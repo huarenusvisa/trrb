@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>唐人日报后台</title>
+  <link rel="stylesheet" href="./styles.css?v=1" />
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <section class="login-card" id="login-view">
+      <div class="logo-text">唐人日报</div>
+      <h1>后台登录</h1>
+      <p>仅限授权管理员使用。</p>
+      <form id="login-form" class="form-stack">
+        <label>
+          邮箱
+          <input type="email" id="login-email" autocomplete="email" required placeholder="请输入管理员邮箱" />
+        </label>
+        <label>
+          密码
+          <input type="password" id="login-password" autocomplete="current-password" required placeholder="请输入密码" />
+        </label>
+        <button type="submit">登录后台</button>
+      </form>
+      <div class="notice" id="login-message"></div>
+    </section>
+
+    <section class="admin-layout is-hidden" id="admin-view">
+      <aside class="sidebar">
+        <div class="brand">
+          <strong>唐人日报</strong>
+          <span>TRRB Admin</span>
+        </div>
+        <nav>
+          <button data-tab="dashboard" class="is-active">控制台</button>
+          <button data-tab="articles">文章管理</button>
+          <button data-tab="new-article">发布文章</button>
+          <button data-tab="rankings">24小时热榜</button>
+        </nav>
+        <button id="logout-btn" class="logout">退出登录</button>
+      </aside>
+
+      <section class="main-panel">
+        <header class="topline">
+          <div>
+            <h1 id="page-title">控制台</h1>
+            <p id="admin-info">正在读取管理员信息...</p>
+          </div>
+          <button id="refresh-btn">刷新</button>
+        </header>
+
+        <section class="tab-panel" id="tab-dashboard">
+          <div class="cards">
+            <article><b id="stat-articles">0</b><span>文章总数</span></article>
+            <article><b id="stat-published">0</b><span>已发布</span></article>
+            <article><b id="stat-drafts">0</b><span>草稿</span></article>
+            <article><b id="stat-rankings">0</b><span>热榜条目</span></article>
+          </div>
+          <div class="panel">
+            <h2>最近文章</h2>
+            <div id="recent-articles" class="simple-list"></div>
+          </div>
+        </section>
+
+        <section class="tab-panel is-hidden" id="tab-articles">
+          <div class="panel">
+            <div class="panel-head">
+              <h2>文章管理</h2>
+              <select id="article-status-filter">
+                <option value="">全部状态</option>
+                <option value="published">已发布</option>
+                <option value="draft">草稿</option>
+                <option value="hidden">隐藏</option>
+              </select>
+            </div>
+            <div id="articles-table" class="table-wrap"></div>
+          </div>
+        </section>
+
+        <section class="tab-panel is-hidden" id="tab-new-article">
+          <div class="panel">
+            <h2>发布文章</h2>
+            <form id="article-form" class="editor-form">
+              <label>标题<input id="article-title" required placeholder="输入新闻标题" /></label>
+              <label>Slug<input id="article-slug" placeholder="自动生成，可手动修改" /></label>
+              <label>摘要<textarea id="article-summary" rows="3" placeholder="新闻摘要，用于列表和 SEO"></textarea></label>
+              <label>正文<textarea id="article-content" rows="12" placeholder="正文内容。每段可直接换行。" required></textarea></label>
+              <div class="two-col">
+                <label>栏目<select id="article-category" required></select></label>
+                <label>状态
+                  <select id="article-status">
+                    <option value="draft">草稿</option>
+                    <option value="published">已发布</option>
+                    <option value="hidden">隐藏</option>
+                  </select>
+                </label>
+              </div>
+              <label>封面图 URL<input id="article-cover" placeholder="https://... 或 /assets/..." /></label>
+              <label>来源链接<input id="article-source" placeholder="原始新闻来源 URL，可选" /></label>
+              <button type="submit">保存文章</button>
+            </form>
+            <div class="notice" id="article-message"></div>
+          </div>
+        </section>
+
+        <section class="tab-panel is-hidden" id="tab-rankings">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>24小时热榜</h2>
+                <p>先手动维护 10 条。后面再做自动阅读量排序。</p>
+              </div>
+              <button id="save-rankings-btn">保存热榜</button>
+            </div>
+            <div id="rankings-editor" class="rank-editor"></div>
+            <div class="notice" id="rankings-message"></div>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./admin.js?v=1"></script>
+</body>
+</html>

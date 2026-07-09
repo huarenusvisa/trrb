@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>唐人日报 Tang Ren Daily</title>
+    <meta name="description" content="唐人日报文章详情页" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles.css?v=28" />
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="meta">
+          <span class="meta-location">📍 本地</span>
+          <span class="meta-date">加载日期中...</span>
+          <span class="meta-weather">🌤️ 天气加载中...</span>
+        </div>
+        <div class="links">
+          <a href="./index.html#submit">投稿爆料</a>
+          <a href="./index.html#daily">电子报</a>
+          <a href="./index.html#about">关于我们</a>
+          <a href="./index.html#ads">广告合作</a>
+          <a href="./index.html#search">搜索</a>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./index.html" aria-label="唐人日报首页">
+          <img src="./trrb-logo.jpg" alt="唐人日报 Tang Ren Daily" />
+        </a>
+        <div class="slogan">
+          <b>立足美国 · 服务华人</b>
+          <span>US-China Breaking News for Chinese Readers</span>
+        </div>
+        <div class="header-actions">
+          <a href="./index.html#daily">电子报订阅</a>
+          <a href="./index.html#community">加入读者群</a>
+          <a class="primary" href="./index.html#submit">投稿爆料</a>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a href="./index.html#important">重要新闻</a>
+        <a href="./index.html#hot">热门头条</a>
+        <a href="./index.html#deport">驱逐快报</a>
+        <a href="./index.html#politics">美国时政</a>
+        <a href="./index.html#crime">美国警情</a>
+        <a href="./index.html#china">中国官场</a>
+        <a href="./index.html#immigration">移民美国</a>
+        <a href="./index.html#asylum">庇护百科</a>
+        <form class="site-search nav-search" role="search">
+          <input name="q" type="search" placeholder="搜索新闻" />
+          <button type="submit">搜索</button>
+        </form>
+      </div>
+    </nav>
+
+    <main class="article-shell">
+      <article class="container article-page" id="article-root">
+        <a class="back-link" href="./index.html">返回首页</a>
+        <div class="article-loading">正在加载文章...</div>
+      </article>
+    </main>
+
+    <footer class="footer" id="about">
+      <div class="container footer-grid">
+        <section>
+          <h2>唐人日报</h2>
+          <b>Tang Ren Daily</b>
+          <p>立足美国 服务华人<br />专注美国新闻与深度报道</p>
+        </section>
+        <section>
+          <h3>栏目导航</h3>
+          <a href="./index.html#important">重要新闻</a>
+          <a href="./index.html#hot">热门头条</a>
+          <a href="./index.html#deport">驱逐快报</a>
+          <a href="./index.html#politics">美国时政</a>
+        </section>
+        <section>
+          <h3>关于我们</h3>
+          <a href="./index.html#about">关于唐人日报</a>
+          <a href="./index.html#ads">广告合作</a>
+          <a href="./index.html#community">加入我们</a>
+        </section>
+        <section>
+          <h3>联系我们</h3>
+          <p>邮箱：news@tangrendaily.com</p>
+          <p>电话：+1 (929) 888-1688</p>
+          <p>地址：136-20 38th Ave, Flushing, NY 11354, USA</p>
+        </section>
+      </div>
+      <div class="container copyright">© 2026 唐人日报 Tang Ren Daily. 保留所有权利。</div>
+    </footer>
+    <script src="./articles-index.js?v=28"></script>
+    <script src="./site-search.js?v=28"></script>
+    <script src="./site-common.js?v=28"></script>
+    <script src="./article.js?v=28"></script>
+  </body>
+</html>

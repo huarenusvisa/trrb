@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#f3f4f6"/>
+  <rect x="1" y="1" width="638" height="358" fill="none" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="50%" y="48%" text-anchor="middle" fill="#d60000" font-family="Arial, sans-serif" font-size="30" font-weight="700">唐人日报</text>
+  <text x="50%" y="58%" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="16">Tang Ren Daily</text>
+</svg>

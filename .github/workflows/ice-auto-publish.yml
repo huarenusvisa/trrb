@@ -35,7 +35,7 @@ jobs:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          SITE_URL: "https://new.trrb.net"
+          SITE_URL: "https://trrb.net"
           ICE_QUERY: "from:ICEgov -is:retweet -is:reply"
           ICE_BOOTSTRAP_LIMIT: "8"
           ICE_MAX_NEW_POSTS: "30"

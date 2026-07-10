@@ -130,6 +130,16 @@
               <div class="media-help">外链适合临时使用；长期运营建议优先使用粘贴或本地上传。</div>
             </div>
 
+            <div class="ai-cover-box">
+              <div class="field-heading">
+                <label>AI 新闻封面</label>
+                <button type="button" class="secondary-btn" id="generate-ai-cover">根据文章生成 AI 封面</button>
+              </div>
+              <label class="ai-auto-label"><input id="auto-ai-cover" type="checkbox" checked /> 发布时没有封面，自动生成一张 16:9 AI 示意图</label>
+              <div class="media-help">AI 图会自动上传到 Supabase Storage，并建议在图片说明中标注“AI生成示意图”。涉及真实人物、灾难或执法现场时只生成概念示意图，不伪造现场照片。</div>
+              <div class="upload-progress hidden" id="ai-cover-progress">正在准备 AI 封面…</div>
+            </div>
+
             <label>正文</label>
             <textarea id="article-content" rows="12" placeholder="请输入正文内容"></textarea>
 

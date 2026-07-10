@@ -227,3 +227,10 @@ button:disabled { opacity: .6; cursor: wait; }
 .external-url-box { margin-top:14px; }
 .external-url-box label { margin-top:0; }
 @media (max-width:760px) { .upload-methods { grid-template-columns:1fr; } .field-heading { align-items:flex-start; flex-direction:column; } }
+
+
+/* v30 AI cover controls */
+.ai-cover-box { margin: 18px 0 22px; padding: 16px; border: 1px solid #d8dee9; border-radius: 10px; background: #fbfcfe; }
+.ai-cover-box .field-heading { margin-bottom: 10px; }
+.ai-auto-label { display: flex; align-items: center; gap: 9px; font-weight: 700; margin: 12px 0 8px; }
+.ai-auto-label input { width: 18px; height: 18px; }

@@ -71,6 +71,7 @@ function bindEvents() {
     const categoryName = el("article-category").selectedOptions?.[0]?.textContent || "";
     el("article-seo-keywords").value = generateSeoKeywords(el("article-title").value, categoryName, el("article-content").value);
   });
+  el("generate-ai-cover")?.addEventListener("click", () => generateAiCover());
 }
 
 async function handleLogin(event) {
@@ -257,6 +258,10 @@ async function handleSaveArticle(event) {
     }
 
     const content = el("article-content").value.trim();
+    if (!coverImage && status === "published" && el("auto-ai-cover")?.checked) {
+      coverImage = await generateAiCover({ silent: true });
+      el("article-cover").value = coverImage || "";
+    }
     const summary = el("article-summary").value.trim() || generateSummary(content, title);
     const seoKeywords = el("article-seo-keywords").value.trim() || generateSeoKeywords(title, categoryName, content);
     el("article-summary").value = summary;
@@ -292,6 +297,40 @@ async function handleSaveArticle(event) {
   } finally {
     submitButton.disabled = false;
     el("article-cover-progress").classList.add("hidden");
+  }
+}
+
+async function generateAiCover(options = {}) {
+  const progress = el("ai-cover-progress");
+  const title = el("article-title").value.trim();
+  const content = el("article-content").value.trim();
+  const summary = el("article-summary").value.trim() || generateSummary(content, title);
+  const category = el("article-category").selectedOptions?.[0]?.textContent || "新闻";
+  if (!title) { if (!options.silent) alert("请先填写文章标题。"); return ""; }
+  progress?.classList.remove("hidden");
+  if (progress) progress.textContent = "正在生成 16:9 AI 新闻封面，通常需要 15–60 秒…";
+  try {
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const token = sessionData.session?.access_token;
+    if (!token) throw new Error("登录状态已失效，请重新登录。");
+    const response = await fetch("/.netlify/functions/generate-cover", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ title, category, summary, content: content.slice(0, 4000) })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || `AI 封面生成失败（${response.status}）`);
+    if (!result.url) throw new Error("AI 接口没有返回图片地址。");
+    el("article-cover").value = result.url;
+    el("article-cover-preview").src = result.url;
+    el("article-cover-preview-wrap").classList.remove("hidden");
+    if (progress) progress.textContent = "AI 封面生成并本地化成功。";
+    return result.url;
+  } catch (error) {
+    console.error(error);
+    if (progress) progress.textContent = `AI 封面失败：${error.message}`;
+    if (!options.silent) alert(`AI 封面失败：${error.message}`);
+    return "";
   }
 }
 

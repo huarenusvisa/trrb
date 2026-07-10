@@ -1,75 +1,71 @@
 const TRRB_SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const TRRB_SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
+const TRRB_LIVE_CACHE_TTL = 60 * 1000;
 
-async function fetchLivePublishedArticles(limit = 100) {
-  const select = [
-    "id","title","slug","summary","content","category_name","cover_image",
-    "author","status","published_at","created_at"
-  ].join(",");
+function readLiveCache(key) {
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(key) || "null");
+    if (cached && Date.now() - cached.savedAt < TRRB_LIVE_CACHE_TTL && Array.isArray(cached.data)) return cached.data;
+  } catch {}
+  return null;
+}
+
+function writeLiveCache(key, data) {
+  try { sessionStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), data })); } catch {}
+}
+
+async function fetchJsonWithTimeout(url, options = {}, timeout = 6500) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeout);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    if (!response.ok) throw new Error(`Supabase ${response.status}`);
+    return await response.json();
+  } finally { clearTimeout(timer); }
+}
+
+async function fetchLivePublishedArticles(limit = 60) {
+  const cacheKey = `trrb-live-v3-${limit}`;
+  const cached = readLiveCache(cacheKey);
+  if (cached) return cached;
+  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
-  const response = await fetch(url, {
-    cache: "no-store",
-    headers: {
-      apikey: TRRB_SUPABASE_KEY,
-      Authorization: `Bearer ${TRRB_SUPABASE_KEY}`,
-      Accept: "application/json"
-    }
+  const rows = await fetchJsonWithTimeout(url, {
+    cache: "default",
+    headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
   });
-  if (!response.ok) throw new Error(`Supabase articles ${response.status}`);
-  const rows = await response.json();
-  return (Array.isArray(rows) ? rows : []).map(mapLiveArticle);
+  const articles = (Array.isArray(rows) ? rows : []).map(mapLiveArticle);
+  writeLiveCache(cacheKey, articles);
+  return articles;
 }
 
 async function fetchLiveArticleById(id) {
-  const select = [
-    "id","title","slug","summary","content","category_name","cover_image",
-    "author","status","published_at","created_at"
-  ].join(",");
+  const cacheKey = `trrb-live-article-v3-${id}`;
+  const cached = readLiveCache(cacheKey);
+  if (cached?.[0]) return cached[0];
+  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
-  const response = await fetch(url, {
-    cache: "no-store",
-    headers: {
-      apikey: TRRB_SUPABASE_KEY,
-      Authorization: `Bearer ${TRRB_SUPABASE_KEY}`,
-      Accept: "application/json"
-    }
+  const rows = await fetchJsonWithTimeout(url, {
+    cache: "default",
+    headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
   });
-  if (!response.ok) throw new Error(`Supabase article ${response.status}`);
-  const rows = await response.json();
-  return Array.isArray(rows) && rows[0] ? mapLiveArticle(rows[0]) : null;
+  const article = Array.isArray(rows) && rows[0] ? mapLiveArticle(rows[0]) : null;
+  if (article) writeLiveCache(cacheKey, [article]);
+  return article;
 }
 
 function mapLiveArticle(row) {
   const published = row.published_at || row.created_at || "";
   const content = String(row.content || "").trim();
   return {
-    id: row.id,
-    title: row.title || "",
-    category: row.category_name || "新闻",
-    excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120),
-    image: row.cover_image || "",
-    author: row.author || "Tang Ren Daily",
-    date: formatLiveDate(published),
-    time: formatLiveDateTime(published),
-    views: "",
-    body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [],
-    isLive: true
+    id: row.id, title: row.title || "", category: row.category_name || "新闻",
+    excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
+    author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
+    body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
   };
 }
-
-function formatLiveDate(value) {
-  if (!value) return "";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return String(value);
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-}
-
-function formatLiveDateTime(value) {
-  if (!value) return "";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return String(value);
-  return `${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
-}
+function formatLiveDate(value) { if (!value) return ""; const d = new Date(value); if (Number.isNaN(d.getTime())) return String(value); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+function formatLiveDateTime(value) { if (!value) return ""; const d = new Date(value); if (Number.isNaN(d.getTime())) return String(value); return `${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`; }
 const pageSize = 24;
 
 initListing();
@@ -80,7 +76,7 @@ async function initListing() {
   const query = params.get("q") || "";
   const page = Math.max(1, Number(params.get("page") || 1));
   let live = [];
-  try { live = await fetchLivePublishedArticles(200); } catch (error) { console.warn("Live articles unavailable", error); }
+  try { live = await fetchLivePublishedArticles(60); } catch (error) { console.warn("Live articles unavailable", error); }
   const archived = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : [];
   const seen = new Set(live.map(item => String(item.id)));
   const articles = live.concat(archived.filter(item => !seen.has(String(item.id))));

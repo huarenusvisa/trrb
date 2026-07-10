@@ -1,0 +1,10 @@
+{
+  "last_seen_id": "",
+  "last_run_at": "",
+  "last_success_at": "",
+  "last_result": {
+    "fetched": 0,
+    "published": 0,
+    "pending": 0
+  }
+}

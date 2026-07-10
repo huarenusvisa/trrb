@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ICE执法追踪 - 唐人日报</title>
+  <meta name="description" content="唐人日报ICE执法追踪，自动整理美国移民与海关执法局公开发布的执法、拘留、遣返及相关动态。">
+  <link rel="canonical" href="https://new.trrb.net/topic/ice/">
+  <link rel="stylesheet" href="/assets/ice-topic.css">
+  <script src="/assets/ice-topic.js" defer></script>
+</head>
+<body>
+  <header class="trrb-header">
+    <div class="trrb-header-inner">
+      <a class="trrb-brand" href="/">唐人日报</a>
+      <a class="trrb-channel" href="/topic/ice/">ICE执法追踪</a>
+    </div>
+  </header>
+
+  <section class="ice-hero">
+    <div class="ice-hero-inner">
+      <div class="ice-kicker">专题聚焦</div>
+      <h1>ICE执法追踪</h1>
+      <p>自动整理美国移民与海关执法局公开发布的执法、拘留、遣返及相关动态。全部内容按发布时间统一排列，不设置分类。</p>
+      <div class="ice-stats">
+        <div class="ice-stat"><strong id="ice-today-count">0</strong><span>今日更新</span></div>
+        <div class="ice-stat"><strong id="ice-total-count">0</strong><span>已收录新闻</span></div>
+        <div class="ice-stat"><strong id="ice-last-sync">尚未同步</strong><span>最近同步（纽约时间）</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="ice-page">
+    <div class="ice-section-head">
+      <h2>最新动态</h2>
+      <p>按发布时间倒序排列</p>
+    </div>
+    <div id="ice-news-list" class="ice-news-list" aria-live="polite">
+      <div class="ice-empty"><strong>正在读取最新内容</strong><span>请稍候</span></div>
+    </div>
+    <button id="ice-load-more" class="ice-load-more" type="button" hidden>加载更多</button>
+  </main>
+</body>
+</html>

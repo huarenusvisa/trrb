@@ -140,7 +140,9 @@ function renderArticle(root, article, articles) {
     .slice(0, 12);
   const extensionItems = related.concat(related).slice(0, Math.max(related.length * 2, related.length));
 
-  const coverUrl = imageUrl(article.image || "", article.category || "");
+  const rawCover = String(article.image || "").trim();
+  const coverUrl = imageUrl(rawCover, article.category || "");
+  const coverOriginal = originalUploadUrl(rawCover);
   const coverFallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(article.category || "") : "./image-placeholder.svg";
   const hasCover = Boolean(coverUrl);
 
@@ -165,6 +167,7 @@ function renderArticle(root, article, articles) {
         decoding="async"
         fetchpriority="high"
         referrerpolicy="no-referrer"
+        data-original="${escapeAttribute(coverOriginal)}"
         data-fallback="${escapeAttribute(coverFallback)}"
         alt="${escapeAttribute(article.title || "")}"
       />
@@ -188,25 +191,31 @@ function renderArticle(root, article, articles) {
 
   const cover = root.querySelector(".article-image");
   if (cover) {
-    const removeFailedCover = () => {
+    const advanceCoverFallback = () => {
+      const stage = Number(cover.dataset.fallbackStage || 0);
+      const original = cover.dataset.original || "";
       const fallback = cover.dataset.fallback || "";
-      if (!cover.dataset.fallbackTried && fallback && !cover.src.endsWith(fallback.replace(/^\.\//, "/"))) {
-        cover.dataset.fallbackTried = "true";
+
+      if (stage === 0 && original && original !== cover.currentSrc && original !== cover.src) {
+        cover.dataset.fallbackStage = "1";
+        cover.src = original;
+        return;
+      }
+      if (stage <= 1 && fallback && fallback !== cover.currentSrc && fallback !== cover.src) {
+        cover.dataset.fallbackStage = "2";
         cover.src = fallback;
         cover.alt = `${article.category || "新闻"}默认封面`;
         return;
       }
+
       cover.dataset.imageFailed = "true";
       cover.removeAttribute("alt");
       cover.hidden = true;
       root.classList.add("image-failed");
     };
 
-    cover.addEventListener("error", removeFailedCover, { once: true });
-
-    if (cover.complete && (!cover.naturalWidth || !cover.naturalHeight)) {
-      removeFailedCover();
-    }
+    cover.addEventListener("error", advanceCoverFallback);
+    if (cover.complete && (!cover.naturalWidth || !cover.naturalHeight)) advanceCoverFallback();
   }
 }
 
@@ -245,6 +254,14 @@ function renderRelatedItem(article) {
       <strong>${escapeHtml(article.title || "")}</strong>
     </a>
   `;
+}
+
+function originalUploadUrl(value) {
+  let text = String(value || "").trim().replace(/\u0026/g, "&");
+  text = text.replace(/[?&]v=[^&]+/g, "").replace(/[?&]$/, "");
+  const match = text.match(/(?:^|\/)assets\/news-images\/(.+)$/i);
+  if (match && match[1]) return `https://trrb.net/wp-content/uploads/${match[1]}`;
+  return "";
 }
 
 function imageUrl(value, category) {

@@ -1,4 +1,5 @@
 (function () {
+  const TRRB_ASSET_VERSION = "29.2";
   const CATEGORY_PLACEHOLDERS = {
     "重要新闻": "./assets/category-placeholders/important.svg",
     "热门头条": "./assets/category-placeholders/hot.svg",
@@ -16,16 +17,23 @@
     return CATEGORY_PLACEHOLDERS[category] || CATEGORY_PLACEHOLDERS.default;
   }
 
+  function addAssetVersion(url) {
+    const text = String(url || "");
+    if (!text.includes("/assets/news-images/")) return text;
+    const separator = text.includes("?") ? "&" : "?";
+    return `${text}${separator}v=${TRRB_ASSET_VERSION}`;
+  }
+
   function normalizeImageUrl(value, category) {
-    let text = String(value || "").replace(/\\u0026/g, "&").trim();
+    let text = String(value || "").replace(/\u0026/g, "&").trim();
     if (!text || text.includes("image-placeholder.svg")) return categoryPlaceholder(category);
     if (/^(?:javascript|vbscript):/i.test(text)) return categoryPlaceholder(category);
     if (text.startsWith("//")) text = "https:" + text;
     if (/^http:\/\//i.test(text)) text = text.replace(/^http:\/\//i, "https://");
-    if (text.startsWith("/assets/news-images/")) return "." + text;
-    if (text.startsWith("assets/news-images/")) return "./" + text;
+    if (text.startsWith("/assets/news-images/")) return addAssetVersion("." + text);
+    if (text.startsWith("assets/news-images/")) return addAssetVersion("./" + text);
     text = text.replace(/^https?:\/\/(?:www\.)?(?:new\.)?trrb\.net\/wp-content\/uploads\//i, "./assets/news-images/");
-    return text;
+    return addAssetVersion(text);
   }
 
   function weatherInfo(code) {

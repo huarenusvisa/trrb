@@ -3,6 +3,8 @@ const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
 const OWNER_EMAIL = "tangrenribao@gmail.com";
 const OWNER_UID = "4c491ee3-a9f0-42c9-9bee-1abb52b20b01";
+const ARTICLE_IMAGE_BUCKET = "article-images";
+const MAX_SOURCE_IMAGE_BYTES = 15 * 1024 * 1024;
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: {
@@ -16,10 +18,29 @@ const el = (id) => document.getElementById(id);
 let currentUser = null;
 let currentAdmin = null;
 let categories = [];
+let selectedCoverFile = null;
+let selectedCoverObjectUrl = "";
 
 document.addEventListener("DOMContentLoaded", init);
 
+// 后台永远使用最新静态文件，清理旧 Service Worker / Cache Storage。
+async function clearLegacyBrowserCaches() {
+  try {
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((registration) => registration.unregister()));
+    }
+    if ("caches" in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    }
+  } catch (error) {
+    console.warn("清理旧缓存失败，不影响继续登录：", error);
+  }
+}
+
 async function init() {
+  await clearLegacyBrowserCaches();
   bindEvents();
   const { data } = await supabaseClient.auth.getSession();
   if (data.session?.user) {
@@ -38,12 +59,14 @@ function bindEvents() {
   el("article-form").addEventListener("submit", handleSaveArticle);
   el("refresh-articles").addEventListener("click", loadArticles);
   el("refresh-rankings").addEventListener("click", loadRankings);
+  el("article-cover-file").addEventListener("change", handleCoverSelection);
+  el("article-cover-remove").addEventListener("click", clearCoverSelection);
 }
 
 async function handleLogin(event) {
   event.preventDefault();
   setLoginMessage("正在登录...");
-  const email = el("login-email").value.trim();
+  const email = el("login-email").value.trim().toLowerCase();
   const password = el("login-password").value;
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
@@ -91,23 +114,23 @@ async function getAdminRecord(user) {
   if (error) {
     console.error("Admin check by user_id failed:", error);
   }
-  if (data) return data;
+  if (data && ["owner", "admin"].includes(String(data.role || "").toLowerCase())) return data;
 
   // 备用：如果早期表里 user_id 没写对，用邮箱再核对一次。
   const fallback = await supabaseClient
     .from("admin_users")
     .select("id,user_id,email,role,is_active")
-    .eq("email", user.email)
+    .ilike("email", String(user.email || "").trim())
     .eq("is_active", true)
     .maybeSingle();
 
   if (fallback.error) {
     console.error("Admin check by email failed:", fallback.error);
   }
-  if (fallback.data) return fallback.data;
+  if (fallback.data && ["owner", "admin"].includes(String(fallback.data.role || "").toLowerCase())) return fallback.data;
 
   // 最后保险：只允许这一个 Supabase Auth UID 进入 UI。数据库写入仍然受 RLS 控制。
-  if (user.id === OWNER_UID && user.email === OWNER_EMAIL) {
+  if (user.id === OWNER_UID && String(user.email || "").trim().toLowerCase() === OWNER_EMAIL) {
     return { user_id: OWNER_UID, email: OWNER_EMAIL, role: "owner", is_active: true };
   }
 
@@ -211,33 +234,135 @@ async function handleSaveArticle(event) {
   const categoryName = selected.options[selected.selectedIndex]?.textContent || "";
   const title = el("article-title").value.trim();
   const status = el("article-status").value;
+  const submitButton = el("article-submit");
 
-  const payload = {
-    title,
-    slug: makeSlug(title),
-    summary: el("article-summary").value.trim(),
-    content: el("article-content").value.trim(),
-    category_id: selected.value || null,
-    category_name: categoryName,
-    cover_image: el("article-cover").value.trim(),
-    author: el("article-author").value.trim() || "Tang Ren Daily",
-    status,
-    published_at: status === "published" ? new Date().toISOString() : null
-  };
+  submitButton.disabled = true;
+  el("article-message").textContent = selectedCoverFile ? "正在压缩并上传封面图片..." : "正在保存...";
 
-  el("article-message").textContent = "正在保存...";
+  try {
+    let coverImage = el("article-cover").value.trim();
+    if (selectedCoverFile) {
+      coverImage = await uploadCoverImage(selectedCoverFile, title);
+      el("article-cover").value = coverImage;
+    }
 
-  const { error } = await supabaseClient.from("articles").insert(payload);
-  if (error) {
-    el("article-message").textContent = "保存失败：" + error.message;
+    const payload = {
+      title,
+      slug: makeSlug(title),
+      summary: el("article-summary").value.trim(),
+      content: el("article-content").value.trim(),
+      category_id: selected.value || null,
+      category_name: categoryName,
+      cover_image: coverImage,
+      author: el("article-author").value.trim() || "Tang Ren Daily",
+      status,
+      published_at: status === "published" ? new Date().toISOString() : null
+    };
+
+    el("article-message").textContent = "图片上传完成，正在保存文章...";
+    const { error } = await supabaseClient.from("articles").insert(payload);
+    if (error) throw error;
+
+    el("article-message").textContent = "文章已保存，封面图片已本地化。";
+    el("article-form").reset();
+    el("article-author").value = "Tang Ren Daily";
+    clearCoverSelection();
+    await loadArticles();
+    showPage("articles");
+  } catch (error) {
+    console.error(error);
+    el("article-message").textContent = "保存失败：" + (error?.message || String(error));
+  } finally {
+    submitButton.disabled = false;
+    el("article-cover-progress").classList.add("hidden");
+  }
+}
+
+function handleCoverSelection(event) {
+  const file = event.target.files?.[0] || null;
+  if (!file) {
+    clearCoverSelection();
+    return;
+  }
+  if (!file.type.startsWith("image/")) {
+    alert("请选择 JPG、PNG、WebP 或 GIF 图片。");
+    event.target.value = "";
+    return;
+  }
+  if (file.size > MAX_SOURCE_IMAGE_BYTES) {
+    alert("原图不能超过 15MB，请先缩小图片。");
+    event.target.value = "";
     return;
   }
 
-  el("article-message").textContent = "文章已保存。";
-  el("article-form").reset();
-  el("article-author").value = "Tang Ren Daily";
-  await loadArticles();
-  showPage("articles");
+  selectedCoverFile = file;
+  if (selectedCoverObjectUrl) URL.revokeObjectURL(selectedCoverObjectUrl);
+  selectedCoverObjectUrl = URL.createObjectURL(file);
+  el("article-cover-preview").src = selectedCoverObjectUrl;
+  el("article-cover-preview-wrap").classList.remove("hidden");
+  el("article-cover-progress").textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)}MB`;
+  el("article-cover-progress").classList.remove("hidden");
+}
+
+function clearCoverSelection() {
+  selectedCoverFile = null;
+  el("article-cover-file").value = "";
+  el("article-cover-preview-wrap").classList.add("hidden");
+  el("article-cover-progress").classList.add("hidden");
+  el("article-cover-preview").removeAttribute("src");
+  if (selectedCoverObjectUrl) URL.revokeObjectURL(selectedCoverObjectUrl);
+  selectedCoverObjectUrl = "";
+}
+
+async function uploadCoverImage(file, title) {
+  const progress = el("article-cover-progress");
+  progress.classList.remove("hidden");
+  progress.textContent = "正在压缩图片...";
+
+  const optimized = await optimizeImage(file, 1600, 0.84);
+  const now = new Date();
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+  const safeTitle = makeSlug(title).slice(0, 60);
+  const filePath = `${year}/${month}/${safeTitle}-${crypto.randomUUID()}.webp`;
+
+  progress.textContent = `正在上传 ${(optimized.size / 1024).toFixed(0)}KB...`;
+  const { error } = await supabaseClient.storage
+    .from(ARTICLE_IMAGE_BUCKET)
+    .upload(filePath, optimized, {
+      contentType: "image/webp",
+      cacheControl: "31536000",
+      upsert: false
+    });
+  if (error) {
+    throw new Error(`图片上传失败：${error.message}。请先在 Supabase 执行补丁包中的 SQL。`);
+  }
+
+  const { data } = supabaseClient.storage.from(ARTICLE_IMAGE_BUCKET).getPublicUrl(filePath);
+  if (!data?.publicUrl) throw new Error("图片已上传，但无法取得公开地址。");
+  progress.textContent = "图片上传成功。";
+  return data.publicUrl;
+}
+
+async function optimizeImage(file, maxDimension, quality) {
+  if (file.type === "image/gif") return file;
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d", { alpha: false });
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
+  context.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+
+  const blob = await new Promise((resolve, reject) => {
+    canvas.toBlob((value) => value ? resolve(value) : reject(new Error("图片压缩失败")), "image/webp", quality);
+  });
+  return blob;
 }
 
 async function loadRankings() {

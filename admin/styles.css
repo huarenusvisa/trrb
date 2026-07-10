@@ -195,3 +195,22 @@ th { background: #f1f5f9; }
   .sidebar { position: static; }
   .cards, .grid2 { grid-template-columns: 1fr; }
 }
+
+
+/* v20260710: 本地图片上传 */
+.media-uploader {
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 16px;
+  background: #f8fafc;
+}
+.media-uploader input[type="file"] { background: white; }
+.media-help { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.media-preview-wrap { margin-top: 14px; display: flex; align-items: flex-start; gap: 12px; }
+.media-preview-wrap img { width: min(360px, 100%); max-height: 220px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); }
+.secondary-btn { background: #475569 !important; margin-top: 0 !important; white-space: nowrap; }
+.upload-progress { margin-top: 10px; font-size: 13px; font-weight: 700; color: #166534; }
+.url-fallback { margin: 12px 0 18px; color: var(--muted); }
+.url-fallback summary { cursor: pointer; font-size: 13px; }
+.url-fallback input { margin-top: 10px; }
+button:disabled { opacity: .6; cursor: wait; }

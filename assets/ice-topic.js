@@ -99,7 +99,7 @@
           ${image}
           <div class="ice-news-body">
             <div class="ice-news-meta">
-              <span class="ice-news-label">ICE官方信息</span>
+              <span class="ice-news-label">${escapeHtml(item.source_name || "ICE执法信息")}</span>
               <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
             </div>
             <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>

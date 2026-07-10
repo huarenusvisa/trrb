@@ -22,7 +22,7 @@ const CONFIG = {
   openAIKey: firstEnv("OPENAI_API_KEY"),
   openAIModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
   siteUrl: normalizeSiteUrl(process.env.SITE_URL || "https://trrb.net"),
-  query: process.env.ICE_QUERY || "from:ICEgov -is:retweet -is:reply",
+  query: process.env.ICE_QUERY || "(from:ICEgov OR from:DHSgov OR from:HSI_HQ OR from:CBP OR from:DOJCrimDiv OR from:Reuters OR from:AP OR from:FoxNews OR from:CNN OR from:NBCNews OR from:ABC OR from:CBSNews OR from:axios) (ICE OR immigration OR deportation OR detained OR arrest OR raid OR removal) -is:retweet",
   bootstrapLimit: intEnv("ICE_BOOTSTRAP_LIMIT", 30, 1, 100),
   maxNewPosts: intEnv("ICE_MAX_NEW_POSTS", 30, 1, 100),
   lookbackHours: intEnv("ICE_LOOKBACK_HOURS", 24, 1, 168),
@@ -334,6 +334,7 @@ async function fetchRecentPosts(sinceId) {
     });
     const payload = await readResponseJson(response, "X API");
     const mediaMap = new Map((payload.includes?.media || []).map(item => [item.media_key, item]));
+    const userMap = new Map((payload.includes?.users || []).map(user => [String(user.id), user]));
 
     for (const item of payload.data || []) {
       const media = (item.attachments?.media_keys || [])
@@ -347,6 +348,7 @@ async function fetchRecentPosts(sinceId) {
           height: m.height || 0
         }));
 
+      const author = userMap.get(String(item.author_id || "")) || {};
       collected.push({
         id: String(item.id),
         text: item.text || "",
@@ -355,7 +357,9 @@ async function fetchRecentPosts(sinceId) {
         possibly_sensitive: Boolean(item.possibly_sensitive),
         entities: item.entities || {},
         media,
-        x_url: `https://x.com/ICEgov/status/${item.id}`
+        author_username: author.username || "ICEgov",
+        author_name: author.name || author.username || "公开来源",
+        x_url: `https://x.com/${author.username || "ICEgov"}/status/${item.id}`
       });
     }
 
@@ -372,6 +376,26 @@ async function fetchRecentPosts(sinceId) {
 
   selected.sort((a, b) => compareSnowflakes(a.id, b.id));
   return selected;
+}
+
+function sourceDisplayName(post) {
+  const username = String(post.author_username || "").toLowerCase();
+  const known = {
+    icegov: "美国移民与海关执法局（ICE）",
+    dhsgov: "美国国土安全部（DHS）",
+    hsi_hq: "美国国土安全调查局（HSI）",
+    cbp: "美国海关与边境保护局（CBP）",
+    dojcrimdiv: "美国司法部刑事司",
+    reuters: "路透社",
+    ap: "美联社",
+    foxnews: "Fox News",
+    cnn: "CNN",
+    nbcnews: "NBC News",
+    abc: "ABC News",
+    cbsnews: "CBS News",
+    axios: "Axios"
+  };
+  return known[username] || post.author_name || post.author_username || "公开来源";
 }
 
 async function processPost(post, news) {
@@ -405,7 +429,7 @@ async function processPost(post, news) {
     published_at: post.created_at,
     updated_at: new Date().toISOString(),
     url: relativeUrl,
-    source_name: "美国移民与海关执法局",
+    source_name: sourceDisplayName(post),
     source_url: post.x_url,
     official_url: enrichment.url || "",
     source_text: post.text.trim().slice(0, 1200),

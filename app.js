@@ -333,3 +333,21 @@ function escapeHtml(value) {
 function escapeAttribute(value) {
   return escapeHtml(value).replaceAll("`", "&#096;");
 }
+
+// v29.9 compact tip form dialog
+(function setupTipDialog(){
+  const dialog = document.getElementById('tip-dialog');
+  const openButton = document.querySelector('[data-tip-open]');
+  if (!dialog || !openButton) return;
+  openButton.addEventListener('click', () => {
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', '');
+    document.body.classList.add('tip-dialog-open');
+  });
+  dialog.addEventListener('close', () => document.body.classList.remove('tip-dialog-open'));
+  dialog.addEventListener('click', (event) => {
+    const rect = dialog.getBoundingClientRect();
+    const outside = event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+    if (outside) dialog.close();
+  });
+})();

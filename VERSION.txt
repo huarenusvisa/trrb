@@ -1,2 +1,2 @@
-TRRB v29.7 clean rebuild
-Built: 2026-07-10
+29.9
+Compact CTA strip, QR update, tip dialog

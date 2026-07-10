@@ -2531,3 +2531,138 @@ svg {
 .form-note{display:block;margin-top:10px;color:#6b7280;line-height:1.55}
 .footer a[href^="tel:"]{display:inline;color:inherit;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:767px){.reader-qr{width:min(100%,320px)}.tip-form input,.tip-form textarea,.tip-form button{font-size:16px}.cta-row article{overflow:hidden}}
+
+/* v29.9 compact subscription/community/tip strip */
+.cta-row.cta-compact{
+  display:grid;
+  grid-template-columns:1.15fr 1fr 1fr;
+  gap:0;
+  padding:0 0 14px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  overflow:hidden;
+}
+.cta-compact .cta-compact-item{
+  min-height:126px;
+  padding:18px 22px;
+  display:grid;
+  align-items:center;
+  column-gap:18px;
+  border:0;
+  border-right:1px solid var(--line);
+  box-shadow:none;
+  background:#fff;
+}
+.cta-compact .cta-compact-item:last-child{border-right:0}
+.cta-compact .cta-copy h2{
+  margin:0 0 7px;
+  padding:0;
+  border:0;
+  font-size:20px;
+  line-height:1.2;
+}
+.cta-compact .cta-copy h2::before{display:none}
+.cta-compact .cta-copy p{
+  margin:0;
+  color:#4b5563;
+  font-size:14px;
+  line-height:1.55;
+}
+.cta-compact .cta-subscribe{
+  grid-template-columns:minmax(150px,.8fr) minmax(260px,1.4fr);
+}
+.cta-compact .cta-subscribe form{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 96px;
+  gap:0;
+  margin:0;
+  align-self:end;
+}
+.cta-compact .cta-subscribe input{
+  width:100%;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:4px 0 0 4px;
+  padding:0 12px;
+  font-size:14px;
+}
+.cta-compact .cta-subscribe button{
+  min-height:38px;
+  border-radius:0 4px 4px 0;
+  padding:0 14px;
+  font-size:14px;
+  white-space:nowrap;
+}
+.cta-compact .cta-community{
+  grid-template-columns:minmax(150px,1fr) 94px;
+}
+.cta-compact .reader-qr{
+  width:88px;
+  height:88px;
+  margin:0;
+  border:0;
+  border-radius:0;
+  object-fit:contain;
+}
+.cta-compact .cta-submit{
+  grid-template-columns:minmax(160px,1fr) 118px;
+}
+.cta-compact .tip-open-button{
+  width:118px;
+  min-height:48px;
+  border:1px solid #ef4444;
+  border-radius:8px;
+  background:#fff5f5;
+  color:#d00;
+  font-weight:800;
+  font-size:15px;
+}
+.tip-dialog{
+  width:min(92vw,620px);
+  max-height:90vh;
+  border:0;
+  border-radius:12px;
+  padding:0;
+  box-shadow:0 24px 70px rgb(0 0 0 / .28);
+}
+.tip-dialog::backdrop{background:rgb(0 0 0 / .5)}
+.tip-dialog-close-row{display:flex;justify-content:flex-end;margin:0;padding:8px 10px 0}
+.tip-dialog-close-row button{border:0;background:transparent;font-size:30px;line-height:1;cursor:pointer}
+.tip-dialog-body{padding:0 24px 24px}
+.tip-dialog-body h2{margin:0 0 8px;font-size:24px}
+.tip-dialog-body>p{margin:0 0 16px;color:#6b7280}
+.tip-dialog .tip-form{margin-top:0!important}
+body.tip-dialog-open{overflow:hidden}
+
+@media (max-width:1099px){
+  .cta-row.cta-compact{grid-template-columns:1fr}
+  .cta-compact .cta-compact-item{
+    min-height:auto;
+    border-right:0;
+    border-bottom:1px solid var(--line);
+  }
+  .cta-compact .cta-compact-item:last-child{border-bottom:0}
+  .cta-compact .cta-subscribe{grid-template-columns:1fr minmax(280px,1.4fr)}
+  .cta-compact .cta-community{grid-template-columns:1fr 94px}
+  .cta-compact .cta-submit{grid-template-columns:1fr 118px}
+}
+@media (max-width:767px){
+  .cta-row.cta-compact{
+    width:min(calc(100% - 24px),var(--container));
+    margin-inline:auto;
+    border-radius:10px;
+  }
+  .cta-compact .cta-compact-item{padding:16px;gap:12px}
+  .cta-compact .cta-copy h2{font-size:20px}
+  .cta-compact .cta-copy p{font-size:15px}
+  .cta-compact .cta-subscribe{grid-template-columns:1fr}
+  .cta-compact .cta-subscribe form{grid-template-columns:1fr 92px;width:100%}
+  .cta-compact .cta-subscribe input,.cta-compact .cta-subscribe button{min-height:44px;font-size:16px}
+  .cta-compact .cta-community{grid-template-columns:1fr 86px}
+  .cta-compact .reader-qr{width:82px;height:82px}
+  .cta-compact .cta-submit{grid-template-columns:1fr 108px}
+  .cta-compact .tip-open-button{width:108px;min-height:44px;font-size:15px}
+  .tip-dialog{width:calc(100vw - 24px)}
+  .tip-dialog-body{padding:0 16px 18px}
+}

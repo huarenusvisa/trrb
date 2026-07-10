@@ -70,21 +70,37 @@ const pageSize = 24;
 
 initListing();
 
-async function initListing() {
-  const params = new URLSearchParams(window.location.search);
-  const category = params.get("category") || "";
-  const query = params.get("q") || "";
-  const page = Math.max(1, Number(params.get("page") || 1));
-  let live = [];
-  try { live = await fetchLivePublishedArticles(60); } catch (error) { console.warn("Live articles unavailable", error); }
-  const archived = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : [];
-  const seen = new Set(live.map(item => String(item.id)));
-  const articles = live.concat(archived.filter(item => !seen.has(String(item.id))));
-
+function renderListingDataset(articles, category, query, page) {
   const filtered = filterArticles(articles, category, query);
   renderHeader(category, query);
   renderArticles(filtered, page);
   renderPagination(filtered.length, page, category, query);
+}
+
+async function initListing() {
+  const params = new URLSearchParams(window.location.search);
+  const category = params.get("category") || "";
+  const query = params.get("q") || "";
+  const searchMode = params.get("type") === "search" || Boolean(query);
+  const page = Math.max(1, Number(params.get("page") || 1));
+  const archived = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : [];
+  const searchForm = document.querySelector("#listing-search");
+  const searchInput = document.querySelector("#listing-search-input");
+  if (searchForm) searchForm.hidden = !searchMode;
+  if (searchInput) searchInput.value = query;
+
+  if (archived.length) renderListingDataset(archived, category, query, page);
+  else renderHeader(category, query);
+
+  try {
+    const live = await fetchLivePublishedArticles(60);
+    if (!live.length) return;
+    const seen = new Set(live.map((item) => String(item.id)));
+    renderListingDataset(live.concat(archived.filter((item) => !seen.has(String(item.id)))), category, query, page);
+  } catch (error) {
+    console.warn("Live articles unavailable", error);
+    if (!archived.length) renderArticles([], page);
+  }
 }
 
 function filterArticles(articles, category, query) {
@@ -132,7 +148,7 @@ function renderCard(article) {
   return `
     <article class="archive-card">
       <a href="./article.html?id=${encodeURIComponent(article.id)}">
-        <img src="${escapeAttribute(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" />
+        <img src="${escapeAttribute(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" />
         <span>${escapeHtml(article.category || "新闻")}</span>
         <h2>${escapeHtml(article.title || "")}</h2>
         <p>${escapeHtml(article.excerpt || "")}</p>

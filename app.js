@@ -80,34 +80,48 @@ const categoryIds = {
 
 loadHome();
 
-async function loadHome() {
-  try {
-    const articles = await fetchArticles();
-    const hotArticles = articles.filter((article) => article.category === "热门头条");
-    renderTicker(hotArticles.slice(0, 12));
-    renderHeroCarousel(articles.slice(0, 5));
-    renderTopList(articles.slice(1, 11));
-    renderSections(articles);
-    renderRank(articles);
-  } catch {
-    document.querySelector("#hero").innerHTML = `<div class="empty-state">文章数据加载失败，请检查 data/articles.json。</div>`;
-  }
+function localArticleIndex() {
+  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) return window.TRRB_ARTICLE_INDEX;
+  if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) return window.TRRB_ARTICLES;
+  return [];
 }
 
-async function fetchArticles() {
-  let live = [];
-  try { live = await fetchLivePublishedArticles(60); } catch (error) { console.warn("Live articles unavailable", error); }
+function mergeArticles(live, archived) {
+  const seen = new Set((Array.isArray(live) ? live : []).map((item) => String(item.id)));
+  return (Array.isArray(live) ? live : []).concat((Array.isArray(archived) ? archived : []).filter((item) => !seen.has(String(item.id))));
+}
 
-  let archived = [];
-  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) archived = window.TRRB_ARTICLE_INDEX;
-  else if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) archived = window.TRRB_ARTICLES;
-  else {
-    const response = await fetch("./data/articles.json", { cache: "force-cache" });
-    if (response.ok) archived = await response.json();
+function renderHome(articles) {
+  if (!Array.isArray(articles) || articles.length === 0) return;
+  const hotArticles = articles.filter((article) => article.category === "热门头条");
+  renderTicker((hotArticles.length ? hotArticles : articles).slice(0, 12));
+  renderHeroCarousel(articles.slice(0, 5));
+  renderTopList(articles.slice(1, 11));
+  renderSections(articles);
+  renderRank(articles);
+}
+
+async function loadHome() {
+  const archived = localArticleIndex();
+  if (archived.length) renderHome(archived);
+
+  try {
+    const live = await fetchLivePublishedArticles(60);
+    if (live.length) renderHome(mergeArticles(live, archived));
+    else if (!archived.length) throw new Error("No article data");
+  } catch (error) {
+    console.warn("Live articles unavailable", error);
+    if (!archived.length) {
+      try {
+        const response = await fetch("./data/articles.json", { cache: "force-cache" });
+        if (response.ok) renderHome(await response.json());
+        else throw new Error("Archive unavailable");
+      } catch {
+        const hero = document.querySelector("#hero");
+        if (hero) hero.innerHTML = `<div class="empty-state">文章数据加载失败，请稍后刷新。</div>`;
+      }
+    }
   }
-
-  const seen = new Set(live.map(item => String(item.id)));
-  return live.concat((Array.isArray(archived) ? archived : []).filter(item => !seen.has(String(item.id))));
 }
 
 function articleUrl(article) {
@@ -129,10 +143,13 @@ function highQualityImageUrl(value, category) {
   return text.replace(/^https?:\/\/(?:www\.)?trrb\.net\/wp-content\/uploads\//, "./assets/news-images/");
 }
 
-function imageAttrs(article) {
+function imageAttrs(article, options = {}) {
   const improved = highQualityImageUrl(article.image || "", article.category || "");
-  const fallback = typeof window.TRRB_categoryPlaceholder === 'function' ? window.TRRB_categoryPlaceholder(article.category || '') : './image-placeholder.svg';
-  return `src="${escapeAttribute(improved)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'"`;
+  const fallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(article.category || "") : "./image-placeholder.svg";
+  const eager = Boolean(options.eager);
+  const width = Number(options.width || 512);
+  const height = Number(options.height || 288);
+  return `src="${escapeAttribute(improved)}" width="${width}" height="${height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ''} referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'"`;
 }
 
 function renderTicker(articles) {
@@ -152,7 +169,7 @@ function renderHeroSlide(article, index) {
   const activeClass = index === 0 ? " is-active" : "";
   return `
     <a class="hero-link hero-slide${activeClass}" href="${articleUrl(article)}" aria-label="${escapeAttribute(article.title)}">
-      <img ${imageAttrs(article)} alt="${escapeAttribute(article.title)}" />
+      <img ${imageAttrs(article, { eager: index === 0, width: 1200, height: 675 })} alt="${escapeAttribute(article.title)}" />
       <div class="hero-overlay">
         <span class="tag">${escapeHtml(article.category)}</span>
         <h1>${escapeHtml(article.title)}</h1>
@@ -170,18 +187,30 @@ function renderHeroDots(count) {
 }
 
 function startHeroCarousel(hero) {
+  if (typeof hero._trrbStopCarousel === "function") hero._trrbStopCarousel();
   const slides = Array.from(hero.querySelectorAll(".hero-slide"));
   const dots = Array.from(hero.querySelectorAll(".hero-dots span"));
-  if (slides.length <= 1) return;
+  if (slides.length <= 1 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   let current = 0;
-  setInterval(() => {
+  let timer = null;
+  const advance = () => {
     slides[current].classList.remove("is-active");
     dots[current]?.classList.remove("is-active");
     current = (current + 1) % slides.length;
     slides[current].classList.add("is-active");
     dots[current]?.classList.add("is-active");
-  }, 5200);
+  };
+  const start = () => { if (!timer && !document.hidden) timer = window.setInterval(advance, 5200); };
+  const stop = () => { if (timer) window.clearInterval(timer); timer = null; };
+  hero.addEventListener("mouseenter", stop);
+  hero.addEventListener("mouseleave", start);
+  hero.addEventListener("focusin", stop);
+  hero.addEventListener("focusout", start);
+  hero.addEventListener("touchstart", stop, { passive: true });
+  document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+  hero._trrbStopCarousel = stop;
+  start();
 }
 
 function renderTopList(articles) {
@@ -190,7 +219,7 @@ function renderTopList(articles) {
       (article, index) => `
         <article>
           <b>${(index % articles.length) + 1}</b>
-          <img ${imageAttrs(article)} alt="" />
+          <img ${imageAttrs(article, { width: 208, height: 148 })} alt="" />
           <h2><a href="${articleUrl(article)}">${escapeHtml(article.title)}</a></h2>
         </article>
       `
@@ -220,7 +249,7 @@ function renderSections(articles) {
       <article class="news-box" id="${categoryIds[category] || ""}">
         <header><h2>${escapeHtml(category)}</h2><a href="./listing.html?category=${encodeURIComponent(category)}">更多</a></header>
         <a class="section-lead" href="${articleUrl(article)}">
-          <img ${imageAttrs(article)} alt="" />
+          <img ${imageAttrs(article, { width: 512, height: 288 })} alt="" />
           <h3>${escapeHtml(article.title)}</h3>
         </a>
         <ul class="section-news-list">

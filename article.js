@@ -93,17 +93,15 @@ async function loadArticlePage() {
 }
 
 async function getArticleIndex() {
-  let live = [];
-  try { live = await fetchLivePublishedArticles(60); } catch (error) { console.warn("Live articles unavailable", error); }
-  let archived = [];
-  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) archived = window.TRRB_ARTICLE_INDEX;
-  else if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) archived = window.TRRB_ARTICLES;
-  else {
+  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) return window.TRRB_ARTICLE_INDEX;
+  if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) return window.TRRB_ARTICLES;
+  try {
     const response = await fetch("./data/articles.json", { cache: "force-cache" });
-    if (response.ok) archived = await response.json();
+    if (response.ok) return await response.json();
+  } catch (error) {
+    console.warn("Archive unavailable", error);
   }
-  const seen = new Set(live.map(item => String(item.id)));
-  return live.concat((Array.isArray(archived) ? archived : []).filter(item => !seen.has(String(item.id))));
+  return [];
 }
 
 async function getFullArticle(indexArticle) {
@@ -112,7 +110,7 @@ async function getFullArticle(indexArticle) {
   }
 
   const chunkNumber = Number(indexArticle.chunk || 0);
-  await loadScript(`./articles-chunk-${chunkNumber}.js?v=28`);
+  await loadScript(`./articles-chunk-${chunkNumber}.js?v=29.1-mobile`);
   const chunk = window.TRRB_ARTICLE_CHUNK;
   if (!Array.isArray(chunk)) throw new Error("Missing article chunk");
 
@@ -143,6 +141,7 @@ function renderArticle(root, article, articles) {
   const extensionItems = related.concat(related).slice(0, Math.max(related.length * 2, related.length));
 
   const coverUrl = imageUrl(article.image || "", article.category || "");
+  const coverFallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(article.category || "") : "./image-placeholder.svg";
   const hasCover = Boolean(coverUrl);
 
   document.title = `${article.title} - 唐人日报`;
@@ -164,7 +163,9 @@ function renderArticle(root, article, articles) {
         src="${escapeAttribute(coverUrl)}"
         loading="eager"
         decoding="async"
+        fetchpriority="high"
         referrerpolicy="no-referrer"
+        data-fallback="${escapeAttribute(coverFallback)}"
         alt="${escapeAttribute(article.title || "")}"
       />
     ` : ""}
@@ -188,6 +189,13 @@ function renderArticle(root, article, articles) {
   const cover = root.querySelector(".article-image");
   if (cover) {
     const removeFailedCover = () => {
+      const fallback = cover.dataset.fallback || "";
+      if (!cover.dataset.fallbackTried && fallback && !cover.src.endsWith(fallback.replace(/^\.\//, "/"))) {
+        cover.dataset.fallbackTried = "true";
+        cover.src = fallback;
+        cover.alt = `${article.category || "新闻"}默认封面`;
+        return;
+      }
       cover.dataset.imageFailed = "true";
       cover.removeAttribute("alt");
       cover.hidden = true;
@@ -229,9 +237,10 @@ function renderNeighbor(article, label, title) {
 
 function renderRelatedItem(article) {
   const image = imageUrl(article.image || "", article.category || "");
+  const fallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(article.category || "") : "./image-placeholder.svg";
   return `
     <a class="related-item${image ? "" : " has-no-image"}" href="./article.html?id=${encodeURIComponent(article.id)}">
-      ${image ? `<img src="${escapeAttribute(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()" alt="" />` : ""}
+      ${image ? `<img src="${escapeAttribute(image)}" width="500" height="240" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="if(!this.dataset.fallbackTried){this.dataset.fallbackTried='true';this.src='${escapeAttribute(fallback)}';}else{this.remove();}" alt="" />` : ""}
       <span>${escapeHtml(article.category || "新闻")}</span>
       <strong>${escapeHtml(article.title || "")}</strong>
     </a>

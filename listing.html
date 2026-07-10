@@ -2,25 +2,30 @@
 <html lang="zh-Hans">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>文章列表 - 唐人日报</title>
+    <meta name="theme-color" content="#d60000" />
+    <meta name="color-scheme" content="light" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="manifest" href="./site.webmanifest?v=29" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
     <meta name="description" content="唐人日报文章列表、分类与搜索。" />
     <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="./styles.css?v=28" />
+    <link rel="stylesheet" href="./styles.css?v=29.1-mobile" />
   </head>
   <body>
     <div class="topbar">
       <div class="container topbar-inner">
-        <div class="meta">
+        <div class="meta" aria-label="本地信息">
           <span class="meta-location">📍 本地</span>
           <span class="meta-date">加载日期中...</span>
-          <span class="meta-weather">🌤️ 天气加载中...</span>
+          <span class="meta-weather">🌤️ 天气暂不可用</span>
         </div>
         <div class="links">
           <a href="./index.html#submit">投稿爆料</a>
           <a href="./index.html#daily">电子报</a>
           <a href="./index.html#about">关于我们</a>
-          <a href="./index.html#ads">广告合作</a>
+          <a href="mailto:news@tangrendaily.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
           <a href="./listing.html?type=search">搜索</a>
         </div>
       </div>
@@ -28,8 +33,11 @@
 
     <header class="site-header">
       <div class="container header-inner">
-        <a aria-label="唐人日报首页" class="brand" href="./index.html">
-          <img src="./trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily" />
+        <button class="mobile-menu-toggle" type="button" aria-label="打开栏目菜单" aria-controls="site-navigation" aria-expanded="false">
+          <span aria-hidden="true">☰</span>
+        </button>
+        <a class="brand" href="./index.html" aria-label="唐人日报首页">
+          <img src="./trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily" width="720" height="208" />
         </a>
         <div class="slogan">
           <b>立足美国 · 服务华人</b>
@@ -40,10 +48,17 @@
           <a href="./index.html#community">加入读者群</a>
           <a class="primary" href="./index.html#submit">投稿爆料</a>
         </div>
+        <button class="mobile-search-toggle" type="button" aria-label="打开新闻搜索" aria-controls="site-navigation">
+          <span aria-hidden="true">⌕</span>
+        </button>
       </div>
     </header>
 
-    <nav class="nav">
+    <nav class="nav" id="site-navigation" aria-label="主要栏目">
+      <div class="mobile-nav-head">
+        <strong>唐人日报</strong>
+        <button class="mobile-nav-close" type="button" aria-label="关闭栏目菜单">×</button>
+      </div>
       <div class="container nav-inner">
         <a href="./listing.html?category=重要新闻">重要新闻</a>
         <a href="./listing.html?category=热门头条">热门头条</a>
@@ -53,12 +68,20 @@
         <a href="./listing.html?category=中国官场">中国官场</a>
         <a href="./listing.html?category=移民美国">移民美国</a>
         <a href="./listing.html?category=庇护百科">庇护百科</a>
-        <form class="site-search nav-search" role="search">
-          <input name="q" type="search" placeholder="搜索新闻" />
+        <form class="site-search nav-search" role="search" action="./listing.html" method="get">
+          <label class="sr-only" for="site-search-input">搜索新闻</label>
+          <input id="site-search-input" name="q" type="search" placeholder="搜索新闻" autocomplete="off" />
           <button type="submit">搜索</button>
         </form>
+        <div class="mobile-utility-links" aria-label="其他链接">
+          <a href="./index.html#daily">电子报订阅</a>
+          <a href="./index.html#community">加入读者群</a>
+          <a href="./index.html#submit">投稿爆料</a>
+          <a href="./index.html#about">关于我们</a>
+        </div>
       </div>
     </nav>
+    <button class="mobile-nav-backdrop" type="button" aria-label="关闭栏目菜单"></button>
 
     <main class="listing-shell">
       <section class="container listing-page">
@@ -68,6 +91,11 @@
             <h1 id="listing-title">文章列表</h1>
           </div>
         </header>
+        <form class="search-box listing-search" id="listing-search" role="search" action="./listing.html" method="get" hidden>
+          <label class="sr-only" for="listing-search-input">搜索唐人日报新闻</label>
+          <input id="listing-search-input" name="q" type="search" placeholder="输入关键词搜索新闻" autocomplete="off" />
+          <button type="submit">搜索</button>
+        </form>
         <div class="listing-grid" id="listing-grid"></div>
         <nav class="pagination" id="pagination" aria-label="分页"></nav>
       </section>
@@ -90,7 +118,7 @@
         <section>
           <h3>关于我们</h3>
           <a href="./index.html#about">关于唐人日报</a>
-          <a href="./index.html#ads">广告合作</a>
+          <a href="mailto:news@tangrendaily.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
           <a href="./index.html#community">加入我们</a>
         </section>
         <section>
@@ -102,9 +130,9 @@
       </div>
       <div class="container copyright">© 2026 唐人日报 Tang Ren Daily. 保留所有权利。</div>
     </footer>
-    <script src="./articles-index.js?v=28"></script>
-    <script src="./site-search.js?v=28"></script>
-    <script src="./site-common.js?v=28"></script>
-    <script src="./listing.js?v=28"></script>
+    <script src="./articles-index.js?v=29.1-mobile"></script>
+    <script src="./site-search.js?v=29.1-mobile"></script>
+    <script src="./site-common.js?v=29.1-mobile"></script>
+    <script src="./listing.js?v=29.1-mobile"></script>
   </body>
 </html>

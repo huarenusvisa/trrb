@@ -119,6 +119,7 @@ function renderHome(articles) {
   renderHeroCarousel(heroArticles);
   renderTopList((topPool.length >= 5 ? topPool : normalized).slice(0, 10));
   renderSections(normalized);
+  renderExposureSection();
   renderRank(normalized);
 }
 
@@ -304,7 +305,39 @@ function renderSections(articles) {
       </article>
     `;
   });
+  sections.push(`<article class="news-box exposure-home-box" id="exposure-home-box"><header><h2>我要曝光</h2><a href="./exposure.html">更多</a></header><div class="empty-state">正在加载公开投稿...</div></article>`);
   document.querySelector("#sections-grid").innerHTML = sections.join("");
+}
+
+
+async function renderExposureSection() {
+  const root = document.querySelector("#exposure-home-box");
+  if (!root) return;
+  try {
+    const response = await fetch("/.netlify/functions/exposure-feed?limit=7", { cache: "no-store" });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "读取失败");
+    const posts = Array.isArray(data.posts) ? data.posts : [];
+    if (!posts.length) {
+      root.innerHTML = `<header><h2>我要曝光</h2><a href="./exposure.html">发布曝光</a></header><div class="empty-state">暂无公开投稿</div>`;
+      return;
+    }
+    const lead = posts[0];
+    const firstMedia = Array.isArray(lead.media) ? lead.media[0] : null;
+    const leadMedia = firstMedia
+      ? (firstMedia.media_type === "video"
+          ? `<div class="exposure-home-video"><video src="${escapeAttribute(firstMedia.media_url)}#t=0.1" muted preload="metadata" playsinline></video><span>▶ 视频</span></div>`
+          : `<img src="${escapeAttribute(firstMedia.media_url)}" alt="" loading="lazy" decoding="async" />`)
+      : `<div class="exposure-home-placeholder">我要曝光</div>`;
+    root.innerHTML = `
+      <header><h2>我要曝光</h2><a href="./exposure.html">更多</a></header>
+      <a class="section-lead exposure-section-lead" href="./exposure-post.html?id=${encodeURIComponent(lead.id)}">
+        ${leadMedia}<h3>${escapeHtml(lead.title)}</h3>
+      </a>
+      <ul class="section-news-list">${posts.slice(1,7).map(item => `<li><a href="./exposure-post.html?id=${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a><time>${escapeHtml(shortDate(item.published_at || ""))}</time></li>`).join("")}</ul>`;
+  } catch (error) {
+    root.innerHTML = `<header><h2>我要曝光</h2><a href="./exposure.html">进入栏目</a></header><div class="empty-state">曝光栏目暂时无法加载</div>`;
+  }
 }
 
 function buildRankPool(articles) {

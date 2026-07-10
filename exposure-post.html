@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>我要曝光｜唐人日报</title>
+  <link rel="stylesheet" href="./styles.css?v=29.12" />
+  <link rel="stylesheet" href="./exposure.css?v=29.12" />
+</head>
+<body>
+  <header class="exposure-site-header"><div class="container exposure-site-header-inner">
+    <a href="./index.html" class="exposure-brand"><img src="./trrb-logo-cropped.webp" alt="唐人日报" /><span>唐人日报</span></a>
+    <nav><a href="./index.html">首页</a><a href="./exposure.html">我要曝光</a></nav>
+  </div></header>
+  <main class="container exposure-detail-page">
+    <a class="exposure-back" href="./exposure.html">← 返回“我要曝光”</a>
+    <article id="exposure-detail" class="exposure-detail"><div class="exposure-loading">正在加载曝光内容...</div></article>
+    <section class="exposure-comments">
+      <header><h2>网友评论</h2><span id="comment-count">0条</span></header>
+      <form id="comment-form" class="comment-form">
+        <div class="exposure-form-two">
+          <label>昵称<input name="nickname" maxlength="40" required placeholder="您的昵称" /></label>
+          <label>邮箱（不公开）<input name="email" type="email" maxlength="200" placeholder="可选" /></label>
+        </div>
+        <label>评论内容<textarea name="body" rows="4" maxlength="2000" required placeholder="发表您的看法"></textarea></label>
+        <button class="exposure-primary" type="submit">发表评论</button>
+        <div class="exposure-message" id="comment-message"></div>
+      </form>
+      <div class="comment-list" id="comment-list"></div>
+    </section>
+  </main>
+  <footer class="exposure-footer"><div class="container">唐人日报 · Tang Ren Daily　读者热线：<a href="tel:+19297898290">+1 929-789-8290</a></div></footer>
+  <script src="./exposure-post.js?v=29.12"></script>
+</body>
+</html>

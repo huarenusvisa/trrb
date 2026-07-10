@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   buildDefaultQuery,
+  buildTrumpQueryLanes,
   compareSnowflakes,
   contentTokens,
   jaccard,
@@ -21,6 +22,14 @@ test("default query contains primary, trusted, review and exclusions", () => {
   assert.match(query, /-is:retweet/);
   assert.match(query, /-is:reply/);
   assert.ok(query.length < 500);
+});
+
+test("radar query lanes include official, media and open search", () => {
+  const lanes = buildTrumpQueryLanes();
+  assert.ok(lanes.some((lane) => lane.id === "official"));
+  assert.ok(lanes.some((lane) => lane.id.startsWith("trusted-")));
+  assert.ok(lanes.some((lane) => lane.id === "radar"));
+  assert.ok(lanes.every((lane) => lane.query.length < 500));
 });
 
 test("snowflake comparison does not lose integer precision", () => {
@@ -51,6 +60,7 @@ test("validation accepts grounded neutral article", () => {
     ],
     category: "白宫动态",
     importance: 6,
+    relevance_score: 94,
     publishable: true,
     needs_review: false,
     review_reason: "",
@@ -76,6 +86,7 @@ test("validation rejects invented Arabic numbers", () => {
     ],
     category: "白宫动态",
     importance: 6,
+    relevance_score: 94,
     publishable: true,
     needs_review: false,
     review_reason: "",

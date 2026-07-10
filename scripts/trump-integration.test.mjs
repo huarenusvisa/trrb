@@ -60,6 +60,7 @@ test("full pipeline writes feed, article, state, home link and sitemap with mock
     ],
     category: "白宫动态",
     importance: 6,
+    relevance_score: 94,
     publishable: true,
     needs_review: false,
     review_reason: "",

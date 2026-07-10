@@ -57,6 +57,7 @@ test("review-list source never auto-publishes even when AI marks it publishable"
         ],
         category: "白宫动态",
         importance: 5,
+        relevance_score: 94,
         publishable: true,
         needs_review: false,
         review_reason: "",

@@ -20,10 +20,10 @@ const PRIMARY_ACCOUNTS = parseAccounts(
   process.env.TRUMP_PRIMARY_ACCOUNTS || "realDonaldTrump"
 );
 const AUTO_ACCOUNTS = parseAccounts(
-  process.env.TRUMP_AUTO_ACCOUNTS || "realDonaldTrump,WhiteHouse,POTUS,Reuters,AP"
+  process.env.TRUMP_AUTO_ACCOUNTS || "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47,Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"
 );
 const REVIEW_ACCOUNTS = parseAccounts(
-  process.env.TRUMP_REVIEW_ACCOUNTS || "FoxNews,CNN,nytimes,washingtonpost"
+  process.env.TRUMP_REVIEW_ACCOUNTS || "Breaking911,CollinRugg"
 );
 
 const CONFIG = {
@@ -31,20 +31,25 @@ const CONFIG = {
   openAIKey: firstEnv("OPENAI_API_KEY"),
   openAIModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
   siteUrl: normalizeSiteUrl(process.env.SITE_URL || "https://trrb.net"),
-  query: process.env.TRUMP_QUERY || buildDefaultQuery(PRIMARY_ACCOUNTS, AUTO_ACCOUNTS, REVIEW_ACCOUNTS),
+  queryOverride: String(process.env.TRUMP_QUERY || "").trim(),
   primaryAccounts: PRIMARY_ACCOUNTS,
   autoAccounts: AUTO_ACCOUNTS,
   reviewAccounts: REVIEW_ACCOUNTS,
-  bootstrapLimit: intEnv("TRUMP_BOOTSTRAP_LIMIT", 10, 1, 50),
-  maxProcessPerRun: intEnv("TRUMP_MAX_PROCESS_PER_RUN", 12, 1, 50),
-  maxPages: intEnv("TRUMP_MAX_PAGES", 10, 1, 50),
-  lookbackHours: intEnv("TRUMP_LOOKBACK_HOURS", 12, 1, 168),
-  minConfidence: intEnv("TRUMP_MIN_CONFIDENCE", 85, 0, 100),
+  bootstrapLimit: intEnv("TRUMP_BOOTSTRAP_LIMIT", 60, 1, 300),
+  maxProcessPerRun: intEnv("TRUMP_MAX_PROCESS_PER_RUN", 18, 1, 100),
+  maxPages: intEnv("TRUMP_MAX_PAGES", 3, 1, 20),
+  maxResultsPerQuery: intEnv("TRUMP_MAX_RESULTS_PER_QUERY", 50, 10, 100),
+  lookbackHours: intEnv("TRUMP_LOOKBACK_HOURS", 48, 1, 168),
+  minConfidence: intEnv("TRUMP_MIN_CONFIDENCE", 83, 0, 100),
+  minRelevance: intEnv("TRUMP_MIN_RELEVANCE", 72, 0, 100),
+  minCandidateScore: intEnv("TRUMP_MIN_CANDIDATE_SCORE", 50, 0, 100),
   maxPendingRetries: intEnv("TRUMP_MAX_PENDING_RETRIES", 5, 1, 20),
   pendingRetentionDays: intEnv("TRUMP_PENDING_RETENTION_DAYS", 30, 1, 365),
   pendingLimit: intEnv("TRUMP_PENDING_LIMIT", 500, 50, 5000),
   useXMedia: boolEnv("TRUMP_USE_X_MEDIA", true),
 };
+
+CONFIG.queryLanes = buildTrumpQueryLanes();
 
 const CATEGORY_VALUES = [
   "白宫动态",
@@ -88,10 +93,11 @@ const SYSTEM_PROMPT = `
 7. 对政策、行政命令、法律或法院裁决的描述，仅能写帖子明确说明的内容；没有正式文件链接时，不得声称已经生效。
 8. 纯观点、辱骂、募款、广告、竞选口号、没有具体事实的信息，publishable必须为false，needs_review必须为true。
 9. 官方账号对自身行动或声明的直接发布可标记official；路透、AP等成熟媒体的事实报道可标记trusted_media；匿名爆料或无法核实的信息标记unverified。
-10. 若来源属于review模式，即使内容看起来可信，也应将needs_review设为true。
-11. confidence为0至100的整数。资料不足、事实矛盾、上下文不完整或可能误导时，confidence应低于85。
-12. title、summary和body_paragraphs不得加入输入中不存在的阿拉伯数字。
-13. category只能从指定枚举中选择。
+10. 若来源属于review或radar模式，即使内容看起来可信，也应将needs_review设为true。
+11. relevance_score为0至100，衡量帖子是否包含特朗普本人、白宫、特朗普政府政策、正式讲话、司法案件、国会互动、外交、经济或选举的具体新闻事实；仅提到Trump标签、表达立场或发布表情包时不得高于55。
+12. confidence为0至100的整数。资料不足、事实矛盾、上下文不完整或可能误导时，confidence应低于83。
+13. title、summary和body_paragraphs不得加入输入中不存在的阿拉伯数字。
+14. category只能从指定枚举中选择。
 `.trim();
 
 const ARTICLE_SCHEMA = {
@@ -103,6 +109,7 @@ const ARTICLE_SCHEMA = {
     "body_paragraphs",
     "category",
     "importance",
+    "relevance_score",
     "publishable",
     "needs_review",
     "review_reason",
@@ -118,6 +125,7 @@ const ARTICLE_SCHEMA = {
     },
     category: { type: "string", enum: CATEGORY_VALUES },
     importance: { type: "integer", minimum: 1, maximum: 10 },
+    relevance_score: { type: "integer", minimum: 0, maximum: 100 },
     publishable: { type: "boolean" },
     needs_review: { type: "boolean" },
     review_reason: { type: "string" },
@@ -141,7 +149,7 @@ export async function main() {
   const publishedIds = new Set(news.map((item) => String(item.x_post_id || "")));
   const pendingIds = new Set(pending.map((item) => String(item.x_post_id || "")));
 
-  const fetched = await fetchRecentPosts(state.last_seen_id);
+  const fetched = await fetchRecentPosts(state);
   const newPosts = fetched.posts.filter((post) => {
     const id = String(post.id);
     return !publishedIds.has(id) && !pendingIds.has(id);
@@ -215,6 +223,8 @@ export async function main() {
   const nextState = {
     ...state,
     last_seen_id: newestId ? maxSnowflake([state.last_seen_id, newestId]) : state.last_seen_id,
+    query_cursors: fetched.queryCursors,
+    last_run_at: new Date().toISOString(),
     last_content_at: publishedCount > 0 ? new Date().toISOString() : state.last_content_at,
     last_success_at: new Date().toISOString(),
     last_error: "",
@@ -228,33 +238,22 @@ export async function main() {
       duplicates: duplicateCount,
       total_published: news.length,
       total_pending: pending.length,
+      query_lanes: fetched.laneStats,
     },
   };
 
-  // 先写内容和待处理队列，最后写游标。任何中途失败都不会把游标提前推进。
-  const contentChanged =
-    newPosts.length > 0 ||
-    toProcess.length > 0 ||
-    publishedCount > 0 ||
-    pending.length !== (await readJson(PENDING_FILE, [])).length;
-  const cursorRecovered =
-    Boolean(nextState.last_seen_id) &&
-    compareSnowflakes(nextState.last_seen_id, state.last_seen_id) > 0;
-  const writeNeeded = contentChanged || cursorRecovered;
-
-  if (writeNeeded) {
-    // 恢复场景也重建sitemap：例如上次已写新闻JSON但在写sitemap/state前中断。
-    await writeJson(NEWS_FILE, news);
-    await writeJson(PENDING_FILE, pending);
-    await updateSitemap(news, new Date().toISOString());
-    await writeJson(STATE_FILE, nextState);
-  }
+  // 每个搜索通道使用独立游标；成功轮询后统一写入，避免某个高流量通道覆盖其他通道的进度。
+  const writeNeeded = true;
+  await writeJson(NEWS_FILE, news);
+  await writeJson(PENDING_FILE, pending);
+  await updateSitemap(news, new Date().toISOString());
+  await writeJson(STATE_FILE, nextState);
 
   console.log(
     JSON.stringify(
       {
         ...nextState.last_result,
-        query: CONFIG.query,
+        query_lanes: fetched.laneStats,
         wrote_files: writeNeeded,
       },
       null,
@@ -266,6 +265,8 @@ export async function main() {
 function defaultState() {
   return {
     last_seen_id: "",
+    query_cursors: {},
+    last_run_at: "",
     last_success_at: "",
     last_content_at: "",
     last_error: "",
@@ -357,35 +358,184 @@ async function ensureHomeIntegration() {
   await fs.writeFile(HOME_FILE, html, "utf8");
 }
 
-export async function fetchRecentPosts(sinceId) {
+export function buildTrumpQueryLanes() {
+  if (CONFIG.queryOverride) {
+    return [{ id: "override", label: "自定义搜索", query: validateTrumpQuery(CONFIG.queryOverride) }];
+  }
+
+  const officialNames = new Set(["realdonaldtrump", "whitehouse", "potus", "presssec", "rapidresponse47"]);
+  const officialAccounts = [...new Set([
+    ...CONFIG.primaryAccounts,
+    ...CONFIG.autoAccounts.filter(account => officialNames.has(account.toLowerCase()))
+  ])];
+  const mediaAccounts = [...new Set(CONFIG.autoAccounts)]
+    .filter(account => !officialNames.has(account.toLowerCase()));
+  const lanes = [];
+
+  if (officialAccounts.length) {
+    lanes.push({
+      id: "official",
+      label: "特朗普与白宫官方",
+      query: validateTrumpQuery(`(${officialAccounts.map(account => `from:${account}`).join(" OR ")}) -is:retweet lang:en`),
+    });
+  }
+
+  const mediaTerms = '(Trump OR "Donald Trump" OR "President Trump" OR "Trump administration" OR "White House")';
+  for (const [index, accounts] of chunkTrumpAccounts(mediaAccounts, mediaTerms, 450).entries()) {
+    lanes.push({
+      id: `trusted-${index + 1}`,
+      label: "主流媒体",
+      query: validateTrumpQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${mediaTerms}) -is:retweet -is:reply lang:en`),
+    });
+  }
+
+  if (CONFIG.reviewAccounts.length) {
+    for (const [index, accounts] of chunkTrumpAccounts(CONFIG.reviewAccounts, mediaTerms, 450).entries()) {
+      lanes.push({
+        id: `review-${index + 1}`,
+        label: "观察账号",
+        query: validateTrumpQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${mediaTerms}) -is:retweet -is:reply lang:en`),
+      });
+    }
+  }
+
+  lanes.push({
+    id: "radar",
+    label: "全网雷达",
+    query: validateTrumpQuery('(\"President Trump\" OR \"Trump administration\" OR \"Trump announced\" OR \"Trump signed\" OR \"Trump said\" OR \"Trump ordered\" OR \"White House announced\" OR \"Donald Trump\") -is:retweet -is:reply lang:en'),
+  });
+  return lanes;
+}
+
+function validateTrumpQuery(query) {
+  const value = String(query || "").trim();
+  if (!value) throw new Error("Trump X query is empty.");
+  if (value.length > 500) throw new Error(`Trump X query is too long (${value.length} characters).`);
+  return value;
+}
+
+function chunkTrumpAccounts(accounts, terms, targetLength) {
+  const chunks = [];
+  let current = [];
+  for (const account of accounts) {
+    const trial = [...current, account];
+    const query = `((${trial.map(value => `from:${value}`).join(" OR ")}) ${terms}) -is:retweet -is:reply lang:en`;
+    if (current.length && query.length > targetLength) {
+      chunks.push(current);
+      current = [account];
+    } else {
+      current = trial;
+    }
+  }
+  if (current.length) chunks.push(current);
+  return chunks;
+}
+
+function sourceProfileForTrump(username) {
+  const value = String(username || "").toLowerCase();
+  if (CONFIG.primaryAccounts.some(account => account.toLowerCase() === value)) {
+    return { mode: "auto", tier: "official", weight: 100 };
+  }
+  if (["whitehouse", "potus", "presssec", "rapidresponse47"].includes(value)) {
+    return { mode: "auto", tier: "official", weight: 98 };
+  }
+  if (CONFIG.autoAccounts.some(account => account.toLowerCase() === value)) {
+    return { mode: "auto", tier: "trusted_media", weight: 88 };
+  }
+  if (CONFIG.reviewAccounts.some(account => account.toLowerCase() === value)) {
+    return { mode: "review", tier: "review_source", weight: 62 };
+  }
+  return { mode: "review", tier: "other_source", weight: 45 };
+}
+
+function scoreTrumpCandidate(post) {
+  const text = String(post.text || "");
+  const matched = [];
+  let score = Math.round(Number(post.source_weight || 0) * 0.38);
+  const tests = [
+    [/(?:\bTrump\b|Donald Trump|President Trump)/i, 30, "特朗普"],
+    [/(?:White House|Trump administration|POTUS|President of the United States)/i, 18, "白宫/政府"],
+    [/(?:announc(?:ed|es|ing)|sign(?:ed|s|ing)|order(?:ed|s|ing)|said|meeting|speech|executive order|policy|tariff|immigration|court|Congress|Senate|House|election|campaign|sanction|ceasefire|budget)/i, 25, "具体事件"],
+    [/(?:today|tonight|tomorrow|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday|July|August|September|October|November|December|January|February|March|April|May|June|\d)/i, 8, "时间/数字"],
+  ];
+  for (const [regex, points, label] of tests) {
+    if (regex.test(text)) {
+      score += points;
+      matched.push(label);
+    }
+  }
+  const metrics = post.public_metrics || {};
+  const engagement = Number(metrics.like_count || 0) + Number(metrics.retweet_count || 0) * 2 + Number(metrics.reply_count || 0);
+  if (engagement >= 5000) score += 8;
+  else if (engagement >= 500) score += 5;
+  else if (engagement >= 50) score += 2;
+  if (post.source_tier === "official" && matched.length) score = Math.max(score, 78);
+  if (post.source_tier === "trusted_media" && matched.includes("特朗普") && matched.includes("具体事件")) score = Math.max(score, 74);
+  return { score: Math.max(0, Math.min(100, score)), matched_terms: matched };
+}
+
+export async function fetchRecentPosts(stateOrSinceId = {}) {
+  const state = typeof stateOrSinceId === "string"
+    ? { last_seen_id: stateOrSinceId, query_cursors: {} }
+    : (stateOrSinceId || {});
+  const previousCursors = state.query_cursors && typeof state.query_cursors === "object"
+    ? state.query_cursors
+    : {};
+  const nextCursors = { ...previousCursors };
+  const collected = [];
+  const laneStats = [];
+  let successfulLanes = 0;
+
+  for (const lane of CONFIG.queryLanes) {
+    const legacyCursor = lane.id === "official" ? String(state.last_seen_id || "") : "";
+    const cursor = String(previousCursors[lane.id] || legacyCursor || "");
+    try {
+      const result = await fetchTrumpQueryLane(lane, cursor);
+      collected.push(...result.posts);
+      if (result.cursor && !result.truncated) nextCursors[lane.id] = result.cursor;
+      laneStats.push({ id: lane.id, label: lane.label, fetched: result.posts.length, truncated: result.truncated });
+      successfulLanes += 1;
+    } catch (error) {
+      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, error: errorMessage(error) });
+      console.error(`Trump query lane ${lane.id} failed:`, errorMessage(error));
+    }
+  }
+
+  if (!successfulLanes) throw new Error("All Trump X search lanes failed.");
+
+  let posts = dedupePosts(collected)
+    .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);
+  // 初次启用也将全部候选写入pending池，不因bootstrap截断而漏掉已抓到的帖子。
+  posts.sort((a, b) => compareSnowflakes(a.id, b.id));
+
+  return {
+    posts,
+    newestId: maxSnowflake(posts.map(post => post.id)),
+    queryCursors: nextCursors,
+    laneStats,
+  };
+}
+
+async function fetchTrumpQueryLane(lane, sinceId) {
   const collected = [];
   let nextToken = "";
   let pages = 0;
   let newestId = "";
+  let truncated = false;
 
   do {
     const url = new URL("https://api.x.com/2/tweets/search/recent");
-    url.searchParams.set("query", CONFIG.query);
-    url.searchParams.set("max_results", "100");
+    url.searchParams.set("query", lane.query);
+    url.searchParams.set("max_results", String(CONFIG.maxResultsPerQuery));
     url.searchParams.set("sort_order", "recency");
-    url.searchParams.set(
-      "tweet.fields",
-      "created_at,entities,attachments,lang,possibly_sensitive,public_metrics,author_id"
-    );
+    url.searchParams.set("tweet.fields", "created_at,entities,attachments,lang,possibly_sensitive,public_metrics,author_id");
     url.searchParams.set("expansions", "attachments.media_keys,author_id");
-    url.searchParams.set(
-      "media.fields",
-      "url,preview_image_url,type,alt_text,width,height"
-    );
-    url.searchParams.set("user.fields", "username,name,verified,verified_type");
-
+    url.searchParams.set("media.fields", "url,preview_image_url,type,alt_text,width,height");
+    url.searchParams.set("user.fields", "username,name,verified,verified_type,public_metrics");
     if (sinceId) {
       url.searchParams.set("since_id", String(sinceId));
     } else {
-      url.searchParams.set(
-        "start_time",
-        toXApiDateTime(Date.now() - CONFIG.lookbackHours * 60 * 60 * 1000)
-      );
+      url.searchParams.set("start_time", toXApiDateTime(Date.now() - CONFIG.lookbackHours * 60 * 60 * 1000));
     }
     if (nextToken) url.searchParams.set("next_token", nextToken);
 
@@ -395,36 +545,26 @@ export async function fetchRecentPosts(sinceId) {
       30000,
       3
     );
-    const payload = await readResponseJson(response, "X API");
-
-    if (pages === 0) newestId = String(payload.meta?.newest_id || "");
-
-    const userMap = new Map(
-      (payload.includes?.users || []).map((user) => [String(user.id), user])
-    );
-    const mediaMap = new Map(
-      (payload.includes?.media || []).map((item) => [item.media_key, item])
-    );
+    const payload = await readResponseJson(response, `X API (${lane.id})`);
+    if (!newestId) newestId = String(payload.meta?.newest_id || "");
+    const userMap = new Map((payload.includes?.users || []).map(user => [String(user.id), user]));
+    const mediaMap = new Map((payload.includes?.media || []).map(item => [item.media_key, item]));
 
     for (const item of payload.data || []) {
       const author = userMap.get(String(item.author_id || ""));
       if (!author?.username) continue;
-
-      const sourceMode = sourceModeForUsername(author.username);
-      if (!sourceMode) continue;
-
+      const profile = sourceProfileForTrump(author.username);
       const media = (item.attachments?.media_keys || [])
-        .map((key) => mediaMap.get(key))
+        .map(key => mediaMap.get(key))
         .filter(Boolean)
-        .map((entry) => ({
+        .map(entry => ({
           type: entry.type,
           url: entry.url || entry.preview_image_url || "",
           alt_text: entry.alt_text || "",
           width: entry.width || 0,
           height: entry.height || 0,
         }));
-
-      collected.push({
+      const post = {
         id: String(item.id),
         text: String(item.text || ""),
         created_at: item.created_at || new Date().toISOString(),
@@ -440,39 +580,33 @@ export async function fetchRecentPosts(sinceId) {
           verified: Boolean(author.verified),
           verified_type: String(author.verified_type || ""),
         },
-        source_mode: sourceMode,
+        source_mode: profile.mode,
+        source_tier: profile.tier,
+        source_weight: profile.weight,
+        query_lane: lane.id,
+        query_label: lane.label,
         x_url: `https://x.com/${author.username}/status/${item.id}`,
-      });
+      };
+      const scored = scoreTrumpCandidate(post);
+      post.candidate_score = scored.score;
+      post.matched_terms = scored.matched_terms;
+      collected.push(post);
     }
 
     nextToken = String(payload.meta?.next_token || "");
     pages += 1;
-
     if (nextToken && pages >= CONFIG.maxPages) {
-      throw new Error(
-        `X API仍有下一页，但已达到TRUMP_MAX_PAGES=${CONFIG.maxPages}。为防止漏抓，本轮停止推进游标。`
-      );
+      truncated = true;
+      break;
     }
   } while (nextToken);
 
-  let posts = dedupePosts(collected);
-
-  // lookback仅用于首次启动。已有since_id时，必须保留X recent search返回的全部增量；
-  // 否则工作流停机超过lookbackHours后，较早但仍在X最近搜索窗口内的帖子会被永久跳过。
-  if (!sinceId) {
-    posts = posts.filter((post) => isWithinHours(post.created_at, CONFIG.lookbackHours));
-  }
-
-  posts.sort((a, b) => compareSnowflakes(b.id, a.id));
-  if (!sinceId) posts = posts.slice(0, CONFIG.bootstrapLimit);
-  posts.sort((a, b) => compareSnowflakes(a.id, b.id));
-
-  return { posts, newestId };
+  return { posts: collected, cursor: newestId || maxSnowflake(collected.map(post => post.id)), truncated };
 }
 
 async function processPost(post, news) {
   const sourceText = buildSourceText(post);
-  const ai = await rewriteWithOpenAI(sourceText, post.source_mode);
+  const ai = await rewriteWithOpenAI(sourceText, post);
   const validation = validateArticle(ai, sourceText, post);
 
   if (!validation.ok) {
@@ -525,6 +659,7 @@ async function processPost(post, news) {
     body_paragraphs: ai.body_paragraphs.map(cleanText),
     category: ai.category,
     importance: ai.importance,
+    relevance_score: ai.relevance_score,
     published_at: post.created_at,
     updated_at: new Date().toISOString(),
     url: relativeUrl,
@@ -534,6 +669,12 @@ async function processPost(post, news) {
     image_url: imageUrl,
     confidence: ai.confidence,
     verified_level: ai.verified_level,
+    source_mode: post.source_mode,
+    source_tier: post.source_tier,
+    source_weight: post.source_weight,
+    candidate_score: post.candidate_score,
+    matched_terms: post.matched_terms || [],
+    query_lane: post.query_lane || "",
     content_hash: contentHash,
   };
 
@@ -550,7 +691,7 @@ async function processPost(post, news) {
   return { status: "published", item };
 }
 
-async function rewriteWithOpenAI(sourceText, sourceMode) {
+async function rewriteWithOpenAI(sourceText, post) {
   const payload = {
     model: CONFIG.openAIModel,
     input: [
@@ -563,7 +704,15 @@ async function rewriteWithOpenAI(sourceText, sourceMode) {
         content: [
           {
             type: "input_text",
-            text: `来源模式：${sourceMode}\n\n请根据以下材料生成中文新闻稿。只能依据材料本身，不得补充外部事实。\n\n${sourceText}`,
+            text: `来源模式：${post.source_mode}
+来源层级：${post.source_tier}
+来源权重：${post.source_weight}
+候选评分：${post.candidate_score}
+搜索通道：${post.query_label || post.query_lane || "X雷达"}
+
+请先判断是否属于特朗普实时新闻，再根据以下材料生成中文新闻稿。只能依据材料本身，不得补充外部事实。
+
+${sourceText}`,
           },
         ],
       },
@@ -627,6 +776,9 @@ export function validateArticle(ai, sourceText, post) {
   if (!VERIFIED_VALUES.includes(ai.verified_level)) return fail("核实级别不合法");
   if (!Number.isInteger(ai.importance) || ai.importance < 1 || ai.importance > 10) {
     return fail("重要程度不合法");
+  }
+  if (!Number.isInteger(ai.relevance_score) || ai.relevance_score < CONFIG.minRelevance || ai.relevance_score > 100) {
+    return fail(`特朗普新闻相关度低于${CONFIG.minRelevance}`);
   }
   if (!Number.isInteger(ai.confidence) || ai.confidence < 0 || ai.confidence > 100) {
     return fail("置信度不合法");
@@ -763,20 +915,24 @@ function buildSourceText(post) {
     `X账号：@${post.author.username}`,
     `账号名称：${post.author.name}`,
     `来源模式：${post.source_mode}`,
+    `来源层级：${post.source_tier || "other_source"}`,
+    `来源权重：${post.source_weight || 0}`,
+    `搜索通道：${post.query_label || post.query_lane || "X雷达"}`,
+    `候选评分：${post.candidate_score || 0}`,
+    `匹配要素：${(post.matched_terms || []).join("、") || "未标注"}`,
     `X帖子ID：${post.id}`,
     `X发布时间（UTC）：${post.created_at}`,
     `X原帖链接：${post.x_url}`,
     `X原文：\n${post.text.trim()}`,
   ].join("\n\n");
 }
-
 function sourceModeForUsername(username) {
   const value = String(username || "").toLowerCase();
   // primary账号始终视为自动来源，避免用户只修改PRIMARY列表却忘记同步AUTO列表时漏抓。
   if (CONFIG.primaryAccounts.some((account) => account.toLowerCase() === value)) return "auto";
   if (CONFIG.autoAccounts.some((account) => account.toLowerCase() === value)) return "auto";
   if (CONFIG.reviewAccounts.some((account) => account.toLowerCase() === value)) return "review";
-  return null;
+  return "review";
 }
 
 export function buildDefaultQuery(primaryAccounts, autoAccounts, reviewAccounts) {
@@ -810,6 +966,11 @@ function makePendingEntry(post, kind, reason, attempts, ai = null) {
     reason: String(reason || "未知原因").slice(0, 500),
     attempts,
     created_at: new Date().toISOString(),
+    source_mode: post?.source_mode || "",
+    source_tier: post?.source_tier || "",
+    source_weight: post?.source_weight || 0,
+    candidate_score: post?.candidate_score || 0,
+    query_lane: post?.query_lane || "",
     ai,
     post,
   };
@@ -861,8 +1022,8 @@ function findContentDuplicate(news, title, summary, publishedAt) {
     if (!Number.isFinite(timestamp) || timestamp < cutoff) continue;
     if (item.content_hash && item.content_hash === candidateHash) return item;
     const score = jaccard(candidateTokens, contentTokens(`${item.title || ""} ${item.summary || ""}`));
-    // 只拦截几乎完全相同的稿件，避免把同一主题下的不同事件误判为重复。
-    if (score >= 0.96) return item;
+    // 仅合并非常接近的改写，避免把同主题下涉及不同地点、人物或政策的帖子误判为重复。
+    if (score >= 0.92) return item;
   }
   return null;
 }

@@ -77,6 +77,7 @@ test("overflow posts remain queued and are processed on the next run without mov
         ],
         category: "白宫动态",
         importance: 5,
+        relevance_score: 94,
         publishable: true,
         needs_review: false,
         review_reason: "",

@@ -17,11 +17,33 @@
   }
 
   function normalizeImageUrl(value, category) {
-    const text = String(value || '').replaceAll('\u0026', '&').trim();
-    if (!text || text.includes('image-placeholder.svg')) return categoryPlaceholder(category);
+    let text = String(value || '').replaceAll('\\u0026', '&').trim();
+
+    if (!text || text.includes('image-placeholder.svg')) {
+      return categoryPlaceholder(category);
+    }
+
+    if (/^(?:javascript|vbscript):/i.test(text)) {
+      return categoryPlaceholder(category);
+    }
+
+    if (text.startsWith('//')) {
+      text = 'https:' + text;
+    }
+
+    if (/^http:\/\//i.test(text)) {
+      text = text.replace(/^http:\/\//i, 'https://');
+    }
+
     if (text.startsWith('/assets/news-images/')) return '.' + text;
     if (text.startsWith('assets/news-images/')) return './' + text;
-    return text.replace(/^https?:\/\/(?:www\.)?trrb\.net\/wp-content\/uploads\//, './assets/news-images/');
+
+    text = text.replace(
+      /^https?:\/\/(?:www\.)?(?:new\.)?trrb\.net\/wp-content\/uploads\//i,
+      './assets/news-images/'
+    );
+
+    return text;
   }
 
   function weatherInfo(code) {

@@ -229,10 +229,9 @@ function renderNeighbor(article, label, title) {
 
 function renderRelatedItem(article) {
   const image = imageUrl(article.image || "", article.category || "");
-  const fallback = typeof window.TRRB_categoryPlaceholder === 'function' ? window.TRRB_categoryPlaceholder(article.category || '') : './image-placeholder.svg';
   return `
-    <a class="related-item" href="./article.html?id=${encodeURIComponent(article.id)}">
-      <img src="${escapeAttribute(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" />
+    <a class="related-item${image ? "" : " has-no-image"}" href="./article.html?id=${encodeURIComponent(article.id)}">
+      ${image ? `<img src="${escapeAttribute(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()" alt="" />` : ""}
       <span>${escapeHtml(article.category || "新闻")}</span>
       <strong>${escapeHtml(article.title || "")}</strong>
     </a>
@@ -240,19 +239,27 @@ function renderRelatedItem(article) {
 }
 
 function imageUrl(value, category) {
-  const text = String(value || "").replaceAll("\u0026", "&").trim();
-  if (!text) return "";
+  let text = String(value || "").replaceAll("\u0026", "&").trim();
+  if (!text || text.includes("image-placeholder.svg")) return "";
+
+  if (/^(?:javascript|vbscript):/i.test(text)) return "";
+  if (text.startsWith("//")) text = "https:" + text;
+  if (/^http:\/\//i.test(text)) text = text.replace(/^http:\/\//i, "https://");
 
   if (typeof window.TRRB_getImageUrl === "function") {
     const resolved = String(window.TRRB_getImageUrl(text, category) || "").trim();
     if (!resolved || resolved.includes("image-placeholder.svg")) return "";
+    if (/^http:\/\//i.test(resolved)) return resolved.replace(/^http:\/\//i, "https://");
     return resolved;
   }
 
-  if (text.includes("image-placeholder.svg")) return "";
   if (text.startsWith("/assets/news-images/")) return "." + text;
   if (text.startsWith("assets/news-images/")) return "./" + text;
-  return text.replace(/^https?:\/\/(?:www\.)?trrb\.net\/wp-content\/uploads\//, "./assets/news-images/");
+
+  return text.replace(
+    /^https?:\/\/(?:www\.)?(?:new\.)?trrb\.net\/wp-content\/uploads\//i,
+    "./assets/news-images/"
+  );
 }
 
 function escapeHtml(value) {

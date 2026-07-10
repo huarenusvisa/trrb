@@ -16,6 +16,7 @@
   document.addEventListener("DOMContentLoaded", init);
 
   async function init() {
+    startNewYorkClock();
     try {
       const [newsResult, stateResult, dashboardResult] = await Promise.allSettled([
         fetchJson(DATA_URLS.news, []),
@@ -37,7 +38,7 @@
       console.error("ICE topic failed:", error);
       setText("today-people", "—");
       setText("today-locations", "—");
-      setText("latest-sync", "加载失败");
+      setText("latest-sync", "最近同步：加载失败");
       document.getElementById("today-event-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE统计数据。</div>';
       document.getElementById("ice-news-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE新闻。</div>';
     }
@@ -49,11 +50,19 @@
     return response.json();
   }
 
+  function startNewYorkClock() {
+    const update = () => {
+      setText("ny-live-time", formatDateTimeSeconds(new Date()));
+    };
+    update();
+    window.setInterval(update, 1000);
+  }
+
   function renderSummary() {
     const today = dashboard?.today || {};
     setText("today-people", `${Number(today.known_people || 0)}人`);
     setText("today-locations", `${Number(today.location_count || 0)}处`);
-    setText("latest-sync", formatDateTimeSeconds(dashboard?.latest_sync_at || dashboard?.generated_at));
+    setText("latest-sync", `最近同步：${formatDateTimeSeconds(dashboard?.latest_sync_at || dashboard?.generated_at)}`);
   }
 
   function renderTodayEvents() {

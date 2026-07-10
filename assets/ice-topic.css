@@ -98,6 +98,7 @@ button { font: inherit; }
   overflow-wrap: anywhere;
 }
 .ice-summary-card span { margin-top: 10px; color: var(--ice-muted); font-size: 16px; }
+.ice-summary-card small { margin-top: 7px; color: var(--ice-muted); font-size: 13px; line-height: 1.4; }
 .ice-summary-sync strong { font-size: 26px; font-variant-numeric: tabular-nums; }
 
 .ice-today-events {

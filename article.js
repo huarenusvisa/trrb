@@ -28,7 +28,7 @@ async function fetchLivePublishedArticles(limit = 60) {
   const cacheKey = `trrb-live-v3-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -43,7 +43,7 @@ async function fetchLiveArticleById(id) {
   const cacheKey = `trrb-live-article-v3-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -60,7 +60,7 @@ function mapLiveArticle(row) {
   return {
     id: row.id, title: row.title || "", category: row.category_name || "新闻",
     excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
-    author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
+    seoKeywords: row.seo_keywords || "", author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
     body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
   };
 }
@@ -145,6 +145,7 @@ function renderArticle(root, article, articles) {
   const fallback = typeof window.TRRB_categoryPlaceholder === 'function' ? window.TRRB_categoryPlaceholder(article.category || '') : './image-placeholder.svg';
 
   document.title = `${article.title} - 唐人日报`;
+  updateSeoMeta(article);
 
   root.innerHTML = `
     <a class="back-link" href="./index.html">返回首页</a>
@@ -170,6 +171,19 @@ function renderArticle(root, article, articles) {
       </div>
     </section>
   `;
+}
+
+
+function updateSeoMeta(article) {
+  const setMeta = (name, content) => {
+    if (!content) return;
+    let node = document.head.querySelector(`meta[name="${name}"]`);
+    if (!node) { node = document.createElement("meta"); node.name = name; document.head.appendChild(node); }
+    node.content = content;
+  };
+  const description = String(article.excerpt || (article.body || []).join(" ")).replace(/\s+/g, " ").trim().slice(0, 160);
+  setMeta("description", description);
+  setMeta("keywords", article.seoKeywords || [article.category, article.title].filter(Boolean).join(", "));
 }
 
 function renderNeighbor(article, label, title) {

@@ -1,5 +1,100 @@
 [
   {
+    "id": "ice-2075645601706889671",
+    "x_post_id": "2075645601706889671",
+    "title": "明尼苏达州州长赦免犯罪非法移民，ICE将其遣返老挝",
+    "summary": "明尼苏达州州长赦免犯罪非法移民Tou Lue Vang，ICE已安排其返回老挝。",
+    "content_type": "brief",
+    "category": "遣返",
+    "importance": 7,
+    "relevance_score": 100,
+    "verified_level": "official",
+    "published_at": "2026-07-10T18:17:29.000Z",
+    "updated_at": "2026-07-10T20:08:25.179Z",
+    "url": "/news/ice/2026/07/10/ice-2075645601706889671.html",
+    "source_name": "美国移民与海关执法局（ICE）",
+    "source_url": "https://x.com/ICEgov/status/2075645601706889671",
+    "official_url": "",
+    "source_text": "The Governor of Minnesota gave a pardon to criminal illegal alien and child rapist Tou Lue Vang.\n\nICE gave him a flight back to his home country of Laos.\n\nAnother child predator deported thanks to the leadership of @POTUS and @SecMullinDHS. https://t.co/XkNuj4Vb5m",
+    "dedupe_key": "text:4f07855e5987cd3ae40f5908",
+    "image_url": "https://pbs.twimg.com/media/HM4srO6W8AAofzx.jpg",
+    "confidence": 95,
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 100,
+    "matched_terms": [
+      "ICE",
+      "执法行动"
+    ],
+    "query_lane": "override",
+    "keywords": [
+      "ICE",
+      "遣返",
+      "明尼苏达州",
+      "犯罪非法移民",
+      "赦免",
+      "老挝"
+    ],
+    "enforcement_events": [
+      {
+        "event_type": "removal",
+        "people_count": null,
+        "occurred_at": "2026-07-10T00:00:00.000Z",
+        "time_precision": "date",
+        "city": "",
+        "state_code": "MN",
+        "state_name": "明尼苏达州",
+        "location_text": "明尼苏达州",
+        "confidence": 95,
+        "source_excerpt": "ICE gave him a flight back to his home country of Laos."
+      }
+    ],
+    "state_codes": [
+      "MN"
+    ],
+    "event_metadata_checked_at": "2026-07-10T20:08:25.179Z"
+  },
+  {
+    "id": "ice-2075636661891817609",
+    "x_post_id": "2075636661891817609",
+    "title": "ICE发布HSI特别行动精彩案例首集短片",
+    "summary": "ICE与HSI发布首集短片，介绍近期具有重大影响的执法案件。",
+    "content_type": "brief",
+    "category": "抓捕与拘留",
+    "importance": 4,
+    "relevance_score": 78,
+    "verified_level": "official",
+    "published_at": "2026-07-10T17:41:58.000Z",
+    "updated_at": "2026-07-10T20:08:16.126Z",
+    "url": "/news/ice/2026/07/10/ice-2075636661891817609.html",
+    "source_name": "美国移民与海关执法局（ICE）",
+    "source_url": "https://x.com/ICEgov/status/2075636661891817609",
+    "official_url": "",
+    "source_text": "📺WATCH the FIRST EPISODE of ICE @HSI_HQ's Top Five now for a quick look at the most impactful cases our special agents have recently worked around the country to keep Americans safe.",
+    "dedupe_key": "text:b89a3402a3c0904bdaf9e103",
+    "image_url": "",
+    "confidence": 100,
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 78,
+    "matched_terms": [
+      "ICE"
+    ],
+    "query_lane": "override",
+    "keywords": [
+      "ICE",
+      "HSI",
+      "执法案件",
+      "特别探员",
+      "美国安全"
+    ],
+    "enforcement_events": [],
+    "state_codes": [],
+    "event_metadata_checked_at": "2026-07-10T20:08:16.127Z"
+  },
+  {
     "id": "ice-2075567019064168475",
     "x_post_id": "2075567019064168475",
     "title": "ICE鼓励公众举报可疑活动支持华盛顿特区庆典安全",

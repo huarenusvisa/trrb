@@ -1,5 +1,305 @@
 [
   {
+    "id": "pending-2075612323364868338",
+    "x_post_id": "2075612323364868338",
+    "reason": "稿件出现来源中不存在的数字：2026, 19",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-10T20:08:08.541Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 97,
+    "query_lane": "override",
+    "ai": {
+      "title": "ICE达拉斯分局在德州罗莱特逮捕越南籍犯罪非法移民",
+      "summary": "2026年6月19日，ICE达拉斯逃犯行动组在德克萨斯州罗莱特社区拘捕一名被定罪的越南籍非法移民。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）达拉斯逃犯行动组于2026年6月19日在德克萨斯州罗莱特执行有针对性的执法行动，逮捕了一名越南籍非法移民Kiet Trung Tran。",
+        "该人曾被定罪犯有加重性侵犯罪，并于1998年曾下达最终遣返令。",
+        "ICE提醒公众，其所有逮捕均为有明确目标的执法行动。"
+      ],
+      "content_type": "brief",
+      "category": "抓捕与拘留",
+      "importance": 7,
+      "relevance_score": 95,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "达拉斯",
+        "执法行动",
+        "逮捕",
+        "加重性侵犯",
+        "遣返令",
+        "越南",
+        "罗莱特"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "arrest",
+          "people_count": 1,
+          "occurred_at": "2026-06-19T00:00:00",
+          "time_precision": "date",
+          "city": "Rowlett",
+          "state_code": "TX",
+          "state_name": "Texas",
+          "location_text": "Rowlett, Texas neighborhood",
+          "confidence": 95,
+          "source_excerpt": "ICE Dallas Fugitive Operations arrested Vietnamese criminal illegal alien Kiet Trung Tran during a targeted enforcement operation a Rowlett, Texas, neighborhood June 19."
+        }
+      ]
+    },
+    "post": {
+      "id": "2075612323364868338",
+      "text": "ICE Dallas Fugitive Operations arrested Vietnamese criminal illegal alien Kiet Trung Tran during a targeted enforcement operation a Rowlett, Texas, neighborhood June 19.\n🚩Convicted | Aggravated sexual assault\n⚖️1998 Final order of removal\n\n📍Remember, ICE makes TARGETED arrests https://t.co/eco6JpWZBE",
+      "created_at": "2026-07-10T16:05:15.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/eco6JpWZBE",
+            "end": 301,
+            "expanded_url": "https://x.com/ICEgov/status/2075612323364868338/photo/1",
+            "media_key": "3_2075612320684806144",
+            "start": 278,
+            "url": "https://t.co/eco6JpWZBE"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM4OaJnXkAA5oBA.jpg",
+          "alt_text": "",
+          "width": 758,
+          "height": 946
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 2,
+        "impression_count": 14516,
+        "like_count": 523,
+        "quote_count": 6,
+        "reply_count": 37,
+        "retweet_count": 163
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075612323364868338",
+      "candidate_score": 97,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
+    "id": "pending-2075023430634611062",
+    "x_post_id": "2075023430634611062",
+    "reason": "稿件出现来源中不存在的数字：68, 2025, 2",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-10T20:08:01.782Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 78,
+    "query_lane": "override",
+    "ai": {
+      "title": "加州一男子承认公布ICE律师信息并指使网络攻击",
+      "summary": "一名68岁加州圣塔莫尼卡男子承认在2025年2月公开披露一名ICE律师身份及住址并指使网络“swat”攻击。",
+      "body_paragraphs": [
+        "2025年2月，一名68岁的圣塔莫尼卡男子Gregory John Curcio承认在社交媒体上公开披露一名美国移民与海关执法局（ICE）律师的身份和家庭住址。",
+        "他还引导他人在社交平台利用该住址实施所谓的“swat”攻击，该行为属于网络骚扰，且可能带来严重后果。"
+      ],
+      "content_type": "brief",
+      "category": "其他",
+      "importance": 5,
+      "relevance_score": 78,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "网络骚扰",
+        "swatting",
+        "律师信息泄露"
+      ],
+      "enforcement_events": []
+    },
+    "post": {
+      "id": "2075023430634611062",
+      "text": "68-year-old Santa Monica man Gregory John Curcio admitted to doxing an ICE attorney by publicly identifying her as an ICE agent, posting her home address and directing others on social media to “swat” her using that address in Feb. 2025.\n\nSwatting is harassment that often https://t.co/Ij8PxJbHJH",
+      "created_at": "2026-07-09T01:05:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/Ij8PxJbHJH",
+            "end": 296,
+            "expanded_url": "https://x.com/ICEgov/status/2075023430634611062/photo/1",
+            "media_key": "3_2075023427681861632",
+            "start": 273,
+            "url": "https://t.co/Ij8PxJbHJH"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HMv20EOXQAA_W9I.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 56,
+        "impression_count": 49309,
+        "like_count": 5854,
+        "quote_count": 42,
+        "reply_count": 244,
+        "retweet_count": 1766
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075023430634611062",
+      "candidate_score": 78,
+      "matched_terms": [
+        "ICE"
+      ]
+    }
+  },
+  {
+    "id": "pending-2074978131216085005",
+    "x_post_id": "2074978131216085005",
+    "reason": "稿件出现来源中不存在的数字：3.5",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-10T20:07:57.571Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 97,
+    "query_lane": "override",
+    "ai": {
+      "title": "美国ICE获得3.5亿美元支持加强避难城市非法移民刑事逮捕",
+      "summary": "美国国会通过《安全美国法案》，拨款3.5亿美元帮助ICE提升在避难城市的刑事非法移民抓捕能力。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）宣布，依据特朗普总统签署的《安全美国法案》，该局将获得3.5亿美元的专项资金。",
+        "该资金旨在支持ICE加强在避难城市中对刑事非法移民的逮捕行动。"
+      ],
+      "content_type": "brief",
+      "category": "抓捕与拘留",
+      "importance": 7,
+      "relevance_score": 95,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "非法移民",
+        "抓捕",
+        "避难城市",
+        "安全美国法案"
+      ],
+      "enforcement_events": []
+    },
+    "post": {
+      "id": "2074978131216085005",
+      "text": "A $350 million-initiative in the Secure America Act signed by @POTUS Trump will help ICE increase criminal illegal alien arrests in sanctuary jurisdictions.\n\n➡️Get Details at https://t.co/ZHyEreOpXc https://t.co/tz7wZ6lK6I",
+      "created_at": "2026-07-08T22:05:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 68,
+            "id": "1879650942410481666",
+            "start": 62,
+            "username": "POTUS"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "go.dhs.gov/5MW",
+            "end": 198,
+            "expanded_url": "https://go.dhs.gov/5MW",
+            "start": 175,
+            "status": 200,
+            "title": "Redirect to https://www.ice.gov/news/releases/ice-leadership-sen-eric-schmitt-partner-together-increase-public-safety",
+            "unwound_url": "https://go.dhs.gov/5MW",
+            "url": "https://t.co/ZHyEreOpXc"
+          },
+          {
+            "display_url": "pic.x.com/tz7wZ6lK6I",
+            "end": 222,
+            "expanded_url": "https://x.com/ICEgov/status/2074978131216085005/photo/1",
+            "media_key": "3_2074978127646785536",
+            "start": 199,
+            "url": "https://t.co/tz7wZ6lK6I"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HMvNnQcXgAAYLQe.jpg",
+          "alt_text": "",
+          "width": 1200,
+          "height": 1500
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 5,
+        "impression_count": 22656,
+        "like_count": 558,
+        "quote_count": 5,
+        "reply_count": 40,
+        "retweet_count": 139
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2074978131216085005",
+      "candidate_score": 97,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
     "id": "pending-2075272581238730758",
     "x_post_id": "2075272581238730758",
     "reason": "在没有定罪依据时使用了罪犯表述",

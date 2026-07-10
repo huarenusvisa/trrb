@@ -133,19 +133,23 @@ function loadScript(src) {
 }
 
 function renderArticle(root, article, articles) {
-  const currentIndex = articles.findIndex((item) => item.id === article.id);
+  const currentIndex = articles.findIndex((item) => String(item.id) === String(article.id));
   const previous = currentIndex > 0 ? articles[currentIndex - 1] : null;
   const next = currentIndex >= 0 && currentIndex < articles.length - 1 ? articles[currentIndex + 1] : null;
   const related = articles
-    .filter((item) => item.id !== article.id && item.category === article.category)
-    .concat(articles.filter((item) => item.id !== article.id && item.category !== article.category))
+    .filter((item) => String(item.id) !== String(article.id) && item.category === article.category)
+    .concat(articles.filter((item) => String(item.id) !== String(article.id) && item.category !== article.category))
     .slice(0, 12);
   const extensionItems = related.concat(related).slice(0, Math.max(related.length * 2, related.length));
-  const image = imageUrl(article.image || "", article.category || "");
-  const fallback = typeof window.TRRB_categoryPlaceholder === 'function' ? window.TRRB_categoryPlaceholder(article.category || '') : './image-placeholder.svg';
+
+  const coverUrl = imageUrl(article.image || "", article.category || "");
+  const hasCover = Boolean(coverUrl);
 
   document.title = `${article.title} - 唐人日报`;
   updateSeoMeta(article);
+
+  root.classList.toggle("has-no-image", !hasCover);
+  root.classList.remove("image-failed");
 
   root.innerHTML = `
     <a class="back-link" href="./index.html">返回首页</a>
@@ -154,7 +158,16 @@ function renderArticle(root, article, articles) {
       <h1>${escapeHtml(article.title || "")}</h1>
       <div class="story-meta">${escapeHtml([article.author, article.date, article.views].filter(Boolean).join(" · "))}</div>
     </header>
-    <img class="article-image${article.image ? "" : " is-placeholder"}" src="${escapeAttribute(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.classList.add('is-placeholder');this.src='${escapeAttribute(fallback)}'" alt="${escapeAttribute(article.title || "")}" />
+    ${hasCover ? `
+      <img
+        class="article-image"
+        src="${escapeAttribute(coverUrl)}"
+        loading="eager"
+        decoding="async"
+        referrerpolicy="no-referrer"
+        alt="${escapeAttribute(article.title || "")}"
+      />
+    ` : ""}
     <div class="article-body">
       ${(article.body || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
     </div>
@@ -171,8 +184,23 @@ function renderArticle(root, article, articles) {
       </div>
     </section>
   `;
-}
 
+  const cover = root.querySelector(".article-image");
+  if (cover) {
+    const removeFailedCover = () => {
+      cover.dataset.imageFailed = "true";
+      cover.removeAttribute("alt");
+      cover.hidden = true;
+      root.classList.add("image-failed");
+    };
+
+    cover.addEventListener("error", removeFailedCover, { once: true });
+
+    if (cover.complete && (!cover.naturalWidth || !cover.naturalHeight)) {
+      removeFailedCover();
+    }
+  }
+}
 
 function updateSeoMeta(article) {
   const setMeta = (name, content) => {
@@ -212,9 +240,16 @@ function renderRelatedItem(article) {
 }
 
 function imageUrl(value, category) {
-  if (typeof window.TRRB_getImageUrl === 'function') return window.TRRB_getImageUrl(value, category);
-  const text = String(value || "").replaceAll("\u0026", "&");
-  if (!text) return "./image-placeholder.svg";
+  const text = String(value || "").replaceAll("\u0026", "&").trim();
+  if (!text) return "";
+
+  if (typeof window.TRRB_getImageUrl === "function") {
+    const resolved = String(window.TRRB_getImageUrl(text, category) || "").trim();
+    if (!resolved || resolved.includes("image-placeholder.svg")) return "";
+    return resolved;
+  }
+
+  if (text.includes("image-placeholder.svg")) return "";
   if (text.startsWith("/assets/news-images/")) return "." + text;
   if (text.startsWith("assets/news-images/")) return "./" + text;
   return text.replace(/^https?:\/\/(?:www\.)?trrb\.net\/wp-content\/uploads\//, "./assets/news-images/");
@@ -234,86 +269,3 @@ function escapeAttribute(value) {
 }
 
 loadArticlePage();
-
-
-/* 唐人日报：自动识别文章封面横图/竖图
-   使用方法：把本文件内容追加到仓库根目录 article.js 最后。
-*/
-(function () {
-  function findCover() {
-    return document.querySelector(
-      '#article-cover, #article-image, .article-cover img, .article-hero img, img.article-cover-image, img.article-image'
-    );
-  }
-
-  function classifyCover(cover) {
-    if (!cover) return;
-
-    const apply = () => {
-      const width = cover.naturalWidth;
-      const height = cover.naturalHeight;
-
-      if (!width || !height) return;
-
-      const ratio = width / height;
-
-      cover.classList.remove('is-landscape', 'is-portrait');
-
-      if (ratio >= 1.35) {
-        cover.classList.add('is-landscape');
-      } else {
-        cover.classList.add('is-portrait');
-      }
-    };
-
-    if (cover.complete && cover.naturalWidth) {
-      apply();
-    } else {
-      cover.addEventListener('load', apply, { once: true });
-    }
-  }
-
-  function normalizeArticleCover() {
-    const cover = findCover();
-    if (cover) classifyCover(cover);
-
-    /* 兼容文章异步渲染：最多观察 8 秒 */
-    const observer = new MutationObserver(() => {
-      const latestCover = findCover();
-      if (latestCover) classifyCover(latestCover);
-    });
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
-
-    window.setTimeout(() => observer.disconnect(), 8000);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', normalizeArticleCover, { once: true });
-  } else {
-    normalizeArticleCover();
-  }
-})();
-
-document.addEventListener(
-  'error',
-  (event) => {
-    const img = event.target;
-
-    if (!(img instanceof HTMLImageElement)) return;
-
-    img.style.display = 'none';
-
-    const wrapper = img.closest(
-      '.article-image-wrap, .article-cover, .article-hero'
-    );
-
-    if (wrapper) {
-      wrapper.style.display = 'none';
-    }
-  },
-  true
-);

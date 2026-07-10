@@ -154,7 +154,7 @@ function renderArticle(root, article, articles) {
       <h1>${escapeHtml(article.title || "")}</h1>
       <div class="story-meta">${escapeHtml([article.author, article.date, article.views].filter(Boolean).join(" · "))}</div>
     </header>
-    <img class="article-image" src="${escapeAttribute(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="${escapeAttribute(article.title || "")}" />
+    <img class="article-image${article.image ? "" : " is-placeholder"}" src="${escapeAttribute(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.classList.add('is-placeholder');this.src='${escapeAttribute(fallback)}'" alt="${escapeAttribute(article.title || "")}" />
     <div class="article-body">
       ${(article.body || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
     </div>

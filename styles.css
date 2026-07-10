@@ -1898,3 +1898,11 @@ img.article-image.is-portrait {
   }
 }
 
+/* 取消顶部栏目导航吸附 */
+.nav,
+.site-nav,
+.main-nav {
+  position: static !important;
+  top: auto !important;
+  z-index: auto !important;
+}

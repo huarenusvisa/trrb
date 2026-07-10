@@ -298,3 +298,22 @@ loadArticlePage();
   }
 })();
 
+document.addEventListener(
+  'error',
+  (event) => {
+    const img = event.target;
+
+    if (!(img instanceof HTMLImageElement)) return;
+
+    img.style.display = 'none';
+
+    const wrapper = img.closest(
+      '.article-image-wrap, .article-cover, .article-hero'
+    );
+
+    if (wrapper) {
+      wrapper.style.display = 'none';
+    }
+  },
+  true
+);

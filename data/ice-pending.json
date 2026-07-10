@@ -1,5 +1,110 @@
 [
   {
+    "id": "pending-2075705424402157897",
+    "x_post_id": "2075705424402157897",
+    "reason": "法律状态“被判刑”在来源中没有对应依据",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-10T23:36:32.299Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 97,
+    "query_lane": "override",
+    "ai": {
+      "title": "ICE在宾夕法尼亚州埃里县监狱接管涉嫌共谋犯罪服刑完毕的中国籍嫌疑人赵丽娟",
+      "summary": "ICE接管了在宾夕法尼亚州埃里县服刑140天后涉嫌共谋犯罪的中国籍赵丽娟，她目前正面临遣返程序。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）于近期从宾夕法尼亚州埃里县的一所监狱接管了中国籍嫌疑人赵丽娟。",
+        "赵丽娟因涉嫌共谋对美国犯罪行为被判刑，服刑期为140天。她非法进入美国，现正处于遣返程序中。"
+      ],
+      "content_type": "brief",
+      "category": "抓捕与拘留",
+      "importance": 6,
+      "relevance_score": 97,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "拘留",
+        "遣返程序",
+        "共谋犯罪",
+        "中国籍",
+        "赵丽娟",
+        "非法入境",
+        "宾夕法尼亚州"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "detention",
+          "people_count": 1,
+          "occurred_at": "2026-07-10T00:00:00",
+          "time_precision": "date",
+          "city": "Erie",
+          "state_code": "PA",
+          "state_name": "Pennsylvania",
+          "location_text": "宾夕法尼亚州埃里县监狱",
+          "confidence": 95,
+          "source_excerpt": "ICE took custody of Lijuan Zhao from a prison in Erie County, Penn., after she served a 140-day sentence for conspiracy to commit an offense against the United States."
+        }
+      ]
+    },
+    "post": {
+      "id": "2075705424402157897",
+      "text": "ICE took custody of Lijuan Zhao from a prison in Erie County, Penn., after she served a 140-day sentence for conspiracy to commit an offense against the United States.\n\n🌏Zhao is a Chinese national who entered the U.S. illegally. She is in removal proceedings. https://t.co/Th0d3g81K8",
+      "created_at": "2026-07-10T22:15:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/Th0d3g81K8",
+            "end": 283,
+            "expanded_url": "https://x.com/ICEgov/status/2075705424402157897/photo/1",
+            "media_key": "3_2075705421814272000",
+            "start": 260,
+            "url": "https://t.co/Th0d3g81K8"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM5jFWWXkAAPwbc.png",
+          "alt_text": "",
+          "width": 240,
+          "height": 240
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 2,
+        "impression_count": 11226,
+        "like_count": 238,
+        "quote_count": 2,
+        "reply_count": 28,
+        "retweet_count": 60
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075705424402157897",
+      "candidate_score": 97,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
     "id": "pending-2075612323364868338",
     "x_post_id": "2075612323364868338",
     "reason": "稿件出现来源中不存在的数字：2026, 19",

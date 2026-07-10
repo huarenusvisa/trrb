@@ -1,10 +1,13 @@
 {
-  "last_seen_id": "",
-  "last_run_at": "",
+  "last_seen_id": "2075418538039206199",
+  "last_run_at": "2026-07-10T11:16:38.869Z",
   "last_success_at": "",
   "last_result": {
-    "fetched": 0,
+    "fetched": 8,
+    "new_posts": 8,
     "published": 0,
-    "pending": 0
+    "pending": 8,
+    "total_published": 0,
+    "total_pending": 8
   }
 }

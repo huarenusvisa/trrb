@@ -1,1 +1,329 @@
-[]
+[
+  {
+    "id": "pending-2075418538039206199",
+    "x_post_id": "2075418538039206199",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:16:38.869Z",
+    "post": {
+      "id": "2075418538039206199",
+      "text": "Diego Reyes-Campos stabbed his 12-year-old female cousin to death decades ago.\nHe pleaded guilty to voluntary manslaughter in 2007, the same year his final order of removal was issued.\n\n👉Under @POTUS, the U.S. has no tolerance for criminal illegal alien killers like https://t.co/FkNOzfcT6F",
+      "created_at": "2026-07-10T03:15:13.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 199,
+            "id": "1879650942410481666",
+            "start": 193,
+            "username": "POTUS"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/FkNOzfcT6F",
+            "end": 290,
+            "expanded_url": "https://x.com/ICEgov/status/2075418538039206199/photo/1",
+            "media_key": "3_2075418535954665472",
+            "start": 267,
+            "url": "https://t.co/FkNOzfcT6F"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM1eKZPW0AANzwV.png",
+          "alt_text": "",
+          "width": 254,
+          "height": 335
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075418538039206199"
+    }
+  },
+  {
+    "id": "pending-2075388332364763345",
+    "x_post_id": "2075388332364763345",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:16:33.041Z",
+    "post": {
+      "id": "2075388332364763345",
+      "text": "ICE arrested convicted murderer Tho Van Luu, of Vietnam, during a targeted immigration enforcement operation in a Houston, Texas, neighborhood, June 24.\n\n📍Remember, ICE makes TARGETED arrests of criminal illegal aliens. If you see us in your community, there’s a very good reason https://t.co/SMYtNu4y1S",
+      "created_at": "2026-07-10T01:15:11.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/SMYtNu4y1S",
+            "end": 303,
+            "expanded_url": "https://x.com/ICEgov/status/2075388332364763345/photo/1",
+            "media_key": "3_2075388329588064256",
+            "start": 280,
+            "url": "https://t.co/SMYtNu4y1S"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM1CsJwWgAAuNme.jpg",
+          "alt_text": "",
+          "width": 758,
+          "height": 946
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075388332364763345"
+    }
+  },
+  {
+    "id": "pending-2075340524463013910",
+    "x_post_id": "2075340524463013910",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:16:25.865Z",
+    "post": {
+      "id": "2075340524463013910",
+      "text": "Do you know that ICE’s VOICE office supports victims and families impacted by immigration-related crimes by:\n\n• Helping victims follow and understand the immigration enforcement and removal process.\n• Signing up victims to receive automated custody status information on https://t.co/w68TLOtkzM",
+      "created_at": "2026-07-09T22:05:13.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/w68TLOtkzM",
+            "end": 294,
+            "expanded_url": "https://x.com/ICEgov/status/2075340524463013910/photo/1",
+            "media_key": "3_2075340521384325120",
+            "start": 271,
+            "url": "https://t.co/w68TLOtkzM"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM0XNWUWMAAtAAN.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075340524463013910"
+    }
+  },
+  {
+    "id": "pending-2075272581238730758",
+    "x_post_id": "2075272581238730758",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:16:19.914Z",
+    "post": {
+      "id": "2075272581238730758",
+      "text": "Daroune Apple Songvilay \n🌏Laos\n✈️2003 Final order of removal\n🚩Multiple sexual assault-related convictions\n\nICE arrested Songvilay in Portland, Ore., June 24. Under @POTUS, the U.S. has no tolerance for illegal alien rapists like Songvilay. He's currently detained pending https://t.co/9jbJjyTvuU",
+      "created_at": "2026-07-09T17:35:14.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 170,
+            "id": "1879650942410481666",
+            "start": 164,
+            "username": "POTUS"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/9jbJjyTvuU",
+            "end": 295,
+            "expanded_url": "https://x.com/ICEgov/status/2075272581238730758/photo/1",
+            "media_key": "3_2075272578793349120",
+            "start": 272,
+            "url": "https://t.co/9jbJjyTvuU"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HMzZakcWIAA4uyV.png",
+          "alt_text": "",
+          "width": 287,
+          "height": 383
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075272581238730758"
+    }
+  },
+  {
+    "id": "pending-2075245542930596058",
+    "x_post_id": "2075245542930596058",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:16:13.545Z",
+    "post": {
+      "id": "2075245542930596058",
+      "text": "📺⚠️WATCH behind the scenes as this ICE @HSI_HQ -led CHILD SEX TRAFFICKING STING leading up to the #FIFAWorldCup2026 games in Kansas City scores multiple arrests and charges. https://t.co/Ww1YtNakoE",
+      "created_at": "2026-07-09T15:47:48.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 115,
+            "start": 98,
+            "tag": "FIFAWorldCup2026"
+          }
+        ],
+        "mentions": [
+          {
+            "end": 46,
+            "id": "1339943881027313666",
+            "start": 39,
+            "username": "HSI_HQ"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/Ww1YtNakoE",
+            "end": 197,
+            "expanded_url": "https://x.com/ICEgov/status/2075245542930596058/video/1",
+            "media_key": "7_2075245455273865216",
+            "start": 174,
+            "url": "https://t.co/Ww1YtNakoE"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2075245455273865216/pu/img/gTQOf1kOfZnRmn-O.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075245542930596058"
+    }
+  },
+  {
+    "id": "pending-2075219680793362937",
+    "x_post_id": "2075219680793362937",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:16:07.338Z",
+    "post": {
+      "id": "2075219680793362937",
+      "text": "🌏The ICE Enforcement and Removal Operations attaché in Phnom Penh, Cambodia, focuses primarily on repatriation and improving the crucial process of obtaining the travel documents needed to fly a Cambodian citizen home.\n\nRead more in link below. 🔽 https://t.co/sDUXJbJYLj",
+      "created_at": "2026-07-09T14:05:02.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/sDUXJbJYLj",
+            "end": 270,
+            "expanded_url": "https://x.com/ICEgov/status/2075219680793362937/video/1",
+            "media_key": "7_2075218490143744000",
+            "start": 247,
+            "url": "https://t.co/sDUXJbJYLj"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2075218490143744000/pu/img/ylO77xXDZOctQbWC.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075219680793362937"
+    }
+  },
+  {
+    "id": "pending-2075086308620276035",
+    "x_post_id": "2075086308620276035",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:16:00.638Z",
+    "post": {
+      "id": "2075086308620276035",
+      "text": "Miguel Reyes Rodriguez faces charges in Florida after claiming he shot a chihuahua in self-defense.\n\nICE placed an immigration detainer on Reyes Rodriguez because ICE already removed him from the United States and he illegally reentered the country. https://t.co/AmQ4AcGKp4",
+      "created_at": "2026-07-09T05:15:03.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/AmQ4AcGKp4",
+            "end": 273,
+            "expanded_url": "https://x.com/ICEgov/status/2075086308620276035/video/1",
+            "media_key": "7_2075085098307682304",
+            "start": 250,
+            "url": "https://t.co/AmQ4AcGKp4"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2075085098307682304/pu/img/YLZb0XyZgd_rDFWz.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075086308620276035"
+    }
+  },
+  {
+    "id": "pending-2075023430634611062",
+    "x_post_id": "2075023430634611062",
+    "reason": "OpenAI API request failed (429): You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "manual_review": false,
+    "attempts": 1,
+    "created_at": "2026-07-10T11:15:53.140Z",
+    "post": {
+      "id": "2075023430634611062",
+      "text": "68-year-old Santa Monica man Gregory John Curcio admitted to doxing an ICE attorney by publicly identifying her as an ICE agent, posting her home address and directing others on social media to “swat” her using that address in Feb. 2025.\n\nSwatting is harassment that often https://t.co/Ij8PxJbHJH",
+      "created_at": "2026-07-09T01:05:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/Ij8PxJbHJH",
+            "end": 296,
+            "expanded_url": "https://x.com/ICEgov/status/2075023430634611062/photo/1",
+            "media_key": "3_2075023427681861632",
+            "start": 273,
+            "url": "https://t.co/Ij8PxJbHJH"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HMv20EOXQAA_W9I.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "x_url": "https://x.com/ICEgov/status/2075023430634611062"
+    }
+  }
+]

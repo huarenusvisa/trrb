@@ -234,3 +234,67 @@ function escapeAttribute(value) {
 }
 
 loadArticlePage();
+
+
+/* 唐人日报：自动识别文章封面横图/竖图
+   使用方法：把本文件内容追加到仓库根目录 article.js 最后。
+*/
+(function () {
+  function findCover() {
+    return document.querySelector(
+      '#article-cover, #article-image, .article-cover img, .article-hero img, img.article-cover-image, img.article-image'
+    );
+  }
+
+  function classifyCover(cover) {
+    if (!cover) return;
+
+    const apply = () => {
+      const width = cover.naturalWidth;
+      const height = cover.naturalHeight;
+
+      if (!width || !height) return;
+
+      const ratio = width / height;
+
+      cover.classList.remove('is-landscape', 'is-portrait');
+
+      if (ratio >= 1.35) {
+        cover.classList.add('is-landscape');
+      } else {
+        cover.classList.add('is-portrait');
+      }
+    };
+
+    if (cover.complete && cover.naturalWidth) {
+      apply();
+    } else {
+      cover.addEventListener('load', apply, { once: true });
+    }
+  }
+
+  function normalizeArticleCover() {
+    const cover = findCover();
+    if (cover) classifyCover(cover);
+
+    /* 兼容文章异步渲染：最多观察 8 秒 */
+    const observer = new MutationObserver(() => {
+      const latestCover = findCover();
+      if (latestCover) classifyCover(latestCover);
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    window.setTimeout(() => observer.disconnect(), 8000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', normalizeArticleCover, { once: true });
+  } else {
+    normalizeArticleCover();
+  }
+})();
+

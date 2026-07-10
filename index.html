@@ -1,127 +1,154 @@
 <!doctype html>
 <html lang="zh-Hans">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>唐人日报后台</title>
-  <link rel="stylesheet" href="./styles.css?v=1" />
-</head>
-<body>
-  <main id="app" class="app-shell">
-    <section class="login-card" id="login-view">
-      <div class="logo-text">唐人日报</div>
-      <h1>后台登录</h1>
-      <p>仅限授权管理员使用。</p>
-      <form id="login-form" class="form-stack">
-        <label>
-          邮箱
-          <input type="email" id="login-email" autocomplete="email" required placeholder="请输入管理员邮箱" />
-        </label>
-        <label>
-          密码
-          <input type="password" id="login-password" autocomplete="current-password" required placeholder="请输入密码" />
-        </label>
-        <button type="submit">登录后台</button>
-      </form>
-      <div class="notice" id="login-message"></div>
-    </section>
-
-    <section class="admin-layout is-hidden" id="admin-view">
-      <aside class="sidebar">
-        <div class="brand">
-          <strong>唐人日报</strong>
-          <span>TRRB Admin</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>唐人日报 Tang Ren Daily - 中美新闻实时播报</title>
+    <meta
+      name="description"
+      content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、庇护百科等内容。"
+    />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="./styles.css?v=28" />
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="meta">
+          <span class="meta-location">📍 本地</span>
+          <span class="meta-date">加载日期中...</span>
+          <span class="meta-weather">🌤️ 天气加载中...</span>
         </div>
-        <nav>
-          <button data-tab="dashboard" class="is-active">控制台</button>
-          <button data-tab="articles">文章管理</button>
-          <button data-tab="new-article">发布文章</button>
-          <button data-tab="rankings">24小时热榜</button>
-        </nav>
-        <button id="logout-btn" class="logout">退出登录</button>
-      </aside>
+        <div class="links">
+          <a href="#submit">投稿爆料</a>
+          <a href="#daily">电子报</a>
+          <a href="#about">关于我们</a>
+          <a href="#ads">广告合作</a>
+          <a href="./listing.html?type=search">搜索</a>
+        </div>
+      </div>
+    </div>
 
-      <section class="main-panel">
-        <header class="topline">
-          <div>
-            <h1 id="page-title">控制台</h1>
-            <p id="admin-info">正在读取管理员信息...</p>
-          </div>
-          <button id="refresh-btn">刷新</button>
-        </header>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./index.html" aria-label="唐人日报首页">
+          <img src="./trrb-logo.jpg" alt="唐人日报 Tang Ren Daily" />
+        </a>
+        <div class="slogan">
+          <b>立足美国 · 服务华人</b>
+          <span>US-China Breaking News for Chinese Readers</span>
+        </div>
+        <div class="header-actions">
+          <a href="#daily">电子报订阅</a>
+          <a href="#community">加入读者群</a>
+          <a class="primary" href="#submit">投稿爆料</a>
+        </div>
+      </div>
+    </header>
 
-        <section class="tab-panel" id="tab-dashboard">
-          <div class="cards">
-            <article><b id="stat-articles">0</b><span>文章总数</span></article>
-            <article><b id="stat-published">0</b><span>已发布</span></article>
-            <article><b id="stat-drafts">0</b><span>草稿</span></article>
-            <article><b id="stat-rankings">0</b><span>热榜条目</span></article>
-          </div>
-          <div class="panel">
-            <h2>最近文章</h2>
-            <div id="recent-articles" class="simple-list"></div>
-          </div>
-        </section>
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a href="./listing.html?category=重要新闻">重要新闻</a>
+        <a href="./listing.html?category=热门头条">热门头条</a>
+        <a href="./listing.html?category=驱逐快报">驱逐快报</a>
+        <a href="./listing.html?category=美国时政">美国时政</a>
+        <a href="./listing.html?category=美国警情">美国警情</a>
+        <a href="./listing.html?category=中国官场">中国官场</a>
+        <a href="./listing.html?category=移民美国">移民美国</a>
+        <a href="./listing.html?category=庇护百科">庇护百科</a>
+        <form class="site-search nav-search" role="search">
+          <input name="q" type="search" placeholder="搜索新闻" />
+          <button type="submit">搜索</button>
+        </form>
+      </div>
+    </nav>
 
-        <section class="tab-panel is-hidden" id="tab-articles">
-          <div class="panel">
-            <div class="panel-head">
-              <h2>文章管理</h2>
-              <select id="article-status-filter">
-                <option value="">全部状态</option>
-                <option value="published">已发布</option>
-                <option value="draft">草稿</option>
-                <option value="hidden">隐藏</option>
-              </select>
-            </div>
-            <div id="articles-table" class="table-wrap"></div>
-          </div>
-        </section>
-
-        <section class="tab-panel is-hidden" id="tab-new-article">
-          <div class="panel">
-            <h2>发布文章</h2>
-            <form id="article-form" class="editor-form">
-              <label>标题<input id="article-title" required placeholder="输入新闻标题" /></label>
-              <label>Slug<input id="article-slug" placeholder="自动生成，可手动修改" /></label>
-              <label>摘要<textarea id="article-summary" rows="3" placeholder="新闻摘要，用于列表和 SEO"></textarea></label>
-              <label>正文<textarea id="article-content" rows="12" placeholder="正文内容。每段可直接换行。" required></textarea></label>
-              <div class="two-col">
-                <label>栏目<select id="article-category" required></select></label>
-                <label>状态
-                  <select id="article-status">
-                    <option value="draft">草稿</option>
-                    <option value="published">已发布</option>
-                    <option value="hidden">隐藏</option>
-                  </select>
-                </label>
-              </div>
-              <label>封面图 URL<input id="article-cover" placeholder="https://... 或 /assets/..." /></label>
-              <label>来源链接<input id="article-source" placeholder="原始新闻来源 URL，可选" /></label>
-              <button type="submit">保存文章</button>
-            </form>
-            <div class="notice" id="article-message"></div>
-          </div>
-        </section>
-
-        <section class="tab-panel is-hidden" id="tab-rankings">
-          <div class="panel">
-            <div class="panel-head">
-              <div>
-                <h2>24小时热榜</h2>
-                <p>先手动维护 10 条。后面再做自动阅读量排序。</p>
-              </div>
-              <button id="save-rankings-btn">保存热榜</button>
-            </div>
-            <div id="rankings-editor" class="rank-editor"></div>
-            <div class="notice" id="rankings-message"></div>
-          </div>
-        </section>
+    <main>
+      <section class="breaking">
+        <div class="container breaking-inner">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <div class="ticker" id="ticker"></div>
+        </div>
       </section>
-    </section>
-  </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./admin.js?v=1"></script>
-</body>
+      <section class="container lead-layout">
+        <article class="hero-card" id="hero"></article>
+        <aside class="top-list" id="top-list"></aside>
+      </section>
+
+      <section class="container content-layout">
+        <div class="sections-grid" id="sections-grid"></div>
+        <aside class="sidebar">
+          <section class="rank">
+            <header><h2>24小时热榜</h2><a href="#" class="rank-switch" id="rank-switch">换一换</a></header>
+            <ol id="rank-list"></ol>
+          </section>
+          <section class="topics">
+            <header><h2>专题聚焦</h2><a href="#">更多专题</a></header>
+            <a href="#">特朗普 <span>最新动态与政策解读</span></a>
+            <a href="#">ICE执法 <span>执法行动与法律应对</span></a>
+            <a href="#">EB-5投资移民 <span>政策更新与项目排行</span></a>
+            <a href="#">庇护指南 <span>申请流程与案例解析</span></a>
+            <a href="#">纽约警情 <span>治安焦点与安全提示</span></a>
+          </section>
+        </aside>
+      </section>
+
+      <section class="container cta-row">
+        <article id="daily">
+          <h2>订阅每日快报</h2>
+          <p>每日精选新闻直达邮箱，不错过任何重要消息</p>
+          <form name="daily-subscribe" method="POST" data-netlify="true">
+            <input type="hidden" name="form-name" value="daily-subscribe" />
+            <input type="email" placeholder="输入您的邮箱地址" />
+            <button type="submit">立即订阅</button>
+          </form>
+        </article>
+        <article id="community">
+          <h2>加入读者群</h2>
+          <p>与10万+读者一起交流，获取第一手资讯与深度解读</p>
+          <div class="qr">TRRB</div>
+        </article>
+        <article id="submit">
+          <h2>投稿爆料</h2>
+          <p>新闻线索、独家爆料，我们珍视每一时间报道</p>
+          <a href="mailto:news@tangrendaily.com">提交线索</a>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer" id="about">
+      <div class="container footer-grid">
+        <section>
+          <h2>唐人日报</h2>
+          <b>Tang Ren Daily</b>
+          <p>立足美国 服务华人<br />专注美国新闻与深度报道</p>
+        </section>
+        <section>
+          <h3>栏目导航</h3>
+          <a href="./listing.html?category=重要新闻">重要新闻</a>
+          <a href="./listing.html?category=热门头条">热门头条</a>
+          <a href="./listing.html?category=驱逐快报">驱逐快报</a>
+          <a href="./listing.html?category=美国时政">美国时政</a>
+        </section>
+        <section>
+          <h3>关于我们</h3>
+          <a href="#about">关于唐人日报</a>
+          <a href="#ads">广告合作</a>
+          <a href="#community">加入我们</a>
+        </section>
+        <section>
+          <h3>联系我们</h3>
+          <p>邮箱：news@tangrendaily.com</p>
+          <p>电话：+1 (929) 888-1688</p>
+          <p>地址：136-20 38th Ave, Flushing, NY 11354, USA</p>
+        </section>
+      </div>
+      <div class="container copyright">© 2026 唐人日报 Tang Ren Daily. 保留所有权利。</div>
+    </footer>
+    <script src="./articles-index.js?v=28"></script>
+    <script src="./site-search.js?v=28"></script>
+    <script src="./site-common.js?v=28"></script>
+    <script src="./app.js?v=28"></script>
+  </body>
 </html>

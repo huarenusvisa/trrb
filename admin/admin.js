@@ -19,24 +19,7 @@ let categories = [];
 
 document.addEventListener("DOMContentLoaded", init);
 
-// 后台永远使用最新静态文件，清理旧 Service Worker / Cache Storage。
-async function clearLegacyBrowserCaches() {
-  try {
-    if ("serviceWorker" in navigator) {
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(registrations.map((registration) => registration.unregister()));
-    }
-    if ("caches" in window) {
-      const keys = await caches.keys();
-      await Promise.all(keys.map((key) => caches.delete(key)));
-    }
-  } catch (error) {
-    console.warn("清理旧缓存失败，不影响继续登录：", error);
-  }
-}
-
 async function init() {
-  await clearLegacyBrowserCaches();
   bindEvents();
   const { data } = await supabaseClient.auth.getSession();
   if (data.session?.user) {
@@ -60,7 +43,7 @@ function bindEvents() {
 async function handleLogin(event) {
   event.preventDefault();
   setLoginMessage("正在登录...");
-  const email = el("login-email").value.trim().toLowerCase();
+  const email = el("login-email").value.trim();
   const password = el("login-password").value;
 
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
@@ -108,23 +91,23 @@ async function getAdminRecord(user) {
   if (error) {
     console.error("Admin check by user_id failed:", error);
   }
-  if (data && ["owner", "admin"].includes(String(data.role || "").toLowerCase())) return data;
+  if (data) return data;
 
   // 备用：如果早期表里 user_id 没写对，用邮箱再核对一次。
   const fallback = await supabaseClient
     .from("admin_users")
     .select("id,user_id,email,role,is_active")
-    .ilike("email", String(user.email || "").trim())
+    .eq("email", user.email)
     .eq("is_active", true)
     .maybeSingle();
 
   if (fallback.error) {
     console.error("Admin check by email failed:", fallback.error);
   }
-  if (fallback.data && ["owner", "admin"].includes(String(fallback.data.role || "").toLowerCase())) return fallback.data;
+  if (fallback.data) return fallback.data;
 
   // 最后保险：只允许这一个 Supabase Auth UID 进入 UI。数据库写入仍然受 RLS 控制。
-  if (user.id === OWNER_UID && String(user.email || "").trim().toLowerCase() === OWNER_EMAIL) {
+  if (user.id === OWNER_UID && user.email === OWNER_EMAIL) {
     return { user_id: OWNER_UID, email: OWNER_EMAIL, role: "owner", is_active: true };
   }
 

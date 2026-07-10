@@ -214,3 +214,16 @@ th { background: #f1f5f9; }
 .url-fallback summary { cursor: pointer; font-size: 13px; }
 .url-fallback input { margin-top: 10px; }
 button:disabled { opacity: .6; cursor: wait; }
+
+/* Editor v2: multi-source cover, auto summary and SEO */
+.field-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; }
+.field-heading label { margin:0; }
+.compact-btn { width:auto; padding:8px 12px; font-size:14px; }
+.upload-methods { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.upload-method { min-height:88px; border:1px dashed #b8c5d8; border-radius:10px; padding:14px; background:#fff; display:flex; flex-direction:column; justify-content:center; gap:8px; }
+.upload-method input { padding:8px; }
+.paste-method { cursor:text; }
+.media-uploader:focus-within, .media-uploader.is-paste-active { outline:3px solid rgba(14,165,233,.25); border-color:#0ea5e9; }
+.external-url-box { margin-top:14px; }
+.external-url-box label { margin-top:0; }
+@media (max-width:760px) { .upload-methods { grid-template-columns:1fr; } .field-heading { align-items:flex-start; flex-direction:column; } }

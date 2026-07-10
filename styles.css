@@ -694,58 +694,6 @@ img {
   font-weight: 900;
 }
 
-.article-shell {
-  background: var(--soft);
-  padding: 34px 0;
-}
-
-.article-page {
-  max-width: 880px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #fff;
-  padding: 34px;
-}
-
-.back-link {
-  display: inline-flex;
-  margin-bottom: 22px;
-  color: var(--red);
-  font-weight: 800;
-}
-
-.article-header h1 {
-  margin: 0 0 16px;
-  font-size: clamp(30px, 5vw, 46px);
-  line-height: 1.18;
-  letter-spacing: 0;
-}
-
-.article-header p {
-  margin: 0 0 16px;
-  color: #4b5563;
-  font-size: 18px;
-  line-height: 1.75;
-}
-
-.article-image {
-  height: 420px;
-  margin: 28px 0;
-  border-radius: 6px;
-}
-
-.article-body {
-  display: grid;
-  gap: 18px;
-  color: #1f2937;
-  font-size: 18px;
-  line-height: 1.9;
-}
-
-.article-body p {
-  margin: 0;
-}
-
 .article-neighbors {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -1168,14 +1116,6 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .article-page {
-    padding: 22px;
-  }
-
-  .article-image {
-    height: 260px;
-  }
-
   .listing-page {
     padding: 18px;
   }
@@ -1383,67 +1323,100 @@ img {
 }
 
 /* =========================================================
-   v29 - 文章详情页比例与响应式修复
+   唐人日报文章详情页最终统一规则
+   说明：
+   - 只保留这一套文章页尺寸规则
+   - 没有封面时不显示图片区域，正文自动前置
+   - 图片保持原始比例，不拉伸、不强制裁切
+   - 顶部栏目导航不吸附、不覆盖正文
    ========================================================= */
+
+.nav,
+.site-nav,
+.main-nav {
+  position: static;
+  top: auto;
+  z-index: auto;
+}
+
 .article-shell {
+  background: var(--soft);
   padding: 28px 0 64px;
 }
 
 .article-page {
-  width: min(calc(100% - 32px), 1040px);
-  max-width: 1040px;
+  width: min(calc(100% - 32px), 1060px);
+  max-width: 1060px;
   margin: 0 auto;
-  padding: 32px 36px 52px;
+  padding: 34px 40px 54px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
   box-sizing: border-box;
 }
 
+.back-link {
+  display: inline-flex;
+  margin-bottom: 24px;
+  color: var(--red);
+  font-weight: 800;
+}
+
 .article-header {
-  width: 100%;
-  max-width: 960px;
+  width: min(100%, 920px);
   margin: 0 auto;
+}
+
+.article-header .tag {
+  display: inline-flex;
+  margin-bottom: 14px;
 }
 
 .article-header h1 {
-  max-width: 960px;
-  margin: 14px 0 14px;
-  font-size: clamp(32px, 3.2vw, 44px);
-  line-height: 1.22;
-  letter-spacing: -0.025em;
+  margin: 0 0 14px;
+  font-size: clamp(32px, 2.7vw, 40px);
+  line-height: 1.26;
+  letter-spacing: -0.02em;
   overflow-wrap: anywhere;
-  word-break: normal;
 }
 
 .article-header .story-meta {
-  font-size: 15px;
-  line-height: 1.55;
+  margin-bottom: 0;
   color: #667085;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
+/* 真实封面：保持原始比例，只限制最大尺寸 */
 .article-image {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: min(100%, 880px);
   height: auto;
   max-height: 560px;
-  margin: 26px auto 30px;
+  margin: 24px auto 30px;
   border-radius: 8px;
+  background: transparent;
   object-fit: contain;
   object-position: center;
-  background: #f3f4f6;
 }
 
-/* 没有真实封面或外链失效时，避免占位图被无限放大 */
-.article-image.is-placeholder {
-  width: 100%;
-  height: 300px;
-  max-height: 300px;
-  object-fit: cover;
-  background: #fff8f8;
+/* 无图或失效图时彻底移除图片占位，正文自动上移 */
+.article-image[hidden],
+.article-page.has-no-image .article-image,
+.article-page.image-failed .article-image {
+  display: none !important;
+}
+
+.article-page.has-no-image .article-header,
+.article-page.image-failed .article-header {
+  margin-bottom: 24px;
 }
 
 .article-body {
-  width: min(100%, 860px);
-  margin: 0 auto;
   display: block;
+  width: min(100%, 820px);
+  margin: 0 auto;
   color: #1f2937;
   font-size: 18px;
   line-height: 1.9;
@@ -1458,38 +1431,50 @@ img {
 .article-body video,
 .article-body iframe {
   display: block;
+  width: auto;
   max-width: 100%;
   height: auto;
+  max-height: 620px;
   margin: 24px auto;
+  object-fit: contain;
 }
 
 .article-neighbors,
 .related-news {
-  width: min(100%, 860px);
+  width: min(100%, 820px);
   margin-left: auto;
   margin-right: auto;
 }
 
+/* 失效图片不保留灰条、破图图标或 alt 文本 */
+img[data-image-failed="true"] {
+  display: none !important;
+}
+
 @media (max-width: 900px) {
   .article-page {
-    width: min(calc(100% - 24px), 1040px);
-    padding: 26px 24px 44px;
+    width: min(calc(100% - 24px), 1060px);
+    padding: 28px 26px 46px;
   }
 
   .article-header h1 {
-    font-size: clamp(30px, 5.5vw, 40px);
+    font-size: clamp(30px, 5vw, 38px);
+  }
+
+  .article-image {
+    max-height: 500px;
   }
 }
 
 @media (max-width: 640px) {
   .article-shell {
-    padding-top: 16px;
+    padding: 14px 0 36px;
   }
 
   .article-page {
-    width: calc(100% - 16px);
-    padding: 22px 16px 36px;
-    border-radius: 4px;
+    width: calc(100% - 14px);
+    padding: 22px 16px 34px;
+    border-radius: 5px;
   }
 
   .back-link {
@@ -1497,412 +1482,29 @@ img {
   }
 
   .article-header h1 {
-    margin-top: 12px;
-    font-size: 29px;
-    line-height: 1.28;
-    letter-spacing: -0.015em;
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  .article-header .story-meta {
+    font-size: 14px;
   }
 
   .article-image {
-    max-height: none;
-    margin: 20px auto 24px;
-  }
-
-  .article-image.is-placeholder {
-    height: 220px;
-    max-height: 220px;
+    max-width: 100%;
+    max-height: 420px;
+    margin: 18px auto 24px;
   }
 
   .article-body {
     font-size: 17px;
     line-height: 1.82;
   }
-}
 
-
-/* =========================================================
-   v30 FINAL: Header logo + article typography + cover sizing
-   This block intentionally comes last to win over legacy rules.
-   ========================================================= */
-.site-header .header-inner {
-  min-height: 118px;
-  height: auto;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-.site-header .brand {
-  width: clamp(210px, 18vw, 285px);
-  flex-basis: clamp(210px, 18vw, 285px);
-}
-.site-header .brand img {
-  width: 100%;
-  height: 86px;
-  object-fit: contain;
-  object-position: left center;
-}
-
-.article-shell { padding: 28px 0 68px; }
-.article-shell .article-page {
-  width: min(calc(100% - 32px), 1080px);
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 34px 40px 58px;
-  box-sizing: border-box;
-}
-.article-shell .article-header {
-  width: min(100%, 940px);
-  max-width: 940px;
-  margin: 0 auto;
-}
-.article-shell .article-header h1 {
-  width: 100%;
-  max-width: 940px;
-  margin: 16px 0 14px;
-  font-size: clamp(30px, 2.65vw, 40px);
-  line-height: 1.28;
-  letter-spacing: -0.018em;
-  font-weight: 800;
-  word-break: normal;
-  overflow-wrap: anywhere;
-}
-.article-shell .article-header .story-meta {
-  height: auto;
-  padding: 0;
-  border: 0;
-  font-size: 15px;
-  line-height: 1.55;
-  color: #667085;
-}
-.article-shell .article-image {
-  display: block;
-  width: min(100%, 920px);
-  height: auto;
-  max-height: 520px;
-  margin: 28px auto 32px;
-  border-radius: 8px;
-  object-fit: contain;
-  object-position: center;
-  background: #f3f4f6;
-}
-.article-shell .article-image.is-placeholder {
-  width: min(100%, 920px);
-  height: 240px;
-  max-height: 240px;
-  object-fit: cover;
-  opacity: .98;
-}
-.article-shell .article-body {
-  width: min(100%, 840px);
-  margin: 0 auto;
-  font-size: 18px;
-  line-height: 1.88;
-  color: #20242a;
-}
-.article-shell .article-body p { margin: 0 0 1.35em; }
-.article-shell .article-body img {
-  width: auto;
-  max-width: 100%;
-  max-height: 680px;
-  height: auto;
-  object-fit: contain;
-}
-.article-shell .article-neighbors,
-.article-shell .related-news { width: min(100%, 840px); }
-
-@media (max-width: 900px) {
-  .site-header .brand { width: 180px; flex-basis: 180px; }
-  .site-header .brand img { height: 72px; }
-  .article-shell .article-page { width: calc(100% - 22px); padding: 28px 24px 46px; }
-  .article-shell .article-header h1 { font-size: clamp(29px, 5vw, 37px); }
-}
-@media (max-width: 680px) {
-  .site-header .header-inner { min-height: auto; padding: 12px 0; }
-  .site-header .brand { width: 150px; flex-basis: 150px; }
-  .site-header .brand img { height: 62px; }
-  .article-shell { padding-top: 14px; }
-  .article-shell .article-page { width: calc(100% - 12px); padding: 22px 15px 36px; }
-  .article-shell .article-header h1 { font-size: 28px; line-height: 1.32; }
-  .article-shell .article-image { max-height: 360px; margin: 21px auto 25px; }
-  .article-shell .article-image.is-placeholder { height: 190px; max-height: 190px; }
-  .article-shell .article-body { font-size: 17px; line-height: 1.82; }
-}
-
-
-/* 唐人日报：文章封面固定比例 + 手机电脑自适应
-   使用方法：把本文件内容追加到仓库根目录 styles.css 最后。
-*/
-
-/* 文章封面统一为 16:9 容器，避免大图把页面拉长 */
-.article-cover,
-.article-hero,
-.article-image-wrap,
-.cover-image-wrap,
-#article-cover-wrap {
-  width: min(100%, 900px) !important;
-  aspect-ratio: 16 / 9 !important;
-  max-height: 506px !important;
-  margin: 24px auto 32px !important;
-  overflow: hidden !important;
-  border-radius: 8px !important;
-  background: #f2f3f5 !important;
-}
-
-/* 所有封面图片进入固定比例容器 */
-.article-cover img,
-.article-hero img,
-.article-image-wrap img,
-.cover-image-wrap img,
-#article-cover,
-#article-image,
-img.article-cover-image,
-img.article-image {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  max-height: none !important;
-  margin: 0 !important;
-  object-position: center !important;
-}
-
-/* 横图铺满容器，允许轻微裁切 */
-.article-cover img.is-landscape,
-.article-hero img.is-landscape,
-#article-cover.is-landscape,
-#article-image.is-landscape,
-img.article-cover-image.is-landscape,
-img.article-image.is-landscape {
-  object-fit: cover !important;
-}
-
-/* 竖图、方图完整显示，不拉伸，两侧自动留白 */
-.article-cover img.is-portrait,
-.article-hero img.is-portrait,
-#article-cover.is-portrait,
-#article-image.is-portrait,
-img.article-cover-image.is-portrait,
-img.article-image.is-portrait {
-  object-fit: contain !important;
-}
-
-/* 未完成分类前默认完整显示，避免拉伸 */
-.article-cover img:not(.is-landscape):not(.is-portrait),
-.article-hero img:not(.is-landscape):not(.is-portrait),
-#article-cover:not(.is-landscape):not(.is-portrait),
-#article-image:not(.is-landscape):not(.is-portrait) {
-  object-fit: contain !important;
-}
-
-/* 正文图片限制最大高度，不把页面无限拉长 */
-.article-content img,
-.article-body img,
-#article-content img {
-  display: block !important;
-  width: auto !important;
-  max-width: 100% !important;
-  height: auto !important;
-  max-height: 650px !important;
-  margin: 24px auto !important;
-  object-fit: contain !important;
-}
-
-/* 平板 */
-@media (max-width: 900px) {
-  .article-cover,
-  .article-hero,
-  .article-image-wrap,
-  .cover-image-wrap,
-  #article-cover-wrap {
-    width: 100% !important;
-    max-height: none !important;
-  }
-}
-
-/* 手机 */
-@media (max-width: 600px) {
-  .article-cover,
-  .article-hero,
-  .article-image-wrap,
-  .cover-image-wrap,
-  #article-cover-wrap {
-    width: 100% !important;
-    aspect-ratio: 16 / 9 !important;
-    margin: 18px auto 24px !important;
-    border-radius: 6px !important;
-  }
-
-  .article-content img,
   .article-body img,
-  #article-content img {
-    max-height: 460px !important;
-    margin: 18px auto !important;
+  .article-body video,
+  .article-body iframe {
+    max-height: 460px;
+    margin: 18px auto;
   }
-}
-
-
-/* =========================================================
-   唐人日报：文章图片比例紧急回滚修复
-   作用：
-   1. 取消此前强制 16:9 和 height:100%
-   2. 图片保持原始比例
-   3. 电脑端最大宽度 860px、最大高度 560px
-   4. 手机端自动缩放
-   请把本段追加到根目录 styles.css 最后
-   ========================================================= */
-
-/* 取消所有文章封面容器的固定比例与固定高度 */
-.article-cover,
-.article-hero,
-.article-image-wrap,
-.cover-image-wrap,
-#article-cover-wrap,
-.article-shell .article-image-wrap,
-.article-shell .article-cover,
-.article-shell .article-hero {
-  width: 100% !important;
-  max-width: 860px !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  aspect-ratio: auto !important;
-  margin: 22px auto 28px !important;
-  overflow: visible !important;
-  background: transparent !important;
-  border-radius: 8px !important;
-}
-
-/* 主封面：保持原始比例，绝不拉伸 */
-.article-cover img,
-.article-hero img,
-.article-image-wrap img,
-.cover-image-wrap img,
-#article-cover,
-#article-image,
-img.article-cover-image,
-img.article-image,
-.article-shell .article-image,
-.article-shell .article-image img,
-.article-shell img.article-image {
-  display: block !important;
-  width: auto !important;
-  max-width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: 560px !important;
-  aspect-ratio: auto !important;
-  margin: 0 auto !important;
-  object-fit: contain !important;
-  object-position: center !important;
-  border-radius: 8px !important;
-}
-
-/* 移除横图/竖图分类对尺寸的强制影响 */
-.article-cover img.is-landscape,
-.article-cover img.is-portrait,
-.article-hero img.is-landscape,
-.article-hero img.is-portrait,
-#article-cover.is-landscape,
-#article-cover.is-portrait,
-#article-image.is-landscape,
-#article-image.is-portrait,
-img.article-image.is-landscape,
-img.article-image.is-portrait {
-  width: auto !important;
-  max-width: 100% !important;
-  height: auto !important;
-  max-height: 560px !important;
-  object-fit: contain !important;
-}
-
-/* 正文中的图片同样保持原比例 */
-.article-content img,
-.article-body img,
-#article-content img,
-.article-shell .article-body img {
-  display: block !important;
-  width: auto !important;
-  max-width: 100% !important;
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: 620px !important;
-  aspect-ratio: auto !important;
-  margin: 22px auto !important;
-  object-fit: contain !important;
-}
-
-/* 标题和正文比例同时收紧 */
-.article-shell .article-header h1,
-.article-title,
-.article-header h1,
-.article-detail h1,
-#article-title {
-  max-width: 900px !important;
-  font-size: clamp(30px, 2.6vw, 39px) !important;
-  line-height: 1.26 !important;
-}
-
-.article-shell .article-body,
-.article-content,
-.article-body,
-#article-content {
-  width: min(100%, 820px) !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  font-size: 18px !important;
-  line-height: 1.88 !important;
-}
-
-/* 手机端 */
-@media (max-width: 768px) {
-  .article-cover,
-  .article-hero,
-  .article-image-wrap,
-  .cover-image-wrap,
-  #article-cover-wrap,
-  .article-shell .article-image-wrap {
-    max-width: 100% !important;
-    margin: 16px auto 22px !important;
-  }
-
-  .article-cover img,
-  .article-hero img,
-  .article-image-wrap img,
-  .cover-image-wrap img,
-  #article-cover,
-  #article-image,
-  img.article-cover-image,
-  img.article-image,
-  .article-shell .article-image,
-  .article-shell .article-image img {
-    width: auto !important;
-    max-width: 100% !important;
-    height: auto !important;
-    max-height: 420px !important;
-  }
-
-  .article-shell .article-header h1,
-  .article-title,
-  .article-header h1,
-  .article-detail h1,
-  #article-title {
-    font-size: 28px !important;
-    line-height: 1.3 !important;
-  }
-
-  .article-shell .article-body,
-  .article-content,
-  .article-body,
-  #article-content {
-    font-size: 17px !important;
-    line-height: 1.82 !important;
-  }
-}
-
-/* 取消顶部栏目导航吸附 */
-.nav,
-.site-nav,
-.main-nav {
-  position: static !important;
-  top: auto !important;
-  z-index: auto !important;
 }

@@ -1,0 +1,2 @@
+TRRB v29.11
+Homepage image fallback: local -> original WordPress upload -> category placeholder.

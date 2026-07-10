@@ -164,13 +164,23 @@ function highQualityImageUrl(value, category) {
   return text.replace(/^https?:\/\/(?:www\.)?trrb\.net\/wp-content\/uploads\//, "./assets/news-images/");
 }
 
+function originalUploadUrl(value) {
+  let text = String(value || "").trim().replace(/\u0026/g, "&");
+  text = text.replace(/[?&]v=[^&]+/g, "").replace(/[?&]$/, "");
+  const match = text.match(/(?:^|\/)assets\/news-images\/(.+)$/i);
+  return match && match[1] ? `https://trrb.net/wp-content/uploads/${match[1]}` : "";
+}
+
 function imageAttrs(article, options = {}) {
-  const improved = highQualityImageUrl(article.image || "", article.category || "");
+  const rawImage = article.image || "";
+  const improved = highQualityImageUrl(rawImage, article.category || "");
+  const original = originalUploadUrl(rawImage);
   const fallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(article.category || "") : "./image-placeholder.svg";
   const eager = Boolean(options.eager);
   const width = Number(options.width || 512);
   const height = Number(options.height || 288);
-  return `src="${escapeAttribute(improved)}" width="${width}" height="${height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ''} referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'"`;
+  const onerror = `if(!this.dataset.originalTried&&this.dataset.original){this.dataset.originalTried='1';this.src=this.dataset.original;}else if(!this.dataset.fallbackTried){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;this.alt='';}else{this.onerror=null;}`;
+  return `src="${escapeAttribute(improved)}" data-original="${escapeAttribute(original)}" data-fallback="${escapeAttribute(fallback)}" width="${width}" height="${height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ''} referrerpolicy="no-referrer" onerror="${onerror}"`;
 }
 
 function renderTicker(articles) {

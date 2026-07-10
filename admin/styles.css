@@ -234,3 +234,5 @@ button:disabled { opacity: .6; cursor: wait; }
 .ai-cover-box .field-heading { margin-bottom: 10px; }
 .ai-auto-label { display: flex; align-items: center; gap: 9px; font-weight: 700; margin: 12px 0 8px; }
 .ai-auto-label input { width: 18px; height: 18px; }
+
+.exposure-admin-link{display:block;text-decoration:none;text-align:left;box-sizing:border-box}

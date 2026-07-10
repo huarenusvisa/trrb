@@ -19,7 +19,10 @@
       "华盛顿特区",
       "安全",
       "250周年庆典"
-    ]
+    ],
+    "enforcement_events": [],
+    "state_codes": [],
+    "event_metadata_checked_at": "2026-07-10T14:03:53.038Z"
   },
   {
     "id": "ice-2075340524463013910",
@@ -41,7 +44,10 @@
       "移民犯罪",
       "受害者支持",
       "拘留状态"
-    ]
+    ],
+    "enforcement_events": [],
+    "state_codes": [],
+    "event_metadata_checked_at": "2026-07-10T14:03:55.081Z"
   },
   {
     "id": "ice-2075245542930596058",
@@ -65,7 +71,10 @@
       "指控",
       "世界杯2026",
       "堪萨斯城"
-    ]
+    ],
+    "enforcement_events": [],
+    "state_codes": [],
+    "event_metadata_checked_at": "2026-07-10T14:03:56.043Z"
   },
   {
     "id": "ice-2075219680793362937",
@@ -87,7 +96,10 @@
       "柬埔寨",
       "旅行证件",
       "金边"
-    ]
+    ],
+    "enforcement_events": [],
+    "state_codes": [],
+    "event_metadata_checked_at": "2026-07-10T14:03:57.959Z"
   },
   {
     "id": "ice-2075086308620276035",
@@ -111,6 +123,24 @@
       "指控",
       "移民扣留",
       "非法入境"
-    ]
+    ],
+    "enforcement_events": [
+      {
+        "event_type": "detention",
+        "people_count": null,
+        "occurred_at": null,
+        "time_precision": "unknown",
+        "city": "",
+        "state_code": "FL",
+        "state_name": "Florida",
+        "location_text": "佛罗里达",
+        "confidence": 100,
+        "source_excerpt": "ICE对米格尔·雷耶斯·罗德里格斯实施移民扣留"
+      }
+    ],
+    "state_codes": [
+      "FL"
+    ],
+    "event_metadata_checked_at": "2026-07-10T14:04:03.437Z"
   }
 ]

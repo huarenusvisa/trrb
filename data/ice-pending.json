@@ -1,42 +1,5 @@
 [
   {
-    "id": "pending-2075023430634611062",
-    "x_post_id": "2075023430634611062",
-    "reason": "稿件出现来源中不存在的数字：68, 2025, 2",
-    "manual_review": true,
-    "attempts": 2,
-    "created_at": "2026-07-10T13:23:28.238Z",
-    "post": {
-      "id": "2075023430634611062",
-      "text": "68-year-old Santa Monica man Gregory John Curcio admitted to doxing an ICE attorney by publicly identifying her as an ICE agent, posting her home address and directing others on social media to “swat” her using that address in Feb. 2025.\n\nSwatting is harassment that often https://t.co/Ij8PxJbHJH",
-      "created_at": "2026-07-09T01:05:12.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "display_url": "pic.x.com/Ij8PxJbHJH",
-            "end": 296,
-            "expanded_url": "https://x.com/ICEgov/status/2075023430634611062/photo/1",
-            "media_key": "3_2075023427681861632",
-            "start": 273,
-            "url": "https://t.co/Ij8PxJbHJH"
-          }
-        ]
-      },
-      "media": [
-        {
-          "type": "photo",
-          "url": "https://pbs.twimg.com/media/HMv20EOXQAA_W9I.jpg",
-          "alt_text": "",
-          "width": 1080,
-          "height": 1350
-        }
-      ],
-      "x_url": "https://x.com/ICEgov/status/2075023430634611062"
-    }
-  },
-  {
     "id": "pending-2075272581238730758",
     "x_post_id": "2075272581238730758",
     "reason": "在没有定罪依据时使用了罪犯表述",

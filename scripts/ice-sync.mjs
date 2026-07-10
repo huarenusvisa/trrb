@@ -119,8 +119,6 @@ const EVENT_EXTRACTION_SCHEMA = {
   }
 };
 
-await main();
-
 async function main() {
   requireSecrets();
   await ensureStructure();
@@ -320,8 +318,15 @@ async function fetchRecentPosts(sinceId) {
     url.searchParams.set("expansions", "attachments.media_keys,author_id");
     url.searchParams.set("media.fields", "url,preview_image_url,type,alt_text,width,height");
     url.searchParams.set("user.fields", "username,name");
-    url.searchParams.set("start_time", new Date(Date.now() - CONFIG.lookbackHours * 60 * 60 * 1000).toISOString());
-    if (sinceId) url.searchParams.set("since_id", String(sinceId));
+    // X documents time-window search and since_id polling as separate patterns.
+    // Use since_id after the first successful run; otherwise use a 24-hour
+    // start_time with second-level precision. A local 24-hour filter is also
+    // applied below, so older posts can never be published.
+    if (sinceId) {
+      url.searchParams.set("since_id", String(sinceId));
+    } else {
+      url.searchParams.set("start_time", toXApiDateTime(Date.now() - CONFIG.lookbackHours * 60 * 60 * 1000));
+    }
     if (nextToken) url.searchParams.set("next_token", nextToken);
 
     const response = await fetchWithTimeout(url, {
@@ -1212,6 +1217,10 @@ function formatChineseDateTime(value) {
   return `${Number(map.year)}/${Number(map.month)}/${Number(map.day)} ${map.hour}:${map.minute}:${map.second}`;
 }
 
+function toXApiDateTime(value) {
+  return new Date(value).toISOString().replace(/\.\d{3}Z$/, "Z");
+}
+
 async function fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -1397,3 +1406,6 @@ function escapeXml(value) { return escapeHtml(value); }
 function escapeRegExp(value) { return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 function safeJsonForHtml(value) { return JSON.stringify(value).replace(/</g, "\\u003c"); }
 function errorMessage(error) { return error instanceof Error ? error.message : String(error); }
+
+// Start only after all top-level constants (state maps and dedupe sets) are initialized.
+await main();

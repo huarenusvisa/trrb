@@ -1626,3 +1626,116 @@ img {
   .article-shell .article-image.is-placeholder { height: 190px; max-height: 190px; }
   .article-shell .article-body { font-size: 17px; line-height: 1.82; }
 }
+
+
+/* 唐人日报：文章封面固定比例 + 手机电脑自适应
+   使用方法：把本文件内容追加到仓库根目录 styles.css 最后。
+*/
+
+/* 文章封面统一为 16:9 容器，避免大图把页面拉长 */
+.article-cover,
+.article-hero,
+.article-image-wrap,
+.cover-image-wrap,
+#article-cover-wrap {
+  width: min(100%, 900px) !important;
+  aspect-ratio: 16 / 9 !important;
+  max-height: 506px !important;
+  margin: 24px auto 32px !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  background: #f2f3f5 !important;
+}
+
+/* 所有封面图片进入固定比例容器 */
+.article-cover img,
+.article-hero img,
+.article-image-wrap img,
+.cover-image-wrap img,
+#article-cover,
+#article-image,
+img.article-cover-image,
+img.article-image {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  object-position: center !important;
+}
+
+/* 横图铺满容器，允许轻微裁切 */
+.article-cover img.is-landscape,
+.article-hero img.is-landscape,
+#article-cover.is-landscape,
+#article-image.is-landscape,
+img.article-cover-image.is-landscape,
+img.article-image.is-landscape {
+  object-fit: cover !important;
+}
+
+/* 竖图、方图完整显示，不拉伸，两侧自动留白 */
+.article-cover img.is-portrait,
+.article-hero img.is-portrait,
+#article-cover.is-portrait,
+#article-image.is-portrait,
+img.article-cover-image.is-portrait,
+img.article-image.is-portrait {
+  object-fit: contain !important;
+}
+
+/* 未完成分类前默认完整显示，避免拉伸 */
+.article-cover img:not(.is-landscape):not(.is-portrait),
+.article-hero img:not(.is-landscape):not(.is-portrait),
+#article-cover:not(.is-landscape):not(.is-portrait),
+#article-image:not(.is-landscape):not(.is-portrait) {
+  object-fit: contain !important;
+}
+
+/* 正文图片限制最大高度，不把页面无限拉长 */
+.article-content img,
+.article-body img,
+#article-content img {
+  display: block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 650px !important;
+  margin: 24px auto !important;
+  object-fit: contain !important;
+}
+
+/* 平板 */
+@media (max-width: 900px) {
+  .article-cover,
+  .article-hero,
+  .article-image-wrap,
+  .cover-image-wrap,
+  #article-cover-wrap {
+    width: 100% !important;
+    max-height: none !important;
+  }
+}
+
+/* 手机 */
+@media (max-width: 600px) {
+  .article-cover,
+  .article-hero,
+  .article-image-wrap,
+  .cover-image-wrap,
+  #article-cover-wrap {
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    margin: 18px auto 24px !important;
+    border-radius: 6px !important;
+  }
+
+  .article-content img,
+  .article-body img,
+  #article-content img {
+    max-height: 460px !important;
+    margin: 18px auto !important;
+  }
+}
+

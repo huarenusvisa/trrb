@@ -1,0 +1,33 @@
+唐人日报 TRRB v29.7 全量审计报告
+日期：2026-07-10
+
+一、已发现并修复的文件内容错位
+1. index.html 曾被 articles-home.js 内容覆盖。
+2. styles.css 曾被 site-search.js 内容覆盖。
+3. app.js 曾被 _headers 内容覆盖。
+4. site-common.js 曾被 site.webmanifest 内容覆盖。
+5. thanks.html 曾被 CSS 内容覆盖。
+6. _headers 曾被 JPEG 二进制图片内容覆盖。
+7. 删除所有文件名包含 # 的非法部署文件。
+
+二、重新组装来源
+- 以完整稳定版 v29.1 为基础。
+- 合并 v29.2 图片缓存和移动端修复。
+- 合并 v29.3 文章映射加速和手机字号调整。
+- 合并 v29.4 Netlify Forms、读者群二维码、投稿表单和读者热线。
+- 所有前端资源统一更新为 v29.7 缓存版本。
+
+三、自动检查结果
+- 117 个部署文件。
+- 所有 HTML 文件均以 <!doctype html> 开头。
+- styles.css 为有效 CSS 文本，不再是 JavaScript。
+- app.js、article.js、listing.js、site-common.js、site-search.js、文章索引及 Netlify Function 均通过 node --check。
+- index.html、article.html、listing.html、thanks.html 的本地资源引用均存在。
+- 无文件名包含 # 或 ?。
+- assets/reader-group-qr.jpeg 位于正确目录。
+- Netlify 表单 daily-subscribe 与 news-tip 均保留。
+- 读者热线为 +1 929-789-8290。
+
+四、重要说明
+- 本包是完整站点包，上传 GitHub 时必须覆盖全部文件，而不是与错误文件混合追加。
+- GitHub 网页上传后，确认根目录 index.html 预览第一行是 <!doctype html>，不要是 window.TRRB_ARTICLE_INDEX。

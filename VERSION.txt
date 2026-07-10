@@ -1,1 +1,2 @@
-<!doctype html><html lang="zh-Hans"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>提交成功 - 唐人日报</title><link rel="stylesheet" href="./styles.css?v=29.4"></head><body><main class="container" style="max-width:720px;padding:80px 20px"><section class="article-shell" style="text-align:center;padding:48px 24px"><h1 style="font-size:32px">提交成功</h1><p style="font-size:18px;color:#6b7280">我们已经收到您的信息，感谢您对唐人日报的支持。</p><p><a class="primary" href="./index.html" style="display:inline-block;padding:12px 24px;background:#d60000;color:#fff;border-radius:6px">返回首页</a></p></section></main></body></html>
+TRRB v29.7 clean rebuild
+Built: 2026-07-10

@@ -1,0 +1,13 @@
+先阅读：TRUMP-AUTOMATION-DEPLOY-GUIDE.txt
+
+本包必须提交到trrb.net连接的GitHub仓库默认分支。
+不要仅拖入Netlify；否则页面能显示，但30分钟自动任务不会运行。
+
+GitHub Secrets必须设置：
+- X_BEARER_TOKEN
+- OPENAI_API_KEY
+
+建议：
+- OPENAI_MODEL = gpt-4.1-mini
+
+上线前必须在GitHub Actions手动运行一次“特朗普动态自动抓取发布”，确认全部步骤为绿色，再检查Netlify生产部署。

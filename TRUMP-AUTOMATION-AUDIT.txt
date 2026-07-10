@@ -1,0 +1,126 @@
+trrb.net 特朗普自动化最终复检报告
+==================================
+复检日期：2026-07-10
+版本：v1.1 checked
+
+一、上传原包检查结果
+--------------------
+通过：
+- ZIP压缩结构完整；
+- 全站JS/MJS语法可解析；
+- JSON、GitHub Actions YAML、netlify.toml、sitemap.xml可解析；
+- 本地HTML/CSS/JS/图片引用检查未发现缺失文件；
+- 未扫描到OpenAI、GitHub或X真实密钥。
+
+原包当时尚未包含特朗普自动化：
+- 首页特朗普卡片href仍为“#”；
+- 没有特朗普抓取脚本；
+- 没有特朗普GitHub Actions；
+- 没有特朗普数据文件；
+- 没有特朗普专题页。
+
+二、已经合并的完整功能
+----------------------
+新增：
+- .github/workflows/trump-auto-publish.yml
+- scripts/trump-sync.mjs
+- scripts/trump-sync.test.mjs
+- scripts/trump-integration.test.mjs
+- scripts/trump-queue.test.mjs
+- scripts/trump-review.test.mjs
+- scripts/trump-recovery.test.mjs
+- data/trump-news.json
+- data/trump-pending.json
+- data/trump-state.json
+- assets/trump-home-widget.js
+- assets/trump-topic.css
+- assets/trump-topic.js
+- topic/trump/index.html
+- .env.trump.example
+- .gitignore
+
+修改：
+- index.html：特朗普卡片连接专题页并加载实时组件；
+- sitemap.xml：加入特朗普专题页；
+- ICE与特朗普工作流使用同一并发组；
+- ICE与特朗普工作流push前执行git pull --rebase；
+- _redirects与netlify.toml：阻止网站直接访问未审核队列；
+- health.html：修复已经失效的本地图片检测路径。
+
+三、最后一轮发现并修复的关键问题
+--------------------------------
+1. 修复停机漏抓：
+   原逻辑在已有since_id时仍丢弃超过12小时的帖子。若Actions中断超过12小时，会永久漏掉仍在X最近搜索范围内的增量。现在lookback只用于首次启动，正常轮询保留全部since_id增量。
+
+2. 修复主账号配置漏抓：
+   即使用户修改TRUMP_PRIMARY_ACCOUNTS但忘记同步AUTO列表，主账号仍会自动识别为auto来源。
+
+3. 修复部分写入后的游标卡死：
+   若上次已写入新闻JSON、但在sitemap或state写入前中断，下次运行会自动重建sitemap并恢复游标，不会永久重复抓同一批帖子。
+
+4. 修复首页链接误改风险：
+   自动集成脚本只修改“专题聚焦”区域的特朗普卡片，不会把其他特朗普新闻标题错误改成专题链接。
+
+5. 隐藏未审核队列：
+   /data/trump-pending.json 在Netlify站点上强制返回404，避免未审核草稿通过网站地址直接公开。
+
+四、自动化安全机制
+------------------
+- 每30分钟检查一次，运行在每小时07分和37分；
+- X since_id增量轮询；
+- X next_token完整分页；
+- 分页未读完时禁止推进游标；
+- 超出单次AI处理数量的帖子进入持久队列；
+- API请求超时、429、408和5xx自动重试；
+- OpenAI Responses API严格JSON Schema输出；
+- 禁止煽动性标题词；
+- 禁止加入来源中不存在的阿拉伯数字；
+- 区分调查、指控、起诉、定罪和判刑；
+- 自动来源与人工复核来源分离；
+- X敏感标记内容不自动发布；
+- 内容和队列先写入，游标最后写入；
+- X帖子ID使用BigInt比较；
+- HTML、属性、XML和内嵌JSON进行转义；
+- 专题页只接受规定格式的站内文章URL；
+- 密钥只从GitHub Secrets读取；
+- ICE与特朗普机器人串行提交，降低git push冲突。
+
+五、最终实际测试结果
+--------------------
+PASS：10项自动化测试全部通过
+PASS：模拟X + OpenAI完整发布
+PASS：X两页分页 + 15条超量队列两轮无损处理
+PASS：review来源绝不自动发布
+PASS：停机超过bootstrap lookback后的增量仍被处理
+PASS：主账号不在AUTO列表时仍被识别
+PASS：部分写入后游标和sitemap恢复
+PASS：首页其他特朗普新闻链接不会被误改
+PASS：大整数X帖子ID比较
+PASS：虚构阿拉伯数字拦截
+PASS：105个JS/MJS文件语法检查
+PASS：7个JSON文件解析
+PASS：2个GitHub Actions YAML解析
+PASS：netlify.toml解析
+PASS：sitemap.xml解析
+PASS：162个本地静态资源引用，缺失0
+PASS：真实密钥扫描，命中0
+PASS：首页、专题页、JSON和静态资源本地HTTP访问
+PASS：最终ZIP完整性检查
+
+六、不能在本地替代的真实环境验证
+--------------------------------
+本地没有使用你的真实密钥，因此不能替代以下真实联调：
+- X recent search套餐、权限和速率限制；
+- OpenAI账户余额、模型权限和真实返回；
+- GitHub Actions的GITHUB_TOKEN写权限；
+- 默认分支保护规则；
+- Netlify收到机器人提交后的生产部署。
+
+上线前必须在GitHub Actions手动运行一次。只有该次任务全部绿色、产生提交、Netlify部署完成，并且trrb.net专题页显示真实内容，才算真实联调通过。
+
+七、平台固有限制
+----------------
+- X recent search只能覆盖最近7天。若自动化连续停用超过7天，基础recent search无法保证补回更早内容。
+- GitHub定时任务并非秒级保证，平台高负载时可能延迟；因此使用07分和37分避开整点高峰。
+- 公开GitHub仓库连续60天没有任何仓库活动时，GitHub可能自动停用scheduled workflow；需要重新启用。
+- AI自动整理不能承诺绝对零错误。当前版本通过白名单、结构校验、数字核对、敏感内容拦截和人工复核名单，把自动发布风险显著降低，但生产站仍应定期抽查。

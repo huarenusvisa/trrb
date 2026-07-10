@@ -1,0 +1,154 @@
+特朗普实时动态自动化部署说明
+================================
+
+一、必须使用这个完整网站包
+--------------------------
+这是已经合并进当前trrb.net完整静态网站源码的版本，不是单独插件。
+它沿用网站现有架构：
+GitHub Actions抓取 → OpenAI整理 → 写入静态JSON与文章 → Git提交 → Netlify自动部署。
+
+不要再把以前的“Netlify Functions/Blobs插件包”混进本项目，也不要只把本ZIP拖入Netlify。
+手动拖拽只能显示页面，不能让GitHub Actions每30分钟运行。
+
+二、正确部署方式
+----------------
+1. 备份当前GitHub仓库。
+2. 解压本包。
+3. 将trrb-main文件夹里的全部内容提交到trrb.net连接的GitHub仓库默认分支。
+4. 确认Netlify仍连接这个仓库，发布目录是仓库根目录“.”。
+5. 等待首次Netlify部署完成。
+6. 再到GitHub Actions手动运行“特朗普动态自动抓取发布”。
+
+三、GitHub必须设置的Secrets
+--------------------------
+进入：
+GitHub仓库 → Settings → Secrets and variables → Actions
+
+必须存在：
+1. X_BEARER_TOKEN
+2. OPENAI_API_KEY
+
+建议存在：
+3. OPENAI_MODEL
+   值：gpt-4.1-mini
+
+不要把真实密钥写进HTML、JS、JSON、工作流env明文或.env文件后提交。
+
+四、GitHub写入权限
+------------------
+工作流需要将新文章提交回仓库。
+请检查：
+Settings → Actions → General → Workflow permissions
+
+应允许工作流使用写权限。若组织策略或分支保护禁止机器人直接push，任务会在最后一步失败。此时需要调整仓库规则，或改成机器人创建Pull Request的流程。
+
+五、定时频率
+------------
+工作流：.github/workflows/trump-auto-publish.yml
+
+cron：7,37 * * * *
+timezone：America/New_York
+
+即每小时第07分和第37分运行，间隔30分钟。
+故意避开每小时00分高峰。GitHub可能出现少量延迟，因此这是检查频率，不是秒级准点承诺。
+
+六、首次真实联调步骤
+--------------------
+1. 打开GitHub仓库的Actions。
+2. 选择“特朗普动态自动抓取发布”。
+3. 点击Run workflow，并选择默认分支。
+4. 依次确认全部步骤为绿色：
+   - Checkout repository
+   - Setup Node.js
+   - Run local safety tests
+   - Fetch, rewrite and publish Trump news
+   - Commit generated Trump news
+5. 检查是否生成机器人提交“Auto publish Trump updates”。
+6. 等待Netlify完成该提交对应的Production deploy。
+7. 打开以下页面：
+   - https://trrb.net/data/trump-state.json
+   - https://trrb.net/data/trump-news.json
+   - https://trrb.net/topic/trump/
+   - https://trrb.net/
+8. 首页专题卡片应能进入特朗普专题页；有新稿时，卡片显示最新标题。
+
+注意：
+/data/trump-pending.json 已在Netlify配置为404，这是正常的安全设计。
+
+七、自动发布规则
+----------------
+默认自动来源：
+- realDonaldTrump
+- WhiteHouse
+- POTUS
+- Reuters
+- AP
+
+默认只进入待审核：
+- FoxNews
+- CNN
+- nytimes
+- washingtonpost
+
+自动来源仍必须同时满足：
+- AI判断publishable=true；
+- needs_review=false；
+- confidence至少85；
+- verified_level不是unverified；
+- X未标记为敏感内容；
+- 没有来源中不存在的阿拉伯数字；
+- 不含禁止的煽动性词语；
+- 标题、摘要和正文长度合格；
+- 不与近期已发布稿件几乎完全重复。
+
+八、防漏抓与故障恢复
+--------------------
+1. 正常运行使用X since_id增量抓取。
+2. 所有next_token页面必须读完。
+3. 达到分页上限仍有下一页时，任务直接失败并且不推进游标。
+4. 超过本轮AI处理上限的帖子进入持久队列，下轮继续。
+5. 先写新闻和队列，最后写last_seen_id。
+6. 如果上次写入一半中断，下次会恢复游标并重建sitemap。
+7. 已有since_id时不再使用12小时过滤，避免Actions短期停机后漏抓。
+8. X帖子ID使用BigInt比较，避免JavaScript数字精度问题。
+
+平台限制：X recent search只覆盖最近7天。若工作流连续停用超过7天，不能依靠该接口保证补回全部旧帖。
+
+九、与ICE自动化的冲突保护
+------------------------
+ICE与特朗普工作流共用：
+concurrency.group = trrb-content-auto-publish
+
+两个机器人不会同时向仓库push；两边push前都会执行git pull --rebase。
+
+十、常见故障
+------------
+1. Missing required environment variables
+   GitHub Secrets未设置或名称错误。
+
+2. X API request failed (401/403)
+   X Bearer Token无效、权限不足或当前套餐不支持所需调用。
+
+3. X API request failed (429)
+   达到X速率限制。程序会重试；仍失败时停止，不推进游标。
+
+4. OpenAI Responses API request failed
+   检查OpenAI密钥、余额、模型权限和服务状态。失败内容保留在队列，下次重试。
+
+5. Commit generated Trump news失败
+   检查Workflow permissions、默认分支保护、仓库是否允许GITHUB_TOKEN push。
+
+6. No new Trump content
+   正常。本轮没有新内容，因此不会产生无意义的提交和Netlify部署。
+
+7. 定时任务长期没有运行
+   确认工作流文件位于默认分支且处于Enabled状态。公开仓库连续60天无活动可能自动停用scheduled workflow。
+
+十一、上线后每天检查
+--------------------
+上线第一周建议每天检查一次：
+- GitHub Actions最近运行是否绿色；
+- data/trump-state.json的last_error是否为空；
+- data/trump-news.json是否有异常字段；
+- 专题页链接、图片和来源链接是否正常；
+- 自动稿是否准确区分“被指控、被起诉、被定罪、被判刑”。

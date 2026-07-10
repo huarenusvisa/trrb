@@ -1,1 +1,1 @@
-TRRB v29.2 mobile image cache fix
+TRRB v29.3 - fast article loading + mobile font increase

@@ -2503,3 +2503,19 @@ svg {
 .listing-search[hidden] {
   display: none !important;
 }
+
+/* v29.3: mobile readability + faster article perceived loading */
+@media (max-width: 767px) {
+  .section-news-list li {
+    min-height: 44px;
+    font-size: 17px;
+    line-height: 1.48;
+    gap: 10px;
+  }
+  .section-news-list time {
+    font-size: 15px;
+  }
+  .article-loading {
+    min-height: 180px;
+  }
+}

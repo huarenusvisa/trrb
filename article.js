@@ -86,13 +86,15 @@ async function loadArticlePage() {
     }
 
     const article = await getFullArticle(indexArticle);
-    renderArticle(root, article, articles);
+    const contextArticles = Array.isArray(window.TRRB_ARTICLE_CHUNK) && window.TRRB_ARTICLE_CHUNK.length ? window.TRRB_ARTICLE_CHUNK : articles;
+    renderArticle(root, article, contextArticles);
   } catch {
     root.innerHTML = `<a class="back-link" href="./index.html">返回首页</a><h1>文章加载失败</h1><p>请稍后刷新页面。</p>`;
   }
 }
 
 async function getArticleIndex() {
+  if (Array.isArray(window.TRRB_ARTICLE_MAP) && window.TRRB_ARTICLE_MAP.length > 0) return window.TRRB_ARTICLE_MAP;
   if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) return window.TRRB_ARTICLE_INDEX;
   if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) return window.TRRB_ARTICLES;
   try {
@@ -110,7 +112,7 @@ async function getFullArticle(indexArticle) {
   }
 
   const chunkNumber = Number(indexArticle.chunk || 0);
-  await loadScript(`./articles-chunk-${chunkNumber}.js?v=29.1-mobile`);
+  await loadScript(`./articles-chunk-${chunkNumber}.js?v=29.3-fast-article`);
   const chunk = window.TRRB_ARTICLE_CHUNK;
   if (!Array.isArray(chunk)) throw new Error("Missing article chunk");
 

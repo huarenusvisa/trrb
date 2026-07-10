@@ -1,0 +1,2 @@
+TRRB v29.10
+Fix strict category rendering and duplicate fallback.

@@ -54,11 +54,27 @@ async function fetchLiveArticleById(id) {
   return article;
 }
 
+function normalizeCategory(value) {
+  const raw = String(value || "").trim();
+  const aliases = {
+    "重要": "重要新闻", "要闻": "重要新闻", "重要新闻": "重要新闻",
+    "头条": "热门头条", "热门": "热门头条", "热门头条": "热门头条",
+    "驱逐": "驱逐快报", "遣返": "驱逐快报", "ICE执法": "驱逐快报", "移民执法": "驱逐快报", "驱逐快报": "驱逐快报",
+    "美国政治": "美国时政", "美国时政": "美国时政",
+    "警情": "美国警情", "美国治安": "美国警情", "美国犯罪": "美国警情", "美国警情": "美国警情",
+    "中国新闻": "中国官场", "中国时政": "中国官场", "中国官场": "中国官场",
+    "美国移民": "移民美国", "移民资讯": "移民美国", "移民美国": "移民美国",
+    "庇护": "庇护百科", "庇护指南": "庇护百科", "庇护百科": "庇护百科",
+    "深度": "深度专题", "专题": "深度专题", "深度专题": "深度专题"
+  };
+  return aliases[raw] || raw || "新闻";
+}
+
 function mapLiveArticle(row) {
   const published = row.published_at || row.created_at || "";
   const content = String(row.content || "").trim();
   return {
-    id: row.id, title: row.title || "", category: row.category_name || "新闻",
+    id: row.id, title: row.title || "", category: normalizeCategory(row.category_name),
     excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
     author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
     body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
@@ -93,13 +109,17 @@ function mergeArticles(live, archived) {
 
 function renderHome(articles) {
   if (!Array.isArray(articles) || articles.length === 0) return;
-  const hotArticles = articles.filter((article) => article.category === "热门头条");
-  renderTicker((hotArticles.length ? hotArticles : articles).slice(0, 12));
-  const visualArticles = articles.filter(hasRealImage);
-  renderHeroCarousel((visualArticles.length >= 5 ? visualArticles : articles).slice(0, 5));
-  renderTopList((visualArticles.length >= 10 ? visualArticles : articles).slice(0, 10));
-  renderSections(articles);
-  renderRank(articles);
+  const normalized = articles.map((article) => ({ ...article, category: normalizeCategory(article.category) }));
+  const hotArticles = normalized.filter((article) => article.category === "热门头条");
+  renderTicker((hotArticles.length ? hotArticles : normalized).slice(0, 12));
+  const visualArticles = normalized.filter(hasRealImage);
+  const heroArticles = (visualArticles.length >= 5 ? visualArticles : normalized).slice(0, 5);
+  const heroIds = new Set(heroArticles.map((item) => String(item.id)));
+  const topPool = (visualArticles.length >= 10 ? visualArticles : normalized).filter((item) => !heroIds.has(String(item.id)));
+  renderHeroCarousel(heroArticles);
+  renderTopList((topPool.length >= 5 ? topPool : normalized).slice(0, 10));
+  renderSections(normalized);
+  renderRank(normalized);
 }
 
 async function loadHome() {
@@ -236,24 +256,26 @@ function hasRealImage(item) {
     && !image.includes("/assets/category-placeholders/");
 }
 
-function findLeadArticle(categoryArticles, allArticles) {
-  return categoryArticles.find(hasRealImage)
-    || allArticles.find(hasRealImage)
-    || categoryArticles[0]
-    || allArticles[0];
+function findLeadArticle(categoryArticles) {
+  return categoryArticles.find(hasRealImage) || categoryArticles[0] || null;
 }
 
 function renderSections(articles) {
   const categories = ["重要新闻", "热门头条", "驱逐快报", "美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
   const sections = categories.map((category) => {
-    const categoryArticles = articles.filter((item) => item.category === category);
-    const article = findLeadArticle(categoryArticles, articles);
-    const directItems = categoryArticles.filter((item) => item.id !== article.id).slice(0, 6);
-    const fallbackItems = articles
-      .filter((item) => item.id !== article.id && !directItems.some((direct) => direct.id === item.id))
-      .slice(0, Math.max(0, 6 - directItems.length));
-    const subItems = directItems.concat(fallbackItems).slice(0, 6);
+    const categoryArticles = articles.filter((item) => normalizeCategory(item.category) === category);
+    const article = findLeadArticle(categoryArticles);
 
+    if (!article) {
+      return `
+        <article class="news-box" id="${categoryIds[category] || ""}">
+          <header><h2>${escapeHtml(category)}</h2><a href="./listing.html?category=${encodeURIComponent(category)}">更多</a></header>
+          <div class="empty-state">该栏目暂无新闻</div>
+        </article>
+      `;
+    }
+
+    const subItems = categoryArticles.filter((item) => String(item.id) !== String(article.id)).slice(0, 6);
     return `
       <article class="news-box" id="${categoryIds[category] || ""}">
         <header><h2>${escapeHtml(category)}</h2><a href="./listing.html?category=${encodeURIComponent(category)}">更多</a></header>

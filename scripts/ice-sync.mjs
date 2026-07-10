@@ -11,6 +11,7 @@ const NEWS_DIR = path.join(ROOT, "news", "ice");
 const NEWS_FILE = path.join(DATA_DIR, "ice-news.json");
 const STATE_FILE = path.join(DATA_DIR, "ice-state.json");
 const PENDING_FILE = path.join(DATA_DIR, "ice-pending.json");
+const DASHBOARD_FILE = path.join(DATA_DIR, "ice-dashboard.json");
 const HOME_FILE = path.join(ROOT, "index.html");
 const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 
@@ -20,10 +21,12 @@ const CONFIG = {
   xToken: firstEnv("X_BEARER_TOKEN", "X_API_BEARER_TOKEN", "TWITTER_BEARER_TOKEN"),
   openAIKey: firstEnv("OPENAI_API_KEY"),
   openAIModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
-  siteUrl: normalizeSiteUrl(process.env.SITE_URL || "https://new.trrb.net"),
+  siteUrl: normalizeSiteUrl(process.env.SITE_URL || "https://trrb.net"),
   query: process.env.ICE_QUERY || "from:ICEgov -is:retweet -is:reply",
-  bootstrapLimit: intEnv("ICE_BOOTSTRAP_LIMIT", 8, 1, 30),
+  bootstrapLimit: intEnv("ICE_BOOTSTRAP_LIMIT", 30, 1, 100),
   maxNewPosts: intEnv("ICE_MAX_NEW_POSTS", 30, 1, 100),
+  lookbackHours: intEnv("ICE_LOOKBACK_HOURS", 24, 1, 168),
+  dedupeThreshold: floatEnv("ICE_DEDUPE_THRESHOLD", 0.72, 0.4, 0.95),
   minConfidence: intEnv("ICE_MIN_CONFIDENCE", 80, 0, 100),
   useXMedia: boolEnv("ICE_USE_X_MEDIA", true),
   maxPendingRetries: intEnv("ICE_MAX_PENDING_RETRIES", 5, 1, 20),
@@ -48,6 +51,11 @@ const SYSTEM_PROMPT = `
 8. title准确概括核心事实；summary为35至80个中文字符；body_paragraphs为2至4段。
 9. source_name固定为“美国移民与海关执法局”。
 10. 资料不足、事实矛盾、涉及未成年人身份、死亡细节或无法判断法律状态时，needs_review必须为true，publishable必须为false，并说明原因。
+11. enforcement_events只记录来源明确披露的ICE/HSI/ERO抓捕、拘留、遣返或其他执法事件；没有明确事件时返回空数组。
+12. people_count只有在来源明确出现阿拉伯数字人数时填写；否则必须为null，禁止推算。
+13. occurred_at只有在来源明确披露执法发生时间时填写ISO 8601；只有日期时使用当天00:00:00并把time_precision设为date；没有时间时为null。
+14. city、state_code、state_name、location_text只能来自来源明确地点；无法确定时用空字符串。state_code使用美国两位州缩写。
+15. 同一人员或同一行动只建立一个event，避免把“被捕后被拘留”等同一事件重复计算。
 `;
 
 const ARTICLE_SCHEMA = {
@@ -55,7 +63,8 @@ const ARTICLE_SCHEMA = {
   additionalProperties: false,
   required: [
     "title", "summary", "body_paragraphs", "content_type", "publishable",
-    "needs_review", "review_reason", "confidence", "source_name", "keywords"
+    "needs_review", "review_reason", "confidence", "source_name", "keywords",
+    "enforcement_events"
   ],
   properties: {
     title: { type: "string" },
@@ -73,7 +82,40 @@ const ARTICLE_SCHEMA = {
     keywords: {
       type: "array",
       items: { type: "string" }
+    },
+    enforcement_events: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: [
+          "event_type", "people_count", "occurred_at", "time_precision",
+          "city", "state_code", "state_name", "location_text",
+          "confidence", "source_excerpt"
+        ],
+        properties: {
+          event_type: { type: "string", enum: ["arrest", "detention", "removal", "other"] },
+          people_count: { type: ["integer", "null"] },
+          occurred_at: { type: ["string", "null"] },
+          time_precision: { type: "string", enum: ["second", "minute", "hour", "date", "unknown"] },
+          city: { type: "string" },
+          state_code: { type: "string" },
+          state_name: { type: "string" },
+          location_text: { type: "string" },
+          confidence: { type: "integer" },
+          source_excerpt: { type: "string" }
+        }
+      }
     }
+  }
+};
+
+const EVENT_EXTRACTION_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["enforcement_events"],
+  properties: {
+    enforcement_events: ARTICLE_SCHEMA.properties.enforcement_events
   }
 };
 
@@ -93,13 +135,27 @@ async function main() {
   const news = await readJson(NEWS_FILE, []);
   let pending = await readJson(PENDING_FILE, []);
 
+  // One-time metadata backfill for previously published articles.
+  // Items are marked after checking so empty results are not charged repeatedly.
+  const metadataBackfilledCount = await backfillRecentNewsEvents(news);
+
+  // The feed only accepts source posts created within the configured lookback window.
+  const pendingBeforeExpiry = pending.length;
+  pending = pending.filter(entry => entry.post && isWithinHours(entry.post.created_at, CONFIG.lookbackHours));
+  const expiredPendingCount = pendingBeforeExpiry - pending.length;
+
+  // Remove same-event pending items before spending API credits.
+  const pendingDedupe = dedupePendingByContent(pending, news);
+  pending = pendingDedupe.items;
+
   const publishedIds = new Set(news.map(item => String(item.x_post_id || "")));
   const pendingIds = new Set(pending.map(item => String(item.x_post_id || "")));
 
   let publishedCount = 0;
   let pendingCount = 0;
+  let duplicateSkippedCount = pendingDedupe.skipped;
 
-  // Retry transient failures first. Manual-review entries stay untouched.
+  // Retry operational failures first. Manual-review entries stay untouched.
   const retryable = pending.filter(item => !item.manual_review && (item.attempts || 0) < CONFIG.maxPendingRetries);
   const untouched = pending.filter(item => item.manual_review || (item.attempts || 0) >= CONFIG.maxPendingRetries);
   const stillPending = [];
@@ -121,10 +177,26 @@ async function main() {
   pending = [...untouched, ...stillPending, ...retryable.slice(10)];
 
   const fetchedPosts = await fetchRecentPosts(state.last_seen_id);
-  const newPosts = fetchedPosts.filter(post => {
+  const candidatePosts = fetchedPosts.filter(post => {
     const id = String(post.id);
     return !publishedIds.has(id) && !pendingIds.has(id);
   });
+
+  // Compare new posts with the last 24 hours of published and pending content.
+  // Exact ICE.gov links, strongly similar wording, or matching names/numbers
+  // are treated as one event. The first accepted item is kept.
+  const references = buildDedupeReferences(news, pending);
+  const newPosts = [];
+  for (const post of candidatePosts) {
+    const duplicate = findLikelyDuplicate(post, references);
+    if (duplicate) {
+      duplicateSkippedCount += 1;
+      console.log(`Skipped duplicate X post ${post.id}; similar to ${duplicate.id}.`);
+      continue;
+    }
+    newPosts.push(post);
+    references.push(referenceFromPost(post));
+  }
 
   for (const post of newPosts) {
     try {
@@ -153,16 +225,23 @@ async function main() {
   if (publishedCount > 0) state.last_success_at = now;
   state.last_result = {
     fetched: fetchedPosts.length,
+    candidates: candidatePosts.length,
     new_posts: newPosts.length,
+    duplicate_skipped: duplicateSkippedCount,
+    expired_pending: expiredPendingCount,
+    metadata_backfilled: metadataBackfilledCount,
     published: publishedCount,
     pending: pendingCount,
     total_published: news.length,
     total_pending: pending.length
   };
 
+  const dashboard = buildDashboardData(news, state, now);
+
   await writeJson(NEWS_FILE, news);
   await writeJson(PENDING_FILE, pending);
   await writeJson(STATE_FILE, state);
+  await writeJson(DASHBOARD_FILE, dashboard);
   await updateSitemap(news, now);
 
   console.log(JSON.stringify(state.last_result, null, 2));
@@ -186,6 +265,7 @@ async function ensureStructure() {
   ]);
   await ensureJsonFile(NEWS_FILE, []);
   await ensureJsonFile(PENDING_FILE, []);
+  await ensureJsonFile(DASHBOARD_FILE, emptyDashboard());
   await ensureJsonFile(STATE_FILE, {
     last_seen_id: "",
     last_run_at: "",
@@ -240,6 +320,7 @@ async function fetchRecentPosts(sinceId) {
     url.searchParams.set("expansions", "attachments.media_keys,author_id");
     url.searchParams.set("media.fields", "url,preview_image_url,type,alt_text,width,height");
     url.searchParams.set("user.fields", "username,name");
+    url.searchParams.set("start_time", new Date(Date.now() - CONFIG.lookbackHours * 60 * 60 * 1000).toISOString());
     if (sinceId) url.searchParams.set("since_id", String(sinceId));
     if (nextToken) url.searchParams.set("next_token", nextToken);
 
@@ -277,7 +358,8 @@ async function fetchRecentPosts(sinceId) {
     pages += 1;
   } while (nextToken && pages < 5 && collected.length < CONFIG.maxNewPosts);
 
-  let selected = dedupePosts(collected);
+  let selected = dedupePosts(collected)
+    .filter(post => isWithinHours(post.created_at, CONFIG.lookbackHours));
   selected.sort((a, b) => compareSnowflakes(b.id, a.id));
 
   if (!sinceId) selected = selected.slice(0, CONFIG.bootstrapLimit);
@@ -308,6 +390,7 @@ async function processPost(post, news) {
   );
 
   const imageUrl = CONFIG.useXMedia ? firstUsableMedia(post.media) : "";
+  const enforcementEvents = normalizeEnforcementEvents(ai.enforcement_events, sourceText);
   const item = {
     id: `ice-${post.id}`,
     x_post_id: post.id,
@@ -320,9 +403,14 @@ async function processPost(post, news) {
     source_name: "美国移民与海关执法局",
     source_url: post.x_url,
     official_url: enrichment.url || "",
+    source_text: post.text.trim().slice(0, 1200),
+    dedupe_key: createDedupeKey(post.text, enrichment.url || extractPrimaryIceUrl(post)),
     image_url: imageUrl,
     confidence: ai.confidence,
-    keywords: ai.keywords
+    keywords: ai.keywords,
+    enforcement_events: enforcementEvents,
+    state_codes: [...new Set(enforcementEvents.map(event => event.state_code).filter(Boolean))],
+    event_metadata_checked_at: new Date().toISOString()
   };
 
   const html = renderArticle(item, ai.body_paragraphs, dateParts);
@@ -336,6 +424,84 @@ async function processPost(post, news) {
   return { status: "published", item };
 }
 
+
+async function backfillRecentNewsEvents(news) {
+  const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  const candidates = news
+    .filter(item => !item.event_metadata_checked_at)
+    .filter(item => Number.isFinite(Date.parse(item.published_at)) && Date.parse(item.published_at) >= cutoff)
+    .slice(0, 10);
+  let updated = 0;
+
+  for (const item of candidates) {
+    const sourceText = [
+      item.source_text ? `ICE原始文字：\n${item.source_text}` : "",
+      `已发布标题：${item.title || ""}`,
+      `已发布摘要：${item.summary || ""}`,
+      item.official_url ? `ICE官网链接：${item.official_url}` : "",
+      item.source_url ? `ICE官方X链接：${item.source_url}` : ""
+    ].filter(Boolean).join("\n\n");
+
+    try {
+      const extracted = await extractEventsWithOpenAI(sourceText);
+      const events = normalizeEnforcementEvents(extracted.enforcement_events, sourceText);
+      item.enforcement_events = events;
+      item.state_codes = [...new Set(events.map(event => event.state_code).filter(Boolean))];
+      item.event_metadata_checked_at = new Date().toISOString();
+      updated += 1;
+    } catch (error) {
+      console.warn(`Could not backfill ICE event metadata for ${item.id || item.x_post_id}: ${errorMessage(error)}`);
+    }
+  }
+
+  return updated;
+}
+
+async function extractEventsWithOpenAI(sourceText) {
+  const payload = {
+    model: CONFIG.openAIModel,
+    input: [
+      {
+        role: "system",
+        content: [{
+          type: "input_text",
+          text: `${SYSTEM_PROMPT.trim()}\n\n这次只提取enforcement_events，不改写文章。`
+        }]
+      },
+      {
+        role: "user",
+        content: [{
+          type: "input_text",
+          text: `从以下材料提取可核实的ICE执法事件。无法明确人数、时间或地点时使用null或空字符串，不得推测。\n\n${sourceText}`
+        }]
+      }
+    ],
+    max_output_tokens: 900,
+    text: {
+      format: {
+        type: "json_schema",
+        name: "trrb_ice_event_metadata",
+        description: "ICE执法事件人数、时间与地点",
+        strict: true,
+        schema: EVENT_EXTRACTION_SCHEMA
+      }
+    }
+  };
+
+  const response = await fetchWithTimeout("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${CONFIG.openAIKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  }, 60000);
+  const json = await readResponseJson(response, "OpenAI event metadata API");
+  const outputText = extractOpenAIOutputText(json);
+  if (!outputText) throw new Error("OpenAI returned no event metadata.");
+  return JSON.parse(outputText);
+}
+
 async function fetchIceGovEnrichment(post) {
   const candidates = extractExpandedUrls(post);
   for (const candidate of candidates) {
@@ -343,7 +509,7 @@ async function fetchIceGovEnrichment(post) {
       const response = await fetchWithTimeout(candidate, {
         redirect: "follow",
         headers: {
-          "User-Agent": "TRRB-ICE-NewsBot/1.0 (+https://new.trrb.net/topic/ice/)"
+          "User-Agent": "TRRB-ICE-NewsBot/1.1 (+https://trrb.net/topic/ice/)"
         }
       }, 20000);
 
@@ -469,6 +635,147 @@ function validateArticle(ai, sourceText, post, enrichment) {
   if (!post.text.trim()) return fail("原帖没有可核实文字");
 
   return { ok: true, reason: "" };
+}
+
+
+const US_STATE_CODES = new Set([
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"
+]);
+
+function normalizeEnforcementEvents(events, sourceText) {
+  if (!Array.isArray(events)) return [];
+  const sourceNumbers = new Set((String(sourceText || "").match(/\d[\d,.%-]*/g) || []).map(normalizeNumberToken));
+  const seen = new Set();
+  const normalized = [];
+
+  for (const raw of events.slice(0, 12)) {
+    if (!raw || typeof raw !== "object") continue;
+    const eventType = ["arrest", "detention", "removal", "other"].includes(raw.event_type)
+      ? raw.event_type
+      : "other";
+    let peopleCount = Number.isInteger(raw.people_count) && raw.people_count > 0
+      ? raw.people_count
+      : null;
+    if (peopleCount != null && !sourceNumbers.has(String(peopleCount))) peopleCount = null;
+
+    const parsedTime = raw.occurred_at && Number.isFinite(Date.parse(raw.occurred_at))
+      ? new Date(raw.occurred_at).toISOString()
+      : null;
+    const precision = ["second", "minute", "hour", "date", "unknown"].includes(raw.time_precision)
+      ? raw.time_precision
+      : (parsedTime ? "second" : "unknown");
+    const stateCode = String(raw.state_code || "").trim().toUpperCase();
+    const safeStateCode = US_STATE_CODES.has(stateCode) ? stateCode : "";
+    const event = {
+      event_type: eventType,
+      people_count: peopleCount,
+      occurred_at: parsedTime,
+      time_precision: parsedTime ? precision : "unknown",
+      city: cleanText(raw.city || "").slice(0, 100),
+      state_code: safeStateCode,
+      state_name: cleanText(raw.state_name || "").slice(0, 100),
+      location_text: cleanText(raw.location_text || "").slice(0, 180),
+      confidence: Math.max(0, Math.min(100, Number.parseInt(raw.confidence || "0", 10) || 0)),
+      source_excerpt: cleanText(raw.source_excerpt || "").slice(0, 240)
+    };
+    const key = [event.event_type, event.people_count ?? "", event.occurred_at || "", event.state_code, event.city, event.location_text].join("|");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    normalized.push(event);
+  }
+
+  return normalized;
+}
+
+function emptyDashboard() {
+  return {
+    generated_at: "",
+    timezone: "America/New_York",
+    latest_sync_at: "",
+    total_published: 0,
+    today: {
+      date: "",
+      known_people: 0,
+      event_count: 0,
+      location_count: 0,
+      unknown_people_events: 0,
+      events: []
+    },
+    heatmap: {
+      "24h": { states: [] },
+      "7d": { states: [] },
+      "30d": { states: [] }
+    }
+  };
+}
+
+function buildDashboardData(news, state, nowIso) {
+  const dashboard = emptyDashboard();
+  dashboard.generated_at = nowIso;
+  dashboard.latest_sync_at = state.last_run_at || nowIso;
+  dashboard.total_published = news.length;
+  dashboard.today.date = newYorkDateKey(nowIso);
+
+  const normalizedEvents = [];
+  for (const item of news) {
+    for (const event of Array.isArray(item.enforcement_events) ? item.enforcement_events : []) {
+      if (!["arrest", "detention", "removal", "other"].includes(event.event_type)) continue;
+      const basisTime = event.occurred_at || item.published_at;
+      if (!basisTime || !Number.isFinite(Date.parse(basisTime))) continue;
+      normalizedEvents.push({
+        ...event,
+        basis_time: new Date(basisTime).toISOString(),
+        time_basis: event.occurred_at ? "执法时间" : "官方公开时间",
+        article_title: item.title,
+        article_url: item.url,
+        published_at: item.published_at
+      });
+    }
+  }
+
+  const todayEvents = normalizedEvents
+    .filter(event => ["arrest", "detention"].includes(event.event_type))
+    .filter(event => newYorkDateKey(event.basis_time) === dashboard.today.date)
+    .sort((a, b) => new Date(b.basis_time) - new Date(a.basis_time));
+
+  dashboard.today.known_people = todayEvents.reduce((sum, event) => sum + (event.people_count || 0), 0);
+  dashboard.today.event_count = todayEvents.length;
+  dashboard.today.location_count = new Set(todayEvents.map(event => event.state_code || event.location_text).filter(Boolean)).size;
+  dashboard.today.unknown_people_events = todayEvents.filter(event => event.people_count == null).length;
+  dashboard.today.events = todayEvents.slice(0, 20);
+
+  for (const [label, hours] of [["24h", 24], ["7d", 24 * 7], ["30d", 24 * 30]]) {
+    const cutoff = Date.parse(nowIso) - hours * 60 * 60 * 1000;
+    const map = new Map();
+    for (const event of normalizedEvents) {
+      if (!event.state_code || Date.parse(event.basis_time) < cutoff) continue;
+      const entry = map.get(event.state_code) || {
+        code: event.state_code,
+        name: event.state_name || event.state_code,
+        events: 0,
+        people: 0,
+        unknown_people_events: 0
+      };
+      entry.events += 1;
+      if (event.people_count == null) entry.unknown_people_events += 1;
+      else entry.people += event.people_count;
+      map.set(event.state_code, entry);
+    }
+    dashboard.heatmap[label].states = [...map.values()].sort((a, b) => b.events - a.events || b.people - a.people);
+  }
+
+  return dashboard;
+}
+
+function newYorkDateKey(value) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date(value));
+  const map = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${map.year}-${map.month}-${map.day}`;
 }
 
 function renderArticle(item, paragraphs, dateParts) {
@@ -649,6 +956,225 @@ function dedupePending(items, publishedIds) {
   return [...map.values()].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 }
 
+
+const DEDUPE_STOPWORDS = new Set([
+  "the", "and", "for", "with", "from", "that", "this", "into", "after", "before",
+  "their", "they", "them", "his", "her", "its", "our", "your", "you", "are", "was",
+  "were", "has", "have", "had", "will", "would", "could", "should", "about", "against",
+  "through", "during", "today", "yesterday", "tomorrow", "new", "more", "most",
+  "ice", "icegov", "hsi", "ero", "dhs", "uscis", "official", "officers", "agents",
+  "u", "s", "us", "news", "update", "read", "learn", "details", "information"
+]);
+
+const GENERIC_NAME_PHRASES = new Set([
+  "United States", "Homeland Security", "Immigration Customs Enforcement",
+  "U S Immigration", "ICE HSI", "ICE ERO", "Department Homeland Security"
+].map(value => value.toLowerCase()));
+
+function isWithinHours(value, hours) {
+  const timestamp = Date.parse(String(value || ""));
+  if (!Number.isFinite(timestamp)) return false;
+  const age = Date.now() - timestamp;
+  return age >= -5 * 60 * 1000 && age <= hours * 60 * 60 * 1000;
+}
+
+function extractPrimaryIceUrl(post) {
+  for (const candidate of extractExpandedUrls(post)) {
+    try {
+      const parsed = new URL(candidate);
+      if (parsed.hostname === "ice.gov" || parsed.hostname.endsWith(".ice.gov")) {
+        parsed.hash = "";
+        parsed.search = "";
+        return parsed.toString().replace(/\/+$/, "");
+      }
+    } catch {}
+  }
+  return "";
+}
+
+function createDedupeKey(text, officialUrl = "") {
+  const normalizedUrl = normalizeComparableUrl(officialUrl);
+  if (normalizedUrl) return `url:${normalizedUrl}`;
+  return `text:${crypto.createHash("sha256").update(normalizeDedupeText(text)).digest("hex").slice(0, 24)}`;
+}
+
+function normalizeComparableUrl(value) {
+  try {
+    const parsed = new URL(String(value || ""));
+    parsed.hash = "";
+    for (const key of [...parsed.searchParams.keys()]) {
+      if (/^(utm_|ref$|source$|campaign$)/i.test(key)) parsed.searchParams.delete(key);
+    }
+    return `${parsed.hostname.toLowerCase()}${parsed.pathname.replace(/\/+$/, "")}${parsed.search}`;
+  } catch {
+    return "";
+  }
+}
+
+function normalizeDedupeText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/[@#][\p{L}\p{N}_-]+/gu, " ")
+    .replace(/&[a-z]+;/gi, " ")
+    .replace(/[^\p{L}\p{N}%$'-]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function tokenSet(value) {
+  const normalized = normalizeDedupeText(value);
+  const rawTokens = normalized.match(/[\p{Script=Han}]|[\p{L}\p{N}%$'-]{2,}/gu) || [];
+  return new Set(rawTokens.filter(token => !DEDUPE_STOPWORDS.has(token)));
+}
+
+function extractNumberSet(value) {
+  return new Set((String(value || "").match(/\b\d[\d,.%-]*\b/g) || []).map(normalizeNumberToken));
+}
+
+function extractNameSet(value) {
+  const matches = String(value || "").match(/\b(?:[A-Z][A-Za-z'’-]{1,})(?:\s+(?:[A-Z][A-Za-z'’-]{1,})){1,3}\b/g) || [];
+  return new Set(matches
+    .map(name => name.replace(/\s+/g, " ").trim().toLowerCase())
+    .filter(name => !GENERIC_NAME_PHRASES.has(name)));
+}
+
+function intersectionSize(a, b) {
+  let count = 0;
+  for (const value of a) if (b.has(value)) count += 1;
+  return count;
+}
+
+function jaccardSimilarity(a, b) {
+  if (!a.size || !b.size) return 0;
+  const intersection = intersectionSize(a, b);
+  return intersection / (a.size + b.size - intersection);
+}
+
+function ngramSet(value, size = 3) {
+  const normalized = normalizeDedupeText(value).replace(/\s+/g, "");
+  const set = new Set();
+  if (normalized.length < size) {
+    if (normalized) set.add(normalized);
+    return set;
+  }
+  for (let i = 0; i <= normalized.length - size; i += 1) {
+    set.add(normalized.slice(i, i + size));
+  }
+  return set;
+}
+
+function diceSimilarity(a, b) {
+  if (!a.size || !b.size) return 0;
+  return (2 * intersectionSize(a, b)) / (a.size + b.size);
+}
+
+function referenceFromPost(post) {
+  return {
+    id: `x:${post.id}`,
+    text: post.text || "",
+    officialUrl: extractPrimaryIceUrl(post),
+    createdAt: post.created_at || ""
+  };
+}
+
+function referenceFromNews(item) {
+  return {
+    id: `news:${item.x_post_id || item.id || "unknown"}`,
+    text: [
+      item.source_text || "",
+      item.title || "",
+      item.summary || "",
+      Array.isArray(item.keywords) ? item.keywords.join(" ") : ""
+    ].join(" "),
+    officialUrl: item.official_url || "",
+    createdAt: item.published_at || item.updated_at || ""
+  };
+}
+
+function referenceFromPending(item) {
+  return item?.post ? {
+    id: `pending:${item.x_post_id || item.post.id || "unknown"}`,
+    text: item.post.text || "",
+    officialUrl: extractPrimaryIceUrl(item.post),
+    createdAt: item.post.created_at || item.created_at || ""
+  } : null;
+}
+
+function buildDedupeReferences(news, pending) {
+  const references = [];
+  for (const item of news) {
+    if (isWithinHours(item.published_at, CONFIG.lookbackHours)) references.push(referenceFromNews(item));
+  }
+  for (const item of pending) {
+    const reference = referenceFromPending(item);
+    if (reference && isWithinHours(reference.createdAt, CONFIG.lookbackHours)) references.push(reference);
+  }
+  return references;
+}
+
+function isLikelyDuplicateReference(a, b) {
+  const aUrl = normalizeComparableUrl(a.officialUrl);
+  const bUrl = normalizeComparableUrl(b.officialUrl);
+  if (aUrl && bUrl && aUrl === bUrl) return true;
+
+  const aText = normalizeDedupeText(a.text);
+  const bText = normalizeDedupeText(b.text);
+  if (!aText || !bText) return false;
+  if (aText === bText) return true;
+
+  const tokenScore = jaccardSimilarity(tokenSet(aText), tokenSet(bText));
+  const ngramScore = diceSimilarity(ngramSet(aText), ngramSet(bText));
+  if (tokenScore >= CONFIG.dedupeThreshold || ngramScore >= 0.84) return true;
+
+  const aNames = extractNameSet(a.text);
+  const bNames = extractNameSet(b.text);
+  const sharedNames = intersectionSize(aNames, bNames);
+
+  const aNumbers = extractNumberSet(a.text);
+  const bNumbers = extractNumberSet(b.text);
+  const sharedNumbers = intersectionSize(aNumbers, bNumbers);
+
+  if (sharedNames >= 1 && sharedNumbers >= 1 && tokenScore >= 0.36) return true;
+  if (sharedNames >= 2 && tokenScore >= 0.40) return true;
+  if (sharedNumbers >= 2 && tokenScore >= 0.50) return true;
+
+  return false;
+}
+
+function findLikelyDuplicate(post, references) {
+  const candidate = referenceFromPost(post);
+  return references.find(reference => isLikelyDuplicateReference(candidate, reference)) || null;
+}
+
+function dedupePendingByContent(items, news) {
+  const references = news
+    .filter(item => isWithinHours(item.published_at, CONFIG.lookbackHours))
+    .map(referenceFromNews);
+  const kept = [];
+  let skipped = 0;
+
+  // Keep the newest pending entry when two pending posts describe the same event.
+  const sorted = [...items].sort((a, b) =>
+    new Date(b.post?.created_at || b.created_at || 0) - new Date(a.post?.created_at || a.created_at || 0)
+  );
+
+  for (const item of sorted) {
+    const reference = referenceFromPending(item);
+    if (!reference) continue;
+    const duplicate = references.find(existing => isLikelyDuplicateReference(reference, existing));
+    if (duplicate) {
+      skipped += 1;
+      console.log(`Removed duplicate pending item ${item.x_post_id}; similar to ${duplicate.id}.`);
+      continue;
+    }
+    kept.push(item);
+    references.push(reference);
+  }
+
+  return { items: kept, skipped };
+}
+
 function dedupePosts(posts) {
   const map = new Map();
   for (const post of posts) map.set(String(post.id), post);
@@ -672,15 +1198,18 @@ function newYorkDateParts(value) {
 }
 
 function formatChineseDateTime(value) {
-  return new Intl.DateTimeFormat("zh-CN", {
+  const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/New_York",
     year: "numeric",
-    month: "long",
-    day: "numeric",
+    month: "2-digit",
+    day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
-    hour12: true
-  }).format(new Date(value));
+    second: "2-digit",
+    hour12: false
+  }).formatToParts(new Date(value));
+  const map = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${Number(map.year)}/${Number(map.month)}/${Number(map.day)} ${map.hour}:${map.minute}:${map.second}`;
 }
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
@@ -814,6 +1343,12 @@ function firstEnv(...names) {
 
 function intEnv(name, fallback, min, max) {
   const value = Number.parseInt(process.env[name] || "", 10);
+  if (!Number.isFinite(value)) return fallback;
+  return Math.max(min, Math.min(max, value));
+}
+
+function floatEnv(name, fallback, min, max) {
+  const value = Number.parseFloat(process.env[name] || "");
   if (!Number.isFinite(value)) return fallback;
   return Math.max(min, Math.min(max, value));
 }

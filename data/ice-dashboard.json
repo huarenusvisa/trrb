@@ -1,0 +1,19 @@
+{
+  "generated_at": "",
+  "timezone": "America/New_York",
+  "latest_sync_at": "",
+  "total_published": 0,
+  "today": {
+    "date": "",
+    "known_people": 0,
+    "event_count": 0,
+    "location_count": 0,
+    "unknown_people_events": 0,
+    "events": []
+  },
+  "heatmap": {
+    "24h": { "states": [] },
+    "7d": { "states": [] },
+    "30d": { "states": [] }
+  }
+}

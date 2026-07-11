@@ -1,5 +1,47 @@
 [
   {
+    "id": "ice-2075913026683699343",
+    "x_post_id": "2075913026683699343",
+    "title": "ICE驻澳洲联络官与多国警察合作打击跨国犯罪",
+    "summary": "ICE驻澳洲特派员Ernest Verina及其团队与澳大利亚联邦警察、新西兰警察等合作，打击非法毒品贩运和儿童剥削等跨国犯罪。",
+    "content_type": "brief",
+    "category": "抓捕与拘留",
+    "importance": 5,
+    "relevance_score": 95,
+    "verified_level": "official",
+    "published_at": "2026-07-11T12:00:08.000Z",
+    "updated_at": "2026-07-11T14:34:00.336Z",
+    "url": "/news/ice/2026/07/11/ice-2075913026683699343.html",
+    "source_name": "美国移民与海关执法局（ICE）",
+    "source_url": "https://x.com/ICEgov/status/2075913026683699343",
+    "official_url": "",
+    "source_text": "🌏ICE HSI Attaché Ernest Verina and his team in Australia work closely with the Australian Federal Police, New Zealand Police, and partner agencies across the Pacific to disrupt transnational criminal networks profiting off illegal narcotics trafficking, child exploitation and https://t.co/sXErZGgZtK",
+    "dedupe_key": "text:af25518ae8963a5cc47f7d68",
+    "image_url": "https://pbs.twimg.com/ext_tw_video_thumb/2075911884759318529/pu/img/TpLVY9lSjUxXwNhK.jpg",
+    "confidence": 95,
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 95,
+    "matched_terms": [
+      "ICE",
+      "HSI/ERO"
+    ],
+    "query_lane": "override",
+    "keywords": [
+      "ICE",
+      "HSI",
+      "跨国犯罪",
+      "毒品贩运",
+      "儿童剥削",
+      "澳大利亚",
+      "新西兰"
+    ],
+    "enforcement_events": [],
+    "state_codes": [],
+    "event_metadata_checked_at": "2026-07-11T14:34:00.337Z"
+  },
+  {
     "id": "ice-2075754447532106174",
     "x_post_id": "2075754447532106174",
     "title": "ICE强调打击2026年国际足联世界杯期间的人口贩运行为",

@@ -1,31 +1,31 @@
 {
-  "last_seen_id": "2075807307447857230",
-  "last_run_at": "2026-07-11T07:27:24.191Z",
-  "last_success_at": "2026-07-11T07:27:24.191Z",
+  "last_seen_id": "2075913026683699343",
+  "last_run_at": "2026-07-11T14:34:00.338Z",
+  "last_success_at": "2026-07-11T14:34:00.338Z",
   "last_result": {
-    "fetched": 2,
-    "candidates": 2,
-    "new_posts": 2,
+    "fetched": 1,
+    "candidates": 1,
+    "new_posts": 1,
     "queued": 0,
-    "processed": 2,
+    "processed": 1,
     "duplicate_skipped": 0,
     "expired_pending": 0,
     "metadata_backfilled": 0,
     "published": 1,
-    "pending": 1,
-    "total_published": 8,
+    "pending": 0,
+    "total_published": 9,
     "total_pending": 8,
     "query_lanes": [
       {
         "id": "override",
         "label": "自定义搜索",
-        "fetched": 2,
+        "fetched": 1,
         "truncated": false
       }
     ]
   },
   "query_cursors": {
-    "override": "2075807307447857230"
+    "override": "2075913026683699343"
   },
-  "last_content_at": "2026-07-11T07:27:24.191Z"
+  "last_content_at": "2026-07-11T14:34:00.338Z"
 }

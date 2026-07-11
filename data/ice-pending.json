@@ -1,5 +1,108 @@
 [
   {
+    "id": "pending-2075807307447857230",
+    "x_post_id": "2075807307447857230",
+    "reason": "稿件出现来源中不存在的数字：11",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-11T07:27:24.191Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 97,
+    "query_lane": "override",
+    "ai": {
+      "title": "ICE在威斯康星州扣押因涉嫌袭击前女友的嫌疑人",
+      "summary": "ICE在威斯康星州丹恩县监狱对涉嫌刺伤前女友的墨西哥籍男子下达扣押令。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）针对来自墨西哥的伊万·阿尔代尔·坎乔拉·加西亚，在威斯康星州丹恩县监狱下达扣押令。",
+        "警方称坎乔拉加西亚涉嫌刺伤其前女友，受害者在被袭击时怀抱11个月大的女儿。坎乔拉加西亚面临多项指控。"
+      ],
+      "content_type": "brief",
+      "category": "抓捕与拘留",
+      "importance": 7,
+      "relevance_score": 97,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        " detention",
+        "威斯康星州",
+        "刺伤",
+        "扣押令",
+        "多项指控"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "detention",
+          "people_count": 1,
+          "occurred_at": "2026-07-11T05:00:03Z",
+          "time_precision": "second",
+          "city": " ",
+          "state_code": "WI",
+          "state_name": "Wisconsin",
+          "location_text": "Dane County jail",
+          "confidence": 95,
+          "source_excerpt": "ICE placed a detainer with the Dane County, Wisc., jail against Ivan Aldair Canchola Garcia, of Mexico, after police say he stabbed his ex-girlfriend"
+        }
+      ]
+    },
+    "post": {
+      "id": "2075807307447857230",
+      "text": "ICE placed a detainer with the Dane County, Wisc., jail against Ivan Aldair Canchola Garcia, of Mexico, after police say he stabbed his ex-girlfriend in the neck, armpit and shoulder blade while she was holding her 11-month-old daughter\n\nCanchola Garcia faces multiple charges, https://t.co/FEFD2L6whc",
+      "created_at": "2026-07-11T05:00:03.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/FEFD2L6whc",
+            "end": 301,
+            "expanded_url": "https://x.com/ICEgov/status/2075807307447857230/video/1",
+            "media_key": "7_2075806125258158080",
+            "start": 278,
+            "url": "https://t.co/FEFD2L6whc"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2075806125258158080/pu/img/pE3syXaBJS5S54l6.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 4,
+        "impression_count": 11251,
+        "like_count": 268,
+        "quote_count": 0,
+        "reply_count": 16,
+        "retweet_count": 84
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075807307447857230",
+      "candidate_score": 97,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
     "id": "pending-2075705424402157897",
     "x_post_id": "2075705424402157897",
     "reason": "法律状态“被判刑”在来源中没有对应依据",

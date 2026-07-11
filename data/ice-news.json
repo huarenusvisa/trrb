@@ -1,5 +1,45 @@
 [
   {
+    "id": "ice-2075754447532106174",
+    "x_post_id": "2075754447532106174",
+    "title": "ICE强调打击2026年国际足联世界杯期间的人口贩运行为",
+    "summary": "美国移民与海关执法局（ICE）下属HSI称，世界杯期间将加强防范人口贩运活动。",
+    "content_type": "brief",
+    "category": "社区反应",
+    "importance": 4,
+    "relevance_score": 78,
+    "verified_level": "official",
+    "published_at": "2026-07-11T01:30:00.000Z",
+    "updated_at": "2026-07-11T07:27:18.400Z",
+    "url": "/news/ice/2026/07/10/ice-2075754447532106174.html",
+    "source_name": "美国移民与海关执法局（ICE）",
+    "source_url": "https://x.com/ICEgov/status/2075754447532106174",
+    "official_url": "",
+    "source_text": "⚽ICE @HSI_HQ is a global leader in preventing human traffickers from profiting during major events like the #FIFAWorldCup2026 that can attract criminal networks seeking to exploit increased travel and commerce. \n\nYou can help.\n\nAnyone can be a victim of sex and labor https://t.co/Lg2yZT0Eli",
+    "dedupe_key": "text:d78bbd7a85295b2576bf0eac",
+    "image_url": "https://pbs.twimg.com/ext_tw_video_thumb/2075753251148910592/pu/img/2793tIV6C0TfWr_U.jpg",
+    "confidence": 100,
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 78,
+    "matched_terms": [
+      "ICE"
+    ],
+    "query_lane": "override",
+    "keywords": [
+      "ICE",
+      "HSI",
+      "人口贩运",
+      "FIFA世界杯2026",
+      "性剥削",
+      "劳工剥削"
+    ],
+    "enforcement_events": [],
+    "state_codes": [],
+    "event_metadata_checked_at": "2026-07-11T07:27:18.400Z"
+  },
+  {
     "id": "ice-2075645601706889671",
     "x_post_id": "2075645601706889671",
     "title": "明尼苏达州州长赦免犯罪非法移民，ICE将其遣返老挝",

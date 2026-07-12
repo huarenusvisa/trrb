@@ -1,0 +1,77 @@
+name: ICE执法自动抓取发布
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6,11,16,21 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-news-publishing
+  cancel-in-progress: false
+
+jobs:
+  ice-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Validate ICE architecture
+        run: |
+          node --check scripts/ice-fetch.mjs
+          node --check scripts/ice-publish.mjs
+          node --check scripts/ice-build-dashboard.mjs
+          node --check scripts/ice-pipeline.mjs
+          node --test scripts/ice-architecture.test.mjs
+
+      - name: Fetch, edit and publish ICE news
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          ICE_MAX_NEW_POSTS: "120"
+          ICE_MAX_PROCESS_PER_RUN: "18"
+          ICE_LOOKBACK_HOURS: "48"
+          ICE_MAX_PAGES_PER_QUERY: "2"
+        run: node scripts/ice-pipeline.mjs
+
+      - name: Verify generated output
+        run: node --test scripts/ice-architecture.test.mjs
+
+      - name: Commit generated ICE data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "TRRB ICE Bot"
+          git config user.email "bot@trrb.net"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No ICE changes."
+            exit 0
+          fi
+
+          git commit -m "Auto publish ICE news"
+
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            if git rebase origin/main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort || true
+            sleep $((attempt * 10))
+          done
+
+          exit 1

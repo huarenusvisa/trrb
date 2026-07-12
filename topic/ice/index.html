@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="/assets/ice-topic.css?v=39">
+  <link rel="stylesheet" href="/assets/ice-topic.css?v=40">
 </head>
 <body>
   <header class="trrb-header">
@@ -37,29 +37,6 @@
     </section>
 
     <section class="ice-shell ice-map-section" aria-labelledby="map-title">
-      <div class="ice-map-heading">
-        <div>
-          <span class="ice-eyebrow">美国实时活动地图</span>
-          <h2 id="map-title">ICE公开事件点位</h2>
-          <p>数字圆点代表同一区域的事件聚合。点击标记查看时间、地点、来源和全文。</p>
-        </div>
-        <div class="ice-map-count"><strong id="visible-event-count">0</strong><span>当前事件</span></div>
-      </div>
-
-      <div class="ice-filter-bar" aria-label="地图筛选">
-        <div class="ice-range-tabs" id="range-controls">
-          <button type="button" data-range="24h" class="is-active"><b>24小时</b><small>最新动态</small></button>
-          <button type="button" data-range="7d"><b>7天</b><small>短期趋势</small></button>
-          <button type="button" data-range="30d"><b>30天</b><small>月度分布</small></button>
-        </div>
-        <div class="ice-type-tabs" id="type-controls">
-          <button type="button" data-type="all" class="is-active">全部</button>
-          <button type="button" data-type="arrest">抓捕/拘留</button>
-          <button type="button" data-type="removal">遣返</button>
-          <button type="button" data-type="other">其他行动</button>
-        </div>
-      </div>
-
       <div class="ice-map-card">
         <div id="ice-live-map" class="ice-live-map" aria-label="美国ICE公开执法事件地图"></div>
         <div id="map-empty" class="ice-map-empty" hidden>
@@ -77,13 +54,6 @@
           <span><i class="dot dot-gray"></i>仅州级位置</span>
         </div>
       </div>
-
-      <div class="ice-map-summary">
-        <div><span>统计范围</span><strong id="summary-range">过去24小时</strong></div>
-        <div><span>公开事件</span><strong id="summary-events">0</strong></div>
-        <div><span>已披露人数</span><strong id="summary-people">0人</strong></div>
-        <div><span>涉及州</span><strong id="summary-states">0</strong></div>
-      </div>
     </section>
 
     <section class="ice-shell ice-news-section" aria-labelledby="latest-title">
@@ -99,6 +69,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <script src="/assets/ice-topic.js?v=39" defer></script>
+  <script src="/assets/ice-topic.js?v=40" defer></script>
 </body>
 </html>

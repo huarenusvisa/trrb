@@ -169,6 +169,7 @@ async function main() {
     last_result: { fetched: 0, published: 0, pending: 0 }
   });
   const news = await readJson(NEWS_FILE, []);
+  const normalizedBriefCount = normalizeExistingIceNews(news);
   let pending = await readJson(PENDING_FILE, []);
 
   // One-time metadata backfill for previously published articles.
@@ -277,6 +278,7 @@ async function main() {
     duplicate_skipped: duplicateSkippedCount,
     expired_pending: expiredPendingCount,
     metadata_backfilled: metadataBackfilledCount,
+    normalized_briefs: normalizedBriefCount,
     published: publishedCount,
     pending: pendingCount,
     total_published: news.length,
@@ -417,16 +419,21 @@ export function buildIceQueryLanes() {
   const officialPrimary = CONFIG.officialAccounts.filter(account => ["icegov", "hsi_hq"].includes(account.toLowerCase()));
   const officialRelated = CONFIG.officialAccounts.filter(account => !officialPrimary.includes(account));
   const agencyTerms = '(ICE OR "Immigration and Customs Enforcement" OR HSI OR ERO OR deportation OR removal OR detained OR arrested OR "immigration enforcement")';
-  const primaryPart = officialPrimary.length ? `(${officialPrimary.map(account => `from:${account}`).join(" OR ")})` : "";
-  const relatedPart = officialRelated.length
-    ? `((${officialRelated.map(account => `from:${account}`).join(" OR ")}) ${agencyTerms})`
-    : "";
-  const officialParts = [primaryPart, relatedPart].filter(Boolean);
-  if (officialParts.length) {
+  if (officialPrimary.length) {
     lanes.push({
       id: "official",
-      label: "联邦机构",
-      query: validateXQuery(`(${officialParts.join(" OR ")}) -is:retweet lang:en`),
+      label: "ICE与HSI官方",
+      query: validateXQuery(`(${officialPrimary.map(account => `from:${account}`).join(" OR ")}) -is:retweet lang:en`),
+    });
+  }
+
+  // 来源登记表可能包含大量联邦、州和地方官方账号，必须拆分查询，
+  // 否则会超过 X recent-search 的 500 字符限制并导致整轮任务停止。
+  for (const [index, accounts] of chunkAccountsForQuery(officialRelated, agencyTerms, 440).entries()) {
+    lanes.push({
+      id: officialPrimary.length ? `official-related-${index + 1}` : (index === 0 ? "official" : `official-related-${index + 1}`),
+      label: "相关执法机构",
+      query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${agencyTerms}) -is:retweet -is:reply lang:en`),
     });
   }
 
@@ -776,7 +783,12 @@ async function processPost(post, news) {
   if (existingIndex >= 0) news[existingIndex] = item;
   else news.push(item);
 
-  await syncIceCmsArticle(post, ai, "published", "", enforcementEvents, "ICE执法");
+  // Supabase 与静态 JSON 使用同一套展示标题。无图新闻必须保存为
+  // 8—18字短标题，避免实时接口重新把长标题带回前台。
+  const cmsAi = displayType === "brief"
+    ? { ...ai, title: itemTitle, summary: itemSummary, content_type: "brief" }
+    : ai;
+  await syncIceCmsArticle(post, cmsAi, "published", "", enforcementEvents, "ICE执法");
   return { status: "published", item };
 }
 
@@ -966,7 +978,7 @@ async function rewriteWithOpenAI(sourceText, post) {
         role: "user",
         content: [{
           type: "input_text",
-          text: `来源模式：${post.source_mode}\n来源层级：${post.source_tier}\n来源权重：${post.source_weight}\n候选评分：${post.candidate_score}\n\n请先判断是否确属ICE/HSI/ERO新闻，再根据以下唯一事实来源生成中文新闻稿。不得使用外部知识补充事实。\n\n${sourceText}`
+          text: `来源模式：${post.source_mode}\n来源层级：${post.source_tier}\n来源权重：${post.source_weight}\n候选评分：${post.candidate_score}\n是否带有可用图片或视频封面：${firstUsableMedia(post.media) ? "是" : "否"}\n\n请先判断是否确属ICE/HSI/ERO新闻，再根据以下唯一事实来源生成中文新闻稿。没有可用图片时，优先生成brief，标题必须为8至18个中文字符。不得使用外部知识补充事实。\n\n${sourceText}`
         }]
       }
     ],
@@ -1198,16 +1210,26 @@ function newYorkDateKey(value) {
 }
 
 function normalizeIceBriefTitle(value) {
-  const clean = String(value || "ICE执法动态")
+  let clean = String(value || "ICE执法动态")
     .replace(/[\r\n\t]+/g, " ")
     .replace(/\s+/g, " ")
     .replace(/[。！？!?]+$/g, "")
     .replace(/美国移民与海关执法局/g, "ICE")
     .replace(/美国国土安全部/g, "DHS")
     .trim();
-  const chars = Array.from(clean);
-  if (chars.length <= 18) return clean;
-  return chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
+  if (!clean) clean = "ICE执法最新动态";
+
+  let chars = Array.from(clean);
+  if (chars.length > 18) {
+    clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
+    chars = Array.from(clean);
+  }
+  if (chars.length < 8) {
+    clean = `${clean}相关动态`;
+    chars = Array.from(clean);
+  }
+  if (chars.length > 18) clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
+  return clean;
 }
 
 function normalizeIceBriefText(summary, paragraphs) {
@@ -1218,7 +1240,22 @@ function normalizeIceBriefText(summary, paragraphs) {
     .replace(/\s+/g, " ")
     .trim();
   const chars = Array.from(clean);
-  return chars.length > 72 ? `${chars.slice(0, 72).join("")}…` : clean;
+  return chars.length > 90 ? `${chars.slice(0, 90).join("")}…` : clean;
+}
+
+function normalizeExistingIceNews(items) {
+  if (!Array.isArray(items)) return 0;
+  let changed = 0;
+  for (const item of items) {
+    if (!item || String(item.image_url || "").trim()) continue;
+    const title = normalizeIceBriefTitle(item.title);
+    const summary = normalizeIceBriefText(item.summary, []);
+    if (item.title !== title || item.summary !== summary || item.content_type !== "brief") changed += 1;
+    item.title = title;
+    item.summary = summary;
+    item.content_type = "brief";
+  }
+  return changed;
 }
 
 function renderArticle(item, paragraphs, dateParts) {

@@ -1,1 +1,223 @@
-(()=>{"use strict";const NEWS="/data/trump-news.json",STATE="/data/trump-state.json",SUPABASE_URL="https://fwiznbpsqkfgkvyznebz.supabase.co",SUPABASE_KEY="sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";let items=[];document.addEventListener("DOMContentLoaded",init);async function init(){const [n,s]=await Promise.all([get(NEWS,[]),get(STATE,{})]);items=Array.isArray(n)?n:[];const live=await liveArticles();if(live.length)items=mergeLive(live,items);renderStatus(s);renderFilters();render("全部")}async function liveArticles(){try{const select="id,title,summary,cover_image,source_name,source_url,published_at";const u=`${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&category_name=eq.${encodeURIComponent("特朗普动态")}&order=published_at.desc&limit=100`;const r=await fetch(u,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});return r.ok?await r.json():[]}catch{return[]}}function mergeLive(live,old){const m=live.map(x=>({id:x.id,title:x.title,summary:x.summary,image_url:x.cover_image,source_name:x.source_name,source_url:x.source_url,published_at:x.published_at,url:`/article.html?id=${encodeURIComponent(x.id)}`,category:"全部"}));const seen=new Set(m.map(x=>String(x.id)));return m.concat(old.filter(x=>!seen.has(String(x.id))))}async function get(url,fallback){try{const r=await fetch(`${url}?v=${Date.now()}`,{cache:"no-store"});return r.ok?await r.json():fallback}catch{return fallback}}function renderStatus(s){const el=document.getElementById("trump-status");const d=s.last_success_at||s.last_content_at;if(!items.length){el.textContent=d?`自动同步正常 · 最近检查 ${fmt(d)}`:"自动同步已启用 · 暂无可发布的新动态";return}el.textContent=`每30分钟自动更新 · 最近同步 ${fmt(d||items[0]?.updated_at||items[0]?.published_at)}`}function renderFilters(){const cats=["全部",...new Set(items.map(x=>x.category).filter(Boolean))];const root=document.getElementById("trump-filters");root.innerHTML=cats.map((c,i)=>`<button type="button" data-cat="${esc(c)}" class="${i===0?"is-active":""}">${esc(c)}</button>`).join("");root.addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;root.querySelectorAll("button").forEach(x=>x.classList.toggle("is-active",x===b));render(b.dataset.cat)})}function render(cat){const root=document.getElementById("trump-feed");const list=[...items].filter(x=>cat==="全部"||x.category===cat).sort((a,b)=>new Date(b.published_at)-new Date(a.published_at));if(!list.length){root.innerHTML='<div class="topic-empty"><strong>暂无新的公开动态</strong><br>系统会继续按计划自动检查并发布符合条件的信息。</div>';return}root.innerHTML=list.map(x=>{const img=x.image_url?`<div class="trump-card-media"><img src="${attr(x.image_url)}" alt="${attr(x.title||"特朗普动态图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`:`<div class="trump-card-media" aria-hidden="true"></div>`;return `<article class="trump-card">${img}<div class="trump-card-body"><div class="trump-meta"><span class="trump-source">${esc(x.source_name||"公开来源")}</span><time>${esc(fmt(x.published_at))}</time></div><h2><a href="${attr(x.url||x.source_url||"#")}">${esc(x.title||"特朗普最新动态")}</a></h2><p>${esc(x.summary||"")}</p><a class="trump-card-link" href="${attr(x.url||x.source_url||"#")}">阅读全文 →</a></div></article>`}).join("")}function fmt(v){if(!v)return"—";const d=new Date(v);if(Number.isNaN(d.getTime()))return"—";return new Intl.DateTimeFormat("zh-CN",{timeZone:"America/New_York",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(d)}function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}const attr=esc})();
+(() => {
+  "use strict";
+
+  const NEWS = "/data/trump-news.json";
+  const STATE = "/data/trump-state.json";
+  const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
+  let items = [];
+
+  document.addEventListener("DOMContentLoaded", init);
+
+  async function init() {
+    const [news, state] = await Promise.all([get(NEWS, []), get(STATE, {})]);
+    items = Array.isArray(news) ? news : [];
+    const live = await liveArticles();
+    if (live.length) items = mergeLive(live, items);
+    items = dedupeForDisplay(items);
+    renderStatus(state);
+    renderFilters();
+    render("全部");
+  }
+
+  async function liveArticles() {
+    try {
+      const select = "id,title,summary,cover_image,source_name,source_url,published_at,tags";
+      const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&category_name=eq.${encodeURIComponent("特朗普动态")}&order=published_at.desc&limit=150`;
+      const response = await fetch(url, {
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+        cache: "no-store",
+      });
+      return response.ok ? await response.json() : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function mergeLive(live, oldItems) {
+    const mapped = live.map((item) => {
+      const tags = Array.isArray(item.tags) ? item.tags : [];
+      return {
+        id: item.id,
+        title: item.title,
+        summary: item.summary,
+        image_url: item.cover_image,
+        source_name: item.source_name,
+        source_url: item.source_url,
+        published_at: item.published_at,
+        url: `/article.html?id=${encodeURIComponent(item.id)}`,
+        category: tags.find((tag) => tag && !["特朗普", "快讯", "完整文章"].includes(tag)) || "全部",
+        content_format: tags.includes("快讯") ? "brief" : "article",
+      };
+    });
+    const seen = new Set(mapped.map((item) => String(item.id)));
+    return mapped.concat(oldItems.filter((item) => !seen.has(String(item.id))));
+  }
+
+  async function get(url, fallback) {
+    try {
+      const response = await fetch(`${url}?v=${Date.now()}`, { cache: "no-store" });
+      return response.ok ? await response.json() : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function renderStatus(state) {
+    const element = document.getElementById("trump-status");
+    const date = state.last_success_at || state.last_content_at;
+    if (!items.length) {
+      element.textContent = date ? `自动同步正常 · 最近检查 ${formatTime(date)}` : "自动同步已启用 · 暂无可发布的新动态";
+      return;
+    }
+    element.textContent = `每30分钟自动更新 · 最近同步 ${formatTime(date || items[0]?.updated_at || items[0]?.published_at)}`;
+  }
+
+  function renderFilters() {
+    const categories = ["全部", ...new Set(items.map((item) => item.category).filter(Boolean).filter((value) => value !== "全部"))];
+    const root = document.getElementById("trump-filters");
+    root.innerHTML = categories.map((category, index) =>
+      `<button type="button" data-cat="${escapeHtml(category)}" class="${index === 0 ? "is-active" : ""}">${escapeHtml(category)}</button>`
+    ).join("");
+    root.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-cat]");
+      if (!button) return;
+      root.querySelectorAll("button").forEach((item) => item.classList.toggle("is-active", item === button));
+      render(button.dataset.cat);
+    });
+  }
+
+  function render(category) {
+    const root = document.getElementById("trump-feed");
+    const list = items
+      .filter((item) => category === "全部" || item.category === category)
+      .sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+
+    if (!list.length) {
+      root.innerHTML = '<div class="topic-empty"><strong>暂无新的公开动态</strong><br>系统会继续按计划自动检查并发布符合条件的信息。</div>';
+      return;
+    }
+
+    const briefs = list.filter(isBrief).slice(0, 30);
+    const articles = list.filter((item) => !isBrief(item));
+    const briefHtml = briefs.length ? `
+      <section class="trump-brief-panel" aria-label="特朗普实时快讯">
+        <div class="trump-section-head">
+          <div><span>LIVE</span><h2>实时快讯</h2></div>
+          <p>简短、明确的信息直接播报，不使用图片占位。</p>
+        </div>
+        <div class="trump-brief-list">
+          ${briefs.map(renderBrief).join("")}
+        </div>
+      </section>` : "";
+
+    const articleHtml = articles.length ? `
+      <section class="trump-article-section">
+        <div class="trump-section-head trump-section-head--articles"><div><h2>重点动态</h2></div></div>
+        <div class="trump-card-grid">${articles.map(renderCard).join("")}</div>
+      </section>` : "";
+
+    root.innerHTML = briefHtml + articleHtml;
+  }
+
+  function renderBrief(item) {
+    const href = item.url || item.source_url || "#";
+    return `<article class="trump-brief-item">
+      <time>${escapeHtml(formatTime(item.published_at))}</time>
+      <div class="trump-brief-copy">
+        <h3><a href="${escapeHtml(href)}">${escapeHtml(item.title || "特朗普最新快讯")}</a></h3>
+        <p>${escapeHtml(oneLine(item.summary || ""))}</p>
+      </div>
+      <span class="trump-brief-source">${escapeHtml(item.source_name || "公开来源")}</span>
+    </article>`;
+  }
+
+  function renderCard(item) {
+    const href = item.url || item.source_url || "#";
+    const media = item.image_url
+      ? `<div class="trump-card-media"><img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.title || "特朗普动态图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+      : "";
+    return `<article class="trump-card ${item.image_url ? "has-media" : "no-media"}">
+      ${media}
+      <div class="trump-card-body">
+        <div class="trump-meta"><span class="trump-source">${escapeHtml(item.source_name || "公开来源")}</span><time>${escapeHtml(formatTime(item.published_at))}</time></div>
+        <h2><a href="${escapeHtml(href)}">${escapeHtml(item.title || "特朗普最新动态")}</a></h2>
+        <p>${escapeHtml(item.summary || "")}</p>
+        <a class="trump-card-link" href="${escapeHtml(href)}">阅读全文 →</a>
+      </div>
+    </article>`;
+  }
+
+  function isBrief(item) {
+    if (item.content_format === "brief") return true;
+    if (Array.isArray(item.tags) && item.tags.includes("快讯")) return true;
+    const summaryLength = String(item.summary || "").replace(/\s+/g, "").length;
+    return !item.image_url && summaryLength > 0 && summaryLength <= 100 && String(item.title || "").length <= 24;
+  }
+
+  function dedupeForDisplay(source) {
+    const result = [];
+    for (const item of source) {
+      const duplicate = result.find((existing) => likelySameEvent(existing, item));
+      if (!duplicate) result.push(item);
+    }
+    return result;
+  }
+
+  function likelySameEvent(a, b) {
+    if (String(a.id) === String(b.id)) return true;
+    if (a.source_url && b.source_url && a.source_url === b.source_url) return true;
+    const aTime = Date.parse(a.published_at || "");
+    const bTime = Date.parse(b.published_at || "");
+    if (Number.isFinite(aTime) && Number.isFinite(bTime) && Math.abs(aTime - bTime) > 72 * 60 * 60 * 1000) return false;
+    const aText = normalizeEvent(`${a.title || ""} ${a.summary || ""}`);
+    const bText = normalizeEvent(`${b.title || ""} ${b.summary || ""}`);
+    if (!aText || !bText) return false;
+    if (aText === bText) return true;
+    const aTokens = tokens(aText);
+    const bTokens = tokens(bText);
+    let intersection = 0;
+    aTokens.forEach((token) => { if (bTokens.has(token)) intersection += 1; });
+    const union = aTokens.size + bTokens.size - intersection;
+    return union > 0 && intersection / union >= 0.985;
+  }
+
+  function normalizeEvent(value) {
+    return String(value || "").toLowerCase()
+      .replace(/特朗普|美国总统|白宫|最新|动态|消息|表示|宣布|称/g, " ")
+      .replace(/https?:\/\/\S+/g, " ")
+      .replace(/[^\p{L}\p{N}\u3400-\u9fff]+/gu, " ")
+      .trim();
+  }
+
+  function tokens(value) {
+    const set = new Set(value.split(/\s+/).filter((word) => word.length > 1));
+    const cjk = [...value.replace(/[^\u3400-\u9fff]/g, "")];
+    for (let index = 0; index < cjk.length - 1; index += 1) set.add(cjk[index] + cjk[index + 1]);
+    return set;
+  }
+
+  function oneLine(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function formatTime(value) {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    return new Intl.DateTimeFormat("zh-CN", {
+      timeZone: "America/New_York",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    })[character]);
+  }
+})();

@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
       - uses: actions/setup-node@v4
-        with: {node-version: "20"}
+        with: {node-version: "24"}
       - name: Fetch rewrite and publish Trump news
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
@@ -29,7 +29,8 @@ jobs:
           TRUMP_AUTO_ACCOUNTS: "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47,Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"
           TRUMP_REVIEW_ACCOUNTS: "Breaking911,CollinRugg"
           TRUMP_BOOTSTRAP_LIMIT: "60"
-          TRUMP_MAX_PROCESS_PER_RUN: "18"
+          TRUMP_MAX_PROCESS_PER_RUN: "60"
+          TRUMP_MAX_PENDING_RETRIES: "20"
           TRUMP_MAX_PAGES: "3"
           TRUMP_MAX_RESULTS_PER_QUERY: "50"
           TRUMP_LOOKBACK_HOURS: "48"

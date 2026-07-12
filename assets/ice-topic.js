@@ -92,20 +92,39 @@
   }
 
   function mergeLiveNews(live, archived) {
-    const mapped = live.map(row => ({
-      id: row.id,
-      title: row.title,
-      summary: row.summary,
-      image_url: row.cover_image,
-      source_name: row.source_name,
-      source_url: row.source_url,
-      published_at: row.published_at,
-      url: `/article.html?id=${encodeURIComponent(row.id)}`,
-      state_codes: row.state ? [normalizeStateCode(row.state)] : [],
-      enforcement_events: []
-    }));
-    const seen = new Set(mapped.map(item => String(item.id)));
-    return mapped.concat(archived.filter(item => !seen.has(String(item.id))));
+    const mapped = live.map(row => {
+      const imageUrl = String(row.cover_image || "").trim();
+      const noImage = !imageUrl;
+      return {
+        id: row.id,
+        title: noImage ? normalizeIceBriefTitle(row.title) : String(row.title || "ICE执法动态").trim(),
+        summary: noImage ? normalizeIceBriefText(row.summary) : String(row.summary || "").trim(),
+        content_type: noImage ? "brief" : "article",
+        image_url: imageUrl,
+        source_name: row.source_name,
+        source_url: row.source_url,
+        published_at: row.published_at || row.created_at,
+        url: `/article.html?id=${encodeURIComponent(row.id)}`,
+        state_codes: row.state ? [normalizeStateCode(row.state)] : [],
+        enforcement_events: []
+      };
+    });
+
+    // Supabase 与静态 JSON 可能同时包含同一条 X 新闻。优先使用实时数据，
+    // 按来源链接和标题双重去重，避免页面出现重复卡片。
+    const seen = new Set();
+    const result = [];
+    for (const item of [...mapped, ...archived]) {
+      const sourceKey = String(item.source_url || "").trim().toLowerCase();
+      const idKey = String(item.x_post_id || item.id || "").trim().toLowerCase();
+      const titleKey = String(item.title || "").replace(/\s+/g, "").toLowerCase();
+      const stableKeys = [sourceKey && `source:${sourceKey}`, idKey && `id:${idKey}`].filter(Boolean);
+      const keys = stableKeys.length ? stableKeys : [titleKey && `title:${titleKey}`].filter(Boolean);
+      if (keys.some(key => seen.has(key))) continue;
+      keys.forEach(key => seen.add(key));
+      result.push(item);
+    }
+    return result;
   }
 
   async function fetchJson(url, fallback) {
@@ -209,23 +228,82 @@
       const states = Array.isArray(item.state_codes)
         ? item.state_codes.map(normalizeStateCode).filter(Boolean)
         : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
-      const image = item.image_url
-        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+      const imageUrl = String(item.image_url || "").trim();
+      const hasImage = Boolean(imageUrl);
+      const displayTitle = hasImage
+        ? String(item.title || "ICE执法动态").trim()
+        : normalizeIceBriefTitle(item.title);
+      const displaySummary = hasImage
+        ? String(item.summary || "").trim()
+        : normalizeIceBriefText(item.summary);
+      const image = hasImage
+        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(imageUrl)}" alt="${escapeAttr(displayTitle || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
         : "";
+      const cardClass = hasImage ? "has-image" : "no-image";
+      const linkText = hasImage ? "查看全文 →" : "查看详情 →";
       return `
-        <article class="ice-news-card" data-states="${escapeAttr(states.join(","))}">
+        <article class="ice-news-card ${cardClass}" data-states="${escapeAttr(states.join(","))}" data-brief-title="${escapeAttr(normalizeIceBriefTitle(item.title))}">
           ${image}
           <div class="ice-news-body">
             <div class="ice-news-meta">
               <span class="ice-news-label">${escapeHtml(item.source_name || "ICE执法信息")}</span>
               <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
             </div>
-            <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
-            <p>${escapeHtml(item.summary || "")}</p>
-            <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">查看全文 →</a>
+            <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(displayTitle)}</a></h3>
+            <p>${escapeHtml(displaySummary)}</p>
+            <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">${linkText}</a>
           </div>
         </article>`;
     }).join("");
+
+    // X 图片地址偶尔会失效。失效后立即切换为纯文字卡片，
+    // 不保留空白图片框，也不让长标题挤成狭窄竖排。
+    root.querySelectorAll(".ice-news-thumb").forEach(image => {
+      image.addEventListener("error", () => {
+        const card = image.closest(".ice-news-card");
+        if (!card) return;
+        image.closest(".ice-news-thumb-wrap")?.remove();
+        card.classList.remove("has-image");
+        card.classList.add("no-image");
+        const titleLink = card.querySelector("h3 a");
+        if (titleLink) titleLink.textContent = card.dataset.briefTitle || "ICE执法最新动态";
+        const detailLink = card.querySelector(".ice-news-link");
+        if (detailLink) detailLink.textContent = "查看详情 →";
+      }, { once: true });
+    });
+  }
+
+  function normalizeIceBriefTitle(value) {
+    let clean = String(value || "ICE执法动态")
+      .replace(/[\r\n\t]+/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/[。！？!?]+$/g, "")
+      .replace(/美国移民与海关执法局/g, "ICE")
+      .replace(/美国国土安全部/g, "DHS")
+      .trim();
+    if (!clean) clean = "ICE执法最新动态";
+
+    let chars = Array.from(clean);
+    if (chars.length > 18) {
+      clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
+      chars = Array.from(clean);
+    }
+    if (chars.length < 8) {
+      clean = `${clean}相关动态`;
+      chars = Array.from(clean);
+    }
+    if (chars.length > 18) clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
+    return clean;
+  }
+
+  function normalizeIceBriefText(value) {
+    const clean = String(value || "ICE相关公开信息已更新。")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/[\r\n\t]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    const chars = Array.from(clean);
+    return chars.length > 90 ? `${chars.slice(0, 90).join("")}…` : clean;
   }
 
   function bindControls() {

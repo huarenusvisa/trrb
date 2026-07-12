@@ -15,6 +15,9 @@ const NEWS_FILE = path.join(DATA_DIR, "ice-news.json");
 const STATE_FILE = path.join(DATA_DIR, "ice-state.json");
 const PENDING_FILE = path.join(DATA_DIR, "ice-pending.json");
 const DASHBOARD_FILE = path.join(DATA_DIR, "ice-dashboard.json");
+const MAP_FILE = path.join(DATA_DIR, "ice-map.json");
+const STATS_FILE = path.join(DATA_DIR, "ice-stats.json");
+const LIVE_FILE = path.join(DATA_DIR, "ice-live.json");
 const HOME_FILE = path.join(ROOT, "index.html");
 const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 
@@ -296,9 +299,49 @@ async function main() {
   });
   await writeJson(STATE_FILE, state);
   await writeJson(DASHBOARD_FILE, dashboard);
+  await writeIceCompatibilityFiles({ dashboard, news, state });
   await updateSitemap(news, now);
 
   console.log(JSON.stringify(state.last_result, null, 2));
+}
+
+async function writeIceCompatibilityFiles({ dashboard, news, state }) {
+  const mapPayload = {
+    generated_at: dashboard?.generated_at || new Date().toISOString(),
+    latest_sync_at: dashboard?.latest_sync_at || state?.last_success_at || state?.last_run_at || null,
+    timezone: dashboard?.timezone || "America/New_York",
+    today: dashboard?.today || {
+      date: null,
+      known_people: 0,
+      event_count: 0,
+      location_count: 0,
+      events: []
+    },
+    heatmap: dashboard?.heatmap || {
+      "24h": { states: [] },
+      "7d": { states: [] },
+      "30d": { states: [] }
+    },
+    events: Array.isArray(dashboard?.today?.events) ? dashboard.today.events : [],
+    states: Array.isArray(dashboard?.heatmap?.["24h"]?.states)
+      ? dashboard.heatmap["24h"].states
+      : []
+  };
+
+  const statsPayload = {
+    generated_at: mapPayload.generated_at,
+    latest_sync_at: mapPayload.latest_sync_at,
+    timezone: mapPayload.timezone,
+    total_published: Array.isArray(news) ? news.length : 0,
+    today: mapPayload.today,
+    heatmap: mapPayload.heatmap
+  };
+
+  await Promise.all([
+    writeJson(MAP_FILE, mapPayload),
+    writeJson(STATS_FILE, statsPayload),
+    writeJson(LIVE_FILE, Array.isArray(news) ? news : [])
+  ]);
 }
 
 function requireSecrets() {
@@ -320,6 +363,9 @@ async function ensureStructure() {
   await ensureJsonFile(NEWS_FILE, []);
   await ensureJsonFile(PENDING_FILE, []);
   await ensureJsonFile(DASHBOARD_FILE, emptyDashboard());
+  await ensureJsonFile(MAP_FILE, emptyDashboard());
+  await ensureJsonFile(STATS_FILE, emptyDashboard());
+  await ensureJsonFile(LIVE_FILE, []);
   await ensureJsonFile(STATE_FILE, {
     last_seen_id: "",
     query_cursors: {},

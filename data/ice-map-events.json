@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-07-10T14:04:03.690Z",
+  "timezone": "America/New_York",
+  "total_events": 1,
+  "events": [
+    {
+      "id": "ice-2075086308620276035-0",
+      "category": "arrest",
+      "event_type": "detention",
+      "title": "佛罗里达男子因射杀吉娃娃被指控，ICE对其实施移民扣留",
+      "summary": "佛罗里达男子米格尔·雷耶斯·罗德里格斯因自称自卫射杀吉娃娃被指控，ICE对其实施移民扣留。",
+      "people_count": null,
+      "occurred_at": null,
+      "published_at": "2026-07-09T05:15:03.000Z",
+      "basis_time": "2026-07-09T05:15:03.000Z",
+      "time_basis": "官方公开时间",
+      "city": "",
+      "state_code": "FL",
+      "state_name": "Florida",
+      "location_text": "佛罗里达",
+      "latitude": 27.766279,
+      "longitude": -81.686783,
+      "location_precision": "state",
+      "confidence": 100,
+      "source_name": "美国移民与海关执法局",
+      "source_url": "https://x.com/ICEgov/status/2075086308620276035",
+      "article_url": "/news/ice/2026/07/09/ice-2075086308620276035.html"
+    }
+  ]
+}

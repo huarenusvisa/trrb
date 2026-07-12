@@ -1,2 +1,4 @@
 /wp-content/uploads/:year/:month/:file  /assets/news-images/:year/:month/:file  200
 http://new.trrb.net/*  https://new.trrb.net/:splat  301!
+/topic/ice   /listing.html?q=ICE   200
+/topic/ice/  /listing.html?q=ICE   200

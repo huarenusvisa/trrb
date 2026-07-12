@@ -21,11 +21,11 @@ const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 loadLocalEnv(path.join(ROOT, ".env.ice"));
 
 const ICE_OFFICIAL_ACCOUNTS = mergeAccounts(
-  parseAccounts(process.env.ICE_OFFICIAL_ACCOUNTS || "ICEgov,HSI_HQ,DHSgov,CBP,TheJusticeDept,DOJCrimDiv"),
+  parseAccounts(process.env.ICE_OFFICIAL_ACCOUNTS || "ICEgov,HSI_HQ,DHSgov,CBP,USBPChief,TheJusticeDept,DOJCrimDiv,USCIS,OfficialFBOP,TxDPS,fdlepio,Arizona_DPS,CHP_HQ,nyspolice,MassStatePolice,GBI_GA,TNHighwayPatrol,NCSBI,CSP_News"),
   accountsForTopic("ice", ROOT, ["A"])
 );
 const ICE_TRUSTED_ACCOUNTS = mergeAccounts(
-  parseAccounts(process.env.ICE_TRUSTED_ACCOUNTS || "Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"),
+  parseAccounts(process.env.ICE_TRUSTED_ACCOUNTS || "Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost,NPR,thehill,CNBC,WSJ,BBCWorld,USATODAY,ReutersPolitics,AP_Politics"),
   accountsForTopic("ice", ROOT, ["B"])
 );
 const ICE_REVIEW_ACCOUNTS = parseAccounts(
@@ -368,50 +368,110 @@ export function buildIceQueryLanes() {
   }
 
   const lanes = [];
-  const officialPrimary = CONFIG.officialAccounts.filter(account => ["icegov", "hsi_hq"].includes(account.toLowerCase()));
+  const officialPrimary = CONFIG.officialAccounts.filter(account =>
+    ["icegov", "hsi_hq", "dhsgov", "cbp", "usbPchief".toLowerCase()].includes(account.toLowerCase())
+  );
   const officialRelated = CONFIG.officialAccounts.filter(account => !officialPrimary.includes(account));
-  const agencyTerms = '(ICE OR "Immigration and Customs Enforcement" OR HSI OR ERO OR deportation OR removal OR detained OR arrested OR "immigration enforcement")';
-  const primaryPart = officialPrimary.length ? `(${officialPrimary.map(account => `from:${account}`).join(" OR ")})` : "";
-  const relatedPart = officialRelated.length
-    ? `((${officialRelated.map(account => `from:${account}`).join(" OR ")}) ${agencyTerms})`
-    : "";
-  const officialParts = [primaryPart, relatedPart].filter(Boolean);
-  if (officialParts.length) {
+  const coreTerms = '(ICE OR "Immigration and Customs Enforcement" OR HSI OR ERO OR "Border Patrol" OR deportation OR removal OR detained OR arrested OR "immigration enforcement")';
+
+  for (const [index, accounts] of chunkAccountsForQuery(officialPrimary, coreTerms, 450).entries()) {
     lanes.push({
-      id: "official",
-      label: "联邦机构",
-      query: validateXQuery(`(${officialParts.join(" OR ")}) -is:retweet lang:en`),
+      id: index === 0 ? "official" : `official-core-${index + 1}`,
+      label: "联邦执法总部",
+      query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${coreTerms}) -is:retweet lang:en`),
     });
   }
 
-  const mediaTerms = '(ICE OR "ICE agents" OR "immigration agents" OR "immigration raid" OR deportation OR detained OR "Immigration and Customs Enforcement")';
+  for (const [index, accounts] of chunkAccountsForQuery(officialRelated, coreTerms, 450).entries()) {
+    lanes.push({
+      id: `official-related-${index + 1}`,
+      label: "州与地方官方机构",
+      query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${coreTerms}) -is:retweet -is:reply lang:en`),
+    });
+  }
+
+  const mediaTerms = '(ICE OR "ICE agents" OR "immigration agents" OR "immigration raid" OR deportation OR detained OR "Immigration and Customs Enforcement" OR HSI OR ERO)';
   for (const [index, accounts] of chunkAccountsForQuery(CONFIG.trustedAccounts, mediaTerms, 450).entries()) {
     lanes.push({
       id: `trusted-${index + 1}`,
-      label: "主流媒体",
+      label: "全国与地方媒体",
       query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${mediaTerms}) -is:retweet -is:reply lang:en`),
     });
   }
 
-  lanes.push({
-    id: "radar",
-    label: "全网雷达",
-    query: validateXQuery('(\"ICE agents\" OR \"ICE agent\" OR \"ICE raid\" OR \"ICE arrested\" OR \"ICE detained\" OR \"immigration raid\" OR \"immigration agents\" OR \"federal immigration agents\" OR \"deportation operation\" OR \"Immigration and Customs Enforcement\") -is:retweet -is:reply lang:en'),
-  });
+  // Search every registered ICE/HSI/CBP/DOJ branch by its official name, even when it has no dedicated X account.
+  const branchPhrases = registrySearchPhrases("ice")
+    .filter(value => /(?:ICE ERO|HSI |Border Patrol|U\.S\. Attorney|Department of Public Safety|State Police|Highway Patrol|Sheriff|Police Department)/i.test(value));
+  for (const [index, phrases] of chunkPhrasesForQuery(branchPhrases, '(arrested OR detained OR raid OR custody OR deportation OR removal OR operation OR indictment)', 450).entries()) {
+    lanes.push({
+      id: `branches-${index + 1}`,
+      label: "地方分支与州县市机构",
+      query: validateXQuery(`((${phrases.map(quoteQueryPhrase).join(" OR ")}) (arrested OR detained OR raid OR custody OR deportation OR removal OR operation OR indictment)) -is:retweet -is:reply lang:en`),
+    });
+  }
 
-  lanes.push({
-    id: "branches-local",
-    label: "地方分支与州县市机构",
-    query: validateXQuery('(\"Enforcement and Removal Operations\" OR \"ICE field office\" OR \"ERO officers\" OR \"HSI special agents\" OR \"ICE detainer\" OR \"transferred to ICE custody\" OR ((sheriff OR police OR \"district attorney\" OR prosecutor) (ICE OR HSI OR deportation OR immigration))) -is:retweet -is:reply lang:en'),
-  });
+  const discoveryQueries = [
+    ['radar', '抓捕与拘留雷达', '("ICE agents" OR "ICE agent" OR "ICE arrested" OR "ICE detained" OR "immigration agents" OR "federal immigration agents" OR "ERO officers") (arrested OR detained OR custody OR raid) -is:retweet -is:reply lang:en'],
+    ['radar-removal', '遣返与递解雷达', '("ICE removal" OR "removal operation" OR "deportation flight" OR "removed from the United States" OR "deported by ICE" OR "final order of removal" OR "transferred to ICE custody") -is:retweet -is:reply lang:en'],
+    ['radar-worksite', '工作场所执法雷达', '("worksite enforcement" OR "worksite operation" OR "employment site" OR "I-9 audit") (ICE OR HSI OR immigration) -is:retweet -is:reply lang:en'],
+    ['radar-detainer', '拘留令与移交雷达', '("ICE detainer" OR "immigration detainer" OR "honored the detainer" OR "released to ICE" OR "turned over to ICE" OR "transferred to ICE custody") -is:retweet -is:reply lang:en'],
+    ['radar-hsi', 'HSI联合执法雷达', '("HSI special agents" OR "Homeland Security Investigations" OR "HSI-led" OR "HSI operation") (arrested OR seized OR indicted OR operation) -is:retweet -is:reply lang:en'],
+    ['radar-court', '司法与检察雷达', '("illegal reentry" OR "reentry after removal" OR "immigration offense" OR "harboring aliens") ("U.S. Attorney" OR DOJ OR indictment OR sentenced) -is:retweet -is:reply lang:en'],
+    ['radar-local', '州县市联合行动雷达', '((sheriff OR police OR "district attorney" OR "state police" OR "department of public safety") (ICE OR HSI OR deportation OR "immigration agents")) -is:retweet -is:reply lang:en'],
+    ['radar-es', '西语社区雷达', '("agentes de ICE" OR "agente de ICE" OR "redada de ICE" OR "detenido por ICE" OR "arrestado por ICE" OR "operativo de inmigración" OR "deportación de ICE") -is:retweet -is:reply lang:es'],
+  ];
+  for (const [id, label, query] of discoveryQueries) {
+    lanes.push({ id, label, query: validateXQuery(query) });
+  }
 
-  lanes.push({
-    id: "radar-es",
-    label: "西语社区雷达",
-    query: validateXQuery('("agentes de ICE" OR "agente de ICE" OR "redada de ICE" OR "detenido por ICE" OR "arrestado por ICE" OR "operativo de inmigración" OR "deportación de ICE") -is:retweet -is:reply lang:es'),
-  });
+  return dedupeQueryLanes(lanes);
+}
 
-  return lanes;
+function registrySearchPhrases(topic) {
+  try {
+    const rows = JSON.parse(fsSync.readFileSync(path.join(ROOT, "data", "source-registry.json"), "utf8"));
+    return [...new Set((Array.isArray(rows) ? rows : [])
+      .filter(row => row && row.active !== false)
+      .filter(row => !Array.isArray(row.topics) || row.topics.includes(topic))
+      .flatMap(row => [row.name, row.branch && row.city ? `${row.branch} ${row.city}` : ""])
+      .map(value => String(value || "").trim())
+      .filter(value => value.length >= 4))];
+  } catch (error) {
+    console.warn(`ICE source phrase registry unavailable: ${error.message}`);
+    return [];
+  }
+}
+
+function quoteQueryPhrase(value) {
+  const clean = String(value || "").replace(/["\\]/g, " ").replace(/\s+/g, " ").trim();
+  return clean.includes(" ") ? `"${clean}"` : clean;
+}
+
+function chunkPhrasesForQuery(phrases, terms, targetLength) {
+  const chunks = [];
+  let current = [];
+  for (const phrase of phrases) {
+    const trial = [...current, phrase];
+    const query = `((${trial.map(quoteQueryPhrase).join(" OR ")}) ${terms}) -is:retweet -is:reply lang:en`;
+    if (current.length && query.length > targetLength) {
+      chunks.push(current);
+      current = [phrase];
+    } else {
+      current = trial;
+    }
+  }
+  if (current.length) chunks.push(current);
+  return chunks;
+}
+
+function dedupeQueryLanes(lanes) {
+  const seen = new Set();
+  return lanes.filter(lane => {
+    const key = String(lane.query || "").toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function validateXQuery(query) {

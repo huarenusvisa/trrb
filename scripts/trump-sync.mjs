@@ -19,10 +19,10 @@ const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 loadLocalEnv(path.join(ROOT, ".env.trump"));
 
 const PRIMARY_ACCOUNTS = parseAccounts(
-  process.env.TRUMP_PRIMARY_ACCOUNTS || "realDonaldTrump"
+  process.env.TRUMP_PRIMARY_ACCOUNTS || "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47"
 );
 const AUTO_ACCOUNTS = mergeAccounts(
-  parseAccounts(process.env.TRUMP_AUTO_ACCOUNTS || "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47,Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"),
+  parseAccounts(process.env.TRUMP_AUTO_ACCOUNTS || "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47,TheJusticeDept,DOJCrimDiv,HouseJudiciary,JudiciaryGOP,JudiciaryDems,SCOTUSblog,Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost,NPR,thehill,CNBC,WSJ,BBCWorld,USATODAY,ReutersPolitics,AP_Politics,ABCPolitics,NBCPolitics,CNNPolitics,FoxNewsPolitics"),
   accountsForTopic("trump", ROOT, ["A", "B"])
 );
 const REVIEW_ACCOUNTS = parseAccounts(
@@ -376,7 +376,10 @@ export function buildTrumpQueryLanes() {
     return [{ id: "override", label: "自定义搜索", query: validateTrumpQuery(CONFIG.queryOverride) }];
   }
 
-  const officialNames = new Set(["realdonaldtrump", "whitehouse", "potus", "presssec", "rapidresponse47"]);
+  const officialNames = new Set([
+    "realdonaldtrump", "whitehouse", "potus", "presssec", "rapidresponse47",
+    "thejusticedept", "dojcrimdiv", "housejudiciary", "judiciarygop", "judiciarydems"
+  ]);
   const officialAccounts = [...new Set([
     ...CONFIG.primaryAccounts,
     ...CONFIG.autoAccounts.filter(account => officialNames.has(account.toLowerCase()))
@@ -385,11 +388,11 @@ export function buildTrumpQueryLanes() {
     .filter(account => !officialNames.has(account.toLowerCase()));
   const lanes = [];
 
-  if (officialAccounts.length) {
+  for (const [index, accounts] of chunkTrumpAccounts(officialAccounts, '(Trump OR "Donald Trump" OR "President Trump" OR "White House")', 450).entries()) {
     lanes.push({
-      id: "official",
-      label: "特朗普与白宫官方",
-      query: validateTrumpQuery(`(${officialAccounts.map(account => `from:${account}`).join(" OR ")}) -is:retweet lang:en`),
+      id: index === 0 ? "official" : `official-${index + 1}`,
+      label: "特朗普、白宫、司法与国会官方",
+      query: validateTrumpQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) (Trump OR "Donald Trump" OR "President Trump" OR "White House")) -is:retweet lang:en`),
     });
   }
 
@@ -397,7 +400,7 @@ export function buildTrumpQueryLanes() {
   for (const [index, accounts] of chunkTrumpAccounts(mediaAccounts, mediaTerms, 450).entries()) {
     lanes.push({
       id: `trusted-${index + 1}`,
-      label: "主流媒体",
+      label: "全国与政治媒体",
       query: validateTrumpQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${mediaTerms}) -is:retweet -is:reply lang:en`),
     });
   }
@@ -412,12 +415,78 @@ export function buildTrumpQueryLanes() {
     }
   }
 
-  lanes.push({
-    id: "radar",
-    label: "全网雷达",
-    query: validateTrumpQuery('(\"President Trump\" OR \"Trump administration\" OR \"Trump announced\" OR \"Trump signed\" OR \"Trump said\" OR \"Trump ordered\" OR \"White House announced\" OR \"Donald Trump\") -is:retweet -is:reply lang:en'),
+  const registeredNames = registryTrumpPhrases();
+  for (const [index, phrases] of chunkTrumpPhrases(registeredNames, '(Trump OR "Trump administration" OR "President Trump")', 450).entries()) {
+    lanes.push({
+      id: `registered-${index + 1}`,
+      label: "登记机构与司法来源",
+      query: validateTrumpQuery(`((${phrases.map(quoteTrumpPhrase).join(" OR ")}) (Trump OR "Trump administration" OR "President Trump")) -is:retweet -is:reply lang:en`),
+    });
+  }
+
+  const discoveryQueries = [
+    ['radar', '讲话与白宫声明', '("President Trump said" OR "Trump announced" OR "Trump signed" OR "Trump ordered" OR "White House announced" OR "Trump speech" OR "Trump remarks") -is:retweet -is:reply lang:en'],
+    ['radar-executive', '行政令与政策', '(Trump OR "Trump administration") ("executive order" OR proclamation OR memorandum OR directive OR regulation OR policy) -is:retweet -is:reply lang:en'],
+    ['radar-judicial', '司法与法院', '(Trump OR "Donald Trump") (court OR judge OR ruling OR lawsuit OR appeal OR indictment OR trial OR subpoena OR prosecutor) -is:retweet -is:reply lang:en'],
+    ['radar-congress', '国会与任命', '(Trump OR "Trump administration") (Congress OR Senate OR House OR hearing OR confirmation OR nominee OR appointment) -is:retweet -is:reply lang:en'],
+    ['radar-immigration', '移民与边境政策', '(Trump OR "Trump administration") (immigration OR border OR ICE OR deportation OR asylum OR visa OR refugee) -is:retweet -is:reply lang:en'],
+    ['radar-economy', '经济与关税', '(Trump OR "Trump administration") (tariff OR trade OR economy OR inflation OR tax OR budget OR Federal Reserve OR jobs) -is:retweet -is:reply lang:en'],
+    ['radar-foreign', '外交与国家安全', '(Trump OR "President Trump") (Ukraine OR Russia OR China OR Iran OR Israel OR NATO OR sanctions OR ceasefire OR summit) -is:retweet -is:reply lang:en'],
+    ['radar-election', '选举与政治', '(Trump OR "Donald Trump") (election OR campaign OR rally OR Republican OR GOP OR polling OR ballot) -is:retweet -is:reply lang:en'],
+  ];
+  for (const [id, label, query] of discoveryQueries) {
+    lanes.push({ id, label, query: validateTrumpQuery(query) });
+  }
+
+  return dedupeTrumpLanes(lanes);
+}
+
+function registryTrumpPhrases() {
+  try {
+    const rows = JSON.parse(fsSync.readFileSync(path.join(ROOT, "data", "source-registry.json"), "utf8"));
+    return [...new Set((Array.isArray(rows) ? rows : [])
+      .filter(row => row && row.active !== false)
+      .filter(row => !Array.isArray(row.topics) || row.topics.includes("trump"))
+      .filter(row => ["official", "media"].includes(String(row.source_type || "").toLowerCase()))
+      .flatMap(row => [row.name, row.branch])
+      .map(value => String(value || "").trim())
+      .filter(value => value.length >= 4))];
+  } catch (error) {
+    console.warn(`Trump source phrase registry unavailable: ${error.message}`);
+    return [];
+  }
+}
+
+function quoteTrumpPhrase(value) {
+  const clean = String(value || "").replace(/["\\]/g, " ").replace(/\s+/g, " ").trim();
+  return clean.includes(" ") ? `"${clean}"` : clean;
+}
+
+function chunkTrumpPhrases(phrases, terms, targetLength) {
+  const chunks = [];
+  let current = [];
+  for (const phrase of phrases) {
+    const trial = [...current, phrase];
+    const query = `((${trial.map(quoteTrumpPhrase).join(" OR ")}) ${terms}) -is:retweet -is:reply lang:en`;
+    if (current.length && query.length > targetLength) {
+      chunks.push(current);
+      current = [phrase];
+    } else {
+      current = trial;
+    }
+  }
+  if (current.length) chunks.push(current);
+  return chunks;
+}
+
+function dedupeTrumpLanes(lanes) {
+  const seen = new Set();
+  return lanes.filter(lane => {
+    const key = String(lane.query || "").toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
   });
-  return lanes;
 }
 
 function validateTrumpQuery(query) {

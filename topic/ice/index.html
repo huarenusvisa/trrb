@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>ICE执法追踪 - 唐人日报</title>
-  <meta name="description" content="追踪美国ICE公开抓捕、拘留、城市分布、州级热力图及相关执法动态。">
+  <meta name="description" content="聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。">
   <link rel="canonical" href="https://trrb.net/topic/ice/">
-  <link rel="stylesheet" href="/assets/ice-topic.css?v=40">
+  <link rel="stylesheet" href="/assets/ice-topic.css?v=33">
 </head>
 <body>
   <header class="trrb-header">
@@ -25,19 +25,19 @@
 
         <div class="ice-summary-grid" aria-label="今日ICE公开数据">
           <article class="ice-summary-card">
-            <span class="summary-label">今日确认人数</span>
+            <span class="ice-summary-label">今日确认人数</span>
             <strong id="today-people">—</strong>
             <small>仅统计公开来源明确披露的数据</small>
           </article>
           <article class="ice-summary-card">
-            <span class="summary-label">今日涉及地点</span>
+            <span class="ice-summary-label">今日涉及地点</span>
             <strong id="today-locations">—</strong>
             <small>按已确认城市或地点去重</small>
           </article>
           <article class="ice-summary-card ice-summary-sync">
-            <span class="summary-label">纽约实时</span>
-            <strong id="ny-live-time">—</strong>
-            <small id="latest-sync">最近同步：—</small>
+            <span class="ice-summary-label">纽约实时</span>
+            <strong id="new-york-now">—</strong>
+            <small>最近同步：<span id="latest-sync">—</span></small>
           </article>
         </div>
 
@@ -54,50 +54,53 @@
     </section>
 
     <section class="ice-shell ice-heatmap-section" aria-labelledby="heatmap-title">
-      <div class="ice-heatmap-head">
+      <div class="ice-section-heading ice-map-heading">
         <div>
-          <span class="eyebrow">执法数据地图</span>
+          <div class="ice-kicker ice-kicker-small">执法数据地图</div>
           <h2 id="heatmap-title">美国ICE公开活跃热力图</h2>
-          <p id="heatmap-description">按州展示最近24小时公开执法事件，点击州可筛选相关动态。</p>
-        </div>
-        <div class="heatmap-toolbar">
-          <div class="range-tabs" id="range-controls" aria-label="统计时间范围">
-            <button type="button" data-range="24h" class="is-active"><b>24小时</b><span>最新动态</span></button>
-            <button type="button" data-range="7d"><b>7天</b><span>短期趋势</span></button>
-            <button type="button" data-range="30d"><b>30天</b><span>月度分布</span></button>
-          </div>
-          <div class="metric-tabs" id="metric-controls" aria-label="热力图统计指标">
-            <button type="button" data-metric="events" class="is-active">事件数</button>
-            <button type="button" data-metric="people">已披露人数</button>
-          </div>
+          <p id="heatmap-description">按州展示过去24小时公开执法事件，点击州可筛选相关动态。</p>
         </div>
       </div>
 
-      <div class="heatmap-kpis" aria-label="当前热力图摘要">
-        <article><span>统计范围</span><strong id="map-range-label">过去24小时</strong></article>
-        <article><span>公开事件</span><strong id="map-total-events">0</strong></article>
-        <article><span>已披露人数</span><strong id="map-total-people">0</strong></article>
-        <article><span>活跃州</span><strong id="map-active-states">0</strong></article>
+      <div class="ice-range-grid" id="range-controls" aria-label="热力图时间范围">
+        <button type="button" data-range="24h" class="ice-range-card is-active">
+          <strong>24小时</strong><span>最新动态</span>
+        </button>
+        <button type="button" data-range="7d" class="ice-range-card">
+          <strong>7天</strong><span>短期趋势</span>
+        </button>
+        <button type="button" data-range="30d" class="ice-range-card">
+          <strong>30天</strong><span>月度分布</span>
+        </button>
+      </div>
+
+      <div class="ice-metric-switch" id="metric-controls" aria-label="热力图指标">
+        <button type="button" data-metric="events" class="is-active">事件数</button>
+        <button type="button" data-metric="people">已披露人数</button>
+      </div>
+
+      <div class="ice-map-stats" aria-label="当前热力图统计摘要">
+        <article><span>统计范围</span><strong id="map-range-stat">过去24小时</strong></article>
+        <article><span>公开事件</span><strong id="map-events-stat">0</strong></article>
+        <article><span>已披露人数</span><strong id="map-people-stat" class="is-green">0人</strong></article>
+        <article><span>活跃州</span><strong id="map-states-stat">0</strong></article>
       </div>
 
       <div class="ice-map-card">
-        <div class="ice-map-main">
-          <div id="ice-heatmap" class="ice-heatmap" role="img" aria-label="美国各州ICE公开执法活跃热力图"></div>
-          <div id="heatmap-fallback" class="ice-heatmap-fallback" hidden></div>
-        </div>
-        <aside class="ice-map-ranking" aria-label="热点州排名">
-          <div class="ranking-head">
-            <div>
-              <span>热点州</span>
-              <strong id="ranking-metric-label">按事件数排序</strong>
-            </div>
-            <small>点击筛选</small>
+        <div id="ice-heatmap" class="ice-heatmap" role="img" aria-label="美国各州ICE公开执法活跃热力图"></div>
+        <div id="heatmap-fallback" class="ice-heatmap-fallback" hidden></div>
+
+        <div class="ice-rank-panel">
+          <div class="ice-rank-head">
+            <div><span>热点州</span><strong id="rank-title">按事件数排序</strong></div>
+            <button id="clear-state-filter" type="button" hidden>清除筛选</button>
+            <span id="rank-hint">点击筛选</span>
           </div>
-          <div id="top-state-list" class="top-state-list"></div>
-        </aside>
+          <div id="state-rank-list" class="ice-state-rank"></div>
+        </div>
+
         <div class="ice-map-footer">
           <span id="heatmap-note">正在加载热力图…</span>
-          <button id="clear-state-filter" type="button" hidden>清除州筛选</button>
         </div>
       </div>
     </section>
@@ -111,6 +114,6 @@
     </section>
   </main>
 
-  <script src="/assets/ice-topic.js?v=40" defer></script>
+  <script src="/assets/ice-topic.js?v=33" defer></script>
 </body>
 </html>

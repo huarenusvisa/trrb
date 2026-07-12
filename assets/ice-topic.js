@@ -19,163 +19,68 @@
 
   async function init() {
     startNewYorkClock();
-
-    // 数据加载与地图渲染分离：地图组件缺失或 Plotly 失败时，
-    // 不得连带导致统计和新闻显示“加载失败”。
     try {
       const [newsResult, stateResult, dashboardResult] = await Promise.allSettled([
-        fetchFirstJson([DATA_URLS.news, "/data/ice-live.json"], []),
-        fetchFirstJson([DATA_URLS.state], {}),
-        fetchFirstJson([DATA_URLS.dashboard, "/data/ice-stats.json", "/data/ice-map.json"], null)
+        fetchJson(DATA_URLS.news, []),
+        fetchJson(DATA_URLS.state, {}),
+        fetchJson(DATA_URLS.dashboard, null)
       ]);
-
-      news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value)
-        ? newsResult.value
-        : [];
-
+      news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value) ? newsResult.value : [];
       const liveNews = await fetchLiveArticles("ICE执法");
       if (liveNews.length) news = mergeLiveNews(liveNews, news);
-
       const state = stateResult.status === "fulfilled" ? stateResult.value : {};
-      const rawDashboard = dashboardResult.status === "fulfilled" ? dashboardResult.value : null;
-      dashboard = normalizeDashboard(rawDashboard) || makeDashboardFallback(news, state);
+      dashboard = dashboardResult.status === "fulfilled" && dashboardResult.value
+        ? dashboardResult.value
+        : makeDashboardFallback(news, state);
 
       renderSummary();
       renderTodayEvents();
       renderNews();
       bindControls();
-    } catch (error) {
-      console.error("ICE data loading failed:", error);
-      dashboard = makeDashboardFallback([], {});
-      renderSummary();
-      renderTodayEvents();
-      renderNews();
-      setText("latest-sync", "最近同步：暂无数据");
-    }
-
-    try {
       await renderHeatmap();
     } catch (error) {
-      console.warn("ICE heatmap skipped:", error);
-      safeShowFallback([]);
+      console.error("ICE topic failed:", error);
+      setText("today-people", "—");
+      setText("today-locations", "—");
+      setText("latest-sync", "最近同步：加载失败");
+      document.getElementById("today-event-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE统计数据。</div>';
+      document.getElementById("ice-news-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE新闻。</div>';
     }
   }
 
   async function fetchLiveArticles(category) {
-    const select = "id,title,summary,cover_image,source_name,source_url,published_at,created_at,city,state,arrest_count,count_in_ice_stats,primary_section,category_name,status";
-    const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
-    const filters = [
-      `primary_section=eq.${encodeURIComponent(category)}`,
-      `category_name=eq.${encodeURIComponent(category)}`
-    ];
-    const rows = [];
-
-    for (const filter of filters) {
-      try {
-        const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&${filter}&order=published_at.desc.nullslast,created_at.desc&limit=100`;
-        const response = await fetch(url, { headers, cache: "no-store" });
-        if (!response.ok) continue;
-        const result = await response.json();
-        if (Array.isArray(result)) rows.push(...result);
-      } catch (error) {
-        console.warn("ICE Supabase query skipped:", error);
-      }
+    try {
+      const select = "id,title,summary,cover_image,source_name,source_url,published_at,city,state,arrest_count,count_in_ice_stats";
+      const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&category_name=eq.${encodeURIComponent(category)}&order=published_at.desc&limit=100`;
+      const response = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+      if (!response.ok) return [];
+      return await response.json();
+    } catch {
+      return [];
     }
-
-    const seen = new Set();
-    return rows.filter(row => {
-      const key = String(row.id || row.source_url || row.title || "");
-      if (!key || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
   }
 
   function mergeLiveNews(live, archived) {
-    const mapped = live.map(row => {
-      const imageUrl = String(row.cover_image || "").trim();
-      const noImage = !imageUrl;
-      return {
-        id: row.id,
-        title: noImage ? normalizeIceBriefTitle(row.title) : String(row.title || "ICE执法动态").trim(),
-        summary: noImage ? normalizeIceBriefText(row.summary) : String(row.summary || "").trim(),
-        content_type: noImage ? "brief" : "article",
-        image_url: imageUrl,
-        source_name: row.source_name,
-        source_url: row.source_url,
-        published_at: row.published_at || row.created_at,
-        url: `/article.html?id=${encodeURIComponent(row.id)}`,
-        state_codes: row.state ? [normalizeStateCode(row.state)] : [],
-        enforcement_events: []
-      };
-    });
-
-    // Supabase 与静态 JSON 可能同时包含同一条 X 新闻。优先使用实时数据，
-    // 按来源链接和标题双重去重，避免页面出现重复卡片。
-    const seen = new Set();
-    const result = [];
-    for (const item of [...mapped, ...archived]) {
-      const sourceKey = String(item.source_url || "").trim().toLowerCase();
-      const idKey = String(item.x_post_id || item.id || "").trim().toLowerCase();
-      const titleKey = String(item.title || "").replace(/\s+/g, "").toLowerCase();
-      const stableKeys = [sourceKey && `source:${sourceKey}`, idKey && `id:${idKey}`].filter(Boolean);
-      const keys = stableKeys.length ? stableKeys : [titleKey && `title:${titleKey}`].filter(Boolean);
-      if (keys.some(key => seen.has(key))) continue;
-      keys.forEach(key => seen.add(key));
-      result.push(item);
-    }
-    return result;
+    const mapped = live.map(row => ({
+      id: row.id,
+      title: row.title,
+      summary: row.summary,
+      image_url: row.cover_image,
+      source_name: row.source_name,
+      source_url: row.source_url,
+      published_at: row.published_at,
+      url: `/article.html?id=${encodeURIComponent(row.id)}`,
+      state_codes: row.state ? [normalizeStateCode(row.state)] : [],
+      enforcement_events: []
+    }));
+    const seen = new Set(mapped.map(item => String(item.id)));
+    return mapped.concat(archived.filter(item => !seen.has(String(item.id))));
   }
 
   async function fetchJson(url, fallback) {
-    try {
-      const joiner = url.includes("?") ? "&" : "?";
-      const response = await fetch(`${url}${joiner}v=${Date.now()}`, { cache: "no-store" });
-      if (!response.ok) return fallback;
-      return await response.json();
-    } catch (error) {
-      console.warn(`ICE JSON unavailable: ${url}`, error);
-      return fallback;
-    }
-  }
-
-  async function fetchFirstJson(urls, fallback) {
-    for (const url of urls) {
-      const value = await fetchJson(url, null);
-      if (value !== null && value !== undefined) return value;
-    }
-    return fallback;
-  }
-
-  function normalizeDashboard(value) {
-    if (!value || typeof value !== "object") return null;
-    if (value.today && value.heatmap) return value;
-
-    // 兼容 ice-stats.json / ice-map.json 等旧格式。
-    const todaySource = value.today || value.stats?.today || {};
-    const mapSource = value.heatmap || value.map || {};
-    const normalizeRange = range => {
-      const source = mapSource?.[range]?.states || mapSource?.[range] || [];
-      return { states: Array.isArray(source) ? source : [] };
-    };
-
-    return {
-      generated_at: value.generated_at || value.updated_at || value.latest_sync_at || "",
-      latest_sync_at: value.latest_sync_at || value.updated_at || value.generated_at || "",
-      total_published: Number(value.total_published || 0),
-      today: {
-        date: todaySource.date || "",
-        known_people: Number(todaySource.known_people ?? todaySource.confirmed_people ?? 0),
-        event_count: Number(todaySource.event_count ?? todaySource.events_count ?? 0),
-        location_count: Number(todaySource.location_count ?? todaySource.locations ?? 0),
-        events: Array.isArray(todaySource.events) ? todaySource.events : []
-      },
-      heatmap: {
-        "24h": normalizeRange("24h"),
-        "7d": normalizeRange("7d"),
-        "30d": normalizeRange("30d")
-      }
-    };
+    const response = await fetch(`${url}?v=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) return fallback;
+    return response.json();
   }
 
   function startNewYorkClock() {
@@ -193,7 +98,6 @@
 
   function renderTodayEvents() {
     const root = document.getElementById("today-event-list");
-    if (!root) return;
     const events = Array.isArray(dashboard?.today?.events) ? dashboard.today.events : [];
     if (!events.length) {
       root.innerHTML = '<div class="ice-empty">今天暂无同时披露抓捕或拘留、时间和地点的公开信息。</div>';
@@ -217,8 +121,7 @@
 
   function renderNews() {
     const root = document.getElementById("ice-news-list");
-    if (!root) return;
-    const sorted = [...news].sort((a, b) => new Date(b.published_at || b.created_at || 0) - new Date(a.published_at || a.created_at || 0));
+    const sorted = [...news].sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
     if (!sorted.length) {
       root.innerHTML = '<div class="ice-empty">暂时没有已发布的ICE新闻。</div>';
       return;
@@ -228,102 +131,27 @@
       const states = Array.isArray(item.state_codes)
         ? item.state_codes.map(normalizeStateCode).filter(Boolean)
         : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
-      const imageUrl = String(item.image_url || "").trim();
-      const hasImage = Boolean(imageUrl);
-      const displayTitle = hasImage
-        ? String(item.title || "ICE执法动态").trim()
-        : normalizeIceBriefTitle(item.title);
-      const displaySummary = hasImage
-        ? String(item.summary || "").trim()
-        : normalizeIceBriefText(item.summary);
-      const image = hasImage
-        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(imageUrl)}" alt="${escapeAttr(displayTitle || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
-        : "";
-      const cardClass = hasImage ? "has-image" : "no-image";
-      const linkText = hasImage ? "查看全文 →" : "查看详情 →";
+      const image = item.image_url
+        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE官方图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+        : '<div class="ice-news-thumb-wrap" aria-hidden="true"></div>';
       return `
-        <article class="ice-news-card ${cardClass}" data-states="${escapeAttr(states.join(","))}" data-brief-title="${escapeAttr(normalizeIceBriefTitle(item.title))}">
+        <article class="ice-news-card" data-states="${escapeAttr(states.join(","))}">
           ${image}
           <div class="ice-news-body">
             <div class="ice-news-meta">
               <span class="ice-news-label">${escapeHtml(item.source_name || "ICE执法信息")}</span>
               <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
             </div>
-            <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(displayTitle)}</a></h3>
-            <p>${escapeHtml(displaySummary)}</p>
-            <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">${linkText}</a>
+            <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
+            <p>${escapeHtml(item.summary || "")}</p>
+            <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">查看全文 →</a>
           </div>
         </article>`;
     }).join("");
-
-    // X 图片地址偶尔会失效。失效后立即切换为纯文字卡片，
-    // 不保留空白图片框，也不让长标题挤成狭窄竖排。
-    root.querySelectorAll(".ice-news-thumb").forEach(image => {
-      image.addEventListener("error", () => {
-        const card = image.closest(".ice-news-card");
-        if (!card) return;
-        image.closest(".ice-news-thumb-wrap")?.remove();
-        card.classList.remove("has-image");
-        card.classList.add("no-image");
-        const titleLink = card.querySelector("h3 a");
-        if (titleLink) titleLink.textContent = card.dataset.briefTitle || "ICE执法最新动态";
-        const detailLink = card.querySelector(".ice-news-link");
-        if (detailLink) detailLink.textContent = "查看详情 →";
-      }, { once: true });
-    });
-  }
-
-  function normalizeIceBriefTitle(value) {
-    let clean = String(value || "ICE执法动态")
-      .replace(/[\r\n\t]+/g, " ")
-      .replace(/\s+/g, " ")
-      .replace(/[。！？!?]+$/g, "")
-      .replace(/美国移民与海关执法局/g, "ICE")
-      .replace(/美国国土安全部/g, "DHS")
-      .trim();
-    if (!clean) clean = "ICE执法最新动态";
-
-    let chars = Array.from(clean);
-    if (chars.length > 18) {
-      clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
-      chars = Array.from(clean);
-    }
-    if (chars.length < 8) {
-      clean = `${clean}相关动态`;
-      chars = Array.from(clean);
-    }
-    if (chars.length > 18) clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
-    return clean;
-  }
-
-  function normalizeIceBriefText(value) {
-    const clean = String(value || "ICE相关公开信息已更新。")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/[\r\n\t]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    const chars = Array.from(clean);
-    return chars.length > 90 ? `${chars.slice(0, 90).join("")}…` : clean;
   }
 
   function bindControls() {
-    document.getElementById("range-controls")?.addEventListener("click", async event => {
-      const button = event.target.closest("button[data-range]");
-      if (!button) return;
-      selectedRange = button.dataset.range;
-      setActiveButton("range-controls", button);
-      await renderHeatmap();
-    });
-
-    document.getElementById("metric-controls")?.addEventListener("click", async event => {
-      const button = event.target.closest("button[data-metric]");
-      if (!button) return;
-      selectedMetric = button.dataset.metric;
-      setActiveButton("metric-controls", button);
-      await renderHeatmap();
-    });
-
-    document.getElementById("clear-state-filter")?.addEventListener("click", () => filterByState(""));
+    // v42: map controls were intentionally removed.
   }
 
   function setActiveButton(parentId, active) {
@@ -331,51 +159,34 @@
   }
 
   async function renderHeatmap() {
-    const rows = dashboard?.heatmap?.[selectedRange]?.states || [];
-    const totals = summarizeRows(rows);
-    updateHeatmapSummary(totals);
-    renderTopStates(rows);
-
-    const note = document.getElementById("heatmap-note");
-    note.textContent = `${rangeLabel(selectedRange)}共公开${selectedMetric === "people" ? `${totals.people}人` : `${totals.events}起事件`}`;
-
-    if (!rows.length) {
-      safeShowFallback(rows);
-      return;
-    }
+    const rows = dashboard?.heatmap?.["24h"]?.states || [];
+    const map = document.getElementById("ice-heatmap");
+    const fallback = document.getElementById("heatmap-fallback");
+    if (!map) return;
 
     try {
       await ensurePlotly();
-      const map = document.getElementById("ice-heatmap");
-      if (!map) return;
+
       map.hidden = false;
-      const fallback = document.getElementById("heatmap-fallback");
       if (fallback) fallback.hidden = true;
-      const values = rows.map(row => Number(row[selectedMetric] || 0));
-      const isPeople = selectedMetric === "people";
+
+      const values = rows.map(row => Number(row.events || 0));
+
       await window.Plotly.react(map, [{
         type: "choropleth",
         locationmode: "USA-states",
         locations: rows.map(row => row.code),
         z: values,
-        text: rows.map(row => `${row.name || row.code}<br>事件：${Number(row.events || 0)}<br>已披露人数：${Number(row.people || 0)}`),
+        text: rows.map(row =>
+          `${row.name || row.code}<br>事件：${Number(row.events || 0)}<br>已披露人数：${Number(row.people || 0)}`
+        ),
         hovertemplate: "%{text}<extra></extra>",
-        colorscale: isPeople
-          ? [[0, "#edf8f2"], [.25, "#bfe4ce"], [.6, "#55ae7d"], [1, "#167447"]]
-          : [[0, "#edf6fa"], [.25, "#b8dce9"], [.6, "#4b9fbe"], [1, "#005f88"]],
+        colorscale: [[0, "#edf6fa"], [.25, "#b8dce9"], [.6, "#4b9fbe"], [1, "#005f88"]],
         marker: { line: { color: "#ffffff", width: 1.2 } },
-        colorbar: {
-          title: isPeople ? "人数" : "事件",
-          thickness: 10,
-          len: .62,
-          x: .98,
-          y: .5,
-          tickfont: { size: 11 },
-          titlefont: { size: 12 }
-        }
+        showscale: false
       }], {
         autosize: true,
-        margin: { l: 0, r: 28, t: 8, b: 4 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "#ffffff",
         plot_bgcolor: "#ffffff",
         geo: {
@@ -390,11 +201,19 @@
         displayModeBar: false,
         scrollZoom: false
       });
-      map.removeAllListeners?.("plotly_click");
-      map.on?.("plotly_click", data => filterByState(data?.points?.[0]?.location || ""));
+
+      window.setTimeout(() => {
+        try {
+          window.Plotly.Plots.resize(map);
+        } catch (_) {}
+      }, 80);
     } catch (error) {
-      console.warn("Plotly unavailable, using fallback list.", error);
-      safeShowFallback(rows);
+      console.warn("ICE map rendering failed.", error);
+      map.hidden = true;
+      if (fallback) {
+        fallback.hidden = false;
+        fallback.textContent = "地图暂时无法加载，请稍后刷新。";
+      }
     }
   }
 
@@ -440,12 +259,10 @@
     root.querySelectorAll("button[data-state]").forEach(button => button.addEventListener("click", () => filterByState(button.dataset.state)));
   }
 
-  function safeShowFallback(rows) {
+  function showFallback(rows) {
     const map = document.getElementById("ice-heatmap");
     const fallback = document.getElementById("heatmap-fallback");
-    if (!map && !fallback) return;
-    if (map) map.hidden = true;
-    if (!fallback) return;
+    map.hidden = true;
     fallback.hidden = false;
     if (!rows.length) {
       fallback.innerHTML = '<div class="ice-empty">当前时间范围内暂无可定位到州的ICE公开执法数据。</div>';

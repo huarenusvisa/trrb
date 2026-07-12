@@ -1,0 +1,465 @@
+{
+  "version": 2,
+  "description": "TRRB ICE/DHS 24-lane public-source registry",
+  "query_lanes": [
+    {
+      "id": "ice-official",
+      "label": "ICE official",
+      "source_type": "official",
+      "agency": "ICE",
+      "trust": 100,
+      "enabled": true,
+      "query": "from:ICEgov -is:retweet"
+    },
+    {
+      "id": "dhs-official",
+      "label": "DHS official",
+      "source_type": "official",
+      "agency": "DHS",
+      "trust": 100,
+      "enabled": true,
+      "query": "from:DHSgov (ICE OR immigration OR deportation OR removal OR detention OR enforcement OR arrested) -is:retweet"
+    },
+    {
+      "id": "cbp-official",
+      "label": "CBP official",
+      "source_type": "official",
+      "agency": "CBP",
+      "trust": 100,
+      "enabled": true,
+      "query": "from:CBP (ICE OR immigration OR removal OR deportation OR detention OR arrested OR enforcement) -is:retweet"
+    },
+    {
+      "id": "hsi-official",
+      "label": "HSI official",
+      "source_type": "official",
+      "agency": "HSI",
+      "trust": 100,
+      "enabled": true,
+      "query": "from:HSI_HQ (arrest OR arrested OR detention OR operation OR investigation OR smuggling OR trafficking) -is:retweet"
+    },
+    {
+      "id": "doj-usattorneys",
+      "label": "DOJ and U.S. Attorneys",
+      "source_type": "official",
+      "agency": "DOJ",
+      "trust": 98,
+      "enabled": true,
+      "query": "(from:TheJusticeDept OR \"U.S. Attorney\") (ICE OR HSI OR immigration OR deportation OR alien OR smuggling OR removal) -is:retweet"
+    },
+    {
+      "id": "federal-partners",
+      "label": "Federal enforcement partners",
+      "source_type": "official",
+      "agency": "Federal",
+      "trust": 96,
+      "enabled": true,
+      "query": "(from:USMarshalsHQ OR from:FBI OR from:DEAHQ OR from:ATFHQ) (ICE OR HSI OR immigration OR alien OR deportation OR smuggling) -is:retweet"
+    },
+    {
+      "id": "ero-operations",
+      "label": "ERO operations",
+      "source_type": "official",
+      "agency": "ERO",
+      "trust": 94,
+      "enabled": true,
+      "query": "(ICE OR ERO OR \"Enforcement and Removal Operations\") (arrest OR arrested OR detained OR fugitive OR operation) -is:retweet lang:en"
+    },
+    {
+      "id": "removal-deportation",
+      "label": "Removal and deportation",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 84,
+      "enabled": true,
+      "query": "(ICE OR immigration) (removed OR deported OR deportation OR repatriated OR removal flight) -is:retweet lang:en"
+    },
+    {
+      "id": "detention-arrest",
+      "label": "Detention and arrests",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 84,
+      "enabled": true,
+      "query": "(ICE OR \"immigration agents\" OR HSI) (arrested OR detained OR custody OR detention) -is:retweet lang:en"
+    },
+    {
+      "id": "raid-operation",
+      "label": "Raids and operations",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "query": "(ICE OR HSI OR \"immigration enforcement\") (raid OR raids OR operation OR sweep OR warrant) -is:retweet lang:en"
+    },
+    {
+      "id": "worksite-enforcement",
+      "label": "Worksite enforcement",
+      "source_type": "media",
+      "agency": "HSI",
+      "trust": 82,
+      "enabled": true,
+      "query": "(ICE OR HSI) (worksite OR workplace OR employer OR factory OR restaurant) (raid OR arrest OR operation OR audit) -is:retweet lang:en"
+    },
+    {
+      "id": "courthouse-enforcement",
+      "label": "Courthouse enforcement",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "query": "(ICE OR \"immigration agents\") (courthouse OR court OR hearing) (arrest OR detained OR custody) -is:retweet lang:en"
+    },
+    {
+      "id": "school-hospital-community",
+      "label": "Schools hospitals community locations",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 80,
+      "enabled": true,
+      "query": "(ICE OR \"immigration agents\") (school OR hospital OR church OR neighborhood OR community) (arrest OR detained OR agents OR enforcement) -is:retweet lang:en"
+    },
+    {
+      "id": "smuggling-trafficking",
+      "label": "Smuggling and trafficking",
+      "source_type": "official",
+      "agency": "HSI",
+      "trust": 92,
+      "enabled": true,
+      "query": "(HSI OR ICE) (human smuggling OR human trafficking OR migrant smuggling) (arrest OR charged OR indicted OR operation) -is:retweet lang:en"
+    },
+    {
+      "id": "fugitive-sex-offender",
+      "label": "Fugitives and public safety arrests",
+      "source_type": "official",
+      "agency": "ICE",
+      "trust": 92,
+      "enabled": true,
+      "query": "(ICE OR ERO) (fugitive OR sex offender OR wanted OR public safety) (arrested OR removed OR detained) -is:retweet lang:en"
+    },
+    {
+      "id": "national-wire",
+      "label": "Wire services and national desks",
+      "source_type": "media",
+      "agency": "",
+      "trust": 94,
+      "enabled": true,
+      "query": "(ICE OR \"immigration enforcement\" OR HSI) (arrest OR detained OR raid OR deported OR removal) (Reuters OR AP OR Bloomberg) -is:retweet lang:en"
+    },
+    {
+      "id": "national-tv",
+      "label": "National television news",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88,
+      "enabled": true,
+      "query": "(ICE OR \"immigration agents\") (arrest OR detained OR raid OR operation OR deportation) (CNN OR NBC OR ABC OR CBS OR Fox) -is:retweet lang:en"
+    },
+    {
+      "id": "national-politics",
+      "label": "National politics and policy media",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88,
+      "enabled": true,
+      "query": "(ICE OR \"immigration enforcement\") (arrest OR detention OR deportation OR operation) (Axios OR Politico OR NPR OR PBS) -is:retweet lang:en"
+    },
+    {
+      "id": "local-tv",
+      "label": "Local television stations",
+      "source_type": "media",
+      "agency": "",
+      "trust": 80,
+      "enabled": true,
+      "query": "(ICE OR HSI OR \"immigration agents\") (arrest OR detained OR raid OR operation) (\"local news\" OR TV OR News) -is:retweet lang:en"
+    },
+    {
+      "id": "local-newspapers",
+      "label": "Local newspapers",
+      "source_type": "media",
+      "agency": "",
+      "trust": 80,
+      "enabled": true,
+      "query": "(ICE OR HSI OR \"immigration enforcement\") (arrest OR detention OR raid OR deportation) (reported OR newsroom OR newspaper) -is:retweet lang:en"
+    },
+    {
+      "id": "spanish-national",
+      "label": "Spanish national media",
+      "source_type": "media",
+      "agency": "",
+      "trust": 82,
+      "enabled": true,
+      "query": "(ICE OR inmigración) (arresto OR detenido OR redada OR deportación OR operativo) -is:retweet lang:es"
+    },
+    {
+      "id": "spanish-local",
+      "label": "Spanish local reports",
+      "source_type": "media",
+      "agency": "",
+      "trust": 76,
+      "enabled": true,
+      "query": "(ICE OR agentes migratorios) (arrestaron OR detuvieron OR redada OR operativo) (ciudad OR condado OR comunidad) -is:retweet lang:es"
+    },
+    {
+      "id": "legal-advocacy",
+      "label": "Legal and advocacy organizations",
+      "source_type": "social",
+      "agency": "",
+      "trust": 68,
+      "enabled": true,
+      "query": "(ICE OR \"immigration agents\") (arrest OR detained OR raid OR sighting) (lawyer OR legal OR rights OR advocacy) -is:retweet lang:en"
+    },
+    {
+      "id": "community-sightings",
+      "label": "Community field reports",
+      "source_type": "social",
+      "agency": "",
+      "trust": 58,
+      "enabled": true,
+      "query": "(ICE OR \"immigration agents\") (seen OR spotted OR sighting OR agents OR raid) (today OR tonight OR morning) -is:retweet lang:en"
+    }
+  ],
+  "accounts": [
+    {
+      "username": "ICEgov",
+      "source_name": "美国移民与海关执法局",
+      "source_type": "official",
+      "agency": "ICE",
+      "trust": 100
+    },
+    {
+      "username": "DHSgov",
+      "source_name": "美国国土安全部",
+      "source_type": "official",
+      "agency": "DHS",
+      "trust": 100
+    },
+    {
+      "username": "CBP",
+      "source_name": "美国海关与边境保护局",
+      "source_type": "official",
+      "agency": "CBP",
+      "trust": 100
+    },
+    {
+      "username": "HSI_HQ",
+      "source_name": "美国国土安全调查局",
+      "source_type": "official",
+      "agency": "HSI",
+      "trust": 100
+    },
+    {
+      "username": "TheJusticeDept",
+      "source_name": "美国司法部",
+      "source_type": "official",
+      "agency": "DOJ",
+      "trust": 100
+    },
+    {
+      "username": "USMarshalsHQ",
+      "source_name": "美国法警局",
+      "source_type": "official",
+      "agency": "USMS",
+      "trust": 98
+    },
+    {
+      "username": "FBI",
+      "source_name": "美国联邦调查局",
+      "source_type": "official",
+      "agency": "FBI",
+      "trust": 98
+    },
+    {
+      "username": "DEAHQ",
+      "source_name": "美国缉毒局",
+      "source_type": "official",
+      "agency": "DEA",
+      "trust": 98
+    },
+    {
+      "username": "ATFHQ",
+      "source_name": "美国烟酒枪炮及爆炸物管理局",
+      "source_type": "official",
+      "agency": "ATF",
+      "trust": 98
+    },
+    {
+      "username": "Reuters",
+      "source_name": "路透社",
+      "source_type": "media",
+      "agency": "",
+      "trust": 96
+    },
+    {
+      "username": "AP",
+      "source_name": "美联社",
+      "source_type": "media",
+      "agency": "",
+      "trust": 96
+    },
+    {
+      "username": "business",
+      "source_name": "彭博社",
+      "source_type": "media",
+      "agency": "",
+      "trust": 94
+    },
+    {
+      "username": "CNN",
+      "source_name": "CNN",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "FoxNews",
+      "source_name": "福克斯新闻",
+      "source_type": "media",
+      "agency": "",
+      "trust": 84
+    },
+    {
+      "username": "NBCNews",
+      "source_name": "NBC新闻",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "ABC",
+      "source_name": "ABC新闻",
+      "source_type": "media",
+      "agency": "",
+      "trust": 86
+    },
+    {
+      "username": "CBSNews",
+      "source_name": "CBS新闻",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "axios",
+      "source_name": "Axios",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "politico",
+      "source_name": "Politico",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "NPR",
+      "source_name": "美国国家公共广播电台",
+      "source_type": "media",
+      "agency": "",
+      "trust": 90
+    },
+    {
+      "username": "PBS",
+      "source_name": "美国公共电视网",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "nytimes",
+      "source_name": "纽约时报",
+      "source_type": "media",
+      "agency": "",
+      "trust": 92
+    },
+    {
+      "username": "washingtonpost",
+      "source_name": "华盛顿邮报",
+      "source_type": "media",
+      "agency": "",
+      "trust": 92
+    },
+    {
+      "username": "latimes",
+      "source_name": "洛杉矶时报",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "MiamiHerald",
+      "source_name": "迈阿密先驱报",
+      "source_type": "media",
+      "agency": "",
+      "trust": 86
+    },
+    {
+      "username": "TexasTribune",
+      "source_name": "得州论坛报",
+      "source_type": "media",
+      "agency": "",
+      "trust": 88
+    },
+    {
+      "username": "Univision",
+      "source_name": "Univision",
+      "source_type": "media",
+      "agency": "",
+      "trust": 84
+    },
+    {
+      "username": "TelemundoNews",
+      "source_name": "Telemundo新闻",
+      "source_type": "media",
+      "agency": "",
+      "trust": 84
+    }
+  ],
+  "allowed_domains": [
+    "ice.gov",
+    "dhs.gov",
+    "cbp.gov",
+    "justice.gov",
+    "usmarshals.gov",
+    "fbi.gov",
+    "dea.gov",
+    "atf.gov",
+    "uscourts.gov",
+    "whitehouse.gov",
+    "reuters.com",
+    "apnews.com",
+    "bloomberg.com",
+    "cnn.com",
+    "foxnews.com",
+    "nbcnews.com",
+    "abcnews.go.com",
+    "cbsnews.com",
+    "axios.com",
+    "politico.com",
+    "npr.org",
+    "pbs.org",
+    "nytimes.com",
+    "washingtonpost.com",
+    "latimes.com",
+    "miamiherald.com",
+    "texastribune.org",
+    "usatoday.com",
+    "newsweek.com",
+    "time.com",
+    "theguardian.com",
+    "bbc.com",
+    "univision.com",
+    "telemundo.com",
+    "nbcmiami.com",
+    "nbcnewyork.com",
+    "nbclosangeles.com",
+    "abc7ny.com",
+    "abc7.com",
+    "abc13.com",
+    "cbsnews.com",
+    "fox5ny.com",
+    "foxla.com"
+  ]
+}

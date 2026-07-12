@@ -3,7 +3,7 @@ import fsSync from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
-import { upsertAutomatedArticle, writeAutomationLog } from "./supabase-news.mjs";
+import { upsertAutomatedArticle, upsertNewsCandidate, writeAutomationLog } from "./supabase-news.mjs";
 import { accountsForTopic, sourceByAccount } from "./source-registry.mjs";
 
 const ROOT = process.cwd();
@@ -286,14 +286,14 @@ async function main() {
   await writeJson(NEWS_FILE, news);
   await writeJson(PENDING_FILE, pending);
   await writeAutomationLog({
-    pipeline: "ice-radar-v3",
+    pipeline: "ice-radar-v4",
     fetched: fetched.posts.length,
     processed: immediate.length + retryBatch.length,
     published: publishedCount,
     drafted: pendingCount,
     duplicates: duplicateSkippedCount,
     details: { lane_stats: fetched.laneStats || [], total_news: news.length, total_pending: pending.length }
-  }).catch(error => console.error("ICE automation log failed:", errorMessage(error)));
+  });
   await writeJson(STATE_FILE, state);
   await writeJson(DASHBOARD_FILE, dashboard);
   await updateSitemap(news, now);
@@ -731,43 +731,58 @@ function isDeportationArticle(ai, events = []) {
 }
 
 async function syncIceCmsArticle(post, ai, status, reviewReason, events = [], forcedCategory = "") {
-  try {
-    const primaryEvent = events.find(event => event.event_type === "arrest" || event.event_type === "detention") || events[0] || {};
-    const countable = status === "published" && forcedCategory !== "驱逐快报" &&
-      ["arrest", "detention"].includes(primaryEvent.event_type) &&
-      Number.isInteger(primaryEvent.people_count) && primaryEvent.people_count > 0 &&
-      Boolean(primaryEvent.city || primaryEvent.location_text) && Boolean(primaryEvent.occurred_at);
-    const categoryName = forcedCategory || (isDeportationArticle(ai, events) ? "驱逐快报" : "ICE执法");
-    await upsertAutomatedArticle({
-      externalId: `x-ice-${post.id}`,
-      automationSource: "ice-radar-v3",
-      title: String(ai?.title || "ICE动态").trim(),
-      summary: String(ai?.summary || "").trim(),
-      bodyParagraphs: Array.isArray(ai?.body_paragraphs) ? ai.body_paragraphs : [],
-      categoryName,
-      primarySection: categoryName,
-      relatedSections: categoryName === "驱逐快报" ? ["ICE执法"] : [],
-      coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
-      sourceUrl: post.x_url,
-      sourceName: sourceDisplayName(post),
-      sourceAccount: post.author_username || post.author?.username || "",
-      sourceLevel: post.source_tier || ai?.verified_level || "",
-      confidence: ai?.confidence || 0,
-      reviewReason,
-      status,
-      publishedAt: post.created_at,
-      eventDate: primaryEvent.occurred_at || null,
-      arrestCount: countable ? primaryEvent.people_count : null,
-      city: primaryEvent.city || "",
-      state: primaryEvent.state_code || primaryEvent.state_name || "",
-      countInIceStats: countable,
-      tags: [ai?.category, ...(ai?.keywords || [])].filter(Boolean),
-    });
-  } catch (error) {
-    console.error(`Supabase ICE sync failed for ${post.id}:`, errorMessage(error));
-  }
+  const primaryEvent = events.find(event => event.event_type === "arrest" || event.event_type === "detention") || events[0] || {};
+  const countable = status === "published" && forcedCategory !== "驱逐快报" &&
+    ["arrest", "detention"].includes(primaryEvent.event_type) &&
+    Number.isInteger(primaryEvent.people_count) && primaryEvent.people_count > 0 &&
+    Boolean(primaryEvent.city || primaryEvent.location_text) && Boolean(primaryEvent.occurred_at);
+  const categoryName = forcedCategory || (isDeportationArticle(ai, events) ? "驱逐快报" : "ICE执法");
+  const articleResult = await upsertAutomatedArticle({
+    externalId: `x-ice-${post.id}`,
+    automationSource: "ice-radar-v4",
+    title: String(ai?.title || "ICE动态").trim(),
+    summary: String(ai?.summary || "").trim(),
+    bodyParagraphs: Array.isArray(ai?.body_paragraphs) ? ai.body_paragraphs : [],
+    categoryName,
+    primarySection: categoryName,
+    relatedSections: categoryName === "驱逐快报" ? ["ICE执法"] : [],
+    coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
+    sourceUrl: post.x_url,
+    sourceName: sourceDisplayName(post),
+    sourceAccount: post.author_username || post.author?.username || "",
+    sourceLevel: post.source_tier || ai?.verified_level || "",
+    confidence: ai?.confidence || 0,
+    reviewReason,
+    status,
+    publishedAt: post.created_at,
+    eventDate: primaryEvent.occurred_at || null,
+    arrestCount: countable ? primaryEvent.people_count : null,
+    city: primaryEvent.city || "",
+    state: primaryEvent.state_code || primaryEvent.state_name || "",
+    countInIceStats: countable,
+    tags: [ai?.category, ...(ai?.keywords || [])].filter(Boolean),
+    riskFlags: ai?.needs_review ? ["needs_review"] : [],
+  });
+  await upsertNewsCandidate({
+    externalId: `x-ice-${post.id}`,
+    pipeline: "ice-radar-v4",
+    sourceUrl: post.x_url,
+    sourceAccount: post.author_username || post.author?.username || "",
+    sourceName: sourceDisplayName(post),
+    sourceLevel: post.source_tier || ai?.verified_level || "",
+    rawText: post.text || "",
+    rawPayload: { id: post.id, created_at: post.created_at, query_lane: post.query_lane || "", media: post.media || [] },
+    aiPayload: ai || {},
+    proposedSection: categoryName,
+    confidence: ai?.confidence || 0,
+    decision: status === "published" ? "published" : "draft",
+    decisionReason: reviewReason || "",
+    articleId: articleResult.article?.id || null,
+    collectedAt: post.created_at || new Date().toISOString(),
+    processedAt: new Date().toISOString(),
+  });
+  return articleResult;
 }
-
 
 async function backfillRecentNewsEvents(news) {
   const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
@@ -1627,6 +1642,7 @@ async function fetchXJsonWithRetry(url, options = {}, label = "X API") {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 
 async function readResponseJson(response, label) {
   const text = await response.text();

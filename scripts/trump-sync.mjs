@@ -3,7 +3,7 @@ import fsSync from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
-import { upsertAutomatedArticle, writeAutomationLog } from "./supabase-news.mjs";
+import { upsertAutomatedArticle, upsertNewsCandidate, writeAutomationLog } from "./supabase-news.mjs";
 import { accountsForTopic, sourceByAccount } from "./source-registry.mjs";
 
 const ROOT = process.cwd();
@@ -250,7 +250,7 @@ export async function main() {
   await writeJson(NEWS_FILE, news);
   await writeJson(PENDING_FILE, pending);
   await writeAutomationLog({
-    pipeline: "trump-radar-v3",
+    pipeline: "trump-radar-v4",
     fetched: fetched.posts.length,
     processed: toProcess.length,
     published: publishedCount,
@@ -258,7 +258,7 @@ export async function main() {
     duplicates: duplicateCount,
     failed: retryCount,
     details: { lane_stats: fetched.laneStats || [], total_news: news.length, total_pending: pending.length }
-  }).catch(error => console.error("Trump automation log failed:", errorMessage(error)));
+  });
   await updateSitemap(news, new Date().toISOString());
   await writeJson(STATE_FILE, nextState);
 
@@ -514,20 +514,7 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
     }
   }
 
-  if (!successfulLanes) {
-    const transientOnly = laneStats.length > 0 && laneStats.every(item => /\((429|500|502|503|504)\)|timeout|aborted|fetch failed|ECONNRESET|ENOTFOUND/i.test(String(item.error || "")));
-    if (transientOnly) {
-      console.warn("All Trump X search lanes are temporarily unavailable; keeping existing data and ending this run successfully.");
-      return {
-        posts: [],
-        queryCursors: nextCursors,
-        newestId: "",
-        laneStats,
-        degraded: true
-      };
-    }
-    throw new Error("All Trump X search lanes failed.");
-  }
+  if (!successfulLanes) throw new Error("All Trump X search lanes failed.");
 
   let posts = dedupePosts(collected)
     .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);
@@ -714,31 +701,47 @@ async function processPost(post, news) {
 }
 
 async function syncTrumpCmsArticle(post, ai, status, reviewReason) {
-  try {
-    await upsertAutomatedArticle({
-      externalId: `x-trump-${post.id}`,
-      automationSource: "trump-radar-v3",
-      title: cleanText(ai?.title || "特朗普动态"),
-      summary: cleanText(ai?.summary || ""),
-      bodyParagraphs: Array.isArray(ai?.body_paragraphs) ? ai.body_paragraphs.map(cleanText) : [],
-      categoryName: "特朗普动态",
-      primarySection: "特朗普动态",
-      relatedSections: [],
-      coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
-      sourceUrl: post.x_url,
-      sourceName: post.author?.name || post.author_name || "公开来源",
-      sourceAccount: post.author?.username || post.author_username || "",
-      sourceLevel: post.source_tier || ai?.verified_level || "",
-      confidence: ai?.confidence || 0,
-      reviewReason,
-      status,
-      publishedAt: post.created_at,
-      countInIceStats: false,
-      tags: [ai?.category, "特朗普"].filter(Boolean),
-    });
-  } catch (error) {
-    console.error(`Supabase Trump sync failed for ${post.id}:`, errorMessage(error));
-  }
+  const articleResult = await upsertAutomatedArticle({
+    externalId: `x-trump-${post.id}`,
+    automationSource: "trump-radar-v4",
+    title: cleanText(ai?.title || "特朗普动态"),
+    summary: cleanText(ai?.summary || ""),
+    bodyParagraphs: Array.isArray(ai?.body_paragraphs) ? ai.body_paragraphs.map(cleanText) : [],
+    categoryName: "特朗普动态",
+    primarySection: "特朗普动态",
+    relatedSections: [],
+    coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
+    sourceUrl: post.x_url,
+    sourceName: post.author?.name || post.author_name || "公开来源",
+    sourceAccount: post.author?.username || post.author_username || "",
+    sourceLevel: post.source_tier || ai?.verified_level || "",
+    confidence: ai?.confidence || 0,
+    reviewReason,
+    status,
+    publishedAt: post.created_at,
+    countInIceStats: false,
+    tags: [ai?.category, "特朗普"].filter(Boolean),
+    riskFlags: ai?.needs_review ? ["needs_review"] : [],
+  });
+  await upsertNewsCandidate({
+    externalId: `x-trump-${post.id}`,
+    pipeline: "trump-radar-v4",
+    sourceUrl: post.x_url,
+    sourceAccount: post.author?.username || post.author_username || "",
+    sourceName: post.author?.name || post.author_name || "公开来源",
+    sourceLevel: post.source_tier || ai?.verified_level || "",
+    rawText: post.text || "",
+    rawPayload: { id: post.id, created_at: post.created_at, query_lane: post.query_lane || "", media: post.media || [] },
+    aiPayload: ai || {},
+    proposedSection: "特朗普动态",
+    confidence: ai?.confidence || 0,
+    decision: status === "published" ? "published" : "draft",
+    decisionReason: reviewReason || "",
+    articleId: articleResult.article?.id || null,
+    collectedAt: post.created_at || new Date().toISOString(),
+    processedAt: new Date().toISOString(),
+  });
+  return articleResult;
 }
 
 async function rewriteWithOpenAI(sourceText, post) {

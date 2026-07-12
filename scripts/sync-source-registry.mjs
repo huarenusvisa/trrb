@@ -1,21 +1,16 @@
 import fs from "node:fs/promises";
+import { hasSupabaseAutomationConfig, syncSourceRegistry, normalizeSupabaseProjectUrl } from "./supabase-news.mjs";
 
-const url = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
-const key = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-if (!url || !key) {
+if (!hasSupabaseAutomationConfig()) {
   console.log("Supabase source-registry sync skipped: secrets not configured.");
   process.exit(0);
 }
-const registry = JSON.parse(await fs.readFile(new URL("../data/source-registry.json", import.meta.url), "utf8"));
-const response = await fetch(`${url}/rest/v1/news_sources?on_conflict=id`, {
-  method: "POST",
-  headers: {
-    apikey: key,
-    Authorization: `Bearer ${key}`,
-    "Content-Type": "application/json",
-    Prefer: "resolution=merge-duplicates,return=minimal",
-  },
-  body: JSON.stringify(registry.map(item => ({ ...item, updated_at: new Date().toISOString() }))),
-});
-if (!response.ok) throw new Error(`Source registry sync failed ${response.status}: ${await response.text()}`);
-console.log(`Source registry synced: ${registry.length} sources.`);
+
+const registryUrl = new URL("../data/source-registry.json", import.meta.url);
+const registry = JSON.parse(await fs.readFile(registryUrl, "utf8"));
+if (!Array.isArray(registry) || registry.length === 0) {
+  throw new Error("Source registry is empty or invalid.");
+}
+
+const result = await syncSourceRegistry(registry);
+console.log(`Source registry synced to ${normalizeSupabaseProjectUrl()}: ${result.count || 0} sources.`);

@@ -1,0 +1,32 @@
+import http from "node:http";
+import assert from "node:assert/strict";
+
+const calls = [];
+const server = http.createServer(async (req, res) => {
+  let body = "";
+  for await (const chunk of req) body += chunk;
+  calls.push({ method: req.method, url: req.url, body });
+  res.setHeader("Content-Type", "application/json");
+  if (req.url.startsWith("/rest/v1/categories")) return res.end(JSON.stringify([{ id: "cat-1", name: "ICE执法" }]));
+  if (req.url.startsWith("/rest/v1/articles")) return res.end(JSON.stringify([{ id: "article-1" }]));
+  if (req.url.startsWith("/rest/v1/news_candidates")) return res.end(JSON.stringify([{ id: 1 }]));
+  res.statusCode = 201;
+  res.end("");
+});
+await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
+const { port } = server.address();
+process.env.SUPABASE_URL = `http://127.0.0.1:${port}/rest/v1`;
+process.env.SUPABASE_SERVICE_ROLE_KEY = "test-key";
+const api = await import("./supabase-news.mjs");
+assert.equal(api.normalizeSupabaseProjectUrl(), `http://127.0.0.1:${port}`);
+await api.syncSourceRegistry([{ id: "ice-hq", name: "ICE", level: "federal", source_type: "official", source_level: "A" }]);
+const article = await api.upsertAutomatedArticle({ externalId: "x-1", title: "测试", categoryName: "ICE执法", status: "published" });
+assert.equal(article.article.id, "article-1");
+await api.upsertNewsCandidate({ externalId: "x-1", pipeline: "ice-radar-v4" });
+await api.writeAutomationLog({ pipeline: "ice-radar-v4", fetched: 1, published: 1 });
+assert(calls.some(c => c.url.startsWith("/rest/v1/news_sources?on_conflict=id")));
+assert(calls.some(c => c.url.startsWith("/rest/v1/articles?on_conflict=external_id")));
+assert(calls.some(c => c.url.startsWith("/rest/v1/news_candidates?on_conflict=external_id")));
+assert(calls.some(c => c.url === "/rest/v1/automation_logs"));
+server.close();
+console.log("V4 Supabase contract test passed.");

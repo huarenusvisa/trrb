@@ -1,11 +1,20 @@
 const DEFAULT_AUTHOR = "唐人日报 AI 编辑部";
+const TRANSIENT_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
 
-export function hasSupabaseAutomationConfig() {
-  return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+export function normalizeSupabaseProjectUrl(value = process.env.SUPABASE_URL || "") {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  try {
+    const url = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
+    // Users sometimes paste the REST endpoint instead of the project URL.
+    return `${url.protocol}//${url.host}`;
+  } catch {
+    return raw.replace(/\/+$/, "").replace(/\/rest\/v1.*$/i, "");
+  }
 }
 
-function baseUrl() {
-  return String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+export function hasSupabaseAutomationConfig() {
+  return Boolean(normalizeSupabaseProjectUrl() && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
 function headers(extra = {}) {
@@ -18,15 +27,48 @@ function headers(extra = {}) {
   };
 }
 
-async function request(path, options = {}) {
+function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+
+async function request(path, options = {}, config = {}) {
   if (!hasSupabaseAutomationConfig()) return null;
-  const response = await fetch(`${baseUrl()}/rest/v1/${path}`, {
-    ...options,
-    headers: headers(options.headers || {}),
-  });
-  const text = await response.text();
-  if (!response.ok) throw new Error(`Supabase ${response.status}: ${text.slice(0, 500)}`);
-  return text ? JSON.parse(text) : null;
+  const root = normalizeSupabaseProjectUrl();
+  const endpoint = new URL(`/rest/v1/${String(path).replace(/^\/+/, "")}`, `${root}/`).toString();
+  const attempts = Number(config.attempts || 4);
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const response = await fetch(endpoint, { ...options, headers: headers(options.headers || {}) });
+      const text = await response.text();
+      if (response.ok) return text ? JSON.parse(text) : null;
+      const error = new Error(`Supabase ${response.status} ${response.statusText}: ${text.slice(0, 1000)}`);
+      error.status = response.status;
+      error.endpoint = endpoint;
+      if (!TRANSIENT_STATUS.has(response.status) || attempt === attempts) throw error;
+      lastError = error;
+    } catch (error) {
+      lastError = error;
+      const status = Number(error?.status || 0);
+      if ((status && !TRANSIENT_STATUS.has(status)) || attempt === attempts) throw error;
+    }
+    await wait(Math.min(15000, 800 * 2 ** (attempt - 1)));
+  }
+  throw lastError || new Error("Unknown Supabase request failure");
+}
+
+export async function checkSupabaseHealth() {
+  if (!hasSupabaseAutomationConfig()) return { configured: false };
+  const required = ["articles", "automation_logs", "news_sources", "news_candidates"];
+  const results = {};
+  for (const table of required) {
+    try {
+      await request(`${table}?select=*&limit=0`, { method: "GET" }, { attempts: 2 });
+      results[table] = true;
+    } catch (error) {
+      results[table] = false;
+      results[`${table}_error`] = error.message;
+    }
+  }
+  return { configured: true, projectUrl: normalizeSupabaseProjectUrl(), tables: results };
 }
 
 export async function resolveCategory(name) {
@@ -37,19 +79,12 @@ export async function resolveCategory(name) {
 
 export function makeSeoKeywords({ title = "", category = "", tags = [], city = "", state = "" }) {
   return [...new Set([category, ...tags, city, state, ...String(title).split(/[\s，。、“”：《》()（）]+/)])]
-    .map(v => String(v || "").trim())
-    .filter(v => v.length >= 2 && v.length <= 24)
-    .slice(0, 12)
-    .join(", ");
+    .map(v => String(v || "").trim()).filter(v => v.length >= 2 && v.length <= 24).slice(0, 12).join(", ");
 }
 
 export function makeSlug(value, fallback = "news") {
-  const normalized = String(value || "")
-    .normalize("NFKD")
-    .toLowerCase()
-    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 100);
+  const normalized = String(value || "").normalize("NFKD").toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 100);
   return normalized || fallback;
 }
 
@@ -89,15 +124,59 @@ export async function upsertAutomatedArticle(input) {
     count_in_ice_stats: Boolean(input.countInIceStats),
     primary_section: input.primarySection || "",
     related_sections: input.relatedSections || [],
+    risk_flags: input.riskFlags || [],
+    independent_source_count: Number(input.independentSourceCount || 1),
+    supporting_sources: input.supportingSources || [],
     updated_at: now,
   };
-  const path = `articles?on_conflict=external_id`;
-  const rows = await request(path, {
+  const rows = await request("articles?on_conflict=external_id", {
     method: "POST",
     headers: { Prefer: "resolution=merge-duplicates,return=representation" },
     body: JSON.stringify(payload),
   });
-  return { skipped: false, article: Array.isArray(rows) ? rows[0] : rows };
+  const article = Array.isArray(rows) ? rows[0] : rows;
+  if (!article?.id) throw new Error(`Supabase article upsert returned no article id for ${input.externalId}`);
+  return { skipped: false, article };
+}
+
+export async function upsertNewsCandidate(input) {
+  if (!hasSupabaseAutomationConfig()) return { skipped: true };
+  const payload = {
+    external_id: input.externalId,
+    pipeline: input.pipeline,
+    source_url: input.sourceUrl || "",
+    source_account: input.sourceAccount || "",
+    source_name: input.sourceName || "",
+    source_level: input.sourceLevel || "",
+    raw_text: input.rawText || "",
+    raw_payload: input.rawPayload || {},
+    ai_payload: input.aiPayload || {},
+    proposed_section: input.proposedSection || "",
+    confidence: Number(input.confidence || 0),
+    decision: input.decision || "pending",
+    decision_reason: input.decisionReason || "",
+    article_id: input.articleId || null,
+    collected_at: input.collectedAt || new Date().toISOString(),
+    processed_at: input.processedAt || null,
+    updated_at: new Date().toISOString(),
+  };
+  const rows = await request("news_candidates?on_conflict=external_id", {
+    method: "POST",
+    headers: { Prefer: "resolution=merge-duplicates,return=representation" },
+    body: JSON.stringify(payload),
+  });
+  return { skipped: false, candidate: Array.isArray(rows) ? rows[0] : rows };
+}
+
+export async function syncSourceRegistry(rows) {
+  if (!hasSupabaseAutomationConfig()) return { skipped: true };
+  const now = new Date().toISOString();
+  await request("news_sources?on_conflict=id", {
+    method: "POST",
+    headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
+    body: JSON.stringify(rows.map(item => ({ ...item, updated_at: now }))),
+  });
+  return { skipped: false, count: rows.length };
 }
 
 export async function writeAutomationLog(log) {
@@ -105,18 +184,10 @@ export async function writeAutomationLog(log) {
   const payload = {
     pipeline: log.pipeline,
     run_at: log.runAt || new Date().toISOString(),
-    fetched: Number(log.fetched || 0),
-    processed: Number(log.processed || 0),
-    published: Number(log.published || 0),
-    drafted: Number(log.drafted || 0),
-    duplicates: Number(log.duplicates || 0),
-    failed: Number(log.failed || 0),
-    details: log.details || {},
+    fetched: Number(log.fetched || 0), processed: Number(log.processed || 0),
+    published: Number(log.published || 0), drafted: Number(log.drafted || 0),
+    duplicates: Number(log.duplicates || 0), failed: Number(log.failed || 0), details: log.details || {},
   };
-  await request("automation_logs", {
-    method: "POST",
-    headers: { Prefer: "return=minimal" },
-    body: JSON.stringify(payload),
-  });
+  await request("automation_logs", { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify(payload) });
   return { skipped: false };
 }

@@ -20,89 +20,19 @@
 @media(max-width:640px){.article-shell{padding:18px 0 44px}.breadcrumb,.news-article{width:calc(100% - 24px)}.news-article{padding:22px 18px;border-radius:16px}.news-article h1{font-size:30px}.article-summary{font-size:17px}.news-article .article-image{margin:20px 0 24px}.news-article .article-image img{aspect-ratio:16/9;max-height:340px}.news-article .article-body p{font-size:17px;line-height:1.86}}
 
 
-/* ===== ICE map final integrated layout v42 =====
-   Only the map viewport remains. All heatmap controls, KPI blocks,
-   ranking panels, footer buttons and explanatory overlays are removed. */
-.ice-heatmap-section{
-  padding-top:18px;
-  padding-bottom:8px;
-}
-.ice-map-only-card{
-  display:block;
-  width:100%;
-  margin:0;
-  padding:0;
-  overflow:hidden;
-  border:1px solid var(--ice-line);
-  border-radius:20px;
-  background:#fff;
-  box-shadow:var(--ice-shadow);
-}
-.ice-map-only-card .ice-map-main{
-  width:100%;
-  min-width:0;
-  border:0;
-}
-.ice-map-only-card .ice-heatmap{
-  display:block;
-  width:100%;
-  height:460px;
-  min-height:460px;
-  background:#fff;
-}
-.ice-map-only-card .ice-heatmap-fallback{
-  display:grid;
-  width:100%;
-  height:460px;
-  min-height:460px;
-  place-items:center;
-  padding:24px;
-  color:var(--ice-muted);
-  background:#fff;
-  text-align:center;
-}
-.ice-map-only-card .ice-heatmap-fallback[hidden]{
-  display:none !important;
-}
+/* ICE实时快讯：无图、双行、紧凑展示 */
+.ice-brief-row{display:grid;grid-template-columns:118px minmax(0,1fr) max-content;gap:18px;align-items:center;padding:15px 18px;background:#fff;border:1px solid var(--ice-line);border-radius:14px;box-shadow:0 3px 14px rgba(16,33,45,.045)}
+.ice-brief-row[hidden]{display:none}.ice-brief-row>time{color:#687b88;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}.ice-brief-copy{min-width:0}.ice-brief-copy h3{margin:0;font-size:18px;line-height:1.35;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ice-brief-copy p{margin:4px 0 0;color:#5b6b75;font-size:14px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ice-brief-source{max-width:170px;color:var(--ice-red);font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* Defensive removal if cached/older markup is briefly rendered. */
-.ice-heatmap-head,
-.heatmap-toolbar,
-.range-tabs,
-.metric-tabs,
-.heatmap-kpis,
-.ice-map-ranking,
-.ice-map-footer,
-#range-controls,
-#metric-controls,
-#top-state-list,
-#heatmap-note,
-#clear-state-filter,
-#map-range-label,
-#map-total-events,
-#map-total-people,
-#map-active-states{
-  display:none !important;
-}
+/* ICE文章页比例校正：减少巨型标题和竖图占屏，正文保持新闻阅读宽度 */
+.news-article{width:min(820px,calc(100% - 40px));padding:clamp(24px,4vw,42px)}
+.news-article h1{font-size:clamp(28px,4vw,40px);line-height:1.22;margin:10px 0 14px}
+.article-summary{font-size:17px;line-height:1.68;margin:18px 0}
+.news-article .article-image{width:min(100%,720px);margin:22px auto 26px}
+.news-article .article-image img{width:100%;height:auto;max-height:420px;aspect-ratio:auto;object-fit:contain;background:#edf2f5}
+.news-article .article-body{max-width:700px}.news-article .article-body p{font-size:17px;line-height:1.86;margin-bottom:1.2em}
 
-@media(max-width:900px){
-  .ice-map-only-card .ice-heatmap,
-  .ice-map-only-card .ice-heatmap-fallback{
-    height:390px;
-    min-height:390px;
-  }
-}
 @media(max-width:640px){
-  .ice-heatmap-section{
-    width:100%;
-    padding-top:12px;
-  }
-  .ice-map-only-card{
-    border-radius:18px;
-  }
-  .ice-map-only-card .ice-heatmap,
-  .ice-map-only-card .ice-heatmap-fallback{
-    height:330px;
-    min-height:330px;
-  }
+  .ice-brief-row{grid-template-columns:72px minmax(0,1fr);gap:10px;padding:13px 12px;border-radius:12px}.ice-brief-row>time{font-size:11px}.ice-brief-source{display:none}.ice-brief-copy h3{font-size:16px}.ice-brief-copy p{font-size:13px;margin-top:3px}
+  .breadcrumb{display:none}.news-article{width:100%;border:0;border-radius:0;box-shadow:none;padding:22px 18px 38px}.news-article h1{font-size:27px;line-height:1.25;letter-spacing:-.01em}.article-meta{font-size:13px;gap:8px}.article-summary{font-size:16px;line-height:1.65;border-left-width:3px;padding-left:12px}.news-article .article-image{width:100%;margin:18px auto 22px}.news-article .article-image img{max-height:300px;border-radius:10px}.news-article .article-body p{font-size:16px;line-height:1.8}.source-box{font-size:14px;padding:15px}
 }

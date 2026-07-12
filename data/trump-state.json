@@ -1,54 +1,60 @@
 {
   "last_seen_id": "2076171328642502725",
-  "last_success_at": "2026-07-12T05:09:45.459Z",
-  "last_content_at": "2026-07-12T05:09:45.459Z",
+  "last_success_at": "2026-07-12T05:43:40.329Z",
+  "last_content_at": "2026-07-12T05:43:40.329Z",
   "last_error": "",
   "last_result": {
-    "fetched": 100,
-    "discovered": 92,
+    "fetched": 0,
+    "discovered": 0,
     "processed": 60,
-    "published": 45,
-    "review": 11,
-    "retry": 2,
-    "duplicates": 2,
-    "total_published": 54,
-    "total_pending": 500,
+    "published": 39,
+    "review": 17,
+    "retry": 0,
+    "duplicates": 4,
+    "total_published": 93,
+    "total_pending": 455,
     "query_lanes": [
       {
         "id": "official",
         "label": "特朗普与白宫官方",
         "fetched": 0,
-        "truncated": false
+        "status": 0,
+        "error": "X API (official) request failed (503): Service Unavailable"
       },
       {
         "id": "trusted-1",
         "label": "主流媒体",
         "fetched": 0,
-        "truncated": false
+        "status": 0,
+        "error": "X API (trusted-1) request failed (503): Service Unavailable"
       },
       {
         "id": "trusted-2",
         "label": "主流媒体",
         "fetched": 0,
-        "truncated": false
+        "status": 0,
+        "error": "X API (trusted-2) request failed (503): Service Unavailable"
       },
       {
         "id": "trusted-3",
         "label": "主流媒体",
         "fetched": 0,
-        "truncated": false
+        "status": 0,
+        "error": "X API (trusted-3) request failed (503): Service Unavailable"
       },
       {
         "id": "review-1",
         "label": "观察账号",
         "fetched": 0,
-        "truncated": false
+        "status": 0,
+        "error": "X API (review-1) request failed (503): Service Unavailable"
       },
       {
         "id": "radar",
         "label": "全网雷达",
-        "fetched": 150,
-        "truncated": true
+        "fetched": 0,
+        "status": 0,
+        "error": "X API (radar) request failed (503): Service Unavailable"
       }
     ]
   },
@@ -59,5 +65,5 @@
     "trusted-2": "2076163642232340528",
     "trusted-3": "2075648687985020996"
   },
-  "last_run_at": "2026-07-12T05:09:45.459Z"
+  "last_run_at": "2026-07-12T05:43:40.329Z"
 }

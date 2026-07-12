@@ -1,1 +1,49 @@
-{"last_seen_id":"","last_success_at":"","last_content_at":"","last_error":"","last_result":{"fetched":0,"discovered":0,"processed":0,"published":0,"review":0,"retry":0,"duplicates":0,"total_published":0,"total_pending":0}}
+{
+  "last_seen_id": "2076135776782319952",
+  "last_success_at": "2026-07-12T02:46:24.722Z",
+  "last_content_at": "",
+  "last_error": "",
+  "last_result": {
+    "fetched": 261,
+    "discovered": 261,
+    "processed": 18,
+    "published": 0,
+    "review": 0,
+    "retry": 18,
+    "duplicates": 0,
+    "total_published": 1,
+    "total_pending": 261,
+    "query_lanes": [
+      {
+        "id": "official",
+        "label": "特朗普与白宫官方",
+        "fetched": 45,
+        "truncated": false
+      },
+      {
+        "id": "trusted-1",
+        "label": "主流媒体",
+        "fetched": 107,
+        "truncated": false
+      },
+      {
+        "id": "review-1",
+        "label": "观察账号",
+        "fetched": 6,
+        "truncated": false
+      },
+      {
+        "id": "radar",
+        "label": "全网雷达",
+        "fetched": 149,
+        "truncated": true
+      }
+    ]
+  },
+  "query_cursors": {
+    "official": "2076045275047571947",
+    "trusted-1": "2076124388726841493",
+    "review-1": "2076119868554801335"
+  },
+  "last_run_at": "2026-07-12T02:46:24.722Z"
+}

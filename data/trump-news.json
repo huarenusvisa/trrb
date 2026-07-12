@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "id": "trump-2075430209394823504",
+    "x_post_id": "2075430209394823504",
+    "title": "佛罗里达州一个机场正式更名为特朗普国际机场",
+    "summary": "佛罗里达州一机场挂牌更名为“唐纳德·J·特朗普国际机场”，但官方机场代码将在一个月后更改。",
+    "body_paragraphs": [
+      "佛罗里达州的棕榈滩国际机场周四正式更名为“唐纳德·J·特朗普国际机场”。",
+      "尽管机场的标识牌已经更换，官方的机场代码将在一个月后才会随之更改。",
+      "这一更名行动是根据州长罗恩·德桑蒂斯三月份签署的法律进行的。"
+    ],
+    "category": "白宫动态",
+    "importance": 4,
+    "relevance_score": 98,
+    "published_at": "2026-07-10T04:01:36.000Z",
+    "updated_at": "2026-07-12T02:45:38.317Z",
+    "url": "/news/trump/2026/07/10/trump-2075430209394823504.html",
+    "source_name": "CBS News",
+    "source_username": "CBSNews",
+    "source_url": "https://x.com/CBSNews/status/2075430209394823504",
+    "image_url": "https://pbs.twimg.com/amplify_video_thumb/2075430184010895360/img/PNeUlCTyUWnMj6uO.jpg",
+    "confidence": 90,
+    "verified_level": "trusted_media",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 98,
+    "matched_terms": [
+      "特朗普",
+      "具体事件",
+      "时间/数字"
+    ],
+    "query_lane": "trusted-1",
+    "content_hash": "e4f078039b09bfeb645fc6d3a73ed7dc52943b0e14dfffd6ff2263553ce99e38"
+  }
+]

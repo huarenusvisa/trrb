@@ -312,3 +312,189 @@ button { font: inherit; }
   .ice-hero-dashboard .ice-summary-sync { min-height: 72px; }
   .ice-today-inline-head span { display: none; }
 }
+
+
+/* V36: 将热力图全部控制功能聚合进首屏红框区域，最新动态保持不变 */
+.ice-hero-map-controls { margin-top: 10px; padding-top: 10px; border-top: 1px solid #e4edf2; }
+.ice-hero-map-controls .ice-range-grid { margin: 0; gap: 8px; }
+.ice-hero-map-controls .ice-range-card { min-height: 66px; padding: 10px 12px; border-radius: 12px; box-shadow: none; }
+.ice-hero-map-controls .ice-range-card strong { font-size: 18px; }
+.ice-hero-map-controls .ice-range-card span { font-size: 11px; margin-top: 2px; }
+.ice-hero-map-controls .ice-metric-switch { margin: 8px 0; min-height: 42px; border-radius: 12px; }
+.ice-hero-map-controls .ice-metric-switch button { min-height: 42px; padding: 8px 10px; font-size: 15px; border-radius: 10px; }
+.ice-hero-map-controls .ice-map-stats { margin: 0; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; }
+.ice-hero-map-controls .ice-map-stats article { min-height: 70px; padding: 10px 12px; border-radius: 12px; box-shadow: none; }
+.ice-hero-map-controls .ice-map-stats span { font-size: 11px; }
+.ice-hero-map-controls .ice-map-stats strong { margin-top: 4px; font-size: 19px; }
+.ice-heatmap-section { padding-top: 28px; }
+.ice-map-heading { margin-bottom: 16px; }
+@media (max-width: 760px) {
+  .ice-hero-map-controls { margin-top: 8px; padding-top: 8px; }
+  .ice-hero-map-controls .ice-range-grid { gap: 6px; }
+  .ice-hero-map-controls .ice-range-card { min-height: 58px; padding: 8px 7px; }
+  .ice-hero-map-controls .ice-range-card strong { font-size: 16px; }
+  .ice-hero-map-controls .ice-range-card span { font-size: 10px; }
+  .ice-hero-map-controls .ice-metric-switch { margin: 6px 0; min-height: 38px; }
+  .ice-hero-map-controls .ice-metric-switch button { min-height: 38px; font-size: 14px; padding: 7px 8px; }
+  .ice-hero-map-controls .ice-map-stats { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
+  .ice-hero-map-controls .ice-map-stats article { min-height: 62px; padding: 8px 7px; }
+  .ice-hero-map-controls .ice-map-stats span { font-size: 10px; white-space: nowrap; }
+  .ice-hero-map-controls .ice-map-stats strong { font-size: 16px; white-space: nowrap; }
+  .ice-heatmap-section { padding-top: 24px; }
+}
+@media (max-width: 430px) {
+  .ice-hero-dashboard { padding: 9px; }
+  .ice-hero-map-controls .ice-range-card strong { font-size: 15px; }
+  .ice-hero-map-controls .ice-range-card span { font-size: 9px; }
+  .ice-hero-map-controls .ice-map-stats article { padding: 7px 5px; }
+  .ice-hero-map-controls .ice-map-stats span { font-size: 9px; }
+  .ice-hero-map-controls .ice-map-stats strong { font-size: 15px; }
+}
+
+/* V37：所有功能压缩进标题下方半屏区域，地图与最新动态结构不变 */
+@media (max-width: 760px) {
+  .ice-hero .ice-shell { padding-top: 22px; padding-bottom: 18px; }
+  .ice-kicker { margin-bottom: 10px; font-size: 15px; }
+  .ice-kicker::before { height: 26px; width: 4px; }
+  .ice-hero h1 { font-size: 37px; line-height: 1.05; }
+  .ice-hero > .ice-shell > p {
+    margin: 12px 0 12px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .ice-hero-dashboard {
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 16px;
+  }
+
+  .ice-hero-dashboard .ice-summary-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .ice-hero-dashboard .ice-summary-card {
+    min-height: 72px;
+    padding: 9px 10px;
+    border-radius: 11px;
+  }
+  .ice-hero-dashboard .ice-summary-label { font-size: 12px; }
+  .ice-hero-dashboard .ice-summary-card strong {
+    margin-top: 2px;
+    font-size: 24px;
+    line-height: 1;
+  }
+  .ice-hero-dashboard .ice-summary-card small {
+    margin-top: 4px;
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  .ice-hero-dashboard .ice-summary-sync {
+    grid-column: 1 / -1;
+    min-height: 45px;
+    padding: 7px 10px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+  }
+  .ice-hero-dashboard .ice-summary-sync .ice-summary-label {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: end;
+  }
+  .ice-hero-dashboard .ice-summary-sync strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    align-self: center;
+    font-size: clamp(17px, 4.7vw, 22px);
+    margin: 0;
+  }
+  .ice-hero-dashboard .ice-summary-sync small {
+    grid-column: 1;
+    grid-row: 2;
+    margin: 1px 0 0;
+    font-size: 8px;
+    white-space: nowrap;
+  }
+
+  .ice-today-inline {
+    margin-top: 6px;
+    padding: 7px 8px;
+    border-radius: 11px;
+  }
+  .ice-today-inline-head { margin-bottom: 4px; }
+  .ice-today-inline-head h2 { font-size: 13px; }
+  .ice-today-inline-head span { font-size: 8px; }
+  .ice-today-inline .ice-empty {
+    padding: 5px 7px;
+    font-size: 9px;
+    line-height: 1.3;
+  }
+  .ice-today-inline .ice-event-row {
+    padding: 5px 7px;
+    font-size: 10px;
+    gap: 2px 6px;
+  }
+  .ice-today-inline .ice-event-meta { font-size: 8px; }
+
+  .ice-hero-map-controls {
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+  .ice-hero-map-controls .ice-range-grid {
+    gap: 5px;
+  }
+  .ice-hero-map-controls .ice-range-card {
+    min-height: 42px;
+    padding: 5px 7px;
+    border-radius: 9px;
+  }
+  .ice-hero-map-controls .ice-range-card strong { font-size: 14px; }
+  .ice-hero-map-controls .ice-range-card span {
+    margin-top: 1px;
+    font-size: 8px;
+  }
+
+  .ice-hero-map-controls .ice-metric-switch {
+    min-height: 31px;
+    margin: 5px 0;
+    padding: 3px;
+    border-radius: 9px;
+  }
+  .ice-hero-map-controls .ice-metric-switch button {
+    min-height: 25px;
+    padding: 3px 6px;
+    font-size: 11px;
+    border-radius: 7px;
+  }
+
+  .ice-hero-map-controls .ice-map-stats {
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 4px;
+  }
+  .ice-hero-map-controls .ice-map-stats article {
+    min-height: 43px;
+    padding: 5px 6px;
+    border-radius: 9px;
+  }
+  .ice-hero-map-controls .ice-map-stats span { font-size: 8px; }
+  .ice-hero-map-controls .ice-map-stats strong {
+    margin-top: 1px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .ice-heatmap-section { padding-top: 24px; }
+}
+
+@media (max-width: 390px) {
+  .ice-hero h1 { font-size: 34px; }
+  .ice-hero > .ice-shell > p { font-size: 14px; }
+  .ice-hero-dashboard .ice-summary-card { min-height: 68px; }
+  .ice-hero-dashboard .ice-summary-card strong { font-size: 22px; }
+  .ice-hero-map-controls .ice-range-card strong { font-size: 13px; }
+  .ice-hero-map-controls .ice-map-stats strong { font-size: 12px; }
+}

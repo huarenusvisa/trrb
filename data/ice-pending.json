@@ -1,5 +1,1700 @@
 [
   {
+    "id": "pending-2076180471453553114",
+    "x_post_id": "2076180471453553114",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:52:43.353Z",
+    "post": {
+      "id": "2076180471453553114",
+      "text": "@johnpavlovitz STFU, HOW COME YOU NEVER CRY OVER THE BLACK ON BLACK GENOCIDE IN THE INNER CITIES LIKE CHICAGO? MASS SHOOTING EVRYDAY. ITS ONLY FOLLOW ICE BC YOUR VOTERS ARE GETTING DEPORTED",
+      "created_at": "2026-07-12T05:42:52.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 14,
+            "id": "493714995",
+            "start": 0,
+            "username": "johnpavlovitz"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1823451126169026560",
+      "username": "ReloadFreedom",
+      "author_name": "🇺🇸Soldier of Fortune",
+      "source_name": "🇺🇸Soldier of Fortune",
+      "source_type": "official",
+      "agency": "ERO",
+      "source_trust": 96,
+      "query_lane": "ero-core",
+      "x_url": "https://x.com/ReloadFreedom/status/2076180471453553114"
+    }
+  },
+  {
+    "id": "pending-2076179145483034983",
+    "x_post_id": "2076179145483034983",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:52:35.367Z",
+    "post": {
+      "id": "2076179145483034983",
+      "text": "@Roger_Negan If they are known why hasn’t he had them all arrested? \nWhat on earth is ICE for?",
+      "created_at": "2026-07-12T05:37:36.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "795119882",
+            "start": 0,
+            "username": "Roger_Negan"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "307850851",
+      "username": "Annemaggsart",
+      "author_name": "Anne Maggs",
+      "source_name": "Anne Maggs",
+      "source_type": "official",
+      "agency": "ERO",
+      "source_trust": 96,
+      "query_lane": "ero-core",
+      "x_url": "https://x.com/Annemaggsart/status/2076179145483034983"
+    }
+  },
+  {
+    "id": "pending-2076179031486075191",
+    "x_post_id": "2076179031486075191",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:52:32.181Z",
+    "post": {
+      "id": "2076179031486075191",
+      "text": "@Llamaoftime @RepSylviaGarcia @HouseDemocrats @HispanicCaucus The Government has lied especially Obuma's and Bidens but this isn't the Government it's police officers which usually do not lie in unison and they put their lives on the kibe everyday. What I want to know is what do you think about thus going on you libturds ignore which is far",
+      "created_at": "2026-07-12T05:37:09.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "35092919",
+            "start": 0,
+            "username": "Llamaoftime"
+          },
+          {
+            "end": 29,
+            "id": "1080587263132733442",
+            "start": 13,
+            "username": "RepSylviaGarcia"
+          },
+          {
+            "end": 45,
+            "id": "43963249",
+            "start": 30,
+            "username": "HouseDemocrats"
+          },
+          {
+            "end": 61,
+            "id": "33530012",
+            "start": 46,
+            "username": "HispanicCaucus"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "2591592000",
+      "username": "moderateright13",
+      "author_name": "Don't go there",
+      "source_name": "Don't go there",
+      "source_type": "official",
+      "agency": "ERO",
+      "source_trust": 96,
+      "query_lane": "ero-core",
+      "x_url": "https://x.com/moderateright13/status/2076179031486075191"
+    }
+  },
+  {
+    "id": "pending-2076178503498678322",
+    "x_post_id": "2076178503498678322",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:52:27.205Z",
+    "post": {
+      "id": "2076178503498678322",
+      "text": "Cricket 🦗 Deporte d ice ice….🧊 \nEquipos de 11 jugadores que compiten en un campo ovolado \n(En mi escuela había un chiste del “11”) *lo dejaré ahí nomas. \n\nEs que hay muchos grillos ushh",
+      "created_at": "2026-07-12T05:35:03.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {},
+      "media": [],
+      "author_id": "2070042805087465472",
+      "username": "alexeincantada",
+      "author_name": "~OGiselle ☆",
+      "source_name": "~OGiselle ☆",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-community",
+      "x_url": "https://x.com/alexeincantada/status/2076178503498678322"
+    }
+  },
+  {
+    "id": "pending-2076177291072422188",
+    "x_post_id": "2076177291072422188",
+    "reason": "法律状态“被遣返”在来源中没有对应依据",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:52:17.569Z",
+    "post": {
+      "id": "2076177291072422188",
+      "text": "El secretario de Estado Marco Rubio ha REVOCADO el estatus legal de Tou Lue Vang, el violador de menores laosiano indultado por Tim Walz.\n\nYa ha sido DEPORTADO por el ICE, afirma Rubio.\n\nTim Walz intentó protegerlo de la deportación. ¡No funcionó!\n\nhttps://t.co/f2QnfOvVxD",
+      "created_at": "2026-07-12T05:30:14.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/f2QnfOvVxD",
+            "end": 272,
+            "expanded_url": "https://x.com/i/status/2075576286219809143/video/1",
+            "media_key": "13_2075576182553350144",
+            "start": 249,
+            "url": "https://t.co/f2QnfOvVxD"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2075576182553350144/img/2h0EeGSgbms1Hv4g.jpg",
+          "alt_text": "",
+          "width": 1920,
+          "height": 1080
+        }
+      ],
+      "author_id": "4494460093",
+      "username": "jennjime3493",
+      "author_name": "jenny jimenez",
+      "source_name": "jenny jimenez",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-deportation",
+      "x_url": "https://x.com/jennjime3493/status/2076177291072422188"
+    }
+  },
+  {
+    "id": "pending-2076177197987954698",
+    "x_post_id": "2076177197987954698",
+    "reason": "稿件出现来源中不存在的数字：7",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:52:12.780Z",
+    "post": {
+      "id": "2076177197987954698",
+      "text": "@WatchingBs @sarahtexe No, this is false.\n\nThe “13,000” comes from ICE data (as of July 2024): ~13,099 non-citizens with *prior* homicide convictions on the non-detained docket. It is a cumulative lifetime total, not murders committed in 2024.\n\nTotal US homicide deaths in 2024: 20,162 (CDC). No data",
+      "created_at": "2026-07-12T05:29:52.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 11,
+            "id": "1500555063713927168",
+            "start": 0,
+            "username": "WatchingBs"
+          },
+          {
+            "end": 22,
+            "id": "1564908366018781184",
+            "start": 12,
+            "username": "sarahtexe"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1720665183188922368",
+      "username": "grok",
+      "author_name": "Grok",
+      "source_name": "Grok",
+      "source_type": "official",
+      "agency": "ERO",
+      "source_trust": 96,
+      "query_lane": "ero-core",
+      "x_url": "https://x.com/grok/status/2076177197987954698"
+    }
+  },
+  {
+    "id": "pending-2076169981436346507",
+    "x_post_id": "2076169981436346507",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:51:55.978Z",
+    "post": {
+      "id": "2076169981436346507",
+      "text": "Encontré este video de una persona que necesita ayuda con un familiar que fue detenido por ICE, si pueden ayudarla seria de mucha ayuda ❤️\n\nhttps://t.co/8mwJIEQfQb",
+      "created_at": "2026-07-12T05:01:11.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Mi Ko-fi:https://ko-fi.com/helpivyandfamily/commissionsSi quieres...",
+            "display_url": "youtu.be/Eqz_VcRrYWs?si…",
+            "end": 163,
+            "expanded_url": "https://youtu.be/Eqz_VcRrYWs?si=O-4zH5OkxDTxBvaB",
+            "images": [
+              {
+                "height": 720,
+                "url": "https://pbs.twimg.com/news_img/2073686403288870912/E43rPLyQ?format=jpg&name=orig",
+                "width": 1280
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2073686403288870912/E43rPLyQ?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 140,
+            "status": 200,
+            "title": "ICE se LLEVÓ a mi ser querido! Te NECESITAMOS",
+            "unwound_url": "https://www.youtube.com/watch?si=O-4zH5OkxDTxBvaB&v=Eqz_VcRrYWs&feature=youtu.be",
+            "url": "https://t.co/8mwJIEQfQb"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1946378981634174976",
+      "username": "Juicy_the_Juice",
+      "author_name": "Juicy Juice🧃| VGEN COMMS OPEN",
+      "source_name": "Juicy Juice🧃| VGEN COMMS OPEN",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-arrests",
+      "x_url": "https://x.com/Juicy_the_Juice/status/2076169981436346507"
+    }
+  },
+  {
+    "id": "pending-2076169942571909486",
+    "x_post_id": "2076169942571909486",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:51:52.055Z",
+    "post": {
+      "id": "2076169942571909486",
+      "text": "@liderfiscal Malnacidos agentes de ICE y demás norteamericanos que abusan del poder otorgado, pero asi les irá en cuanto cambien la enmienda que les facultaba eso...",
+      "created_at": "2026-07-12T05:01:02.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "85940766",
+            "start": 0,
+            "username": "liderfiscal"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "580887779",
+      "username": "BeristOrtz",
+      "author_name": "Alfredo Ortíz Berist",
+      "source_name": "Alfredo Ortíz Berist",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/BeristOrtz/status/2076169942571909486"
+    }
+  },
+  {
+    "id": "pending-2076162366677438474",
+    "x_post_id": "2076162366677438474",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:51:45.153Z",
+    "post": {
+      "id": "2076162366677438474",
+      "text": "**DEMANDA A EE.UU.** México inicia acciones legales internacionales tras la muerte de un connacional en Houston.\n\nEl gobierno de México 🇲🇽 confirmó que presentará demandas contra Estados Unidos por la muerte de Lorenzo Salgado Araujo (63), un ciudadano mexicano con más de 35 años https://t.co/s8F84o8IdJ",
+      "created_at": "2026-07-12T04:30:56.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/s8F84o8IdJ",
+            "end": 304,
+            "expanded_url": "https://x.com/El_Presentador_/status/2076162366677438474/photo/1",
+            "media_key": "3_2076162360440451072",
+            "start": 281,
+            "url": "https://t.co/s8F84o8IdJ"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNACqrYW8AAJEPc.jpg",
+          "alt_text": "",
+          "width": 928,
+          "height": 1152
+        }
+      ],
+      "author_id": "1904633038396440576",
+      "username": "El_Presentador_",
+      "author_name": "El Presentador",
+      "source_name": "El Presentador",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-community",
+      "x_url": "https://x.com/El_Presentador_/status/2076162366677438474"
+    }
+  },
+  {
+    "id": "pending-2076162014234255511",
+    "x_post_id": "2076162014234255511",
+    "reason": "稿件出现来源中不存在的数字：7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:51:24.679Z",
+    "post": {
+      "id": "2076162014234255511",
+      "text": "@MishoAmoli Menos mal que no lo pusieron en la Casa  Blanca, llega a lesionarse en el maint event de la Casa Blanca y Trump le manda 100 agentes del ICE",
+      "created_at": "2026-07-12T04:29:32.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 11,
+            "id": "1080071915795111937",
+            "start": 0,
+            "username": "MishoAmoli"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1912073021998899200",
+      "username": "Roluxad",
+      "author_name": "Rolux",
+      "source_name": "Rolux",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/Roluxad/status/2076162014234255511"
+    }
+  },
+  {
+    "id": "pending-2076157169251045653",
+    "x_post_id": "2076157169251045653",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:51:22.650Z",
+    "post": {
+      "id": "2076157169251045653",
+      "text": "Stephen A. Smith, conocido principalmente por sus comentarios deportivos y no por ser un analista conservador, sorprendió al criticar duramente el manejo de la frontera durante la administración Biden.\nSmith afirmó que las autoridades negaron durante demasiado tiempo la https://t.co/tOnItBLUCF",
+      "created_at": "2026-07-12T04:10:16.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/tOnItBLUCF",
+            "end": 294,
+            "expanded_url": "https://x.com/hablemosclaroUS/status/2076157169251045653/video/1",
+            "media_key": "7_2076156641611767808",
+            "start": 271,
+            "url": "https://t.co/tOnItBLUCF"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2076156641611767808/pu/img/fGDfmYgJ-zxtUoDc.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1920
+        }
+      ],
+      "author_id": "2010507913073504256",
+      "username": "hablemosclaroUS",
+      "author_name": "hablemosclaro",
+      "source_name": "hablemosclaro",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-border",
+      "x_url": "https://x.com/hablemosclaroUS/status/2076157169251045653"
+    }
+  },
+  {
+    "id": "pending-2076154582464704667",
+    "x_post_id": "2076154582464704667",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:51:01.884Z",
+    "post": {
+      "id": "2076154582464704667",
+      "text": "🚨🇺🇸 | LA DERECHA PERSEGUIRÁ EL MAL EN TODOS LADOS: El zurdo psicópata anti-ICE que aterrorizó a mujeres, niños y al pastor en una iglesia en Minneapolis ahora está furioso porque lo están siguiendo y confrontando por sus acciones.\n\n\"¡¿Qué estás haciendo!? ¡¿Por qué estás https://t.co/pGFWrwY8OC",
+      "created_at": "2026-07-12T04:00:00.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/pGFWrwY8OC",
+            "end": 295,
+            "expanded_url": "https://x.com/DerechaDiarioUS/status/2076154582464704667/video/1",
+            "media_key": "13_2076128601108316160",
+            "start": 272,
+            "url": "https://t.co/pGFWrwY8OC"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2076128601108316160/img/8k8LuvxPG0adVcLD.jpg",
+          "alt_text": "",
+          "width": 1920,
+          "height": 1080
+        }
+      ],
+      "author_id": "1935064627458490368",
+      "username": "DerechaDiarioUS",
+      "author_name": "La Derecha Diario Estados Unidos",
+      "source_name": "La Derecha Diario Estados Unidos",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-community",
+      "x_url": "https://x.com/DerechaDiarioUS/status/2076154582464704667"
+    }
+  },
+  {
+    "id": "pending-2076150262029341093",
+    "x_post_id": "2076150262029341093",
+    "reason": "快讯正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:50:51.776Z",
+    "post": {
+      "id": "2076150262029341093",
+      "text": "@NYRNepb @trashpanda2012 @sarahtexe @POTUS @VP @SecMullinDHS @HHSGov ICE data shows tens of thousands of convicted criminals on the non-detained docket, underscoring backlogs in removal proceedings and sanctuary policies that limit cooperation.",
+      "created_at": "2026-07-12T03:42:50.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 8,
+            "id": "1874096218072137728",
+            "start": 0,
+            "username": "NYRNepb"
+          },
+          {
+            "end": 24,
+            "id": "1661493546350780421",
+            "start": 9,
+            "username": "trashpanda2012"
+          },
+          {
+            "end": 35,
+            "id": "1564908366018781184",
+            "start": 25,
+            "username": "sarahtexe"
+          },
+          {
+            "end": 42,
+            "id": "1879650942410481666",
+            "start": 36,
+            "username": "POTUS"
+          },
+          {
+            "end": 46,
+            "id": "1879652428490149888",
+            "start": 43,
+            "username": "VP"
+          },
+          {
+            "end": 60,
+            "id": "2035092939253456898",
+            "start": 47,
+            "username": "SecMullinDHS"
+          },
+          {
+            "end": 68,
+            "id": "44783853",
+            "start": 61,
+            "username": "HHSGov"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "26730649",
+      "username": "debraregypt",
+      "author_name": "Debra Reinhardt",
+      "source_name": "Debra Reinhardt",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-policy-sanctuary",
+      "x_url": "https://x.com/debraregypt/status/2076150262029341093"
+    }
+  },
+  {
+    "id": "pending-2076144573319893341",
+    "x_post_id": "2076144573319893341",
+    "reason": "稿件出现来源中不存在的数字：2026, 7",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:50:38.069Z",
+    "post": {
+      "id": "2076144573319893341",
+      "text": "https://t.co/LGYLy0qTCM | Un agente del ICE mató el martes a tiros a Lorenzo Salgado Araujo, de 52 años, después de que agentes federales que conducían vehículos sin distintivos lo persiguieran mientras llevaba a su cuadrilla a su lugar de trabajo más reciente.",
+      "created_at": "2026-07-12T03:20:13.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "El constructor se levantaba todas las mañanas mucho antes del amanecer, salía de casa para recoger a su cuadrilla de construcción y luego se dirigía a trabajar en otra vivienda más en algún punto de la extensa mancha urbana de Houston.",
+            "display_url": "ow.ly/XZJV50ZmC3v",
+            "end": 23,
+            "expanded_url": "https://ow.ly/XZJV50ZmC3v",
+            "images": [
+              {
+                "height": 230,
+                "url": "https://pbs.twimg.com/news_img/2075930671873241088/I_wnj4KV?format=jpg&name=orig",
+                "width": 438
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075930671873241088/I_wnj4KV?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 0,
+            "status": 200,
+            "title": "Lloran la muerte de un constructor mexicano baleado por un agente del ICE en Houston",
+            "unwound_url": "https://www.elvocero.com/el-mundo/lloran-la-muerte-de-un-constructor-mexicano-baleado-por-un-agente-del-ice-en-houston/article_a260cb96-cfe3-5a84-88d0-75baf61adb05.html",
+            "url": "https://t.co/LGYLy0qTCM"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "34613234",
+      "username": "VoceroPR",
+      "author_name": "El Vocero de Puerto Rico",
+      "source_name": "El Vocero de Puerto Rico",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/VoceroPR/status/2076144573319893341"
+    }
+  },
+  {
+    "id": "pending-2076139488112222544",
+    "x_post_id": "2076139488112222544",
+    "reason": "稿件出现来源中不存在的数字：6",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:50:09.294Z",
+    "post": {
+      "id": "2076139488112222544",
+      "text": "🔄Excarcelado político se rehúsa a firmar carta de deportación de ICE\n\nYupanke López, originario de Tipitapa, fue obligado a exiliarse en Estados Unidos, el 13 de junio del 2019, tres meses y 17 días después de haber sido excarcelado\n\nhttps://t.co/KUXULZrOZR",
+      "created_at": "2026-07-12T03:00:01.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Un juez de inmigración de Estados Unidos ordenó a ICE no deportar a Yupanke López, sin embargo, insisten en enviarlo a México o Nicaragua.",
+            "display_url": "laprensani.com/2026/07/11/pol…",
+            "end": 257,
+            "expanded_url": "https://www.laprensani.com/2026/07/11/politica/3736150-excarcelado-politico-rehusa-firmar-carta-deportacion-ice",
+            "images": [
+              {
+                "height": 675,
+                "url": "https://pbs.twimg.com/news_img/2076011181743996928/LnykOOTK?format=jpg&name=orig",
+                "width": 1200
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076011181743996928/LnykOOTK?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 234,
+            "status": 200,
+            "title": "Excarcelado político se rehúsa a firmar carta de deportación de ICE",
+            "unwound_url": "https://www.laprensani.com/2026/07/11/politica/3736150-excarcelado-politico-rehusa-firmar-carta-deportacion-ice",
+            "url": "https://t.co/KUXULZrOZR"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "86444881",
+      "username": "laprensa",
+      "author_name": "LA PRENSA Nicaragua",
+      "source_name": "LA PRENSA Nicaragua",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-deportation",
+      "x_url": "https://x.com/laprensa/status/2076139488112222544"
+    }
+  },
+  {
+    "id": "pending-2076137893957967927",
+    "x_post_id": "2076137893957967927",
+    "reason": "可信度低于76",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:50:01.118Z",
+    "post": {
+      "id": "2076137893957967927",
+      "text": "@liderfiscal En cualquier momento harán la de devorarse entre ellos, agentes del ICE arrestando por ilegales a compañeros de patrulla o no, y no me refiero sólo a que vayan sin uniforme, sino hasta con el uniforme puesto.",
+      "created_at": "2026-07-12T02:53:41.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "85940766",
+            "start": 0,
+            "username": "liderfiscal"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1245220362821996544",
+      "username": "INDEFIN97852060",
+      "author_name": "INDEFINIDO",
+      "source_name": "INDEFINIDO",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/INDEFIN97852060/status/2076137893957967927"
+    }
+  },
+  {
+    "id": "pending-2076136586870140965",
+    "x_post_id": "2076136586870140965",
+    "reason": "快讯正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:52.756Z",
+    "post": {
+      "id": "2076136586870140965",
+      "text": "@KimKatieUSA \"ICE detained this Juan in Wicker Park, Chicago.  Adios amigo!\"\n\n😄✔️I like you- haha",
+      "created_at": "2026-07-12T02:48:29.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "1810693538247745536",
+            "start": 0,
+            "username": "KimKatieUSA"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1771672086601138177",
+      "username": "FreedomFriend42",
+      "author_name": "Freedom Friendly",
+      "source_name": "Freedom Friendly",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-metro-chicago",
+      "x_url": "https://x.com/FreedomFriend42/status/2076136586870140965"
+    }
+  },
+  {
+    "id": "pending-2076135559450279979",
+    "x_post_id": "2076135559450279979",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:49.555Z",
+    "post": {
+      "id": "2076135559450279979",
+      "text": "@KHOU The Home Depot’s in Houston need a ICE  raid.",
+      "created_at": "2026-07-12T02:44:24.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 5,
+            "id": "15791186",
+            "start": 0,
+            "username": "KHOU"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1587641561873088514",
+      "username": "JakesterTx",
+      "author_name": "Jake",
+      "source_name": "Jake",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-metro-houston",
+      "x_url": "https://x.com/JakesterTx/status/2076135559450279979"
+    }
+  },
+  {
+    "id": "pending-2076134963569701327",
+    "x_post_id": "2076134963569701327",
+    "reason": "可信度低于76",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:45.853Z",
+    "post": {
+      "id": "2076134963569701327",
+      "text": "Taylor Swift es la Israel de la música. En su boda había gente que proporcionó tecnología para ICE, los que están matando a migrantes y a ciudadanos de EEUU. Cómo de pronto se vuelve evidente que todo este cáncer está articulado. https://t.co/DuAFkd5mwJ",
+      "created_at": "2026-07-12T02:42:02.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "x.com/Polymarket/sta…",
+            "end": 253,
+            "expanded_url": "https://twitter.com/Polymarket/status/2075552404427170187",
+            "start": 230,
+            "url": "https://t.co/DuAFkd5mwJ"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "32890254",
+      "username": "limpicatto",
+      "author_name": "Dante 👁️",
+      "source_name": "Dante 👁️",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-border",
+      "x_url": "https://x.com/limpicatto/status/2076134963569701327"
+    }
+  },
+  {
+    "id": "pending-2076134208150392895",
+    "x_post_id": "2076134208150392895",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:39.155Z",
+    "post": {
+      "id": "2076134208150392895",
+      "text": "@WHAAsstSecty Casi como los cientos de migrantes mujeres, niños o ancianos en prisiones de ICE aún peores que las cubanas.",
+      "created_at": "2026-07-12T02:39:02.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 13,
+            "id": "97190495",
+            "start": 0,
+            "username": "WHAAsstSecty"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1672880241709121536",
+      "username": "Federic87676553",
+      "author_name": "Federico Antonio Manzano Hinojosa",
+      "source_name": "Federico Antonio Manzano Hinojosa",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-border",
+      "x_url": "https://x.com/Federic87676553/status/2076134208150392895"
+    }
+  },
+  {
+    "id": "pending-2076129721797022096",
+    "x_post_id": "2076129721797022096",
+    "reason": "稿件出现来源中不存在的数字：2026, 35",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:30.018Z",
+    "post": {
+      "id": "2076129721797022096",
+      "text": "@louididdy @two5poundnotes There was a fatal ICE shooting in Houston on July 7, 2026. \n\nLorenzo Salgado Araujo, 52, a Mexican national and 35-year Houston resident with no criminal record, was driving his work van to a construction job when agents (not the target of their operation) stopped him. \n\nICE says",
+      "created_at": "2026-07-12T02:21:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 10,
+            "id": "71631590",
+            "start": 0,
+            "username": "louididdy"
+          },
+          {
+            "end": 26,
+            "id": "877907401437040644",
+            "start": 11,
+            "username": "two5poundnotes"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1720665183188922368",
+      "username": "grok",
+      "author_name": "Grok",
+      "source_name": "Grok",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-metro-houston",
+      "x_url": "https://x.com/grok/status/2076129721797022096"
+    }
+  },
+  {
+    "id": "pending-2076125897418309759",
+    "x_post_id": "2076125897418309759",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:25.327Z",
+    "post": {
+      "id": "2076125897418309759",
+      "text": "Dear Readers,\nThank you so much for your support and all the likes， I really appreciate it and I’m honored by your kindness.\nAs a sign of respect to you all, please enjoy the new chapter.\n￼\n\nChapter 36 The Sword Art of the Nine Luminaries\n\nIn the secret spirit chamber, Tigerboy https://t.co/7qFZkyMYxO",
+      "created_at": "2026-07-12T02:06:01.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/7qFZkyMYxO",
+            "end": 302,
+            "expanded_url": "https://x.com/Vision77yu/status/2076125897418309759/photo/1",
+            "media_key": "3_2076125256608313344",
+            "start": 279,
+            "url": "https://t.co/7qFZkyMYxO"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM_g681a8AAYHwP.jpg",
+          "alt_text": "",
+          "width": 1248,
+          "height": 832
+        }
+      ],
+      "author_id": "1955542015078436864",
+      "username": "Vision77yu",
+      "author_name": "buyu_writer",
+      "source_name": "buyu_writer",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-policy-detention",
+      "x_url": "https://x.com/Vision77yu/status/2076125897418309759"
+    }
+  },
+  {
+    "id": "pending-2076124780252832006",
+    "x_post_id": "2076124780252832006",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:19.834Z",
+    "post": {
+      "id": "2076124780252832006",
+      "text": "@RepSylviaGarcia @HouseDemocrats @HispanicCaucus If you visited the ICE detention facility, it means that all of them were illegal aliens and are now being held for deportation.\n\nIt also means that ICE was targeting them specifically for being illegal aliens.\n\nIf they weren't here illegally, none of this would've happened.",
+      "created_at": "2026-07-12T02:01:34.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "1080587263132733442",
+            "start": 0,
+            "username": "RepSylviaGarcia"
+          },
+          {
+            "end": 32,
+            "id": "43963249",
+            "start": 17,
+            "username": "HouseDemocrats"
+          },
+          {
+            "end": 48,
+            "id": "33530012",
+            "start": 33,
+            "username": "HispanicCaucus"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "804886819",
+      "username": "5gkfkx",
+      "author_name": "Novus Opiate Seclorum",
+      "source_name": "Novus Opiate Seclorum",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-policy-detention",
+      "x_url": "https://x.com/5gkfkx/status/2076124780252832006"
+    }
+  },
+  {
+    "id": "pending-2076123634775839163",
+    "x_post_id": "2076123634775839163",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:09.743Z",
+    "post": {
+      "id": "2076123634775839163",
+      "text": "@ZuritaCarpio si sabe mexico que los agentes de ice son latinos… https://t.co/jX3P9lHfMC",
+      "created_at": "2026-07-12T01:57:01.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 13,
+            "id": "62664348",
+            "start": 0,
+            "username": "ZuritaCarpio"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/jX3P9lHfMC",
+            "end": 88,
+            "expanded_url": "https://x.com/hildadaniela/status/2076123634775839163/video/1",
+            "media_key": "13_2076123505964548096",
+            "start": 65,
+            "url": "https://t.co/jX3P9lHfMC"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2076123505964548096/img/ob-ntVbeD8Zn13Z0.jpg",
+          "alt_text": "",
+          "width": 718,
+          "height": 916
+        }
+      ],
+      "author_id": "182094372",
+      "username": "hildadaniela",
+      "author_name": "Hyllda_Danyella 🖤",
+      "source_name": "Hyllda_Danyella 🖤",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/hildadaniela/status/2076123634775839163"
+    }
+  },
+  {
+    "id": "pending-2076120625693745362",
+    "x_post_id": "2076120625693745362",
+    "reason": "新闻正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:49:02.772Z",
+    "post": {
+      "id": "2076120625693745362",
+      "text": "Agentes de ICE realizan un violento arresto en Illinois.\n\n https://t.co/Ti3svtdUhx",
+      "created_at": "2026-07-12T01:45:04.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Los testigos afirman que el detenido sufrió una fractura en el cráneo tras ser golpeado contra una superficie y denuncian que los agentes amenazaron con pistolas 'taser' a quienes grababan. El DHS no ha dado detalles del incidente.",
+            "display_url": "tlmdo.co/44oxpLC",
+            "end": 82,
+            "expanded_url": "https://tlmdo.co/44oxpLC",
+            "images": [
+              {
+                "height": 512,
+                "url": "https://pbs.twimg.com/news_img/2076120629967724544/7KEEplYV?format=jpg&name=orig",
+                "width": 1024
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076120629967724544/7KEEplYV?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 59,
+            "status": 200,
+            "title": "Agentes de ICE realizan un violento arresto en Illinois",
+            "unwound_url": "https://www.telemundo.com/noticias/edicion-noticias-telemundo/inmigracion/video/agentes-de-ice-realizan-un-violento-arresto-en-illinois-tmvo13202870",
+            "url": "https://t.co/Ti3svtdUhx"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "152142811",
+      "username": "TelemundoNews",
+      "author_name": "Noticias Telemundo",
+      "source_name": "Telemundo新闻",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 84,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/TelemundoNews/status/2076120625693745362"
+    }
+  },
+  {
+    "id": "pending-2076110588640428498",
+    "x_post_id": "2076110588640428498",
+    "reason": "稿件出现来源中不存在的数字：2026, 7",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:48:39.888Z",
+    "post": {
+      "id": "2076110588640428498",
+      "text": "NEW YORK, USA.\n-Los sueños del joven dominicano Johan Sandoval de 22 años se vieron empañados el pasado 3 de julio en Nueva York cuando fue detenido por agentes del Servicio de Inmigración y Control de Aduanas (ICE).\n\nhttps://t.co/tmil06wmbs https://t.co/DnYNqd1os9",
+      "created_at": "2026-07-12T01:05:11.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "1 likes, 0 comments - noticiajuanlopezymas on July 9, 2026: \"NEW YORK, USA. -Los sueños del joven dominicano Johan Sandoval de 22 años se vieron empañados el pasado 3 de julio en Nueva York cuando fue detenido por agentes del Servicio de Inmigración y Control de Aduanas (ICE) durante un operativo realizado en Clifton Park, por presuntas irregularidades con su estatus migratorio. Johan Efrain Sandoval Rodríguez, llegó a Estados Unidos desde República Dominicana en 2021, cursa la carrera de Administración de Empresas, para obtener su segundo título, gracias a una beca deportiva completa en la Savannah State University de Georgia y es considerado una de las figuras más prometedoras del béisbol universitario.\".",
+            "display_url": "instagram.com/p/DalzF3fO-WW/…",
+            "end": 241,
+            "expanded_url": "https://www.instagram.com/p/DalzF3fO-WW/?igsh=amFiN3pkOHZqZWo1",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://pbs.twimg.com/news_img/2076110591739973633/8uAMmMD4?format=jpg&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076110591739973633/8uAMmMD4?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 218,
+            "status": 200,
+            "title": "Noticias Juan López y Más on Instagram: \"NEW YORK, USA. -Los sueños del joven dominicano Johan Sandoval de 22 años se vieron empañados el pasado 3 de julio en Nueva York cuando fue detenido por agentes del Servicio de Inmigración y Control de Aduanas (ICE) durante un operativo realizado en Clifton P",
+            "unwound_url": "https://www.instagram.com/p/DalzF3fO-WW/",
+            "url": "https://t.co/tmil06wmbs"
+          },
+          {
+            "display_url": "pic.x.com/DnYNqd1os9",
+            "end": 265,
+            "expanded_url": "https://x.com/noticiasjlp/status/2076110588640428498/photo/1",
+            "media_key": "3_2076110583234011136",
+            "start": 242,
+            "url": "https://t.co/DnYNqd1os9"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM_Tk2QXoAAftiM.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "author_id": "1077287767397355520",
+      "username": "noticiasjlp",
+      "author_name": "NOTICIAS JUAN LÓPEZ",
+      "source_name": "NOTICIAS JUAN LÓPEZ",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/noticiasjlp/status/2076110588640428498"
+    }
+  },
+  {
+    "id": "pending-2076110503638692336",
+    "x_post_id": "2076110503638692336",
+    "reason": "快讯正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:48:35.415Z",
+    "post": {
+      "id": "2076110503638692336",
+      "text": "Insane govt: South LA teen detained after high school graduation released from ICE detention center https://t.co/lBbvHZ44je",
+      "created_at": "2026-07-12T01:04:50.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "msn.com/en-us/travel/n…",
+            "end": 123,
+            "expanded_url": "https://www.msn.com/en-us/travel/news/south-la-teen-detained-after-high-school-graduation-released-from-ice-detention-center/vi-AA27G9af?ocid=socialshare#details",
+            "start": 100,
+            "unwound_url": "https://www.msn.com/en-us/travel/news/south-la-teen-detained-after-high-school-graduation-released-from-ice-detention-center/vi-AA27G9af?ocid=socialshare#details",
+            "url": "https://t.co/lBbvHZ44je"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "22413812",
+      "username": "gardgoldsmith",
+      "author_name": "Gardner Goldsmith - Liberty Conspiracy M-F 6pm",
+      "source_name": "Gardner Goldsmith - Liberty Conspiracy M-F 6pm",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-policy-detention",
+      "x_url": "https://x.com/gardgoldsmith/status/2076110503638692336"
+    }
+  },
+  {
+    "id": "pending-2076110218786697616",
+    "x_post_id": "2076110218786697616",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:48:31.270Z",
+    "post": {
+      "id": "2076110218786697616",
+      "text": "🇪🇦 𝗘𝗖𝗢𝗦 𝗗𝗘 𝗘𝗦𝗣𝗔𝗡̃𝗔 ¡𝑁𝑜𝑡𝑖𝑐𝑖𝑎𝑠 𝑞𝑢𝑒 𝑑𝑒𝑏𝑒𝑟𝑖́𝑎𝑛 𝑑𝑒𝑠𝑡𝑎𝑐𝑎𝑟, 𝑐𝑙𝑎𝑚𝑎𝑛𝑑𝑜 𝑛𝑢𝑒𝑠𝑡𝑟𝑎 𝑟𝑒𝑓𝑙𝑒𝑥𝑖𝑜́𝑛! #Inmigración #Subvenciones #Libertad\n\n♦ 𝐄𝐥 𝐞𝐬𝐩𝐚𝐧̃𝐨𝐥 𝐩𝐚𝐠𝐚, 𝐞𝐥 𝐞𝐱𝐭𝐫𝐚𝐧𝐣𝐞𝐫𝐨 𝐜𝐨𝐛𝐫𝐚: Que el 70% de los https://t.co/qzrphmQZpQ",
+      "created_at": "2026-07-12T01:03:43.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 94,
+            "start": 82,
+            "tag": "Inmigración"
+          },
+          {
+            "end": 108,
+            "start": 95,
+            "tag": "Subvenciones"
+          },
+          {
+            "end": 118,
+            "start": 109,
+            "tag": "Libertad"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/qzrphmQZpQ",
+            "end": 202,
+            "expanded_url": "https://x.com/Takis1X2/status/2076110218786697616/photo/1",
+            "media_key": "3_2076110180127760384",
+            "start": 179,
+            "url": "https://t.co/qzrphmQZpQ"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM_TNYkWYAATonr.jpg",
+          "alt_text": "",
+          "width": 1200,
+          "height": 675
+        }
+      ],
+      "author_id": "292673228",
+      "username": "Takis1X2",
+      "author_name": "Takis Tsiambouris",
+      "source_name": "Takis Tsiambouris",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-community",
+      "x_url": "https://x.com/Takis1X2/status/2076110218786697616"
+    }
+  },
+  {
+    "id": "pending-2076109474742284522",
+    "x_post_id": "2076109474742284522",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:48:24.863Z",
+    "post": {
+      "id": "2076109474742284522",
+      "text": "¿Qué hay detrás de la captura de Ismael “El Mayo” Zambada? | “Esta Semana” con @iliacalderon | Ken Salazar, exembajador de Estados Unidos, revela detalles sobre el papel de su país en la detención de Ismael “El Mayo” Zambada; Juan Proaño, CEO de LULAC, exige justicia tras el https://t.co/xFWf2S7fnQ",
+      "created_at": "2026-07-12T01:00:45.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 92,
+            "id": "29133549",
+            "start": 79,
+            "username": "iliacalderon"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/xFWf2S7fnQ",
+            "end": 299,
+            "expanded_url": "https://x.com/nmasunivision/status/2076109474742284522/video/1",
+            "media_key": "13_2076109306798202880",
+            "start": 276,
+            "url": "https://t.co/xFWf2S7fnQ"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/media/HM_SjE-WMAAC9M1.jpg",
+          "alt_text": "",
+          "width": 1920,
+          "height": 1080
+        }
+      ],
+      "author_id": "35785401",
+      "username": "nmasunivision",
+      "author_name": "N+ UNIVISION",
+      "source_name": "N+ UNIVISION",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-arrests",
+      "x_url": "https://x.com/nmasunivision/status/2076109474742284522"
+    }
+  },
+  {
+    "id": "pending-2076109435726958631",
+    "x_post_id": "2076109435726958631",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:48:18.253Z",
+    "post": {
+      "id": "2076109435726958631",
+      "text": "De acuerdo con reportes de testigos, se observó una presunta presencia de agentes migratorios en el Home Depot de Lancaster, Carolina del Sur. \n\n07/11/2026 Lancaster— SC \n12:00 PM \n\n1116 US, Hwy 9 Bypass W, Lancaster, SC 29720\n\n#UltimaHora #MigracionUSA  #ComunidadHispana https://t.co/VJR7ZwqTVr",
+      "created_at": "2026-07-12T01:00:36.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 239,
+            "start": 228,
+            "tag": "UltimaHora"
+          },
+          {
+            "end": 253,
+            "start": 240,
+            "tag": "MigracionUSA"
+          },
+          {
+            "end": 272,
+            "start": 255,
+            "tag": "ComunidadHispana"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/VJR7ZwqTVr",
+            "end": 296,
+            "expanded_url": "https://x.com/KingNewsNC/status/2076109435726958631/photo/1",
+            "media_key": "3_2076109431004094464",
+            "start": 273,
+            "url": "https://t.co/VJR7ZwqTVr"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM_Shx3WYAA20qy.jpg",
+          "alt_text": "",
+          "width": 1284,
+          "height": 1994
+        }
+      ],
+      "author_id": "2075364419685498880",
+      "username": "KingNewsNC",
+      "author_name": "King News NC",
+      "source_name": "King News NC",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/KingNewsNC/status/2076109435726958631"
+    }
+  },
+  {
+    "id": "pending-2076102276964389160",
+    "x_post_id": "2076102276964389160",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:47:54.924Z",
+    "post": {
+      "id": "2076102276964389160",
+      "text": "El ice ni siquiera tiene agentes del ice https://t.co/OcoD99z56R",
+      "created_at": "2026-07-12T00:32:09.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "x.com/liderfiscal/st…",
+            "end": 64,
+            "expanded_url": "https://twitter.com/liderfiscal/status/2075681961067049089",
+            "start": 41,
+            "url": "https://t.co/OcoD99z56R"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "54338577",
+      "username": "alasuroboro",
+      "author_name": "🌘 Edi_GC",
+      "source_name": "🌘 Edi_GC",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/alasuroboro/status/2076102276964389160"
+    }
+  },
+  {
+    "id": "pending-2076101780144849012",
+    "x_post_id": "2076101780144849012",
+    "reason": "X将该帖子标记为敏感内容",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:47:47.131Z",
+    "post": {
+      "id": "2076101780144849012",
+      "text": "Senado respaldará acciones legales contra ICE por muerte de migrantes\nhttps://t.co/pJQmsxHn4i\n#Nacional #ICE #Migrantes https://t.co/l07PWQsa5K",
+      "created_at": "2026-07-12T00:30:11.000Z",
+      "lang": "es",
+      "possibly_sensitive": true,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 103,
+            "start": 94,
+            "tag": "Nacional"
+          },
+          {
+            "end": 108,
+            "start": 104,
+            "tag": "ICE"
+          },
+          {
+            "end": 119,
+            "start": 109,
+            "tag": "Migrantes"
+          }
+        ],
+        "urls": [
+          {
+            "description": "Con la muerte de Lorenzo Salgado Araujo suman 17 migrantes muertos bajo custodia del ICE en año y medio.",
+            "display_url": "superchannel12.com/700978",
+            "end": 93,
+            "expanded_url": "http://superchannel12.com/700978",
+            "start": 70,
+            "status": 200,
+            "title": "Senado respaldará acciones legales contra ICE por muerte de migrantes",
+            "unwound_url": "https://superchannel12.com/700978/noticia",
+            "url": "https://t.co/pJQmsxHn4i"
+          },
+          {
+            "display_url": "pic.x.com/l07PWQsa5K",
+            "end": 143,
+            "expanded_url": "https://x.com/SuperChannel_12/status/2076101780144849012/photo/1",
+            "media_key": "3_2076101725992173568",
+            "start": 120,
+            "url": "https://t.co/l07PWQsa5K"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM_LhSdWwAAth3d.jpg",
+          "alt_text": "",
+          "width": 650,
+          "height": 417
+        }
+      ],
+      "author_id": "3254924130",
+      "username": "SuperChannel_12",
+      "author_name": "Super Channel 12",
+      "source_name": "Super Channel 12",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-border",
+      "x_url": "https://x.com/SuperChannel_12/status/2076101780144849012"
+    }
+  },
+  {
+    "id": "pending-2076101732250042508",
+    "x_post_id": "2076101732250042508",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:47:42.867Z",
+    "post": {
+      "id": "2076101732250042508",
+      "text": "ICE asegura que Lorenzo intentó atropellar agentes, pero 3 testigos relatan versión distinta - YouTube https://t.co/l3MDMO4ARq #EEUU #streamers #Mexico #Jalisco #NuevoLeon",
+      "created_at": "2026-07-12T00:29:59.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 132,
+            "start": 127,
+            "tag": "EEUU"
+          },
+          {
+            "end": 143,
+            "start": 133,
+            "tag": "streamers"
+          },
+          {
+            "end": 151,
+            "start": 144,
+            "tag": "Mexico"
+          },
+          {
+            "end": 160,
+            "start": 152,
+            "tag": "Jalisco"
+          },
+          {
+            "end": 171,
+            "start": 161,
+            "tag": "NuevoLeon"
+          }
+        ],
+        "urls": [
+          {
+            "description": "Lorenzo Salgado iba al trabajo cuando ICE lo interceptó. Tres compa...",
+            "display_url": "youtube.com/watch?v=qick14…",
+            "end": 126,
+            "expanded_url": "https://www.youtube.com/watch?v=qick14nh2dY",
+            "start": 103,
+            "status": 200,
+            "title": "ICE asegura que Lorenzo intentó atropellar agentes, pero 3 testigos relatan versión distinta",
+            "unwound_url": "https://www.youtube.com/watch?v=qick14nh2dY",
+            "url": "https://t.co/l3MDMO4ARq"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "2064492060690763776",
+      "username": "atzxvm",
+      "author_name": "atzx",
+      "source_name": "atzx",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-raids",
+      "x_url": "https://x.com/atzxvm/status/2076101732250042508"
+    }
+  },
+  {
+    "id": "pending-2076101461105324305",
+    "x_post_id": "2076101461105324305",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:47:39.571Z",
+    "post": {
+      "id": "2076101461105324305",
+      "text": "@luis_sinfiltro No bueno ,seguramente no has visto los videos de un mexicano con una bala en el cuerpo gritando por ayuda siendo detenido por ice o lo que seria la nueva gestapo de trumo",
+      "created_at": "2026-07-12T00:28:55.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 15,
+            "id": "1075937946446979072",
+            "start": 0,
+            "username": "luis_sinfiltro"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "478235738",
+      "username": "xxxsmarxxx",
+      "author_name": "@undiasininmigrantes",
+      "source_name": "@undiasininmigrantes",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-arrests",
+      "x_url": "https://x.com/xxxsmarxxx/status/2076101461105324305"
+    }
+  },
+  {
+    "id": "pending-2076099036885524886",
+    "x_post_id": "2076099036885524886",
+    "reason": "法律状态“被遣返”在来源中没有对应依据",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:47:36.036Z",
+    "post": {
+      "id": "2076099036885524886",
+      "text": "@Jersey2SanDiego @KimKatieUSA Public records confirm Karina Brucio (Chicago area) used social media for ICE location alerts before her June 2026 detention and deportation to Mexico. \n\nSimilar local alert networks and group accounts (e.g. Montco Community Watch) operate elsewhere, often anonymously or via",
+      "created_at": "2026-07-12T00:19:17.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "100710263",
+            "start": 0,
+            "username": "Jersey2SanDiego"
+          },
+          {
+            "end": 29,
+            "id": "1810693538247745536",
+            "start": 17,
+            "username": "KimKatieUSA"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1720665183188922368",
+      "username": "grok",
+      "author_name": "Grok",
+      "source_name": "Grok",
+      "source_type": "media",
+      "agency": "ICE",
+      "source_trust": 82,
+      "query_lane": "extra-metro-chicago",
+      "x_url": "https://x.com/grok/status/2076099036885524886"
+    }
+  },
+  {
+    "id": "pending-2076094592953237670",
+    "x_post_id": "2076094592953237670",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:47:21.855Z",
+    "post": {
+      "id": "2076094592953237670",
+      "text": "❄️✨ Disney On Ice: ¡Vive la magia! regresa a la CDMX con un espectáculo que reunirá a algunos de los personajes más queridos de Disney sobre la pista de hielo. Una opción perfecta para disfrutar en familia durante la temporada.\n\n👉 https://t.co/yPr2Qc3MZc\n\n#somosflow #noticias https://t.co/NKiQf0sBTT",
+      "created_at": "2026-07-12T00:01:37.000Z",
+      "lang": "es",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 266,
+            "start": 256,
+            "tag": "somosflow"
+          },
+          {
+            "end": 276,
+            "start": 267,
+            "tag": "noticias"
+          }
+        ],
+        "urls": [
+          {
+            "description": "¡Llega Disney On Ice 2026 al Auditorio Nacional! Disfruta la magia con Mickey, Minnie, Donald y Goofy. Boletos y más.",
+            "display_url": "revistaflow.com/disney-on-ice-…",
+            "end": 254,
+            "expanded_url": "https://revistaflow.com/disney-on-ice-mexico-2026-llega-a-la-cdmx/",
+            "images": [
+              {
+                "height": 800,
+                "url": "https://pbs.twimg.com/news_img/2074619635312308224/vXdEhKIO?format=jpg&name=orig",
+                "width": 1300
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2074619635312308224/vXdEhKIO?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 231,
+            "status": 200,
+            "title": "Disney On Ice México 2026 llega a la CDMX | Actividades del Mes",
+            "unwound_url": "https://revistaflow.com/disney-on-ice-mexico-2026-llega-a-la-cdmx/",
+            "url": "https://t.co/yPr2Qc3MZc"
+          },
+          {
+            "display_url": "pic.x.com/NKiQf0sBTT",
+            "end": 300,
+            "expanded_url": "https://x.com/RevistaFlowMx/status/2076094592953237670/photo/1",
+            "media_key": "3_2076094584963104768",
+            "start": 277,
+            "url": "https://t.co/NKiQf0sBTT"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM_FBoDWgAA-xGN.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "author_id": "148349212",
+      "username": "RevistaFlowMx",
+      "author_name": "Revista Flow",
+      "source_name": "Revista Flow",
+      "source_type": "media",
+      "agency": "",
+      "source_trust": 78,
+      "query_lane": "es-national",
+      "x_url": "https://x.com/RevistaFlowMx/status/2076094592953237670"
+    }
+  },
+  {
     "id": "pending-2076174418967924781",
     "x_post_id": "2076174418967924781",
     "reason": "内容与ICE或移民执法无直接关系",

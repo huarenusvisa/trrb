@@ -1,24 +1,26 @@
-唐人日报 ICE 修复包 v44（仓库根目录版）
+唐人日报 ICE 页面布局修复 v45
 
-已经确认：
-GitHub → Netlify → trrb.net 的部署链路正常。
+根本问题：
+v44只修复了图片地址判断，没有真正替换无图新闻的HTML布局。
+旧renderNews仍然把无图内容放进新闻卡片体系，所以页面外观基本不变。
+CSS里虽然有ice-brief-row，但旧JavaScript从未使用它。
 
-本次修复：
-1. 非空但无效的 cover_image 不再被误判为图片。
-2. 图片加载失败后强制切换为纯文字卡片。
-3. 即使图片错误发生得很快，也会通过 complete/naturalWidth 二次检查。
-4. 无效旧图片地址自动按无图新闻处理。
-5. 无图新闻标题显示为 8—18 个字，并保留正文摘要。
+v45真正改变：
+1. 有图片：继续使用“左图 + 右侧标题正文”的新闻卡片。
+2. 无图片：改用独立的紧凑文字快讯行。
+3. 无图标题自动控制为8—18个字。
+4. 无图正文显示两行；手机端显示三行。
+5. 图片加载失败：整张图片卡片直接替换成文字快讯行。
+6. 州筛选同时支持图片卡片和文字快讯行。
 
-覆盖路径：
+上传并覆盖：
 - /assets/ice-topic.js
 - /assets/ice-topic.css
-- /scripts/ice-sync.mjs
 - /topic/ice/index.html
+- /scripts/ice-sync.mjs
 
-提交到 main 后等待 Netlify 自动部署。
-打开：
-https://trrb.net/topic/ice/?release=44
+提交main后等待Netlify自动部署，然后打开：
+https://trrb.net/topic/ice/?layout=45
 
-查看页面源代码时应能搜索到：
-ice-direct-publish-v44
+查看页面源代码应能搜索：
+ice-layout-v45

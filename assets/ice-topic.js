@@ -18,6 +18,7 @@
   document.addEventListener("DOMContentLoaded", init);
 
   async function init() {
+    document.documentElement.dataset.iceLayout = "v45";
     startNewYorkClock();
 
     // 数据加载与地图渲染分离：地图组件缺失或 Plotly 失败时，
@@ -218,7 +219,13 @@
   function renderNews() {
     const root = document.getElementById("ice-news-list");
     if (!root) return;
-    const sorted = [...news].sort((a, b) => new Date(b.published_at || b.created_at || 0) - new Date(a.published_at || a.created_at || 0));
+
+    const sorted = [...news].sort(
+      (a, b) =>
+        new Date(b.published_at || b.created_at || 0) -
+        new Date(a.published_at || a.created_at || 0)
+    );
+
     if (!sorted.length) {
       root.innerHTML = '<div class="ice-empty">暂时没有已发布的ICE新闻。</div>';
       return;
@@ -227,67 +234,114 @@
     root.innerHTML = sorted.map(item => {
       const states = Array.isArray(item.state_codes)
         ? item.state_codes.map(normalizeStateCode).filter(Boolean)
-        : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
+        : [...new Set(
+            (item.enforcement_events || [])
+              .map(event => normalizeStateCode(event.state_code))
+              .filter(Boolean)
+          )];
+
       const imageUrl = normalizeIceImageUrl(item.image_url || item.cover_image);
-      const hasImage = Boolean(imageUrl);
-      const displayTitle = hasImage
-        ? String(item.title || "ICE执法动态").trim()
-        : normalizeIceBriefTitle(item.title);
-      const displaySummary = hasImage
-        ? String(item.summary || "").trim()
-        : normalizeIceBriefText(item.summary);
-      const image = hasImage
-        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(imageUrl)}" alt="" aria-hidden="true" loading="lazy" referrerpolicy="no-referrer"></div>`
-        : "";
-      const cardClass = hasImage ? "has-image" : "no-image";
-      const linkText = hasImage ? "查看全文 →" : "查看详情 →";
-      return `
-        <article class="ice-news-card ${cardClass}" data-states="${escapeAttr(states.join(","))}" data-brief-title="${escapeAttr(normalizeIceBriefTitle(item.title))}">
-          ${image}
-          <div class="ice-news-body">
-            <div class="ice-news-meta">
-              <span class="ice-news-label">${escapeHtml(item.source_name || "ICE执法信息")}</span>
-              <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
-            </div>
-            <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(displayTitle)}</a></h3>
-            <p>${escapeHtml(displaySummary)}</p>
-            <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">${linkText}</a>
-          </div>
-        </article>`;
+      return imageUrl
+        ? renderImageNewsCard(item, states, imageUrl)
+        : renderBriefNewsRow(item, states);
     }).join("");
 
-    // X 图片地址偶尔会失效。失效后立即切换为纯文字卡片，
-    // 不保留空白图片框，也不让长标题挤成狭窄竖排。
-    const switchToTextCard = image => {
+    const replaceBrokenImageCard = image => {
       const card = image.closest(".ice-news-card");
-      if (!card || card.classList.contains("no-image")) return;
+      if (!card) return;
 
-      image.closest(".ice-news-thumb-wrap")?.remove();
-      card.classList.remove("has-image");
-      card.classList.add("no-image");
+      const item = {
+        title: card.dataset.briefTitle || "ICE执法最新动态",
+        summary: card.dataset.briefSummary || "ICE相关公开信息已更新。",
+        source_name: card.dataset.sourceName || "ICE执法信息",
+        published_at: card.dataset.publishedAt || "",
+        url: card.dataset.articleUrl || "#"
+      };
+      const states = String(card.dataset.states || "")
+        .split(",")
+        .map(normalizeStateCode)
+        .filter(Boolean);
 
-      const titleLink = card.querySelector("h3 a");
-      if (titleLink) {
-        titleLink.textContent = card.dataset.briefTitle || "ICE执法最新动态";
-      }
-
-      const summary = card.querySelector(".ice-news-body > p");
-      if (summary) {
-        summary.textContent = normalizeIceBriefText(summary.textContent);
-      }
-
-      const detailLink = card.querySelector(".ice-news-link");
-      if (detailLink) detailLink.textContent = "查看详情 →";
+      const template = document.createElement("template");
+      template.innerHTML = renderBriefNewsRow(item, states).trim();
+      const replacement = template.content.firstElementChild;
+      if (replacement) card.replaceWith(replacement);
     };
 
     root.querySelectorAll(".ice-news-thumb").forEach(image => {
-      image.addEventListener("error", () => switchToTextCard(image), { once: true });
+      image.addEventListener(
+        "error",
+        () => replaceBrokenImageCard(image),
+        { once: true }
+      );
 
-      // 无效图片有时会在监听器绑定前就已经失败，立即检查一次。
+      // 图片可能在监听器绑定前已经失败，必须立即检查。
       if (image.complete && image.naturalWidth === 0) {
-        switchToTextCard(image);
+        replaceBrokenImageCard(image);
       }
     });
+  }
+
+  function renderImageNewsCard(item, states, imageUrl) {
+    const title = String(item.title || "ICE执法动态").trim();
+    const summary = String(item.summary || "").trim();
+    const briefTitle = normalizeIceBriefTitle(item.title);
+    const briefSummary = normalizeIceBriefText(item.summary);
+    const sourceName = String(item.source_name || "ICE执法信息").trim();
+    const publishedAt = String(item.published_at || item.created_at || "");
+    const articleUrl = String(item.url || "#");
+
+    return `
+      <article
+        class="ice-news-card has-image ice-news-item"
+        data-states="${escapeAttr(states.join(","))}"
+        data-brief-title="${escapeAttr(briefTitle)}"
+        data-brief-summary="${escapeAttr(briefSummary)}"
+        data-source-name="${escapeAttr(sourceName)}"
+        data-published-at="${escapeAttr(publishedAt)}"
+        data-article-url="${escapeAttr(articleUrl)}"
+      >
+        <a class="ice-news-thumb-wrap" href="${escapeAttr(articleUrl)}" aria-label="${escapeAttr(title)}">
+          <img
+            class="ice-news-thumb"
+            src="${escapeAttr(imageUrl)}"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          >
+        </a>
+        <div class="ice-news-body">
+          <div class="ice-news-meta">
+            <span class="ice-news-label">${escapeHtml(sourceName)}</span>
+            <time datetime="${escapeAttr(publishedAt)}">${escapeHtml(formatDateTimeSeconds(publishedAt))}</time>
+          </div>
+          <h3><a href="${escapeAttr(articleUrl)}">${escapeHtml(title)}</a></h3>
+          <p>${escapeHtml(summary)}</p>
+          <a class="ice-news-link" href="${escapeAttr(articleUrl)}">查看全文 →</a>
+        </div>
+      </article>`;
+  }
+
+  function renderBriefNewsRow(item, states) {
+    const title = normalizeIceBriefTitle(item.title);
+    const summary = normalizeIceBriefText(item.summary);
+    const sourceName = String(item.source_name || "ICE执法信息").trim();
+    const publishedAt = String(item.published_at || item.created_at || "");
+    const articleUrl = String(item.url || item.source_url || "#");
+
+    return `
+      <article
+        class="ice-brief-row ice-news-item"
+        data-states="${escapeAttr(states.join(","))}"
+      >
+        <time datetime="${escapeAttr(publishedAt)}">${escapeHtml(formatDateTimeSeconds(publishedAt))}</time>
+        <div class="ice-brief-copy">
+          <h3><a href="${escapeAttr(articleUrl)}">${escapeHtml(title)}</a></h3>
+          <p>${escapeHtml(summary)}</p>
+        </div>
+        <a class="ice-brief-source" href="${escapeAttr(articleUrl)}">${escapeHtml(sourceName)}</a>
+      </article>`;
   }
 
   function normalizeIceImageUrl(value) {
@@ -508,7 +562,7 @@
   function filterByState(state) {
     selectedState = normalizeStateCode(state);
     let visible = 0;
-    document.querySelectorAll(".ice-news-card").forEach(card => {
+    document.querySelectorAll(".ice-news-item").forEach(card => {
       const states = (card.dataset.states || "").split(",").filter(Boolean);
       const show = !selectedState || states.includes(selectedState);
       card.hidden = !show;

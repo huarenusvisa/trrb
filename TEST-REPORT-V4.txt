@@ -1,0 +1,12 @@
+唐人日报 V4 自动新闻中台测试报告
+
+通过项目：
+1. JavaScript 语法：supabase-news、source-registry、ICE、Trump 全部通过。
+2. Supabase 合约测试：SUPABASE_URL 含 /rest/v1 时可自动纠正；news_sources/articles/news_candidates/automation_logs 请求路径正确。
+3. ICE 雷达查询与候选评分测试通过。
+4. 特朗普查询、Snowflake精度、中文去重、事实约束测试通过。
+5. 观察账号强制进入人工审核测试通过。
+6. 管理后台已存在独立草稿页、来源管理页、自动化日志页。
+7. 工作流使用 Node.js 24，ICE与Trump均包含健康检查、来源同步、抓取编辑、提交步骤。
+
+部署前必须执行：supabase-news-engine-v4.sql

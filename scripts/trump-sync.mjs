@@ -1130,29 +1130,114 @@ function addKnownEditorialItem(items, ai, publishedAt, id) {
   items.push({ id: id || "current-run", title: ai.title, summary: ai.summary || "", published_at: publishedAt || new Date().toISOString() });
 }
 
+const EVENT_STOP_WORDS = new Set([
+  "特朗普", "美国总统", "总统", "美国", "白宫", "政府", "最新", "动态", "消息", "表示", "宣布", "称", "指出", "计划",
+  "推动", "有关", "针对", "相关", "更多", "再次", "正在", "今日", "当天", "目前", "问题", "事件", "一项", "一份", "将", "已",
+]);
+
+const EVENT_ACTION_GROUPS = [
+  ["签署", "拒签", "不签", "生效", "法案", "立法", "通过"],
+  ["起诉", "诉讼", "上诉", "裁决", "判决", "法院", "司法部"],
+  ["和解", "达成协议", "解决", "协议"],
+  ["任命", "调整", "撤换", "委员会", "成员"],
+  ["标签", "美国制造", "原产地", "肉类", "产品"],
+  ["管道", "泄漏", "漏油", "Keystone", "基斯顿"],
+  ["住房", "购房", "房改", "住宅"],
+  ["关税", "贸易", "进口", "出口"],
+  ["移民", "ICE", "驱逐", "遣返", "边境"],
+  ["选举", "投票", "选委会", "非法投票"],
+  ["行政令", "撤销", "监管", "规则", "定义"],
+];
+
 function normalizedEventText(value) {
   return cleanText(value)
     .toLowerCase()
-    .replace(/特朗普|美国总统|白宫|最新|动态|消息|表示|宣布|称/g, " ")
+    .replace(/https?:\/\/\S+/g, " ")
     .replace(/[\p{P}\p{S}\s]+/gu, "")
-    .slice(0, 120);
+    .replace(/特朗普|美国总统|总统特朗普|白宫|最新|动态|消息|表示|宣布|称|指出/g, "")
+    .slice(0, 180);
+}
+
+function significantEventTokens(value) {
+  const cleaned = cleanText(value)
+    .toLowerCase()
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/[\p{P}\p{S}]+/gu, " ");
+  const result = new Set();
+  for (const word of cleaned.split(/\s+/).filter(Boolean)) {
+    if (word.length < 2 || EVENT_STOP_WORDS.has(word)) continue;
+    result.add(word);
+  }
+  const cjk = cleaned.replace(/[^\u3400-\u9fff]/g, "");
+  for (let size = 2; size <= 4; size += 1) {
+    for (let index = 0; index <= cjk.length - size; index += 1) {
+      const token = cjk.slice(index, index + size);
+      if ([...EVENT_STOP_WORDS].some((stop) => stop.includes(token) || token.includes(stop))) continue;
+      result.add(token);
+    }
+  }
+  return result;
+}
+
+function eventActionKeys(value) {
+  const text = cleanText(value).toLowerCase();
+  const keys = new Set();
+  EVENT_ACTION_GROUPS.forEach((terms, index) => {
+    if (terms.some((term) => text.includes(term.toLowerCase()))) keys.add(String(index));
+  });
+  return keys;
+}
+
+function overlapCoefficient(a, b) {
+  if (!a.size || !b.size) return 0;
+  let intersection = 0;
+  for (const token of a) if (b.has(token)) intersection += 1;
+  return intersection / Math.min(a.size, b.size);
+}
+
+function sharedCount(a, b) {
+  let total = 0;
+  for (const token of a) if (b.has(token)) total += 1;
+  return total;
+}
+
+export function likelyDuplicateEvent(aTitle, aSummary, bTitle, bSummary) {
+  const aText = `${aTitle || ""} ${aSummary || ""}`;
+  const bText = `${bTitle || ""} ${bSummary || ""}`;
+  const aTitleNormalized = normalizedEventText(aTitle || "");
+  const bTitleNormalized = normalizedEventText(bTitle || "");
+  if (aTitleNormalized && bTitleNormalized) {
+    if (aTitleNormalized === bTitleNormalized && aTitleNormalized.length >= 6) return true;
+    const shorter = aTitleNormalized.length <= bTitleNormalized.length ? aTitleNormalized : bTitleNormalized;
+    const longer = shorter === aTitleNormalized ? bTitleNormalized : aTitleNormalized;
+    if (shorter.length >= 8 && longer.includes(shorter) && shorter.length / longer.length >= 0.62) return true;
+  }
+
+  const aTokens = significantEventTokens(aText);
+  const bTokens = significantEventTokens(bText);
+  const jac = jaccard(aTokens, bTokens);
+  const overlap = overlapCoefficient(aTokens, bTokens);
+  const shared = sharedCount(aTokens, bTokens);
+  const aActions = eventActionKeys(aText);
+  const bActions = eventActionKeys(bText);
+  const actionOverlap = sharedCount(aActions, bActions) > 0;
+
+  if (jac >= 0.62) return true;
+  if (overlap >= 0.74 && shared >= 5) return true;
+  if (actionOverlap && overlap >= 0.58 && shared >= 4) return true;
+  if (actionOverlap && shared >= 12 && jac >= 0.20) return true;
+  return false;
 }
 
 function findContentDuplicate(items, title, summary, publishedAt) {
   const currentTime = Date.parse(publishedAt || "") || Date.now();
-  const cutoff = currentTime - 72 * 60 * 60 * 1000;
+  const cutoff = currentTime - 7 * 24 * 60 * 60 * 1000;
   const candidateHash = createContentHash(title, summary);
-  const candidateTokens = contentTokens(`${title} ${summary}`);
-  const candidateTitle = normalizedEventText(title);
   for (const item of items || []) {
     const timestamp = Date.parse(item.published_at || "");
     if (Number.isFinite(timestamp) && timestamp < cutoff) continue;
     if (item.content_hash && item.content_hash === candidateHash) return item;
-    const existingTitle = normalizedEventText(item.title || "");
-    if (candidateTitle && existingTitle && candidateTitle === existingTitle && candidateTitle.length >= 8) return item;
-    const score = jaccard(candidateTokens, contentTokens(`${item.title || ""} ${item.summary || ""}`));
-    // 对不同来源的改写采取保守去重；只有几乎完全一致时才合并，避免误删不同进展。
-    if (score >= 0.985) return item;
+    if (likelyDuplicateEvent(title, summary, item.title || "", item.summary || "")) return item;
   }
   return null;
 }

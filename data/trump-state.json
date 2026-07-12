@@ -1,18 +1,18 @@
 {
-  "last_seen_id": "2076276679668797530",
-  "last_success_at": "2026-07-12T12:14:04.627Z",
-  "last_content_at": "2026-07-12T12:14:04.627Z",
+  "last_seen_id": "2076189802807099818",
+  "last_success_at": "2026-07-12T06:20:59.685Z",
+  "last_content_at": "2026-07-12T06:20:59.685Z",
   "last_error": "",
   "last_result": {
-    "fetched": 9,
-    "discovered": 9,
+    "fetched": 114,
+    "discovered": 114,
     "processed": 18,
-    "published": 15,
-    "review": 2,
-    "retry": 0,
-    "duplicates": 1,
-    "total_published": 133,
-    "total_pending": 597,
+    "published": 11,
+    "review": 6,
+    "retry": 1,
+    "duplicates": 0,
+    "total_published": 105,
+    "total_pending": 510,
     "query_lanes": [
       {
         "id": "official",
@@ -23,13 +23,13 @@
       {
         "id": "trusted-1",
         "label": "主流媒体",
-        "fetched": 3,
+        "fetched": 0,
         "truncated": false
       },
       {
         "id": "trusted-2",
         "label": "主流媒体",
-        "fetched": 6,
+        "fetched": 0,
         "truncated": false
       },
       {
@@ -42,24 +42,22 @@
         "id": "review-1",
         "label": "观察账号",
         "fetched": 0,
-        "status": 0,
-        "error": "X API (review-1) request failed (403): Your monthly spend cap has been reached."
+        "truncated": false
       },
       {
         "id": "radar",
         "label": "全网雷达",
-        "fetched": 0,
-        "status": 0,
-        "error": "X API (radar) request failed (403): Your monthly spend cap has been reached."
+        "fetched": 149,
+        "truncated": true
       }
     ]
   },
   "query_cursors": {
-    "official": "2076211412112670839",
-    "trusted-1": "2076265371267420308",
+    "official": "2076153803208818709",
+    "trusted-1": "2076154602852913498",
     "review-1": "2076119868554801335",
-    "trusted-2": "2076276679668797530",
+    "trusted-2": "2076163642232340528",
     "trusted-3": "2075648687985020996"
   },
-  "last_run_at": "2026-07-12T12:14:04.627Z"
+  "last_run_at": "2026-07-12T06:20:59.685Z"
 }

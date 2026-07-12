@@ -237,21 +237,66 @@
       root.innerHTML = '<div class="ice-empty">暂时没有已发布的ICE新闻。</div>';
       return;
     }
-    root.innerHTML = sorted.map(item => {
-      const image = item.image_url
-        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE官方图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
-        : '<div class="ice-news-thumb-wrap" aria-hidden="true"></div>';
-      return `<article class="ice-news-card">
-        ${image}
-        <div class="ice-news-body">
-          <div class="ice-news-meta"><span class="ice-news-label">ICE公开信息</span><time>${escapeHtml(formatNyDateTime(item.published_at))}</time></div>
-          <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
-          <p>${escapeHtml(item.summary || "")}</p>
-          <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">查看全文 →</a>
-        </div>
-      </article>`;
-    }).join("");
+
+    const flashes = sorted.filter(item => item.is_flash || item.display_mode === "flash" || item.content_type === "flash");
+    const stories = sorted.filter(item => !(item.is_flash || item.display_mode === "flash" || item.content_type === "flash"));
+
+    const flashSection = flashes.length ? `<section class="ice-flash-section" aria-labelledby="ice-flash-title">
+      <div class="ice-flash-heading">
+        <h3 id="ice-flash-title">ICE实时快讯</h3>
+        <span>过去24小时</span>
+      </div>
+      <div class="ice-flash-list">
+        ${flashes.map(renderFlash).join("")}
+      </div>
+    </section>` : "";
+
+    const storySection = stories.length ? `<section class="ice-story-section" aria-labelledby="ice-story-title">
+      <div class="ice-story-heading"><h3 id="ice-story-title">ICE重点新闻</h3></div>
+      <div class="ice-story-list">${stories.map(renderStory).join("")}</div>
+    </section>` : "";
+
+    root.innerHTML = flashSection + storySection;
   }
+
+  function renderFlash(item) {
+    const href = item.click_url || item.official_url || item.source_url || "#";
+    const external = /^https?:\/\//i.test(href);
+    return `<article class="ice-flash-item">
+      <time>${escapeHtml(formatNyTime(item.published_at))}</time>
+      <div class="ice-flash-copy">
+        <h4><a href="${escapeAttr(href)}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(item.title || "ICE实时动态")}</a></h4>
+        <p>${escapeHtml(item.summary || "")}</p>
+      </div>
+      <span class="ice-flash-source">${escapeHtml(item.source_name || "公开来源")}</span>
+    </article>`;
+  }
+
+  function renderStory(item) {
+    const image = item.image_url
+      ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+      : '<div class="ice-news-thumb-wrap" aria-hidden="true"></div>';
+    return `<article class="ice-news-card">
+      ${image}
+      <div class="ice-news-body">
+        <div class="ice-news-meta"><span class="ice-news-label">${escapeHtml(item.source_name || "ICE公开信息")}</span><time>${escapeHtml(formatNyDateTime(item.published_at))}</time></div>
+        <h3><a href="${escapeAttr(item.url || item.click_url || item.source_url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
+        <p>${escapeHtml(item.summary || "")}</p>
+        <a class="ice-news-link" href="${escapeAttr(item.url || item.click_url || item.source_url || "#")}">查看全文 →</a>
+      </div>
+    </article>`;
+  }
+
+  function formatNyTime(value) {
+    if (!value || !Number.isFinite(Date.parse(value))) return "--:--";
+    return new Intl.DateTimeFormat("zh-CN", {
+      timeZone: "America/New_York",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }).format(new Date(value));
+  }
+
 
   function formatNyDateTime(value) {
     if (!value || !Number.isFinite(Date.parse(value))) return "—";

@@ -55,13 +55,26 @@
       const response = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
       if (!response.ok) return [];
       return await response.json();
-    } catch { return []; }
+    } catch {
+      return [];
+    }
   }
 
   function mergeLiveNews(live, archived) {
-    const mapped = live.map(row => ({ id: row.id, title: row.title, summary: row.summary, image_url: row.cover_image, source_name: row.source_name, source_url: row.source_url, published_at: row.published_at, url: `/article.html?id=${encodeURIComponent(row.id)}`, state_codes: row.state ? [String(row.state).toUpperCase()] : [], enforcement_events: [] }));
-    const seen = new Set(mapped.map(x => String(x.id)));
-    return mapped.concat(archived.filter(x => !seen.has(String(x.id))));
+    const mapped = live.map(row => ({
+      id: row.id,
+      title: row.title,
+      summary: row.summary,
+      image_url: row.cover_image,
+      source_name: row.source_name,
+      source_url: row.source_url,
+      published_at: row.published_at,
+      url: `/article.html?id=${encodeURIComponent(row.id)}`,
+      state_codes: row.state ? [normalizeStateCode(row.state)] : [],
+      enforcement_events: []
+    }));
+    const seen = new Set(mapped.map(item => String(item.id)));
+    return mapped.concat(archived.filter(item => !seen.has(String(item.id))));
   }
 
   async function fetchJson(url, fallback) {
@@ -71,9 +84,7 @@
   }
 
   function startNewYorkClock() {
-    const update = () => {
-      setText("ny-live-time", formatDateTimeSeconds(new Date()));
-    };
+    const update = () => setText("ny-live-time", formatDateTimeSeconds(new Date()));
     update();
     window.setInterval(update, 1000);
   }
@@ -89,7 +100,7 @@
     const root = document.getElementById("today-event-list");
     const events = Array.isArray(dashboard?.today?.events) ? dashboard.today.events : [];
     if (!events.length) {
-      root.innerHTML = '<div class="ice-empty">今天暂无同时披露抓捕/拘留、时间和地点的ICE官方信息。</div>';
+      root.innerHTML = '<div class="ice-empty">今天暂无同时披露抓捕或拘留、时间和地点的公开信息。</div>';
       return;
     }
 
@@ -118,8 +129,8 @@
 
     root.innerHTML = sorted.map(item => {
       const states = Array.isArray(item.state_codes)
-        ? item.state_codes
-        : [...new Set((item.enforcement_events || []).map(event => event.state_code).filter(Boolean))];
+        ? item.state_codes.map(normalizeStateCode).filter(Boolean)
+        : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
       const image = item.image_url
         ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE官方图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
         : '<div class="ice-news-thumb-wrap" aria-hidden="true"></div>';
@@ -165,9 +176,12 @@
 
   async function renderHeatmap() {
     const rows = dashboard?.heatmap?.[selectedRange]?.states || [];
+    const totals = summarizeRows(rows);
+    updateHeatmapSummary(totals);
+    renderTopStates(rows);
+
     const note = document.getElementById("heatmap-note");
-    const total = rows.reduce((sum, row) => sum + Number(row[selectedMetric] || 0), 0);
-    note.textContent = `${rangeLabel(selectedRange)}共公开${total}${selectedMetric === "people" ? "人" : "起事件"}`;
+    note.textContent = `${rangeLabel(selectedRange)}共公开${selectedMetric === "people" ? `${totals.people}人` : `${totals.events}起事件`}`;
 
     if (!rows.length) {
       showFallback(rows);
@@ -180,18 +194,30 @@
       map.hidden = false;
       document.getElementById("heatmap-fallback").hidden = true;
       const values = rows.map(row => Number(row[selectedMetric] || 0));
-      await window.Plotly.newPlot(map, [{
+      const isPeople = selectedMetric === "people";
+      await window.Plotly.react(map, [{
         type: "choropleth",
         locationmode: "USA-states",
         locations: rows.map(row => row.code),
         z: values,
-        text: rows.map(row => `${row.name || row.code}<br>事件：${row.events}<br>已披露人数：${row.people}`),
+        text: rows.map(row => `${row.name || row.code}<br>事件：${Number(row.events || 0)}<br>已披露人数：${Number(row.people || 0)}`),
         hovertemplate: "%{text}<extra></extra>",
-        colorscale: [[0, "#eaf4f9"], [.25, "#a7d2e3"], [.6, "#3b91b6"], [1, "#005f88"]],
-        marker: { line: { color: "#ffffff", width: .8 } },
-        colorbar: { title: selectedMetric === "people" ? "人数" : "事件", thickness: 12, len: .72 }
+        colorscale: isPeople
+          ? [[0, "#edf8f2"], [.25, "#bfe4ce"], [.6, "#55ae7d"], [1, "#167447"]]
+          : [[0, "#edf6fa"], [.25, "#b8dce9"], [.6, "#4b9fbe"], [1, "#005f88"]],
+        marker: { line: { color: "#ffffff", width: 1.2 } },
+        colorbar: {
+          title: isPeople ? "人数" : "事件",
+          thickness: 10,
+          len: .62,
+          x: .98,
+          y: .5,
+          tickfont: { size: 11 },
+          titlefont: { size: 12 }
+        }
       }], {
-        margin: { l: 8, r: 8, t: 20, b: 10 },
+        autosize: true,
+        margin: { l: 0, r: 28, t: 8, b: 4 },
         paper_bgcolor: "#ffffff",
         plot_bgcolor: "#ffffff",
         geo: {
@@ -207,14 +233,53 @@
         scrollZoom: false
       });
       map.removeAllListeners?.("plotly_click");
-      map.on?.("plotly_click", data => {
-        const state = data?.points?.[0]?.location || "";
-        filterByState(state);
-      });
+      map.on?.("plotly_click", data => filterByState(data?.points?.[0]?.location || ""));
     } catch (error) {
       console.warn("Plotly unavailable, using fallback list.", error);
       showFallback(rows);
     }
+  }
+
+  function summarizeRows(rows) {
+    return rows.reduce((acc, row) => {
+      acc.events += Number(row.events || 0);
+      acc.people += Number(row.people || 0);
+      if (Number(row.events || 0) > 0 || Number(row.people || 0) > 0) acc.states += 1;
+      return acc;
+    }, { events: 0, people: 0, states: 0 });
+  }
+
+  function updateHeatmapSummary(totals) {
+    setText("map-range-label", rangeLabel(selectedRange));
+    setText("map-total-events", String(totals.events));
+    setText("map-total-people", `${totals.people}人`);
+    setText("map-active-states", String(totals.states));
+    setText("ranking-metric-label", selectedMetric === "people" ? "按已披露人数排序" : "按事件数排序");
+    setText("heatmap-description", `按州展示${rangeLabel(selectedRange)}公开执法${selectedMetric === "people" ? "人数" : "事件"}，点击州可筛选相关动态。`);
+  }
+
+  function renderTopStates(rows) {
+    const root = document.getElementById("top-state-list");
+    if (!root) return;
+    const sorted = [...rows]
+      .sort((a, b) => Number(b[selectedMetric] || 0) - Number(a[selectedMetric] || 0))
+      .filter(row => Number(row[selectedMetric] || 0) > 0)
+      .slice(0, 8);
+    if (!sorted.length) {
+      root.innerHTML = '<div class="ice-empty">当前范围暂无州级数据。</div>';
+      return;
+    }
+    const max = Math.max(...sorted.map(row => Number(row[selectedMetric] || 0)), 1);
+    root.innerHTML = sorted.map((row, index) => {
+      const value = Number(row[selectedMetric] || 0);
+      return `<button class="top-state-row" type="button" data-state="${escapeAttr(row.code)}">
+        <span class="rank">${index + 1}</span>
+        <b>${escapeHtml(row.code)}</b>
+        <span class="top-state-bar"><i style="width:${Math.max(6, value / max * 100)}%"></i></span>
+        <strong>${value}</strong>
+      </button>`;
+    }).join("");
+    root.querySelectorAll("button[data-state]").forEach(button => button.addEventListener("click", () => filterByState(button.dataset.state)));
   }
 
   function showFallback(rows) {
@@ -239,7 +304,7 @@
   }
 
   function filterByState(state) {
-    selectedState = state || "";
+    selectedState = normalizeStateCode(state);
     let visible = 0;
     document.querySelectorAll(".ice-news-card").forEach(card => {
       const states = (card.dataset.states || "").split(",").filter(Boolean);
@@ -288,22 +353,13 @@
     if (!Number.isFinite(date.getTime())) return null;
     const parts = new Intl.DateTimeFormat("en-CA", {
       timeZone: "America/New_York",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
     }).formatToParts(date);
     const map = Object.fromEntries(parts.map(part => [part.type, part.value]));
     return {
-      year: String(Number(map.year)),
-      month: String(Number(map.month)),
-      day: String(Number(map.day)),
-      hour: map.hour,
-      minute: map.minute,
-      second: map.second
+      year: String(Number(map.year)), month: String(Number(map.month)), day: String(Number(map.day)),
+      hour: map.hour, minute: map.minute, second: map.second
     };
   }
 
@@ -330,6 +386,17 @@
     return ({ "24h": "过去24小时", "7d": "过去7天", "30d": "过去30天" })[range] || range;
   }
 
+  function normalizeStateCode(value) {
+    const raw = String(value || "").trim().toUpperCase();
+    if (/^[A-Z]{2}$/.test(raw)) return raw;
+    const aliases = {
+      FLORIDA: "FL", TEXAS: "TX", CALIFORNIA: "CA", ARIZONA: "AZ", NEW_YORK: "NY", "NEW YORK": "NY",
+      GEORGIA: "GA", ILLINOIS: "IL", MASSACHUSETTS: "MA", COLORADO: "CO", WASHINGTON: "WA",
+      PENNSYLVANIA: "PA", VIRGINIA: "VA", MARYLAND: "MD", NEW_JERSEY: "NJ", "NEW JERSEY": "NJ"
+    };
+    return aliases[raw] || "";
+  }
+
   function setText(id, value) {
     const element = document.getElementById(id);
     if (element) element.textContent = value;
@@ -341,7 +408,5 @@
     })[char]);
   }
 
-  function escapeAttr(value) {
-    return escapeHtml(value);
-  }
+  function escapeAttr(value) { return escapeHtml(value); }
 })();

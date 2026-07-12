@@ -170,3 +170,27 @@
   }
 }
 
+
+
+/* ICE v46：最新动态移到地图前；图片先验证、文字先显示 */
+.ice-news-section{
+  padding-top:26px;
+  padding-bottom:28px;
+}
+
+.ice-news-section + .ice-heatmap-section{
+  padding-top:14px;
+}
+
+html[data-ice-layout="v46"] #ice-news-list{
+  min-height:120px;
+}
+
+html[data-ice-layout="v46"] #ice-news-list .ice-brief-row{
+  animation:ice-v46-row-in .18s ease-out both;
+}
+
+@keyframes ice-v46-row-in{
+  from{opacity:.5;transform:translateY(2px)}
+  to{opacity:1;transform:none}
+}

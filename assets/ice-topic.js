@@ -18,7 +18,7 @@
   document.addEventListener("DOMContentLoaded", init);
 
   async function init() {
-    document.documentElement.dataset.iceLayout = "v45";
+    document.documentElement.dataset.iceLayout = "v46";
     startNewYorkClock();
 
     // 数据加载与地图渲染分离：地图组件缺失或 Plotly 失败时，
@@ -231,7 +231,7 @@
       return;
     }
 
-    root.innerHTML = sorted.map(item => {
+    const prepared = sorted.map((item, index) => {
       const states = Array.isArray(item.state_codes)
         ? item.state_codes.map(normalizeStateCode).filter(Boolean)
         : [...new Set(
@@ -240,66 +240,54 @@
               .filter(Boolean)
           )];
 
-      const imageUrl = normalizeIceImageUrl(item.image_url || item.cover_image);
-      return imageUrl
-        ? renderImageNewsCard(item, states, imageUrl)
-        : renderBriefNewsRow(item, states);
-    }).join("");
-
-    const replaceBrokenImageCard = image => {
-      const card = image.closest(".ice-news-card");
-      if (!card) return;
-
-      const item = {
-        title: card.dataset.briefTitle || "ICE执法最新动态",
-        summary: card.dataset.briefSummary || "ICE相关公开信息已更新。",
-        source_name: card.dataset.sourceName || "ICE执法信息",
-        published_at: card.dataset.publishedAt || "",
-        url: card.dataset.articleUrl || "#"
+      return {
+        item,
+        states,
+        key: `ice-news-${index}`,
+        imageUrl: normalizeIceImageUrl(item.image_url || item.cover_image)
       };
-      const states = String(card.dataset.states || "")
-        .split(",")
-        .map(normalizeStateCode)
-        .filter(Boolean);
+    });
+
+    // 先全部显示为文字快讯，确保坏图、慢图和懒加载图片不会制造空白卡片。
+    root.innerHTML = prepared
+      .map(entry => renderBriefNewsRow(entry.item, entry.states, entry.key))
+      .join("");
+
+    // 图片只有真正加载成功并达到新闻图片尺寸后，才升级为图片卡片。
+    prepared.forEach(async entry => {
+      if (!entry.imageUrl) return;
+
+      const imageInfo = await validateNewsImage(entry.imageUrl);
+      if (!imageInfo.valid) return;
+
+      const current = root.querySelector(`[data-news-key="${entry.key}"]`);
+      if (!current) return;
 
       const template = document.createElement("template");
-      template.innerHTML = renderBriefNewsRow(item, states).trim();
+      template.innerHTML = renderImageNewsCard(
+        entry.item,
+        entry.states,
+        imageInfo.url,
+        entry.key
+      ).trim();
+
       const replacement = template.content.firstElementChild;
-      if (replacement) card.replaceWith(replacement);
-    };
-
-    root.querySelectorAll(".ice-news-thumb").forEach(image => {
-      image.addEventListener(
-        "error",
-        () => replaceBrokenImageCard(image),
-        { once: true }
-      );
-
-      // 图片可能在监听器绑定前已经失败，必须立即检查。
-      if (image.complete && image.naturalWidth === 0) {
-        replaceBrokenImageCard(image);
-      }
+      if (replacement) current.replaceWith(replacement);
     });
   }
 
-  function renderImageNewsCard(item, states, imageUrl) {
+  function renderImageNewsCard(item, states, imageUrl, newsKey = "") {
     const title = String(item.title || "ICE执法动态").trim();
     const summary = String(item.summary || "").trim();
-    const briefTitle = normalizeIceBriefTitle(item.title);
-    const briefSummary = normalizeIceBriefText(item.summary);
     const sourceName = String(item.source_name || "ICE执法信息").trim();
     const publishedAt = String(item.published_at || item.created_at || "");
-    const articleUrl = String(item.url || "#");
+    const articleUrl = String(item.url || item.source_url || "#");
 
     return `
       <article
         class="ice-news-card has-image ice-news-item"
+        data-news-key="${escapeAttr(newsKey)}"
         data-states="${escapeAttr(states.join(","))}"
-        data-brief-title="${escapeAttr(briefTitle)}"
-        data-brief-summary="${escapeAttr(briefSummary)}"
-        data-source-name="${escapeAttr(sourceName)}"
-        data-published-at="${escapeAttr(publishedAt)}"
-        data-article-url="${escapeAttr(articleUrl)}"
       >
         <a class="ice-news-thumb-wrap" href="${escapeAttr(articleUrl)}" aria-label="${escapeAttr(title)}">
           <img
@@ -307,7 +295,7 @@
             src="${escapeAttr(imageUrl)}"
             alt=""
             aria-hidden="true"
-            loading="lazy"
+            loading="eager"
             referrerpolicy="no-referrer"
           >
         </a>
@@ -323,7 +311,7 @@
       </article>`;
   }
 
-  function renderBriefNewsRow(item, states) {
+  function renderBriefNewsRow(item, states, newsKey = "") {
     const title = normalizeIceBriefTitle(item.title);
     const summary = normalizeIceBriefText(item.summary);
     const sourceName = String(item.source_name || "ICE执法信息").trim();
@@ -333,6 +321,7 @@
     return `
       <article
         class="ice-brief-row ice-news-item"
+        data-news-key="${escapeAttr(newsKey)}"
         data-states="${escapeAttr(states.join(","))}"
       >
         <time datetime="${escapeAttr(publishedAt)}">${escapeHtml(formatDateTimeSeconds(publishedAt))}</time>
@@ -342,6 +331,42 @@
         </div>
         <a class="ice-brief-source" href="${escapeAttr(articleUrl)}">${escapeHtml(sourceName)}</a>
       </article>`;
+  }
+
+  function validateNewsImage(value) {
+    const url = normalizeIceImageUrl(value);
+    if (!url) return Promise.resolve({ valid: false, url: "" });
+
+    return new Promise(resolve => {
+      const image = new Image();
+      let settled = false;
+
+      const finish = valid => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        resolve({
+          valid,
+          url,
+          width: image.naturalWidth || 0,
+          height: image.naturalHeight || 0
+        });
+      };
+
+      const timer = window.setTimeout(() => finish(false), 8000);
+
+      image.referrerPolicy = "no-referrer";
+      image.decoding = "async";
+      image.onload = () => {
+        const width = image.naturalWidth || 0;
+        const height = image.naturalHeight || 0;
+
+        // 排除头像、Logo、追踪像素、失效占位图。
+        finish(width >= 300 && height >= 160);
+      };
+      image.onerror = () => finish(false);
+      image.src = url;
+    });
   }
 
   function normalizeIceImageUrl(value) {

@@ -170,13 +170,41 @@ export async function upsertNewsCandidate(input) {
 
 export async function syncSourceRegistry(rows) {
   if (!hasSupabaseAutomationConfig()) return { skipped: true };
+  if (!Array.isArray(rows) || rows.length === 0) return { skipped: false, count: 0 };
+
   const now = new Date().toISOString();
+  // PostgREST bulk inserts require every object in the JSON array to have
+  // exactly the same keys. Normalize all registry rows to the database schema
+  // instead of forwarding heterogeneous JSON objects directly.
+  const payload = rows.map(item => ({
+    id: String(item?.id || "").trim(),
+    name: String(item?.name || item?.id || "").trim(),
+    agency: String(item?.agency || ""),
+    branch: String(item?.branch || ""),
+    level: String(item?.level || "media"),
+    state: String(item?.state || ""),
+    city: String(item?.city || ""),
+    coverage_area: Array.isArray(item?.coverage_area) ? item.coverage_area : [],
+    source_type: String(item?.source_type || "media"),
+    source_level: String(item?.source_level || "C"),
+    website: String(item?.website || ""),
+    newsroom_url: String(item?.newsroom_url || ""),
+    rss_url: String(item?.rss_url || ""),
+    x_account: String(item?.x_account || ""),
+    active: item?.active !== false,
+    last_checked_at: item?.last_checked_at || null,
+    last_success_at: item?.last_success_at || null,
+    updated_at: now,
+  })).filter(item => item.id && item.name);
+
+  if (payload.length === 0) return { skipped: false, count: 0 };
+
   await request("news_sources?on_conflict=id", {
     method: "POST",
     headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
-    body: JSON.stringify(rows.map(item => ({ ...item, updated_at: now }))),
+    body: JSON.stringify(payload),
   });
-  return { skipped: false, count: rows.length };
+  return { skipped: false, count: payload.length };
 }
 
 export async function writeAutomationLog(log) {

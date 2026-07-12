@@ -98,26 +98,16 @@
       return;
     }
 
-    const briefs = list.filter(isBrief).slice(0, 30);
-    const articles = list.filter((item) => !isBrief(item));
-    const briefHtml = briefs.length ? `
+    root.innerHTML = `
       <section class="trump-brief-panel" aria-label="特朗普实时快讯">
         <div class="trump-section-head">
           <div><span>LIVE</span><h2>实时快讯</h2></div>
-          <p>简短、明确的信息直接播报，不使用图片占位。</p>
+          <p>全部动态以无图快讯形式展示；标题一行，摘要一行。</p>
         </div>
         <div class="trump-brief-list">
-          ${briefs.map(renderBrief).join("")}
+          ${list.map(renderBrief).join("")}
         </div>
-      </section>` : "";
-
-    const articleHtml = articles.length ? `
-      <section class="trump-article-section">
-        <div class="trump-section-head trump-section-head--articles"><div><h2>重点动态</h2></div></div>
-        <div class="trump-card-grid">${articles.map(renderCard).join("")}</div>
-      </section>` : "";
-
-    root.innerHTML = briefHtml + articleHtml;
+      </section>`;
   }
 
   function renderBrief(item) {
@@ -130,29 +120,6 @@
       </div>
       <span class="trump-brief-source">${escapeHtml(item.source_name || "公开来源")}</span>
     </article>`;
-  }
-
-  function renderCard(item) {
-    const href = item.url || item.source_url || "#";
-    const media = item.image_url
-      ? `<div class="trump-card-media"><img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.title || "特朗普动态图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
-      : "";
-    return `<article class="trump-card ${item.image_url ? "has-media" : "no-media"}">
-      ${media}
-      <div class="trump-card-body">
-        <div class="trump-meta"><span class="trump-source">${escapeHtml(item.source_name || "公开来源")}</span><time>${escapeHtml(formatTime(item.published_at))}</time></div>
-        <h2><a href="${escapeHtml(href)}">${escapeHtml(item.title || "特朗普最新动态")}</a></h2>
-        <p>${escapeHtml(item.summary || "")}</p>
-        <a class="trump-card-link" href="${escapeHtml(href)}">阅读全文 →</a>
-      </div>
-    </article>`;
-  }
-
-  function isBrief(item) {
-    if (item.content_format === "brief") return true;
-    if (Array.isArray(item.tags) && item.tags.includes("快讯")) return true;
-    const summaryLength = String(item.summary || "").replace(/\s+/g, "").length;
-    return !item.image_url && summaryLength > 0 && summaryLength <= 100 && String(item.title || "").length <= 24;
   }
 
   function dedupeForDisplay(source) {

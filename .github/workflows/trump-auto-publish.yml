@@ -1,0 +1,51 @@
+name: 特朗普实时动态自动发布
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7,37 * * * *"
+permissions:
+  contents: write
+concurrency:
+  group: trrb-trump-auto-publish
+  cancel-in-progress: false
+jobs:
+  sync-trump-news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: "20"}
+      - name: Fetch rewrite and publish Trump news
+        env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          SITE_URL: "https://trrb.net"
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TRUMP_PRIMARY_ACCOUNTS: "realDonaldTrump"
+          TRUMP_AUTO_ACCOUNTS: "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47,Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"
+          TRUMP_REVIEW_ACCOUNTS: "Breaking911,CollinRugg"
+          TRUMP_BOOTSTRAP_LIMIT: "60"
+          TRUMP_MAX_PROCESS_PER_RUN: "18"
+          TRUMP_MAX_PAGES: "3"
+          TRUMP_MAX_RESULTS_PER_QUERY: "50"
+          TRUMP_LOOKBACK_HOURS: "48"
+          TRUMP_MIN_CANDIDATE_SCORE: "50"
+          TRUMP_MIN_RELEVANCE: "72"
+          TRUMP_MIN_CONFIDENCE: "83"
+          TRUMP_USE_X_MEDIA: "true"
+        run: |
+          node scripts/sync-source-registry.mjs
+          node scripts/trump-sync.mjs
+      - name: Commit generated Trump news
+        shell: bash
+        run: |
+          git config user.name "TRRB Trump Bot"
+          git config user.email "bot@trrb.net"
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Auto publish Trump news"
+          git push

@@ -100,6 +100,7 @@ function renderHome(articles) {
   renderTopList((visualArticles.length >= 10 ? visualArticles : articles).slice(0, 10));
   renderSections(articles);
   renderRank(articles);
+  if (typeof window.TRRB_renderTopicFocus === "function") window.TRRB_renderTopicFocus(articles);
 }
 
 async function loadHome() {

@@ -1,17 +1,141 @@
 {
   "last_seen_id": "2075567019064168475",
-  "last_run_at": "2026-07-10T14:04:03.690Z",
+  "last_run_at": "2026-07-12T04:59:47.611Z",
   "last_success_at": "2026-07-10T13:23:35.762Z",
   "last_result": {
     "fetched": 0,
+    "lanes": {
+      "ice-official": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane ice-official request failed (503): Service Unavailable"
+      },
+      "dhs-official": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane dhs-official request failed (503): Service Unavailable"
+      },
+      "cbp-official": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane cbp-official request failed (503): Service Unavailable"
+      },
+      "hsi-official": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane hsi-official request failed (503): Service Unavailable"
+      },
+      "doj-usattorneys": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane doj-usattorneys request failed (503): Service Unavailable"
+      },
+      "federal-partners": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane federal-partners request failed (503): Service Unavailable"
+      },
+      "ero-operations": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane ero-operations request failed (503): Service Unavailable"
+      },
+      "removal-deportation": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane removal-deportation request failed (503): Service Unavailable"
+      },
+      "detention-arrest": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane detention-arrest request failed (503): Service Unavailable"
+      },
+      "raid-operation": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane raid-operation request failed (503): Service Unavailable"
+      },
+      "worksite-enforcement": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane worksite-enforcement request failed (503): Service Unavailable"
+      },
+      "courthouse-enforcement": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane courthouse-enforcement request failed (503): Service Unavailable"
+      },
+      "school-hospital-community": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane school-hospital-community request failed (503): Service Unavailable"
+      },
+      "smuggling-trafficking": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane smuggling-trafficking request failed (503): Service Unavailable"
+      },
+      "fugitive-sex-offender": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane fugitive-sex-offender request failed (503): Service Unavailable"
+      },
+      "national-wire": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane national-wire request failed (503): Service Unavailable"
+      },
+      "national-tv": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane national-tv request failed (503): Service Unavailable"
+      },
+      "national-politics": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane national-politics request failed (503): Service Unavailable"
+      },
+      "local-tv": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane local-tv request failed (503): Service Unavailable"
+      },
+      "local-newspapers": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane local-newspapers request failed (503): Service Unavailable"
+      },
+      "spanish-national": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane spanish-national request failed (503): Service Unavailable"
+      },
+      "spanish-local": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane spanish-local request failed (503): Service Unavailable"
+      },
+      "legal-advocacy": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane legal-advocacy request failed (503): Service Unavailable"
+      },
+      "community-sightings": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane community-sightings request failed (503): Service Unavailable"
+      }
+    },
+    "sources_seen": 0,
     "candidates": 0,
     "new_posts": 0,
     "duplicate_skipped": 0,
-    "expired_pending": 1,
-    "metadata_backfilled": 5,
+    "expired_pending": 3,
+    "metadata_backfilled": 0,
     "published": 0,
     "pending": 0,
     "total_published": 5,
-    "total_pending": 3
-  }
+    "total_pending": 0
+  },
+  "last_seen_by_lane": {}
 }

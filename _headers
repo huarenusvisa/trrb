@@ -1,18 +1,51 @@
+# Final Netlify headers for TRRB.
+# Security headers are global. ICE cache headers are exact and non-overlapping.
+
 /*
   Content-Security-Policy: upgrade-insecure-requests; block-all-mixed-content
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
-/*.html
-  Cache-Control: no-cache, no-store, must-revalidate
+/topic/ice/*
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Netlify-CDN-Cache-Control: no-store
+  Pragma: no-cache
+  Expires: 0
 
-/*.js
-  Cache-Control: no-cache, no-store, must-revalidate
+/assets/ice-topic.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Netlify-CDN-Cache-Control: no-store
+  Pragma: no-cache
+  Expires: 0
 
-/*.css
-  Cache-Control: no-cache, no-store, must-revalidate
+/assets/ice-topic.css
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Netlify-CDN-Cache-Control: no-store
+  Pragma: no-cache
+  Expires: 0
 
-/data/*.json
-  Cache-Control: no-cache, no-store, must-revalidate
+/data/ice-news.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Netlify-CDN-Cache-Control: no-store
+  Pragma: no-cache
+  Expires: 0
+
+/data/ice-dashboard.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Netlify-CDN-Cache-Control: no-store
+  Pragma: no-cache
+  Expires: 0
+
+/data/ice-state.json
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+  CDN-Cache-Control: no-store
+  Netlify-CDN-Cache-Control: no-store
+  Pragma: no-cache
+  Expires: 0
 
 /assets/news-images/*
   Cache-Control: public, max-age=3600, must-revalidate

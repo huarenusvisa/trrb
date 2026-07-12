@@ -1,233 +1,122 @@
 (() => {
   "use strict";
 
+  const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const DATA_URLS = {
     news: "/data/ice-news.json",
-    dashboard: "/data/ice-dashboard.json",
-    map: "/data/ice-map-events.json"
+    state: "/data/ice-state.json",
+    dashboard: "/data/ice-dashboard.json"
   };
 
-  const RANGE_HOURS = { "24h": 24, "7d": 168, "30d": 720 };
-  const US_MAINLAND_BOUNDS = [[24.396308, -124.848974], [49.384358, -66.885444]];
-  const TYPE_LABELS = { arrest: "抓捕/拘留", removal: "遣返", other: "其他行动" };
-  let news = [];
   let dashboard = null;
-  let mapData = { events: [] };
+  let news = [];
   let selectedRange = "24h";
-  let selectedType = "all";
-  let map = null;
-  let cluster = null;
-  let userMarker = null;
+  let selectedMetric = "events";
+  let selectedState = "";
 
   document.addEventListener("DOMContentLoaded", init);
 
   async function init() {
-    const [newsResult, dashboardResult, mapResult] = await Promise.allSettled([
-      fetchJson(DATA_URLS.news, []),
-      fetchJson(DATA_URLS.dashboard, null),
-      fetchJson(DATA_URLS.map, { events: [] })
-    ]);
-    news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value) ? newsResult.value : [];
-    dashboard = dashboardResult.status === "fulfilled" ? dashboardResult.value : null;
-    mapData = mapResult.status === "fulfilled" && mapResult.value ? mapResult.value : { events: [] };
+    startNewYorkClock();
+    try {
+      const [newsResult, stateResult, dashboardResult] = await Promise.allSettled([
+        fetchJson(DATA_URLS.news, []),
+        fetchJson(DATA_URLS.state, {}),
+        fetchJson(DATA_URLS.dashboard, null)
+      ]);
+      news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value) ? newsResult.value : [];
+      const liveNews = await fetchLiveArticles("ICE执法");
+      if (liveNews.length) news = mergeLiveNews(liveNews, news);
+      const state = stateResult.status === "fulfilled" ? stateResult.value : {};
+      dashboard = dashboardResult.status === "fulfilled" && dashboardResult.value
+        ? dashboardResult.value
+        : makeDashboardFallback(news, state);
 
-    renderSummary();
-    startClock();
-    renderNews();
-    bindControls();
-    initMap();
-    renderMapEvents();
+      renderSummary();
+      renderTodayEvents();
+      renderNews();
+      bindControls();
+      await renderHeatmap();
+    } catch (error) {
+      console.error("ICE topic failed:", error);
+      setText("today-people", "—");
+      setText("today-locations", "—");
+      setText("latest-sync", "最近同步：加载失败");
+      document.getElementById("today-event-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE统计数据。</div>';
+      document.getElementById("ice-news-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE新闻。</div>';
+    }
+  }
+
+  async function fetchLiveArticles(category) {
+    try {
+      const select = "id,title,summary,cover_image,source_name,source_url,published_at,city,state,arrest_count,count_in_ice_stats";
+      const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&category_name=eq.${encodeURIComponent(category)}&order=published_at.desc&limit=100`;
+      const response = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+      if (!response.ok) return [];
+      return await response.json();
+    } catch {
+      return [];
+    }
+  }
+
+  function mergeLiveNews(live, archived) {
+    const mapped = live.map(row => ({
+      id: row.id,
+      title: row.title,
+      summary: row.summary,
+      image_url: row.cover_image,
+      source_name: row.source_name,
+      source_url: row.source_url,
+      published_at: row.published_at,
+      url: `/article.html?id=${encodeURIComponent(row.id)}`,
+      state_codes: row.state ? [normalizeStateCode(row.state)] : [],
+      enforcement_events: []
+    }));
+    const seen = new Set(mapped.map(item => String(item.id)));
+    return mapped.concat(archived.filter(item => !seen.has(String(item.id))));
   }
 
   async function fetchJson(url, fallback) {
-    try {
-      const response = await fetch(`${url}?v=${Date.now()}`, { cache: "no-store" });
-      if (!response.ok) return fallback;
-      return await response.json();
-    } catch { return fallback; }
+    const response = await fetch(`${url}?v=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) return fallback;
+    return response.json();
+  }
+
+  function startNewYorkClock() {
+    const update = () => setText("ny-live-time", formatDateTimeSeconds(new Date()));
+    update();
+    window.setInterval(update, 1000);
   }
 
   function renderSummary() {
     const today = dashboard?.today || {};
     setText("today-people", `${Number(today.known_people || 0)}人`);
     setText("today-locations", `${Number(today.location_count || 0)}处`);
-    setText("latest-sync", formatNyDateTime(dashboard?.latest_sync_at || dashboard?.generated_at));
+    setText("latest-sync", `最近同步：${formatDateTimeSeconds(dashboard?.latest_sync_at || dashboard?.generated_at)}`);
   }
 
-  function startClock() {
-    const tick = () => setText("ny-clock", formatNyDateTime(new Date().toISOString()));
-    tick();
-    window.setInterval(tick, 1000);
-  }
-
-  function initMap() {
-    const root = document.getElementById("ice-live-map");
-    if (!root || !window.L) {
-      document.getElementById("map-empty").hidden = false;
+  function renderTodayEvents() {
+    const root = document.getElementById("today-event-list");
+    const events = Array.isArray(dashboard?.today?.events) ? dashboard.today.events : [];
+    if (!events.length) {
+      root.innerHTML = '<div class="ice-empty">今天暂无同时披露抓捕或拘留、时间和地点的公开信息。</div>';
       return;
     }
-    const usBounds = L.latLngBounds(US_MAINLAND_BOUNDS);
-    map = L.map(root, {
-      zoomControl: true,
-      minZoom: 4,
-      maxZoom: 16,
-      worldCopyJump: false,
-      maxBounds: usBounds.pad(0.03),
-      maxBoundsViscosity: 1
-    });
-    map.fitBounds(usBounds, { padding: [6, 6], animate: false });
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      noWrap: true,
-      bounds: usBounds.pad(0.08),
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    cluster = L.markerClusterGroup({
-      showCoverageOnHover: false,
-      maxClusterRadius: 52,
-      spiderfyOnMaxZoom: true,
-      iconCreateFunction(group) {
-        const count = group.getChildCount();
-        const size = count < 10 ? "small" : count < 50 ? "medium" : "large";
-        return L.divIcon({
-          html: `<span>${count}</span>`,
-          className: `ice-cluster ice-cluster-${size}`,
-          iconSize: L.point(44, 44)
-        });
-      }
-    });
-    map.addLayer(cluster);
-    window.setTimeout(() => map.invalidateSize(), 250);
-  }
 
-  function bindControls() {
-    document.getElementById("range-controls")?.addEventListener("click", event => {
-      const button = event.target.closest("button[data-range]");
-      if (!button) return;
-      selectedRange = button.dataset.range;
-      activate("range-controls", button);
-      renderMapEvents();
-    });
-    document.getElementById("type-controls")?.addEventListener("click", event => {
-      const button = event.target.closest("button[data-type]");
-      if (!button) return;
-      selectedType = button.dataset.type;
-      activate("type-controls", button);
-      renderMapEvents();
-    });
-    document.getElementById("reset-map")?.addEventListener("click", resetToUnitedStates);
-    document.getElementById("locate-me")?.addEventListener("click", locateUser);
-  }
-
-  function activate(parentId, active) {
-    document.querySelectorAll(`#${parentId} button`).forEach(btn => btn.classList.toggle("is-active", btn === active));
-  }
-
-  function filteredEvents() {
-    const cutoff = Date.now() - RANGE_HOURS[selectedRange] * 3600 * 1000;
-    return (Array.isArray(mapData.events) ? mapData.events : []).filter(event => {
-      const time = Date.parse(event.basis_time || event.published_at || "");
-      const typeOk = selectedType === "all" || event.category === selectedType;
-      const lat = Number(event.latitude);
-      const lng = Number(event.longitude);
-      return Number.isFinite(time) && time >= cutoff && typeOk && isInsideMainlandUS(lat, lng);
-    });
-  }
-
-  function renderMapEvents() {
-    const events = filteredEvents();
-    updateMapSummary(events);
-    const empty = document.getElementById("map-empty");
-    empty.hidden = events.length > 0;
-    if (!map || !cluster) return;
-    cluster.clearLayers();
-    events.forEach(event => cluster.addLayer(makeMarker(event)));
-    if (events.length) {
-      const bounds = cluster.getBounds();
-      if (bounds.isValid()) map.fitBounds(bounds.pad(.22), { maxZoom: 8, animate: false });
-    } else {
-      resetToUnitedStates();
-    }
-  }
-
-  function isInsideMainlandUS(lat, lng) {
-    return Number.isFinite(lat) && Number.isFinite(lng) &&
-      lat >= US_MAINLAND_BOUNDS[0][0] && lat <= US_MAINLAND_BOUNDS[1][0] &&
-      lng >= US_MAINLAND_BOUNDS[0][1] && lng <= US_MAINLAND_BOUNDS[1][1];
-  }
-
-  function resetToUnitedStates() {
-    if (!map || !window.L) return;
-    map.fitBounds(L.latLngBounds(US_MAINLAND_BOUNDS), { padding: [6, 6], animate: false });
-  }
-
-  function makeMarker(event) {
-    const category = event.category || "other";
-    const precision = event.location_precision === "state" ? " state-only" : "";
-    const icon = L.divIcon({
-      className: "ice-marker-wrap",
-      html: `<span class="ice-marker ice-marker-${category}${precision}" aria-hidden="true"><i></i></span>`,
-      iconSize: [34, 44],
-      iconAnchor: [17, 42],
-      popupAnchor: [0, -38]
-    });
-    const marker = L.marker([event.latitude, event.longitude], { icon, title: event.title || "ICE公开事件" });
-    marker.bindPopup(popupHtml(event), { maxWidth: 320, className: "ice-popup" });
-    return marker;
-  }
-
-  function popupHtml(event) {
-    const people = Number(event.people_count) > 0 ? `${event.people_count}人` : "人数未披露";
-    const location = event.location_text || [event.city, event.state_name || event.state_code].filter(Boolean).join("，") || "地点未披露";
-    const precision = event.location_precision === "state" ? "（州级位置）" : "";
-    return `<article class="ice-popup-card">
-      <span class="ice-popup-type">${escapeHtml(TYPE_LABELS[event.category] || "ICE公开事件")}</span>
-      <h3>${escapeHtml(event.title || "ICE公开事件")}</h3>
-      <dl>
-        <div><dt>时间</dt><dd>${escapeHtml(formatNyDateTime(event.basis_time || event.published_at))}</dd></div>
-        <div><dt>地点</dt><dd>${escapeHtml(location + precision)}</dd></div>
-        <div><dt>人数</dt><dd>${escapeHtml(people)}</dd></div>
-      </dl>
-      <p>${escapeHtml(event.summary || "")}</p>
-      <a href="${escapeAttr(event.article_url || "#")}">查看全文 →</a>
-    </article>`;
-  }
-
-  function updateMapSummary(events) {
-    const people = events.reduce((sum, event) => sum + (Number(event.people_count) || 0), 0);
-    const states = new Set(events.map(event => event.state_code).filter(Boolean));
-    setText("visible-event-count", String(events.length));
-    setText("summary-range", ({ "24h": "过去24小时", "7d": "过去7天", "30d": "过去30天" })[selectedRange]);
-    setText("summary-events", String(events.length));
-    setText("summary-people", `${people}人`);
-    setText("summary-states", String(states.size));
-  }
-
-  function locateUser() {
-    if (!map || !navigator.geolocation) return;
-    const button = document.getElementById("locate-me");
-    button.disabled = true;
-    button.textContent = "定位中…";
-    navigator.geolocation.getCurrentPosition(position => {
-      const latlng = [position.coords.latitude, position.coords.longitude];
-      if (!isInsideMainlandUS(latlng[0], latlng[1])) {
-        button.disabled = false;
-        button.textContent = "仅限美国本土";
-        window.setTimeout(() => button.textContent = "◎ 定位附近", 1800);
-        resetToUnitedStates();
-        return;
-      }
-      if (userMarker) userMarker.remove();
-      userMarker = L.circleMarker(latlng, { radius: 8, color: "#fff", weight: 3, fillColor: "#1267e5", fillOpacity: 1 }).addTo(map);
-      userMarker.bindPopup("您的大致位置").openPopup();
-      map.setView(latlng, 8);
-      button.disabled = false;
-      button.textContent = "◎ 定位附近";
-    }, () => {
-      button.disabled = false;
-      button.textContent = "无法定位";
-      window.setTimeout(() => button.textContent = "◎ 定位附近", 1800);
-    }, { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+    root.innerHTML = events.map(event => {
+      const time = formatEventTime(event);
+      const location = event.location_text || [event.city, event.state_name || event.state_code].filter(Boolean).join("，") || "地点未披露";
+      const count = Number.isInteger(event.people_count) && event.people_count > 0 ? `${event.people_count}人` : "人数未披露";
+      const basis = event.time_basis || (event.occurred_at ? "执法时间" : "官方公开时间");
+      return `
+        <article class="ice-event-row">
+          <div class="ice-event-time">${escapeHtml(time)}</div>
+          <div class="ice-event-place">${escapeHtml(location)}</div>
+          <div class="ice-event-count">${escapeHtml(count)}</div>
+          <div class="ice-event-meta">${escapeHtml(basis)} · <a href="${escapeAttr(event.article_url || "#")}">${escapeHtml(event.article_title || "查看相关报道")}</a></div>
+        </article>`;
+    }).join("");
   }
 
   function renderNews() {
@@ -238,77 +127,336 @@
       return;
     }
 
-    const flashes = sorted.filter(item => item.is_flash || item.display_mode === "flash" || item.content_type === "flash");
-    const stories = sorted.filter(item => !(item.is_flash || item.display_mode === "flash" || item.content_type === "flash"));
+    root.innerHTML = sorted.map(item => {
+      const states = Array.isArray(item.state_codes)
+        ? item.state_codes.map(normalizeStateCode).filter(Boolean)
+        : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
 
-    const flashSection = flashes.length ? `<section class="ice-flash-section" aria-labelledby="ice-flash-title">
-      <div class="ice-flash-heading">
-        <h3 id="ice-flash-title">ICE实时快讯</h3>
-        <span>过去24小时</span>
-      </div>
-      <div class="ice-flash-list">
-        ${flashes.map(renderFlash).join("")}
-      </div>
-    </section>` : "";
+      // ICE快讯：AI标记为brief，或没有可用图片时，统一以纯文字双行快讯展示。
+      // 不再生成灰色图片占位框，也不强迫短消息进入比例失衡的长文章页面。
+      const isBrief = item.content_type === "brief" || !item.image_url;
+      const targetUrl = item.url || item.source_url || "#";
+      const briefTitle = compactBriefTitle(item.title || "ICE执法动态");
+      const briefText = compactBriefText(item.summary || item.source_text || "ICE相关公开信息已更新。", 72);
 
-    const storySection = stories.length ? `<section class="ice-story-section" aria-labelledby="ice-story-title">
-      <div class="ice-story-heading"><h3 id="ice-story-title">ICE重点新闻</h3></div>
-      <div class="ice-story-list">${stories.map(renderStory).join("")}</div>
-    </section>` : "";
+      if (isBrief) {
+        return `
+          <article class="ice-brief-row" data-states="${escapeAttr(states.join(","))}">
+            <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
+            <div class="ice-brief-copy">
+              <h3><a href="${escapeAttr(targetUrl)}"${isExternalUrl(targetUrl) ? ' target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(briefTitle)}</a></h3>
+              <p>${escapeHtml(briefText)}</p>
+            </div>
+            <span class="ice-brief-source">${escapeHtml(item.source_name || "ICE动态")}</span>
+          </article>`;
+      }
 
-    root.innerHTML = flashSection + storySection;
+      return `
+        <article class="ice-news-card" data-states="${escapeAttr(states.join(","))}">
+          <div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>
+          <div class="ice-news-body">
+            <div class="ice-news-meta">
+              <span class="ice-news-label">${escapeHtml(item.source_name || "ICE执法信息")}</span>
+              <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
+            </div>
+            <h3><a href="${escapeAttr(targetUrl)}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
+            <p>${escapeHtml(compactBriefText(item.summary || "", 110))}</p>
+            <a class="ice-news-link" href="${escapeAttr(targetUrl)}">查看全文 →</a>
+          </div>
+        </article>`;
+    }).join("");
   }
 
-  function renderFlash(item) {
-    const href = item.click_url || item.official_url || item.source_url || "#";
-    const external = /^https?:\/\//i.test(href);
-    return `<article class="ice-flash-item">
-      <time>${escapeHtml(formatNyTime(item.published_at))}</time>
-      <div class="ice-flash-copy">
-        <h4><a href="${escapeAttr(href)}"${external ? ' target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(item.title || "ICE实时动态")}</a></h4>
-        <p>${escapeHtml(item.summary || "")}</p>
-      </div>
-      <span class="ice-flash-source">${escapeHtml(item.source_name || "公开来源")}</span>
-    </article>`;
+  function compactBriefTitle(value) {
+    const clean = String(value || "")
+      .replace(/[\r\n\t]+/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/[。！？!?]+$/g, "")
+      .trim();
+    const chars = Array.from(clean);
+    if (chars.length <= 18) return clean || "ICE执法动态";
+
+    // 优先保留核心动作，确保快讯标题保持一行、8—18个中文字符左右。
+    const shortened = clean
+      .replace(/美国移民与海关执法局/g, "ICE")
+      .replace(/美国国土安全部/g, "DHS")
+      .replace(/美国司法部/g, "司法部")
+      .replace(/执法行动中/g, "行动中")
+      .replace(/相关事件/g, "事件");
+    return Array.from(shortened).slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
   }
 
-  function renderStory(item) {
-    const image = item.image_url
-      ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
-      : '<div class="ice-news-thumb-wrap" aria-hidden="true"></div>';
-    return `<article class="ice-news-card">
-      ${image}
-      <div class="ice-news-body">
-        <div class="ice-news-meta"><span class="ice-news-label">${escapeHtml(item.source_name || "ICE公开信息")}</span><time>${escapeHtml(formatNyDateTime(item.published_at))}</time></div>
-        <h3><a href="${escapeAttr(item.url || item.click_url || item.source_url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
-        <p>${escapeHtml(item.summary || "")}</p>
-        <a class="ice-news-link" href="${escapeAttr(item.url || item.click_url || item.source_url || "#")}">查看全文 →</a>
-      </div>
-    </article>`;
+  function compactBriefText(value, limit = 72) {
+    const clean = String(value || "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/[\r\n\t]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    const chars = Array.from(clean);
+    return chars.length > limit ? `${chars.slice(0, limit).join("")}…` : clean;
   }
 
-  function formatNyTime(value) {
-    if (!value || !Number.isFinite(Date.parse(value))) return "--:--";
-    return new Intl.DateTimeFormat("zh-CN", {
-      timeZone: "America/New_York",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false
-    }).format(new Date(value));
+  function isExternalUrl(value) {
+    return /^https?:\/\//i.test(String(value || ""));
   }
 
+  function bindControls() {
+    document.getElementById("range-controls")?.addEventListener("click", async event => {
+      const button = event.target.closest("button[data-range]");
+      if (!button) return;
+      selectedRange = button.dataset.range;
+      setActiveButton("range-controls", button);
+      await renderHeatmap();
+    });
 
-  function formatNyDateTime(value) {
-    if (!value || !Number.isFinite(Date.parse(value))) return "—";
+    document.getElementById("metric-controls")?.addEventListener("click", async event => {
+      const button = event.target.closest("button[data-metric]");
+      if (!button) return;
+      selectedMetric = button.dataset.metric;
+      setActiveButton("metric-controls", button);
+      await renderHeatmap();
+    });
+
+    document.getElementById("clear-state-filter")?.addEventListener("click", () => filterByState(""));
+  }
+
+  function setActiveButton(parentId, active) {
+    document.querySelectorAll(`#${parentId} button`).forEach(button => button.classList.toggle("is-active", button === active));
+  }
+
+  async function renderHeatmap() {
+    const rows = dashboard?.heatmap?.[selectedRange]?.states || [];
+    const totals = summarizeRows(rows);
+    updateHeatmapSummary(totals);
+    renderTopStates(rows);
+
+    const note = document.getElementById("heatmap-note");
+    note.textContent = `${rangeLabel(selectedRange)}共公开${selectedMetric === "people" ? `${totals.people}人` : `${totals.events}起事件`}`;
+
+    if (!rows.length) {
+      showFallback(rows);
+      return;
+    }
+
+    try {
+      await ensurePlotly();
+      const map = document.getElementById("ice-heatmap");
+      map.hidden = false;
+      document.getElementById("heatmap-fallback").hidden = true;
+      const values = rows.map(row => Number(row[selectedMetric] || 0));
+      const isPeople = selectedMetric === "people";
+      await window.Plotly.react(map, [{
+        type: "choropleth",
+        locationmode: "USA-states",
+        locations: rows.map(row => row.code),
+        z: values,
+        text: rows.map(row => `${row.name || row.code}<br>事件：${Number(row.events || 0)}<br>已披露人数：${Number(row.people || 0)}`),
+        hovertemplate: "%{text}<extra></extra>",
+        colorscale: isPeople
+          ? [[0, "#edf8f2"], [.25, "#bfe4ce"], [.6, "#55ae7d"], [1, "#167447"]]
+          : [[0, "#edf6fa"], [.25, "#b8dce9"], [.6, "#4b9fbe"], [1, "#005f88"]],
+        marker: { line: { color: "#ffffff", width: 1.2 } },
+        colorbar: {
+          title: isPeople ? "人数" : "事件",
+          thickness: 10,
+          len: .62,
+          x: .98,
+          y: .5,
+          tickfont: { size: 11 },
+          titlefont: { size: 12 }
+        }
+      }], {
+        autosize: true,
+        margin: { l: 0, r: 28, t: 8, b: 4 },
+        paper_bgcolor: "#ffffff",
+        plot_bgcolor: "#ffffff",
+        geo: {
+          scope: "usa",
+          projection: { type: "albers usa" },
+          showlakes: true,
+          lakecolor: "#ffffff",
+          bgcolor: "#ffffff"
+        }
+      }, {
+        responsive: true,
+        displayModeBar: false,
+        scrollZoom: false
+      });
+      map.removeAllListeners?.("plotly_click");
+      map.on?.("plotly_click", data => filterByState(data?.points?.[0]?.location || ""));
+    } catch (error) {
+      console.warn("Plotly unavailable, using fallback list.", error);
+      showFallback(rows);
+    }
+  }
+
+  function summarizeRows(rows) {
+    return rows.reduce((acc, row) => {
+      acc.events += Number(row.events || 0);
+      acc.people += Number(row.people || 0);
+      if (Number(row.events || 0) > 0 || Number(row.people || 0) > 0) acc.states += 1;
+      return acc;
+    }, { events: 0, people: 0, states: 0 });
+  }
+
+  function updateHeatmapSummary(totals) {
+    setText("map-range-label", rangeLabel(selectedRange));
+    setText("map-total-events", String(totals.events));
+    setText("map-total-people", `${totals.people}人`);
+    setText("map-active-states", String(totals.states));
+    setText("ranking-metric-label", selectedMetric === "people" ? "按已披露人数排序" : "按事件数排序");
+    setText("heatmap-description", `按州展示${rangeLabel(selectedRange)}公开执法${selectedMetric === "people" ? "人数" : "事件"}，点击州可筛选相关动态。`);
+  }
+
+  function renderTopStates(rows) {
+    const root = document.getElementById("top-state-list");
+    if (!root) return;
+    const sorted = [...rows]
+      .sort((a, b) => Number(b[selectedMetric] || 0) - Number(a[selectedMetric] || 0))
+      .filter(row => Number(row[selectedMetric] || 0) > 0)
+      .slice(0, 8);
+    if (!sorted.length) {
+      root.innerHTML = '<div class="ice-empty">当前范围暂无州级数据。</div>';
+      return;
+    }
+    const max = Math.max(...sorted.map(row => Number(row[selectedMetric] || 0)), 1);
+    root.innerHTML = sorted.map((row, index) => {
+      const value = Number(row[selectedMetric] || 0);
+      return `<button class="top-state-row" type="button" data-state="${escapeAttr(row.code)}">
+        <span class="rank">${index + 1}</span>
+        <b>${escapeHtml(row.code)}</b>
+        <span class="top-state-bar"><i style="width:${Math.max(6, value / max * 100)}%"></i></span>
+        <strong>${value}</strong>
+      </button>`;
+    }).join("");
+    root.querySelectorAll("button[data-state]").forEach(button => button.addEventListener("click", () => filterByState(button.dataset.state)));
+  }
+
+  function showFallback(rows) {
+    const map = document.getElementById("ice-heatmap");
+    const fallback = document.getElementById("heatmap-fallback");
+    map.hidden = true;
+    fallback.hidden = false;
+    if (!rows.length) {
+      fallback.innerHTML = '<div class="ice-empty">当前时间范围内暂无可定位到州的ICE公开执法数据。</div>';
+      return;
+    }
+    const max = Math.max(...rows.map(row => Number(row[selectedMetric] || 0)), 1);
+    fallback.innerHTML = `<div class="ice-state-rank">${rows.slice(0, 15).map(row => {
+      const value = Number(row[selectedMetric] || 0);
+      return `<button class="ice-state-rank-row" type="button" data-state="${escapeAttr(row.code)}">
+        <b>${escapeHtml(row.code)}</b>
+        <span class="ice-state-bar"><i style="width:${Math.max(4, value / max * 100)}%"></i></span>
+        <strong>${value}</strong>
+      </button>`;
+    }).join("")}</div>`;
+    fallback.querySelectorAll("button[data-state]").forEach(button => button.addEventListener("click", () => filterByState(button.dataset.state)));
+  }
+
+  function filterByState(state) {
+    selectedState = normalizeStateCode(state);
+    let visible = 0;
+    document.querySelectorAll(".ice-news-card").forEach(card => {
+      const states = (card.dataset.states || "").split(",").filter(Boolean);
+      const show = !selectedState || states.includes(selectedState);
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    const clear = document.getElementById("clear-state-filter");
+    clear.hidden = !selectedState;
+    const note = document.getElementById("news-sort-note");
+    note.textContent = selectedState ? `当前筛选：${selectedState}（${visible}条）` : "按发布时间倒序排列";
+    if (selectedState) document.getElementById("latest-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function makeDashboardFallback(items, state) {
+    return {
+      latest_sync_at: state?.last_run_at || "",
+      total_published: items.length,
+      today: { known_people: 0, event_count: 0, location_count: 0, events: [] },
+      heatmap: { "24h": { states: [] }, "7d": { states: [] }, "30d": { states: [] } }
+    };
+  }
+
+  function formatEventTime(event) {
+    if (event.occurred_at) return formatByPrecision(event.occurred_at, event.time_precision);
+    return `${formatDateTimeSeconds(event.published_at || event.basis_time)}（公开）`;
+  }
+
+  function formatByPrecision(value, precision) {
+    const full = dateParts(value);
+    if (!full) return "时间未披露";
+    if (precision === "date") return `${full.year}/${full.month}/${full.day}`;
+    if (precision === "hour") return `${full.year}/${full.month}/${full.day} ${full.hour}时`;
+    if (precision === "minute") return `${full.year}/${full.month}/${full.day} ${full.hour}:${full.minute}`;
+    return `${full.year}/${full.month}/${full.day} ${full.hour}:${full.minute}:${full.second}`;
+  }
+
+  function formatDateTimeSeconds(value) {
+    const parts = dateParts(value);
+    if (!parts) return "—";
+    return `${parts.year}/${parts.month}/${parts.day} ${parts.hour}:${parts.minute}:${parts.second}`;
+  }
+
+  function dateParts(value) {
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return null;
     const parts = new Intl.DateTimeFormat("en-CA", {
-      timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit",
+      timeZone: "America/New_York",
+      year: "numeric", month: "2-digit", day: "2-digit",
       hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
-    }).formatToParts(new Date(value));
-    const m = Object.fromEntries(parts.map(p => [p.type, p.value]));
-    return `${Number(m.year)}/${Number(m.month)}/${Number(m.day)} ${m.hour}:${m.minute}:${m.second}`;
+    }).formatToParts(date);
+    const map = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return {
+      year: String(Number(map.year)), month: String(Number(map.month)), day: String(Number(map.day)),
+      hour: map.hour, minute: map.minute, second: map.second
+    };
   }
 
-  function setText(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; }
-  function escapeHtml(value) { return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]); }
+  function ensurePlotly() {
+    if (window.Plotly) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector('script[data-ice-plotly="true"]');
+      if (existing) {
+        existing.addEventListener("load", resolve, { once: true });
+        existing.addEventListener("error", reject, { once: true });
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://cdn.plot.ly/plotly-2.35.2.min.js";
+      script.async = true;
+      script.dataset.icePlotly = "true";
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  function rangeLabel(range) {
+    return ({ "24h": "过去24小时", "7d": "过去7天", "30d": "过去30天" })[range] || range;
+  }
+
+  function normalizeStateCode(value) {
+    const raw = String(value || "").trim().toUpperCase();
+    if (/^[A-Z]{2}$/.test(raw)) return raw;
+    const aliases = {
+      FLORIDA: "FL", TEXAS: "TX", CALIFORNIA: "CA", ARIZONA: "AZ", NEW_YORK: "NY", "NEW YORK": "NY",
+      GEORGIA: "GA", ILLINOIS: "IL", MASSACHUSETTS: "MA", COLORADO: "CO", WASHINGTON: "WA",
+      PENNSYLVANIA: "PA", VIRGINIA: "VA", MARYLAND: "MD", NEW_JERSEY: "NJ", "NEW JERSEY": "NJ"
+    };
+    return aliases[raw] || "";
+  }
+
+  function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[char]);
+  }
+
   function escapeAttr(value) { return escapeHtml(value); }
 })();

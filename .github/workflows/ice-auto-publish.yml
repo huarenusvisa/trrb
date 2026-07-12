@@ -1,4 +1,4 @@
-name: TRRB 24小时实时新闻自动发布
+name: ICE多来源自动抓取发布
 
 on:
   workflow_dispatch:
@@ -9,13 +9,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: trrb-24h-live-news
+  group: trrb-ice-multisource
   cancel-in-progress: false
 
 jobs:
-  sync-news:
+  sync-ice-news:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository
@@ -28,55 +28,42 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Validate automation code
+      - name: Validate ICE automation code
+        shell: bash
         run: |
-          node --check scripts/trump-sync.mjs
+          set -e
+          test -f scripts/ice-sync.mjs
           node --check scripts/ice-sync.mjs
-          node --check scripts/news-sync.mjs
-          node --check scripts/build-news-index.mjs
+          test -f data/ice-source-registry.json
+          node -e "JSON.parse(require('fs').readFileSync('data/ice-source-registry.json','utf8')); console.log('ICE source registry JSON valid')"
 
-      - name: Fetch and publish last 24 hours
+      - name: Fetch and publish ICE news from last 24 hours
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
           SITE_URL: "https://trrb.net"
-
-          # 特朗普频道：只抓特朗普本人官方账号，不抓媒体报道或白宫转述。
-          TRUMP_USE_X: "true"
-          TRUMP_X_ACCOUNT: "realDonaldTrump"
-          TRUMP_USE_TRUTH_SOCIAL: "true"
-          TRUTH_SOCIAL_ACCT: "realDonaldTrump"
-          TRUTH_SOCIAL_ACCOUNT_ID: "107780257626128497"
-          TRUMP_LOOKBACK_HOURS: "24"
-          TRUMP_MAX_PROCESS_PER_RUN: "30"
-          TRUMP_MIN_CONFIDENCE: "82"
-          TRUMP_USE_MEDIA: "true"
-
-          # ICE频道继续使用当前已验证的24小时抓取、去重和热力图流程。
           ICE_LOOKBACK_HOURS: "24"
-          ICE_BOOTSTRAP_LIMIT: "80"
-          ICE_MAX_NEW_POSTS: "50"
-          ICE_MAX_QUERY_LANES: "24"
-          ICE_MAX_RESULTS_PER_LANE: "25"
-          ICE_MAX_PAGES_PER_LANE: "1"
-          ICE_MIN_CONFIDENCE: "80"
-          ICE_USE_X_MEDIA: "true"
           ICE_DEDUPE_THRESHOLD: "0.78"
-        run: node scripts/news-sync.mjs
+          ICE_BOOTSTRAP_LIMIT: "50"
+          ICE_MAX_NEW_POSTS: "120"
+          ICE_USE_X_MEDIA: "true"
+          ICE_MIN_CONFIDENCE: "80"
+          ICE_MAX_PENDING_RETRIES: "5"
+        run: node scripts/ice-sync.mjs
 
-      - name: Commit generated news
+      - name: Commit generated ICE news
         shell: bash
         run: |
-          git config user.name "TRRB News Bot"
+          set -e
+          git config user.name "TRRB ICE Bot"
           git config user.email "bot@trrb.net"
           git add -A
 
           if git diff --cached --quiet; then
-            echo "No new publishable content."
+            echo "No new ICE content."
             exit 0
           fi
 
-          git commit -m "Auto publish 24h live news"
-          git pull --rebase origin main
-          git push origin main
+          git commit -m "Auto publish ICE multisource news"
+          git push

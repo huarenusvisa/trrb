@@ -6,7 +6,7 @@
   <title>ICE执法追踪 - 唐人日报</title>
   <meta name="description" content="聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。">
   <link rel="canonical" href="https://trrb.net/topic/ice/">
-  <link rel="stylesheet" href="/assets/ice-topic.css?v=34">
+  <link rel="stylesheet" href="/assets/ice-topic.css?v=35">
 </head>
 <body>
   <header class="trrb-header">
@@ -23,32 +23,32 @@
         <h1>ICE执法追踪</h1>
         <p>聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。</p>
 
-        <div class="ice-summary-grid" aria-label="今日ICE公开数据">
-          <article class="ice-summary-card">
-            <span class="ice-summary-label">今日确认人数</span>
-            <strong id="today-people">—</strong>
-            <small>仅统计公开来源明确披露的数据</small>
-          </article>
-          <article class="ice-summary-card">
-            <span class="ice-summary-label">今日涉及地点</span>
-            <strong id="today-locations">—</strong>
-            <small>按已确认城市或地点去重</small>
-          </article>
-          <article class="ice-summary-card ice-summary-sync">
-            <span class="ice-summary-label">纽约实时</span>
-            <strong id="new-york-now">—</strong>
-            <small>最近同步：<span id="latest-sync">—</span></small>
-          </article>
-        </div>
-
-        <section class="ice-today-events" aria-labelledby="today-events-title">
-          <div class="ice-section-heading compact">
-            <div>
-              <h2 id="today-events-title">今日抓捕时间与地点</h2>
-              <p>人数、地点或事件日期未明确披露时，不进入今日统计，但相关新闻仍可出现在最新动态。</p>
-            </div>
+        <section class="ice-hero-dashboard" aria-label="今日ICE公开数据总览">
+          <div class="ice-summary-grid">
+            <article class="ice-summary-card">
+              <span class="ice-summary-label">今日确认人数</span>
+              <strong id="today-people">—</strong>
+              <small>公开来源明确披露</small>
+            </article>
+            <article class="ice-summary-card">
+              <span class="ice-summary-label">今日涉及地点</span>
+              <strong id="today-locations">—</strong>
+              <small>按城市或地点去重</small>
+            </article>
+            <article class="ice-summary-card ice-summary-sync">
+              <span class="ice-summary-label">纽约实时</span>
+              <strong id="new-york-now">—</strong>
+              <small>最近同步：<span id="latest-sync">—</span></small>
+            </article>
           </div>
-          <div id="today-event-list" class="ice-event-list" aria-live="polite"></div>
+
+          <div class="ice-today-inline" aria-labelledby="today-events-title">
+            <div class="ice-today-inline-head">
+              <h2 id="today-events-title">今日抓捕时间与地点</h2>
+              <span>未明确披露则不计入</span>
+            </div>
+            <div id="today-event-list" class="ice-event-list" aria-live="polite"></div>
+          </div>
         </section>
       </div>
     </section>
@@ -114,6 +114,6 @@
     </section>
   </main>
 
-  <script src="/assets/ice-topic.js?v=34" defer></script>
+  <script src="/assets/ice-topic.js?v=35" defer></script>
 </body>
 </html>

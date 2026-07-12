@@ -1,35 +1,35 @@
 {
-  "last_seen_id": "2076189802807099818",
-  "last_success_at": "2026-07-12T06:20:59.685Z",
-  "last_content_at": "2026-07-12T06:20:59.685Z",
+  "last_seen_id": "2076237264439349437",
+  "last_success_at": "2026-07-12T09:29:42.024Z",
+  "last_content_at": "2026-07-12T09:29:42.024Z",
   "last_error": "",
   "last_result": {
-    "fetched": 114,
-    "discovered": 114,
+    "fetched": 115,
+    "discovered": 115,
     "processed": 18,
-    "published": 11,
-    "review": 6,
-    "retry": 1,
-    "duplicates": 0,
-    "total_published": 105,
-    "total_pending": 510,
+    "published": 13,
+    "review": 4,
+    "retry": 0,
+    "duplicates": 1,
+    "total_published": 118,
+    "total_pending": 606,
     "query_lanes": [
       {
         "id": "official",
         "label": "特朗普与白宫官方",
-        "fetched": 0,
+        "fetched": 1,
         "truncated": false
       },
       {
         "id": "trusted-1",
         "label": "主流媒体",
-        "fetched": 0,
+        "fetched": 1,
         "truncated": false
       },
       {
         "id": "trusted-2",
         "label": "主流媒体",
-        "fetched": 0,
+        "fetched": 4,
         "truncated": false
       },
       {
@@ -53,11 +53,11 @@
     ]
   },
   "query_cursors": {
-    "official": "2076153803208818709",
-    "trusted-1": "2076154602852913498",
+    "official": "2076211412112670839",
+    "trusted-1": "2076193627882004712",
     "review-1": "2076119868554801335",
-    "trusted-2": "2076163642232340528",
+    "trusted-2": "2076216490391429548",
     "trusted-3": "2075648687985020996"
   },
-  "last_run_at": "2026-07-12T06:20:59.685Z"
+  "last_run_at": "2026-07-12T09:29:42.024Z"
 }

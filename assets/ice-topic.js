@@ -131,93 +131,27 @@
       const states = Array.isArray(item.state_codes)
         ? item.state_codes.map(normalizeStateCode).filter(Boolean)
         : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
-
-      // ICE快讯：AI标记为brief，或没有可用图片时，统一以纯文字双行快讯展示。
-      // 不再生成灰色图片占位框，也不强迫短消息进入比例失衡的长文章页面。
-      const isBrief = item.content_type === "brief" || !item.image_url;
-      const targetUrl = item.url || item.source_url || "#";
-      const briefTitle = compactBriefTitle(item.title || "ICE执法动态");
-      const briefText = compactBriefText(item.summary || item.source_text || "ICE相关公开信息已更新。", 72);
-
-      if (isBrief) {
-        return `
-          <article class="ice-brief-row" data-states="${escapeAttr(states.join(","))}">
-            <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
-            <div class="ice-brief-copy">
-              <h3><a href="${escapeAttr(targetUrl)}"${isExternalUrl(targetUrl) ? ' target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(briefTitle)}</a></h3>
-              <p>${escapeHtml(briefText)}</p>
-            </div>
-            <span class="ice-brief-source">${escapeHtml(item.source_name || "ICE动态")}</span>
-          </article>`;
-      }
-
+      const image = item.image_url
+        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE官方图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+        : '<div class="ice-news-thumb-wrap" aria-hidden="true"></div>';
       return `
         <article class="ice-news-card" data-states="${escapeAttr(states.join(","))}">
-          <div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>
+          ${image}
           <div class="ice-news-body">
             <div class="ice-news-meta">
               <span class="ice-news-label">${escapeHtml(item.source_name || "ICE执法信息")}</span>
               <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
             </div>
-            <h3><a href="${escapeAttr(targetUrl)}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
-            <p>${escapeHtml(compactBriefText(item.summary || "", 110))}</p>
-            <a class="ice-news-link" href="${escapeAttr(targetUrl)}">查看全文 →</a>
+            <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
+            <p>${escapeHtml(item.summary || "")}</p>
+            <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">查看全文 →</a>
           </div>
         </article>`;
     }).join("");
   }
 
-  function compactBriefTitle(value) {
-    const clean = String(value || "")
-      .replace(/[\r\n\t]+/g, " ")
-      .replace(/\s+/g, " ")
-      .replace(/[。！？!?]+$/g, "")
-      .trim();
-    const chars = Array.from(clean);
-    if (chars.length <= 18) return clean || "ICE执法动态";
-
-    // 优先保留核心动作，确保快讯标题保持一行、8—18个中文字符左右。
-    const shortened = clean
-      .replace(/美国移民与海关执法局/g, "ICE")
-      .replace(/美国国土安全部/g, "DHS")
-      .replace(/美国司法部/g, "司法部")
-      .replace(/执法行动中/g, "行动中")
-      .replace(/相关事件/g, "事件");
-    return Array.from(shortened).slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
-  }
-
-  function compactBriefText(value, limit = 72) {
-    const clean = String(value || "")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/[\r\n\t]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    const chars = Array.from(clean);
-    return chars.length > limit ? `${chars.slice(0, limit).join("")}…` : clean;
-  }
-
-  function isExternalUrl(value) {
-    return /^https?:\/\//i.test(String(value || ""));
-  }
-
   function bindControls() {
-    document.getElementById("range-controls")?.addEventListener("click", async event => {
-      const button = event.target.closest("button[data-range]");
-      if (!button) return;
-      selectedRange = button.dataset.range;
-      setActiveButton("range-controls", button);
-      await renderHeatmap();
-    });
-
-    document.getElementById("metric-controls")?.addEventListener("click", async event => {
-      const button = event.target.closest("button[data-metric]");
-      if (!button) return;
-      selectedMetric = button.dataset.metric;
-      setActiveButton("metric-controls", button);
-      await renderHeatmap();
-    });
-
-    document.getElementById("clear-state-filter")?.addEventListener("click", () => filterByState(""));
+    // v42: map controls were intentionally removed.
   }
 
   function setActiveButton(parentId, active) {
@@ -225,49 +159,34 @@
   }
 
   async function renderHeatmap() {
-    const rows = dashboard?.heatmap?.[selectedRange]?.states || [];
-    const totals = summarizeRows(rows);
-    updateHeatmapSummary(totals);
-    renderTopStates(rows);
-
-    const note = document.getElementById("heatmap-note");
-    note.textContent = `${rangeLabel(selectedRange)}共公开${selectedMetric === "people" ? `${totals.people}人` : `${totals.events}起事件`}`;
-
-    if (!rows.length) {
-      showFallback(rows);
-      return;
-    }
+    const rows = dashboard?.heatmap?.["24h"]?.states || [];
+    const map = document.getElementById("ice-heatmap");
+    const fallback = document.getElementById("heatmap-fallback");
+    if (!map) return;
 
     try {
       await ensurePlotly();
-      const map = document.getElementById("ice-heatmap");
+
       map.hidden = false;
-      document.getElementById("heatmap-fallback").hidden = true;
-      const values = rows.map(row => Number(row[selectedMetric] || 0));
-      const isPeople = selectedMetric === "people";
+      if (fallback) fallback.hidden = true;
+
+      const values = rows.map(row => Number(row.events || 0));
+
       await window.Plotly.react(map, [{
         type: "choropleth",
         locationmode: "USA-states",
         locations: rows.map(row => row.code),
         z: values,
-        text: rows.map(row => `${row.name || row.code}<br>事件：${Number(row.events || 0)}<br>已披露人数：${Number(row.people || 0)}`),
+        text: rows.map(row =>
+          `${row.name || row.code}<br>事件：${Number(row.events || 0)}<br>已披露人数：${Number(row.people || 0)}`
+        ),
         hovertemplate: "%{text}<extra></extra>",
-        colorscale: isPeople
-          ? [[0, "#edf8f2"], [.25, "#bfe4ce"], [.6, "#55ae7d"], [1, "#167447"]]
-          : [[0, "#edf6fa"], [.25, "#b8dce9"], [.6, "#4b9fbe"], [1, "#005f88"]],
+        colorscale: [[0, "#edf6fa"], [.25, "#b8dce9"], [.6, "#4b9fbe"], [1, "#005f88"]],
         marker: { line: { color: "#ffffff", width: 1.2 } },
-        colorbar: {
-          title: isPeople ? "人数" : "事件",
-          thickness: 10,
-          len: .62,
-          x: .98,
-          y: .5,
-          tickfont: { size: 11 },
-          titlefont: { size: 12 }
-        }
+        showscale: false
       }], {
         autosize: true,
-        margin: { l: 0, r: 28, t: 8, b: 4 },
+        margin: { l: 0, r: 0, t: 0, b: 0 },
         paper_bgcolor: "#ffffff",
         plot_bgcolor: "#ffffff",
         geo: {
@@ -282,11 +201,19 @@
         displayModeBar: false,
         scrollZoom: false
       });
-      map.removeAllListeners?.("plotly_click");
-      map.on?.("plotly_click", data => filterByState(data?.points?.[0]?.location || ""));
+
+      window.setTimeout(() => {
+        try {
+          window.Plotly.Plots.resize(map);
+        } catch (_) {}
+      }, 80);
     } catch (error) {
-      console.warn("Plotly unavailable, using fallback list.", error);
-      showFallback(rows);
+      console.warn("ICE map rendering failed.", error);
+      map.hidden = true;
+      if (fallback) {
+        fallback.hidden = false;
+        fallback.textContent = "地图暂时无法加载，请稍后刷新。";
+      }
     }
   }
 
@@ -363,9 +290,9 @@
       if (show) visible += 1;
     });
     const clear = document.getElementById("clear-state-filter");
-    clear.hidden = !selectedState;
+    if (clear) clear.hidden = !selectedState;
     const note = document.getElementById("news-sort-note");
-    note.textContent = selectedState ? `当前筛选：${selectedState}（${visible}条）` : "按发布时间倒序排列";
+    if (note) note.textContent = selectedState ? `当前筛选：${selectedState}（${visible}条）` : "按发布时间倒序排列";
     if (selectedState) document.getElementById("latest-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 

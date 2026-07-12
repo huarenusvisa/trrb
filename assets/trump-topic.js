@@ -164,37 +164,98 @@
     return result;
   }
 
+  const EVENT_STOP_WORDS = new Set([
+    "特朗普", "美国总统", "总统", "美国", "白宫", "政府", "最新", "动态", "消息", "表示", "宣布", "称", "指出", "计划",
+    "推动", "有关", "针对", "相关", "更多", "再次", "正在", "今日", "当天", "目前", "问题", "事件", "一项", "一份", "将", "已",
+  ]);
+
+  const EVENT_ACTION_GROUPS = [
+    ["签署", "拒签", "不签", "生效", "法案", "立法", "通过"],
+    ["起诉", "诉讼", "上诉", "裁决", "判决", "法院", "司法部"],
+    ["和解", "达成协议", "解决", "协议"],
+    ["任命", "调整", "撤换", "委员会", "成员"],
+    ["标签", "美国制造", "原产地", "肉类", "产品"],
+    ["管道", "泄漏", "漏油", "keystone", "基斯顿"],
+    ["住房", "购房", "房改", "住宅"],
+    ["关税", "贸易", "进口", "出口"],
+    ["移民", "ice", "驱逐", "遣返", "边境"],
+    ["选举", "投票", "选委会", "非法投票"],
+    ["行政令", "撤销", "监管", "规则", "定义"],
+  ];
+
   function likelySameEvent(a, b) {
     if (String(a.id) === String(b.id)) return true;
     if (a.source_url && b.source_url && a.source_url === b.source_url) return true;
     const aTime = Date.parse(a.published_at || "");
     const bTime = Date.parse(b.published_at || "");
-    if (Number.isFinite(aTime) && Number.isFinite(bTime) && Math.abs(aTime - bTime) > 72 * 60 * 60 * 1000) return false;
+    if (Number.isFinite(aTime) && Number.isFinite(bTime) && Math.abs(aTime - bTime) > 7 * 24 * 60 * 60 * 1000) return false;
+
+    const aTitle = normalizeTitle(a.title || "");
+    const bTitle = normalizeTitle(b.title || "");
+    if (aTitle && bTitle) {
+      if (aTitle === bTitle && aTitle.length >= 6) return true;
+      const shorter = aTitle.length <= bTitle.length ? aTitle : bTitle;
+      const longer = shorter === aTitle ? bTitle : aTitle;
+      if (shorter.length >= 8 && longer.includes(shorter) && shorter.length / longer.length >= 0.62) return true;
+    }
+
     const aText = normalizeEvent(`${a.title || ""} ${a.summary || ""}`);
     const bText = normalizeEvent(`${b.title || ""} ${b.summary || ""}`);
     if (!aText || !bText) return false;
-    if (aText === bText) return true;
     const aTokens = tokens(aText);
     const bTokens = tokens(bText);
-    let intersection = 0;
-    aTokens.forEach((token) => { if (bTokens.has(token)) intersection += 1; });
+    const intersection = sharedCount(aTokens, bTokens);
     const union = aTokens.size + bTokens.size - intersection;
-    return union > 0 && intersection / union >= 0.985;
+    const jac = union > 0 ? intersection / union : 0;
+    const overlap = Math.min(aTokens.size, bTokens.size) > 0 ? intersection / Math.min(aTokens.size, bTokens.size) : 0;
+    const actionOverlap = sharedCount(actionKeys(aText), actionKeys(bText)) > 0;
+
+    return jac >= 0.62 || (overlap >= 0.74 && intersection >= 5) || (actionOverlap && overlap >= 0.58 && intersection >= 4) || (actionOverlap && intersection >= 12 && jac >= 0.20);
+  }
+
+  function normalizeTitle(value) {
+    return String(value || "").toLowerCase()
+      .replace(/特朗普|美国总统|总统特朗普|白宫|最新|动态|消息|表示|宣布|称|指出/g, "")
+      .replace(/https?:\/\/\S+/g, "")
+      .replace(/[\p{P}\p{S}\s]+/gu, "")
+      .slice(0, 180);
   }
 
   function normalizeEvent(value) {
     return String(value || "").toLowerCase()
-      .replace(/特朗普|美国总统|白宫|最新|动态|消息|表示|宣布|称/g, " ")
       .replace(/https?:\/\/\S+/g, " ")
       .replace(/[^\p{L}\p{N}\u3400-\u9fff]+/gu, " ")
       .trim();
   }
 
   function tokens(value) {
-    const set = new Set(value.split(/\s+/).filter((word) => word.length > 1));
-    const cjk = [...value.replace(/[^\u3400-\u9fff]/g, "")];
-    for (let index = 0; index < cjk.length - 1; index += 1) set.add(cjk[index] + cjk[index + 1]);
+    const set = new Set();
+    for (const word of value.split(/\s+/).filter(Boolean)) {
+      if (word.length > 1 && !EVENT_STOP_WORDS.has(word)) set.add(word);
+    }
+    const cjk = value.replace(/[^\u3400-\u9fff]/g, "");
+    for (let size = 2; size <= 4; size += 1) {
+      for (let index = 0; index <= cjk.length - size; index += 1) {
+        const token = cjk.slice(index, index + size);
+        if ([...EVENT_STOP_WORDS].some((stop) => stop.includes(token) || token.includes(stop))) continue;
+        set.add(token);
+      }
+    }
     return set;
+  }
+
+  function actionKeys(value) {
+    const keys = new Set();
+    EVENT_ACTION_GROUPS.forEach((terms, index) => {
+      if (terms.some((term) => value.includes(term))) keys.add(String(index));
+    });
+    return keys;
+  }
+
+  function sharedCount(a, b) {
+    let total = 0;
+    a.forEach((token) => { if (b.has(token)) total += 1; });
+    return total;
   }
 
   function oneLine(value) {

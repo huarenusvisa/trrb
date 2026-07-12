@@ -1,4 +1,5 @@
 [build]
+  command = "node scripts/validate-site.mjs"
   publish = "."
 
 [[headers]]

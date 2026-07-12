@@ -1,0 +1,5 @@
+唐人日报前台修复 v29.7
+
+根因：多个文件内容被错位写入，index.html 被文章索引 JavaScript 覆盖，因此浏览器直接显示代码。
+已修复：index.html、styles.css、site-common.js、site-search.js、site.webmanifest、thanks.html、trrb-logo-cropped.webp、_headers、读者群二维码。
+已新增：首页本地文章兜底 articles-home-index.js；/topic/ice/ 内部重写到 ICE 搜索列表；资源版本升级至 29.7。

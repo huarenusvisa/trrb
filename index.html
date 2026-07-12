@@ -1,205 +1,569 @@
-<!doctype html>
-<html lang="zh-Hans">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>唐人日报 Tang Ren Daily - 中美新闻实时播报</title>
-    <meta name="theme-color" content="#d60000" />
-    <meta name="color-scheme" content="light" />
-    <meta name="format-detection" content="telephone=no" />
-    <link rel="manifest" href="./site.webmanifest?v=29.7" />
-    <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
-    <meta
-      name="description"
-      content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、庇护百科等内容。"
-    />
-    <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="./styles.css?v=29.7" />
-  </head>
-  <body>
-    <div class="topbar">
-      <div class="container topbar-inner">
-        <div class="meta" aria-label="本地信息">
-          <span class="meta-location">📍 本地</span>
-          <span class="meta-date">加载日期中...</span>
-          <span class="meta-weather">🌤️ 天气暂不可用</span>
-        </div>
-        <div class="links">
-          <a href="#submit">投稿爆料</a>
-          <a href="#daily">电子报</a>
-          <a href="#about">关于我们</a>
-          <a href="mailto:news@tangrendaily.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
-          <a href="./listing.html?type=search">搜索</a>
-        </div>
-      </div>
-    </div>
 
-    <header class="site-header">
-      <div class="container header-inner">
-        <button class="mobile-menu-toggle" type="button" aria-label="打开栏目菜单" aria-controls="site-navigation" aria-expanded="false">
-          <span aria-hidden="true">☰</span>
-        </button>
-        <a class="brand" href="./index.html" aria-label="唐人日报首页">
-          <img src="./trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily" width="720" height="208" />
-        </a>
-        <div class="slogan">
-          <b>立足美国 · 服务华人</b>
-          <span>US-China Breaking News for Chinese Readers</span>
-        </div>
-        <div class="header-actions">
-          <a href="#daily">电子报订阅</a>
-          <a href="#community">加入读者群</a>
-          <a class="primary" href="#submit">投稿爆料</a>
-        </div>
-        <button class="mobile-search-toggle" type="button" aria-label="打开新闻搜索" aria-controls="site-navigation">
-          <span aria-hidden="true">⌕</span>
-        </button>
-      </div>
-    </header>
+const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
+const OWNER_EMAIL = "tangrenribao@gmail.com";
+const OWNER_UID = "4c491ee3-a9f0-42c9-9bee-1abb52b20b01";
+const ARTICLE_IMAGE_BUCKET = "article-images";
+const MAX_SOURCE_IMAGE_BYTES = 15 * 1024 * 1024;
 
-    <nav class="nav" id="site-navigation" aria-label="主要栏目">
-      <div class="mobile-nav-head">
-        <strong>唐人日报</strong>
-        <button class="mobile-nav-close" type="button" aria-label="关闭栏目菜单">×</button>
-      </div>
-      <div class="container nav-inner">
-        <a href="./listing.html?category=重要新闻">重要新闻</a>
-        <a href="./listing.html?category=热门头条">热门头条</a>
-        <a href="./listing.html?category=驱逐快报">驱逐快报</a>
-        <a href="./listing.html?category=美国时政">美国时政</a>
-        <a href="./listing.html?category=美国警情">美国警情</a>
-        <a href="./listing.html?category=中国官场">中国官场</a>
-        <a href="./listing.html?category=移民美国">移民美国</a>
-        <a href="./listing.html?category=庇护百科">庇护百科</a>
-        <form class="site-search nav-search" role="search" action="./listing.html" method="get">
-          <label class="sr-only" for="site-search-input">搜索新闻</label>
-          <input id="site-search-input" name="q" type="search" placeholder="搜索新闻" autocomplete="off" />
-          <button type="submit">搜索</button>
-        </form>
-        <div class="mobile-utility-links" aria-label="其他链接">
-          <a href="#daily">电子报订阅</a>
-          <a href="#community">加入读者群</a>
-          <a href="#submit">投稿爆料</a>
-          <a href="#about">关于我们</a>
-        </div>
-      </div>
-    </nav>
-    <button class="mobile-nav-backdrop" type="button" aria-label="关闭栏目菜单"></button>
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
 
-    <main>
-      <section class="breaking">
-        <div class="container breaking-inner">
-          <span class="pulse-dot" aria-hidden="true"></span>
-          <div class="ticker" id="ticker"></div>
-        </div>
-      </section>
+const el = (id) => document.getElementById(id);
+let currentUser = null;
+let currentAdmin = null;
+let categories = [];
+let selectedCoverFile = null;
+let selectedCoverObjectUrl = "";
 
-      <section class="container lead-layout">
-        <article class="hero-card" id="hero"></article>
-        <aside class="top-list" id="top-list"></aside>
-      </section>
+document.addEventListener("DOMContentLoaded", init);
 
-      <section class="container content-layout">
-        <div class="sections-grid" id="sections-grid"></div>
-        <aside class="sidebar">
-          <section class="rank">
-            <header><h2>24小时热榜</h2><a href="#" class="rank-switch" id="rank-switch">换一换</a></header>
-            <ol id="rank-list"></ol>
-          </section>
-         <section class="topics topic-focus">
+// 后台永远使用最新静态文件，清理旧 Service Worker / Cache Storage。
+async function clearLegacyBrowserCaches() {
+  try {
+    if ("serviceWorker" in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(registrations.map((registration) => registration.unregister()));
+    }
+    if ("caches" in window) {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((key) => caches.delete(key)));
+    }
+  } catch (error) {
+    console.warn("清理旧缓存失败，不影响继续登录：", error);
+  }
+}
 
-  <header class="topic-focus-header">
-    <h2>专题聚焦</h2>
+async function init() {
+  await clearLegacyBrowserCaches();
+  bindEvents();
+  const { data } = await supabaseClient.auth.getSession();
+  if (data.session?.user) {
+    await enterAdmin(data.session.user);
+  }
+}
 
-    <a href="./listing.html">
-      更多专题 <span>›</span>
-    </a>
-  </header>
+function bindEvents() {
+  el("login-form").addEventListener("submit", handleLogin);
+  el("logout-btn").addEventListener("click", handleLogout);
 
+  document.querySelectorAll(".nav-btn").forEach((button) => {
+    button.addEventListener("click", () => showPage(button.dataset.page));
+  });
 
-  <div id="topic-focus-list" class="topic-focus-list">
+  el("article-form").addEventListener("submit", handleSaveArticle);
+  el("refresh-articles").addEventListener("click", loadArticles);
+  el("refresh-rankings").addEventListener("click", loadRankings);
+  el("article-cover-file").addEventListener("change", handleCoverSelection);
+  el("article-cover-remove").addEventListener("click", clearCoverSelection);
+  el("article-cover-paste-zone").addEventListener("paste", handleCoverPaste);
+  el("article-cover-paste-zone").addEventListener("focus", () => el("article-cover-paste-zone").classList.add("is-paste-active"));
+  el("article-cover-paste-zone").addEventListener("blur", () => el("article-cover-paste-zone").classList.remove("is-paste-active"));
+  el("generate-summary").addEventListener("click", () => {
+    el("article-summary").value = generateSummary(el("article-content").value, el("article-title").value);
+  });
+  el("generate-seo").addEventListener("click", () => {
+    const categoryName = el("article-category").selectedOptions?.[0]?.textContent || "";
+    el("article-seo-keywords").value = generateSeoKeywords(el("article-title").value, categoryName, el("article-content").value);
+  });
+  el("generate-ai-cover")?.addEventListener("click", () => generateAiCover());
+}
 
-    <!-- 动态加载专题内容 -->
+async function handleLogin(event) {
+  event.preventDefault();
+  setLoginMessage("正在登录...");
+  const email = el("login-email").value.trim().toLowerCase();
+  const password = el("login-password").value;
 
-    <div class="topic-focus-loading">
-      专题内容加载中...
-    </div>
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error) {
+    setLoginMessage("登录失败：" + error.message);
+    return;
+  }
 
-  </div>
+  await enterAdmin(data.user);
+}
 
+async function enterAdmin(user) {
+  currentUser = user;
+  setLoginMessage("正在验证后台权限...");
 
-</section>
-        </aside>
-      </section>
+  const admin = await getAdminRecord(user);
+  if (!admin) {
+    await supabaseClient.auth.signOut();
+    setLoginMessage(
+      "这个账号没有后台权限。\n" +
+      "当前登录 UID: " + user.id + "\n" +
+      "当前邮箱: " + (user.email || "") + "\n" +
+      "请确认 admin_users.user_id 是否一致。"
+    );
+    return;
+  }
 
-      <section class="container cta-row">
-        <article id="daily">
-          <h2>订阅每日快报</h2>
-          <p>每日精选新闻直达邮箱，不错过任何重要消息</p>
-          <form name="daily-subscribe" method="POST" action="/thanks.html" data-netlify="true" data-netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="daily-subscribe" />
-            <p class="sr-only"><label>请勿填写：<input name="bot-field" /></label></p>
-            <input type="email" name="email" placeholder="输入您的邮箱地址" autocomplete="email" required />
-            <button type="submit">立即订阅</button>
-          </form>
-          <small class="form-note">提交后即完成订阅登记。</small>
-        </article>
-        <article id="community">
-          <h2>加入读者群</h2>
-          <p>扫码添加唐人日报微信，获取第一手资讯与深度解读</p>
-          <img class="reader-qr" src="./assets/reader-group-qr.jpeg?v=29.7" alt="唐人日报读者群微信二维码" width="888" height="1134" loading="lazy" decoding="async" />
-        </article>
-        <article id="submit">
-          <h2>投稿爆料</h2>
-          <p>新闻线索、独家爆料，可提交文字、图片或视频。</p>
-          <form class="tip-form" name="news-tip" method="POST" action="/thanks.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field">
-            <input type="hidden" name="form-name" value="news-tip" />
-            <p class="sr-only"><label>请勿填写：<input name="bot-field" /></label></p>
-            <input type="text" name="name" placeholder="您的姓名或昵称（可选）" />
-            <input type="text" name="contact" placeholder="联系方式（邮箱/电话/微信，可选）" />
-            <textarea name="message" placeholder="请填写爆料内容" rows="5" required></textarea>
-            <label class="file-label">上传图片或视频（单个文件建议不超过10MB）
-              <input type="file" name="attachment" accept="image/*,video/*" />
-            </label>
-            <button type="submit">提交线索</button>
-          </form>
-          <small class="form-note">线索将进入唐人日报后台，并可通过Netlify表单通知发送至 tangrenribao@gmail.com。</small>
-        </article>
-      </section>
-    </main>
+  currentAdmin = admin;
+  el("login-view").classList.add("hidden");
+  el("admin-view").classList.remove("hidden");
+  el("admin-info").textContent = `${user.email} · ${admin.role}`;
+  await Promise.all([loadCategories(), loadArticles(), loadRankings()]);
+  showPage("dashboard");
+}
 
-    <footer class="footer" id="about">
-      <div class="container footer-grid">
-        <section>
-          <h2>唐人日报</h2>
-          <b>Tang Ren Daily</b>
-          <p>立足美国 服务华人<br />专注美国新闻与深度报道</p>
-        </section>
-        <section>
-          <h3>栏目导航</h3>
-          <a href="./listing.html?category=重要新闻">重要新闻</a>
-          <a href="./listing.html?category=热门头条">热门头条</a>
-          <a href="./listing.html?category=驱逐快报">驱逐快报</a>
-          <a href="./listing.html?category=美国时政">美国时政</a>
-        </section>
-        <section>
-          <h3>关于我们</h3>
-          <a href="#about">关于唐人日报</a>
-          <a href="mailto:news@tangrendaily.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
-          <a href="#community">加入我们</a>
-        </section>
-        <section>
-          <h3>联系我们</h3>
-          <p>邮箱：tangrenribao@gmail.com</p>
-          <p>读者热线：<a href="tel:+19297898290">+1 929-789-8290</a></p>
-          <p>地址：136-20 38th Ave, Flushing, NY 11354, USA</p>
-        </section>
-      </div>
-      <div class="container copyright">© 2026 唐人日报 Tang Ren Daily. 保留所有权利。</div>
-    </footer>
-    <script src="./site-common.js?v=29.7"></script>
-    <script src="./site-search.js?v=29.7"></script>
-    <script src="./articles-home-index.js?v=29.7"></script>
-    <script src="./articles-home.js?v=29.7"></script>
-  </body>
-</html>
+async function getAdminRecord(user) {
+  // 正确字段是 user_id，不是 admin_users.id。v2 已修复这一点。
+  let { data, error } = await supabaseClient
+    .from("admin_users")
+    .select("id,user_id,email,role,is_active")
+    .eq("user_id", user.id)
+    .eq("is_active", true)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Admin check by user_id failed:", error);
+  }
+  if (data && ["owner", "admin"].includes(String(data.role || "").toLowerCase())) return data;
+
+  // 备用：如果早期表里 user_id 没写对，用邮箱再核对一次。
+  const fallback = await supabaseClient
+    .from("admin_users")
+    .select("id,user_id,email,role,is_active")
+    .ilike("email", String(user.email || "").trim())
+    .eq("is_active", true)
+    .maybeSingle();
+
+  if (fallback.error) {
+    console.error("Admin check by email failed:", fallback.error);
+  }
+  if (fallback.data && ["owner", "admin"].includes(String(fallback.data.role || "").toLowerCase())) return fallback.data;
+
+  // 最后保险：只允许这一个 Supabase Auth UID 进入 UI。数据库写入仍然受 RLS 控制。
+  if (user.id === OWNER_UID && String(user.email || "").trim().toLowerCase() === OWNER_EMAIL) {
+    return { user_id: OWNER_UID, email: OWNER_EMAIL, role: "owner", is_active: true };
+  }
+
+  return null;
+}
+
+async function handleLogout() {
+  await supabaseClient.auth.signOut();
+  location.reload();
+}
+
+function showPage(page) {
+  const titles = {
+    dashboard: "控制台",
+    articles: "文章管理",
+    "new-article": "发布文章",
+    rankings: "24小时热榜"
+  };
+
+  document.querySelectorAll(".page").forEach((item) => item.classList.add("hidden"));
+  document.querySelectorAll(".nav-btn").forEach((button) => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+
+  el(`${page}-page`).classList.remove("hidden");
+  el("page-title").textContent = titles[page] || "控制台";
+}
+
+async function loadCategories() {
+  const { data, error } = await supabaseClient
+    .from("categories")
+    .select("id,name,slug,sort_order")
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  categories = data || [];
+  el("article-category").innerHTML = categories
+    .map((item) => `<option value="${item.id}" data-name="${escapeHtml(item.name)}">${escapeHtml(item.name)}</option>`)
+    .join("");
+}
+
+async function loadArticles() {
+  const { data, error } = await supabaseClient
+    .from("articles")
+    .select("id,title,category_name,status,published_at,created_at")
+    .order("created_at", { ascending: false })
+    .limit(100);
+
+  if (error) {
+    console.error(error);
+    el("articles-tbody").innerHTML = `<tr><td colspan="5">文章读取失败：${escapeHtml(error.message)}</td></tr>`;
+    return;
+  }
+
+  const articles = data || [];
+  el("count-articles").textContent = articles.length;
+  el("count-published").textContent = articles.filter((item) => item.status === "published").length;
+  el("count-draft").textContent = articles.filter((item) => item.status === "draft").length;
+
+  el("articles-tbody").innerHTML = articles.length
+    ? articles.map(renderArticleRow).join("")
+    : `<tr><td colspan="5">暂无文章。可以先发布一篇测试文章。</td></tr>`;
+}
+
+function renderArticleRow(article) {
+  return `
+    <tr>
+      <td><b>${escapeHtml(article.title)}</b><br><small>${article.id}</small></td>
+      <td>${escapeHtml(article.category_name || "-")}</td>
+      <td><span class="status-pill status-${article.status}">${statusLabel(article.status)}</span></td>
+      <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>
+      <td>
+        <button class="small-btn" onclick="changeArticleStatus('${article.id}','published')">发布</button>
+        <button class="small-btn" onclick="changeArticleStatus('${article.id}','draft')">草稿</button>
+        <button class="small-btn" onclick="changeArticleStatus('${article.id}','hidden')">隐藏</button>
+      </td>
+    </tr>
+  `;
+}
+
+window.changeArticleStatus = async function (id, status) {
+  const patch = { status };
+  if (status === "published") patch.published_at = new Date().toISOString();
+
+  const { error } = await supabaseClient.from("articles").update(patch).eq("id", id);
+  if (error) {
+    alert("更新失败：" + error.message);
+    return;
+  }
+  await loadArticles();
+};
+
+async function handleSaveArticle(event) {
+  event.preventDefault();
+  const selected = el("article-category");
+  const categoryName = selected.options[selected.selectedIndex]?.textContent || "";
+  const title = el("article-title").value.trim();
+  const status = el("article-status").value;
+  const submitButton = el("article-submit");
+
+  submitButton.disabled = true;
+  el("article-message").textContent = selectedCoverFile ? "正在压缩并上传封面图片..." : "正在保存...";
+
+  try {
+    let coverImage = el("article-cover").value.trim();
+    if (selectedCoverFile) {
+      coverImage = await uploadCoverImage(selectedCoverFile, title);
+      el("article-cover").value = coverImage;
+    }
+
+    const content = el("article-content").value.trim();
+    if (!coverImage && status === "published" && el("auto-ai-cover")?.checked) {
+      coverImage = await generateAiCover({ silent: true });
+      el("article-cover").value = coverImage || "";
+    }
+    const summary = el("article-summary").value.trim() || generateSummary(content, title);
+    const seoKeywords = el("article-seo-keywords").value.trim() || generateSeoKeywords(title, categoryName, content);
+    el("article-summary").value = summary;
+    el("article-seo-keywords").value = seoKeywords;
+
+    const payload = {
+      title,
+      slug: makeSlug(title),
+      summary,
+      content,
+      category_id: selected.value || null,
+      category_name: categoryName,
+      cover_image: coverImage,
+      seo_keywords: seoKeywords,
+      author: el("article-author").value.trim() || "Tang Ren Daily",
+      status,
+      published_at: status === "published" ? new Date().toISOString() : null
+    };
+
+    el("article-message").textContent = "图片上传完成，正在保存文章...";
+    const { error } = await supabaseClient.from("articles").insert(payload);
+    if (error) throw error;
+
+    el("article-message").textContent = "文章已保存，封面图片已本地化。";
+    el("article-form").reset();
+    el("article-author").value = "Tang Ren Daily";
+    clearCoverSelection();
+    await loadArticles();
+    showPage("articles");
+  } catch (error) {
+    console.error(error);
+    el("article-message").textContent = "保存失败：" + (error?.message || String(error));
+  } finally {
+    submitButton.disabled = false;
+    el("article-cover-progress").classList.add("hidden");
+  }
+}
+
+async function generateAiCover(options = {}) {
+  const progress = el("ai-cover-progress");
+  const title = el("article-title").value.trim();
+  const content = el("article-content").value.trim();
+  const summary = el("article-summary").value.trim() || generateSummary(content, title);
+  const category = el("article-category").selectedOptions?.[0]?.textContent || "新闻";
+  if (!title) { if (!options.silent) alert("请先填写文章标题。"); return ""; }
+  progress?.classList.remove("hidden");
+  if (progress) progress.textContent = "正在生成 16:9 AI 新闻封面，通常需要 15–60 秒…";
+  try {
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const token = sessionData.session?.access_token;
+    if (!token) throw new Error("登录状态已失效，请重新登录。");
+    const response = await fetch("/.netlify/functions/generate-cover", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ title, category, summary, content: content.slice(0, 4000) })
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || `AI 封面生成失败（${response.status}）`);
+    if (!result.url) throw new Error("AI 接口没有返回图片地址。");
+    el("article-cover").value = result.url;
+    el("article-cover-preview").src = result.url;
+    el("article-cover-preview-wrap").classList.remove("hidden");
+    if (progress) progress.textContent = "AI 封面生成并本地化成功。";
+    return result.url;
+  } catch (error) {
+    console.error(error);
+    if (progress) progress.textContent = `AI 封面失败：${error.message}`;
+    if (!options.silent) alert(`AI 封面失败：${error.message}`);
+    return "";
+  }
+}
+
+function handleCoverPaste(event) {
+  const items = Array.from(event.clipboardData?.items || []);
+  const imageItem = items.find((item) => item.type.startsWith("image/"));
+  if (imageItem) {
+    event.preventDefault();
+    const blob = imageItem.getAsFile();
+    if (!blob) return;
+    const ext = (blob.type.split("/")[1] || "png").replace("jpeg", "jpg");
+    const file = new File([blob], `clipboard-${Date.now()}.${ext}`, { type: blob.type });
+    setSelectedCoverFile(file);
+    return;
+  }
+
+  const pastedText = event.clipboardData?.getData("text/plain")?.trim() || "";
+  if (/^https?:\/\//i.test(pastedText)) {
+    event.preventDefault();
+    el("article-cover").value = pastedText;
+    el("article-cover-progress").textContent = "已粘贴外部图片链接。";
+    el("article-cover-progress").classList.remove("hidden");
+  }
+}
+
+function setSelectedCoverFile(file) {
+  if (!file?.type?.startsWith("image/")) {
+    alert("请选择或粘贴 JPG、PNG、WebP 或 GIF 图片。");
+    return;
+  }
+  if (file.size > MAX_SOURCE_IMAGE_BYTES) {
+    alert("原图不能超过 15MB，请先缩小图片。");
+    return;
+  }
+
+  selectedCoverFile = file;
+  if (selectedCoverObjectUrl) URL.revokeObjectURL(selectedCoverObjectUrl);
+  selectedCoverObjectUrl = URL.createObjectURL(file);
+  el("article-cover-preview").src = selectedCoverObjectUrl;
+  el("article-cover-preview-wrap").classList.remove("hidden");
+  el("article-cover-progress").textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)}MB`;
+  el("article-cover-progress").classList.remove("hidden");
+  el("article-cover").value = "";
+}
+
+function generateSummary(content, title = "") {
+  const clean = String(content || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!clean) return String(title || "").trim();
+  const sentences = clean.split(/(?<=[。！？!?])\s*/).filter(Boolean);
+  let summary = "";
+  for (const sentence of sentences) {
+    if ((summary + sentence).length > 135 && summary.length >= 60) break;
+    summary += sentence;
+  }
+  summary = (summary || clean.slice(0, 130)).trim();
+  return summary.length > 150 ? `${summary.slice(0, 147)}…` : summary;
+}
+
+function generateSeoKeywords(title, category, content) {
+  const stop = new Set(["我们","他们","以及","一个","这个","那个","目前","已经","进行","表示","指出","认为","相关","报道","消息","记者","唐人日报","中国","美国","新闻","文章","情况","问题","可以","没有","因为","但是","如果","其中","对于","通过","正在"]);
+  const scores = new Map();
+  const add = (term, score) => {
+    const value = String(term || "").trim().replace(/^[,，。；;：:\s]+|[,，。；;：:\s]+$/g, "");
+    if (!value || value.length < 2 || value.length > 18 || stop.has(value) || /^\d+$/.test(value)) return;
+    scores.set(value, (scores.get(value) || 0) + score);
+  };
+
+  add(category, 12);
+  String(title || "").split(/[\s,，。；;：:、|｜—\-（）()《》“”"']+/).forEach((part) => add(part, 10));
+
+  const text = `${title || ""} ${content || ""}`.replace(/<[^>]+>/g, " ");
+  (text.match(/[A-Za-z][A-Za-z0-9.'-]{2,}/g) || []).forEach((word) => add(word.toUpperCase(), 3));
+  const chineseRuns = text.match(/[\u4e00-\u9fff]{2,12}/g) || [];
+  chineseRuns.forEach((run) => {
+    if (run.length <= 6) add(run, 4);
+    for (const size of [2,3,4]) {
+      for (let i = 0; i <= run.length - size; i++) add(run.slice(i, i + size), size === 2 ? 1 : 2);
+    }
+  });
+
+  return [...scores.entries()]
+    .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)
+    .slice(0, 10)
+    .map(([term]) => term)
+    .join(", ");
+}
+
+function handleCoverSelection(event) {
+  const file = event.target.files?.[0] || null;
+  if (!file) {
+    clearCoverSelection();
+    return;
+  }
+  setSelectedCoverFile(file);
+}
+
+function clearCoverSelection() {
+  selectedCoverFile = null;
+  el("article-cover-file").value = "";
+  el("article-cover-preview-wrap").classList.add("hidden");
+  el("article-cover-progress").classList.add("hidden");
+  el("article-cover-preview").removeAttribute("src");
+  if (selectedCoverObjectUrl) URL.revokeObjectURL(selectedCoverObjectUrl);
+  selectedCoverObjectUrl = "";
+}
+
+async function uploadCoverImage(file, title) {
+  const progress = el("article-cover-progress");
+  progress.classList.remove("hidden");
+  progress.textContent = "正在压缩图片...";
+
+  const optimized = await optimizeImage(file, 1600, 0.84);
+  const now = new Date();
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, "0");
+  const safeTitle = makeSlug(title).slice(0, 60);
+  const filePath = `${year}/${month}/${safeTitle}-${crypto.randomUUID()}.webp`;
+
+  progress.textContent = `正在上传 ${(optimized.size / 1024).toFixed(0)}KB...`;
+  const { error } = await supabaseClient.storage
+    .from(ARTICLE_IMAGE_BUCKET)
+    .upload(filePath, optimized, {
+      contentType: "image/webp",
+      cacheControl: "31536000",
+      upsert: false
+    });
+  if (error) {
+    throw new Error(`图片上传失败：${error.message}。请先在 Supabase 执行补丁包中的 SQL。`);
+  }
+
+  const { data } = supabaseClient.storage.from(ARTICLE_IMAGE_BUCKET).getPublicUrl(filePath);
+  if (!data?.publicUrl) throw new Error("图片已上传，但无法取得公开地址。");
+  progress.textContent = "图片上传成功。";
+  return data.publicUrl;
+}
+
+async function optimizeImage(file, maxDimension, quality) {
+  if (file.type === "image/gif") return file;
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d", { alpha: false });
+  context.imageSmoothingEnabled = true;
+  context.imageSmoothingQuality = "high";
+  context.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+
+  const blob = await new Promise((resolve, reject) => {
+    canvas.toBlob((value) => value ? resolve(value) : reject(new Error("图片压缩失败")), "image/webp", quality);
+  });
+  return blob;
+}
+
+async function loadRankings() {
+  const { data, error } = await supabaseClient
+    .from("rankings")
+    .select("id,article_id,rank_order,heat_text,is_active")
+    .eq("rank_type", "24h")
+    .order("rank_order", { ascending: true })
+    .limit(10);
+
+  if (error) {
+    console.error(error);
+    el("rankings-tbody").innerHTML = `<tr><td colspan="4">热榜读取失败：${escapeHtml(error.message)}</td></tr>`;
+    return;
+  }
+
+  const rankings = data || [];
+  el("count-rankings").textContent = rankings.length;
+  el("rankings-tbody").innerHTML = rankings.length
+    ? rankings.map((item) => `
+      <tr>
+        <td>${item.rank_order}</td>
+        <td>${escapeHtml(item.heat_text || "-")}</td>
+        <td>${escapeHtml(item.article_id || "-")}</td>
+        <td>${item.is_active ? "启用" : "停用"}</td>
+      </tr>
+    `).join("")
+    : `<tr><td colspan="4">暂无热榜条目。</td></tr>`;
+}
+
+function setLoginMessage(text) {
+  el("login-message").textContent = text || "";
+}
+
+function statusLabel(status) {
+  return {
+    published: "已发布",
+    draft: "草稿",
+    hidden: "隐藏"
+  }[status] || status;
+}
+
+function makeSlug(title) {
+  const base = title
+    .trim()
+    .toLowerCase()
+    .replace(/[\s_]+/g, "-")
+    .replace(/[^\u4e00-\u9fa5a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  return `${base || "article"}-${Date.now().toString(36)}`;
+}
+
+function formatDate(value) {
+  if (!value) return "-";
+  try {
+    return new Intl.DateTimeFormat("zh-CN", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(new Date(value));
+  } catch {
+    return value;
+  }
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}

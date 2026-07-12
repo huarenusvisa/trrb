@@ -1,0 +1,183 @@
+
+/* 唐人日报：首页专题聚焦 v30 */
+.topics{
+  padding:14px;
+  border:1px solid #e7eaf0;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 5px 18px rgba(15,23,42,.04);
+}
+.topics header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.topics header h2{
+  position:relative;
+  margin:0;
+  padding-left:13px;
+  font-size:20px;
+  line-height:1.2;
+  color:#111827;
+}
+.topics header h2::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:1px;
+  width:4px;
+  height:24px;
+  border-radius:4px;
+  background:#d60000;
+}
+.topics header a{
+  padding:7px 11px;
+  border:1px solid #e5e7eb;
+  border-radius:999px;
+  background:#fafafa;
+  color:#64748b;
+  font-size:12px;
+  font-weight:700;
+}
+.topics .topic-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  min-height:94px;
+  gap:12px;
+  margin-top:10px;
+  padding:13px 14px;
+  overflow:hidden;
+  border:1px solid transparent;
+  border-radius:20px;
+  text-decoration:none;
+  isolation:isolate;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.topics .topic-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 22px rgba(15,23,42,.08);
+}
+.topic-card__icon{
+  position:relative;
+  z-index:2;
+  flex:0 0 62px;
+  width:62px;
+  height:62px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  overflow:hidden;
+  box-shadow:0 6px 14px rgba(15,23,42,.12);
+}
+.topic-card__icon img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.topic-card__body{
+  position:relative;
+  z-index:2;
+  min-width:0;
+  flex:1;
+}
+.topic-card__body strong{
+  display:block;
+  margin:0;
+  font-size:17px;
+  line-height:1.25;
+  font-weight:900;
+}
+.topic-card__body span{
+  display:block;
+  margin-top:5px;
+  color:#5f6b7d;
+  font-size:12px;
+  line-height:1.45;
+}
+.topic-card__tag{
+  display:inline-flex!important;
+  align-items:center;
+  width:max-content;
+  margin-top:8px!important;
+  padding:4px 9px;
+  border-radius:999px;
+  font-size:11px!important;
+  font-weight:800;
+}
+.topic-trump{
+  background:linear-gradient(110deg,#fff8f8,#ffe9eb);
+  border-color:#ffd1d5!important;
+}
+.topic-trump strong{color:#c71520}
+.topic-trump .topic-card__icon{background:#cf2731}
+.topic-trump .topic-card__tag{
+  color:#c71520;
+  background:rgba(255,255,255,.65);
+  border:1px solid #f6c5ca;
+}
+.topic-ice{
+  background:linear-gradient(110deg,#f6faff,#e5f2ff);
+  border-color:#c8e1fb!important;
+}
+.topic-ice strong{color:#083d78}
+.topic-ice .topic-card__icon{
+  color:#fff;
+  background:linear-gradient(145deg,#174a78,#082d53);
+  border-radius:16px 16px 28px 28px;
+  font-size:19px;
+  font-weight:950;
+  letter-spacing:.06em;
+}
+.topic-ice .topic-card__tag{
+  color:#0a579f;
+  background:rgba(255,255,255,.68);
+  border:1px solid #c7dcf3;
+}
+.topic-election{
+  background:linear-gradient(110deg,#f6fffc,#e2f7f0);
+  border-color:#c5e8df!important;
+}
+.topic-election strong{color:#08745f}
+.topic-election .topic-card__icon{
+  color:#fff;
+  background:linear-gradient(145deg,#2db49a,#087a66);
+}
+.topic-election .topic-card__tag{
+  color:#08745f;
+  background:rgba(255,255,255,.7);
+  border:1px solid #bfe3da;
+}
+.topic-card__ghost{
+  position:absolute;
+  z-index:1;
+  right:-18px;
+  bottom:-16px;
+  width:120px;
+  height:90px;
+  opacity:.09;
+  pointer-events:none;
+}
+.topic-card__ghost.capitol{
+  border-top:18px solid currentColor;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  color:#08745f;
+}
+.topic-card__ghost.capitol::after{
+  content:"";
+  position:absolute;
+  left:14px;
+  top:17px;
+  width:76px;
+  height:54px;
+  background:repeating-linear-gradient(90deg,currentColor 0 7px,transparent 7px 16px);
+}
+@media(max-width:760px){
+  .topics{padding:11px}
+  .topics .topic-card{min-height:84px;padding:11px 12px;border-radius:17px}
+  .topic-card__icon{flex-basis:54px;width:54px;height:54px}
+  .topic-card__body strong{font-size:15px}
+  .topic-card__body span{font-size:11px}
+}

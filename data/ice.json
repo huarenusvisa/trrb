@@ -42,28 +42,19 @@
   ],
   "news": [
     {
-      "published_at": "2026-07-12T10:58:00-04:00",
+      "published_at": "2026-07-12T11:37:00-04:00",
       "type": "arrest",
-      "title": "纽约皇后区突袭行动，ICE逮捕23人",
-      "summary": "执法人员在多个地点执行搜查行动，详细信息以官方通报为准。",
+      "title": "纽约皇后区执法行动公开信息汇总",
+      "summary": "页面仅聚合公开信息，人数和地点应由你的自动化程序写入。",
       "image": "/assets/placeholder.svg",
       "source": "公开信息",
       "source_url": "#"
     },
     {
-      "published_at": "2026-07-12T10:45:00-04:00",
-      "type": "arrest",
-      "title": "ICE在芝加哥展开执法行动",
-      "summary": "行动集中在部分城区，更多细节等待执法机构发布。",
-      "image": "/assets/placeholder.svg",
-      "source": "公开信息",
-      "source_url": "#"
-    },
-    {
-      "published_at": "2026-07-12T10:20:00-04:00",
+      "published_at": "2026-07-12T11:20:00-04:00",
       "type": "other",
-      "title": "ICE与当地警方展开联合行动",
-      "summary": "行动涉及多部门协作和公开记录核验。",
+      "title": "ICE与地方执法机构联合行动动态",
+      "summary": "更多细节以相关机构公开通报和可靠媒体报道为准。",
       "image": "/assets/placeholder.svg",
       "source": "公开信息",
       "source_url": "#"

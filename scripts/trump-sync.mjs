@@ -39,14 +39,14 @@ const CONFIG = {
   autoAccounts: AUTO_ACCOUNTS,
   reviewAccounts: REVIEW_ACCOUNTS,
   bootstrapLimit: intEnv("TRUMP_BOOTSTRAP_LIMIT", 60, 1, 300),
-  maxProcessPerRun: intEnv("TRUMP_MAX_PROCESS_PER_RUN", 60, 1, 100),
+  maxProcessPerRun: intEnv("TRUMP_MAX_PROCESS_PER_RUN", 18, 1, 100),
   maxPages: intEnv("TRUMP_MAX_PAGES", 3, 1, 20),
   maxResultsPerQuery: intEnv("TRUMP_MAX_RESULTS_PER_QUERY", 50, 10, 100),
   lookbackHours: intEnv("TRUMP_LOOKBACK_HOURS", 48, 1, 168),
   minConfidence: intEnv("TRUMP_MIN_CONFIDENCE", 83, 0, 100),
   minRelevance: intEnv("TRUMP_MIN_RELEVANCE", 72, 0, 100),
   minCandidateScore: intEnv("TRUMP_MIN_CANDIDATE_SCORE", 50, 0, 100),
-  maxPendingRetries: intEnv("TRUMP_MAX_PENDING_RETRIES", 20, 1, 50),
+  maxPendingRetries: intEnv("TRUMP_MAX_PENDING_RETRIES", 5, 1, 20),
   pendingRetentionDays: intEnv("TRUMP_PENDING_RETENTION_DAYS", 30, 1, 365),
   pendingLimit: intEnv("TRUMP_PENDING_LIMIT", 500, 50, 5000),
   useXMedia: boolEnv("TRUMP_USE_X_MEDIA", true),
@@ -497,6 +497,7 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
   const nextCursors = { ...previousCursors };
   const collected = [];
   const laneStats = [];
+  const laneErrors = [];
   let successfulLanes = 0;
 
   for (const lane of CONFIG.queryLanes) {
@@ -509,12 +510,30 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
       laneStats.push({ id: lane.id, label: lane.label, fetched: result.posts.length, truncated: result.truncated });
       successfulLanes += 1;
     } catch (error) {
-      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, error: errorMessage(error) });
-      console.error(`Trump query lane ${lane.id} failed:`, errorMessage(error));
+      const status = Number(error?.status || 0);
+      const message = errorMessage(error);
+      laneErrors.push({ id: lane.id, status, message });
+      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, status, error: message });
+      console.error(`Trump query lane ${lane.id} failed:`, message);
     }
   }
 
-  if (!successfulLanes) throw new Error("All Trump X search lanes failed.");
+  if (!successfulLanes) {
+    const transientStatuses = new Set([0, 408, 425, 429, 500, 502, 503, 504]);
+    const allTransient = laneErrors.length > 0 && laneErrors.every(item => transientStatuses.has(item.status));
+    if (allTransient) {
+      console.warn("All Trump X search lanes are temporarily unavailable; preserving cursors and continuing with the existing pending queue.");
+      return {
+        posts: [],
+        newestId: "",
+        queryCursors: nextCursors,
+        laneStats,
+        xUnavailable: true,
+      };
+    }
+    const summary = laneErrors.map(item => `${item.id}:${item.status || "network"}`).join(", ");
+    throw new Error(`All Trump X search lanes failed (${summary}).`);
+  }
 
   let posts = dedupePosts(collected)
     .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);
@@ -1188,7 +1207,10 @@ async function readResponseJson(response, label) {
       json?.errors?.[0]?.detail ||
       json?.title ||
       text.slice(0, 300);
-    throw new Error(`${label} request failed (${response.status}): ${detail}`);
+    const error = new Error(`${label} request failed (${response.status}): ${detail}`);
+    error.status = response.status;
+    error.retryAfter = response.headers.get("retry-after") || "";
+    throw error;
   }
   return json;
 }

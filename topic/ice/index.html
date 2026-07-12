@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>ICE执法追踪 - 唐人日报</title>
   <meta name="description" content="追踪美国ICE公开抓捕、拘留、城市分布、州级热力图及相关执法动态。">
-  <meta name="trrb-ice-release" content="ice-layout-v46">
+  <meta name="trrb-ice-release" content="ice-architecture-v1">
   <link rel="canonical" href="https://trrb.net/topic/ice/">
-  <link rel="stylesheet" href="/assets/ice-topic.css?v=46">
+  <link rel="stylesheet" href="/assets/ice-topic.css?v=101">
 </head>
 <body>
   <header class="trrb-header">
@@ -52,15 +52,6 @@
           <div id="today-event-list" class="ice-event-list" aria-live="polite"></div>
         </section>
       </div>
-    </section>
-
-
-    <section class="ice-shell ice-news-section" aria-labelledby="latest-title">
-      <div class="ice-section-heading">
-        <h2 id="latest-title">最新动态</h2>
-        <span id="news-sort-note">按发布时间倒序排列</span>
-      </div>
-      <div id="ice-news-list" class="ice-news-list" aria-live="polite"></div>
     </section>
 
     <section class="ice-shell ice-heatmap-section" aria-labelledby="heatmap-title">
@@ -112,8 +103,21 @@
       </div>
     </section>
 
+    <section class="ice-shell ice-news-section" aria-labelledby="latest-title">
+      <div class="ice-section-heading">
+        <div>
+          <h2 id="latest-title">最新动态</h2>
+          <p id="news-sort-note">按发布时间倒序排列</p>
+        </div>
+      </div>
+      <div id="ice-news-list" class="ice-news-list" aria-live="polite"></div>
+      <div class="ice-news-actions">
+        <span id="news-count-note" aria-live="polite"></span>
+        <button id="load-more-news" type="button" hidden>加载更多</button>
+      </div>
+    </section>
   </main>
 
-  <script src="/assets/ice-topic.js?v=46" defer></script>
+  <script src="/assets/ice-topic.js?v=101" defer></script>
 </body>
 </html>

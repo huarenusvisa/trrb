@@ -2668,3 +2668,23 @@ body.tip-dialog-open{overflow:hidden}
 }
 /* v29.12 我要曝光首页栏目 */
 .exposure-nav-link{background:#9c0000}.exposure-home-placeholder{height:160px;display:grid;place-items:center;background:linear-gradient(135deg,#790000,#e00000);color:#fff;font-size:30px;font-weight:900;border-radius:6px}.exposure-section-lead .exposure-home-video{height:160px;position:relative;background:#111;border-radius:6px;overflow:hidden}.exposure-section-lead .exposure-home-video video{width:100%;height:100%;object-fit:cover}.exposure-section-lead .exposure-home-video span{position:absolute;left:10px;bottom:10px;background:rgba(0,0,0,.7);color:#fff;padding:4px 8px;border-radius:4px}.exposure-section-lead>img{width:100%;height:160px;object-fit:cover;border-radius:6px}
+
+/* v40 文章详情封面比例与正文平衡 */
+.article-page .article-image{
+  width:min(100%,880px);
+  aspect-ratio:16/9;
+  height:auto;
+  max-height:500px;
+  margin:26px auto 30px;
+  padding:0;
+  border-radius:12px;
+  background:#edf2f5;
+  object-fit:contain;
+  object-position:center;
+}
+.article-page .article-header{max-width:840px}
+.article-page .article-body{max-width:780px}
+@media(max-width:640px){
+  .article-page .article-image{width:100%;aspect-ratio:16/9;max-height:340px;margin:20px auto 24px;border-radius:10px}
+  .article-page .article-header h1{font-size:30px;line-height:1.25}
+}

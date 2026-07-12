@@ -2,9 +2,6 @@ import fs from "node:fs/promises";
 import fsSync from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
-import { pathToFileURL } from "node:url";
-import { upsertAutomatedArticle, upsertNewsCandidate, writeAutomationLog } from "./supabase-news.mjs";
-import { accountsForTopic, sourceByAccount } from "./source-registry.mjs";
 
 const ROOT = process.cwd();
 const DATA_DIR = path.join(ROOT, "data");
@@ -15,48 +12,26 @@ const NEWS_FILE = path.join(DATA_DIR, "ice-news.json");
 const STATE_FILE = path.join(DATA_DIR, "ice-state.json");
 const PENDING_FILE = path.join(DATA_DIR, "ice-pending.json");
 const DASHBOARD_FILE = path.join(DATA_DIR, "ice-dashboard.json");
+const MAP_EVENTS_FILE = path.join(DATA_DIR, "ice-map-events.json");
 const HOME_FILE = path.join(ROOT, "index.html");
 const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 
 loadLocalEnv(path.join(ROOT, ".env.ice"));
-
-const ICE_OFFICIAL_ACCOUNTS = mergeAccounts(
-  parseAccounts(process.env.ICE_OFFICIAL_ACCOUNTS || "ICEgov,HSI_HQ,DHSgov,CBP,USBPChief,TheJusticeDept,DOJCrimDiv,USCIS,OfficialFBOP,TxDPS,fdlepio,Arizona_DPS,CHP_HQ,nyspolice,MassStatePolice,GBI_GA,TNHighwayPatrol,NCSBI,CSP_News"),
-  accountsForTopic("ice", ROOT, ["A"])
-);
-const ICE_TRUSTED_ACCOUNTS = mergeAccounts(
-  parseAccounts(process.env.ICE_TRUSTED_ACCOUNTS || "Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost,NPR,thehill,CNBC,WSJ,BBCWorld,USATODAY,ReutersPolitics,AP_Politics"),
-  accountsForTopic("ice", ROOT, ["B"])
-);
-const ICE_REVIEW_ACCOUNTS = parseAccounts(
-  process.env.ICE_REVIEW_ACCOUNTS || "Breaking911,CollinRugg,EndWokeness"
-);
 
 const CONFIG = {
   xToken: firstEnv("X_BEARER_TOKEN", "X_API_BEARER_TOKEN", "TWITTER_BEARER_TOKEN"),
   openAIKey: firstEnv("OPENAI_API_KEY"),
   openAIModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
   siteUrl: normalizeSiteUrl(process.env.SITE_URL || "https://trrb.net"),
-  queryOverride: String(process.env.ICE_QUERY || "").trim(),
-  officialAccounts: ICE_OFFICIAL_ACCOUNTS,
-  trustedAccounts: ICE_TRUSTED_ACCOUNTS,
-  reviewAccounts: ICE_REVIEW_ACCOUNTS,
-  bootstrapLimit: intEnv("ICE_BOOTSTRAP_LIMIT", 60, 1, 300),
-  maxNewPosts: intEnv("ICE_MAX_NEW_POSTS", 120, 1, 500),
-  maxProcessPerRun: intEnv("ICE_MAX_PROCESS_PER_RUN", 18, 1, 100),
-  maxPagesPerQuery: intEnv("ICE_MAX_PAGES_PER_QUERY", 3, 1, 10),
-  maxResultsPerQuery: intEnv("ICE_MAX_RESULTS_PER_QUERY", 50, 10, 100),
-  lookbackHours: intEnv("ICE_LOOKBACK_HOURS", 48, 1, 168),
-  pendingRetentionHours: intEnv("ICE_PENDING_RETENTION_HOURS", 168, 24, 720),
+  query: process.env.ICE_QUERY || "from:ICEgov -is:retweet -is:reply",
+  bootstrapLimit: intEnv("ICE_BOOTSTRAP_LIMIT", 30, 1, 100),
+  maxNewPosts: intEnv("ICE_MAX_NEW_POSTS", 30, 1, 100),
+  lookbackHours: intEnv("ICE_LOOKBACK_HOURS", 24, 1, 168),
   dedupeThreshold: floatEnv("ICE_DEDUPE_THRESHOLD", 0.72, 0.4, 0.95),
   minConfidence: intEnv("ICE_MIN_CONFIDENCE", 80, 0, 100),
-  minRelevance: intEnv("ICE_MIN_RELEVANCE", 72, 0, 100),
-  minCandidateScore: intEnv("ICE_MIN_CANDIDATE_SCORE", 52, 0, 100),
   useXMedia: boolEnv("ICE_USE_X_MEDIA", true),
   maxPendingRetries: intEnv("ICE_MAX_PENDING_RETRIES", 5, 1, 20),
 };
-
-CONFIG.queryLanes = buildIceQueryLanes();
 
 const SUBJECTIVE_TERMS = [
   "震惊", "炸裂", "疯狂", "大快人心", "罪有应得", "恶徒", "非法分子",
@@ -64,7 +39,7 @@ const SUBJECTIVE_TERMS = [
 ];
 
 const SYSTEM_PROMPT = `
-你是唐人日报的中文新闻编辑。输入材料来自X平台上的美国联邦机构、主流媒体、地方媒体或其他公开账号，主题必须与美国移民与海关执法局（ICE）、HSI、ERO及相关移民执法直接有关。
+你是唐人日报的中文新闻编辑。你处理的是美国移民与海关执法局（ICE）官方公开信息。
 
 硬性规则：
 1. 只能使用输入材料中明确出现的事实，不得补充、猜测或虚构时间、地点、人数、身份、国籍、犯罪记录、法院结论或执法背景。
@@ -72,28 +47,24 @@ const SYSTEM_PROMPT = `
 3. arrested译为“被捕”，detained译为“被拘留”，charged译为“被指控”，indicted译为“被起诉”，convicted译为“被定罪”，sentenced译为“被判刑”，removed/deported译为“被遣返”。不得混淆这些状态。
 4. 尚未定罪的人，不得称为“罪犯”“犯罪分子”或写成已经犯罪。
 5. 不使用“震惊、炸裂、疯狂、铁腕、横扫、大快人心”等煽动性词语。
-6. 输入事实很少时，生成brief，正文总量约80至180个中文字符；输入含完整官方通报或完整新闻报道时，生成article，正文总量约220至420个中文字符。不要为了凑字数重复或扩写。
+6. 输入事实很少时，生成brief，正文总量约80至180个中文字符；输入含完整ICE官方新闻稿时，生成article，正文总量约260至380个中文字符。不要为了凑字数重复或扩写。
 7. 不复制大段英文原文，不使用Markdown，不写项目符号。
-8. title准确概括核心事实；summary为35至100个中文字符；body_paragraphs为2至4段。
-9. relevance_score为0至100，衡量材料是否直接属于ICE/HSI/ERO执法新闻；仅泛泛讨论移民、边境或政治观点时不得高于60。
-10. importance为1至10，衡量新闻价值；纯观点、口号、募款、广告、重复转述或没有具体事实的信息不得高于3。
-11. verified_level只能为official、trusted_media、other_source或unverified。官方机构对自身行动的直接发布为official；成熟新闻媒体的事实报道可为trusted_media；其余来源不得自行提升为official。
-12. 来源模式为review或radar时，除非材料包含可直接核实的官方文件链接且事实完整，否则needs_review必须为true，publishable必须为false。
-13. 资料不足、事实矛盾、涉及未成年人身份、死亡细节或无法判断法律状态时，needs_review必须为true，publishable必须为false，并说明原因。
-14. enforcement_events只记录来源明确披露的ICE/HSI/ERO抓捕、拘留、遣返或其他执法事件；没有明确事件时返回空数组。
-15. people_count只有在来源明确出现阿拉伯数字人数时填写；否则必须为null，禁止推算。
-16. occurred_at只有在来源明确披露执法发生时间时填写ISO 8601；只有日期时使用当天00:00:00并把time_precision设为date；没有时间时为null。
-17. city、state_code、state_name、location_text只能来自来源明确地点；无法确定时用空字符串。state_code使用美国两位州缩写。
-18. 同一人员或同一行动只建立一个event，避免把“被捕后被拘留”等同一事件重复计算。
+8. title准确概括核心事实；summary为35至80个中文字符；body_paragraphs为2至4段。
+9. source_name固定为“美国移民与海关执法局”。
+10. 资料不足、事实矛盾、涉及未成年人身份、死亡细节或无法判断法律状态时，needs_review必须为true，publishable必须为false，并说明原因。
+11. enforcement_events只记录来源明确披露的ICE/HSI/ERO抓捕、拘留、遣返或其他执法事件；没有明确事件时返回空数组。
+12. people_count只有在来源明确出现阿拉伯数字人数时填写；否则必须为null，禁止推算。
+13. occurred_at只有在来源明确披露执法发生时间时填写ISO 8601；只有日期时使用当天00:00:00并把time_precision设为date；没有时间时为null。
+14. city、state_code、state_name、location_text只能来自来源明确地点；无法确定时用空字符串。state_code使用美国两位州缩写。
+15. 同一人员或同一行动只建立一个event，避免把“被捕后被拘留”等同一事件重复计算。
 `;
 
 const ARTICLE_SCHEMA = {
   type: "object",
   additionalProperties: false,
   required: [
-    "title", "summary", "body_paragraphs", "content_type", "category",
-    "importance", "relevance_score", "publishable", "needs_review",
-    "review_reason", "confidence", "verified_level", "keywords",
+    "title", "summary", "body_paragraphs", "content_type", "publishable",
+    "needs_review", "review_reason", "confidence", "source_name", "keywords",
     "enforcement_events"
   ],
   properties: {
@@ -104,14 +75,11 @@ const ARTICLE_SCHEMA = {
       items: { type: "string" }
     },
     content_type: { type: "string", enum: ["brief", "article"] },
-    category: { type: "string", enum: ["抓捕与拘留", "遣返", "刑事执法", "政策与机构", "法院与诉讼", "社区反应", "其他"] },
-    importance: { type: "integer", minimum: 1, maximum: 10 },
-    relevance_score: { type: "integer", minimum: 0, maximum: 100 },
     publishable: { type: "boolean" },
     needs_review: { type: "boolean" },
     review_reason: { type: "string" },
-    confidence: { type: "integer", minimum: 0, maximum: 100 },
-    verified_level: { type: "string", enum: ["official", "trusted_media", "other_source", "unverified"] },
+    confidence: { type: "integer" },
+    source_name: { type: "string", enum: ["美国移民与海关执法局"] },
     keywords: {
       type: "array",
       items: { type: "string" }
@@ -159,10 +127,8 @@ async function main() {
 
   const state = await readJson(STATE_FILE, {
     last_seen_id: "",
-    query_cursors: {},
     last_run_at: "",
     last_success_at: "",
-    last_content_at: "",
     last_result: { fetched: 0, published: 0, pending: 0 }
   });
   const news = await readJson(NEWS_FILE, []);
@@ -172,9 +138,9 @@ async function main() {
   // Items are marked after checking so empty results are not charged repeatedly.
   const metadataBackfilledCount = await backfillRecentNewsEvents(news);
 
-  // 候选池保留更长时间，避免高峰时因每轮处理额度而丢失新闻线索。
+  // The feed only accepts source posts created within the configured lookback window.
   const pendingBeforeExpiry = pending.length;
-  pending = pending.filter(entry => entry.post && isWithinHours(entry.post.created_at, CONFIG.pendingRetentionHours));
+  pending = pending.filter(entry => entry.post && isWithinHours(entry.post.created_at, CONFIG.lookbackHours));
   const expiredPendingCount = pendingBeforeExpiry - pending.length;
 
   // Remove same-event pending items before spending API credits.
@@ -193,8 +159,7 @@ async function main() {
   const untouched = pending.filter(item => item.manual_review || (item.attempts || 0) >= CONFIG.maxPendingRetries);
   const stillPending = [];
 
-  const retryBatch = retryable.slice(0, CONFIG.maxProcessPerRun);
-  for (const entry of retryBatch) {
+  for (const entry of retryable.slice(0, 10)) {
     if (!entry.post || publishedIds.has(String(entry.x_post_id))) continue;
     try {
       const result = await processPost(entry.post, news);
@@ -202,21 +167,23 @@ async function main() {
         publishedIds.add(String(entry.x_post_id));
         publishedCount += 1;
       } else {
-        stillPending.push(makePendingEntry(entry.post, result.reason, true, (entry.attempts || 0) + 1, result.ai || null));
+        stillPending.push(makePendingEntry(entry.post, result.reason, true, (entry.attempts || 0) + 1));
       }
     } catch (error) {
       stillPending.push(makePendingEntry(entry.post, errorMessage(error), false, (entry.attempts || 0) + 1));
     }
   }
-  pending = [...untouched, ...stillPending, ...retryable.slice(retryBatch.length)];
+  pending = [...untouched, ...stillPending, ...retryable.slice(10)];
 
-  const fetched = await fetchRecentPosts(state);
-  const candidatePosts = fetched.posts.filter(post => {
+  const fetchedPosts = await fetchRecentPosts(state.last_seen_id);
+  const candidatePosts = fetchedPosts.filter(post => {
     const id = String(post.id);
     return !publishedIds.has(id) && !pendingIds.has(id);
   });
 
-  // 同一行动被多个账号转述时只保留一条候选；其余记录为重复线索。
+  // Compare new posts with the last 24 hours of published and pending content.
+  // Exact ICE.gov links, strongly similar wording, or matching names/numbers
+  // are treated as one event. The first accepted item is kept.
   const references = buildDedupeReferences(news, pending);
   const newPosts = [];
   for (const post of candidatePosts) {
@@ -230,18 +197,14 @@ async function main() {
     references.push(referenceFromPost(post));
   }
 
-  const remainingBudget = Math.max(0, CONFIG.maxProcessPerRun - retryBatch.length);
-  const immediate = newPosts.slice(0, remainingBudget);
-  const queued = newPosts.slice(remainingBudget);
-
-  for (const post of immediate) {
+  for (const post of newPosts) {
     try {
       const result = await processPost(post, news);
       if (result.status === "published") {
         publishedIds.add(String(post.id));
         publishedCount += 1;
       } else {
-        pending.push(makePendingEntry(post, result.reason, true, 1, result.ai || null));
+        pending.push(makePendingEntry(post, result.reason, true, 1));
         pendingCount += 1;
       }
     } catch (error) {
@@ -250,52 +213,36 @@ async function main() {
       pendingCount += 1;
     }
   }
-  for (const post of queued) {
-    pending.push(makePendingEntry(post, "已进入候选池，等待下一轮自动处理", false, 0));
-    pendingCount += 1;
-  }
 
   news.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
   pending = dedupePending(pending, publishedIds);
 
   const now = new Date().toISOString();
-  const maxSeenId = fetched.newestId || maxSnowflake(fetched.posts.map(post => String(post.id)));
+  const maxSeenId = maxSnowflake(fetchedPosts.map(post => String(post.id)));
   if (maxSeenId) state.last_seen_id = maxSnowflake([state.last_seen_id, maxSeenId]);
-  state.query_cursors = fetched.queryCursors;
   state.last_run_at = now;
-  state.last_success_at = now;
-  if (publishedCount > 0) state.last_content_at = now;
+  if (publishedCount > 0) state.last_success_at = now;
   state.last_result = {
-    fetched: fetched.posts.length,
+    fetched: fetchedPosts.length,
     candidates: candidatePosts.length,
     new_posts: newPosts.length,
-    queued: queued.length,
-    processed: retryBatch.length + immediate.length,
     duplicate_skipped: duplicateSkippedCount,
     expired_pending: expiredPendingCount,
     metadata_backfilled: metadataBackfilledCount,
     published: publishedCount,
     pending: pendingCount,
     total_published: news.length,
-    total_pending: pending.length,
-    query_lanes: fetched.laneStats
+    total_pending: pending.length
   };
 
   const dashboard = buildDashboardData(news, state, now);
+  const mapEvents = buildMapEvents(news, now);
 
   await writeJson(NEWS_FILE, news);
   await writeJson(PENDING_FILE, pending);
-  await writeAutomationLog({
-    pipeline: "ice-radar-v4",
-    fetched: fetched.posts.length,
-    processed: immediate.length + retryBatch.length,
-    published: publishedCount,
-    drafted: pendingCount,
-    duplicates: duplicateSkippedCount,
-    details: { lane_stats: fetched.laneStats || [], total_news: news.length, total_pending: pending.length }
-  });
   await writeJson(STATE_FILE, state);
   await writeJson(DASHBOARD_FILE, dashboard);
+  await writeJson(MAP_EVENTS_FILE, mapEvents);
   await updateSitemap(news, now);
 
   console.log(JSON.stringify(state.last_result, null, 2));
@@ -319,13 +266,12 @@ async function ensureStructure() {
   ]);
   await ensureJsonFile(NEWS_FILE, []);
   await ensureJsonFile(PENDING_FILE, []);
+  await ensureJsonFile(MAP_EVENTS_FILE, { generated_at: "", timezone: "America/New_York", events: [] });
   await ensureJsonFile(DASHBOARD_FILE, emptyDashboard());
   await ensureJsonFile(STATE_FILE, {
     last_seen_id: "",
-    query_cursors: {},
     last_run_at: "",
     last_success_at: "",
-    last_content_at: "",
     last_result: { fetched: 0, published: 0, pending: 0 }
   });
 }
@@ -362,260 +308,24 @@ async function ensureHomeIntegration() {
   }
 }
 
-export function buildIceQueryLanes() {
-  if (CONFIG.queryOverride) {
-    return [{ id: "override", label: "自定义搜索", query: validateXQuery(CONFIG.queryOverride) }];
-  }
-
-  const lanes = [];
-  const officialPrimary = CONFIG.officialAccounts.filter(account =>
-    ["icegov", "hsi_hq", "dhsgov", "cbp", "usbPchief".toLowerCase()].includes(account.toLowerCase())
-  );
-  const officialRelated = CONFIG.officialAccounts.filter(account => !officialPrimary.includes(account));
-  const coreTerms = '(ICE OR "Immigration and Customs Enforcement" OR HSI OR ERO OR "Border Patrol" OR deportation OR removal OR detained OR arrested OR "immigration enforcement")';
-
-  for (const [index, accounts] of chunkAccountsForQuery(officialPrimary, coreTerms, 450).entries()) {
-    lanes.push({
-      id: index === 0 ? "official" : `official-core-${index + 1}`,
-      label: "联邦执法总部",
-      query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${coreTerms}) -is:retweet lang:en`),
-    });
-  }
-
-  for (const [index, accounts] of chunkAccountsForQuery(officialRelated, coreTerms, 450).entries()) {
-    lanes.push({
-      id: `official-related-${index + 1}`,
-      label: "州与地方官方机构",
-      query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${coreTerms}) -is:retweet -is:reply lang:en`),
-    });
-  }
-
-  const mediaTerms = '(ICE OR "ICE agents" OR "immigration agents" OR "immigration raid" OR deportation OR detained OR "Immigration and Customs Enforcement" OR HSI OR ERO)';
-  for (const [index, accounts] of chunkAccountsForQuery(CONFIG.trustedAccounts, mediaTerms, 450).entries()) {
-    lanes.push({
-      id: `trusted-${index + 1}`,
-      label: "全国与地方媒体",
-      query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${mediaTerms}) -is:retweet -is:reply lang:en`),
-    });
-  }
-
-  // Search every registered ICE/HSI/CBP/DOJ branch by its official name, even when it has no dedicated X account.
-  const branchPhrases = registrySearchPhrases("ice")
-    .filter(value => /(?:ICE ERO|HSI |Border Patrol|U\.S\. Attorney|Department of Public Safety|State Police|Highway Patrol|Sheriff|Police Department)/i.test(value));
-  for (const [index, phrases] of chunkPhrasesForQuery(branchPhrases, '(arrested OR detained OR raid OR custody OR deportation OR removal OR operation OR indictment)', 450).entries()) {
-    lanes.push({
-      id: `branches-${index + 1}`,
-      label: "地方分支与州县市机构",
-      query: validateXQuery(`((${phrases.map(quoteQueryPhrase).join(" OR ")}) (arrested OR detained OR raid OR custody OR deportation OR removal OR operation OR indictment)) -is:retweet -is:reply lang:en`),
-    });
-  }
-
-  const discoveryQueries = [
-    ['radar', '抓捕与拘留雷达', '("ICE agents" OR "ICE agent" OR "ICE arrested" OR "ICE detained" OR "immigration agents" OR "federal immigration agents" OR "ERO officers") (arrested OR detained OR custody OR raid) -is:retweet -is:reply lang:en'],
-    ['radar-removal', '遣返与递解雷达', '("ICE removal" OR "removal operation" OR "deportation flight" OR "removed from the United States" OR "deported by ICE" OR "final order of removal" OR "transferred to ICE custody") -is:retweet -is:reply lang:en'],
-    ['radar-worksite', '工作场所执法雷达', '("worksite enforcement" OR "worksite operation" OR "employment site" OR "I-9 audit") (ICE OR HSI OR immigration) -is:retweet -is:reply lang:en'],
-    ['radar-detainer', '拘留令与移交雷达', '("ICE detainer" OR "immigration detainer" OR "honored the detainer" OR "released to ICE" OR "turned over to ICE" OR "transferred to ICE custody") -is:retweet -is:reply lang:en'],
-    ['radar-hsi', 'HSI联合执法雷达', '("HSI special agents" OR "Homeland Security Investigations" OR "HSI-led" OR "HSI operation") (arrested OR seized OR indicted OR operation) -is:retweet -is:reply lang:en'],
-    ['radar-court', '司法与检察雷达', '("illegal reentry" OR "reentry after removal" OR "immigration offense" OR "harboring aliens") ("U.S. Attorney" OR DOJ OR indictment OR sentenced) -is:retweet -is:reply lang:en'],
-    ['radar-local', '州县市联合行动雷达', '((sheriff OR police OR "district attorney" OR "state police" OR "department of public safety") (ICE OR HSI OR deportation OR "immigration agents")) -is:retweet -is:reply lang:en'],
-    ['radar-es', '西语社区雷达', '("agentes de ICE" OR "agente de ICE" OR "redada de ICE" OR "detenido por ICE" OR "arrestado por ICE" OR "operativo de inmigración" OR "deportación de ICE") -is:retweet -is:reply lang:es'],
-  ];
-  for (const [id, label, query] of discoveryQueries) {
-    lanes.push({ id, label, query: validateXQuery(query) });
-  }
-
-  return dedupeQueryLanes(lanes);
-}
-
-function registrySearchPhrases(topic) {
-  try {
-    const rows = JSON.parse(fsSync.readFileSync(path.join(ROOT, "data", "source-registry.json"), "utf8"));
-    return [...new Set((Array.isArray(rows) ? rows : [])
-      .filter(row => row && row.active !== false)
-      .filter(row => !Array.isArray(row.topics) || row.topics.includes(topic))
-      .flatMap(row => [row.name, row.branch && row.city ? `${row.branch} ${row.city}` : ""])
-      .map(value => String(value || "").trim())
-      .filter(value => value.length >= 4))];
-  } catch (error) {
-    console.warn(`ICE source phrase registry unavailable: ${error.message}`);
-    return [];
-  }
-}
-
-function quoteQueryPhrase(value) {
-  const clean = String(value || "").replace(/["\\]/g, " ").replace(/\s+/g, " ").trim();
-  return clean.includes(" ") ? `"${clean}"` : clean;
-}
-
-function chunkPhrasesForQuery(phrases, terms, targetLength) {
-  const chunks = [];
-  let current = [];
-  for (const phrase of phrases) {
-    const trial = [...current, phrase];
-    const query = `((${trial.map(quoteQueryPhrase).join(" OR ")}) ${terms}) -is:retweet -is:reply lang:en`;
-    if (current.length && query.length > targetLength) {
-      chunks.push(current);
-      current = [phrase];
-    } else {
-      current = trial;
-    }
-  }
-  if (current.length) chunks.push(current);
-  return chunks;
-}
-
-function dedupeQueryLanes(lanes) {
-  const seen = new Set();
-  return lanes.filter(lane => {
-    const key = String(lane.query || "").toLowerCase();
-    if (!key || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
-function validateXQuery(query) {
-  const value = String(query || "").trim();
-  if (!value) throw new Error("ICE X query is empty.");
-  if (value.length > 500) throw new Error(`ICE X query is too long (${value.length} characters).`);
-  return value;
-}
-
-function chunkAccountsForQuery(accounts, terms, targetLength) {
-  const chunks = [];
-  let current = [];
-  for (const account of accounts) {
-    const trial = [...current, account];
-    const query = `((${trial.map(value => `from:${value}`).join(" OR ")}) ${terms}) -is:retweet -is:reply lang:en`;
-    if (current.length && query.length > targetLength) {
-      chunks.push(current);
-      current = [account];
-    } else {
-      current = trial;
-    }
-  }
-  if (current.length) chunks.push(current);
-  return chunks;
-}
-
-function sourceProfileForUsername(username) {
-  const value = String(username || "").toLowerCase();
-  if (CONFIG.officialAccounts.some(account => account.toLowerCase() === value)) {
-    return { mode: "auto", tier: "official", weight: 100 };
-  }
-  if (CONFIG.trustedAccounts.some(account => account.toLowerCase() === value)) {
-    return { mode: "auto", tier: "trusted_media", weight: 88 };
-  }
-  if (CONFIG.reviewAccounts.some(account => account.toLowerCase() === value)) {
-    return { mode: "review", tier: "review_source", weight: 62 };
-  }
-  return { mode: "radar", tier: "other_source", weight: 45 };
-}
-
-export function scoreIceCandidate(post) {
-  const text = String(post.text || "");
-  const lower = text.toLowerCase();
-  const matched = [];
-  let score = Math.round(Number(post.source_weight || 0) * 0.38);
-
-  const tests = [
-    [/(?:\bICE\b|Immigration and Customs Enforcement)/, 30, "ICE"],
-    [/(?:\bHSI\b|Homeland Security Investigations|\bERO\b|Enforcement and Removal Operations)/i, 22, "HSI/ERO"],
-    [/(?:arrest(?:ed|s|ing)?|detain(?:ed|s|ing)?|raid(?:ed|s|ing)?|deport(?:ed|s|ing|ation)?|remov(?:ed|al|ing)|custody|operation)/i, 24, "执法行动"],
-    [/(?:immigration|migrant|noncitizen|undocumented|federal agents?)/i, 14, "移民语境"],
-    [/(?:agentes? de ICE|redada(?:s)?|detenid[oa]s?|arrestad[oa]s?|deportaci[oó]n|operativo de inmigraci[oó]n)/i, 24, "西语执法行动"],
-  ];
-  for (const [regex, points, label] of tests) {
-    if (regex.test(text)) {
-      score += points;
-      matched.push(label);
-    }
-  }
-
-  const metrics = post.public_metrics || {};
-  const engagement = Number(metrics.like_count || 0) + Number(metrics.retweet_count || 0) * 2 + Number(metrics.reply_count || 0);
-  if (engagement >= 1000) score += 8;
-  else if (engagement >= 100) score += 5;
-  else if (engagement >= 20) score += 2;
-
-  if (post.source_tier === "official" && matched.length) score = Math.max(score, 78);
-  if (post.source_tier === "trusted_media" && matched.includes("ICE") && matched.includes("执法行动")) score = Math.max(score, 74);
-  if (!lower.trim()) score = 0;
-
-  return { score: Math.max(0, Math.min(100, score)), matched_terms: matched };
-}
-
-async function fetchRecentPosts(stateOrSinceId = {}) {
-  const state = typeof stateOrSinceId === "string"
-    ? { last_seen_id: stateOrSinceId, query_cursors: {} }
-    : (stateOrSinceId || {});
-  const previousCursors = state.query_cursors && typeof state.query_cursors === "object"
-    ? state.query_cursors
-    : {};
-  const nextCursors = { ...previousCursors };
-  const collected = [];
-  const laneStats = [];
-  let successfulLanes = 0;
-
-  for (const lane of CONFIG.queryLanes) {
-    const legacyCursor = lane.id === "official" ? String(state.last_seen_id || "") : "";
-    const cursor = String(previousCursors[lane.id] || legacyCursor || "");
-    try {
-      const result = await fetchIceQueryLane(lane, cursor);
-      collected.push(...result.posts);
-      if (result.cursor && !result.truncated) nextCursors[lane.id] = result.cursor;
-      laneStats.push({ id: lane.id, label: lane.label, fetched: result.posts.length, truncated: result.truncated });
-      successfulLanes += 1;
-    } catch (error) {
-      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, error: errorMessage(error) });
-      console.error(`ICE query lane ${lane.id} failed:`, errorMessage(error));
-    }
-  }
-
-  if (!successfulLanes) {
-    const transientOnly = laneStats.length > 0 && laneStats.every(item => /\((429|500|502|503|504)\)|timeout|aborted|fetch failed|ECONNRESET|ENOTFOUND/i.test(String(item.error || "")));
-    if (transientOnly) {
-      console.warn("All ICE X search lanes are temporarily unavailable; keeping existing data and ending this run successfully.");
-      return {
-        posts: [],
-        queryCursors: nextCursors,
-        newestId: "",
-        laneStats,
-        degraded: true
-      };
-    }
-    throw new Error("All ICE X search lanes failed.");
-  }
-
-  let posts = dedupePosts(collected)
-    .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);
-  // 不在这里截断：全部候选进入pending池，避免高峰时推进X游标后丢失较早帖子。
-  posts.sort((a, b) => compareSnowflakes(a.id, b.id));
-
-  return {
-    posts,
-    queryCursors: nextCursors,
-    newestId: maxSnowflake(posts.map(post => post.id)),
-    laneStats,
-  };
-}
-
-async function fetchIceQueryLane(lane, sinceId) {
+async function fetchRecentPosts(sinceId) {
   const collected = [];
   let nextToken = "";
   let pages = 0;
-  let newestId = "";
-  let truncated = false;
 
   do {
     const url = new URL("https://api.x.com/2/tweets/search/recent");
-    url.searchParams.set("query", lane.query);
-    url.searchParams.set("max_results", String(CONFIG.maxResultsPerQuery));
+    url.searchParams.set("query", CONFIG.query);
+    url.searchParams.set("max_results", "100");
     url.searchParams.set("sort_order", "recency");
-    url.searchParams.set("tweet.fields", "created_at,entities,attachments,lang,possibly_sensitive,public_metrics,author_id");
+    url.searchParams.set("tweet.fields", "created_at,entities,attachments,lang,possibly_sensitive,public_metrics");
     url.searchParams.set("expansions", "attachments.media_keys,author_id");
     url.searchParams.set("media.fields", "url,preview_image_url,type,alt_text,width,height");
-    url.searchParams.set("user.fields", "username,name,verified,verified_type,public_metrics");
+    url.searchParams.set("user.fields", "username,name");
+    // X documents time-window search and since_id polling as separate patterns.
+    // Use since_id after the first successful run; otherwise use a 24-hour
+    // start_time with second-level precision. A local 24-hour filter is also
+    // applied below, so older posts can never be published.
     if (sinceId) {
       url.searchParams.set("since_id", String(sinceId));
     } else {
@@ -623,12 +333,11 @@ async function fetchIceQueryLane(lane, sinceId) {
     }
     if (nextToken) url.searchParams.set("next_token", nextToken);
 
-    const payload = await fetchXJsonWithRetry(url, {
+    const response = await fetchWithTimeout(url, {
       headers: { Authorization: `Bearer ${CONFIG.xToken}` }
-    }, `X API (${lane.id})`);
-    if (!newestId) newestId = String(payload.meta?.newest_id || "");
+    });
+    const payload = await readResponseJson(response, "X API");
     const mediaMap = new Map((payload.includes?.media || []).map(item => [item.media_key, item]));
-    const userMap = new Map((payload.includes?.users || []).map(user => [String(user.id), user]));
 
     for (const item of payload.data || []) {
       const media = (item.attachments?.media_keys || [])
@@ -641,10 +350,8 @@ async function fetchIceQueryLane(lane, sinceId) {
           width: m.width || 0,
           height: m.height || 0
         }));
-      const author = userMap.get(String(item.author_id || "")) || {};
-      if (!author.username) continue;
-      const profile = sourceProfileForUsername(author.username);
-      const post = {
+
+      collected.push({
         id: String(item.id),
         text: item.text || "",
         created_at: item.created_at || new Date().toISOString(),
@@ -652,81 +359,33 @@ async function fetchIceQueryLane(lane, sinceId) {
         possibly_sensitive: Boolean(item.possibly_sensitive),
         entities: item.entities || {},
         media,
-        public_metrics: item.public_metrics || {},
-        author_username: author.username,
-        author_name: author.name || author.username,
-        author_verified: Boolean(author.verified),
-        author_verified_type: String(author.verified_type || ""),
-        source_mode: profile.mode,
-        source_tier: profile.tier,
-        source_weight: profile.weight,
-        query_lane: lane.id,
-        query_label: lane.label,
-        x_url: `https://x.com/${author.username}/status/${item.id}`
-      };
-      const scored = scoreIceCandidate(post);
-      post.candidate_score = scored.score;
-      post.matched_terms = scored.matched_terms;
-      collected.push(post);
+        x_url: `https://x.com/ICEgov/status/${item.id}`
+      });
     }
 
     nextToken = payload.meta?.next_token || "";
     pages += 1;
-    if (nextToken && pages >= CONFIG.maxPagesPerQuery) {
-      truncated = true;
-      break;
-    }
-  } while (nextToken);
+  } while (nextToken && pages < 5 && collected.length < CONFIG.maxNewPosts);
 
-  return { posts: collected, cursor: newestId || maxSnowflake(collected.map(post => post.id)), truncated };
-}
+  let selected = dedupePosts(collected)
+    .filter(post => isWithinHours(post.created_at, CONFIG.lookbackHours));
+  selected.sort((a, b) => compareSnowflakes(b.id, a.id));
 
-function sourceDisplayName(post) {
-  const username = String(post.author_username || "").toLowerCase();
-  const known = {
-    icegov: "美国移民与海关执法局（ICE）",
-    dhsgov: "美国国土安全部（DHS）",
-    hsi_hq: "美国国土安全调查局（HSI）",
-    cbp: "美国海关与边境保护局（CBP）",
-    dojcrimdiv: "美国司法部刑事司",
-    thejusticedept: "美国司法部",
-    reuters: "路透社",
-    ap: "美联社",
-    foxnews: "Fox News",
-    cnn: "CNN",
-    nbcnews: "NBC News",
-    abc: "ABC News",
-    cbsnews: "CBS News",
-    axios: "Axios",
-    politico: "Politico",
-    newsnation: "NewsNation",
-    nytimes: "纽约时报",
-    washingtonpost: "华盛顿邮报"
-  };
-  return known[username] || post.author_name || post.author_username || "公开来源";
+  if (!sinceId) selected = selected.slice(0, CONFIG.bootstrapLimit);
+  else selected = selected.slice(0, CONFIG.maxNewPosts);
+
+  selected.sort((a, b) => compareSnowflakes(a.id, b.id));
+  return selected;
 }
 
 async function processPost(post, news) {
   const enrichment = await fetchIceGovEnrichment(post);
   const sourceText = buildSourceText(post, enrichment);
-  const ai = await rewriteWithOpenAI(sourceText, post);
+  const ai = await rewriteWithOpenAI(sourceText);
   const validation = validateArticle(ai, sourceText, post, enrichment);
 
-  const enforcementEvents = normalizeEnforcementEvents(ai.enforcement_events, sourceText);
   if (!validation.ok) {
-    await syncIceCmsArticle(post, ai, "draft", validation.reason, enforcementEvents);
-    return { status: "pending", reason: validation.reason, ai };
-  }
-  if (["review", "radar"].includes(post.source_mode) && !enrichment.url) {
-    const reason = "该线索来自非预设可信来源，已完成编辑并进入后台草稿等待复核";
-    await syncIceCmsArticle(post, ai, "draft", reason, enforcementEvents);
-    return { status: "pending", reason, ai };
-  }
-
-  // 遣返、递解、刑满移交等内容进入“驱逐快报”，不写入 ICE 抓捕新闻流，也不计入抓捕人数。
-  if (isDeportationArticle(ai, enforcementEvents)) {
-    await syncIceCmsArticle(post, ai, "published", "", enforcementEvents, "驱逐快报");
-    return { status: "published", routed_to: "驱逐快报" };
+    return { status: "pending", reason: validation.reason };
   }
 
   const dateParts = newYorkDateParts(post.created_at);
@@ -740,32 +399,23 @@ async function processPost(post, news) {
   );
 
   const imageUrl = CONFIG.useXMedia ? firstUsableMedia(post.media) : "";
+  const enforcementEvents = normalizeEnforcementEvents(ai.enforcement_events, sourceText);
   const item = {
     id: `ice-${post.id}`,
     x_post_id: post.id,
     title: ai.title.trim(),
     summary: ai.summary.trim(),
     content_type: ai.content_type,
-    category: ai.category,
-    importance: ai.importance,
-    relevance_score: ai.relevance_score,
-    verified_level: ai.verified_level,
     published_at: post.created_at,
     updated_at: new Date().toISOString(),
     url: relativeUrl,
-    source_name: sourceDisplayName(post),
+    source_name: "美国移民与海关执法局",
     source_url: post.x_url,
     official_url: enrichment.url || "",
     source_text: post.text.trim().slice(0, 1200),
     dedupe_key: createDedupeKey(post.text, enrichment.url || extractPrimaryIceUrl(post)),
     image_url: imageUrl,
     confidence: ai.confidence,
-    source_mode: post.source_mode,
-    source_tier: post.source_tier,
-    source_weight: post.source_weight,
-    candidate_score: post.candidate_score,
-    matched_terms: post.matched_terms || [],
-    query_lane: post.query_lane || "",
     keywords: ai.keywords,
     enforcement_events: enforcementEvents,
     state_codes: [...new Set(enforcementEvents.map(event => event.state_code).filter(Boolean))],
@@ -780,69 +430,9 @@ async function processPost(post, news) {
   if (existingIndex >= 0) news[existingIndex] = item;
   else news.push(item);
 
-  await syncIceCmsArticle(post, ai, "published", "", enforcementEvents, "ICE执法");
   return { status: "published", item };
 }
 
-function isDeportationArticle(ai, events = []) {
-  if (String(ai?.category || "") === "遣返") return true;
-  const types = events.map(event => event.event_type);
-  return types.length > 0 && types.every(type => type === "removal");
-}
-
-async function syncIceCmsArticle(post, ai, status, reviewReason, events = [], forcedCategory = "") {
-  const primaryEvent = events.find(event => event.event_type === "arrest" || event.event_type === "detention") || events[0] || {};
-  const countable = status === "published" && forcedCategory !== "驱逐快报" &&
-    ["arrest", "detention"].includes(primaryEvent.event_type) &&
-    Number.isInteger(primaryEvent.people_count) && primaryEvent.people_count > 0 &&
-    Boolean(primaryEvent.city || primaryEvent.location_text) && Boolean(primaryEvent.occurred_at);
-  const categoryName = forcedCategory || (isDeportationArticle(ai, events) ? "驱逐快报" : "ICE执法");
-  const articleResult = await upsertAutomatedArticle({
-    externalId: `x-ice-${post.id}`,
-    automationSource: "ice-radar-v4",
-    title: String(ai?.title || "ICE动态").trim(),
-    summary: String(ai?.summary || "").trim(),
-    bodyParagraphs: Array.isArray(ai?.body_paragraphs) ? ai.body_paragraphs : [],
-    categoryName,
-    primarySection: categoryName,
-    relatedSections: categoryName === "驱逐快报" ? ["ICE执法"] : [],
-    coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
-    sourceUrl: post.x_url,
-    sourceName: sourceDisplayName(post),
-    sourceAccount: post.author_username || post.author?.username || "",
-    sourceLevel: post.source_tier || ai?.verified_level || "",
-    confidence: ai?.confidence || 0,
-    reviewReason,
-    status,
-    publishedAt: post.created_at,
-    eventDate: primaryEvent.occurred_at || null,
-    arrestCount: countable ? primaryEvent.people_count : null,
-    city: primaryEvent.city || "",
-    state: primaryEvent.state_code || primaryEvent.state_name || "",
-    countInIceStats: countable,
-    tags: [ai?.category, ...(ai?.keywords || [])].filter(Boolean),
-    riskFlags: ai?.needs_review ? ["needs_review"] : [],
-  });
-  await upsertNewsCandidate({
-    externalId: `x-ice-${post.id}`,
-    pipeline: "ice-radar-v4",
-    sourceUrl: post.x_url,
-    sourceAccount: post.author_username || post.author?.username || "",
-    sourceName: sourceDisplayName(post),
-    sourceLevel: post.source_tier || ai?.verified_level || "",
-    rawText: post.text || "",
-    rawPayload: { id: post.id, created_at: post.created_at, query_lane: post.query_lane || "", media: post.media || [] },
-    aiPayload: ai || {},
-    proposedSection: categoryName,
-    confidence: ai?.confidence || 0,
-    decision: status === "published" ? "published" : "draft",
-    decisionReason: reviewReason || "",
-    articleId: articleResult.article?.id || null,
-    collectedAt: post.created_at || new Date().toISOString(),
-    processedAt: new Date().toISOString(),
-  });
-  return articleResult;
-}
 
 async function backfillRecentNewsEvents(news) {
   const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
@@ -958,7 +548,7 @@ async function fetchIceGovEnrichment(post) {
   return { url: "", title: "", description: "", body: "" };
 }
 
-async function rewriteWithOpenAI(sourceText, post) {
+async function rewriteWithOpenAI(sourceText) {
   const payload = {
     model: CONFIG.openAIModel,
     input: [
@@ -970,7 +560,7 @@ async function rewriteWithOpenAI(sourceText, post) {
         role: "user",
         content: [{
           type: "input_text",
-          text: `来源模式：${post.source_mode}\n来源层级：${post.source_tier}\n来源权重：${post.source_weight}\n候选评分：${post.candidate_score}\n\n请先判断是否确属ICE/HSI/ERO新闻，再根据以下唯一事实来源生成中文新闻稿。不得使用外部知识补充事实。\n\n${sourceText}`
+          text: `请根据以下唯一事实来源生成一篇可发布的中文新闻。\n\n${sourceText}`
         }]
       }
     ],
@@ -1006,14 +596,10 @@ async function rewriteWithOpenAI(sourceText, post) {
   }
 }
 
-export function validateArticle(ai, sourceText, post, enrichment) {
+function validateArticle(ai, sourceText, post, enrichment) {
   if (!ai || typeof ai !== "object") return fail("AI稿件结构无效");
   if (!ai.publishable || ai.needs_review) return fail(ai.review_reason || "AI标记为需要人工审核");
   if (Number(ai.confidence) < CONFIG.minConfidence) return fail(`可信度低于${CONFIG.minConfidence}`);
-  if (!Number.isInteger(ai.relevance_score) || ai.relevance_score < CONFIG.minRelevance) return fail(`ICE相关度低于${CONFIG.minRelevance}`);
-  if (!Number.isInteger(ai.importance) || ai.importance < 1 || ai.importance > 10) return fail("新闻重要性评分无效");
-  if (!["official", "trusted_media", "other_source", "unverified"].includes(ai.verified_level)) return fail("来源核实级别无效");
-  if (post.source_tier === "official" && ai.verified_level === "unverified") return fail("官方来源被模型判定为未核实");
 
   const title = String(ai.title || "").trim();
   const summary = String(ai.summary || "").trim();
@@ -1190,6 +776,62 @@ function buildDashboardData(news, state, nowIso) {
   return dashboard;
 }
 
+
+const STATE_CENTROIDS = {
+  AL:[32.806671,-86.791130],AK:[61.370716,-152.404419],AZ:[33.729759,-111.431221],AR:[34.969704,-92.373123],CA:[36.116203,-119.681564],CO:[39.059811,-105.311104],CT:[41.597782,-72.755371],DE:[39.318523,-75.507141],FL:[27.766279,-81.686783],GA:[33.040619,-83.643074],HI:[21.094318,-157.498337],ID:[44.240459,-114.478828],IL:[40.349457,-88.986137],IN:[39.849426,-86.258278],IA:[42.011539,-93.210526],KS:[38.526600,-96.726486],KY:[37.668140,-84.670067],LA:[31.169546,-91.867805],ME:[44.693947,-69.381927],MD:[39.063946,-76.802101],MA:[42.230171,-71.530106],MI:[43.326618,-84.536095],MN:[45.694454,-93.900192],MS:[32.741646,-89.678696],MO:[38.456085,-92.288368],MT:[46.921925,-110.454353],NE:[41.125370,-98.268082],NV:[38.313515,-117.055374],NH:[43.452492,-71.563896],NJ:[40.298904,-74.521011],NM:[34.840515,-106.248482],NY:[42.165726,-74.948051],NC:[35.630066,-79.806419],ND:[47.528912,-99.784012],OH:[40.388783,-82.764915],OK:[35.565342,-96.928917],OR:[44.572021,-122.070938],PA:[40.590752,-77.209755],RI:[41.680893,-71.511780],SC:[33.856892,-80.945007],SD:[44.299782,-99.438828],TN:[35.747845,-86.692345],TX:[31.054487,-97.563461],UT:[40.150032,-111.862434],VT:[44.045876,-72.710686],VA:[37.769337,-78.169968],WA:[47.400902,-121.490494],WV:[38.491226,-80.954453],WI:[44.268543,-89.616508],WY:[42.755966,-107.302490],DC:[38.9072,-77.0369]
+};
+
+const CITY_COORDS = {
+  "new york,ny":[40.7128,-74.0060],"new york city,ny":[40.7128,-74.0060],"los angeles,ca":[34.0522,-118.2437],"chicago,il":[41.8781,-87.6298],"houston,tx":[29.7604,-95.3698],"phoenix,az":[33.4484,-112.0740],"philadelphia,pa":[39.9526,-75.1652],"san antonio,tx":[29.4241,-98.4936],"san diego,ca":[32.7157,-117.1611],"dallas,tx":[32.7767,-96.7970],"miami,fl":[25.7617,-80.1918],"orlando,fl":[28.5383,-81.3792],"tampa,fl":[27.9506,-82.4572],"atlanta,ga":[33.7490,-84.3880],"boston,ma":[42.3601,-71.0589],"denver,co":[39.7392,-104.9903],"seattle,wa":[47.6062,-122.3321],"portland,or":[45.5152,-122.6784],"detroit,mi":[42.3314,-83.0458],"minneapolis,mn":[44.9778,-93.2650],"kansas city,mo":[39.0997,-94.5786],"washington,dc":[38.9072,-77.0369],"baltimore,md":[39.2904,-76.6122],"charlotte,nc":[35.2271,-80.8431],"nashville,tn":[36.1627,-86.7816],"new orleans,la":[29.9511,-90.0715],"las vegas,nv":[36.1699,-115.1398],"salt lake city,ut":[40.7608,-111.8910],"el paso,tx":[31.7619,-106.4850],"austin,tx":[30.2672,-97.7431],"san francisco,ca":[37.7749,-122.4194],"sacramento,ca":[38.5816,-121.4944]
+};
+
+function buildMapEvents(news, nowIso) {
+  const events = [];
+  const seen = new Set();
+  for (const item of news) {
+    const sourceEvents = Array.isArray(item.enforcement_events) ? item.enforcement_events : [];
+    sourceEvents.forEach((event, index) => {
+      const stateCode = String(event.state_code || "").toUpperCase();
+      if (!STATE_CENTROIDS[stateCode]) return;
+      const cityKey = `${String(event.city || "").trim().toLowerCase()},${stateCode.toLowerCase()}`;
+      const exact = CITY_COORDS[cityKey];
+      const coords = exact || STATE_CENTROIDS[stateCode];
+      const basisTime = event.occurred_at || item.published_at;
+      if (!basisTime || !Number.isFinite(Date.parse(basisTime))) return;
+      const category = event.event_type === "removal" ? "removal"
+        : ["arrest", "detention"].includes(event.event_type) ? "arrest" : "other";
+      const id = `${item.id || item.x_post_id}-${index}`;
+      if (seen.has(id)) return;
+      seen.add(id);
+      events.push({
+        id,
+        category,
+        event_type: event.event_type,
+        title: item.title || "ICE公开事件",
+        summary: item.summary || "",
+        people_count: event.people_count ?? null,
+        occurred_at: event.occurred_at || null,
+        published_at: item.published_at,
+        basis_time: new Date(basisTime).toISOString(),
+        time_basis: event.occurred_at ? "执法时间" : "官方公开时间",
+        city: event.city || "",
+        state_code: stateCode,
+        state_name: event.state_name || stateCode,
+        location_text: event.location_text || [event.city, event.state_name || stateCode].filter(Boolean).join("，"),
+        latitude: coords[0],
+        longitude: coords[1],
+        location_precision: exact ? "city" : "state",
+        confidence: event.confidence || item.confidence || 0,
+        source_name: item.source_name || "美国移民与海关执法局",
+        source_url: item.source_url || "",
+        article_url: item.url || ""
+      });
+    });
+  }
+  events.sort((a,b) => new Date(b.basis_time) - new Date(a.basis_time));
+  return { generated_at: nowIso, timezone: "America/New_York", total_events: events.length, events };
+}
+
 function newYorkDateKey(value) {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/New_York",
@@ -1209,14 +851,14 @@ function renderArticle(item, paragraphs, dateParts) {
   }).join("\n");
 
   const image = item.image_url
-    ? `<figure class="article-image"><img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title)}" loading="lazy" referrerpolicy="no-referrer"><figcaption>图片来源：${escapeHtml(item.source_name)}公开X内容</figcaption></figure>`
+    ? `<figure class="article-image"><img src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title)}" loading="lazy" referrerpolicy="no-referrer"><figcaption>图片来源：ICE官方X账号公开内容</figcaption></figure>`
     : "";
 
   const officialLink = item.official_url
     ? `<a href="${escapeAttr(item.official_url)}" target="_blank" rel="noopener noreferrer">ICE官方网站原始通报</a>`
     : "";
   const sourceLinks = [
-    `<a href="${escapeAttr(item.source_url)}" target="_blank" rel="noopener noreferrer">查看X原帖</a>`,
+    `<a href="${escapeAttr(item.source_url)}" target="_blank" rel="noopener noreferrer">查看ICE官方X原帖</a>`,
     officialLink
   ].filter(Boolean).join("<span>·</span>");
 
@@ -1256,11 +898,11 @@ function renderArticle(item, paragraphs, dateParts) {
   <main class="article-shell">
     <nav class="breadcrumb"><a href="/">首页</a><span>›</span><a href="/topic/ice/">ICE执法</a></nav>
     <article class="news-article">
-      <div class="article-kicker">${escapeHtml(item.category || "ICE执法追踪")}</div>
+      <div class="article-kicker">ICE执法追踪</div>
       <h1>${escapeHtml(item.title)}</h1>
       <div class="article-meta">
         <time datetime="${escapeAttr(item.published_at)}">${escapeHtml(formatChineseDateTime(item.published_at))}</time>
-        <span>来源：${escapeHtml(item.source_name)}</span>
+        <span>来源：美国移民与海关执法局</span>
       </div>
       <p class="article-summary">${escapeHtml(item.summary)}</p>
       ${image}
@@ -1268,7 +910,7 @@ function renderArticle(item, paragraphs, dateParts) {
       <aside class="source-box">
         <strong>原始信息</strong>
         <div class="source-links">${sourceLinks}</div>
-        <p>本文根据公开来源整理。案件中的逮捕、拘留、指控或起诉不等同于法院定罪。</p>
+        <p>本文根据ICE公开资料整理。案件中的逮捕、指控或起诉不等同于法院定罪。</p>
       </aside>
     </article>
     <div class="back-topic"><a href="/topic/ice/">返回ICE执法全部新闻</a></div>
@@ -1306,14 +948,7 @@ async function updateSitemap(news, nowIso) {
 
 function buildSourceText(post, enrichment) {
   const parts = [
-    `X账号：@${post.author_username || "unknown"}`,
-    `账号名称：${post.author_name || post.author_username || "公开来源"}`,
-    `来源模式：${post.source_mode || "radar"}`,
-    `来源层级：${post.source_tier || "other_source"}`,
-    `来源权重：${post.source_weight || 0}`,
-    `搜索通道：${post.query_label || post.query_lane || "X雷达"}`,
-    `候选评分：${post.candidate_score || 0}`,
-    `匹配要素：${(post.matched_terms || []).join("、") || "未标注"}`,
+    `X账号：@ICEgov`,
     `X帖子ID：${post.id}`,
     `X发布时间（UTC）：${post.created_at}`,
     `X原帖链接：${post.x_url}`,
@@ -1327,10 +962,11 @@ function buildSourceText(post, enrichment) {
       `ICE官网正文摘取：\n${enrichment.body}`
     );
   } else {
-    parts.push("未发现或未能读取ICE.gov完整通报。只能依据该X帖子本身写快讯，不得扩写未知事实；非预设可信来源应进入候选池复核。");
+    parts.push("未发现或未能读取ICE.gov完整新闻稿。只能依据X原帖写快讯，不得扩写未知事实。");
   }
   return parts.join("\n\n");
 }
+
 function extractExpandedUrls(post) {
   const urls = [];
   for (const item of post.entities?.urls || []) {
@@ -1362,7 +998,7 @@ function extractOpenAIOutputText(json) {
   return "";
 }
 
-function makePendingEntry(post, reason, manualReview, attempts, ai = null) {
+function makePendingEntry(post, reason, manualReview, attempts) {
   return {
     id: `pending-${post.id}`,
     x_post_id: String(post.id),
@@ -1370,12 +1006,6 @@ function makePendingEntry(post, reason, manualReview, attempts, ai = null) {
     manual_review: Boolean(manualReview),
     attempts,
     created_at: new Date().toISOString(),
-    source_mode: post?.source_mode || "",
-    source_tier: post?.source_tier || "",
-    source_weight: post?.source_weight || 0,
-    candidate_score: post?.candidate_score || 0,
-    query_lane: post?.query_lane || "",
-    ai,
     post
   };
 }
@@ -1661,49 +1291,6 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
   }
 }
 
-async function fetchXJsonWithRetry(url, options = {}, label = "X API") {
-  const maxAttempts = 3;
-  let lastError;
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    try {
-      const response = await fetchWithTimeout(url, options, 30000);
-      if (response.ok) return await readResponseJson(response, label);
-
-      const retryAfterHeader = response.headers.get("retry-after");
-      const retryAfterMs = retryAfterHeader && /^\d+$/.test(retryAfterHeader)
-        ? Math.min(Number(retryAfterHeader) * 1000, 60000)
-        : 0;
-      const retryable = [429, 500, 502, 503, 504].includes(response.status);
-
-      if (!retryable || attempt === maxAttempts) {
-        return await readResponseJson(response, label);
-      }
-
-      const body = await response.text().catch(() => "");
-      const baseDelay = attempt === 1 ? 5000 : 15000;
-      const waitMs = Math.max(baseDelay, retryAfterMs) + Math.floor(Math.random() * 1500);
-      console.warn(`${label} returned ${response.status}${body ? `: ${body.slice(0, 120)}` : ""}; retrying in ${Math.ceil(waitMs / 1000)}s (${attempt}/${maxAttempts}).`);
-      await sleep(waitMs);
-    } catch (error) {
-      lastError = error;
-      const message = errorMessage(error);
-      const retryable = /timeout|aborted|fetch failed|ECONNRESET|ENOTFOUND|EAI_AGAIN/i.test(message);
-      if (!retryable || attempt === maxAttempts) throw error;
-      const waitMs = (attempt === 1 ? 5000 : 15000) + Math.floor(Math.random() * 1500);
-      console.warn(`${label} network error: ${message}; retrying in ${Math.ceil(waitMs / 1000)}s (${attempt}/${maxAttempts}).`);
-      await sleep(waitMs);
-    }
-  }
-
-  throw lastError || new Error(`${label} failed after retries.`);
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
 async function readResponseJson(response, label) {
   const text = await response.text();
   let json;
@@ -1823,17 +1410,6 @@ function firstEnv(...names) {
   return "";
 }
 
-function mergeAccounts(...groups) {
-  return [...new Set(groups.flat().map(v => String(v || "").replace(/^@/, "").trim()).filter(Boolean))];
-}
-
-function parseAccounts(value) {
-  return [...new Set(String(value || "")
-    .split(/[\s,]+/)
-    .map(item => item.trim().replace(/^@/, ""))
-    .filter(Boolean))];
-}
-
 function intEnv(name, fallback, min, max) {
   const value = Number.parseInt(process.env[name] || "", 10);
   if (!Number.isFinite(value)) return fallback;
@@ -1891,24 +1467,5 @@ function escapeRegExp(value) { return String(value).replace(/[.*+?^${}()|[\]\\]/
 function safeJsonForHtml(value) { return JSON.stringify(value).replace(/</g, "\\u003c"); }
 function errorMessage(error) { return error instanceof Error ? error.message : String(error); }
 
-const isDirectRun = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
-if (isDirectRun) {
-  main().catch(async (error) => {
-    const message = errorMessage(error);
-    console.error(message);
-    try {
-      const state = await readJson(STATE_FILE, {
-        last_seen_id: "",
-        query_cursors: {},
-        last_run_at: "",
-        last_success_at: "",
-        last_content_at: "",
-        last_result: {}
-      });
-      await writeJson(STATE_FILE, { ...state, last_error: message });
-    } catch (stateError) {
-      console.error(`Could not write ICE failure state: ${errorMessage(stateError)}`);
-    }
-    process.exitCode = 1;
-  });
-}
+// Start only after all top-level constants (state maps and dedupe sets) are initialized.
+await main();

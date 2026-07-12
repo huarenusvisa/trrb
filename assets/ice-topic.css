@@ -195,3 +195,120 @@ button { font: inherit; }
   .ice-news-thumb-wrap { width: 116px; height: 94px; margin-left: 12px; }
   .ice-news-body { padding-left: 12px; }
 }
+
+/* V35: 将今日统计、纽约时间、抓捕时间地点合并进首屏同一区域 */
+.ice-hero-dashboard {
+  margin-top: 26px;
+  padding: 16px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(207,221,229,.95);
+  border-radius: 22px;
+  box-shadow: 0 12px 34px rgba(16,33,45,.07);
+  backdrop-filter: blur(10px);
+}
+.ice-hero-dashboard .ice-summary-grid {
+  grid-template-columns: .8fr .8fr 1.4fr;
+  gap: 10px;
+}
+.ice-hero-dashboard .ice-summary-card {
+  min-height: 112px;
+  padding: 16px 18px;
+  border-radius: 15px;
+  box-shadow: none;
+  border-color: #e4edf2;
+}
+.ice-hero-dashboard .ice-summary-label { font-size: 15px; }
+.ice-hero-dashboard .ice-summary-card strong { margin-top: 5px; font-size: 30px; }
+.ice-hero-dashboard .ice-summary-card small { margin-top: 7px; font-size: 12px; }
+.ice-hero-dashboard .ice-summary-sync strong { font-size: 25px; white-space: nowrap; }
+
+.ice-today-inline {
+  margin-top: 10px;
+  padding: 13px 14px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid #e4edf2;
+  border-radius: 15px;
+}
+.ice-today-inline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+.ice-today-inline-head h2 { margin: 0; font-size: 18px; }
+.ice-today-inline-head span { color: var(--ice-muted); font-size: 12px; }
+.ice-today-inline .ice-event-list { gap: 7px; }
+.ice-today-inline .ice-event-row {
+  grid-template-columns: minmax(150px,.75fr) minmax(150px,1fr) auto;
+  padding: 9px 11px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.ice-today-inline .ice-empty {
+  padding: 10px 12px;
+  border: 0;
+  background: #f6f9fb;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+/* 废弃旧的独立大卡片样式，避免重复占据一整屏 */
+.ice-today-events { display: none !important; }
+
+@media (max-width: 760px) {
+  .ice-hero .ice-shell { padding-bottom: 24px; }
+  .ice-hero > .ice-shell > p { margin-bottom: 18px; }
+  .ice-hero-dashboard { margin-top: 14px; padding: 10px; border-radius: 18px; }
+  .ice-hero-dashboard .ice-summary-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .ice-hero-dashboard .ice-summary-card {
+    min-height: 104px;
+    padding: 13px 14px;
+  }
+  .ice-hero-dashboard .ice-summary-card strong { font-size: 28px; }
+  .ice-hero-dashboard .ice-summary-sync {
+    grid-column: 1 / -1;
+    min-height: 78px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 14px;
+    align-items: center;
+  }
+  .ice-hero-dashboard .ice-summary-sync .ice-summary-label { align-self: end; }
+  .ice-hero-dashboard .ice-summary-sync strong {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: end;
+    margin: 0;
+    font-size: clamp(20px, 5.8vw, 27px);
+  }
+  .ice-hero-dashboard .ice-summary-sync small {
+    grid-column: 1;
+    align-self: start;
+    margin-top: 3px;
+  }
+  .ice-today-inline { margin-top: 8px; padding: 11px; }
+  .ice-today-inline-head h2 { font-size: 16px; }
+  .ice-today-inline-head span { font-size: 11px; }
+  .ice-today-inline .ice-event-row {
+    grid-template-columns: 1fr auto;
+    gap: 5px 10px;
+  }
+  .ice-today-inline .ice-event-place { grid-column: 1; }
+  .ice-today-inline .ice-event-count { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .ice-today-inline .ice-event-meta { grid-column: 1 / -1; }
+  .ice-heatmap-section { padding-top: 28px; }
+}
+
+@media (max-width: 430px) {
+  .ice-hero-dashboard .ice-summary-card { min-height: 98px; padding: 12px; }
+  .ice-hero-dashboard .ice-summary-label { font-size: 14px; }
+  .ice-hero-dashboard .ice-summary-card strong { font-size: 27px; }
+  .ice-hero-dashboard .ice-summary-card small { font-size: 11px; }
+  .ice-hero-dashboard .ice-summary-sync { min-height: 72px; }
+  .ice-today-inline-head span { display: none; }
+}

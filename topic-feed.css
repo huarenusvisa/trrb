@@ -1,1 +1,60 @@
-.ice-card,.ice-text-card{background:#fff;border:1px solid #eee;border-radius:12px;padding:16px;margin:12px 0}.ice-card img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:8px}.ice-card h3,.ice-text-card h3{font-size:18px}.ice-card p,.ice-text-card p{line-height:1.6;color:#555}
+.topic-card,
+.ice-card,
+.ice-text-card{
+
+background:#fff;
+border:1px solid #eee;
+border-radius:14px;
+padding:16px;
+margin:12px 0;
+
+}
+
+
+.topic-card img,
+.ice-card img{
+
+width:100%;
+aspect-ratio:16/9;
+object-fit:cover;
+border-radius:10px;
+
+}
+
+
+.topic-card h3,
+.ice-card h3,
+.ice-text-card h3{
+
+font-size:18px;
+font-weight:700;
+margin:10px 0;
+
+}
+
+
+.topic-card p,
+.ice-card p,
+.ice-text-card p{
+
+font-size:14px;
+line-height:1.6;
+color:#555;
+
+}
+
+
+.topic-time{
+
+font-size:13px;
+color:#999;
+
+}
+
+
+.topic-source{
+
+font-size:13px;
+color:#1677ff;
+
+}

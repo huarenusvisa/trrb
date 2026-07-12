@@ -25,7 +25,8 @@ const CONFIG = {
   openAIModel: process.env.OPENAI_MODEL || "gpt-4.1-mini",
   siteUrl: normalizeSiteUrl(process.env.SITE_URL || "https://trrb.net"),
   legacyQuery: process.env.ICE_QUERY || "",
-  maxQueryLanes: intEnv("ICE_MAX_QUERY_LANES", 24, 1, 32),
+  maxQueryLanes: intEnv("ICE_MAX_QUERY_LANES", 72, 1, 96),
+  lanesPerRun: intEnv("ICE_LANES_PER_RUN", 28, 8, 48),
   maxResultsPerLane: intEnv("ICE_MAX_RESULTS_PER_LANE", 50, 10, 100),
   maxPagesPerLane: intEnv("ICE_MAX_PAGES_PER_LANE", 1, 1, 5),
   bootstrapLimit: intEnv("ICE_BOOTSTRAP_LIMIT", 80, 1, 300),
@@ -435,11 +436,14 @@ async function main() {
   const maxSeenId = maxSnowflake(fetchedPosts.map(post => String(post.id)));
   if (maxSeenId) state.last_seen_id = maxSnowflake([state.last_seen_id, maxSeenId]);
   state.last_seen_by_lane = { ...(state.last_seen_by_lane || {}), ...(fetchResult.laneMaxIds || {}) };
+  state.lane_cursor = Number(fetchResult.nextLaneCursor || 0);
   state.last_run_at = now;
   if (publishedCount > 0) state.last_success_at = now;
   state.last_result = {
     fetched: fetchedPosts.length,
     lanes: fetchResult.laneStats,
+    lanes_run: fetchResult.lanesRun || Object.keys(fetchResult.laneStats || {}).length,
+    lanes_total: fetchResult.lanesTotal || sourceRegistry.query_lanes.length,
     sources_seen: [...new Set(fetchedPosts.map(post => post.source_name).filter(Boolean))].length,
     candidates: candidatePosts.length,
     new_posts: newPosts.length,
@@ -529,12 +533,27 @@ async function fetchRecentPosts(state, sourceRegistry) {
   const collected = [];
   const laneMaxIds = {};
   const laneStats = {};
-  const lanes = sourceRegistry.query_lanes
+  const allEnabledLanes = sourceRegistry.query_lanes
     .filter(lane => lane.enabled !== false)
     .slice(0, CONFIG.maxQueryLanes);
 
+  // Always run priority lanes, then rotate through the remaining lanes. This
+  // broadens coverage without making every 30-minute run fire 70+ X queries.
+  const priorityLanes = allEnabledLanes.filter(lane => lane.priority === true);
+  const rotatingLanes = allEnabledLanes.filter(lane => lane.priority !== true);
+  const rotationSlots = Math.max(0, CONFIG.lanesPerRun - priorityLanes.length);
+  const cursor = rotatingLanes.length ? Number(state.lane_cursor || 0) % rotatingLanes.length : 0;
+  const rotated = [];
+  for (let index = 0; index < Math.min(rotationSlots, rotatingLanes.length); index += 1) {
+    rotated.push(rotatingLanes[(cursor + index) % rotatingLanes.length]);
+  }
+  const lanes = [...priorityLanes, ...rotated].slice(0, CONFIG.lanesPerRun);
+  const nextLaneCursor = rotatingLanes.length
+    ? (cursor + Math.min(rotationSlots, rotatingLanes.length)) % rotatingLanes.length
+    : 0;
+
   if (CONFIG.legacyQuery) {
-    lanes.unshift({ id: "legacy", label: "Legacy query", query: CONFIG.legacyQuery, source_type: "official" });
+    lanes.unshift({ id: "legacy", label: "Legacy query", query: CONFIG.legacyQuery, source_type: "official", priority: true });
   }
 
   for (const lane of lanes) {
@@ -618,7 +637,7 @@ async function fetchRecentPosts(state, sourceRegistry) {
   selected.sort((a, b) => compareSnowflakes(b.id, a.id));
   selected = selected.slice(0, state.last_run_at ? CONFIG.maxNewPosts : CONFIG.bootstrapLimit);
   selected.sort((a, b) => compareSnowflakes(a.id, b.id));
-  return { posts: selected, laneMaxIds, laneStats };
+  return { posts: selected, laneMaxIds, laneStats, nextLaneCursor, lanesRun: lanes.length, lanesTotal: allEnabledLanes.length };
 }
 async function processPost(post, news) {
   const enrichment = await fetchSourceEnrichment(post, sourceRegistryGlobal);

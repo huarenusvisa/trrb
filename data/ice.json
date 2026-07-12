@@ -1,0 +1,72 @@
+{
+  "stats": {
+    "confirmed": 0,
+    "locations": 0
+  },
+  "mapPoints": [
+    {
+      "x": 7,
+      "y": 46,
+      "count": 156
+    },
+    {
+      "x": 25,
+      "y": 13,
+      "small": true
+    },
+    {
+      "x": 45,
+      "y": 16,
+      "small": true
+    },
+    {
+      "x": 67,
+      "y": 18,
+      "count": 41
+    },
+    {
+      "x": 88,
+      "y": 12,
+      "count": 63
+    },
+    {
+      "x": 53,
+      "y": 63,
+      "count": 72
+    },
+    {
+      "x": 82,
+      "y": 68,
+      "count": 63
+    }
+  ],
+  "news": [
+    {
+      "published_at": "2026-07-12T10:58:00-04:00",
+      "type": "arrest",
+      "title": "纽约皇后区突袭行动，ICE逮捕23人",
+      "summary": "执法人员在多个地点执行搜查行动，详细信息以官方通报为准。",
+      "image": "/assets/placeholder.svg",
+      "source": "公开信息",
+      "source_url": "#"
+    },
+    {
+      "published_at": "2026-07-12T10:45:00-04:00",
+      "type": "arrest",
+      "title": "ICE在芝加哥展开执法行动",
+      "summary": "行动集中在部分城区，更多细节等待执法机构发布。",
+      "image": "/assets/placeholder.svg",
+      "source": "公开信息",
+      "source_url": "#"
+    },
+    {
+      "published_at": "2026-07-12T10:20:00-04:00",
+      "type": "other",
+      "title": "ICE与当地警方展开联合行动",
+      "summary": "行动涉及多部门协作和公开记录核验。",
+      "image": "/assets/placeholder.svg",
+      "source": "公开信息",
+      "source_url": "#"
+    }
+  ]
+}

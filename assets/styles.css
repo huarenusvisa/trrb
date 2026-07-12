@@ -1,0 +1,135 @@
+
+:root{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --text:#14213d;
+  --muted:#64748b;
+  --line:#e5e7eb;
+  --blue:#1467e8;
+  --blue-soft:#eef5ff;
+  --red:#e11d2e;
+  --green:#10b981;
+  --purple:#7c3aed;
+  --shadow:0 10px 30px rgba(15,23,42,.06);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+.site-header{
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  min-height:66px;padding:0 22px;background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);border-bottom:1px solid rgba(229,231,235,.9)
+}
+.brand{font-size:25px;font-weight:900;letter-spacing:.02em}
+.brand b{color:#e00018}
+.header-link{color:var(--blue);font-weight:800}
+.menu{border:0;background:transparent;font-size:24px;cursor:pointer}
+.page{width:min(1180px,calc(100% - 24px));margin:18px auto 40px}
+.panel{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden
+}
+.hero{padding:28px}
+.hero h1{margin:0 0 8px;font-size:clamp(30px,4vw,46px);line-height:1.1}
+.hero p{margin:0;max-width:760px;color:var(--muted);line-height:1.8}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px
+}
+.stat{
+  min-height:126px;padding:20px;border:1px solid var(--line);border-radius:16px;background:#fff
+}
+.stat-head{display:flex;align-items:center;gap:9px;font-weight:800}
+.icon-dot{
+  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  background:var(--blue-soft);color:var(--blue);font-size:16px
+}
+.stat-value{margin-top:15px;font-size:34px;font-weight:900}
+.stat-sub{margin-top:4px;color:var(--muted);font-size:14px}
+.section{padding:22px 28px;border-top:1px solid var(--line)}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.section-title h2{margin:0;font-size:22px}
+.section-title small{color:var(--muted)}
+.map-shell{
+  position:relative;min-height:360px;border-radius:16px;overflow:hidden;
+  background:linear-gradient(180deg,#dff3ff,#f7fbff);border:1px solid #dbeafe
+}
+.us-map{width:100%;height:360px;display:block}
+.map-label{
+  position:absolute;display:grid;place-items:center;min-width:40px;height:40px;padding:0 10px;
+  border-radius:999px;background:var(--blue);color:#fff;font-weight:900;
+  box-shadow:0 8px 20px rgba(20,103,232,.28)
+}
+.map-label.sm{min-width:12px;width:12px;height:12px;padding:0;font-size:0}
+.legend{
+  position:absolute;left:12px;bottom:12px;display:flex;flex-wrap:wrap;gap:12px;
+  padding:10px 12px;background:rgba(255,255,255,.92);border-radius:12px;
+  border:1px solid var(--line);font-size:13px
+}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden
+}
+.tab{padding:13px;text-align:center;border:0;background:#fff;color:var(--muted);font-weight:800;cursor:pointer}
+.tab.active{background:var(--blue-soft);color:var(--blue)}
+.filters{display:flex;gap:10px;overflow:auto;padding-bottom:4px}
+.filter{
+  flex:0 0 auto;padding:9px 16px;border:1px solid var(--line);background:#fff;
+  color:#475569;border-radius:999px;font-weight:800;cursor:pointer
+}
+.filter.active{color:var(--blue);border-color:#bfdbfe;background:var(--blue-soft)}
+.news-list{display:flex;flex-direction:column}
+.news-item{
+  display:grid;grid-template-columns:82px 116px 1fr auto;gap:16px;align-items:center;
+  padding:18px 0;border-top:1px solid var(--line)
+}
+.news-item:first-child{border-top:0}
+.news-time{color:var(--muted);font-size:14px}
+.news-time .live{display:inline-block;width:7px;height:7px;margin-left:6px;border-radius:50%;background:var(--red)}
+.news-thumb{width:116px;height:76px;object-fit:cover;border-radius:10px;background:#e2e8f0}
+.news-main h3{margin:0 0 7px;font-size:18px}
+.news-main p{margin:0;color:var(--muted);line-height:1.6}
+.source{color:var(--blue);font-size:14px;white-space:nowrap}
+.load-more{
+  display:block;width:min(420px,100%);margin:18px auto 0;padding:13px;border:0;border-radius:12px;
+  background:#f1f5f9;font-weight:800;cursor:pointer
+}
+.election-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.race-card{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.race-card h3{margin:0 0 12px}
+.progress{height:12px;border-radius:999px;background:#eef2f7;overflow:hidden}
+.progress > span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#2563eb,#7c3aed)}
+.race-meta{display:flex;justify-content:space-between;margin-top:9px;color:var(--muted);font-size:14px}
+.state-list{display:flex;flex-direction:column;gap:10px}
+.state-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:13px;border:1px solid var(--line);border-radius:12px}
+.badge{display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:900}
+.badge.tossup{background:#fff7ed;color:#c2410c}
+.badge.lean-d{background:#eff6ff;color:#1d4ed8}
+.badge.lean-r{background:#fef2f2;color:#b91c1c}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+@media(max-width:760px){
+  .site-header{padding:0 16px}
+  .brand{font-size:22px}
+  .page{width:min(100% - 16px,1180px);margin-top:10px}
+  .hero{padding:22px 16px}
+  .stats{grid-template-columns:1fr}
+  .stat{min-height:108px}
+  .section{padding:18px 14px}
+  .map-shell,.us-map{min-height:260px;height:260px}
+  .news-item{grid-template-columns:66px 92px 1fr;gap:10px}
+  .news-thumb{width:92px;height:66px}
+  .source{display:none}
+  .news-main h3{font-size:16px}
+  .news-main p{font-size:13px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .election-grid{grid-template-columns:1fr}
+}

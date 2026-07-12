@@ -1,0 +1,59 @@
+{
+  "stats": {
+    "senate": "12席",
+    "house": "38席",
+    "governor": "9州"
+  },
+  "races": [
+    {
+      "title": "参议院控制权",
+      "progress": 49,
+      "left_label": "民主党阵营",
+      "right_label": "共和党阵营"
+    },
+    {
+      "title": "众议院控制权",
+      "progress": 52,
+      "left_label": "民主党阵营",
+      "right_label": "共和党阵营"
+    }
+  ],
+  "keyStates": [
+    {
+      "state": "宾夕法尼亚州",
+      "note": "郊区选民与投票率是关键变量",
+      "status": "胶着",
+      "status_class": "tossup"
+    },
+    {
+      "state": "密歇根州",
+      "note": "底特律都会区与工会选票受关注",
+      "status": "略偏民主党",
+      "status_class": "lean-d"
+    },
+    {
+      "state": "北卡罗来纳州",
+      "note": "增长中的城市郊区可能改变格局",
+      "status": "略偏共和党",
+      "status_class": "lean-r"
+    }
+  ],
+  "news": [
+    {
+      "published_at": "2026-07-12T10:50:00-04:00",
+      "title": "关键州竞选活动升温，两党加大资源投入",
+      "summary": "多个重点选区出现密集竞选活动，后续应结合官方申报和可靠民调持续更新。",
+      "image": "/assets/placeholder.svg",
+      "source": "公开信息",
+      "source_url": "#"
+    },
+    {
+      "published_at": "2026-07-12T10:10:00-04:00",
+      "title": "参议院焦点席位进入资金与广告投放阶段",
+      "summary": "竞选团队开始扩大广告购买与基层动员。",
+      "image": "/assets/placeholder.svg",
+      "source": "公开信息",
+      "source_url": "#"
+    }
+  ]
+}

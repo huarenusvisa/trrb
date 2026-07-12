@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2026中期选举实时动态｜唐人日报</title>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><b>唐</b>人日报</a>
+  <div style="display:flex;align-items:center;gap:20px"><span class="header-link">2026中期选举</span><button class="menu" aria-label="菜单">☰</button></div>
+</header>
+<main class="page">
+<section class="panel">
+  <div class="hero">
+    <h1>2026中期选举实时动态</h1>
+    <p>追踪参议院、众议院、州长选举、关键州变化及最新公开民调。页面数据接口可单独接入你的自动抓取程序。</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-head"><span class="icon-dot">S</span>参议院焦点席位</div><div class="stat-value" data-senate>-</div></div>
+      <div class="stat"><div class="stat-head"><span class="icon-dot" style="color:#7c3aed">H</span>众议院焦点席位</div><div class="stat-value" data-house>-</div></div>
+      <div class="stat"><div class="stat-head"><span class="icon-dot" style="color:#10b981">G</span>州长焦点选举</div><div class="stat-value" data-governor>-</div><div class="stat-sub"><span data-clock></span> · <span data-date></span></div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><h2>全国选情概览</h2><small>示例结构，可接真实数据</small></div>
+    <div class="election-grid" id="raceCards"></div>
+  </div>
+  <div class="section">
+    <div class="section-title"><h2>关键州追踪</h2><small>状态由你的数据接口返回</small></div>
+    <div class="state-list" id="stateList"></div>
+  </div>
+</section>
+<section class="panel" style="margin-top:14px">
+  <div class="section">
+    <div class="section-title"><h2>选举快讯</h2><small>按发布时间倒序</small></div>
+    <div class="news-list" id="electionNews"><div class="empty">正在加载…</div></div>
+  </div>
+</section>
+</main>
+<script src="/assets/app.js"></script><script>initElection()</script>
+</body></html>

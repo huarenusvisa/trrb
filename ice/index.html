@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ICE执法追踪｜唐人日报</title>
+<link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><b>唐</b>人日报</a>
+  <div style="display:flex;align-items:center;gap:20px"><span class="header-link">ICE执法追踪</span><button class="menu" aria-label="菜单">☰</button></div>
+</header>
+<main class="page">
+<section class="panel">
+  <div class="hero">
+    <h1>ICE执法追踪</h1>
+    <p>聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-head"><span class="icon-dot">👥</span>今日确认人数</div><div class="stat-value" data-confirmed>0人</div></div>
+      <div class="stat"><div class="stat-head"><span class="icon-dot" style="color:#10b981">●</span>今日涉及地点</div><div class="stat-value" data-locations>0处</div></div>
+      <div class="stat"><div class="stat-head"><span class="icon-dot" style="color:#7c3aed">◷</span>纽约时间</div><div class="stat-value" style="color:#1467e8" data-clock>--:--</div><div class="stat-sub" data-date></div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title"><h2>美国实时执法地图</h2><small>位置为公开报道地点，不代表实时人员定位</small></div>
+    <div class="map-shell">
+      <svg class="us-map" viewBox="0 0 900 500" aria-label="美国地图示意">
+        <path d="M88 96 L185 70 282 77 348 62 439 72 512 60 578 85 650 81 713 112 793 116 823 166 795 205 742 214 711 264 662 284 631 345 552 366 470 343 398 366 313 341 240 298 178 259 117 230 82 183 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="3"/>
+        <path d="M88 96 L185 70 M178 259 L240 298 M313 341 L348 62 M398 366 L439 72 M470 343 L512 60 M552 366 L578 85 M631 345 L650 81 M662 284 L713 112" stroke="#e2e8f0" stroke-width="2"/>
+      </svg>
+      <div id="mapLabels"></div>
+      <div class="legend"><span><i style="opacity:.35"></i>1–10</span><span><i style="opacity:.55"></i>11–50</span><span><i style="opacity:.75"></i>51–100</span><span><i></i>100+</span></div>
+    </div>
+    <div class="tabs"><button class="tab active">24小时<br><small>最新动态</small></button><button class="tab">7天<br><small>短期趋势</small></button><button class="tab">30天<br><small>月度分布</small></button></div>
+  </div>
+  <div class="section">
+    <div class="filters">
+      <button class="filter active" data-filter="all">全部</button>
+      <button class="filter" data-filter="arrest">抓捕/拘留</button>
+      <button class="filter" data-filter="violation">遣返</button>
+      <button class="filter" data-filter="other">其他行动</button>
+    </div>
+  </div>
+</section>
+<section class="panel" style="margin-top:14px">
+  <div class="section">
+    <div class="section-title"><h2>新闻快讯</h2><small>按发布时间倒序</small></div>
+    <div class="news-list" id="newsList"><div class="empty">正在加载…</div></div>
+    <button class="load-more">加载更多⌄</button>
+  </div>
+</section>
+</main>
+<script src="/assets/app.js"></script><script>initIce()</script>
+</body></html>

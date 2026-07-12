@@ -4,9 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>ICE执法追踪 - 唐人日报</title>
-  <meta name="description" content="聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。">
+  <meta name="description" content="聚合ICE、DHS、HSI、CBP及相关公开来源，按地点展示美国ICE执法动态。">
   <link rel="canonical" href="https://trrb.net/topic/ice/">
-  <link rel="stylesheet" href="/assets/ice-topic.css?v=37">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="/assets/ice-topic.css?v=39">
 </head>
 <body>
   <header class="trrb-header">
@@ -19,97 +23,82 @@
   <main>
     <section class="ice-hero">
       <div class="ice-shell">
-        <div class="ice-kicker">专题聚焦</div>
+        <div class="ice-kicker">实时执法地图</div>
         <h1>ICE执法追踪</h1>
-        <p>聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。</p>
+        <p>聚合公开来源中的抓捕、拘留、遣返和相关执法动态。地图只显示来源明确披露地点的事件，不推测具体位置。</p>
 
-        <section class="ice-hero-dashboard" aria-label="今日ICE公开数据总览">
-          <div class="ice-summary-grid">
-            <article class="ice-summary-card">
-              <span class="ice-summary-label">今日确认人数</span>
-              <strong id="today-people">—</strong>
-              <small>公开来源明确披露</small>
-            </article>
-            <article class="ice-summary-card">
-              <span class="ice-summary-label">今日涉及地点</span>
-              <strong id="today-locations">—</strong>
-              <small>按城市或地点去重</small>
-            </article>
-            <article class="ice-summary-card ice-summary-sync">
-              <span class="ice-summary-label">纽约实时</span>
-              <strong id="new-york-now">—</strong>
-              <small>最近同步：<span id="latest-sync">—</span></small>
-            </article>
-          </div>
-
-          <div class="ice-today-inline" aria-labelledby="today-events-title">
-            <div class="ice-today-inline-head">
-              <h2 id="today-events-title">今日抓捕时间与地点</h2>
-              <span>未明确披露则不计入</span>
-            </div>
-            <div id="today-event-list" class="ice-event-list" aria-live="polite"></div>
-
-          <div class="ice-hero-map-controls" aria-label="ICE热力图控制与摘要">
-            <div class="ice-range-grid" id="range-controls" aria-label="热力图时间范围">
-              <button type="button" data-range="24h" class="ice-range-card is-active"><strong>24小时</strong><span>最新动态</span></button>
-              <button type="button" data-range="7d" class="ice-range-card"><strong>7天</strong><span>短期趋势</span></button>
-              <button type="button" data-range="30d" class="ice-range-card"><strong>30天</strong><span>月度分布</span></button>
-            </div>
-
-            <div class="ice-metric-switch" id="metric-controls" aria-label="热力图指标">
-              <button type="button" data-metric="events" class="is-active">事件数</button>
-              <button type="button" data-metric="people">已披露人数</button>
-            </div>
-
-            <div class="ice-map-stats" aria-label="当前热力图统计摘要">
-              <article><span>统计范围</span><strong id="map-range-stat">过去24小时</strong></article>
-              <article><span>公开事件</span><strong id="map-events-stat">0</strong></article>
-              <article><span>已披露人数</span><strong id="map-people-stat" class="is-green">0人</strong></article>
-              <article><span>活跃州</span><strong id="map-states-stat">0</strong></article>
-            </div>
-          </div>
+        <div class="ice-command" aria-label="ICE实时概况">
+          <div class="ice-stat"><span>今日确认人数</span><strong id="today-people">—</strong></div>
+          <div class="ice-stat"><span>今日涉及地点</span><strong id="today-locations">—</strong></div>
+          <div class="ice-clock"><span>纽约实时</span><strong id="ny-clock">—</strong></div>
+          <div class="ice-sync"><span>最近同步</span><strong id="latest-sync">—</strong></div>
         </div>
-        </section>
       </div>
     </section>
 
-    <section class="ice-shell ice-heatmap-section" aria-labelledby="heatmap-title">
-      <div class="ice-section-heading ice-map-heading">
+    <section class="ice-shell ice-map-section" aria-labelledby="map-title">
+      <div class="ice-map-heading">
         <div>
-          <div class="ice-kicker ice-kicker-small">执法数据地图</div>
-          <h2 id="heatmap-title">美国ICE公开活跃热力图</h2>
-          <p id="heatmap-description">按州展示过去24小时公开执法事件，点击州可筛选相关动态。</p>
+          <span class="ice-eyebrow">美国实时活动地图</span>
+          <h2 id="map-title">ICE公开事件点位</h2>
+          <p>数字圆点代表同一区域的事件聚合。点击标记查看时间、地点、来源和全文。</p>
+        </div>
+        <div class="ice-map-count"><strong id="visible-event-count">0</strong><span>当前事件</span></div>
+      </div>
+
+      <div class="ice-filter-bar" aria-label="地图筛选">
+        <div class="ice-range-tabs" id="range-controls">
+          <button type="button" data-range="24h" class="is-active"><b>24小时</b><small>最新动态</small></button>
+          <button type="button" data-range="7d"><b>7天</b><small>短期趋势</small></button>
+          <button type="button" data-range="30d"><b>30天</b><small>月度分布</small></button>
+        </div>
+        <div class="ice-type-tabs" id="type-controls">
+          <button type="button" data-type="all" class="is-active">全部</button>
+          <button type="button" data-type="arrest">抓捕/拘留</button>
+          <button type="button" data-type="removal">遣返</button>
+          <button type="button" data-type="other">其他行动</button>
         </div>
       </div>
 
       <div class="ice-map-card">
-        <div id="ice-heatmap" class="ice-heatmap" role="img" aria-label="美国各州ICE公开执法活跃热力图"></div>
-        <div id="heatmap-fallback" class="ice-heatmap-fallback" hidden></div>
-
-        <div class="ice-rank-panel">
-          <div class="ice-rank-head">
-            <div><span>热点州</span><strong id="rank-title">按事件数排序</strong></div>
-            <button id="clear-state-filter" type="button" hidden>清除筛选</button>
-            <span id="rank-hint">点击筛选</span>
-          </div>
-          <div id="state-rank-list" class="ice-state-rank"></div>
+        <div id="ice-live-map" class="ice-live-map" aria-label="美国ICE公开执法事件地图"></div>
+        <div id="map-empty" class="ice-map-empty" hidden>
+          <strong>当前筛选范围暂无可定位事件</strong>
+          <span>相关公开信息仍会显示在下方“最新动态”。</span>
         </div>
-
-        <div class="ice-map-footer">
-          <span id="heatmap-note">正在加载热力图…</span>
+        <div class="ice-map-tools">
+          <button id="locate-me" type="button" aria-label="定位到我附近">◎ 定位附近</button>
+          <button id="reset-map" type="button">重置地图</button>
         </div>
+        <div class="ice-map-legend" aria-label="事件类型图例">
+          <span><i class="dot dot-red"></i>抓捕/拘留</span>
+          <span><i class="dot dot-orange"></i>遣返</span>
+          <span><i class="dot dot-blue"></i>其他行动</span>
+          <span><i class="dot dot-gray"></i>仅州级位置</span>
+        </div>
+      </div>
+
+      <div class="ice-map-summary">
+        <div><span>统计范围</span><strong id="summary-range">过去24小时</strong></div>
+        <div><span>公开事件</span><strong id="summary-events">0</strong></div>
+        <div><span>已披露人数</span><strong id="summary-people">0人</strong></div>
+        <div><span>涉及州</span><strong id="summary-states">0</strong></div>
       </div>
     </section>
 
     <section class="ice-shell ice-news-section" aria-labelledby="latest-title">
       <div class="ice-section-heading">
-        <h2 id="latest-title">最新动态</h2>
-        <span id="news-sort-note">按发布时间倒序排列</span>
+        <div>
+          <h2 id="latest-title">最新动态</h2>
+          <p>按发布时间倒序排列</p>
+        </div>
       </div>
       <div id="ice-news-list" class="ice-news-list" aria-live="polite"></div>
     </section>
   </main>
 
-  <script src="/assets/ice-topic.js?v=37" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="/assets/ice-topic.js?v=39" defer></script>
 </body>
 </html>

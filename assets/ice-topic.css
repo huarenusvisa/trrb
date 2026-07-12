@@ -14,3 +14,48 @@
   .ice-map-section{padding-top:18px}
   .ice-live-map{height:56vh;min-height:420px;max-height:560px}
 }
+
+
+/* V44: compact map viewport — users can zoom manually */
+.ice-map-card{
+  overflow:hidden;
+}
+.ice-live-map{
+  height:440px;
+  min-height:440px;
+  max-height:440px;
+}
+.ice-map-empty{
+  padding:18px 20px;
+}
+@media(max-width:760px){
+  .ice-live-map{
+    height:320px;
+    min-height:320px;
+    max-height:320px;
+  }
+  .ice-map-card{
+    border-radius:18px;
+  }
+  .ice-map-empty{
+    left:18px;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    padding:16px 14px;
+  }
+  .ice-map-tools{
+    bottom:12px;
+    left:10px;
+  }
+  .ice-map-tools button{
+    min-height:38px;
+    padding:8px 13px;
+    font-size:13px;
+  }
+  .ice-map-legend{
+    max-width:145px;
+    padding:9px 11px;
+    font-size:12px;
+  }
+}

@@ -1,5 +1,1396 @@
 [
   {
+    "id": "pending-trump-2075799774083613169",
+    "x_post_id": "2075799774083613169",
+    "kind": "retry",
+    "reason": "Supabase 409 Conflict: {\"code\":\"23505\",\"details\":\"Key (slug)=(特朗普政府对纽约时报记者发出传票) already exists.\",\"hint\":null,\"message\":\"duplicate key value violates unique constraint \\\"articles_slug_key\\\"\"}",
+    "attempts": 1,
+    "created_at": "2026-07-12T06:20:50.529Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 94,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2075799774083613169",
+      "text": "The Trump administration issued subpoenas to New York Times journalists who wrote about the new Air Force One, an escalation of pressure on the media. https://t.co/8cXYSuSSy4",
+      "created_at": "2026-07-11T04:30:07.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "The Justice Department is seeking to compel testimony from reporters who wrote about the new Air Force One. The Times called the move a “brazen act.”",
+            "display_url": "nyti.ms/44k07x4",
+            "end": 174,
+            "expanded_url": "https://nyti.ms/44k07x4",
+            "images": [
+              {
+                "height": 1688,
+                "url": "https://pbs.twimg.com/news_img/2075799776801505280/XPkIez4t?format=jpg&name=orig",
+                "width": 3000
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075799776801505280/XPkIez4t?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 151,
+            "status": 200,
+            "title": "Times Journalists Subpoenaed as Trump Escalates Pressure on Media",
+            "unwound_url": "https://www.nytimes.com/2026/07/11/business/media/new-york-times-trump-subpoenas.html?smtyp=cur&smid=tw-nytimes",
+            "url": "https://t.co/8cXYSuSSy4"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 195,
+        "impression_count": 712503,
+        "like_count": 2238,
+        "quote_count": 147,
+        "reply_count": 523,
+        "retweet_count": 1020
+      },
+      "author": {
+        "id": "807095",
+        "name": "The New York Times",
+        "username": "nytimes",
+        "verified": true,
+        "verified_type": "blue"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/nytimes/status/2075799774083613169",
+      "candidate_score": 94,
+      "matched_terms": [
+        "特朗普",
+        "白宫/政府",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075822768688349197",
+    "x_post_id": "2075822768688349197",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T02:45:30.421Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 98,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2075822768688349197",
+      "text": "President Trump said \"1000 Missiles are Locked and Loaded and aimed at Iran,\" should the government attempt to assassinate him. https://t.co/sm10iw4cD5",
+      "created_at": "2026-07-11T06:01:29.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Qatari mediators visited Iran on Friday to get negotiations back on track. Last Updated: July 11, 2026, 12:11 AM EDT President Donald Trump announced \"major combat operations \"against Iran on Feb. 28, with massive joint U.S.-Israeli strikes targeting military, government and infrastructure sites. Delegations from the U.S. and Iran entered negotiations last month aimed at a war-ending deal based on a memorandum of understanding signed by both countries. The U.S. and Iran nonetheless exchanged limited",
+            "display_url": "abcnews.link/W9EQFkN",
+            "end": 151,
+            "expanded_url": "https://abcnews.link/W9EQFkN",
+            "images": [
+              {
+                "height": 900,
+                "url": "https://pbs.twimg.com/news_img/2075822777194467328/9FrMQ7dV?format=jpg&name=orig",
+                "width": 1600
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075822777194467328/9FrMQ7dV?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 128,
+            "status": 200,
+            "title": "Trump says '1000 Missiles are Locked and Loaded' if Iran attempts to assassinate him",
+            "unwound_url": "https://abcnews.com/International/live-updates/iran-live-updates-thousands-throng-tehran-streets-khamenei/?id=134509610&entryId=134670041&cid=social_twitter_abcn",
+            "url": "https://t.co/sm10iw4cD5"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 7,
+        "impression_count": 52519,
+        "like_count": 65,
+        "quote_count": 4,
+        "reply_count": 63,
+        "retweet_count": 26
+      },
+      "author": {
+        "id": "28785486",
+        "name": "ABC News",
+        "username": "ABC",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/ABC/status/2075822768688349197",
+      "candidate_score": 98,
+      "matched_terms": [
+        "特朗普",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075829943280292302",
+    "x_post_id": "2075829943280292302",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 90,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075829943280292302",
+      "text": "Schumer on Trump election board firings: ‘Brazen attempt to seize control’\n\nhttps://t.co/FLNCPCyhIP",
+      "created_at": "2026-07-11T06:30:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Senate Democratic Leader Chuck Schumer (N.Y.) on Thursday blasted President Trump’s decision to fire members of the bipartisan Election Assistance Commission, accusing the president of making a “br…",
+            "display_url": "thehill.com/homenews/senat…",
+            "end": 99,
+            "expanded_url": "https://thehill.com/homenews/senate/5962253-chuck-schumer-donald-trump-election-board-firings/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2075582354580451328/-Ti6GZEG?format=jpg&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075582354580451328/-Ti6GZEG?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 76,
+            "status": 200,
+            "title": "Schumer on Trump election board firings: ‘Brazen attempt to seize control’",
+            "unwound_url": "https://thehill.com/homenews/senate/5962253-chuck-schumer-donald-trump-election-board-firings/",
+            "url": "https://t.co/FLNCPCyhIP"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 1,
+        "impression_count": 9029,
+        "like_count": 62,
+        "quote_count": 2,
+        "reply_count": 17,
+        "retweet_count": 23
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2075829943280292302",
+      "candidate_score": 90,
+      "matched_terms": [
+        "特朗普",
+        "具体事件"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075839744743731448",
+    "x_post_id": "2075839744743731448",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T02:45:30.421Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 86,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2075839744743731448",
+      "text": "Security enhancements are underway on the North Portico of the White House, an official said, but it's not yet clear what those enhancements entail.\n\nThe work to the entrance of 1600 Pennsylvania Ave. is expected to be finished around mid-September. https://t.co/05OGuHoJSJ https://t.co/UBxXFIRzrc",
+      "created_at": "2026-07-11T07:08:57.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Security enhancements are underway on the North Portico of the White House, according to a White House official. ",
+            "display_url": "abcnews.link/oHDEHLG",
+            "end": 273,
+            "expanded_url": "https://abcnews.link/oHDEHLG",
+            "images": [
+              {
+                "height": 900,
+                "url": "https://pbs.twimg.com/news_img/2075761771458011136/mCcHhsuI?format=jpg&name=orig",
+                "width": 1600
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075761771458011136/mCcHhsuI?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 250,
+            "status": 200,
+            "title": "White House entrance undergoing 'security enhancements and upgrades'",
+            "unwound_url": "https://abcnews.com/Politics/white-house-entrance-undergoing-security-enhancements-upgrades/story?id=134660365&cid=social_twitter_abcn",
+            "url": "https://t.co/05OGuHoJSJ"
+          },
+          {
+            "display_url": "pic.x.com/UBxXFIRzrc",
+            "end": 297,
+            "expanded_url": "https://x.com/ABC/status/2075839744743731448/photo/1",
+            "media_key": "3_2075839735725973504",
+            "start": 274,
+            "url": "https://t.co/UBxXFIRzrc"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM7dPcqWYAAnGu-.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 8,
+        "impression_count": 31857,
+        "like_count": 103,
+        "quote_count": 5,
+        "reply_count": 56,
+        "retweet_count": 31
+      },
+      "author": {
+        "id": "28785486",
+        "name": "ABC News",
+        "username": "ABC",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/ABC/status/2075839744743731448",
+      "candidate_score": 86,
+      "matched_terms": [
+        "白宫/政府",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075845042850378182",
+    "x_post_id": "2075845042850378182",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 65,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075845042850378182",
+      "text": "Trump says he won’t sign housing bill in protest of SAVE America Act inaction\n\nhttps://t.co/enEnDYlXTA",
+      "created_at": "2026-07-11T07:30:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "President Trump said on Friday that he will not sign the 21st Century ROAD to Housing Act, which is set to pass into law tonight, in protest over the Senate not passing the SAVE America Act.  “THE …",
+            "display_url": "thehill.com/homenews/admin…",
+            "end": 102,
+            "expanded_url": "https://thehill.com/homenews/administration/5962396-trump-not-signing-housing-act/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2075579707651756032/kye5zUpG?format=jpg&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075579707651756032/kye5zUpG?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 79,
+            "status": 200,
+            "title": "Trump says he won’t sign housing bill in protest of SAVE America Act inaction",
+            "unwound_url": "https://thehill.com/homenews/administration/5962396-trump-not-signing-housing-act/",
+            "url": "https://t.co/enEnDYlXTA"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 0,
+        "impression_count": 8492,
+        "like_count": 33,
+        "quote_count": 2,
+        "reply_count": 28,
+        "retweet_count": 5
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2075845042850378182",
+      "candidate_score": 65,
+      "matched_terms": [
+        "特朗普"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075848839739720114",
+    "x_post_id": "2075848839739720114",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 73,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075848839739720114",
+      "text": "Will Trump Accounts deliver for American children? https://t.co/lALhGxKx9g",
+      "created_at": "2026-07-11T07:45:05.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "The White House has hailed the project as giving new generations a stake in the American dream, but the scheme has its critics.",
+            "display_url": "bbc.in/4vmuVYY",
+            "end": 74,
+            "expanded_url": "https://bbc.in/4vmuVYY",
+            "images": [
+              {
+                "height": 576,
+                "url": "https://pbs.twimg.com/news_img/2075848843837554688/y3U-vuGs?format=jpg&name=orig",
+                "width": 1024
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075848843837554688/y3U-vuGs?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 51,
+            "status": 200,
+            "title": "Trump Accounts: Will the new savings scheme for American children succeed?",
+            "unwound_url": "https://www.bbc.com/news/articles/ckg55v9e2y9o?xtor=AL-71-%5Bpartner%5D-%5Bbbc.news.twitter%5D-%5Bheadline%5D-%5Bnews%5D-%5Bbizdev%5D-%5Bisapi%5D&at_campaign_type=owned&at_link_origin=BBCWorld&at_link_type=web_link&at_ptr_name=twitter&at_bbc_team=editorial&at_medium=social&at_link_id=6B1A591E-7CFC-11F1-84E5-E86EC3B1DEB0&at_format=link&at_campaign=Social_Flow",
+            "url": "https://t.co/lALhGxKx9g"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 11,
+        "impression_count": 111099,
+        "like_count": 160,
+        "quote_count": 6,
+        "reply_count": 111,
+        "retweet_count": 30
+      },
+      "author": {
+        "id": "742143",
+        "name": "BBC News (World)",
+        "username": "BBCWorld",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/BBCWorld/status/2075848839739720114",
+      "candidate_score": 73,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075860143800258874",
+    "x_post_id": "2075860143800258874",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 84,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075860143800258874",
+      "text": "8 indicted in White House UFC event attack plot\n\nhttps://t.co/KnhI8VYIHJ",
+      "created_at": "2026-07-11T08:30:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Eight men were indicted on federal charges Thursday for their alleged involvement in a planned drone and sniper attack on the White House’s UFC cage-fighting event last month.  The indictment, whic…",
+            "display_url": "thehill.com/regulation/cou…",
+            "end": 72,
+            "expanded_url": "https://thehill.com/regulation/court-battles/5962235-white-house-ufc-attack-plot-indictments/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2075587397161529344/4VE3hAoP?format=jpg&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075587397161529344/4VE3hAoP?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 49,
+            "status": 200,
+            "title": "8 indicted in White House UFC event attack plot",
+            "unwound_url": "https://thehill.com/regulation/court-battles/5962235-white-house-ufc-attack-plot-indictments/",
+            "url": "https://t.co/KnhI8VYIHJ"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 2,
+        "impression_count": 7570,
+        "like_count": 18,
+        "quote_count": 1,
+        "reply_count": 6,
+        "retweet_count": 2
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2075860143800258874",
+      "candidate_score": 84,
+      "matched_terms": [
+        "白宫/政府",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075878516084679077",
+    "x_post_id": "2075878516084679077",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 98,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075878516084679077",
+      "text": "Trump threatens to 'decimate' Iran if it tries to kill him, as Treasury sanctions alleged Iranian financier https://t.co/gsTgxJ8bIX",
+      "created_at": "2026-07-11T09:43:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Trump says 1,000 missiles are \"locked and loaded\" and will hit Iran if it carries out its threats to assassinate the U.S. president.",
+            "display_url": "cnbc.com/2026/07/11/tru…",
+            "end": 131,
+            "expanded_url": "https://www.cnbc.com/2026/07/11/trump-threat.html?taid=6a521024ae9f0300013bb020&utm_campaign=trueanthem&utm_content=main&utm_medium=social&utm_source=twitter",
+            "images": [
+              {
+                "height": 1080,
+                "url": "https://pbs.twimg.com/news_img/2075878519087755264/k5V9Gko3?format=jpg&name=orig",
+                "width": 1920
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075878519087755264/k5V9Gko3?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 108,
+            "status": 200,
+            "title": "Trump threatens to 'decimate' Iran if it tries to kill him, as Treasury sanctions alleged Iranian financier",
+            "unwound_url": "https://www.cnbc.com/2026/07/11/trump-threat.html?taid=6a521024ae9f0300013bb020&utm_campaign=trueanthem&utm_content=main&utm_medium=social&utm_source=twitter",
+            "url": "https://t.co/gsTgxJ8bIX"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 3,
+        "impression_count": 35495,
+        "like_count": 83,
+        "quote_count": 2,
+        "reply_count": 46,
+        "retweet_count": 16
+      },
+      "author": {
+        "id": "20402945",
+        "name": "CNBC",
+        "username": "CNBC",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/CNBC/status/2075878516084679077",
+      "candidate_score": 98,
+      "matched_terms": [
+        "特朗普",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075890341304008922",
+    "x_post_id": "2075890341304008922",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 65,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075890341304008922",
+      "text": "Former Trump staffer: Vance ‘set up’ as ‘fall guy’ for Iran deal\n\nhttps://t.co/EiOPviFaUm",
+      "created_at": "2026-07-11T10:30:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Caroline Sunshine, who served as an aide to President Trump during his first term, suggested Thursday that Vice President Vance was set up to take the blame for the failed memorandum of understandi…",
+            "display_url": "thehill.com/homenews/admin…",
+            "end": 89,
+            "expanded_url": "https://thehill.com/homenews/administration/5962326-caroline-sunshine-donald-trump-jd-vance-iran-war-peace-talks/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2075584515246837760/DUr7mmYD?format=jpg&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075584515246837760/DUr7mmYD?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 66,
+            "status": 200,
+            "title": "Former Trump staffer: Vance ‘set up’ as ‘fall guy’ for Iran deal",
+            "unwound_url": "https://thehill.com/homenews/administration/5962326-caroline-sunshine-donald-trump-jd-vance-iran-war-peace-talks/",
+            "url": "https://t.co/EiOPviFaUm"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 5,
+        "impression_count": 11285,
+        "like_count": 72,
+        "quote_count": 5,
+        "reply_count": 46,
+        "retweet_count": 21
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2075890341304008922",
+      "candidate_score": 65,
+      "matched_terms": [
+        "特朗普"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075894677157335204",
+    "x_post_id": "2075894677157335204",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T02:45:30.421Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 68,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2075894677157335204",
+      "text": "LOCKED &amp; LOADED: President Trump responds to Iran's latest threat against him, saying any assassination attempt would force the United States to \"decimate and destroy\" their country. https://t.co/QCfcVFuCCS",
+      "created_at": "2026-07-11T10:47:13.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/QCfcVFuCCS",
+            "end": 210,
+            "expanded_url": "https://x.com/FoxNews/status/2075894677157335204/photo/1",
+            "media_key": "3_2075894634136346624",
+            "start": 187,
+            "url": "https://t.co/QCfcVFuCCS"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM8PK9LWIAAxQ8T.png",
+          "alt_text": "",
+          "width": 582,
+          "height": 374
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 65,
+        "impression_count": 218515,
+        "like_count": 2309,
+        "quote_count": 47,
+        "reply_count": 613,
+        "retweet_count": 456
+      },
+      "author": {
+        "id": "1367531",
+        "name": "Fox News",
+        "username": "FoxNews",
+        "verified": true,
+        "verified_type": "blue"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/FoxNews/status/2075894677157335204",
+      "candidate_score": 68,
+      "matched_terms": [
+        "特朗普"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075898031518503185",
+    "x_post_id": "2075898031518503185",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 98,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075898031518503185",
+      "text": "Some Supreme Court justices drove the agenda. Some resisted, broke records, defied Trump or criticized their colleagues. https://t.co/dLzepBatG8",
+      "created_at": "2026-07-11T11:00:33.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Some Supreme Court justices drove the agenda. Some resisted, broke records, defied Trump or criticized their colleagues.",
+            "display_url": "usatoday.com/story/news/pol…",
+            "end": 144,
+            "expanded_url": "https://www.usatoday.com/story/news/politics/2026/07/11/supreme-court-justices-differences-trump/90843104007/?taid=6a522251ae9f0300013bb087&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
+            "images": [
+              {
+                "height": 800,
+                "url": "https://pbs.twimg.com/news_img/2075898032499908608/q4FisE7G?format=jpg&name=orig",
+                "width": 1600
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075898032499908608/q4FisE7G?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 121,
+            "status": 200,
+            "title": "Behind black robes, Supreme Court justices reveal colorful differences",
+            "unwound_url": "https://www.usatoday.com/story/news/politics/2026/07/11/supreme-court-justices-differences-trump/90843104007/?taid=6a522251ae9f0300013bb087&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
+            "url": "https://t.co/dLzepBatG8"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 3,
+        "impression_count": 12317,
+        "like_count": 37,
+        "quote_count": 1,
+        "reply_count": 28,
+        "retweet_count": 19
+      },
+      "author": {
+        "id": "15754281",
+        "name": "USA TODAY",
+        "username": "USATODAY",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/USATODAY/status/2075898031518503185",
+      "candidate_score": 98,
+      "matched_terms": [
+        "特朗普",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075901209441943565",
+    "x_post_id": "2075901209441943565",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 98,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075901209441943565",
+      "text": "Around 40% of voters in the 2024 election said the economy was their top issue, far outstripping any other. The Wall Street Journal talked to Trump voters about his performance on the economy.  https://t.co/IL0hOTKT5E",
+      "created_at": "2026-07-11T11:13:11.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Support among some of the president’s voters has fallen off, alongside an overall declining approval rating on the economy. Others give him high marks.",
+            "display_url": "on.wsj.com/4bldalD",
+            "end": 217,
+            "expanded_url": "https://on.wsj.com/4bldalD",
+            "images": [
+              {
+                "height": 640,
+                "url": "https://pbs.twimg.com/news_img/2075901211614564352/66Xk5q8J?format=jpg&name=orig",
+                "width": 1280
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075901211614564352/66Xk5q8J?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 194,
+            "status": 200,
+            "title": "What Trump Voters Say About the Economy Now",
+            "unwound_url": "https://www.wsj.com/economy/trump-voters-economy-2026-6c76d508?mod=e2tw",
+            "url": "https://t.co/IL0hOTKT5E"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 9,
+        "impression_count": 52106,
+        "like_count": 44,
+        "quote_count": 4,
+        "reply_count": 30,
+        "retweet_count": 10
+      },
+      "author": {
+        "id": "3108351",
+        "name": "The Wall Street Journal",
+        "username": "WSJ",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/WSJ/status/2075901209441943565",
+      "candidate_score": 98,
+      "matched_terms": [
+        "特朗普",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075902975394881684",
+    "x_post_id": "2075902975394881684",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 98,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075902975394881684",
+      "text": "Opinion: This is a story Republicans were eager to tell voters back home, a win to tout ahead of the November midterm elections. So why did Trump sit it out? https://t.co/Cf3tjNq53v",
+      "created_at": "2026-07-11T11:20:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Republicans had a clear win with the bipartisan 21st Century ROAD to Housing Act. They were ready to celebrate, until Trump rained on their parade.",
+            "display_url": "usatoday.com/story/opinion/…",
+            "end": 181,
+            "expanded_url": "https://www.usatoday.com/story/opinion/columnist/2026/07/11/trump-housing-bill-unsigned-law-home-buying/90849979007/?taid=6a5226ec87c42e000119d150&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
+            "start": 158,
+            "status": 200,
+            "title": "Housing bill gave Republicans a win. Then Trump showed up. | Opinion",
+            "unwound_url": "https://www.usatoday.com/story/opinion/columnist/2026/07/11/trump-housing-bill-unsigned-law-home-buying/90849979007/?taid=6a5226ec87c42e000119d150&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
+            "url": "https://t.co/Cf3tjNq53v"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 1,
+        "impression_count": 12666,
+        "like_count": 27,
+        "quote_count": 3,
+        "reply_count": 21,
+        "retweet_count": 9
+      },
+      "author": {
+        "id": "15754281",
+        "name": "USA TODAY",
+        "username": "USATODAY",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/USATODAY/status/2075902975394881684",
+      "candidate_score": 98,
+      "matched_terms": [
+        "特朗普",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075905443772408098",
+    "x_post_id": "2075905443772408098",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 73,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075905443772408098",
+      "text": "Top Democrats bash Trump over cryptocurrency income\n\nhttps://t.co/0pSY7EEsIw",
+      "created_at": "2026-07-11T11:30:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Top Senate Democrats slammed President Trump on Friday over the more than $1 billion in cryptocurrency-related income he reported last year, calling for investigations into the national security ra…",
+            "display_url": "thehill.com/homenews/senat…",
+            "end": 76,
+            "expanded_url": "https://thehill.com/homenews/senate/5962664-senate-dems-elizabeth-warren-richard-blumenthal-dick-durbin-gary-peters-donald-trump-crypto-criticism/",
+            "start": 53,
+            "status": 200,
+            "title": "Top Democrats bash Trump over cryptocurrency income",
+            "unwound_url": "https://thehill.com/homenews/senate/5962664-senate-dems-elizabeth-warren-richard-blumenthal-dick-durbin-gary-peters-donald-trump-crypto-criticism/",
+            "url": "https://t.co/0pSY7EEsIw"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 0,
+        "impression_count": 9116,
+        "like_count": 24,
+        "quote_count": 3,
+        "reply_count": 19,
+        "retweet_count": 6
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2075905443772408098",
+      "candidate_score": 73,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075918495682846837",
+    "x_post_id": "2075918495682846837",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T02:45:30.421Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 86,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2075918495682846837",
+      "text": "Smithsonian Secretary Lonnie Bunch disputed the scathing July 4 report released by the White House, which accused the National Museum of American History and its leaders of presenting a \"radical view\" of American history. https://t.co/NM0CdJzsQ6",
+      "created_at": "2026-07-11T12:21:52.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Smithsonian Secretary Lonnie Bunch disputed the scathing White House report, which accused the American history museum of presenting a \"radical view\" of American history.",
+            "display_url": "abcnews.link/8ZUh1Dk",
+            "end": 245,
+            "expanded_url": "https://abcnews.link/8ZUh1Dk",
+            "images": [
+              {
+                "height": 900,
+                "url": "https://pbs.twimg.com/news_img/2075348558480334848/SHaDCkVH?format=jpg&name=orig",
+                "width": 1600
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075348558480334848/SHaDCkVH?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 222,
+            "status": 200,
+            "title": "Smithsonian chief disputes scathing White House report accusing museum of 'radical' activism",
+            "unwound_url": "https://abcnews.com/Politics/smithsonian-chief-disputes-scathing-white-house-report-accusing/story?id=134628251&cid=social_twitter_abcn",
+            "url": "https://t.co/NM0CdJzsQ6"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 4,
+        "impression_count": 45106,
+        "like_count": 70,
+        "quote_count": 3,
+        "reply_count": 43,
+        "retweet_count": 27
+      },
+      "author": {
+        "id": "28785486",
+        "name": "ABC News",
+        "username": "ABC",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/ABC/status/2075918495682846837",
+      "candidate_score": 86,
+      "matched_terms": [
+        "白宫/政府",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075925423234457728",
+    "x_post_id": "2075925423234457728",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T02:45:30.421Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 98,
+    "candidate_score": 83,
+    "query_lane": "official",
+    "ai": null,
+    "post": {
+      "id": "2075925423234457728",
+      "text": "President Trump warns US would 'decimate and destroy' Iran over assassination attempt\n\nhttps://t.co/JQD6XVPa6g",
+      "created_at": "2026-07-11T12:49:24.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "President Donald Trump declared on Truth Social that \"1,000 missiles are locked and loaded\" if Iran acts on assassination threats made against him.",
+            "display_url": "foxnews.com/politics/trump…",
+            "end": 110,
+            "expanded_url": "https://www.foxnews.com/politics/trump-warns-us-would-decimate-destroy-iran-assassination-attempt",
+            "images": [
+              {
+                "height": 512,
+                "url": "https://pbs.twimg.com/news_img/2075854418038116352/uoXQIaoF?format=jpg&name=orig",
+                "width": 1024
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075854418038116352/uoXQIaoF?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 87,
+            "status": 200,
+            "title": "Trump warns US would 'decimate and destroy' Iran over assassination attempt",
+            "unwound_url": "https://www.foxnews.com/politics/trump-warns-us-would-decimate-destroy-iran-assassination-attempt",
+            "url": "https://t.co/JQD6XVPa6g"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 103,
+        "impression_count": 218698,
+        "like_count": 6603,
+        "quote_count": 101,
+        "reply_count": 1524,
+        "retweet_count": 1197
+      },
+      "author": {
+        "id": "1879670389057474560",
+        "name": "Karoline Leavitt",
+        "username": "PressSec",
+        "verified": true,
+        "verified_type": "government"
+      },
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 98,
+      "query_lane": "official",
+      "query_label": "特朗普与白宫官方",
+      "x_url": "https://x.com/PressSec/status/2075925423234457728",
+      "candidate_score": 83,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075933301391417820",
+    "x_post_id": "2075933301391417820",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T02:45:30.421Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 98,
+    "candidate_score": 83,
+    "query_lane": "official",
+    "ai": null,
+    "post": {
+      "id": "2075933301391417820",
+      "text": "President Trump celebrates $250B Micron investment, says America is 'GETTING SHOVELS IN THE GROUND'\n\nhttps://t.co/1Sc6okaF5L",
+      "created_at": "2026-07-11T13:20:42.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Micron Technology's $250 billion investment will create 100,000 American jobs across semiconductor facilities in New York, Idaho and Virginia.",
+            "display_url": "foxbusiness.com/politics/trump…",
+            "end": 124,
+            "expanded_url": "https://www.foxbusiness.com/politics/trump-celebrates-250b-micron-investment-america-getting-shovels-ground",
+            "start": 101,
+            "status": 200,
+            "title": "Trump celebrates $250B Micron investment, says America is 'GETTING SHOVELS IN THE GROUND'",
+            "unwound_url": "https://www.foxbusiness.com/politics/trump-celebrates-250b-micron-investment-america-getting-shovels-ground",
+            "url": "https://t.co/1Sc6okaF5L"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 44,
+        "impression_count": 101851,
+        "like_count": 4788,
+        "quote_count": 20,
+        "reply_count": 515,
+        "retweet_count": 727
+      },
+      "author": {
+        "id": "1879670389057474560",
+        "name": "Karoline Leavitt",
+        "username": "PressSec",
+        "verified": true,
+        "verified_type": "government"
+      },
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 98,
+      "query_lane": "official",
+      "query_label": "特朗普与白宫官方",
+      "x_url": "https://x.com/PressSec/status/2075933301391417820",
+      "candidate_score": 83,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075934036640378880",
+    "x_post_id": "2075934036640378880",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T04:40:06.416Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 73,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2075934036640378880",
+      "text": "Live updates: Trump warns Iran over alleged assassination plot; Housing bill now law\n\nhttps://t.co/xtSQJ9Slj2",
+      "created_at": "2026-07-11T13:23:37.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "President Trump issued a stark warning to Iran late Friday, after the Islamic Republic reportedly plotted an assassination attempt against the president. “1000 Missiles are Locked and Loaded and ai…",
+            "display_url": "thehill.com/homenews/admin…",
+            "end": 109,
+            "expanded_url": "https://thehill.com/homenews/administration/5962532-live-updates-trump-iran-war-midterms-housing-bill/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2075934037596688384/mTUzLfdm?format=jpg&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2075934037596688384/mTUzLfdm?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 86,
+            "status": 200,
+            "title": "Live updates: Trump warns Iran over alleged assassination plot; Housing bill now law",
+            "unwound_url": "https://thehill.com/homenews/administration/5962532-live-updates-trump-iran-war-midterms-housing-bill/",
+            "url": "https://t.co/xtSQJ9Slj2"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 1,
+        "impression_count": 8659,
+        "like_count": 10,
+        "quote_count": 2,
+        "reply_count": 26,
+        "retweet_count": 10
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2075934036640378880",
+      "candidate_score": 73,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2075934675017597141",
+    "x_post_id": "2075934675017597141",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T02:45:30.421Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 98,
+    "candidate_score": 78,
+    "query_lane": "official",
+    "ai": null,
+    "post": {
+      "id": "2075934675017597141",
+      "text": "Secretary Marco Rubio on Rapist Pardoned by Tim Walz Being Deported: ‘He Will Never Endanger Another American’\n\nhttps://t.co/V9r8DRswnc",
+      "created_at": "2026-07-11T13:26:10.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "ICE deported an illegal migrant who repeatedly sexually assaulted a 10-year-old girl, who Democrat Minnesota Gov. Tim Walz (D) pardoned.",
+            "display_url": "breitbart.com/immigration/20…",
+            "end": 135,
+            "expanded_url": "https://www.breitbart.com/immigration/2026/07/10/marco-rubio-deports-rapist-pardoned-by-tim-walz-minnesota-democrats/",
+            "start": 112,
+            "status": 200,
+            "title": "Rubio Deports Rapist Pardoned by Minnesota Democrats",
+            "unwound_url": "https://www.breitbart.com/immigration/2026/07/10/marco-rubio-deports-rapist-pardoned-by-tim-walz-minnesota-democrats/",
+            "url": "https://t.co/V9r8DRswnc"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 55,
+        "impression_count": 111659,
+        "like_count": 8013,
+        "quote_count": 44,
+        "reply_count": 677,
+        "retweet_count": 1052
+      },
+      "author": {
+        "id": "1879670389057474560",
+        "name": "Karoline Leavitt",
+        "username": "PressSec",
+        "verified": true,
+        "verified_type": "government"
+      },
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 98,
+      "query_lane": "official",
+      "query_label": "特朗普与白宫官方",
+      "x_url": "https://x.com/PressSec/status/2075934675017597141",
+      "candidate_score": 78,
+      "matched_terms": [
+        "时间/数字"
+      ]
+    }
+  },
+  {
     "id": "pending-trump-2075940964720595061",
     "x_post_id": "2075940964720595061",
     "kind": "queue",
@@ -34094,520 +35485,6 @@
         "特朗普",
         "具体事件",
         "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075934675017597141",
-    "x_post_id": "2075934675017597141",
-    "kind": "review",
-    "reason": "特朗普新闻相关度低于72",
-    "attempts": 1,
-    "created_at": "2026-07-12T15:45:15.717Z",
-    "source_mode": "auto",
-    "source_tier": "official",
-    "source_weight": 98,
-    "candidate_score": 78,
-    "query_lane": "official",
-    "ai": {
-      "title": "国务卿称被赦免强奸犯将被驱逐",
-      "summary": "国务卿马可·卢比奥表示，前州长蒂姆·沃尔茨赦免的强奸犯将被驱逐。",
-      "content_format": "brief",
-      "body_paragraphs": [
-        "国务卿马可·卢比奥称，被前州长蒂姆·沃尔茨赦免的一名强奸犯将被驱逐，确保其不再危及美国公民。"
-      ],
-      "category": "白宫动态",
-      "importance": 4,
-      "relevance_score": 50,
-      "publishable": true,
-      "needs_review": false,
-      "review_reason": "",
-      "confidence": 85,
-      "verified_level": "official"
-    },
-    "post": {
-      "id": "2075934675017597141",
-      "text": "Secretary Marco Rubio on Rapist Pardoned by Tim Walz Being Deported: ‘He Will Never Endanger Another American’\n\nhttps://t.co/V9r8DRswnc",
-      "created_at": "2026-07-11T13:26:10.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "ICE deported an illegal migrant who repeatedly sexually assaulted a 10-year-old girl, who Democrat Minnesota Gov. Tim Walz (D) pardoned.",
-            "display_url": "breitbart.com/immigration/20…",
-            "end": 135,
-            "expanded_url": "https://www.breitbart.com/immigration/2026/07/10/marco-rubio-deports-rapist-pardoned-by-tim-walz-minnesota-democrats/",
-            "start": 112,
-            "status": 200,
-            "title": "Rubio Deports Rapist Pardoned by Minnesota Democrats",
-            "unwound_url": "https://www.breitbart.com/immigration/2026/07/10/marco-rubio-deports-rapist-pardoned-by-tim-walz-minnesota-democrats/",
-            "url": "https://t.co/V9r8DRswnc"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 55,
-        "impression_count": 111659,
-        "like_count": 8013,
-        "quote_count": 44,
-        "reply_count": 677,
-        "retweet_count": 1052
-      },
-      "author": {
-        "id": "1879670389057474560",
-        "name": "Karoline Leavitt",
-        "username": "PressSec",
-        "verified": true,
-        "verified_type": "government"
-      },
-      "source_mode": "auto",
-      "source_tier": "official",
-      "source_weight": 98,
-      "query_lane": "official",
-      "query_label": "特朗普与白宫官方",
-      "x_url": "https://x.com/PressSec/status/2075934675017597141",
-      "candidate_score": 78,
-      "matched_terms": [
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075934036640378880",
-    "x_post_id": "2075934036640378880",
-    "kind": "review",
-    "reason": "正文长度不合格",
-    "attempts": 1,
-    "created_at": "2026-07-12T15:45:12.379Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 73,
-    "query_lane": "trusted-2",
-    "ai": {
-      "title": "特朗普警告伊朗涉嫌暗杀计划",
-      "summary": "特朗普针对伊朗被指控的暗杀阴谋发表警告，住房法案现已成为法律。",
-      "content_format": "article",
-      "body_paragraphs": [
-        "美国前总统特朗普对伊朗涉嫌暗杀计划发出警告。",
-        "同日，美国住房法案已正式通过，成为法律。"
-      ],
-      "category": "白宫动态",
-      "importance": 7,
-      "relevance_score": 78,
-      "publishable": true,
-      "needs_review": false,
-      "review_reason": "",
-      "confidence": 85,
-      "verified_level": "trusted_media"
-    },
-    "post": {
-      "id": "2075934036640378880",
-      "text": "Live updates: Trump warns Iran over alleged assassination plot; Housing bill now law\n\nhttps://t.co/xtSQJ9Slj2",
-      "created_at": "2026-07-11T13:23:37.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "President Trump issued a stark warning to Iran late Friday, after the Islamic Republic reportedly plotted an assassination attempt against the president. “1000 Missiles are Locked and Loaded and ai…",
-            "display_url": "thehill.com/homenews/admin…",
-            "end": 109,
-            "expanded_url": "https://thehill.com/homenews/administration/5962532-live-updates-trump-iran-war-midterms-housing-bill/",
-            "images": [
-              {
-                "height": 359,
-                "url": "https://pbs.twimg.com/news_img/2075934037596688384/mTUzLfdm?format=jpg&name=orig",
-                "width": 640
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075934037596688384/mTUzLfdm?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 86,
-            "status": 200,
-            "title": "Live updates: Trump warns Iran over alleged assassination plot; Housing bill now law",
-            "unwound_url": "https://thehill.com/homenews/administration/5962532-live-updates-trump-iran-war-midterms-housing-bill/",
-            "url": "https://t.co/xtSQJ9Slj2"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 1,
-        "impression_count": 8659,
-        "like_count": 10,
-        "quote_count": 2,
-        "reply_count": 26,
-        "retweet_count": 10
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075934036640378880",
-      "candidate_score": 73,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075905443772408098",
-    "x_post_id": "2075905443772408098",
-    "kind": "review",
-    "reason": "特朗普新闻相关度低于72",
-    "attempts": 1,
-    "created_at": "2026-07-12T15:45:00.702Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 73,
-    "query_lane": "trusted-2",
-    "ai": {
-      "title": "民主党领导批评特朗普加密货币收入情况",
-      "summary": "多名民主党高层批评特朗普的加密货币收入问题。",
-      "content_format": "brief",
-      "body_paragraphs": [
-        "多位民主党顶级领导公开批评前总统特朗普的加密货币收入情况。"
-      ],
-      "category": "白宫动态",
-      "importance": 6,
-      "relevance_score": 65,
-      "publishable": true,
-      "needs_review": false,
-      "review_reason": "",
-      "confidence": 90,
-      "verified_level": "trusted_media"
-    },
-    "post": {
-      "id": "2075905443772408098",
-      "text": "Top Democrats bash Trump over cryptocurrency income\n\nhttps://t.co/0pSY7EEsIw",
-      "created_at": "2026-07-11T11:30:00.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "Top Senate Democrats slammed President Trump on Friday over the more than $1 billion in cryptocurrency-related income he reported last year, calling for investigations into the national security ra…",
-            "display_url": "thehill.com/homenews/senat…",
-            "end": 76,
-            "expanded_url": "https://thehill.com/homenews/senate/5962664-senate-dems-elizabeth-warren-richard-blumenthal-dick-durbin-gary-peters-donald-trump-crypto-criticism/",
-            "start": 53,
-            "status": 200,
-            "title": "Top Democrats bash Trump over cryptocurrency income",
-            "unwound_url": "https://thehill.com/homenews/senate/5962664-senate-dems-elizabeth-warren-richard-blumenthal-dick-durbin-gary-peters-donald-trump-crypto-criticism/",
-            "url": "https://t.co/0pSY7EEsIw"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 0,
-        "impression_count": 9116,
-        "like_count": 24,
-        "quote_count": 3,
-        "reply_count": 19,
-        "retweet_count": 6
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075905443772408098",
-      "candidate_score": 73,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075890341304008922",
-    "x_post_id": "2075890341304008922",
-    "kind": "review",
-    "reason": "特朗普新闻相关度低于72",
-    "attempts": 1,
-    "created_at": "2026-07-12T15:44:43.913Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 65,
-    "query_lane": "trusted-2",
-    "ai": {
-      "title": "前特朗普助手称万斯成伊朗协议替罪羊",
-      "summary": "前特朗普助手表示，万斯被安排成为伊朗协议的替罪羊。",
-      "content_format": "brief",
-      "body_paragraphs": [
-        "据报道，一名前特朗普助手称，万斯被设定为伊朗协议的替罪羊。"
-      ],
-      "category": "白宫动态",
-      "importance": 3,
-      "relevance_score": 65,
-      "publishable": true,
-      "needs_review": false,
-      "review_reason": "",
-      "confidence": 83,
-      "verified_level": "trusted_media"
-    },
-    "post": {
-      "id": "2075890341304008922",
-      "text": "Former Trump staffer: Vance ‘set up’ as ‘fall guy’ for Iran deal\n\nhttps://t.co/EiOPviFaUm",
-      "created_at": "2026-07-11T10:30:00.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "Caroline Sunshine, who served as an aide to President Trump during his first term, suggested Thursday that Vice President Vance was set up to take the blame for the failed memorandum of understandi…",
-            "display_url": "thehill.com/homenews/admin…",
-            "end": 89,
-            "expanded_url": "https://thehill.com/homenews/administration/5962326-caroline-sunshine-donald-trump-jd-vance-iran-war-peace-talks/",
-            "images": [
-              {
-                "height": 359,
-                "url": "https://pbs.twimg.com/news_img/2075584515246837760/DUr7mmYD?format=jpg&name=orig",
-                "width": 640
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075584515246837760/DUr7mmYD?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 66,
-            "status": 200,
-            "title": "Former Trump staffer: Vance ‘set up’ as ‘fall guy’ for Iran deal",
-            "unwound_url": "https://thehill.com/homenews/administration/5962326-caroline-sunshine-donald-trump-jd-vance-iran-war-peace-talks/",
-            "url": "https://t.co/EiOPviFaUm"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 5,
-        "impression_count": 11285,
-        "like_count": 72,
-        "quote_count": 5,
-        "reply_count": 46,
-        "retweet_count": 21
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075890341304008922",
-      "candidate_score": 65,
-      "matched_terms": [
-        "特朗普"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075848839739720114",
-    "x_post_id": "2075848839739720114",
-    "kind": "review",
-    "reason": "特朗普新闻相关度低于72",
-    "attempts": 1,
-    "created_at": "2026-07-12T15:44:36.173Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 73,
-    "query_lane": "trusted-2",
-    "ai": {
-      "title": "特朗普账户对美国儿童的影响存疑",
-      "summary": "BBC报道质疑特朗普账户是否能有效支持美国儿童发展。",
-      "content_format": "brief",
-      "body_paragraphs": [
-        "BBC新闻发布推文，提出疑问特朗普账户是否能够为美国儿童带来实质性帮助。"
-      ],
-      "category": "经济",
-      "importance": 3,
-      "relevance_score": 53,
-      "publishable": true,
-      "needs_review": false,
-      "review_reason": "",
-      "confidence": 80,
-      "verified_level": "trusted_media"
-    },
-    "post": {
-      "id": "2075848839739720114",
-      "text": "Will Trump Accounts deliver for American children? https://t.co/lALhGxKx9g",
-      "created_at": "2026-07-11T07:45:05.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "The White House has hailed the project as giving new generations a stake in the American dream, but the scheme has its critics.",
-            "display_url": "bbc.in/4vmuVYY",
-            "end": 74,
-            "expanded_url": "https://bbc.in/4vmuVYY",
-            "images": [
-              {
-                "height": 576,
-                "url": "https://pbs.twimg.com/news_img/2075848843837554688/y3U-vuGs?format=jpg&name=orig",
-                "width": 1024
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075848843837554688/y3U-vuGs?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 51,
-            "status": 200,
-            "title": "Trump Accounts: Will the new savings scheme for American children succeed?",
-            "unwound_url": "https://www.bbc.com/news/articles/ckg55v9e2y9o?xtor=AL-71-%5Bpartner%5D-%5Bbbc.news.twitter%5D-%5Bheadline%5D-%5Bnews%5D-%5Bbizdev%5D-%5Bisapi%5D&at_campaign_type=owned&at_link_origin=BBCWorld&at_link_type=web_link&at_ptr_name=twitter&at_bbc_team=editorial&at_medium=social&at_link_id=6B1A591E-7CFC-11F1-84E5-E86EC3B1DEB0&at_format=link&at_campaign=Social_Flow",
-            "url": "https://t.co/lALhGxKx9g"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 11,
-        "impression_count": 111099,
-        "like_count": 160,
-        "quote_count": 6,
-        "reply_count": 111,
-        "retweet_count": 30
-      },
-      "author": {
-        "id": "742143",
-        "name": "BBC News (World)",
-        "username": "BBCWorld",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/BBCWorld/status/2075848839739720114",
-      "candidate_score": 73,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075845042850378182",
-    "x_post_id": "2075845042850378182",
-    "kind": "review",
-    "reason": "特朗普新闻相关度低于72",
-    "attempts": 1,
-    "created_at": "2026-07-12T15:44:33.951Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 65,
-    "query_lane": "trusted-2",
-    "ai": {
-      "title": "特朗普拒绝签署住房法案以抗议SAVE Amer",
-      "summary": "特朗普宣布不签署住房法案，以表达对SAVE America法案未获通过的不满。",
-      "content_format": "brief",
-      "body_paragraphs": [
-        "特朗普公开表示，他将不会签署当前的住房法案，以抗议SAVE America法案在立法上的停滞和未能采取行动。"
-      ],
-      "category": "白宫动态",
-      "importance": 6,
-      "relevance_score": 65,
-      "publishable": true,
-      "needs_review": false,
-      "review_reason": "",
-      "confidence": 85,
-      "verified_level": "trusted_media"
-    },
-    "post": {
-      "id": "2075845042850378182",
-      "text": "Trump says he won’t sign housing bill in protest of SAVE America Act inaction\n\nhttps://t.co/enEnDYlXTA",
-      "created_at": "2026-07-11T07:30:00.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "President Trump said on Friday that he will not sign the 21st Century ROAD to Housing Act, which is set to pass into law tonight, in protest over the Senate not passing the SAVE America Act.  “THE …",
-            "display_url": "thehill.com/homenews/admin…",
-            "end": 102,
-            "expanded_url": "https://thehill.com/homenews/administration/5962396-trump-not-signing-housing-act/",
-            "images": [
-              {
-                "height": 359,
-                "url": "https://pbs.twimg.com/news_img/2075579707651756032/kye5zUpG?format=jpg&name=orig",
-                "width": 640
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075579707651756032/kye5zUpG?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 79,
-            "status": 200,
-            "title": "Trump says he won’t sign housing bill in protest of SAVE America Act inaction",
-            "unwound_url": "https://thehill.com/homenews/administration/5962396-trump-not-signing-housing-act/",
-            "url": "https://t.co/enEnDYlXTA"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 0,
-        "impression_count": 8492,
-        "like_count": 33,
-        "quote_count": 2,
-        "reply_count": 28,
-        "retweet_count": 5
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075845042850378182",
-      "candidate_score": 65,
-      "matched_terms": [
-        "特朗普"
       ]
     }
   }

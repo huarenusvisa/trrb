@@ -7,14 +7,14 @@
     <meta name="theme-color" content="#d60000" />
     <meta name="color-scheme" content="light" />
     <meta name="format-detection" content="telephone=no" />
-    <link rel="manifest" href="./site.webmanifest?v=30.0" />
+    <link rel="manifest" href="./site.webmanifest?v=29.7" />
     <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
     <meta
       name="description"
       content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、庇护百科等内容。"
     />
     <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="./styles.css?v=30.0" />
+    <link rel="stylesheet" href="./styles.css?v=29.7" />
   </head>
   <body>
     <div class="topbar">
@@ -106,13 +106,33 @@
             <header><h2>24小时热榜</h2><a href="#" class="rank-switch" id="rank-switch">换一换</a></header>
             <ol id="rank-list"></ol>
           </section>
-          <section class="topics topic-focus" aria-labelledby="topic-focus-title">
-            <header class="topic-focus-header">
-              <h2 id="topic-focus-title">专题聚焦</h2>
-              <a href="./listing.html">更多专题 <span aria-hidden="true">›</span></a>
-            </header>
-            <div id="topic-focus-list" class="topic-focus-list">
-              <div class="topic-focus-loading">专题内容加载中...</div>
+          <section class="topics topic-focus" id="topic-focus">
+            <header class="topic-focus-header"><h2>专题聚焦</h2><a href="./listing.html">更多专题 <span aria-hidden="true">›</span></a></header>
+            <div class="topic-focus-list">
+              <a class="topic-focus-card topic-trump" href="./listing.html?q=%E7%89%B9%E6%9C%97%E6%99%AE" data-topic="trump">
+                <img class="topic-focus-icon" src="./assets/topic-focus/trump-portrait.jpg?v=30" alt="特朗普实时动态" width="420" height="560" loading="lazy" />
+                <div class="topic-focus-copy">
+                  <h3>特朗普实时动态</h3><p>每30分钟自动检查更新</p>
+                  <span class="topic-status"><i></i> 实时追踪</span>
+                  <div class="topic-latest" data-topic-latest="trump">正在读取最新动态…</div>
+                </div>
+              </a>
+              <a class="topic-focus-card topic-ice" href="/topic/ice/" data-topic="ice">
+                <img class="topic-focus-icon" src="./assets/topic-focus/ice-badge.jpg?v=30" alt="ICE执法" width="420" height="520" loading="lazy" />
+                <div class="topic-focus-copy">
+                  <h3>ICE执法</h3><p>执法行动与法律应对</p>
+                  <span class="topic-status"><i></i> 自动更新</span>
+                  <div class="topic-latest" data-topic-latest="ice">正在读取最新动态…</div>
+                </div>
+              </a>
+              <a class="topic-focus-card topic-election" href="./listing.html?q=%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE" data-topic="election">
+                <img class="topic-focus-icon" src="./assets/topic-focus/election-ballot.jpg?v=30" alt="2026中期选举实时动态" width="420" height="480" loading="lazy" />
+                <div class="topic-focus-copy">
+                  <h3>2026中期选举实时动态</h3><p>选情变化与关键州追踪</p>
+                  <span class="topic-status"><i></i> 实时更新</span>
+                  <div class="topic-latest" data-topic-latest="election">正在读取最新动态…</div>
+                </div>
+              </a>
             </div>
           </section>
         </aside>
@@ -133,7 +153,7 @@
         <article id="community">
           <h2>加入读者群</h2>
           <p>扫码添加唐人日报微信，获取第一手资讯与深度解读</p>
-          <img class="reader-qr" src="./assets/reader-group-qr.jpeg?v=30.0" alt="唐人日报读者群微信二维码" width="888" height="1134" loading="lazy" decoding="async" />
+          <img class="reader-qr" src="./assets/reader-group-qr.jpeg?v=29.7" alt="唐人日报读者群微信二维码" width="888" height="1134" loading="lazy" decoding="async" />
         </article>
         <article id="submit">
           <h2>投稿爆料</h2>
@@ -183,10 +203,10 @@
       </div>
       <div class="container copyright">© 2026 唐人日报 Tang Ren Daily. 保留所有权利。</div>
     </footer>
-    <script src="./site-common.js?v=30.0"></script>
-    <script src="./site-search.js?v=30.0"></script>
-    <script src="./articles-home-index.js?v=30.0"></script>
-    <script src="./topic-focus.js?v=30.0"></script>
-    <script src="./articles-home.js?v=30.0"></script>
+    <script src="./site-common.js?v=29.7"></script>
+    <script src="./site-search.js?v=29.7"></script>
+    <script src="./articles-home-index.js?v=29.7"></script>
+    <script src="./articles-home.js?v=29.7"></script>
+    <script src="./topic-focus.js?v=30"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-name: ICE全美执法事件追踪自动发布
+name: ICE全美执法事件追踪与快讯自动发布
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: trrb-ice-v45-event-tracking
+  group: trrb-ice-v46-flash
   cancel-in-progress: false
 
 jobs:

@@ -1,141 +1,161 @@
 {
-  "last_seen_id": "2075567019064168475",
-  "last_run_at": "2026-07-12T04:59:47.611Z",
-  "last_success_at": "2026-07-10T13:23:35.762Z",
+  "last_seen_id": "2076174418967924781",
+  "last_run_at": "2026-07-12T05:24:30.528Z",
+  "last_success_at": "2026-07-12T05:24:30.528Z",
   "last_result": {
-    "fetched": 0,
+    "fetched": 90,
     "lanes": {
       "ice-official": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane ice-official request failed (503): Service Unavailable"
+        "fetched": 6,
+        "status": "ok"
       },
       "dhs-official": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane dhs-official request failed (503): Service Unavailable"
+        "fetched": 1,
+        "status": "ok"
       },
       "cbp-official": {
         "fetched": 0,
-        "status": "error",
-        "error": "X API lane cbp-official request failed (503): Service Unavailable"
+        "status": "ok"
       },
       "hsi-official": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane hsi-official request failed (503): Service Unavailable"
+        "fetched": 1,
+        "status": "ok"
       },
-      "doj-usattorneys": {
+      "doj-official": {
         "fetched": 0,
-        "status": "error",
-        "error": "X API lane doj-usattorneys request failed (503): Service Unavailable"
+        "status": "ok"
       },
       "federal-partners": {
         "fetched": 0,
-        "status": "error",
-        "error": "X API lane federal-partners request failed (503): Service Unavailable"
+        "status": "ok"
       },
-      "ero-operations": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane ero-operations request failed (503): Service Unavailable"
+      "ero-core": {
+        "fetched": 50,
+        "status": "ok"
       },
-      "removal-deportation": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane removal-deportation request failed (503): Service Unavailable"
+      "major-operations": {
+        "fetched": 41,
+        "status": "ok"
       },
-      "detention-arrest": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane detention-arrest request failed (503): Service Unavailable"
+      "region-northeast": {
+        "fetched": 21,
+        "status": "ok"
       },
-      "raid-operation": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane raid-operation request failed (503): Service Unavailable"
+      "region-midatlantic": {
+        "fetched": 9,
+        "status": "ok"
       },
-      "worksite-enforcement": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane worksite-enforcement request failed (503): Service Unavailable"
+      "region-southeast": {
+        "fetched": 13,
+        "status": "ok"
       },
-      "courthouse-enforcement": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane courthouse-enforcement request failed (503): Service Unavailable"
+      "region-greatlakes": {
+        "fetched": 48,
+        "status": "ok"
       },
-      "school-hospital-community": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane school-hospital-community request failed (503): Service Unavailable"
+      "region-southcentral": {
+        "fetched": 50,
+        "status": "ok"
       },
-      "smuggling-trafficking": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane smuggling-trafficking request failed (503): Service Unavailable"
+      "region-southwest": {
+        "fetched": 13,
+        "status": "ok"
       },
-      "fugitive-sex-offender": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane fugitive-sex-offender request failed (503): Service Unavailable"
+      "region-westcoast": {
+        "fetched": 12,
+        "status": "ok"
       },
-      "national-wire": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane national-wire request failed (503): Service Unavailable"
+      "region-mountain": {
+        "fetched": 2,
+        "status": "ok"
       },
-      "national-tv": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane national-tv request failed (503): Service Unavailable"
+      "region-plains": {
+        "fetched": 13,
+        "status": "ok"
       },
-      "national-politics": {
+      "region-territories": {
         "fetched": 0,
-        "status": "error",
-        "error": "X API lane national-politics request failed (503): Service Unavailable"
+        "status": "ok"
       },
-      "local-tv": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane local-tv request failed (503): Service Unavailable"
+      "event-arrests": {
+        "fetched": 50,
+        "status": "ok"
       },
-      "local-newspapers": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane local-newspapers request failed (503): Service Unavailable"
+      "event-removals": {
+        "fetched": 50,
+        "status": "ok"
       },
-      "spanish-national": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane spanish-national request failed (503): Service Unavailable"
+      "event-detainers": {
+        "fetched": 48,
+        "status": "ok"
       },
-      "spanish-local": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane spanish-local request failed (503): Service Unavailable"
+      "event-fugitives": {
+        "fetched": 49,
+        "status": "ok"
       },
-      "legal-advocacy": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane legal-advocacy request failed (503): Service Unavailable"
+      "event-worksite": {
+        "fetched": 50,
+        "status": "ok"
       },
-      "community-sightings": {
-        "fetched": 0,
-        "status": "error",
-        "error": "X API lane community-sightings request failed (503): Service Unavailable"
+      "event-courthouse": {
+        "fetched": 50,
+        "status": "ok"
+      },
+      "event-community": {
+        "fetched": 50,
+        "status": "ok"
+      },
+      "event-gangs": {
+        "fetched": 50,
+        "status": "ok"
+      },
+      "event-reentry": {
+        "fetched": 5,
+        "status": "ok"
+      },
+      "event-smuggling": {
+        "fetched": 3,
+        "status": "ok"
       }
     },
-    "sources_seen": 0,
-    "candidates": 0,
-    "new_posts": 0,
-    "duplicate_skipped": 0,
-    "expired_pending": 3,
+    "lanes_run": 28,
+    "lanes_total": 72,
+    "sources_seen": 80,
+    "candidates": 90,
+    "new_posts": 87,
+    "duplicate_skipped": 3,
+    "expired_pending": 0,
     "metadata_backfilled": 0,
-    "published": 0,
-    "pending": 0,
-    "total_published": 5,
-    "total_pending": 0
+    "published": 22,
+    "pending": 65,
+    "total_published": 27,
+    "total_pending": 65
   },
-  "last_seen_by_lane": {}
+  "last_seen_by_lane": {
+    "ice-official": "2076170950362488837",
+    "dhs-official": "2075964581441126496",
+    "hsi-official": "2076065293349064921",
+    "ero-core": "2076173989391581195",
+    "major-operations": "2076156129185300719",
+    "region-northeast": "2076163265269223672",
+    "region-midatlantic": "2076169684408586651",
+    "region-southeast": "2076060088415162410",
+    "region-greatlakes": "2076142703902126537",
+    "region-southcentral": "2076169684408586651",
+    "region-southwest": "2076169684408586651",
+    "region-westcoast": "2076163265269223672",
+    "region-mountain": "2076057354848862278",
+    "region-plains": "2076169684408586651",
+    "event-arrests": "2076173132361261523",
+    "event-removals": "2076173989391581195",
+    "event-detainers": "2076174290366370074",
+    "event-fugitives": "2076174319864930487",
+    "event-worksite": "2076171729529930088",
+    "event-courthouse": "2076169875567849973",
+    "event-community": "2076174418967924781",
+    "event-gangs": "2076169684408586651",
+    "event-reentry": "2076111804866912766",
+    "event-smuggling": "2076120497574875139"
+  },
+  "lane_cursor": 20
 }

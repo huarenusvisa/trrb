@@ -1,22 +1,72 @@
 {
-  "generated_at": "2026-07-12T04:59:47.611Z",
+  "generated_at": "2026-07-12T05:24:30.528Z",
   "timezone": "America/New_York",
-  "latest_sync_at": "2026-07-12T04:59:47.611Z",
-  "total_published": 5,
+  "latest_sync_at": "2026-07-12T05:24:30.528Z",
+  "total_published": 27,
   "today": {
     "date": "2026-07-12",
-    "known_people": 0,
-    "event_count": 0,
-    "location_count": 0,
-    "unknown_people_events": 0,
-    "events": []
+    "known_people": 1,
+    "event_count": 2,
+    "location_count": 1,
+    "unknown_people_events": 1,
+    "events": [
+      {
+        "event_type": "arrest",
+        "people_count": 1,
+        "occurred_at": "2026-07-12T04:48:18.000Z",
+        "time_precision": "second",
+        "city": "Wattala",
+        "state_code": "",
+        "state_name": "",
+        "location_text": "斯里兰卡瓦特拉",
+        "confidence": 95,
+        "source_excerpt": "Woman Arrested in Wattala Over Possession of Ice and Heroin",
+        "basis_time": "2026-07-12T04:48:18.000Z",
+        "time_basis": "执法时间",
+        "article_title": "斯里兰卡瓦特拉一女子因持有冰毒和海洛因被捕",
+        "article_url": "/news/ice/2026/07/12/ice-2076166737796747285.html",
+        "published_at": "2026-07-12T04:48:18.000Z"
+      },
+      {
+        "event_type": "arrest",
+        "people_count": null,
+        "occurred_at": null,
+        "time_precision": "unknown",
+        "city": "",
+        "state_code": "",
+        "state_name": "",
+        "location_text": "",
+        "confidence": 80,
+        "source_excerpt": "He came over during the Biden administration and had been arrested several times, but he was released each time and officials ignored ICE detainers.",
+        "basis_time": "2026-07-12T04:36:25.000Z",
+        "time_basis": "官方公开时间",
+        "article_title": "冰岛执法机构批评释放涉嫌人员延误遣返过程",
+        "article_url": "/news/ice/2026/07/12/ice-2076163747119514036.html",
+        "published_at": "2026-07-12T04:36:25.000Z"
+      }
+    ]
   },
   "heatmap": {
     "24h": {
-      "states": []
+      "states": [
+        {
+          "code": "NM",
+          "name": "New Mexico",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        }
+      ]
     },
     "7d": {
       "states": [
+        {
+          "code": "NM",
+          "name": "New Mexico",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
         {
           "code": "FL",
           "name": "Florida",
@@ -28,6 +78,13 @@
     },
     "30d": {
       "states": [
+        {
+          "code": "NM",
+          "name": "New Mexico",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
         {
           "code": "FL",
           "name": "Florida",

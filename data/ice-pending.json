@@ -1,1 +1,2841 @@
-[]
+[
+  {
+    "id": "pending-2076174418967924781",
+    "x_post_id": "2076174418967924781",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:30.527Z",
+    "post": {
+      "id": "2076174418967924781",
+      "text": "@GaIIegos @ViciouslyInsane Mexicans have been crying for days  because black people didn’t invite them into Streamer University. \n\nThey also don’t say that shi in the vicinity of black people. They’d be in the hospital \n\nTrump need to hire more ICE units",
+      "created_at": "2026-07-12T05:18:49.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 9,
+            "id": "43453852",
+            "start": 0,
+            "username": "GaIIegos"
+          },
+          {
+            "end": 26,
+            "id": "88060030",
+            "start": 10,
+            "username": "ViciouslyInsane"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1195845544398245889",
+      "username": "BootieGoonie",
+      "author_name": "BBL enjoyer",
+      "source_name": "BBL enjoyer",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/BootieGoonie/status/2076174418967924781"
+    }
+  },
+  {
+    "id": "pending-2076174319864930487",
+    "x_post_id": "2076174319864930487",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:28.034Z",
+    "post": {
+      "id": "2076174319864930487",
+      "text": "@disclosure2x @JackPosobiec Ok space cadet. They wanted to push gun control. They clearly said the constitution was a road block and oop all of a sudden someone shot up a school of children. Like some gifted them this path to gun control. 🤣🤣 Your brain is so smooth I can ice skate on it. Also you believe",
+      "created_at": "2026-07-12T05:18:25.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 13,
+            "id": "1016472477793320960",
+            "start": 0,
+            "username": "disclosure2x"
+          },
+          {
+            "end": 27,
+            "id": "592730371",
+            "start": 14,
+            "username": "JackPosobiec"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1712122835324293120",
+      "username": "tone71771",
+      "author_name": "FramersFLP",
+      "source_name": "FramersFLP",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/tone71771/status/2076174319864930487"
+    }
+  },
+  {
+    "id": "pending-2076174290366370074",
+    "x_post_id": "2076174290366370074",
+    "reason": "法律状态“被捕”在来源中没有对应依据",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:25.770Z",
+    "post": {
+      "id": "2076174290366370074",
+      "text": "@ItsEmilyKateIt WTF was he doing in a \"face off\" with ICE agents? He's lucky he didn't get take to jail for interfering with police",
+      "created_at": "2026-07-12T05:18:18.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 15,
+            "id": "852825217",
+            "start": 0,
+            "username": "ItsEmilyKateIt"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1972385923624042497",
+      "username": "SsidVicious111",
+      "author_name": "Brian",
+      "source_name": "Brian",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-detainers",
+      "x_url": "https://x.com/SsidVicious111/status/2076174290366370074"
+    }
+  },
+  {
+    "id": "pending-2076173885876355408",
+    "x_post_id": "2076173885876355408",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:20.869Z",
+    "post": {
+      "id": "2076173885876355408",
+      "text": "@AllSeeingEye57 I said I wanted to bake. I don’t really know how to make ice cream.",
+      "created_at": "2026-07-12T05:16:42.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 15,
+            "id": "2058283194709897217",
+            "start": 0,
+            "username": "AllSeeingEye57"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1908987765037076480",
+      "username": "CGRenegadePearl",
+      "author_name": "Pearl ⭐️",
+      "source_name": "Pearl ⭐️",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-fugitives",
+      "x_url": "https://x.com/CGRenegadePearl/status/2076173885876355408"
+    }
+  },
+  {
+    "id": "pending-2076173618170540483",
+    "x_post_id": "2076173618170540483",
+    "reason": "快讯正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:17.848Z",
+    "post": {
+      "id": "2076173618170540483",
+      "text": "@WHLeavitt YES ABSOLUTELY 💯 IN FACT ICE JUST DEPORTED THE ILLEGAL. MAYBE WALSH WOULD LIKE TO JOIN HIM SINCE THEY ARE SUCH GREAT BUDDIES I KNOW WE IN AMERICA WOULD LOVE ❤️ TO SEE HIM LEAVE AS  SOON 🔜 AS HE COULD PACK",
+      "created_at": "2026-07-12T05:15:38.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 10,
+            "id": "1065265726536073216",
+            "start": 0,
+            "username": "WHLeavitt"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1956774006649991169",
+      "username": "CornwellHa22227",
+      "author_name": "Harold Cornwell",
+      "source_name": "Harold Cornwell",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-removals",
+      "x_url": "https://x.com/CornwellHa22227/status/2076173618170540483"
+    }
+  },
+  {
+    "id": "pending-2076173051297997033",
+    "x_post_id": "2076173051297997033",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:12.196Z",
+    "post": {
+      "id": "2076173051297997033",
+      "text": "🚨BREAKING: Sen Jon Fetterman is reportedly planning on switching parties!\n\nPennsylvania Senators John Fetterman (D) and Dave McCormick (R) just stunned America, teaming up with joint fundraising as the leftists push Fetterman out.\n\nSomething remarkable is happening in https://t.co/PoeYQ9BfXs",
+      "created_at": "2026-07-12T05:13:23.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/PoeYQ9BfXs",
+            "end": 292,
+            "expanded_url": "https://x.com/Casey__Taylor/status/2076173051297997033/photo/1",
+            "media_key": "3_2076173048504573952",
+            "start": 269,
+            "url": "https://t.co/PoeYQ9BfXs"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNAMYzha4AAPIHE.jpg",
+          "alt_text": "",
+          "width": 1138,
+          "height": 1408
+        }
+      ],
+      "author_id": "1497788074084167692",
+      "username": "Casey__Taylor",
+      "author_name": "Caesy Taylor",
+      "source_name": "Caesy Taylor",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/Casey__Taylor/status/2076173051297997033"
+    }
+  },
+  {
+    "id": "pending-2076172075497087008",
+    "x_post_id": "2076172075497087008",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12, 300, 2015, 2021",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:08.655Z",
+    "post": {
+      "id": "2076172075497087008",
+      "text": "-3 million people were deported under Obama (most without seeing a judge)\n-50 ICE shootings from 2015-2021\n-50 detainees died in ICE custody under Obama\n\nNo moral outrage.\nNo riots.\n\nSo spare us the BULLSHlT!!\n\nYou're only upset because you were TOLD to be upset!! https://t.co/tVebtznVbs",
+      "created_at": "2026-07-12T05:09:30.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/tVebtznVbs",
+            "end": 288,
+            "expanded_url": "https://x.com/ShanonLee_A/status/2076172075497087008/photo/1",
+            "media_key": "3_2076172045528731648",
+            "start": 265,
+            "url": "https://t.co/tVebtznVbs"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNALebJWEAAkYpX.jpg",
+          "alt_text": "",
+          "width": 1200,
+          "height": 675
+        }
+      ],
+      "author_id": "2047162930840453120",
+      "username": "ShanonLee_A",
+      "author_name": "America First Lioness~Justice for Charlie~",
+      "source_name": "America First Lioness~Justice for Charlie~",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-removals",
+      "x_url": "https://x.com/ShanonLee_A/status/2076172075497087008"
+    }
+  },
+  {
+    "id": "pending-2076171983080067451",
+    "x_post_id": "2076171983080067451",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:05.770Z",
+    "post": {
+      "id": "2076171983080067451",
+      "text": "@LordFrz @ChibiReviews because hes a hypocritical moralfag who got into anime, moved to Japan, but has an issue with Ero manga sensei...\n\nPeople like him needs to be kicked out of the community, he is part of the problem hes trying to fight against now lol",
+      "created_at": "2026-07-12T05:09:08.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 8,
+            "id": "48070592",
+            "start": 0,
+            "username": "LordFrz"
+          },
+          {
+            "end": 22,
+            "id": "2462889674",
+            "start": 9,
+            "username": "ChibiReviews"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1925007193088438272",
+      "username": "John__Exile",
+      "author_name": "Tim",
+      "source_name": "Tim",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/John__Exile/status/2076171983080067451"
+    }
+  },
+  {
+    "id": "pending-2076171729529930088",
+    "x_post_id": "2076171729529930088",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:24:00.935Z",
+    "post": {
+      "id": "2076171729529930088",
+      "text": "Workplace Ice King and an unused Prophet render. Should I post scrapped/stupid things like this every once in a while? \n\n#Fortnite #FortniteArt #FortniteTheIceKing https://t.co/isuRLiM29W",
+      "created_at": "2026-07-12T05:08:08.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 130,
+            "start": 121,
+            "tag": "Fortnite"
+          },
+          {
+            "end": 143,
+            "start": 131,
+            "tag": "FortniteArt"
+          },
+          {
+            "end": 163,
+            "start": 144,
+            "tag": "FortniteTheIceKing"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/isuRLiM29W",
+            "end": 187,
+            "expanded_url": "https://x.com/kingofspadesyt/status/2076171729529930088/photo/1",
+            "media_key": "3_2076171723687256064",
+            "start": 164,
+            "url": "https://t.co/isuRLiM29W"
+          },
+          {
+            "display_url": "pic.x.com/isuRLiM29W",
+            "end": 187,
+            "expanded_url": "https://x.com/kingofspadesyt/status/2076171729529930088/photo/1",
+            "media_key": "3_2076171723670523905",
+            "start": 164,
+            "url": "https://t.co/isuRLiM29W"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNALLsMW4AAxYNY.jpg",
+          "alt_text": "",
+          "width": 2048,
+          "height": 1152
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNALLsIXkAEgXKf.jpg",
+          "alt_text": "",
+          "width": 2048,
+          "height": 1152
+        }
+      ],
+      "author_id": "1666411025774657536",
+      "username": "kingofspadesyt",
+      "author_name": "KingOfSpades | Allegiance Unknown",
+      "source_name": "KingOfSpades | Allegiance Unknown",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-worksite",
+      "x_url": "https://x.com/kingofspadesyt/status/2076171729529930088"
+    }
+  },
+  {
+    "id": "pending-2076171279413997831",
+    "x_post_id": "2076171279413997831",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:57.508Z",
+    "post": {
+      "id": "2076171279413997831",
+      "text": "@liderfiscal Oh no.. he’s resisting arrest, now ICE is using force to subdue him. Oh the humanity!😭",
+      "created_at": "2026-07-12T05:06:21.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "85940766",
+            "start": 0,
+            "username": "liderfiscal"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1744828996376842240",
+      "username": "AbleShellback",
+      "author_name": "AbleShellback",
+      "source_name": "AbleShellback",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/AbleShellback/status/2076171279413997831"
+    }
+  },
+  {
+    "id": "pending-2076170950362488837",
+    "x_post_id": "2076170950362488837",
+    "reason": "新闻正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:54.033Z",
+    "post": {
+      "id": "2076170950362488837",
+      "text": "ICE HSI Kansas City special agents arrested 14 suspects, identified 9 human trafficking victims and rescued 8 missing children since the tournament began.\n\n⚽ICE HSI is a global leader in preventing human traffickers from profiting during major events like the #FIFAWorldCup2026 https://t.co/Fyv0wkZp8u",
+      "created_at": "2026-07-12T05:05:02.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 277,
+            "start": 260,
+            "tag": "FIFAWorldCup2026"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/Fyv0wkZp8u",
+            "end": 301,
+            "expanded_url": "https://x.com/ICEgov/status/2076170950362488837/video/1",
+            "media_key": "7_2076169758135713792",
+            "start": 278,
+            "url": "https://t.co/Fyv0wkZp8u"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2076169758135713792/pu/img/wJIY4EVa5zVTafFQ.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "author_id": "39384517",
+      "username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "source_name": "美国移民与海关执法局",
+      "source_type": "official",
+      "agency": "ICE",
+      "source_trust": 100,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/ICEgov/status/2076170950362488837"
+    }
+  },
+  {
+    "id": "pending-2076170762751209527",
+    "x_post_id": "2076170762751209527",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:49.378Z",
+    "post": {
+      "id": "2076170762751209527",
+      "text": "@covie_93 How many shootings in Chicago by members of the community of\none another?  How many by ICE?  I’ll hang up and listen….",
+      "created_at": "2026-07-12T05:04:17.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 9,
+            "id": "2768271223",
+            "start": 0,
+            "username": "covie_93"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1263615915905691650",
+      "username": "FTG8286",
+      "author_name": "FTG8286",
+      "source_name": "FTG8286",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/FTG8286/status/2076170762751209527"
+    }
+  },
+  {
+    "id": "pending-2076170688835055969",
+    "x_post_id": "2076170688835055969",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:46.828Z",
+    "post": {
+      "id": "2076170688835055969",
+      "text": "Captain America's greatest sacrifice wasn't the ice. \n\nSteve Rogers survived 70 years frozen in ice and came back looking almost exactly the same. But after finally getting the life he always wanted with Peggy Carter, 20 years together was enough for time to naturally catch up https://t.co/BXvRbOqxer",
+      "created_at": "2026-07-12T05:04:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/BXvRbOqxer",
+            "end": 301,
+            "expanded_url": "https://x.com/Mossmoviesjo/status/2076170688835055969/photo/1",
+            "media_key": "3_2076168490646372352",
+            "start": 278,
+            "url": "https://t.co/BXvRbOqxer"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNAIPgLWAAAMegj.jpg",
+          "alt_text": "",
+          "width": 768,
+          "height": 960
+        }
+      ],
+      "author_id": "1384082998656569348",
+      "username": "Mossmoviesjo",
+      "author_name": "𝗠𝗼𝘀𝘀 𝗺𝗼𝘃𝗶𝗲𝘀",
+      "source_name": "𝗠𝗼𝘀𝘀 𝗺𝗼𝘃𝗶𝗲𝘀",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-fugitives",
+      "x_url": "https://x.com/Mossmoviesjo/status/2076170688835055969"
+    }
+  },
+  {
+    "id": "pending-2076170537814970655",
+    "x_post_id": "2076170537814970655",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:34.877Z",
+    "post": {
+      "id": "2076170537814970655",
+      "text": "@mynameissquatch @bygcland @MayraFlores4TX WRONG.  \n\nIn the Renee Good case, an eyewitness said ICE agents gave conflicting orders, with one telling Good to drive away while another shouted at her to get out of the SUV.  She complied with one agent and put the car in reverse. \n\nIn Alex Pretti case,  there was no issue of",
+      "created_at": "2026-07-12T05:03:24.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "2877503969",
+            "start": 0,
+            "username": "mynameissquatch"
+          },
+          {
+            "end": 26,
+            "id": "1177632995219509248",
+            "start": 17,
+            "username": "bygcland"
+          },
+          {
+            "end": 42,
+            "id": "89469296",
+            "start": 27,
+            "username": "MayraFlores4TX"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1151207089135656960",
+      "username": "RealPatSpurlock",
+      "author_name": "Patrick Spurlock",
+      "source_name": "Patrick Spurlock",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/RealPatSpurlock/status/2076170537814970655"
+    }
+  },
+  {
+    "id": "pending-2076170452142072046",
+    "x_post_id": "2076170452142072046",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:25.213Z",
+    "post": {
+      "id": "2076170452142072046",
+      "text": "@LRanlo1 @BherwaniLucky @mb_ghalibaf Look at ICE! Look at how you have treated people of colour during your 260 year old country! Your genocide in Gaza! Killing school children of Minab! Trstin a missile on Lamerd! Hitting Dena while unarmed for fun! Look at your pathetic homicidal and genocidal history first!",
+      "created_at": "2026-07-12T05:03:03.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 8,
+            "id": "1771745695831105537",
+            "start": 0,
+            "username": "LRanlo1"
+          },
+          {
+            "end": 23,
+            "id": "378762353",
+            "start": 9,
+            "username": "BherwaniLucky"
+          },
+          {
+            "end": 36,
+            "id": "1062545037567889408",
+            "start": 24,
+            "username": "mb_ghalibaf"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1942463578826760194",
+      "username": "Starrytruths",
+      "author_name": "Silver_Starr",
+      "source_name": "Silver_Starr",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/Starrytruths/status/2076170452142072046"
+    }
+  },
+  {
+    "id": "pending-2076170077875966121",
+    "x_post_id": "2076170077875966121",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:23.124Z",
+    "post": {
+      "id": "2076170077875966121",
+      "text": "@farvesswlnprst8 @JoshEakle Targeting the worst of the worst for immigration enforcement is a popular policy.\nAnd is what happened for decades until last year. Over 75% of detainees had criminal records.\nBut Trump 180ed that number.\nTens of thousands needlessly detained, most with zero criminal history.",
+      "created_at": "2026-07-12T05:01:34.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "91923800",
+            "start": 0,
+            "username": "farvesswlnprst8"
+          },
+          {
+            "end": 27,
+            "id": "88016448",
+            "start": 17,
+            "username": "JoshEakle"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "2209791067",
+      "username": "Stultis_TheFool",
+      "author_name": "Scott ''Human Scum'' Faust",
+      "source_name": "Scott ''Human Scum'' Faust",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/Stultis_TheFool/status/2076170077875966121"
+    }
+  },
+  {
+    "id": "pending-2076169586249240579",
+    "x_post_id": "2076169586249240579",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:06.597Z",
+    "post": {
+      "id": "2076169586249240579",
+      "text": "I make attack animation :D. This was fun, Wanted it to be used Like Nero's back forward attack, plus magic, cuz she's a mage. Had the idea of Ice to the feet to stop 'em, Wind to the eyes to blind 'em, and Hit 'em with a rock to end 'em. https://t.co/XgcnhoVhd9",
+      "created_at": "2026-07-12T04:59:37.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/XgcnhoVhd9",
+            "end": 261,
+            "expanded_url": "https://x.com/MalKetto/status/2076169586249240579/video/1",
+            "media_key": "13_2076169529240223744",
+            "start": 238,
+            "url": "https://t.co/XgcnhoVhd9"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2076169529240223744/img/fmUnQAmOHyIwHpHV.jpg",
+          "alt_text": "",
+          "width": 1920,
+          "height": 1080
+        }
+      ],
+      "author_id": "1510857118869782532",
+      "username": "MalKetto",
+      "author_name": "Ulelulel",
+      "source_name": "Ulelulel",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-fugitives",
+      "x_url": "https://x.com/MalKetto/status/2076169586249240579"
+    }
+  },
+  {
+    "id": "pending-2076169541671940330",
+    "x_post_id": "2076169541671940330",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:23:03.135Z",
+    "post": {
+      "id": "2076169541671940330",
+      "text": "But I did buy your Jersey for Fashion during that time Messi🥹. I had so many cool jerseys. But I gave them away at the laundry table in the dorms🤍🕊 but I kept Real Madrid😌 .. I was trying to get into the soccer life because I used to watch and support my school team.. i never",
+      "created_at": "2026-07-12T04:59:26.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {},
+      "media": [],
+      "author_id": "1926092887164391424",
+      "username": "AugustusAprille",
+      "author_name": "𝐀𝐏𝐑𝐈𝐋𝐋𝐄 𝐀𝐔𝐆𝐔𝐒𝐓𝐔𝐒🤍",
+      "source_name": "𝐀𝐏𝐑𝐈𝐋𝐋𝐄 𝐀𝐔𝐆𝐔𝐒𝐓𝐔𝐒🤍",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/AugustusAprille/status/2076169541671940330"
+    }
+  },
+  {
+    "id": "pending-2076169406598545541",
+    "x_post_id": "2076169406598545541",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:59.467Z",
+    "post": {
+      "id": "2076169406598545541",
+      "text": "@greenheroaf @Electroversenet I'd be interested in hearing your theory on how the miles thick, continent covering Laurentide Ice Sheet melted WITHOUT that \"human-caused warming\" you are blaming? https://t.co/pb2poToEui",
+      "created_at": "2026-07-12T04:58:54.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "1535556616082407424",
+            "start": 0,
+            "username": "greenheroaf"
+          },
+          {
+            "end": 29,
+            "id": "1018425398869282817",
+            "start": 13,
+            "username": "Electroversenet"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/pb2poToEui",
+            "end": 218,
+            "expanded_url": "https://x.com/JourneyA73382/status/2076169406598545541/photo/1",
+            "media_key": "3_2076169376735059968",
+            "start": 195,
+            "url": "https://t.co/pb2poToEui"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNAJDFHWYAAjgxr.png",
+          "alt_text": "",
+          "width": 642,
+          "height": 478
+        }
+      ],
+      "author_id": "1873380334022062080",
+      "username": "JourneyA73382",
+      "author_name": "AGrandsonsJourney",
+      "source_name": "AGrandsonsJourney",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-courthouse",
+      "x_url": "https://x.com/JourneyA73382/status/2076169406598545541"
+    }
+  },
+  {
+    "id": "pending-2076168852178604065",
+    "x_post_id": "2076168852178604065",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:56.567Z",
+    "post": {
+      "id": "2076168852178604065",
+      "text": "#BREAKING: Rosa Flores: “I was just having this conversation moments before coming on air and I keep on hearing this could be my father, and I hear it from men too, who say this could have been me. And here’s the bigger picture of this: the American dream here in the United https://t.co/pa2UOKQtZA",
+      "created_at": "2026-07-12T04:56:42.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 9,
+            "start": 0,
+            "tag": "BREAKING"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/pa2UOKQtZA",
+            "end": 298,
+            "expanded_url": "https://x.com/Emolclause/status/2076168852178604065/video/1",
+            "media_key": "13_2076168635597389824",
+            "start": 275,
+            "url": "https://t.co/pa2UOKQtZA"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2076168635597389824/img/mM6c7qhWc9nJSfat.jpg",
+          "alt_text": "",
+          "width": 1914,
+          "height": 1080
+        }
+      ],
+      "author_id": "802649176299466752",
+      "username": "Emolclause",
+      "author_name": "Emoluments Clause",
+      "source_name": "Emoluments Clause",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-courthouse",
+      "x_url": "https://x.com/Emolclause/status/2076168852178604065"
+    }
+  },
+  {
+    "id": "pending-2076167647058604305",
+    "x_post_id": "2076167647058604305",
+    "reason": "稿件出现来源中不存在的数字：7, 8, 9, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:48.882Z",
+    "post": {
+      "id": "2076167647058604305",
+      "text": "@MarieUSA1776 @Steve_Stuck The ICE operations in the post took place Wednesday and Thursday this week (July 8-9, 2026). At least 28 people were detained in Clark County/Clarksville area, with Clarksville PD HQ used as a staging point. Additional arrests reported in Evansville around the same time. The",
+      "created_at": "2026-07-12T04:51:55.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 13,
+            "id": "1889920690540912644",
+            "start": 0,
+            "username": "MarieUSA1776"
+          },
+          {
+            "end": 26,
+            "id": "17531057",
+            "start": 14,
+            "username": "Steve_Stuck"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1720665183188922368",
+      "username": "grok",
+      "author_name": "Grok",
+      "source_name": "Grok",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/grok/status/2076167647058604305"
+    }
+  },
+  {
+    "id": "pending-2076167539521110414",
+    "x_post_id": "2076167539521110414",
+    "reason": "稿件出现来源中不存在的数字：310",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:42.237Z",
+    "post": {
+      "id": "2076167539521110414",
+      "text": "Obama deported 3.1 million people, far more than Donald Trump. There was no chaos in the streets. ICE didn't arrest or harass any US citizens. No soccer moms shot. Nobody's Fourth Amendment rights violated. No doors were kicked down. No secret police were needed. Done by the book",
+      "created_at": "2026-07-12T04:51:29.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {},
+      "media": [],
+      "author_id": "39554852",
+      "username": "SLICK89",
+      "author_name": "The Movement",
+      "source_name": "The Movement",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-removals",
+      "x_url": "https://x.com/SLICK89/status/2076167539521110414"
+    }
+  },
+  {
+    "id": "pending-2076167349120680341",
+    "x_post_id": "2076167349120680341",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:39.219Z",
+    "post": {
+      "id": "2076167349120680341",
+      "text": "fuyumi asks shoto what 67 is, shoto asks the elementary students at the school where he has his winter wonderland festival, and when they teach him he does 67 but with his fire and ice quirk and finds it profound how he can use his quirks to entertain a nation when it goes viral https://t.co/w1cVdGJ6Rn",
+      "created_at": "2026-07-12T04:50:44.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "x.com/IdioticalNix/s…",
+            "end": 303,
+            "expanded_url": "https://twitter.com/IdioticalNix/status/2076030442529271903",
+            "start": 280,
+            "url": "https://t.co/w1cVdGJ6Rn"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1165540204628733953",
+      "username": "hoshiumisexy",
+      "author_name": "hoshiumi's 30 YEAR OLD PR team",
+      "source_name": "hoshiumi's 30 YEAR OLD PR team",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/hoshiumisexy/status/2076167349120680341"
+    }
+  },
+  {
+    "id": "pending-2076167286097076327",
+    "x_post_id": "2076167286097076327",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:32.228Z",
+    "post": {
+      "id": "2076167286097076327",
+      "text": "@clippedszn He said I'ma call ice cream. Clearly wanted ice cream",
+      "created_at": "2026-07-12T04:50:28.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 11,
+            "id": "3551296392",
+            "start": 0,
+            "username": "clippedszn"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1779044944482914304",
+      "username": "JeetFat",
+      "author_name": "FatLarpWhaleJeet",
+      "source_name": "FatLarpWhaleJeet",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-fugitives",
+      "x_url": "https://x.com/JeetFat/status/2076167286097076327"
+    }
+  },
+  {
+    "id": "pending-2076167166588571784",
+    "x_post_id": "2076167166588571784",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:29.899Z",
+    "post": {
+      "id": "2076167166588571784",
+      "text": "Guys with Ladders” Milwaukee &amp; Wisconsin \"Ice Dam &amp; Dangerous Icicle Removal\" https://t.co/y7dfXheX2H #milwaukee #milwaukeepanthers #mke #mke414 #GoPackGo #tosa #packers #bucks #madison #racine #kenosha #thisismycrew #cubs",
+      "created_at": "2026-07-12T04:50:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 120,
+            "start": 110,
+            "tag": "milwaukee"
+          },
+          {
+            "end": 139,
+            "start": 121,
+            "tag": "milwaukeepanthers"
+          },
+          {
+            "end": 144,
+            "start": 140,
+            "tag": "mke"
+          },
+          {
+            "end": 152,
+            "start": 145,
+            "tag": "mke414"
+          },
+          {
+            "end": 162,
+            "start": 153,
+            "tag": "GoPackGo"
+          },
+          {
+            "end": 168,
+            "start": 163,
+            "tag": "tosa"
+          },
+          {
+            "end": 177,
+            "start": 169,
+            "tag": "packers"
+          },
+          {
+            "end": 184,
+            "start": 178,
+            "tag": "bucks"
+          },
+          {
+            "end": 193,
+            "start": 185,
+            "tag": "madison"
+          },
+          {
+            "end": 201,
+            "start": 194,
+            "tag": "racine"
+          },
+          {
+            "end": 210,
+            "start": 202,
+            "tag": "kenosha"
+          },
+          {
+            "end": 224,
+            "start": 211,
+            "tag": "thisismycrew"
+          },
+          {
+            "end": 230,
+            "start": 225,
+            "tag": "cubs"
+          }
+        ],
+        "urls": [
+          {
+            "description": "Do you need ice stamps or dangerous icicles to remove from your hom...",
+            "display_url": "buff.ly/04xvigO",
+            "end": 109,
+            "expanded_url": "https://buff.ly/04xvigO",
+            "images": [
+              {
+                "height": 360,
+                "url": "https://pbs.twimg.com/news_img/2074649966677557248/etq4beaq?format=jpg&name=orig",
+                "width": 480
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2074649966677557248/etq4beaq?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 86,
+            "status": 200,
+            "title": "Ice Dam & Dangerous Icicle Removal by WI’s “Guys with Ladders”",
+            "unwound_url": "https://www.youtube.com/watch?feature=shared&utm_content=bufferecf59&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer&v=s9lzWf8kq4E",
+            "url": "https://t.co/y7dfXheX2H"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "67625793",
+      "username": "LaughOutNOW",
+      "author_name": "Comedy College",
+      "source_name": "Comedy College",
+      "source_type": "official",
+      "agency": "ERO",
+      "source_trust": 96,
+      "query_lane": "ero-core",
+      "x_url": "https://x.com/LaughOutNOW/status/2076167166588571784"
+    }
+  },
+  {
+    "id": "pending-2076167145713553556",
+    "x_post_id": "2076167145713553556",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:26.988Z",
+    "post": {
+      "id": "2076167145713553556",
+      "text": "Hey Trump before you go off shooting your big mouth off about immigrants coming into our country &amp; setting your ICE goons to arrest them….why don’t you look at your family tree? https://t.co/48WHLc5ltP",
+      "created_at": "2026-07-12T04:49:55.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/48WHLc5ltP",
+            "end": 205,
+            "expanded_url": "https://x.com/Glovie13/status/2076167145713553556/photo/1",
+            "media_key": "3_2076167143519903744",
+            "start": 182,
+            "url": "https://t.co/48WHLc5ltP"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNAHBFvXYAAfTuQ.jpg",
+          "alt_text": "",
+          "width": 595,
+          "height": 960
+        }
+      ],
+      "author_id": "831223735176790017",
+      "username": "Glovie13",
+      "author_name": "Sammy",
+      "source_name": "Sammy",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/Glovie13/status/2076167145713553556"
+    }
+  },
+  {
+    "id": "pending-2076167134871236756",
+    "x_post_id": "2076167134871236756",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:24.343Z",
+    "post": {
+      "id": "2076167134871236756",
+      "text": "@mrddmia I have an idea, send these guys into hostile territory eith their signs while ice is parked around the corner ready to jump in and arrest the illegals.",
+      "created_at": "2026-07-12T04:49:52.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 8,
+            "id": "20394822",
+            "start": 0,
+            "username": "mrddmia"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1754671553164259328",
+      "username": "RGreer76765",
+      "author_name": "REG",
+      "source_name": "REG",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/RGreer76765/status/2076167134871236756"
+    }
+  },
+  {
+    "id": "pending-2076166908857192636",
+    "x_post_id": "2076166908857192636",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:21.588Z",
+    "post": {
+      "id": "2076166908857192636",
+      "text": "A school of tiny fish swims under the spring ice. ❄️🐟 https://t.co/b90CsIPSPI",
+      "created_at": "2026-07-12T04:48:59.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/b90CsIPSPI",
+            "end": 77,
+            "expanded_url": "https://x.com/DinoLeadingNews/status/2076166908857192636/video/1",
+            "media_key": "7_2076166882315689984",
+            "start": 54,
+            "url": "https://t.co/b90CsIPSPI"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2076166882315689984/pu/img/LaPOYdFobQEeC3h1.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "author_id": "1708940481088929792",
+      "username": "DinoLeadingNews",
+      "author_name": "Dino Vibes Daily",
+      "source_name": "Dino Vibes Daily",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/DinoLeadingNews/status/2076166908857192636"
+    }
+  },
+  {
+    "id": "pending-2076166727356858395",
+    "x_post_id": "2076166727356858395",
+    "reason": "在没有定罪依据时使用了罪犯表述",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:12.821Z",
+    "post": {
+      "id": "2076166727356858395",
+      "text": "THIS is why the Sheriff’s Department MUST coordinate and cooperate with ICE in order to keep violent criminals out of our cities and homes. Our county and our state are SAFER and BETTER when illegal aliens and criminals are deported. @Tim_Walz https://t.co/SXeQi0IIQL",
+      "created_at": "2026-07-12T04:48:15.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 243,
+            "id": "85726335",
+            "start": 234,
+            "username": "Tim_Walz"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/SXeQi0IIQL",
+            "end": 267,
+            "expanded_url": "https://x.com/stehr4sheriff/status/2076166727356858395/photo/1",
+            "media_key": "3_2076166722797580288",
+            "start": 244,
+            "url": "https://t.co/SXeQi0IIQL"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNAGombWMAAa5uA.jpg",
+          "alt_text": "",
+          "width": 1206,
+          "height": 1491
+        }
+      ],
+      "author_id": "2063391844734521344",
+      "username": "stehr4sheriff",
+      "author_name": "Joshua Stehr",
+      "source_name": "Joshua Stehr",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-removals",
+      "x_url": "https://x.com/stehr4sheriff/status/2076166727356858395"
+    }
+  },
+  {
+    "id": "pending-2076166315258368194",
+    "x_post_id": "2076166315258368194",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:09.596Z",
+    "post": {
+      "id": "2076166315258368194",
+      "text": "Part 3 is here.\nWe have now covered a large part of India's industrial manufacturing ecosyste in Part 1 &amp; 2 &amp; it's already clear that \"Capital Goods\" is far more diverse than most investors realise.\nIn this final part, we explore industrial explosives, textile machinery, plastic https://t.co/eKtQMegkjg",
+      "created_at": "2026-07-12T04:46:37.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/eKtQMegkjg",
+            "end": 311,
+            "expanded_url": "https://x.com/WealthEnrich/status/2076166315258368194/photo/1",
+            "media_key": "3_2076166157007192064",
+            "start": 288,
+            "url": "https://t.co/eKtQMegkjg"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNAGHqsaAAAoBC5.jpg",
+          "alt_text": "",
+          "width": 1672,
+          "height": 941
+        }
+      ],
+      "author_id": "1155941090240991232",
+      "username": "WealthEnrich",
+      "author_name": "Advait Arora",
+      "source_name": "Advait Arora",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-worksite",
+      "x_url": "https://x.com/WealthEnrich/status/2076166315258368194"
+    }
+  },
+  {
+    "id": "pending-2076166020050366887",
+    "x_post_id": "2076166020050366887",
+    "reason": "稿件出现来源中不存在的数字：55%, 62%",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:06.663Z",
+    "post": {
+      "id": "2076166020050366887",
+      "text": "@LinaHidalgoTX ICE’s job is Immigration and Customs enforcement.  Folks will never have to worry about ICE unless they are here illegally.  In case you can’t read a poll, ~55-62% of US citizens support the forced removal of illegals.  75%+ support removal if they are criminals.  Good try though",
+      "created_at": "2026-07-12T04:45:27.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 14,
+            "id": "247174365",
+            "start": 0,
+            "username": "LinaHidalgoTX"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "925754415742513157",
+      "username": "Joe19058742",
+      "author_name": "Joethedeadhead",
+      "source_name": "Joethedeadhead",
+      "source_type": "official",
+      "agency": "ERO",
+      "source_trust": 96,
+      "query_lane": "ero-core",
+      "x_url": "https://x.com/Joe19058742/status/2076166020050366887"
+    }
+  },
+  {
+    "id": "pending-2076165733487161620",
+    "x_post_id": "2076165733487161620",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:22:02.159Z",
+    "post": {
+      "id": "2076165733487161620",
+      "text": "@SecMullinDHS No uniforms. Unmarked car. No body cams.\nI support ICE &amp; voted for deportation of every Illegal.\nThat said, rogue, UNIDENTIFIED thugs point guns at me, I'm running them over, too!!\nThis is not the hill to die on!! \nThese guys spoil the reputation of ICE.",
+      "created_at": "2026-07-12T04:44:18.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 13,
+            "id": "2035092939253456898",
+            "start": 0,
+            "username": "SecMullinDHS"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "3306827273",
+      "username": "American1229",
+      "author_name": "Proud American Veteran ⚓️🇺🇸🇺🇸⚓️",
+      "source_name": "Proud American Veteran ⚓️🇺🇸🇺🇸⚓️",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-removals",
+      "x_url": "https://x.com/American1229/status/2076165733487161620"
+    }
+  },
+  {
+    "id": "pending-2076165383078523095",
+    "x_post_id": "2076165383078523095",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:21:24.770Z",
+    "post": {
+      "id": "2076165383078523095",
+      "text": "That's bound to happen when you spend a month on ice in the hospital basement. https://t.co/ZPPtBR0QFB",
+      "created_at": "2026-07-12T04:42:55.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "x.com/RetroCoast/sta…",
+            "end": 102,
+            "expanded_url": "https://twitter.com/RetroCoast/status/2076143695246569786",
+            "start": 79,
+            "url": "https://t.co/ZPPtBR0QFB"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1312144746031136768",
+      "username": "NM_in_CA",
+      "author_name": "nm_ca_🌻",
+      "source_name": "nm_ca_🌻",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/NM_in_CA/status/2076165383078523095"
+    }
+  },
+  {
+    "id": "pending-2076165270503071787",
+    "x_post_id": "2076165270503071787",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:21:18.911Z",
+    "post": {
+      "id": "2076165270503071787",
+      "text": "@Cathy44365595 serious quest how many americans have to die that evil tyrant be in jail because he hired murders ICE are just the cancer of america like Trump",
+      "created_at": "2026-07-12T04:42:28.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 14,
+            "id": "1438119016539856896",
+            "start": 0,
+            "username": "Cathy44365595"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1706054603681177601",
+      "username": "ErikaTsuki83",
+      "author_name": "ErikaTsuki",
+      "source_name": "ErikaTsuki",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-detainers",
+      "x_url": "https://x.com/ErikaTsuki83/status/2076165270503071787"
+    }
+  },
+  {
+    "id": "pending-2076165071051665671",
+    "x_post_id": "2076165071051665671",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:21:15.970Z",
+    "post": {
+      "id": "2076165071051665671",
+      "text": "@JoshEakle Since the Dems were letting  91k illegals a month into the country,  it takes awhile  to clean up the mess.   When states refuse to honor ICE detainers and illegals resist arrest bad things can happen",
+      "created_at": "2026-07-12T04:41:40.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 10,
+            "id": "88016448",
+            "start": 0,
+            "username": "JoshEakle"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1519475802533863424",
+      "username": "lancejanw",
+      "author_name": "Lance Weatherbee",
+      "source_name": "Lance Weatherbee",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/lancejanw/status/2076165071051665671"
+    }
+  },
+  {
+    "id": "pending-2076164523007082958",
+    "x_post_id": "2076164523007082958",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:21:13.669Z",
+    "post": {
+      "id": "2076164523007082958",
+      "text": "Attention! As I stated I'm one of my word I will be paying for it either an ice cream social at the Eureka Valley Park or the Castro library or I'll rent a clown for a couple of hours to walk around near Jane Warner Plaza. I will ask one person from each of the following",
+      "created_at": "2026-07-12T04:39:30.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {},
+      "media": [],
+      "author_id": "1947201996274159616",
+      "username": "AceCronce94019",
+      "author_name": "Scott Ace Romani",
+      "source_name": "Scott Ace Romani",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-worksite",
+      "x_url": "https://x.com/AceCronce94019/status/2076164523007082958"
+    }
+  },
+  {
+    "id": "pending-2076164357591818422",
+    "x_post_id": "2076164357591818422",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:21:10.868Z",
+    "post": {
+      "id": "2076164357591818422",
+      "text": "New stock alert! Ice-cold lemon tea, matcha mochi and instant noodles restocked at our neighborhood convenience store. Pop in for your go-to snacks and daily essentials today! https://t.co/OrdDSyqYXj",
+      "created_at": "2026-07-12T04:38:50.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/OrdDSyqYXj",
+            "end": 199,
+            "expanded_url": "https://x.com/ssqju57181492/status/2076164357591818422/photo/1",
+            "media_key": "3_2076164274972426240",
+            "start": 176,
+            "url": "https://t.co/OrdDSyqYXj"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNAEaHkWgAAH8n1.jpg",
+          "alt_text": "",
+          "width": 690,
+          "height": 920
+        }
+      ],
+      "author_id": "1731119874636701696",
+      "username": "ssqju57181492",
+      "author_name": "Alisson Morales",
+      "source_name": "Alisson Morales",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/ssqju57181492/status/2076164357591818422"
+    }
+  },
+  {
+    "id": "pending-2076163686679617625",
+    "x_post_id": "2076163686679617625",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:21:02.327Z",
+    "post": {
+      "id": "2076163686679617625",
+      "text": "@Cathy44365595 @hypnoksa @sosagittarian Alex committed suicide by cop when he pulled a gun during an active arrest that he had nothing do do with. 2 weeks earlier was arrested for attacking an Ice vehicle. Fuck him and fuck you",
+      "created_at": "2026-07-12T04:36:10.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 14,
+            "id": "1438119016539856896",
+            "start": 0,
+            "username": "Cathy44365595"
+          },
+          {
+            "end": 24,
+            "id": "789376521152634880",
+            "start": 15,
+            "username": "hypnoksa"
+          },
+          {
+            "end": 39,
+            "id": "214997322",
+            "start": 25,
+            "username": "sosagittarian"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "837095088387846144",
+      "username": "twitchy_Dave",
+      "author_name": "Dave P",
+      "source_name": "Dave P",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/twitchy_Dave/status/2076163686679617625"
+    }
+  },
+  {
+    "id": "pending-2076163265269223672",
+    "x_post_id": "2076163265269223672",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:58.955Z",
+    "post": {
+      "id": "2076163265269223672",
+      "text": "EMPIRE STATE BUILDING DESTRUCTION⁉️\n🌙🌙🌙Eyes On The Moon🌙🌙🌙\n\nA  Couple Scaled athe Empire State Building July 1 Birthday Of Hillarie  Burton Who Drove The Comet In One Tree Hill About The Comet, Same Day  Comet Atlas Was Discovered Birthday Of Princess Diana. Ten Days Later https://t.co/PMKcQX9jib https://t.co/odK7SvFV5C",
+      "created_at": "2026-07-12T04:34:30.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/PMKcQX9jib",
+            "end": 297,
+            "expanded_url": "https://x.com/TraderGirlQ/status/2076163265269223672/photo/1",
+            "media_key": "3_2076162469727223808",
+            "start": 274,
+            "url": "https://t.co/PMKcQX9jib"
+          },
+          {
+            "display_url": "x.com/EmpireStateBld…",
+            "end": 321,
+            "expanded_url": "https://twitter.com/EmpireStateBldg/status/2034433333296251362",
+            "start": 298,
+            "url": "https://t.co/odK7SvFV5C"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNACxCgWwAAue3E.jpg",
+          "alt_text": "",
+          "width": 1079,
+          "height": 1043
+        }
+      ],
+      "author_id": "513469995",
+      "username": "TraderGirlQ",
+      "author_name": "TraderGirlQ",
+      "source_name": "TraderGirlQ",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/TraderGirlQ/status/2076163265269223672"
+    }
+  },
+  {
+    "id": "pending-2076163091335991596",
+    "x_post_id": "2076163091335991596",
+    "reason": "X将该帖子标记为敏感内容",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:54.951Z",
+    "post": {
+      "id": "2076163091335991596",
+      "text": "🇺🇸 The ICE beasts broke this citizen's skull after he left a courthouse in Illinois. Savages. 👎 https://t.co/AnswMO4HCm",
+      "created_at": "2026-07-12T04:33:48.000Z",
+      "lang": "en",
+      "possibly_sensitive": true,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/AnswMO4HCm",
+            "end": 119,
+            "expanded_url": "https://x.com/Orlando71156528/status/2076098050716582068/video/1",
+            "media_key": "13_2076097937067724800",
+            "start": 96,
+            "url": "https://t.co/AnswMO4HCm"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2076097937067724800/img/hnUbo_B9GFsZjBgc.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1920
+        }
+      ],
+      "author_id": "1337068002215415808",
+      "username": "Christian76l",
+      "author_name": "Christian 🇺🇸",
+      "source_name": "Christian 🇺🇸",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-courthouse",
+      "x_url": "https://x.com/Christian76l/status/2076163091335991596"
+    }
+  },
+  {
+    "id": "pending-2076162887320568039",
+    "x_post_id": "2076162887320568039",
+    "reason": "快讯正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:52.449Z",
+    "post": {
+      "id": "2076162887320568039",
+      "text": "ICE New Orleans arrested Kongkane Souphasavath, an illegal alien from Laos. \n💥His criminal history includes felony convictions for aggravated homicide and attempt to commit - homicide. https://t.co/OL61WBWDT4",
+      "created_at": "2026-07-12T04:33:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/OL61WBWDT4",
+            "end": 208,
+            "expanded_url": "https://x.com/ERONewOrleans/status/2076162887320568039/photo/1",
+            "media_key": "3_2075301925025648640",
+            "start": 185,
+            "url": "https://t.co/OL61WBWDT4"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HMz0GvrWkAAJgKB.png",
+          "alt_text": "",
+          "width": 385,
+          "height": 349
+        }
+      ],
+      "author_id": "1300971307497127943",
+      "username": "ERONewOrleans",
+      "author_name": "ICE New Orleans",
+      "source_name": "ICE New Orleans",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/ERONewOrleans/status/2076162887320568039"
+    }
+  },
+  {
+    "id": "pending-2076162855334756693",
+    "x_post_id": "2076162855334756693",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:48.632Z",
+    "post": {
+      "id": "2076162855334756693",
+      "text": "@appleheaddreams omg ice breakers were like crack 😭 I always had some on me in middle school, either that or the fruit tic tacs",
+      "created_at": "2026-07-12T04:32:52.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "1915902144890228736",
+            "start": 0,
+            "username": "appleheaddreams"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "883438369367359488",
+      "username": "LElASSPACEBUNS",
+      "author_name": "zoe 🪩 #BB28 SAW MICHAEL X8",
+      "source_name": "zoe 🪩 #BB28 SAW MICHAEL X8",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/LElASSPACEBUNS/status/2076162855334756693"
+    }
+  },
+  {
+    "id": "pending-2076162829925724583",
+    "x_post_id": "2076162829925724583",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:44.249Z",
+    "post": {
+      "id": "2076162829925724583",
+      "text": "@LongTimeHistory hope the karma come soon and ICE and Trump Burn in Hell  in jail  heartless and souless people no wonder they are ally with Israel same kind people  with racist acts",
+      "created_at": "2026-07-12T04:32:46.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "1178452608794726401",
+            "start": 0,
+            "username": "LongTimeHistory"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1706054603681177601",
+      "username": "ErikaTsuki83",
+      "author_name": "ErikaTsuki",
+      "source_name": "ErikaTsuki",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-detainers",
+      "x_url": "https://x.com/ErikaTsuki83/status/2076162829925724583"
+    }
+  },
+  {
+    "id": "pending-2076162569631416820",
+    "x_post_id": "2076162569631416820",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:40.597Z",
+    "post": {
+      "id": "2076162569631416820",
+      "text": "#BREAKING: Psaki: “[there’s] nothing that Donald Trump is more fixated on than undermining the integrity of American elections, and he is using every lever at his disposal to do so. It has really become kind of a whole of government approach. He has tried to strong arm https://t.co/zMvJjvDDwk",
+      "created_at": "2026-07-12T04:31:44.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 9,
+            "start": 0,
+            "tag": "BREAKING"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/zMvJjvDDwk",
+            "end": 293,
+            "expanded_url": "https://x.com/Emolclause/status/2076162569631416820/video/1",
+            "media_key": "13_2076162363258986497",
+            "start": 270,
+            "url": "https://t.co/zMvJjvDDwk"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2076162363258986497/img/uHcPu6EJui_wUSbG.jpg",
+          "alt_text": "",
+          "width": 1914,
+          "height": 1080
+        }
+      ],
+      "author_id": "802649176299466752",
+      "username": "Emolclause",
+      "author_name": "Emoluments Clause",
+      "source_name": "Emoluments Clause",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-courthouse",
+      "x_url": "https://x.com/Emolclause/status/2076162569631416820"
+    }
+  },
+  {
+    "id": "pending-2076162096908165511",
+    "x_post_id": "2076162096908165511",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:36.156Z",
+    "post": {
+      "id": "2076162096908165511",
+      "text": "@ProfMJCleveland I will bet money that he's brain dead, which means he's dead. Was there a funeral? As far as I can tell, no. I'd really like to know what's going on. All the secrets and lies are disgusting. Thune doesn't want a special election because he can't control who might get elected.",
+      "created_at": "2026-07-12T04:29:51.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "765255265503543296",
+            "start": 0,
+            "username": "ProfMJCleveland"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1674528270841151491",
+      "username": "carlin_sus46010",
+      "author_name": "S. Carlin",
+      "source_name": "S. Carlin",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/carlin_sus46010/status/2076162096908165511"
+    }
+  },
+  {
+    "id": "pending-2076161762345288155",
+    "x_post_id": "2076161762345288155",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:33.839Z",
+    "post": {
+      "id": "2076161762345288155",
+      "text": "@A_Nostalgilct Should I tell her? Maybe she could Google it.\nWhy would you get up there and make a statement like that and not know if you’re right or wrong?  ICE can stop all Americans and foreigners in America. I hope she doesn’t get arrested for being stupid.",
+      "created_at": "2026-07-12T04:28:32.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 14,
+            "id": "414420920",
+            "start": 0,
+            "username": "A_Nostalgilct"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1721632192772612096",
+      "username": "BruceYoung4004",
+      "author_name": "Bruce Young",
+      "source_name": "Bruce Young",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/BruceYoung4004/status/2076161762345288155"
+    }
+  },
+  {
+    "id": "pending-2076161633412349959",
+    "x_post_id": "2076161633412349959",
+    "reason": "稿件出现来源中不存在的数字：2, 1.3, 7",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:31.240Z",
+    "post": {
+      "id": "2076161633412349959",
+      "text": "@hypz @sarahtexe No, the claim is false.\n\nThe 20,162 total homicides matches CDC 2024 data. The \"13,000 killed by illegal immigrants\" misuses ICE figures: ~13,099 non-citizens with homicide convictions were on ICE's non-detained docket as of July 2024. This is a cumulative count over many years,",
+      "created_at": "2026-07-12T04:28:01.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 5,
+            "id": "20029654",
+            "start": 0,
+            "username": "hypz"
+          },
+          {
+            "end": 16,
+            "id": "1564908366018781184",
+            "start": 6,
+            "username": "sarahtexe"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1720665183188922368",
+      "username": "grok",
+      "author_name": "Grok",
+      "source_name": "Grok",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/grok/status/2076161633412349959"
+    }
+  },
+  {
+    "id": "pending-2076161405674295713",
+    "x_post_id": "2076161405674295713",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:28.409Z",
+    "post": {
+      "id": "2076161405674295713",
+      "text": "@slippy_pickle92 @alleria_eh But you gotta know that Carney is outsmarting Trump. This is masterclass strategy, Carney is playing 4D chess and Trump is playing checker.  Carney is playing the long game, you see he's figured Trump and Americans in general out, he's playing them right into their biggest fears",
+      "created_at": "2026-07-12T04:27:06.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "611174869",
+            "start": 0,
+            "username": "slippy_pickle92"
+          },
+          {
+            "end": 28,
+            "id": "1731689805820358656",
+            "start": 17,
+            "username": "alleria_eh"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "389682941",
+      "username": "StockwellJeremy",
+      "author_name": "Jeremy Stockwell",
+      "source_name": "Jeremy Stockwell",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-fugitives",
+      "x_url": "https://x.com/StockwellJeremy/status/2076161405674295713"
+    }
+  },
+  {
+    "id": "pending-2076160415977844849",
+    "x_post_id": "2076160415977844849",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:16.667Z",
+    "post": {
+      "id": "2076160415977844849",
+      "text": "niggas get slicker everyday why’d this chopped fashion boy say he wanted to style me im like sure because i thought he was like gay or something now he’s asking me the questions omgggg you think you’re SLICK fucking got me omg because that broke the ice perfectly",
+      "created_at": "2026-07-12T04:23:11.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {},
+      "media": [],
+      "author_id": "1429623111482281986",
+      "username": "sqwamura",
+      "author_name": "GOLDN BOY 🇲🇽🇧🇷🇨🇩🇬🇭🇫🇷🇨🇴🇭🇹🇨🇮",
+      "source_name": "GOLDN BOY 🇲🇽🇧🇷🇨🇩🇬🇭🇫🇷🇨🇴🇭🇹🇨🇮",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-fugitives",
+      "x_url": "https://x.com/sqwamura/status/2076160415977844849"
+    }
+  },
+  {
+    "id": "pending-2076159922669343061",
+    "x_post_id": "2076159922669343061",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:20:03.217Z",
+    "post": {
+      "id": "2076159922669343061",
+      "text": "@TVBCRehfer I keep think of this episode when thinking of A/C. I went old school when I was a student, ice cubes in a container and a fan. So nice. I did this two years ago when the building A/C fans died again. It's a yearly thing. https://t.co/Q2eW4QO0bj",
+      "created_at": "2026-07-12T04:21:13.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 11,
+            "id": "224210652",
+            "start": 0,
+            "username": "TVBCRehfer"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/Q2eW4QO0bj",
+            "end": 256,
+            "expanded_url": "https://x.com/wapimaskwa69/status/2076159922669343061/photo/1",
+            "media_key": "16_2076159916427911168",
+            "start": 233,
+            "url": "https://t.co/Q2eW4QO0bj"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "animated_gif",
+          "url": "https://pbs.twimg.com/tweet_video_thumb/HNAAcauXIAAYHjT.jpg",
+          "alt_text": "",
+          "width": 338,
+          "height": 230
+        }
+      ],
+      "author_id": "257644524",
+      "username": "wapimaskwa69",
+      "author_name": "Kevin Carter",
+      "source_name": "Kevin Carter",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/wapimaskwa69/status/2076159922669343061"
+    }
+  },
+  {
+    "id": "pending-2076159591717675395",
+    "x_post_id": "2076159591717675395",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:59.429Z",
+    "post": {
+      "id": "2076159591717675395",
+      "text": "@CrowTeeRobot @zerogtemplar1 @Cathy44365595 @hypnoksa @sosagittarian You are ok with federal agents gunning down innocent defenseless civilians who are using their rights. Again ICE has a record of wrongful deportation, ignoring court orders, and even detaining the wrong people.",
+      "created_at": "2026-07-12T04:19:54.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 13,
+            "id": "1601992142724939782",
+            "start": 0,
+            "username": "CrowTeeRobot"
+          },
+          {
+            "end": 28,
+            "id": "1579494362857107458",
+            "start": 14,
+            "username": "zerogtemplar1"
+          },
+          {
+            "end": 43,
+            "id": "1438119016539856896",
+            "start": 29,
+            "username": "Cathy44365595"
+          },
+          {
+            "end": 53,
+            "id": "789376521152634880",
+            "start": 44,
+            "username": "hypnoksa"
+          },
+          {
+            "end": 68,
+            "id": "214997322",
+            "start": 54,
+            "username": "sosagittarian"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1529558403642630144",
+      "username": "bel_zombie",
+      "author_name": "BelZombie",
+      "source_name": "BelZombie",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-courthouse",
+      "x_url": "https://x.com/bel_zombie/status/2076159591717675395"
+    }
+  },
+  {
+    "id": "pending-2076159239954047017",
+    "x_post_id": "2076159239954047017",
+    "reason": "稿件出现来源中不存在的数字：2026, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:53.569Z",
+    "post": {
+      "id": "2076159239954047017",
+      "text": "Whose going to arrest ICE https://t.co/rq8dtBedX7",
+      "created_at": "2026-07-12T04:18:30.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "x.com/GOP__Ls/status…",
+            "end": 49,
+            "expanded_url": "https://twitter.com/GOP__Ls/status/2075977185026867365",
+            "start": 26,
+            "url": "https://t.co/rq8dtBedX7"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1184898513118744576",
+      "username": "kschraeder123",
+      "author_name": "Kay☮🌊🇺🇸🇺🇦",
+      "source_name": "Kay☮🌊🇺🇸🇺🇦",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/kschraeder123/status/2076159239954047017"
+    }
+  },
+  {
+    "id": "pending-2076159089885786232",
+    "x_post_id": "2076159089885786232",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:50.903Z",
+    "post": {
+      "id": "2076159089885786232",
+      "text": "🚨SNEAKO and Cory have reportedly been detained by ICE. https://t.co/ZcqYlu9D9n",
+      "created_at": "2026-07-12T04:17:54.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/ZcqYlu9D9n",
+            "end": 78,
+            "expanded_url": "https://x.com/groypernewsTV/status/2076159089885786232/photo/1",
+            "media_key": "3_2076159087771860992",
+            "start": 55,
+            "url": "https://t.co/ZcqYlu9D9n"
+          },
+          {
+            "display_url": "pic.x.com/ZcqYlu9D9n",
+            "end": 78,
+            "expanded_url": "https://x.com/groypernewsTV/status/2076159089885786232/photo/1",
+            "media_key": "3_2076159087775973376",
+            "start": 55,
+            "url": "https://t.co/ZcqYlu9D9n"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM__sLvXQAAWrD1.jpg",
+          "alt_text": "",
+          "width": 696,
+          "height": 695
+        },
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM__sLwWAAAxUgZ.jpg",
+          "alt_text": "",
+          "width": 601,
+          "height": 510
+        }
+      ],
+      "author_id": "2056371793040936960",
+      "username": "groypernewsTV",
+      "author_name": "Discussing Groyper",
+      "source_name": "Discussing Groyper",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/groypernewsTV/status/2076159089885786232"
+    }
+  },
+  {
+    "id": "pending-2076157909780611402",
+    "x_post_id": "2076157909780611402",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:47.324Z",
+    "post": {
+      "id": "2076157909780611402",
+      "text": "@rightsidefreee @AprilSpark1890 Christians just killed 210 school going \nGirls in tehran…..ALL GIRLS. \n\nICE shoot awhite in the middle of american ciry…. Shoot by achristian by the way. \n\nWhere does islam fit here.",
+      "created_at": "2026-07-12T04:13:13.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 15,
+            "id": "1812284873987510272",
+            "start": 0,
+            "username": "rightsidefreee"
+          },
+          {
+            "end": 31,
+            "id": "1646016107004698624",
+            "start": 16,
+            "username": "AprilSpark1890"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1730981638039805952",
+      "username": "Iranwarroom8",
+      "author_name": "Persian Times🇮🇷",
+      "source_name": "Persian Times🇮🇷",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/Iranwarroom8/status/2076157909780611402"
+    }
+  },
+  {
+    "id": "pending-2076157628976156868",
+    "x_post_id": "2076157628976156868",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:44.964Z",
+    "post": {
+      "id": "2076157628976156868",
+      "text": "@Rainmaker1973 It's almost as if Ice is water's most natural state. \nOnce the heat comes, it disrupts and distorts the natural lattice. \nLike a rubber band that's slightly stretched, when flicking it causes distortion once the rubber band is removed from it's normal state of non-movement..",
+      "created_at": "2026-07-12T04:12:06.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 14,
+            "id": "177101260",
+            "start": 0,
+            "username": "Rainmaker1973"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1278942105260494849",
+      "username": "glassscape",
+      "author_name": "GBDaniello",
+      "source_name": "GBDaniello",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-removals",
+      "x_url": "https://x.com/glassscape/status/2076157628976156868"
+    }
+  },
+  {
+    "id": "pending-2076157383814865215",
+    "x_post_id": "2076157383814865215",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:39.462Z",
+    "post": {
+      "id": "2076157383814865215",
+      "text": "@BradFromFlorida @Maddytx76 Fact check: CDC confirms 20,162 US homicide deaths in 2024.\n\nThe 13,000 figure misused here is from ICE: ~13k noncitizens convicted of homicide (cumulative, any time) on the non-detained docket mid-2024. Not murders committed by illegal immigrants in 2024.\n\nNo credible data shows",
+      "created_at": "2026-07-12T04:11:08.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 16,
+            "id": "443453649",
+            "start": 0,
+            "username": "BradFromFlorida"
+          },
+          {
+            "end": 27,
+            "id": "1721947069798043648",
+            "start": 17,
+            "username": "Maddytx76"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1720665183188922368",
+      "username": "grok",
+      "author_name": "Grok",
+      "source_name": "Grok",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/grok/status/2076157383814865215"
+    }
+  },
+  {
+    "id": "pending-2076157010492481873",
+    "x_post_id": "2076157010492481873",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:34.312Z",
+    "post": {
+      "id": "2076157010492481873",
+      "text": "@David_Moscrop Hahaha.\nMy daughter went on a school trip to CERN when she was little, and one of the scientists made them ice cream so she wanted to be a scientist when she grew up and work at CERN.",
+      "created_at": "2026-07-12T04:09:39.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 14,
+            "id": "330574021",
+            "start": 0,
+            "username": "David_Moscrop"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "268423609",
+      "username": "pgoodfellow",
+      "author_name": "Ms Doe",
+      "source_name": "Ms Doe",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-community",
+      "x_url": "https://x.com/pgoodfellow/status/2076157010492481873"
+    }
+  },
+  {
+    "id": "pending-2076156965126893822",
+    "x_post_id": "2076156965126893822",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:31.942Z",
+    "post": {
+      "id": "2076156965126893822",
+      "text": "I guarantee you, not one person whining about ICE today even bothered to look this up.\n\n\"Official and watchdog reporting indicates at least 26 people died while in ICE custody over the four years of the Biden administration\"\n\n#ICE #immigrants #Lorenzo\n\nhttps://t.co/InyUM25Yon",
+      "created_at": "2026-07-12T04:09:28.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 230,
+            "start": 226,
+            "tag": "ICE"
+          },
+          {
+            "end": 242,
+            "start": 231,
+            "tag": "immigrants"
+          },
+          {
+            "end": 251,
+            "start": 243,
+            "tag": "Lorenzo"
+          }
+        ],
+        "urls": [
+          {
+            "description": "Executive summary Official and watchdog reporting indicates at least 26 people died while in ICE custody over the four years of the Biden administration,...",
+            "display_url": "factually.co/fact-checks/po…",
+            "end": 276,
+            "expanded_url": "https://factually.co/fact-checks/politics/deaths-linked-to-ice-under-biden-number-estimates-d3ad79",
+            "start": 253,
+            "status": 200,
+            "title": "How many people died because of ICE under Biden",
+            "unwound_url": "https://factually.co/fact-checks/politics/deaths-linked-to-ice-under-biden-number-estimates-d3ad79",
+            "url": "https://t.co/InyUM25Yon"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "608945154",
+      "username": "jswriter65",
+      "author_name": "John in the Shelter",
+      "source_name": "John in the Shelter",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-arrests",
+      "x_url": "https://x.com/jswriter65/status/2076156965126893822"
+    }
+  },
+  {
+    "id": "pending-2076156821480656991",
+    "x_post_id": "2076156821480656991",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:28.580Z",
+    "post": {
+      "id": "2076156821480656991",
+      "text": "@sarahdactyl123 @WallStreetApes You know Dairy Queen is bad because they're an ice cream restaurant that can't legally call their product ice cream.",
+      "created_at": "2026-07-12T04:08:54.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 15,
+            "id": "1397368906801717249",
+            "start": 0,
+            "username": "sarahdactyl123"
+          },
+          {
+            "end": 31,
+            "id": "1099579684981944320",
+            "start": 16,
+            "username": "WallStreetApes"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1548420327645933568",
+      "username": "RealElliottHope",
+      "author_name": "Elliott (Elijah) Hope ☦️",
+      "source_name": "Elliott (Elijah) Hope ☦️",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-worksite",
+      "x_url": "https://x.com/RealElliottHope/status/2076156821480656991"
+    }
+  },
+  {
+    "id": "pending-2076156793919562176",
+    "x_post_id": "2076156793919562176",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:24.820Z",
+    "post": {
+      "id": "2076156793919562176",
+      "text": "@SteveJ111 @AuntSassyAss Minus ICE and Kyle Rittenhouse...the People your referring too are called anarchists not antifa. And this pedophile was let out of jail by @KenPaxtonTX so your argument is flawed. If trump was innocent, then the epstein files should be released to prove it, not gonna happen https://t.co/foIs8iBLgO",
+      "created_at": "2026-07-12T04:08:47.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 10,
+            "id": "1666947212071571456",
+            "start": 0,
+            "username": "SteveJ111"
+          },
+          {
+            "end": 24,
+            "id": "1755314049745571840",
+            "start": 11,
+            "username": "AuntSassyAss"
+          },
+          {
+            "end": 176,
+            "id": "45840174",
+            "start": 164,
+            "username": "KenPaxtonTX"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/foIs8iBLgO",
+            "end": 323,
+            "expanded_url": "https://x.com/atxsouthside04/status/2076156793919562176/photo/1",
+            "media_key": "3_2076156791872778240",
+            "start": 300,
+            "url": "https://t.co/foIs8iBLgO"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM_9mi2XcAAfo-e.jpg",
+          "alt_text": "",
+          "width": 972,
+          "height": 1303
+        }
+      ],
+      "author_id": "751558701111140352",
+      "username": "atxsouthside04",
+      "author_name": "ATXriverrat",
+      "source_name": "ATXriverrat",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-detainers",
+      "x_url": "https://x.com/atxsouthside04/status/2076156793919562176"
+    }
+  },
+  {
+    "id": "pending-2076156675740905533",
+    "x_post_id": "2076156675740905533",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:21.801Z",
+    "post": {
+      "id": "2076156675740905533",
+      "text": "@JGALJGAL @NostromoCat23 @Suzierizzo1 Yeah yeah and Biden loves to smell little girls hair.  Not hearing you talking about that.  We finally have a President that follows through on what he ran on.  Twice now.  And Kamala could not lock down the border that he did in 2 weeks. Look now with ICE goes back on them.",
+      "created_at": "2026-07-12T04:08:19.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 9,
+            "id": "48486216",
+            "start": 0,
+            "username": "JGALJGAL"
+          },
+          {
+            "end": 24,
+            "id": "1977166839781224448",
+            "start": 10,
+            "username": "NostromoCat23"
+          },
+          {
+            "end": 37,
+            "id": "770373873036500992",
+            "start": 25,
+            "username": "Suzierizzo1"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1616263662",
+      "username": "Mike_Lupinacci",
+      "author_name": "Mike Lupinacci",
+      "source_name": "Mike Lupinacci",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-courthouse",
+      "x_url": "https://x.com/Mike_Lupinacci/status/2076156675740905533"
+    }
+  },
+  {
+    "id": "pending-2076156271422792002",
+    "x_post_id": "2076156271422792002",
+    "reason": "X将该帖子标记为敏感内容",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:17.133Z",
+    "post": {
+      "id": "2076156271422792002",
+      "text": "A video shows ICE agents violently subduing a man outside an Illinois courthouse. Witnesses report that the detainee suffered a skull fracture after hitting the ground, while officers threatened bystanders with Tasers. https://t.co/02QEGdwge2",
+      "created_at": "2026-07-12T04:06:42.000Z",
+      "lang": "en",
+      "possibly_sensitive": true,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/02QEGdwge2",
+            "end": 242,
+            "expanded_url": "https://x.com/lajornadaonline/status/2075801260788465964/video/1",
+            "media_key": "13_2075800320454840320",
+            "start": 219,
+            "url": "https://t.co/02QEGdwge2"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/amplify_video_thumb/2075800320454840320/img/s0-CKWEfqolaP0yj.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1920
+        }
+      ],
+      "author_id": "1337068002215415808",
+      "username": "Christian76l",
+      "author_name": "Christian 🇺🇸",
+      "source_name": "Christian 🇺🇸",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-courthouse",
+      "x_url": "https://x.com/Christian76l/status/2076156271422792002"
+    }
+  },
+  {
+    "id": "pending-2076156129185300719",
+    "x_post_id": "2076156129185300719",
+    "reason": "新闻正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:12.751Z",
+    "post": {
+      "id": "2076156129185300719",
+      "text": "@jeffb198712 @storm1news @ICEgov The video of the Adams County, CO raid is from January 2025—not recent. It involved a DEA/ICE operation targeting a Tren de Aragua-linked drug site, with ~50 people detained and turned over to ICE.\n\nICE has ramped up enforcement in the second Trump term: interior deportations up",
+      "created_at": "2026-07-12T04:06:08.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 12,
+            "id": "1512169372374106132",
+            "start": 0,
+            "username": "jeffb198712"
+          },
+          {
+            "end": 24,
+            "id": "1986382076757852160",
+            "start": 13,
+            "username": "storm1news"
+          },
+          {
+            "end": 32,
+            "id": "39384517",
+            "start": 25,
+            "username": "ICEgov"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1720665183188922368",
+      "username": "grok",
+      "author_name": "Grok",
+      "source_name": "Grok",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-gangs",
+      "x_url": "https://x.com/grok/status/2076156129185300719"
+    }
+  },
+  {
+    "id": "pending-2076155990131568874",
+    "x_post_id": "2076155990131568874",
+    "reason": "内容与ICE或移民执法无直接关系",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:09.401Z",
+    "post": {
+      "id": "2076155990131568874",
+      "text": "@Selatrop @bigmanhereyes @BadEmpanadx Black people were born here. Most Latino immigrants moved here specifically because they wanted to get away from their own people and join ICE.",
+      "created_at": "2026-07-12T04:05:35.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 9,
+            "id": "1487828089",
+            "start": 0,
+            "username": "Selatrop"
+          },
+          {
+            "end": 24,
+            "id": "1496233384607031298",
+            "start": 10,
+            "username": "bigmanhereyes"
+          },
+          {
+            "end": 37,
+            "id": "2070968257457111040",
+            "start": 25,
+            "username": "BadEmpanadx"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1736314213264437250",
+      "username": "GiveMeYourBonez",
+      "author_name": "Self-taught Embalmer",
+      "source_name": "Self-taught Embalmer",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-fugitives",
+      "x_url": "https://x.com/GiveMeYourBonez/status/2076155990131568874"
+    }
+  },
+  {
+    "id": "pending-2076155904248971300",
+    "x_post_id": "2076155904248971300",
+    "reason": "稿件出现来源中不存在的数字：2026, 7, 12, 2021",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T05:19:06.718Z",
+    "post": {
+      "id": "2076155904248971300",
+      "text": "@RBReich Oh my God. Ice is doing their job. Pelosi on the other hand and her whole band of criminals lied about January 6 and put innocent people in jail, in the glugs and tortured them, but I don’t hear you saying anything about that.. You LOSER! That doesn’t matter right? GFY 🖕",
+      "created_at": "2026-07-12T04:05:15.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 8,
+            "id": "148529707",
+            "start": 0,
+            "username": "RBReich"
+          }
+        ]
+      },
+      "media": [],
+      "author_id": "1835294679815872512",
+      "username": "blueMoonChaser1",
+      "author_name": "BlueMoonChaser",
+      "source_name": "BlueMoonChaser",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "source_trust": 90,
+      "query_lane": "event-detainers",
+      "x_url": "https://x.com/blueMoonChaser1/status/2076155904248971300"
+    }
+  }
+]

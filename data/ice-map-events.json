@@ -1,8 +1,31 @@
 {
-  "generated_at": "2026-07-12T04:59:47.611Z",
+  "generated_at": "2026-07-12T05:24:30.528Z",
   "timezone": "America/New_York",
-  "total_events": 1,
+  "total_events": 2,
   "events": [
+    {
+      "id": "ice-2076167871001198938-0",
+      "category": "removal",
+      "event_type": "removal",
+      "title": "ICE将对非法选票寄送行为采取遣返行动",
+      "summary": "ICE将遣返涉非法选票寄送的非美国公民，案件引发关注。",
+      "people_count": null,
+      "occurred_at": null,
+      "published_at": "2026-07-12T04:52:48.000Z",
+      "basis_time": "2026-07-12T04:52:48.000Z",
+      "time_basis": "官方公开时间",
+      "city": "Hobbs",
+      "state_code": "NM",
+      "state_name": "New Mexico",
+      "location_text": "新墨西哥州霍布斯市",
+      "latitude": 34.840515,
+      "longitude": -106.248482,
+      "location_precision": "state",
+      "confidence": 90,
+      "source_name": "Jim Koon",
+      "source_url": "https://x.com/koon_jim98411/status/2076167871001198938",
+      "article_url": "/news/ice/2026/07/12/ice-2076167871001198938.html"
+    },
     {
       "id": "ice-2075086308620276035-0",
       "category": "arrest",

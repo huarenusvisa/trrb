@@ -19,45 +19,76 @@
 
   async function init() {
     startNewYorkClock();
+
+    // 数据加载与地图渲染分离：地图组件缺失或 Plotly 失败时，
+    // 不得连带导致统计和新闻显示“加载失败”。
     try {
       const [newsResult, stateResult, dashboardResult] = await Promise.allSettled([
-        fetchJson(DATA_URLS.news, []),
-        fetchJson(DATA_URLS.state, {}),
-        fetchJson(DATA_URLS.dashboard, null)
+        fetchFirstJson([DATA_URLS.news, "/data/ice-live.json"], []),
+        fetchFirstJson([DATA_URLS.state], {}),
+        fetchFirstJson([DATA_URLS.dashboard, "/data/ice-stats.json", "/data/ice-map.json"], null)
       ]);
-      news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value) ? newsResult.value : [];
+
+      news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value)
+        ? newsResult.value
+        : [];
+
       const liveNews = await fetchLiveArticles("ICE执法");
       if (liveNews.length) news = mergeLiveNews(liveNews, news);
+
       const state = stateResult.status === "fulfilled" ? stateResult.value : {};
-      dashboard = dashboardResult.status === "fulfilled" && dashboardResult.value
-        ? dashboardResult.value
-        : makeDashboardFallback(news, state);
+      const rawDashboard = dashboardResult.status === "fulfilled" ? dashboardResult.value : null;
+      dashboard = normalizeDashboard(rawDashboard) || makeDashboardFallback(news, state);
 
       renderSummary();
       renderTodayEvents();
       renderNews();
       bindControls();
+    } catch (error) {
+      console.error("ICE data loading failed:", error);
+      dashboard = makeDashboardFallback([], {});
+      renderSummary();
+      renderTodayEvents();
+      renderNews();
+      setText("latest-sync", "最近同步：暂无数据");
+    }
+
+    try {
       await renderHeatmap();
     } catch (error) {
-      console.error("ICE topic failed:", error);
-      setText("today-people", "—");
-      setText("today-locations", "—");
-      setText("latest-sync", "最近同步：加载失败");
-      document.getElementById("today-event-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE统计数据。</div>';
-      document.getElementById("ice-news-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE新闻。</div>';
+      console.warn("ICE heatmap skipped:", error);
+      safeShowFallback([]);
     }
   }
 
   async function fetchLiveArticles(category) {
-    try {
-      const select = "id,title,summary,cover_image,source_name,source_url,published_at,city,state,arrest_count,count_in_ice_stats";
-      const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&category_name=eq.${encodeURIComponent(category)}&order=published_at.desc&limit=100`;
-      const response = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
-      if (!response.ok) return [];
-      return await response.json();
-    } catch {
-      return [];
+    const select = "id,title,summary,cover_image,source_name,source_url,published_at,created_at,city,state,arrest_count,count_in_ice_stats,primary_section,category_name,status";
+    const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
+    const filters = [
+      `primary_section=eq.${encodeURIComponent(category)}`,
+      `category_name=eq.${encodeURIComponent(category)}`
+    ];
+    const rows = [];
+
+    for (const filter of filters) {
+      try {
+        const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&${filter}&order=published_at.desc.nullslast,created_at.desc&limit=100`;
+        const response = await fetch(url, { headers, cache: "no-store" });
+        if (!response.ok) continue;
+        const result = await response.json();
+        if (Array.isArray(result)) rows.push(...result);
+      } catch (error) {
+        console.warn("ICE Supabase query skipped:", error);
+      }
     }
+
+    const seen = new Set();
+    return rows.filter(row => {
+      const key = String(row.id || row.source_url || row.title || "");
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
 
   function mergeLiveNews(live, archived) {
@@ -78,9 +109,54 @@
   }
 
   async function fetchJson(url, fallback) {
-    const response = await fetch(`${url}?v=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) return fallback;
-    return response.json();
+    try {
+      const joiner = url.includes("?") ? "&" : "?";
+      const response = await fetch(`${url}${joiner}v=${Date.now()}`, { cache: "no-store" });
+      if (!response.ok) return fallback;
+      return await response.json();
+    } catch (error) {
+      console.warn(`ICE JSON unavailable: ${url}`, error);
+      return fallback;
+    }
+  }
+
+  async function fetchFirstJson(urls, fallback) {
+    for (const url of urls) {
+      const value = await fetchJson(url, null);
+      if (value !== null && value !== undefined) return value;
+    }
+    return fallback;
+  }
+
+  function normalizeDashboard(value) {
+    if (!value || typeof value !== "object") return null;
+    if (value.today && value.heatmap) return value;
+
+    // 兼容 ice-stats.json / ice-map.json 等旧格式。
+    const todaySource = value.today || value.stats?.today || {};
+    const mapSource = value.heatmap || value.map || {};
+    const normalizeRange = range => {
+      const source = mapSource?.[range]?.states || mapSource?.[range] || [];
+      return { states: Array.isArray(source) ? source : [] };
+    };
+
+    return {
+      generated_at: value.generated_at || value.updated_at || value.latest_sync_at || "",
+      latest_sync_at: value.latest_sync_at || value.updated_at || value.generated_at || "",
+      total_published: Number(value.total_published || 0),
+      today: {
+        date: todaySource.date || "",
+        known_people: Number(todaySource.known_people ?? todaySource.confirmed_people ?? 0),
+        event_count: Number(todaySource.event_count ?? todaySource.events_count ?? 0),
+        location_count: Number(todaySource.location_count ?? todaySource.locations ?? 0),
+        events: Array.isArray(todaySource.events) ? todaySource.events : []
+      },
+      heatmap: {
+        "24h": normalizeRange("24h"),
+        "7d": normalizeRange("7d"),
+        "30d": normalizeRange("30d")
+      }
+    };
   }
 
   function startNewYorkClock() {
@@ -98,6 +174,7 @@
 
   function renderTodayEvents() {
     const root = document.getElementById("today-event-list");
+    if (!root) return;
     const events = Array.isArray(dashboard?.today?.events) ? dashboard.today.events : [];
     if (!events.length) {
       root.innerHTML = '<div class="ice-empty">今天暂无同时披露抓捕或拘留、时间和地点的公开信息。</div>';
@@ -121,7 +198,8 @@
 
   function renderNews() {
     const root = document.getElementById("ice-news-list");
-    const sorted = [...news].sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+    if (!root) return;
+    const sorted = [...news].sort((a, b) => new Date(b.published_at || b.created_at || 0) - new Date(a.published_at || a.created_at || 0));
     if (!sorted.length) {
       root.innerHTML = '<div class="ice-empty">暂时没有已发布的ICE新闻。</div>';
       return;
@@ -131,73 +209,23 @@
       const states = Array.isArray(item.state_codes)
         ? item.state_codes.map(normalizeStateCode).filter(Boolean)
         : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
-
-      // ICE快讯：AI标记为brief，或没有可用图片时，统一以纯文字双行快讯展示。
-      // 不再生成灰色图片占位框，也不强迫短消息进入比例失衡的长文章页面。
-      const isBrief = item.content_type === "brief" || !item.image_url;
-      const targetUrl = item.url || item.source_url || "#";
-      const briefTitle = compactBriefTitle(item.title || "ICE执法动态");
-      const briefText = compactBriefText(item.summary || item.source_text || "ICE相关公开信息已更新。", 72);
-
-      if (isBrief) {
-        return `
-          <article class="ice-brief-row" data-states="${escapeAttr(states.join(","))}">
-            <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
-            <div class="ice-brief-copy">
-              <h3><a href="${escapeAttr(targetUrl)}"${isExternalUrl(targetUrl) ? ' target="_blank" rel="noopener noreferrer"' : ""}>${escapeHtml(briefTitle)}</a></h3>
-              <p>${escapeHtml(briefText)}</p>
-            </div>
-            <span class="ice-brief-source">${escapeHtml(item.source_name || "ICE动态")}</span>
-          </article>`;
-      }
-
+      const image = item.image_url
+        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+        : "";
       return `
         <article class="ice-news-card" data-states="${escapeAttr(states.join(","))}">
-          <div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(item.image_url)}" alt="${escapeAttr(item.title || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>
+          ${image}
           <div class="ice-news-body">
             <div class="ice-news-meta">
               <span class="ice-news-label">${escapeHtml(item.source_name || "ICE执法信息")}</span>
               <time datetime="${escapeAttr(item.published_at || "")}">${escapeHtml(formatDateTimeSeconds(item.published_at))}</time>
             </div>
-            <h3><a href="${escapeAttr(targetUrl)}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
-            <p>${escapeHtml(compactBriefText(item.summary || "", 110))}</p>
-            <a class="ice-news-link" href="${escapeAttr(targetUrl)}">查看全文 →</a>
+            <h3><a href="${escapeAttr(item.url || "#")}">${escapeHtml(item.title || "ICE执法动态")}</a></h3>
+            <p>${escapeHtml(item.summary || "")}</p>
+            <a class="ice-news-link" href="${escapeAttr(item.url || "#")}">查看全文 →</a>
           </div>
         </article>`;
     }).join("");
-  }
-
-  function compactBriefTitle(value) {
-    const clean = String(value || "")
-      .replace(/[\r\n\t]+/g, " ")
-      .replace(/\s+/g, " ")
-      .replace(/[。！？!?]+$/g, "")
-      .trim();
-    const chars = Array.from(clean);
-    if (chars.length <= 18) return clean || "ICE执法动态";
-
-    // 优先保留核心动作，确保快讯标题保持一行、8—18个中文字符左右。
-    const shortened = clean
-      .replace(/美国移民与海关执法局/g, "ICE")
-      .replace(/美国国土安全部/g, "DHS")
-      .replace(/美国司法部/g, "司法部")
-      .replace(/执法行动中/g, "行动中")
-      .replace(/相关事件/g, "事件");
-    return Array.from(shortened).slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
-  }
-
-  function compactBriefText(value, limit = 72) {
-    const clean = String(value || "")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/[\r\n\t]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    const chars = Array.from(clean);
-    return chars.length > limit ? `${chars.slice(0, limit).join("")}…` : clean;
-  }
-
-  function isExternalUrl(value) {
-    return /^https?:\/\//i.test(String(value || ""));
   }
 
   function bindControls() {
@@ -234,15 +262,17 @@
     note.textContent = `${rangeLabel(selectedRange)}共公开${selectedMetric === "people" ? `${totals.people}人` : `${totals.events}起事件`}`;
 
     if (!rows.length) {
-      showFallback(rows);
+      safeShowFallback(rows);
       return;
     }
 
     try {
       await ensurePlotly();
       const map = document.getElementById("ice-heatmap");
+      if (!map) return;
       map.hidden = false;
-      document.getElementById("heatmap-fallback").hidden = true;
+      const fallback = document.getElementById("heatmap-fallback");
+      if (fallback) fallback.hidden = true;
       const values = rows.map(row => Number(row[selectedMetric] || 0));
       const isPeople = selectedMetric === "people";
       await window.Plotly.react(map, [{
@@ -286,7 +316,7 @@
       map.on?.("plotly_click", data => filterByState(data?.points?.[0]?.location || ""));
     } catch (error) {
       console.warn("Plotly unavailable, using fallback list.", error);
-      showFallback(rows);
+      safeShowFallback(rows);
     }
   }
 
@@ -332,10 +362,12 @@
     root.querySelectorAll("button[data-state]").forEach(button => button.addEventListener("click", () => filterByState(button.dataset.state)));
   }
 
-  function showFallback(rows) {
+  function safeShowFallback(rows) {
     const map = document.getElementById("ice-heatmap");
     const fallback = document.getElementById("heatmap-fallback");
-    map.hidden = true;
+    if (!map && !fallback) return;
+    if (map) map.hidden = true;
+    if (!fallback) return;
     fallback.hidden = false;
     if (!rows.length) {
       fallback.innerHTML = '<div class="ice-empty">当前时间范围内暂无可定位到州的ICE公开执法数据。</div>';
@@ -363,9 +395,9 @@
       if (show) visible += 1;
     });
     const clear = document.getElementById("clear-state-filter");
-    clear.hidden = !selectedState;
+    if (clear) clear.hidden = !selectedState;
     const note = document.getElementById("news-sort-note");
-    note.textContent = selectedState ? `当前筛选：${selectedState}（${visible}条）` : "按发布时间倒序排列";
+    if (note) note.textContent = selectedState ? `当前筛选：${selectedState}（${visible}条）` : "按发布时间倒序排列";
     if (selectedState) document.getElementById("latest-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 

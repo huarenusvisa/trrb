@@ -1,4 +1,4 @@
-name: ICE全美执法情报自动发布
+name: ICE全美执法事件追踪自动发布
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: trrb-ice-v43-national
+  group: trrb-ice-v45-event-tracking
   cancel-in-progress: false
 
 jobs:
@@ -51,6 +51,9 @@ jobs:
           ICE_MIN_CONFIDENCE: "76"
           ICE_USE_X_MEDIA: "true"
           ICE_DEDUPE_THRESHOLD: "0.84"
+          ICE_EXACT_DUPLICATE_THRESHOLD: "0.93"
+          ICE_EVENT_MATCH_THRESHOLD: "0.58"
+          ICE_EVENT_HISTORY_DAYS: "14"
           ICE_MAX_PENDING_RETRIES: "5"
         run: node scripts/ice-sync.mjs
 
@@ -65,6 +68,6 @@ jobs:
             echo "No new publishable ICE content."
             exit 0
           fi
-          git commit -m "Auto publish ICE national intelligence news"
+          git commit -m "Auto publish ICE event tracking news"
           git pull --rebase origin main
           git push origin main

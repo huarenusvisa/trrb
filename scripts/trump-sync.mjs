@@ -90,7 +90,9 @@ const SYSTEM_PROMPT = `
 1. 只能使用输入帖子中明确出现的事实，不得自行补充背景、原因、动机、数字、日期、地点或法律结论。
 2. 使用简体中文，新闻写实风格，不表达支持或反对特朗普的立场。
 3. 标题准确克制，不使用“震惊、炸裂、疯狂、惊天、彻底翻车、铁腕、横扫”等情绪词。
-4. summary为45至110个中文字符；body_paragraphs为2至3段，正文总量约160至360个中文字符。输入信息不足时宁可写短，不得凑字数。
+4. 先判断内容形态：
+   - content_format="brief"：适用于单一明确事实、简短讲话、任命、回应、司法进展或材料不足以形成完整文章的内容。title控制在8至18个中文字符；summary控制在20至70个中文字符，只写一行核心事实；body_paragraphs只保留1段，建议20至90个中文字符。不得为了凑长度扩写。
+   - content_format="article"：适用于有两个以上事实点、背景或影响的完整新闻。summary为45至110个中文字符；body_paragraphs为2至3段，正文总量约160至360个中文字符。
 5. 不复制大段英文原文，不使用Markdown，不写项目符号。
 6. 涉及诉讼、调查、指控或刑事案件时，必须区分“被调查、被指控、被起诉、被定罪、被判刑”，不得混淆。
 7. 对政策、行政命令、法律或法院裁决的描述，仅能写帖子明确说明的内容；没有正式文件链接时，不得声称已经生效。
@@ -101,6 +103,7 @@ const SYSTEM_PROMPT = `
 12. confidence为0至100的整数。资料不足、事实矛盾、上下文不完整或可能误导时，confidence应低于83。
 13. title、summary和body_paragraphs不得加入输入中不存在的阿拉伯数字。
 14. category只能从指定枚举中选择。
+15. 极短但事实明确的内容不得仅因字数不足判定失败，应输出content_format="brief"。
 `.trim();
 
 const ARTICLE_SCHEMA = {
@@ -109,6 +112,7 @@ const ARTICLE_SCHEMA = {
   required: [
     "title",
     "summary",
+    "content_format",
     "body_paragraphs",
     "category",
     "importance",
@@ -122,6 +126,7 @@ const ARTICLE_SCHEMA = {
   properties: {
     title: { type: "string" },
     summary: { type: "string" },
+    content_format: { type: "string", enum: ["brief", "article"] },
     body_paragraphs: {
       type: "array",
       items: { type: "string" },
@@ -181,9 +186,13 @@ export async function main() {
   let retryCount = 0;
   let duplicateCount = 0;
 
+  // 同一事件可能由多个账号重复发布。把已发布内容、历史审核稿和本轮已处理稿件
+  // 放进同一个事件去重池，避免同一新闻生成多篇文章或多条草稿。
+  const knownEditorialItems = buildKnownEditorialItems(news, pending);
+
   for (const entry of toProcess) {
     try {
-      const result = await processPost(entry.post, news);
+      const result = await processPost(entry.post, news, knownEditorialItems);
 
       if (result.status === "published") {
         publishedIds.add(String(entry.x_post_id));
@@ -203,6 +212,7 @@ export async function main() {
         );
         reviewCount += 1;
       }
+      if (result.ai) addKnownEditorialItem(knownEditorialItems, result.ai, entry.post.created_at, entry.x_post_id);
     } catch (error) {
       nextPending.push(
         makePendingEntry(
@@ -497,7 +507,6 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
   const nextCursors = { ...previousCursors };
   const collected = [];
   const laneStats = [];
-  const laneErrors = [];
   let successfulLanes = 0;
 
   for (const lane of CONFIG.queryLanes) {
@@ -510,30 +519,12 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
       laneStats.push({ id: lane.id, label: lane.label, fetched: result.posts.length, truncated: result.truncated });
       successfulLanes += 1;
     } catch (error) {
-      const status = Number(error?.status || 0);
-      const message = errorMessage(error);
-      laneErrors.push({ id: lane.id, status, message });
-      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, status, error: message });
-      console.error(`Trump query lane ${lane.id} failed:`, message);
+      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, error: errorMessage(error) });
+      console.error(`Trump query lane ${lane.id} failed:`, errorMessage(error));
     }
   }
 
-  if (!successfulLanes) {
-    const transientStatuses = new Set([0, 408, 425, 429, 500, 502, 503, 504]);
-    const allTransient = laneErrors.length > 0 && laneErrors.every(item => transientStatuses.has(item.status));
-    if (allTransient) {
-      console.warn("All Trump X search lanes are temporarily unavailable; preserving cursors and continuing with the existing pending queue.");
-      return {
-        posts: [],
-        newestId: "",
-        queryCursors: nextCursors,
-        laneStats,
-        xUnavailable: true,
-      };
-    }
-    const summary = laneErrors.map(item => `${item.id}:${item.status || "network"}`).join(", ");
-    throw new Error(`All Trump X search lanes failed (${summary}).`);
-  }
+  if (!successfulLanes) throw new Error("All Trump X search lanes failed.");
 
   let posts = dedupePosts(collected)
     .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);
@@ -636,10 +627,19 @@ async function fetchTrumpQueryLane(lane, sinceId) {
   return { posts: collected, cursor: newestId || maxSnowflake(collected.map(post => post.id)), truncated };
 }
 
-async function processPost(post, news) {
+async function processPost(post, news, knownEditorialItems = []) {
   const sourceText = buildSourceText(post);
-  const ai = await rewriteWithOpenAI(sourceText, post);
+  const ai = normalizeContentFormat(await rewriteWithOpenAI(sourceText, post));
   const validation = validateArticle(ai, sourceText, post);
+
+  const duplicate = findContentDuplicate(knownEditorialItems, ai.title, ai.summary, post.created_at);
+  if (duplicate) {
+    return {
+      status: "duplicate",
+      reason: `与已有内容重复：${duplicate.id || duplicate.x_post_id || "same-event"}`,
+      ai,
+    };
+  }
 
   if (!validation.ok) {
     await syncTrumpCmsArticle(post, ai, "draft", validation.reason);
@@ -659,13 +659,6 @@ async function processPost(post, news) {
   }
 
   const contentHash = createContentHash(ai.title, ai.summary);
-  const duplicate = findContentDuplicate(news, ai.title, ai.summary, post.created_at);
-  if (duplicate) {
-    return {
-      status: "duplicate",
-      reason: `与已发布内容重复：${duplicate.id}`,
-    };
-  }
 
   const dateParts = newYorkDateParts(post.created_at);
   const relativeUrl = `/news/trump/${dateParts.year}/${dateParts.month}/${dateParts.day}/trump-${post.id}.html`;
@@ -677,12 +670,14 @@ async function processPost(post, news) {
     `trump-${post.id}.html`
   );
 
-  const imageUrl = CONFIG.useXMedia ? firstUsableMedia(post.media) : "";
+  const contentFormat = ai.content_format === "brief" ? "brief" : "article";
+  const imageUrl = contentFormat === "brief" ? "" : (CONFIG.useXMedia ? firstUsableMedia(post.media) : "");
   const item = {
     id: `trump-${post.id}`,
     x_post_id: post.id,
     title: cleanText(ai.title),
     summary: cleanText(ai.summary),
+    content_format: contentFormat,
     body_paragraphs: ai.body_paragraphs.map(cleanText),
     category: ai.category,
     importance: ai.importance,
@@ -716,7 +711,7 @@ async function processPost(post, news) {
   else news.push(item);
 
   await syncTrumpCmsArticle(post, ai, "published", "");
-  return { status: "published", item };
+  return { status: "published", item, ai };
 }
 
 async function syncTrumpCmsArticle(post, ai, status, reviewReason) {
@@ -729,7 +724,7 @@ async function syncTrumpCmsArticle(post, ai, status, reviewReason) {
     categoryName: "特朗普动态",
     primarySection: "特朗普动态",
     relatedSections: [],
-    coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
+    coverImage: ai?.content_format === "brief" ? "" : (CONFIG.useXMedia ? firstUsableMedia(post.media) : ""),
     sourceUrl: post.x_url,
     sourceName: post.author?.name || post.author_name || "公开来源",
     sourceAccount: post.author?.username || post.author_username || "",
@@ -739,7 +734,7 @@ async function syncTrumpCmsArticle(post, ai, status, reviewReason) {
     status,
     publishedAt: post.created_at,
     countInIceStats: false,
-    tags: [ai?.category, "特朗普"].filter(Boolean),
+    tags: [ai?.category, "特朗普", ai?.content_format === "brief" ? "快讯" : "完整文章"].filter(Boolean),
     riskFlags: ai?.needs_review ? ["needs_review"] : [],
   });
   await upsertNewsCandidate({
@@ -839,11 +834,19 @@ export function validateArticle(ai, sourceText, post) {
     : [];
   const allOutput = `${title}\n${summary}\n${paragraphs.join("\n")}`;
 
-  if (title.length < 8 || title.length > 80) return fail("标题长度不合格");
-  if (summary.length < 25 || summary.length > 180) return fail("摘要长度不合格");
-  if (paragraphs.length < 2 || paragraphs.length > 3) return fail("正文段落数不合格");
+  const contentFormat = ai.content_format === "brief" ? "brief" : "article";
   const bodyLength = paragraphs.join("").length;
-  if (bodyLength < 90 || bodyLength > 650) return fail("正文长度不合格");
+  if (contentFormat === "brief") {
+    if (title.length < 8 || title.length > 24) return fail("快讯标题长度不合格");
+    if (summary.length < 15 || summary.length > 100) return fail("快讯正文长度不合格");
+    if (paragraphs.length < 1 || paragraphs.length > 2) return fail("快讯段落数不合格");
+    if (bodyLength < 15 || bodyLength > 160) return fail("快讯正文长度不合格");
+  } else {
+    if (title.length < 8 || title.length > 80) return fail("标题长度不合格");
+    if (summary.length < 25 || summary.length > 180) return fail("摘要长度不合格");
+    if (paragraphs.length < 2 || paragraphs.length > 3) return fail("正文段落数不合格");
+    if (bodyLength < 90 || bodyLength > 650) return fail("正文长度不合格");
+  }
   if (!CATEGORY_VALUES.includes(ai.category)) return fail("分类不在允许范围");
   if (!VERIFIED_VALUES.includes(ai.verified_level)) return fail("核实级别不合法");
   if (!Number.isInteger(ai.importance) || ai.importance < 1 || ai.importance > 10) {
@@ -927,8 +930,8 @@ function renderArticle(item, dateParts) {
 
   <main class="article-shell">
     <nav class="breadcrumb"><a href="/">首页</a><span>›</span><a href="/topic/trump/">特朗普实时动态</a></nav>
-    <article class="news-article">
-      <div class="article-kicker">${escapeHtml(item.category)}</div>
+    <article class="news-article ${item.content_format === "brief" ? "is-brief" : ""}">
+      <div class="article-kicker">${escapeHtml(item.content_format === "brief" ? "实时快讯" : item.category)}</div>
       <h1>${escapeHtml(item.title)}</h1>
       <div class="article-meta">
         <time datetime="${escapeAttr(item.published_at)}">${escapeHtml(formatChineseDateTime(item.published_at))}</time>
@@ -1085,17 +1088,71 @@ function dedupePending(items, publishedIds) {
   return [...map.values()].sort((a, b) => compareSnowflakes(a.x_post_id, b.x_post_id));
 }
 
-function findContentDuplicate(news, title, summary, publishedAt) {
-  const cutoff = Date.parse(publishedAt) - 48 * 60 * 60 * 1000;
+function normalizeContentFormat(ai) {
+  const next = { ...(ai || {}) };
+  const paragraphs = Array.isArray(next.body_paragraphs)
+    ? next.body_paragraphs.map(cleanText).filter(Boolean)
+    : [];
+  const bodyLength = paragraphs.join("").length;
+  if (next.content_format !== "brief" && next.content_format !== "article") {
+    next.content_format = bodyLength < 90 || paragraphs.length < 2 ? "brief" : "article";
+  }
+  if (next.content_format === "brief") {
+    next.title = shortenBriefTitle(cleanText(next.title || "特朗普最新动态"));
+    next.summary = cleanText(next.summary || paragraphs[0] || "").slice(0, 100);
+    next.body_paragraphs = paragraphs.length ? [paragraphs.join(" ").slice(0, 160)] : [next.summary];
+  }
+  return next;
+}
+
+function shortenBriefTitle(value) {
+  const text = cleanText(value).replace(/[。！？!?]+$/g, "");
+  if (text.length <= 24) return text;
+  return text.slice(0, 23).replace(/[，、：:；;\s]+$/g, "");
+}
+
+function buildKnownEditorialItems(news, pending) {
+  const items = [];
+  for (const item of news || []) {
+    if (!item?.title) continue;
+    items.push({ id: item.id, title: item.title, summary: item.summary || "", published_at: item.published_at });
+  }
+  for (const entry of pending || []) {
+    const ai = entry?.ai;
+    if (!ai?.title) continue;
+    items.push({ id: entry.id, x_post_id: entry.x_post_id, title: ai.title, summary: ai.summary || "", published_at: entry.post?.created_at || entry.created_at });
+  }
+  return items;
+}
+
+function addKnownEditorialItem(items, ai, publishedAt, id) {
+  if (!ai?.title) return;
+  items.push({ id: id || "current-run", title: ai.title, summary: ai.summary || "", published_at: publishedAt || new Date().toISOString() });
+}
+
+function normalizedEventText(value) {
+  return cleanText(value)
+    .toLowerCase()
+    .replace(/特朗普|美国总统|白宫|最新|动态|消息|表示|宣布|称/g, " ")
+    .replace(/[\p{P}\p{S}\s]+/gu, "")
+    .slice(0, 120);
+}
+
+function findContentDuplicate(items, title, summary, publishedAt) {
+  const currentTime = Date.parse(publishedAt || "") || Date.now();
+  const cutoff = currentTime - 72 * 60 * 60 * 1000;
   const candidateHash = createContentHash(title, summary);
   const candidateTokens = contentTokens(`${title} ${summary}`);
-  for (const item of news) {
+  const candidateTitle = normalizedEventText(title);
+  for (const item of items || []) {
     const timestamp = Date.parse(item.published_at || "");
-    if (!Number.isFinite(timestamp) || timestamp < cutoff) continue;
+    if (Number.isFinite(timestamp) && timestamp < cutoff) continue;
     if (item.content_hash && item.content_hash === candidateHash) return item;
+    const existingTitle = normalizedEventText(item.title || "");
+    if (candidateTitle && existingTitle && candidateTitle === existingTitle && candidateTitle.length >= 8) return item;
     const score = jaccard(candidateTokens, contentTokens(`${item.title || ""} ${item.summary || ""}`));
-    // 仅合并非常接近的改写，避免把同主题下涉及不同地点、人物或政策的帖子误判为重复。
-    if (score >= 0.92) return item;
+    // 对不同来源的改写采取保守去重；只有几乎完全一致时才合并，避免误删不同进展。
+    if (score >= 0.985) return item;
   }
   return null;
 }
@@ -1207,10 +1264,7 @@ async function readResponseJson(response, label) {
       json?.errors?.[0]?.detail ||
       json?.title ||
       text.slice(0, 300);
-    const error = new Error(`${label} request failed (${response.status}): ${detail}`);
-    error.status = response.status;
-    error.retryAfter = response.headers.get("retry-after") || "";
-    throw error;
+    throw new Error(`${label} request failed (${response.status}): ${detail}`);
   }
   return json;
 }

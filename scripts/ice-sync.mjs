@@ -13,6 +13,7 @@ const STATE_FILE = path.join(DATA_DIR, "ice-state.json");
 const PENDING_FILE = path.join(DATA_DIR, "ice-pending.json");
 const DASHBOARD_FILE = path.join(DATA_DIR, "ice-dashboard.json");
 const MAP_EVENTS_FILE = path.join(DATA_DIR, "ice-map-events.json");
+const EVENT_INDEX_FILE = path.join(DATA_DIR, "ice-event-index.json");
 const SOURCE_REGISTRY_FILE = path.join(DATA_DIR, "ice-source-registry.json");
 const HOME_FILE = path.join(ROOT, "index.html");
 const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
@@ -32,7 +33,10 @@ const CONFIG = {
   bootstrapLimit: intEnv("ICE_BOOTSTRAP_LIMIT", 80, 1, 300),
   maxNewPosts: intEnv("ICE_MAX_NEW_POSTS", 50, 1, 300),
   lookbackHours: intEnv("ICE_LOOKBACK_HOURS", 24, 1, 168),
-  dedupeThreshold: floatEnv("ICE_DEDUPE_THRESHOLD", 0.72, 0.4, 0.95),
+  dedupeThreshold: floatEnv("ICE_DEDUPE_THRESHOLD", 0.84, 0.4, 0.98),
+  exactDuplicateThreshold: floatEnv("ICE_EXACT_DUPLICATE_THRESHOLD", 0.93, 0.80, 0.995),
+  eventMatchThreshold: floatEnv("ICE_EVENT_MATCH_THRESHOLD", 0.58, 0.35, 0.90),
+  eventHistoryDays: intEnv("ICE_EVENT_HISTORY_DAYS", 14, 2, 60),
   minConfidence: intEnv("ICE_MIN_CONFIDENCE", 80, 0, 100),
   useXMedia: boolEnv("ICE_USE_X_MEDIA", true),
   maxPendingRetries: intEnv("ICE_MAX_PENDING_RETRIES", 5, 1, 20),
@@ -63,6 +67,9 @@ const SYSTEM_PROMPT = `
 13. occurred_at只有在来源明确披露执法发生时间时填写ISO 8601；只有日期时使用当天00:00:00并把time_precision设为date；没有时间时为null。
 14. city、state_code、state_name、location_text只能来自来源明确地点；无法确定时用空字符串。state_code使用美国两位州缩写。
 15. 同一人员或同一行动只建立一个event，避免把“被捕后被拘留”等同一事件重复计算。
+16. report_stage标记这篇材料所处阶段：breaking、operation、arrest、charge、indictment、detention、conviction、sentencing、removal、official_response、followup或unknown。
+17. material_updates只列出相较早期报道新增且来源明确的事实，例如新增人数、姓名、地点、法院阶段、官方回应、判刑或遣返结果；没有新增事实时返回空数组。
+18. event_subjects只填写来源明确出现的人名、行动名称或组织名称；case_identifiers只填写案件号、行动代号或法院案号，不得猜测。
 `;
 
 const ARTICLE_SCHEMA = {
@@ -71,7 +78,8 @@ const ARTICLE_SCHEMA = {
   required: [
     "title", "summary", "body_paragraphs", "content_type", "publishable",
     "needs_review", "review_reason", "confidence", "source_name", "source_type",
-    "agency", "ice_relevant", "keywords", "enforcement_events"
+    "agency", "ice_relevant", "keywords", "enforcement_events",
+    "report_stage", "material_updates", "event_subjects", "case_identifiers"
   ],
   properties: {
     title: { type: "string" },
@@ -90,6 +98,23 @@ const ARTICLE_SCHEMA = {
     agency: { type: "string" },
     ice_relevant: { type: "boolean" },
     keywords: {
+      type: "array",
+      items: { type: "string" }
+    },
+
+    report_stage: {
+      type: "string",
+      enum: ["breaking", "operation", "arrest", "charge", "indictment", "detention", "conviction", "sentencing", "removal", "official_response", "followup", "unknown"]
+    },
+    material_updates: {
+      type: "array",
+      items: { type: "string" }
+    },
+    event_subjects: {
+      type: "array",
+      items: { type: "string" }
+    },
+    case_identifiers: {
       type: "array",
       items: { type: "string" }
     },
@@ -357,7 +382,8 @@ async function main() {
   pending = pending.filter(entry => entry.post && isWithinHours(entry.post.created_at, CONFIG.lookbackHours));
   const expiredPendingCount = pendingBeforeExpiry - pending.length;
 
-  // Remove same-event pending items before spending API credits.
+  // Remove only exact/near-verbatim pending duplicates before spending API credits.
+  // Related follow-ups and later legal stages must remain eligible for publication.
   const pendingDedupe = dedupePendingByContent(pending, news);
   pending = pendingDedupe.items;
 
@@ -367,6 +393,8 @@ async function main() {
   let publishedCount = 0;
   let pendingCount = 0;
   let duplicateSkippedCount = pendingDedupe.skipped;
+  let eventUpdatePublishedCount = 0;
+  let newEventPublishedCount = 0;
 
   // Retry operational failures first. Manual-review entries stay untouched.
   const retryable = pending.filter(item => !item.manual_review && (item.attempts || 0) < CONFIG.maxPendingRetries);
@@ -380,6 +408,10 @@ async function main() {
       if (result.status === "published") {
         publishedIds.add(String(entry.x_post_id));
         publishedCount += 1;
+        if (result.item?.is_followup) eventUpdatePublishedCount += 1;
+        else newEventPublishedCount += 1;
+      } else if (result.status === "duplicate") {
+        duplicateSkippedCount += 1;
       } else {
         stillPending.push(makePendingEntry(entry.post, result.reason, true, (entry.attempts || 0) + 1));
       }
@@ -396,13 +428,12 @@ async function main() {
     return !publishedIds.has(id) && !pendingIds.has(id);
   });
 
-  // Compare new posts with the last 24 hours of published and pending content.
-  // Exact ICE.gov links, strongly similar wording, or matching names/numbers
-  // are treated as one event. The first accepted item is kept.
+  // Preflight dedupe removes only exact links or near-verbatim reposts.
+  // Event association and follow-up handling happen after AI fact extraction.
   const references = buildDedupeReferences(news, pending);
   const newPosts = [];
   for (const post of candidatePosts) {
-    const duplicate = findLikelyDuplicate(post, references);
+    const duplicate = findExactDuplicate(post, references);
     if (duplicate) {
       duplicateSkippedCount += 1;
       console.log(`Skipped duplicate X post ${post.id}; similar to ${duplicate.id}.`);
@@ -418,6 +449,10 @@ async function main() {
       if (result.status === "published") {
         publishedIds.add(String(post.id));
         publishedCount += 1;
+        if (result.item?.is_followup) eventUpdatePublishedCount += 1;
+        else newEventPublishedCount += 1;
+      } else if (result.status === "duplicate") {
+        duplicateSkippedCount += 1;
       } else {
         pending.push(makePendingEntry(post, result.reason, true, 1));
         pendingCount += 1;
@@ -447,7 +482,9 @@ async function main() {
     sources_seen: [...new Set(fetchedPosts.map(post => post.source_name).filter(Boolean))].length,
     candidates: candidatePosts.length,
     new_posts: newPosts.length,
-    duplicate_skipped: duplicateSkippedCount,
+    exact_duplicates_skipped: duplicateSkippedCount,
+    event_updates_published: eventUpdatePublishedCount,
+    new_events_published: newEventPublishedCount,
     expired_pending: expiredPendingCount,
     metadata_backfilled: metadataBackfilledCount,
     published: publishedCount,
@@ -458,12 +495,14 @@ async function main() {
 
   const dashboard = buildDashboardData(news, state, now);
   const mapEvents = buildMapEvents(news, now);
+  const eventIndex = buildEventIndex(news, now);
 
   await writeJson(NEWS_FILE, news);
   await writeJson(PENDING_FILE, pending);
   await writeJson(STATE_FILE, state);
   await writeJson(DASHBOARD_FILE, dashboard);
   await writeJson(MAP_EVENTS_FILE, mapEvents);
+  await writeJson(EVENT_INDEX_FILE, eventIndex);
   await updateSitemap(news, now);
 
   console.log(JSON.stringify(state.last_result, null, 2));
@@ -488,6 +527,7 @@ async function ensureStructure() {
   await ensureJsonFile(NEWS_FILE, []);
   await ensureJsonFile(PENDING_FILE, []);
   await ensureJsonFile(MAP_EVENTS_FILE, { generated_at: "", timezone: "America/New_York", events: [] });
+  await ensureJsonFile(EVENT_INDEX_FILE, { generated_at: "", events: [] });
   await ensureJsonFile(DASHBOARD_FILE, emptyDashboard());
   await ensureJsonFile(STATE_FILE, {
     last_seen_id: "",
@@ -661,6 +701,29 @@ async function processPost(post, news) {
 
   const imageUrl = CONFIG.useXMedia ? firstUsableMedia(post.media) : "";
   const enforcementEvents = normalizeEnforcementEvents(ai.enforcement_events, sourceText);
+
+  const eventProfile = createEventProfile({
+    post,
+    ai,
+    enrichment,
+    enforcementEvents,
+    sourceText
+  });
+  const eventDecision = classifyEventRelationship(eventProfile, news);
+
+  if (eventDecision.kind === "duplicate") {
+    return {
+      status: "duplicate",
+      reason: `Exact duplicate of ${eventDecision.match?.id || "existing report"}`
+    };
+  }
+
+  const eventId = eventDecision.match?.event_id || createEventId(eventProfile, post.id);
+  const relatedReports = news
+    .filter(entry => entry.event_id === eventId)
+    .sort((a, b) => new Date(a.published_at) - new Date(b.published_at));
+  const previousReport = relatedReports.at(-1) || eventDecision.match || null;
+
   const item = {
     id: `ice-${post.id}`,
     x_post_id: post.id,
@@ -684,7 +747,19 @@ async function processPost(post, news) {
     keywords: ai.keywords,
     enforcement_events: enforcementEvents,
     state_codes: [...new Set(enforcementEvents.map(event => event.state_code).filter(Boolean))],
-    event_metadata_checked_at: new Date().toISOString()
+    event_metadata_checked_at: new Date().toISOString(),
+
+    event_id: eventId,
+    event_relationship: eventDecision.kind,
+    is_followup: eventDecision.kind === "update",
+    update_sequence: relatedReports.length + 1,
+    previous_update_url: previousReport?.url || "",
+    report_stage: normalizeReportStage(ai.report_stage),
+    material_updates: normalizeStringArray(ai.material_updates, 12),
+    event_subjects: normalizeStringArray(ai.event_subjects, 20),
+    case_identifiers: normalizeStringArray(ai.case_identifiers, 20),
+    event_fingerprint: eventProfile.fingerprint,
+    event_match_score: Number(eventDecision.score || 0)
   };
 
   const html = renderArticle(item, ai.body_paragraphs, dateParts);
@@ -1506,10 +1581,296 @@ function isLikelyDuplicateReference(a, b) {
   return false;
 }
 
-function findLikelyDuplicate(post, references) {
-  const candidate = referenceFromPost(post);
-  return references.find(reference => isLikelyDuplicateReference(candidate, reference)) || null;
+function isExactDuplicateReference(a, b) {
+  const aUrl = normalizeComparableUrl(a.officialUrl);
+  const bUrl = normalizeComparableUrl(b.officialUrl);
+  if (aUrl && bUrl && aUrl === bUrl) return true;
+
+  const aText = normalizeDedupeText(a.text);
+  const bText = normalizeDedupeText(b.text);
+  if (!aText || !bText) return false;
+  if (aText === bText) return true;
+
+  const tokenScore = jaccardSimilarity(tokenSet(aText), tokenSet(bText));
+  const ngramScore = diceSimilarity(ngramSet(aText), ngramSet(bText));
+
+  // Only near-verbatim reposts are discarded before AI analysis.
+  return tokenScore >= CONFIG.exactDuplicateThreshold || ngramScore >= 0.96;
 }
+
+function findExactDuplicate(post, references) {
+  const candidate = referenceFromPost(post);
+  return references.find(reference => isExactDuplicateReference(candidate, reference)) || null;
+}
+
+function normalizeReportStage(value) {
+  const allowed = new Set([
+    "breaking", "operation", "arrest", "charge", "indictment", "detention",
+    "conviction", "sentencing", "removal", "official_response", "followup", "unknown"
+  ]);
+  const normalized = String(value || "unknown").trim().toLowerCase();
+  return allowed.has(normalized) ? normalized : "unknown";
+}
+
+function normalizeStringArray(value, limit = 20) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value
+    .map(item => String(item || "").replace(/\s+/g, " ").trim())
+    .filter(Boolean))]
+    .slice(0, limit);
+}
+
+function extractCaseIdentifiers(value) {
+  const text = String(value || "");
+  const patterns = [
+    /\b\d{1,2}:\d{2}-(?:cr|cv|mj)-\d{2,8}\b/gi,
+    /\b(?:case|docket|operation|task force)\s*(?:no\.?|number|#|:)?\s*[A-Z0-9][A-Z0-9._/-]{3,}\b/gi,
+    /\b[A-Z]{2,8}-\d{2,8}\b/g
+  ];
+  return [...new Set(patterns.flatMap(pattern => text.match(pattern) || []).map(v => v.toLowerCase()))];
+}
+
+function stageFamily(stage) {
+  const value = normalizeReportStage(stage);
+  if (["breaking", "operation", "arrest", "detention"].includes(value)) return "enforcement";
+  if (["charge", "indictment"].includes(value)) return "charging";
+  if (["conviction", "sentencing"].includes(value)) return "adjudication";
+  if (value === "removal") return "removal";
+  if (value === "official_response") return "response";
+  return value;
+}
+
+function createEventProfile({ post, ai, enrichment, enforcementEvents, sourceText }) {
+  const text = [
+    post.text || "",
+    ai.title || "",
+    ai.summary || "",
+    Array.isArray(ai.keywords) ? ai.keywords.join(" ") : "",
+    Array.isArray(ai.event_subjects) ? ai.event_subjects.join(" ") : "",
+    Array.isArray(ai.case_identifiers) ? ai.case_identifiers.join(" ") : ""
+  ].join(" ");
+
+  const names = new Set([
+    ...extractNameSet(text),
+    ...normalizeStringArray(ai.event_subjects, 20).map(v => v.toLowerCase())
+  ]);
+  const caseIds = new Set([
+    ...extractCaseIdentifiers(sourceText),
+    ...normalizeStringArray(ai.case_identifiers, 20).map(v => v.toLowerCase())
+  ]);
+  const numbers = extractNumberSet(text);
+  const states = new Set(enforcementEvents.map(event => String(event.state_code || "").toUpperCase()).filter(Boolean));
+  const cities = new Set(enforcementEvents.map(event => String(event.city || "").trim().toLowerCase()).filter(Boolean));
+  const eventTypes = new Set(enforcementEvents.map(event => event.event_type).filter(Boolean));
+  const occurredDates = new Set(enforcementEvents
+    .map(event => event.occurred_at ? String(event.occurred_at).slice(0, 10) : "")
+    .filter(Boolean));
+
+  const stage = normalizeReportStage(ai.report_stage);
+  const officialUrl = enrichment.url || extractPrimaryIceUrl(post) || "";
+  const tokenFingerprint = [...tokenSet(text)].sort().slice(0, 40).join("|");
+  const fingerprintSeed = [
+    [...caseIds].sort().join(","),
+    [...names].sort().slice(0, 8).join(","),
+    [...states].sort().join(","),
+    [...cities].sort().join(","),
+    [...eventTypes].sort().join(","),
+    [...occurredDates].sort().join(","),
+    stageFamily(stage),
+    tokenFingerprint
+  ].join("::");
+
+  return {
+    text,
+    officialUrl,
+    stage,
+    materialUpdates: normalizeStringArray(ai.material_updates, 12),
+    names,
+    caseIds,
+    numbers,
+    states,
+    cities,
+    eventTypes,
+    occurredDates,
+    tokens: tokenSet(text),
+    ngrams: ngramSet(text),
+    fingerprint: crypto.createHash("sha256").update(fingerprintSeed).digest("hex").slice(0, 24)
+  };
+}
+
+function profileFromNews(item) {
+  const events = Array.isArray(item.enforcement_events) ? item.enforcement_events : [];
+  const text = [
+    item.source_text || "",
+    item.title || "",
+    item.summary || "",
+    Array.isArray(item.keywords) ? item.keywords.join(" ") : "",
+    Array.isArray(item.event_subjects) ? item.event_subjects.join(" ") : "",
+    Array.isArray(item.case_identifiers) ? item.case_identifiers.join(" ") : ""
+  ].join(" ");
+
+  return {
+    item,
+    text,
+    officialUrl: item.official_url || "",
+    stage: normalizeReportStage(item.report_stage),
+    materialUpdates: normalizeStringArray(item.material_updates, 12),
+    names: new Set([
+      ...extractNameSet(text),
+      ...normalizeStringArray(item.event_subjects, 20).map(v => v.toLowerCase())
+    ]),
+    caseIds: new Set([
+      ...extractCaseIdentifiers(text),
+      ...normalizeStringArray(item.case_identifiers, 20).map(v => v.toLowerCase())
+    ]),
+    numbers: extractNumberSet(text),
+    states: new Set(events.map(event => String(event.state_code || "").toUpperCase()).filter(Boolean)),
+    cities: new Set(events.map(event => String(event.city || "").trim().toLowerCase()).filter(Boolean)),
+    eventTypes: new Set(events.map(event => event.event_type).filter(Boolean)),
+    occurredDates: new Set(events.map(event => event.occurred_at ? String(event.occurred_at).slice(0, 10) : "").filter(Boolean)),
+    tokens: tokenSet(text),
+    ngrams: ngramSet(text),
+    fingerprint: item.event_fingerprint || ""
+  };
+}
+
+function eventMatchScore(a, b) {
+  if (intersectionSize(a.caseIds, b.caseIds) > 0) return 1;
+
+  let score = 0;
+  const sharedNames = intersectionSize(a.names, b.names);
+  const sharedStates = intersectionSize(a.states, b.states);
+  const sharedCities = intersectionSize(a.cities, b.cities);
+  const sharedTypes = intersectionSize(a.eventTypes, b.eventTypes);
+  const sharedDates = intersectionSize(a.occurredDates, b.occurredDates);
+  const sharedNumbers = intersectionSize(a.numbers, b.numbers);
+  const tokenScore = jaccardSimilarity(a.tokens, b.tokens);
+
+  if (sharedNames >= 2) score += 0.42;
+  else if (sharedNames === 1) score += 0.28;
+  if (sharedCities > 0) score += 0.22;
+  else if (sharedStates > 0) score += 0.10;
+  if (sharedDates > 0) score += 0.18;
+  if (sharedTypes > 0) score += 0.10;
+  if (sharedNumbers > 0) score += Math.min(0.12, sharedNumbers * 0.06);
+  score += Math.min(0.20, tokenScore * 0.30);
+
+  return Math.min(1, score);
+}
+
+function hasMaterialDifference(candidate, existing) {
+  if (stageFamily(candidate.stage) !== stageFamily(existing.stage)) return true;
+  if (candidate.materialUpdates.length > 0) return true;
+  if ([...candidate.caseIds].some(value => !existing.caseIds.has(value))) return true;
+  if ([...candidate.names].some(value => !existing.names.has(value))) return true;
+  if ([...candidate.numbers].some(value => !existing.numbers.has(value))) return true;
+  if ([...candidate.states].some(value => !existing.states.has(value))) return true;
+  if ([...candidate.cities].some(value => !existing.cities.has(value))) return true;
+  return false;
+}
+
+function classifyEventRelationship(candidate, news) {
+  const cutoff = Date.now() - CONFIG.eventHistoryDays * 24 * 60 * 60 * 1000;
+  const recent = news
+    .filter(item => Number.isFinite(Date.parse(item.published_at)) && Date.parse(item.published_at) >= cutoff)
+    .map(profileFromNews);
+
+  let best = null;
+  for (const existing of recent) {
+    const sameUrl = normalizeComparableUrl(candidate.officialUrl)
+      && normalizeComparableUrl(candidate.officialUrl) === normalizeComparableUrl(existing.officialUrl);
+    const tokenScore = jaccardSimilarity(candidate.tokens, existing.tokens);
+    const ngramScore = diceSimilarity(candidate.ngrams, existing.ngrams);
+
+    if (sameUrl || tokenScore >= CONFIG.exactDuplicateThreshold || ngramScore >= 0.96) {
+      if (!hasMaterialDifference(candidate, existing)) {
+        return { kind: "duplicate", match: existing.item, score: Math.max(tokenScore, ngramScore) };
+      }
+    }
+
+    const score = eventMatchScore(candidate, existing);
+    if (!best || score > best.score) best = { existing, score };
+  }
+
+  if (best && best.score >= CONFIG.eventMatchThreshold) {
+    if (hasMaterialDifference(candidate, best.existing)) {
+      return { kind: "update", match: best.existing.item, score: best.score };
+    }
+    return { kind: "duplicate", match: best.existing.item, score: best.score };
+  }
+
+  return { kind: "new", match: null, score: 0 };
+}
+
+function createEventId(profile, fallbackId) {
+  const basis = [
+    [...profile.caseIds].sort().join(","),
+    [...profile.names].sort().slice(0, 8).join(","),
+    [...profile.states].sort().join(","),
+    [...profile.cities].sort().join(","),
+    [...profile.eventTypes].sort().join(","),
+    [...profile.occurredDates].sort().join(","),
+    profile.fingerprint,
+    String(fallbackId || "")
+  ].join("::");
+  return `ice-event-${crypto.createHash("sha256").update(basis).digest("hex").slice(0, 18)}`;
+}
+
+function buildEventIndex(news, nowIso) {
+  const grouped = new Map();
+  for (const item of news) {
+    const eventId = item.event_id || `legacy-${item.id}`;
+    const entry = grouped.get(eventId) || {
+      event_id: eventId,
+      title: item.title || "",
+      first_published_at: item.published_at || "",
+      last_updated_at: item.published_at || "",
+      report_count: 0,
+      stages: [],
+      state_codes: [],
+      subjects: [],
+      reports: []
+    };
+    entry.report_count += 1;
+    if (!entry.first_published_at || new Date(item.published_at) < new Date(entry.first_published_at)) {
+      entry.first_published_at = item.published_at;
+    }
+    if (!entry.last_updated_at || new Date(item.published_at) > new Date(entry.last_updated_at)) {
+      entry.last_updated_at = item.published_at;
+      entry.title = item.title || entry.title;
+    }
+    entry.stages = [...new Set([...entry.stages, normalizeReportStage(item.report_stage)])];
+    entry.state_codes = [...new Set([...entry.state_codes, ...(item.state_codes || [])])];
+    entry.subjects = [...new Set([...entry.subjects, ...normalizeStringArray(item.event_subjects, 20)])].slice(0, 30);
+    entry.reports.push({
+      id: item.id,
+      title: item.title,
+      url: item.url,
+      published_at: item.published_at,
+      source_name: item.source_name,
+      report_stage: normalizeReportStage(item.report_stage),
+      is_followup: Boolean(item.is_followup),
+      update_sequence: Number(item.update_sequence || 1),
+      material_updates: normalizeStringArray(item.material_updates, 12)
+    });
+    grouped.set(eventId, entry);
+  }
+
+  const events = [...grouped.values()]
+    .map(entry => ({
+      ...entry,
+      reports: entry.reports.sort((a, b) => new Date(a.published_at) - new Date(b.published_at))
+    }))
+    .sort((a, b) => new Date(b.last_updated_at) - new Date(a.last_updated_at));
+
+  return {
+    generated_at: nowIso,
+    total_events: events.length,
+    total_reports: news.length,
+    events
+  };
+}
+
 
 function dedupePendingByContent(items, news) {
   const references = news
@@ -1526,7 +1887,7 @@ function dedupePendingByContent(items, news) {
   for (const item of sorted) {
     const reference = referenceFromPending(item);
     if (!reference) continue;
-    const duplicate = references.find(existing => isLikelyDuplicateReference(reference, existing));
+    const duplicate = references.find(existing => isExactDuplicateReference(reference, existing));
     if (duplicate) {
       skipped += 1;
       console.log(`Removed duplicate pending item ${item.x_post_id}; similar to ${duplicate.id}.`);

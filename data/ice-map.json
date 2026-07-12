@@ -1,25 +1,209 @@
 {
-  "generated_at": "2026-07-10T14:04:03.690Z",
+  "generated_at": "2026-07-12T06:26:35.936Z",
+  "latest_sync_at": "2026-07-12T06:26:35.936Z",
   "timezone": "America/New_York",
-  "latest_sync_at": "2026-07-10T14:04:03.690Z",
-  "total_published": 5,
   "today": {
-    "date": "2026-07-10",
-    "known_people": 0,
-    "event_count": 0,
-    "location_count": 0,
-    "unknown_people_events": 0,
-    "events": []
+    "date": "2026-07-12",
+    "known_people": 2,
+    "event_count": 5,
+    "location_count": 2,
+    "unknown_people_events": 3,
+    "events": [
+      {
+        "event_type": "arrest",
+        "people_count": null,
+        "occurred_at": "2026-07-12T05:52:03.000Z",
+        "time_precision": "second",
+        "city": "Houston",
+        "state_code": "TX",
+        "state_name": "Texas",
+        "location_text": "休斯顿县",
+        "confidence": 90,
+        "source_excerpt": "涉案的ICE特工已被捕，休斯顿县法医裁定死亡为他杀。",
+        "basis_time": "2026-07-12T05:52:03.000Z",
+        "time_basis": "执法时间",
+        "article_title": "休斯顿县一名男子死亡案涉ICE人员被捕",
+        "article_url": "/news/ice/2026/07/12/ice-2076182780757581918.html",
+        "published_at": "2026-07-12T05:52:03.000Z"
+      },
+      {
+        "event_type": "detention",
+        "people_count": null,
+        "occurred_at": "2026-07-12T05:23:33.000Z",
+        "time_precision": "second",
+        "city": "",
+        "state_code": "",
+        "state_name": "",
+        "location_text": "",
+        "confidence": 90,
+        "source_excerpt": "a US citizen \"detained by ICE\" inserted themselves into an operation with the intent to obstruct justice",
+        "basis_time": "2026-07-12T05:23:33.000Z",
+        "time_basis": "执法时间",
+        "article_title": "美国公民涉嫌妨碍司法遭ICE拘留",
+        "article_url": "/news/ice/2026/07/12/ice-2076175609470796065.html",
+        "published_at": "2026-07-12T05:23:33.000Z"
+      },
+      {
+        "event_type": "arrest",
+        "people_count": 1,
+        "occurred_at": "2026-07-12T04:48:18.000Z",
+        "time_precision": "second",
+        "city": "Wattala",
+        "state_code": "",
+        "state_name": "",
+        "location_text": "斯里兰卡瓦特拉",
+        "confidence": 95,
+        "source_excerpt": "Woman Arrested in Wattala Over Possession of Ice and Heroin",
+        "basis_time": "2026-07-12T04:48:18.000Z",
+        "time_basis": "执法时间",
+        "article_title": "斯里兰卡瓦特拉一女子因持有冰毒和海洛因被捕",
+        "article_url": "/news/ice/2026/07/12/ice-2076166737796747285.html",
+        "published_at": "2026-07-12T04:48:18.000Z"
+      },
+      {
+        "event_type": "arrest",
+        "people_count": null,
+        "occurred_at": null,
+        "time_precision": "unknown",
+        "city": "",
+        "state_code": "",
+        "state_name": "",
+        "location_text": "",
+        "confidence": 80,
+        "source_excerpt": "He came over during the Biden administration and had been arrested several times, but he was released each time and officials ignored ICE detainers.",
+        "basis_time": "2026-07-12T04:36:25.000Z",
+        "time_basis": "官方公开时间",
+        "article_title": "冰岛执法机构批评释放涉嫌人员延误遣返过程",
+        "article_url": "/news/ice/2026/07/12/ice-2076163747119514036.html",
+        "published_at": "2026-07-12T04:36:25.000Z"
+      },
+      {
+        "event_type": "detention",
+        "people_count": 1,
+        "occurred_at": null,
+        "time_precision": "unknown",
+        "city": "",
+        "state_code": "",
+        "state_name": "",
+        "location_text": "",
+        "confidence": 85,
+        "source_excerpt": "墨西哥移民洛伦佐·萨尔加多被ICE执法人员拘留后死亡,相关新影像曝光。",
+        "basis_time": "2026-07-12T04:30:33.000Z",
+        "time_basis": "官方公开时间",
+        "article_title": "墨西哥移民洛伦佐·萨尔加多被ICE执法人员致死事件引发公众愤怒",
+        "article_url": "/news/ice/2026/07/12/ice-2076162272372642099.html",
+        "published_at": "2026-07-12T04:30:33.000Z"
+      }
+    ]
   },
   "heatmap": {
     "24h": {
-      "states": []
+      "states": [
+        {
+          "code": "TX",
+          "name": "Texas",
+          "events": 12,
+          "people": 1,
+          "unknown_people_events": 11
+        },
+        {
+          "code": "IL",
+          "name": "Illinois",
+          "events": 3,
+          "people": 1,
+          "unknown_people_events": 2
+        },
+        {
+          "code": "FL",
+          "name": "Florida",
+          "events": 1,
+          "people": 1,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "CA",
+          "name": "California",
+          "events": 1,
+          "people": 1,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "NM",
+          "name": "New Mexico",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "MO",
+          "name": "Missouri",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "WI",
+          "name": "威斯康星州",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        }
+      ]
     },
     "7d": {
       "states": [
         {
+          "code": "TX",
+          "name": "Texas",
+          "events": 15,
+          "people": 2,
+          "unknown_people_events": 13
+        },
+        {
+          "code": "IL",
+          "name": "Illinois",
+          "events": 4,
+          "people": 16,
+          "unknown_people_events": 2
+        },
+        {
           "code": "FL",
           "name": "Florida",
+          "events": 2,
+          "people": 1,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "MT",
+          "name": "Montana",
+          "events": 1,
+          "people": 100,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "CA",
+          "name": "California",
+          "events": 1,
+          "people": 1,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "NM",
+          "name": "New Mexico",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "MO",
+          "name": "Missouri",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "WI",
+          "name": "威斯康星州",
           "events": 1,
           "people": 0,
           "unknown_people_events": 1
@@ -29,13 +213,200 @@
     "30d": {
       "states": [
         {
+          "code": "TX",
+          "name": "Texas",
+          "events": 15,
+          "people": 2,
+          "unknown_people_events": 13
+        },
+        {
+          "code": "IL",
+          "name": "Illinois",
+          "events": 4,
+          "people": 16,
+          "unknown_people_events": 2
+        },
+        {
           "code": "FL",
           "name": "Florida",
+          "events": 2,
+          "people": 1,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "MT",
+          "name": "Montana",
+          "events": 1,
+          "people": 100,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "CA",
+          "name": "California",
+          "events": 1,
+          "people": 1,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "NM",
+          "name": "New Mexico",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "MO",
+          "name": "Missouri",
+          "events": 1,
+          "people": 0,
+          "unknown_people_events": 1
+        },
+        {
+          "code": "WI",
+          "name": "威斯康星州",
           "events": 1,
           "people": 0,
           "unknown_people_events": 1
         }
       ]
     }
-  }
+  },
+  "events": [
+    {
+      "event_type": "arrest",
+      "people_count": null,
+      "occurred_at": "2026-07-12T05:52:03.000Z",
+      "time_precision": "second",
+      "city": "Houston",
+      "state_code": "TX",
+      "state_name": "Texas",
+      "location_text": "休斯顿县",
+      "confidence": 90,
+      "source_excerpt": "涉案的ICE特工已被捕，休斯顿县法医裁定死亡为他杀。",
+      "basis_time": "2026-07-12T05:52:03.000Z",
+      "time_basis": "执法时间",
+      "article_title": "休斯顿县一名男子死亡案涉ICE人员被捕",
+      "article_url": "/news/ice/2026/07/12/ice-2076182780757581918.html",
+      "published_at": "2026-07-12T05:52:03.000Z"
+    },
+    {
+      "event_type": "detention",
+      "people_count": null,
+      "occurred_at": "2026-07-12T05:23:33.000Z",
+      "time_precision": "second",
+      "city": "",
+      "state_code": "",
+      "state_name": "",
+      "location_text": "",
+      "confidence": 90,
+      "source_excerpt": "a US citizen \"detained by ICE\" inserted themselves into an operation with the intent to obstruct justice",
+      "basis_time": "2026-07-12T05:23:33.000Z",
+      "time_basis": "执法时间",
+      "article_title": "美国公民涉嫌妨碍司法遭ICE拘留",
+      "article_url": "/news/ice/2026/07/12/ice-2076175609470796065.html",
+      "published_at": "2026-07-12T05:23:33.000Z"
+    },
+    {
+      "event_type": "arrest",
+      "people_count": 1,
+      "occurred_at": "2026-07-12T04:48:18.000Z",
+      "time_precision": "second",
+      "city": "Wattala",
+      "state_code": "",
+      "state_name": "",
+      "location_text": "斯里兰卡瓦特拉",
+      "confidence": 95,
+      "source_excerpt": "Woman Arrested in Wattala Over Possession of Ice and Heroin",
+      "basis_time": "2026-07-12T04:48:18.000Z",
+      "time_basis": "执法时间",
+      "article_title": "斯里兰卡瓦特拉一女子因持有冰毒和海洛因被捕",
+      "article_url": "/news/ice/2026/07/12/ice-2076166737796747285.html",
+      "published_at": "2026-07-12T04:48:18.000Z"
+    },
+    {
+      "event_type": "arrest",
+      "people_count": null,
+      "occurred_at": null,
+      "time_precision": "unknown",
+      "city": "",
+      "state_code": "",
+      "state_name": "",
+      "location_text": "",
+      "confidence": 80,
+      "source_excerpt": "He came over during the Biden administration and had been arrested several times, but he was released each time and officials ignored ICE detainers.",
+      "basis_time": "2026-07-12T04:36:25.000Z",
+      "time_basis": "官方公开时间",
+      "article_title": "冰岛执法机构批评释放涉嫌人员延误遣返过程",
+      "article_url": "/news/ice/2026/07/12/ice-2076163747119514036.html",
+      "published_at": "2026-07-12T04:36:25.000Z"
+    },
+    {
+      "event_type": "detention",
+      "people_count": 1,
+      "occurred_at": null,
+      "time_precision": "unknown",
+      "city": "",
+      "state_code": "",
+      "state_name": "",
+      "location_text": "",
+      "confidence": 85,
+      "source_excerpt": "墨西哥移民洛伦佐·萨尔加多被ICE执法人员拘留后死亡,相关新影像曝光。",
+      "basis_time": "2026-07-12T04:30:33.000Z",
+      "time_basis": "官方公开时间",
+      "article_title": "墨西哥移民洛伦佐·萨尔加多被ICE执法人员致死事件引发公众愤怒",
+      "article_url": "/news/ice/2026/07/12/ice-2076162272372642099.html",
+      "published_at": "2026-07-12T04:30:33.000Z"
+    }
+  ],
+  "states": [
+    {
+      "code": "TX",
+      "name": "Texas",
+      "events": 12,
+      "people": 1,
+      "unknown_people_events": 11
+    },
+    {
+      "code": "IL",
+      "name": "Illinois",
+      "events": 3,
+      "people": 1,
+      "unknown_people_events": 2
+    },
+    {
+      "code": "FL",
+      "name": "Florida",
+      "events": 1,
+      "people": 1,
+      "unknown_people_events": 0
+    },
+    {
+      "code": "CA",
+      "name": "California",
+      "events": 1,
+      "people": 1,
+      "unknown_people_events": 0
+    },
+    {
+      "code": "NM",
+      "name": "New Mexico",
+      "events": 1,
+      "people": 0,
+      "unknown_people_events": 1
+    },
+    {
+      "code": "MO",
+      "name": "Missouri",
+      "events": 1,
+      "people": 0,
+      "unknown_people_events": 1
+    },
+    {
+      "code": "WI",
+      "name": "威斯康星州",
+      "events": 1,
+      "people": 0,
+      "unknown_people_events": 1
+    }
+  ]
 }

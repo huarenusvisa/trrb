@@ -1,35 +1,35 @@
 {
-  "last_seen_id": "2076237264439349437",
-  "last_success_at": "2026-07-12T09:29:42.024Z",
-  "last_content_at": "2026-07-12T09:29:42.024Z",
+  "last_seen_id": "2076276679668797530",
+  "last_success_at": "2026-07-12T12:14:04.627Z",
+  "last_content_at": "2026-07-12T12:14:04.627Z",
   "last_error": "",
   "last_result": {
-    "fetched": 115,
-    "discovered": 115,
+    "fetched": 9,
+    "discovered": 9,
     "processed": 18,
-    "published": 13,
-    "review": 4,
+    "published": 15,
+    "review": 2,
     "retry": 0,
     "duplicates": 1,
-    "total_published": 118,
-    "total_pending": 606,
+    "total_published": 133,
+    "total_pending": 597,
     "query_lanes": [
       {
         "id": "official",
         "label": "特朗普与白宫官方",
-        "fetched": 1,
+        "fetched": 0,
         "truncated": false
       },
       {
         "id": "trusted-1",
         "label": "主流媒体",
-        "fetched": 1,
+        "fetched": 3,
         "truncated": false
       },
       {
         "id": "trusted-2",
         "label": "主流媒体",
-        "fetched": 4,
+        "fetched": 6,
         "truncated": false
       },
       {
@@ -42,22 +42,24 @@
         "id": "review-1",
         "label": "观察账号",
         "fetched": 0,
-        "truncated": false
+        "status": 0,
+        "error": "X API (review-1) request failed (403): Your monthly spend cap has been reached."
       },
       {
         "id": "radar",
         "label": "全网雷达",
-        "fetched": 149,
-        "truncated": true
+        "fetched": 0,
+        "status": 0,
+        "error": "X API (radar) request failed (403): Your monthly spend cap has been reached."
       }
     ]
   },
   "query_cursors": {
     "official": "2076211412112670839",
-    "trusted-1": "2076193627882004712",
+    "trusted-1": "2076265371267420308",
     "review-1": "2076119868554801335",
-    "trusted-2": "2076216490391429548",
+    "trusted-2": "2076276679668797530",
     "trusted-3": "2075648687985020996"
   },
-  "last_run_at": "2026-07-12T09:29:42.024Z"
+  "last_run_at": "2026-07-12T12:14:04.627Z"
 }

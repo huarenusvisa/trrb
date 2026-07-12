@@ -1,1370 +1,5 @@
 [
   {
-    "id": "pending-trump-2075940964720595061",
-    "x_post_id": "2075940964720595061",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 73,
-    "query_lane": "trusted-1",
-    "ai": null,
-    "post": {
-      "id": "2075940964720595061",
-      "text": "President Trump posted a new threat this morning, saying \"1,000 missiles are locked and loaded and aimed\" at Iran as he greenlights a new round of talks with the country. ABC News' Selina Wang reports. \n\nhttps://t.co/1ZtVUUOvS7 https://t.co/IF19HMTrg9",
-      "created_at": "2026-07-11T13:51:09.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "ABC News is your trusted source on political news stories and videos. Get the latest coverage and analysis on everything from the Trump presidency, Senate, House and Supreme Court.",
-            "display_url": "abcnews.visitlink.me/n8-SVU",
-            "end": 227,
-            "expanded_url": "https://abcnews.visitlink.me/n8-SVU",
-            "images": [
-              {
-                "height": 558,
-                "url": "https://pbs.twimg.com/news_img/2073771148899176448/p0thcuqx?format=jpg&name=orig",
-                "width": 992
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2073771148899176448/p0thcuqx?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 204,
-            "status": 200,
-            "title": "Politics News | Breaking Political News, Video & Analysis-ABC News",
-            "unwound_url": "https://abcnews.com/Politics?utm_source=twitter&utm_medium=social&utm_campaign=dhtwitter&utm_content=app.dashsocial.com/abcnews/library/media/695663311",
-            "url": "https://t.co/1ZtVUUOvS7"
-          },
-          {
-            "display_url": "pic.x.com/IF19HMTrg9",
-            "end": 251,
-            "expanded_url": "https://x.com/ABC/status/2075940964720595061/video/1",
-            "media_key": "7_2075940903664205824",
-            "start": 228,
-            "url": "https://t.co/IF19HMTrg9"
-          }
-        ]
-      },
-      "media": [
-        {
-          "type": "video",
-          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2075940903664205824/pu/img/i6E-WD_QtNkioG1f.jpg",
-          "alt_text": "",
-          "width": 1080,
-          "height": 1920
-        }
-      ],
-      "public_metrics": {
-        "bookmark_count": 3,
-        "impression_count": 33989,
-        "like_count": 105,
-        "quote_count": 6,
-        "reply_count": 78,
-        "retweet_count": 39
-      },
-      "author": {
-        "id": "28785486",
-        "name": "ABC News",
-        "username": "ABC",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-1",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/ABC/status/2075940964720595061",
-      "candidate_score": 73,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075943971109671262",
-    "x_post_id": "2075943971109671262",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 71,
-    "query_lane": "trusted-1",
-    "ai": null,
-    "post": {
-      "id": "2075943971109671262",
-      "text": "‘Not where they hoped it'd be’: Launch of Trump AI promotion program underwhelms https://t.co/sYYmNeT4XV",
-      "created_at": "2026-07-11T14:03:06.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "The administration is struggling to balance its desire to dominate AI globally with its ad-hoc security restrictions.",
-            "display_url": "dlvr.it/TTT8Vp",
-            "end": 104,
-            "expanded_url": "http://dlvr.it/TTT8Vp",
-            "images": [
-              {
-                "height": 800,
-                "url": "https://pbs.twimg.com/news_img/2075944013698588672/x9PsDuam?format=jpg&name=orig",
-                "width": 1200
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075944013698588672/x9PsDuam?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 81,
-            "status": 200,
-            "title": "‘Not where they hoped it'd be’: Launch of Trump AI promotion program underwhelms",
-            "unwound_url": "https://www.politico.com/news/2026/07/11/trump-administration-commerce-ai-program-00993532?utm_source=dlvr.it&utm_medium=twitter",
-            "url": "https://t.co/sYYmNeT4XV"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 3,
-        "impression_count": 20491,
-        "like_count": 9,
-        "quote_count": 0,
-        "reply_count": 8,
-        "retweet_count": 2
-      },
-      "author": {
-        "id": "9300262",
-        "name": "POLITICO",
-        "username": "politico",
-        "verified": true,
-        "verified_type": "blue"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-1",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/politico/status/2075943971109671262",
-      "candidate_score": 71,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075944699656130924",
-    "x_post_id": "2075944699656130924",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 73,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075944699656130924",
-      "text": "Mystery surrounds ‘Freedom Fuel’ gas stations touted by Trump\n\nhttps://t.co/skrPXJnM6w",
-      "created_at": "2026-07-11T14:06:00.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "In recent days, President Trump has touted 25 “Freedom Fuel” gas stations, but little is publicly known about the stations or who is running them.  The gas stations, located in Penns…",
-            "display_url": "thehill.com/policy/energy-…",
-            "end": 86,
-            "expanded_url": "https://thehill.com/policy/energy-environment/5963065-freedom-fuel-trump-gas-stations/",
-            "images": [
-              {
-                "height": 359,
-                "url": "https://pbs.twimg.com/news_img/2075904659416350721/LzpqGi5Z?format=jpg&name=orig",
-                "width": 640
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075904659416350721/LzpqGi5Z?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 63,
-            "status": 200,
-            "title": "Mystery surrounds ‘Freedom Fuel’ gas stations touted by Trump ",
-            "unwound_url": "https://thehill.com/policy/energy-environment/5963065-freedom-fuel-trump-gas-stations/",
-            "url": "https://t.co/skrPXJnM6w"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 2,
-        "impression_count": 9082,
-        "like_count": 22,
-        "quote_count": 1,
-        "reply_count": 16,
-        "retweet_count": 6
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075944699656130924",
-      "candidate_score": 73,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075949226089996728",
-    "x_post_id": "2075949226089996728",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 73,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075949226089996728",
-      "text": "Trump Accounts: Who is eligible, how $1,000 deposits work and how to open one https://t.co/w53hSwKELy",
-      "created_at": "2026-07-11T14:23:59.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "Trump Accounts officially launched in July, introducing a new tax-deferred investing option for children. Here are the key features.",
-            "display_url": "cnbc.com/guide/trump-ac…",
-            "end": 101,
-            "expanded_url": "https://www.cnbc.com/guide/trump-accounts/?taid=6a5251ffae9f0300013bb19c&utm_campaign=trueanthem&utm_content=main&utm_medium=social&utm_source=twitter",
-            "images": [
-              {
-                "height": 1080,
-                "url": "https://pbs.twimg.com/news_img/2075949228791148544/JgbvKAjT?format=jpg&name=orig",
-                "width": 1920
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075949228791148544/JgbvKAjT?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 78,
-            "status": 200,
-            "title": "Trump Accounts: Who is eligible, how $1,000 deposits work and how to open one",
-            "unwound_url": "https://www.cnbc.com/guide/trump-accounts/?taid=6a5251ffae9f0300013bb19c&utm_campaign=trueanthem&utm_content=main&utm_medium=social&utm_source=twitter",
-            "url": "https://t.co/w53hSwKELy"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 4,
-        "impression_count": 31363,
-        "like_count": 36,
-        "quote_count": 1,
-        "reply_count": 17,
-        "retweet_count": 6
-      },
-      "author": {
-        "id": "20402945",
-        "name": "CNBC",
-        "username": "CNBC",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/CNBC/status/2075949226089996728",
-      "candidate_score": 73,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075949732623732819",
-    "x_post_id": "2075949732623732819",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 98,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075949732623732819",
-      "text": "Trump election commission firings spark interference concerns ahead of midterms\n\nhttps://t.co/0LjrQa6zU6",
-      "created_at": "2026-07-11T14:26:00.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "President Trump’s decision to fire multiple members of a bipartisan election administration-focused commission is sparking concerns that the White House is looking to meddle ahead of the November m…",
-            "display_url": "thehill.com/homenews/campa…",
-            "end": 104,
-            "expanded_url": "https://thehill.com/homenews/campaign/5963244-trump-fires-election-commissioners-interference-fears/",
-            "images": [
-              {
-                "height": 359,
-                "url": "https://pbs.twimg.com/news_img/2075903020605284352/WNPKzu9Z?format=jpg&name=orig",
-                "width": 640
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075903020605284352/WNPKzu9Z?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 81,
-            "status": 200,
-            "title": "Trump election commission firings spark interference concerns ahead of midterms ",
-            "unwound_url": "https://thehill.com/homenews/campaign/5963244-trump-fires-election-commissioners-interference-fears/",
-            "url": "https://t.co/0LjrQa6zU6"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 0,
-        "impression_count": 8722,
-        "like_count": 41,
-        "quote_count": 3,
-        "reply_count": 13,
-        "retweet_count": 21
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075949732623732819",
-      "candidate_score": 98,
-      "matched_terms": [
-        "特朗普",
-        "具体事件",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075954765943783559",
-    "x_post_id": "2075954765943783559",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 73,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075954765943783559",
-      "text": "Trump warns Iran of ‘complete decimation’ if assassination threat carried out\n\nhttps://t.co/2WCjg9Mlaw",
-      "created_at": "2026-07-11T14:46:00.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "President Trump late Friday threatened to “decimate and destroy” Iran if it carries out a reported assassination plot against him, saying he has already directed the U.S. military to be prepared to…",
-            "display_url": "thehill.com/policy/interna…",
-            "end": 102,
-            "expanded_url": "https://thehill.com/policy/international/5963738-donald-trump-iran-war-assassination-threats/",
-            "images": [
-              {
-                "height": 359,
-                "url": "https://pbs.twimg.com/news_img/2075918819550203904/ZQfPEqCj?format=jpg&name=orig",
-                "width": 640
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075918819550203904/ZQfPEqCj?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 79,
-            "status": 200,
-            "title": "Trump warns Iran of ‘complete decimation’ if assassination threat carried out",
-            "unwound_url": "https://thehill.com/policy/international/5963738-donald-trump-iran-war-assassination-threats/",
-            "url": "https://t.co/2WCjg9Mlaw"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 3,
-        "impression_count": 11257,
-        "like_count": 35,
-        "quote_count": 6,
-        "reply_count": 76,
-        "retweet_count": 8
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075954765943783559",
-      "candidate_score": 73,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075958653442465840",
-    "x_post_id": "2075958653442465840",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 98,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075958653442465840",
-      "text": "US defense contractors including Lockheed Martin have every interest to let Ukraine manufacture Patriot missile interceptors after Trump pledged the US would grant a license for the weapons system, a senior Republican lawmaker said https://t.co/ucYS8aqduM",
-      "created_at": "2026-07-11T15:01:27.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "US defense contractors including Lockheed Martin Corp. have every interest to let Ukraine manufacture Patriot missile interceptors after President Donald Trump pledged the US would grant a license for the weapons system, a senior Republican lawmaker said.",
-            "display_url": "bloomberg.com/news/articles/…",
-            "end": 255,
-            "expanded_url": "https://www.bloomberg.com/news/articles/2026-07-11/ukraine-building-patriots-is-in-lockheed-s-interest-mccaul-says?taid=6a525ac6ae9f0300013bb1d5&utm_campaign=trueanthem&utm_content=business&utm_medium=social&utm_source=twitter",
-            "images": [
-              {
-                "height": 800,
-                "url": "https://pbs.twimg.com/news_img/2075958657674567680/ofkXzydt?format=jpg&name=orig",
-                "width": 1200
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075958657674567680/ofkXzydt?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 232,
-            "status": 200,
-            "title": "Ukraine Building Patriots Is in Lockheed’s Interest, McCaul Says",
-            "unwound_url": "https://www.bloomberg.com/news/articles/2026-07-11/ukraine-building-patriots-is-in-lockheed-s-interest-mccaul-says?taid=6a525ac6ae9f0300013bb1d5&utm_campaign=trueanthem&utm_content=business&utm_medium=social&utm_source=twitter",
-            "url": "https://t.co/ucYS8aqduM"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 21,
-        "impression_count": 39754,
-        "like_count": 227,
-        "quote_count": 3,
-        "reply_count": 19,
-        "retweet_count": 62
-      },
-      "author": {
-        "id": "34713362",
-        "name": "Bloomberg",
-        "username": "business",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/business/status/2075958653442465840",
-      "candidate_score": 98,
-      "matched_terms": [
-        "特朗普",
-        "具体事件",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075959767357407234",
-    "x_post_id": "2075959767357407234",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 94,
-    "query_lane": "trusted-1",
-    "ai": null,
-    "post": {
-      "id": "2075959767357407234",
-      "text": "The New York Times reports the Trump administration has subpoenaed several of its journalists after their report over security concerns with the new Air Force One. https://t.co/1yN8l9FYfb",
-      "created_at": "2026-07-11T15:05:52.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "The New York Times reports the Trump administration has subpoenaed several of its journalists after their report over security concerns with the new Air Force One.",
-            "display_url": "apnews.com/article/trump-…",
-            "end": 187,
-            "expanded_url": "https://apnews.com/article/trump-nyt-air-force-one-qatari-jet-e2c798a95a1e41077d2cae969774df91?taid=6a525bd02fac9a0001be382c&utm_campaign=TrueAnthem&utm_medium=AP&utm_source=Twitter",
-            "start": 164,
-            "status": 200,
-            "title": "New York Times reporters are subpoenaed after Air Force One reporting, newspaper says",
-            "unwound_url": "https://apnews.com/article/trump-nyt-air-force-one-qatari-jet-e2c798a95a1e41077d2cae969774df91?taid=6a525bd02fac9a0001be382c&utm_campaign=TrueAnthem&utm_medium=AP&utm_source=Twitter",
-            "url": "https://t.co/1yN8l9FYfb"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 65,
-        "impression_count": 289606,
-        "like_count": 715,
-        "quote_count": 45,
-        "reply_count": 152,
-        "retweet_count": 283
-      },
-      "author": {
-        "id": "51241574",
-        "name": "The Associated Press",
-        "username": "AP",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-1",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/AP/status/2075959767357407234",
-      "candidate_score": 94,
-      "matched_terms": [
-        "特朗普",
-        "白宫/政府",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075960530083123222",
-    "x_post_id": "2075960530083123222",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "official",
-    "source_weight": 98,
-    "candidate_score": 78,
-    "query_lane": "official",
-    "ai": null,
-    "post": {
-      "id": "2075960530083123222",
-      "text": ".@EDSecMcMahon: “Schools are going to be in jeopardy of losing their federal funding if they don’t take action” against teachers who engage in sexual abuse. https://t.co/pVW1vPYgxc https://t.co/H2eJV8kit7",
-      "created_at": "2026-07-11T15:08:54.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "mentions": [
-          {
-            "end": 14,
-            "id": "1882496976115404800",
-            "start": 1,
-            "username": "EDSecMcMahon"
-          }
-        ],
-        "urls": [
-          {
-            "display_url": "pic.x.com/pVW1vPYgxc",
-            "end": 180,
-            "expanded_url": "https://x.com/RapidResponse47/status/2075960530083123222/video/1",
-            "media_key": "13_2075960457689538560",
-            "start": 157,
-            "url": "https://t.co/pVW1vPYgxc"
-          },
-          {
-            "display_url": "x.com/edsecmcmahon/s…",
-            "end": 204,
-            "expanded_url": "https://twitter.com/edsecmcmahon/status/2075576565958590939",
-            "start": 181,
-            "url": "https://t.co/H2eJV8kit7"
-          }
-        ]
-      },
-      "media": [
-        {
-          "type": "video",
-          "url": "https://pbs.twimg.com/amplify_video_thumb/2075960457689538560/img/AfHj2-CenelVpamS.jpg",
-          "alt_text": "",
-          "width": 1280,
-          "height": 720
-        }
-      ],
-      "public_metrics": {
-        "bookmark_count": 52,
-        "impression_count": 185658,
-        "like_count": 3637,
-        "quote_count": 28,
-        "reply_count": 243,
-        "retweet_count": 821
-      },
-      "author": {
-        "id": "1881451105454002176",
-        "name": "Rapid Response 47",
-        "username": "RapidResponse47",
-        "verified": true,
-        "verified_type": "government"
-      },
-      "source_mode": "auto",
-      "source_tier": "official",
-      "source_weight": 98,
-      "query_lane": "official",
-      "query_label": "特朗普与白宫官方",
-      "x_url": "https://x.com/RapidResponse47/status/2075960530083123222",
-      "candidate_score": 78,
-      "matched_terms": [
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075965080882065873",
-    "x_post_id": "2075965080882065873",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "official",
-    "source_weight": 98,
-    "candidate_score": 78,
-    "query_lane": "official",
-    "ai": null,
-    "post": {
-      "id": "2075965080882065873",
-      "text": "Trump Accounts are here, and they’re game-changing! 💰\n\nEmpowering families to build wealth for the next generation. https://t.co/Uiotnxvdxc",
-      "created_at": "2026-07-11T15:26:59.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "display_url": "pic.x.com/Uiotnxvdxc",
-            "end": 139,
-            "expanded_url": "https://x.com/WhiteHouse/status/2075965080882065873/video/1",
-            "media_key": "13_2075963046304849920",
-            "start": 116,
-            "url": "https://t.co/Uiotnxvdxc"
-          }
-        ]
-      },
-      "media": [
-        {
-          "type": "video",
-          "url": "https://pbs.twimg.com/amplify_video_thumb/2075963046304849920/img/v5goVMIMkXdHp-Hj.jpg",
-          "alt_text": "",
-          "width": 4096,
-          "height": 2160
-        }
-      ],
-      "public_metrics": {
-        "bookmark_count": 176,
-        "impression_count": 559995,
-        "like_count": 4977,
-        "quote_count": 75,
-        "reply_count": 672,
-        "retweet_count": 1055
-      },
-      "author": {
-        "id": "1879644163769335808",
-        "name": "The White House",
-        "username": "WhiteHouse",
-        "verified": true,
-        "verified_type": "government"
-      },
-      "source_mode": "auto",
-      "source_tier": "official",
-      "source_weight": 98,
-      "query_lane": "official",
-      "query_label": "特朗普与白宫官方",
-      "x_url": "https://x.com/WhiteHouse/status/2075965080882065873",
-      "candidate_score": 78,
-      "matched_terms": [
-        "特朗普"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075968951159259144",
-    "x_post_id": "2075968951159259144",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 91,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075968951159259144",
-      "text": "Trump administration subpoenas New York Times journalists over Air Force One reporting https://t.co/NlgrD580XL",
-      "created_at": "2026-07-11T15:42:22.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "The reporters received the legal summons after they reported on alleged security issues with the president's new plane, which was gifted by Qatar.",
-            "display_url": "bbc.in/4vXVeps",
-            "end": 110,
-            "expanded_url": "https://bbc.in/4vXVeps",
-            "start": 87,
-            "status": 200,
-            "title": "Trump administration subpoenas New York Times journalists over Air Force One reporting",
-            "unwound_url": "https://www.bbc.com/news/articles/cpd3g8q51g7o?xtor=AL-71-%5Bpartner%5D-%5Bbbc.news.twitter%5D-%5Bheadline%5D-%5Bnews%5D-%5Bbizdev%5D-%5Bisapi%5D&at_format=link&at_link_origin=BBCWorld&at_medium=social&at_link_type=web_link&at_link_id=187873EC-7D3F-11F1-AD4B-B2D222E6EE3D&at_campaign_type=owned&at_bbc_team=editorial&at_ptr_name=twitter&at_campaign=Social_Flow",
-            "url": "https://t.co/NlgrD580XL"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 11,
-        "impression_count": 113793,
-        "like_count": 192,
-        "quote_count": 3,
-        "reply_count": 69,
-        "retweet_count": 53
-      },
-      "author": {
-        "id": "742143",
-        "name": "BBC News (World)",
-        "username": "BBCWorld",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/BBCWorld/status/2075968951159259144",
-      "candidate_score": 91,
-      "matched_terms": [
-        "特朗普",
-        "白宫/政府",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075971638537994460",
-    "x_post_id": "2075971638537994460",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "official",
-    "source_weight": 98,
-    "candidate_score": 83,
-    "query_lane": "official",
-    "ai": null,
-    "post": {
-      "id": "2075971638537994460",
-      "text": "\"The great thing about Trump Accounts is they deliver on the promise of ownership and skin in the game from birth. They also build an appreciation for our great country.\"  - @RobinhoodApp Founder &amp; CEO @VladTenev https://t.co/MV2c492tKp",
-      "created_at": "2026-07-11T15:53:02.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "mentions": [
-          {
-            "end": 187,
-            "id": "1265037073",
-            "start": 174,
-            "username": "RobinhoodApp"
-          },
-          {
-            "end": 216,
-            "id": "605700792",
-            "start": 206,
-            "username": "vladtenev"
-          }
-        ],
-        "urls": [
-          {
-            "display_url": "x.com/WhiteHouse/sta…",
-            "end": 240,
-            "expanded_url": "https://twitter.com/WhiteHouse/status/2075965080882065873",
-            "start": 217,
-            "url": "https://t.co/MV2c492tKp"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 170,
-        "impression_count": 857708,
-        "like_count": 4656,
-        "quote_count": 324,
-        "reply_count": 778,
-        "retweet_count": 1096
-      },
-      "author": {
-        "id": "1879644163769335808",
-        "name": "The White House",
-        "username": "WhiteHouse",
-        "verified": true,
-        "verified_type": "government"
-      },
-      "source_mode": "auto",
-      "source_tier": "official",
-      "source_weight": 98,
-      "query_lane": "official",
-      "query_label": "特朗普与白宫官方",
-      "x_url": "https://x.com/WhiteHouse/status/2075971638537994460",
-      "candidate_score": 83,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075973446199111709",
-    "x_post_id": "2075973446199111709",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 94,
-    "query_lane": "trusted-1",
-    "ai": null,
-    "post": {
-      "id": "2075973446199111709",
-      "text": "The Trump Administration change limits the reach of the 50-year-old Endangered Species Act, which is credited with helping to save the bald eagle, California condor and numerous other animals and plants from extinction. https://t.co/f2A1cwPhP9",
-      "created_at": "2026-07-11T16:00:13.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "The change limits the reach of the 50-year-old Endangered Species Act so that the destruction of habitats will no longer be considered “harm.”",
-            "display_url": "nbcnews.com/science/enviro…",
-            "end": 243,
-            "expanded_url": "https://www.nbcnews.com/science/environment/trump-weakens-protections-endangered-animal-species-rcna385912?cid=sm_npd_nn_tw_ma&taid=6a52688d4d426f00019bbcaf&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
-            "images": [
-              {
-                "height": 512,
-                "url": "https://pbs.twimg.com/news_img/2075973447474180096/a15wgQhV?format=jpg&name=orig",
-                "width": 1024
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075973447474180096/a15wgQhV?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 220,
-            "status": 200,
-            "title": "Trump administration weakens protections for threatened animal species",
-            "unwound_url": "https://www.nbcnews.com/science/environment/trump-weakens-protections-endangered-animal-species-rcna385912?cid=sm_npd_nn_tw_ma&taid=6a52688d4d426f00019bbcaf&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
-            "url": "https://t.co/f2A1cwPhP9"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 40,
-        "impression_count": 35850,
-        "like_count": 360,
-        "quote_count": 26,
-        "reply_count": 82,
-        "retweet_count": 235
-      },
-      "author": {
-        "id": "14173315",
-        "name": "NBC News",
-        "username": "NBCNews",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-1",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/NBCNews/status/2075973446199111709",
-      "candidate_score": 94,
-      "matched_terms": [
-        "特朗普",
-        "白宫/政府",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075973731579511289",
-    "x_post_id": "2075973731579511289",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 91,
-    "query_lane": "trusted-1",
-    "ai": null,
-    "post": {
-      "id": "2075973731579511289",
-      "text": "Trump administration subpoenas New York Times journalists over Air Force One story, newspaper says https://t.co/J2ghcFu47k https://t.co/J2ghcFu47k",
-      "created_at": "2026-07-11T16:01:21.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "The New York Times said on Saturday ​that the U.S. Department of Justice had ordered several ‌of its journalists to testify before a federal grand jury after they reported on security concerns involving President Donald Trump's new Qatari-donated Air ​Force One.",
-            "display_url": "reut.rs/4bFj415",
-            "end": 122,
-            "expanded_url": "http://reut.rs/4bFj415",
-            "images": [
-              {
-                "height": 1005,
-                "url": "https://pbs.twimg.com/news_img/2075973735421444096/pWREt0Jw?format=jpg&name=orig",
-                "width": 1920
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075973735421444096/pWREt0Jw?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 99,
-            "status": 200,
-            "title": "Trump administration subpoenas New York Times journalists over Air Force One story, newspaper says",
-            "unwound_url": "https://www.reuters.com/business/media-telecom/trump-administration-subpoenas-new-york-times-journalists-over-air-force-one-2026-07-11/?taid=6a5268d14d426f00019bbcca&utm_campaign=trueAnthem:+Trending+Content&utm_medium=trueAnthem&utm_source=twitter",
-            "url": "https://t.co/J2ghcFu47k"
-          },
-          {
-            "description": "The New York Times said on Saturday ​that the U.S. Department of Justice had ordered several ‌of its journalists to testify before a federal grand jury after they reported on security concerns involving President Donald Trump's new Qatari-donated Air ​Force One.",
-            "display_url": "reut.rs/4bFj415",
-            "end": 146,
-            "expanded_url": "http://reut.rs/4bFj415",
-            "images": [
-              {
-                "height": 1005,
-                "url": "https://pbs.twimg.com/news_img/2075973735421444096/pWREt0Jw?format=jpg&name=orig",
-                "width": 1920
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075973735421444096/pWREt0Jw?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 123,
-            "status": 200,
-            "title": "Trump administration subpoenas New York Times journalists over Air Force One story, newspaper says",
-            "unwound_url": "https://www.reuters.com/business/media-telecom/trump-administration-subpoenas-new-york-times-journalists-over-air-force-one-2026-07-11/?taid=6a5268d14d426f00019bbcca&utm_campaign=trueAnthem:+Trending+Content&utm_medium=trueAnthem&utm_source=twitter",
-            "url": "https://t.co/J2ghcFu47k"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 5,
-        "impression_count": 57784,
-        "like_count": 47,
-        "quote_count": 3,
-        "reply_count": 34,
-        "retweet_count": 21
-      },
-      "author": {
-        "id": "1652541",
-        "name": "Reuters",
-        "username": "Reuters",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-1",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/Reuters/status/2075973731579511289",
-      "candidate_score": 91,
-      "matched_terms": [
-        "特朗普",
-        "白宫/政府",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075979316001653001",
-    "x_post_id": "2075979316001653001",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "official",
-    "source_weight": 98,
-    "candidate_score": 93,
-    "query_lane": "official",
-    "ai": null,
-    "post": {
-      "id": "2075979316001653001",
-      "text": "White House Domestic Policy Council Director @vincehaley: “They want people to go away from their museums not happy or inspired about their country—but angry and looking to find ways to act and resist the political forces they oppose.” https://t.co/ZOxcB3NOK7 https://t.co/JpBBcQ4C31",
-      "created_at": "2026-07-11T16:23:33.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "mentions": [
-          {
-            "end": 56,
-            "id": "1024474926227578881",
-            "start": 45,
-            "username": "vincehaley"
-          }
-        ],
-        "urls": [
-          {
-            "display_url": "pic.x.com/ZOxcB3NOK7",
-            "end": 259,
-            "expanded_url": "https://x.com/RapidResponse47/status/2075979316001653001/video/1",
-            "media_key": "13_2075979216017883136",
-            "start": 236,
-            "url": "https://t.co/ZOxcB3NOK7"
-          },
-          {
-            "display_url": "x.com/rapidresponse4…",
-            "end": 283,
-            "expanded_url": "https://twitter.com/rapidresponse47/status/2074317861443559809",
-            "start": 260,
-            "url": "https://t.co/JpBBcQ4C31"
-          }
-        ]
-      },
-      "media": [
-        {
-          "type": "video",
-          "url": "https://pbs.twimg.com/amplify_video_thumb/2075979216017883136/img/-tFl-98FCp2ugsla.jpg",
-          "alt_text": "",
-          "width": 1280,
-          "height": 720
-        }
-      ],
-      "public_metrics": {
-        "bookmark_count": 73,
-        "impression_count": 161043,
-        "like_count": 2561,
-        "quote_count": 8,
-        "reply_count": 83,
-        "retweet_count": 711
-      },
-      "author": {
-        "id": "1881451105454002176",
-        "name": "Rapid Response 47",
-        "username": "RapidResponse47",
-        "verified": true,
-        "verified_type": "government"
-      },
-      "source_mode": "auto",
-      "source_tier": "official",
-      "source_weight": 98,
-      "query_lane": "official",
-      "query_label": "特朗普与白宫官方",
-      "x_url": "https://x.com/RapidResponse47/status/2075979316001653001",
-      "candidate_score": 93,
-      "matched_terms": [
-        "白宫/政府",
-        "具体事件",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075979931683586439",
-    "x_post_id": "2075979931683586439",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 71,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075979931683586439",
-      "text": "Trump claims US got ‘much better deal’ as delayed bridge with Canada set to open\n\nhttps://t.co/tbcY8Hps8y",
-      "created_at": "2026-07-11T16:26:00.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "description": "The U.S. and Canada have reached an agreement clearing the way for the long-delayed opening of a $4.7 billion bridge connecting Detroit to Windsor, Ontario, the Canadian government announced late F…",
-            "display_url": "thehill.com/homenews/admin…",
-            "end": 105,
-            "expanded_url": "https://thehill.com/homenews/administration/5963874-donald-trump-us-canada-gordie-howe-international-bridge/",
-            "images": [
-              {
-                "height": 360,
-                "url": "https://pbs.twimg.com/news_img/2075964967849693184/hsuTbUkE?format=jpg&name=orig",
-                "width": 640
-              },
-              {
-                "height": 150,
-                "url": "https://pbs.twimg.com/news_img/2075964967849693184/hsuTbUkE?format=jpg&name=150x150",
-                "width": 150
-              }
-            ],
-            "start": 82,
-            "status": 200,
-            "title": "Trump claims US got ‘much better deal’ as delayed bridge with Canada set to open",
-            "unwound_url": "https://thehill.com/homenews/administration/5963874-donald-trump-us-canada-gordie-howe-international-bridge/",
-            "url": "https://t.co/tbcY8Hps8y"
-          }
-        ]
-      },
-      "media": [],
-      "public_metrics": {
-        "bookmark_count": 1,
-        "impression_count": 8615,
-        "like_count": 10,
-        "quote_count": 2,
-        "reply_count": 16,
-        "retweet_count": 6
-      },
-      "author": {
-        "id": "1917731",
-        "name": "The Hill",
-        "username": "thehill",
-        "verified": true,
-        "verified_type": "business"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/thehill/status/2075979931683586439",
-      "candidate_score": 71,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075980933740601845",
-    "x_post_id": "2075980933740601845",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T02:45:30.421Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 100,
-    "query_lane": "trusted-1",
-    "ai": null,
-    "post": {
-      "id": "2075980933740601845",
-      "text": "The Trump administration reportedly stepped in to cancel a meeting between New York City Mayor Zohran Mamdani's office and Iran.\n\n\"It is unconscionable that a New York City official would even consider meeting with the Iranian Ambassador to the U.N., a man who consistently works https://t.co/bi216hs9tx",
-      "created_at": "2026-07-11T16:29:59.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "display_url": "pic.x.com/bi216hs9tx",
-            "end": 303,
-            "expanded_url": "https://x.com/FoxNews/status/2075980933740601845/photo/1",
-            "media_key": "3_2075980861355220992",
-            "start": 280,
-            "url": "https://t.co/bi216hs9tx"
-          }
-        ]
-      },
-      "media": [
-        {
-          "type": "photo",
-          "url": "https://pbs.twimg.com/media/HM9dmCmWYAAbT5U.jpg",
-          "alt_text": "",
-          "width": 1080,
-          "height": 1350
-        }
-      ],
-      "public_metrics": {
-        "bookmark_count": 201,
-        "impression_count": 367064,
-        "like_count": 7185,
-        "quote_count": 126,
-        "reply_count": 1162,
-        "retweet_count": 1717
-      },
-      "author": {
-        "id": "1367531",
-        "name": "Fox News",
-        "username": "FoxNews",
-        "verified": true,
-        "verified_type": "blue"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-1",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/FoxNews/status/2075980933740601845",
-      "candidate_score": 100,
-      "matched_terms": [
-        "特朗普",
-        "白宫/政府",
-        "具体事件",
-        "时间/数字"
-      ]
-    }
-  },
-  {
-    "id": "pending-trump-2075981275110769036",
-    "x_post_id": "2075981275110769036",
-    "kind": "queue",
-    "reason": "等待自动处理",
-    "attempts": 0,
-    "created_at": "2026-07-12T04:40:06.416Z",
-    "source_mode": "auto",
-    "source_tier": "trusted_media",
-    "source_weight": 88,
-    "candidate_score": 76,
-    "query_lane": "trusted-2",
-    "ai": null,
-    "post": {
-      "id": "2075981275110769036",
-      "text": "Attorneys dedicated to protecting the independence of law enforcement and the rule of law are sounding the alarm.\n\nTodd Blanche will always put Donald Trump first—not YOU. https://t.co/hErG4w8zLi",
-      "created_at": "2026-07-11T16:31:20.000Z",
-      "lang": "en",
-      "possibly_sensitive": false,
-      "entities": {
-        "urls": [
-          {
-            "display_url": "pic.x.com/hErG4w8zLi",
-            "end": 195,
-            "expanded_url": "https://x.com/JudiciaryDems/status/2075981275110769036/photo/1",
-            "media_key": "3_2075968418428108800",
-            "start": 172,
-            "url": "https://t.co/hErG4w8zLi"
-          }
-        ]
-      },
-      "media": [
-        {
-          "type": "photo",
-          "url": "https://pbs.twimg.com/media/HM9SRxFWQAAWbt9.jpg",
-          "alt_text": "",
-          "width": 1830,
-          "height": 1830
-        }
-      ],
-      "public_metrics": {
-        "bookmark_count": 7,
-        "impression_count": 3880,
-        "like_count": 387,
-        "quote_count": 3,
-        "reply_count": 37,
-        "retweet_count": 145
-      },
-      "author": {
-        "id": "818513652814843906",
-        "name": "Senate Judiciary Democrats 🇺🇸",
-        "username": "JudiciaryDems",
-        "verified": true,
-        "verified_type": "government"
-      },
-      "source_mode": "auto",
-      "source_tier": "trusted_media",
-      "source_weight": 88,
-      "query_lane": "trusted-2",
-      "query_label": "主流媒体",
-      "x_url": "https://x.com/JudiciaryDems/status/2075981275110769036",
-      "candidate_score": 76,
-      "matched_terms": [
-        "特朗普",
-        "时间/数字"
-      ]
-    }
-  },
-  {
     "id": "pending-trump-2075986037730349212",
     "x_post_id": "2075986037730349212",
     "kind": "queue",
@@ -42269,6 +40904,663 @@
       "matched_terms": [
         "特朗普",
         "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076239139926626471",
+    "x_post_id": "2076239139926626471",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 73,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2076239139926626471",
+      "text": "Trump rips Haberman, says she’ll ‘pay the price’ over health reporting\n\nhttps://t.co/zEVu8NQfLu",
+      "created_at": "2026-07-12T09:36:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "President Trump slammed New York Times journalist Maggie Haberman after she questioned his physical and cognitive fitness during an appearance on MS Now, warning that she will “pay the price” when …",
+            "display_url": "thehill.com/homenews/59641…",
+            "end": 95,
+            "expanded_url": "https://thehill.com/homenews/5964144-trump-slams-maggie-haberman/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2076053199908118528/pJCsehFP?format=png&name=orig",
+                "width": 639
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076053199908118528/pJCsehFP?format=png&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 72,
+            "status": 200,
+            "title": "Trump rips Haberman, says she’ll ‘pay the price’ over health reporting",
+            "unwound_url": "https://thehill.com/homenews/5964144-trump-slams-maggie-haberman/",
+            "url": "https://t.co/zEVu8NQfLu"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 3,
+        "impression_count": 10294,
+        "like_count": 21,
+        "quote_count": 3,
+        "reply_count": 21,
+        "retweet_count": 6
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2076239139926626471",
+      "candidate_score": 73,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076244306185085215",
+    "x_post_id": "2076244306185085215",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 71,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2076244306185085215",
+      "text": "US Senator Lindsey Graham has died at 71 after a \"brief and sudden illness,\" his office said.\n\nThe South Carolina Republican was elected to the U.S. Senate in 2002, won reelection three times and had been seeking a fifth Senate term after winning the Republican primary last https://t.co/RbARxs2BqI",
+      "created_at": "2026-07-12T09:56:32.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/RbARxs2BqI",
+            "end": 298,
+            "expanded_url": "https://x.com/FoxNews/status/2076244306185085215/photo/1",
+            "media_key": "3_2076243985618628608",
+            "start": 275,
+            "url": "https://t.co/RbARxs2BqI"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNBM543W8AA7RxR.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 64,
+        "impression_count": 106736,
+        "like_count": 1934,
+        "quote_count": 53,
+        "reply_count": 544,
+        "retweet_count": 436
+      },
+      "author": {
+        "id": "1367531",
+        "name": "Fox News",
+        "username": "FoxNews",
+        "verified": true,
+        "verified_type": "blue"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/FoxNews/status/2076244306185085215",
+      "candidate_score": 71,
+      "matched_terms": [
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076250197609357494",
+    "x_post_id": "2076250197609357494",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 76,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2076250197609357494",
+      "text": "President Trump pays tribute to Sen. Lindsey Graham after his death, calling him a \"true American Patriot.\" https://t.co/hZOky7fWAO",
+      "created_at": "2026-07-12T10:19:56.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/hZOky7fWAO",
+            "end": 131,
+            "expanded_url": "https://x.com/FoxNews/status/2076250197609357494/photo/1",
+            "media_key": "3_2076250130760552448",
+            "start": 108,
+            "url": "https://t.co/hZOky7fWAO"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNBSflTXUAAy548.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1350
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 58,
+        "impression_count": 122034,
+        "like_count": 2725,
+        "quote_count": 36,
+        "reply_count": 721,
+        "retweet_count": 450
+      },
+      "author": {
+        "id": "1367531",
+        "name": "Fox News",
+        "username": "FoxNews",
+        "verified": true,
+        "verified_type": "blue"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/FoxNews/status/2076250197609357494",
+      "candidate_score": 76,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076254239178019071",
+    "x_post_id": "2076254239178019071",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 71,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2076254239178019071",
+      "text": "Vulnerable Republicans embrace risky strategy of embracing an unpopular Trump\n\nhttps://t.co/47JOWil7Ta",
+      "created_at": "2026-07-12T10:36:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Republicans in swing-seat House districts are welcoming President Trump to their districts and embracing him as the leader of the party despite his underwater approval ratings. It is a somewhat sur…",
+            "display_url": "thehill.com/homenews/house…",
+            "end": 102,
+            "expanded_url": "https://thehill.com/homenews/house/5963303-trump-boost-gop-turnout-strategy/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2076015207348944896/D0VdgjRG?format=png&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076015207348944896/D0VdgjRG?format=png&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 79,
+            "status": 200,
+            "title": "Vulnerable Republicans embrace risky strategy of embracing an unpopular Trump",
+            "unwound_url": "https://thehill.com/homenews/house/5963303-trump-boost-gop-turnout-strategy/",
+            "url": "https://t.co/47JOWil7Ta"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 1,
+        "impression_count": 9140,
+        "like_count": 14,
+        "quote_count": 3,
+        "reply_count": 20,
+        "retweet_count": 5
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2076254239178019071",
+      "candidate_score": 71,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076261788879045032",
+    "x_post_id": "2076261788879045032",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 71,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2076261788879045032",
+      "text": "English soccer star Harry Kane confirms he golfed with Trump: ‘Surreal experience’\n\nhttps://t.co/9dSFrcflwf",
+      "created_at": "2026-07-12T11:06:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "English striker Harry Kane said Friday that he played a round of golf with President Trump around 18 months ago in Florida after receiving an invite from the president himself. Speaking at a press …",
+            "display_url": "thehill.com/policy/sports-…",
+            "end": 107,
+            "expanded_url": "https://thehill.com/policy/sports-gaming/5964040-harry-kane-british-soccer-star-donald-trump-golfing/",
+            "start": 84,
+            "status": 200,
+            "title": "English soccer star Harry Kane confirms he golfed with Trump: ‘Surreal experience’",
+            "unwound_url": "https://thehill.com/policy/sports-gaming/5964040-harry-kane-british-soccer-star-donald-trump-golfing/",
+            "url": "https://t.co/9dSFrcflwf"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 2,
+        "impression_count": 8426,
+        "like_count": 11,
+        "quote_count": 0,
+        "reply_count": 9,
+        "retweet_count": 3
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2076261788879045032",
+      "candidate_score": 71,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076265371267420308",
+    "x_post_id": "2076265371267420308",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 98,
+    "query_lane": "trusted-1",
+    "ai": null,
+    "post": {
+      "id": "2076265371267420308",
+      "text": "President Trump paid tribute to Sen. Lindsey Graham, calling him \"one of the greatest people and Senators I have ever known,\" a \"true American Patriot,\" and saying he would be \"greatly missed\" following the South Carolina Republican's death at 71.\n\nGraham's office said he died https://t.co/Sj0rscN71H",
+      "created_at": "2026-07-12T11:20:14.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/Sj0rscN71H",
+            "end": 301,
+            "expanded_url": "https://x.com/CBSNews/status/2076265371267420308/photo/1",
+            "media_key": "3_2076265246394572800",
+            "start": 278,
+            "url": "https://t.co/Sj0rscN71H"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HNBgPbbWYAAz_tB.jpg",
+          "alt_text": "",
+          "width": 1080,
+          "height": 1440
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 1,
+        "impression_count": 12426,
+        "like_count": 39,
+        "quote_count": 3,
+        "reply_count": 35,
+        "retweet_count": 16
+      },
+      "author": {
+        "id": "15012486",
+        "name": "CBS News",
+        "username": "CBSNews",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-1",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/CBSNews/status/2076265371267420308",
+      "candidate_score": 98,
+      "matched_terms": [
+        "特朗普",
+        "具体事件",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076269338601136352",
+    "x_post_id": "2076269338601136352",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 71,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2076269338601136352",
+      "text": "Huckabee warns Iran not to ‘test’ Trump as tensions simmer\n\nhttps://t.co/2bE7yUnrcU",
+      "created_at": "2026-07-12T11:36:00.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "U.S. Ambassador to Israel Mike Huckabee warned Tehran on Saturday not to “test” the U.S. military after repeated threats from President Trump in recent days to carry out further strikes on Iranian …",
+            "display_url": "thehill.com/policy/interna…",
+            "end": 83,
+            "expanded_url": "https://thehill.com/policy/international/5964030-mike-huckabee-donald-trump-iran-war-threats/",
+            "images": [
+              {
+                "height": 359,
+                "url": "https://pbs.twimg.com/news_img/2076019932421038080/QuiYLERT?format=jpg&name=orig",
+                "width": 640
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076019932421038080/QuiYLERT?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 60,
+            "status": 200,
+            "title": "Huckabee warns Iran not to ‘test’ Trump as tensions simmer",
+            "unwound_url": "https://thehill.com/policy/international/5964030-mike-huckabee-donald-trump-iran-war-threats/",
+            "url": "https://t.co/2bE7yUnrcU"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 0,
+        "impression_count": 5144,
+        "like_count": 4,
+        "quote_count": 0,
+        "reply_count": 11,
+        "retweet_count": 0
+      },
+      "author": {
+        "id": "1917731",
+        "name": "The Hill",
+        "username": "thehill",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/thehill/status/2076269338601136352",
+      "candidate_score": 71,
+      "matched_terms": [
+        "特朗普",
+        "时间/数字"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076270396781793367",
+    "x_post_id": "2076270396781793367",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 63,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2076270396781793367",
+      "text": "Polling shows declining support for President Donald Trump among his white working-class base, but will it hurt Republicans in the midterms? https://t.co/HmWXVjecXR",
+      "created_at": "2026-07-12T11:40:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "description": "Polling shows declining support for President Donald Trump among his white working-class base, but will it hurt Republicans in the midterms?",
+            "display_url": "usatoday.com/story/news/pol…",
+            "end": 164,
+            "expanded_url": "https://www.usatoday.com/story/news/politics/elections/2026/07/12/trump-approval-rates-fall-rural-white-working-class-voters/90864576007/?taid=6a537d1c2fac9a0001be3cef&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
+            "images": [
+              {
+                "height": 800,
+                "url": "https://pbs.twimg.com/news_img/2076270397582962688/vd8NDC5r?format=jpg&name=orig",
+                "width": 1600
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076270397582962688/vd8NDC5r?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 141,
+            "status": 200,
+            "title": "Trump's approval rating drops among white working-class voters",
+            "unwound_url": "https://www.usatoday.com/story/news/politics/elections/2026/07/12/trump-approval-rates-fall-rural-white-working-class-voters/90864576007/?taid=6a537d1c2fac9a0001be3cef&utm_campaign=trueanthem&utm_medium=social&utm_source=twitter",
+            "url": "https://t.co/HmWXVjecXR"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 2,
+        "impression_count": 6692,
+        "like_count": 13,
+        "quote_count": 2,
+        "reply_count": 26,
+        "retweet_count": 3
+      },
+      "author": {
+        "id": "15754281",
+        "name": "USA TODAY",
+        "username": "USATODAY",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/USATODAY/status/2076270396781793367",
+      "candidate_score": 63,
+      "matched_terms": [
+        "特朗普"
+      ]
+    }
+  },
+  {
+    "id": "pending-trump-2076276679668797530",
+    "x_post_id": "2076276679668797530",
+    "kind": "queue",
+    "reason": "等待自动处理",
+    "attempts": 0,
+    "created_at": "2026-07-12T12:13:05.339Z",
+    "source_mode": "auto",
+    "source_tier": "trusted_media",
+    "source_weight": 88,
+    "candidate_score": 89,
+    "query_lane": "trusted-2",
+    "ai": null,
+    "post": {
+      "id": "2076276679668797530",
+      "text": "By tapping funds intended for national parks to pay for pet projects in Washington, the Trump administration has created an incentive to let in as many visitors as possible. @Erika_D_Smith sees a recipe for disaster (via @opinion)  https://t.co/YKTvOYH0np",
+      "created_at": "2026-07-12T12:05:10.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 188,
+            "id": "17001628",
+            "start": 174,
+            "username": "Erika_D_Smith"
+          },
+          {
+            "end": 229,
+            "id": "227682918",
+            "start": 221,
+            "username": "opinion"
+          }
+        ],
+        "urls": [
+          {
+            "description": "With its ancient sequoias, towering waterfalls and glacier-carved granite cliffs, California’s Yosemite National Park has long been one of the most visited destinations in the national park system, helping to inspire its very creation. The vistas, which span more than 1,100 square miles along the Sierra Nevada mountain range, are inspiring to say the least. Yet the stories out of Yosemite this year — particularly this month, the official start of the busy season for national parks — are anything",
+            "display_url": "bloomberg.com/opinion/articl…",
+            "end": 255,
+            "expanded_url": "https://www.bloomberg.com/opinion/articles/2026-07-12/national-parks-are-in-chaos-trump-is-making-it-worse?taid=6a5382f64d426f00019bc15d&utm_campaign=trueanthem&utm_content=business&utm_medium=social&utm_source=twitter",
+            "images": [
+              {
+                "height": 800,
+                "url": "https://pbs.twimg.com/news_img/2076276681866645504/7MkcS-bk?format=jpg&name=orig",
+                "width": 1200
+              },
+              {
+                "height": 150,
+                "url": "https://pbs.twimg.com/news_img/2076276681866645504/7MkcS-bk?format=jpg&name=150x150",
+                "width": 150
+              }
+            ],
+            "start": 232,
+            "status": 200,
+            "title": "National Parks Are in Chaos. Trump Is Making It Worse",
+            "unwound_url": "https://www.bloomberg.com/opinion/articles/2026-07-12/national-parks-are-in-chaos-trump-is-making-it-worse?taid=6a5382f64d426f00019bc15d&utm_campaign=trueanthem&utm_content=business&utm_medium=social&utm_source=twitter",
+            "url": "https://t.co/YKTvOYH0np"
+          }
+        ]
+      },
+      "media": [],
+      "public_metrics": {
+        "bookmark_count": 1,
+        "impression_count": 13431,
+        "like_count": 3,
+        "quote_count": 0,
+        "reply_count": 1,
+        "retweet_count": 0
+      },
+      "author": {
+        "id": "34713362",
+        "name": "Bloomberg",
+        "username": "business",
+        "verified": true,
+        "verified_type": "business"
+      },
+      "source_mode": "auto",
+      "source_tier": "trusted_media",
+      "source_weight": 88,
+      "query_lane": "trusted-2",
+      "query_label": "主流媒体",
+      "x_url": "https://x.com/business/status/2076276679668797530",
+      "candidate_score": 89,
+      "matched_terms": [
+        "特朗普",
+        "白宫/政府",
         "时间/数字"
       ]
     }

@@ -8,15 +8,14 @@ on:
 permissions:
   contents: write
 
-# ICE 与特朗普共用同一发布锁，避免同时向 main 推送。
 concurrency:
   group: trrb-news-publishing
   cancel-in-progress: false
 
 jobs:
-  sync-ice-news:
+  ice-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -29,51 +28,50 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Fetch, rewrite and publish ICE news
+      - name: Validate ICE architecture
+        run: |
+          node --check scripts/ice-fetch.mjs
+          node --check scripts/ice-publish.mjs
+          node --check scripts/ice-build-dashboard.mjs
+          node --check scripts/ice-pipeline.mjs
+          node --test scripts/ice-architecture.test.mjs
+
+      - name: Fetch, edit and publish ICE news
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          SITE_URL: "https://trrb.net"
-          ICE_QUERY: "from:ICEgov -is:retweet -is:reply"
-          ICE_BOOTSTRAP_LIMIT: "8"
-          ICE_MAX_NEW_POSTS: "30"
-          ICE_USE_X_MEDIA: "true"
-          ICE_MIN_CONFIDENCE: "80"
-        run: node scripts/ice-sync.mjs
+          ICE_MAX_NEW_POSTS: "120"
+          ICE_MAX_PROCESS_PER_RUN: "18"
+          ICE_LOOKBACK_HOURS: "48"
+          ICE_MAX_PAGES_PER_QUERY: "2"
+        run: node scripts/ice-pipeline.mjs
 
-      - name: Commit generated ICE news
+      - name: Verify generated output
+        run: node --test scripts/ice-architecture.test.mjs
+
+      - name: Commit generated ICE data
         shell: bash
         run: |
           set -euo pipefail
-
           git config user.name "TRRB ICE Bot"
           git config user.email "bot@trrb.net"
           git add -A
 
           if git diff --cached --quiet; then
-            echo "No ICE content changes to commit."
+            echo "No ICE changes."
             exit 0
           fi
 
           git commit -m "Auto publish ICE news"
 
           for attempt in 1 2 3 4; do
-            echo "Push attempt ${attempt}/4"
             git fetch origin main
-
-            if git rebase origin/main; then
-              if git push origin HEAD:main; then
-                echo "ICE news pushed successfully."
-                exit 0
-              fi
-            else
-              echo "Rebase failed; aborting before retry."
-              git rebase --abort || true
+            if git rebase origin/main && git push origin HEAD:main; then
+              exit 0
             fi
-
+            git rebase --abort || true
             sleep $((attempt * 10))
           done
 
-          echo "Unable to push ICE news after 4 attempts."
           exit 1

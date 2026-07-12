@@ -1,41 +1,36 @@
 (() => {
   "use strict";
 
-  const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const DATA_URLS = {
     news: "/data/ice-news.json",
     state: "/data/ice-state.json",
     dashboard: "/data/ice-dashboard.json"
   };
+  const NEWS_PAGE_SIZE = 20;
 
   let dashboard = null;
   let news = [];
   let selectedRange = "24h";
   let selectedMetric = "events";
   let selectedState = "";
+  let visibleNewsCount = NEWS_PAGE_SIZE;
 
   document.addEventListener("DOMContentLoaded", init);
 
   async function init() {
-    document.documentElement.dataset.iceLayout = "v46";
+    document.documentElement.dataset.iceLayout = "architecture-v1";
     startNewYorkClock();
 
-    // 数据加载与地图渲染分离：地图组件缺失或 Plotly 失败时，
-    // 不得连带导致统计和新闻显示“加载失败”。
     try {
       const [newsResult, stateResult, dashboardResult] = await Promise.allSettled([
-        fetchFirstJson([DATA_URLS.news, "/data/ice-live.json"], []),
-        fetchFirstJson([DATA_URLS.state], {}),
-        fetchFirstJson([DATA_URLS.dashboard, "/data/ice-stats.json", "/data/ice-map.json"], null)
+        fetchJson(DATA_URLS.news, []),
+        fetchJson(DATA_URLS.state, {}),
+        fetchJson(DATA_URLS.dashboard, null)
       ]);
 
       news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value)
-        ? newsResult.value
+        ? normalizeNewsItems(newsResult.value)
         : [];
-
-      const liveNews = await fetchLiveArticles("ICE执法");
-      if (liveNews.length) news = mergeLiveNews(liveNews, news);
 
       const state = stateResult.status === "fulfilled" ? stateResult.value : {};
       const rawDashboard = dashboardResult.status === "fulfilled" ? dashboardResult.value : null;
@@ -62,70 +57,20 @@
     }
   }
 
-  async function fetchLiveArticles(category) {
-    const select = "id,title,summary,cover_image,source_name,source_url,published_at,created_at,city,state,arrest_count,count_in_ice_stats,primary_section,category_name,status";
-    const headers = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
-    const filters = [
-      `primary_section=eq.${encodeURIComponent(category)}`,
-      `category_name=eq.${encodeURIComponent(category)}`
-    ];
-    const rows = [];
-
-    for (const filter of filters) {
-      try {
-        const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&${filter}&order=published_at.desc.nullslast,created_at.desc&limit=100`;
-        const response = await fetch(url, { headers, cache: "no-store" });
-        if (!response.ok) continue;
-        const result = await response.json();
-        if (Array.isArray(result)) rows.push(...result);
-      } catch (error) {
-        console.warn("ICE Supabase query skipped:", error);
-      }
-    }
-
+  function normalizeNewsItems(items) {
     const seen = new Set();
-    return rows.filter(row => {
-      const key = String(row.id || row.source_url || row.title || "");
-      if (!key || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-  }
-
-  function mergeLiveNews(live, archived) {
-    const mapped = live.map(row => {
-      const imageUrl = normalizeIceImageUrl(row.cover_image);
-      const noImage = !imageUrl;
-      return {
-        id: row.id,
-        title: noImage ? normalizeIceBriefTitle(row.title) : String(row.title || "ICE执法动态").trim(),
-        summary: noImage ? normalizeIceBriefText(row.summary) : String(row.summary || "").trim(),
-        content_type: noImage ? "brief" : "article",
-        image_url: imageUrl,
-        source_name: row.source_name,
-        source_url: row.source_url,
-        published_at: row.published_at || row.created_at,
-        url: `/article.html?id=${encodeURIComponent(row.id)}`,
-        state_codes: row.state ? [normalizeStateCode(row.state)] : [],
-        enforcement_events: []
-      };
-    });
-
-    // Supabase 与静态 JSON 可能同时包含同一条 X 新闻。优先使用实时数据，
-    // 按来源链接和标题双重去重，避免页面出现重复卡片。
-    const seen = new Set();
-    const result = [];
-    for (const item of [...mapped, ...archived]) {
-      const sourceKey = String(item.source_url || "").trim().toLowerCase();
-      const idKey = String(item.x_post_id || item.id || "").trim().toLowerCase();
-      const titleKey = String(item.title || "").replace(/\s+/g, "").toLowerCase();
-      const stableKeys = [sourceKey && `source:${sourceKey}`, idKey && `id:${idKey}`].filter(Boolean);
-      const keys = stableKeys.length ? stableKeys : [titleKey && `title:${titleKey}`].filter(Boolean);
-      if (keys.some(key => seen.has(key))) continue;
-      keys.forEach(key => seen.add(key));
-      result.push(item);
-    }
-    return result;
+    return items
+      .filter(item => item && typeof item === "object")
+      .filter(item => {
+        const key = String(item.x_post_id || item.id || item.source_url || item.url || item.title || "").trim();
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .sort((a, b) =>
+        new Date(b.published_at || b.created_at || 0) -
+        new Date(a.published_at || a.created_at || 0)
+      );
   }
 
   async function fetchJson(url, fallback) {
@@ -140,43 +85,10 @@
     }
   }
 
-  async function fetchFirstJson(urls, fallback) {
-    for (const url of urls) {
-      const value = await fetchJson(url, null);
-      if (value !== null && value !== undefined) return value;
-    }
-    return fallback;
-  }
-
   function normalizeDashboard(value) {
     if (!value || typeof value !== "object") return null;
     if (value.today && value.heatmap) return value;
-
-    // 兼容 ice-stats.json / ice-map.json 等旧格式。
-    const todaySource = value.today || value.stats?.today || {};
-    const mapSource = value.heatmap || value.map || {};
-    const normalizeRange = range => {
-      const source = mapSource?.[range]?.states || mapSource?.[range] || [];
-      return { states: Array.isArray(source) ? source : [] };
-    };
-
-    return {
-      generated_at: value.generated_at || value.updated_at || value.latest_sync_at || "",
-      latest_sync_at: value.latest_sync_at || value.updated_at || value.generated_at || "",
-      total_published: Number(value.total_published || 0),
-      today: {
-        date: todaySource.date || "",
-        known_people: Number(todaySource.known_people ?? todaySource.confirmed_people ?? 0),
-        event_count: Number(todaySource.event_count ?? todaySource.events_count ?? 0),
-        location_count: Number(todaySource.location_count ?? todaySource.locations ?? 0),
-        events: Array.isArray(todaySource.events) ? todaySource.events : []
-      },
-      heatmap: {
-        "24h": normalizeRange("24h"),
-        "7d": normalizeRange("7d"),
-        "30d": normalizeRange("30d")
-      }
-    };
+    return null;
   }
 
   function startNewYorkClock() {
@@ -203,8 +115,12 @@
 
     root.innerHTML = events.map(event => {
       const time = formatEventTime(event);
-      const location = event.location_text || [event.city, event.state_name || event.state_code].filter(Boolean).join("，") || "地点未披露";
-      const count = Number.isInteger(event.people_count) && event.people_count > 0 ? `${event.people_count}人` : "人数未披露";
+      const location = event.location_text ||
+        [event.city, event.state_name || event.state_code].filter(Boolean).join("，") ||
+        "地点未披露";
+      const count = Number.isInteger(event.people_count) && event.people_count > 0
+        ? `${event.people_count}人`
+        : "人数未披露";
       const basis = event.time_basis || (event.occurred_at ? "执法时间" : "官方公开时间");
       return `
         <article class="ice-event-row">
@@ -218,177 +134,108 @@
 
   function renderNews() {
     const root = document.getElementById("ice-news-list");
+    const loadMore = document.getElementById("load-more-news");
+    const countNote = document.getElementById("news-count-note");
     if (!root) return;
 
-    const sorted = [...news].sort(
-      (a, b) =>
-        new Date(b.published_at || b.created_at || 0) -
-        new Date(a.published_at || a.created_at || 0)
-    );
+    const filtered = selectedState
+      ? news.filter(item => extractStateCodes(item).includes(selectedState))
+      : news;
 
-    if (!sorted.length) {
-      root.innerHTML = '<div class="ice-empty">暂时没有已发布的ICE新闻。</div>';
+    const shown = filtered.slice(0, visibleNewsCount);
+    if (!shown.length) {
+      root.innerHTML = '<div class="ice-empty">当前筛选范围暂无已发布的ICE新闻。</div>';
+      if (loadMore) loadMore.hidden = true;
+      if (countNote) countNote.textContent = "共0条";
       return;
     }
 
-    const prepared = sorted.map((item, index) => {
-      const states = Array.isArray(item.state_codes)
-        ? item.state_codes.map(normalizeStateCode).filter(Boolean)
-        : [...new Set(
-            (item.enforcement_events || [])
-              .map(event => normalizeStateCode(event.state_code))
-              .filter(Boolean)
-          )];
+    root.innerHTML = shown.map((item, index) => renderNewsCard(item, index)).join("");
+    bindImageFallbacks(root);
 
-      return {
-        item,
-        states,
-        key: `ice-news-${index}`,
-        imageUrl: normalizeIceImageUrl(item.image_url || item.cover_image)
-      };
-    });
-
-    // 先全部显示为文字快讯，确保坏图、慢图和懒加载图片不会制造空白卡片。
-    root.innerHTML = prepared
-      .map(entry => renderBriefNewsRow(entry.item, entry.states, entry.key))
-      .join("");
-
-    // 图片只有真正加载成功并达到新闻图片尺寸后，才升级为图片卡片。
-    prepared.forEach(async entry => {
-      if (!entry.imageUrl) return;
-
-      const imageInfo = await validateNewsImage(entry.imageUrl);
-      if (!imageInfo.valid) return;
-
-      const current = root.querySelector(`[data-news-key="${entry.key}"]`);
-      if (!current) return;
-
-      const template = document.createElement("template");
-      template.innerHTML = renderImageNewsCard(
-        entry.item,
-        entry.states,
-        imageInfo.url,
-        entry.key
-      ).trim();
-
-      const replacement = template.content.firstElementChild;
-      if (replacement) current.replaceWith(replacement);
-    });
+    if (countNote) countNote.textContent = `已显示${shown.length}条，共${filtered.length}条`;
+    if (loadMore) {
+      loadMore.hidden = shown.length >= filtered.length;
+      loadMore.textContent = `再加载${Math.min(NEWS_PAGE_SIZE, filtered.length - shown.length)}条`;
+    }
   }
 
-  function renderImageNewsCard(item, states, imageUrl, newsKey = "") {
+  function renderNewsCard(item, index) {
+    const states = extractStateCodes(item);
+    const imageUrl = normalizeIceImageUrl(item.image_url);
     const title = String(item.title || "ICE执法动态").trim();
-    const summary = String(item.summary || "").trim();
-    const sourceName = String(item.source_name || "ICE执法信息").trim();
-    const publishedAt = String(item.published_at || item.created_at || "");
-    const articleUrl = String(item.url || item.source_url || "#");
-
-    return `
-      <article
-        class="ice-news-card has-image ice-news-item"
-        data-news-key="${escapeAttr(newsKey)}"
-        data-states="${escapeAttr(states.join(","))}"
-      >
-        <a class="ice-news-thumb-wrap" href="${escapeAttr(articleUrl)}" aria-label="${escapeAttr(title)}">
-          <img
-            class="ice-news-thumb"
-            src="${escapeAttr(imageUrl)}"
-            alt=""
-            aria-hidden="true"
-            loading="eager"
-            referrerpolicy="no-referrer"
-          >
-        </a>
-        <div class="ice-news-body">
-          <div class="ice-news-meta">
-            <span class="ice-news-label">${escapeHtml(sourceName)}</span>
-            <time datetime="${escapeAttr(publishedAt)}">${escapeHtml(formatDateTimeSeconds(publishedAt))}</time>
-          </div>
-          <h3><a href="${escapeAttr(articleUrl)}">${escapeHtml(title)}</a></h3>
-          <p>${escapeHtml(summary)}</p>
-          <a class="ice-news-link" href="${escapeAttr(articleUrl)}">查看全文 →</a>
-        </div>
-      </article>`;
-  }
-
-  function renderBriefNewsRow(item, states, newsKey = "") {
-    const title = normalizeIceBriefTitle(item.title);
+    const briefTitle = normalizeIceBriefTitle(title);
     const summary = normalizeIceBriefText(item.summary);
     const sourceName = String(item.source_name || "ICE执法信息").trim();
     const publishedAt = String(item.published_at || item.created_at || "");
     const articleUrl = String(item.url || item.source_url || "#");
 
+    const image = imageUrl
+      ? `<a class="ice-news-media" href="${escapeAttr(articleUrl)}" aria-label="${escapeAttr(title)}">
+          <img src="${escapeAttr(imageUrl)}" alt="" aria-hidden="true"
+            loading="${index < 3 ? "eager" : "lazy"}"
+            ${index < 2 ? 'fetchpriority="high"' : ""}
+            referrerpolicy="no-referrer">
+        </a>`
+      : "";
+
     return `
       <article
-        class="ice-brief-row ice-news-item"
-        data-news-key="${escapeAttr(newsKey)}"
+        class="ice-news-card ice-news-item ${imageUrl ? "has-image" : "no-image"}"
         data-states="${escapeAttr(states.join(","))}"
+        data-brief-title="${escapeAttr(briefTitle)}"
       >
-        <time datetime="${escapeAttr(publishedAt)}">${escapeHtml(formatDateTimeSeconds(publishedAt))}</time>
-        <div class="ice-brief-copy">
-          <h3><a href="${escapeAttr(articleUrl)}">${escapeHtml(title)}</a></h3>
+        ${image}
+        <div class="ice-news-body">
+          <div class="ice-news-meta">
+            <span class="ice-news-source" title="${escapeAttr(sourceName)}">${escapeHtml(sourceName)}</span>
+            <time datetime="${escapeAttr(publishedAt)}">${escapeHtml(formatDateTimeSeconds(publishedAt))}</time>
+          </div>
+          <h3><a href="${escapeAttr(articleUrl)}">${escapeHtml(imageUrl ? title : briefTitle)}</a></h3>
           <p>${escapeHtml(summary)}</p>
+          <a class="ice-news-link" href="${escapeAttr(articleUrl)}">${imageUrl ? "查看全文" : "查看详情"} →</a>
         </div>
-        <a class="ice-brief-source" href="${escapeAttr(articleUrl)}">${escapeHtml(sourceName)}</a>
       </article>`;
   }
 
-  function validateNewsImage(value) {
-    const url = normalizeIceImageUrl(value);
-    if (!url) return Promise.resolve({ valid: false, url: "" });
-
-    return new Promise(resolve => {
-      const image = new Image();
-      let settled = false;
-
-      const finish = valid => {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(timer);
-        resolve({
-          valid,
-          url,
-          width: image.naturalWidth || 0,
-          height: image.naturalHeight || 0
-        });
+  function bindImageFallbacks(root) {
+    root.querySelectorAll(".ice-news-media img").forEach(image => {
+      const fallback = () => {
+        const card = image.closest(".ice-news-card");
+        if (!card || card.classList.contains("no-image")) return;
+        image.closest(".ice-news-media")?.remove();
+        card.classList.remove("has-image");
+        card.classList.add("no-image");
+        const title = card.querySelector("h3 a");
+        if (title) title.textContent = card.dataset.briefTitle || "ICE执法最新动态";
+        const link = card.querySelector(".ice-news-link");
+        if (link) link.textContent = "查看详情 →";
       };
-
-      const timer = window.setTimeout(() => finish(false), 8000);
-
-      image.referrerPolicy = "no-referrer";
-      image.decoding = "async";
-      image.onload = () => {
-        const width = image.naturalWidth || 0;
-        const height = image.naturalHeight || 0;
-
-        // 排除头像、Logo、追踪像素、失效占位图。
-        finish(width >= 300 && height >= 160);
-      };
-      image.onerror = () => finish(false);
-      image.src = url;
+      image.addEventListener("error", fallback, { once: true });
+      if (image.complete && image.naturalWidth === 0) fallback();
     });
+  }
+
+  function extractStateCodes(item) {
+    const direct = Array.isArray(item.state_codes)
+      ? item.state_codes.map(normalizeStateCode).filter(Boolean)
+      : [];
+    const fromEvents = Array.isArray(item.enforcement_events)
+      ? item.enforcement_events.map(event => normalizeStateCode(event.state_code)).filter(Boolean)
+      : [];
+    return [...new Set([...direct, ...fromEvents])];
   }
 
   function normalizeIceImageUrl(value) {
     const raw = String(value || "").trim();
     if (!raw || /\s/.test(raw)) return "";
-
-    const isAbsoluteHttp =
-      raw.startsWith("https://") ||
-      raw.startsWith("http://") ||
-      raw.startsWith("//");
+    const isHttp = /^https?:\/\//i.test(raw);
     const isSitePath = raw.startsWith("/") && !raw.startsWith("//");
-
-    // 账号名、alt文字和普通文本即使非空，也不能被当作图片地址。
-    if (!isAbsoluteHttp && !isSitePath) return "";
-
+    if (!isHttp && !isSitePath) return "";
     try {
       const parsed = new URL(raw, window.location.origin);
-      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return "";
-
-      return isSitePath
-        ? `${parsed.pathname}${parsed.search}${parsed.hash}`
-        : parsed.href;
+      if (!["http:", "https:"].includes(parsed.protocol)) return "";
+      return isSitePath ? `${parsed.pathname}${parsed.search}${parsed.hash}` : parsed.href;
     } catch {
       return "";
     }
@@ -402,7 +249,15 @@
       .replace(/美国移民与海关执法局/g, "ICE")
       .replace(/美国国土安全部/g, "DHS")
       .trim();
+
     if (!clean) clean = "ICE执法最新动态";
+
+    const clauses = clean.split(/[，,:：；;｜|—–-]/).map(part => part.trim()).filter(Boolean);
+    const preferred = clauses.find(part => {
+      const length = Array.from(part).length;
+      return length >= 8 && length <= 18;
+    });
+    if (preferred) clean = preferred;
 
     let chars = Array.from(clean);
     if (chars.length > 18) {
@@ -424,7 +279,7 @@
       .replace(/\s+/g, " ")
       .trim();
     const chars = Array.from(clean);
-    return chars.length > 90 ? `${chars.slice(0, 90).join("")}…` : clean;
+    return chars.length > 110 ? `${chars.slice(0, 110).join("")}…` : clean;
   }
 
   function bindControls() {
@@ -445,6 +300,10 @@
     });
 
     document.getElementById("clear-state-filter")?.addEventListener("click", () => filterByState(""));
+    document.getElementById("load-more-news")?.addEventListener("click", () => {
+      visibleNewsCount += NEWS_PAGE_SIZE;
+      renderNews();
+    });
   }
 
   function setActiveButton(parentId, active) {
@@ -586,18 +445,25 @@
 
   function filterByState(state) {
     selectedState = normalizeStateCode(state);
-    let visible = 0;
-    document.querySelectorAll(".ice-news-item").forEach(card => {
-      const states = (card.dataset.states || "").split(",").filter(Boolean);
-      const show = !selectedState || states.includes(selectedState);
-      card.hidden = !show;
-      if (show) visible += 1;
-    });
+    visibleNewsCount = NEWS_PAGE_SIZE;
+    renderNews();
+
     const clear = document.getElementById("clear-state-filter");
     if (clear) clear.hidden = !selectedState;
+
     const note = document.getElementById("news-sort-note");
-    if (note) note.textContent = selectedState ? `当前筛选：${selectedState}（${visible}条）` : "按发布时间倒序排列";
-    if (selectedState) document.getElementById("latest-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (note) {
+      const count = selectedState
+        ? news.filter(item => extractStateCodes(item).includes(selectedState)).length
+        : news.length;
+      note.textContent = selectedState
+        ? `当前筛选：${selectedState}（${count}条）`
+        : "按发布时间倒序排列";
+    }
+
+    if (selectedState) {
+      document.getElementById("latest-title")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
   function makeDashboardFallback(items, state) {
@@ -690,4 +556,5 @@
   }
 
   function escapeAttr(value) { return escapeHtml(value); }
+
 })();

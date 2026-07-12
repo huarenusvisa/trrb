@@ -1,0 +1,22 @@
+部署建议
+
+最稳妥：
+1. 使用完整包替换你的本地仓库。
+2. 在仓库根目录运行：
+   node --check scripts/ice-fetch.mjs
+   node --check scripts/ice-publish.mjs
+   node --check scripts/ice-build-dashboard.mjs
+   node --check scripts/ice-pipeline.mjs
+   node --test scripts/ice-architecture.test.mjs
+3. git add -A
+4. git commit -m "Rebuild ICE architecture v1"
+5. git push origin main
+6. 等Netlify自动部署。
+7. 打开 https://trrb.net/topic/ice/?architecture=1
+
+验证：
+document.querySelector('meta[name="trrb-ice-release"]')?.content
+应返回 ice-architecture-v1
+
+document.documentElement.dataset.iceLayout
+应返回 architecture-v1

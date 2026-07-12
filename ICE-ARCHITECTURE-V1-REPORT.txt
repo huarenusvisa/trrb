@@ -1,0 +1,45 @@
+唐人日报 ICE Architecture v1
+
+本次不是补丁，而是重新架构。
+
+旧结构：
+一个ice-sync.mjs同时承担抓取、AI编辑、发布、Supabase、统计、兼容JSON和页面生成。
+
+新结构：
+scripts/ice-fetch.mjs
+  只负责X API抓取、来源通道、候选评分和去重。
+
+scripts/ice-publish.mjs
+  只负责AI编辑、审核判断、8—18字标题和最终新闻数据。
+
+scripts/ice-build-dashboard.mjs
+  只负责今日统计和24小时/7天/30天热力图。
+
+scripts/ice-pipeline.mjs
+  只负责按顺序调用前三层。
+
+scripts/ice-utils.mjs
+  只存放JSON、文本、图片、时间等共享工具。
+
+唯一数据：
+data/ice-candidates.json
+data/ice-news.json
+data/ice-dashboard.json
+data/ice-state.json
+data/ice-pending.json
+
+彻底取消：
+scripts/ice-sync.mjs
+data/ice-live.json
+data/ice-map.json
+data/ice-stats.json
+前端Supabase合并
+兼容JSON生成
+ICE_QUERY覆盖
+多层版本补丁代码
+
+页面规则：
+有合格图片显示图片卡片。
+无图显示8—18字标题和摘要。
+图片失效自动转文字卡片。
+初始20条，加载更多。

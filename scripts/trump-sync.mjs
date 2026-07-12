@@ -514,7 +514,20 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
     }
   }
 
-  if (!successfulLanes) throw new Error("All Trump X search lanes failed.");
+  if (!successfulLanes) {
+    const transientOnly = laneStats.length > 0 && laneStats.every(item => /\((429|500|502|503|504)\)|timeout|aborted|fetch failed|ECONNRESET|ENOTFOUND/i.test(String(item.error || "")));
+    if (transientOnly) {
+      console.warn("All Trump X search lanes are temporarily unavailable; keeping existing data and ending this run successfully.");
+      return {
+        posts: [],
+        queryCursors: nextCursors,
+        newestId: "",
+        laneStats,
+        degraded: true
+      };
+    }
+    throw new Error("All Trump X search lanes failed.");
+  }
 
   let posts = dedupePosts(collected)
     .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);

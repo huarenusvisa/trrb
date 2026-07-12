@@ -512,7 +512,20 @@ async function fetchRecentPosts(stateOrSinceId = {}) {
     }
   }
 
-  if (!successfulLanes) throw new Error("All ICE X search lanes failed.");
+  if (!successfulLanes) {
+    const transientOnly = laneStats.length > 0 && laneStats.every(item => /\((429|500|502|503|504)\)|timeout|aborted|fetch failed|ECONNRESET|ENOTFOUND/i.test(String(item.error || "")));
+    if (transientOnly) {
+      console.warn("All ICE X search lanes are temporarily unavailable; keeping existing data and ending this run successfully.");
+      return {
+        posts: [],
+        queryCursors: nextCursors,
+        newestId: "",
+        laneStats,
+        degraded: true
+      };
+    }
+    throw new Error("All ICE X search lanes failed.");
+  }
 
   let posts = dedupePosts(collected)
     .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);
@@ -550,10 +563,9 @@ async function fetchIceQueryLane(lane, sinceId) {
     }
     if (nextToken) url.searchParams.set("next_token", nextToken);
 
-    const response = await fetchWithTimeout(url, {
+    const payload = await fetchXJsonWithRetry(url, {
       headers: { Authorization: `Bearer ${CONFIG.xToken}` }
-    });
-    const payload = await readResponseJson(response, `X API (${lane.id})`);
+    }, `X API (${lane.id})`);
     if (!newestId) newestId = String(payload.meta?.newest_id || "");
     const mediaMap = new Map((payload.includes?.media || []).map(item => [item.media_key, item]));
     const userMap = new Map((payload.includes?.users || []).map(user => [String(user.id), user]));
@@ -1572,6 +1584,48 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+async function fetchXJsonWithRetry(url, options = {}, label = "X API") {
+  const maxAttempts = 3;
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(url, options, 30000);
+      if (response.ok) return await readResponseJson(response, label);
+
+      const retryAfterHeader = response.headers.get("retry-after");
+      const retryAfterMs = retryAfterHeader && /^\d+$/.test(retryAfterHeader)
+        ? Math.min(Number(retryAfterHeader) * 1000, 60000)
+        : 0;
+      const retryable = [429, 500, 502, 503, 504].includes(response.status);
+
+      if (!retryable || attempt === maxAttempts) {
+        return await readResponseJson(response, label);
+      }
+
+      const body = await response.text().catch(() => "");
+      const baseDelay = attempt === 1 ? 5000 : 15000;
+      const waitMs = Math.max(baseDelay, retryAfterMs) + Math.floor(Math.random() * 1500);
+      console.warn(`${label} returned ${response.status}${body ? `: ${body.slice(0, 120)}` : ""}; retrying in ${Math.ceil(waitMs / 1000)}s (${attempt}/${maxAttempts}).`);
+      await sleep(waitMs);
+    } catch (error) {
+      lastError = error;
+      const message = errorMessage(error);
+      const retryable = /timeout|aborted|fetch failed|ECONNRESET|ENOTFOUND|EAI_AGAIN/i.test(message);
+      if (!retryable || attempt === maxAttempts) throw error;
+      const waitMs = (attempt === 1 ? 5000 : 15000) + Math.floor(Math.random() * 1500);
+      console.warn(`${label} network error: ${message}; retrying in ${Math.ceil(waitMs / 1000)}s (${attempt}/${maxAttempts}).`);
+      await sleep(waitMs);
+    }
+  }
+
+  throw lastError || new Error(`${label} failed after retries.`);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function readResponseJson(response, label) {

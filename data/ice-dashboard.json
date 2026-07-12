@@ -1,15 +1,32 @@
 {
-  "generated_at": "2026-07-12T05:52:43.353Z",
+  "generated_at": "2026-07-12T05:58:39.973Z",
   "timezone": "America/New_York",
-  "latest_sync_at": "2026-07-12T05:52:43.353Z",
-  "total_published": 71,
+  "latest_sync_at": "2026-07-12T05:58:39.973Z",
+  "total_published": 78,
   "today": {
     "date": "2026-07-12",
     "known_people": 2,
-    "event_count": 4,
-    "location_count": 1,
-    "unknown_people_events": 2,
+    "event_count": 5,
+    "location_count": 2,
+    "unknown_people_events": 3,
     "events": [
+      {
+        "event_type": "arrest",
+        "people_count": null,
+        "occurred_at": "2026-07-12T05:52:03.000Z",
+        "time_precision": "second",
+        "city": "Houston",
+        "state_code": "TX",
+        "state_name": "Texas",
+        "location_text": "休斯顿县",
+        "confidence": 90,
+        "source_excerpt": "涉案的ICE特工已被捕，休斯顿县法医裁定死亡为他杀。",
+        "basis_time": "2026-07-12T05:52:03.000Z",
+        "time_basis": "执法时间",
+        "article_title": "休斯顿县一名男子死亡案涉ICE人员被捕",
+        "article_url": "/news/ice/2026/07/12/ice-2076182780757581918.html",
+        "published_at": "2026-07-12T05:52:03.000Z"
+      },
       {
         "event_type": "detention",
         "people_count": null,
@@ -86,20 +103,27 @@
         {
           "code": "TX",
           "name": "Texas",
-          "events": 11,
+          "events": 12,
           "people": 1,
-          "unknown_people_events": 10
+          "unknown_people_events": 11
         },
         {
           "code": "IL",
           "name": "Illinois",
-          "events": 2,
+          "events": 3,
           "people": 1,
-          "unknown_people_events": 1
+          "unknown_people_events": 2
         },
         {
           "code": "FL",
           "name": "Florida",
+          "events": 1,
+          "people": 1,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "CA",
+          "name": "California",
           "events": 1,
           "people": 1,
           "unknown_people_events": 0
@@ -132,9 +156,16 @@
         {
           "code": "TX",
           "name": "Texas",
-          "events": 14,
+          "events": 15,
           "people": 2,
-          "unknown_people_events": 12
+          "unknown_people_events": 13
+        },
+        {
+          "code": "IL",
+          "name": "Illinois",
+          "events": 4,
+          "people": 16,
+          "unknown_people_events": 2
         },
         {
           "code": "FL",
@@ -144,11 +175,18 @@
           "unknown_people_events": 1
         },
         {
-          "code": "IL",
-          "name": "Illinois",
-          "events": 2,
+          "code": "MT",
+          "name": "Montana",
+          "events": 1,
+          "people": 100,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "CA",
+          "name": "California",
+          "events": 1,
           "people": 1,
-          "unknown_people_events": 1
+          "unknown_people_events": 0
         },
         {
           "code": "NM",
@@ -178,9 +216,16 @@
         {
           "code": "TX",
           "name": "Texas",
-          "events": 14,
+          "events": 15,
           "people": 2,
-          "unknown_people_events": 12
+          "unknown_people_events": 13
+        },
+        {
+          "code": "IL",
+          "name": "Illinois",
+          "events": 4,
+          "people": 16,
+          "unknown_people_events": 2
         },
         {
           "code": "FL",
@@ -190,11 +235,18 @@
           "unknown_people_events": 1
         },
         {
-          "code": "IL",
-          "name": "Illinois",
-          "events": 2,
+          "code": "MT",
+          "name": "Montana",
+          "events": 1,
+          "people": 100,
+          "unknown_people_events": 0
+        },
+        {
+          "code": "CA",
+          "name": "California",
+          "events": 1,
           "people": 1,
-          "unknown_people_events": 1
+          "unknown_people_events": 0
         },
         {
           "code": "NM",

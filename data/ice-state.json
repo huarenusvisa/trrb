@@ -1,7 +1,7 @@
 {
-  "last_seen_id": "2076180471453553114",
-  "last_run_at": "2026-07-12T05:52:43.353Z",
-  "last_success_at": "2026-07-12T05:52:43.353Z",
+  "last_seen_id": "2076183360679084148",
+  "last_run_at": "2026-07-12T05:58:39.973Z",
+  "last_success_at": "2026-07-12T05:58:39.973Z",
   "last_result": {
     "fetched": 90,
     "lanes": {
@@ -30,130 +30,130 @@
         "status": "ok"
       },
       "ero-core": {
-        "fetched": 10,
+        "fetched": 4,
         "status": "ok"
       },
       "major-operations": {
-        "fetched": 1,
-        "status": "ok"
-      },
-      "media-localpapers-east": {
         "fetched": 0,
         "status": "ok"
       },
-      "media-localpapers-south": {
-        "fetched": 1,
-        "status": "ok"
-      },
-      "media-localpapers-midwest": {
-        "fetched": 2,
-        "status": "ok"
-      },
-      "media-localpapers-west": {
-        "fetched": 1,
-        "status": "ok"
-      },
-      "es-national": {
-        "fetched": 29,
-        "status": "ok"
-      },
-      "es-arrests": {
-        "fetched": 50,
-        "status": "ok"
-      },
-      "es-raids": {
-        "fetched": 50,
-        "status": "ok"
-      },
-      "es-deportation": {
-        "fetched": 10,
-        "status": "ok"
-      },
-      "es-border": {
-        "fetched": 47,
-        "status": "ok"
-      },
-      "es-community": {
+      "legal-aid": {
         "fetched": 22,
         "status": "ok"
       },
-      "extra-policy-executive": {
-        "fetched": 3,
-        "status": "ok"
-      },
-      "extra-policy-sanctuary": {
-        "fetched": 13,
-        "status": "ok"
-      },
-      "extra-policy-detention": {
-        "fetched": 12,
-        "status": "ok"
-      },
-      "extra-policy-flights": {
+      "advocacy": {
         "fetched": 2,
         "status": "ok"
       },
-      "extra-metro-ny": {
-        "fetched": 8,
+      "community-sightings": {
+        "fetched": 47,
         "status": "ok"
       },
-      "extra-metro-la": {
+      "spanish-sightings": {
         "fetched": 0,
         "status": "ok"
       },
-      "extra-metro-chicago": {
-        "fetched": 17,
+      "region-northeast": {
+        "fetched": 0,
         "status": "ok"
       },
-      "extra-metro-houston": {
-        "fetched": 50,
+      "region-midatlantic": {
+        "fetched": 0,
         "status": "ok"
       },
-      "extra-metro-miami": {
+      "region-southeast": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "region-greatlakes": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "region-southcentral": {
+        "fetched": 1,
+        "status": "ok"
+      },
+      "region-southwest": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "region-westcoast": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "region-mountain": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "region-plains": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "region-territories": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "event-arrests": {
+        "fetched": 12,
+        "status": "ok"
+      },
+      "event-removals": {
+        "fetched": 6,
+        "status": "ok"
+      },
+      "event-detainers": {
+        "fetched": 0,
+        "status": "ok"
+      },
+      "event-fugitives": {
+        "fetched": 1,
+        "status": "ok"
+      },
+      "event-worksite": {
         "fetched": 2,
         "status": "ok"
       },
-      "extra-metro-dallas": {
-        "fetched": 4,
+      "event-courthouse": {
+        "fetched": 3,
         "status": "ok"
       }
     },
     "lanes_run": 28,
     "lanes_total": 72,
-    "sources_seen": 78,
-    "candidates": 87,
-    "new_posts": 80,
-    "exact_duplicates_skipped": 7,
-    "event_updates_published": 9,
-    "new_events_published": 35,
+    "sources_seen": 86,
+    "candidates": 77,
+    "new_posts": 73,
+    "exact_duplicates_skipped": 4,
+    "event_updates_published": 1,
+    "new_events_published": 6,
     "expired_pending": 0,
     "metadata_backfilled": 0,
-    "published": 44,
-    "pending": 36,
-    "total_published": 71,
-    "total_pending": 101
+    "published": 7,
+    "pending": 66,
+    "total_published": 78,
+    "total_pending": 167
   },
   "last_seen_by_lane": {
     "ice-official": "2076170950362488837",
     "dhs-official": "2075964581441126496",
     "hsi-official": "2076065293349064921",
-    "ero-core": "2076180471453553114",
+    "ero-core": "2076183360679084148",
     "major-operations": "2076175609470796065",
     "region-northeast": "2076163265269223672",
     "region-midatlantic": "2076169684408586651",
     "region-southeast": "2076060088415162410",
     "region-greatlakes": "2076142703902126537",
-    "region-southcentral": "2076169684408586651",
+    "region-southcentral": "2076177197987954698",
     "region-southwest": "2076169684408586651",
     "region-westcoast": "2076163265269223672",
     "region-mountain": "2076057354848862278",
     "region-plains": "2076169684408586651",
-    "event-arrests": "2076173132361261523",
-    "event-removals": "2076173989391581195",
+    "event-arrests": "2076183360679084148",
+    "event-removals": "2076182511860715606",
     "event-detainers": "2076174290366370074",
-    "event-fugitives": "2076174319864930487",
-    "event-worksite": "2076171729529930088",
-    "event-courthouse": "2076169875567849973",
+    "event-fugitives": "2076181763198439555",
+    "event-worksite": "2076181763198439555",
+    "event-courthouse": "2076178333847486519",
     "event-community": "2076174418967924781",
     "event-gangs": "2076169684408586651",
     "event-reentry": "2076111804866912766",
@@ -175,7 +175,10 @@
     "extra-metro-chicago": "2076136586870140965",
     "extra-metro-houston": "2076169684408586651",
     "extra-metro-miami": "2076046720879006107",
-    "extra-metro-dallas": "2076051891050668513"
+    "extra-metro-dallas": "2076051891050668513",
+    "legal-aid": "2076169684408586651",
+    "advocacy": "2076071177554928112",
+    "community-sightings": "2076175515766100142"
   },
-  "lane_cursor": 60
+  "lane_cursor": 16
 }

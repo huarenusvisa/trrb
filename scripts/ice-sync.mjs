@@ -15,9 +15,6 @@ const NEWS_FILE = path.join(DATA_DIR, "ice-news.json");
 const STATE_FILE = path.join(DATA_DIR, "ice-state.json");
 const PENDING_FILE = path.join(DATA_DIR, "ice-pending.json");
 const DASHBOARD_FILE = path.join(DATA_DIR, "ice-dashboard.json");
-const MAP_FILE = path.join(DATA_DIR, "ice-map.json");
-const STATS_FILE = path.join(DATA_DIR, "ice-stats.json");
-const LIVE_FILE = path.join(DATA_DIR, "ice-live.json");
 const HOME_FILE = path.join(ROOT, "index.html");
 const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 
@@ -169,7 +166,6 @@ async function main() {
     last_result: { fetched: 0, published: 0, pending: 0 }
   });
   const news = await readJson(NEWS_FILE, []);
-  const normalizedBriefCount = normalizeExistingIceNews(news);
   let pending = await readJson(PENDING_FILE, []);
 
   // One-time metadata backfill for previously published articles.
@@ -278,7 +274,6 @@ async function main() {
     duplicate_skipped: duplicateSkippedCount,
     expired_pending: expiredPendingCount,
     metadata_backfilled: metadataBackfilledCount,
-    normalized_briefs: normalizedBriefCount,
     published: publishedCount,
     pending: pendingCount,
     total_published: news.length,
@@ -301,49 +296,9 @@ async function main() {
   });
   await writeJson(STATE_FILE, state);
   await writeJson(DASHBOARD_FILE, dashboard);
-  await writeIceCompatibilityFiles({ dashboard, news, state });
   await updateSitemap(news, now);
 
   console.log(JSON.stringify(state.last_result, null, 2));
-}
-
-async function writeIceCompatibilityFiles({ dashboard, news, state }) {
-  const mapPayload = {
-    generated_at: dashboard?.generated_at || new Date().toISOString(),
-    latest_sync_at: dashboard?.latest_sync_at || state?.last_success_at || state?.last_run_at || null,
-    timezone: dashboard?.timezone || "America/New_York",
-    today: dashboard?.today || {
-      date: null,
-      known_people: 0,
-      event_count: 0,
-      location_count: 0,
-      events: []
-    },
-    heatmap: dashboard?.heatmap || {
-      "24h": { states: [] },
-      "7d": { states: [] },
-      "30d": { states: [] }
-    },
-    events: Array.isArray(dashboard?.today?.events) ? dashboard.today.events : [],
-    states: Array.isArray(dashboard?.heatmap?.["24h"]?.states)
-      ? dashboard.heatmap["24h"].states
-      : []
-  };
-
-  const statsPayload = {
-    generated_at: mapPayload.generated_at,
-    latest_sync_at: mapPayload.latest_sync_at,
-    timezone: mapPayload.timezone,
-    total_published: Array.isArray(news) ? news.length : 0,
-    today: mapPayload.today,
-    heatmap: mapPayload.heatmap
-  };
-
-  await Promise.all([
-    writeJson(MAP_FILE, mapPayload),
-    writeJson(STATS_FILE, statsPayload),
-    writeJson(LIVE_FILE, Array.isArray(news) ? news : [])
-  ]);
 }
 
 function requireSecrets() {
@@ -365,9 +320,6 @@ async function ensureStructure() {
   await ensureJsonFile(NEWS_FILE, []);
   await ensureJsonFile(PENDING_FILE, []);
   await ensureJsonFile(DASHBOARD_FILE, emptyDashboard());
-  await ensureJsonFile(MAP_FILE, emptyDashboard());
-  await ensureJsonFile(STATS_FILE, emptyDashboard());
-  await ensureJsonFile(LIVE_FILE, []);
   await ensureJsonFile(STATE_FILE, {
     last_seen_id: "",
     query_cursors: {},
@@ -419,21 +371,16 @@ export function buildIceQueryLanes() {
   const officialPrimary = CONFIG.officialAccounts.filter(account => ["icegov", "hsi_hq"].includes(account.toLowerCase()));
   const officialRelated = CONFIG.officialAccounts.filter(account => !officialPrimary.includes(account));
   const agencyTerms = '(ICE OR "Immigration and Customs Enforcement" OR HSI OR ERO OR deportation OR removal OR detained OR arrested OR "immigration enforcement")';
-  if (officialPrimary.length) {
+  const primaryPart = officialPrimary.length ? `(${officialPrimary.map(account => `from:${account}`).join(" OR ")})` : "";
+  const relatedPart = officialRelated.length
+    ? `((${officialRelated.map(account => `from:${account}`).join(" OR ")}) ${agencyTerms})`
+    : "";
+  const officialParts = [primaryPart, relatedPart].filter(Boolean);
+  if (officialParts.length) {
     lanes.push({
       id: "official",
-      label: "ICE与HSI官方",
-      query: validateXQuery(`(${officialPrimary.map(account => `from:${account}`).join(" OR ")}) -is:retweet lang:en`),
-    });
-  }
-
-  // 来源登记表可能包含大量联邦、州和地方官方账号，必须拆分查询，
-  // 否则会超过 X recent-search 的 500 字符限制并导致整轮任务停止。
-  for (const [index, accounts] of chunkAccountsForQuery(officialRelated, agencyTerms, 440).entries()) {
-    lanes.push({
-      id: officialPrimary.length ? `official-related-${index + 1}` : (index === 0 ? "official" : `official-related-${index + 1}`),
-      label: "相关执法机构",
-      query: validateXQuery(`((${accounts.map(account => `from:${account}`).join(" OR ")}) ${agencyTerms}) -is:retweet -is:reply lang:en`),
+      label: "联邦机构",
+      query: validateXQuery(`(${officialParts.join(" OR ")}) -is:retweet lang:en`),
     });
   }
 
@@ -783,12 +730,7 @@ async function processPost(post, news) {
   if (existingIndex >= 0) news[existingIndex] = item;
   else news.push(item);
 
-  // Supabase 与静态 JSON 使用同一套展示标题。无图新闻必须保存为
-  // 8—18字短标题，避免实时接口重新把长标题带回前台。
-  const cmsAi = displayType === "brief"
-    ? { ...ai, title: itemTitle, summary: itemSummary, content_type: "brief" }
-    : ai;
-  await syncIceCmsArticle(post, cmsAi, "published", "", enforcementEvents, "ICE执法");
+  await syncIceCmsArticle(post, ai, "published", "", enforcementEvents, "ICE执法");
   return { status: "published", item };
 }
 
@@ -978,7 +920,7 @@ async function rewriteWithOpenAI(sourceText, post) {
         role: "user",
         content: [{
           type: "input_text",
-          text: `来源模式：${post.source_mode}\n来源层级：${post.source_tier}\n来源权重：${post.source_weight}\n候选评分：${post.candidate_score}\n是否带有可用图片或视频封面：${firstUsableMedia(post.media) ? "是" : "否"}\n\n请先判断是否确属ICE/HSI/ERO新闻，再根据以下唯一事实来源生成中文新闻稿。没有可用图片时，优先生成brief，标题必须为8至18个中文字符。不得使用外部知识补充事实。\n\n${sourceText}`
+          text: `来源模式：${post.source_mode}\n来源层级：${post.source_tier}\n来源权重：${post.source_weight}\n候选评分：${post.candidate_score}\n\n请先判断是否确属ICE/HSI/ERO新闻，再根据以下唯一事实来源生成中文新闻稿。不得使用外部知识补充事实。\n\n${sourceText}`
         }]
       }
     ],
@@ -1210,26 +1152,16 @@ function newYorkDateKey(value) {
 }
 
 function normalizeIceBriefTitle(value) {
-  let clean = String(value || "ICE执法动态")
+  const clean = String(value || "ICE执法动态")
     .replace(/[\r\n\t]+/g, " ")
     .replace(/\s+/g, " ")
     .replace(/[。！？!?]+$/g, "")
     .replace(/美国移民与海关执法局/g, "ICE")
     .replace(/美国国土安全部/g, "DHS")
     .trim();
-  if (!clean) clean = "ICE执法最新动态";
-
-  let chars = Array.from(clean);
-  if (chars.length > 18) {
-    clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
-    chars = Array.from(clean);
-  }
-  if (chars.length < 8) {
-    clean = `${clean}相关动态`;
-    chars = Array.from(clean);
-  }
-  if (chars.length > 18) clean = chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
-  return clean;
+  const chars = Array.from(clean);
+  if (chars.length <= 18) return clean;
+  return chars.slice(0, 18).join("").replace(/[，、：:；;]+$/g, "");
 }
 
 function normalizeIceBriefText(summary, paragraphs) {
@@ -1240,22 +1172,7 @@ function normalizeIceBriefText(summary, paragraphs) {
     .replace(/\s+/g, " ")
     .trim();
   const chars = Array.from(clean);
-  return chars.length > 90 ? `${chars.slice(0, 90).join("")}…` : clean;
-}
-
-function normalizeExistingIceNews(items) {
-  if (!Array.isArray(items)) return 0;
-  let changed = 0;
-  for (const item of items) {
-    if (!item || String(item.image_url || "").trim()) continue;
-    const title = normalizeIceBriefTitle(item.title);
-    const summary = normalizeIceBriefText(item.summary, []);
-    if (item.title !== title || item.summary !== summary || item.content_type !== "brief") changed += 1;
-    item.title = title;
-    item.summary = summary;
-    item.content_type = "brief";
-  }
-  return changed;
+  return chars.length > 72 ? `${chars.slice(0, 72).join("")}…` : clean;
 }
 
 function renderArticle(item, paragraphs, dateParts) {

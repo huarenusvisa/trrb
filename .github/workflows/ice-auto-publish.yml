@@ -1,4 +1,4 @@
-name: ICE多来源自动抓取发布
+name: ICE全美执法情报自动发布
 
 on:
   workflow_dispatch:
@@ -9,13 +9,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: trrb-ice-multisource
+  group: trrb-ice-v43-national
   cancel-in-progress: false
 
 jobs:
   sync-ice-news:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
 
     steps:
       - name: Checkout repository
@@ -32,10 +32,8 @@ jobs:
         shell: bash
         run: |
           set -e
-          test -f scripts/ice-sync.mjs
           node --check scripts/ice-sync.mjs
-          test -f data/ice-source-registry.json
-          node -e "JSON.parse(require('fs').readFileSync('data/ice-source-registry.json','utf8')); console.log('ICE source registry JSON valid')"
+          node -e "const r=JSON.parse(require('fs').readFileSync('data/ice-source-registry.json','utf8')); if(r.query_lanes.length!==72) throw new Error('Expected 72 lanes'); console.log('ICE registry lanes:',r.query_lanes.length)"
 
       - name: Fetch and publish ICE news from last 24 hours
         env:
@@ -44,11 +42,15 @@ jobs:
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
           SITE_URL: "https://trrb.net"
           ICE_LOOKBACK_HOURS: "24"
-          ICE_DEDUPE_THRESHOLD: "0.78"
-          ICE_BOOTSTRAP_LIMIT: "50"
-          ICE_MAX_NEW_POSTS: "120"
+          ICE_MAX_QUERY_LANES: "72"
+          ICE_LANES_PER_RUN: "28"
+          ICE_MAX_RESULTS_PER_LANE: "50"
+          ICE_MAX_PAGES_PER_LANE: "1"
+          ICE_BOOTSTRAP_LIMIT: "150"
+          ICE_MAX_NEW_POSTS: "90"
+          ICE_MIN_CONFIDENCE: "76"
           ICE_USE_X_MEDIA: "true"
-          ICE_MIN_CONFIDENCE: "80"
+          ICE_DEDUPE_THRESHOLD: "0.84"
           ICE_MAX_PENDING_RETRIES: "5"
         run: node scripts/ice-sync.mjs
 
@@ -59,11 +61,10 @@ jobs:
           git config user.name "TRRB ICE Bot"
           git config user.email "bot@trrb.net"
           git add -A
-
           if git diff --cached --quiet; then
-            echo "No new ICE content."
+            echo "No new publishable ICE content."
             exit 0
           fi
-
-          git commit -m "Auto publish ICE multisource news"
-          git push
+          git commit -m "Auto publish ICE national intelligence news"
+          git pull --rebase origin main
+          git push origin main

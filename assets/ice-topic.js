@@ -8,6 +8,7 @@
   };
 
   const RANGE_HOURS = { "24h": 24, "7d": 168, "30d": 720 };
+  const US_MAINLAND_BOUNDS = [[24.396308, -124.848974], [49.384358, -66.885444]];
   const TYPE_LABELS = { arrest: "抓捕/拘留", removal: "遣返", other: "其他行动" };
   let news = [];
   let dashboard = null;
@@ -65,10 +66,20 @@
       document.getElementById("map-empty").hidden = false;
       return;
     }
-    map = L.map(root, { zoomControl: true, minZoom: 3, maxZoom: 16, worldCopyJump: true })
-      .setView([38.2, -96.3], 4);
+    const usBounds = L.latLngBounds(US_MAINLAND_BOUNDS);
+    map = L.map(root, {
+      zoomControl: true,
+      minZoom: 4,
+      maxZoom: 16,
+      worldCopyJump: false,
+      maxBounds: usBounds.pad(0.03),
+      maxBoundsViscosity: 1
+    });
+    map.fitBounds(usBounds, { padding: [6, 6], animate: false });
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
+      noWrap: true,
+      bounds: usBounds.pad(0.08),
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     cluster = L.markerClusterGroup({
@@ -104,7 +115,7 @@
       activate("type-controls", button);
       renderMapEvents();
     });
-    document.getElementById("reset-map")?.addEventListener("click", () => map?.setView([38.2, -96.3], 4));
+    document.getElementById("reset-map")?.addEventListener("click", resetToUnitedStates);
     document.getElementById("locate-me")?.addEventListener("click", locateUser);
   }
 
@@ -117,7 +128,9 @@
     return (Array.isArray(mapData.events) ? mapData.events : []).filter(event => {
       const time = Date.parse(event.basis_time || event.published_at || "");
       const typeOk = selectedType === "all" || event.category === selectedType;
-      return Number.isFinite(time) && time >= cutoff && typeOk && Number.isFinite(event.latitude) && Number.isFinite(event.longitude);
+      const lat = Number(event.latitude);
+      const lng = Number(event.longitude);
+      return Number.isFinite(time) && time >= cutoff && typeOk && isInsideMainlandUS(lat, lng);
     });
   }
 
@@ -133,8 +146,19 @@
       const bounds = cluster.getBounds();
       if (bounds.isValid()) map.fitBounds(bounds.pad(.22), { maxZoom: 8, animate: false });
     } else {
-      map.setView([38.2, -96.3], 4, { animate: false });
+      resetToUnitedStates();
     }
+  }
+
+  function isInsideMainlandUS(lat, lng) {
+    return Number.isFinite(lat) && Number.isFinite(lng) &&
+      lat >= US_MAINLAND_BOUNDS[0][0] && lat <= US_MAINLAND_BOUNDS[1][0] &&
+      lng >= US_MAINLAND_BOUNDS[0][1] && lng <= US_MAINLAND_BOUNDS[1][1];
+  }
+
+  function resetToUnitedStates() {
+    if (!map || !window.L) return;
+    map.fitBounds(L.latLngBounds(US_MAINLAND_BOUNDS), { padding: [6, 6], animate: false });
   }
 
   function makeMarker(event) {
@@ -186,6 +210,13 @@
     button.textContent = "定位中…";
     navigator.geolocation.getCurrentPosition(position => {
       const latlng = [position.coords.latitude, position.coords.longitude];
+      if (!isInsideMainlandUS(latlng[0], latlng[1])) {
+        button.disabled = false;
+        button.textContent = "仅限美国本土";
+        window.setTimeout(() => button.textContent = "◎ 定位附近", 1800);
+        resetToUnitedStates();
+        return;
+      }
       if (userMarker) userMarker.remove();
       userMarker = L.circleMarker(latlng, { radius: 8, color: "#fff", weight: 3, fillColor: "#1267e5", fillOpacity: 1 }).addTo(map);
       userMarker.bindPopup("您的大致位置").openPopup();

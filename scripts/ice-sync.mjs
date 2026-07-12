@@ -1247,10 +1247,24 @@ function normalizeExistingIceNews(items) {
   if (!Array.isArray(items)) return 0;
   let changed = 0;
   for (const item of items) {
-    if (!item || String(item.image_url || "").trim()) continue;
+    if (!item) continue;
+
+    const rawImage = String(item.image_url || "").trim();
+    if (isUsablePublicMediaUrl(rawImage)) {
+      item.image_url = rawImage;
+      continue;
+    }
+
     const title = normalizeIceBriefTitle(item.title);
     const summary = normalizeIceBriefText(item.summary, []);
-    if (item.title !== title || item.summary !== summary || item.content_type !== "brief") changed += 1;
+    if (
+      rawImage ||
+      item.title !== title ||
+      item.summary !== summary ||
+      item.content_type !== "brief"
+    ) changed += 1;
+
+    item.image_url = "";
     item.title = title;
     item.summary = summary;
     item.content_type = "brief";
@@ -1674,8 +1688,27 @@ function dedupePosts(posts) {
 }
 
 function firstUsableMedia(media = []) {
-  const item = media.find(entry => entry.url && ["photo", "video", "animated_gif"].includes(entry.type));
-  return item?.url || "";
+  const item = media.find(entry =>
+    ["photo", "video", "animated_gif"].includes(entry?.type) &&
+    isUsablePublicMediaUrl(entry?.url)
+  );
+  return item ? String(item.url).trim() : "";
+}
+
+function isUsablePublicMediaUrl(value) {
+  const raw = String(value || "").trim();
+  if (!raw || /\s/.test(raw)) return false;
+  if (!raw.startsWith("https://") && !raw.startsWith("http://")) return false;
+
+  try {
+    const parsed = new URL(raw);
+    return (
+      (parsed.protocol === "http:" || parsed.protocol === "https:") &&
+      Boolean(parsed.hostname)
+    );
+  } catch {
+    return false;
+  }
 }
 
 function newYorkDateParts(value) {

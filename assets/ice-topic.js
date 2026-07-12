@@ -93,7 +93,7 @@
 
   function mergeLiveNews(live, archived) {
     const mapped = live.map(row => {
-      const imageUrl = String(row.cover_image || "").trim();
+      const imageUrl = normalizeIceImageUrl(row.cover_image);
       const noImage = !imageUrl;
       return {
         id: row.id,
@@ -228,7 +228,7 @@
       const states = Array.isArray(item.state_codes)
         ? item.state_codes.map(normalizeStateCode).filter(Boolean)
         : [...new Set((item.enforcement_events || []).map(event => normalizeStateCode(event.state_code)).filter(Boolean))];
-      const imageUrl = String(item.image_url || "").trim();
+      const imageUrl = normalizeIceImageUrl(item.image_url || item.cover_image);
       const hasImage = Boolean(imageUrl);
       const displayTitle = hasImage
         ? String(item.title || "ICE执法动态").trim()
@@ -237,7 +237,7 @@
         ? String(item.summary || "").trim()
         : normalizeIceBriefText(item.summary);
       const image = hasImage
-        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(imageUrl)}" alt="${escapeAttr(displayTitle || "ICE公开图片")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+        ? `<div class="ice-news-thumb-wrap"><img class="ice-news-thumb" src="${escapeAttr(imageUrl)}" alt="" aria-hidden="true" loading="lazy" referrerpolicy="no-referrer"></div>`
         : "";
       const cardClass = hasImage ? "has-image" : "no-image";
       const linkText = hasImage ? "查看全文 →" : "查看详情 →";
@@ -258,19 +258,61 @@
 
     // X 图片地址偶尔会失效。失效后立即切换为纯文字卡片，
     // 不保留空白图片框，也不让长标题挤成狭窄竖排。
+    const switchToTextCard = image => {
+      const card = image.closest(".ice-news-card");
+      if (!card || card.classList.contains("no-image")) return;
+
+      image.closest(".ice-news-thumb-wrap")?.remove();
+      card.classList.remove("has-image");
+      card.classList.add("no-image");
+
+      const titleLink = card.querySelector("h3 a");
+      if (titleLink) {
+        titleLink.textContent = card.dataset.briefTitle || "ICE执法最新动态";
+      }
+
+      const summary = card.querySelector(".ice-news-body > p");
+      if (summary) {
+        summary.textContent = normalizeIceBriefText(summary.textContent);
+      }
+
+      const detailLink = card.querySelector(".ice-news-link");
+      if (detailLink) detailLink.textContent = "查看详情 →";
+    };
+
     root.querySelectorAll(".ice-news-thumb").forEach(image => {
-      image.addEventListener("error", () => {
-        const card = image.closest(".ice-news-card");
-        if (!card) return;
-        image.closest(".ice-news-thumb-wrap")?.remove();
-        card.classList.remove("has-image");
-        card.classList.add("no-image");
-        const titleLink = card.querySelector("h3 a");
-        if (titleLink) titleLink.textContent = card.dataset.briefTitle || "ICE执法最新动态";
-        const detailLink = card.querySelector(".ice-news-link");
-        if (detailLink) detailLink.textContent = "查看详情 →";
-      }, { once: true });
+      image.addEventListener("error", () => switchToTextCard(image), { once: true });
+
+      // 无效图片有时会在监听器绑定前就已经失败，立即检查一次。
+      if (image.complete && image.naturalWidth === 0) {
+        switchToTextCard(image);
+      }
     });
+  }
+
+  function normalizeIceImageUrl(value) {
+    const raw = String(value || "").trim();
+    if (!raw || /\s/.test(raw)) return "";
+
+    const isAbsoluteHttp =
+      raw.startsWith("https://") ||
+      raw.startsWith("http://") ||
+      raw.startsWith("//");
+    const isSitePath = raw.startsWith("/") && !raw.startsWith("//");
+
+    // 账号名、alt文字和普通文本即使非空，也不能被当作图片地址。
+    if (!isAbsoluteHttp && !isSitePath) return "";
+
+    try {
+      const parsed = new URL(raw, window.location.origin);
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return "";
+
+      return isSitePath
+        ? `${parsed.pathname}${parsed.search}${parsed.hash}`
+        : parsed.href;
+    } catch {
+      return "";
+    }
   }
 
   function normalizeIceBriefTitle(value) {

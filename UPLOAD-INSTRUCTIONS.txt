@@ -1,0 +1,24 @@
+唐人日报 ICE 修复包 v44（仓库根目录版）
+
+已经确认：
+GitHub → Netlify → trrb.net 的部署链路正常。
+
+本次修复：
+1. 非空但无效的 cover_image 不再被误判为图片。
+2. 图片加载失败后强制切换为纯文字卡片。
+3. 即使图片错误发生得很快，也会通过 complete/naturalWidth 二次检查。
+4. 无效旧图片地址自动按无图新闻处理。
+5. 无图新闻标题显示为 8—18 个字，并保留正文摘要。
+
+覆盖路径：
+- /assets/ice-topic.js
+- /assets/ice-topic.css
+- /scripts/ice-sync.mjs
+- /topic/ice/index.html
+
+提交到 main 后等待 Netlify 自动部署。
+打开：
+https://trrb.net/topic/ice/?release=44
+
+查看页面源代码时应能搜索到：
+ice-direct-publish-v44

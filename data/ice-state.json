@@ -1,133 +1,163 @@
 {
   "last_seen_id": "2076174418967924781",
-  "last_run_at": "2026-07-12T05:24:30.528Z",
+  "last_run_at": "2026-07-12T05:36:21.409Z",
   "last_success_at": "2026-07-12T05:24:30.528Z",
   "last_result": {
-    "fetched": 90,
+    "fetched": 0,
     "lanes": {
       "ice-official": {
-        "fetched": 6,
-        "status": "ok"
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane ice-official request failed (503): Service Unavailable"
       },
       "dhs-official": {
-        "fetched": 1,
-        "status": "ok"
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane dhs-official request failed (503): Service Unavailable"
       },
       "cbp-official": {
         "fetched": 0,
-        "status": "ok"
+        "status": "error",
+        "error": "X API lane cbp-official request failed (503): Service Unavailable"
       },
       "hsi-official": {
-        "fetched": 1,
-        "status": "ok"
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane hsi-official request failed (503): Service Unavailable"
       },
       "doj-official": {
         "fetched": 0,
-        "status": "ok"
+        "status": "error",
+        "error": "X API lane doj-official request failed (503): Service Unavailable"
       },
       "federal-partners": {
         "fetched": 0,
-        "status": "ok"
+        "status": "error",
+        "error": "X API lane federal-partners request failed (503): Service Unavailable"
       },
       "ero-core": {
-        "fetched": 50,
-        "status": "ok"
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane ero-core request failed (503): Service Unavailable"
       },
       "major-operations": {
-        "fetched": 41,
-        "status": "ok"
-      },
-      "region-northeast": {
-        "fetched": 21,
-        "status": "ok"
-      },
-      "region-midatlantic": {
-        "fetched": 9,
-        "status": "ok"
-      },
-      "region-southeast": {
-        "fetched": 13,
-        "status": "ok"
-      },
-      "region-greatlakes": {
-        "fetched": 48,
-        "status": "ok"
-      },
-      "region-southcentral": {
-        "fetched": 50,
-        "status": "ok"
-      },
-      "region-southwest": {
-        "fetched": 13,
-        "status": "ok"
-      },
-      "region-westcoast": {
-        "fetched": 12,
-        "status": "ok"
-      },
-      "region-mountain": {
-        "fetched": 2,
-        "status": "ok"
-      },
-      "region-plains": {
-        "fetched": 13,
-        "status": "ok"
-      },
-      "region-territories": {
         "fetched": 0,
-        "status": "ok"
+        "status": "error",
+        "error": "X API lane major-operations request failed (503): Service Unavailable"
       },
-      "event-arrests": {
-        "fetched": 50,
-        "status": "ok"
+      "event-trafficking": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane event-trafficking request failed (503): Service Unavailable"
       },
-      "event-removals": {
-        "fetched": 50,
-        "status": "ok"
+      "event-sexoffender": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane event-sexoffender request failed (503): Service Unavailable"
       },
-      "event-detainers": {
-        "fetched": 48,
-        "status": "ok"
+      "event-fraud": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane event-fraud request failed (503): Service Unavailable"
       },
-      "event-fugitives": {
-        "fetched": 49,
-        "status": "ok"
+      "event-money": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane event-money request failed (503): Service Unavailable"
       },
-      "event-worksite": {
-        "fetched": 50,
-        "status": "ok"
+      "event-narcotics": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane event-narcotics request failed (503): Service Unavailable"
       },
-      "event-courthouse": {
-        "fetched": 50,
-        "status": "ok"
+      "event-weapons": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane event-weapons request failed (503): Service Unavailable"
       },
-      "event-community": {
-        "fetched": 50,
-        "status": "ok"
+      "legal-charged": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane legal-charged request failed (503): Service Unavailable"
       },
-      "event-gangs": {
-        "fetched": 50,
-        "status": "ok"
+      "legal-indicted": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane legal-indicted request failed (503): Service Unavailable"
       },
-      "event-reentry": {
-        "fetched": 5,
-        "status": "ok"
+      "legal-convicted": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane legal-convicted request failed (503): Service Unavailable"
       },
-      "event-smuggling": {
-        "fetched": 3,
-        "status": "ok"
+      "legal-sentenced": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane legal-sentenced request failed (503): Service Unavailable"
+      },
+      "legal-extradition": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane legal-extradition request failed (503): Service Unavailable"
+      },
+      "legal-lawsuit": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane legal-lawsuit request failed (503): Service Unavailable"
+      },
+      "media-wire": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-wire request failed (503): Service Unavailable"
+      },
+      "media-tv": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-tv request failed (503): Service Unavailable"
+      },
+      "media-politics": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-politics request failed (503): Service Unavailable"
+      },
+      "media-papers": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-papers request failed (503): Service Unavailable"
+      },
+      "media-localtv-east": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-localtv-east request failed (503): Service Unavailable"
+      },
+      "media-localtv-south": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-localtv-south request failed (503): Service Unavailable"
+      },
+      "media-localtv-midwest": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-localtv-midwest request failed (503): Service Unavailable"
+      },
+      "media-localtv-west": {
+        "fetched": 0,
+        "status": "error",
+        "error": "X API lane media-localtv-west request failed (503): Service Unavailable"
       }
     },
     "lanes_run": 28,
     "lanes_total": 72,
-    "sources_seen": 80,
-    "candidates": 90,
-    "new_posts": 87,
-    "duplicate_skipped": 3,
+    "sources_seen": 0,
+    "candidates": 0,
+    "new_posts": 0,
+    "exact_duplicates_skipped": 0,
+    "event_updates_published": 0,
+    "new_events_published": 0,
     "expired_pending": 0,
     "metadata_backfilled": 0,
-    "published": 22,
-    "pending": 65,
+    "published": 0,
+    "pending": 0,
     "total_published": 27,
     "total_pending": 65
   },
@@ -157,5 +187,5 @@
     "event-reentry": "2076111804866912766",
     "event-smuggling": "2076120497574875139"
   },
-  "lane_cursor": 20
+  "lane_cursor": 40
 }

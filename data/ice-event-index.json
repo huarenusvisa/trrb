@@ -1,6 +1,686 @@
 {
-  "generated_at": "",
-  "total_events": 0,
-  "total_reports": 0,
-  "events": []
+  "generated_at": "2026-07-12T05:36:21.409Z",
+  "total_events": 27,
+  "total_reports": 27,
+  "events": [
+    {
+      "event_id": "legacy-ice-2076173989391581195",
+      "title": "ICE人员持续驻留底特律德尔伯恩，推动遣返非法移民",
+      "first_published_at": "2026-07-12T05:17:07.000Z",
+      "last_updated_at": "2026-07-12T05:17:07.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076173989391581195",
+          "title": "ICE人员持续驻留底特律德尔伯恩，推动遣返非法移民",
+          "url": "/news/ice/2026/07/12/ice-2076173989391581195.html",
+          "published_at": "2026-07-12T05:17:07.000Z",
+          "source_name": "Bill Black",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076173132361261523",
+      "title": "公众呼吁加强ICE执法和遣返措施",
+      "first_published_at": "2026-07-12T05:13:42.000Z",
+      "last_updated_at": "2026-07-12T05:13:42.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076173132361261523",
+          "title": "公众呼吁加强ICE执法和遣返措施",
+          "url": "/news/ice/2026/07/12/ice-2076173132361261523.html",
+          "published_at": "2026-07-12T05:13:42.000Z",
+          "source_name": "Silverlace",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076171957612016020",
+      "title": "ICE官员强调普通美国人生活无涉执法行动",
+      "first_published_at": "2026-07-12T05:09:02.000Z",
+      "last_updated_at": "2026-07-12T05:09:02.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076171957612016020",
+          "title": "ICE官员强调普通美国人生活无涉执法行动",
+          "url": "/news/ice/2026/07/12/ice-2076171957612016020.html",
+          "published_at": "2026-07-12T05:09:02.000Z",
+          "source_name": "Col1234567",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076170672531767384",
+      "title": "记者指出ICE拘留期间死亡人数激增，称白宫扩建秘密拘留中心并阻挠监督",
+      "first_published_at": "2026-07-12T05:03:56.000Z",
+      "last_updated_at": "2026-07-12T05:03:56.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076170672531767384",
+          "title": "记者指出ICE拘留期间死亡人数激增，称白宫扩建秘密拘留中心并阻挠监督",
+          "url": "/news/ice/2026/07/12/ice-2076170672531767384.html",
+          "published_at": "2026-07-12T05:03:56.000Z",
+          "source_name": "BRICS+TODAY",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076170660582175045",
+      "title": "州赦免与联邦移民执法带来不同结果",
+      "first_published_at": "2026-07-12T05:03:53.000Z",
+      "last_updated_at": "2026-07-12T05:03:53.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076170660582175045",
+          "title": "州赦免与联邦移民执法带来不同结果",
+          "url": "/news/ice/2026/07/12/ice-2076170660582175045.html",
+          "published_at": "2026-07-12T05:03:53.000Z",
+          "source_name": "Arrests",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076169875567849973",
+      "title": "墨西哥将特朗普时期ICE相关死伤案件诉诸法庭",
+      "first_published_at": "2026-07-12T05:00:46.000Z",
+      "last_updated_at": "2026-07-12T05:00:46.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076169875567849973",
+          "title": "墨西哥将特朗普时期ICE相关死伤案件诉诸法庭",
+          "url": "/news/ice/2026/07/12/ice-2076169875567849973.html",
+          "published_at": "2026-07-12T05:00:46.000Z",
+          "source_name": "James Macfarlane",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076169713554423817",
+      "title": "ICE官员遭枪击呼吁迅速逮捕涉案人员",
+      "first_published_at": "2026-07-12T05:00:07.000Z",
+      "last_updated_at": "2026-07-12T05:00:07.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076169713554423817",
+          "title": "ICE官员遭枪击呼吁迅速逮捕涉案人员",
+          "url": "/news/ice/2026/07/12/ice-2076169713554423817.html",
+          "published_at": "2026-07-12T05:00:07.000Z",
+          "source_name": "Minerva Cespedes",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076169684408586651",
+      "title": "墨西哥总统威胁对美提起诉讼引发新美国公民关注",
+      "first_published_at": "2026-07-12T05:00:00.000Z",
+      "last_updated_at": "2026-07-12T05:00:00.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076169684408586651",
+          "title": "墨西哥总统威胁对美提起诉讼引发新美国公民关注",
+          "url": "/news/ice/2026/07/12/ice-2076169684408586651.html",
+          "published_at": "2026-07-12T05:00:00.000Z",
+          "source_name": "Christina Aguayo",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076167871001198938",
+      "title": "ICE将对非法选票寄送行为采取遣返行动",
+      "first_published_at": "2026-07-12T04:52:48.000Z",
+      "last_updated_at": "2026-07-12T04:52:48.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [
+        "NM"
+      ],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076167871001198938",
+          "title": "ICE将对非法选票寄送行为采取遣返行动",
+          "url": "/news/ice/2026/07/12/ice-2076167871001198938.html",
+          "published_at": "2026-07-12T04:52:48.000Z",
+          "source_name": "Jim Koon",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076167547917840771",
+      "title": "国会共和党阻挠调查一名休斯顿男子被ICE致死事件",
+      "first_published_at": "2026-07-12T04:51:31.000Z",
+      "last_updated_at": "2026-07-12T04:51:31.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076167547917840771",
+          "title": "国会共和党阻挠调查一名休斯顿男子被ICE致死事件",
+          "url": "/news/ice/2026/07/12/ice-2076167547917840771.html",
+          "published_at": "2026-07-12T04:51:31.000Z",
+          "source_name": "Emoluments Clause",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076167348541677787",
+      "title": "堪萨斯城警方配合ICE行动，找回多名失踪儿童",
+      "first_published_at": "2026-07-12T04:50:43.000Z",
+      "last_updated_at": "2026-07-12T04:50:43.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076167348541677787",
+          "title": "堪萨斯城警方配合ICE行动，找回多名失踪儿童",
+          "url": "/news/ice/2026/07/12/ice-2076167348541677787.html",
+          "published_at": "2026-07-12T04:50:43.000Z",
+          "source_name": "The Bruiser",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076166737796747285",
+      "title": "斯里兰卡瓦特拉一女子因持有冰毒和海洛因被捕",
+      "first_published_at": "2026-07-12T04:48:18.000Z",
+      "last_updated_at": "2026-07-12T04:48:18.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076166737796747285",
+          "title": "斯里兰卡瓦特拉一女子因持有冰毒和海洛因被捕",
+          "url": "/news/ice/2026/07/12/ice-2076166737796747285.html",
+          "published_at": "2026-07-12T04:48:18.000Z",
+          "source_name": "Newsfirst.lk Sri Lanka",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076163747119514036",
+      "title": "冰岛执法机构批评释放涉嫌人员延误遣返过程",
+      "first_published_at": "2026-07-12T04:36:25.000Z",
+      "last_updated_at": "2026-07-12T04:36:25.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076163747119514036",
+          "title": "冰岛执法机构批评释放涉嫌人员延误遣返过程",
+          "url": "/news/ice/2026/07/12/ice-2076163747119514036.html",
+          "published_at": "2026-07-12T04:36:25.000Z",
+          "source_name": "Rose of Sharon Mayer",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076162499792003508",
+      "title": "官方未披露具体执法细节 仅确认相关行动态势",
+      "first_published_at": "2026-07-12T04:31:27.000Z",
+      "last_updated_at": "2026-07-12T04:31:27.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076162499792003508",
+          "title": "官方未披露具体执法细节 仅确认相关行动态势",
+          "url": "/news/ice/2026/07/12/ice-2076162499792003508.html",
+          "published_at": "2026-07-12T04:31:27.000Z",
+          "source_name": "Cast✿rice",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076161180377153789",
+      "title": "康涅狄格州社区支持ICE执法",
+      "first_published_at": "2026-07-12T04:26:13.000Z",
+      "last_updated_at": "2026-07-12T04:26:13.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076161180377153789",
+          "title": "康涅狄格州社区支持ICE执法",
+          "url": "/news/ice/2026/07/12/ice-2076161180377153789.html",
+          "published_at": "2026-07-12T04:26:13.000Z",
+          "source_name": "Let’s Flip CT RED!",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076160742588322175",
+      "title": "前副警长回忆奥巴马时期ICE执法情况",
+      "first_published_at": "2026-07-12T04:24:28.000Z",
+      "last_updated_at": "2026-07-12T04:24:28.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076160742588322175",
+          "title": "前副警长回忆奥巴马时期ICE执法情况",
+          "url": "/news/ice/2026/07/12/ice-2076160742588322175.html",
+          "published_at": "2026-07-12T04:24:28.000Z",
+          "source_name": "J (JAWSY) W",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076160239800357041",
+      "title": "ICE官方推特回应有关Khanna被拘留地点质疑",
+      "first_published_at": "2026-07-12T04:22:29.000Z",
+      "last_updated_at": "2026-07-12T04:22:29.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076160239800357041",
+          "title": "ICE官方推特回应有关Khanna被拘留地点质疑",
+          "url": "/news/ice/2026/07/12/ice-2076160239800357041.html",
+          "published_at": "2026-07-12T04:22:29.000Z",
+          "source_name": "Capricornus",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076160175761690848",
+      "title": "美国联邦检察官与国土安全部副部长会谈推动加州联邦调查",
+      "first_published_at": "2026-07-12T04:22:13.000Z",
+      "last_updated_at": "2026-07-12T04:22:13.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076160175761690848",
+          "title": "美国联邦检察官与国土安全部副部长会谈推动加州联邦调查",
+          "url": "/news/ice/2026/07/12/ice-2076160175761690848.html",
+          "published_at": "2026-07-12T04:22:13.000Z",
+          "source_name": "Johnsmith",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076160089543627106",
+      "title": "ICE官员强调在各地拘留非法移民的执法必要性",
+      "first_published_at": "2026-07-12T04:21:53.000Z",
+      "last_updated_at": "2026-07-12T04:21:53.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076160089543627106",
+          "title": "ICE官员强调在各地拘留非法移民的执法必要性",
+          "url": "/news/ice/2026/07/12/ice-2076160089543627106.html",
+          "published_at": "2026-07-12T04:21:53.000Z",
+          "source_name": "LockTheMoon2",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076159259276939289",
+      "title": "ICE回应关于逮捕及遣返非法移民的质疑",
+      "first_published_at": "2026-07-12T04:18:35.000Z",
+      "last_updated_at": "2026-07-12T04:18:35.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076159259276939289",
+          "title": "ICE回应关于逮捕及遣返非法移民的质疑",
+          "url": "/news/ice/2026/07/12/ice-2076159259276939289.html",
+          "published_at": "2026-07-12T04:18:35.000Z",
+          "source_name": "Freedom of speech matters",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076157024430383245",
+      "title": "涉袭击ICE特工事件中人员死亡",
+      "first_published_at": "2026-07-12T04:09:42.000Z",
+      "last_updated_at": "2026-07-12T04:09:42.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076157024430383245",
+          "title": "涉袭击ICE特工事件中人员死亡",
+          "url": "/news/ice/2026/07/12/ice-2076157024430383245.html",
+          "published_at": "2026-07-12T04:09:42.000Z",
+          "source_name": "1songdog",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2076156381053497532",
+      "title": "ICE官员明确移民执法职责",
+      "first_published_at": "2026-07-12T04:07:09.000Z",
+      "last_updated_at": "2026-07-12T04:07:09.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2076156381053497532",
+          "title": "ICE官员明确移民执法职责",
+          "url": "/news/ice/2026/07/12/ice-2076156381053497532.html",
+          "published_at": "2026-07-12T04:07:09.000Z",
+          "source_name": "Bill Smith",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2075567019064168475",
+      "title": "ICE鼓励公众举报可疑活动支持华盛顿特区庆典安全",
+      "first_published_at": "2026-07-10T13:05:14.000Z",
+      "last_updated_at": "2026-07-10T13:05:14.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2075567019064168475",
+          "title": "ICE鼓励公众举报可疑活动支持华盛顿特区庆典安全",
+          "url": "/news/ice/2026/07/10/ice-2075567019064168475.html",
+          "published_at": "2026-07-10T13:05:14.000Z",
+          "source_name": "美国移民与海关执法局",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2075340524463013910",
+      "title": "ICE VOICE办公室为涉移民犯罪受害者及其家庭提供支持",
+      "first_published_at": "2026-07-09T22:05:13.000Z",
+      "last_updated_at": "2026-07-09T22:05:13.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2075340524463013910",
+          "title": "ICE VOICE办公室为涉移民犯罪受害者及其家庭提供支持",
+          "url": "/news/ice/2026/07/09/ice-2075340524463013910.html",
+          "published_at": "2026-07-09T22:05:13.000Z",
+          "source_name": "美国移民与海关执法局",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2075245542930596058",
+      "title": "ICE领导打击2026年世界杯前儿童性贩运行动取得多次逮捕和指控",
+      "first_published_at": "2026-07-09T15:47:48.000Z",
+      "last_updated_at": "2026-07-09T15:47:48.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2075245542930596058",
+          "title": "ICE领导打击2026年世界杯前儿童性贩运行动取得多次逮捕和指控",
+          "url": "/news/ice/2026/07/09/ice-2075245542930596058.html",
+          "published_at": "2026-07-09T15:47:48.000Z",
+          "source_name": "美国移民与海关执法局",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2075219680793362937",
+      "title": "ICE金边办事处聚焦柬埔寨公民遣返和旅行证件办理",
+      "first_published_at": "2026-07-09T14:05:02.000Z",
+      "last_updated_at": "2026-07-09T14:05:02.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2075219680793362937",
+          "title": "ICE金边办事处聚焦柬埔寨公民遣返和旅行证件办理",
+          "url": "/news/ice/2026/07/09/ice-2075219680793362937.html",
+          "published_at": "2026-07-09T14:05:02.000Z",
+          "source_name": "美国移民与海关执法局",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    },
+    {
+      "event_id": "legacy-ice-2075086308620276035",
+      "title": "佛罗里达男子因射杀吉娃娃被指控，ICE对其实施移民扣留",
+      "first_published_at": "2026-07-09T05:15:03.000Z",
+      "last_updated_at": "2026-07-09T05:15:03.000Z",
+      "report_count": 1,
+      "stages": [
+        "unknown"
+      ],
+      "state_codes": [
+        "FL"
+      ],
+      "subjects": [],
+      "reports": [
+        {
+          "id": "ice-2075086308620276035",
+          "title": "佛罗里达男子因射杀吉娃娃被指控，ICE对其实施移民扣留",
+          "url": "/news/ice/2026/07/09/ice-2075086308620276035.html",
+          "published_at": "2026-07-09T05:15:03.000Z",
+          "source_name": "美国移民与海关执法局",
+          "report_stage": "unknown",
+          "is_followup": false,
+          "update_sequence": 1,
+          "material_updates": []
+        }
+      ]
+    }
+  ]
 }

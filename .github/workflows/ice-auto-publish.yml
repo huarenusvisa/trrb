@@ -1,21 +1,22 @@
-name: ICE全美执法事件追踪与快讯自动发布
+name: ICE执法自动抓取发布
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "17 6,11,16,21 * * *"
 
 permissions:
   contents: write
 
+# ICE 与特朗普共用同一发布锁，避免同时向 main 推送。
 concurrency:
-  group: trrb-ice-v46-flash
+  group: trrb-news-publishing
   cancel-in-progress: false
 
 jobs:
   sync-ice-news:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -28,46 +29,51 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Validate ICE automation code
-        shell: bash
-        run: |
-          set -e
-          node --check scripts/ice-sync.mjs
-          node -e "const r=JSON.parse(require('fs').readFileSync('data/ice-source-registry.json','utf8')); if(r.query_lanes.length!==72) throw new Error('Expected 72 lanes'); console.log('ICE registry lanes:',r.query_lanes.length)"
-
-      - name: Fetch and publish ICE news from last 24 hours
+      - name: Fetch, rewrite and publish ICE news
         env:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
           SITE_URL: "https://trrb.net"
-          ICE_LOOKBACK_HOURS: "24"
-          ICE_MAX_QUERY_LANES: "72"
-          ICE_LANES_PER_RUN: "28"
-          ICE_MAX_RESULTS_PER_LANE: "50"
-          ICE_MAX_PAGES_PER_LANE: "1"
-          ICE_BOOTSTRAP_LIMIT: "150"
-          ICE_MAX_NEW_POSTS: "90"
-          ICE_MIN_CONFIDENCE: "76"
+          ICE_QUERY: "from:ICEgov -is:retweet -is:reply"
+          ICE_BOOTSTRAP_LIMIT: "8"
+          ICE_MAX_NEW_POSTS: "30"
           ICE_USE_X_MEDIA: "true"
-          ICE_DEDUPE_THRESHOLD: "0.84"
-          ICE_EXACT_DUPLICATE_THRESHOLD: "0.93"
-          ICE_EVENT_MATCH_THRESHOLD: "0.58"
-          ICE_EVENT_HISTORY_DAYS: "14"
-          ICE_MAX_PENDING_RETRIES: "5"
+          ICE_MIN_CONFIDENCE: "80"
         run: node scripts/ice-sync.mjs
 
       - name: Commit generated ICE news
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
+
           git config user.name "TRRB ICE Bot"
           git config user.email "bot@trrb.net"
           git add -A
+
           if git diff --cached --quiet; then
-            echo "No new publishable ICE content."
+            echo "No ICE content changes to commit."
             exit 0
           fi
-          git commit -m "Auto publish ICE event tracking news"
-          git pull --rebase origin main
-          git push origin main
+
+          git commit -m "Auto publish ICE news"
+
+          for attempt in 1 2 3 4; do
+            echo "Push attempt ${attempt}/4"
+            git fetch origin main
+
+            if git rebase origin/main; then
+              if git push origin HEAD:main; then
+                echo "ICE news pushed successfully."
+                exit 0
+              fi
+            else
+              echo "Rebase failed; aborting before retry."
+              git rebase --abort || true
+            fi
+
+            sleep $((attempt * 10))
+          done
+
+          echo "Unable to push ICE news after 4 attempts."
+          exit 1

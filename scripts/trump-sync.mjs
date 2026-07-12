@@ -507,6 +507,7 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
   const nextCursors = { ...previousCursors };
   const collected = [];
   const laneStats = [];
+  const laneErrors = [];
   let successfulLanes = 0;
 
   for (const lane of CONFIG.queryLanes) {
@@ -519,12 +520,30 @@ export async function fetchRecentPosts(stateOrSinceId = {}) {
       laneStats.push({ id: lane.id, label: lane.label, fetched: result.posts.length, truncated: result.truncated });
       successfulLanes += 1;
     } catch (error) {
-      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, error: errorMessage(error) });
-      console.error(`Trump query lane ${lane.id} failed:`, errorMessage(error));
+      const status = Number(error?.status || 0);
+      const message = errorMessage(error);
+      laneErrors.push({ id: lane.id, status, message });
+      laneStats.push({ id: lane.id, label: lane.label, fetched: 0, status, error: message });
+      console.error(`Trump query lane ${lane.id} failed:`, message);
     }
   }
 
-  if (!successfulLanes) throw new Error("All Trump X search lanes failed.");
+  if (!successfulLanes) {
+    const transientStatuses = new Set([0, 408, 425, 429, 500, 502, 503, 504]);
+    const allTransient = laneErrors.length > 0 && laneErrors.every(item => transientStatuses.has(item.status));
+    if (allTransient) {
+      console.warn("All Trump X search lanes are temporarily unavailable; preserving cursors and continuing with the existing pending queue.");
+      return {
+        posts: [],
+        newestId: "",
+        queryCursors: nextCursors,
+        laneStats,
+        xUnavailable: true,
+      };
+    }
+    const summary = laneErrors.map(item => `${item.id}:${item.status || "network"}`).join(", ");
+    throw new Error(`All Trump X search lanes failed (${summary}).`);
+  }
 
   let posts = dedupePosts(collected)
     .filter(post => Number(post.candidate_score || 0) >= CONFIG.minCandidateScore);

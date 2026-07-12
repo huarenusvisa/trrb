@@ -56,9 +56,9 @@ const SYSTEM_PROMPT = `
 3. arrested译为“被捕”，detained译为“被拘留”，charged译为“被指控”，indicted译为“被起诉”，convicted译为“被定罪”，sentenced译为“被判刑”，removed/deported译为“被遣返”。不得混淆这些状态。
 4. 尚未定罪的人，不得称为“罪犯”“犯罪分子”或写成已经犯罪。
 5. 不使用“震惊、炸裂、疯狂、铁腕、横扫、大快人心”等煽动性词语。
-6. 输入事实很少时，生成brief，正文总量约80至180个中文字符；输入含完整官方新闻稿或可靠媒体报道时，生成article，正文总量约260至500个中文字符。不要为了凑字数重复或扩写。
+6. 只有单一观点、简短回应、政策主张、社交媒体短帖，或没有明确抓捕人数/地点/案件进展且不足以支撑完整新闻时，生成flash。flash标题必须为8至18个汉字，summary必须为25至55个汉字，body_paragraphs返回空数组。信息较少但仍有明确事件事实时生成brief，正文总量约80至180个中文字符；输入含完整官方新闻稿或可靠媒体报道时生成article，正文总量约260至500个中文字符。不要为了凑字数重复或扩写。
 7. 不复制大段英文原文，不使用Markdown，不写项目符号。
-8. title准确概括核心事实；summary为35至80个中文字符；body_paragraphs为2至4段。
+8. title准确概括核心事实。flash标题8至18个汉字且不得使用冒号堆砌；flash summary为25至55个汉字且只写一条核心事实。brief/article的summary为35至80个中文字符，body_paragraphs为2至4段。
 9. source_name必须使用输入中提供的来源名称；source_type必须与输入来源类型一致；agency填写主要涉及机构。
 10. 资料不足、事实矛盾、涉及未成年人身份、死亡细节或无法判断法律状态时，needs_review必须为true，publishable必须为false，并说明原因。
 11. ice_relevant只有在材料明确涉及ICE、HSI、ERO、DHS移民执法、CBP移民执法、遣返、拘留、移民抓捕或与ICE直接合作的执法行动时才为true；普通边境、毒品、海关贸易或一般刑事新闻不得误收。
@@ -690,8 +690,9 @@ async function processPost(post, news) {
   }
 
   const dateParts = newYorkDateParts(post.created_at);
-  const relativeUrl = `/news/ice/${dateParts.year}/${dateParts.month}/${dateParts.day}/ice-${post.id}.html`;
-  const filePath = path.join(
+  const isFlash = ai.content_type === "flash";
+  const relativeUrl = isFlash ? "" : `/news/ice/${dateParts.year}/${dateParts.month}/${dateParts.day}/ice-${post.id}.html`;
+  const filePath = isFlash ? "" : path.join(
     NEWS_DIR,
     dateParts.year,
     dateParts.month,
@@ -699,7 +700,7 @@ async function processPost(post, news) {
     `ice-${post.id}.html`
   );
 
-  const imageUrl = CONFIG.useXMedia ? firstUsableMedia(post.media) : "";
+  const imageUrl = isFlash ? "" : (CONFIG.useXMedia ? firstUsableMedia(post.media) : "");
   const enforcementEvents = normalizeEnforcementEvents(ai.enforcement_events, sourceText);
 
   const eventProfile = createEventProfile({
@@ -730,6 +731,9 @@ async function processPost(post, news) {
     title: ai.title.trim(),
     summary: ai.summary.trim(),
     content_type: ai.content_type,
+    display_mode: isFlash ? "flash" : "card",
+    is_flash: isFlash,
+    click_url: isFlash ? (enrichment.url || post.x_url) : relativeUrl,
     published_at: post.created_at,
     updated_at: new Date().toISOString(),
     url: relativeUrl,
@@ -762,9 +766,11 @@ async function processPost(post, news) {
     event_match_score: Number(eventDecision.score || 0)
   };
 
-  const html = renderArticle(item, ai.body_paragraphs, dateParts);
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
-  await fs.writeFile(filePath, html, "utf8");
+  if (!isFlash) {
+    const html = renderArticle(item, ai.body_paragraphs, dateParts);
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, html, "utf8");
+  }
 
   const existingIndex = news.findIndex(entry => String(entry.x_post_id) === String(post.id));
   if (existingIndex >= 0) news[existingIndex] = item;
@@ -948,10 +954,18 @@ function validateArticle(ai, sourceText, post, enrichment) {
   const output = `${title}\n${summary}\n${paragraphs.join("\n")}`;
   const bodyLength = countCjkAndWords(paragraphs.join(""));
 
-  if (title.length < 8 || title.length > 60) return fail("标题长度不合格");
-  if (!paragraphs.length) return fail("正文为空");
-  if (ai.content_type === "brief" && (bodyLength < 55 || bodyLength > 260)) return fail("快讯正文长度异常");
-  if (ai.content_type === "article" && (bodyLength < 150 || bodyLength > 650)) return fail("新闻正文长度异常");
+  if (ai.content_type === "flash") {
+    const titleLength = countChineseDisplayChars(title);
+    const summaryLength = countChineseDisplayChars(summary);
+    if (titleLength < 8 || titleLength > 18) return fail("快讯标题必须为8至18个汉字");
+    if (summaryLength < 25 || summaryLength > 55) return fail("快讯正文必须为25至55个汉字");
+    if (paragraphs.some(paragraph => String(paragraph || "").trim())) return fail("快讯不得生成长正文");
+  } else {
+    if (title.length < 8 || title.length > 60) return fail("标题长度不合格");
+    if (!paragraphs.length) return fail("正文为空");
+    if (ai.content_type === "brief" && (bodyLength < 55 || bodyLength > 260)) return fail("简讯正文长度异常");
+    if (ai.content_type === "article" && (bodyLength < 150 || bodyLength > 650)) return fail("新闻正文长度异常");
+  }
 
   const subjective = SUBJECTIVE_TERMS.find(term => output.includes(term));
   if (subjective) return fail(`出现主观或煽动性词语：${subjective}`);
@@ -1077,7 +1091,7 @@ function buildDashboardData(news, state, nowIso) {
         basis_time: new Date(basisTime).toISOString(),
         time_basis: event.occurred_at ? "执法时间" : "官方公开时间",
         article_title: item.title,
-        article_url: item.url,
+        article_url: item.click_url || item.url || item.source_url,
         published_at: item.published_at
       });
     }
@@ -1165,7 +1179,7 @@ function buildMapEvents(news, nowIso) {
         confidence: event.confidence || item.confidence || 0,
         source_name: item.source_name || "公开来源",
         source_url: item.source_url || "",
-        article_url: item.url || ""
+        article_url: item.click_url || item.url || item.source_url || ""
       });
     });
   }
@@ -1265,7 +1279,7 @@ async function updateSitemap(news, nowIso) {
   const newest = news.slice(0, Math.max(50, CONFIG.maxNewPosts));
   const additions = [
     { loc: topicUrl, lastmod: nowIso.slice(0, 10) },
-    ...newest.map(item => ({ loc: `${CONFIG.siteUrl}${item.url}`, lastmod: item.updated_at.slice(0, 10) }))
+    ...newest.filter(item => item.url && !item.is_flash).map(item => ({ loc: `${CONFIG.siteUrl}${item.url}`, lastmod: item.updated_at.slice(0, 10) }))
   ];
 
   let xml;
@@ -1845,7 +1859,7 @@ function buildEventIndex(news, nowIso) {
     entry.reports.push({
       id: item.id,
       title: item.title,
-      url: item.url,
+      url: item.click_url || item.url || item.source_url,
       published_at: item.published_at,
       source_name: item.source_name,
       report_stage: normalizeReportStage(item.report_stage),
@@ -2043,6 +2057,10 @@ function countCjkAndWords(value) {
   const cjk = (text.match(/[\u3400-\u9fff]/g) || []).length;
   const words = (text.replace(/[\u3400-\u9fff]/g, " ").match(/[A-Za-z0-9]+/g) || []).length;
   return cjk + words;
+}
+
+function countChineseDisplayChars(value) {
+  return [...String(value || "").replace(/\s+/g, "")].length;
 }
 
 function fail(reason) { return { ok: false, reason }; }

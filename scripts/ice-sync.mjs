@@ -3,6 +3,8 @@ import fsSync from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
+import { upsertAutomatedArticle, writeAutomationLog } from "./supabase-news.mjs";
+import { accountsForTopic, sourceByAccount } from "./source-registry.mjs";
 
 const ROOT = process.cwd();
 const DATA_DIR = path.join(ROOT, "data");
@@ -18,11 +20,13 @@ const SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
 
 loadLocalEnv(path.join(ROOT, ".env.ice"));
 
-const ICE_OFFICIAL_ACCOUNTS = parseAccounts(
-  process.env.ICE_OFFICIAL_ACCOUNTS || "ICEgov,HSI_HQ,DHSgov,CBP,TheJusticeDept,DOJCrimDiv"
+const ICE_OFFICIAL_ACCOUNTS = mergeAccounts(
+  parseAccounts(process.env.ICE_OFFICIAL_ACCOUNTS || "ICEgov,HSI_HQ,DHSgov,CBP,TheJusticeDept,DOJCrimDiv"),
+  accountsForTopic("ice", ROOT, ["A"])
 );
-const ICE_TRUSTED_ACCOUNTS = parseAccounts(
-  process.env.ICE_TRUSTED_ACCOUNTS || "Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"
+const ICE_TRUSTED_ACCOUNTS = mergeAccounts(
+  parseAccounts(process.env.ICE_TRUSTED_ACCOUNTS || "Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"),
+  accountsForTopic("ice", ROOT, ["B"])
 );
 const ICE_REVIEW_ACCOUNTS = parseAccounts(
   process.env.ICE_REVIEW_ACCOUNTS || "Breaking911,CollinRugg,EndWokeness"
@@ -281,6 +285,15 @@ async function main() {
 
   await writeJson(NEWS_FILE, news);
   await writeJson(PENDING_FILE, pending);
+  await writeAutomationLog({
+    pipeline: "ice-radar-v3",
+    fetched: fetched.posts.length,
+    processed: immediate.length + retryBatch.length,
+    published: publishedCount,
+    drafted: pendingCount,
+    duplicates: duplicateSkippedCount,
+    details: { lane_stats: fetched.laneStats || [], total_news: news.length, total_pending: pending.length }
+  }).catch(error => console.error("ICE automation log failed:", errorMessage(error)));
   await writeJson(STATE_FILE, state);
   await writeJson(DASHBOARD_FILE, dashboard);
   await updateSitemap(news, now);
@@ -384,6 +397,12 @@ export function buildIceQueryLanes() {
     id: "radar",
     label: "全网雷达",
     query: validateXQuery('(\"ICE agents\" OR \"ICE agent\" OR \"ICE raid\" OR \"ICE arrested\" OR \"ICE detained\" OR \"immigration raid\" OR \"immigration agents\" OR \"federal immigration agents\" OR \"deportation operation\" OR \"Immigration and Customs Enforcement\") -is:retweet -is:reply lang:en'),
+  });
+
+  lanes.push({
+    id: "branches-local",
+    label: "地方分支与州县市机构",
+    query: validateXQuery('(\"Enforcement and Removal Operations\" OR \"ICE field office\" OR \"ERO officers\" OR \"HSI special agents\" OR \"ICE detainer\" OR \"transferred to ICE custody\" OR ((sheriff OR police OR \"district attorney\" OR prosecutor) (ICE OR HSI OR deportation OR immigration))) -is:retweet -is:reply lang:en'),
   });
 
   lanes.push({
@@ -621,11 +640,21 @@ async function processPost(post, news) {
   const ai = await rewriteWithOpenAI(sourceText, post);
   const validation = validateArticle(ai, sourceText, post, enrichment);
 
+  const enforcementEvents = normalizeEnforcementEvents(ai.enforcement_events, sourceText);
   if (!validation.ok) {
+    await syncIceCmsArticle(post, ai, "draft", validation.reason, enforcementEvents);
     return { status: "pending", reason: validation.reason, ai };
   }
   if (["review", "radar"].includes(post.source_mode) && !enrichment.url) {
-    return { status: "pending", reason: "该线索来自非预设可信来源，已保留在候选池等待复核", ai };
+    const reason = "该线索来自非预设可信来源，已完成编辑并进入后台草稿等待复核";
+    await syncIceCmsArticle(post, ai, "draft", reason, enforcementEvents);
+    return { status: "pending", reason, ai };
+  }
+
+  // 遣返、递解、刑满移交等内容进入“驱逐快报”，不写入 ICE 抓捕新闻流，也不计入抓捕人数。
+  if (isDeportationArticle(ai, enforcementEvents)) {
+    await syncIceCmsArticle(post, ai, "published", "", enforcementEvents, "驱逐快报");
+    return { status: "published", routed_to: "驱逐快报" };
   }
 
   const dateParts = newYorkDateParts(post.created_at);
@@ -639,7 +668,6 @@ async function processPost(post, news) {
   );
 
   const imageUrl = CONFIG.useXMedia ? firstUsableMedia(post.media) : "";
-  const enforcementEvents = normalizeEnforcementEvents(ai.enforcement_events, sourceText);
   const item = {
     id: `ice-${post.id}`,
     x_post_id: post.id,
@@ -680,7 +708,52 @@ async function processPost(post, news) {
   if (existingIndex >= 0) news[existingIndex] = item;
   else news.push(item);
 
+  await syncIceCmsArticle(post, ai, "published", "", enforcementEvents, "ICE执法");
   return { status: "published", item };
+}
+
+function isDeportationArticle(ai, events = []) {
+  if (String(ai?.category || "") === "遣返") return true;
+  const types = events.map(event => event.event_type);
+  return types.length > 0 && types.every(type => type === "removal");
+}
+
+async function syncIceCmsArticle(post, ai, status, reviewReason, events = [], forcedCategory = "") {
+  try {
+    const primaryEvent = events.find(event => event.event_type === "arrest" || event.event_type === "detention") || events[0] || {};
+    const countable = status === "published" && forcedCategory !== "驱逐快报" &&
+      ["arrest", "detention"].includes(primaryEvent.event_type) &&
+      Number.isInteger(primaryEvent.people_count) && primaryEvent.people_count > 0 &&
+      Boolean(primaryEvent.city || primaryEvent.location_text) && Boolean(primaryEvent.occurred_at);
+    const categoryName = forcedCategory || (isDeportationArticle(ai, events) ? "驱逐快报" : "ICE执法");
+    await upsertAutomatedArticle({
+      externalId: `x-ice-${post.id}`,
+      automationSource: "ice-radar-v3",
+      title: String(ai?.title || "ICE动态").trim(),
+      summary: String(ai?.summary || "").trim(),
+      bodyParagraphs: Array.isArray(ai?.body_paragraphs) ? ai.body_paragraphs : [],
+      categoryName,
+      primarySection: categoryName,
+      relatedSections: categoryName === "驱逐快报" ? ["ICE执法"] : [],
+      coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
+      sourceUrl: post.x_url,
+      sourceName: sourceDisplayName(post),
+      sourceAccount: post.author_username || post.author?.username || "",
+      sourceLevel: post.source_tier || ai?.verified_level || "",
+      confidence: ai?.confidence || 0,
+      reviewReason,
+      status,
+      publishedAt: post.created_at,
+      eventDate: primaryEvent.occurred_at || null,
+      arrestCount: countable ? primaryEvent.people_count : null,
+      city: primaryEvent.city || "",
+      state: primaryEvent.state_code || primaryEvent.state_name || "",
+      countInIceStats: countable,
+      tags: [ai?.category, ...(ai?.keywords || [])].filter(Boolean),
+    });
+  } catch (error) {
+    console.error(`Supabase ICE sync failed for ${post.id}:`, errorMessage(error));
+  }
 }
 
 
@@ -1618,6 +1691,10 @@ function firstEnv(...names) {
     if (process.env[name]?.trim()) return process.env[name].trim();
   }
   return "";
+}
+
+function mergeAccounts(...groups) {
+  return [...new Set(groups.flat().map(v => String(v || "").replace(/^@/, "").trim()).filter(Boolean))];
 }
 
 function parseAccounts(value) {

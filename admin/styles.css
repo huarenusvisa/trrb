@@ -236,3 +236,4 @@ button:disabled { opacity: .6; cursor: wait; }
 .ai-auto-label input { width: 18px; height: 18px; }
 
 .exposure-admin-link{display:block;text-decoration:none;text-align:left;box-sizing:border-box}
+.editor-mode-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.review-note{display:inline-block;max-width:260px;margin-top:6px;color:#9a5b00;line-height:1.35}.table-wrap code,.panel code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.status-pill.status-hidden{background:#eee;color:#555}.status-pill.status-draft{background:#fff2cc;color:#7b5900}.status-pill.status-published{background:#e8f5e9;color:#176b2c}

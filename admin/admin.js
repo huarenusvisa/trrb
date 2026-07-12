@@ -20,6 +20,8 @@ let currentAdmin = null;
 let categories = [];
 let selectedCoverFile = null;
 let selectedCoverObjectUrl = "";
+let currentEditingArticleId = null;
+let currentEditingArticle = null;
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -59,6 +61,11 @@ function bindEvents() {
   el("article-form").addEventListener("submit", handleSaveArticle);
   el("refresh-articles").addEventListener("click", loadArticles);
   el("refresh-rankings").addEventListener("click", loadRankings);
+  el("refresh-logs")?.addEventListener("click", loadAutomationLogs);
+  el("refresh-drafts")?.addEventListener("click", loadDrafts);
+  el("source-form")?.addEventListener("submit", saveNewsSource);
+  el("refresh-sources")?.addEventListener("click", loadNewsSources);
+  el("article-cancel-edit")?.addEventListener("click", resetArticleEditor);
   el("article-cover-file").addEventListener("change", handleCoverSelection);
   el("article-cover-remove").addEventListener("click", clearCoverSelection);
   el("article-cover-paste-zone").addEventListener("paste", handleCoverPaste);
@@ -109,7 +116,7 @@ async function enterAdmin(user) {
   el("login-view").classList.add("hidden");
   el("admin-view").classList.remove("hidden");
   el("admin-info").textContent = `${user.email} · ${admin.role}`;
-  await Promise.all([loadCategories(), loadArticles(), loadRankings()]);
+  await Promise.all([loadCategories(), loadArticles(), loadDrafts(), loadRankings(), loadAutomationLogs(), loadNewsSources()]);
   showPage("dashboard");
 }
 
@@ -158,7 +165,10 @@ function showPage(page) {
     dashboard: "控制台",
     articles: "文章管理",
     "new-article": "发布文章",
-    rankings: "24小时热榜"
+    rankings: "24小时热榜",
+    drafts: "待审核草稿",
+    sources: "来源管理",
+    logs: "自动化日志"
   };
 
   document.querySelectorAll(".page").forEach((item) => item.classList.add("hidden"));
@@ -191,7 +201,7 @@ async function loadCategories() {
 async function loadArticles() {
   const { data, error } = await supabaseClient
     .from("articles")
-    .select("id,title,category_name,status,published_at,created_at")
+    .select("id,title,category_name,status,published_at,created_at,ai_confidence,ai_review_reason,automation_source,source_name")
     .order("created_at", { ascending: false })
     .limit(100);
 
@@ -219,12 +229,59 @@ function renderArticleRow(article) {
       <td><span class="status-pill status-${article.status}">${statusLabel(article.status)}</span></td>
       <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>
       <td>
+        <button class="small-btn" onclick="editArticle('${article.id}')">编辑</button>
         <button class="small-btn" onclick="changeArticleStatus('${article.id}','published')">发布</button>
         <button class="small-btn" onclick="changeArticleStatus('${article.id}','draft')">草稿</button>
         <button class="small-btn" onclick="changeArticleStatus('${article.id}','hidden')">隐藏</button>
+        ${article.ai_review_reason ? `<br><small class="review-note">AI：${escapeHtml(article.ai_review_reason)}</small>` : ""}
       </td>
     </tr>
   `;
+}
+
+window.editArticle = async function (id) {
+  const { data, error } = await supabaseClient
+    .from("articles")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (error || !data) {
+    alert("读取文章失败：" + (error?.message || "文章不存在"));
+    return;
+  }
+  currentEditingArticleId = id;
+  currentEditingArticle = article;
+  el("article-title").value = data.title || "";
+  el("article-summary").value = data.summary || "";
+  el("article-content").value = data.content || "";
+  el("article-cover").value = data.cover_image || "";
+  el("article-seo-keywords").value = data.seo_keywords || "";
+  el("article-author").value = data.author || "Tang Ren Daily";
+  el("article-status").value = data.status || "draft";
+  const categoryOption = [...el("article-category").options].find(option => option.value === data.category_id || option.textContent === data.category_name);
+  if (categoryOption) el("article-category").value = categoryOption.value;
+  el("article-source-url").value = data.source_url || "";
+  el("article-review-reason").value = data.ai_review_reason || "";
+  el("article-confidence").value = data.ai_confidence ?? "";
+  el("article-submit").textContent = "保存修改";
+  el("article-cancel-edit").classList.remove("hidden");
+  el("editor-mode-label").textContent = "正在编辑已存在文章";
+  if (data.cover_image) {
+    el("article-cover-preview").src = data.cover_image;
+    el("article-cover-preview-wrap").classList.remove("hidden");
+  }
+  showPage("new-article");
+};
+
+function resetArticleEditor() {
+  currentEditingArticleId = null;
+  currentEditingArticle = null;
+  el("article-form").reset();
+  el("article-author").value = "Tang Ren Daily";
+  el("article-submit").textContent = "保存文章";
+  el("article-cancel-edit").classList.add("hidden");
+  el("editor-mode-label").textContent = "新建文章";
+  clearCoverSelection();
 }
 
 window.changeArticleStatus = async function (id, status) {
@@ -269,7 +326,7 @@ async function handleSaveArticle(event) {
 
     const payload = {
       title,
-      slug: makeSlug(title),
+      slug: currentEditingArticleId && currentEditingArticle?.slug ? currentEditingArticle.slug : makeSlug(title),
       summary,
       content,
       category_id: selected.value || null,
@@ -278,17 +335,22 @@ async function handleSaveArticle(event) {
       seo_keywords: seoKeywords,
       author: el("article-author").value.trim() || "Tang Ren Daily",
       status,
-      published_at: status === "published" ? new Date().toISOString() : null
+      published_at: status === "published" ? new Date().toISOString() : null,
+      source_url: el("article-source-url").value.trim(),
+      ai_review_reason: el("article-review-reason").value.trim(),
+      ai_confidence: Number(el("article-confidence").value || 0),
+      updated_at: new Date().toISOString()
     };
 
     el("article-message").textContent = "图片上传完成，正在保存文章...";
-    const { error } = await supabaseClient.from("articles").insert(payload);
+    const query = currentEditingArticleId
+      ? supabaseClient.from("articles").update(payload).eq("id", currentEditingArticleId)
+      : supabaseClient.from("articles").insert(payload);
+    const { error } = await query;
     if (error) throw error;
 
-    el("article-message").textContent = "文章已保存，封面图片已本地化。";
-    el("article-form").reset();
-    el("article-author").value = "Tang Ren Daily";
-    clearCoverSelection();
+    el("article-message").textContent = currentEditingArticleId ? "文章修改已保存。" : "文章已保存，封面图片已本地化。";
+    resetArticleEditor();
     await loadArticles();
     showPage("articles");
   } catch (error) {
@@ -522,6 +584,82 @@ async function loadRankings() {
 
 function setLoginMessage(text) {
   el("login-message").textContent = text || "";
+}
+
+
+
+async function loadDrafts() {
+  const tbody = el("drafts-tbody");
+  if (!tbody) return;
+  const { data, error } = await supabaseClient.from("articles")
+    .select("id,title,category_name,ai_confidence,ai_review_reason,source_name,created_at")
+    .eq("status", "draft").order("created_at", { ascending: false }).limit(200);
+  if (error) { tbody.innerHTML = `<tr><td colspan="5">草稿读取失败：${escapeHtml(error.message)}</td></tr>`; return; }
+  tbody.innerHTML = (data || []).map(row => `<tr><td><b>${escapeHtml(row.title)}</b><br><small>${escapeHtml(row.source_name || "")}</small></td><td>${escapeHtml(row.category_name || "待分类")}</td><td>${Number(row.ai_confidence || 0)}%</td><td>${escapeHtml(row.ai_review_reason || "需要人工审核")}</td><td><button onclick="editArticle('${row.id}')">编辑</button><button onclick="publishDraft('${row.id}')">发布</button></td></tr>`).join("") || `<tr><td colspan="5">暂无待审核草稿。</td></tr>`;
+}
+
+window.publishDraft = async function(id) {
+  const { error } = await supabaseClient.from("articles").update({ status: "published", published_at: new Date().toISOString(), visibility: "public" }).eq("id", id);
+  if (error) return alert(`发布失败：${error.message}`);
+  await Promise.all([loadDrafts(), loadArticles()]);
+};
+
+async function saveNewsSource(event) {
+  event.preventDefault();
+  const payload = {
+    id: el("source-id").value.trim(), name: el("source-name").value.trim(), agency: el("source-agency").value.trim(),
+    x_account: el("source-x").value.trim().replace(/^@/, ""), source_level: el("source-level").value,
+    active: el("source-status").value === "true", updated_at: new Date().toISOString()
+  };
+  const { error } = await supabaseClient.from("news_sources").upsert(payload, { onConflict: "id" });
+  if (error) return alert(`保存来源失败：${error.message}`);
+  event.target.reset(); await loadNewsSources();
+}
+
+window.toggleNewsSource = async function(id, active) {
+  const { error } = await supabaseClient.from("news_sources").update({ active: !active, updated_at: new Date().toISOString() }).eq("id", id);
+  if (error) return alert(`更新失败：${error.message}`);
+  await loadNewsSources();
+};
+
+async function loadAutomationLogs() {
+  const tbody = el("logs-tbody");
+  if (!tbody) return;
+  const { data, error } = await supabaseClient
+    .from("automation_logs")
+    .select("pipeline,run_at,fetched,processed,published,drafted,duplicates,failed")
+    .order("run_at", { ascending: false })
+    .limit(100);
+  if (error) {
+    tbody.innerHTML = `<tr><td colspan="8">日志暂不可用：${escapeHtml(error.message)}。请先执行 V3 SQL。</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = (data || []).map(row => `<tr>
+    <td>${escapeHtml(row.pipeline)}</td><td>${escapeHtml(formatDate(row.run_at))}</td>
+    <td>${row.fetched || 0}</td><td>${row.processed || 0}</td><td>${row.published || 0}</td>
+    <td>${row.drafted || 0}</td><td>${row.duplicates || 0}</td><td>${row.failed || 0}</td>
+  </tr>`).join("") || `<tr><td colspan="8">暂无自动化日志。</td></tr>`;
+}
+
+async function loadNewsSources() {
+  const tbody = el("sources-tbody");
+  if (!tbody) return;
+  const { data, error } = await supabaseClient
+    .from("news_sources")
+    .select("id,name,agency,level,state,city,source_level,x_account,active,last_success_at")
+    .order("source_level", { ascending: true })
+    .limit(300);
+  if (error) {
+    tbody.innerHTML = `<tr><td colspan="8">来源表暂不可用：${escapeHtml(error.message)}。请先执行 V3 SQL。</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = (data || []).map(row => `<tr>
+    <td><b>${escapeHtml(row.name)}</b><br><small>${escapeHtml(row.x_account ? "@" + row.x_account : row.id)}</small></td>
+    <td>${escapeHtml(row.agency || "-")}</td><td>${escapeHtml(row.level || "-")}</td>
+    <td>${escapeHtml([row.city,row.state].filter(Boolean).join(", ") || "全国")}</td>
+    <td>${escapeHtml(row.source_level || "-")}</td><td>${row.active ? "启用" : "停用"}</td>
+    <td>${escapeHtml(row.last_success_at ? formatDate(row.last_success_at) : "尚未记录")}</td><td><button onclick="toggleNewsSource('${escapeHtml(row.id)}', ${row.active})">${row.active ? "停用" : "启用"}</button></td>
+  </tr>`).join("") || `<tr><td colspan="8">暂无来源。可执行导入脚本或在后台添加。</td></tr>`;
 }
 
 function statusLabel(status) {

@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const DATA_URLS = {
     news: "/data/ice-news.json",
     state: "/data/ice-state.json",
@@ -24,6 +26,8 @@
         fetchJson(DATA_URLS.dashboard, null)
       ]);
       news = newsResult.status === "fulfilled" && Array.isArray(newsResult.value) ? newsResult.value : [];
+      const liveNews = await fetchLiveArticles("ICE执法");
+      if (liveNews.length) news = mergeLiveNews(liveNews, news);
       const state = stateResult.status === "fulfilled" ? stateResult.value : {};
       dashboard = dashboardResult.status === "fulfilled" && dashboardResult.value
         ? dashboardResult.value
@@ -42,6 +46,22 @@
       document.getElementById("today-event-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE统计数据。</div>';
       document.getElementById("ice-news-list").innerHTML = '<div class="ice-empty">暂时无法读取ICE新闻。</div>';
     }
+  }
+
+  async function fetchLiveArticles(category) {
+    try {
+      const select = "id,title,summary,cover_image,source_name,source_url,published_at,city,state,arrest_count,count_in_ice_stats";
+      const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&category_name=eq.${encodeURIComponent(category)}&order=published_at.desc&limit=100`;
+      const response = await fetch(url, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+      if (!response.ok) return [];
+      return await response.json();
+    } catch { return []; }
+  }
+
+  function mergeLiveNews(live, archived) {
+    const mapped = live.map(row => ({ id: row.id, title: row.title, summary: row.summary, image_url: row.cover_image, source_name: row.source_name, source_url: row.source_url, published_at: row.published_at, url: `/article.html?id=${encodeURIComponent(row.id)}`, state_codes: row.state ? [String(row.state).toUpperCase()] : [], enforcement_events: [] }));
+    const seen = new Set(mapped.map(x => String(x.id)));
+    return mapped.concat(archived.filter(x => !seen.has(String(x.id))));
   }
 
   async function fetchJson(url, fallback) {

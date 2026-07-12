@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>唐人日报后台</title>
-  <link rel="stylesheet" href="./styles.css?v=20260710-editor2" />
+  <link rel="stylesheet" href="./styles.css?v=20260711-news-engine-v3" />
 </head>
 <body>
   <div id="app">
@@ -37,8 +37,11 @@
         <nav>
           <button class="nav-btn active" data-page="dashboard">控制台</button>
           <button class="nav-btn" data-page="articles">文章管理</button>
+          <button class="nav-btn" data-page="drafts">待审核草稿</button>
           <button class="nav-btn" data-page="new-article">发布文章</button>
           <button class="nav-btn" data-page="rankings">24小时热榜</button>
+          <button class="nav-btn" data-page="sources">来源管理</button>
+          <button class="nav-btn" data-page="logs">自动化日志</button>
           <a class="nav-btn exposure-admin-link" href="./exposure.html">曝光与评论管理</a>
         </nav>
         <button class="logout" id="logout-btn">退出登录</button>
@@ -86,7 +89,14 @@
           </div>
         </section>
 
+
+        <section class="page hidden" id="drafts-page">
+          <div class="toolbar"><button id="refresh-drafts">刷新草稿</button></div>
+          <div class="table-wrap"><table><thead><tr><th>标题</th><th>建议栏目</th><th>可信度</th><th>未自动发布原因</th><th>操作</th></tr></thead><tbody id="drafts-tbody"></tbody></table></div>
+        </section>
+
         <section class="page hidden" id="new-article-page">
+          <div class="panel editor-mode-bar"><strong id="editor-mode-label">新建文章</strong><button type="button" class="secondary-btn hidden" id="article-cancel-edit">取消编辑</button></div>
           <form class="editor-form" id="article-form">
             <div class="grid2">
               <div>
@@ -153,6 +163,19 @@
 
             <div class="grid2">
               <div>
+                <label>来源链接</label>
+                <input id="article-source-url" type="url" placeholder="https://..." />
+              </div>
+              <div>
+                <label>AI可信度</label>
+                <input id="article-confidence" type="number" min="0" max="100" placeholder="0-100" />
+              </div>
+            </div>
+            <label>AI待审核原因</label>
+            <textarea id="article-review-reason" rows="2" placeholder="自动化草稿会在这里说明为什么未自动发布"></textarea>
+
+            <div class="grid2">
+              <div>
                 <label>作者</label>
                 <input id="article-author" value="Tang Ren Daily" />
               </div>
@@ -191,11 +214,23 @@
             </table>
           </div>
         </section>
+
+        <section class="page hidden" id="sources-page">
+          <div class="panel"><form id="source-form" class="grid2"><input id="source-id" placeholder="唯一ID，如 ice-ero-boston" required><input id="source-name" placeholder="来源名称" required><input id="source-agency" placeholder="机构，如 ICE"><input id="source-x" placeholder="X账号，不含@"><select id="source-level"><option>A</option><option>B</option><option>C</option><option>D</option></select><select id="source-status"><option value="true">启用</option><option value="false">停用</option></select><button type="submit">保存来源</button></form></div>
+          <div class="toolbar"><button id="refresh-sources">刷新来源</button></div>
+          <div class="panel"><p>管理联邦总部、地方分支、州县市机构、媒体和记者来源。来源数据来自 Supabase <code>news_sources</code> 表。</p></div>
+          <div class="table-wrap"><table><thead><tr><th>来源</th><th>机构</th><th>层级</th><th>地区</th><th>可信等级</th><th>状态</th><th>最后成功</th></tr></thead><tbody id="sources-tbody"></tbody></table></div>
+        </section>
+
+        <section class="page hidden" id="logs-page">
+          <div class="toolbar"><button id="refresh-logs">刷新日志</button></div>
+          <div class="table-wrap"><table><thead><tr><th>流程</th><th>运行时间</th><th>抓取</th><th>处理</th><th>发布</th><th>草稿</th><th>重复</th><th>失败</th></tr></thead><tbody id="logs-tbody"></tbody></table></div>
+        </section>
       </main>
     </section>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./admin.js?v=20260710-editor2"></script>
+  <script src="./admin.js?v=20260711-news-engine-v3"></script>
 </body>
 </html>

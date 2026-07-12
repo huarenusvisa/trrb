@@ -3,6 +3,8 @@ import fsSync from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { pathToFileURL } from "node:url";
+import { upsertAutomatedArticle, writeAutomationLog } from "./supabase-news.mjs";
+import { accountsForTopic, sourceByAccount } from "./source-registry.mjs";
 
 const ROOT = process.cwd();
 const DATA_DIR = path.join(ROOT, "data");
@@ -19,8 +21,9 @@ loadLocalEnv(path.join(ROOT, ".env.trump"));
 const PRIMARY_ACCOUNTS = parseAccounts(
   process.env.TRUMP_PRIMARY_ACCOUNTS || "realDonaldTrump"
 );
-const AUTO_ACCOUNTS = parseAccounts(
-  process.env.TRUMP_AUTO_ACCOUNTS || "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47,Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"
+const AUTO_ACCOUNTS = mergeAccounts(
+  parseAccounts(process.env.TRUMP_AUTO_ACCOUNTS || "realDonaldTrump,WhiteHouse,POTUS,PressSec,RapidResponse47,Reuters,AP,FoxNews,CNN,NBCNews,ABC,CBSNews,axios,politico,NewsNation,nytimes,washingtonpost"),
+  accountsForTopic("trump", ROOT, ["A", "B"])
 );
 const REVIEW_ACCOUNTS = parseAccounts(
   process.env.TRUMP_REVIEW_ACCOUNTS || "Breaking911,CollinRugg"
@@ -246,6 +249,16 @@ export async function main() {
   const writeNeeded = true;
   await writeJson(NEWS_FILE, news);
   await writeJson(PENDING_FILE, pending);
+  await writeAutomationLog({
+    pipeline: "trump-radar-v3",
+    fetched: fetched.posts.length,
+    processed: toProcess.length,
+    published: publishedCount,
+    drafted: reviewCount,
+    duplicates: duplicateCount,
+    failed: retryCount,
+    details: { lane_stats: fetched.laneStats || [], total_news: news.length, total_pending: pending.length }
+  }).catch(error => console.error("Trump automation log failed:", errorMessage(error)));
   await updateSitemap(news, new Date().toISOString());
   await writeJson(STATE_FILE, nextState);
 
@@ -610,25 +623,20 @@ async function processPost(post, news) {
   const validation = validateArticle(ai, sourceText, post);
 
   if (!validation.ok) {
+    await syncTrumpCmsArticle(post, ai, "draft", validation.reason);
     return { status: "review", reason: validation.reason, ai };
   }
 
   if (post.source_mode === "review") {
-    return {
-      status: "review",
-      reason: ai.review_reason || "该来源按规则需要人工复核",
-      ai,
-    };
+    const reason = ai.review_reason || "该来源按规则需要人工复核";
+    await syncTrumpCmsArticle(post, ai, "draft", reason);
+    return { status: "review", reason, ai };
   }
 
   if (!ai.publishable || ai.needs_review || ai.confidence < CONFIG.minConfidence) {
-    return {
-      status: "review",
-      reason:
-        ai.review_reason ||
-        `未达到自动发布标准（confidence=${ai.confidence}）`,
-      ai,
-    };
+    const reason = ai.review_reason || `未达到自动发布标准（confidence=${ai.confidence}）`;
+    await syncTrumpCmsArticle(post, ai, "draft", reason);
+    return { status: "review", reason, ai };
   }
 
   const contentHash = createContentHash(ai.title, ai.summary);
@@ -688,7 +696,36 @@ async function processPost(post, news) {
   if (existingIndex >= 0) news[existingIndex] = item;
   else news.push(item);
 
+  await syncTrumpCmsArticle(post, ai, "published", "");
   return { status: "published", item };
+}
+
+async function syncTrumpCmsArticle(post, ai, status, reviewReason) {
+  try {
+    await upsertAutomatedArticle({
+      externalId: `x-trump-${post.id}`,
+      automationSource: "trump-radar-v3",
+      title: cleanText(ai?.title || "特朗普动态"),
+      summary: cleanText(ai?.summary || ""),
+      bodyParagraphs: Array.isArray(ai?.body_paragraphs) ? ai.body_paragraphs.map(cleanText) : [],
+      categoryName: "特朗普动态",
+      primarySection: "特朗普动态",
+      relatedSections: [],
+      coverImage: CONFIG.useXMedia ? firstUsableMedia(post.media) : "",
+      sourceUrl: post.x_url,
+      sourceName: post.author?.name || post.author_name || "公开来源",
+      sourceAccount: post.author?.username || post.author_username || "",
+      sourceLevel: post.source_tier || ai?.verified_level || "",
+      confidence: ai?.confidence || 0,
+      reviewReason,
+      status,
+      publishedAt: post.created_at,
+      countInIceStats: false,
+      tags: [ai?.category, "特朗普"].filter(Boolean),
+    });
+  } catch (error) {
+    console.error(`Supabase Trump sync failed for ${post.id}:`, errorMessage(error));
+  }
 }
 
 async function rewriteWithOpenAI(sourceText, post) {
@@ -1190,6 +1227,10 @@ function firstEnv(...names) {
     if (value) return value;
   }
   return "";
+}
+
+function mergeAccounts(...groups) {
+  return [...new Set(groups.flat().map(v => String(v || "").replace(/^@/, "").trim()).filter(Boolean))];
 }
 
 function parseAccounts(value) {

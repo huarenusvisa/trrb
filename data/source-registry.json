@@ -1,0 +1,690 @@
+[
+  {
+    "id": "ice-hq",
+    "name": "U.S. Immigration and Customs Enforcement",
+    "agency": "ICE",
+    "branch": "Headquarters",
+    "level": "federal",
+    "state": "",
+    "city": "Washington",
+    "coverage_area": [
+      "United States"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "ICEgov",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "hsi-hq",
+    "name": "Homeland Security Investigations",
+    "agency": "ICE",
+    "branch": "HSI",
+    "level": "federal",
+    "state": "",
+    "city": "Washington",
+    "coverage_area": [
+      "United States"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/hsi",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "HSI_HQ",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "dhs-hq",
+    "name": "U.S. Department of Homeland Security",
+    "agency": "DHS",
+    "branch": "Headquarters",
+    "level": "federal",
+    "state": "",
+    "city": "Washington",
+    "coverage_area": [
+      "United States"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.dhs.gov/",
+    "newsroom_url": "https://www.dhs.gov/news",
+    "rss_url": "",
+    "x_account": "DHSgov",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "cbp-hq",
+    "name": "U.S. Customs and Border Protection",
+    "agency": "CBP",
+    "branch": "Headquarters",
+    "level": "federal",
+    "state": "",
+    "city": "Washington",
+    "coverage_area": [
+      "United States"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.cbp.gov/",
+    "newsroom_url": "https://www.cbp.gov/newsroom",
+    "rss_url": "",
+    "x_account": "CBP",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "doj-hq",
+    "name": "U.S. Department of Justice",
+    "agency": "DOJ",
+    "branch": "Headquarters",
+    "level": "federal",
+    "state": "",
+    "city": "Washington",
+    "coverage_area": [
+      "United States"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.justice.gov/",
+    "newsroom_url": "https://www.justice.gov/news",
+    "rss_url": "",
+    "x_account": "TheJusticeDept",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "white-house",
+    "name": "The White House",
+    "agency": "Executive Office",
+    "branch": "White House",
+    "level": "federal",
+    "state": "DC",
+    "city": "Washington",
+    "coverage_area": [
+      "United States"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.whitehouse.gov/",
+    "newsroom_url": "https://www.whitehouse.gov/news/",
+    "rss_url": "",
+    "x_account": "WhiteHouse",
+    "active": true,
+    "topics": [
+      "trump"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "reuters",
+    "name": "Reuters",
+    "agency": "",
+    "branch": "",
+    "level": "national",
+    "state": "",
+    "city": "",
+    "coverage_area": [
+      "United States",
+      "World"
+    ],
+    "source_type": "media",
+    "source_level": "A",
+    "website": "https://www.reuters.com/",
+    "newsroom_url": "",
+    "rss_url": "",
+    "x_account": "Reuters",
+    "active": true,
+    "topics": [
+      "ice",
+      "trump"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "ap",
+    "name": "Associated Press",
+    "agency": "",
+    "branch": "",
+    "level": "national",
+    "state": "",
+    "city": "",
+    "coverage_area": [
+      "United States",
+      "World"
+    ],
+    "source_type": "media",
+    "source_level": "A",
+    "website": "https://apnews.com/",
+    "newsroom_url": "",
+    "rss_url": "",
+    "x_account": "AP",
+    "active": true,
+    "topics": [
+      "ice",
+      "trump"
+    ],
+    "auto_publish": true,
+    "last_checked_at": "",
+    "last_success_at": ""
+  },
+  {
+    "id": "ice-ero-boston",
+    "name": "ICE ERO Boston",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Massachusetts",
+    "city": "Boston",
+    "coverage_area": [
+      "Massachusetts",
+      "Maine",
+      "New Hampshire",
+      "Rhode Island",
+      "Vermont"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-new-york",
+    "name": "ICE ERO New York City",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "New York",
+    "city": "New York",
+    "coverage_area": [
+      "New York"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-newark",
+    "name": "ICE ERO Newark",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "New Jersey",
+    "city": "Newark",
+    "coverage_area": [
+      "New Jersey"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-philadelphia",
+    "name": "ICE ERO Philadelphia",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Pennsylvania",
+    "city": "Philadelphia",
+    "coverage_area": [
+      "Pennsylvania",
+      "Delaware",
+      "West Virginia"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-atlanta",
+    "name": "ICE ERO Atlanta",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Georgia",
+    "city": "Atlanta",
+    "coverage_area": [
+      "Georgia",
+      "North Carolina",
+      "South Carolina"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-miami",
+    "name": "ICE ERO Miami",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Florida",
+    "city": "Miami",
+    "coverage_area": [
+      "Florida",
+      "Puerto Rico",
+      "U.S. Virgin Islands"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-chicago",
+    "name": "ICE ERO Chicago",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Illinois",
+    "city": "Chicago",
+    "coverage_area": [
+      "Illinois",
+      "Indiana",
+      "Wisconsin",
+      "Kentucky",
+      "Kansas",
+      "Missouri"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-dallas",
+    "name": "ICE ERO Dallas",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Texas",
+    "city": "Dallas",
+    "coverage_area": [
+      "North Texas",
+      "Oklahoma"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-houston",
+    "name": "ICE ERO Houston",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Texas",
+    "city": "Houston",
+    "coverage_area": [
+      "Southeast Texas"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-el-paso",
+    "name": "ICE ERO El Paso",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Texas",
+    "city": "El Paso",
+    "coverage_area": [
+      "West Texas",
+      "New Mexico"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-phoenix",
+    "name": "ICE ERO Phoenix",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Arizona",
+    "city": "Phoenix",
+    "coverage_area": [
+      "Arizona"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-los-angeles",
+    "name": "ICE ERO Los Angeles",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "California",
+    "city": "Los Angeles",
+    "coverage_area": [
+      "Southern California"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-san-francisco",
+    "name": "ICE ERO San Francisco",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "California",
+    "city": "San Francisco",
+    "coverage_area": [
+      "Northern California",
+      "Hawaii",
+      "Pacific Islands"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "ice-ero-seattle",
+    "name": "ICE ERO Seattle",
+    "agency": "ICE",
+    "branch": "ERO",
+    "level": "regional",
+    "state": "Washington",
+    "city": "Seattle",
+    "coverage_area": [
+      "Washington",
+      "Oregon",
+      "Alaska"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/ero",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "hsi-houston",
+    "name": "HSI Houston",
+    "agency": "ICE",
+    "branch": "HSI",
+    "level": "regional",
+    "state": "Texas",
+    "city": "Houston",
+    "coverage_area": [
+      "Southeast Texas"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/hsi",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "hsi-tampa",
+    "name": "HSI Tampa",
+    "agency": "ICE",
+    "branch": "HSI",
+    "level": "regional",
+    "state": "Florida",
+    "city": "Tampa",
+    "coverage_area": [
+      "Central Florida"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.ice.gov/about-ice/hsi",
+    "newsroom_url": "https://www.ice.gov/news/releases",
+    "rss_url": "",
+    "x_account": "",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "cbp-el-paso-sector",
+    "name": "U.S. Border Patrol El Paso Sector",
+    "agency": "CBP",
+    "branch": "Border Patrol",
+    "level": "regional",
+    "state": "Texas",
+    "city": "El Paso",
+    "coverage_area": [
+      "West Texas",
+      "New Mexico"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.cbp.gov/border-security/along-us-borders/border-patrol-sectors/el-paso-sector-texas",
+    "newsroom_url": "https://www.cbp.gov/newsroom",
+    "rss_url": "",
+    "x_account": "USBPChiefEPT",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "cbp-tucson-sector",
+    "name": "U.S. Border Patrol Tucson Sector",
+    "agency": "CBP",
+    "branch": "Border Patrol",
+    "level": "regional",
+    "state": "Arizona",
+    "city": "Tucson",
+    "coverage_area": [
+      "Arizona"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.cbp.gov/border-security/along-us-borders/border-patrol-sectors/tucson-sector-arizona",
+    "newsroom_url": "https://www.cbp.gov/newsroom",
+    "rss_url": "",
+    "x_account": "USBPChiefTCA",
+    "active": true,
+    "topics": [
+      "ice"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "doj-sdtx",
+    "name": "U.S. Attorney’s Office, Southern District of Texas",
+    "agency": "DOJ",
+    "branch": "U.S. Attorney",
+    "level": "regional",
+    "state": "Texas",
+    "city": "Houston",
+    "coverage_area": [
+      "Southern District of Texas"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.justice.gov/usao-sdtx",
+    "newsroom_url": "https://www.justice.gov/usao-sdtx/pr",
+    "rss_url": "",
+    "x_account": "USAO_SDTX",
+    "active": true,
+    "topics": [
+      "ice",
+      "trump"
+    ],
+    "auto_publish": true
+  },
+  {
+    "id": "doj-arizona",
+    "name": "U.S. Attorney’s Office, District of Arizona",
+    "agency": "DOJ",
+    "branch": "U.S. Attorney",
+    "level": "regional",
+    "state": "Arizona",
+    "city": "Phoenix",
+    "coverage_area": [
+      "Arizona"
+    ],
+    "source_type": "official",
+    "source_level": "A",
+    "website": "https://www.justice.gov/usao-az",
+    "newsroom_url": "https://www.justice.gov/usao-az/pr",
+    "rss_url": "",
+    "x_account": "USAO_AZ",
+    "active": true,
+    "topics": [
+      "ice",
+      "trump"
+    ],
+    "auto_publish": true
+  }
+]

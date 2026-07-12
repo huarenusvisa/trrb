@@ -1,0 +1,1 @@
+function generateElectionTitle(content){for(const s of ['宾州','佐治亚','亚利桑那','密歇根','威斯康星','内华达']){if(content.includes(s))return `${s}选情出现新变化`;}return content.includes('共和党')?'共和党关键州竞争升级':content.includes('民主党')?'民主党调整竞选策略':'中期选举竞争升温';}

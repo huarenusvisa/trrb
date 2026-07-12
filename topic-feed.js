@@ -1,0 +1,1 @@
+async function loadTopicFeed(){window.TRRB_TOPIC_DATA=await fetch('/data/topic-feed.json').then(r=>r.json()).catch(()=>[])}document.addEventListener('DOMContentLoaded',loadTopicFeed);

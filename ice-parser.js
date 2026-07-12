@@ -1,0 +1,1 @@
+function renderICE(item){if(item.image){return `<article class="ice-card"><img src="${item.image}"><h3>${item.title}</h3><p>${item.summary||''}</p><small>${item.source||''}</small></article>`;}return `<article class="ice-text-card"><h3>${(item.title||'ICE执法行动').slice(0,18)}</h3><p>${item.summary||''}</p></article>`;}

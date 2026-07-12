@@ -1,0 +1,1 @@
+function generateTrumpTitle(content){const a=[['签署','签署'],['宣布','宣布'],['下令','下令'],['要求','要求'],['批准','批准'],['制裁','制裁'],['回应','回应']];const e=['移民','ICE','边境','关税','伊朗','乌克兰','俄罗斯','中国','经济','美联储','降息','军队'];let ac='',ev='';for(const x of a){if(content.includes(x[0])){ac=x[1];break}}for(const x of e){if(content.includes(x)){ev=x;break}}return ac&&ev?`特朗普${ac}${ev}`:'特朗普回应具体事件';}

@@ -1,222 +1,726 @@
 {
-  "version": 2,
-  "description": "TRRB ICE/DHS 24-lane public-source registry",
+  "version": 3,
+  "description": "TRRB ICE/DHS V43 nationwide 72-lane rotating public-source registry",
   "query_lanes": [
     {
       "id": "ice-official",
-      "label": "ICE official",
+      "label": "ICE headquarters official",
       "source_type": "official",
       "agency": "ICE",
       "trust": 100,
       "enabled": true,
+      "priority": true,
       "query": "from:ICEgov -is:retweet"
     },
     {
       "id": "dhs-official",
-      "label": "DHS official",
+      "label": "DHS official immigration enforcement",
       "source_type": "official",
       "agency": "DHS",
       "trust": 100,
       "enabled": true,
+      "priority": true,
       "query": "from:DHSgov (ICE OR immigration OR deportation OR removal OR detention OR enforcement OR arrested) -is:retweet"
     },
     {
       "id": "cbp-official",
-      "label": "CBP official",
+      "label": "CBP official immigration enforcement",
       "source_type": "official",
       "agency": "CBP",
       "trust": 100,
       "enabled": true,
-      "query": "from:CBP (ICE OR immigration OR removal OR deportation OR detention OR arrested OR enforcement) -is:retweet"
+      "priority": true,
+      "query": "from:CBP (immigration OR removal OR deportation OR detention OR arrested OR enforcement OR BorderPatrol) -is:retweet"
     },
     {
       "id": "hsi-official",
-      "label": "HSI official",
+      "label": "HSI headquarters official",
       "source_type": "official",
       "agency": "HSI",
       "trust": 100,
       "enabled": true,
+      "priority": true,
       "query": "from:HSI_HQ (arrest OR arrested OR detention OR operation OR investigation OR smuggling OR trafficking) -is:retweet"
     },
     {
-      "id": "doj-usattorneys",
-      "label": "DOJ and U.S. Attorneys",
+      "id": "doj-official",
+      "label": "DOJ immigration enforcement",
       "source_type": "official",
       "agency": "DOJ",
-      "trust": 98,
+      "trust": 99,
       "enabled": true,
-      "query": "(from:TheJusticeDept OR \"U.S. Attorney\") (ICE OR HSI OR immigration OR deportation OR alien OR smuggling OR removal) -is:retweet"
+      "priority": true,
+      "query": "from:TheJusticeDept (ICE OR HSI OR immigration OR alien OR smuggling OR deportation OR removal OR reentry) -is:retweet"
     },
     {
       "id": "federal-partners",
       "label": "Federal enforcement partners",
       "source_type": "official",
       "agency": "Federal",
-      "trust": 96,
+      "trust": 97,
       "enabled": true,
+      "priority": true,
       "query": "(from:USMarshalsHQ OR from:FBI OR from:DEAHQ OR from:ATFHQ) (ICE OR HSI OR immigration OR alien OR deportation OR smuggling) -is:retweet"
     },
     {
-      "id": "ero-operations",
-      "label": "ERO operations",
+      "id": "ero-core",
+      "label": "ERO core operations",
       "source_type": "official",
       "agency": "ERO",
+      "trust": 96,
+      "enabled": true,
+      "priority": true,
+      "query": "(ICE OR ERO OR \"Enforcement and Removal Operations\") (arrest OR arrested OR detained OR fugitive OR removal OR deported) -is:retweet lang:en"
+    },
+    {
+      "id": "major-operations",
+      "label": "Major immigration enforcement operations",
+      "source_type": "official",
+      "agency": "DHS",
       "trust": 94,
       "enabled": true,
-      "query": "(ICE OR ERO OR \"Enforcement and Removal Operations\") (arrest OR arrested OR detained OR fugitive OR operation) -is:retweet lang:en"
+      "priority": true,
+      "query": "(ICE OR DHS OR HSI OR ERO) (operation OR sweep OR raid OR task force OR warrant) (arrest OR detained OR removal) -is:retweet lang:en"
     },
     {
-      "id": "removal-deportation",
-      "label": "Removal and deportation",
-      "source_type": "media",
-      "agency": "ICE",
-      "trust": 84,
-      "enabled": true,
-      "query": "(ICE OR immigration) (removed OR deported OR deportation OR repatriated OR removal flight) -is:retweet lang:en"
-    },
-    {
-      "id": "detention-arrest",
-      "label": "Detention and arrests",
-      "source_type": "media",
-      "agency": "ICE",
-      "trust": 84,
-      "enabled": true,
-      "query": "(ICE OR \"immigration agents\" OR HSI) (arrested OR detained OR custody OR detention) -is:retweet lang:en"
-    },
-    {
-      "id": "raid-operation",
-      "label": "Raids and operations",
+      "id": "region-northeast",
+      "label": "Northeast ICE reports",
       "source_type": "media",
       "agency": "ICE",
       "trust": 82,
       "enabled": true,
-      "query": "(ICE OR HSI OR \"immigration enforcement\") (raid OR raids OR operation OR sweep OR warrant) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (New York OR New Jersey OR Boston OR Philadelphia OR Baltimore OR Newark OR Buffalo) -is:retweet lang:en"
     },
     {
-      "id": "worksite-enforcement",
+      "id": "region-midatlantic",
+      "label": "Mid-Atlantic ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Virginia OR Maryland OR Washington DC OR Delaware OR West Virginia) -is:retweet lang:en"
+    },
+    {
+      "id": "region-southeast",
+      "label": "Southeast ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Florida OR Georgia OR Alabama OR Mississippi OR Tennessee OR Carolinas) -is:retweet lang:en"
+    },
+    {
+      "id": "region-greatlakes",
+      "label": "Great Lakes ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Chicago OR Detroit OR Cleveland OR Milwaukee OR Indianapolis OR Minnesota) -is:retweet lang:en"
+    },
+    {
+      "id": "region-southcentral",
+      "label": "South Central ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Texas OR Houston OR Dallas OR San Antonio OR Austin OR Oklahoma OR Arkansas OR Louisiana) -is:retweet lang:en"
+    },
+    {
+      "id": "region-southwest",
+      "label": "Southwest ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Arizona OR Phoenix OR Tucson OR New Mexico OR El Paso OR Nevada) -is:retweet lang:en"
+    },
+    {
+      "id": "region-westcoast",
+      "label": "West Coast ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (California OR Los Angeles OR San Diego OR San Francisco OR Seattle OR Portland) -is:retweet lang:en"
+    },
+    {
+      "id": "region-mountain",
+      "label": "Mountain West ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Colorado OR Denver OR Utah OR Idaho OR Montana OR Wyoming) -is:retweet lang:en"
+    },
+    {
+      "id": "region-plains",
+      "label": "Central Plains ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Kansas OR Nebraska OR Iowa OR Missouri OR North Dakota OR South Dakota) -is:retweet lang:en"
+    },
+    {
+      "id": "region-territories",
+      "label": "Alaska Hawaii Puerto Rico ICE reports",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR operation OR deportation) (Alaska OR Hawaii OR Puerto Rico OR Guam OR \"U.S. Virgin Islands\") -is:retweet lang:en"
+    },
+    {
+      "id": "event-arrests",
+      "label": "Arrests and custody",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (arrested OR arrest OR detained OR custody) -is:retweet lang:en"
+    },
+    {
+      "id": "event-removals",
+      "label": "Removals and deportations",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (removed OR deported OR deportation OR repatriated OR \"removal flight\") -is:retweet lang:en"
+    },
+    {
+      "id": "event-detainers",
+      "label": "Detainers and jail cooperation",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (detainer OR \"immigration hold\" OR jail OR sheriff OR 287g) -is:retweet lang:en"
+    },
+    {
+      "id": "event-fugitives",
+      "label": "Fugitive operations",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (fugitive OR wanted OR absconder OR \"public safety\") -is:retweet lang:en"
+    },
+    {
+      "id": "event-worksite",
       "label": "Worksite enforcement",
-      "source_type": "media",
-      "agency": "HSI",
-      "trust": 82,
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
       "enabled": true,
-      "query": "(ICE OR HSI) (worksite OR workplace OR employer OR factory OR restaurant) (raid OR arrest OR operation OR audit) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (worksite OR workplace OR employer OR factory OR restaurant OR warehouse) -is:retweet lang:en"
     },
     {
-      "id": "courthouse-enforcement",
+      "id": "event-courthouse",
       "label": "Courthouse enforcement",
-      "source_type": "media",
-      "agency": "ICE",
-      "trust": 82,
-      "enabled": true,
-      "query": "(ICE OR \"immigration agents\") (courthouse OR court OR hearing) (arrest OR detained OR custody) -is:retweet lang:en"
-    },
-    {
-      "id": "school-hospital-community",
-      "label": "Schools hospitals community locations",
-      "source_type": "media",
-      "agency": "ICE",
-      "trust": 80,
-      "enabled": true,
-      "query": "(ICE OR \"immigration agents\") (school OR hospital OR church OR neighborhood OR community) (arrest OR detained OR agents OR enforcement) -is:retweet lang:en"
-    },
-    {
-      "id": "smuggling-trafficking",
-      "label": "Smuggling and trafficking",
       "source_type": "official",
-      "agency": "HSI",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (courthouse OR court OR hearing) -is:retweet lang:en"
+    },
+    {
+      "id": "event-community",
+      "label": "Community locations",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (school OR hospital OR church OR neighborhood OR community) -is:retweet lang:en"
+    },
+    {
+      "id": "event-gangs",
+      "label": "Gang enforcement",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (MS-13 OR \"Tren de Aragua\" OR gang OR cartel) -is:retweet lang:en"
+    },
+    {
+      "id": "event-reentry",
+      "label": "Illegal reentry prosecutions",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (\"illegal reentry\" OR \"unlawful reentry\" OR reentered OR 1326) -is:retweet lang:en"
+    },
+    {
+      "id": "event-smuggling",
+      "label": "Human smuggling",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (\"human smuggling\" OR \"migrant smuggling\" OR stash house) -is:retweet lang:en"
+    },
+    {
+      "id": "event-trafficking",
+      "label": "Human trafficking",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (\"human trafficking\" OR trafficking OR exploitation) -is:retweet lang:en"
+    },
+    {
+      "id": "event-sexoffender",
+      "label": "Sex offender and child safety",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (\"sex offender\" OR \"child exploitation\" OR \"child pornography\") -is:retweet lang:en"
+    },
+    {
+      "id": "event-fraud",
+      "label": "Document and immigration fraud",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (\"document fraud\" OR \"visa fraud\" OR \"immigration fraud\" OR \"fake passport\") -is:retweet lang:en"
+    },
+    {
+      "id": "event-money",
+      "label": "Money laundering and financial crime",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (\"money laundering\" OR sanctions OR cryptocurrency OR proceeds) -is:retweet lang:en"
+    },
+    {
+      "id": "event-narcotics",
+      "label": "Narcotics tied to HSI",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (fentanyl OR cocaine OR methamphetamine OR narcotics) -is:retweet lang:en"
+    },
+    {
+      "id": "event-weapons",
+      "label": "Weapons tied to HSI",
+      "source_type": "official",
+      "agency": "ICE/HSI",
+      "trust": 90,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration enforcement\") (firearms OR weapons OR ammunition OR export violation) -is:retweet lang:en"
+    },
+    {
+      "id": "legal-charged",
+      "label": "Immigration enforcement Charges",
+      "source_type": "official",
+      "agency": "DOJ",
       "trust": 92,
       "enabled": true,
-      "query": "(HSI OR ICE) (human smuggling OR human trafficking OR migrant smuggling) (arrest OR charged OR indicted OR operation) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR HSI OR immigration OR alien OR deportation) (charged OR complaint OR criminal complaint) -is:retweet lang:en"
     },
     {
-      "id": "fugitive-sex-offender",
-      "label": "Fugitives and public safety arrests",
+      "id": "legal-indicted",
+      "label": "Immigration enforcement Indictments",
       "source_type": "official",
-      "agency": "ICE",
+      "agency": "DOJ",
       "trust": 92,
       "enabled": true,
-      "query": "(ICE OR ERO) (fugitive OR sex offender OR wanted OR public safety) (arrested OR removed OR detained) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR HSI OR immigration OR alien OR deportation) (indicted OR indictment) -is:retweet lang:en"
     },
     {
-      "id": "national-wire",
-      "label": "Wire services and national desks",
+      "id": "legal-convicted",
+      "label": "Immigration enforcement Convictions",
+      "source_type": "official",
+      "agency": "DOJ",
+      "trust": 92,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR immigration OR alien OR deportation) (convicted OR \"found guilty\" OR \"pleaded guilty\") -is:retweet lang:en"
+    },
+    {
+      "id": "legal-sentenced",
+      "label": "Immigration enforcement Sentencing",
+      "source_type": "official",
+      "agency": "DOJ",
+      "trust": 92,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR immigration OR alien OR deportation) (sentenced OR \"prison sentence\") -is:retweet lang:en"
+    },
+    {
+      "id": "legal-extradition",
+      "label": "Immigration enforcement Extradition and returns",
+      "source_type": "official",
+      "agency": "DOJ",
+      "trust": 92,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR immigration OR alien OR deportation) (extradited OR extradition OR returned OR repatriated) -is:retweet lang:en"
+    },
+    {
+      "id": "legal-lawsuit",
+      "label": "Immigration enforcement Litigation and court rulings",
+      "source_type": "official",
+      "agency": "DOJ",
+      "trust": 92,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR immigration OR alien OR deportation) (lawsuit OR judge OR injunction OR ruling OR court order) -is:retweet lang:en"
+    },
+    {
+      "id": "media-wire",
+      "label": "Wire services",
       "source_type": "media",
       "agency": "",
       "trust": 94,
       "enabled": true,
-      "query": "(ICE OR \"immigration enforcement\" OR HSI) (arrest OR detained OR raid OR deported OR removal) (Reuters OR AP OR Bloomberg) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (Reuters OR AP OR Bloomberg) -is:retweet lang:en"
     },
     {
-      "id": "national-tv",
-      "label": "National television news",
+      "id": "media-tv",
+      "label": "National television",
       "source_type": "media",
       "agency": "",
       "trust": 88,
       "enabled": true,
-      "query": "(ICE OR \"immigration agents\") (arrest OR detained OR raid OR operation OR deportation) (CNN OR NBC OR ABC OR CBS OR Fox) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (CNN OR NBC OR ABC OR CBS OR Fox) -is:retweet lang:en"
     },
     {
-      "id": "national-politics",
-      "label": "National politics and policy media",
+      "id": "media-politics",
+      "label": "National policy media",
       "source_type": "media",
       "agency": "",
       "trust": 88,
       "enabled": true,
-      "query": "(ICE OR \"immigration enforcement\") (arrest OR detention OR deportation OR operation) (Axios OR Politico OR NPR OR PBS) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (Axios OR Politico OR NPR OR PBS) -is:retweet lang:en"
     },
     {
-      "id": "local-tv",
-      "label": "Local television stations",
+      "id": "media-papers",
+      "label": "National newspapers",
       "source_type": "media",
       "agency": "",
-      "trust": 80,
+      "trust": 88,
       "enabled": true,
-      "query": "(ICE OR HSI OR \"immigration agents\") (arrest OR detained OR raid OR operation) (\"local news\" OR TV OR News) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (\"New York Times\" OR \"Washington Post\" OR \"Los Angeles Times\" OR \"Wall Street Journal\") -is:retweet lang:en"
     },
     {
-      "id": "local-newspapers",
-      "label": "Local newspapers",
-      "source_type": "media",
-      "agency": "",
-      "trust": 80,
-      "enabled": true,
-      "query": "(ICE OR HSI OR \"immigration enforcement\") (arrest OR detention OR raid OR deportation) (reported OR newsroom OR newspaper) -is:retweet lang:en"
-    },
-    {
-      "id": "spanish-national",
-      "label": "Spanish national media",
+      "id": "media-localtv-east",
+      "label": "East local television",
       "source_type": "media",
       "agency": "",
       "trust": 82,
       "enabled": true,
-      "query": "(ICE OR inmigración) (arresto OR detenido OR redada OR deportación OR operativo) -is:retweet lang:es"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (WABC OR WNBC OR WCBS OR WCVB OR WCAU OR WJLA) -is:retweet lang:en"
     },
     {
-      "id": "spanish-local",
-      "label": "Spanish local reports",
+      "id": "media-localtv-south",
+      "label": "South local television",
       "source_type": "media",
       "agency": "",
-      "trust": 76,
+      "trust": 82,
       "enabled": true,
-      "query": "(ICE OR agentes migratorios) (arrestaron OR detuvieron OR redada OR operativo) (ciudad OR condado OR comunidad) -is:retweet lang:es"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (WPLG OR WSVN OR WSBTV OR KHOU OR KPRC OR WFAA) -is:retweet lang:en"
     },
     {
-      "id": "legal-advocacy",
-      "label": "Legal and advocacy organizations",
+      "id": "media-localtv-midwest",
+      "label": "Midwest local television",
+      "source_type": "media",
+      "agency": "",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (WGN OR WLS OR WXYZ OR WKYC OR KARE OR KMOV) -is:retweet lang:en"
+    },
+    {
+      "id": "media-localtv-west",
+      "label": "West local television",
+      "source_type": "media",
+      "agency": "",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (KTLA OR KABC OR KNBC OR KTVU OR KIRO OR KGW) -is:retweet lang:en"
+    },
+    {
+      "id": "media-localpapers-east",
+      "label": "East local newspapers",
+      "source_type": "media",
+      "agency": "",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (Miami Herald OR Boston Globe OR Philadelphia Inquirer OR NJ.com) -is:retweet lang:en"
+    },
+    {
+      "id": "media-localpapers-south",
+      "label": "South local newspapers",
+      "source_type": "media",
+      "agency": "",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (Texas Tribune OR Houston Chronicle OR Dallas Morning News OR Atlanta Journal) -is:retweet lang:en"
+    },
+    {
+      "id": "media-localpapers-midwest",
+      "label": "Midwest local newspapers",
+      "source_type": "media",
+      "agency": "",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (Chicago Tribune OR Detroit Free Press OR Cleveland.com OR Star Tribune) -is:retweet lang:en"
+    },
+    {
+      "id": "media-localpapers-west",
+      "label": "West local newspapers",
+      "source_type": "media",
+      "agency": "",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\" OR HSI OR ERO) (arrest OR detained OR raid OR deportation OR operation) (Seattle Times OR Oregonian OR Arizona Republic OR Denver Post) -is:retweet lang:en"
+    },
+    {
+      "id": "es-national",
+      "label": "Spanish national",
+      "source_type": "media",
+      "agency": "",
+      "trust": 78,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR inmigración OR agentes migratorios) (Univision OR Telemundo OR Noticias) -is:retweet lang:es"
+    },
+    {
+      "id": "es-arrests",
+      "label": "Spanish arrests",
+      "source_type": "media",
+      "agency": "",
+      "trust": 78,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR inmigración OR agentes migratorios) (arresto OR detenido OR detención) -is:retweet lang:es"
+    },
+    {
+      "id": "es-raids",
+      "label": "Spanish raids",
+      "source_type": "media",
+      "agency": "",
+      "trust": 78,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR inmigración OR agentes migratorios) (redada OR operativo OR agentes) -is:retweet lang:es"
+    },
+    {
+      "id": "es-deportation",
+      "label": "Spanish deportation",
+      "source_type": "media",
+      "agency": "",
+      "trust": 78,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR inmigración OR agentes migratorios) (deportación OR expulsado OR repatriado) -is:retweet lang:es"
+    },
+    {
+      "id": "es-border",
+      "label": "Spanish border",
+      "source_type": "media",
+      "agency": "",
+      "trust": 78,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR inmigración OR agentes migratorios) (frontera OR migrantes OR patrulla fronteriza) -is:retweet lang:es"
+    },
+    {
+      "id": "es-community",
+      "label": "Spanish community reports",
+      "source_type": "media",
+      "agency": "",
+      "trust": 78,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR inmigración OR agentes migratorios) (comunidad OR iglesia OR escuela OR vecindario) -is:retweet lang:es"
+    },
+    {
+      "id": "extra-policy-executive",
+      "label": "Executive actions and DHS policy",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (executive order OR proclamation OR DHS policy OR enforcement guidance) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-policy-sanctuary",
+      "label": "Sanctuary jurisdiction disputes",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (sanctuary city OR sanctuary state OR cooperation OR noncooperation) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-policy-detention",
+      "label": "Detention capacity and facilities",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (detention center OR detention facility OR bed space OR processing center) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-policy-flights",
+      "label": "Removal flights and international returns",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (removal flight OR charter flight OR repatriation flight OR international return) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-metro-ny",
+      "label": "New York metro enforcement",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (New York City OR Queens OR Brooklyn OR Bronx OR Long Island OR Newark) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-metro-la",
+      "label": "Los Angeles metro enforcement",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (Los Angeles OR Orange County OR Riverside OR San Bernardino OR Ventura) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-metro-chicago",
+      "label": "Chicago metro enforcement",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (Chicago OR Cook County OR Aurora OR Joliet OR Naperville) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-metro-houston",
+      "label": "Houston metro enforcement",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (Houston OR Harris County OR Galveston OR Pasadena OR Baytown) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-metro-miami",
+      "label": "South Florida enforcement",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (Miami OR Fort Lauderdale OR Broward OR Palm Beach OR Homestead) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "extra-metro-dallas",
+      "label": "Dallas Fort Worth enforcement",
+      "source_type": "media",
+      "agency": "ICE",
+      "trust": 82,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR HSI OR ERO OR \"immigration agents\") (Dallas OR Fort Worth OR Arlington OR Tarrant OR Collin County) (arrest OR detained OR raid OR operation OR deportation) -is:retweet lang:en"
+    },
+    {
+      "id": "legal-aid",
+      "label": "Immigration legal aid reports",
       "source_type": "social",
       "agency": "",
       "trust": 68,
       "enabled": true,
-      "query": "(ICE OR \"immigration agents\") (arrest OR detained OR raid OR sighting) (lawyer OR legal OR rights OR advocacy) -is:retweet lang:en"
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\") (arrest OR detained OR raid OR sighting) (lawyer OR legal aid OR hotline OR rights) -is:retweet lang:en"
+    },
+    {
+      "id": "advocacy",
+      "label": "Immigrant advocacy reports",
+      "source_type": "social",
+      "agency": "",
+      "trust": 64,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR \"immigration agents\") (arrest OR detained OR raid OR sighting) (advocacy OR immigrant rights OR coalition) -is:retweet lang:en"
     },
     {
       "id": "community-sightings",
-      "label": "Community field reports",
+      "label": "Community sightings",
       "source_type": "social",
       "agency": "",
       "trust": 58,
       "enabled": true,
+      "priority": false,
       "query": "(ICE OR \"immigration agents\") (seen OR spotted OR sighting OR agents OR raid) (today OR tonight OR morning) -is:retweet lang:en"
+    },
+    {
+      "id": "spanish-sightings",
+      "label": "Spanish community sightings",
+      "source_type": "social",
+      "agency": "",
+      "trust": 58,
+      "enabled": true,
+      "priority": false,
+      "query": "(ICE OR agentes migratorios) (visto OR avistamiento OR redada OR operativo) (hoy OR esta mañana OR esta noche) -is:retweet lang:es"
     }
   ],
   "accounts": [

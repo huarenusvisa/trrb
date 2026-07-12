@@ -1,137 +1,28 @@
 {
   "last_seen_id": "2076183360679084148",
-  "last_run_at": "2026-07-12T05:58:39.973Z",
-  "last_success_at": "2026-07-12T05:58:39.973Z",
+  "last_run_at": "2026-07-12T06:20:00.626Z",
+  "last_success_at": "2026-07-12T06:20:00.626Z",
   "last_result": {
-    "fetched": 90,
-    "lanes": {
-      "ice-official": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "dhs-official": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "cbp-official": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "hsi-official": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "doj-official": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "federal-partners": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "ero-core": {
-        "fetched": 4,
-        "status": "ok"
-      },
-      "major-operations": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "legal-aid": {
-        "fetched": 22,
-        "status": "ok"
-      },
-      "advocacy": {
-        "fetched": 2,
-        "status": "ok"
-      },
-      "community-sightings": {
-        "fetched": 47,
-        "status": "ok"
-      },
-      "spanish-sightings": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-northeast": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-midatlantic": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-southeast": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-greatlakes": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-southcentral": {
-        "fetched": 1,
-        "status": "ok"
-      },
-      "region-southwest": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-westcoast": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-mountain": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-plains": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "region-territories": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "event-arrests": {
-        "fetched": 12,
-        "status": "ok"
-      },
-      "event-removals": {
-        "fetched": 6,
-        "status": "ok"
-      },
-      "event-detainers": {
-        "fetched": 0,
-        "status": "ok"
-      },
-      "event-fugitives": {
-        "fetched": 1,
-        "status": "ok"
-      },
-      "event-worksite": {
-        "fetched": 2,
-        "status": "ok"
-      },
-      "event-courthouse": {
-        "fetched": 3,
-        "status": "ok"
-      }
-    },
-    "lanes_run": 28,
-    "lanes_total": 72,
-    "sources_seen": 86,
-    "candidates": 77,
-    "new_posts": 73,
-    "exact_duplicates_skipped": 4,
-    "event_updates_published": 1,
-    "new_events_published": 6,
+    "fetched": 14,
+    "candidates": 12,
+    "new_posts": 11,
+    "queued": 0,
+    "processed": 11,
+    "duplicate_skipped": 1,
     "expired_pending": 0,
     "metadata_backfilled": 0,
-    "published": 7,
-    "pending": 66,
-    "total_published": 78,
-    "total_pending": 167
+    "published": 5,
+    "pending": 6,
+    "total_published": 82,
+    "total_pending": 173,
+    "query_lanes": [
+      {
+        "id": "override",
+        "label": "自定义搜索",
+        "fetched": 14,
+        "truncated": false
+      }
+    ]
   },
   "last_seen_by_lane": {
     "ice-official": "2076170950362488837",
@@ -180,5 +71,9 @@
     "advocacy": "2076071177554928112",
     "community-sightings": "2076175515766100142"
   },
-  "lane_cursor": 16
+  "lane_cursor": 16,
+  "query_cursors": {
+    "override": "2076170950362488837"
+  },
+  "last_content_at": "2026-07-12T06:20:00.626Z"
 }

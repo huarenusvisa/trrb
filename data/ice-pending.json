@@ -1,5 +1,653 @@
 [
   {
+    "id": "pending-2076139505724080501",
+    "x_post_id": "2076139505724080501",
+    "reason": "法律状态“被定罪”在来源中没有对应依据",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T06:20:00.625Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 100,
+    "query_lane": "override",
+    "ai": {
+      "title": "堪萨斯市多机构联合行动打击儿童性贩卖",
+      "summary": "在2026年世界杯前夕，HSI堪萨斯市分部领导的多机构联合执法行动逮捕多名涉嫌儿童性贩卖的犯罪嫌疑人。",
+      "body_paragraphs": [
+        "2026年6月，堪萨斯市的美国国土安全调查局（HSI）与联邦调查局（FBI）堪萨斯市、克莱县警长办公室及北堪萨斯城市警察局合作，开展了一次针对儿童性贩卖的专项执法行动。该行动旨在识别并逮捕意图性剥削未成年人的犯罪嫌疑人，同时打击该地区的人口贩卖网络。",
+        "通过协调的卧底调查，执法人员逮捕多名试图与儿童进行非法性交易的个人。佛罗里达州彭萨科拉市50岁的Jason Grouix被克莱县检察官以企图引诱儿童和企图持有儿童色情作品提起指控。堪萨斯州莱内克萨市47岁的Curtis Ray Gibson则在联邦法院被指控企图进行儿童性贩卖。执法部门已扣押相关电子设备进行法医鉴定，案件提交起诉审查。",
+        "此次行动展现了联邦、州及地方执法机构的紧密合作，为保护社区安全和受害青少年权益发挥了重要作用。HSI堪萨斯市特别探员Rick Sabatini表示，持续的合作基础是打击人口贩卖成功的关键，所有涉案指控均需经审判团认定罪名成立。HSI将继续致力于识别和破获人口贩卖网络，支持受害者。"
+      ],
+      "content_type": "article",
+      "category": "抓捕与拘留",
+      "importance": 7,
+      "relevance_score": 100,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 100,
+      "verified_level": "official",
+      "keywords": [
+        "HSI",
+        "儿童性贩卖",
+        "堪萨斯市",
+        "联合行动",
+        "世界杯",
+        "人口贩卖"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "arrest",
+          "people_count": null,
+          "occurred_at": "2026-06-22T00:00:00",
+          "time_precision": "date",
+          "city": "Kansas City",
+          "state_code": "MO",
+          "state_name": "Missouri",
+          "location_text": "堪萨斯市，密苏里州",
+          "confidence": 100,
+          "source_excerpt": "Homeland Security Investigations Kansas City, in partnership with the FBI Kansas City, the Clay County Sheriff’s Office and the North Kansas City Police Department, arrested several child predators during a targeted human trafficking operation leading up to the World Cup."
+        }
+      ]
+    },
+    "post": {
+      "id": "2076139505724080501",
+      "text": "📺⚠️WATCH behind the scenes as this ICE HSI-led CHILD SEX TRAFFICKING STING leading up to the #FIFAWorldCup2026 games in Kansas City scores multiple arrests and charges.\n\n➡️Details: https://t.co/Q6FZjY39Vl https://t.co/NrcxCy02zW",
+      "created_at": "2026-07-12T03:00:05.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "hashtags": [
+          {
+            "end": 110,
+            "start": 93,
+            "tag": "FIFAWorldCup2026"
+          }
+        ],
+        "urls": [
+          {
+            "description": "The operation focused on identifying and apprehending sexual predators seeking to exploit minors, as well as disrupting human trafficking networks operating in the region.",
+            "display_url": "ice.gov/news/releases/…",
+            "end": 204,
+            "expanded_url": "https://www.ice.gov/news/releases/hsi-kansas-city-leads-multiagency-operation-combat-human-trafficking-leading-world",
+            "start": 181,
+            "status": 200,
+            "title": "HSI Kansas City leads multiagency operation to combat human trafficking leading up to World Cup games",
+            "unwound_url": "https://www.ice.gov/news/releases/hsi-kansas-city-leads-multiagency-operation-combat-human-trafficking-leading-world",
+            "url": "https://t.co/Q6FZjY39Vl"
+          },
+          {
+            "display_url": "pic.x.com/NrcxCy02zW",
+            "end": 228,
+            "expanded_url": "https://x.com/ICEgov/status/2076139505724080501/video/1",
+            "media_key": "7_2076138300922830848",
+            "start": 205,
+            "url": "https://t.co/NrcxCy02zW"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2076138300922830848/pu/img/5jJLcWRogIJxiVXV.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 12,
+        "impression_count": 17827,
+        "like_count": 322,
+        "quote_count": 2,
+        "reply_count": 19,
+        "retweet_count": 94
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2076139505724080501",
+      "candidate_score": 100,
+      "matched_terms": [
+        "ICE",
+        "HSI/ERO",
+        "执法行动"
+      ]
+    }
+  },
+  {
+    "id": "pending-2076110602146095345",
+    "x_post_id": "2076110602146095345",
+    "reason": "新闻正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T06:19:47.084Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 100,
+    "query_lane": "override",
+    "ai": {
+      "title": "密歇根致命刺杀案嫌疑人被ICE扣押",
+      "summary": "ICE对海地籍瓦尔米尔·杰普尔西发布拘押令，他因涉嫌在肉类厂刺杀同事被密歇根警方拘留。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）发布拘押令，针对海地籍嫌疑人瓦尔米尔·杰普尔西（Valmir Djemplsy）。",
+        "据密歇根州Coldwater警方报告，杰普尔西涉嫌在当地一家肉类加工厂刺杀一名同事致死，目前以谋杀指控被关押在Branch县监狱。",
+        "ICE表示，该嫌疑人非法入境，美国境内无合法入境手续。"
+      ],
+      "content_type": "article",
+      "category": "抓捕与拘留",
+      "importance": 7,
+      "relevance_score": 100,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "拘押令",
+        "谋杀",
+        "密歇根",
+        "非法入境",
+        "瓦尔米尔·杰普尔西"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "detention",
+          "people_count": 1,
+          "occurred_at": "2026-07-12T00:00:00",
+          "time_precision": "date",
+          "city": "Coldwater",
+          "state_code": "MI",
+          "state_name": "Michigan",
+          "location_text": "Coldwater肉类厂",
+          "confidence": 95,
+          "source_excerpt": "Coldwater police in Michigan say he stabbed a co-worker to death at a meat plant. Djemplsy is held at a jail in Branch County on a homicide charge."
+        }
+      ]
+    },
+    "post": {
+      "id": "2076110602146095345",
+      "text": "ICE issued a detainer against Valmir Djemplsy, of Haiti. Coldwater police in Michigan say he stabbed a co-worker to death at a meat plant.\nDjemplsy is held at a jail in Branch County on a homicide charge.\n\nThe criminal illegal alien arrived at a port of entry without proper https://t.co/ieZlQeNVwN",
+      "created_at": "2026-07-12T01:05:14.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/ieZlQeNVwN",
+            "end": 298,
+            "expanded_url": "https://x.com/ICEgov/status/2076110602146095345/video/1",
+            "media_key": "7_2076109344014204928",
+            "start": 275,
+            "url": "https://t.co/ieZlQeNVwN"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2076109344014204928/pu/img/VgJ7CRziQaOIhzEJ.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 19,
+        "impression_count": 28538,
+        "like_count": 982,
+        "quote_count": 8,
+        "reply_count": 49,
+        "retweet_count": 288
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2076110602146095345",
+      "candidate_score": 100,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
+    "id": "pending-2075977219776630927",
+    "x_post_id": "2075977219776630927",
+    "reason": "新闻正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T06:19:38.331Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 100,
+    "query_lane": "override",
+    "ai": {
+      "title": "ICE遣返曾因毒品犯罪和非法入境被判刑人员",
+      "summary": "ICE遣返了一名曾因毒品贩运和非法再入境被判刑的墨西哥帮派成员。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）遣返了墨西哥籍前Paisas帮派成员Marcelo Narcizo-Cristobal。",
+        "该人员此前因毒品贩运被判刑20年，且在被遣返后非法再次入境，随后被判处15个月监禁。",
+        "根据官方发布，现任总统领导下，美国继续严厉打击毒品贩运行为，不再为其提供庇护。"
+      ],
+      "content_type": "article",
+      "category": "遣返",
+      "importance": 7,
+      "relevance_score": 100,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "遣返",
+        "Paisas帮派",
+        "毒品贩运",
+        "非法入境"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "removal",
+          "people_count": 1,
+          "occurred_at": "2026-07-11T00:00:00",
+          "time_precision": "date",
+          "city": "",
+          "state_code": "",
+          "state_name": "",
+          "location_text": "墨西哥",
+          "confidence": 95,
+          "source_excerpt": "ICE遣返了曾因毒品贩运和非法入境被判刑的墨西哥Paisas帮派成员Marcelo Narcizo-Cristobal。"
+        }
+      ]
+    },
+    "post": {
+      "id": "2075977219776630927",
+      "text": "👏ICE deported Marcelo Narcizo-Cristobal, a previously deported Paisas gang member from Mexico, who was previously sentenced to 20 years for drug trafficking and 15-months for illegal reentry after removal.\n\n🛑Under @POTUS, the U.S. is no longer a safe haven for drug traffickers https://t.co/pMox90zDzl",
+      "created_at": "2026-07-11T16:15:13.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "mentions": [
+          {
+            "end": 220,
+            "id": "1879650942410481666",
+            "start": 214,
+            "username": "POTUS"
+          }
+        ],
+        "urls": [
+          {
+            "display_url": "pic.x.com/pMox90zDzl",
+            "end": 301,
+            "expanded_url": "https://x.com/ICEgov/status/2075977219776630927/photo/1",
+            "media_key": "3_2075977217444593664",
+            "start": 278,
+            "url": "https://t.co/pMox90zDzl"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM9aR7-WwAA7Ss9.png",
+          "alt_text": "",
+          "width": 370,
+          "height": 336
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 8,
+        "impression_count": 24482,
+        "like_count": 1339,
+        "quote_count": 7,
+        "reply_count": 69,
+        "retweet_count": 303
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075977219776630927",
+      "candidate_score": 100,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
+    "id": "pending-2075807307447857230",
+    "x_post_id": "2075807307447857230",
+    "reason": "稿件出现来源中不存在的数字：11",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T06:19:28.423Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 100,
+    "query_lane": "override",
+    "ai": {
+      "title": "威斯康星县拘留涉嫌袭击女性男子",
+      "summary": "ICE在威斯康星州Dane县监狱对涉嫌刺伤前女友的男子实施拘留。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）已对来自墨西哥的伊万·阿尔代尔·坎乔拉·加西亚（Ivan Aldair Canchola Garcia）在威斯康星州Dane县监狱实施拘留。",
+        "警方称坎乔拉·加西亚涉嫌在其前女友怀抱11个月大的女儿时，多次用刀刺伤她的颈部、腋下和肩胛骨。",
+        "坎乔拉·加西亚面临多项指控，案件正在处理中。"
+      ],
+      "content_type": "brief",
+      "category": "抓捕与拘留",
+      "importance": 6,
+      "relevance_score": 95,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "拘留",
+        "刺伤",
+        "威斯康星",
+        "抓捕"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "detention",
+          "people_count": 1,
+          "occurred_at": "2026-07-11T00:00:00",
+          "time_precision": "date",
+          "city": "Madison",
+          "state_code": "WI",
+          "state_name": "Wisconsin",
+          "location_text": "Dane County Jail, Wisconsin",
+          "confidence": 95,
+          "source_excerpt": "ICE placed a detainer with the Dane County, Wisc., jail against Ivan Aldair Canchola Garcia, of Mexico, after police say he stabbed his ex-girlfriend."
+        }
+      ]
+    },
+    "post": {
+      "id": "2075807307447857230",
+      "text": "ICE placed a detainer with the Dane County, Wisc., jail against Ivan Aldair Canchola Garcia, of Mexico, after police say he stabbed his ex-girlfriend in the neck, armpit and shoulder blade while she was holding her 11-month-old daughter\n\nCanchola Garcia faces multiple charges, https://t.co/FEFD2L6whc",
+      "created_at": "2026-07-11T05:00:03.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/FEFD2L6whc",
+            "end": 301,
+            "expanded_url": "https://x.com/ICEgov/status/2075807307447857230/video/1",
+            "media_key": "7_2075806125258158080",
+            "start": 278,
+            "url": "https://t.co/FEFD2L6whc"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "video",
+          "url": "https://pbs.twimg.com/ext_tw_video_thumb/2075806125258158080/pu/img/pE3syXaBJS5S54l6.jpg",
+          "alt_text": "",
+          "width": 720,
+          "height": 1280
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 35,
+        "impression_count": 37815,
+        "like_count": 2730,
+        "quote_count": 16,
+        "reply_count": 68,
+        "retweet_count": 787
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075807307447857230",
+      "candidate_score": 100,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
+    "id": "pending-2075705424402157897",
+    "x_post_id": "2075705424402157897",
+    "reason": "法律状态“被判刑”在来源中没有对应依据",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T06:19:19.214Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 100,
+    "query_lane": "override",
+    "ai": {
+      "title": "ICE在宾夕法尼亚州拘留一名中国籍非法入境者",
+      "summary": "ICE在宾夕法尼亚州拘留了一名曾因共谋犯罪服刑140天的中国籍女子赵丽娟，她目前正处于遣返程序中。",
+      "body_paragraphs": [
+        "美国移民与海关执法局（ICE）近日从宾夕法尼亚州伊利县一所监狱接管了赵丽娟的拘押手续。赵丽娟因共谋对美国犯罪，被判处140天有期徒刑。",
+        "赵丽娟为中国公民，非法进入美国，目前正处于遣返程序中。"
+      ],
+      "content_type": "brief",
+      "category": "抓捕与拘留",
+      "importance": 6,
+      "relevance_score": 100,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 95,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "拘留",
+        "遣返程序",
+        "中国籍",
+        "非法入境",
+        "共谋犯罪"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "detention",
+          "people_count": 1,
+          "occurred_at": "2026-07-10T00:00:00",
+          "time_precision": "date",
+          "city": "Erie",
+          "state_code": "PA",
+          "state_name": "Pennsylvania",
+          "location_text": "宾夕法尼亚州伊利县监狱",
+          "confidence": 95,
+          "source_excerpt": "ICE took custody of Lijuan Zhao from a prison in Erie County, Penn., after she served a 140-day sentence for conspiracy to commit an offense against the United States."
+        }
+      ]
+    },
+    "post": {
+      "id": "2075705424402157897",
+      "text": "ICE took custody of Lijuan Zhao from a prison in Erie County, Penn., after she served a 140-day sentence for conspiracy to commit an offense against the United States.\n\n🌏Zhao is a Chinese national who entered the U.S. illegally. She is in removal proceedings. https://t.co/Th0d3g81K8",
+      "created_at": "2026-07-10T22:15:12.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/Th0d3g81K8",
+            "end": 283,
+            "expanded_url": "https://x.com/ICEgov/status/2075705424402157897/photo/1",
+            "media_key": "3_2075705421814272000",
+            "start": 260,
+            "url": "https://t.co/Th0d3g81K8"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM5jFWWXkAAPwbc.png",
+          "alt_text": "",
+          "width": 240,
+          "height": 240
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 139,
+        "impression_count": 146728,
+        "like_count": 14386,
+        "quote_count": 68,
+        "reply_count": 390,
+        "retweet_count": 3324
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075705424402157897",
+      "candidate_score": 100,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
+    "id": "pending-2075612323364868338",
+    "x_post_id": "2075612323364868338",
+    "reason": "新闻正文长度异常",
+    "manual_review": true,
+    "attempts": 1,
+    "created_at": "2026-07-12T06:19:05.680Z",
+    "source_mode": "auto",
+    "source_tier": "official",
+    "source_weight": 100,
+    "candidate_score": 100,
+    "query_lane": "override",
+    "ai": {
+      "title": "ICE在得州罗莱特拘捕越南罪犯",
+      "summary": "ICE达拉斯通缉行动于6月19日在得州罗莱特拘捕一名越南身份非法移民，该人因严重性侵案于1998年被下达最终遣返令。",
+      "body_paragraphs": [
+        "ICE达拉斯通缉行动于2026年6月19日在得克萨斯州罗莱特的一社区内实施有针对性的执法行动，拘捕一名越南籍非法移民Kiet Trung Tran。",
+        "根据ICE发布的信息，该嫌疑人在1998年因加重性侵罪被判定并下达最终遣返令。ICE强调其执法行动为针对性拘捕。"
+      ],
+      "content_type": "article",
+      "category": "抓捕与拘留",
+      "importance": 8,
+      "relevance_score": 100,
+      "publishable": true,
+      "needs_review": false,
+      "review_reason": "",
+      "confidence": 100,
+      "verified_level": "official",
+      "keywords": [
+        "ICE",
+        "拘捕",
+        "违法移民",
+        "加重性侵",
+        "遣返令",
+        "得克萨斯",
+        "罗莱特"
+      ],
+      "enforcement_events": [
+        {
+          "event_type": "arrest",
+          "people_count": 1,
+          "occurred_at": "2026-06-19T00:00:00",
+          "time_precision": "date",
+          "city": "Rowlett",
+          "state_code": "TX",
+          "state_name": "Texas",
+          "location_text": "Rowlett, Texas neighborhood",
+          "confidence": 100,
+          "source_excerpt": "ICE Dallas Fugitive Operations arrested Vietnamese criminal illegal alien Kiet Trung Tran during a targeted enforcement operation a Rowlett, Texas, neighborhood June 19."
+        }
+      ]
+    },
+    "post": {
+      "id": "2075612323364868338",
+      "text": "ICE Dallas Fugitive Operations arrested Vietnamese criminal illegal alien Kiet Trung Tran during a targeted enforcement operation a Rowlett, Texas, neighborhood June 19.\n🚩Convicted | Aggravated sexual assault\n⚖️1998 Final order of removal\n\n📍Remember, ICE makes TARGETED arrests https://t.co/eco6JpWZBE",
+      "created_at": "2026-07-10T16:05:15.000Z",
+      "lang": "en",
+      "possibly_sensitive": false,
+      "entities": {
+        "urls": [
+          {
+            "display_url": "pic.x.com/eco6JpWZBE",
+            "end": 301,
+            "expanded_url": "https://x.com/ICEgov/status/2075612323364868338/photo/1",
+            "media_key": "3_2075612320684806144",
+            "start": 278,
+            "url": "https://t.co/eco6JpWZBE"
+          }
+        ]
+      },
+      "media": [
+        {
+          "type": "photo",
+          "url": "https://pbs.twimg.com/media/HM4OaJnXkAA5oBA.jpg",
+          "alt_text": "",
+          "width": 758,
+          "height": 946
+        }
+      ],
+      "public_metrics": {
+        "bookmark_count": 20,
+        "impression_count": 25927,
+        "like_count": 1513,
+        "quote_count": 15,
+        "reply_count": 88,
+        "retweet_count": 498
+      },
+      "author_username": "ICEgov",
+      "author_name": "U.S. Immigration and Customs Enforcement",
+      "author_verified": true,
+      "author_verified_type": "government",
+      "source_mode": "auto",
+      "source_tier": "official",
+      "source_weight": 100,
+      "query_lane": "override",
+      "query_label": "自定义搜索",
+      "x_url": "https://x.com/ICEgov/status/2075612323364868338",
+      "candidate_score": 100,
+      "matched_terms": [
+        "ICE",
+        "执法行动"
+      ]
+    }
+  },
+  {
     "id": "pending-2076183360679084148",
     "x_post_id": "2076183360679084148",
     "reason": "正文为空",

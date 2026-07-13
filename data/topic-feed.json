@@ -1,25 +1,24 @@
-
 [
   {
     "topic": "trump",
     "content": "特朗普宣布新的边境安全计划",
     "summary": "特朗普公布最新移民政策安排。",
-    "time": "2026-07-12 20:00",
+    "time": "2026-07-12 23:00",
     "source": "Trump"
   },
   {
     "topic": "ice",
-    "title": "纽约ICE执法行动",
-    "summary": "ICE展开执法行动，多人被捕。",
+    "title": "ICE实时执法追踪启动",
+    "summary": "系统已重新开始记录上线后的ICE执法动态。",
     "image": "",
-    "time": "2026-07-12 19:30",
+    "time": "2026-07-12 23:00",
     "source": "ICE"
   },
   {
     "topic": "election",
     "content": "宾州中期选举民调出现变化",
     "summary": "关键州选情受到关注。",
-    "time": "2026-07-12 19:00",
+    "time": "2026-07-12 23:00",
     "source": "Election"
   }
 ]

@@ -42,6 +42,7 @@ jobs:
       ICE_MAX_RETRIES: "5"
       ICE_PUBLISH_INTERVAL_MINUTES: "30"
       ICE_MAX_STORIES_PER_RUN: "10"
+      ICE_NORMALIZE_MAX_STORIES: "16"
       ICE_OFFICIALS_PER_QUERY: "10"
       ICE_MEDIA_PER_QUERY: "10"
       ICE_ORGS_PER_QUERY: "15"
@@ -69,6 +70,7 @@ jobs:
         run: |
           node --check scripts/ice-high-recall-discovery.mjs
           node --check scripts/ice-multisource.mjs
+          node --check scripts/ice-editorial-normalize.mjs
           node --check scripts/ice-publish-due.mjs
           node --check scripts/ice-enable-first-backfill.mjs
           node --test scripts/ice-architecture.test.mjs
@@ -84,6 +86,9 @@ jobs:
 
       - name: Fetch, extract and cross-check ICE news
         run: node scripts/ice-multisource.mjs --mode="$RUN_MODE"
+
+      - name: Translate and format Chinese ICE briefs
+        run: node scripts/ice-editorial-normalize.mjs
 
       - name: Publish first approved ICE story immediately
         if: env.RUN_MODE == 'collect'

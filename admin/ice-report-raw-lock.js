@@ -1,6 +1,9 @@
 (() => {
   "use strict";
 
+  let installed = false;
+  let observer = null;
+
   function installStyles() {
     if (document.getElementById("original-submission-lock-styles")) return;
     const style = document.createElement("style");
@@ -36,12 +39,21 @@
     document.head.appendChild(style);
   }
 
+  function setTextOnce(node, value) {
+    if (node && node.textContent !== value) node.textContent = value;
+  }
+
   function installOriginalSubmissionLock() {
+    if (installed) return true;
     installStyles();
+
     const title = document.getElementById("report-edit-title");
     const summary = document.getElementById("report-edit-summary");
     const content = document.getElementById("report-edit-content");
     if (!title || !summary || !content) return false;
+
+    installed = true;
+    document.documentElement.dataset.originalSubmissionLockInstalled = "true";
 
     [title, summary, content].forEach((field) => {
       field.readOnly = true;
@@ -56,9 +68,9 @@
     const titleLabel = title.previousElementSibling;
     const summaryLabel = summary.previousElementSibling;
     const contentLabel = content.previousElementSibling;
-    if (titleLabel?.tagName === "LABEL") titleLabel.textContent = "发布标题（依据用户填写地点自动生成）";
-    if (summaryLabel?.tagName === "LABEL") summaryLabel.textContent = "用户原始摘要（只读）";
-    if (contentLabel?.tagName === "LABEL") contentLabel.textContent = "用户原始现场描述（原样发布，只读）";
+    if (titleLabel?.tagName === "LABEL") setTextOnce(titleLabel, "发布标题（依据用户填写地点自动生成）");
+    if (summaryLabel?.tagName === "LABEL") setTextOnce(summaryLabel, "用户原始摘要（只读）");
+    if (contentLabel?.tagName === "LABEL") setTextOnce(contentLabel, "用户原始现场描述（原样发布，只读）");
 
     if (!document.getElementById("original-submission-lock-note")) {
       const note = document.createElement("div");
@@ -69,28 +81,32 @@
     }
 
     const saveButton = document.querySelector('[data-report-action="save"]');
-    if (saveButton) saveButton.textContent = "保存审核状态";
+    setTextOnce(saveButton, "保存审核状态");
 
     const publishButton = document.querySelector('[data-report-action="publish"]');
     if (publishButton) {
-      publishButton.textContent = "原文立即发布";
+      setTextOnce(publishButton, "原文立即发布");
       publishButton.title = "正文将从数据库重新读取用户原始投稿，前端字段不会改变发布内容";
     }
 
     const pageDescription = document.querySelector("#ice-reports-page .report-head p");
-    if (pageDescription) {
-      pageDescription.textContent = "用户投稿不进入AI。后台只负责核实、选择封面和决定发布；现场描述按数据库原文发布。";
-    }
+    setTextOnce(pageDescription, "用户投稿不进入AI。后台只负责核实、选择封面和决定发布；现场描述按数据库原文发布。");
 
     return true;
   }
 
-  const observer = new MutationObserver(() => installOriginalSubmissionLock());
+  observer = new MutationObserver(() => {
+    if (installOriginalSubmissionLock()) observer.disconnect();
+  });
   observer.observe(document.documentElement, { childList: true, subtree: true });
 
+  const run = () => {
+    if (installOriginalSubmissionLock()) observer.disconnect();
+  };
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installOriginalSubmissionLock, { once: true });
+    document.addEventListener("DOMContentLoaded", run, { once: true });
   } else {
-    installOriginalSubmissionLock();
+    run();
   }
 })();

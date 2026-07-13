@@ -41,9 +41,14 @@ const topic=
 box.dataset.topicLatest;
 
 
-const item=data.find(
+const item=data
+.filter(
 x=>x.topic===topic
-);
+)
+.sort(
+(a,b)=>
+new Date(b.time)-new Date(a.time)
+)[0];
 
 
 if(!item){

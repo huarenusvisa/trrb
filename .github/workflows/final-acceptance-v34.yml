@@ -12,6 +12,7 @@ on:
       - "site-common.js"
       - "topic-config.js"
       - "scripts/final-acceptance-v34.test.mjs"
+      - "scripts/mobile-acceptance-v34.mjs"
       - ".github/workflows/final-acceptance-v34.yml"
   workflow_dispatch:
 
@@ -21,7 +22,7 @@ permissions:
 jobs:
   acceptance:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,7 +37,20 @@ jobs:
           node --check homepage-focus-v34.js
           node --check site-common.js
           node --check topic-config.js
+          node --check scripts/mobile-acceptance-v34.mjs
       - name: Final acceptance assertions
         run: node --test scripts/final-acceptance-v34.test.mjs
       - name: Existing site validation
         run: node scripts/validate-site.mjs
+      - name: Install Chromium for mobile acceptance
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.53.2
+          npx playwright install --with-deps chromium
+      - name: Mobile browser acceptance at 390px and 430px
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/trrb-mobile-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          node scripts/mobile-acceptance-v34.mjs

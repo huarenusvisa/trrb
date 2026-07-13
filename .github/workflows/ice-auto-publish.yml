@@ -1,0 +1,64 @@
+name: ICE多信源抓取与交叉审核
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "collect=正常抓取；bootstrap=从当前时刻初始化；dry-run=审核但不自动排期"
+        required: true
+        default: collect
+        type: choice
+        options:
+          - collect
+          - bootstrap
+          - dry-run
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-multisource
+  cancel-in-progress: false
+
+jobs:
+  ice-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'collect' }}
+      ICE_AUTO_PUBLISH_SCORE: "80"
+      ICE_AI_CONFIDENCE: "80"
+      ICE_SOURCES_PER_QUERY: "14"
+      ICE_MAX_PAGES_PER_QUERY: "2"
+      ICE_MAX_AI_POSTS_PER_RUN: "30"
+      ICE_MAX_RETRIES: "5"
+      ICE_PUBLISH_INTERVAL_MINUTES: "120"
+      ICE_VALIDATE_SOURCE_HANDLES: "false"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Validate ICE architecture
+        run: |
+          node --check scripts/ice-multisource.mjs
+          node --check scripts/ice-publish-due.mjs
+          node --test scripts/ice-architecture.test.mjs
+          node scripts/ice-multisource.mjs --self-test
+
+      - name: Fetch, extract and cross-check ICE news
+        run: node scripts/ice-multisource.mjs --mode="$RUN_MODE"

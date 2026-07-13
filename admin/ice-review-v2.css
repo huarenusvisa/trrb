@@ -1,0 +1,137 @@
+/* ICE审核中心 V2：紧凑三栏布局 */
+#ice-review-page .review-head {
+  min-height: 78px;
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+}
+#ice-review-page .review-head h3 { font-size: 20px; }
+#ice-review-page .review-head p { margin-top: 2px; font-size: 13px; line-height: 1.45; }
+.review-head-actions { display: flex; align-items: center; gap: 10px; }
+.user-report-entry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: #0f766e;
+  color: #fff;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.user-report-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+}
+.user-report-nav span {
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: #0f766e;
+  color: #fff;
+  font-size: 10px;
+}
+#ice-review-page .review-tabs { margin-bottom: 8px; }
+#ice-review-page .review-tab { padding: 8px 11px; }
+#ice-review-page .review-message { min-height: 20px; margin: 5px 0 8px; font-size: 13px; }
+#ice-review-page .review-list { gap: 10px; }
+.review-item-v2 {
+  grid-template-columns: 150px minmax(0, 1fr) 132px;
+  gap: 14px;
+  min-height: 116px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, .035);
+}
+.review-item-v2 .review-item-media img,
+.review-item-v2 .review-card-placeholder {
+  width: 150px;
+  height: 94px;
+  border-radius: 9px;
+}
+.review-item-v2 .review-item-main h3 {
+  margin: 6px 0 3px;
+  font-size: 17px;
+  line-height: 1.3;
+}
+.review-item-v2 .review-item-main p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-line-clamp: 2;
+}
+.review-item-v2 .review-item-topline { gap: 5px; }
+.review-item-v2 .risk-chip,
+.review-item-v2 .status-pill,
+.source-chip,
+.location-chip {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.source-chip { background: #e0f2fe; color: #075985; }
+.location-chip { background: #f1f5f9; color: #334155; }
+.review-item-v2 .score-row { gap: 5px 12px; margin-top: 7px; font-size: 12px; }
+.review-item-v2 .review-item-action {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 8px;
+}
+.review-item-v2 .review-item-action time {
+  color: #64748b;
+  font-size: 11px;
+  text-align: right;
+  white-space: nowrap;
+}
+.review-item-v2 .review-item-action button {
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 10px;
+}
+.review-modal-panel { width: min(980px, 100%); }
+.review-modal-header { padding: 14px 20px; }
+.review-modal-body { padding: 18px 20px; }
+.review-score-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.review-score-grid div { padding: 10px; }
+.review-score-grid strong { font-size: 16px; line-height: 1.3; }
+.review-location-metric { grid-column: span 2; }
+.review-modal-body label { margin-top: 13px; }
+.review-modal-body input,
+.review-modal-body textarea { padding: 10px 12px; }
+.decision-box { margin: 14px 0; padding: 12px 14px; }
+.manual-publish-note {
+  margin: 9px 0 0;
+  color: #9a3412;
+  font-size: 13px;
+  font-weight: 700;
+}
+.evidence-section,
+.review-log-section { margin-top: 18px; padding-top: 16px; }
+.review-modal-actions { padding: 12px 18px; }
+
+@media (max-width: 980px) {
+  .review-item-v2 { grid-template-columns: 126px minmax(0, 1fr); }
+  .review-item-v2 .review-item-media img,
+  .review-item-v2 .review-card-placeholder { width: 126px; height: 84px; }
+  .review-item-v2 .review-item-action { grid-column: 1 / -1; flex-direction: row; align-items: center; }
+  .review-item-v2 .review-item-action button { width: auto; margin-left: auto; }
+}
+@media (max-width: 640px) {
+  .review-head-actions { width: 100%; }
+  .review-head-actions > * { flex: 1; }
+  .review-item-v2 { grid-template-columns: 96px minmax(0, 1fr); gap: 10px; }
+  .review-item-v2 .review-item-media img,
+  .review-item-v2 .review-card-placeholder { width: 96px; height: 76px; }
+  .review-item-v2 .score-row { display: none; }
+  .location-chip { max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+  .review-score-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

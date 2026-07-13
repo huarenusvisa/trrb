@@ -1,27 +1,30 @@
 name: TRRB V31 Homepage Migration
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
     paths:
-      - ".github/workflows/v31-homepage-migration.yml"
+      - ".trrb-v31-trigger"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: trrb-v31-homepage-migration
+  group: trrb-v31-homepage-migration-${{ github.event.pull_request.number || github.run_id }}
   cancel-in-progress: false
 
 jobs:
   migrate:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
+      - name: Checkout pull request branch
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -143,16 +146,17 @@ function renderSections(articles) {
           print("V31 homepage migration validation passed")
           PY
 
-      - name: Commit validated migration
+      - name: Commit validated migration to pull request branch
         shell: bash
         run: |
+          rm -f .trrb-v31-trigger
           rm -f .github/workflows/v31-homepage-migration.yml
           git config user.name "TRRB V31 Migration"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html articles-home.js .github/workflows/v31-homepage-migration.yml
+          git add index.html articles-home.js .trrb-v31-trigger .github/workflows/v31-homepage-migration.yml
           if git diff --cached --quiet; then
             echo "No migration changes were needed."
             exit 0
           fi
           git commit -m "feat: show all configured homepage news channels"
-          git push origin HEAD:main
+          git push origin HEAD:${{ github.head_ref }}

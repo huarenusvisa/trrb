@@ -1,78 +1,185 @@
-function renderICE(item){
+/**
+ * ICE 实时执法过滤器
+ * v36
+ *
+ * 规则：
+ * 只显示网站上线之后的数据
+ * 历史数据全部忽略
+ */
 
-const hasImage =
-item.image &&
-item.image !== "null";
+
+async function filterICEData(data){
 
 
-if(hasImage){
+    let config;
 
-return `
 
-<article class="ice-card">
+    try{
 
-<img 
-src="${item.image}"
-alt="${item.title || 'ICE执法新闻'}"
-loading="lazy"
->
+        const response =
+        await fetch(
+            "/data/ice-config.json?v="+Date.now()
+        );
 
-<h3>
-${item.title || ''}
-</h3>
 
-<p>
-${item.summary || ''}
-</p>
+        config =
+        await response.json();
 
-<div class="topic-time">
-${item.time || ''}
-</div>
 
-<div class="topic-source">
-来源：${item.source || ''}
-</div>
+    }catch(error){
 
-</article>
 
-`;
+        console.warn(
+            "ICE config missing",
+            error
+        );
+
+
+        return [];
+
+
+    }
+
+
+
+    const startTime =
+    new Date(
+        config.startTime
+    );
+
+
+
+    const result =
+    data.filter(item=>{
+
+
+        const itemTime =
+        new Date(
+
+            item.created_at ||
+            item.time ||
+            item.date ||
+            0
+
+        );
+
+
+
+        return (
+            itemTime >= startTime
+        );
+
+
+    });
+
+
+
+    return result;
+
 
 }
 
 
-return `
 
-<article class="ice-text-card">
+/**
+ * ICE统计
+ */
 
-<h3>
-${shortIceTitle(item.title || 'ICE执法行动')}
-</h3>
+function getICEStats(data){
 
-<p>
-${item.summary || ''}
-</p>
 
-<div class="topic-time">
-${item.time || ''}
-</div>
+    const now =
+    new Date();
 
-<div class="topic-source">
-来源：${item.source || ''}
-</div>
 
-</article>
 
-`;
+    const today =
+    new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
+
+
+
+    const todayData =
+    data.filter(item=>{
+
+
+        const t =
+        new Date(
+            item.time ||
+            item.created_at ||
+            item.date
+        );
+
+
+        return t>=today;
+
+
+    });
+
+
+
+    return {
+
+
+        people:
+        todayData.reduce(
+            (sum,item)=>{
+
+                return sum +
+                Number(
+                    item.arrests ||
+                    item.people ||
+                    0
+                );
+
+            },
+            0
+        ),
+
+
+
+        locations:
+        [
+            ...new Set(
+                todayData
+                .map(
+                    x=>x.location
+                )
+                .filter(Boolean)
+            )
+        ].length,
+
+
+
+        newsCount:
+        todayData.length
+
+
+
+    };
+
 
 }
 
 
 
-function shortIceTitle(title){
+/**
+ * ICE新闻过滤
+ */
 
-if(title.length <= 18)
-return title;
+function filterICEArticle(article){
 
-return title.substring(0,18);
+
+    return filterICEData(
+        [article]
+    )
+    .then(
+        result=>
+        result.length>0
+    );
+
 
 }

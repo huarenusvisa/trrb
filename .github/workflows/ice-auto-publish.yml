@@ -39,7 +39,7 @@ jobs:
       ICE_AI_CONFIDENCE: "80"
       ICE_MAX_AI_POSTS_PER_RUN: "12"
       ICE_MAX_RETRIES: "5"
-      ICE_PUBLISH_INTERVAL_MINUTES: "120"
+      ICE_PUBLISH_INTERVAL_MINUTES: "30"
       ICE_MAX_STORIES_PER_RUN: "6"
       ICE_OFFICIALS_PER_QUERY: "8"
       ICE_MEDIA_PER_QUERY: "8"
@@ -62,8 +62,20 @@ jobs:
         run: |
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-publish-due.mjs
+          node --check scripts/ice-enable-first-backfill.mjs
           node --test scripts/ice-architecture.test.mjs
           node scripts/ice-multisource.mjs --self-test
 
+      - name: Enable one-time first-run backfill
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-enable-first-backfill.mjs
+
       - name: Fetch, extract and cross-check ICE news
         run: node scripts/ice-multisource.mjs --mode="$RUN_MODE"
+
+      - name: Publish first approved ICE story immediately
+        if: env.RUN_MODE == 'collect'
+        env:
+          ICE_FORCE_FIRST_PUBLISH: "true"
+          ICE_PUBLISH_MAX_PER_RUN: "1"
+        run: node scripts/ice-publish-due.mjs

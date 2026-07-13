@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import process from "node:process";
 
-const EDITORIAL_VERSION = "zh-brief-v1";
+const EDITORIAL_VERSION = "zh-brief-v2";
 
 function safeJson(value, fallback = null) {
   try { return typeof value === "string" ? JSON.parse(value) : value; }
@@ -69,6 +69,20 @@ function responseText(response) {
   return "";
 }
 
+const STATE_ZH = {
+  AL: "阿拉巴马州", AK: "阿拉斯加州", AZ: "亚利桑那州", AR: "阿肯色州", CA: "加利福尼亚州",
+  CO: "科罗拉多州", CT: "康涅狄格州", DE: "特拉华州", FL: "佛罗里达州", GA: "佐治亚州",
+  HI: "夏威夷州", ID: "爱达荷州", IL: "伊利诺伊州", IN: "印第安纳州", IA: "爱荷华州",
+  KS: "堪萨斯州", KY: "肯塔基州", LA: "路易斯安那州", ME: "缅因州", MD: "马里兰州",
+  MA: "马萨诸塞州", MI: "密歇根州", MN: "明尼苏达州", MS: "密西西比州", MO: "密苏里州",
+  MT: "蒙大拿州", NE: "内布拉斯加州", NV: "内华达州", NH: "新罕布什尔州", NJ: "新泽西州",
+  NM: "新墨西哥州", NY: "纽约州", NC: "北卡罗来纳州", ND: "北达科他州", OH: "俄亥俄州",
+  OK: "俄克拉何马州", OR: "俄勒冈州", PA: "宾夕法尼亚州", RI: "罗得岛州", SC: "南卡罗来纳州",
+  SD: "南达科他州", TN: "田纳西州", TX: "得克萨斯州", UT: "犹他州", VT: "佛蒙特州",
+  VA: "弗吉尼亚州", WA: "华盛顿州", WV: "西弗吉尼亚州", WI: "威斯康星州", WY: "怀俄明州",
+  DC: "华盛顿特区"
+};
+
 const SCHEMA = {
   type: "object",
   additionalProperties: false,
@@ -97,7 +111,7 @@ async function normalizeWithAi(story, posts) {
         "所有输出必须是简体中文；原始信源为英文时必须准确翻译，不得保留完整英文句子，ICE、DHS等机构缩写可保留。",
         "只使用信源中明确出现的事实，不补充外部信息，不把指控写成定论。",
         "title写成10至24个中文字符，包含地点和ICE核心动作。",
-        "bulletin写成30至50个中文字符的客观快讯；不得少于30字，不得超过50字。",
+        "bulletin写成30至50个中文字符的客观快讯；必须以地点开头，不得少于30字，不得超过50字。",
         "location_text必须进行地点分类，优先格式为“州中文名·城市中文名”，例如“缅因州·比德福德”；无法确认时写“地点待确认”。",
         "city使用中文城市名；state_code使用美国州两位英文缩写，无法确认则留空。",
         "source_language按主要原始信源判断为zh、en、mixed或unknown。",
@@ -167,6 +181,41 @@ function clampTitle(value, location) {
   return chars.length > 24 ? chars.slice(0, 24).join("") : text;
 }
 
+function sourceLanguageFromPosts(posts) {
+  const text = posts.map((post) => safeText(post.source_text, 5000)).join(" ");
+  const hasChinese = /[\u3400-\u9fff]/.test(text);
+  const hasLatin = /[A-Za-z]/.test(text);
+  if (hasChinese && hasLatin) return "mixed";
+  if (hasChinese) return "zh";
+  if (hasLatin) return "en";
+  return "unknown";
+}
+
+function savedLocationFromTitle(title) {
+  const text = compact(title);
+  const index = text.toUpperCase().indexOf("ICE");
+  if (index <= 0) return "";
+  return text.slice(0, index).replace(/(?:发生|出现|曝出|传出|涉及|展开|启动|执行)$/u, "").slice(0, 40);
+}
+
+function locationFromPosts(story, posts) {
+  const saved = savedLocationFromTitle(story.final_title || story.title);
+  if (saved) return saved;
+  const post = posts.find((item) => item.location_text || item.city || item.state_code) || {};
+  const stateCode = safeText(post.state_code, 2).toUpperCase();
+  const state = STATE_ZH[stateCode] || stateCode;
+  const city = safeText(post.city, 80);
+  const raw = safeText(post.location_text, 160);
+  if (state && city) return `${state}·${city}`;
+  return raw || state || city || "地点待确认";
+}
+
+function hasSavedChineseEditorial(story) {
+  const title = safeText(story.final_title, 220);
+  const bulletin = compact(story.final_summary || story.final_content);
+  return /[\u3400-\u9fff]/.test(title) && /[\u3400-\u9fff]/.test(bulletin) && Array.from(bulletin).length >= 30 && Array.from(bulletin).length <= 50;
+}
+
 function looksNormalized(story) {
   const payload = story.ai_payload || {};
   const bulletinLength = Array.from(compact(story.summary || story.content)).length;
@@ -180,7 +229,7 @@ async function storiesToNormalize() {
       select: "*",
       status: "in.(pending_review,pending_corroboration,approved)",
       order: "updated_at.desc",
-      limit: String(intEnv("ICE_NORMALIZE_MAX_STORIES", 16, 1, 50))
+      limit: String(intEnv("ICE_NORMALIZE_MAX_STORIES", 30, 1, 50))
     }
   });
   return Array.isArray(rows) ? rows : [];
@@ -198,7 +247,7 @@ async function postsFor(story) {
   return Array.isArray(rows) ? rows : [];
 }
 
-async function patchStory(story, normalized) {
+async function patchStory(story, normalized, posts = []) {
   const locationText = safeText(normalized.location_text, 160) || "地点待确认";
   const bulletin = clampBulletin(normalized.bulletin);
   const title = clampTitle(normalized.title, locationText);
@@ -210,7 +259,8 @@ async function patchStory(story, normalized) {
     source_language: normalized.source_language || "unknown",
     editorial_version: EDITORIAL_VERSION,
     editorial_normalized_at: nowIso(),
-    chinese_bulletin_length: Array.from(bulletin).length
+    chinese_bulletin_length: Array.from(bulletin).length,
+    editorial_evidence_count: posts.length
   };
 
   await sb("ice_stories", {
@@ -220,12 +270,28 @@ async function patchStory(story, normalized) {
       title,
       summary: bulletin,
       content: bulletin,
+      final_title: title,
+      final_summary: bulletin,
+      final_content: bulletin,
       ai_payload: payload,
       updated_at: nowIso()
     },
     prefer: "return=minimal"
   });
   console.log(`已生成中文快讯：${locationText}｜${title}｜${Array.from(bulletin).length}字`);
+}
+
+async function restoreSavedEditorial(story, posts) {
+  const normalized = {
+    title: story.final_title,
+    bulletin: story.final_summary || story.final_content,
+    location_text: locationFromPosts(story, posts),
+    city: safeText(posts.find((item) => item.city)?.city, 120),
+    state_code: safeText(posts.find((item) => item.state_code)?.state_code, 2),
+    source_language: sourceLanguageFromPosts(posts)
+  };
+  await patchStory(story, normalized, posts);
+  console.log(`复用已生成中文快讯：${story.id}`);
 }
 
 async function main() {
@@ -241,8 +307,12 @@ async function main() {
     if (!posts.length) continue;
 
     try {
-      const normalized = await normalizeWithAi(story, posts);
-      await patchStory(story, normalized);
+      if (hasSavedChineseEditorial(story)) {
+        await restoreSavedEditorial(story, posts);
+      } else {
+        const normalized = await normalizeWithAi(story, posts);
+        await patchStory(story, normalized, posts);
+      }
       changed += 1;
     } catch (error) {
       console.error(`中文快讯处理失败 ${story.id}:`, error.message || error);

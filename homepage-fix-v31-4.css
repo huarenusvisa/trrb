@@ -1,0 +1,133 @@
+/* TRRB V31.4 homepage repair: category grid, image crop, footer */
+
+/* Keep news images visually consistent even when source ratios vary. */
+.hero-link img,
+.top-list img,
+.section-lead img,
+.related-item img,
+.archive-card img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.section-lead img {
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: 16 / 9;
+  background: #f3f4f6;
+}
+
+.news-box {
+  height: auto;
+  min-height: 344px;
+}
+
+.news-box img.is-category-fallback,
+.hero-link img.is-category-fallback,
+.top-list img.is-category-fallback {
+  object-position: center;
+  filter: none;
+}
+
+/* Eight news channels + exposure wall = a balanced 3 × 3 desktop grid. */
+.sections-grid {
+  align-items: stretch;
+}
+
+/* Footer cleanup */
+.footer {
+  margin-top: 8px;
+  border-top: 4px solid var(--red);
+  background: #111827;
+  color: #f9fafb;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 0.8fr 1.25fr;
+  gap: 34px;
+  align-items: start;
+  padding: 38px 0 28px;
+}
+
+.footer-grid section {
+  min-width: 0;
+}
+
+.footer h2,
+.footer h3,
+.footer b {
+  color: #fff;
+}
+
+.footer h2 {
+  margin: 0 0 8px;
+}
+
+.footer h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+}
+
+.footer p {
+  margin: 8px 0;
+  color: #cbd5e1;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.footer a {
+  display: block;
+  margin: 8px 0;
+  color: #e5e7eb;
+  line-height: 1.5;
+}
+
+.footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer a[href^="tel:"] {
+  display: inline;
+}
+
+.copyright {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 16px 0 20px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+@media (max-width: 1099px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .news-box {
+    min-height: 0;
+  }
+
+  .section-lead img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 26px 0 18px;
+  }
+
+  .footer-grid section {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 14px 0 16px;
+  }
+
+  .footer-grid section:last-child {
+    border-bottom: 0;
+  }
+}

@@ -48,9 +48,28 @@ jobs:
           npm install --silent --no-progress --no-save playwright@1.53.2 >/dev/null
           npx playwright install --with-deps chromium >/dev/null
       - name: Mobile browser acceptance at 390px and 430px
+        id: mobile
+        continue-on-error: true
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/trrb-mobile-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill $SERVER_PID || true' EXIT
           sleep 2
-          node scripts/mobile-acceptance-v34.mjs
+          set +e
+          node scripts/mobile-acceptance-v34.mjs > mobile-acceptance-result.txt 2>&1
+          CODE=$?
+          echo "exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          exit $CODE
+      - name: Upload mobile diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-acceptance-result
+          path: mobile-acceptance-result.txt
+          if-no-files-found: error
+          retention-days: 2
+      - name: Enforce mobile acceptance result
+        if: steps.mobile.outputs.exit_code != '0'
+        run: |
+          cat mobile-acceptance-result.txt || true
+          exit 1

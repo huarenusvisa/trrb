@@ -1,0 +1,323 @@
+/* 唐人日报曝光墙 v30.2 */
+
+.expose-action,
+.nav-expose-link {
+  color: #d60000 !important;
+  font-weight: 800;
+}
+
+.expose-wall-box {
+  border-color: #efb3b3;
+  overflow: hidden;
+}
+
+.expose-wall-box > header {
+  border-bottom-color: #f5d3d3;
+}
+
+.expose-wall-box > header h2 {
+  color: #b90000;
+}
+
+.expose-wall-main {
+  min-height: 214px;
+  padding: 24px 22px 20px;
+  background:
+    radial-gradient(circle at 88% 16%, rgba(214, 0, 0, 0.08), transparent 34%),
+    linear-gradient(145deg, #fff8f8 0%, #ffffff 72%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-decoration: none;
+  color: #1f2328;
+  border-bottom: 1px solid #f3dddd;
+}
+
+.expose-wall-main:hover h3,
+.expose-wall-main:focus h3 {
+  color: #d60000;
+}
+
+.expose-wall-symbol {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #d60000;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 10px 24px rgba(214, 0, 0, 0.2);
+  margin-bottom: 14px;
+}
+
+.expose-wall-main h3 {
+  margin: 0 0 9px;
+  font-size: 21px;
+  line-height: 1.35;
+  transition: color 0.2s ease;
+}
+
+.expose-wall-main p {
+  margin: 0;
+  color: #5a6069;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.expose-wall-main strong {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: 15px;
+  padding: 9px 17px;
+  border-radius: 999px;
+  background: #d60000;
+  color: #fff;
+  font-size: 14px;
+}
+
+.expose-wall-points {
+  list-style: none;
+  margin: 0;
+  padding: 12px 16px 15px;
+}
+
+.expose-wall-points li {
+  position: relative;
+  margin: 0;
+  padding: 6px 0 6px 16px;
+  color: #50555d;
+  font-size: 13px;
+  line-height: 1.35;
+  border-bottom: 1px dashed #eee;
+}
+
+.expose-wall-points li:last-child {
+  border-bottom: 0;
+}
+
+.expose-wall-points li::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d60000;
+}
+
+.category-empty-state {
+  min-height: 315px;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #777;
+  background: #fafafa;
+}
+
+.category-empty-state strong {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+/* 曝光提交页 */
+.expose-page {
+  background: #f5f6f8;
+}
+
+.expose-page-main {
+  padding: 34px 0 58px;
+}
+
+.expose-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+.expose-form-card,
+.expose-notice-card {
+  background: #fff;
+  border: 1px solid #e4e6eb;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(25, 30, 40, 0.06);
+}
+
+.expose-form-card {
+  padding: 30px;
+}
+
+.expose-page-heading {
+  border-left: 5px solid #d60000;
+  padding-left: 15px;
+  margin-bottom: 26px;
+}
+
+.expose-page-heading h1 {
+  margin: 0 0 8px;
+  color: #17191d;
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.2;
+}
+
+.expose-page-heading p {
+  margin: 0;
+  color: #616771;
+  line-height: 1.7;
+}
+
+.expose-form {
+  display: grid;
+  gap: 18px;
+}
+
+.expose-field {
+  display: grid;
+  gap: 8px;
+}
+
+.expose-field label,
+.expose-field legend {
+  color: #25282d;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.expose-field input,
+.expose-field textarea,
+.expose-field select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccd0d7;
+  border-radius: 12px;
+  background: #fff;
+  padding: 13px 14px;
+  color: #1f2328;
+  font: inherit;
+  outline: none;
+}
+
+.expose-field input:focus,
+.expose-field textarea:focus,
+.expose-field select:focus {
+  border-color: #d60000;
+  box-shadow: 0 0 0 3px rgba(214, 0, 0, 0.1);
+}
+
+.expose-field textarea {
+  min-height: 190px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.expose-field small {
+  color: #6c727c;
+  line-height: 1.5;
+}
+
+.expose-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.expose-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #424750;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.expose-check input {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: #d60000;
+  flex: 0 0 auto;
+}
+
+.expose-submit {
+  border: 0;
+  border-radius: 12px;
+  background: #d60000;
+  color: #fff;
+  padding: 14px 22px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(214, 0, 0, 0.18);
+}
+
+.expose-submit:hover {
+  background: #b90000;
+}
+
+.expose-notice-card {
+  padding: 24px;
+  position: sticky;
+  top: 18px;
+}
+
+.expose-notice-card h2 {
+  margin: 0 0 15px;
+  font-size: 22px;
+  color: #b90000;
+}
+
+.expose-notice-card ol {
+  margin: 0;
+  padding-left: 21px;
+  color: #4c525b;
+  line-height: 1.75;
+}
+
+.expose-notice-card li + li {
+  margin-top: 8px;
+}
+
+.expose-contact-privacy {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #fff4f4;
+  color: #7c2020;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+@media (max-width: 860px) {
+  .expose-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expose-notice-card {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .expose-form-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+
+  .expose-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .expose-wall-main {
+    min-height: 190px;
+  }
+}

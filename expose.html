@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>曝光墙投稿 - 唐人日报</title>
+    <meta name="description" content="向唐人日报提交曝光材料，支持文字、图片和视频。可匿名公开，但必须留下电话或邮箱供编辑核实。" />
+    <meta name="theme-color" content="#d60000" />
+    <link rel="stylesheet" href="./styles.css?v=29.7" />
+    <link rel="stylesheet" href="./expose-wall.css?v=30.2" />
+  </head>
+  <body class="expose-page">
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <div class="meta" aria-label="本地信息">
+          <span class="meta-location">📍 本地</span>
+          <span class="meta-date">加载日期中...</span>
+          <span class="meta-weather">🌤️ 天气暂不可用</span>
+        </div>
+        <div class="links">
+          <a href="./index.html">返回首页</a>
+          <a href="./index.html#submit">投稿爆料</a>
+          <a href="./index.html#about">关于我们</a>
+        </div>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="./index.html" aria-label="唐人日报首页">
+          <img src="./trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily" width="720" height="208" />
+        </a>
+        <div class="slogan">
+          <b>立足美国 · 服务华人</b>
+          <span>US-China Breaking News for Chinese Readers</span>
+        </div>
+        <div class="header-actions">
+          <a href="./index.html">返回首页</a>
+          <a class="primary" href="./index.html#submit">普通爆料</a>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav" aria-label="主要栏目">
+      <div class="container nav-inner">
+        <a href="./listing.html?category=美国时政">美国时政</a>
+        <a href="./listing.html?category=美国警情">美国警情</a>
+        <a href="./listing.html?category=中国官场">中国官场</a>
+        <a href="./listing.html?category=移民美国">移民美国</a>
+        <a href="./listing.html?category=庇护百科">庇护百科</a>
+        <a class="nav-expose-link" href="./expose.html" aria-current="page">曝光墙</a>
+      </div>
+    </nav>
+
+    <main class="expose-page-main">
+      <div class="container expose-page-grid">
+        <section class="expose-form-card">
+          <div class="expose-page-heading">
+            <h1>曝光墙</h1>
+            <p>可提交文字、图片或视频。您可以选择匿名公开，但必须留下电话或邮箱，便于唐人日报编辑核实材料。</p>
+          </div>
+
+          <form
+            class="expose-form"
+            name="exposure-submission"
+            method="POST"
+            action="/thanks.html"
+            enctype="multipart/form-data"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+          >
+            <input type="hidden" name="form-name" value="exposure-submission" />
+            <p class="sr-only">
+              <label>请勿填写：<input name="bot-field" /></label>
+            </p>
+
+            <div class="expose-field">
+              <label for="exposure-title">曝光标题 *</label>
+              <input id="exposure-title" name="exposure_title" type="text" maxlength="120" placeholder="请简要概括需要曝光的事件" required />
+            </div>
+
+            <div class="expose-form-row">
+              <div class="expose-field">
+                <label for="incident-location">事件地点</label>
+                <input id="incident-location" name="incident_location" type="text" maxlength="120" placeholder="城市、州或具体地点" />
+              </div>
+              <div class="expose-field">
+                <label for="incident-date">事件日期</label>
+                <input id="incident-date" name="incident_date" type="date" />
+              </div>
+            </div>
+
+            <div class="expose-field">
+              <label for="exposure-content">曝光内容 *</label>
+              <textarea
+                id="exposure-content"
+                name="message"
+                maxlength="10000"
+                placeholder="请写明事情经过、涉及人员或机构、已有证据以及希望媒体核实的重点。"
+                required
+              ></textarea>
+            </div>
+
+            <div class="expose-form-row">
+              <div class="expose-field">
+                <label for="public-name">公开署名</label>
+                <input id="public-name" name="public_name" type="text" maxlength="80" placeholder="可填姓名、昵称或“匿名”" />
+              </div>
+              <div class="expose-field">
+                <label for="contact">电话或邮箱 *</label>
+                <input id="contact" name="contact" type="text" maxlength="160" placeholder="必须填写电话或邮箱，前台不会公开" required />
+              </div>
+            </div>
+
+            <label class="expose-check">
+              <input type="checkbox" name="anonymous_publication" value="yes" />
+              <span>我要求公开报道时隐藏姓名和联系方式，以“匿名投稿人”身份展示。</span>
+            </label>
+
+            <div class="expose-field">
+              <label for="image-attachment">上传图片</label>
+              <input id="image-attachment" name="image_attachment" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+              <small>支持 JPG、PNG、WEBP、GIF。为保证提交成功，建议文件不超过 8MB。</small>
+            </div>
+
+            <div class="expose-field">
+              <label for="video-attachment">上传视频</label>
+              <input id="video-attachment" name="video_attachment" type="file" accept="video/mp4,video/quicktime,video/webm" />
+              <small>支持 MP4、MOV、WEBM。视频较大时，可在正文中提供云盘链接。</small>
+            </div>
+
+            <label class="expose-check">
+              <input type="checkbox" name="rights_confirmation" value="confirmed" required />
+              <span>我确认提交内容基于本人了解的事实，并有权向唐人日报提供这些材料；不得提交捏造、诽谤、违法或侵犯他人隐私的内容。*</span>
+            </label>
+
+            <button class="expose-submit" type="submit">提交曝光材料</button>
+          </form>
+        </section>
+
+        <aside class="expose-notice-card">
+          <h2>提交说明</h2>
+          <ol>
+            <li>联系方式仅供编辑核实，不会直接显示在前台。</li>
+            <li>勾选匿名后，公开报道不会显示您的真实姓名。</li>
+            <li>提交不代表一定刊登，编辑部会先核实真实性和公共利益。</li>
+            <li>请保留原始图片、视频、聊天记录或其他证据。</li>
+            <li>存在人身危险或紧急情况时，请先联系当地警方或紧急服务。</li>
+          </ol>
+          <div class="expose-contact-privacy">
+            <strong>隐私提示：</strong><br />
+            Netlify后台管理员仍可查看您主动填写的联系方式和上传材料，但这些信息不会自动公开。
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container copyright">
+        © 2026 唐人日报 Tang Ren Daily. 保留所有权利。
+      </div>
+    </footer>
+
+    <script src="./site-common.js?v=29.7"></script>
+  </body>
+</html>

@@ -9,7 +9,7 @@ function readLiveCache(key) {
   } catch {}
   return null;
 }
- 
+
 function writeLiveCache(key, data) {
   try { sessionStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), data })); } catch {}
 }
@@ -64,8 +64,21 @@ function mapLiveArticle(row) {
     body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
   };
 }
-function formatLiveDate(value) { if (!value) return ""; const d = new Date(value); if (Number.isNaN(d.getTime())) return String(value); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
-function formatLiveDateTime(value) { if (!value) return ""; const d = new Date(value); if (Number.isNaN(d.getTime())) return String(value); return `${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`; }
+
+function formatLiveDate(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+function formatLiveDateTime(value) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return String(value);
+  return `${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
+}
+
 const categoryIds = {
   重要新闻: "important",
   热门头条: "hot",
@@ -81,47 +94,26 @@ const categoryIds = {
 loadHome();
 
 function localArticleIndex() {
-
-
-  if(
-    Array.isArray(window.TRRB_ARTICLE_INDEX)
-    &&
-    window.TRRB_ARTICLE_INDEX.length
-  ){
+  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length) {
     return window.TRRB_ARTICLE_INDEX;
   }
 
-
-
-  if(
-    Array.isArray(window.TRRB_ARTICLES)
-    &&
-    window.TRRB_ARTICLES.length
-  ){
+  if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length) {
     return window.TRRB_ARTICLES;
   }
 
-
-
-  if(
-    Array.isArray(window.TRRB_ARTICLE_CHUNK)
-    &&
-    window.TRRB_ARTICLE_CHUNK.length
-  ){
-
+  if (Array.isArray(window.TRRB_ARTICLE_CHUNK) && window.TRRB_ARTICLE_CHUNK.length) {
     return window.TRRB_ARTICLE_CHUNK;
-
   }
 
-
-
   return [];
-
 }
 
 function mergeArticles(live, archived) {
   const seen = new Set((Array.isArray(live) ? live : []).map((item) => String(item.id)));
-  return (Array.isArray(live) ? live : []).concat((Array.isArray(archived) ? archived : []).filter((item) => !seen.has(String(item.id))));
+  return (Array.isArray(live) ? live : []).concat(
+    (Array.isArray(archived) ? archived : []).filter((item) => !seen.has(String(item.id)))
+  );
 }
 
 function renderHome(articles) {
@@ -170,7 +162,7 @@ function shortDate(value) {
 }
 
 function highQualityImageUrl(value, category) {
-  if (typeof window.TRRB_getImageUrl === 'function') return window.TRRB_getImageUrl(value, category);
+  if (typeof window.TRRB_getImageUrl === "function") return window.TRRB_getImageUrl(value, category);
   const text = String(value || "").replaceAll("\u0026", "&");
   if (!text) return "./image-placeholder.svg";
   if (text.startsWith("/assets/news-images/")) return "." + text;
@@ -180,11 +172,13 @@ function highQualityImageUrl(value, category) {
 
 function imageAttrs(article, options = {}) {
   const improved = highQualityImageUrl(article.image || "", article.category || "");
-  const fallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(article.category || "") : "./image-placeholder.svg";
+  const fallback = typeof window.TRRB_categoryPlaceholder === "function"
+    ? window.TRRB_categoryPlaceholder(article.category || "")
+    : "./image-placeholder.svg";
   const eager = Boolean(options.eager);
   const width = Number(options.width || 512);
   const height = Number(options.height || 288);
-  return `src="${escapeAttribute(improved)}" width="${width}" height="${height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ''} referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'"`;
+  return `src="${escapeAttribute(improved)}" width="${width}" height="${height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ""} referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'"`;
 }
 
 function renderTicker(articles) {
@@ -270,43 +264,90 @@ function hasRealImage(item) {
     && !image.includes("/assets/category-placeholders/");
 }
 
-function findLeadArticle(categoryArticles, allArticles) {
-  return categoryArticles.find(hasRealImage)
-    || allArticles.find(hasRealImage)
-    || categoryArticles[0]
-    || allArticles[0];
+function normalizeCategory(value) {
+  return String(value || "").trim();
+}
+
+function findLeadArticle(categoryArticles) {
+  return categoryArticles.find(hasRealImage) || categoryArticles[0] || null;
+}
+
+function renderCategorySection(category, articles) {
+  const categoryArticles = articles.filter(
+    (item) => normalizeCategory(item.category) === category
+  );
+  const article = findLeadArticle(categoryArticles);
+
+  if (!article) {
+    return `
+      <article class="news-box category-empty" id="${categoryIds[category] || ""}">
+        <header>
+          <h2>${escapeHtml(category)}</h2>
+          <a href="./listing.html?category=${encodeURIComponent(category)}">更多</a>
+        </header>
+        <div class="category-empty-state">
+          <strong>暂无该分类内容</strong>
+          <span>新内容发布后将在这里显示</span>
+        </div>
+      </article>
+    `;
+  }
+
+  const subItems = categoryArticles
+    .filter((item) => String(item.id) !== String(article.id))
+    .slice(0, 6);
+
+  return `
+    <article class="news-box" id="${categoryIds[category] || ""}">
+      <header>
+        <h2>${escapeHtml(category)}</h2>
+        <a href="./listing.html?category=${encodeURIComponent(category)}">更多</a>
+      </header>
+      <a class="section-lead" href="${articleUrl(article)}">
+        <img ${imageAttrs(article, { width: 512, height: 288 })} alt="" />
+        <h3>${escapeHtml(article.title)}</h3>
+      </a>
+      <ul class="section-news-list">
+        ${subItems.map((item) => `
+          <li>
+            <a href="${articleUrl(item)}">${escapeHtml(item.title)}</a>
+            <time>${escapeHtml(shortDate(item.time || item.date || ""))}</time>
+          </li>
+        `).join("")}
+      </ul>
+    </article>
+  `;
+}
+
+function renderExposureWallCard() {
+  return `
+    <article class="news-box expose-wall-box" id="exposure-wall">
+      <header>
+        <h2>曝光墙</h2>
+        <a href="./expose.html">我要曝光</a>
+      </header>
+      <a class="expose-wall-main" href="./expose.html" aria-label="提交曝光材料">
+        <span class="expose-wall-symbol" aria-hidden="true">!</span>
+        <h3>匿名曝光 · 证据直达编辑部</h3>
+        <p>支持提交文字、图片和视频。公开展示可匿名，但必须留下电话或邮箱，方便编辑核实。</p>
+        <strong>提交曝光材料</strong>
+      </a>
+      <ul class="expose-wall-points">
+        <li>身份信息不会在前台公开</li>
+        <li>材料审核后决定是否报道</li>
+        <li>严禁捏造、诽谤和非法内容</li>
+      </ul>
+    </article>
+  `;
 }
 
 function renderSections(articles) {
-  const categories = ["重要新闻", "热门头条", "驱逐快报", "美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
-  const sections = categories.map((category) => {
-    const categoryArticles = articles.filter((item) => item.category === category);
-    const article = findLeadArticle(categoryArticles, articles);
-    const directItems = categoryArticles.filter((item) => item.id !== article.id).slice(0, 6);
-    const fallbackItems = articles
-      .filter((item) => item.id !== article.id && !directItems.some((direct) => direct.id === item.id))
-      .slice(0, Math.max(0, 6 - directItems.length));
-    const subItems = directItems.concat(fallbackItems).slice(0, 6);
+  const categories = ["美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
+  const sections = categories.map((category) => renderCategorySection(category, articles));
+  sections.push(renderExposureWallCard());
 
-    return `
-      <article class="news-box" id="${categoryIds[category] || ""}">
-        <header><h2>${escapeHtml(category)}</h2><a href="./listing.html?category=${encodeURIComponent(category)}">更多</a></header>
-        <a class="section-lead" href="${articleUrl(article)}">
-          <img ${imageAttrs(article, { width: 512, height: 288 })} alt="" />
-          <h3>${escapeHtml(article.title)}</h3>
-        </a>
-        <ul class="section-news-list">
-          ${subItems.map((item) => `
-            <li>
-              <a href="${articleUrl(item)}">${escapeHtml(item.title)}</a>
-              <time>${escapeHtml(shortDate(item.time || item.date || ""))}</time>
-            </li>
-          `).join("")}
-        </ul>
-      </article>
-    `;
-  });
-  document.querySelector("#sections-grid").innerHTML = sections.join("");
+  const root = document.querySelector("#sections-grid");
+  if (root) root.innerHTML = sections.join("");
 }
 
 function buildRankPool(articles) {
@@ -317,15 +358,15 @@ function buildRankPool(articles) {
 }
 
 function generateHeat(article, index) {
-  const digits = String(article.id || '').replace(/\D/g, '');
+  const digits = String(article.id || "").replace(/\D/g, "");
   const seed = Number(digits.slice(-3) || index + 1);
   const value = 16000 + ((seed * 37) % 9000) + (12 - index) * 430;
   return `${(value / 10000).toFixed(1)}万`;
 }
 
 function renderRank(articles) {
-  const rankRoot = document.querySelector('#rank-list');
-  const switchBtn = document.querySelector('#rank-switch');
+  const rankRoot = document.querySelector("#rank-list");
+  const switchBtn = document.querySelector("#rank-switch");
   if (!rankRoot || !switchBtn) return;
   const pool = buildRankPool(articles);
   let start = 0;
@@ -343,14 +384,17 @@ function renderRank(articles) {
         </li>
       `);
     }
-    rankRoot.innerHTML = items.join('');
+    rankRoot.innerHTML = items.join("");
   }
 
-  switchBtn.addEventListener('click', function (event) {
-    event.preventDefault();
-    start = (start + 10) % pool.length;
-    draw();
-  });
+  if (!switchBtn.dataset.rankBound) {
+    switchBtn.dataset.rankBound = "true";
+    switchBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      start = (start + 10) % Math.max(pool.length, 1);
+      draw();
+    });
+  }
 
   draw();
 }

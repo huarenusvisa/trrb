@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>唐人日报后台</title>
-  <link rel="stylesheet" href="./styles.css?v=20260710-editor2" />
+  <link rel="stylesheet" href="./styles.css?v=20260713-ice-review-final" />
 </head>
 <body>
   <div id="app">
@@ -16,13 +16,10 @@
         <div class="brand">唐人日报</div>
         <h1>后台登录</h1>
         <p>仅限授权管理员使用。</p>
-
         <label>邮箱</label>
-        <input id="login-email" type="email" autocomplete="email" placeholder="请输入管理员邮箱" value="" required />
-
+        <input id="login-email" type="email" autocomplete="email" placeholder="请输入管理员邮箱" required />
         <label>密码</label>
         <input id="login-password" type="password" autocomplete="current-password" placeholder="请输入密码" required />
-
         <button type="submit">登录后台</button>
         <div class="message" id="login-message"></div>
       </form>
@@ -38,6 +35,9 @@
           <button class="nav-btn active" data-page="dashboard">控制台</button>
           <button class="nav-btn" data-page="articles">文章管理</button>
           <button class="nav-btn" data-page="new-article">发布文章</button>
+          <button class="nav-btn review-nav" data-page="ice-review">
+            ICE审核中心 <span id="review-nav-count">0</span>
+          </button>
           <button class="nav-btn" data-page="rankings">24小时热榜</button>
         </nav>
         <button class="logout" id="logout-btn">退出登录</button>
@@ -49,19 +49,20 @@
             <h2 id="page-title">控制台</h2>
             <p id="admin-info">正在读取管理员身份...</p>
           </div>
-          <a href="/" target="_blank">打开前台</a>
+          <a href="/" target="_blank" rel="noopener">打开前台</a>
         </header>
 
         <section class="page" id="dashboard-page">
-          <div class="cards">
+          <div class="cards cards-five">
             <article><strong id="count-articles">0</strong><span>文章总数</span></article>
             <article><strong id="count-published">0</strong><span>已发布</span></article>
             <article><strong id="count-draft">0</strong><span>草稿</span></article>
+            <article class="review-card"><strong id="count-review">0</strong><span>ICE待人工审核</span></article>
             <article><strong id="count-rankings">0</strong><span>热榜条目</span></article>
           </div>
           <div class="panel">
             <h3>后台状态</h3>
-            <p id="system-status">后台已连接 Supabase。现在可以测试发布文章。</p>
+            <p id="system-status">后台已连接 Supabase。ICE非官方候选新闻必须在审核中心批准后才能发布。</p>
           </div>
         </section>
 
@@ -127,17 +128,20 @@
             <div class="external-url-box">
               <label>外部图片链接</label>
               <input id="article-cover" type="url" placeholder="https://...（可直接使用外链）" />
-              <div class="media-help">外链适合临时使用；长期运营建议优先使用粘贴或本地上传。</div>
+              <div class="media-help">长期运营建议优先使用本地上传或粘贴图片。</div>
             </div>
 
             <div class="ai-cover-box">
               <div class="field-heading">
-                <label>AI 新闻封面</label>
-                <button type="button" class="secondary-btn" id="generate-ai-cover">根据文章生成 AI 封面</button>
+                <label>AI新闻封面</label>
+                <button type="button" class="secondary-btn" id="generate-ai-cover">根据文章生成AI封面</button>
               </div>
-              <label class="ai-auto-label"><input id="auto-ai-cover" type="checkbox" checked /> 发布时没有封面，自动生成一张 16:9 AI 示意图</label>
-              <div class="media-help">AI 图会自动上传到 Supabase Storage，并建议在图片说明中标注“AI生成示意图”。涉及真实人物、灾难或执法现场时只生成概念示意图，不伪造现场照片。</div>
-              <div class="upload-progress hidden" id="ai-cover-progress">正在准备 AI 封面…</div>
+              <label class="ai-auto-label">
+                <input id="auto-ai-cover" type="checkbox" checked />
+                发布时没有封面，自动生成一张16:9 AI示意图
+              </label>
+              <div class="media-help">涉及真实人物、灾难或执法现场时只生成概念示意图，不伪造现场照片。</div>
+              <div class="upload-progress hidden" id="ai-cover-progress">正在准备AI封面…</div>
             </div>
 
             <label>正文</label>
@@ -147,8 +151,7 @@
               <label>SEO关键词</label>
               <button type="button" class="secondary-btn compact-btn" id="generate-seo">自动提取关键词</button>
             </div>
-            <input id="article-seo-keywords" placeholder="例如：美国移民, ICE执法, 华人新闻（可留空自动生成）" />
-            <div class="media-help">保存时会结合标题、栏目和正文自动生成关键词，并写入文章 SEO Meta。</div>
+            <input id="article-seo-keywords" placeholder="例如：美国移民, ICE执法, 华人新闻" />
 
             <div class="grid2">
               <div>
@@ -170,10 +173,32 @@
           </form>
         </section>
 
+        <section class="page hidden" id="ice-review-page">
+          <div class="review-head panel">
+            <div>
+              <h3>ICE人工审核中心</h3>
+              <p>官方高分且无风险内容可自动排期；非官方内容必须由管理员审核。</p>
+            </div>
+            <button id="refresh-review">刷新审核队列</button>
+          </div>
+
+          <div class="review-tabs" id="review-tabs">
+            <button class="review-tab active" data-review-filter="pending_review">待人工审核 <b id="tab-count-pending_review">0</b></button>
+            <button class="review-tab" data-review-filter="pending_corroboration">等待交叉信源 <b id="tab-count-pending_corroboration">0</b></button>
+            <button class="review-tab" data-review-filter="approved">已通过待发布 <b id="tab-count-approved">0</b></button>
+            <button class="review-tab" data-review-filter="published">已发布 <b id="tab-count-published">0</b></button>
+            <button class="review-tab" data-review-filter="rejected">已拒绝 <b id="tab-count-rejected">0</b></button>
+            <button class="review-tab" data-review-filter="failed">处理失败 <b id="tab-count-failed">0</b></button>
+          </div>
+
+          <div class="review-message" id="review-message"></div>
+          <div class="review-list" id="review-list"></div>
+        </section>
+
         <section class="page hidden" id="rankings-page">
           <div class="panel">
             <h3>24小时热榜</h3>
-            <p>第一版后台先显示数据库热榜条目。下一版会加入拖拽排序和一键选择文章。</p>
+            <p>显示数据库中的24小时热榜条目。</p>
             <button id="refresh-rankings">刷新热榜</button>
           </div>
           <div class="table-wrap">
@@ -194,7 +219,81 @@
     </section>
   </div>
 
+  <div class="review-modal hidden" id="review-modal">
+    <div class="review-modal-backdrop" id="review-modal-backdrop"></div>
+    <section class="review-modal-panel" role="dialog" aria-modal="true" aria-labelledby="review-modal-title">
+      <header class="review-modal-header">
+        <div>
+          <span class="eyebrow">ICE CANDIDATE REVIEW</span>
+          <h2 id="review-modal-title">审核候选新闻</h2>
+        </div>
+        <button class="icon-btn" id="review-modal-close" aria-label="关闭">×</button>
+      </header>
+
+      <div class="review-modal-body">
+        <div class="review-score-grid" id="review-score-grid"></div>
+
+        <div class="risk-panel" id="review-risk-panel"></div>
+
+        <label>最终标题</label>
+        <input id="review-title" maxlength="220" />
+
+        <label>最终摘要</label>
+        <textarea id="review-summary" rows="4"></textarea>
+
+        <label>最终正文</label>
+        <textarea id="review-content" rows="16"></textarea>
+
+        <label>封面图片链接</label>
+        <input id="review-cover" type="url" placeholder="https://..." />
+        <img class="review-cover-preview hidden" id="review-cover-preview" alt="候选新闻封面" />
+
+        <div class="grid2">
+          <div>
+            <label>排期时间</label>
+            <input id="review-schedule" type="datetime-local" />
+          </div>
+          <div>
+            <label>审核状态</label>
+            <input id="review-current-status" readonly />
+          </div>
+        </div>
+
+        <label>编辑说明／拒绝理由</label>
+        <textarea id="review-notes" rows="4" placeholder="记录修改、等待信源或拒绝原因。"></textarea>
+
+        <div class="decision-box">
+          <h3>AI审核结论</h3>
+          <p id="review-decision-reason"></p>
+        </div>
+
+        <section class="evidence-section">
+          <div class="field-heading">
+            <h3>原始信源与证据</h3>
+            <span id="review-evidence-count"></span>
+          </div>
+          <div id="review-evidence-list"></div>
+        </section>
+
+        <section class="review-log-section">
+          <h3>人工审核记录</h3>
+          <div id="review-log-list"></div>
+        </section>
+      </div>
+
+      <footer class="review-modal-actions">
+        <button class="secondary-btn" data-review-action="save">保存编辑</button>
+        <button class="warning-btn" data-review-action="wait">等待更多信源</button>
+        <button class="secondary-btn" data-review-action="rewrite">重新交给AI审核</button>
+        <button class="danger-btn" data-review-action="reject">拒绝发布</button>
+        <button data-review-action="approve">批准并排期</button>
+        <button class="publish-now-btn" data-review-action="publish_now">立即发布</button>
+      </footer>
+      <div class="review-action-message" id="review-action-message"></div>
+    </section>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./admin.js?v=20260710-editor2"></script>
+  <script src="./admin.js?v=20260713-ice-review-final"></script>
 </body>
 </html>

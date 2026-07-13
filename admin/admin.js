@@ -1,4 +1,3 @@
-
 const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
 const OWNER_EMAIL = "tangrenribao@gmail.com";
@@ -20,10 +19,12 @@ let currentAdmin = null;
 let categories = [];
 let selectedCoverFile = null;
 let selectedCoverObjectUrl = "";
+let reviewStories = [];
+let reviewFilter = "pending_review";
+let activeReview = null;
 
 document.addEventListener("DOMContentLoaded", init);
 
-// 后台永远使用最新静态文件，清理旧 Service Worker / Cache Storage。
 async function clearLegacyBrowserCaches() {
   try {
     if ("serviceWorker" in navigator) {
@@ -43,9 +44,7 @@ async function init() {
   await clearLegacyBrowserCaches();
   bindEvents();
   const { data } = await supabaseClient.auth.getSession();
-  if (data.session?.user) {
-    await enterAdmin(data.session.user);
-  }
+  if (data.session?.user) await enterAdmin(data.session.user);
 }
 
 function bindEvents() {
@@ -64,14 +63,41 @@ function bindEvents() {
   el("article-cover-paste-zone").addEventListener("paste", handleCoverPaste);
   el("article-cover-paste-zone").addEventListener("focus", () => el("article-cover-paste-zone").classList.add("is-paste-active"));
   el("article-cover-paste-zone").addEventListener("blur", () => el("article-cover-paste-zone").classList.remove("is-paste-active"));
+
   el("generate-summary").addEventListener("click", () => {
     el("article-summary").value = generateSummary(el("article-content").value, el("article-title").value);
   });
   el("generate-seo").addEventListener("click", () => {
     const categoryName = el("article-category").selectedOptions?.[0]?.textContent || "";
-    el("article-seo-keywords").value = generateSeoKeywords(el("article-title").value, categoryName, el("article-content").value);
+    el("article-seo-keywords").value = generateSeoKeywords(
+      el("article-title").value,
+      categoryName,
+      el("article-content").value
+    );
   });
-  el("generate-ai-cover")?.addEventListener("click", () => generateAiCover());
+  el("generate-ai-cover").addEventListener("click", () => generateAiCover());
+
+  el("refresh-review").addEventListener("click", loadReviewQueue);
+  document.querySelectorAll(".review-tab").forEach((button) => {
+    button.addEventListener("click", () => {
+      reviewFilter = button.dataset.reviewFilter;
+      document.querySelectorAll(".review-tab").forEach((item) => item.classList.toggle("active", item === button));
+      renderReviewList();
+    });
+  });
+
+  el("review-modal-close").addEventListener("click", closeReviewModal);
+  el("review-modal-backdrop").addEventListener("click", closeReviewModal);
+  el("review-cover").addEventListener("input", updateReviewCoverPreview);
+  document.querySelectorAll("[data-review-action]").forEach((button) => {
+    button.addEventListener("click", () => handleReviewAction(button.dataset.reviewAction));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !el("review-modal").classList.contains("hidden")) {
+      closeReviewModal();
+    }
+  });
 }
 
 async function handleLogin(event) {
@@ -85,7 +111,6 @@ async function handleLogin(event) {
     setLoginMessage("登录失败：" + error.message);
     return;
   }
-
   await enterAdmin(data.user);
 }
 
@@ -99,8 +124,7 @@ async function enterAdmin(user) {
     setLoginMessage(
       "这个账号没有后台权限。\n" +
       "当前登录 UID: " + user.id + "\n" +
-      "当前邮箱: " + (user.email || "") + "\n" +
-      "请确认 admin_users.user_id 是否一致。"
+      "当前邮箱: " + (user.email || "")
     );
     return;
   }
@@ -109,12 +133,17 @@ async function enterAdmin(user) {
   el("login-view").classList.add("hidden");
   el("admin-view").classList.remove("hidden");
   el("admin-info").textContent = `${user.email} · ${admin.role}`;
-  await Promise.all([loadCategories(), loadArticles(), loadRankings()]);
+
+  await Promise.allSettled([
+    loadCategories(),
+    loadArticles(),
+    loadRankings(),
+    loadReviewQueue()
+  ]);
   showPage("dashboard");
 }
 
 async function getAdminRecord(user) {
-  // 正确字段是 user_id，不是 admin_users.id。v2 已修复这一点。
   let { data, error } = await supabaseClient
     .from("admin_users")
     .select("id,user_id,email,role,is_active")
@@ -122,12 +151,9 @@ async function getAdminRecord(user) {
     .eq("is_active", true)
     .maybeSingle();
 
-  if (error) {
-    console.error("Admin check by user_id failed:", error);
-  }
+  if (error) console.error("Admin check by user_id failed:", error);
   if (data && ["owner", "admin"].includes(String(data.role || "").toLowerCase())) return data;
 
-  // 备用：如果早期表里 user_id 没写对，用邮箱再核对一次。
   const fallback = await supabaseClient
     .from("admin_users")
     .select("id,user_id,email,role,is_active")
@@ -135,16 +161,14 @@ async function getAdminRecord(user) {
     .eq("is_active", true)
     .maybeSingle();
 
-  if (fallback.error) {
-    console.error("Admin check by email failed:", fallback.error);
+  if (fallback.error) console.error("Admin check by email failed:", fallback.error);
+  if (fallback.data && ["owner", "admin"].includes(String(fallback.data.role || "").toLowerCase())) {
+    return fallback.data;
   }
-  if (fallback.data && ["owner", "admin"].includes(String(fallback.data.role || "").toLowerCase())) return fallback.data;
 
-  // 最后保险：只允许这一个 Supabase Auth UID 进入 UI。数据库写入仍然受 RLS 控制。
   if (user.id === OWNER_UID && String(user.email || "").trim().toLowerCase() === OWNER_EMAIL) {
     return { user_id: OWNER_UID, email: OWNER_EMAIL, role: "owner", is_active: true };
   }
-
   return null;
 }
 
@@ -158,6 +182,7 @@ function showPage(page) {
     dashboard: "控制台",
     articles: "文章管理",
     "new-article": "发布文章",
+    "ice-review": "ICE人工审核中心",
     rankings: "24小时热榜"
   };
 
@@ -168,6 +193,7 @@ function showPage(page) {
 
   el(`${page}-page`).classList.remove("hidden");
   el("page-title").textContent = titles[page] || "控制台";
+  if (page === "ice-review") loadReviewQueue();
 }
 
 async function loadCategories() {
@@ -184,7 +210,7 @@ async function loadCategories() {
 
   categories = data || [];
   el("article-category").innerHTML = categories
-    .map((item) => `<option value="${item.id}" data-name="${escapeHtml(item.name)}">${escapeHtml(item.name)}</option>`)
+    .map((item) => `<option value="${item.id}">${escapeHtml(item.name)}</option>`)
     .join("");
 }
 
@@ -208,20 +234,20 @@ async function loadArticles() {
 
   el("articles-tbody").innerHTML = articles.length
     ? articles.map(renderArticleRow).join("")
-    : `<tr><td colspan="5">暂无文章。可以先发布一篇测试文章。</td></tr>`;
+    : `<tr><td colspan="5">暂无文章。</td></tr>`;
 }
 
 function renderArticleRow(article) {
   return `
     <tr>
-      <td><b>${escapeHtml(article.title)}</b><br><small>${article.id}</small></td>
+      <td><b>${escapeHtml(article.title)}</b><br><small>${escapeHtml(article.id)}</small></td>
       <td>${escapeHtml(article.category_name || "-")}</td>
-      <td><span class="status-pill status-${article.status}">${statusLabel(article.status)}</span></td>
+      <td><span class="status-pill status-${escapeHtml(article.status)}">${statusLabel(article.status)}</span></td>
       <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>
       <td>
-        <button class="small-btn" onclick="changeArticleStatus('${article.id}','published')">发布</button>
-        <button class="small-btn" onclick="changeArticleStatus('${article.id}','draft')">草稿</button>
-        <button class="small-btn" onclick="changeArticleStatus('${article.id}','hidden')">隐藏</button>
+        <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','published')">发布</button>
+        <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','draft')">草稿</button>
+        <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','hidden')">隐藏</button>
       </td>
     </tr>
   `;
@@ -258,14 +284,13 @@ async function handleSaveArticle(event) {
     }
 
     const content = el("article-content").value.trim();
-    if (!coverImage && status === "published" && el("auto-ai-cover")?.checked) {
+    if (!coverImage && status === "published" && el("auto-ai-cover").checked) {
       coverImage = await generateAiCover({ silent: true });
       el("article-cover").value = coverImage || "";
     }
+
     const summary = el("article-summary").value.trim() || generateSummary(content, title);
     const seoKeywords = el("article-seo-keywords").value.trim() || generateSeoKeywords(title, categoryName, content);
-    el("article-summary").value = summary;
-    el("article-seo-keywords").value = seoKeywords;
 
     const payload = {
       title,
@@ -281,11 +306,10 @@ async function handleSaveArticle(event) {
       published_at: status === "published" ? new Date().toISOString() : null
     };
 
-    el("article-message").textContent = "图片上传完成，正在保存文章...";
     const { error } = await supabaseClient.from("articles").insert(payload);
     if (error) throw error;
 
-    el("article-message").textContent = "文章已保存，封面图片已本地化。";
+    el("article-message").textContent = "文章已保存。";
     el("article-form").reset();
     el("article-author").value = "Tang Ren Daily";
     clearCoverSelection();
@@ -306,30 +330,38 @@ async function generateAiCover(options = {}) {
   const content = el("article-content").value.trim();
   const summary = el("article-summary").value.trim() || generateSummary(content, title);
   const category = el("article-category").selectedOptions?.[0]?.textContent || "新闻";
-  if (!title) { if (!options.silent) alert("请先填写文章标题。"); return ""; }
-  progress?.classList.remove("hidden");
-  if (progress) progress.textContent = "正在生成 16:9 AI 新闻封面，通常需要 15–60 秒…";
+
+  if (!title) {
+    if (!options.silent) alert("请先填写文章标题。");
+    return "";
+  }
+
+  progress.classList.remove("hidden");
+  progress.textContent = "正在生成16:9 AI新闻封面，通常需要15–60秒…";
+
   try {
     const { data: sessionData } = await supabaseClient.auth.getSession();
     const token = sessionData.session?.access_token;
     if (!token) throw new Error("登录状态已失效，请重新登录。");
+
     const response = await fetch("/.netlify/functions/generate-cover", {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
       body: JSON.stringify({ title, category, summary, content: content.slice(0, 4000) })
     });
     const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || `AI 封面生成失败（${response.status}）`);
-    if (!result.url) throw new Error("AI 接口没有返回图片地址。");
+    if (!response.ok) throw new Error(result.error || `AI封面生成失败（${response.status}）`);
+    if (!result.url) throw new Error("AI接口没有返回图片地址。");
+
     el("article-cover").value = result.url;
     el("article-cover-preview").src = result.url;
     el("article-cover-preview-wrap").classList.remove("hidden");
-    if (progress) progress.textContent = "AI 封面生成并本地化成功。";
+    progress.textContent = "AI封面生成并本地化成功。";
     return result.url;
   } catch (error) {
     console.error(error);
-    if (progress) progress.textContent = `AI 封面失败：${error.message}`;
-    if (!options.silent) alert(`AI 封面失败：${error.message}`);
+    progress.textContent = `AI封面失败：${error.message}`;
+    if (!options.silent) alert(`AI封面失败：${error.message}`);
     return "";
   }
 }
@@ -342,8 +374,7 @@ function handleCoverPaste(event) {
     const blob = imageItem.getAsFile();
     if (!blob) return;
     const ext = (blob.type.split("/")[1] || "png").replace("jpeg", "jpg");
-    const file = new File([blob], `clipboard-${Date.now()}.${ext}`, { type: blob.type });
-    setSelectedCoverFile(file);
+    setSelectedCoverFile(new File([blob], `clipboard-${Date.now()}.${ext}`, { type: blob.type }));
     return;
   }
 
@@ -356,13 +387,19 @@ function handleCoverPaste(event) {
   }
 }
 
+function handleCoverSelection(event) {
+  const file = event.target.files?.[0] || null;
+  if (!file) return clearCoverSelection();
+  setSelectedCoverFile(file);
+}
+
 function setSelectedCoverFile(file) {
   if (!file?.type?.startsWith("image/")) {
     alert("请选择或粘贴 JPG、PNG、WebP 或 GIF 图片。");
     return;
   }
   if (file.size > MAX_SOURCE_IMAGE_BYTES) {
-    alert("原图不能超过 15MB，请先缩小图片。");
+    alert("原图不能超过15MB，请先缩小图片。");
     return;
   }
 
@@ -374,61 +411,6 @@ function setSelectedCoverFile(file) {
   el("article-cover-progress").textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)}MB`;
   el("article-cover-progress").classList.remove("hidden");
   el("article-cover").value = "";
-}
-
-function generateSummary(content, title = "") {
-  const clean = String(content || "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/https?:\/\/\S+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  if (!clean) return String(title || "").trim();
-  const sentences = clean.split(/(?<=[。！？!?])\s*/).filter(Boolean);
-  let summary = "";
-  for (const sentence of sentences) {
-    if ((summary + sentence).length > 135 && summary.length >= 60) break;
-    summary += sentence;
-  }
-  summary = (summary || clean.slice(0, 130)).trim();
-  return summary.length > 150 ? `${summary.slice(0, 147)}…` : summary;
-}
-
-function generateSeoKeywords(title, category, content) {
-  const stop = new Set(["我们","他们","以及","一个","这个","那个","目前","已经","进行","表示","指出","认为","相关","报道","消息","记者","唐人日报","中国","美国","新闻","文章","情况","问题","可以","没有","因为","但是","如果","其中","对于","通过","正在"]);
-  const scores = new Map();
-  const add = (term, score) => {
-    const value = String(term || "").trim().replace(/^[,，。；;：:\s]+|[,，。；;：:\s]+$/g, "");
-    if (!value || value.length < 2 || value.length > 18 || stop.has(value) || /^\d+$/.test(value)) return;
-    scores.set(value, (scores.get(value) || 0) + score);
-  };
-
-  add(category, 12);
-  String(title || "").split(/[\s,，。；;：:、|｜—\-（）()《》“”"']+/).forEach((part) => add(part, 10));
-
-  const text = `${title || ""} ${content || ""}`.replace(/<[^>]+>/g, " ");
-  (text.match(/[A-Za-z][A-Za-z0-9.'-]{2,}/g) || []).forEach((word) => add(word.toUpperCase(), 3));
-  const chineseRuns = text.match(/[\u4e00-\u9fff]{2,12}/g) || [];
-  chineseRuns.forEach((run) => {
-    if (run.length <= 6) add(run, 4);
-    for (const size of [2,3,4]) {
-      for (let i = 0; i <= run.length - size; i++) add(run.slice(i, i + size), size === 2 ? 1 : 2);
-    }
-  });
-
-  return [...scores.entries()]
-    .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)
-    .slice(0, 10)
-    .map(([term]) => term)
-    .join(", ");
-}
-
-function handleCoverSelection(event) {
-  const file = event.target.files?.[0] || null;
-  if (!file) {
-    clearCoverSelection();
-    return;
-  }
-  setSelectedCoverFile(file);
 }
 
 function clearCoverSelection() {
@@ -461,10 +443,8 @@ async function uploadCoverImage(file, title) {
       cacheControl: "31536000",
       upsert: false
     });
-  if (error) {
-    throw new Error(`图片上传失败：${error.message}。请先在 Supabase 执行补丁包中的 SQL。`);
-  }
 
+  if (error) throw new Error(`图片上传失败：${error.message}`);
   const { data } = supabaseClient.storage.from(ARTICLE_IMAGE_BUCKET).getPublicUrl(filePath);
   if (!data?.publicUrl) throw new Error("图片已上传，但无法取得公开地址。");
   progress.textContent = "图片上传成功。";
@@ -486,10 +466,13 @@ async function optimizeImage(file, maxDimension, quality) {
   context.drawImage(bitmap, 0, 0, width, height);
   bitmap.close?.();
 
-  const blob = await new Promise((resolve, reject) => {
-    canvas.toBlob((value) => value ? resolve(value) : reject(new Error("图片压缩失败")), "image/webp", quality);
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (value) => value ? resolve(value) : reject(new Error("图片压缩失败")),
+      "image/webp",
+      quality
+    );
   });
-  return blob;
 }
 
 async function loadRankings() {
@@ -520,6 +503,349 @@ async function loadRankings() {
     : `<tr><td colspan="4">暂无热榜条目。</td></tr>`;
 }
 
+async function reviewApi(action, payload = {}) {
+  const { data } = await supabaseClient.auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new Error("登录状态已失效，请重新登录。");
+
+  const response = await fetch("/.netlify/functions/ice-review", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ action, ...payload })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(result.error || `ICE审核接口失败（${response.status}）`);
+  return result;
+}
+
+async function loadReviewQueue() {
+  el("review-message").textContent = "正在读取ICE候选新闻…";
+  try {
+    const result = await reviewApi("list");
+    reviewStories = result.stories || [];
+    updateReviewCounts();
+    renderReviewList();
+    el("review-message").textContent = `已读取 ${reviewStories.length} 条候选记录。`;
+  } catch (error) {
+    console.error(error);
+    el("review-message").textContent = `审核队列读取失败：${error.message}`;
+    el("review-list").innerHTML = `<div class="empty-state">请确认已运行最终版SQL，并且Netlify已经设置服务端Supabase密钥。</div>`;
+  }
+}
+
+function updateReviewCounts() {
+  const statuses = [
+    "pending_review",
+    "pending_corroboration",
+    "approved",
+    "published",
+    "rejected",
+    "failed"
+  ];
+
+  const counts = Object.fromEntries(
+    statuses.map((status) => [
+      status,
+      reviewStories.filter((story) => story.status === status).length
+    ])
+  );
+
+  statuses.forEach((status) => {
+    const node = el(`tab-count-${status}`);
+    if (node) node.textContent = counts[status] || 0;
+  });
+
+  const pending = (counts.pending_review || 0);
+  el("count-review").textContent = pending;
+  el("review-nav-count").textContent = pending;
+  el("review-nav-count").classList.toggle("has-items", pending > 0);
+}
+
+function renderReviewList() {
+  const stories = reviewStories.filter((story) => story.status === reviewFilter);
+  el("review-list").innerHTML = stories.length
+    ? stories.map(renderReviewCard).join("")
+    : `<div class="empty-state">当前分类没有候选新闻。</div>`;
+}
+
+function renderReviewCard(story) {
+  const riskItems = [];
+  if (story.conflict_detected) riskItems.push("事实冲突");
+  if (story.legal_risk) riskItems.push("法律风险");
+  if (story.privacy_risk) riskItems.push("隐私风险");
+  if (story.fabrication_risk) riskItems.push("虚构风险");
+
+  const riskHtml = riskItems.length
+    ? `<span class="risk-chip danger">${riskItems.map(escapeHtml).join(" · ")}</span>`
+    : `<span class="risk-chip safe">无硬风险</span>`;
+
+  const image = story.cover_image
+    ? `<img src="${escapeAttr(story.cover_image)}" alt="" loading="lazy" />`
+    : `<div class="review-card-placeholder">ICE</div>`;
+
+  return `
+    <article class="review-item">
+      <div class="review-item-media">${image}</div>
+      <div class="review-item-main">
+        <div class="review-item-topline">
+          <span class="status-pill review-status-${escapeHtml(story.status)}">${reviewStatusLabel(story.status)}</span>
+          ${riskHtml}
+          <time>${escapeHtml(formatDate(story.updated_at || story.last_seen_at))}</time>
+        </div>
+        <h3>${escapeHtml(story.title || "等待AI生成标题")}</h3>
+        <p>${escapeHtml(story.summary || story.decision_reason || "暂无摘要")}</p>
+        <div class="score-row">
+          <span><b>${Number(story.total_score || 0)}</b>/100 综合分</span>
+          <span><b>${Number(story.ai_confidence || 0)}</b>/100 AI可信度</span>
+          <span>独立信源 <b>${Number(story.independent_source_count || 0)}</b></span>
+          <span>官方 <b>${Number(story.official_source_count || 0)}</b></span>
+          <span>媒体 <b>${Number(story.media_source_count || 0)}</b></span>
+        </div>
+      </div>
+      <div class="review-item-action">
+        <button onclick="openIceReview('${escapeAttr(story.id)}')">查看并审核</button>
+      </div>
+    </article>
+  `;
+}
+
+window.openIceReview = async function (storyId) {
+  el("review-action-message").textContent = "";
+  el("review-modal").classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  el("review-modal-title").textContent = "正在读取候选新闻…";
+  el("review-evidence-list").innerHTML = `<div class="empty-state">正在加载原始信源…</div>`;
+
+  try {
+    const detail = await reviewApi("detail", { story_id: storyId });
+    activeReview = detail;
+    populateReviewModal(detail);
+  } catch (error) {
+    console.error(error);
+    el("review-modal-title").textContent = "读取失败";
+    el("review-action-message").textContent = error.message;
+  }
+};
+
+function populateReviewModal(detail) {
+  const story = detail.story;
+  el("review-modal-title").textContent = story.title || "审核候选新闻";
+  el("review-title").value = story.final_title || story.title || "";
+  el("review-summary").value = story.final_summary || story.summary || "";
+  el("review-content").value = story.final_content || story.content || "";
+  el("review-cover").value = story.final_cover_image || story.cover_image || "";
+  el("review-current-status").value = `${reviewStatusLabel(story.status)} / ${humanStatusLabel(story.human_review_status)}`;
+  el("review-notes").value = story.editor_notes || "";
+  el("review-decision-reason").textContent = story.decision_reason || "暂无AI审核说明。";
+  el("review-schedule").value = toDateTimeLocal(story.scheduled_at || nextHalfHourIso());
+  updateReviewCoverPreview();
+
+  const metrics = [
+    ["综合评分", `${Number(story.total_score || 0)}/100`],
+    ["AI可信度", `${Number(story.ai_confidence || 0)}/100`],
+    ["独立信源", Number(story.independent_source_count || 0)],
+    ["官方来源", Number(story.official_source_count || 0)],
+    ["媒体来源", Number(story.media_source_count || 0)],
+    ["专业机构", Number(story.organization_source_count || 0)]
+  ];
+  el("review-score-grid").innerHTML = metrics
+    .map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`)
+    .join("");
+
+  const risks = [
+    ["事实冲突", story.conflict_detected],
+    ["法律风险", story.legal_risk],
+    ["隐私风险", story.privacy_risk],
+    ["虚构风险", story.fabrication_risk]
+  ];
+  el("review-risk-panel").innerHTML = risks
+    .map(([label, active]) => `
+      <span class="risk-chip ${active ? "danger" : "safe"}">
+        ${active ? "⚠" : "✓"} ${escapeHtml(label)}
+      </span>
+    `).join("");
+
+  renderEvidence(detail);
+  renderReviewLogs(detail.logs || []);
+}
+
+function renderEvidence(detail) {
+  const postsById = new Map((detail.posts || []).map((post) => [post.id, post]));
+  const evidence = detail.evidence || [];
+  el("review-evidence-count").textContent = `${evidence.length}条证据`;
+
+  el("review-evidence-list").innerHTML = evidence.length
+    ? evidence.map((item, index) => {
+        const post = postsById.get(item.post_id) ||
+          (detail.posts || []).find((candidate) => candidate.x_post_id === item.x_post_id) || {};
+        const media = Array.isArray(post.media) ? post.media : [];
+        const mediaUrl = media.find((entry) => entry.url || entry.preview_image_url);
+        return `
+          <article class="evidence-card">
+            <div class="evidence-number">${index + 1}</div>
+            <div class="evidence-body">
+              <div class="evidence-meta">
+                <b>${escapeHtml(post.source_display_name || post.source_username || item.independence_key || "未知来源")}</b>
+                <span>${escapeHtml(sourceTypeLabel(post.source_type || item.source_type))}</span>
+                <span>信任等级 ${Number(post.trust_tier || item.trust_tier || 5)}</span>
+                <time>${escapeHtml(formatDate(post.source_created_at || item.created_at))}</time>
+              </div>
+              <p>${escapeHtml(post.source_text || "没有保存原始正文。")}</p>
+              ${mediaUrl ? `<img class="evidence-image" src="${escapeAttr(mediaUrl.url || mediaUrl.preview_image_url)}" alt="" loading="lazy" />` : ""}
+              <a href="${escapeAttr(post.x_url || item.x_url)}" target="_blank" rel="noopener">打开原始X帖子</a>
+            </div>
+          </article>
+        `;
+      }).join("")
+    : `<div class="empty-state">尚未找到交叉证据。</div>`;
+}
+
+function renderReviewLogs(logs) {
+  el("review-log-list").innerHTML = logs.length
+    ? logs.map((log) => `
+      <div class="review-log-item">
+        <b>${escapeHtml(reviewActionLabel(log.action))}</b>
+        <span>${escapeHtml(log.reviewer_email || "系统")}</span>
+        <time>${escapeHtml(formatDate(log.created_at))}</time>
+        ${log.notes ? `<p>${escapeHtml(log.notes)}</p>` : ""}
+      </div>
+    `).join("")
+    : `<div class="empty-state compact">暂无人工审核记录。</div>`;
+}
+
+function closeReviewModal() {
+  el("review-modal").classList.add("hidden");
+  document.body.classList.remove("modal-open");
+  activeReview = null;
+}
+
+function updateReviewCoverPreview() {
+  const url = el("review-cover").value.trim();
+  if (/^https?:\/\//i.test(url)) {
+    el("review-cover-preview").src = url;
+    el("review-cover-preview").classList.remove("hidden");
+  } else {
+    el("review-cover-preview").classList.add("hidden");
+    el("review-cover-preview").removeAttribute("src");
+  }
+}
+
+async function handleReviewAction(action) {
+  if (!activeReview?.story?.id) return;
+
+  const labels = {
+    save: "保存编辑",
+    wait: "等待更多信源",
+    rewrite: "重新交给AI审核",
+    reject: "拒绝发布",
+    approve: "批准并排期",
+    publish_now: "立即发布"
+  };
+
+  if (action === "reject" && !el("review-notes").value.trim()) {
+    el("review-action-message").textContent = "拒绝发布前请填写审核理由。";
+    el("review-notes").focus();
+    return;
+  }
+
+  if (["approve", "publish_now"].includes(action)) {
+    const confirmed = window.confirm(
+      action === "publish_now"
+        ? "确认立即发布到 trrb.net 前台？"
+        : "确认批准并放入规律发布队列？"
+    );
+    if (!confirmed) return;
+  }
+
+  const buttons = [...document.querySelectorAll("[data-review-action]")];
+  buttons.forEach((button) => { button.disabled = true; });
+  el("review-action-message").textContent = `正在执行：${labels[action]}…`;
+
+  try {
+    const payload = {
+      story_id: activeReview.story.id,
+      title: el("review-title").value.trim(),
+      summary: el("review-summary").value.trim(),
+      content: el("review-content").value.trim(),
+      cover_image: el("review-cover").value.trim(),
+      scheduled_at: el("review-schedule").value
+        ? new Date(el("review-schedule").value).toISOString()
+        : "",
+      notes: el("review-notes").value.trim()
+    };
+
+    const result = await reviewApi(action, payload);
+    el("review-action-message").textContent = `${labels[action]}成功。`;
+
+    if (action === "publish_now" && result.article_id) {
+      el("review-action-message").textContent = `发布成功，文章ID：${result.article_id}`;
+    }
+
+    await Promise.all([loadReviewQueue(), loadArticles()]);
+    setTimeout(closeReviewModal, 650);
+  } catch (error) {
+    console.error(error);
+    el("review-action-message").textContent = `${labels[action]}失败：${error.message}`;
+  } finally {
+    buttons.forEach((button) => { button.disabled = false; });
+  }
+}
+
+function generateSummary(content, title = "") {
+  const clean = String(content || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/https?:\/\/\S+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!clean) return String(title || "").trim();
+  const sentences = clean.split(/(?<=[。！？!?])\s*/).filter(Boolean);
+  let summary = "";
+  for (const sentence of sentences) {
+    if ((summary + sentence).length > 135 && summary.length >= 60) break;
+    summary += sentence;
+  }
+  summary = (summary || clean.slice(0, 130)).trim();
+  return summary.length > 150 ? `${summary.slice(0, 147)}…` : summary;
+}
+
+function generateSeoKeywords(title, category, content) {
+  const stop = new Set([
+    "我们","他们","以及","一个","这个","那个","目前","已经","进行","表示","指出",
+    "认为","相关","报道","消息","记者","唐人日报","中国","美国","新闻","文章","情况",
+    "问题","可以","没有","因为","但是","如果","其中","对于","通过","正在"
+  ]);
+  const scores = new Map();
+  const add = (term, score) => {
+    const value = String(term || "").trim().replace(/^[,，。；;：:\s]+|[,，。；;：:\s]+$/g, "");
+    if (!value || value.length < 2 || value.length > 18 || stop.has(value) || /^\d+$/.test(value)) return;
+    scores.set(value, (scores.get(value) || 0) + score);
+  };
+
+  add(category, 12);
+  String(title || "").split(/[\s,，。；;：:、|｜—\-（）()《》“”"']+/).forEach((part) => add(part, 10));
+
+  const text = `${title || ""} ${content || ""}`.replace(/<[^>]+>/g, " ");
+  (text.match(/[A-Za-z][A-Za-z0-9.'-]{2,}/g) || []).forEach((word) => add(word.toUpperCase(), 3));
+
+  const chineseRuns = text.match(/[\u4e00-\u9fff]{2,12}/g) || [];
+  chineseRuns.forEach((run) => {
+    if (run.length <= 6) add(run, 4);
+    for (const size of [2, 3, 4]) {
+      for (let i = 0; i <= run.length - size; i++) add(run.slice(i, i + size), size === 2 ? 1 : 2);
+    }
+  });
+
+  return [...scores.entries()]
+    .sort((a, b) => b[1] - a[1] || b[0].length - a[0].length)
+    .slice(0, 10)
+    .map(([term]) => term)
+    .join(", ");
+}
+
 function setLoginMessage(text) {
   el("login-message").textContent = text || "";
 }
@@ -532,15 +858,63 @@ function statusLabel(status) {
   }[status] || status;
 }
 
+function reviewStatusLabel(status) {
+  return {
+    pending_review: "待人工审核",
+    pending_corroboration: "等待交叉信源",
+    approved: "已通过待发布",
+    published: "已发布",
+    rejected: "已拒绝",
+    failed: "处理失败",
+    collecting: "收集中"
+  }[status] || status;
+}
+
+function humanStatusLabel(status) {
+  return {
+    not_reviewed: "尚未审核",
+    required: "需要人工审核",
+    waiting: "等待更多信源",
+    editing: "人工编辑中",
+    rewrite_requested: "等待AI重新审核",
+    approved: "人工已批准",
+    rejected: "人工已拒绝",
+    not_required: "官方自动审核"
+  }[status] || status || "尚未审核";
+}
+
+function sourceTypeLabel(type) {
+  return {
+    official: "官方机构",
+    major_media: "主流媒体",
+    local_media: "地方媒体",
+    specialist_media: "专业媒体",
+    legal_org: "法律机构",
+    research_org: "研究机构",
+    civic_org: "民权组织",
+    discovered_individual: "发现的个人信源"
+  }[type] || type || "未知来源";
+}
+
+function reviewActionLabel(action) {
+  return {
+    save_editorial: "保存编辑",
+    approve_schedule: "批准并排期",
+    publish_now: "立即发布",
+    wait: "等待更多信源",
+    rewrite: "重新交给AI审核",
+    reject: "拒绝发布"
+  }[action] || action;
+}
+
 function makeSlug(title) {
-  const base = title
+  const base = String(title || "")
     .trim()
     .toLowerCase()
     .replace(/[\s_]+/g, "-")
     .replace(/[^\u4e00-\u9fa5a-z0-9-]/g, "")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
-
   return `${base || "article"}-${Date.now().toString(36)}`;
 }
 
@@ -559,6 +933,25 @@ function formatDate(value) {
   }
 }
 
+function nextHalfHourIso() {
+  const date = new Date();
+  date.setSeconds(0, 0);
+  if (date.getMinutes() < 30) date.setMinutes(30);
+  else {
+    date.setHours(date.getHours() + 1);
+    date.setMinutes(0);
+  }
+  return date.toISOString();
+}
+
+function toDateTimeLocal(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const offset = date.getTimezoneOffset();
+  return new Date(date.getTime() - offset * 60000).toISOString().slice(0, 16);
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -566,4 +959,8 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replaceAll("`", "&#096;");
 }

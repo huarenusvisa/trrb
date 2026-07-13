@@ -1,7 +1,7 @@
 const crypto = require("node:crypto");
 
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
-const ANON_KEY = process.env.SUPABASE_ANON_KEY || "";
+const ANON_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const PRIVATE_BUCKET = process.env.ICE_REPORT_PRIVATE_BUCKET || "ice-report-private";
 const PUBLIC_BUCKET = process.env.ICE_REPORT_PUBLIC_BUCKET || "ice-report-public";
@@ -158,7 +158,15 @@ async function publishReport(report, actor, input) {
   const content = safeText(input.content || editorial.content, 30000);
   if (!title || !content) { const error = new Error("标题和正文不能为空"); error.statusCode = 400; throw error; }
   const duplicate = await existingArticle(report.id);
-  if (duplicate?.id) return { article_id: duplicate.id, duplicate: true };
+  if (duplicate?.id) {
+    const time = new Date().toISOString();
+    await patchReport(report.id, {
+      status: "published", article_id: String(duplicate.id), admin_title: title, admin_summary: summary,
+      admin_content: content, review_note: safeText(input.review_note, 4000), reviewer_user_id: actor.user.id,
+      reviewer_email: actor.user.email || actor.admin.email || "", reviewed_at: time, published_at: time
+    });
+    return { article_id: duplicate.id, duplicate: true };
+  }
 
   const publishedMedia = [];
   for (const item of Array.isArray(report.media) ? report.media : []) publishedMedia.push(await copyToPublic(report, item));

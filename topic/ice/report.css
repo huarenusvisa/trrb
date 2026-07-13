@@ -1,0 +1,164 @@
+.ice-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+.ice-title-row h1{margin:0;min-width:0}
+.snapshot-entry{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:42px;
+  padding:8px 14px;
+  border:1px solid #ef4444;
+  border-radius:999px;
+  background:#fff5f5;
+  color:#d92d20;
+  font:700 16px/1 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(217,45,32,.08);
+}
+.snapshot-entry:hover{background:#fee4e2}
+.snapshot-entry:focus-visible{outline:3px solid rgba(217,45,32,.2);outline-offset:2px}
+.snapshot-entry svg{width:20px;height:20px;fill:currentColor}
+
+.snapshot-modal{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.snapshot-modal.hidden{display:none!important}
+.snapshot-backdrop{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  background:rgba(15,23,42,.58);
+  backdrop-filter:blur(3px);
+}
+.snapshot-sheet{
+  position:relative;
+  z-index:1;
+  width:min(620px,100%);
+  max-height:min(88vh,900px);
+  overflow:auto;
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 24px 80px rgba(15,23,42,.28);
+  padding:24px;
+  color:#101828;
+}
+.snapshot-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  padding-bottom:16px;
+  border-bottom:1px solid #eaecf0;
+}
+.snapshot-header span{font-size:12px;font-weight:800;letter-spacing:.08em;color:#d92d20}
+.snapshot-header h2{margin:4px 0 0;font-size:28px;line-height:1.2}
+.snapshot-close{
+  width:40px;height:40px;border:0;border-radius:50%;
+  background:#f2f4f7;color:#344054;font-size:28px;line-height:1;cursor:pointer;
+}
+#snapshot-form{display:grid;gap:16px;margin-top:18px}
+.snapshot-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:14px}
+#snapshot-form label>span:first-child{display:block;margin-bottom:7px;font-weight:750;color:#344054}
+#snapshot-form label b{color:#d92d20}
+#snapshot-form input[type="text"],
+#snapshot-form input[type="date"],
+#snapshot-form input:not([type]),
+#snapshot-form textarea{
+  box-sizing:border-box;
+  width:100%;
+  border:1px solid #d0d5dd;
+  border-radius:12px;
+  padding:12px 13px;
+  background:#fff;
+  color:#101828;
+  font:inherit;
+}
+#snapshot-form textarea{resize:vertical;min-height:120px}
+#snapshot-form input:focus,
+#snapshot-form textarea:focus{outline:0;border-color:#2e90fa;box-shadow:0 0 0 4px rgba(46,144,250,.12)}
+.snapshot-upload{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  min-height:78px;
+  border:1.5px dashed #98a2b3;
+  border-radius:14px;
+  padding:14px;
+  background:#f9fafb;
+  cursor:pointer;
+}
+.snapshot-upload input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.snapshot-upload:before{
+  content:"＋";
+  display:grid;place-items:center;
+  width:44px;height:44px;border-radius:12px;
+  background:#eaf2ff;color:#175cd3;font-size:28px;font-weight:500;
+}
+.snapshot-upload strong,.snapshot-upload small{display:block}
+.snapshot-upload small{margin-top:4px;color:#667085;line-height:1.45}
+.snapshot-preview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.snapshot-preview:empty{display:none}
+.snapshot-media-card{
+  position:relative;overflow:hidden;min-height:100px;
+  border:1px solid #eaecf0;border-radius:12px;background:#f2f4f7;
+}
+.snapshot-media-card img,.snapshot-media-card video{width:100%;height:120px;object-fit:cover;display:block}
+.snapshot-media-card span{
+  display:block;padding:7px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#475467;
+}
+.snapshot-media-remove{
+  position:absolute;right:6px;top:6px;width:28px;height:28px;border:0;border-radius:50%;
+  background:rgba(16,24,40,.78);color:#fff;cursor:pointer;font-size:18px;
+}
+.snapshot-help{display:block;margin-top:6px;color:#667085}
+.snapshot-consent{display:flex!important;align-items:flex-start;gap:10px;padding:12px;border-radius:12px;background:#f9fafb}
+.snapshot-consent input{margin-top:4px;flex:0 0 auto}
+.snapshot-consent span{margin:0!important;font-size:13px!important;font-weight:500!important;line-height:1.55;color:#475467!important}
+.snapshot-honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;opacity:0!important}
+.snapshot-progress>div{height:8px;border-radius:999px;background:#eaecf0;overflow:hidden}
+.snapshot-progress i{display:block;width:0;height:100%;background:#2e90fa;transition:width .2s ease}
+.snapshot-progress span{display:block;margin-top:7px;font-size:13px;color:#475467}
+.snapshot-message{min-height:20px;color:#b42318;font-size:14px}
+.snapshot-submit,#snapshot-success button{
+  border:0;border-radius:12px;background:#175cd3;color:#fff;padding:13px 18px;
+  font:750 16px/1.2 inherit;cursor:pointer;
+}
+.snapshot-submit:disabled{opacity:.6;cursor:wait}
+.snapshot-success{text-align:center;padding:32px 8px 12px}
+.snapshot-success.hidden{display:none!important}
+.snapshot-success-icon{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 16px;border-radius:50%;background:#dcfae6;color:#079455;font-size:34px;font-weight:900}
+.snapshot-success h3{margin:0 0 8px;font-size:26px}
+.snapshot-success p{color:#475467}
+.snapshot-receipt{padding:10px;border-radius:10px;background:#f2f4f7}
+body.snapshot-open{overflow:hidden}
+
+@media (max-width:640px){
+  .ice-title-row{align-items:center}
+  .snapshot-entry{padding:8px 11px;font-size:15px}
+  .snapshot-modal{align-items:flex-end;padding:0}
+  .snapshot-sheet{
+    width:100%;max-height:92dvh;border-radius:22px 22px 0 0;
+    padding:20px 18px calc(20px + env(safe-area-inset-bottom));
+  }
+  .snapshot-grid{grid-template-columns:1fr}
+  .snapshot-preview{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:390px){
+  .snapshot-entry span{font-size:14px}
+  .snapshot-entry{gap:5px;padding-inline:9px}
+}

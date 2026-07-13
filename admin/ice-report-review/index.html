@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <title>ICE随手拍审核 - 唐人日报后台</title>
+  <link rel="stylesheet" href="./style.css?v=20260713-v2">
+</head>
+<body>
+  <section class="login-view" id="login-view">
+    <form class="login-card" id="login-form">
+      <div class="brand">唐人日报</div>
+      <h1>随手拍审核后台</h1>
+      <p>仅限已授权管理员。</p>
+      <label>邮箱<input id="login-email" type="email" required autocomplete="email"></label>
+      <label>密码<input id="login-password" type="password" required autocomplete="current-password"></label>
+      <button type="submit">登录</button>
+      <div class="message" id="login-message"></div>
+    </form>
+  </section>
+
+  <div class="app hidden" id="app-view">
+    <aside>
+      <div class="logo"><b>唐人日报</b><span>ICE SNAPSHOT REVIEW</span></div>
+      <a href="/admin/">← 返回主后台</a>
+      <a href="/topic/ice/" target="_blank" rel="noopener">打开ICE前台</a>
+      <button id="logout">退出登录</button>
+    </aside>
+
+    <main>
+      <header class="top">
+        <div><h1>📷 随手拍审核</h1><p id="admin-info"></p></div>
+        <button id="refresh">刷新队列</button>
+      </header>
+
+      <section class="stats">
+        <article><strong id="count-draft">0</strong><span>待审核</span></article>
+        <article><strong id="count-reviewing">0</strong><span>审核中</span></article>
+        <article><strong id="count-published">0</strong><span>已发布</span></article>
+        <article><strong id="count-rejected">0</strong><span>已拒绝</span></article>
+      </section>
+
+      <nav class="tabs">
+        <button class="active" data-status="draft">待审核</button>
+        <button data-status="reviewing">审核中</button>
+        <button data-status="published">已发布</button>
+        <button data-status="rejected">已拒绝</button>
+      </nav>
+
+      <div class="status-message" id="status-message">正在读取…</div>
+      <section class="report-list" id="report-list"></section>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="modal">
+    <button class="backdrop" id="modal-backdrop" aria-label="关闭"></button>
+    <section class="modal-panel" role="dialog" aria-modal="true">
+      <header>
+        <div><span>USER SUBMISSION</span><h2 id="modal-title">审核随手拍</h2></div>
+        <button id="modal-close" class="close">×</button>
+      </header>
+
+      <div class="facts" id="report-facts"></div>
+      <div class="media-grid" id="report-media"></div>
+
+      <label>编辑后标题<input id="edit-title" maxlength="220"></label>
+      <label>摘要<textarea id="edit-summary" rows="3"></textarea></label>
+      <label>正文<textarea id="edit-content" rows="12"></textarea></label>
+
+      <fieldset>
+        <legend>选择封面</legend>
+        <div id="cover-options" class="cover-options"></div>
+      </fieldset>
+
+      <label>审核说明／拒绝理由<textarea id="review-note" rows="4"></textarea></label>
+      <div class="action-message" id="action-message"></div>
+
+      <footer>
+        <button class="secondary" data-action="save">保存编辑</button>
+        <button class="danger" data-action="reject">拒绝</button>
+        <button class="publish" data-action="publish">审核通过并发布</button>
+      </footer>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./app.js?v=20260713-v2"></script>
+</body>
+</html>

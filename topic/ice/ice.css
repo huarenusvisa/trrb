@@ -44,7 +44,12 @@ a{text-decoration:none;color:inherit}
  .ice-page{width:calc(100% - 20px);margin:10px auto 30px}
  .ice-panel,.ice-news-panel{padding:14px;border-radius:12px}
  .ice-panel h1{font-size:31px}.ice-intro{font-size:14px;margin-bottom:16px}
- .ice-stats{grid-template-columns:1fr 1fr}.ice-stats article{min-height:112px;padding:16px 12px}.ice-stats article:nth-child(3){grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}
+ .ice-stats article{min-height:112px;padding:16px 12px}
+ .ice-stats article:nth-child(3){
+grid-column:auto;
+border-left:1px solid var(--line);
+border-top:0;
+}
  .ice-stats strong{font-size:30px}.ice-map{height:300px}
  .range-tabs b{font-size:15px}.type-tabs button{font-size:13px;padding:11px 5px}
  .ice-news-item,.ice-news-item.no-image{grid-template-columns:112px minmax(0,1fr);gap:12px}
@@ -52,4 +57,98 @@ a{text-decoration:none;color:inherit}
  .ice-news-thumb{width:112px}
  .ice-news-copy h3{font-size:16px}.ice-news-copy p{font-size:13px}
  .ice-news-source{grid-column:2;justify-self:end;align-self:auto}.ice-news-item.no-image .ice-news-source{grid-column:1}
+}
+
+/* =========================
+   ICE 手机端统计卡片优化
+   ========================= */
+
+@media(max-width:767px){
+
+
+/* 三个统计保持一行 */
+
+.ice-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+}
+
+
+/* 单个统计卡 */
+
+.ice-stats article{
+
+    min-height:90px;
+
+    padding:12px 6px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:6px;
+
+}
+
+
+/* 第三个卡片保持同一排 */
+
+
+/* 图标缩小 */
+
+.stat-icon{
+
+    width:22px;
+
+    height:22px;
+
+    font-size:9px;
+
+}
+
+
+/* 标题 */
+
+.ice-stats b{
+
+    font-size:11px;
+
+    margin:0;
+
+    white-space:nowrap;
+
+}
+
+
+/* 数字 */
+
+.ice-stats strong{
+
+    font-size:22px;
+
+    line-height:1;
+
+}
+
+
+/* 日期 */
+
+.ice-stats small{
+
+    font-size:10px;
+
+    margin-top:3px;
+
+    white-space:nowrap;
+
+}
+
+
 }

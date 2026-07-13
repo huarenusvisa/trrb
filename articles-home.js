@@ -81,9 +81,23 @@ const categoryIds = {
 loadHome();
 
 function localArticleIndex() {
-  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) return window.TRRB_ARTICLE_INDEX;
-  if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) return window.TRRB_ARTICLES;
+
+  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) {
+    return window.TRRB_ARTICLE_INDEX;
+  }
+
+  if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) {
+    return window.TRRB_ARTICLES;
+  }
+
+  if (Array.isArray(window.TRRB_ARTICLE_CHUNKS) && window.TRRB_ARTICLE_CHUNKS.length > 0) {
+
+    return window.TRRB_ARTICLE_CHUNKS.flat();
+
+  }
+
   return [];
+
 }
 
 function mergeArticles(live, archived) {

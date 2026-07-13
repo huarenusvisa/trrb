@@ -1,303 +1,261 @@
-async function loadTopicFeed(){
-
-    let data=[];
-
-
-    try{
-
-        const res = await fetch(
-            "/data/topic-feed.json?v=" + Date.now()
-        );
+/* =========================
+   专题聚焦 V31 FINAL
+========================= */
 
 
-        data = await res.json();
+.topic-focus-list{
+
+display:flex;
+
+flex-direction:column;
+
+gap:24px;
+
+}
 
 
-    }catch(e){
 
-        console.log(
-            "topic feed loading error",
-            e
-        );
+.topic-focus-card{
 
-    }
+position:relative;
+
+display:block;
+
+height:230px;
+
+border-radius:28px;
+
+overflow:hidden;
+
+text-decoration:none;
+
+box-sizing:border-box;
+
+padding:0;
+
+}
 
 
-    window.TRRB_TOPIC_DATA=data;
+
+/* 图片 */
+
+.topic-focus-icon{
+
+position:absolute;
+
+left:35px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+width:180px;
+
+height:180px;
+
+object-fit:contain;
+
+z-index:2;
+
+}
 
 
-    renderTopicLatest(data);
+
+/* 文字区域 */
+
+.topic-focus-copy{
+
+position:absolute;
+
+left:260px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+z-index:3;
+
+}
+
+
+
+.topic-focus-copy h3{
+
+font-size:38px;
+
+font-weight:900;
+
+line-height:1.15;
+
+margin:0 0 12px;
+
+}
+
+
+
+.topic-focus-copy p{
+
+font-size:20px;
+
+font-weight:500;
+
+margin:0 0 20px;
+
+color:#374151;
+
+}
+
+
+
+.topic-status{
+
+font-size:17px;
+
+font-weight:700;
+
+}
+
+
+
+/* =========================
+   三个背景
+========================= */
+
+
+.topic-trump{
+
+background:
+
+linear-gradient(
+90deg,
+rgba(255,240,240,.95),
+rgba(255,255,255,.5)
+),
+
+url("./assets/topic-focus/trump-bg.jpg");
+
+background-size:cover;
+
+background-position:center;
 
 }
 
 
 
 
-function renderTopicLatest(data){
+.topic-ice{
 
+background:
 
-    document
-    .querySelectorAll("[data-topic-latest]")
-    .forEach(box=>{
+linear-gradient(
+90deg,
+rgba(235,244,255,.95),
+rgba(255,255,255,.45)
+),
 
+url("./assets/topic-focus/ice-bg.jpg");
 
-        const topic =
-        box.dataset.topicLatest;
+background-size:cover;
 
-
-
-        const item =
-        data.find(
-            x=>x.topic===topic
-        );
-
-
-
-        if(!item){
-
-            box.innerHTML =
-            "暂无最新动态";
-
-            return;
-
-        }
-
-
-
-        /*
-          Trump
-        */
-
-        if(topic==="trump"){
-
-
-            let title =
-            item.title ||
-            item.content ||
-            "";
-
-
-            if(window.generateTrumpTitle){
-
-                title =
-                window.generateTrumpTitle(
-                    item.content || title
-                );
-
-            }
-
-
-
-            box.innerHTML = `
-
-            <div class="topic-update">
-
-                <strong>
-                ${title}
-                </strong>
-
-
-                <p>
-                ${item.summary || ""}
-                </p>
-
-
-                <div class="topic-time">
-                ${item.time || ""}
-                </div>
-
-
-                <div class="topic-source">
-                ${item.source || ""}
-                </div>
-
-            </div>
-
-            `;
-
-
-            return;
-
-        }
-
-
-
-
-        /*
-          ICE
-        */
-
-        if(topic==="ice"){
-
-
-            let html="";
-
-
-
-            if(
-                item.image &&
-                item.image !== "null"
-                &&
-                item.image !== ""
-            ){
-
-
-                html = `
-
-                <div class="topic-update ice-update">
-
-                    <img 
-                    src="${item.image}"
-                    loading="lazy"
-                    >
-
-
-                    <div>
-
-                    <strong>
-                    ${item.title || "ICE执法动态"}
-                    </strong>
-
-
-                    <p>
-                    ${item.summary || ""}
-                    </p>
-
-
-                    </div>
-
-
-                </div>
-
-                `;
-
-
-            }else{
-
-
-                html = `
-
-                <div class="topic-update">
-
-                    <strong>
-                    ${shortTitle(
-                    item.title ||
-                    "ICE执法行动"
-                    )}
-                    </strong>
-
-
-                    <p>
-                    ${item.summary || ""}
-                    </p>
-
-                </div>
-
-                `;
-
-
-            }
-
-
-
-            box.innerHTML = html;
-
-
-            return;
-
-
-        }
-
-
-
-
-
-        /*
-          Election
-        */
-
-
-        if(topic==="election"){
-
-
-            let title =
-            item.content ||
-            item.title ||
-            "";
-
-
-
-            if(window.generateElectionTitle){
-
-                title =
-                window.generateElectionTitle(
-                    item.content || title
-                );
-
-            }
-
-
-
-            box.innerHTML = `
-
-            <div class="topic-update">
-
-
-                <strong>
-                ${title}
-                </strong>
-
-
-                <p>
-                ${item.summary || ""}
-                </p>
-
-
-                <div class="topic-time">
-                ${item.time || ""}
-                </div>
-
-
-                <div class="topic-source">
-                ${item.source || ""}
-                </div>
-
-
-            </div>
-
-            `;
-
-
-        }
-
-
-
-    });
-
+background-position:center;
 
 }
 
 
 
 
-function shortTitle(title){
+.topic-election{
 
-    if(title.length<=18){
+background:
 
-        return title;
+linear-gradient(
+90deg,
+rgba(235,255,245,.95),
+rgba(255,255,255,.45)
+),
 
-    }
+url("./assets/topic-focus/election-bg.jpg");
+
+background-size:cover;
+
+background-position:center;
+
+}
 
 
-    return title.substring(0,18);
+
+/* =========================
+   最新动态
+========================= */
+
+
+.topic-latest{
+
+position:absolute;
+
+left:260px;
+
+bottom:25px;
+
+z-index:4;
+
+font-size:15px;
+
+color:#333;
+
+max-width:420px;
+
+}
+
+
+
+.topic-update{
+
+background:none;
+
+border:none;
+
+padding:0;
+
+margin:0;
+
+}
+
+
+
+.topic-update strong{
+
+font-size:16px;
+
+font-weight:700;
+
+}
+
+
+
+.topic-update p{
+
+display:none;
 
 }
 
 
 
 
+.topic-time,
+.topic-source{
 
-document.addEventListener(
-"DOMContentLoaded",
-loadTopicFeed
-);
+display:none;
+
+}
+
+
+
+
+/* ICE小图不要破坏Banner */
+
+.topic-latest img{
+
+display:none;
+
+}

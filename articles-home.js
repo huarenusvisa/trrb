@@ -9,7 +9,7 @@ function readLiveCache(key) {
   } catch {}
   return null;
 }
-
+ 
 function writeLiveCache(key, data) {
   try { sessionStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), data })); } catch {}
 }
@@ -82,19 +82,38 @@ loadHome();
 
 function localArticleIndex() {
 
-  if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.length > 0) {
+
+  if(
+    Array.isArray(window.TRRB_ARTICLE_INDEX)
+    &&
+    window.TRRB_ARTICLE_INDEX.length
+  ){
     return window.TRRB_ARTICLE_INDEX;
   }
 
-  if (Array.isArray(window.TRRB_ARTICLES) && window.TRRB_ARTICLES.length > 0) {
+
+
+  if(
+    Array.isArray(window.TRRB_ARTICLES)
+    &&
+    window.TRRB_ARTICLES.length
+  ){
     return window.TRRB_ARTICLES;
   }
 
-  if (Array.isArray(window.TRRB_ARTICLE_CHUNKS) && window.TRRB_ARTICLE_CHUNKS.length > 0) {
 
-    return window.TRRB_ARTICLE_CHUNKS.flat();
+
+  if(
+    Array.isArray(window.TRRB_ARTICLE_CHUNK)
+    &&
+    window.TRRB_ARTICLE_CHUNK.length
+  ){
+
+    return window.TRRB_ARTICLE_CHUNK;
 
   }
+
+
 
   return [];
 

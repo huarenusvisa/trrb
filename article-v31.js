@@ -2,6 +2,50 @@
   const root = document.querySelector("#article-root");
   if (!root) return;
 
+  const enforcementPattern = /\bICE\b|移民与海关执法局|移民执法|遣返|驱逐|递解|自愿离境|非法移民|逮捕.{0,8}移民|拘捕.{0,8}移民/i;
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function escapeAttribute(value) {
+    return escapeHtml(value).replaceAll("`", "&#096;");
+  }
+
+  function inferCategory(article) {
+    if (typeof window.TRRB_inferArticleCategory === "function") {
+      return window.TRRB_inferArticleCategory(article);
+    }
+
+    const raw = String(article?.category || "新闻").trim() || "新闻";
+    const text = `${article?.title || ""} ${article?.excerpt || ""}`;
+    if ((raw === "移民美国" || raw === "新闻" || raw === "ICE执法") && enforcementPattern.test(text)) {
+      return "驱逐快报";
+    }
+    return raw;
+  }
+
+  function resolveImage(value, category) {
+    let text = String(value || "").replaceAll("\\u0026", "&").trim();
+    if (!text || text.includes("image-placeholder.svg") || /^(?:javascript|vbscript):/i.test(text)) return "";
+    if (text.startsWith("//")) text = "https:" + text;
+    if (/^http:\/\//i.test(text)) text = text.replace(/^http:\/\//i, "https://");
+
+    if (typeof window.TRRB_getImageUrl === "function") {
+      const resolved = String(window.TRRB_getImageUrl(text, category) || "").trim();
+      if (resolved && !resolved.includes("image-placeholder.svg")) return resolved;
+    }
+
+    if (text.startsWith("/assets/")) return "." + text;
+    if (text.startsWith("assets/")) return "./" + text;
+    return text;
+  }
+
   function normalizeNeighbors() {
     const container = root.querySelector(".article-neighbors");
     if (!container) return;
@@ -13,36 +57,84 @@
     });
   }
 
-  function normalizeRelatedReading() {
+  function ensureRichArticleIndex() {
+    if (Array.isArray(window.TRRB_ARTICLE_INDEX) && window.TRRB_ARTICLE_INDEX.some((item) => item?.title)) {
+      return Promise.resolve(window.TRRB_ARTICLE_INDEX);
+    }
+
+    return new Promise((resolve) => {
+      const existing = document.querySelector('script[data-trrb-rich-index="true"]');
+      if (existing) {
+        existing.addEventListener("load", () => resolve(window.TRRB_ARTICLE_INDEX || []), { once: true });
+        existing.addEventListener("error", () => resolve([]), { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "./articles-home-index.js?v=31.3";
+      script.async = true;
+      script.dataset.trrbRichIndex = "true";
+      script.addEventListener("load", () => resolve(window.TRRB_ARTICLE_INDEX || []), { once: true });
+      script.addEventListener("error", () => resolve([]), { once: true });
+      document.head.appendChild(script);
+    });
+  }
+
+  function renderRelatedItem(article) {
+    const category = inferCategory(article);
+    const image = resolveImage(article.image || "", category);
+    const fallback = typeof window.TRRB_categoryPlaceholder === "function"
+      ? window.TRRB_categoryPlaceholder(category)
+      : "./image-placeholder.svg";
+
+    return `
+      <a class="related-item${image ? "" : " has-no-image"}" href="./article.html?id=${encodeURIComponent(article.id)}" role="listitem">
+        ${image ? `<img src="${escapeAttribute(image)}" width="500" height="281" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="if(!this.dataset.fallbackTried){this.dataset.fallbackTried='true';this.src='${escapeAttribute(fallback)}';}else{this.remove();}" alt="" />` : ""}
+        <span>${escapeHtml(category)}</span>
+        <strong>${escapeHtml(article.title || "")}</strong>
+      </a>
+    `;
+  }
+
+  async function rebuildRelatedReading() {
     const section = root.querySelector(".related-news");
     const track = section?.querySelector(".related-track");
     if (!section || !track) return;
 
+    const currentId = new URLSearchParams(window.location.search).get("id") || "";
+    const currentTitle = root.querySelector(".article-header h1")?.textContent?.trim() || "";
+    const tag = root.querySelector(".article-header .tag");
+    const currentCategory = inferCategory({ category: tag?.textContent || "新闻", title: currentTitle });
+    if (tag) tag.textContent = currentCategory;
+
+    const richIndex = await ensureRichArticleIndex();
     const seen = new Set();
-    let kept = 0;
+    const candidates = (Array.isArray(richIndex) ? richIndex : [])
+      .filter((item) => item && item.title && String(item.id) !== String(currentId))
+      .map((item) => ({ ...item, category: inferCategory(item) }))
+      .sort((a, b) => Number(b.category === currentCategory) - Number(a.category === currentCategory))
+      .filter((item) => {
+        const key = String(item.id || item.title);
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .slice(0, 6);
 
-    Array.from(track.querySelectorAll(".related-item")).forEach((item) => {
-      const href = item.getAttribute("href") || "";
-      const title = item.querySelector("strong")?.textContent?.trim() || "";
-      const key = href || title;
-
-      if (!key || seen.has(key) || kept >= 6) {
-        item.remove();
-        return;
-      }
-
-      seen.add(key);
-      kept += 1;
-      item.setAttribute("role", "listitem");
-    });
-
-    if (!kept) {
-      section.hidden = true;
+    if (!candidates.length) {
+      const existingItems = Array.from(track.querySelectorAll(".related-item"));
+      existingItems.forEach((item) => {
+        const title = item.querySelector("strong")?.textContent?.trim() || "";
+        if (!title) item.remove();
+      });
+      if (!track.querySelector(".related-item")) section.hidden = true;
       return;
     }
 
     track.setAttribute("role", "list");
-    section.dataset.relatedCount = String(kept);
+    track.innerHTML = candidates.map(renderRelatedItem).join("");
+    section.hidden = false;
+    section.dataset.relatedCount = String(candidates.length);
   }
 
   function createEngagementPanel() {
@@ -63,7 +155,7 @@
         </a>
         <a class="article-engagement-card" href="./expose.html">
           <strong>曝光墙</strong>
-          <span>提交被骗经历和相关证据</span>
+          <span>提交真实经历和相关证据</span>
         </a>
         <a class="article-engagement-card" href="./index.html#submit">
           <strong>投稿爆料</strong>
@@ -83,13 +175,14 @@
 
   function enhance() {
     if (!root.querySelector(".article-header")) return false;
-    if (root.dataset.v31Enhanced === "true") return true;
+    if (root.dataset.v31Enhanced === "running" || root.dataset.v31Enhanced === "true") return true;
 
+    root.dataset.v31Enhanced = "running";
     normalizeNeighbors();
-    normalizeRelatedReading();
     createEngagementPanel();
-
-    root.dataset.v31Enhanced = "true";
+    rebuildRelatedReading()
+      .catch((error) => console.warn("TRRB related reading rebuild failed", error))
+      .finally(() => { root.dataset.v31Enhanced = "true"; });
     return true;
   }
 

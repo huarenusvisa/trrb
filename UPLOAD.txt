@@ -1,0 +1,15 @@
+唐人日报 ICE执法追踪 v1
+
+严格按照标注删除：
+1. 删除新闻列表左侧时间列
+2. 删除“ICE公开信息”标签
+3. 删除右上角“按发布时间倒序”
+保留：新闻快讯、图片、标题、摘要、来源、加载更多。
+
+上传位置：
+topic/ice/index.html
+topic/ice/ice.css
+topic/ice/ice.js
+
+页面地址：
+https://trrb.net/topic/ice/

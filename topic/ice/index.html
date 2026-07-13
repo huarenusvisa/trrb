@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>ICE执法追踪 - 唐人日报</title>
+  <meta name="description" content="聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="./ice.css?v=1">
+</head>
+<body>
+  <header class="ice-topbar">
+    <a class="ice-brand" href="../../index.html"><span>唐</span>人日报</a>
+    <a class="ice-nav-current" href="./">ICE执法追踪</a>
+    <button class="ice-menu" type="button" aria-label="菜单">☰</button>
+  </header>
+
+  <main class="ice-page">
+    <section class="ice-panel">
+      <h1>ICE执法追踪</h1>
+      <p class="ice-intro">聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。</p>
+
+      <div class="ice-stats">
+        <article>
+          <span class="stat-icon people">●</span>
+          <div><b>今日确认人数</b><strong id="today-count">0人</strong></div>
+        </article>
+        <article>
+          <span class="stat-icon place">●</span>
+          <div><b>今日涉及地点</b><strong id="today-places">0处</strong></div>
+        </article>
+        <article>
+          <span class="stat-icon time">◷</span>
+          <div><b>纽约时间</b><strong id="ny-time">--:--</strong><small id="ny-date">----</small></div>
+        </article>
+      </div>
+
+      <h2 class="section-title">美国实时执法地图</h2>
+      <div id="ice-map" class="ice-map" aria-label="美国实时执法地图"></div>
+
+      <div class="range-tabs" role="tablist" aria-label="时间范围">
+        <button class="active" data-range="24h"><b>24小时</b><span>最新动态</span></button>
+        <button data-range="7d"><b>7天</b><span>短期趋势</span></button>
+        <button data-range="30d"><b>30天</b><span>月度分布</span></button>
+      </div>
+
+      <div class="type-tabs" role="tablist" aria-label="行动类型">
+        <button class="active" data-type="all">全部</button>
+        <button data-type="arrest">抓捕/拘留</button>
+        <button data-type="removal">遣返</button>
+        <button data-type="other">其他行动</button>
+      </div>
+
+      <div class="scroll-tip">向下滚动查看更多最新动态⌄</div>
+    </section>
+
+    <section class="ice-news-panel">
+      <h2>新闻快讯</h2>
+      <div id="ice-news-list" class="ice-news-list"></div>
+      <button id="load-more" class="load-more" type="button">加载更多⌄</button>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../../articles-index.js?v=29.7"></script>
+  <script src="./ice.js?v=1"></script>
+</body>
+</html>

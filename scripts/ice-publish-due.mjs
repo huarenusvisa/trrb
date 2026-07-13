@@ -7,6 +7,11 @@ function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   return Number.isFinite(value) ? Math.min(max, Math.max(min, Math.floor(value))) : fallback;
 }
 function nowIso() { return new Date().toISOString(); }
+function boolEnv(name, fallback = false) {
+  const value = process.env[name];
+  if (value == null || value === "") return fallback;
+  return /^(1|true|yes|on)$/i.test(value);
+}
 function safeJson(value, fallback = null) {
   try { return typeof value === "string" ? JSON.parse(value) : value; }
   catch { return fallback; }
@@ -51,15 +56,16 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
 }
 
 async function dueStories(limit) {
-  const rows = await sb("ice_stories", {
-    query: {
-      select: "*",
-      status: "eq.approved",
-      scheduled_at: `lte.${nowIso()}`,
-      order: "scheduled_at.asc",
-      limit: String(limit),
-    },
-  });
+  const query = {
+    select: "*",
+    status: "eq.approved",
+    order: "scheduled_at.asc.nullslast,created_at.asc",
+    limit: String(limit),
+  };
+  if (!boolEnv("ICE_FORCE_FIRST_PUBLISH", false)) {
+    query.scheduled_at = `lte.${nowIso()}`;
+  }
+  const rows = await sb("ice_stories", { query });
   return Array.isArray(rows) ? rows : [];
 }
 async function storyEvidence(storyId) {
@@ -172,6 +178,11 @@ async function publish(story) {
       review_status: officialEligible ? "official_auto_published" : "human_approved",
       metadata: {
         event_fingerprint: story.event_fingerprint,
+        event_type: story.event_type || post.event_type || "other",
+        city: post.city || "",
+        state_code: post.state_code || "",
+        location_text: post.location_text || [post.city, post.state_code].filter(Boolean).join(", "),
+        people_count: Number(post.people_count || 0),
         total_score: story.total_score,
         independent_source_count: story.independent_source_count,
         official_source_count: story.official_source_count,

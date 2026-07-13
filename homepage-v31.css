@@ -1,0 +1,82 @@
+/* TRRB V31.3: homepage image fitting and bottom CTA alignment */
+
+.sections-grid .section-lead img {
+  object-fit: cover;
+  object-position: center 18%;
+}
+
+.cta-row {
+  align-items: start;
+}
+
+.cta-row article {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+}
+
+#community {
+  text-align: left;
+}
+
+.reader-qr {
+  display: block;
+  width: min(210px, 100%);
+  height: auto;
+  max-height: 268px;
+  margin: 18px auto 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+  object-fit: contain;
+}
+
+#submit .tip-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 11px;
+}
+
+#submit .tip-form textarea {
+  width: 100%;
+  min-height: 138px;
+  resize: vertical;
+}
+
+#submit .file-label {
+  display: grid;
+  gap: 8px;
+  color: #4b5563;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#submit .file-label input[type="file"] {
+  width: 100%;
+  height: auto;
+  min-height: 48px;
+  padding: 10px;
+  background: #fff;
+}
+
+@media (max-width: 767px) {
+  .sections-grid .section-lead {
+    grid-template-columns: 112px minmax(0, 1fr);
+  }
+
+  .sections-grid .section-lead img {
+    width: 112px;
+    height: 74px;
+    object-position: center 16%;
+  }
+
+  .cta-row #community { order: 1; }
+  .cta-row #submit { order: 2; }
+  .cta-row #daily { order: 3; }
+
+  .reader-qr {
+    width: min(184px, 72vw);
+    max-height: 235px;
+  }
+}

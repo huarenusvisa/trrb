@@ -20,4 +20,6 @@ test("用户投稿审核融合到主后台", () => {
   assert.match(api, /human_verified_user_report/);
   assert.match(api, /ai_intervention: false/);
   assert.match(api, /TRRB_OWNER_UID/);
+  assert.match(api, /这个账号没有主后台管理权限/);
+  assert.match(api, /sb_publishable_/);
 });

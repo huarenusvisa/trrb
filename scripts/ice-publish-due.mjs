@@ -113,12 +113,16 @@ async function updateStory(id, patch) {
 
 async function publish(story) {
   const threshold = intEnv("ICE_AUTO_PUBLISH_SCORE", 80, 0, 100);
+  const officialEligible = Number(story.official_source_count || 0) >= 1;
+  const humanApproved = story.human_review_status === "approved";
+
   if (
     Number(story.total_score || 0) < threshold ||
     story.conflict_detected ||
     story.legal_risk ||
     story.privacy_risk ||
-    story.fabrication_risk
+    story.fabrication_risk ||
+    (!officialEligible && !humanApproved)
   ) {
     await updateStory(story.id, {
       status: "pending_review",
@@ -165,7 +169,7 @@ async function publish(story) {
       source_account: post.source_username,
       source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
-      review_status: "cross_source_auto_published",
+      review_status: officialEligible ? "official_auto_published" : "human_approved",
       metadata: {
         event_fingerprint: story.event_fingerprint,
         total_score: story.total_score,
@@ -174,6 +178,10 @@ async function publish(story) {
         media_source_count: story.media_source_count,
         organization_source_count: story.organization_source_count,
         decision_reason: story.decision_reason,
+        human_review_status: story.human_review_status,
+        reviewed_by: story.reviewed_by || null,
+        reviewed_at: story.reviewed_at || null,
+        editor_notes: story.editor_notes || "",
         confirmed_facts: story.ai_payload?.confirmed_facts || [],
         unconfirmed_claims: story.ai_payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({

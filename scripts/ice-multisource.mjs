@@ -43,6 +43,28 @@ function normalize(value) {
 function digest(value) {
   return crypto.createHash("sha256").update(String(value)).digest("hex");
 }
+
+function localIceRelevance(text) {
+  const value = String(text || "").toLowerCase();
+  const agency =
+    /\bice\b|immigration and customs enforcement|\bhsi\b|\bero\b|homeland security investigations/.test(value);
+  const action =
+    /arrest|detain|detention|raid|deport|removal|removed|custody|release|court|facility|operation|warrant|immigration enforcement/.test(value);
+  return agency && action;
+}
+
+function discoveredSourceEligible(author) {
+  const followers = Number(author?.public_metrics?.followers_count || 0);
+  return Boolean(author?.verified) || followers >= intEnv("ICE_DISCOVERY_MIN_FOLLOWERS", 10000, 0);
+}
+
+function monthKey(date = new Date()) {
+  return date.toISOString().slice(0, 7);
+}
+
+function dayKey(date = new Date()) {
+  return date.toISOString().slice(0, 10);
+}
 function maxSnowflake(ids) {
   return ids.reduce((max, id) => {
     if (!id) return max;
@@ -162,6 +184,7 @@ async function openAiStructured(instructions, input, schema, name, maxOutputToke
       },
     }),
   });
+  await addUsage({ openAiCalls: 1 });
   const parsed = safeJson(responseText(response));
   if (!parsed) throw new Error(`OpenAI ${name} 返回无法解析`);
   return parsed;
@@ -325,26 +348,149 @@ async function validateSources(sources) {
   return enabledSources();
 }
 
-function buildQueries(sources) {
-  const size = intEnv("ICE_SOURCES_PER_QUERY", 14, 5, 20);
-  const queries = [];
+function chunkSources(sources, size) {
+  const output = [];
   for (let index = 0; index < sources.length; index += size) {
-    const batch = sources.slice(index, index + size);
-    const from = batch.map((source) => `from:${source.x_username}`).join(" OR ");
-    queries.push({
-      key: `registry-${digest(batch.map((source) => source.x_username.toLowerCase()).join(","))}`,
-      text: `(${from}) ${ICE_TERMS} lang:en -is:retweet`,
-      sourceMap: new Map(batch.map((source) => [source.x_username.toLowerCase(), source])),
-      discovery: false,
-    });
+    output.push(sources.slice(index, index + size));
   }
+  return output;
+}
+
+function sourceQuery(batch, cadence, groupIndex, kind) {
+  const from = batch.map((source) => `from:${source.x_username}`).join(" OR ");
+  return {
+    key: `${kind}-${digest(batch.map((source) => source.x_username.toLowerCase()).join(","))}`,
+    text: `(${from}) ${ICE_TERMS} lang:en -is:retweet`,
+    sourceMap: new Map(batch.map((source) => [source.x_username.toLowerCase(), source])),
+    discovery: false,
+    kind,
+    cadence,
+    groupIndex,
+  };
+}
+
+function buildQueries(sources) {
+  const official = sources.filter((source) => source.source_type === "official");
+  const media = sources.filter((source) =>
+    ["major_media", "local_media", "specialist_media"].includes(source.source_type)
+  );
+  const organizations = sources.filter((source) =>
+    ["legal_org", "research_org", "civic_org"].includes(source.source_type)
+  );
+
+  const queries = [];
+
+  chunkSources(official, intEnv("ICE_OFFICIALS_PER_QUERY", 8, 5, 10))
+    .forEach((batch, index) => queries.push(sourceQuery(batch, "hourly", index, "official")));
+
+  chunkSources(media, intEnv("ICE_MEDIA_PER_QUERY", 8, 5, 10))
+    .forEach((batch, index) => queries.push(sourceQuery(batch, "media-rotation", index, "media")));
+
+  chunkSources(organizations, intEnv("ICE_ORGS_PER_QUERY", 13, 8, 15))
+    .forEach((batch, index) => queries.push(sourceQuery(batch, "org-rotation", index, "organization")));
+
   DISCOVERY_QUERIES.forEach((text, index) => queries.push({
     key: `discovery-${index + 1}-${digest(text)}`,
     text,
     sourceMap: new Map(),
     discovery: true,
+    kind: "discovery",
+    cadence: "discovery-rotation",
+    groupIndex: index,
   }));
+
   return queries;
+}
+
+function selectQueriesForRun(queries, date = new Date()) {
+  if (MODE === "bootstrap") return queries;
+
+  const hour = date.getUTCHours();
+  const selected = [];
+
+  const mediaQueries = queries.filter((query) => query.kind === "media");
+  const orgQueries = queries.filter((query) => query.kind === "organization");
+  const discoveryQueries = queries.filter((query) => query.kind === "discovery");
+
+  selected.push(...queries.filter((query) => query.kind === "official"));
+
+  // 媒体分两批轮换：每个媒体来源约每2小时检查一次。
+  selected.push(...mediaQueries.filter((query) => query.groupIndex % 2 === hour % 2));
+
+  // 专业机构每3小时运行一组，两组轮换后每个来源约每6小时检查一次。
+  if (hour % 3 === 0 && orgQueries.length) {
+    selected.push(orgQueries[Math.floor(hour / 3) % orgQueries.length]);
+  }
+
+  // 记者和可信个体发现查询每2小时运行一条，并在两条查询之间轮换。
+  if (hour % 2 === 0 && discoveryQueries.length) {
+    selected.push(discoveryQueries[Math.floor(hour / 2) % discoveryQueries.length]);
+  }
+
+  return selected;
+}
+
+
+async function usageRow(key) {
+  const rows = await sb("ice_usage_ledger", {
+    query: { select: "*", usage_key: `eq.${key}`, limit: "1" },
+  });
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function addUsage({ xRequests = 0, xPosts = 0, openAiCalls = 0 }) {
+  const month = monthKey();
+  const day = dayKey();
+  const monthUsage = (await usageRow(`month:${month}`)) || {
+    usage_key: `month:${month}`,
+    period_type: "month",
+    period_label: month,
+    x_requests: 0,
+    x_posts_read: 0,
+    openai_calls: 0,
+  };
+  const dayUsage = (await usageRow(`day:${day}`)) || {
+    usage_key: `day:${day}`,
+    period_type: "day",
+    period_label: day,
+    x_requests: 0,
+    x_posts_read: 0,
+    openai_calls: 0,
+  };
+
+  for (const row of [monthUsage, dayUsage]) {
+    await sb("ice_usage_ledger", {
+      method: "POST",
+      query: { on_conflict: "usage_key" },
+      body: {
+        ...row,
+        x_requests: Number(row.x_requests || 0) + xRequests,
+        x_posts_read: Number(row.x_posts_read || 0) + xPosts,
+        openai_calls: Number(row.openai_calls || 0) + openAiCalls,
+        updated_at: nowIso(),
+      },
+      prefer: "resolution=merge-duplicates,return=minimal",
+    });
+  }
+}
+
+async function assertBudgetAvailable() {
+  const month = await usageRow(`month:${monthKey()}`);
+  const day = await usageRow(`day:${dayKey()}`);
+
+  const monthlyPostCap = intEnv("ICE_MONTHLY_X_POST_READ_CAP", 52000, 1000, 1000000);
+  const dailyRequestCap = intEnv("ICE_DAILY_X_REQUEST_CAP", 190, 10, 5000);
+
+  if (Number(month?.x_posts_read || 0) >= monthlyPostCap) {
+    throw new Error(
+      `ICE月度X读取预算已达到保护上限：${month?.x_posts_read || 0}/${monthlyPostCap}`
+    );
+  }
+  if (Number(day?.x_requests || 0) >= dailyRequestCap) {
+    throw new Error(
+      `ICE当日X请求已达到保护上限：${day?.x_requests || 0}/${dailyRequestCap}`
+    );
+  }
 }
 
 async function queryState(key) {
@@ -364,7 +510,7 @@ async function saveQueryState(row) {
 function searchUrl(query, state, token = "", bootstrap = false) {
   const url = new URL("https://api.x.com/2/tweets/search/recent");
   url.searchParams.set("query", query.text);
-  url.searchParams.set("max_results", bootstrap ? "10" : "100");
+  url.searchParams.set("max_results", "10");
   url.searchParams.set(
     "tweet.fields",
     "created_at,author_id,attachments,entities,lang,public_metrics,possibly_sensitive"
@@ -383,16 +529,21 @@ function searchUrl(query, state, token = "", bootstrap = false) {
   return url;
 }
 async function fetchQuery(query, state, bootstrap = false) {
-  const maxPages = bootstrap ? 1 : intEnv("ICE_MAX_PAGES_PER_QUERY", 2, 1, 10);
+  const maxPages = 1;
   const output = [];
   let token = "";
   let pages = 0;
   do {
+    await assertBudgetAvailable();
     const body = await requestJson(searchUrl(query, state, token, bootstrap), {
       headers: {
         Authorization: `Bearer ${process.env.X_BEARER_TOKEN}`,
         Accept: "application/json",
       },
+    });
+    await addUsage({
+      xRequests: 1,
+      xPosts: Array.isArray(body?.data) ? body.data.length : 0,
     });
     const users = new Map((body?.includes?.users || []).map((user) => [user.id, user]));
     const media = new Map((body?.includes?.media || []).map((item) => [item.media_key, item]));
@@ -410,9 +561,7 @@ async function fetchQuery(query, state, bootstrap = false) {
   } while (token && pages < maxPages);
 
   if (token) {
-    throw new Error(
-      `${query.key}分页未完成，达到ICE_MAX_PAGES_PER_QUERY=${maxPages}，本轮不推进游标`
-    );
+    console.warn(`${query.key}本小时返回超过10条；为控制预算，本轮只读取第一页。`);
   }
   return output;
 }
@@ -495,6 +644,8 @@ async function collectQuery(query) {
     let inserted = 0;
     for (const item of rows) {
       if (await postExists(item.tweet.id)) continue;
+      if (!localIceRelevance(item.tweet.text || "")) continue;
+      if (item.query.discovery && !discoveredSourceEligible(item.author)) continue;
       await insertPost(item);
       inserted += 1;
     }
@@ -532,7 +683,7 @@ async function backlog() {
       processing_status: "in.(collected,failed)",
       attempts: `lt.${intEnv("ICE_MAX_RETRIES", 5, 1, 20)}`,
       order: "created_at.asc",
-      limit: String(intEnv("ICE_MAX_AI_POSTS_PER_RUN", 30, 1, 100)),
+      limit: String(intEnv("ICE_MAX_AI_POSTS_PER_RUN", 12, 1, 50)),
     },
   });
   return Array.isArray(rows) ? rows : [];
@@ -761,6 +912,21 @@ async function scheduledAt() {
   return roundHalfHour(candidate).toISOString();
 }
 async function judgeStory(storyId) {
+  const storyRows = await sb("ice_stories", {
+    query: {
+      select: "id,status,human_review_status",
+      id: `eq.${storyId}`,
+      limit: "1",
+    },
+  });
+  const storyMeta = Array.isArray(storyRows) ? storyRows[0] : null;
+  if (!storyMeta) return;
+  if (["approved","published","rejected"].includes(storyMeta.status)) return;
+  if (storyMeta.human_review_status === "editing") {
+    console.log(`${storyId}：管理员正在编辑，本轮跳过AI覆盖`);
+    return;
+  }
+
   const evidence = await storyEvidence(storyId);
   if (!evidence.length) return;
   const sourceCounts = counts(evidence);
@@ -824,11 +990,21 @@ async function judgeStory(storyId) {
     Number(ai.confidence || 0) >= intEnv("ICE_AI_CONFIDENCE", 80, 0, 100);
 
   let status = "pending_corroboration";
-  if (risk) status = "pending_review";
-  else if (ai.publish && (officialEligible || multiSourceEligible) && scoreEligible) {
+  let humanReviewStatus = "waiting";
+
+  if (risk) {
+    status = "pending_review";
+    humanReviewStatus = "required";
+  } else if (ai.publish && officialEligible && scoreEligible) {
     status = MODE === "dry-run" ? "pending_review" : "approved";
+    humanReviewStatus = MODE === "dry-run" ? "required" : "not_required";
+  } else if (ai.publish && multiSourceEligible && scoreEligible) {
+    // 非官方内容即使达到80分，也必须进入 trrb.net/admin 人工审核。
+    status = "pending_review";
+    humanReviewStatus = "required";
   } else if (officialEligible || sourceCounts.independent >= 2) {
     status = "pending_review";
+    humanReviewStatus = "required";
   }
 
   await sb("ice_stories", {
@@ -871,6 +1047,7 @@ async function judgeStory(storyId) {
         `总分${total}/100`,
       ].join("；"),
       status,
+      human_review_status: humanReviewStatus,
       scheduled_at: status === "approved" ? await scheduledAt() : null,
     },
     prefer: "return=minimal",
@@ -879,6 +1056,38 @@ async function judgeStory(storyId) {
   console.log(
     `${storyId}：${status}，总分${total}，独立来源${sourceCounts.independent}，官方${sourceCounts.official}`
   );
+}
+
+
+async function storiesForReview(preferredIds = []) {
+  const limit = intEnv("ICE_MAX_STORIES_PER_RUN", 6, 1, 20);
+  const output = [];
+  const seen = new Set();
+
+  for (const id of preferredIds) {
+    if (!id || seen.has(id) || output.length >= limit) continue;
+    seen.add(id);
+    output.push(id);
+  }
+
+  if (output.length < limit) {
+    const rows = await sb("ice_stories", {
+      query: {
+        select: "id,human_review_status",
+        status: "in.(collecting,pending_corroboration,pending_review)",
+        order: "updated_at.asc",
+        limit: String(limit * 2),
+      },
+    });
+    for (const row of Array.isArray(rows) ? rows : []) {
+      if (row.human_review_status === "editing") continue;
+      if (!row.id || seen.has(row.id) || output.length >= limit) continue;
+      seen.add(row.id);
+      output.push(row.id);
+    }
+  }
+
+  return output;
 }
 
 function selfTest() {
@@ -892,6 +1101,8 @@ function selfTest() {
   assert(corroboration({ official: 1, independent: 1 }) === 18, "官方单源评分");
   assert(corroboration({ official: 0, independent: 2 }) === 21, "双独立来源评分");
   assert(xPostUrl("ICEgov","123").includes("/ICEgov/status/123"), "来源链接");
+  assert(localIceRelevance("ICE announced an immigration arrest operation"), "本地相关性筛查");
+  assert(!localIceRelevance("Weather forecast for New York"), "无关内容拦截");
   console.log(`ICE多信源自检通过：${checks.length}项`);
 }
 
@@ -911,8 +1122,11 @@ async function main() {
   sources = await validateSources(sources);
   if (sources.length < 50) throw new Error(`启用ICE信源少于50个：${sources.length}`);
 
-  const queries = buildQueries(sources);
-  console.log(`启用信源${sources.length}个，查询批次${queries.length}个`);
+  const allQueries = buildQueries(sources);
+  const queries = selectQueriesForRun(allQueries);
+  console.log(
+    `启用信源${sources.length}个，全部查询批次${allQueries.length}个，本轮执行${queries.length}个`
+  );
 
   let collected = 0;
   for (const query of queries) collected += await collectQuery(query);
@@ -928,10 +1142,11 @@ async function main() {
     const storyId = await processPost(post);
     if (storyId) storyIds.add(storyId);
   }
-  for (const storyId of storyIds) await judgeStory(storyId);
+  const reviewIds = await storiesForReview([...storyIds]);
+  for (const storyId of reviewIds) await judgeStory(storyId);
 
   console.log(
-    `运行完成：新收集${collected}条，AI处理${pending.length}条，交叉复核${storyIds.size}个事件`
+    `运行完成：新收集${collected}条，AI处理${pending.length}条，交叉复核${reviewIds.length}个事件`
   );
 }
 

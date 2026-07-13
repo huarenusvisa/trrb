@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "collect=正常抓取；bootstrap=从当前时刻初始化；dry-run=审核但不自动排期"
+        description: "collect=正常抓取；bootstrap=初始化；dry-run=审核但不自动排期"
         required: true
         default: collect
         type: choice
@@ -13,7 +13,7 @@ on:
           - bootstrap
           - dry-run
   schedule:
-    - cron: "17 * * * *"
+    - cron: "7,37 * * * *"
 
 permissions:
   contents: read
@@ -35,19 +35,26 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
       RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'collect' }}
+
       ICE_AUTO_PUBLISH_SCORE: "80"
       ICE_AI_CONFIDENCE: "80"
-      ICE_MAX_AI_POSTS_PER_RUN: "12"
+      ICE_MAX_AI_POSTS_PER_RUN: "20"
       ICE_MAX_RETRIES: "5"
       ICE_PUBLISH_INTERVAL_MINUTES: "30"
-      ICE_MAX_STORIES_PER_RUN: "6"
-      ICE_OFFICIALS_PER_QUERY: "8"
-      ICE_MEDIA_PER_QUERY: "8"
-      ICE_ORGS_PER_QUERY: "13"
-      ICE_DISCOVERY_MIN_FOLLOWERS: "10000"
+      ICE_MAX_STORIES_PER_RUN: "10"
+      ICE_OFFICIALS_PER_QUERY: "10"
+      ICE_MEDIA_PER_QUERY: "10"
+      ICE_ORGS_PER_QUERY: "15"
+      ICE_DISCOVERY_MIN_FOLLOWERS: "1000"
       ICE_MONTHLY_X_POST_READ_CAP: "52000"
       ICE_DAILY_X_REQUEST_CAP: "190"
       ICE_VALIDATE_SOURCE_HANDLES: "false"
+
+      # V3高召回参数
+      ICE_HIGH_RECALL_LOOKBACK_HOURS: "24"
+      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"
+      ICE_HIGH_RECALL_MIN_SCORE: "45"
+      ICE_HIGH_RECALL_MIN_FOLLOWERS: "500"
 
     steps:
       - name: Checkout repository
@@ -60,11 +67,16 @@ jobs:
 
       - name: Validate ICE architecture
         run: |
+          node --check scripts/ice-high-recall-discovery.mjs
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-publish-due.mjs
           node --check scripts/ice-enable-first-backfill.mjs
           node --test scripts/ice-architecture.test.mjs
           node scripts/ice-multisource.mjs --self-test
+
+      - name: High-recall event discovery
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-high-recall-discovery.mjs
 
       - name: Enable one-time first-run backfill
         if: env.RUN_MODE == 'collect'

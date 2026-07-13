@@ -8,6 +8,7 @@ on:
       - "admin/ice-report-raw-lock.js"
       - "admin/ice-review-v2.js"
       - "homepage-focus-v34.js"
+      - "homepage-v31.css"
       - "news-media-v34.css"
       - "site-common.js"
       - "topic-config.js"

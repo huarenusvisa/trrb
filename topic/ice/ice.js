@@ -196,7 +196,7 @@ function renderICENews(data){
 
         box.innerHTML=`
 
-        <article class="ice-news-item">
+        <article class="ice-news-copy">
 
         <h3>
         暂无最新ICE执法动态

@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>ICE执法追踪 - 唐人日报</title>
   <meta name="description" content="聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。">
+
+  <link rel="canonical" href="https://trrb.net/topic/ice/">
+  <link rel="apple-touch-icon" href="https://trrb.net/assets/brand/apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="唐人日报">
+  <meta property="og:title" content="ICE执法追踪 - 唐人日报">
+  <meta property="og:description" content="实时追踪美国ICE抓捕、拘留、遣返和执法地点分布。">
+  <meta property="og:url" content="https://trrb.net/topic/ice/">
+  <meta property="og:image" content="https://trrb.net/assets/share/ice-share.jpg?v=20260713">
+  <meta property="og:image:secure_url" content="https://trrb.net/assets/share/ice-share.jpg?v=20260713">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="唐人日报 ICE执法追踪">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ICE执法追踪 - 唐人日报">
+  <meta name="twitter:description" content="实时追踪美国ICE抓捕、拘留、遣返和执法地点分布。">
+  <meta name="twitter:image" content="https://trrb.net/assets/share/ice-share.jpg?v=20260713">
+
+  <meta itemprop="name" content="ICE执法追踪 - 唐人日报">
+  <meta itemprop="description" content="实时追踪美国ICE抓捕、拘留、遣返和执法地点分布。">
+  <meta itemprop="image" content="https://trrb.net/assets/share/ice-share.jpg?v=20260713">
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="./ice.css?v=20260713-us-map">
 </head>
@@ -42,23 +68,19 @@
 
       <div class="map-shell">
         <div id="ice-map" class="ice-map" aria-label="美国实时执法地图"></div>
-
         <div id="ice-map-loading" class="ice-map-state">
           <div class="map-spinner" aria-hidden="true"></div>
           <strong>正在加载美国执法地图</strong>
           <span>地图会自动显示已确认地点</span>
         </div>
-
         <div id="ice-map-empty" class="ice-map-state hidden">
           <strong>暂无已确认的执法地点</strong>
           <span>地图已经启用；新数据确认地点后会自动出现标记。</span>
         </div>
-
         <div id="ice-map-error" class="ice-map-state hidden">
           <strong>地图底图暂时无法加载</strong>
           <span>执法地点数据仍会继续更新，请稍后刷新。</span>
         </div>
-
         <div class="ice-map-legend" aria-label="地图图例">
           <span><i class="legend-dot arrest"></i>抓捕/拘留</span>
           <span><i class="legend-dot removal"></i>遣返</span>

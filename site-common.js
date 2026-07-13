@@ -13,6 +13,15 @@
     "default": "./assets/category-placeholders/generic.svg"
   };
 
+  function installNewsMediaStyles() {
+    if (document.querySelector('link[data-trrb-news-media="34"]')) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "./news-media-v34.css?v=34.0";
+    link.dataset.trrbNewsMedia = "34";
+    document.head.appendChild(link);
+  }
+
   function categoryPlaceholder(category) {
     return CATEGORY_PLACEHOLDERS[category] || CATEGORY_PLACEHOLDERS.default;
   }
@@ -202,6 +211,9 @@
   window.TRRB_getImageUrl = normalizeImageUrl;
   window.TRRB_categoryPlaceholder = categoryPlaceholder;
   window.TRRB_updateTopbar = updateTopbar;
+  window.TRRB_installNewsMediaStyles = installNewsMediaStyles;
+  installNewsMediaStyles();
+
   document.addEventListener("DOMContentLoaded", () => {
     updateTopbar();
     initMobileNavigation();

@@ -1,0 +1,76 @@
+name: TRRB Final Acceptance V34
+
+on:
+  pull_request:
+    paths:
+      - "netlify/functions/ice-report-integrated.js"
+      - "netlify/functions/ice-report-review.js"
+      - "admin/ice-report-raw-lock.js"
+      - "admin/ice-review-v2.js"
+      - "homepage-focus-v34.js"
+      - "homepage-v31.css"
+      - "news-media-v34.css"
+      - "site-common.js"
+      - "topic-config.js"
+      - "scripts/final-acceptance-v34.test.mjs"
+      - "scripts/mobile-acceptance-v34.mjs"
+      - ".github/workflows/final-acceptance-v34.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: JavaScript syntax checks
+        run: |
+          node --check netlify/functions/ice-report-integrated.js
+          node --check netlify/functions/ice-report-review.js
+          node --check admin/ice-report-raw-lock.js
+          node --check admin/ice-review-v2.js
+          node --check homepage-focus-v34.js
+          node --check site-common.js
+          node --check topic-config.js
+          node --check scripts/mobile-acceptance-v34.mjs
+      - name: Final acceptance assertions
+        run: node --test scripts/final-acceptance-v34.test.mjs
+      - name: Existing site validation
+        run: node scripts/validate-site.mjs
+      - name: Install Chromium for mobile acceptance
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --silent --no-progress --no-save playwright@1.53.2 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Mobile browser acceptance at 390px and 430px
+        id: mobile
+        continue-on-error: true
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/trrb-mobile-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          sleep 2
+          set +e
+          node scripts/mobile-acceptance-v34.mjs > mobile-acceptance-result.txt 2>&1
+          CODE=$?
+          echo "exit_code=$CODE" >> "$GITHUB_OUTPUT"
+          exit $CODE
+      - name: Upload mobile diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-acceptance-result
+          path: mobile-acceptance-result.txt
+          if-no-files-found: error
+          retention-days: 2
+      - name: Enforce mobile acceptance result
+        if: steps.mobile.outputs.exit_code != '0'
+        run: |
+          cat mobile-acceptance-result.txt || true
+          exit 1

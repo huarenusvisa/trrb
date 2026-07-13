@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "20260713-v4-raw-user-report";
+  const VERSION = "20260713-v5-original-submission-server-lock";
   const originalReviewApi = reviewApi;
   const originalPopulateReviewModal = populateReviewModal;
 
@@ -53,20 +53,20 @@
     if (!document.querySelector('link[data-ice-report-integrated="1"]')) {
       const css = document.createElement("link");
       css.rel = "stylesheet";
-      css.href = "./ice-report-integrated.css?v=20260713-v1";
+      css.href = "./ice-report-integrated.css?v=20260713-v2";
       css.dataset.iceReportIntegrated = "1";
       document.head.appendChild(css);
     }
     const loadIntegrated = () => {
       if (document.querySelector('script[data-ice-report-integrated="1"]')) return;
       const script = document.createElement("script");
-      script.src = "./ice-report-integrated.js?v=20260713-v2";
+      script.src = "./ice-report-integrated.js?v=20260713-v3";
       script.dataset.iceReportIntegrated = "1";
       document.body.appendChild(script);
     };
     if (!document.querySelector('script[data-ice-report-raw-lock="1"]')) {
       const lock = document.createElement("script");
-      lock.src = "./ice-report-raw-lock.js?v=20260713-v1";
+      lock.src = "./ice-report-raw-lock.js?v=20260713-v2";
       lock.dataset.iceReportRawLock = "1";
       lock.onload = loadIntegrated;
       document.body.appendChild(lock);
@@ -85,7 +85,7 @@
       if (refresh) actions.appendChild(refresh);
       reviewHead.appendChild(actions);
       const description = reviewHead.querySelector("p");
-      if (description) description.textContent = "英文信源生成中文快讯；用户投稿不进入AI，人工同意后原样发布用户提供的内容。";
+      if (description) description.textContent = "英文信源生成中文快讯；用户投稿完全绕过AI，人工审核后按数据库原文发布。";
     }
   }
 

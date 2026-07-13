@@ -3,6 +3,7 @@
 .sections-grid .section-lead img {
   object-fit: cover;
   object-position: center 18%;
+  aspect-ratio: 16 / 9;
 }
 
 .cta-row {
@@ -67,7 +68,8 @@
 
   .sections-grid .section-lead img {
     width: 112px;
-    height: 74px;
+    height: 63px;
+    aspect-ratio: 16 / 9;
     object-position: center 16%;
   }
 

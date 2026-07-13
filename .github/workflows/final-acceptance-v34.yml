@@ -45,8 +45,8 @@ jobs:
       - name: Install Chromium for mobile acceptance
         run: |
           npm init -y >/dev/null 2>&1
-          npm install --no-save playwright@1.53.2
-          npx playwright install --with-deps chromium
+          npm install --silent --no-progress --no-save playwright@1.53.2 >/dev/null
+          npx playwright install --with-deps chromium >/dev/null
       - name: Mobile browser acceptance at 390px and 430px
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/trrb-mobile-server.log 2>&1 &

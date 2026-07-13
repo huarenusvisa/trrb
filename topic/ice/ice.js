@@ -3,7 +3,7 @@ let ICE_DATA = [];
 
 
 // =========================
-// 加载上线时间
+// 加载 ICE 上线时间
 // =========================
 
 async function loadICEConfig(){
@@ -14,7 +14,9 @@ async function loadICEConfig(){
             "./ice-config.json?v=" + Date.now()
         );
 
+
         const config = await res.json();
+
 
         ICE_START_TIME = new Date(
             config.startTime
@@ -22,7 +24,7 @@ async function loadICEConfig(){
 
 
         console.log(
-            "ICE开始追踪时间:",
+            "ICE追踪开始:",
             ICE_START_TIME
         );
 
@@ -34,6 +36,7 @@ async function loadICEConfig(){
             e
         );
 
+
         ICE_START_TIME = new Date();
 
     }
@@ -43,42 +46,49 @@ async function loadICEConfig(){
 
 
 // =========================
-// 只保留上线以后数据
+// 过滤上线以前数据
 // =========================
 
 function filterICEData(data){
 
+
     if(!ICE_START_TIME){
+
         return [];
+
     }
+
 
 
     return data.filter(item=>{
 
 
-        const t =
-        new Date(
+        const time = new Date(
+
             item.time ||
             item.created_at ||
-            item.date
+            item.date ||
+            0
+
         );
 
 
+
         return (
-            !isNaN(t) &&
-            t >= ICE_START_TIME
+            !isNaN(time) &&
+            time >= ICE_START_TIME
         );
 
 
     });
 
+
 }
 
 
 
-
 // =========================
-// 今天统计
+// 顶部统计
 // =========================
 
 function updateICEStats(data){
@@ -97,10 +107,12 @@ function updateICEStats(data){
 
 
         people += Number(
+
             item.people ||
             item.arrests ||
             item.count ||
             0
+
         );
 
 
@@ -108,15 +120,18 @@ function updateICEStats(data){
 
 
 
-    const locations =
-    [
+    const locations = [
+
         ...new Set(
+
             list
             .map(
-                x=>x.location
+                item=>item.location
             )
             .filter(Boolean)
+
         )
+
     ];
 
 
@@ -155,10 +170,8 @@ function updateICEStats(data){
 
 
 
-
-
 // =========================
-// 新闻列表
+// ICE新闻列表
 // =========================
 
 function renderICENews(data){
@@ -170,8 +183,11 @@ function renderICENews(data){
     );
 
 
+
     if(!box){
+
         return;
+
     }
 
 
@@ -181,34 +197,64 @@ function renderICENews(data){
 
 
 
-    // 最新在前
+    // 最新优先
 
     list.sort(
-        (a,b)=>
-        new Date(b.time)
-        -
-        new Date(a.time)
+        (a,b)=>{
+
+
+            return new Date(
+
+                b.time ||
+                b.created_at ||
+                0
+
+            )
+            -
+            new Date(
+
+                a.time ||
+                a.created_at ||
+                0
+
+            );
+
+
+        }
     );
 
 
 
+    // 没有数据
+
     if(list.length===0){
 
-        box.innerHTML=`
 
-        <article class="ice-news-copy">
+        box.innerHTML = `
 
-        <h3>
-        暂无最新ICE执法动态
-        </h3>
+        <article class="ice-news-item no-image">
 
-        <p>
-        系统已从上线时间开始实时追踪。
-        </p>
+
+            <div class="ice-news-copy">
+
+
+                <h3>
+                暂无最新ICE执法动态
+                </h3>
+
+
+                <p>
+                系统已从上线时间开始实时追踪。
+                </p>
+
+
+            </div>
+
 
         </article>
 
         `;
+
 
         return;
 
@@ -216,33 +262,78 @@ function renderICENews(data){
 
 
 
+
     box.innerHTML =
+
 
     list.map(item=>{
 
 
+        const hasImage =
+        item.image &&
+        item.image !== "" &&
+        item.image !== "null";
+
+
+
         return `
 
-        <article class="ice-news-item">
+
+        <article class="ice-news-item ${hasImage ? "" : "no-image"}">
 
 
-        <h3>
-        ${item.title || "ICE执法行动"}
-        </h3>
+
+            ${
+                hasImage
+
+                ?
+
+                `
+                <img
+                class="ice-news-thumb"
+                src="${item.image}"
+                alt="${item.title || "ICE执法新闻"}"
+                loading="lazy"
+                >
+                `
+
+                :
+
+                ""
+
+            }
 
 
-        <p>
-        ${item.summary || ""}
-        </p>
 
 
-        <small>
-        来源：
-        ${item.source || "ICE"}
-        </small>
+            <div class="ice-news-copy">
+
+
+                <h3>
+                ${item.title || "ICE执法行动"}
+                </h3>
+
+
+                <p>
+                ${item.summary || ""}
+                </p>
+
+
+            </div>
+
+
+
+            <div class="ice-news-source">
+
+                来源：
+                ${item.source || "ICE"}
+
+            </div>
+
 
 
         </article>
+
 
         `;
 
@@ -253,12 +344,9 @@ function renderICENews(data){
 
 
 
-
-
 // =========================
 // 初始化
 // =========================
-
 
 async function loadICE(){
 
@@ -272,9 +360,7 @@ async function loadICE(){
 
         const res =
         await fetch(
-            "/data/ice-data.json?v="
-            +
-            Date.now()
+            "/data/ice-data.json?v=" + Date.now()
         );
 
 
@@ -292,11 +378,10 @@ async function loadICE(){
         );
 
 
-        ICE_DATA=[];
+        ICE_DATA = [];
 
 
     }
-
 
 
 
@@ -311,7 +396,6 @@ async function loadICE(){
 
 
 }
-
 
 
 

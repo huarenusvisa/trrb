@@ -37,11 +37,16 @@ jobs:
       RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'collect' }}
       ICE_AUTO_PUBLISH_SCORE: "80"
       ICE_AI_CONFIDENCE: "80"
-      ICE_SOURCES_PER_QUERY: "14"
-      ICE_MAX_PAGES_PER_QUERY: "2"
-      ICE_MAX_AI_POSTS_PER_RUN: "30"
+      ICE_MAX_AI_POSTS_PER_RUN: "12"
       ICE_MAX_RETRIES: "5"
       ICE_PUBLISH_INTERVAL_MINUTES: "120"
+      ICE_MAX_STORIES_PER_RUN: "6"
+      ICE_OFFICIALS_PER_QUERY: "8"
+      ICE_MEDIA_PER_QUERY: "8"
+      ICE_ORGS_PER_QUERY: "13"
+      ICE_DISCOVERY_MIN_FOLLOWERS: "10000"
+      ICE_MONTHLY_X_POST_READ_CAP: "52000"
+      ICE_DAILY_X_REQUEST_CAP: "190"
       ICE_VALIDATE_SOURCE_HANDLES: "false"
 
     steps:

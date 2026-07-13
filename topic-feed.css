@@ -1,407 +1,344 @@
 /* ==================================================
-   唐人日报 专题聚焦 FINAL v33
-   Sidebar Topic Cards
+   唐人日报 · 专题聚焦最终版
+   PC 与手机分别适配
 ================================================== */
 
 
-.topic-focus-list{
-
-display:flex;
-
-flex-direction:column;
-
-gap:16px;
-
-width:100%;
-
-}
-
-
-
 /* =========================
-   专题卡片
+   通用结构
 ========================= */
 
-
-.topic-focus-card{
-
-position:relative;
-
-display:flex;
-
-align-items:center;
-
-width:100%;
-
-height:205px;
-
-padding:20px;
-
-box-sizing:border-box;
-
-overflow:hidden;
-
-border-radius:22px;
-
-text-decoration:none;
-
+.topic-focus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 }
 
-
-/* =========================
-   左侧图片
-========================= */
-
-
-.topic-focus-icon{
-
-width:90px;
-
-height:110px;
-
-object-fit:contain;
-
-flex-shrink:0;
-
-margin-right:20px;
-
-z-index:2;
-
+.topic-focus-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.7 / 1;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  text-decoration: none;
+  color: #111827;
 }
 
-
-
-/* =========================
-   右侧内容
-========================= */
-
-
-.topic-focus-copy{
-
-flex:1;
-
-min-width:0;
-
-position:relative;
-
-z-index:3;
-
+/* 左侧主图 */
+.topic-focus-icon {
+  position: absolute;
+  left: 16px;
+  bottom: 18px;
+  width: 31%;
+  height: 58%;
+  margin: 0;
+  object-fit: contain;
+  z-index: 2;
 }
 
-
-
-.topic-focus-copy h3{
-
-margin:0 0 8px;
-
-font-size:20px;
-
-font-weight:800;
-
-line-height:1.3;
-
+/* 右侧主文案 */
+.topic-focus-copy {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  bottom: 14px;
+  left: 42%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  z-index: 3;
 }
 
-
-
-.topic-focus-copy p{
-
-margin:0 0 12px;
-
-font-size:13px;
-
-font-weight:600;
-
-line-height:1.4;
-
-color:#475569;
-
+.topic-focus-copy h3 {
+  margin: 0 0 5px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
 }
 
-
-
-/* =========================
-   状态
-========================= */
-
-
-.topic-status{
-
-display:inline-flex;
-
-align-items:center;
-
-gap:6px;
-
-padding:4px 10px;
-
-border-radius:20px;
-
-background:rgba(255,255,255,.85);
-
-border:1px solid rgba(0,0,0,.08);
-
-font-size:12px;
-
-font-weight:700;
-
+.topic-focus-copy > p {
+  margin: 0 0 9px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
-
-
-.topic-status i{
-
-width:7px;
-
-height:7px;
-
-border-radius:50%;
-
-background:#ef233c;
-
+/* 状态标签 */
+.topic-status {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
+  min-height: 23px;
+  padding: 2px 8px;
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #475569;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
 }
 
-
-
-/* =========================
-   最新动态
-========================= */
-
-
-.topic-latest{
-
-margin-top:12px;
-
-padding-top:10px;
-
-border-top:1px solid rgba(0,0,0,.08);
-
-font-size:13px;
-
-line-height:1.45;
-
+.topic-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef233c;
+  box-shadow: 0 0 0 4px rgba(239, 35, 60, 0.11);
 }
 
+/* 最新动态区域 */
+.topic-latest {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(100, 116, 139, 0.16);
+  min-width: 0;
+  color: #1f2937;
+}
 
-
-/* 去除动态小卡 */
-
+/* 防止 JS 输出白色小卡 */
+.topic-update,
 .topic-latest .topic-card,
 .topic-latest .ice-card,
-.topic-latest .ice-text-card{
-
-background:transparent;
-
-border:0;
-
-padding:0;
-
-margin:0;
-
-box-shadow:none;
-
+.topic-latest .ice-text-card {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-
-
-.topic-latest img{
-
-display:none!important;
-
+/* 最新动态标题 */
+.topic-update strong,
+.topic-latest h3 {
+  display: block;
+  margin: 0 0 4px;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
-
-
-.topic-update strong{
-
-display:block;
-
-font-size:15px;
-
-font-weight:800;
-
-line-height:1.35;
-
+/* 摘要 */
+.topic-update p,
+.topic-latest .ice-card p,
+.topic-latest .ice-text-card p {
+  display: -webkit-box;
+  margin: 0 0 5px;
+  overflow: hidden;
+  color: #475569;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-
-
-.topic-update p{
-
-margin-top:5px;
-
-font-size:12px;
-
-color:#475569;
-
-line-height:1.4;
-
+/* 时间和来源 */
+.topic-time,
+.topic-source {
+  display: block;
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.25;
 }
 
+.topic-time {
+  color: #64748b;
+}
+
+.topic-source {
+  color: #0969da;
+}
+
+/* 内部新闻图隐藏，避免重复图片破坏卡片 */
+.topic-latest img,
+.ice-update img {
+  display: none !important;
+}
 
 
 /* =========================
-   三个主题背景
+   三个专题配色
 ========================= */
 
-
-.topic-trump{
-
-background:
-
-linear-gradient(
-135deg,
-#fff5f6,
-#ffe8ed
-);
-
-border:1px solid #ffd0d6;
-
+.topic-trump {
+  border-color: #ffc9cf;
+  background:
+    radial-gradient(circle at 88% 85%, rgba(255,255,255,.72), transparent 30%),
+    linear-gradient(135deg, #fff8f8 0%, #ffecef 100%);
 }
 
-
-.topic-trump h3,
-.topic-trump strong{
-
-color:#c91524;
-
+.topic-trump .topic-focus-copy h3,
+.topic-trump .topic-update strong {
+  color: #c8141e;
 }
 
-
-
-.topic-ice{
-
-background:
-
-linear-gradient(
-135deg,
-#f3f8ff,
-#e5f1ff
-);
-
-border:1px solid #c7ddff;
-
+.topic-ice {
+  border-color: #badcff;
+  background:
+    radial-gradient(circle at 88% 85%, rgba(255,255,255,.72), transparent 30%),
+    linear-gradient(135deg, #f5faff 0%, #e7f3ff 100%);
 }
 
-
-.topic-ice h3,
-.topic-ice strong{
-
-color:#07549b;
-
+.topic-ice .topic-focus-copy h3,
+.topic-ice .topic-update strong {
+  color: #07549b;
 }
 
-
-
-.topic-election{
-
-background:
-
-linear-gradient(
-135deg,
-#f3fffa,
-#e5faf1
-);
-
-border:1px solid #bcebd8;
-
+.topic-election {
+  border-color: #b8eadc;
+  background:
+    radial-gradient(circle at 88% 85%, rgba(255,255,255,.72), transparent 30%),
+    linear-gradient(135deg, #f4fffb 0%, #e8faf4 100%);
 }
 
-
-.topic-election h3,
-.topic-election strong{
-
-color:#087c5b;
-
+.topic-election .topic-focus-copy h3,
+.topic-election .topic-update strong {
+  color: #007d62;
 }
 
+.topic-election .topic-status i {
+  background: #0bb78b;
+  box-shadow: 0 0 0 4px rgba(11, 183, 139, 0.12);
+}
 
 
 /* =========================
    手机端
 ========================= */
 
+@media (max-width: 767px) {
 
-@media(max-width:767px){
+  .topic-focus-list {
+    gap: 18px;
+  }
 
+  .topic-focus-card {
+    aspect-ratio: 1.7 / 1;
+    border-radius: 24px;
+  }
 
-.topic-focus-list{
+  .topic-focus-icon {
+    left: 24px;
+    bottom: 32px;
+    width: 25%;
+    height: 46%;
+  }
 
-gap:18px;
+  .topic-focus-copy {
+    top: 24px;
+    right: 24px;
+    bottom: 22px;
+    left: 32%;
+  }
 
+  .topic-focus-copy h3 {
+    margin-bottom: 7px;
+    font-size: 27px;
+    line-height: 1.18;
+  }
+
+  .topic-focus-copy > p {
+    margin-bottom: 12px;
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  .topic-status {
+    min-height: 30px;
+    padding: 4px 12px;
+    font-size: 14px;
+  }
+
+  .topic-status i {
+    width: 9px;
+    height: 9px;
+  }
+
+  .topic-latest {
+    padding-top: 14px;
+  }
+
+  .topic-update strong,
+  .topic-latest h3 {
+    margin-bottom: 7px;
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .topic-update p,
+  .topic-latest .ice-card p,
+  .topic-latest .ice-text-card p {
+    margin-bottom: 7px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .topic-time,
+  .topic-source {
+    font-size: 12px;
+  }
 }
 
 
+/* =========================
+   极窄手机
+========================= */
 
-.topic-focus-card{
+@media (max-width: 390px) {
 
-height:205px;
+  .topic-focus-card {
+    aspect-ratio: 1.62 / 1;
+  }
 
-padding:18px;
+  .topic-focus-icon {
+    left: 16px;
+    bottom: 24px;
+    width: 25%;
+    height: 42%;
+  }
 
-border-radius:20px;
+  .topic-focus-copy {
+    top: 20px;
+    right: 16px;
+    bottom: 18px;
+    left: 31%;
+  }
 
-}
+  .topic-focus-copy h3 {
+    font-size: 23px;
+  }
 
+  .topic-focus-copy > p {
+    font-size: 15px;
+  }
 
+  .topic-update strong,
+  .topic-latest h3 {
+    font-size: 17px;
+  }
 
-.topic-focus-icon{
+  .topic-update p,
+  .topic-latest .ice-card p,
+  .topic-latest .ice-text-card p {
+    font-size: 12px;
+  }
 
-width:90px;
-
-height:110px;
-
-margin-right:18px;
-
-}
-
-
-
-.topic-focus-copy h3{
-
-font-size:20px;
-
-}
-
-
-
-.topic-focus-copy p{
-
-font-size:13px;
-
-}
-
-
-
-.topic-status{
-
-font-size:11px;
-
-}
-
-
-
-.topic-latest{
-
-font-size:12px;
-
-}
-
-
-
-.topic-update strong{
-
-font-size:14px;
-
-}
-
-
-
-.topic-update p{
-
-font-size:12px;
-
-}
-
-
+  .topic-time,
+  .topic-source {
+    font-size: 10px;
+  }
 }

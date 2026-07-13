@@ -130,6 +130,8 @@
       if (refresh) actions.appendChild(refresh);
       head.appendChild(actions);
     }
+    const description = head?.querySelector("p");
+    if (description) description.textContent = "英文信源生成中文快讯；用户投稿完全绕过AI，人工审核后按数据库原文发布。";
     loadUserReports();
     const publishButton = document.querySelector('[data-review-action="publish_now"]');
     if (publishButton) publishButton.textContent = "人工立即发布";

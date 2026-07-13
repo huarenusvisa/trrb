@@ -1,7 +1,43 @@
 (() => {
   "use strict";
 
+  function installStyles() {
+    if (document.getElementById("original-submission-lock-styles")) return;
+    const style = document.createElement("style");
+    style.id = "original-submission-lock-styles";
+    style.textContent = `
+      .original-submission-lock-note {
+        display: grid;
+        gap: 4px;
+        margin: 4px 0 16px;
+        border: 1px solid #86efac;
+        border-radius: 10px;
+        padding: 12px 14px;
+        background: #f0fdf4;
+        color: #166534;
+      }
+      .original-submission-lock-note strong { font-size: 14px; }
+      .original-submission-lock-note span { font-size: 13px; line-height: 1.55; }
+      .original-submission-field {
+        border-color: #bbf7d0 !important;
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        cursor: default;
+      }
+      #report-edit-content.original-submission-field {
+        min-height: 190px;
+        white-space: pre-wrap;
+      }
+      @media (max-width: 640px) {
+        .original-submission-lock-note { margin-bottom: 12px; padding: 10px 12px; }
+        #report-edit-content.original-submission-field { min-height: 230px; font-size: 16px; line-height: 1.65; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   function installOriginalSubmissionLock() {
+    installStyles();
     const title = document.getElementById("report-edit-title");
     const summary = document.getElementById("report-edit-summary");
     const content = document.getElementById("report-edit-content");

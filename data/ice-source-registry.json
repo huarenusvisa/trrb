@@ -1,0 +1,962 @@
+[
+  {
+    "topic": "ice",
+    "username": "ICEgov",
+    "name": "U.S. Immigration and Customs Enforcement",
+    "type": "official",
+    "tier": 1,
+    "group": "ice",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "DHSgov",
+    "name": "U.S. Department of Homeland Security",
+    "type": "official",
+    "tier": 1,
+    "group": "dhs",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "CBP",
+    "name": "U.S. Customs and Border Protection",
+    "type": "official",
+    "tier": 1,
+    "group": "cbp",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "USBPChief",
+    "name": "U.S. Border Patrol Chief",
+    "type": "official",
+    "tier": 1,
+    "group": "cbp",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "USCIS",
+    "name": "U.S. Citizenship and Immigration Services",
+    "type": "official",
+    "tier": 1,
+    "group": "uscis",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "TheJusticeDept",
+    "name": "U.S. Department of Justice",
+    "type": "official",
+    "tier": 1,
+    "group": "doj",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "DOJ_EOIR",
+    "name": "Executive Office for Immigration Review",
+    "type": "official",
+    "tier": 1,
+    "group": "doj-eoir",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "FBI",
+    "name": "Federal Bureau of Investigation",
+    "type": "official",
+    "tier": 1,
+    "group": "fbi",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "USMarshalsHQ",
+    "name": "U.S. Marshals Service",
+    "type": "official",
+    "tier": 1,
+    "group": "usms",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "DEAHQ",
+    "name": "Drug Enforcement Administration",
+    "type": "official",
+    "tier": 1,
+    "group": "dea",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "ATFHQ",
+    "name": "Bureau of Alcohol, Tobacco, Firearms and Explosives",
+    "type": "official",
+    "tier": 1,
+    "group": "atf",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "StateDept",
+    "name": "U.S. Department of State",
+    "type": "official",
+    "tier": 1,
+    "group": "state",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "WhiteHouse",
+    "name": "The White House",
+    "type": "official",
+    "tier": 1,
+    "group": "whitehouse",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "HSI_HQ",
+    "name": "Homeland Security Investigations",
+    "type": "official",
+    "tier": 1,
+    "group": "hsi",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "NYPDnews",
+    "name": "NYPD News",
+    "type": "official",
+    "tier": 1,
+    "group": "nypd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "LAPDHQ",
+    "name": "Los Angeles Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "lapd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "Chicago_Police",
+    "name": "Chicago Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "chicago-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "houstonpolice",
+    "name": "Houston Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "houston-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "MiamiPD",
+    "name": "Miami Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "miami-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "PhoenixPolice",
+    "name": "Phoenix Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "phoenix-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "DenverPolice",
+    "name": "Denver Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "denver-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "SeattlePD",
+    "name": "Seattle Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "seattle-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "DallasPD",
+    "name": "Dallas Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "dallas-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "SanDiegoPD",
+    "name": "San Diego Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "sandiego-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "BostonPolice",
+    "name": "Boston Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "boston-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "PhillyPolice",
+    "name": "Philadelphia Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "philly-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "LVMPD",
+    "name": "Las Vegas Metropolitan Police",
+    "type": "official",
+    "tier": 1,
+    "group": "lvmpd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "OrlandoPolice",
+    "name": "Orlando Police Department",
+    "type": "official",
+    "tier": 1,
+    "group": "orlando-pd",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "LACountySheriff",
+    "name": "Los Angeles County Sheriff",
+    "type": "official",
+    "tier": 1,
+    "group": "la-sheriff",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "HCSOTexas",
+    "name": "Harris County Sheriff",
+    "type": "official",
+    "tier": 1,
+    "group": "harris-sheriff",
+    "enabled": true,
+    "requires_corroboration": false
+  },
+  {
+    "topic": "ice",
+    "username": "Reuters",
+    "name": "Reuters",
+    "type": "major_media",
+    "tier": 2,
+    "group": "reuters",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "AP",
+    "name": "Associated Press",
+    "type": "major_media",
+    "tier": 2,
+    "group": "ap",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "nytimes",
+    "name": "The New York Times",
+    "type": "major_media",
+    "tier": 2,
+    "group": "nyt",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "washingtonpost",
+    "name": "The Washington Post",
+    "type": "major_media",
+    "tier": 2,
+    "group": "wapo",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "WSJ",
+    "name": "The Wall Street Journal",
+    "type": "major_media",
+    "tier": 2,
+    "group": "wsj",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "CNN",
+    "name": "CNN",
+    "type": "major_media",
+    "tier": 2,
+    "group": "cnn",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NBCNews",
+    "name": "NBC News",
+    "type": "major_media",
+    "tier": 2,
+    "group": "nbc",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ABC",
+    "name": "ABC News",
+    "type": "major_media",
+    "tier": 2,
+    "group": "abc",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "CBSNews",
+    "name": "CBS News",
+    "type": "major_media",
+    "tier": 2,
+    "group": "cbs",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "FoxNews",
+    "name": "Fox News",
+    "type": "major_media",
+    "tier": 2,
+    "group": "fox",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NPR",
+    "name": "NPR",
+    "type": "major_media",
+    "tier": 2,
+    "group": "npr",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "Bloomberg",
+    "name": "Bloomberg",
+    "type": "major_media",
+    "tier": 2,
+    "group": "bloomberg",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "politico",
+    "name": "POLITICO",
+    "type": "major_media",
+    "tier": 2,
+    "group": "politico",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "axios",
+    "name": "Axios",
+    "type": "major_media",
+    "tier": 2,
+    "group": "axios",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "thehill",
+    "name": "The Hill",
+    "type": "major_media",
+    "tier": 2,
+    "group": "thehill",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "USATODAY",
+    "name": "USA TODAY",
+    "type": "major_media",
+    "tier": 2,
+    "group": "usatoday",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NewsNation",
+    "name": "NewsNation",
+    "type": "major_media",
+    "tier": 2,
+    "group": "newsnation",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ScrippsNews",
+    "name": "Scripps News",
+    "type": "major_media",
+    "tier": 2,
+    "group": "scripps",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ProPublica",
+    "name": "ProPublica",
+    "type": "specialist_media",
+    "tier": 2,
+    "group": "propublica",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "MarshallProj",
+    "name": "The Marshall Project",
+    "type": "specialist_media",
+    "tier": 2,
+    "group": "marshall",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "TexasTribune",
+    "name": "The Texas Tribune",
+    "type": "specialist_media",
+    "tier": 2,
+    "group": "texastribune",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "BorderReportcom",
+    "name": "Border Report",
+    "type": "specialist_media",
+    "tier": 2,
+    "group": "borderreport",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "DocumentedNY",
+    "name": "Documented",
+    "type": "specialist_media",
+    "tier": 2,
+    "group": "documented",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "CityLimitsNews",
+    "name": "City Limits",
+    "type": "specialist_media",
+    "tier": 2,
+    "group": "citylimits",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "nypost",
+    "name": "New York Post",
+    "type": "local_media",
+    "tier": 2,
+    "group": "nypost",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NBCNewYork",
+    "name": "NBC New York",
+    "type": "local_media",
+    "tier": 2,
+    "group": "nbcny",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "CBSNewYork",
+    "name": "CBS New York",
+    "type": "local_media",
+    "tier": 2,
+    "group": "cbsny",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ABC7NY",
+    "name": "ABC7 New York",
+    "type": "local_media",
+    "tier": 2,
+    "group": "abc7ny",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "fox5ny",
+    "name": "FOX 5 New York",
+    "type": "local_media",
+    "tier": 2,
+    "group": "fox5ny",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "PIX11News",
+    "name": "PIX11 News",
+    "type": "local_media",
+    "tier": 2,
+    "group": "pix11",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "Gothamist",
+    "name": "Gothamist",
+    "type": "local_media",
+    "tier": 2,
+    "group": "gothamist",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "TheCityNY",
+    "name": "THE CITY",
+    "type": "local_media",
+    "tier": 2,
+    "group": "thecity",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "latimes",
+    "name": "Los Angeles Times",
+    "type": "local_media",
+    "tier": 2,
+    "group": "latimes",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NBCLA",
+    "name": "NBC Los Angeles",
+    "type": "local_media",
+    "tier": 2,
+    "group": "nbcla",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ABC7",
+    "name": "ABC7 Los Angeles",
+    "type": "local_media",
+    "tier": 2,
+    "group": "abc7la",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "KTLA",
+    "name": "KTLA",
+    "type": "local_media",
+    "tier": 2,
+    "group": "ktla",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "CBSLA",
+    "name": "CBS Los Angeles",
+    "type": "local_media",
+    "tier": 2,
+    "group": "cbsla",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "chicagotribune",
+    "name": "Chicago Tribune",
+    "type": "local_media",
+    "tier": 2,
+    "group": "chicagotribune",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ABC7Chicago",
+    "name": "ABC7 Chicago",
+    "type": "local_media",
+    "tier": 2,
+    "group": "abc7chicago",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "WGNNews",
+    "name": "WGN News",
+    "type": "local_media",
+    "tier": 2,
+    "group": "wgn",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "AILANational",
+    "name": "American Immigration Lawyers Association",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "aila",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "immcouncil",
+    "name": "American Immigration Council",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "aic",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "MigrationPolicy",
+    "name": "Migration Policy Institute",
+    "type": "research_org",
+    "tier": 3,
+    "group": "mpi",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ACLU",
+    "name": "American Civil Liberties Union",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "aclu",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NIJC",
+    "name": "National Immigrant Justice Center",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "nijc",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NILC",
+    "name": "National Immigration Law Center",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "nilc",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "RAICESTEXAS",
+    "name": "RAICES",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "raices",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "UnitedWeDream",
+    "name": "United We Dream",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "uwd",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "DetentionWatch",
+    "name": "Detention Watch Network",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "dwn",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "HumanRights1st",
+    "name": "Human Rights First",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "hrf",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "CLINIClegal",
+    "name": "CLINIC",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "clinic",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "LIRSorg",
+    "name": "Global Refuge",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "lirs",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "MakeTheRoadNY",
+    "name": "Make the Road New York",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "mtrny",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NYLAG",
+    "name": "New York Legal Assistance Group",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "nylag",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "LegalAidNYC",
+    "name": "The Legal Aid Society",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "legalaidnyc",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "MALDEF",
+    "name": "MALDEF",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "maldef",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "FlorenceProject",
+    "name": "Florence Immigrant & Refugee Rights Project",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "firrp",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ImmDef",
+    "name": "Immigrant Defenders Law Center",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "immdef",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "TRACReports",
+    "name": "TRAC Immigration",
+    "type": "research_org",
+    "tier": 3,
+    "group": "trac",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ACLU_NorCal",
+    "name": "ACLU of Northern California",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "aclu-norcal",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ACLU_SoCal",
+    "name": "ACLU of Southern California",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "aclu-socal",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ACLU_TX",
+    "name": "ACLU of Texas",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "aclu-tx",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ACLUFL",
+    "name": "ACLU of Florida",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "aclu-fl",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "ACLU_NY",
+    "name": "New York Civil Liberties Union",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "nyclu",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "Mijente",
+    "name": "Mijente",
+    "type": "civic_org",
+    "tier": 3,
+    "group": "mijente",
+    "enabled": true,
+    "requires_corroboration": true
+  },
+  {
+    "topic": "ice",
+    "username": "NIPNLG",
+    "name": "National Immigration Project",
+    "type": "legal_org",
+    "tier": 3,
+    "group": "nipnlg",
+    "enabled": true,
+    "requires_corroboration": true
+  }
+]

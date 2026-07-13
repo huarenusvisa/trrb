@@ -45,11 +45,7 @@ a{text-decoration:none;color:inherit}
  .ice-panel,.ice-news-panel{padding:14px;border-radius:12px}
  .ice-panel h1{font-size:31px}.ice-intro{font-size:14px;margin-bottom:16px}
  .ice-stats article{min-height:112px;padding:16px 12px}
- .ice-stats article:nth-child(3){
-grid-column:auto;
-border-left:1px solid var(--line);
-border-top:0;
-}
+ .ice-stats article:nth-child(3){grid-column:auto;border-left:1px solid var(--line);border-top:0}
  .ice-stats strong{font-size:30px}.ice-map{height:300px}
  .range-tabs b{font-size:15px}.type-tabs button{font-size:13px;padding:11px 5px}
  .ice-news-item,.ice-news-item.no-image{grid-template-columns:112px minmax(0,1fr);gap:12px}
@@ -58,97 +54,190 @@ border-top:0;
  .ice-news-copy h3{font-size:16px}.ice-news-copy p{font-size:13px}
  .ice-news-source{grid-column:2;justify-self:end;align-self:auto}.ice-news-item.no-image .ice-news-source{grid-column:1}
 }
+@media(max-width:767px){
+ .ice-stats{display:grid;grid-template-columns:repeat(3,1fr)}
+ .ice-stats article{min-height:90px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+ .stat-icon{width:22px;height:22px;font-size:9px}
+ .ice-stats b{font-size:11px;margin:0;white-space:nowrap}
+ .ice-stats strong{font-size:22px;line-height:1}
+ .ice-stats small{font-size:10px;margin-top:3px;white-space:nowrap}
+}
 
 /* =========================
-   ICE 手机端统计卡片优化
+   v20260713 美国区域ICE地图
    ========================= */
-
+.map-heading-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.us-only-badge{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:5px 10px;
+  border:1px solid #bfdbfe;
+  border-radius:999px;
+  background:#eff6ff;
+  color:#175cd3;
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.map-shell{
+  position:relative;
+  min-height:380px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid #dbe4ef;
+  background:#dff1fb;
+}
+.map-shell .ice-map{
+  position:relative;
+  z-index:1;
+  width:100%;
+  height:380px;
+  border-radius:0;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(255,255,255,.92),rgba(219,238,249,.9));
+}
+.ice-map-state{
+  position:absolute;
+  z-index:600;
+  inset:50% auto auto 50%;
+  width:min(360px,calc(100% - 36px));
+  transform:translate(-50%,-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:7px;
+  padding:18px 20px;
+  border:1px solid rgba(203,213,225,.95);
+  border-radius:12px;
+  background:rgba(255,255,255,.94);
+  box-shadow:0 12px 32px rgba(15,23,42,.12);
+  text-align:center;
+  pointer-events:none;
+}
+.ice-map-state strong{
+  color:#101828;
+  font-size:15px;
+}
+.ice-map-state span{
+  color:#667085;
+  font-size:12px;
+  line-height:1.5;
+}
+.map-spinner{
+  width:28px;
+  height:28px;
+  border:3px solid #dbeafe;
+  border-top-color:#175cd3;
+  border-radius:50%;
+  animation:ice-map-spin .8s linear infinite;
+}
+@keyframes ice-map-spin{to{transform:rotate(360deg)}}
+.ice-map-legend{
+  position:absolute;
+  z-index:500;
+  left:12px;
+  bottom:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 12px;
+  padding:8px 10px;
+  border:1px solid rgba(203,213,225,.9);
+  border-radius:9px;
+  background:rgba(255,255,255,.92);
+  box-shadow:0 4px 16px rgba(15,23,42,.08);
+  color:#475467;
+  font-size:11px;
+  font-weight:700;
+  pointer-events:none;
+}
+.ice-map-legend span{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+.legend-dot{
+  width:10px;
+  height:10px;
+  border:2px solid;
+  border-radius:50%;
+}
+.legend-dot.arrest{background:#d92d20;border-color:#7a271a}
+.legend-dot.removal{background:#175cd3;border-color:#1849a9}
+.legend-dot.other{background:#7f56d9;border-color:#53389e}
+.ice-map-popup h3{
+  margin:7px 0 6px;
+  color:#101828;
+  font-size:16px;
+  line-height:1.35;
+}
+.ice-map-popup p{
+  margin:0 0 9px;
+  color:#475467;
+  font-size:13px;
+  line-height:1.55;
+}
+.ice-map-popup dl{
+  margin:0;
+  display:grid;
+  gap:4px;
+}
+.ice-map-popup dl div{
+  display:grid;
+  grid-template-columns:66px minmax(0,1fr);
+  gap:8px;
+}
+.ice-map-popup dt{
+  color:#667085;
+  font-size:12px;
+}
+.ice-map-popup dd{
+  margin:0;
+  color:#344054;
+  font-size:12px;
+  font-weight:700;
+}
+.popup-type{
+  display:inline-flex;
+  padding:3px 7px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+}
+.popup-arrest{background:#fee4e2;color:#b42318}
+.popup-removal{background:#dbeafe;color:#1849a9}
+.popup-other{background:#f4ebff;color:#6941c6}
+.ice-popup-shell .leaflet-popup-content-wrapper{
+  border-radius:12px;
+}
+.ice-popup-shell .leaflet-popup-content{
+  margin:14px 16px;
+}
+.leaflet-container{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+}
+.leaflet-control-zoom a{
+  color:#344054;
+}
+.hidden{display:none!important}
 @media(max-width:767px){
-
-
-/* 三个统计保持一行 */
-
-.ice-stats{
-
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-}
-
-
-/* 单个统计卡 */
-
-.ice-stats article{
-
-    min-height:90px;
-
-    padding:12px 6px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
+  .map-heading-row{align-items:flex-start}
+  .map-shell{min-height:300px}
+  .map-shell .ice-map{height:300px}
+  .us-only-badge{font-size:11px;padding:4px 8px}
+  .ice-map-legend{
+    right:10px;
+    left:10px;
+    bottom:9px;
     justify-content:center;
-
-    gap:6px;
-
-}
-
-
-/* 第三个卡片保持同一排 */
-
-
-/* 图标缩小 */
-
-.stat-icon{
-
-    width:22px;
-
-    height:22px;
-
-    font-size:9px;
-
-}
-
-
-/* 标题 */
-
-.ice-stats b{
-
-    font-size:11px;
-
-    margin:0;
-
-    white-space:nowrap;
-
-}
-
-
-/* 数字 */
-
-.ice-stats strong{
-
-    font-size:22px;
-
-    line-height:1;
-
-}
-
-
-/* 日期 */
-
-.ice-stats small{
-
-    font-size:10px;
-
-    margin-top:3px;
-
-    white-space:nowrap;
-
-}
-
-
+  }
+  .ice-map-state{
+    width:calc(100% - 28px);
+    padding:15px 14px;
+  }
 }

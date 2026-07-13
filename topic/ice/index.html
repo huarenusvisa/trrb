@@ -6,7 +6,7 @@
   <title>ICE执法追踪 - 唐人日报</title>
   <meta name="description" content="聚合ICE、DHS、HSI、CBP、司法部及地方执法机构公开信息，追踪抓捕、拘留、地点分布与后续执法动态。">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="./ice.css?v=1">
+  <link rel="stylesheet" href="./ice.css?v=20260713-us-map">
 </head>
 <body>
   <header class="ice-topbar">
@@ -35,8 +35,36 @@
         </article>
       </div>
 
-      <h2 class="section-title">美国实时执法地图</h2>
-      <div id="ice-map" class="ice-map" aria-label="美国实时执法地图"></div>
+      <div class="map-heading-row">
+        <h2 class="section-title">美国实时执法地图</h2>
+        <span class="us-only-badge">仅显示美国本土</span>
+      </div>
+
+      <div class="map-shell">
+        <div id="ice-map" class="ice-map" aria-label="美国实时执法地图"></div>
+
+        <div id="ice-map-loading" class="ice-map-state">
+          <div class="map-spinner" aria-hidden="true"></div>
+          <strong>正在加载美国执法地图</strong>
+          <span>地图会自动显示已确认地点</span>
+        </div>
+
+        <div id="ice-map-empty" class="ice-map-state hidden">
+          <strong>暂无已确认的执法地点</strong>
+          <span>地图已经启用；新数据确认地点后会自动出现标记。</span>
+        </div>
+
+        <div id="ice-map-error" class="ice-map-state hidden">
+          <strong>地图底图暂时无法加载</strong>
+          <span>执法地点数据仍会继续更新，请稍后刷新。</span>
+        </div>
+
+        <div class="ice-map-legend" aria-label="地图图例">
+          <span><i class="legend-dot arrest"></i>抓捕/拘留</span>
+          <span><i class="legend-dot removal"></i>遣返</span>
+          <span><i class="legend-dot other"></i>其他行动</span>
+        </div>
+      </div>
 
       <div class="range-tabs" role="tablist" aria-label="时间范围">
         <button class="active" data-range="24h"><b>24小时</b><span>最新动态</span></button>
@@ -63,6 +91,7 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="../../articles-index.js?v=29.7"></script>
-  <link rel="stylesheet" href="./ice.css?v=36">
+  <script src="./ice.js?v=20260713-us-map"></script>
+  <script src="./ice-map.js?v=20260713-us-map"></script>
 </body>
 </html>

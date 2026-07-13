@@ -3,8 +3,6 @@ name: TRRB V31 Homepage Migration
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - ".trrb-v31-trigger"
   workflow_dispatch:
 
 permissions:

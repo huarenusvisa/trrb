@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const VERSION = "20260713-v2";
+  const VERSION = "20260713-v3-integrated";
   const originalReviewApi = reviewApi;
   const originalPopulateReviewModal = populateReviewModal;
 
@@ -140,36 +140,42 @@
     }
   };
 
+  function loadIntegratedReportAssets() {
+    if (!document.querySelector('link[data-ice-report-integrated="1"]')) {
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "./ice-report-integrated.css?v=20260713-v1";
+      css.dataset.iceReportIntegrated = "1";
+      document.head.appendChild(css);
+    }
+    if (!document.querySelector('script[data-ice-report-integrated="1"]')) {
+      const script = document.createElement("script");
+      script.src = "./ice-report-integrated.js?v=20260713-v1";
+      script.dataset.iceReportIntegrated = "1";
+      document.body.appendChild(script);
+    }
+  }
+
   function installUserReportEntry() {
     const reviewHead = document.querySelector("#ice-review-page .review-head");
     if (reviewHead && !reviewHead.querySelector(".user-report-entry")) {
       const actions = document.createElement("div");
       actions.className = "review-head-actions";
-      actions.innerHTML = `
-        <a class="user-report-entry" href="/admin/ice-report-review/">用户投稿审核</a>
-      `;
+      actions.innerHTML = `<button type="button" class="user-report-entry" data-page="ice-reports">用户投稿审核</button>`;
       const refresh = el("refresh-review");
       if (refresh) actions.appendChild(refresh);
       reviewHead.appendChild(actions);
 
       const description = reviewHead.querySelector("p");
       if (description) {
-        description.textContent = "英文信源强制生成30—50字中文快讯并标注地点；用户投稿不进入AI，人工可编辑或直接发布。";
+        description.textContent = "英文信源强制生成30—50字中文快讯并标注地点；用户投稿不进入AI，直接在同一后台人工审核。";
       }
-    }
-
-    const nav = document.querySelector(".sidebar nav");
-    if (nav && !nav.querySelector(".user-report-nav")) {
-      const link = document.createElement("a");
-      link.className = "nav-btn user-report-nav";
-      link.href = "/admin/ice-report-review/";
-      link.innerHTML = "用户投稿审核 <span>人工直发</span>";
-      nav.insertBefore(link, nav.querySelector('[data-page="rankings"]'));
     }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     installUserReportEntry();
+    loadIntegratedReportAssets();
     const publishButton = document.querySelector('[data-review-action="publish_now"]');
     if (publishButton) publishButton.textContent = "人工立即发布";
 

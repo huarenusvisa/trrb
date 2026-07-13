@@ -1,455 +1,205 @@
-/* =================================================
-   专题聚焦最终版 v35
-   紧凑移动端布局
-================================================= */
-
-
-/* 外层 */
-
-.topic-focus-list{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:16px;
-
+.topic-focus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
 }
 
+.topic-focus-card {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
 
+  width: 100%;
+  min-height: 150px;
+  padding: 18px;
+  box-sizing: border-box;
 
-/* 三个专题卡 */
+  border: 1px solid transparent;
+  border-radius: 18px;
+  overflow: hidden;
 
-.topic-focus-card{
-
-    display:grid;
-
-    grid-template-columns:72px 1fr;
-
-    align-items:center;
-
-    gap:14px;
-
-
-    width:100%;
-
-    min-height:125px;
-
-    padding:18px;
-
-
-    box-sizing:border-box;
-
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    text-decoration:none;
-
+  text-decoration: none;
+  color: #111827;
 }
 
+.topic-focus-icon {
+  position: static !important;
+  transform: none !important;
 
+  width: 66px;
+  height: 84px;
+  margin: 0;
 
-/* 左侧头像/logo */
-
-
-.topic-focus-icon{
-
-    width:72px;
-
-    height:82px;
-
-
-    object-fit:contain;
-
-
-    display:block;
-
+  object-fit: contain;
+  object-position: center;
+  align-self: center;
 }
 
+.topic-focus-copy {
+  position: static !important;
+  transform: none !important;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
-/* 右侧文字区域 */
-
-
-.topic-focus-copy{
-
-    min-width:0;
-
+  min-width: 0;
+  width: 100%;
 }
 
-
-
-/* 专题标题 */
-
-
-.topic-focus-copy h3{
-
-
-    margin:0 0 6px;
-
-
-    font-size:22px;
-
-    line-height:1.15;
-
-
-    font-weight:900;
-
-
+.topic-focus-copy h3 {
+  margin: 0 0 5px;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.18;
 }
 
-
-
-/* 隐藏副标题 */
-
-.topic-focus-copy p{
-
-    display:none;
-
+.topic-focus-copy > p {
+  margin: 0 0 8px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
+.topic-status {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 5px;
 
+  min-height: 23px;
+  padding: 2px 8px;
 
-/* 状态 */
+  border: 1px solid rgba(100, 116, 139, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
 
-
-.topic-status{
-
-
-    display:inline-flex;
-
-    align-items:center;
-
-
-    height:24px;
-
-
-    padding:0 10px;
-
-
-    border-radius:999px;
-
-
-    background:white;
-
-
-    border:1px solid rgba(0,0,0,.08);
-
-
-
-    font-size:12px;
-
-    font-weight:700;
-
-
-    color:#475569;
-
-
+  color: #475569;
+  font-size: 10px;
+  font-weight: 700;
 }
 
-
-
-.topic-status i{
-
-
-    width:7px;
-
-    height:7px;
-
-
-    margin-right:6px;
-
-
-    border-radius:50%;
-
-
-    background:#ef233c;
-
-
+.topic-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef233c;
+  box-shadow: 0 0 0 4px rgba(239, 35, 60, 0.11);
 }
 
-
-
-
-/* 最新动态区域 */
-
-
-.topic-latest{
-
-
-    margin-top:8px;
-
-
-    padding-top:7px;
-
-
-    border-top:1px solid rgba(0,0,0,.08);
-
-
+.topic-latest {
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(100, 116, 139, 0.16);
+  min-width: 0;
 }
 
-
-
-/* 最新标题 */
-
-.topic-update strong{
-
-
-    display:block;
-
-
-    overflow:hidden;
-
-
-    white-space:nowrap;
-
-
-    text-overflow:ellipsis;
-
-
-
-    font-size:14px;
-
-    line-height:1.35;
-
-
-    font-weight:800;
-
-
+.topic-update,
+.topic-latest .topic-card,
+.topic-latest .ice-card,
+.topic-latest .ice-text-card {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
+.topic-update strong,
+.topic-latest h3 {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
 
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.35;
 
-/* 隐藏多余信息 */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 
-
+/* 强制隐藏你不要的内容 */
 .topic-update p,
 .topic-time,
 .topic-source,
 .topic-latest img,
-.topic-card img,
-.ice-card img{
-
-
-    display:none!important;
-
-
+.ice-update img,
+.topic-latest .ice-card p,
+.topic-latest .ice-text-card p {
+  display: none !important;
 }
 
-
-
-/* =========================
-   三个专题颜色
-========================= */
-
-
-.topic-trump{
-
-
-    background:#fff1f3;
-
-    border:1px solid #ffd0d6;
-
-
+.topic-trump {
+  border-color: #ffc8cf;
+  background: linear-gradient(135deg, #fff8f8 0%, #ffecef 100%);
 }
 
-
-.topic-trump h3,
-.topic-trump .topic-update strong{
-
-
-    color:#c91424;
-
-
+.topic-trump .topic-focus-copy h3,
+.topic-trump .topic-update strong {
+  color: #c8141e;
 }
 
-
-
-.topic-ice{
-
-
-    background:#edf5ff;
-
-    border:1px solid #c7ddff;
-
-
+.topic-ice {
+  border-color: #badcff;
+  background: linear-gradient(135deg, #f5faff 0%, #e7f3ff 100%);
 }
 
-
-
-.topic-ice h3,
-.topic-ice .topic-update strong{
-
-
-    color:#07549b;
-
-
+.topic-ice .topic-focus-copy h3,
+.topic-ice .topic-update strong {
+  color: #07549b;
 }
 
-
-
-.topic-election{
-
-
-    background:#edfff7;
-
-    border:1px solid #c5eadb;
-
-
+.topic-election {
+  border-color: #b8eadc;
+  background: linear-gradient(135deg, #f4fffb 0%, #e8faf4 100%);
 }
 
-
-.topic-election h3,
-.topic-election .topic-update strong{
-
-
-    color:#087f5b;
-
-
+.topic-election .topic-focus-copy h3,
+.topic-election .topic-update strong {
+  color: #007d62;
 }
 
-
-
-.topic-election .topic-status i{
-
-
-    background:#0bb78b;
-
-
+.topic-election .topic-status i {
+  background: #0bb78b;
+  box-shadow: 0 0 0 4px rgba(11, 183, 139, 0.12);
 }
 
-
-
-
-/* =================================================
-   手机端
-================================================= */
-
-
-@media(max-width:767px){
-
-
-
-.topic-focus-list{
-
-    gap:14px;
-
-}
-
-
-
-.topic-focus-card{
-
-
-    grid-template-columns:62px 1fr;
-
-
-    min-height:112px;
-
-
-    padding:15px;
-
-
-    border-radius:20px;
-
-
-    gap:12px;
-
-
-}
-
-
-
-.topic-focus-icon{
-
-
-    width:62px;
-
-    height:70px;
-
-
-}
-
-
-
-.topic-focus-copy h3{
-
-
-    font-size:20px;
-
-
-    margin-bottom:5px;
-
-
-}
-
-
-
-.topic-status{
-
-
-    height:22px;
-
-
-    font-size:11px;
-
-
-    padding:0 9px;
-
-
-}
-
-
-
-.topic-update strong{
-
-
-    font-size:13px;
-
-
-}
-
-
-
-}
-
-
-
-/* 超小屏 */
-
-@media(max-width:390px){
-
-
-.topic-focus-card{
-
-
-    grid-template-columns:55px 1fr;
-
-
-    padding:14px;
-
-
-}
-
-
-.topic-focus-icon{
-
-    width:55px;
-
-    height:65px;
-
-}
-
-
-.topic-focus-copy h3{
-
-
-    font-size:18px;
-
-
-}
-
-
+/* 手机端 */
+@media (max-width: 767px) {
+  .topic-focus-card {
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 16px;
+
+    min-height: 174px;
+    padding: 20px 18px;
+    border-radius: 22px;
+  }
+
+  .topic-focus-icon {
+    width: 82px;
+    height: 100px;
+  }
+
+  .topic-focus-copy h3 {
+    font-size: 22px;
+  }
+
+  .topic-focus-copy > p {
+    font-size: 14px;
+  }
+
+  .topic-status {
+    min-height: 27px;
+    padding: 3px 10px;
+    font-size: 12px;
+  }
+
+  .topic-update strong,
+  .topic-latest h3 {
+    font-size: 16px;
+  }
 }

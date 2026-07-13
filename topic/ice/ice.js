@@ -10,19 +10,20 @@ async function loadICEConfig(){
 
     try{
 
-        const res =
-        await fetch(
+        const res = await fetch(
             "./ice-config.json?v=" + Date.now()
         );
 
+        const config = await res.json();
 
-        const config =
-        await res.json();
-
-
-        ICE_START_TIME =
-        new Date(
+        ICE_START_TIME = new Date(
             config.startTime
+        );
+
+
+        console.log(
+            "ICE开始追踪时间:",
+            ICE_START_TIME
         );
 
 
@@ -33,9 +34,7 @@ async function loadICEConfig(){
             e
         );
 
-
-        ICE_START_TIME =
-        new Date();
+        ICE_START_TIME = new Date();
 
     }
 
@@ -44,11 +43,10 @@ async function loadICEConfig(){
 
 
 // =========================
-// 过滤上线以前数据
+// 只保留上线以后数据
 // =========================
 
 function filterICEData(data){
-
 
     if(!ICE_START_TIME){
         return [];
@@ -58,31 +56,29 @@ function filterICEData(data){
     return data.filter(item=>{
 
 
-        const itemTime =
+        const t =
         new Date(
-
             item.time ||
             item.created_at ||
-            item.date ||
-            0
-
+            item.date
         );
 
 
         return (
-            itemTime >= ICE_START_TIME
+            !isNaN(t) &&
+            t >= ICE_START_TIME
         );
 
 
     });
 
-
 }
 
 
 
+
 // =========================
-// 顶部统计
+// 今天统计
 // =========================
 
 function updateICEStats(data){
@@ -96,16 +92,15 @@ function updateICEStats(data){
     let people = 0;
 
 
+
     list.forEach(item=>{
 
 
         people += Number(
-
             item.people ||
             item.arrests ||
             item.count ||
             0
-
         );
 
 
@@ -116,13 +111,11 @@ function updateICEStats(data){
     const locations =
     [
         ...new Set(
-
             list
             .map(
                 x=>x.location
             )
             .filter(Boolean)
-
         )
     ];
 
@@ -162,6 +155,8 @@ function updateICEStats(data){
 
 
 
+
+
 // =========================
 // 新闻列表
 // =========================
@@ -181,22 +176,39 @@ function renderICENews(data){
 
 
 
-    const list =
+    let list =
     filterICEData(data);
+
+
+
+    // 最新在前
+
+    list.sort(
+        (a,b)=>
+        new Date(b.time)
+        -
+        new Date(a.time)
+    );
 
 
 
     if(list.length===0){
 
+        box.innerHTML=`
 
-        box.innerHTML =
-        `
         <article class="ice-news-item">
-        <h3>暂无最新ICE执法动态</h3>
-        <p>系统已从上线时间开始实时追踪。</p>
-        </article>
-        `;
 
+        <h3>
+        暂无最新ICE执法动态
+        </h3>
+
+        <p>
+        系统已从上线时间开始实时追踪。
+        </p>
+
+        </article>
+
+        `;
 
         return;
 
@@ -204,8 +216,8 @@ function renderICENews(data){
 
 
 
-
     box.innerHTML =
+
     list.map(item=>{
 
 
@@ -241,9 +253,12 @@ function renderICENews(data){
 
 
 
+
+
 // =========================
 // 初始化
 // =========================
+
 
 async function loadICE(){
 
@@ -257,7 +272,9 @@ async function loadICE(){
 
         const res =
         await fetch(
-            "/data/ice-data.json?v="+Date.now()
+            "/data/ice-data.json?v="
+            +
+            Date.now()
         );
 
 
@@ -277,6 +294,7 @@ async function loadICE(){
 
         ICE_DATA=[];
 
+
     }
 
 
@@ -293,6 +311,7 @@ async function loadICE(){
 
 
 }
+
 
 
 

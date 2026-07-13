@@ -1,0 +1,42 @@
+name: TRRB Final Acceptance V34
+
+on:
+  pull_request:
+    paths:
+      - "netlify/functions/ice-report-integrated.js"
+      - "netlify/functions/ice-report-review.js"
+      - "admin/ice-report-raw-lock.js"
+      - "admin/ice-review-v2.js"
+      - "homepage-focus-v34.js"
+      - "news-media-v34.css"
+      - "site-common.js"
+      - "topic-config.js"
+      - "scripts/final-acceptance-v34.test.mjs"
+      - ".github/workflows/final-acceptance-v34.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: JavaScript syntax checks
+        run: |
+          node --check netlify/functions/ice-report-integrated.js
+          node --check netlify/functions/ice-report-review.js
+          node --check admin/ice-report-raw-lock.js
+          node --check admin/ice-review-v2.js
+          node --check homepage-focus-v34.js
+          node --check site-common.js
+          node --check topic-config.js
+      - name: Final acceptance assertions
+        run: node --test scripts/final-acceptance-v34.test.mjs
+      - name: Existing site validation
+        run: node scripts/validate-site.mjs

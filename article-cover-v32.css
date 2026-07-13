@@ -1,0 +1,26 @@
+/* TRRB V32：文章详情封面统一为新闻标准16:9 */
+.article-page .article-image {
+  display: block;
+  width: min(100%, 880px);
+  max-width: 880px;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 16 / 9;
+  margin: 24px auto 30px;
+  border-radius: 8px;
+  background: #eef1f4;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 640px) {
+  .article-page .article-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 16 / 9;
+    margin: 18px auto 24px;
+    object-fit: cover;
+  }
+}

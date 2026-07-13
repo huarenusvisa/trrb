@@ -1,24 +1,25 @@
 /* ==================================================
-   唐人日报 专题聚焦 FINAL v32
-   目标：
-   手机端侧栏卡片
-   图片左侧 + 文字右侧
+   唐人日报 专题聚焦 FINAL v33
+   Sidebar Topic Cards
 ================================================== */
 
 
 .topic-focus-list{
 
 display:flex;
+
 flex-direction:column;
-gap:18px;
+
+gap:16px;
 
 width:100%;
 
 }
 
 
+
 /* =========================
-   主卡片
+   专题卡片
 ========================= */
 
 
@@ -32,15 +33,15 @@ align-items:center;
 
 width:100%;
 
-height:220px;
+height:205px;
 
-padding:24px;
+padding:20px;
 
 box-sizing:border-box;
 
 overflow:hidden;
 
-border-radius:24px;
+border-radius:22px;
 
 text-decoration:none;
 
@@ -54,15 +55,15 @@ text-decoration:none;
 
 .topic-focus-icon{
 
-width:120px;
+width:90px;
 
-height:150px;
+height:110px;
 
 object-fit:contain;
 
 flex-shrink:0;
 
-margin-right:26px;
+margin-right:20px;
 
 z-index:2;
 
@@ -71,19 +72,19 @@ z-index:2;
 
 
 /* =========================
-   文字区域
+   右侧内容
 ========================= */
 
 
 .topic-focus-copy{
 
-position:relative;
-
-z-index:3;
-
 flex:1;
 
 min-width:0;
+
+position:relative;
+
+z-index:3;
 
 }
 
@@ -91,13 +92,13 @@ min-width:0;
 
 .topic-focus-copy h3{
 
-margin:0 0 10px;
+margin:0 0 8px;
 
-font-size:26px;
+font-size:20px;
 
 font-weight:800;
 
-line-height:1.25;
+line-height:1.3;
 
 }
 
@@ -105,19 +106,22 @@ line-height:1.25;
 
 .topic-focus-copy p{
 
-margin:0 0 18px;
+margin:0 0 12px;
 
-font-size:15px;
+font-size:13px;
 
-line-height:1.5;
+font-weight:600;
+
+line-height:1.4;
 
 color:#475569;
 
 }
 
 
+
 /* =========================
-   状态按钮
+   状态
 ========================= */
 
 
@@ -127,28 +131,29 @@ display:inline-flex;
 
 align-items:center;
 
-gap:7px;
+gap:6px;
 
-padding:5px 12px;
+padding:4px 10px;
 
 border-radius:20px;
 
-background:rgba(255,255,255,.8);
+background:rgba(255,255,255,.85);
 
 border:1px solid rgba(0,0,0,.08);
 
-font-size:13px;
+font-size:12px;
 
 font-weight:700;
 
 }
 
 
+
 .topic-status i{
 
-width:8px;
+width:7px;
 
-height:8px;
+height:7px;
 
 border-radius:50%;
 
@@ -159,28 +164,27 @@ background:#ef233c;
 
 
 /* =========================
-   最新动态区域
+   最新动态
 ========================= */
 
 
 .topic-latest{
 
-margin-top:14px;
+margin-top:12px;
 
-padding-top:12px;
+padding-top:10px;
 
 border-top:1px solid rgba(0,0,0,.08);
 
-font-size:14px;
+font-size:13px;
 
-line-height:1.5;
+line-height:1.45;
 
 }
 
 
 
-/* 去掉动态生成的小卡片 */
-
+/* 去除动态小卡 */
 
 .topic-latest .topic-card,
 .topic-latest .ice-card,
@@ -208,16 +212,27 @@ display:none!important;
 
 
 
-.topic-update strong,
-.topic-latest h3{
+.topic-update strong{
 
 display:block;
 
-margin:0 0 6px;
-
-font-size:16px;
+font-size:15px;
 
 font-weight:800;
+
+line-height:1.35;
+
+}
+
+
+
+.topic-update p{
+
+margin-top:5px;
+
+font-size:12px;
+
+color:#475569;
 
 line-height:1.4;
 
@@ -225,33 +240,20 @@ line-height:1.4;
 
 
 
-.topic-update p,
-.topic-latest p{
-
-margin:0;
-
-font-size:13px;
-
-color:#475569;
-
-line-height:1.45;
-
-}
-
-
-
 /* =========================
-   三个主题颜色
+   三个主题背景
 ========================= */
 
 
 .topic-trump{
 
 background:
-radial-gradient(circle at 90% 80%,
-rgba(255,255,255,.7),
-transparent 35%),
-linear-gradient(135deg,#fff5f6,#ffe9ed);
+
+linear-gradient(
+135deg,
+#fff5f6,
+#ffe8ed
+);
 
 border:1px solid #ffd0d6;
 
@@ -267,16 +269,17 @@ color:#c91524;
 
 
 
-
 .topic-ice{
 
 background:
-radial-gradient(circle at 90% 80%,
-rgba(255,255,255,.7),
-transparent 35%),
-linear-gradient(135deg,#f3f8ff,#e6f2ff);
 
-border:1px solid #c5dcff;
+linear-gradient(
+135deg,
+#f3f8ff,
+#e5f1ff
+);
+
+border:1px solid #c7ddff;
 
 }
 
@@ -290,14 +293,15 @@ color:#07549b;
 
 
 
-
 .topic-election{
 
 background:
-radial-gradient(circle at 90% 80%,
-rgba(255,255,255,.7),
-transparent 35%),
-linear-gradient(135deg,#f3fffa,#e5faf2);
+
+linear-gradient(
+135deg,
+#f3fffa,
+#e5faf1
+);
 
 border:1px solid #bcebd8;
 
@@ -313,17 +317,9 @@ color:#087c5b;
 
 
 
-.topic-election .topic-status i{
-
-background:#0bb78b;
-
-}
-
-
-
-/* ==================================================
-   手机优化
-================================================== */
+/* =========================
+   手机端
+========================= */
 
 
 @media(max-width:767px){
@@ -339,96 +335,11 @@ gap:18px;
 
 .topic-focus-card{
 
-height:220px;
-
-padding:22px;
-
-border-radius:22px;
-
-}
-
-
-
-.topic-focus-icon{
-
-width:105px;
-
-height:135px;
-
-margin-right:18px;
-
-}
-
-
-
-.topic-focus-copy h3{
-
-font-size:24px;
-
-}
-
-
-
-.topic-focus-copy p{
-
-font-size:14px;
-
-}
-
-
-
-.topic-status{
-
-font-size:12px;
-
-padding:5px 10px;
-
-}
-
-
-
-.topic-latest{
-
-margin-top:12px;
-
-padding-top:10px;
-
-}
-
-
-
-.topic-update strong,
-.topic-latest h3{
-
-font-size:15px;
-
-}
-
-
-
-.topic-update p,
-.topic-latest p{
-
-font-size:12px;
-
-}
-
-
-
-}
-
-
-
-/* 极窄屏 */
-
-@media(max-width:390px){
-
-
-.topic-focus-card{
-
-height:210px;
+height:205px;
 
 padding:18px;
+
+border-radius:20px;
 
 }
 
@@ -438,9 +349,9 @@ padding:18px;
 
 width:90px;
 
-height:115px;
+height:110px;
 
-margin-right:15px;
+margin-right:18px;
 
 }
 
@@ -448,7 +359,7 @@ margin-right:15px;
 
 .topic-focus-copy h3{
 
-font-size:21px;
+font-size:20px;
 
 }
 
@@ -457,6 +368,38 @@ font-size:21px;
 .topic-focus-copy p{
 
 font-size:13px;
+
+}
+
+
+
+.topic-status{
+
+font-size:11px;
+
+}
+
+
+
+.topic-latest{
+
+font-size:12px;
+
+}
+
+
+
+.topic-update strong{
+
+font-size:14px;
+
+}
+
+
+
+.topic-update p{
+
+font-size:12px;
 
 }
 

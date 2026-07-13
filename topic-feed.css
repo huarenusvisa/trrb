@@ -1,141 +1,303 @@
-.topic-focus-list{
-box-sizing:border-box;
-display:flex;
-flex-direction:column;
-gap:24px;
-}
+async function loadTopicFeed(){
+
+    let data=[];
 
 
-.topic-focus-card{
+    try{
 
-height:220px;
-
-padding:30px;
-
-box-sizing:border-box;
-
-display:flex;
-
-align-items:center;
-
-border-radius:30px;
-
-overflow:hidden;
-
-text-decoration:none;
-  
-}
+        const res = await fetch(
+            "/data/topic-feed.json?v=" + Date.now()
+        );
 
 
-.topic-focus-icon{
+        data = await res.json();
 
-width:180px;
-height:160px;
 
-object-fit:contain;
+    }catch(e){
 
-flex-shrink:0;
+        console.log(
+            "topic feed loading error",
+            e
+        );
 
-margin-right:35px;
+    }
+
+
+    window.TRRB_TOPIC_DATA=data;
+
+
+    renderTopicLatest(data);
 
 }
 
 
-.topic-focus-copy h3{
 
-font-size:34px;
 
-font-weight:800;
+function renderTopicLatest(data){
 
-line-height:1.2;
+
+    document
+    .querySelectorAll("[data-topic-latest]")
+    .forEach(box=>{
+
+
+        const topic =
+        box.dataset.topicLatest;
+
+
+
+        const item =
+        data.find(
+            x=>x.topic===topic
+        );
+
+
+
+        if(!item){
+
+            box.innerHTML =
+            "暂无最新动态";
+
+            return;
+
+        }
+
+
+
+        /*
+          Trump
+        */
+
+        if(topic==="trump"){
+
+
+            let title =
+            item.title ||
+            item.content ||
+            "";
+
+
+            if(window.generateTrumpTitle){
+
+                title =
+                window.generateTrumpTitle(
+                    item.content || title
+                );
+
+            }
+
+
+
+            box.innerHTML = `
+
+            <div class="topic-update">
+
+                <strong>
+                ${title}
+                </strong>
+
+
+                <p>
+                ${item.summary || ""}
+                </p>
+
+
+                <div class="topic-time">
+                ${item.time || ""}
+                </div>
+
+
+                <div class="topic-source">
+                ${item.source || ""}
+                </div>
+
+            </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+
+
+        /*
+          ICE
+        */
+
+        if(topic==="ice"){
+
+
+            let html="";
+
+
+
+            if(
+                item.image &&
+                item.image !== "null"
+                &&
+                item.image !== ""
+            ){
+
+
+                html = `
+
+                <div class="topic-update ice-update">
+
+                    <img 
+                    src="${item.image}"
+                    loading="lazy"
+                    >
+
+
+                    <div>
+
+                    <strong>
+                    ${item.title || "ICE执法动态"}
+                    </strong>
+
+
+                    <p>
+                    ${item.summary || ""}
+                    </p>
+
+
+                    </div>
+
+
+                </div>
+
+                `;
+
+
+            }else{
+
+
+                html = `
+
+                <div class="topic-update">
+
+                    <strong>
+                    ${shortTitle(
+                    item.title ||
+                    "ICE执法行动"
+                    )}
+                    </strong>
+
+
+                    <p>
+                    ${item.summary || ""}
+                    </p>
+
+                </div>
+
+                `;
+
+
+            }
+
+
+
+            box.innerHTML = html;
+
+
+            return;
+
+
+        }
+
+
+
+
+
+        /*
+          Election
+        */
+
+
+        if(topic==="election"){
+
+
+            let title =
+            item.content ||
+            item.title ||
+            "";
+
+
+
+            if(window.generateElectionTitle){
+
+                title =
+                window.generateElectionTitle(
+                    item.content || title
+                );
+
+            }
+
+
+
+            box.innerHTML = `
+
+            <div class="topic-update">
+
+
+                <strong>
+                ${title}
+                </strong>
+
+
+                <p>
+                ${item.summary || ""}
+                </p>
+
+
+                <div class="topic-time">
+                ${item.time || ""}
+                </div>
+
+
+                <div class="topic-source">
+                ${item.source || ""}
+                </div>
+
+
+            </div>
+
+            `;
+
+
+        }
+
+
+
+    });
 
 
 }
 
 
-.topic-focus-copy p{
-
-font-size:22px;
-
-color:#4b5563;
-
-margin:0 0 20px;
-
-}
 
 
-.topic-status{
+function shortTitle(title){
 
-font-size:18px;
+    if(title.length<=18){
 
-font-weight:700;
+        return title;
+
+    }
+
+
+    return title.substring(0,18);
 
 }
 
 
-.topic-latest{
-
-margin-top:18px;
-
-font-size:16px;
-
-color:#333;
-
-}
 
 
-/* 三个专题颜色 */
 
-
-.topic-trump{
-
-background:#fff1f1;
-
-}
-
-
-.topic-ice{
-
-background:#edf5ff;
-
-}
-
-
-.topic-election{
-
-background:#edfff5;
-
-}
-
-
-/* 最新新闻不要变成卡片 */
-
-.topic-latest .ice-card,
-.topic-latest .ice-text-card,
-.topic-latest .topic-card{
-
-background:none;
-
-border:none;
-
-padding:0;
-
-margin:0;
-
-}
-
-
-.topic-latest img{
-
-width:90px;
-height:60px;
-
-object-fit:cover;
-
-border-radius:8px;
-
-float:left;
-
-margin-right:12px;
-
-}
+document.addEventListener(
+"DOMContentLoaded",
+loadTopicFeed
+);

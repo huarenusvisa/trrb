@@ -22,12 +22,11 @@ function safeText(value, max = 20000) {
   return String(value ?? "").trim().replace(/\u0000/g, "").slice(0, max);
 }
 
-function originalText(value, max = 30000) {
-  return String(value ?? "").replace(/\u0000/g, "").slice(0, max);
-}
-
+// event_description has already been accepted by PostgreSQL. Return the exact
+// stored string: no trim, whitespace collapse, prefix, suffix, translation,
+// sanitizing rewrite or length truncation is allowed on the publication path.
 function originalSubmission(report) {
-  return originalText(report?.event_description, 30000);
+  return String(report?.event_description ?? "");
 }
 
 function publicationTitle(report) {

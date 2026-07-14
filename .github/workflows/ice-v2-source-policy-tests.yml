@@ -10,8 +10,12 @@ on:
       - "scripts/ice-v2-source-policy.test.mjs"
       - "scripts/ice-v2-collector-core.mjs"
       - "scripts/ice-v2-collector-core.test.mjs"
+      - "scripts/ice-v2-collect.mjs"
+      - "scripts/ice-v2-collect.test.mjs"
       - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
+      - ".github/workflows/ice-v2-official-collector.yml"
+      - ".github/workflows/ice-v2-media-collector.yml"
   pull_request:
     paths:
       - "data/ice-v2-source-policy.json"
@@ -19,8 +23,12 @@ on:
       - "scripts/ice-v2-source-policy.test.mjs"
       - "scripts/ice-v2-collector-core.mjs"
       - "scripts/ice-v2-collector-core.test.mjs"
+      - "scripts/ice-v2-collect.mjs"
+      - "scripts/ice-v2-collect.test.mjs"
       - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
+      - ".github/workflows/ice-v2-official-collector.yml"
+      - ".github/workflows/ice-v2-media-collector.yml"
 
 permissions:
   contents: read
@@ -37,6 +45,7 @@ jobs:
         run: |
           node --check scripts/ice-v2-source-policy.mjs
           node --check scripts/ice-v2-collector-core.mjs
+          node --check scripts/ice-v2-collect.mjs
           node --check scripts/ice-v2-registry-export.mjs
       - name: Validate source policy
         run: node scripts/ice-v2-source-policy.mjs
@@ -46,3 +55,4 @@ jobs:
         run: |
           node --test scripts/ice-v2-source-policy.test.mjs
           node --test scripts/ice-v2-collector-core.test.mjs
+          node --test scripts/ice-v2-collect.test.mjs

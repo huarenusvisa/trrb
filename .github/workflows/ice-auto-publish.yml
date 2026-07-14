@@ -1,6 +1,14 @@
 name: ICE多信源抓取与交叉审核
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/ice-auto-publish-user-reports.mjs"
+      - "scripts/ice-publish-due.mjs"
+      - "scripts/ice-ero-official-discovery.mjs"
+      - ".github/workflows/ice-auto-publish.yml"
   workflow_dispatch:
     inputs:
       mode:

@@ -10,6 +10,7 @@ on:
       - "scripts/ice-v2-*.test.mjs"
       - "admin/ice-review-v2.js"
       - "netlify/functions/ice-v2-health.js"
+      - "netlify/functions/ice-v2-health.test.js"
       - "netlify/functions/ice-review-list-v3.js"
       - "netlify/functions/_shared/ice-v2-*.js"
       - ".github/workflows/ice-v2-*.yml"
@@ -20,6 +21,7 @@ on:
       - "scripts/ice-v2-*.test.mjs"
       - "admin/ice-review-v2.js"
       - "netlify/functions/ice-v2-health.js"
+      - "netlify/functions/ice-v2-health.test.js"
       - "netlify/functions/ice-review-list-v3.js"
       - "netlify/functions/_shared/ice-v2-*.js"
       - ".github/workflows/ice-v2-*.yml"
@@ -67,3 +69,4 @@ jobs:
           node --test scripts/ice-v2-admin-health.test.mjs
           node --test netlify/functions/_shared/ice-v2-health.test.js
           node --test netlify/functions/_shared/ice-v2-review.test.js
+          node --test netlify/functions/ice-v2-health.test.js

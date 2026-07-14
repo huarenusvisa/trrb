@@ -66,6 +66,8 @@ jobs:
       - name: Validate ICE architecture
         run: |
           node --check scripts/ice-high-recall-discovery.mjs
+          node --check scripts/ice-ero-official-discovery.mjs
+          node --check scripts/ice-dedupe-v3.mjs
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-editorial-normalize.mjs
           node --check scripts/ice-filter-replies.mjs
@@ -81,6 +83,11 @@ jobs:
         if: env.RUN_MODE == 'collect'
         continue-on-error: true
         run: node scripts/ice-high-recall-discovery.mjs
+
+      - name: Safe regional ERO official discovery
+        if: env.RUN_MODE == 'collect'
+        continue-on-error: true
+        run: node scripts/ice-ero-official-discovery.mjs
 
       - name: Enable ERO two-hour recovery
         if: env.RUN_MODE == 'collect'
@@ -118,6 +125,11 @@ jobs:
         continue-on-error: true
         run: node scripts/ice-translate-title-body.mjs
 
+      - name: Hide repeated ICE candidates
+        if: env.RUN_MODE == 'collect'
+        continue-on-error: true
+        run: node scripts/ice-dedupe-v3.mjs
+
       - name: Publish first approved ICE story immediately
         if: env.RUN_MODE == 'collect'
         continue-on-error: true
@@ -130,4 +142,4 @@ jobs:
         if: always()
         run: |
           echo "ICE pipeline completed."
-          echo "Collected posts are exposed before deep AI processing."
+          echo "Collected posts are deduplicated before publication."

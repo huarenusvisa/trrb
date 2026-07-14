@@ -1,6 +1,8 @@
 #!/usr/bin/env node
+import { spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   const value = Number(process.env[name] ?? fallback);
@@ -19,6 +21,17 @@ function safeJson(value, fallback = null) {
 function isOfficialUrgent(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
   return Boolean(payload?.official_urgent);
+}
+function runOfficialUrgentPromotion() {
+  const script = fileURLToPath(new URL("./ice-official-urgent-promote.mjs", import.meta.url));
+  const result = spawnSync(process.execPath, [script], {
+    stdio: "inherit",
+    env: process.env,
+  });
+  if (result.error) throw result.error;
+  if (result.status !== 0) {
+    throw new Error(`DHS/ICE官方重大突发提升失败，退出码${result.status}`);
+  }
 }
 async function requestJson(url, options = {}) {
   const response = await fetch(url, options);
@@ -244,6 +257,8 @@ async function publish(story) {
 
 async function main() {
   requireEnvironment();
+  runOfficialUrgentPromotion();
+
   const max = intEnv("ICE_PUBLISH_MAX_PER_RUN", 1, 1, 3);
   const stories = await dueStories(max);
   if (!stories.length) {

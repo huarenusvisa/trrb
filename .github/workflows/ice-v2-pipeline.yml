@@ -25,6 +25,11 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -40,9 +45,12 @@ jobs:
           node --test scripts/ice-v2-editor-core.test.mjs
           node --test scripts/ice-v2-cleanup-core.test.mjs
           node --test scripts/ice-v2-readiness-core.test.mjs
+          node --test scripts/ice-v2-schema-preflight-core.test.mjs
           node --test netlify/functions/_shared/ice-v2-health.test.js
           node --test netlify/functions/_shared/ice-v2-review.test.js
           node --test netlify/functions/_shared/ice-v2-publish.test.js
+      - name: Verify secrets and Supabase schema
+        run: node scripts/ice-v2-schema-preflight.mjs
 
   collect-official:
     needs: validate

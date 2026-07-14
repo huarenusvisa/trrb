@@ -1,4 +1,4 @@
-name: ICE v2 Source Collector Event Editor Health and Admin Tests
+name: ICE v2 Source Collector Event Editor Review Health and Admin Tests
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
       - "scripts/ice-v2-*.test.mjs"
       - "admin/ice-review-v2.js"
       - "netlify/functions/ice-v2-health.js"
-      - "netlify/functions/_shared/ice-v2-health.js"
-      - "netlify/functions/_shared/ice-v2-health.test.js"
+      - "netlify/functions/ice-review-list-v3.js"
+      - "netlify/functions/_shared/ice-v2-*.js"
       - ".github/workflows/ice-v2-*.yml"
   pull_request:
     paths:
@@ -20,8 +20,8 @@ on:
       - "scripts/ice-v2-*.test.mjs"
       - "admin/ice-review-v2.js"
       - "netlify/functions/ice-v2-health.js"
-      - "netlify/functions/_shared/ice-v2-health.js"
-      - "netlify/functions/_shared/ice-v2-health.test.js"
+      - "netlify/functions/ice-review-list-v3.js"
+      - "netlify/functions/_shared/ice-v2-*.js"
       - ".github/workflows/ice-v2-*.yml"
 
 permissions:
@@ -47,7 +47,9 @@ jobs:
           node --check scripts/ice-v2-registry-export.mjs
           node --check admin/ice-review-v2.js
           node --check netlify/functions/_shared/ice-v2-health.js
+          node --check netlify/functions/_shared/ice-v2-review.js
           node --check netlify/functions/ice-v2-health.js
+          node --check netlify/functions/ice-review-list-v3.js
       - name: Validate source policy
         run: node scripts/ice-v2-source-policy.mjs
       - name: Export legacy-compatible whitelist registry
@@ -61,3 +63,4 @@ jobs:
           node --test scripts/ice-v2-editor-core.test.mjs
           node --test scripts/ice-v2-admin-health.test.mjs
           node --test netlify/functions/_shared/ice-v2-health.test.js
+          node --test netlify/functions/_shared/ice-v2-review.test.js

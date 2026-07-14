@@ -37,14 +37,24 @@
     const { data } = await supabaseClient.auth.getSession();
     const token = data.session?.access_token;
     if (!token) throw new Error("登录状态已失效，请重新登录。");
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ action, ...payload })
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || `ICE接口失败（${response.status}）`);
-    return result;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        signal: controller.signal,
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ action, ...payload })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `ICE接口失败（${response.status}）`);
+      return result;
+    } catch (error) {
+      if (error?.name === "AbortError") throw new Error("后台接口响应超时，请刷新后重试。");
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   reviewApi = async function reviewApiV3(action, payload = {}) {
@@ -100,29 +110,41 @@
     if (!document.querySelector('link[data-ice-report-integrated="1"]')) {
       const css = document.createElement("link");
       css.rel = "stylesheet";
-      css.href = "./ice-report-integrated.css?v=20260713-v2";
+      css.href = "./ice-report-integrated.css?v=20260714-edit-fix";
       css.dataset.iceReportIntegrated = "1";
       document.head.appendChild(css);
     }
-    const loadMain = () => {
-      if (document.querySelector('script[data-ice-report-integrated="1"]')) return;
-      const script = document.createElement("script");
-      script.src = "./ice-report-integrated.js?v=20260713-v3";
-      script.dataset.iceReportIntegrated = "1";
-      document.body.appendChild(script);
+
+    const loadEnhancement = () => {
+      if (document.querySelector('script[data-ice-report-enhancement="1"]')) return;
+      const enhancement = document.createElement("script");
+      enhancement.src = "./ice-report-management-enhancement.js?v=20260714-edit-fix";
+      enhancement.dataset.iceReportEnhancement = "1";
+      enhancement.onerror = () => console.error("用户投稿管理增强脚本加载失败");
+      document.body.appendChild(enhancement);
     };
-    if (document.querySelector('script[data-ice-report-raw-lock="1"]')) return loadMain();
-    const lock = document.createElement("script");
-    lock.src = "./ice-report-raw-lock.js?v=20260713-v2";
-    lock.dataset.iceReportRawLock = "1";
-    lock.onload = loadMain;
-    document.body.appendChild(lock);
+
+    if (document.querySelector('script[data-ice-report-integrated="1"]')) {
+      loadEnhancement();
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "./ice-report-integrated.js?v=20260714-edit-fix";
+    script.dataset.iceReportIntegrated = "1";
+    script.onload = loadEnhancement;
+    script.onerror = () => {
+      console.error("用户投稿审核脚本加载失败");
+      const status = document.getElementById("system-status");
+      if (status) status.textContent = "用户投稿审核模块加载失败，请强制刷新页面。";
+    };
+    document.body.appendChild(script);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     const head = document.querySelector("#ice-review-page .review-head");
     const description = head?.querySelector("p");
-    if (description) description.textContent = "采集内容完成关键词去重后直接显示；风险和法律问题由工作人员判断是否发布。用户投稿完全绕过AI，人工审核后按数据库原文发布。";
+    if (description) description.textContent = "采集内容完成关键词去重后直接显示；风险和法律问题由工作人员判断是否发布。用户投稿可由管理员编辑后发布。";
     if (head && !head.querySelector(".user-report-entry")) {
       const actions = document.createElement("div");
       actions.className = "review-head-actions";

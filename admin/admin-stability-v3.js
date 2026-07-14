@@ -4,6 +4,19 @@
   const PAGE_KEY = "trrb-admin-page-v3";
   const MAINTENANCE_API = "/.netlify/functions/ice-admin-maintenance-v3";
   let explicitNavigation = false;
+  let activeReportId = "";
+
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = async function stableAdminFetch(input, init = {}) {
+    const url = typeof input === "string" ? input : input?.url || "";
+    let payload = null;
+    try { payload = JSON.parse(init?.body || "{}"); } catch {}
+    if (url.includes("/.netlify/functions/ice-report-integrated") && payload?.report_id) {
+      activeReportId = String(payload.report_id);
+      window.TRRB_ACTIVE_REPORT_ID = activeReportId;
+    }
+    return originalFetch(input, init);
+  };
 
   async function api(action, payload = {}) {
     const { data } = await supabaseClient.auth.getSession();
@@ -12,7 +25,7 @@
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 12000);
     try {
-      const response = await fetch(MAINTENANCE_API, {
+      const response = await originalFetch(MAINTENANCE_API, {
         method: "POST",
         signal: controller.signal,
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -81,8 +94,8 @@
 
   function addReportMaintenanceButtons() {
     const footer = document.querySelector("#report-modal .report-modal-actions");
-    const report = window.activeDetail?.report || null;
-    if (!footer || !report?.id) return;
+    const reportId = activeReportId || window.TRRB_ACTIVE_REPORT_ID || "";
+    if (!footer || !reportId) return;
     footer.querySelectorAll("[data-maintenance-action]").forEach((node) => node.remove());
 
     const actions = [
@@ -105,8 +118,9 @@
         if (!confirm(warning)) return;
         button.disabled = true;
         try {
-          await api(action, { report_id: report.id });
-          if (typeof loadReports === "function") await loadReports();
+          await api(action, { report_id: reportId });
+          const refresh = document.getElementById("refresh-reports");
+          refresh?.click();
           document.getElementById("report-modal")?.classList.add("hidden");
           document.body.classList.remove("modal-open");
         } catch (error) {
@@ -126,8 +140,16 @@
       deleteStory(deleteButton);
       return;
     }
-    const openReport = event.target.closest('[onclick*="TRRB_openIntegratedReport"], .report-item button');
-    if (openReport) setTimeout(addReportMaintenanceButtons, 350);
+    const reportButton = event.target.closest(".report-item button");
+    if (reportButton) {
+      const onclick = reportButton.getAttribute("onclick") || "";
+      const matched = onclick.match(/TRRB_openIntegratedReport\(['\"]([^'\"]+)/);
+      if (matched) {
+        activeReportId = matched[1];
+        window.TRRB_ACTIVE_REPORT_ID = activeReportId;
+      }
+      setTimeout(addReportMaintenanceButtons, 350);
+    }
   }, true);
 
   const modalObserver = new MutationObserver(() => {

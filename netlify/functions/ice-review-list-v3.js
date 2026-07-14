@@ -33,7 +33,7 @@ async function loadStories() {
       limit: "400"
     }
   });
-  return Array.isArray(rows) ? rows : [];
+  return (Array.isArray(rows) ? rows : []).filter((story) => !story?.ai_payload?.filtered_reply_only);
 }
 
 async function loadLeadPosts(stories) {
@@ -45,6 +45,7 @@ async function loadLeadPosts(stories) {
       query: {
         select: "id,event_fingerprint,event_type,event_date,state_code,city,source_text,source_username,source_display_name,source_created_at,media,trust_tier,processing_status,last_error",
         event_fingerprint: `in.(${batch.join(",")})`,
+        processing_status: "neq.irrelevant",
         order: "trust_tier.asc,source_created_at.asc",
         limit: "2000"
       }

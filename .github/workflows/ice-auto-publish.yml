@@ -51,7 +51,6 @@ jobs:
       ICE_DAILY_X_REQUEST_CAP: "190"
       ICE_VALIDATE_SOURCE_HANDLES: "false"
 
-      # V3高召回参数
       ICE_HIGH_RECALL_LOOKBACK_HOURS: "24"
       ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"
       ICE_HIGH_RECALL_MIN_SCORE: "45"
@@ -71,9 +70,12 @@ jobs:
           node --check scripts/ice-high-recall-discovery.mjs
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-editorial-normalize.mjs
+          node --check scripts/ice-filter-replies.mjs
+          node --check scripts/ice-translate-title-body.mjs
           node --check scripts/ice-publish-due.mjs
           node --check scripts/ice-enable-first-backfill.mjs
           node --test scripts/ice-architecture.test.mjs
+          node --test scripts/ice-original-posts.test.mjs
           node scripts/ice-multisource.mjs --self-test
 
       - name: High-recall event discovery
@@ -84,11 +86,22 @@ jobs:
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-enable-first-backfill.mjs
 
+      - name: Remove replies and comments before AI processing
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-filter-replies.mjs
+
       - name: Fetch, extract and cross-check ICE news
         run: node scripts/ice-multisource.mjs --mode="$RUN_MODE"
 
+      - name: Remove replies and comments created by source rotation
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-filter-replies.mjs
+
       - name: Translate and format Chinese ICE briefs
         run: node scripts/ice-editorial-normalize.mjs
+
+      - name: Generate Chinese title and review body
+        run: node scripts/ice-translate-title-body.mjs
 
       - name: Publish first approved ICE story immediately
         if: env.RUN_MODE == 'collect'

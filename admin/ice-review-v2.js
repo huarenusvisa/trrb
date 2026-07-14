@@ -41,25 +41,36 @@
     return value;
   }
 
+  async function fetchJsonWithTimeout(endpoint, options = {}, label = "ICE接口", timeoutMs = 12000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetch(endpoint, { ...options, signal: controller.signal });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `${label}失败（${response.status}）`);
+      return result;
+    } catch (error) {
+      if (error?.name === "AbortError") throw new Error(`${label}响应超时，请刷新后重试。`);
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   async function callApi(endpoint, action, payload = {}) {
-    const response = await fetch(endpoint, {
+    return fetchJsonWithTimeout(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${await token()}` },
       body: JSON.stringify({ action, ...payload })
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || `ICE接口失败（${response.status}）`);
-    return result;
+    }, "ICE后台接口");
   }
 
   async function loadV2Health() {
-    const response = await fetch("/.netlify/functions/ice-v2-health", {
+    const result = await fetchJsonWithTimeout("/.netlify/functions/ice-v2-health", {
       method: "GET",
       headers: { Authorization: `Bearer ${await token()}` },
       cache: "no-store"
-    });
-    const result = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(result.error || `ICE v2监控接口失败（${response.status}）`);
+    }, "ICE v2监控接口");
     v2Health = result;
     renderV2Health();
     return result;

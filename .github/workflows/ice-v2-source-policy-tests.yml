@@ -10,6 +10,8 @@ on:
       - "scripts/ice-v2-*.mjs"
       - "scripts/ice-v2-*.test.mjs"
       - "admin/ice-review-v2.js"
+      - "topic/ice/index.html"
+      - "topic/ice/ice-stats-*.js"
       - "netlify/functions/ice-v2-health.js"
       - "netlify/functions/ice-v2-health.test.js"
       - "netlify/functions/ice-review-list-v3.js"
@@ -22,6 +24,8 @@ on:
       - "scripts/ice-v2-*.mjs"
       - "scripts/ice-v2-*.test.mjs"
       - "admin/ice-review-v2.js"
+      - "topic/ice/index.html"
+      - "topic/ice/ice-stats-*.js"
       - "netlify/functions/ice-v2-health.js"
       - "netlify/functions/ice-v2-health.test.js"
       - "netlify/functions/ice-review-list-v3.js"
@@ -53,6 +57,8 @@ jobs:
           node --check scripts/ice-v2-readiness-core.mjs
           node --check scripts/ice-v2-readiness.mjs
           node --check scripts/ice-v2-registry-export.mjs
+          node --check topic/ice/ice-stats-enhanced.js
+          node --check topic/ice/ice-stats-guard.js
           node --check admin/ice-review-v2.js
           node --check netlify/functions/_shared/ice-v2-health.js
           node --check netlify/functions/_shared/ice-v2-review.js
@@ -77,6 +83,8 @@ jobs:
           node --test scripts/ice-v2-readiness-core.test.mjs
           node --test scripts/ice-v2-pipeline.test.mjs
           node --test scripts/ice-v2-migration.test.mjs
+          node --test scripts/ice-v2-main-sync-policy.test.mjs
+          node --test scripts/ice-v2-stats-sync.test.mjs
           node --test scripts/ice-v2-admin-health.test.mjs
           node --test netlify/functions/_shared/ice-v2-health.test.js
           node --test netlify/functions/_shared/ice-v2-review.test.js

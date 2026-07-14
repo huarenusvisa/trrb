@@ -1,0 +1,33 @@
+name: ICE v2 Readiness Gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - ice-v2-rebuild
+    paths:
+      - "data/ice-v2-source-policy.json"
+      - "scripts/ice-v2-*.mjs"
+      - "scripts/ice-v2-*.test.mjs"
+      - "netlify/functions/ice-v2-*.js"
+      - "netlify/functions/ice-review-list-v3.js"
+      - ".github/workflows/ice-v2-*.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate ICE v2 source and pipeline readiness
+        run: |
+          node --check scripts/ice-v2-readiness-core.mjs
+          node --check scripts/ice-v2-readiness.mjs
+          node --test scripts/ice-v2-readiness-core.test.mjs
+          node scripts/ice-v2-readiness.mjs

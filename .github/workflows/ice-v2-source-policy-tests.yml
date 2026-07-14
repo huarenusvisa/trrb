@@ -1,4 +1,4 @@
-name: ICE v2 Source and Collector Tests
+name: ICE v2 Source Collector and Event Tests
 
 on:
   push:
@@ -12,10 +12,14 @@ on:
       - "scripts/ice-v2-collector-core.test.mjs"
       - "scripts/ice-v2-collect.mjs"
       - "scripts/ice-v2-collect.test.mjs"
+      - "scripts/ice-v2-event-core.mjs"
+      - "scripts/ice-v2-event-core.test.mjs"
+      - "scripts/ice-v2-event-cluster.mjs"
       - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
       - ".github/workflows/ice-v2-official-collector.yml"
       - ".github/workflows/ice-v2-media-collector.yml"
+      - ".github/workflows/ice-v2-event-cluster.yml"
   pull_request:
     paths:
       - "data/ice-v2-source-policy.json"
@@ -25,10 +29,14 @@ on:
       - "scripts/ice-v2-collector-core.test.mjs"
       - "scripts/ice-v2-collect.mjs"
       - "scripts/ice-v2-collect.test.mjs"
+      - "scripts/ice-v2-event-core.mjs"
+      - "scripts/ice-v2-event-core.test.mjs"
+      - "scripts/ice-v2-event-cluster.mjs"
       - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
       - ".github/workflows/ice-v2-official-collector.yml"
       - ".github/workflows/ice-v2-media-collector.yml"
+      - ".github/workflows/ice-v2-event-cluster.yml"
 
 permissions:
   contents: read
@@ -46,13 +54,16 @@ jobs:
           node --check scripts/ice-v2-source-policy.mjs
           node --check scripts/ice-v2-collector-core.mjs
           node --check scripts/ice-v2-collect.mjs
+          node --check scripts/ice-v2-event-core.mjs
+          node --check scripts/ice-v2-event-cluster.mjs
           node --check scripts/ice-v2-registry-export.mjs
       - name: Validate source policy
         run: node scripts/ice-v2-source-policy.mjs
       - name: Export legacy-compatible whitelist registry
         run: node scripts/ice-v2-registry-export.mjs
-      - name: Run source and collector tests
+      - name: Run tests
         run: |
           node --test scripts/ice-v2-source-policy.test.mjs
           node --test scripts/ice-v2-collector-core.test.mjs
           node --test scripts/ice-v2-collect.test.mjs
+          node --test scripts/ice-v2-event-core.test.mjs

@@ -2,14 +2,21 @@ name: ICE v2 Newsroom Collector
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "8,23,38,53 * * * *"
 
 permissions:
   contents: read
+
+concurrency:
+  group: ice-v2-newsroom-collector
+  cancel-in-progress: false
 
 jobs:
   collect:
     runs-on: ubuntu-latest
     timeout-minutes: 12
+    if: github.ref == 'refs/heads/ice-v2-rebuild' || github.ref == 'refs/heads/main'
     env:
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -19,5 +26,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-      - run: node --test scripts/ice-v2-collect.test.mjs
-      - run: node scripts/ice-v2-collect.mjs --mode=media
+      - name: Validate newsroom collector
+        run: |
+          node --check scripts/ice-v2-source-policy.mjs
+          node --check scripts/ice-v2-collector-core.mjs
+          node --check scripts/ice-v2-collect.mjs
+          node --test scripts/ice-v2-source-policy.test.mjs
+          node --test scripts/ice-v2-collect.test.mjs
+      - name: Collect approved newsroom sources
+        run: node scripts/ice-v2-collect.mjs --mode=media

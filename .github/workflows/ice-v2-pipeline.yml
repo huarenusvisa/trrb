@@ -1,0 +1,130 @@
+name: ICE v2 End-to-End Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_media:
+        description: "是否运行正规媒体采集"
+        required: true
+        default: true
+        type: boolean
+      run_editor:
+        description: "是否运行中文编辑"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ice-v2-end-to-end
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate ICE v2 architecture
+        run: |
+          node scripts/ice-v2-readiness.mjs
+          node --test scripts/ice-v2-source-policy.test.mjs
+          node --test scripts/ice-v2-collector-core.test.mjs
+          node --test scripts/ice-v2-collect.test.mjs
+          node --test scripts/ice-v2-event-core.test.mjs
+          node --test scripts/ice-v2-editor-core.test.mjs
+          node --test scripts/ice-v2-cleanup-core.test.mjs
+          node --test scripts/ice-v2-readiness-core.test.mjs
+          node --test netlify/functions/_shared/ice-v2-health.test.js
+          node --test netlify/functions/_shared/ice-v2-review.test.js
+          node --test netlify/functions/_shared/ice-v2-publish.test.js
+
+  collect-official:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: node scripts/ice-v2-collect.mjs --mode=official
+
+  collect-media:
+    if: ${{ inputs.run_media }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: node scripts/ice-v2-collect.mjs --mode=media
+
+  cluster:
+    needs:
+      - collect-official
+      - collect-media
+    if: ${{ always() && needs.collect-official.result == 'success' && (needs.collect-media.result == 'success' || needs.collect-media.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_V2_CLUSTER_MAX: "500"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: node scripts/ice-v2-event-cluster.mjs
+
+  editor:
+    if: ${{ inputs.run_editor && needs.cluster.result == 'success' }}
+    needs: cluster
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_V2_EDITOR_MAX: "80"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: node scripts/ice-v2-editor.mjs
+
+  summary:
+    if: always()
+    needs:
+      - validate
+      - collect-official
+      - collect-media
+      - cluster
+      - editor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pipeline summary
+        run: |
+          echo "validate=${{ needs.validate.result }}"
+          echo "collect-official=${{ needs.collect-official.result }}"
+          echo "collect-media=${{ needs.collect-media.result }}"
+          echo "cluster=${{ needs.cluster.result }}"
+          echo "editor=${{ needs.editor.result }}"

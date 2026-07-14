@@ -34,14 +34,11 @@ async function suggestTitles(input) {
   const schema = {
     type: "object",
     additionalProperties: false,
-    required: ["titles"],
+    required: ["title_1", "title_2", "title_3"],
     properties: {
-      titles: {
-        type: "array",
-        minItems: 3,
-        maxItems: 3,
-        items: { type: "string", minLength: 8, maxLength: 36 }
-      }
+      title_1: { type: "string" },
+      title_2: { type: "string" },
+      title_3: { type: "string" }
     }
   };
 
@@ -70,7 +67,11 @@ async function suggestTitles(input) {
   });
 
   const parsed = JSON.parse(responseText(response));
-  const titles = [...new Set((parsed?.titles || []).map((item) => safeText(item, 80)).filter(Boolean))].slice(0, 3);
+  const titles = [...new Set([
+    parsed?.title_1,
+    parsed?.title_2,
+    parsed?.title_3
+  ].map((item) => safeText(item, 80)).filter(Boolean))].slice(0, 3);
   if (titles.length !== 3) throw new Error("AI没有返回三个有效标题，请重试");
   return titles;
 }
@@ -119,7 +120,7 @@ async function generateCover(input) {
   const content = safeText(input.content, 4000);
   if (!title) throw new Error("缺少文章标题");
 
-  const prompt = `Create a professional 16:9 editorial news illustration for a Chinese-language US news website. Category: ${category}. Headline: ${title}. Context: ${summary || content}. Serious, clean, realistic editorial illustration. No words, no logos, no watermarks, no readable documents, no fake official seals. Do not depict an identifiable real person. For crime, immigration, disaster, politics, detention or courtroom topics, create a clearly conceptual editorial illustration rather than a fabricated documentary photograph.`;
+  const prompt = `Create a professional landscape editorial news illustration for a Chinese-language US news website, composed safely for a 16:9 crop. Category: ${category}. Headline: ${title}. Context: ${summary || content}. Serious, clean, realistic editorial illustration. No words, no logos, no watermarks, no readable documents, no fake official seals. Do not depict an identifiable real person. For crime, immigration, disaster, politics, detention or courtroom topics, create a clearly conceptual editorial illustration rather than a fabricated documentary photograph.`;
   const imageData = await requestJson("https://api.openai.com/v1/images/generations", {
     method: "POST",
     headers: { Authorization: `Bearer ${OPENAI_KEY}`, "Content-Type": "application/json" },

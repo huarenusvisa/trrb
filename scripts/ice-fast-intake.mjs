@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import crypto from "node:crypto";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const MAX_PER_RUN = Number(process.env.ICE_FAST_INTAKE_MAX || 500);
@@ -198,7 +199,7 @@ async function createCandidate(post) {
   });
 }
 
-async function main() {
+async function runFastIntake() {
   requireEnv();
   const posts = await pendingPosts();
   let visible = 0;
@@ -225,17 +226,23 @@ async function main() {
     }
   }
 
-  console.log(JSON.stringify({
+  const result = {
     stage: "ice-fast-intake-v1",
     scanned: posts.length,
     visible_in_cross_source: visible,
     filtered_replies: replies,
     already_linked: alreadyLinked,
     failed
-  }));
+  };
+  console.log(JSON.stringify(result));
+  return result;
 }
 
-main().catch((error) => {
-  console.error("ICE快速导入失败：", error);
-  process.exitCode = 1;
-});
+export { runFastIntake, isReply, firstSentence, summary };
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  runFastIntake().catch((error) => {
+    console.error("ICE快速导入失败：", error);
+    process.exitCode = 1;
+  });
+}

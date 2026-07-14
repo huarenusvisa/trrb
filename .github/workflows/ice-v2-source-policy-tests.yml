@@ -1,4 +1,4 @@
-name: ICE v2 Source Collector and Event Tests
+name: ICE v2 Source Collector Event and Editor Tests
 
 on:
   push:
@@ -15,6 +15,8 @@ on:
       - "scripts/ice-v2-event-core.mjs"
       - "scripts/ice-v2-event-core.test.mjs"
       - "scripts/ice-v2-event-cluster.mjs"
+      - "scripts/ice-v2-editor-core.mjs"
+      - "scripts/ice-v2-editor-core.test.mjs"
       - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
       - ".github/workflows/ice-v2-official-collector.yml"
@@ -32,6 +34,8 @@ on:
       - "scripts/ice-v2-event-core.mjs"
       - "scripts/ice-v2-event-core.test.mjs"
       - "scripts/ice-v2-event-cluster.mjs"
+      - "scripts/ice-v2-editor-core.mjs"
+      - "scripts/ice-v2-editor-core.test.mjs"
       - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
       - ".github/workflows/ice-v2-official-collector.yml"
@@ -56,6 +60,7 @@ jobs:
           node --check scripts/ice-v2-collect.mjs
           node --check scripts/ice-v2-event-core.mjs
           node --check scripts/ice-v2-event-cluster.mjs
+          node --check scripts/ice-v2-editor-core.mjs
           node --check scripts/ice-v2-registry-export.mjs
       - name: Validate source policy
         run: node scripts/ice-v2-source-policy.mjs
@@ -67,3 +72,4 @@ jobs:
           node --test scripts/ice-v2-collector-core.test.mjs
           node --test scripts/ice-v2-collect.test.mjs
           node --test scripts/ice-v2-event-core.test.mjs
+          node --test scripts/ice-v2-editor-core.test.mjs

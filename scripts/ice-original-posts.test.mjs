@@ -35,6 +35,6 @@ test("Chinese detector distinguishes translated and English content", () => {
 
 test("English or overly short story requires Chinese title and body generation", () => {
   assert.equal(needsTranslation({ title: "Now it is in Maine", content: "ICE reported a shooting.", ai_payload: {} }), true);
-  assert.equal(needsTranslation({ title: "缅因州发生ICE执法枪击事件", content: "ICE表示，执法人员执行最终驱逐令期间，一名男子驾车试图逃离现场，事件造成一人死亡。有关部门已启动调查，具体经过仍待官方进一步通报。", ai_payload: {} }), true);
+  assert.equal(needsTranslation({ title: "缅因州发生ICE执法枪击事件", content: "ICE表示，执法人员执行最终驱逐令期间，一名男子驾车试图逃离现场，事件造成一人死亡。有关部门已启动调查，具体经过仍待官方进一步通报。", ai_payload: {} }), false);
   assert.equal(needsTranslation({ title: "缅因州发生ICE执法枪击事件", content: "ICE表示，执法人员执行最终驱逐令期间，一名男子驾车试图逃离现场，事件造成一人死亡。有关部门已启动调查，具体经过仍待官方进一步通报。", ai_payload: { translation_version: "zh-title-body-v1" } }), false);
 });

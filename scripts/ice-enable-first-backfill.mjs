@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import process from "node:process";
 
 function safeJson(value, fallback = null) {
@@ -44,8 +46,24 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
   });
 }
 
+function runTwoHourEroRecovery() {
+  const script = fileURLToPath(new URL("./ice-ero-official-discovery.mjs", import.meta.url));
+  const result = spawnSync(process.execPath, [script], {
+    stdio: "inherit",
+    env: process.env,
+  });
+  if (result.error) throw result.error;
+  if (result.status !== 0) {
+    throw new Error(`ERO两小时补抓失败，退出码${result.status}`);
+  }
+}
+
 async function main() {
   requireEnvironment();
+
+  // ERO补抓被硬限制为过去2小时；不会重置到更早时间。
+  runTwoHourEroRecovery();
+
   const rows = await sb("ice_query_state", {
     query: {
       select: "query_key,last_seen_id,last_result",
@@ -55,7 +73,7 @@ async function main() {
 
   const bootstrapRows = (Array.isArray(rows) ? rows : []).filter((row) => {
     const result = safeJson(row.last_result, row.last_result || {});
-    return result?.mode === "bootstrap";
+    return result?.mode === "bootstrap" && !String(row.query_key || "").startsWith("ero-official-2h-");
   });
 
   for (const row of bootstrapRows) {
@@ -73,7 +91,7 @@ async function main() {
     });
   }
 
-  console.log(`ICE首次回填准备完成：重置${bootstrapRows.length}个初始化查询游标`);
+  console.log(`ICE首次回填准备完成：重置${bootstrapRows.length}个初始化查询游标；ERO回填始终限制为2小时`);
 }
 
 main().catch((error) => {

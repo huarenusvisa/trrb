@@ -1,0 +1,31 @@
+name: ICE Pipeline Tests
+
+on:
+  pull_request:
+    paths:
+      - "scripts/ice-*.mjs"
+      - ".github/workflows/ice-pipeline-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: JavaScript syntax checks
+        run: |
+          node --check scripts/ice-ero-official-discovery.mjs
+          node --check scripts/ice-enable-first-backfill.mjs
+          node --check scripts/ice-official-urgent-promote.mjs
+          node --check scripts/ice-publish-due.mjs
+      - name: ICE architecture tests
+        run: node --test scripts/ice-architecture.test.mjs
+      - name: Existing ICE self-test
+        run: node scripts/ice-multisource.mjs --self-test

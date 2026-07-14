@@ -1,0 +1,42 @@
+name: ICE v2 Legacy Cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "false=仅预览；true=将个人博主和非白名单旧记录标记为irrelevant"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ice-v2-legacy-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_V2_CLEANUP_LIMIT: "3000"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate cleanup rules
+        run: |
+          node --check scripts/ice-v2-cleanup-core.mjs
+          node --check scripts/ice-v2-cleanup-legacy.mjs
+          node --test scripts/ice-v2-cleanup-core.test.mjs
+      - name: Preview cleanup
+        if: ${{ !inputs.apply }}
+        run: node scripts/ice-v2-cleanup-legacy.mjs
+      - name: Apply cleanup
+        if: ${{ inputs.apply }}
+        run: node scripts/ice-v2-cleanup-legacy.mjs --apply

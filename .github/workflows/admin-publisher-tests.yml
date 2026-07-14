@@ -1,0 +1,37 @@
+name: Admin Publisher Tests
+
+on:
+  pull_request:
+    paths:
+      - "admin/**"
+      - "netlify/functions/admin-article*.js"
+      - "netlify/functions/_shared/article-*.js"
+      - "netlify/functions/_shared/supabase-admin.js"
+      - "scripts/admin-publisher-v2.test.mjs"
+      - ".github/workflows/admin-publisher-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: JavaScript syntax checks
+        run: |
+          node --check admin/admin-publisher-v2.js
+          node --check netlify/functions/admin-articles.js
+          node --check netlify/functions/admin-article-ai-publish-background.js
+          node --check netlify/functions/_shared/supabase-admin.js
+          node --check netlify/functions/_shared/article-seo.js
+          node --check netlify/functions/_shared/article-ai.js
+      - name: Publisher architecture tests
+        run: node --test scripts/admin-publisher-v2.test.mjs
+      - name: Existing site validation
+        run: node scripts/validate-site.mjs

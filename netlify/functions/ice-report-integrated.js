@@ -29,9 +29,10 @@ function originalSubmission(report) {
   return String(report?.event_description ?? "");
 }
 
+// ICE随手拍目前只有一个用户原文字段。该原文同时作为标题、摘要和正文，
+// 不再根据地点生成标题，也不采用管理员或AI产生的替代标题。
 function publicationTitle(report) {
-  const location = safeText(report?.location_text, 140) || "地点待确认";
-  return `${location}ICE现场投稿`;
+  return originalSubmission(report);
 }
 
 function originalHash(report) {
@@ -132,6 +133,27 @@ async function getReport(id) {
   return report;
 }
 
+function lockedEditorial(report) {
+  const content = originalSubmission(report);
+  return {
+    title: publicationTitle(report),
+    summary: content,
+    content,
+    original_submission_locked: true,
+    ai_intervention: false
+  };
+}
+
+function lockedReportView(report) {
+  const editorial = lockedEditorial(report);
+  return {
+    ...report,
+    admin_title: editorial.title,
+    admin_summary: editorial.summary,
+    admin_content: editorial.content
+  };
+}
+
 async function listReports() {
   const rows = await rest("ice_user_reports", {
     query: { select: "*", order: "created_at.desc", limit: "250" }
@@ -144,19 +166,8 @@ async function listReports() {
     if (!preview && image?.path) {
       try { preview = await signedReadUrl(image.path, 1800); } catch { preview = ""; }
     }
-    return { ...report, preview_url: preview };
+    return { ...lockedReportView(report), preview_url: preview };
   }));
-}
-
-function lockedEditorial(report) {
-  const content = originalSubmission(report);
-  return {
-    title: publicationTitle(report),
-    summary: content,
-    content,
-    original_submission_locked: true,
-    ai_intervention: false
-  };
 }
 
 async function detailReport(id) {
@@ -165,7 +176,10 @@ async function detailReport(id) {
   for (const item of Array.isArray(report.media) ? report.media : []) {
     media.push({ ...item, url: await signedReadUrl(item.path) });
   }
-  return { report: { ...report, signed_media: media }, editorial: lockedEditorial(report) };
+  return {
+    report: { ...lockedReportView(report), signed_media: media },
+    editorial: lockedEditorial(report)
+  };
 }
 
 async function patchReport(id, patch) {
@@ -254,6 +268,7 @@ function articlePayload(report, actor, publishedMedia, coverUrl, time) {
       published_media: publishedMedia,
       ai_intervention: false,
       original_submission_locked: true,
+      original_title_locked: true,
       original_submission_sha256: originalHash(report),
       reviewer_email: actor.user.email || actor.admin.email || "",
       reviewed_at: time
@@ -319,6 +334,7 @@ async function publishReport(report, actor, input) {
     article_id: String(articleId),
     duplicate: Boolean(duplicate),
     original_submission_locked: true,
+    original_title_locked: true,
     ai_intervention: false,
     original_submission_sha256: originalHash(report)
   };

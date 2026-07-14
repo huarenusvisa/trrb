@@ -1,4 +1,4 @@
-name: ICE v2 Source Policy Tests
+name: ICE v2 Source and Collector Tests
 
 on:
   push:
@@ -8,12 +8,18 @@ on:
       - "data/ice-v2-source-policy.json"
       - "scripts/ice-v2-source-policy.mjs"
       - "scripts/ice-v2-source-policy.test.mjs"
+      - "scripts/ice-v2-collector-core.mjs"
+      - "scripts/ice-v2-collector-core.test.mjs"
+      - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
   pull_request:
     paths:
       - "data/ice-v2-source-policy.json"
       - "scripts/ice-v2-source-policy.mjs"
       - "scripts/ice-v2-source-policy.test.mjs"
+      - "scripts/ice-v2-collector-core.mjs"
+      - "scripts/ice-v2-collector-core.test.mjs"
+      - "scripts/ice-v2-registry-export.mjs"
       - ".github/workflows/ice-v2-source-policy-tests.yml"
 
 permissions:
@@ -27,7 +33,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+      - name: Syntax checks
+        run: |
+          node --check scripts/ice-v2-source-policy.mjs
+          node --check scripts/ice-v2-collector-core.mjs
+          node --check scripts/ice-v2-registry-export.mjs
       - name: Validate source policy
         run: node scripts/ice-v2-source-policy.mjs
-      - name: Run source policy tests
-        run: node --test scripts/ice-v2-source-policy.test.mjs
+      - name: Export legacy-compatible whitelist registry
+        run: node scripts/ice-v2-registry-export.mjs
+      - name: Run source and collector tests
+        run: |
+          node --test scripts/ice-v2-source-policy.test.mjs
+          node --test scripts/ice-v2-collector-core.test.mjs

@@ -61,22 +61,22 @@
       field.classList.add("original-submission-field");
     });
 
-    title.title = "标题只使用投稿者填写的地点生成，不调用AI，也不能人工改写";
-    summary.title = "摘要直接来自数据库保存的用户原始投稿";
-    content.title = "正文为用户原始投稿，发布接口会忽略任何前端改写";
+    title.title = "发布标题直接使用用户提交的原文，不生成、不改写、不可人工编辑";
+    summary.title = "摘要直接使用数据库保存的用户原始投稿，不生成、不改写";
+    content.title = "正文直接使用数据库保存的用户原始投稿，不生成、不改写";
 
     const titleLabel = title.previousElementSibling;
     const summaryLabel = summary.previousElementSibling;
     const contentLabel = content.previousElementSibling;
-    if (titleLabel?.tagName === "LABEL") setTextOnce(titleLabel, "发布标题（依据用户填写地点自动生成）");
-    if (summaryLabel?.tagName === "LABEL") setTextOnce(summaryLabel, "用户原始摘要（只读）");
+    if (titleLabel?.tagName === "LABEL") setTextOnce(titleLabel, "用户原始标题（原样发布，只读）");
+    if (summaryLabel?.tagName === "LABEL") setTextOnce(summaryLabel, "用户原始摘要（原样发布，只读）");
     if (contentLabel?.tagName === "LABEL") setTextOnce(contentLabel, "用户原始现场描述（原样发布，只读）");
 
     if (!document.getElementById("original-submission-lock-note")) {
       const note = document.createElement("div");
       note.id = "original-submission-lock-note";
       note.className = "original-submission-lock-note";
-      note.innerHTML = "<strong>原文锁定已开启</strong><span>AI不会处理此投稿；管理员只能审核、选择封面、填写内部说明、发布或拒绝，不能修改用户现场描述。</span>";
+      note.innerHTML = "<strong>原文锁定已开启</strong><span>用户提交的标题、摘要和现场描述全部按数据库原文展示和发布。AI与管理员都不能生成、改写、删减或补充用户原文。</span>";
       titleLabel?.insertAdjacentElement("beforebegin", note);
     }
 
@@ -86,11 +86,11 @@
     const publishButton = document.querySelector('[data-report-action="publish"]');
     if (publishButton) {
       setTextOnce(publishButton, "原文立即发布");
-      publishButton.title = "正文将从数据库重新读取用户原始投稿，前端字段不会改变发布内容";
+      publishButton.title = "标题、摘要和正文都会从数据库重新读取用户原始投稿";
     }
 
     const pageDescription = document.querySelector("#ice-reports-page .report-head p");
-    setTextOnce(pageDescription, "用户投稿不进入AI。后台只负责核实、选择封面和决定发布；现场描述按数据库原文发布。");
+    setTextOnce(pageDescription, "用户投稿不进入AI。后台只能核实、选择封面、填写内部说明、发布或拒绝；标题和正文全部按数据库原文发布。");
 
     return true;
   }

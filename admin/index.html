@@ -9,6 +9,7 @@
   <title>唐人日报后台</title>
   <link rel="stylesheet" href="./styles.css?v=20260713-ice-review-final" />
   <link rel="stylesheet" href="./ice-review-v2.css?v=20260713-v2" />
+  <link rel="stylesheet" href="./admin-publisher-v2.css?v=20260713-v1" />
 </head>
 <body>
   <div id="app">
@@ -87,90 +88,103 @@
           </div>
         </section>
 
-        <section class="page hidden" id="new-article-page">
-          <form class="editor-form" id="article-form">
-            <div class="grid2">
+        <section class="page hidden publisher-page" id="new-article-page">
+          <form class="editor-form publisher-form" id="article-form">
+            <div class="publisher-header-grid">
               <div>
-                <label>标题</label>
-                <input id="article-title" required placeholder="请输入新闻标题" />
+                <label for="article-title">标题</label>
+                <input id="article-title" maxlength="220" required placeholder="选择AI推荐标题后仍可人工修改" />
               </div>
               <div>
-                <label>栏目</label>
+                <label for="article-category">栏目</label>
                 <select id="article-category"></select>
               </div>
             </div>
 
-            <div class="field-heading">
-              <label>摘要</label>
-              <button type="button" class="secondary-btn compact-btn" id="generate-summary">从正文自动生成</button>
-            </div>
-            <textarea id="article-summary" rows="3" placeholder="可留空，保存时会自动读取正文生成摘要"></textarea>
-
-            <label>封面图片</label>
-            <div class="media-uploader" id="article-cover-paste-zone" tabindex="0">
-              <div class="upload-methods">
-                <label class="upload-method">
-                  <strong>本地上传</strong>
-                  <input id="article-cover-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
-                </label>
-                <div class="upload-method paste-method">
-                  <strong>复制粘贴</strong>
-                  <span>复制图片后，在此区域按 Ctrl+V</span>
+            <section class="title-assistant-card" aria-labelledby="title-assistant-heading">
+              <div class="publisher-section-heading">
+                <div>
+                  <strong id="title-assistant-heading">AI标题推荐</strong>
+                  <span id="article-title-status">正文输入后自动生成3个标题。</span>
                 </div>
+                <button type="button" class="secondary-btn compact-btn" id="refresh-title-suggestions">重新推荐</button>
               </div>
-              <div class="media-help">本地图片或粘贴图片会自动压缩为 WebP 并上传到 Supabase Storage。</div>
-              <div class="media-preview-wrap hidden" id="article-cover-preview-wrap">
-                <img id="article-cover-preview" alt="封面预览" />
-                <button type="button" class="secondary-btn" id="article-cover-remove">移除图片</button>
-              </div>
-              <div class="upload-progress hidden" id="article-cover-progress">准备上传…</div>
+              <div class="title-suggestions" id="article-title-suggestions"></div>
+            </section>
+
+            <div class="publisher-workspace">
+              <section class="publisher-copy-column">
+                <label for="article-content">正文</label>
+                <textarea id="article-content" rows="16" required placeholder="粘贴或输入正文。摘要、Meta描述和SEO关键词会在发布时自动生成。"></textarea>
+                <div class="auto-seo-note">
+                  <b>SEO全自动</b>
+                  <span>系统会根据标题、栏目和正文自动生成摘要、Meta描述与关键词，不需要人工填写。</span>
+                </div>
+              </section>
+
+              <aside class="publisher-side-column">
+                <section class="publisher-card publisher-cover-card">
+                  <div class="publisher-section-heading">
+                    <strong>封面图片</strong>
+                    <span>可上传、粘贴或使用外链</span>
+                  </div>
+
+                  <div class="media-uploader publisher-media-uploader" id="article-cover-paste-zone" tabindex="0">
+                    <div class="upload-methods publisher-upload-methods">
+                      <label class="upload-method publisher-upload-method">
+                        <strong>本地上传</strong>
+                        <input id="article-cover-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+                      </label>
+                      <div class="upload-method paste-method publisher-upload-method">
+                        <strong>复制粘贴</strong>
+                        <span>在此区域按 Ctrl+V</span>
+                      </div>
+                    </div>
+                    <div class="media-preview-wrap hidden" id="article-cover-preview-wrap">
+                      <img id="article-cover-preview" alt="封面预览" />
+                      <button type="button" class="secondary-btn compact-btn" id="article-cover-remove">移除</button>
+                    </div>
+                    <div class="upload-progress hidden" id="article-cover-progress">准备上传…</div>
+                  </div>
+
+                  <label class="publisher-small-label" for="article-cover">外部图片链接</label>
+                  <input id="article-cover" type="url" placeholder="https://...（可留空）" />
+
+                  <label class="ai-auto-label publisher-ai-label">
+                    <input id="auto-ai-cover" type="checkbox" checked />
+                    <span>没有封面时，点击发布后由AI在后台生成16:9示意图，再自动发布到前台。</span>
+                  </label>
+                  <button type="button" class="secondary-btn compact-btn publisher-preview-ai" id="generate-ai-cover">提前生成AI封面预览</button>
+                  <div class="upload-progress hidden" id="ai-cover-progress">正在准备AI封面…</div>
+                </section>
+
+                <section class="publisher-card publisher-action-card">
+                  <div class="publisher-author-status">
+                    <div>
+                      <label for="article-author">作者</label>
+                      <input id="article-author" value="Tang Ren Daily" />
+                    </div>
+                    <div>
+                      <label for="article-status">状态</label>
+                      <select id="article-status">
+                        <option value="published" selected>立即发布</option>
+                        <option value="draft">保存草稿</option>
+                        <option value="hidden">隐藏</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="submit" id="article-submit">发布文章</button>
+                  <div class="message publisher-message" id="article-message"></div>
+                </section>
+              </aside>
             </div>
 
-            <div class="external-url-box">
-              <label>外部图片链接</label>
-              <input id="article-cover" type="url" placeholder="https://...（可直接使用外链）" />
-              <div class="media-help">长期运营建议优先使用本地上传或粘贴图片。</div>
+            <div class="publisher-compatibility hidden" aria-hidden="true">
+              <button type="button" id="generate-summary"></button>
+              <textarea id="article-summary"></textarea>
+              <button type="button" id="generate-seo"></button>
+              <input id="article-seo-keywords" />
             </div>
-
-            <div class="ai-cover-box">
-              <div class="field-heading">
-                <label>AI新闻封面</label>
-                <button type="button" class="secondary-btn" id="generate-ai-cover">根据文章生成AI封面</button>
-              </div>
-              <label class="ai-auto-label">
-                <input id="auto-ai-cover" type="checkbox" checked />
-                发布时没有封面，自动生成一张16:9 AI示意图
-              </label>
-              <div class="media-help">涉及真实人物、灾难或执法现场时只生成概念示意图，不伪造现场照片。</div>
-              <div class="upload-progress hidden" id="ai-cover-progress">正在准备AI封面…</div>
-            </div>
-
-            <label>正文</label>
-            <textarea id="article-content" rows="12" placeholder="请输入正文内容"></textarea>
-
-            <div class="field-heading">
-              <label>SEO关键词</label>
-              <button type="button" class="secondary-btn compact-btn" id="generate-seo">自动提取关键词</button>
-            </div>
-            <input id="article-seo-keywords" placeholder="例如：美国移民, ICE执法, 华人新闻" />
-
-            <div class="grid2">
-              <div>
-                <label>作者</label>
-                <input id="article-author" value="Tang Ren Daily" />
-              </div>
-              <div>
-                <label>状态</label>
-                <select id="article-status">
-                  <option value="draft">草稿</option>
-                  <option value="published">已发布</option>
-                  <option value="hidden">隐藏</option>
-                </select>
-              </div>
-            </div>
-
-            <button type="submit" id="article-submit">保存文章</button>
-            <div class="message" id="article-message"></div>
           </form>
         </section>
 
@@ -233,18 +247,13 @@
 
       <div class="review-modal-body">
         <div class="review-score-grid" id="review-score-grid"></div>
-
         <div class="risk-panel" id="review-risk-panel"></div>
-
         <label>最终标题</label>
         <input id="review-title" maxlength="220" />
-
         <label>最终摘要</label>
         <textarea id="review-summary" rows="4"></textarea>
-
         <label>最终正文</label>
         <textarea id="review-content" rows="16"></textarea>
-
         <label>封面图片链接</label>
         <input id="review-cover" type="url" placeholder="https://..." />
         <img class="review-cover-preview hidden" id="review-cover-preview" alt="候选新闻封面" />
@@ -296,6 +305,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./admin.js?v=20260713-ice-review-final"></script>
+  <script src="./admin-publisher-v2.js?v=20260713-v1"></script>
   <script src="./ice-review-v2.js?v=20260713-v2"></script>
 </body>
 </html>

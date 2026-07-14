@@ -2,19 +2,25 @@
   "use strict";
 
   const API = "/.netlify/functions/admin-articles";
+  const BACKGROUND_API = "/.netlify/functions/admin-article-ai-publish-background";
+  const originalShowPage = showPage;
   let titleTimer = null;
   let titleRequestPending = false;
   let lastTitleSignature = "";
 
-  async function publisherApi(action, payload = {}) {
+  async function authToken() {
     const { data } = await supabaseClient.auth.getSession();
     const token = data.session?.access_token;
     if (!token) throw new Error("登录状态已失效，请重新登录。");
+    return token;
+  }
+
+  async function publisherApi(action, payload = {}) {
     const response = await fetch(API, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${await authToken()}`
       },
       body: JSON.stringify({ action, ...payload })
     });
@@ -22,6 +28,26 @@
     if (!response.ok) throw new Error(result.error || `文章接口失败（${response.status}）`);
     return result;
   }
+
+  async function startBackgroundPublication(articleId) {
+    const response = await fetch(BACKGROUND_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${await authToken()}`
+      },
+      body: JSON.stringify({ article_id: articleId })
+    });
+    if (!response.ok) {
+      const result = await response.json().catch(() => ({}));
+      throw new Error(result.error || `AI后台发布启动失败（${response.status}）`);
+    }
+  }
+
+  showPage = function showPageWithPublisherMode(page) {
+    originalShowPage(page);
+    document.body.classList.toggle("publisher-mode", page === "new-article");
+  };
 
   function categoryName() {
     return el("article-category").selectedOptions?.[0]?.textContent || "重要新闻";
@@ -139,7 +165,7 @@
       return "";
     }
     progress.classList.remove("hidden");
-    progress.textContent = "AI正在后台生成16:9新闻封面…";
+    progress.textContent = "AI正在生成16:9新闻封面…";
     try {
       const result = await publisherApi("generate_cover", {
         title,
@@ -159,6 +185,31 @@
     }
   };
 
+  function renderArticleRowWithAiState(article) {
+    const metadata = article.metadata && typeof article.metadata === "object" ? article.metadata : {};
+    const processing = Boolean(metadata.ai_cover_processing);
+    const failed = Boolean(metadata.ai_cover_error);
+    const statusText = processing
+      ? "AI封面生成中"
+      : failed
+        ? "AI封面失败"
+        : statusLabel(article.status);
+    const statusClass = processing ? "status-draft" : failed ? "status-hidden" : `status-${escapeHtml(article.status)}`;
+    return `
+      <tr>
+        <td><b>${escapeHtml(article.title)}</b><br><small>${escapeHtml(article.id)}</small></td>
+        <td>${escapeHtml(article.category_name || "-")}</td>
+        <td><span class="status-pill ${statusClass}">${escapeHtml(statusText)}</span>${failed ? `<br><small>${escapeHtml(metadata.ai_cover_error)}</small>` : ""}</td>
+        <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>
+        <td>
+          <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','published')">发布</button>
+          <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','draft')">草稿</button>
+          <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','hidden')">隐藏</button>
+        </td>
+      </tr>
+    `;
+  }
+
   loadArticles = async function loadArticlesV2() {
     try {
       const result = await publisherApi("list");
@@ -167,7 +218,7 @@
       el("count-published").textContent = articles.filter((item) => item.status === "published").length;
       el("count-draft").textContent = articles.filter((item) => item.status === "draft").length;
       el("articles-tbody").innerHTML = articles.length
-        ? articles.map(renderArticleRow).join("")
+        ? articles.map(renderArticleRowWithAiState).join("")
         : `<tr><td colspan="5">暂无文章。</td></tr>`;
     } catch (error) {
       console.error(error);
@@ -203,7 +254,7 @@
     el("article-message").textContent = selectedCoverFile
       ? "正在上传封面…"
       : (status === "published" && autoAiCover && !el("article-cover").value.trim()
-        ? "正在后台生成AI封面并发布，请勿关闭页面…"
+        ? "正在保存文章并启动AI后台封面任务…"
         : "正在自动生成摘要、SEO并保存…");
 
     try {
@@ -224,10 +275,15 @@
         status
       });
 
-      const published = result.article?.status === "published";
-      el("article-message").textContent = published
-        ? `发布成功。摘要和SEO已自动生成${result.ai_cover_generated ? "，AI封面已生成" : ""}。`
-        : "草稿保存成功，摘要和SEO已自动生成。";
+      if (result.background_required && result.background_article_id) {
+        await startBackgroundPublication(result.background_article_id);
+        el("article-message").textContent = "文章已保存。AI正在后台生成封面，完成后会自动发布到前台。";
+      } else if (result.article?.status === "published") {
+        el("article-message").textContent = "发布成功。摘要和SEO已自动生成。";
+      } else {
+        el("article-message").textContent = "草稿保存成功，摘要和SEO已自动生成。";
+      }
+
       el("article-form").reset();
       el("article-author").value = "Tang Ren Daily";
       el("article-status").value = "published";
@@ -237,7 +293,7 @@
       lastTitleSignature = "";
       updateSubmitLabel();
       await loadArticles();
-      window.setTimeout(() => showPage("articles"), 700);
+      window.setTimeout(() => showPage("articles"), 900);
     } catch (error) {
       console.error(error);
       el("article-message").textContent = `发布失败：${error.message}`;

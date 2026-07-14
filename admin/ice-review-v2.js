@@ -49,12 +49,7 @@
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || `ICE接口失败（${response.status}）`);
       return result;
-    } catch (error) {
-      if (error?.name === "AbortError") throw new Error("后台接口响应超时，请刷新后重试。");
-      throw error;
-    } finally {
-      clearTimeout(timer);
-    }
+    } finally { clearTimeout(timer); }
   }
 
   reviewApi = async function reviewApiV3(action, payload = {}) {
@@ -73,7 +68,6 @@
     const date = value ? new Date(value) : null;
     return date && !Number.isNaN(date.getTime()) ? date.toLocaleString("zh-CN", { hour12: false }) : "尚无记录";
   }
-
   function postCount(name) { return Number(pipeline?.post_counts?.[name] || 0); }
 
   function renderPipeline() {
@@ -96,7 +90,7 @@
     const image = clean(story.cover_image) ? `<div class="review-item-media"><img src="${esc(story.cover_image)}" alt="" loading="lazy"></div>` : "";
     const body = clean(story.summary || story.content || story.source_preview || story.decision_reason) || "暂无正文";
     const merged = Number(story.duplicate_count || 0) ? `<span class="risk-chip safe">已合并${Number(story.duplicate_count)}条重复信息</span>` : "";
-    return `<article class="review-item review-item-v2" style="grid-template-columns:${image ? "164px minmax(0,1fr) auto" : "minmax(0,1fr) auto"}">${image}<div class="review-item-main"><div class="review-item-topline"><span class="status-pill review-status-${esc(story.status)}">${reviewStatusLabel(story.status)}</span><span class="risk-chip ${risks.length ? "danger" : "safe"}">${risks.length ? risks.map(esc).join(" · ") : "待工作人员判断"}</span>${merged}</div><h3>${esc(story.title || "ICE候选新闻待审核")}</h3><p>${esc(body)}</p></div><div class="review-item-action"><time>${esc(formatDate(story.source_created_at || story.updated_at || story.last_seen_at))}</time><button onclick="openIceReview('${esc(story.id)}')">查看并审核</button></div></article>`;
+    return `<article class="review-item review-item-v2" data-story-id="${esc(story.id)}" style="grid-template-columns:${image ? "164px minmax(0,1fr) auto" : "minmax(0,1fr) auto"}">${image}<div class="review-item-main"><div class="review-item-topline"><span class="status-pill review-status-${esc(story.status)}">${reviewStatusLabel(story.status)}</span><span class="risk-chip ${risks.length ? "danger" : "safe"}">${risks.length ? risks.map(esc).join(" · ") : "待工作人员判断"}</span>${merged}</div><h3>${esc(story.title || "ICE候选新闻待审核")}</h3><p>${esc(body)}</p></div><div class="review-item-action"><time>${esc(formatDate(story.source_created_at || story.updated_at || story.last_seen_at))}</time><button onclick="openIceReview('${esc(story.id)}')">查看并审核</button><button class="secondary-btn ice-delete-story" data-story-id="${esc(story.id)}" type="button">删除</button></div></article>`;
   };
 
   populateReviewModal = function populateReviewModalV3(detail) {
@@ -110,41 +104,30 @@
     if (!document.querySelector('link[data-ice-report-integrated="1"]')) {
       const css = document.createElement("link");
       css.rel = "stylesheet";
-      css.href = "./ice-report-integrated.css?v=20260714-edit-fix";
+      css.href = "./ice-report-integrated.css?v=20260714-v3";
       css.dataset.iceReportIntegrated = "1";
       document.head.appendChild(css);
     }
-
-    const loadEnhancement = () => {
-      if (document.querySelector('script[data-ice-report-enhancement="1"]')) return;
-      const enhancement = document.createElement("script");
-      enhancement.src = "./ice-report-management-enhancement.js?v=20260714-edit-fix";
-      enhancement.dataset.iceReportEnhancement = "1";
-      enhancement.onerror = () => console.error("用户投稿管理增强脚本加载失败");
-      document.body.appendChild(enhancement);
-    };
-
-    if (document.querySelector('script[data-ice-report-integrated="1"]')) {
-      loadEnhancement();
-      return;
+    if (!document.querySelector('script[data-ice-report-integrated="1"]')) {
+      const script = document.createElement("script");
+      script.src = "./ice-report-integrated.js?v=20260714-v4";
+      script.dataset.iceReportIntegrated = "1";
+      document.body.appendChild(script);
     }
+  }
 
+  function loadStability() {
+    if (document.querySelector('script[data-admin-stability-v3="1"]')) return;
     const script = document.createElement("script");
-    script.src = "./ice-report-integrated.js?v=20260714-edit-fix";
-    script.dataset.iceReportIntegrated = "1";
-    script.onload = loadEnhancement;
-    script.onerror = () => {
-      console.error("用户投稿审核脚本加载失败");
-      const status = document.getElementById("system-status");
-      if (status) status.textContent = "用户投稿审核模块加载失败，请强制刷新页面。";
-    };
+    script.src = "./admin-stability-v3.js?v=20260714-v1";
+    script.dataset.adminStabilityV3 = "1";
     document.body.appendChild(script);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     const head = document.querySelector("#ice-review-page .review-head");
     const description = head?.querySelector("p");
-    if (description) description.textContent = "采集内容完成关键词去重后直接显示；风险和法律问题由工作人员判断是否发布。用户投稿可由管理员编辑后发布。";
+    if (description) description.textContent = "采集内容完成来源去重和事件归并后显示；风险和法律问题由工作人员判断是否发布。用户投稿可人工编辑、下线和删除。";
     if (head && !head.querySelector(".user-report-entry")) {
       const actions = document.createElement("div");
       actions.className = "review-head-actions";
@@ -156,5 +139,6 @@
     const publishButton = document.querySelector('[data-review-action="publish_now"]');
     if (publishButton) publishButton.textContent = "人工立即发布";
     loadUserReports();
+    loadStability();
   });
 })();

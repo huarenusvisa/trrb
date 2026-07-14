@@ -1,0 +1,29 @@
+name: ICE v2 Schema Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate preflight code
+        run: |
+          node --check scripts/ice-v2-schema-preflight-core.mjs
+          node --check scripts/ice-v2-schema-preflight.mjs
+          node --test scripts/ice-v2-schema-preflight-core.test.mjs
+      - name: Verify secrets and Supabase schema
+        run: node scripts/ice-v2-schema-preflight.mjs

@@ -1,0 +1,30 @@
+name: ICE v2 Editor
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  editor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate editor files
+        run: |
+          node --check scripts/ice-v2-editor.mjs
+          node --check scripts/ice-v2-editor-core.mjs
+          node --test scripts/ice-v2-editor-core.test.mjs
+      - name: Generate Chinese review copy
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ICE_V2_EDITOR_MAX: "40"
+        run: node scripts/ice-v2-editor.mjs

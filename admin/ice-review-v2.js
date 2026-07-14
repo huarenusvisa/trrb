@@ -7,6 +7,7 @@
   const oldPopulateReviewModal = populateReviewModal;
   let pipeline = null;
   let dedupe = null;
+  let v2Health = null;
 
   const clean = (value) => String(value ?? "").trim();
   const esc = (value) => clean(value)
@@ -33,13 +34,17 @@
     catch (error) { setLoginMessage("权限验证失败：" + (error?.message || String(error))); }
   };
 
-  async function callApi(endpoint, action, payload = {}) {
+  async function token() {
     const { data } = await supabaseClient.auth.getSession();
-    const token = data.session?.access_token;
-    if (!token) throw new Error("登录状态已失效，请重新登录。");
+    const value = data.session?.access_token;
+    if (!value) throw new Error("登录状态已失效，请重新登录。");
+    return value;
+  }
+
+  async function callApi(endpoint, action, payload = {}) {
     const response = await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${await token()}` },
       body: JSON.stringify({ action, ...payload })
     });
     const result = await response.json().catch(() => ({}));
@@ -47,9 +52,29 @@
     return result;
   }
 
+  async function loadV2Health() {
+    const response = await fetch("/.netlify/functions/ice-v2-health", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${await token()}` },
+      cache: "no-store"
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(result.error || `ICE v2监控接口失败（${response.status}）`);
+    v2Health = result;
+    renderV2Health();
+    return result;
+  }
+
   reviewApi = async function reviewApiV3(action, payload = {}) {
     if (action === "list") {
-      const result = await callApi("/.netlify/functions/ice-review-list-v3", action, payload);
+      const [result] = await Promise.all([
+        callApi("/.netlify/functions/ice-review-list-v3", action, payload),
+        loadV2Health().catch((error) => {
+          console.warn("ICE v2健康状态加载失败：", error);
+          renderV2HealthError(error);
+          return null;
+        })
+      ]);
       pipeline = result.pipeline || {};
       dedupe = result.dedupe || {};
       renderPipeline();
@@ -66,6 +91,77 @@
 
   function postCount(name) { return Number(pipeline?.post_counts?.[name] || 0); }
 
+  function installV2Styles() {
+    if (document.getElementById("ice-v2-health-styles")) return;
+    const style = document.createElement("style");
+    style.id = "ice-v2-health-styles";
+    style.textContent = `
+      .ice-v2-health{margin:12px 0;padding:14px;border:1px solid #dbe4ef;border-radius:14px;background:#fff}
+      .ice-v2-health-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.ice-v2-health-head h3{margin:0}
+      .ice-v2-health-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}.ice-v2-health-card{padding:10px 12px;border-radius:10px;background:#f7f9fc;min-width:0}
+      .ice-v2-health-card span{display:block;font-size:12px;color:#64748b}.ice-v2-health-card strong{display:block;margin-top:4px;font-size:18px;color:#0f172a}
+      .ice-v2-health-summary{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;font-size:13px;color:#475569}.ice-v2-health-summary b{color:#0f172a}
+      .ice-v2-source-table{margin-top:12px;overflow:auto}.ice-v2-source-table table{width:100%;border-collapse:collapse;font-size:13px}.ice-v2-source-table th,.ice-v2-source-table td{padding:8px 10px;border-bottom:1px solid #e5e7eb;text-align:left;white-space:nowrap}
+      .ice-v2-badge{display:inline-flex;padding:3px 8px;border-radius:999px;font-weight:700;font-size:12px}.ice-v2-badge.healthy{background:#dcfce7;color:#166534}.ice-v2-badge.stale{background:#fef3c7;color:#92400e}.ice-v2-badge.failed{background:#fee2e2;color:#991b1b}.ice-v2-badge.unknown{background:#e5e7eb;color:#374151}
+      .ice-v2-health-error{margin-top:10px;padding:10px 12px;border-radius:10px;background:#fff7ed;color:#9a3412}
+      @media(max-width:1000px){.ice-v2-health-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:640px){.ice-v2-health-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ice-v2-health-head{align-items:flex-start;flex-direction:column}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  function healthPanel() {
+    const head = document.querySelector("#ice-review-page .review-head");
+    if (!head) return null;
+    let panel = document.getElementById("ice-v2-health-panel");
+    if (!panel) {
+      panel = document.createElement("section");
+      panel.id = "ice-v2-health-panel";
+      panel.className = "ice-v2-health";
+      head.insertAdjacentElement("afterend", panel);
+    }
+    return panel;
+  }
+
+  function count(group, status) {
+    return Number(v2Health?.groups?.[group]?.[status] || 0);
+  }
+
+  function sources() {
+    const items = Array.isArray(v2Health?.sources) ? v2Health.sources : [];
+    const order = { failed: 0, stale: 1, unknown: 2, healthy: 3 };
+    return [...items].sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9) || clean(a.query_key).localeCompare(clean(b.query_key)));
+  }
+
+  function renderV2Health() {
+    installV2Styles();
+    const panel = healthPanel();
+    if (!panel || !v2Health) return;
+    const queue = v2Health.queue || {};
+    const rows = sources();
+    panel.innerHTML = `
+      <div class="ice-v2-health-head"><div><h3>ICE v2真实运行监控</h3><small>生成时间：${esc(time(v2Health.generated_at))}</small></div><button type="button" id="refresh-ice-v2-health">刷新监控</button></div>
+      <div class="ice-v2-health-grid">
+        <div class="ice-v2-health-card"><span>官方正常</span><strong>${count("official", "healthy")}</strong></div>
+        <div class="ice-v2-health-card"><span>官方超时</span><strong>${count("official", "stale")}</strong></div>
+        <div class="ice-v2-health-card"><span>官方失败</span><strong>${count("official", "failed")}</strong></div>
+        <div class="ice-v2-health-card"><span>媒体正常</span><strong>${count("newsroom", "healthy")}</strong></div>
+        <div class="ice-v2-health-card"><span>媒体超时</span><strong>${count("newsroom", "stale")}</strong></div>
+        <div class="ice-v2-health-card"><span>媒体失败</span><strong>${count("newsroom", "failed")}</strong></div>
+      </div>
+      <div class="ice-v2-health-summary"><span>待归并 <b>${Number(queue.posts_collected || 0)}</b></span><span>已归并 <b>${Number(queue.posts_clustered || 0)}</b></span><span>帖子失败 <b>${Number(queue.posts_failed || 0)}</b></span><span>等待交叉信源 <b>${Number(queue.stories_waiting_corroboration || 0)}</b></span><span>待人工审核 <b>${Number(queue.stories_pending_review || 0)}</b></span><span>事件失败 <b>${Number(queue.stories_failed || 0)}</b></span></div>
+      <div class="ice-v2-source-table"><table><thead><tr><th>信源</th><th>状态</th><th>最近成功</th><th>最近运行</th><th>最近结果</th><th>错误</th></tr></thead><tbody>${rows.map((row) => `<tr><td>${esc(row.query_key || "-")}</td><td><span class="ice-v2-badge ${esc(row.status || "unknown")}">${esc(row.status_label || row.status || "unknown")}</span></td><td>${esc(time(row.last_success_at))}</td><td>${esc(time(row.last_run_at))}</td><td>${esc(row.result_summary || "-")}</td><td>${esc(row.last_error || "-")}</td></tr>`).join("") || `<tr><td colspan="6">尚无ICE v2采集记录。首次运行采集器后会显示每个白名单账号的状态。</td></tr>`}</tbody></table></div>
+    `;
+    document.getElementById("refresh-ice-v2-health")?.addEventListener("click", () => loadV2Health().catch(renderV2HealthError));
+  }
+
+  function renderV2HealthError(error) {
+    installV2Styles();
+    const panel = healthPanel();
+    if (!panel) return;
+    panel.innerHTML = `<div class="ice-v2-health-head"><h3>ICE v2真实运行监控</h3><button type="button" id="refresh-ice-v2-health">重新加载</button></div><div class="ice-v2-health-error">${esc(error?.message || error || "监控接口加载失败")}</div>`;
+    document.getElementById("refresh-ice-v2-health")?.addEventListener("click", () => loadV2Health().catch(renderV2HealthError));
+  }
+
   function renderPipeline() {
     const head = document.querySelector("#ice-review-page .review-head");
     if (!head || !pipeline) return;
@@ -75,10 +171,11 @@
       panel.id = "ice-pipeline-panel";
       panel.className = "panel";
       panel.style.margin = "12px 0";
-      head.insertAdjacentElement("afterend", panel);
+      const health = document.getElementById("ice-v2-health-panel");
+      (health || head).insertAdjacentElement("afterend", panel);
     }
     const errors = Array.isArray(pipeline.recent_errors) ? pipeline.recent_errors : [];
-    panel.innerHTML = `<h3>ICE采集状态</h3><p>最近运行：${esc(time(pipeline.last_run_at))}　最近成功：${esc(time(pipeline.last_success_at))}</p><p>待处理 ${postCount("collected") + postCount("processing")}　已提取 ${postCount("extracted")}　已归并 ${postCount("clustered")}　失败 ${postCount("failed")}　关键词合并 ${Number(dedupe.hidden_duplicates || 0)}　后台可见 ${Number(dedupe.visible || 0)}</p>${errors.length ? `<p style="color:#b91c1c">最近错误：${errors.map((item) => esc(item.error)).join("；")}</p>` : ""}`;
+    panel.innerHTML = `<h3>旧队列兼容状态</h3><p>最近运行：${esc(time(pipeline.last_run_at))}　最近成功：${esc(time(pipeline.last_success_at))}</p><p>待处理 ${postCount("collected") + postCount("processing")}　已提取 ${postCount("extracted")}　已归并 ${postCount("clustered")}　失败 ${postCount("failed")}　关键词合并 ${Number(dedupe.hidden_duplicates || 0)}　后台可见 ${Number(dedupe.visible || 0)}</p>${errors.length ? `<p style="color:#b91c1c">最近错误：${errors.map((item) => esc(item.error)).join("；")}</p>` : ""}`;
   }
 
   renderReviewCard = function renderReviewCardV3(story) {
@@ -93,7 +190,7 @@
     oldPopulateReviewModal(detail);
     const reason = el("review-decision-reason");
     document.querySelectorAll(".staff-decision-note").forEach((node) => node.remove());
-    if (reason) reason.insertAdjacentHTML("afterend", "<p class=\"manual-publish-note staff-decision-note\">系统只负责采集、关键词去重和风险提示；法律风险及是否发布由工作人员最终判断。没有图片也可以直接发布标题和正文。</p>");
+    if (reason) reason.insertAdjacentHTML("afterend", "<p class=\"manual-publish-note staff-decision-note\">系统只负责采集、事件归并、中文整理和风险提示；法律风险及是否发布由工作人员最终判断。没有图片也可以直接发布标题和正文。</p>");
   };
 
   function loadUserReports() {
@@ -120,9 +217,10 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    installV2Styles();
     const head = document.querySelector("#ice-review-page .review-head");
     const description = head?.querySelector("p");
-    if (description) description.textContent = "采集内容完成关键词去重后直接显示；风险和法律问题由工作人员判断是否发布。用户投稿完全绕过AI，人工审核后按数据库原文发布。";
+    if (description) description.textContent = "ICE v2仅采集白名单官方机构、政策官员和正规媒体；完成事件归并与中文整理后由工作人员审核。用户投稿完全绕过AI，按数据库原文审核发布。";
     if (head && !head.querySelector(".user-report-entry")) {
       const actions = document.createElement("div");
       actions.className = "review-head-actions";

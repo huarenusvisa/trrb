@@ -97,6 +97,13 @@
   };
 
   function loadUserReports() {
+    if (!document.querySelector('link[data-ice-report-integrated="1"]')) {
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "./ice-report-integrated.css?v=20260713-v2";
+      css.dataset.iceReportIntegrated = "1";
+      document.head.appendChild(css);
+    }
     const loadMain = () => {
       if (document.querySelector('script[data-ice-report-integrated="1"]')) return;
       const script = document.createElement("script");
@@ -106,7 +113,7 @@
     };
     if (document.querySelector('script[data-ice-report-raw-lock="1"]')) return loadMain();
     const lock = document.createElement("script");
-    lock.src = "./ice-report-raw-lock.js?v=20260713-v3";
+    lock.src = "./ice-report-raw-lock.js?v=20260713-v2";
     lock.dataset.iceReportRawLock = "1";
     lock.onload = loadMain;
     document.body.appendChild(lock);
@@ -115,7 +122,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const head = document.querySelector("#ice-review-page .review-head");
     const description = head?.querySelector("p");
-    if (description) description.textContent = "采集内容完成关键词去重后直接显示；风险和法律问题由工作人员判断是否发布。";
+    if (description) description.textContent = "采集内容完成关键词去重后直接显示；风险和法律问题由工作人员判断是否发布。用户投稿完全绕过AI，人工审核后按数据库原文发布。";
     if (head && !head.querySelector(".user-report-entry")) {
       const actions = document.createElement("div");
       actions.className = "review-head-actions";
@@ -124,6 +131,8 @@
       if (refresh) actions.appendChild(refresh);
       head.appendChild(actions);
     }
+    const publishButton = document.querySelector('[data-review-action="publish_now"]');
+    if (publishButton) publishButton.textContent = "人工立即发布";
     loadUserReports();
   });
 })();

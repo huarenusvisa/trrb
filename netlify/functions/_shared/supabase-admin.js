@@ -1,6 +1,7 @@
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const ANON_KEY = process.env.SUPABASE_ANON_KEY || "";
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const AUTH_API_KEY = ANON_KEY || SERVICE_KEY;
 
 function safeText(value, max = 20000) {
   return String(value ?? "").replace(/\u0000/g, "").trim().slice(0, max);
@@ -9,8 +10,8 @@ function safeText(value, max = 20000) {
 function requireSupabase() {
   const missing = [];
   if (!SUPABASE_URL) missing.push("SUPABASE_URL");
-  if (!ANON_KEY) missing.push("SUPABASE_ANON_KEY");
   if (!SERVICE_KEY) missing.push("SUPABASE_SERVICE_ROLE_KEY");
+  if (!AUTH_API_KEY) missing.push("SUPABASE_ANON_KEY or SUPABASE_SERVICE_ROLE_KEY");
   if (missing.length) throw new Error(`Netlify缺少环境变量：${missing.join(", ")}`);
 }
 
@@ -60,7 +61,7 @@ async function authenticateAdmin(event) {
   }
 
   const user = await requestJson(`${SUPABASE_URL}/auth/v1/user`, {
-    headers: { apikey: ANON_KEY, Authorization: `Bearer ${token}` }
+    headers: { apikey: AUTH_API_KEY, Authorization: `Bearer ${token}` }
   });
   if (!user?.id) {
     const error = new Error("后台登录状态无效，请重新登录");

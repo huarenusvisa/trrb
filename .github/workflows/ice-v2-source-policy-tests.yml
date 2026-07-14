@@ -5,6 +5,7 @@ on:
     branches:
       - ice-v2-rebuild
     paths:
+      - "SUPABASE-ICE-V2-MIGRATION.sql"
       - "data/ice-v2-source-policy.json"
       - "scripts/ice-v2-*.mjs"
       - "scripts/ice-v2-*.test.mjs"
@@ -16,6 +17,7 @@ on:
       - ".github/workflows/ice-v2-*.yml"
   pull_request:
     paths:
+      - "SUPABASE-ICE-V2-MIGRATION.sql"
       - "data/ice-v2-source-policy.json"
       - "scripts/ice-v2-*.mjs"
       - "scripts/ice-v2-*.test.mjs"
@@ -74,6 +76,7 @@ jobs:
           node --test scripts/ice-v2-cleanup-core.test.mjs
           node --test scripts/ice-v2-readiness-core.test.mjs
           node --test scripts/ice-v2-pipeline.test.mjs
+          node --test scripts/ice-v2-migration.test.mjs
           node --test scripts/ice-v2-admin-health.test.mjs
           node --test netlify/functions/_shared/ice-v2-health.test.js
           node --test netlify/functions/_shared/ice-v2-review.test.js

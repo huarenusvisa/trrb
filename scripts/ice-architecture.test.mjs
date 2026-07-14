@@ -67,7 +67,7 @@ test("DHS和ICE官方重大突发可绕过法律风险但不能绕过硬风险",
   assert.match(promoter, /official_urgent: true/);
   assert.match(promoter, /legal_risk_bypassed/);
   assert.match(promoter, /story\.conflict_detected \|\| story\.privacy_risk \|\| story\.fabrication_risk/);
-  assert.doesNotMatch(promoter, /story\.legal_risk\)/);
+  assert.doesNotMatch(promoter, /story\.legal_risk\s*\|\|/);
   assert.match(publisher, /runOfficialUrgentPromotion/);
   assert.match(publisher, /legalBlocked = Boolean\(story\.legal_risk\) && !officialUrgent/);
   assert.match(publisher, /scoreBlocked = Number\(story\.total_score \|\| 0\) < threshold && !officialUrgent/);

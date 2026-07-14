@@ -1,0 +1,29 @@
+name: ICE Visibility Tests
+
+on:
+  pull_request:
+    paths:
+      - "admin/ice-review-v2.js"
+      - "netlify/functions/ice-review-list-v3.js"
+      - "netlify/functions/_shared/ice-review-list.js"
+      - "scripts/ice-review-list.test.mjs"
+      - ".github/workflows/ice-visibility-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Syntax checks
+        run: |
+          node --check admin/ice-review-v2.js
+          node --check netlify/functions/ice-review-list-v3.js
+          node --check netlify/functions/_shared/ice-review-list.js
+      - name: Keyword dedupe and text-only candidate tests
+        run: node --test scripts/ice-review-list.test.mjs

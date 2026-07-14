@@ -1,10 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
+const syntaxCheck = (file) => execFileSync(process.execPath, ["--check", path.join(root, file)], { stdio: "pipe" });
 
 test("ICE信源为50至100个且不重复", () => {
   const rows = JSON.parse(read("data/ice-source-registry.json"));
@@ -34,6 +36,52 @@ test("非官方内容必须进入人工审核", () => {
   assert.match(collector, /humanReviewStatus = "required"/);
   assert.match(publisher, /humanApproved/);
   assert.match(publisher, /!officialEligible && !humanApproved/);
+});
+
+test("ERO地区官方补抓严格限制为过去2小时并支持分页去重", () => {
+  const ero = read("scripts/ice-ero-official-discovery.mjs");
+  const launcher = read("scripts/ice-enable-first-backfill.mjs");
+  syntaxCheck("scripts/ice-ero-official-discovery.mjs");
+  syntaxCheck("scripts/ice-enable-first-backfill.mjs");
+  assert.match(ero, /const LOOKBACK_HOURS = 2/);
+  assert.match(ero, /max_results", "100"/);
+  assert.match(ero, /start_time", twoHourStart\(\)/);
+  assert.match(ero, /since_id/);
+  assert.match(ero, /next_token/);
+  assert.match(ero, /MAX_PAGES_PER_QUERY/);
+  assert.match(ero, /EROBaltimore/);
+  assert.match(ero, /source_type: "official"/);
+  assert.match(ero, /resolution=ignore-duplicates/);
+  assert.match(ero, /existingIds/);
+  assert.match(launcher, /ice-ero-official-discovery\.mjs/);
+  assert.match(launcher, /ERO补抓被硬限制为过去2小时/);
+  assert.match(launcher, /!String\(row\.query_key \|\| ""\)\.startsWith\("ero-official-2h-"\)/);
+});
+
+test("DHS和ICE官方重大突发可绕过法律风险但不能绕过硬风险", () => {
+  const promoter = read("scripts/ice-official-urgent-promote.mjs");
+  const publisher = read("scripts/ice-publish-due.mjs");
+  syntaxCheck("scripts/ice-official-urgent-promote.mjs");
+  syntaxCheck("scripts/ice-publish-due.mjs");
+  assert.match(promoter, /dhsgov\|icegov\|ero/);
+  assert.match(promoter, /official_urgent: true/);
+  assert.match(promoter, /legal_risk_bypassed/);
+  assert.match(promoter, /story\.conflict_detected \|\| story\.privacy_risk \|\| story\.fabrication_risk/);
+  assert.doesNotMatch(promoter, /story\.legal_risk\)/);
+  assert.match(publisher, /runOfficialUrgentPromotion/);
+  assert.match(publisher, /legalBlocked = Boolean\(story\.legal_risk\) && !officialUrgent/);
+  assert.match(publisher, /scoreBlocked = Number\(story\.total_score \|\| 0\) < threshold && !officialUrgent/);
+  assert.match(publisher, /category_name: "驱逐快报"/);
+  assert.match(publisher, /topic_key: "ice"/);
+  assert.match(publisher, /distribution_channels: \["驱逐快报", "ICE动态"\]/);
+});
+
+test("同一ICE信息按来源帖子和事件指纹双重去重", () => {
+  const publisher = read("scripts/ice-publish-due.mjs");
+  assert.match(publisher, /existingArticle\(postId, eventFingerprint\)/);
+  assert.match(publisher, /source_post_id: `eq\.\$\{postId\}`/);
+  assert.match(publisher, /slug: `eq\.ice-\$\{eventFingerprint\}`/);
+  assert.match(publisher, /同一来源帖子或事件指纹已发布/);
 });
 
 test("trrb.net/admin包含ICE审核中心", () => {

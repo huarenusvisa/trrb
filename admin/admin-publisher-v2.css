@@ -233,39 +233,39 @@
 }
 
 @media (min-width: 1100px) and (min-height: 720px) {
-  .admin-shell {
+  body.publisher-mode .admin-shell {
     height: 100vh;
     min-height: 0;
     overflow: hidden;
   }
 
-  .sidebar {
+  body.publisher-mode .sidebar {
     height: 100vh;
     min-height: 0;
   }
 
-  .main {
+  body.publisher-mode .main {
     height: 100vh;
     padding: 16px 22px;
     overflow: hidden;
   }
 
-  .top {
+  body.publisher-mode .top {
     min-height: 58px;
     margin-bottom: 10px;
   }
 
-  .top h2 {
+  body.publisher-mode .top h2 {
     font-size: 25px;
     margin-bottom: 2px;
   }
 
-  .publisher-page {
+  body.publisher-mode .publisher-page {
     height: calc(100vh - 100px);
     min-height: 0;
   }
 
-  .publisher-form {
+  body.publisher-mode .publisher-form {
     height: 100%;
     grid-template-rows: auto auto minmax(0, 1fr);
     overflow: hidden;

@@ -1,0 +1,38 @@
+name: ICE v2 Publish Tests
+
+on:
+  push:
+    branches:
+      - ice-v2-rebuild
+    paths:
+      - "netlify/functions/ice-v2-publish-now.js"
+      - "netlify/functions/ice-review-v2.js"
+      - "netlify/functions/_shared/ice-v2-publish.js"
+      - "netlify/functions/_shared/ice-v2-publish.test.js"
+      - ".github/workflows/ice-v2-publish-tests.yml"
+  pull_request:
+    paths:
+      - "netlify/functions/ice-v2-publish-now.js"
+      - "netlify/functions/ice-review-v2.js"
+      - "netlify/functions/_shared/ice-v2-publish.js"
+      - "netlify/functions/_shared/ice-v2-publish.test.js"
+      - ".github/workflows/ice-v2-publish-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Syntax checks
+        run: |
+          node --check netlify/functions/_shared/ice-v2-publish.js
+          node --check netlify/functions/ice-v2-publish-now.js
+          node --check netlify/functions/ice-review-v2.js
+      - name: Run publication tests
+        run: node --test netlify/functions/_shared/ice-v2-publish.test.js

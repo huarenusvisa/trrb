@@ -1,4 +1,4 @@
-name: ICE v2 Source Collector Event Editor Review Health and Admin Tests
+name: ICE v2 Source Collector Event Editor Review Health Admin and Cleanup Tests
 
 on:
   push:
@@ -44,6 +44,8 @@ jobs:
           node --check scripts/ice-v2-event-cluster.mjs
           node --check scripts/ice-v2-editor-core.mjs
           node --check scripts/ice-v2-editor.mjs
+          node --check scripts/ice-v2-cleanup-core.mjs
+          node --check scripts/ice-v2-cleanup-legacy.mjs
           node --check scripts/ice-v2-registry-export.mjs
           node --check admin/ice-review-v2.js
           node --check netlify/functions/_shared/ice-v2-health.js
@@ -61,6 +63,7 @@ jobs:
           node --test scripts/ice-v2-collect.test.mjs
           node --test scripts/ice-v2-event-core.test.mjs
           node --test scripts/ice-v2-editor-core.test.mjs
+          node --test scripts/ice-v2-cleanup-core.test.mjs
           node --test scripts/ice-v2-admin-health.test.mjs
           node --test netlify/functions/_shared/ice-v2-health.test.js
           node --test netlify/functions/_shared/ice-v2-review.test.js

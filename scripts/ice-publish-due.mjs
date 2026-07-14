@@ -16,6 +16,10 @@ function safeJson(value, fallback = null) {
   try { return typeof value === "string" ? JSON.parse(value) : value; }
   catch { return fallback; }
 }
+function isOfficialUrgent(story) {
+  const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
+  return Boolean(payload?.official_urgent);
+}
 async function requestJson(url, options = {}) {
   const response = await fetch(url, options);
   const text = await response.text();
@@ -60,13 +64,17 @@ async function dueStories(limit) {
     select: "*",
     status: "eq.approved",
     order: "scheduled_at.asc.nullslast,created_at.asc",
-    limit: String(limit),
+    limit: "100",
   };
   if (!boolEnv("ICE_FORCE_FIRST_PUBLISH", false)) {
     query.scheduled_at = `lte.${nowIso()}`;
   }
   const rows = await sb("ice_stories", { query });
-  return Array.isArray(rows) ? rows : [];
+  const stories = Array.isArray(rows) ? rows : [];
+  const urgentCap = intEnv("ICE_URGENT_MAX_PER_RUN", 20, 1, 50);
+  const urgent = stories.filter(isOfficialUrgent).slice(0, urgentCap);
+  const normal = stories.filter((story) => !isOfficialUrgent(story)).slice(0, limit);
+  return [...urgent, ...normal];
 }
 async function storyEvidence(storyId) {
   const rows = await sb("ice_story_evidence", {
@@ -97,8 +105,8 @@ async function leadPost(story) {
   });
   return Array.isArray(rows) ? rows[0] || null : null;
 }
-async function existingArticle(postId) {
-  const rows = await sb("articles", {
+async function existingArticle(postId, eventFingerprint) {
+  const bySource = await sb("articles", {
     query: {
       select: "id",
       source_platform: "eq.x",
@@ -106,7 +114,16 @@ async function existingArticle(postId) {
       limit: "1",
     },
   });
-  return Array.isArray(rows) ? rows[0] || null : null;
+  if (Array.isArray(bySource) && bySource[0]) return bySource[0];
+
+  const byEvent = await sb("articles", {
+    query: {
+      select: "id",
+      slug: `eq.ice-${eventFingerprint}`,
+      limit: "1",
+    },
+  });
+  return Array.isArray(byEvent) ? byEvent[0] || null : null;
 }
 async function updateStory(id, patch) {
   await sb("ice_stories", {
@@ -121,11 +138,14 @@ async function publish(story) {
   const threshold = intEnv("ICE_AUTO_PUBLISH_SCORE", 80, 0, 100);
   const officialEligible = Number(story.official_source_count || 0) >= 1;
   const humanApproved = story.human_review_status === "approved";
+  const officialUrgent = isOfficialUrgent(story);
+  const scoreBlocked = Number(story.total_score || 0) < threshold && !officialUrgent;
+  const legalBlocked = Boolean(story.legal_risk) && !officialUrgent;
 
   if (
-    Number(story.total_score || 0) < threshold ||
+    scoreBlocked ||
     story.conflict_detected ||
-    story.legal_risk ||
+    legalBlocked ||
     story.privacy_risk ||
     story.fabrication_risk ||
     (!officialEligible && !humanApproved)
@@ -140,12 +160,13 @@ async function publish(story) {
   const post = await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
 
-  const duplicate = await existingArticle(post.x_post_id);
+  const duplicate = await existingArticle(post.x_post_id, story.event_fingerprint);
   if (duplicate) {
     await updateStory(story.id, {
       status: "published",
       article_id: String(duplicate.id),
       published_at: nowIso(),
+      decision_reason: `${story.decision_reason || ""}；同一来源帖子或事件指纹已发布，未重复创建文章`,
     });
     return duplicate.id;
   }
@@ -161,9 +182,9 @@ async function publish(story) {
       slug: `ice-${story.event_fingerprint}`,
       summary: story.summary,
       content: story.content,
-      category_name: "移民美国",
+      category_name: "驱逐快报",
       cover_image: story.cover_image || "",
-      seo_keywords: "ICE,移民执法,拘留,遣返,美国移民",
+      seo_keywords: "ICE,移民执法,拘留,遣返,驱逐快报,美国移民",
       author: "唐人日报编辑部",
       status: "published",
       published_at: time,
@@ -175,7 +196,9 @@ async function publish(story) {
       source_account: post.source_username,
       source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
-      review_status: officialEligible ? "official_auto_published" : "human_approved",
+      review_status: officialUrgent
+        ? "official_urgent_auto_published"
+        : (officialEligible ? "official_auto_published" : "human_approved"),
       metadata: {
         event_fingerprint: story.event_fingerprint,
         event_type: story.event_type || post.event_type || "other",
@@ -193,6 +216,9 @@ async function publish(story) {
         reviewed_by: story.reviewed_by || null,
         reviewed_at: story.reviewed_at || null,
         editor_notes: story.editor_notes || "",
+        official_urgent: officialUrgent,
+        legal_risk_bypassed: officialUrgent && Boolean(story.legal_risk),
+        distribution_channels: ["驱逐快报", "ICE动态"],
         confirmed_facts: story.ai_payload?.confirmed_facts || [],
         unconfirmed_claims: story.ai_payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({
@@ -231,7 +257,7 @@ async function main() {
       const id = await publish(story);
       if (id) {
         published += 1;
-        console.log(`已发布：${story.title} → ${id}`);
+        console.log(`已发布：${story.title} → ${id}${isOfficialUrgent(story) ? "（官方重大突发）" : ""}`);
       }
     } catch (error) {
       await updateStory(story.id, {

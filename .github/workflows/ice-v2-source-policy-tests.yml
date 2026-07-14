@@ -1,0 +1,33 @@
+name: ICE v2 Source Policy Tests
+
+on:
+  push:
+    branches:
+      - ice-v2-rebuild
+    paths:
+      - "data/ice-v2-source-policy.json"
+      - "scripts/ice-v2-source-policy.mjs"
+      - "scripts/ice-v2-source-policy.test.mjs"
+      - ".github/workflows/ice-v2-source-policy-tests.yml"
+  pull_request:
+    paths:
+      - "data/ice-v2-source-policy.json"
+      - "scripts/ice-v2-source-policy.mjs"
+      - "scripts/ice-v2-source-policy.test.mjs"
+      - ".github/workflows/ice-v2-source-policy-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate source policy
+        run: node scripts/ice-v2-source-policy.mjs
+      - name: Run source policy tests
+        run: node --test scripts/ice-v2-source-policy.test.mjs

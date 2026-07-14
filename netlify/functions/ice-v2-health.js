@@ -13,23 +13,30 @@ function json(statusCode, body) {
   };
 }
 
+function isV2Post(row) {
+  const payload = row?.raw_payload && typeof row.raw_payload === "object" ? row.raw_payload : {};
+  return payload.collector === "ice-v2";
+}
+
 async function countPosts(status) {
   const rows = await rest("ice_posts", {
     query: {
-      select: "id",
+      select: "id,raw_payload",
       processing_status: `eq.${status}`,
-      limit: "1000"
+      order: "created_at.desc",
+      limit: "5000"
     }
   });
-  return Array.isArray(rows) ? rows.length : 0;
+  return (Array.isArray(rows) ? rows : []).filter(isV2Post).length;
 }
 
 async function countStories(status) {
   const rows = await rest("ice_stories", {
     query: {
-      select: "id",
+      select: "id,event_fingerprint,ai_payload",
       status: `eq.${status}`,
-      limit: "1000"
+      event_fingerprint: "like.v2-*",
+      limit: "5000"
     }
   });
   return Array.isArray(rows) ? rows.length : 0;
@@ -62,6 +69,7 @@ exports.handler = async (event) => {
 
     return json(200, {
       generated_at: new Date().toISOString(),
+      scope: "ice-v2",
       ...health,
       queue: {
         posts_collected: collected,
@@ -77,3 +85,5 @@ exports.handler = async (event) => {
     return json(error.statusCode || 500, { error: error.message || String(error) });
   }
 };
+
+exports.isV2Post = isV2Post;

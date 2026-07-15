@@ -16,7 +16,7 @@ function requireEnv() {
   if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`);
 }
 function nowIso() { return new Date().toISOString(); }
-function lookbackIso() { return new Date(Date.now() - LOOKBACK_HOURS * 3600000).toISOString(); }
+function twoHourStart() { return new Date(Date.now() - LOOKBACK_HOURS * 3600000).toISOString(); }
 function digest(value) { return crypto.createHash("sha256").update(String(value)).digest("hex"); }
 function maxSnowflake(ids) {
   return ids.reduce((max, id) => { try { return BigInt(id) > BigInt(max || "0") ? String(id) : max; } catch { return String(id) > String(max || "") ? String(id) : max; } }, "");
@@ -65,12 +65,11 @@ async function saveState(row) {
 async function searchX(query) {
   const pages = [];
   let next = "";
-  const startTime = lookbackIso();
   for (let page = 0; page < MAX_PAGES_PER_QUERY; page += 1) {
     const url = new URL(`${X_API}/tweets/search/recent`);
     url.searchParams.set("query", query);
     url.searchParams.set("max_results", "100");
-    url.searchParams.set("start_time", startTime);
+    url.searchParams.set("start_time", twoHourStart());
     if (next) url.searchParams.set("next_token", next);
     url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,geo");
     url.searchParams.set("expansions", "author_id,attachments.media_keys,geo.place_id");

@@ -1,0 +1,35 @@
+name: ICE v2 Event Cluster
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "4,14,24,34,44,54 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ice-v2-event-cluster
+  cancel-in-progress: false
+
+jobs:
+  cluster:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_V2_CLUSTER_MAX: "300"
+      ICE_V2_EVENT_LOOKBACK_DAYS: "3"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate event engine
+        run: |
+          node --check scripts/ice-v2-event-core.mjs
+          node --check scripts/ice-v2-event-cluster.mjs
+          node --test scripts/ice-v2-event-core.test.mjs
+      - name: Cluster posts into unique events
+        run: node scripts/ice-v2-event-cluster.mjs

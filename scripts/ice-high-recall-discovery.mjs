@@ -7,17 +7,21 @@ const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]
 const SEARCH_QUERIES = [
   // 高召回：重大执法、枪击、追车、现场视频
   '("ICE agent" OR "ICE agents" OR ICE) (shooting OR shot OR gunfire OR fired OR chase OR crash OR "use of force") -is:retweet lang:en',
-  '("Immigration and Customs Enforcement" OR ICE) (arrest OR detained OR detention OR raid OR operation OR custody) -is:retweet lang:en',
+  '("Immigration and Customs Enforcement" OR ICE) (arrest OR arrested OR detained OR detention OR raid OR operation OR custody) -is:retweet lang:en',
   '("ICE raid" OR "immigration raid" OR "ICE arrest" OR "ICE detention") (video OR footage OR witness OR breaking OR update) -is:retweet lang:en',
   '("ICE" OR "ERO" OR "HSI") (deportation OR removal OR "removal flight" OR repatriation) -is:retweet lang:en',
   '("ICE" OR "immigration agents") (protest OR courthouse OR school OR hospital OR workplace OR home) -is:retweet lang:en',
 
+  // HSI专项：人口贩卖、儿童营救、地方联合行动和逮捕
+  '("HSI" OR "Homeland Security Investigations") (arrest OR arrested OR operation OR raid OR trafficking OR "human trafficking" OR smuggling) -is:retweet lang:en',
+  '("HSI" OR "Homeland Security Investigations") (rescued OR recovered OR located OR "missing children" OR child OR children OR victim OR victims) -is:retweet lang:en',
+
   // 官方机构与主要媒体，即使正文没有完整关键词，也尽量覆盖
   '(from:ICEgov OR from:DHSgov OR from:HSI_HQ OR from:CBP OR from:DOJCrimDiv) -is:retweet',
-  '(from:Reuters OR from:AP OR from:ABC OR from:CBSNews OR from:NBCNews OR from:CNN OR from:FoxNews) (ICE OR immigration) -is:retweet',
+  '(from:Reuters OR from:AP OR from:ABC OR from:CBSNews OR from:NBCNews OR from:CNN OR from:FoxNews) (ICE OR immigration OR HSI) -is:retweet',
 
   // 地点+行动词，解决帖子只写“agents”而未反复写ICE的问题
-  '("federal agents" OR "immigration agents") (arrest OR shooting OR raid OR detention OR chase) -is:retweet lang:en'
+  '("federal agents" OR "immigration agents" OR "HSI agents") (arrest OR arrested OR shooting OR raid OR detention OR chase OR operation) -is:retweet lang:en'
 ];
 
 function envInt(name, fallback, min = 0, max = 1000) {
@@ -105,8 +109,8 @@ function relevanceScore(text, mediaCount, author) {
   const value = String(text || "").toLowerCase();
   let score = 0;
 
-  if (/\bice\b|immigration and customs enforcement|immigration agents|federal agents|\bero\b|\bhsi\b/.test(value)) score += 35;
-  if (/shoot|shot|gunfire|fired|chase|raid|arrest|detain|detention|deport|removal|custody|operation|use of force/.test(value)) score += 30;
+  if (/\bice\b|immigration and customs enforcement|immigration agents|federal agents|\bero\b|\bhsi\b|homeland security investigations/.test(value)) score += 35;
+  if (/shoot|shot|gunfire|fired|chase|raid|arrest|detain|detention|deport|removal|custody|operation|use of force|traffick|smuggl|rescued|recovered|missing children/.test(value)) score += 30;
   if (/video|footage|breaking|update|witness|scene|现场|视频/.test(value)) score += 12;
   if (mediaCount > 0) score += 13;
   if (author?.verified) score += 10;
@@ -121,25 +125,37 @@ function eligible(text, media, author) {
   const followers = Number(author?.public_metrics?.followers_count || 0);
   const minFollowers = envInt("ICE_HIGH_RECALL_MIN_FOLLOWERS", 500, 0, 100000000);
 
-  // 有现场媒体时降低账号门槛；重大关键词也降低门槛
-  const major = /shoot|shot|gunfire|fired|raid|arrest|detain|deport|removal|chase/.test(String(text || "").toLowerCase());
+  const major = /shoot|shot|gunfire|fired|raid|arrest|detain|deport|removal|chase|traffick|rescued|missing children/.test(String(text || "").toLowerCase());
   const sourceOk = Boolean(author?.verified) || followers >= minFollowers || (media.length > 0 && major);
 
   return score >= minScore && sourceOk;
 }
 
 async function searchX(query, startTime) {
-  const url = new URL(`${X_API}/tweets/search/recent`);
-  url.searchParams.set("query", query);
-  url.searchParams.set("max_results", String(envInt("ICE_HIGH_RECALL_RESULTS_PER_QUERY", 50, 10, 100)));
-  url.searchParams.set("start_time", startTime);
-  url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,geo");
-  url.searchParams.set("expansions", "author_id,attachments.media_keys,geo.place_id");
-  url.searchParams.set("user.fields", "id,name,username,verified,public_metrics");
-  url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms,variants");
-  url.searchParams.set("place.fields", "id,full_name,country,country_code,geo,name,place_type");
+  const pages = [];
+  const maxPages = envInt("ICE_HIGH_RECALL_MAX_PAGES", 3, 1, 10);
+  let nextToken = "";
 
-  return request(url, { headers: xHeaders() });
+  for (let page = 0; page < maxPages; page += 1) {
+    const url = new URL(`${X_API}/tweets/search/recent`);
+    url.searchParams.set("query", query);
+    url.searchParams.set("max_results", String(envInt("ICE_HIGH_RECALL_RESULTS_PER_QUERY", 100, 10, 100)));
+    url.searchParams.set("start_time", startTime);
+    if (nextToken) url.searchParams.set("next_token", nextToken);
+
+    // 不再请求 geo/place 扩展，避免 X recent-search 参数兼容性导致 400。
+    url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
+    url.searchParams.set("expansions", "author_id,attachments.media_keys");
+    url.searchParams.set("user.fields", "id,name,username,verified,public_metrics");
+    url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms,variants");
+
+    const payload = await request(url, { headers: xHeaders() });
+    pages.push(payload);
+    nextToken = payload?.meta?.next_token || "";
+    if (!nextToken) break;
+  }
+
+  return pages;
 }
 
 async function existingIds(ids) {
@@ -176,61 +192,70 @@ async function main() {
   const startTime = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
   const collected = new Map();
   let requests = 0;
+  let failedQueries = 0;
 
   for (const query of SEARCH_QUERIES) {
     try {
-      const payload = await searchX(query, startTime);
-      requests += 1;
-      const authors = authorMap(payload?.includes);
-      for (const tweet of payload?.data || []) {
-        const author = authors.get(tweet.author_id) || {};
-        const media = mediaFromIncludes(tweet, payload?.includes);
+      const pages = await searchX(query, startTime);
+      requests += pages.length;
 
-        if (!eligible(tweet.text, media, author)) continue;
+      for (const payload of pages) {
+        const authors = authorMap(payload?.includes);
+        for (const tweet of payload?.data || []) {
+          const author = authors.get(tweet.author_id) || {};
+          const media = mediaFromIncludes(tweet, payload?.includes);
 
-        const score = relevanceScore(tweet.text, media.length, author);
-        collected.set(String(tweet.id), {
-          x_post_id: String(tweet.id),
-          x_url: xUrl(author.username, tweet.id),
-          source_registry_id: null,
-          source_username: author.username || "",
-          source_display_name: author.name || "",
-          source_type: author.verified ? "verified_discovered" : "discovered_individual",
-          trust_tier: author.verified ? 3 : 5,
-          independence_key: author.username ? `x:${String(author.username).toLowerCase()}` : `x-user:${tweet.author_id}`,
-          source_created_at: tweet.created_at || null,
-          source_text: tweet.text || "",
-          media,
-          raw_payload: {
-            tweet,
-            author,
-            discovery: {
-              collector: "ice-high-recall-v3",
-              relevance_score: score,
-              query
-            }
-          },
-          relevant: null,
-          event_fingerprint: null,
-          event_type: null,
-          event_date: null,
-          city: null,
-          state_code: null,
-          location_text: null,
-          people_count: null,
-          claims: [],
-          entities: [],
-          extraction_confidence: null,
-          extraction_payload: {},
-          processing_status: "collected",
-          attempts: 0,
-          last_error: null
-        });
+          if (!eligible(tweet.text, media, author)) continue;
+
+          const score = relevanceScore(tweet.text, media.length, author);
+          collected.set(String(tweet.id), {
+            x_post_id: String(tweet.id),
+            x_url: xUrl(author.username, tweet.id),
+            source_registry_id: null,
+            source_username: author.username || "",
+            source_display_name: author.name || "",
+            source_type: author.verified ? "verified_discovered" : "discovered_individual",
+            trust_tier: author.verified ? 3 : 5,
+            independence_key: author.username ? `x:${String(author.username).toLowerCase()}` : `x-user:${tweet.author_id}`,
+            source_created_at: tweet.created_at || null,
+            source_text: tweet.text || "",
+            media,
+            raw_payload: {
+              tweet,
+              author,
+              discovery: {
+                collector: "ice-high-recall-v4",
+                relevance_score: score,
+                query
+              }
+            },
+            relevant: null,
+            event_fingerprint: null,
+            event_type: null,
+            event_date: null,
+            city: null,
+            state_code: null,
+            location_text: null,
+            people_count: null,
+            claims: [],
+            entities: [],
+            extraction_confidence: null,
+            extraction_payload: {},
+            processing_status: "collected",
+            attempts: 0,
+            last_error: null
+          });
+        }
       }
     } catch (error) {
+      failedQueries += 1;
       console.error(`查询失败：${query}\n${error.message}`);
       if (error.status === 429) break;
     }
+  }
+
+  if (failedQueries > 0) {
+    throw new Error(`ICE高召回抓取有${failedQueries}组查询失败，拒绝伪装为成功。`);
   }
 
   const candidates = [...collected.values()];
@@ -239,8 +264,9 @@ async function main() {
   const inserted = await insertRows(fresh);
 
   console.log(JSON.stringify({
-    collector: "ice-high-recall-v3",
+    collector: "ice-high-recall-v4",
     lookback_hours: hours,
+    max_pages_per_query: envInt("ICE_HIGH_RECALL_MAX_PAGES", 3, 1, 10),
     x_requests: requests,
     candidates: candidates.length,
     duplicates: duplicates.size,

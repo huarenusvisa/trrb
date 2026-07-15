@@ -12,6 +12,7 @@
     "los angeles":[34.0522,-118.2437],"洛杉矶":[34.0522,-118.2437],"chicago":[41.8781,-87.6298],"芝加哥":[41.8781,-87.6298],"houston":[29.7604,-95.3698],"休斯敦":[29.7604,-95.3698],
     "phoenix":[33.4484,-112.074],"philadelphia":[39.9526,-75.1652],"费城":[39.9526,-75.1652],"san antonio":[29.4241,-98.4936],"san diego":[32.7157,-117.1611],"圣迭戈":[32.7157,-117.1611],
     "dallas":[32.7767,-96.797],"达拉斯":[32.7767,-96.797],"austin":[30.2672,-97.7431],"san francisco":[37.7749,-122.4194],"旧金山":[37.7749,-122.4194],"seattle":[47.6062,-122.3321],
+    "oroville washington":[48.9393,-119.4363],"oroville, washington":[48.9393,-119.4363],"oroville":[48.9393,-119.4363],"华州oroville":[48.9393,-119.4363],
     "denver":[39.7392,-104.9903],"washington dc":[38.9072,-77.0369],"华盛顿":[38.9072,-77.0369],"boston":[42.3601,-71.0589],"波士顿":[42.3601,-71.0589],"miami":[25.7617,-80.1918],"迈阿密":[25.7617,-80.1918],
     "atlanta":[33.749,-84.388],"detroit":[42.3314,-83.0458],"minneapolis":[44.9778,-93.265],"portland":[45.5152,-122.6784],"las vegas":[36.1699,-115.1398],"new orleans":[29.9511,-90.0715],
     "baltimore":[39.2904,-76.6122],"cleveland":[41.4993,-81.6944],"sacramento":[38.5816,-121.4944],"el paso":[31.7619,-106.485],
@@ -40,8 +41,8 @@
   }
   function inferType(item) {
     const text = normalize(`${item.event_type || ""} ${item.title || ""} ${item.summary || ""}`);
-    if (/arrest|detain|detention|custody|raid|apprehend|抓捕|拘留|羁押|逮捕|带走/.test(text)) return "arrest";
     if (/removal|removed|deport|repatriat|遣返|递解|驱逐/.test(text)) return "removal";
+    if (Number(item.people || 0) > 0 && /arrest|detain|detention|custody|apprehend|抓捕|拘留|羁押|逮捕|带走|押送/.test(text)) return "arrest";
     return "other";
   }
   function textCount(text) {
@@ -71,7 +72,9 @@
       .map(Number)
       .filter((n) => Number.isFinite(n) && n > 0 && n <= 500);
     const people = candidates.length ? Math.max(...candidates) : fallback.value;
-    const location = metadata.location_text || [metadata.city || row.city, metadata.state_code || row.state].filter(Boolean).join(", ");
+    const city = metadata.city || row.city || "";
+    const state = metadata.state_code || row.state || "";
+    const location = metadata.location_text || [city, state].filter(Boolean).join(", ");
     const item = {
       id: row.id,
       title: row.title || "ICE执法动态",
@@ -82,8 +85,8 @@
       source: row.source_account ? `@${row.source_account}` : (row.source_name || "唐人日报编辑部"),
       article_url: `/article.html?id=${encodeURIComponent(row.id)}`,
       location,
-      city: metadata.city || row.city || "",
-      state: metadata.state_code || row.state || "",
+      city,
+      state,
       people,
       estimated: Boolean(metadata.people_count_estimated || metadata.estimated_count || (!candidates.length && fallback.estimated)),
       lat: metadata.lat,
@@ -177,6 +180,11 @@
   }
   function hideMapStates() { ["ice-map-loading","ice-map-empty","ice-map-error"].forEach((name) => el(name)?.classList.add("hidden")); }
   function typeLabel(type) { return { arrest:"抓捕/拘留", removal:"遣返", other:"其他行动" }[type] || "其他行动"; }
+  function groupType(items) {
+    if (items.some((item) => item.type === "arrest" && Number(item.people || 0) > 0)) return "arrest";
+    if (items.some((item) => item.type === "removal")) return "removal";
+    return "other";
+  }
   function renderMarkers() {
     if (!map || !markerLayer) return;
     markerLayer.clearLayers();
@@ -185,13 +193,18 @@
       const coords = coordinateFor(item);
       if (!coords || coords[0] < 24.2 || coords[0] > 49.7 || coords[1] < -125 || coords[1] > -66.4) continue;
       const key = `${coords[0].toFixed(3)},${coords[1].toFixed(3)}`;
-      const group = groups.get(key) || { coords, items:[], people:0, estimated:false, type:item.type };
-      group.items.push(item); group.people += Number(item.people || 0); group.estimated ||= item.estimated; groups.set(key, group);
+      const group = groups.get(key) || { coords, items:[], people:0, estimated:false, type:"other" };
+      group.items.push(item);
+      group.people += Number(item.people || 0);
+      group.estimated ||= item.estimated;
+      group.type = groupType(group.items);
+      groups.set(key, group);
     }
     for (const group of groups.values()) {
       const latest = group.items.sort((a,b) => new Date(b.time)-new Date(a.time))[0];
       const location = latest.location || latest.city || latest.state || "地点待确认";
-      const popup = `<article class="ice-map-popup"><span class="popup-type popup-${escapeHtml(group.type)}">${typeLabel(group.type)}</span><h3>${escapeHtml(location)}</h3><p>${rangeLabel()}发生${group.items.length}起相关行动</p><dl><div><dt>涉及人数</dt><dd>${group.estimated ? "约" : ""}${group.people}人</dd></div><div><dt>最近动态</dt><dd><a href="${escapeHtml(latest.article_url)}">${escapeHtml(latest.title)}</a></dd></div></dl></article>`;
+      const peopleText = group.people > 0 ? `${group.estimated ? "约" : ""}${group.people}人` : "人数未确认";
+      const popup = `<article class="ice-map-popup"><span class="popup-type popup-${escapeHtml(group.type)}">${typeLabel(group.type)}</span><h3>${escapeHtml(location)}</h3><p>${rangeLabel()}发生${group.items.length}起相关行动</p><dl><div><dt>涉及人数</dt><dd>${peopleText}</dd></div><div><dt>最近动态</dt><dd><a href="${escapeHtml(latest.article_url)}">${escapeHtml(latest.title)}</a></dd></div></dl></article>`;
       L.circleMarker(group.coords, markerStyle(group.type, group.people, group.items.length)).bindPopup(popup, { maxWidth:320, className:"ice-popup-shell" }).addTo(markerLayer);
     }
     if (!groups.size) { showMapState("ice-map-empty"); map.fitBounds(USA_BOUNDS, { padding:[4,4] }); return; }

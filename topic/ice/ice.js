@@ -67,21 +67,23 @@
   function mapArticle(row) {
     const metadata = parseMetadata(row.metadata);
     const fallback = textCount(`${row.title || ""} ${row.summary || ""} ${row.content || ""}`);
-    const candidates = [metadata.people_count, metadata.detained_count, metadata.arrested_count, metadata.removed_count].map(Number).filter((n) => Number.isFinite(n) && n > 0 && n <= 500);
+    const candidates = [metadata.people_count, metadata.detained_count, metadata.arrested_count, metadata.removed_count, row.arrest_count]
+      .map(Number)
+      .filter((n) => Number.isFinite(n) && n > 0 && n <= 500);
     const people = candidates.length ? Math.max(...candidates) : fallback.value;
-    const location = metadata.location_text || [metadata.city, metadata.state_code].filter(Boolean).join(", ");
+    const location = metadata.location_text || [metadata.city || row.city, metadata.state_code || row.state].filter(Boolean).join(", ");
     const item = {
       id: row.id,
       title: row.title || "ICE执法动态",
       summary: row.summary || String(row.content || "").replace(/\s+/g, " ").slice(0, 220),
       content: row.content || "",
       image: row.cover_image || "",
-      time: row.published_at || row.source_created_at || row.created_at || "",
-      source: row.source_account ? `@${row.source_account}` : "唐人日报编辑部",
+      time: row.published_at || row.source_created_at || row.event_date || row.created_at || "",
+      source: row.source_account ? `@${row.source_account}` : (row.source_name || "唐人日报编辑部"),
       article_url: `/article.html?id=${encodeURIComponent(row.id)}`,
       location,
-      city: metadata.city || "",
-      state: metadata.state_code || "",
+      city: metadata.city || row.city || "",
+      state: metadata.state_code || row.state || "",
       people,
       estimated: Boolean(metadata.people_count_estimated || metadata.estimated_count || (!candidates.length && fallback.estimated)),
       lat: metadata.lat,
@@ -92,10 +94,28 @@
     return item;
   }
   async function fetchIceArticles(limit = 200) {
-    const select = ["id","title","summary","content","cover_image","published_at","created_at","source_account","source_url","source_created_at","metadata","topic_key","status"].join(",");
-    const url = `${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&topic_key=eq.ice&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}&_=${Date.now()}`;
-    const response = await fetch(url, { cache: "no-store", headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Accept: "application/json" } });
-    if (!response.ok) throw new Error(`Supabase ${response.status}`);
+    const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
+    url.searchParams.set("select", "id,title,summary,content,cover_image,published_at,created_at,source_account,source_name,source_url,source_created_at,event_date,arrest_count,city,state,metadata,topic_key,status");
+    url.searchParams.set("topic_key", "eq.ice");
+    url.searchParams.set("status", "eq.published");
+    url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
+    url.searchParams.set("limit", String(limit));
+
+    const response = await fetch(url.toString(), {
+      cache: "no-store",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        Accept: "application/json",
+        "Cache-Control": "no-cache"
+      }
+    });
+
+    if (!response.ok) {
+      const detail = await response.text();
+      throw new Error(`Supabase ${response.status}: ${detail}`);
+    }
+
     const rows = await response.json();
     return (Array.isArray(rows) ? rows : []).map(mapArticle);
   }
@@ -194,7 +214,7 @@
   function renderAll() { updateStats(); renderNews(); renderMarkers(); }
   async function reloadData() {
     try { allData = await fetchIceArticles(); window.TRRB_ICE_DATA = allData; renderAll(); }
-    catch (error) { console.error("ICE实时数据加载失败", error); if (!allData.length) { renderNews(); showMapState("ice-map-empty"); } }
+    catch (error) { console.error("ICE实时数据加载失败", error); if (!allData.length) { renderNews(); showMapState("ice-map-error"); } }
   }
   function bindControls() {
     document.querySelectorAll(".range-tabs [data-range]").forEach((button) => button.addEventListener("click", () => {

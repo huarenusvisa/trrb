@@ -37,6 +37,7 @@ jobs:
     timeout-minutes: 45
 
     env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
@@ -75,7 +76,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
 
       - name: Validate ICE architecture
         run: |

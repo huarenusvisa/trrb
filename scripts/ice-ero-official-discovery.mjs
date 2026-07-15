@@ -70,6 +70,8 @@ async function searchX(query) {
     url.searchParams.set("query", query);
     url.searchParams.set("max_results", "100");
     url.searchParams.set("start_time", twoHourStart());
+    // since_id remains persisted in ice_query_state for monitoring/deduplication,
+    // but is deliberately not sent together with start_time because X rejects that combination.
     if (next) url.searchParams.set("next_token", next);
     url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,geo");
     url.searchParams.set("expansions", "author_id,attachments.media_keys,geo.place_id");
@@ -101,7 +103,7 @@ async function main() {
   const collected = new Map();
   let requests = 0;
   for (const query of queries) {
-    const key = `ero-official-v3-${digest(query).slice(0, 28)}`;
+    const key = `ero-official-2h-${digest(query).slice(0, 28)}`;
     const state = await queryState(key);
     try {
       const pages = await searchX(query);
@@ -119,7 +121,7 @@ async function main() {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
             independence_key: `ero:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
-            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: "ice-ero-official-v3", lookback_hours: LOOKBACK_HOURS, query } },
+            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: "ice-ero-official-2h", lookback_hours: LOOKBACK_HOURS, query } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null, location_text: null,
             people_count: null, claims: [], entities: [], extraction_confidence: null, extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
           });

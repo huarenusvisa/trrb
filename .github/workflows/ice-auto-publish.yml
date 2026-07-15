@@ -9,6 +9,7 @@ on:
       - "scripts/ice-auto-publish-user-reports.mjs"
       - "scripts/ice-publish-due.mjs"
       - "scripts/ice-ero-official-discovery.mjs"
+      - "scripts/ice-drop-stale-posts.mjs"
       - ".github/workflows/ice-auto-publish.yml"
   workflow_dispatch:
     inputs:
@@ -62,7 +63,8 @@ jobs:
       ICE_MONTHLY_X_POST_READ_CAP: "65000"
       ICE_DAILY_X_REQUEST_CAP: "220"
       ICE_VALIDATE_SOURCE_HANDLES: "false"
-      ICE_HIGH_RECALL_LOOKBACK_HOURS: "24"
+      ICE_HIGH_RECALL_LOOKBACK_HOURS: "12"
+      ICE_DEDUPE_HOURS: "12"
       ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
       ICE_HIGH_RECALL_MAX_PAGES: "3"
       ICE_HIGH_RECALL_MIN_SCORE: "45"
@@ -82,6 +84,7 @@ jobs:
         run: |
           node --check scripts/ice-high-recall-discovery.mjs
           node --check scripts/ice-ero-official-discovery.mjs
+          node --check scripts/ice-drop-stale-posts.mjs
           node --check scripts/ice-dedupe-v3.mjs
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-editorial-normalize.mjs
@@ -102,6 +105,10 @@ jobs:
       - name: Safe regional ERO official discovery
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-ero-official-discovery.mjs
+
+      - name: Drop ICE source posts older than 12 hours
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-drop-stale-posts.mjs
 
       - name: Enable ERO two-hour recovery
         if: env.RUN_MODE == 'collect'
@@ -163,4 +170,5 @@ jobs:
           echo "ICE pipeline completed."
           echo "OpenAI monthly budget: $ICE_OPENAI_MONTHLY_BUDGET_USD"
           echo "X monthly budget: $ICE_X_MONTHLY_BUDGET_USD"
+          echo "Collection and dedupe windows are both capped at 12 hours."
           echo "Collected posts are deduplicated and approved stories are published immediately."

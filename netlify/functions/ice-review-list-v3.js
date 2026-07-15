@@ -66,6 +66,11 @@ function countBy(rows, key) {
   }, {});
 }
 
+function timeValue(value) {
+  const time = new Date(value || 0).getTime();
+  return Number.isFinite(time) ? time : 0;
+}
+
 async function pipelineStatus(stories) {
   const [posts, states] = await Promise.all([
     rest("ice_posts", {
@@ -87,11 +92,28 @@ async function pipelineStatus(stories) {
   const stateRows = Array.isArray(states) ? states : [];
   const successful = stateRows.map((row) => row.last_success_at).filter(Boolean).sort().at(-1) || null;
   const latestRun = stateRows.map((row) => row.last_run_at).filter(Boolean).sort().at(-1) || null;
-  const errors = stateRows.filter((row) => row.last_error).slice(0, 5).map((row) => ({
-    query_key: row.query_key,
-    error: row.last_error,
-    updated_at: row.updated_at
-  }));
+
+  // 只显示仍然有效的错误：
+  // 1. 该查询的错误更新时间晚于它自己的最近成功时间；
+  // 2. 并且错误属于当前活跃运行窗口，避免旧版query_key永久留在后台。
+  const latestRunMs = timeValue(latestRun);
+  const activeWindowStart = latestRunMs ? latestRunMs - 6 * 60 * 60 * 1000 : 0;
+  const errors = stateRows
+    .filter((row) => {
+      if (!row.last_error) return false;
+      const updatedMs = timeValue(row.updated_at || row.last_run_at);
+      const successMs = timeValue(row.last_success_at);
+      if (successMs && updatedMs <= successMs) return false;
+      if (activeWindowStart && updatedMs < activeWindowStart) return false;
+      return true;
+    })
+    .slice(0, 5)
+    .map((row) => ({
+      query_key: row.query_key,
+      error: row.last_error,
+      updated_at: row.updated_at
+    }));
+
   return {
     last_run_at: latestRun,
     last_success_at: successful,

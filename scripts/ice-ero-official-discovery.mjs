@@ -24,13 +24,17 @@ function maxSnowflake(ids) {
 function chunk(values, size) { const out = []; for (let i = 0; i < values.length; i += size) out.push(values.slice(i, i + size)); return out; }
 function sbHeaders(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }; }
 async function jsonResponse(response) { const text = await response.text(); if (!text) return null; try { return JSON.parse(text); } catch { return { raw: text }; } }
+function errorMessage(body) {
+  if (Array.isArray(body?.errors) && body.errors.length) return body.errors.map((item) => item?.message || item?.detail || JSON.stringify(item)).join("; ");
+  return body?.detail || body?.title || body?.message || body?.raw || "未知错误";
+}
 async function request(url, options = {}, attempts = 3) {
   let last;
   for (let i = 1; i <= attempts; i += 1) {
     try {
       const response = await fetch(url, options);
       const body = await jsonResponse(response);
-      if (!response.ok) { const error = new Error(`${options.method || "GET"} ${url} → ${response.status}: ${body?.detail || body?.title || body?.message || body?.raw || "未知错误"}`); error.status = response.status; throw error; }
+      if (!response.ok) { const error = new Error(`${options.method || "GET"} ${url} → ${response.status}: ${errorMessage(body)}`); error.status = response.status; throw error; }
       return body;
     } catch (error) {
       last = error;
@@ -48,7 +52,7 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
 function buildQueries(handles) {
   const unique = [...new Set(handles.map((x) => String(x).trim()).filter(Boolean))];
   const direct = chunk(unique, 6).map((batch) => `(${batch.map((h) => `from:${h}`).join(" OR ")}) -is:retweet -is:reply`);
-  direct.push('("ICE ERO" OR "Enforcement and Removal Operations" OR "ERO officers") (arrested OR detained OR deported OR removed OR raid OR operation) -is:retweet -is:reply lang:en');
+  direct.push('(“ICE ERO” OR “Enforcement and Removal Operations” OR “ERO officers”) (arrested OR detained OR deported OR removed OR raid OR operation) -is:retweet -is:reply lang:en'.replaceAll('“','"').replaceAll('”','"'));
   return direct;
 }
 async function queryState(key) {
@@ -58,15 +62,15 @@ async function queryState(key) {
 async function saveState(row) {
   await sb("ice_query_state", { method: "POST", query: { on_conflict: "query_key" }, body: row, prefer: "resolution=merge-duplicates,return=minimal" });
 }
-async function searchX(query, state) {
+async function searchX(query) {
   const pages = [];
   let next = "";
+  const startTime = lookbackIso();
   for (let page = 0; page < MAX_PAGES_PER_QUERY; page += 1) {
     const url = new URL(`${X_API}/tweets/search/recent`);
     url.searchParams.set("query", query);
     url.searchParams.set("max_results", "100");
-    if (state?.last_seen_id) url.searchParams.set("since_id", String(state.last_seen_id));
-    else url.searchParams.set("start_time", lookbackIso());
+    url.searchParams.set("start_time", startTime);
     if (next) url.searchParams.set("next_token", next);
     url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,geo");
     url.searchParams.set("expansions", "author_id,attachments.media_keys,geo.place_id");
@@ -98,10 +102,10 @@ async function main() {
   const collected = new Map();
   let requests = 0;
   for (const query of queries) {
-    const key = `ero-official-v2-${digest(query).slice(0, 28)}`;
+    const key = `ero-official-v3-${digest(query).slice(0, 28)}`;
     const state = await queryState(key);
     try {
-      const pages = await searchX(query, state);
+      const pages = await searchX(query);
       requests += pages.length;
       const seen = [];
       for (const payload of pages) {
@@ -116,7 +120,7 @@ async function main() {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
             independence_key: `ero:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
-            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: "ice-ero-official-v2", lookback_hours: LOOKBACK_HOURS, query } },
+            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: "ice-ero-official-v3", lookback_hours: LOOKBACK_HOURS, query } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null, location_text: null,
             people_count: null, claims: [], entities: [], extraction_confidence: null, extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
           });

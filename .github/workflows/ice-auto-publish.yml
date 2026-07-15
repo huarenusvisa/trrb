@@ -5,6 +5,7 @@ on:
     branches:
       - main
     paths:
+      - "scripts/ice-high-recall-discovery.mjs"
       - "scripts/ice-auto-publish-user-reports.mjs"
       - "scripts/ice-publish-due.mjs"
       - "scripts/ice-ero-official-discovery.mjs"
@@ -61,7 +62,8 @@ jobs:
       ICE_DAILY_X_REQUEST_CAP: "220"
       ICE_VALIDATE_SOURCE_HANDLES: "false"
       ICE_HIGH_RECALL_LOOKBACK_HOURS: "24"
-      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"
+      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
+      ICE_HIGH_RECALL_MAX_PAGES: "3"
       ICE_HIGH_RECALL_MIN_SCORE: "45"
       ICE_HIGH_RECALL_MIN_FOLLOWERS: "500"
       ICE_USER_REPORT_PUBLISH_MAX: "20"
@@ -94,12 +96,10 @@ jobs:
 
       - name: High-recall event discovery
         if: env.RUN_MODE == 'collect'
-        continue-on-error: true
         run: node scripts/ice-high-recall-discovery.mjs
 
       - name: Safe regional ERO official discovery
         if: env.RUN_MODE == 'collect'
-        continue-on-error: true
         run: node scripts/ice-ero-official-discovery.mjs
 
       - name: Enable ERO two-hour recovery

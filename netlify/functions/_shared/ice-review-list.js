@@ -74,6 +74,11 @@ function priority(story) {
     + Number(story.official_source_count || 0) * 20 + Number(Boolean(story.cover_image)) * 5;
 }
 
+function timeValue(value) {
+  const result = new Date(value || 0).getTime();
+  return Number.isFinite(result) ? result : 0;
+}
+
 function prepareStories(stories, postsByFingerprint) {
   const prepared = stories.map((story) => {
     const post = postsByFingerprint.get(String(story.event_fingerprint || "")) || {};
@@ -90,7 +95,8 @@ function prepareStories(stories, postsByFingerprint) {
       cover_image: safeText(story.cover_image, 3000) || mediaUrl(post),
       source_preview: raw,
       source_username: post.source_username || "",
-      source_created_at: post.source_created_at || story.last_seen_at || "",
+      source_created_at: post.source_created_at || story.last_seen_at || story.first_seen_at || "",
+      _sort_time: timeValue(post.source_created_at || story.last_seen_at || story.first_seen_at || story.updated_at),
       _dedupe: {
         text,
         words: keywords(text),
@@ -99,7 +105,7 @@ function prepareStories(stories, postsByFingerprint) {
         state_code: post.state_code || ""
       }
     };
-  });
+  }).sort((a, b) => b._sort_time - a._sort_time);
 
   const output = [];
   for (const item of prepared) {
@@ -117,7 +123,9 @@ function prepareStories(stories, postsByFingerprint) {
     }
   }
 
-  return output.map(({ _dedupe, ...story }) => story);
+  return output
+    .sort((a, b) => b._sort_time - a._sort_time)
+    .map(({ _dedupe, _sort_time, ...story }) => story);
 }
 
 module.exports = { prepareStories, keywords, sameEvent, firstSentence, summary };

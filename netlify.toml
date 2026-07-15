@@ -1,5 +1,5 @@
 [build]
-  command = "node scripts/validate-site.mjs"
+  command = "find netlify/functions -type f \\( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \\) -delete && node scripts/validate-site.mjs"
   publish = "."
 
 [[headers]]

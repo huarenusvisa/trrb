@@ -7,10 +7,14 @@ const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]
 const SEARCH_QUERIES = [
   // 高召回：重大执法、枪击、追车、现场视频
   '("ICE agent" OR "ICE agents" OR ICE) (shooting OR shot OR gunfire OR fired OR chase OR crash OR "use of force") -is:retweet lang:en',
-  '("Immigration and Customs Enforcement" OR ICE) (arrest OR arrested OR detained OR detention OR raid OR operation OR custody) -is:retweet lang:en',
+  '("Immigration and Customs Enforcement" OR ICE) (arrest OR arrested OR detained OR detention OR raid OR operation OR custody OR "taken into custody" OR "taken away" OR dragged OR "broke the window" OR "vehicle stop") -is:retweet lang:en',
   '("ICE raid" OR "immigration raid" OR "ICE arrest" OR "ICE detention") (video OR footage OR witness OR breaking OR update) -is:retweet lang:en',
   '("ICE" OR "ERO" OR "HSI") (deportation OR removal OR "removal flight" OR repatriation) -is:retweet lang:en',
-  '("ICE" OR "immigration agents") (protest OR courthouse OR school OR hospital OR workplace OR home) -is:retweet lang:en',
+  '("ICE" OR "immigration agents") (protest OR courthouse OR school OR hospital OR workplace OR home OR street OR vehicle) -is:retweet lang:en',
+
+  // 中文和双语帖子：不能加 lang:en，否则华人现场消息会被X直接排除
+  '(ICE OR HSI OR "移民与海关执法局" OR "国土安全调查局") (抓捕 OR 逮捕 OR 拘留 OR 羁押 OR 带走 OR 抓走 OR 遣返 OR 驱逐 OR 突袭 OR 执法 OR 破窗 OR 拖出) -is:retweet',
+  '(ICE OR "移民局特工" OR "移民执法人员") (律师 OR 华人 OR 中国人 OR 非法移民 OR 现场 OR 视频 OR 突发) -is:retweet',
 
   // HSI专项：人口贩卖、儿童营救、地方联合行动和逮捕
   '("HSI" OR "Homeland Security Investigations") (arrest OR arrested OR operation OR raid OR trafficking OR "human trafficking" OR smuggling) -is:retweet lang:en',
@@ -21,7 +25,7 @@ const SEARCH_QUERIES = [
   '(from:Reuters OR from:AP OR from:ABC OR from:CBSNews OR from:NBCNews OR from:CNN OR from:FoxNews) (ICE OR immigration OR HSI) -is:retweet',
 
   // 地点+行动词，解决帖子只写“agents”而未反复写ICE的问题
-  '("federal agents" OR "immigration agents" OR "HSI agents") (arrest OR arrested OR shooting OR raid OR detention OR chase OR operation) -is:retweet lang:en'
+  '("federal agents" OR "immigration agents" OR "HSI agents") (arrest OR arrested OR shooting OR raid OR detention OR chase OR operation OR "taken into custody" OR "taken away" OR dragged) -is:retweet lang:en'
 ];
 
 function envInt(name, fallback, min = 0, max = 1000) {
@@ -109,9 +113,9 @@ function relevanceScore(text, mediaCount, author) {
   const value = String(text || "").toLowerCase();
   let score = 0;
 
-  if (/\bice\b|immigration and customs enforcement|immigration agents|federal agents|\bero\b|\bhsi\b|homeland security investigations/.test(value)) score += 35;
-  if (/shoot|shot|gunfire|fired|chase|raid|arrest|detain|detention|deport|removal|custody|operation|use of force|traffick|smuggl|rescued|recovered|missing children/.test(value)) score += 30;
-  if (/video|footage|breaking|update|witness|scene|现场|视频/.test(value)) score += 12;
+  if (/\bice\b|immigration and customs enforcement|immigration agents|federal agents|\bero\b|\bhsi\b|homeland security investigations|移民与海关执法局|国土安全调查局|移民局特工|移民执法人员/.test(value)) score += 35;
+  if (/shoot|shot|gunfire|fired|chase|raid|arrest|detain|detention|deport|removal|custody|operation|use of force|traffick|smuggl|rescued|recovered|missing children|taken into custody|taken away|dragged|broke the window|抓捕|逮捕|拘留|羁押|带走|抓走|遣返|驱逐|突袭|执法|破窗|拖出/.test(value)) score += 30;
+  if (/video|footage|breaking|update|witness|scene|现场|视频|突发/.test(value)) score += 12;
   if (mediaCount > 0) score += 13;
   if (author?.verified) score += 10;
   if (Number(author?.public_metrics?.followers_count || 0) >= 10000) score += 8;
@@ -125,7 +129,7 @@ function eligible(text, media, author) {
   const followers = Number(author?.public_metrics?.followers_count || 0);
   const minFollowers = envInt("ICE_HIGH_RECALL_MIN_FOLLOWERS", 500, 0, 100000000);
 
-  const major = /shoot|shot|gunfire|fired|raid|arrest|detain|deport|removal|chase|traffick|rescued|missing children/.test(String(text || "").toLowerCase());
+  const major = /shoot|shot|gunfire|fired|raid|arrest|detain|deport|removal|chase|traffick|rescued|missing children|taken into custody|taken away|dragged|broke the window|抓捕|逮捕|拘留|羁押|带走|抓走|遣返|驱逐|突袭|破窗|拖出/.test(String(text || "").toLowerCase());
   const sourceOk = Boolean(author?.verified) || followers >= minFollowers || (media.length > 0 && major);
 
   return score >= minScore && sourceOk;
@@ -143,7 +147,6 @@ async function searchX(query, startTime) {
     url.searchParams.set("start_time", startTime);
     if (nextToken) url.searchParams.set("next_token", nextToken);
 
-    // 不再请求 geo/place 扩展，避免 X recent-search 参数兼容性导致 400。
     url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
     url.searchParams.set("expansions", "author_id,attachments.media_keys");
     url.searchParams.set("user.fields", "id,name,username,verified,public_metrics");
@@ -224,7 +227,7 @@ async function main() {
               tweet,
               author,
               discovery: {
-                collector: "ice-high-recall-v4",
+                collector: "ice-high-recall-v5",
                 relevance_score: score,
                 query
               }
@@ -264,7 +267,7 @@ async function main() {
   const inserted = await insertRows(fresh);
 
   console.log(JSON.stringify({
-    collector: "ice-high-recall-v4",
+    collector: "ice-high-recall-v5",
     lookback_hours: hours,
     max_pages_per_query: envInt("ICE_HIGH_RECALL_MAX_PAGES", 3, 1, 10),
     x_requests: requests,

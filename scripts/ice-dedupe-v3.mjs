@@ -19,35 +19,50 @@ async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {
 function normalize(value) { return String(value || "").toLowerCase().replace(/https?:\/\/\S+/g, " ").replace(/[\p{P}\p{S}\s]+/gu, "").trim(); }
 function tokens(value) {
   const text = String(value || "").toLowerCase().replace(/https?:\/\/\S+/g, " ");
-  return new Set((text.match(/[a-z]{3,}|[\u3400-\u9fff]{2,}|\d+/gu) || []).filter((x) => !/^(the|and|with|from|this|that|ice|移民|执法|新闻)$/.test(x)));
+  return new Set((text.match(/[a-z]{3,}|[\u3400-\u9fff]{2,}|\d+/gu) || []).filter((x) => !/^(the|and|with|from|this|that|ice|移民|执法|新闻|事件|男子|女子)$/.test(x)));
 }
 function overlap(a, b) { const A = tokens(a), B = tokens(b); if (!A.size || !B.size) return 0; let hit = 0; for (const x of A) if (B.has(x)) hit += 1; return hit / Math.max(1, Math.min(A.size, B.size)); }
 function grams(value, size = 3) { const text = normalize(value); const set = new Set(); for (let i = 0; i <= text.length - size; i += 1) set.add(text.slice(i, i + size)); return set; }
 function similarity(a, b) { const A = grams(a), B = grams(b); if (!A.size || !B.size) return 0; let hit = 0; for (const x of A) if (B.has(x)) hit += 1; return (2 * hit) / (A.size + B.size); }
 function timeOf(row) { const d = new Date(row.last_seen_at || row.first_seen_at || row.created_at || row.updated_at || 0); return Number.isNaN(d.getTime()) ? 0 : d.getTime(); }
 function payload(row) { return row?.ai_payload && typeof row.ai_payload === "object" ? row.ai_payload : {}; }
+function numbers(value) { return new Set((String(value || "").match(/\b\d{1,4}\b/g) || []).map(Number).filter((n) => n > 0)); }
+function numberOverlap(a, b) { const A = numbers(a), B = numbers(b); if (!A.size || !B.size) return 0; let hit = 0; for (const n of A) if (B.has(n)) hit += 1; return hit / Math.max(1, Math.min(A.size, B.size)); }
+function eventFamily(value) {
+  const text = String(value || "").toLowerCase();
+  if (/shoot|shot|gunfire|killed|death|died|枪击|死亡|身亡/.test(text)) return "shooting_death";
+  if (/deport|removal|removed|repatriat|遣返|驱逐|递解/.test(text)) return "removal";
+  if (/arrest|detain|custody|raid|拘捕|抓捕|逮捕|拘留|羁押|带走/.test(text)) return "custody";
+  if (/protest|demonstrat|抗议/.test(text)) return "protest";
+  return "other";
+}
 function dimensions(row) {
   const p = payload(row);
   const entities = [...(Array.isArray(p.entities) ? p.entities : []), ...(Array.isArray(p.confirmed_facts) ? p.confirmed_facts : [])].join(" ");
+  const facts = `${row.title || ""} ${row.summary || ""} ${row.content || ""} ${entities}`;
   return {
     time: String(row.first_seen_at || row.last_seen_at || row.created_at || "").slice(0, 13),
-    place: normalize(`${p.location_text || ""} ${p.city || ""} ${p.state_code || ""} ${row.title || ""}`),
+    place: normalize(`${p.location_text || ""} ${p.city || ""} ${p.state_code || ""} ${row.title || ""} ${row.summary || ""}`),
     people: normalize(`${entities} ${row.title || ""} ${row.summary || ""}`),
-    type: normalize(row.event_type || p.event_type || ""),
-    facts: `${row.title || ""} ${row.summary || ""} ${row.content || ""} ${entities}`
+    family: eventFamily(`${row.event_type || ""} ${p.event_type || ""} ${facts}`),
+    facts
   };
 }
 function sameEvent(a, b) {
   if (a.event_fingerprint && b.event_fingerprint && a.event_fingerprint === b.event_fingerprint) return { yes: true, reason: "相同事件指纹" };
   const A = dimensions(a), B = dimensions(b);
   if (Math.abs(timeOf(a) - timeOf(b)) > WINDOW_HOURS * 3600000) return { yes: false };
-  const sameType = !A.type || !B.type || A.type === B.type;
+  const familyCompatible = A.family === B.family || A.family === "other" || B.family === "other";
   const placeScore = overlap(A.place, B.place);
   const peopleScore = overlap(A.people, B.people);
   const factScore = Math.max(similarity(A.facts, B.facts), overlap(A.facts, B.facts));
-  if (sameType && factScore >= 0.78) return { yes: true, reason: "事件事实高度相似" };
-  if (sameType && placeScore >= 0.5 && peopleScore >= 0.45 && factScore >= 0.5) return { yes: true, reason: "时间地点人物及事件信息重复" };
-  if (sameType && placeScore >= 0.7 && factScore >= 0.62) return { yes: true, reason: "同一地点同类事件重复" };
+  const numericScore = numberOverlap(A.facts, B.facts);
+
+  if (familyCompatible && factScore >= 0.62) return { yes: true, reason: "事件事实高度相似" };
+  if (familyCompatible && placeScore >= 0.42 && peopleScore >= 0.35 && factScore >= 0.4) return { yes: true, reason: "时间地点人物及事件信息重复" };
+  if (familyCompatible && placeScore >= 0.55 && numericScore >= 0.5 && factScore >= 0.34) return { yes: true, reason: "地点和关键数字一致" };
+  if (familyCompatible && peopleScore >= 0.55 && numericScore >= 0.5 && factScore >= 0.36) return { yes: true, reason: "人物和关键数字一致" };
+  if (familyCompatible && placeScore >= 0.68 && factScore >= 0.48) return { yes: true, reason: "同一地点同类事件重复" };
   return { yes: false };
 }
 function preferred(a, b) {
@@ -66,7 +81,7 @@ async function rejectDuplicate(row, keeper, reason) {
 async function main() {
   requireEnv();
   const since = new Date(Date.now() - Math.max(2, WINDOW_HOURS) * 3600000).toISOString();
-  const rows = await rest("ice_stories", { query: { select: "*", created_at: `gte.${since}`, order: "created_at.asc", limit: "1500" } });
+  const rows = await rest("ice_stories", { query: { select: "*", created_at: `gte.${since}`, order: "created_at.asc", limit: "2000" } });
   const stories = Array.isArray(rows) ? rows : [];
   const keepers = [];
   let hidden = 0;

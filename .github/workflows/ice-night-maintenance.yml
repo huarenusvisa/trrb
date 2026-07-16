@@ -1,0 +1,114 @@
+name: ICE夜间维护与自修复
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-night-maintenance
+  cancel-in-progress: false
+
+jobs:
+  new-york-maintenance-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.guard.outputs.allowed }}
+      final_check: ${{ steps.guard.outputs.final_check }}
+      ny_time: ${{ steps.guard.outputs.ny_time }}
+    steps:
+      - id: guard
+        name: Only maintain during New York 02:00-08:00
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_MINUTE=$(TZ=America/New_York date +%M)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          echo "ny_time=$NY_TIME" >> "$GITHUB_OUTPUT"
+
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]] || (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if (( 10#$NY_HOUR == 7 && 10#$NY_MINUTE >= 30 )); then
+            echo "final_check=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "final_check=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "纽约时间：$NY_TIME；维护许可已计算。"
+
+  maintenance:
+    needs: new-york-maintenance-gate
+    if: needs.new-york-maintenance-gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_MAX_SOURCE_AGE_HOURS: "1"
+      ICE_UNREVIEWED_EXPIRE_HOURS: "2"
+      ICE_DEDUPE_HOURS: "2"
+      ICE_STUCK_PROCESSING_MINUTES: "30"
+      ICE_MAINTENANCE_BATCH_SIZE: "500"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate critical ICE code
+        run: |
+          node --check scripts/ice-night-maintenance.mjs
+          node --check scripts/ice-drop-stale-posts.mjs
+          node --check scripts/ice-expire-unreviewed.mjs
+          node --check scripts/ice-filter-replies.mjs
+          node --check scripts/ice-dedupe-v3.mjs
+          node --check scripts/ice-high-recall-discovery.mjs
+          node --check scripts/ice-ero-official-discovery.mjs
+          node --check scripts/ice-translate-title-body.mjs
+          node --check scripts/ice-trusted-source-promote.mjs
+          node --check scripts/ice-publish-due.mjs
+
+      - name: Run architecture regression tests
+        run: |
+          node --test scripts/ice-architecture.test.mjs
+          node --test scripts/ice-original-posts.test.mjs
+
+      - name: Recover stuck and retryable records
+        run: node scripts/ice-night-maintenance.mjs
+
+      - name: Remove source posts outside realtime window
+        run: node scripts/ice-drop-stale-posts.mjs
+
+      - name: Remove expired unreviewed candidates
+        run: node scripts/ice-expire-unreviewed.mjs
+
+      - name: Remove replies and comments
+        run: node scripts/ice-filter-replies.mjs
+
+      - name: Consolidate duplicate events
+        run: node scripts/ice-dedupe-v3.mjs
+
+      - name: Final 08:00 readiness check
+        if: needs.new-york-maintenance-gate.outputs.final_check == 'true'
+        run: |
+          node --check scripts/ice-multisource.mjs
+          node scripts/ice-multisource.mjs --self-test
+          echo "纽约时间08:00前最终检查通过，ICE实时流水线已准备恢复。"
+
+      - name: Maintenance summary
+        if: always()
+        run: |
+          echo "纽约时间：${{ needs.new-york-maintenance-gate.outputs.ny_time }}"
+          echo "本轮未调用X接口、未调用OpenAI、未自动发布新闻。"
+          echo "已执行：代码检查、回归测试、卡死任务恢复、失败任务重试、过期清理、回复过滤、事件去重。"

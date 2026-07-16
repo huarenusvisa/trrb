@@ -37,13 +37,16 @@
   function extractPeople(item) {
     const source = sourceText(item);
     const stored = Number(item.people || 0);
+
+    // Backend metadata/arrest_count is the authoritative count after AI extraction.
+    // Do not erase it merely because the Chinese wording uses “拘捕” or separates the number from the verb.
     if (stored > 0 && stored <= MAX_SINGLE_EVENT) {
-      const close = new RegExp(`(?:逮捕|抓捕|拘留|羁押|被捕|遣返)[^。；;]{0,20}${stored}(?:名|人|位)|${stored}(?:名|人|位)[^。；;]{0,20}(?:被逮捕|被捕|被拘留|遭拘留|羁押)`, "i");
-      if (close.test(source)) return { value: stored, kind: item.people_count_type || "exact" };
+      return { value: stored, kind: item.people_count_type || (item.estimated ? "estimated" : "exact") };
     }
+
     const patterns = [
-      /(?:逮捕|抓捕|拘留|羁押|扣押|遣返|递解)(?:了|约|至少|超过|逾)?\s*(\d{1,3})\s*(?:名|人|位)/,
-      /(\d{1,3})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民)?[^。；;]{0,14}(?:被逮捕|被捕|被拘留|遭拘留|落网|羁押)/,
+      /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|遣返|递解)(?:了|约|至少|超过|逾)?\s*(\d{1,3})\s*(?:名|人|位)/,
+      /(\d{1,3})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民)?[^。；;]{0,18}(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|落网|羁押)/,
       /(?:arrested|detained|apprehended|deported)\s+(?:about\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|migrants|immigrants|individuals)/i
     ];
     for (const pattern of patterns) {
@@ -53,6 +56,8 @@
       if (value <= 0 || value > MAX_SINGLE_EVENT) continue;
       return { value, kind: /约|about/i.test(match[0]) ? "estimated" : /至少|超过|逾|at least|more than|over/i.test(match[0]) ? "minimum" : "exact" };
     }
+    if (/(?:一名|一位|1名|1位|一人|一男子|一女子|one person|one man|one woman|a man|a woman)/i.test(source) && /(?:逮捕|抓捕|拘捕|拘留|羁押|被捕|带走|arrest|detain|custody|apprehend)/i.test(source)) return { value: 1, kind: "exact" };
+    if (/(?:两名|两位|两人|2名|2位|2人|two people|two men|two women)/i.test(source) && /(?:逮捕|抓捕|拘捕|拘留|羁押|被捕|带走|arrest|detain|custody|apprehend)/i.test(source)) return { value: 2, kind: "exact" };
     if (/数百(?:名|人)|hundreds? of/i.test(source)) return { value: 200, kind: "estimated" };
     if (/上百(?:名|人)/.test(source)) return { value: 100, kind: "minimum" };
     if (/近百(?:名|人)/.test(source)) return { value: 90, kind: "estimated" };

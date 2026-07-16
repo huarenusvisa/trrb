@@ -1,4 +1,4 @@
-/* TRRB V31.8: lock CTA intro sizing on desktop and mobile */
+/* TRRB V31.9: compact footer CTA strip matching reference layout */
 
 .sections-grid .section-lead img {
   object-fit: cover;
@@ -6,221 +6,287 @@
   aspect-ratio: 16 / 9;
 }
 
+/* Desktop: one compact horizontal strip */
 .cta-row {
   display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  align-items: start !important;
-  gap: 22px !important;
-  margin-top: 42px;
-  margin-bottom: 48px;
-  padding: 22px;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #fafafa 0%, #f5f6f8 100%);
+  grid-template-columns: 1.08fr 1fr 1fr !important;
+  align-items: stretch !important;
+  width: min(1180px, calc(100% - 32px)) !important;
+  margin: 28px auto 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  border: 1px solid #e2e6eb !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, .045) !important;
+  overflow: hidden !important;
 }
 
 .cta-row > article {
-  position: relative;
-  display: flex !important;
-  flex-direction: column !important;
-  align-self: start !important;
-  width: 100% !important;
+  position: relative !important;
+  display: grid !important;
+  grid-template-rows: auto auto 1fr !important;
+  align-content: center !important;
   min-width: 0 !important;
-  min-height: 0 !important;
-  height: auto !important;
+  min-height: 142px !important;
+  height: 142px !important;
   margin: 0 !important;
-  border: 1px solid #e1e5ea;
-  border-radius: 14px;
-  padding: 24px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(17, 24, 39, .055);
-  overflow: hidden;
+  padding: 18px 24px !important;
+  border: 0 !important;
+  border-right: 1px solid #e5e7eb !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.cta-row > article:last-child {
+  border-right: 0 !important;
 }
 
 .cta-row > article::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 4px;
-  background: #d60000;
+  display: none !important;
 }
 
 .cta-row > article > h2 {
-  display: flex !important;
-  align-items: center !important;
-  box-sizing: border-box !important;
-  width: 100% !important;
-  height: 40px !important;
-  min-height: 40px !important;
-  max-height: 40px !important;
-  margin: 0 0 10px !important;
-  overflow: hidden !important;
-  font-size: 22px;
-  line-height: 1.25;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 0 6px !important;
+  overflow: visible !important;
+  color: #111827 !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
 }
 
 .cta-row > article > p {
-  display: -webkit-box !important;
-  box-sizing: border-box !important;
-  width: 100% !important;
-  height: 72px !important;
-  min-height: 72px !important;
-  max-height: 72px !important;
-  margin: 0 0 18px !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  margin: 0 0 10px !important;
   overflow: hidden !important;
-  color: #5f6b7a;
-  line-height: 1.65;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  color: #4b5563 !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  -webkit-line-clamp: 2 !important;
 }
 
+/* Subscription form remains inline and compact */
 #daily form {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px;
-  margin-top: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 104px !important;
+  align-items: center !important;
+  gap: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
 }
 
-#daily form input,
-#daily form button,
-#submit .tip-form input,
-#submit .tip-form textarea,
-#submit .tip-form button {
-  border-radius: 9px;
+#daily form input[type="email"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border: 1px solid #d9dee5 !important;
+  border-radius: 4px 0 0 4px !important;
+  font-size: 13px !important;
 }
 
-#daily form button,
-#submit .tip-form button {
-  min-height: 48px;
-  font-weight: 800;
+#daily form button {
+  width: 104px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 12px !important;
+  border-radius: 0 4px 4px 0 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
 }
 
-.form-note {
-  display: block;
-  margin-top: 12px;
-  color: #6b7280;
-  line-height: 1.55;
+#daily .form-note {
+  display: none !important;
 }
 
+/* Reader group: copy left, small QR on the right */
 #community {
-  text-align: left;
+  grid-template-columns: minmax(0, 1fr) 92px !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 16px !important;
+  text-align: left !important;
+}
+
+#community > h2,
+#community > p {
+  grid-column: 1 !important;
 }
 
 .reader-qr {
-  display: block;
-  width: min(220px, 100%);
-  height: auto;
-  max-height: 280px;
-  margin: 8px auto 0 !important;
-  border: 1px solid #e1e5ea;
-  border-radius: 12px;
-  padding: 10px;
-  background: #fff;
-  object-fit: contain;
-  box-shadow: 0 8px 20px rgba(17, 24, 39, .06);
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  align-self: center !important;
+  justify-self: end !important;
+  display: block !important;
+  width: 88px !important;
+  height: 112px !important;
+  max-width: 88px !important;
+  max-height: 112px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  object-fit: contain !important;
+  box-shadow: none !important;
+}
+
+/* Submission: compact button only; full form remains in DOM for Netlify but hidden here */
+#submit {
+  grid-template-columns: minmax(0, 1fr) 112px !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 18px !important;
+}
+
+#submit > h2,
+#submit > p {
+  grid-column: 1 !important;
 }
 
 #submit .tip-form {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 11px;
-  margin-top: 0 !important;
+  grid-column: 2 !important;
+  grid-row: 1 / span 2 !important;
+  align-self: center !important;
+  display: block !important;
+  width: 112px !important;
+  margin: 0 !important;
 }
 
-#submit .tip-form textarea {
-  width: 100%;
-  min-height: 138px;
-  resize: vertical;
+#submit .tip-form > input:not([type="hidden"]),
+#submit .tip-form > textarea,
+#submit .tip-form > label,
+#submit .tip-form > p {
+  display: none !important;
 }
 
-#submit .file-label {
-  display: grid;
-  gap: 8px;
-  color: #4b5563;
-  font-size: 14px;
-  line-height: 1.5;
+#submit .tip-form button {
+  display: block !important;
+  width: 112px !important;
+  height: 42px !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 12px !important;
+  border: 1px solid #e34848 !important;
+  border-radius: 5px !important;
+  background: #fff !important;
+  color: #d60000 !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
 }
 
-#submit .file-label input[type="file"] {
-  width: 100%;
-  height: auto;
-  min-height: 48px;
-  padding: 10px;
-  border-radius: 9px;
-  background: #fff;
+#submit .form-note {
+  display: none !important;
 }
 
-@media (max-width: 1020px) {
-  .cta-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    align-items: start !important;
-  }
-
-  .cta-row #submit {
-    grid-column: 1 / -1;
-  }
+/* Keep footer tight to the CTA strip */
+.footer {
+  margin-top: 14px !important;
 }
 
-@media (max-width: 767px) {
-  .sections-grid .section-lead {
-    grid-template-columns: 112px minmax(0, 1fr);
-  }
-
-  .sections-grid .section-lead img {
-    width: 112px;
-    height: 63px;
-    aspect-ratio: 16 / 9;
-    object-position: center 16%;
-  }
-
+@media (max-width: 900px) {
   .cta-row {
     grid-template-columns: 1fr !important;
-    align-items: start !important;
-    gap: 14px !important;
-    margin-top: 28px;
-    padding: 14px;
-    border-radius: 12px;
+    width: min(720px, calc(100% - 24px)) !important;
+    margin-top: 22px !important;
+    border-radius: 10px !important;
   }
 
   .cta-row > article {
-    align-self: start !important;
     min-height: 0 !important;
     height: auto !important;
-    padding: 20px 18px;
-    border-radius: 11px;
+    padding: 18px 18px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid #e5e7eb !important;
   }
 
-  .cta-row #daily,
-  .cta-row #community,
-  .cta-row #submit {
-    order: initial;
-    grid-column: auto;
+  .cta-row > article:last-child {
+    border-bottom: 0 !important;
   }
 
   .cta-row > article > h2 {
-    height: 40px !important;
-    min-height: 40px !important;
-    max-height: 40px !important;
-    margin-bottom: 8px !important;
-    font-size: 22px;
+    font-size: 21px !important;
   }
 
   .cta-row > article > p {
-    height: 72px !important;
-    min-height: 72px !important;
-    max-height: 72px !important;
-    margin-bottom: 16px !important;
-    overflow: hidden !important;
-    -webkit-line-clamp: 2;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin-bottom: 12px !important;
+    font-size: 14px !important;
   }
 
-  #daily form {
-    grid-template-columns: 1fr;
+  #community {
+    grid-template-columns: minmax(0, 1fr) 86px !important;
+    min-height: 126px !important;
   }
 
   .reader-qr {
-    width: min(190px, 68vw);
-    max-height: 242px;
-    margin: 8px auto 0 !important;
+    width: 78px !important;
+    height: 100px !important;
+    max-width: 78px !important;
+    max-height: 100px !important;
+  }
+
+  #submit {
+    grid-template-columns: minmax(0, 1fr) 108px !important;
+    min-height: 112px !important;
+  }
+
+  #submit .tip-form,
+  #submit .tip-form button {
+    width: 108px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .cta-row {
+    width: calc(100% - 20px) !important;
+    margin-top: 18px !important;
+  }
+
+  .cta-row > article {
+    padding: 16px !important;
+  }
+
+  #daily form {
+    grid-template-columns: minmax(0, 1fr) 96px !important;
+  }
+
+  #daily form button {
+    width: 96px !important;
+    font-size: 13px !important;
+  }
+
+  #community {
+    grid-template-columns: minmax(0, 1fr) 76px !important;
+    column-gap: 12px !important;
+  }
+
+  .reader-qr {
+    width: 70px !important;
+    height: 90px !important;
+    max-width: 70px !important;
+    max-height: 90px !important;
+  }
+
+  #submit {
+    grid-template-columns: minmax(0, 1fr) 102px !important;
+    column-gap: 12px !important;
+  }
+
+  #submit .tip-form,
+  #submit .tip-form button {
+    width: 102px !important;
   }
 }

@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "scripts/ice-high-recall-discovery.mjs"
+      - "scripts/ice-priority-discovery.mjs"
       - "scripts/ice-publish-due.mjs"
       - "scripts/ice-ero-official-discovery.mjs"
       - "scripts/ice-drop-stale-posts.mjs"
@@ -28,6 +29,7 @@ on:
           - dry-run
   schedule:
     - cron: "*/10 * * * *"
+    - cron: "3,13,23,33,43,53 * * * *"
 
 permissions:
   contents: read
@@ -97,11 +99,14 @@ jobs:
       ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
       ICE_DEDUPE_HOURS: "2"
       ICE_MAX_SOURCE_AGE_HOURS: "1"
+      ICE_MAX_SOURCE_AGE_MINUTES: "60"
       ICE_UNREVIEWED_EXPIRE_HOURS: "2"
       ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
       ICE_HIGH_RECALL_MAX_PAGES: "3"
-      ICE_HIGH_RECALL_MIN_SCORE: "45"
-      ICE_HIGH_RECALL_MIN_FOLLOWERS: "500"
+      ICE_HIGH_RECALL_MIN_SCORE: "40"
+      ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
+      ICE_PRIORITY_LOOKBACK_MINUTES: "75"
+      ICE_PRIORITY_MAX_PAGES: "2"
 
     steps:
       - name: Checkout repository
@@ -115,6 +120,7 @@ jobs:
       - name: Validate ICE architecture
         run: |
           node --check scripts/ice-high-recall-discovery.mjs
+          node --check scripts/ice-priority-discovery.mjs
           node --check scripts/ice-ero-official-discovery.mjs
           node --check scripts/ice-drop-stale-posts.mjs
           node --check scripts/ice-expire-unreviewed.mjs
@@ -134,6 +140,10 @@ jobs:
       - name: High-recall one-hour event discovery
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-high-recall-discovery.mjs
+
+      - name: Priority account and missing-keyword discovery
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-priority-discovery.mjs
 
       - name: Safe regional ERO official discovery
         if: env.RUN_MODE == 'collect'
@@ -160,6 +170,10 @@ jobs:
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-fast-intake.mjs
 
+      - name: Early event dedupe before expensive AI processing
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-dedupe-v3.mjs
+
       - name: Deep AI extraction and cross-check
         run: node scripts/ice-multisource.mjs --mode="$RUN_MODE"
 
@@ -177,7 +191,7 @@ jobs:
       - name: Read all supplied text and generate 12 to 25 character titles
         run: node scripts/ice-translate-title-body.mjs
 
-      - name: Multi-dimensional event dedupe
+      - name: Final multi-dimensional event dedupe
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-dedupe-v3.mjs
 
@@ -197,10 +211,11 @@ jobs:
         run: |
           echo "ICE realtime pipeline completed."
           echo "New York quiet hours: 02:00-08:00."
-          echo "Collection window: one hour."
-          echo "Collection frequency: every ten minutes outside quiet hours."
+          echo "Primary schedule: every ten minutes; recovery schedule: three minutes after each slot."
+          echo "Collection window: one hour with a 75-minute priority-query overlap."
           echo "Official agencies and trusted media are AI edited and auto published."
           echo "All other accounts remain in manual review."
+          echo "Event dedupe runs before and after AI normalization."
           echo "Unreviewed candidates expire after two hours."
           echo "OpenAI monthly budget: $ICE_OPENAI_MONTHLY_BUDGET_USD"
           echo "X monthly budget: $ICE_X_MONTHLY_BUDGET_USD"

@@ -36,7 +36,7 @@ permissions:
 
 concurrency:
   group: trrb-ice-multisource
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   new-york-time-gate:
@@ -65,7 +65,7 @@ jobs:
     needs: new-york-time-gate
     if: needs.new-york-time-gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 35
 
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
@@ -97,7 +97,7 @@ jobs:
       ICE_DAILY_X_REQUEST_CAP: "300"
       ICE_VALIDATE_SOURCE_HANDLES: "false"
       ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
-      ICE_DEDUPE_HOURS: "2"
+      ICE_DEDUPE_HOURS: "720"
       ICE_MAX_SOURCE_AGE_HOURS: "1"
       ICE_MAX_SOURCE_AGE_MINUTES: "60"
       ICE_UNREVIEWED_EXPIRE_HOURS: "2"
@@ -107,6 +107,7 @@ jobs:
       ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
       ICE_PRIORITY_LOOKBACK_MINUTES: "75"
       ICE_PRIORITY_MAX_PAGES: "2"
+      ICE_PIPELINE_RESTART_GENERATION: "2026-07-16T12:52:00-04:00"
 
     steps:
       - name: Checkout repository
@@ -215,7 +216,7 @@ jobs:
           echo "Collection window: one hour with a 75-minute priority-query overlap."
           echo "Official agencies and trusted media are AI edited and auto published."
           echo "All other accounts remain in manual review."
-          echo "Event dedupe runs before and after AI normalization."
+          echo "Event dedupe runs before and after AI normalization against a 30-day history window."
           echo "Unreviewed candidates expire after two hours."
           echo "OpenAI monthly budget: $ICE_OPENAI_MONTHLY_BUDGET_USD"
           echo "X monthly budget: $ICE_X_MONTHLY_BUDGET_USD"

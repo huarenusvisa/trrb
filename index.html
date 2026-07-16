@@ -9,14 +9,11 @@
     <meta name="format-detection" content="telephone=no" />
     <link rel="manifest" href="./site.webmanifest?v=29.7" />
     <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
-    <meta
-      name="description"
-      content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、庇护百科等内容。"
-    />
+    <meta name="description" content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、庇护百科等内容。" />
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="stylesheet" href="./styles.css?v=29.7" />
     <link rel="stylesheet" href="./expose-wall.css?v=30.2" />
-    <link rel="stylesheet" href="./homepage-v31.css?v=31.6" />
+    <link rel="stylesheet" href="./homepage-v31.css?v=31.7" />
   </head>
   <body>
     <div class="topbar">
@@ -39,33 +36,21 @@
 
     <header class="site-header">
       <div class="container header-inner">
-        <button class="mobile-menu-toggle" type="button" aria-label="打开栏目菜单" aria-controls="site-navigation" aria-expanded="false">
-          <span aria-hidden="true">☰</span>
-        </button>
-        <a class="brand" href="./index.html" aria-label="唐人日报首页">
-          <img src="./trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily" width="720" height="208" />
-        </a>
-        <div class="slogan">
-          <b>立足美国 · 服务华人</b>
-          <span>US-China Breaking News for Chinese Readers</span>
-        </div>
+        <button class="mobile-menu-toggle" type="button" aria-label="打开栏目菜单" aria-controls="site-navigation" aria-expanded="false"><span aria-hidden="true">☰</span></button>
+        <a class="brand" href="./index.html" aria-label="唐人日报首页"><img src="./trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily" width="720" height="208" /></a>
+        <div class="slogan"><b>立足美国 · 服务华人</b><span>US-China Breaking News for Chinese Readers</span></div>
         <div class="header-actions">
           <a href="#daily">电子报订阅</a>
           <a href="#community">加入读者群</a>
           <a class="expose-action" href="./expose.html">我要曝光</a>
           <a class="primary" href="#submit">投稿爆料</a>
         </div>
-        <button class="mobile-search-toggle" type="button" aria-label="打开新闻搜索" aria-controls="site-navigation">
-          <span aria-hidden="true">⌕</span>
-        </button>
+        <button class="mobile-search-toggle" type="button" aria-label="打开新闻搜索" aria-controls="site-navigation"><span aria-hidden="true">⌕</span></button>
       </div>
     </header>
 
     <nav class="nav" id="site-navigation" aria-label="主要栏目">
-      <div class="mobile-nav-head">
-        <strong>唐人日报</strong>
-        <button class="mobile-nav-close" type="button" aria-label="关闭栏目菜单">×</button>
-      </div>
+      <div class="mobile-nav-head"><strong>唐人日报</strong><button class="mobile-nav-close" type="button" aria-label="关闭栏目菜单">×</button></div>
       <div class="container nav-inner">
         <a href="./listing.html?category=重要新闻">重要新闻</a>
         <a href="./listing.html?category=热门头条">热门头条</a>
@@ -82,62 +67,33 @@
           <button type="submit">搜索</button>
         </form>
         <div class="mobile-utility-links" aria-label="其他链接">
-          <a href="#daily">电子报订阅</a>
-          <a href="#community">加入读者群</a>
-          <a href="#submit">投稿爆料</a>
-          <a href="./expose.html">我要曝光</a>
-          <a href="#about">关于我们</a>
+          <a href="#daily">电子报订阅</a><a href="#community">加入读者群</a><a href="#submit">投稿爆料</a><a href="./expose.html">我要曝光</a><a href="#about">关于我们</a>
         </div>
       </div>
     </nav>
     <button class="mobile-nav-backdrop" type="button" aria-label="关闭栏目菜单"></button>
 
     <main>
-      <section class="breaking">
-        <div class="container breaking-inner">
-          <span class="pulse-dot" aria-hidden="true"></span>
-          <div class="ticker" id="ticker"></div>
-        </div>
-      </section>
-
-      <section class="container lead-layout">
-        <article class="hero-card" id="hero"></article>
-        <aside class="top-list" id="top-list"></aside>
-      </section>
-
+      <section class="breaking"><div class="container breaking-inner"><span class="pulse-dot" aria-hidden="true"></span><div class="ticker" id="ticker"></div></div></section>
+      <section class="container lead-layout"><article class="hero-card" id="hero"></article><aside class="top-list" id="top-list"></aside></section>
       <section class="container content-layout">
         <div class="sections-grid" id="sections-grid"></div>
         <aside class="sidebar">
-          <section class="rank">
-            <header><h2>24小时热榜</h2><a href="#" class="rank-switch" id="rank-switch">换一换</a></header>
-            <ol id="rank-list"></ol>
-          </section>
+          <section class="rank"><header><h2>24小时热榜</h2><a href="#" class="rank-switch" id="rank-switch">换一换</a></header><ol id="rank-list"></ol></section>
           <section class="topics topic-focus" id="topic-focus">
             <header class="topic-focus-header"><h2>专题聚焦</h2><a href="./listing.html">更多专题 <span aria-hidden="true">›</span></a></header>
             <div class="topic-focus-list">
               <a class="topic-focus-card topic-trump" href="./listing.html?q=%E7%89%B9%E6%9C%97%E6%99%AE" data-topic="trump">
                 <img class="topic-focus-icon" src="./assets/topic-focus/trump-portrait.jpg?v=30" alt="特朗普实时动态" width="420" height="560" loading="lazy" />
-                <div class="topic-focus-copy">
-                  <h3>特朗普实时动态</h3><p>每30分钟自动检查更新</p>
-                  <span class="topic-status"><i></i> 实时追踪</span>
-                  <div class="topic-latest" data-topic-latest="trump">正在读取最新动态…</div>
-                </div>
+                <div class="topic-focus-copy"><h3>特朗普实时动态</h3><p>每30分钟自动检查更新</p><span class="topic-status"><i></i> 实时追踪</span><div class="topic-latest" data-topic-latest="trump">正在读取最新动态…</div></div>
               </a>
               <a class="topic-focus-card topic-ice" href="/topic/ice/" data-topic="ice">
                 <img class="topic-focus-icon" src="./assets/topic-focus/ice-badge.jpg?v=30" alt="ICE执法" width="420" height="520" loading="lazy" />
-                <div class="topic-focus-copy">
-                  <h3>ICE执法</h3><p>执法行动与法律应对</p>
-                  <span class="topic-status"><i></i> 自动更新</span>
-                  <div class="topic-latest" data-topic-latest="ice">正在读取最新动态…</div>
-                </div>
+                <div class="topic-focus-copy"><h3>ICE执法</h3><p>执法行动与法律应对</p><span class="topic-status"><i></i> 自动更新</span><div class="topic-latest" data-topic-latest="ice">正在读取最新动态…</div></div>
               </a>
               <a class="topic-focus-card topic-election" href="./listing.html?q=%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE" data-topic="election">
                 <img class="topic-focus-icon" src="./assets/topic-focus/election-ballot.jpg?v=30" alt="2026中期选举实时动态" width="420" height="480" loading="lazy" />
-                <div class="topic-focus-copy">
-                  <h3>2026中期选举实时动态</h3><p>选情变化与关键州追踪</p>
-                  <span class="topic-status"><i></i> 实时更新</span>
-                  <div class="topic-latest" data-topic-latest="election">正在读取最新动态…</div>
-                </div>
+                <div class="topic-focus-copy"><h3>2026中期选举实时动态</h3><p>选情变化与关键州追踪</p><span class="topic-status"><i></i> 实时更新</span><div class="topic-latest" data-topic-latest="election">正在读取最新动态…</div></div>
               </a>
             </div>
           </section>
@@ -159,7 +115,7 @@
         <article id="community">
           <h2>加入读者群</h2>
           <p>扫码添加唐人日报微信，获取第一手资讯与深度解读</p>
-          <img class="reader-qr" src="./assets/reader-group-qr.jpeg?v=31.6" alt="唐人日报读者群微信二维码" width="888" height="1134" loading="lazy" decoding="async" />
+          <img class="reader-qr" src="./assets/reader-group-qr.jpeg?v=31.7" alt="唐人日报读者群微信二维码" width="888" height="1134" loading="lazy" decoding="async" />
         </article>
         <article id="submit">
           <h2>投稿爆料</h2>
@@ -170,9 +126,7 @@
             <input type="text" name="name" placeholder="您的姓名或昵称（可选）" />
             <input type="text" name="contact" placeholder="联系方式（邮箱/电话/微信，可选）" />
             <textarea name="message" placeholder="请填写爆料内容" rows="5" required></textarea>
-            <label class="file-label">上传图片或视频（单个文件建议不超过10MB）
-              <input type="file" name="attachment" accept="image/*,video/*" />
-            </label>
+            <label class="file-label">上传图片或视频（单个文件建议不超过10MB）<input type="file" name="attachment" accept="image/*,video/*" /></label>
             <button type="submit">提交线索</button>
           </form>
           <small class="form-note">线索将进入唐人日报后台，并可通过Netlify表单通知发送至 tangrenribao@gmail.com。</small>
@@ -214,10 +168,8 @@
     <script src="./articles-chunk-71.js"></script>
     <script src="./articles-chunk-72.js"></script>
     <script src="./articles-chunk-73.js"></script>
-
     <script src="./articles-home-index.js?v=29.7"></script>
     <script src="./articles-home.js?v=30.2"></script>
-
     <link rel="stylesheet" href="./topic-feed.css?v=36">
     <script src="./topic-config.js?v=36"></script>
     <script src="./trump-parser.js?v=36"></script>

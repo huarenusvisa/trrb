@@ -23,7 +23,7 @@ jobs:
       ICE_AUTO_PUBLISH_SCORE: "80"
       ICE_TRUSTED_AUTO_CONFIDENCE: "80"
       ICE_TRUSTED_MAX_AGE_MINUTES: "120"
-      ICE_PUBLISH_MAX_PER_RUN: "10"
+      ICE_PUBLISH_MAX_PER_RUN: "3"
 
     steps:
       - name: Checkout repository
@@ -43,4 +43,8 @@ jobs:
         run: node scripts/ice-trusted-source-promote.mjs
 
       - name: Publish up to ten due ICE stories
-        run: node scripts/ice-publish-due.mjs
+        run: |
+          node scripts/ice-publish-due.mjs
+          node scripts/ice-publish-due.mjs
+          node scripts/ice-publish-due.mjs
+          node scripts/ice-publish-due.mjs

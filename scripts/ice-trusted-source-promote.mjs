@@ -4,6 +4,8 @@ import process from "node:process";
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const TRUSTED_TYPES = /^(official|government|agency|media|news|verified_media|verified_discovered|organization|legal_org)$/i;
 const TRUSTED_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usmarshalshq|dojcrimdiv|reuters|ap|apnews|abc|abcnews|cbsnews|nbcnews|cnn|foxnews|newsnation|billmelugin_|alibradleytv|breaking911|immigrantcrimes|borderhawknews)$/i;
+const MEDIA_NAME = /news|times|post|journal|tribune|herald|report|press|daily|tv|radio|abc|nbc|cbs|fox|cnn|reuters|associated press|ap news|telemundo|univision|newsnation|scripps|spectrum|local\s*\d+/i;
+const AGENCY_NAME = /immigration and customs enforcement|homeland security|customs and border protection|border patrol|u\.?s\.? marshals|department of justice|federal bureau of investigation|enforcement and removal operations|\bice\b|\bdhs\b|\bhsi\b|\bcbp\b/i;
 const MIN_CONFIDENCE = Number(process.env.ICE_TRUSTED_AUTO_CONFIDENCE || 80);
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
 
@@ -45,7 +47,8 @@ function trusted(post) {
   const tier = Number(post?.trust_tier || 99);
   if (TRUSTED_HANDLES.test(username)) return true;
   if (TRUSTED_TYPES.test(type) && tier <= 3) return true;
-  if (type === "verified_discovered" && /news|times|post|journal|tribune|herald|report|press|daily|tv|radio|abc|nbc|cbs|fox|cnn|reuters|associated press|ap news/i.test(name)) return true;
+  if (tier <= 3 && (MEDIA_NAME.test(name) || AGENCY_NAME.test(name))) return true;
+  if (/verified/i.test(type) && tier <= 4 && (MEDIA_NAME.test(name) || AGENCY_NAME.test(name))) return true;
   return false;
 }
 function hardBlocked(story) {
@@ -57,7 +60,7 @@ function recentEnough(story) {
 }
 async function main() {
   requireEnv();
-  const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration)", order: "updated_at.desc", limit: "500" } });
+  const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration)", order: "updated_at.desc", limit: "1000" } });
   let approved = 0, manual = 0, blocked = 0, incomplete = 0, stale = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
     if (!recentEnough(story)) { stale += 1; continue; }
@@ -81,6 +84,6 @@ async function main() {
     });
     approved += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-trusted-source-promote-v3", checked: Array.isArray(rows) ? rows.length : 0, approved, manual_non_trusted: manual, blocked_hard_risk_or_low_confidence: blocked, incomplete, stale }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-trusted-source-promote-v4", checked: Array.isArray(rows) ? rows.length : 0, approved, manual_non_trusted: manual, blocked_hard_risk_or_low_confidence: blocked, incomplete, stale }, null, 2));
 }
 main().catch((error) => { console.error("可信ICE信源自动批准失败：", error); process.exitCode = 1; });

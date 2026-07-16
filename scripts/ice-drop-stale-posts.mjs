@@ -2,7 +2,7 @@
 import process from "node:process";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-const MAX_AGE_HOURS = 12;
+const MAX_AGE_HOURS = Number(process.env.ICE_MAX_SOURCE_AGE_HOURS || 5);
 const BATCH_SIZE = 100;
 
 function requireEnv() {
@@ -88,6 +88,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("清理超过12小时的ICE来源帖子失败：", error);
+  console.error(`清理超过${MAX_AGE_HOURS}小时的ICE来源帖子失败：`, error);
   process.exitCode = 1;
 });

@@ -2,7 +2,7 @@
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-const VERSION = "zh-title-body-v2-8-18";
+const VERSION = "zh-title-body-v3-12-25";
 const REQUIRED = ["OPENAI_API_KEY", "OPENAI_MODEL", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 
 function safeText(value, max = 30000) { return String(value ?? "").replace(/\u0000/g, "").trim().slice(0, max); }
@@ -19,12 +19,12 @@ function hasChinese(value) { return /[\u3400-\u9fff]/u.test(String(value || ""))
 function chineseRatio(value) { const text = String(value || "").replace(/\s+/g, ""); if (!text) return 0; const count = (text.match(/[\u3400-\u9fff]/gu) || []).length; return count / Array.from(text).length; }
 function titleLength(value) { return Array.from(String(value || "").replace(/[\s，。！？、：；“”‘’【】《》]/g, "")).length; }
 function fitTitle(value) {
-  let title = safeText(value, 80).replace(/[。！？!?]+$/g, "").trim();
-  if (titleLength(title) > 18) title = Array.from(title).slice(0, 18).join("").replace(/[，、：；]$/g, "");
-  if (titleLength(title) < 8) title = `${title}ICE执法动态`.slice(0, 18);
+  let title = safeText(value, 100).replace(/[。！？!?]+$/g, "").trim();
+  if (titleLength(title) > 25) title = Array.from(title).slice(0, 25).join("").replace(/[，、：；]$/g, "");
+  if (titleLength(title) < 12) title = `${title}ICE执法最新动态`.slice(0, 25);
   return title;
 }
-function needsTranslation(story) { const payload = safeJson(story.ai_payload, {}); if (payload.translation_version === VERSION && titleLength(story.title) >= 8 && titleLength(story.title) <= 18) return false; const content = safeText(story.content || story.summary, 30000); return !hasChinese(story.title) || titleLength(story.title) < 8 || titleLength(story.title) > 18 || !hasChinese(content) || chineseRatio(content) < 0.45 || Array.from(content).length < 55; }
+function needsTranslation(story) { const payload = safeJson(story.ai_payload, {}); if (payload.translation_version === VERSION && titleLength(story.title) >= 12 && titleLength(story.title) <= 25) return false; const content = safeText(story.content || story.summary, 30000); return !hasChinese(story.title) || titleLength(story.title) < 12 || titleLength(story.title) > 25 || !hasChinese(content) || chineseRatio(content) < 0.45 || Array.from(content).length < 55; }
 
 const SCHEMA = { type: "object", additionalProperties: false, required: ["title", "summary", "content", "source_language"], properties: { title: { type: "string" }, summary: { type: "string" }, content: { type: "string" }, source_language: { type: "string", enum: ["en", "zh", "mixed", "unknown"] } } };
 
@@ -40,7 +40,7 @@ async function translate(story, posts) {
         "所有输出必须使用简体中文，ICE、DHS、ERO、HSI等机构缩写及必要的人名英文拼写可以保留。",
         "只根据来源材料陈述事实，不补充未经提供的外部资料，不把观点、指控或单方说法写成已证实事实。",
         "官方账号使用‘ICE表示’‘DHS通报’等归因；媒体使用‘据该媒体报道’；个人账号使用‘该账号称’。",
-        "title必须为8至18个中文字符，包含最重要的地点、人物或机构及核心动作；不得使用震惊、炸裂、横扫、铁腕等煽动词。",
+        "title必须为12至25个中文字符，准确包含最重要的地点、人物或机构、人数及核心动作；不得使用震惊、炸裂、横扫、铁腕等煽动词。",
         "summary为45至90个中文字符。",
         "content为可直接发布的中文新闻正文，优先写明时间、地点、人物、机构、事件经过、人数及来源归因；信息少时60至140字，信息完整时140至320字。",
         "不得添加评论、立场、免责声明、标签或SEO关键词。"
@@ -64,7 +64,7 @@ async function patchStory(story, translated, posts) {
   const title = fitTitle(translated.title);
   const summary = safeText(translated.summary, 1200);
   const content = safeText(translated.content, 30000);
-  if (!title || !content || !hasChinese(title) || !hasChinese(content) || titleLength(title) < 8 || titleLength(title) > 18) throw new Error("中文标题不符合8至18字或正文为空");
+  if (!title || !content || !hasChinese(title) || !hasChinese(content) || titleLength(title) < 12 || titleLength(title) > 25) throw new Error("中文标题不符合12至25字或正文为空");
   await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, translation_version: VERSION, translated_at: nowIso(), translated_source_count: posts.length, source_language: translated.source_language || "unknown", title_length: titleLength(title) }, updated_at: nowIso() }, prefer: "return=minimal" });
 }
 async function main() {
@@ -76,7 +76,7 @@ async function main() {
     if (!needsTranslation(story)) { skipped += 1; continue; }
     const posts = await postsFor(story);
     if (!posts.length) { skipped += 1; continue; }
-    try { const translated = await translate(story, posts); await patchStory(story, translated, posts); translatedCount += 1; console.log(`已生成8至18字标题及中文正文：${story.id}｜${fitTitle(translated.title)}`); }
+    try { const translated = await translate(story, posts); await patchStory(story, translated, posts); translatedCount += 1; console.log(`已生成12至25字标题及中文正文：${story.id}｜${fitTitle(translated.title)}`); }
     catch (error) { console.error(`ICE中文编辑失败 ${story.id}:`, error.message || error); }
   }
   console.log(JSON.stringify({ stage: VERSION, checked: stories.length, translated: translatedCount, skipped }));

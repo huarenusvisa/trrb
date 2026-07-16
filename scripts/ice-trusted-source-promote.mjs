@@ -65,14 +65,17 @@ async function main() {
       select: "*",
       status: "in.(collecting,pending_review,pending_corroboration)",
       order: "updated_at.desc",
-      limit: "200"
+      limit: "300"
     }
   });
   let approved = 0;
   let manual = 0;
   let blocked = 0;
+  let incomplete = 0;
+  let stale = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
-    if (!recentEnough(story) || !String(story.title || "").trim() || !String(story.content || "").trim()) continue;
+    if (!recentEnough(story)) { stale += 1; continue; }
+    if (!String(story.title || "").trim() || !String(story.content || "").trim()) { incomplete += 1; continue; }
     const evidence = await evidenceFor(story.id);
     const trustedEvidence = evidence.filter(trusted);
     if (!trustedEvidence.length) { manual += 1; continue; }
@@ -88,7 +91,16 @@ async function main() {
         reviewer_email: "ai-trusted-source@trrb.net",
         reviewed_at: nowIso(),
         scheduled_at: nowIso(),
-        ai_payload: { ...payload, trusted_source_auto: true, trusted_source_types: [...new Set(trustedEvidence.map((post) => post.source_type))], trusted_source_accounts: sources, trusted_source_promoted_at: nowIso() },
+        total_score: Math.max(100, Number(story.total_score || 0)),
+        legal_risk: false,
+        ai_payload: {
+          ...payload,
+          trusted_source_auto: true,
+          trusted_source_types: [...new Set(trustedEvidence.map((post) => post.source_type))],
+          trusted_source_accounts: sources,
+          trusted_source_promoted_at: nowIso(),
+          original_legal_risk: Boolean(story.legal_risk)
+        },
         decision_reason: `${story.decision_reason || ""}；官方机构或可信媒体来源，AI自动编辑并批准发布`,
         updated_at: nowIso()
       },
@@ -96,7 +108,15 @@ async function main() {
     });
     approved += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-trusted-source-promote-v1", checked: Array.isArray(rows) ? rows.length : 0, approved, manual_non_trusted: manual, blocked }, null, 2));
+  console.log(JSON.stringify({
+    stage: "ice-trusted-source-promote-v2",
+    checked: Array.isArray(rows) ? rows.length : 0,
+    approved,
+    manual_non_trusted: manual,
+    blocked_hard_risk_or_low_confidence: blocked,
+    incomplete,
+    stale
+  }, null, 2));
 }
 main().catch((error) => {
   console.error("可信ICE信源自动批准失败：", error);

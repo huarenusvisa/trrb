@@ -37,7 +37,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  new-york-time-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.guard.outputs.allowed }}
+      ny_time: ${{ steps.guard.outputs.ny_time }}
+    steps:
+      - id: guard
+        name: Enforce New York 02:00-08:00 quiet hours
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          echo "ny_time=$NY_TIME" >> "$GITHUB_OUTPUT"
+
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于02:00-08:00休息时段，本轮停止采集和AI处理。"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，本轮允许运行。"
+          fi
+
   ice-pipeline:
+    needs: new-york-time-gate
+    if: needs.new-york-time-gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -150,7 +174,7 @@ jobs:
       - name: Normalize Chinese ICE briefs
         run: node scripts/ice-editorial-normalize.mjs
 
-      - name: Read all supplied text and generate 8 to 18 character titles
+      - name: Read all supplied text and generate 12 to 25 character titles
         run: node scripts/ice-translate-title-body.mjs
 
       - name: Multi-dimensional event dedupe
@@ -172,8 +196,9 @@ jobs:
         if: always()
         run: |
           echo "ICE realtime pipeline completed."
+          echo "New York quiet hours: 02:00-08:00."
           echo "Collection window: one hour."
-          echo "Collection frequency: every ten minutes."
+          echo "Collection frequency: every ten minutes outside quiet hours."
           echo "Official agencies and trusted media are AI edited and auto published."
           echo "All other accounts remain in manual review."
           echo "Unreviewed candidates expire after two hours."

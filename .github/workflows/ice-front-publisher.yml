@@ -3,24 +3,26 @@ name: ICE前端规律发布
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15,45 * * * *"
+    - cron: "5,35 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
-  group: trrb-ice-multisource
+  group: trrb-ice-front-publisher
   cancel-in-progress: false
 
 jobs:
   publish-one:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ICE_AUTO_PUBLISH_SCORE: "80"
+      ICE_TRUSTED_AUTO_CONFIDENCE: "80"
+      ICE_TRUSTED_MAX_AGE_MINUTES: "120"
       ICE_PUBLISH_MAX_PER_RUN: "10"
 
     steps:
@@ -32,8 +34,13 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Validate publisher
-        run: node --check scripts/ice-publish-due.mjs
+      - name: Validate publisher and trusted-source promoter
+        run: |
+          node --check scripts/ice-trusted-source-promote.mjs
+          node --check scripts/ice-publish-due.mjs
+
+      - name: Approve fresh official and trusted-media ICE stories
+        run: node scripts/ice-trusted-source-promote.mjs
 
       - name: Publish up to ten due ICE stories
         run: node scripts/ice-publish-due.mjs

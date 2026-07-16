@@ -21,7 +21,7 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ICE_AUTO_PUBLISH_SCORE: "80"
-      ICE_PUBLISH_MAX_PER_RUN: "1"
+      ICE_PUBLISH_MAX_PER_RUN: "10"
 
     steps:
       - name: Checkout repository
@@ -35,5 +35,5 @@ jobs:
       - name: Validate publisher
         run: node --check scripts/ice-publish-due.mjs
 
-      - name: Publish one due ICE story
+      - name: Publish up to ten due ICE stories
         run: node scripts/ice-publish-due.mjs

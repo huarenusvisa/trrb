@@ -3,7 +3,7 @@ import process from "node:process";
 
 const BASE = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-const WINDOW_HOURS = Number(process.env.ICE_DEDUPE_HOURS || 12);
+const WINDOW_HOURS = Number(process.env.ICE_DEDUPE_HOURS || 720);
 const PUBLISHED_HISTORY_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 30);
 
 function requireEnv() { if (!BASE || !KEY) throw new Error("缺少 SUPABASE_URL 或 SUPABASE_SERVICE_ROLE_KEY"); }
@@ -21,7 +21,7 @@ async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {
 function normalize(value) { return String(value || "").toLowerCase().replace(/https?:\/\/\S+/g, " ").replace(/[\p{P}\p{S}\s]+/gu, "").trim(); }
 function tokens(value) {
   const text = String(value || "").toLowerCase().replace(/https?:\/\/\S+/g, " ");
-  return new Set((text.match(/[a-z]{3,}|[\u3400-\u9fff]{2,}|\d+/gu) || []).filter((x) => !/^(the|and|with|from|this|that|ice|移民|执法|新闻|事件|男子|女子|美国|加拿大)$/.test(x)));
+  return new Set((text.match(/[a-z][a-z'-]{2,}|[\u3400-\u9fff]{2,}|\d+/gu) || []).filter((x) => !/^(the|and|with|from|this|that|ice|dhs|移民|执法|新闻|事件|男子|女子|美国|加拿大|表示|相关|目前|正在|一名)$/.test(x)));
 }
 function overlap(a, b) { const A = tokens(a), B = tokens(b); if (!A.size || !B.size) return 0; let hit = 0; for (const x of A) if (B.has(x)) hit += 1; return hit / Math.max(1, Math.min(A.size, B.size)); }
 function grams(value, size = 3) { const text = normalize(value); const set = new Set(); for (let i = 0; i <= text.length - size; i += 1) set.add(text.slice(i, i + size)); return set; }
@@ -39,6 +39,13 @@ function eventFamily(value) {
   if (/protest|demonstrat|抗议/.test(text)) return "protest";
   return "other";
 }
+function anchors(value) {
+  const text = String(value || "");
+  const latin = text.match(/\b[A-Z][a-z]+(?:[-'][A-Z]?[a-z]+)?(?:\s+[A-Z][a-z]+(?:[-'][A-Z]?[a-z]+)?){0,3}\b/g) || [];
+  const chinese = text.match(/[\u3400-\u9fff]{2,8}(?:州|市|县|郡|拘留中心|监狱|法院|海岸|社区|女子|男子|儿童|少年|律师|检察官)/g) || [];
+  return new Set([...latin, ...chinese].map(normalize).filter((x) => x.length >= 3));
+}
+function anchorOverlap(a, b) { const A = anchors(a), B = anchors(b); if (!A.size || !B.size) return 0; let hit = 0; for (const x of A) if (B.has(x)) hit += 1; return hit / Math.max(1, Math.min(A.size, B.size)); }
 function dimensions(row) {
   const p = payload(row), m = metadata(row);
   const entities = [...(Array.isArray(p.entities) ? p.entities : []), ...(Array.isArray(p.confirmed_facts) ? p.confirmed_facts : [])].join(" ");
@@ -62,12 +69,14 @@ function sameEvent(a, b, { ignoreTime = false, publishedHistory = false } = {}) 
   const peopleScore = overlap(A.people, B.people);
   const factScore = Math.max(similarity(A.facts, B.facts), overlap(A.facts, B.facts));
   const numericScore = numberOverlap(A.facts, B.facts);
-  const strong = publishedHistory ? 0.58 : 0.55;
+  const anchorScore = anchorOverlap(A.facts, B.facts);
+  const strong = publishedHistory ? 0.48 : 0.46;
   if (factScore >= strong) return { yes: true, reason: publishedHistory ? "与已发布文章事实高度相似" : "事件事实高度相似" };
-  if (placeScore >= 0.4 && peopleScore >= 0.34 && factScore >= (publishedHistory ? 0.34 : 0.32)) return { yes: true, reason: "时间地点人物及事件信息重复" };
-  if (placeScore >= 0.5 && numericScore >= 0.5 && factScore >= 0.3) return { yes: true, reason: "地点和关键数字一致" };
-  if (peopleScore >= 0.5 && numericScore >= 0.5 && factScore >= 0.3) return { yes: true, reason: "人物和关键数字一致" };
-  if (placeScore >= 0.62 && factScore >= 0.38) return { yes: true, reason: "同一地点同类事件重复" };
+  if (anchorScore >= 0.5 && factScore >= 0.24) return { yes: true, reason: "关键人物或地点锚点一致" };
+  if (placeScore >= 0.34 && peopleScore >= 0.28 && factScore >= 0.25) return { yes: true, reason: "时间地点人物及事件信息重复" };
+  if (placeScore >= 0.42 && numericScore >= 0.5 && factScore >= 0.22) return { yes: true, reason: "地点和关键数字一致" };
+  if (peopleScore >= 0.42 && numericScore >= 0.5 && factScore >= 0.22) return { yes: true, reason: "人物和关键数字一致" };
+  if (placeScore >= 0.55 && factScore >= 0.28) return { yes: true, reason: "同一地点同类事件重复" };
   return { yes: false };
 }
 function preferred(a, b) {
@@ -85,11 +94,11 @@ async function rejectDuplicate(row, keeper, reason) {
 }
 async function main() {
   requireEnv();
-  const storySince = new Date(Date.now() - Math.max(12, WINDOW_HOURS) * 3600000).toISOString();
+  const storySince = new Date(Date.now() - Math.max(24, WINDOW_HOURS) * 3600000).toISOString();
   const articleSince = new Date(Date.now() - PUBLISHED_HISTORY_DAYS * 86400000).toISOString();
   const [storyRows, articleRows] = await Promise.all([
-    rest("ice_stories", { query: { select: "*", created_at: `gte.${storySince}`, order: "created_at.asc", limit: "3000" } }),
-    rest("articles", { query: { select: "id,title,summary,content,published_at,source_created_at,metadata,topic_key,status", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${articleSince}`, order: "published_at.desc", limit: "3000" } })
+    rest("ice_stories", { query: { select: "*", created_at: `gte.${storySince}`, order: "created_at.asc", limit: "5000" } }),
+    rest("articles", { query: { select: "id,title,summary,content,published_at,source_created_at,metadata,topic_key,status", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${articleSince}`, order: "published_at.desc", limit: "5000" } })
   ]);
   const stories = Array.isArray(storyRows) ? storyRows : [];
   const published = (Array.isArray(articleRows) ? articleRows : []).map((row) => ({ ...row, status: "published", event_fingerprint: metadata(row).event_fingerprint || "" }));
@@ -123,6 +132,6 @@ async function main() {
     if (keeper.id === story.id) { const index = keepers.findIndex((x) => x.id === duplicate.id); if (index >= 0) keepers[index] = story; }
     if (await rejectDuplicate(loser, keeper, reason)) hidden += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-dedupe-v4", scanned_stories: stories.length, published_history: published.length, hidden_current_duplicates: hidden, blocked_already_published: blockedByPublished, hidden_placeholders: placeholders, kept: keepers.length }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-dedupe-v5", scanned_stories: stories.length, published_history: published.length, hidden_current_duplicates: hidden, blocked_already_published: blockedByPublished, hidden_placeholders: placeholders, kept: keepers.length }, null, 2));
 }
 main().catch((error) => { console.error("ICE多维查重失败：", error); process.exitCode = 1; });

@@ -2,6 +2,12 @@ name: ICE前端规律发布
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/ice-trusted-source-promote.mjs"
+      - "scripts/ice-publish-due.mjs"
+      - ".github/workflows/ice-front-publisher.yml"
   schedule:
     - cron: "5,35 * * * *"
 
@@ -13,7 +19,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish-one:
+  new-york-time-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.guard.outputs.allowed }}
+      ny_time: ${{ steps.guard.outputs.ny_time }}
+    steps:
+      - id: guard
+        name: Enforce New York 02:00-08:00 publishing quiet hours
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          echo "ny_time=$NY_TIME" >> "$GITHUB_OUTPUT"
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于02:00-08:00休息时段，本轮停止自动发布。"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，本轮允许自动发布。"
+          fi
+
+  publish:
+    needs: new-york-time-gate
+    if: needs.new-york-time-gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -32,7 +61,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: "22"
 
       - name: Validate publisher and trusted-source promoter
         run: |
@@ -48,3 +77,9 @@ jobs:
           node scripts/ice-publish-due.mjs
           node scripts/ice-publish-due.mjs
           node scripts/ice-publish-due.mjs
+
+      - name: Publisher completion summary
+        if: always()
+        run: |
+          echo "纽约时间：${{ needs.new-york-time-gate.outputs.ny_time }}"
+          echo "发布规则：每30分钟检查，单轮最多约10篇；02:00-08:00纽约时间停止定时发布。"

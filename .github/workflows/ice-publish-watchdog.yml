@@ -1,0 +1,75 @@
+name: ICE去重与自动发布看门狗
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5,15,25,35,45,55 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/ice-dedupe-v3.mjs"
+      - "scripts/ice-trusted-source-promote.mjs"
+      - "scripts/ice-publish-due.mjs"
+      - ".github/workflows/ice-publish-watchdog.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-publish-watchdog
+  cancel-in-progress: true
+
+jobs:
+  publish-watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_DEDUPE_HOURS: "12"
+      ICE_TRUSTED_AUTO_CONFIDENCE: "80"
+      ICE_TRUSTED_MAX_AGE_MINUTES: "120"
+      ICE_AUTO_PUBLISH_SCORE: "80"
+      ICE_FORCE_FIRST_PUBLISH: "true"
+      ICE_PUBLISH_MAX_PER_RUN: "20"
+      ICE_URGENT_MAX_PER_RUN: "20"
+    steps:
+      - name: Check New York quiet hours
+        id: gate
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout repository
+        if: steps.gate.outputs.allowed == 'true'
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: steps.gate.outputs.allowed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate scripts
+        if: steps.gate.outputs.allowed == 'true'
+        run: |
+          node --check scripts/ice-dedupe-v3.mjs
+          node --check scripts/ice-trusted-source-promote.mjs
+          node --check scripts/ice-publish-due.mjs
+
+      - name: Remove duplicate ICE stories
+        if: steps.gate.outputs.allowed == 'true'
+        run: node scripts/ice-dedupe-v3.mjs
+
+      - name: Approve trusted official and media stories
+        if: steps.gate.outputs.allowed == 'true'
+        run: node scripts/ice-trusted-source-promote.mjs
+
+      - name: Publish approved ICE stories
+        if: steps.gate.outputs.allowed == 'true'
+        run: node scripts/ice-publish-due.mjs

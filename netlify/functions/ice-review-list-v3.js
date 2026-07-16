@@ -5,6 +5,8 @@ const {
 } = require("./_shared/supabase-admin");
 const { prepareStories } = require("./_shared/ice-review-list");
 
+const REVIEW_MAX_AGE_HOURS = 5;
+
 function json(statusCode, body) {
   return {
     statusCode,
@@ -15,6 +17,10 @@ function json(statusCode, body) {
     },
     body: JSON.stringify(body)
   };
+}
+
+function cutoffIso() {
+  return new Date(Date.now() - REVIEW_MAX_AGE_HOURS * 3600000).toISOString();
 }
 
 async function loadStories() {
@@ -29,7 +35,8 @@ async function loadStories() {
         "reviewer_email","editor_notes","updated_at","ai_payload"
       ].join(","),
       status: "in.(collecting,pending_review,pending_corroboration,approved,published,rejected,failed)",
-      order: "updated_at.desc",
+      last_seen_at: `gte.${cutoffIso()}`,
+      order: "last_seen_at.desc,updated_at.desc",
       limit: "400"
     }
   });
@@ -46,7 +53,8 @@ async function loadLeadPosts(stories) {
         select: "id,event_fingerprint,event_type,event_date,state_code,city,source_text,source_username,source_display_name,source_created_at,media,trust_tier,processing_status,last_error",
         event_fingerprint: `in.(${batch.join(",")})`,
         processing_status: "neq.irrelevant",
-        order: "trust_tier.asc,source_created_at.asc",
+        source_created_at: `gte.${cutoffIso()}`,
+        order: "trust_tier.asc,source_created_at.desc",
         limit: "2000"
       }
     });
@@ -72,11 +80,13 @@ function timeValue(value) {
 }
 
 async function pipelineStatus(stories) {
+  const cutoff = cutoffIso();
   const [posts, states] = await Promise.all([
     rest("ice_posts", {
       query: {
         select: "processing_status,created_at,source_created_at,last_error",
-        order: "created_at.desc",
+        source_created_at: `gte.${cutoff}`,
+        order: "source_created_at.desc",
         limit: "1000"
       }
     }),
@@ -93,9 +103,6 @@ async function pipelineStatus(stories) {
   const successful = stateRows.map((row) => row.last_success_at).filter(Boolean).sort().at(-1) || null;
   const latestRun = stateRows.map((row) => row.last_run_at).filter(Boolean).sort().at(-1) || null;
 
-  // 只显示仍然有效的错误：
-  // 1. 该查询的错误更新时间晚于它自己的最近成功时间；
-  // 2. 并且错误属于当前活跃运行窗口，避免旧版query_key永久留在后台。
   const latestRunMs = timeValue(latestRun);
   const activeWindowStart = latestRunMs ? latestRunMs - 6 * 60 * 60 * 1000 : 0;
   const errors = stateRows
@@ -117,6 +124,7 @@ async function pipelineStatus(stories) {
   return {
     last_run_at: latestRun,
     last_success_at: successful,
+    freshness_hours: REVIEW_MAX_AGE_HOURS,
     post_counts: countBy(postRows, "processing_status"),
     story_counts: countBy(stories, "status"),
     recent_errors: errors,
@@ -134,7 +142,9 @@ exports.handler = async (event) => {
     if (safeText(input.action, 40) !== "list") return json(400, { error: "只支持list操作" });
     const stories = await loadStories();
     const postsByFingerprint = await loadLeadPosts(stories);
-    const visible = prepareStories(stories, postsByFingerprint);
+    const visible = prepareStories(stories, postsByFingerprint)
+      .filter((story) => timeValue(story.source_created_at || story.last_seen_at || story.updated_at) >= Date.now() - REVIEW_MAX_AGE_HOURS * 3600000)
+      .sort((a, b) => timeValue(b.source_created_at || b.last_seen_at || b.updated_at) - timeValue(a.source_created_at || a.last_seen_at || a.updated_at));
     return json(200, {
       stories: visible,
       pipeline: await pipelineStatus(stories),

@@ -29,14 +29,13 @@ on:
           - dry-run
   schedule:
     - cron: "*/10 * * * *"
-    - cron: "3,13,23,33,43,53 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ice-multisource
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   new-york-time-gate:
@@ -212,7 +211,7 @@ jobs:
         run: |
           echo "ICE realtime pipeline completed."
           echo "New York quiet hours: 02:00-08:00."
-          echo "Primary schedule: every ten minutes; recovery schedule: three minutes after each slot."
+          echo "Stable schedule: every ten minutes; active runs are never cancelled by later schedules."
           echo "Collection window: one hour with a 75-minute priority-query overlap."
           echo "Official agencies and trusted media are AI edited and auto published."
           echo "All other accounts remain in manual review."

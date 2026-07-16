@@ -10,6 +10,8 @@ on:
       - "scripts/ice-publish-due.mjs"
       - "scripts/ice-ero-official-discovery.mjs"
       - "scripts/ice-drop-stale-posts.mjs"
+      - "scripts/ice-expire-unreviewed.mjs"
+      - "netlify/functions/ice-review-list-v3.js"
       - ".github/workflows/ice-auto-publish.yml"
   workflow_dispatch:
     inputs:
@@ -23,7 +25,7 @@ on:
           - bootstrap
           - dry-run
   schedule:
-    - cron: "7,37 * * * *"
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
   contents: read
@@ -35,7 +37,7 @@ concurrency:
 jobs:
   ice-pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 35
 
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
@@ -50,12 +52,12 @@ jobs:
       ICE_TOTAL_MONTHLY_BUDGET_USD: "700"
       ICE_AUTO_PUBLISH_SCORE: "80"
       ICE_AI_CONFIDENCE: "80"
-      ICE_MAX_AI_POSTS_PER_RUN: "100"
-      ICE_FAST_INTAKE_MAX: "500"
+      ICE_MAX_AI_POSTS_PER_RUN: "150"
+      ICE_FAST_INTAKE_MAX: "800"
       ICE_MAX_RETRIES: "5"
-      ICE_PUBLISH_INTERVAL_MINUTES: "30"
-      ICE_MAX_STORIES_PER_RUN: "50"
-      ICE_NORMALIZE_MAX_STORIES: "100"
+      ICE_PUBLISH_INTERVAL_MINUTES: "15"
+      ICE_MAX_STORIES_PER_RUN: "80"
+      ICE_NORMALIZE_MAX_STORIES: "150"
       ICE_OFFICIALS_PER_QUERY: "8"
       ICE_MEDIA_PER_QUERY: "10"
       ICE_ORGS_PER_QUERY: "15"
@@ -63,8 +65,10 @@ jobs:
       ICE_MONTHLY_X_POST_READ_CAP: "65000"
       ICE_DAILY_X_REQUEST_CAP: "220"
       ICE_VALIDATE_SOURCE_HANDLES: "false"
-      ICE_HIGH_RECALL_LOOKBACK_HOURS: "12"
-      ICE_DEDUPE_HOURS: "12"
+      ICE_HIGH_RECALL_LOOKBACK_HOURS: "5"
+      ICE_DEDUPE_HOURS: "5"
+      ICE_MAX_SOURCE_AGE_HOURS: "5"
+      ICE_UNREVIEWED_EXPIRE_HOURS: "5"
       ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
       ICE_HIGH_RECALL_MAX_PAGES: "3"
       ICE_HIGH_RECALL_MIN_SCORE: "45"
@@ -85,6 +89,7 @@ jobs:
           node --check scripts/ice-high-recall-discovery.mjs
           node --check scripts/ice-ero-official-discovery.mjs
           node --check scripts/ice-drop-stale-posts.mjs
+          node --check scripts/ice-expire-unreviewed.mjs
           node --check scripts/ice-dedupe-v3.mjs
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-editorial-normalize.mjs
@@ -106,9 +111,13 @@ jobs:
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-ero-official-discovery.mjs
 
-      - name: Drop ICE source posts older than 12 hours
+      - name: Drop ICE source posts older than five hours
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-drop-stale-posts.mjs
+
+      - name: Remove expired unreviewed ICE candidates
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-expire-unreviewed.mjs
 
       - name: Enable ERO two-hour recovery
         if: env.RUN_MODE == 'collect'
@@ -120,7 +129,7 @@ jobs:
         continue-on-error: true
         run: node scripts/ice-filter-replies.mjs
 
-      - name: Send collected posts directly to cross-source review
+      - name: Send fresh posts directly to review within the same run
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-fast-intake.mjs
 
@@ -133,9 +142,8 @@ jobs:
         continue-on-error: true
         run: node scripts/ice-filter-replies.mjs
 
-      - name: Re-send remaining backlog to cross-source review
+      - name: Re-send remaining fresh backlog to cross-source review
         if: env.RUN_MODE == 'collect'
-        continue-on-error: true
         run: node scripts/ice-fast-intake.mjs
 
       - name: Translate and format Chinese ICE briefs
@@ -161,7 +169,7 @@ jobs:
         continue-on-error: true
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
-          ICE_PUBLISH_MAX_PER_RUN: "10"
+          ICE_PUBLISH_MAX_PER_RUN: "15"
         run: node scripts/ice-publish-due.mjs
 
       - name: Pipeline summary
@@ -170,5 +178,5 @@ jobs:
           echo "ICE pipeline completed."
           echo "OpenAI monthly budget: $ICE_OPENAI_MONTHLY_BUDGET_USD"
           echo "X monthly budget: $ICE_X_MONTHLY_BUDGET_USD"
-          echo "Collection and dedupe windows are both capped at 12 hours."
-          echo "Collected posts are deduplicated and approved stories are published immediately."
+          echo "Collection, review visibility, dedupe and expiry are capped at five hours."
+          echo "The workflow runs every fifteen minutes and fresh posts enter review in the same run."

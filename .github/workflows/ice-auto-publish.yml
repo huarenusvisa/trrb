@@ -12,6 +12,7 @@ on:
       - "scripts/ice-drop-stale-posts.mjs"
       - "scripts/ice-expire-unreviewed.mjs"
       - "scripts/ice-precollect-published-dedupe.mjs"
+      - "scripts/ice-clean-existing-review-duplicates.mjs"
       - "scripts/ice-dedupe-v3.mjs"
       - "scripts/ice-translate-title-body.mjs"
       - "scripts/ice-trusted-source-promote.mjs"
@@ -102,6 +103,7 @@ jobs:
       ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "60"
       ICE_PUBLISHED_DEDUPE_DAYS: "30"
       ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.38"
+      ICE_REVIEW_DUPLICATE_THRESHOLD: "0.42"
       ICE_UNREVIEWED_EXPIRE_HOURS: "2"
       ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
       ICE_HIGH_RECALL_MAX_PAGES: "3"
@@ -109,7 +111,6 @@ jobs:
       ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
       ICE_PRIORITY_LOOKBACK_MINUTES: "75"
       ICE_PRIORITY_MAX_PAGES: "2"
-      ICE_PIPELINE_RESTART_GENERATION: "2026-07-16T12:52:00-04:00"
 
     steps:
       - name: Checkout repository
@@ -128,6 +129,7 @@ jobs:
           node --check scripts/ice-drop-stale-posts.mjs
           node --check scripts/ice-expire-unreviewed.mjs
           node --check scripts/ice-precollect-published-dedupe.mjs
+          node --check scripts/ice-clean-existing-review-duplicates.mjs
           node --check scripts/ice-dedupe-v3.mjs
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-editorial-normalize.mjs
@@ -136,10 +138,13 @@ jobs:
           node --check scripts/ice-translate-title-body.mjs
           node --check scripts/ice-trusted-source-promote.mjs
           node --check scripts/ice-publish-due.mjs
-          node --check scripts/ice-enable-first-backfill.mjs
           node --test scripts/ice-architecture.test.mjs
           node --test scripts/ice-original-posts.test.mjs
           node scripts/ice-multisource.mjs --self-test
+
+      - name: Clean existing review queue before collection
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-clean-existing-review-duplicates.mjs
 
       - name: High-recall one-hour event discovery
         if: env.RUN_MODE == 'collect'
@@ -160,11 +165,6 @@ jobs:
       - name: Remove candidates not handled within two hours
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-expire-unreviewed.mjs
-
-      - name: Enable ERO recovery
-        if: env.RUN_MODE == 'collect'
-        continue-on-error: true
-        run: node scripts/ice-enable-first-backfill.mjs
 
       - name: Remove replies and comments before intake
         if: env.RUN_MODE == 'collect'
@@ -207,6 +207,10 @@ jobs:
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-dedupe-v3.mjs
 
+      - name: Clean review queue again after normalization
+        if: env.RUN_MODE == 'collect'
+        run: node scripts/ice-clean-existing-review-duplicates.mjs
+
       - name: Auto approve official agencies and trusted media only
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-trusted-source-promote.mjs
@@ -222,10 +226,7 @@ jobs:
         if: always()
         run: |
           echo "ICE realtime pipeline completed."
-          echo "New York quiet hours: 02:00-08:00."
-          echo "Stable schedule: every ten minutes; active runs are never cancelled by later schedules."
           echo "Collection window: strictly one hour."
           echo "Published articles and recent one-hour candidates are checked before intake."
-          echo "Similar items without a material factual change are discarded before review."
-          echo "Official agencies and trusted media are AI edited and auto published."
-          echo "All other accounts remain in manual review."
+          echo "Existing review queue is cleaned before collection and again before publishing."
+          echo "Similar items without a material factual change are discarded."

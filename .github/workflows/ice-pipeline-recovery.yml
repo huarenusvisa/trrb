@@ -10,13 +10,14 @@ on:
       - ".github/workflows/ice-pipeline-recovery.yml"
       - "scripts/ice-high-recall-discovery.mjs"
       - "scripts/ice-priority-discovery.mjs"
+      - "scripts/ice-precollect-published-dedupe.mjs"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ice-recovery
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   recovery:
@@ -39,7 +40,11 @@ jobs:
       ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
       ICE_MAX_SOURCE_AGE_MINUTES: "60"
       ICE_MAX_SOURCE_AGE_HOURS: "1"
+      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "60"
+      ICE_PUBLISHED_DEDUPE_DAYS: "30"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.38"
       ICE_FAST_INTAKE_MAX: "400"
+      ICE_PRECOLLECT_MAX: "600"
       ICE_MAX_AI_POSTS_PER_RUN: "80"
       ICE_MAX_STORIES_PER_RUN: "70"
       ICE_NORMALIZE_MAX_STORIES: "100"
@@ -80,11 +85,12 @@ jobs:
           node scripts/ice-priority-discovery.mjs
           node scripts/ice-ero-official-discovery.mjs
 
-      - name: Clean and intake
+      - name: Clean compare and intake
         if: steps.gate.outputs.allowed == 'true'
         run: |
           node scripts/ice-drop-stale-posts.mjs
           node scripts/ice-filter-replies.mjs
+          node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
 
       - name: AI process fresh backlog

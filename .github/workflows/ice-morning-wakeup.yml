@@ -7,9 +7,8 @@ on:
       - main
     paths:
       - ".github/workflows/ice-morning-wakeup.yml"
+      - "scripts/ice-precollect-published-dedupe.mjs"
   schedule:
-    # 夏令时纽约08:03 = UTC 12:03；冬令时纽约08:03 = UTC 13:03。
-    # 两个时点都触发，再由纽约时区门禁只放行真正的08点。
     - cron: "3 12,13 * * *"
 
 permissions:
@@ -39,6 +38,7 @@ jobs:
       ICE_TRUSTED_MAX_AGE_MINUTES: "120"
       ICE_MAX_AI_POSTS_PER_RUN: "220"
       ICE_FAST_INTAKE_MAX: "1000"
+      ICE_PRECOLLECT_MAX: "1200"
       ICE_MAX_RETRIES: "5"
       ICE_PUBLISH_INTERVAL_MINUTES: "10"
       ICE_MAX_STORIES_PER_RUN: "140"
@@ -47,6 +47,10 @@ jobs:
       ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
       ICE_DEDUPE_HOURS: "2"
       ICE_MAX_SOURCE_AGE_HOURS: "1"
+      ICE_MAX_SOURCE_AGE_MINUTES: "60"
+      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "60"
+      ICE_PUBLISHED_DEDUPE_DAYS: "30"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.38"
       ICE_UNREVIEWED_EXPIRE_HOURS: "2"
       ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
       ICE_HIGH_RECALL_MAX_PAGES: "3"
@@ -63,7 +67,6 @@ jobs:
           echo "纽约时间：$NY_TIME"
           if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR != 8 )); then
             echo "run=false" >> "$GITHUB_OUTPUT"
-            echo "不是纽约早上8点，本次夏令时/冬令时冗余触发跳过。"
           else
             echo "run=true" >> "$GITHUB_OUTPUT"
           fi
@@ -83,6 +86,7 @@ jobs:
         run: |
           node --check scripts/ice-high-recall-discovery.mjs
           node --check scripts/ice-ero-official-discovery.mjs
+          node --check scripts/ice-precollect-published-dedupe.mjs
           node --check scripts/ice-multisource.mjs
           node --check scripts/ice-publish-due.mjs
 
@@ -92,12 +96,13 @@ jobs:
           node scripts/ice-high-recall-discovery.mjs
           node scripts/ice-ero-official-discovery.mjs
 
-      - name: Clean and intake fresh sources
+      - name: Clean compare and intake fresh sources
         if: steps.gate.outputs.run == 'true'
         run: |
           node scripts/ice-drop-stale-posts.mjs
           node scripts/ice-expire-unreviewed.mjs
           node scripts/ice-filter-replies.mjs
+          node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
 
       - name: AI extraction editing and event dedupe
@@ -105,6 +110,7 @@ jobs:
         run: |
           node scripts/ice-multisource.mjs --mode=collect
           node scripts/ice-filter-replies.mjs
+          node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
           node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
@@ -121,4 +127,4 @@ jobs:
 
       - name: Wake-up summary
         if: always()
-        run: echo "ICE纽约早八点唤醒流程执行完毕；正常每10分钟采集仍由主工作流继续。"
+        run: echo "ICE纽约早八点唤醒流程执行完毕；超过一小时、已发布重复和近一小时相似事件均在入库前过滤。"

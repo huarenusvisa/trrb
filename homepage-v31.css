@@ -1,4 +1,4 @@
-/* TRRB V31.6: homepage image fitting and equal CTA intro sizing */
+/* TRRB V31.7: homepage image fitting and compact equal CTA sizing */
 
 .sections-grid .section-lead img {
   object-fit: cover;
@@ -9,7 +9,7 @@
 .cta-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
+  align-items: start;
   gap: 22px;
   margin-top: 42px;
   margin-bottom: 48px;
@@ -24,8 +24,10 @@
   display: flex;
   width: 100%;
   min-width: 0;
-  min-height: 100%;
+  min-height: 0;
+  height: auto;
   flex-direction: column;
+  align-self: start;
   border: 1px solid #e1e5ea;
   border-radius: 14px;
   padding: 24px;
@@ -45,16 +47,19 @@
 .cta-row article h2 {
   display: flex;
   align-items: center;
+  height: 34px;
   min-height: 34px;
   margin: 0 0 10px;
   font-size: 22px;
   line-height: 1.25;
 }
 
-.cta-row article p {
+.cta-row article > p {
   display: block;
+  height: 66px;
   min-height: 66px;
   margin: 0 0 18px;
+  overflow: hidden;
   color: #5f6b7a;
   line-height: 1.65;
 }
@@ -63,7 +68,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
-  margin-top: auto;
+  margin-top: 0;
 }
 
 #daily form input,
@@ -96,7 +101,7 @@
   width: min(220px, 100%);
   height: auto;
   max-height: 280px;
-  margin: auto auto 0;
+  margin: 8px auto 0;
   border: 1px solid #e1e5ea;
   border-radius: 12px;
   padding: 10px;
@@ -109,7 +114,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 11px;
-  margin-top: auto;
+  margin-top: 0;
 }
 
 #submit .tip-form textarea {
@@ -138,6 +143,7 @@
 @media (max-width: 1020px) {
   .cta-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
   }
 
   .cta-row #submit {
@@ -159,6 +165,7 @@
 
   .cta-row {
     grid-template-columns: 1fr;
+    align-items: start;
     gap: 14px;
     margin-top: 28px;
     padding: 14px;
@@ -166,6 +173,9 @@
   }
 
   .cta-row article {
+    min-height: 0;
+    height: auto;
+    align-self: start;
     padding: 20px 18px;
     border-radius: 11px;
   }
@@ -178,13 +188,16 @@
   }
 
   .cta-row article h2 {
-    min-height: 40px;
+    height: auto;
+    min-height: 34px;
     margin-bottom: 8px;
   }
 
-  .cta-row article p {
-    min-height: 72px;
+  .cta-row article > p {
+    height: auto;
+    min-height: 58px;
     margin-bottom: 16px;
+    overflow: visible;
   }
 
   #daily form {
@@ -194,6 +207,6 @@
   .reader-qr {
     width: min(190px, 68vw);
     max-height: 242px;
-    margin-top: 8px;
+    margin: 8px auto 0;
   }
 }

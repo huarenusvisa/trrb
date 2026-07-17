@@ -44,7 +44,7 @@ jobs:
     timeout-minutes: 8
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
-      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ICE_PRIORITY_LOOKBACK_MINUTES: "60"
@@ -63,7 +63,7 @@ jobs:
     timeout-minutes: 8
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
-      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ICE_MAX_SOURCE_AGE_MINUTES: "60"

@@ -90,16 +90,13 @@ function sameEvent(a, b) {
   if (!left || !right) return false;
   if (left === right) return true;
   if (Math.min(left.length, right.length) >= 45 && (left.includes(right) || right.includes(left))) return true;
-
   const aMedia = mediaKeys(a); const bMedia = mediaKeys(b);
   if (aMedia.size && bMedia.size && overlap(aMedia, bMedia) > 0) return true;
-
   const score = similarity(left, right);
   const action = overlap(actionKeys(left), actionKeys(right));
   const number = overlap(numbers(left), numbers(right));
   const proper = overlap(properNouns(a?.source_text), properNouns(b?.source_text));
   const common = [...tokens(left)].filter((token) => tokens(right).has(token)).length;
-
   if (action > 0 && proper > 0 && score >= 0.23) return true;
   if (action > 0 && number > 0 && common >= 2 && score >= 0.22) return true;
   if (proper > 0 && number > 0 && common >= 2 && score >= 0.27) return true;
@@ -142,33 +139,34 @@ async function markDuplicates(ids) {
 async function main() {
   requireEnv();
   const historyCutoff = new Date(Date.now() - WINDOW_HOURS * 3600000).toISOString();
-  const candidateCutoff = new Date(Date.now() - CANDIDATE_MINUTES * 60000).toISOString();
+  const candidateCutoffMs = Date.now() - CANDIDATE_MINUTES * 60000;
   const rows = await sb("ice_posts", {
     query: {
       select: "id,x_post_id,source_text,source_type,trust_tier,source_created_at,created_at,media,processing_status,relevant",
       source_created_at: `gte.${historyCutoff}`,
-      relevant: "neq.false",
       order: "source_created_at.desc.nullslast,created_at.desc",
       limit: String(MAX_ROWS)
     }
   });
-  const all = Array.isArray(rows) ? rows.filter((row) => normalize(row.source_text)) : [];
+  const all = Array.isArray(rows)
+    ? rows.filter((row) => row.relevant !== false && normalize(row.source_text))
+    : [];
+  const candidateStatuses = new Set(["collected","processing","failed","extracted"]);
   const candidates = all.filter((row) => {
     const ts = new Date(row.source_created_at || row.created_at || 0).getTime();
-    return ts >= new Date(candidateCutoff).getTime() && ["collected","processing","failed","extracted"].includes(String(row.processing_status || ""));
+    return Number.isFinite(ts) && ts >= candidateCutoffMs && candidateStatuses.has(String(row.processing_status || ""));
   }).sort((a, b) => quality(b) - quality(a));
   const candidateIds = new Set(candidates.map((row) => String(row.id)));
-  const references = all.filter((row) => !candidateIds.has(String(row.id)) || !["collected","processing","failed","extracted"].includes(String(row.processing_status || "")));
+  const references = all.filter((row) => !candidateIds.has(String(row.id)) || !candidateStatuses.has(String(row.processing_status || "")));
   const keepers = [];
   const duplicateIds = [];
-
   for (const candidate of candidates) {
     const duplicate = [...keepers, ...references].find((row) => row.id !== candidate.id && sameEvent(candidate, row));
     if (duplicate) duplicateIds.push(candidate.id);
     else keepers.push(candidate);
   }
   if (duplicateIds.length) await markDuplicates(duplicateIds);
-  console.log(JSON.stringify({ stage: "english-pretranslation-dedupe-v1", scanned: all.length, candidates: candidates.length, kept: keepers.length, filtered_duplicates: duplicateIds.length, history_hours: WINDOW_HOURS, candidate_minutes: CANDIDATE_MINUTES, threshold: THRESHOLD }, null, 2));
+  console.log(JSON.stringify({ stage: "english-pretranslation-dedupe-v2", scanned: all.length, candidates: candidates.length, kept: keepers.length, filtered_duplicates: duplicateIds.length, history_hours: WINDOW_HOURS, candidate_minutes: CANDIDATE_MINUTES, threshold: THRESHOLD }, null, 2));
 }
 
 main().catch((error) => { console.error("英文原文预翻译去重失败：", error); process.exitCode = 1; });

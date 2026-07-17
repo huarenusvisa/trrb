@@ -2,6 +2,11 @@ name: ICE纽约早上8点强制唤醒
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-morning-wake.yml"
+      - "scripts/ice-english-pretranslation-dedupe.mjs"
   schedule:
     # 覆盖夏令时和冬令时；下面再用纽约本地时间精确判断，只允许8点执行。
     - cron: "0 12,13 * * *"

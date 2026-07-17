@@ -8,6 +8,7 @@ on:
       - "scripts/ice-trusted-source-promote.mjs"
       - "scripts/ice-publish-due.mjs"
       - "scripts/ice-pipeline-heartbeat.mjs"
+      - "scripts/ice-ai-process-only.mjs"
       - ".github/workflows/ice-ai-process.yml"
   schedule:
     - cron: "5,15,25,35,45,55 * * * *"
@@ -46,7 +47,7 @@ jobs:
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      RUN_MODE: "collect"
+      RUN_MODE: "process"
       ICE_OPENAI_MONTHLY_BUDGET_USD: "300"
       ICE_TOTAL_MONTHLY_BUDGET_USD: "700"
       ICE_AUTO_PUBLISH_SCORE: "80"
@@ -82,8 +83,8 @@ jobs:
         run: node scripts/ice-official-source-only.mjs
       - name: English source dedupe before AI
         run: node scripts/ice-english-pretranslation-dedupe.mjs
-      - name: Process a bounded AI batch
-        run: node scripts/ice-multisource.mjs --mode=collect
+      - name: Process database AI batch without X API
+        run: node scripts/ice-ai-process-only.mjs
       - name: Normalize and translate to Chinese
         run: |
           node scripts/ice-editorial-normalize.mjs

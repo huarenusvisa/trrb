@@ -121,7 +121,8 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validate ICE architecture
+      - name: Validate ICE architecture on code changes only
+        if: github.event_name != 'schedule'
         run: |
           node --check scripts/ice-high-recall-discovery.mjs
           node --check scripts/ice-priority-discovery.mjs
@@ -146,29 +147,27 @@ jobs:
         if: env.RUN_MODE == 'collect'
         run: node scripts/ice-clean-existing-review-duplicates.mjs
 
-      - name: High-recall one-hour event discovery
+      - name: Collect fresh ICE sources without blocking the pipeline
         if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-high-recall-discovery.mjs
+        shell: bash
+        run: |
+          set +e
+          node scripts/ice-high-recall-discovery.mjs
+          HIGH_RECALL_EXIT=$?
+          node scripts/ice-priority-discovery.mjs
+          PRIORITY_EXIT=$?
+          node scripts/ice-ero-official-discovery.mjs
+          ERO_EXIT=$?
+          echo "Discovery exit codes: high_recall=$HIGH_RECALL_EXIT priority=$PRIORITY_EXIT ero=$ERO_EXIT"
+          exit 0
 
-      - name: Priority account and missing-keyword discovery
+      - name: Drop stale posts and expired candidates
         if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-priority-discovery.mjs
-
-      - name: Safe regional ERO official discovery
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-ero-official-discovery.mjs
-
-      - name: Drop source posts older than one hour
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-drop-stale-posts.mjs
-
-      - name: Remove candidates not handled within two hours
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-expire-unreviewed.mjs
-
-      - name: Remove replies and comments before intake
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-filter-replies.mjs
+        shell: bash
+        run: |
+          node scripts/ice-drop-stale-posts.mjs || true
+          node scripts/ice-expire-unreviewed.mjs || true
+          node scripts/ice-filter-replies.mjs || true
 
       - name: Compare with published articles and recent one-hour events before intake
         if: env.RUN_MODE == 'collect'
@@ -185,48 +184,37 @@ jobs:
       - name: Deep AI extraction and cross-check
         run: node scripts/ice-multisource.mjs --mode="$RUN_MODE"
 
-      - name: Remove replies and comments after source rotation
+      - name: Recheck and intake after source rotation
         if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-filter-replies.mjs
+        shell: bash
+        run: |
+          node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-precollect-published-dedupe.mjs
+          node scripts/ice-fast-intake.mjs
 
-      - name: Recheck published and recent duplicates after source rotation
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-precollect-published-dedupe.mjs
+      - name: Normalize and translate Chinese ICE briefs
+        shell: bash
+        run: |
+          node scripts/ice-editorial-normalize.mjs
+          node scripts/ice-translate-title-body.mjs
 
-      - name: Re-send remaining fresh backlog to review
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-fast-intake.mjs
-
-      - name: Normalize Chinese ICE briefs
-        run: node scripts/ice-editorial-normalize.mjs
-
-      - name: Read all supplied text and generate 12 to 25 character titles
-        run: node scripts/ice-translate-title-body.mjs
-
-      - name: Final multi-dimensional event dedupe
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-dedupe-v3.mjs
-
-      - name: Clean review queue again after normalization
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-clean-existing-review-duplicates.mjs
-
-      - name: Auto approve official agencies and trusted media only
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-trusted-source-promote.mjs
-
-      - name: Publish trusted approved ICE stories immediately
+      - name: Final dedupe clean approve and publish
         if: env.RUN_MODE == 'collect'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "40"
-        run: node scripts/ice-publish-due.mjs
+        shell: bash
+        run: |
+          node scripts/ice-dedupe-v3.mjs
+          node scripts/ice-clean-existing-review-duplicates.mjs
+          node scripts/ice-trusted-source-promote.mjs
+          node scripts/ice-publish-due.mjs
 
       - name: Pipeline summary
         if: always()
         run: |
           echo "ICE realtime pipeline completed."
           echo "Collection window: strictly one hour."
+          echo "Scheduled runs skip architecture tests."
+          echo "One failed discovery source no longer blocks AI processing and publishing."
           echo "Published articles and recent one-hour candidates are checked before intake."
-          echo "Existing review queue is cleaned before collection and again before publishing."
-          echo "Similar items without a material factual change are discarded."

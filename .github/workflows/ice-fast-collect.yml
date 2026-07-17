@@ -28,30 +28,7 @@ jobs:
             echo "allowed=true" >> "$GITHUB_OUTPUT"
           fi
 
-  broad-media:
-    needs: gate
-    if: needs.gate.outputs.allowed == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 8
-    env:
-      NODE_OPTIONS: "--max-http-header-size=65536"
-      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
-      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
-      ICE_HIGH_RECALL_MAX_PAGES: "2"
-      ICE_HIGH_RECALL_MIN_SCORE: "40"
-      ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
-      ICE_MAX_SOURCE_AGE_MINUTES: "60"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - continue-on-error: true
-        run: node scripts/ice-high-recall-discovery.mjs
-
-  priority:
+  official-priority:
     needs: gate
     if: needs.gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
@@ -68,8 +45,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
-      - continue-on-error: true
-        run: node scripts/ice-priority-discovery.mjs
+      - run: node scripts/ice-priority-discovery.mjs
 
   regional-ero:
     needs: gate
@@ -86,11 +62,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
-      - continue-on-error: true
-        run: node scripts/ice-ero-official-discovery.mjs
+      - run: node scripts/ice-ero-official-discovery.mjs
 
   intake:
-    needs: [gate, broad-media, priority, regional-ero]
+    needs: [gate, official-priority, regional-ero]
     if: always() && needs.gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 8
@@ -107,15 +82,16 @@ jobs:
       ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "90"
       ICE_ENGLISH_DEDUPE_MAX: "2500"
       ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
+      ICE_OFFICIAL_FILTER_MAX: "3000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - run: |
+          node scripts/ice-official-source-only.mjs
           node scripts/ice-drop-stale-posts.mjs || true
           node scripts/ice-filter-replies.mjs || true
           node scripts/ice-english-pretranslation-dedupe.mjs
-          node scripts/ice-cross-language-dedupe.mjs || true
           node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
           node scripts/ice-dedupe-v3.mjs || true

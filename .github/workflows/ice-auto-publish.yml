@@ -1,132 +1,26 @@
-name: ICE多信源抓取与交叉审核
+name: ICE旧版手动应急流程
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/ice-high-recall-discovery.mjs"
-      - "scripts/ice-priority-discovery.mjs"
-      - "scripts/ice-ero-official-discovery.mjs"
-      - "scripts/ice-cross-language-dedupe.mjs"
-      - "scripts/ice-precollect-published-dedupe.mjs"
-      - "scripts/ice-clean-existing-review-duplicates.mjs"
-      - "scripts/ice-translate-title-body.mjs"
-      - "scripts/ice-publish-due.mjs"
-      - "netlify/functions/ice-review-list-v3.js"
-      - ".github/workflows/ice-auto-publish.yml"
   workflow_dispatch:
     inputs:
       mode:
-        description: "collect=正常抓取；bootstrap=初始化；dry-run=审核但不自动排期"
+        description: "仅用于人工应急，正常定时已拆分为快速采集和AI加工两条流程"
         required: true
         default: collect
         type: choice
-        options: [collect, bootstrap, dry-run]
-  schedule:
-    - cron: "*/10 * * * *"
+        options: [collect, dry-run]
 
 permissions:
   contents: read
 
 concurrency:
-  group: trrb-ice-multisource
-  cancel-in-progress: false
+  group: trrb-ice-legacy-manual
+  cancel-in-progress: true
 
 jobs:
-  new-york-time-gate:
+  manual-recovery:
     runs-on: ubuntu-latest
-    outputs:
-      allowed: ${{ steps.guard.outputs.allowed }}
-      ny_time: ${{ steps.guard.outputs.ny_time }}
-    steps:
-      - id: guard
-        name: Enforce New York 02:00-08:00 quiet hours
-        shell: bash
-        run: |
-          NY_HOUR=$(TZ=America/New_York date +%H)
-          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
-          echo "ny_time=$NY_TIME" >> "$GITHUB_OUTPUT"
-          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
-            echo "allowed=false" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，处于02:00-08:00休息时段。"
-          else
-            echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，本轮允许运行。"
-          fi
-
-  discover-broad-media:
-    name: 媒体与高热度广覆盖采集
-    needs: new-york-time-gate
-    if: needs.new-york-time-gate.outputs.allowed == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 12
-    env:
-      NODE_OPTIONS: "--max-http-header-size=65536"
-      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
-      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
-      ICE_HIGH_RECALL_MAX_PAGES: "3"
-      ICE_HIGH_RECALL_MIN_SCORE: "40"
-      ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
-      ICE_MAX_SOURCE_AGE_MINUTES: "60"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - name: Run broad media discovery
-        continue-on-error: true
-        run: node scripts/ice-high-recall-discovery.mjs
-
-  discover-priority:
-    name: 官方媒体重点账号和缺失关键词采集
-    needs: new-york-time-gate
-    if: needs.new-york-time-gate.outputs.allowed == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 12
-    env:
-      NODE_OPTIONS: "--max-http-header-size=65536"
-      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      ICE_PRIORITY_LOOKBACK_MINUTES: "60"
-      ICE_PRIORITY_MAX_PAGES: "2"
-      ICE_MAX_SOURCE_AGE_MINUTES: "60"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - name: Run priority source discovery
-        continue-on-error: true
-        run: node scripts/ice-priority-discovery.mjs
-
-  discover-regional-ero:
-    name: 地区ERO官方账号采集
-    needs: new-york-time-gate
-    if: needs.new-york-time-gate.outputs.allowed == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 12
-    env:
-      NODE_OPTIONS: "--max-http-header-size=65536"
-      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      ICE_MAX_SOURCE_AGE_MINUTES: "60"
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: "22" }
-      - name: Run regional ERO discovery
-        continue-on-error: true
-        run: node scripts/ice-ero-official-discovery.mjs
-
-  process-edit-publish:
-    name: 数据库去重中文加工与发布
-    needs: [new-york-time-gate, discover-broad-media, discover-priority, discover-regional-ero]
-    if: always() && needs.new-york-time-gate.outputs.allowed == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 20
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
@@ -134,99 +28,31 @@ jobs:
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      RUN_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'collect' }}
-      ICE_OPENAI_MONTHLY_BUDGET_USD: "300"
-      ICE_X_MONTHLY_BUDGET_USD: "400"
-      ICE_TOTAL_MONTHLY_BUDGET_USD: "700"
-      ICE_AUTO_PUBLISH_SCORE: "80"
-      ICE_AI_CONFIDENCE: "80"
-      ICE_TRUSTED_AUTO_CONFIDENCE: "80"
-      ICE_TRUSTED_MAX_AGE_MINUTES: "120"
-      ICE_MAX_AI_POSTS_PER_RUN: "220"
-      ICE_FAST_INTAKE_MAX: "1000"
-      ICE_PRECOLLECT_MAX: "1500"
-      ICE_CROSS_LANGUAGE_DEDUPE_MAX: "1500"
-      ICE_MAX_RETRIES: "5"
-      ICE_PUBLISH_INTERVAL_MINUTES: "10"
-      ICE_MAX_STORIES_PER_RUN: "140"
-      ICE_NORMALIZE_MAX_STORIES: "220"
-      ICE_TRANSLATE_MAX_STORIES: "220"
-      ICE_MAX_SOURCE_AGE_HOURS: "1"
+      RUN_MODE: ${{ inputs.mode }}
       ICE_MAX_SOURCE_AGE_MINUTES: "60"
-      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "60"
-      ICE_PUBLISHED_DEDUPE_DAYS: "30"
-      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.32"
-      ICE_REVIEW_DUPLICATE_THRESHOLD: "0.38"
-      ICE_UNREVIEWED_EXPIRE_HOURS: "2"
-      ICE_DEDUPE_HOURS: "720"
+      ICE_MAX_AI_POSTS_PER_RUN: "30"
+      ICE_MAX_STORIES_PER_RUN: "25"
+      ICE_TRANSLATE_MAX_STORIES: "30"
+      ICE_PUBLISH_MAX_PER_RUN: "10"
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with: { node-version: "22" }
-
-      - name: Validate changed code only
-        if: github.event_name != 'schedule'
+      - name: Emergency collection
+        if: inputs.mode == 'collect'
         run: |
-          node --check scripts/ice-cross-language-dedupe.mjs
-          node --check scripts/ice-precollect-published-dedupe.mjs
-          node --check scripts/ice-translate-title-body.mjs
-          node --check scripts/ice-multisource.mjs
-          node --check scripts/ice-publish-due.mjs
-
-      - name: Remove old queue duplicates
-        if: env.RUN_MODE == 'collect'
-        run: node scripts/ice-clean-existing-review-duplicates.mjs || true
-
-      - name: Drop stale replies and expired candidates
-        if: env.RUN_MODE == 'collect'
+          node scripts/ice-priority-discovery.mjs || true
+          node scripts/ice-ero-official-discovery.mjs || true
+          node scripts/ice-precollect-published-dedupe.mjs || true
+          node scripts/ice-fast-intake.mjs || true
+      - name: Emergency AI processing
         run: |
-          node scripts/ice-drop-stale-posts.mjs || true
-          node scripts/ice-expire-unreviewed.mjs || true
-          node scripts/ice-filter-replies.mjs || true
-
-      - name: Cross-language compare against published database
-        if: env.RUN_MODE == 'collect'
+          node scripts/ice-multisource.mjs --mode="$RUN_MODE"
+          node scripts/ice-editorial-normalize.mjs || true
+          node scripts/ice-translate-title-body.mjs || true
+      - name: Emergency publish
+        if: inputs.mode == 'collect'
         run: |
-          node scripts/ice-cross-language-dedupe.mjs
-          node scripts/ice-precollect-published-dedupe.mjs
-
-      - name: Intake only fresh unique posts
-        if: env.RUN_MODE == 'collect'
-        run: |
-          node scripts/ice-fast-intake.mjs
-          node scripts/ice-dedupe-v3.mjs
-
-      - name: Deep AI extraction and cross-check
-        run: node scripts/ice-multisource.mjs --mode="$RUN_MODE"
-
-      - name: Normalize and translate all candidate stories to Chinese
-        run: |
-          node scripts/ice-editorial-normalize.mjs
-          node scripts/ice-translate-title-body.mjs
-          node scripts/ice-translate-title-body.mjs
-
-      - name: Final database comparison dedupe and queue cleanup
-        if: env.RUN_MODE == 'collect'
-        run: |
-          node scripts/ice-cross-language-dedupe.mjs
-          node scripts/ice-dedupe-v3.mjs
-          node scripts/ice-clean-existing-review-duplicates.mjs
-
-      - name: Approve trusted Chinese stories and publish
-        if: env.RUN_MODE == 'collect'
-        env:
-          ICE_FORCE_FIRST_PUBLISH: "true"
-          ICE_PUBLISH_MAX_PER_RUN: "40"
-        run: |
-          node scripts/ice-trusted-source-promote.mjs
-          node scripts/ice-publish-due.mjs
-
-      - name: Pipeline summary
-        if: always()
-        run: |
-          echo "Three independent discovery channels completed."
-          echo "Collection window is strictly one hour."
-          echo "English source posts are compared with Chinese published articles by event entities, actions, numbers and locations."
-          echo "Only Chinese-ready stories are visible in the review center."
+          node scripts/ice-clean-existing-review-duplicates.mjs || true
+          node scripts/ice-trusted-source-promote.mjs || true
+          node scripts/ice-publish-due.mjs || true

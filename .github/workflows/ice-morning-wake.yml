@@ -1,0 +1,122 @@
+name: ICE纽约早上8点强制唤醒
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 覆盖夏令时和冬令时；下面再用纽约本地时间精确判断，只允许8点执行。
+    - cron: "0 12,13 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-morning-wake
+  cancel-in-progress: true
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      RUN_MODE: "collect"
+      ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
+      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
+      ICE_HIGH_RECALL_MAX_PAGES: "2"
+      ICE_HIGH_RECALL_MIN_SCORE: "40"
+      ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
+      ICE_PRIORITY_LOOKBACK_MINUTES: "60"
+      ICE_PRIORITY_MAX_PAGES: "2"
+      ICE_MAX_SOURCE_AGE_MINUTES: "60"
+      ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
+      ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "120"
+      ICE_ENGLISH_DEDUPE_MAX: "2500"
+      ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
+      ICE_FAST_INTAKE_MAX: "600"
+      ICE_MAX_AI_POSTS_PER_RUN: "45"
+      ICE_MAX_STORIES_PER_RUN: "35"
+      ICE_NORMALIZE_MAX_STORIES: "45"
+      ICE_TRANSLATE_MAX_STORIES: "45"
+      ICE_CROSS_LANGUAGE_DEDUPE_MAX: "800"
+      ICE_PUBLISHED_DEDUPE_DAYS: "30"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.32"
+      ICE_REVIEW_DUPLICATE_THRESHOLD: "0.38"
+      ICE_UNREVIEWED_EXPIRE_HOURS: "2"
+      ICE_DEDUPE_HOURS: "720"
+      ICE_PUBLISH_INTERVAL_MINUTES: "10"
+      ICE_AUTO_PUBLISH_SCORE: "80"
+      ICE_AI_CONFIDENCE: "80"
+      ICE_TRUSTED_AUTO_CONFIDENCE: "80"
+      ICE_TRUSTED_MAX_AGE_MINUTES: "120"
+    steps:
+      - name: Verify New York wake hour
+        id: guard
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          echo "纽约当前小时：$NY_HOUR"
+          if [[ "${{ github.event_name }}" == "schedule" ]] && [[ "$NY_HOUR" != "08" ]]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.run == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.run == 'true'
+        with:
+          node-version: "22"
+
+      - name: Morning collection
+        if: steps.guard.outputs.run == 'true'
+        shell: bash
+        run: |
+          set +e
+          node scripts/ice-high-recall-discovery.mjs & P1=$!
+          node scripts/ice-priority-discovery.mjs & P2=$!
+          node scripts/ice-ero-official-discovery.mjs & P3=$!
+          wait $P1; S1=$?
+          wait $P2; S2=$?
+          wait $P3; S3=$?
+          echo "采集退出码：broad=$S1 priority=$S2 ero=$S3"
+          if (( S1 != 0 && S2 != 0 && S3 != 0 )); then
+            echo "三个采集通道全部失败"
+            exit 1
+          fi
+
+      - name: Pre-AI dedupe and intake
+        if: steps.guard.outputs.run == 'true'
+        run: |
+          node scripts/ice-drop-stale-posts.mjs || true
+          node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-english-pretranslation-dedupe.mjs
+          node scripts/ice-cross-language-dedupe.mjs || true
+          node scripts/ice-precollect-published-dedupe.mjs
+          node scripts/ice-fast-intake.mjs
+          node scripts/ice-dedupe-v3.mjs || true
+
+      - name: AI edit and translate
+        if: steps.guard.outputs.run == 'true'
+        run: |
+          node scripts/ice-multisource.mjs --mode=collect
+          node scripts/ice-editorial-normalize.mjs || true
+          node scripts/ice-translate-title-body.mjs
+
+      - name: Publish morning batch
+        if: steps.guard.outputs.run == 'true'
+        env:
+          ICE_FORCE_FIRST_PUBLISH: "true"
+          ICE_PUBLISH_MAX_PER_RUN: "10"
+        run: |
+          node scripts/ice-cross-language-dedupe.mjs || true
+          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-clean-existing-review-duplicates.mjs || true
+          node scripts/ice-trusted-source-promote.mjs
+          node scripts/ice-publish-due.mjs

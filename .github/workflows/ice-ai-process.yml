@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: trrb-ice-ai-process
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   gate:
@@ -38,7 +38,7 @@ jobs:
     needs: gate
     if: needs.gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 14
+    timeout-minutes: 10
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -52,11 +52,11 @@ jobs:
       ICE_AI_CONFIDENCE: "80"
       ICE_TRUSTED_AUTO_CONFIDENCE: "0"
       ICE_TRUSTED_MAX_AGE_MINUTES: "120"
-      ICE_MAX_AI_POSTS_PER_RUN: "45"
-      ICE_MAX_STORIES_PER_RUN: "35"
-      ICE_NORMALIZE_MAX_STORIES: "45"
-      ICE_TRANSLATE_MAX_STORIES: "45"
-      ICE_CROSS_LANGUAGE_DEDUPE_MAX: "800"
+      ICE_MAX_AI_POSTS_PER_RUN: "24"
+      ICE_MAX_STORIES_PER_RUN: "18"
+      ICE_NORMALIZE_MAX_STORIES: "24"
+      ICE_TRANSLATE_MAX_STORIES: "24"
+      ICE_CROSS_LANGUAGE_DEDUPE_MAX: "500"
       ICE_PUBLISHED_DEDUPE_DAYS: "30"
       ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.32"
       ICE_REVIEW_DUPLICATE_THRESHOLD: "0.38"
@@ -65,9 +65,9 @@ jobs:
       ICE_PUBLISH_INTERVAL_MINUTES: "10"
       ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
       ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "120"
-      ICE_ENGLISH_DEDUPE_MAX: "2500"
+      ICE_ENGLISH_DEDUPE_MAX: "1500"
       ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
-      ICE_OFFICIAL_FILTER_MAX: "3000"
+      ICE_OFFICIAL_FILTER_MAX: "1500"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

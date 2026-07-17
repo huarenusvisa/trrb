@@ -1,0 +1,13 @@
+[
+  {
+    "topic": "ice",
+    "username": "KimKatieUSA",
+    "name": "Kim \"Katie\" USA",
+    "type": "monitored_individual",
+    "tier": 4,
+    "enabled": true,
+    "auto_publish": false,
+    "requires_human_review": true,
+    "note": "Monitor ICE-related posts; never treat as an official source and never auto-publish."
+  }
+]

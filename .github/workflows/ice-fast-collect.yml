@@ -2,6 +2,15 @@ name: ICE快速采集
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-fast-collect.yml"
+      - "scripts/ice-pipeline-heartbeat.mjs"
+      - "scripts/ice-priority-discovery.mjs"
+      - "scripts/ice-ero-official-discovery.mjs"
+      - "scripts/ice-official-source-only.mjs"
+      - "scripts/ice-english-pretranslation-dedupe.mjs"
   schedule:
     - cron: "*/10 * * * *"
 
@@ -87,7 +96,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
-      - run: |
+      - name: Write collection start heartbeat
+        env:
+          ICE_HEARTBEAT_STAGE: "fast-collect"
+          ICE_HEARTBEAT_STATUS: "running"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+      - name: Filter and intake official English sources
+        run: |
           node scripts/ice-official-source-only.mjs
           node scripts/ice-drop-stale-posts.mjs || true
           node scripts/ice-filter-replies.mjs || true
@@ -95,3 +110,16 @@ jobs:
           node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
           node scripts/ice-dedupe-v3.mjs || true
+      - name: Write collection success heartbeat
+        if: success()
+        env:
+          ICE_HEARTBEAT_STAGE: "fast-collect"
+          ICE_HEARTBEAT_STATUS: "success"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+      - name: Write collection failure heartbeat
+        if: failure()
+        env:
+          ICE_HEARTBEAT_STAGE: "fast-collect"
+          ICE_HEARTBEAT_STATUS: "failure"
+          ICE_HEARTBEAT_ERROR: "ICE fast collection workflow failed"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true

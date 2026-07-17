@@ -10,6 +10,8 @@ const MAX_PAGES = Number(process.env.ICE_PRIORITY_MAX_PAGES || 2);
 const OFFICIAL_HANDLES = [
   "ICEgov","DHSgov","HSI_HQ","CBP","USBPChief","USCIS","DOJCrimDiv","USMarshalsHQ","FBI"
 ];
+const MONITORED_HANDLES = ["KimKatieUSA"];
+const ALL_HANDLES = [...OFFICIAL_HANDLES, ...MONITORED_HANDLES];
 
 function requireEnv() {
   const missing = REQUIRED.filter((name) => !process.env[name]);
@@ -46,7 +48,7 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
 }
 function chunks(values, size) { const out = []; for (let i = 0; i < values.length; i += size) out.push(values.slice(i, i + size)); return out; }
 function buildQueries() {
-  return chunks([...new Set(OFFICIAL_HANDLES)], 6).map((group) => `(${group.map((handle) => `from:${handle}`).join(" OR ")}) -is:retweet -is:reply`);
+  return chunks([...new Set(ALL_HANDLES)], 6).map((group) => `(${group.map((handle) => `from:${handle}`).join(" OR ")}) -is:retweet -is:reply`);
 }
 function authorMap(includes) { return new Map((includes?.users || []).map((user) => [user.id, user])); }
 function mediaFromIncludes(tweet, includes) {
@@ -78,6 +80,8 @@ async function existingIds(ids) {
   return new Set((Array.isArray(rows) ? rows : []).map((row) => String(row.x_post_id)));
 }
 function xUrl(username, id) { return username ? `https://x.com/${encodeURIComponent(username)}/status/${encodeURIComponent(id)}` : `https://x.com/i/web/status/${encodeURIComponent(id)}`; }
+function isOfficialHandle(username) { return OFFICIAL_HANDLES.some((handle) => handle.toLowerCase() === username.toLowerCase()); }
+function isMonitoredHandle(username) { return MONITORED_HANDLES.some((handle) => handle.toLowerCase() === username.toLowerCase()); }
 
 async function main() {
   requireEnv();
@@ -91,24 +95,25 @@ async function main() {
         for (const tweet of payload?.data || []) {
           if (!isRelevant(tweet.text) || ageMinutes(tweet.created_at) > ACCEPT_AGE_MINUTES) continue;
           const author = authors.get(tweet.author_id) || {}; const username = String(author.username || "");
-          if (!OFFICIAL_HANDLES.some((handle) => handle.toLowerCase() === username.toLowerCase())) continue;
+          if (!isOfficialHandle(username) && !isMonitoredHandle(username)) continue;
+          const official = isOfficialHandle(username);
           const media = mediaFromIncludes(tweet, payload?.includes);
           collected.set(String(tweet.id), {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
-            source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
-            independence_key: `official:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "", media,
-            raw_payload: { tweet, author, discovery: { collector: "ice-official-priority-v2", query, lookback_minutes: LOOKBACK_MINUTES } },
+            source_username: username, source_display_name: author.name || username, source_type: official ? "official" : "monitored_individual", trust_tier: official ? 1 : 4,
+            independence_key: `${official ? "official" : "monitored"}:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "", media,
+            raw_payload: { tweet, author, discovery: { collector: "ice-priority-v3", query, lookback_minutes: LOOKBACK_MINUTES, manual_review_only: !official } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null,
             location_text: null, people_count: null, claims: [], entities: [], extraction_confidence: null,
             extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
           });
         }
       }
-    } catch (error) { failed += 1; console.error(`官方重点补抓失败：${query}\n${error.message}`); if (error.status === 429) break; }
+    } catch (error) { failed += 1; console.error(`重点补抓失败：${query}\n${error.message}`); if (error.status === 429) break; }
   }
-  if (failed > 0 && collected.size === 0) throw new Error(`官方重点补抓有${failed}组查询失败且无可用数据`);
+  if (failed > 0 && collected.size === 0) throw new Error(`重点补抓有${failed}组查询失败且无可用数据`);
   const rows = [...collected.values()]; const exists = await existingIds(rows.map((row) => row.x_post_id)); const fresh = rows.filter((row) => !exists.has(row.x_post_id));
   if (fresh.length) await sb("ice_posts", { method: "POST", body: fresh, prefer: "resolution=ignore-duplicates,return=minimal" });
-  console.log(JSON.stringify({ collector: "ice-official-priority-v2", requests, candidates: rows.length, duplicates: exists.size, inserted: fresh.length, failed_queries: failed }, null, 2));
+  console.log(JSON.stringify({ collector: "ice-priority-v3", requests, candidates: rows.length, duplicates: exists.size, inserted: fresh.length, failed_queries: failed }, null, 2));
 }
-main().catch((error) => { console.error("ICE官方重点补抓失败：", error); process.exitCode = 1; });
+main().catch((error) => { console.error("ICE重点补抓失败：", error); process.exitCode = 1; });

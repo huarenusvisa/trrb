@@ -57,10 +57,16 @@ jobs:
       ICE_UNREVIEWED_EXPIRE_HOURS: "2"
       ICE_DEDUPE_HOURS: "720"
       ICE_PUBLISH_INTERVAL_MINUTES: "10"
+      ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
+      ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "120"
+      ICE_ENGLISH_DEDUPE_MAX: "2500"
+      ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
+      - name: English source dedupe before AI
+        run: node scripts/ice-english-pretranslation-dedupe.mjs
       - name: Process a bounded AI batch
         run: node scripts/ice-multisource.mjs --mode=collect
       - name: Normalize and translate to Chinese

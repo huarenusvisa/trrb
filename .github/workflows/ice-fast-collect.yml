@@ -1,0 +1,116 @@
+name: ICE快速采集
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-fast-collect
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.guard.outputs.allowed }}
+    steps:
+      - id: guard
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  broad-media:
+    needs: gate
+    if: needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
+      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
+      ICE_HIGH_RECALL_MAX_PAGES: "2"
+      ICE_HIGH_RECALL_MIN_SCORE: "40"
+      ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
+      ICE_MAX_SOURCE_AGE_MINUTES: "60"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - continue-on-error: true
+        run: node scripts/ice-high-recall-discovery.mjs
+
+  priority:
+    needs: gate
+    if: needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_PRIORITY_LOOKBACK_MINUTES: "60"
+      ICE_PRIORITY_MAX_PAGES: "2"
+      ICE_MAX_SOURCE_AGE_MINUTES: "60"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - continue-on-error: true
+        run: node scripts/ice-priority-discovery.mjs
+
+  regional-ero:
+    needs: gate
+    if: needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_MAX_SOURCE_AGE_MINUTES: "60"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - continue-on-error: true
+        run: node scripts/ice-ero-official-discovery.mjs
+
+  intake:
+    needs: [gate, broad-media, priority, regional-ero]
+    if: always() && needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_MAX_SOURCE_AGE_MINUTES: "60"
+      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "60"
+      ICE_PUBLISHED_DEDUPE_DAYS: "30"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.32"
+      ICE_PRECOLLECT_MAX: "1000"
+      ICE_FAST_INTAKE_MAX: "600"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - run: |
+          node scripts/ice-drop-stale-posts.mjs || true
+          node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-cross-language-dedupe.mjs || true
+          node scripts/ice-precollect-published-dedupe.mjs
+          node scripts/ice-fast-intake.mjs
+          node scripts/ice-dedupe-v3.mjs || true

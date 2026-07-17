@@ -6,9 +6,10 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/ice-morning-wake.yml"
+      - "scripts/ice-official-source-only.mjs"
       - "scripts/ice-english-pretranslation-dedupe.mjs"
+      - "scripts/ice-priority-discovery.mjs"
   schedule:
-    # 覆盖夏令时和冬令时；下面再用纽约本地时间精确判断，只允许8点执行。
     - cron: "0 12,13 * * *"
 
 permissions:
@@ -30,11 +31,6 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       RUN_MODE: "collect"
-      ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
-      ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
-      ICE_HIGH_RECALL_MAX_PAGES: "2"
-      ICE_HIGH_RECALL_MIN_SCORE: "40"
-      ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
       ICE_PRIORITY_LOOKBACK_MINUTES: "60"
       ICE_PRIORITY_MAX_PAGES: "2"
       ICE_MAX_SOURCE_AGE_MINUTES: "60"
@@ -42,6 +38,7 @@ jobs:
       ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "120"
       ICE_ENGLISH_DEDUPE_MAX: "2500"
       ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
+      ICE_OFFICIAL_FILTER_MAX: "3000"
       ICE_FAST_INTAKE_MAX: "600"
       ICE_MAX_AI_POSTS_PER_RUN: "45"
       ICE_MAX_STORIES_PER_RUN: "35"
@@ -73,36 +70,32 @@ jobs:
 
       - uses: actions/checkout@v4
         if: steps.guard.outputs.run == 'true'
-
       - uses: actions/setup-node@v4
         if: steps.guard.outputs.run == 'true'
-        with:
-          node-version: "22"
+        with: { node-version: "22" }
 
-      - name: Morning collection
+      - name: Morning official collection
         if: steps.guard.outputs.run == 'true'
         shell: bash
         run: |
           set +e
-          node scripts/ice-high-recall-discovery.mjs & P1=$!
-          node scripts/ice-priority-discovery.mjs & P2=$!
-          node scripts/ice-ero-official-discovery.mjs & P3=$!
+          node scripts/ice-priority-discovery.mjs & P1=$!
+          node scripts/ice-ero-official-discovery.mjs & P2=$!
           wait $P1; S1=$?
           wait $P2; S2=$?
-          wait $P3; S3=$?
-          echo "采集退出码：broad=$S1 priority=$S2 ero=$S3"
-          if (( S1 != 0 && S2 != 0 && S3 != 0 )); then
-            echo "三个采集通道全部失败"
+          echo "官方采集退出码：priority=$S1 ero=$S2"
+          if (( S1 != 0 && S2 != 0 )); then
+            echo "两个官方采集通道全部失败"
             exit 1
           fi
 
-      - name: Pre-AI dedupe and intake
+      - name: Official filter and English dedupe
         if: steps.guard.outputs.run == 'true'
         run: |
+          node scripts/ice-official-source-only.mjs
           node scripts/ice-drop-stale-posts.mjs || true
           node scripts/ice-filter-replies.mjs || true
           node scripts/ice-english-pretranslation-dedupe.mjs
-          node scripts/ice-cross-language-dedupe.mjs || true
           node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
           node scripts/ice-dedupe-v3.mjs || true
@@ -111,10 +104,10 @@ jobs:
         if: steps.guard.outputs.run == 'true'
         run: |
           node scripts/ice-multisource.mjs --mode=collect
-          node scripts/ice-editorial-normalize.mjs || true
+          node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
 
-      - name: Publish morning batch
+      - name: Publish morning official batch
         if: steps.guard.outputs.run == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"

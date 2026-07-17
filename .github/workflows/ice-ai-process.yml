@@ -2,6 +2,12 @@ name: ICE中文加工与发布
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/ice-trusted-source-promote.mjs"
+      - "scripts/ice-publish-due.mjs"
+      - ".github/workflows/ice-ai-process.yml"
   schedule:
     - cron: "5,15,25,35,45,55 * * * *"
 
@@ -44,7 +50,7 @@ jobs:
       ICE_TOTAL_MONTHLY_BUDGET_USD: "700"
       ICE_AUTO_PUBLISH_SCORE: "80"
       ICE_AI_CONFIDENCE: "80"
-      ICE_TRUSTED_AUTO_CONFIDENCE: "80"
+      ICE_TRUSTED_AUTO_CONFIDENCE: "0"
       ICE_TRUSTED_MAX_AGE_MINUTES: "120"
       ICE_MAX_AI_POSTS_PER_RUN: "45"
       ICE_MAX_STORIES_PER_RUN: "35"

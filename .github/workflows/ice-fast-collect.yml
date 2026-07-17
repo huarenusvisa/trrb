@@ -103,6 +103,10 @@ jobs:
       ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.32"
       ICE_PRECOLLECT_MAX: "1000"
       ICE_FAST_INTAKE_MAX: "600"
+      ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
+      ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "90"
+      ICE_ENGLISH_DEDUPE_MAX: "2500"
+      ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -110,6 +114,7 @@ jobs:
       - run: |
           node scripts/ice-drop-stale-posts.mjs || true
           node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-english-pretranslation-dedupe.mjs
           node scripts/ice-cross-language-dedupe.mjs || true
           node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs

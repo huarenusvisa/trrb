@@ -4,7 +4,6 @@ import process from "node:process";
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
-const MIN_CONFIDENCE = Number(process.env.ICE_TRUSTED_AUTO_CONFIDENCE || 80);
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
 
 function nowIso() { return new Date().toISOString(); }
@@ -17,26 +16,27 @@ async function evidenceFor(storyId) { const links = await sb("ice_story_evidence
 function official(post) { const type = String(post?.source_type || ""); const username = String(post?.source_username || "").replace(/^@/, ""); return OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username); }
 function hardBlocked(story) { return Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk); }
 function recentEnough(story) { const time = new Date(story.last_seen_at || story.first_seen_at || story.created_at || 0).getTime(); return Number.isFinite(time) && Date.now() - time <= MAX_AGE_MINUTES * 60000; }
+function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
 async function main() {
   requireEnv();
   const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration)", order: "updated_at.desc", limit: "1000" } });
   let approved = 0, manual = 0, blocked = 0, incomplete = 0, stale = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
     if (!recentEnough(story)) { stale += 1; continue; }
-    if (!String(story.title || "").trim() || !String(story.content || "").trim()) { incomplete += 1; continue; }
+    if (!String(story.title || "").trim() || !String(story.content || "").trim() || !hasChinese(story.title) || !hasChinese(story.content)) { incomplete += 1; continue; }
     const evidence = await evidenceFor(story.id); const officialEvidence = evidence.filter(official);
     if (!officialEvidence.length) { manual += 1; continue; }
-    if (hardBlocked(story) || Number(story.ai_confidence || 0) < MIN_CONFIDENCE) { blocked += 1; continue; }
+    if (hardBlocked(story)) { blocked += 1; continue; }
     const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
     const sources = [...new Set(officialEvidence.map((post) => post.source_username).filter(Boolean))];
     await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
       status: "approved", human_review_status: "approved", reviewer_email: "ai-official-source@trrb.net", reviewed_at: nowIso(), scheduled_at: nowIso(),
       total_score: Math.max(100, Number(story.total_score || 0)), legal_risk: false,
-      ai_payload: { ...payload, official_source_auto: true, official_source_types: [...new Set(officialEvidence.map((post) => post.source_type))], official_source_accounts: sources, official_source_promoted_at: nowIso(), original_legal_risk: Boolean(story.legal_risk) },
-      decision_reason: `${story.decision_reason || ""}；官方执法或移民机构账号来源，AI自动编辑并批准发布`, updated_at: nowIso()
+      ai_payload: { ...payload, official_source_auto: true, trusted_source_auto: true, official_source_types: [...new Set(officialEvidence.map((post) => post.source_type))], official_source_accounts: sources, official_source_promoted_at: nowIso(), original_legal_risk: Boolean(story.legal_risk) },
+      decision_reason: `${story.decision_reason || ""}；官方执法或移民机构账号来源，中文加工完成，自动批准发布`, updated_at: nowIso()
     }, prefer: "return=minimal" });
     approved += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-official-source-promote-v1", checked: Array.isArray(rows) ? rows.length : 0, approved, manual_non_official: manual, blocked_hard_risk_or_low_confidence: blocked, incomplete, stale }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-official-source-promote-v2", checked: Array.isArray(rows) ? rows.length : 0, approved, manual_non_official: manual, blocked_hard_risk: blocked, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 main().catch((error) => { console.error("ICE官方信源自动批准失败：", error); process.exitCode = 1; });

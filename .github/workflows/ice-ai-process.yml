@@ -9,6 +9,8 @@ on:
       - "scripts/ice-publish-due.mjs"
       - "scripts/ice-pipeline-heartbeat.mjs"
       - "scripts/ice-ai-process-only.mjs"
+      - "scripts/ice-official-source-only.mjs"
+      - "scripts/ice-english-pretranslation-dedupe.mjs"
       - ".github/workflows/ice-ai-process.yml"
   schedule:
     - cron: "5,15,25,35,45,55 * * * *"
@@ -60,15 +62,15 @@ jobs:
       ICE_TRANSLATE_MAX_STORIES: "24"
       ICE_CROSS_LANGUAGE_DEDUPE_MAX: "500"
       ICE_PUBLISHED_DEDUPE_DAYS: "30"
-      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.32"
-      ICE_REVIEW_DUPLICATE_THRESHOLD: "0.38"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
+      ICE_REVIEW_DUPLICATE_THRESHOLD: "0.92"
       ICE_UNREVIEWED_EXPIRE_HOURS: "2"
       ICE_DEDUPE_HOURS: "720"
       ICE_PUBLISH_INTERVAL_MINUTES: "10"
       ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
       ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "120"
       ICE_ENGLISH_DEDUPE_MAX: "1500"
-      ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
+      ICE_ENGLISH_DEDUPE_THRESHOLD: "0.92"
       ICE_OFFICIAL_FILTER_MAX: "1500"
     steps:
       - uses: actions/checkout@v4
@@ -79,9 +81,9 @@ jobs:
           ICE_HEARTBEAT_STAGE: "ai-process"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
-      - name: Keep official sources only
+      - name: Keep official and monitored sources only
         run: node scripts/ice-official-source-only.mjs
-      - name: English source dedupe before AI
+      - name: Strict English event dedupe before AI
         run: node scripts/ice-english-pretranslation-dedupe.mjs
       - name: Process database AI batch without X API
         run: node scripts/ice-ai-process-only.mjs

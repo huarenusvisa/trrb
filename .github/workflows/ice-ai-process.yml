@@ -10,7 +10,7 @@ permissions:
 
 concurrency:
   group: trrb-ice-ai-process
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   gate:
@@ -61,17 +61,20 @@ jobs:
       ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "120"
       ICE_ENGLISH_DEDUPE_MAX: "2500"
       ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
+      ICE_OFFICIAL_FILTER_MAX: "3000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
+      - name: Keep official sources only
+        run: node scripts/ice-official-source-only.mjs
       - name: English source dedupe before AI
         run: node scripts/ice-english-pretranslation-dedupe.mjs
       - name: Process a bounded AI batch
         run: node scripts/ice-multisource.mjs --mode=collect
       - name: Normalize and translate to Chinese
         run: |
-          node scripts/ice-editorial-normalize.mjs || true
+          node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
       - name: Final dedupe and publish
         env:

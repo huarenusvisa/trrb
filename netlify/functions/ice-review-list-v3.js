@@ -23,6 +23,16 @@ function cutoffIso() {
   return new Date(Date.now() - REVIEW_MAX_AGE_HOURS * 3600000).toISOString();
 }
 
+function hasChinese(value) {
+  return /[\u3400-\u9fff]/u.test(String(value || ""));
+}
+
+function chineseReady(story) {
+  const title = safeText(story?.title, 300);
+  const body = safeText(story?.content || story?.summary, 30000);
+  return hasChinese(title) && hasChinese(body);
+}
+
 async function loadStories() {
   const rows = await rest("ice_stories", {
     query: {
@@ -142,16 +152,19 @@ exports.handler = async (event) => {
     if (safeText(input.action, 40) !== "list") return json(400, { error: "只支持list操作" });
     const stories = await loadStories();
     const postsByFingerprint = await loadLeadPosts(stories);
-    const visible = prepareStories(stories, postsByFingerprint)
+    const prepared = prepareStories(stories, postsByFingerprint)
       .filter((story) => timeValue(story.source_created_at || story.last_seen_at || story.updated_at) >= Date.now() - REVIEW_MAX_AGE_HOURS * 3600000)
       .sort((a, b) => timeValue(b.source_created_at || b.last_seen_at || b.updated_at) - timeValue(a.source_created_at || a.last_seen_at || a.updated_at));
+    const visible = prepared.filter(chineseReady);
+    const pendingTranslation = prepared.length - visible.length;
     return json(200, {
       stories: visible,
-      pipeline: await pipelineStatus(stories),
+      pipeline: { ...(await pipelineStatus(stories)), pending_translation: pendingTranslation },
       dedupe: {
         scanned: stories.length,
         visible: visible.length,
-        hidden_duplicates: Math.max(0, stories.length - visible.length)
+        hidden_duplicates: Math.max(0, stories.length - prepared.length),
+        hidden_pending_translation: pendingTranslation
       }
     });
   } catch (error) {

@@ -9,5 +9,16 @@
     "auto_publish": false,
     "requires_human_review": true,
     "note": "Monitor ICE-related posts; never treat as an official source and never auto-publish."
+  },
+  {
+    "topic": "ice",
+    "username": "LongTimeHistory",
+    "name": "LongTime FirstTime",
+    "type": "monitored_individual",
+    "tier": 4,
+    "enabled": true,
+    "auto_publish": false,
+    "requires_human_review": true,
+    "note": "Monitor ICE-related eyewitness and video posts; never treat as an official source and never auto-publish."
   }
 ]

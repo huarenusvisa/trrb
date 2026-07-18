@@ -5,11 +5,18 @@ import process from "node:process";
 const X_API = "https://api.x.com/2";
 const LOOKBACK_HOURS = Number(process.env.ICE_ERO_LOOKBACK_HOURS || 3);
 const MAX_PAGES_PER_QUERY = 3;
+
+// ICE ERO 现有地区办公室账号。其余地区级 HSI/CBP/USBP/USCIS/DHS 账号
+// 会同时从 source_registry 动态读取，并通过下方宽召回查询自动发现。
 const HANDLES = [
+  "ICEgov","DHSgov","HSI_HQ","CBP","USBPChief","USCIS","DOJ_EOIR",
   "EROAtlanta","EROBaltimore","EROBoston","EROBuffalo","EROChicago","ERODallas","ERODenver","ERODetroit",
   "EROElPaso","EROHouston","EROLosAngeles","EROMiami","ERONewark","ERONewOrleans","ERONewYork","EROPhiladelphia",
   "EROPhoenix","EROSaltLakeCity","EROSanAntonio","EROSanDiego","EROSanFrancisco","EROSeattle","EROStPaul","EROWashington"
 ];
+
+const OFFICIAL_PREFIX = /^(ice|ero|hsi|cbp|usbp|uscis|dhs|eoir)/i;
+const OFFICIAL_PROFILE = /immigration and customs enforcement|enforcement and removal operations|homeland security investigations|customs and border protection|u\.s\. border patrol|citizenship and immigration services|department of homeland security|executive office for immigration review/i;
 
 function requireEnv() {
   const missing = ["X_BEARER_TOKEN","SUPABASE_URL","SUPABASE_SERVICE_ROLE_KEY"].filter((name) => !process.env[name]);
@@ -50,9 +57,12 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
   return request(url, { method, headers: sbHeaders(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
 }
 function buildQueries(handles) {
-  const unique = [...new Set(handles.map((x) => String(x).trim()).filter(Boolean))];
+  const unique = [...new Set(handles.map((x) => String(x).replace(/^@/, "").trim()).filter(Boolean))];
   const direct = chunk(unique, 6).map((batch) => `(${batch.map((h) => `from:${h}`).join(" OR ")}) -is:retweet -is:reply`);
   direct.push('(“ICE ERO” OR “Enforcement and Removal Operations” OR “ERO officers”) (arrested OR detained OR deported OR removed OR raid OR operation) -is:retweet -is:reply lang:en'.replaceAll('“','"').replaceAll('”','"'));
+  direct.push('(“HSI” OR “Homeland Security Investigations”) (arrested OR operation OR raid OR trafficking OR smuggling OR seized OR rescued) -is:retweet -is:reply lang:en'.replaceAll('“','"').replaceAll('”','"'));
+  direct.push('(“CBP” OR “U.S. Border Patrol” OR USBP) (arrested OR apprehended OR seized OR intercepted OR rescued OR operation) -is:retweet -is:reply lang:en'.replaceAll('“','"').replaceAll('”','"'));
+  direct.push('(“USCIS” OR “DHS” OR “EOIR”) (immigration OR enforcement OR fraud OR arrest OR policy OR court) -is:retweet -is:reply lang:en'.replaceAll('“','"').replaceAll('”','"'));
   return direct;
 }
 async function queryState(key) {
@@ -70,8 +80,6 @@ async function searchX(query) {
     url.searchParams.set("query", query);
     url.searchParams.set("max_results", "100");
     url.searchParams.set("start_time", lookbackStart());
-    // since_id remains persisted in ice_query_state for monitoring/deduplication,
-    // but is deliberately not sent together with start_time because X rejects that combination.
     if (next) url.searchParams.set("next_token", next);
     url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,geo");
     url.searchParams.set("expansions", "author_id,attachments.media_keys,geo.place_id");
@@ -84,7 +92,12 @@ async function searchX(query) {
   }
   return pages;
 }
-function relevant(text) { return /arrest|detain|custody|raid|operation|deport|remov|final order|fugitive|gang|criminal|shoot|shot|gunfire|death|fatal|use of force|vehicle stop|surveillance/i.test(String(text || "")); }
+function relevant(text) { return /arrest|apprehend|detain|custody|raid|operation|deport|remov|final order|fugitive|gang|criminal|shoot|shot|gunfire|death|fatal|use of force|vehicle stop|surveillance|seiz|intercept|rescu|traffick|smuggl|fraud|court|policy/i.test(String(text || "")); }
+function officialAuthor(author) {
+  const username = String(author?.username || "").replace(/^@/, "");
+  const profile = `${author?.name || ""} ${author?.description || ""}`;
+  return OFFICIAL_PREFIX.test(username) || (Boolean(author?.verified) && OFFICIAL_PROFILE.test(profile));
+}
 function media(tweet, includes) {
   const byKey = new Map((includes?.media || []).map((item) => [item.media_key, item]));
   return (tweet?.attachments?.media_keys || []).map((key) => byKey.get(key)).filter(Boolean).map((item) => ({ type: item.type || "", url: item.url || "", preview_image_url: item.preview_image_url || "", width: item.width || null, height: item.height || null, duration_ms: item.duration_ms || null, variants: Array.isArray(item.variants) ? item.variants : [] }));
@@ -97,13 +110,16 @@ async function existingIds(ids) {
 }
 async function main() {
   requireEnv();
-  const registryRows = await sb("source_registry", { query: { select: "x_username,source_type,enabled", topic_key: "eq.ice", enabled: "eq.true", limit: "200" } });
-  const registryHandles = (Array.isArray(registryRows) ? registryRows : []).filter((row) => row.source_type === "official" && /^ero/i.test(String(row.x_username || ""))).map((row) => String(row.x_username));
+  const registryRows = await sb("source_registry", { query: { select: "x_username,source_type,enabled", topic_key: "eq.ice", enabled: "eq.true", limit: "1000" } });
+  const registryHandles = (Array.isArray(registryRows) ? registryRows : [])
+    .filter((row) => row.source_type === "official" && OFFICIAL_PREFIX.test(String(row.x_username || "").replace(/^@/, "")))
+    .map((row) => String(row.x_username));
   const queries = buildQueries([...HANDLES, ...registryHandles]);
   const collected = new Map();
   let requests = 0;
+  let failedQueries = 0;
   for (const query of queries) {
-    const key = `ero-official-${LOOKBACK_HOURS}h-${digest(query).slice(0, 28)}`;
+    const key = `regional-official-${LOOKBACK_HOURS}h-${digest(query).slice(0, 28)}`;
     const state = await queryState(key);
     try {
       const pages = await searchX(query);
@@ -115,13 +131,13 @@ async function main() {
           seen.push(String(tweet.id));
           if (!relevant(tweet.text)) continue;
           const author = users.get(tweet.author_id) || {};
+          if (!officialAuthor(author)) continue;
           const username = String(author.username || "");
-          if (!/^ero/i.test(username) && !/immigration and customs enforcement|enforcement and removal operations|\bice\b/i.test(`${author.name || ""} ${author.description || ""}`)) continue;
           collected.set(String(tweet.id), {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
-            independence_key: `ero:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
-            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-ero-official-${LOOKBACK_HOURS}h`, lookback_hours: LOOKBACK_HOURS, query } },
+            independence_key: `official:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
+            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-regional-official-${LOOKBACK_HOURS}h-v2`, lookback_hours: LOOKBACK_HOURS, query } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null, location_text: null,
             people_count: null, claims: [], entities: [], extraction_confidence: null, extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
           });
@@ -129,14 +145,16 @@ async function main() {
       }
       await saveState({ query_key: key, query_text: query, last_seen_id: maxSnowflake(seen) || state?.last_seen_id || null, last_run_at: nowIso(), last_success_at: nowIso(), last_error: null, updated_at: nowIso() });
     } catch (error) {
+      failedQueries += 1;
       await saveState({ query_key: key, query_text: query, last_seen_id: state?.last_seen_id || null, last_run_at: nowIso(), last_error: String(error.message || error).slice(0, 1500), updated_at: nowIso() });
-      console.error(`ERO查询失败：${query}\n${error.message}`);
+      console.error(`地区官方查询失败：${query}\n${error.message}`);
+      if (error.status === 429) break;
     }
   }
   const rows = [...collected.values()];
   const exists = await existingIds(rows.map((row) => row.x_post_id));
   const fresh = rows.filter((row) => !exists.has(row.x_post_id));
   if (fresh.length) await sb("ice_posts", { method: "POST", body: fresh, prefer: "resolution=ignore-duplicates,return=minimal" });
-  console.log(`ERO官方抓取完成：${requests}次请求，回看${LOOKBACK_HOURS}小时，发现${rows.length}条，新增${fresh.length}条。`);
+  console.log(JSON.stringify({ collector: "ice-regional-official-v2", lookback_hours: LOOKBACK_HOURS, queries: queries.length, requests, failed_queries: failedQueries, found: rows.length, inserted: fresh.length }, null, 2));
 }
-main().catch((error) => { console.error("ERO官方抓取失败：", error); process.exitCode = 1; });
+main().catch((error) => { console.error("地区官方抓取失败：", error); process.exitCode = 1; });

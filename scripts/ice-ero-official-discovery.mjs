@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import process from "node:process";
 
 const X_API = "https://api.x.com/2";
-const LOOKBACK_HOURS = 2;
+const LOOKBACK_HOURS = Number(process.env.ICE_ERO_LOOKBACK_HOURS || 3);
 const MAX_PAGES_PER_QUERY = 3;
 const HANDLES = [
   "EROAtlanta","EROBaltimore","EROBoston","EROBuffalo","EROChicago","ERODallas","ERODenver","ERODetroit",
@@ -16,7 +16,7 @@ function requireEnv() {
   if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`);
 }
 function nowIso() { return new Date().toISOString(); }
-function twoHourStart() { return new Date(Date.now() - LOOKBACK_HOURS * 3600000).toISOString(); }
+function lookbackStart() { return new Date(Date.now() - LOOKBACK_HOURS * 3600000).toISOString(); }
 function digest(value) { return crypto.createHash("sha256").update(String(value)).digest("hex"); }
 function maxSnowflake(ids) {
   return ids.reduce((max, id) => { try { return BigInt(id) > BigInt(max || "0") ? String(id) : max; } catch { return String(id) > String(max || "") ? String(id) : max; } }, "");
@@ -69,7 +69,7 @@ async function searchX(query) {
     const url = new URL(`${X_API}/tweets/search/recent`);
     url.searchParams.set("query", query);
     url.searchParams.set("max_results", "100");
-    url.searchParams.set("start_time", twoHourStart());
+    url.searchParams.set("start_time", lookbackStart());
     // since_id remains persisted in ice_query_state for monitoring/deduplication,
     // but is deliberately not sent together with start_time because X rejects that combination.
     if (next) url.searchParams.set("next_token", next);
@@ -103,7 +103,7 @@ async function main() {
   const collected = new Map();
   let requests = 0;
   for (const query of queries) {
-    const key = `ero-official-2h-${digest(query).slice(0, 28)}`;
+    const key = `ero-official-${LOOKBACK_HOURS}h-${digest(query).slice(0, 28)}`;
     const state = await queryState(key);
     try {
       const pages = await searchX(query);
@@ -121,7 +121,7 @@ async function main() {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
             independence_key: `ero:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
-            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: "ice-ero-official-2h", lookback_hours: LOOKBACK_HOURS, query } },
+            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-ero-official-${LOOKBACK_HOURS}h`, lookback_hours: LOOKBACK_HOURS, query } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null, location_text: null,
             people_count: null, claims: [], entities: [], extraction_confidence: null, extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
           });
@@ -137,6 +137,6 @@ async function main() {
   const exists = await existingIds(rows.map((row) => row.x_post_id));
   const fresh = rows.filter((row) => !exists.has(row.x_post_id));
   if (fresh.length) await sb("ice_posts", { method: "POST", body: fresh, prefer: "resolution=ignore-duplicates,return=minimal" });
-  console.log(`ERO官方抓取完成：${requests}次请求，发现${rows.length}条，新增${fresh.length}条。`);
+  console.log(`ERO官方抓取完成：${requests}次请求，回看${LOOKBACK_HOURS}小时，发现${rows.length}条，新增${fresh.length}条。`);
 }
 main().catch((error) => { console.error("ERO官方抓取失败：", error); process.exitCode = 1; });

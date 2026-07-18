@@ -1,0 +1,142 @@
+name: ICE一体化采集编辑发布
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-unified-pipeline.yml"
+      - "scripts/ice-*.mjs"
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-unified-pipeline
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      RUN_MODE: "process"
+      ICE_PRIORITY_LOOKBACK_MINUTES: "180"
+      ICE_PRIORITY_MAX_PAGES: "3"
+      ICE_MAX_SOURCE_AGE_MINUTES: "180"
+      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "180"
+      ICE_PUBLISHED_DEDUPE_DAYS: "30"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
+      ICE_REVIEW_DUPLICATE_THRESHOLD: "0.92"
+      ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
+      ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "210"
+      ICE_ENGLISH_DEDUPE_MAX: "2500"
+      ICE_ENGLISH_DEDUPE_THRESHOLD: "0.92"
+      ICE_OFFICIAL_FILTER_MAX: "3000"
+      ICE_PRECOLLECT_MAX: "1000"
+      ICE_FAST_INTAKE_MAX: "600"
+      ICE_MAX_AI_POSTS_PER_RUN: "24"
+      ICE_MAX_STORIES_PER_RUN: "18"
+      ICE_NORMALIZE_MAX_STORIES: "24"
+      ICE_TRANSLATE_MAX_STORIES: "24"
+      ICE_CROSS_LANGUAGE_DEDUPE_MAX: "500"
+      ICE_AUTO_PUBLISH_SCORE: "80"
+      ICE_AI_CONFIDENCE: "80"
+      ICE_TRUSTED_AUTO_CONFIDENCE: "0"
+      ICE_TRUSTED_MAX_AGE_MINUTES: "180"
+      ICE_UNREVIEWED_EXPIRE_HOURS: "3"
+      ICE_DEDUPE_HOURS: "720"
+      ICE_PUBLISH_INTERVAL_MINUTES: "10"
+    steps:
+      - name: Check New York operating hours
+        id: guard
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间凌晨2点至8点，按规则暂停。"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.guard.outputs.skip != 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.guard.outputs.skip != 'true'
+        with:
+          node-version: "22"
+
+      - name: Write pipeline start heartbeat
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          ICE_HEARTBEAT_STAGE: "unified-pipeline"
+          ICE_HEARTBEAT_STATUS: "running"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+
+      - name: Collect official and monitored X sources
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          node scripts/ice-priority-discovery.mjs || echo "priority collector failed; continue with other sources"
+          node scripts/ice-ero-official-discovery.mjs || echo "ERO collector failed; continue with database processing"
+
+      - name: Filter, English dedupe and intake
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          node scripts/ice-official-source-only.mjs
+          node scripts/ice-drop-stale-posts.mjs || true
+          node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-english-pretranslation-dedupe.mjs
+          node scripts/ice-precollect-published-dedupe.mjs
+          node scripts/ice-fast-intake.mjs
+          node scripts/ice-dedupe-v3.mjs || true
+
+      - name: AI process database batch
+        if: steps.guard.outputs.skip != 'true'
+        run: node scripts/ice-ai-process-only.mjs
+
+      - name: Normalize and translate to Chinese
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          node scripts/ice-editorial-normalize.mjs
+          node scripts/ice-translate-title-body.mjs
+
+      - name: Final dedupe and publish official stories
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          ICE_FORCE_FIRST_PUBLISH: "true"
+          ICE_PUBLISH_MAX_PER_RUN: "10"
+        shell: bash
+        run: |
+          node scripts/ice-cross-language-dedupe.mjs || true
+          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-clean-existing-review-duplicates.mjs || true
+          node scripts/ice-trusted-source-promote.mjs
+          node scripts/ice-publish-due.mjs
+
+      - name: Write pipeline success heartbeat
+        if: success() && steps.guard.outputs.skip != 'true'
+        env:
+          ICE_HEARTBEAT_STAGE: "unified-pipeline"
+          ICE_HEARTBEAT_STATUS: "success"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+
+      - name: Write pipeline failure heartbeat
+        if: failure() && steps.guard.outputs.skip != 'true'
+        env:
+          ICE_HEARTBEAT_STAGE: "unified-pipeline"
+          ICE_HEARTBEAT_STATUS: "failure"
+          ICE_HEARTBEAT_ERROR: "ICE unified collection, AI processing or publishing workflow failed"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true

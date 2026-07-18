@@ -6,10 +6,13 @@ const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"]
 const LOOKBACK_MINUTES = Number(process.env.ICE_PRIORITY_LOOKBACK_MINUTES || 180);
 const ACCEPT_AGE_MINUTES = Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 180);
 const MAX_PAGES = Number(process.env.ICE_PRIORITY_MAX_PAGES || 3);
+const ROTATION_GROUPS = Math.max(1, Number(process.env.ICE_PRIORITY_ROTATION_GROUPS || 4));
 
-// 美国官方移民、边境及执法机构账号。地区 ERO 账号由独立采集器补充。
-const OFFICIAL_HANDLES = [
-  "ICEgov", "DHSgov", "HSI_HQ", "CBP", "USBPChief", "USCIS",
+const CORE_OFFICIAL_HANDLES = [
+  "ICEgov", "DHSgov", "HSI_HQ", "CBP", "USBPChief", "USCIS"
+];
+
+const ROTATING_OFFICIAL_HANDLES = [
   "DOJCrimDiv", "TheJusticeDept", "USMarshalsHQ", "FBI",
   "CBPPortDirBOS", "CBPPortDirJFK", "CBPPortDirLAX", "CBPPortDirMIA",
   "USBPChiefEPT", "USBPChiefRGV", "USBPChiefTCA", "USBPChiefYUM",
@@ -17,9 +20,23 @@ const OFFICIAL_HANDLES = [
   "FEMA", "SecretService"
 ];
 
-// 指定非官方监控账号：只进入人工审核，绝不自动发布。
-const MONITORED_HANDLES = ["KimKatieUSA", "ImmigrantCrimes", "LongTimeHistory"];
-const ALL_HANDLES = [...new Set([...OFFICIAL_HANDLES, ...MONITORED_HANDLES])];
+const OFFICIAL_HANDLES = [...CORE_OFFICIAL_HANDLES, ...ROTATING_OFFICIAL_HANDLES];
+
+// 非官方监控账号只进入人工审核，绝不自动发布。
+const MONITORED_HANDLES = [
+  "KimKatieUSA", "ImmigrantCrimes", "LongTimeHistory", "CartelWatch", "storm1news"
+];
+
+function rotationSlot() {
+  return Math.floor(Date.now() / (15 * 60 * 1000)) % ROTATION_GROUPS;
+}
+
+function handlesForRun() {
+  const slot = rotationSlot();
+  const rotatingOfficial = ROTATING_OFFICIAL_HANDLES.filter((_, index) => index % ROTATION_GROUPS === slot);
+  const monitored = MONITORED_HANDLES.filter((_, index) => index % 2 === slot % 2);
+  return [...new Set([...CORE_OFFICIAL_HANDLES, ...rotatingOfficial, ...monitored])];
+}
 
 function requireEnv() {
   const missing = REQUIRED.filter((name) => !process.env[name]);
@@ -56,7 +73,7 @@ async function request(url, options = {}, attempts = 3) {
     } catch (error) {
       last = error;
       if (attempt === attempts || (error.status && error.status < 500 && error.status !== 429)) throw error;
-      await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** (attempt - 1)));
+      await new Promise((resolve) => setTimeout(resolve, error.status === 429 ? 12000 * attempt : 1000 * 2 ** (attempt - 1)));
     }
   }
   throw last;
@@ -75,7 +92,7 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
 }
 
 function isRelevant(text) {
-  return /\bice\b|immigration and customs enforcement|\bhsi\b|homeland security investigations|\bdhs\b|\bcbp\b|border patrol|uscis|deport|removal|detain|custody|arrest|raid|shoot|shot|killed|death|immigration benefit|immigration policy|smuggl|traffick|fentanyl|counterfeit/i.test(String(text || ""));
+  return /\bice\b|immigration and customs enforcement|\bhsi\b|homeland security investigations|\bdhs\b|\bcbp\b|border patrol|uscis|deport|removal|detain|custody|arrest|raid|shoot|shot|killed|death|immigration benefit|immigration policy|smuggl|traffick|fentanyl|counterfeit|protest|facility|enforcement/i.test(String(text || ""));
 }
 
 function ageMinutes(value) {
@@ -143,6 +160,7 @@ async function searchSingleHandle(username, startTime) {
   url.searchParams.set("query", `from:${username} -is:retweet -is:reply`);
   url.searchParams.set("max_results", "100");
   url.searchParams.set("start_time", startTime);
+  url.searchParams.set("sort_order", "recency");
   url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
   url.searchParams.set("expansions", "author_id,attachments.media_keys");
   url.searchParams.set("user.fields", "id,name,username,verified,public_metrics");
@@ -207,10 +225,22 @@ function makeRow(tweet, user, media, collector, manualReviewOnly) {
 async function main() {
   requireEnv();
   const startTime = new Date(Date.now() - LOOKBACK_MINUTES * 60000).toISOString();
+  const selectedHandles = handlesForRun();
   const collected = new Map();
-  const stats = { accounts: ALL_HANDLES.length, timeline_ok: 0, fallback_ok: 0, failed: 0, returned: 0, irrelevant: 0, expired: 0 };
+  const stats = {
+    configured_accounts: OFFICIAL_HANDLES.length + MONITORED_HANDLES.length,
+    selected_accounts: selectedHandles.length,
+    rotation_slot: rotationSlot(),
+    timeline_ok: 0,
+    fallback_ok: 0,
+    failed: 0,
+    returned: 0,
+    irrelevant: 0,
+    expired: 0,
+    failed_handles: []
+  };
 
-  for (const username of ALL_HANDLES) {
+  for (const username of selectedHandles) {
     let user = null;
     try {
       user = await resolveUser(username);
@@ -223,7 +253,7 @@ async function main() {
           if (ageMinutes(tweet.created_at) > ACCEPT_AGE_MINUTES) { stats.expired += 1; continue; }
           if (!isRelevant(tweet.text)) { stats.irrelevant += 1; continue; }
           const media = mediaFromIncludes(tweet, payload?.includes);
-          collected.set(String(tweet.id), makeRow(tweet, user, media, "ice-direct-timeline-v2", isMonitoredHandle(username)));
+          collected.set(String(tweet.id), makeRow(tweet, user, media, "ice-direct-timeline-v3", isMonitoredHandle(username)));
         }
       }
     } catch (timelineError) {
@@ -237,18 +267,19 @@ async function main() {
           if (ageMinutes(tweet.created_at) > ACCEPT_AGE_MINUTES) { stats.expired += 1; continue; }
           if (!isRelevant(tweet.text)) { stats.irrelevant += 1; continue; }
           const media = mediaFromIncludes(tweet, payload?.includes);
-          collected.set(String(tweet.id), makeRow(tweet, fallbackUser, media, "ice-single-search-fallback-v2", isMonitoredHandle(username)));
+          collected.set(String(tweet.id), makeRow(tweet, fallbackUser, media, "ice-single-search-fallback-v3", isMonitoredHandle(username)));
         }
       } catch (fallbackError) {
         stats.failed += 1;
+        stats.failed_handles.push({ username, status: fallbackError.status || null, error: String(fallbackError.message || fallbackError).slice(0, 240) });
         console.error(`重点账号采集失败：@${username} — ${fallbackError.message}`);
       }
     }
-    await new Promise((resolve) => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 250));
   }
 
-  if (stats.failed === ALL_HANDLES.length && collected.size === 0) {
-    throw new Error("所有重点账号采集均失败且没有可用数据");
+  if (stats.failed === selectedHandles.length && collected.size === 0) {
+    throw new Error("本轮所有重点账号采集均失败且没有可用数据");
   }
 
   const rows = [...collected.values()];
@@ -264,7 +295,7 @@ async function main() {
   }
 
   console.log(JSON.stringify({
-    collector: "ice-direct-timeline-v2",
+    collector: "ice-direct-timeline-v3",
     ...stats,
     candidates: rows.length,
     database_duplicates: exists.size,

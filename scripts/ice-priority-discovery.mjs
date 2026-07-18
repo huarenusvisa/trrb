@@ -17,7 +17,7 @@ const OFFICIAL_HANDLES = [
   "FEMA", "SecretService"
 ];
 // 指定非官方监控账号：只进入人工审核，绝不自动发布。
-const MONITORED_HANDLES = ["KimKatieUSA", "ImmigrantCrimes"];
+const MONITORED_HANDLES = ["KimKatieUSA", "ImmigrantCrimes", "LongTimeHistory"];
 const ALL_HANDLES = [...OFFICIAL_HANDLES, ...MONITORED_HANDLES];
 
 function requireEnv() {
@@ -109,7 +109,7 @@ async function main() {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: official ? "official" : "monitored_individual", trust_tier: official ? 1 : 4,
             independence_key: `${official ? "official" : "monitored"}:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "", media,
-            raw_payload: { tweet, author, discovery: { collector: "ice-priority-v4", query, lookback_minutes: LOOKBACK_MINUTES, manual_review_only: !official } },
+            raw_payload: { tweet, author, discovery: { collector: "ice-priority-v5", query, lookback_minutes: LOOKBACK_MINUTES, manual_review_only: !official } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null,
             location_text: null, people_count: null, claims: [], entities: [], extraction_confidence: null,
             extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
@@ -121,6 +121,6 @@ async function main() {
   if (failed > 0 && collected.size === 0) throw new Error(`重点补抓有${failed}组查询失败且无可用数据`);
   const rows = [...collected.values()]; const exists = await existingIds(rows.map((row) => row.x_post_id)); const fresh = rows.filter((row) => !exists.has(row.x_post_id));
   if (fresh.length) await sb("ice_posts", { method: "POST", body: fresh, prefer: "resolution=ignore-duplicates,return=minimal" });
-  console.log(JSON.stringify({ collector: "ice-priority-v4", requests, candidates: rows.length, duplicates: exists.size, inserted: fresh.length, failed_queries: failed }, null, 2));
+  console.log(JSON.stringify({ collector: "ice-priority-v5", requests, candidates: rows.length, duplicates: exists.size, inserted: fresh.length, failed_queries: failed }, null, 2));
 }
 main().catch((error) => { console.error("ICE重点补抓失败：", error); process.exitCode = 1; });

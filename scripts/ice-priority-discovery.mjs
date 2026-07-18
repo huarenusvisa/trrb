@@ -118,7 +118,6 @@ async function resolveUser(username) {
   return payload?.data || null;
 }
 
-// 核心修复：逐账号读取用户时间线，不再依赖 recent search 的搜索索引完整性。
 async function fetchUserTimeline(user, startTime) {
   const pages = [];
   let paginationToken = "";
@@ -139,7 +138,6 @@ async function fetchUserTimeline(user, startTime) {
   return pages;
 }
 
-// 时间线接口因套餐或临时错误不可用时，才退回单账号 recent search。
 async function searchSingleHandle(username, startTime) {
   const url = new URL(`${X_API}/tweets/search/recent`);
   url.searchParams.set("query", `from:${username} -is:retweet -is:reply`);
@@ -225,7 +223,7 @@ async function main() {
           if (ageMinutes(tweet.created_at) > ACCEPT_AGE_MINUTES) { stats.expired += 1; continue; }
           if (!isRelevant(tweet.text)) { stats.irrelevant += 1; continue; }
           const media = mediaFromIncludes(tweet, payload?.includes);
-          collected.set(String(tweet.id), makeRow(tweet, user, media, "ice-direct-timeline-v1", isMonitoredHandle(username)));
+          collected.set(String(tweet.id), makeRow(tweet, user, media, "ice-direct-timeline-v2", isMonitoredHandle(username)));
         }
       }
     } catch (timelineError) {
@@ -239,7 +237,7 @@ async function main() {
           if (ageMinutes(tweet.created_at) > ACCEPT_AGE_MINUTES) { stats.expired += 1; continue; }
           if (!isRelevant(tweet.text)) { stats.irrelevant += 1; continue; }
           const media = mediaFromIncludes(tweet, payload?.includes);
-          collected.set(String(tweet.id), makeRow(tweet, fallbackUser, media, "ice-single-search-fallback-v1", isMonitoredHandle(username)));
+          collected.set(String(tweet.id), makeRow(tweet, fallbackUser, media, "ice-single-search-fallback-v2", isMonitoredHandle(username)));
         }
       } catch (fallbackError) {
         stats.failed += 1;
@@ -259,17 +257,18 @@ async function main() {
   if (fresh.length) {
     await sb("ice_posts", {
       method: "POST",
+      query: { on_conflict: "x_post_id" },
       body: fresh,
       prefer: "resolution=ignore-duplicates,return=minimal"
     });
   }
 
   console.log(JSON.stringify({
-    collector: "ice-direct-timeline-v1",
+    collector: "ice-direct-timeline-v2",
     ...stats,
     candidates: rows.length,
     database_duplicates: exists.size,
-    inserted: fresh.length
+    attempted_insert: fresh.length
   }, null, 2));
 }
 

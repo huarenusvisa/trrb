@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  backfill:
+  backfill-priority:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -28,10 +28,8 @@ jobs:
       RUN_MODE: "process"
       ICE_PRIORITY_LOOKBACK_MINUTES: "2880"
       ICE_MAX_SOURCE_AGE_MINUTES: "2880"
-      ICE_PRIORITY_MAX_PAGES: "3"
+      ICE_PRIORITY_MAX_PAGES: "2"
       ICE_PRIORITY_ROTATION_GROUPS: "1"
-      ICE_ERO_LOOKBACK_HOURS: "48"
-      ICE_ERO_ROTATION_GROUPS: "1"
       ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "2880"
       ICE_PUBLISHED_DEDUPE_DAYS: "30"
       ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
@@ -61,12 +59,8 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Backfill all configured sources
-        shell: bash
-        run: |
-          set -e
-          node scripts/ice-priority-discovery.mjs
-          node scripts/ice-ero-official-discovery.mjs
+      - name: Backfill priority official and monitored sources
+        run: node scripts/ice-priority-discovery.mjs
 
       - name: Dedupe, process and translate
         shell: bash
@@ -82,7 +76,7 @@ jobs:
           node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
 
-      - name: Publish official backfill stories
+      - name: Publish official priority backfill stories
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "20"

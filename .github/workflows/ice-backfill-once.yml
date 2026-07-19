@@ -1,0 +1,96 @@
+name: ICE遗漏内容一次性补抓
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-backfill-once.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-backfill-once
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NODE_OPTIONS: "--max-http-header-size=65536"
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      RUN_MODE: "process"
+      ICE_PRIORITY_LOOKBACK_MINUTES: "2880"
+      ICE_MAX_SOURCE_AGE_MINUTES: "2880"
+      ICE_PRIORITY_MAX_PAGES: "3"
+      ICE_PRIORITY_ROTATION_GROUPS: "1"
+      ICE_ERO_LOOKBACK_HOURS: "48"
+      ICE_ERO_ROTATION_GROUPS: "1"
+      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "2880"
+      ICE_PUBLISHED_DEDUPE_DAYS: "30"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
+      ICE_REVIEW_DUPLICATE_THRESHOLD: "0.92"
+      ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
+      ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "2880"
+      ICE_ENGLISH_DEDUPE_MAX: "4000"
+      ICE_ENGLISH_DEDUPE_THRESHOLD: "0.92"
+      ICE_OFFICIAL_FILTER_MAX: "4000"
+      ICE_PRECOLLECT_MAX: "1600"
+      ICE_FAST_INTAKE_MAX: "1000"
+      ICE_MAX_AI_POSTS_PER_RUN: "50"
+      ICE_MAX_STORIES_PER_RUN: "40"
+      ICE_NORMALIZE_MAX_STORIES: "50"
+      ICE_TRANSLATE_MAX_STORIES: "50"
+      ICE_CROSS_LANGUAGE_DEDUPE_MAX: "1000"
+      ICE_AUTO_PUBLISH_SCORE: "80"
+      ICE_AI_CONFIDENCE: "80"
+      ICE_TRUSTED_AUTO_CONFIDENCE: "0"
+      ICE_TRUSTED_MAX_AGE_MINUTES: "2880"
+      ICE_UNREVIEWED_EXPIRE_HOURS: "48"
+      ICE_DEDUPE_HOURS: "720"
+      ICE_PUBLISH_INTERVAL_MINUTES: "0"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Backfill all configured sources
+        shell: bash
+        run: |
+          set -e
+          node scripts/ice-priority-discovery.mjs
+          node scripts/ice-ero-official-discovery.mjs
+
+      - name: Dedupe, process and translate
+        shell: bash
+        run: |
+          set -e
+          node scripts/ice-official-source-only.mjs
+          node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-english-pretranslation-dedupe.mjs
+          node scripts/ice-precollect-published-dedupe.mjs
+          node scripts/ice-fast-intake.mjs
+          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-ai-process-only.mjs
+          node scripts/ice-editorial-normalize.mjs
+          node scripts/ice-translate-title-body.mjs
+
+      - name: Publish official backfill stories
+        env:
+          ICE_FORCE_FIRST_PUBLISH: "true"
+          ICE_PUBLISH_MAX_PER_RUN: "20"
+        shell: bash
+        run: |
+          set -e
+          node scripts/ice-cross-language-dedupe.mjs || true
+          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-clean-existing-review-duplicates.mjs || true
+          node scripts/ice-trusted-source-promote.mjs
+          node scripts/ice-publish-due.mjs

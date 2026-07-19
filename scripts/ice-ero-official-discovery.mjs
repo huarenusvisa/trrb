@@ -5,6 +5,7 @@ import process from "node:process";
 const X_API = "https://api.x.com/2";
 const LOOKBACK_HOURS = Number(process.env.ICE_ERO_LOOKBACK_HOURS || 3);
 const MAX_PAGES_PER_QUERY = 3;
+const ROTATION_GROUPS = Math.max(1, Number(process.env.ICE_ERO_ROTATION_GROUPS || 4));
 
 const HANDLES = [
   "ICEgov","DHSgov","HSI_HQ","CBP","USBPChief","USCIS","DOJ_EOIR",
@@ -56,7 +57,6 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
 }
 function buildQueries(handles) {
   const unique = [...new Set(handles.map((x) => String(x).replace(/^@/, "").trim()).filter(Boolean))];
-  // 每个账号独立查询，避免多个账号合并后搜索索引漏稿。
   const direct = unique.map((handle) => ({ handle, query: `from:${handle} -is:retweet -is:reply` }));
   const discovery = [
     { handle: "discovery-ero", query: '("ICE ERO" OR "Enforcement and Removal Operations" OR "ERO officers") (arrested OR detained OR deported OR removed OR raid OR operation) -is:retweet -is:reply lang:en' },
@@ -64,8 +64,9 @@ function buildQueries(handles) {
     { handle: "discovery-cbp", query: '("CBP" OR "U.S. Border Patrol" OR USBP) (arrested OR apprehended OR seized OR intercepted OR rescued OR operation) -is:retweet -is:reply lang:en' },
     { handle: "discovery-other", query: '("USCIS" OR "DHS" OR "EOIR") (immigration OR enforcement OR fraud OR arrest OR policy OR court) -is:retweet -is:reply lang:en' }
   ];
-  return [...direct, ...discovery];
+  return { direct, discovery };
 }
+function rotationSlot() { return Math.floor(Date.now() / (15 * 60 * 1000)) % ROTATION_GROUPS; }
 async function queryState(key) {
   const rows = await sb("ice_query_state", { query: { select: "*", query_key: `eq.${key}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
@@ -81,6 +82,7 @@ async function searchX(query) {
     url.searchParams.set("query", query);
     url.searchParams.set("max_results", "100");
     url.searchParams.set("start_time", lookbackStart());
+    url.searchParams.set("sort_order", "recency");
     if (next) url.searchParams.set("next_token", next);
     url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,geo");
     url.searchParams.set("expansions", "author_id,attachments.media_keys,geo.place_id");
@@ -115,7 +117,13 @@ async function main() {
   const registryHandles = (Array.isArray(registryRows) ? registryRows : [])
     .filter((row) => row.source_type === "official" && OFFICIAL_PREFIX.test(String(row.x_username || "").replace(/^@/, "")))
     .map((row) => String(row.x_username));
-  const queryItems = buildQueries([...HANDLES, ...registryHandles]);
+
+  const { direct, discovery } = buildQueries([...HANDLES, ...registryHandles]);
+  const slot = rotationSlot();
+  const selectedDirect = direct.filter((_, index) => index % ROTATION_GROUPS === slot);
+  const selectedDiscovery = discovery.length ? [discovery[slot % discovery.length]] : [];
+  const queryItems = [...selectedDirect, ...selectedDiscovery];
+
   const collected = new Map();
   let requests = 0;
   let failedQueries = 0;
@@ -134,26 +142,24 @@ async function main() {
           seen.push(String(tweet.id));
           const author = users.get(tweet.author_id) || {};
           if (!officialAuthor(author)) continue;
-          // 已知官方账号直接保留；宽召回发现查询才应用关键词筛选。
           if (handle.startsWith("discovery-") && !relevant(tweet.text)) continue;
           const username = String(author.username || "");
           collected.set(String(tweet.id), {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
             independence_key: `official:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
-            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-regional-official-${LOOKBACK_HOURS}h-v3`, lookback_hours: LOOKBACK_HOURS, handle, query } },
+            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-regional-official-${LOOKBACK_HOURS}h-v4`, lookback_hours: LOOKBACK_HOURS, handle, query, rotation_slot: slot } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null, location_text: null,
             people_count: null, claims: [], entities: [], extraction_confidence: null, extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
           });
         }
       }
-      await saveState({ query_key: key, query_text: query, last_seen_id: maxSnowflake(seen) || state?.last_seen_id || null, last_run_at: nowIso(), last_success_at: nowIso(), last_error: null, updated_at: nowIso() });
+      await saveState({ query_key: key, query_text: query, last_seen_id: maxSnowflake(seen) || state?.last_seen_id || null, last_run_at: nowIso(), last_success_at: nowIso(), last_error: null, last_result: { handle, found: seen.length, rotation_slot: slot }, updated_at: nowIso() });
     } catch (error) {
       failedQueries += 1;
       failedHandles.push({ handle, status: error.status || null, error: String(error.message || error).slice(0, 300) });
-      await saveState({ query_key: key, query_text: query, last_seen_id: state?.last_seen_id || null, last_run_at: nowIso(), last_error: String(error.message || error).slice(0, 1500), updated_at: nowIso() });
+      await saveState({ query_key: key, query_text: query, last_seen_id: state?.last_seen_id || null, last_run_at: nowIso(), last_error: String(error.message || error).slice(0, 1500), last_result: { handle, failed: true, rotation_slot: slot }, updated_at: nowIso() });
       console.error(`地区官方账号查询失败：${handle}\n${error.message}`);
-      // 不再因为一个账号429/失败而停止后续所有地区账号。
       await sleep(error.status === 429 ? 5000 : 300);
     }
   }
@@ -161,6 +167,19 @@ async function main() {
   const exists = await existingIds(rows.map((row) => row.x_post_id));
   const fresh = rows.filter((row) => !exists.has(row.x_post_id));
   if (fresh.length) await sb("ice_posts", { method: "POST", query: { on_conflict: "x_post_id" }, body: fresh, prefer: "resolution=ignore-duplicates,return=minimal" });
-  console.log(JSON.stringify({ collector: "ice-regional-official-v3", lookback_hours: LOOKBACK_HOURS, account_queries: queryItems.filter((x) => !x.handle.startsWith("discovery-")).length, discovery_queries: queryItems.filter((x) => x.handle.startsWith("discovery-")).length, requests, failed_queries: failedQueries, failed_handles: failedHandles, found: rows.length, inserted: fresh.length }, null, 2));
+  console.log(JSON.stringify({
+    collector: "ice-regional-official-v4",
+    lookback_hours: LOOKBACK_HOURS,
+    rotation_groups: ROTATION_GROUPS,
+    rotation_slot: slot,
+    configured_account_queries: direct.length,
+    selected_account_queries: selectedDirect.length,
+    selected_discovery_queries: selectedDiscovery.map((x) => x.handle),
+    requests,
+    failed_queries: failedQueries,
+    failed_handles: failedHandles,
+    found: rows.length,
+    inserted: fresh.length
+  }, null, 2));
 }
 main().catch((error) => { console.error("地区官方抓取失败：", error); process.exitCode = 1; });

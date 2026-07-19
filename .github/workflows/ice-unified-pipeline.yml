@@ -8,7 +8,7 @@ on:
       - ".github/workflows/ice-unified-pipeline.yml"
       - "scripts/ice-*.mjs"
   schedule:
-    - cron: "7,22,37,52 * * * *"
+    - cron: "7,37 * * * *"
 
 permissions:
   contents: read

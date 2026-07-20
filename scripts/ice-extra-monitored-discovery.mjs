@@ -2,7 +2,18 @@
 import process from "node:process";
 
 const X_API = "https://api.x.com/2";
-const HANDLES = ["WallStreetApes", "EricLeeAtty"];
+const HANDLES = [
+  "WallStreetApes",
+  "EricLeeAtty",
+  "BlueLivesMtr",
+  "BreannaMorello",
+  "WalshFreedom",
+  "FoxNews",
+  "DittiePE",
+  "EricLDaugh",
+  "DrCharlieWard",
+  "GuntherEagleman"
+];
 const LOOKBACK_MINUTES = Math.min(720, Math.max(30, Number(process.env.ICE_EXTRA_LOOKBACK_MINUTES || process.env.ICE_PRIORITY_LOOKBACK_MINUTES || 180)));
 const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 
@@ -35,7 +46,7 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
   return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
 }
 function relevant(text) {
-  return /\bice\b|immigration and customs enforcement|\bhsi\b|deport|removal|detain|custody|arrest|raid|enforcement|immigration/i.test(String(text || ""));
+  return /\bice\b|immigration and customs enforcement|\bhsi\b|deport|removal|detain|custody|arrest|raid|enforcement|immigration|border patrol|federal plaza|immigration judge/i.test(String(text || ""));
 }
 function media(tweet, includes) {
   const map = new Map((includes?.media || []).map((item) => [item.media_key, item]));
@@ -77,7 +88,7 @@ function row(tweet, user, attachedMedia) {
     source_created_at: tweet.created_at || null,
     source_text: tweet.text || "",
     media: attachedMedia,
-    raw_payload: { tweet, author: user, discovery: { collector: "ice-extra-monitored-v1", manual_review_only: true, lookback_minutes: LOOKBACK_MINUTES } },
+    raw_payload: { tweet, author: user, discovery: { collector: "ice-extra-monitored-v2", manual_review_only: true, lookback_minutes: LOOKBACK_MINUTES } },
     relevant: null,
     claims: [], entities: [], extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
   };
@@ -101,7 +112,7 @@ async function main() {
     } catch (error) {
       stats.failed.push({ username, error: String(error.message || error).slice(0, 240) });
     }
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
   if (rows.length) {
     await sb("ice_posts", {

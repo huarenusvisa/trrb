@@ -30,6 +30,7 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       RUN_MODE: "process"
       ICE_PRIORITY_LOOKBACK_MINUTES: "180"
+      ICE_EXTRA_LOOKBACK_MINUTES: "180"
       ICE_PRIORITY_MAX_PAGES: "3"
       ICE_PRIORITY_ROTATION_GROUPS: "3"
       ICE_ERO_ROTATION_GROUPS: "3"
@@ -77,6 +78,7 @@ jobs:
           set +e
           priority_ok=0
           ero_ok=0
+          extra_ok=0
 
           for attempt in 1 2 3; do
             echo "Priority collector attempt $attempt/3"
@@ -90,9 +92,15 @@ jobs:
             sleep $((attempt * 20))
           done
 
-          echo "priority_ok=$priority_ok ero_ok=$ero_ok"
-          if [[ "$priority_ok" -eq 0 && "$ero_ok" -eq 0 ]]; then
-            echo "Both ICE collectors failed after retries."
+          for attempt in 1 2; do
+            echo "Extra monitored collector attempt $attempt/2"
+            node scripts/ice-extra-monitored-discovery.mjs && { extra_ok=1; break; }
+            sleep $((attempt * 15))
+          done
+
+          echo "priority_ok=$priority_ok ero_ok=$ero_ok extra_ok=$extra_ok"
+          if [[ "$priority_ok" -eq 0 && "$ero_ok" -eq 0 && "$extra_ok" -eq 0 ]]; then
+            echo "All ICE collectors failed after retries."
             exit 1
           fi
 

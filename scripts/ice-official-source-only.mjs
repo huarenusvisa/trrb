@@ -5,7 +5,7 @@ const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const MAX_ROWS = Number(process.env.ICE_OFFICIAL_FILTER_MAX || 3000);
 const OFFICIAL_HANDLE = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|thejusticedept|usmarshalshq|fbi|fema|secretservice|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*|hsi[a-z0-9_]*)$/i;
 const OFFICIAL_TYPE = /^(official|government|agency)$/i;
-const MONITORED_HANDLE = /^(kimkatieusa|immigrantcrimes|longtimehistory|cartelwatch|storm1news|wallstreetapes|ericleeatty)$/i;
+const MONITORED_HANDLE = /^(kimkatieusa|immigrantcrimes|longtimehistory|cartelwatch|storm1news|wallstreetapes|ericleeatty|bluelivesmtr|breannamorello|walshfreedom|foxnews|dittiepe|ericldaugh|drcharlieward|gunthereagleman)$/i;
 const MONITORED_TYPE = /^(monitored_individual)$/i;
 
 function requireEnv() {
@@ -46,7 +46,7 @@ async function reject(ids) {
 }
 async function main() {
   requireEnv();
-  const cutoff = new Date(Date.now() - 48 * 3600000).toISOString();
+  const cutoff = new Date(Date.now() - 12 * 3600000).toISOString();
   const rows = await sb("ice_posts", {
     query: {
       select: "id,source_username,source_display_name,source_type,processing_status,relevant,source_created_at,created_at",
@@ -58,6 +58,6 @@ async function main() {
   const active = (Array.isArray(rows) ? rows : []).filter((row) => row.relevant !== false && !["published","irrelevant"].includes(String(row.processing_status || "")));
   const rejected = active.filter((row) => !isAllowed(row)).map((row) => row.id);
   if (rejected.length) await reject(rejected);
-  console.log(JSON.stringify({ stage: "official-and-monitored-source-filter-v6", scanned: active.length, kept: active.length - rejected.length, rejected_non_allowed: rejected.length }, null, 2));
+  console.log(JSON.stringify({ stage: "official-and-monitored-source-filter-v7", scanned: active.length, kept: active.length - rejected.length, rejected_non_allowed: rejected.length }, null, 2));
 }
 main().catch((error) => { console.error("ICE允许信源过滤失败：", error); process.exitCode = 1; });

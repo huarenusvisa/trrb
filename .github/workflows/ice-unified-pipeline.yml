@@ -126,13 +126,14 @@ jobs:
           node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
 
-      - name: Final dedupe and publish official stories
+      - name: Restore human approvals, final dedupe and publish
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "10"
         shell: bash
         run: |
           set -e
+          node scripts/ice-restore-human-approved.mjs || true
           node scripts/ice-cross-language-dedupe.mjs || true
           node scripts/ice-dedupe-v3.mjs || true
           node scripts/ice-clean-existing-review-duplicates.mjs || true

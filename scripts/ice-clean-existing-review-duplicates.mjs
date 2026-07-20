@@ -60,23 +60,23 @@ async function main() {
   const cutoff = new Date(Date.now() - MAX_AGE_MINUTES * 60000).toISOString();
   const articleCutoff = new Date(Date.now() - PUBLISHED_DAYS * 86400000).toISOString();
   const [storiesRaw, articlesRaw] = await Promise.all([
-    sb("ice_stories", { query: { select: "id,title,summary,content,first_seen_at,last_seen_at,created_at,status,decision_reason,event_fingerprint", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "last_seen_at.desc.nullslast,created_at.desc", limit: "1500" } }),
+    sb("ice_stories", { query: { select: "id,title,summary,content,first_seen_at,last_seen_at,created_at,status,human_review_status,decision_reason,event_fingerprint", status: "in.(collecting,pending_review,pending_corroboration)", order: "last_seen_at.desc.nullslast,created_at.desc", limit: "1500" } }),
     sb("articles", { query: { select: "id,title,summary,content,published_at,metadata", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${articleCutoff}`, order: "published_at.desc", limit: "2000" } })
   ]);
-  const stories = Array.isArray(storiesRaw) ? storiesRaw : [];
+  const stories = (Array.isArray(storiesRaw) ? storiesRaw : []).filter((story) => story.human_review_status !== "approved");
   const articles = Array.isArray(articlesRaw) ? articlesRaw : [];
   const kept = [];
   let stale = 0, publishedDuplicate = 0, queueDuplicate = 0, retained = 0;
   for (const story of stories) {
     const seen = story.last_seen_at || story.first_seen_at || story.created_at || "";
-    if (!seen || seen < cutoff) { await reject(story, "超过一小时未形成可发布的新信息，自动移出审核队列"); stale += 1; continue; }
+    if (!seen || seen < cutoff) { await reject(story, "超过时限未形成可发布的新信息，自动移出审核队列"); stale += 1; continue; }
     const body = combined(story);
     const article = articles.find((item) => similar(body, combined(item)));
     if (article) { await reject(story, "与数据库已发布文章高度相似且无独立新增事实", article.id); publishedDuplicate += 1; continue; }
     const existing = kept.find((item) => similar(body, combined(item)));
-    if (existing) { await reject(story, "与近一小时审核队列中的较新候选高度相似", existing.id); queueDuplicate += 1; continue; }
+    if (existing) { await reject(story, "与审核队列中的较新候选高度相似", existing.id); queueDuplicate += 1; continue; }
     kept.push(story); retained += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-clean-existing-review-duplicates-v1", scanned: stories.length, removed_stale_over_one_hour: stale, removed_published_duplicates: publishedDuplicate, removed_queue_duplicates: queueDuplicate, retained }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-clean-existing-review-duplicates-v2", scanned: stories.length, protected_human_approved: true, removed_stale: stale, removed_published_duplicates: publishedDuplicate, removed_queue_duplicates: queueDuplicate, retained }, null, 2));
 }
 main().catch((error) => { console.error("ICE现有审核队列去重失败：", error); process.exitCode = 1; });

@@ -54,6 +54,7 @@ jobs:
       ICE_UNREVIEWED_EXPIRE_HOURS: "12"
       ICE_DEDUPE_HOURS: "720"
       ICE_PUBLISH_INTERVAL_MINUTES: "0"
+      ICE_BACKFILL_TRIGGER: "2026-07-20-new-monitored-accounts"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

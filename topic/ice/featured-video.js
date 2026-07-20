@@ -2,6 +2,10 @@
   "use strict";
   const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
   const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
+  const style = document.createElement("link");
+  style.rel = "stylesheet";
+  style.href = "./featured-video.css?v=20260719-video-v1";
+  document.head.appendChild(style);
   const box = document.getElementById("ice-featured-video");
   if (!box) return;
 

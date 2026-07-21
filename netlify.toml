@@ -2,6 +2,20 @@
   command = "find netlify/functions -type f \\( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \\) -delete && node scripts/validate-site.mjs"
   publish = "."
 
+[images]
+  remote_images = [
+    "https:\\/\\/images\\.openai\\.com\\/.*",
+    "https:\\/\\/i\\.abcnewsfe\\.com\\/.*",
+    "https:\\/\\/pbs\\.twimg\\.com\\/.*",
+    "https:\\/\\/media\\.cnn\\.com\\/.*",
+    "https:\\/\\/a57\\.foxnews\\.com\\/.*",
+    "https:\\/\\/static01\\.nyt\\.com\\/.*",
+    "https:\\/\\/dims\\.apnews\\.com\\/.*",
+    "https:\\/\\/media-cldnry\\.s-nbcnews\\.com\\/.*",
+    "https:\\/\\/www\\.ice\\.gov\\/.*",
+    "https:\\/\\/www\\.dhs\\.gov\\/.*"
+  ]
+
 [[headers]]
   for = "/data/*.json"
   [headers.values]
@@ -27,7 +41,12 @@
 [[headers]]
   for = "/assets/news-images/*"
   [headers.values]
-    Cache-Control = "public, max-age=3600, must-revalidate"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/.netlify/images*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
   for = "/assets/category-placeholders/*"

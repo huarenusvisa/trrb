@@ -3,9 +3,9 @@ import crypto from "node:crypto";
 import process from "node:process";
 
 const X_API = "https://api.x.com/2";
-const LOOKBACK_HOURS = Number(process.env.ICE_ERO_LOOKBACK_HOURS || 3);
+const LOOKBACK_HOURS = Number(process.env.ICE_ERO_LOOKBACK_HOURS || 12);
 const MAX_PAGES_PER_QUERY = 3;
-const ROTATION_GROUPS = Math.max(1, Number(process.env.ICE_ERO_ROTATION_GROUPS || 4));
+const ROTATION_GROUPS = Math.max(1, Number(process.env.ICE_ERO_ROTATION_GROUPS || 3));
 
 const HANDLES = [
   "ICEgov","DHSgov","HSI_HQ","CBP","USBPChief","USCIS","DOJ_EOIR",
@@ -148,7 +148,7 @@ async function main() {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
             independence_key: `official:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
-            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-regional-official-${LOOKBACK_HOURS}h-v4`, lookback_hours: LOOKBACK_HOURS, handle, query, rotation_slot: slot } },
+            media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-regional-official-${LOOKBACK_HOURS}h-v5`, lookback_hours: LOOKBACK_HOURS, handle, query, rotation_slot: slot } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null, location_text: null,
             people_count: null, claims: [], entities: [], extraction_confidence: null, extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
           });
@@ -168,7 +168,7 @@ async function main() {
   const fresh = rows.filter((row) => !exists.has(row.x_post_id));
   if (fresh.length) await sb("ice_posts", { method: "POST", query: { on_conflict: "x_post_id" }, body: fresh, prefer: "resolution=ignore-duplicates,return=minimal" });
   console.log(JSON.stringify({
-    collector: "ice-regional-official-v4",
+    collector: "ice-regional-official-v5",
     lookback_hours: LOOKBACK_HOURS,
     rotation_groups: ROTATION_GROUPS,
     rotation_slot: slot,

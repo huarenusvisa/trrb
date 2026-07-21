@@ -8,14 +8,14 @@ on:
       - ".github/workflows/ice-unified-pipeline.yml"
       - "scripts/ice-*.mjs"
   schedule:
-    - cron: "7,37 * * * *"
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ice-unified-pipeline
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   pipeline:

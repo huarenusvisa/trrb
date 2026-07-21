@@ -33,8 +33,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
+          AGE_MINUTES: ${{ steps.check.outputs.age_minutes }}
         run: |
-          echo "ICE pipeline heartbeat is stale (${ { steps.check.outputs.age_minutes } } minutes). Re-dispatching main workflow."
+          echo "ICE pipeline heartbeat is stale (${AGE_MINUTES} minutes). Re-dispatching main workflow."
           curl --fail-with-body -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \

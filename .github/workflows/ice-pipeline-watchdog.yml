@@ -3,7 +3,11 @@ name: ICE流水线自动唤醒看门狗
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "5,20,35,50 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-pipeline-watchdog.yml"
 
 permissions:
   contents: read
@@ -16,7 +20,7 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      ICE_WATCHDOG_MAX_AGE_MINUTES: "50"
+      ICE_WATCHDOG_MAX_AGE_MINUTES: "35"
     steps:
       - uses: actions/checkout@v4
 

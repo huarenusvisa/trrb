@@ -68,7 +68,37 @@
     const date = value ? new Date(value) : null;
     return date && !Number.isNaN(date.getTime()) ? date.toLocaleString("zh-CN", { hour12: false }) : "尚无记录";
   }
+
   function postCount(name) { return Number(pipeline?.post_counts?.[name] || 0); }
+
+  function errorTime(item) {
+    const value = item?.updated_at || item?.last_run_at || null;
+    const date = value ? new Date(value) : null;
+    return date && !Number.isNaN(date.getTime()) ? date.getTime() : 0;
+  }
+
+  function conciseError(value) {
+    const text = clean(value);
+    if (!text) return "";
+    if (/monthly spend cap has been reached/i.test(text)) return "X接口曾达到消费上限";
+    if (/rate limit|too many requests|\b429\b/i.test(text)) return "X接口请求频率受限";
+    if (/unauthorized|invalid token|\b401\b/i.test(text)) return "X接口授权失败";
+    if (/forbidden|\b403\b/i.test(text)) return "X接口拒绝请求";
+    if (/duplicate key|unique constraint|\b409\b/i.test(text)) return "重复内容已自动跳过";
+    if (/timeout|timed out|abort/i.test(text)) return "请求超时";
+    return text.replace(/https?:\/\/\S+/g, "[请求地址]").replace(/\s+/g, " ").slice(0, 180);
+  }
+
+  function activeErrors() {
+    const errors = Array.isArray(pipeline?.recent_errors) ? pipeline.recent_errors : [];
+    const successAt = pipeline?.last_success_at ? new Date(pipeline.last_success_at).getTime() : 0;
+    return errors
+      .filter((item) => !successAt || errorTime(item) > successAt)
+      .map((item) => conciseError(item?.error))
+      .filter(Boolean)
+      .filter((value, index, array) => array.indexOf(value) === index)
+      .slice(0, 3);
+  }
 
   function renderPipeline() {
     const head = document.querySelector("#ice-review-page .review-head");
@@ -81,8 +111,17 @@
       panel.style.margin = "12px 0";
       head.insertAdjacentElement("afterend", panel);
     }
-    const errors = Array.isArray(pipeline.recent_errors) ? pipeline.recent_errors : [];
-    panel.innerHTML = `<h3>ICE采集状态</h3><p>最近运行：${esc(time(pipeline.last_run_at))}　最近成功：${esc(time(pipeline.last_success_at))}</p><p>待处理 ${postCount("collected") + postCount("processing")}　已提取 ${postCount("extracted")}　已归并 ${postCount("clustered")}　失败 ${postCount("failed")}　关键词合并 ${Number(dedupe.hidden_duplicates || 0)}　后台可见 ${Number(dedupe.visible || 0)}</p>${errors.length ? `<p style="color:#b91c1c">最近错误：${errors.map((item) => esc(item.error)).join("；")}</p>` : ""}`;
+
+    const errors = activeErrors();
+    const published = postCount("published");
+    const successNote = published > 0 && !errors.length
+      ? `<p style="color:#166534;margin-top:10px">运行正常：本轮已发布 ${published} 条，历史错误已自动隐藏。</p>`
+      : "";
+    const errorNote = errors.length
+      ? `<p style="color:#b91c1c;margin-top:10px">当前错误：${errors.map(esc).join("；")}</p>`
+      : "";
+
+    panel.innerHTML = `<h3>ICE采集状态</h3><p>最近运行：${esc(time(pipeline.last_run_at))}　最近成功：${esc(time(pipeline.last_success_at))}</p><p>待处理 ${postCount("collected") + postCount("processing")}　已提取 ${postCount("extracted")}　已归并 ${postCount("clustered")}　失败 ${postCount("failed")}　关键词合并 ${Number(dedupe.hidden_duplicates || 0)}　后台可见 ${Number(dedupe.visible || 0)}</p>${successNote}${errorNote}`;
   }
 
   renderReviewCard = function renderReviewCardV3(story) {

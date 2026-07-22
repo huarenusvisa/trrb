@@ -154,3 +154,5 @@ jobs:
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE unified collection, AI processing or publishing workflow failed"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
+
+# manual restart: 2026-07-22T12:04:00-04:00

@@ -2,6 +2,8 @@ name: ICE采集处理恢复通道
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "22 * * * *"
   push:
     branches: [main]
     paths:
@@ -11,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: trrb-ice-multisource
+  group: trrb-ice-recovery-watchdog
   cancel-in-progress: false
 
 jobs:
@@ -20,37 +22,37 @@ jobs:
     timeout-minutes: 25
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
-      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       RUN_MODE: "collect"
-      ICE_HIGH_RECALL_LOOKBACK_HOURS: "1"
-      ICE_PRIORITY_LOOKBACK_MINUTES: "75"
+      ICE_HIGH_RECALL_LOOKBACK_HOURS: "12"
+      ICE_PRIORITY_LOOKBACK_MINUTES: "720"
       ICE_HIGH_RECALL_RESULTS_PER_QUERY: "100"
       ICE_HIGH_RECALL_MAX_PAGES: "2"
       ICE_PRIORITY_MAX_PAGES: "2"
       ICE_HIGH_RECALL_MIN_SCORE: "40"
       ICE_HIGH_RECALL_MIN_FOLLOWERS: "250"
-      ICE_MAX_SOURCE_AGE_MINUTES: "60"
-      ICE_MAX_SOURCE_AGE_HOURS: "1"
-      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "60"
+      ICE_MAX_SOURCE_AGE_MINUTES: "720"
+      ICE_MAX_SOURCE_AGE_HOURS: "12"
+      ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
       ICE_PUBLISHED_DEDUPE_DAYS: "30"
-      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.38"
+      ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
       ICE_FAST_INTAKE_MAX: "400"
       ICE_PRECOLLECT_MAX: "600"
-      ICE_MAX_AI_POSTS_PER_RUN: "80"
-      ICE_MAX_STORIES_PER_RUN: "70"
-      ICE_NORMALIZE_MAX_STORIES: "100"
-      ICE_TRANSLATE_MAX_STORIES: "80"
+      ICE_MAX_AI_POSTS_PER_RUN: "40"
+      ICE_MAX_STORIES_PER_RUN: "30"
+      ICE_NORMALIZE_MAX_STORIES: "40"
+      ICE_TRANSLATE_MAX_STORIES: "40"
       ICE_DEDUPE_HOURS: "720"
       ICE_AI_CONFIDENCE: "80"
-      ICE_TRUSTED_AUTO_CONFIDENCE: "80"
-      ICE_TRUSTED_MAX_AGE_MINUTES: "120"
+      ICE_TRUSTED_AUTO_CONFIDENCE: "0"
+      ICE_TRUSTED_MAX_AGE_MINUTES: "720"
       ICE_AUTO_PUBLISH_SCORE: "80"
       ICE_FORCE_FIRST_PUBLISH: "true"
-      ICE_PUBLISH_MAX_PER_RUN: "20"
+      ICE_PUBLISH_MAX_PER_RUN: "10"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,6 +62,12 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Write recovery start heartbeat
+        env:
+          ICE_HEARTBEAT_STAGE: "recovery-watchdog"
+          ICE_HEARTBEAT_STATUS: "running"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+
       - name: Collect recent ICE posts without blocking recovery
         shell: bash
         run: |
@@ -67,25 +75,46 @@ jobs:
           node scripts/ice-high-recall-discovery.mjs
           node scripts/ice-priority-discovery.mjs
           node scripts/ice-ero-official-discovery.mjs
+          node scripts/ice-extra-monitored-discovery.mjs
           exit 0
 
       - name: Clean compare and intake
         shell: bash
         run: |
+          set -e
+          node scripts/ice-official-source-only.mjs
           node scripts/ice-drop-stale-posts.mjs || true
           node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-english-pretranslation-dedupe.mjs
           node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
 
       - name: AI process fresh backlog
         run: |
-          node scripts/ice-multisource.mjs --mode=collect
+          node scripts/ice-ai-process-only.mjs
           node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
 
       - name: Dedupe approve and publish
         run: |
-          node scripts/ice-dedupe-v3.mjs
-          node scripts/ice-clean-existing-review-duplicates.mjs
+          node scripts/ice-restore-human-approved.mjs || true
+          node scripts/ice-cross-language-dedupe.mjs || true
+          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-clean-existing-review-duplicates.mjs || true
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs
+
+      - name: Write recovery success heartbeat
+        if: success()
+        env:
+          ICE_HEARTBEAT_STAGE: "recovery-watchdog"
+          ICE_HEARTBEAT_STATUS: "success"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+
+      - name: Write recovery failure heartbeat
+        if: failure()
+        env:
+          ICE_HEARTBEAT_STAGE: "recovery-watchdog"
+          ICE_HEARTBEAT_STATUS: "failure"
+          ICE_HEARTBEAT_ERROR: "ICE recovery watchdog failed"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true

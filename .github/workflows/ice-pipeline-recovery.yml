@@ -3,7 +3,7 @@ name: ICE采集处理恢复通道
 on:
   workflow_dispatch:
   schedule:
-    - cron: "22 * * * *"
+    - cron: "22,52 * * * *"
   push:
     branches: [main]
     paths:

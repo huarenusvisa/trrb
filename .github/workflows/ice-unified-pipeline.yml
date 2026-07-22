@@ -8,7 +8,7 @@ on:
       - ".github/workflows/ice-unified-pipeline.yml"
       - "scripts/ice-*.mjs"
   schedule:
-    - cron: "7,37 * * * *"
+    - cron: "7,22,37,52 * * * *"
 
 permissions:
   contents: read
@@ -155,4 +155,4 @@ jobs:
           ICE_HEARTBEAT_ERROR: "ICE unified collection, AI processing or publishing workflow failed"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-# manual restart: 2026-07-22T12:04:00-04:00
+# forced restart and denser schedule: 2026-07-22T15:12:00-04:00

@@ -8,6 +8,7 @@ on:
       - ".github/workflows/ice-fast-collect.yml"
       - "scripts/ice-pipeline-heartbeat.mjs"
       - "scripts/ice-priority-discovery.mjs"
+      - "scripts/ice-added-source-discovery.mjs"
       - "scripts/ice-ero-official-discovery.mjs"
       - "scripts/ice-official-source-only.mjs"
       - "scripts/ice-english-pretranslation-dedupe.mjs"
@@ -34,7 +35,7 @@ jobs:
     needs: gate
     if: needs.gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 10
     env:
       NODE_OPTIONS: "--max-http-header-size=65536"
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
@@ -43,11 +44,16 @@ jobs:
       ICE_PRIORITY_LOOKBACK_MINUTES: "180"
       ICE_PRIORITY_MAX_PAGES: "3"
       ICE_MAX_SOURCE_AGE_MINUTES: "180"
+      ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
+      ICE_ADDED_SOURCE_MAX_PAGES: "2"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
-      - run: node scripts/ice-priority-discovery.mjs
+      - name: Collect official and added ICE sources
+        run: |
+          node scripts/ice-priority-discovery.mjs
+          node scripts/ice-added-source-discovery.mjs
 
   regional-ero:
     needs: gate

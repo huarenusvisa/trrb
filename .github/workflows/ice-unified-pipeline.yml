@@ -31,6 +31,8 @@ jobs:
       RUN_MODE: "process"
       ICE_PRIORITY_LOOKBACK_MINUTES: "720"
       ICE_EXTRA_LOOKBACK_MINUTES: "720"
+      ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
+      ICE_ADDED_SOURCE_MAX_PAGES: "2"
       ICE_PRIORITY_MAX_PAGES: "3"
       ICE_PRIORITY_ROTATION_GROUPS: "3"
       ICE_ERO_ROTATION_GROUPS: "3"
@@ -79,6 +81,7 @@ jobs:
           priority_ok=0
           ero_ok=0
           extra_ok=0
+          added_ok=0
 
           for attempt in 1 2 3; do
             echo "Priority collector attempt $attempt/3"
@@ -98,8 +101,14 @@ jobs:
             sleep $((attempt * 15))
           done
 
-          echo "priority_ok=$priority_ok ero_ok=$ero_ok extra_ok=$extra_ok"
-          if [[ "$priority_ok" -eq 0 && "$ero_ok" -eq 0 && "$extra_ok" -eq 0 ]]; then
+          for attempt in 1 2; do
+            echo "Added source collector attempt $attempt/2"
+            node scripts/ice-added-source-discovery.mjs && { added_ok=1; break; }
+            sleep $((attempt * 15))
+          done
+
+          echo "priority_ok=$priority_ok ero_ok=$ero_ok extra_ok=$extra_ok added_ok=$added_ok"
+          if [[ "$priority_ok" -eq 0 && "$ero_ok" -eq 0 && "$extra_ok" -eq 0 && "$added_ok" -eq 0 ]]; then
             echo "All ICE collectors failed after retries."
             exit 1
           fi
@@ -155,4 +164,4 @@ jobs:
           ICE_HEARTBEAT_ERROR: "ICE unified collection, AI processing or publishing workflow failed"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-# forced restart and denser schedule: 2026-07-22T15:12:00-04:00
+# added-source collector wired into scheduled production pipeline: 2026-07-23

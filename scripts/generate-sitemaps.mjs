@@ -3,10 +3,15 @@ import path from 'node:path';
 
 const ROOT = process.cwd();
 const SITE = 'https://www.trrb.net';
-const TODAY = new Date().toISOString().slice(0, 10);
-const NEWS_CUTOFF = Date.now() - 48 * 60 * 60 * 1000;
+const NOW = new Date();
+const TODAY = NOW.toISOString().slice(0, 10);
+const NEWS_CUTOFF = NOW.getTime() - 48 * 60 * 60 * 1000;
 
-const escapeXml = (value = '') => String(value)
+const cleanText = (value = '') => String(value)
+  .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+  .trim();
+
+const escapeXml = (value = '') => cleanText(value)
   .replaceAll('&', '&amp;')
   .replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;')
@@ -25,6 +30,28 @@ const normalizeUrl = (raw) => {
   } catch {
     return null;
   }
+};
+
+const canonicalArticleUrl = (article) => {
+  if (article?.id) return `${SITE}/article.html?id=${encodeURIComponent(article.id)}`;
+  return normalizeUrl(article?.sourceUrl);
+};
+
+const parsePublicationDate = (article) => {
+  const rawDate = cleanText(article?.date || '');
+  const rawTime = cleanText(article?.time || '');
+  let value = null;
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+    const timeMatch = rawTime.match(/(?:^|\s)(\d{2}):(\d{2})(?::(\d{2}))?$/);
+    value = timeMatch
+      ? `${rawDate}T${timeMatch[1]}:${timeMatch[2]}:${timeMatch[3] || '00'}-04:00`
+      : `${rawDate}T12:00:00-04:00`;
+  }
+
+  const timestamp = value ? Date.parse(value) : NaN;
+  if (!Number.isFinite(timestamp)) return null;
+  return { value, timestamp, dateOnly: rawDate };
 };
 
 const records = [];
@@ -57,12 +84,13 @@ const staticEntries = [
 
 const byUrl = new Map(staticEntries.map((entry) => [entry.loc, entry]));
 for (const article of records) {
-  const loc = normalizeUrl(article.sourceUrl) || (article.id ? `${SITE}/article.html?id=${encodeURIComponent(article.id)}` : null);
+  const loc = canonicalArticleUrl(article);
   if (!loc) continue;
-  const date = /^\d{4}-\d{2}-\d{2}$/.test(article.date || '') ? article.date : TODAY;
+  const published = parsePublicationDate(article);
+  const date = published?.dateOnly || TODAY;
   const existing = byUrl.get(loc);
   if (!existing || date > existing.lastmod) {
-    byUrl.set(loc, { loc, lastmod: date, priority: '0.6', changefreq: 'weekly', article });
+    byUrl.set(loc, { loc, lastmod: date, priority: '0.6', changefreq: 'weekly', article, published });
   }
 }
 
@@ -70,13 +98,13 @@ const entries = [...byUrl.values()].sort((a, b) => b.lastmod.localeCompare(a.las
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map(({ loc, lastmod, changefreq, priority }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
 
-const recentNews = entries.filter((entry) => {
-  if (!entry.article) return false;
-  const timestamp = Date.parse(`${entry.lastmod}T00:00:00Z`);
-  return Number.isFinite(timestamp) && timestamp >= NEWS_CUTOFF;
-}).slice(0, 1000);
+const recentNews = entries
+  .filter((entry) => entry.article && entry.published)
+  .filter((entry) => entry.published.timestamp >= NEWS_CUTOFF && entry.published.timestamp <= NOW.getTime() + 5 * 60 * 1000)
+  .sort((a, b) => b.published.timestamp - a.published.timestamp)
+  .slice(0, 1000);
 
-const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, lastmod, article }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication>\n        <news:name>唐人日报</news:name>\n        <news:language>zh-cn</news:language>\n      </news:publication>\n      <news:publication_date>${lastmod}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
+const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication>\n        <news:name>唐人日报</news:name>\n        <news:language>zh-cn</news:language>\n      </news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
 
 console.log(`[sitemap] generated sitemap.xml with ${entries.length} URLs`);

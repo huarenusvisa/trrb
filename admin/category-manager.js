@@ -2,12 +2,25 @@
   const $ = (id) => document.getElementById(id);
   let allCategories = [];
 
+  const STANDARD_CATEGORIES = [
+    { name: "ICE", slug: "ice", sort_order: 10, is_active: true },
+    { name: "Trump", slug: "trump", sort_order: 20, is_active: true },
+    { name: "USCIS", slug: "uscis", sort_order: 30, is_active: true },
+    { name: "DHS", slug: "dhs", sort_order: 40, is_active: true },
+    { name: "CBP", slug: "cbp", sort_order: 50, is_active: true },
+    { name: "Visa", slug: "visa", sort_order: 60, is_active: true },
+    { name: "China", slug: "china", sort_order: 70, is_active: true },
+    { name: "Politics", slug: "politics", sort_order: 80, is_active: true },
+    { name: "World", slug: "world", sort_order: 90, is_active: true }
+  ];
+
   document.addEventListener("DOMContentLoaded", () => {
     const form = $("category-form");
     if (!form) return;
     form.addEventListener("submit", saveCategory);
     $("category-reset")?.addEventListener("click", resetCategoryForm);
     $("refresh-categories")?.addEventListener("click", loadCategoryManager);
+    $("apply-standard-categories")?.addEventListener("click", applyStandardCategories);
     $("category-name")?.addEventListener("input", syncSlugFromName);
     $("category-slug")?.addEventListener("input", () => { $("category-slug").dataset.manual = "1"; });
 
@@ -48,7 +61,7 @@
     const list = $("category-list");
     if (!list) return;
     if (!allCategories.length) {
-      list.innerHTML = '<div class="category-empty">暂无栏目，请在左侧新增。</div>';
+      list.innerHTML = '<div class="category-empty">暂无栏目，请在左侧新增，或点击“应用标准栏目”。</div>';
       return;
     }
 
@@ -67,6 +80,54 @@
         </div>
       </article>
     `).join("");
+  }
+
+  async function applyStandardCategories() {
+    if (!canManageCategories()) return setStandardMessage("当前账号没有栏目管理权限。", true);
+    if (!confirm("将应用唐人日报标准栏目：ICE、Trump、USCIS、DHS、CBP、Visa、China、Politics、World。已有同网址栏目会更新名称、排序并启用；其他自定义栏目不会被删除。是否继续？")) return;
+
+    const button = $("apply-standard-categories");
+    if (button) button.disabled = true;
+    setStandardMessage("正在配置标准栏目...");
+
+    try {
+      const { data: existing, error: readError } = await supabaseClient
+        .from("categories")
+        .select("id,name,slug,sort_order,is_active");
+      if (readError) throw readError;
+
+      const bySlug = new Map((existing || []).map((item) => [String(item.slug || "").toLowerCase(), item]));
+      let created = 0;
+      let updated = 0;
+
+      for (const standard of STANDARD_CATEGORIES) {
+        const current = bySlug.get(standard.slug);
+        if (current) {
+          const { error } = await supabaseClient
+            .from("categories")
+            .update({
+              name: standard.name,
+              sort_order: standard.sort_order,
+              is_active: true
+            })
+            .eq("id", current.id);
+          if (error) throw new Error(`更新 /${standard.slug} 失败：${error.message}`);
+          updated += 1;
+        } else {
+          const { error } = await supabaseClient.from("categories").insert(standard);
+          if (error) throw new Error(`新增 /${standard.slug} 失败：${error.message}`);
+          created += 1;
+        }
+      }
+
+      await Promise.all([loadCategoryManager(), loadCategories()]);
+      setStandardMessage(`标准栏目配置完成：新增 ${created} 个，更新 ${updated} 个。其他自定义栏目已保留。`, false, true);
+    } catch (error) {
+      console.error(error);
+      setStandardMessage("标准栏目配置失败：" + (error?.message || String(error)), true);
+    } finally {
+      if (button) button.disabled = false;
+    }
   }
 
   async function saveCategory(event) {
@@ -196,6 +257,13 @@
     node.className = `message${isError ? " error" : ""}${isSuccess ? " success" : ""}`;
   }
 
+  function setStandardMessage(text, isError = false, isSuccess = false) {
+    const node = $("category-standard-note");
+    if (!node) return;
+    node.textContent = text;
+    node.className = `message${isError ? " error" : ""}${isSuccess ? " success" : ""}`;
+  }
+
   function escapeText(value) {
     return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
   }
@@ -206,6 +274,7 @@
 
   window.TRRBCategoryManager = {
     load: loadCategoryManager,
+    applyStandard: applyStandardCategories,
     edit: editCategory,
     toggle: toggleCategory,
     move: moveCategory,

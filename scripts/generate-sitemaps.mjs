@@ -34,10 +34,22 @@ const normalizeUrl = (raw) => {
 
 const canonicalArticleUrl = (article) => {
   if (article?.id) return `${SITE}/article.html?id=${encodeURIComponent(article.id)}`;
-  return normalizeUrl(article?.sourceUrl);
+  return normalizeUrl(article?.sourceUrl || article?.source_url);
 };
 
 const parsePublicationDate = (article) => {
+  const iso = cleanText(article?.published_at || article?.created_at || '');
+  if (iso) {
+    const timestamp = Date.parse(iso);
+    if (Number.isFinite(timestamp)) {
+      return {
+        value: new Date(timestamp).toISOString(),
+        timestamp,
+        dateOnly: new Date(timestamp).toISOString().slice(0, 10)
+      };
+    }
+  }
+
   const rawDate = cleanText(article?.date || '');
   const rawTime = cleanText(article?.time || '');
   let value = null;
@@ -51,8 +63,41 @@ const parsePublicationDate = (article) => {
 
   const timestamp = value ? Date.parse(value) : NaN;
   if (!Number.isFinite(timestamp)) return null;
-  return { value, timestamp, dateOnly: rawDate };
+  return { value: new Date(timestamp).toISOString(), timestamp, dateOnly: rawDate };
 };
+
+async function fetchRecentSupabaseArticles() {
+  const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+  if (!base || !key) {
+    console.warn('[sitemap] Supabase build environment is unavailable; using static article chunks only');
+    return [];
+  }
+
+  const cutoffIso = new Date(NEWS_CUTOFF).toISOString();
+  const url = new URL(`${base}/rest/v1/articles`);
+  url.searchParams.set('select', 'id,title,summary,category_name,status,published_at,created_at,source_url,cover_image');
+  url.searchParams.set('status', 'eq.published');
+  url.searchParams.set('published_at', `gte.${cutoffIso}`);
+  url.searchParams.set('order', 'published_at.desc');
+  url.searchParams.set('limit', '1000');
+
+  const response = await fetch(url, {
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      Accept: 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Supabase articles query failed: ${response.status} ${text.slice(0, 300)}`);
+  }
+
+  const rows = await response.json();
+  return Array.isArray(rows) ? rows : [];
+}
 
 const records = [];
 for (const name of fs.readdirSync(ROOT)) {
@@ -67,6 +112,17 @@ for (const name of fs.readdirSync(ROOT)) {
   } catch (error) {
     console.warn(`[sitemap] skipped ${name}: ${error.message}`);
   }
+}
+
+let recentDatabaseArticles = [];
+try {
+  recentDatabaseArticles = await fetchRecentSupabaseArticles();
+  records.push(...recentDatabaseArticles);
+  console.log(`[sitemap] loaded ${recentDatabaseArticles.length} recent published articles from Supabase`);
+} catch (error) {
+  console.error(`[sitemap] ${error.message}`);
+  process.exitCode = 1;
+  throw error;
 }
 
 const staticEntries = [
@@ -101,8 +157,13 @@ fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
 const recentNews = entries
   .filter((entry) => entry.article && entry.published)
   .filter((entry) => entry.published.timestamp >= NEWS_CUTOFF && entry.published.timestamp <= NOW.getTime() + 5 * 60 * 1000)
+  .filter((entry) => cleanText(entry.article?.title || '').length > 0)
   .sort((a, b) => b.published.timestamp - a.published.timestamp)
   .slice(0, 1000);
+
+if (recentDatabaseArticles.length > 0 && recentNews.length === 0) {
+  throw new Error('Recent Supabase articles were loaded, but news-sitemap.xml would be empty');
+}
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication>\n        <news:name>唐人日报</news:name>\n        <news:language>zh-cn</news:language>\n      </news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);

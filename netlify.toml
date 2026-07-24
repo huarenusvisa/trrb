@@ -1,5 +1,5 @@
 [build]
-  command = "find netlify/functions -type f \\( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \\) -delete && node scripts/validate-site.mjs"
+  command = "find netlify/functions -type f \\( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \\) -delete && node scripts/generate-sitemaps.mjs && node scripts/validate-site.mjs"
   publish = "."
 
 [images]
@@ -15,6 +15,24 @@
     "https:\\/\\/www\\.ice\\.gov\\/.*",
     "https:\\/\\/www\\.dhs\\.gov\\/.*"
   ]
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=UTF-8"
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/news-sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=UTF-8"
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=UTF-8"
+    Cache-Control = "public, max-age=300"
 
 [[headers]]
   for = "/data/*.json"

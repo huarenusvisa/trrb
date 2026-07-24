@@ -64,17 +64,36 @@ jobs:
       ICE_DEDUPE_HOURS: "720"
       ICE_PUBLISH_INTERVAL_MINUTES: "10"
     steps:
+      - name: Enforce New York production window
+        id: window
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          echo "ny_time=$NY_TIME" >> "$GITHUB_OUTPUT"
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于02:00-08:00维护时段，本轮不调用X、不调用OpenAI、不发布。"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，本轮执行完整ICE流水线。"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.window.outputs.allowed == 'true'
 
       - uses: actions/setup-node@v4
+        if: steps.window.outputs.allowed == 'true'
         with:
           node-version: "22"
 
       - name: Read ICE category CMS switches
+        if: steps.window.outputs.allowed == 'true'
         id: category
         run: node scripts/category-pipeline-gate.mjs ice
 
       - name: Show effective ICE category policy
+        if: steps.window.outputs.allowed == 'true'
         run: |
           echo "enabled=${{ steps.category.outputs.enabled }}"
           echo "auto_fetch=${{ steps.category.outputs.auto_fetch }}"
@@ -84,18 +103,18 @@ jobs:
           echo "push_telegram=${{ steps.category.outputs.push_telegram }}"
 
       - name: Stop cleanly when ICE category is disabled
-        if: steps.category.outputs.enabled != 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled != 'true'
         run: echo "ICE栏目已在后台停用，本轮不采集、不改写、不发布。"
 
       - name: Write pipeline start heartbeat
-        if: steps.category.outputs.enabled == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "unified-pipeline"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
       - name: Collect official and monitored X sources with retry
-        if: steps.category.outputs.auto_fetch == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set +e
@@ -135,11 +154,11 @@ jobs:
           fi
 
       - name: Record collection disabled state
-        if: steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch != 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch != 'true'
         run: echo "后台已关闭ICE自动抓取；保留现有候选，不执行X采集。"
 
       - name: Filter, English dedupe and intake
-        if: steps.category.outputs.auto_fetch == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
@@ -152,17 +171,17 @@ jobs:
           node scripts/ice-dedupe-v3.mjs || true
 
       - name: AI process database batch
-        if: steps.category.outputs.ai_rewrite == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.ai_rewrite == 'true'
         env:
           CATEGORY_AI_PROMPT: ${{ steps.category.outputs.ai_prompt }}
         run: node scripts/ice-ai-process-only.mjs
 
       - name: Record AI rewrite disabled state
-        if: steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite != 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite != 'true'
         run: echo "后台已关闭ICE AI改写；本轮不生成或覆盖AI标题、摘要和正文。"
 
       - name: Normalize and translate to Chinese
-        if: steps.category.outputs.ai_rewrite == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.ai_rewrite == 'true'
         env:
           CATEGORY_AI_PROMPT: ${{ steps.category.outputs.ai_prompt }}
         shell: bash
@@ -172,7 +191,7 @@ jobs:
           node scripts/ice-translate-title-body.mjs
 
       - name: Restore human approvals, final dedupe and publish
-        if: steps.category.outputs.auto_publish == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.auto_publish == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "10"
@@ -189,22 +208,24 @@ jobs:
           node scripts/ice-publish-due.mjs
 
       - name: Record automatic publishing disabled state
-        if: steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish != 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish != 'true'
         run: echo "后台已关闭ICE自动发布；已审核内容保留在待发布状态。"
 
       - name: Write pipeline success heartbeat
-        if: success() && steps.category.outputs.enabled == 'true'
+        if: success() && steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "unified-pipeline"
           ICE_HEARTBEAT_STATUS: "success"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
       - name: Write pipeline failure heartbeat
-        if: failure()
+        if: failure() && steps.window.outputs.allowed == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "unified-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE category CMS gate, collection, AI processing or publishing workflow failed"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-# category CMS switches enforced in scheduled production pipeline: 2026-07-24
+      - name: Quiet-hours summary
+        if: steps.window.outputs.allowed != 'true'
+        run: echo "ICE生产流水线处于纽约02:00-08:00维护窗口；08:07将按12小时窗口自动补抓。"

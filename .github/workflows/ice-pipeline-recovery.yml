@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/ice-pipeline-recovery.yml"
+      - "scripts/category-pipeline-gate.mjs"
 
 permissions:
   contents: read
@@ -54,21 +55,21 @@ jobs:
       ICE_FORCE_FIRST_PUBLISH: "true"
       ICE_PUBLISH_MAX_PER_RUN: "10"
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "22"
-
+      - name: Read ICE category CMS switches
+        id: category
+        run: node scripts/category-pipeline-gate.mjs ice
       - name: Write recovery start heartbeat
+        if: steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "recovery-watchdog"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
-
       - name: Collect recent ICE posts without blocking recovery
+        if: steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set +e
@@ -77,8 +78,8 @@ jobs:
           node scripts/ice-ero-official-discovery.mjs
           node scripts/ice-extra-monitored-discovery.mjs
           exit 0
-
       - name: Clean compare and intake
+        if: steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
@@ -88,14 +89,19 @@ jobs:
           node scripts/ice-english-pretranslation-dedupe.mjs
           node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
-
       - name: AI process fresh backlog
+        if: steps.category.outputs.ai_rewrite == 'true'
+        env:
+          CATEGORY_AI_PROMPT: ${{ steps.category.outputs.ai_prompt }}
         run: |
           node scripts/ice-ai-process-only.mjs
           node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
-
       - name: Dedupe approve and publish
+        if: steps.category.outputs.auto_publish == 'true'
+        env:
+          CATEGORY_PUSH_X: ${{ steps.category.outputs.push_x }}
+          CATEGORY_PUSH_TELEGRAM: ${{ steps.category.outputs.push_telegram }}
         run: |
           node scripts/ice-restore-human-approved.mjs || true
           node scripts/ice-cross-language-dedupe.mjs || true
@@ -103,18 +109,16 @@ jobs:
           node scripts/ice-clean-existing-review-duplicates.mjs || true
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs
-
       - name: Write recovery success heartbeat
-        if: success()
+        if: success() && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "recovery-watchdog"
           ICE_HEARTBEAT_STATUS: "success"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
-
       - name: Write recovery failure heartbeat
         if: failure()
         env:
           ICE_HEARTBEAT_STAGE: "recovery-watchdog"
           ICE_HEARTBEAT_STATUS: "failure"
-          ICE_HEARTBEAT_ERROR: "ICE recovery watchdog failed"
+          ICE_HEARTBEAT_ERROR: "ICE category CMS gate or recovery watchdog failed"
         run: node scripts/ice-pipeline-heartbeat.mjs || true

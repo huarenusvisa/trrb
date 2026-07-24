@@ -7,6 +7,7 @@ on:
     paths:
       - "scripts/ice-trusted-source-promote.mjs"
       - "scripts/ice-publish-due.mjs"
+      - "scripts/category-pipeline-gate.mjs"
       - ".github/workflows/ice-front-publisher.yml"
   schedule:
     - cron: "5,35 * * * *"
@@ -37,7 +38,7 @@ jobs:
             echo "纽约时间 $NY_TIME，处于02:00-08:00休息时段，本轮停止自动发布。"
           else
             echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，本轮允许自动发布。"
+            echo "纽约时间 $NY_TIME，本轮允许检查自动发布。"
           fi
 
   publish:
@@ -45,7 +46,6 @@ jobs:
     if: needs.new-york-time-gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
-
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -53,33 +53,40 @@ jobs:
       ICE_TRUSTED_AUTO_CONFIDENCE: "80"
       ICE_TRUSTED_MAX_AGE_MINUTES: "120"
       ICE_PUBLISH_MAX_PER_RUN: "3"
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-
+      - name: Read ICE category CMS switches
+        id: category
+        run: node scripts/category-pipeline-gate.mjs ice
       - name: Validate publisher and trusted-source promoter
+        if: steps.category.outputs.auto_publish == 'true'
         run: |
           node --check scripts/ice-trusted-source-promote.mjs
           node --check scripts/ice-publish-due.mjs
-
       - name: Approve fresh official and trusted-media ICE stories
+        if: steps.category.outputs.auto_publish == 'true'
         run: node scripts/ice-trusted-source-promote.mjs
-
-      - name: Publish up to ten due ICE stories
+      - name: Publish due ICE stories
+        if: steps.category.outputs.auto_publish == 'true'
+        env:
+          CATEGORY_PUSH_X: ${{ steps.category.outputs.push_x }}
+          CATEGORY_PUSH_TELEGRAM: ${{ steps.category.outputs.push_telegram }}
         run: |
           node scripts/ice-publish-due.mjs
           node scripts/ice-publish-due.mjs
           node scripts/ice-publish-due.mjs
           node scripts/ice-publish-due.mjs
-
+      - name: Record disabled automatic publishing
+        if: steps.category.outputs.auto_publish != 'true'
+        run: echo "后台已关闭ICE自动发布；前端规律发布器未发布任何内容。"
       - name: Publisher completion summary
         if: always()
         run: |
           echo "纽约时间：${{ needs.new-york-time-gate.outputs.ny_time }}"
-          echo "发布规则：每30分钟检查，单轮最多约10篇；02:00-08:00纽约时间停止定时发布。"
+          echo "后台auto_publish：${{ steps.category.outputs.auto_publish }}"
+          echo "发布规则：每30分钟检查；02:00-08:00纽约时间停止定时发布。"

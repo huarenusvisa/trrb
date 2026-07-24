@@ -11,6 +11,7 @@ on:
       - "scripts/ice-ai-process-only.mjs"
       - "scripts/ice-official-source-only.mjs"
       - "scripts/ice-english-pretranslation-dedupe.mjs"
+      - "scripts/category-pipeline-gate.mjs"
       - ".github/workflows/ice-ai-process.yml"
   schedule:
     - cron: "5,15,25,35,45,55 * * * *"
@@ -76,25 +77,43 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
+      - name: Read ICE category CMS switches
+        id: category
+        run: node scripts/category-pipeline-gate.mjs ice
+      - name: Stop cleanly when ICE or both workers are disabled
+        if: steps.category.outputs.enabled != 'true' || (steps.category.outputs.ai_rewrite != 'true' && steps.category.outputs.auto_publish != 'true')
+        run: echo "后台已停用ICE栏目，或同时关闭AI改写与自动发布；本轮安全结束。"
       - name: Write AI start heartbeat
+        if: steps.category.outputs.enabled == 'true' && (steps.category.outputs.ai_rewrite == 'true' || steps.category.outputs.auto_publish == 'true')
         env:
           ICE_HEARTBEAT_STAGE: "ai-process"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
       - name: Keep official and monitored sources only
+        if: steps.category.outputs.ai_rewrite == 'true'
         run: node scripts/ice-official-source-only.mjs
       - name: Strict English event dedupe before AI
+        if: steps.category.outputs.ai_rewrite == 'true'
         run: node scripts/ice-english-pretranslation-dedupe.mjs
       - name: Process database AI batch without X API
+        if: steps.category.outputs.ai_rewrite == 'true'
+        env:
+          CATEGORY_AI_PROMPT: ${{ steps.category.outputs.ai_prompt }}
         run: node scripts/ice-ai-process-only.mjs
       - name: Normalize and translate to Chinese
+        if: steps.category.outputs.ai_rewrite == 'true'
+        env:
+          CATEGORY_AI_PROMPT: ${{ steps.category.outputs.ai_prompt }}
         run: |
           node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
       - name: Final dedupe and publish
+        if: steps.category.outputs.auto_publish == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "10"
+          CATEGORY_PUSH_X: ${{ steps.category.outputs.push_x }}
+          CATEGORY_PUSH_TELEGRAM: ${{ steps.category.outputs.push_telegram }}
         run: |
           node scripts/ice-cross-language-dedupe.mjs || true
           node scripts/ice-dedupe-v3.mjs || true
@@ -102,7 +121,7 @@ jobs:
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs
       - name: Write AI success heartbeat
-        if: success()
+        if: success() && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "ai-process"
           ICE_HEARTBEAT_STATUS: "success"
@@ -112,5 +131,5 @@ jobs:
         env:
           ICE_HEARTBEAT_STAGE: "ai-process"
           ICE_HEARTBEAT_STATUS: "failure"
-          ICE_HEARTBEAT_ERROR: "ICE AI processing or publishing workflow failed"
+          ICE_HEARTBEAT_ERROR: "ICE category CMS gate, AI processing or publishing workflow failed"
         run: node scripts/ice-pipeline-heartbeat.mjs || true

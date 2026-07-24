@@ -82,7 +82,7 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# Clean first-level category URLs. These are rewrites, so the browser keeps /ice, /trump, etc.
+# Clean first-level category URLs.
 [[redirects]]
   from = "/ice"
   to = "/listing.html?category=ICE"
@@ -128,14 +128,49 @@
   to = "/listing.html?category=World"
   status = 200
 
-# Retire WordPress sitemap paths without exposing Netlify's generic 404 page.
+# Explicit WordPress sitemap retirement redirects.
 [[redirects]]
   from = "/index.php/author-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
 
 [[redirects]]
-  from = "/index.php/*-sitemap.xml"
+  from = "/index.php/post-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/index.php/page-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/index.php/category-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/index.php/sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/author-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/post-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/page-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/category-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
 

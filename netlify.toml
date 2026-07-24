@@ -82,6 +82,63 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
+# Clean first-level category URLs. These are rewrites, so the browser keeps /ice, /trump, etc.
+[[redirects]]
+  from = "/ice"
+  to = "/listing.html?category=ICE"
+  status = 200
+
+[[redirects]]
+  from = "/trump"
+  to = "/listing.html?category=Trump"
+  status = 200
+
+[[redirects]]
+  from = "/uscis"
+  to = "/listing.html?category=USCIS"
+  status = 200
+
+[[redirects]]
+  from = "/dhs"
+  to = "/listing.html?category=DHS"
+  status = 200
+
+[[redirects]]
+  from = "/cbp"
+  to = "/listing.html?category=CBP"
+  status = 200
+
+[[redirects]]
+  from = "/visa"
+  to = "/listing.html?category=Visa"
+  status = 200
+
+[[redirects]]
+  from = "/china"
+  to = "/listing.html?category=China"
+  status = 200
+
+[[redirects]]
+  from = "/politics"
+  to = "/listing.html?category=Politics"
+  status = 200
+
+[[redirects]]
+  from = "/world"
+  to = "/listing.html?category=World"
+  status = 200
+
+# Retire WordPress sitemap paths without exposing Netlify's generic 404 page.
+[[redirects]]
+  from = "/index.php/author-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
+[[redirects]]
+  from = "/index.php/*-sitemap.xml"
+  to = "/sitemap.xml"
+  status = 301
+
 [[redirects]]
   from = "/wp-content/uploads/:year/:month/:file"
   to = "/assets/news-images/:year/:month/:file"

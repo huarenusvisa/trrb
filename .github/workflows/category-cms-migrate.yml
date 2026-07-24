@@ -41,7 +41,7 @@ jobs:
             fi
             if [[ -n "$ref" ]]; then
               encoded_password="$(python3 -c 'import os,urllib.parse; print(urllib.parse.quote(os.environ["SUPABASE_DB_PASSWORD"], safe=""))')"
-              url="postgresql://postgres.${ref}:${encoded_password}@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+              url="postgresql://postgres:${encoded_password}@db.${ref}.supabase.co:5432/postgres?sslmode=require"
             fi
           fi
           if [[ -z "$url" ]]; then

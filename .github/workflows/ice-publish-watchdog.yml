@@ -10,6 +10,7 @@ on:
       - "scripts/ice-dedupe-v3.mjs"
       - "scripts/ice-trusted-source-promote.mjs"
       - "scripts/ice-publish-due.mjs"
+      - "scripts/category-pipeline-gate.mjs"
       - ".github/workflows/ice-publish-watchdog.yml"
 
 permissions:
@@ -35,7 +36,7 @@ jobs:
       ICE_URGENT_MAX_PER_RUN: "20"
     steps:
       - name: Check New York quiet hours
-        id: gate
+        id: quiet
         shell: bash
         run: |
           NY_HOUR=$(TZ=America/New_York date +%H)
@@ -46,30 +47,42 @@ jobs:
           fi
 
       - name: Checkout repository
-        if: steps.gate.outputs.allowed == 'true'
+        if: steps.quiet.outputs.allowed == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        if: steps.gate.outputs.allowed == 'true'
+        if: steps.quiet.outputs.allowed == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
+      - name: Read ICE category CMS switches
+        if: steps.quiet.outputs.allowed == 'true'
+        id: category
+        run: node scripts/category-pipeline-gate.mjs ice
+
       - name: Validate scripts
-        if: steps.gate.outputs.allowed == 'true'
+        if: steps.quiet.outputs.allowed == 'true' && steps.category.outputs.auto_publish == 'true'
         run: |
           node --check scripts/ice-dedupe-v3.mjs
           node --check scripts/ice-trusted-source-promote.mjs
           node --check scripts/ice-publish-due.mjs
 
       - name: Remove duplicate ICE stories
-        if: steps.gate.outputs.allowed == 'true'
+        if: steps.quiet.outputs.allowed == 'true' && steps.category.outputs.auto_publish == 'true'
         run: node scripts/ice-dedupe-v3.mjs
 
       - name: Approve trusted official and media stories
-        if: steps.gate.outputs.allowed == 'true'
+        if: steps.quiet.outputs.allowed == 'true' && steps.category.outputs.auto_publish == 'true'
         run: node scripts/ice-trusted-source-promote.mjs
 
       - name: Publish approved ICE stories
-        if: steps.gate.outputs.allowed == 'true'
+        if: steps.quiet.outputs.allowed == 'true' && steps.category.outputs.auto_publish == 'true'
+        env:
+          CATEGORY_PUSH_X: ${{ steps.category.outputs.push_x }}
+          CATEGORY_PUSH_TELEGRAM: ${{ steps.category.outputs.push_telegram }}
         run: node scripts/ice-publish-due.mjs
+
+      - name: Record disabled automatic publishing
+        if: steps.quiet.outputs.allowed == 'true' && steps.category.outputs.auto_publish != 'true'
+        run: echo "后台已关闭ICE自动发布；看门狗未发布任何内容。"

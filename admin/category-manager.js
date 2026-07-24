@@ -9,9 +9,13 @@
     $("category-reset")?.addEventListener("click", resetCategoryForm);
     $("refresh-categories")?.addEventListener("click", loadCategoryManager);
     $("category-name")?.addEventListener("input", syncSlugFromName);
+    $("category-slug")?.addEventListener("input", () => { $("category-slug").dataset.manual = "1"; });
 
     document.querySelectorAll('.nav-btn[data-page="categories"]').forEach((button) => {
-      button.addEventListener("click", () => setTimeout(loadCategoryManager, 0));
+      button.addEventListener("click", () => {
+        if ($("page-title")) $("page-title").textContent = "栏目管理";
+        setTimeout(loadCategoryManager, 0);
+      });
     });
   });
 
@@ -89,9 +93,9 @@
     const { error } = await query;
 
     if (error) return setMessage("保存失败：" + error.message, true);
-    setMessage(id ? "栏目已更新。" : "栏目已新增。", false, true);
     resetCategoryForm();
     await Promise.all([loadCategoryManager(), loadCategories()]);
+    setMessage(id ? "栏目已更新。" : "栏目已新增。", false, true);
   }
 
   function editCategory(id) {
@@ -100,6 +104,7 @@
     $("category-id").value = item.id;
     $("category-name").value = item.name || "";
     $("category-slug").value = item.slug || "";
+    $("category-slug").dataset.manual = "1";
     $("category-sort").value = Number(item.sort_order || 0);
     $("category-active").checked = Boolean(item.is_active);
     $("category-form-title").textContent = "编辑栏目";
@@ -157,6 +162,7 @@
   function resetCategoryForm() {
     $("category-form")?.reset();
     if ($("category-id")) $("category-id").value = "";
+    if ($("category-slug")) delete $("category-slug").dataset.manual;
     if ($("category-sort")) $("category-sort").value = "100";
     if ($("category-active")) $("category-active").checked = true;
     if ($("category-form-title")) $("category-form-title").textContent = "新增栏目";

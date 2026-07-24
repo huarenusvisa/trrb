@@ -10,6 +10,7 @@
     <link rel="manifest" href="./site.webmanifest?v=29.7" />
     <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
     <meta name="description" content="唐人日报文章列表、分类与搜索。" />
+    <link rel="alternate" type="application/rss+xml" title="唐人日报 RSS" href="https://www.trrb.net/feed.xml" />
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="stylesheet" href="./styles.css?v=29.7" />
   </head>
@@ -23,9 +24,10 @@
         </div>
         <div class="links">
           <a href="./index.html#submit">投稿爆料</a>
+          <a href="./expose.html">我要曝光</a>
           <a href="./index.html#daily">电子报</a>
           <a href="./index.html#about">关于我们</a>
-          <a href="mailto:news@tangrendaily.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
+          <a href="mailto:tangrenribao@gmail.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
           <a href="./listing.html?type=search">搜索</a>
         </div>
       </div>
@@ -46,6 +48,7 @@
         <div class="header-actions">
           <a href="./index.html#daily">电子报订阅</a>
           <a href="./index.html#community">加入读者群</a>
+          <a class="expose-action" href="./expose.html">我要曝光</a>
           <a class="primary" href="./index.html#submit">投稿爆料</a>
         </div>
         <button class="mobile-search-toggle" type="button" aria-label="打开新闻搜索" aria-controls="site-navigation">
@@ -68,6 +71,7 @@
         <a href="./listing.html?category=中国官场">中国官场</a>
         <a href="./listing.html?category=移民美国">移民美国</a>
         <a href="./listing.html?category=庇护百科">庇护百科</a>
+        <a class="nav-expose-link" href="./expose.html">我要曝光</a>
         <form class="site-search nav-search" role="search" action="./listing.html" method="get">
           <label class="sr-only" for="site-search-input">搜索新闻</label>
           <input id="site-search-input" name="q" type="search" placeholder="搜索新闻" autocomplete="off" />
@@ -77,6 +81,7 @@
           <a href="./index.html#daily">电子报订阅</a>
           <a href="./index.html#community">加入读者群</a>
           <a href="./index.html#submit">投稿爆料</a>
+          <a href="./expose.html">我要曝光</a>
           <a href="./index.html#about">关于我们</a>
         </div>
       </div>
@@ -118,13 +123,14 @@
         <section>
           <h3>关于我们</h3>
           <a href="./index.html#about">关于唐人日报</a>
-          <a href="mailto:news@tangrendaily.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
+          <a href="mailto:tangrenribao@gmail.com?subject=%E5%B9%BF%E5%91%8A%E5%90%88%E4%BD%9C">广告合作</a>
           <a href="./index.html#community">加入我们</a>
+          <a href="./expose.html">曝光墙</a>
         </section>
         <section>
           <h3>联系我们</h3>
-          <p>邮箱：news@tangrendaily.com</p>
-          <p>电话：+1 (929) 888-1688</p>
+          <p>邮箱：tangrenribao@gmail.com</p>
+          <p>读者热线：<a href="tel:+19297898290">+1 929-789-8290</a></p>
           <p>地址：136-20 38th Ave, Flushing, NY 11354, USA</p>
         </section>
       </div>
@@ -133,7 +139,8 @@
     <script src="./articles-index.js?v=29.7"></script>
     <script src="./site-search.js?v=29.7"></script>
     <script src="./site-common.js?v=29.7"></script>
+    <script src="./category-runtime-v3.js?v=20260724-3"></script>
     <script src="./image-cdn-optimizer.js?v=20260721-1"></script>
-    <script src="./listing.js?v=29.7"></script>
+    <script src="./listing.js?v=20260724-3"></script>
   </body>
 </html>

@@ -1,0 +1,75 @@
+name: 栏目CMS数据库迁移
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/20260724_category_cms_v3.sql"
+      - ".github/workflows/category-cms-migrate.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-category-cms-migration
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL || secrets.SUPABASE_DATABASE_URL || secrets.DATABASE_URL }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve Supabase database connection
+        id: db
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="${SUPABASE_DB_URL:-}"
+          if [[ -z "$url" && -n "${SUPABASE_DB_PASSWORD:-}" ]]; then
+            ref="${SUPABASE_PROJECT_REF:-}"
+            if [[ -z "$ref" && -n "${SUPABASE_URL:-}" ]]; then
+              ref="$(printf '%s' "$SUPABASE_URL" | sed -E 's#https?://([^.]+).*#\1#')"
+            fi
+            if [[ -n "$ref" ]]; then
+              encoded_password="$(python3 -c 'import os,urllib.parse; print(urllib.parse.quote(os.environ["SUPABASE_DB_PASSWORD"], safe=""))')"
+              url="postgresql://postgres.${ref}:${encoded_password}@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+            fi
+          fi
+          if [[ -z "$url" ]]; then
+            echo "缺少数据库连接。请配置 SUPABASE_DB_URL，或配置 SUPABASE_DB_PASSWORD 与 SUPABASE_PROJECT_REF。" >&2
+            exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Apply category CMS v3 migration
+        env:
+          DATABASE_URL: ${{ steps.db.outputs.url }}
+        run: |
+          set -euo pipefail
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260724_category_cms_v3.sql
+
+      - name: Verify category CMS columns through REST
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SUPABASE_URL:-}"
+          test -n "${SUPABASE_SERVICE_ROLE_KEY:-}"
+          status="$(curl -sS -o /tmp/categories.json -w '%{http_code}' \
+            "${SUPABASE_URL%/}/rest/v1/categories?select=slug,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss,push_x,push_telegram,seo_title,seo_description,seo_keywords,ai_prompt&limit=1" \
+            -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}")"
+          cat /tmp/categories.json
+          if [[ "$status" != "200" ]]; then
+            echo "栏目CMS字段验证失败，HTTP $status" >&2
+            exit 1
+          fi
+          echo "栏目CMS数据库迁移及REST验证完成。"

@@ -15,6 +15,11 @@ async function fetchCategories(){try{return await rest('categories',{select:'id,
 async function fetchRecentArticles(){if(!base||!key){console.warn('[sitemap] Supabase unavailable; using static chunks');return[];}return rest('articles',{select:'id,title,summary,category_id,category_name,status,published_at,created_at,source_url,cover_image',status:'eq.published',published_at:`gte.${new Date(NEWS_CUTOFF).toISOString()}`,order:'published_at.desc',limit:'1000'});}
 
 const categories=await fetchCategories();
+if(categories.length){
+  const redirects=categories.filter(x=>cleanText(x.slug)&&cleanText(x.name)).map(x=>`/${cleanText(x.slug)} /listing.html?category=${encodeURIComponent(cleanText(x.name))} 200`).join('\n');
+  fs.writeFileSync(path.join(ROOT,'_redirects'),`${redirects}\n`);
+  console.log(`[routes] generated ${categories.length} category rewrites`);
+}
 const sitemapCategoryIds=new Set(categories.filter(x=>x.include_in_sitemap!==false).map(x=>String(x.id)));
 const sitemapCategoryNames=new Set(categories.filter(x=>x.include_in_sitemap!==false).map(x=>String(x.name)));
 const newsCategoryIds=new Set(categories.filter(x=>x.include_in_google_news!==false).map(x=>String(x.id)));

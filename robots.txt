@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /trrb_admin_v1/
+Disallow: /.netlify/
+
+Sitemap: https://www.trrb.net/sitemap.xml
+Sitemap: https://www.trrb.net/news-sitemap.xml

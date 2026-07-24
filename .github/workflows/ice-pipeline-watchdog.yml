@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/ice-pipeline-watchdog.yml"
+      - "scripts/ice-workflow-watchdog.mjs"
 
 permissions:
   contents: read
@@ -22,18 +23,35 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ICE_WATCHDOG_MAX_AGE_MINUTES: "35"
     steps:
+      - name: Enforce New York watchdog window
+        id: window
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于维护窗口；不检查、不重复唤醒生产流水线。"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，允许检查生产流水线心跳。"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.window.outputs.allowed == 'true'
 
       - uses: actions/setup-node@v4
+        if: steps.window.outputs.allowed == 'true'
         with:
           node-version: "22"
 
       - name: Check ICE pipeline heartbeat
+        if: steps.window.outputs.allowed == 'true'
         id: check
         run: node scripts/ice-workflow-watchdog.mjs
 
       - name: Re-dispatch ICE unified pipeline when stale
-        if: steps.check.outputs.stale == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.check.outputs.stale == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -47,3 +65,7 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${REPO}/actions/workflows/ice-unified-pipeline.yml/dispatches" \
             -d '{"ref":"main"}'
+
+      - name: Watchdog summary
+        if: always()
+        run: echo "ICE看门狗检查完成；只有主流水线超过35分钟无成功心跳时才会补发一次。"

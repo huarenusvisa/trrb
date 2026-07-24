@@ -1,2 +1,5 @@
 /topic/ice /topic/ice/live-v6.html 200!
 /topic/ice/ /topic/ice/live-v6.html 200!
+
+# Dynamic first-level category routes. Existing static files/directories keep precedence.
+/:slug /listing.html 200

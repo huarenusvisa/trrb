@@ -32,7 +32,7 @@ const headers = {
 async function readCategory() {
   const url = new URL(`${base}/rest/v1/categories`);
   url.searchParams.set('select', 'slug,is_active,auto_fetch,ai_rewrite,auto_publish,push_x,push_telegram,ai_prompt');
-  url.searchParams.set('slug', `eq.${slug}`);
+  url.searchParams.set('slug', `ilike.${slug}`);
   url.searchParams.set('limit', '1');
   const response = await fetch(url, { headers });
   if (!response.ok) throw new Error(`Category gate query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);

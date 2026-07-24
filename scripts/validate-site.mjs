@@ -15,6 +15,13 @@ function includesText(buffer, expected) {
   return buffer.toString("utf8").includes(expected);
 }
 
+async function parseBrowserScript(path) {
+  const source = (await bytes(path)).toString("utf8");
+  if (!source) return;
+  try { new Function(source); }
+  catch (error) { failures.push(`${path}: JavaScript syntax error (${error.message})`); }
+}
+
 const index = await bytes("index.html");
 if (!startsText(index, "<!doctype html>")) failures.push("index.html is not HTML");
 if (!includesText(index, "category-runtime-v3.js")) failures.push("index.html is missing category CMS runtime");
@@ -41,6 +48,15 @@ if (!includesText(search, "bindSiteSearch")) failures.push("site-search.js is mi
 
 const categoryRuntime = await bytes("category-runtime-v3.js");
 if (!includesText(categoryRuntime, "show_in_navigation") || !includesText(categoryRuntime, "show_on_homepage")) failures.push("category runtime is not using canonical CMS fields");
+
+await Promise.all([
+  parseBrowserScript("site-common.js"),
+  parseBrowserScript("site-search.js"),
+  parseBrowserScript("category-runtime-v3.js"),
+  parseBrowserScript("listing.js"),
+  parseBrowserScript("article.js"),
+  parseBrowserScript("admin/category-manager.js")
+]);
 
 const manifest = await bytes("site.webmanifest");
 try { JSON.parse(manifest.toString("utf8")); }

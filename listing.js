@@ -1,6 +1,7 @@
 const TRRB_SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const TRRB_SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
 const TRRB_LIVE_CACHE_TTL = 60 * 1000;
+let currentCategorySlug = "";
 
 function readLiveCache(key) {
   try {
@@ -24,11 +25,22 @@ async function fetchJsonWithTimeout(url, options = {}, timeout = 6500) {
   } finally { clearTimeout(timer); }
 }
 
+async function fetchCategoryBySlug(slug) {
+  if (!slug) return null;
+  const select = ["id","name","slug","is_active","seo_title","seo_description","seo_keywords"].join(",");
+  const url = `${TRRB_SUPABASE_URL}/rest/v1/categories?select=${encodeURIComponent(select)}&slug=eq.${encodeURIComponent(slug)}&is_active=eq.true&limit=1`;
+  const rows = await fetchJsonWithTimeout(url, {
+    cache: "no-store",
+    headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
+  });
+  return Array.isArray(rows) && rows[0] ? rows[0] : null;
+}
+
 async function fetchLivePublishedArticles(limit = 60) {
-  const cacheKey = `trrb-live-v3-${limit}`;
+  const cacheKey = `trrb-live-v4-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_id","category_name","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -40,10 +52,10 @@ async function fetchLivePublishedArticles(limit = 60) {
 }
 
 async function fetchLiveArticleById(id) {
-  const cacheKey = `trrb-live-article-v3-${id}`;
+  const cacheKey = `trrb-live-article-v4-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_id","category_name","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -58,7 +70,7 @@ function mapLiveArticle(row) {
   const published = row.published_at || row.created_at || "";
   const content = String(row.content || "").trim();
   return {
-    id: row.id, title: row.title || "", category: row.category_name || "新闻",
+    id: row.id, title: row.title || "", categoryId: row.category_id || "", category: row.category_name || "新闻",
     excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
     author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
     body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
@@ -79,10 +91,25 @@ function renderListingDataset(articles, category, query, page) {
 
 async function initListing() {
   const params = new URLSearchParams(window.location.search);
-  const category = params.get("category") || "";
+  let category = params.get("category") || "";
   const query = params.get("q") || "";
   const searchMode = params.get("type") === "search" || Boolean(query);
   const page = Math.max(1, Number(params.get("page") || 1));
+  const pathSlug = window.location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+
+  if (!category && pathSlug && pathSlug !== "listing.html") {
+    try {
+      const categoryRow = await fetchCategoryBySlug(pathSlug);
+      if (categoryRow) {
+        category = categoryRow.name;
+        currentCategorySlug = categoryRow.slug;
+        applyCategorySeo(categoryRow);
+      }
+    } catch (error) {
+      console.warn("Category slug lookup unavailable", error);
+    }
+  }
+
   const archived = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : [];
   const searchForm = document.querySelector("#listing-search");
   const searchInput = document.querySelector("#listing-search-input");
@@ -93,7 +120,7 @@ async function initListing() {
   else renderHeader(category, query);
 
   try {
-    const live = await fetchLivePublishedArticles(60);
+    const live = await fetchLivePublishedArticles(100);
     if (!live.length) return;
     const seen = new Set(live.map((item) => String(item.id)));
     renderListingDataset(live.concat(archived.filter((item) => !seen.has(String(item.id)))), category, query, page);
@@ -103,17 +130,26 @@ async function initListing() {
   }
 }
 
+function applyCategorySeo(category) {
+  if (category.seo_title) document.title = category.seo_title;
+  if (category.seo_description) setMeta("description", category.seo_description);
+  if (category.seo_keywords) setMeta("keywords", category.seo_keywords);
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+  canonical.href = `https://www.trrb.net/${encodeURIComponent(category.slug)}`;
+}
+
+function setMeta(name, content) {
+  let meta = document.querySelector(`meta[name="${name}"]`);
+  if (!meta) { meta = document.createElement("meta"); meta.name = name; document.head.appendChild(meta); }
+  meta.content = content;
+}
+
 function filterArticles(articles, category, query) {
   const normalizedQuery = query.trim().toLowerCase();
   return articles.filter((article) => {
     const categoryMatch = !category || article.category === category;
-    const queryMatch =
-      !normalizedQuery ||
-      [article.title, article.excerpt, article.category, article.date]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase()
-        .includes(normalizedQuery);
+    const queryMatch = !normalizedQuery || [article.title, article.excerpt, article.category, article.date].filter(Boolean).join(" ").toLowerCase().includes(normalizedQuery);
     return categoryMatch && queryMatch;
   });
 }
@@ -124,8 +160,7 @@ function renderHeader(category, query) {
   if (category) heading = category;
   if (query) heading = `搜索：${query}`;
   if (category && query) heading = `${category} · 搜索：${query}`;
-
-  document.title = `${heading} - 唐人日报`;
+  if (!currentCategorySlug || query) document.title = `${heading} - 唐人日报`;
   title.textContent = heading;
 }
 
@@ -133,29 +168,14 @@ function renderArticles(articles, page) {
   const grid = document.querySelector("#listing-grid");
   const start = (page - 1) * pageSize;
   const items = articles.slice(start, start + pageSize);
-
-  if (items.length === 0) {
-    grid.innerHTML = `<div class="empty-list">没有找到相关文章。</div>`;
-    return;
-  }
-
+  if (items.length === 0) { grid.innerHTML = `<div class="empty-list">没有找到相关文章。</div>`; return; }
   grid.innerHTML = items.map(renderCard).join("");
 }
 
 function renderCard(article) {
   const image = imageUrl(article.image || "", article.category || "");
   const fallback = typeof window.TRRB_categoryPlaceholder === 'function' ? window.TRRB_categoryPlaceholder(article.category || '') : './image-placeholder.svg';
-  return `
-    <article class="archive-card">
-      <a href="./article.html?id=${encodeURIComponent(article.id)}">
-        <img src="${escapeAttribute(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" />
-        <span>${escapeHtml(article.category || "新闻")}</span>
-        <h2>${escapeHtml(article.title || "")}</h2>
-        <p>${escapeHtml(article.excerpt || "")}</p>
-        <time>${escapeHtml(article.time || article.date || "")}</time>
-      </a>
-    </article>
-  `;
+  return `<article class="archive-card"><a href="./article.html?id=${encodeURIComponent(article.id)}"><img src="${escapeAttribute(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" /><span>${escapeHtml(article.category || "新闻")}</span><h2>${escapeHtml(article.title || "")}</h2><p>${escapeHtml(article.excerpt || "")}</p><time>${escapeHtml(article.time || article.date || "")}</time></a></article>`;
 }
 
 function imageUrl(value, category) {
@@ -170,17 +190,9 @@ function imageUrl(value, category) {
 function renderPagination(total, currentPage, category, query) {
   const nav = document.querySelector("#pagination");
   const totalPages = Math.ceil(total / pageSize);
-  if (totalPages <= 1) {
-    nav.innerHTML = "";
-    return;
-  }
-
+  if (totalPages <= 1) { nav.innerHTML = ""; return; }
   const pages = paginationWindow(currentPage, totalPages);
-  nav.innerHTML = `
-    ${pageLink("上一页", Math.max(1, currentPage - 1), currentPage === 1, category, query)}
-    ${pages.map((page) => pageLink(page, page, page === currentPage, category, query)).join("")}
-    ${pageLink("下一页", Math.min(totalPages, currentPage + 1), currentPage === totalPages, category, query)}
-  `;
+  nav.innerHTML = `${pageLink("上一页", Math.max(1, currentPage - 1), currentPage === 1, category, query)}${pages.map((page) => pageLink(page, page, page === currentPage, category, query)).join("")}${pageLink("下一页", Math.min(totalPages, currentPage + 1), currentPage === totalPages, category, query)}`;
 }
 
 function paginationWindow(currentPage, totalPages) {
@@ -193,23 +205,15 @@ function paginationWindow(currentPage, totalPages) {
 
 function pageLink(label, page, disabled, category, query) {
   const params = new URLSearchParams();
-  if (category) params.set("category", category);
   if (query) params.set("q", query);
   params.set("page", page);
-
   if (disabled) return `<span class="page-link is-disabled">${label}</span>`;
+  if (currentCategorySlug && !query) return `<a class="page-link" href="/${encodeURIComponent(currentCategorySlug)}?${params.toString()}">${label}</a>`;
+  if (category) params.set("category", category);
   return `<a class="page-link" href="./listing.html?${params.toString()}">${label}</a>`;
 }
 
 function escapeHtml(value) {
-  return String(value || "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(value || "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
 }
-
-function escapeAttribute(value) {
-  return escapeHtml(value).replaceAll("`", "&#096;");
-}
+function escapeAttribute(value) { return escapeHtml(value).replaceAll("`", "&#096;"); }

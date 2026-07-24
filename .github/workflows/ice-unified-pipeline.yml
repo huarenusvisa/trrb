@@ -7,6 +7,8 @@ on:
     paths:
       - ".github/workflows/ice-unified-pipeline.yml"
       - "scripts/ice-*.mjs"
+      - "scripts/category-pipeline-gate.mjs"
+      - "supabase/migrations/20260724_category_cms_v3.sql"
   schedule:
     - cron: "7,22,37,52 * * * *"
 
@@ -68,13 +70,32 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Read ICE category CMS switches
+        id: category
+        run: node scripts/category-pipeline-gate.mjs ice
+
+      - name: Show effective ICE category policy
+        run: |
+          echo "enabled=${{ steps.category.outputs.enabled }}"
+          echo "auto_fetch=${{ steps.category.outputs.auto_fetch }}"
+          echo "ai_rewrite=${{ steps.category.outputs.ai_rewrite }}"
+          echo "auto_publish=${{ steps.category.outputs.auto_publish }}"
+          echo "push_x=${{ steps.category.outputs.push_x }}"
+          echo "push_telegram=${{ steps.category.outputs.push_telegram }}"
+
+      - name: Stop cleanly when ICE category is disabled
+        if: steps.category.outputs.enabled != 'true'
+        run: echo "ICE栏目已在后台停用，本轮不采集、不改写、不发布。"
+
       - name: Write pipeline start heartbeat
+        if: steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "unified-pipeline"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
       - name: Collect official and monitored X sources with retry
+        if: steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set +e
@@ -113,7 +134,12 @@ jobs:
             exit 1
           fi
 
+      - name: Record collection disabled state
+        if: steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch != 'true'
+        run: echo "后台已关闭ICE自动抓取；保留现有候选，不执行X采集。"
+
       - name: Filter, English dedupe and intake
+        if: steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
@@ -126,9 +152,19 @@ jobs:
           node scripts/ice-dedupe-v3.mjs || true
 
       - name: AI process database batch
+        if: steps.category.outputs.ai_rewrite == 'true'
+        env:
+          CATEGORY_AI_PROMPT: ${{ steps.category.outputs.ai_prompt }}
         run: node scripts/ice-ai-process-only.mjs
 
+      - name: Record AI rewrite disabled state
+        if: steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite != 'true'
+        run: echo "后台已关闭ICE AI改写；本轮不生成或覆盖AI标题、摘要和正文。"
+
       - name: Normalize and translate to Chinese
+        if: steps.category.outputs.ai_rewrite == 'true'
+        env:
+          CATEGORY_AI_PROMPT: ${{ steps.category.outputs.ai_prompt }}
         shell: bash
         run: |
           set -e
@@ -136,9 +172,12 @@ jobs:
           node scripts/ice-translate-title-body.mjs
 
       - name: Restore human approvals, final dedupe and publish
+        if: steps.category.outputs.auto_publish == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "10"
+          CATEGORY_PUSH_X: ${{ steps.category.outputs.push_x }}
+          CATEGORY_PUSH_TELEGRAM: ${{ steps.category.outputs.push_telegram }}
         shell: bash
         run: |
           set -e
@@ -149,8 +188,12 @@ jobs:
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs
 
+      - name: Record automatic publishing disabled state
+        if: steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish != 'true'
+        run: echo "后台已关闭ICE自动发布；已审核内容保留在待发布状态。"
+
       - name: Write pipeline success heartbeat
-        if: success()
+        if: success() && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "unified-pipeline"
           ICE_HEARTBEAT_STATUS: "success"
@@ -161,7 +204,7 @@ jobs:
         env:
           ICE_HEARTBEAT_STAGE: "unified-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
-          ICE_HEARTBEAT_ERROR: "ICE unified collection, AI processing or publishing workflow failed"
+          ICE_HEARTBEAT_ERROR: "ICE category CMS gate, collection, AI processing or publishing workflow failed"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-# added-source collector wired into scheduled production pipeline: 2026-07-23
+# category CMS switches enforced in scheduled production pipeline: 2026-07-24

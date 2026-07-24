@@ -3,14 +3,14 @@ name: ICE夜间维护与自修复
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "7 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ice-night-maintenance
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   new-york-maintenance-gate:
@@ -35,7 +35,7 @@ jobs:
             echo "allowed=false" >> "$GITHUB_OUTPUT"
           fi
 
-          if (( 10#$NY_HOUR == 7 && 10#$NY_MINUTE >= 30 )); then
+          if (( 10#$NY_HOUR == 7 && 10#$NY_MINUTE >= 0 )); then
             echo "final_check=true" >> "$GITHUB_OUTPUT"
           else
             echo "final_check=false" >> "$GITHUB_OUTPUT"
@@ -52,9 +52,9 @@ jobs:
       NODE_OPTIONS: "--max-http-header-size=65536"
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      ICE_MAX_SOURCE_AGE_HOURS: "1"
-      ICE_UNREVIEWED_EXPIRE_HOURS: "2"
-      ICE_DEDUPE_HOURS: "2"
+      ICE_MAX_SOURCE_AGE_HOURS: "12"
+      ICE_UNREVIEWED_EXPIRE_HOURS: "12"
+      ICE_DEDUPE_HOURS: "720"
       ICE_STUCK_PROCESSING_MINUTES: "30"
       ICE_MAINTENANCE_BATCH_SIZE: "500"
     steps:
@@ -87,7 +87,7 @@ jobs:
       - name: Recover stuck and retryable records
         run: node scripts/ice-night-maintenance.mjs
 
-      - name: Remove source posts outside realtime window
+      - name: Remove source posts outside twelve-hour window
         run: node scripts/ice-drop-stale-posts.mjs
 
       - name: Remove expired unreviewed candidates
@@ -111,4 +111,4 @@ jobs:
         run: |
           echo "纽约时间：${{ needs.new-york-maintenance-gate.outputs.ny_time }}"
           echo "本轮未调用X接口、未调用OpenAI、未自动发布新闻。"
-          echo "已执行：代码检查、回归测试、卡死任务恢复、失败任务重试、过期清理、回复过滤、事件去重。"
+          echo "已执行：代码检查、回归测试、卡死任务恢复、失败任务重试、12小时过期清理、回复过滤、事件去重。"

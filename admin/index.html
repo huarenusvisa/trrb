@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./styles.css?v=20260724-category-manager" />
   <link rel="stylesheet" href="./ice-review-v2.css?v=20260713-v2" />
   <link rel="stylesheet" href="./admin-publisher-v2.css?v=20260713-v1" />
-  <link rel="stylesheet" href="./category-manager.css?v=20260724-v1" />
+  <link rel="stylesheet" href="./category-manager.css?v=20260724-v2" />
 </head>
 <body>
   <div id="app">
@@ -43,7 +43,7 @@
               <label class="category-switch"><input id="category-active" type="checkbox" checked /><span>启用栏目</span></label>
               <button type="submit" id="category-submit">保存栏目</button><div id="category-message" class="message"></div>
             </form>
-            <section class="panel category-list-panel"><div class="category-form-head"><div><h3>现有栏目</h3><p>停用后不会出现在发布下拉菜单；删除前系统会检查是否已有文章使用。</p></div><button id="refresh-categories" type="button">刷新</button></div><div id="category-list" class="category-list"></div></section>
+            <section class="panel category-list-panel"><div class="category-form-head"><div><h3>现有栏目</h3><p>停用后不会出现在发布下拉菜单；删除前系统会检查是否已有文章使用。</p></div><div><button id="apply-standard-categories" type="button" class="secondary-btn">应用标准栏目</button> <button id="refresh-categories" type="button">刷新</button></div></div><div id="category-standard-note" class="message"></div><div id="category-list" class="category-list"></div></section>
           </div>
         </section>
         <section class="page hidden" id="ice-review-page"><div class="review-head panel"><div><h3>ICE人工审核中心</h3><p>官方高分且无风险内容可自动排期；非官方内容必须由管理员审核。</p></div><button id="refresh-review">刷新审核队列</button></div><div class="review-tabs" id="review-tabs"><button class="review-tab active" data-review-filter="pending_review">待人工审核 <b id="tab-count-pending_review">0</b></button><button class="review-tab" data-review-filter="pending_corroboration">等待交叉信源 <b id="tab-count-pending_corroboration">0</b></button><button class="review-tab" data-review-filter="approved">已通过待发布 <b id="tab-count-approved">0</b></button><button class="review-tab" data-review-filter="published">已发布 <b id="tab-count-published">0</b></button><button class="review-tab" data-review-filter="rejected">已拒绝 <b id="tab-count-rejected">0</b></button><button class="review-tab" data-review-filter="failed">处理失败 <b id="tab-count-failed">0</b></button></div><div id="review-message"></div><div id="review-list"></div></section>
@@ -57,6 +57,6 @@
   <script src="./admin-publisher-v2.js?v=20260713-v1"></script>
   <script src="./ice-review-v2.js?v=20260714-report-controls-v2"></script>
   <script src="./ice-report-controls-v2.js?v=20260714-v2"></script>
-  <script src="./category-manager.js?v=20260724-v1"></script>
+  <script src="./category-manager.js?v=20260724-v2"></script>
 </body>
 </html>

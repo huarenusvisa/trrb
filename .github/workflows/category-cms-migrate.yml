@@ -20,34 +20,44 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
+      # GitHub Actions is IPv4-only for this use case. Prefer the Supabase
+      # Session pooler URI (port 5432), not db.<ref>.supabase.co direct IPv6.
+      SUPABASE_POOLER_URL: ${{ secrets.SUPABASE_POOLER_URL }}
       SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL || secrets.SUPABASE_DATABASE_URL || secrets.DATABASE_URL }}
-      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Resolve Supabase database connection
+      - name: Resolve Supabase IPv4 database connection
         id: db
         shell: bash
         run: |
           set -euo pipefail
-          url="${SUPABASE_DB_URL:-}"
-          if [[ -z "$url" && -n "${SUPABASE_DB_PASSWORD:-}" ]]; then
-            ref="${SUPABASE_PROJECT_REF:-}"
-            if [[ -z "$ref" && -n "${SUPABASE_URL:-}" ]]; then
-              ref="$(printf '%s' "$SUPABASE_URL" | sed -E 's#https?://([^.]+).*#\1#')"
-            fi
-            if [[ -n "$ref" ]]; then
-              encoded_password="$(python3 -c 'import os,urllib.parse; print(urllib.parse.quote(os.environ["SUPABASE_DB_PASSWORD"], safe=""))')"
-              url="postgresql://postgres:${encoded_password}@db.${ref}.supabase.co:5432/postgres?sslmode=require"
-            fi
-          fi
+
+          url="${SUPABASE_POOLER_URL:-}"
           if [[ -z "$url" ]]; then
-            echo "缺少数据库连接。请配置 SUPABASE_DB_URL，或配置 SUPABASE_DB_PASSWORD 与 SUPABASE_PROJECT_REF。" >&2
+            url="${SUPABASE_DB_URL:-}"
+          fi
+
+          if [[ -z "$url" ]]; then
+            echo "缺少数据库连接。请配置 SUPABASE_POOLER_URL，值必须是 Supabase Session pooler URI（端口 5432）。" >&2
             exit 1
           fi
+
+          # Direct Supabase database hosts are IPv6 unless the paid IPv4 add-on
+          # is enabled. GitHub Actions cannot reliably reach them.
+          if [[ "$url" =~ @db\.[^.]+\.supabase\.co:5432(/|$) ]]; then
+            echo "当前 Secret 是 Supabase Direct IPv6 连接，GitHub Actions 无法访问。" >&2
+            echo "请在 Supabase Connect → Session pooler 中复制 URI，并保存为 SUPABASE_POOLER_URL。" >&2
+            exit 1
+          fi
+
+          if [[ ! "$url" =~ pooler\.supabase\.com:5432(/|$) ]]; then
+            echo "警告：连接地址看起来不是 Supabase Session pooler（应包含 pooler.supabase.com:5432）。" >&2
+          fi
+
+          # Do not print the URL because it contains the database password.
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Apply category CMS v3 migration

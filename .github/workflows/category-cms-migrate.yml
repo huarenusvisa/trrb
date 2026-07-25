@@ -7,6 +7,7 @@ on:
     paths:
       - "supabase/migrations/20260724_category_cms_v3.sql"
       - "supabase/migrations/20260725_retire_deport_and_refine_ice.sql"
+      - "supabase/migrations/20260725_trump_topic_and_media_cleanup.sql"
       - ".github/workflows/category-cms-migrate.yml"
 
 permissions:
@@ -51,22 +52,23 @@ jobs:
           fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
-      - name: Apply category CMS and ICE category migrations
+      - name: Apply category and topic migrations
         env:
           DATABASE_URL: ${{ steps.db.outputs.url }}
         run: |
           set -euo pipefail
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260724_category_cms_v3.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260725_retire_deport_and_refine_ice.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260725_trump_topic_and_media_cleanup.sql
 
-      - name: Verify category CMS and deport retirement through REST
+      - name: Verify ICE and Trump topic policy through REST
         shell: bash
         run: |
           set -euo pipefail
           test -n "${SUPABASE_URL:-}"
           test -n "${SUPABASE_SERVICE_ROLE_KEY:-}"
           status="$(curl -sS -o /tmp/categories.json -w '%{http_code}' \
-            "${SUPABASE_URL%/}/rest/v1/categories?select=slug,name,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss&or=(slug.eq.ice,slug.eq.deport,name.eq.%E9%A9%B1%E9%80%90%E5%BF%AB%E6%8A%A5)" \
+            "${SUPABASE_URL%/}/rest/v1/categories?select=slug,name,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss&or=(slug.eq.ice,slug.eq.deport,slug.eq.trump,name.eq.%E9%A9%B1%E9%80%90%E5%BF%AB%E6%8A%A5)" \
             -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}")"
           cat /tmp/categories.json
@@ -79,11 +81,15 @@ jobs:
           const rows = JSON.parse(fs.readFileSync('/tmp/categories.json','utf8'));
           const ice = rows.find(x => String(x.slug).toLowerCase() === 'ice');
           const deport = rows.find(x => String(x.slug).toLowerCase() === 'deport' || x.name === '驱逐快报');
+          const trump = rows.find(x => String(x.slug).toLowerCase() === 'trump');
           if (!ice || ice.name !== 'ICE执法动态' || !ice.is_active || !ice.show_in_navigation || !ice.show_on_homepage) {
             throw new Error('ICE执法动态栏目未正确启用');
           }
           if (deport && (deport.is_active || deport.show_in_navigation || deport.show_on_homepage || deport.include_in_sitemap || deport.include_in_rss)) {
             throw new Error('驱逐快报栏目尚未彻底下线');
           }
-          console.log('ICE执法动态已统一，驱逐快报已下线。');
+          if (trump && (trump.is_active || trump.show_in_navigation || trump.show_on_homepage || trump.include_in_sitemap || trump.include_in_rss)) {
+            throw new Error('Trump独立栏目尚未下线');
+          }
+          console.log('ICE栏目已统一；驱逐快报和Trump独立栏目已下线。');
           NODE

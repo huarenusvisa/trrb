@@ -12,7 +12,11 @@ function requireEnv() {
   if (!SUPABASE_URL || !SERVICE_KEY || !OPENAI_API_KEY) throw new Error("缺少 SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY 或 OPENAI_API_KEY");
 }
 function headers(extra = {}) { return { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}`, ...extra }; }
-async function json(response) { const text = await response.text(); if (!response.ok) throw new Error(text || `HTTP ${response.status}`); return text ? JSON.parse(text) : null; }
+async function parseResponse(response) {
+  const text = await response.text();
+  if (!response.ok) throw new Error(text || `HTTP ${response.status}`);
+  return text ? JSON.parse(text) : null;
+}
 function usable(value) {
   const text = String(value || "").trim();
   return Boolean(text) && !/(category-placeholders|image-placeholder|tang-ren-daily-placeholder)/i.test(text);
@@ -23,8 +27,9 @@ async function ensureBucket() {
   const check = await fetch(`${SUPABASE_URL}/storage/v1/bucket/${encodeURIComponent(BUCKET)}`, { headers: headers() });
   if (check.ok) return;
   const created = await fetch(`${SUPABASE_URL}/storage/v1/bucket`, {
-    method: "POST", headers: headers({ "Content-Type": "application/json" }),
-    body: JSON.stringify({ id: BUCKET, name: BUCKET, public: true, file_size_limit: 10485760, allowed_mime_types: ["image/png","image/jpeg","image/webp"] })
+    method: "POST",
+    headers: headers({ "Content-Type": "application/json" }),
+    body: JSON.stringify({ id: BUCKET, name: BUCKET, public: true, file_size_limit: 10485760, allowed_mime_types: ["image/png", "image/jpeg", "image/webp"] })
   });
   if (!created.ok && created.status !== 409) throw new Error(`创建封面存储桶失败：${await created.text()}`);
 }
@@ -36,14 +41,15 @@ async function readCandidates() {
   url.searchParams.set("status", "eq.published");
   url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
   url.searchParams.set("limit", "120");
-  const rows = await json(await fetch(url, { headers: headers({ Accept: "application/json" }) }));
+  const rows = await parseResponse(await fetch(url, { headers: headers({ Accept: "application/json" }) }));
   return (Array.isArray(rows) ? rows : []).filter((row) => !usable(row.cover_image)).slice(0, LIMIT);
 }
 
 function promptFor(row) {
-  const topic = row.topic_key === "trump" || /特朗普|川普|Donald Trump/i.test(`${row.title} ${row.summary}`)
+  const material = `${row.title || ""} ${row.summary || ""}`;
+  const topic = row.topic_key === "trump" || /特朗普|川普|Donald Trump/i.test(material)
     ? "Donald Trump related U.S. political news"
-    : row.topic_key === "ice" || /ICE|移民执法|遣返|递解/i.test(`${row.title} ${row.summary}`)
+    : row.topic_key === "ice" || /ICE|移民执法|遣返|递解/i.test(material)
       ? "U.S. immigration enforcement and ICE news"
       : `${row.category_name || "breaking news"}`;
   return [
@@ -61,15 +67,21 @@ async function generate(row) {
     headers: { Authorization: `Bearer ${OPENAI_API_KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({ model: IMAGE_MODEL, prompt: promptFor(row), size: "1536x1024", quality: "medium", output_format: "webp" })
   });
-  const payload = await json(response);
-  const b64 = payload?.data?.[0]?.b64_json;
-  if (!b64) throw new Error("OpenAI未返回图片数据");
-  return Buffer.from(b64, "base64");
+  const payload = await parseResponse(response);
+  const item = payload?.data?.[0] || {};
+  if (item.b64_json) return Buffer.from(item.b64_json, "base64");
+  if (item.url) {
+    const imageResponse = await fetch(item.url);
+    if (!imageResponse.ok) throw new Error(`下载OpenAI图片失败：${imageResponse.status}`);
+    return Buffer.from(await imageResponse.arrayBuffer());
+  }
+  throw new Error("OpenAI未返回图片数据");
 }
 
 async function upload(row, buffer) {
-  const path = `${new Date().toISOString().slice(0,10)}/${row.id}-${crypto.randomUUID()}.webp`;
-  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/${encodeURIComponent(BUCKET)}/${path.split("/").map(encodeURIComponent).join("/")}`, {
+  const path = `${new Date().toISOString().slice(0, 10)}/${row.id}-${crypto.randomUUID()}.webp`;
+  const objectPath = path.split("/").map(encodeURIComponent).join("/");
+  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/${encodeURIComponent(BUCKET)}/${objectPath}`, {
     method: "POST",
     headers: headers({ "Content-Type": "image/webp", "x-upsert": "false" }),
     body: buffer
@@ -84,7 +96,7 @@ async function save(row, cover) {
   const response = await fetch(url, {
     method: "PATCH",
     headers: headers({ "Content-Type": "application/json", Prefer: "return=minimal" }),
-    body: JSON.stringify({ cover_image: cover, updated_at: new Date().toISOString() })
+    body: JSON.stringify({ cover_image: cover })
   });
   if (!response.ok) throw new Error(`保存AI封面失败：${await response.text()}`);
 }
@@ -101,12 +113,13 @@ async function main() {
       const cover = await upload(row, image);
       await save(row, cover);
       completed += 1;
-      console.log(`AI封面已生成：${row.title}`);
+      console.log(`AI封面已生成并保存：${row.title}`);
     } catch (error) {
       console.error(`AI封面生成失败 ${row.id}:`, error.message);
     }
   }
   console.log(`本轮完成 ${completed}/${candidates.length} 张AI封面`);
+  if (candidates.length > 0 && completed === 0) process.exitCode = 1;
 }
 
 main().catch((error) => { console.error(error); process.exitCode = 1; });

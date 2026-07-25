@@ -16,9 +16,10 @@ async function fetchRecentArticles(){if(!base||!key){console.warn('[sitemap] Sup
 
 const categories=await fetchCategories();
 if(categories.length){
-  const redirects=categories.filter(x=>cleanText(x.slug)&&cleanText(x.name)).map(x=>`/${cleanText(x.slug)} /listing.html?category=${encodeURIComponent(cleanText(x.name))} 200`).join('\n');
-  fs.writeFileSync(path.join(ROOT,'_redirects'),`${redirects}\n`);
-  console.log(`[routes] generated ${categories.length} category rewrites`);
+  const specialRoutes=['/ice /topic/ice/live-v6.html 200!','/ice/ /topic/ice/live-v6.html 200!','/ice/news /listing.html?category=ICE 200!','/ice/news/ /listing.html?category=ICE 200!','/topic/ice /topic/ice/live-v6.html 200!','/topic/ice/ /topic/ice/live-v6.html 200!'];
+  const categoryRoutes=categories.filter(x=>cleanText(x.slug)&&cleanText(x.name)&&cleanText(x.slug).toLowerCase()!=='ice').map(x=>`/${cleanText(x.slug)} /listing.html?category=${encodeURIComponent(cleanText(x.name))} 200`);
+  fs.writeFileSync(path.join(ROOT,'_redirects'),`${[...specialRoutes,...categoryRoutes].join('\n')}\n`);
+  console.log(`[routes] generated ${categoryRoutes.length} category rewrites plus ICE dashboard routes`);
 }
 const sitemapCategoryIds=new Set(categories.filter(x=>x.include_in_sitemap!==false).map(x=>String(x.id)));
 const sitemapCategoryNames=new Set(categories.filter(x=>x.include_in_sitemap!==false).map(x=>String(x.name)));
@@ -28,7 +29,7 @@ const records=[];for(const name of fs.readdirSync(ROOT)){if(!/^articles-chunk-\d
 let recentDatabaseArticles=[];try{recentDatabaseArticles=await fetchRecentArticles();records.push(...recentDatabaseArticles);console.log(`[sitemap] loaded ${recentDatabaseArticles.length} recent articles`);}catch(error){console.error(`[sitemap] ${error.message}`);throw error;}
 
 const staticEntries=[{loc:`${SITE}/`,lastmod:TODAY,priority:'1.0',changefreq:'hourly'}];
-if(categories.length){for(const category of categories.filter(x=>x.include_in_sitemap!==false&&cleanText(x.slug))){staticEntries.push({loc:categoryUrl(category),lastmod:TODAY,priority:'0.8',changefreq:'hourly'});}}
+if(categories.length){for(const category of categories.filter(x=>x.include_in_sitemap!==false&&cleanText(x.slug))){staticEntries.push({loc:categoryUrl(category),lastmod:TODAY,priority:'0.8',changefreq:'hourly'});}staticEntries.push({loc:`${SITE}/ice/news`,lastmod:TODAY,priority:'0.7',changefreq:'hourly'});}
 else{['重要新闻','热门头条','驱逐快报','美国时政','美国警情','中国官场','移民美国','庇护百科'].forEach(name=>staticEntries.push({loc:`${SITE}/listing.html?category=${encodeURIComponent(name)}`,lastmod:TODAY,priority:'0.7',changefreq:'daily'}));}
 
 const isAllowed=(article,idSet,nameSet)=>{if(!categories.length)return true;if(article?.category_id)return idSet.has(String(article.category_id));if(article?.category_name)return nameSet.has(String(article.category_name));return true;};

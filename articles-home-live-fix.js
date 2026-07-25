@@ -1,6 +1,7 @@
 (() => {
   const ENDPOINT = "/.netlify/functions/public-home-articles";
   const REFRESH_INTERVAL = 2 * 60 * 1000;
+  let lastSignature = "";
 
   function articleTime(item) {
     const raw = item?.published_at || item?.created_at || item?.time || item?.date || "";
@@ -30,16 +31,33 @@
     };
   }
 
+  function usableImage(value) {
+    const text = String(value || "").trim();
+    return Boolean(text) && !/category-placeholders|image-placeholder\.svg|tang-ren-daily-placeholder/i.test(text);
+  }
+
   function mergeFresh(live, archived) {
+    const archivedById = new Map((Array.isArray(archived) ? archived : []).map((item) => [String(item?.id || ""), item]));
     const seen = new Set();
     const merged = [];
-    for (const item of [...live, ...archived]) {
-      const key = String(item?.id || "");
+
+    for (const source of [...live, ...archived]) {
+      const key = String(source?.id || "");
       if (!key || seen.has(key)) continue;
       seen.add(key);
+
+      const old = archivedById.get(key) || {};
+      const item = { ...old, ...source };
+      if (!usableImage(source?.image) && usableImage(old?.image)) item.image = old.image;
+      if (!String(source?.excerpt || "").trim() && String(old?.excerpt || "").trim()) item.excerpt = old.excerpt;
       merged.push(item);
     }
+
     return merged.sort((a, b) => articleTime(b) - articleTime(a));
+  }
+
+  function signatureFor(articles) {
+    return articles.slice(0, 20).map((item) => `${item.id}:${item.image || ""}:${item.title || ""}`).join("|");
   }
 
   async function refreshHome() {
@@ -57,6 +75,10 @@
       const live = rows.map(mapRow);
       const archived = typeof window.localArticleIndex === "function" ? window.localArticleIndex() : [];
       const articles = mergeFresh(live, Array.isArray(archived) ? archived : []);
+      const signature = signatureFor(articles);
+      if (signature === lastSignature) return;
+      lastSignature = signature;
+
       if (typeof window.renderHome !== "function") throw new Error("首页渲染函数不可用");
       window.renderHome(articles);
       document.documentElement.dataset.liveNewsUpdatedAt = payload.generated_at || new Date().toISOString();
@@ -71,6 +93,6 @@
     refreshHome();
   }
 
-  window.addEventListener("pageshow", refreshHome);
+  window.addEventListener("pageshow", (event) => { if (event.persisted) refreshHome(); });
   window.setInterval(refreshHome, REFRESH_INTERVAL);
 })();

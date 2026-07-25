@@ -97,22 +97,42 @@
 
 [[redirects]]
   from = "/ice/news"
-  to = "/listing.html?category=ICE"
+  to = "/listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81"
   status = 200
   force = true
 
 [[redirects]]
   from = "/ice/news/"
-  to = "/listing.html?category=ICE"
+  to = "/listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81"
+  status = 200
+  force = true
+
+# 特朗普只保留实时专题，不再作为独立新闻栏目。
+[[redirects]]
+  from = "/trump"
+  to = "/trump/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/trump/"
+  to = "/trump/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/topic/trump"
+  to = "/trump/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/topic/trump/"
+  to = "/trump/index.html"
   status = 200
   force = true
 
 # Clean first-level category URLs.
-[[redirects]]
-  from = "/trump"
-  to = "/listing.html?category=Trump"
-  status = 200
-
 [[redirects]]
   from = "/uscis"
   to = "/listing.html?category=USCIS"

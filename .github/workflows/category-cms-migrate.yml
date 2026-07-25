@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "supabase/migrations/20260724_category_cms_v3.sql"
+      - "supabase/migrations/20260725_retire_deport_and_refine_ice.sql"
       - ".github/workflows/category-cms-migrate.yml"
 
 permissions:
@@ -20,8 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      # GitHub Actions is IPv4-only for this use case. Prefer the Supabase
-      # Session pooler URI (port 5432), not db.<ref>.supabase.co direct IPv6.
       SUPABASE_POOLER_URL: ${{ secrets.SUPABASE_POOLER_URL }}
       SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL || secrets.SUPABASE_DATABASE_URL || secrets.DATABASE_URL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -34,52 +33,57 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           url="${SUPABASE_POOLER_URL:-}"
           if [[ -z "$url" ]]; then
             url="${SUPABASE_DB_URL:-}"
           fi
-
           if [[ -z "$url" ]]; then
             echo "缺少数据库连接。请配置 SUPABASE_POOLER_URL，值必须是 Supabase Session pooler URI（端口 5432）。" >&2
             exit 1
           fi
-
-          # Direct Supabase database hosts are IPv6 unless the paid IPv4 add-on
-          # is enabled. GitHub Actions cannot reliably reach them.
           if [[ "$url" =~ @db\.[^.]+\.supabase\.co:5432(/|$) ]]; then
             echo "当前 Secret 是 Supabase Direct IPv6 连接，GitHub Actions 无法访问。" >&2
             echo "请在 Supabase Connect → Session pooler 中复制 URI，并保存为 SUPABASE_POOLER_URL。" >&2
             exit 1
           fi
-
           if [[ ! "$url" =~ pooler\.supabase\.com:5432(/|$) ]]; then
             echo "警告：连接地址看起来不是 Supabase Session pooler（应包含 pooler.supabase.com:5432）。" >&2
           fi
-
-          # Do not print the URL because it contains the database password.
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
-      - name: Apply category CMS v3 migration
+      - name: Apply category CMS and ICE category migrations
         env:
           DATABASE_URL: ${{ steps.db.outputs.url }}
         run: |
           set -euo pipefail
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260724_category_cms_v3.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260725_retire_deport_and_refine_ice.sql
 
-      - name: Verify category CMS columns through REST
+      - name: Verify category CMS and deport retirement through REST
         shell: bash
         run: |
           set -euo pipefail
           test -n "${SUPABASE_URL:-}"
           test -n "${SUPABASE_SERVICE_ROLE_KEY:-}"
           status="$(curl -sS -o /tmp/categories.json -w '%{http_code}' \
-            "${SUPABASE_URL%/}/rest/v1/categories?select=slug,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss,push_x,push_telegram,seo_title,seo_description,seo_keywords,ai_prompt&limit=1" \
+            "${SUPABASE_URL%/}/rest/v1/categories?select=slug,name,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss&or=(slug.eq.ice,slug.eq.deport,name.eq.%E9%A9%B1%E9%80%90%E5%BF%AB%E6%8A%A5)" \
             -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}")"
           cat /tmp/categories.json
           if [[ "$status" != "200" ]]; then
-            echo "栏目CMS字段验证失败，HTTP $status" >&2
+            echo "栏目CMS验证失败，HTTP $status" >&2
             exit 1
           fi
-          echo "栏目CMS数据库迁移及REST验证完成。"
+          node - <<'NODE'
+          const fs = require('fs');
+          const rows = JSON.parse(fs.readFileSync('/tmp/categories.json','utf8'));
+          const ice = rows.find(x => String(x.slug).toLowerCase() === 'ice');
+          const deport = rows.find(x => String(x.slug).toLowerCase() === 'deport' || x.name === '驱逐快报');
+          if (!ice || ice.name !== 'ICE执法动态' || !ice.is_active || !ice.show_in_navigation || !ice.show_on_homepage) {
+            throw new Error('ICE执法动态栏目未正确启用');
+          }
+          if (deport && (deport.is_active || deport.show_in_navigation || deport.show_on_homepage || deport.include_in_sitemap || deport.include_in_rss)) {
+            throw new Error('驱逐快报栏目尚未彻底下线');
+          }
+          console.log('ICE执法动态已统一，驱逐快报已下线。');
+          NODE

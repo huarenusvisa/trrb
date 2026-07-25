@@ -1,5 +1,5 @@
 window.TRRB_IMMIGRATION_KNOWLEDGE = {
-  version: "2026.07.25-4",
+  version: "2026.07.25-5",
   title: "移民美国",
   description: "按照赴美目标查找签证、绿卡、身份转换和入籍知识。",
   categories: [
@@ -40,9 +40,18 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
       keywords:["eb1","eb-1","eb1a","eb-1a","eb1b","eb1c","eb2","eb-2","niw","国家利益豁免","perm","eb3","eb-3","eb4","eb-4","eb5","eb-5","投资移民","职业移民","杰出人才","跨国高管","劳工证","i-140","i140"]
     },
     {
-      key:"family",slug:"family",nameZh:"家庭移民",nameEn:"Family-Based Immigration",description:"通过美国公民或永久居民亲属关系申请移民签证或境内绿卡。",
-      items:[{name:"美国公民婚姻绿卡",slug:"citizen-spouse"},{name:"绿卡配偶F2A",slug:"f2a"},{name:"K-1未婚夫/妻",slug:"k1"},{name:"父母移民",slug:"parents"},{name:"子女移民",slug:"children"},{name:"兄弟姐妹移民",slug:"siblings"},{name:"CR-1/IR-1",slug:"cr1-ir1"},{name:"F1/F2B/F3/F4",slug:"family-preference"}],
-      keywords:["婚绿","婚姻绿卡","配偶绿卡","家庭移民","f2a","k1","k-1","cr1","cr-1","ir1","ir-1","父母移民","子女移民","兄弟姐妹移民","i-130","i130","亲属移民"]
+      key:"family",slug:"family",nameZh:"家庭移民",nameEn:"Family-Based Immigration",description:"通过美国公民或永久居民亲属关系申请移民签证、境内绿卡或未婚夫妻签证。",
+      items:[
+        {name:"美国公民婚姻绿卡",slug:"citizen-spouse",summary:"美国公民为境内或境外配偶申请绿卡"},
+        {name:"绿卡配偶F2A",slug:"f2a",summary:"永久居民为配偶及未成年子女申请移民"},
+        {name:"K-1未婚夫/妻",slug:"k1",summary:"美国公民未婚夫妻赴美结婚签证"},
+        {name:"父母移民",slug:"parents",summary:"年满21岁的美国公民为父母申请绿卡"},
+        {name:"子女移民",slug:"children",summary:"公民或绿卡持有者为子女申请移民"},
+        {name:"兄弟姐妹移民",slug:"siblings",summary:"年满21岁的美国公民申请兄弟姐妹"},
+        {name:"CR-1/IR-1配偶移民",slug:"cr1-ir1",summary:"境外配偶通过领事程序获得移民签证"},
+        {name:"F1/F2B/F3/F4优先类别",slug:"family-preference",summary:"家庭优先类别、排期与优先日期"}
+      ],
+      keywords:["婚绿","婚姻绿卡","配偶绿卡","家庭移民","f2a","k1","k-1","cr1","cr-1","ir1","ir-1","父母移民","子女移民","兄弟姐妹移民","i-130","i130","亲属移民","家庭优先","移民签证","nvc","ds-260","经济担保","i-864"]
     },
     {
       key:"humanitarian",slug:"humanitarian",nameZh:"人道主义庇护",nameEn:"Humanitarian Protection",description:"因迫害、犯罪伤害、人口贩运、家庭暴力或其他特殊风险寻求法律保护。",

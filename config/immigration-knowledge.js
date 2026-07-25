@@ -1,5 +1,5 @@
 window.TRRB_IMMIGRATION_KNOWLEDGE = {
-  version: "2026.07.25-2",
+  version: "2026.07.25-3",
   title: "移民美国",
   description: "按照赴美目标查找签证、绿卡、身份转换和入籍知识。",
   categories: [
@@ -13,8 +13,17 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
     },
     {
       key:"work",slug:"work",nameZh:"赴美工作",nameEn:"Work in the U.S.",description:"通过非移民工作签证进入美国就业、派驻、创业或提供专业服务。",
-      items:[{name:"H-1B专业工作",slug:"h1b"},{name:"L-1跨国公司派遣",slug:"l1"},{name:"O-1杰出人才",slug:"o1"},{name:"H-2A农业工",slug:"h2a"},{name:"H-2B临时工",slug:"h2b"},{name:"TN专业人士",slug:"tn"},{name:"E-1/E-2商业签证",slug:"e1-e2"},{name:"R-1宗教工作者",slug:"r1"}],
-      keywords:["h1b","h-1b","工作签证","赴美工作","l1","l-1","o1","o-1","h2a","h-2a","h2b","h-2b","tn签证","e2签证","e-2","r1","r-1","雇主","劳工证"]
+      items:[
+        {name:"H-1B专业工作",slug:"h1b",summary:"专业职位与雇主担保"},
+        {name:"L-1跨国公司派遣",slug:"l1",summary:"跨国企业内部调任"},
+        {name:"O-1杰出人才",slug:"o1",summary:"杰出能力人士赴美工作"},
+        {name:"H-2A农业工",slug:"h2a",summary:"临时或季节性农业工作"},
+        {name:"H-2B临时工",slug:"h2b",summary:"临时非农业工作"},
+        {name:"TN专业人士",slug:"tn",summary:"加拿大与墨西哥专业人士"},
+        {name:"E-1/E-2商业签证",slug:"e1-e2",summary:"条约贸易与条约投资"},
+        {name:"R-1宗教工作者",slug:"r1",summary:"宗教组织赴美任职"}
+      ],
+      keywords:["h1b","h-1b","工作签证","赴美工作","l1","l-1","o1","o-1","h2a","h-2a","h2b","h-2b","tn签证","e1","e-1","e2签证","e-2","r1","r-1","雇主","劳工条件申请","lca","抽签","专业职位","跨国派遣","宗教工作者"]
     },
     {
       key:"employment",slug:"employment",nameZh:"职业移民",nameEn:"Employment-Based Immigration",description:"通过专业能力、雇主担保、跨国管理、投资或特殊职业申请美国永久居民身份。",

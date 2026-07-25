@@ -18,10 +18,33 @@
     }).format(date);
   }
 
-  function isTrump(item) {
-    if (String(item?.topic_key || "").toLowerCase() === "trump") return true;
-    const text = [item?.title, item?.summary, item?.content].filter(Boolean).join(" ");
-    return /特朗普|川普|Donald\s+Trump|President\s+Trump/i.test(text);
+  const FAMILY_PATTERN = /(小特朗普|小唐纳德|唐纳德·特朗普二世|Donald\s+Trump\s+Jr\.?|Don\s+Jr\.?|埃里克·?特朗普|Eric\s+Trump|伊万卡·?特朗普|Ivanka\s+Trump|蒂芙尼·?特朗普|Tiffany\s+Trump|巴伦·?特朗普|Barron\s+Trump|特朗普之子|特朗普儿子|特朗普女儿|特朗普孙子|特朗普孙女|特朗普家族|Trump\s+family|Trump's\s+(son|daughter|grandson|granddaughter))/i;
+  const SELF_NAME_PATTERN = /(美国总统特朗普|总统特朗普|特朗普本人|唐纳德·?特朗普|Donald\s+J\.?\s*Trump|Donald\s+Trump|President\s+Trump|特朗普|川普)/i;
+  const SELF_ACTION_PATTERN = /(宣布|表示|称|说|发文|发帖|签署|下令|命令|任命|提名|支持|反对|批评|回应|警告|会见|接见|出席|发表|讲话|演讲|抵达|访问|主持|推动|要求|敦促|威胁|承诺|决定|否认|证实|透露|呼吁|抨击|起诉|上诉|批准|否决|赦免|解雇|撤换|签约|会晤|通话|接受采访|竞选|造势|赢得|宣布参选|宣布退出|orders?|announces?|says?|said|signs?|meets?|speaks?|calls\s+for|urges?|warns?|supports?|backs?|criticizes?|responds?|visits?|hosts?|nominates?|appoints?|fires?|vetoes?|pardons?)/i;
+
+  function isTrumpSelf(item) {
+    const title = String(item?.title || "").trim();
+    const summary = String(item?.summary || "").trim();
+    const content = String(item?.content || "").trim();
+    const combined = `${title} ${summary} ${content}`;
+
+    // 儿子、女儿、孙辈及其他家族成员为主体的新闻一律排除。
+    if (FAMILY_PATTERN.test(title)) return false;
+
+    // 标题必须明确点名特朗普本人，避免仅因正文顺带提到而误收。
+    if (!SELF_NAME_PATTERN.test(title)) return false;
+
+    // 仅写“特朗普政府”但没有特朗普本人的具体动作，不进入本人专题。
+    const governmentOnly = /特朗普政府|Trump\s+administration/i.test(title)
+      && !SELF_ACTION_PATTERN.test(title.replace(/特朗普政府|Trump\s+administration/ig, ""));
+    if (governmentOnly) return false;
+
+    // 标题应体现特朗普本人的讲话、决定、行动或公开活动。
+    if (SELF_ACTION_PATTERN.test(title)) return true;
+
+    // 对极少数标题简短的稿件，摘要首段必须明确由特朗普本人实施动作。
+    const lead = `${summary} ${content.slice(0, 400)}`;
+    return SELF_NAME_PATTERN.test(lead) && SELF_ACTION_PATTERN.test(lead) && !FAMILY_PATTERN.test(combined);
   }
 
   function isUsableImage(value) {
@@ -34,7 +57,7 @@
     const root = $("trump-feed");
     const items = rows.slice(0, visible);
     if (!items.length) {
-      root.innerHTML = '<div class="trump-empty">暂时没有已发布的特朗普相关新闻。新内容发布后会自动进入本专题。</div>';
+      root.innerHTML = '<div class="trump-empty">暂时没有符合“特朗普本人动态”标准的已发布新闻。</div>';
       $("trump-more").hidden = true;
       return;
     }
@@ -66,10 +89,10 @@
 
   async function refresh() {
     const root = $("trump-feed");
-    root.innerHTML = '<div class="trump-loading">正在读取特朗普最新新闻…</div>';
+    root.innerHTML = '<div class="trump-loading">正在读取特朗普本人最新动态…</div>';
     try {
       const all = await readPublished();
-      rows = all.filter(isTrump);
+      rows = all.filter(isTrumpSelf);
       visible = PAGE_SIZE;
       $("trump-updated").textContent = `最近更新：${formatTime(new Date().toISOString())}`;
       render();

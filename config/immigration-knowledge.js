@@ -1,5 +1,5 @@
 window.TRRB_IMMIGRATION_KNOWLEDGE = {
-  version: "2026.07.25-7",
+  version: "2026.07.25-8",
   title: "移民美国",
   description: "按照赴美目标查找签证、绿卡、身份转换和入籍知识。",
   categories: [
@@ -42,21 +42,23 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
     {
       key:"change-status",slug:"change-status",nameZh:"境内身份转换",nameEn:"Change of Status in the U.S.",description:"人在美国境内时，处理非移民身份转换、延期、恢复、调整身份、工卡与旅行许可。",
       items:[
-        {name:"B-2转F-1",slug:"b2-to-f1",summary:"旅游身份在美国境内转换为学生身份"},
-        {name:"F-1转H-1B",slug:"f1-to-h1b",summary:"学生身份、OPT与H-1B工作身份衔接"},
-        {name:"J-1豁免",slug:"j1-waiver",summary:"解除两年回国居住要求后规划身份"},
-        {name:"身份延期",slug:"extension",summary:"在现有非移民身份到期前申请延长停留"},
-        {name:"身份恢复",slug:"reinstatement",summary:"F-1失去身份后申请恢复合法学生身份"},
-        {name:"I-485境内调整身份",slug:"i485",summary:"人在美国境内申请永久居民身份"},
-        {name:"EAD工卡",slug:"ead",summary:"基于特定资格申请美国就业授权"},
-        {name:"Advance Parole旅行许可",slug:"advance-parole",summary:"身份申请待审期间申请出境与返美许可"}
+        {name:"B-2转F-1",slug:"b2-to-f1",summary:"旅游身份在美国境内转换为学生身份"},{name:"F-1转H-1B",slug:"f1-to-h1b",summary:"学生身份、OPT与H-1B工作身份衔接"},{name:"J-1豁免",slug:"j1-waiver",summary:"解除两年回国居住要求后规划身份"},{name:"身份延期",slug:"extension",summary:"在现有非移民身份到期前申请延长停留"},{name:"身份恢复",slug:"reinstatement",summary:"F-1失去身份后申请恢复合法学生身份"},{name:"I-485境内调整身份",slug:"i485",summary:"人在美国境内申请永久居民身份"},{name:"EAD工卡",slug:"ead",summary:"基于特定资格申请美国就业授权"},{name:"Advance Parole旅行许可",slug:"advance-parole",summary:"身份申请待审期间申请出境与返美许可"}
       ],
       keywords:["身份转换","change of status","境内转身份","b2转f1","b-2转f-1","f1转h1b","j1豁免","两年回国要求","i-539","i539","身份延期","延期停留","身份恢复","reinstatement","i-485","i485","调整身份","ead","工卡","i-765","i765","advance parole","旅行许可","回美证","i-131","i131","身份逾期","非法停留","cap-gap"]
     },
     {
-      key:"citizenship",slug:"citizenship",nameZh:"入籍美国公民",nameEn:"U.S. Citizenship",description:"了解入籍资格、N-400申请、考试、面试、宣誓及公民身份证明。",
-      items:[{name:"N-400入籍",slug:"n400"},{name:"连续居住",slug:"continuous-residence"},{name:"实际居住",slug:"physical-presence"},{name:"英语与公民考试",slug:"tests"},{name:"入籍面试",slug:"interview"},{name:"入籍宣誓",slug:"oath"},{name:"N-600公民证明",slug:"n600"},{name:"衍生公民",slug:"derived-citizenship"}],
-      keywords:["入籍","美国公民","公民申请","n-400","n400","入籍考试","公民考试","入籍面试","宣誓","n-600","n600","衍生公民","连续居住"]
+      key:"citizenship",slug:"citizenship",nameZh:"入籍美国公民",nameEn:"U.S. Citizenship",description:"系统了解入籍资格、居住要求、N-400申请、考试面试、宣誓以及公民身份证明。",
+      items:[
+        {name:"N-400入籍申请",slug:"n400",summary:"从资格评估到提交、面试和宣誓的完整流程"},
+        {name:"连续居住",slug:"continuous-residence",summary:"判断长期离境是否中断入籍连续居住"},
+        {name:"实际居住",slug:"physical-presence",summary:"计算五年或三年期间在美国实际停留天数"},
+        {name:"英语与公民考试",slug:"tests",summary:"准备英语读写口语和美国公民知识考试"},
+        {name:"入籍面试",slug:"interview",summary:"了解N-400审查、测试、补件和面试结果"},
+        {name:"入籍宣誓",slug:"oath",summary:"完成Oath of Allegiance并领取入籍证书"},
+        {name:"N-600公民证明",slug:"n600",summary:"已自动获得公民身份者申请公民证书"},
+        {name:"衍生与取得公民",slug:"derived-citizenship",summary:"通过父母在出生时或出生后取得美国公民身份"}
+      ],
+      keywords:["入籍","美国公民","公民申请","自然化","naturalization","n-400","n400","连续居住","实际居住","良好道德品格","入籍考试","公民考试","英语考试","入籍面试","宣誓","oath ceremony","n-600","n600","公民证明","衍生公民","取得公民","入籍证书","美国护照"]
     }
   ]
 };

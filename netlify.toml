@@ -82,12 +82,32 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# Clean first-level category URLs.
+# ICE专题主页与新闻列表必须分开。
 [[redirects]]
   from = "/ice"
+  to = "/topic/ice/live-v6.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/ice/"
+  to = "/topic/ice/live-v6.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/ice/news"
   to = "/listing.html?category=ICE"
   status = 200
+  force = true
 
+[[redirects]]
+  from = "/ice/news/"
+  to = "/listing.html?category=ICE"
+  status = 200
+  force = true
+
+# Clean first-level category URLs.
 [[redirects]]
   from = "/trump"
   to = "/listing.html?category=Trump"

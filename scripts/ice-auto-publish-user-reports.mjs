@@ -92,7 +92,7 @@ async function publishReport(report) {
   const articleId = duplicate?.id || crypto.randomUUID();
   const payload = {
     title, summary, content,
-    category_name: "ICE动态",
+    category_name: "ICE执法动态",
     cover_image: cover?.url || "",
     seo_keywords: ["ICE","移民执法","随手拍",facts.agency,facts.location,facts.country].filter(Boolean).join(","),
     author: "ICE随手拍",
@@ -101,11 +101,11 @@ async function publishReport(report) {
     topic_key: "ice",
     source_platform: "user_report",
     source_post_id: report.id,
-    source_url: "https://trrb.net/topic/ice/",
+    source_url: "https://trrb.net/ice",
     source_account: "ICE随手拍",
     source_created_at: report.created_at,
     review_status: "auto_published_user_report",
-    metadata: { user_report_id: report.id, report_date: report.report_date, location_text: report.location_text, event_type: "arrest", people_count: facts.people_count, detained_count: facts.people_count, agency: facts.agency, country: facts.country, published_media: publishedMedia, auto_published: true }
+    metadata: { user_report_id: report.id, report_date: report.report_date, location_text: report.location_text, event_type: "arrest", people_count: facts.people_count, detained_count: facts.people_count, agency: facts.agency, country: facts.country, published_media: publishedMedia, auto_published: true, distribution_channels: ["ICE执法动态","ICE实时追踪"] }
   };
   if (duplicate?.id) await rest("articles", { method: "PATCH", query: { id: `eq.${articleId}` }, body: payload, prefer: "return=minimal" });
   else await rest("articles", { method: "POST", body: { id: articleId, slug: `ice-report-${report.id}`, created_at: time, ...payload }, prefer: "return=minimal" });
@@ -119,13 +119,13 @@ async function fixIceCategories() {
   let changed = 0;
   for (const article of Array.isArray(rows) ? rows : []) {
     const text = `${article.title || ""} ${article.summary || ""} ${article.content || ""}`;
-    const isIce = article.topic_key === "ice" || article.source_platform === "user_report" || /\b(?:ICE|ERO|HSI|CBP)\b|移民执法|拘留|逮捕|遣返|驱逐/.test(text);
-    if (isIce && article.category_name === "移民美国") {
-      await rest("articles", { method: "PATCH", query: { id: `eq.${article.id}` }, body: { category_name: "驱逐快报", topic_key: "ice", updated_at: new Date().toISOString() }, prefer: "return=minimal" });
+    const isIce = article.topic_key === "ice" || article.source_platform === "user_report" || /\b(?:ICE|ERO|HSI|CBP|DHS)\b|移民执法|拘留|逮捕|遣返|递解/.test(text);
+    if (isIce && article.category_name !== "ICE执法动态") {
+      await rest("articles", { method: "PATCH", query: { id: `eq.${article.id}` }, body: { category_name: "ICE执法动态", topic_key: "ice", updated_at: new Date().toISOString() }, prefer: "return=minimal" });
       changed += 1;
     }
   }
-  console.log(`已纠正ICE错误栏目 ${changed} 条`);
+  console.log(`已纠正ICE栏目 ${changed} 条`);
 }
 
 async function main() {

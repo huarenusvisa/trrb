@@ -45,7 +45,6 @@
       const key = String(source?.id || "");
       if (!key || seen.has(key)) continue;
       seen.add(key);
-
       const old = archivedById.get(key) || {};
       const item = { ...old, ...source };
       if (!usableImage(source?.image) && usableImage(old?.image)) item.image = old.image;
@@ -63,10 +62,7 @@
   async function refreshHome() {
     try {
       const url = `${ENDPOINT}?limit=120&_=${Date.now()}`;
-      const response = await fetch(url, {
-        cache: "no-store",
-        headers: { Accept: "application/json" }
-      });
+      const response = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } });
       if (!response.ok) throw new Error(`首页实时接口 ${response.status}`);
       const payload = await response.json();
       const rows = Array.isArray(payload?.articles) ? payload.articles : [];
@@ -87,12 +83,11 @@
     }
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", refreshHome, { once: true });
-  } else {
-    refreshHome();
-  }
-
-  window.addEventListener("pageshow", (event) => { if (event.persisted) refreshHome(); });
+  // articles-home.js already performs the initial live load. Running this file
+  // again on DOMContentLoaded caused a second full homepage render and visible jump.
+  // Keep only the periodic refresh after the page has been stable for two minutes.
   window.setInterval(refreshHome, REFRESH_INTERVAL);
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) window.setTimeout(refreshHome, 300);
+  });
 })();

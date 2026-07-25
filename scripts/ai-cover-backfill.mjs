@@ -84,7 +84,7 @@ async function save(row, cover) {
   const response = await fetch(url, {
     method: "PATCH",
     headers: headers({ "Content-Type": "application/json", Prefer: "return=minimal" }),
-    body: JSON.stringify({ cover_image: cover, updated_at: new Date().toISOString(), metadata: { ai_cover_generated: true, ai_cover_model: IMAGE_MODEL } })
+    body: JSON.stringify({ cover_image: cover, updated_at: new Date().toISOString() })
   });
   if (!response.ok) throw new Error(`保存AI封面失败：${await response.text()}`);
 }

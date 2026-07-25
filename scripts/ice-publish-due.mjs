@@ -132,7 +132,7 @@ async function publish(story) {
     method: "POST",
     body: {
       id, title: story.title, slug: `ice-${story.event_fingerprint}`, summary: story.summary, content: story.content,
-      category_name: "驱逐快报", cover_image: story.cover_image || video?.poster || "", seo_keywords: "ICE,移民执法,拘留,遣返,驱逐快报,美国移民",
+      category_name: "ICE执法动态", cover_image: story.cover_image || video?.poster || "", seo_keywords: "ICE,移民执法,拘留,遣返,ERO,HSI,CBP,DHS,美国移民",
       author: "唐人日报编辑部", status: "published", published_at: time, created_at: time, topic_key: "ice", source_platform: "x",
       source_post_id: post.x_post_id, source_url: post.x_url, source_account: post.source_username, source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
@@ -143,7 +143,7 @@ async function publish(story) {
         independent_source_count: story.independent_source_count, official_source_count: story.official_source_count, media_source_count: story.media_source_count,
         organization_source_count: story.organization_source_count, decision_reason: story.decision_reason, human_review_status: story.human_review_status,
         reviewed_by: story.reviewed_by || null, reviewed_at: story.reviewed_at || null, editor_notes: story.editor_notes || "", official_urgent: officialUrgent,
-        official_source_auto: officialAuto, official_direct_publish: officialAuto, distribution_channels: ["驱逐快报", "ICE动态"],
+        official_source_auto: officialAuto, official_direct_publish: officialAuto, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
         video_url: video?.url || "", video_poster: video?.poster || "", video_featured: temporaryFeatured, video_featured_until: featuredUntil,
         confirmed_facts: payload?.confirmed_facts || [], unconfirmed_claims: payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({ post_id: item.x_post_id, url: item.x_url, source_type: item.source_type, independence_key: item.independence_key }))

@@ -1,5 +1,5 @@
 window.TRRB_IMMIGRATION_KNOWLEDGE = {
-  version: "2026.07.25-3",
+  version: "2026.07.25-4",
   title: "移民美国",
   description: "按照赴美目标查找签证、绿卡、身份转换和入籍知识。",
   categories: [
@@ -27,8 +27,17 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
     },
     {
       key:"employment",slug:"employment",nameZh:"职业移民",nameEn:"Employment-Based Immigration",description:"通过专业能力、雇主担保、跨国管理、投资或特殊职业申请美国永久居民身份。",
-      items:[{name:"EB-1A杰出人才",slug:"eb1a"},{name:"EB-1B教授研究员",slug:"eb1b"},{name:"EB-1C跨国高管",slug:"eb1c"},{name:"EB-2 NIW",slug:"niw"},{name:"EB-2 PERM",slug:"eb2-perm"},{name:"EB-3",slug:"eb3"},{name:"EB-4",slug:"eb4"},{name:"EB-5投资移民",slug:"eb5"}],
-      keywords:["eb1","eb-1","eb1a","eb-1a","eb1b","eb1c","eb2","eb-2","niw","国家利益豁免","perm","eb3","eb-3","eb4","eb-4","eb5","eb-5","投资移民","职业移民","杰出人才","跨国高管"]
+      items:[
+        {name:"EB-1A杰出人才",slug:"eb1a",summary:"无需雇主担保的杰出人才绿卡"},
+        {name:"EB-1B教授研究员",slug:"eb1b",summary:"杰出教授与研究人员移民"},
+        {name:"EB-1C跨国高管",slug:"eb1c",summary:"跨国企业经理与高管绿卡"},
+        {name:"EB-2 NIW",slug:"niw",summary:"国家利益豁免职业移民"},
+        {name:"EB-2 PERM",slug:"eb2-perm",summary:"高学历或特殊技能雇主担保"},
+        {name:"EB-3",slug:"eb3",summary:"专业人士、技术工与非技术工"},
+        {name:"EB-4",slug:"eb4",summary:"宗教工作者等特殊移民"},
+        {name:"EB-5投资移民",slug:"eb5",summary:"通过合规投资与就业创造申请绿卡"}
+      ],
+      keywords:["eb1","eb-1","eb1a","eb-1a","eb1b","eb1c","eb2","eb-2","niw","国家利益豁免","perm","eb3","eb-3","eb4","eb-4","eb5","eb-5","投资移民","职业移民","杰出人才","跨国高管","劳工证","i-140","i140"]
     },
     {
       key:"family",slug:"family",nameZh:"家庭移民",nameEn:"Family-Based Immigration",description:"通过美国公民或永久居民亲属关系申请移民签证或境内绿卡。",

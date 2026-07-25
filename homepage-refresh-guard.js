@@ -1,43 +1,104 @@
 (() => {
   "use strict";
 
-  // Remove stale experiments from earlier refresh fixes. Do not intercept
-  // innerHTML and do not inject placeholder cards: both could freeze the
-  // archived first render and prevent live images from replacing it.
+  const ICE_CATEGORY = "ICE执法动态";
+  const ICE_ALIASES = new Set(["ICE执法动态", "ICE执法追踪", "ICE新闻", "驱逐快报"]);
+  const PLACEHOLDER_RE = /image-placeholder\.svg|category-placeholders|tang-ren-daily-placeholder|^data:image\/svg/i;
+
   try { sessionStorage.removeItem("trrb-home-render-v1"); } catch {}
 
-  const style = document.createElement("style");
-  style.id = "trrb-home-layout-hotfix";
-  style.textContent = `
-    @media (min-width: 901px) {
-      .site-header .header-inner {
-        height: 126px !important;
-        min-height: 126px !important;
-        align-items: center !important;
-      }
-      .site-header .brand {
-        flex: 0 0 280px !important;
-        width: 280px !important;
-        max-width: 280px !important;
-        align-self: center !important;
-        margin: 0 !important;
-      }
-      .site-header .brand img {
-        display: block !important;
-        width: 280px !important;
-        height: 81px !important;
-        max-width: 280px !important;
-        object-fit: contain !important;
-        object-position: left center !important;
-      }
-      .site-header .slogan { min-width: 240px !important; }
+  function normalizeCategory(value) {
+    const name = String(value || "").trim();
+    return ICE_ALIASES.has(name) ? ICE_CATEGORY : name;
+  }
+
+  function usableImage(value) {
+    const image = String(value || "").trim();
+    return Boolean(image) && !PLACEHOLDER_RE.test(image);
+  }
+
+  function keyOf(item) {
+    const id = String(item?.id || "").trim();
+    return id ? `id:${id}` : `title:${String(item?.title || "").trim().toLowerCase()}`;
+  }
+
+  function normalize(item) {
+    return { ...item, category: normalizeCategory(item?.category || item?.category_name) };
+  }
+
+  function mergeStable(live, archived) {
+    const oldByKey = new Map((Array.isArray(archived) ? archived : []).map((item) => {
+      const normalized = normalize(item);
+      return [keyOf(normalized), normalized];
+    }));
+    const seen = new Set();
+    const output = [];
+
+    for (const source of [...(Array.isArray(live) ? live : []), ...(Array.isArray(archived) ? archived : [])]) {
+      const incoming = normalize(source);
+      const key = keyOf(incoming);
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+
+      const old = oldByKey.get(key) || {};
+      const merged = { ...old, ...incoming };
+      if (!usableImage(incoming.image) && usableImage(old.image)) merged.image = old.image;
+      if (!String(incoming.excerpt || "").trim() && String(old.excerpt || "").trim()) merged.excerpt = old.excerpt;
+      output.push(merged);
     }
-    #hero { min-height: 426px; }
-    #top-list { min-height: 426px; }
-    @media (max-width: 767px) {
-      #hero { min-height: 240px; }
-      #top-list { min-height: 0; }
+    return output;
+  }
+
+  function bindImageRecovery(root = document) {
+    root.querySelectorAll?.("img").forEach((img) => {
+      if (!(img instanceof HTMLImageElement) || img.dataset.trrbRecoveryBound === "true") return;
+      img.dataset.trrbRecoveryBound = "true";
+      const original = String(img.getAttribute("src") || "");
+      img.addEventListener("error", () => {
+        if (img.dataset.trrbRetried === "true" || !original || PLACEHOLDER_RE.test(original)) return;
+        img.dataset.trrbRetried = "true";
+        const joiner = original.includes("?") ? "&" : "?";
+        window.setTimeout(() => { img.src = `${original}${joiner}retry=${Date.now()}`; }, 300);
+      });
+    });
+  }
+
+  async function finalizeHome() {
+    if (typeof window.renderHome !== "function") return;
+
+    let archived = [];
+    try { archived = typeof window.localArticleIndex === "function" ? window.localArticleIndex() : []; } catch {}
+
+    let live = [];
+    try {
+      if (typeof window.fetchLivePublishedArticles === "function") live = await window.fetchLivePublishedArticles(120);
+    } catch (error) {
+      console.warn("Homepage final live fetch unavailable", error);
     }
-  `;
-  document.head.appendChild(style);
+
+    const articles = mergeStable(live, archived);
+    if (articles.length) {
+      window.renderHome(articles);
+      document.documentElement.dataset.homeFinalized = "true";
+    }
+    bindImageRecovery(document);
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) bindImageRecovery(node);
+      });
+    }
+  });
+
+  function start() {
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    window.setTimeout(finalizeHome, 100);
+    window.setTimeout(finalizeHome, 1600);
+    window.setTimeout(finalizeHome, 7200);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
+  else start();
 })();

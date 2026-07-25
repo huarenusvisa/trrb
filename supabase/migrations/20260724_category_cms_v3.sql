@@ -68,8 +68,8 @@ insert into public.categories
    auto_fetch, ai_rewrite, auto_publish, include_in_sitemap, include_in_google_news, include_in_rss,
    push_x, push_telegram, seo_title, seo_description, seo_keywords, ai_prompt)
 values
-  ('ICE','ice',10,true,true,true,true,true,true,true,true,true,true,true,false,false,
-   'ICE执法最新新闻｜唐人日报','追踪美国ICE执法、拘留、遣返及移民政策动态。','ICE,美国移民执法,遣返,拘留',
+  ('ICE执法动态','ice',10,true,true,true,true,true,true,true,true,true,true,true,false,false,
+   'ICE执法动态与实时追踪｜唐人日报','追踪美国ICE、ERO、HSI、CBP及DHS执法、拘留、遣返和移民政策动态。','ICE,美国移民执法,遣返,拘留,ERO,HSI,CBP,DHS',
    '写成客观、写实的中文新闻，核实人物、地点、时间与执法机构；不得把指控写成定罪。'),
   ('Trump','trump',20,true,true,true,true,true,true,true,true,true,true,true,false,false,
    '特朗普最新动态｜唐人日报','特朗普政府、白宫、选举及美国政策最新动态。','特朗普,白宫,美国政治',
@@ -113,13 +113,34 @@ on conflict ((lower(slug))) do update set
   seo_keywords = excluded.seo_keywords,
   ai_prompt = excluded.ai_prompt;
 
+-- Permanently retire the former deport channel everywhere.
+update public.categories
+set is_active = false,
+    show_in_navigation = false,
+    show_on_homepage = false,
+    show_in_nav = false,
+    show_on_home = false,
+    auto_fetch = false,
+    ai_rewrite = false,
+    auto_publish = false,
+    include_in_sitemap = false,
+    include_in_google_news = false,
+    include_in_rss = false,
+    push_x = false,
+    push_telegram = false
+where lower(coalesce(slug, '')) = 'deport'
+   or name in ('驱逐快报','驱逐新闻');
+
 -- ICE publisher historically wrote category_name='驱逐快报'. Normalize both existing and future ICE articles.
 create or replace function public.assign_article_category_from_topic()
 returns trigger language plpgsql as $$
 declare
   target record;
 begin
-  if lower(coalesce(new.topic_key, '')) = 'ice' or lower(coalesce(new.slug, '')) like 'ice-%' then
+  if lower(coalesce(new.topic_key, '')) = 'ice'
+     or lower(coalesce(new.slug, '')) like 'ice-%'
+     or coalesce(new.title, '') || ' ' || coalesce(new.summary, '') || ' ' || coalesce(new.content, '')
+        ~* '(\mICE\M|\mERO\M|\mHSI\M|\mCBP\M|\mDHS\M|移民执法|移民海关|国土安全部|遣返|递解|拘留|驱逐)' then
     select id, name into target
     from public.categories
     where lower(slug) = 'ice'
@@ -128,6 +149,7 @@ begin
     if target.id is not null then
       new.category_id := target.id;
       new.category_name := target.name;
+      new.topic_key := 'ice';
     end if;
   end if;
   return new;
@@ -136,13 +158,43 @@ $$;
 
 drop trigger if exists articles_assign_category_from_topic on public.articles;
 create trigger articles_assign_category_from_topic
-before insert or update of topic_key, slug, category_id, category_name on public.articles
+before insert or update of topic_key, slug, title, summary, content, category_id, category_name on public.articles
 for each row execute function public.assign_article_category_from_topic();
 
+-- First move all ICE-related legacy deport stories into the unified ICE channel.
 update public.articles a
 set category_id = c.id,
-    category_name = c.name
+    category_name = c.name,
+    topic_key = 'ice'
 from public.categories c
 where lower(c.slug) = 'ice'
-  and (lower(coalesce(a.topic_key, '')) = 'ice' or lower(coalesce(a.slug, '')) like 'ice-%')
-  and (a.category_id is distinct from c.id or a.category_name is distinct from c.name);
+  and (
+    lower(coalesce(a.topic_key, '')) = 'ice'
+    or lower(coalesce(a.slug, '')) like 'ice-%'
+    or (
+      a.category_name in ('驱逐快报','驱逐新闻','ICE动态','ICE')
+      and (coalesce(a.title, '') || ' ' || coalesce(a.summary, '') || ' ' || coalesce(a.content, ''))
+          ~* '(\mICE\M|\mERO\M|\mHSI\M|\mCBP\M|\mDHS\M|移民执法|移民海关|国土安全部|遣返|递解|拘留|驱逐)'
+    )
+  )
+  and (a.category_id is distinct from c.id or a.category_name is distinct from c.name or lower(coalesce(a.topic_key, '')) <> 'ice');
+
+-- Remaining former deport stories with political/policy substance go to U.S. politics.
+update public.articles a
+set category_id = c.id,
+    category_name = c.name,
+    topic_key = null
+from public.categories c
+where lower(c.slug) = 'politics'
+  and a.category_name in ('驱逐快报','驱逐新闻')
+  and (coalesce(a.title, '') || ' ' || coalesce(a.summary, '') || ' ' || coalesce(a.content, ''))
+      ~* '(白宫|总统|国会|参议院|众议院|联邦政府|州长|选举|法案|政策|行政令|最高法院|联邦法院|司法部)';
+
+-- Any other former deport stories become important news when that category exists.
+update public.articles a
+set category_id = c.id,
+    category_name = c.name,
+    topic_key = null
+from public.categories c
+where (lower(coalesce(c.slug, '')) = 'important' or c.name = '重要新闻')
+  and a.category_name in ('驱逐快报','驱逐新闻');

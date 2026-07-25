@@ -1,5 +1,5 @@
 window.TRRB_IMMIGRATION_KNOWLEDGE = {
-  version: "2026.07.25-6",
+  version: "2026.07.25-7",
   title: "移民美国",
   description: "按照赴美目标查找签证、绿卡、身份转换和入籍知识。",
   categories: [
@@ -35,21 +35,23 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
     {
       key:"humanitarian",slug:"humanitarian",nameZh:"人道主义庇护",nameEn:"Humanitarian Protection",description:"因迫害、严重犯罪、人口贩运、家庭暴力、未成年人受虐或国家危机寻求美国法律保护。",
       items:[
-        {name:"政治庇护",slug:"asylum",summary:"因种族、宗教、国籍、政治观点或特定社会群体遭受迫害"},
-        {name:"防止递解",slug:"withholding",summary:"证明返回原籍国更可能遭受迫害的递解保护"},
-        {name:"禁止酷刑公约保护",slug:"cat",summary:"面临政府实施或默许酷刑风险时申请保护"},
-        {name:"VAWA家暴保护",slug:"vawa",summary:"受美国公民或绿卡亲属虐待者独立申请身份"},
-        {name:"U签证",slug:"u-visa",summary:"严重犯罪受害者协助执法后申请保护"},
-        {name:"T签证",slug:"t-visa",summary:"人口贩运受害者在美国寻求保护与身份"},
-        {name:"SIJS特殊青少年",slug:"sijs",summary:"遭父母虐待、遗弃或忽视的未成年人申请保护"},
-        {name:"TPS临时保护身份",slug:"tps",summary:"指定国家公民因战争或灾难暂时留美"}
+        {name:"政治庇护",slug:"asylum",summary:"因种族、宗教、国籍、政治观点或特定社会群体遭受迫害"},{name:"防止递解",slug:"withholding",summary:"证明返回原籍国更可能遭受迫害的递解保护"},{name:"禁止酷刑公约保护",slug:"cat",summary:"面临政府实施或默许酷刑风险时申请保护"},{name:"VAWA家暴保护",slug:"vawa",summary:"受美国公民或绿卡亲属虐待者独立申请身份"},{name:"U签证",slug:"u-visa",summary:"严重犯罪受害者协助执法后申请保护"},{name:"T签证",slug:"t-visa",summary:"人口贩运受害者在美国寻求保护与身份"},{name:"SIJS特殊青少年",slug:"sijs",summary:"遭父母虐待、遗弃或忽视的未成年人申请保护"},{name:"TPS临时保护身份",slug:"tps",summary:"指定国家公民因战争或灾难暂时留美"}
       ],
       keywords:["庇护","政治庇护","asylum","i-589","i589","一年期限","可信恐惧","合理恐惧","防止递解","withholding","cat保护","禁止酷刑","vawa","家暴绿卡","u签证","u visa","t签证","t visa","人口贩运","sijs","特殊移民青少年","特殊青少年","tps","临时保护身份","难民","人道保护","递解程序","移民法庭"]
     },
     {
-      key:"change-status",slug:"change-status",nameZh:"境内身份转换",nameEn:"Change of Status in the U.S.",description:"人在美国境内时转换、延期、恢复或调整移民身份。",
-      items:[{name:"B-2转F-1",slug:"b2-to-f1"},{name:"F-1转H-1B",slug:"f1-to-h1b"},{name:"J-1豁免",slug:"j1-waiver"},{name:"身份延期",slug:"extension"},{name:"身份恢复",slug:"reinstatement"},{name:"I-485境内调整身份",slug:"i485"},{name:"EAD工卡",slug:"ead"},{name:"Advance Parole",slug:"advance-parole"}],
-      keywords:["身份转换","change of status","境内转身份","b2转f1","b-2转f-1","f1转h1b","j1豁免","身份延期","延期停留","身份恢复","reinstatement","i-485","i485","调整身份","ead","工卡","advance parole","回美证","身份逾期"]
+      key:"change-status",slug:"change-status",nameZh:"境内身份转换",nameEn:"Change of Status in the U.S.",description:"人在美国境内时，处理非移民身份转换、延期、恢复、调整身份、工卡与旅行许可。",
+      items:[
+        {name:"B-2转F-1",slug:"b2-to-f1",summary:"旅游身份在美国境内转换为学生身份"},
+        {name:"F-1转H-1B",slug:"f1-to-h1b",summary:"学生身份、OPT与H-1B工作身份衔接"},
+        {name:"J-1豁免",slug:"j1-waiver",summary:"解除两年回国居住要求后规划身份"},
+        {name:"身份延期",slug:"extension",summary:"在现有非移民身份到期前申请延长停留"},
+        {name:"身份恢复",slug:"reinstatement",summary:"F-1失去身份后申请恢复合法学生身份"},
+        {name:"I-485境内调整身份",slug:"i485",summary:"人在美国境内申请永久居民身份"},
+        {name:"EAD工卡",slug:"ead",summary:"基于特定资格申请美国就业授权"},
+        {name:"Advance Parole旅行许可",slug:"advance-parole",summary:"身份申请待审期间申请出境与返美许可"}
+      ],
+      keywords:["身份转换","change of status","境内转身份","b2转f1","b-2转f-1","f1转h1b","j1豁免","两年回国要求","i-539","i539","身份延期","延期停留","身份恢复","reinstatement","i-485","i485","调整身份","ead","工卡","i-765","i765","advance parole","旅行许可","回美证","i-131","i131","身份逾期","非法停留","cap-gap"]
     },
     {
       key:"citizenship",slug:"citizenship",nameZh:"入籍美国公民",nameEn:"U.S. Citizenship",description:"了解入籍资格、N-400申请、考试、面试、宣誓及公民身份证明。",

@@ -53,7 +53,7 @@
     const root = $("trump-feed");
     root.innerHTML = '<div class="trump-loading">正在读取特朗普最新新闻…</div>';
     try {
-      rows = await fetchRows("topic_key.eq.trump,title.ilike.*%E7%89%B9%E6%9C%97%E6%99%AE*,title.ilike.*%E5%B7%9D%E6%99%AE*,summary.ilike.*%E7%89%B9%E6%9C%97%E6%99%AE*,summary.ilike.*%E5%B7%9D%E6%99%AE*,content.ilike.*%E7%89%B9%E6%9C%97%E6%99%AE*,content.ilike.*Donald%20Trump*,source_account.ilike.*Trump*");
+      rows = await fetchRows("topic_key.eq.trump,title.ilike.*特朗普*,title.ilike.*川普*,summary.ilike.*特朗普*,summary.ilike.*川普*,content.ilike.*特朗普*,content.ilike.*Donald Trump*,source_account.ilike.*Trump*");
       visible = PAGE_SIZE;
       $("trump-updated").textContent = `最近更新：${formatTime(new Date().toISOString())}`;
       render();

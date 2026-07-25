@@ -12,7 +12,9 @@ const HANDLES = [
   "DittiePE",
   "EricLDaugh",
   "DrCharlieWard",
-  "GuntherEagleman"
+  "GuntherEagleman",
+  "TheJFreakinC",
+  "CantStopPoppin"
 ];
 const LOOKBACK_MINUTES = Math.min(720, Math.max(30, Number(process.env.ICE_EXTRA_LOOKBACK_MINUTES || process.env.ICE_PRIORITY_LOOKBACK_MINUTES || 180)));
 const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
@@ -88,7 +90,7 @@ function row(tweet, user, attachedMedia) {
     source_created_at: tweet.created_at || null,
     source_text: tweet.text || "",
     media: attachedMedia,
-    raw_payload: { tweet, author: user, discovery: { collector: "ice-extra-monitored-v2", manual_review_only: true, lookback_minutes: LOOKBACK_MINUTES } },
+    raw_payload: { tweet, author: user, discovery: { collector: "ice-extra-monitored-v3", manual_review_only: true, lookback_minutes: LOOKBACK_MINUTES } },
     relevant: null,
     claims: [], entities: [], extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
   };

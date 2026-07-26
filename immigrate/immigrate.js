@@ -4,8 +4,8 @@
   const matchedSection=document.querySelector('#matched-section');
   const matchedGrid=document.querySelector('#matched-grid');
   const matchedTitle=document.querySelector('#matched-title');
+  const searchForm=document.querySelector('#knowledge-search-form');
   const searchInput=document.querySelector('#knowledge-search');
-  const searchButton=document.querySelector('#knowledge-search-button');
   const clearButton=document.querySelector('#clear-filter');
   const hotButtons=document.querySelectorAll('[data-search]');
   const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
@@ -63,8 +63,7 @@
   }
 
   clearButton.addEventListener('click',()=>{matchedSection.hidden=true;searchInput.value='';history.replaceState(null,'',location.pathname);document.querySelector('#pathway-title').scrollIntoView({behavior:'smooth'});});
-  searchButton.addEventListener('click',search);
-  searchInput.addEventListener('keydown',e=>{if(e.key==='Enter')search();});
+  searchForm.addEventListener('submit',event=>{event.preventDefault();searchInput.blur();search();});
   hotButtons.forEach(button=>button.addEventListener('click',()=>{searchInput.value=button.dataset.search||'';search();}));
   renderPathways();
   fetchArticles();

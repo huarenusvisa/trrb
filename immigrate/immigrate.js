@@ -7,6 +7,7 @@
   const searchInput=document.querySelector('#knowledge-search');
   const searchButton=document.querySelector('#knowledge-search-button');
   const clearButton=document.querySelector('#clear-filter');
+  const hotButtons=document.querySelectorAll('[data-search]');
   const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
   const SUPABASE_KEY='sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
   let articles=[];
@@ -43,7 +44,7 @@
   async function fetchArticles(){
     const select=['id','title','summary','content','category_name','status','published_at'].join(',');
     const url=`${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast&limit=500`;
-    try{const r=await fetch(url,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'}});if(!r.ok)throw new Error(r.status);const live=await r.json();const seen=new Set(live.map(x=>String(x.id)));articles=live.concat(localArticles().filter(x=>!seen.has(String(x.id))));}
+    try{const r=await fetch(url,{cache:'no-store',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'}});if(!r.ok)throw new Error(r.status);const live=await r.json();const seen=new Set(live.map(x=>String(x.id)));articles=live.concat(localArticles().filter(x=>!seen.has(String(x.id))));}
     catch(e){console.warn('Immigration knowledge articles unavailable',e);articles=localArticles();}
   }
   function renderMatches(items,label){
@@ -64,6 +65,7 @@
   clearButton.addEventListener('click',()=>{matchedSection.hidden=true;searchInput.value='';history.replaceState(null,'',location.pathname);document.querySelector('#pathway-title').scrollIntoView({behavior:'smooth'});});
   searchButton.addEventListener('click',search);
   searchInput.addEventListener('keydown',e=>{if(e.key==='Enter')search();});
+  hotButtons.forEach(button=>button.addEventListener('click',()=>{searchInput.value=button.dataset.search||'';search();}));
   renderPathways();
   fetchArticles();
 })();

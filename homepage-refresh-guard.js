@@ -4,8 +4,35 @@
   const ICE_CATEGORY = "ICE执法动态";
   const ICE_ALIASES = new Set(["ICE执法动态", "ICE执法追踪", "ICE新闻", "驱逐快报"]);
   const PLACEHOLDER_RE = /image-placeholder\.svg|category-placeholders|tang-ren-daily-placeholder|^data:image\/svg/i;
+  const DYNAMIC_SELECTORS = ["#ticker", "#hero", "#top-list", "#sections-grid", "#rank-list"];
 
   try { sessionStorage.removeItem("trrb-home-render-v1"); } catch {}
+
+  // Hide any archive/chunk render until the live query has completed. This prevents
+  // old articles from flashing briefly and then being replaced by current articles.
+  document.documentElement.dataset.homeLoading = "true";
+  const loadingStyle = document.createElement("style");
+  loadingStyle.id = "trrb-home-loading-style";
+  loadingStyle.textContent = `
+    html[data-home-loading="true"] #ticker,
+    html[data-home-loading="true"] #hero,
+    html[data-home-loading="true"] #top-list,
+    html[data-home-loading="true"] #sections-grid,
+    html[data-home-loading="true"] #rank-list{visibility:hidden!important}
+    html[data-home-loading="true"] #hero,
+    html[data-home-loading="true"] #top-list,
+    html[data-home-loading="true"] #sections-grid,
+    html[data-home-loading="true"] #rank-list{position:relative}
+    html[data-home-loading="true"] #hero::after,
+    html[data-home-loading="true"] #top-list::after,
+    html[data-home-loading="true"] #sections-grid::after,
+    html[data-home-loading="true"] #rank-list::after{
+      content:"正在读取最新内容…";visibility:visible;position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;color:#777;background:#f6f6f6;
+      font-size:14px;border-radius:8px
+    }
+  `;
+  document.head.appendChild(loadingStyle);
 
   function normalizeCategory(value) {
     const name = String(value || "").trim();
@@ -63,6 +90,12 @@
     });
   }
 
+  function revealHome() {
+    document.documentElement.dataset.homeLoading = "false";
+    document.documentElement.dataset.homeFinalized = "true";
+    loadingStyle.remove();
+  }
+
   async function finalizeHome() {
     if (typeof window.renderHome !== "function") return;
 
@@ -77,10 +110,8 @@
     }
 
     const articles = mergeStable(live, archived);
-    if (articles.length) {
-      window.renderHome(articles);
-      document.documentElement.dataset.homeFinalized = "true";
-    }
+    if (articles.length) window.renderHome(articles);
+    revealHome();
     bindImageRecovery(document);
   }
 
@@ -97,6 +128,9 @@
     window.setTimeout(finalizeHome, 100);
     window.setTimeout(finalizeHome, 1600);
     window.setTimeout(finalizeHome, 7200);
+    window.setTimeout(() => {
+      if (document.documentElement.dataset.homeLoading === "true") revealHome();
+    }, 10000);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });

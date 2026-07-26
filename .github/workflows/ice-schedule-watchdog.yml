@@ -1,0 +1,69 @@
+name: ICE调度看门狗与自动补跑
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-schedule-watchdog.yml"
+      - "scripts/ice-schedule-watchdog.mjs"
+  schedule:
+    - cron: "17,47 * * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: trrb-ice-schedule-watchdog
+  cancel-in-progress: true
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_WATCHDOG_STALE_MINUTES: "45"
+    steps:
+      - name: Check New York production window
+        id: window
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          if (( 10#$NY_HOUR < 8 || 10#$NY_HOUR >= 20 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于20:00-08:00停采时段；看门狗不补跑。"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于08:00-20:00采集时段；检查30分钟调度。"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.window.outputs.allowed == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.window.outputs.allowed == 'true'
+        with:
+          node-version: "22"
+
+      - name: Inspect latest ICE start heartbeat
+        if: steps.window.outputs.allowed == 'true'
+        id: health
+        run: node scripts/ice-schedule-watchdog.mjs
+
+      - name: Dispatch missed ICE collection round
+        if: steps.window.outputs.allowed == 'true' && steps.health.outputs.need_dispatch == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          echo "ICE最近启动距今 ${{ steps.health.outputs.age_minutes }} 分钟，超过45分钟，立即补跑。"
+          gh workflow run ice-unified-pipeline.yml --ref main
+
+      - name: Report healthy schedule
+        if: steps.window.outputs.allowed == 'true' && steps.health.outputs.need_dispatch != 'true'
+        run: |
+          echo "ICE调度正常。最近启动：${{ steps.health.outputs.last_run_at }}，距今 ${{ steps.health.outputs.age_minutes }} 分钟。"

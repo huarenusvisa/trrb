@@ -1,0 +1,32 @@
+name: 移民美国历史文章重新分类
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/reclassify-immigration-articles.mjs"
+      - ".github/workflows/reclassify-immigration-articles-once.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-reclassify-immigration-articles-once
+  cancel-in-progress: false
+
+jobs:
+  reclassify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      APPLY_CHANGES: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Reclassify and remove misplaced immigration articles
+        run: node scripts/reclassify-immigration-articles.mjs

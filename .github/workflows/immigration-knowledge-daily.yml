@@ -1,0 +1,64 @@
+name: 移民知识库每日自动生成
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 13 * * *"
+    - cron: "0 14 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-immigration-knowledge-daily
+  cancel-in-progress: false
+
+jobs:
+  time-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.check.outputs.allowed }}
+    steps:
+      - id: check
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "$NY_HOUR" == "09" ]]; then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，开始生成七大知识库内容。"
+          else
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，不是上午9点，本次仅用于兼容夏令时，不执行。"
+          fi
+
+  generate:
+    needs: time-gate
+    if: needs.time-gate.outputs.allowed == 'true'
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        category:
+          - study
+          - work
+          - employment
+          - family
+          - humanitarian
+          - change-status
+          - citizenship
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      KNOWLEDGE_ARTICLES_PER_CATEGORY: "10"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 生成并发布 ${{ matrix.category }} 知识文章
+        run: node scripts/immigration-knowledge-daily.mjs "${{ matrix.category }}"

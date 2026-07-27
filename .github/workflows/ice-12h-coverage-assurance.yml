@@ -1,0 +1,182 @@
+name: ICE十二小时覆盖保障
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "12,32,52 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-12h-coverage-assurance
+  cancel-in-progress: false
+
+env:
+  NODE_OPTIONS: "--max-http-header-size=65536"
+  X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  RUN_MODE: "process"
+  ICE_PRIORITY_LOOKBACK_MINUTES: "720"
+  ICE_EXTRA_LOOKBACK_MINUTES: "720"
+  ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
+  ICE_ERO_LOOKBACK_HOURS: "12"
+  ICE_MAX_SOURCE_AGE_MINUTES: "720"
+  ICE_MAX_SOURCE_AGE_HOURS: "12"
+  ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
+  ICE_PRIORITY_MAX_PAGES: "4"
+  ICE_ADDED_SOURCE_MAX_PAGES: "2"
+  ICE_PRIORITY_ROTATION_GROUPS: "4"
+  ICE_ERO_ROTATION_GROUPS: "4"
+  ICE_PUBLISHED_DEDUPE_DAYS: "30"
+  ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
+  ICE_REVIEW_DUPLICATE_THRESHOLD: "0.92"
+  ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
+  ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "750"
+  ICE_ENGLISH_DEDUPE_MAX: "2500"
+  ICE_ENGLISH_DEDUPE_THRESHOLD: "0.92"
+  ICE_OFFICIAL_FILTER_MAX: "3000"
+  ICE_PRECOLLECT_MAX: "1000"
+  ICE_FAST_INTAKE_MAX: "600"
+  ICE_MAX_AI_POSTS_PER_RUN: "24"
+  ICE_MAX_STORIES_PER_RUN: "18"
+  ICE_NORMALIZE_MAX_STORIES: "24"
+  ICE_TRANSLATE_MAX_STORIES: "24"
+  ICE_CROSS_LANGUAGE_DEDUPE_MAX: "500"
+  ICE_AUTO_PUBLISH_SCORE: "80"
+  ICE_AI_CONFIDENCE: "80"
+  ICE_TRUSTED_AUTO_CONFIDENCE: "0"
+  ICE_TRUSTED_MAX_AGE_MINUTES: "720"
+  ICE_UNREVIEWED_EXPIRE_HOURS: "12"
+  ICE_DEDUPE_HOURS: "720"
+  ICE_PUBLISH_INTERVAL_MINUTES: "10"
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.window.outputs.allowed }}
+    steps:
+      - id: window
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间02:00-08:00，暂停采集。"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  core:
+    needs: gate
+    if: needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            node scripts/ice-priority-discovery.mjs && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
+
+  regional:
+    needs: gate
+    if: needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            node scripts/ice-ero-official-discovery.mjs && exit 0
+            sleep $((attempt * 20))
+          done
+          exit 1
+
+  monitored:
+    needs: gate
+    if: needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - shell: bash
+        run: |
+          set +e
+          ok=0
+          for attempt in 1 2 3; do
+            node scripts/ice-extra-monitored-discovery.mjs && { ok=1; break; }
+            sleep $((attempt * 15))
+          done
+          for attempt in 1 2 3; do
+            node scripts/ice-added-source-discovery.mjs && { ok=1; break; }
+            sleep $((attempt * 15))
+          done
+          [[ "$ok" -eq 1 ]]
+
+  process:
+    needs: [gate, core, regional, monitored]
+    if: always() && needs.gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      CORE_RESULT: ${{ needs.core.result }}
+      REGIONAL_RESULT: ${{ needs.regional.result }}
+      MONITORED_RESULT: ${{ needs.monitored.result }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: Require at least one successful collector
+        shell: bash
+        run: |
+          echo "core=$CORE_RESULT regional=$REGIONAL_RESULT monitored=$MONITORED_RESULT"
+          if [[ "$CORE_RESULT" != "success" && "$REGIONAL_RESULT" != "success" && "$MONITORED_RESULT" != "success" ]]; then
+            exit 1
+          fi
+      - name: Enforce strict 12-hour window and process
+        shell: bash
+        run: |
+          set -e
+          node scripts/ice-official-source-only.mjs
+          node scripts/ice-drop-stale-posts.mjs
+          node scripts/ice-filter-replies.mjs || true
+          node scripts/ice-english-pretranslation-dedupe.mjs
+          node scripts/ice-precollect-published-dedupe.mjs
+          node scripts/ice-fast-intake.mjs
+          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-ai-process-only.mjs
+          node scripts/ice-editorial-normalize.mjs
+          node scripts/ice-translate-title-body.mjs
+          node scripts/ice-restore-human-approved.mjs || true
+          node scripts/ice-cross-language-dedupe.mjs || true
+          node scripts/ice-clean-existing-review-duplicates.mjs || true
+          node scripts/ice-trusted-source-promote.mjs
+          node scripts/ice-publish-due.mjs
+      - name: Record coverage success heartbeat
+        if: success()
+        env:
+          ICE_HEARTBEAT_STAGE: "12h-coverage-assurance"
+          ICE_HEARTBEAT_STATUS: "success"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+      - name: Record coverage failure heartbeat
+        if: failure()
+        env:
+          ICE_HEARTBEAT_STAGE: "12h-coverage-assurance"
+          ICE_HEARTBEAT_STATUS: "failure"
+          ICE_HEARTBEAT_ERROR: "ICE strict 12-hour coverage workflow failed"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true

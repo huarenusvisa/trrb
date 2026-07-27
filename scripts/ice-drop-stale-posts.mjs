@@ -2,7 +2,10 @@
 import process from "node:process";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-const MAX_AGE_HOURS = Number(process.env.ICE_MAX_SOURCE_AGE_HOURS || 1);
+// Production rule: ICE source content older than 12 hours must never remain in the pipeline.
+// Environment variables may request a shorter window, but can never extend it beyond 12 hours.
+const REQUESTED_MAX_AGE_HOURS = Number(process.env.ICE_MAX_SOURCE_AGE_HOURS || 12);
+const MAX_AGE_HOURS = Math.min(12, Math.max(0.25, Number.isFinite(REQUESTED_MAX_AGE_HOURS) ? REQUESTED_MAX_AGE_HOURS : 12));
 const BATCH_SIZE = 100;
 
 function requireEnv() {
@@ -61,7 +64,7 @@ async function main() {
   for (const batch of chunks(stale.map((row) => row.id), BATCH_SIZE)) {
     await sb("ice_posts", { method: "DELETE", query: { id: `in.(${batch.join(",")})` }, prefer: "return=minimal" });
   }
-  console.log(JSON.stringify({ stage: "ice-drop-stale-posts", max_age_hours: MAX_AGE_HOURS, scanned: Array.isArray(rows) ? rows.length : 0, deleted: stale.length, cutoff: new Date(cutoffMs).toISOString() }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-drop-stale-posts", requested_max_age_hours: REQUESTED_MAX_AGE_HOURS, enforced_max_age_hours: MAX_AGE_HOURS, scanned: Array.isArray(rows) ? rows.length : 0, deleted: stale.length, cutoff: new Date(cutoffMs).toISOString() }, null, 2));
 }
 main().catch((error) => {
   console.error(`清理超过${MAX_AGE_HOURS}小时的ICE来源帖子失败：`, error);

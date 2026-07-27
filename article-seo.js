@@ -42,6 +42,10 @@
     return Number.isNaN(date.getTime()) ? new Date().toISOString() : date.toISOString();
   }
 
+  function compactKeywords(values) {
+    return [...new Set(values.map(clean).filter(Boolean))].slice(0, 12).join(',');
+  }
+
   function installSeo() {
     const root = document.querySelector('#article-root');
     const heading = root?.querySelector('h1');
@@ -51,18 +55,23 @@
     if (!title || title === '文章不存在' || title === '文章加载失败') return false;
 
     heading.dataset.seoReady = 'true';
-    const body = [...root.querySelectorAll('.article-body p')].map((node) => clean(node.textContent)).filter(Boolean);
-    const description = clean(document.querySelector('meta[name="description"]')?.content || body.join(' ')).slice(0, 180);
+    const paragraphs = [...root.querySelectorAll('.article-body p')].map((node) => clean(node.textContent)).filter(Boolean);
+    const summary = clean(root.querySelector('.article-summary, .story-summary, .lead, .article-deck')?.textContent);
+    const description = clean(summary || paragraphs.join(' ')).slice(0, 180) || `${title}，唐人日报为美国华人提供准确、实用的信息。`;
     const category = clean(root.querySelector('.article-header .tag')?.textContent || '新闻');
     const metaText = clean(root.querySelector('.story-meta')?.textContent);
     const author = clean(metaText.split('·')[0]) || PUBLISHER_NAME;
     const published = parseDate(metaText);
     const image = absoluteUrl(root.querySelector('.article-image')?.currentSrc || root.querySelector('.article-image')?.src || LOGO);
     const canonical = `${SITE}/article.html${window.location.search || ''}`;
+    const keywords = compactKeywords([category, title, ...title.split(/[｜|：:、，,\s]+/), '唐人日报', '美国华人']);
 
+    document.title = `${title} - 唐人日报`;
     upsertLink('canonical', canonical);
     upsertLink('alternate', `${SITE}/feed.xml`).setAttribute('type', 'application/rss+xml');
 
+    upsertMeta('meta[name="description"]', { name: 'description', content: description });
+    upsertMeta('meta[name="keywords"]', { name: 'keywords', content: keywords });
     upsertMeta('meta[property="og:type"]', { property: 'og:type', content: 'article' });
     upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name', content: PUBLISHER_NAME });
     upsertMeta('meta[property="og:title"]', { property: 'og:title', content: title });
@@ -70,6 +79,7 @@
     upsertMeta('meta[property="og:url"]', { property: 'og:url', content: canonical });
     upsertMeta('meta[property="og:image"]', { property: 'og:image', content: image });
     upsertMeta('meta[property="article:published_time"]', { property: 'article:published_time', content: published });
+    upsertMeta('meta[property="article:modified_time"]', { property: 'article:modified_time', content: published });
     upsertMeta('meta[property="article:section"]', { property: 'article:section', content: category });
     upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: 'summary_large_image' });
     upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: title });
@@ -85,6 +95,7 @@
           '@id': `${canonical}#article`,
           headline: title,
           description,
+          keywords,
           image: [image],
           datePublished: published,
           dateModified: published,

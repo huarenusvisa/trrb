@@ -7,6 +7,7 @@ on:
     paths:
       - ".github/workflows/immigration-knowledge-daily.yml"
       - "scripts/immigration-knowledge-daily.mjs"
+      - "scripts/immigration-knowledge-health.mjs"
       - "config/immigration-knowledge.js"
       - "immigrate/*knowledge-content.js"
       - "immigrate/change-status-module.js"
@@ -84,3 +85,30 @@ jobs:
             sleep $((attempt * 20))
           done
           exit 1
+
+  verify-and-repair:
+    name: 核验七类更新并自动补齐
+    needs: [time-gate, generate]
+    if: always() && needs.time-gate.outputs.allowed == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      KNOWLEDGE_ARTICLES_PER_CATEGORY: "10"
+      KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 检查必要密钥
+        shell: bash
+        run: |
+          test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
+          test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
+      - name: 核验最近30小时七类文章并补齐不足
+        run: node scripts/immigration-knowledge-health.mjs

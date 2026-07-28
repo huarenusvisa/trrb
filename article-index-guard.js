@@ -24,6 +24,11 @@
     link.href = url;
   }
 
+  function markValid() {
+    setRobots('index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
+    setCanonical(`https://www.trrb.net/article.html?id=${encodeURIComponent(id)}`);
+  }
+
   function renderMissing() {
     setRobots('noindex,nofollow,noarchive');
     setCanonical('https://www.trrb.net/article.html');
@@ -36,6 +41,13 @@
 
   if (!id) {
     renderMissing();
+    return;
+  }
+
+  const staticSources = [window.TRRB_ARTICLE_MAP, window.TRRB_ARTICLE_INDEX, window.TRRB_ARTICLES];
+  const existsInStaticArchive = staticSources.some((items) => Array.isArray(items) && items.some((item) => String(item?.id) === id));
+  if (existsInStaticArchive) {
+    markValid();
     return;
   }
 
@@ -54,8 +66,7 @@
         renderMissing();
         return;
       }
-      setRobots('index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
-      setCanonical(`https://www.trrb.net/article.html?id=${encodeURIComponent(id)}`);
+      markValid();
     })
     .catch(() => {
       // 网络临时失败时不误伤有效文章；保留现有页面状态。

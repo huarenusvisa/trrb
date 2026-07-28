@@ -1,0 +1,63 @@
+(() => {
+  const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
+  const params = new URLSearchParams(location.search);
+  const id = String(params.get('id') || '').trim();
+
+  function setRobots(value) {
+    let meta = document.head.querySelector('meta[name="robots"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'robots';
+      document.head.appendChild(meta);
+    }
+    meta.content = value;
+  }
+
+  function setCanonical(url) {
+    let link = document.head.querySelector('link[rel="canonical"]');
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'canonical';
+      document.head.appendChild(link);
+    }
+    link.href = url;
+  }
+
+  function renderMissing() {
+    setRobots('noindex,nofollow,noarchive');
+    setCanonical('https://www.trrb.net/article.html');
+    document.title = '文章不存在 - 唐人日报';
+    const root = document.querySelector('#article-root');
+    if (root) {
+      root.innerHTML = '<a class="back-link" href="./index.html">返回首页</a><h1>文章不存在</h1><p>该链接可能已经失效、文章已下线，或地址不完整。</p>';
+    }
+  }
+
+  if (!id) {
+    renderMissing();
+    return;
+  }
+
+  const url = `${SUPABASE_URL}/rest/v1/articles?select=id,status&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
+  fetch(url, {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      Accept: 'application/json'
+    },
+    cache: 'no-store'
+  })
+    .then((response) => response.ok ? response.json() : Promise.reject(new Error(String(response.status))))
+    .then((rows) => {
+      if (!Array.isArray(rows) || !rows[0]) {
+        renderMissing();
+        return;
+      }
+      setRobots('index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
+      setCanonical(`https://www.trrb.net/article.html?id=${encodeURIComponent(id)}`);
+    })
+    .catch(() => {
+      // 网络临时失败时不误伤有效文章；保留现有页面状态。
+    });
+})();

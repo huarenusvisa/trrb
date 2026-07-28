@@ -1,4 +1,4 @@
-name: ICE三路并行采集编辑发布
+name: ICE唯一生产流水线
 
 on:
   workflow_dispatch:
@@ -8,16 +8,15 @@ on:
       - ".github/workflows/ice-unified-pipeline.yml"
       - "scripts/ice-*.mjs"
       - "scripts/category-pipeline-gate.mjs"
-      - "supabase/migrations/20260724_category_cms_v3.sql"
   schedule:
-    - cron: "7,37 * * * *"
+    - cron: "3,13,23,33,43,53 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
-  group: trrb-ice-unified-pipeline
-  cancel-in-progress: true
+  group: trrb-ice-production-singleton
+  cancel-in-progress: false
 
 env:
   NODE_OPTIONS: "--max-http-header-size=65536"
@@ -27,21 +26,22 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
   RUN_MODE: "process"
-  ICE_PRIORITY_LOOKBACK_MINUTES: "2880"
-  ICE_EXTRA_LOOKBACK_MINUTES: "1440"
-  ICE_ADDED_SOURCE_LOOKBACK_HOURS: "24"
+  ICE_RUN_DUE_MINUTES: "25"
+  ICE_PRIORITY_LOOKBACK_MINUTES: "720"
+  ICE_EXTRA_LOOKBACK_MINUTES: "720"
+  ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
   ICE_ADDED_SOURCE_MAX_PAGES: "3"
   ICE_PRIORITY_MAX_PAGES: "6"
   ICE_PRIORITY_ROTATION_GROUPS: "4"
   ICE_ERO_ROTATION_GROUPS: "4"
-  ICE_ERO_LOOKBACK_HOURS: "48"
-  ICE_MAX_SOURCE_AGE_MINUTES: "2880"
-  ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "2880"
+  ICE_ERO_LOOKBACK_HOURS: "12"
+  ICE_MAX_SOURCE_AGE_MINUTES: "720"
+  ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
   ICE_PUBLISHED_DEDUPE_DAYS: "30"
   ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
   ICE_REVIEW_DUPLICATE_THRESHOLD: "0.92"
   ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
-  ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "2940"
+  ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "750"
   ICE_ENGLISH_DEDUPE_MAX: "4000"
   ICE_ENGLISH_DEDUPE_THRESHOLD: "0.92"
   ICE_OFFICIAL_FILTER_MAX: "4000"
@@ -55,26 +55,17 @@ env:
   ICE_AUTO_PUBLISH_SCORE: "80"
   ICE_AI_CONFIDENCE: "80"
   ICE_TRUSTED_AUTO_CONFIDENCE: "0"
-  ICE_TRUSTED_MAX_AGE_MINUTES: "2880"
+  ICE_TRUSTED_MAX_AGE_MINUTES: "720"
   ICE_UNREVIEWED_EXPIRE_HOURS: "24"
   ICE_DEDUPE_HOURS: "720"
   ICE_PUBLISH_INTERVAL_MINUTES: "10"
 
 jobs:
-  gate:
+  production:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      allowed: ${{ steps.window.outputs.allowed }}
-      enabled: ${{ steps.category.outputs.enabled }}
-      auto_fetch: ${{ steps.category.outputs.auto_fetch }}
-      ai_rewrite: ${{ steps.category.outputs.ai_rewrite }}
-      auto_publish: ${{ steps.category.outputs.auto_publish }}
-      ai_prompt: ${{ steps.category.outputs.ai_prompt }}
-      push_x: ${{ steps.category.outputs.push_x }}
-      push_telegram: ${{ steps.category.outputs.push_telegram }}
+    timeout-minutes: 45
     steps:
-      - name: Enforce New York 6-hour overnight pause window
+      - name: Check New York production window
         id: window
         shell: bash
         run: |
@@ -85,148 +76,64 @@ jobs:
             echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
           else
             echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，处于正常采集时段。"
+            echo "纽约时间 $NY_TIME，允许检查并运行。"
           fi
 
       - uses: actions/checkout@v4
         if: steps.window.outputs.allowed == 'true'
+
       - uses: actions/setup-node@v4
         if: steps.window.outputs.allowed == 'true'
         with:
           node-version: "22"
 
-      - name: Read ICE category CMS switches
-        if: steps.window.outputs.allowed == 'true'
-        id: category
-        run: node scripts/category-pipeline-gate.mjs ice
-
-      - name: Show effective policy
+      - name: Check whether a new round is due
+        id: due
         if: steps.window.outputs.allowed == 'true'
         run: |
-          echo "enabled=${{ steps.category.outputs.enabled }}"
-          echo "auto_fetch=${{ steps.category.outputs.auto_fetch }}"
-          echo "ai_rewrite=${{ steps.category.outputs.ai_rewrite }}"
-          echo "auto_publish=${{ steps.category.outputs.auto_publish }}"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event_name }}" == "push" ]]; then
+            echo "due=true" >> "$GITHUB_OUTPUT"
+            echo "人工或代码变更触发，立即执行。"
+          else
+            node scripts/ice-run-due.mjs
+          fi
 
-      - name: Write pipeline start heartbeat
-        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
+      - name: Read ICE category switches
+        id: category
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
+        run: node scripts/category-pipeline-gate.mjs ice
+
+      - name: Write start heartbeat
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-collection-start"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-  collect-core:
-    name: 线程A｜核心官方账号
-    needs: gate
-    if: needs.gate.outputs.allowed == 'true' && needs.gate.outputs.enabled == 'true' && needs.gate.outputs.auto_fetch == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Collect core official sources with retry
-        shell: bash
-        run: |
-          for attempt in 1 2 3; do
-            echo "核心官方采集 attempt $attempt/3"
-            node scripts/ice-priority-discovery.mjs && exit 0
-            sleep $((attempt * 20))
-          done
-          exit 1
-
-  collect-regional:
-    name: 线程B｜ERO地区官方账号
-    needs: gate
-    if: needs.gate.outputs.allowed == 'true' && needs.gate.outputs.enabled == 'true' && needs.gate.outputs.auto_fetch == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Collect ERO regional sources with retry
-        shell: bash
-        run: |
-          for attempt in 1 2 3; do
-            echo "ERO地区采集 attempt $attempt/3"
-            node scripts/ice-ero-official-discovery.mjs && exit 0
-            sleep $((attempt * 20))
-          done
-          exit 1
-
-  collect-monitored:
-    name: 线程C｜媒体与重点监控账号
-    needs: gate
-    if: needs.gate.outputs.allowed == 'true' && needs.gate.outputs.enabled == 'true' && needs.gate.outputs.auto_fetch == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: Collect monitored and added sources
+      - name: Collect all ICE sources
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set +e
-          extra_ok=0
-          added_ok=0
-
-          for attempt in 1 2; do
-            echo "额外监控采集 attempt $attempt/2"
-            node scripts/ice-extra-monitored-discovery.mjs && { extra_ok=1; break; }
-            sleep $((attempt * 15))
+          ok=0
+          for script in \
+            scripts/ice-priority-discovery.mjs \
+            scripts/ice-ero-official-discovery.mjs \
+            scripts/ice-extra-monitored-discovery.mjs \
+            scripts/ice-added-source-discovery.mjs
+          do
+            script_ok=0
+            for attempt in 1 2 3; do
+              echo "$script attempt $attempt/3"
+              node "$script" && { script_ok=1; ok=1; break; }
+              sleep $((attempt * 15))
+            done
+            echo "$script result=$script_ok"
           done
-
-          for attempt in 1 2; do
-            echo "新增账号采集 attempt $attempt/2"
-            node scripts/ice-added-source-discovery.mjs && { added_ok=1; break; }
-            sleep $((attempt * 15))
-          done
-
-          echo "extra_ok=$extra_ok added_ok=$added_ok"
-          [[ "$extra_ok" -eq 1 || "$added_ok" -eq 1 ]]
-
-  process-and-publish:
-    name: 汇合｜去重、AI、翻译与发布
-    needs: [gate, collect-core, collect-regional, collect-monitored]
-    if: always() && needs.gate.outputs.allowed == 'true' && needs.gate.outputs.enabled == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 18
-    env:
-      CORE_RESULT: ${{ needs.collect-core.result }}
-      REGIONAL_RESULT: ${{ needs.collect-regional.result }}
-      MONITORED_RESULT: ${{ needs.collect-monitored.result }}
-      CATEGORY_AI_PROMPT: ${{ needs.gate.outputs.ai_prompt }}
-      CATEGORY_PUSH_X: ${{ needs.gate.outputs.push_x }}
-      CATEGORY_PUSH_TELEGRAM: ${{ needs.gate.outputs.push_telegram }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Check parallel collector results
-        shell: bash
-        run: |
-          echo "核心官方=$CORE_RESULT"
-          echo "地区ERO=$REGIONAL_RESULT"
-          echo "媒体监控=$MONITORED_RESULT"
-          if [[ "$CORE_RESULT" == "failure" && "$REGIONAL_RESULT" == "failure" && "$MONITORED_RESULT" == "failure" ]]; then
-            echo "三路采集全部失败，停止后续处理。"
-            exit 1
-          fi
-          echo "至少一路采集成功，继续处理。"
-
-      - name: Record collection disabled state
-        if: needs.gate.outputs.auto_fetch != 'true'
-        run: echo "后台已关闭ICE自动抓取；保留现有候选并继续后续处理。"
+          [[ "$ok" -eq 1 ]]
 
       - name: Filter, dedupe and intake
-        if: needs.gate.outputs.auto_fetch == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
@@ -238,23 +145,20 @@ jobs:
           node scripts/ice-fast-intake.mjs
           node scripts/ice-dedupe-v3.mjs || true
 
-      - name: AI process database batch
-        if: needs.gate.outputs.ai_rewrite == 'true'
-        run: node scripts/ice-ai-process-only.mjs
-
-      - name: Normalize and translate to Chinese
-        if: needs.gate.outputs.ai_rewrite == 'true'
+      - name: AI edit and translate
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite == 'true'
         shell: bash
         run: |
           set -e
+          node scripts/ice-ai-process-only.mjs
           node scripts/ice-editorial-normalize.mjs
           node scripts/ice-translate-title-body.mjs
 
-      - name: Restore approvals, final dedupe and publish
-        if: needs.gate.outputs.auto_publish == 'true'
+      - name: Publish
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
-          ICE_PUBLISH_MAX_PER_RUN: "10"
+          ICE_PUBLISH_MAX_PER_RUN: "12"
         shell: bash
         run: |
           set -e
@@ -265,24 +169,21 @@ jobs:
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs
 
-      - name: Write pipeline success heartbeat
-        if: success()
+      - name: Write success heartbeat
+        if: success() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "success"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-      - name: Write pipeline failure heartbeat
-        if: failure()
+      - name: Write failure heartbeat
+        if: failure() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
-          ICE_HEARTBEAT_ERROR: "ICE三路并行采集或后续处理失败"
+          ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-  off-hours:
-    needs: gate
-    if: needs.gate.outputs.allowed != 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "ICE生产流水线处于纽约02:00-08:00停采窗口；08:07恢复，每30分钟运行一次。"
+      - name: Report no-op
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
+        run: echo "距上次成功不足25分钟，本轮不重复启动。"

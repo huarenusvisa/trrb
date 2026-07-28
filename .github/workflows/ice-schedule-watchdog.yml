@@ -7,8 +7,9 @@ on:
     paths:
       - ".github/workflows/ice-schedule-watchdog.yml"
       - "scripts/ice-schedule-watchdog.mjs"
+      - ".github/workflows/ice-unified-pipeline.yml"
   schedule:
-    - cron: "17,47 * * * *"
+    - cron: "3,13,23,33,43,53 * * * *"
 
 permissions:
   contents: read
@@ -25,7 +26,7 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      ICE_WATCHDOG_STALE_MINUTES: "45"
+      ICE_WATCHDOG_STALE_MINUTES: "42"
     steps:
       - name: Check New York production window
         id: window
@@ -33,12 +34,12 @@ jobs:
         run: |
           NY_HOUR=$(TZ=America/New_York date +%H)
           NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
-          if (( 10#$NY_HOUR < 8 || 10#$NY_HOUR >= 20 )); then
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
             echo "allowed=false" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，处于20:00-08:00停采时段；看门狗不补跑。"
+            echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段；看门狗不补跑。"
           else
             echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，处于08:00-20:00采集时段；检查30分钟调度。"
+            echo "纽约时间 $NY_TIME，处于正常采集时段；检查30分钟调度。"
           fi
 
       - uses: actions/checkout@v4
@@ -60,7 +61,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          echo "ICE最近启动距今 ${{ steps.health.outputs.age_minutes }} 分钟，超过45分钟，立即补跑。"
+          echo "ICE最近启动距今 ${{ steps.health.outputs.age_minutes }} 分钟，超过42分钟，立即补跑。"
           gh workflow run ice-unified-pipeline.yml --ref main
 
       - name: Report healthy schedule

@@ -9,7 +9,7 @@ on:
       - "scripts/ice-*.mjs"
       - "scripts/category-pipeline-gate.mjs"
   schedule:
-    - cron: "4,14,24,34,44,54 * * * *"
+    - cron: "2,7,12,17,22,27,32,37,42,47,52,57 * * * *"
 
 permissions:
   contents: read
@@ -26,7 +26,7 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
   RUN_MODE: "process"
-  ICE_RUN_DUE_MINUTES: "35"
+  ICE_RUN_DUE_MINUTES: "28"
   ICE_PRIORITY_LOOKBACK_MINUTES: "720"
   ICE_EXTRA_LOOKBACK_MINUTES: "720"
   ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
@@ -96,6 +96,13 @@ jobs:
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
 
+      - name: Write scheduler check heartbeat
+        if: steps.window.outputs.allowed == 'true'
+        env:
+          ICE_HEARTBEAT_STAGE: "scheduler-check"
+          ICE_HEARTBEAT_STATUS: "running"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+
       - name: Check whether a round is due
         id: due
         if: steps.window.outputs.allowed == 'true'
@@ -108,10 +115,18 @@ jobs:
             node scripts/ice-run-due.mjs
           fi
 
-      - name: Read ICE category switches
+      - name: Read ICE category switches with safe fallback
         id: category
         if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
-        run: node scripts/category-pipeline-gate.mjs ice
+        shell: bash
+        run: |
+          if ! node scripts/category-pipeline-gate.mjs ice; then
+            echo "分类配置读取失败，启用安全默认值继续运行。"
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            echo "auto_fetch=true" >> "$GITHUB_OUTPUT"
+            echo "ai_rewrite=true" >> "$GITHUB_OUTPUT"
+            echo "auto_publish=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Write start heartbeat
         if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
@@ -196,4 +211,4 @@ jobs:
 
       - name: Report no-op
         if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
-        run: echo "距上次完整成功不足35分钟，本轮不重复启动。"
+        run: echo "距上次完整成功不足28分钟，本轮不重复启动。"

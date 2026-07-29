@@ -1,4 +1,4 @@
-name: ICE唯一生产流水线
+name: ICE唯一生产执行器
 
 on:
   workflow_dispatch:
@@ -8,8 +8,6 @@ on:
       - ".github/workflows/ice-unified-pipeline.yml"
       - "scripts/ice-*.mjs"
       - "scripts/category-pipeline-gate.mjs"
-  schedule:
-    - cron: "7,37 * * * *"
 
 permissions:
   contents: read
@@ -76,12 +74,12 @@ jobs:
         run: |
           NY_HOUR=$(TZ=America/New_York date +%H)
           NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
-          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
-            echo "allowed=false" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
-          else
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]] || ! (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
             echo "allowed=true" >> "$GITHUB_OUTPUT"
             echo "纽约时间 $NY_TIME，开始本轮采集。"
+          else
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
           fi
       - uses: actions/checkout@v4
         if: steps.window.outputs.allowed == 'true'
@@ -214,7 +212,7 @@ jobs:
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
-          ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
+          ICE_HEARTBEAT_ERROR: "ICE唯一生产执行器失败"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
   off-hours:
@@ -222,4 +220,4 @@ jobs:
     if: needs.gate.outputs.allowed != 'true'
     runs-on: ubuntu-latest
     steps:
-      - run: echo "ICE生产流水线处于纽约02:00-08:00停采窗口；08:07恢复，每30分钟运行一次。"
+      - run: echo "ICE生产执行器处于纽约02:00-08:00停采窗口。"

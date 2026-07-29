@@ -1,0 +1,72 @@
+name: ICE轻量调度器
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "4,14,24,34,44,54 * * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: trrb-ice-launcher
+  cancel-in-progress: true
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - name: Check New York window
+        id: window
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]] || ! (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，允许调度。"
+          else
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
+          fi
+
+      - name: Check last completed ICE round
+        if: steps.window.outputs.allowed == 'true'
+        id: health
+        shell: bash
+        run: |
+          set -e
+          URL="${SUPABASE_URL%/}/rest/v1/ice_query_state?select=query_key,last_success_at,last_run_at,updated_at&query_key=eq.pipeline%3Aparallel-pipeline&limit=1"
+          JSON=$(curl -fsS "$URL" \
+            -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY")
+          LAST=$(node -e 'const x=JSON.parse(process.argv[1]); const r=x[0]||{}; process.stdout.write(r.last_success_at||r.last_run_at||r.updated_at||"")' "$JSON")
+          if [[ -z "$LAST" ]]; then
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "没有完成心跳，立即启动。"
+            exit 0
+          fi
+          AGE=$(node -e 'const t=Date.parse(process.argv[1]); console.log(Number.isFinite(t)?((Date.now()-t)/60000).toFixed(1):"9999")' "$LAST")
+          echo "age_minutes=$AGE" >> "$GITHUB_OUTPUT"
+          if node -e 'process.exit(Number(process.argv[1]) >= 35 ? 0 : 1)' "$AGE"; then
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+            echo "最近完整成功距今 $AGE 分钟，立即启动。"
+          else
+            echo "stale=false" >> "$GITHUB_OUTPUT"
+            echo "最近完整成功距今 $AGE 分钟，无需重复启动。"
+          fi
+
+      - name: Dispatch singleton ICE worker
+        if: steps.window.outputs.allowed == 'true' && steps.health.outputs.stale == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ice-unified-pipeline.yml --ref main
+
+      - name: Healthy
+        if: steps.window.outputs.allowed == 'true' && steps.health.outputs.stale != 'true'
+        run: echo "ICE执行器状态正常。"

@@ -35,14 +35,21 @@ jobs:
             echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
           fi
 
+      - name: Check required environment
+        if: steps.window.outputs.allowed == 'true'
+        shell: bash
+        run: |
+          test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
+
       - name: Check last completed ICE round
         if: steps.window.outputs.allowed == 'true'
         id: health
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
           URL="${SUPABASE_URL%/}/rest/v1/ice_query_state?select=query_key,last_success_at,last_run_at,updated_at&query_key=eq.pipeline%3Aparallel-pipeline&limit=1"
-          JSON=$(curl -fsS "$URL" \
+          JSON=$(curl --fail-with-body --silent --show-error "$URL" \
             -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
             -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY")
           LAST=$(node -e 'const x=JSON.parse(process.argv[1]); const r=x[0]||{}; process.stdout.write(r.last_success_at||r.last_run_at||r.updated_at||"")' "$JSON")
@@ -53,6 +60,7 @@ jobs:
           fi
           AGE=$(node -e 'const t=Date.parse(process.argv[1]); console.log(Number.isFinite(t)?((Date.now()-t)/60000).toFixed(1):"9999")' "$LAST")
           echo "age_minutes=$AGE" >> "$GITHUB_OUTPUT"
+          echo "last_success_at=$LAST" >> "$GITHUB_OUTPUT"
           if node -e 'process.exit(Number(process.argv[1]) >= 35 ? 0 : 1)' "$AGE"; then
             echo "stale=true" >> "$GITHUB_OUTPUT"
             echo "最近完整成功距今 $AGE 分钟，立即启动。"
@@ -65,7 +73,23 @@ jobs:
         if: steps.window.outputs.allowed == 'true' && steps.health.outputs.stale == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run ice-unified-pipeline.yml --ref main
+        shell: bash
+        run: |
+          set -euo pipefail
+          API="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/workflows/ice-unified-pipeline.yml/dispatches"
+          echo "Dispatching ${GITHUB_REPOSITORY}/ice-unified-pipeline.yml on main"
+          HTTP=$(curl --silent --show-error --output /tmp/dispatch-response.txt --write-out '%{http_code}' \
+            --request POST "$API" \
+            --header "Accept: application/vnd.github+json" \
+            --header "Authorization: Bearer $GH_TOKEN" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            --data '{"ref":"main"}')
+          cat /tmp/dispatch-response.txt || true
+          if [[ "$HTTP" != "204" ]]; then
+            echo "ICE执行器调度失败，HTTP $HTTP"
+            exit 1
+          fi
+          echo "ICE执行器已成功调度。"
 
       - name: Healthy
         if: steps.window.outputs.allowed == 'true' && steps.health.outputs.stale != 'true'

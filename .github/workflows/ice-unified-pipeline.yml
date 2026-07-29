@@ -9,14 +9,14 @@ on:
       - "scripts/ice-*.mjs"
       - "scripts/category-pipeline-gate.mjs"
   schedule:
-    - cron: "2,7,12,17,22,27,32,37,42,47,52,57 * * * *"
+    - cron: "7,37 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ice-production-singleton
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   NODE_OPTIONS: "--max-http-header-size=65536"
@@ -26,7 +26,6 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
   RUN_MODE: "process"
-  ICE_RUN_DUE_MINUTES: "28"
   ICE_PRIORITY_LOOKBACK_MINUTES: "720"
   ICE_EXTRA_LOOKBACK_MINUTES: "720"
   ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
@@ -63,7 +62,7 @@ env:
 jobs:
   production:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 28
     steps:
       - name: Check New York production window
         id: window
@@ -76,7 +75,7 @@ jobs:
             echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
           else
             echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，允许检查并运行。"
+            echo "纽约时间 $NY_TIME，立即执行完整采集。"
           fi
 
       - uses: actions/checkout@v4
@@ -87,7 +86,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Check required secrets
+      - name: Validate required secrets
         if: steps.window.outputs.allowed == 'true'
         shell: bash
         run: |
@@ -96,32 +95,13 @@ jobs:
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
 
-      - name: Write scheduler check heartbeat
-        if: steps.window.outputs.allowed == 'true'
-        env:
-          ICE_HEARTBEAT_STAGE: "scheduler-check"
-          ICE_HEARTBEAT_STATUS: "running"
-        run: node scripts/ice-pipeline-heartbeat.mjs || true
-
-      - name: Check whether a round is due
-        id: due
-        if: steps.window.outputs.allowed == 'true'
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event_name }}" == "push" ]]; then
-            echo "due=true" >> "$GITHUB_OUTPUT"
-            echo "人工或代码变更触发，立即执行。"
-          else
-            node scripts/ice-run-due.mjs
-          fi
-
       - name: Read ICE category switches with safe fallback
         id: category
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
+        if: steps.window.outputs.allowed == 'true'
         shell: bash
         run: |
           if ! node scripts/category-pipeline-gate.mjs ice; then
-            echo "分类配置读取失败，启用安全默认值继续运行。"
+            echo "分类配置读取失败，采用安全默认值。"
             echo "enabled=true" >> "$GITHUB_OUTPUT"
             echo "auto_fetch=true" >> "$GITHUB_OUTPUT"
             echo "ai_rewrite=true" >> "$GITHUB_OUTPUT"
@@ -129,14 +109,14 @@ jobs:
           fi
 
       - name: Write start heartbeat
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-collection-start"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-      - name: Collect all ICE sources with independent retries
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
+      - name: Collect all ICE sources
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set +e
@@ -147,18 +127,12 @@ jobs:
             scripts/ice-extra-monitored-discovery.mjs \
             scripts/ice-added-source-discovery.mjs
           do
-            script_ok=0
-            for attempt in 1 2 3; do
-              echo "$script attempt $attempt/3"
-              node "$script" && { script_ok=1; ok=1; break; }
-              sleep $((attempt * 15))
-            done
-            echo "$script result=$script_ok"
+            node "$script" && ok=1
           done
           [[ "$ok" -eq 1 ]]
 
       - name: Filter, dedupe and intake
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
@@ -171,7 +145,7 @@ jobs:
           node scripts/ice-dedupe-v3.mjs || true
 
       - name: AI edit and translate
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite == 'true'
         shell: bash
         run: |
           set -e
@@ -180,7 +154,7 @@ jobs:
           node scripts/ice-translate-title-body.mjs
 
       - name: Publish
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "12"
@@ -195,7 +169,7 @@ jobs:
           node scripts/ice-publish-due.mjs
 
       - name: Write success heartbeat
-        if: success() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
+        if: success() && steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "success"
@@ -206,9 +180,9 @@ jobs:
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
-          ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败；请查看本轮Actions日志"
+          ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
-      - name: Report no-op
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
-        run: echo "距上次完整成功不足28分钟，本轮不重复启动。"
+      - name: Report off-hours
+        if: steps.window.outputs.allowed != 'true'
+        run: echo "ICE生产流水线处于纽约02:00-08:00停采窗口。"

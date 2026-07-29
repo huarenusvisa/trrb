@@ -17,7 +17,7 @@
     <section class="login-wrap" id="login-view">
       <form class="login-card" id="login-form">
         <div class="brand">唐人日报</div><h1>后台登录</h1><p>仅限授权管理员使用。</p>
-        <label>邮箱</label><input id="login-email" type="email" autocomplete="email" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="请输入管理员邮箱" required />
+        <label>邮箱</label><input id="login-email" type="email" autocomplete="email" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="请输入管理员邮箱" required />
         <label>密码</label><input id="login-password" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="请输入密码" required />
         <button type="submit">登录后台</button><div class="message" id="login-message"></div>
       </form>
@@ -54,7 +54,7 @@
   <div class="review-modal hidden" id="review-modal"><div class="review-modal-backdrop" id="review-modal-backdrop"></div><section class="review-modal-panel"><header class="review-modal-header"><div><span class="eyebrow">ICE CANDIDATE REVIEW</span><h2 id="review-modal-title">审核候选新闻</h2></div><button class="icon-btn" id="review-modal-close">×</button></header><div class="review-modal-body"><div id="review-score-grid"></div><div id="review-risk-panel"></div><label>最终标题</label><input id="review-title" /><label>最终摘要</label><textarea id="review-summary"></textarea><label>最终正文</label><textarea id="review-content"></textarea><label>封面</label><input id="review-cover" /><img id="review-cover-preview" class="hidden" /><input id="review-schedule" type="datetime-local" /><input id="review-current-status" readonly /><textarea id="review-notes"></textarea><p id="review-decision-reason"></p><span id="review-evidence-count"></span><div id="review-evidence-list"></div><div id="review-log-list"></div></div><footer class="review-modal-actions"><button data-review-action="save">保存编辑</button><button data-review-action="wait">等待更多信源</button><button data-review-action="rewrite">重新审核</button><button data-review-action="reject">拒绝发布</button><button data-review-action="approve">批准并排期</button><button data-review-action="publish_now">立即发布</button></footer><div id="review-action-message"></div></section></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./admin.js?v=20260729-single-auth-flow"></script>
-  <script src="./mobile-auth-fallback.js?v=20260729-1"></script>
+  <script src="./password-login-compat.js?v=20260729-1"></script>
   <script src="./admin-publisher-v2.js?v=20260713-v1"></script>
   <script src="./ice-review-v2.js?v=20260714-report-controls-v2"></script>
   <script src="./ice-report-controls-v2.js?v=20260714-v2"></script>

@@ -1,4 +1,4 @@
-name: 栏目CMS数据库迁移
+name: 栏目CMS与生产调度数据库迁移
 
 on:
   workflow_dispatch:
@@ -8,6 +8,7 @@ on:
       - "supabase/migrations/20260724_category_cms_v3.sql"
       - "supabase/migrations/20260725_retire_deport_and_refine_ice.sql"
       - "supabase/migrations/20260725_trump_topic_and_media_cleanup.sql"
+      - "supabase/migrations/20260730_ice_supabase_cron_dispatch.sql"
       - ".github/workflows/category-cms-migrate.yml"
 
 permissions:
@@ -26,6 +27,7 @@ jobs:
       SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL || secrets.SUPABASE_DATABASE_URL || secrets.DATABASE_URL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GITHUB_DISPATCH_TOKEN: ${{ secrets.ICE_GITHUB_DISPATCH_TOKEN || secrets.GH_PAT || secrets.PERSONAL_ACCESS_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -52,7 +54,46 @@ jobs:
           fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
-      - name: Apply category and topic migrations
+      - name: Store GitHub workflow token in Supabase Vault
+        env:
+          DATABASE_URL: ${{ steps.db.outputs.url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${GITHUB_DISPATCH_TOKEN:-}" ]]; then
+            echo "缺少ICE_GITHUB_DISPATCH_TOKEN（或GH_PAT/PERSONAL_ACCESS_TOKEN）。" >&2
+            echo "该Fine-grained PAT只需访问huarenusvisa/trrb，并授予Actions: Read and write。" >&2
+            exit 1
+          fi
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -v dispatch_token="$GITHUB_DISPATCH_TOKEN" <<'SQL'
+          do $$
+          declare
+            existing_id uuid;
+          begin
+            select id into existing_id
+            from vault.secrets
+            where name = 'github_actions_dispatch_token'
+            order by created_at desc
+            limit 1;
+
+            if existing_id is null then
+              perform vault.create_secret(
+                :'dispatch_token',
+                'github_actions_dispatch_token',
+                'Fine-grained GitHub token for Supabase Cron to dispatch ICE production workflow'
+              );
+            else
+              perform vault.update_secret(
+                existing_id,
+                :'dispatch_token',
+                'github_actions_dispatch_token',
+                'Fine-grained GitHub token for Supabase Cron to dispatch ICE production workflow'
+              );
+            end if;
+          end $$;
+          SQL
+
+      - name: Apply category, topic and scheduler migrations
         env:
           DATABASE_URL: ${{ steps.db.outputs.url }}
         run: |
@@ -60,13 +101,17 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260724_category_cms_v3.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260725_retire_deport_and_refine_ice.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260725_trump_topic_and_media_cleanup.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260730_ice_supabase_cron_dispatch.sql
 
-      - name: Verify ICE and Trump topic policy through REST
+      - name: Verify ICE category and Supabase Cron
+        env:
+          DATABASE_URL: ${{ steps.db.outputs.url }}
         shell: bash
         run: |
           set -euo pipefail
           test -n "${SUPABASE_URL:-}"
           test -n "${SUPABASE_SERVICE_ROLE_KEY:-}"
+
           status="$(curl -sS -o /tmp/categories.json -w '%{http_code}' \
             "${SUPABASE_URL%/}/rest/v1/categories?select=slug,name,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss&or=(slug.eq.ice,slug.eq.deport,slug.eq.trump,name.eq.%E9%A9%B1%E9%80%90%E5%BF%AB%E6%8A%A5)" \
             -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
@@ -76,6 +121,16 @@ jobs:
             echo "栏目CMS验证失败，HTTP $status" >&2
             exit 1
           fi
+
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
+            "select jobname || '|' || schedule || '|' || active from cron.job where jobname='trrb-ice-supabase-scheduler';" \
+            | tee /tmp/cron.txt
+          grep -q '^trrb-ice-supabase-scheduler|\*/10 \* \* \* \*|t$' /tmp/cron.txt
+
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
+            "select public.dispatch_ice_pipeline_if_due();" \
+            | tee /tmp/dispatch-check.txt
+
           node - <<'NODE'
           const fs = require('fs');
           const rows = JSON.parse(fs.readFileSync('/tmp/categories.json','utf8'));
@@ -91,5 +146,5 @@ jobs:
           if (trump && (trump.is_active || trump.show_in_navigation || trump.show_on_homepage || trump.include_in_sitemap || trump.include_in_rss)) {
             throw new Error('Trump独立栏目尚未下线');
           }
-          console.log('ICE栏目已统一；驱逐快报和Trump独立栏目已下线。');
+          console.log('ICE栏目和Supabase Cron调度器验证完成。');
           NODE

@@ -1,0 +1,92 @@
+name: ICE调度哨兵
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-sentinel.yml"
+      - "scripts/ice-run-due.mjs"
+  schedule:
+    - cron: "1,6,11,16,21,26,31,36,41,46,51,56 * * * *"
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: trrb-ice-sentinel-singleton
+  cancel-in-progress: true
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  ICE_RUN_DUE_MINUTES: "35"
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check New York collection window
+        id: window
+        shell: bash
+        run: |
+          NY_HOUR=$(TZ=America/New_York date +%H)
+          NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
+          if (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+            echo "纽约时间 $NY_TIME，检查生产流水线心跳。"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.window.outputs.allowed == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.window.outputs.allowed == 'true'
+        with:
+          node-version: "22"
+
+      - name: Check whether main pipeline is stale
+        id: due
+        if: steps.window.outputs.allowed == 'true'
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event_name }}" == "push" ]]; then
+            echo "due=true" >> "$GITHUB_OUTPUT"
+            echo "人工或代码变更触发，立即唤醒主流水线。"
+          elif ! node scripts/ice-run-due.mjs; then
+            echo "心跳查询失败，为避免停更，立即唤醒主流水线。"
+            echo "due=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dispatch unique production pipeline
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          status=$(curl -sS -o /tmp/dispatch.json -w '%{http_code}' \
+            -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/ice-unified-pipeline.yml/dispatches" \
+            -d '{"ref":"main"}')
+          cat /tmp/dispatch.json || true
+          if [[ "$status" != "204" ]]; then
+            echo "启动主流水线失败，HTTP $status"
+            exit 1
+          fi
+          echo "已成功唤醒唯一ICE生产流水线。"
+
+      - name: Report healthy
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
+        run: echo "主流水线心跳正常，无需补跑。"
+
+      - name: Report off-hours
+        if: steps.window.outputs.allowed != 'true'
+        run: echo "ICE调度哨兵处于纽约02:00-08:00停采窗口。"

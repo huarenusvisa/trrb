@@ -1,0 +1,55 @@
+name: ICE发布数量即时审计
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-published-report.yml"
+      - "scripts/ice-published-report.mjs"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-ice-published-report
+  cancel-in-progress: true
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 统计纽约当天ICE发布数量
+        shell: bash
+        run: |
+          test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
+          echo "ICE_TODAY_START=$(TZ=America/New_York date -d 'today 00:00' --iso-8601=seconds)" >> "$GITHUB_ENV"
+      - name: 生成报告
+        run: node scripts/ice-published-report.mjs
+      - name: 写回统计结果
+        shell: bash
+        run: |
+          git config user.name "TRRB ICE Audit Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/ice-published-status.json
+          if git diff --cached --quiet; then
+            echo "统计结果没有变化。"
+            exit 0
+          fi
+          git commit -m "更新ICE发布数量统计"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((attempt * 10))
+          done
+          exit 1

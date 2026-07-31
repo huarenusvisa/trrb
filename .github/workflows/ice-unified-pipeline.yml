@@ -9,6 +9,7 @@ on:
       - "scripts/ice-*.mjs"
       - "scripts/category-pipeline-gate.mjs"
   schedule:
+    # 2026-07-30: 重新注册GitHub定时器；Supabase Cron正式接管前保留应急时钟。
     - cron: "3,13,23,33,43,53 * * * *"
 
 permissions:

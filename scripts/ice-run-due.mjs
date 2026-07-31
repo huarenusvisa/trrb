@@ -34,3 +34,7 @@ console.log(JSON.stringify({
   age_minutes: Number.isFinite(ageMinutes) ? Number(ageMinutes.toFixed(1)) : null,
   last_success_at: raw
 }, null, 2));
+
+// ice-unified-pipeline.yml uses a non-zero exit code to mean that a full run is due.
+// Previously this script always exited 0, so every scheduled run was incorrectly skipped.
+if (due) process.exitCode = 1;

@@ -94,3 +94,5 @@ jobs:
       - name: Report off-hours
         if: steps.window.outputs.allowed != 'true'
         run: echo "ICE应急看门狗处于纽约02:00-08:00停采窗口。"
+
+# recovery-touch: 2026-07-31 morning

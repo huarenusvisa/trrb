@@ -36,7 +36,7 @@ jobs:
           NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
           if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event_name }}" == "push" || "$NY_HOUR" == "09" ]]; then
             echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，开始生成七大知识库内容。"
+            echo "纽约时间 $NY_TIME，开始生成7个大栏目、55个小类目的每日内容。"
           else
             echo "allowed=false" >> "$GITHUB_OUTPUT"
             echo "纽约时间 $NY_TIME，不是上午9点，本次仅用于兼容夏令时，不执行。"
@@ -58,13 +58,15 @@ jobs:
           - change-status
           - citizenship
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      KNOWLEDGE_ARTICLES_PER_CATEGORY: "10"
+      KNOWLEDGE_ARTICLES_PER_TOPIC: "10"
+      KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
+      KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "20000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -76,29 +78,30 @@ jobs:
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
           test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
           test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
-      - name: 生成并发布 ${{ matrix.category }} 知识文章
+      - name: 为 ${{ matrix.category }} 的每个小类目生成10篇
         shell: bash
         run: |
-          for attempt in 1 2 3; do
-            echo "${{ matrix.category }} 第 $attempt/3 次执行"
+          for attempt in 1 2; do
+            echo "${{ matrix.category }} 第 $attempt/2 次执行"
             node scripts/immigration-knowledge-daily.mjs "${{ matrix.category }}" && exit 0
-            sleep $((attempt * 20))
+            sleep $((attempt * 30))
           done
           exit 1
 
   verify-and-repair:
-    name: 核验七类更新并自动补齐
+    name: 核验55个小类目并自动补齐
     needs: [time-gate, generate]
     if: always() && needs.time-gate.outputs.allowed == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      KNOWLEDGE_ARTICLES_PER_CATEGORY: "10"
+      KNOWLEDGE_ARTICLES_PER_TOPIC: "10"
       KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
+      KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "20000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -110,5 +113,5 @@ jobs:
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
           test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
           test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
-      - name: 核验最近30小时七类文章并补齐不足
+      - name: 核验最近30小时每个小类目并补齐不足
         run: node scripts/immigration-knowledge-health.mjs

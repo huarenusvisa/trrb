@@ -1,0 +1,61 @@
+name: 移民知识库审计补齐与统计
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/immigration-knowledge-audit.yml"
+      - "scripts/immigration-knowledge-report.mjs"
+      - "scripts/immigration-knowledge-health.mjs"
+      - "scripts/immigration-knowledge-daily.mjs"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-immigration-knowledge-audit
+  cancel-in-progress: false
+
+jobs:
+  audit-repair-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      KNOWLEDGE_ARTICLES_PER_TOPIC: "10"
+      KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
+      KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "20000"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 检查必要密钥
+        shell: bash
+        run: |
+          test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
+          test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
+      - name: 统计并自动补齐55个小类目
+        run: node scripts/immigration-knowledge-health.mjs
+      - name: 生成最终统计报告
+        run: node scripts/immigration-knowledge-report.mjs
+      - name: 提交统计报告
+        shell: bash
+        run: |
+          git config user.name "TRRB Immigration Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/immigration-knowledge-status.json
+          if git diff --cached --quiet; then
+            echo "统计结果没有变化"
+            exit 0
+          fi
+          git commit -m "更新移民知识库55类统计报告"
+          git pull --rebase origin main
+          git push origin HEAD:main

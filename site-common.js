@@ -1,5 +1,5 @@
 (function () {
-  const TRRB_ASSET_VERSION = "29.2";
+  const TRRB_ASSET_VERSION = "29.3";
   const CATEGORY_PLACEHOLDERS = {
     "重要新闻": "./assets/category-placeholders/important.svg",
     "热门头条": "./assets/category-placeholders/hot.svg",
@@ -43,6 +43,35 @@
     if (text.startsWith("assets/news-images/")) return addAssetVersion("./" + text);
     text = text.replace(/^https?:\/\/(?:www\.)?(?:new\.)?trrb\.net\/wp-content\/uploads\//i, "./assets/news-images/");
     return addAssetVersion(text);
+  }
+
+  function categoryFromImage(img) {
+    const explicit = String(img.dataset.category || "").trim();
+    if (explicit) return explicit;
+    const box = img.closest(".news-box");
+    const heading = box && box.querySelector("header h2");
+    return String(heading?.textContent || "").trim();
+  }
+
+  function applyImageFallback(img) {
+    if (!(img instanceof HTMLImageElement)) return;
+    if (img.dataset.trrbFallbackApplied === "1") return;
+    img.dataset.trrbFallbackApplied = "1";
+    img.removeAttribute("srcset");
+    img.removeAttribute("sizes");
+    img.loading = "eager";
+    img.src = categoryPlaceholder(categoryFromImage(img));
+  }
+
+  function installGlobalImageFallback() {
+    if (window.__TRRB_IMAGE_FALLBACK_INSTALLED__) return;
+    window.__TRRB_IMAGE_FALLBACK_INSTALLED__ = true;
+    document.addEventListener("error", (event) => {
+      if (event.target instanceof HTMLImageElement) applyImageFallback(event.target);
+    }, true);
+    document.querySelectorAll("img").forEach((img) => {
+      if (img.complete && img.naturalWidth === 0) applyImageFallback(img);
+    });
   }
 
   function weatherInfo(code) {
@@ -212,10 +241,13 @@
   window.TRRB_categoryPlaceholder = categoryPlaceholder;
   window.TRRB_updateTopbar = updateTopbar;
   window.TRRB_installNewsMediaStyles = installNewsMediaStyles;
+  window.TRRB_applyImageFallback = applyImageFallback;
   installNewsMediaStyles();
+  installGlobalImageFallback();
 
   document.addEventListener("DOMContentLoaded", () => {
     updateTopbar();
     initMobileNavigation();
+    installGlobalImageFallback();
   }, { once: true });
 })();

@@ -9,26 +9,79 @@ on:
       - "scripts/immigration-knowledge-report.mjs"
       - "scripts/immigration-knowledge-health.mjs"
       - "scripts/immigration-knowledge-daily.mjs"
+  schedule:
+    - cron: "30 14 * * *"
 
 permissions:
   contents: write
 
 concurrency:
   group: trrb-immigration-knowledge-audit
-  cancel-in-progress: false
+  cancel-in-progress: true
+
+env:
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  KNOWLEDGE_ARTICLES_PER_TOPIC: "10"
+  KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
+  KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "20000"
 
 jobs:
-  audit-repair-report:
+  pre-audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      KNOWLEDGE_ARTICLES_PER_TOPIC: "10"
-      KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
-      KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "20000"
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 检查必要密钥
+        run: |
+          test -n "$SUPABASE_URL" || exit 1
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || exit 1
+      - name: 先生成真实缺口报告
+        run: node scripts/immigration-knowledge-report.mjs
+      - name: 上传审计前报告
+        uses: actions/upload-artifact@v4
+        with:
+          name: immigration-pre-audit
+          path: data/immigration-knowledge-status.json
+
+  repair:
+    needs: pre-audit
+    strategy:
+      fail-fast: false
+      max-parallel: 7
+      matrix:
+        category: [study, work, employment, family, humanitarian, change-status, citizenship]
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 检查必要密钥
+        run: |
+          test -n "$OPENAI_API_KEY" || exit 1
+          test -n "$SUPABASE_URL" || exit 1
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || exit 1
+      - name: 补齐 ${{ matrix.category }} 内每个小类目至10篇
+        shell: bash
+        run: |
+          for attempt in 1 2; do
+            node scripts/immigration-knowledge-daily.mjs "${{ matrix.category }}" && exit 0
+            sleep $((attempt * 30))
+          done
+          exit 1
+
+  final-audit:
+    needs: [pre-audit, repair]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,17 +89,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 检查必要密钥
-        shell: bash
-        run: |
-          test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
-          test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
-          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
-      - name: 统计并自动补齐55个小类目
-        run: node scripts/immigration-knowledge-health.mjs
-      - name: 生成最终统计报告
+      - name: 生成补齐后的最终报告
         run: node scripts/immigration-knowledge-report.mjs
-      - name: 提交统计报告
+      - name: 提交最终统计报告
         shell: bash
         run: |
           git config user.name "TRRB Immigration Bot"

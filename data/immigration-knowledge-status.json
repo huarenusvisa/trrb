@@ -1,0 +1,454 @@
+{
+  "generated_at": "2026-08-02T19:10:29.906Z",
+  "window_hours": 30,
+  "topic_count": 55,
+  "target_per_topic": 10,
+  "total_target": 550,
+  "total_published": 0,
+  "remaining": 550,
+  "completed_topics": 0,
+  "incomplete_topics": 55,
+  "complete": false,
+  "details": [
+    {
+      "category": "赴美留学",
+      "topic": "F-1学生签证",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美留学",
+      "topic": "J-1交流访问",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美留学",
+      "topic": "M-1职业学生",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美留学",
+      "topic": "CPT",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美留学",
+      "topic": "OPT",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美留学",
+      "topic": "STEM OPT",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美留学",
+      "topic": "Day 1 CPT",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "H-1B专业工作",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "L-1跨国公司派遣",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "O-1杰出人才",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "H-2A农业工",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "H-2B临时工",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "TN专业人士",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "E-1/E-2商业签证",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "赴美工作",
+      "topic": "R-1宗教工作者",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-1A杰出人才",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-1B教授研究员",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-1C跨国高管",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-2 NIW",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-2 PERM",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-3",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-4",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "职业移民",
+      "topic": "EB-5投资移民",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "美国公民婚姻绿卡",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "绿卡配偶F2A",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "K-1未婚夫/妻",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "父母移民",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "子女移民",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "兄弟姐妹移民",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "CR-1/IR-1配偶移民",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "家庭移民",
+      "topic": "F1/F2B/F3/F4优先类别",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "政治庇护",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "防止递解",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "禁止酷刑公约保护",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "VAWA家暴保护",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "U签证",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "T签证",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "SIJS特殊青少年",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "人道主义庇护",
+      "topic": "TPS临时保护身份",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "B-2转F-1",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "F-1转H-1B",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "J-1豁免",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "身份延期",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "身份恢复",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "I-485境内调整身份",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "EAD工卡",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "境内身份转换",
+      "topic": "Advance Parole旅行许可",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "N-400入籍申请",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "连续居住",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "实际居住",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "英语与公民考试",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "入籍面试",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "入籍宣誓",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "N-600公民证明",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    },
+    {
+      "category": "入籍美国公民",
+      "topic": "衍生与取得公民",
+      "count": 0,
+      "target": 10,
+      "missing": 10,
+      "latest_published_at": null
+    }
+  ]
+}

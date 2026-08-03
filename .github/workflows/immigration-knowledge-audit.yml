@@ -6,12 +6,10 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/immigration-knowledge-audit.yml"
+      - "scripts/immigration-knowledge-repair-small.mjs"
       - "scripts/immigration-knowledge-report.mjs"
-      - "scripts/immigration-knowledge-health.mjs"
-      - "scripts/immigration-knowledge-daily.mjs"
   schedule:
-    # 每天美东上午约10:30执行；缺口会按55个小类目逐项补齐。
-    - cron: "30 14 * * *"
+    - cron: "30 13 * * *"
 
 permissions:
   contents: write
@@ -27,38 +25,17 @@ env:
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
   KNOWLEDGE_ARTICLES_PER_TOPIC: "10"
   KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
-  KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "20000"
+  KNOWLEDGE_SAFE_BATCH_SIZE: "5"
 
 jobs:
-  pre-audit:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-      - name: 检查必要密钥
-        run: |
-          test -n "$SUPABASE_URL" || exit 1
-          test -n "$SUPABASE_SERVICE_ROLE_KEY" || exit 1
-      - name: 先生成真实缺口报告
-        run: node scripts/immigration-knowledge-report.mjs
-      - name: 上传审计前报告
-        uses: actions/upload-artifact@v4
-        with:
-          name: immigration-pre-audit
-          path: data/immigration-knowledge-status.json
-
   repair:
-    needs: pre-audit
     strategy:
       fail-fast: false
       max-parallel: 7
       matrix:
         category: [study, work, employment, family, humanitarian, change-status, citizenship]
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -66,21 +43,14 @@ jobs:
           node-version: "22"
       - name: 检查必要密钥
         run: |
-          test -n "$OPENAI_API_KEY" || exit 1
-          test -n "$SUPABASE_URL" || exit 1
-          test -n "$SUPABASE_SERVICE_ROLE_KEY" || exit 1
-      - name: 补齐 ${{ matrix.category }} 内每个小类目至10篇
-        shell: bash
-        run: |
-          for attempt in 1 2 3; do
-            node scripts/immigration-knowledge-daily.mjs "${{ matrix.category }}" && exit 0
-            echo "第${attempt}次补齐失败，稍后重试"
-            sleep $((attempt * 45))
-          done
-          exit 1
+          test -n "$OPENAI_API_KEY"
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_SERVICE_ROLE_KEY"
+      - name: 小批次补齐 ${{ matrix.category }} 每个小类目至10篇
+        run: node scripts/immigration-knowledge-repair-small.mjs "${{ matrix.category }}"
 
   final-audit:
-    needs: [pre-audit, repair]
+    needs: repair
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -91,7 +61,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 生成补齐后的最终报告
+      - name: 生成最终真实统计报告
         run: node scripts/immigration-knowledge-report.mjs
       - name: 提交最终统计报告
         shell: bash

@@ -9,8 +9,8 @@ on:
       - "scripts/ice-*.mjs"
       - "scripts/category-pipeline-gate.mjs"
   schedule:
-    # 每10分钟强制执行一轮，避免中午后定时器长时间无心跳。
-    - cron: "*/10 * * * *"
+    # 每20分钟启动一轮；单轮最长18分钟，避免下一轮提前取消尚未完成的采集。
+    - cron: "3,23,43 * * * *"
 
 permissions:
   contents: read

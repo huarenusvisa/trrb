@@ -9,7 +9,8 @@ on:
       - "scripts/ice-*.mjs"
       - "scripts/category-pipeline-gate.mjs"
   schedule:
-    - cron: "2,17,32,47 * * * *"
+    # 每10分钟强制执行一轮，避免中午后定时器长时间无心跳。
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: read
@@ -62,7 +63,7 @@ env:
 jobs:
   forced-production:
     runs-on: ubuntu-latest
-    timeout-minutes: 14
+    timeout-minutes: 18
     steps:
       - name: Check New York collection window
         id: window
@@ -75,7 +76,7 @@ jobs:
             echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
           else
             echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，执行15分钟新鲜生产轮次。"
+            echo "纽约时间 $NY_TIME，立即执行ICE采集与发布。"
           fi
       - uses: actions/checkout@v4
         if: steps.window.outputs.allowed == 'true'
@@ -140,7 +141,7 @@ jobs:
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
-          ICE_PUBLISH_MAX_PER_RUN: "8"
+          ICE_PUBLISH_MAX_PER_RUN: "12"
         run: |
           node scripts/ice-restore-human-approved.mjs || true
           node scripts/ice-cross-language-dedupe.mjs || true

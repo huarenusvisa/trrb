@@ -1,5 +1,9 @@
 import { readFile } from "node:fs/promises";
 
+// generate-sitemaps.mjs first creates one large URL set. Split it before the
+// deployment validation so Google receives a sitemap index with smaller files.
+await import("./split-sitemap-index.mjs");
+
 const failures = [];
 
 async function bytes(path) {
@@ -70,7 +74,10 @@ if (!(qr[0] === 0xff && qr[1] === 0xd8 && qr[2] === 0xff)) failures.push("assets
 
 const sitemap = await bytes("sitemap.xml");
 if (!startsText(sitemap, "<?xml")) failures.push("sitemap.xml is not XML");
-if (!includesText(sitemap, "<urlset") || !includesText(sitemap, "<loc>https://www.trrb.net/</loc>")) failures.push("sitemap.xml is missing its root URL");
+if (!includesText(sitemap, "<sitemapindex") || !includesText(sitemap, "<loc>https://www.trrb.net/sitemap-")) failures.push("sitemap.xml is not a valid sitemap index");
+
+const sitemapStatic = await bytes("sitemap-static.xml");
+if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://www.trrb.net/</loc>")) failures.push("sitemap-static.xml is missing its root URL");
 
 const newsSitemap = await bytes("news-sitemap.xml");
 if (!startsText(newsSitemap, "<?xml")) failures.push("news-sitemap.xml is not XML");

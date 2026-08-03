@@ -10,6 +10,7 @@ on:
       - "scripts/immigration-knowledge-health.mjs"
       - "scripts/immigration-knowledge-daily.mjs"
   schedule:
+    # 每天美东上午约10:30执行；缺口会按55个小类目逐项补齐。
     - cron: "30 14 * * *"
 
 permissions:
@@ -17,7 +18,7 @@ permissions:
 
 concurrency:
   group: trrb-immigration-knowledge-audit
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -57,7 +58,7 @@ jobs:
       matrix:
         category: [study, work, employment, family, humanitarian, change-status, citizenship]
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -71,9 +72,10 @@ jobs:
       - name: 补齐 ${{ matrix.category }} 内每个小类目至10篇
         shell: bash
         run: |
-          for attempt in 1 2; do
+          for attempt in 1 2 3; do
             node scripts/immigration-knowledge-daily.mjs "${{ matrix.category }}" && exit 0
-            sleep $((attempt * 30))
+            echo "第${attempt}次补齐失败，稍后重试"
+            sleep $((attempt * 45))
           done
           exit 1
 

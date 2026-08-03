@@ -4,6 +4,12 @@ Allow: /
 Disallow: /admin/
 Disallow: /trrb_admin_v1/
 Disallow: /.netlify/
+Disallow: /listing.html?type=search
+Disallow: /listing.html?q=
+Disallow: /*?q=
+Disallow: /*&q=
+Disallow: /*?preview=
+Disallow: /*&preview=
 
 Sitemap: https://www.trrb.net/sitemap.xml
 Sitemap: https://www.trrb.net/news-sitemap.xml

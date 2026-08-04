@@ -6,15 +6,16 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/ice-publisher-continuous.yml"
+      - "scripts/ice-*.mjs"
   schedule:
-    - cron: "9,19,29,39,49,59 * * * *"
+    - cron: "17,47 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ice-publisher-continuous
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   NODE_OPTIONS: "--max-http-header-size=65536"
@@ -23,11 +24,11 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
   RUN_MODE: "process"
-  ICE_MAX_AI_POSTS_PER_RUN: "8"
-  ICE_MAX_STORIES_PER_RUN: "6"
-  ICE_NORMALIZE_MAX_STORIES: "8"
-  ICE_TRANSLATE_MAX_STORIES: "8"
-  ICE_CROSS_LANGUAGE_DEDUPE_MAX: "400"
+  ICE_MAX_AI_POSTS_PER_RUN: "6"
+  ICE_MAX_STORIES_PER_RUN: "5"
+  ICE_NORMALIZE_MAX_STORIES: "6"
+  ICE_TRANSLATE_MAX_STORIES: "6"
+  ICE_CROSS_LANGUAGE_DEDUPE_MAX: "300"
   ICE_PUBLISHED_DEDUPE_DAYS: "30"
   ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
   ICE_REVIEW_DUPLICATE_THRESHOLD: "0.92"
@@ -42,7 +43,7 @@ env:
 jobs:
   process-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 9
+    timeout-minutes: 12
     steps:
       - name: Check New York window
         id: window
@@ -77,21 +78,21 @@ jobs:
         shell: bash
         run: |
           timeout 180s node scripts/ice-ai-process-only.mjs
-          timeout 120s node scripts/ice-editorial-normalize.mjs
-          timeout 120s node scripts/ice-translate-title-body.mjs
+          timeout 90s node scripts/ice-editorial-normalize.mjs
+          timeout 90s node scripts/ice-translate-title-body.mjs
       - name: Publish with hard timeout
         if: steps.window.outputs.allowed == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
-          ICE_PUBLISH_MAX_PER_RUN: "8"
+          ICE_PUBLISH_MAX_PER_RUN: "6"
         shell: bash
         run: |
-          timeout 60s node scripts/ice-restore-human-approved.mjs || true
-          timeout 60s node scripts/ice-cross-language-dedupe.mjs || true
-          timeout 60s node scripts/ice-dedupe-v3.mjs || true
-          timeout 60s node scripts/ice-clean-existing-review-duplicates.mjs || true
-          timeout 90s node scripts/ice-trusted-source-promote.mjs
-          timeout 90s node scripts/ice-publish-due.mjs
+          timeout 45s node scripts/ice-restore-human-approved.mjs || true
+          timeout 45s node scripts/ice-cross-language-dedupe.mjs || true
+          timeout 45s node scripts/ice-dedupe-v3.mjs || true
+          timeout 45s node scripts/ice-clean-existing-review-duplicates.mjs || true
+          timeout 75s node scripts/ice-trusted-source-promote.mjs
+          timeout 75s node scripts/ice-publish-due.mjs
       - name: Write success heartbeat
         if: success() && steps.window.outputs.allowed == 'true'
         env:

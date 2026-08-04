@@ -1,0 +1,107 @@
+name: ICE持续处理发布线
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-publisher-continuous.yml"
+  schedule:
+    - cron: "9,19,29,39,49,59 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-publisher-continuous
+  cancel-in-progress: true
+
+env:
+  NODE_OPTIONS: "--max-http-header-size=65536"
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  RUN_MODE: "process"
+  ICE_MAX_AI_POSTS_PER_RUN: "8"
+  ICE_MAX_STORIES_PER_RUN: "6"
+  ICE_NORMALIZE_MAX_STORIES: "8"
+  ICE_TRANSLATE_MAX_STORIES: "8"
+  ICE_CROSS_LANGUAGE_DEDUPE_MAX: "400"
+  ICE_PUBLISHED_DEDUPE_DAYS: "30"
+  ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
+  ICE_REVIEW_DUPLICATE_THRESHOLD: "0.92"
+  ICE_AUTO_PUBLISH_SCORE: "80"
+  ICE_AI_CONFIDENCE: "80"
+  ICE_TRUSTED_AUTO_CONFIDENCE: "0"
+  ICE_TRUSTED_MAX_AGE_MINUTES: "720"
+  ICE_UNREVIEWED_EXPIRE_HOURS: "24"
+  ICE_DEDUPE_HOURS: "720"
+  ICE_PUBLISH_INTERVAL_MINUTES: "10"
+
+jobs:
+  process-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - name: Check New York window
+        id: window
+        shell: bash
+        run: |
+          H=$(TZ=America/New_York date +%H)
+          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$H >= 2 && 10#$H < 8 )); then
+            echo "allowed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "allowed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.window.outputs.allowed == 'true'
+      - uses: actions/setup-node@v4
+        if: steps.window.outputs.allowed == 'true'
+        with:
+          node-version: "22"
+      - name: Validate secrets
+        if: steps.window.outputs.allowed == 'true'
+        run: |
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_SERVICE_ROLE_KEY"
+          test -n "$OPENAI_API_KEY"
+      - name: Write processing heartbeat
+        if: steps.window.outputs.allowed == 'true'
+        env:
+          ICE_HEARTBEAT_STAGE: "parallel-pipeline"
+          ICE_HEARTBEAT_STATUS: "running"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+      - name: AI process with hard timeout
+        if: steps.window.outputs.allowed == 'true'
+        shell: bash
+        run: |
+          timeout 180s node scripts/ice-ai-process-only.mjs
+          timeout 120s node scripts/ice-editorial-normalize.mjs
+          timeout 120s node scripts/ice-translate-title-body.mjs
+      - name: Publish with hard timeout
+        if: steps.window.outputs.allowed == 'true'
+        env:
+          ICE_FORCE_FIRST_PUBLISH: "true"
+          ICE_PUBLISH_MAX_PER_RUN: "8"
+        shell: bash
+        run: |
+          timeout 60s node scripts/ice-restore-human-approved.mjs || true
+          timeout 60s node scripts/ice-cross-language-dedupe.mjs || true
+          timeout 60s node scripts/ice-dedupe-v3.mjs || true
+          timeout 60s node scripts/ice-clean-existing-review-duplicates.mjs || true
+          timeout 90s node scripts/ice-trusted-source-promote.mjs
+          timeout 90s node scripts/ice-publish-due.mjs
+      - name: Write success heartbeat
+        if: success() && steps.window.outputs.allowed == 'true'
+        env:
+          ICE_HEARTBEAT_STAGE: "parallel-pipeline"
+          ICE_HEARTBEAT_STATUS: "success"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true
+      - name: Write failure heartbeat
+        if: failure() && steps.window.outputs.allowed == 'true'
+        env:
+          ICE_HEARTBEAT_STAGE: "parallel-pipeline"
+          ICE_HEARTBEAT_STATUS: "failure"
+          ICE_HEARTBEAT_ERROR: "ICE持续处理发布线失败"
+        run: node scripts/ice-pipeline-heartbeat.mjs || true

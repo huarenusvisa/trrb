@@ -6,15 +6,16 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/ice-collector-continuous.yml"
+      - "scripts/ice-*.mjs"
   schedule:
-    - cron: "4,14,24,34,44,54 * * * *"
+    - cron: "12,42 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ice-collector-continuous
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   NODE_OPTIONS: "--max-http-header-size=65536"
@@ -34,15 +35,15 @@ env:
   ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
   ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
   ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "750"
-  ICE_ENGLISH_DEDUPE_MAX: "1400"
-  ICE_OFFICIAL_FILTER_MAX: "1400"
-  ICE_PRECOLLECT_MAX: "600"
-  ICE_FAST_INTAKE_MAX: "400"
+  ICE_ENGLISH_DEDUPE_MAX: "1200"
+  ICE_OFFICIAL_FILTER_MAX: "1200"
+  ICE_PRECOLLECT_MAX: "500"
+  ICE_FAST_INTAKE_MAX: "300"
 
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 9
+    timeout-minutes: 12
     steps:
       - name: Check New York window
         id: window
@@ -79,7 +80,7 @@ jobs:
           set +e
           ok=0
           for script in scripts/ice-priority-discovery.mjs scripts/ice-ero-official-discovery.mjs scripts/ice-extra-monitored-discovery.mjs scripts/ice-added-source-discovery.mjs; do
-            timeout 75s node "$script" && ok=1
+            timeout 90s node "$script" && ok=1
           done
           [[ "$ok" -eq 1 ]]
       - name: Intake only
@@ -87,12 +88,12 @@ jobs:
         shell: bash
         run: |
           timeout 90s node scripts/ice-official-source-only.mjs
-          timeout 60s node scripts/ice-drop-stale-posts.mjs || true
-          timeout 60s node scripts/ice-filter-replies.mjs || true
-          timeout 90s node scripts/ice-english-pretranslation-dedupe.mjs
-          timeout 90s node scripts/ice-precollect-published-dedupe.mjs
-          timeout 90s node scripts/ice-fast-intake.mjs
-          timeout 60s node scripts/ice-dedupe-v3.mjs || true
+          timeout 45s node scripts/ice-drop-stale-posts.mjs || true
+          timeout 45s node scripts/ice-filter-replies.mjs || true
+          timeout 75s node scripts/ice-english-pretranslation-dedupe.mjs
+          timeout 75s node scripts/ice-precollect-published-dedupe.mjs
+          timeout 75s node scripts/ice-fast-intake.mjs
+          timeout 45s node scripts/ice-dedupe-v3.mjs || true
       - name: Write collection success
         if: success() && steps.window.outputs.allowed == 'true'
         env:

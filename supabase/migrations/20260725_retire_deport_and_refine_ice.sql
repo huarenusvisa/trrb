@@ -48,16 +48,24 @@ begin
   legacy_deport := new.category_name in ('驱逐快报','驱逐新闻','ICE动态','ICE','ICE执法动态')
                    and article_text ~* '(移民执法|遣返|递解|移民拘留|驱逐出境|边境执法|抓捕移民)';
 
-  -- 后台人工明确选择了非ICE栏目时，必须保留人工选择。
-  -- 仅当栏目为空、已经属于ICE旧栏目，或topic/slug明确标记为ICE时才自动归入ICE。
+  -- 后台人工明确选择非ICE栏目时，人工选择拥有最高优先级。
   has_manual_non_ice_category := new.category_id is not null
                                  and coalesce(new.category_name, '') <> ''
                                  and new.category_name not in ('驱逐快报','驱逐新闻','ICE动态','ICE','ICE执法动态');
 
+  if has_manual_non_ice_category then
+    -- 清除旧自动分类可能遗留的ICE主题标记，阻止正文关键词覆盖人工栏目。
+    if lower(coalesce(new.topic_key, '')) = 'ice' then
+      new.topic_key := null;
+    end if;
+    return new;
+  end if;
+
+  -- 自动归类仅服务于未指定栏目或已经属于ICE体系的自动化稿件。
   if lower(coalesce(new.topic_key, '')) = 'ice'
      or lower(coalesce(new.slug, '')) like 'ice-%'
-     or legacy_deport
-     or (explicit_agency and not has_manual_non_ice_category) then
+     or explicit_agency
+     or legacy_deport then
     select id, name into target
     from public.categories
     where lower(slug) = 'ice'
@@ -67,11 +75,6 @@ begin
       new.category_id := target.id;
       new.category_name := target.name;
       new.topic_key := 'ice';
-    end if;
-  elsif has_manual_non_ice_category then
-    -- 清除可能由旧自动分类遗留的ICE topic标记，确保人工栏目是最终结果。
-    if lower(coalesce(new.topic_key, '')) = 'ice' then
-      new.topic_key := null;
     end if;
   end if;
   return new;
@@ -113,5 +116,5 @@ set category_id = c.id,
     topic_key = null
 from public.categories c
 where a.id = 'ba9a4e1a-4854-49cf-9081-d05e8f0db58f'
-  and lower(c.slug) in ('us-politics','usa-politics','us-news','america')
+  and lower(c.slug) = 'politics'
   and c.name = '美国时政';

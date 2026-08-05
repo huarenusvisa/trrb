@@ -1,16 +1,22 @@
-/* TRRB V32：文章详情封面统一为新闻标准16:9 */
+/* TRRB V32：文章详情封面完整展示，避免人物头像和竖图被16:9裁掉 */
 .article-page .article-image {
   display: block;
   width: min(100%, 880px);
   max-width: 880px;
   height: auto;
-  max-height: none;
-  aspect-ratio: 16 / 9;
+  max-height: 760px;
+  aspect-ratio: auto;
   margin: 24px auto 30px;
   border-radius: 8px;
   background: #eef1f4;
+  object-fit: contain;
+  object-position: center center;
+}
+
+.article-page .article-image[data-placeholder="true"] {
+  width: min(100%, 880px);
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  object-position: center;
 }
 
 @media (max-width: 640px) {
@@ -18,9 +24,15 @@
     width: 100%;
     max-width: 100%;
     height: auto;
-    max-height: none;
-    aspect-ratio: 16 / 9;
+    max-height: 72vh;
+    aspect-ratio: auto;
     margin: 18px auto 24px;
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  .article-page .article-image[data-placeholder="true"] {
+    aspect-ratio: 16 / 9;
     object-fit: cover;
   }
 }

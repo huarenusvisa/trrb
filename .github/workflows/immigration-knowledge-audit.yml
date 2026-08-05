@@ -27,7 +27,7 @@ env:
   KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
   KNOWLEDGE_SAFE_BATCH_SIZE: "2"
 
-# 2026-08-04 手动触发：先核对今日缺口，再将55个小类目分别补到10篇。
+# 2026-08-05 继续执行：核对今日缺口，并将“移民美国”55个小类目分别补到10篇。
 jobs:
   repair:
     strategy:

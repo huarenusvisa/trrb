@@ -35,6 +35,6 @@ console.log(JSON.stringify({
   last_success_at: raw
 }, null, 2));
 
-// ice-unified-pipeline.yml uses a non-zero exit code to mean that a full run is due.
+// ICE生产恢复触发：2026-08-06。主工作流把非零退出码解释为“需要完整运行”。
 // Previously this script always exited 0, so every scheduled run was incorrectly skipped.
 if (due) process.exitCode = 1;

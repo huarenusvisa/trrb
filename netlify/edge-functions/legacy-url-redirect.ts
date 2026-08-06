@@ -8,6 +8,11 @@ const SKIP_PREFIXES = [
   "/news-sitemap", "/robots", "/favicon", "/manifest", "/service-worker"
 ];
 
+const TRACKING_PARAMS = new Set([
+  "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+  "gclid", "fbclid", "msclkid", "mc_cid", "mc_eid"
+]);
+
 function normalizeTitle(value: string): string {
   return String(value || "")
     .normalize("NFKC")
@@ -43,7 +48,6 @@ function legacySystemRedirect(pathname: string): string {
     return `${SITE_ORIGIN}/listing.html?category=${encodeURIComponent("热门头条")}`;
   }
   if (/^\/category\/[^/]+(?:\/page\/\d+)?\/?$/i.test(pathname)) return SITE_ORIGIN + "/";
-  if (/^\/page\/\d+\/?$/i.test(pathname)) return SITE_ORIGIN + "/";
   if (/^\/page\/\d+\/?$/i.test(pathname) || lower.includes("mailpoet_page=subscriptions")) return SITE_ORIGIN + "/";
   return "";
 }
@@ -106,15 +110,28 @@ function redirect(destination: string, reason: string): Response {
     headers: {
       Location: destination,
       "Cache-Control": "public, max-age=86400, s-maxage=604800",
-      "X-TRRB-Legacy-Redirect": reason
+      "X-TRRB-Redirect": reason
     }
   });
+}
+
+function canonicalRequestUrl(url: URL): string {
+  const canonical = new URL(url.pathname, SITE_ORIGIN);
+  for (const [key, value] of url.searchParams.entries()) {
+    if (!TRACKING_PARAMS.has(key.toLowerCase())) canonical.searchParams.append(key, value);
+  }
+  return canonical.href;
 }
 
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
 
   const url = new URL(request.url);
+  const hasTracking = [...url.searchParams.keys()].some((key) => TRACKING_PARAMS.has(key.toLowerCase()));
+  if (url.protocol !== "https:" || url.hostname !== "www.trrb.net" || hasTracking) {
+    return redirect(canonicalRequestUrl(url), "canonical-host-or-query");
+  }
+
   const systemDestination = legacySystemRedirect(url.pathname);
   if (systemDestination) return redirect(systemDestination, "wordpress-system-page");
   if (!isLegacyCandidate(url.pathname)) return context.next();

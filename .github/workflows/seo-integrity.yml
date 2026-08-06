@@ -1,0 +1,56 @@
+name: 全站SEO与404完整性检查
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "**/*.js"
+      - "**/*.css"
+      - "robots.txt"
+      - "sitemap*.xml"
+      - "news-sitemap.xml"
+      - "feed.xml"
+      - "netlify.toml"
+      - "scripts/seo-integrity-audit.mjs"
+      - ".github/workflows/seo-integrity.yml"
+  schedule:
+    - cron: "20 8 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-seo-integrity
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Generate current SEO assets
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          node scripts/generate-sitemaps.mjs
+          node scripts/clean-sitemap-against-database.mjs
+          node scripts/generate-feed.mjs
+      - name: Run production integrity validation
+        run: node scripts/validate-site.mjs
+      - name: Run SEO and internal 404 audit
+        run: node scripts/seo-integrity-audit.mjs
+      - name: Upload SEO audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-audit-report
+          path: seo-audit-report.json
+          if-no-files-found: warn
+          retention-days: 30

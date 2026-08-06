@@ -20,14 +20,14 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_IMAGE_MODEL: ${{ secrets.OPENAI_IMAGE_MODEL || 'gpt-image-1' }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ARTICLE_COVER_BUCKET: "article-covers"
-      AI_COVER_MAX_PER_RUN: "4"
+      AI_COVER_MAX_PER_RUN: "10"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -35,3 +35,5 @@ jobs:
           node-version: "22"
       - name: Generate and persist missing article covers
         run: node scripts/ai-cover-backfill.mjs
+
+# 2026-08-05 全站图片修复后立即触发一轮缺图补齐。

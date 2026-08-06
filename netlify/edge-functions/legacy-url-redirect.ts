@@ -1,4 +1,4 @@
-const SITE_ORIGIN = "https://www.trrb.net";
+const SITE_ORIGIN = "https://trrb.net";
 
 export const config = { path: "/*" };
 
@@ -7,11 +7,6 @@ const SKIP_PREFIXES = [
   "/ice", "/immigrate", "/asylum", "/listing", "/article", "/feed", "/sitemap",
   "/news-sitemap", "/robots", "/favicon", "/manifest", "/service-worker"
 ];
-
-const TRACKING_PARAMS = new Set([
-  "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
-  "gclid", "fbclid", "msclkid", "mc_cid", "mc_eid"
-]);
 
 function normalizeTitle(value: string): string {
   return String(value || "")
@@ -109,29 +104,20 @@ function redirect(destination: string, reason: string): Response {
     status: 301,
     headers: {
       Location: destination,
-      "Cache-Control": "public, max-age=86400, s-maxage=604800",
+      "Cache-Control": "no-store",
       "X-TRRB-Redirect": reason
     }
   });
-}
-
-function canonicalRequestUrl(url: URL): string {
-  const canonical = new URL(url.pathname, SITE_ORIGIN);
-  for (const [key, value] of url.searchParams.entries()) {
-    if (!TRACKING_PARAMS.has(key.toLowerCase())) canonical.searchParams.append(key, value);
-  }
-  return canonical.href;
 }
 
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
 
   const url = new URL(request.url);
-  const hasTracking = [...url.searchParams.keys()].some((key) => TRACKING_PARAMS.has(key.toLowerCase()));
-  if (url.protocol !== "https:" || url.hostname !== "www.trrb.net" || hasTracking) {
-    return redirect(canonicalRequestUrl(url), "canonical-host-or-query");
-  }
 
+  // IMPORTANT: Do not force apex/www host redirects here. Netlify already handles
+  // the primary domain, and forcing the opposite host at the edge can create an
+  // infinite Safari redirect loop.
   const systemDestination = legacySystemRedirect(url.pathname);
   if (systemDestination) return redirect(systemDestination, "wordpress-system-page");
   if (!isLegacyCandidate(url.pathname)) return context.next();

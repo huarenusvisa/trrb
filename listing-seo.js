@@ -1,5 +1,5 @@
 (() => {
-  const SITE = 'https://www.trrb.net';
+  const SITE = 'https://trrb.net';
   const params = new URLSearchParams(location.search);
   const category = String(params.get('category') || '').trim();
   const query = String(params.get('q') || '').trim();

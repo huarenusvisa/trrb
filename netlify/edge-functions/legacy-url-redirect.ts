@@ -8,6 +8,8 @@ const SKIP_PREFIXES = [
   "/news-sitemap", "/robots", "/favicon", "/manifest", "/service-worker"
 ];
 
+const GONE = "__TRRB_GONE__";
+
 function normalizeTitle(value: string): string {
   return String(value || "")
     .normalize("NFKC")
@@ -38,12 +40,13 @@ function matchScore(legacyTitle: string, currentTitle: string): number {
 }
 
 function legacySystemRedirect(pathname: string): string {
-  const lower = pathname.toLowerCase();
   if (/^\/category\/hotnews(?:\/page\/\d+)?\/?$/i.test(pathname)) {
     return `${SITE_ORIGIN}/listing.html?category=${encodeURIComponent("热门头条")}`;
   }
-  if (/^\/category\/[^/]+(?:\/page\/\d+)?\/?$/i.test(pathname)) return SITE_ORIGIN + "/";
-  if (/^\/page\/\d+\/?$/i.test(pathname) || lower.includes("mailpoet_page=subscriptions")) return SITE_ORIGIN + "/";
+  if (/^\/category\/[^/]+(?:\/page\/\d+)?\/?$/i.test(pathname)) return GONE;
+  if (/^\/page\/\d+\/?$/i.test(pathname)) return GONE;
+  if (/^\/(?:wp-admin|wp-login\.php|wp-json|xmlrpc\.php)(?:\/|$)/i.test(pathname)) return GONE;
+  if (/^\/index\.php\/(?:author|page|category|tag)(?:\/|$)/i.test(pathname)) return GONE;
   return "";
 }
 
@@ -110,15 +113,29 @@ function redirect(destination: string, reason: string): Response {
   });
 }
 
+function gone(reason: string): Response {
+  return new Response("Gone", {
+    status: 410,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "public, max-age=300",
+      "X-Robots-Tag": "noindex, nofollow",
+      "X-TRRB-Retired": reason
+    }
+  });
+}
+
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
 
   const url = new URL(request.url);
 
-  // IMPORTANT: Do not force apex/www host redirects here. Netlify already handles
-  // the primary domain, and forcing the opposite host at the edge can create an
-  // infinite Safari redirect loop.
+  if (url.searchParams.get("mailpoet_page") === "subscriptions") {
+    return gone("wordpress-mailpoet-page");
+  }
+
   const systemDestination = legacySystemRedirect(url.pathname);
+  if (systemDestination === GONE) return gone("wordpress-system-page");
   if (systemDestination) return redirect(systemDestination, "wordpress-system-page");
   if (!isLegacyCandidate(url.pathname)) return context.next();
 

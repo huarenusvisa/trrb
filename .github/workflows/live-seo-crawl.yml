@@ -36,7 +36,7 @@ jobs:
         run: sleep 90
       - name: 抓取线上页面并检查404和SEO
         env:
-          SITE_ORIGIN: https://www.trrb.net
+          SITE_ORIGIN: https://trrb.net
           CRAWL_LIMIT: "500"
           CRAWL_CONCURRENCY: "10"
           CRAWL_TIMEOUT_MS: "15000"

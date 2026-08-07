@@ -37,6 +37,14 @@
           <label>分类栏目</label>
           <select id="edit-article-category"></select>
 
+          <label>发布状态</label>
+          <select id="edit-article-status">
+            <option value="published">立即发布</option>
+            <option value="draft">保存草稿</option>
+            <option value="hidden">隐藏 / 下线</option>
+          </select>
+          <div class="article-edit-note">修改栏目后直接选择“立即发布”并保存，文章会以新的栏目发布；隐藏只下线，不删除数据库记录。</div>
+
           <label>标签</label>
           <input id="edit-article-tags" placeholder="多个标签用逗号分隔" />
 
@@ -68,7 +76,8 @@
         .article-edit-preview{display:block;max-width:320px;max-height:180px;object-fit:cover;border-radius:8px;border:1px solid #e5e7eb}
         .article-edit-preview.hidden{display:none}
         .article-edit-note{font-size:13px;color:#6b7280}
-        .article-edit-btn{margin-right:5px}
+        .article-edit-btn,.article-delete-btn{margin-right:5px}
+        .article-delete-btn{background:#991b1b!important;color:#fff!important;border-color:#991b1b!important}
         @media (max-width:700px){#article-edit-modal{padding:0}.article-edit-panel{width:100%;height:100%;max-height:none;border-radius:0}.article-edit-body textarea{min-height:38vh}}
       `;
       document.head.appendChild(style);
@@ -145,6 +154,7 @@
     document.getElementById('edit-article-content').value = data.content || '';
     document.getElementById('edit-article-cover').value = data.cover_image || '';
     document.getElementById('edit-article-tags').value = ('tags' in data ? data.tags : data.seo_keywords) || '';
+    document.getElementById('edit-article-status').value = ['published', 'draft', 'hidden'].includes(String(data.status || '')) ? data.status : 'draft';
     document.getElementById('edit-article-cover-file').value = '';
     document.getElementById('edit-article-cover-status').textContent = '';
     fillCategories(data);
@@ -162,6 +172,7 @@
     const content = document.getElementById('edit-article-content').value.trim();
     const cover = document.getElementById('edit-article-cover').value.trim();
     const tags = document.getElementById('edit-article-tags').value.trim();
+    const status = document.getElementById('edit-article-status').value;
 
     if (!title || !content) {
       message.textContent = '标题和正文不能为空。';
@@ -173,41 +184,75 @@
       content,
       cover_image: cover,
       category_id: categorySelect.value || null,
-      category_name: option?.textContent?.trim() || activeArticle.category_name || ''
+      category_name: option?.textContent?.trim() || activeArticle.category_name || '',
+      status
     };
     if ('tags' in activeArticle) patch.tags = tags;
     else patch.seo_keywords = tags;
     if ('updated_at' in activeArticle) patch.updated_at = new Date().toISOString();
+    if (status === 'published' && activeArticle.status !== 'published') patch.published_at = new Date().toISOString();
 
     save.disabled = true;
-    message.textContent = '正在保存...';
+    message.textContent = status === 'published' ? '正在保存并发布到新栏目...' : '正在保存...';
     const { error } = await supabaseClient.from('articles').update(patch).eq('id', activeArticle.id);
     save.disabled = false;
     if (error) {
       message.textContent = `保存失败：${error.message}`;
       return;
     }
-    message.textContent = '修改已保存。';
+    message.textContent = status === 'published' ? '修改已保存，并按当前所选栏目发布。' : '修改已保存。';
     if (typeof loadArticles === 'function') await loadArticles();
-    setTimeout(closeEditor, 350);
+    setTimeout(closeEditor, 450);
+  }
+
+  async function deleteArticle(id, title) {
+    const safeTitle = String(title || '').trim();
+    const confirmed = window.confirm(`永久删除这篇文章？\n\n${safeTitle || id}\n\n删除后将从数据库中移除，前台无法恢复。若只是暂时下线，请使用“隐藏”。`);
+    if (!confirmed) return;
+
+    const finalConfirmed = window.confirm('再次确认：这是永久删除，不是隐藏。确定继续吗？');
+    if (!finalConfirmed) return;
+
+    try {
+      const { error } = await supabaseClient.from('articles').delete().eq('id', id);
+      if (error) throw error;
+      if (typeof loadArticles === 'function') await loadArticles();
+      alert('文章已从数据库永久删除。站点地图会在下一次构建时自动移除该文章URL。');
+    } catch (error) {
+      alert(`删除失败：${error?.message || error}\n\n如果提示权限不足，需要为 articles 表补充管理员 DELETE 策略。`);
+    }
   }
 
   function injectButtons() {
     document.querySelectorAll('#articles-tbody tr').forEach((row) => {
-      if (row.querySelector('.article-edit-btn')) return;
       const id = row.querySelector('small')?.textContent?.trim();
       const box = row.querySelector('td:last-child');
       if (!id || !box) return;
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'small-btn article-edit-btn';
-      button.textContent = '编辑';
-      button.addEventListener('click', () => editArticle(id));
-      box.prepend(button);
+      const title = row.querySelector('td:first-child b')?.textContent?.trim() || '';
+
+      if (!row.querySelector('.article-edit-btn')) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'small-btn article-edit-btn';
+        button.textContent = '编辑';
+        button.addEventListener('click', () => editArticle(id));
+        box.prepend(button);
+      }
+
+      if (!row.querySelector('.article-delete-btn')) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'small-btn article-delete-btn';
+        button.textContent = '删除';
+        button.title = '永久从数据库删除';
+        button.addEventListener('click', () => deleteArticle(id, title));
+        box.appendChild(button);
+      }
     });
   }
 
   window.editArticle = editArticle;
+  window.deleteArticle = deleteArticle;
   const observer = new MutationObserver(injectButtons);
   document.addEventListener('DOMContentLoaded', () => {
     ensureModal();

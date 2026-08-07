@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 
-const ORIGIN = String(process.env.SITE_ORIGIN || 'https://www.trrb.net').replace(/\/+$/, '');
+const ORIGIN = String(process.env.SITE_ORIGIN || 'https://trrb.net').replace(/\/+$/, '');
 const LIMIT = Math.max(20, Math.min(1000, Number(process.env.CRAWL_LIMIT || 300)));
 const CONCURRENCY = Math.max(2, Math.min(20, Number(process.env.CRAWL_CONCURRENCY || 8)));
 const TIMEOUT = Math.max(3000, Number(process.env.CRAWL_TIMEOUT_MS || 12000));
@@ -51,7 +51,7 @@ async function inspect(url) {
     failures.push({ url, issue: `HTTP ${status}` });
     return;
   }
-  if (response.url && new URL(response.url).hostname !== 'www.trrb.net') {
+  if (response.url && new URL(response.url).hostname !== 'trrb.net') {
     failures.push({ url, issue: `最终主机错误: ${response.url}` });
   }
   if (!type.includes('text/html')) return;

@@ -41,10 +41,15 @@
     }
   }
 
-  // article.html is a database-backed route. Static archive files are no longer
-  // an indexing authority: only a currently published Supabase record is valid.
   if (!UUID_RE.test(id)) {
     renderMissing();
+    return;
+  }
+
+  // The edge prerenderer only emits this marker after confirming the article is
+  // currently published in Supabase. Avoid a redundant client-side validation.
+  if (document.querySelector('#article-root[data-prerendered="true"]')) {
+    markValid();
     return;
   }
 

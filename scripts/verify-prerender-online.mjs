@@ -5,17 +5,43 @@ const UA_GOOGLE = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.co
 const UA_BROWSER = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/140 Safari/537.36';
 
 function decodeXml(v=''){return String(v).replaceAll('&amp;','&').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&quot;','"').replaceAll('&apos;',"'");}
-function locs(xml){return [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map(m=>decodeXml(m[1].trim())).filter(u=>u.startsWith(`${ORIGIN}/article.html?id=`));}
+function allLocs(xml){return [...String(xml).matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map(m=>decodeXml(m[1].trim())).filter(Boolean);}
+function articleLocs(xml){return allLocs(xml).filter(u=>u.startsWith(`${ORIGIN}/article.html?id=`));}
 function textMatch(html,re){const m=html.match(re);return m?String(m[1]||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim():'';}
 async function get(url, ua){return fetch(url,{redirect:'follow',headers:{'user-agent':ua,'accept':'text/html,application/xhtml+xml'}});}
 
+async function collectArticleUrls(){
+  const queue=[`${ORIGIN}/sitemap.xml`,`${ORIGIN}/news-sitemap.xml`];
+  const seen=new Set();
+  const articles=new Set();
+  while(queue.length && seen.size<20 && articles.size<SAMPLE){
+    const url=queue.shift();
+    if(seen.has(url)) continue;
+    seen.add(url);
+    let res;
+    try{res=await fetch(url,{redirect:'follow',headers:{'user-agent':UA_GOOGLE,'accept':'application/xml,text/xml,*/*'}});}catch{continue;}
+    if(!res.ok) continue;
+    const xml=await res.text();
+    for(const a of articleLocs(xml)) articles.add(a);
+    for(const loc of allLocs(xml)){
+      if(articles.size>=SAMPLE) break;
+      try{
+        const u=new URL(loc);
+        if(u.hostname!=='trrb.net') continue;
+        if(/\.xml(?:$|\?)/i.test(u.pathname+u.search) || /sitemap/i.test(u.pathname)) queue.push(loc);
+      }catch{}
+    }
+  }
+  return {urls:[...articles].slice(0,SAMPLE),seen:[...seen]};
+}
+
 const failures=[];
 const details=[];
-const sm = await fetch(`${ORIGIN}/sitemap.xml`, {headers:{'user-agent':UA_GOOGLE}});
-if(!sm.ok) throw new Error(`sitemap HTTP ${sm.status}`);
-const xml=await sm.text();
-const urls=[...new Set(locs(xml))].slice(0,SAMPLE);
-if(urls.length<3) throw new Error(`sitemap article sample too small: ${urls.length}`);
+const collected=await collectArticleUrls();
+const urls=collected.urls;
+if(urls.length<3){
+  throw new Error(`sitemap article sample too small: ${urls.length}; checked: ${collected.seen.join(', ')}`);
+}
 
 for(const url of urls){
   for(const [agent,ua] of [['googlebot',UA_GOOGLE],['browser',UA_BROWSER]]){
@@ -41,7 +67,7 @@ const badHtml=await badRes.text();
 const invalidOk=badRes.status===404 && (/noindex/i.test(badRes.headers.get('x-robots-tag')||'') || /name=["']robots["'][^>]+noindex/i.test(badHtml));
 if(!invalidOk) failures.push({url:invalid,agent:'googlebot',bad:['invalid-url-not-404-noindex'],status:badRes.status});
 
-const report={generated_at:new Date().toISOString(),origin:ORIGIN,sample:urls.length,failures,details,invalid:{url:invalid,status:badRes.status,xRobots:badRes.headers.get('x-robots-tag')||'',ok:invalidOk}};
+const report={generated_at:new Date().toISOString(),origin:ORIGIN,sample:urls.length,sitemaps_checked:collected.seen,failures,details,invalid:{url:invalid,status:badRes.status,xRobots:badRes.headers.get('x-robots-tag')||'',ok:invalidOk}};
 await import('node:fs').then(fs=>fs.writeFileSync('prerender-online-report.json',JSON.stringify(report,null,2)));
 console.log(`预渲染线上验证：${urls.length}篇 × 2种UA；失败 ${failures.length}`);
 if(failures.length){console.error(JSON.stringify(failures,null,2));process.exit(1);} 

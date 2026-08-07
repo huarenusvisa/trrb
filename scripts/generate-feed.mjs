@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT=process.cwd();
-const SITE='https://www.trrb.net';
+const SITE='https://trrb.net';
 const base=String(process.env.SUPABASE_URL||'').replace(/\/+$/,'');
 const key=process.env.SUPABASE_SERVICE_ROLE_KEY||process.env.SUPABASE_ANON_KEY||'';
 const clean=(v='')=>String(v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g,'').replace(/\s+/g,' ').trim();

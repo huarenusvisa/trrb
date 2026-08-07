@@ -43,3 +43,5 @@ jobs:
           name: prerender-online-report
           path: prerender-online-report.json
           retention-days: 30
+
+# deployment acceptance trigger: 2026-08-07

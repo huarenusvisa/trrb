@@ -11,5 +11,5 @@ Disallow: /*&q=
 Disallow: /*?preview=
 Disallow: /*&preview=
 
-Sitemap: https://www.trrb.net/sitemap.xml
-Sitemap: https://www.trrb.net/news-sitemap.xml
+Sitemap: https://trrb.net/sitemap.xml
+Sitemap: https://trrb.net/news-sitemap.xml

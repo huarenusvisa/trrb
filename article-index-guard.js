@@ -1,8 +1,10 @@
 (() => {
+  const SITE = 'https://trrb.net';
   const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
   const params = new URLSearchParams(location.search);
   const id = String(params.get('id') || '').trim();
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
   function setRobots(value) {
     let meta = document.head.querySelector('meta[name="robots"]');
@@ -26,12 +28,12 @@
 
   function markValid() {
     setRobots('index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
-    setCanonical(`https://www.trrb.net/article.html?id=${encodeURIComponent(id)}`);
+    setCanonical(`${SITE}/article.html?id=${encodeURIComponent(id)}`);
   }
 
   function renderMissing() {
     setRobots('noindex,nofollow,noarchive');
-    setCanonical('https://www.trrb.net/article.html');
+    setCanonical(`${SITE}/article.html`);
     document.title = '文章不存在 - 唐人日报';
     const root = document.querySelector('#article-root');
     if (root) {
@@ -39,15 +41,10 @@
     }
   }
 
-  if (!id) {
+  // article.html is a database-backed route. Static archive files are no longer
+  // an indexing authority: only a currently published Supabase record is valid.
+  if (!UUID_RE.test(id)) {
     renderMissing();
-    return;
-  }
-
-  const staticSources = [window.TRRB_ARTICLE_MAP, window.TRRB_ARTICLE_INDEX, window.TRRB_ARTICLES];
-  const existsInStaticArchive = staticSources.some((items) => Array.isArray(items) && items.some((item) => String(item?.id) === id));
-  if (existsInStaticArchive) {
-    markValid();
     return;
   }
 
@@ -69,6 +66,7 @@
       markValid();
     })
     .catch(() => {
-      // 网络临时失败时不误伤有效文章；保留现有页面状态。
+      // Temporary network failures must not incorrectly de-index a valid article.
+      // article-seo.js will still set the canonical after a successful article load.
     });
 })();

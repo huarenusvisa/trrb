@@ -1,5 +1,5 @@
 (() => {
-  const SITE = 'https://www.trrb.net';
+  const SITE = 'https://trrb.net';
   const PUBLISHER_NAME = '唐人日报';
   const LOGO = `${SITE}/trrb-logo-cropped.webp`;
 
@@ -63,7 +63,9 @@
     const author = clean(metaText.split('·')[0]) || PUBLISHER_NAME;
     const published = parseDate(metaText);
     const image = absoluteUrl(root.querySelector('.article-image')?.currentSrc || root.querySelector('.article-image')?.src || LOGO);
-    const canonical = `${SITE}/article.html${window.location.search || ''}`;
+    const params = new URLSearchParams(window.location.search);
+    const id = clean(params.get('id'));
+    const canonical = id ? `${SITE}/article.html?id=${encodeURIComponent(id)}` : `${SITE}/article.html`;
     const keywords = compactKeywords([category, title, ...title.split(/[｜|：:、，,\s]+/), '唐人日报', '美国华人']);
 
     document.title = `${title} - 唐人日报`;

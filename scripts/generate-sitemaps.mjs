@@ -2,12 +2,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = process.cwd();
-const SITE = 'https://www.trrb.net';
+const SITE = 'https://trrb.net';
 const NOW = new Date();
 const TODAY = NOW.toISOString().slice(0, 10);
 const NEWS_CUTOFF = NOW.getTime() - 48 * 60 * 60 * 1000;
 const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+
+if (!base || !key) {
+  throw new Error('Supabase credentials are required to build production sitemaps. Static WordPress-era archives are no longer an indexing source.');
+}
 
 const cleanText = (value = '') => String(value)
   .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
@@ -25,7 +29,7 @@ const normalizeUrl = (raw) => {
     const url = new URL(raw, SITE);
     if (!['trrb.net', 'www.trrb.net'].includes(url.hostname)) return null;
     url.protocol = 'https:';
-    url.hostname = 'www.trrb.net';
+    url.hostname = 'trrb.net';
     url.hash = '';
     return url.toString();
   } catch {
@@ -50,23 +54,10 @@ const parsePublicationDate = (article) => {
       };
     }
   }
-  const rawDate = cleanText(article?.date || '');
-  const rawTime = cleanText(article?.time || '');
-  let value = null;
-  if (/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
-    const match = rawTime.match(/(?:^|\s)(\d{2}):(\d{2})(?::(\d{2}))?$/);
-    value = match
-      ? `${rawDate}T${match[1]}:${match[2]}:${match[3] || '00'}-04:00`
-      : `${rawDate}T12:00:00-04:00`;
-  }
-  const timestamp = value ? Date.parse(value) : NaN;
-  return Number.isFinite(timestamp)
-    ? { value: new Date(timestamp).toISOString(), timestamp, dateOnly: rawDate }
-    : null;
+  return null;
 };
 
 async function rest(pathname, params) {
-  if (!base || !key) return [];
   const url = new URL(`${base}/rest/v1/${pathname}`);
   Object.entries(params || {}).forEach(([name, value]) => url.searchParams.set(name, value));
   const response = await fetch(url, {
@@ -97,16 +88,12 @@ async function fetchCategories() {
 }
 
 async function fetchAllPublishedArticles() {
-  if (!base || !key) {
-    console.warn('[sitemap] Supabase unavailable; using static chunks');
-    return [];
-  }
   const pageSize = 1000;
-  const maxPages = 50;
+  const maxPages = 100;
   const all = [];
   for (let page = 0; page < maxPages; page += 1) {
     const rows = await rest('articles', {
-      select: 'id,title,summary,category_id,category_name,status,published_at,created_at,source_url,cover_image',
+      select: 'id,title,summary,content,category_id,category_name,status,published_at,created_at,source_url,cover_image',
       status: 'eq.published',
       order: 'published_at.desc.nullslast,created_at.desc',
       limit: String(pageSize),
@@ -140,29 +127,10 @@ const sitemapCategoryNames = new Set(categories.filter((item) => item.include_in
 const newsCategoryIds = new Set(categories.filter((item) => item.include_in_google_news !== false).map((item) => String(item.id)));
 const newsCategoryNames = new Set(categories.filter((item) => item.include_in_google_news !== false).map((item) => String(item.name)));
 
-const records = [];
-for (const name of fs.readdirSync(ROOT)) {
-  if (!/^articles-chunk-\d+\.js$/.test(name)) continue;
-  try {
-    const text = fs.readFileSync(path.join(ROOT, name), 'utf8');
-    const start = text.indexOf('[');
-    const end = text.lastIndexOf(']');
-    if (start < 0 || end <= start) continue;
-    const items = JSON.parse(text.slice(start, end + 1));
-    if (Array.isArray(items)) records.push(...items);
-  } catch (error) {
-    console.warn(`[sitemap] skipped ${name}: ${error.message}`);
-  }
-}
-
-let databaseArticles = [];
-try {
-  databaseArticles = await fetchAllPublishedArticles();
-  records.push(...databaseArticles);
-  console.log(`[sitemap] loaded ${databaseArticles.length} published articles`);
-} catch (error) {
-  console.error(`[sitemap] ${error.message}`);
-  throw error;
+const databaseArticles = await fetchAllPublishedArticles();
+console.log(`[sitemap] loaded ${databaseArticles.length} live published articles from Supabase`);
+if (!databaseArticles.length) {
+  throw new Error('No published database articles were returned; refusing to publish an empty/stale sitemap');
 }
 
 const staticEntries = [{ loc: `${SITE}/`, lastmod: TODAY, priority: '1.0', changefreq: 'hourly' }];
@@ -189,16 +157,14 @@ const isAllowed = (article, idSet, nameSet) => {
 };
 
 const byUrl = new Map(staticEntries.map((entry) => [entry.loc, entry]));
-for (const article of records) {
+for (const article of databaseArticles) {
+  if (!article?.id || !cleanText(article?.title)) continue;
   if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames)) continue;
   const loc = canonicalArticleUrl(article);
   if (!loc) continue;
   const published = parsePublicationDate(article);
   const date = published?.dateOnly || TODAY;
-  const existing = byUrl.get(loc);
-  if (!existing || date > existing.lastmod) {
-    byUrl.set(loc, { loc, lastmod: date, priority: '0.6', changefreq: 'weekly', article, published });
-  }
+  byUrl.set(loc, { loc, lastmod: date, priority: '0.6', changefreq: 'weekly', article, published });
 }
 
 const entries = [...byUrl.values()].sort((a, b) => b.lastmod.localeCompare(a.lastmod));
@@ -213,10 +179,10 @@ const recentNews = entries
   .sort((a, b) => b.published.timestamp - a.published.timestamp)
   .slice(0, 1000);
 
-if (databaseArticles.length > 0 && recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0 || newsCategoryIds.size > 0)) {
-  throw new Error('Published articles loaded but news sitemap would be empty');
+if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0 || newsCategoryIds.size > 0)) {
+  console.warn('[sitemap] no articles qualified for the 48-hour Google News sitemap');
 }
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} URLs; news ${recentNews.length}; categories ${categories.length}`);
+console.log(`[sitemap] generated ${entries.length} canonical URLs; news ${recentNews.length}; categories ${categories.length}`);

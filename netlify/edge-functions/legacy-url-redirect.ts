@@ -60,9 +60,30 @@ function isLegacyCandidate(pathname: string): boolean {
   return /[\u3400-\u9fff]/u.test(pathname);
 }
 
-async function fetchCandidates(title: string): Promise<Array<{ id: string; title: string }>> {
+function supabaseConfig() {
   const base = (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, "");
   const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
+  return { base, key };
+}
+
+async function isActiveCategorySlug(slug: string): Promise<boolean> {
+  const { base, key } = supabaseConfig();
+  if (!base || !key || !slug) return false;
+  const url = new URL(`${base}/rest/v1/categories`);
+  url.searchParams.set("select", "id");
+  url.searchParams.set("slug", `eq.${slug}`);
+  url.searchParams.set("is_active", "eq.true");
+  url.searchParams.set("limit", "1");
+  const response = await fetch(url, {
+    headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }
+  });
+  if (!response.ok) throw new Error(`category lookup failed ${response.status}`);
+  const rows = await response.json();
+  return Array.isArray(rows) && rows.length > 0;
+}
+
+async function fetchCandidates(title: string): Promise<Array<{ id: string; title: string }>> {
+  const { base, key } = supabaseConfig();
   if (!base || !key) return [];
 
   const headers = { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
@@ -145,12 +166,15 @@ export default async (request: Request, context: any) => {
       .replace(/\+/g, " ")
       .trim();
   } catch {
-    return context.next();
+    return gone("wordpress-title-malformed");
   }
 
-  if (legacyTitle.length < 4 || legacyTitle.length > 220) return context.next();
+  if (legacyTitle.length < 4 || legacyTitle.length > 220) return gone("wordpress-title-invalid");
 
   try {
+    // Do not retire a currently active first-level category whose slug happens to contain Chinese.
+    if (await isActiveCategorySlug(legacyTitle)) return context.next();
+
     const candidates = await fetchCandidates(legacyTitle);
     const ranked = candidates
       .map((row) => ({ ...row, score: matchScore(legacyTitle, row.title || "") }))
@@ -159,12 +183,15 @@ export default async (request: Request, context: any) => {
 
     const match = ranked[0];
     const runnerUp = ranked[1];
-    if (!match?.id) return context.next();
-    if (runnerUp && match.score < 90 && match.score - runnerUp.score < 8) return context.next();
+    if (!match?.id) return gone("wordpress-title-no-current-article");
+    if (runnerUp && match.score < 90 && match.score - runnerUp.score < 8) {
+      return gone("wordpress-title-ambiguous-retired");
+    }
 
     return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(match.id)}`, `article-match-${match.score}`);
   } catch (error) {
     console.error("legacy redirect lookup failed", error);
+    // If the database lookup itself fails, fail open so a temporary backend issue never retires a valid page.
     return context.next();
   }
 };

@@ -1,0 +1,22 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const file = path.join(process.cwd(), '_redirects');
+const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').trim() : '';
+
+const required = [
+  'http://trrb.net/* https://trrb.net/:splat 301!',
+  'http://www.trrb.net/* https://trrb.net/:splat 301!',
+  'https://www.trrb.net/* https://trrb.net/:splat 301!',
+  '/ice /topic/ice/live-v6.html 200!',
+  '/ice/ /topic/ice/live-v6.html 200!',
+  '/ice/news /listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81 200!',
+  '/ice/news/ /listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81 200!',
+  '/topic/ice /topic/ice/live-v6.html 200!',
+  '/topic/ice/ /topic/ice/live-v6.html 200!'
+];
+
+const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
+const filtered = lines.filter((line) => !required.some((rule) => line.split(/\s+/)[0] === rule.split(/\s+/)[0]));
+fs.writeFileSync(file, [...required, ...filtered].join('\n') + '\n');
+console.log(`[redirects] finalized ${required.length} canonical/special rules + ${filtered.length} generated rules`);

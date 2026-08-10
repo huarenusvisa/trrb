@@ -27,6 +27,26 @@ function isoDate(value: unknown): string {
   return Number.isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
 }
 
+function buildDescription(article: any): string {
+  const title = clean(article.title) || "唐人日报新闻";
+  const summary = clean(article.summary);
+  const content = clean(article.content);
+  let description = summary;
+
+  if (description.length < 90 && content) {
+    const remaining = Math.max(0, 165 - description.length - (description ? 1 : 0));
+    const extra = content.slice(0, remaining);
+    description = clean(`${description}${description ? " " : ""}${extra}`);
+  }
+
+  if (!description) description = `${title}。唐人日报提供最新事实、背景与后续进展。`;
+  if (!description.includes(title) && description.length < 115) {
+    description = clean(`${title}：${description}`);
+  }
+
+  return description.slice(0, 180);
+}
+
 async function getArticle(id: string) {
   const base = (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, "");
   const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
@@ -47,7 +67,7 @@ async function getArticle(id: string) {
 
 function injectHead(html: string, article: any, canonical: string) {
   const title = clean(article.title) || "唐人日报新闻";
-  const summary = clean(article.summary || article.content).slice(0, 180) || `${title} - 唐人日报`;
+  const summary = buildDescription(article);
   const category = clean(article.category_name) || "新闻";
   const author = clean(article.author) || "Tang Ren Daily";
   const published = isoDate(article.published_at || article.created_at);

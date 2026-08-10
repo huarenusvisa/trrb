@@ -50,14 +50,28 @@ function legacySystemRedirect(pathname: string): string {
   return "";
 }
 
+function decodePathname(pathname: string): string {
+  try {
+    return decodeURIComponent(pathname);
+  } catch {
+    return pathname;
+  }
+}
+
 function isLegacyCandidate(pathname: string): boolean {
   if (!pathname || pathname === "/") return false;
-  const lower = pathname.toLowerCase();
+
+  // URL.pathname keeps non-ASCII path text percent-encoded in production requests.
+  // Always decode before testing Chinese title slugs; otherwise real legacy URLs
+  // such as /%E5%8D%8E%E8%A3%94.../ fall through and become ordinary 404s.
+  const decodedPath = decodePathname(pathname);
+  const lower = decodedPath.toLowerCase();
+
   if (SKIP_PREFIXES.some((prefix) => lower === prefix || lower.startsWith(prefix + "/") || lower.startsWith(prefix + "."))) return false;
-  if (/\.[a-z0-9]{1,8}$/i.test(pathname)) return false;
-  const segments = pathname.split("/").filter(Boolean);
+  if (/\.[a-z0-9]{1,8}$/i.test(decodedPath)) return false;
+  const segments = decodedPath.split("/").filter(Boolean);
   if (segments.length !== 1) return false;
-  return /[\u3400-\u9fff]/u.test(pathname);
+  return /[\u3400-\u9fff]/u.test(decodedPath);
 }
 
 function supabaseConfig() {

@@ -98,7 +98,9 @@ for (const item of required) if (!(await exists(item))) errors.push(`缺少 ${it
 try {
   const robots = await readFile(path.join(ROOT, "robots.txt"), "utf8");
   if (!/User-agent:\s*\*/i.test(robots)) errors.push("robots.txt 缺少 User-agent: *");
-  if (!/Sitemap:\s*https:\/\/www\.trrb\.net\/sitemap\.xml/i.test(robots)) errors.push("robots.txt 缺少主 sitemap 声明");
+  if (!/Sitemap:\s*https:\/\/trrb\.net\/sitemap\.xml/i.test(robots)) errors.push("robots.txt 缺少主 sitemap 声明");
+  if (!/Sitemap:\s*https:\/\/trrb\.net\/news-sitemap\.xml/i.test(robots)) warnings.push("robots.txt 缺少 news sitemap 声明");
+  if (/Sitemap:\s*https:\/\/www\.trrb\.net\//i.test(robots)) errors.push("robots.txt 仍包含 www.trrb.net sitemap 声明");
   if (!/Disallow:\s*\/admin\//i.test(robots)) warnings.push("robots.txt 未屏蔽后台目录");
 } catch {}
 

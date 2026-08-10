@@ -34,6 +34,7 @@ const listing = await bytes("listing.html");
 if (!startsText(listing, "<!doctype html>")) failures.push("listing.html is not HTML");
 if (!includesText(listing, "category-runtime-v3.js")) failures.push("listing.html is missing category CMS runtime");
 if (!includesText(listing, "nav-expose-link")) failures.push("listing.html is missing persistent expose navigation link");
+if (!includesText(listing, '<base href="/"')) failures.push("listing.html is missing root base href for rewritten category routes");
 
 const article = await bytes("article.html");
 if (!startsText(article, "<!doctype html>")) failures.push("article.html is not HTML");
@@ -74,14 +75,17 @@ if (!(qr[0] === 0xff && qr[1] === 0xd8 && qr[2] === 0xff)) failures.push("assets
 
 const sitemap = await bytes("sitemap.xml");
 if (!startsText(sitemap, "<?xml")) failures.push("sitemap.xml is not XML");
-if (!includesText(sitemap, "<sitemapindex") || !includesText(sitemap, "<loc>https://www.trrb.net/sitemap-")) failures.push("sitemap.xml is not a valid sitemap index");
+if (!includesText(sitemap, "<sitemapindex") || !includesText(sitemap, "<loc>https://trrb.net/sitemap-")) failures.push("sitemap.xml is not a valid canonical trrb.net sitemap index");
+if (includesText(sitemap, "https://www.trrb.net/")) failures.push("sitemap.xml still contains www.trrb.net URLs");
 
 const sitemapStatic = await bytes("sitemap-static.xml");
-if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://www.trrb.net/</loc>")) failures.push("sitemap-static.xml is missing its root URL");
+if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://trrb.net/</loc>")) failures.push("sitemap-static.xml is missing canonical root URL");
+if (includesText(sitemapStatic, "https://www.trrb.net/")) failures.push("sitemap-static.xml still contains www.trrb.net URLs");
 
 const newsSitemap = await bytes("news-sitemap.xml");
 if (!startsText(newsSitemap, "<?xml")) failures.push("news-sitemap.xml is not XML");
 if (!includesText(newsSitemap, "xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\"")) failures.push("news-sitemap.xml is missing Google News namespace");
+if (includesText(newsSitemap, "https://www.trrb.net/")) failures.push("news-sitemap.xml still contains www.trrb.net URLs");
 
 const feed = await bytes("feed.xml");
 if (!startsText(feed, "<?xml")) failures.push("feed.xml is not XML");

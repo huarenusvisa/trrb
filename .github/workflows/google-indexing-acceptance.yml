@@ -1,0 +1,42 @@
+name: Google收录技术验收
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "_redirects"
+      - "netlify.toml"
+      - "netlify/edge-functions/article-prerender.ts"
+      - "scripts/generate-sitemaps.mjs"
+      - "scripts/clean-sitemap-against-database.mjs"
+      - "scripts/google-indexing-acceptance.mjs"
+      - ".github/workflows/google-indexing-acceptance.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-google-indexing-acceptance
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 等待 Netlify 发布
+        run: sleep 180
+      - name: 验证主域、SSR、canonical、robots、sitemap
+        run: node scripts/google-indexing-acceptance.mjs
+      - name: 保存验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: google-indexing-acceptance-report
+          path: google-indexing-acceptance-report.json
+          retention-days: 30

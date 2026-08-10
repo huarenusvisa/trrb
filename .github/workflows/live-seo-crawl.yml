@@ -9,11 +9,12 @@ on:
     paths:
       - "**/*.html"
       - "**/*.js"
+      - "**/*.mjs"
       - "**/*.css"
+      - "_redirects"
       - "robots.txt"
       - "netlify.toml"
       - "netlify/edge-functions/**"
-      - "scripts/live-seo-crawl.mjs"
       - ".github/workflows/live-seo-crawl.yml"
 
 permissions:
@@ -33,7 +34,7 @@ jobs:
         with:
           node-version: "22"
       - name: 等待Netlify部署
-        run: sleep 90
+        run: sleep 240
       - name: 抓取线上页面并检查404和SEO
         env:
           SITE_ORIGIN: https://trrb.net

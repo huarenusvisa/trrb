@@ -157,8 +157,32 @@
     if (modal && !modal.classList.contains("hidden")) setTimeout(addReportMaintenanceButtons, 50);
   });
 
+  function installIceEditorialPersistence() {
+    if (typeof reviewApi !== "function" || window.TRRB_ICE_EDITOR_PERSIST_V3) return;
+    const previousReviewApi = reviewApi;
+    reviewApi = async function reviewApiPersistV3(action, payload = {}) {
+      if (action !== "publish_now") return previousReviewApi(action, payload);
+
+      const { data } = await supabaseClient.auth.getSession();
+      const token = data.session?.access_token;
+      if (!token) throw new Error("登录状态已失效，请重新登录。");
+
+      const response = await originalFetch("/.netlify/functions/ice-review-publish-v3", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ action, ...payload })
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || `ICE发布保存失败（${response.status}）`);
+      if (!result.editorial_persisted) throw new Error("文章已发布，但编辑内容未确认写入数据库，请重试。");
+      return result;
+    };
+    window.TRRB_ICE_EDITOR_PERSIST_V3 = true;
+  }
+
   function init() {
     installNavigationGuard();
+    installIceEditorialPersistence();
     modalObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
   }
 

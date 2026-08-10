@@ -1,0 +1,43 @@
+name: 旧WordPress URL线上退休验收
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "netlify/edge-functions/legacy-url-redirect.ts"
+      - "scripts/generate-sitemaps.mjs"
+      - "scripts/clean-sitemap-against-database.mjs"
+      - "scripts/verify-legacy-retirement-online.mjs"
+      - "netlify.toml"
+      - ".github/workflows/legacy-retirement-online-verify.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-legacy-retirement-online-verify
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 等待 Netlify 发布
+        run: sleep 150
+      - name: 验证旧 URL 已 301 或 410 且 sitemap 无旧中文文章 URL
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/verify-legacy-retirement-online.mjs
+      - name: 保存旧 URL 验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-retirement-online-report
+          path: legacy-retirement-online-report.json
+          retention-days: 30

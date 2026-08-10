@@ -10,6 +10,14 @@ const warnings = [];
 const visited = new Set();
 const queue = [`${ORIGIN}/`, `${ORIGIN}/sitemap.xml`, `${ORIGIN}/news-sitemap.xml`, `${ORIGIN}/robots.txt`];
 
+const BROWSER_HEADERS = {
+  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36',
+  'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+  'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cache-control': 'no-cache',
+  'pragma': 'no-cache'
+};
+
 function sameSite(raw) {
   try { return new URL(raw, ORIGIN).origin === ORIGIN; } catch { return false; }
 }
@@ -21,12 +29,37 @@ function normalize(raw) {
     return url.href;
   } catch { return ''; }
 }
+function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 async function request(url, method = 'GET') {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT);
-  try {
-    return await fetch(url, { method, redirect: 'follow', signal: controller.signal, headers: { 'user-agent': 'TRRB-SEO-Audit/1.0' } });
-  } finally { clearTimeout(timer); }
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT);
+    try {
+      const response = await fetch(url, {
+        method,
+        redirect: 'follow',
+        signal: controller.signal,
+        headers: BROWSER_HEADERS
+      });
+      if (response.status === 403 && attempt < 3) {
+        await response.body?.cancel().catch(() => {});
+        await sleep(600 * attempt);
+        continue;
+      }
+      return response;
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) {
+        await sleep(600 * attempt);
+        continue;
+      }
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw lastError || new Error('request failed');
 }
 function extractLinks(html, baseUrl) {
   const links = [];

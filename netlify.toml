@@ -11,222 +11,225 @@
   path = "/*"
 
 [images]
-  remote_images = [
-    "https:\\/\\/images\\.openai\\.com\\/.*",
-    "https:\\/\\/i\\.abcnewsfe\\.com\\/.*",
-    "https:\\/\\/pbs\\.twimg\\.com\\/.*",
-    "https:\\/\\/media\\.cnn\\.com\\/.*",
-    "https:\\/\\/a57\\.foxnews\\.com\\/.*",
-    "https:\\/\\/static01\\.nyt\\.com\\/.*",
-    "https:\\/\\/dims\\.apnews\\.com\\/.*",
-    "https:\\/\\/media-cldnry\\.s-nbcnews\\.com\\/.*",
-    "https:\\/\\/www\\.ice\\.gov\\/.*",
-    "https:\\/\\/www\\.dhs\\.gov\\/.*"
-  ]
+  remote_images = ["https:\\/\\/images\\.openai\\.com\\/.*", "https:\\/\\/i\\.abcnewsfe\\.com\\/.*", "https:\\/\\/pbs\\.twimg\\.com\\/.*", "https:\\/\\/media\\.cnn\\.com\\/.*", "https:\\/\\/a57\\.foxnews\\.com\\/.*", "https:\\/\\/static01\\.nyt\\.com\\/.*", "https:\\/\\/dims\\.apnews\\.com\\/.*", "https:\\/\\/media-cldnry\\.s-nbcnews\\.com\\/.*", "https:\\/\\/www\\.ice\\.gov\\/.*", "https:\\/\\/www\\.dhs\\.gov\\/.*"]
 
 [[headers]]
   for = "/sitemap.xml"
   [headers.values]
     Content-Type = "application/xml; charset=UTF-8"
     Cache-Control = "public, max-age=300"
-
 [[headers]]
   for = "/news-sitemap.xml"
   [headers.values]
     Content-Type = "application/xml; charset=UTF-8"
     Cache-Control = "public, max-age=300"
-
 [[headers]]
   for = "/feed.xml"
   [headers.values]
     Content-Type = "application/rss+xml; charset=UTF-8"
     Cache-Control = "public, max-age=300"
-
 [[headers]]
   for = "/robots.txt"
   [headers.values]
     Content-Type = "text/plain; charset=UTF-8"
     Cache-Control = "public, max-age=300"
-
 [[headers]]
   for = "/data/*.json"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
-
 [[headers]]
   for = "/*.js"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
-
 [[headers]]
   for = "/*.css"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
-
 [[headers]]
   for = "/*.html"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
     Content-Security-Policy = "upgrade-insecure-requests; block-all-mixed-content"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-
 [[headers]]
   for = "/assets/news-images/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
 [[headers]]
   for = "/.netlify/images*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
 [[headers]]
   for = "/assets/category-placeholders/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
-
 [[headers]]
   for = "/assets/icons/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# ICE专题主页与新闻列表必须分开。
+# ICE canonical route. Use 200 rewrite, but force root-relative assets to remain root assets.
 [[redirects]]
   from = "/ice"
   to = "/topic/ice/live-v6.html"
   status = 200
   force = true
-
 [[redirects]]
   from = "/ice/"
   to = "/topic/ice/live-v6.html"
   status = 200
   force = true
-
 [[redirects]]
   from = "/ice/news"
   to = "/listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81"
   status = 200
   force = true
-
 [[redirects]]
   from = "/ice/news/"
   to = "/listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81"
   status = 200
   force = true
 
-# 特朗普只保留实时专题，不再作为独立新闻栏目。
+# Compatibility redirects for clients/crawlers that resolve rewritten /ice HTML assets against /ice/.
+[[redirects]]
+  from = "/ice/site.webmanifest"
+  to = "/site.webmanifest"
+  status = 301
+[[redirects]]
+  from = "/ice/styles.css"
+  to = "/styles.css"
+  status = 301
+[[redirects]]
+  from = "/ice/listing-seo.js"
+  to = "/listing-seo.js"
+  status = 301
+[[redirects]]
+  from = "/ice/trrb-logo-cropped.webp"
+  to = "/trrb-logo-cropped.webp"
+  status = 301
+[[redirects]]
+  from = "/ice/immigration-entry.js"
+  to = "/immigration-entry.js"
+  status = 301
+[[redirects]]
+  from = "/ice/articles-index.js"
+  to = "/articles-index.js"
+  status = 301
+[[redirects]]
+  from = "/ice/site-search.js"
+  to = "/site-search.js"
+  status = 301
+[[redirects]]
+  from = "/ice/site-common.js"
+  to = "/site-common.js"
+  status = 301
+[[redirects]]
+  from = "/ice/category-runtime-v3.js"
+  to = "/category-runtime-v3.js"
+  status = 301
+[[redirects]]
+  from = "/ice/image-cdn-optimizer.js"
+  to = "/image-cdn-optimizer.js"
+  status = 301
+[[redirects]]
+  from = "/ice/listing.js"
+  to = "/listing.js"
+  status = 301
+[[redirects]]
+  from = "/ice/assets/icons/:file"
+  to = "/assets/icons/:file"
+  status = 301
+
 [[redirects]]
   from = "/trump"
   to = "/trump/index.html"
   status = 200
   force = true
-
 [[redirects]]
   from = "/trump/"
   to = "/trump/index.html"
   status = 200
   force = true
-
 [[redirects]]
   from = "/topic/trump"
   to = "/trump/index.html"
   status = 200
   force = true
-
 [[redirects]]
   from = "/topic/trump/"
   to = "/trump/index.html"
   status = 200
   force = true
 
-# Clean first-level category URLs.
 [[redirects]]
   from = "/uscis"
   to = "/listing.html?category=USCIS"
   status = 200
-
 [[redirects]]
   from = "/dhs"
   to = "/listing.html?category=DHS"
   status = 200
-
 [[redirects]]
   from = "/cbp"
   to = "/listing.html?category=CBP"
   status = 200
-
 [[redirects]]
   from = "/visa"
   to = "/listing.html?category=Visa"
   status = 200
-
 [[redirects]]
   from = "/china"
   to = "/listing.html?category=China"
   status = 200
-
 [[redirects]]
   from = "/politics"
   to = "/listing.html?category=Politics"
   status = 200
-
 [[redirects]]
   from = "/world"
   to = "/listing.html?category=World"
   status = 200
 
-# Explicit WordPress sitemap retirement redirects.
 [[redirects]]
   from = "/index.php/author-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/index.php/post-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/index.php/page-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/index.php/category-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/index.php/sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/author-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/post-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/page-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/category-sitemap.xml"
   to = "/sitemap.xml"
   status = 301
-
 [[redirects]]
   from = "/wp-content/uploads/:year/:month/:file"
   to = "/assets/news-images/:year/:month/:file"
   status = 200
-
 [[redirects]]
   from = "http://new.trrb.net/*"
   to = "https://new.trrb.net/:splat"

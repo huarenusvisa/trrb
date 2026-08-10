@@ -9,7 +9,11 @@ on:
       - "article.html"
       - "article-index-guard.js"
       - "scripts/generate-sitemaps.mjs"
+      - "scripts/clean-sitemap-against-database.mjs"
+      - "scripts/ensure-sitemap-articles.mjs"
+      - "scripts/split-sitemap-index.mjs"
       - "scripts/verify-prerender-online.mjs"
+      - "_redirects"
       - "netlify.toml"
       - ".github/workflows/prerender-online-verify.yml"
 
@@ -30,7 +34,7 @@ jobs:
         with:
           node-version: "22"
       - name: 等待 Netlify 发布最新版本
-        run: sleep 150
+        run: sleep 240
       - name: 模拟 Googlebot 与普通浏览器验证文章首屏 HTML
         env:
           SITE_ORIGIN: https://trrb.net
@@ -43,5 +47,3 @@ jobs:
           name: prerender-online-report
           path: prerender-online-report.json
           retention-days: 30
-
-# deployment acceptance trigger: 2026-08-07

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const ROOT = process.cwd();
-const SITE = 'https://www.trrb.net';
+const SITE = 'https://trrb.net';
 const sourcePath = path.join(ROOT, 'sitemap.xml');
 const xml = fs.readFileSync(sourcePath, 'utf8');
 

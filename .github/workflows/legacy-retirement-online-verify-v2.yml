@@ -1,0 +1,43 @@
+name: 历史旧URL清理验收V2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "netlify/edge-functions/legacy-url-redirect.ts"
+      - "scripts/generate-sitemaps.mjs"
+      - "scripts/clean-sitemap-against-database.mjs"
+      - "scripts/verify-legacy-retirement-online-v2.mjs"
+      - "netlify.toml"
+      - ".github/workflows/legacy-retirement-online-verify-v2.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-legacy-retirement-online-verify-v2
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 等待 Netlify 发布
+        run: sleep 150
+      - name: 验证历史旧URL、主域和sitemap
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/verify-legacy-retirement-online-v2.mjs
+      - name: 保存验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-retirement-online-report-v2
+          path: legacy-retirement-online-report-v2.json
+          retention-days: 30

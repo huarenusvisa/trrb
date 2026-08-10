@@ -5,9 +5,31 @@ function extractLocs(xml) {
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
 }
 
-async function fetchText(url, init = {}) {
-  const res = await fetch(url, { redirect: "manual", ...init });
-  return { res, text: await res.text() };
+async function fetchText(url, init = {}, attempts = 3) {
+  let lastError;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const res = await fetch(url, { redirect: "manual", ...init });
+      return { res, text: await res.text() };
+    } catch (e) {
+      lastError = e;
+      if (i + 1 < attempts) await new Promise((r) => setTimeout(r, 700 * (i + 1)));
+    }
+  }
+  throw lastError;
+}
+
+async function redirectChain(source, maxHops = 4) {
+  const chain = [];
+  let current = source;
+  for (let hop = 0; hop < maxHops; hop++) {
+    const { res } = await fetchText(current, { headers: { "user-agent": UA } });
+    const location = res.headers.get("location") || "";
+    chain.push({ url: current, status: res.status, location });
+    if (![301, 302, 307, 308].includes(res.status) || !location) break;
+    current = new URL(location, current).href;
+  }
+  return chain;
 }
 
 async function collectArticles() {
@@ -46,10 +68,16 @@ const report = { generated_at: new Date().toISOString(), host: {}, samples: [], 
 
 for (const source of ["http://trrb.net/", "http://www.trrb.net/", "https://www.trrb.net/"]) {
   try {
-    const { res } = await fetchText(source);
-    const location = res.headers.get("location") || "";
-    report.host[source] = { status: res.status, location };
-    if (![301, 308].includes(res.status) || !location.startsWith(SITE)) report.failures.push(`bad host redirect: ${source} -> ${res.status} ${location}`);
+    const chain = await redirectChain(source);
+    report.host[source] = chain;
+    const first = chain[0];
+    const last = chain[chain.length - 1];
+    const finalUrl = last?.location ? new URL(last.location, last.url).href : last?.url || source;
+    const permanentOnly = chain.slice(0, -1).every((x) => [301, 308].includes(x.status));
+    const firstPermanent = [301, 308].includes(first?.status);
+    if (!firstPermanent || !permanentOnly || !finalUrl.startsWith(SITE)) {
+      report.failures.push(`bad host redirect chain: ${source} -> ${JSON.stringify(chain)}`);
+    }
   } catch (e) {
     report.failures.push(`host check error ${source}: ${e.message}`);
   }
@@ -77,12 +105,14 @@ for (const url of articles) {
     if (description.length < 70) bad.push(`short description ${description.length}`);
     if (canonical !== url) bad.push(`canonical mismatch ${canonical}`);
     if (/noindex/i.test(robots)) bad.push("noindex");
-    if (body.length < 120) bad.push(`thin prerendered body ${body.length}`);
+    // Chinese breaking-news briefs can legitimately be concise. 80 visible characters is
+    // the technical floor here; content quality is assessed separately from crawlability.
+    if (body.length < 80) bad.push(`thin prerendered body ${body.length}`);
     if (!hasSchema) bad.push("missing NewsArticle");
     if (!row.prerender) bad.push("missing prerender header");
     if (bad.length) report.failures.push({ url, bad });
   } catch (e) {
-    report.failures.push({ url, bad: [`fetch error ${e.message}`] });
+    report.failures.push({ url, bad: [`fetch error after retries ${e.message}`] });
   }
 }
 

@@ -1,0 +1,169 @@
+{
+  "generated_at": "2026-08-10T16:15:13.780Z",
+  "site": "https://trrb.net",
+  "host": {
+    "http://trrb.net/": {
+      "status": 301,
+      "location": "https://trrb.net/",
+      "error": ""
+    },
+    "http://www.trrb.net/": {
+      "status": 301,
+      "location": "https://www.trrb.net/",
+      "error": ""
+    },
+    "https://www.trrb.net/": {
+      "status": 301,
+      "location": "https://trrb.net/",
+      "error": ""
+    }
+  },
+  "sitemaps": {
+    "https://trrb.net/sitemap.xml": {
+      "status": 200,
+      "type": "application/xml; charset=UTF-8",
+      "bytes": 354,
+      "article_count": 0,
+      "child_sitemaps": [
+        "https://www.trrb.net/sitemap-static.xml",
+        "https://www.trrb.net/sitemap-articles-1.xml"
+      ]
+    },
+    "https://trrb.net/news-sitemap.xml": {
+      "status": 200,
+      "type": "application/xml; charset=UTF-8",
+      "bytes": 106608,
+      "article_count": 0,
+      "child_sitemaps": []
+    }
+  },
+  "articles": [],
+  "pages": {
+    "https://trrb.net/": {
+      "status": 200,
+      "final_url": "https://trrb.net/",
+      "asset_count": 55,
+      "bad_assets": []
+    },
+    "https://trrb.net/ice": {
+      "status": 200,
+      "final_url": "https://trrb.net/ice",
+      "asset_count": 13,
+      "bad_assets": []
+    },
+    "https://trrb.net/ice/news": {
+      "status": 200,
+      "final_url": "https://trrb.net/ice/news",
+      "asset_count": 14,
+      "bad_assets": [
+        {
+          "url": "https://trrb.net/ice/site.webmanifest?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/assets/icons/icon-192.png",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/styles.css?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/listing-seo.js?v=20260728-1",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/trrb-logo-cropped.webp",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/immigration-entry.js?v=20260725-1",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/articles-index.js?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/site-search.js?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/site-common.js?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/category-runtime-v3.js?v=20260725-ice-unified",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/image-cdn-optimizer.js?v=20260721-1",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/listing.js?v=20260725-ice-unified",
+          "status": 404
+        }
+      ]
+    }
+  },
+  "failures": [
+    "host redirect http://www.trrb.net/ => 301 https://www.trrb.net/",
+    "article sitemap sample too small: 0",
+    {
+      "page": "https://trrb.net/ice/news",
+      "status": 200,
+      "bad_assets": [
+        {
+          "url": "https://trrb.net/ice/site.webmanifest?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/assets/icons/icon-192.png",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/styles.css?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/listing-seo.js?v=20260728-1",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/trrb-logo-cropped.webp",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/immigration-entry.js?v=20260725-1",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/articles-index.js?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/site-search.js?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/site-common.js?v=29.7",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/category-runtime-v3.js?v=20260725-ice-unified",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/image-cdn-optimizer.js?v=20260721-1",
+          "status": 404
+        },
+        {
+          "url": "https://trrb.net/ice/listing.js?v=20260725-ice-unified",
+          "status": 404
+        }
+      ]
+    }
+  ],
+  "warnings": []
+}

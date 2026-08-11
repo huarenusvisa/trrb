@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11T00:26:48.971Z",
+  "generated_at": "2026-08-11T00:46:31.165Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -32,8 +32,8 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 64788,
-      "article_count": 165,
+      "bytes": 64028,
+      "article_count": 163,
       "child_sitemaps": []
     }
   },
@@ -59,18 +59,6 @@
       "h1_length": 17,
       "canonical": "https://trrb.net/article.html?id=fa8b5936-5713-474d-a7c4-c2f095f1a7be",
       "body_length": 148,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/article.html?id=d4c63c85-f2dc-490e-9145-eda766d03529",
-      "status": 200,
-      "final_url": "https://trrb.net/article.html?id=d4c63c85-f2dc-490e-9145-eda766d03529",
-      "prerender": "article-edge-v1",
-      "title_length": 21,
-      "h1_length": 14,
-      "canonical": "https://trrb.net/article.html?id=d4c63c85-f2dc-490e-9145-eda766d03529",
-      "body_length": 32,
       "schema": true,
       "noindex": false
     },
@@ -157,6 +145,18 @@
       "body_length": 131,
       "schema": true,
       "noindex": false
+    },
+    {
+      "url": "https://trrb.net/article.html?id=3b5220ab-0593-4f6e-b223-fd0c5bc8d9d9",
+      "status": 200,
+      "final_url": "https://trrb.net/article.html?id=3b5220ab-0593-4f6e-b223-fd0c5bc8d9d9",
+      "prerender": "article-edge-v1",
+      "title_length": 31,
+      "h1_length": 24,
+      "canonical": "https://trrb.net/article.html?id=3b5220ab-0593-4f6e-b223-fd0c5bc8d9d9",
+      "body_length": 127,
+      "schema": true,
+      "noindex": false
     }
   ],
   "pages": {
@@ -181,21 +181,6 @@
   },
   "failures": [
     "host redirect http://www.trrb.net/ => 301 https://www.trrb.net/",
-    {
-      "article": "https://trrb.net/article.html?id=d4c63c85-f2dc-490e-9145-eda766d03529",
-      "row": {
-        "url": "https://trrb.net/article.html?id=d4c63c85-f2dc-490e-9145-eda766d03529",
-        "status": 200,
-        "final_url": "https://trrb.net/article.html?id=d4c63c85-f2dc-490e-9145-eda766d03529",
-        "prerender": "article-edge-v1",
-        "title_length": 21,
-        "h1_length": 14,
-        "canonical": "https://trrb.net/article.html?id=d4c63c85-f2dc-490e-9145-eda766d03529",
-        "body_length": 32,
-        "schema": true,
-        "noindex": false
-      }
-    },
     {
       "article": "https://trrb.net/article.html?id=c36c5f7f-e802-4ed8-ab55-4dbc945a51c6",
       "row": {

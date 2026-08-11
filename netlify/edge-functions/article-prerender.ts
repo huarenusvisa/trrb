@@ -1,4 +1,5 @@
 const SITE = "https://trrb.net";
+const MIN_INDEXABLE_BODY_LENGTH = 80;
 
 export const config = { path: "/article.html" };
 
@@ -20,6 +21,21 @@ function escJson(value: unknown): string {
 
 function clean(value: unknown): string {
   return String(value ?? "").replace(/\s+/g, " ").trim();
+}
+
+function visibleText(value: unknown): string {
+  return clean(value)
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;|&#160;/gi, " ")
+    .replace(/&[a-z0-9#]+;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isIndexableArticle(article: any): boolean {
+  return visibleText(article?.content || "").length >= MIN_INDEXABLE_BODY_LENGTH;
 }
 
 function isoDate(value: unknown): string {
@@ -73,6 +89,10 @@ function injectHead(html: string, article: any, canonical: string) {
   const published = isoDate(article.published_at || article.created_at);
   const image = clean(article.cover_image) || `${SITE}/trrb-logo-cropped.webp`;
   const keywords = clean(article.seo_keywords) || [category, title, "唐人日报", "美国华人"].join(",");
+  const indexable = isIndexableArticle(article);
+  const robots = indexable
+    ? "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+    : "noindex,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1";
   const schema = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
@@ -96,7 +116,7 @@ function injectHead(html: string, article: any, canonical: string) {
     <title>${esc(title)} - 唐人日报</title>
     <meta name="description" content="${esc(summary)}" />
     <meta name="keywords" content="${esc(keywords)}" />
-    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="robots" content="${robots}" />
     <link rel="canonical" href="${esc(canonical)}" />
     <link rel="alternate" type="application/rss+xml" title="唐人日报 RSS" href="${SITE}/feed.xml" />
     <meta property="og:type" content="article" />
@@ -176,6 +196,8 @@ export default async (request: Request, context: any) => {
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
     headers.set("x-trrb-prerender", "article-edge-v1");
+    if (!isIndexableArticle(article)) headers.set("x-robots-tag", "noindex, follow");
+    else headers.delete("x-robots-tag");
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers });
   } catch (error) {
     console.error("article prerender failed", error);

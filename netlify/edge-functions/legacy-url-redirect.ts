@@ -61,9 +61,6 @@ function decodePathname(pathname: string): string {
 function isLegacyCandidate(pathname: string): boolean {
   if (!pathname || pathname === "/") return false;
 
-  // URL.pathname keeps non-ASCII path text percent-encoded in production requests.
-  // Always decode before testing Chinese title slugs; otherwise real legacy URLs
-  // such as /%E5%8D%8E%E8%A3%94.../ fall through and become ordinary 404s.
   const decodedPath = decodePathname(pathname);
   const lower = decodedPath.toLowerCase();
 
@@ -148,6 +145,10 @@ function redirect(destination: string, reason: string): Response {
   });
 }
 
+function canonicalSamePath(url: URL): string {
+  return `${SITE_ORIGIN}${url.pathname}${url.search}`;
+}
+
 function gone(reason: string): Response {
   return new Response("Gone", {
     status: 410,
@@ -164,6 +165,15 @@ export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
 
   const url = new URL(request.url);
+  const host = url.hostname.toLowerCase();
+  const isCcHost = host === "trrb.cc" || host === "www.trrb.cc";
+
+  // Canonical-domain migration: both .cc hosts must permanently consolidate into trrb.net.
+  // Root and current application routes keep path/query exactly; legacy Chinese-title URLs
+  // continue through the matcher below so they can land directly on the corresponding article.
+  if (isCcHost && url.pathname === "/") {
+    return redirect(`${SITE_ORIGIN}/${url.search}`, "cc-domain-migration-root");
+  }
 
   if (url.searchParams.get("mailpoet_page") === "subscriptions") {
     return gone("wordpress-mailpoet-page");
@@ -172,7 +182,12 @@ export default async (request: Request, context: any) => {
   const systemDestination = legacySystemRedirect(url.pathname);
   if (systemDestination === GONE) return gone("wordpress-system-page");
   if (systemDestination) return redirect(systemDestination, "wordpress-system-page");
-  if (!isLegacyCandidate(url.pathname)) return context.next();
+
+  const legacyCandidate = isLegacyCandidate(url.pathname);
+  if (!legacyCandidate) {
+    if (isCcHost) return redirect(canonicalSamePath(url), "cc-domain-migration-path");
+    return context.next();
+  }
 
   let legacyTitle = "";
   try {
@@ -186,8 +201,10 @@ export default async (request: Request, context: any) => {
   if (legacyTitle.length < 4 || legacyTitle.length > 220) return gone("wordpress-title-invalid");
 
   try {
-    // Do not retire a currently active first-level category whose slug happens to contain Chinese.
-    if (await isActiveCategorySlug(legacyTitle)) return context.next();
+    if (await isActiveCategorySlug(legacyTitle)) {
+      if (isCcHost) return redirect(canonicalSamePath(url), "cc-active-category");
+      return context.next();
+    }
 
     const candidates = await fetchCandidates(legacyTitle);
     const ranked = candidates
@@ -205,7 +222,8 @@ export default async (request: Request, context: any) => {
     return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(match.id)}`, `article-match-${match.score}`);
   } catch (error) {
     console.error("legacy redirect lookup failed", error);
-    // If the database lookup itself fails, fail open so a temporary backend issue never retires a valid page.
+    // On .cc, never serve a duplicate copy even if the article lookup backend is temporarily unavailable.
+    if (isCcHost) return redirect(canonicalSamePath(url), "cc-domain-migration-fallback");
     return context.next();
   }
 };

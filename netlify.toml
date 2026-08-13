@@ -4,7 +4,11 @@
 
 [[edge_functions]]
   function = "article-prerender"
-  path = ["/article.html", "/*/*"]
+  path = "/article.html"
+
+[[edge_functions]]
+  function = "article-prerender"
+  path = "/*/*"
 
 [[edge_functions]]
   function = "legacy-url-redirect"

@@ -35,6 +35,7 @@ async function fetchAll(table, select, extra = {}) {
     const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
     url.searchParams.set('select', select);
     Object.entries(extra).forEach(([key, value]) => url.searchParams.set(key, value));
+    if (!url.searchParams.has('order')) url.searchParams.set('order', 'id.asc');
     url.searchParams.set('limit', String(pageSize));
     url.searchParams.set('offset', String(offset));
     const response = await fetch(url, { headers });

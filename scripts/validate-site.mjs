@@ -60,6 +60,7 @@ await Promise.all([
   parseBrowserScript("category-runtime-v3.js"),
   parseBrowserScript("listing.js"),
   parseBrowserScript("article.js"),
+  parseBrowserScript("article-route-runtime.js"),
   parseBrowserScript("admin/category-manager.js")
 ]);
 
@@ -77,19 +78,28 @@ const sitemap = await bytes("sitemap.xml");
 if (!startsText(sitemap, "<?xml")) failures.push("sitemap.xml is not XML");
 if (!includesText(sitemap, "<sitemapindex") || !includesText(sitemap, "<loc>https://trrb.net/sitemap-")) failures.push("sitemap.xml is not a valid canonical trrb.net sitemap index");
 if (includesText(sitemap, "https://www.trrb.net/")) failures.push("sitemap.xml still contains www.trrb.net URLs");
+if (!includesText(sitemap, "sitemap-articles-1.xml")) failures.push("sitemap.xml is missing article sitemap chunk");
 
 const sitemapStatic = await bytes("sitemap-static.xml");
 if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://trrb.net/</loc>")) failures.push("sitemap-static.xml is missing canonical root URL");
 if (includesText(sitemapStatic, "https://www.trrb.net/")) failures.push("sitemap-static.xml still contains www.trrb.net URLs");
 
+const sitemapArticles = await bytes("sitemap-articles-1.xml");
+const sitemapArticlesText = sitemapArticles.toString("utf8");
+if (!includesText(sitemapArticles, "<urlset")) failures.push("sitemap-articles-1.xml is not a URL set");
+if (!/https:\/\/trrb\.net\/[^/<]+\/[^<]+/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml is missing pretty article URLs");
+if (/\/article\.html\?id=/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml still contains legacy article URLs");
+
 const newsSitemap = await bytes("news-sitemap.xml");
 if (!startsText(newsSitemap, "<?xml")) failures.push("news-sitemap.xml is not XML");
 if (!includesText(newsSitemap, "xmlns:news=\"http://www.google.com/schemas/sitemap-news/0.9\"")) failures.push("news-sitemap.xml is missing Google News namespace");
 if (includesText(newsSitemap, "https://www.trrb.net/")) failures.push("news-sitemap.xml still contains www.trrb.net URLs");
+if (/\/article\.html\?id=/.test(newsSitemap.toString("utf8"))) failures.push("news-sitemap.xml still contains legacy article URLs");
 
 const feed = await bytes("feed.xml");
 if (!startsText(feed, "<?xml")) failures.push("feed.xml is not XML");
 if (!includesText(feed, "<rss version=\"2.0\"") || !includesText(feed, "<channel>")) failures.push("feed.xml is not a valid RSS document");
+if (/\/article\.html\?id=/.test(feed.toString("utf8"))) failures.push("feed.xml still contains legacy article URLs");
 
 const redirects = await bytes("_redirects");
 if (!redirects.toString("utf8").trim()) failures.push("_redirects contains no category routes");

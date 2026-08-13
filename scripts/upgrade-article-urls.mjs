@@ -1,0 +1,115 @@
+import fs from 'node:fs';
+
+const SITE = 'https://trrb.net';
+const SUPABASE_URL = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+  console.warn('[article-urls] Supabase env missing; skip SEO URL upgrade');
+  process.exit(0);
+}
+
+const FALLBACK_CATEGORY_SLUGS = new Map([
+  ['重要新闻', 'important'],
+  ['热门头条', 'hot'],
+  ['美国时政', 'politics'],
+  ['美国警情', 'crime'],
+  ['中国官场', 'china'],
+  ['移民美国', 'immigration'],
+  ['庇护百科', 'asylum'],
+  ['ICE执法动态', 'ice'],
+  ['ICE执法', 'ice'],
+  ['曝光墙', 'expose']
+]);
+
+const headers = {
+  apikey: SUPABASE_KEY,
+  Authorization: `Bearer ${SUPABASE_KEY}`,
+  Accept: 'application/json'
+};
+
+async function fetchAll(table, select, extra = {}) {
+  const pageSize = 1000;
+  const rows = [];
+  for (let offset = 0; ; offset += pageSize) {
+    const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
+    url.searchParams.set('select', select);
+    Object.entries(extra).forEach(([key, value]) => url.searchParams.set(key, value));
+    url.searchParams.set('limit', String(pageSize));
+    url.searchParams.set('offset', String(offset));
+    const response = await fetch(url, { headers });
+    if (!response.ok) throw new Error(`${table} ${response.status}: ${(await response.text()).slice(0, 300)}`);
+    const batch = await response.json();
+    if (!Array.isArray(batch)) break;
+    rows.push(...batch);
+    if (batch.length < pageSize) break;
+  }
+  return rows;
+}
+
+function safeSegment(value) {
+  return encodeURIComponent(String(value || '').trim());
+}
+
+function articleSection(article, categoriesById, categoriesByName) {
+  const topic = String(article.topic_key || '').trim().toLowerCase();
+  if (topic === 'trump') return 'trump';
+  if (topic === 'ice') return 'ice';
+
+  const byId = categoriesById.get(String(article.category_id || ''));
+  if (byId?.slug) return String(byId.slug).trim();
+  const byName = categoriesByName.get(String(article.category_name || '').trim());
+  if (byName?.slug) return String(byName.slug).trim();
+  return FALLBACK_CATEGORY_SLUGS.get(String(article.category_name || '').trim()) || 'news';
+}
+
+function prettyUrl(article, categoriesById, categoriesByName) {
+  const section = articleSection(article, categoriesById, categoriesByName);
+  const slug = String(article.slug || '').trim() || String(article.id || '').trim();
+  if (!slug) return '';
+  return `${SITE}/${safeSegment(section)}/${safeSegment(slug)}`;
+}
+
+function decodeId(value) {
+  try { return decodeURIComponent(value); } catch { return value; }
+}
+
+function upgradeText(text, routes) {
+  return String(text || '').replace(/https:\/\/(?:www\.)?trrb\.net\/article\.html\?id=([^<"'&\s]+)/gi, (full, encodedId) => {
+    const id = decodeId(encodedId);
+    return routes.get(id) || full.replace('https://www.trrb.net', SITE);
+  });
+}
+
+const categories = await fetchAll('categories', 'id,name,slug', { is_active: 'eq.true' });
+const categoriesById = new Map(categories.map((row) => [String(row.id || ''), row]));
+const categoriesByName = new Map(categories.map((row) => [String(row.name || '').trim(), row]));
+const articles = await fetchAll(
+  'articles',
+  'id,slug,category_id,category_name,topic_key,status',
+  { status: 'eq.published' }
+);
+
+const routes = new Map();
+for (const article of articles) {
+  const id = String(article.id || '').trim();
+  const url = prettyUrl(article, categoriesById, categoriesByName);
+  if (id && url) routes.set(id, url);
+}
+
+const files = ['sitemap.xml', 'news-sitemap.xml', 'feed.xml'];
+let replacements = 0;
+for (const file of files) {
+  if (!fs.existsSync(file)) continue;
+  const before = fs.readFileSync(file, 'utf8');
+  const after = upgradeText(before, routes);
+  if (after !== before) {
+    fs.writeFileSync(file, after);
+    replacements += 1;
+    console.log(`[article-urls] upgraded ${file}`);
+  } else {
+    console.log(`[article-urls] no legacy article URLs in ${file}`);
+  }
+}
+
+console.log(`[article-urls] route map ${routes.size}; files changed ${replacements}`);

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T04:25:41.144Z",
+  "generated_at": "2026-08-13T05:41:33.467Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -8,8 +8,9 @@
       "error": ""
     },
     "http://www.trrb.net/": {
-      "status": 0,
-      "error": "fetch failed"
+      "status": 301,
+      "location": "https://www.trrb.net/",
+      "error": ""
     },
     "https://www.trrb.net/": {
       "status": 301,
@@ -31,7 +32,7 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 138124,
+      "bytes": 136878,
       "article_count": 0,
       "child_sitemaps": []
     },
@@ -55,7 +56,7 @@
     "https://trrb.net/": {
       "status": 200,
       "final_url": "https://trrb.net/",
-      "asset_count": 55,
+      "asset_count": 56,
       "bad_assets": []
     },
     "https://trrb.net/ice": {
@@ -67,12 +68,12 @@
     "https://trrb.net/ice/news": {
       "status": 200,
       "final_url": "https://trrb.net/ice/news",
-      "asset_count": 14,
+      "asset_count": 15,
       "bad_assets": []
     }
   },
   "failures": [
-    "host redirect http://www.trrb.net/ => 0 undefined",
+    "host redirect http://www.trrb.net/ => 301 https://www.trrb.net/",
     "article sitemap sample too small: 0"
   ],
   "warnings": []

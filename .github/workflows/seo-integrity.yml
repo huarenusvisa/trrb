@@ -14,6 +14,7 @@ on:
       - "feed.xml"
       - "netlify.toml"
       - "scripts/seo-integrity-audit.mjs"
+      - "scripts/upgrade-article-urls.mjs"
       - ".github/workflows/seo-integrity.yml"
   schedule:
     - cron: "20 8 * * *"
@@ -42,6 +43,7 @@ jobs:
           node scripts/generate-sitemaps.mjs
           node scripts/clean-sitemap-against-database.mjs
           node scripts/generate-feed.mjs
+          node scripts/upgrade-article-urls.mjs
       - name: Run production integrity validation
         run: node scripts/validate-site.mjs
       - name: Run SEO and internal 404 audit

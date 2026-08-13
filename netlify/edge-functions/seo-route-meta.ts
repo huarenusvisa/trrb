@@ -5,6 +5,8 @@ export const config = {
   path: [
     "/", "/index.html",
     "/listing", "/listing.html",
+    "/important-news", "/hot-headlines", "/us-politics", "/us-crime", "/china-officialdom", "/asylum",
+    "/uscis", "/dhs", "/cbp", "/visa", "/china", "/politics", "/world",
     "/expose", "/expose.html",
     "/immigrate", "/immigrate/", "/immigrate/index.html",
     "/immigrate/center", "/immigrate/center.html",
@@ -36,6 +38,10 @@ const CATEGORY_SLUGS: Record<string, string> = {
   "Politics": "politics",
   "World": "world"
 };
+
+const CATEGORY_NAMES_BY_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(CATEGORY_SLUGS).map(([name, slug]) => [slug, name])
+);
 
 const IMMIGRATION_PATHS: Record<string, { name: string; description: string }> = {
   "study": {
@@ -77,6 +83,16 @@ function esc(value: unknown): string {
     .replaceAll("'", "&#039;");
 }
 
+function categorySeo(category: string, slug: string, page = 1): Seo {
+  const baseCanonical = `${SITE}/${slug}`;
+  const canonical = page > 1 ? `${baseCanonical}?page=${page}` : baseCanonical;
+  return {
+    title: `${category}新闻${page > 1 ? ` 第${page}页` : ""} - 唐人日报`,
+    description: `唐人日报${category}栏目，持续更新相关新闻、政策变化、重要事件、背景信息与后续进展，为华人读者提供清晰及时的新闻汇总。`,
+    canonical
+  };
+}
+
 function listingSeo(url: URL): Seo {
   if (url.pathname === "/ice/news" || url.pathname === "/ice/news/") {
     return {
@@ -94,7 +110,9 @@ function listingSeo(url: URL): Seo {
   if (query || type === "search") {
     return {
       title: query ? `搜索：${query} - 唐人日报` : "新闻搜索 - 唐人日报",
-      description: query ? `唐人日报站内搜索结果：${query}。` : "唐人日报站内新闻搜索，查找已发布新闻与专题内容。",
+      description: query
+        ? `唐人日报站内搜索结果：${query}。汇总相关最新新闻、政策变化、背景信息与后续报道，方便读者快速查找相关内容。`
+        : "唐人日报站内新闻搜索，查找已发布新闻、政策变化、背景信息、专题内容与后续报道。",
       canonical: `${SITE}/listing`,
       robots: "noindex,follow,noarchive"
     };
@@ -118,11 +136,12 @@ function listingSeo(url: URL): Seo {
   }
 
   const slug = CATEGORY_SLUGS[category];
-  const baseCanonical = slug ? `${SITE}/${slug}` : `${SITE}/listing?category=${encodeURIComponent(category)}`;
-  const canonical = page > 1 ? `${baseCanonical}${baseCanonical.includes("?") ? "&" : "?"}page=${page}` : baseCanonical;
+  if (slug) return categorySeo(category, slug, page);
+  const baseCanonical = `${SITE}/listing?category=${encodeURIComponent(category)}`;
+  const canonical = page > 1 ? `${baseCanonical}&page=${page}` : baseCanonical;
   return {
     title: `${category}新闻${page > 1 ? ` 第${page}页` : ""} - 唐人日报`,
-    description: `唐人日报${category}栏目，持续更新相关新闻、政策变化与重要事件。`,
+    description: `唐人日报${category}栏目，持续更新相关新闻、政策变化、重要事件、背景信息与后续进展。`,
     canonical
   };
 }
@@ -137,6 +156,14 @@ function routeSeo(url: URL): Seo | null {
     };
   }
   if (path === "/listing" || path === "/listing.html" || path === "/ice/news") return listingSeo(url);
+
+  const categorySlug = path.replace(/^\//, "");
+  const categoryName = CATEGORY_NAMES_BY_SLUG[categorySlug];
+  if (categoryName) {
+    const page = Math.max(1, Number(url.searchParams.get("page") || "1") || 1);
+    return categorySeo(categoryName, categorySlug, page);
+  }
+
   if (path === "/expose" || path === "/expose.html") {
     return {
       title: "曝光墙投稿 - 唐人日报",
@@ -216,7 +243,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("link", `<${seo.canonical}>; rel=\"canonical\"`);
-    headers.set("x-trrb-seo-route-meta", "round10-v1");
+    headers.set("x-trrb-seo-route-meta", "round10-v2");
     if (/^noindex/i.test(seo.robots || "")) headers.set("x-robots-tag", seo.robots || "noindex,follow");
     else headers.delete("x-robots-tag");
     return new Response(request.method === "HEAD" ? null : body, { status: upstream.status, headers });

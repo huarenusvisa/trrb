@@ -15,6 +15,7 @@ on:
       - "netlify.toml"
       - "scripts/seo-integrity-audit.mjs"
       - "scripts/upgrade-article-urls.mjs"
+      - "scripts/verify-pr-preview.mjs"
       - ".github/workflows/seo-integrity.yml"
   push:
     branches: [main]
@@ -29,6 +30,7 @@ on:
       - "netlify.toml"
       - "scripts/seo-integrity-audit.mjs"
       - "scripts/upgrade-article-urls.mjs"
+      - "scripts/verify-pr-preview.mjs"
       - ".github/workflows/seo-integrity.yml"
   schedule:
     - cron: "20 8 * * *"
@@ -62,6 +64,13 @@ jobs:
         run: node scripts/validate-site.mjs
       - name: Run SEO and internal 404 audit
         run: node scripts/seo-integrity-audit.mjs
+      - name: Verify Netlify deploy preview article routes
+        if: github.event_name == 'pull_request'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PREVIEW_BASE: https://deploy-preview-${{ github.event.pull_request.number }}--trrb.netlify.app
+        run: node scripts/verify-pr-preview.mjs
       - name: Upload SEO audit report
         if: always()
         uses: actions/upload-artifact@v4

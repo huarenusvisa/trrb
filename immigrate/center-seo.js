@@ -1,5 +1,5 @@
 (() => {
-  const SITE = 'https://www.trrb.net';
+  const SITE = 'https://trrb.net';
   const cfg = window.TRRB_IMMIGRATION_KNOWLEDGE || { categories: [] };
   const params = new URLSearchParams(location.search);
   const path = params.get('path') || 'study';
@@ -15,7 +15,7 @@
   const description = clean(topic
     ? `${topic.summary || topic.name}。系统整理申请资格、办理流程、材料准备、时间节点、常见风险与相关文章，由唐人日报美国移民知识中心持续更新。`
     : `${category.description}系统整理各类申请资格、流程、材料、风险和最新知识文章，由唐人日报持续更新。`).slice(0, 180);
-  const canonical = `${SITE}/immigrate/center.html?path=${encodeURIComponent(category.slug)}${topic ? `&topic=${encodeURIComponent(topic.slug)}` : ''}`;
+  const canonical = `${SITE}/immigrate/center?path=${encodeURIComponent(category.slug)}${topic ? `&topic=${encodeURIComponent(topic.slug)}` : ''}`;
   const keywords = [...new Set([
     category.nameZh,
     category.nameEn,
@@ -64,7 +64,7 @@
     '@type': 'ListItem',
     position: index + 1,
     name: item.name,
-    url: `${SITE}/immigrate/center.html?path=${encodeURIComponent(category.slug)}&topic=${encodeURIComponent(item.slug)}`
+    url: `${SITE}/immigrate/center?path=${encodeURIComponent(category.slug)}&topic=${encodeURIComponent(item.slug)}`
   }));
   const graph = {
     '@context': 'https://schema.org',
@@ -84,7 +84,7 @@
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: '首页', item: `${SITE}/` },
           { '@type': 'ListItem', position: 2, name: '移民美国', item: `${SITE}/immigrate/` },
-          { '@type': 'ListItem', position: 3, name: category.nameZh, item: `${SITE}/immigrate/center.html?path=${encodeURIComponent(category.slug)}` },
+          { '@type': 'ListItem', position: 3, name: category.nameZh, item: `${SITE}/immigrate/center?path=${encodeURIComponent(category.slug)}` },
           ...(topic ? [{ '@type': 'ListItem', position: 4, name: topic.name, item: canonical }] : [])
         ]
       },

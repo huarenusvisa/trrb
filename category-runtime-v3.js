@@ -92,7 +92,7 @@
       canonical.rel = "canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href = `https://www.trrb.net/${encodeURIComponent(active.slug)}`;
+    canonical.href = `https://trrb.net/${encodeURIComponent(active.slug)}`;
   }
 
   function publish(channels) {

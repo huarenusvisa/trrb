@@ -12,7 +12,6 @@ const legacySamples = [
 
 function decodeXml(v=''){return String(v).replaceAll('&amp;','&').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&quot;','"').replaceAll('&apos;',"'");}
 function locs(xml){return [...String(xml).matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map(m=>decodeXml(m[1].trim())).filter(Boolean);}
-function decodedPathname(url){try{return decodeURIComponent(new URL(url).pathname);}catch{return '';}}
 function isSuspiciousLegacyPath(url){
   try{
     const x = new URL(url);
@@ -20,7 +19,10 @@ function isSuspiciousLegacyPath(url){
     if (x.pathname === '/' || x.pathname === '/article.html') return false;
     const decoded = decodeURIComponent(x.pathname).replace(/^\/+|\/+$/g,'');
     if (!/[\u3400-\u9fff]/u.test(decoded)) return false;
-    // Current category slugs may legitimately be Chinese. Old article-title slugs are characteristically long.
+    const segments = decoded.split('/').filter(Boolean);
+    // Round 8 canonical article URLs are /<category-or-topic>/<article-slug>.
+    // Legacy title URLs were long, root-level, single-segment Chinese paths.
+    if (segments.length >= 2) return false;
     return decoded.length >= 18;
   }catch{return false;}
 }

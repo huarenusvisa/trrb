@@ -2,6 +2,20 @@ name: 全站SEO与404完整性检查
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "**/*.js"
+      - "**/*.css"
+      - "robots.txt"
+      - "sitemap*.xml"
+      - "news-sitemap.xml"
+      - "feed.xml"
+      - "netlify.toml"
+      - "scripts/seo-integrity-audit.mjs"
+      - "scripts/upgrade-article-urls.mjs"
+      - ".github/workflows/seo-integrity.yml"
   push:
     branches: [main]
     paths:

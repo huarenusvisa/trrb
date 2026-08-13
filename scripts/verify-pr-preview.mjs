@@ -26,10 +26,25 @@ const FALLBACK_CATEGORY_SLUGS = new Map([
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+async function fetchWithRetry(url, options = {}, attempts = 5) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await fetch(url, options);
+    } catch (error) {
+      lastError = error;
+      if (attempt === attempts) break;
+      console.log(`[preview] transient fetch failure (${attempt}/${attempts}): ${error?.cause?.code || error?.message || 'unknown'}`);
+      await sleep(1200 * attempt);
+    }
+  }
+  throw lastError || new Error(`fetch failed for ${url}`);
+}
+
 async function rest(table, params) {
   const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
   Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
-  const response = await fetch(url, { headers });
+  const response = await fetchWithRetry(url, { headers });
   if (!response.ok) throw new Error(`${table} ${response.status}: ${(await response.text()).slice(0, 240)}`);
   const rows = await response.json();
   return Array.isArray(rows) ? rows : [];
@@ -39,7 +54,7 @@ async function waitForPreview() {
   let lastError = null;
   for (let attempt = 1; attempt <= 18; attempt += 1) {
     try {
-      const response = await fetch(`${PREVIEW_BASE}/`, { redirect: 'manual' });
+      const response = await fetchWithRetry(`${PREVIEW_BASE}/`, { redirect: 'manual' }, 2);
       if (response.status >= 200 && response.status < 500) {
         console.log(`[preview] ready on attempt ${attempt}: ${response.status}`);
         return;
@@ -90,13 +105,13 @@ const prettyPath = `/${encodeURIComponent(section)}/${encodeURIComponent(String(
 const canonical = `${SITE}${prettyPath}`;
 const legacyPath = `/article.html?id=${encodeURIComponent(article.id)}`;
 
-const legacyResponse = await fetch(`${PREVIEW_BASE}${legacyPath}`, { redirect: 'manual' });
+const legacyResponse = await fetchWithRetry(`${PREVIEW_BASE}${legacyPath}`, { redirect: 'manual' });
 if (legacyResponse.status !== 301) throw new Error(`Legacy URL expected 301, got ${legacyResponse.status}`);
 const location = legacyResponse.headers.get('location') || '';
 if (location !== canonical) throw new Error(`Legacy redirect mismatch: expected ${canonical}, got ${location}`);
 console.log(`[preview] legacy 301 OK: ${legacyPath} -> ${canonical}`);
 
-const prettyResponse = await fetch(`${PREVIEW_BASE}${prettyPath}`, { redirect: 'manual' });
+const prettyResponse = await fetchWithRetry(`${PREVIEW_BASE}${prettyPath}`, { redirect: 'manual' });
 if (prettyResponse.status !== 200) throw new Error(`Pretty URL expected 200, got ${prettyResponse.status}`);
 const html = await prettyResponse.text();
 if (!html.includes(`data-article-id="${article.id}"`)) throw new Error('Pretty URL body is missing the expected article marker');
@@ -104,7 +119,7 @@ if (!html.includes(`href="${canonical}"`)) throw new Error('Pretty URL body is m
 if (!html.includes('data-trrb-edge-schema')) throw new Error('Pretty URL body is missing edge NewsArticle schema');
 console.log(`[preview] pretty 200/canonical/schema OK: ${prettyPath}`);
 
-const sitemapResponse = await fetch(`${PREVIEW_BASE}/sitemap-articles-1.xml`);
+const sitemapResponse = await fetchWithRetry(`${PREVIEW_BASE}/sitemap-articles-1.xml`, {}, 6);
 if (!sitemapResponse.ok) throw new Error(`Article sitemap expected 200, got ${sitemapResponse.status}`);
 const sitemap = await sitemapResponse.text();
 if (!sitemap.includes('<urlset')) throw new Error('Article sitemap is not a URL set');

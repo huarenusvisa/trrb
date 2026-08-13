@@ -20,6 +20,7 @@ async function fetchPublishedIds() {
     const url = new URL(`${base}/rest/v1/articles`);
     url.searchParams.set('select', 'id');
     url.searchParams.set('status', 'eq.published');
+    url.searchParams.set('order', 'id.asc');
     url.searchParams.set('limit', String(pageSize));
     url.searchParams.set('offset', String(offset));
     const response = await fetch(url, {

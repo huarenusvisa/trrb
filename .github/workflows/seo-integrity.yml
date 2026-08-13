@@ -2,6 +2,21 @@ name: 全站SEO与404完整性检查
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "**/*.js"
+      - "**/*.css"
+      - "robots.txt"
+      - "sitemap*.xml"
+      - "news-sitemap.xml"
+      - "feed.xml"
+      - "netlify.toml"
+      - "scripts/seo-integrity-audit.mjs"
+      - "scripts/upgrade-article-urls.mjs"
+      - "scripts/verify-pr-preview.mjs"
+      - ".github/workflows/seo-integrity.yml"
   push:
     branches: [main]
     paths:
@@ -14,6 +29,8 @@ on:
       - "feed.xml"
       - "netlify.toml"
       - "scripts/seo-integrity-audit.mjs"
+      - "scripts/upgrade-article-urls.mjs"
+      - "scripts/verify-pr-preview.mjs"
       - ".github/workflows/seo-integrity.yml"
   schedule:
     - cron: "20 8 * * *"
@@ -42,10 +59,18 @@ jobs:
           node scripts/generate-sitemaps.mjs
           node scripts/clean-sitemap-against-database.mjs
           node scripts/generate-feed.mjs
+          node scripts/upgrade-article-urls.mjs
       - name: Run production integrity validation
         run: node scripts/validate-site.mjs
       - name: Run SEO and internal 404 audit
         run: node scripts/seo-integrity-audit.mjs
+      - name: Verify Netlify deploy preview article routes
+        if: github.event_name == 'pull_request'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PREVIEW_BASE: https://deploy-preview-${{ github.event.pull_request.number }}--trrb.netlify.app
+        run: node scripts/verify-pr-preview.mjs
       - name: Upload SEO audit report
         if: always()
         uses: actions/upload-artifact@v4

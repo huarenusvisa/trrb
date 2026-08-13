@@ -13,9 +13,24 @@ if (!xml.includes('<urlset')) {
 const blocks = xml.match(/<url>[\s\S]*?<\/url>/g) || [];
 const staticBlocks = [];
 const articleBlocks = [];
+const RESERVED_FIRST_SEGMENTS = new Set(['topic', 'immigrate', 'assets', 'admin', 'data', 'netlify', '.netlify', 'wp-content']);
+
+function isArticleBlock(block) {
+  if (/\/article\.html\?id=/.test(block)) return true;
+  const match = block.match(/<loc>https:\/\/trrb\.net\/([^<]+)<\/loc>/i);
+  if (!match) return false;
+  const pathname = String(match[1] || '').split(/[?#]/)[0].replace(/^\/+|\/+$/g, '');
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts.length !== 2) return false;
+  const [section, slug] = parts;
+  if (!section || !slug || RESERVED_FIRST_SEGMENTS.has(section.toLowerCase())) return false;
+  if (section.toLowerCase() === 'ice' && slug.toLowerCase() === 'news') return false;
+  if (/\.[a-z0-9]{1,8}$/i.test(slug)) return false;
+  return true;
+}
 
 for (const block of blocks) {
-  if (/\/article\.html\?id=/.test(block)) articleBlocks.push(block);
+  if (isArticleBlock(block)) articleBlocks.push(block);
   else staticBlocks.push(block);
 }
 

@@ -22,6 +22,16 @@
     document.head.appendChild(link);
   }
 
+  function installArticleRouteRuntime() {
+    if (window.__TRRB_ARTICLE_ROUTE_RUNTIME__ || document.querySelector('script[data-trrb-article-route-runtime]')) return;
+    window.__TRRB_ARTICLE_ROUTE_RUNTIME__ = true;
+    const script = document.createElement("script");
+    script.src = "/article-route-runtime.js?v=20260813-1";
+    script.async = true;
+    script.dataset.trrbArticleRouteRuntime = "true";
+    document.head.appendChild(script);
+  }
+
   function categoryPlaceholder(category) {
     return CATEGORY_PLACEHOLDERS[category] || CATEGORY_PLACEHOLDERS.default;
   }
@@ -243,6 +253,7 @@
   window.TRRB_installNewsMediaStyles = installNewsMediaStyles;
   window.TRRB_applyImageFallback = applyImageFallback;
   installNewsMediaStyles();
+  installArticleRouteRuntime();
   installGlobalImageFallback();
 
   document.addEventListener("DOMContentLoaded", () => {

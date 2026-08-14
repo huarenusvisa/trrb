@@ -1,0 +1,68 @@
+name: 第十三轮发布后SEO实时同步
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/round13-publish-seo-sync.yml"
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_run:
+    workflows:
+      - "ICE持续处理发布线"
+      - "ICE直接救援生产线"
+      - "ICE唯一生产流水线"
+      - "ICE旧版手动应急流程"
+    types: [completed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round13-publish-seo-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 对齐主分支最新版本
+        run: |
+          git fetch origin main
+          git checkout -B main origin/main
+      - name: 校验生产密钥
+        run: |
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_SERVICE_ROLE_KEY"
+      - name: 从生产数据库重建 Sitemap / News Sitemap / RSS
+        run: |
+          node scripts/generate-sitemaps.mjs
+          node scripts/clean-sitemap-against-database.mjs
+          node scripts/ensure-sitemap-articles.mjs
+          node scripts/generate-feed.mjs
+          node scripts/upgrade-article-urls.mjs
+      - name: 仅在SEO文件变化时提交并触发Netlify部署
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "TRRB Round13 Sync Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add sitemap.xml news-sitemap.xml feed.xml _redirects
+          if git diff --cached --quiet; then
+            echo "SEO metadata already converged; no commit required."
+            exit 0
+          fi
+          git commit -m "Round 13: sync published articles into SEO feeds [skip ci]"
+          git push origin HEAD:main

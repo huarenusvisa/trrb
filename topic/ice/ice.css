@@ -243,3 +243,15 @@ a{text-decoration:none;color:inherit}
     padding:15px 14px;
   }
 }
+
+/* Round 12: contain every mobile ICE surface inside the viewport. */
+@media(max-width:767px){
+  html,body{width:100%;max-width:100%;overflow-x:clip}
+  .ice-topbar,.ice-page,.ice-panel,.ice-news-panel,.ice-stats,.map-heading-row,.map-shell,.ice-map,.range-tabs,.type-tabs,.ice-news-list,.ice-news-item,.ice-news-copy{min-width:0;max-width:100%}
+  .ice-page{overflow-x:clip}
+  .ice-panel,.ice-news-panel{overflow:hidden}
+  .ice-news-copy h3,.ice-news-copy p{overflow-wrap:anywhere;word-break:break-word}
+  .ice-news-source{min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .leaflet-container,.leaflet-pane,.leaflet-map-pane,.leaflet-control-container{max-width:100%}
+  .leaflet-control-attribution{max-width:calc(100vw - 48px);white-space:normal;line-height:1.15;overflow-wrap:anywhere}
+}

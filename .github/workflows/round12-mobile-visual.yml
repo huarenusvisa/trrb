@@ -43,8 +43,28 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium webkit
-      - name: 等待Netlify生产部署
-        run: sleep 240
+      - name: 等待当前版本真正上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum scripts/round12-mobile-visual.mjs | awk '{print $1}')"
+          echo "Expected mobile probe sha256: $expected"
+          for attempt in $(seq 1 48); do
+            probe="/tmp/round12-mobile-live-${attempt}.mjs"
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round12-mobile-visual.mjs?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+              live="$(sha256sum "$probe" | awk '{print $1}')"
+              echo "Deploy probe ${attempt}/48: $live"
+              if [ "$live" = "$expected" ]; then
+                echo "Current Round 12 mobile version is live."
+                exit 0
+              fi
+            else
+              echo "Deploy probe ${attempt}/48: production probe not ready"
+            fi
+            sleep 5
+          done
+          echo "Production never exposed the current Round 12 mobile probe within 4 minutes."
+          exit 1
       - name: iPhone WebKit + Android Chromium 深度验收
         env:
           SITE_ORIGIN: https://trrb.net

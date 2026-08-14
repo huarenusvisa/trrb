@@ -33,12 +33,15 @@ const [categories,rawArticles]=await Promise.all([loadCategories(),loadPublished
 const allowedIds=new Set(categories.filter(x=>x.include_in_rss!==false).map(x=>String(x.id)));
 const allowedNames=new Set(categories.filter(x=>x.include_in_rss!==false).map(x=>String(x.name)));
 const articles=(categories.length?rawArticles.filter(x=>x.category_id?allowedIds.has(String(x.category_id)):(!x.category_name||allowedNames.has(String(x.category_name)))):rawArticles).slice(0,100);
-const buildDate=new Date().toUTCString();
+// Keep RSS deterministic: lastBuildDate tracks the newest included article instead of the current clock.
+// This prevents the 5-minute SEO sync job from creating a new Git commit/Netlify deploy when no content changed.
+const newestFeedDate=new Date(articles[0]?.published_at||articles[0]?.created_at||0);
+const buildDate=Number.isNaN(newestFeedDate.getTime())?'Thu, 01 Jan 1970 00:00:00 GMT':newestFeedDate.toUTCString();
 const items=articles.map(article=>{
   const link=articleUrl(article);
   const title=clean(article.title||'唐人日报新闻');
   const description=clean(article.summary||article.content||'').slice(0,500);
-  const published=new Date(article.published_at||article.created_at||Date.now());
+  const published=new Date(article.published_at||article.created_at||0);
   const pubDate=Number.isNaN(published.getTime())?buildDate:published.toUTCString();
   const category=clean(article.category_name||'新闻');
   const enclosure=clean(article.cover_image||'');
@@ -46,4 +49,4 @@ const items=articles.map(article=>{
 }).join('\n');
 const feed=`<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n  <channel>\n    <title>唐人日报 Tang Ren Daily</title>\n    <link>${SITE}/</link>\n    <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>\n    <language>zh-cn</language>\n    <lastBuildDate>${buildDate}</lastBuildDate>\n    <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml" />\n${items}\n  </channel>\n</rss>\n`;
 fs.writeFileSync(path.join(ROOT,'feed.xml'),feed);
-console.log(`[feed] generated ${articles.length} items using ${categories.length} category settings`);
+console.log(`[feed] generated ${articles.length} items using ${categories.length} category settings; lastBuildDate=${buildDate}`);

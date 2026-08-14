@@ -25,7 +25,7 @@ if (html.includes(topicCss)) {
 // Upgrade dynamically rendered homepage article links from legacy article.html?id= URLs
 // to the canonical /section/slug routes without loading full article body chunks.
 if (!html.includes('article-route-runtime.js')) {
-  const marker = '<script src="./articles-home.js?v=30.4"></script>';
+  const marker = '<script src="./articles-home.js?v=30.5-r11-routefix"></script>';
   const runtime = '<script src="/article-route-runtime.js?v=20260814-r11"></script>';
   if (html.includes(marker)) html = html.replace(marker, `${runtime}${marker}`);
   else html = html.replace('</body>', `  ${runtime}\n  </body>`);

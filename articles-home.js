@@ -25,7 +25,7 @@ async function fetchJsonWithTimeout(url, options = {}, timeout = 6500) {
 }
 
 async function fetchLivePublishedArticles(limit = 60) {
-  const cacheKey = `trrb-live-v3-${limit}`;
+  const cacheKey = `trrb-live-v4-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
   const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
@@ -40,7 +40,7 @@ async function fetchLivePublishedArticles(limit = 60) {
 }
 
 async function fetchLiveArticleById(id) {
-  const cacheKey = `trrb-live-article-v3-${id}`;
+  const cacheKey = `trrb-live-article-v4-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
   const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");

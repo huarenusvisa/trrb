@@ -16,7 +16,14 @@ async function checkViewport(browserType, name, contextOptions) {
   const context = await browser.newContext({...contextOptions, locale:'zh-CN'});
   const page = await context.newPage();
   const consoleErrors = [];
+  const failedResources = [];
   page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
+  page.on('response', response => {
+    if (response.status() >= 400) failedResources.push(`${response.status()} ${response.url()}`);
+  });
+  page.on('requestfailed', request => {
+    failedResources.push(`FAILED ${request.url()} ${request.failure()?.errorText || ''}`.trim());
+  });
 
   async function open(path, selector = 'body') {
     const response = await page.goto(`${ORIGIN}${path}`, {waitUntil:'domcontentloaded', timeout:30000});
@@ -28,14 +35,26 @@ async function checkViewport(browserType, name, contextOptions) {
       viewport: window.innerWidth,
       title: document.title,
       text: document.body.innerText.slice(0,5000),
-      logo: (() => { const el=document.querySelector('.brand img,.site-header img'); if(!el) return null; const r=el.getBoundingClientRect(); return {w:r.width,h:r.height,visible:r.width>0&&r.height>0}; })(),
-      menuVisible: (() => { const el=document.querySelector('.mobile-menu-toggle'); if(!el) return false; const s=getComputedStyle(el); return s.display!=='none' && s.visibility!=='hidden'; })()
+      brand: (() => {
+        const el=document.querySelector('.brand img,.site-header img,.trump-brand,.ice-brand');
+        if(!el) return null;
+        const r=el.getBoundingClientRect();
+        return {w:r.width,h:r.height,visible:r.width>0&&r.height>0,text:(el.textContent||'').trim().slice(0,20)};
+      })(),
+      navigationVisible: (() => {
+        const candidates=[...document.querySelectorAll('.mobile-menu-toggle,.ice-menu,.trump-topbar nav')];
+        return candidates.some(el => {
+          const s=getComputedStyle(el);
+          const r=el.getBoundingClientRect();
+          return s.display!=='none' && s.visibility!=='hidden' && r.width>0 && r.height>0;
+        });
+      })()
     }));
     assert(metrics.bodyWidth <= metrics.viewport + 4, `${name} ${path} 无横向溢出`, `${metrics.bodyWidth}/${metrics.viewport}`);
     assert(!/文章不存在|文章已下线/.test(metrics.text), `${name} ${path} 无错误文章状态`);
     if (path !== '/listing.html?q=%E7%89%B9%E6%9C%97%E6%99%AE') {
-      assert(Boolean(metrics.logo?.visible) && metrics.logo.w < 360, `${name} ${path} Logo尺寸正常`, JSON.stringify(metrics.logo));
-      assert(metrics.menuVisible, `${name} ${path} 移动菜单按钮可见`);
+      assert(Boolean(metrics.brand?.visible) && metrics.brand.w < 360, `${name} ${path} 品牌标识尺寸正常`, JSON.stringify(metrics.brand));
+      assert(metrics.navigationVisible, `${name} ${path} 移动导航入口可见`);
     }
     return metrics;
   }
@@ -76,7 +95,10 @@ async function checkViewport(browserType, name, contextOptions) {
   assert(search.overflow <= 4, `${name} 搜索页无横向溢出`, `overflow=${search.overflow}`);
 
   await page.screenshot({path:`round12-${name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}.png`, fullPage:true});
-  assert(consoleErrors.filter(x => !/favicon|ResizeObserver/i.test(x)).length === 0, `${name} 无关键console error`, consoleErrors.slice(0,8).join(' | '));
+  const relevantFailed = [...new Set(failedResources.filter(x => !/favicon|ResizeObserver/i.test(x)))];
+  const relevantConsole = consoleErrors.filter(x => !/favicon|ResizeObserver/i.test(x));
+  assert(relevantFailed.length === 0, `${name} 无404/失败资源请求`, relevantFailed.slice(0,12).join(' | '));
+  assert(relevantConsole.length === 0, `${name} 无关键console error`, relevantConsole.slice(0,8).join(' | '));
   await browser.close();
 }
 

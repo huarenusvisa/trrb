@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 21:03:19 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 21:12:00 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>西雅图ICE逮捕墨西哥女涉嫌甲基安非他命走私</title>
+      <link>https://trrb.net/ice/ice-5f68bb7b064efeb20965cb0eb14b614191a592d3</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-5f68bb7b064efeb20965cb0eb14b614191a592d3</guid>
+      <pubDate>Fri, 14 Aug 2026 21:06:13 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>西雅图ICE逮捕墨西哥籍加西亚-巴拉哈斯，因走私甲基安非他命被判26个月联邦监禁。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPsN3uPbQAACcwb.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>美边境部门强化执法打击人口走私</title>
       <link>https://trrb.net/ice/ice-b57d15e2f662e34ecf68589ffd9514fbe18c7211</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>圣塔莫尼卡官员拒绝执行ICE对非法入境者萨拉维亚的拘留请求，致其获释。</description>
       <enclosure url="https://pbs.twimg.com/media/HPouum0a8AAenSp.png" type="image/png" />
-    </item>
-    <item>
-      <title>洛杉矶ICE拘捕洪都拉斯帮派成员维持拘押</title>
-      <link>https://trrb.net/ice/ice-ee99969a56a29aa851d1b770ea3e2b3dd53924f2</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-ee99969a56a29aa851d1b770ea3e2b3dd53924f2</guid>
-      <pubDate>Fri, 14 Aug 2026 04:34:40 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>洛杉矶ICE拘押非法入境的洪都拉斯帮派成员，等待遣返程序。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPouecPa4AAB0f5.png" type="image/png" />
     </item>
   </channel>
 </rss>

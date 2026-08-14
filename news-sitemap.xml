@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-5f68bb7b064efeb20965cb0eb14b614191a592d3</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T21:06:13.126Z</news:publication_date>
+        <news:title>西雅图ICE逮捕墨西哥女涉嫌甲基安非他命走私</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-b57d15e2f662e34ecf68589ffd9514fbe18c7211</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

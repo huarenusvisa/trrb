@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "scripts/round13-publish-freshness-audit.mjs"
+      - "netlify/edge-functions/sitemap-live.ts"
       - ".github/workflows/round13-node1-publish-freshness.yml"
       - ".github/workflows/round13-publish-seo-sync.yml"
       - "sitemap.xml"

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-14T13:41:03.481Z",
+  "generated_at": "2026-08-14T14:51:11.418Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -32,7 +32,7 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 157010,
+      "bytes": 156308,
       "article_count": 0,
       "child_sitemaps": []
     },
@@ -46,7 +46,7 @@
     "https://trrb.net/sitemap-articles-1.xml": {
       "status": 200,
       "type": "application/xml",
-      "bytes": 1120367,
+      "bytes": 1126386,
       "article_count": 0,
       "child_sitemaps": []
     }

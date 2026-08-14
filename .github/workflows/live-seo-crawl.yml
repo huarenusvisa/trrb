@@ -44,6 +44,11 @@ jobs:
         run: node scripts/live-seo-crawl.mjs
       - name: 验证Trump文章手机端CSS回归问题
         run: node scripts/verify-round10-mobile-article.mjs
+      - name: 验证第十一轮首页性能预算
+        env:
+          SITE_ORIGIN: https://trrb.net
+          CRAWL_TIMEOUT_MS: "15000"
+        run: node scripts/verify-round11-home-performance.mjs
       - name: 保存检查报告
         if: always()
         uses: actions/upload-artifact@v4

@@ -5,8 +5,25 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 22:39:07 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 22:43:03 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>加州比莱斯站逮捕持过期签证巴基斯坦男子</title>
+      <link>https://trrb.net/ice/ice-95bc51739a200258289581f9c0a2db6b93753a44</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-95bc51739a200258289581f9c0a2db6b93753a44</guid>
+      <pubDate>Fri, 14 Aug 2026 22:42:42 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>7月27日，加州比莱斯站ICE执法人员逮捕一名持2021年过期B2签证的巴基斯坦男子，该男子持有纽约州驾驶证。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPt3iQ-bcAAwVZA.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>美国终止多国临时保护身份要求离境</title>
+      <link>https://trrb.net/ice/ice-85d363720b12f69ae8cd61e4f282aab31691c421</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-85d363720b12f69ae8cd61e4f282aab31691c421</guid>
+      <pubDate>Fri, 14 Aug 2026 22:42:42 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国国土安全部8月宣布终止多国TPS，相关持有人须立即离境，否则将被遣返。</description>
+    </item>
     <item>
       <title>圣地亚哥ICE拘押持毒墨西哥籍嫌疑人</title>
       <link>https://trrb.net/ice/ice-81b7622beec8847edd0c74b43a667e863301e9fd</link>
@@ -888,24 +905,6 @@
       <category>ICE执法动态</category>
       <description>洛杉矶ICE拘留Truc Ngoc Tran，因1995年帮派谋杀案被定罪，正等待遣返程序。</description>
       <enclosure url="https://pbs.twimg.com/media/HPouUBxagAAvrv9.png" type="image/png" />
-    </item>
-    <item>
-      <title>洛杉矶ICE拘留非法重返者Zeferino Cha</title>
-      <link>https://trrb.net/ice/ice-1b94e576b091af76df3d365b8eb398ed3d181d4e</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-1b94e576b091af76df3d365b8eb398ed3d181d4e</guid>
-      <pubDate>Fri, 14 Aug 2026 05:00:32 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>洛杉矶ICE拘留了曾因非法重返、性犯罪及酒驾服刑的Zeferino Chavarria-Garcia。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPoumNxaMAAfIDB.png" type="image/png" />
-    </item>
-    <item>
-      <title>洛杉矶ICE逮捕可卡因嫌犯后遣返墨西哥</title>
-      <link>https://trrb.net/ice/ice-d311d462c55e84420222c4a936d6de9a89cc8dd3</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-d311d462c55e84420222c4a936d6de9a89cc8dd3</guid>
-      <pubDate>Fri, 14 Aug 2026 05:00:31 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>洛杉矶ICE逮捕可卡因贩运者José Rosario Luque-Cruz，服刑27个月后遣返回墨西哥。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPovwqnbgAASKlj.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

@@ -1,0 +1,26 @@
+name: 紧急文章跳转验收
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/verify-live-navigation-emergency.mjs"
+      - ".github/workflows/emergency-live-navigation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 等待Netlify回滚部署
+        run: sleep 90
+      - name: 检查最新20篇文章的新旧URL跳转
+        run: node scripts/verify-live-navigation-emergency.mjs

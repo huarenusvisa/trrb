@@ -53,11 +53,11 @@ jobs:
         env:
           SITE_ORIGIN: https://trrb.net
         run: node scripts/verify-round11-stale-article-route.mjs
-      - name: 第十一轮十节点并行生产验收
+      - name: 第十一轮十节点最终生产验收
         env:
           SITE_ORIGIN: https://trrb.net
           CRAWL_TIMEOUT_MS: "15000"
-        run: node scripts/round11-parallel-production-audit.mjs
+        run: node scripts/round11-final-production-audit.mjs
       - name: 保存检查报告
         if: always()
         uses: actions/upload-artifact@v4
@@ -65,5 +65,5 @@ jobs:
           name: live-seo-crawl-report
           path: |
             live-seo-crawl-report.json
-            round11-production-audit.json
+            round11-final-production-audit.json
           retention-days: 30

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-a91d361a7c159a915ae5bce90d77e8757c78c254</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T21:38:44.429Z</news:publication_date>
+        <news:title>美国ICE8月14日遣返多名非法移民加强安全</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-5f68bb7b064efeb20965cb0eb14b614191a592d3</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2294,30 +2302,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-12T21:57:01.362Z</news:publication_date>
         <news:title>旧金山执法机构逮捕加拿大通缉性侵嫌犯Charles</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-50c4cfeb1a3a9ae8e540f024a96a844844b8b597</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T21:29:15.822Z</news:publication_date>
-        <news:title>加州国土安全部坚持执法不撤离</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a9e76fa1fe9e551bea98c2f407f5f5bc70f5ec09</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T21:29:14.875Z</news:publication_date>
-        <news:title>ICE启动十年美国全国婚姻欺诈调查</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-ca82081d23a0d30cb62243519f119e60a2b516dd</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T21:29:13.832Z</news:publication_date>
-        <news:title>美国ICE起诉11被告涉假结婚诈骗案</news:title>
       </news:news>
     </url>
 </urlset>

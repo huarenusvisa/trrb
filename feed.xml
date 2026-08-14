@@ -5,8 +5,16 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 21:12:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 21:39:44 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>美国ICE8月14日遣返多名非法移民加强安全</title>
+      <link>https://trrb.net/ice/ice-a91d361a7c159a915ae5bce90d77e8757c78c254</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-a91d361a7c159a915ae5bce90d77e8757c78c254</guid>
+      <pubDate>Fri, 14 Aug 2026 21:38:44 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>2026年8月14日，美国ICE遣返多名非法移民，旨在维护国家安全。</description>
+    </item>
     <item>
       <title>西雅图ICE逮捕墨西哥女涉嫌甲基安非他命走私</title>
       <link>https://trrb.net/ice/ice-5f68bb7b064efeb20965cb0eb14b614191a592d3</link>
@@ -897,15 +905,6 @@
       <category>ICE执法动态</category>
       <description>洛宝克ICE接管完成18个月刑期的墨西哥籍毒贩哈伊罗，正在拘留等待遣返。</description>
       <enclosure url="https://pbs.twimg.com/media/HPou-9fbgAAGdNZ.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>洛杉矶ICE逮捕萨尔瓦多非法入境者获释</title>
-      <link>https://trrb.net/ice/ice-5080b0a733a8813321adb85dafa13a38b16a1d04</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-5080b0a733a8813321adb85dafa13a38b16a1d04</guid>
-      <pubDate>Fri, 14 Aug 2026 04:34:40 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>圣塔莫尼卡官员拒绝执行ICE对非法入境者萨拉维亚的拘留请求，致其获释。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPouum0a8AAenSp.png" type="image/png" />
     </item>
   </channel>
 </rss>

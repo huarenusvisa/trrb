@@ -5,7 +5,7 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 21:43:21 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 21:58:47 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>美国ICE8月14日遣返多名非法移民加强安全</title>
@@ -14,6 +14,7 @@
       <pubDate>Fri, 14 Aug 2026 21:38:44 GMT</pubDate>
       <category>ICE执法动态</category>
       <description>2026年8月14日，美国ICE遣返多名非法移民，旨在维护国家安全。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-14/10f83553-640a-469a-9aa2-29979ca657cf-e0f353d9-e1f7-4d08-bbe3-d5133bfd6347.webp" type="image/webp" />
     </item>
     <item>
       <title>西雅图ICE逮捕墨西哥女涉嫌甲基安非他命走私</title>

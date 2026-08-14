@@ -37,10 +37,10 @@ async function fetchCategoryBySlug(slug) {
 }
 
 async function fetchLivePublishedArticles(limit = 60) {
-  const cacheKey = `trrb-live-v4-${limit}`;
+  const cacheKey = `trrb-live-v5-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_id","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -51,11 +51,36 @@ async function fetchLivePublishedArticles(limit = 60) {
   return articles;
 }
 
+async function fetchLiveSearchArticles(query, limit = 240) {
+  const normalized = String(query || "").trim().slice(0, 120).replace(/[%*(),]/g, " ").replace(/\s+/g, " ");
+  if (!normalized) return [];
+  const cacheKey = `trrb-search-v1-${normalized.toLowerCase()}-${limit}`;
+  const cached = readLiveCache(cacheKey);
+  if (cached) return cached;
+
+  const select = ["id","title","slug","summary","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
+  const url = new URL(`${TRRB_SUPABASE_URL}/rest/v1/articles`);
+  url.searchParams.set("select", select);
+  url.searchParams.set("status", "eq.published");
+  const pattern = `*${normalized}*`;
+  url.searchParams.set("or", `(title.ilike.${pattern},summary.ilike.${pattern},content.ilike.${pattern})`);
+  url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
+  url.searchParams.set("limit", String(limit));
+
+  const rows = await fetchJsonWithTimeout(url.toString(), {
+    cache: "no-store",
+    headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
+  }, 9000);
+  const articles = (Array.isArray(rows) ? rows : []).map(mapLiveArticle);
+  writeLiveCache(cacheKey, articles);
+  return articles;
+}
+
 async function fetchLiveArticleById(id) {
-  const cacheKey = `trrb-live-article-v4-${id}`;
+  const cacheKey = `trrb-live-article-v5-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_id","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -70,10 +95,20 @@ function mapLiveArticle(row) {
   const published = row.published_at || row.created_at || "";
   const content = String(row.content || "").trim();
   return {
-    id: row.id, title: row.title || "", categoryId: row.category_id || "", category: row.category_name || "新闻",
-    excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
-    author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
-    body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
+    id: row.id,
+    title: row.title || "",
+    slug: row.slug || "",
+    topicKey: row.topic_key || "",
+    categoryId: row.category_id || "",
+    category: row.category_name || "新闻",
+    excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120),
+    image: row.cover_image || "",
+    author: row.author || "Tang Ren Daily",
+    date: formatLiveDate(published),
+    time: formatLiveDateTime(published),
+    views: "",
+    body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [],
+    isLive: true
   };
 }
 function formatLiveDate(value) { if (!value) return ""; const d = new Date(value); if (Number.isNaN(d.getTime())) return String(value); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
@@ -120,8 +155,13 @@ async function initListing() {
   else renderHeader(category, query);
 
   try {
-    const live = await fetchLivePublishedArticles(100);
-    if (!live.length) return;
+    const live = searchMode && query
+      ? await fetchLiveSearchArticles(query, 240)
+      : await fetchLivePublishedArticles(100);
+    if (!live.length) {
+      if (!archived.length) renderArticles([], page);
+      return;
+    }
     const seen = new Set(live.map((item) => String(item.id)));
     renderListingDataset(live.concat(archived.filter((item) => !seen.has(String(item.id)))), category, query, page);
   } catch (error) {
@@ -136,7 +176,7 @@ function applyCategorySeo(category) {
   if (category.seo_keywords) setMeta("keywords", category.seo_keywords);
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
-  canonical.href = `https://www.trrb.net/${encodeURIComponent(category.slug)}`;
+  canonical.href = `https://trrb.net/${encodeURIComponent(category.slug)}`;
 }
 
 function setMeta(name, content) {
@@ -172,10 +212,34 @@ function renderArticles(articles, page) {
   grid.innerHTML = items.map(renderCard).join("");
 }
 
+function articleUrl(article) {
+  if (typeof window.TRRB_articleUrl === "function") {
+    const routed = window.TRRB_articleUrl(article);
+    if (routed) return routed;
+  }
+  const slug = String(article?.slug || "").trim();
+  if (slug) {
+    const topic = String(article?.topicKey || article?.topic_key || "").trim().toLowerCase();
+    const sections = {
+      "重要新闻": "important-news",
+      "热门头条": "hot-headlines",
+      "美国时政": "us-politics",
+      "美国警情": "us-crime",
+      "中国官场": "china-officialdom",
+      "移民美国": "immigration",
+      "庇护百科": "asylum",
+      "驱逐快报": "deport"
+    };
+    const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (sections[String(article?.category || "").trim()] || "news");
+    return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+  }
+  return `/article.html?id=${encodeURIComponent(article?.id || "")}`;
+}
+
 function renderCard(article) {
   const image = imageUrl(article.image || "", article.category || "");
   const fallback = typeof window.TRRB_categoryPlaceholder === 'function' ? window.TRRB_categoryPlaceholder(article.category || '') : './image-placeholder.svg';
-  return `<article class="archive-card"><a href="./article.html?id=${encodeURIComponent(article.id)}"><img src="${escapeAttribute(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" /><span>${escapeHtml(article.category || "新闻")}</span><h2>${escapeHtml(article.title || "")}</h2><p>${escapeHtml(article.excerpt || "")}</p><time>${escapeHtml(article.time || article.date || "")}</time></a></article>`;
+  return `<article class="archive-card"><a href="${escapeAttribute(articleUrl(article))}"><img src="${escapeAttribute(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" /><span>${escapeHtml(article.category || "新闻")}</span><h2>${escapeHtml(article.title || "")}</h2><p>${escapeHtml(article.excerpt || "")}</p><time>${escapeHtml(article.time || article.date || "")}</time></a></article>`;
 }
 
 function imageUrl(value, category) {
@@ -210,7 +274,7 @@ function pageLink(label, page, disabled, category, query) {
   if (disabled) return `<span class="page-link is-disabled">${label}</span>`;
   if (currentCategorySlug && !query) return `<a class="page-link" href="/${encodeURIComponent(currentCategorySlug)}?${params.toString()}">${label}</a>`;
   if (category) params.set("category", category);
-  return `<a class="page-link" href="./listing.html?${params.toString()}">${label}</a>`;
+  return `<a class="page-link" href="/listing.html?${params.toString()}">${label}</a>`;
 }
 
 function escapeHtml(value) {

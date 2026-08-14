@@ -27,7 +27,7 @@ concurrency:
 jobs:
   crawl:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -58,6 +58,10 @@ jobs:
           SITE_ORIGIN: https://trrb.net
           CRAWL_TIMEOUT_MS: "15000"
         run: node scripts/round11-final-production-audit.mjs
+      - name: 第十二轮文章链路与全量索引生产审计
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round12-production-audit.mjs
       - name: 保存检查报告
         if: always()
         uses: actions/upload-artifact@v4
@@ -66,4 +70,5 @@ jobs:
           path: |
             live-seo-crawl-report.json
             round11-final-production-audit.json
+            round12-production-audit.json
           retention-days: 30

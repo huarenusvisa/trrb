@@ -1,0 +1,39 @@
+name: 第十一轮无人机文章线上诊断
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/round11-drone-live-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 抓取线上无人机文章
+        run: |
+          python - <<'PY'
+          import urllib.parse, urllib.request
+          slug='特朗普挥出无人机关税大棒最高100重税剑指海外供应链-msshk3o4-4c0315'
+          url='https://trrb.net/trump/'+urllib.parse.quote(slug,safe='')
+          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1','Cache-Control':'no-cache'})
+          with urllib.request.urlopen(req,timeout=20) as r:
+              html=r.read().decode('utf-8','replace')
+              print('STATUS',r.status)
+              print('FINAL',r.geturl())
+              print('X_PRERENDER',r.headers.get('x-trrb-prerender'))
+          checks={
+            'drone_title':'特朗普挥出无人机' in html,
+            'massage_wrong':'迈阿密按摩院连环扫黄' in html,
+            'missing':'文章不存在' in html,
+            'prerender':'data-prerendered="true"' in html,
+            'legacy_article_js':'article.js?v=29.7' in html,
+            'legacy_guard':'article-index-guard.js' in html,
+            'legacy_seo':'article-seo.js' in html,
+          }
+          print('CHECKS',checks)
+          print('H1',html[html.find('<h1'):html.find('</h1>')+5] if '<h1' in html else 'NONE')
+          PY

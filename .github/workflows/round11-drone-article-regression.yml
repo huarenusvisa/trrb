@@ -9,6 +9,11 @@ on:
       - "article.html"
       - "article-index-guard.js"
       - "netlify/edge-functions/article-prerender.ts"
+      - "immigrate/center.html"
+      - "scripts/seo-integrity-audit.mjs"
+      - "_headers"
+      - "_redirects"
+      - "netlify.toml"
       - ".github/workflows/round11-drone-article-regression.yml"
 
 permissions:
@@ -63,7 +68,6 @@ jobs:
           target='https://trrb.net/'+urllib.parse.quote(section,safe='')+'/'+urllib.parse.quote(str(row['slug']),safe='')
           print('TARGET=', target)
 
-          title=str(row.get('title') or '')
           last=''
           for attempt in range(1,25):
               try:

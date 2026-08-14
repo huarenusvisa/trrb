@@ -1,0 +1,30 @@
+name: 故障文章生产快速验收
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/article-route-production-verify.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: 等待生产部署并验证故障文章
+        shell: bash
+        run: |
+          for i in $(seq 1 16); do
+            echo "attempt=$i"
+            if SITE_ORIGIN=https://trrb.net node scripts/verify-round11-stale-article-route.mjs; then
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "生产文章仍未恢复"
+          exit 1

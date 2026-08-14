@@ -49,6 +49,10 @@ jobs:
           SITE_ORIGIN: https://trrb.net
           CRAWL_TIMEOUT_MS: "15000"
         run: node scripts/verify-round11-home-performance.mjs
+      - name: 验证失效pretty文章URL自动救援
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/verify-round11-stale-article-route.mjs
       - name: 第十一轮十节点并行生产验收
         env:
           SITE_ORIGIN: https://trrb.net

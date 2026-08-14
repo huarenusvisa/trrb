@@ -5,7 +5,7 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 22:43:03 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 22:51:15 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>加州比莱斯站逮捕持过期签证巴基斯坦男子</title>
@@ -23,6 +23,7 @@
       <pubDate>Fri, 14 Aug 2026 22:42:42 GMT</pubDate>
       <category>ICE执法动态</category>
       <description>美国国土安全部8月宣布终止多国TPS，相关持有人须立即离境，否则将被遣返。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-14/c4a399c4-4ea9-43c9-98f4-56c1d7c7a6d4-4e38f4b1-3ea8-4584-b11a-692e09c7cb7b.webp" type="image/webp" />
     </item>
     <item>
       <title>圣地亚哥ICE拘押持毒墨西哥籍嫌疑人</title>

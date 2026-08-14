@@ -1,0 +1,170 @@
+name: 第十一轮文章跳转竞态修复
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/fix-round11-article-click-race.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: 修复首页文章链接竞态与文章页旧脚本覆盖
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          # 1) Pretty article pages are server-rendered by the Edge function. Remove
+          # legacy client loaders from the source template entirely so they can never
+          # overwrite a correct prerendered article with the first stale archive item.
+          p = Path('article.html')
+          s = p.read_text(encoding='utf-8')
+          for pattern in [
+              r'<script src="\./article\.js\?v=29\.7"></script>',
+              r'<script src="\./article-index-guard\.js\?v=20260807-db-only"></script>',
+              r'<script src="\./article-seo\.js\?v=20260723-1"></script>',
+              r'<script src="/article\.js\?v=29\.7"></script>',
+              r'<script src="/article-index-guard\.js\?v=20260807-db-only"></script>',
+              r'<script src="/article-seo\.js\?v=20260723-1"></script>',
+          ]:
+              s = re.sub(pattern, '', s)
+          p.write_text(s, encoding='utf-8')
+
+          # 2) Homepage live rows must keep route fields so links are born canonical,
+          # not legacy article.html?id= links that are upgraded later asynchronously.
+          p = Path('articles-home.js')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              '["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"]',
+              '["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"]'
+          )
+          s = s.replace(
+              'id: row.id, title: row.title || "", category: row.category_name || "新闻",',
+              'id: row.id, title: row.title || "", slug: row.slug || "", categoryId: row.category_id || "", topicKey: row.topic_key || "", category: row.category_name || "新闻",'
+          )
+
+          old_load = '''async function loadHome() {
+            const archived = localArticleIndex();
+            if (archived.length) renderHome(archived);
+
+            try {
+              const live = await fetchLivePublishedArticles(60);
+              if (live.length) renderHome(mergeArticles(live, archived));
+              else if (!archived.length) throw new Error("No article data");
+            } catch (error) {
+              console.warn("Live articles unavailable", error);
+              if (!archived.length) {
+                try {
+                  const response = await fetch("./data/articles.json", { cache: "force-cache" });
+                  if (response.ok) renderHome(await response.json());
+                  else throw new Error("Archive unavailable");
+                } catch {
+                  const hero = document.querySelector("#hero");
+                  if (hero) hero.innerHTML = `<div class="empty-state">文章数据加载失败，请稍后刷新。</div>`;
+                }
+              }
+            }
+          }'''
+          new_load = '''async function loadHome() {
+            const archived = localArticleIndex();
+            try {
+              const live = await fetchLivePublishedArticles(60);
+              if (live.length) {
+                renderHome(mergeArticles(live, archived));
+                return;
+              }
+              throw new Error("No live article data");
+            } catch (error) {
+              console.warn("Live articles unavailable", error);
+              if (archived.length) {
+                renderHome(archived);
+                return;
+              }
+              try {
+                const response = await fetch("./data/articles.json", { cache: "force-cache" });
+                if (response.ok) renderHome(await response.json());
+                else throw new Error("Archive unavailable");
+              } catch {
+                const hero = document.querySelector("#hero");
+                if (hero) hero.innerHTML = `<div class="empty-state">文章数据加载失败，请稍后刷新。</div>`;
+              }
+            }
+          }'''
+          if old_load not in s:
+              raise SystemExit('loadHome patch target not found')
+          s = s.replace(old_load, new_load)
+
+          old_url = '''function articleUrl(article) {
+            return `./article.html?id=${encodeURIComponent(article.id)}`;
+          }'''
+          new_url = '''function articleUrl(article) {
+            if (!article) return "/";
+            const slug = String(article.slug || "").trim();
+            if (slug) {
+              const topic = String(article.topicKey || article.topic_key || "").trim().toLowerCase();
+              const category = String(article.category || article.category_name || "").trim();
+              const sections = {
+                "重要新闻": "important-news",
+                "热门头条": "hot-headlines",
+                "美国时政": "us-politics",
+                "美国警情": "us-crime",
+                "中国官场": "china-officialdom",
+                "移民美国": "immigration",
+                "庇护百科": "asylum",
+                "驱逐快报": "deport"
+              };
+              const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (sections[category] || "news");
+              return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+            }
+            if (typeof window.TRRB_articleUrl === "function") {
+              const routed = window.TRRB_articleUrl(article);
+              if (routed) return routed;
+            }
+            return `./article.html?id=${encodeURIComponent(article.id)}`;
+          }'''
+          if old_url not in s:
+              raise SystemExit('articleUrl patch target not found')
+          s = s.replace(old_url, new_url)
+          p.write_text(s, encoding='utf-8')
+
+          # 3) Load the route helper before articles-home.js as defense in depth.
+          p = Path('scripts/optimize-homepage-performance.mjs')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              'if (html.includes(marker)) html = html.replace(marker, `${marker}${runtime}`);',
+              'if (html.includes(marker)) html = html.replace(marker, `${runtime}${marker}`);'
+          )
+          p.write_text(s, encoding='utf-8')
+
+          # 4) Intrinsic safety guard: if an old cached index-guard leaks into a pretty
+          # route, never turn a verified server-prerendered page into "文章不存在".
+          p = Path('article-index-guard.js')
+          s = p.read_text(encoding='utf-8')
+          marker = "  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;\n"
+          guard = marker + "\n  // Pretty routes are already validated and rendered by the Edge function.\n  if (document.querySelector('#article-root[data-prerendered=\"true\"]')) return;\n"
+          if guard not in s:
+              if marker not in s: raise SystemExit('article-index-guard patch target not found')
+              s = s.replace(marker, guard, 1)
+          p.write_text(s, encoding='utf-8')
+
+          print('Round 11 article click/race fix applied')
+          PY
+      - name: 提交修复
+        run: |
+          git config user.name "TRRB Round 11 Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add article.html articles-home.js article-index-guard.js scripts/optimize-homepage-performance.mjs
+          git diff --cached --check
+          git commit -m "Round 11: eliminate article click race and stale overwrite"
+          git push origin main

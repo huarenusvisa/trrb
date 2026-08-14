@@ -12,7 +12,7 @@ function bindSiteSearch() {
       const query = input ? input.value.trim() : "";
       const nextParams = new URLSearchParams();
       if (query) nextParams.set("q", query);
-      window.location.href = `./listing.html${query ? `?${nextParams.toString()}` : ""}`;
+      window.location.href = `/listing.html${query ? `?${nextParams.toString()}` : ""}`;
     });
   });
 }

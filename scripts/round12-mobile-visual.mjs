@@ -43,13 +43,15 @@ async function checkViewport(browserType, name, contextOptions) {
   }
 
   function finishNetworkDiagnostics(label) {
-    const relevantFailed = [...new Set(failedResources.filter(x => !/favicon|ResizeObserver/i.test(x)))];
+    const navigationAbort = /net::ERR_ABORTED|Load request cancelled/i;
+    const relevantFailed = [...new Set(failedResources.filter(x => !/favicon|ResizeObserver/i.test(x)).filter(x => !navigationAbort.test(x)))];
     const relevantConsole = [...new Set(consoleErrors.filter(x => !/favicon|ResizeObserver/i.test(x)))];
     assert(relevantFailed.length === 0, `${name} ${label} 无404/失败资源请求`, relevantFailed.slice(0, 20).join(' | '));
     assert(relevantConsole.length === 0, `${name} ${label} 无关键console error`, relevantConsole.slice(0, 12).join(' | '));
     recordDiagnostic(`${name}:${label}:network`, {
       failedResources: relevantFailed.slice(0, 50),
-      consoleErrors: relevantConsole.slice(0, 30)
+      consoleErrors: relevantConsole.slice(0, 30),
+      ignoredNavigationAborts: [...new Set(failedResources.filter(x => navigationAbort.test(x)))].slice(0, 30)
     });
   }
 
@@ -83,6 +85,10 @@ async function checkViewport(browserType, name, contextOptions) {
         title: document.title,
         text: document.body.innerText.slice(0, 5000),
         finalUrl: location.href,
+        overflowOffenders: [...document.querySelectorAll('body *')].map(el => {
+          const r = el.getBoundingClientRect();
+          return { tag: el.tagName, cls: String(el.className || '').slice(0, 120), id: el.id || '', left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) };
+        }).filter(x => x.right > innerWidth + 4 || x.left < -4 || x.width > innerWidth + 4).sort((a,b) => b.right - a.right).slice(0, 12),
         brand: (() => {
           const el = document.querySelector('.brand img,.site-header img,.trump-brand,.ice-brand');
           if (!el) return null;
@@ -100,7 +106,7 @@ async function checkViewport(browserType, name, contextOptions) {
       }));
       assert(status === 200, `${name} ${path} HTTP 200`, `status=${status}; final=${metrics.finalUrl}`);
       assert(selectorVisible, `${name} ${path} 关键元素存在`, selector);
-      assert(metrics.bodyWidth <= metrics.viewport + 4, `${name} ${path} 无横向溢出`, `${metrics.bodyWidth}/${metrics.viewport}`);
+      assert(metrics.bodyWidth <= metrics.viewport + 4, `${name} ${path} 无横向溢出`, `${metrics.bodyWidth}/${metrics.viewport}; offenders=${JSON.stringify(metrics.overflowOffenders)}`);
       assert(!/文章不存在|文章已下线/.test(metrics.text), `${name} ${path} 无错误文章状态`);
       if (path !== '/listing.html?q=%E7%89%B9%E6%9C%97%E6%99%AE') {
         assert(Boolean(metrics.brand?.visible) && metrics.brand.w < 360, `${name} ${path} 品牌标识尺寸正常`, JSON.stringify(metrics.brand));

@@ -74,6 +74,19 @@ function extractLinks(html, baseUrl) {
   return links;
 }
 function has(html, pattern) { return pattern.test(html); }
+function verifyAssetContentType(url, response, type) {
+  let pathname = '';
+  try { pathname = new URL(response.url || url).pathname.toLowerCase(); } catch {}
+  if (/\.css$/.test(pathname) && !/^text\/css\b/i.test(type)) {
+    failures.push({ url, issue: `CSS资源Content-Type错误: ${type || 'missing'}` });
+    return false;
+  }
+  if (/\.(?:js|mjs)$/.test(pathname) && !/(?:javascript|ecmascript)/i.test(type)) {
+    failures.push({ url, issue: `JS资源Content-Type错误: ${type || 'missing'}` });
+    return false;
+  }
+  return true;
+}
 async function inspect(url) {
   let response;
   try { response = await request(url); }
@@ -84,6 +97,7 @@ async function inspect(url) {
     failures.push({ url, issue: `HTTP ${status}` });
     return;
   }
+  if (!verifyAssetContentType(url, response, type)) return;
   if (response.url && new URL(response.url).hostname !== 'trrb.net') {
     failures.push({ url, issue: `最终主机错误: ${response.url}` });
   }

@@ -1,0 +1,46 @@
+name: 第十一轮首页文章路由缓存清理
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/fix-round11-home-cache-bust.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 更新首页文章数据与脚本缓存版本
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p=Path('articles-home.js')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('trrb-live-v3-${limit}', 'trrb-live-v4-${limit}')
+          s=s.replace('trrb-live-article-v3-${id}', 'trrb-live-article-v4-${id}')
+          p.write_text(s, encoding='utf-8')
+
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('./articles-home.js?v=30.4', './articles-home.js?v=30.5-r11-routefix')
+          p.write_text(s, encoding='utf-8')
+
+          p=Path('scripts/optimize-homepage-performance.mjs')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('<script src="./articles-home.js?v=30.4"></script>', '<script src="./articles-home.js?v=30.5-r11-routefix"></script>')
+          p.write_text(s, encoding='utf-8')
+          print('homepage route cache/version bumped')
+          PY
+      - name: 提交缓存修复
+        run: |
+          git config user.name "TRRB Round 11 Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add articles-home.js index.html scripts/optimize-homepage-performance.mjs
+          git diff --cached --check
+          git commit -m "Round 11: bust stale homepage routing cache"
+          git push origin main

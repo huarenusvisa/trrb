@@ -6,6 +6,9 @@
   const id = String(params.get('id') || '').trim();
   const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+  // Pretty routes are already validated and rendered by the Edge function.
+  if (document.querySelector('#article-root[data-prerendered="true"]')) return;
+
   function setRobots(value) {
     let meta = document.head.querySelector('meta[name="robots"]');
     if (!meta) {

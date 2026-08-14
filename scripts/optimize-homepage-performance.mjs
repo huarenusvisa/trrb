@@ -27,7 +27,7 @@ if (html.includes(topicCss)) {
 if (!html.includes('article-route-runtime.js')) {
   const marker = '<script src="./articles-home.js?v=30.4"></script>';
   const runtime = '<script src="/article-route-runtime.js?v=20260814-r11"></script>';
-  if (html.includes(marker)) html = html.replace(marker, `${marker}${runtime}`);
+  if (html.includes(marker)) html = html.replace(marker, `${runtime}${marker}`);
   else html = html.replace('</body>', `  ${runtime}\n  </body>`);
 }
 

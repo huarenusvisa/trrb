@@ -28,7 +28,7 @@ async function fetchLivePublishedArticles(limit = 60) {
   const cacheKey = `trrb-live-v3-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -43,7 +43,7 @@ async function fetchLiveArticleById(id) {
   const cacheKey = `trrb-live-article-v3-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_name","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -58,7 +58,7 @@ function mapLiveArticle(row) {
   const published = row.published_at || row.created_at || "";
   const content = String(row.content || "").trim();
   return {
-    id: row.id, title: row.title || "", category: row.category_name || "新闻",
+    id: row.id, title: row.title || "", slug: row.slug || "", categoryId: row.category_id || "", topicKey: row.topic_key || "", category: row.category_name || "新闻",
     excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
     author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
     body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
@@ -130,28 +130,53 @@ function renderHome(articles) {
 
 async function loadHome() {
   const archived = localArticleIndex();
-  if (archived.length) renderHome(archived);
-
   try {
     const live = await fetchLivePublishedArticles(60);
-    if (live.length) renderHome(mergeArticles(live, archived));
-    else if (!archived.length) throw new Error("No article data");
+    if (live.length) {
+      renderHome(mergeArticles(live, archived));
+      return;
+    }
+    throw new Error("No live article data");
   } catch (error) {
     console.warn("Live articles unavailable", error);
-    if (!archived.length) {
-      try {
-        const response = await fetch("./data/articles.json", { cache: "force-cache" });
-        if (response.ok) renderHome(await response.json());
-        else throw new Error("Archive unavailable");
-      } catch {
-        const hero = document.querySelector("#hero");
-        if (hero) hero.innerHTML = `<div class="empty-state">文章数据加载失败，请稍后刷新。</div>`;
-      }
+    if (archived.length) {
+      renderHome(archived);
+      return;
+    }
+    try {
+      const response = await fetch("./data/articles.json", { cache: "force-cache" });
+      if (response.ok) renderHome(await response.json());
+      else throw new Error("Archive unavailable");
+    } catch {
+      const hero = document.querySelector("#hero");
+      if (hero) hero.innerHTML = `<div class="empty-state">文章数据加载失败，请稍后刷新。</div>`;
     }
   }
 }
 
 function articleUrl(article) {
+  if (!article) return "/";
+  const slug = String(article.slug || "").trim();
+  if (slug) {
+    const topic = String(article.topicKey || article.topic_key || "").trim().toLowerCase();
+    const category = String(article.category || article.category_name || "").trim();
+    const sections = {
+      "重要新闻": "important-news",
+      "热门头条": "hot-headlines",
+      "美国时政": "us-politics",
+      "美国警情": "us-crime",
+      "中国官场": "china-officialdom",
+      "移民美国": "immigration",
+      "庇护百科": "asylum",
+      "驱逐快报": "deport"
+    };
+    const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (sections[category] || "news");
+    return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+  }
+  if (typeof window.TRRB_articleUrl === "function") {
+    const routed = window.TRRB_articleUrl(article);
+    if (routed) return routed;
+  }
   return `./article.html?id=${encodeURIComponent(article.id)}`;
 }
 

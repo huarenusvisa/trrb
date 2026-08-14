@@ -11,6 +11,10 @@
   path = "/*/*"
 
 [[edge_functions]]
+  function = "article-stale-route-rescue"
+  path = "/*/*"
+
+[[edge_functions]]
   function = "legacy-url-redirect"
   path = "/*"
 

@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 19:43:22 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 19:59:03 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>美宣布特朗普任内加强边境安全与ICE遣返行动</title>
+      <link>https://trrb.net/ice/ice-67145c1d57fa51222ca3148077e2cc733c4e78ef</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-67145c1d57fa51222ca3148077e2cc733c4e78ef</guid>
+      <pubDate>Fri, 14 Aug 2026 19:58:44 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国DHS表示特朗普任内边境安全显著提升，ICE加大非法移民追捕遣返。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088350120207081472/img/GUJxBwwqRD89JNaA.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>ICE遣返涉嫌重罪墨西哥女性嫌疑人</title>
       <link>https://trrb.net/ice/ice-e44b0be0eb56f961d798af42c86ca2b96c882c57</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>加州洛波克联邦监狱释放前，ICE逮捕多次自愿返回墨西哥的前科犯Emilio Rivera-Arciga。</description>
       <enclosure url="https://pbs.twimg.com/media/HPotsz4b0AE5FI0.png" type="image/png" />
-    </item>
-    <item>
-      <title>洛杉矶ICE逮捕遣返墨西哥重犯莫尔芬</title>
-      <link>https://trrb.net/ice/ice-a56e6da5545a7bf2805a869ba8b2a8ae2af68706</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-a56e6da5545a7bf2805a869ba8b2a8ae2af68706</guid>
-      <pubDate>Fri, 14 Aug 2026 04:34:38 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>洛杉矶ICE逮捕曾因尝试强奸被定罪的墨西哥非法移民莫尔芬，已将其遣返回国。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPotjTJbgAA_Q5X.png" type="image/png" />
     </item>
   </channel>
 </rss>

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-67145c1d57fa51222ca3148077e2cc733c4e78ef</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T19:58:44.601Z</news:publication_date>
+        <news:title>美宣布特朗普任内加强边境安全与ICE遣返行动</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-e44b0be0eb56f961d798af42c86ca2b96c882c57</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2422,22 +2430,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-12T20:24:41.530Z</news:publication_date>
         <news:title>美国ICE多地加强遣返非法移民行动</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-1b0067e5b7b1790e75ba8015892ff360a127a559</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T19:51:05.082Z</news:publication_date>
-        <news:title>纽约联合行动逮捕11名婚姻欺诈被告</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-65262a3220e7307a36ec6b4c351760a1f095244d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T19:51:04.742Z</news:publication_date>
-        <news:title>加州奥克兰ICE拘留洪都拉斯籍涉毒嫌犯</news:title>
       </news:news>
     </url>
 </urlset>

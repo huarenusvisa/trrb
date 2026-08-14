@@ -2416,20 +2416,4 @@
         <news:title>新墨西哥安东尼ICE特工拔枪并使用胡椒喷雾</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-fe21d6b8970565f9447d5c58be900bc2d6b9e957</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T20:49:39.549Z</news:publication_date>
-        <news:title>新墨西哥Anthony市多名ICE执法人员涉对无武装公民指枪并使用辣椒喷雾</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-3ef8b9e0892c9d8aa5ee24ffe40923a74bd1ec88</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T20:49:11.680Z</news:publication_date>
-        <news:title>美国多地质疑ICE执法致无辜者死亡</news:title>
-      </news:news>
-    </url>
 </urlset>

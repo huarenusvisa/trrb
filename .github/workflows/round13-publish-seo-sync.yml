@@ -64,5 +64,5 @@ jobs:
             echo "SEO metadata already converged; no commit required."
             exit 0
           fi
-          git commit -m "Round 13: sync published articles into SEO feeds [skip ci]"
+          git commit -m "Round 13: sync published articles into SEO feeds"
           git push origin HEAD:main

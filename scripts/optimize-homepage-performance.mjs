@@ -31,6 +31,21 @@ if (!html.includes('article-route-runtime.js')) {
   else html = html.replace('</body>', `  ${runtime}\n  </body>`);
 }
 
+// Prefer canonical category routes in the static homepage shell as well.
+const canonicalCategories = new Map([
+  ['重要新闻', '/important-news'],
+  ['热门头条', '/hot-headlines'],
+  ['美国时政', '/us-politics'],
+  ['美国警情', '/us-crime'],
+  ['中国官场', '/china-officialdom'],
+  ['移民美国', '/immigrate/'],
+  ['庇护百科', '/asylum']
+]);
+for (const [name, route] of canonicalCategories) {
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  html = html.replace(new RegExp(`\\.\\/listing\\.html\\?category=${escaped}`, 'g'), route);
+}
+
 // Root-relative critical assets are stable on every canonical route and avoid path-resolution regressions.
 html = html
   .replace('href="./site.webmanifest?v=29.8"', 'href="/site.webmanifest?v=29.8"')
@@ -44,4 +59,4 @@ if (html === before) {
 }
 
 fs.writeFileSync(file, html);
-console.log(`Round 11 homepage optimizer: removed ${removedChunks} redundant article chunk requests; promoted topic-feed.css; enabled canonical article-link runtime`);
+console.log(`Round 11 homepage optimizer: removed ${removedChunks} redundant article chunk requests; promoted topic-feed.css; enabled canonical article/category routes`);

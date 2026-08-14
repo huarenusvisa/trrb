@@ -1,0 +1,68 @@
+name: 第十三轮节点2-首页栏目专题实时同步
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "articles-home.js"
+      - "listing.js"
+      - "listing.html"
+      - "article-route-runtime.js"
+      - "topic/ice/**"
+      - "trump/**"
+      - "netlify/edge-functions/article-prerender.ts"
+      - "scripts/round13-node2-live-listings.mjs"
+      - ".github/workflows/round13-node2-live-listings.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round13-node2-live-listings
+  cancel-in-progress: true
+
+jobs:
+  live-listings:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 等待当前节点2验收脚本上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum scripts/round13-node2-live-listings.mjs | awk '{print $1}')"
+          for attempt in $(seq 1 48); do
+            probe="/tmp/round13-node2-${attempt}.mjs"
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round13-node2-live-listings.mjs?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+              live="$(sha256sum "$probe" | awk '{print $1}')"
+              echo "Deploy probe ${attempt}/48: $live"
+              if [ "$live" = "$expected" ]; then
+                echo "Current Round 13 node2 version is live."
+                exit 0
+              fi
+            fi
+            sleep 5
+          done
+          echo "Production did not expose the current node2 probe within 4 minutes."
+          exit 1
+      - name: 首页 / 栏目 / 专题实时同步与点击一致性验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round13-node2-live-listings.mjs
+      - name: 保存节点2报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round13-node2-live-listings
+          path: round13-node2-live-listings.json
+          retention-days: 30

@@ -35,13 +35,15 @@ jobs:
           node-version: "22"
       - name: 等待Netlify部署
         run: sleep 240
-      - name: 抓取线上页面并检查404和SEO
+      - name: 抓取线上页面并检查404、SEO和静态资源类型
         env:
           SITE_ORIGIN: https://trrb.net
           CRAWL_LIMIT: "500"
           CRAWL_CONCURRENCY: "10"
           CRAWL_TIMEOUT_MS: "15000"
         run: node scripts/live-seo-crawl.mjs
+      - name: 验证Trump文章手机端CSS回归问题
+        run: node scripts/verify-round10-mobile-article.mjs
       - name: 保存检查报告
         if: always()
         uses: actions/upload-artifact@v4

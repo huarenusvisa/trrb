@@ -10,13 +10,14 @@ if (!SUPABASE_URL || !SUPABASE_KEY) {
 }
 
 const FALLBACK_CATEGORY_SLUGS = new Map([
-  ['重要新闻', 'important'],
-  ['热门头条', 'hot'],
-  ['美国时政', 'politics'],
-  ['美国警情', 'crime'],
-  ['中国官场', 'china'],
+  ['重要新闻', 'important-news'],
+  ['热门头条', 'hot-headlines'],
+  ['美国时政', 'us-politics'],
+  ['美国警情', 'us-crime'],
+  ['中国官场', 'china-officialdom'],
   ['移民美国', 'immigration'],
   ['庇护百科', 'asylum'],
+  ['驱逐快报', 'deport'],
   ['ICE执法动态', 'ice'],
   ['ICE执法', 'ice'],
   ['曝光墙', 'expose']

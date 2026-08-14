@@ -79,6 +79,93 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
+# Round 12: exact fallbacks for legacy July files that are referenced by archived article data but no longer exist on disk.
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-315.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-314.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-317-448x512.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-320-395x512.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-318-512x374.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-319-512x95.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-313.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-312-512x147.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-308-512x401.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-310-512x410.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-304-410x512.webp"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-316-512x263.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-311-512x300.png"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-306.webp"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-307-512x282.webp"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-302-512x288.webp"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/assets/news-images/2026/07/image-303-512x341.webp"
+  to = "/assets/category-placeholders/generic.svg"
+  status = 200
+  force = true
+
 # ICE canonical route. Use 200 rewrite, but force root-relative assets to remain root assets.
 [[redirects]]
   from = "/ice"

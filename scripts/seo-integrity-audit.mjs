@@ -5,6 +5,11 @@ import path from "node:path";
 const ROOT = process.cwd();
 const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
 const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
+const ROUTE_PREFIXES = new Set([
+  "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
+  "us-crime", "china-officialdom", "asylum", "immigration", "deport", "expose",
+  "uscis", "dhs", "cbp", "visa", "china", "politics", "world"
+]);
 const errors = [];
 const warnings = [];
 const checked = { html: 0, links: 0, images: 0, scripts: 0, styles: 0 };
@@ -50,6 +55,11 @@ function tagValues(html, tag, attr) {
   return values;
 }
 function has(html, re) { return re.test(html); }
+function isCleanRouteTarget(target) {
+  if (!target || path.posix.extname(target)) return false;
+  const first = target.split("/").filter(Boolean)[0] || "";
+  return ROUTE_PREFIXES.has(first);
+}
 
 const files = await walk();
 const htmlFiles = files.filter((f) => f.endsWith(".html"));
@@ -84,9 +94,8 @@ for (const file of htmlFiles) {
       if (!target) continue;
       checked[bucket]++;
       if (raw.includes(":")) continue;
-      if (!(await exists(target))) {
-        const routeLike = !path.posix.extname(target) && ["ice", "trump", "immigrate"].some((r) => target === r || target.startsWith(`${r}/`));
-        if (!routeLike) errors.push(`${name}: ${tag}[${attr}] 指向不存在文件 ${raw} -> ${target}`);
+      if (!(await exists(target)) && !isCleanRouteTarget(target)) {
+        errors.push(`${name}: ${tag}[${attr}] 指向不存在文件 ${raw} -> ${target}`);
       }
     }
   }

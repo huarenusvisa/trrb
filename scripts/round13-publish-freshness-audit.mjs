@@ -15,6 +15,8 @@ function fail(message) {
   process.exitCode = 1;
 }
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 async function request(url, options = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 15000);
@@ -22,7 +24,7 @@ async function request(url, options = {}) {
     return await fetch(url, {
       redirect: 'follow',
       ...options,
-      headers: { 'user-agent': 'TRRB-Round13-Freshness/1.0', 'cache-control': 'no-cache', ...(options.headers || {}) },
+      headers: { 'user-agent': 'TRRB-Round13-Freshness/1.1', 'cache-control': 'no-cache', pragma: 'no-cache', ...(options.headers || {}) },
       signal: controller.signal
     });
   } finally {
@@ -57,6 +59,29 @@ function containsMissingMessage(html) {
   return /文章不存在|文章已下线|链接可能已经失效|该文章已删除/i.test(String(html || ''));
 }
 
+async function waitForEntry(path, label, candidates, attempts = 18, delayMs = 10000) {
+  let lastStatus = 0;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const separator = path.includes('?') ? '&' : '?';
+      const r = await request(`${ORIGIN}${path}${separator}round13=${Date.now()}-${attempt}`);
+      const text = await r.text();
+      lastStatus = r.status;
+      const hit = candidates.some(value => text.includes(value.replaceAll('&','&amp;')) || text.includes(value));
+      if (r.status === 200 && hit) {
+        console.log(`PASS ${label}: status=${r.status}; attempt=${attempt}`);
+        return true;
+      }
+      console.log(`WAIT ${label}: status=${r.status}; attempt=${attempt}/${attempts}; hit=${hit}`);
+    } catch (e) {
+      console.log(`WAIT ${label}: attempt=${attempt}/${attempts}; ${e.message || e}`);
+    }
+    if (attempt < attempts) await sleep(delayMs);
+  }
+  console.log(`FAIL ${label}: lastStatus=${lastStatus}`);
+  return false;
+}
+
 const categories = await db('categories', {
   select: 'id,name,slug',
   is_active: 'eq.true',
@@ -86,7 +111,7 @@ let articleFailures = 0;
 for (const article of articles.slice(0, 12)) {
   const url = canonicalFor(article, byId, byName);
   try {
-    const r = await request(url);
+    const r = await request(`${url}?round13=${Date.now()}`);
     const html = await r.text();
     const titlePrefix = String(article.title || '').slice(0, Math.min(10, String(article.title || '').length));
     const ok = r.status === 200 && !containsMissingMessage(html) && html.includes(titlePrefix) && /data-prerendered=["']true["']/i.test(html);
@@ -99,32 +124,15 @@ for (const article of articles.slice(0, 12)) {
 }
 if (articleFailures) fail(`latest article canonical failures=${articleFailures}`);
 
-// Gate B: latest published canonical must have converged into the main sitemap.
-try {
-  const r = await request(`${ORIGIN}/sitemap.xml`);
-  const xml = await r.text();
-  const ok = r.status === 200 && xml.includes(latestUrl.replaceAll('&','&amp;'));
-  console.log(`${ok ? 'PASS' : 'FAIL'} sitemap latest article: status=${r.status}`);
-  if (!ok) fail('latest published article missing from sitemap.xml');
-} catch (e) {
-  fail(`sitemap request failed: ${e.message || e}`);
-}
+// Gate B: the newest published canonical must converge into the deployed main sitemap.
+const sitemapOk = await waitForEntry('/sitemap.xml', 'sitemap latest article', [latestUrl]);
+if (!sitemapOk) fail('latest published article missing from sitemap.xml after convergence window');
 
-// Gate C: news sitemap and RSS must be healthy and contain recent published content.
+// Gate C: News Sitemap and RSS must converge too. Accept any of the latest 20 articles.
+const recentUrls = articles.slice(0, 20).map(a => canonicalFor(a, byId, byName));
 for (const [path, label] of [['/news-sitemap.xml','news sitemap'], ['/feed.xml','RSS feed']]) {
-  try {
-    const r = await request(`${ORIGIN}${path}`);
-    const text = await r.text();
-    const recentHit = articles.slice(0, 20).some(a => {
-      const u = canonicalFor(a, byId, byName);
-      return text.includes(u.replaceAll('&','&amp;')) || text.includes(u);
-    });
-    const ok = r.status === 200 && recentHit;
-    console.log(`${ok ? 'PASS' : 'FAIL'} ${label}: status=${r.status}; recentHit=${recentHit}`);
-    if (!ok) fail(`${label} has no recent published article`);
-  } catch (e) {
-    fail(`${label} request failed: ${e.message || e}`);
-  }
+  const ok = await waitForEntry(path, label, recentUrls, 6, 5000);
+  if (!ok) fail(`${label} has no recent published article after convergence window`);
 }
 
 if (!process.exitCode) {

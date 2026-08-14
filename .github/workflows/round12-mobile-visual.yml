@@ -1,0 +1,56 @@
+name: 第十二轮移动端真实浏览器验收
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "articles-home.js"
+      - "listing.js"
+      - "listing.html"
+      - "site-search.js"
+      - "article-route-runtime.js"
+      - "article.html"
+      - "styles.css"
+      - "article-v31.css"
+      - "netlify/edge-functions/article-prerender.ts"
+      - "netlify/edge-functions/article-stale-route-rescue.ts"
+      - "scripts/round12-mobile-visual.mjs"
+      - ".github/workflows/round12-mobile-visual.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round12-mobile-visual
+  cancel-in-progress: true
+
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium webkit
+      - name: 等待Netlify生产部署
+        run: sleep 240
+      - name: iPhone WebKit + Android Chromium 深度验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round12-mobile-visual.mjs
+      - name: 保存移动端报告和截图
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round12-mobile-visual
+          path: |
+            round12-mobile-visual.json
+            round12-*.png
+          retention-days: 30

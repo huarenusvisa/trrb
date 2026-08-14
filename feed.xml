@@ -5,7 +5,7 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 23:02:04 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 23:09:00 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>纽约前警官称非法移民因庇护法获释后涉杀害护理生</title>
@@ -23,6 +23,7 @@
       <pubDate>Fri, 14 Aug 2026 22:58:03 GMT</pubDate>
       <category>ICE执法动态</category>
       <description>律师Eric Lee称美国移民上诉委员会计划禁止律师在遣返听证中发言，该消息尚未获独立证实。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-14/1f814f2c-4fe9-4dd8-af46-0809c45ab990-958e95c0-ee0a-4080-8a5e-839a74f9602a.webp" type="image/webp" />
     </item>
     <item>
       <title>缅因州波特兰国际机场将常规旅客区设为ICE执法区域</title>
@@ -49,6 +50,7 @@
       <pubDate>Fri, 14 Aug 2026 22:56:14 GMT</pubDate>
       <category>ICE执法动态</category>
       <description>8月10日，ICE在佛州HallandaleBeach开展针对性执法，尝试接触疑似目标人员。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-14/530244fd-0fa7-4496-bdbd-ace2ddca269b-96fdc61c-fdcd-4d02-a82e-2c6346e350dd.webp" type="image/webp" />
     </item>
     <item>
       <title>哥伦比亚非法移民冒充美公民投票获刑三年</title>

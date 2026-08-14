@@ -6,19 +6,29 @@ on:
     paths:
       - "scripts/round13-publish-freshness-audit.mjs"
       - ".github/workflows/round13-node1-publish-freshness.yml"
+      - ".github/workflows/round13-publish-seo-sync.yml"
+      - "sitemap.xml"
+      - "news-sitemap.xml"
+      - "feed.xml"
+      - "netlify.toml"
   workflow_dispatch:
+
+concurrency:
+  group: trrb-round13-node1-freshness
+  cancel-in-progress: true
 
 jobs:
   freshness:
     runs-on: ubuntu-24.04
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: 等待生产部署收敛
-        run: sleep 20
-      - name: 检查最新文章发布链路
+      - name: 给Netlify开始部署的最小缓冲
+        run: sleep 5
+      - name: 检查最新文章发布链路并等待生产收敛
         env:
           SITE_ORIGIN: https://trrb.net
         run: node scripts/round13-publish-freshness-audit.mjs

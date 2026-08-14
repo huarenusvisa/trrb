@@ -1,0 +1,37 @@
+name: 文章路由数据库诊断
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/article-route-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 查询故障文章slug
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, urllib.parse, urllib.request
+          base='https://fwiznbpsqkfgkvyznebz.supabase.co/rest/v1/articles'
+          key='sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak'
+          slug='百万工具盗窃案告破华男炮制幽灵订单盗走140万美元获刑5年-msrgiw56-5a39d3'
+          def q(params):
+              url=base+'?'+urllib.parse.urlencode(params)
+              req=urllib.request.Request(url, headers={'apikey':key,'Authorization':'Bearer '+key,'Accept':'application/json'})
+              with urllib.request.urlopen(req, timeout=20) as r:
+                  return json.loads(r.read().decode())
+          exact=q({'select':'id,title,slug,status,category_name,category_id,topic_key,published_at','slug':'eq.'+slug,'limit':'5'})
+          suffix=q({'select':'id,title,slug,status,category_name,category_id,topic_key,published_at','slug':'like.*-msrgiw56-5a39d3','limit':'5'})
+          tail=q({'select':'id,title,slug,status,category_name,category_id,topic_key,published_at','slug':'like.*-5a39d3','limit':'5'})
+          print('EXACT=', json.dumps(exact, ensure_ascii=False))
+          print('SUFFIX=', json.dumps(suffix, ensure_ascii=False))
+          print('TAIL=', json.dumps(tail, ensure_ascii=False))
+          PY

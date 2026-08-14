@@ -1,0 +1,24 @@
+name: 第十三轮节点1-最新文章发布实时性验收
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round13-publish-freshness-audit.mjs"
+      - ".github/workflows/round13-node1-publish-freshness.yml"
+  workflow_dispatch:
+
+jobs:
+  freshness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 等待生产部署收敛
+        run: sleep 20
+      - name: 检查最新文章发布链路
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round13-publish-freshness-audit.mjs

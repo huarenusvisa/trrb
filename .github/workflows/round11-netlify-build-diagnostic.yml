@@ -1,0 +1,31 @@
+name: 第十一轮Netlify构建诊断
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/round11-netlify-build-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 执行与Netlify一致的构建命令
+        run: |
+          find netlify/functions -type f \( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \) -delete
+          node scripts/generate-sitemaps.mjs
+          node scripts/clean-sitemap-against-database.mjs
+          node scripts/ensure-sitemap-articles.mjs
+          node scripts/finalize-redirects.mjs
+          node scripts/generate-feed.mjs
+          node scripts/upgrade-article-urls.mjs
+          node scripts/validate-site.mjs
+          node scripts/seo-integrity-audit.mjs

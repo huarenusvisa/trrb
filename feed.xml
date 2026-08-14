@@ -5,8 +5,26 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 14 Aug 2026 20:16:55 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 20:43:37 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>美边境部门强化执法打击人口走私</title>
+      <link>https://trrb.net/ice/ice-b57d15e2f662e34ecf68589ffd9514fbe18c7211</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-b57d15e2f662e34ecf68589ffd9514fbe18c7211</guid>
+      <pubDate>Fri, 14 Aug 2026 20:42:43 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国边境安全加强，积极打击利用弱势群体的人口走私犯罪网络，执法行动持续推进。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPtbXlfXsAAVCT5.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>美国国土安全部称遣返非法犯罪外籍人员降犯罪率</title>
+      <link>https://trrb.net/ice/ice-35b2fd1fb7987b332dbfdebdd930069461552f21</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-35b2fd1fb7987b332dbfdebdd930069461552f21</guid>
+      <pubDate>Fri, 14 Aug 2026 20:42:43 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国国土安全部称遣返非法外籍犯罪分子有助降低犯罪率，提升国民安全。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088358079838486528/img/3LYM7pgQawqW7Tjo.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>美宣布特朗普任内加强边境安全与ICE遣返行动</title>
       <link>https://trrb.net/ice/ice-67145c1d57fa51222ca3148077e2cc733c4e78ef</link>
@@ -888,24 +906,6 @@
       <category>ICE执法动态</category>
       <description>洛杉矶ICE拘押非法入境的洪都拉斯帮派成员，等待遣返程序。</description>
       <enclosure url="https://pbs.twimg.com/media/HPouecPa4AAB0f5.png" type="image/png" />
-    </item>
-    <item>
-      <title>洛杉矶ICE遣返多次违法移民何塞</title>
-      <link>https://trrb.net/ice/ice-c75addac6df6189f457b10d2138aa20459a473d6</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-c75addac6df6189f457b10d2138aa20459a473d6</guid>
-      <pubDate>Fri, 14 Aug 2026 04:34:39 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>洛杉矶ICE遣返多次违法及刑事定罪的非法移民何塞·埃尔南德斯-孔特拉雷斯。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPouGCZb0AApbMS.png" type="image/png" />
-    </item>
-    <item>
-      <title>加州洛波克ICE拘捕曾多次自愿返回墨西哥前科犯</title>
-      <link>https://trrb.net/ice/ice-0f98c78b6f55ba3f61671d623161ea56f18e1240</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-0f98c78b6f55ba3f61671d623161ea56f18e1240</guid>
-      <pubDate>Fri, 14 Aug 2026 04:34:39 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>加州洛波克联邦监狱释放前，ICE逮捕多次自愿返回墨西哥的前科犯Emilio Rivera-Arciga。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPotsz4b0AE5FI0.png" type="image/png" />
     </item>
   </channel>
 </rss>

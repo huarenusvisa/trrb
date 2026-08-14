@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-b57d15e2f662e34ecf68589ffd9514fbe18c7211</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T20:42:43.699Z</news:publication_date>
+        <news:title>美边境部门强化执法打击人口走私</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-35b2fd1fb7987b332dbfdebdd930069461552f21</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T20:42:43.261Z</news:publication_date>
+        <news:title>美国国土安全部称遣返非法犯罪外籍人员降犯罪率</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-67145c1d57fa51222ca3148077e2cc733c4e78ef</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2414,22 +2430,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-12T20:49:11.680Z</news:publication_date>
         <news:title>美国多地质疑ICE执法致无辜者死亡</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-c31827edc5549f88b1a2fd6a49b4a3f169d593a7</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T20:24:42.192Z</news:publication_date>
-        <news:title>亚利桑那Tacna警方逮捕一非法重返边境毒犯</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-2139de14df368c498d2132a18acd03c0de9ac53a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-12T20:24:41.530Z</news:publication_date>
-        <news:title>美国ICE多地加强遣返非法移民行动</news:title>
       </news:news>
     </url>
 </urlset>

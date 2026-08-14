@@ -13,6 +13,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+      SUPABASE_ANON_KEY: sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

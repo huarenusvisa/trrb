@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-81b7622beec8847edd0c74b43a667e863301e9fd</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T22:38:50.874Z</news:publication_date>
+        <news:title>圣地亚哥ICE拘押持毒墨西哥籍嫌疑人</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-8f9d74f5a7585858f6efefa36d5aecaac9401442</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T22:33:53.725Z</news:publication_date>
+        <news:title>美国移民上诉委员会调整提前假释出境政策</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-7b358feb4eb46dc55e7cc61bb249cf91fa773e18</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-14T22:33:53.380Z</news:publication_date>
+        <news:title>新英格兰HSI抓获发布儿童性虐待广告男子</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-a91d361a7c159a915ae5bce90d77e8757c78c254</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

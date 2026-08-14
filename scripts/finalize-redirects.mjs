@@ -23,3 +23,6 @@ const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const filtered = lines.filter((line) => !required.some((rule) => line.split(/\s+/)[0] === rule.split(/\s+/)[0]));
 fs.writeFileSync(file, [...required, ...filtered].join('\n') + '\n');
 console.log(`[redirects] finalized ${required.length} canonical/special rules + ${filtered.length} generated rules`);
+
+// Round 11: trim redundant homepage payload immediately before the Netlify publish output is finalized.
+await import('./optimize-homepage-performance.mjs');

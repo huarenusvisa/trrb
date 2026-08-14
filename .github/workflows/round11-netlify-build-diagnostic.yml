@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
     paths:
+      - "immigrate/center.html"
+      - "scripts/seo-integrity-audit.mjs"
       - ".github/workflows/round11-netlify-build-diagnostic.yml"
 
 permissions:

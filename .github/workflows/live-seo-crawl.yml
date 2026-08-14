@@ -49,10 +49,17 @@ jobs:
           SITE_ORIGIN: https://trrb.net
           CRAWL_TIMEOUT_MS: "15000"
         run: node scripts/verify-round11-home-performance.mjs
+      - name: 第十一轮十节点并行生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+          CRAWL_TIMEOUT_MS: "15000"
+        run: node scripts/round11-parallel-production-audit.mjs
       - name: 保存检查报告
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: live-seo-crawl-report
-          path: live-seo-crawl-report.json
+          path: |
+            live-seo-crawl-report.json
+            round11-production-audit.json
           retention-days: 30

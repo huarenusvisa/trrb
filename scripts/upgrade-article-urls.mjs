@@ -83,12 +83,26 @@ function upgradeText(text, routes) {
   });
 }
 
+function escapeXml(value = '') {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&apos;');
+}
+
+function dateOnly(value) {
+  const date = new Date(value || Date.now());
+  return Number.isNaN(date.getTime()) ? new Date().toISOString().slice(0, 10) : date.toISOString().slice(0, 10);
+}
+
 const categories = await fetchAll('categories', 'id,name,slug', { is_active: 'eq.true' });
 const categoriesById = new Map(categories.map((row) => [String(row.id || ''), row]));
 const categoriesByName = new Map(categories.map((row) => [String(row.name || '').trim(), row]));
 const articles = await fetchAll(
   'articles',
-  'id,slug,category_id,category_name,topic_key,status',
+  'id,title,slug,category_id,category_name,topic_key,status,published_at,created_at',
   { status: 'eq.published' }
 );
 
@@ -101,10 +115,35 @@ for (const article of articles) {
 
 const files = ['sitemap.xml', 'news-sitemap.xml', 'feed.xml'];
 let replacements = 0;
+let sitemapAdded = 0;
 for (const file of files) {
   if (!fs.existsSync(file)) continue;
   const before = fs.readFileSync(file, 'utf8');
-  const after = upgradeText(before, routes);
+  let after = upgradeText(before, routes);
+
+  // The sitemap is built near the start of a Netlify deploy, while publishing can
+  // continue during the remaining build steps. Reconcile once more here, at the
+  // final URL-upgrade stage, so every article that is published before deploy
+  // validation is represented without weakening the production audit.
+  if (file === 'sitemap.xml' && /<urlset\b/i.test(after)) {
+    const existing = new Set(
+      [...after.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)]
+        .map((match) => match[1].replaceAll('&amp;', '&').trim())
+    );
+    const blocks = [];
+    for (const article of articles) {
+      const id = String(article.id || '').trim();
+      const loc = routes.get(id);
+      if (!id || !loc || existing.has(loc) || !String(article.title || '').trim()) continue;
+      blocks.push(`  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${dateOnly(article.published_at || article.created_at)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>`);
+      existing.add(loc);
+      sitemapAdded += 1;
+    }
+    if (blocks.length) {
+      after = after.replace(/\s*<\/urlset>\s*$/i, `\n${blocks.join('\n')}\n</urlset>\n`);
+    }
+  }
+
   if (after !== before) {
     fs.writeFileSync(file, after);
     replacements += 1;
@@ -114,4 +153,4 @@ for (const file of files) {
   }
 }
 
-console.log(`[article-urls] route map ${routes.size}; files changed ${replacements}`);
+console.log(`[article-urls] route map ${routes.size}; sitemap late-publish additions ${sitemapAdded}; files changed ${replacements}`);

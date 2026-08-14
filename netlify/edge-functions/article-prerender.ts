@@ -183,6 +183,16 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
       logo: { "@type": "ImageObject", url: `${SITE}/trrb-logo-cropped.webp` }
     }
   };
+  const sectionUrl = canonical.replace(/\/[^/]+$/, "");
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "唐人日报", item: `${SITE}/` },
+      { "@type": "ListItem", position: 2, name: category, item: sectionUrl },
+      { "@type": "ListItem", position: 3, name: title, item: canonical }
+    ]
+  };
   const seo = `
     ${prettyRoute ? '<base href="/" />' : ""}
     <title>${esc(title)} - 唐人日报</title>
@@ -203,7 +213,8 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
     <meta name="twitter:title" content="${esc(title)}" />
     <meta name="twitter:description" content="${esc(summary)}" />
     <meta name="twitter:image" content="${esc(image)}" />
-    <script type="application/ld+json" data-trrb-edge-schema>${escJson(schema)}</script>`;
+    <script type="application/ld+json" data-trrb-edge-schema>${escJson(schema)}</script>
+    <script type="application/ld+json" data-trrb-edge-breadcrumb>${escJson(breadcrumb)}</script>`;
 
   return html
     .replace(/<title>[\s\S]*?<\/title>/i, "")
@@ -242,9 +253,9 @@ function disableLegacyClientLoaders(html: string): string {
   // These scripts assume ?id= is visible in window.location and would overwrite
   // the server-rendered pretty URL page or reset its canonical URL.
   return html
-    .replace(/<script\s+src=["']\.\/article\.js[^"']*["'][^>]*><\/script>/i, "")
-    .replace(/<script\s+src=["']\.\/article-index-guard\.js[^"']*["'][^>]*><\/script>/i, "")
-    .replace(/<script\s+src=["']\.\/article-seo\.js[^"']*["'][^>]*><\/script>/i, "");
+    .replace(/<script\s+src=["'](?:\.\/|\/)article\.js[^"']*["'][^>]*><\/script>/i, "")
+    .replace(/<script\s+src=["'](?:\.\/|\/)article-index-guard\.js[^"']*["'][^>]*><\/script>/i, "")
+    .replace(/<script\s+src=["'](?:\.\/|\/)article-seo\.js[^"']*["'][^>]*><\/script>/i, "");
 }
 
 function notFoundHtml() {

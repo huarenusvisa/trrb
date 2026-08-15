@@ -1,0 +1,53 @@
+name: 第十五轮节点8-“美国判例与新规”前台栏目及检索筛选系统
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "legal/**"
+      - "scripts/round15-node8-legal-frontend-audit.mjs"
+      - ".github/workflows/round15-node8-legal-frontend.yml"
+      - "data/legal/unified-legal-authorities-latest.json"
+      - "data/legal/legal-ai-analysis-latest.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round15-node8-legal-frontend
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SITE_ORIGIN: https://trrb.net
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 等待Netlify发布法律栏目版本
+        run: |
+          for attempt in $(seq 1 60); do
+            body="$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/?r15=${GITHUB_SHA}-${attempt}" || true)"
+            if echo "$body" | grep -q 'round15-legal-hub-v1'; then
+              echo "Round15 legal frontend is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Round15 legal frontend deployment not ready."
+          exit 1
+      - name: 美国判例与新规前台栏目及筛选生产验收
+        run: node scripts/round15-node8-legal-frontend-audit.mjs
+      - name: 保存节点8验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node8-legal-frontend
+          path: round15-node8-legal-frontend-audit.json
+          if-no-files-found: warn
+          retention-days: 30

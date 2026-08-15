@@ -1,9 +1,25 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
+  "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 8,
+  "count": 16,
   "analyses": [
+    {
+      "recordId": "01d42822aa2629ee30c6e45a",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-429_h3ci.pdf",
+      "title": "Blanche v. Lau",
+      "chineseTitle": "白朗诉刘案：合法永久居民出入境身份认定的裁判规则",
+      "summary": "本案涉及一名中国籍合法永久居民刘某，在美国境外短暂旅行后试图返美时，因涉嫌犯罪被边境官员认定为“申请入境者”，获准临时入境后被以不可入境理由启动遣返程序。最高法院判定《移民与国籍法》未要求边境官员必须具备“清晰且令人信服”的证据才能认定合法永久居民为申请入境者，确认政府有权依犯罪行为将其视为申请入境人并启动不可入境程序。",
+      "legalIssue": "合法永久居民在返美时是否需要边境官员具备“清晰且令人信服”的证据，方可将其视为申请入境者，从而以不可入境理由启动遣返程序？",
+      "holdingOrRule": "最高法院判决：《移民与国籍法》未规定边境官员需具备“清晰且令人信服”的证据才能认定合法永久居民为申请入境者，只要其已犯罪，政府即可将其视为申请入境并启动相应不可入境遣返程序。案件因证据不足未决定刘某犯罪是否构成道德败坏罪。",
+      "impact": "直接法律效力：明确边境官员在处理涉嫌犯罪的合法永久居民返美时的认定标准，降低政府举证门槛。可能影响：影响相关遣返案件审理标准，涉及边境入境身份认定和遣返程序适用，指导未来类似案件裁判和执法实践。",
+      "sourceGrounding": "依据美国最高法院2026年6月23日《Blanche v. Lau》正式裁判文件及意见摘要，网址：https://www.supremecourt.gov/opinions/25pdf/25-429_h3ci.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
     {
       "recordId": "037a6e964468f930072ed661",
       "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
@@ -34,6 +50,70 @@
       "holdingOrRule": "总统解职联邦储备理事必须基于法定“有因”理由，且法院可对“有因”合理性进行司法审查。被解职理事享有提前获通知并回应指控的程序权利。未经法定程序的解职无效，临时禁止解职令有效维持此保护。",
       "impact": "直接法律效力：限制总统对联邦储备理事的任意解职行为，保障理事职位独立性，确保法定程序权利。可能影响：强化联邦储备制度独立性，维护货币政策免受政治干预的传统，有助于未来复杂金融监管机构成员的解职程序规范。",
       "sourceGrounding": "根据美国最高法院2026年6月29日《特朗普诉库克》案终审意见书（No. 25A312），详见https://www.supremecourt.gov/opinions/25pdf/25a312_5468.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "19e51d55a406eb88cd7f9248",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-5_86qd.pdf",
+      "title": "Mullin v. Al Otro Lado",
+      "chineseTitle": "穆林诉阿尔奥特罗案最高法院判决解析",
+      "summary": "最高法院裁定，依据《1952年移民与国籍法》（INA）相关条文，“抵达美国”指外籍人士实际进入美国领土，而非仅在美国边境外的墨西哥一侧等待。此裁决推翻第九巡回上诉法院判决，确认尚未踏入美国境内的非公民不享有申请庇护及边境检查的法定权利。本案聚焦海关与边境保护局（CBP）“限流”政策的合法性，该政策规定每日接受检查外籍人士的数量上限，法院认为此政策不违反法律。此判决明确界定边境申请庇护的地域性限制，对移民法执行及边境管理政策有重大指导意义。",
+      "legalIssue": "外籍人士在申请入境时，何时构成“抵达美国”——是在美国边境之外的墨西哥境内等待，还是必须实际跨越边境进入美国境内？",
+      "holdingOrRule": "最高法院判定，“抵达美国”仅指外籍人士实际进入美国领土，站在墨西哥境内即使试图进入也不构成合法“抵达”，因此不享受相应的检查及庇护申请权利。政府不需为未入境人员提供入境检查或庇护申请程序。",
+      "impact": "【直接法律效力】本判决在第九巡回法院辖区内对联邦政府与边境管理政策具有约束力，允许政府实施“限流”措施管理边境入境人数。【可能影响】全国其他联邦地区法院及联邦移民执法实践中可能借鉴解读，提高边境入境审查的空间划定，影响庇护申请受理的时点与程序。",
+      "sourceGrounding": "根据美国最高法院2026年6月25日发布的官方判决全文（Slip Opinion，609 U.S. ___ (2026)，https://www.supremecourt.gov/opinions/25pdf/25-5_86qd.pdf），特别是判决书第1-18页内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "23f0be8dcea2b0a868aebe13",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-1068_n7ip.pdf",
+      "title": "Monsanto v. Durnell",
+      "chineseTitle": "孟山都公司诉杜内尔案：联邦杀虫剂法案对州级不充分警告索赔权的排他效力",
+      "summary": "美国最高法院于2026年6月裁定，依照联邦杀虫剂、杀菌剂及灭鼠剂法案（FIFRA），环境保护署（EPA）统一制定并批准的农药标签具优先效力。因EPA认定草甘膦类农药不太可能致癌，未要求在农药标签上标示癌症警示，故州法院对孟山都未警示癌症风险的失败警告侵权判决被认为违反联邦法案的统一标示规定，判决遭到推翻。",
+      "legalIssue": "在FIFRA法规框架下，州级因农药标签未警示癌症风险提起的侵权赔偿诉讼，是否因联邦法规中统一标签要求而被排除适用？",
+      "holdingOrRule": "联邦杀虫剂法案第7 U.S.C. §136v(b)条明确禁止州政府制定超出或不同于EPA根据FIFRA批准之标签的要求，Durnell原告主张的需增加癌症警示标签的州侵权失败警告诉讼因与联邦批准标签不符而被FIFRA明文排除；官方材料节选不足，暂不判断具体赔偿责任。",
+      "impact": "直接法律效力：当前农药制造商必须严格依照EPA批准的统一标签进行产品标示，州法院对该标签的额外警示要求被排除；可能影响：此判例明确了联邦法规对州侵权诉讼的排他性，有可能限制未来消费者基于失败警告的州级诉讼渠道，对农业化学品监管与诉讼环境产生指导意义。",
+      "sourceGrounding": "依据美国最高法院2026年6月25日发布之Monsanto v. Durnell案最高法院意见书全文及法官释义，官方出处：https://www.supremecourt.gov/opinions/25pdf/24-1068_n7ip.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "3227fd9efd89c1c85e5c473e",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/23-1197_new2_k5fm.pdf",
+      "title": "Landor v. Louisiana Dept of Corrections and Public Safety Revisions : 6/28/26",
+      "chineseTitle": "Landor诉路易斯安那州惩教与公共安全部案司法解释",
+      "summary": "本案解释了《2000年宗教土地使用及制度化人群法案》（RLUIPA）是否允许针对未自愿同意承担RLUIPA诉讼责任的个人州监狱官员提出个人赔偿诉讼。最高法院认定，基于宪法拨款条款，未经个人自愿且知情的同意，不能对个人州官员承担RLUIPA下的诉讼责任，仅州监狱系统作为拨款接收方可能受RLUIPA约束。",
+      "legalIssue": "RLUIPA是否授权针对未自愿同意承担责任的个人州监狱官员提起个人赔偿诉讼？",
+      "holdingOrRule": "根据拨款条款，个人必须自愿并知情地同意承担诉讼责任，未经此同意，RLUIPA不允许针对个人州官员提出诉讼。州监狱系统作为资金接受方可以被诉，个人官员则不行。",
+      "impact": "直接法律效力限制于联邦资金接受的州监狱机构及其政策执行，不涉及对个别监狱官员的个人诉讼责任。可能影响州监狱人员责任认定及联邦拨款条件履行时的责任划分。",
+      "sourceGrounding": "依据美国最高法院2026年6月23日公开发表的终审判决意见，及其在官方判决摘要与意见正文中的详细论述。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "75f5b3d51778d9bf434af043",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-1083_f204.pdf",
+      "title": "Mullin v. Doe",
+      "chineseTitle": "Mullin诉Doe案：临时保护身份（TPS）终止的司法审查范围与平等保护权利争议",
+      "summary": "本案涉及叙利亚和海地国籍外籍人士对临时保护身份（TPS）终止的异议，争论焦点为终止决定在诉讼期间是否应被延期。最高法院认定，根据《移民与国籍法》相关条款，非宪法性主张不得对TPS终止决定进行司法审查。同时，对于海地申请者提出因种族动机终止TPS的平等保护权利诉求，法院判定其胜诉可能性较小，因此不应获得临时救济。该裁决明确限制了TPS相关决策的司法干预权，并对类似救济申请设定了较高标准。",
+      "legalIssue": "临时保护身份（TPS）终止决策是否可以被司法审查，及基于终止理由是否存在违反宪法平等保护权利的争议。",
+      "holdingOrRule": "依据8 U.S.C. §1254a(b)(5)(A)，TPS指定、延长或终止的决策不允许非宪法性诉求受到司法审查。关于平等保护权利主张，若政府提供合理的非种族动机解释，且相关声明未明确涉及种族因素，则该诉讼主张胜诉可能性低，且不具备获得临时救济的依据。",
+      "impact": "直接法律效力在于限制联邦法院对TPS终止行政决定的司法审查权，明确TPS相关行政行为的不可诉范围。可能影响包括未来TPS持有者对行政终止行为的法律抗辩策略，以及行政机关行使TPS终止权的政策执行和风险评估。",
+      "sourceGrounding": "以上解析基于美国最高法院2026年6月25日发布的Mullin v. Doe判决（案号25-1083)及其官方意见摘要，详见官方链接https://www.supremecourt.gov/opinions/25pdf/25-1083_f204.pdf。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -85,6 +165,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "a59be14508cb2f7859e8109c",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-95_dc8e.pdf",
+      "title": "Pung v. Isabella County",
+      "chineseTitle": "盘地产权税收抵押售出价值确定案解析",
+      "summary": "本案涉及密歇根州伊莎贝拉县因物业税欠款而拍卖庞家住宅，拍卖价远低于市场评估价。庞氏主张根据《第五修正案》征收拍卖价与物业公允市场价差额作为合理赔偿。最高法院判定，仅应以拍卖价减税款差额返还业主溢价部分，非公允市场价值。历史法及前案均支持以拍卖价为赔偿基准，且《第八修正案》过罚款条款不适用此情形。判决重申了税收拍卖的合法性和稳定性。",
+      "legalIssue": "政府在以征税欠款为由依法拍卖房地产时，根据《第五修正案》“征用条款”，合理赔偿的基准应为实际拍卖价还是物业公允市场价值？《第八修正案》过罚款条款是否要求超额赔偿？",
+      "holdingOrRule": "法院认定，以合理、公平的税收拍卖价格作为衡量“合理赔偿”的基准是合宪的。《第五修正案》不要求政府支付超过拍卖价与税债差额的赔偿，也即不以假设的公允市场价值为基准。且《第八修正案》过罚款条款不适用于要求超过拍卖价的赔偿。具体程序是否公平由下级法院审理。",
+      "impact": "直接法律效力：明确联邦宪法层面下税收拍卖赔偿标准，指导各级政府征税和拍卖实践，防止要求以公允市场价支付过高赔偿，保障税收执行机制的实施。可能影响：各州处理税收抵押和司法拍卖相关程序，厘清抵押出售程序公平性的审查标准及边界。",
+      "sourceGrounding": "依据美国最高法院2026年6月23日公布的Pung v. Isabella County一案意见书（编号25-95），详见官方链接：https://www.supremecourt.gov/opinions/25pdf/25-95_dc8e.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "af262e1f2c90da7ed6830ea1",
       "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
       "sourceSystem": "SCOTUS",
@@ -117,6 +213,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "c2b9607cb6cc546b5467963d",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-699_f204.pdf",
+      "title": "Exxon Mobil Corp. v. Corporación Cimex, S. A. (Cuba)",
+      "chineseTitle": "埃克森美孚公司诉古巴CIMEX公司案最高法院判决解析",
+      "summary": "本案涉及1960年古巴政府对埃克森美孚公司资产的没收，及1996年《赫尔姆斯-伯顿法案》赋予美国国民对“贩运”该等没收财产的外国国有实体提起诉讼的权利。穆斯科特最高法院认定该法案本身明确免除了古巴国有机构的主权豁免权，原告无需额外满足《外国主权豁免法》的例外条款。此判决确认联邦立法对主权豁免的例外适用，强化了美国国民通过该法案维权的可能性。",
+      "legalIssue": "《赫尔姆斯-伯顿法案》是否明确剥夺了古巴国有机构在美国法院中的主权豁免权，使诉讼无需依据《外国主权豁免法》中的例外条款？",
+      "holdingOrRule": "最高法院判决，《赫尔姆斯-伯顿法案》通过其明确规定的诉讼原因及对“任何外国国家机构或代理人”适用的定义，已经清晰废除了古巴代理机构的主权豁免权，因而诉讼人无需满足《外国主权豁免法》中的任何豁免例外。",
+      "impact": "直接法律效力：确认《赫尔姆斯-伯顿法案》对被告古巴国有机构的主权豁免豁免效力，使美国国民可依法提起诉讼。可能影响：可能鼓励其他涉及被制裁国家资产没收的美国国民利用类似立法寻求赔偿，影响美古关系及美国对外政策执行。",
+      "sourceGrounding": "依据美国最高法院2026年6月23日《埃克森美孚公司诉古巴CIMEX公司》案最终意见及判决书（编号24-699）原文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "ced959957946e3b0936a7933",
       "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
       "sourceSystem": "SCOTUS",
@@ -130,6 +242,22 @@
       "holdingOrRule": "法院判决夏威夷此项法律违宪。鉴于该法律直接限制了被第二修正案保护的携枪权，且州方提供的历史类比不足以证明其合理性，该限制在宪法意义上不可接受。",
       "impact": "直接法律效力：该判决使得夏威夷禁止许可持枪者进入对公众开放私有场所的规定无效，持证者无需业主明确许可即可进入。可能影响：为其他州类似限制第二修正案权利的法律提供审视依据，有助于界定携枪权的地理与环境边界，影响全国持枪权相关法规的制定及诉讼。",
       "sourceGrounding": "根据2026年6月25日美国最高法院案件Wolford v. Lopez（案号24-1046）官方全文判决及摘要内容分析整理。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "e42688f5dbf3c36406ce89ba",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-856_kjfm.pdf",
+      "title": "Cisco Systems, Inc. v. Doe",
+      "chineseTitle": "Cisco系统诉Doe案最高法院判决解析",
+      "summary": "本案涉及原告指控Cisco公司及其高管因开发监控技术助中国政府迫害宗教信仰者，依据《外国侵权法案》（ATS）及《1991年酷刑受害者保护法》（TVPA）提起诉讼。最高法院确认ATS仅授予法院管辖权，不赋予创造新诉因的权限，驳回基于ATS的协助教唆责任认定；同时认定TVPA未涵盖协助教唆责任。该判决明确限制法院通过ATS扩展保护人权诉讼范围，强调立法机关在创设诉讼权利方面的主导地位。",
+      "legalIssue": "法院是否可依据ATS创造针对协助教唆国际法违法行为的新诉因，以及TVPA是否涵盖对协助教唆酷刑行为者的责任？",
+      "holdingOrRule": "最高法院裁定：1）法院无权在ATS下创造新的诉因，包括协助教唆责任；2）TVPA未明确包含协助教唆责任，故不予支持此类诉讼。",
+      "impact": "该判决直接约束联邦法院不得基于ATS创造新诉因，限制国际人权侵权诉讼的范围；可能影响今后针对企业及其高管在国际法侵权中的责任归属和救济路径，引导相关立法改进制度设计。",
+      "sourceGrounding": "依据2026年6月23日美国最高法院《Cisco Systems, Inc. v. Doe》案正式判决（609/1），官方文档链接https://www.supremecourt.gov/opinions/25pdf/24-856_kjfm.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     }
   ]

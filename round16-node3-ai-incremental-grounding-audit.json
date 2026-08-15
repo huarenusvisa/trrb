@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-08-15T16:01:23.835Z",
+  "node": "3 AI中文解析增量更新与事实约束",
+  "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+  "count": 16,
+  "currentVersionAnalyses": 8,
+  "orphan": 0,
+  "urlMismatch": 0,
+  "authorityMismatch": 0,
+  "incomplete": 0,
+  "disclaimerBad": 0,
+  "commercialLeak": 0,
+  "biaOverclaim": 0,
+  "duplicateIds": 0,
+  "checks": [
+    {
+      "ok": true,
+      "label": "AI dataset pointer synchronized to unified database",
+      "detail": "ai=e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40; db=e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40"
+    },
+    {
+      "ok": true,
+      "label": "AI count metadata matches analyses",
+      "detail": "metadata=16; analyses=16"
+    },
+    {
+      "ok": true,
+      "label": "incremental AI analysis corpus is non-empty",
+      "detail": "analyses=16"
+    },
+    {
+      "ok": true,
+      "label": "all AI analyses map to current legal records",
+      "detail": "orphans=0"
+    },
+    {
+      "ok": true,
+      "label": "official source URLs remain bound to source records",
+      "detail": "mismatches=0"
+    },
+    {
+      "ok": true,
+      "label": "authority metadata is preserved from unified records",
+      "detail": "mismatches=0"
+    },
+    {
+      "ok": true,
+      "label": "required Chinese analysis fields are complete",
+      "detail": "incomplete=0"
+    },
+    {
+      "ok": true,
+      "label": "all analyses include legal-information disclaimer",
+      "detail": "bad=0"
+    },
+    {
+      "ok": true,
+      "label": "no Westlaw/Lexis/headnote material appears in generated analysis",
+      "detail": "hits=0"
+    },
+    {
+      "ok": true,
+      "label": "BIA scope is not overstated as all decisions",
+      "detail": "hits=0"
+    },
+    {
+      "ok": true,
+      "label": "incremental analysis does not duplicate record IDs",
+      "detail": "duplicates=0"
+    },
+    {
+      "ok": true,
+      "label": "current dataset produced or refreshed incremental analyses",
+      "detail": "currentVersion=8/16"
+    },
+    {
+      "ok": true,
+      "label": "AI scope explicitly requires first-party official grounding",
+      "detail": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles."
+    }
+  ],
+  "failures": 0
+}

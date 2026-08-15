@@ -1,0 +1,52 @@
+name: 第十三轮节点4-站内搜索新文章即时可搜
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "listing.js"
+      - "listing.html"
+      - "article-route-runtime.js"
+      - "scripts/round13-node4-search-freshness-audit.mjs"
+      - ".github/workflows/round13-node4-search-freshness.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round13-node4-search-freshness
+  cancel-in-progress: true
+
+jobs:
+  search-freshness:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 等待节点4验收脚本上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum scripts/round13-node4-search-freshness-audit.mjs | awk '{print $1}')"
+          for attempt in $(seq 1 60); do
+            probe="/tmp/round13-node4-${attempt}.mjs"
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round13-node4-search-freshness-audit.mjs?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+              live="$(sha256sum "$probe" | awk '{print $1}')"
+              if [ "$live" = "$expected" ]; then echo "Current node4 audit is live."; exit 0; fi
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: 站内搜索新文章即时可搜生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round13-node4-search-freshness-audit.mjs

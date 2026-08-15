@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-10f3ecf7a03575a92a9cb0906eb7f210198feec8</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T14:46:22.116Z</news:publication_date>
+        <news:title>普林斯乔治县拘留中心释放两名涉嫌帮派非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-85b1c52601907651327b7302f029f27556895e1a</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1886,30 +1894,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-13T14:58:44.221Z</news:publication_date>
         <news:title>“总统信息变付费通道？”特朗普Truth Social提前访问计划引发宪法诉讼</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-b88bdbf73ac87a634fa737d807603c062c722183</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T14:51:41.388Z</news:publication_date>
-        <news:title>新泽西纽瓦克ICE监狱内拘捕印度籍诈骗嫌疑人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/hot/%E5%87%8C%E6%99%A8%E6%8B%A6%E8%BD%A6%E6%94%B61400%E5%85%83%E9%83%91%E5%B7%9E%E8%B4%A7%E8%BD%A6%E5%8F%B8%E6%9C%BA%E7%A7%B0%E7%BD%9A%E6%AC%BE%E8%BD%AC%E4%B8%AA%E4%BA%BA%E5%BE%AE%E4%BF%A1%E5%9F%8E%E7%AE%A1%E5%9B%9E%E5%BA%94%E8%B0%83%E6%9F%A5-msrmylg8-6efeee</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T14:51:07.928Z</news:publication_date>
-        <news:title>凌晨拦车收1400元？郑州货车司机称“罚款”转个人微信，城管回应调查</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/hot/%E8%B4%B5%E5%B7%9E%E5%A4%A7%E5%B0%8F%E4%BA%95%E5%8F%96%E6%B6%88%E5%81%9C%E8%BD%A6%E6%8D%A2%E4%B9%98%E5%BC%80%E6%94%BE%E8%87%AA%E9%A9%BE%E9%80%9A%E8%A1%8C%E6%9A%82%E5%81%9C%E6%91%86%E6%B8%A1%E8%BD%A6%E6%94%B6%E8%B4%B9-msrmt5vi-484b56</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T14:46:54.462Z</news:publication_date>
-        <news:title>贵州大小井取消“停车换乘”！开放自驾通行，暂停摆渡车收费</news:title>
       </news:news>
     </url>
 </urlset>

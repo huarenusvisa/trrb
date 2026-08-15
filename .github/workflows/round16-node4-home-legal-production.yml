@@ -1,0 +1,100 @@
+name: 第十六轮节点4-首页“美国判例与新规”生产上线与缓存治理
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "homepage-immigration-hub.js"
+      - "homepage-immigration-hub.css"
+      - "index.html"
+      - "scripts/round16-node4-home-legal-production.mjs"
+      - ".github/workflows/round16-node4-home-legal-production.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round16-node4-home-legal-production
+  cancel-in-progress: true
+
+jobs:
+  home-legal-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 更新首页法律栏目静态资源版本
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs = require('fs');
+          const path = 'index.html';
+          let html = fs.readFileSync(path, 'utf8');
+          html = html.replace(/homepage-immigration-hub\.css\?v=[^"']+/g, 'homepage-immigration-hub.css?v=20260815-r16n4');
+          html = html.replace(/homepage-immigration-hub\.js\?v=[^"']+/g, 'homepage-immigration-hub.js?v=20260815-r16n4');
+          fs.writeFileSync(path, html);
+          NODE
+
+      - name: 提交缓存治理版本
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "TRRB Round16 Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "Round16 node4 cache version already current."
+          else
+            git commit -m "Round 16 node4: bust homepage legal hub cache"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: 等待首页法律栏目生产版本上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=0
+          for attempt in $(seq 1 72); do
+            home="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
+            js="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-immigration-hub.js?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
+            css="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-immigration-hub.css?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
+            if grep -q 'homepage-immigration-hub.js?v=20260815-r16n4' <<<"$home" \
+              && grep -q 'homepage-immigration-hub.css?v=20260815-r16n4' <<<"$home" \
+              && grep -q '美国判例与新规' <<<"$js" \
+              && grep -q 'legal-knowledge-card' <<<"$css"; then
+              echo "ROUND16_NODE4_BUNDLE_LIVE=true attempt=${attempt}"
+              ready=1
+              break
+            fi
+            echo "Waiting production deploy attempt=${attempt}"
+            sleep 5
+          done
+          test "$ready" = "1"
+
+      - name: 首页法律栏目真实浏览器生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round16-node4-home-legal-production.mjs
+
+      - name: 保存节点4报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round16-node4-home-legal-production
+          path: round16-node4-home-legal-production.json
+          retention-days: 30

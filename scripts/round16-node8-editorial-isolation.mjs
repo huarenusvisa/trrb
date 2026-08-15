@@ -57,7 +57,12 @@ function walk(dir = '.') {
   }
 }
 walk('.');
-const allowedReference = p => p === 'scripts/round15-node9-major-legal-news-pipeline.mjs' || p === 'scripts/round16-node8-editorial-isolation.mjs' || p === '.github/workflows/round16-node8-editorial-isolation.yml';
+const allowedReference = p => [
+  'scripts/round15-node9-major-legal-news-pipeline.mjs',
+  '.github/workflows/round15-node9-major-legal-news-pipeline.yml',
+  'scripts/round16-node8-editorial-isolation.mjs',
+  '.github/workflows/round16-node8-editorial-isolation.yml'
+].includes(p);
 const unexpectedRefs = references.filter(p => !allowedReference(p));
 check(unexpectedRefs.length === 0, 'candidate queue has no automatic publisher/news-renderer consumers', unexpectedRefs.join(', '));
 

@@ -7,7 +7,7 @@ const H={apikey:KEY,Authorization:`Bearer ${KEY}`,Accept:'application/json'};
 const checks=[]; let failures=0;
 function check(ok,label,detail=''){checks.push({ok:Boolean(ok),label,detail});if(!ok)failures++;console.log(`${ok?'PASS':'FAIL'} ${label}${detail?` — ${detail}`:''}`);}
 async function dbArticles(limit=200){const u=new URL(`${SUPABASE_URL}/rest/v1/articles`);u.searchParams.set('select','id,title,slug,cover_image,status,published_at,created_at');u.searchParams.set('status','eq.published');u.searchParams.set('order','published_at.desc.nullslast,created_at.desc');u.searchParams.set('limit',String(limit));const r=await fetch(u,{headers:H});if(!r.ok)throw new Error(`articles ${r.status}`);return r.json();}
-async function get(path){const r=await fetch(`${ORIGIN}${path}`,{headers:{'cache-control':'no-cache','user-agent':'Mozilla/5.0'}});return {status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers.entries())};}
+async function get(path){const sep=path.includes('?')?'&':'?';const r=await fetch(`${ORIGIN}${path}${sep}r14n6=${Date.now()}`,{headers:{'cache-control':'no-cache','user-agent':'Mozilla/5.0'}});return {status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers.entries())};}
 
 const articles=await dbArticles(200);
 check(articles.length>=100,'取得近期已发布文章图片样本',`articles=${articles.length}`);
@@ -24,13 +24,17 @@ for(const a of covered.slice(0,30)){
 check(tested>=20,'取得至少20张真实封面可达性样本',`tested=${tested}`);
 check(badCover===0,'近期封面样本全部可访问',`bad=${badCover}/${tested}`);
 
-const listingSource=readFileSync('listing.js','utf8');
-check(/loading=["']lazy["']/i.test(listingSource),'栏目卡片图片启用 lazy-load');
-check(/decoding=["']async["']/i.test(listingSource),'栏目卡片图片启用 async decoding');
-check(/width=["']512["'][^>]+height=["']288["']/i.test(listingSource),'栏目卡片图片声明固定宽高避免布局抖动');
-check(!/alt=["']["']/i.test(listingSource),'栏目卡片图片不存在空 alt');
-check(/alt=["'][^"']*\$\{[^}]*title/i.test(listingSource)||/alt=\\?["'][^\n]*article\.title/i.test(listingSource),'栏目卡片图片 alt 绑定文章标题');
-check(/onerror=/i.test(listingSource),'栏目卡片图片具备加载失败 fallback');
+const localListing=readFileSync('listing.js','utf8');
+check(/loading=["']lazy["']/i.test(localListing),'栏目卡片图片启用 lazy-load');
+check(/decoding=["']async["']/i.test(localListing),'栏目卡片图片启用 async decoding');
+check(/width=["']512["'][^>]+height=["']288["']/i.test(localListing),'栏目卡片图片声明固定宽高避免布局抖动');
+check(/onerror=/i.test(localListing),'栏目卡片图片具备加载失败 fallback');
+
+const liveListing=await get('/listing.js');
+check(liveListing.status===200,'生产 listing.js 可访问',`status=${liveListing.status}`);
+check(liveListing.headers['x-trrb-image-seo']==='listing-alt-v1','生产 listing.js 已启用图片SEO修复层',liveListing.headers['x-trrb-image-seo']||'missing');
+check(!/alt=["']["']/i.test(liveListing.text),'生产栏目卡片不存在空 alt');
+check(/alt=["'][^"']*\$\{[^}]*article\.title/i.test(liveListing.text)||/alt=["'][^\n]*article\.title/i.test(liveListing.text),'生产栏目卡片 alt 绑定文章标题');
 
 const common=readFileSync('site-common.js','utf8');
 check(/CATEGORY_PLACEHOLDERS/.test(common)&&/installGlobalImageFallback/.test(common),'全站图片具备分类占位与错误容灾');

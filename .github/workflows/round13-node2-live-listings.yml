@@ -47,6 +47,7 @@ jobs:
             "scripts/round13-node2-live-listings.mjs"
             "homepage-refresh-guard.js"
             "listing-live-category-fix.js"
+            "article-route-runtime.js"
           )
           for attempt in $(seq 1 60); do
             all_live=true

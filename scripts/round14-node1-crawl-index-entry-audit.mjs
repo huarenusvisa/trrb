@@ -1,3 +1,5 @@
+import { writeFileSync } from 'node:fs';
+
 const ORIGIN = (process.env.SITE_ORIGIN || 'https://trrb.net').replace(/\/$/, '');
 const checks = [];
 let failures = 0;
@@ -88,6 +90,7 @@ for (const path of ['/', '/important-news', '/hot-headlines', '/us-politics', '/
   check(!hasNoindex(r.text, r.headers), `${path} 未被意外 noindex`);
 }
 
+writeFileSync('round14-node1-crawl-index-entry-audit.json', JSON.stringify({ generatedAt: new Date().toISOString(), origin: ORIGIN, checks, failures }, null, 2));
 console.log(`ROUND14 NODE1 audit: checks=${checks.length}; failures=${failures}`);
 if (failures === 0) {
   console.log('ROUND14 NODE1 PASS: search-engine crawl and index entry consistency verified');
@@ -95,5 +98,3 @@ if (failures === 0) {
   console.log('ROUND14 NODE1 FAIL: crawl/index entry inconsistencies detected');
   process.exitCode = 1;
 }
-
-await Bun?.write?.('round14-node1-crawl-index-entry-audit.json', JSON.stringify({ generatedAt: new Date().toISOString(), origin: ORIGIN, checks, failures }, null, 2)).catch?.(() => {});

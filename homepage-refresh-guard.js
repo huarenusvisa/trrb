@@ -5,6 +5,7 @@
   const ICE_ALIASES = new Set(["ICE执法动态", "ICE执法追踪", "ICE新闻", "驱逐快报"]);
   const PLACEHOLDER_RE = /image-placeholder\.svg|category-placeholders|tang-ren-daily-placeholder|^data:image\/svg/i;
   const DYNAMIC_SELECTORS = ["#ticker", "#hero", "#top-list", "#sections-grid", "#rank-list"];
+  let lastRenderSignature = "";
 
   try { sessionStorage.removeItem("trrb-home-render-v1"); } catch {}
 
@@ -76,6 +77,15 @@
     return output;
   }
 
+  function signatureFor(items) {
+    return (Array.isArray(items) ? items : []).slice(0, 80).map((item) => [
+      keyOf(item),
+      String(item?.title || ""),
+      String(item?.image || ""),
+      String(item?.category || "")
+    ].join("|")).join("\n");
+  }
+
   function bindImageRecovery(root = document) {
     root.querySelectorAll?.("img").forEach((img) => {
       if (!(img instanceof HTMLImageElement) || img.dataset.trrbRecoveryBound === "true") return;
@@ -110,7 +120,11 @@
     }
 
     const articles = mergeStable(live, archived);
-    if (articles.length) window.renderHome(articles);
+    const signature = signatureFor(articles);
+    if (articles.length && signature && signature !== lastRenderSignature) {
+      window.renderHome(articles);
+      lastRenderSignature = signature;
+    }
     revealHome();
     bindImageRecovery(document);
   }

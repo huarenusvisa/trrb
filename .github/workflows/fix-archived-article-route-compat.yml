@@ -1,0 +1,58 @@
+name: 修复旧文章点击404兼容链
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/fix-archived-article-route-compat.mjs"
+      - ".github/workflows/fix-archived-article-route-compat.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-fix-archived-article-route-compat
+  cancel-in-progress: true
+
+jobs:
+  patch-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 修复Edge旧文章兼容
+        run: node scripts/fix-archived-article-route-compat.mjs
+      - name: 提交Edge修复
+        run: |
+          git config user.name "TRRB Route Fix Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add netlify/edge-functions/article-prerender.ts
+          if git diff --cached --quiet; then
+            echo "Edge compatibility already patched."
+          else
+            git commit -m "Fix archived numeric article routes and legacy fallback"
+            git push origin HEAD:main
+          fi
+      - name: 等待生产部署并验证117302
+        run: |
+          set -euo pipefail
+          ok=0
+          for attempt in $(seq 1 72); do
+            code=$(curl -L -sS -o /tmp/archive.html -w '%{http_code}' --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news/117302?rfix=${GITHUB_RUN_ID}-${attempt}" || true)
+            legacy=$(curl -sS -o /tmp/legacy.html -w '%{http_code}' --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=117302&rfix=${GITHUB_RUN_ID}-${attempt}" || true)
+            echo "attempt=$attempt pretty_final=$code legacy=$legacy"
+            if [ "$code" = "200" ] && [ "$legacy" = "200" ]; then
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          test "$ok" = "1"
+          grep -q 'article.js' /tmp/archive.html
+          echo 'ARCHIVED_ARTICLE_117302_PRODUCTION_HTTP_PASS=true'

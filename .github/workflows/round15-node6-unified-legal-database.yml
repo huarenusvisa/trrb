@@ -1,0 +1,55 @@
+name: 第十五轮节点6-判例与新规统一数据库、去重及版本控制
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round15-node6-unified-legal-database.mjs"
+      - ".github/workflows/round15-node6-unified-legal-database.yml"
+      - "data/legal/supreme-court-latest.json"
+      - "data/legal/circuit-opinions-latest.json"
+      - "data/legal/bia-precedent-latest.json"
+      - "data/legal/whitehouse-executive-orders-latest.json"
+      - "data/legal/federal-register-final-rules-latest.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round15-node6-unified-legal-database
+  cancel-in-progress: true
+
+jobs:
+  unify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 生成统一判例与新规数据库并验收去重版本控制
+        run: node scripts/round15-node6-unified-legal-database.mjs
+      - name: 保存节点6验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node6-unified-legal-database
+          path: |
+            round15-node6-unified-legal-database-audit.json
+            data/legal/unified-legal-authorities-latest.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: 统一数据库内容变化时提交
+        if: success()
+        run: |
+          git config user.name "TRRB Round15 Legal Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/legal/unified-legal-authorities-latest.json
+          if git diff --cached --quiet; then
+            echo "No unified legal database content change."
+          else
+            git commit -m "Round 15: sync unified legal authority database"
+            git push
+          fi

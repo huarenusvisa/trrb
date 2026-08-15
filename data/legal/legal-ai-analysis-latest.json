@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+  "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 32,
+  "count": 40,
   "analyses": [
     {
       "recordId": "01d42822aa2629ee30c6e45a",
@@ -53,6 +53,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "11a2996869768ec384c810a5",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/608us1r32_g3bi.pdf",
+      "title": "Montgomery v. Caribe Transport II, LLC",
+      "chineseTitle": "蒙哥马利诉加勒比运输二号有限责任公司案",
+      "summary": "本案中，申请人蒙哥马利因被加勒比运输二号有限公司的卡车司机撞伤，起诉卡车运输协调商C.H. Robinson，指其因招募安全评级为“条件不合格”的承运商而疏忽。地方法院及第七巡回上诉法院认为联邦航空管理授权法案（FAAAA）的预emption条款阻止该疏忽招用诉讼，但该法案的安全例外条款允许州对涉及机动车安全的法规仍有监管权。最高法院一致判决，疏忽招用索赔属于该安全例外，故不能被预emption阻止。",
+      "legalIssue": "FAAAA中安全例外条款是否允许针对运输协调商提出因疏忽招用不安全承运商导致他人受伤的州法索赔？",
+      "holdingOrRule": "因疏忽招用承运商的诉讼属于“与机动车有关”的安全监管范围内，受FAAAA安全例外保护，不受该法案对价格、路线和服务相关州法规的预emption限制。",
+      "impact": "直接法律效力：确认州法院可以受理针对运输协调商的疏忽招用机动车承运商的安全责任诉讼。可能影响：促进运输行业中对承运商安全资格的重视，为受害者提供更多求偿渠道，影响州法律在运输安全监管中的作用范围。",
+      "sourceGrounding": "解析依据《蒙哥马利诉加勒比运输二号有限责任公司》案2026年5月14日最高法院官方判决文件（608 U.S. 219），详见https://www.supremecourt.gov/opinions/25pdf/608us1r32_g3bi.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "1955610f74fee00116d30964",
       "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
       "sourceSystem": "SCOTUS",
@@ -82,6 +98,22 @@
       "holdingOrRule": "最高法院判定，“抵达美国”仅指外籍人士实际进入美国领土，站在墨西哥境内即使试图进入也不构成合法“抵达”，因此不享受相应的检查及庇护申请权利。政府不需为未入境人员提供入境检查或庇护申请程序。",
       "impact": "【直接法律效力】本判决在第九巡回法院辖区内对联邦政府与边境管理政策具有约束力，允许政府实施“限流”措施管理边境入境人数。【可能影响】全国其他联邦地区法院及联邦移民执法实践中可能借鉴解读，提高边境入境审查的空间划定，影响庇护申请受理的时点与程序。",
       "sourceGrounding": "根据美国最高法院2026年6月25日发布的官方判决全文（Slip Opinion，609 U.S. ___ (2026)，https://www.supremecourt.gov/opinions/25pdf/25-5_86qd.pdf），特别是判决书第1-18页内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "1b97e7d7fb7c366e1266c388",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/608us1r31_8759.pdf",
+      "title": "Jules v. Andre Balazs Properties",
+      "chineseTitle": "Jules诉Andre Balazs Properties案最高法院判决解析",
+      "summary": "本案核心在于联邦法院在依据美国联邦仲裁法§3条暂停诉讼后，是否仍具备对随后的仲裁裁决依据§9及§10条进行确认或撤销的司法管辖权。最高法院一致认为，原诉讼既然具有联邦问题管辖权，法院在案件暂停期间并未失去管辖权，因此在仲裁结束后有权确认或撤销裁决。该判决明确联邦法院对原受理案件的§9和§10动议具备管辖权，无需另寻独立管辖基础。",
+      "legalIssue": "联邦法院在依据联邦仲裁法§3条对诉讼暂时中止后，是否仍对同一标的的§9（确认仲裁裁决）及§10（撤销仲裁裁决）动议具备联邦司法管辖权。",
+      "holdingOrRule": "联邦法院对原有联邦问题诉讼依据其既有管辖权，在案件根据§3条暂时中止进行仲裁期间，不丧失对后续§9及§10动议的管辖权。联邦仲裁法未排除法院对待决案件的管辖权和对仲裁裁决确认或撤销的权能。",
+      "impact": "该判决直接法律效力在于指导联邦法院正确理解和适用联邦仲裁法，维护法院对原有诉讼的持续监督权，避免诉讼和仲裁程序分离引发管辖权真空和程序重复。可能影响范围包括与仲裁相关的诉讼程序设计、律师诉讼策略及仲裁协议执行等。",
+      "sourceGrounding": "依据美国最高法院2026年5月14日发布的Jules v. Andre Balazs Properties案官方判决书第608卷第200页至218页内容。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -181,6 +213,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "5cb0a7c0e8860ac72c1a48b4",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-781_pok0.pdf",
+      "title": "First Choice Women’s Resource Centers, Inc. v. Davenport",
+      "chineseTitle": "First Choice女性资源中心诉达文波特案案情与联邦法院审查资格问题解析",
+      "summary": "本案涉及新泽西州总检察长对宗教非营利组织First Choice女性资源中心发出传票，要求提供捐赠者的详细个人信息。First Choice主张该要求侵犯了其第一修正案保护的结社自由权，故提起联邦诉讼请求禁止执行该传票。初审及第三巡回上诉法院裁定其缺乏联邦法院审判资格，最高法院则认定First Choice已遭受现时具体的宪法侵害，具有诉讼资格，符合第三条案由要求，裁定撤销并发回重审。",
+      "legalIssue": "在政府发出要求非营利组织披露捐赠者个人信息的传票时，该组织是否具备联邦法院对该传票合宪性提起诉讼的宪法诉讼资格？",
+      "holdingOrRule": "最高法院一致裁定，要求披露私人捐赠者信息的传票对被请求组织的第一修正案结社权构成现实且持续的损害，组织因此具备联邦法院审理案件所需的实际伤害和因果关系，即具备联邦诉讼资格。",
+      "impact": "该裁决直接对涉及政府强制披露捐赠者信息的案件在联邦法院审理资格问题上具有拘束力；可能影响非营利组织及宗教团体保护捐赠者匿名性的策略，以及州级政府调查权力与第一修正案保护之间的界限认定。",
+      "sourceGrounding": "基于美国最高法院2026年4月29日发布的《First Choice Women’s Resource Centers, Inc. v. Davenport》案全意见书和概要部分，官方链接：https://www.supremecourt.gov/opinions/25pdf/24-781_pok0.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "630e51f8c333fdec5443d7cf",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -210,6 +258,22 @@
       "holdingOrRule": "最高法院裁定，工人即便未亲自跨越州界或接触跨州车辆，倘若其运输活动是跨州连续运输过程中的一个环节，则符合第1条豁免“从事州际商业的工人”资格。官方材料节选不足，暂不判断具体案件裁判结论。",
       "impact": "直接法律效力：扩大了联邦仲裁法第1条豁免在州际运输相关职业中的适用，影响相关劳动合同与仲裁协议的强制执行范围。可能影响：州际商业链中各环节运输及配送人员身份界定，劳动法和仲裁司法实践的解释标准。",
       "sourceGrounding": "依据美国最高法院2026年5月28日发表的Flowers Foods, Inc.诉Brock案判决全文及法庭摘要，官方文档网址https://www.supremecourt.gov/opinions/25pdf/24-935_k53m.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "6831d9a77cc1c620e47935a4",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-767_7758.pdf",
+      "title": "Margolin v. NAIJ",
+      "chineseTitle": "边境司法审查渠道案——Margolin诉全国移民法官协会案释义",
+      "summary": "本案涉及行政办公厅出台的一项要求移民法官发表与职责相关公开言论需主管批准的政策，移民法官协会质疑政策侵犯第一和第五修正案权利。地区法院判断此类雇佣行为应适用《公务员改革法》行政复议程序，不属联邦地区法院管辖。第四巡回上诉法院虽认同该政策被涵盖，但超出双方争议事项，基于未由当事人提出的新事实展开审查，违反诉讼双方主导原则。最高法院逆转四巡判决，重申联邦法院受理案件应聚焦当事人提出问题，非自行探查且审理范围须限定。",
+      "legalIssue": "联邦雇员对行政办公厅制定移民法官言论审批政策的宪法质疑应否由《公务员改革法》的行政复议机制专属审理，而非联邦地区法院；以及法院是否可基于未被当事方提出的新事实自行审查案件。",
+      "holdingOrRule": "最高法院裁定：四巡法院违反诉讼双方主导原则，未经当事方请求自行基于新事实判决及发回审理；应尊重当事方提出的争议范围；本案涉及的政策被《公务员改革法》覆盖，其挑战应通过行政复议渠道处理。",
+      "impact": "直接法律效力：明确联邦雇员工作相关申诉应依《公务员改革法》程序处理，限制联邦法院管辖范围。可能影响：指导联邦雇员对抗工作政策时诉讼路径选择，对法院处理当事人未提及问题的审慎性有重要参考。",
+      "sourceGrounding": "依据美国最高法院2026年5月26日Margolin诉全国移民法官协会案官方判决文本（608 U. S. ____ (2026) 1，案号25-767）及相关法官意见。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -245,6 +309,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "80518ad39027f56e9d2b9f39",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/23-1209_i3kn.pdf",
+      "title": "M & K Employee Solutions, Inc. v. Trustees of IAM Nat. Pension",
+      "chineseTitle": "M & K员工解决方案诉IAM全国养老金受托人案美国最高法院判决解析",
+      "summary": "本案涉及ERISA下多雇主养老金计划中，企业退出时计算撤出责任的精算假设选择时点。最高法院裁定，法律中“截至”测算日的规定并不限制精算假设必须在测算日前确定，精算假设可在测算日后选定，前提是假设合理并基于测算日前已有的资料。此判决与部分下级法院判决相抵触，明确了精算假设选择的法律框架。",
+      "legalIssue": "ERISA规定的“撤出责任”计算中，精算假设是否必须在测算日（计划年度结束日前一天）之前确定？",
+      "holdingOrRule": "ERISA §§1391和1393未要求精算假设必须于测算日或之前选定。测算日限制的是核算所依据的硬数据时点，精算假设作为预测性判断工具，可在测算日后根据当时最佳可获得信息合理选定。",
+      "impact": "直接法律效力：明确ERISA撤出责任的核算程序合法范围，影响多雇主养老金计划及其退出企业的撤出责任计算。可能影响：养老金计划精算实践及相关诉讼中精算假设的采纳时点标准。",
+      "sourceGrounding": "依据美国最高法院2026年5月21日关于M & K Employee Solutions, Inc.诉IAM National Pension Trustees案（案号23-1209）的官方判决意见全文及其法条引用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "864a376952f5c46e52421521",
       "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
       "sourceSystem": "SCOTUS",
@@ -258,6 +338,22 @@
       "holdingOrRule": "最高法院裁定，根据第十四修正案公民条款，所有在美国出生且受美国法律管辖的人均为美国公民，包括父母非法或暂时居留的子女。行政命令认为此类子女不受“管辖”范围，剥夺其公民权的规定违宪。",
       "impact": "该判决直接确认非法或暂居父母子女之出生公民权，阻止联邦行政限制。对移民子女公民身份权利具有直接法律效力。此判决可能影响联邦和州移民政策、入籍案件及相关诉讼，对公众和政府移民执法实践有重要指导作用。",
       "sourceGrounding": "依据美国最高法院于2026年6月30日发布的终审意见书，案件编号25-365，官方文件载于https://www.supremecourt.gov/opinions/25pdf/25-365_new_5if6.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "8bbb551654bd30d83c4ccc65",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-109_new_jifl.pdf",
+      "title": "Louisiana v. Callais Revisions : 5/04/26",
+      "chineseTitle": "路易斯安那州诉卡莱斯案：关于州界划分中的种族考量与投票权法案第2条合规性的最高法院判决",
+      "summary": "美国最高法院2026年判决指出，路易斯安那州2022年为符合《投票权法案》第2条而划定的联邦国会选区地图，因基于种族构建多数黑人选区，未满足该法对需设立额外多数少数族裔区的严格要求，构成违宪的种族选区划分。法院明确合规性需依文本解释，指出第2条仅在存在明确种族歧视意图时成立，且州不得为避责而无正当理由基于种族划线，强化了《宪法》第14修正案平等保护条款的适用。",
+      "legalIssue": "《投票权法案》第2条是否能作为种族为基础划定州立法选区的正当理由，从而避免受到《宪法》第14修正案平等保护条款对种族歧视的严格审查？",
+      "holdingOrRule": "最高法院裁定：第2条在被正确解读时可构成使用种族划定选区的正当理由，但路易斯安那州2022年的划区地图不符合第2条要求，因未证明必须建立额外多数黑人选区，故其以种族为主要因素划区构成违宪种族划分；同时更新了Gingles判例框架，要求原告在绘制示范地图时不能单用种族标准，须符合所有合法划区目标，并要求排除党派因素影响分析。官方材料节选不足，暂不判断后续具体裁判结论。",
+      "impact": "直接法律效力：本判决为联邦最高法院权威判决，约束各州在遵循《投票权法案》和《宪法》第14修正案间平衡种族因素划分选区的法律标准。可能影响：未来涉及投票权和种族划分的联邦及州级诉讼、立法及选区重新划分政策，指导审查标准强化对种族因素的严格审视，限制过度依据种族划区以避免违宪风险。",
+      "sourceGrounding": "解析依据2026年4月29日美国最高法院发布的“路易斯安那州诉卡莱斯”意见书（案件号24-109），官方网址：https://www.supremecourt.gov/opinions/25pdf/24-109_new_jifl.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -453,6 +549,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "d1349146c1392627439c2c7e",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-872_ec8f.pdf",
+      "title": "Hamm v. Smith",
+      "chineseTitle": "哈姆诉史密斯案（2026年）最高法院公告",
+      "summary": "本案涉及阿拉巴马州囚犯史密斯是否属于因智力残疾禁止执行死刑的适用条件。史密斯有多个智商测试结果分布在边界线范围，涉及标准误差的考量及适用阿拉巴马州标准对其智力残疾认定。最高法院驳回了对该案的审查请求，认为案件不宜作为制定多重智商评分评估标准的依据。大法官索托马约尔分别说明了不宜通过此案确立多重智商评分判断规则，并指出主要反对意见对前案和科学共识的片面陈述。",
+      "legalIssue": "法院是否应在本案中就涉及多重智商分数的宪法智力残疾认定问题作出统一指导，尤其涉及如何综合标准误差范围内的各项智商得分判断被告是否符合禁死条款标准。",
+      "holdingOrRule": "最高法院以多数意见驳回了对案件的审查请求，官方材料节选不足，暂不判断裁判结论。各级法院和专家对多重智商分数的综合分析实行不同方法，但本案未形成统一裁判规则。",
+      "impact": "该判决直接法律效力限于撤销本案联邦最高审具体审查，不具示范或约束性判例作用。在更广范围内，该决定反映最高法院短期内不设统一标准，影响各州和联邦下级法院自行裁量认定智力残疾案件的多重智商分数处理方式。",
+      "sourceGrounding": "依据最高法院2026年5月21日发布的《哈姆诉史密斯》案Slip Opinion及索托马约尔大法官与杰克逊大法官联合附议书，官方网址：https://www.supremecourt.gov/opinions/25pdf/24-872_ec8f.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "e42688f5dbf3c36406ce89ba",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -498,6 +610,22 @@
       "holdingOrRule": "诱导侵权索赔需证明被告采取了目的明确、可归责的积极行动来鼓励侵权；不应仅凭含糊陈述或被告未提及某些专利限制即认定诱导侵权。",
       "impact": "直接法律效力包括指导联邦专利侵权诉讼中关于诱导侵权责任的举证标准，限制原告通过被告模糊宣传材料推定诱导责任。可能影响仿制药厂商标签设计、宣传行为以及品牌药企的维权策略，涉及整个制药及专利执法领域。",
       "sourceGrounding": "依据美国最高法院2026年6月4日发布的Hikma Pharmaceuticals USA Inc. v. Amarin Pharma, Inc.官方意见书全文及摘要，来源：https://www.supremecourt.gov/opinions/25pdf/24-889_5i36.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "f8e8d2622ead3273d9072dd2",
+      "datasetVersion": "e2355776389a55a013ea1e974332fb09a2555ca7e39145233399112205d7f3d8",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-983_c07d.pdf",
+      "title": "Havana Docks Corp. v. Royal Caribbean Cruises, Ltd.",
+      "chineseTitle": "哈瓦那码头公司诉皇家加勒比邮轮有限公司案",
+      "summary": "本案涉及古巴政府对美国哈瓦那码头公司所拥有的哈瓦那港码头的强制没收及赔偿问题。哈瓦那码头公司持有1928年授予的码头使用经营权，该权利原计划于2004年到期。1959年古巴革命后，古巴政府没收相关财产未支付赔偿。1996年美国国会通过古巴自由与民主团结法案（简称LIBERTAD法案），赋予美国国民因古巴政府自1959年起没收财产提起私人诉讼权利。案件争议核心为旅游邮轮公司使用该被没收的码头是否构成违法流通没收财产。最高法院判决，法案所称“没收财产”既包括实际物理财产，也包括相关财产权利，且哈瓦那码头公司无需证明邮轮公司的行为是否干扰其原有权利，仅需证明邮轮公司使用了被没收的码头物理财产，即构成违法流通。",
+      "legalIssue": "美国古巴自由与民主团结法案第三章是否对此前被古巴政府没收的财产的物理资产之使用行为构成违法流通，且权利人是否需证明被控方行为对其原有财产权利的影响。",
+      "holdingOrRule": "最高法院判定，法案中的“没收财产”包括受原权利人持有的实际物理财产，权利人无需证明没有没收的反事实下其财产权利持续存在，单凭被告使用被没收的物理财产即构成违法流通，支持原告哈瓦那码头公司诉求。",
+      "impact": "具有直接法律效力的是，该判决确认了美国国民对古巴政府没收财产私权诉讼的范围及证据标准，从而扩大了对没收财产的保护范围。可能影响范围包括涉及古巴没收财产及类似对外资产纠纷之美国企业与个人，增加相关商业活动的法律风险。",
+      "sourceGrounding": "依据美国最高法院于2026年5月21日公布的哈瓦那码头公司诉皇家加勒比邮轮有限公司案正式判决意见书（608 U.S. ___）。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

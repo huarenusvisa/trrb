@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+const DB='data/legal/unified-legal-authorities-latest.json';
+const OUT='sitemap-legal.xml';
+const ORIGIN='https://trrb.net';
+const db=JSON.parse(fs.readFileSync(DB,'utf8'));
+const records=Array.isArray(db.records)?db.records:[];
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
+const urls=[`${ORIGIN}/legal/`,...records.filter(r=>r&&r.id).map(r=>`${ORIGIN}/legal/detail.html?id=${encodeURIComponent(r.id)}`)];
+const xml=['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',...urls.map(u=>`  <url><loc>${esc(u)}</loc></url>`),'</urlset>',''].join('\n');
+fs.writeFileSync(OUT,xml);
+console.log(`LEGAL SITEMAP GENERATED: urls=${urls.length}; datasetVersion=${db.datasetVersion||''}`);

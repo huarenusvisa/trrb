@@ -1,0 +1,40 @@
+name: 第十四轮节点3-NewsArticle结构化数据完整性
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round14-node3-newsarticle-schema-audit.mjs"
+      - ".github/workflows/round14-node3-newsarticle-schema.yml"
+      - "article-seo.js"
+      - "netlify/edge-functions/article-prerender.ts"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round14-node3-newsarticle-schema
+  cancel-in-progress: true
+
+jobs:
+  newsarticle-schema:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      SITE_ORIGIN: https://trrb.net
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: NewsArticle 结构化数据生产验收
+        run: node scripts/round14-node3-newsarticle-schema-audit.mjs
+      - name: 保存节点3报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round14-node3-newsarticle-schema
+          path: round14-node3-newsarticle-schema-audit.json
+          if-no-files-found: warn
+          retention-days: 30

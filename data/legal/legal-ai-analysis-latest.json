@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 16,
+  "count": 24,
   "analyses": [
     {
       "recordId": "01d42822aa2629ee30c6e45a",
@@ -34,6 +34,22 @@
       "holdingOrRule": "联邦选举日法规仅规定投票时间，不要求选票必须在选举当天收到，州法规允许选举日后合理期限内收取缺席选票不被联邦法规预先排除。",
       "impact": "直接法律效力：确认州政府在设定缺席选票接收期限时享有一定自主权，联邦法规不统一设定收票截止；可能影响：其他约30州允许选举日后收到缺席选票的政策，相关诉讼和选举规则制定。",
       "sourceGrounding": "依据美国最高法院2026年6月29日《沃森诉共和党全国委员会》案官方判决书（No. 24-1260）全文及法庭说明，详见supremecourt.gov官方网站。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "112d6645a1480743182eb054",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-345_i42k.pdf",
+      "title": "FS Credit Opportunities Corp. v. Saba Capital Master Fund, Ltd.",
+      "chineseTitle": "美国最高法院判决：投资公司法第47条(b)不赋予私人合同撤销诉讼权",
+      "summary": "本案涉及投资公司法（ICA）第47条(b)是否隐含赋予私人合同撤销诉讼权。诉讼方质疑管理闭端共同基金的基金所通过限制大股东投票权的决议是否违反ICA。最高法院认为，ICA第47条(b)是针对法院的权力指示，而非为私人当事人设立起诉权利。鉴于该法有明确证券交易委员会的执法机制，私人一般无权基于此条文主张合同撤销。",
+      "legalIssue": "投资公司法第47条(b)是否隐含赋予私人当事人权利提起合同撤销诉讼？",
+      "holdingOrRule": "最高法院裁定，投资公司法第47条(b)不隐含赋予私人当事人合同撤销起诉权。该条款主要是对法院在处理违反ICA合同时行使救济权的指令，而非赋予当事人诉权。",
+      "impact": "直接法律效力：限制私人基于ICA第47条(b)单独提起合同撤销诉讼的权利。可能影响：投资基金及相关投资者的诉讼策略，强化监管机构作为ICA主要执法者的地位。",
+      "sourceGrounding": "基于美国最高法院2026年6月11日关于FS Credit Opportunities Corp.诉Saba Capital Master Fund案的终审意见，详见官方判决文档https://www.supremecourt.gov/opinions/25pdf/24-345_i42k.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -101,6 +117,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "488d6c5b561f59d1b9a3e515",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-748_4g1o.pdf",
+      "title": "McCarthy v. Hernandez",
+      "chineseTitle": "麦卡锡诉埃尔南德斯案（McCarthy v. Hernandez）",
+      "summary": "本案涉及依据反恐和有效死刑法案（AEDPA）对州法院有罪判决的联邦纥据救济限制。第二巡回上诉法院认定州法院未正确指导陪审团适用密苏里州诉塞伯特案中关于认罪自白的规定，故发出人身保护令。最高法院纠正此判决，明确塞伯特案未涉及陪审团指示义务，州法院判决未违反明确联邦法。",
+      "legalIssue": "联邦法院在审理申请人基于Miranda权利保护与Seibert先后审讯策略提出的人身保护令申请时，是否可以认定州法院未正确解释陪审团应如何对待前后供词，进而发出救济？",
+      "holdingOrRule": "最高法院认为：Seibert案不涉及陪审团指示义务，联邦宪法不要求陪审团对供词自愿性进行评判，州法适用未违反明确联邦法律，第二巡回法院超越AEDPA授权，误用Seibert标准，救济不当。官方材料节选不足，暂不判断裁判结论。",
+      "impact": "直接法律效力：限制联邦法院依据AEDPA给予人身保护令的条件，强调尊重州法院对供词证据的处理及陪审团指示范围。可能影响：州刑事审判中陪审团指示内容和联邦法院复审权限的界定，对类似虐用Miranda警告的案件处理有指导意义。",
+      "sourceGrounding": "依据美国最高法院2026年6月22日公布的McCarthy v. Hernandez判决书(608 U.S. ____)，特别是对第二巡回上诉法院判决的审查与解释。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "630e51f8c333fdec5443d7cf",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-5146_new_kifl.pdf",
+      "title": "Abouammo v. United States Revisions : 6/16/26",
+      "chineseTitle": "阿布阿莫诉美国案：联邦伪造文件罪的审判地域确定",
+      "summary": "本案聚焦18 U.S.C. §1519规定的伪造文件以妨碍联邦调查罪的审判地域问题。被告阿布阿莫在西雅图伪造发票，但被控于旧金山北区法院受审。最高法院裁定，犯罪行为所在地即伪造文件地点为合适审判地，意图妨碍调查的地域不构成审判地域。该判决明确保护犯罪地点审判权，拒绝以调查所在地为审判地的扩张解释。",
+      "legalIssue": "18 U.S.C. §1519刑事案件中，被告必须在伪造文件发生地受审，还是可以在联邦调查所在地受审？",
+      "holdingOrRule": "违反18 U.S.C. §1519的被告，应在伪造文件所在地接受审判；调查所在地无“构成犯罪的行为”，不能作为审判地域。该罪名仅以伪造文件的行为构成犯罪，意图妨碍仅为犯罪的主观要素，不影响审判地域确定。",
+      "impact": "直接法律效力：明确伪造文件罪审判地域专属性，限制联邦检方选择审判地范围。可能影响：其他无明确地域规定的联邦犯罪的审判地域解释和策略，强化地域管辖权的严谨界定。",
+      "sourceGrounding": "依据美国最高法院2026年6月11日发布的阿布阿莫诉美国案官方判决摘要及正式意见书，链接：https://www.supremecourt.gov/opinions/25pdf/25-5146_new_kifl.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "75f5b3d51778d9bf434af043",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -165,6 +213,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "a1936d179b8fd50d7eb2a2fd",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-197_new_4g15.pdf",
+      "title": "T. M. v. University of Md. Medical System Corporation Revisions : 6/19/26",
+      "chineseTitle": "T. M.诉马里兰大学医疗系统公司案最高法院判决解析",
+      "summary": "本案涉及Rooker-Feldman原则是否适用于尚处于州上诉程序中的州法院判决。法院确认，该原则禁止联邦地区法院受理州法院败诉方提起的、旨在审查和推翻该判决的诉讼，无论该州法院判决是否仍在上诉过程中。因而，原告T.M.对其州法院达成的调解同意令中止执行，以及相关联邦诉讼被驳回。",
+      "legalIssue": "Rooker-Feldman原则是否仅限制对州最高法院最终判决的联邦审查，还是也适用于尚在州上诉阶段的州法院判决？",
+      "holdingOrRule": "Rooker-Feldman原则禁止联邦地区法院受理原州法院败诉方提起的针对州法院判决的诉讼，无论该判决是否仍可在州上诉程序中进一步审查。",
+      "impact": "直接法律效力：限制联邦地区法院对非最高州法院最终判决的司法审查权限。可能影响：涉及多级州法院判决的司法管辖争议案件中，影响诉讼策略及联邦法院案件受理范围。",
+      "sourceGrounding": "依据2026年6月18日美国最高法院在T. M. v. University of Maryland Medical System Corporation案中的官方判决文档，编号25-197。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "a59be14508cb2f7859e8109c",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -194,6 +258,38 @@
       "holdingOrRule": "最高法院推翻2001年《科罗拉多II》判例，认定现行政治党派协调支出限额侵犯言论自由，且此限额不符合司法“近严密审查”标准，系不必要且不精准的限制措施，违反第一修正案。",
       "impact": "直接法律效力：解除对政党与候选人协调选举支出的支出限制。可能影响：改变未来美国竞选资金监管格局，增强政党与候选人合作发声能力，影响选举资金法律和实践。",
       "sourceGrounding": "依据美国最高法院2026年6月30日公布的《全国共和党参议员委员会诉联邦选举委员会》终审意见书及其官方材料。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "b39e1ec165ab64c7ee95791b",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-1063new_l5gm.pdf",
+      "title": "Hunter v. United States Revisions : 6/19/26",
+      "chineseTitle": "亨特诉美国案——上诉豁免权及误判正义的司法审查",
+      "summary": "本案涉及被告亨特签署认罪协议，包含放弃上诉权条款后，针对强制用药条件提出上诉，联邦最高法院裁定，上诉豁免权在导致严重司法错误（误判正义）时不可强制执行，此类错误须是显而易见且严重影响司法公信力。法院维持合同效力但允许在“误判正义”标准下例外解除豁免。",
+      "legalIssue": "认罪协议中被告放弃上诉权的条款是否在导致严重司法错误时依旧可强制执行？强制用药条件是否构成此类严重司法错误？",
+      "holdingOrRule": "协议中免除上诉权条款必须是知情自愿的，且不得在导致司法系统受损的严重错误情况下执行。法院确立“误判正义”例外标准，允许在判决明显违宪或极端错误时免除上诉豁免权。对于本案强制用药条款是否满足该标准，法院暂未作出判决，交由下级法院审查确认。",
+      "impact": "直接法律效力：明确上诉豁免权在认罪协议中的可执行边界，确立误判正义的司法审查原则。可能影响：刑事司法中认罪协议的设计和执行标准，特别是涉及宪法权利保障的上诉权豁免条款。",
+      "sourceGrounding": "依据美国最高法院2026年6月18日HUNTER v. UNITED STATES判决书官方材料（编号24-1063）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "b8489a889e5d69e92d433a43",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-1234_new_6k47.pdf",
+      "title": "United States v. Hemani Revisions : 6/29/26",
+      "chineseTitle": "美国诉阿里·海马尼案判决摘要",
+      "summary": "美国最高法院裁定，依据18 U.S.C. §922(g)(3)以非法使用受控物质为由自动禁止持枪的规定，违反了第二修正案保护的权利。法院认为该规定未能符合美国历史上的枪支管制传统，特别是不能将经常使用任何程度受控物质者一概认定为危险，且未提供程序保障。该裁定不涉及毒瘾者或现时醉酒者限制，也不影响国会另行制定的具有个案证明的相关法律。",
+      "legalIssue": "联邦18 U.S.C. §922(g)(3)中禁止非法使用受控物质者持枪的规定，是否违背美国宪法第二修正案的权利保障。",
+      "holdingOrRule": "美国最高法院判定，基于该条款自动禁止所有非法使用任何受控物质者持枪的规定，与第二修正案不符，因其未能满足与国家历史传统相符的枪支管制标准，且缺乏个案危险评估及程序保障。",
+      "impact": "直接法律效力：限制联邦以非法使用任何受控药物为由自动剥夺持枪权利的执法行为，强调个案危险性评估。可能影响：推动联邦及州法律重新评估涉及非法药物使用者持枪限制的合理性和程序保障；影响相关案件判决和执法实践。",
+      "sourceGrounding": "依据美国最高法院2026年6月18日公布的United States v. Hemani案判决意见（案件号24-1234，608 U.S. ___），详见官方原文：https://www.supremecourt.gov/opinions/25pdf/24-1234_new_6k47.pdf。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -258,6 +354,38 @@
       "holdingOrRule": "最高法院裁定：1）法院无权在ATS下创造新的诉因，包括协助教唆责任；2）TVPA未明确包含协助教唆责任，故不予支持此类诉讼。",
       "impact": "该判决直接约束联邦法院不得基于ATS创造新诉因，限制国际人权侵权诉讼的范围；可能影响今后针对企业及其高管在国际法侵权中的责任归属和救济路径，引导相关立法改进制度设计。",
       "sourceGrounding": "依据2026年6月23日美国最高法院《Cisco Systems, Inc. v. Doe》案正式判决（609/1），官方文档链接https://www.supremecourt.gov/opinions/25pdf/24-856_kjfm.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "eacffc7fdaad792302009531",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-889_5i36.pdf",
+      "title": "Hikma Pharmaceuticals USA Inc. v. Amarin Pharma, Inc.",
+      "chineseTitle": "美国最高法院2026年Hikma制药诉Amarin制药案判决解析",
+      "summary": "本案涉及安眠药Vascepa的仿制药生产商Hikma是否因诱导侵权而承担责任。FDA批准Vascepa治疗重度高甘油三酯症（SH）和心血管风险（CV）两种适应症，Amarin拥有针对CV方法的专利。Hikma在其申报中先以无效原告专利起诉，后采用含瘦标签排除专利保护适应症。Amarin指控Hikma通过标签及宣传诱导侵权。最高法院认为，Amarin未能具体证明Hikma采取了积极鼓励侵权的行为，驳回诉求并重审。",
+      "legalIssue": "在专利侵权诱导责任中，是否仅凭被告声明被医疗提供者可能理解为侵权指示即构成“积极步骤”诱导侵权？",
+      "holdingOrRule": "诱导侵权索赔需证明被告采取了目的明确、可归责的积极行动来鼓励侵权；不应仅凭含糊陈述或被告未提及某些专利限制即认定诱导侵权。",
+      "impact": "直接法律效力包括指导联邦专利侵权诉讼中关于诱导侵权责任的举证标准，限制原告通过被告模糊宣传材料推定诱导责任。可能影响仿制药厂商标签设计、宣传行为以及品牌药企的维权策略，涉及整个制药及专利执法领域。",
+      "sourceGrounding": "依据美国最高法院2026年6月4日发布的Hikma Pharmaceuticals USA Inc. v. Amarin Pharma, Inc.官方意见书全文及摘要，来源：https://www.supremecourt.gov/opinions/25pdf/24-889_5i36.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "fafefeb25e2cd81a65df97d7",
+      "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-6_d1o2.pdf",
+      "title": "Keathley v. Buddy Ayers Construction, Inc.",
+      "chineseTitle": "Keathley诉Buddy Ayers Construction公司案司法禁反言适用范围解析",
+      "summary": "本案涉及破产程序中债务人未披露已知索赔的司法禁反言适用问题。最高法院认定，下级法院不能仅依据债务人是否知悉索赔事实及是否有隐瞒动机，来排除疏忽或错误。司法禁反言属衡平原则，需全面考察遗漏的具体情形。本案推翻了第五巡回上诉法院过于机械的规则，要求对疏忽例外进行更灵活审查。",
+      "legalIssue": "在破产案件中，债务人未披露潜在诉讼索赔是否自动触发司法禁反言禁止后续诉讼？判断疏忽或错误遗漏索赔的标准为何？",
+      "holdingOrRule": "法院应根据遗漏的全部实际情况综合判断疏忽或错误，不能仅限定于债务人是否知情及是否有隐瞒动机。第五巡回法院将疏忽判断仅限于这两项标准的规则错误，应予以撤销并发回重审。",
+      "impact": "直接法律效力在于指导下级法院在涉及破产中索赔未披露时对司法禁反言的衡平适用。可能影响范围包括其他巡回法院和地区法院对类似案件司法禁反言适用标准的审查与判定，推动更加灵活个案审查。",
+      "sourceGrounding": "依据2026年6月11日美国最高法院关于Keathley诉Buddy Ayers Construction案的正式意见及裁判理由中明确阐述的司法禁反言适用原则。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     }
   ]

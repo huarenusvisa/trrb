@@ -1,0 +1,50 @@
+name: 第十四轮节点7-Core-Web-Vitals深度性能优化
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round14-node7-core-web-vitals-audit.mjs"
+      - ".github/workflows/round14-node7-core-web-vitals.yml"
+      - "index.html"
+      - "styles.css"
+      - "site-common.js"
+      - "homepage*.js"
+      - "listing*.js"
+      - "article*.js"
+      - "netlify/edge-functions/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round14-node7-core-web-vitals
+  cancel-in-progress: true
+
+jobs:
+  core-web-vitals:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      SITE_ORIGIN: https://trrb.net
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Core Web Vitals 生产验收
+        run: node scripts/round14-node7-core-web-vitals-audit.mjs
+      - name: 保存节点7报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round14-node7-core-web-vitals
+          path: round14-node7-core-web-vitals-audit.json
+          if-no-files-found: warn
+          retention-days: 30

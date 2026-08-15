@@ -1,0 +1,54 @@
+name: 第十四轮节点9-安全响应头-依赖-敏感文件暴露审计
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "_headers"
+      - "_redirects"
+      - "netlify.toml"
+      - "scripts/round14-node9-security-audit.mjs"
+      - ".github/workflows/round14-node9-security.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round14-node9-security
+  cancel-in-progress: true
+
+jobs:
+  security-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SITE_ORIGIN: https://trrb.net
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 等待敏感路径阻断上线
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            status="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/netlify.toml?r14n9=${GITHUB_SHA}-${attempt}" || true)"
+            if [ "$status" = "404" ] || [ "$status" = "410" ]; then
+              echo "Sensitive-path block is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Sensitive-path block did not reach production within 5 minutes."
+          exit 1
+      - name: 安全响应头 / 依赖 / 敏感文件暴露生产审计
+        run: node scripts/round14-node9-security-audit.mjs
+      - name: 保存节点9报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round14-node9-security
+          path: round14-node9-security-audit.json
+          if-no-files-found: warn
+          retention-days: 30

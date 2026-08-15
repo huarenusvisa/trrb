@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+  "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 56,
+  "count": 64,
   "analyses": [
     {
       "recordId": "01d42822aa2629ee30c6e45a",
@@ -114,6 +114,38 @@
       "holdingOrRule": "因疏忽招用承运商的诉讼属于“与机动车有关”的安全监管范围内，受FAAAA安全例外保护，不受该法案对价格、路线和服务相关州法规的预emption限制。",
       "impact": "直接法律效力：确认州法院可以受理针对运输协调商的疏忽招用机动车承运商的安全责任诉讼。可能影响：促进运输行业中对承运商安全资格的重视，为受害者提供更多求偿渠道，影响州法律在运输安全监管中的作用范围。",
       "sourceGrounding": "解析依据《蒙哥马利诉加勒比运输二号有限责任公司》案2026年5月14日最高法院官方判决文件（608 U.S. 219），详见https://www.supremecourt.gov/opinions/25pdf/608us1r32_g3bi.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "11d9ceaffa391fed3ec966dc",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us1r06_19m1.pdf",
+      "title": "Case v. Montana",
+      "chineseTitle": "Case诉蒙大拿州案最高法院判决解析",
+      "summary": "本案涉及警方在无搜查令情况下，为紧急救助进入私人住宅是否合法。依据Brigham City v. Stuart案先例，警察在有“客观合理理由相信室内有人需要紧急援助”的情况下，可以无令入屋。蒙大拿警方因接报有人可能自杀，进入Case住所进行救助，法院认定其行为合理，驳回了Case的违规搜查主张，确认警方紧急救助进入住宅时不需达到刑事调查中“可能成因”标准。",
+      "legalIssue": "警方为紧急救助无搜查令进入住宅时，使用的第四修正案合理性标准应为“客观合理依据”还是更高的“可能成因”标准？",
+      "holdingOrRule": "最高法院确认警方进入住宅帮助紧急事件时，适用Brigham City案中的“客观合理依据”标准，无需达到刑事调查常用的“可能成因”标准。",
+      "impact": "直接法律效力：明确了第四修正案紧急救助例外的适用标准，指导全国警方及法院判断类似紧急入屋行为的合法性。可能影响：影响未来紧急情形中警方权利与公民隐私权之间的平衡，影响社区安全与执法政策制定。",
+      "sourceGrounding": "依据美国最高法院2026年1月14日Case诉蒙大拿州案官方判决全文，案件号24-624，官方链接：https://www.supremecourt.gov/opinions/25pdf/607us1r06_19m1.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "154062a087a3a4d258bbaae2",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r12_8nj9.pdf",
+      "title": "Learning Resources, Inc. v. Trump",
+      "chineseTitle": "Learning Resources, Inc.诉特朗普总统案最高法院判决解析",
+      "summary": "最高法院判决指出，国际紧急经济权力法（IEEPA）不授权总统自行征收关税。总统特朗普曾依据IEEPA针对毒品走私和贸易逆差问题征收多项关税，但法院认定该法无明确授权总统征收关税的条款，且征收关税属国会专属立法征税权。法院强调重大问题原则，指出此类重大权力不应含糊授权行政部门，因此撤销部分判决，确认总统无权依据IEEPA单方面征税。",
+      "legalIssue": "国际紧急经济权力法（IEEPA）是否授权总统自行征收关税？",
+      "holdingOrRule": "IEEPA未明确赋予总统征收关税权力，征收关税系国会专属权力，总统依据IEEPA单方面征收关税违反权力分立原则，故不被许可。",
+      "impact": "直接法律效力：限制总统依据IEEPA征收关税的行政行为无效。可能影响：未来涉及行政机关利用IEEPA进行经济制裁或关税措施的法律适用与政策制定，强化国会在关税立法中的主导地位。",
+      "sourceGrounding": "依据美国最高法院2026年2月20日发布的Learning Resources, Inc.诉特朗普总统案官方意见书（607 U. S. 229），含大法官意见及案件事实记载，详见https://www.supremecourt.gov/opinions/25pdf/607us2r12_8nj9.pdf。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -245,6 +277,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "410b41c2db12329c36e1b79a",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us1r08_f2q3.pdf",
+      "title": "Coney Island Auto Parts Unlimited, Inc. v. Burton",
+      "chineseTitle": "康尼岛汽车零部件有限公司诉伯顿一案分析",
+      "summary": "本案核心在于联邦民事诉讼规则60(c)(1)中“合理时间”限制是否适用于依据规则60(b)(4)请求撤销无效判决的动议。原告因未正确送达程序文件导致缺席判决，六年后被执行时提出撤销判决。最高法院裁定，“合理时间”限制同样适用于无效判决的撤销动议，驳回了无论何时均可请求撤销无效判决的观点。法院强调无效判决虽为法律无效状态，但当事人必须在合理时间内行使权利，以维护司法程序稳定。",
+      "legalIssue": "联邦民事诉讼规则60(c)(1)中要求当事人在“合理时间”内提出60(b)项下撤销动议，该限制是否适用于根据60(b)(4)请求撤销无效判决的情形？",
+      "holdingOrRule": "最高法院判定，规则60(c)(1)之“合理时间”限制适用于申请撤销无效判决的60(b)(4)动议，无论判决是否无效，当事人均须在合理时间内提出撤销请求。规则中对其他撤销理由设有明确时限，未对无效判决例外放宽。",
+      "impact": "直接法律效力：所有联邦法院案件中，涉及根据规则60(b)(4)撤销无效判决的申请均须遵守合理时间限制。可能影响：增强司法程序稳定性，限制滥用撤销无效判决权利，促进当事人及时行使救济权。",
+      "sourceGrounding": "解析基于美国最高法院2026年1月20日发布的康尼岛汽车零部件有限公司诉伯顿案官方判决报告（607 U.S. 155），含案件事实、程序及判决理由全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "41df72232399c5f8ed10f572",
       "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
       "sourceSystem": "SCOTUS",
@@ -325,6 +373,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "5cb4690b0e13543c1b77adab",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us1r10_5hek.pdf",
+      "title": "Berk v. Choy",
+      "chineseTitle": "Berk诉Choy案——联邦法院中州医疗事故诉讼中联邦程序规则与州附证声明要求的适用问题",
+      "summary": "Delaware州医疗事故诉讼要求原告在起诉时提交医疗专业人士的附证声明以证明诉讼合理性。原告Berk未提交该附证声明，联邦地区法院依据Delaware法驳回诉讼，第三巡回法院维持该裁定。美国最高法院认为联邦《民事诉讼规则》第8条明确规定原告诉状仅需陈述权利主张，无需附加证据，因此Delaware附证声明要求不适用于联邦法院，撤销下级法院判决。",
+      "legalIssue": "在联邦法院诉讼中，州法要求医疗事故诉讼原告提交附证声明是否被联邦《民事诉讼规则》排除？",
+      "holdingOrRule": "联邦《民事诉讼规则》第8条对诉状的要求明确，不包含附证声明，属有效程序规则，优先于州法Delaware附证声明要求，因此该州法不得在联邦法院强制执行。",
+      "impact": "直接法律效力：联邦法院审理基于州法的医疗事故诉讼时，不得强制要求原告提交州法规定的附证声明。可能影响：可能促使各州调整类似程序性筛查机制，以及影响多州多样州法与联邦程序规则的冲突处理。",
+      "sourceGrounding": "依据2026年1月20日美国最高法院607 U.S. 187号判决全文（https://www.supremecourt.gov/opinions/25pdf/607us1r10_5hek.pdf）",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "630e51f8c333fdec5443d7cf",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -386,6 +450,22 @@
       "holdingOrRule": "依据8 U.S.C. §1254a(b)(5)(A)，TPS指定、延长或终止的决策不允许非宪法性诉求受到司法审查。关于平等保护权利主张，若政府提供合理的非种族动机解释，且相关声明未明确涉及种族因素，则该诉讼主张胜诉可能性低，且不具备获得临时救济的依据。",
       "impact": "直接法律效力在于限制联邦法院对TPS终止行政决定的司法审查权，明确TPS相关行政行为的不可诉范围。可能影响包括未来TPS持有者对行政终止行为的法律抗辩策略，以及行政机关行使TPS终止权的政策执行和风险评估。",
       "sourceGrounding": "以上解析基于美国最高法院2026年6月25日发布的Mullin v. Doe判决（案号25-1083)及其官方意见摘要，详见官方链接https://www.supremecourt.gov/opinions/25pdf/25-1083_f204.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "7a3ae1b61d07c13432bed022",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us1r09_4fb4.pdf",
+      "title": "Ellingburg v. United States",
+      "chineseTitle": "艾灵伯格诉美国案：强制受害者赔偿法案中的赔偿金是否构成刑事处罚",
+      "summary": "最高法院裁定，根据1996年《强制受害者赔偿法案》（MVRA），赔偿金属于刑事处罚，受禁止追溯法令影响。案件中，艾灵伯格在犯罪发生时法律尚未生效，但后来判决其根据MVRA支付赔偿款。法院认为赔偿金与监禁、罚款同属刑罚，且由政府主导，并非民事程序下的赔偿，故适用追溯限制，推翻了下级法院的相反判决。",
+      "legalIssue": "因罪行发生在法律生效前，强制赔偿令是否违反宪法禁止追溯法律条款，核心在于MVRA下的赔偿是否属于刑事处罚？",
+      "holdingOrRule": "MVRA下的赔偿金明确构成刑事处罚，因其通过刑事诉讼程序由法院在判刑时结合其他刑罚并对被告实施，符合刑罚的全部法律特征，因此追溯适用MVRA赔偿规定违反宪法禁止追溯法律条款。",
+      "impact": "直接法律效力：明确MVRA的赔偿要求属刑事处罚，影响联邦刑事案件中对赔偿金性质的认定及适用追溯限制。可能影响：可能促使法院重新审视其他类似赔偿或处罚措施的法律属性，影响未来刑事量刑与赔偿执行。",
+      "sourceGrounding": "内容依据美国最高法院2026年1月20日正式公布的Ellingburg v. United States案判决意见官方材料，卷号607 U.S. 163，案件编号24-482。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -629,6 +709,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "af69ad5cd8a90fe2269f5990",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us1r05_e2q3.pdf",
+      "title": "Bost v. Illinois Bd. of Elections",
+      "chineseTitle": "博斯诉伊利诺伊州选举委员会案——候选人诉讼资格的确立",
+      "summary": "美国最高法院判决，作为参选人，国会议员博斯有资格对伊利诺伊州选举中延迟计票规则提出诉讼。法院认为候选人具备对选举规则提出异议的具体利害关系，不仅因可能影响选举结果，还因他们利益在于维护选举过程的公正与合法性，从而具备诉讼资格。该判决推翻下级法院认为候选人缺乏诉讼资格的裁定。",
+      "legalIssue": "候选人是否具备对影响其竞选结果的选举计票规则提出联邦诉讼的资格（即诉讼资格）？",
+      "holdingOrRule": "最高法院确认候选人因自身对选举规则的具体利害关系，特别是对公正选举程序及结果的关切，具备诉讼资格，无须证明规则导致其必然败选或具体票数减少。延迟计票的规则挑战属于合法受理范畴。",
+      "impact": "直接法律效力：明确候选人在联邦法庭对选举规则不公提出诉讼的资格标准。可能影响：各州选举管理规则的司法审查标准及候选人维护选举公正的诉讼实践，强化选举过程透明度和合法性。",
+      "sourceGrounding": "依据2026年1月14日美国最高法院官方判决文《Bost v. Illinois Bd. of Elections, 607 U.S. 71》原文材料。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "b0bd7dad38f48a92ff503ab7",
       "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
       "sourceSystem": "SCOTUS",
@@ -690,6 +786,22 @@
       "holdingOrRule": "联邦法院的初始多元化管辖权缺陷，因错误驳回非多元化当事人而未被正确纠正，法院最终判决必须予以撤销。错误的非多元化当事人驳回在最终判决前为中间程序性决定，不构成治愈管辖权缺失的有效行为。",
       "impact": "【直接法律效力】明确联邦多元化案件中对非多元化被告的错误驳回不能确认联邦法院管辖权，相关案件判决应被撤销，并移送至州法院审理。此规则确保联邦法院管辖权边界严格遵守。 【可能影响】影响涉及存在非多元化被告的联邦案件的程序策略及司法管辖判断，指导未来类似错误的纠正与诉讼程序安排。",
       "sourceGrounding": "依据美国最高法院2026年2月24日正式裁判意见，案件编号24-724，文献编号607 U.S. 421，官方发布地址https://www.supremecourt.gov/opinions/25pdf/607us2r14_1a72.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "bd93ab9f76d1c10f634f0109",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us1r11_7l48.pdf",
+      "title": "Klein v. Martin",
+      "chineseTitle": "克莱因诉马丁案判决解析",
+      "summary": "克莱因诉马丁案涉及马丁因未披露关键法医报告而申请联邦人身保护令的合法性。最高法院确认，根据1996年反恐及有效死刑法案（AEDPA），应尊重州法院关于证据重要性的判定，驳回马丁联邦救济请求，强调联邦法院不得轻易否定州法院对布雷迪规则的合理适用。",
+      "legalIssue": "联邦法院审理州法院有罪判决的人身保护诉求时，是否应遵循AEDPA标准尊重州法院关于未披露证据的物质性判断，尤其是在布雷迪规则框架下的案件证据披露问题。",
+      "holdingOrRule": "最高法院裁定，州上诉法院关于未披露法医报告非重要性的判断既未与既定联邦法律相悖，也未做出不合理适用，联邦法院应依AEDPA标准否决马丁的联邦诉求。第四巡回上诉法院在宽松适用AEDPA标准上发生错误。",
+      "impact": "直接影响州与联邦法院在人身保护令案件中关于证据披露物质性的标准适用，强化州法院判决的联邦尊重标准。可能影响联邦法院处理州法院判决相关联邦救济申请的审查尺度和程序设定。",
+      "sourceGrounding": "依据美国最高法院官方判决文书《Klein v. Martin》607 U.S. 213(2026)及其中对AEDPA及布雷迪规则的解释和适用。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -770,6 +882,22 @@
       "holdingOrRule": "最高法院以多数意见驳回了对案件的审查请求，官方材料节选不足，暂不判断裁判结论。各级法院和专家对多重智商分数的综合分析实行不同方法，但本案未形成统一裁判规则。",
       "impact": "该判决直接法律效力限于撤销本案联邦最高审具体审查，不具示范或约束性判例作用。在更广范围内，该决定反映最高法院短期内不设统一标准，影响各州和联邦下级法院自行裁量认定智力残疾案件的多重智商分数处理方式。",
       "sourceGrounding": "依据最高法院2026年5月21日发布的《哈姆诉史密斯》案Slip Opinion及索托马约尔大法官与杰克逊大法官联合附议书，官方网址：https://www.supremecourt.gov/opinions/25pdf/24-872_ec8f.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "de6d7704ca444aeddd3aea37",
+      "datasetVersion": "703cb96b363aa061ffcd07688fd2de211d298d740a0df02bb8572d5c3216d919",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us1r07_7647.pdf",
+      "title": "Barrett v. United States",
+      "chineseTitle": "巴雷特诉美国案—关于18 U.S.C.§924(c)(1)(A)(i)与§924(j)的单一行为重复定罪问题",
+      "summary": "本案涉及联邦刑法18 U.S.C.§924中(c)(1)(A)(i)条款（使用枪械关联暴力或毒品犯罪）与(j)条款（该行为造成死亡时的加重处罚）之间的关系。最高法院裁定，针对单一违法行为，不得基于两个条款分别定罪并处罚，即只能适用一项定罪，否认第二巡回上诉法院支持两项定罪的判决。",
+      "legalIssue": "在一项行为同时触犯18 U.S.C.§924(c)(1)(A)(i)与(j)条款的情况下，是否可以基于该单一行为分别构成两项罪名并进行双重定罪？",
+      "holdingOrRule": "最高法院判定，国会并未明确授权针对同一行为基于§924(c)(1)(A)(i)与§924(j)分别定罪，因此针对单一违法行为只能认定一项罪名并定罪，不得重复定罪。",
+      "impact": "直接法律效力：限制了联邦法院对单一行为基于两条款重复定罪的合法性，避免重复处罚。可能影响：影响类似案件判罚标准，规范枪械致死相关犯罪定罪方式，引导检察机关通盘考虑起诉策略。",
+      "sourceGrounding": "依据美国最高法院2026年1月14日发布的Barrett v. United States（607 U.S. 128）判决书正文及其摘要内容。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

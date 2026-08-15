@@ -1,3 +1,8 @@
+/netlify.toml /404.html 404!
+/.github/* /404.html 404!
+/scripts/* /404.html 404!
+/netlify/edge-functions/* /404.html 404!
+
 /ice /topic/ice/live-v6.html 200!
 /ice/ /topic/ice/live-v6.html 200!
 /ice/news /listing.html?category=ICE 200!

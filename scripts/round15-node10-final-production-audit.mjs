@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { writeFileSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
 
 const nodes=[
   ['1 美国最高法院判决自动采集','node',['scripts/round15-node1-supreme-court-collector.mjs','--write-data']],
@@ -12,6 +12,19 @@ const nodes=[
   ['8 “美国判例与新规”前台栏目及检索筛选系统','node',['scripts/round15-node8-legal-frontend-audit.mjs']],
   ['9 重大裁决自动识别并进入唐人日报新闻生产线','node',['scripts/round15-node9-major-legal-news-pipeline.mjs']]
 ];
+const fixedNames=[
+  '1 美国最高法院判决自动采集','2 13个联邦巡回上诉法院判决自动采集','3 BIA先例裁决自动采集','4 白宫行政命令自动采集','5 Federal Register新规 / Final Rule自动采集','6 判例与新规统一数据库、去重及版本控制','7 AI中文裁判要旨、法律问题与影响范围解析','8 “美国判例与新规”前台栏目及检索筛选系统','9 重大裁决自动识别并进入唐人日报新闻生产线'
+];
+if(nodes.length!==9||nodes.some((n,i)=>n[0]!==fixedNames[i])){
+  console.error('ROUND15 NODE10 FAIL: fixed node names/order changed');
+  process.exit(1);
+}
+if(existsSync('scripts/round15-ca2-debug.mjs')||existsSync('.github/workflows/round15-ca2-debug.yml')){
+  console.error('ROUND15 NODE10 FAIL: temporary Second Circuit debug artifacts remain');
+  process.exit(1);
+}
+console.log('ROUND15 NODE10 PREFLIGHT PASS: fixed node order preserved and temporary debug artifacts removed');
+
 const results=[];let failures=0;
 for(const [name,cmd,args] of nodes){
   console.log(`\n===== ROUND15 FINAL RECHECK: ${name} =====`);

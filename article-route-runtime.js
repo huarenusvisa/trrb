@@ -5,7 +5,7 @@
   const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
   const FALLBACK_CATEGORY_SLUGS = {
     '重要新闻': 'important-news',
-    '热门头条': 'hot-headlines',
+    '热门头条': 'hot',
     '美国时政': 'us-politics',
     '美国警情': 'us-crime',
     '中国官场': 'china-officialdom',

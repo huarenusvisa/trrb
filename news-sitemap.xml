@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-484df76b77cbe853984e69018267c000d02f9052</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T19:32:37.175Z</news:publication_date>
+        <news:title>ICE遣返服刑27月墨西哥籍可卡因贩运罪犯卢克斯</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-97b9e3ed443fb9d3ea80013bbf2d9ded349bfa11</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T19:32:36.452Z</news:publication_date>
+        <news:title>马萨诸塞沃尔瑟姆ICE拘捕危地马拉刑事非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-d8dd27b9762bb3685f0fc3e2d996a7f78379ff32</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

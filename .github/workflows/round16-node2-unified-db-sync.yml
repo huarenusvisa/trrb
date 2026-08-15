@@ -82,4 +82,5 @@ jobs:
           process.exit(1);
           NODE
       - name: 节点2最终结论
-        run: echo 'ROUND16 NODE2 PASS: unified legal database automatic rebuild, content-addressed versioning, and production synchronization verified'
+        run: |
+          echo 'ROUND16 NODE2 PASS: unified legal database automatic rebuild, content-addressed versioning, and production synchronization verified'

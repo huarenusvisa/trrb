@@ -90,6 +90,8 @@ async function verifyClickedArticle(sourcePage, locator, chosen, targetName) {
   let popup = null;
   const popupPromise = sourcePage.waitForEvent('popup', { timeout: 2500 }).catch(() => null);
   const sameTabPromise = sourcePage.waitForURL((u) => normalizeUrl(u.toString()) === chosenNorm, { timeout: TIMEOUT }).then(() => sourcePage).catch(() => null);
+  await locator.scrollIntoViewIfNeeded({ timeout: TIMEOUT });
+  await locator.hover({ timeout: TIMEOUT });
   await locator.click({ timeout: TIMEOUT });
   popup = await popupPromise;
   let destination = popup || await sameTabPromise;
@@ -114,12 +116,22 @@ for (const target of targets) {
     record(response?.status() === 200, `${target.name} HTTP 200`, `status=${response?.status() || 0}`);
     await page.waitForTimeout(3500);
 
-    const anchors = await page.locator('a[href]').evaluateAll((els) => els.map((a, index) => ({
-      index,
-      href: a.href,
-      text: (a.textContent || '').replace(/\s+/g, ' ').trim()
-    })).filter(x => x.href && x.text));
-    const anchorMap = new Map(anchors.map(x => [x.href.replace(/\/$/, '').split('#')[0].split('?')[0], x]));
+    const anchors = await page.locator('a[href]').evaluateAll((els) => els.map((a, index) => {
+      const rect = a.getBoundingClientRect();
+      return {
+        index,
+        href: a.href,
+        text: (a.textContent || '').replace(/\s+/g, ' ').trim(),
+        visible: rect.width > 0 && rect.height > 0,
+        moving: Boolean(a.closest('.ticker-track,.top-list-track'))
+      };
+    }).filter(x => x.href && x.text));
+    const anchorMap = new Map();
+    for (const anchor of anchors) {
+      const key = normalizeUrl(anchor.href);
+      if (!anchorMap.has(key)) anchorMap.set(key, []);
+      anchorMap.get(key).push(anchor);
+    }
     const expected = target.expected.map(a => ({ article: a, url: canonicalFor(a), title: clean(a.title) }));
     const matches = expected.filter(x => anchorMap.has(normalizeUrl(x.url)));
     record(matches.length > 0, `${target.name}包含数据库近期文章`, `matched=${matches.length}/${expected.length}; anchors=${anchors.length}`);
@@ -128,14 +140,21 @@ for (const target of targets) {
     record(legacy.length === 0, `${target.name}文章链接直接使用pretty URL`, `legacy=${legacy.length}`);
 
     if (matches.length) {
-      const chosen = matches[0];
-      const chosenNorm = normalizeUrl(chosen.url);
-      const anchorIndex = anchors.find(x => normalizeUrl(x.href) === chosenNorm)?.index;
-      if (Number.isInteger(anchorIndex)) {
-        const locator = page.locator('a[href]').nth(anchorIndex);
+      let chosen = null;
+      let chosenAnchor = null;
+      for (const candidate of matches) {
+        const options = anchorMap.get(normalizeUrl(candidate.url)) || [];
+        const stable = options.find((anchor) => anchor.visible && !anchor.moving);
+        if (stable) {
+          chosen = candidate;
+          chosenAnchor = stable;
+          break;
+        }
+      }
+      record(Boolean(chosen && chosenAnchor), `${target.name}存在稳定可点击的近期文章锚点`, chosenAnchor ? chosen.url : `matched=${matches.length}`);
+      if (chosen && chosenAnchor) {
+        const locator = page.locator('a[href]').nth(chosenAnchor.index);
         await verifyClickedArticle(page, locator, chosen, target.name);
-      } else {
-        record(false, `${target.name}定位匹配文章锚点`, chosen.url);
       }
     }
   } catch (error) {

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-15T14:09:05.058Z",
+  "scope": "Official White House Executive Orders; source text retained as authoritative reference.",
+  "source": "https://www.whitehouse.gov/presidential-actions/executive-orders/",
+  "count": 10,
+  "orders": [
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14420",
+      "title": "DELIVERING GOLD STANDARD CHILDHOOD VACCINE RECOMMENDATIONS FOR AMERICANS",
+      "date": "August 10, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/08/delivering-gold-standard-childhood-vaccine-recommendations-for-americans/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14419",
+      "title": "ENDING BIRTH TOURISM",
+      "date": "August 6, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/08/ending-birth-tourism/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14418",
+      "title": "CONTINUING TO PROTECT THE MEANING AND VALUE OF AMERICAN CITIZENSHIP",
+      "date": "August 6, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/08/continuing-to-protect-the-meaning-and-value-of-american-citizenship/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14417",
+      "title": "ESTABLISHING THE PRESIDENT&#8217;S MILITARY SPOUSE COMMISSION",
+      "date": "August 3, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/08/establishing-the-presidents-military-spouse-commission-af64/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14416",
+      "title": "RESTORING TRUST IN THE SMITHSONIAN INSTITUTION",
+      "date": "July 24, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/07/restoring-trust-in-the-smithsonian-institution-e061/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14415",
+      "title": "SECURING AMERICA&#8217;S DEFENSE SUPPLY CHAINS AND ENSURING DOMESTIC ACQUISITION OF CRITICAL MATERIALS",
+      "date": "July 20, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/07/securing-americas-defense-supply-chains-and-ensuring-domestic-acquisition-of-critical-materials/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14414",
+      "title": "ADVANCING REGENERATIVE AGRICULTURE AND STRENGTHENING AMERICAN FARM RESILIENCE",
+      "date": "June 25, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/06/advancing-regenerative-agriculture-and-strengthening-american-farm-resilience/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14413",
+      "title": "USHERING IN THE NEXT FRONTIER OF QUANTUM INNOVATION",
+      "date": "June 22, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/06/ushering-in-the-next-frontier-of-quantum-innovation/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14412",
+      "title": "SECURING THE NATION AGAINST ADVANCED CRYPTOGRAPHIC ATTACKS",
+      "date": "June 22, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/06/securing-the-nation-against-advanced-cryptographic-attacks/",
+      "source": "The White House"
+    },
+    {
+      "authorityType": "Executive Order",
+      "issuer": "President of the United States",
+      "executiveOrderNumber": "14411",
+      "title": "STRENGTHENING CUSTOMS ENFORCEMENT",
+      "date": "June 3, 2026",
+      "officialUrl": "https://www.whitehouse.gov/presidential-actions/2026/06/strengthening-customs-enforcement/",
+      "source": "The White House"
+    }
+  ]
+}

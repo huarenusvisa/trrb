@@ -1,0 +1,52 @@
+name: 第十三轮节点3-Sitemap-RSS自动更新零延迟治理
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "netlify/edge-functions/sitemap-live.ts"
+      - "netlify/edge-functions/news-sitemap-live.ts"
+      - "netlify/edge-functions/feed-live.ts"
+      - "scripts/round13-node3-seo-realtime-audit.mjs"
+      - ".github/workflows/round13-node3-seo-realtime.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round13-node3-seo-realtime
+  cancel-in-progress: true
+
+jobs:
+  seo-realtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 等待实时 Sitemap / News Sitemap / RSS Edge 上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            s="$(curl -fsSI --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?node3=${GITHUB_SHA}-${attempt}" || true)"
+            n="$(curl -fsSI --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?node3=${GITHUB_SHA}-${attempt}" || true)"
+            f="$(curl -fsSI --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/feed.xml?node3=${GITHUB_SHA}-${attempt}" || true)"
+            if echo "$s" | grep -qi '^x-trrb-sitemap: live-supabase-v1' && \
+               echo "$n" | grep -qi '^x-trrb-news-sitemap: live-supabase-v1' && \
+               echo "$f" | grep -qi '^x-trrb-feed: live-supabase-v1'; then
+              echo "All Round 13 node3 realtime SEO endpoints are live."
+              exit 0
+            fi
+            echo "Waiting for node3 edge deploy ${attempt}/60"
+            sleep 5
+          done
+          echo "Node3 realtime SEO edge endpoints did not converge within 5 minutes."
+          exit 1
+      - name: Sitemap / RSS 自动更新零延迟生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round13-node3-seo-realtime-audit.mjs

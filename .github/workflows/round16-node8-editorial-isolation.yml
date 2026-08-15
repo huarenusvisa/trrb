@@ -1,0 +1,52 @@
+name: 第十六轮节点8-重大裁决/新规新闻路由去重与编辑隔离
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "data/news-pipeline/legal-high-impact-queue.json"
+      - "scripts/round15-node9-major-legal-news-pipeline.mjs"
+      - "scripts/round16-node8-editorial-isolation.mjs"
+      - ".github/workflows/round16-node8-editorial-isolation.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round16-node8-editorial-isolation
+  cancel-in-progress: true
+
+jobs:
+  editorial-isolation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 等待节点8验收脚本进入生产对应提交
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://raw.githubusercontent.com/huarenusvisa/trrb/${GITHUB_SHA}/scripts/round16-node8-editorial-isolation.mjs" >/tmp/node8.mjs; then
+              echo "Node8 acceptance script is available at current commit."
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Current node8 acceptance script did not become readable in time."
+          exit 1
+      - name: 重大裁决/新规新闻路由去重与编辑隔离生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round16-node8-editorial-isolation.mjs
+      - name: 保存节点8报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round16-node8-editorial-isolation
+          path: round16-node8-editorial-isolation.json
+          retention-days: 30

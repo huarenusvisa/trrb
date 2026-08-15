@@ -1,0 +1,67 @@
+name: 第十五轮节点10-全链路实时更新与生产总验收
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round15-node10-final-production-audit.mjs"
+      - ".github/workflows/round15-node10-final-production.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round15-node10-final-production
+  cancel-in-progress: true
+
+jobs:
+  final-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      SITE_ORIGIN: https://trrb.net
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      ROUND15_FINAL_AI_BATCH: "3"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 安装最终验收PDF文本解析工具
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - name: 检查最终验收AI密钥
+        run: test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
+      - name: 等待节点8法律栏目生产版本上线
+        run: |
+          for attempt in $(seq 1 60); do
+            body="$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/?r15final=${GITHUB_SHA}-${attempt}" || true)"
+            if echo "$body" | grep -q 'round15-legal-hub-v1'; then
+              echo "Round15 legal production frontend is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Round15 legal production frontend not ready."
+          exit 1
+      - name: 第十五轮1至9节点全链路重新验收
+        run: node scripts/round15-node10-final-production-audit.mjs
+      - name: 保存第十五轮最终生产验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node10-final-production
+          path: |
+            round15-node10-final-production-audit.json
+            round15-node1-supreme-court-audit.json
+            round15-node2-circuit-opinion-audit.json
+            round15-node3-bia-precedent-audit.json
+            round15-node4-whitehouse-executive-orders-audit.json
+            round15-node5-federal-register-final-rules-audit.json
+            round15-node6-unified-legal-database-audit.json
+            round15-node7-ai-legal-analysis-audit.json
+            round15-node8-legal-frontend-audit.json
+            round15-node9-major-legal-news-pipeline-audit.json
+          if-no-files-found: ignore
+          retention-days: 30

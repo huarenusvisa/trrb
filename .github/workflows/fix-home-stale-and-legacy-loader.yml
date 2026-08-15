@@ -1,0 +1,61 @@
+name: 修复首页过期旧闻与旧文章加载
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/fix-home-stale-and-legacy-loader.mjs'
+      - '.github/workflows/fix-home-stale-and-legacy-loader.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-home-stale-and-legacy-loader
+  cancel-in-progress: false
+
+jobs:
+  patch-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 修复首页数据源与旧文章加载
+        run: node scripts/fix-home-stale-and-legacy-loader.mjs
+      - name: 提交修复
+        run: |
+          git config user.name "TRRB Homepage Fix Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add article.html articles-home.js
+          if git diff --cached --quiet; then
+            echo "Patch already applied."
+          else
+            git commit -m "Fix stale homepage archive entries and legacy article loading"
+            git push origin HEAD:main
+          fi
+      - name: 等待生产部署并验证
+        run: |
+          set -euo pipefail
+          ok=0
+          for attempt in $(seq 1 72); do
+            legacy=$(curl -sS --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=117302&homefix=${GITHUB_RUN_ID}-${attempt}" || true)
+            homejs=$(curl -sS --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home.js?homefix=${GITHUB_RUN_ID}-${attempt}" || true)
+            if printf '%s' "$legacy" | grep -q 'article.js?v=29.8-legacy-archive-rescue' \
+              && printf '%s' "$homejs" | grep -q 'fetchLivePublishedArticles(200)' \
+              && printf '%s' "$homejs" | grep -q 'renderHome(live);' \
+              && ! printf '%s' "$homejs" | grep -q 'renderHome(mergeArticles(live, archived));'; then
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          test "$ok" = "1"
+          archive=$(curl -sS --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/data/articles.json?homefix=${GITHUB_RUN_ID}" || true)
+          printf '%s' "$archive" | grep -q '117302'
+          echo 'HOME_STALE_ARCHIVE_PRODUCTION_PASS=true'
+          echo 'LEGACY_ARTICLE_117302_LOADER_PRODUCTION_PASS=true'

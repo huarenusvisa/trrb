@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "2fa6cf4c7bd83768cf691c891353d8c0ce29892c7da3142ea4326be271c357b6",
+  "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 417,
+    "US_CIRCUIT": 419,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 613,
+  "count": 615,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2848,6 +2848,21 @@
       "sourceKey": "CIRCUIT:ca1:07722a41dfd0bf2a"
     },
     {
+      "id": "e626478cbad999dd8ea50aed",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-1524P.01A",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:0a40ffbc971671e0"
+    },
+    {
       "id": "3bbfc927f458d0bca0b17dc6",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -2891,6 +2906,21 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2152P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2152P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:280acdbfedf00b67"
+    },
+    {
+      "id": "139a65fbe32346987bdc29d1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1064 Wilson v. Iguana Sport Services, Corp.",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1064P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1064P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:41876d0b48a6e8bc"
     },
     {
       "id": "a6b6f91a71ae458c4a5719ac",

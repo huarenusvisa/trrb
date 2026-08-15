@@ -7,7 +7,7 @@ async function db(params){const u=new URL(`${SUPABASE_URL}/rest/v1/articles`);Ob
 async function reachable(url){const c=new AbortController();const t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(url,{redirect:'follow',signal:c.signal,headers:{Range:'bytes=0-2048','user-agent':'TRRB-Round13-Node6/1.0'}});return {ok:r.status>=200&&r.status<400,status:r.status,type:r.headers.get('content-type')||''};}catch(e){return{ok:false,status:0,type:'',error:String(e.message||e)}}finally{clearTimeout(t);}}
 const admin=fs.readFileSync('admin/admin.js','utf8');
 record(/ARTICLE_IMAGE_BUCKET\s*=\s*"article-images"/.test(admin),'后台封面上传使用专用 article-images Bucket');
-record(/file\.type\.startsWith\("image\/"\)/.test(admin)&&/MAX_SOURCE_IMAGE_BYTES/.test(admin),'上传前校验图片类型和大小');
+record(/file\?\.type\?\.startsWith\("image\/"\)/.test(admin)&&/file\.size\s*>\s*MAX_SOURCE_IMAGE_BYTES/.test(admin),'上传前校验图片类型和大小');
 record(/optimizeImage\(file,\s*1600,\s*0\.84\)/.test(admin)&&/contentType:\s*"image\/webp"/.test(admin),'封面上传前自动压缩并转 WebP');
 record(/upsert:\s*false/.test(admin)&&/图片上传失败/.test(admin)&&/无法取得公开地址/.test(admin),'上传失败明确中止且避免静默覆盖');
 record(/auto-ai-cover/.test(admin)&&/generateAiCover\(\{\s*silent:\s*true\s*\}\)/.test(admin),'发布无封面时支持自动生成封面');

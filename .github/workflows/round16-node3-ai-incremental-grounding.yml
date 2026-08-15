@@ -52,6 +52,7 @@ jobs:
             echo 'No AI legal analysis changes to commit.'
           else
             git commit -m 'Round 16 node3: sync grounded incremental Chinese legal analyses'
+            git pull --rebase origin main
             git push origin HEAD:main
           fi
       - name: 验证生产AI解析数据版本

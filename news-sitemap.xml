@@ -1576,20 +1576,4 @@
         <news:title>美国遣返涉自愿杀人罪墨西哥籍罪犯</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-387b2609b6839e5bf114c0136854ed2c9db0d5cb</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T19:37:38.936Z</news:publication_date>
-        <news:title>佛罗里达霍兰戴尔海滩ICE 果汁店内拘捕非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-c524ee550f8e35f95e3a7140fef9ef1757e4e74c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T19:36:34.227Z</news:publication_date>
-        <news:title>盖恩斯维尔ICE拘留1名依赖SNAP及EBT福利女性，进入遣返程序</news:title>
-      </news:news>
-    </url>
 </urlset>

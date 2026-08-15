@@ -131,9 +131,12 @@ function renderHome(articles) {
 async function loadHome() {
   const archived = localArticleIndex();
   try {
-    const live = await fetchLivePublishedArticles(60);
+    const live = await fetchLivePublishedArticles(200);
     if (live.length) {
-      renderHome(mergeArticles(live, archived));
+      // Production homepage must be driven only by current published rows.
+      // Archived static data is a disaster-recovery fallback, not a source for
+      // filling live category slots, otherwise old July stories can reappear.
+      renderHome(live);
       return;
     }
     throw new Error("No live article data");

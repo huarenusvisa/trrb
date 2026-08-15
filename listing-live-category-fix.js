@@ -51,24 +51,29 @@
   };
 
   // listing.js starts initListing() before this patch is loaded. Its original global-feed
-  // request can finish after the exact-category repaint and overwrite the grid. Keep the
-  // category page pinned to its exact Supabase dataset whenever that stale render appears.
+  // request can finish after the exact-category repaint and overwrite the grid with older
+  // archive items from the same category. Track the current exact first-page titles and
+  // repaint whenever a later render no longer contains those current records.
   const pathSlug = location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
   const category = CATEGORY_BY_PATH[pathSlug];
   if (!category || typeof window.renderListingDataset !== 'function') return;
 
   let repainting = false;
   let repaintQueued = false;
+  let exactFirstPageTitles = new Set();
+
   const repaint = async () => {
     if (repainting) return;
     repainting = true;
     try {
       const articles = await fetchExactCategory(pathSlug, category, 100);
       if (!articles.length) return;
+      exactFirstPageTitles = new Set(articles.slice(0, 24).map((item) => String(item?.title || '').trim()).filter(Boolean));
       const params = new URLSearchParams(location.search);
       const page = Math.max(1, Number(params.get('page') || 1));
       window.renderListingDataset(articles, category, '', page);
       document.documentElement.dataset.trrbLiveCategory = 'ready';
+      document.documentElement.dataset.trrbLiveCategoryCount = String(articles.length);
     } catch (error) {
       console.warn('Exact live category repaint unavailable', error);
     } finally {
@@ -79,11 +84,13 @@
   const grid = document.querySelector('#listing-grid');
   if (grid) {
     const observer = new MutationObserver(() => {
-      if (repainting || repaintQueued) return;
-      const labels = [...grid.querySelectorAll('.archive-card span')]
+      if (repainting || repaintQueued || !exactFirstPageTitles.size) return;
+      const renderedTitles = new Set([...grid.querySelectorAll('.archive-card h2')]
         .map((node) => String(node.textContent || '').trim())
-        .filter(Boolean);
-      if (!labels.length || labels.every((value) => value === category)) return;
+        .filter(Boolean));
+      if (!renderedTitles.size) return;
+      const hasCurrent = [...exactFirstPageTitles].some((title) => renderedTitles.has(title));
+      if (hasCurrent) return;
       repaintQueued = true;
       queueMicrotask(() => {
         repaintQueued = false;

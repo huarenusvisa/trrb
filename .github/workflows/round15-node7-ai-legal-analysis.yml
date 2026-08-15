@@ -1,0 +1,61 @@
+name: 第十五轮节点7-AI中文裁判要旨、法律问题与影响范围解析
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round15-node7-ai-legal-analysis.mjs"
+      - ".github/workflows/round15-node7-ai-legal-analysis.yml"
+      - "data/legal/unified-legal-authorities-latest.json"
+  schedule:
+    - cron: "41 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round15-node7-ai-legal-analysis
+  cancel-in-progress: false
+
+jobs:
+  analyze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      ROUND15_AI_BATCH: "8"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 安装官方PDF文本解析工具
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - name: 检查AI密钥
+        run: test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
+      - name: 基于官方原文生成中文裁判要旨与影响解析
+        run: node scripts/round15-node7-ai-legal-analysis.mjs
+      - name: 保存节点7验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node7-ai-legal-analysis
+          path: |
+            round15-node7-ai-legal-analysis-audit.json
+            data/legal/legal-ai-analysis-latest.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: AI法律解析有变化时提交
+        if: success()
+        run: |
+          git config user.name "TRRB Round15 Legal Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/legal/legal-ai-analysis-latest.json
+          if git diff --cached --quiet; then
+            echo "No legal AI analysis change."
+          else
+            git commit -m "Round 15: sync grounded Chinese legal analyses"
+            git push
+          fi

@@ -18,7 +18,7 @@ permissions:
 jobs:
   legal-seo-sitemap-schema:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,13 +45,26 @@ jobs:
           npx playwright install --with-deps chromium
       - name: 等待节点9前端与Sitemap生产上线
         run: |
-          for attempt in $(seq 1 90); do
-            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round16node9=$(date +%s)" | grep -q 'legal-detail-jsonld' \
-              && curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap-legal.xml?round16node9=$(date +%s)" | grep -q '<urlset'; then
-              echo 'Node9 production assets are live.'
+          set -u
+          for attempt in $(seq 1 120); do
+            stamp=$(date +%s)
+            detail_file=$(mktemp)
+            sitemap_file=$(mktemp)
+            detail_code=$(curl -sS -L --max-time 15 -H 'Cache-Control: no-cache' -o "$detail_file" -w '%{http_code}' "https://trrb.net/legal/detail.js?round16node9=$stamp" || true)
+            sitemap_code=$(curl -sS -L --max-time 15 -H 'Cache-Control: no-cache' -o "$sitemap_file" -w '%{http_code}' "https://trrb.net/sitemap-legal.xml?round16node9=$stamp" || true)
+            detail_marker=no
+            sitemap_marker=no
+            grep -q 'legal-detail-jsonld' "$detail_file" && detail_marker=yes || true
+            grep -q '<urlset' "$sitemap_file" && sitemap_marker=yes || true
+            if [ "$detail_code" = "200" ] && [ "$sitemap_code" = "200" ] && [ "$detail_marker" = "yes" ] && [ "$sitemap_marker" = "yes" ]; then
+              echo "Node9 production assets are live: detail=$detail_code/$detail_marker sitemap=$sitemap_code/$sitemap_marker"
+              rm -f "$detail_file" "$sitemap_file"
               exit 0
             fi
-            echo "Waiting for production node9 assets ($attempt/90)..."
+            if [ $((attempt % 10)) -eq 0 ] || [ "$attempt" -eq 1 ]; then
+              echo "Waiting for production node9 assets ($attempt/120): detail=$detail_code marker=$detail_marker bytes=$(wc -c < "$detail_file") sitemap=$sitemap_code marker=$sitemap_marker bytes=$(wc -c < "$sitemap_file")"
+            fi
+            rm -f "$detail_file" "$sitemap_file"
             sleep 10
           done
           echo 'Node9 production assets did not become ready in time.'

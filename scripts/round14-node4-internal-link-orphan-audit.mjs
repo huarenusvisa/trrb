@@ -18,32 +18,56 @@ function canonical(a){return `${ORIGIN}/${encodeURIComponent(section(a))}/${enco
 check(arts.length>=60,'取得近期已发布文章样本',`articles=${arts.length}`);
 check(cats.length>=5,'取得有效栏目列表',`categories=${cats.length}`);
 
-const paths=['/',...cats.map(c=>`/${encodeURIComponent(clean(c.slug))}`).filter(p=>p!=='/'),'/trump','/ice','/ice/news'];
-const uniquePaths=[...new Set(paths)];
+// Existing general archive is itself a first-class discovery surface. Crawl it and
+// the pagination of every listing page so articles beyond page 1 are not
+// incorrectly classified as orphans.
+const seedPaths=['/','/listing.html',...cats.map(c=>`/${encodeURIComponent(clean(c.slug))}`).filter(p=>p!=='/'),'/trump','/ice','/ice/news'];
+const uniqueSeeds=[...new Set(seedPaths)];
 const browser=await chromium.launch({headless:true});
 const page=await browser.newPage({viewport:{width:1280,height:900}});
-const inbound=new Map();let pageBad=0;let legacyLinks=0;let externalBad=0;
-for(const path of uniquePaths){
-  const url=`${ORIGIN}${path}`;
+const inboundSources=new Map();let pageBad=0;let legacyLinks=0;const visited=new Set();
+
+async function auditPage(url){
+  if(visited.has(url)||visited.size>=120)return [];
+  visited.add(url);
   try{
     const r=await page.goto(url,{waitUntil:'domcontentloaded',timeout:25000});
-    await page.waitForTimeout(1800);
-    if(!r||r.status()!==200){pageBad++;continue;}
+    await page.waitForTimeout(1400);
+    if(!r||r.status()!==200){pageBad++;return[];}
     const hrefs=await page.locator('a[href]').evaluateAll(nodes=>nodes.map(a=>a.href));
+    const perPage=new Set();
     for(const href of hrefs){
       if(/article\.html\?id=/i.test(href))legacyLinks++;
-      try{const u=new URL(href);if(u.hostname&&u.hostname!=='trrb.net'&&u.hostname!=='www.trrb.net'&&href.startsWith('http'))continue;}catch{}
-      const norm=href.replace(/\/$/,'');inbound.set(norm,(inbound.get(norm)||0)+1);
+      let u;try{u=new URL(href);}catch{continue;}
+      if(u.hostname!=='trrb.net'&&u.hostname!=='www.trrb.net')continue;
+      const norm=`${u.origin}${u.pathname}${u.search}`.replace(/\/$/,'');
+      perPage.add(norm);
     }
-  }catch{pageBad++;}
+    for(const norm of perPage){
+      if(!inboundSources.has(norm))inboundSources.set(norm,new Set());
+      inboundSources.get(norm).add(url);
+    }
+    return [...perPage].filter(h=>/[?&]page=\d+/i.test(h));
+  }catch{pageBad++;return[];}
+}
+
+for(const path of uniqueSeeds){
+  const first=`${ORIGIN}${path}`;
+  const queue=[first];
+  const localSeen=new Set();
+  while(queue.length&&localSeen.size<6){
+    const url=queue.shift();if(localSeen.has(url))continue;localSeen.add(url);
+    const pagination=await auditPage(url);
+    for(const p of pagination){if(!localSeen.has(p))queue.push(p);}
+  }
 }
 await browser.close();
-check(pageBad===0,'首页/栏目/专题发现页全部可访问',`pages=${uniquePaths.length}; bad=${pageBad}`);
+check(pageBad===0,'首页/栏目/专题/归档发现页及分页全部可访问',`pages=${visited.size}; bad=${pageBad}`);
 check(legacyLinks===0,'发现页内部文章链接无legacy article?id',`legacy=${legacyLinks}`);
 
 const orphan=[];let multiInbound=0;
-for(const a of arts){const u=canonical(a).replace(/\/$/,'');const count=inbound.get(u)||0;if(count===0)orphan.push(u);if(count>=2)multiInbound++;}
-check(orphan.length===0,'近期文章无孤岛：均可从首页/栏目/专题发现',`checked=${arts.length}; orphan=${orphan.length}${orphan.length?`; ${orphan.slice(0,8).join(' | ')}`:''}`);
+for(const a of arts){const u=canonical(a).replace(/\/$/,'');const count=inboundSources.get(u)?.size||0;if(count===0)orphan.push(u);if(count>=2)multiInbound++;}
+check(orphan.length===0,'近期文章无孤岛：均可从首页/栏目/专题/归档发现',`checked=${arts.length}; orphan=${orphan.length}${orphan.length?`; ${orphan.slice(0,8).join(' | ')}`:''}`);
 check(multiInbound>=Math.floor(arts.length*0.25),'至少25%近期文章获得多入口内链',`multiInbound=${multiInbound}/${arts.length}`);
 
 const sitemap=await fetch(`${ORIGIN}/sitemap.xml`,{headers:{'cache-control':'no-cache'}}).then(async r=>({status:r.status,text:await r.text()}));
@@ -51,6 +75,6 @@ check(sitemap.status===200,'Sitemap 可用于补充发现',`status=${sitemap.sta
 const sitemapMissing=arts.map(canonical).filter(u=>!sitemap.text.includes(u));
 check(sitemapMissing.length===0,'近期文章全部进入Sitemap补充发现链路',`missing=${sitemapMissing.length}`);
 
-writeFileSync('round14-node4-internal-link-orphan-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),origin:ORIGIN,articles:arts.length,pages:uniquePaths,orphan,checks,failures},null,2));
+writeFileSync('round14-node4-internal-link-orphan-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),origin:ORIGIN,articles:arts.length,pages:[...visited],orphan,multiInbound,checks,failures},null,2));
 console.log(`ROUND14 NODE4 audit: checks=${checks.length}; failures=${failures}`);
 if(failures===0)console.log('ROUND14 NODE4 PASS: internal-link coverage and orphan-article governance verified');else{console.log('ROUND14 NODE4 FAIL: internal-link/orphan issues detected');process.exitCode=1;}

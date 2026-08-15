@@ -7,6 +7,7 @@ on:
     paths:
       - "scripts/round14-node6-image-seo-audit.mjs"
       - ".github/workflows/round14-node6-image-seo.yml"
+      - "netlify/edge-functions/listing-image-seo.ts"
       - "listing.js"
       - "site-common.js"
       - "image-cdn-optimizer.js"
@@ -22,7 +23,7 @@ concurrency:
 jobs:
   image-seo:
     runs-on: ubuntu-24.04
-    timeout-minutes: 8
+    timeout-minutes: 10
     env:
       SITE_ORIGIN: https://trrb.net
     steps:
@@ -30,6 +31,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: 等待图片SEO修复部署上线
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            header="$(curl -fsSI --max-time 12 -H 'Cache-Control: no-cache' "https://trrb.net/listing.js?r14n6=${GITHUB_SHA}-${attempt}" | tr -d '\r' | awk -F': ' 'tolower($1)=="x-trrb-image-seo"{print $2}' | tail -1 || true)"
+            if [ "$header" = "listing-alt-v1" ]; then
+              echo "Image SEO production edge is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Image SEO production edge did not become live within 5 minutes."
+          exit 1
       - name: 图片SEO生产验收
         run: node scripts/round14-node6-image-seo-audit.mjs
       - name: 保存节点6报告

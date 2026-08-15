@@ -308,12 +308,10 @@ export default async (request: Request, context: any) => {
         });
       }
       const article = await getArticleById(id);
-      if (!article) {
-        return new Response(notFoundHtml(), {
-          status: 404,
-          headers: { "content-type": "text/html; charset=UTF-8", "cache-control": "public, max-age=60", "x-robots-tag": "noindex" }
-        });
-      }
+      // Static/WordPress archive IDs are not stored in Supabase. Let the original
+      // article.html + article.js archive loader handle those instead of returning
+      // a false 404 from the Edge layer.
+      if (!article) return context.next();
       const canonical = await canonicalFor(article);
       return redirect(canonical, "legacy-query-to-pretty");
     }
@@ -323,6 +321,14 @@ export default async (request: Request, context: any) => {
 
     let article = await getArticleBySlug(parts.slug);
     if (!article && /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(parts.slug)) article = await getArticleById(parts.slug);
+    // Earlier clients fabricated pretty URLs from archive ids, e.g.
+    // /important-news/117302. Preserve those inbound links by returning them to
+    // the legacy archive loader, which owns numeric and wp-* static article ids.
+    if (!article && /^(?:wp-)?\d+$/i.test(parts.slug)) {
+      const legacy = new URL('/article.html', url.origin);
+      legacy.searchParams.set('id', parts.slug);
+      return redirect(legacy.toString(), 'archived-id-to-legacy');
+    }
     if (!article) return context.next();
 
     const canonical = await canonicalFor(article);

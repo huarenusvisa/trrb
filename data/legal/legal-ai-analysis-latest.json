@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+  "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 24,
+  "count": 32,
   "analyses": [
     {
       "recordId": "01d42822aa2629ee30c6e45a",
@@ -85,6 +85,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "2316c375898fcb7fe030a582",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-7351_jiel.pdf",
+      "title": "Pitchford v. Cain",
+      "chineseTitle": "Pitchford诉Cain案：陪审团种族排除的Batson规则执行问题",
+      "summary": "2004年，黑人青少年Pitchford被指控资本谋杀，法院陪审团选拔中检察官对四名黑人成员使用种族挑除。Pitchford提出Batson异议，初步获认可，但法院未允许其反驳检察官所谓无种族成分的理由。密西西比最高法院判定其放弃反驳权利，联邦地区法院及最高法院认为此判定不合理，确认密西西比法院未完整执行Batson规定程序，恢复原判决。",
+      "legalIssue": "在陪审团选拔中，是否必须严格执行Batson三步检验程序，特别是被告方是否有权反驳检察官所称的无种族成分的理由，以及法院是否有义务对此做出明确裁定。",
+      "holdingOrRule": "最高法院裁定，密西西比最高法院不合理地认定Pitchford放弃了反驳权利，实际因地方法院未提供反驳机会，违反Batson规定的三步检验程序。官方材料节选不足，无具体判决结果细节。",
+      "impact": "直接法律效力：明确陪审团种族挑除案件中，地方法院必须完整实施Batson三步程序，保障被告反驳机会。可能影响：未来种族歧视陪审团选拔案件审理标准，促进公平司法程序，尤其在存在潜在种族偏见的地区。",
+      "sourceGrounding": "依据美国最高法院608 U.S. ___（2026）Pitchford v. Cain案官方判决摘要及意见书，参见https://www.supremecourt.gov/opinions/25pdf/24-7351_jiel.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "23f0be8dcea2b0a868aebe13",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -117,6 +133,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "34d5ccf21d5f869285386ad3",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-466_5i26.pdf",
+      "title": "Sripetch v. SEC",
+      "chineseTitle": "斯里佩奇诉美国证券交易委员会案",
+      "summary": "美国最高法院裁定，证券交易委员会(SEC)在申请追回违法所得时，无需证明投资者已遭受金钱损失。该案涉及被告斯里佩奇在多起便士股欺诈活动中非法获利，SEC要求其返还超410万美元违法收益。法院基于传统衡平法原则，认定追回违法利润的救济旨在剥夺被告的不当得利，而非补偿原告的财务损失，故不要求证实投资者经济损失。",
+      "legalIssue": "SEC在申请违法所得返还(disgorgement)救济时，是否必须证明受害投资者遭受金钱性损失。",
+      "holdingOrRule": "法院判定，SEC请求的disgorgement救济作为一种衡平法救济，无需SEC证明投资者有金钱损失即可获得。该救济旨在剥夺违法者从不法行为中获得的净利益而非补偿受害人财务损失，符合传统衡平法原则。",
+      "impact": "直接法律效力：对SEC提起的证券法执行案件中申请违法所得返还的程序和举证标准具有约束力，降低了SEC的举证负担。可能影响：可能引导其他监管机构及法院在类似衡平救济案件中调整对受害者经济损失的认定标准，有助于强化对证券违法行为的追责力度。",
+      "sourceGrounding": "完全依据美国最高法院2026年6月4日发布的Sripetch v. SEC官方判决全文及摘要，通过解读判决中对15 U. S. C. §§78u(d)(5)和78u(d)(7)相关规定及衡平法原则的应用明确裁定。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "41df72232399c5f8ed10f572",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-406_nmip.pdf",
+      "title": "FCC v. AT&T",
+      "chineseTitle": "联邦通讯委员会诉AT&T案最高法院判决解析",
+      "summary": "本案涉及联邦通讯委员会（FCC）依据《通信法》对AT&T及Verizon发出的罚款命令是否违反美国宪法第七修正案的陪审团审判权。最高法院裁定，FCC发出的罚款命令仅为初步程序，不具有最终法律效力，故该程序不须陪审团审理。仅当司法机关依据罚款命令提起执法诉讼时，方由陪审团进行事实审查。该判决统一了第五与第二巡回法院的分歧。",
+      "legalIssue": "是否FCC根据47 U.S.C.§503(b)(4)发出的罚款命令侵害了宪法第七修正案保障的陪审团审判权？",
+      "holdingOrRule": "最高法院裁定，FCC发出的罚款命令不具有最终法律义务的确定性和执行力，执法诉讼前不存在陪审团审理的宪法要求；司法机关提起的§504民事诉讼才须进行初审陪审团裁定。",
+      "impact": "直接法律效力：确认FCC罚款程序合宪，罚款仅经司法诉讼确认后方有拘束力。可能影响：通信监管执法程序规范、受监管企业权利保障范围及联邦行政执法中陪审团权利的适用界限。",
+      "sourceGrounding": "基于美国最高法院于2026年6月4日发布的FCC诉AT&T合并案件判决原文（608/2号案），以及判决中对47 U.S.C.§503与§504条款及宪法第七修正案的详细阐释。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "488d6c5b561f59d1b9a3e515",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -146,6 +194,22 @@
       "holdingOrRule": "违反18 U.S.C. §1519的被告，应在伪造文件所在地接受审判；调查所在地无“构成犯罪的行为”，不能作为审判地域。该罪名仅以伪造文件的行为构成犯罪，意图妨碍仅为犯罪的主观要素，不影响审判地域确定。",
       "impact": "直接法律效力：明确伪造文件罪审判地域专属性，限制联邦检方选择审判地范围。可能影响：其他无明确地域规定的联邦犯罪的审判地域解释和策略，强化地域管辖权的严谨界定。",
       "sourceGrounding": "依据美国最高法院2026年6月11日发布的阿布阿莫诉美国案官方判决摘要及正式意见书，链接：https://www.supremecourt.gov/opinions/25pdf/25-5146_new_kifl.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "63f08a3edfcc1442d6ac4344",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-935_k53m.pdf",
+      "title": "Flowers Foods, Inc. v. Brock",
+      "chineseTitle": "Flowers Foods, Inc.诉Brock案最高法院判决解析",
+      "summary": "本案聚焦联邦仲裁法第1条豁免条款是否涵盖仅在州内运输却为跨州商业链条一部分的工人。最高法院一致认为，该豁免适用于即使本人未越州亦未接触越州车辆，但其运输行为属跨州连续商业活动组成部分的工人。法院依据法条原意及历史判例，否定了必须亲自跨州或与跨州车辆直接互动的限制。此判决明确扩大了§1豁免条款的适用范围。",
+      "legalIssue": "联邦仲裁法第1条中“从事州际商业的工人”豁免适用范围，是否要求该工人本人必须跨越州界或接触跨州运输车辆？",
+      "holdingOrRule": "最高法院裁定，工人即便未亲自跨越州界或接触跨州车辆，倘若其运输活动是跨州连续运输过程中的一个环节，则符合第1条豁免“从事州际商业的工人”资格。官方材料节选不足，暂不判断具体案件裁判结论。",
+      "impact": "直接法律效力：扩大了联邦仲裁法第1条豁免在州际运输相关职业中的适用，影响相关劳动合同与仲裁协议的强制执行范围。可能影响：州际商业链中各环节运输及配送人员身份界定，劳动法和仲裁司法实践的解释标准。",
+      "sourceGrounding": "依据美国最高法院2026年5月28日发表的Flowers Foods, Inc.诉Brock案判决全文及法庭摘要，官方文档网址https://www.supremecourt.gov/opinions/25pdf/24-935_k53m.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -197,6 +261,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "91143835e1a58587ba6a1d85",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-580_08m1.pdf",
+      "title": "Whitton v. Dixon",
+      "chineseTitle": "惠顿诉迪克森案（2026年）",
+      "summary": "佛罗里达州陪审团认定加里·理查德·惠顿谋杀罪名成立并判处死刑。案件核心在于监狱线人欧兹奥提供的虚假无犯罪历史证词，以及控方明知该证词不实。联邦上诉法院在审理中错误考虑了庭审后出现的DNA新证据，影响了对证词虚假影响力的判断。美国最高法院于2026年6月1日裁定撤销上诉法院判决，发回重审，明确指出不应考虑庭后DNA证据，案件对此违反《吉利奥案》要求的影响进行重新评估。",
+      "legalIssue": "陪审团判决是否因检方证人提供虚假证词且检方知晓不实，违反《吉利奥案》确立的正当程序权利；联邦法院在评估该违宪错误是否对陪审团判决有实质性不利影响时，是否合法考虑庭审后出现的新DNA证据。",
+      "holdingOrRule": "联邦上诉法院不应当在评估州最高法院对错误是否有害的合理认定时，考虑未在庭审中出现的新的DNA证据。对此应重新评估证人虚假证词对陪审团判决的影响。官方材料节选不足，暂不判断裁判结论。",
+      "impact": "该判决直接法律效力针对本案及类似联邦人身保护令案件证据评估程序，限定了联邦法院复审州法院事实认定时证据采纳范围；可能影响联邦法院对后续新证据出现后既往判决有无实质性影响的评估标准及程序调整。",
+      "sourceGrounding": "依据美国最高法院2026年6月1日Whitton v. Dixon一案（案号25-580）全院意见，官方文件链接：https://www.supremecourt.gov/opinions/25pdf/25-580_08m1.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "9b4319aa9cb10e17f8d42a2c",
       "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
       "sourceSystem": "SCOTUS",
@@ -242,6 +322,38 @@
       "holdingOrRule": "法院认定，以合理、公平的税收拍卖价格作为衡量“合理赔偿”的基准是合宪的。《第五修正案》不要求政府支付超过拍卖价与税债差额的赔偿，也即不以假设的公允市场价值为基准。且《第八修正案》过罚款条款不适用于要求超过拍卖价的赔偿。具体程序是否公平由下级法院审理。",
       "impact": "直接法律效力：明确联邦宪法层面下税收拍卖赔偿标准，指导各级政府征税和拍卖实践，防止要求以公允市场价支付过高赔偿，保障税收执行机制的实施。可能影响：各州处理税收抵押和司法拍卖相关程序，厘清抵押出售程序公平性的审查标准及边界。",
       "sourceGrounding": "依据美国最高法院2026年6月23日公布的Pung v. Isabella County一案意见书（编号25-95），详见官方链接：https://www.supremecourt.gov/opinions/25pdf/25-95_dc8e.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "a712ba8a3005451eead4e92a",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-820_97be.pdf",
+      "title": "Rutherford v. United States",
+      "chineseTitle": "拉瑟福德诉美国案裁判要点解析",
+      "summary": "本案因两被告拉瑟福德和卡特依据18 U.S.C. §924(c)非法携枪犯罪被判重刑，后美国国会通过2018年第一步法案，废止对初犯累积25年强制刑罚规则，但不溯及既判。本案探讨该非溯及性刑罚差异是否构成联邦刑法§3582(c)(1)(A)(i)下“特殊且令人信服理由”，以支持减刑。最高法院认定，国会明示不溯及旧案，非溯及性差异属常态，不构成减刑理由。且“特殊且令人信服理由”应限定于个人特殊境遇。",
+      "legalIssue": "非溯及性刑罚差异是否构成依据18 U.S.C. §3582(c)(1)(A)(i)可适用的“特殊且令人信服理由”，支持法院减刑。",
+      "holdingOrRule": "最高法院裁定，国会对§924(c)刑期调整的非溯及性安排及造成的刑期差异，不构成“特殊且令人信服理由”，因此不能作为减刑依据。法院须尊重国会明确的非溯及性规定，且减刑理由应聚焦于罪犯个人特殊情况。",
+      "impact": "直接法律效力：限制联邦法院在非溯及刑期变更情形下适用§3582(c)(1)(A)(i)进行减刑，维护国会决策效力。可能影响：影响众多因非溯及修法而刑期较长的联邦服刑人员申请减刑案件处理，强化司法对立法意志的尊重。",
+      "sourceGrounding": "解析完全基于美国最高法院2026年5月28日合并审理的Rutherford v. United States（案号24-820，24-860）官方判决全文及摘要。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "ae7e2e384389a6ff1579a6f9",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25a1314_7m58.pdf",
+      "title": "Allen v. Milligan",
+      "chineseTitle": "Allen诉Milligan案最高法院临时停留令分析",
+      "summary": "最高法院于2026年6月2日发布临时停留令，暂停阿拉巴马州联邦地区法院关于2023年国会选区图违法投票权法第2条及第十四修正案判决的执行。法院依据最新的Louisiana诉Callais案更新的投票权法第2条适用标准，认为下级法院未充分遵循新标准，且被告州政府有较大可能胜诉。该停留令防止了选区图在2026年选举前夕的突然更改，强调避免选举临近时的规则变动。少数派法官对此持异议，强调投票权保护与司法遵循的重要性。",
+      "legalIssue": "本案核心法律问题是阿拉巴马州2023年国会选区图是否违反联邦投票权法第2条禁止基于种族的选票稀释，以及该州是否故意违反联邦宪法第十四修正案的平等保护条款。",
+      "holdingOrRule": "最高法院基于Louisiana诉Callais案更新的投票权法第2条标准，要求原告提出的备选图必须完全符合州合法选区标准，并排除了将种族作为绘图标准。最高法院认为下级法院未正确应用新标准，且州政府有胜诉可能，因此决定对禁令执行予以临时停留，维持2023年选区图直至案件终审。",
+      "impact": "该停留令直接使阿拉巴马州得以在2026年国会选举中继续使用2023年制定的选区图，避免了临近选举时图则变更的混乱。其可能影响包括阿拉巴马州黑人选民的选举影响力、州选举管理的稳定性，以及联邦投票权法第2条的未来适用标准。该判决不具有终局法律效力，但对相关诉讼和重新划分选区的司法审查具有示范和指导作用。",
+      "sourceGrounding": "以上解析依据美国最高法院2026年6月2日发布的Allen v. Milligan案临时停留令官方文件（案号25A1314），包括该案主文及索托马约尔法官不同意见书，详细内容见https://www.supremecourt.gov/opinions/25pdf/25a1314_7m58.pdf。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -354,6 +466,22 @@
       "holdingOrRule": "最高法院裁定：1）法院无权在ATS下创造新的诉因，包括协助教唆责任；2）TVPA未明确包含协助教唆责任，故不予支持此类诉讼。",
       "impact": "该判决直接约束联邦法院不得基于ATS创造新诉因，限制国际人权侵权诉讼的范围；可能影响今后针对企业及其高管在国际法侵权中的责任归属和救济路径，引导相关立法改进制度设计。",
       "sourceGrounding": "依据2026年6月23日美国最高法院《Cisco Systems, Inc. v. Doe》案正式判决（609/1），官方文档链接https://www.supremecourt.gov/opinions/25pdf/24-856_kjfm.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "e68b1a8e24b1f47e3f108d37",
+      "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-556_8m58.pdf",
+      "title": "Fernandez v. United States",
+      "chineseTitle": "费尔南德斯诉美国案",
+      "summary": "本案涉及被告费尔南德斯因杀人雇佣罪被判终身监禁，后其基于质疑定罪有效性申请宽容减刑（compassionate release），指出证人证言不实及政府未披露相关证据。地区法院同意其理由予以减刑，但第二巡回上诉法院推翻此决定，联邦最高法院最终裁定，质疑定罪有效性的救济必须通过《28 U.S.C. §2255》申请，不能依《18 U.S.C. §3582》以“非同寻常及令人信服的理由”获得宽容释放，否认将定罪无效纳入宽容减刑理由。",
+      "legalIssue": "18 U.S.C. §3582(c)(1)(A)下，质疑刑事定罪有效性的理由是否属于可支持宽容释放的“非同寻常且令人信服的理由”？以及质疑定罪的救济是否必须通过28 U.S.C. §2255程序？",
+      "holdingOrRule": "联邦最高法院判定，质疑刑事定罪有效性应受28 U.S.C. §2255规定的严格程序限制，不应通过18 U.S.C. §3582的宽容释放程序规避。定罪无效不属于“非同寻常且令人信服的理由”，不能作为申请宽容释放的依据。",
+      "impact": "直接法律效力：明确限制被告利用宽容释放程序质疑定罪有效性，要求通过既定的刑事后审程序提出。可能影响：联邦犯人及其律师提交减刑申请方式，纠正各地分庭在宽容释放适用上的分歧，推动统一司法实践。",
+      "sourceGrounding": "依据美国最高法院2026年5月28日发布的Fernandez v. United States，案号24-556，官方完整判决书链接：https://www.supremecourt.gov/opinions/25pdf/24-556_8m58.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

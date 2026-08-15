@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>美国判例与新规｜唐人日报</title>
+  <meta name="description" content="唐人日报美国判例与新规数据库：最高法院、13个联邦巡回上诉法院、BIA先例裁决、白宫行政命令与Federal Register Final Rule。" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://trrb.net/legal/" />
+  <link rel="stylesheet" href="/legal/legal.css?v=20260815-1" />
+</head>
+<body data-round15-legal-hub="round15-legal-hub-v1">
+  <header class="legal-header">
+    <div class="wrap header-row">
+      <a class="brand" href="/">唐人日报 <span>Tang Ren Daily</span></a>
+      <nav aria-label="法律资料导航"><a href="/">新闻首页</a><a class="active" href="/legal/">美国判例与新规</a><a href="/immigrate/">移民美国</a><a href="/ice">ICE执法动态</a></nav>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">TRRB · U.S. LAW & REGULATION</p>
+      <h1>美国判例与新规</h1>
+      <p>免费查询美国最高法院、13个联邦巡回上诉法院、BIA公开先例裁决、白宫行政命令与 Federal Register Final Rule。资料优先来自法院或政府官方一手来源。</p>
+      <p class="notice">中文解析为信息整理，不构成法律意见；法律效力以官方原文及后续裁判、规则为准。</p>
+    </section>
+
+    <section class="source-tabs" aria-label="来源快捷筛选">
+      <button type="button" data-source="">全部</button>
+      <button type="button" data-source="SCOTUS">最高法院</button>
+      <button type="button" data-source="US_CIRCUIT">巡回法院</button>
+      <button type="button" data-source="BIA">BIA裁决</button>
+      <button type="button" data-source="WHITE_HOUSE">行政命令</button>
+      <button type="button" data-source="FEDERAL_REGISTER">Federal Register</button>
+    </section>
+
+    <section class="filters" aria-label="数据库筛选">
+      <label>关键词<input id="legal-q" type="search" placeholder="案名、案号、法院、法规标题…" /></label>
+      <label>来源<select id="legal-source"><option value="">全部来源</option><option value="SCOTUS">美国最高法院</option><option value="US_CIRCUIT">联邦巡回上诉法院</option><option value="BIA">BIA先例裁决</option><option value="WHITE_HOUSE">白宫行政命令</option><option value="FEDERAL_REGISTER">Federal Register Final Rule</option></select></label>
+      <label>机构<select id="legal-body"><option value="">全部机构</option></select></label>
+      <label>类型<select id="legal-type"><option value="">全部类型</option></select></label>
+      <button id="legal-reset" type="button">重置</button>
+    </section>
+
+    <section class="status-row"><strong id="legal-count">正在加载数据库…</strong><span id="legal-version"></span></section>
+    <section id="legal-list" class="legal-list" aria-live="polite"></section>
+    <nav class="pagination" aria-label="分页"><button id="legal-prev" type="button">上一页</button><span id="legal-page">1 / 1</span><button id="legal-next" type="button">下一页</button></nav>
+  </main>
+  <footer><div class="wrap">© 2026 唐人日报 · 美国判例与新规数据库 · 官方原文优先</div></footer>
+  <script src="/legal/legal-app.js?v=20260815-1" defer></script>
+</body>
+</html>

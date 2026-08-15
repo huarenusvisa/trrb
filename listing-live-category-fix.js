@@ -17,12 +17,8 @@
   const original = window.fetchLivePublishedArticles;
   if (typeof original !== 'function' || typeof window.mapLiveArticle !== 'function') return;
 
-  window.fetchLivePublishedArticles = async function fetchLivePublishedArticlesForCurrentListing(limit = 100) {
-    const pathSlug = location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
-    const category = CATEGORY_BY_PATH[pathSlug];
-    if (!category) return original(limit);
-
-    const cacheKey = `trrb-live-category-v1-${pathSlug}-${limit}`;
+  async function fetchExactCategory(pathSlug, category, limit = 100) {
+    const cacheKey = `trrb-live-category-v2-${pathSlug}-${limit}`;
     try {
       const cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
       if (cached && Date.now() - cached.savedAt < 60000 && Array.isArray(cached.data)) return cached.data;
@@ -45,5 +41,34 @@
     const articles = (Array.isArray(rows) ? rows : []).map(window.mapLiveArticle);
     try { sessionStorage.setItem(cacheKey, JSON.stringify({ savedAt: Date.now(), data: articles })); } catch {}
     return articles;
+  }
+
+  window.fetchLivePublishedArticles = async function fetchLivePublishedArticlesForCurrentListing(limit = 100) {
+    const pathSlug = location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+    const category = CATEGORY_BY_PATH[pathSlug];
+    if (!category) return original(limit);
+    return fetchExactCategory(pathSlug, category, limit);
   };
+
+  // listing.js starts initListing() before this patch is loaded. If that first request has
+  // already captured the old global feed, force one exact-category repaint after load.
+  const pathSlug = location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+  const category = CATEGORY_BY_PATH[pathSlug];
+  if (!category || typeof window.renderListingDataset !== 'function') return;
+
+  const repaint = async () => {
+    try {
+      const articles = await fetchExactCategory(pathSlug, category, 100);
+      if (!articles.length) return;
+      const params = new URLSearchParams(location.search);
+      const page = Math.max(1, Number(params.get('page') || 1));
+      window.renderListingDataset(articles, category, '', page);
+      document.documentElement.dataset.trrbLiveCategory = 'ready';
+    } catch (error) {
+      console.warn('Exact live category repaint unavailable', error);
+    }
+  };
+
+  repaint();
+  window.addEventListener('load', () => setTimeout(repaint, 0), { once: true });
 })();

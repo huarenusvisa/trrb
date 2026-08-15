@@ -1,0 +1,85 @@
+name: 第十六轮节点2-统一法律数据库自动重建与版本同步
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/**'
+      - 'scripts/round15-node6-unified-legal-database.mjs'
+      - 'scripts/round16-node2-unified-db-sync-audit.mjs'
+      - '.github/workflows/round16-node2-unified-db-sync.yml'
+  workflow_run:
+    workflows: ['第十六轮节点1-五大官方法律源自动采集触发链闭环']
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild-verify-production:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 从五大官方源重建统一法律数据库
+        run: node scripts/round15-node6-unified-legal-database.mjs
+      - name: 验收统一数据库与版本同步
+        run: node scripts/round16-node2-unified-db-sync-audit.mjs
+      - name: 数据变化时提交统一数据库和验收报告
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/legal/unified-legal-authorities-latest.json round15-node6-unified-legal-database-audit.json round16-node2-unified-db-sync-audit.json
+          if git diff --cached --quiet; then
+            echo 'No unified database changes to commit.'
+          else
+            git commit -m 'Round 16 node2: synchronize unified legal database version'
+            git push origin HEAD:main
+          fi
+      - name: 读取本次统一数据库版本
+        id: version
+        run: |
+          VERSION=$(node -p "require('./data/legal/unified-legal-authorities-latest.json').datasetVersion")
+          COUNT=$(node -p "require('./data/legal/unified-legal-authorities-latest.json').count")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "Expected production version: $VERSION records=$COUNT"
+      - name: 等待生产部署并验证版本一致
+        env:
+          EXPECTED_VERSION: ${{ steps.version.outputs.version }}
+          EXPECTED_COUNT: ${{ steps.version.outputs.count }}
+        run: |
+          node <<'NODE'
+          const expectedVersion=process.env.EXPECTED_VERSION;
+          const expectedCount=Number(process.env.EXPECTED_COUNT);
+          const url='https://trrb.net/data/legal/unified-legal-authorities-latest.json';
+          let last='';
+          for(let i=0;i<20;i++){
+            try{
+              const res=await fetch(`${url}?round16node2=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
+              last=`HTTP ${res.status}`;
+              if(res.ok){
+                const data=await res.json();
+                last=`version=${data.datasetVersion} count=${data.count}`;
+                if(data.datasetVersion===expectedVersion && Number(data.count)===expectedCount){
+                  console.log(`PASS production unified legal database synchronized — ${last}`);
+                  console.log('ROUND16 NODE2 PRODUCTION PASS');
+                  process.exit(0);
+                }
+              }
+            }catch(e){last=e.message}
+            console.log(`Production not synchronized yet (${i+1}/20): ${last}`);
+            await new Promise(r=>setTimeout(r,15000));
+          }
+          console.error(`FAIL production unified database version mismatch: ${last}`);
+          process.exit(1);
+          NODE
+      - name: 节点2最终结论
+        run: echo 'ROUND16 NODE2 PASS: unified legal database automatic rebuild, content-addressed versioning, and production synchronization verified'

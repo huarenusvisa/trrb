@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const registry = JSON.parse(readFileSync('data/legal/circuit-source-registry.json','utf8'));
-const UA = 'Mozilla/5.0 (compatible; TRRB-Legal-Collector/1.1; +https://trrb.net)';
+const UA = 'Mozilla/5.0 (compatible; TRRB-Legal-Collector/1.2; +https://trrb.net)';
 const timeoutMs = 20000;
 const results = [];
 let failures = 0;
@@ -62,6 +62,22 @@ async function get(url){
   try{const r=await fetch(url,{redirect:'follow',headers:{'user-agent':UA,'accept':'text/html,application/xhtml+xml,application/rss+xml,application/xml,text/xml,application/pdf;q=0.9,*/*;q=0.8'},signal:ac.signal});return{ok:r.ok,status:r.status,url:r.url,type:r.headers.get('content-type')||'',text:await r.text()};}
   catch(e){return{ok:false,status:0,url,type:'',text:'',error:String(e?.message||e)}}finally{clearTimeout(t)}
 }
+async function ca2RecentOpinions(days=30){
+  const endpoint='https://ww3.ca2.uscourts.gov/dtSearch/dtisapi6.dll';
+  const end=new Date(),start=new Date(end);start.setUTCDate(start.getUTCDate()-days);
+  const iso=d=>d.toISOString().slice(0,10);const startIso=iso(start),endIso=iso(end);
+  const body=new URLSearchParams();
+  body.append('index','*{aa12e167958cdbcaa709fa14b9161a4a} OPN');
+  body.append('rctopin',String(days));body.append('StartDate',startIso);body.append('EndDate',endIso);
+  body.append('request','*');body.append('searchType','allwords');body.append('cmd','search');body.append('SearchForm','%%SearchForm%%');body.append('dtsPdfWh','*');body.append('OrigSearchForm','/decisions.html');body.append('autoStopLimit','5000');body.append('pageSize','50');body.append('sort','date');body.append('fileConditions',`xfilter(date "${startIso.replace(/-/g,'/')}~~${endIso.replace(/-/g,'/')}")`);body.append('booleanConditions','');
+  const ac=new AbortController();const t=setTimeout(()=>ac.abort(),timeoutMs);
+  try{
+    const r=await fetch(endpoint,{method:'POST',redirect:'follow',headers:{'user-agent':UA,'content-type':'application/x-www-form-urlencoded','accept':'text/html,*/*','referer':'https://ww3.ca2.uscourts.gov/decisions.html'},body,signal:ac.signal});
+    const text=await r.text();if(!r.ok)return{ok:false,status:r.status,url:r.url,text,documents:[]};
+    const documents=dedupe(links(text,'https://ww3.ca2.uscourts.gov/decisions.html').filter(x=>/https:\/\/ww3\.ca2\.uscourts\.gov\/decisions\/OPN\/[^?#]+\.pdf(?:$|[?#])/i.test(x.url)));
+    return{ok:true,status:r.status,url:r.url,text,documents};
+  }catch(e){return{ok:false,status:0,url:endpoint,text:'',documents:[],error:String(e?.message||e)}}finally{clearTimeout(t)}
+}
 function isOfficial(url,court){
   try{const h=new URL(url).hostname.toLowerCase(),d=court.officialDomain.toLowerCase();return h===d||h.endsWith('.'+d);}catch{return false}
 }
@@ -72,7 +88,7 @@ function isOpinionDoc(court,x){
   if(bad) return false;
   switch(court.id){
     case 'ca1': return /\/opnfiles\//i.test(u);
-    case 'ca2': return !/\/nav\/rss\.html$/i.test(u) && (/\/decisions?\//i.test(u)||/\/opinions?\//i.test(u)||(/\.pdf(?:$|[?#])/i.test(u)&&/\b\d{2}-\d+\b/.test(t+' '+u)));
+    case 'ca2': return /^https:\/\/ww3\.ca2\.uscourts\.gov\/decisions\/OPN\/[^?#]+\.pdf(?:$|[?#])/i.test(u);
     case 'ca3': return /(?:recentop|opinarch|opinions?)/i.test(u) && (/\.pdf(?:$|[?#])/i.test(u)||/\b\d{2}-\d{3,4}\b/.test(t));
     case 'ca4': return /\/opinions\//i.test(u)&&/\.pdf(?:$|[?#])/i.test(u);
     case 'ca5': return /\/opinions\/(?:pub|unpub)\/\d{2}\/.+\.pdf(?:$|[?#])/i.test(u);
@@ -93,7 +109,6 @@ function followable(court,x){
 }
 async function alternateSource(court){
   const urls={
-    ca2:['https://ww3.ca2.uscourts.gov/rss/opinions.xml','https://www.ca2.uscourts.gov/rss/opinions.xml'],
     ca6:['https://www.opn.ca6.uscourts.gov/opinions/opinions.php?todo=today/1000','https://www.ca6.uscourts.gov/opinions/'],
     ca8:['https://ecf.ca8.uscourts.gov/cgi-bin/TodayOpn.pl','https://www.ca8.uscourts.gov/opinions']
   }[court.id]||[];
@@ -103,49 +118,51 @@ async function alternateSource(court){
 for(const court of registry.courts){
   console.log(`\n=== ${court.id} ${court.name} ===`);
   let source=await get(court.sourceUrl);
-  if(!source.ok&&['ca2','ca6','ca8'].includes(court.id)){const alt=await alternateSource(court);if(alt)source=alt;}
+  if(!source.ok&&['ca6','ca8'].includes(court.id)){const alt=await alternateSource(court);if(alt)source=alt;}
   const row={courtId:court.id,courtName:court.name,sourceUrl:court.sourceUrl,sourceStatus:source.status,sourceFinalUrl:source.url,documents:[],notes:[]};
   if(!source.ok){failures++;row.notes.push(`official source unavailable status=${source.status}${source.error?` error=${source.error}`:''}`);results.push(row);console.log('FAIL official source unavailable',source.status);continue;}
 
-  let candidates=dedupe([...links(source.text,source.url),...feedLinks(source.text,source.url),...embeddedUrls(source.text,source.url)]).filter(x=>isOfficial(x.url,court));
-  if(court.id==='ca5') candidates.push(...ca5WindowsOpinionUrls(source.text));
-  if(court.id==='ca6') candidates.push(...ca6OpinionUrls(source.text));
-  if(court.id==='ca8') candidates.push(...ca8OpinionUrls(source.text));
+  let docs=[];
   if(court.id==='ca2'){
-    for(const feedUrl of ['https://ww3.ca2.uscourts.gov/rss/opinions.xml','https://www.ca2.uscourts.gov/rss/opinions.xml']){
-      const feed=await get(feedUrl); if(feed.ok)candidates.push(...feedLinks(feed.text,feed.url),...embeddedUrls(feed.text,feed.url));
+    const search=await ca2RecentOpinions(30);
+    row.notes.push(`official dtSearch recent-opinion endpoint: ${search.url}`);
+    if(search.ok){docs=search.documents.filter(x=>isOpinionDoc(court,x));row.sourceStatus=search.status;}
+  } else {
+    let candidates=dedupe([...links(source.text,source.url),...feedLinks(source.text,source.url),...embeddedUrls(source.text,source.url)]).filter(x=>isOfficial(x.url,court));
+    if(court.id==='ca5') candidates.push(...ca5WindowsOpinionUrls(source.text));
+    if(court.id==='ca6') candidates.push(...ca6OpinionUrls(source.text));
+    if(court.id==='ca8') candidates.push(...ca8OpinionUrls(source.text));
+    candidates=dedupe(candidates).filter(x=>isOfficial(x.url,court));
+    docs=dedupe(candidates.filter(x=>isOpinionDoc(court,x)));
+
+    const follow=dedupe(candidates.filter(x=>followable(court,x)&&!isOpinionDoc(court,x))).slice(0,35);
+    for(const x of follow){
+      if(docs.length>=50) break;
+      const r=await get(x.url); if(!r.ok) continue;
+      if(/application\/pdf/i.test(r.type)){const candidate={url:r.url,text:x.text};if(isOpinionDoc(court,candidate))docs.push(candidate);continue;}
+      let nested=dedupe([...links(r.text,r.url),...feedLinks(r.text,r.url),...embeddedUrls(r.text,r.url)]).filter(y=>isOfficial(y.url,court));
+      if(court.id==='ca5') nested.push(...ca5WindowsOpinionUrls(r.text));
+      if(court.id==='ca6') nested.push(...ca6OpinionUrls(r.text));
+      if(court.id==='ca8') nested.push(...ca8OpinionUrls(r.text));
+      docs.push(...nested.filter(y=>isOpinionDoc(court,y)));
+      docs=dedupe(docs);
     }
-  }
-  candidates=dedupe(candidates).filter(x=>isOfficial(x.url,court));
-  let docs=dedupe(candidates.filter(x=>isOpinionDoc(court,x)));
 
-  const follow=dedupe(candidates.filter(x=>followable(court,x)&&!isOpinionDoc(court,x))).slice(0,35);
-  for(const x of follow){
-    if(docs.length>=50) break;
-    const r=await get(x.url); if(!r.ok) continue;
-    if(/application\/pdf/i.test(r.type)){const candidate={url:r.url,text:x.text};if(isOpinionDoc(court,candidate))docs.push(candidate);continue;}
-    let nested=dedupe([...links(r.text,r.url),...feedLinks(r.text,r.url),...embeddedUrls(r.text,r.url)]).filter(y=>isOfficial(y.url,court));
-    if(court.id==='ca5') nested.push(...ca5WindowsOpinionUrls(r.text));
-    if(court.id==='ca6') nested.push(...ca6OpinionUrls(r.text));
-    if(court.id==='ca8') nested.push(...ca8OpinionUrls(r.text));
-    docs.push(...nested.filter(y=>isOpinionDoc(court,y)));
-    docs=dedupe(docs);
-  }
-
-  if(docs.length===0&&['ca2','ca6','ca8'].includes(court.id)){
-    const alt=await alternateSource(court);
-    if(alt){
-      let nested=dedupe([...links(alt.text,alt.url),...feedLinks(alt.text,alt.url),...embeddedUrls(alt.text,alt.url)]).filter(y=>isOfficial(y.url,court));
-      if(court.id==='ca6')nested.push(...ca6OpinionUrls(alt.text));
-      if(court.id==='ca8')nested.push(...ca8OpinionUrls(alt.text));
-      docs=dedupe(nested.filter(y=>isOpinionDoc(court,y)));
-      row.notes.push(`official alternate source used: ${alt.url}`);
+    if(docs.length===0&&['ca6','ca8'].includes(court.id)){
+      const alt=await alternateSource(court);
+      if(alt){
+        let nested=dedupe([...links(alt.text,alt.url),...feedLinks(alt.text,alt.url),...embeddedUrls(alt.text,alt.url)]).filter(y=>isOfficial(y.url,court));
+        if(court.id==='ca6')nested.push(...ca6OpinionUrls(alt.text));
+        if(court.id==='ca8')nested.push(...ca8OpinionUrls(alt.text));
+        docs=dedupe(nested.filter(y=>isOpinionDoc(court,y)));
+        row.notes.push(`official alternate source used: ${alt.url}`);
+      }
     }
   }
 
   row.documents=dedupe(docs).slice(0,50).map(x=>({url:x.url,title:x.text||null}));
   const suspicious=row.documents.filter(d=>/rulebook|rules|manual|handbook|guide|form|calendar|admission|fee schedule|procedure|policy|instructions|mediation/i.test((d.url||'')+' '+(d.title||'')));
-  if(row.documents.length===0||suspicious.length>0){failures++;row.notes.push(row.documents.length===0?'no opinion document discovered from official source':`non-opinion documents leaked=${suspicious.length}`);console.log(`FAIL opinion-only validation documents=${row.documents.length} suspicious=${suspicious.length}`);if(court.id==='ca2')console.log('CA2 candidate hints:',candidates.filter(x=>/rss|feed|opinion|decision/i.test(x.url+' '+x.text)).slice(0,20));}
+  if(row.documents.length===0||suspicious.length>0){failures++;row.notes.push(row.documents.length===0?'no opinion document discovered from official source':`non-opinion documents leaked=${suspicious.length}`);console.log(`FAIL opinion-only validation documents=${row.documents.length} suspicious=${suspicious.length}`);}
   else console.log(`PASS official opinion documents=${row.documents.length}`);
   results.push(row);
 }

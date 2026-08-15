@@ -26,6 +26,11 @@
     return encodeURIComponent(String(value || '').trim());
   }
 
+  function legacyArticleUrl(article) {
+    const id = String(article?.id || '').trim();
+    return id ? `/article.html?id=${encodeURIComponent(id)}` : '';
+  }
+
   function articleIdFromAnchor(anchor) {
     const raw = anchor.getAttribute('href') || '';
     if (!raw || !raw.includes('article.html?id=')) return '';
@@ -80,20 +85,27 @@
 
   function prettyArticleUrl(article, categories) {
     if (!article) return '';
-    const slug = String(article.slug || '').trim() || String(article.id || '').trim();
+    const slug = String(article.slug || '').trim();
     if (!slug) return '';
     return `/${safeSegment(sectionForArticle(article, categories))}/${safeSegment(slug)}`;
   }
 
   window.TRRB_articleUrl = function TRRB_articleUrl(article) {
     if (!article) return '';
-    const cached = routeCache.get(String(article.id || '').trim());
+    const id = String(article.id || '').trim();
+    const cached = routeCache.get(id);
     if (cached) return cached;
+
+    // Only articles with a real CMS slug may be sent directly to a pretty route.
+    // Archived WordPress/static rows commonly have only a numeric/wp-* id. Turning
+    // that id into /section/id creates a route that Supabase/Edge cannot resolve.
+    const slug = String(article.slug || '').trim();
+    if (!slug) return legacyArticleUrl(article);
+
     const topic = String(article.topic_key || article.topicKey || '').trim().toLowerCase();
     const categoryName = String(article.category_name || article.category || '').trim();
     const section = topic === 'trump' ? 'trump' : topic === 'ice' ? 'ice' : (FALLBACK_CATEGORY_SLUGS[categoryName] || 'news');
-    const slug = String(article.slug || '').trim() || String(article.id || '').trim();
-    return slug ? `/${safeSegment(section)}/${safeSegment(slug)}` : '';
+    return `/${safeSegment(section)}/${safeSegment(slug)}`;
   };
 
   async function fetchRoutes(ids) {

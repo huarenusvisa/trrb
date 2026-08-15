@@ -1,0 +1,54 @@
+name: 第十六轮节点5-五大类深链接筛选与状态保持
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "legal/**"
+      - "homepage-immigration-hub.js"
+      - "scripts/round16-node5-deep-link-state.mjs"
+      - ".github/workflows/round16-node5-deep-link-state.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round16-node5-deep-link-state
+  cancel-in-progress: true
+
+jobs:
+  deep-link-state:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 等待节点5验收脚本进入生产对应提交
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 36); do
+            code=$(curl -sS -o /tmp/legal.html -w '%{http_code}' --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/?source=SCOTUS&sha=${GITHUB_SHA}&attempt=${attempt}" || true)
+            echo "production probe ${attempt}/36: HTTP ${code}"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: 五大类深链接筛选与状态保持生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round16-node5-deep-link-state.mjs
+      - name: 保存节点5报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round16-node5-deep-link-state
+          path: round16-node5-deep-link-state.json
+          retention-days: 30

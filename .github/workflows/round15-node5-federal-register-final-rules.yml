@@ -1,0 +1,52 @@
+name: "第十五轮节点5-Federal Register新规 / Final Rule自动采集"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round15-node5-federal-register-final-rules.mjs"
+      - ".github/workflows/round15-node5-federal-register-final-rules.yml"
+  schedule:
+    - cron: "51 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round15-node5-federal-register-final-rules
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 通过Federal Register官方API采集Final Rule
+        run: node scripts/round15-node5-federal-register-final-rules.mjs
+      - name: 保存节点5验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node5-federal-register-final-rules
+          path: |
+            round15-node5-federal-register-final-rules-audit.json
+            data/legal/federal-register-final-rules-latest.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: 官方Final Rule数据有变化时提交
+        if: success()
+        run: |
+          git config user.name "TRRB Round15 Legal Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/legal/federal-register-final-rules-latest.json
+          if git diff --cached --quiet; then
+            echo "No Federal Register final-rule data change."
+          else
+            git commit -m "Round 15: sync Federal Register final rules"
+            git push
+          fi

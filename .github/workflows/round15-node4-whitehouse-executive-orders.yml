@@ -1,0 +1,52 @@
+name: 第十五轮节点4-白宫行政命令自动采集
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round15-node4-whitehouse-executive-orders.mjs"
+      - ".github/workflows/round15-node4-whitehouse-executive-orders.yml"
+  schedule:
+    - cron: "37 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round15-node4-whitehouse-executive-orders
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 采集白宫官方行政命令
+        run: node scripts/round15-node4-whitehouse-executive-orders.mjs
+      - name: 保存节点4验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node4-whitehouse-executive-orders
+          path: |
+            round15-node4-whitehouse-executive-orders-audit.json
+            data/legal/whitehouse-executive-orders-latest.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: 官方行政命令数据有变化时提交
+        if: success()
+        run: |
+          git config user.name "TRRB Round15 Legal Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/legal/whitehouse-executive-orders-latest.json
+          if git diff --cached --quiet; then
+            echo "No White House executive-order data change."
+          else
+            git commit -m "Round 15: sync White House executive orders"
+            git push
+          fi

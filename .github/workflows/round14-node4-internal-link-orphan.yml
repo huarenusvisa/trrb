@@ -1,0 +1,47 @@
+name: 第十四轮节点4-内链覆盖与孤岛文章治理
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round14-node4-internal-link-orphan-audit.mjs"
+      - ".github/workflows/round14-node4-internal-link-orphan.yml"
+      - "listing*.js"
+      - "homepage*.js"
+      - "article*.js"
+      - "index.html"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round14-node4-internal-link-orphan
+  cancel-in-progress: true
+
+jobs:
+  internal-link-orphan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      SITE_ORIGIN: https://trrb.net
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 内链覆盖与孤岛文章生产验收
+        run: node scripts/round14-node4-internal-link-orphan-audit.mjs
+      - name: 保存节点4报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round14-node4-internal-link-orphan
+          path: round14-node4-internal-link-orphan-audit.json
+          if-no-files-found: warn
+          retention-days: 30

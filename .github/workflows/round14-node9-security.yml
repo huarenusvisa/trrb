@@ -8,6 +8,7 @@ on:
       - "_headers"
       - "_redirects"
       - "netlify.toml"
+      - "netlify/edge-functions/internal-source-block.ts"
       - "scripts/round14-node9-security-audit.mjs"
       - ".github/workflows/round14-node9-security.yml"
 
@@ -33,14 +34,15 @@ jobs:
         run: |
           set -euo pipefail
           for attempt in $(seq 1 60); do
-            status="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/netlify.toml?r14n9=${GITHUB_SHA}-${attempt}" || true)"
-            if [ "$status" = "404" ] || [ "$status" = "410" ]; then
-              echo "Sensitive-path block is live."
+            a="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round14-node7-core-web-vitals-audit.mjs?r14n9=${GITHUB_SHA}-${attempt}" || true)"
+            b="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/netlify/edge-functions/article-prerender.ts?r14n9=${GITHUB_SHA}-${attempt}" || true)"
+            if { [ "$a" = "404" ] || [ "$a" = "410" ]; } && { [ "$b" = "404" ] || [ "$b" = "410" ]; }; then
+              echo "Sensitive source paths are blocked."
               exit 0
             fi
             sleep 5
           done
-          echo "Sensitive-path block did not reach production within 5 minutes."
+          echo "Sensitive source-path block did not reach production within 5 minutes."
           exit 1
       - name: 安全响应头 / 依赖 / 敏感文件暴露生产审计
         run: node scripts/round14-node9-security-audit.mjs

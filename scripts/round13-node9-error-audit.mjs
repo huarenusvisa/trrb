@@ -14,11 +14,18 @@ const clean=v=>String(v||'').trim();
 const cats=await dbAll('categories','id,name,slug,is_active,include_in_sitemap',{is_active:'eq.true'});
 const arts=await dbAll('articles','id,title,slug,category_id,category_name,topic_key,status,published_at,created_at',{status:'eq.published',order:'published_at.desc.nullslast,created_at.desc'});
 const byId=new Map(cats.map(x=>[String(x.id||''),x]));const byName=new Map(cats.map(x=>[clean(x.name),x]));
+const allowedIds=new Set(cats.filter(x=>x.include_in_sitemap!==false).map(x=>String(x.id||'')));
+const allowedNames=new Set(cats.filter(x=>x.include_in_sitemap!==false).map(x=>clean(x.name)));
 const fallback=new Map([['重要新闻','important-news'],['热门头条','hot-headlines'],['美国时政','us-politics'],['美国警情','us-crime'],['中国官场','china-officialdom'],['移民美国','immigration'],['庇护百科','asylum'],['驱逐快报','deport'],['ICE执法动态','ice'],['ICE执法','ice'],['曝光墙','expose']]);
 function categoryFor(a){return a.category_id?byId.get(String(a.category_id)):byName.get(clean(a.category_name));}
 function section(a){const t=clean(a.topic_key).toLowerCase();if(t==='trump')return'trump';if(t==='ice')return'ice';const c=categoryFor(a);return clean(c?.slug)||fallback.get(clean(a.category_name))||'news';}
 function canonical(a){return `${ORIGIN}/${encodeURIComponent(section(a))}/${encodeURIComponent(clean(a.slug||a.id))}`;}
-function includedInSitemap(a){const c=categoryFor(a);return c?c.include_in_sitemap!==false:true;}
+function includedInSitemap(a){
+  if(!cats.length)return true;
+  if(a.category_id)return allowedIds.has(String(a.category_id));
+  if(clean(a.category_name))return allowedNames.has(clean(a.category_name));
+  return true;
+}
 
 record(arts.length>3000,'加载完整已发布文章库',`published=${arts.length}`);
 record(cats.length>=5,'加载有效栏目配置',`categories=${cats.length}`);

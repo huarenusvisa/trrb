@@ -20,11 +20,25 @@ function links(html, base) {
   }
   return out;
 }
+function feedLinks(xml, base) {
+  const out = [];
+  for (const m of xml.matchAll(/<link\b[^>]*>([\s\S]*?)<\/link>/gi)) {
+    const raw = clean(m[1]);
+    const url = abs(base, raw);
+    if (url) out.push({url,text:''});
+  }
+  for (const m of xml.matchAll(/<(?:guid|enclosure)\b[^>]*(?:url=["']([^"']+)["'])?[^>]*>([\s\S]*?)<\/(?:guid|enclosure)>/gi)) {
+    const raw = m[1] || clean(m[2]);
+    const url = abs(base, raw);
+    if (url) out.push({url,text:''});
+  }
+  return out;
+}
 async function get(url) {
   const ac = new AbortController();
   const t = setTimeout(()=>ac.abort(), timeoutMs);
   try {
-    const r = await fetch(url,{redirect:'follow',headers:{'user-agent':UA,'accept':'text/html,application/xhtml+xml,application/xml,application/pdf;q=0.9,*/*;q=0.8'},signal:ac.signal});
+    const r = await fetch(url,{redirect:'follow',headers:{'user-agent':UA,'accept':'text/html,application/xhtml+xml,application/rss+xml,application/xml,text/xml,application/pdf;q=0.9,*/*;q=0.8'},signal:ac.signal});
     return {ok:r.ok,status:r.status,url:r.url,type:r.headers.get('content-type')||'',text: await r.text()};
   } catch (e) {
     return {ok:false,status:0,url,type:'',text:'',error:String(e?.message||e)};
@@ -41,6 +55,10 @@ function likelyOpinionLink(x) {
   return /\.pdf(?:$|[?#])/i.test(x.url) || /opinion|decision|case|document|download|media/i.test(x.url+' '+x.text);
 }
 function pdfOnly(xs) { return xs.filter(x=>/\.pdf(?:$|[?#])/i.test(x.url)); }
+function dedupe(xs) {
+  const seen = new Set();
+  return xs.filter(x=>{ const k=x.url.split('#')[0]; if(seen.has(k)) return false; seen.add(k); return true; });
+}
 
 for (const court of registry.courts) {
   console.log(`\n=== ${court.id} ${court.name} ===`);
@@ -53,26 +71,32 @@ for (const court of registry.courts) {
     console.log('FAIL official source unavailable', source.status);
     continue;
   }
-  const first = links(source.text, source.url).filter(x=>isOfficial(x.url,court));
-  let docs = pdfOnly(first);
 
-  // Some courts expose an RSS/HTML landing page rather than direct PDFs. Follow a small
-  // number of first-party opinion/feed links and collect PDFs from those pages.
+  const candidates = dedupe([
+    ...links(source.text, source.url),
+    ...feedLinks(source.text, source.url)
+  ]).filter(x=>isOfficial(x.url,court));
+  let docs = pdfOnly(candidates);
+
+  // Courts often expose RSS/HTML listing pages whose entries point to an opinion-detail page.
+  // Follow only a small number of first-party links and harvest official PDFs from those pages.
   if (docs.length === 0) {
-    const follow = first.filter(likelyOpinionLink).filter(x=>!/logout|login|privacy|contact/i.test(x.url)).slice(0,12);
+    const follow = candidates.filter(likelyOpinionLink).filter(x=>!/logout|login|privacy|contact/i.test(x.url)).slice(0,20);
     for (const x of follow) {
       const r = await get(x.url);
-      if (!r.ok || /application\/pdf/i.test(r.type)) {
-        if (r.ok && /application\/pdf/i.test(r.type)) docs.push({url:r.url,text:x.text});
+      if (!r.ok) continue;
+      if (/application\/pdf/i.test(r.type)) {
+        docs.push({url:r.url,text:x.text});
+        if (docs.length >= 20) break;
         continue;
       }
-      docs.push(...pdfOnly(links(r.text,r.url)).filter(y=>isOfficial(y.url,court)));
+      const nested = dedupe([...links(r.text,r.url), ...feedLinks(r.text,r.url)]).filter(y=>isOfficial(y.url,court));
+      docs.push(...pdfOnly(nested));
       if (docs.length >= 20) break;
     }
   }
 
-  const seen = new Set();
-  row.documents = docs.filter(x=>{ const k=x.url.split('#')[0]; if(seen.has(k)) return false; seen.add(k); return true; }).slice(0,50).map(x=>({url:x.url,title:x.text||null}));
+  row.documents = dedupe(docs).slice(0,50).map(x=>({url:x.url,title:x.text||null}));
   if (row.documents.length === 0) {
     failures++;
     row.notes.push('no opinion PDF discovered from official source; court-specific parser/feed still required');

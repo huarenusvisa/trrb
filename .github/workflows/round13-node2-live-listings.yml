@@ -6,8 +6,11 @@ on:
     branches: [main]
     paths:
       - "articles-home.js"
+      - "articles-home-live-fix.js"
+      - "homepage-refresh-guard.js"
       - "listing.js"
       - "listing.html"
+      - "listing-live-category-fix.js"
       - "article-route-runtime.js"
       - "topic/ice/**"
       - "trump/**"

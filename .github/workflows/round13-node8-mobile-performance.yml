@@ -1,0 +1,59 @@
+name: 第十三轮节点8-移动端首屏速度与交互性能
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round13-node8-mobile-performance-audit.mjs"
+      - ".github/workflows/round13-node8-mobile-performance.yml"
+      - "styles.css"
+      - "site-common.js"
+      - "homepage-refresh-guard.js"
+      - "listing.js"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round13-node8-mobile-performance
+  cancel-in-progress: true
+
+jobs:
+  mobile-performance:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装Chromium真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 等待节点8验收脚本上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum scripts/round13-node8-mobile-performance-audit.mjs | awk '{print $1}')"
+          for attempt in $(seq 1 60); do
+            probe="/tmp/round13-node8-${attempt}.mjs"
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round13-node8-mobile-performance-audit.mjs?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+              live="$(sha256sum "$probe" | awk '{print $1}')"
+              if [ "$live" = "$expected" ]; then echo "Current node8 audit is live."; exit 0; fi
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: 移动端首屏速度与交互性能生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round13-node8-mobile-performance-audit.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: round13-node8-mobile-performance
+          path: round13-node8-mobile-performance.json
+          retention-days: 30

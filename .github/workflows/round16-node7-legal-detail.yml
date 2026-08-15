@@ -1,0 +1,73 @@
+name: 第十六轮节点7-单条判例/新规详情页与官方原文双层展示
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "legal/detail.html"
+      - "legal/detail.js"
+      - "legal/legal-app.js"
+      - "legal/legal.css"
+      - "legal/index.html"
+      - "scripts/round16-node7-legal-detail.mjs"
+      - ".github/workflows/round16-node7-legal-detail.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round16-node7-legal-detail
+  cancel-in-progress: true
+
+jobs:
+  legal-detail-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 等待节点7前端版本生产上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=("legal/detail.html" "legal/detail.js" "legal/legal-app.js" "legal/legal.css")
+          for attempt in $(seq 1 60); do
+            all_live=true
+            for file in "${files[@]}"; do
+              expected="$(sha256sum "$file" | awk '{print $1}')"
+              probe="/tmp/$(basename "$file")-${attempt}"
+              if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/${file}?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+                live="$(sha256sum "$probe" | awk '{print $1}')"
+                echo "Deploy probe ${attempt}/60 ${file}: ${live}"
+                if [ "$live" != "$expected" ]; then all_live=false; fi
+              else
+                all_live=false
+              fi
+            done
+            if [ "$all_live" = true ]; then
+              echo "Current Round 16 node7 frontend is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Production did not expose node7 frontend within 5 minutes."
+          exit 1
+      - name: 单条判例/新规详情页与官方原文双层展示生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round16-node7-legal-detail.mjs
+      - name: 保存节点7报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round16-node7-legal-detail
+          path: round16-node7-legal-detail.json
+          retention-days: 30

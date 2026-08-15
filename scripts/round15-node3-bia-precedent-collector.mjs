@@ -50,7 +50,7 @@ for (const m of page.text.matchAll(anchorRe)) {
   const matches = [...text.matchAll(/([A-Z][A-Z0-9'’.,&()\-\s]{1,180}?),?\s*29\s+I&N\s+Dec\.?\s*(\d+)\s*\(BIA\s+(\d{4})\)/gi)];
   const hit = matches.at(-1);
   if (!hit) continue;
-  let caseName = hit[1].trim().replace(/^.*?(Matter of\s+)/i,'Matter of ').replace(/\s+/g,' ');
+  const caseName = hit[1].trim().replace(/^.*?(Matter of\s+)/i,'Matter of ').replace(/\s+/g,' ');
   if (!/^Matter of\b/i.test(caseName) && !/^[A-Z0-9][A-Z0-9\- &'’.]+$/i.test(caseName)) continue;
   entries.push({
     court:'Board of Immigration Appeals',
@@ -66,9 +66,16 @@ for (const m of page.text.matchAll(anchorRe)) {
   });
 }
 
-const byKey = new Map();
-for (const e of entries) byKey.set(`${e.reporterPage}|${e.officialPdfUrl}`,e);
-const decisions = [...byKey.values()].sort((a,b)=>b.reporterPage-a.reporterPage);
+// EOIR pages may expose more than one first-party link for the same published decision.
+// The reporter page is the stable identity of a Volume 29 precedent, so retain one record per page.
+const byReporterPage = new Map();
+for (const e of entries) {
+  const prior = byReporterPage.get(e.reporterPage);
+  if (!prior || (/\.pdf(?:$|[?#])/i.test(e.officialPdfUrl) && !/\.pdf(?:$|[?#])/i.test(prior.officialPdfUrl))) {
+    byReporterPage.set(e.reporterPage,e);
+  }
+}
+const decisions = [...byReporterPage.values()].sort((a,b)=>b.reporterPage-a.reporterPage);
 check(decisions.length >= 10,'BIA precedent decisions parsed from current official volume',`count=${decisions.length}`);
 check(decisions.every(d=>d.precedential && d.authorityType==='BIA precedent decision'),'dataset contains BIA precedent decisions only');
 check(new Set(decisions.map(d=>d.reporterPage)).size === decisions.length,'reporter pages are unique',`unique=${new Set(decisions.map(d=>d.reporterPage)).size}/${decisions.length}`);

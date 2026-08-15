@@ -1,0 +1,77 @@
+name: 第十六轮节点3-AI中文解析增量更新与事实约束
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/round15-node7-ai-legal-analysis.mjs'
+      - 'scripts/round16-node3-ai-incremental-grounding-audit.mjs'
+      - '.github/workflows/round16-node3-ai-incremental-grounding.yml'
+  workflow_run:
+    workflows: ['第十六轮节点2-统一法律数据库自动重建与版本同步']
+    types: [completed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round16-node3-ai-grounding
+  cancel-in-progress: false
+
+jobs:
+  analyze-audit-production:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      ROUND15_AI_BATCH: '8'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 安装官方PDF文本解析工具
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - name: 检查AI密钥
+        run: test -n "$OPENAI_API_KEY" || { echo '缺少OPENAI_API_KEY'; exit 1; }
+      - name: 对统一法律数据库执行增量中文解析
+        run: node scripts/round15-node7-ai-legal-analysis.mjs
+      - name: 验收事实约束与增量一致性
+        run: node scripts/round16-node3-ai-incremental-grounding-audit.mjs
+      - name: 有变化时提交AI解析和验收报告
+        run: |
+          git config user.name 'TRRB Round16 Legal AI Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/legal/legal-ai-analysis-latest.json round16-node3-ai-incremental-grounding-audit.json
+          if git diff --cached --quiet; then
+            echo 'No AI legal analysis changes to commit.'
+          else
+            git commit -m 'Round 16 node3: sync grounded incremental Chinese legal analyses'
+            git push origin HEAD:main
+          fi
+      - name: 验证生产AI解析数据版本
+        run: |
+          EXPECTED=$(node -p "require('./data/legal/legal-ai-analysis-latest.json').datasetVersion")
+          COUNT=$(node -p "require('./data/legal/legal-ai-analysis-latest.json').count")
+          node - "$EXPECTED" "$COUNT" <<'NODE'
+          const expected=process.argv[2]; const count=Number(process.argv[3]);
+          const url='https://trrb.net/data/legal/legal-ai-analysis-latest.json';
+          let last='';
+          for(let i=0;i<20;i++){
+            try{
+              const r=await fetch(`${url}?round16node3=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
+              last=`HTTP ${r.status}`;
+              if(r.ok){const d=await r.json();last=`version=${d.datasetVersion} count=${d.count}`;if(d.datasetVersion===expected&&Number(d.count)===count){console.log(`PASS production AI legal analysis synchronized — ${last}`);console.log('ROUND16 NODE3 PRODUCTION PASS');process.exit(0)}}
+            }catch(e){last=e.message}
+            console.log(`Production not synchronized yet (${i+1}/20): ${last}`);await new Promise(r=>setTimeout(r,15000));
+          }
+          console.error(`FAIL production AI legal analysis mismatch: ${last}`);process.exit(1);
+          NODE
+      - name: 节点3最终结论
+        run: |
+          echo 'ROUND16 NODE3 PASS: incremental Chinese legal analysis, official-source grounding, and production synchronization verified'

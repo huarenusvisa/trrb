@@ -1520,36 +1520,4 @@
         <news:title>德州女子认罪涉走私无陪伴未成年人</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e9159d1183f7a2f6107fef0dd9a5a5e5db01548c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T21:45:54.712Z</news:publication_date>
-        <news:title>弗吉尼亚伍德布里奇ICE阻止1名拘留者</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-1b44cfaee1b930324850ac13074bd83f7c9fa7e7</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T21:45:23.459Z</news:publication_date>
-        <news:title>美国男子误遭ICE拘留后获达美头等舱赔偿</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-694fc763bfe184a6cc6cc3aee43e5d1202b39e68</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T21:45:08.924Z</news:publication_date>
-        <news:title>ICE弗吉尼亚伍德布里奇执法拘多名非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-6a5412b8b96afc83aedb4d155f7db3a1a11093f0</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T21:44:47.717Z</news:publication_date>
-        <news:title>美国警方拘留涉嫌推搡CBP女嫌疑人并计划遣返出境</news:title>
-      </news:news>
-    </url>
 </urlset>

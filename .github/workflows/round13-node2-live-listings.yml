@@ -39,24 +39,35 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: 等待当前节点2验收脚本上线
+      - name: 等待节点2全部前端修复上线
         shell: bash
         run: |
           set -euo pipefail
-          expected="$(sha256sum scripts/round13-node2-live-listings.mjs | awk '{print $1}')"
-          for attempt in $(seq 1 48); do
-            probe="/tmp/round13-node2-${attempt}.mjs"
-            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round13-node2-live-listings.mjs?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
-              live="$(sha256sum "$probe" | awk '{print $1}')"
-              echo "Deploy probe ${attempt}/48: $live"
-              if [ "$live" = "$expected" ]; then
-                echo "Current Round 13 node2 version is live."
-                exit 0
+          files=(
+            "scripts/round13-node2-live-listings.mjs"
+            "homepage-refresh-guard.js"
+            "listing-live-category-fix.js"
+          )
+          for attempt in $(seq 1 60); do
+            all_live=true
+            for file in "${files[@]}"; do
+              expected="$(sha256sum "$file" | awk '{print $1}')"
+              probe="/tmp/$(basename "$file")-${attempt}"
+              if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/${file}?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+                live="$(sha256sum "$probe" | awk '{print $1}')"
+                echo "Deploy probe ${attempt}/60 ${file}: ${live}"
+                if [ "$live" != "$expected" ]; then all_live=false; fi
+              else
+                all_live=false
               fi
+            done
+            if [ "$all_live" = true ]; then
+              echo "Current Round 13 node2 frontend bundle is live."
+              exit 0
             fi
             sleep 5
           done
-          echo "Production did not expose the current node2 probe within 4 minutes."
+          echo "Production did not expose all current node2 frontend fixes within 5 minutes."
           exit 1
       - name: 首页 / 栏目 / 专题实时同步与点击一致性验收
         env:

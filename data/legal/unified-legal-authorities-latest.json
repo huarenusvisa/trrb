@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+  "datasetVersion": "ed7aa345f4593a631d8bd6ecc370ddea4df71b67ac5476ca9963e1ab6115be1f",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 419,
+    "US_CIRCUIT": 418,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 615,
+  "count": 614,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2906,21 +2906,6 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2152P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2152P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:280acdbfedf00b67"
-    },
-    {
-      "id": "139a65fbe32346987bdc29d1",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "25-1064 Wilson v. Iguana Sport Services, Corp.",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1064P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1064P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:41876d0b48a6e8bc"
     },
     {
       "id": "a6b6f91a71ae458c4a5719ac",

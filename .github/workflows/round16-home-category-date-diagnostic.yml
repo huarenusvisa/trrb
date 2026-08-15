@@ -1,0 +1,55 @@
+name: 第十六轮临时-首页栏目日期新鲜度诊断
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "homepage-immigration-hub.js"
+      - ".github/workflows/round16-home-category-date-diagnostic.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 等待首页新鲜度脚本上线并核对各栏目数据库最新日期
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_KEY: sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak
+        run: |
+          node - <<'NODE'
+          const sleep = ms => new Promise(r => setTimeout(r, ms));
+          let deployed = false;
+          for (let i = 1; i <= 60; i++) {
+            const r = await fetch(`https://trrb.net/homepage-immigration-hub.js?freshness=${process.env.GITHUB_SHA}-${i}`, {headers:{'cache-control':'no-cache'}}).catch(()=>null);
+            const t = r?.ok ? await r.text() : '';
+            if (t.includes('liveFreshness') && t.includes('fetchFreshCategory')) { deployed = true; break; }
+            await sleep(5_000);
+          }
+          console.log(`PRODUCTION_FRESHNESS_SCRIPT_DEPLOYED=${deployed}`);
+          if (!deployed) process.exitCode = 1;
+
+          const categories = ['美国时政','美国警情','中国官场','庇护百科'];
+          for (const category of categories) {
+            const qs = new URLSearchParams({
+              select:'id,title,category_name,published_at,created_at,slug',
+              status:'eq.published',
+              category_name:`eq.${category}`,
+              order:'published_at.desc.nullslast,created_at.desc',
+              limit:'8'
+            });
+            const r = await fetch(`${process.env.SUPABASE_URL}/rest/v1/articles?${qs}`, {headers:{apikey:process.env.SUPABASE_KEY,Authorization:`Bearer ${process.env.SUPABASE_KEY}`,Accept:'application/json'}});
+            if (!r.ok) throw new Error(`${category} Supabase ${r.status}`);
+            const rows = await r.json();
+            console.log(`CATEGORY ${category} count=${rows.length}`);
+            for (const row of rows) console.log(`  ${(row.published_at||row.created_at||'').slice(0,19)} | ${row.title}`);
+          }
+          NODE

@@ -1,0 +1,53 @@
+name: 第十三轮节点9-全站404-5xx-资源错误持续审计
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round13-node9-error-audit.mjs"
+      - ".github/workflows/round13-node9-error-audit.yml"
+      - "netlify.toml"
+      - "_redirects"
+      - "netlify/edge-functions/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round13-node9-error-audit
+  cancel-in-progress: true
+
+jobs:
+  error-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 等待节点9验收脚本上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum scripts/round13-node9-error-audit.mjs | awk '{print $1}')"
+          for attempt in $(seq 1 60); do
+            probe="/tmp/round13-node9-${attempt}.mjs"
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round13-node9-error-audit.mjs?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+              live="$(sha256sum "$probe" | awk '{print $1}')"
+              if [ "$live" = "$expected" ]; then echo "Current node9 audit is live."; exit 0; fi
+            fi
+            sleep 5
+          done
+          exit 1
+      - name: 全站404 / 5xx / 资源错误持续审计
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round13-node9-error-audit.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: round13-node9-error-audit
+          path: round13-node9-error-audit.json
+          retention-days: 30

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-0bd46488728fbeceecfe98549593807b1352bc4c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T23:28:17.941Z</news:publication_date>
+        <news:title>冰岛仓库ICE突袭仓库拘留员工 锁门时遭反抗</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-34fe522dddf04bd072033a25a2654fd0c8b79c6f</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

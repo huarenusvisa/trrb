@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 15 Aug 2026 23:27:18 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 23:28:17 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>冰岛仓库ICE突袭仓库拘留员工 锁门时遭反抗</title>
+      <link>https://trrb.net/ice/ice-0bd46488728fbeceecfe98549593807b1352bc4c</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-0bd46488728fbeceecfe98549593807b1352bc4c</guid>
+      <pubDate>Sat, 15 Aug 2026 23:28:17 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>冰岛仓库遭ICE突袭，安全人员锁门困员工并推搡部分员工，多人设法逃脱。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088741362002788352/img/z_k2Y1OXnpPDyJWA.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>纽约将终止12机构287(g)协议限制警方协助移民</title>
       <link>https://trrb.net/ice/ice-34fe522dddf04bd072033a25a2654fd0c8b79c6f</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>普林斯乔治县拘留中心拒执行ICE扣押令释放两名非法移民。ICE随后追踪并重新逮捕两人。</description>
       <enclosure url="https://pbs.twimg.com/media/HPrz6yvXkAAj5sk.png" type="image/png" />
-    </item>
-    <item>
-      <title>特朗普跨国驱逐扩大！移民被送往无关联第三国，陷海外无限期拘留困局</title>
-      <link>https://trrb.net/ice/%E7%89%B9%E6%9C%97%E6%99%AE%E7%A6%BB%E5%B2%B8%E9%A9%B1%E9%80%90%E6%8C%81%E7%BB%AD%E5%8A%A0%E7%A0%81%E7%A7%BB%E6%B0%91%E8%A2%AB%E8%BD%AC%E9%80%81%E9%99%8C%E7%94%9F%E7%AC%AC%E4%B8%89%E5%9B%BD%E9%99%B7%E6%B5%B7%E5%A4%96%E6%97%A0%E9%99%90%E6%9C%9F%E6%8B%98%E7%95%99%E5%9B%B0%E5%A2%83-msszevp0-659c56</link>
-      <guid isPermaLink="true">https://trrb.net/ice/%E7%89%B9%E6%9C%97%E6%99%AE%E7%A6%BB%E5%B2%B8%E9%A9%B1%E9%80%90%E6%8C%81%E7%BB%AD%E5%8A%A0%E7%A0%81%E7%A7%BB%E6%B0%91%E8%A2%AB%E8%BD%AC%E9%80%81%E9%99%8C%E7%94%9F%E7%AC%AC%E4%B8%89%E5%9B%BD%E9%99%B7%E6%B5%B7%E5%A4%96%E6%97%A0%E9%99%90%E6%9C%9F%E6%8B%98%E7%95%99%E5%9B%B0%E5%A2%83-msszevp0-659c56</guid>
-      <pubDate>Fri, 14 Aug 2026 13:27:29 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>唐人日报8月14日讯：特朗普政府持续扩大第三国移民驱逐政策实施范围，将大量无法遣返回原籍国的移民，强制送往与其毫无关联的海外国家，众多移民落地后遭无限期监禁，无指控、无上诉渠道、无获释可能，陷入永久自由剥夺的绝境。</description>
-      <enclosure url="https://static01.nyt.com/images/2026/08/23/magazine/23mag-eswatini-roberto/23mag-eswatini-roberto-superJumbo.jpg?quality=75&amp;auto=webp" type="image/jpeg" />
     </item>
   </channel>
 </rss>

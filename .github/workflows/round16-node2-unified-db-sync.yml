@@ -8,6 +8,7 @@ on:
       - 'data/legal/**'
       - 'scripts/round15-node6-unified-legal-database.mjs'
       - 'scripts/round16-node2-unified-db-sync-audit.mjs'
+      - 'scripts/generate-legal-sitemap.mjs'
       - '.github/workflows/round16-node2-unified-db-sync.yml'
   workflow_run:
     workflows: ['第十六轮节点1-五大官方法律源自动采集触发链闭环']
@@ -32,13 +33,15 @@ jobs:
         run: node scripts/round15-node6-unified-legal-database.mjs
       - name: 验收统一数据库与版本同步
         run: node scripts/round16-node2-unified-db-sync-audit.mjs
-      - name: 数据变化时提交统一数据库和验收报告
+      - name: 同步法律栏目Sitemap
+        run: node scripts/generate-legal-sitemap.mjs
+      - name: 数据变化时提交统一数据库、法律Sitemap和验收报告
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/legal/unified-legal-authorities-latest.json round15-node6-unified-legal-database-audit.json round16-node2-unified-db-sync-audit.json
+          git add data/legal/unified-legal-authorities-latest.json round15-node6-unified-legal-database-audit.json round16-node2-unified-db-sync-audit.json sitemap-legal.xml
           if git diff --cached --quiet; then
-            echo 'No unified database changes to commit.'
+            echo 'No unified database or legal sitemap changes to commit.'
           else
             git commit -m 'Round 16 node2: synchronize unified legal database version'
             git push origin HEAD:main
@@ -83,4 +86,4 @@ jobs:
           NODE
       - name: 节点2最终结论
         run: |
-          echo 'ROUND16 NODE2 PASS: unified legal database automatic rebuild, content-addressed versioning, and production synchronization verified'
+          echo 'ROUND16 NODE2 PASS: unified legal database automatic rebuild, content-addressed versioning, legal sitemap synchronization, and production synchronization verified'

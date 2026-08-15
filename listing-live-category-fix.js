@@ -50,13 +50,18 @@
     return fetchExactCategory(pathSlug, category, limit);
   };
 
-  // listing.js starts initListing() before this patch is loaded. If that first request has
-  // already captured the old global feed, force one exact-category repaint after load.
+  // listing.js starts initListing() before this patch is loaded. Its original global-feed
+  // request can finish after the exact-category repaint and overwrite the grid. Keep the
+  // category page pinned to its exact Supabase dataset whenever that stale render appears.
   const pathSlug = location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
   const category = CATEGORY_BY_PATH[pathSlug];
   if (!category || typeof window.renderListingDataset !== 'function') return;
 
+  let repainting = false;
+  let repaintQueued = false;
   const repaint = async () => {
+    if (repainting) return;
+    repainting = true;
     try {
       const articles = await fetchExactCategory(pathSlug, category, 100);
       if (!articles.length) return;
@@ -66,8 +71,27 @@
       document.documentElement.dataset.trrbLiveCategory = 'ready';
     } catch (error) {
       console.warn('Exact live category repaint unavailable', error);
+    } finally {
+      repainting = false;
     }
   };
+
+  const grid = document.querySelector('#listing-grid');
+  if (grid) {
+    const observer = new MutationObserver(() => {
+      if (repainting || repaintQueued) return;
+      const labels = [...grid.querySelectorAll('.archive-card span')]
+        .map((node) => String(node.textContent || '').trim())
+        .filter(Boolean);
+      if (!labels.length || labels.every((value) => value === category)) return;
+      repaintQueued = true;
+      queueMicrotask(() => {
+        repaintQueued = false;
+        repaint();
+      });
+    });
+    observer.observe(grid, { childList: true, subtree: true });
+  }
 
   repaint();
   window.addEventListener('load', () => setTimeout(repaint, 0), { once: true });

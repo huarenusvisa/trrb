@@ -1,0 +1,57 @@
+name: 第十四轮节点8-Google-Bing新文发现与推送链路稳定性
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "08665bdb2ead4dcf7d8e6afc895c07d7.txt"
+      - "scripts/round14-node8-search-discovery-push-audit.mjs"
+      - ".github/workflows/round14-node8-search-discovery-push.yml"
+      - "robots.txt"
+      - "netlify/edge-functions/sitemap-live.ts"
+      - "netlify/edge-functions/news-sitemap-live.ts"
+      - "netlify/edge-functions/feed-live.ts"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round14-node8-search-discovery-push
+  cancel-in-progress: true
+
+jobs:
+  search-discovery-push:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SITE_ORIGIN: https://trrb.net
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 等待 IndexNow 验证文件上线
+        run: |
+          set -euo pipefail
+          key="08665bdb2ead4dcf7d8e6afc895c07d7"
+          for attempt in $(seq 1 60); do
+            body="$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/${key}.txt?r14n8=${GITHUB_SHA}-${attempt}" || true)"
+            if [ "$(printf '%s' "$body" | tr -d '\r\n ')" = "$key" ]; then
+              echo "IndexNow verification key is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "IndexNow verification key did not reach production within 5 minutes."
+          exit 1
+      - name: Google / Bing 新文发现与推送生产验收
+        run: node scripts/round14-node8-search-discovery-push-audit.mjs
+      - name: 保存节点8报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round14-node8-search-discovery-push
+          path: round14-node8-search-discovery-push-audit.json
+          if-no-files-found: warn
+          retention-days: 30

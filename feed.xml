@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 15 Aug 2026 21:23:22 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 22:02:57 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>休斯顿警方疑将刑事案件证人移交ICE调查</title>
+      <link>https://trrb.net/ice/ice-6a15faf60168d05138d861dddcd56bcbd3f8df19</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-6a15faf60168d05138d861dddcd56bcbd3f8df19</guid>
+      <pubDate>Sat, 15 Aug 2026 22:02:57 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>有消息称休斯顿警方将一名犯罪案件证人移交ICE调查，相关情况未获官方确认。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088738268305129472/img/vWBm-HRb5aNTQqmI.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>路易斯安那肯纳ICE行动遭女子质疑执法凭据</title>
       <link>https://trrb.net/ice/ice-873f70015ec566deecb36145d670569cd4fe5fc3</link>
@@ -897,15 +906,6 @@
       <category>重要新闻</category>
       <description>唐人日报 8 月 14日讯：美国司法部移民审查执行办公室（EOIR）旗下移民上诉委员会（BIA）于2026年8月13日作出重要裁决，认定根据提前假释（Advance Parole）批准离开美国，仍属于《移民与国籍法》（INA）第212(a)(9)(B)(i)(II)条所规定的“departur…</description>
       <enclosure url="https://images.openai.com/static-rsc-4/5mi8ccn_CyF0ksUww8RCITV6oiJJvKFHb1H_4CG05v5NGuA1pNQZUXEi675Un1Ol5rxbK0ReTRg5Z2lIsvTh-NKslDw3asMt-ztthnn_AbHQlVKB6AQrTNVyBTgfOQviybDRzgIfc6iWlnEPW_xaYuToCF5xmKKGdQrJ8NsIVLE?purpose=inline" type="image/jpeg" />
-    </item>
-    <item>
-      <title>得州男子涉使用假社保卡被带脚环后自愿遣返</title>
-      <link>https://trrb.net/ice/ice-104d10cc0322ff7e0324a0b53d294e757b35621d</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-104d10cc0322ff7e0324a0b53d294e757b35621d</guid>
-      <pubDate>Fri, 14 Aug 2026 13:08:59 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>得州一男子因涉嫌使用假社保卡被安装电子脚环，后选择向ICE自愿遣返。官方尚未确认相关信息。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088152805681025024/img/uTIaWyjIzFObhzRW.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

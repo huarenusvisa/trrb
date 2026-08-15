@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-6a15faf60168d05138d861dddcd56bcbd3f8df19</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T22:02:57.798Z</news:publication_date>
+        <news:title>休斯顿警方疑将刑事案件证人移交ICE调查</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-873f70015ec566deecb36145d670569cd4fe5fc3</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1502,22 +1510,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-13T22:50:49.097Z</news:publication_date>
         <news:title>乔治亚威达利亚洋葱因签证延迟减产40%</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-4e4afb62523f5be0031ab816fc94d79a04f70154</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T22:00:58.815Z</news:publication_date>
-        <news:title>ICE遣返多名恋童癖和强奸犯保障安全</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-be4b20c67f713d84248aac5555666418d3e75951</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T22:00:57.973Z</news:publication_date>
-        <news:title>德州女子认罪涉走私无陪伴未成年人</news:title>
       </news:news>
     </url>
 </urlset>

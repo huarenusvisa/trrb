@@ -1488,28 +1488,4 @@
         <news:title>华盛顿州格兰特县ICE逮捕涉嫌盗窃非法移民</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-c26cc00d2e2c0f546cb8b7258a002a5ac32200c2</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T20:25:58.248Z</news:publication_date>
-        <news:title>美边境15月未释放非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-eb304bab2bdb67ba395610b5f345d748ab6b0bc0</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T20:25:57.900Z</news:publication_date>
-        <news:title>司法部关注加州乔奇拉女子监狱管理</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-3e9131c3ccb5ca2c20aca6d2f6f164ac28bc7f4e</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T20:03:51.718Z</news:publication_date>
-        <news:title>旧金山ICE在奥克兰逮捕洪都拉斯籍犯罪男子</news:title>
-      </news:news>
-    </url>
 </urlset>

@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-99d85dc6260ab99adc5946ff6523e1f7b88981e9</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T01:04:33.268Z</news:publication_date>
+        <news:title>墨西哥违法者JorgeMartinez-Guerr</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-b8916dc6a4240883001b5c5f35de6f7cec16cb0a</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T01:04:33.058Z</news:publication_date>
+        <news:title>国土安全部遣返涉非法枪支制造墨籍移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-62d9eda6aa3c4e09443a0f2638d264a8134091b6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T01:04:32.803Z</news:publication_date>
+        <news:title>美国遣返涉多重罪名印度籍非法移民辛格</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-4640107bcecbd24cc021c722435f4c0b380d9fde</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T01:04:32.488Z</news:publication_date>
+        <news:title>美国遣返涉住宅盗窃智利非法移民威廉姆斯</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-f261e4f6e8714924c895553f9621fbd31d5096af</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2398,14 +2430,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-13T02:23:42.653Z</news:publication_date>
         <news:title>美国陆军AH-64阿帕奇直升机德州坠毁，2名机组人员死亡并引发山火</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-be63a8dc0a18666c7ac64fa5cadfc6badedf84b5</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T00:45:54.055Z</news:publication_date>
-        <news:title>美国ICE8月11日逮捕多名犯罪非法移民</news:title>
       </news:news>
     </url>
 </urlset>

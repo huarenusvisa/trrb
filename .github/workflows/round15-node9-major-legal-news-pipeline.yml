@@ -1,0 +1,54 @@
+name: 第十五轮节点9-重大裁决自动识别并进入唐人日报新闻生产线
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round15-node9-major-legal-news-pipeline.mjs"
+      - ".github/workflows/round15-node9-major-legal-news-pipeline.yml"
+      - "data/legal/unified-legal-authorities-latest.json"
+      - "data/legal/legal-ai-analysis-latest.json"
+  schedule:
+    - cron: "52 */6 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round15-node9-major-legal-news-pipeline
+  cancel-in-progress: true
+
+jobs:
+  route:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 识别重大裁决与新规并进入编辑新闻生产队列
+        run: node scripts/round15-node9-major-legal-news-pipeline.mjs
+      - name: 保存节点9验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node9-major-legal-news-pipeline
+          path: |
+            round15-node9-major-legal-news-pipeline-audit.json
+            data/news-pipeline/legal-high-impact-queue.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: 新闻候选队列变化时提交
+        if: success()
+        run: |
+          git config user.name "TRRB Round15 Legal Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/news-pipeline/legal-high-impact-queue.json
+          if git diff --cached --quiet; then
+            echo "No high-impact legal news queue change."
+          else
+            git commit -m "Round 15: sync high-impact legal news candidates"
+            git push
+          fi

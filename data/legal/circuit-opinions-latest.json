@@ -1,0 +1,879 @@
+{
+  "generatedAt": "2026-08-15T14:11:45.302Z",
+  "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
+  "courts": 13,
+  "covered": 13,
+  "failures": 0,
+  "results": [
+    {
+      "courtId": "ca1",
+      "courtName": "U.S. Court of Appeals for the First Circuit",
+      "sourceUrl": "https://www.ca1.uscourts.gov/opinions",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca1.uscourts.gov/opinions",
+      "documents": [
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/CourtAccessCoordinator.pdf",
+          "title": "Access Coordinator"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/NextGenUsersGuide.pdf#page=26",
+          "title": "Monitoring Cases of Interest"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/rulebook.pdf",
+          "title": "First Circuit Rulebook"
+        },
+        {
+          "url": "http://www.ca1.uscourts.gov/sites/ca1/files/CJA_Reference_Manual.pdf",
+          "title": "CJA Reference Manual"
+        },
+        {
+          "url": "http://www.ca1.uscourts.gov/sites/ca1/files/rulebook.pdf#page=94",
+          "title": "CJA Plan - Local Rule 46.5"
+        },
+        {
+          "url": "http://www.ca1.uscourts.gov/sites/ca1/files/Notice_To_CJA_Counsel_Re_Final_Voucher.pdf",
+          "title": "CJA Requirements for Completion of Representation"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1703P-01A.pdf",
+          "title": "26-1703 Dorcas International Institute of Rhode Island v. United States Citizenship and Immigration Services"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1703_STAY_GRANT_DENIED1.PDF-01A.pdf",
+          "title": "26-1703 Dorcas International Institute of Rhode Island v. United States Citizenship and Immigration Services"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2152P-01A.pdf",
+          "title": "25-2152 Guerrero Orellana v. Moniz"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2077P-01A.pdf",
+          "title": "25-2077 LUMA Energy LLC v. Puerto Rico Dep't of Consumer Affairs"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1575P-01A.pdf",
+          "title": "25-1575 Cosel v. Wendt"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1820P-01A.pdf",
+          "title": "25-1820 Bangs v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2054P-01A.pdf",
+          "title": "25-2054 Urena v. Travelers Casualty and Surety Co. of America"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1351P-01A.pdf",
+          "title": "25-1351 Guzman v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1428P-01A.pdf",
+          "title": "25-1428 Woonasquatucket River Watershed Council v. USDA"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1769P-01A.pdf",
+          "title": "24-1769 US v. Cooper"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1626P-01A.pdf",
+          "title": "23-1626 Rodriguez-Cotto v. Gonzalez-Colon"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1978P-01A.pdf",
+          "title": "24-1978 US v. Andino-Arroyo"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1832O-01A.pdf",
+          "title": "26-1832 African Communities Together v. Mullin"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467E-01A.pdf",
+          "title": "24-1467 US v. Johnson"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
+          "title": "24-1524 US v. Fulcar"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805E-01A.pdf",
+          "title": "24-1805 Cortes-Ramos v. Martin-Morales"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340E-01A.pdf",
+          "title": "25-1340 Muchiri v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2042P-01A.pdf",
+          "title": "24-2042 Kim v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2086P-01A.pdf",
+          "title": "24-2086 US v. Gonzalez"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca2",
+      "courtName": "U.S. Court of Appeals for the Second Circuit",
+      "sourceUrl": "https://ww3.ca2.uscourts.gov/nav/rss.html",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://ww3.ca2.uscourts.gov/nav/rss.html",
+      "documents": [
+        {
+          "url": "https://ww3.ca2.uscourts.gov/docs/EDR%20Plan.pdf",
+          "title": "EDR Plan"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca3",
+      "courtName": "U.S. Court of Appeals for the Third Circuit",
+      "sourceUrl": "https://www.ca3.uscourts.gov/opinions-and-oral-arguments",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca3.uscourts.gov/opinions-and-oral-arguments",
+      "documents": [
+        {
+          "url": "https://www.ca3.uscourts.gov/sites/ca3/files/SmartScan.pdf",
+          "title": "Smart Scan"
+        },
+        {
+          "url": "https://www.ca3.uscourts.gov/sites/ca3/files/2011_LAR_Final.pdf",
+          "title": "Local Rules (PDF)"
+        },
+        {
+          "url": "https://www.ca3.uscourts.gov/sites/ca3/files/LAR%2026%20and%20Misc.%20LAR%20113%28c%29%20Effective%20July%201%202023.pdf",
+          "title": "Recent Amendments to the Local Rules (PDF)"
+        },
+        {
+          "url": "https://www.ca3.uscourts.gov/sites/ca3/files/IOPs.pdf",
+          "title": "Internal Operating Procedures (PDF)"
+        },
+        {
+          "url": "https://www.ca3.uscourts.gov/sites/ca3/files/Third_Circuit_Local_Rules_Bankuptcy_Judge_Reappointment.pdf",
+          "title": "Third Circuit Court of Appeals Local Rules on the Bankruptcy Judge Reappointment Procedures"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca4",
+      "courtName": "U.S. Court of Appeals for the Fourth Circuit",
+      "sourceUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
+      "documents": [
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/241487.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/241487.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244556.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244556.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254037.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254037.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244125.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244125.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/256083.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/256083.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/256306.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/256306.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/231078R1.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/231078R1.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/237032.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/237032.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/241523.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/241523.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251828.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251828.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254220.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254220.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254663.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254663.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/256329.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/256329.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244565.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244565.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254369.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254369.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/242000.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/242000.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251410.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251410.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254214.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254214.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/231897.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/231897.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251975.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251975.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251570.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251570.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244498.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244498.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251350.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251350.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251848.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251848.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/252320.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/252320.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/256283.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/256283.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/261231.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/261231.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/234206.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/234206.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251970.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251970.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254385.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254385.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/264047.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/264047.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/236914.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/236914.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251730.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251730.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/242205.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/242205.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244387.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244387.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251221.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251221.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca5",
+      "courtName": "U.S. Court of Appeals for the Fifth Circuit",
+      "sourceUrl": "https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions",
+      "documents": [
+        {
+          "url": "https://www.ca5.uscourts.gov/docs/497ded49-34ea-4d2a-835b-c910cc2aeb88/practitionersguide.pdf",
+          "title": "Practitioner&#x27;s Guide"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca6",
+      "courtName": "U.S. Court of Appeals for the Sixth Circuit",
+      "sourceUrl": "https://www.ca6.uscourts.gov/opinions",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca6.uscourts.gov/opinions",
+      "documents": [
+        {
+          "url": "http://www.ca6.uscourts.gov/sites/ca6/files/documents/rules_procedures/Electronic_Device.pdf",
+          "title": "Electronic Device Policy"
+        },
+        {
+          "url": "http://www.ca6.uscourts.gov/sites/ca6/files/documents/about_the_court/AdmissionPSC.pdf",
+          "title": "Admission to the Courthouse"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca7",
+      "courtName": "U.S. Court of Appeals for the Seventh Circuit",
+      "sourceUrl": "https://media.ca7.uscourts.gov/cgi-bin/rssExec.pl?Submit=Submit&Time=week",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://media.ca7.uscourts.gov/cgi-bin/rssExec.pl?Submit=Submit&Time=week",
+      "documents": [
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-14/C:25-2428:J:PerCuriam:aut:T:fnOp:N:3591581:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-14/C:25-2428:J:Brennan:dis:T:fnOp:N:3591581:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-14/C:25-1627:J:Lee:aut:T:fnOp:N:3591691:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-14/C:24-2947:J:Kirsch:aut:T:fnOp:N:3591784:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-14/C:24-2947:J:Jackson-Akiwumi:condis:T:fnOp:N:3591784:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-14/C:23-3061:J:Pryor:aut:T:fnOp:N:3591169:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-2366:J:Kolar:aut:T:fnOp:N:3590753:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-2366:J:Easterbrook:con:T:fnOp:N:3590753:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-2251:J:Easterbrook:aut:T:fnOp:N:3590741:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-2118:J:PerCuriam:aut:T:fnOp:N:3590856:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-1964:J:Easterbrook:aut:T:fnOp:N:3590724:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-1516:J:Maldonado:aut:T:fnOp:N:3590692:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-1392:J:Pryor:aut:T:fnOp:N:3590386:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:25-1311:J:Pryor:aut:T:fnOp:N:3590385:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:24-3018:J:Maldonado:aut:T:fnOp:N:3590876:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:24-3017:J:Maldonado:aut:T:fnOp:N:3590875:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:24-2977:J:Maldonado:aut:T:fnOp:N:3590874:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:24-2682:J:Lee:condis:T:fnOp:N:3590973:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:24-2682:J:Jackson-Akiwumi:aut:T:fnOp:N:3590973:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&amp;Path=Y2026/D08-13/C:24-2017:J:Maldonado:aut:T:fnOp:N:3590561:S:0",
+          "title": "Final Opinion"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca8",
+      "courtName": "U.S. Court of Appeals for the Eighth Circuit",
+      "sourceUrl": "https://www.ca8.uscourts.gov/all-opinions",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca8.uscourts.gov/all-opinions",
+      "documents": [
+        {
+          "url": "https://www.ca8.uscourts.gov/sites/ca8/files/oadates.pdf",
+          "title": "Future Court Sessions"
+        },
+        {
+          "url": "https://www.ca8.uscourts.gov/sites/ca8/files/ATTORNEY%20ADMISSION%20March%202024.pdf",
+          "title": "Attorney Admissions"
+        },
+        {
+          "url": "https://www.ca8.uscourts.gov/sites/ca8/files/AmendPayGov12-23.pdf",
+          "title": "Fee Schedules"
+        },
+        {
+          "url": "https://www.ca8.uscourts.gov/sites/ca8/files/Civil_Appointment_Information.pdf",
+          "title": "Civil Information"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca9",
+      "courtName": "U.S. Court of Appeals for the Ninth Circuit",
+      "sourceUrl": "https://www.ca9.uscourts.gov/opinions/index.xml",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml",
+      "documents": [
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/14/21-99001.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/14/25-7384.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/25-557.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/24-7460.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/25-1372.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2135.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-3454.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2137.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/24-6341.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/24-3849.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/22-35085.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/22-35103.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/20-36024.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/24-3479.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/16-71147.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/23-16164.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7265.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/21-71380.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7312.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7032.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7037.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7300.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7304.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/19-71322.pdf",
+          "title": null
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca10",
+      "courtName": "U.S. Court of Appeals for the Tenth Circuit",
+      "sourceUrl": "https://www.ca10.uscourts.gov/clerk/opinions/daily",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca10.uscourts.gov/clerk/opinions/daily",
+      "documents": [
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/Mediation%20Contact%20Form.pdf",
+          "title": "Mediation Contact Form"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/rule33.pdf",
+          "title": "FRAP Rule 33 and 10th Circuit Rule 33.1"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/Sample%20Order%20of%20Dismissal.pdf",
+          "title": "Sample Order of Dismissal.pdf"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/Sample%20Stipulation%20to%20Dismiss.pdf",
+          "title": "Sample Stipulation to Dismiss.pdf"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/2026%20CMECF%20NextGen%20User%27s%20Manual_0.pdf",
+          "title": "2026 CM/ECF NextGen User&#039;s Manual"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/Sealed%20Materials%20Cheat%20Sheet.pdf",
+          "title": "Dealing With Sealed Materials in ECF"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/NextGen%20Step-by-Step%20Guide.pdf",
+          "title": "ECF Registration Step by Step"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/How%20to%20Request%20E-Filing%20Privileges%20with%20Our%20Court.pdf",
+          "title": "How to add E-Filing privileges with Our Court"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/How%20to%20Link%20your%20Pacer%20and%20ECF%20accounts.pdf",
+          "title": "How to Link your Pacer and ECF accounts"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/ECF%20Tips%20%26%20Hints_0.pdf",
+          "title": "ECF Tips & Hints.pdf"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/calendar/events/August_17_2026_-_Final_Calendar.pdf",
+          "title": "Argument Schedule"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/calendar/events/August_17_2026_-_Final_Zoom_Calendar.pdf",
+          "title": "Argument Schedule"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/calendar/events/August_18_2026_-_Final_Calendar.pdf",
+          "title": "Argument Schedule"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/calendar/events/September_2026_-_Public_Calendar.pdf",
+          "title": "Argument Calendar"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/2026-Calendar-Revised.pdf",
+          "title": "2026 Court Argument Calendar Sessions"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/2027%20COURT%20SESSIONS%20REVISED%20AGAIN.pdf",
+          "title": "2027 Court Argument Calendar Sessions"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/Zoom_Guide-2026.pdf",
+          "title": "Guide for Participating in Zoom Oral Arguments"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/Oral%20Argument%20Notice-2026.pdf",
+          "title": "Instructions for Cases Set on the Oral Argument Calendar"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/Answers%20to%20Frequently%20Asked%20Questions%20%282026%29.pdf",
+          "title": "Answers to Frequently Asked Questions.pdf"
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/documents/downloads/What%20is%20a%20hearing%20loop.pdf",
+          "title": "What is a Hearing Loop?"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "ca11",
+      "courtName": "U.S. Court of Appeals for the Eleventh Circuit",
+      "sourceUrl": "https://www.ca11.uscourts.gov/opinions",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.ca11.uscourts.gov/opinions",
+      "documents": [
+        {
+          "url": "https://www.ca11.uscourts.gov/sites/default/files/courtdocs/clk/Rules%20Bookmarked.AUG26.pdf",
+          "title": "FRAP, 11th Circuit Rules, and IOPs - Effective August 1, 2026 (Current)"
+        },
+        {
+          "url": "https://www.ca11.uscourts.gov/sites/default/files/courtdocs/clk/Pro_Se_Handbook_Final_With_Attachments.DEC25.pdf",
+          "title": "Pro Se Handbook (Revised December 2025)"
+        },
+        {
+          "url": "https://www.ca11.uscourts.gov/sites/default/files/courtdocs/clk/Revised%20Coord.%20Notice%20June%202026.pdf",
+          "title": "Disability Access Information"
+        },
+        {
+          "url": "https://www.ca11.uscourts.gov/sites/default/files/courtdocs/clk/RulesFRAP36_DEC16.pdf",
+          "title": "Click to view FRAP 36 and accompanying Eleventh Circuit Rules and Internal Operating Procedures"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "cadc",
+      "courtName": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "sourceUrl": "https://media.cadc.uscourts.gov/opinions/",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://media.cadc.uscourts.gov/opinions/",
+      "documents": [
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-7135-2188251.pdf",
+          "title": "24-7135"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5367-2188259.pdf",
+          "title": "25-5367"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "courtId": "cafc",
+      "courtName": "U.S. Court of Appeals for the Federal Circuit",
+      "sourceUrl": "https://www.cafc.uscourts.gov/home/case-information/opinions-orders/",
+      "sourceStatus": 200,
+      "sourceFinalUrl": "https://www.cafc.uscourts.gov/home/case-information/opinions-orders/",
+      "documents": [
+        {
+          "url": "https://www.cafc.uscourts.gov/wp-content/uploads/GeneralInformation/GPO_Search_Strategies.pdf",
+          "title": "GovInfo Search Strategies resource"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1590.ORDER.8-14-2026_2739694.pdf",
+          "title": "BOYER v. MSPB [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1371.OPINION.8-14-2026_2739381.pdf",
+          "title": "NIELSEN COMPANY (US), LLC v. TVISION INSIGHTS, INC. [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
+          "title": "CUMMINS v. US [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1388.OPINION.8-14-2026_2739444.pdf",
+          "title": "BRIMER v. NAVY [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1388.ORDER.8-14-2026_2739434.pdf",
+          "title": "BRIMER v. NAVY [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1907.ORDER.8-14-2026_2739562.pdf",
+          "title": "TECHNATOMY CORP. v. US [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1538.OPINION.8-14-2026_2739398.pdf",
+          "title": "JACKI EASLICK, LLC v. CJ EMERALD [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1631.ORDER.8-13-2026_2738589.pdf",
+          "title": "RICKS v. US [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1865.ORDER.8-13-2026_2738791.pdf",
+          "title": "BARTO v. MSPB [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-2027.ORDER.8-13-2026_2738900.pdf",
+          "title": "HOWELL v. DVA [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-143.ORDER.8-12-2026_2737931.pdf",
+          "title": "In Re BYRD [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1525.ORDER.8-12-2026_2737955.pdf",
+          "title": "CANADIAN SOLAR, INC. v. MAXEON SOLAR PTE. LTD. [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1811.ORDER.8-12-2026_2737854.pdf",
+          "title": "BRADLEY v. US [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1750.ORDER.8-12-2026_2738008.pdf",
+          "title": "DIXON v. COLLINS [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1666.ORDER.8-12-2026_2737910.pdf",
+          "title": "ROBERSON v. MSPB [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1081.ERRATA.8-12-2026_2737779.pdf",
+          "title": "GUTTENBERG v. DHS [ERRATA]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1821.ORDER.8-11-2026_2736951.pdf",
+          "title": "RICHARD v. US [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-2030.ORDER.8-11-2026_2737061.pdf",
+          "title": "LENOVO (UNITED STATES) INC. v. ITC [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/23-2427.ORDER.8-11-2026_2737015.pdf",
+          "title": "RANGE OF MOTION PRODUCTS, LLC v. ARMAID COMPANY INC. [ORDER]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1160.OPINION.8-11-2026_2736904.pdf",
+          "title": "FEDMET RESOURCES CORPORATION v. US [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1196.OPINION.8-11-2026_2736888.pdf",
+          "title": "FUSONG JINLONG WOODEN GROUP CO., LTD. v. US [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1302.OPINION.8-10-2026_2736010.pdf",
+          "title": "ICHARTS LLC v. TABLEAU SOFTWARE, LLC [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1804.OPINION.8-10-2026_2735973.pdf",
+          "title": "CHITLIK v. HHS [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1132.OPINION.8-10-2026_2735947.pdf",
+          "title": "VL COLLECTIVE IP, LLC v. NETFLIX, INC. [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1833.ORDER.8-10-2026_2736616.pdf",
+          "title": "POWER2B, INC. v. SAMSUNG ELECTRONICS CO., LTD. [ORDER]"
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

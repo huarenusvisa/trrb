@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
+  "policy": "official first-party court sources only; GovInfo may be used as official fallback",
+  "courts": [
+    {"id":"ca1","name":"U.S. Court of Appeals for the First Circuit","officialDomain":"ca1.uscourts.gov","sourceUrl":"https://www.ca1.uscourts.gov/opinions","sourceMode":"official_html_rss_available"},
+    {"id":"ca2","name":"U.S. Court of Appeals for the Second Circuit","officialDomain":"ca2.uscourts.gov","sourceUrl":"https://ww3.ca2.uscourts.gov/nav/rss.html","sourceMode":"official_rss_landing"},
+    {"id":"ca3","name":"U.S. Court of Appeals for the Third Circuit","officialDomain":"ca3.uscourts.gov","sourceUrl":"https://www.ca3.uscourts.gov/opinions-and-oral-arguments","sourceMode":"official_html"},
+    {"id":"ca4","name":"U.S. Court of Appeals for the Fourth Circuit","officialDomain":"ca4.uscourts.gov","sourceUrl":"https://www.ca4.uscourts.gov/opinions/recent-opinions","sourceMode":"official_html"},
+    {"id":"ca5","name":"U.S. Court of Appeals for the Fifth Circuit","officialDomain":"ca5.uscourts.gov","sourceUrl":"https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions","sourceMode":"official_html_rss_available"},
+    {"id":"ca6","name":"U.S. Court of Appeals for the Sixth Circuit","officialDomain":"ca6.uscourts.gov","sourceUrl":"https://www.ca6.uscourts.gov/opinions","sourceMode":"official_html"},
+    {"id":"ca7","name":"U.S. Court of Appeals for the Seventh Circuit","officialDomain":"ca7.uscourts.gov","sourceUrl":"https://media.ca7.uscourts.gov/cgi-bin/rssExec.pl?Submit=Submit&Time=week","sourceMode":"official_html_feed"},
+    {"id":"ca8","name":"U.S. Court of Appeals for the Eighth Circuit","officialDomain":"ca8.uscourts.gov","sourceUrl":"https://media.ca8.uscourts.gov/cgi-bin/TodayOpn.pl","sourceMode":"official_daily_html_rss_available"},
+    {"id":"ca9","name":"U.S. Court of Appeals for the Ninth Circuit","officialDomain":"ca9.uscourts.gov","sourceUrl":"https://www.ca9.uscourts.gov/decisions/opinions/","sourceMode":"official_html_rss_public_data"},
+    {"id":"ca10","name":"U.S. Court of Appeals for the Tenth Circuit","officialDomain":"ca10.uscourts.gov","sourceUrl":"https://www.ca10.uscourts.gov/clerk/opinions/daily","sourceMode":"official_daily_html_rss_available"},
+    {"id":"ca11","name":"U.S. Court of Appeals for the Eleventh Circuit","officialDomain":"ca11.uscourts.gov","sourceUrl":"https://www.ca11.uscourts.gov/opinions","sourceMode":"official_html"},
+    {"id":"cadc","name":"U.S. Court of Appeals for the District of Columbia Circuit","officialDomain":"cadc.uscourts.gov","sourceUrl":"https://media.cadc.uscourts.gov/opinions/","sourceMode":"official_opinion_archive"},
+    {"id":"cafc","name":"U.S. Court of Appeals for the Federal Circuit","officialDomain":"cafc.uscourts.gov","sourceUrl":"https://www.cafc.uscourts.gov/home/case-information/opinions-orders/","sourceMode":"official_html_rss_available"}
+  ],
+  "fallback": {
+    "name": "GovInfo United States Courts Opinions",
+    "url": "https://www.govinfo.gov/app/collection/uscourts/appellate",
+    "role": "official supplemental/fallback only; do not replace faster first-party source when the court publishes promptly"
+  }
+}

@@ -1,0 +1,76 @@
+name: 第十六轮节点6-13个联邦巡回法院二级导航与独立筛选
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "legal/index.html"
+      - "legal/legal-app.js"
+      - "legal/legal.css"
+      - "data/legal/circuit-source-registry.json"
+      - "data/legal/unified-legal-authorities-latest.json"
+      - "scripts/round16-node6-circuit-nav.mjs"
+      - ".github/workflows/round16-node6-circuit-nav.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round16-node6-circuit-nav
+  cancel-in-progress: true
+
+jobs:
+  circuit-nav-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 安装 Chromium 真实浏览器
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 等待节点6前端版本生产上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=("legal/index.html" "legal/legal-app.js" "legal/legal.css")
+          for attempt in $(seq 1 60); do
+            ok=true
+            for file in "${files[@]}"; do
+              expected="$(sha256sum "$file" | awk '{print $1}')"
+              probe="/tmp/$(basename "$file")-${attempt}"
+              if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/${file}?round16node6=${GITHUB_SHA}-${attempt}" -o "$probe"; then
+                live="$(sha256sum "$probe" | awk '{print $1}')"
+                echo "$file expected=$expected live=$live"
+                if [ "$live" != "$expected" ]; then ok=false; fi
+              else
+                ok=false
+              fi
+            done
+            if [ "$ok" = true ]; then
+              echo "Round 16 node6 frontend is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Round 16 node6 frontend did not become live within 5 minutes."
+          exit 1
+      - name: 13个联邦巡回法院二级导航与独立筛选生产验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round16-node6-circuit-nav.mjs
+      - name: 保存节点6报告
+        if: always()
+        run: |
+          printf '{"node":6,"name":"13个联邦巡回法院二级导航与独立筛选","run":"%s","sha":"%s"}\n' "$GITHUB_RUN_ID" "$GITHUB_SHA" > round16-node6-report.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round16-node6-circuit-nav
+          path: round16-node6-report.json
+          retention-days: 30

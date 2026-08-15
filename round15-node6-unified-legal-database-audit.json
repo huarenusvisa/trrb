@@ -1,0 +1,66 @@
+{
+  "generatedAt": "2026-08-15T15:57:32.696Z",
+  "schemaVersion": 1,
+  "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+  "count": 615,
+  "sourceCounts": {
+    "SCOTUS": 68,
+    "US_CIRCUIT": 419,
+    "BIA": 68,
+    "WHITE_HOUSE": 10,
+    "FEDERAL_REGISTER": 50
+  },
+  "checks": [
+    {
+      "ok": true,
+      "label": "SCOTUS dataset loaded",
+      "detail": "records=68"
+    },
+    {
+      "ok": true,
+      "label": "13 federal appellate court datasets loaded",
+      "detail": "courts=13"
+    },
+    {
+      "ok": true,
+      "label": "BIA precedent dataset loaded",
+      "detail": "records=68"
+    },
+    {
+      "ok": true,
+      "label": "White House executive-order dataset loaded",
+      "detail": "records=10"
+    },
+    {
+      "ok": true,
+      "label": "Federal Register final-rule dataset loaded",
+      "detail": "records=50"
+    },
+    {
+      "ok": true,
+      "label": "unified source keys are unique",
+      "detail": "duplicates=0"
+    },
+    {
+      "ok": true,
+      "label": "unified record IDs are unique",
+      "detail": "duplicates=0"
+    },
+    {
+      "ok": true,
+      "label": "unified core fields complete",
+      "detail": "missing=0"
+    },
+    {
+      "ok": true,
+      "label": "content-addressed dataset version generated",
+      "detail": "e1ef9f917f289439"
+    },
+    {
+      "ok": true,
+      "label": "all five legal authority source systems represented",
+      "detail": "{\"SCOTUS\":68,\"US_CIRCUIT\":419,\"BIA\":68,\"WHITE_HOUSE\":10,\"FEDERAL_REGISTER\":50}"
+    }
+  ],
+  "failures": 0
+}

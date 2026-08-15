@@ -24,7 +24,6 @@ function normalizeUrl(value) {
     return u.toString().replace(/\/$/, '');
   } catch { return ''; }
 }
-function escRegExp(v='') { return String(v).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
 async function db(table, params) {
   const u = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
@@ -86,6 +85,27 @@ record(targets.length >= 8, '取得首页/栏目/专题生产验收目标', `tar
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ viewport: { width: 1365, height: 900 }, locale: 'zh-CN' });
 
+async function verifyClickedArticle(sourcePage, locator, chosen, targetName) {
+  const chosenNorm = normalizeUrl(chosen.url);
+  let popup = null;
+  const popupPromise = sourcePage.waitForEvent('popup', { timeout: 2500 }).catch(() => null);
+  const sameTabPromise = sourcePage.waitForURL((u) => normalizeUrl(u.toString()) === chosenNorm, { timeout: TIMEOUT }).then(() => sourcePage).catch(() => null);
+  await locator.click({ timeout: TIMEOUT });
+  popup = await popupPromise;
+  let destination = popup || await sameTabPromise;
+  if (!destination) {
+    if (normalizeUrl(sourcePage.url()) === chosenNorm) destination = sourcePage;
+    else throw new Error(`click did not reach expected article: ${chosenNorm}`);
+  }
+  await destination.waitForLoadState('domcontentloaded', { timeout: TIMEOUT }).catch(() => {});
+  const h1 = clean(await destination.locator('h1').first().textContent().catch(() => ''));
+  const canonical = normalizeUrl(await destination.locator('link[rel="canonical"]').first().getAttribute('href').catch(() => ''));
+  record(normalizeUrl(destination.url()) === chosenNorm, `${targetName}点击后URL与所点文章一致`, destination.url());
+  record(h1.includes(chosen.title.slice(0, Math.min(12, chosen.title.length))), `${targetName}点击后H1与所点标题一致`, `h1=${h1.slice(0,60)}`);
+  record(canonical === chosenNorm, `${targetName}点击后canonical一致`, canonical);
+  if (popup) await popup.close().catch(() => {});
+}
+
 for (const target of targets) {
   const page = await context.newPage();
   const url = `${ORIGIN}${target.path}`;
@@ -113,16 +133,7 @@ for (const target of targets) {
       const anchorIndex = anchors.find(x => normalizeUrl(x.href) === chosenNorm)?.index;
       if (Number.isInteger(anchorIndex)) {
         const locator = page.locator('a[href]').nth(anchorIndex);
-        await Promise.all([
-          page.waitForURL((u) => normalizeUrl(u.toString()) === chosenNorm, { timeout: TIMEOUT }),
-          locator.click({ timeout: TIMEOUT })
-        ]);
-        await page.waitForLoadState('domcontentloaded');
-        const h1 = clean(await page.locator('h1').first().textContent().catch(() => ''));
-        const canonical = normalizeUrl(await page.locator('link[rel="canonical"]').first().getAttribute('href').catch(() => ''));
-        record(normalizeUrl(page.url()) === chosenNorm, `${target.name}点击后URL与所点文章一致`, page.url());
-        record(h1.includes(chosen.title.slice(0, Math.min(12, chosen.title.length))), `${target.name}点击后H1与所点标题一致`, `h1=${h1.slice(0,60)}`);
-        record(canonical === chosenNorm, `${target.name}点击后canonical一致`, canonical);
+        await verifyClickedArticle(page, locator, chosen, target.name);
       } else {
         record(false, `${target.name}定位匹配文章锚点`, chosen.url);
       }

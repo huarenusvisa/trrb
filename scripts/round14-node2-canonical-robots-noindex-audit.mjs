@@ -1,6 +1,8 @@
 import { writeFileSync } from 'node:fs';
 
 const ORIGIN = (process.env.SITE_ORIGIN || 'https://trrb.net').replace(/\/$/, '');
+const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
 const checks = [];
 let failures = 0;
 
@@ -14,6 +16,18 @@ async function request(urlOrPath, { redirect = 'follow', ua = 'Mozilla/5.0 (comp
   const url = urlOrPath.startsWith('http') ? urlOrPath : `${ORIGIN}${urlOrPath}`;
   const res = await fetch(url, { redirect, headers: { 'user-agent': ua, 'cache-control': 'no-cache', pragma: 'no-cache' } });
   return { status: res.status, url: res.url, headers: Object.fromEntries(res.headers.entries()), text: await res.text() };
+}
+
+async function latestPublishedArticle() {
+  const u = new URL(`${SUPABASE_URL}/rest/v1/articles`);
+  u.searchParams.set('select', 'id,slug,title');
+  u.searchParams.set('status', 'eq.published');
+  u.searchParams.set('order', 'published_at.desc.nullslast,created_at.desc');
+  u.searchParams.set('limit', '1');
+  const r = await fetch(u, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Accept: 'application/json' } });
+  if (!r.ok) throw new Error(`Supabase latest article ${r.status}`);
+  const rows = await r.json();
+  return Array.isArray(rows) ? rows[0] : null;
 }
 
 function canonical(html) {
@@ -83,11 +97,13 @@ const preview = await request('/article.html?preview=1');
 check(preview.status === 200 || preview.status === 404, '预览入口不会返回5xx', `status=${preview.status}`);
 if (preview.status === 200) check(noindex(preview), '预览入口明确 noindex');
 
-const legacyTarget = articleUrls[0];
-if (legacyTarget) {
-  const slug = legacyTarget.split('/').pop();
-  const legacy = await request(`/article.html?id=${encodeURIComponent(slug)}`, { redirect: 'manual' });
-  check([301,302,307,308,404].includes(legacy.status), 'legacy article?id 不作为200可索引重复页', `status=${legacy.status}`);
+const latest = await latestPublishedArticle();
+check(Boolean(latest?.id), '取得真实已发布文章ID用于legacy治理验收', latest?.id || 'missing');
+if (latest?.id) {
+  const legacy = await request(`/article.html?id=${encodeURIComponent(latest.id)}`, { redirect: 'manual' });
+  const location = legacy.headers.location || '';
+  const redirectedToPretty = [301, 308].includes(legacy.status) && /^https:\/\/trrb\.net\/[^/?#]+\/[^/?#]+/i.test(location) && !/article\.html\?id=/i.test(location);
+  check(redirectedToPretty, 'legacy article?id 永久一跳到pretty canonical', `status=${legacy.status}; location=${location || '-'}`);
 }
 
 writeFileSync('round14-node2-canonical-robots-noindex-audit.json', JSON.stringify({ generatedAt: new Date().toISOString(), origin: ORIGIN, checks, failures }, null, 2));

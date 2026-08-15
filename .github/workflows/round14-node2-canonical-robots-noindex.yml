@@ -1,0 +1,42 @@
+name: 第十四轮节点2-Canonical-Robots-Noindex深度治理
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round14-node2-canonical-robots-noindex-audit.mjs"
+      - ".github/workflows/round14-node2-canonical-robots-noindex.yml"
+      - "robots.txt"
+      - "article-index-guard.js"
+      - "netlify.toml"
+      - "netlify/edge-functions/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round14-node2-canonical-robots-noindex
+  cancel-in-progress: true
+
+jobs:
+  canonical-robots-noindex:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      SITE_ORIGIN: https://trrb.net
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Canonical / Robots / Noindex 深度生产验收
+        run: node scripts/round14-node2-canonical-robots-noindex-audit.mjs
+      - name: 保存节点2报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round14-node2-canonical-robots-noindex
+          path: round14-node2-canonical-robots-noindex-audit.json
+          if-no-files-found: warn
+          retention-days: 30

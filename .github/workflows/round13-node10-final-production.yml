@@ -1,0 +1,64 @@
+name: 第十三轮节点10-最终生产总验收
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round13-node10-final-production-audit.mjs"
+      - ".github/workflows/round13-node10-final-production.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: trrb-round13-node10-final-production
+  cancel-in-progress: true
+
+jobs:
+  final-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 安装最终验收所需 Chromium
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: 等待节点10验收脚本上线
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum scripts/round13-node10-final-production-audit.mjs | awk '{print $1}')"
+          for attempt in $(seq 1 60); do
+            probe="/tmp/round13-node10-${attempt}.mjs"
+            if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/scripts/round13-node10-final-production-audit.mjs?sha=${GITHUB_SHA}&attempt=${attempt}" -o "$probe"; then
+              live="$(sha256sum "$probe" | awk '{print $1}')"
+              if [ "$live" = "$expected" ]; then echo "Current node10 audit is live."; exit 0; fi
+            fi
+            sleep 5
+          done
+          echo "Production did not expose the current node10 audit within 5 minutes."
+          exit 1
+      - name: 第十三轮最终生产总验收
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round13-node10-final-production-audit.mjs
+      - name: 保存最终验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round13-node10-final-production
+          path: |
+            round13-node10-final-production-audit.json
+            round13-node2-live-listings.json
+            round13-node3-seo-realtime-audit.json
+            round13-node4-search-freshness-audit.json
+            round13-node5-publish-guard-audit.json
+            round13-node6-image-resilience-audit.json
+            round13-node7-netlify-stability-audit.json
+            round13-node8-mobile-performance-audit.json
+            round13-node9-error-audit.json
+          if-no-files-found: ignore
+          retention-days: 30

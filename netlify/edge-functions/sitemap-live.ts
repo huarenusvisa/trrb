@@ -1,4 +1,5 @@
 const SITE = "https://trrb.net";
+const MIN_INDEXABLE_BODY_LENGTH = 80;
 
 export const config = { path: "/sitemap.xml" };
 
@@ -18,6 +19,21 @@ const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
 
 function clean(value: unknown): string {
   return String(value ?? "").replace(/\s+/g, " ").trim();
+}
+
+function visibleText(value: unknown): string {
+  return clean(value)
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;|&#160;/gi, " ")
+    .replace(/&[a-z0-9#]+;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizedTitle(value: unknown): string {
+  return visibleText(value).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu, "");
 }
 
 function esc(value: unknown): string {
@@ -64,9 +80,9 @@ async function fetchPublishedArticles() {
   const pageSize = 1000;
   for (let offset = 0; offset < 100000; offset += pageSize) {
     const rows = await fetchRows("articles", {
-      select: "id,title,slug,category_id,category_name,topic_key,status,published_at,created_at",
+      select: "id,title,slug,content,category_id,category_name,topic_key,status,published_at,created_at",
       status: "eq.published",
-      order: "published_at.desc.nullslast,created_at.desc",
+      order: "published_at.asc.nullslast,created_at.asc",
       limit: String(pageSize),
       offset: String(offset)
     });
@@ -117,12 +133,33 @@ export default async (request: Request, context: any) => {
     }
     blocks.push(urlBlock(`${SITE}/ice/news`, today, "hourly", "0.7"));
 
+    // Keep the earliest published copy as the sitemap winner for exact duplicate
+    // titles or bodies. Pages remain accessible; this only prevents competing
+    // duplicate/thin URLs from being advertised as indexable discovery targets.
+    const seenTitles = new Set<string>();
+    const seenBodies = new Set<string>();
+    let excludedThin = 0;
+    let excludedDuplicate = 0;
+
     for (const article of articles) {
       if (!article?.id || !clean(article?.title)) continue;
       if (categories.length) {
         if (article?.category_id && !allowedIds.has(String(article.category_id))) continue;
         if (!article?.category_id && article?.category_name && !allowedNames.has(clean(article.category_name))) continue;
       }
+
+      const body = visibleText(article?.content || "");
+      if (body.length < MIN_INDEXABLE_BODY_LENGTH) { excludedThin++; continue; }
+
+      const titleKey = normalizedTitle(article?.title);
+      const bodyKey = body.length >= 120 ? body : "";
+      if ((titleKey.length >= 8 && seenTitles.has(titleKey)) || (bodyKey && seenBodies.has(bodyKey))) {
+        excludedDuplicate++;
+        continue;
+      }
+      if (titleKey.length >= 8) seenTitles.add(titleKey);
+      if (bodyKey) seenBodies.add(bodyKey);
+
       const section = sectionFor(article, byId, byName);
       const slug = clean(article?.slug) || clean(article?.id);
       if (!slug) continue;
@@ -134,8 +171,10 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v1",
-      "x-trrb-sitemap-articles": String(articles.length)
+      "x-trrb-sitemap": "live-supabase-v2-dedupe",
+      "x-trrb-sitemap-articles": String(articles.length),
+      "x-trrb-sitemap-excluded-thin": String(excludedThin),
+      "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate)
     });
     return new Response(request.method === "HEAD" ? null : xml, { status: 200, headers });
   } catch (error) {

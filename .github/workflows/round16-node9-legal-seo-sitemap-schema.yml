@@ -18,7 +18,7 @@ permissions:
 jobs:
   legal-seo-sitemap-schema:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,13 +45,13 @@ jobs:
           npx playwright install --with-deps chromium
       - name: 等待节点9前端与Sitemap生产上线
         run: |
-          for attempt in $(seq 1 30); do
+          for attempt in $(seq 1 90); do
             if curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round16node9=$(date +%s)" | grep -q 'legal-detail-jsonld' \
               && curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap-legal.xml?round16node9=$(date +%s)" | grep -q '<urlset'; then
               echo 'Node9 production assets are live.'
               exit 0
             fi
-            echo "Waiting for production node9 assets ($attempt/30)..."
+            echo "Waiting for production node9 assets ($attempt/90)..."
             sleep 10
           done
           echo 'Node9 production assets did not become ready in time.'

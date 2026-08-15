@@ -1,0 +1,56 @@
+name: 第十五轮节点1-美国最高法院判决自动采集
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17,47 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/round15-node1-supreme-court-collector.mjs"
+      - ".github/workflows/round15-node1-supreme-court.yml"
+      - "docs/ROUND15-US-JUDICIARY-REGULATORY-RULES.md"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round15-node1-supreme-court
+  cancel-in-progress: true
+
+jobs:
+  collect-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 采集并验收美国最高法院官方判决
+        run: node scripts/round15-node1-supreme-court-collector.mjs --write-data
+
+      - name: 仅在官方数据变化时提交
+        run: |
+          set -euo pipefail
+          git add data/legal/supreme-court-latest.json
+          if git diff --cached --quiet; then
+            echo "Supreme Court dataset already converged; no commit required."
+            exit 0
+          fi
+          git config user.name "TRRB Legal Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git commit -m "Round 15: sync Supreme Court official opinions"
+          git push origin HEAD:main
+
+      - name: 保存节点1验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node1-supreme-court
+          path: round15-node1-supreme-court-audit.json
+          if-no-files-found: warn
+          retention-days: 30

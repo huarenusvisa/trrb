@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-47e6687bd11be60c620cfac0ed4e6440628b685a</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T13:38:59.748Z</news:publication_date>
+        <news:title>美国边境巡逻队6月逮捕11400人加强边境安全</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-52ebe77ff37269b227f66b3c475bfad11b8764fa</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T13:38:59.451Z</news:publication_date>
+        <news:title>得州拉雷多联合行动拘捕12人</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-d137cdb0a4bc30646c4bcacdfe3a58c30a8fa8a7</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1918,14 +1934,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-13T13:45:04.953Z</news:publication_date>
         <news:title>美国制造业迎“复兴潮”！工厂建设加速，ISM指数升至四年最高</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E6%8C%91%E6%88%98%E9%82%AE%E5%AF%84%E9%80%89%E7%A5%A8%E8%A7%84%E5%88%99%E5%8F%B8%E6%B3%95%E9%83%A8%E8%AF%B7%E6%B1%82%E6%9C%80%E9%AB%98%E6%B3%95%E9%99%A2%E5%8A%A0%E9%80%9F%E5%AE%A1%E7%90%86%E8%A1%8C%E6%94%BF%E4%BB%A4%E4%BA%89%E8%AE%AE-msrkhc6u-fcf703</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T13:41:43.542Z</news:publication_date>
-        <news:title>特朗普政府挑战邮寄选票规则！司法部请求最高法院加速审理行政令争议</news:title>
       </news:news>
     </url>
 </urlset>

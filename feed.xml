@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 15 Aug 2026 22:02:57 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 23:27:18 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>纽约将终止12机构287(g)协议限制警方协助移民</title>
+      <link>https://trrb.net/ice/ice-34fe522dddf04bd072033a25a2654fd0c8b79c6f</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-34fe522dddf04bd072033a25a2654fd0c8b79c6f</guid>
+      <pubDate>Sat, 15 Aug 2026 23:27:18 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>纽约计划2026年8月25日起终止12家机构与ICE的287(g)合作协议，限制地方警方协助联邦移民执法。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPy6fQ_WgAA7gQo.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>休斯顿警方疑将刑事案件证人移交ICE调查</title>
       <link>https://trrb.net/ice/ice-6a15faf60168d05138d861dddcd56bcbd3f8df19</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>唐人日报8月14日讯：特朗普政府持续扩大第三国移民驱逐政策实施范围，将大量无法遣返回原籍国的移民，强制送往与其毫无关联的海外国家，众多移民落地后遭无限期监禁，无指控、无上诉渠道、无获释可能，陷入永久自由剥夺的绝境。</description>
       <enclosure url="https://static01.nyt.com/images/2026/08/23/magazine/23mag-eswatini-roberto/23mag-eswatini-roberto-superJumbo.jpg?quality=75&amp;auto=webp" type="image/jpeg" />
-    </item>
-    <item>
-      <title>离境=判死刑！BIA旧法新解，推翻12年裁决先例，移民美国进入地狱级难度！</title>
-      <link>https://trrb.net/important/bia%E6%8E%A8%E7%BF%BB12%E5%B9%B4%E5%85%88%E4%BE%8B%E6%8F%90%E5%89%8D%E5%81%87%E9%87%8A%E7%A6%BB%E5%A2%83%E8%A2%AB%E8%AE%A4%E5%AE%9A%E4%B8%BA%E7%A6%BB%E5%A2%83-%E7%BE%8E%E5%9B%BD%E7%A7%BB%E6%B0%91%E8%A7%84%E5%88%99%E8%BF%8E%E9%87%8D%E5%A4%A7%E5%8F%98%E5%8C%96-mssz5585-2282f7</link>
-      <guid isPermaLink="true">https://trrb.net/important/bia%E6%8E%A8%E7%BF%BB12%E5%B9%B4%E5%85%88%E4%BE%8B%E6%8F%90%E5%89%8D%E5%81%87%E9%87%8A%E7%A6%BB%E5%A2%83%E8%A2%AB%E8%AE%A4%E5%AE%9A%E4%B8%BA%E7%A6%BB%E5%A2%83-%E7%BE%8E%E5%9B%BD%E7%A7%BB%E6%B0%91%E8%A7%84%E5%88%99%E8%BF%8E%E9%87%8D%E5%A4%A7%E5%8F%98%E5%8C%96-mssz5585-2282f7</guid>
-      <pubDate>Fri, 14 Aug 2026 13:19:55 GMT</pubDate>
-      <category>重要新闻</category>
-      <description>唐人日报 8 月 14日讯：美国司法部移民审查执行办公室（EOIR）旗下移民上诉委员会（BIA）于2026年8月13日作出重要裁决，认定根据提前假释（Advance Parole）批准离开美国，仍属于《移民与国籍法》（INA）第212(a)(9)(B)(i)(II)条所规定的“departur…</description>
-      <enclosure url="https://images.openai.com/static-rsc-4/5mi8ccn_CyF0ksUww8RCITV6oiJJvKFHb1H_4CG05v5NGuA1pNQZUXEi675Un1Ol5rxbK0ReTRg5Z2lIsvTh-NKslDw3asMt-ztthnn_AbHQlVKB6AQrTNVyBTgfOQviybDRzgIfc6iWlnEPW_xaYuToCF5xmKKGdQrJ8NsIVLE?purpose=inline" type="image/jpeg" />
     </item>
   </channel>
 </rss>

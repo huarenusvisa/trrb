@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-34fe522dddf04bd072033a25a2654fd0c8b79c6f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-15T23:27:18.735Z</news:publication_date>
+        <news:title>纽约将终止12机构287(g)协议限制警方协助移民</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-6a15faf60168d05138d861dddcd56bcbd3f8df19</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1446,14 +1454,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-14T00:06:47.954Z</news:publication_date>
         <news:title>美国遣返因纵火致女儿身亡的墨西哥非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-f22b4922f091a7f5a60727a04ded61c4e583a47d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-13T23:12:08.052Z</news:publication_date>
-        <news:title>西雅图ICE逮捕53岁老挝籍多罪犯</news:title>
       </news:news>
     </url>
 </urlset>

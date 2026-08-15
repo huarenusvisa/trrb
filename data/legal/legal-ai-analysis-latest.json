@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 48,
+  "count": 56,
   "analyses": [
     {
       "recordId": "01d42822aa2629ee30c6e45a",
@@ -18,6 +18,22 @@
       "holdingOrRule": "最高法院判决：《移民与国籍法》未规定边境官员需具备“清晰且令人信服”的证据才能认定合法永久居民为申请入境者，只要其已犯罪，政府即可将其视为申请入境并启动相应不可入境遣返程序。案件因证据不足未决定刘某犯罪是否构成道德败坏罪。",
       "impact": "直接法律效力：明确边境官员在处理涉嫌犯罪的合法永久居民返美时的认定标准，降低政府举证门槛。可能影响：影响相关遣返案件审理标准，涉及边境入境身份认定和遣返程序适用，指导未来类似案件裁判和执法实践。",
       "sourceGrounding": "依据美国最高法院2026年6月23日《Blanche v. Lau》正式裁判文件及意见摘要，网址：https://www.supremecourt.gov/opinions/25pdf/25-429_h3ci.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "02d359805a9ac6c85424305c",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r17_bqmc.pdf",
+      "title": "Mirabelli v. Bonta",
+      "chineseTitle": "Mirabelli诉加利福尼亚州总检察长一案简析",
+      "summary": "本案涉及加州公立学校学生性别认同政策，要求学校以学生首选姓名和代词称呼学生，并且未经学生同意不得告知家长其性别认同情况。家长以宗教自由权和正当程序权为由起诉，地区法院永久禁止执行该政策，九巡回上诉法院暂停该禁令。最高法院废除了对家长的暂停令，认为政策严重干预家长宗教培养子女的权利，可能违反宪法严格审查标准，且违背家长对子女抚养和教育的主要权利。",
+      "legalIssue": "加利福尼亚州学校性别认同政策是否违反美国宪法第一修正案自由宗教权条款及第十四修正案正当程序条款，侵犯家长对子女宗教培养及教养教育的权利？",
+      "holdingOrRule": "最高法院部分批准废除九巡回上诉法院对地区法院禁令的暂停，认定加州政策极可能侵犯家长宗教自由和正当程序权，触发严格审查且难以通过，政策未能充分考虑家长在子女最佳利益中的主导地位。",
+      "impact": "该判决直接影响加州及类似政策对学生性别认同处理方式，保障家长在涉及子女宗教信仰和教育决策中的权利。该判决具有直接法律约束力，但其对其他州和相关政策的影响需视后续案件和政策调整而定。",
+      "sourceGrounding": "依据美国最高法院2026年3月2日Mirabelli诉Bonta案官方判决书（607 U.S. 492）全文节选内容。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -181,6 +197,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "2871b5a97100431d4c6aae46",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r16_869c.pdf",
+      "title": "Villarreal v. Texas",
+      "chineseTitle": "维拉雷亚尔诉得克萨斯案",
+      "summary": "本案围绕被告维拉雷亚尔在被问讯作证中途的24小时休庭期间，法院限制辩护律师不得“管理”其证词的命令是否合法展开。最高法院认定，法官限制律师在休庭期间仅就证词本身进行指导，同时允许讨论辩护策略、认罪等其他事项，合理平衡了被告的第六修正案权利与诉讼的真实性追求，裁定该限制符合宪法。",
+      "legalIssue": "法院在被告作证中途休庭期间，对辩护律师与被告交流内容的限制是否违背第六修正案保障的被告获得律师咨询的权利。",
+      "holdingOrRule": "法院确认，有限制性的协商令禁止仅为调整证词而讨论证词本身，在保证被告可以就认罪、辩护策略等非证词内容咨询律师的前提下，不构成违宪。完全禁止讨论证词以外事项则不被允许，但仅限制“管理”证词的交流是允许的。",
+      "impact": "该裁定直接对刑事被告在作证休息期间律师交流权利的限制制度具约束力，指导各地法院合理限定律师介入证词内容的范围，保障辩护权同时维护庭审公平性。可能影响刑事辩护实务中的证词管理及律师策略交流。",
+      "sourceGrounding": "依据美国最高法院《维拉雷亚尔诉得克萨斯案》官方裁判意见，2026年2月25日公布，卷607第2部分第465-491页。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "3227fd9efd89c1c85e5c473e",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -242,6 +274,22 @@
       "holdingOrRule": "最高法院认为：Seibert案不涉及陪审团指示义务，联邦宪法不要求陪审团对供词自愿性进行评判，州法适用未违反明确联邦法律，第二巡回法院超越AEDPA授权，误用Seibert标准，救济不当。官方材料节选不足，暂不判断裁判结论。",
       "impact": "直接法律效力：限制联邦法院依据AEDPA给予人身保护令的条件，强调尊重州法院对供词证据的处理及陪审团指示范围。可能影响：州刑事审判中陪审团指示内容和联邦法院复审权限的界定，对类似虐用Miranda警告的案件处理有指导意义。",
       "sourceGrounding": "依据美国最高法院2026年6月22日公布的McCarthy v. Hernandez判决书(608 U.S. ____)，特别是对第二巡回上诉法院判决的审查与解释。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "5016e35abc2d552d94b18bf8",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r18_d18f.pdf",
+      "title": "Galette v. New Jersey Transit Corp.",
+      "chineseTitle": "盖莱特诉新泽西运输公司案 — 最高法院关于州属机构主权豁免权的裁决",
+      "summary": "本案涉及新泽西运输公司（NJ Transit）是否属于新泽西州的“州属机构”，以主张州际主权豁免权以避免两起交通事故诉讼。最高法院依据新泽西州法律和相关联邦判例，认定NJ Transit作为一个具有独立法人资格的公司，其债务不构成州债务，且州不对公司债务承担正式责任，故不属于州属机构。法院确认NJ Transit不享有新泽西州主权豁免权，推翻了宾夕法尼亚州最高法院的判决，维持纽约州法院的判决。",
+      "legalIssue": "是否应认定新泽西运输公司为新泽西州的“州属机构”，从而适用州主权豁免权，免于在他州法院被起诉？",
+      "holdingOrRule": "最高法院裁定，新泽西运输公司作为独立的法人实体，不属于州的“州属机构”，因此不享有新泽西州主权豁免权，其债务及诉讼责任不由州承担。",
+      "impact": "直接法律效力：明确具有传统公司法人资格且州不承担其债务责任的实体不享有州主权豁免权，对类似州创设但具独立法人资格的机构在诉讼中豁免权适用具有指导意义。可能影响：可能引导各州在设立国有企业或机构时结构设计及法律责任承担方式的调整，以规避或享受主权豁免权。",
+      "sourceGrounding": "本解析依据美国最高法院2026年3月4日发布的Galette诉New Jersey Transit Corp.案官方判决全文，引用判决书内容判定核心法律问题及裁判结果。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -437,6 +485,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "90b36fdb4dc688feb5f20964",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r15_bqmc.pdf",
+      "title": "Geo Group, Inc. v. Menocal",
+      "chineseTitle": "Geo Group, Inc. 诉 Menocal案最高法院判决解析",
+      "summary": "本案涉及联邦承包商Geo Group经营的拘留设施中对囚犯工作政策的法律责任问题。原告Menocal指控Geo Group的政策违反联邦禁止强迫劳动的规定以及科罗拉多州关于不正当获利的法令。Geo Group主张依据Yearsley判例，因其行为获政府授权而应免于责任。最高法院确认Yearsley提供的是实质性抗辩而非诉讼豁免，驳回了Geo Group关于立即上诉的请求，裁定此类拒绝Yearsley保护的初审命令不可立即上诉，必须待最终判决后复审。",
+      "legalIssue": "联邦承包商依据Yearsley判例请求免除法律责任的抗辩是否构成诉讼豁免，以及拒绝给予Yearsley保护的初审命令是否可立即上诉。",
+      "holdingOrRule": "Yearsley判例赋予承包商的是对责任的实质性抗辩，而非免除诉讼的豁免权。拒绝Yearsley保护的命令因可于最终判决后复审，不属可立即上诉的“终审判决”范畴。",
+      "impact": "直接法律效力在联邦承包商领域，明确其不能依Yearsley抗辩阻止诉讼进入实质审理阶段；可能影响政府合同管理和承包商责任认定，以及司法审理程序的上诉时机问题。",
+      "sourceGrounding": "依据美国最高法院2026年2月25日发布的607 U. S. 438号Opinions，特别是主文第438-464页官方判决全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "90e63cf5d02df7ab839caffc",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r13_m64n.pdf",
+      "title": "Postal Service v. Konan",
+      "chineseTitle": "美国邮政服务诉Konan案判决解析",
+      "summary": "本案涉及邮政服务故意不投递邮件是否适用联邦侵权索赔法（FTCA）中邮政例外条款的豁免问题。最高法院认定，FTCA邮政例外条款中的“遗失”和“失误”涵盖因邮政人员故意不投递邮件而导致的损害。因此，即便因邮政故意不投递邮件引发诉讼，联邦政府依然享有主权豁免权。",
+      "legalIssue": "联邦侵权索赔法中邮政例外条款“遗失、失误或疏忽传递邮件”是否涵盖邮政人员故意不投递邮件的行为，使该行为免于诉讼。",
+      "holdingOrRule": "最高法院裁定，邮政例外条款中的“遗失”和“失误”包含邮政服务故意不送达邮件的行为，因此此类诉讼受主权豁免保护，不能针对政府提起索赔。",
+      "impact": "直接法律效力：确认邮政例外条款豁免政府因邮政故意不投递邮件而产生的侵权诉讼权利，限制因类似情形起诉联邦政府的可能。可能影响：邮政服务客户与政府相关诉讼的法律范围界定，相关诉讼中关于邮政例外的适用争议，及州法律对政府行为救济的适用。",
+      "sourceGrounding": "依据2026年2月24日美国最高法院正式发布的《United States Postal Service v. Konan》案官方判决全文，卷号607 U.S. 391。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "91143835e1a58587ba6a1d85",
       "datasetVersion": "de745d3fe54c308cbbe4cda8d3528f2354f1922dd3726cee5691e0337f160718",
       "sourceSystem": "SCOTUS",
@@ -549,6 +629,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "b0bd7dad38f48a92ff503ab7",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r20_h315.pdf",
+      "title": "Olivier v. City of Brandon",
+      "chineseTitle": "俄利维耶诉密西西比州布兰登市案最高法院判决解析",
+      "summary": "申诉人俄利维耶因违反布兰登市关于抗议活动区域的条例曾被判处罚款及缓刑，其后虽未对此提出上诉，但其以该条例侵犯第一修正案言论自由权为由，依据42 U.S.C. § 1983提起诉讼，寻求禁止未来执行该条例的禁令。最高法院判决认定，尽管其存在先前定罪，依据最高法院在Heck案框架，该诉讼仍可针对未来执行该条例的行为寻求纯前瞻性救济，Heck禁止的是对既往定罪的实质性挑战，不适用于此类请求未来禁令的案件。",
+      "legalIssue": "依据Heck v. Humphrey案，先前因违反法规被定罪者，是否可通过42 U.S.C. § 1983提起诉讼挑战该法规的宪法性，并请求仅针对未来执行的禁令？",
+      "holdingOrRule": "最高法院裁定：依据Heck案原则，寻求预防未来执法行为的纯前瞻性禁令诉讼，不属于对既往定罪的无效化挑战，不被Heck禁止，可以继续审理。",
+      "impact": "直接法律效力：明确区分42 U.S.C. § 1983诉讼中对既往定罪的挑战与未来救济的界限，保障言论自由诉讼可诉性。可能影响：此判决将影响先前被定罪的被告提起宪法诉讼以阻止未来类似禁令的案件处理，特别是涉及公共表达权的案件。",
+      "sourceGrounding": "解析严格基于美国最高法院2026年3月20日发布的《Olivier v. City of Brandon》案例官方材料（607 U.S. 552），无引用任何商业法律摘要。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "b39e1ec165ab64c7ee95791b",
       "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
       "sourceSystem": "SCOTUS",
@@ -581,6 +677,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "bc0d26630f5dbf15b0830db7",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r14_1a72.pdf",
+      "title": "Hain Celestial Group, Inc. v. Palmquist",
+      "chineseTitle": "海恩天集团诉帕姆奎斯特案",
+      "summary": "本案涉及因潜在重金属含量超标婴儿食品引发的发展障碍诉讼。原告帕姆奎斯特一家起诉生产商海恩天集团与销售商全食超市。因销售商全食与原告同为德州公民，联邦法院对案件缺乏多元化管辖权。地方法院错误裁定销售商不当加入，将其驳回后受理审判并作出有利于被告的判决。上诉法院推翻不当裁定恢复销售商身份，认为案件不具备联邦管辖权，应将判决撤销并发回州法院。本案最高法院维持上诉法院意见，强调联邦法院必须基于初始案件事实判断管辖权，错误驳回非多元化方不能治愈管辖缺陷。",
+      "legalIssue": "联邦地区法院在多元化管辖权缺失情况下，对被告错误驳回非多元化当事人，该错误能否治愈初始管辖权缺陷并支持最终判决有效？",
+      "holdingOrRule": "联邦法院的初始多元化管辖权缺陷，因错误驳回非多元化当事人而未被正确纠正，法院最终判决必须予以撤销。错误的非多元化当事人驳回在最终判决前为中间程序性决定，不构成治愈管辖权缺失的有效行为。",
+      "impact": "【直接法律效力】明确联邦多元化案件中对非多元化被告的错误驳回不能确认联邦法院管辖权，相关案件判决应被撤销，并移送至州法院审理。此规则确保联邦法院管辖权边界严格遵守。 【可能影响】影响涉及存在非多元化被告的联邦案件的程序策略及司法管辖判断，指导未来类似错误的纠正与诉讼程序安排。",
+      "sourceGrounding": "依据美国最高法院2026年2月24日正式裁判意见，案件编号24-724，文献编号607 U.S. 421，官方发布地址https://www.supremecourt.gov/opinions/25pdf/607us2r14_1a72.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "beee5fc1c9dfa5f473354514",
       "datasetVersion": "eed6d648f51b742710c96ffb1ac9ac13058f5902a736fc7161d892119eb64f5f",
       "sourceSystem": "SCOTUS",
@@ -610,6 +722,22 @@
       "holdingOrRule": "最高法院判决，《赫尔姆斯-伯顿法案》通过其明确规定的诉讼原因及对“任何外国国家机构或代理人”适用的定义，已经清晰废除了古巴代理机构的主权豁免权，因而诉讼人无需满足《外国主权豁免法》中的任何豁免例外。",
       "impact": "直接法律效力：确认《赫尔姆斯-伯顿法案》对被告古巴国有机构的主权豁免豁免效力，使美国国民可依法提起诉讼。可能影响：可能鼓励其他涉及被制裁国家资产没收的美国国民利用类似立法寻求赔偿，影响美古关系及美国对外政策执行。",
       "sourceGrounding": "依据美国最高法院2026年6月23日《埃克森美孚公司诉古巴CIMEX公司》案最终意见及判决书（编号24-699）原文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "c8b46838a2e8a24c6ffa3fd5",
+      "datasetVersion": "5d3714136eb6c93426942dea0c01d836dd483d908fafd63360b85c87ad43da16",
+      "sourceSystem": "SCOTUS",
+      "authorityType": "Supreme Court Opinion",
+      "issuingBody": "Supreme Court of the United States",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/607us2r19_3e04.pdf",
+      "title": "Urias-Orellana v. Bondi",
+      "chineseTitle": "Urias-Orellana诉邦迪案——移民法中庇护认定的“实质证据”审查标准",
+      "summary": "本案聚焦联邦上诉法院对移民法下庇护申请中‘迫害’认定所适用的审查标准。原告乌里亚斯等中美洲非法入境者申请庇护，移民法官认可其证词但认为未达‘迫害’标准，后经移民上诉委员会和第一巡回上诉法院确认。最高法院裁定移民及国籍法（INA）要求对移民局对是否构成‘迫害’的事实认定和其法律适用应实施‘实质证据’的审查标准，即除非没有合理裁判者能做出相反结论，否则认定应维持。该判决明确统一了适用标准，为未来庇护案件中事实及法律应用的审查范围提供指导。",
+      "legalIssue": "法院应当采用何种审查标准来评估移民上诉委员会对‘迫害’认定的事实与法律适用？具体是是否应适用移民及国籍法第1252(b)(4)(B)条款所规定的‘实质证据’审查标准。",
+      "holdingOrRule": "最高法院裁定：依据移民及国籍法§1252(b)(4)(B)，法院对移民上诉委员会关于‘迫害’认定的事实和法律适用均应实行‘实质证据’标准审查，只有在任何合理裁判者均不得得出相反结论时，方可推翻该认定。",
+      "impact": "直接法律效力：明确了联邦法院在审查庇护案件中对移民局‘迫害’认定所适用的审查标准，统一裁判尺度。可能影响：对今后所有涉及庇护申请的司法审查流程和结果产生指导作用，影响移民法领域内庇护案件的判决与行政程序。",
+      "sourceGrounding": "解析依据2026年3月4日美国最高法院607 U.S. 537号案官方判决文本，网址：https://www.supremecourt.gov/opinions/25pdf/607us2r19_3e04.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

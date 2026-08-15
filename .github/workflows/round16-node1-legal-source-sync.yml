@@ -1,0 +1,76 @@
+name: 第十六轮节点1-五大官方法律源自动采集触发链闭环
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "11,41 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "docs/ROUND16-LEGAL-SYNC-AND-KNOWLEDGE-UX.md"
+      - "scripts/round16-node1-legal-source-sync-audit.mjs"
+      - ".github/workflows/round16-node1-legal-source-sync.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round16-node1-legal-source-sync
+  cancel-in-progress: true
+
+jobs:
+  collect-and-verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 同步美国最高法院官方判决
+        run: node scripts/round15-node1-supreme-court-collector.mjs --write-data
+
+      - name: 同步13个联邦巡回上诉法院官方判决
+        run: node scripts/round15-node2-circuit-opinion-collector.mjs
+
+      - name: 同步BIA公开先例裁决
+        run: node scripts/round15-node3-bia-precedent-collector.mjs
+
+      - name: 同步白宫行政命令
+        run: node scripts/round15-node4-whitehouse-executive-orders.mjs
+
+      - name: 同步Federal Register Final Rule
+        run: node scripts/round15-node5-federal-register-final-rules.mjs
+
+      - name: 验收五大官方法律源触发链
+        run: node scripts/round16-node1-legal-source-sync-audit.mjs
+
+      - name: 官方源数据变化时统一提交
+        if: success()
+        run: |
+          set -euo pipefail
+          git config user.name "TRRB Round16 Legal Sync Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add \
+            data/legal/supreme-court-latest.json \
+            data/legal/circuit-opinions-latest.json \
+            data/legal/bia-precedent-latest.json \
+            data/legal/whitehouse-executive-orders-latest.json \
+            data/legal/federal-register-final-rules-latest.json
+          if git diff --cached --quiet; then
+            echo "Five-source legal datasets already converged; no commit required."
+          else
+            git commit -m "Round 16: sync five official legal sources"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: 保存节点1验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round16-node1-legal-source-sync
+          path: round16-node1-legal-source-sync-audit.json
+          if-no-files-found: warn
+          retention-days: 30

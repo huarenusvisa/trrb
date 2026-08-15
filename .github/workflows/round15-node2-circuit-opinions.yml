@@ -1,0 +1,53 @@
+name: 第十五轮节点2-13个联邦巡回上诉法院判决自动采集
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/circuit-source-registry.json'
+      - 'scripts/round15-node2-circuit-opinion-collector.mjs'
+      - '.github/workflows/round15-node2-circuit-opinions.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-round15-node2-circuit-opinions
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: 采集13个联邦巡回上诉法院官方判决
+        run: node scripts/round15-node2-circuit-opinion-collector.mjs
+      - name: 保存节点2验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round15-node2-circuit-opinions
+          path: |
+            round15-node2-circuit-opinion-audit.json
+            data/legal/circuit-opinions-latest.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: 官方数据有变化时提交
+        if: success()
+        run: |
+          if git diff --quiet -- data/legal/circuit-opinions-latest.json; then
+            echo 'No circuit opinion data change.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/legal/circuit-opinions-latest.json
+          git commit -m 'Round 15: sync federal appellate official opinions'
+          git push

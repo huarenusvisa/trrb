@@ -8,6 +8,7 @@ on:
       - "scripts/round14-node7-core-web-vitals-audit.mjs"
       - ".github/workflows/round14-node7-core-web-vitals.yml"
       - "index.html"
+      - "listing.html"
       - "styles.css"
       - "site-common.js"
       - "homepage*.js"
@@ -38,6 +39,19 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
+      - name: 等待节点7布局稳定修复上线
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            html="$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?r14n7deploy=${GITHUB_SHA}-${attempt}" || true)"
+            if printf '%s' "$html" | grep -q 'listing-cwv-stability.js'; then
+              echo "Node7 listing stability fix is live."
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Node7 listing stability fix did not reach production within 5 minutes."
+          exit 1
       - name: Core Web Vitals 生产验收
         run: node scripts/round14-node7-core-web-vitals-audit.mjs
       - name: 保存节点7报告

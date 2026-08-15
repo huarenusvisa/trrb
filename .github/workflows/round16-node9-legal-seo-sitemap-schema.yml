@@ -10,6 +10,7 @@ on:
       - 'sitemap-legal.xml'
       - 'scripts/generate-legal-sitemap.mjs'
       - 'scripts/round16-node9-legal-seo-sitemap-schema.mjs'
+      - 'netlify.toml'
       - '.github/workflows/round16-node9-legal-seo-sitemap-schema.yml'
 
 permissions:

@@ -640,20 +640,4 @@
         <news:title>美国边境巡逻局查获拖拉机运载非法移民</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7b21086f06fb1fee14369d6dd62eaf1cf4387393</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T18:03:46.237Z</news:publication_date>
-        <news:title>加州科切拉谷边境局逮捕逾期滞留旅游者</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-b4dc295c101f512ce65eebd63e6e346aa8c27ff8</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T18:03:45.842Z</news:publication_date>
-        <news:title>加州海沃德ICE逮捕涉嫌阴谋持毒墨西哥籍男子</news:title>
-      </news:news>
-    </url>
 </urlset>

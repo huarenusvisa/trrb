@@ -7,7 +7,7 @@
   <meta name="description" content="唐人日报美国判例与新规数据库：最高法院、13个联邦巡回上诉法院、BIA先例裁决、白宫行政命令与Federal Register Final Rule。" />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://trrb.net/legal/" />
-  <link rel="stylesheet" href="/legal/legal.css?v=20260815-3" />
+  <link rel="stylesheet" href="/legal/legal.css?v=20260816-17-2" />
 </head>
 <body data-round15-legal-hub="round15-legal-hub-v1">
   <header class="legal-header">
@@ -57,6 +57,9 @@
       <label>来源<select id="legal-source"><option value="">全部来源</option><option value="SCOTUS">美国最高法院</option><option value="US_CIRCUIT">联邦巡回上诉法院</option><option value="BIA">BIA先例裁决</option><option value="WHITE_HOUSE">白宫行政命令</option><option value="FEDERAL_REGISTER">Federal Register Final Rule</option></select></label>
       <label>机构<select id="legal-body"><option value="">全部机构</option></select></label>
       <label>类型<select id="legal-type"><option value="">全部类型</option></select></label>
+      <label>起始日期<input id="legal-from" type="date" /></label>
+      <label>结束日期<input id="legal-to" type="date" /></label>
+      <label>排序<select id="legal-sort"><option value="relevance">相关性/最新</option><option value="newest">发布日期：新到旧</option><option value="oldest">发布日期：旧到新</option></select></label>
       <button id="legal-reset" type="button">重置</button>
     </section>
 
@@ -65,6 +68,6 @@
     <nav class="pagination" aria-label="分页"><button id="legal-prev" type="button">上一页</button><span id="legal-page">1 / 1</span><button id="legal-next" type="button">下一页</button></nav>
   </main>
   <footer><div class="wrap">© 2026 唐人日报 · 美国判例与新规数据库 · 官方原文优先</div></footer>
-  <script src="/legal/legal-app.js?v=20260815-3" defer></script>
+  <script src="/legal/legal-app.js?v=20260816-17-2" defer></script>
 </body>
 </html>

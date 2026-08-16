@@ -19,7 +19,9 @@ permissions:
 jobs:
   audit-production:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
+    env:
+      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,16 +29,27 @@ jobs:
           node-version: '24'
       - name: Audit repository AI coverage and grounding
         run: node scripts/round17-node6-ai-coverage-grounding-audit.mjs
-      - name: Download production legal datasets and UI scripts
+      - name: Trigger production deployment
         shell: bash
         run: |
           set -euo pipefail
-          stamp=$(date +%s)
-          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?round17node6=$stamp" -o /tmp/db.json
-          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/legal-ai-analysis-latest.json?round17node6=$stamp" -o /tmp/ai.json
-          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/legal-app.js?round17node6=$stamp" -o /tmp/app.js
-          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round17node6=$stamp" -o /tmp/detail.js
-      - name: Audit production AI coverage grounding and fallback
+          test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK is not configured'; exit 2; }
+          curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
+      - name: Wait for synchronized production and audit
+        shell: bash
         run: |
-          node scripts/round17-node6-ai-coverage-grounding-audit.mjs /tmp/db.json /tmp/ai.json /tmp/app.js /tmp/detail.js /tmp/round17-node6-production.json
-          echo 'ROUND 17 NODE 6 PRODUCTION: PASS'
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            stamp=$(date +%s)
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?round17node6=$stamp" -o /tmp/db.json || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/legal-ai-analysis-latest.json?round17node6=$stamp" -o /tmp/ai.json || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/legal-app.js?round17node6=$stamp" -o /tmp/app.js || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round17node6=$stamp" -o /tmp/detail.js || true
+            if node scripts/round17-node6-ai-coverage-grounding-audit.mjs /tmp/db.json /tmp/ai.json /tmp/app.js /tmp/detail.js /tmp/round17-node6-production.json; then
+              echo 'ROUND 17 NODE 6 PRODUCTION: PASS'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Production did not converge to synchronized AI grounding state.'
+          exit 1

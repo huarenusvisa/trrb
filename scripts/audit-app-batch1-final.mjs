@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
+// Final gate reruns nodes 1-9 from current main before declaring 10/10.
 const audits = [
   ['1 TRRB统一用户数据库与身份架构','scripts/audit-community-foundation.mjs'],
   ['2 随机昵称与默认头像生成机制','scripts/audit-app-batch1-node2.mjs'],

@@ -9,7 +9,7 @@ on:
       - ".github/workflows/round15-node7-ai-legal-analysis.yml"
       - "data/legal/unified-legal-authorities-latest.json"
   schedule:
-    - cron: "41 */6 * * *"
+    - cron: "17 * * * *"
 
 permissions:
   contents: write
@@ -25,9 +25,11 @@ jobs:
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-      ROUND15_AI_BATCH: "12"
+      ROUND15_AI_BATCH: "60"
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -50,14 +52,15 @@ jobs:
       - name: AI法律解析有变化时提交
         if: success()
         run: |
-          git config user.name "TRRB Round15 Legal Bot"
+          git config user.name "TRRB Legal Backfill Bot"
           git config user.email "actions@users.noreply.github.com"
           git add data/legal/legal-ai-analysis-latest.json
           if git diff --cached --quiet; then
-            echo "No legal AI analysis change."
+            echo "No legal Chinese analysis change."
           else
-            git commit -m "Round 15: sync grounded Chinese legal analyses"
-            git push
+            git commit -m "Round 17: sync grounded Chinese legal analyses"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
 
-# Round 17 strict N/N backfill batch: 12
+# Round 17 strict N/N backfill: hourly, up to 60 grounded records per run.

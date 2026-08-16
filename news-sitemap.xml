@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-3254dfa2efb0abb27e98e8972722aada444543c7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T21:31:35.919Z</news:publication_date>
+        <news:title>亚利桑那古迪尔仓库误报ICE致员工出口被封</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-def3dc345e58ce82e0e4b3a3b058c462600e83a6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T21:31:25.636Z</news:publication_date>
+        <news:title>加州VenturaICE店内拘捕逃跑女性</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-ba2b98d124a11c0b2cc55a512018815e7033ebf0</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T21:31:14.291Z</news:publication_date>
+        <news:title>迈阿密ICE疑强行驱逐车辆司机</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-7d7a9731ab84b3b02553602f4186baab4f01fcad</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

@@ -24,3 +24,5 @@ jobs:
           node-version: '20'
       - name: Audit Round 17 node 1
         run: node scripts/round17-node1-search-relevance-audit.mjs
+
+# strict restart validation refresh: 2026-08-16

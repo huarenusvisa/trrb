@@ -13,6 +13,8 @@ export function CommentThread({ articleId }: { articleId: string }) {
   const [replyTo, setReplyTo] = useState<CommentRow | null>(null);
   const [sending, setSending] = useState(false);
   const [busyCommentId, setBusyCommentId] = useState<string | null>(null);
+  const [reportTarget, setReportTarget] = useState<CommentRow | null>(null);
+  const [reportReason, setReportReason] = useState('');
 
   const load = useCallback(async (append = false) => {
     append ? setLoadingMore(true) : setLoading(true);
@@ -46,14 +48,10 @@ export function CommentThread({ articleId }: { articleId: string }) {
     setSending(true);
     try {
       await createComment(articleId, text, replyTo?.id || null);
-      setText('');
-      setReplyTo(null);
-      await load(false);
+      setText(''); setReplyTo(null); await load(false);
     } catch (error) {
       Alert.alert('评论失败', error instanceof Error ? error.message : '请稍后重试。');
-    } finally {
-      setSending(false);
-    }
+    } finally { setSending(false); }
   };
 
   const onLike = async (comment: CommentRow) => {
@@ -64,30 +62,25 @@ export function CommentThread({ articleId }: { articleId: string }) {
       Alert.alert('已点赞', '你的点赞已经记录。');
     } catch (error) {
       Alert.alert('点赞失败', error instanceof Error ? error.message : '请稍后重试。');
-    } finally {
-      setBusyCommentId(null);
-    }
+    } finally { setBusyCommentId(null); }
   };
 
-  const onReport = async (comment: CommentRow) => {
+  const beginReport = async (comment: CommentRow) => {
     if (!(await requireSession())) return;
-    Alert.prompt(
-      '举报评论',
-      '请简要说明举报理由（1–500字）。',
-      async (reason) => {
-        if (!reason?.trim()) return;
-        setBusyCommentId(comment.id);
-        try {
-          await reportComment(comment.id, reason);
-          Alert.alert('举报已提交', '我们会在后台审核这条评论。');
-        } catch (error) {
-          Alert.alert('举报失败', error instanceof Error ? error.message : '请稍后重试。');
-        } finally {
-          setBusyCommentId(null);
-        }
-      },
-      'plain-text'
-    );
+    setReportTarget(comment);
+    setReportReason('');
+  };
+
+  const submitReport = async () => {
+    if (!reportTarget || !reportReason.trim()) return;
+    setBusyCommentId(reportTarget.id);
+    try {
+      await reportComment(reportTarget.id, reportReason);
+      setReportTarget(null); setReportReason('');
+      Alert.alert('举报已提交', '我们会在后台审核这条评论。');
+    } catch (error) {
+      Alert.alert('举报失败', error instanceof Error ? error.message : '请稍后重试。');
+    } finally { setBusyCommentId(null); }
   };
 
   return <View style={styles.wrap}>
@@ -97,6 +90,12 @@ export function CommentThread({ articleId }: { articleId: string }) {
     <TextInput value={text} onChangeText={setText} placeholder={replyTo ? '写下回复…' : '写下评论…'} multiline maxLength={3000} style={styles.input} editable={!sending} />
     <Pressable style={styles.submit} onPress={submit} disabled={sending || !text.trim()}><Text style={styles.submitText}>{sending ? '发送中…' : replyTo ? '发表回复' : '发表评论'}</Text></Pressable>
 
+    {reportTarget ? <View style={styles.reportBox}>
+      <View style={styles.replyBanner}><Text style={styles.replyText}>举报 {reportTarget.profiles?.display_name || '该用户'} 的评论</Text><Pressable onPress={() => { setReportTarget(null); setReportReason(''); }}><Text style={styles.cancel}>取消</Text></Pressable></View>
+      <TextInput value={reportReason} onChangeText={setReportReason} placeholder="请说明举报理由（1–500字）" multiline maxLength={500} style={styles.reportInput} />
+      <Pressable style={styles.reportSubmit} onPress={submitReport} disabled={!reportReason.trim() || busyCommentId === reportTarget.id}><Text style={styles.submitText}>{busyCommentId === reportTarget.id ? '提交中…' : '提交举报'}</Text></Pressable>
+    </View> : null}
+
     {loading ? <ActivityIndicator style={{ marginTop: 24 }} /> : items.length === 0 ? <Text style={styles.empty}>暂时还没有评论。</Text> : items.map((item) => <View key={item.id} style={styles.comment}>
       <View style={styles.commentHead}><Text style={styles.name}>{item.profiles?.display_name || '唐人读者'}</Text><Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
       {item.parent_id ? <Text style={styles.parentTag}>回复</Text> : null}
@@ -104,7 +103,7 @@ export function CommentThread({ articleId }: { articleId: string }) {
       <View style={styles.actions}>
         <Pressable onPress={() => setReplyTo(item)} disabled={busyCommentId === item.id}><Text style={styles.action}>回复</Text></Pressable>
         <Pressable onPress={() => onLike(item)} disabled={busyCommentId === item.id}><Text style={styles.action}>{busyCommentId === item.id ? '处理中…' : '点赞'}</Text></Pressable>
-        <Pressable onPress={() => onReport(item)} disabled={busyCommentId === item.id}><Text style={styles.reportAction}>举报</Text></Pressable>
+        <Pressable onPress={() => beginReport(item)} disabled={busyCommentId === item.id}><Text style={styles.reportAction}>举报</Text></Pressable>
       </View>
     </View>)}
 
@@ -113,5 +112,5 @@ export function CommentThread({ articleId }: { articleId: string }) {
 }
 
 const styles = StyleSheet.create({
-  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},heading:{fontSize:24,fontWeight:'900',color:'#101828'},hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},actions:{flexDirection:'row',gap:18,marginTop:10},action:{color:'#c8211e',fontWeight:'800'},reportAction:{color:'#667085',fontWeight:'800'},more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
+  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},heading:{fontSize:24,fontWeight:'900',color:'#101828'},hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},reportBox:{marginTop:16,padding:12,backgroundColor:'#fff7ed',borderRadius:12},reportInput:{minHeight:74,borderWidth:1,borderColor:'#d0d5dd',backgroundColor:'#fff',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{backgroundColor:'#b42318',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:8},empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},actions:{flexDirection:'row',gap:18,marginTop:10},action:{color:'#c8211e',fontWeight:'800'},reportAction:{color:'#667085',fontWeight:'800'},more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
 });

@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+// Node 9 acceptance gate: in-app deletion, trusted Auth deletion, minimal retention, public instructions.
 const read=(p)=>fs.readFileSync(p,'utf8');
 const foundation=read('supabase/migrations/20260816120500_trrb_account_deletion_foundation.sql');
 const audit=read('supabase/migrations/20260816210500_trrb_account_deletion_audit.sql');

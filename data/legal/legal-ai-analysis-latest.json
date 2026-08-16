@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+  "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 96,
+  "count": 104,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -69,6 +69,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "1aead7d4112c3ff54172f610",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1430911/dl?inline",
+      "title": "ive closure is not warranted based on the respondent’s intention to apply for a provisional unlawful presence waiver with United States Citizenship and Immigration Services. Z-N-L-",
+      "chineseTitle": "Z-N-L-案：拘押决定及保释申请的差异居住地证据影响",
+      "summary": "本案涉及中国籍申请人关于其居住地存在重大不一致的证据，移民法庭审查其保释申请时，认定申请人存在潜逃风险，因而撤销移民法官批准的保释决定，改为不准保释继续拘押。委员会参考了先例Matter of Akhmedov，强调固定住所证据在判断潜逃风险中的重要性，并指出申请人未能解决相关记录差异和提交确实关系证明的义务，且待审庇护申请不足以减轻潜逃风险。最终裁定移民局上诉成立，撤销保释并要求无保释拘押。",
+      "legalIssue": "申请人有关其在美国的居住地证明是否存在重大不一致，从而是否构成潜逃风险，应否允许其获得保释释放？",
+      "holdingOrRule": "若申请人关于其固定住所存在重大记录不一致，且未能提供有效证明，且未能说明此差异以消除潜逃风险，即使有待审庇护申请，法院也可认定申请人存在潜逃风险，不予保释。",
+      "impact": "直接法律效力：对类似案件涉及居住地不一致导致潜逃风险判断有约束力，要求申请人提供一致和可信的居住证明。可能影响：移民法官在审理拘押及保释案件时，将更加重视居住地及担保人关系的真实性和一致性评估。",
+      "sourceGrounding": "依据2026年美国司法部移民上诉委员会《Matter of Z-N-L-》29 I&N Dec. 511官方裁决全文及引用先例Matter of Akhmedov、Matter of Guerra等。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "1d2d1417f88c04c0896b9a49",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -98,6 +114,22 @@
       "holdingOrRule": "法院确认，酌情救济需衡量正面和负面因素。被告使用假冒社保号及税表虚假信息属重大负面因素，且因未能提供充分证据支持其合理依赖专业意见的主张，负面影响难以抵消。故被告不符合获得酌情救济的条件，案件予以驳回。",
       "impact": "本判决明确了对移民酌情救济申请中诚信与犯罪行为的严格评估标准，强调举证合理依赖专业建议的重要性。其直接法律效力适用于移民法庭审理类似案件，可能影响广泛移民群体申请酌情救济的成功率及裁判标准。",
       "sourceGrounding": "解析基于美国司法部执行办公室移民复审委员会2025年7月9日发布的行政判例《Matter of Pascacio Gonzalez Jimenez》，案号29 I&N Dec. 129，官方链接：https://www.justice.gov/eoir/media/1407386/dl?inline。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "30c31cebce9ad44875452e79",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1429116/dl?inline",
+      "title": "as a de facto extra-statutory form of relief that effectively grants amnesty to thousands of removable aliens because they may be eligible for a visa sometime in the future. FORJOE",
+      "chineseTitle": "关于237(a)(1)(H)条款中“入境时”的定义及调整身份期间欺诈行为豁免资格的裁定——FORJOE案",
+      "summary": "本案中，BIA推翻2015年Matter of Agour案裁定，明确《移民国籍法》237(a)(1)(H)条款所指“入境时”(at the time of admission)仅指经检验和授权后的合法入境，不包括调整身份时的欺诈行为。案件涉及非移民入境后伪造婚姻获批调整身份，后因申请入籍时隐瞒事实被拒并被启动驱逐程序。BIA支持移民法条文清晰原则，限制该条豁免权只能适用于初次入境时的欺诈，拒绝扩大至身份调整阶段。",
+      "legalIssue": "237(a)(1)(H)条款中“入境时”的法律定义是否包括调整身份时，欺诈或虚假陈述能否在该阶段获得豁免资格？",
+      "holdingOrRule": "BIA明确“入境时”指经官方检验和授权的合法入境，不包括调整身份阶段，因欺诈导致的不良入境状态豁免仅限于初次合法入境时发生的欺诈，推翻Matter of Agour案扩大适用范围的裁决。",
+      "impact": "直接法律效力：限制237(a)(1)(H)条款的豁免范围，影响申请调整身份后遭遇驱逐和要求豁免的外籍人士及移民法院裁判。可能影响：移民律师、移民政策分析和法学研究关于相关豁免解释和适用的理论讨论。",
+      "sourceGrounding": "依据2026年BIA案号29 I&N Dec. 463《Matter of Francis Jude FORJOE》官方判决书全文节选及相关法条解释。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -178,6 +210,22 @@
       "holdingOrRule": "移民上诉委员会判决指出，在保释审查中，移民法官不仅限于定罪判决，可综合考虑警方报告等证据认定是否存在危险。具体到本案，被告涉嫌贩毒且证据充分，未满足无危险性的举证责任，故撤销允许保释的裁定，令继续羁押。",
       "impact": "直接法律效力：本判例作为移民法庭准则，对所有涉及保释的重要刑事指控案件具有约束力，指导法官综合证据判断危险性。可能影响：加重涉嫌严重犯罪移民被告的保释难度，推动更严格的公共安全考量。",
       "sourceGrounding": "依据美国司法部执行办公室司法移民上诉委员会2025年7月31日发布的《Matter of Jose Luis SALAS PENA》决定全文（29 I&N Dec. 173），原文详见https://www.justice.gov/eoir/media/1411216/dl?inline",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "565b6d2e63433b22f21f22af",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/d9/2025-05/4092.pdf",
+      "title": "applies to documents sent by certified mail because electronic service through ECAS does not involve the use of a signed receipt or other affirmative evidence of delivery. CHOC-TUT",
+      "chineseTitle": "移民拘留保证金审查中对州法院保释决定的考虑——菲利普·奇奥克-图特案（BIA 2025）",
+      "summary": "本案涉及移民法庭对被拘留人保证金释放的裁定，回应DHS对移民法官释放被告的上诉。关键争议在于移民法官是否应当采纳州法院的保释决定。虽然移民法官可参考州法院对被拘留人危险性的认定及其保释金额，但不对州法院拘留令予以尊重。考虑到被告多次酒驾及无证驾驶的严重行为，BIA认为被告未能满足不构成社区危险的举证责任，撤销移民法官的释放决定，裁定其应无保证金继续拘留。",
+      "legalIssue": "移民法庭在决定是否准许拘留者保释时，是否必须尊重州法院针对危险性及保释金的决定，以及被告是否满足不对社区构成危险的举证责任。",
+      "holdingOrRule": "移民法官可考虑州法院的保释决定，但不须对州法院拘留令予以尊重，必须根据移民法及相关判例独立判断拘留者是否构成危险。因被告多次酒驾且短期内重复违法，其未能满足不构成社区危险的要求，故移民法官批准保释的决定缺乏合理基础，应被推翻，被告应无保释金继续拘留。",
+      "impact": "直接法律效力：本裁定具备BIA先例效力，明确移民法官在保释审查中不必遵循州法院拘押决定，强调独立评估危险性并保持对多次酒驾行为的严格态度。可能影响：涉及移民拘留及保释权利的案件适用本原则，可能导致多次严重违法者更难获得保释。",
+      "sourceGrounding": "依据BIA于2025年2月25日作出的29 I&N Dec. 48 (BIA 2025)案中官方全文及司法理由。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -277,6 +325,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "902c4857c0c5c4d7b868c9db",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1430766/dl?inline",
+      "title": "followed. PINZON ROZO",
+      "chineseTitle": "特别移民青年身份签证优先日期未到情况下续期申请的裁判分析——遵循PINZON ROZO案",
+      "summary": "本案涉及一名哥伦比亚籍特别移民青年（SIJ）签证申请人，其尽管获得了特别移民青年身份批准，但因签证优先日期尚未到且等待时间不确定且可能较长，移民法官错误批准其续期申请。司法部门认定申请人未充分证明续期合理原因，包括未能合理勤勉申请签证，且美国国土安全部反对续期。依据相关法规及先例，批准签证申请并不自动赋予续期权利，特别在签证排期不明朗情况下应平衡多重因素，防止无限期拖延遣返程序。最终，续期决定被撤销，案件发回重新审理。",
+      "legalIssue": "在申请人已获得特别移民青年身份批准但签证优先日期未当前，等待签证期间是否应批准移民法庭续期申请以延缓遣返程序？",
+      "holdingOrRule": "移民法官若被告申请人优先日期遥远且等待时间不确定，且申请人未能证明合理勤勉，且国土安全部反对，续期申请不应获批。特别移民青年身份批准不自动赋予等待签证期间的续期权利。",
+      "impact": "直接法律效力：该裁决为BIA先例决定，适用于类似情况的续期申请评判标准，限制司法续期授权。可能影响：对特别移民青年身份申请人及其律师、移民法官在处理等待签证续期案件时的审理标准及司法行为产生指导和约束。",
+      "sourceGrounding": "依据2026年美国司法部移民上诉委员会（BIA）《followed. PINZON ROZO, 29 I&N Dec. 507 (BIA 2026)》官方材料裁判文书及相关法规引用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "912a9c0ae677fd577c4e15b6",
       "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
       "sourceSystem": "BIA",
@@ -306,6 +370,22 @@
       "holdingOrRule": "根据案件事实及BIA既有判例，涉案人因涉及不当性行为指控、刑事定罪及未能充分说明相关定罪事实，未能满足不构成社区危险的举证责任，故不应获准保释，应予拘留。",
       "impact": "本裁定对类似涉不当行为及刑事定罪的移民拘留被告具有直接法律效力，强化了对社区危险性的认定标准，指导移民法官在保释决定中审慎评估被告危险性。潜在地影响未来涉及未成年被害人的案件保释评估。",
       "sourceGrounding": "依据BIA于2025年9月22日发布的Matter of Oscar Alfredo DUBON MIRANDA案裁决文本（29 I&N Dec. 335 (BIA 2025)）及相关法规和判例。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "9afd14a346c04249377b8ea1",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1428266/dl?inline",
+      "title": "Matter of Agour , 26 I&N Dec. 566 (BIA 2015), overruled. F-B-A-",
+      "chineseTitle": "F-B-A-案：俄罗斯宗教转换者庇护申请被拒",
+      "summary": "本案中，申请人因改信俄罗斯东正教而恐惧家族迫害，虽遭受威胁，移民法官认定申请人有迫害恐惧。但上诉委员会认定俄罗斯政府能够保护申请人，且申请人未能充分证明无法内部迁移。因此，申请人未达庇护、撤离及联合国反酷刑公约保护标准，最终撤销庇护裁定，批准将其遣返俄罗斯。",
+      "legalIssue": "申请人是否因宗教信仰转换在俄罗斯面临国家无法保护的迫害，从而有资格获庇护？其是否合理地无法内部迁移避免迫害？",
+      "holdingOrRule": "成年人须主动寻求当局保护，儿童面临的报告障碍不适用成年申请人；俄罗斯政府被认定能够保护该申请人，申请人未能证明无法合理内部迁移，故庇护请求不成立，撤销庇护。",
+      "impact": "直接法律效力限制于具体依宗教转换遭家族威胁但可内部迁移且当地政府有保护能力的成人人士庇护请求。可能影响对宗教迫害索赔中关于内部迁移及报告保护义务的认定标准。",
+      "sourceGrounding": "依据美国司法部移民审查执行办公室上诉委员会2026年2月20日案号29 I&N Dec. 456官方判例全文。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -341,6 +421,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "c34137a10aa5912a8bf03980",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1400301/dl?inline",
+      "title": "the potential for private actor violence coupled with a speculation that police cannot or will not help is insufficient to prove acquiescence. F-B-G-M- & J-E-M-G-",
+      "chineseTitle": "关于ECAS电子通知的送达效力及举证责任——F-B-G-M- & J-E-M-G-案解析",
+      "summary": "2025年BIA裁定，针对电子文件送达，给律师邮箱发送ECAS电子通知视为有效送达，即便律师未查看邮件，亦推定送达成立。电子送达虽无签收凭证，故仅存较弱送达推定，举证责任在被通知方，如提供实质证据反驳。但此案中回应方未能提交足够证据反驳推定，法院支持通过电子通知送达，并否认因律师对ECAS不熟悉或办公室搬迁可延迟申请时限的主张。",
+      "legalIssue": "ECAS系统中电子通知是否构成合法有效的送达？当事人在何种情况下可以推翻送达的推定？电子送达与传统邮寄送达的举证责任及其强度如何？",
+      "holdingOrRule": "1. 通过ECAS发送至律师电子邮箱的通知，视为已合法送达。2. 送达存在较弱的推定，需对方提供实质性证据反驳。3. 当事人对新制度不熟悉或办公地址变更，不构成延期申请时限的足够理由。4. 未按期提交书面材料且未说明原因，董事会可依据规章程序摘要驳回上诉。",
+      "impact": "直接法律效力：适用于所有使用ECAS系统电子送达的移民案件，确立电子通知的送达效力及反驳举证责任标准。可能影响：推动法律实践中电子送达普遍认可，促使律师更加重视系统内通知，减少因通知不达产生的延误和纠纷。",
+      "sourceGrounding": "依据美国司法部移民上诉委员会2025年3月19日发布的先例决定《Matter of F-B-G-M- & J-E-M-G-》，官方文书及相关行政规章条文、公示和解释。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "c8b25ffe17d5a8d3092fb2d5",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -354,6 +450,22 @@
       "holdingOrRule": "移民上诉委员会裁定，申请人未能满足证明遣返将对其美国公民配偶和子女造成“特殊和极端困难”的法律标准，因此撤销移民法官裁定，支持遣返决定。",
       "impact": "直接法律效力：该裁决为移民法领域关于“特殊和极端困难”认定的先例，对同类型取消遣返申请具有约束力影响。可能影响：限制申请人仅因家庭经济困难及家庭分离而请求取消遣返的成功率，并强调医疗和教育支持的持续性为考虑因素。",
       "sourceGrounding": "依据美国司法部执行办公室移民审查局（EOIR）移民上诉委员会2025年7月21日对BURI MORA案的官方判决文书（29 I&N Dec. 186）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "cce5a258e46c5b36051839ad",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1431066/dl?inline",
+      "title": "onal hardship his children may experience in the event of the respondent’s removal from the United States would constitute exceptional and extremely unusual hardship. MEDINA MADRID",
+      "chineseTitle": "关于长期行政中止移民驱逐程序的再排期问题——Medina Madrid案例解析",
+      "summary": "本案涉及被告长期（超过13年）行政中止的移民驱逐程序，国土安全部请求移民法官恢复程序（再排期），理由为被告正在为提交暂时非法居留豁免申请做准备。但移民法官以被告正在追求相关救济为由拒绝再排期。上诉委员会裁定，长期行政中止已超出合理“暂时”期限，被告未来提交豁免申请的可能性尚属推测，且豁免申请不影响驱逐程序结果，故拒绝继续行政中止，支持再排期，案件发回移民法官进一步审理。",
+      "legalIssue": "是否在移民驱逐程序长期（超13年）行政中止的情况下，基于被告计划申请暂时非法居留豁免的目的拒绝再排期该程序，符合法规及程序正义要求？",
+      "holdingOrRule": "长期行政中止驱逐程序超过合理暂时期间，不得仅因被告意图申请暂时非法居留豁免而拒绝再排期。行政中止不得被用作长期延期工具，除非有充分理由支持继续暂停；申请豁免的可能性应被视为推测且不足以阻止程序继续。案件适宜再排期并继续实质审理。",
+      "impact": "直接法律效力体现在移民法庭案件管理程序中，规范行政中止及再排期的适用标准，防止通过行政中止实现实质豁免，保障程序的及时性和公正性。可能影响范围包括类似长期行政中止案件，被告申请相关豁免及代理律师在程序策略上的决策。",
+      "sourceGrounding": "依据2026年美国司法部行政上诉委员会（BIA）关于Medina Madrid案（29 I&N Dec. 514）中对行政中止及再排期规定的详细阐释，该案例明确指出行政中止的临时性原则及再排期适用标准。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -402,6 +514,22 @@
       "holdingOrRule": "申请人被判严重危害儿童福利等罪，相关证据显示其涉性犯罪及毒品行为，权衡其违法行为严重性与积极因素，上诉委员会认定申请人不应获得酌情取消驱逐的救济，撤销原裁决，维持驱逐决定。",
       "impact": "直接法律效力：作为先例，指导未来涉及严重刑事犯罪且申请酌情取消驱逐案件的裁量标准。可能影响：移民法官评估类似案件时需严格核实犯罪及受害人陈述的真实性，审慎衡量申请人的负面行为与积极因素。",
       "sourceGrounding": "依据美司法部移民上诉委员会2025年8月13日发布的官方判决报告（29 I&N Dec. 249）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "f2f512cc708bb4e1a8c8f055",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1426556/dl?inline",
+      "title": "d marriage to a United States citizen entered into after a removal order does not constitute an exceptional situation warranting sua sponte reopening of removal proceedings. G-M-I-",
+      "chineseTitle": "关于在有驱逐令后与美国公民结婚不构成重新开启驱逐程序之特殊情况——G-M-I案",
+      "summary": "本案审理涉及一名中国籍被告其在2014年因走私可卡因罪名被判刑，后被驱逐出境。移民法官基于其专家证人证词，裁定被告若遣返中国将面临酷刑，因而依据《禁止酷刑公约》延期其驱逐。移民上诉委员会复核专家证词，认定其基于未经验证、片面及错误的事实，未能充分证明被告个案遭受酷刑的概率，故撤销原裁定，允许依据驱逐令执行。",
+      "legalIssue": "是否基于被告专家证人提供的证词及相关证据，被告能满足《禁止酷刑公约》下延缓驱逐的高标准要求，从而阻止执行驱逐令。",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。上诉委员会指出专家证言因采用陈述性的轶事和不准确事实，缺乏合理和可靠依据，不能单独作为认定被告将遭受酷刑的充分证据。",
+      "impact": "此决定对涉及类似被告与专家证词的驱逐案件具有指导意义，提醒审理机构审慎评价专家证词的事实基础并严格审查个案化风险，直接法律效力为该移民案件判决;可能影响其他基于《禁止酷刑公约》申请延期驱逐案件的证据采信标准。",
+      "sourceGrounding": "基于美国司法部执行移民审查办公室移民上诉委员会于2026年发布的《Matter of G-M-I-, 29 I&N Dec. 431》官方判例材料。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

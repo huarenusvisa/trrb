@@ -1,0 +1,55 @@
+name: 第十六轮节点9-生产部署恢复
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/round16-node9-production-deploy-recovery.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  recover-production-deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 触发或执行Netlify生产部署
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
+            echo 'Using configured Netlify build hook.'
+            curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
+            exit 0
+          fi
+          if [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && [ -n "${NETLIFY_SITE_ID:-}" ]; then
+            echo 'Using Netlify CLI production deploy.'
+            npm install --no-save netlify-cli@latest
+            npx netlify deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+            exit 0
+          fi
+          echo 'No Netlify deployment credential or build hook is configured in GitHub Actions secrets.'
+          exit 2
+      - name: 不降低节点9标准的生产资源确认
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            stamp=$(date +%s)
+            detail=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round16node9recovery=$stamp" || true)
+            sitemap=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap-legal.xml?round16node9recovery=$stamp" || true)
+            if printf '%s' "$detail" | grep -q 'legal-detail-jsonld' && printf '%s' "$sitemap" | grep -q '<urlset'; then
+              echo 'ROUND16 NODE9 PRODUCTION DEPLOY RECOVERY PASS'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Production still does not expose the required node9 assets.'
+          exit 1

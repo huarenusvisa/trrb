@@ -680,28 +680,4 @@
         <news:title>哥伦比亚非法移民冒充美公民投票获刑三年</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-95bc51739a200258289581f9c0a2db6b93753a44</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T22:42:42.973Z</news:publication_date>
-        <news:title>加州比莱斯站逮捕持过期签证巴基斯坦男子</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-85d363720b12f69ae8cd61e4f282aab31691c421</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T22:42:42.542Z</news:publication_date>
-        <news:title>美国终止多国临时保护身份要求离境</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-81b7622beec8847edd0c74b43a667e863301e9fd</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T22:38:50.874Z</news:publication_date>
-        <news:title>圣地亚哥ICE拘押持毒墨西哥籍嫌疑人</news:title>
-      </news:news>
-    </url>
 </urlset>

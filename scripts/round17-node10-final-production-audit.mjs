@@ -77,7 +77,7 @@ node(9,'法律SEO索引质量、Sitemap更新时效与内部链接完整性',[
  ['legal sitemap has no duplicates',new Set(locs).size===locs.length],
  ['every current detail URL is in sitemap',expectedLocs.every(u=>locSet.has(u))],
  ['robots advertises legal sitemap',robots.includes('Sitemap: https://trrb.net/sitemap-legal.xml')],
- ['dynamic canonical and structured data remain',detail.includes('https://trrb.net/legal/detail.html?id=${encodeURIComponent(recordId)}')&&detail.includes("'@type':'Legislation'"))
+ ['dynamic canonical and structured data remain',detail.includes('https://trrb.net/legal/detail.html?id=${encodeURIComponent(recordId)}')&&detail.includes("'@type':'Legislation'")]
 ]);
 if(nodes.join(',')!=='1,2,3,4,5,6,7,8,9')throw new Error(`Final node sequence invalid: ${nodes.join(',')}`);
 console.log('ROUND 17 NODE 10 FINAL: PASS');

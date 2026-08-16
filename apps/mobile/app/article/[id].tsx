@@ -14,7 +14,16 @@ export default function ArticleDetailScreen() {
   useEffect(() => {
     if (!id) return;
     setLoading(true); setError('');
-    fetchArticle(id).then(async (row)=>{setArticle(row); await addHistory(row); setFavorite(await isFavorite(row.id));}).catch((e) => setError(e instanceof Error ? e.message : '文章加载失败')).finally(() => setLoading(false));
+    fetchArticle(id).then(async (row)=>{
+      if (!row) {
+        setArticle(null);
+        setError('文章可能尚未发布或已经下线。');
+        return;
+      }
+      setArticle(row);
+      await addHistory(row);
+      setFavorite(await isFavorite(row.id));
+    }).catch((e) => setError(e instanceof Error ? e.message : '文章加载失败')).finally(() => setLoading(false));
   }, [id]);
 
   const webUrl = useMemo(() => {

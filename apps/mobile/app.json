@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "唐人日报",
+    "slug": "tang-ren-daily",
+    "scheme": "trrb",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": true, "reactCompiler": true },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "net.trrb.mobile"
+    },
+    "android": {
+      "package": "net.trrb.mobile",
+      "predictiveBackGestureEnabled": true
+    }
+  }
+}

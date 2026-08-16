@@ -1,0 +1,43 @@
+name: Fix Module Single Source Final
+
+on:
+  push:
+    paths:
+      - 'scripts/fix-module-single-source-final.mjs'
+      - '.github/workflows/fix-module-single-source-final.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Apply final module single-source repair
+        run: node scripts/fix-module-single-source-final.mjs
+      - name: Verify final module markers
+        run: |
+          grep -q 'listing.js?v=20260816-category-live-2' listing.html
+          ! grep -q 'listing-live-category-fix.js' listing.html
+          grep -q 'articles-home.js?v=20260816-single-source-2' index.html
+          grep -q 'HOME_ARCHIVE_MERGE=false' <(node scripts/fix-module-single-source-final.mjs)
+          grep -q 'fetchLivePublishedArticles(12, name)' homepage-refresh-guard.js
+          grep -q 'fetchLivePublishedArticles(12, name)' articles-home-live-fix.js
+      - name: Commit repair
+        run: |
+          if git diff --quiet -- listing.html index.html homepage-refresh-guard.js articles-home-live-fix.js; then
+            echo 'No changes needed'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listing.html index.html homepage-refresh-guard.js articles-home-live-fix.js
+          git commit -m 'Make homepage and category modules single-source live'
+          git push

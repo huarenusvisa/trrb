@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-16T19:56:56.494Z",
+  "generatedAt": "2026-08-16T20:31:43.796Z",
   "node": "3 AI中文解析增量更新与事实约束",
   "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
-  "count": 525,
-  "currentVersionAnalyses": 525,
+  "count": 583,
+  "currentVersionAnalyses": 583,
   "orphan": 0,
   "urlMismatch": 0,
   "authorityMismatch": 0,
@@ -21,12 +21,12 @@
     {
       "ok": true,
       "label": "AI count metadata matches analyses",
-      "detail": "metadata=525; analyses=525"
+      "detail": "metadata=583; analyses=583"
     },
     {
       "ok": true,
       "label": "incremental AI analysis corpus is non-empty",
-      "detail": "analyses=525"
+      "detail": "analyses=583"
     },
     {
       "ok": true,
@@ -71,7 +71,7 @@
     {
       "ok": true,
       "label": "current dataset produced or refreshed incremental analyses",
-      "detail": "currentVersion=525/525"
+      "detail": "currentVersion=583/583"
     },
     {
       "ok": true,

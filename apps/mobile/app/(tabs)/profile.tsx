@@ -38,7 +38,7 @@ export default function ProfileScreen() {
         <Text style={styles.sub}>已登录 · {session.user.email || 'TRRB用户'}</Text>
         <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>查看新闻收藏；云端同步将在本批后续节点接入</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>最近阅读的新闻，最多保存100条</Text></Pressable>
-        <Pressable style={styles.item}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>昵称、头像与注销将在本批后续节点接入</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>修改昵称、默认头像与公开简介</Text></Pressable>
         <Pressable style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>退出登录</Text></Pressable>
       </> : <>
         <Text style={styles.sub}>游客模式 · 无需注册即可阅读全部公开内容</Text>

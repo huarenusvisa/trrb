@@ -22,8 +22,8 @@ const checks=[
   ['date range applied with source/body/type', app.includes('inDateRange(r)&&matches(r,state.q)')],
   ['page reset on changed filters', app.includes('function resetPageRender(){state.page=1;render()}')],
   ['reset clears date filters', app.includes("state.q=state.source=state.body=state.type=state.from=state.to=''")],
-  ['13-circuit navigation preserved', app.includes("state.source='US_CIRCUIT'" ) && app.includes('[data-circuit-body]')),
-  ['node1 Chinese search preserved', app.includes('analysisSearchFields(r)') && app.includes('relevanceScore(r,q)'))
+  ['13-circuit navigation preserved', app.includes("state.source='US_CIRCUIT'") && app.includes('[data-circuit-body]')],
+  ['node1 Chinese search preserved', app.includes('analysisSearchFields(r)') && app.includes('relevanceScore(r,q)')]
 ];
 let failed=0;
 for(const [name,ok] of checks){console.log(`${ok?'PASS':'FAIL'}: ${name}`);if(!ok)failed++;}

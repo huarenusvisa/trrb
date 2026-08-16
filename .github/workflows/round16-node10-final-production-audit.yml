@@ -6,6 +6,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/round16-node10-final-production-audit.yml'
+  workflow_run:
+    workflows: ['第十六轮节点2-统一法律数据库自动重建与版本同步']
+    types: [completed]
 
 permissions:
   contents: read
@@ -16,6 +19,7 @@ concurrency:
 
 jobs:
   final-production-audit:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

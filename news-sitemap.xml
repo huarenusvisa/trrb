@@ -632,12 +632,4 @@
         <news:title>哥伦比亚男子美国身份盗用选举欺诈获刑</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-02ab85659f87e32c38f8806dce7f16d6342164b4</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T23:01:18.947Z</news:publication_date>
-        <news:title>纽约前警官称非法移民因庇护法获释后涉杀害护理生</news:title>
-      </news:news>
-    </url>
 </urlset>

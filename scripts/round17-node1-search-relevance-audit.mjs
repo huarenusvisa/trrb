@@ -15,7 +15,7 @@ const checks=[
   ['official exact title ranking exists', app.includes('title===query')],
   ['docket exact ranking exceeds title exact ranking', app.includes('docket===query') && app.includes('score+=160')],
   ['citation exact ranking exists', app.includes('citation===query')],
-  ['empty query retains default date sort', app.includes('if(!state.q)return defaultSorted(scoped)')],
+  ['empty query retains default date sort', app.includes("sort:(params.get('sort')||'relevance').trim()") && app.includes("if(state.sort==='newest'||!state.q)return defaultSorted(scoped)")],
   ['source filter remains enforced', app.includes("!state.source||r.sourceSystem===state.source")],
   ['body filter remains enforced', app.includes("!state.body||r.issuingBody===state.body")],
   ['type filter remains enforced', app.includes("!state.type||r.authorityType===state.type")],

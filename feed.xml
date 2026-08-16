@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Aug 2026 12:47:22 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2026 14:32:01 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>美国边境执法追捕走私者无人员伤亡</title>
+      <link>https://trrb.net/ice/ice-ab23142c7e3d34c2e04d0c77164cae60e05f3eeb</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-ab23142c7e3d34c2e04d0c77164cae60e05f3eeb</guid>
+      <pubDate>Sun, 16 Aug 2026 14:32:01 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国边境执法人员成功追捕涉嫌走私者，无人员受伤，走私者将面临法律指控。</description>
+      <enclosure url="https://pbs.twimg.com/media/HP15NIMXIAAg3-E.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>奥斯汀DNC传投票通过废除ICE提案</title>
       <link>https://trrb.net/ice/ice-e0862deade7a13df4593dd12b1520730a02b12e8</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>新奥尔良ICE逮捕一名拥有入室盗窃等多项罪名的墨西哥非法移民毛里西奥。</description>
       <enclosure url="https://pbs.twimg.com/media/HPdN5TiWwAAOsok.png" type="image/png" />
-    </item>
-    <item>
-      <title>得克萨斯Laredo边境巡逻救助22名被困人员</title>
-      <link>https://trrb.net/ice/ice-5b0ab0e43943400dda3621b579903d1633be3c57</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-5b0ab0e43943400dda3621b579903d1633be3c57</guid>
-      <pubDate>Fri, 14 Aug 2026 14:05:15 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>得克萨斯Laredo至Del Rio路段，边境巡逻官员发现卡车绕开移民检查站，成功救助22人。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPsBiIlXgAEEE1_.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

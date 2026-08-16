@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-ab23142c7e3d34c2e04d0c77164cae60e05f3eeb</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T14:32:01.999Z</news:publication_date>
+        <news:title>美国边境执法追捕走私者无人员伤亡</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-e0862deade7a13df4593dd12b1520730a02b12e8</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -734,14 +742,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-14T14:41:07.314Z</news:publication_date>
         <news:title>“鹅腿阿姨”走红后卷入风波！遭刑事举报，官方回应依法处理</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/hot/%E6%B7%B1%E5%9C%B3%E7%A8%8B%E5%BA%8F%E5%91%98%E5%85%AC%E5%8F%B8%E5%86%85%E7%8C%9D%E6%AD%BB%E5%90%8E%E5%B7%A5%E4%BC%A4%E8%AE%A4%E5%AE%9A%E5%8F%97%E9%98%BB%E5%AE%B6%E5%B1%9E%E7%94%B3%E8%AF%B7%E5%A4%8D%E8%AE%AE%E8%BF%BD%E9%97%AE%E8%B4%A3%E4%BB%BB%E8%BE%B9%E7%95%8C-mst1port-b1d790</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T14:31:52.745Z</news:publication_date>
-        <news:title>深圳程序员公司内猝死后工伤认定受阻：家属申请复议追问责任边界</news:title>
       </news:news>
     </url>
 </urlset>

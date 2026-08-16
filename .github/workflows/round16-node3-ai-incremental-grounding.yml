@@ -77,4 +77,5 @@ jobs:
         run: |
           echo 'ROUND16 NODE3 PASS: incremental Chinese legal analysis, official-source grounding, and production synchronization verified'
 
-# Round17 strict restart requests completion of the two current missing Chinese analyses without changing legal facts.
+# Round17 strict restart requests completion of the current missing Chinese analyses without changing legal facts.
+# Round17 node1 repair trigger: 2026-08-16T22:41Z.

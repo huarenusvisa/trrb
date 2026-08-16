@@ -1,0 +1,26 @@
+name: Round 17 Node 1 - Legal Search Relevance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'legal/legal-app.js'
+      - 'scripts/round17-node1-search-relevance-audit.mjs'
+      - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
+      - '.github/workflows/round17-node1-search-relevance.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Audit Round 17 node 1
+        run: node scripts/round17-node1-search-relevance-audit.mjs

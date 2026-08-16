@@ -27,7 +27,7 @@ jobs:
           grep -q 'listing.js?v=20260816-category-live-2' listing.html
           ! grep -q 'listing-live-category-fix.js' listing.html
           grep -q 'articles-home.js?v=20260816-single-source-2' index.html
-          grep -q 'HOME_ARCHIVE_MERGE=false' <(node scripts/fix-module-single-source-final.mjs)
+          grep -q 'HOME_ARCHIVE_MERGE=false' scripts/fix-module-single-source-final.mjs
           grep -q 'fetchLivePublishedArticles(12, name)' homepage-refresh-guard.js
           grep -q 'fetchLivePublishedArticles(12, name)' articles-home-live-fix.js
       - name: Commit repair

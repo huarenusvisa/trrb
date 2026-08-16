@@ -616,12 +616,4 @@
         <news:title>美国国土安全部称遣返非法犯罪外籍人员降犯罪率</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-67145c1d57fa51222ca3148077e2cc733c4e78ef</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T19:58:44.601Z</news:publication_date>
-        <news:title>美宣布特朗普任内加强边境安全与ICE遣返行动</news:title>
-      </news:news>
-    </url>
 </urlset>

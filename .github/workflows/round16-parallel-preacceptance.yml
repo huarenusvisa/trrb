@@ -1,0 +1,64 @@
+name: 第十六轮节点4至9并行预验收
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/round16-parallel-preacceptance.yml'
+  workflow_run:
+    workflows: ['第十六轮节点2-统一法律数据库自动重建与版本同步']
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round16-parallel-preacceptance
+  cancel-in-progress: true
+
+jobs:
+  preaccept:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - node: '4'
+            label: '首页美国判例与新规生产上线与缓存治理'
+            script: 'scripts/round16-node4-home-legal-production.mjs'
+          - node: '5'
+            label: '五大类深链接筛选与状态保持'
+            script: 'scripts/round16-node5-deep-link-state.mjs'
+          - node: '6'
+            label: '13个联邦巡回法院二级导航与独立筛选'
+            script: 'scripts/round16-node6-circuit-nav.mjs'
+          - node: '7'
+            label: '单条判例新规详情页与官方原文双层展示'
+            script: 'scripts/round16-node7-legal-detail.mjs'
+          - node: '8'
+            label: '重大裁决新规新闻路由去重与编辑隔离'
+            script: 'scripts/round16-node8-editorial-isolation.mjs'
+          - node: '9'
+            label: '法律栏目SEO Sitemap与结构化数据完整性'
+            script: 'scripts/round16-node9-legal-seo-sitemap-schema.mjs'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    name: node${{ matrix.node }}-${{ matrix.label }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 安装生产浏览器验收依赖
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install --with-deps chromium
+      - name: 并行预验收节点${{ matrix.node }}
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node ${{ matrix.script }}
+      - name: 预验收结论
+        run: echo 'ROUND16 NODE${{ matrix.node }} PREACCEPT PASS'

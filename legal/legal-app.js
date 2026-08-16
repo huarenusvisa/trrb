@@ -10,13 +10,41 @@
     records:[],analysis:new Map(),version:''
   };
   const $=s=>document.querySelector(s);
-  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const labels={SCOTUS:'美国最高法院',US_CIRCUIT:'联邦巡回上诉法院',BIA:'BIA先例裁决',WHITE_HOUSE:'白宫行政命令',FEDERAL_REGISTER:'Federal Register'};
-  function norm(v){return String(v||'').toLowerCase()}
+  function norm(v){return String(v||'').normalize('NFKC').toLowerCase().replace(/\s+/g,' ').trim()}
+  function terms(v){return norm(v).split(/\s+/).filter(Boolean)}
   function displayDate(v){if(!v)return'日期未提取';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d)}
-  function combined(r){return norm([r.title,r.docket,r.citation,r.issuingBody,r.authorityType,r.sourceSystem].join(' '))}
-  function sorted(records){return [...records].sort((a,b)=>String(b.publicationDate||'').localeCompare(String(a.publicationDate||''))||String(a.issuingBody||'').localeCompare(String(b.issuingBody||''))||String(a.title||'').localeCompare(String(b.title||'')))}
-  function filtered(){return sorted(state.records.filter(r=>(!state.source||r.sourceSystem===state.source)&&(!state.body||r.issuingBody===state.body)&&(!state.type||r.authorityType===state.type)&&(!state.q||combined(r).includes(norm(state.q)))))}
+  function officialSearchFields(r){return [r.title,r.docket,r.citation,r.issuingBody,r.authorityType,r.sourceSystem]}
+  function analysisSearchFields(r){const a=state.analysis.get(r.id)||{};return [a.chineseTitle,a.summary,a.legalIssue,a.holdingOrRule,a.impact]}
+  function relevanceScore(r,q){
+    const query=norm(q);if(!query)return 0;
+    const ts=terms(query),title=norm(r.title),docket=norm(r.docket),citation=norm(r.citation);
+    const body=norm(r.issuingBody),authority=norm(r.authorityType),source=norm(r.sourceSystem);
+    const ai=analysisSearchFields(r).map(norm);
+    let score=0;
+    if(title===query)score+=140;else if(title.includes(query))score+=85;
+    if(docket===query)score+=160;else if(docket.includes(query))score+=95;
+    if(citation===query)score+=160;else if(citation.includes(query))score+=95;
+    if(body===query)score+=65;else if(body.includes(query))score+=35;
+    if(authority===query||source===query)score+=45;
+    for(const t of ts){
+      if(!t)continue;
+      if(title.includes(t))score+=18;
+      if(docket.includes(t)||citation.includes(t))score+=24;
+      if(body.includes(t)||authority.includes(t)||source.includes(t))score+=8;
+      ai.forEach((v,i)=>{if(v.includes(t))score+=i===0?12:6});
+    }
+    if(ai.some(v=>v.includes(query)))score+=18;
+    return score;
+  }
+  function matches(r,q){const query=norm(q);if(!query)return true;const haystack=[...officialSearchFields(r),...analysisSearchFields(r)].map(norm).join(' ');return terms(query).every(t=>haystack.includes(t))}
+  function defaultSorted(records){return [...records].sort((a,b)=>String(b.publicationDate||'').localeCompare(String(a.publicationDate||''))||String(a.issuingBody||'').localeCompare(String(b.issuingBody||''))||String(a.title||'').localeCompare(String(b.title||'')))}
+  function filtered(){
+    const scoped=state.records.filter(r=>(!state.source||r.sourceSystem===state.source)&&(!state.body||r.issuingBody===state.body)&&(!state.type||r.authorityType===state.type)&&matches(r,state.q));
+    if(!state.q)return defaultSorted(scoped);
+    return [...scoped].sort((a,b)=>relevanceScore(b,state.q)-relevanceScore(a,state.q)||String(b.publicationDate||'').localeCompare(String(a.publicationDate||''))||String(a.title||'').localeCompare(String(b.title||'')));
+  }
   function fillSelect(el,values,label,desired=''){const selected=desired||el.value;el.innerHTML=`<option value="">${label}</option>`+[...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b,'zh-CN')).map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');if([...el.options].some(o=>o.value===selected))el.value=selected;else el.value=''}
   function analysisHtml(r){const a=state.analysis.get(r.id);if(!a)return`<div class="analysis"><h3>中文解析</h3><p class="muted">中文裁判要旨/规则解析正在生成；请先以官方原文为准。</p></div>`;return`<div class="analysis"><h3>${esc(a.chineseTitle||'中文解析')}</h3><p><strong>要旨：</strong>${esc(a.summary)}</p><p><strong>法律问题：</strong>${esc(a.legalIssue)}</p><p><strong>裁判/规则：</strong>${esc(a.holdingOrRule)}</p><p><strong>影响范围：</strong>${esc(a.impact)}</p><p class="muted">${esc(a.disclaimer)}</p></div>`}
   function card(r){const title=r.title||r.citation||r.docket||`${labels[r.sourceSystem]||r.sourceSystem}资料`;const detail=`/legal/detail.html?id=${encodeURIComponent(r.id)}`;return`<article class="legal-card" data-record-id="${esc(r.id)}"><div class="legal-card-top"><span class="badge">${esc(labels[r.sourceSystem]||r.sourceSystem)}</span><span class="badge kind">${esc(r.authorityType)}</span></div><h2><a class="legal-title-link" href="${detail}">${esc(title)}</a></h2><div class="meta"><span>${esc(r.issuingBody)}</span><span>${esc(displayDate(r.publicationDate))}</span>${r.docket?`<span>案号 ${esc(r.docket)}</span>`:''}${r.citation?`<span>${esc(r.citation)}</span>`:''}</div>${analysisHtml(r)}<div class="card-actions"><a class="primary" href="${detail}">查看详情</a><a href="${esc(r.officialUrl)}" target="_blank" rel="noopener noreferrer">查看官方原文</a>${r.officialPdfUrl&&r.officialPdfUrl!==r.officialUrl?`<a href="${esc(r.officialPdfUrl)}" target="_blank" rel="noopener noreferrer">官方PDF</a>`:''}</div></article>`}

@@ -17,6 +17,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: trrb-round16-node2-unified-db-sync
+  cancel-in-progress: true
+
 jobs:
   rebuild-verify-production:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
@@ -44,6 +48,7 @@ jobs:
             echo 'No unified database or legal sitemap changes to commit.'
           else
             git commit -m 'Round 16 node2: synchronize unified legal database version'
+            git pull --rebase origin main
             git push origin HEAD:main
           fi
       - name: 读取本次统一数据库版本

@@ -27,4 +27,5 @@ jobs:
       - name: Audit Round 17 node 1
         run: node scripts/round17-node1-search-relevance-audit.mjs
 
-# Strict node 1 automatically revalidates after every unified legal or Chinese-analysis dataset change.
+# Strict node 1 revalidates on relevant user-authored dataset changes.
+# Revalidation marker: workflow-generated backfill commits do not recursively trigger GitHub Actions.

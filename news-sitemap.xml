@@ -720,12 +720,4 @@
         <news:title>新英格兰HSI抓获发布儿童性虐待广告男子</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a91d361a7c159a915ae5bce90d77e8757c78c254</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T21:38:44.429Z</news:publication_date>
-        <news:title>美国ICE8月14日遣返多名非法移民加强安全</news:title>
-      </news:news>
-    </url>
 </urlset>

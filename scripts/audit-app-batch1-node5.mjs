@@ -14,7 +14,7 @@ const checks = [
   ['stable pagination index includes created_at and id', /comments_article_created_id_idx/.test(migration) && /created_at desc, id desc/.test(migration)],
   ['client pagination orders by created_at and id', /order\('created_at'.*false/.test(api) && /order\('id'.*false/.test(api)],
   ['public client explicitly filters published comments', /eq\('status', 'published'\)/.test(api)],
-  ['comment create uses authenticated user id', /supabase\.auth\.getUser\(\)/.test(api) && /user_id: user\.id/.test(api)],
+  ['comment create uses authenticated user id', /currentUserId\(\)[\s\S]*supabase\.auth\.getUser\(\)/.test(api) && /const userId = await currentUserId\(\)/.test(api) && /user_id: userId/.test(api)],
   ['reply parent id is supported', /parent_id: parentId/.test(api) && /setReplyTo/.test(ui)],
   ['article detail mounts shared comment thread', /CommentThread/.test(article) && /articleId=\{String\(article\.id\)\}/.test(article)],
   ['hidden or deleted rows are not readable by public RLS', /comments public read[\s\S]*status='published'/.test(foundation)]

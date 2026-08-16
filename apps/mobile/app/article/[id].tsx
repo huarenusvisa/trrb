@@ -3,6 +3,7 @@ import { ActivityIndicator, Image, Linking, Pressable, ScrollView, Share, StyleS
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { fetchArticle, NewsArticle } from '../../src/api/trrb';
 import { addHistory, isFavorite, toggleFavorite } from '../../src/storage/library';
+import { CommentThread } from '../../src/components/CommentThread';
 
 export default function ArticleDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -43,6 +44,7 @@ export default function ArticleDetailScreen() {
     <Text style={styles.category}>{article.category_name || '新闻'}</Text><Text style={styles.title}>{article.title}</Text><Text style={styles.meta}>{article.author || '唐人日报'} · {article.published_at ? new Date(article.published_at).toLocaleString('zh-CN') : ''}</Text>
     {article.cover_image ? <Image source={{ uri: article.cover_image }} style={styles.image} resizeMode="cover" /> : null}{article.summary ? <Text style={styles.summary}>{article.summary}</Text> : null}<Text style={styles.body}>{article.content || '正文暂不可用。'}</Text>
     <View style={styles.actions}><Pressable style={favorite?styles.savedButton:styles.primaryButton} onPress={async()=>setFavorite(await toggleFavorite(article))}><Text style={styles.primaryButtonText}>{favorite?'已收藏':'收藏新闻'}</Text></Pressable><Pressable style={styles.primaryButton} onPress={() => Share.share({ title: article.title, message: `${article.title}\n${webUrl}`, url: webUrl })}><Text style={styles.primaryButtonText}>分享新闻</Text></Pressable><Pressable style={styles.outlineButton} onPress={() => Linking.openURL(webUrl)}><Text style={styles.outlineButtonText}>在网站打开</Text></Pressable></View>
+    <CommentThread articleId={String(article.id)} />
   </ScrollView></>;
 }
 

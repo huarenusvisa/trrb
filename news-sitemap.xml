@@ -648,36 +648,4 @@
         <news:title>加州海沃德ICE逮捕涉嫌阴谋持毒墨西哥籍男子</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7c245adbbe970ddb5cf6d6aee5a7135eea7799b4</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T17:07:44.917Z</news:publication_date>
-        <news:title>美国DHS确认持续递解犯罪分子保障治安</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-ab100a4d2a99b713e893124f1f153453637039f2</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T17:07:44.389Z</news:publication_date>
-        <news:title>密西西比ICE联合行动逮捕70名儿童剥削嫌疑人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-28fad90cd1d913b59950aca65474b8892c3a250e</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T17:07:43.834Z</news:publication_date>
-        <news:title>美国ICE拘押涉嫌性侵未成年非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e7a56589044808f476a686476c9e374b8f278182</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T17:07:43.217Z</news:publication_date>
-        <news:title>密西西比HSI联合执法逮捕70名涉童罪嫌疑人</news:title>
-      </news:news>
-    </url>
 </urlset>

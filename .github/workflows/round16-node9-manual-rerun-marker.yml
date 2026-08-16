@@ -1,0 +1,13 @@
+name: 第十六轮节点9-人工推进标记
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  marker:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Manual progression marker only. Run the real node9 acceptance workflow for production validation.'

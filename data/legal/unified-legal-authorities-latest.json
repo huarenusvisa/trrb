@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "e1ef9f917f289439488aa5625b71e76edc8a9d3be41d0b44bffdec94e5b8ce40",
+  "datasetVersion": "d3e5268a58b18be45c19e64c3a635d3e60ed39b7f423691fcbfca76bae4bba39",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 419,
+    "US_CIRCUIT": 418,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 615,
+  "count": 614,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -4406,21 +4406,6 @@
       "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-3004_opn.pdf",
       "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-3004_opn.pdf",
       "sourceKey": "CIRCUIT:ca2:39db2442b87541a8"
-    },
-    {
-      "id": "8f5593051756f6b671c78304",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "25-2733",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-2733_opn.pdf",
-      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-2733_opn.pdf",
-      "sourceKey": "CIRCUIT:ca2:3ec6f10e739eb5e6"
     },
     {
       "id": "7dc1e3639b429f5870943660",

@@ -1,0 +1,47 @@
+name: SEO Search Engine Operations Robot
+
+on:
+  workflow_dispatch:
+    inputs:
+      write_mode:
+        description: 'Submit sitemaps to Google/Bing'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false','true']
+  schedule:
+    - cron: '17 10 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-seo-search-engine-ops
+  cancel-in-progress: true
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Google API client
+        run: npm install --no-save googleapis@144
+      - name: Run SEO search-engine operations
+        env:
+          SITE_ORIGIN: https://trrb.net
+          GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'sc-domain:trrb.net' }}
+          GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON }}
+          BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+          SEO_WRITE_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.write_mode || 'false' }}
+        run: node scripts/seo-search-engine-ops.mjs
+      - name: Save SEO robot report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-search-engine-ops-report
+          path: seo-search-engine-ops-report.json
+          retention-days: 30

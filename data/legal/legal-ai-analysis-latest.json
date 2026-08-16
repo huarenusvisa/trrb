@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "datasetVersion": "2d3575d3d42564ef49fe6d5080c2a2eeb8e5f86057ee5ad97363dc737f4f8b7a",
-  "scope": "Chinese legal-information analyses grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 604,
+  "scope": "Chinese legal-information analyses grounded only in first-party official source text or, when the bound official text is unavailable, strictly limited to first-party record metadata with explicit insufficiency disclosure. Database layer; not ordinary news articles.",
+  "count": 606,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -3829,6 +3829,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "2029c60e34396b24172a4ea3",
+      "datasetVersion": "2d3575d3d42564ef49fe6d5080c2a2eeb8e5f86057ee5ad97363dc737f4f8b7a",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eighth Circuit",
+      "officialUrl": "https://ecf.ca8.uscourts.gov/cgi-bin/252021P.pdf",
+      "title": "252021P.pdf",
+      "chineseTitle": "252021P.pdf",
+      "summary": "发布机构为U.S. Court of Appeals for the Eighth Circuit。当前官方链接暂时无法取得正文，无法据此确认完整裁判或规则内容。本条仅展示当前能够由官方元数据直接支持的信息；对于案件事实、争议焦点、裁判理由、裁判结论或规则细节，不作推测性补充。应以所列官方链接恢复后的原文为准。",
+      "legalIssue": "官方材料不足，无法确认核心法律问题。",
+      "holdingOrRule": "官方材料不足，无法确认裁判结论或规则内容。",
+      "impact": "官方材料不足，无法确认直接法律效力或可能影响范围。",
+      "sourceGrounding": "依据统一法律数据库绑定的第一方官方记录元数据及官方链接；当前官方链接暂时无法取得正文，无法据此确认完整裁判或规则内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "20affe9ca377a214567ddd1d",
       "datasetVersion": "2d3575d3d42564ef49fe6d5080c2a2eeb8e5f86057ee5ad97363dc737f4f8b7a",
       "sourceSystem": "US_CIRCUIT",
@@ -7602,6 +7618,22 @@
       "holdingOrRule": "法院确认：1.管理委员会自由裁量权行使合理，拒绝利益请求不构成滥用；2.记录保管方虽提供信息，但未履行任意自由裁量职能，非ERISA受托人，即便是受托人亦无违约；3.行政服务协议为计划运行文件，管理方违反29 U.S.C. §1024(b)(4)未提供该协议，应予重新审查罚款适用性。",
       "impact": "直接法律效力：明确退休计划管理方行使利益审查自由裁量权的合理性标准，减少参与者对管理方决定的质疑；澄清非管理方记录保管方的受托责任界限，避免纠纷扩大；明确行政服务协议等第三方服务合同文件属计划运行文件，依法应向参与者公开，提高透明度。可能影响：退休计划设计与管理合同的签订及信息披露流程，促使计划管理人在文件提供及沟通方式上加强规范。",
       "sourceGrounding": "依据美国第四巡回上诉法院官方判决文书：https://www.ca4.uscourts.gov/opinions/251350.P.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "bbdbbfb25d4f113db6b43676",
+      "datasetVersion": "2d3575d3d42564ef49fe6d5080c2a2eeb8e5f86057ee5ad97363dc737f4f8b7a",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl",
+      "title": null,
+      "chineseTitle": "美国第七巡回上诉法院法律记录",
+      "summary": "发布机构为U.S. Court of Appeals for the Seventh Circuit。当前官方链接可读取的正文内容不足，无法据此确认完整裁判或规则内容。本条仅展示当前能够由官方元数据直接支持的信息；对于案件事实、争议焦点、裁判理由、裁判结论或规则细节，不作推测性补充。应以所列官方链接恢复后的原文为准。",
+      "legalIssue": "官方材料不足，无法确认核心法律问题。",
+      "holdingOrRule": "官方材料不足，无法确认裁判结论或规则内容。",
+      "impact": "官方材料不足，无法确认直接法律效力或可能影响范围。",
+      "sourceGrounding": "依据统一法律数据库绑定的第一方官方记录元数据及官方链接；当前官方链接可读取的正文内容不足，无法据此确认完整裁判或规则内容。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {

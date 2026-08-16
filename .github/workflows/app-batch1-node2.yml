@@ -6,6 +6,7 @@ on:
     paths:
       - 'supabase/migrations/**'
       - 'apps/mobile/src/components/TrRbAvatar.tsx'
+      - 'apps/mobile/app/article/[id].tsx'
       - 'scripts/audit-app-batch1-node2.mjs'
       - '.github/workflows/app-batch1-node2.yml'
   workflow_dispatch:
@@ -27,6 +28,6 @@ jobs:
       - name: Install mobile dependencies
         working-directory: apps/mobile
         run: npm install --no-audit --no-fund
-      - name: Typecheck mobile avatar component
+      - name: Typecheck mobile app
         working-directory: apps/mobile
         run: npm run typecheck

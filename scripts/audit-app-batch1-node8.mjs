@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 
+// Node 8 acceptance gate: existing /admin integration + trusted, auditable moderation writes.
 const read = (p) => fs.readFileSync(p, 'utf8');
 const index = read('admin/index.html');
 const ui = read('admin/community-center.js');

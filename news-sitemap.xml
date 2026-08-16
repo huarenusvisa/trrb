@@ -632,12 +632,4 @@
         <news:title>美国ICE协助抓获8名委内瑞拉籍跨国性交易嫌疑人</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-3403d239db6fac92fd83cfc8c77e418461c9702d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T18:34:00.688Z</news:publication_date>
-        <news:title>美国边境巡逻局查获拖拉机运载非法移民</news:title>
-      </news:news>
-    </url>
 </urlset>

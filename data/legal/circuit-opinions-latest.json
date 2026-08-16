@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T03:15:17.008Z",
+  "generatedAt": "2026-08-16T04:21:14.865Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -93,6 +93,10 @@
           "title": "24-1467P.01A"
         },
         {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
+          "title": "24-1524P.01A"
+        },
+        {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
           "title": "24-1805P.01A"
         },
@@ -159,14 +163,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/20-1170U-01A.pdf",
           "title": "20-1170 US v. Figueroa-Roman"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1956P-01A.pdf",
-          "title": "23-1956 US v. Omoruyi"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1064P-01A.pdf",
-          "title": "25-1064 Wilson v. Iguana Sport Services, Corp."
         }
       ],
       "notes": []
@@ -953,18 +949,6 @@
       "sourceFinalUrl": "https://www.opn.ca6.uscourts.gov/opinions/opinions.php?todo=today/1000",
       "documents": [
         {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0219p-06.pdf",
-          "title": "26a0219p-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0220p-06.pdf",
-          "title": "26a0220p-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0221p-06.pdf",
-          "title": "26a0221p-06.pdf"
-        },
-        {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0222p-06.pdf",
           "title": "26a0222p-06.pdf"
         },
@@ -1015,14 +999,6 @@
         {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0234p-06.pdf",
           "title": "26a0234p-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0352n-06.pdf",
-          "title": "26a0352n-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0353n-06.pdf",
-          "title": "26a0353n-06.pdf"
         },
         {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0354n-06.pdf",

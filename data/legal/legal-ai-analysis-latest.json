@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+  "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 163,
+  "count": 170,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -2277,6 +2277,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "20affe9ca377a214567ddd1d",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf",
+      "title": "25-1063 North End Chamber of Commerce, Inc. v. City of Boston",
+      "chineseTitle": "波士顿市户外餐饮计划诉讼案分析",
+      "summary": "波士顿市在疫情期间实施临时户外餐饮计划，起初各区规则一致，但2022年北端区域因居民投诉采取差别化措施，包括征收费用和缩短季节，导致北端多家餐厅诉诸联邦法院，主张市政府违反平等保护和正当程序权利。联邦地区法院因诉状不符合程序规则驳回诉求，一审上诉法院维持前述决定，部分州法涉案税费诉求撤销后准许重审。",
+      "legalIssue": "波士顿市针对北端区域户外餐饮计划采取差异化政策，涉及是否违反联邦宪法中平等保护和正当程序权利，以及相关州法税费是否合法。",
+      "holdingOrRule": "一审法院驳回原告基于联邦宪法的诉求，理由为诉状不符合联邦民事诉讼规则第8条及实体权利不成立；上诉法院确认前述驳回决定，同时撤销对州法税费诉求的驳回，指示予以无异议撤诉处理。官方材料节选不足，暂不判断裁判结论。",
+      "impact": "直接法律效力：联邦法院确认因程序及实质理由驳回餐厅基于宪法权利诉求，暂未认定市政策违法；部分涉及州法的税费诉求获撤销，为后续重新提起诉讼留有空间。可能影响：对疫情后城市管理中区域差异化政策的合法性争议提供审判指导，影响类似城市户外经营政策制定及相关业主权益保护。",
+      "sourceGrounding": "依据美国第一巡回上诉法院官方判决文件（Case No. 25-1063）中详细案情描述及审理理由，结合联邦民事诉讼规则第8条及相关州法，公开链接：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "221c3a0939750fb084de69e6",
       "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
       "sourceSystem": "US_CIRCUIT",
@@ -2322,6 +2338,38 @@
       "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
       "impact": "直接法律效力：确认涉案被告犯罪行为构成电信诈骗、共谋及洗钱罪，维持相应刑罚。可能影响：为联邦法院在类似利用公共资金进行复杂诈骗案件中的证据评估与犯罪故意认定提供参考标准。",
       "sourceGrounding": "依据美国第一巡回上诉法院2026年7月24日关于案件编号23-1975的官方判决文书全文摘录。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "49e57b0eb42f56514707bd22",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1832O-01A.pdf",
+      "title": "26-1832 African Communities Together v. Mullin",
+      "chineseTitle": "非洲社区联合等诉穆林案——第一巡回上诉法院对临时保护身份终止行政暂停令的裁判",
+      "summary": "本案涉及美国国土安全部部长撤销索马里临时保护身份（TPS）资格的行政决定，及地方法院对该撤销决定行政暂停令的裁定。地方法院于2026年7月2日拒绝解除行政暂停令，该暂停令时间不定，超出临时限制时效。政府提起上诉，请求法院撤销该行政暂停令。第一巡回法院认为暂停令实质构成未评估禁令，超出适用范围，决定发回重审并要求地方法院尽速对保护令请求进行裁决。敦促法院不要采纳过长举证期限，下令撤销上诉。",
+      "legalIssue": "政府撤销索马里TPS资格的行政暂停令是否合法，尤其该暂停令是否构成未经审查的临时禁令，以及地方法院是否有权限维持该行政暂停令。",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。法院发回地方法院继续审理原行政暂停令请求，明确指行政暂停令不得无限期维持，否则即构成禁令，法院需及时裁决。",
+      "impact": "直接法律效力：督促地方法院及时裁决临时保护身份相关的行政暂停请求，限制行政暂停令适用期限。可能影响：指导其他联邦诉讼中行政暂停令的适用标准，防止法院通过行政暂停绕开禁令评估程序。",
+      "sourceGrounding": "解析基于美国第一巡回上诉法院2026年案件文件《26-1832 African Communities Together v. Mullin》官方判决书全文（https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1832O-01A.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "4e8e20ab90b006d5881fb624",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf",
+      "title": "25-1862 Rana v. Blanche",
+      "chineseTitle": "拉纳诉布兰奇案第一巡回上诉法院修正案摘要",
+      "summary": "本案为拉纳（Rana）诉布兰奇（Blanche）一案，第一巡回上诉法院于2026年7月23日发布判决意见，后发布勘误表更正了第13页脚注4中“noncitizens’”为“noncitizen’s”的用词错误。该勘误仅为文字修正，不涉及实体裁判内容的更改。",
+      "legalIssue": "本案核心法律问题涉及非公民身份相关法律解释及其适用，但官方材料未提供具体事实或判决细节以进一步明确。",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
+      "impact": "该修正对法律实体权利义务不产生直接法律效力，但可能影响相关法律文书的准确表述及后续引用的规范性。",
+      "sourceGrounding": "解析基于美国第一巡回上诉法院发布的官方判决书及随后的勘误表公开材料（https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf）。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2453,6 +2501,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "9e246f148fb4d777c6593476",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1254O-01A.pdf",
+      "title": "26-1254 African Communities Together v. Mullin",
+      "chineseTitle": "非洲社区联合等诉美国国土安全部长案判决解析",
+      "summary": "第一巡回上诉法院针对临时保护身份（TPS）南苏丹资格终止延期命令进行了审理。法院依据美国最高法院在Mullin诉Doe案中的裁决，认定TPS法规中的司法审查禁止条款适用于所有非宪法性质的针对国土安全部长终止TPS决定的诉求。故撤销延期终止TPS的地方法院命令，并将案件发回低院继续依Mullin案指导处理。",
+      "legalIssue": "是否联邦TPS法规中的司法审查禁止条款，适用于针对国土安全部长终止TPS决定的所有非宪法性质诉讼请求，进而影响地方法院对TPS终止延期的命令有效性？",
+      "holdingOrRule": "最高法院Mullin案明确TPS法规司法审查禁止条款涵盖所有非宪法争议，故延期终止TPS的地方法院命令不符合法律规定予以撤销。第一巡回法院据此撤销延期令并发回重审。",
+      "impact": "直接法律效力：明确限制了TPS终止决定可受理的诉讼范围，禁止非宪法类司法复审请求。可能影响：涉及TPS终止的相关团体与个人诉讼策略及联邦移民程序的司法审查实践。",
+      "sourceGrounding": "解析依据为第一巡回上诉法院2026年7月29日公开判决文件以及其引用的最高法院Mullin诉Doe案的官方判决文本。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "9f93813440c80386da31fdef",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/20-1170U-01A.pdf",
+      "title": "20-1170 US v. Figueroa-Roman",
+      "chineseTitle": "美国第一巡回上诉法院关于Figueroa-Roman案判决的二次上诉裁定",
+      "summary": "Figueroa-Roman因涉及多起劫车案被判108个月监禁，超出了双方建议的刑期。首次上诉中，法院指出原判决关于“与有前科罪犯关联”的理由模糊，要求地区法院澄清。重新量刑时，地区法院仅简单澄清其实是“与共犯关联”，并维持108个月刑期。Figueroa-Roman再次上诉，法院认为地区法院有权重新量刑，但对上调刑期的理由仍未充分解释，导致判决程序性错误。",
+      "legalIssue": "在上诉法院发回重审以澄清量刑理由后，地区法院若未充分说明对上调刑期的合理依据，其量刑是否程序合理？",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。法院认定地区法院明确有权重新量刑，但仍未能充分说明加刑21个月的合理性，程序上存在不足。",
+      "impact": "直接法律效力：本判决明确了地区法院在发回重审后必须充分阐明量刑依据，否则上诉法院将无法充分审查，可能导致量刑无效。可能影响：影响涉及量刑解释不清、需发回重审案件的司法实践及律师辩护策略。",
+      "sourceGrounding": "依据美国第一巡回上诉法院官方判决文书《20-1170 US v. Figueroa-Roman》全文节选。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "a6b6f91a71ae458c4a5719ac",
       "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
       "sourceSystem": "US_CIRCUIT",
@@ -2501,6 +2581,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "b3b80f75c307c3a579e8d0d0",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
+      "title": "25-1862 Rana v. Blanche",
+      "chineseTitle": "Prakash Dhoj Rana诉Todd Blanche案——移民程序中精神能力认定的司法审查",
+      "summary": "本案涉及非公民申诉人在移民听证过程中精神能力的认定。申诉人Rana因记忆混乱接受心理评估，报告显示其集中注意力存在缺陷，可能影响协助律师。移民法官未依据此评估进一步询问其精神能力，直接否决其申请。上诉法院认定原判决忽视了精神能力的初步迹象，违反既有程序，要求发回重审。",
+      "legalIssue": "移民法官在非公民表现出精神能力疑虑时，是否必须依据Matter of M-A-M-先例，对其精神能力进行调查、认定并说明理由？",
+      "holdingOrRule": "法院裁定，若记录显示非公民存在精神能力迹象，移民法官必须进行能力调查并作出认定。此案原判遗漏此程序，故决定发回重审。官方材料节选不足，暂不判断裁判结论。",
+      "impact": "此判决对移民法官处理精神能力问题提出明确程序要求，直接影响移民法庭听证程序的公正性和适当性。对申请人权利保护具有直接法律效力，对于类似案件精神能力认定的司法审查亦具示范作用。",
+      "sourceGrounding": "依据美国第一巡回上诉法院2026年判决全文及Matter of M-A-M-先例，综合官方一手法律文件内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "be0fb83908df09d7557fe41b",
       "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
@@ -2530,6 +2626,22 @@
       "holdingOrRule": "根据权衡四因子标准，上诉法院同意中止地区法院针对“全面重新审查政策”的判决执行，但驳回了对其余两项政策中止执行的请求。其他政策行政行为的性质及诉讼适格性问题，官方材料中未详述，故暂不判断。",
       "impact": "直接法律效力在于“全面重新审查政策”的执行暂获维持，影响相关移民申请人的权益审查流程。可能影响范围包括行政程序法下行政行为界定的判例发展，以及类似行政政策受诉时的中止救济申请评判标准。",
       "sourceGrounding": "依据美国第一巡回上诉法院2026年8月14日发布的公开裁定文书，链接：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1703_STAY_GRANT_DENIED1.PDF-01A.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "d0f84583b7c1b4f89896b119",
+      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
+      "title": "26-1699 State of California v. Mullin",
+      "chineseTitle": "加州等州诉穆林案：H-1B签证附加10万美元支付要求被驳回",
+      "summary": "本案涉及美国总统颁布的限制部分非移民工人入境的公告，要求所有H-1B签证申请需附带10万美元支付。多个州原告诉讼称该政策超越行政权限并违反《行政程序法》，地区法院支持原告，撤销该政策。上诉法院拒绝临时中止该撤销令，认为被告未能充分证明上诉胜诉可能，且政策属超越国会授权。",
+      "legalIssue": "总统依据《移民和国籍法》第1182(f)和1185(a)条款，是否有权通过行政行为要求H-1B签证申请附加10万美元支付，以及该行政实施是否符合《行政程序法》规定。",
+      "holdingOrRule": "法院确认，行政部门实施要求支付10万美元的H-1B签证政策超越其法定权限，不具备合法效力，且未遵循《行政程序法》法定程序，暂不支持暂停撤销令。",
+      "impact": "直接法律效力：该H-1B附加支付政策被撤销，相关联邦执行机构不得执行该政策。可能影响：涉及高技能外国劳工签证的雇主及申请者将免于该高额支付负担，可能影响劳动力市场及相关教育和医疗行业的用工配置。",
+      "sourceGrounding": "美国第一巡回上诉法院2026年7月24日关于26-1699案的官方判决文书，网址：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

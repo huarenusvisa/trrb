@@ -1,0 +1,58 @@
+name: Round 17 Node 9 - SEO Sitemap Internal Links
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'robots.txt'
+      - 'sitemap-legal.xml'
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'legal/index.html'
+      - 'legal/legal-app.js'
+      - 'legal/detail.js'
+      - 'scripts/round17-node9-seo-index-internal-links-audit.mjs'
+      - '.github/workflows/round17-node9-seo-index-internal-links.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Audit repository SEO sitemap and internal links
+        run: node scripts/round17-node9-seo-index-internal-links-audit.mjs
+      - name: Trigger production deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK is not configured'; exit 2; }
+          curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-node9.txt
+      - name: Wait for current SEO assets and audit production
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            stamp=$(date +%s)
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?round17node9=$stamp" -o /tmp/db.json || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap-legal.xml?round17node9=$stamp" -o /tmp/sitemap.xml || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/?round17node9=$stamp" -o /tmp/index.html || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/legal-app.js?round17node9=$stamp" -o /tmp/app.js || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round17node9=$stamp" -o /tmp/detail.js || true
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/robots.txt?round17node9=$stamp" -o /tmp/robots.txt || true
+            if node scripts/round17-node9-seo-index-internal-links-audit.mjs /tmp/db.json /tmp/sitemap.xml /tmp/index.html /tmp/app.js /tmp/detail.js /tmp/robots.txt; then
+              echo 'ROUND 17 NODE 9 PRODUCTION: PASS'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Production SEO state did not converge.'
+          exit 1

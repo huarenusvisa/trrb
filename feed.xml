@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Aug 2026 02:51:14 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2026 03:56:56 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ICE拟撤销军人罗宾逊公民身份涉绑架案</title>
+      <link>https://trrb.net/ice/ice-af2f8ed1237615928d354e6b321d9656a0953b82</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-af2f8ed1237615928d354e6b321d9656a0953b82</guid>
+      <pubDate>Sun, 16 Aug 2026 03:56:56 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>ICE宣布拟撤销罗宾逊因绑架及谋杀未遂案获美国公民身份，程序正在进行。</description>
+      <enclosure url="https://pbs.twimg.com/media/HP0EcCnWYAAADei.png" type="image/png" />
+    </item>
     <item>
       <title>纽约布法罗举办DHS职业博览会招募ICE遣返官员</title>
       <link>https://trrb.net/ice/ice-496816d92c6d2b649484c246a590599854afe348</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>美国民主党今年提出250项法案，旨在削弱移民执法，主张废除ICE。</description>
       <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088250045543927808/img/w1nQb-ZRI7ns5AKu.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>美国国土安全部强调ICE依法执法，不应该接受批评</title>
-      <link>https://trrb.net/ice/ice-479f9790dc56450b642da58ee01549dec807407d</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-479f9790dc56450b642da58ee01549dec807407d</guid>
-      <pubDate>Fri, 14 Aug 2026 13:31:56 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>国土安全部长称ICE执行国会移民法律，批评应向国会施压。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088250159377317888/img/xLaN2SWkohYVidBq.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

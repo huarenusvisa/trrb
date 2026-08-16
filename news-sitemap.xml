@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-af2f8ed1237615928d354e6b321d9656a0953b82</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T03:56:56.214Z</news:publication_date>
+        <news:title>ICE拟撤销军人罗宾逊公民身份涉绑架案</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-496816d92c6d2b649484c246a590599854afe348</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1350,22 +1358,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-14T04:04:51.169Z</news:publication_date>
         <news:title>特朗普扩大网络打击权限！私企获准参与行动，瞄准全球跨国犯罪网络</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/us-politics/%E6%9E%97%E8%82%AF%E5%8F%B7%E8%88%AA%E6%AF%8D%E8%BF%9E%E7%BB%AD%E9%83%A8%E7%BD%B29%E4%B8%AA%E6%9C%885000%E5%90%8D%E5%AE%98%E5%85%B5%E5%BF%83%E7%90%86%E9%98%B2%E7%BA%BF%E5%91%8A%E6%80%A5%E5%A4%9A%E4%BA%BA%E8%A2%AB%E6%9B%9D%E8%AF%95%E5%9B%BE%E8%B7%B3%E6%B5%B7-mssf7jhy-7358a1</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:01:54.550Z</news:publication_date>
-        <news:title>“林肯”号航母连续部署9个月！5000名官兵心理防线告急，多人被曝试图跳海</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/%E8%BE%B9%E5%A2%83%E5%81%B7%E6%B8%A1%E8%A1%80%E6%B3%AA%E8%AD%A6%E7%A4%BA%E5%8D%8E%E4%BA%BA%E5%A5%B3%E5%AD%90%E8%92%82%E5%8D%8E%E7%BA%B3%E9%9D%9E%E6%B3%95%E5%81%B7%E6%B8%A1%E8%B5%B4%E7%BE%8E%E6%83%A8%E9%81%AD-6-%E5%90%8D%E5%A2%A8%E7%B1%8D%E9%BB%91%E5%B8%AE%E8%BD%AE%E5%A5%B8%E5%8B%92%E7%B4%A2-5-%E4%B8%87%E5%85%83%E8%B5%8E%E9%87%91-mssewcev-b8f79c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T03:53:12.150Z</news:publication_date>
-        <news:title>华人女子蒂华纳非法偷渡赴美，惨遭 6 名墨籍黑帮轮奸，勒索 5 万元赎金</news:title>
       </news:news>
     </url>
 </urlset>

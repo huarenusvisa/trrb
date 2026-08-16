@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { router } from 'expo-router';
-import { CommentCursor, CommentRow, createComment, listComments } from '../api/comments';
+import { CommentCursor, CommentRow, createComment, likeComment, listComments, reportComment } from '../api/comments';
 import { supabase } from '../auth/supabase';
 
 export function CommentThread({ articleId }: { articleId: string }) {
@@ -12,6 +12,7 @@ export function CommentThread({ articleId }: { articleId: string }) {
   const [text, setText] = useState('');
   const [replyTo, setReplyTo] = useState<CommentRow | null>(null);
   const [sending, setSending] = useState(false);
+  const [busyCommentId, setBusyCommentId] = useState<string | null>(null);
 
   const load = useCallback(async (append = false) => {
     append ? setLoadingMore(true) : setLoading(true);
@@ -29,16 +30,19 @@ export function CommentThread({ articleId }: { articleId: string }) {
 
   useEffect(() => { void load(false); }, [articleId]);
 
+  const requireSession = async () => {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) return true;
+    Alert.alert('需要登录', '登录后才能使用社区互动功能。', [
+      { text: '取消', style: 'cancel' },
+      { text: '去登录', onPress: () => router.push('/auth') }
+    ]);
+    return false;
+  };
+
   const submit = async () => {
     if (!text.trim()) return;
-    const { data } = await supabase.auth.getSession();
-    if (!data.session) {
-      Alert.alert('需要登录', '登录后才能发表评论。', [
-        { text: '取消', style: 'cancel' },
-        { text: '去登录', onPress: () => router.push('/auth') }
-      ]);
-      return;
-    }
+    if (!(await requireSession())) return;
     setSending(true);
     try {
       await createComment(articleId, text, replyTo?.id || null);
@@ -52,28 +56,56 @@ export function CommentThread({ articleId }: { articleId: string }) {
     }
   };
 
+  const onLike = async (comment: CommentRow) => {
+    if (!(await requireSession())) return;
+    setBusyCommentId(comment.id);
+    try {
+      await likeComment(comment.id);
+      Alert.alert('已点赞', '你的点赞已经记录。');
+    } catch (error) {
+      Alert.alert('点赞失败', error instanceof Error ? error.message : '请稍后重试。');
+    } finally {
+      setBusyCommentId(null);
+    }
+  };
+
+  const onReport = async (comment: CommentRow) => {
+    if (!(await requireSession())) return;
+    Alert.prompt(
+      '举报评论',
+      '请简要说明举报理由（1–500字）。',
+      async (reason) => {
+        if (!reason?.trim()) return;
+        setBusyCommentId(comment.id);
+        try {
+          await reportComment(comment.id, reason);
+          Alert.alert('举报已提交', '我们会在后台审核这条评论。');
+        } catch (error) {
+          Alert.alert('举报失败', error instanceof Error ? error.message : '请稍后重试。');
+        } finally {
+          setBusyCommentId(null);
+        }
+      },
+      'plain-text'
+    );
+  };
+
   return <View style={styles.wrap}>
     <Text style={styles.heading}>评论</Text>
-    <Text style={styles.hint}>登录后可评论和回复。公开列表仅展示已发布评论。</Text>
+    <Text style={styles.hint}>登录后可评论、回复、点赞和举报。公开列表仅展示已发布评论。</Text>
     {replyTo ? <View style={styles.replyBanner}><Text style={styles.replyText}>回复 {replyTo.profiles?.display_name || '用户'}</Text><Pressable onPress={() => setReplyTo(null)}><Text style={styles.cancel}>取消</Text></Pressable></View> : null}
-    <TextInput
-      value={text}
-      onChangeText={setText}
-      placeholder={replyTo ? '写下回复…' : '写下评论…'}
-      multiline
-      maxLength={3000}
-      style={styles.input}
-      editable={!sending}
-    />
-    <Pressable style={styles.submit} onPress={submit} disabled={sending || !text.trim()}>
-      <Text style={styles.submitText}>{sending ? '发送中…' : replyTo ? '发表回复' : '发表评论'}</Text>
-    </Pressable>
+    <TextInput value={text} onChangeText={setText} placeholder={replyTo ? '写下回复…' : '写下评论…'} multiline maxLength={3000} style={styles.input} editable={!sending} />
+    <Pressable style={styles.submit} onPress={submit} disabled={sending || !text.trim()}><Text style={styles.submitText}>{sending ? '发送中…' : replyTo ? '发表回复' : '发表评论'}</Text></Pressable>
 
     {loading ? <ActivityIndicator style={{ marginTop: 24 }} /> : items.length === 0 ? <Text style={styles.empty}>暂时还没有评论。</Text> : items.map((item) => <View key={item.id} style={styles.comment}>
       <View style={styles.commentHead}><Text style={styles.name}>{item.profiles?.display_name || '唐人读者'}</Text><Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
       {item.parent_id ? <Text style={styles.parentTag}>回复</Text> : null}
       <Text style={styles.body}>{item.content}</Text>
-      <Pressable onPress={() => setReplyTo(item)}><Text style={styles.replyAction}>回复</Text></Pressable>
+      <View style={styles.actions}>
+        <Pressable onPress={() => setReplyTo(item)} disabled={busyCommentId === item.id}><Text style={styles.action}>回复</Text></Pressable>
+        <Pressable onPress={() => onLike(item)} disabled={busyCommentId === item.id}><Text style={styles.action}>{busyCommentId === item.id ? '处理中…' : '点赞'}</Text></Pressable>
+        <Pressable onPress={() => onReport(item)} disabled={busyCommentId === item.id}><Text style={styles.reportAction}>举报</Text></Pressable>
+      </View>
     </View>)}
 
     {cursor ? <Pressable style={styles.more} onPress={() => load(true)} disabled={loadingMore}><Text style={styles.moreText}>{loadingMore ? '加载中…' : '加载更多评论'}</Text></Pressable> : null}
@@ -81,14 +113,5 @@ export function CommentThread({ articleId }: { articleId: string }) {
 }
 
 const styles = StyleSheet.create({
-  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},
-  heading:{fontSize:24,fontWeight:'900',color:'#101828'},
-  hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},
-  replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},
-  replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},
-  input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},
-  submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},
-  empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},
-  comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},replyAction:{color:'#c8211e',fontWeight:'800',marginTop:8},
-  more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
+  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},heading:{fontSize:24,fontWeight:'900',color:'#101828'},hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},actions:{flexDirection:'row',gap:18,marginTop:10},action:{color:'#c8211e',fontWeight:'800'},reportAction:{color:'#667085',fontWeight:'800'},more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
 });

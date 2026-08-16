@@ -1,0 +1,30 @@
+name: APP Batch 1 Node 5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260816150000_trrb_comment_thread_integrity.sql'
+      - 'apps/mobile/src/api/comments.ts'
+      - 'apps/mobile/src/components/CommentThread.tsx'
+      - 'apps/mobile/app/article/[id].tsx'
+      - 'scripts/audit-app-batch1-node5.mjs'
+      - '.github/workflows/app-batch1-node5.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Audit comment and reply requirements
+        run: node scripts/audit-app-batch1-node5.mjs
+      - name: Install mobile dependencies
+        working-directory: apps/mobile
+        run: npm install --no-audit --no-fund
+      - name: Typecheck mobile app
+        working-directory: apps/mobile
+        run: npm run typecheck

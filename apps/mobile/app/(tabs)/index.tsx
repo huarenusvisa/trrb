@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { fetchArticles, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 
@@ -45,8 +45,13 @@ export default function HomeScreen() {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(); }} />}
       ListHeaderComponent={
         <View>
-          <View style={styles.header}><Text style={styles.brand}>唐人日报</Text><Text style={styles.en}>Tang Ren Daily</Text></View>
-          <Text style={styles.subtitle}>美国华人新闻 · ICE · 移民 · 判例与新规</Text>
+          <View style={styles.headerRow}>
+            <View><View style={styles.header}><Text style={styles.brand}>唐人日报</Text><Text style={styles.en}>Tang Ren Daily</Text></View><Text style={styles.subtitle}>美国华人新闻 · ICE · 移民 · 判例与新规</Text></View>
+            <Pressable style={styles.searchButton} onPress={() => router.push('/search')}><Text style={styles.searchText}>搜索</Text></Pressable>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryRow}>
+            {categories.map((category) => <Pressable key={category} style={styles.chip} onPress={() => router.push({ pathname: '/category/[name]', params: { name: category } })}><Text style={styles.chipText}>{category}</Text></Pressable>)}
+          </ScrollView>
           {error ? <Text style={styles.error}>{error}</Text> : null}
           {lead ? (
             <Pressable style={styles.hero} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(lead.id) } })}>
@@ -70,8 +75,5 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: '#f5f6f8' }, content: { padding: 16, paddingTop: 58, paddingBottom: 30 }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 }, muted: { color: '#667085' },
-  header: { flexDirection: 'row', alignItems: 'baseline', gap: 10 }, brand: { color: '#c8211e', fontSize: 30, fontWeight: '900' }, en: { color: '#667085', fontSize: 15, fontWeight: '700' }, subtitle: { marginTop: 6, color: '#475467', marginBottom: 18 }, error: { color: '#b42318', marginBottom: 12 },
-  hero: { backgroundColor: '#fff', borderRadius: 18, overflow: 'hidden', marginBottom: 24 }, heroImage: { width: '100%', height: 210, backgroundColor: '#e4e7ec' }, heroBody: { padding: 16 }, heroTitle: { fontSize: 23, lineHeight: 31, fontWeight: '900', color: '#101828', marginTop: 6 },
-  sectionTitle: { fontSize: 22, fontWeight: '900', color: '#101828', marginBottom: 12 }, card: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 14, marginBottom: 12, overflow: 'hidden', minHeight: 118 }, thumb: { width: 126, minHeight: 118, backgroundColor: '#e4e7ec' }, thumbPlaceholder: { width: 126, backgroundColor: '#eaecf0' }, cardBody: { flex: 1, padding: 12 }, category: { color: '#c8211e', fontSize: 13, fontWeight: '800' }, title: { marginTop: 5, color: '#101828', fontSize: 17, lineHeight: 23, fontWeight: '800' }, date: { marginTop: 7, color: '#98a2b3', fontSize: 12 }
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:30},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085'},headerRow:{flexDirection:'row',alignItems:'flex-start',justifyContent:'space-between',gap:12},header:{flexDirection:'row',alignItems:'baseline',gap:10},brand:{color:'#c8211e',fontSize:30,fontWeight:'900'},en:{color:'#667085',fontSize:15,fontWeight:'700'},subtitle:{marginTop:6,color:'#475467',marginBottom:14},searchButton:{backgroundColor:'#101828',paddingHorizontal:16,paddingVertical:10,borderRadius:12},searchText:{color:'#fff',fontWeight:'800'},categoryRow:{gap:8,paddingBottom:18},chip:{backgroundColor:'#fff',borderRadius:999,paddingHorizontal:14,paddingVertical:9},chipText:{color:'#344054',fontWeight:'800'},error:{color:'#b42318',marginBottom:12},hero:{backgroundColor:'#fff',borderRadius:18,overflow:'hidden',marginBottom:24},heroImage:{width:'100%',height:210,backgroundColor:'#e4e7ec'},heroBody:{padding:16},heroTitle:{fontSize:23,lineHeight:31,fontWeight:'900',color:'#101828',marginTop:6},sectionTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:12},card:{flexDirection:'row',backgroundColor:'#fff',borderRadius:14,marginBottom:12,overflow:'hidden',minHeight:118},thumb:{width:126,minHeight:118,backgroundColor:'#e4e7ec'},thumbPlaceholder:{width:126,backgroundColor:'#eaecf0'},cardBody:{flex:1,padding:12},category:{color:'#c8211e',fontSize:13,fontWeight:'800'},title:{marginTop:5,color:'#101828',fontSize:17,lineHeight:23,fontWeight:'800'},date:{marginTop:7,color:'#98a2b3',fontSize:12}
 });

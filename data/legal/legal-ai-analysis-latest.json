@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
   "scope": "Chinese legal-information analyses grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 456,
+  "count": 514,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -2341,6 +2341,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "06c28182f9c20cce5a89e839",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-5278-2187603.pdf",
+      "title": "24-5278",
+      "chineseTitle": "动物保护组织诉美国鱼类及野生动物管理局关于《濒危物种法》第1533(e)条相似外观保护权解释案",
+      "summary": "本案聚焦《濒危物种法》第1533(e)条款是否授权美国鱼类及野生动物管理局（以下简称“管理局”）对已在濒危或受威胁名单上的物种，基于相似外观进行再次保护分类。管理局认为该条仅适用于未列入名单的物种，而动物保护组织则主张该条款允许对已列名单物种进行类似保护。地区法院支持动物保护组织，后被哥伦比亚特区巡回法院推翻，裁定管理局解释符合立法文本和目的，明确管理局无权对已列名单物种进行相似外观分析。",
+      "legalIssue": "《濒危物种法》第1533(e)条款是否赋予管理局权力基于相似外观对已列入濒危或受威胁物种实行再次保护分类？",
+      "holdingOrRule": "法院裁定，第1533(e)条明文规定相似外观保护权适用于“未列入名单的物种”，管理局无权基于该条对已列入名单的物种进行相似外观分析和保护升级，管理局拒绝进行相似外观分析不构成任意或反复无常。",
+      "impact": "直接法律效力：限制了管理局基于第1533(e)条对已列名单物种实施类似濒危更高级别保护的权限。可能影响：促使管理局通过其他授权条款或规章制定针对受威胁物种额外保护措施，影响濒危物种保护管理实践。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院2026年8月11日公开判决（案件编号24-5278）官方pdf判决文书，全文解析裁判理由、法规解释及先例适用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "07620bd2365b944513e7c308",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/19-71322.pdf",
+      "title": null,
+      "chineseTitle": "美国第九巡回上诉法院：俄勒冈州法§163.670罪名符合联邦“虐童罪”定义，拒绝Gonzalez-Godinez的移民复议请求",
+      "summary": "本案中，第九巡回上诉法院裁定，俄勒冈州法律§163.670条款下的“利用儿童展示性内容”罪名，符合联邦法律中对“虐童、忽视或遗弃罪”的范畴，因该罪需具备至少刑事过失的主观要件及可能造成儿童身心损害的行为要件。依据此认定，Gonzalez-Godinez因该罪被判可驱逐。法院驳回了Gonzalez关于罪名不符联邦定义的主张，认为俄勒冈州法院要求主观故意或知情状态，并且该罪行为含有导致儿童伤害的实质风险。",
+      "legalIssue": "是否俄勒冈州法律§163.670“利用儿童展示性内容”罪名，依据联邦8 U.S.C. § 1227(a)(2)(E)(i)构成“虐童、忽视或遗弃罪”，进而使被告移民身份面临被遣返的法律后果。",
+      "holdingOrRule": "第九巡回法院依Leon-Briviesca案确立的标准，认定§163.670罪名具有至少刑事过失的主观要件及将未成年人置于可能受害状态的行为构成要件，符合联邦范畴的“虐童罪”，故该罪使被告可依据联邦法律被驱逐。",
+      "impact": "直接法律效力：明确§163.670条款违反儿童保护联邦标准，构成可驱逐罪名，直接影响被判该罪的外国人在移民法方面的救济权利。可能影响：为类似州法罪名是否符合联邦虐童罪的界定提供司法标准与参考，指导移民法及刑法交叉领域的后续案件审理。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月10日正式公开裁决文件，结合法院对Leon-Briviesca案和Menendez案判决及对俄勒冈州法相关司法解释的分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "087828b8350b840f298d1a5b",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -2485,6 +2517,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "1017ec92395d810ca4d50f84",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/23-16164.pdf",
+      "title": null,
+      "chineseTitle": "霍洛福德诉洛佩兹案：夏威夷携枪法律涉及私有产权限制的部分初步禁令部分确认",
+      "summary": "夏威夷2023年通过法律禁止在多个敏感地点携带枪械，并规定未经产权人允许不得在私有地携带枪械。原告挑战私有产权携枪规则，初审法院部分支持其临时禁令。第九巡回上诉法院原判原告未能证明其有望胜诉，但美国最高法院仅针对私有产权规则逆转该判断，案件发回重审。上诉法院现确认针对夏威夷修订法规134-9.5节的禁令，维持部分禁令，撤销部分禁令。",
+      "legalIssue": "夏威夷法律中禁止未经产权人允许私有地产携枪的规定是否违反美国宪法第二修正案的核心权利保障？",
+      "holdingOrRule": "最高法院认为原告有可能在挑战夏威夷134-9.5条款时胜诉，要求重审；第九巡回法院经再审确认部分禁止携枪的法规条款的初步禁令有效，主要涉及禁止私有地产默认携枪规则，拒绝禁令的部分条款涉及其他携枪限制。",
+      "impact": "该判决对夏威夷州携带枪械法律的部分实施具有直接法律约束力，尤其是涉及私有地产携枪限制的条款；同时，对其他州处理私有产权与枪支携带权的类似法律具有潜在示范和影响，可能引起全国范围内对第二修正案保护范围的进一步法律探讨。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月10日发布的官方判决意见及相关最高法院裁定文件（链接https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/23-16164.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "1023c8669d258c847eb90928",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:24-2682:J:Lee:condis:T:fnOp:N:3590973:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "凯利-洛马克斯诉芝加哥市警察非法逮捕及恶意起诉案",
+      "summary": "凯利-洛马克斯因涉嫌非法持枪被警察逮捕，基于驾驶座下发现枪支及其无持枪许可证被捕。虽然审判中被判无罪，后凯利-洛马克斯基于第四修正案提起非法逮捕及恶意起诉诉讼。第七巡回上诉法院认为警方有合理根据逮捕及起诉，证据足以支持控告，逮捕和起诉均有充分理由，故支持警方的简易判决。意见中异议法官认为恶意起诉部分存在合理怀疑，应进一步审理。",
+      "legalIssue": "是否存在充分的合理根据支持对凯利-洛马克斯的非法持枪指控，以决定非法逮捕及恶意起诉的合法性。",
+      "holdingOrRule": "法院认定警方在发现枪支并得知当事人无持枪许可的情况下，有合理根据进行逮捕，并且初步证据支持检控，故简易判决支持警方抗辩；但异议意见认为恶意起诉部分应考虑知情或疏忽虚假陈述后证据是否仍构成合理根据。",
+      "impact": "直接法律效力—本判决对第七巡回法院辖区内涉及合理根据标准下警察逮捕及恶意起诉案件具有指导作用。可能影响—其他辖区和类似案件在处理合理根据与警方责任界定时可借鉴该案出发点和分析框架。",
+      "sourceGrounding": "依据美国第七巡回上诉法院官方裁判文书Final Opinion，案号24-2682，通过官方链接及全文详细事实和法律分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "10f3479cda7e5ce2e064cf16",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -2597,6 +2661,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "16377d61169827d3b6ffd730",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-5111-2186049.pdf",
+      "title": null,
+      "chineseTitle": "印第安再组织法下对犹他州Uncompahgre保留地土地恢复申请案判决解析",
+      "summary": "本案涉及依据1934年印第安再组织法（IRA）恢复部落所有权的土地范围。Ute印第安部落声称对犹他州的Uncompahgre保留地拥有可赔偿所有权，但政府和法院认定1880年法案赋予的赔偿所有权仅限于科罗拉多保留地，Uncompahgre保留地未被涵盖，因而不具备通过IRA恢复部落所有权的资格。法院明确，保留地的管辖权与土地所有权独立，部落对Uncompahgre保留地缺乏赔偿所有权，故驳回申请。",
+      "legalIssue": "印第安再组织法下，部落是否对犹他州Uncompahgre保留地拥有可赔偿土地所有权，从而有资格请求恢复该土地的部落所有权？",
+      "holdingOrRule": "联邦上诉法院根据1880年法案及相关条约，裁定部落的可赔偿所有权仅限于科罗拉多保留地，未涵盖位于犹他州的Uncompahgre保留地，故该保留地不符合印第安再组织法中土地恢复资格。",
+      "impact": "直接法律效力体现在限制部落依据1934年印第安再组织法对犹他州Uncompahgre保留地申请的恢复权利。可能影响其他类似历史协议背景下的部落土地恢复请求，特别是对赔偿所有权认定的司法解释。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院2026年判决全文，具体分析1880年法案条文、相关条约、司法先例及IRA规定。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "163d5c2cd55ea2312168f90b",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -2642,6 +2722,22 @@
       "holdingOrRule": "法院裁定：未充分通知范围之额外证词经法官及时剔除并辅以指引，不足以致审判不公；证词虽存在部分不一致但不构成伪证或证词全面不可信，故拒绝剔除全部相关证词；涉案影像虽表现未成年人更衣，结合被告置摄像机方位、编辑选择及设备控制目的，可构成“露骨展现”且证据充分支持定罪。",
       "impact": "直接法律效力：确认了对涉及未成年人隐秘拍摄案件中证据接受及评估标准，尤其强调裁判中对非法证词处理的法官自由裁量权及对“露骨展现”证据的采信标准，强化对儿童性剥削罪行的司法严肃态度。可能影响：指导今后类似涉及未成年隐私侵犯及性剥削影像制作案件中证据合法性与证明标准，影响联邦地区法院及上诉法院的案例处理。",
       "sourceGrounding": "依据美国第十一巡回上诉法院官方判决文书（USA v. Gray Rivera，第十一巡回法院案件号24-14147）全文材料，网址：https://media.ca11.uscourts.gov/opinions/pub/files/202414147.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "17dd36aa735d92e95efb437c",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-3454.pdf",
+      "title": null,
+      "chineseTitle": "美国第九巡回上诉法院关于RICO诉讼时效及近因关系的判决解析",
+      "summary": "本案涉及针对学生贷款服务商的民事RICO诉讼，核心争议为四年诉讼时效的起算时间。法院认为学生借款人对贷款欺诈性质的“伤害”认知始于2016年ITT公司倒闭，而非早期贷款发放或政府调查公开。故原告于2020年提起诉讼未逾期。其次，被告未能保留针对近因关系的上诉资格，因相关事实存在争议，且未于审判结束时提出挑战。法院据此维持原判。",
+      "legalIssue": "RICO法案下四年诉讼时效自何时起算；被告是否保留近因关系抗辩的上诉权利。",
+      "holdingOrRule": "诉讼时效根据“伤害发现规则”，始于原告知道或理应知道欺诈伤害之时。此案证据显示原告最早于2016年ITT破产后才合理知晓伤害，提诉在四年时效内。被告未在审判终结时适当提出近因关系异议，故该抗辩不予审查。",
+      "impact": "直接法律效力：确认RICO诉讼时效起算应依原告实际或合理知识判断，保护普通消费者免受因复杂金融安排难以早期发现欺诈而错失诉讼机会的风险。可能影响：类似复杂金融欺诈案件中对诉讼时效起算和上诉程序保全的进一步解释和应用。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年公开判决全文《Turrey v. Vervent, Inc.》官方文件（https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-3454.pdf）。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -2693,6 +2789,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "1a3a8b86043b83297bec450b",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-11/C:23-3374:J:Pryor:aut:T:fnOp:N:3589009:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "美国第七巡回上诉法院关于分销受控物质导致严重身体伤害案终审意见解析",
+      "summary": "本案涉及被告Matlock向Wiley分销海洛因，导致后者严重药物过量受伤。法院审查证据，是否足以证明Matlock所提供的海洛因是Wiley过量的“but-for”（必要）原因。经分析证据链，包括双方短信、医疗证言及专家观点，法院认定证据充分支持定罪，驳回Matlock要求无罪判决的请求，最终维持原判。",
+      "legalIssue": "在刑事案件中，是否有充足证据证明被告分销的受控物质为受害人严重身体伤害的“but-for”原因，从而支持依据21 U.S.C. § 841(b)(1)(C)进行的定罪及量刑加重。",
+      "holdingOrRule": "法院认为，视证据于对政府有利的光线，若被告分销的受控物质至少是导致受害人严重受伤的必要因素（即‘but-for’原因），则可判定被告罪名成立。且被告提出的其他可能因素及时间差并不足以推翻此因果关系认定。故维持对被告的定罪及相关刑罚。",
+      "impact": "直接法律效力：确认了联邦法院在毒品分销案件中应用‘but-for’因果关系原则的标准，为类似案件审理提供裁判依据。可能影响：指导律师在相关刑事案件中的证据准备和辩护策略，影响法官审理相关案件时的标准认可及判决。",
+      "sourceGrounding": "依据美国第七巡回上诉法院于2026年8月11日发布的终审意见，案件编号23-3374，涉及Matlock因分销导致严重身体伤害而被判刑，详见官方判决全文链接。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "1a76c87c4a7653e7aa95d569",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-5177-2184255.pdf",
+      "title": "25-5177",
+      "chineseTitle": "美国上诉法院判决：340B药品定价中回扣机制须经卫生与公共服务部长批准",
+      "summary": "340B项目要求制造商向符合条件的医疗机构提供药品折扣。部分制造商2024年提出改用购后回扣(rebate)取代购前折扣。卫生部部长指回扣机制须经其批准，制造商不得自行实施。法院认可部长权限，依据法律条文认定340B条款中的“as provided by the Secretary”要求回扣机制须获部长事先“提供”和批准。制造商未经批准强推回扣模型违反法规，部长有权阻止。法院支持部长暂缓回扣机制实施，继续研究相关方案。",
+      "legalIssue": "340B法案是否允许药品制造商在未获得卫生与公共服务部长明确批准前，单方面实施回扣机制替代传统的购前折扣机制？",
+      "holdingOrRule": "法院判决340B法案中规定的价格调整机制“as provided by the Secretary”意味着回扣机制须由卫生部部长明示并批准，制造商不得单方面实施回扣模型。现阶段部长未批准制造商提出的回扣方案，制造商须暂停实施，部长有权要求制造商提供更多资料并继续评估。",
+      "impact": "直接法律效力：禁止制造商在未获批准前采用回扣机制，维护卫生部部长对340B项目价格机制的控制权。可能影响：回扣定价模式的未来推广和试点，影响340B参与制造商及覆盖医疗实体的药品购销方式，影响患者获得药品的价格及供应链管理。",
+      "sourceGrounding": "内容基于美区哥伦比亚特区巡回上诉法院2026年7月21日判决案号25-5177，法院详细解析340B法案条文及相关法案历史，判决书全文见官方链接https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-5177-2184255.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "1aa1753fa5d8ddae57fed756",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -2706,6 +2834,22 @@
       "holdingOrRule": "法院认为，根据宾夕法尼亚法和侵权法第二次重述，托管义务仅限于合同或自愿承担的范围，Carlisle仅承诺销售、安装泵及基础操作培训，未承担全面安全培训义务，且未增加事故风险，亦无因托管而产生的合理依赖，故不负更广泛的侵权责任。",
       "impact": "直接法律效力：本判决限制了设备制造商在未明确承诺提供全面安全培训情况下的责任范围，强调托管义务需具体且明确承诺。可能影响：对工业设备制造商与用户单位之间培训及安全责任界定提供重要参考，减少设备供应商潜在侵权风险。",
       "sourceGrounding": "解析基于美国第三巡回上诉法院官方判决书全文，具体见判决理由部分关于托管义务和侵权责任的阐述和引用的宾夕法尼亚法律及侵权法第二次重述。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "1b317d465f5ad05db5533c23",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-7050-2187620.pdf",
+      "title": "25-7050",
+      "chineseTitle": "华盛顿特区警方对涉嫌儿童虐待嫌疑人合理怀疑下的临时拘留获判定享有合格豁免权",
+      "summary": "案件涉及唐人日报报道的华盛顿特区警察基于目击者涉嫌儿童绑架或虐待的报警，对Jared Fishman进行约25分钟拘留。初步调查发现被拘留者为涉事儿童父亲，警方进一步基于涉嫌儿童虐待合理怀疑，对其继续拘留直至确认儿童安全。地方法院判决警方无合格豁免，但上诉法院认定，鉴于目击者陈述及嫌疑人行为，警方合理怀疑未消散，拘留行为符合法律规定，警方享有合格豁免。",
+      "legalIssue": "在警方基于目击者报告涉嫌儿童绑架或虐待初步调查时，是否在合理怀疑消散后继续拘留涉事嫌疑人构成第四修正案违法？",
+      "holdingOrRule": "警方在有合理怀疑儿童虐待相关犯罪的情况下，对嫌疑人的临时拘留直至合理确认儿童安全，并未违反第四修正案。疑似绑架线索消散后，合理怀疑儿童虐待仍存在，警方持续拘留具备法律依据。案件中警方执法行为享有合格豁免权，免于因延长拘留被追责。",
+      "impact": "直接法律效力：本判决明确在涉嫌儿童虐待案中，警方合理调查期间对疑似犯罪嫌疑的临时拘留不违反第四修正案，保障执法人员合格豁免权。可能影响：警察部门在处理类似涉及儿童安全的初步报警时，得以基于合理怀疑延长临时拘留时间。涉儿童相关刑事侦查及民事侵权（如非法拘禁诉讼）案件的处理标准亦受该判决间接影响。",
+      "sourceGrounding": "根据2026年8月11日美国哥伦比亚特区巡回上诉法院25-7050号判决全文，详细分析了事件经过、各方主张及法院关于合理怀疑、第四修正案及合格豁免权的法律适用。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -2770,6 +2914,22 @@
       "holdingOrRule": "1. Lozada案的‘适当纪律机构’并不限于州律师协会，联邦移民执行办公室（EOIR）作为具有独立纪律制裁权的机构，接受投诉即符合第三步要求。2. 当投诉满足Lozada程序目的（如遏制无理援助无效申诉等），即使非传统州律师协会投诉亦属‘实质遵守’。本案中，原裁决以未向州律师协会投诉为由拒绝申请属滥用裁量权，需撤销。",
       "impact": "直接法律效力：本判决确认EOIR投诉可替代州律师协会投诉，明确了移民诉讼中Lozada三步骤要求的具体适用范围。可能影响：为移民申请人提供更灵活便捷的律师失职申诉途径，在相关移民法庭案件中，或影响类似申诉的受理和评估标准。",
       "sourceGrounding": "依据美国第十一巡回上诉法院2026年公开审理文书『Jeremias Medrado Pasqual-Andres v. U.S. Attorney General』全文官方裁判意见，特别参照判决理由第三部分关于Lozada‘适当纪律机构’解释及判决结论章节。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "1d6450a1ccf891396aceeaa0",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/22-35103.pdf",
+      "title": null,
+      "chineseTitle": "Devas Multimedia诉Antrix案：外国主权豁免、个人管辖权及论坛非便宜原则解析",
+      "summary": "本案涉及Devas Multimedia及其关联方在美国根据《承认及执行外国仲裁裁决公约》（纽约公约）请求确认对印度全资国有企业Antrix Corp Ltd.的国际仲裁裁决。法院认定，根据《外国主权豁免法》（FSIA）仲裁例外条款，联邦法院对Antrix拥有标的管辖权。并阐明个人管辖权符合第五修正案正当程序要求，且因纽约公约强制执行仲裁裁决，论坛非便宜原则不适用于确认仲裁裁决诉讼。最高法院推翻先前最低联系标准，确认FSIA列明的例外即构成管辖依据。法院部分维持、部分撤销原判，进一步处理印度法院撤销仲裁裁决的效力。",
+      "legalIssue": "本案聚焦的核心法律问题包括：（1）联邦法院是否对印度国有企业Antrix拥有根据FSIA仲裁例外条款的标的管辖权；（2）法院对此类外国主权实体行使个人管辖权是否符合美国宪法第五修正案的正当程序条款；（3）基于纽约公约确认仲裁裁决诉讼中，论坛非便宜原则是否适用。",
+      "holdingOrRule": "（1）FSIA仲裁例外条款为确认涉及外国国有企业的国际仲裁裁决提供联邦法院标的管辖权，无需所在交易与美国有商业联系；（2）即使Assuming Antrix受第五修正案保护，法院的个人管辖权行使合理，符合法律程序；（3）纽约公约要求缔约国强制执行仲裁裁决，排除论坛非便宜作为免除执行的辩护；（4）美国法院拥有对外国国有企业位于美国商业资产的强制执行权。",
+      "impact": "直接法律效力：该判决明确强化FSIA仲裁例外适用范围，降低对外国国有企业国际仲裁裁决确认的管辖门槛，为类似案件提供联邦法院管辖与执行司法基础。破除最低联系人门槛，阐明个人管辖合理性标准。明确纽约公约下论坛非便宜原则不适用，保障国际仲裁裁决执行的统一性。可能影响：国际投资仲裁、跨国商业纠纷中涉外国主权企业资产执行环境，影响国际商业合同诉讼策略及仲裁裁决后续执行机制。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月12日发布的联邦上诉意见书全文分析，该文书详细阐明FSIA仲裁例外条款与《承认及执行外国仲裁裁决公约》（纽约公约）的适用及解释，结合最高法院2025年相关判例指引，综合判决结构与理由形成本解析。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -2965,6 +3125,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "2e264a168c3d657a22c07bdd",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-2251:J:Easterbrook:aut:T:fnOp:N:3590741:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "第七巡回上诉法院最终判决意见解析",
+      "summary": "本案由美国第七巡回上诉法院发布最终判决意见，涵盖对案件事实的认定及适用联邦法律原则的解释。判决详细分析了案件争议焦点，并依据相关法律规定作出裁定。判决意见体现了对法律条文和先例的综合运用，明确了当事人在该争议中的法律地位及责任。",
+      "legalIssue": "本案核心法律问题系关于上诉方提出的法律主张是否符合法律规定，以及下级法院判决是否存在法律适用错误。涉及对案件事实认定及法律解释的争议。",
+      "holdingOrRule": "官方材料不足，无法确认裁判结论。",
+      "impact": "直接法律效力限定于第七巡回法院的辖区内，对同类案件具有指导意义。可能影响该管辖区内相关诉讼程序及法律实践，对类似事实案件的处理提供参照。",
+      "sourceGrounding": "依据美国第七巡回上诉法院官方发布的最终判决意见原文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "2f064c369bf0d4ff1d3f1623",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -3026,6 +3202,22 @@
       "holdingOrRule": "法院确认被告联邦调查局享有主权豁免权，宪法及联邦侵权索赔法中有关调查决策的豁免条款使法院无管辖权；此外，未建立雇佣关系，故Title VII索赔不成立，且法院认定进一步修正诉状属徒劳，故案件最终被驳回。",
       "impact": "直接法律效力：明确联邦机构在类似诉讼中的主权豁免适用，限制了原告对联邦执法机关刑事调查失职的民事诉讼。可能影响：对网络犯罪举报未获处理情形寻求联邦赔偿的案件提出较高的法律门槛，尤其是非雇员身份的原告难以通过Title VII主张歧视赔偿。",
       "sourceGrounding": "依据美国第三巡回上诉法院2026年8月10日公开判决书《La'Keya Keo诉联邦调查局》全文分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "3245c67381665f0a8a513d18",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:24-3018:J:Maldonado:aut:T:fnOp:N:3590876:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "美国第七巡回上诉法院关于非法藏匿和强迫劳动案的最终判决",
+      "summary": "本案涉及三名被告于2014年从贝宁非法将两名未成年女童带入美国，以虚假身份文件哄骗当局，后将其强迫劳动并施加虐待。被告被控密谋藏匿非法入境者、藏匿行为及强迫劳动罪，经陪审团认定有罪。被告上诉质疑证据不足及判刑不合理，法院给予被害人证言高度采信，认定证据充足支持定罪，维持判决和刑期。",
+      "legalIssue": "被告是否有证据显示其在明知被害人非法入境的情况下，实施了藏匿、防止其被执法机关发现的行为，并实施强迫劳动合规构成犯罪？",
+      "holdingOrRule": "法院认定证据足以支持被告以伪造证件、诱骗方式非法带入女童美国并强迫其劳动；陪审团有权判断证人可信度，被害人证言合理且非法律意义上不可信；被告意图隐藏被害人免受执法机关发现可由其对女童行为限制、隐藏、传达恐吓信息、转移居所行为合理推断成立；判决及刑期无不当。",
+      "impact": "直接法律效力：此案判例确认了对联合藏匿非法入境者及强迫劳动罪的认定标准，强化了陪审团证据采信权。可能影响：对类似涉及非法入境者藏匿及强迫劳动案件的司法审理及量刑提供指导和支持。",
+      "sourceGrounding": "美国第七巡回上诉法院2026年8月13日正式判决，官方发布意见书全文https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:24-3018:J:Maldonado:aut:T:fnOp:N:3590876:S:0",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3109,6 +3301,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "3438fa165c8ea5001ce0c382",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
+      "title": null,
+      "chineseTitle": "Duralev诉美国案：联邦侵犯主权豁免限制下错带拘留及就业许可申请拒绝的侵权诉求审查",
+      "summary": "本案中，Duralev因涉嫌非法拘留及被拒就业许可申请，依据联邦侵权索赔法（FTCA）起诉美国政府。法院认定：除针对就业许可申请拒绝的过失侵权索赔外，其余诉讼请求因超过两年诉讼时效被驳回；且该及时索赔不具备州法律中对应的私法类比责任，不符合法规要求。法院驳回了对逾期索赔和私法类比存在的争议，维持联邦政府主权豁免权。",
+      "legalIssue": "联邦侵权索赔法（FTCA）下，针对非法拘留、监禁期间身体侵害及就业许可拒绝的索赔是否受两年诉讼时效限制，以及就业许可拒绝构成的过失侵权能否满足FTCA要求的私法类比标准。",
+      "holdingOrRule": "法院确认，Duralev除针对2020年就业许可申请被拒的过失侵权索赔外，其余索赔因超过FTCA规定的两年诉讼时效而被驳回；就业许可申请被拒的过失侵权不具备州侵权法中的类比责任，不符合FTCA下的诉讼资格，故予以驳回。",
+      "impact": "直接法律效力：明确FTCA两年诉讼时效的起算点及私法类比标准严格限制，阻止超时索赔及缺乏私法支持的行政决策过失诉讼。可能影响：涉及联邦行政许可及申请被拒的类似侵权诉讼案件，强调通过行政程序解决争议，避免滥用FTCA追求赔偿。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月11日公开判决文书全文内容分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "347fa1642e53d9ebe402ccf0",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -3138,6 +3346,22 @@
       "holdingOrRule": "法院判定市政府于2022年6月实施的开发暂停决定即属对土地使用权的最终明确立场，满足案件宪法及审慎成熟性的要求。该暂停决定阻止了许可申请的审批及土地开发使用，且无行政复议途径，故诉求已达可审理阶段。地区法院基于未有“最终决定”辩称诉求不成熟理由予以驳回不当，判决撤销并发回重审。",
       "impact": "直接法律效力：确认联邦法院可对地方政府对土地开发许可实施的无限期暂停作出司法审查，界定征用及程序正当性权利受侵害的审理门槛。可能影响：地方政府在基建评估期间实施类似暂停的行为，触发土地权利保护诉求的受理资格，提示行政程序中暂停决定的法律风险。",
       "sourceGrounding": "依据美国第六巡回上诉法院2026年8月14日公开判决书《SW Nashville EB Owner, LLC v. Metropolitan Government of Nashville & Davidson County》官方全文，详见https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0230p-06.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "35e9174ef914cf4f4795a626",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2137.pdf",
+      "title": null,
+      "chineseTitle": "塔瑞诉韦文特案——关于RICO诉讼时效及近因因果关系的联邦上诉法院判决分析",
+      "summary": "本案涉及学生贷款服务商韦文特公司因协助IT技术学院（ITT）通过虚假贷款方案“PEAKS”违反RICO法案的诉讼。案件焦点是四年诉讼时效起算时间及近因因果关系认定。联邦第九巡回法院维持陪审团判决，认定原告借款人直到ITT于2016年倒闭前并未也不应当知道其遭受的基于欺诈的损害，诉讼提起于2020年，符合RICO四年诉讼时效。法院还裁定被告未能在审判结束时及时提出关于因果关系的合法性挑战，故无法在上诉中审查。",
+      "legalIssue": "在RICO法下，民事诉讼的四年诉讼时效应自何时起算：是借款人开始还款时、政府公开调查时，还是直到借款人或其合理推定应知道其遭受欺诈性损害？以及被告是否保留了关于近因因果关系的上诉审查权？",
+      "holdingOrRule": "法院采纳“损害发现规则”，诉讼时效从借款人知道或合理应知其受欺诈损害之时起算。鉴于证据充分显示借款人直到ITT 2016年倒闭前均未获知欺诈，诉讼于2020年提起不迟延。关于因果关系，因原审法院基于事实争议驳回简易判决，被告未于审判终结时适当提出法定异议，故不上诉审查。",
+      "impact": "直接法律效力：确立了针对复杂金融欺诈案件中，RICO诉讼时效起算不应盲目从贷款发放或政府调查开始计算，而应从受害人实际或合理应知欺诈时开始计算。可能影响：其他涉及隐蔽欺诈的消费者保护诉讼，包括学生贷款及金融服务纠纷案件的时效认定标准。",
+      "sourceGrounding": "全部依据美国第九巡回上诉法院2026年8月12日正式公开发布的判决书（https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2137.pdf）内容撰写。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3349,6 +3573,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "3ee0ef38dbef52cca534f37d",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2135.pdf",
+      "title": null,
+      "chineseTitle": "第九巡回上诉法院关于教育贷款服务商RICO诉讼时效案的判决解析",
+      "summary": "本案围绕ITT技术学院学生贷款服务商Vervent涉民事RICO诉讼，核心在于何时起诉时效应开始计算。法院确认，四年诉讼时效自原告合理发现或应当发现其因欺诈性质的贷款所受伤害时起算。鉴于ITT于2016年破产倒闭并揭露了PEAKS贷款项目的欺诈本质，陪审团裁定原告在此之后才合理知晓其损害，故诉讼于2020年提起尚属及时。同时，被告未保存关于因果关系异议的上诉资格。法院据此维持原判，确认四年诉讼时效适用且诉求不被时效阻断。",
+      "legalIssue": "本案核心法律问题为民事RICO诉讼的四年诉讼时效何时开始计算，特别在欺诈事实隐蔽情况下，是否从受害人实际或应合理知晓伤害及欺诈事实时起算。",
+      "holdingOrRule": "法院依据“伤害发现”规则，判定民事RICO诉讼时效自原告实际或应合理知晓伤害及其欺诈性质之日起算。原告合理在2016年ITT破产后首次得知欺诈性贷款事实，2020年起诉在四年时效内。因被告未适当保留因果关系上诉异议，该点不予审理，维持原判。",
+      "impact": "直接法律效力：明确隐蔽欺诈案件中RICO诉讼时效起算点须结合受害人合理知晓情况判断，保护普通消费者权益，避免将诉讼时效不当提前。可能影响：指导类似学生贷款或复杂金融欺诈案件中诉讼时效适用及举证责任，对消费者保护与金融监管均有示范意义。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月12日公布之判决文本（https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2135.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "3fa1706a9232b64cfd3a6de3",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -3426,6 +3666,22 @@
       "holdingOrRule": "“严重原因相信”标准等同于刑事程序中“可能原因（probable cause）”标准，政府负举证责任达此标准；申请人负反驳举证责任。申请人因谋杀未遂指控及射击行为，满足可能原因；其自卫辩护及主观意图均被以事实证据充分驳回。申请人未证明遣返回国时官方会同意或容忍酷刑，故禁止酷刑救济不成立。",
       "impact": "直接法律效力：确立第六巡回法院认定移民法“严重非政治罪”障碍中“严重原因相信”标准即“可能原因”标准，指引本辖区移民案件审理。可能影响：对类似案件中申请人证据举证负担及移民局对犯罪事实认定的裁量权范围具有示范意义，影响美国移民庇护及拒遣案的判决标准和司法审查尺度。",
       "sourceGrounding": "依据美国第六巡回上诉法院2026年8月7日公开判决文件《26a0222p-06.pdf》全文内容，特别是法院关于“严重非政治罪”标准解释及事实认定部分。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "436d2250d686eeb11f380a80",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/16-71147.pdf",
+      "title": null,
+      "chineseTitle": "加州刑法§288.2(b)分发有害物质罪是否构成联邦意义上的儿童虐待罪——加州分发猥亵信息罪上诉案",
+      "summary": "美国第九巡回上诉法院裁定，加州刑法§288.2(b)关于向未成年人分发猥亵且带有性诱导目的的“有害物质”罪名，符合法定的“儿童虐待、忽视或遗弃罪”定义。法院依据《联邦移民法》拒绝了被告Adame关于该罪名过度宽泛的异议，认定此罪名含有知情的主观意图及积极的侵害行为，且根据加州案例，该行为必然造成未成年人的实质伤害，故属可取消遣返申请的法定驱逐理由。",
+      "legalIssue": "加州刑法§288.2(b)针对向未成年人发送带有性诱导目的的有害物质的定罪，是否在法律性质上构成《联邦移民法》所指的儿童虐待罪，从而影响被告的移民救济资格。",
+      "holdingOrRule": "法院采用范畴性分析，认定加州刑法§288.2(b)满足儿童虐待罪的联邦通用定义，包含至少刑事疏忽的主观构成和造成未成年人有害境遇的行为构成。被告关于该罪名范围过宽的主张，包括不需实际伤害、涉及同意的未成年人间行为、错误认定成年人的情况以及未实际接收等，均无现实法律可能性支持，加州法律及判例均表明该罪名构成实质儿童伤害。因而，取消遣返申请被合法拒绝。",
+      "impact": "直接法律效力：明确加州刑法§288.2(b)犯行为符合联邦儿童虐待罪定义，影响在该罪名定罪的非公民移民案件中，相关个人难以获得取消遣返救济。可能影响：为其他第九巡回地区涉及相似未成年人相关刑事罪名的移民案件提供判例指导，对联邦内其他司法辖区理解儿童虐待犯罪构成较为权威。",
+      "sourceGrounding": "解析依据来源于美国第九巡回上诉法院2026年8月10日公开判决书（案号16-71147），法院判决文字内容和法律分析，及案中引用的相关加州法律条文与联邦移民法规定。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3538,6 +3794,38 @@
       "holdingOrRule": "法院认定：1. 18 U.S.C. § 951及§ 371作为内容中立法律，符合第一修正案的中度审查标准；2. 有充分证据证明被告共谋在俄罗斯指导下行动且未通报司法部长；3. 被告不需知道该通报义务亦受刑法制约；4. 法院未滥用自由裁量权拒绝被告提出的陪审团指令；5. 检察机关未构成不当行为。",
       "impact": "直接法律效力：确认了18 U.S.C. § 951及§ 371涉及外国代理人身份通知义务的合宪性及适用标准，对联邦法院在类似案件定罪、审查第一修正案限制设置具有指导意义。可能影响：对涉及外国政府操控及未报告行为的案件司法审理及相关政治言论与活动合规审视，影响政府监管和司法实践范围。",
       "sourceGrounding": "基于美国第十一巡回上诉法院2026年公开判决书《USA v. Augustus C. Romain, Jr., et al》；官方全文详见：https://media.ca11.uscourts.gov/opinions/pub/files/202414097.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "49a8554ce52574e716048166",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5367-2188259.pdf",
+      "title": "25-5367",
+      "chineseTitle": "美国特区哥伦比亚巡回上诉法院关于DJI被列为中国军工企业的判决解析",
+      "summary": "根据2021年《国防授权法》第1260H条，国防部长须每年公布在美运营的“中国军工企业”名单。DJI被多次列入该名单，因其获得中国政府军事工业规划机构的科技支持。DJI诉称该指定程序侵犯程序正义，缺乏证据支持且解释不充分。法院确认此名单附带多个制约如限制联邦合同，认定指定大部分合理，但认为未公开充分说明DJI如何具体“贡献”于中国军工基地，需进一步调查并审视机密记录。",
+      "legalIssue": "国防部长将DJI列为“中国军工企业”是否违反程序正义及是否有充分证据支持其认定，尤其关于DJI被认定为“贡献于中国军工基地”的事实基础和决定解释是否充分。",
+      "holdingOrRule": "法院认为国防部长基于现有证据认定DJI接受中国政府的军事工业支持符合实质性证据标准，拒绝认定程序正义受侵犯；但因未向法院完整公开为何认定DJI“贡献”于中国军工基地的理由，违反陈瑞原则，须发回下级法院重新审查机密依据。",
+      "impact": "直接法律效力为维持国防部长有权将企业列入中国军工企业名单并实施相关限制；对企业而言，该判决强调政府在安全审查中可依机密信息作出严重影响企业的决定，但须确保合理解释和司法审查。此案可能影响其它被制裁实体的程序保护及证据公开要求，强化行政决定的透明度和合规审查。",
+      "sourceGrounding": "解析依据于美国哥伦比亚巡回上诉法院2026年8月14日公开判决书《25-5367》全文，其中详述法条依据、案件事实、法院论证及裁决结果。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "49c26c3d121550e7caeb15ff",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-1392:J:Pryor:aut:T:fnOp:N:3590386:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "Chapman诉Burke案：联邦法院对伊利诺伊州刑事定罪后DNA检测法律的管辖权分析",
+      "summary": "伊利诺伊州Chapman因谋杀罪被定罪，其后在州法院请求根据《伊利诺伊刑事诉讼法》第116-3条对未检测证据进行DNA重新检测，遭到驳回。Chapman随后以联邦42 U.S.C. § 1983条款诉讼质疑该州法律在程序正义和陪审团权利方面的合宪性。联邦地区法院基于Rooker-Feldman原则驳回其诉讼，认为联邦法院无法推翻州法院判决。第七巡回上诉法院认定Chapman具备诉讼资格，且Rooker-Feldman原则不适用，因其诉求针对法律本身的合宪性而非州法院判决，故撤销原判，发回重审。",
+      "legalIssue": "联邦法院是否对质疑伊利诺伊州刑事定罪后DNA检测法案合宪性的案子，因州法院判决已生效而丧失司法管辖权，以及Chapman是否具备诉讼资格。",
+      "holdingOrRule": "Chapman具备诉讼资格，其所遭受伤害与被告控方的拒绝提供DNA检测证据相关，符合美国宪法规定的诉讼资格要求。Rooker-Feldman原则不适用，因Chapman的联邦诉求针对州法律的合宪性挑战，属于独立联邦权利主张，不是对州法院终审判决的复审。联邦法院因此拥有对此类诉讼的管辖权。",
+      "impact": "直接法律效力：该判决确立联邦法院对州刑事定罪后DNA检测法律合宪性诉讼的管辖权范围，防止Rooker-Feldman原则被过度适用，确保证据访问权利受到宪法保障。可能影响：影响类似案件中涉案人员针对州后期证据检测规定提出联邦合宪性质疑的起诉路径，强化程序公正权益保护。",
+      "sourceGrounding": "依据2026年由美国第七巡回上诉法院发布的意见书（Final Opinion），详见https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-1392:J:Pryor:aut:T:fnOp:N:3590386:S:0内正文。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3714,6 +4002,38 @@
       "holdingOrRule": "法院不得在无监督释放期条件下强制被告出狱后登记要求；法庭判定被告未承认枪支相关违规且未以此作为判刑依据，上诉法院撤销不当登记条件，维持其他判决。",
       "impact": "直接法律效力：限制地区联邦法院对无监督释放期被告出狱后附加登记条件的权限。可能影响：州和联邦法院审理类似侵犯监督释放条件案件时的限制及出狱要求设置。",
       "sourceGrounding": "依据美国第七巡回上诉法院2026年关于Jerid Hinz案的官方判决全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "51ad37e1ba7e4be724b8e4e2",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/22-35085.pdf",
+      "title": null,
+      "chineseTitle": "德瓦斯多媒体诉印度Antrix公司案——仲裁裁决的确认与外国主权豁免法下的管辖权问题",
+      "summary": "本案系德瓦斯多媒体及其关联方依据《纽约公约》在美国法院申请确认针对印度国有企业Antrix公司的国际仲裁裁决。联邦第九巡回上诉法院确认美国地方法院对Antrix具备主体和人身管辖权，依据《外国主权豁免法》（FSIA）仲裁例外条款撤销了针对管辖权的先前否定判决。此外，法院裁定仲裁裁决的执行不得因方便法院原则而遭驳回，因《纽约公约》要求各缔约国强制执行裁决。最终法院部分维持裁决确认，但对部分股东的执行权提出异议并发回重审。",
+      "legalIssue": "外国主权豁免法下，针对外国国有企业的仲裁裁决确认诉讼的主体管辖权、人身管辖权是否成立；是否可基于论坛非便利原则驳回确认仲裁裁决的诉讼。",
+      "holdingOrRule": "（1）FSIA的仲裁例外条款赋予美国法院对本案诉讼的主体管辖权；（2）人身管辖权依据FSIA无需满足传统最小联系标准，且本案基于五修正案合理性原则，行使管辖权符合程序正义；（3）《纽约公约》要求强制执行仲裁裁决，论坛非便利原则不适用于确认仲裁裁决的诉讼；（4）法院部分维持对裁决的确认，部分撤销对部分股东的执行权并发回处理。",
+      "impact": "直接法律效力体现在明确了FSIA仲裁例外赋予的管辖权规则，及《纽约公约》下仲裁裁决执行的程序限制，影响外国国有企业涉美国际仲裁裁决确认诉讼的审理。可能影响全球涉外仲裁裁决执行及美国对外主权实体管辖权的认定标准，推动国际仲裁裁决的跨境执行实践。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年公开判决文书《Devas Multimedia Private Ltd. v. Antrix Corp. Ltd.》全文，包括对FSIA、纽约公约相关条款的详细分析及最高法院2025年相关判决的引用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "5204880771e2d84c80abd206",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/25-557.pdf",
+      "title": null,
+      "chineseTitle": "前萨尔瓦多警官身份与庇护资格认定案——Gonzalez-Argueta诉Blanche",
+      "summary": "本案中，Gonzalez-Argueta作为前萨尔瓦多警察，申请庇护及撤销驱逐，但未有效证明遭受的迫害与其前警察身份直接关联。法院依据现行第九巡回上诉法院先例，仅考虑其离职后遭遇的迫害证据，判定由于其及家属离职后未受威胁，故未能建立必要的因果联系，故驳回其申请。两位法官分别发表了对现行判例的批评，呼吁重新审视依据执法行为的迫害与前警察身份间的联系分析方法。",
+      "legalIssue": "申请人作为“前警官”的身份是否与其遭受的迫害之间存在法律上认可的因果联系，从而符合美国移民法下的庇护及撤销驱逐条件？",
+      "holdingOrRule": "依据现行第九巡回法院先例，判断前警官身份相关的迫害，法院仅考察申请人退出警察职业后的遭遇。因申请人未能证明退出后有持续威胁，故缺乏必要的迫害与其前警察身份的关联因果关系，申请庇护及撤销驱逐请求被驳回。",
+      "impact": "直接法律效力：该判决维持了第九巡回法院对“前警察”特定社会群体资格认定时，因果关系评估局限于离职后迫害经历的司法标准，短期内指导同类案件裁判。可能影响：法官们对现有因果关系分析方法公开表示反对，提出修正建议，可能在未来促使第九巡回法院或更高法院重新审视该领域判例，进而影响未来相似庇护案件的实务判断。",
+      "sourceGrounding": "解析基于美国第九巡回上诉法院2026年公开判决文件《Gonzalez-Argueta诉Blanche》全文及法官一致与分别意见，特别围绕事实认定、现行法律标准与法官对判例的评论。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3989,6 +4309,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "5e91a518b43e0477a7698c98",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7037.pdf",
+      "title": null,
+      "chineseTitle": "美国第九巡回上诉法院裁定通讯规范法第230条仅为责任抗辩，不构成诉讼免疫",
+      "summary": "本案涉及Meta及相关实体对地方法院拒绝其基于通讯规范法第230条（CDA第230条）诉讼免疫抗辩的部分驳回所提出的上诉。第九巡回法院裁定，CDA第230条提供的是针对责任的抗辩，而非诉讼免疫，拒绝该项抗辩的裁决不属于可立即上诉的“附带裁定”，需待最终判决后才可复审，因此法院缺乏对本上诉的管辖权。法院进一步说明拒绝第230条抗辩涉及对事实内容的审查，不符合附带裁定的条件。",
+      "legalIssue": "CDA第230条是否赋予互联网服务提供商诉讼免疫权，从而使其拒绝该抗辩的中间裁决可作为附带裁定立即上诉。",
+      "holdingOrRule": "CDA第230条仅提供针对责任的抗辩，不构成诉讼免疫，拒绝该抗辩的裁决不满足附带裁定的三要件，不具备立即上诉的 appellate jurisdiction。",
+      "impact": "直接法律效力：限制互联网平台在第230条抗辩被拒时必须等待最终判决后才能上诉，避免诉讼延迟。可能影响：互联网服务商及相关法律实践中对第230条抗辩的战略调整及诉讼程序安排。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月10日公开发布的裁决意见全文（https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7037.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "5ec556bcd225ad9aaaa0a38d",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -4037,6 +4373,70 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "606443c0f59dc9cc03933a84",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/20-36024.pdf",
+      "title": null,
+      "chineseTitle": "联邦第九巡回上诉法院关于Devas Multimedia对印度Antrix公司国际仲裁裁决确认案的裁判解析",
+      "summary": "本案涉及Devas Multimedia及其相关方依据《承认及执行外国仲裁裁决公约》（《纽约公约》）在美国联邦法院确认对印度Antrix公司仲裁裁决的案件。法院确认《外国主权豁免法》(FSIA)中仲裁例外条款为该案提供了实体及人身管辖权。法院裁定，尽管Antrix缺乏传统最小联系，美国法院行使管辖权并不违反美国宪法第五修正案正当程序条款。同时，法院明确《论坛非便利》原则不适用于依据《纽约公约》确认仲裁裁决的案件。最终，法院部分确认、部分撤销地方法院对仲裁裁决的确认及判决登记，案件发回地方法院对印度法院撤销裁决的影响作进一步处理。",
+      "legalIssue": "是否依据《外国主权豁免法》中的仲裁例外条款，美国法院对外国国有企业Antrix拥有确认国际仲裁裁决的主体及人身管辖权，以及《论坛非便利》原则是否适用于《纽约公约》框架下的仲裁裁决确认案件。",
+      "holdingOrRule": "1. FSIA仲裁例外条款确认法院具备主题管辖权；2. 即使假定Antrix享受第五修正案保护，法院行使个人管辖权亦符合法定正当程序；3. “论坛非便利”原则不适用于基于《纽约公约》的仲裁裁决确认诉讼，且印度法院无法扣押位于美国境内的资产；4. 地方法院裁决部分维持，部分撤销并发回后续审理。",
+      "impact": "直接法律效力：明确FSIA仲裁例外条款下美国法院可确认外国国有企业仲裁裁决、人员管辖权并不受传统最小联系限制，以及《论坛非便利》原则不适用于此类案件。可能影响：促进国际商业仲裁裁决在美国的执行，加强美国法院在国际仲裁确认方面的权威，同时为涉外国有企业诉讼提供管辖权和程序适用指引。",
+      "sourceGrounding": "依据美国联邦第九巡回上诉法院2026年8月12日发布的官方判决文书（https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/20-36024.pdf）及判决全文内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "61003958185591b06db45b54",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-1050-2183025.pdf",
+      "title": "25-1050",
+      "chineseTitle": "税务举报人奖励申请案（Mary Trongone诉美国国税局专员）",
+      "summary": "Mary Trongone向美国国税局提交举报申请，指控两名纳税人2004至2012年涉嫌税务违规，并请求对2013至2017年类似行为的调查给予奖励。IRS拒绝其申请，理由为举报材料中含“污染”信息且IRS未基于其举报收取相关款项。税务法院支持IRS决定，驳回申请。上诉法院审查判定，IRS未能充分调查2013至2017年举报事项，行政记录不足以支持拒绝决定，IRS作出裁决存在任意、随意性，判决推翻税务法院裁定，案件发回重审。",
+      "legalIssue": "IRS在拒绝举报人奖励申请时，是否基于充分合理的调查及完整行政记录，特别是在举报涵盖调查时间延伸至举报材料期后？",
+      "holdingOrRule": "法院认为IRS拒绝2013至2017年度奖励申请依据“举报材料污染”缺乏事实支持，行政记录不完整，IRS未充分调查。IRS应重新审查举报事项，做出合理解释，税务法院应发回重审。",
+      "impact": "直接法律效力：本判决要求IRS在审查举报人奖励申请时，必须基于充分和清晰的事实与记录，否则其决定不具备合理性，应予以撤销。可能影响：对IRS举报人奖励制度的执法程序提出更高要求，保障举报人权利，促使IRS审慎、透明地审查所有举报信息。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院2026年判决全文（https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-1050-2183025.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "617194ae4d26b983a958ab4d",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/24-3849.pdf",
+      "title": null,
+      "chineseTitle": "关于2008年后ITT技术学院学生贷款服务欺诈案的RICO时效和因果关系审查",
+      "summary": "本案中，ITT技术学院通过PEAKS学生贷款项目隐瞒贷款风险，诱使学生借贷而不知其贷款实质上由ITT自身担保，贷款服务由Vervent公司负责。学生在ITT 2016年破产后，始知贷款背后存有欺诈。法院认定，依据RICO四年诉讼时效，学生在2020年起诉未逾期，因其在四年前并不知晓欺诈事实。此外，Vervent未能有效保存对因果关系的上诉异议，故法院维持原判。该案强调消费者对复杂金融欺诈的合理认知标准，并区分投资机构与普通借款人的区别。",
+      "legalIssue": "RICO法案下，学生贷款借款人何时应视为“知晓或应知”其因欺诈造成的损害，从而触发四年诉讼时效，以及被告是否保存了对因果关系裁定的上诉权。",
+      "holdingOrRule": "法院裁定有充分证据支持陪审团认定原告未在诉前四年内知道或应知其受欺诈损害，因此其诉讼符合RICO四年时效。被告关于因果关系的挑战因未在审判结束时提出，故未获审查。",
+      "impact": "直接法律效力：维持对学生贷款服务商等受诉RICO诈骗案件的时效认定及因果审查程序要求。可能影响：对未来涉及复杂金融欺诈行为的消费者诉讼中，“知晓”标准与时效起算时间认定具有示范意义，尤其区分普通消费者与金融机构的认知能力。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月12日公开发布的Heather Turrey诉Vervent, Inc.一案联邦上诉判决文书。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "632697aba74d37b5cc54f318",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/24-7460.pdf",
+      "title": null,
+      "chineseTitle": "华盛顿大学作为州机关享受第十一修正案主权豁免权案解析",
+      "summary": "本案中，九巡法院确认华盛顿大学（UW）属于华盛顿州的“州机关”，因此根据《第十一修正案》享有主权豁免权，非《42 U.S.C. § 1983》意义上的“个人”，不能因执行州长疫情疫苗强制令而被诉侵权。法院依据最高法院Galette案重申并调整了“州机关”三因素测试，重点考察实体是否为州所设独立法人、州对其债务的法定责任及州对实体的控制程度，最终认定UW不具法人独立性，州对其防御及责任有一定承担，确认其为州机关。",
+      "legalIssue": "华盛顿大学是否作为“州机关”享有《第十一修正案》主权豁免，因而不构成《42 U.S.C. § 1983》下的“个人”，可否对其提起民权诉讼？",
+      "holdingOrRule": "适用包含：（1）州是否意图设立独立法人实体，（2）州是否对实体债务有法定责任，（3）州对实体掌控程度的三因素测试，且首因素权重最大。华盛顿大学不具公司法人形式，但受州法限制，州对其债务承担一定法定责任，州对其监管存在，综合认定其为州机关，享有主权豁免权，不是§1983中的“个人”，区内法院判决撤销原告针对UW的civil rights诉讼。",
+      "impact": "直接法律效力：确认华盛顿大学为州机关，免除其对COVID-19疫苗令违反宪法权利的§1983诉讼责任。可能影响：加深对高校等州属机构是否享有主权豁免的判断标准，指引类似机构在疫情及其他公共政策执行中的法律风险评估。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年判决书《Nilsen v. University of Washington》（24-7460号案），全文详见https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/24-7460.pdf，法院详细分析历史与州法背景，依据最高法院2026年Galette案调整“州机关”认定标准。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "63644e42a619108afcb4e2fb",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -4050,6 +4450,22 @@
       "holdingOrRule": "1. '联邦官员移除条款'适用需满足三要件：一、被告作为“受联邦官员指挥”的个人或实体；二、涉案行为与联邦官员职权相关联；三、被告提出合理的联邦法律防御。2. 即便被告为已停止与联邦政府合作的前承包商，只要诉讼涉及其曾在联邦监督下进行的行为，仍可适用该条款。3. 原告即使声明放弃对联邦承包产品的索赔，若诉状实质涉及整体污染事件，仍不排除联邦关联。4. 3M制造遵循联邦军事规格的含PFAS消防泡沫产品事实成立，符合三要件，故移除联邦法院审理适当。",
       "impact": "直接法律效力：明确联邦官员移除条款对政府承包商因过往联邦授权行为遭控具有移送联邦法院的适用标准。可能影响：环境污染相关诉讼中，针对军用级别化学产品制造商的司法管辖权认定，以及原告通过免责声明回避联邦关联的限度。该判决为相关多起联邦承包商诉讼提供判例参考，推动联邦移除权利的合理行使。",
       "sourceGrounding": "基于美国第十一巡回上诉法院2026年7月29日《阿拉巴马州派恩希尔镇诉3M公司》联邦上诉判决全文（官方链接：https://media.ca11.uscourts.gov/opinions/pub/files/202510746.pdf），全面分析案件事实、法律适用及法院裁判理由撰写。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "6365ee3b91144598418faaf1",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-1516:J:Maldonado:aut:T:fnOp:N:3590692:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "Putnam诉CaramelCrisp食安举报报复案第七巡回上诉法院判决解析",
+      "summary": "Putnam在CaramelCrisp工作期间举报食品安全违规，随后被解雇。其匿名向FDA投诉的报复诉求被驳回，因缺乏证据显示公司知晓其举报。基于直接向公司管理层投诉的报复诉求进入审判阶段，陪审团裁定其投诉未构成解雇原因。Putnam的伊利诺伊普通法报复解雇诉求被法院因有充分法定救济驳回。针对基于贸易秘密诉讼为报复行为的主张，法院认定Putnam未及时主张，驳回相关请求。",
+      "legalIssue": "员工举报食品安全违规后被解雇，是否构成违反《食品安全现代化法案》（FSMA）及伊利诺伊普通法的报复行为？",
+      "holdingOrRule": "FSMA报复诉讼需证明：1)员工参与受保护行为；2)雇主知晓该行为；3)员工遭受不利人事行动；4)该行为是不利行动的贡献因素。法院认定Putnam未能证明公司知晓其匿名向FDA的举报，故该部分诉求不成立；普通法报复解雇因已有FSMA法定救济且陪审团认定无因果关系而不被支持；贸易秘密诉讼作为报复未及时提出，法院不予支持。",
+      "impact": "直接法律效力：明确FSMA举报保护的证明标准及伊利诺伊普通法报复解雇的适用限制，影响涉及食品行业员工举报权益保护案件。可能影响：对雇主对匿名举报知悉程度的举证要求，以及雇员多渠道举报与诉讼策略的风险评估。",
+      "sourceGrounding": "依据2025至2026年美国第七巡回上诉法院官方判决文件“Final Opinion”，详述案件事实背景、程序历史及法院法理分析与最终裁定。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4213,6 +4629,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "6941823db5733f9ee872e4f8",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7300.pdf",
+      "title": null,
+      "chineseTitle": "第九巡回上诉法院裁定：通信义务法第230条仅为责任抗辩而非诉讼豁免权",
+      "summary": "本案中，Meta等公司上诉否认联邦通信义务法(CDA)第230条提供诉讼豁免权，主张该条款之抗辩可作为即时上诉的“附带裁定”。第九巡回法院确认，第230条仅提供对责任的抗辩，而非免除诉讼，因此拒绝了即时上诉请求，指出相关抗辩可在终审判决后通过上诉审查。法院强调，滑动豁免权和责任抗辩在上诉权限判断上有本质区别。该案还说明第230条并无明确赋予诉讼豁免权，且该条规定需结合案件具体事实审查，属案件实体审理范围。最终，法院裁定缺乏上诉管辖权，驳回相关上诉。",
+      "legalIssue": "通信义务法第230条是否赋予互联网服务商诉讼豁免权，拒绝该抗辩的裁定是否属于可立即上诉的附带裁定，是否满足联邦上诉管辖权要求。",
+      "holdingOrRule": "第230条仅为责任抗辩，而非免于诉讼的豁免权。拒绝第230条抗辩的裁定不能作为附带裁定立即上诉，因其不满足‘附带裁定原则’中‘裁判结果无法于终审判决后有效复审’的条件，法院因此缺乏对该类裁定的上诉管辖权。",
+      "impact": "该判决对互联网平台及社交媒体企业在类似诉讼中提出的第230条抗辩权的即时上诉提出限制，直接法律效力体现在联邦上诉法院对第230条抗辩相关裁定的上诉管辖权范围界定。可能影响律师和当事人在互联网相关责任诉讼中的诉讼策略以及针对即时上诉路径的评估。",
+      "sourceGrounding": "依据美国第九巡回上诉法院官方公开判决意见书（2026年8月10日），网址：https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7300.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "694c51b9e022cf15fe27b4b7",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -4306,6 +4738,22 @@
       "holdingOrRule": "法院裁定：第四修正案保护的‘扣押’须包含‘限制自由的故意行为’。因本案中被告在训练演习中无意图限制原告自由，且行为属于训练性质的使用武力，故不构成‘扣押’。因此，原告未能证明法定要件，法院支持被告的简易判决请求，驳回过度使用武力指控。",
       "impact": "该判决直接对政府员工因培训时意外受伤提起第四修正案过度使用武力诉讼持限制立场，不认定培训意外伤害属扣押行为，减轻政府相关部门民事责任风险。可能影响其他涉及训练场景造成非故意身体接触导致争议的类似案件的司法认定和诉讼策略。",
       "sourceGrounding": "依据美国第六巡回上诉法院2026年8月11日公开发布的判决书《Arthur v. Krause, et al., No. 25-2123》全文内容，包含案件事实、下级法院判决、引用相关联邦判例及法院分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "6d5581dd381ff668dc780be4",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-1363-2184211.pdf",
+      "title": "24-1363",
+      "chineseTitle": "公共安全频段管理案（24-1363号）判决摘要",
+      "summary": "本案审理了联邦通信委员会（FCC）关于4.9GHz公共安全频段管理变更的执法命令。FCC为解决该频段利用率低下问题，设计任命“频段管理者”负责协调管理，并授予其将未使用频谱转让给FirstNet的许可。部分申请人主张FCC超越法定权限，限制现有许可权利，另有申请人认为措施不足。法院确认部分申请人缺乏诉讼资格，实质判决支持FCC调整措施，认为其不违反法律且非武断，部分争议因未成熟暂缓裁决。",
+      "legalIssue": "FCC是否有权通过指定频段管理者并授权其向FirstNet转让4.9 GHz频段未使用频谱，以及此措施是否超出其法律权限，是否违反有关频谱许可、竞标以及联邦实体监管的法律规定。",
+      "holdingOrRule": "法院裁定（一）PSSA及PSBTA缺乏宪法诉讼资格，不得审理；（二）FCC以促进公共安全频谱更高效利用为目的，合理行使其授权，授权频段管理者转让未使用频谱给FirstNet不违法；（三）关于FCC是否违反联邦实体频谱分配权限的争议尚未成熟，暂不裁决；（四）FCC可免除竞标程序，合法限制现有许可的扩展使用；（五）合同允许FirstNet商业伙伴AT&T间接使用频谱不违法。",
+      "impact": "直接法律效力：确认FCC可调整公共安全频谱管理机制，支持指定管理者协调频谱利用，合法影响已有许可权利，免除竞标要求。可能影响：涉及公共安全通讯频谱分配和利用的政府机构、运营商及相关协会，对未来公共安全无线网络建设及频谱管理政策具有参考价值。",
+      "sourceGrounding": "依据华盛顿哥伦比亚特区巡回上诉法院2026年7月21日判决全文，详见官方法院意见书《24-1363案判决书》。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4517,6 +4965,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "7cb002d5c367b8b130aaf3cb",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-14/C:23-3061:J:Pryor:aut:T:fnOp:N:3591169:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "美国第七巡回上诉法院关于Elanco动物健康公司证券欺诈案的最终裁决解析",
+      "summary": "本案涉及原告指控Elanco动物健康公司及其高管通过渠道灌货制造虚假销售增长，误导证券市场。原告提出依据1933年证券法及1934年证券交易法的多项指控，但法院认定其未能满足《私人证券诉讼改革法案》及联邦民事诉讼规则9(b)关于欺诈性诉讼的严苛举证标准，尤其未能充分证明被告具有欺诈故意。法院还明确，Rule 10b-5(b)关注的是声明是否真实及是否存在误导，而非声明背后的商业行为是否非法。因拟议修正起诉书在核心欺诈要件上存在缺陷，故维持原审法院驳回起诉及禁止原告再行修改的判决。",
+      "legalIssue": "原告提起证券法下的欺诈诉讼，核心法律问题为：被告是否因涉及“渠道灌货”及相关财务声明，违反1934年证券交易法第10(b)条及SEC Rule 10b-5(b)，以及1933年证券法第11条、第12(a)(2)条，并是否满足PSLRA及联邦民事诉讼规则9(b)的举证标准？",
+      "holdingOrRule": "法院判决维持原审法院驳回，理由包括(1)未满足PSLRA关于欺诈性陈述及欺诈故意的高度举证标准;(2)Rule 10b-5(b)关注陈述的真实性及是否存在误导，与商业行为本身合法性无关;(3)因起诉书核心事实构成欺诈，故适用Rule 9(b)更高举证标准，原告未达要求;(4)未能充分证明被告意图欺骗市场，故不构成欺诈法律责任。",
+      "impact": "直接法律效力：维持驳回诉讼，表明证券欺诈诉讼中对欺诈故意及陈述误导性要求严格，尤其涉及渠道灌货技术型行为需提供明确欺诈意图证据。可能影响：证券发行人及投资者对相关财务披露事项的法律风险评估及诉讼准备，以及对证券诉讼立案标准的认知和实践标准。",
+      "sourceGrounding": "解析基于美国第七巡回上诉法院《Final Opinion》（2026年8月14日）官方判决文本，地址：https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-14/C:23-3061:J:Pryor:aut:T:fnOp:N:3591169:S:0",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "7d1f11eb7e9a6c7d7a0f7317",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -4546,6 +5010,22 @@
       "holdingOrRule": "官方材料不足，无法确认裁判结论。因联邦二巡回法院与纽约上诉法院对适用纽约合同法标准存在分歧，二巡回法院已将该合同法问题认证至纽约最高法院，暂停案件实体判决。",
       "impact": "该认证具有直接法律效力，是二巡回法院正式请求纽约最高法院明确州合同法原则，可能影响疫情期间高校学费退款诉讼范围和标准，对学生和高校双方权利义务界定具有重要指导意义。",
       "sourceGrounding": "全部内容基于美国联邦第二巡回上诉法院官方判决材料25-1747案，2026年8月11日公布之判决文书。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "7dc1eb40b5fd4e30df1dd4c3",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/21-71380.pdf",
+      "title": null,
+      "chineseTitle": "Drip More LLC诉美国食品药品监督管理局案（第九巡回法院2026年判决）",
+      "summary": "本案中，Drip More LLC的糖果及水果味电子烟产品预市场申请被FDA拒绝，因其未能提供足够的比较有效性证据证明这些味道产品在促进成人吸烟者戒烟方面优于烟草味产品，且该拒绝符合法律要求。法院认定FDA的比较有效性证据要求基于《家庭吸烟预防与烟草控制法》（TCA）明确授权，且无需通过事先公示征求意见程序。此外，法院认为FDA未充分考虑Drip More的营销和销售限制计划，若有错误亦属无害错误。Drip More关于“零尼古丁”产品脱离TCA管辖的主张因其自身申请中承认适用TCA而被驳回。",
+      "legalIssue": "FDA基于Drip More未提交比较有效性证据拒绝其电子烟产品预市场申请是否构成任意或反复无常？FDA是否必须通过规则制定程序才能实施比较有效性要求？“零尼古丁”产品是否受TCA监管？",
+      "holdingOrRule": "（1）FDA要求产品提供比较有效性证据证明非烟草味电子烟相较烟草味产品对成人戒烟有益，符合法律授权，拒绝Drip More申请不构成任意或反复无常；（2）FDA无需依TCA或APA开展事先公示征求意见程序即可适用比较有效性要求；（3）“零尼古丁”产品若申请中认定含烟草衍生尼古丁或被合理预期与含尼古丁产品一同使用，亦受TCA监管。",
+      "impact": "直接法律效力于所有寻求FDA预市场授权的电子烟产品制造商，特别是涉及多种口味产品申请者；可能影响FDA未来对预市场申请中比较有效性证据的审查标准及管理方式，为行业及监管提供明确法律规范。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月10日对Drip More LLC诉FDA官方判决文书，详见https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/21-71380.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4693,6 +5173,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "835d103cc2a7cf3d566acab7",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3162-2186022.pdf",
+      "title": null,
+      "chineseTitle": "美国哥伦比亚特区巡回上诉法院关于无证观看涉嫌儿童色情材料文件的判决解析",
+      "summary": "本案涉及被告约翰逊利用谷歌云盘上传疑似儿童性虐待材料（CSAM）的文件，警方通过谷歌自动识别系统收到线报并调查。约翰逊主张调查初期未获搜查令观看文件侵犯第四修正案权利，应排除相关证据。法院假设存在违反第四修正案，但基于“独立来源”及“善意例外”原则，认为警方后续依合法授权再次查看文件，拒绝排除证据。另认定住宅搜查令明确授权搜查电子设备，且被告运输行为不符减刑条款。",
+      "legalIssue": "本案核心法律问题为：警方在未取得搜查令情况下初步查看电子存储的涉嫌儿童性虐待材料是否违反美国宪法第四修正案？若违反，相关证据及其衍生证据是否应予以排除？住宅搜查令是否授权搜索电子设备？被告的运输行为是否符合联邦量刑指南减刑条件？",
+      "holdingOrRule": "法院假设警方初步无证查看涉嫌CSAM文件存在第四修正案违规，但根据“独立来源”原则：警方后续获取法官授权独立查看该文件，破断因果链条；根据“善意例外”原则：警方基于法官的合法判断善意执行，排除证据规则不应适用。住宅搜查令文本明确允许搜索数字设备及获取生物识别信息。被告运输CSAM行为不属于仅收受或索取，故不得适用相关减刑规定。",
+      "impact": "本裁决直接确认执法人员在依赖司法官判断善意执行时，即便存在初步无证查看，也不必排除相关证据，对保护儿童性虐待材料侦查执法具有指导意义，强化了数字文件搜查法律适用的合理界限。可能影响范围包括涉及利用云服务存储非法内容的调查实践及电子设备搜查权限理解。无立法效力，仅适用于联邦巡回法院辖区内判例法。",
+      "sourceGrounding": "本解析完全基于美国哥伦比亚特区巡回上诉法院2025年10月24日辩论，2026年7月31日判决的官方联邦上诉法院判决书原文，网址：https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3162-2186022.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "83bcf8e1520dc2df700c2cff",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -4741,6 +5237,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "89990f0826780e3311b8671e",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/14/25-7384.pdf",
+      "title": null,
+      "chineseTitle": "美国第九巡回上诉法院关于司法复核行政传票适用性的判决解析——以DOJ对QueerDoc的传票案为例",
+      "summary": "本案中，司法机关审查美国司法部依据《健康保险携带与责任法》（HIPAA）对提供性别确认远程医疗服务的QueerDoc发出的行政传票。法院认为，DOJ有法定权威调查涉嫌违反《联邦食品、药品与化妆品法》（FDCA）的药品标签规定，且传票符合法律程序并要求与调查相关的证据。尽管总统发布行政命令表达反对性别肯定治疗的政策立场，但该立场本身不构成发出传票的“非法目的”。法院推翻地区法院以“非法目的”为由完全撤销传票的决定，认定行政机关可根据其授权以符合政策目标的方式调查。案件发回地区法院继续审查传票范围及负担问题。",
+      "legalIssue": "司法机关在行政传票执行程序中，应如何评估行政机关发出传票的法定权限、程序合规性和调查相关性，以及在何种情况下传票可因“非法目的”或“恶意”被撤销？具体而言，行政权力是否因总统政策方向而被限制，行政传票是否因类别争议的药品标示管理而超出法律范围？",
+      "holdingOrRule": "第九巡回法院判定：1) DOJ依据HIPAA及相关法律拥有发出行政传票的权限；2) DOJ遵守了传票发出程序；3) 传票要求的文件与允许的调查范围相关；4) 政府对性别确认治疗的政策立场本身不构成非法目的，未能满足以非法目的撤销传票的重负证明标准；5) 地区法院只能依法严格审查，不得因行政分支政策指引否决传票；6) 地区法院必须进一步审理传票的范围是否过宽及不合理负担问题。现阶段官方材料不足，无法确认这些程序性问题的最终裁判结果。",
+      "impact": "直接法律效力：确认司法部门对依据HIPAA展开联邦医疗违规调查的行政传票审查权和限度，特别是对“非法目的”抗辩的高举证标准。可能影响：指导联邦和州医疗服务提供商、药品制造商及远程医疗等领域遇到联邦调查时对传票的法律应对策略；促进司法审查行政传票时对行政政策导向与法律权限分界的认识，尤其在涉及复杂医疗争议的案件中。",
+      "sourceGrounding": "内容依据美国第九巡回上诉法院公开判决文书https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/14/25-7384.pdf，并结合官方法条涉及HIPAA（18 U.S.C. §3486）、FDCA（21 U.S.C. §§331,352）及相关行政命令。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "8b33f730c05301a66dbb71d3",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -4770,6 +5282,22 @@
       "holdingOrRule": "18 U.S.C. § 2422(b)构成《移民与国籍法》定义范围内的“未成年性虐待”加重罪，符合8 U.S.C. § 1101(a)(43)(A)和8 U.S.C. § 1227(a)(2)(A)(iii)规定，可作为遣返依据。移民法院有权更换庭审地且未侵犯程序正义，迟交上诉书可拒绝受理但不妨碍审查争议点，未发现需强制心理能力评估的法定或事实支持。",
       "impact": "直接法律效力：明确18 U.S.C. § 2422(b)罪名为联邦移民法规定的“未成年性虐待”加重罪类别，为符合相同罪名标准的类似个案提供司法指导。明确移民法院更换庭审地、拒绝迟交上诉书程序合法，有助于规范移民法庭程序审理权。可能影响：影响符合此罪名定义的持合法永久居民因刑事定罪遭遣返案件的认定与审理，影响对程序正义中庭审地点及心理能力评估的适用标准。",
       "sourceGrounding": "依据美国第三巡回上诉法院官方非先例性意见书《Dameon Kirk Allen v. Attorney General United States of America》全文内容，包括案件背景、法庭分析及判决理由，网址：https://www2.ca3.uscourts.gov/opinarch/252836np.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "8c77b53d21a9f54ac6e67fb4",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7312.pdf",
+      "title": null,
+      "chineseTitle": "加州等州诉Meta平台案——第九巡回上诉法院关于通信道德法第230条“豁免权”拒绝即刻上诉的裁定",
+      "summary": "第九巡回法院驳回Meta及相关方基于通信道德法第230条主张的“免于诉讼的豁免权”拒绝动议部分裁决的即刻上诉请求。法院认定第230条提供的是针对责任的抗辩，而非诉讼豁免权，因此拒绝的裁决不符合《联邦民事诉讼法》1291条规定的终审判决，也不符合“附带裁定”例外情形；此外，法院认为该裁决未最终确定争议问题，也未完全独立于案情实体权利义务，故无权立即审理。",
+      "legalIssue": "通信道德法第230条是否赋予互联网服务提供商免于被起诉的诉讼豁免权，致使针对该法下的免疫抗辩被拒决定可被即刻上诉？",
+      "holdingOrRule": "第230条仅提供针对责任的抗辩，而非免于诉讼的权利，故基于第230条抗辩被拒的裁定不满足《联邦民事诉讼法》1291条“附带裁定”例外的三要件，不具备即刻上诉资格，法院缺乏对此类中间裁决的上诉管辖权。",
+      "impact": "直接法律效力：限制了互联网平台依赖通信道德法第230条抗辩的中间上诉权利，必须等最终判决后才能提起上诉。可能影响：互联网服务提供商及相关诉讼实践，尤其涉及平台责任抗辩的案件中程序策略和诉讼进程时间安排。",
+      "sourceGrounding": "依据2026年8月10日美国第九巡回法院公开发布的涉及加州等州诉Meta Platforms的联邦上诉判决书全文。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4866,6 +5394,22 @@
       "holdingOrRule": "法院依据Nken判例，明确申请人须证明在成功可能性和不可弥补损害两项关键因素上的充分依据，同时考虑对政府及公共利益的影响。在本案中，申请人未能克服多项法律程序障碍，也未能提供足够证据证明符合暂停移除的条件，故撤销暂停移除令。关于基于新州际判例Minter的法律变更主张，将另行审理。",
       "impact": "直接法律效力：对包括Jose Aristy-Rosa在内，被同意移除令约束且寻求暂停移除的人员，明确暂停标准和法院审查原则。可能影响：未来类似移除暂停申请的审理标准，特别是在涉及多次法律程序挑战和行政程序尊重方面的司法态度及案件处理速度。",
       "sourceGrounding": "全部解析依据U.S. Court of Appeals for the Third Circuit官方公开判决文书（https://www2.ca3.uscourts.gov/opinarch/251490p.pdf）内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "8f7b418e629bc06727aeae55",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7032.pdf",
+      "title": null,
+      "chineseTitle": "第九巡回上诉法院关于通讯规范法第230条“免疫权”上诉管辖权的裁判分析",
+      "summary": "本案涉及Meta平台及相关实体针对地区法院部分驳回其依据《通讯规范法》第230条主张的“免疫权”动议的上诉。法院认定，第230条仅授予对责任的抗辩权，而非免于诉讼的绝对免疫，因此地区法院拒绝免疫权动议的裁定不符合“附带判决”标准，不能获得立即上诉审查。法院还指出，地区法院的决定未最终确定争议问题，且涉及事实和法律的混合问题，未能完全独立于主体诉讼的实质问题，故不满足立即上诉条件。最终裁定驳回Meta及TikTok等实体的上诉请求。",
+      "legalIssue": "《通讯规范法》第230条是否赋予网络服务商针对诉讼的免于诉讼（immunity from suit）权利，从而可以对驳回以该条款为依据的免疫权动议的裁定立即提起上诉？",
+      "holdingOrRule": "第230条仅提供对责任的抗辩权（immunity from liability），而非免于诉讼的绝对免疫，因此驳回该抗辩权的裁定不具备作为附带判决立即上诉的条件；地区法院拒绝免疫权动议的决定不可立即上诉，须等待终审判决后方可复核。",
+      "impact": "直接法律效力：限制了基于第230条抗辩权的上诉权限，要求相关当事方必须等终审判决后才能上诉此类问题。可能影响：影响互联网服务供应商在诉讼中对第230条抗辩的策略，影响联邦法院对类似免疫权上诉管辖权的审查尺度。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月10日公开判决书（案件编号24-7032等），全文详见官方链接https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7032.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -5253,6 +5797,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "9faaccd331f2ab140f1e0b1c",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-5103-2183128.pdf",
+      "title": "23-5103",
+      "chineseTitle": "纽约州等诉美国邮政局运营变更案",
+      "summary": "2020年邮政局对邮件收集、处理及投递实施了多项调整，若干州及市政府诉至地区法院，称未依法律程序向邮政监管委员会申请咨询意见。地区法院先后做出临时禁令及简易判决支持原告，但美国哥伦比亚特区巡回上诉法院依据《邮政责任和增强法》所设审查机制，认定地区法院对此类申诉无管辖权，撤销判决，并指令驳回相关诉求。法院强调，法律明确规定此类申诉应先经监管委员会审理，再由本院复审。",
+      "legalIssue": "邮政局未经邮政监管委员会咨询意见实施服务变更，原告州、市能否在地区法院直接提起诉讼，还是应适用行政申诉渠道？地区法院对此是否有管辖权？",
+      "holdingOrRule": "邮政责任和增强法设立了针对邮政服务运营变更投诉的专属行政申诉审查程序，初审由邮政监管委员会处理，复审由哥伦比亚特区巡回上诉法院进行。基于此专属审查机制，地区法院对该类申诉无管辖权，原告应依规定程序先向监管委员会提起申诉。地区法院对相关申诉的判决应予撤销，诉讼请求应驳回。",
+      "impact": "直接法律效力：明确州和地方政府若指控邮政局违规变更服务，须先通过邮政监管委员会申诉渠道，地区法院无权受理此类行政程序内申诉。可能影响：增强行政复议制度权威，规范邮政服务相关诉讼程序，减少地区法院审理非授权事务，影响未来相关机构及法院对邮政及类似联邦机构行为的管辖认定。",
+      "sourceGrounding": "解析依据美国哥伦比亚特区巡回上诉法院2026年7月14日作出的23-5103号判决书全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "9fe69d1caf674e19d8bbd604",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -5349,6 +5909,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "a3f8da2d70c73fdbeb9e7023",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-1028-2184183.pdf",
+      "title": "24-1028",
+      "chineseTitle": "联邦航空管理局批准康涅狄格州Tweed New Haven机场扩建项目的NEPA合规性审查",
+      "summary": "本案涉及联邦航空管理局（FAA）批准康涅狄格州Tweed New Haven机场的一项扩建项目，包括跑道延长和新航站楼建设的环境影响评估。原告Save The Sound环保组织和康涅狄格州East Haven镇质疑FAA在环境评估过程中未充分考虑未来的出租道升级项目、未准确预测乘客增长及未妥善处理洪水、径流及湿地保护等环境因素。法院援引2025年最高法院Seven County案的司法审查原则，强调对FAA判断的高度尊重，认定FAA合理划定项目范围，充分评估直接和累积环境影响，并合理采用预测数据和缓解措施，最终驳回质疑，维持FAA批准决定。",
+      "legalIssue": "联邦航空管理局在依据《国家环境政策法案》（NEPA）评估机场扩建项目环境影响时，其项目范围的合理划定、对“合理可预见”环境影响的认定及缓解措施的充分性是否符合法律要求。",
+      "holdingOrRule": "法院确认NEPA要求联邦机构对拟议项目的环境影响进行程序性评估，重点在于所提项目本身。FAA合理排除尚处于初步规划阶段且远期的出租道升级项目，无需纳入本次环境评估。FAA的环境评估合理考虑了累积影响，采用符合技术规范的预测数据及方法，识别并详细说明洪水、径流及湿地保护的缓解措施。法院强调对机构专业判断的高度尊重，未发现其行为任意或难以理解，驳回诉请。",
+      "impact": "直接法律效力：本判决明确了FAA及其他联邦机构在根据NEPA进行环境评估时对项目范围合理划定的自由裁量权及对预测数据采用的审查标准，界定了司法审查中对环境报告内容的尊重程度。可能影响：为类似机场扩建及基础设施项目的环境审查提供判例指导，明确对未来远期项目及相关累积影响的评估边界，有助于规范环境评估程序并降低诉讼风险。",
+      "sourceGrounding": "本解析基于美国哥伦比亚特区联邦巡回上诉法院2026年7月21日发布的官方判决文件《24-1028案》全文，内容详述FAA审查过程、各方诉辩及法院法律适用与裁判理由，结合2025年美国最高法院Seven County Infrastructure Coalition案判例解释。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "a50ccc454b0e65b137610f06",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -5394,6 +5970,22 @@
       "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
       "impact": "该修正意见直接适用于本案文书文本的准确性修正，无其他明确直接法律效力。可能影响法庭文书文本规范性及类似案件文书校订标准。",
       "sourceGrounding": "依据美国联邦第一巡回上诉法院发布的2026年7月7日意见书及其随后公开的修正（errata）表。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "a76f2268ad0854d05822028e",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-1282-2185998.pdf",
+      "title": null,
+      "chineseTitle": "联邦能源监管委员会（FERC）关于改进发电机并网程序的判决解析",
+      "summary": "华盛顿哥伦比亚特区巡回上诉法院裁定联邦能源监管委员会（FERC）依据《联邦电力法》第206节，有权实施《2023号命令》，对电力并网程序进行全面改革。该命令用“首次准备就绪、优先受理”的集群研究替代了先来先服务的串行处理模式，强制要求较高的押金、设定违约罚款并明确研究时间限制。法院驳回了对罚款阈值、严苛的时间表及关联系统研究标准的质疑，认为FERC的决定合理且符合法规程序。",
+      "legalIssue": "联邦能源监管委员会是否在其法定权限范围内，合理制定《2023号命令》对发电机并网程序实施结构性改革，包括撤回罚款的门槛设定、研究期限及罚款机制，以及影响系统研究标准，且是否符合法律程序要求？",
+      "holdingOrRule": "法院确认FERC在《联邦电力法》第206节授权框架内作出决定，支持《2023号命令》推动发电机并网流程改革：采用集群研究模式，设定撤回罚款梯度及时间表，并统一采用Energy Resource Interconnection Service标准。该命令合理平衡各方利益，未违背行政程序法，罚款门槛与程序设定具备实质依据。",
+      "impact": "直接法律效力涵盖所有受FERC管辖的传输服务提供商及发电机并网客户，尤其涉及可再生能源项目申请并网的时间和成本要求。可能影响广泛，促进电网接入效率，减少项目延迟，间接影响电价及可再生能源市场竞争环境。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院2026年7月31日就FERC《2023号命令》系列复审合并案件发布的官方判决文档（https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-1282-2185998.pdf）的详细裁判意见。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -5445,6 +6037,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "a8a8a9ff6ea32300116a9be0",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-7008-2183743.pdf",
+      "title": "25-7008",
+      "chineseTitle": "Akhmetshin诉Browder案关于哥伦比亚特区地方法院管辖权及反SLAPP费用请求的判决",
+      "summary": "本案审理的核心在于英国公民Browder因多条涉及俄罗斯与美国政治争议的言论，被俄裔美国居民Akhmetshin控告诽谤。法院聚焦于Browder在哥伦比亚特区（D.C.）是否因言论而与该地建立了充足的法律联系，从而使D.C.地方法院具有对其管辖权。法院依据国际鞋业案个人管辖权原则认为，D.C.地方法院仅能基于被告与D.C.的最小联系原则行使管辖权，Browder的言论虽涉及D.C.，但该言论的核心事件及伤害焦点均在纽约，且Browder并未有旨在利用D.C.法律保护的行为，因此不构成管辖联系。同时法院认定，因Browder通过联邦规则获得驳回，不符合D.C.反SLAPP法案要求的费用申请条件，驳回其律师费请求。",
+      "legalIssue": "Browder是否因在公众言论中提及Akhmetshin及该言论对D.C.的影响而“有目的地利用”哥伦比亚特区的法律保护，致使D.C.地方法院对其具有个人管辖权；以及Browder是否符合D.C.反SLAPP法案中关于律师费申请的条件。",
+      "holdingOrRule": "法院判决Browder未因相关言论满足D.C.地方法院个人管辖权所要求的最低联系条件，不属于D.C.法院有效管辖范围；此外，Browder未通过反SLAPP法案第16-5502条规定的特别动议成功，故无权获得该法案项下的律师费。",
+      "impact": "直接法律效力：明确界定D.C.地方法院个人管辖权应适用国际鞋业案的最小联系原则，限制该法院对跨州被告的管辖范围；确认联邦法院程序优先于D.C.反SLAPP法案，限制律师费的申请资格。可能影响：涉及跨州或跨国言论争议案件中，被告对D.C.地方法院管辖权的挑战，以及当事人利用反SLAPP法案寻求诉讼费用救济的策略调整。",
+      "sourceGrounding": "解析基于2026年7月17日美国哥伦比亚特区巡回上诉法院25-7008号判决书全文内容，详见https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-7008-2183743.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "a8c3f4f8352836bd41c3cb14",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -5490,6 +6098,22 @@
       "holdingOrRule": "法院确认，原告未能提供有力证据显示申诉或申请残疾便利为其降职和解雇之因，判决支持被告佛罗里达惩教部的简易判决，维持驳回诉讼；同时，对律师的不实引用行为实行制裁并移送纪律审查。",
       "impact": "直接法律效力在于提示在联邦第十一巡回区内对报复性解雇诉讼证据标准的应用，明确申诉及合理便利请求并非必然构成报复且需有充分证据支撑；可能影响法律职业规范，提醒律师严守引用真实权威，防止AI生成错误材料。",
       "sourceGrounding": "解析完全基于联邦第十一巡回法院公开发布的判决文书，包含对案件事实及程序的说明、法律适用分析及律师行为纪律处理内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "aabe8cc51297ac7f36b7cca4",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3130-2186012.pdf",
+      "title": null,
+      "chineseTitle": "美国哥伦比亚特区巡回上诉法院关于非法携带枪械案的判决解析",
+      "summary": "本案中，被告Antonio Payne因涉嫌无执照携带枪械被捕。警方响应一起针对其住所的驾车射击事件，基于现场调查、邻居监控视频及物证申请搜查令，搜出多把枪械和毒品。被告质疑搜查令缺乏合理依据且证据应被排除。法院认定搜查令基于合理的事实依据且符合“善意依赖”例外，驳回排除动议。审判中，被告承认携枪且无执照，陪审团判其所有罪名成立。法院确认证据充分支持定罪，驳回上诉。",
+      "legalIssue": "本案核心法律问题在于搜查令是否基于合理的可能性（probable cause）颁发，以及搜查所得证据是否应因涉嫌违反第四修正案被排除。此外，被告的携枪无证行为是否构成犯罪的证据是否充分。",
+      "holdingOrRule": "法院确认：即使搜查令存在轻微文字错误，但因警方依赖搜查令系基于客观合理的善意，排除规则不适用；搜查令获授权具有合理根据。被告携带枪械的事实经视听证据和被告承认支持，证据充足构成其无执照携带枪械罪成立。",
+      "impact": "直接法律效力：确认了警方基于监控视频等证据申请搜查令并执行搜查的合法性，及善意依赖搜查令排除证据的司法适用范围。可能影响：对类似场景下搜查令申请和执行的法律适用，对被告基于现场事实承认和视频证据认定犯罪行为的判决标准，特别是在携枪犯罪司法处理中产生指导意义。",
+      "sourceGrounding": "本解析依据美国哥伦比亚特区巡回上诉法院2026年7月31日公开判决全文（网址：https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3130-2186012.pdf）。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -5701,6 +6325,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "b7886570296fce4712673253",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-7140-2184910.pdf",
+      "title": "24-7140",
+      "chineseTitle": "约翰逊诉哥伦比亚特区案（第24-7140号）第一修正案言论报复与合格豁免问题",
+      "summary": "约翰逊作为哥伦比亚特区惩教署资深警官，因疫情期间向工会律师转发内部电子邮件及接受媒体采访遭开除。法院认定，因转发保密邮件而被解雇不构成第一修正案违规，支持被告合格豁免；但就媒体采访一事存在事实争议，若证明解雇因采访而起，则构成明确规定的第一修正案保护权利，被告无法获得合格豁免。案件部分裁定被撤销，部分维持，发回下级法院进一步审理相关事实。",
+      "legalIssue": "政府雇员因公开发布内部保密信息及接受媒体采访，其言论是否受第一修正案保护，政府官员实施报复性解雇是否构成违宪，及合格豁免适用范围。",
+      "holdingOrRule": "一、转发内部保密邮件违反部门政策，因该行为被解雇不构成第一修正案违法，被告官员享有合格豁免。二、就接受媒体采访一事，原审认定存在争议的事实问题，若员工能证明因采访被解雇，则该权利受宪法保障，相关官员无合格豁免。三、案件部分发回重审。",
+      "impact": "直接法律效力：本案明确区分了政府雇员因泄露保密信息与因公众发声所受宪法保护的不同处理标准，为第一修正案言论保护及合格豁免适用提供具体指导。可能影响：影响政府部门对内部信息保护政策的执行力度及员工言论自由界限，同时促使司法系统进一步明晰政府雇员言论权利和国家利益间平衡。",
+      "sourceGrounding": "以上内容依据美国哥伦比亚特区巡回上诉法院公开判决文本（案号24-7140，2026年7月24日）全文解析整理。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "b7d7cff28601b9b067fb655a",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -5714,6 +6354,38 @@
       "holdingOrRule": "法院判定Clarendon非合同项下直接受益人，不能主张合同违约；保险经纪人Aon仅对其投保客户负有通知义务，对非投保第三方Clarendon无此义务；且Plaintiffs的违约及过失索赔均超过伊利诺伊州两年诉讼时效，诉求被驳回。",
       "impact": "此判决直接适用于Clarendon及涉及Aon与SCB类似保险经纪合同关系的当事人，明确了第三方受益人资格认定及保险经纪人通知义务边界，具有指导性法律效力。对类似案件中保险经纪人责任认定和第三方索赔权利的司法审查有重要影响，但非普遍性行政规则。",
       "sourceGrounding": "基于美国第七巡回上诉法院2026年8月13日Final Opinion，案件编号24-2017，官方判决文书全文内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "b8566ff0d0659e16a8a7001e",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/24-3479.pdf",
+      "title": null,
+      "chineseTitle": "HAMOC诉WSP USA, Inc.案：ERISA对加州州法过失虚假陈述请求的适用及范围",
+      "summary": "本案涉及加州医疗服务提供者HAMOC针对WSP USA及Aetna就手术支付费率纠纷提起的诉讼，核心争议为Aetna通过电话告知HAMOC手术将按“通常、习惯且合理”的费率（UCR）支付，实际支付却为更低的医疗保险费率（Medicare），HAMOC主张的加州过失虚假陈述请求是否被联邦《雇员退休收入保障法》（ERISA）排除。第九巡回上诉法院认为，此项过失虚假陈述诉讼未涉及ERISA所规范的计划成员与计划管理者之间的关系，且请求不依赖ERISA计划条款，因此不受ERISA排除。另一方面，法院确认有关承诺禁反言的州法请求因涉及ERISA计划权利受ERISA排除。",
+      "legalIssue": "ERISA是否排除因计划管理员向网外医疗服务提供者做出虚假支付承诺而引发的加州过失虚假陈述诉讼？",
+      "holdingOrRule": "上诉法院部分确认地区法院裁定，认为ERISA不排除因先前覆盖核实电话中的虚假承诺而产生的过失虚假陈述请求；但确认该案中承诺禁反言州法请求因与ERISA计划权益密切相关而被ERISA排除。",
+      "impact": "该判决对网外医疗服务提供者提出因计划管理员支付承诺失实引起的损失索赔提供了可能的救济途径，限制了ERISA排除过度延伸，保障州法对虚假陈述及类似侵权行为的适用，但未变更ERISA对计划权益相关合同权利的全面排除效力。此判决有直接法律效力，对加州及第九巡回辖区其他联邦法院具有指导意义，对医疗服务提供者及健康保险计划管理者均有影响。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月11日公开发表的判决意见（案件号24-3479），详见https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/24-3479.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "b8c3bb373aa24a5e45dcd607",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/26-5123.pdf",
+      "title": "26-5123",
+      "chineseTitle": "国家历史保护信托诉国家公园管理局等案—华盛顿哥伦比亚特区巡回上诉法院2026年判决",
+      "summary": "本案围绕特朗普总统未获国会批准，利用私人资金拆除白宫东翼并拟建9万平方英尺舞厅的行为展开。法院指出，宪法赋予国会对白宫及其周边联邦地产的全面管理权，且相关联邦法规禁止未获国会明确授权的建筑施工。国会长期对白宫维护和改建行使严格控制，相关拨款法规亦仅授权有限维修改造，不包括此类大规模重建。政府虽试图以国家安全和公园管理权限为由辩护，但法院认定，国会未放弃对该联邦财产重大改造的审查权，行政部门无权单方面推动项目。故判决维持禁止上述舞厅地上部分施工的初步禁令，仅允许为安全目的进行地下建设。",
+      "legalIssue": "总统是否具有在未经国会明确授权情况下，利用私人资金对白宫联邦地产进行大规模拆除与新建的合法权限？此外，国家公园管理局及执行办公室是否有权绕开国会审批，直接推动建筑项目？",
+      "holdingOrRule": "依据美国宪法财产条款及联邦法规，国会对联邦地产拥有专属立法与管理权，任何重大建筑施工须经国会明确授权。总统及行政部门未获授权单方面拆除白宫东翼并重建具有永久不利影响的新建筑，构成越权行为。初步禁令禁止地上舞厅建设，允许仅限安全相关的地下工程；行政部门应取得国会许可后方可实施相关建设。",
+      "impact": "直接法律效力：限制行政部门未经国会批准对联邦地产，尤其是白宫建筑进行大规模新建改造，凡违者法院可发禁令阻止施工。可能影响：未来联邦行政部门涉及国家级具有文化遗产价值物业改造时，须严格遵守国会授权程序，保障公众及相关历史保护团体利益，加强国会对联邦地产重大决策的监督。",
+      "sourceGrounding": "依据官方一手判决文书《国家历史保护信托诉国家公园管理局案》，美国哥伦比亚特区巡回上诉法院2026年8月7日判决全文及相关庭审记录。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -5845,6 +6517,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "be4c203b7e69a187192ed180",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-3067-2187594.pdf",
+      "title": "24-3067",
+      "chineseTitle": "威廉姆斯案：联邦枪支犯罪知情要件的程序性弃权问题解析",
+      "summary": "本案中，威廉姆斯因被控违反18 U.S.C. § 922(g)(1)（经定罪的重罪犯持枪），以无知情认罪抗辩进行联邦减刑。最高法院Rehaif案确立，被告须知晓自身重罪犯身份乃犯罪要素。威廉姆斯宣称其并未知晓因其1994年毒品重罪被判三年监禁，但程序性弃权使其不能在后续2255动议中主张此认知缺失。上诉法院认定其在服刑超过两年后，理应知晓自己有超过一年监禁的定罪罪行。因证据确凿，法院拒绝听证并驳回其救济请求，维持原判。",
+      "legalIssue": "被告未在认罪时获知其犯罪构成中的重要要素（即知晓本人为经判重罪犯）是否构成有效抗辩？程序性弃权情况下，被告如何证明认罪无效？",
+      "holdingOrRule": "法院判定威廉姆斯未能提供足够证据证明其对重罪犯身份的无知，无法克服程序性弃权。服刑超过一年重罪者，通常认知自己有重罪身份；因此其2255动议请求撤销认罪失败。拒绝召开事实听证，维持判决。",
+      "impact": "直接法律效力：明确程序性弃权阻挡基于罪行知情要素缺失的后续救济请求；判例强调服刑时间长者难主张对此认罪要素无知。可能影响：类似案情中被告程序性弃权后的认罪无效抗辩策略评估及辩护方建议改进，涉及联邦枪支犯罪案件认定与救济程序。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院2026年裁决文书（案号24-3067），结合最高法院Rehaif案对18 U.S.C. § 922(g)(1)中犯罪知情要件的解释。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "be58fd91ccaca093d8578df8",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -5925,6 +6613,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "c198545cdc56e70945a18b52",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-3035-2183738.pdf",
+      "title": "25-3035",
+      "chineseTitle": "美国哥伦比亚特区巡回上诉法院关于414规则适用及证据排除的判决",
+      "summary": "本案涉及被告大卫·佐贝尔被控分发儿童色情制品及试图性剥削未成年人。政府拟依据联邦证据规则414条引入被告先前儿童性侵犯定罪证据，但地区法院依403条规则排除该证据，理由为不公平偏见过大。上诉法院认定有管辖权审查此裁定，指出地区法院误解414规则在403规则下对倾向性推断的影响，应认为414规则允许将先前儿童性侵犯行为作为展示倾向的证据，不应被视为不公平偏见。故撤销排除令，发回重审。",
+      "legalIssue": "本案核心法律问题是联邦证据规则414条是否改变规则403条下对儿童性侵犯先例证据潜在不公平偏见的评估标准，以及地区法院排除该证据是否法律适用错误。",
+      "holdingOrRule": "联邦规则414条允许在儿童性侵犯案件中引入被告先前类似犯罪行为的证据，以证明被告有该犯罪倾向，此类证据虽仍受403条规则约束，但不能将倾向性推断视为不公平偏见而自动排除。地区法院错误地将倾向性推断认定为不公平偏见，故撤销其证据排除裁定，案件发回重审。",
+      "impact": "直接法律效力：明确联邦证据规则414条在儿童性犯罪案件中证据可接受性标准，影响类似案件的证据采纳评估。可能影响：对联邦刑事案件中儿童性侵犯相关证据的承认标准和审判程序产生指导性影响，促进更准确平衡证据的相关性与潜在偏见。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院2026年7月17日的官方判决意见全文，链接https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-3035-2183738.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "c1faba93862510fe6ea70eea",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -5970,6 +6674,38 @@
       "holdingOrRule": "法院认定：(1) MBC依据阿联酋法律构成集体作品初始版权所有者，其注册具有法定推定效力；(2) MBC向DISH的版权转让符合美国版权法第201(d)及204(a)条款要求，且被告无权质疑转让协议；(3) 被告通过使用编码器将受保护节目推送至服务器并经内容分发网络传输给美国用户，构成直接版权侵权；(4) 专家证词及包括监控报告、支付记录、WHOIS信息在内的证据有效且可靠，可支持侵权认定。",
       "impact": "本案判决对拥有外国版权的媒体公司维护在美独家传播权利具有直接法律效力，明确了外国集体作品版权的法律地位及转让要求，强化了对网络版权侵权行为的认定标准。可能促进版权持有人在类似网络侵权案件中运用相关证据与专家证人，提升版权保护力度。",
       "sourceGrounding": "依据美国第十一巡回上诉法院2026年官方判决文书（USCA11案号24-10223），详见：https://media.ca11.uscourts.gov/opinions/pub/files/202410223.op2.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "c43e6a0ac31649d48c1e80eb",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-1047-2184235.pdf",
+      "title": "25-1047",
+      "chineseTitle": "Thrivent Financial诉美国证券交易委员会（SEC）：关于FINRA仲裁规则修订的申请被拒案",
+      "summary": "Thrivent Financial因FINRA仲裁规则与其自身仲裁程序冲突，向SEC申请废除或修改三项相关规则，SEC以程序性资源分配理由简单拒绝。法院虽高度尊重行政裁量权，但要求SEC必须对拒绝给予具体、合理解释。因SEC回覆过于简略，法院判决此拒绝决定武断，要求SEC重新审议。裁决未触及规则实质合法性问题。",
+      "legalIssue": "SEC是否在拒绝针对FINRA仲裁规则的规则制定申请时，履行了关于拒绝理由的法定说明义务，及其拒绝是否属于武断或滥用裁量权。",
+      "holdingOrRule": "法院确认行政机关拒绝规则制定申请必须基于针对具体案情的合理说明，仅泛泛资源分配理由不足以支持拒绝决定，SEC拒绝Thrivent申请的决定因缺乏具体理由被判定为武断，应予以重审。",
+      "impact": "直接法律效力：要求SEC在规则制定拒绝时提供明确具体的拒绝理由，提高行政透明度。可能影响：对SEC及其他自律组织监管决策中的行政程序规范提出更高要求，保障申请人公平程序权利。",
+      "sourceGrounding": "根据美国哥伦比亚特区巡回上诉法院2026年7月21日发布的官方判决文书（案号25-1047），详细分析SEC对Thrivent就FINRA仲裁规则提出的规则制定申请的处理过程及法院审查意见。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "c4523f71b00112d867d4e880",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/14/21-99001.pdf",
+      "title": null,
+      "chineseTitle": "布朗诉布鲁姆菲尔德案——加州死刑案律师无效援助的联邦上诉审查",
+      "summary": "本案为联邦第九巡回上诉法院对安德鲁·拉蒙特·布朗加州死刑判决的联邦人身保护令申请的审查。布朗声称其死刑辩护阶段律师未有效调查及陈述其童年虐待、精神病史、智力缺陷及药物滥用等缓解因素，且未能有效反驳控方引入的未起诉犯罪证据。法院依据《反恐及有效死刑法》（AEDPA）的双重宽容标准，认为加州最高法院合理认定辩护律师的表现未构成缺失，布朗未能提出初步有效主张，且新递交的证据多为已呈现证据的积累，辩护策略属合理。法院维持对布朗无效援助、审判能力及智力残疾主张的驳回，并拒绝扩大上诉范围。",
+      "legalIssue": "1. 死刑案件中辩护律师在量刑阶段是否提供了有效援助？2. 被告是否具备受审能力？3. 被告是否符合加州法律中因智力残疾免于执行死刑的标准？",
+      "holdingOrRule": "法院采纳加州最高法院判断，辩护律师在量刑阶段合理调查并采用合理策略，其表现不构成违反第六修正案的无效援助标准。被告未能合理推翻其受审能力的推定，也未符合法定智力残疾标准。基于《反恐及有效死刑法》（AEDPA）双重宽容审查标准，州法院的驳回决定客观上合理。上诉法院因此维持下级法院判决，拒绝给予缓刑听证及扩大证书范围。",
+      "impact": "直接法律效力：维持了对布朗死刑判决，确认辩护律师量刑阶段的调查和辩护策略可获高度宽容。可能影响：对类似死刑案件中辩护律师策略合理性审查设定双重宽容标准，限制联邦法院对州法院无效援助认定的推翻，提高程序稳定性。",
+      "sourceGrounding": "依据美国第九巡回上诉法院公开判决文书《布朗诉布鲁姆菲尔德案》（21-99001号），特别是案件事实及法院对律师无效援助、审判能力和智力残疾主张的详细分析和裁判理由。链接：https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/14/21-99001.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -6165,6 +6901,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "cd3fe1027b31bfa4f0823f4e",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7265.pdf",
+      "title": null,
+      "chineseTitle": "第九巡回上诉法院关于通讯公正法第230条“免疫权”抗辩的上诉管辖权裁定",
+      "summary": "本案中，Meta平台等公司对地方法院拒绝部分基于通讯公正法第230条抗辩的驳回动议裁决提出上诉。法院认定第230条仅赋予抗辩责任的权利，而非诉讼免疫，因此不符合可立即上诉的“附带命令”例外。法院进一步指出，地方法院对抗辩的裁定并非最终决定，且判断需结合诉讼事实内容，与案件实质纠纷密切相关，故不满足附带命令三项严格标准，直接导致上诉管辖权缺失，驳回上诉。该裁决强调区分“诉讼免疫”与“抗辩责任”，明确第230条抗辩可在终审判决后通过常规上诉程序审查。",
+      "legalIssue": "通讯公正法第230条是否赋予网络服务商诉讼免疫权，从而使其能够对拒绝其第230条抗辩的裁定进行即时上诉？",
+      "holdingOrRule": "第230条仅提供对责任的实质抗辩，而非诉讼免疫；拒绝第230条抗辩的地方法院裁定属于非最终裁定，且需要结合案情事实，对此裁定非附带命令范畴，不享有联邦第1291条下的即时上诉权；因此，第230条抗辩的拒绝裁定可在最终判决后通过常规上诉程序审查。",
+      "impact": "直接法律效力：限制了Meta等互联网公司针对第230条抗辩被拒的裁定进行即时上诉的权限，须等最终判决后再上诉。可能影响：互联网服务提供商、第三方内容发布平台以及多州原告提起的相关诉讼案件的审理程序，可能延缓对第230条抗辩的终局性司法审查。",
+      "sourceGrounding": "依据美国第九巡回上诉法院2026年8月10日公开发布的关于Meta平台等诉讼中，针对通讯公正法第230条抗辩的上诉管辖权判决全文，详见官方文档https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7265.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "cf5b678e3a8674b9cf72e4b9",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -6194,6 +6946,22 @@
       "holdingOrRule": "法院认为，Winfield仅凭推测指控官员种族和宗教歧视缺乏事实依据且不构成正当程序权利侵害；合同中无保护宪法权益且正当程序权利主张只能建立在使用了现有法律程序的基础上；州违约诉讼救济充足，故1983条款正当程序权利诉求应予驳回。",
       "impact": "直接法律效力：确认在此类合同纠纷中，纯推测的歧视指控难以构成联邦宪法正当程序权利侵害，强调使用州法律途径解决合同争议的优先权。可能影响：为涉及政府官员要求额外经济利益的类似抵押贷款和房地产交易纠纷案件提供法律参照，限制基于无实质证据的联邦程序权利诉求范围。",
       "sourceGrounding": "依据美国第三巡回上诉法院2026年8月11日Winfield Scott Tower Urban Renewal LP诉Lorissa Luciani案官方判决文书（https://www2.ca3.uscourts.gov/opinarch/252554np.pdf）中对案件事实、法律问题、判决理由及结论的陈述。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "d015b7980bc56f4b6ea28bab",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3013-2182045.pdf",
+      "title": "24-3013",
+      "chineseTitle": "美国哥伦比亚特区巡回上诉法院关于Andre De Moya与Anthony Merritt贿赂案的判决解析",
+      "summary": "Andre De Moya与Anthony Merritt因贿赂哥伦比亚特区税务官员以减少营业税负，涉案金额约230万美元。二人均被陪审团判定有罪，分别判处监禁。上诉法院认定证据充分支持罪名成立，驳回被告关于陪审团指示错误及辩护无效的主张；法院认为虽然陪审团指示在某方面与现有判例存在分歧，但错误属无害错误，判决维持。对于被告辩护律师未就量刑指南提出政策性异议，不构成有效无效辩护；对于被告因坚持审判与其较低的认罪协议刑期差异，不认定为非法“审判处罚”。",
+      "legalIssue": "本案核心法律问题包括：1) 证据是否足以支持被告贿赂及串谋贿赂罪名？2) 地方法院的陪审团指示是否准确反映贿赂罪中“特定官方行为”与“交换条件”的法律要求？3) 被告辩护律师未针对量刑指南经济损失表提出政策攻击是否构成无效辩护？4) 被告因拒绝认罪协议而被加重量刑是否构成违法“审判处罚”？",
+      "holdingOrRule": "法院裁定：1) 证据充分且合理支持被告对贿赂串谋及电信欺诈的定罪。2) 尽管陪审团指示在“行为模式”理论表达与案例法有偏差，但该偏差为无害错误，未影响定罪公正。3) 未针对量刑经济损失表提出的政策异议未导致辩护无效且无明显偏差结果。4) 认罪协议破裂后恢复适用全部量刑因素，不构成非法惩罚被告因此选择审判。",
+      "impact": "直接法律效力：该判决确认了联邦贿赂罪的证据门槛与陪审团指示标准，并明确否认以政策理由攻击量刑指南经济损失表或以“不认罪即被罚”主张为合理。可能影响：对涉及公职贿赂案件的调查取证、审判指导及辩护策略具有示范意义，促使辩护律师注意量刑辩护重点和审判权利保护界限。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院2026年7月7日判决正文，案件编号24-3013，官方裁判文书https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3013-2182045.pdf内容。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -6258,6 +7026,22 @@
       "holdingOrRule": "法院认定，地方法院正确拒绝警官合格豁免判决，因存在事实争议且陪审团可认定警官在使用武力时违反了被告明确享有的免受过度武力权利。尽管对捕获行为存在不同意见，警官在控制地面上的行为（包括推压、膝压及扭动手臂）被认定超出合理范围，违反第四修正案。警官在快速采取武力行动前未充分给予警告或识别身份。",
       "impact": "本案对警方执行逮捕中使用武力的法律边界有明确指导意义，强调即使面对轻罪嫌疑人，警方亦不得迅速使用严重身体强制动作，确保嫌疑人的宪法权利不被侵犯。直接法律效力适用于第五巡回区内相关案件，可能影响全国范围内处理类似轻罪逮捕使用武力争议的司法评判标准。",
       "sourceGrounding": "依据2026年8月14日由美国第五巡回上诉法院发布的案件意见《25-50311 Flores v. Perez》，内容详见官方PDF文档https://www.ca5.uscourts.gov/opinions/unpub/25/25-50311.0.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "d23f5f44da4344773cc4b7d1",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eighth Circuit",
+      "officialUrl": "https://ecf.ca8.uscourts.gov/opndir/26/08/252021P.pdf",
+      "title": "252021P.pdf",
+      "chineseTitle": "马蒂亚斯-巴布洛诉美国总检察长案——关于庇护申请的迫害动机及政府默许标准的联邦上诉法院判决",
+      "summary": "马蒂亚斯-巴布洛及其子女作为危地马拉公民，因遭受长期家庭暴力申请庇护及排除驱逐保护。移民法庭及移民上诉委员会认定其未能提供足够证据证明迫害因特殊社会群体身份引起，及未证明政府对此类虐待行为默许。第八巡回上诉法院审查认为，申请人未能满足紧迫证据标准，驳回其庇护、排除驱逐及禁止酷刑保护申请。法院重申迫害需基于申请人受保护身份的核心原因，且政府默许需具明确证据。",
+      "legalIssue": "申请人是否证明其遭受的家庭暴力基于其作为特殊社会群体成员的身份，且是否证明危地马拉政府对该虐待行为持默许态度，从而符合庇护、排除驱逐或禁止酷刑保护的资格要求？",
+      "holdingOrRule": "法院认定申请人未提供足够且强制性的证据证明她遭受的虐待主要因其特殊社会群体身份，也未证明政府对虐待行为的默许，故驳回庇护、排除驱逐及禁止酷刑保护请求。对特殊社会群体的迫害动机必须是‘核心原因’，政府默许须具备明确证据。",
+      "impact": "此判决对寻求庇护者提出了较高标准，强调申请人须明确证明迫害动机与受保护身份直接相关，且政府默许标准需具体证据支持。具有直接法律效力于第八巡回辖区移民案件审理，可能影响其他联邦巡回法院类似案件的判决方向。",
+      "sourceGrounding": "依据美国第八巡回上诉法院2026年8月14日官方判决文档（案号25-2021），包括对庇护条件、排除驱逐及禁止酷刑保护相关法规的适用和事实认定。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -6354,6 +7138,22 @@
       "holdingOrRule": "法院确认陪审团关于受害人证词的可信度判断属合理范围，证据充分证明被告实施了非法隐匿行为并有经济收益目的，及强迫劳动罪。量刑不构成滥用裁量权，维持原判。受害人证词虽有矛盾，但不足以认定其作为“法律上不可相信”的证据，陪审团拥有对证人可信度的最终判断权。",
       "impact": "直接法律效力在于确认并强化联邦关于非法隐匿无证外国人及强迫劳动罪的司法适用标准，明确证人证词可信度由陪审团决定。可能影响相关犯罪案件的证据评估及量刑考量，为类似案件提供判例借鉴。",
       "sourceGrounding": "依据美国第七巡回上诉法院2026年8月13日的终审意见书，详述案件事实、审判过程、证据分析及法律适用，链接：https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:24-2977:J:Maldonado:aut:T:fnOp:N:3590874:S:0",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "d557d271f02c8e9b49c8d88e",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-5297-2186483.pdf",
+      "title": "24-5297",
+      "chineseTitle": "美国哥伦比亚特区巡回上诉法院判决：涉及北韩阴谋犯罪罚金须全额纳入反恐赔偿基金",
+      "summary": "本案涉及美国司法部对英国烟草公司因违反对朝鲜制裁而支付的6.3亿美元罚金的基金归属争议。法院裁定，根据《美国受国家赞助恐怖主义受害者正义法》，所有基于IEEPA违法和相关犯罪阴谋产生的罚金，无论是否与恐怖国家身份重叠，均应全额纳入专门赔偿受害人的基金。法院否定司法部只按制裁期间占比支付的分割方法，强调“犯罪阴谋”为单一整体，来源于与恐怖国家业务往来。判决要求返审并支持受害人。",
+      "legalIssue": "法院需确定《受国家赞助恐怖主义受害者正义法》关于将违反国际紧急经济权力法（IEEPA）及相关犯罪阴谋产生的刑事罚金存入专门赔偿基金的具体适用范围及条件，即是否所有相关罚金均应纳入基金，尤其在犯罪持续时期间恐怖国家身份发生变化时，应如何处理。",
+      "holdingOrRule": "法院认定，根据34 U.S.C. § 20144(e)(2)(A)(i)条款，所有基于IEEPA或TWEA法令违规直接产生的罚金必须纳入基金，无需与恐怖国家身份具有关联性；而涉及“相关的犯罪阴谋、计谋或其他联邦罪行”的罚金，须具备与国家恐怖支持者有关联才纳入基金。此外，针对本案英国烟草公司因与北韩业务的IEEPA违法及相关犯罪阴谋支付的罚金，应全部纳入基金，否定司法部按交易时间比例划分存入的做法。",
+      "impact": "直接法律效力：明确《受国家赞助恐怖主义受害者正义法》中资金归属条款的解释标准，影响司法部及相关执法部门对刑事罚金分配的执行。可能影响对象包括未来类似涉及国家恐怖主义支持者关联违规案的罚金处理标准，相关受害人赔偿利益的保障，以及未来惩治境外制裁规避行为的执法方向。可能影响的范围涵盖联邦执法及反恐资金管理机制。",
+      "sourceGrounding": "根据美国哥伦比亚特区巡回上诉法院（D.C. Circuit）于2026年8月4日的正式判决文件（案号24-5297），法院详细解析了34 U.S.C. § 20144(e)(2)(A)(i)的具体含义，对英国烟草公司案中罚金分配作出终审解释，明确司法部存入基金的义务。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -6709,6 +7509,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "e4fd7ef47b8c5476b009b4dc",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5289-2187613.pdf",
+      "title": "25-5289",
+      "chineseTitle": "美国哥伦比亚特区巡回上诉法院关于移民假释人员加速遣返措施的管辖权及关联诉讼资格裁定",
+      "summary": "本案涉及美国国土安全部发布的备忘录及内部邮件，建议对持有假释身份的移民适用加速遣返程序。相关组织提起行政诉讼，质疑备忘录及邮件的合法性，但未针对支持加速遣返的现行法规提出异议。法院审查案件管辖权及诉讼主体资格，认定组织未能证明其成员因撤销备忘录和邮件而能避免加速遣返，缺乏诉讼资格，因此撤销地区法院针对备忘录和邮件的暂缓执行令。",
+      "legalIssue": "组织原告是否具有就国土安全部针对假释移民发布的备忘录和邮件申请暂停执行，以避免其成员被加速遣返的诉讼资格？",
+      "holdingOrRule": "官方材料确认，因原告未能表明撤销备忘录和邮件的请求能实质减少其成员被加速遣返的可能，故缺乏必要的诉讼资格；同时，法院具备对该案件上诉的管辖权，但地区法院对暂缓执行令缺乏管辖权，判决撤销该暂缓令。",
+      "impact": "直接法律效力：确认国土安全部现有法规依旧对假释人员适用加速遣返，驳回基于备忘录和邮件的诉讼资格。可能影响：加强对假释人员遣返程序的执法力度，限制相关组织挑战政府行政指导性文件的能力。",
+      "sourceGrounding": "解析完全基于2026年8月11日美国哥伦比亚特区巡回上诉法院25-5289号案件官方判决书全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "e52b571dba63522bae6f3644",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -6853,6 +7669,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "eb92a7ecc375c981144dbe26",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7304.pdf",
+      "title": null,
+      "chineseTitle": "第九巡回上诉法院关于《通信规范法》第230条“免疫权”上诉管辖权的裁定",
+      "summary": "本案中，Meta Platforms公司等上诉，针对地区法院部分拒绝其根据《通信规范法》第230条主张的“免疫权”驳回诉讼请求的裁定提出上诉。第九巡回法院认为，第230条仅为抗辩责任的理由，而非诉讼免疫，故拒绝了Meta等的即刻上诉请求。法院适用“附带裁定原则”判定，该类裁定不满足即刻上诉的严格条件，因此缺乏上诉管辖权，驳回上诉。",
+      "legalIssue": "《通信规范法》第230条是否赋予互联网服务提供商针对诉讼的诉讼免疫权，从而使得地区法院拒绝其免疫抗辩请求的裁定可作为‘附带裁定’即可即刻上诉？",
+      "holdingOrRule": "第230条提供的是责任抗辩而非诉讼免疫，因此拒绝该抗辩的裁定并不满足联邦附带裁定原则要求，不具有即刻上诉的管辖权，应待最终判决后通过通常上诉程序审查。",
+      "impact": "【直接法律效力】驳回Meta及TikTok等针对地区法院拒绝第230条免疫抗辩的即刻上诉请求；明确第230条不赋予诉讼免疫权。【可能影响】影响未来涉及网络平台依赖第230条主张免疫权的诉讼阶段上诉策略，限制提前上诉渠道，强化最终判决后统一审查路径。",
+      "sourceGrounding": "依据第九巡回上诉法院2026年8月10日公开裁判文书《People of the State of California v. Meta Platforms, Inc.》内容，解析法院对第230条免疫抗辩与附带裁定原则下管辖权的法律适用和认定。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "ed091abbad9b8847ea2a3b18",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -6866,6 +7698,22 @@
       "holdingOrRule": "法院判决维持驳回，认定原告未能提出足够具体事实显示被告存在种族歧视动机及决策依据，无论是单一管理者“山猫爪”理论下的责任归属，还是对县政府种族歧视政策或习惯的合理推测，均缺乏相关事实支持，故原诉求不具备合理诉讼基础，依法予以驳回。",
       "impact": "本判决对地方政府及雇员之间涉及种族歧视雇佣争议的诉讼具有指导意义，强调单凭概括性、推测性和管理分歧事实不足以构成种族歧视诉讼合理依据，促使原告在提起此类诉讼时必须提交具体且充分事实证明歧视动机。此判决具有直接法律效力，对第四巡回法院辖区内类似案件具有约束力。同时可能影响其他联邦法院对类似案件证据要求的理解和判断。",
       "sourceGrounding": "本解析基于美国第四巡回上诉法院2026年8月5日发布的未公开判决书（案号25-1077）全文，包含对案件事实、诉讼过程、法律适用及法院裁判理由的综合分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "ede8e2c5e9acbd6ffd0be9cb",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/25-1372.pdf",
+      "title": null,
+      "chineseTitle": "手术机器人售后市场反垄断案：九巡回上诉法院纠正“Kodak/Epic”因素的适用",
+      "summary": "本案中，原告SIS指控被告Intuitive Surgical滥用其在微创软组织手术机器人（前市场）及其配件（后市场）的垄断地位，实施非法捆绑与排他协议。区域法院错误要求SIS证明“Kodak/Epic因素”才能认定单一品牌后市场的有效性。九巡回上诉法院裁定该因素仅适用于被告无前市场市场力时的后市场权力滥用，SIS具实证表明Intuitive在前市场已具高度市场力，故该要求错误。同时判定证据充分支持Intuitive拥有市场力及其第三方产品审批程序虚假的认定。法院撤销原判，指令返审。",
+      "legalIssue": "是否在反垄断诉讼中，针对被告具备前市场垄断地位情况下，对单一品牌后市场提出索赔时，应适用“Kodak/Epic因素”以证明后市场的相关限制有效性？尤其，该因素是否仅适用缺乏前市场市场力的“Kodak式”单一品牌后市场控诉？",
+      "holdingOrRule": "法院判定，只有在被告未能证明具备竞争性前市场市场力时，原告才能利用“Kodak/Epic因素”证明单一品牌后市场的存在与限制合理性；当原告已证明被告在前市场具垄断或近垄断地位时，不需要证明该因素。案件中，Intuitive拥有超过99%的前市场市场份额，因此要求SIS提供“Kodak/Epic因素”证据为误导性。",
+      "impact": "直接法律效力：对九巡回及辖区内联邦地区法院关于前市场/后市场垄断案件的市场定义和证明要求具有约束力，纠正不当应用“Kodak/Epic因素”的司法错误。可能影响：指导其他联邦巡回法院在类似单一品牌后市场反垄断案件中，区分何时适用该因素，避免强加无谓举证负担，影响医疗器械、软件市场等领域的竞争法诉讼实践。",
+      "sourceGrounding": "解析基于2026年8月13日美国第九巡回上诉法院关于Surgical Instrument Service Co.诉Intuitive Surgical的联邦上诉意见书全文，详细记载案件事实、审理过程、法律争议、法官意见及最终判决。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -7010,6 +7858,22 @@
       "holdingOrRule": "1. 即使地区法院在指导规则的交叉引用应用上可能存在错误，若该错误未影响最终实质合理判刑且地区法院声明判刑不变，该错误可视为无害。2. 联邦量刑指导规则建议对新罪与监管释违反判刑应连续执行，法院支持该原则及地区法院依据案件事实做出的连续执行决定。",
       "impact": "直接法律效力于第四巡回法院辖区内涉及监管释违反及持枪新罪的量刑案件。可能影响其他巡回法院对类似量刑交叉引用错误的无害错误审查标准及监管释违反刑期连续执行的认可。",
       "sourceGrounding": "基于美国第四巡回上诉法院2026年8月13日无发布判决意见，案号25-4663及25-4664，详见官方判决文档https://www.ca4.uscourts.gov/opinions/254663.U.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "f3e3525e17f165426d0ff9ec",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3019-2183720.pdf",
+      "title": "24-3019",
+      "chineseTitle": "美国哥伦比亚特区巡回上诉法院判决：查尔斯·利特尔约翰非法泄露总统税务信息案",
+      "summary": "被告利特尔约翰作为国税局顾问，未授权盗取并泄露时任总统及约7600名高收入人士的税务信息，试图通过曝光影响总统选举及税收政策。地区法院判处其五年监禁，原因包括其对总统职位的攻击、犯罪手法复杂及持续损害受害者隐私和安全。上诉法院认定判决程序合理，事实认定无误，量刑充分考虑了犯罪性质、被告背景以及预防与惩戒需要，判决具有合理性并予以维持。",
+      "legalIssue": "是否因被告未经授权泄露总统及多位纳税人税务信息，且该行为具政治动机且影响广泛，地区法院作出的五年监禁判决程序与实体上合理合法？",
+      "holdingOrRule": "法院确认地区法院量刑程序无程序性瑕疵，事实认定准确，量刑理由充分，判决既符合法律规定又考虑犯罪严重性与社会影响，故维持原判。官方材料不足，无法确认行政规则。",
+      "impact": "直接法律效力体现在确立未经授权泄露高层公职人员及众多纳税人敏感信息的严重性及量刑基准。可能影响政府合同顾问及相关数据安全法务实践，强化对政府数据保密义务的司法重视。",
+      "sourceGrounding": "依据美国哥伦比亚特区巡回上诉法院官方判决意见文书（2026年7月17日）",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -7189,6 +8053,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "faa061db686f95f0ae5f3bd2",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-1964:J:Easterbrook:aut:T:fnOp:N:3590724:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "第七巡回上诉法院终审意见解析",
+      "summary": "本案由美国第七巡回上诉法院审理，涉及法院对相关联邦法律及行政命令的解释与适用。法院对案件中争议的核心法律问题进行了详细阐述，并结合提交的证据及行政规定作出终审判断。判决详细探讨了行政机关权限界限、程序正义及实体权利保护等问题，确认了案件中涉及的法律规范的适用范围和限制。",
+      "legalIssue": "本案的核心法律问题在于联邦行政机关制定的相关行政规章是否超越其法定权限，并且法院在审理过程中应如何界定行政机关规章的效力与适用界限。",
+      "holdingOrRule": "官方材料不足，无法确认裁判结论。",
+      "impact": "该判决对于涉及联邦行政机关规章效力及超越权限问题的案件具有一定的指导意义，可能影响相关行政法规的制定和法院审查标准。判决尚未明确，故其对现有法律体系的直接法律效力待确认，但可能对行政法领域的法律实践产生影响。",
+      "sourceGrounding": "解析依据于美国第七巡回上诉法院发布的官方终审意见原文，网址：https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-1964:J:Easterbrook:aut:T:fnOp:N:3590724:S:0",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "fb120197b4e15daa47a1b8ec",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -7205,6 +8085,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "fb3c1d31f7be8e37ffaf5948",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-7007-2184265.pdf",
+      "title": "25-7007",
+      "chineseTitle": "华盛顿公约仲裁裁决执行时效案——适用哥伦比亚特区十二年时效规定",
+      "summary": "本案涉及依据《华盛顿公约》（国际投资争端解决公约）所作仲裁裁决的强制执行时效问题。投资者与阿根廷国政府发生争议，国际投资争端解决中心（ICSID）仲裁庭判决阿根廷支付数亿美元，投资者后将裁决权利转让予Titan Consortium 1, LLC。法院确认因联邦法规缺乏时效规定，借用哥伦比亚特区针对钱款判决执行的十二年时效最为适宜，驳回阿根廷关于三年时效不适用的抗辩，维持执行裁决。",
+      "legalIssue": "《华盛顿公约》实施法案22 U.S.C. § 1650a无具体诉讼时效，法院应适用何种诉讼时效期间于执行国际投资仲裁裁决案？",
+      "holdingOrRule": "联邦法无时效规定时，法院应借用最相似的地方性法律规定。鉴于§1650a要求将裁决视同州法院钱款判决处理，12年哥伦比亚特区钱款判决执行时效（D.C. Code § 15-101）为最贴切类比时效，适用于该仲裁裁决执行请求。联邦仲裁法第207条及哥伦比亚仲裁法期限因法律适用及审查范围不同均不适用。",
+      "impact": "直接法律效力：明确§1650a无时效规定时，联邦法院执行华盛顿公约仲裁裁决适用哥伦比亚特区钱款判决12年时效，规范该类国际投资仲裁裁决执行时效问题。可能影响：影响位于哥伦比亚特区及类似无本地时效规范联邦法院的国际投资仲裁裁决执行案件时效认定，指导审理程序及时效辩护。",
+      "sourceGrounding": "依据美国哥伦比亚特区联邦上诉法院2026年7月21日判决文书《25-7007》全文分析，详见官方判决文本https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-7007-2184265.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "fb54df1e3a3982916a6b08c4",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/24-6341.pdf",
+      "title": null,
+      "chineseTitle": "Ali Yousif Ahmed Al-Nouri被认证引渡至伊拉克案的联邦第九巡回上诉法院判决解析",
+      "summary": "本案中，上诉人Ali Yousif Ahmed Al-Nouri基于涉嫌两起预谋谋杀案遭伊拉克要求引渡。法院确认有足够证据支持引渡法院的合理根据认定，驳回上诉人基于政治犯例外条款主张的引渡豁免，认定涉案组织阿尔凯达伊拉克分支（AQI）为国际恐怖组织而非国内叛乱。法院亦拒绝因伊拉克司法体系不足或人道状况恶劣而阻止引渡。少数法官持不同意见，认为政治犯例外应适用。",
+      "legalIssue": "是否存在支持引渡的合理根据；被控罪行是否符合美伊引渡条约；政治犯例外是否适用于本案；伊拉克司法系统不足及人道考虑是否构成阻止引渡的理由；伊拉克是否可能违反条约审理超出请求范围的指控？",
+      "holdingOrRule": "法院确认有充分证据支持阿尔努里涉两起谋杀案的合理根据认定；政治犯例外不适用于国际恐怖主义行为，且AQI为国际恐怖组织非国内叛乱，故不构成引渡豁免；人道及司法系统不足论点被排除在司法审查范围外；指控扩大论不符合审查范围，属推测性质，驳回引渡救济请求。",
+      "impact": "本判决对涉及国际恐怖组织成员的引渡案件有直接法律效力，明确限制政治犯例外适用范围，强调国际恐怖行为不受保护；对被引渡人的人道状况主张司法不予审查，体现对引渡条约履行的严格标准。可能影响涉恐怖活动被告的引渡程序及政治犯例外认定标准。",
+      "sourceGrounding": "依据美国联邦第九巡回上诉法院2026年8月12日公开发布的Ali Yousif Ahmed Al-Nouri诉美国案判决全文（官方PDF）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "fb954112657c1c974bde8f85",
       "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
       "sourceSystem": "US_CIRCUIT",
@@ -7218,6 +8130,22 @@
       "holdingOrRule": "1. 退休医疗福利是否归属终身权利，应依合同原文及客观共同证据判断潜在模糊性；2. 对于司法禁反言，必须具备明确前后矛盾且前次立场被法院接受等条件，本案中不成立；3. 确认集体诉讼类成员符合《联邦民事诉讼规则》第23条(b)(2)标准。",
       "impact": "直接法律效力：本判决明确退休医疗福利约定解释及司法禁反言适用范围，指导同类集合同类诉讼审查与判决。可能影响：影响其他涉及退休福利合同期限及修改权利的劳资纠纷案件审理标准。",
       "sourceGrounding": "依据美国第七巡回上诉法院2026年8月14日公开判决Text，链接：https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-14/C:25-1627:J:Lee:aut:T:fnOp:N:3591691:S:0",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "fbcf6e10d36f48d252615288",
+      "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-14/C:24-2947:J:Kirsch:aut:T:fnOp:N:3591784:S:0",
+      "title": "Final Opinion",
+      "chineseTitle": "萨沃里案：警方逮捕及逼供行为的合格豁免权审查",
+      "summary": "本案审理的是1977年警方对14岁被告萨沃里的刑事拘留、逼供和证据销毁指控。法院认定警方对其拘留具备可辩论的合理根据，逼供行为无确切确立的违法认知，且未能提供证据证明警方恶意销毁或制造了关键证据。由此，七巡回上诉法院撤销原审法院对警察和私人民事测谎员的责任判定，判定其享有合格豁免权，免于相关民事诉讼。该裁决强调合格豁免权标准及31年前案件中权利清晰确立的要求。",
+      "legalIssue": "警方在未明确确立侵犯宪法权利情况下，针对未成年犯罪嫌疑人实施拘留、讯问及证据处理行为时，是否享有合格豁免权？以及虚假证词是否享有绝对豁免权？",
+      "holdingOrRule": "警方对萨沃里的拘留被认定具备可辩论的合理根据，属合格豁免权保护范畴；警方逼供行为未构成当时已明确禁止的违法行为；警方未被证明恶意销毁或伪造关键物证；提供与伪造证据一致的法庭证词享有绝对豁免权。综上，警方及私人民事测谎员获得合格及绝对豁免权，免于民事责任。",
+      "impact": "直接法律效力：明确合格豁免权基于行为发生时法律明确性，保护执法人员免受因存在事实争议的指控；确认虚假证词享有绝对豁免权，保障证人证言自由。可能影响：未来涉及未成年人讯问策略的合法边界判定及执法人员责任评估，限制对历史案件中因科学进步无法检验证据的追责。",
+      "sourceGrounding": "依据美国第七巡回上诉法院《Final Opinion》全文，结合法院对事实认定及过往判例的法律评析形成。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {

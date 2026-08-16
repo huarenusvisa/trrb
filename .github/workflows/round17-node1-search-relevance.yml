@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - 'legal/legal-app.js'
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'data/legal/legal-ai-analysis-latest.json'
       - 'scripts/round17-node1-search-relevance-audit.mjs'
       - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
       - '.github/workflows/round17-node1-search-relevance.yml'
@@ -21,8 +23,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Audit Round 17 node 1
         run: node scripts/round17-node1-search-relevance-audit.mjs
 
-# strict restart validation refresh: 2026-08-16 11:28 ET
+# Strict node 1 automatically revalidates after every unified legal or Chinese-analysis dataset change.

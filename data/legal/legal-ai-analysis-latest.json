@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+  "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 155,
+  "count": 163,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -2229,6 +2229,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "1553dc49477b50a38480aec9",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
+      "title": "25-1817 Recchia v. Campbell",
+      "chineseTitle": "瑞奇亚诉坎贝尔案（25-1817）",
+      "summary": "本案系原告瑞奇亚及其所拥有的枪械店挑战马萨诸塞州2024年枪支法案中关于“攻击式半自动步枪”的限制条款，声称其违宪，涉及第二修正案权利、商务条款及平等保护条款。联邦地区法院依照一审辖区先前判例及现有法律原则，驳回诉讼请求，并获一审上诉法院确认。",
+      "legalIssue": "马萨诸塞州2024年禁止“攻击式半自动步枪”等枪械的法律条款，是否违反宪法中第二修正案关于持有和携带枪械的权利、联邦宪法禁止州际贸易歧视的商务条款，以及十四修正案的平等保护条款？",
+      "holdingOrRule": "基于第一巡回法院此前判例（Capen v. Campbell），法院认为该枪械限制法不构成第二修正案禁止范围内的严重负担，且未能显示对州际贸易构成实质歧视或侵害平等保护权利。故判决驳回诉讼请求。",
+      "impact": "该判决对马萨诸塞州等类似州法律限制某些半自动步枪的法规具直接法律效力，支持州政府管控权，同时可能影响枪械销售商、拥枪者及州际贸易规则的适用范围。对其他辖区类似案件具一定参考价值。",
+      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月21日公开发布之官方判决文件（案号25-1817，公开链接：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "1e39c415528a307825d03b01",
       "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
       "sourceSystem": "US_CIRCUIT",
@@ -2242,6 +2258,22 @@
       "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。法院主要判断LUMA无权代表破产实体PREPA提出自动中止令请求及相关上诉。",
       "impact": "直接法律效力在于明确了私人合同方（LUMA）在PROMESA框架下，不能单独行使破产保护中的自动中止权利或代表债务人发起相关诉讼程序。可能影响波多黎各公共事业私有化项目中，运营商与监管及消费者维权的法律关系和诉讼地位。",
       "sourceGrounding": "基于美国第一巡回上诉法院2026年8月13日对25-2077号案的官方判决书原文节选。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "1e45f048e4aecf60e105f698",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1781P-01A.pdf",
+      "title": "25-1781 Rhode Island Truck Ctr., LLC v. Daimler Trucks North America, LLC",
+      "chineseTitle": "罗德岛卡车中心有限责任公司诉戴姆勒北美卡车有限责任公司案",
+      "summary": "本案涉及罗德岛卡车中心（RITC）与戴姆勒北美卡车（Daimler）间的经销商协议纠纷。协议赋予RITC在特定区域非排他销售权，同时允许戴姆勒自行决定增设其他经销商。戴姆勒基于RITC业绩不佳，在其区域内增设新经销商，RITC诉其违约及违反诚信义务。地方法院判戴姆勒胜诉，一审法院确认戴姆勒依合同行使权利无违约，RITC上诉被驳回。",
+      "legalIssue": "合同条款赋予制造商以“自行决定”权新增经销商是否构成违约；制造商此举是否违反诚信与公平交易的暗示契约义务。",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。地方法院已判戴姆勒胜诉，合议庭维持原判。裁判认为戴姆勒在合同赋予的“自行决定”权限范围内行事，未违反合同及诚信与公平交易义务。",
+      "impact": "该判决直接对罗德岛卡车中心与戴姆勒北美产生法律效力；可能影响制造商与经销商协议中授予“自行决定”权的解释及争议解决，尤其涉及区域经销安排与市场合并策略；有助明确合同中经销商非排他销售权范畴及限制。",
+      "sourceGrounding": "依据2026年美国第一巡回上诉法院对罗德岛卡车中心诉戴姆勒北美卡车案的官方判决文件，特别是案件事实、合同条款内容及法院对纠纷的判决理由。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2274,6 +2306,22 @@
       "holdingOrRule": "法院认定“寻求入境”涵义限于寻求合法入境，非法入境者不属于“寻求入境”范畴，因此不适用于第1225(b)(2)(A)条款的强制拘留，而应适用第1226条相关拘留和保释规定。",
       "impact": "直接法律效力在于确认非法入境且长期滞留的非公民拘留适用第1226条规定，可获得保释听证权利；可能影响方面，该判决限制了政府将所有非法入境者统一适用第1225条款强制拘留的政策，促进对非公民拘留权利的保障。",
       "sourceGrounding": "依据2025年首巡联邦上诉法院意见书《格雷罗-奥雷利亚纳诉莫尼兹案》（案号25-2152），包括对《移民与国籍法》第1225和1226条款的法律解释及相关政府政策变化论述。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "3bbfc927f458d0bca0b17dc6",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1975P-01A.pdf",
+      "title": "23-1975 US v. Irizarry-Irizarry",
+      "chineseTitle": "美国第一巡回上诉法院关于Irizarry诈骗案的判决解析",
+      "summary": "被告Irizarry因参与针对波多黎各Mayagüez市及其经济发展机构MEDI的诈骗计划，被陪审团判定犯有电信诈骗、共谋及洗钱罪。核心事实包括未经授权利用为创伤中心改造拨款的900万美元资金，伪造投资文件，资金多次转移至相关联企业账户，并开具虚假服务发票。Irizarry申诉指证据不足未证明其犯罪故意，且未成功减刑。法院认定证据充分，维持原判。",
+      "legalIssue": "被告Irizarry是否具备实施电信诈骗、共谋及洗钱罪所必需的犯罪故意，且其申诉的量刑调整请求是否具备上诉基础？",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
+      "impact": "直接法律效力：确认涉案被告犯罪行为构成电信诈骗、共谋及洗钱罪，维持相应刑罚。可能影响：为联邦法院在类似利用公共资金进行复杂诈骗案件中的证据评估与犯罪故意认定提供参考标准。",
+      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月24日关于案件编号23-1975的官方判决文书全文摘录。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2341,6 +2389,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "742ec4be70d431a94118222c",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf",
+      "title": "26-1774 State of California v. Trump",
+      "chineseTitle": "加利福尼亚州等23州诉特朗普总统行政命令案（一巡回上诉法院2026年）",
+      "summary": "2026年，特朗普总统发布行政命令14399，旨在调整联邦选举中邮寄投票的管理措施，涉及国土安全部建立公民名单及邮政规则制定。23个州和哥伦比亚特区诉其违反权力分立原则，法院认定州方具备诉讼主体资格，且行政命令超越总统权限，部分条款遭禁止执行，暂缓实施至2026年11月选举为止。联邦政府后续提出暂停禁令的申请未获批准。",
+      "legalIssue": "总统发布涉州及地方选举管理的行政命令是否超越其宪法授权权限，侵犯了各州在联邦选举中行政管理的权力，从而产生联邦法院审理资格（诉讼主体资格）及案件可审理性？",
+      "holdingOrRule": "法院确认州方具备诉讼主体资格，因行政命令导致实际且迫切的伤害，包括成本负担和可能刑事处罚。裁定总统无权通过行政命令直接调整州和地方联邦选举的运作，行政命令相关条款违反权力分立原则，禁止联邦被告在原告州实施该命令至2026年11月选举。",
+      "impact": "直接法律效力限制于原告23州及哥伦比亚特区，禁止被告联邦机构执行行政命令相关内容。可能影响全美联邦选举管理模式及总统行政命令对州权行政事务介入的合法性论证。",
+      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月25日正式公开的判决及相关诉讼文件，详见官方网站https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "8992bd49ef4ddac154309568",
       "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
       "sourceSystem": "US_CIRCUIT",
@@ -2354,6 +2418,38 @@
       "holdingOrRule": "法院依据保险合同中“相关索赔”条款认定所有源自同一基本事实的索赔视为在首个索赔日同时提出，因Mammoth在保单生效期前已获知相关索赔事实，故该索赔不属于保单承保范围，保险公司不承担赔偿责任。官方材料节选不足，暂不判断裁判结论。",
       "impact": "直接法律效力：明确保险合同中相关索赔条款对保险责任触发时点的解释原则。可能影响：保险业对雇主责任险保单设计及索赔通知时间的管理，亦影响被保险人与保险公司之间权利义务界定。",
       "sourceGrounding": "依据美国第一巡回上诉法院官方判决文书《Urena诉Travelers Casualty and Surety Co. of America》全文解读。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "8d5733057d0929671f6f14f8",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1314E-01A.pdf",
+      "title": "25-1314 Czerno v. General Electric Company",
+      "chineseTitle": "Czerno诉通用电气公司案（第一巡回上诉法院）",
+      "summary": "本案由Crystal Czerno代表其未成年子女C.L.对通用电气公司提起诉讼，涉及产品责任及相关法律争议。案件经历上诉程序，第一巡回上诉法院于2026年7月14日发布判决意见，之后发布勘误表更正部分文本内容。案件核心在于责任认定和适用法律规范的争议，官方材料未包含具体判决结果。",
+      "legalIssue": "本案核心法律问题在于确认通用电气公司对原告因产品或行为引起损害的法律责任范围及适用的法律标准。",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
+      "impact": "该判决如确认，直接对案件双方具有约束力，影响民事诉讼中产品责任法律适用及责任划分；可能影响同类产品责任诉讼的法律理解和司法实践。",
+      "sourceGrounding": "解析依据第一巡回上诉法院2026年7月14日发布的官方判决文书及随后勘误表，其中包含案件当事人、争议焦点和程序信息。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "954a604a63103c49925317c1",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
+      "title": "25-1555 Grant v. Trial Court of the Commonwealth of Massachusetts",
+      "chineseTitle": "Grant诉马萨诸塞州普通法院案（一巡回法院）",
+      "summary": "上诉人群体在被禁止在法院200英尺范围内示威后，针对缓冲区命令提起联邦诉讼，声称第一修正案和正当程序被侵犯。法院指出，缓冲区命令仅在该案审判期间有效，审判已结束且判决已出，缓冲区命令自动失效，因而上诉事项已无实际争议，案件因缺乏实际争议而终结，适用例外情形“可重复但难以审查”不成立，故撤销原审部分裁决，指示驳回相关诉讼请求。",
+      "legalIssue": "法院须判断缓冲区禁令在审判结束后是否仍有法律争议，即该禁令的持续效力及其对言论自由权利的影响是否构成实际争议，进而确认案件是否构成司法审查的实质案件。",
+      "holdingOrRule": "因缓冲区命令根据其自身条款仅在审判期间有效，审判结束且判决宣告后即自动失效，上诉中涉及的禁令已无实际法效应，案件因缺乏实际争议而构成无论裁定均无实质影响的“非实质案件”，故裁定撤销下级法院部分裁决并驳回相关诉讼请求。",
+      "impact": "直接法律效力在于明确审判相关限制性命令时效及其司法审查范围，避免法院审理已失效命令的诉讼，从而维护司法资源有效利用。可能影响执法机关对审判期间示威区划定的合法执法行为，及示威者权利保护的界定。",
+      "sourceGrounding": "本文解析完全基于美国第一巡回上诉法院判决书原文《Grant v. Trial Court of the Commonwealth of Massachusetts》（案号25-1555），并引用判决中对缓冲区命令时效及初步禁令审查的官方说明。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2453,6 +2549,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "df053c05724a92ac914774b4",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
+      "title": "23-2011 Cruz v. UIA",
+      "chineseTitle": "克鲁兹诉波多黎各水务局工会等案（23-2011）",
+      "summary": "克鲁兹因反对工会从其工资中扣除政治和非议价性质的会费，诉诸联邦法院以违反第一修正案权利。诉讼期间，水务局停止扣费，工会向法庭存入克鲁兹索赔的赔偿金。地区法院认为案件已无实际争议而驳回诉求，克鲁兹上诉后，本法庭维持驳回决定，明确律师费请求不足以使案件复活。",
+      "legalIssue": "克鲁兹主张其第一修正案权利遭侵犯，争议在于在扣费停止且工会存款后，原告请求的宣告性救济和赔偿请求是否仍存争议（未失效）？以及该如何认定当事人是否有权获得律师费。",
+      "holdingOrRule": "法院确认案件实质争议因扣费停止及工会存款已经消除，诉讼请求实质上已无效，宣告性救济请求亦属无效；律师费请求虽为争议点，但不足以恢复原本已无效的诉讼争议。由此，驳回诉及宣判案件已无效。",
+      "impact": "直接法律效力：该判例确认了倘若争议事项已由行为停止及赔偿方式处理，诉讼请求可被判无效，限制了第一修正案下对工会会费扣除争议的诉讼持续性。可能影响：此案对劳资争议、第一修正案权利主张及诉讼程序中费用和无效问题具有指导意义，影响相关诉讼当事人的策略及权利行使。",
+      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月24日裁判文书及相关法律程序原文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "e626478cbad999dd8ea50aed",
       "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
       "sourceSystem": "US_CIRCUIT",
@@ -2466,6 +2578,22 @@
       "holdingOrRule": "法院认定Fulcar认罪为知情自愿，拒绝其第二修正案主张，认定原审法院错误适用职业罪犯量刑加重但该错误无害，维持所有定罪和判决。对于拒绝排除证据的决定，因认罪放弃异议权，故不予支持。",
       "impact": "该案对被告认罪程序合法性的司法审查、联邦枪械管制的宪法限制范围及联邦量刑指引中职业罪犯加重的适用标准具有直接法律效力。其析理可能影响其他涉及类似认罪程序和量刑争议的案件，但不直接变更法律条文。",
       "sourceGrounding": "依据美国联邦第一巡回上诉法院2026年Fulcar案官方判决文书（案件编号24-1524），详细内容见https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "e9d1350cccc902aa411755e1",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1376O-01A.pdf",
+      "title": "26-1376 African Communities Together v. Mullin",
+      "chineseTitle": "非洲社区联合诉穆林一案联邦第一巡回上诉法院判决解析",
+      "summary": "本案涉及美国国土安全部秘书决定终止对埃塞俄比亚的临时保护身份（TPS）而引发的诉讼。上诉法院依据美国最高法院最新判决Mullin v. Doe，确认TPS相关司法审查受限，否定了原审法院针对TPS终止延期的命令，撤销延期决定，将案件发回下级法院依照最高法院指示重新审理。",
+      "legalIssue": "本案核心法律问题是司法审查权限，即是否联邦法院可对国土安全部秘书终止TPS决定中除宪法问题外的非宪法诉求进行审查。",
+      "holdingOrRule": "依据最高法院Mullin判决，TPS法案中对司法审查的限制适用于所有非宪法性质的诉求，从而限制法院对于国土安全部长终止TPS决定的司法干预。上诉法院据此撤销了相关延期终止TPS的下级法院命令。",
+      "impact": "该判决直接影响TPS暂保护状态终止案件的司法审查范围，使得对于国土安全部有关TPS终止的非宪法诉求难以在联邦法院获得审理，限制了诉讼参与者的救济渠道。可能影响范围涵盖所有TPS受益群体及相关诉讼，特别是在类似司法审查障碍案件中。",
+      "sourceGrounding": "解析依据美国第一巡回上诉法院2026年7月29日判决文书及文中明确引用的最高法院Mullin v. Doe判决（2026年6月25日）。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

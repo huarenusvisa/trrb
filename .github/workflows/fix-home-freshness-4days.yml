@@ -1,0 +1,39 @@
+name: Fix Homepage Freshness 4 Days
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/fix-home-freshness-4days.mjs'
+      - '.github/workflows/fix-home-freshness-4days.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply four-day freshness rule
+        run: node scripts/fix-home-freshness-4days.mjs
+      - name: Verify rule
+        run: |
+          grep -F "const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;" articles-home.js
+          ! grep -F "const HOME_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;" articles-home.js
+      - name: Commit repair
+        run: |
+          if git diff --quiet -- articles-home.js; then
+            echo "No change needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add articles-home.js
+          git commit -m "Fix homepage freshness threshold to four days"
+          git push

@@ -32,28 +32,41 @@ async function analyze(record,sourceText){
 
 const db=JSON.parse(readFileSync('data/legal/unified-legal-authorities-latest.json','utf8'));
 let prior={analyses:[]};if(existsSync('data/legal/legal-ai-analysis-latest.json')){try{prior=JSON.parse(readFileSync('data/legal/legal-ai-analysis-latest.json','utf8'))}catch{}}
-const map=new Map((prior.analyses||[]).map(a=>[a.recordId,a]));
+const recordMap=new Map((db.records||[]).map(r=>[String(r.id),r]));
+const map=new Map();
+const archivedOrphans=[];
+const staleMetadata=[];
+for(const a of prior.analyses||[]){
+  const r=recordMap.get(String(a.recordId||''));
+  if(!r){archivedOrphans.push(String(a.recordId||''));continue;}
+  const metadataFields=['sourceSystem','authorityType','issuingBody','officialUrl','title'];
+  if(metadataFields.some(field=>String(a[field]??'')!==String(r[field]??''))){staleMetadata.push(String(a.recordId||''));continue;}
+  map.set(String(a.recordId),{...a,datasetVersion:db.datasetVersion});
+}
 const priority={SCOTUS:0,BIA:1,US_CIRCUIT:2,WHITE_HOUSE:3,FEDERAL_REGISTER:4};
-const candidates=[...(db.records||[])].filter(r=>r.officialUrl&&!map.has(r.id)).sort((a,b)=>(priority[a.sourceSystem]??9)-(priority[b.sourceSystem]??9)||String(b.publicationDate||'').localeCompare(String(a.publicationDate||''))).slice(0,LIMIT);
+const candidates=[...(db.records||[])].filter(r=>r.officialUrl&&!map.has(String(r.id))).sort((a,b)=>(priority[a.sourceSystem]??9)-(priority[b.sourceSystem]??9)||String(b.publicationDate||'').localeCompare(String(a.publicationDate||''))).slice(0,LIMIT);
 check((db.records||[]).length>0,'unified legal database available',`records=${(db.records||[]).length}`);
 check(db.datasetVersion&&/^[a-f0-9]{64}$/.test(db.datasetVersion),'unified dataset version available',String(db.datasetVersion).slice(0,16));
 check(candidates.length>0||map.size>0,'AI analysis has records to process or preserve',`new=${candidates.length}; existing=${map.size}`);
+check(new Set([...map.keys()]).size===map.size,'active Chinese analyses have unique recordId bindings');
 let generated=0,sourceFailures=0,modelFailures=0;
 for(const r of candidates){
   try{
     const sourceText=await fetchText(r.officialUrl,r.id);
     if(sourceText.length<300){sourceFailures++;console.log(`WARN source text too short ${r.id} chars=${sourceText.length}`);continue;}
-    try{const a=await analyze(r,sourceText);map.set(r.id,{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a});generated++;console.log(`PASS AI analysis ${r.sourceSystem} ${r.id}`)}catch(e){modelFailures++;console.log(`WARN model ${r.id}: ${e.message}`)}
+    try{const a=await analyze(r,sourceText);map.set(String(r.id),{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a});generated++;console.log(`PASS AI analysis ${r.sourceSystem} ${r.id}`)}catch(e){modelFailures++;console.log(`WARN model ${r.id}: ${e.message}`)}
   }catch(e){sourceFailures++;console.log(`WARN source ${r.id}: ${e.message}`)}
 }
-const analyses=[...map.values()].sort((a,b)=>a.sourceSystem.localeCompare(b.sourceSystem)||a.recordId.localeCompare(b.recordId));
+const analyses=[...map.values()].sort((a,b)=>a.sourceSystem.localeCompare(b.sourceSystem)||String(a.recordId).localeCompare(String(b.recordId)));
 check(analyses.length>=Math.min(3,Math.max(1,candidates.length)),'Chinese legal analyses generated/preserved',`analyses=${analyses.length}; generated=${generated}`);
 check(analyses.every(a=>a.summary&&a.legalIssue&&a.holdingOrRule&&a.impact&&a.sourceGrounding&&a.disclaimer),'AI analysis fields complete');
 check(analyses.every(a=>/不构成法律意见/.test(a.disclaimer)),'all analyses include legal-information disclaimer');
+check(analyses.every(a=>recordMap.has(String(a.recordId))),'all active analyses bind to current official records');
+check(analyses.every(a=>String(a.datasetVersion||'')===String(db.datasetVersion||'')),'all active analyses bind to current dataset version');
 check(modelFailures===0,'AI model calls completed without failures',`failures=${modelFailures}`);
 check(sourceFailures<=Math.max(2,Math.floor(candidates.length/2)),'official-source extraction reliability acceptable',`sourceFailures=${sourceFailures}/${candidates.length}`);
 mkdirSync('data/legal',{recursive:true});
 writeFileSync('data/legal/legal-ai-analysis-latest.json',JSON.stringify({schemaVersion:1,datasetVersion:db.datasetVersion,scope:'AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.',count:analyses.length,analyses},null,2)+'\n');
-writeFileSync('round15-node7-ai-legal-analysis-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),datasetVersion:db.datasetVersion,candidates:candidates.length,generated,sourceFailures,modelFailures,count:analyses.length,checks,failures},null,2)+'\n');
-console.log(`ROUND15 NODE7 audit: analyses=${analyses.length}; generated=${generated}; checks=${checks.length}; failures=${failures}`);
+writeFileSync('round15-node7-ai-legal-analysis-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),datasetVersion:db.datasetVersion,candidates:candidates.length,generated,sourceFailures,modelFailures,count:analyses.length,archivedOrphans,staleMetadata,checks,failures},null,2)+'\n');
+console.log(`ROUND15 NODE7 audit: analyses=${analyses.length}; generated=${generated}; archivedOrphans=${archivedOrphans.length}; staleMetadata=${staleMetadata.length}; checks=${checks.length}; failures=${failures}`);
 if(failures===0)console.log('ROUND15 NODE7 PASS: AI Chinese holdings, legal issues and impact analysis verified');else{console.log('ROUND15 NODE7 FAIL: AI legal analysis pipeline gaps remain');process.exitCode=1}

@@ -1,0 +1,57 @@
+name: Round 17 Node 4 - Standardized Metadata Production
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'legal/detail.js'
+      - 'scripts/round17-node4-metadata-display-audit.mjs'
+      - '.github/workflows/round17-node4-metadata-display.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-and-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Audit Round 17 node 4 locally
+        run: node scripts/round17-node4-metadata-display-audit.mjs
+      - name: Trigger Netlify production deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
+            curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
+          elif [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && [ -n "${NETLIFY_SITE_ID:-}" ]; then
+            npm install --no-save netlify-cli@latest
+            npx netlify deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+          else
+            echo 'No Netlify deployment credential or build hook is configured.'
+            exit 2
+          fi
+      - name: Verify standardized metadata code on production
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            stamp=$(date +%s)
+            detailjs=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round17node4=$stamp" || true)
+            if printf '%s' "$detailjs" | grep -q 'displayDocket' && printf '%s' "$detailjs" | grep -q 'displayCitation' && printf '%s' "$detailjs" | grep -q 'displayBody' && printf '%s' "$detailjs" | grep -q '发布机构未提取'; then
+              echo 'ROUND 17 NODE 4 PRODUCTION: PASS'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'Production did not expose Round 17 node 4 metadata normalization.'
+          exit 1

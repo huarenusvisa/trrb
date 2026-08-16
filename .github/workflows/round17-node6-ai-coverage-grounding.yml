@@ -10,6 +10,7 @@ on:
       - 'legal/legal-app.js'
       - 'legal/detail.js'
       - 'scripts/round17-node6-ai-coverage-grounding-audit.mjs'
+      - 'scripts/round17-node6-sync-analysis-version.mjs'
       - '.github/workflows/round17-node6-ai-coverage-grounding.yml'
 
 permissions:

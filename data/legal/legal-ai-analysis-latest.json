@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
-  "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 178,
+  "scope": "Chinese legal-information analyses grounded only in first-party official source text. Database layer; not ordinary news articles.",
+  "count": 186,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -2309,6 +2309,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "1f95a0d32d198e12bb378866",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
+      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510011.pdf",
+      "title": "USA v. Marcus Ryan Telfair",
+      "chineseTitle": "马库斯·瑞安·特尔费尔案：联邦kidnapping量刑交叉适用州kidnapping罪的指导方针",
+      "summary": "本案中，特尔费尔因作为重罪犯非法持有枪支，并在实施州级绑架行为时使用枪支，被判刑。下级法院拒绝将联邦绑架相关量刑指导方针类比适用于其州绑架行为，理由是不符联邦绑架的构成要件（缺少跨州元素）。州绑架罪无对应联邦指导方针，联邦上诉法院认为“另一个罪行”涵盖州罪，且联邦绑架指导方针为最类比适用的规则，尽管要件不完全相同。最终撤销原判，发回重审。",
+      "legalIssue": "联邦枪支持有量刑指导方针中，是否允许将联邦绑架罪的量刑交叉类比适用于因州绑架罪而使用枪支的行为？",
+      "holdingOrRule": "“另一个罪行”涵盖联邦、州及地方法律犯罪，且当无对应指导方针时，应适用“最类比罪行指导方针”。尽管联邦绑架罪要求跨州元素，但并不妨碍其类比适用于州绑架行为。故联邦绑架指导方针对本案州绑架类行为最类比，应予适用。",
+      "impact": "直接法律效力：明确联邦枪支持有罪量刑指导方针中跨罪行交叉适用范围涵盖州罪，指导下级法院正确确定量刑基准。可能影响：涉及跨管辖区犯罪行为量刑交叉适用的未来联邦案件量刑解释与执行。",
+      "sourceGrounding": "依据美国第十一巡回上诉法院公开判决文件（25-10011号案），2026年8月5日，联邦量刑指导方针§2K2.1(c)(1)(A)、§2X1.1(a)、§2X5.1及相关联邦法典和佐治亚州法典条文判示。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "20affe9ca377a214567ddd1d",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2338,6 +2354,22 @@
       "holdingOrRule": "第5.14(a)条款属于根据内容区分的言论限制，须适用严格审查。政府的保护公共安全利益虽为重要，但该条款宽泛且缺乏必要的限制，未能通过严格审查，故该法规条款违宪，不能执行。",
       "impact": "直接影响波多黎各及类似地区针对紧急状态下言论限制的相关法律执行，确保媒体及公众在紧急状态下的言论自由。可能影响其他司法辖区对类似言论限制法律的合宪性审查标准。",
       "sourceGrounding": "依据美国波多黎各第一区联邦上诉法院2026年在23-1626号案件中对《公共安全法》第5.14(a)条款的官方判决文书分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "255ffcc64f9120b58995d670",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010164141.pdf",
+      "title": "06-9575 - Thongphilack v. Gonzales [9525966] 09/11/2007",
+      "chineseTitle": "Thongphilack诉Gonzales案：未及时书面通知变更地址致缺席听证，拒绝重开移除程序",
+      "summary": "本案中，Thongphilack未出席其移除听证，移民法官因此以缺席判决其移除。虽其辩称已口头通知移民法官及通过朋友邮寄变更地址表格，但法院认定其未及时提交书面变更地址通知，视为未履行通知义务。根据联邦法律书面通知要求，缺席判决得以维持，驳回重开程序申请。",
+      "legalIssue": "是否未及时向移民法院提供书面地址变更通知，导致缺席移除听证的缺席判决应否撤销？",
+      "holdingOrRule": "移民法规定，外籍人士须在变更地址后五日内提交书面通知（例如EOIR-33表格），仅口头通知不足以免除按规定接收听证通知的义务。若缺席听证且未能充分证明未收到合法邮寄的书面通知，法官可依规定做出缺席移除判决。案中原告未能提交实质证据证明其变更地址的书面通知被正确递交，故法官拒绝重开移除程序，法院确认未滥用裁量权。",
+      "impact": "直接法律效力：强调移民程序中及时提交书面变更地址通知的法定义务及其对听证权利保障的重要性，未遵守者可能导致缺席判决不被撤销。可能影响：此判例对移民被告、移民律师及行政机关执行移民程序中地址变更义务的遵循具有指导意义，促进规范程序及保障通知权。",
+      "sourceGrounding": "依据美国第十巡回上诉法院2007年9月11日Thongphilack诉Gonzales案判决全文，详细论述听证通知法定书面要求及重开程序的审查标准。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2386,6 +2418,38 @@
       "holdingOrRule": "法院认为，审判中提交的证据从合理推断角度足以证明被告犯罪意图，支持其定罪；且被告未就减刑申请裁决提起上诉，上诉请求不予受理。",
       "impact": "直接法律效力：确立联邦法院在电汇欺诈及洗钱案件中评估犯罪意图证据的标准和审查程序。可能影响：对类似公共资金非法挪用案件的证据评价及刑罚减免动议的上诉程序产生指引作用。",
       "sourceGrounding": "依据美国第一巡回上诉法院公开判决书（案号23-1975），由法院官方发布的初审及上诉材料。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "417f5ccaff3bf68018da946c",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/01019202759.pdf",
+      "title": "00-6235 - United States v. Anderson [1470367] 12/13/2001",
+      "chineseTitle": "美国诉安德森案：共同犯罪中对共犯行为的可预见性认定",
+      "summary": "安德森因参与交换儿童色情制品的跨州犯罪，被判处监禁和罚金。区法院依据《联邦量刑指南》第1B1.3条，将共犯利瓦对未成年人的性剥削行为纳入安德森的量刑考量。法院认定安德森事先获知利瓦意图，并在事后收到相关图片，说明利瓦的行为在共同犯罪活动中是合理可预见的。上诉法院确认区法院此认定具备足够的特别化事实支持，并判决维持原判。",
+      "legalIssue": "在共同犯罪中，被告能否因共犯实施的犯罪行为而被追责，要求区法院就共犯行为的范围和可预见性做出具体事实认定。",
+      "holdingOrRule": "法院认定，基于特别化的事实发现和证据，被告对共犯的违法行为具有合理可预见性，且该行为属于共同犯罪范围，因此可将共犯行为计入被告量刑。区法院关于共犯行为的事实认定虽简洁但足够支持量刑决定，上诉法院予以确认。",
+      "impact": "直接法律效力在于确认共同犯罪中对共犯行为的可预见性认定标准，指导区法院具体事实认定；可能影响范围包括类似共谋犯罪的量刑程序及证据评估方式，对被告责任归属及量刑起关键作用。",
+      "sourceGrounding": "基于美国第十巡回上诉法院2001年12月13日关于安德森案的正式判决书全文内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "4884ec2730673e1d2fd9386d",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
+      "title": "24-1524 US v. Fulcar",
+      "chineseTitle": "美国诉雷·大卫·富尔卡案——第一巡回上诉法院裁判意见勘误说明",
+      "summary": "本案由美国第一巡回上诉法院审理，原裁判意见于2026年7月6日发布。现就该意见第19页第14行文字内容作出勘误说明，将“perpetuated”一词更正为“perpetrated”。该纠正涉及用词准确性，确保法律文书内容的正确表达。",
+      "legalIssue": "上诉法院在裁判意见发布后，针对意见书中的文字错误进行勘误，明确用词准确性的重要性。",
+      "holdingOrRule": "法院正式更正裁判意见文本，确认应将第19页第14行的“perpetuated”替换为“perpetrated”，以确保裁判文书用词准确。",
+      "impact": "直接法律效力体现在更正后的意见文本为准，保证法律文书的准确性和严谨性；可能影响使用该裁判意见的后续法律研究、引用与判例理解。",
+      "sourceGrounding": "依据美国第一巡回上诉法院官方发布的勘误说明文件（Errata Sheet），及相关裁判意见文本。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2530,6 +2594,38 @@
       "holdingOrRule": "地区法院判决行政命令第2与第3条超出总统权限，违背分权原则，限制联邦被告在原告州于2026年11月3日之前执行相关条款；联邦政府主张州无诉讼资格的请求被拒。",
       "impact": "直接法律效力于原告州及其相关2026年联邦选举，不允许联邦机构执行相关命令内容；可能影响其他州及未来联邦选举的选举管理实践及行政命令权限的司法审查。",
       "sourceGrounding": "内容依据美国第一巡回上诉法院关于2026年7月25日发布的案件号26-1774《加州等州诉特朗普总统》官方判决文件及法院裁定摘要。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "7b67d12ea28ddff18056e5b5",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010126574.pdf",
+      "title": "07-5027 - United States v. Tiger [9510250] 09/05/2007",
+      "chineseTitle": "美国第十巡回上诉法院关于酒驾是否构成暴力犯罪的判决——美国诉罗纳德·迪恩·泰格案",
+      "summary": "本案中被告罗纳德·迪恩·泰格因持枪抢劫银行被定罪。其判刑时，量刑报告将其此前的酒驾（DUI）定罪认定为“暴力犯罪”，依据联邦量刑准则第4B1.2(a)(2)条款，该被告作为职业罪犯被判处较高刑期。被告提出异议，但根据本巡回法院以往判例（美国诉摩尔案），酒驾被认定为暴力犯罪，法院驳回异议，维持原判。",
+      "legalIssue": "酒驾（DUI）定罪是否构成联邦量刑指南中“暴力犯罪”的范畴？",
+      "holdingOrRule": "依据美国第十巡回上诉法院既有判例（美国诉摩尔案），酒驾定罪被认定为《联邦量刑指南》第4B1.2(a)(2)条中定义的“暴力犯罪”，因此可作为职业罪犯加重量刑的依据。本案维持该认定并确认职业罪犯量刑适用。",
+      "impact": "直接法律效力：对美国第十巡回上诉法院辖区内联邦被告的量刑具有直接约束力。可能影响：影响律师和法院对酒驾犯罪定性与量刑的认知及应用，以及后续类似案件的判决趋势。",
+      "sourceGrounding": "依据美国第十巡回上诉法院2007年9月5日对07-5027号案的公开判决文书，官方链接：https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010126574.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "7d1f11eb7e9a6c7d7a0f7317",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
+      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202413967.pdf",
+      "title": "USA v. Thomas Sheely, Jr.",
+      "chineseTitle": "美国第十一巡回上诉法院对佛罗里达州重罪电池罪是否构成暴力犯罪的判决解析：USA诉Thomas Sheely, Jr.案",
+      "summary": "本案中，Thomas Sheely因非法持枪被判处84个月监禁，其判刑因其前科中包括佛罗里达州重罪电池而被指导性量刑规则（U.S.S.G. § 2K2.1(a)(3)）提升。Sheely主张根据2021年美国最高法院Borden案，佛罗里达重罪电池因可能仅具备鲁莽（recklessness）犯罪故不应认定为暴力犯罪，从而不应提升刑罚。但第十一巡回法院坚持其既有判例Vail-Bailon案的解释，认定佛罗里达重罪电池具备“故意使用可致伤害的物理力量”要件，符合指导性量刑规则中的暴力犯罪定义，且Borden案并未推翻该判例，故判决维持。该判决明确了相关犯罪认定标准，并坚持既有先例的权威。",
+      "legalIssue": "在指导性量刑规则中，佛罗里达州重罪电池罪是否属于基于犯罪要件条款（elements clause）的“暴力犯罪”，尤其在Borden v. United States案后，是否因可能仅需鲁莽罪过标准而不再符合暴力犯罪定义？",
+      "holdingOrRule": "根据第十一巡回法院既有判例United States v. Vail-Bailon，该州重罪电池罪需故意使用导致身体伤害的物理力量，符合暴力犯罪中“犯意行为”与“使用物理力量”的定义，故符合指导性量刑规则中“暴力犯罪”的要件；Borden案并未推翻该判例，故重罪电池罪仍构成暴力犯罪，可用于量刑提升。",
+      "impact": "直接法律效力在于指导第十一巡回法院及下级法院对佛罗里达州重罪电池罪的刑事量刑适用，尤其涉及重罪持枪案件的前科认定和刑罚提升。可能影响对类似州法律中犯罪性质界定及联邦量刑规则的解释及适用范围，维护既有先例稳定性。",
+      "sourceGrounding": "依据官方公开美国第十一巡回上诉法院2026年8月13日公布的USA v. Thomas Sheely, Jr.判决全文及并列法官Rosentbaum法官同意意见，结合判决中对Borden v. United States及United States v. Vail-Bailon的司法分析与适用。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2741,6 +2837,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "c1faba93862510fe6ea70eea",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010130797.pdf",
+      "title": "06-6123 - Kanclakos v. Barnhart [9512139] 09/12/2007",
+      "chineseTitle": "卡内拉科斯诉巴恩哈特案（第十巡回上诉法院，2007年）",
+      "summary": "卡内拉科斯诉美国社会安全管理局专员案中，上诉人因精神及身体多种疾病申请残疾保险金被拒。第十巡回法院认定初审法官未充分评估退伍军人事务部（VA）的残疾评级，尤其未解释拒绝采信的理由，违反了既有判例Grogan v. Barnhart的规定。此外，法官未确认精神疾病是否构成严重障碍，亦未充分开发案卷。法院因此撤销下级法院判决，指令返回重审，强调VA评级作为重要证据需详尽考虑。案件涉及残疾评定程序中医疗证据权重及行政裁量的边界。",
+      "legalIssue": "行政法中社会安全管理局对退伍军人事务部残疾评级证据的采信义务及精神障碍严重性认定标准；残疾保险金申请中事实认定与法律适用是否符合法规及判例要求；案件材料是否需要补充专业精神医学评估。",
+      "holdingOrRule": "法院裁定社会安全管理局审批员必须详细考虑并说明拒绝采纳退伍军人事务部残疾评级的理由；精神疾病严重性仅需满足“起码门槛”判定标准；案件需全面审查医疗证据，如案卷存疑可要求补充精神科咨询评估。判决撤销原审意见，指令返还社会安全管理局重新评估案件。",
+      "impact": "直接法律效力：约束第十巡回法院辖区内社保残疾案件中对VA残疾评级证据的审查标准及审批员说明义务。可能影响：其他联邦巡回法院对类似社保残疾申诉案件证据采信及精神障碍严重性认定的司法态度，有助于统一残疾评估程序，提高行政透明度，确保申请人权利保护。",
+      "sourceGrounding": "依据美国第十巡回上诉法院2007年9月12日公开判决文书《Kanclakos v. Barnhart》官方PDF文件及判决内容，全文详尽讨论了案件事实、法官意见、判例引用（Grogan案）、残疾评定法规及精神疾病评估。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "d0f84583b7c1b4f89896b119",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2786,6 +2898,22 @@
       "holdingOrRule": "法院确认克鲁兹关于请求的诉讼事实基础已不存在，故诉讼请求无效。决定认定克鲁兹为‘胜诉方’，但‘胜诉方’资格不足以对抗诉讼请求无效的裁决。故维持地区法院对所有诉求的驳回。官方材料节选内容充分支持该裁判结论。",
       "impact": "直接法律效力：该判决确认在相关扣款行为停止且赔偿资金已归还情况下，相关诉讼请求将因无效被驳回，影响类似宪法权利诉讼案件的实质审理。可能影响：法院对‘胜诉方’资格的解释可能影响未来涉及律师费申请的案件策略及法院对诉讼资格的认定。",
       "sourceGrounding": "依据美国第一巡回上诉法院2026年裁判意见全文，特别参照上诉法院对地区法院判决的讨论及最终维持裁决的部分。官方原文链接：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "e52b571dba63522bae6f3644",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010128354.pdf",
+      "title": "06-1199 - Garner v. U.S. West Disability [9511052] 09/07/2007",
+      "chineseTitle": "加纳诉美国西部残疾计划案——关于ERISA下临时福利认定案法院管辖权的判决",
+      "summary": "本案中，加纳女士因类风湿关节炎申请并获得了美国西部公司残疾福利计划（ERISA保障下）的短期及长期残疾福利。长期福利于2004年被终止，原因是体检及评估显示未达到残疾标准。加纳女士对终止复议失败后，提起诉讼，指控计划任意剥夺福利。地区法院认定对其精神残疾的证据处理存在任意性，判令将案子发回计划重新审理精神残疾索赔，并闭案待重新开案。加纳及计划均上诉，联邦第十巡回上诉法院认定诉讼尚未终结，发回重审的裁定非终审判决，无管辖权，故驳回上诉。",
+      "legalIssue": "本案核心法律问题是：联邦地区法院将ERISA长期残疾福利案件发回残疾计划重新审查的命令是否构成终审判决，从而联邦上诉法院是否对此类发回令具有管辖权。",
+      "holdingOrRule": "联邦第十巡回法院判决指出，地区法院发回ERISA案件供计划重新审查的命令非终审判决，不属于可上诉的最终裁定范围，上诉法院无管辖权。发回后是否授予最终福利等仍待审理，故不能立即上诉。此外对申诉人请求立即禁止计划违反管理规定的紧急禁令也不构成可上诉命令。相关判例确认了发回令非最终决定，需案件实质终结后方可上诉。",
+      "impact": "直接法律效力：判决限制了联邦上诉法院对不完全终结ERISA案发回令的审查权，明确发回令非终审判决，避免碎片化审判。可能影响：ERISA索赔人在福利计划发回重审案件中，必须等待最终裁定后方可上诉；确立了涉及认定残疾权利救济的联审程序规则。",
+      "sourceGrounding": "本解析依据美国第十巡回上诉法院2007年9月7日发布的《Garner诉US West Disability Plan》联邦上诉意见书全文内容及判例法解析。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

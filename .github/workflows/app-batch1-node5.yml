@@ -12,6 +12,10 @@ on:
       - '.github/workflows/app-batch1-node5.yml'
   workflow_dispatch:
 
+concurrency:
+  group: app-batch1-node5-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     runs-on: ubuntu-24.04

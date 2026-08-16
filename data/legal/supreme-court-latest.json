@@ -210,19 +210,14 @@
       "releaseNo": "55",
       "publicationDate": "2026-06-23",
       "docket": "23-1197",
-      "caseName": "Landor v. Louisiana Dept of Corrections and Public Safety Revisions : 6/28/26",
+      "caseName": "Landor v. Louisiana Dept of Corrections and Public Safety",
       "justice": "NG",
       "officialCitation": "609/1",
       "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/23-1197_new2_k5fm.pdf",
       "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/23-1197_new2_k5fm.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": [
-        {
-          "date": "2026-06-28",
-          "url": "https://www.supremecourt.gov/opinions/25pdf/23-1197diff2_j4ek.pdf"
-        }
-      ]
+      "revisions": []
     },
     {
       "source": "SCOTUS",
@@ -317,19 +312,14 @@
       "releaseNo": "50",
       "publicationDate": "2026-06-18",
       "docket": "24-1063",
-      "caseName": "Hunter v. United States Revisions : 6/19/26",
+      "caseName": "Hunter v. United States",
       "justice": "EK",
       "officialCitation": "608/2",
       "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-1063new_l5gm.pdf",
       "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/24-1063new_l5gm.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": [
-        {
-          "date": "2026-06-19",
-          "url": "https://www.supremecourt.gov/opinions/25pdf/24-1063_diff_5h26.pdf"
-        }
-      ]
+      "revisions": []
     },
     {
       "source": "SCOTUS",
@@ -339,19 +329,14 @@
       "releaseNo": "51",
       "publicationDate": "2026-06-18",
       "docket": "24-1234",
-      "caseName": "United States v. Hemani Revisions : 6/29/26",
+      "caseName": "United States v. Hemani",
       "justice": "NG",
       "officialCitation": "608/2",
       "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-1234_new_6k47.pdf",
       "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/24-1234_new_6k47.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": [
-        {
-          "date": "2026-06-29",
-          "url": "https://www.supremecourt.gov/opinions/25pdf/24-1234_diff_q8l1.pdf"
-        }
-      ]
+      "revisions": []
     },
     {
       "source": "SCOTUS",
@@ -361,19 +346,14 @@
       "releaseNo": "49",
       "publicationDate": "2026-06-18",
       "docket": "25-197",
-      "caseName": "T. M. v. University of Md. Medical System Corporation Revisions : 6/19/26",
+      "caseName": "T. M. v. University of Md. Medical System Corporation",
       "justice": "SS",
       "officialCitation": "608/2",
       "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-197_new_4g15.pdf",
       "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/25-197_new_4g15.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": [
-        {
-          "date": "2026-06-19",
-          "url": "https://www.supremecourt.gov/opinions/25pdf/25-197diff_8759.pdf"
-        }
-      ]
+      "revisions": []
     },
     {
       "source": "SCOTUS",

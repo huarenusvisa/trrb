@@ -1,0 +1,28 @@
+name: APP Batch 1 Node 7
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/src/storage/library.ts'
+      - 'scripts/audit-app-batch1-node7.mjs'
+      - 'supabase/migrations/20260816114500_trrb_identity_and_community_foundation.sql'
+      - '.github/workflows/app-batch1-node7.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+      - name: Audit local-cloud library sync
+        run: node scripts/audit-app-batch1-node7.mjs
+      - name: Install mobile dependencies
+        working-directory: apps/mobile
+        run: npm install --no-audit --no-fund
+      - name: Typecheck mobile app
+        working-directory: apps/mobile
+        run: npm run typecheck

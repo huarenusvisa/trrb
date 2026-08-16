@@ -36,23 +36,8 @@
     return Boolean(text) && !/category-placeholders|image-placeholder\.svg|tang-ren-daily-placeholder/i.test(text);
   }
 
-  function mergeFresh(live, archived) {
-    const archivedById = new Map((Array.isArray(archived) ? archived : []).map((item) => [String(item?.id || ""), item]));
-    const seen = new Set();
-    const merged = [];
-
-    for (const source of [...live, ...archived]) {
-      const key = String(source?.id || "");
-      if (!key || seen.has(key)) continue;
-      seen.add(key);
-      const old = archivedById.get(key) || {};
-      const item = { ...old, ...source };
-      if (!usableImage(source?.image) && usableImage(old?.image)) item.image = old.image;
-      if (!String(source?.excerpt || "").trim() && String(old?.excerpt || "").trim()) item.excerpt = old.excerpt;
-      merged.push(item);
-    }
-
-    return merged.sort((a, b) => articleTime(b) - articleTime(a));
+  function mergeFresh(live) {
+    return (Array.isArray(live) ? [...live] : []).sort((a,b) => articleTime(b) - articleTime(a));
   }
 
   function signatureFor(articles) {
@@ -69,8 +54,7 @@
       if (!rows.length) throw new Error("首页实时接口没有返回已发布新闻");
 
       const live = rows.map(mapRow);
-      const archived = typeof window.localArticleIndex === "function" ? window.localArticleIndex() : [];
-      const articles = mergeFresh(live, Array.isArray(archived) ? archived : []);
+      const articles = mergeFresh(live);
       const signature = signatureFor(articles);
       if (signature === lastSignature) return;
       lastSignature = signature;
@@ -83,9 +67,11 @@
     }
   }
 
-  // articles-home.js already performs the initial live load. Running this file
-  // again on DOMContentLoaded caused a second full homepage render and visible jump.
-  // Keep only the periodic refresh after the page has been stable for two minutes.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => window.setTimeout(refreshHome, 50), { once: true });
+  } else {
+    window.setTimeout(refreshHome, 50);
+  }
   window.setInterval(refreshHome, REFRESH_INTERVAL);
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) window.setTimeout(refreshHome, 300);

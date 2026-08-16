@@ -25,18 +25,28 @@ async function fetchJsonWithTimeout(url, options = {}, timeout = 6500) {
 }
 
 async function fetchLivePublishedArticles(limit = 60) {
-  const cacheKey = `trrb-live-v4-${limit}`;
-  const cached = readLiveCache(cacheKey);
-  if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
-  const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
-  const rows = await fetchJsonWithTimeout(url, {
-    cache: "default",
-    headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
-  });
-  const articles = (Array.isArray(rows) ? rows : []).map(mapLiveArticle);
-  writeLiveCache(cacheKey, articles);
-  return articles;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 6500);
+  try {
+    const url = `/.netlify/functions/public-home-articles?limit=${Math.min(Math.max(Number(limit)||60,20),200)}&_${Date.now()}`;
+    const response = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" }, signal: controller.signal });
+    if (!response.ok) throw new Error(`首页实时接口 ${response.status}`);
+    const payload = await response.json();
+    const rows = Array.isArray(payload?.articles) ? payload.articles : [];
+    return rows.map(mapLiveArticle).sort((a,b) => articleTimestamp(b) - articleTimestamp(a));
+  } finally { clearTimeout(timer); }
+}
+
+function articleTimestamp(item) {
+  const raw = item?.published_at || item?.created_at || item?.date || item?.time || "";
+  const t = new Date(raw).getTime();
+  return Number.isFinite(t) ? t : 0;
+}
+
+const HOME_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;
+function isFreshHomepageArticle(item) {
+  const t = articleTimestamp(item);
+  return t > 0 && Date.now() - t <= HOME_MAX_AGE_MS;
 }
 
 async function fetchLiveArticleById(id) {
@@ -129,31 +139,14 @@ function renderHome(articles) {
 }
 
 async function loadHome() {
-  const archived = localArticleIndex();
   try {
     const live = await fetchLivePublishedArticles(200);
-    if (live.length) {
-      // Production homepage must be driven only by current published rows.
-      // Archived static data is a disaster-recovery fallback, not a source for
-      // filling live category slots, otherwise old July stories can reappear.
-      renderHome(live);
-      return;
-    }
-    throw new Error("No live article data");
+    if (!live.length) throw new Error("首页实时接口没有返回已发布新闻");
+    renderHome(live);
   } catch (error) {
-    console.warn("Live articles unavailable", error);
-    if (archived.length) {
-      renderHome(archived);
-      return;
-    }
-    try {
-      const response = await fetch("./data/articles.json", { cache: "force-cache" });
-      if (response.ok) renderHome(await response.json());
-      else throw new Error("Archive unavailable");
-    } catch {
-      const hero = document.querySelector("#hero");
-      if (hero) hero.innerHTML = `<div class="empty-state">文章数据加载失败，请稍后刷新。</div>`;
-    }
+    console.error("首页实时新闻加载失败：", error);
+    const root = document.querySelector("#sections-grid");
+    if (root) root.innerHTML = '<div class="empty-state">实时新闻暂时不可用，请稍后刷新。</div>';
   }
 }
 
@@ -301,9 +294,10 @@ function findLeadArticle(categoryArticles) {
 }
 
 function renderCategorySection(category, articles) {
-  const categoryArticles = articles.filter(
-    (item) => normalizeCategory(item.category) === category
-  );
+  const categoryArticles = articles
+    .filter((item) => normalizeCategory(item.category) === category)
+    .filter(isFreshHomepageArticle)
+    .sort((a,b) => articleTimestamp(b) - articleTimestamp(a));
   const article = findLeadArticle(categoryArticles);
 
   if (!article) {

@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "d3e5268a58b18be45c19e64c3a635d3e60ed39b7f423691fcbfca76bae4bba39",
+  "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 418,
+    "US_CIRCUIT": 411,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 614,
+  "count": 607,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2908,21 +2908,6 @@
       "sourceKey": "CIRCUIT:ca1:280acdbfedf00b67"
     },
     {
-      "id": "139a65fbe32346987bdc29d1",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "25-1064 Wilson v. Iguana Sport Services, Corp.",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1064P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1064P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:41876d0b48a6e8bc"
-    },
-    {
       "id": "a6b6f91a71ae458c4a5719ac",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3236,21 +3221,6 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1703_STAY_GRANT_DENIED1.PDF-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1703_STAY_GRANT_DENIED1.PDF-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:ce9f52b42ab435ac"
-    },
-    {
-      "id": "ea11b5af7f533a6f4851b02b",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "23-1956 US v. Omoruyi",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1956P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1956P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:d7d3a781ec3e0993"
     },
     {
       "id": "56762ef5dedc53fe4b935b16",
@@ -7048,21 +7018,6 @@
       "sourceKey": "CIRCUIT:ca5:fcc1ad4bf083d1be"
     },
     {
-      "id": "96eec0dfcffd9ceb96de942f",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Sixth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "26a0220p-06.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0220p-06.pdf",
-      "officialPdfUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0220p-06.pdf",
-      "sourceKey": "CIRCUIT:ca6:11613556b60999cc"
-    },
-    {
       "id": "3c8743e43a8d9da5f6ee82d8",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -7288,36 +7243,6 @@
       "sourceKey": "CIRCUIT:ca6:825833093b9ccdca"
     },
     {
-      "id": "698d4a50eeda10c7db1a694e",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Sixth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "26a0353n-06.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0353n-06.pdf",
-      "officialPdfUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0353n-06.pdf",
-      "sourceKey": "CIRCUIT:ca6:8528f4fbb52f3d4f"
-    },
-    {
-      "id": "6d3dde7fd4d684cff692b941",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Sixth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "26a0221p-06.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0221p-06.pdf",
-      "officialPdfUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0221p-06.pdf",
-      "sourceKey": "CIRCUIT:ca6:8a667be99956499e"
-    },
-    {
       "id": "50483178791ed0e4a12898e7",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -7346,21 +7271,6 @@
       "officialUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0354n-06.pdf",
       "officialPdfUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0354n-06.pdf",
       "sourceKey": "CIRCUIT:ca6:a8387927da9d7cd2"
-    },
-    {
-      "id": "0db22277d24638bd973eeda0",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Sixth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "26a0352n-06.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0352n-06.pdf",
-      "officialPdfUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0352n-06.pdf",
-      "sourceKey": "CIRCUIT:ca6:b50b87d363d39042"
     },
     {
       "id": "6ce657e12e6da24e0d0b524d",
@@ -7436,21 +7346,6 @@
       "officialUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0359n-06.pdf",
       "officialPdfUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0359n-06.pdf",
       "sourceKey": "CIRCUIT:ca6:c8222908beaa0339"
-    },
-    {
-      "id": "b41c210aea00129cbc8e421a",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Sixth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "26a0219p-06.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0219p-06.pdf",
-      "officialPdfUrl": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0219p-06.pdf",
-      "sourceKey": "CIRCUIT:ca6:cda3858748d60b26"
     },
     {
       "id": "ca100ee7071297d0878db03d",

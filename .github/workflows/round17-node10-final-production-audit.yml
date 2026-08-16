@@ -29,6 +29,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Validate final production audit syntax
+        run: node --check scripts/round17-node10-final-production-audit.mjs
       - name: Re-verify Round 17 nodes 1-9 at code/data level
         shell: bash
         run: |

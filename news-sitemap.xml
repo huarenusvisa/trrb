@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-ef0cc5433858b260ce14cd57b257fc68e1e476e2</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T01:46:45.876Z</news:publication_date>
+        <news:title>西雅图ICE拘捕墨西哥籍甲基苯丙胺犯罪嫌疑人</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-0bd46488728fbeceecfe98549593807b1352bc4c</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1446,22 +1454,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-14T02:26:34.869Z</news:publication_date>
         <news:title>支持声浪还是人为造势？特朗普退休投资计划陷“虚假支持浪潮”质疑</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-82dd6af1dcbcae188452486a8087a9a248574c09</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T00:06:48.703Z</news:publication_date>
-        <news:title>美国多地ICE逮捕多名犯罪非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e24c47802b513585efc3c6119736204ecf32b033</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T00:06:47.954Z</news:publication_date>
-        <news:title>美国遣返因纵火致女儿身亡的墨西哥非法移民</news:title>
       </news:news>
     </url>
 </urlset>

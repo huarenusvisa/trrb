@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 15 Aug 2026 23:28:17 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2026 01:46:45 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>西雅图ICE拘捕墨西哥籍甲基苯丙胺犯罪嫌疑人</title>
+      <link>https://trrb.net/ice/ice-ef0cc5433858b260ce14cd57b257fc68e1e476e2</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-ef0cc5433858b260ce14cd57b257fc68e1e476e2</guid>
+      <pubDate>Sun, 16 Aug 2026 01:46:45 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>西雅图ICE拘押一名34岁墨西哥籍非法移民，涉甲基苯丙胺进口分销，正等待遣返。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPsOARUaUAAxrdq.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>冰岛仓库ICE突袭仓库拘留员工 锁门时遭反抗</title>
       <link>https://trrb.net/ice/ice-0bd46488728fbeceecfe98549593807b1352bc4c</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>美国国土安全部称ICE逮捕非法移民中近七成涉刑事指控或定罪，重点针对严重犯罪嫌疑人。</description>
       <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088244861661069312/img/FQEYhUW2K7V7PyZ5.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>马里兰德普林斯乔治县拘留中心释放两名非法移民被IC</title>
-      <link>https://trrb.net/ice/ice-3d00ba27b96e3c6116c1b8175aa5b98a6a2d6eef</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-3d00ba27b96e3c6116c1b8175aa5b98a6a2d6eef</guid>
-      <pubDate>Fri, 14 Aug 2026 13:30:44 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>普林斯乔治县拘留中心拒执行ICE扣押令释放两名非法移民。ICE随后追踪并重新逮捕两人。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPrz6yvXkAAj5sk.png" type="image/png" />
     </item>
   </channel>
 </rss>

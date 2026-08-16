@@ -1,17 +1,56 @@
-import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
+import type { Session } from '@supabase/supabase-js';
+import { isAuthConfigured, supabase } from '../../src/auth/supabase';
 
 export default function ProfileScreen() {
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (mounted) {
+        setSession(data.session);
+        setLoading(false);
+      }
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+      setLoading(false);
+    });
+    return () => {
+      mounted = false;
+      listener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) Alert.alert('退出失败', error.message);
+  };
+
   return (
     <View style={styles.page}>
       <Text style={styles.h1}>我的</Text>
-      <Text style={styles.sub}>唐人日报 App</Text>
-      <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>查看保存在当前设备的新闻</Text></Pressable>
-      <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>最近阅读的新闻，最多保存100条</Text></Pressable>
+      {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
+        <Text style={styles.sub}>已登录 · {session.user.email || 'TRRB用户'}</Text>
+        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>查看新闻收藏；云端同步将在本批后续节点接入</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>最近阅读的新闻，最多保存100条</Text></Pressable>
+        <Pressable style={styles.item}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>昵称、头像与注销将在本批后续节点接入</Text></Pressable>
+        <Pressable style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>退出登录</Text></Pressable>
+      </> : <>
+        <Text style={styles.sub}>游客模式 · 无需注册即可阅读全部公开内容</Text>
+        {!isAuthConfigured ? <Text style={styles.warning}>当前构建尚未配置生产身份服务环境变量。</Text> : null}
+        <Pressable style={styles.login} onPress={()=>router.push('/auth')}><Text style={styles.loginText}>登录 / 创建账户</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>本机收藏</Text><Text style={styles.meta}>登录前继续保存在当前设备</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>本机阅读历史</Text><Text style={styles.meta}>登录前继续保存在当前设备</Text></Pressable>
+      </>}
       <Pressable style={styles.item}><Text style={styles.title}>推送设置</Text><Text style={styles.meta}>重大新闻 · ICE · 移民 · 判例新规（下一阶段接入）</Text></Pressable>
       <Pressable style={styles.item} onPress={() => Linking.openURL('https://trrb.net')}><Text style={styles.title}>打开 trrb.net</Text><Text style={styles.meta}>访问唐人日报网站</Text></Pressable>
     </View>
   );
 }
 
-const styles = StyleSheet.create({page:{flex:1,backgroundColor:'#f5f6f8',padding:16,paddingTop:58},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:24},item:{backgroundColor:'#fff',padding:18,borderRadius:14,marginBottom:12},title:{fontSize:18,fontWeight:'800',color:'#101828'},meta:{color:'#98a2b3',marginTop:6}});
+const styles = StyleSheet.create({page:{flex:1,backgroundColor:'#f5f6f8',padding:16,paddingTop:58},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},loader:{marginVertical:20},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},item:{backgroundColor:'#fff',padding:18,borderRadius:14,marginBottom:12},title:{fontSize:18,fontWeight:'800',color:'#101828'},meta:{color:'#98a2b3',marginTop:6},login:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',marginBottom:12},signOutText:{color:'#475467',fontWeight:'800'}});

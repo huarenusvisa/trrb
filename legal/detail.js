@@ -7,6 +7,22 @@
   function displayDate(v){if(!v)return'日期未提取';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'}).format(d)}
   function titleOf(r){return r.title||r.citation||r.docket||`${labels[r.sourceSystem]||r.sourceSystem}资料`}
   function pair(label,value){if(value===null||value===undefined||String(value).trim()==='')return'';return `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`}
+  function normWords(v){return new Set(String(v||'').normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').split(/\s+/).filter(w=>w.length>=3))}
+  function overlapScore(a,b){let score=0;const aw=normWords(`${a.title||''} ${a.citation||''} ${a.docket||''}`),bw=normWords(`${b.title||''} ${b.citation||''} ${b.docket||''}`);for(const w of aw){if(bw.has(w))score+=1}return score}
+  function relatedScore(base,candidate){
+    let score=0;
+    if(base.issuingBody&&candidate.issuingBody===base.issuingBody)score+=60;
+    if(base.sourceSystem&&candidate.sourceSystem===base.sourceSystem)score+=30;
+    if(base.authorityType&&candidate.authorityType===base.authorityType)score+=20;
+    if(base.jurisdiction&&candidate.jurisdiction===base.jurisdiction)score+=10;
+    score+=Math.min(20,overlapScore(base,candidate)*4);
+    return score;
+  }
+  function relatedRecords(base,records){
+    return records.filter(r=>String(r.id)!==String(base.id)).map(r=>({r,score:relatedScore(base,r)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||String(b.r.publicationDate||'').localeCompare(String(a.r.publicationDate||''))||titleOf(a.r).localeCompare(titleOf(b.r),'zh-CN')).slice(0,6).map(x=>x.r);
+  }
+  function relatedCard(r){const detail=`/legal/detail.html?id=${encodeURIComponent(r.id)}`;return `<article class="legal-card"><div class="legal-card-top"><span class="badge">${esc(labels[r.sourceSystem]||r.sourceSystem)}</span><span class="badge kind">${esc(r.authorityType||'法律资料')}</span></div><h3><a class="legal-title-link" href="${detail}">${esc(titleOf(r))}</a></h3><div class="meta"><span>${esc(r.issuingBody||'')}</span><span>${esc(displayDate(r.publicationDate))}</span>${r.docket?`<span>案号 ${esc(r.docket)}</span>`:''}</div><div class="card-actions"><a class="primary" href="${detail}">查看详情</a>${r.officialUrl?`<a href="${esc(r.officialUrl)}" target="_blank" rel="noopener noreferrer">官方原文</a>`:''}</div></article>`}
+  function renderRelated(base,records){const related=relatedRecords(base,records);$('#detail-related-list').innerHTML=related.length?related.map(relatedCard).join(''):'<p class="muted">当前数据库中暂无可确认的相关记录。</p>'}
   function analysisHtml(a){
     if(!a)return '<p class="muted">这条资料的中文裁判要旨/规则解析尚未生成。当前页面仅展示已经从官方来源采集的结构化信息，请先以官方原文为准。</p>';
     return `${a.chineseTitle?`<h3>${esc(a.chineseTitle)}</h3>`:''}<p><strong>要旨：</strong>${esc(a.summary||'')}</p><p><strong>法律问题：</strong>${esc(a.legalIssue||'')}</p><p><strong>裁判/规则：</strong>${esc(a.holdingOrRule||'')}</p><p><strong>影响范围：</strong>${esc(a.impact||'')}</p><p class="muted">${esc(a.disclaimer||'')}</p>`;
@@ -55,6 +71,7 @@
       $('#detail-fields-list').innerHTML=[
         pair('来源系统',labels[r.sourceSystem]||r.sourceSystem),pair('发布机构',r.issuingBody),pair('资料类型',r.authorityType),pair('发布日期',displayDate(r.publicationDate)),pair('案号',r.docket),pair('正式引证',r.citation),pair('管辖范围',r.jurisdiction),pair('先例状态',r.precedentialStatus),pair('来源键',r.sourceKey),pair('数据库版本',db.datasetVersion)
       ].join('');
+      renderRelated(r,records);
       const official=[];
       if(r.officialUrl)official.push(`<a class="primary" href="${esc(r.officialUrl)}" target="_blank" rel="noopener noreferrer" data-official-primary="true">打开官方原文</a>`);
       if(r.officialPdfUrl&&r.officialPdfUrl!==r.officialUrl)official.push(`<a href="${esc(r.officialPdfUrl)}" target="_blank" rel="noopener noreferrer" data-official-pdf="true">打开官方PDF</a>`);

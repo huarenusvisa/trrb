@@ -15,7 +15,7 @@ const checks = [
   ['trusted Netlify endpoint', ui.includes('/.netlify/functions/community-admin') && !ui.includes("from('profiles').update") && !ui.includes("from('comments').update")],
   ['server-side staff auth', fn.includes("authenticateStaff(event, ['owner','admin','moderator'])") && shared.includes('authenticateStaff')],
   ['owner/admin user boundary', fn.includes("['owner','admin'].includes(admin.role)")],
-  ['moderator supported without editor escalation', fn.includes("['owner','admin','moderator']") && !fn.includes("'editor'"))],
+  ['moderator supported without editor escalation', fn.includes("['owner','admin','moderator']") && !fn.includes("'editor'")],
   ['audited critical writes', fn.includes("rest('moderation_actions'") && fn.includes('actor_user_id') && fn.includes('community admin center')],
   ['service role remains server side', shared.includes('SUPABASE_SERVICE_ROLE_KEY') && !index.includes('SUPABASE_SERVICE_ROLE_KEY') && !ui.includes('SUPABASE_SERVICE_ROLE_KEY')]
 ];

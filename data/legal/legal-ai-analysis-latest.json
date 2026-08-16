@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+  "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 104,
+  "count": 112,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -34,6 +34,22 @@
       "holdingOrRule": "移民上诉委员会裁定：申请人的严重刑事行为及多次药物复发记录实质性抵消其积极康复努力，且未能证明具备持续重塑个人行为的能力和意愿，故不符取消驱逐条件，决定撤销移民法官的优惠裁量决定，维持驱逐命令。",
       "impact": "直接法律效力适用于持有美国合法永久居民身份且涉及儿童危害及药物犯罪案件的申请人。可能影响移民法中类似药物滥用及儿童保护相关驱逐取消申请的裁量标准及评估路径，强化对犯罪和康复证据的审查力度。",
       "sourceGrounding": "依据美国司法部移民审查执行办公室移民上诉委员会2025年Jimenez-Ayala案判决全文（29 I&N Dec. 325 (BIA 2025)），官方英文出版文本及指定为先例的裁决内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "0c47d7ec4fcdf3d95bbbf6d3",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1400431/dl?inline",
+      "title": "Matter of discretion. Q. LI",
+      "chineseTitle": "关于非法入境者拘留和保释资格的裁定——Q. LI案解读",
+      "summary": "本案涉及一中国籍申请入境者Q. LI，因非法入境美国被无证拘留，后获移民局根据《移民与国籍法》第212(d)(5)(A)条款假释。假释终止后，因关联国际刑事通缉令被再次拘捕并进入移除程序。BIA裁定，Q. LI作为非法入境的申请入境者，其拘留依据为第235(b)(2)(A)条款，不适用可保释的第236(a)条款，拒绝其保释请求。",
+      "legalIssue": "非法入境申请者被无证拘留后，是否有资格依据《移民与国籍法》第236(a)条获得保释？",
+      "holdingOrRule": "依据《移民与国籍法》第235(b)(2)(A)条，非法入境申请者遭无证拘留并进入移除程序，应当被强制拘留至程序结束，无法适用第236(a)条请求保释，除非在拘留期间依据第212(d)(5)(A)条获准假释；假释终止后需恢复拘留身份。",
+      "impact": "本裁定对非法入境者及其法律代理人直接产生约束力，明确限缩了非法入境者保释资格，直接法律效力体现在拘留及保释程序中；同时可能影响移民执法政策和未来案件中对非法入境申请者拘留与释放的法律适用。",
+      "sourceGrounding": "解析依据美国司法部执行办公室移民上诉委员会2025年5月15日发布的《Matter of discretion. Q. LI》29 I&N Dec. 66（BIA 2025）官方判决全文。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -149,6 +165,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "3741cc60635b231c10153c0c",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1438621/dl?inline",
+      "title": "to the level of torture by gang or cartel members in Mexico and did not establish the requisite state action for government acquiescence to torture. OROZCO BECERRA & OROZCO BECERRA",
+      "chineseTitle": "关于未出庭被告行政关闭驱逐程序权限的裁判意见",
+      "summary": "本案涉及两名墨西哥未成年被告及其家属因无效入境文件被起诉驱逐，二未成年人及陪同成年人均未出庭。移民法官基于未成年被告非故意未出庭，拒绝作出缺席驱逐决定，行政关闭其案件。移民上诉委员会认为，依据移民国籍法第240条(b)(5)(A)款，法官无权行政关闭此类案件，应依法作出缺席驱逐决定，且未成年人受法定保障，家长接收通知应负保证未成年人出庭责任。上诉委员会撤销行政关闭决定，恢复案件程序。",
+      "legalIssue": "移民法官是否有权在被告缺席且移民及国土安全部证明其已获正确通知且符合驱逐条件的情况下，行政关闭驱逐程序，而不作出缺席驱逐决定的权限？",
+      "holdingOrRule": "当被告（包括未成年人）未出庭，且已被正确通知且符合驱逐条件时，移民法官依据8 U.S.C. § 1229a(b)(5)(A)无权行政关闭案件，必须作出缺席驱逐决定，该法定要求优先于行政关闭的酌情权规定。",
+      "impact": "直接法律效力适用于移民法庭处理缺席驱逐程序的标准，防止行政关闭被用作规避缺席驱逐决定的手段。可能影响所有面临驱逐程序被告的案件管理与程序实践，尤其涉及未成年被告出庭责任的解释和通知送达制度。",
+      "sourceGrounding": "依据2026年美国司法部移民上诉委员会发布的29 I&N Dec. 600案中官方判决文本，特别是对8 U.S.C. § 1229a(b)(5)(A)及相关行政关闭规章的解释及适用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "39a104ec894cd3526b3212e5",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -197,6 +229,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "40293b8e3dce4e6ff49f0523",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1443566/dl?inline",
+      "title": "Matter of discretion because the respondent’s extensive criminal history outweighed his equities. N-A-G-C-",
+      "chineseTitle": "N-A-G-C案：非法入境者前UAC身份及SIJ申请不赋予移民法官重新审查拘押权",
+      "summary": "N-A-G-C案中，移民上诉委员会裁定被告虽曾被指定为无陪伴儿童（UAC）且获得特定移民少年（SIJ）申请批准，但因非法入境且未被正式准入，其仍属入境申请人，适用移民国籍法第235条拘押规定，移民法官无权依据第236条重新决定其拘押状态，故撤销原移民法官准予缴纳保释金释放的决定，命令无保释放拘留。",
+      "legalIssue": "移民法官是否有权依据移民国籍法第236条对未正式准入美国的申请人（即非法入境者）重新决定拘押状态？",
+      "holdingOrRule": "根据移民国籍法第235条，非法入境者属入境申请人，拘押权由第235条规定并由政府执行，移民法官无权依据第236条重新审理，此类申请人不可通过此前UAC身份或SIJ申请绕开该拘押框架。",
+      "impact": "直接法律效力在于明确非法入境者的拘押权限制，防止移民法官越权赋予保释权；可能影响联邦法院、移民法官及相关机构处理类似身份复杂非入境申请人的拘押与保释案件。",
+      "sourceGrounding": "依据2026年6月2日美国司法部移民审查执行办公室移民上诉委员会裁定《Matter of discretion because the respondent’s extensive criminal history outweighed his equities. N-A-G-C-》全文及引用的《Matter of Yajure Hurtado》判例。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "40b6030c6b52c92089168a46",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -210,6 +258,22 @@
       "holdingOrRule": "移民上诉委员会判决指出，在保释审查中，移民法官不仅限于定罪判决，可综合考虑警方报告等证据认定是否存在危险。具体到本案，被告涉嫌贩毒且证据充分，未满足无危险性的举证责任，故撤销允许保释的裁定，令继续羁押。",
       "impact": "直接法律效力：本判例作为移民法庭准则，对所有涉及保释的重要刑事指控案件具有约束力，指导法官综合证据判断危险性。可能影响：加重涉嫌严重犯罪移民被告的保释难度，推动更严格的公共安全考量。",
       "sourceGrounding": "依据美国司法部执行办公室司法移民上诉委员会2025年7月31日发布的《Matter of Jose Luis SALAS PENA》决定全文（29 I&N Dec. 173），原文详见https://www.justice.gov/eoir/media/1411216/dl?inline",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "42e1e2c249e3e31109da32c2",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1444566/dl?inline",
+      "title": "Department of Homeland Security prior to the Board considering a stay request filed in connection with a motion to reopen or reconsider a Board or Immigration Court order. S-E-M-Z-",
+      "chineseTitle": "关于家庭为基础的特定社会群体社会区分性标准的裁定",
+      "summary": "本案中，BIA认定，特定社会群体的“社会区分性”应从全国范围而非局限地理区域如邻里来衡量。申请人主张的基于家庭的社会群体，虽在其居住的邻里内有识别度，但未能证明其在洪都拉斯社会整体中具有相应的社会区分性。此外，案件也强调了成员身份与受到迫害之间的关联需符合“主要且非偶然”标准。该裁定驳回了移民法官关于家庭社会群体的认定和关联性认定，影响到基于家庭的庇护申请评估标准。",
+      "legalIssue": "特定社会群体的社会区分性应以国家整体社会视角衡量而非局限于局部地理范围，及家庭成员身份与迫害之间的法律关联性标准。",
+      "holdingOrRule": "特定社会群体的社会区分性必须在全国范围内被社会认可，邻里或局部社区视角不足以满足社会区分性要求。对于家庭为基础的社会群体，成员身份必须是迫害行为的主要且非偶然原因，若迫害目标与家庭身份无关，则不构成基于该群体的迫害。",
+      "impact": "该裁定对基于家庭为根基提出特定社会群体的庇护及身份保护申请有直接法律指导作用，要求申请人在国家社会范围内证明群体的可识别性和迫害关联性。此标准将影响移民法官及相关移民裁定机构的案件评审，有助于统一社会区分性的认定标准。",
+      "sourceGrounding": "依据美国司法部执行移民审查办公室移民上诉委员会2026年发布的判例Department of Homeland Security prior to the Board considering a stay request filed in connection with a motion to reopen or reconsider a Board or Immigration Court order. S-E-M-Z-, 29 I&N Dec. 680 (BIA 2026)",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -293,6 +357,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "850f8e5d4d2e5569ee83e587",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1442701/dl?inline",
+      "title": "An alien’s lack of candor regarding his criminal history is a significant adverse factor when exercising discretion on an application for cancellation of removal. MARTINEZ-RODRIGUEZ",
+      "chineseTitle": "关于外国人隐瞒刑事历史影响缓解驱逐裁量权的先例分析——MARTINEZ-RODRIGUEZ案件",
+      "summary": "本案中，涉案外国人在移民保释听证中，由于其包含虚假监禁的定罪及其他未定罪的刑事指控，移民法庭原判准许保释被撤销。移民上诉委员会审查后认定该外国人未能通过清晰确凿证据证明其不会对社区构成危险，判决其不具备保释资格。该案例重申刑事犯罪记录，尤其包括未最终定罪的犯罪行为均可作为裁量时考虑的重要不利因素。",
+      "legalIssue": "外国人在申请缓解驱逐时，是否因隐瞒其刑事历史而被视为不诚信，从而影响其获得保释或缓解驱逐的裁量权？",
+      "holdingOrRule": "移民上诉委员会认为，外国人未能诚实披露其刑事历史是行使缓解驱逐裁量权时的重要不利因素，且若外国人无法提供清晰确凿的证据证明其不危害社区，则无资格获得保释。",
+      "impact": "直接法律效力：本先例适用于移民法庭关于外国人保释资格及缓解驱逐申请的审理，明确了犯罪历史的不诚信披露为负面考量依据。可能影响：执法机构和辩护律师在评估案件时将更重视犯罪历史和诚信问题，影响移民案件裁量审查的倾向性。",
+      "sourceGrounding": "依据美国司法部移民审查执行办公室上诉委员会2026年4月29日发布的MARTINEZ-RODRIGUEZ案（29 I&N Dec. 656），官方正式收录为具拘束力的先例。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "8ba8ce75f392b8b45be98665",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -306,6 +386,22 @@
       "holdingOrRule": "(1)申请人对协同证据问题的含糊和不响应证词支持不利可信度认定；(2)缺乏合理可得的协同证据可独立成为未满足庇护申请举证责任的依据。",
       "impact": "直接法律效力：规则适用于移民法庭审批庇护及拒绝驱逐申请的证据评估程序。可能影响：庇护申请人应积极提供合理协同证据，避免因证据缺失或证词不一致影响申请结果。",
       "sourceGrounding": "依据美国司法部EOIR下属移民上诉委员会于2025年发布的G-C-I-案官方判决文书（29 I&N Dec. 176 (BIA 2025)）内容，详见https://www.justice.gov/eoir/media/1411476/dl?inline。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "8e5d036173279f9bc0b14a1a",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1442711/dl?inline",
+      "title": "followed. RICHARDS",
+      "chineseTitle": "里查兹案（Matter of Richards）——移民拒绝撤销驱逐申请的先例决定解析",
+      "summary": "本案中，申请人作为美国合法永久居民，因未如实披露其刑事记录，被移民法庭判定剥夺撤销驱逐申请的裁量权资格。移民法庭确认申请人对其犯罪历史的不诚实严重影响酌情权的行使，证据显示申请人隐瞒多项犯罪逮捕与定罪记录，导致申请被拒绝。该案被指定为有关刑事记录诚实披露影响撤销驱逐申请酌情权的先例。",
+      "legalIssue": "是否因申请人在申请撤销驱逐过程中未诚实披露其全部刑事犯罪历史，移民法庭可依法基于此不予批准其撤销驱逐申请的酌情裁量权？",
+      "holdingOrRule": "移民法庭确认申请人未如实披露其刑事历史构成重大不利因素，可作为酌情否决撤销驱逐申请依据。官方材料节选证明移民法庭可依申请人缺乏诚信拒绝撤销驱逐申请。",
+      "impact": "直接法律效力：本先例适用于所有涉及申请撤销驱逐且有刑事记录披露争议的移民案件，指导法官审查申请人诚信。可能影响：对移民申请者加强诚信披露刑事史的认识，影响移民执法与审查标准。",
+      "sourceGrounding": "依据2026年美国司法部移民上诉委员会（BIA）发布的先例决定《Matter of Richards》，官方材料全文详见https://www.justice.gov/eoir/media/1442711/dl?inline。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -501,6 +597,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "d5461d7a696cb9fd6379e4c8",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1435616/dl?inline",
+      "title": "ies in Immigration Court have no right to give a closing argument unless they demonstrate that the denial of such argument would constitute a due process violation. BOLIVAR-BOLIVAR",
+      "chineseTitle": "移民法庭无证据外缺席听证错误终止驱逐程序——BOLIVAR-BOLIVAR案解析",
+      "summary": "本案中，被告被控非法入境，案件指控中包含DHS提供的外来身份证据，然移民法庭因DHS及被告缺席而错误终止程序。上诉庭判定，在有外来身份证据且通知及时的情况下，法庭应进行无证出庭听证，而非直接终止程序，遂撤销原裁定，重启案件审理。此判例明确了无证出庭听证的适用条件及程序要求。",
+      "legalIssue": "当被告及移民局均未出庭，但记录中存在表明外来身份的证据时，移民法庭是否应终止驱逐程序，或进行无证出庭听证？",
+      "holdingOrRule": "依据《移民及国籍法》第240(b)(5)(A)条款及相关法规，若对被告发出合规通知并有确定可驱逐的明确证据，移民法庭必须对缺席被告进行无证出庭听证，不得仅因移民局缺席或未提交动议而终止程序。",
+      "impact": "直接法律效力适用于所有移民法庭案件，要求法庭在有证据并适当通知情况下适用无证出庭听证程序，防止非法终止驱逐案件；可能影响移民司法程序中案件处理的准确性及公正性，提高程序正义保障。",
+      "sourceGrounding": "依据2026年4月10日美国司法部移民上诉委员会发布的BOLIVAR-BOLIVAR案（29 I&N Dec. 548）官方判例全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "e4e3f81b5fbfd5904b53d8d7",
       "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
       "sourceSystem": "BIA",
@@ -578,6 +690,22 @@
       "holdingOrRule": "（1）对于由私人律师代理的非羁押外籍人士，推定其具备支付诉讼费的能力；（2）申请费减免时，若所有收入均申报为零且无合理说明，该申请推定无效；（3）申请人须提供充分证据证明无力支付诉讼费，否则申请将被拒绝。",
       "impact": "直接法律效力：明确了移民诉讼中非羁押外籍人士申请诉讼费减免的认定规则及举证责任，指导移民法庭审核相关申请。可能影响：影响非羁押移民申请费减免者如何准备申请材料，并影响代理律师对客户经济状况的核实与披露要求。",
       "sourceGrounding": "依据美国司法部执行办公室移民审查局（EOIR）2025年8月8日发布的加西亚·马丁内斯案（29 I&N Dec. 169 (BIA 2025)）判决书及相关法规条文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "fe975e73f64cec1a9d1f2d71",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1442486/dl?inline",
+      "title": "revoke the prior approval of a visa petition because the record contained substantial and probative evidence of marriage fraud between the beneficiary and her prior spouse. GERMAIN",
+      "chineseTitle": "移民法下取消驱逐救济的裁量权分析——Germain案（2026年）",
+      "summary": "本案涉及一名海地籍永久居民申请根据《移民与国籍法》第240A(a)条取消驱逐令的裁量救济。移民局上诉委员会认定，尽管申请人具有亲属关系紧密、长期居住及社区贡献等积极因素，但其包括两次攻击罪和多项枪支相关罪在内的犯罪历史及其对犯罪行为缺乏悔意，综合负面因素超过积极因素，故撤销原移民法官的救济决定，维持驱逐令。",
+      "legalIssue": "申请人在考虑其犯罪历史及个人积极因素后，是否应获得基于裁量权的移民救济（取消驱逐令）？",
+      "holdingOrRule": "移民局上诉委员会裁定：申请人犯罪历史及其对犯罪的否认或缺乏悔意构成重大不利因素，超过其积极因素。刑事指控虽未全部定罪，但相关行为仍可纳入裁量审查。基于整体考量，申请人不符合裁量救济条件。",
+      "impact": "直接法律效力：本案作为先例决定，对具有类似犯罪背景和个人情况的永久居民申请取消驱逐救济案件具约束力。可能影响：执法机构及移民法官在评估犯罪记录与救济申请时，将更加重视非定罪的负面行为及申请人悔意表现。",
+      "sourceGrounding": "解析依据2026年4月6日美国移民局上诉委员会《Matter of Germain》案官方裁决全文，编号29 I&N Dec. 648，来自美国司法部移民审查执行办公室官方公布材料。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

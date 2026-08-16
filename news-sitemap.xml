@@ -624,20 +624,4 @@
         <news:title>美宣布特朗普任内加强边境安全与ICE遣返行动</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e44b0be0eb56f961d798af42c86ca2b96c882c57</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T19:10:04.943Z</news:publication_date>
-        <news:title>ICE遣返涉嫌重罪墨西哥女性嫌疑人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-b6ca6e1d66d9e7b822a753a52c919e50b4950a72</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T19:10:03.465Z</news:publication_date>
-        <news:title>美国ICE协助抓获8名委内瑞拉籍跨国性交易嫌疑人</news:title>
-      </news:news>
-    </url>
 </urlset>

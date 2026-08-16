@@ -24,11 +24,13 @@ async function fetchJsonWithTimeout(url, options = {}, timeout = 6500) {
   } finally { clearTimeout(timer); }
 }
 
-async function fetchLivePublishedArticles(limit = 60) {
+async function fetchLivePublishedArticles(limit = 60, category = "") {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 6500);
   try {
-    const url = `/.netlify/functions/public-home-articles?limit=${Math.min(Math.max(Number(limit)||60,20),200)}&_${Date.now()}`;
+    const params = new URLSearchParams({ limit: String(Math.min(Math.max(Number(limit)||60,1),200)), _: String(Date.now()) });
+    if (category) params.set("category", category);
+    const url = `/.netlify/functions/public-home-articles?${params.toString()}`;
     const response = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" }, signal: controller.signal });
     if (!response.ok) throw new Error(`首页实时接口 ${response.status}`);
     const payload = await response.json();
@@ -142,7 +144,13 @@ async function loadHome() {
   try {
     const live = await fetchLivePublishedArticles(200);
     if (!live.length) throw new Error("首页实时接口没有返回已发布新闻");
-    renderHome(live);
+    const coreCategories = ["重要新闻","热门头条","美国时政","美国警情","中国官场","庇护百科"];
+    const supplements = await Promise.all(coreCategories.map((name) => fetchLivePublishedArticles(12, name).catch(() => [])));
+    const seen = new Set();
+    const combined = [...live, ...supplements.flat()]
+      .filter((item) => { const key=String(item?.id||""); if(!key||seen.has(key)) return false; seen.add(key); return true; })
+      .sort((a,b) => articleTimestamp(b)-articleTimestamp(a));
+    renderHome(combined);
   } catch (error) {
     console.error("首页实时新闻加载失败：", error);
     const root = document.querySelector("#sections-grid");

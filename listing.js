@@ -36,19 +36,24 @@ async function fetchCategoryBySlug(slug) {
   return Array.isArray(rows) && rows[0] ? rows[0] : null;
 }
 
-async function fetchLivePublishedArticles(limit = 60) {
-  const cacheKey = `trrb-live-v5-${limit}`;
-  const cached = readLiveCache(cacheKey);
-  if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
-  const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
-  const rows = await fetchJsonWithTimeout(url, {
-    cache: "default",
-    headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
-  });
-  const articles = (Array.isArray(rows) ? rows : []).map(mapLiveArticle);
-  writeLiveCache(cacheKey, articles);
-  return articles;
+async function fetchLivePublishedArticles(limit = 60, category = "") {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 6500);
+  try {
+    const params = new URLSearchParams({ limit: String(Math.min(Math.max(Number(limit)||60,1),200)), _: String(Date.now()) });
+    if (category) params.set("category", category);
+    const response = await fetch(`/.netlify/functions/public-home-articles?${params.toString()}`, { cache: "no-store", headers: { Accept: "application/json" }, signal: controller.signal });
+    if (!response.ok) throw new Error(`栏目实时接口 ${response.status}`);
+    const payload = await response.json();
+    const rows = Array.isArray(payload?.articles) ? payload.articles : [];
+    return rows.map(mapLiveArticle).sort((a,b) => articleTimestamp(b)-articleTimestamp(a));
+  } finally { clearTimeout(timer); }
+}
+
+function articleTimestamp(item) {
+  const raw = item?.published_at || item?.created_at || item?.date || item?.time || "";
+  const t = new Date(raw).getTime();
+  return Number.isFinite(t) ? t : 0;
 }
 
 async function fetchLiveSearchArticles(query, limit = 240) {
@@ -108,6 +113,8 @@ function mapLiveArticle(row) {
     time: formatLiveDateTime(published),
     views: "",
     body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [],
+    published_at: row.published_at || "",
+    created_at: row.created_at || "",
     isLive: true
   };
 }
@@ -145,28 +152,27 @@ async function initListing() {
     }
   }
 
-  const archived = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : [];
+  const archived = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : []; // disaster-recovery only
   const searchForm = document.querySelector("#listing-search");
   const searchInput = document.querySelector("#listing-search-input");
   if (searchForm) searchForm.hidden = !searchMode;
   if (searchInput) searchInput.value = query;
 
-  if (archived.length) renderListingDataset(archived, category, query, page);
-  else renderHeader(category, query);
+  renderHeader(category, query);
 
   try {
     const live = searchMode && query
       ? await fetchLiveSearchArticles(query, 240)
-      : await fetchLivePublishedArticles(100);
+      : await fetchLivePublishedArticles(200, category);
     if (!live.length) {
-      if (!archived.length) renderArticles([], page);
+      renderArticles([], page);
       return;
     }
-    const seen = new Set(live.map((item) => String(item.id)));
-    renderListingDataset(live.concat(archived.filter((item) => !seen.has(String(item.id)))), category, query, page);
+    renderListingDataset(live, category, query, page);
   } catch (error) {
     console.warn("Live articles unavailable", error);
-    if (!archived.length) renderArticles([], page);
+    // Never silently repopulate a normal category page with stale archive rows.
+    renderArticles([], page);
   }
 }
 
@@ -191,7 +197,7 @@ function filterArticles(articles, category, query) {
     const categoryMatch = !category || article.category === category;
     const queryMatch = !normalizedQuery || [article.title, article.excerpt, article.category, article.date].filter(Boolean).join(" ").toLowerCase().includes(normalizedQuery);
     return categoryMatch && queryMatch;
-  });
+  }).sort((a,b) => articleTimestamp(b)-articleTimestamp(a));
 }
 
 function renderHeader(category, query) {

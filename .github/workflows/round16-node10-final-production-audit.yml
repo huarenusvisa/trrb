@@ -1,0 +1,38 @@
+name: 第十六轮节点10-最终生产总验收
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round16-node10-final-production-audit
+  cancel-in-progress: true
+
+jobs:
+  final-production-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 安装真实浏览器依赖
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install --with-deps chromium
+      - name: 第十六轮节点1至9最终生产复核
+        env:
+          SITE_ORIGIN: https://trrb.net
+        run: node scripts/round16-node10-final-production-audit.mjs
+      - name: 保存第十六轮最终验收报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: round16-node10-final-production-audit
+          path: round16-node10-final-production-audit.json
+          retention-days: 30

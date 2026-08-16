@@ -27,7 +27,4 @@
 
 ## 当前人工推进状态（2026-08-16）
 
-- 节点1—8：实现、自动验收与持续同步链已建立，继续保持生产复核。
-- 节点9：当前唯一主要卡点，集中在 Netlify 生产部署、`sitemap-legal.xml`、法律详情页动态 canonical / meta / JSON-LD 的生产一致性验收。不得因部署延迟降低标准。
-- 节点10：尚未建立最终总验收。必须等待节点9明确 PASS 后，重新执行节点1—9并输出最终 `ROUND 16: 10/10 PASS`。
-- Google Search Console / Bing Webmaster 账户级 API 授权属于后续 SEO 运维层，不作为放宽第十六轮节点9或节点10验收的条件；现有站内 SEO、Sitemap、IndexNow 与生产可抓取性仍按本轮标准验收。
+节点1—8继续保持生产复核；节点9是当前生产验收闸门，集中核对 Netlify 生产部署、`sitemap-legal.xml`、法律详情页动态 canonical / meta / JSON-LD 的生产一致性。节点9明确 PASS 后，立即运行节点10重新验证节点1—9。Google Search Console / Bing Webmaster 账户级 API 授权另行处理，不作为降低本轮验收标准的条件。

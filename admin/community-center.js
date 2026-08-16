@@ -1,38 +1,44 @@
 (() => {
-  const role = () => String(window.currentAdmin?.role || window.currentAdminRole || '').toLowerCase();
-  const canModerate = () => ['owner','admin','moderator'].includes(role());
-  const canManageUsers = () => ['owner','admin'].includes(role());
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const sb = () => window.supabaseClient;
-  let state = { users: [], comments: [], reports: [] };
+  let state = { users: [], comments: [], reports: [], role: '' };
 
-  async function loadUsers() {
-    const { data, error } = await sb().from('profiles').select('id,display_name,avatar_key,role,status,created_at,updated_at').order('created_at',{ascending:false}).limit(200);
-    if (error) throw error;
-    state.users = data || [];
-    renderUsers();
+  const canModerate = () => ['owner','admin','moderator'].includes(state.role);
+  const canManageUsers = () => ['owner','admin'].includes(state.role);
+
+  async function authToken() {
+    const { data } = await window.supabaseClient.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) throw new Error('后台登录已失效，请重新登录。');
+    return token;
   }
 
-  async function loadComments() {
-    const { data, error } = await sb().from('comments').select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,profiles(display_name)').order('created_at',{ascending:false}).limit(200);
-    if (error) throw error;
-    state.comments = data || [];
-    renderComments();
-  }
-
-  async function loadReports() {
-    const { data, error } = await sb().from('comment_reports').select('id,comment_id,reporter_user_id,reason,status,created_at').order('created_at',{ascending:false}).limit(200);
-    if (error) throw error;
-    state.reports = data || [];
-    renderReports();
+  async function api(method = 'GET', payload) {
+    const token = await authToken();
+    const response = await fetch('/.netlify/functions/community-admin', {
+      method,
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: payload ? JSON.stringify(payload) : undefined
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || `请求失败（${response.status}）`);
+    return data;
   }
 
   async function loadCommunity() {
     const msg = document.getElementById('community-message');
     if (msg) msg.textContent = '正在读取社区数据…';
     try {
-      await Promise.all([loadUsers(), loadComments(), loadReports()]);
-      if (msg) msg.textContent = `用户 ${state.users.length} · 评论 ${state.comments.length} · 举报 ${state.reports.length}`;
+      const data = await api('GET');
+      state = {
+        users: data.users || [],
+        comments: data.comments || [],
+        reports: data.reports || [],
+        role: String(data.role || '').toLowerCase()
+      };
+      renderUsers();
+      renderComments();
+      renderReports();
+      if (msg) msg.textContent = `用户 ${state.users.length} · 评论 ${state.comments.length} · 举报 ${state.reports.length} · 当前权限 ${state.role}`;
     } catch (e) {
       if (msg) msg.textContent = '读取失败：' + (e?.message || e);
     }
@@ -47,7 +53,7 @@
   function renderComments() {
     const body = document.getElementById('community-comments-body');
     if (!body) return;
-    body.innerHTML = state.comments.map(c => `<tr><td>${esc(c.profiles?.display_name || c.user_id)}</td><td>${esc(c.content).slice(0,140)}</td><td>${esc(c.status)}</td><td>${new Date(c.created_at).toLocaleString('zh-CN')}</td><td>${canModerate()?`<button class="small-btn" data-comment-status="published" data-comment-id="${esc(c.id)}">发布</button> <button class="small-btn" data-comment-status="hidden" data-comment-id="${esc(c.id)}">隐藏</button> <button class="small-btn" data-comment-status="deleted" data-comment-id="${esc(c.id)}">删除</button>`:'无权限'}</td></tr>`).join('') || '<tr><td colspan="5">暂无评论</td></tr>';
+    body.innerHTML = state.comments.map(c => `<tr><td>${esc(c.user_id)}</td><td>${esc(c.content).slice(0,140)}</td><td>${esc(c.status)}</td><td>${new Date(c.created_at).toLocaleString('zh-CN')}</td><td>${canModerate()?`<button class="small-btn" data-comment-status="published" data-comment-id="${esc(c.id)}">发布</button> <button class="small-btn" data-comment-status="hidden" data-comment-id="${esc(c.id)}">隐藏</button> <button class="small-btn" data-comment-status="deleted" data-comment-id="${esc(c.id)}">删除</button>`:'无权限'}</td></tr>`).join('') || '<tr><td colspan="5">暂无评论</td></tr>';
   }
 
   function renderReports() {
@@ -56,25 +62,13 @@
     body.innerHTML = state.reports.map(r => `<tr><td>${esc(r.comment_id)}</td><td>${esc(r.reason)}</td><td>${esc(r.status)}</td><td>${new Date(r.created_at).toLocaleString('zh-CN')}</td><td>${canModerate()?`<button class="small-btn" data-report-status="reviewed" data-report-id="${esc(r.id)}">已审</button> <button class="small-btn" data-report-status="dismissed" data-report-id="${esc(r.id)}">驳回</button> <button class="small-btn" data-report-status="actioned" data-report-id="${esc(r.id)}">已处置</button>`:'无权限'}</td></tr>`).join('') || '<tr><td colspan="5">暂无举报</td></tr>';
   }
 
-  async function setUserStatus(id, status) {
-    if (!canManageUsers()) return alert('当前角色没有用户状态管理权限。');
-    const { error } = await sb().from('profiles').update({ status }).eq('id', id);
-    if (error) return alert(error.message);
-    await loadUsers();
-  }
-
-  async function setCommentStatus(id, status) {
-    if (!canModerate()) return alert('当前角色没有评论审核权限。');
-    const { error } = await sb().from('comments').update({ status }).eq('id', id);
-    if (error) return alert(error.message);
-    await loadComments();
-  }
-
-  async function setReportStatus(id, status) {
-    if (!canModerate()) return alert('当前角色没有举报处理权限。');
-    const { error } = await sb().from('comment_reports').update({ status, reviewed_at: new Date().toISOString() }).eq('id', id);
-    if (error) return alert(error.message);
-    await loadReports();
+  async function mutate(action, id, value) {
+    try {
+      await api('POST', { action, id, value });
+      await loadCommunity();
+    } catch (error) {
+      alert(error?.message || String(error));
+    }
   }
 
   function bindCommunityEvents() {
@@ -82,9 +76,9 @@
     document.getElementById('community-page')?.addEventListener('click', (e) => {
       const t = e.target;
       if (!(t instanceof HTMLElement)) return;
-      if (t.dataset.userStatus) setUserStatus(t.dataset.userId, t.dataset.userStatus);
-      if (t.dataset.commentStatus) setCommentStatus(t.dataset.commentId, t.dataset.commentStatus);
-      if (t.dataset.reportStatus) setReportStatus(t.dataset.reportId, t.dataset.reportStatus);
+      if (t.dataset.userStatus) mutate('set_user_status', t.dataset.userId, t.dataset.userStatus);
+      if (t.dataset.commentStatus) mutate('set_comment_status', t.dataset.commentId, t.dataset.commentStatus);
+      if (t.dataset.reportStatus) mutate('set_report_status', t.dataset.reportId, t.dataset.reportStatus);
     });
   }
 

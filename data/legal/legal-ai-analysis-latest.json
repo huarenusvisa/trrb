@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 120,
+  "count": 128,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -53,6 +53,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "0e7391d4a4739fe40b959ac1",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1449611/dl?inline",
+      "title": "on account of his membership in a mental health-based particular social group because the evidence in the record did not establish a particularized risk of future persecution. BEST",
+      "chineseTitle": "关于因精神健康特定社会群体成员身份而申请庇护未能建立未来迫害特定风险的案情分析——Best案",
+      "summary": "本案涉及一名巴巴多斯籍申请人因其精神健康状态所属特定社会群体而寻求法律救济。移民法庭最初裁定申请人因家庭成员将承受极端困难而获批豁免及调整身份，但上诉委员会认为情感与经济困难未达极端困难标准，同时申请人多项刑事记录且未提供有说服力的康复证据，其家庭及社区联系不足以抵消严重犯罪历史。最终撤销下级法院判决，拒绝豁免及身份调整，命令将申请人遣返。",
+      "legalIssue": "申请人是否因其作为精神健康基础的特定社会群体成员而证明其面临未来迫害的特定风险，从而满足申请豁免及调整身份的法定标准？",
+      "holdingOrRule": "官方材料节选不足，暂不判断申请人因精神健康特定社会群体成员身份受到未来迫害的特定风险；但根据家庭成员承受的困难未达极端困难标准，且申请人存在严重且长期的刑事记录且缺乏康复证据，其豁免申请和身份调整请求被拒绝。",
+      "impact": "直接法律效力在于明确豁免及身份调整的审查标准，强调仅有经济和情感困难不足以构成极端困难，同时犯罪历史是重要考量因素。此裁决对类似案件中评估极端困难及犯罪背景的移民法庭判决具有指导意义，可能影响未来涉及特定社会群体身份及豁免审查的案件。",
+      "sourceGrounding": "依据2026年美国司法部移民上诉委员会Best案（29 I&N Dec. 723），官方裁决全文内容和理由分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "101e2004a1aff6c91ff4b9c5",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -82,6 +98,22 @@
       "holdingOrRule": "证据显示申请人因涉嫌恐怖活动将被遣返并被拘押，但缺乏明确证据证明他将因非法理由遭受酷刑，不能满足CAT下“更大可能性遭受酷刑”的证明标准，且国家安全风险构成避难和扣留的法定障碍。依此，申请避难和扣留被拒，缓刑驱逐不应批准，申请人应被遣返。",
       "impact": "直接法律效力：本判决作为移民上诉委员会先例，适用于类似涉及酷刑公约保护申请的案件，明确申请人需证明高概率遭受酷刑且指控非基于非法理由。可能影响：对未来因国家安全风险及证据不足而遭拒避难及缓刑驱逐的案件审理标准有指导意义。",
       "sourceGrounding": "依据美国司法部执行移民审查办公室移民上诉委员会2025年8月8日J-A案的官方裁定文本，29 I&N Dec. 253 (BIA 2025)。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "152a4606dfb3b08853cb27ca",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1451996/dl?inline",
+      "title": "of operative terms and criteria in order to establish that an alien is subject to the terms of the ACA in the context of the safe third country bar to asylum eligibility. E-A-R-M-",
+      "chineseTitle": "美国移民上诉委员会关于安全第三国准入规则及庇护合作协议适用的中期裁决 —— E-A-R-M-案",
+      "summary": "本案中，国土安全部(DHS)对移民法官拒绝依据美国与厄瓜多尔签订的庇护合作协议(ACA)而拒绝受理申请人的庇护申请提出上诉。上诉委员会裁定DHS口头动议已构成适当通知，移民法官超越权限，未正确适用法规，应重新审理安全第三国条款及申请是否被排除。移民法官无权质疑DHS关于第三国接收意愿及附加执行计划的认定。经裁决，DHS上诉获支持，案件发回法院继续审理。",
+      "legalIssue": "本案核心法律问题为：依据《移民及国籍法》第208(a)(2)(A)条款及相关联邦法规，移民法官是否有权在DHS提出基于美国与厄瓜多尔庇护合作协议之安全第三国条款的动议时，拒绝受理申请人庇护申请，尤其是关于DHS通知是否充分及是否可审查第三国接收意愿和执行计划的法律权限。",
+      "holdingOrRule": "裁决确认：1) DHS口头动议提供了充足的移除意图通知；2) 移民法官无权要求DHS证明第三国愿意接收申请人或审查执行计划；3) 移民法官必须依据法规正确适用安全第三国条款；4) DHS有权依据庇护合作协议动议请求免除审理庇护申请；5) 案件应发回移民法庭重新审理是否适用安全第三国条款。官方材料节选不足，暂不判断具体庇护申请结果。",
+      "impact": "直接法律效力：裁决明确移民法官在处理基于庇护合作协议的安全第三国动议时权限限制，指导移民法庭正确程序。可能影响：美-厄瓜多尔协议适用案件，以及未来美国与他国ACAs下庇护申请的审理流程，确保DHS通过口头或书面通知行使移除权的合法性与效率。",
+      "sourceGrounding": "依据2026年7月10日美国司法部执行办公室移民上诉委员会发布的中期裁决（29 I&N Dec. 746），案件标题为Matter of E-A-R-M-，官方链接：https://www.justice.gov/eoir/media/1451996/dl?inline。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -133,6 +165,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "1b65877dfb597cba3f364db6",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1401626/dl?inline",
+      "title": "be tortured. BELTRAND-RODRIGUEZ",
+      "chineseTitle": "贝特兰-罗德里格斯案（2025年）——社区安全与保释决定",
+      "summary": "本案中，被告因与其12岁继妹发生猥亵行为及发送不雅影像材料而被判刑并需注册为性犯罪者。国土安全部(DHS)主张其释放将对社区构成危险，移民法官曾判其可缴纳保释金释放。上诉委员会依据证据及法律规定，推翻该保释决定，认定被告的行为因被害人年龄及亲属关系属高危害性行为，维持其拘留。",
+      "legalIssue": "是否应基于被告的性犯罪行为认定其释放对社区构成危险，从而决定其是否可获得保释？",
+      "holdingOrRule": "依据清晰且令人信服的证据，移民法官错误裁定被告可保释，委员会认定被告性犯罪行为使其释放将威胁社区安全，应继续无保释拘留。",
+      "impact": "直接法律效力：此案成为类似侵害青少年及有家庭关系性犯罪的保释审理先例，明确危险性高的被告可被拒绝保释。可能影响：影响移民拘留案件中性犯罪被告的保释决定，促进更严格的社区安全考量。",
+      "sourceGrounding": "基于美国司法部执行移民审查办公室移民上诉委员会2025年3月27日发布的《贝特兰-罗德里格斯案》裁决全文及相关法规。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "1d0d5a230e01c8c3ccbddd8d",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -162,6 +210,22 @@
       "holdingOrRule": "由于18.2-387条款要求“猥亵展示或暴露”，即需包含淫秽（lewd）意图，该犯罪构成涉及道德败坏的犯罪，符合《移民与国籍法》规定的强制拘留条件。移民上诉委员会撤销被告保释释放，维持强制拘留。",
       "impact": "直接法律效力：影响被弗吉尼亚州18.2-387条款猥亵暴露罪定罪的外国人，根据联邦移民法将被强制拘留。可能影响：为类似法律条文犯罪定性提供判例指导，影响移民拘留政策和庇护案件审理。",
       "sourceGrounding": "依据2025年6月26日移民上诉委员会发布的29 I&N Dec. 110（BIA 2025）正式决定全文，该文件由美国司法部执行办公室移民审查官署发布。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "2a04e4c1786d88688b059cd3",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1449436/dl?inline",
+      "title": "An Immigration Judge may not determine that a respondent is credible solely because the respondent was candid in admitting he previously lied to obtain immigration benefits. C-L-R-",
+      "chineseTitle": "关于被告承认曾为获得移民利益而撒谎的坦白不构成可信度唯一依据的先例案",
+      "summary": "本案涉及一位患有精神疾病的洪都拉斯申请人，其撤销遣返申请被移民法官驳回，移民上诉委员会肯定了程序的公正性及法官关于申请人未能证明基于精神健康理由未来遭受迫害的判断。该判例明确指出，移民法官不得仅因申请人坦率承认曾为移民利益说谎，即认定其可信。",
+      "legalIssue": "移民法官是否可以仅以申请人坦诚承认先前为获取移民利益而撒谎作为其可信度的唯一依据？",
+      "holdingOrRule": "移民法官不得仅因为申请人坦率承认曾为获取移民利益而说谎，即认定其可信度。",
+      "impact": "该判例对所有移民诉讼程序中的可信度评估具有直接法律效力，明确限制法官依申请人坦诚承认曾撒谎的行为单独作出可信认定，促进更全面和客观的事实审查。其影响对象为所有涉及申请人诚信及可信度评估的移民案件。",
+      "sourceGrounding": "依据美国司法部门执行移民审查办公室移民上诉委员会2026年5月4日发布的先例裁决29 I&N Dec. 726 (BIA 2026)。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -434,6 +498,22 @@
       "holdingOrRule": "获得免于驱逐保护的申请人，其庇护申请可基于自由裁量权被拒，即使面临未来迫害风险；司法机关需综合评估有利与不利因素，重大负面行为（如多次酒驾）可以推翻庇护及其它身份救济的请求。",
       "impact": "直接法律效力针对个案申请人的庇护及身份调整决定，指导移民法官在自由裁量权运用上加强对不良行为的重视；可能影响移民申请程序中负面因素评估标准，特别是涉及多次酒驾等严重违规行为的庇护及撤销驱逐申请者。",
       "sourceGrounding": "根据美国司法部执行办公室移民审查局2026年6月22日发布的29 I&N Dec. 708号案例解析，内容详见官方判决全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "82a0eb899bbab83679fd0d84",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1451396/dl?inline",
+      "title": "and related protection was sufficient to provide the requisite notice of its intent to remove the respondents to a third country pursuant to an asylum cooperative agreement. R-A-N-",
+      "chineseTitle": "关于被强制服兵役申请庇护的法律分析——R-A-N案（2026年移民上诉委员会裁定）",
+      "summary": "本案讨论了是否可仅以被强制服兵役为由申请庇护。移民上诉委员会认定，单纯强制服兵役并不构成庇护理由，必须与法律规定保护的五大理由（种族、宗教、国籍、特定社会群体及政治观点）相关联。仅因服役军队受到国际谴责，不能认定为迫害。案件中，申请人未能证明其因受保护理由而面临迫害，故移民法官错误批准庇护申请，上诉委员会撤销决定并发回重审有关《反酷刑公约》保护的申请。",
+      "legalIssue": "强制服兵役是否能作为独立的庇护理由，特别是在缺乏与移民法中保护的特定理由之间的关联情况下？",
+      "holdingOrRule": "强制服兵役本身不构成庇护理由，申请人必须证明其被迫服役的行为或因此遭受的迫害与移民法规定的保护根据（种族、宗教、国籍、特定社会群体或政治观点）有关。仅凭军队行为被国际谴责不足以成立迫害。否则，不符合庇护定义。",
+      "impact": "直接法律效力：明确移民法中强制服兵役不是独立庇护理由，影响类似申请的裁判；可能影响：未来涉及强制服兵役及国际谴责军队行为的庇护案件审查标准。",
+      "sourceGrounding": "基于2026年7月7日美国司法部移民上诉委员会裁定《R-A-N》案，29 I&N Dec. 739 (BIA 2026)官方裁决全文。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -725,6 +805,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "dd6f41031cfe66e5036bba1e",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1453751/dl?inline",
+      "title": "ng it do not extend to an application for statutory withholding of removal or a request for protection under the regulations implementing the Convention Against Torture. LOPEZ RICO",
+      "chineseTitle": "洛佩斯·里科案：非法投票与自主权保护的移民法裁决解析",
+      "summary": "本案系洛佩斯·里科因非法投票而面临驱逐出境，移民法官认定其在2012年总统选举中非法投票，违反联邦法律，构成可移除身份。尽管其居住时间长、家庭关系紧密及经济支持家庭，但其刑事记录（包括酒驾）及拒绝作证导致其未能获得取消驱逐的酌情救济。上诉移民局支持移民法官判决，认为拒绝作证可推断不利结论，非法投票为重要不利因素。",
+      "legalIssue": "非法投票是否构成《移民国籍法》第237(a)(6)条规定的可移除身份，以及拒绝就刑事记录作证是否影响取消驱逐酌情裁定的权衡。",
+      "holdingOrRule": "移民法官可以基于被告拒绝对关键事实作证，合理推断不利结论；非法投票违反联邦法律构成可移除身份；非法投票及刑事犯罪记录为拒绝行使取消驱逐酌情救济的重要不利因素。",
+      "impact": "直接法律效力：中国籍或其他外籍长期居民涉及非法投票将直接面临可移除身份认定；拒绝自证不利事实影响取消驱逐酌情救济申请。可能影响：移民法律实践中对非法投票行为和拒绝举证权利的平衡考量，强化提升选举诚信的法治目标。",
+      "sourceGrounding": "依据美国司法部执行局移民上诉委员会2026年《洛佩斯·里科案》（29 I&N Dec. 780）官方判决全文解析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "e4e3f81b5fbfd5904b53d8d7",
       "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
       "sourceSystem": "BIA",
@@ -754,6 +850,22 @@
       "holdingOrRule": "依据Matter of Velasquez-Rios及相关联邦法规，州法对刑期的修正不影响联邦移民法227(a)(2)(A)(i)(II)条对CIMT的认定，且1473.7条的撤销必须基于程序或实体错误方可影响移民资格；本案中资料不足以证明撤销基于合法无效理由，故维持驱逐决定。",
       "impact": "直接法律效力：本裁决作为先例，适用于联邦移民案件中对加州刑事定罪资格审查及撤销定罪时的法律标准。可能影响：影响有类似刑事定罪及后续州法撤销案件的非公民移民状况申诉策略及司法解释。",
       "sourceGrounding": "解析依据来自美国司法部执行办公室移民审查委员会2025年1月17日正式裁决文本，具体含29 I&N Dec. 7案卷及其引用相关法律条文与先例。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "ed5c0f58948cfaebcad845fb",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1453181/dl?inline",
+      "title": "not establish eligibility for humanitarian asylum because he did not show that the government was unwilling or unable to protect him from the harm he suffered in the past. H-L-S-M-",
+      "chineseTitle": "H-L-S-M案：未证明政府对其曾遭受伤害的不作为，拒绝人道主义庇护资格",
+      "summary": "申请人因在美国出庭作证反对帮派成员，声称若遣返墨西哥或危地马拉，将遭受酷刑。移民法官基于国家状况及专家证词认定可能遭酷刑，但忽视申请人未曾受酷刑，威胁时间久远且含糊等个案关键事实。上诉委员会认定政府虽未能完全有效打击帮派，但已有对策，申请人未能证明政府不作为或默许其遭受酷刑，撤销前判决。",
+      "legalIssue": "申请人是否通过证据证明被遣返国政府不愿或不能保护其免受过去或未来酷刑，从而符合人道主义庇护（根据禁止酷刑公约实施规定）资格？",
+      "holdingOrRule": "申请人未能证明政府不愿意或不能保护其免受酷刑，类似威胁缺乏直接性且过时，且政府已有打击帮派措施，故不成立人道主义庇护资格。",
+      "impact": "直接法律效力：为类似案件提供先例，强调需结合个案具体情况而非仅凭一般国家状况评估酷刑风险。可能影响：移民法官和申请人在评估酷刑风险及政府保护能力时，更重视具体个人经历及政府行动的细节证据。",
+      "sourceGrounding": "依据美国司法部移民上诉委员会2026年6月18日通过的案件H-L-S-M-，并参照相关联邦法规及先前判例，详见官方文件29 I&N Dec. 767 (BIA 2026)。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -818,6 +930,22 @@
       "holdingOrRule": "（1）对于由私人律师代理的非羁押外籍人士，推定其具备支付诉讼费的能力；（2）申请费减免时，若所有收入均申报为零且无合理说明，该申请推定无效；（3）申请人须提供充分证据证明无力支付诉讼费，否则申请将被拒绝。",
       "impact": "直接法律效力：明确了移民诉讼中非羁押外籍人士申请诉讼费减免的认定规则及举证责任，指导移民法庭审核相关申请。可能影响：影响非羁押移民申请费减免者如何准备申请材料，并影响代理律师对客户经济状况的核实与披露要求。",
       "sourceGrounding": "依据美国司法部执行办公室移民审查局（EOIR）2025年8月8日发布的加西亚·马丁内斯案（29 I&N Dec. 169 (BIA 2025)）判决书及相关法规条文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "fde11685da47a6bb2aba599a",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1401621/dl?inline",
+      "title": "n his dangerous behavior that subjected a person who was particularly vulnerable because of her age and her familial relationship to the respondent to unlawful sexual conduct. BAIN",
+      "chineseTitle": "BIA关于被申请人刑事历史与撤销驱逐裁量权决定的案例分析",
+      "summary": "本案涉及一名巴哈马籍被申请人请求根据《移民与国籍法》第240A(a)条款申请撤销驱逐。移民法官原裁其申请成立，但国土安全部上诉。BIA经再次审查，考虑被申请人自2013年至2021年间多次涉及毒品犯罪且未能充分显示其康复，认为其不应获得撤销驱逐的裁量救济，遂撤销移民法官决定，并下令其遣返回国。",
+      "legalIssue": "被申请人是否因其显著且持续的刑事犯罪历史及缺乏康复证明，而不具备作为裁量权行使基础的撤销驱逐救济资格？",
+      "holdingOrRule": "基于被申请人严重且近期的毒品相关犯罪历史和未能展示康复努力，BIA裁定其未能满足撤销驱逐的裁量条件，撤销原撤销驱逐决定，命令被申请人遣返。",
+      "impact": "直接法律效力：本裁定对涉及类似刑事背景的撤销驱逐申请案件具先例约束力，强调刑事历史及康复呈现对撤销驱逐裁量的重要影响。可能影响：其他持有合法永久居民身份但有犯罪记录者在类似撤销驱逐申请中，须加强康复证据以期获得裁量救济。",
+      "sourceGrounding": "依据2025年2月6日BIA第29卷I&N第72号Matter of Gilton BAIN案官方全文材料解析。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

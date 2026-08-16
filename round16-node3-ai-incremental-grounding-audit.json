@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-16T11:59:16.526Z",
+  "generatedAt": "2026-08-16T15:32:42.267Z",
   "node": "3 AI中文解析增量更新与事实约束",
-  "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+  "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
   "count": 163,
-  "currentVersionAnalyses": 8,
+  "currentVersionAnalyses": 163,
   "orphan": 0,
   "urlMismatch": 0,
   "authorityMismatch": 0,
@@ -16,7 +16,7 @@
     {
       "ok": true,
       "label": "AI dataset pointer synchronized to unified database",
-      "detail": "ai=0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5; db=0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5"
+      "detail": "ai=56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59; db=56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59"
     },
     {
       "ok": true,
@@ -71,7 +71,7 @@
     {
       "ok": true,
       "label": "current dataset produced or refreshed incremental analyses",
-      "detail": "currentVersion=8/163"
+      "detail": "currentVersion=163/163"
     },
     {
       "ok": true,

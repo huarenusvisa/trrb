@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+  "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 170,
+  "count": 163,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -22,7 +22,7 @@
     },
     {
       "recordId": "0abdbf83279c01dbe664cb50",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -38,7 +38,7 @@
     },
     {
       "recordId": "0c47d7ec4fcdf3d95bbbf6d3",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -54,7 +54,7 @@
     },
     {
       "recordId": "0e7391d4a4739fe40b959ac1",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -70,7 +70,7 @@
     },
     {
       "recordId": "101e2004a1aff6c91ff4b9c5",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -86,7 +86,7 @@
     },
     {
       "recordId": "142fec7559441ac9a10b10b9",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -102,7 +102,7 @@
     },
     {
       "recordId": "147ee36a2d5a73ea71ba08d3",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -118,7 +118,7 @@
     },
     {
       "recordId": "152a4606dfb3b08853cb27ca",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -134,7 +134,7 @@
     },
     {
       "recordId": "154d29c815c9cb7231ff9381",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -150,7 +150,7 @@
     },
     {
       "recordId": "1710cfefdbb39ffb1e12dc12",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -166,7 +166,7 @@
     },
     {
       "recordId": "1aead7d4112c3ff54172f610",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -182,7 +182,7 @@
     },
     {
       "recordId": "1b65877dfb597cba3f364db6",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -198,7 +198,7 @@
     },
     {
       "recordId": "1d0d5a230e01c8c3ccbddd8d",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -214,7 +214,7 @@
     },
     {
       "recordId": "1d2d1417f88c04c0896b9a49",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -230,7 +230,7 @@
     },
     {
       "recordId": "2a04e4c1786d88688b059cd3",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -246,7 +246,7 @@
     },
     {
       "recordId": "2b585941a003981e539eb258",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -262,7 +262,7 @@
     },
     {
       "recordId": "30c31cebce9ad44875452e79",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -278,7 +278,7 @@
     },
     {
       "recordId": "363a2839a9e040793e71f876",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -294,7 +294,7 @@
     },
     {
       "recordId": "3741cc60635b231c10153c0c",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -310,7 +310,7 @@
     },
     {
       "recordId": "39a104ec894cd3526b3212e5",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -326,7 +326,7 @@
     },
     {
       "recordId": "3bd5c3957f112b9e540bc516",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -342,7 +342,7 @@
     },
     {
       "recordId": "3d4e19d7136df5cb7ad74678",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -358,7 +358,7 @@
     },
     {
       "recordId": "40293b8e3dce4e6ff49f0523",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -374,7 +374,7 @@
     },
     {
       "recordId": "40b6030c6b52c92089168a46",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -390,7 +390,7 @@
     },
     {
       "recordId": "4154530609708ab4f82f43b9",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -406,7 +406,7 @@
     },
     {
       "recordId": "42e1e2c249e3e31109da32c2",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -422,7 +422,7 @@
     },
     {
       "recordId": "438518db6ce716b939c6c008",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -438,7 +438,7 @@
     },
     {
       "recordId": "565b6d2e63433b22f21f22af",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -454,7 +454,7 @@
     },
     {
       "recordId": "56e8887c29cf9e22ec2349e5",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -470,7 +470,7 @@
     },
     {
       "recordId": "59c06e96d6203297be041dab",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -486,7 +486,7 @@
     },
     {
       "recordId": "6d71998164d7fa814946b7a3",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -502,7 +502,7 @@
     },
     {
       "recordId": "6e78e9478cb87341590d4fad",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -518,7 +518,7 @@
     },
     {
       "recordId": "7a6abb280c4672a5919212a2",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -534,7 +534,7 @@
     },
     {
       "recordId": "7fd779176c88220982e43976",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -550,7 +550,7 @@
     },
     {
       "recordId": "82a0eb899bbab83679fd0d84",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -566,7 +566,7 @@
     },
     {
       "recordId": "850f8e5d4d2e5569ee83e587",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -582,7 +582,7 @@
     },
     {
       "recordId": "8ba8ce75f392b8b45be98665",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -598,7 +598,7 @@
     },
     {
       "recordId": "8e5d036173279f9bc0b14a1a",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -614,7 +614,7 @@
     },
     {
       "recordId": "8ed76ab79251f47a2f7f6213",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -630,7 +630,7 @@
     },
     {
       "recordId": "902c4857c0c5c4d7b868c9db",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -646,7 +646,7 @@
     },
     {
       "recordId": "912a9c0ae677fd577c4e15b6",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -662,7 +662,7 @@
     },
     {
       "recordId": "93de4f8335c300157f7c79bb",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -678,7 +678,7 @@
     },
     {
       "recordId": "9afd14a346c04249377b8ea1",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -694,7 +694,7 @@
     },
     {
       "recordId": "a38bbffed7148a558a32acfc",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -710,7 +710,7 @@
     },
     {
       "recordId": "a7dd3a0a5c57b1d4d2a59764",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -726,7 +726,7 @@
     },
     {
       "recordId": "b71e64a6712e638f74ca48af",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -742,7 +742,7 @@
     },
     {
       "recordId": "b8ac3405b9d28dbe5ec444b9",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -758,7 +758,7 @@
     },
     {
       "recordId": "becca7addb1aebd11182cbad",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -774,7 +774,7 @@
     },
     {
       "recordId": "c34137a10aa5912a8bf03980",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -790,7 +790,7 @@
     },
     {
       "recordId": "c5da33c4c6310ae082e456cd",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -806,7 +806,7 @@
     },
     {
       "recordId": "c8b25ffe17d5a8d3092fb2d5",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -822,7 +822,7 @@
     },
     {
       "recordId": "cce5a258e46c5b36051839ad",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -838,7 +838,7 @@
     },
     {
       "recordId": "cde0657843ba7f48ebf00322",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -854,7 +854,7 @@
     },
     {
       "recordId": "ceb069a62e4cd4ca0f6d3336",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -870,7 +870,7 @@
     },
     {
       "recordId": "d4860047bf257c0b0454cb0a",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -886,7 +886,7 @@
     },
     {
       "recordId": "d5461d7a696cb9fd6379e4c8",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -902,7 +902,7 @@
     },
     {
       "recordId": "dd6f41031cfe66e5036bba1e",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -918,7 +918,7 @@
     },
     {
       "recordId": "e4e3f81b5fbfd5904b53d8d7",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -934,7 +934,7 @@
     },
     {
       "recordId": "e7ab4dc1184a396a76ec77bd",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -950,7 +950,7 @@
     },
     {
       "recordId": "ed5c0f58948cfaebcad845fb",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -966,7 +966,7 @@
     },
     {
       "recordId": "f2f512cc708bb4e1a8c8f055",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -982,7 +982,7 @@
     },
     {
       "recordId": "f5f03a8452e194df35256af5",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -998,7 +998,7 @@
     },
     {
       "recordId": "f930aa9b00b7f788fc2c0489",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -1014,7 +1014,7 @@
     },
     {
       "recordId": "faa29e9662fc421685625689",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -1030,7 +1030,7 @@
     },
     {
       "recordId": "fbf5592824f9a2855c0ad6ba",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -1046,7 +1046,7 @@
     },
     {
       "recordId": "fd56c456d7754a87899ffcbe",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -1062,7 +1062,7 @@
     },
     {
       "recordId": "fde11685da47a6bb2aba599a",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -1078,7 +1078,7 @@
     },
     {
       "recordId": "fe975e73f64cec1a9d1f2d71",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
@@ -1094,7 +1094,7 @@
     },
     {
       "recordId": "01d42822aa2629ee30c6e45a",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1110,7 +1110,7 @@
     },
     {
       "recordId": "02d359805a9ac6c85424305c",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1126,7 +1126,7 @@
     },
     {
       "recordId": "037a6e964468f930072ed661",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1142,7 +1142,7 @@
     },
     {
       "recordId": "0556abab49bb28c52ebc0265",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1158,7 +1158,7 @@
     },
     {
       "recordId": "09bb267f7de4dca2836ba7eb",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1174,7 +1174,7 @@
     },
     {
       "recordId": "112d6645a1480743182eb054",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1190,7 +1190,7 @@
     },
     {
       "recordId": "11a2996869768ec384c810a5",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1206,7 +1206,7 @@
     },
     {
       "recordId": "11d9ceaffa391fed3ec966dc",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1222,7 +1222,7 @@
     },
     {
       "recordId": "154062a087a3a4d258bbaae2",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1238,7 +1238,7 @@
     },
     {
       "recordId": "1955610f74fee00116d30964",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1254,7 +1254,7 @@
     },
     {
       "recordId": "19e51d55a406eb88cd7f9248",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1270,7 +1270,7 @@
     },
     {
       "recordId": "1b97e7d7fb7c366e1266c388",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1286,7 +1286,7 @@
     },
     {
       "recordId": "2316c375898fcb7fe030a582",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1302,7 +1302,7 @@
     },
     {
       "recordId": "23f0be8dcea2b0a868aebe13",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1318,7 +1318,7 @@
     },
     {
       "recordId": "2871b5a97100431d4c6aae46",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1334,7 +1334,7 @@
     },
     {
       "recordId": "2f7d4233ef42d2d97d7a7abc",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1350,7 +1350,7 @@
     },
     {
       "recordId": "3227fd9efd89c1c85e5c473e",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1366,7 +1366,7 @@
     },
     {
       "recordId": "34d5ccf21d5f869285386ad3",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1382,7 +1382,7 @@
     },
     {
       "recordId": "410b41c2db12329c36e1b79a",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1398,7 +1398,7 @@
     },
     {
       "recordId": "41df72232399c5f8ed10f572",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1414,7 +1414,7 @@
     },
     {
       "recordId": "488d6c5b561f59d1b9a3e515",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1430,7 +1430,7 @@
     },
     {
       "recordId": "5016e35abc2d552d94b18bf8",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1446,7 +1446,7 @@
     },
     {
       "recordId": "514a0e8c9a6435be6bd54872",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1462,7 +1462,7 @@
     },
     {
       "recordId": "5195eb0c2faec630c8f71953",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1478,7 +1478,7 @@
     },
     {
       "recordId": "5cb0a7c0e8860ac72c1a48b4",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1494,7 +1494,7 @@
     },
     {
       "recordId": "5cb4690b0e13543c1b77adab",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1510,7 +1510,7 @@
     },
     {
       "recordId": "630e51f8c333fdec5443d7cf",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1526,7 +1526,7 @@
     },
     {
       "recordId": "63f08a3edfcc1442d6ac4344",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1542,7 +1542,7 @@
     },
     {
       "recordId": "6831d9a77cc1c620e47935a4",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1558,7 +1558,7 @@
     },
     {
       "recordId": "75f5b3d51778d9bf434af043",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1574,7 +1574,7 @@
     },
     {
       "recordId": "7a3ae1b61d07c13432bed022",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1590,7 +1590,7 @@
     },
     {
       "recordId": "7de7443c223bd54aea67a683",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1606,7 +1606,7 @@
     },
     {
       "recordId": "80518ad39027f56e9d2b9f39",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1622,7 +1622,7 @@
     },
     {
       "recordId": "84ce2ee2e27efb77d007a9ee",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1638,7 +1638,7 @@
     },
     {
       "recordId": "864a376952f5c46e52421521",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1654,7 +1654,7 @@
     },
     {
       "recordId": "86cd29b63d73ec1d40eb5c62",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1670,7 +1670,7 @@
     },
     {
       "recordId": "8bbb551654bd30d83c4ccc65",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1686,7 +1686,7 @@
     },
     {
       "recordId": "8e9bed8915b751cff5e3edd4",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1702,7 +1702,7 @@
     },
     {
       "recordId": "90b36fdb4dc688feb5f20964",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1718,7 +1718,7 @@
     },
     {
       "recordId": "90e63cf5d02df7ab839caffc",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1734,7 +1734,7 @@
     },
     {
       "recordId": "91143835e1a58587ba6a1d85",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1750,7 +1750,7 @@
     },
     {
       "recordId": "9b4319aa9cb10e17f8d42a2c",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1766,7 +1766,7 @@
     },
     {
       "recordId": "a1936d179b8fd50d7eb2a2fd",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1782,7 +1782,7 @@
     },
     {
       "recordId": "a59be14508cb2f7859e8109c",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1798,7 +1798,7 @@
     },
     {
       "recordId": "a712ba8a3005451eead4e92a",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1814,7 +1814,7 @@
     },
     {
       "recordId": "a793b4da9dcf9027683a4888",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1830,7 +1830,7 @@
     },
     {
       "recordId": "ae7e2e384389a6ff1579a6f9",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1846,7 +1846,7 @@
     },
     {
       "recordId": "af262e1f2c90da7ed6830ea1",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1862,7 +1862,7 @@
     },
     {
       "recordId": "af69ad5cd8a90fe2269f5990",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1878,7 +1878,7 @@
     },
     {
       "recordId": "b0bd7dad38f48a92ff503ab7",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1894,7 +1894,7 @@
     },
     {
       "recordId": "b39e1ec165ab64c7ee95791b",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1910,7 +1910,7 @@
     },
     {
       "recordId": "b8489a889e5d69e92d433a43",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1926,7 +1926,7 @@
     },
     {
       "recordId": "bc0d26630f5dbf15b0830db7",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1942,7 +1942,7 @@
     },
     {
       "recordId": "bd93ab9f76d1c10f634f0109",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1958,7 +1958,7 @@
     },
     {
       "recordId": "beee5fc1c9dfa5f473354514",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1974,7 +1974,7 @@
     },
     {
       "recordId": "c2b9607cb6cc546b5467963d",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -1990,7 +1990,7 @@
     },
     {
       "recordId": "c8b46838a2e8a24c6ffa3fd5",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2006,7 +2006,7 @@
     },
     {
       "recordId": "ced959957946e3b0936a7933",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2022,7 +2022,7 @@
     },
     {
       "recordId": "d1349146c1392627439c2c7e",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2038,7 +2038,7 @@
     },
     {
       "recordId": "de6d7704ca444aeddd3aea37",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2054,7 +2054,7 @@
     },
     {
       "recordId": "dfe8f56ac2e6f2b0b6495448",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2070,7 +2070,7 @@
     },
     {
       "recordId": "e36e89076adc49de5565a98f",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2086,7 +2086,7 @@
     },
     {
       "recordId": "e42688f5dbf3c36406ce89ba",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2102,7 +2102,7 @@
     },
     {
       "recordId": "e68b1a8e24b1f47e3f108d37",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2118,7 +2118,7 @@
     },
     {
       "recordId": "eacffc7fdaad792302009531",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2134,7 +2134,7 @@
     },
     {
       "recordId": "f8e8d2622ead3273d9072dd2",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2150,7 +2150,7 @@
     },
     {
       "recordId": "fa9a0877f16eb31dcefaf43c",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2166,7 +2166,7 @@
     },
     {
       "recordId": "fafefeb25e2cd81a65df97d7",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
@@ -2182,7 +2182,7 @@
     },
     {
       "recordId": "039fa5e10987266b75b030a4",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2198,7 +2198,7 @@
     },
     {
       "recordId": "04e25b49dc66be1f278c7006",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2214,7 +2214,7 @@
     },
     {
       "recordId": "068f830bb29a31d9c53ac57c",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2229,24 +2229,24 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "1553dc49477b50a38480aec9",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "recordId": "1c18bdb10873881a00b30336",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
-      "title": "25-1817 Recchia v. Campbell",
-      "chineseTitle": "瑞奇亚诉坎贝尔案（25-1817）",
-      "summary": "本案系原告瑞奇亚及其所拥有的枪械店挑战马萨诸塞州2024年枪支法案中关于“攻击式半自动步枪”的限制条款，声称其违宪，涉及第二修正案权利、商务条款及平等保护条款。联邦地区法院依照一审辖区先前判例及现有法律原则，驳回诉讼请求，并获一审上诉法院确认。",
-      "legalIssue": "马萨诸塞州2024年禁止“攻击式半自动步枪”等枪械的法律条款，是否违反宪法中第二修正案关于持有和携带枪械的权利、联邦宪法禁止州际贸易歧视的商务条款，以及十四修正案的平等保护条款？",
-      "holdingOrRule": "基于第一巡回法院此前判例（Capen v. Campbell），法院认为该枪械限制法不构成第二修正案禁止范围内的严重负担，且未能显示对州际贸易构成实质歧视或侵害平等保护权利。故判决驳回诉讼请求。",
-      "impact": "该判决对马萨诸塞州等类似州法律限制某些半自动步枪的法规具直接法律效力，支持州政府管控权，同时可能影响枪械销售商、拥枪者及州际贸易规则的适用范围。对其他辖区类似案件具一定参考价值。",
-      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月21日公开发布之官方判决文件（案号25-1817，公开链接：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf）。",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010131995.pdf",
+      "title": "06-3097 - Hinkley v. Roadway Express, Inc, et al. [9512618] 09/13/2007",
+      "chineseTitle": "廷第十巡回上诉法院判决：Hinkley诉Roadway Express及工会案解析",
+      "summary": "本案中，原告Hinkley指控其雇主Roadway违反劳资集体谈判协议（CBA）非法解雇其，并指责其工会违反公平代表义务未能妥善处理申诉。法院审查发现，工会在申诉过程中未有歧视、欺诈、不合理或敷衍行为，且原告未能提出确实证据支持其指控。法院最终确认工会未违反代表义务，维持原判决，支持被告。",
+      "legalIssue": "工会在处理劳动者申诉过程中是否违反公平代表义务，特别是在雇佣合同争议中工会的行为是否存在歧视、欺诈、任意或敷衍。",
+      "holdingOrRule": "法院确认，工会在处理Hinkley申诉时未违反其公平代表义务。工会的行为不构成歧视、欺诈、任意或敷衍，且原告未提交相关具体证据，故法院予以维持被告方的简易判决。",
+      "impact": "直接法律效力：该判决明确了工会在集体谈判协议争议中的法律责任标准，强调申诉处理中举证责任及审查标准。可能影响：为类似劳动争议案件中工会职责的司法审查提供指导，影响未来工会申诉处理及申请法院救济的实践。",
+      "sourceGrounding": "依据美国第十巡回上诉法院2007年9月13日公开判决文书，详见官方发布PDF原文https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010131995.pdf。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
       "recordId": "1e39c415528a307825d03b01",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2261,40 +2261,8 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "1e45f048e4aecf60e105f698",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1781P-01A.pdf",
-      "title": "25-1781 Rhode Island Truck Ctr., LLC v. Daimler Trucks North America, LLC",
-      "chineseTitle": "罗德岛卡车中心有限责任公司诉戴姆勒北美卡车有限责任公司案",
-      "summary": "本案涉及罗德岛卡车中心（RITC）与戴姆勒北美卡车（Daimler）间的经销商协议纠纷。协议赋予RITC在特定区域非排他销售权，同时允许戴姆勒自行决定增设其他经销商。戴姆勒基于RITC业绩不佳，在其区域内增设新经销商，RITC诉其违约及违反诚信义务。地方法院判戴姆勒胜诉，一审法院确认戴姆勒依合同行使权利无违约，RITC上诉被驳回。",
-      "legalIssue": "合同条款赋予制造商以“自行决定”权新增经销商是否构成违约；制造商此举是否违反诚信与公平交易的暗示契约义务。",
-      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。地方法院已判戴姆勒胜诉，合议庭维持原判。裁判认为戴姆勒在合同赋予的“自行决定”权限范围内行事，未违反合同及诚信与公平交易义务。",
-      "impact": "该判决直接对罗德岛卡车中心与戴姆勒北美产生法律效力；可能影响制造商与经销商协议中授予“自行决定”权的解释及争议解决，尤其涉及区域经销安排与市场合并策略；有助明确合同中经销商非排他销售权范畴及限制。",
-      "sourceGrounding": "依据2026年美国第一巡回上诉法院对罗德岛卡车中心诉戴姆勒北美卡车案的官方判决文件，特别是案件事实、合同条款内容及法院对纠纷的判决理由。",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
-      "recordId": "20affe9ca377a214567ddd1d",
-      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf",
-      "title": "25-1063 North End Chamber of Commerce, Inc. v. City of Boston",
-      "chineseTitle": "波士顿市户外餐饮计划诉讼案分析",
-      "summary": "波士顿市在疫情期间实施临时户外餐饮计划，起初各区规则一致，但2022年北端区域因居民投诉采取差别化措施，包括征收费用和缩短季节，导致北端多家餐厅诉诸联邦法院，主张市政府违反平等保护和正当程序权利。联邦地区法院因诉状不符合程序规则驳回诉求，一审上诉法院维持前述决定，部分州法涉案税费诉求撤销后准许重审。",
-      "legalIssue": "波士顿市针对北端区域户外餐饮计划采取差异化政策，涉及是否违反联邦宪法中平等保护和正当程序权利，以及相关州法税费是否合法。",
-      "holdingOrRule": "一审法院驳回原告基于联邦宪法的诉求，理由为诉状不符合联邦民事诉讼规则第8条及实体权利不成立；上诉法院确认前述驳回决定，同时撤销对州法税费诉求的驳回，指示予以无异议撤诉处理。官方材料节选不足，暂不判断裁判结论。",
-      "impact": "直接法律效力：联邦法院确认因程序及实质理由驳回餐厅基于宪法权利诉求，暂未认定市政策违法；部分涉及州法的税费诉求获撤销，为后续重新提起诉讼留有空间。可能影响：对疫情后城市管理中区域差异化政策的合法性争议提供审判指导，影响类似城市户外经营政策制定及相关业主权益保护。",
-      "sourceGrounding": "依据美国第一巡回上诉法院官方判决文件（Case No. 25-1063）中详细案情描述及审理理由，结合联邦民事诉讼规则第8条及相关州法，公开链接：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf。",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
       "recordId": "221c3a0939750fb084de69e6",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2309,8 +2277,24 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "2f4b8153ffac9243a582939e",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010130747.pdf",
+      "title": "06-6284 - United States v. Kelly [9512110] 09/12/2007",
+      "chineseTitle": "10巡回上诉法院关于Kelly案重审刑期的裁决解析",
+      "summary": "本案涉及Ronald Daniel Kelly因持有伪麻黄碱意图制造甲基苯丙胺被判刑。首次判决中认定量刑依据存在非宪法性Booker错误，法院重审维持原刑期151个月。核心争议包括量刑依据的毒品数量事实认定、辩护律师陈述的法律效力、第六修正案对引证证人证言的影响及Booker案宣布的刑期量刑标准的溯及力问题。法院根据现有判例，确认律师陈述可视为被告承认，毒品数量可依证据优势认定，量刑程序合理，Booker溯及力仅限部分内容，不影响本案判决。最终维持原判。",
+      "legalIssue": "本案核心法律问题包括：(1) 辩护律师关于毒品数量的陈述是否构成被告的有效承认；(2) 第六修正案是否禁止使用证人所引述的传闻证据以支撑判决；(3) 依据Booker案判决，事实认定应采用的证据标准及其对既判案件的溯及效力；(4) 量刑程序是否符合法律规定并充分说明判决理由。",
+      "holdingOrRule": "本案裁判结论为：辩护律师的陈述视为被告的承认，毒品数量可基于证据优势标准认定，证人传闻证词不违反第六修正案，量刑法院充分考虑相关法律因素，判处151个月刑期合理且应当维持；Booker案中关于量刑事实须被告承认或经陪审团证明的原则适用，但Booker量刑指导方针溯及力有限，不适用于本案判处。",
+      "impact": "直接法律效力：该判决对所涉被告及类似案件中涉及毒品数量认定、律师陈述法律效力、量刑程序合理性等问题具有指导作用。可能影响：促进司法实践中对Booker案量刑标准及相关权利保护的理解和适用，影响量刑程序与辩护策略制定。",
+      "sourceGrounding": "本解析依据美国第十巡回上诉法院2007年9月12日发布的United States v. Kelly案官方判决文书，全文详见https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010130747.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "33ad8ba1160e1f56f2f67bbc",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2325,24 +2309,8 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "3bbfc927f458d0bca0b17dc6",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1975P-01A.pdf",
-      "title": "23-1975 US v. Irizarry-Irizarry",
-      "chineseTitle": "美国第一巡回上诉法院关于Irizarry诈骗案的判决解析",
-      "summary": "被告Irizarry因参与针对波多黎各Mayagüez市及其经济发展机构MEDI的诈骗计划，被陪审团判定犯有电信诈骗、共谋及洗钱罪。核心事实包括未经授权利用为创伤中心改造拨款的900万美元资金，伪造投资文件，资金多次转移至相关联企业账户，并开具虚假服务发票。Irizarry申诉指证据不足未证明其犯罪故意，且未成功减刑。法院认定证据充分，维持原判。",
-      "legalIssue": "被告Irizarry是否具备实施电信诈骗、共谋及洗钱罪所必需的犯罪故意，且其申诉的量刑调整请求是否具备上诉基础？",
-      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
-      "impact": "直接法律效力：确认涉案被告犯罪行为构成电信诈骗、共谋及洗钱罪，维持相应刑罚。可能影响：为联邦法院在类似利用公共资金进行复杂诈骗案件中的证据评估与犯罪故意认定提供参考标准。",
-      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月24日关于案件编号23-1975的官方判决文书全文摘录。",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
       "recordId": "49e57b0eb42f56514707bd22",
-      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2357,19 +2325,19 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "4e8e20ab90b006d5881fb624",
-      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
+      "recordId": "522f4974f976fdad7abf5a18",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf",
-      "title": "25-1862 Rana v. Blanche",
-      "chineseTitle": "拉纳诉布兰奇案第一巡回上诉法院修正案摘要",
-      "summary": "本案为拉纳（Rana）诉布兰奇（Blanche）一案，第一巡回上诉法院于2026年7月23日发布判决意见，后发布勘误表更正了第13页脚注4中“noncitizens’”为“noncitizen’s”的用词错误。该勘误仅为文字修正，不涉及实体裁判内容的更改。",
-      "legalIssue": "本案核心法律问题涉及非公民身份相关法律解释及其适用，但官方材料未提供具体事实或判决细节以进一步明确。",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
+      "title": "24-1467P.01A",
+      "chineseTitle": "美国第一巡回上诉法院就Freenet网络中儿童色情文件持有案的隐私权与第四修正案问题判决",
+      "summary": "本案涉及被告Eric Robert Johnson使用匿名的P2P网络Freenet传播儿童色情内容。政府使用特殊执法工具Freenet Roundup，通过追踪网络请求跳数和节点IP，定位并获得搜查令，查获犯罪证据。被告主张执法程序侵犯第四修正案保障的隐私权，请求排除搜查证据。法院详细阐述Freenet的匿名机制及Freenet Roundup的执法原理，最后维持地区法院判决，未支持排除证据的请求。",
+      "legalIssue": "Freenet网络中利用匿名化技术进行数据传输时，执法部门通过监听和追踪节点的请求跳数及IP地址，是否构成违反宪法第四修正案的不合理搜查和扣押？",
       "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
-      "impact": "该修正对法律实体权利义务不产生直接法律效力，但可能影响相关法律文书的准确表述及后续引用的规范性。",
-      "sourceGrounding": "解析基于美国第一巡回上诉法院发布的官方判决书及随后的勘误表公开材料（https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf）。",
+      "impact": "直接法律效力体现在联邦地区法院及第一巡回区相关案件中，界定了应用匿名网络技术时执法取证的合法边界。可能影响数字隐私权保护、匿名网络用户合法权益保护及网络取证实践等领域。",
+      "sourceGrounding": "分析基于美国第一巡回上诉法院于2026年7月7日发布的官方判决文档，及其中对Freenet技术和Freenet Roundup执法操作的具体描述。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -2390,7 +2358,7 @@
     },
     {
       "recordId": "5a79a0a8bb5ea4584aa0f3ea",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2422,7 +2390,7 @@
     },
     {
       "recordId": "5cd9323d03436861545115ca",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2437,24 +2405,24 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "742ec4be70d431a94118222c",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "recordId": "5e6394b64aa311fe03b43f89",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf",
-      "title": "26-1774 State of California v. Trump",
-      "chineseTitle": "加利福尼亚州等23州诉特朗普总统行政命令案（一巡回上诉法院2026年）",
-      "summary": "2026年，特朗普总统发布行政命令14399，旨在调整联邦选举中邮寄投票的管理措施，涉及国土安全部建立公民名单及邮政规则制定。23个州和哥伦比亚特区诉其违反权力分立原则，法院认定州方具备诉讼主体资格，且行政命令超越总统权限，部分条款遭禁止执行，暂缓实施至2026年11月选举为止。联邦政府后续提出暂停禁令的申请未获批准。",
-      "legalIssue": "总统发布涉州及地方选举管理的行政命令是否超越其宪法授权权限，侵犯了各州在联邦选举中行政管理的权力，从而产生联邦法院审理资格（诉讼主体资格）及案件可审理性？",
-      "holdingOrRule": "法院确认州方具备诉讼主体资格，因行政命令导致实际且迫切的伤害，包括成本负担和可能刑事处罚。裁定总统无权通过行政命令直接调整州和地方联邦选举的运作，行政命令相关条款违反权力分立原则，禁止联邦被告在原告州实施该命令至2026年11月选举。",
-      "impact": "直接法律效力限制于原告23州及哥伦比亚特区，禁止被告联邦机构执行行政命令相关内容。可能影响全美联邦选举管理模式及总统行政命令对州权行政事务介入的合法性论证。",
-      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月25日正式公开的判决及相关诉讼文件，详见官方网站https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf。",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010131132.pdf",
+      "title": "06-4128 - General Motors Corp. v. Urban Gorilla, LLC [9512277] 09/12/2007",
+      "chineseTitle": "通用汽车公司诉Urban Gorilla有限责任公司案件初步禁令申请裁决解析",
+      "summary": "本案中，通用汽车公司（GM）诉Urban Gorilla有限责任公司（Urban Gorilla）涉嫌侵犯和稀释其“Hummer”车系的商业外观权。GM请求初步禁令以阻止Urban Gorilla的钢制“车身套件”生产，但地方法院拒绝，认为GM未能充分证明胜诉可能性。上诉法院审查后确认地方法院未滥用裁量权，维持驳回禁令。此案涉及商标法下的商业外观权保护和初步禁令标准的适用。",
+      "legalIssue": "核心法律问题为Urban Gorilla所生产的“车身套件”是否侵犯并稀释了GM“Hummer”系列车辆的商业外观权，以及GM申请初步禁令阻止生产是否满足可能胜诉及其他禁令要素的高标准。",
+      "holdingOrRule": "法院认为GM未能在初步禁令申请阶段作出强有力的胜诉可能性证明，因而拒绝授予初步禁令。该裁定确认申请改变现状的初步禁令必须充分展示胜诉概率强烈及利害关系平衡。",
+      "impact": "直接法律效力为确认在商标法商业外观权侵权案件中，原告申请初步禁令需负较高举证责任。可能影响包括涉足改装车市场的相关制造商及品牌权利人，对类似侵权纠纷的案件策略具有指导意义。",
+      "sourceGrounding": "本解析基于美国第十巡回上诉法院2007年9月12日官方判决文书（案号06-4128）全文内容。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
       "recordId": "8992bd49ef4ddac154309568",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2469,72 +2437,40 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "8d5733057d0929671f6f14f8",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "recordId": "996f8742b0f505a5ecca7a28",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1314E-01A.pdf",
-      "title": "25-1314 Czerno v. General Electric Company",
-      "chineseTitle": "Czerno诉通用电气公司案（第一巡回上诉法院）",
-      "summary": "本案由Crystal Czerno代表其未成年子女C.L.对通用电气公司提起诉讼，涉及产品责任及相关法律争议。案件经历上诉程序，第一巡回上诉法院于2026年7月14日发布判决意见，之后发布勘误表更正部分文本内容。案件核心在于责任认定和适用法律规范的争议，官方材料未包含具体判决结果。",
-      "legalIssue": "本案核心法律问题在于确认通用电气公司对原告因产品或行为引起损害的法律责任范围及适用的法律标准。",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010130834.pdf",
+      "title": "06-2309 - Vigil, et al. v. South Valley Academy, et al. [9512153] 09/12/2007",
+      "chineseTitle": "维吉尔夫妇诉南谷学院案（第十巡回上诉法院，2007年）",
+      "summary": "维吉尔夫妇诉南谷学院案中，原告声称遭解雇侵犯宪法赋予的结社自由及言论自由权利。第十巡回法院确认原告所述事实应被采纳，审查被告是否违反明确确立的宪法权利。法院认为，原告未能提供足够证据证明其解雇系因表达政治观点或婚姻关系而遭报复，且其妻未证明因言论遭不当解雇。法院支持地方学院及官员的合格豁免，撤销诉求。",
+      "legalIssue": "是否存在被告因原告表达政治观点及婚姻关系而违反宪法保护的结社自由及言论自由，及原告是否被非法解雇？",
       "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
-      "impact": "该判决如确认，直接对案件双方具有约束力，影响民事诉讼中产品责任法律适用及责任划分；可能影响同类产品责任诉讼的法律理解和司法实践。",
-      "sourceGrounding": "解析依据第一巡回上诉法院2026年7月14日发布的官方判决文书及随后勘误表，其中包含案件当事人、争议焦点和程序信息。",
+      "impact": "直接法律效力体现在支持政府及公立学校官员在合格豁免保护下不承担民事赔偿责任。可能影响公立机构处理员工申诉、言论和结社权利相关案件的司法审查标准。",
+      "sourceGrounding": "依据《维吉尔诉南谷学院案》第十巡回上诉法院2007年判决原文。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "954a604a63103c49925317c1",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "recordId": "a50ccc454b0e65b137610f06",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
-      "title": "25-1555 Grant v. Trial Court of the Commonwealth of Massachusetts",
-      "chineseTitle": "Grant诉马萨诸塞州普通法院案（一巡回法院）",
-      "summary": "上诉人群体在被禁止在法院200英尺范围内示威后，针对缓冲区命令提起联邦诉讼，声称第一修正案和正当程序被侵犯。法院指出，缓冲区命令仅在该案审判期间有效，审判已结束且判决已出，缓冲区命令自动失效，因而上诉事项已无实际争议，案件因缺乏实际争议而终结，适用例外情形“可重复但难以审查”不成立，故撤销原审部分裁决，指示驳回相关诉讼请求。",
-      "legalIssue": "法院须判断缓冲区禁令在审判结束后是否仍有法律争议，即该禁令的持续效力及其对言论自由权利的影响是否构成实际争议，进而确认案件是否构成司法审查的实质案件。",
-      "holdingOrRule": "因缓冲区命令根据其自身条款仅在审判期间有效，审判结束且判决宣告后即自动失效，上诉中涉及的禁令已无实际法效应，案件因缺乏实际争议而构成无论裁定均无实质影响的“非实质案件”，故裁定撤销下级法院部分裁决并驳回相关诉讼请求。",
-      "impact": "直接法律效力在于明确审判相关限制性命令时效及其司法审查范围，避免法院审理已失效命令的诉讼，从而维护司法资源有效利用。可能影响执法机关对审判期间示威区划定的合法执法行为，及示威者权利保护的界定。",
-      "sourceGrounding": "本文解析完全基于美国第一巡回上诉法院判决书原文《Grant v. Trial Court of the Commonwealth of Massachusetts》（案号25-1555），并引用判决中对缓冲区命令时效及初步禁令审查的官方说明。",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
-      "recordId": "9e246f148fb4d777c6593476",
-      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1254O-01A.pdf",
-      "title": "26-1254 African Communities Together v. Mullin",
-      "chineseTitle": "非洲社区联合等诉美国国土安全部长案判决解析",
-      "summary": "第一巡回上诉法院针对临时保护身份（TPS）南苏丹资格终止延期命令进行了审理。法院依据美国最高法院在Mullin诉Doe案中的裁决，认定TPS法规中的司法审查禁止条款适用于所有非宪法性质的针对国土安全部长终止TPS决定的诉求。故撤销延期终止TPS的地方法院命令，并将案件发回低院继续依Mullin案指导处理。",
-      "legalIssue": "是否联邦TPS法规中的司法审查禁止条款，适用于针对国土安全部长终止TPS决定的所有非宪法性质诉讼请求，进而影响地方法院对TPS终止延期的命令有效性？",
-      "holdingOrRule": "最高法院Mullin案明确TPS法规司法审查禁止条款涵盖所有非宪法争议，故延期终止TPS的地方法院命令不符合法律规定予以撤销。第一巡回法院据此撤销延期令并发回重审。",
-      "impact": "直接法律效力：明确限制了TPS终止决定可受理的诉讼范围，禁止非宪法类司法复审请求。可能影响：涉及TPS终止的相关团体与个人诉讼策略及联邦移民程序的司法审查实践。",
-      "sourceGrounding": "解析依据为第一巡回上诉法院2026年7月29日公开判决文件以及其引用的最高法院Mullin诉Doe案的官方判决文本。",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
-      "recordId": "9f93813440c80386da31fdef",
-      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/20-1170U-01A.pdf",
-      "title": "20-1170 US v. Figueroa-Roman",
-      "chineseTitle": "美国第一巡回上诉法院关于Figueroa-Roman案判决的二次上诉裁定",
-      "summary": "Figueroa-Roman因涉及多起劫车案被判108个月监禁，超出了双方建议的刑期。首次上诉中，法院指出原判决关于“与有前科罪犯关联”的理由模糊，要求地区法院澄清。重新量刑时，地区法院仅简单澄清其实是“与共犯关联”，并维持108个月刑期。Figueroa-Roman再次上诉，法院认为地区法院有权重新量刑，但对上调刑期的理由仍未充分解释，导致判决程序性错误。",
-      "legalIssue": "在上诉法院发回重审以澄清量刑理由后，地区法院若未充分说明对上调刑期的合理依据，其量刑是否程序合理？",
-      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。法院认定地区法院明确有权重新量刑，但仍未能充分说明加刑21个月的合理性，程序上存在不足。",
-      "impact": "直接法律效力：本判决明确了地区法院在发回重审后必须充分阐明量刑依据，否则上诉法院将无法充分审查，可能导致量刑无效。可能影响：影响涉及量刑解释不清、需发回重审案件的司法实践及律师辩护策略。",
-      "sourceGrounding": "依据美国第一巡回上诉法院官方判决文书《20-1170 US v. Figueroa-Roman》全文节选。",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010130102.pdf",
+      "title": "06-9575 - Thongphilack v. Gonzales [9511838] 09/11/2007",
+      "chineseTitle": "Thongphilack诉Gonzales案：欠缺变更地址书面通知，重开驱逐程序申请被拒",
+      "summary": "Thongphilack未按规定向移民法院提交变更地址的书面通知，法院将传票寄至旧地址。其缺席听证后被判驱逐，他申请重开程序主张未收到通知遭拒。法院认定口头通知及未能提供实质证据证明已寄送变更通知，不构成合法缺席听证理由，驳回其重开申请。",
+      "legalIssue": "申请人是否因未收到移民听证书面通知而有权重开驱逐程序？以及申请人提供的变更地址口头通知及未经证实的书面通知是否足以推翻送达通知的推定？",
+      "holdingOrRule": "法院认为立法要求申请人须提交书面地址变更通知，口头通知不足以替代。申请人未满足举证责任，未能提供有效证据证明未收到听证通知，不足以推翻寄送至官方记录地址的通知推定。故移民法官合理拒绝重开申请。",
+      "impact": "直接法律效力：确认移民听证通知须通过书面形式有效送达，变更地址需依规定书面提交，否则视为未正当通知。可能影响：移民诉讼当事人在地址变更及接收通知义务方面的严格要求，指导类似案件审查程序有效送达与变更地址的举证责任。",
+      "sourceGrounding": "依据美国第十巡回上诉法院2007年Thongphilack诉Gonzales案官方判决文件全文摘录，尤其关于8 U.S.C. §1229a条款及法院对书面通知及举证责任的阐述。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
       "recordId": "a6b6f91a71ae458c4a5719ac",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2581,22 +2517,6 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "b3b80f75c307c3a579e8d0d0",
-      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
-      "title": "25-1862 Rana v. Blanche",
-      "chineseTitle": "Prakash Dhoj Rana诉Todd Blanche案——移民程序中精神能力认定的司法审查",
-      "summary": "本案涉及非公民申诉人在移民听证过程中精神能力的认定。申诉人Rana因记忆混乱接受心理评估，报告显示其集中注意力存在缺陷，可能影响协助律师。移民法官未依据此评估进一步询问其精神能力，直接否决其申请。上诉法院认定原判决忽视了精神能力的初步迹象，违反既有程序，要求发回重审。",
-      "legalIssue": "移民法官在非公民表现出精神能力疑虑时，是否必须依据Matter of M-A-M-先例，对其精神能力进行调查、认定并说明理由？",
-      "holdingOrRule": "法院裁定，若记录显示非公民存在精神能力迹象，移民法官必须进行能力调查并作出认定。此案原判遗漏此程序，故决定发回重审。官方材料节选不足，暂不判断裁判结论。",
-      "impact": "此判决对移民法官处理精神能力问题提出明确程序要求，直接影响移民法庭听证程序的公正性和适当性。对申请人权利保护具有直接法律效力，对于类似案件精神能力认定的司法审查亦具示范作用。",
-      "sourceGrounding": "依据美国第一巡回上诉法院2026年判决全文及Matter of M-A-M-先例，综合官方一手法律文件内容。",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
       "recordId": "be0fb83908df09d7557fe41b",
       "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
@@ -2629,22 +2549,6 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "d0f84583b7c1b4f89896b119",
-      "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
-      "title": "26-1699 State of California v. Mullin",
-      "chineseTitle": "加州等州诉穆林案：H-1B签证附加10万美元支付要求被驳回",
-      "summary": "本案涉及美国总统颁布的限制部分非移民工人入境的公告，要求所有H-1B签证申请需附带10万美元支付。多个州原告诉讼称该政策超越行政权限并违反《行政程序法》，地区法院支持原告，撤销该政策。上诉法院拒绝临时中止该撤销令，认为被告未能充分证明上诉胜诉可能，且政策属超越国会授权。",
-      "legalIssue": "总统依据《移民和国籍法》第1182(f)和1185(a)条款，是否有权通过行政行为要求H-1B签证申请附加10万美元支付，以及该行政实施是否符合《行政程序法》规定。",
-      "holdingOrRule": "法院确认，行政部门实施要求支付10万美元的H-1B签证政策超越其法定权限，不具备合法效力，且未遵循《行政程序法》法定程序，暂不支持暂停撤销令。",
-      "impact": "直接法律效力：该H-1B附加支付政策被撤销，相关联邦执行机构不得执行该政策。可能影响：涉及高技能外国劳工签证的雇主及申请者将免于该高额支付负担，可能影响劳动力市场及相关教育和医疗行业的用工配置。",
-      "sourceGrounding": "美国第一巡回上诉法院2026年7月24日关于26-1699案的官方判决文书，网址：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
       "recordId": "d78f49e74c3e8d830a8fc2b7",
       "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
@@ -2661,24 +2565,24 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "df053c05724a92ac914774b4",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "recordId": "e54c78e7d9d098f0cf823b17",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
-      "title": "23-2011 Cruz v. UIA",
-      "chineseTitle": "克鲁兹诉波多黎各水务局工会等案（23-2011）",
-      "summary": "克鲁兹因反对工会从其工资中扣除政治和非议价性质的会费，诉诸联邦法院以违反第一修正案权利。诉讼期间，水务局停止扣费，工会向法庭存入克鲁兹索赔的赔偿金。地区法院认为案件已无实际争议而驳回诉求，克鲁兹上诉后，本法庭维持驳回决定，明确律师费请求不足以使案件复活。",
-      "legalIssue": "克鲁兹主张其第一修正案权利遭侵犯，争议在于在扣费停止且工会存款后，原告请求的宣告性救济和赔偿请求是否仍存争议（未失效）？以及该如何认定当事人是否有权获得律师费。",
-      "holdingOrRule": "法院确认案件实质争议因扣费停止及工会存款已经消除，诉讼请求实质上已无效，宣告性救济请求亦属无效；律师费请求虽为争议点，但不足以恢复原本已无效的诉讼争议。由此，驳回诉及宣判案件已无效。",
-      "impact": "直接法律效力：该判例确认了倘若争议事项已由行为停止及赔偿方式处理，诉讼请求可被判无效，限制了第一修正案下对工会会费扣除争议的诉讼持续性。可能影响：此案对劳资争议、第一修正案权利主张及诉讼程序中费用和无效问题具有指导意义，影响相关诉讼当事人的策略及权利行使。",
-      "sourceGrounding": "依据美国第一巡回上诉法院2026年7月24日裁判文书及相关法律程序原文。",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805E-01A.pdf",
+      "title": "24-1805 Cortes-Ramos v. Martin-Morales",
+      "chineseTitle": "库尔特斯-拉莫斯诉马丁-莫拉莱斯案（24-1805号）",
+      "summary": "本案为第一巡回上诉法院审理的联邦上诉案件，涉及原告库尔特斯-拉莫斯与被告马丁-莫拉莱斯之间的民事争议。官方材料仅提供了案件的勘误表内容，对判决书进行了语言上的更正调整，但未涉及实体法律争议的具体裁判内容。",
+      "legalIssue": "本案的核心法律问题尚未在官方材料节选中明确披露，因此无法确定涉及的具体法律争议。",
+      "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
+      "impact": "由于官方材料仅为判决勘误内容，未包含实体裁判内容，故本案判决对当事人之外的主体不具备明确直接法律效力，但可能影响第一巡回法院在相关案件中对语言表述精准度的重视。",
+      "sourceGrounding": "本解析依据第一巡回上诉法院2026年6月12日发布的判决勘误表官方PDF文件（https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805E-01A.pdf）。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
       "recordId": "e626478cbad999dd8ea50aed",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",
@@ -2693,24 +2597,8 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
-      "recordId": "e9d1350cccc902aa411755e1",
-      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1376O-01A.pdf",
-      "title": "26-1376 African Communities Together v. Mullin",
-      "chineseTitle": "非洲社区联合诉穆林一案联邦第一巡回上诉法院判决解析",
-      "summary": "本案涉及美国国土安全部秘书决定终止对埃塞俄比亚的临时保护身份（TPS）而引发的诉讼。上诉法院依据美国最高法院最新判决Mullin v. Doe，确认TPS相关司法审查受限，否定了原审法院针对TPS终止延期的命令，撤销延期决定，将案件发回下级法院依照最高法院指示重新审理。",
-      "legalIssue": "本案核心法律问题是司法审查权限，即是否联邦法院可对国土安全部秘书终止TPS决定中除宪法问题外的非宪法诉求进行审查。",
-      "holdingOrRule": "依据最高法院Mullin判决，TPS法案中对司法审查的限制适用于所有非宪法性质的诉求，从而限制法院对于国土安全部长终止TPS决定的司法干预。上诉法院据此撤销了相关延期终止TPS的下级法院命令。",
-      "impact": "该判决直接影响TPS暂保护状态终止案件的司法审查范围，使得对于国土安全部有关TPS终止的非宪法诉求难以在联邦法院获得审理，限制了诉讼参与者的救济渠道。可能影响范围涵盖所有TPS受益群体及相关诉讼，特别是在类似司法审查障碍案件中。",
-      "sourceGrounding": "解析依据美国第一巡回上诉法院2026年7月29日判决文书及文中明确引用的最高法院Mullin v. Doe判决（2026年6月25日）。",
-      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
-    },
-    {
       "recordId": "f66ad0de36547966647d7916",
-      "datasetVersion": "3831fe9db1f8ae834047db2b190a5270ca4315cdf33937d9bb516bde3793bf0a",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the First Circuit",

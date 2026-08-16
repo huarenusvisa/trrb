@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Aug 2026 17:56:05 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2026 19:05:13 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>新奥尔良ICE逮捕洪都拉斯涉毒重罪非法移民</title>
+      <link>https://trrb.net/ice/ice-a0be45e2960e97c2e0bb52603f803ea412d0b86d</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-a0be45e2960e97c2e0bb52603f803ea412d0b86d</guid>
+      <pubDate>Sun, 16 Aug 2026 19:05:13 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>新奥尔良ICE于8月16日逮捕洪都拉斯籍非法移民Angel Cruz Ortiz，曾因毒品贩运罪被定罪。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPdO1V3WcAAqfMK.png" type="image/png" />
+    </item>
     <item>
       <title>加州莫德斯托ICE逮捕多项犯罪墨西哥籍男子</title>
       <link>https://trrb.net/ice/ice-fed7d65317f47bccccc37f84b7b2857908e2760a</link>
@@ -897,15 +906,6 @@
       <category>热门头条</category>
       <description>唐人日报 8 月 14日讯：8月12日，北京一名高一学生发布视频称，在军事训练期间，学生因“毯子没叠好”受到处罚。视频中提到，相关学生被要求抱着毯子进行深蹲，并抱着毯子在操场上爬行。一些学生因体力无法支撑，无法继续完成爬行动作，只能跪着向前移动。</description>
       <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-images/manual/2026/08/1786719581495-bffd6e05-05ad-4785-86b9-c62d75b830d9.webp" type="image/webp" />
-    </item>
-    <item>
-      <title>40万车位成“发霉车库”？武汉业主车辆严重受损，开发商回应调查</title>
-      <link>https://trrb.net/hot/40%E4%B8%87%E8%BD%A6%E4%BD%8D%E6%88%90%E5%8F%91%E9%9C%89%E8%BD%A6%E5%BA%93%E6%AD%A6%E6%B1%89%E4%B8%9A%E4%B8%BB%E8%BD%A6%E8%BE%86%E4%B8%A5%E9%87%8D%E5%8F%97%E6%8D%9F%E5%BC%80%E5%8F%91%E5%95%86%E5%9B%9E%E5%BA%94%E8%B0%83%E6%9F%A5-mst27l1e-4c1b06</link>
-      <guid isPermaLink="true">https://trrb.net/hot/40%E4%B8%87%E8%BD%A6%E4%BD%8D%E6%88%90%E5%8F%91%E9%9C%89%E8%BD%A6%E5%BA%93%E6%AD%A6%E6%B1%89%E4%B8%9A%E4%B8%BB%E8%BD%A6%E8%BE%86%E4%B8%A5%E9%87%8D%E5%8F%97%E6%8D%9F%E5%BC%80%E5%8F%91%E5%95%86%E5%9B%9E%E5%BA%94%E8%B0%83%E6%9F%A5-mst27l1e-4c1b06</guid>
-      <pubDate>Fri, 14 Aug 2026 14:45:47 GMT</pubDate>
-      <category>热门头条</category>
-      <description>唐人日报 8 月 14日讯：武汉市民熊婆婆反映，自己花费40万元购买了一个地下停车位，近期车辆停放在该车位上一周后，车内座椅出现大面积发霉情况。熊婆婆表示，车辆送去洗车时，洗车店工作人员都不敢处理，称车辆皮质内饰已经受到损伤。</description>
-      <enclosure url="https://images.openai.com/static-rsc-4/mtMHqxVlf5v2uXQwSRCO_WBT8EF3w9X8y_zVzrETsH4TJu5yw67rlRdby56YBuGAjqDpaR0Y6RJjc2eJGiSAWGpNSycpmsgv4bzV3LZTRygk5-eHK8dxGToo_X0nuxlL6_TbzT4HxcCjxbPvS2LFRasY2fY7OE6ptiQE3L49HtU?purpose=inline" type="image/jpeg" />
     </item>
   </channel>
 </rss>

@@ -43,7 +43,7 @@ function articleTimestamp(item) {
   return Number.isFinite(t) ? t : 0;
 }
 
-const HOME_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;
+const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 function isFreshHomepageArticle(item) {
   const t = articleTimestamp(item);
   return t > 0 && Date.now() - t <= HOME_MAX_AGE_MS;

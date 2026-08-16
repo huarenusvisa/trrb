@@ -1,0 +1,19 @@
+name: 第十六轮节点10-节点9通过闸门
+
+on:
+  workflow_run:
+    workflows: ['第十六轮节点9-法律栏目SEO、Sitemap与结构化数据完整性']
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 节点9通过，提示人工启动节点10
+        run: |
+          echo 'ROUND16 NODE9 workflow concluded success.'
+          echo 'Manual policy remains active: run 第十六轮节点10-最终生产总验收 by workflow_dispatch.'

@@ -1,0 +1,30 @@
+name: Mobile App CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - '.github/workflows/mobile-app-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - name: Install mobile dependencies
+        working-directory: apps/mobile
+        run: npm install --package-lock-only && npm ci
+      - name: Typecheck mobile app
+        working-directory: apps/mobile
+        run: npm run typecheck

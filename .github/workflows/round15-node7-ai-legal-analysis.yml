@@ -64,3 +64,4 @@ jobs:
           fi
 
 # Round 17 strict N/N backfill: every 20 minutes, up to 60 grounded records per run until exact coverage reaches 100%.
+# Immediate node-1 recovery trigger: 2026-08-16 strict revalidation.

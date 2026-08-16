@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { supabase } from '../auth/supabase';
 
 export type SavedArticle = {
   id: string | number;
@@ -26,13 +27,30 @@ async function writeList(key: string, rows: SavedArticle[]) {
   await AsyncStorage.setItem(key, JSON.stringify(rows));
 }
 
+async function currentUserIdOrNull() {
+  const { data } = await supabase.auth.getUser();
+  return data.user?.id ?? null;
+}
+
 export async function getFavorites() { return readList(FAVORITES_KEY); }
 export async function isFavorite(id: string | number) { return (await getFavorites()).some((x) => String(x.id) === String(id)); }
+
 export async function toggleFavorite(article: SavedArticle) {
   const rows = await getFavorites();
   const exists = rows.some((x) => String(x.id) === String(article.id));
   const next = exists ? rows.filter((x) => String(x.id) !== String(article.id)) : [article, ...rows];
   await writeList(FAVORITES_KEY, next);
+
+  const userId = await currentUserIdOrNull();
+  if (userId) {
+    if (exists) {
+      const { error } = await supabase.from('favorites').delete().eq('user_id', userId).eq('article_id', String(article.id));
+      if (error) throw error;
+    } else {
+      const { error } = await supabase.from('favorites').upsert({ user_id: userId, article_id: String(article.id) }, { onConflict: 'user_id,article_id' });
+      if (error) throw error;
+    }
+  }
   return !exists;
 }
 
@@ -41,6 +59,50 @@ export async function addHistory(article: SavedArticle) {
   const rows = await getHistory();
   const next = [article, ...rows.filter((x) => String(x.id) !== String(article.id))].slice(0, MAX_HISTORY);
   await writeList(HISTORY_KEY, next);
+  const userId = await currentUserIdOrNull();
+  if (userId) {
+    const { error } = await supabase.from('reading_history').upsert({ user_id: userId, article_id: String(article.id), last_read_at: new Date().toISOString() }, { onConflict: 'user_id,article_id' });
+    if (error) throw error;
+  }
 }
 
-export async function clearHistory() { await AsyncStorage.removeItem(HISTORY_KEY); }
+export async function clearHistory() {
+  await AsyncStorage.removeItem(HISTORY_KEY);
+  const userId = await currentUserIdOrNull();
+  if (userId) {
+    const { error } = await supabase.from('reading_history').delete().eq('user_id', userId);
+    if (error) throw error;
+  }
+}
+
+export async function mergeLocalLibraryToCloud() {
+  const userId = await currentUserIdOrNull();
+  if (!userId) return { favorites: 0, history: 0 };
+  const [favorites, history] = await Promise.all([getFavorites(), getHistory()]);
+  if (favorites.length) {
+    const { error } = await supabase.from('favorites').upsert(favorites.map((x) => ({ user_id: userId, article_id: String(x.id) })), { onConflict: 'user_id,article_id', ignoreDuplicates: true });
+    if (error) throw error;
+  }
+  if (history.length) {
+    const now = Date.now();
+    const { error } = await supabase.from('reading_history').upsert(history.map((x, i) => ({ user_id: userId, article_id: String(x.id), last_read_at: new Date(now - i * 1000).toISOString() })), { onConflict: 'user_id,article_id' });
+    if (error) throw error;
+  }
+  return { favorites: favorites.length, history: history.length };
+}
+
+export async function getCloudFavoriteIds() {
+  const userId = await currentUserIdOrNull();
+  if (!userId) return [] as string[];
+  const { data, error } = await supabase.from('favorites').select('article_id').eq('user_id', userId).order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data || []).map((x) => String(x.article_id));
+}
+
+export async function getCloudHistoryIds() {
+  const userId = await currentUserIdOrNull();
+  if (!userId) return [] as string[];
+  const { data, error } = await supabase.from('reading_history').select('article_id').eq('user_id', userId).order('last_read_at', { ascending: false }).limit(MAX_HISTORY);
+  if (error) throw error;
+  return (data || []).map((x) => String(x.article_id));
+}

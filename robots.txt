@@ -13,3 +13,4 @@ Disallow: /*&preview=
 
 Sitemap: https://trrb.net/sitemap.xml
 Sitemap: https://trrb.net/news-sitemap.xml
+Sitemap: https://trrb.net/sitemap-legal.xml

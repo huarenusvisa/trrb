@@ -1,0 +1,22 @@
+name: APP Batch 2 Node 2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'scripts/audit-app-batch2-node2.mjs'
+      - '.github/workflows/app-batch2-node2.yml'
+      - 'docs/APP-BATCH-2-NEWS-EXPERIENCE-AND-ENGAGEMENT.md'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify node 2 category navigation and pagination
+        run: node scripts/audit-app-batch2-node2.mjs

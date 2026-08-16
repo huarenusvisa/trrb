@@ -11,7 +11,7 @@ const checks=[
   ['detail metadata uses standardized body',js.includes('displayBody(r),displayDate(r.publicationDate)')],
   ['detail fields use standardized docket',js.includes("pair('案号',displayDocket(r.docket))")],
   ['detail fields use standardized citation',js.includes("pair('正式引证',displayCitation(r.citation))")],
-  ['official raw identifiers remain source of truth',js.includes('r.docket')&&js.includes('r.citation')&&js.includes('r.issuingBody')&&js.includes('r.publicationDate')),
+  ['official raw identifiers remain source of truth',js.includes('r.docket')&&js.includes('r.citation')&&js.includes('r.issuingBody')&&js.includes('r.publicationDate')],
   ['related records still preserved',js.includes('renderRelated(r,records)')]
 ];
 let failed=0;

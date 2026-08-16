@@ -9,7 +9,7 @@ on:
       - ".github/workflows/round15-node7-ai-legal-analysis.yml"
       - "data/legal/unified-legal-authorities-latest.json"
   schedule:
-    - cron: "17 * * * *"
+    - cron: "7,27,47 * * * *"
 
 permissions:
   contents: write
@@ -63,4 +63,4 @@ jobs:
             git push origin HEAD:main
           fi
 
-# Round 17 strict N/N backfill: hourly, up to 60 grounded records per run.
+# Round 17 strict N/N backfill: every 20 minutes, up to 60 grounded records per run until exact coverage reaches 100%.

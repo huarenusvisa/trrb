@@ -25,7 +25,7 @@ jobs:
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-      ROUND15_AI_BATCH: "8"
+      ROUND15_AI_BATCH: "12"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -59,3 +59,5 @@ jobs:
             git commit -m "Round 15: sync grounded Chinese legal analyses"
             git push
           fi
+
+# Round 17 strict N/N backfill batch: 12

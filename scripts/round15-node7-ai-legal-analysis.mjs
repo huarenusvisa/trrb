@@ -30,6 +30,33 @@ async function analyze(record,sourceText){
   const res=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,input:prompt,max_output_tokens:2200,text:{format:{type:'json_schema',name:'trrb_legal_analysis',strict:true,schema}}})});
   const raw=await res.text();if(!res.ok)throw new Error(`OpenAI ${res.status}: ${raw.slice(0,500)}`);const data=JSON.parse(raw),text=outputText(data);if(!text)throw new Error('OpenAI returned no output text');return JSON.parse(text)
 }
+async function unavailableSourceFallback(record,reason){
+  const schema={type:'object',additionalProperties:false,required:['chineseTitle'],properties:{chineseTitle:{type:'string'}}};
+  const titleSource=String(record.title||record.citation||record.docket||`${record.issuingBody||'官方机构'}法律记录`).trim();
+  let chineseTitle=`官方法律记录：${titleSource}`;
+  try{
+    const prompt=`只把下面这条官方法律记录标题忠实翻译成简体中文。不得添加案件事实、裁判理由、结论、当事人信息或法律效果；专有名词、案号和引证可保留原文。只返回JSON。\n官方标题：${titleSource}`;
+    const res=await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,input:prompt,max_output_tokens:300,text:{format:{type:'json_schema',name:'trrb_title_translation',strict:true,schema}}})});
+    const raw=await res.text();
+    if(res.ok){const data=JSON.parse(raw),text=outputText(data);if(text){const parsed=JSON.parse(text);if(String(parsed.chineseTitle||'').trim())chineseTitle=String(parsed.chineseTitle).trim();}}
+  }catch(e){console.log(`WARN fallback title translation ${record.id}: ${e.message}`)}
+  const reasonText=reason==='too-short'?'当前官方链接可读取的正文内容不足，无法据此确认完整裁判或规则内容。':'当前官方链接暂时无法取得正文，无法据此确认完整裁判或规则内容。';
+  const metadata=[];
+  if(record.issuingBody)metadata.push(`发布机构为${record.issuingBody}`);
+  if(record.docket)metadata.push(`案号为${record.docket}`);
+  if(record.citation)metadata.push(`官方引证为${record.citation}`);
+  if(record.publicationDate)metadata.push(`发布日期为${record.publicationDate}`);
+  const known=metadata.length?metadata.join('；'):'统一法律数据库仅保留了该条官方记录的基础元数据';
+  return {
+    chineseTitle,
+    summary:`${known}。${reasonText}本条仅展示当前能够由官方元数据直接支持的信息；对于案件事实、争议焦点、裁判理由、裁判结论或规则细节，不作推测性补充。应以所列官方链接恢复后的原文为准。`,
+    legalIssue:'官方材料不足，无法确认核心法律问题。',
+    holdingOrRule:'官方材料不足，无法确认裁判结论或规则内容。',
+    impact:'官方材料不足，无法确认直接法律效力或可能影响范围。',
+    sourceGrounding:`依据统一法律数据库绑定的第一方官方记录元数据及官方链接；${reasonText}`,
+    disclaimer:DISCLAIMER
+  };
+}
 
 const db=JSON.parse(readFileSync('data/legal/unified-legal-authorities-latest.json','utf8'));
 let prior={analyses:[]};if(existsSync('data/legal/legal-ai-analysis-latest.json')){try{prior=JSON.parse(readFileSync('data/legal/legal-ai-analysis-latest.json','utf8'))}catch{}}
@@ -50,24 +77,37 @@ check((db.records||[]).length>0,'unified legal database available',`records=${(d
 check(db.datasetVersion&&/^[a-f0-9]{64}$/.test(db.datasetVersion),'unified dataset version available',String(db.datasetVersion).slice(0,16));
 check(candidates.length>0||map.size>0,'AI analysis has records to process or preserve',`new=${candidates.length}; existing=${map.size}`);
 check(new Set([...map.keys()]).size===map.size,'active Chinese analyses have unique recordId bindings');
-let generated=0,sourceFailures=0,modelFailures=0;
+let generated=0,sourceFailures=0,modelFailures=0,fallbacks=0;
 for(const r of candidates){
   try{
     const sourceText=await fetchText(r.officialUrl,r.id);
-    if(sourceText.length<250){sourceFailures++;console.log(`WARN source text too short ${r.id} chars=${sourceText.length}`);continue;}
+    if(sourceText.length<250){
+      sourceFailures++;console.log(`WARN source text too short ${r.id} chars=${sourceText.length}`);
+      const a=await unavailableSourceFallback(r,'too-short');
+      map.set(String(r.id),{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a,disclaimer:DISCLAIMER});generated++;fallbacks++;
+      console.log(`PASS grounded unavailable-source fallback ${r.sourceSystem} ${r.id}`);
+      continue;
+    }
     try{const a=await analyze(r,sourceText);map.set(String(r.id),{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a,disclaimer:DISCLAIMER});generated++;console.log(`PASS AI analysis ${r.sourceSystem} ${r.id}`)}catch(e){modelFailures++;console.log(`WARN model ${r.id}: ${e.message}`)}
-  }catch(e){sourceFailures++;console.log(`WARN source ${r.id}: ${e.message}`)}
+  }catch(e){
+    sourceFailures++;console.log(`WARN source ${r.id}: ${e.message}`);
+    try{
+      const a=await unavailableSourceFallback(r,'unavailable');
+      map.set(String(r.id),{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a,disclaimer:DISCLAIMER});generated++;fallbacks++;
+      console.log(`PASS grounded unavailable-source fallback ${r.sourceSystem} ${r.id}`);
+    }catch(fallbackError){modelFailures++;console.log(`WARN fallback ${r.id}: ${fallbackError.message}`)}
+  }
 }
 const analyses=[...map.values()].sort((a,b)=>a.sourceSystem.localeCompare(b.sourceSystem)||String(a.recordId).localeCompare(String(b.recordId)));
 check(analyses.length>=Math.min(3,Math.max(1,candidates.length)),'Chinese legal analyses generated/preserved',`analyses=${analyses.length}; generated=${generated}`);
-check(analyses.every(a=>a.summary&&a.legalIssue&&a.holdingOrRule&&a.impact&&a.sourceGrounding&&a.disclaimer),'AI analysis fields complete');
+check(analyses.every(a=>a.chineseTitle&&a.summary&&a.legalIssue&&a.holdingOrRule&&a.impact&&a.sourceGrounding&&a.disclaimer),'AI analysis fields complete');
 check(analyses.every(a=>a.disclaimer===DISCLAIMER),'all analyses include legal-information disclaimer');
 check(analyses.every(a=>recordMap.has(String(a.recordId))),'all active analyses bind to current official records');
 check(analyses.every(a=>String(a.datasetVersion||'')===String(db.datasetVersion||'')),'all active analyses bind to current dataset version');
 check(modelFailures===0,'AI model calls completed without failures',`failures=${modelFailures}`);
-check(sourceFailures<=Math.max(3,Math.floor(candidates.length/2)),'official-source extraction reliability acceptable',`sourceFailures=${sourceFailures}/${candidates.length}`);
+check(sourceFailures<=Math.max(3,Math.floor(candidates.length/2)),'official-source extraction reliability acceptable',`sourceFailures=${sourceFailures}/${candidates.length}; groundedFallbacks=${fallbacks}`);
 mkdirSync('data/legal',{recursive:true});
-writeFileSync('data/legal/legal-ai-analysis-latest.json',JSON.stringify({schemaVersion:1,datasetVersion:db.datasetVersion,scope:'Chinese legal-information analyses grounded only in first-party official source text. Database layer; not ordinary news articles.',count:analyses.length,analyses},null,2)+'\n');
-writeFileSync('round15-node7-ai-legal-analysis-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),datasetVersion:db.datasetVersion,candidates:candidates.length,generated,sourceFailures,modelFailures,count:analyses.length,archivedOrphans,staleMetadata,checks,failures},null,2)+'\n');
-console.log(`ROUND15 NODE7 audit: analyses=${analyses.length}; generated=${generated}; archivedOrphans=${archivedOrphans.length}; staleMetadata=${staleMetadata.length}; checks=${checks.length}; failures=${failures}`);
+writeFileSync('data/legal/legal-ai-analysis-latest.json',JSON.stringify({schemaVersion:1,datasetVersion:db.datasetVersion,scope:'Chinese legal-information analyses grounded only in first-party official source text or, when the bound official text is unavailable, strictly limited to first-party record metadata with explicit insufficiency disclosure. Database layer; not ordinary news articles.',count:analyses.length,analyses},null,2)+'\n');
+writeFileSync('round15-node7-ai-legal-analysis-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),datasetVersion:db.datasetVersion,candidates:candidates.length,generated,fallbacks,sourceFailures,modelFailures,count:analyses.length,archivedOrphans,staleMetadata,checks,failures},null,2)+'\n');
+console.log(`ROUND15 NODE7 audit: analyses=${analyses.length}; generated=${generated}; fallbacks=${fallbacks}; archivedOrphans=${archivedOrphans.length}; staleMetadata=${staleMetadata.length}; checks=${checks.length}; failures=${failures}`);
 if(failures===0)console.log('ROUND15 NODE7 PASS: grounded Chinese holdings, legal issues and impact analysis verified');else{console.log('ROUND15 NODE7 FAIL: Chinese legal analysis pipeline gaps remain');process.exitCode=1}

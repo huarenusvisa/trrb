@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-b8f065e31e7d9006492492afe36c9ed562078f5d</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T15:04:37.916Z</news:publication_date>
+        <news:title>德州穆斯林移民伊玛目被指支持恐怖主义引驱逐呼声</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-520926c00777402a78c9f2c55aede2d78c071141</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T15:04:28.925Z</news:publication_date>
+        <news:title>新奥尔良Roblox程序员涉持未成年人淫秽物被捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-26f8ea2d068f34b70ccbed5791e90d55b0b74047</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T15:04:18.113Z</news:publication_date>
+        <news:title>美国终止索马里TPS近2500人失临时身份</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-014aa811074725d1e72fc8ad0573f3384fbef3d6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T15:04:10.457Z</news:publication_date>
+        <news:title>佛罗里达贝县非法移民沙奎尔因汉堡王持刀伤人被捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-e9b956f8f1689dbbba90a022ca3e92126edbe8ae</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T15:03:17.672Z</news:publication_date>
+        <news:title>休斯敦警方逮捕五名涉暴力入室绑架非法入境者</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-ab23142c7e3d34c2e04d0c77164cae60e05f3eeb</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -702,14 +742,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-14T15:09:18.277Z</news:publication_date>
         <news:title>ICE遣返涉嫌亲女儿性侵嫌犯</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-03ac0f3f130898d4da23ddf325f1fa2b80fd6e6d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T15:05:05.652Z</news:publication_date>
-        <news:title>美国ICE在特朗普与穆林领导下持续遣返非法移民</news:title>
       </news:news>
     </url>
 </urlset>

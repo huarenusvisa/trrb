@@ -1,0 +1,61 @@
+name: 第十六轮节点9-Netlify生产构建诊断
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/round16-node9-netlify-build-diagnostic.yml'
+      - 'netlify.toml'
+      - 'legal/**'
+      - 'data/legal/**'
+      - 'scripts/generate-legal-sitemap.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  netlify-build-diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 运行与Netlify一致的生产构建命令
+        shell: bash
+        run: |
+          set -euo pipefail
+          find netlify/functions -type f \( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \) -delete
+          cp config/immigration-knowledge.js immigration-knowledge.js
+          cp immigrate/center.css immigrate-center.css
+          cp immigrate/study-knowledge-content.css immigrate-study-knowledge-content.css
+          cp immigrate/center-seo.js immigrate-center-seo.js
+          cp immigrate/center.js immigrate-center.js
+          cp immigrate/study-knowledge-content.js immigrate-study-knowledge-content.js
+          cp immigrate/work-knowledge-content.js immigrate-work-knowledge-content.js
+          cp immigrate/employment-knowledge-content.js immigrate-employment-knowledge-content.js
+          cp immigrate/family-knowledge-content.js immigrate-family-knowledge-content.js
+          cp immigrate/humanitarian-knowledge-content.js immigrate-humanitarian-knowledge-content.js
+          cp immigrate/change-status-module.js immigrate-change-status-module.js
+          cp immigrate/citizenship-module.js immigrate-citizenship-module.js
+          cp immigrate/knowledge-article-filter.js immigrate-knowledge-article-filter.js
+          node scripts/generate-sitemaps.mjs
+          node scripts/generate-legal-sitemap.mjs
+          node scripts/clean-sitemap-against-database.mjs
+          node scripts/ensure-sitemap-articles.mjs
+          node scripts/finalize-redirects.mjs
+          node scripts/generate-feed.mjs
+          node scripts/upgrade-article-urls.mjs
+          node scripts/validate-site.mjs
+          node scripts/seo-integrity-audit.mjs
+      - name: 确认节点9产物存在
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s legal/detail.js
+          grep -q 'legal-detail-jsonld' legal/detail.js
+          test -s sitemap-legal.xml
+          grep -q '<urlset' sitemap-legal.xml
+          echo 'ROUND16 NODE9 NETLIFY BUILD DIAGNOSTIC PASS'

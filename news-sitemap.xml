@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-c717621397dbd3f94001f5ec6ba81356d1ced47f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T04:43:52.032Z</news:publication_date>
+        <news:title>亚利桑那古迪尔一公司遭ICE移民执法</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-fffff583b88e0f7876dc2d15aaa09abc7829fa76</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T04:43:40.523Z</news:publication_date>
+        <news:title>DHS或在机场登机前增设ICE身份核查环节</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-4689d78d40e14ddbc8683ba3a5614c4fa565e661</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T04:42:44.828Z</news:publication_date>
+        <news:title>一公民男子呼吁非法入境引ICE拘留没问题，但需要提高人道主义待遇</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-e4c242fe89206ea742f327196419c9fd03b0692c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T04:41:36.674Z</news:publication_date>
+        <news:title>前DACA助理DiegodelaVega自愿离境返</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-af2f8ed1237615928d354e6b321d9656a0953b82</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1222,102 +1254,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-14T05:00:31.534Z</news:publication_date>
         <news:title>洛杉矶ICE逮捕可卡因嫌犯后遣返墨西哥</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a877ec20f14dc75e2a92716a77b10f1a6a01565d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:43.186Z</news:publication_date>
-        <news:title>丹佛ICE拘留涉自行车道超速墨西哥籍嫌疑人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-33d3c51e4065e1d354f11359cb0b6d96bbf8c7de</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:42.181Z</news:publication_date>
-        <news:title>洛杉矶ICE拘留涉未成年猥亵及多罪犯贝隆-罗德里格</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-93833c09c85d365c9a1d7855135d84316506a47a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:41.312Z</news:publication_date>
-        <news:title>加州洛宝克ICE接管墨籍毒贩哈伊罗等待遣返</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-5080b0a733a8813321adb85dafa13a38b16a1d04</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:40.749Z</news:publication_date>
-        <news:title>洛杉矶ICE逮捕萨尔瓦多非法入境者获释</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-ee99969a56a29aa851d1b770ea3e2b3dd53924f2</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:40.187Z</news:publication_date>
-        <news:title>洛杉矶ICE拘捕洪都拉斯帮派成员维持拘押</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-c75addac6df6189f457b10d2138aa20459a473d6</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:39.592Z</news:publication_date>
-        <news:title>洛杉矶ICE遣返多次违法移民何塞</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-0f98c78b6f55ba3f61671d623161ea56f18e1240</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:39.022Z</news:publication_date>
-        <news:title>加州洛波克ICE拘捕曾多次自愿返回墨西哥前科犯</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a56e6da5545a7bf2805a869ba8b2a8ae2af68706</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:38.437Z</news:publication_date>
-        <news:title>洛杉矶ICE逮捕遣返墨西哥重犯莫尔芬</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-46306591081179edc032255d7efd686fba748f87</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:37.525Z</news:publication_date>
-        <news:title>加州蒙特雷县杀人逃逸犯罗萨莱斯被ICE逮捕</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-f61e04b692d71d9f95de48b4e75bf60d816f14f1</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:36.921Z</news:publication_date>
-        <news:title>洛杉矶ICE拘捕墨西哥甲基苯丙胺贩毒嫌犯</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-0f0680acc29c71c637e41bb4ecc612ce46350f6e</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:36.179Z</news:publication_date>
-        <news:title>ICE加州圣玛利亚县拘捕并驱逐墨西哥籍罪犯</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-2e2b4a52775637df02ca0c839c2f7bdef204f67c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T04:34:35.513Z</news:publication_date>
-        <news:title>洛杉矶ICE拘捕已服刑杀人犯Cornelio Ar</news:title>
       </news:news>
     </url>
 </urlset>

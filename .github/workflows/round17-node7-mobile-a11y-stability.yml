@@ -1,0 +1,43 @@
+name: Round 17 Node 7 - Mobile A11y Stability
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'legal/index.html'
+      - 'legal/detail.html'
+      - 'legal/legal.css'
+      - 'legal/legal-app.js'
+      - 'legal/detail.js'
+      - 'scripts/round17-node7-mobile-a11y-stability-audit.mjs'
+      - '.github/workflows/round17-node7-mobile-a11y-stability.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Audit repository mobile accessibility and stability
+        run: node scripts/round17-node7-mobile-a11y-stability-audit.mjs
+      - name: Download production legal assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp=$(date +%s)
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/?round17node7=$stamp" -o /tmp/index.html
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.html?round17node7=$stamp" -o /tmp/detail.html
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/legal.css?round17node7=$stamp" -o /tmp/legal.css
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/legal-app.js?round17node7=$stamp" -o /tmp/app.js
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round17node7=$stamp" -o /tmp/detail.js
+      - name: Audit production mobile accessibility and stability
+        run: |
+          node scripts/round17-node7-mobile-a11y-stability-audit.mjs /tmp/index.html /tmp/detail.html /tmp/legal.css /tmp/app.js /tmp/detail.js
+          echo 'ROUND 17 NODE 7 PRODUCTION: PASS'

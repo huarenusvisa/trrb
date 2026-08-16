@@ -1,0 +1,26 @@
+name: Community Foundation Audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/**'
+      - 'docs/TRRB-UNIFIED-IDENTITY-AND-COMMUNITY-V1.md'
+      - 'scripts/audit-community-foundation.mjs'
+      - '.github/workflows/community-foundation-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Audit unified identity and community foundation
+        run: node scripts/audit-community-foundation.mjs

@@ -1,0 +1,41 @@
+name: Round 17 Node 6 - AI Coverage Grounding Production
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/legal-ai-analysis-latest.json'
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'legal/legal-app.js'
+      - 'legal/detail.js'
+      - 'scripts/round17-node6-ai-coverage-grounding-audit.mjs'
+      - '.github/workflows/round17-node6-ai-coverage-grounding.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Audit repository AI coverage and grounding
+        run: node scripts/round17-node6-ai-coverage-grounding-audit.mjs
+      - name: Download production legal datasets and UI scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp=$(date +%s)
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?round17node6=$stamp" -o /tmp/db.json
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/legal-ai-analysis-latest.json?round17node6=$stamp" -o /tmp/ai.json
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/legal-app.js?round17node6=$stamp" -o /tmp/app.js
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round17node6=$stamp" -o /tmp/detail.js
+      - name: Audit production AI coverage grounding and fallback
+        run: |
+          node scripts/round17-node6-ai-coverage-grounding-audit.mjs /tmp/db.json /tmp/ai.json /tmp/app.js /tmp/detail.js /tmp/round17-node6-production.json
+          echo 'ROUND 17 NODE 6 PRODUCTION: PASS'

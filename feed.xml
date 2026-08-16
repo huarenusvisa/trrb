@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Aug 2026 01:46:45 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 16 Aug 2026 02:51:14 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>纽约布法罗举办DHS职业博览会招募ICE遣返官员</title>
+      <link>https://trrb.net/ice/ice-496816d92c6d2b649484c246a590599854afe348</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-496816d92c6d2b649484c246a590599854afe348</guid>
+      <pubDate>Sun, 16 Aug 2026 02:51:14 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>2026年9月1日至2日纽约布法罗举办DHS职业博览会，面向ICE遣返官员申请开放。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPzw96KXcAE6gi4.png" type="image/png" />
+    </item>
     <item>
       <title>西雅图ICE拘捕墨西哥籍甲基苯丙胺犯罪嫌疑人</title>
       <link>https://trrb.net/ice/ice-ef0cc5433858b260ce14cd57b257fc68e1e476e2</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>国土安全部长称ICE执行国会移民法律，批评应向国会施压。</description>
       <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088250159377317888/img/xLaN2SWkohYVidBq.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>美国ICE公布非法移民逮捕中近七成涉刑事犯罪</title>
-      <link>https://trrb.net/ice/ice-08360970296b110fd76e71848da572ea498c6a06</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-08360970296b110fd76e71848da572ea498c6a06</guid>
-      <pubDate>Fri, 14 Aug 2026 13:30:45 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>美国国土安全部称ICE逮捕非法移民中近七成涉刑事指控或定罪，重点针对严重犯罪嫌疑人。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088244861661069312/img/FQEYhUW2K7V7PyZ5.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

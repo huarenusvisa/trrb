@@ -51,7 +51,7 @@ async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {
   });
 }
 
-async function authenticateAdmin(event) {
+async function authenticateStaff(event, allowedRoles = ["owner", "admin"]) {
   requireSupabase();
   const token = safeText(event.headers.authorization || event.headers.Authorization, 2000).replace(/^Bearer\s+/i, "");
   if (!token) {
@@ -87,12 +87,17 @@ async function authenticateAdmin(event) {
     admin = { user_id: ownerUid, email: ownerEmail, role: "owner", is_active: true };
   }
 
-  if (!admin || !["owner", "admin"].includes(String(admin.role || "").toLowerCase())) {
-    const error = new Error("这个账号没有文章发布权限");
+  const role = String(admin?.role || "").toLowerCase();
+  if (!admin || !allowedRoles.includes(role)) {
+    const error = new Error("这个账号没有所需后台权限");
     error.statusCode = 403;
     throw error;
   }
-  return { user, admin };
+  return { user, admin: { ...admin, role } };
+}
+
+async function authenticateAdmin(event) {
+  return authenticateStaff(event, ["owner", "admin"]);
 }
 
 module.exports = {
@@ -101,5 +106,6 @@ module.exports = {
   safeText,
   requestJson,
   rest,
+  authenticateStaff,
   authenticateAdmin
 };

@@ -5,6 +5,7 @@ export type NewsArticle = {
   summary?: string;
   content?: string;
   category_name?: string;
+  topic_key?: string;
   cover_image?: string;
   author?: string;
   published_at?: string;
@@ -12,6 +13,12 @@ export type NewsArticle = {
 };
 
 const API_BASE = 'https://trrb.net/.netlify/functions';
+
+async function readJson(response: Response) {
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) throw new Error(payload?.error || `TRRB API ${response.status}`);
+  return payload;
+}
 
 export async function fetchArticles(options: { category?: string; limit?: number } = {}) {
   const params = new URLSearchParams();
@@ -21,10 +28,18 @@ export async function fetchArticles(options: { category?: string; limit?: number
   const response = await fetch(`${API_BASE}/public-home-articles?${params.toString()}`, {
     headers: { Accept: 'application/json' }
   });
-  if (!response.ok) throw new Error(`TRRB API ${response.status}`);
-  const payload = await response.json();
+  const payload = await readJson(response);
   const articles = Array.isArray(payload?.articles) ? payload.articles : [];
   return articles as NewsArticle[];
+}
+
+export async function fetchArticle(id: string | number) {
+  const params = new URLSearchParams({ id: String(id) });
+  const response = await fetch(`${API_BASE}/public-article?${params.toString()}`, {
+    headers: { Accept: 'application/json' }
+  });
+  const payload = await readJson(response);
+  return (payload?.article || null) as NewsArticle | null;
 }
 
 export function publicationTime(item: NewsArticle) {

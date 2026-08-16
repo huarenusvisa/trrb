@@ -1,0 +1,53 @@
+name: Round 17 Node 5 - Legal Diff and Dedup Governance
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'scripts/round17-node5-legal-diff-dedup-audit.mjs'
+      - '.github/workflows/round17-node5-legal-diff-dedup.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build previous database snapshot when available
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git show HEAD^:data/legal/unified-legal-authorities-latest.json > /tmp/legal-prev.json 2>/dev/null; then
+            echo 'Previous unified database snapshot loaded.'
+          else
+            cp data/legal/unified-legal-authorities-latest.json /tmp/legal-prev.json
+            echo 'No previous snapshot available; current snapshot used as baseline.'
+          fi
+      - name: Audit incremental diff and duplicate governance
+        run: node scripts/round17-node5-legal-diff-dedup-audit.mjs data/legal/unified-legal-authorities-latest.json /tmp/legal-prev.json /tmp/round17-node5-report.json
+      - name: Verify production database matches governed dataset
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?round17node5=$(date +%s)" -o /tmp/legal-production.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const expected=JSON.parse(fs.readFileSync('data/legal/unified-legal-authorities-latest.json','utf8'));
+          const live=JSON.parse(fs.readFileSync('/tmp/legal-production.json','utf8'));
+          if(live.datasetVersion!==expected.datasetVersion)throw new Error(`datasetVersion mismatch live=${live.datasetVersion} expected=${expected.datasetVersion}`);
+          if(Number(live.count)!==Number(expected.count))throw new Error(`record count mismatch live=${live.count} expected=${expected.count}`);
+          const ids=(live.records||[]).map(r=>r.id), keys=(live.records||[]).map(r=>r.sourceKey);
+          if(new Set(ids).size!==ids.length)throw new Error('production duplicate IDs detected');
+          if(new Set(keys).size!==keys.length)throw new Error('production duplicate sourceKeys detected');
+          console.log('ROUND 17 NODE 5 PRODUCTION: PASS');
+          NODE

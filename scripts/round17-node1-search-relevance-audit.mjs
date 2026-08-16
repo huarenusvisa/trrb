@@ -63,3 +63,5 @@ if(failed){
   process.exit(1);
 }
 console.log(`ROUND 17 NODE 1: PASS (${checks.length}/${checks.length})`);
+
+// Revalidation marker: current strict audit intentionally re-runs against the latest legal and Chinese-analysis datasets.

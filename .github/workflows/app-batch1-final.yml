@@ -1,0 +1,27 @@
+name: APP Batch 1 Final Acceptance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'admin/**'
+      - 'netlify/functions/community-admin.js'
+      - 'netlify/functions/delete-account.js'
+      - 'netlify/functions/_shared/supabase-admin.js'
+      - 'supabase/migrations/**'
+      - 'scripts/audit-app-batch1-*.mjs'
+      - 'scripts/audit-community-foundation.mjs'
+      - 'delete-account.html'
+      - '.github/workflows/app-batch1-final.yml'
+  workflow_dispatch:
+
+jobs:
+  final-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/audit-app-batch1-final.mjs

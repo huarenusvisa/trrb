@@ -1,0 +1,25 @@
+name: APP Batch 1 Node 9
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260816120500_trrb_account_deletion_foundation.sql'
+      - 'supabase/migrations/20260816210500_trrb_account_deletion_audit.sql'
+      - 'netlify/functions/delete-account.js'
+      - 'apps/mobile/app/delete-account.tsx'
+      - 'apps/mobile/app/profile-settings.tsx'
+      - 'delete-account.html'
+      - 'scripts/audit-app-batch1-node9.mjs'
+      - '.github/workflows/app-batch1-node9.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/audit-app-batch1-node9.mjs

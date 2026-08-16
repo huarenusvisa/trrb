@@ -21,6 +21,6 @@ check('report rate limit exists', migration.includes('report rate limit exceeded
 check('moderation actions are audited', migration.includes('moderation_actions') && migration.includes('log_trrb_comment_moderation'));
 check('comment statuses include published/pending/hidden/deleted', foundation.includes("status in ('published','pending','hidden','deleted')"));
 check('mobile API supports like/report actions', api.includes('likeComment') && api.includes('unlikeComment') && api.includes('reportComment'));
-check('mobile UI exposes cross-platform like/report controls', ui.includes("'点赞'") && ui.includes("'举报'") && ui.includes('reportReason') && !ui.includes('Alert.prompt'));
+check('mobile UI exposes cross-platform like/report controls', ui.includes('点赞') && ui.includes('举报') && ui.includes('reportReason') && ui.includes('TextInput') && !ui.includes('Alert.prompt'));
 
 if (!process.exitCode) console.log('APP BATCH 1 NODE 6: PASS (10/10)');

@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-e0862deade7a13df4593dd12b1520730a02b12e8</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T12:47:22.477Z</news:publication_date>
+        <news:title>奥斯汀DNC传投票通过废除ICE提案</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-b1446e863e6dc6edd130ffd600dd77b97cdc067f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T12:46:59.031Z</news:publication_date>
+        <news:title>奥斯汀ICE本周逮捕人数疑激增3至4倍</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-5f569a79e388c992bcad9637c728f253eabcbd22</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-16T12:46:49.641Z</news:publication_date>
+        <news:title>伊利诺伊州传反ICE抗议教授被捕及控诉</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-c717621397dbd3f94001f5ec6ba81356d1ced47f</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -886,38 +910,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-14T13:08:43.421Z</news:publication_date>
         <news:title>美国前警被捕携弹涉嫌计划枪击黑人获释</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/%E8%93%9D%E5%B7%9E%E8%B5%B7%E8%AF%89%E7%89%B9%E6%9C%97%E6%99%AE%E9%9D%9E%E6%B3%95%E7%A7%BB%E6%B0%91%E4%BE%9D%E7%84%B6%E5%8F%AF%E4%BB%A5%E5%BC%80%E5%8D%A1%E8%BD%A6-mssxh8kf-7261f6</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T12:33:20.031Z</news:publication_date>
-        <news:title>蓝州起诉特朗普，非法移民依然可以开卡车</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-0e35f1e956f1d96dabbd078423df4da892dce109</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T12:29:48.664Z</news:publication_date>
-        <news:title>罗德岛ICE逮捕有毒品暴力犯罪记录非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/%E7%AC%AC%E4%BA%94%E5%B7%A1%E5%9B%9E%E6%B3%95%E9%99%A2%E8%A3%81%E5%86%B3%E6%94%AF%E6%8C%81%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E4%BE%9D%E6%8D%AE%E5%A4%96%E5%9B%BD%E6%95%8C%E4%BA%BA%E6%B3%95%E6%8E%A8%E8%BF%9B%E5%BC%BA%E5%88%B6%E9%A9%B1%E9%80%90%E8%A1%8C%E5%8A%A8-mssxbkfo-467a82</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T12:28:55.475Z</news:publication_date>
-        <news:title>第五巡回法院裁决：支持特朗普政府依据《外国敌人法》推进强制驱逐行动</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/important/%E7%9F%A2%E5%BF%97%E6%94%B9%E9%9D%A9%E5%85%B4%E5%8D%8E%E5%A4%8F-%E4%B8%80%E7%94%9F%E5%AE%9E%E5%B9%B2%E4%B8%BA%E6%B0%91%E7%94%9F-%E8%BF%BD%E5%BF%86%E6%9C%B1%E9%95%95%E5%9F%BA%E5%90%8C%E5%BF%97%E5%85%89%E8%BE%89%E4%B8%80%E7%94%9F-msswwiy9-9722ef</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-14T12:17:13.712Z</news:publication_date>
-        <news:title>矢志改革兴华夏 一生实干为民生 —— 追忆朱镕基同志光辉一生</news:title>
       </news:news>
     </url>
 </urlset>

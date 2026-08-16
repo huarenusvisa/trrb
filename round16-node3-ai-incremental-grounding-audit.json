@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-16T23:05:46.918Z",
+  "generatedAt": "2026-08-16T23:27:02.435Z",
   "node": "3 AI中文解析增量更新与事实约束",
   "datasetVersion": "2d3575d3d42564ef49fe6d5080c2a2eeb8e5f86057ee5ad97363dc737f4f8b7a",
-  "count": 604,
-  "currentVersionAnalyses": 604,
+  "count": 606,
+  "currentVersionAnalyses": 606,
   "orphan": 0,
   "urlMismatch": 0,
   "authorityMismatch": 0,
@@ -21,12 +21,12 @@
     {
       "ok": true,
       "label": "AI count metadata matches analyses",
-      "detail": "metadata=604; analyses=604"
+      "detail": "metadata=606; analyses=606"
     },
     {
       "ok": true,
       "label": "incremental AI analysis corpus is non-empty",
-      "detail": "analyses=604"
+      "detail": "analyses=606"
     },
     {
       "ok": true,
@@ -71,12 +71,12 @@
     {
       "ok": true,
       "label": "current dataset produced or refreshed incremental analyses",
-      "detail": "currentVersion=604/604"
+      "detail": "currentVersion=606/606"
     },
     {
       "ok": true,
       "label": "AI scope explicitly requires first-party official grounding",
-      "detail": "Chinese legal-information analyses grounded only in first-party official source text. Database layer; not ordinary news articles."
+      "detail": "Chinese legal-information analyses grounded only in first-party official source text or, when the bound official text is unavailable, strictly limited to first-party record metadata with explicit insufficiency disclosure. Database layer; not ordinary news articles."
     }
   ],
   "failures": 0

@@ -1,0 +1,42 @@
+name: Fix Homepage Single Live Source
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/fix-home-single-live-source.mjs'
+      - '.github/workflows/fix-home-single-live-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Patch homepage live source
+        run: node scripts/fix-home-single-live-source.mjs
+      - name: Verify stale archive paths removed
+        run: |
+          grep -q '/.netlify/functions/public-home-articles' articles-home.js
+          grep -q 'HOME_MAX_AGE_MS = 14' articles-home.js
+          ! grep -q 'articles-chunk-' index.html
+          ! grep -q 'articles-home-index.js' index.html
+          ! grep -q 'mergeFresh(live,' articles-home-live-fix.js
+      - name: Commit repair
+        run: |
+          if git diff --quiet; then
+            echo 'No changes required'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add articles-home.js articles-home-live-fix.js index.html
+          git commit -m 'Fix homepage stale news with single live source'
+          git push

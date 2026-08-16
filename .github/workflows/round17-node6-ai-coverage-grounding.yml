@@ -27,6 +27,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - name: Validate node 6 audit and sync scripts
+        run: |
+          node --check scripts/round17-node6-ai-coverage-grounding-audit.mjs
+          node --check scripts/round17-node6-sync-analysis-version.mjs
       - name: Audit repository AI coverage and grounding
         run: node scripts/round17-node6-ai-coverage-grounding-audit.mjs
       - name: Trigger production deployment

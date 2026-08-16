@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
   "scope": "Chinese legal-information analyses grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 329,
+  "count": 389,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -2181,6 +2181,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "010e156eced7a9b4fec06b52",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/234206.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/234206.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于Arnel Hategekimana毒品购买案的上诉判决",
+      "summary": "Arnel Hategekimana因在西弗吉尼亚州Martinsburg涉嫌被控六项毒品交易相关罪名，经无陪审团审判被法院定罪。其上诉主要基于地区法院拒绝举行证据开示听证及采纳部分证人证词的决定，辩称法院滥用自由裁量权。第四巡回上诉法院审查记录后未发现可推翻判决的重大错误，故维持地区法院判决，驳回上诉。",
+      "legalIssue": "是否地区法院在未举行证据开示听证程序的情况下拒绝排除证据及采纳相关证人证词，构成滥用裁量权？",
+      "holdingOrRule": "第四巡回上诉法院确认地区法院在本案中对排除证据和采纳证词的裁定并无滥用自由裁量权，上诉理由不足，判决维持。",
+      "impact": "直接法律效力：该判决维持了被告在毒品案件中证据采纳及审理程序的合法性，影响该案定罪结果。可能影响：对未来同类案件中如何衡量证据排除听证请求及证人证言采纳的法院自由裁量权提供参考，指示上诉法院通常尊重地区法院的程序裁定。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月7日公开发布的无摘要版判决书（No. 23-4206，官方链接：https://www.ca4.uscourts.gov/opinions/234206.U.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "0170085dda456a9223b98bbf",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2277,6 +2293,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "06871695a080b8a44e322df1",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11037.0.pdf",
+      "title": "25-11037 USA v. Rainey Aug 14, 2026 Unpublished Opinion PDF",
+      "chineseTitle": "美国诉Rainey案—交通拦截合法性与延长拘留的审查",
+      "summary": "本案中，审查员Rainey因意图分发可卡因被判刑，他就交通拦截证据排除提出上诉。联邦第五巡回上诉法院审查交通停止的合法性及延长的合理怀疑，法院支持下级法院判决，认定初始交通违规事实支持拦截，且延长停留基于合理怀疑符合法律要求，维持原判。",
+      "legalIssue": "交通拦截是否因初始交通违规具有合理正当依据？在拦截后，警方是否基于合理怀疑适当延长了停留时间？",
+      "holdingOrRule": "法院确认初始交通违规事实充分支持合法拦截，且警方对嫌疑活动产生合理怀疑，合法地延长了停留时间。",
+      "impact": "直接法律效力在于确认执法机关在交通拦截时，对于初始违规和延长停留所需的合理怀疑标准；可能影响范围包括类似情形中执法操作的合规性评估及相关证据的采纳。",
+      "sourceGrounding": "依据美国第五巡回上诉法院2026年8月14日未公开判决文书，案件编号25-11037，审查标准及裁判理由明确来自官方判决全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "068f830bb29a31d9c53ac57c",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2306,6 +2338,38 @@
       "holdingOrRule": "第106条完整性规则并非自动赋予被告引入全部采访录音内容的权利，仅允许为纠正选择性陈述而必需者引入补充内容；证据充分显示被告知晓并参与串谋实施电信诈骗；陪审团针对协助犯罪的连带责任（Pinkerton）及故意无知原则的说明合理且符合法律要求；行政命令或行政规则不应被称为国会法律。",
       "impact": "直接法律效力：本案裁决确认第106条证据规则的适用界限，重申串谋与电信诈骗的证明标准，并明确陪审团说明的合法性，对类似诈骗案的诉讼提供指导。可能影响：对联邦地区法院证据采纳与陪审团说明的实践规则以及行政命令与立法之间法律属性的正确认识与表达。",
       "sourceGrounding": "美国第十一巡回上诉法院2026年官方判决书《USA v. Alexander Alli》全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "08bb4f8c8ab1d28ed5c8e282",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院就西弗吉尼亚州交通法规下延迟绿灯车辆停驶案的裁决",
+      "summary": "被告亚历山大·加林多因被控非法持枪而认罪，其仅就交通拦截是否合法提出上诉。案情显示，加林多的车辆在两次绿灯时出现分别约10秒和3至5秒的停滞，警员据此认为加林多违反了西弗吉尼亚州法第17C-3-4(a)条规定的“未服从官方交通信号指示”，因而实施交通拦截。上诉法院维持地区法院认定事实及法律适用，认定交通拦截合法，驳回加林多的上诉请求。",
+      "legalIssue": "交通拦截是否合法？具体为：被告一车辆在绿灯时的暂时停驶是否构成违反官方交通信号的行为，从而为警察合法拦截提供合理依据？",
+      "holdingOrRule": "法院确认，基于被告车辆在绿灯时停滞约10秒，已构成违反西弗吉尼亚州交通法规17C-3-4(a)条对官方交通信号的服从义务，因此警方具备合理怀疑并合法实施交通拦截。加林多未能推翻此事实认定及法律解释，上诉法院维持原判。",
+      "impact": "本判决对第四巡回区内涉及交通拦截是否合法问题的案件具有直接约束力，明确即便短暂的绿灯延迟停车也可能构成交通违规。此判决对于执法人员判断交通信号遵守程度及合法拦截具有指导意义，可能间接影响其他地区有关交通信号遵守及搜查证据合法性的司法判断。",
+      "sourceGrounding": "本解析依据美国第四巡回上诉法院2026年8月6日未发表意见书 — 美国诉加林多案 (25-4301) 完整官方裁判文本，网址：https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "08e727ce3bc8f025a0b6374d",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/244556.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/244556.P.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于18 U.S.C. § 4243第(g)条下精神病患者条件释放撤销权之判决",
+      "summary": "本案中，Danny Roney因持有枪支违反了联邦法庭对精神病条件释放的武器禁令，法院因其未遵守“规定的医疗精神治疗方案”而撤销其条件释放。法院明确 §4243第(g)条规定，条件释放仅能因违反经医疗机构主任认证并由法院命令的“规定之医疗、精神或心理治疗方案”而被撤销，非“附加条件”违规不得作为撤销依据。法院认定禁止携带武器的条件属于“规定方案”中治病及控制风险的一部分，因此Roney违反该条件可撤销释放。另有法官部分异议，认为应回归法院事实认定程序。",
+      "legalIssue": "18 U.S.C. § 4243第(g)条是否只授权因违反“规定的医疗、精神或心理治疗方案”才可撤销精神病患者条件释放？附加的非医疗治疗条件（ancillary conditions）是否也可作为撤销条件？",
+      "holdingOrRule": "法院裁定 §4243(g)条文明确规定只有违反由医疗机构主任认证并法院批准的“规定的医疗、精神或心理治疗方案”才可启动条件释放撤销程序，附加条件违规不能单独作为撤销理由。并具体认定本案禁止持有武器条件属于治疗方案组成部分，违反该条件符合撤销条件释放的法定要件。",
+      "impact": "直接法律效力：明确第四巡回法院范围内精神病患者条件释放撤销标准，限制法院撤销权必须基于治疗方案的违反。可能影响：全国其他巡回法院处理类似条文适用时，可能参考此种严格拘束判释，影响精神病罪犯释放管理政策及实践。",
+      "sourceGrounding": "依据《美国第四巡回上诉法院判决书》（2025年8月14日，案号24-4556），以及18 U.S.C. § 4243条文和相关联邦法律背景。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -2389,6 +2453,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "118d068f71f52cfa450e30ab",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于认罪协议履行及量刑辩护的判决",
+      "summary": "本案涉及Daryl Smith因违犯21 U.S.C. § 841(a)(1)及(b)(1)(C)分销可卡因基质罪名，认罪后被判处120个月监禁。Smith上诉称政府违反认罪协议，在量刑时主张刑期超过指导范围，理由是政府称其犯罪记录被低估，暗示支持上调量刑。第四巡回法院认为政府在认罪协议中已承诺推荐依据指导范围量刑，其随后针对辩护人对犯罪记录的淡化回应发言，符合认罪协议条款，且由于Smith未及时抗辩，法院仅审查明显错误，最终维持原判。",
+      "legalIssue": "被告主张政府是否违反认罪协议，通过量刑时暗示支持超过指导范围的上调量刑，政府是否超越协议范围。",
+      "holdingOrRule": "法院认定政府履行认罪协议义务，其推荐被告在指导范围内判刑并对辩护方陈述作出回应，未构成违反协议。因被告未及时提出异议，法院按明显错误标准审查，未发现明显错误，维持判决。",
+      "impact": "直接法律效力在于明确认罪协议涉及的量刑推荐及辩论权限范围，政府回应被告或辩方陈述在合理范围内不视为协议违反。可能影响类似认罪协议中量刑辩护程序及上诉审查标准的案件处理。",
+      "sourceGrounding": "依据第四巡回上诉法院2026年未发表判决文件（案号25-4122）及法庭意见书内容，官方原文链接https://www.ca4.uscourts.gov/opinions/254122.U.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "11be7e2900663dfef0af8ebe",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2421,6 +2501,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "12cfe366048afbc0a6b0f49e",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40552.0.pdf",
+      "title": null,
+      "chineseTitle": "丹尼尔·加梅兹持枪罪案上诉案判决解析",
+      "summary": "丹尼尔·加梅兹因曾有重罪前科后持有枪械被判刑92个月。其上诉针对联邦判刑指南第2K2.1条款中两项量刑加重调整提出异议，分别是基于有前科加重2级，以及基于特定情节加重4级。第五巡回上诉法院对两项调整的法理适用和事实认定均未发现明显错误，最终维持原判。",
+      "legalIssue": "被告因持有枪支且有重罪前科，上诉质疑联邦判刑指南§2K2.1(b)(1)(A)及§2K2.1(b)(6)(B)两项加重量刑调整的适用是否正确。",
+      "holdingOrRule": "法院确认，上诉中提出的对量刑指南§2K2.1(b)(1)(A)（前科加重）及§2K2.1(b)(6)(B)（特定情节加重）条款的适用无明显错误，维护了原判的刑罚调整。",
+      "impact": "本判决对持有枪支并有重罪前科者的量刑适用具有直接法律效力，强化了联邦判刑指南在类似案件中的统一使用标准。可能影响到类似案件中对相关条款的解释和适用，促使下级法院依据联邦指南条款行使量刑裁量权。",
+      "sourceGrounding": "依据美国第五巡回上诉法院发布的非公开判决文书（案号25-40552，2026年8月12日）全文内容，涵盖法院对判刑指南条款的法律适用和事实认定。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "1553dc49477b50a38480aec9",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2434,6 +2530,22 @@
       "holdingOrRule": "第一巡回法院遵循既有判例Capen案，确认该法对AR-15等武器的限制与美国历史上的枪支管制传统相符，不构成第二修正案的重大侵害；缺乏充分事实支持其商务条款和平等保护条款的违宪主张，故驳回诉讼请求。",
       "impact": "该判决直接认可马萨诸塞州针对特定半自动武器的严格限制，具有直接法律效力，对州内相关枪支销售和持有行为构成约束。与此同时，该案例可能成为其他州制定类似枪支管控法规的参考，有助于形成司法统一的宪法解释标准。",
       "sourceGrounding": "依据美国第一巡回上诉法院官方判决文件《Recchia v. Campbell》（案号25-1817）及其对2024年马萨诸塞州枪支法案的审理、Capen v. Campbell案相关判例认定。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "163d5c2cd55ea2312168f90b",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10058.0.pdf",
+      "title": null,
+      "chineseTitle": "第五巡回上诉法院驳回无实质争议案件的上诉",
+      "summary": "本案为美国第五巡回上诉法院审理的刑事上诉案件，被上诉人查理·埃弗雷特·博格尔（Charlie Everette Bogle, Jr.）提出上诉。联邦公设辩护人为其提出撤回代理的请求，并依照安德斯诉加利福尼亚案（Anders v. California）程序提交了无可争议问题的简报。被上诉人未提交回应。法院经审查认为本案不存在非无理诉讼点，遂批准辩护人撤回代理请求，驳回上诉。",
+      "legalIssue": "本案的核心法律问题是上诉是否存在任何非无理争议的实质性法律问题，足以支持维持或改判初审法院判决。",
+      "holdingOrRule": "法院认定，在被告辩护律师提交的依据安德斯案标准的无争议问题简报及案件记录审查后，未发现任何非无理的上诉问题存在，故裁定批准辩护律师撤回代理请求，并根据第五巡回法院程序规则驳回该上诉。",
+      "impact": "本判决对直接涉案的被告及相关辩护律师具有直接法律效力，确认当无实质争议时法院可驳回上诉。对同类案件中争议不足以支持上诉的程序处理提供指导，可能影响类似案件上诉阶段的法律程序运作。",
+      "sourceGrounding": "依据美国第五巡回上诉法院官方判决文件No. 26-10058及其公开发文日期2026年8月11日，内容包括法院对辩护律师依据安德斯案提出撤回代理请求的审查和决定。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -2498,6 +2610,22 @@
       "holdingOrRule": "法院认为，根据宾夕法尼亚法和侵权法第二次重述，托管义务仅限于合同或自愿承担的范围，Carlisle仅承诺销售、安装泵及基础操作培训，未承担全面安全培训义务，且未增加事故风险，亦无因托管而产生的合理依赖，故不负更广泛的侵权责任。",
       "impact": "直接法律效力：本判决限制了设备制造商在未明确承诺提供全面安全培训情况下的责任范围，强调托管义务需具体且明确承诺。可能影响：对工业设备制造商与用户单位之间培训及安全责任界定提供重要参考，减少设备供应商潜在侵权风险。",
       "sourceGrounding": "解析基于美国第三巡回上诉法院官方判决书全文，具体见判决理由部分关于托管义务和侵权责任的阐述和引用的宾夕法尼亚法律及侵权法第二次重述。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "1ba869e532cd3885c1863f20",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf",
+      "chineseTitle": "第四巡回上诉法院关于Tevon O’Shea Vanhorn贩毒共谋案的判决",
+      "summary": "被告Tevon O’Shea Vanhorn因涉及甲基苯丙胺及芬太尼贩卖共谋，被判认罪并被判处有期徒刑210个月。上诉法院审查了其认罪基础及量刑时加二级“场所加成”的适用性。法院认定地方法院确保了充分的事实依据，涉案通信、监控及缴获证据支持对被告的定罪及场所加成，驳回被告上诉，维持原判。",
+      "legalIssue": "法院是否具备足够事实依据接受被告无协议认罪，并且对依据其利用特定地点贩毒而适用的两级场所加成判罚是否成立？",
+      "holdingOrRule": "法院广泛酌情权确保认罪有足够事实基础，被告认罪前对涉及犯罪活动的通信及交易有明确承认；场所加成适用于被告实际存储及指挥毒品交易的场所，基于多方面证据支持。故认罪有效，场所加成判罚适当。",
+      "impact": "直接法律效力：确立在第四巡回区内认罪事实基础认定及场所加成量刑标准的法院适用准则。可能影响：指导类似毒品案量刑争议中场所加成证据评估及认罪程序保障。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月6日非公开判决全文《United States v. Tevon O’Shea Vanhorn》官方文件，详细审理经过及判决理由。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -2677,6 +2805,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "285136dcf1d2fb565e8253eb",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf",
+      "chineseTitle": "约翰逊诉布鲁克陆军医疗中心案——费雷斯规则下军人受害诉讼的管辖权问题",
+      "summary": "本案中，原告萨洛姆·约翰逊针对布鲁克陆军医疗中心提起诉讼，联邦地区法院以缺乏主体管辖权为由驳回其修正诉状，依据为美国最高法院在费雷斯诉美国案中确立的规则。第四巡回上诉法院审查后未发现可推翻地区法院裁判的错误，最终维持原裁判，确认费雷斯规则在限制军人相关医疗纠纷的司法管辖权方面的适用。此案强调了联邦法院对军人因服役相关医疗行为提出诉讼的司法限制。",
+      "legalIssue": "本案的核心法律问题是联邦法院是否享有针对军队医疗机构因服务相关医疗行为引起的诉讼的主体管辖权，以及费雷斯规则在此类案件中的适用范围。",
+      "holdingOrRule": "联邦上诉法院确认，依据费雷斯诉美国案，联邦法院对于军人因服役相关医疗行为提起的诉讼缺乏主体管辖权，地区法院驳回诉讼的决定正确，维持诉讼驳回。",
+      "impact": "直接法律效力：该裁判确认并延续了费雷斯规则对联邦法院军人医疗行为诉讼主体管辖权的限制，对同类案件具有约束力。可能影响：该判决影响军人及其家属对军医行为追责的途径，推动相关行政和立法机构在军人医疗救济体系上进行完善。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月12日的无发布命令，及案件书面材料陈述，明确引用费雷斯诉美国340 U.S. 135（1950）作为法律依据。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "2abf250b2e5c1d18a5314110",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30456.0.pdf",
+      "title": "25-30456 Folks v. Sainato Aug 14, 2026 Unpublished Opinion PDF",
+      "chineseTitle": "佛克斯诉塞纳托案：第五巡回上诉法院确认陪审团裁决维持警官无过失",
+      "summary": "本案中，原告佛克斯控告警官塞纳托在一宗涉及佛克斯公司车辆的肇事逃逸事件中调查不当，涉嫌违反第四修正案权利及路易斯安那州法律。尽管原告提供监控录像排除本人为肇事司机，但陪审团认为证据支持警方行为，未认定塞纳托有责任，故判决其无罪。原告后续提出陪审团说明书指示和减损损害指令异议，法院认为减损指令为正确法律陈述、异议未具体且无明显错误。法院最终确认地区法院判决。",
+      "legalIssue": "在涉及涉嫌错误逮捕和调查不当的第四修正案及路易斯安那州法律框架下，如何评价警方证据和调查行为是否支持陪审团无责任判决？减损损害指令的合法性及其是否影响陪审团裁决？",
+      "holdingOrRule": "法院确认原告无法证明陪审团裁决缺乏证据支持，故维持无责任判决。减损损害指令符合法律要求，未构成错误。陪审团须按照法院指示完成裁决，陪审团提问无法替代裁决结果。",
+      "impact": "直接法律效力：确认了执法调查中证据评估标准及减损损害指令合理性的司法适用。可能影响：警务人员在类似侵权案件中的责任认定标准及律师在异议提交时需明确具体，指导今后第四修正案诉讼及陪审团指示审查。",
+      "sourceGrounding": "依据美国第五巡回上诉法院2026年8月14日未公开意见书，案例编号25-30456全文官方文本。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "2bae8ef25d379febc8b58aac",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2690,6 +2850,22 @@
       "holdingOrRule": "联邦法院不得审理州法院判决后续诉讼案，阻止以联邦法庭重新审查及撤销州法院亲权及抚养费令的请求，因其构成对州法院判决的事实和法律复议，违反罗克—费尔德曼原则。且申请人未能满足禁令四要素中关键的获胜可能性及不可弥补损害标准。",
       "impact": "直接法律效力在于限制联邦法院对州法院已终审判决的干预，强调州法院判决的最终性，维护司法体系分工和尊重州法院权威。可能影响涉及家庭法领域中涉及亲权及抚养令争议的联邦诉讼策略，以及当事人在程序保障方面的诉讼路径选择。",
       "sourceGrounding": "依据美国第三巡回上诉法院2026年8月5日发布的非先例性判决文书，详细分析罗克—费尔德曼原则及禁令申请标准判定过程。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "2f064c369bf0d4ff1d3f1623",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于拒绝犯罪认责任减刑的判决",
+      "summary": "本案中，犯罪嫌疑人Jason Allen Rhule因犯有持枪罪认罪，随后在羁押期间被发现持有可卡因，被法院认定其在羁押期间进行了进一步犯罪行为。地区法院据此拒绝给予定罪认罪的减刑优惠。第四巡回上诉法院审查认为地区法院基于优势证据合理认定Rhule未表现出明确的认责，拒绝减刑决定无明显错误，予以维持。",
+      "legalIssue": "是否应基于被告在认罪后但判刑前继续涉嫌犯罪行为，拒绝给予其“承认责任”减刑的资格？",
+      "holdingOrRule": "法院认定，被告如在认罪后仍有进一步犯罪行为，法院可基于足够证据拒绝给予其根据联邦判刑指引§3E1.1规定的承认责任减刑；地区法院的事实认定受到高度尊重，不构成明显错误。",
+      "impact": "直接法律效力于联邦地区法院对被告是否应获得承认责任减刑的裁定，明确后续犯罪行为予以反映；可能影响刑事被告人认罪后行为管理及减刑申请的审理标准，促使司法机关严格审查被告认责态度。",
+      "sourceGrounding": "美国第四巡回上诉法院2026年8月10日未发表判决全文，案号25-4403，官方链接https://www.ca4.uscourts.gov/opinions/254403.U.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -2805,6 +2981,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "37ae74fbe14a518ef3b4c6df",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60698.0.pdf",
+      "title": null,
+      "chineseTitle": "德拉斯-维拉斯克斯及穆诺兹-德拉斯诉美国司法部长案——第五巡回上诉法院关于撤销驱逐令救济请求的裁定",
+      "summary": "本案系洪都拉斯公民德拉斯-维拉斯克斯及穆诺兹-德拉斯不服移民上诉委员会（BIA）支持移民法官（IJ）拒绝其撤销驱逐令申请的决定，向第五巡回上诉法院提起复审。法院认定申请人放弃对其主张的特定社会群体认定的异议基于BIA裁定，足以作为拒绝复审的充分依据。申请人关于移民法官存在偏见违反正当程序的主张未在法定途径充分提出，因此不予审理。最终法院驳回申请。",
+      "legalIssue": "申请人是否就撤销驱逐令的特定社会群体认定问题提出了有效抗辩，及其正当程序权利被认为是否遭受移民法官偏见侵害。",
+      "holdingOrRule": "法院确认申请人放弃了对特定社会群体认定的质疑，依据BIA的弃权认定而拒绝撤销驱逐令的复审请求。关于正当程序偏见主张因未在法定程序中提出被视为未尽诉讼程序，故不予审理。",
+      "impact": "直接法律效力在于对本案申请人撤销驱逐令复审请求的拒绝；可能影响类似案件中当事人若未就重大法律问题提出有效抗辩即可能失去复审权，且未依法提出正当程序投诉的主张不被联邦上诉法院审理。",
+      "sourceGrounding": "依据美国第五巡回上诉法院2026年8月13日未发布意见文书（备案号25-60698）及相关判例引用，包括Chambers v. Mukasey、Santos-Alvarado v. Barr等。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "38fd2fa32e9a963bc70c0713",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -2882,6 +3074,22 @@
       "holdingOrRule": "法院确认：领导委员会法案在原告竞选者与现任领导者间制造了划时代的不公平筹款优势，违反了第一修正案。领导委员会虽形式上系私营实体，其依赖现任官员的公职身份存在特殊立法授权，故其行为属国家行为。基于以上，法院对领导委员会筹款行为发布初步禁令，禁止其继续利用该不平等法规为候选人竞选筹款。",
       "impact": "直接法律效力：该判决要求领导委员会遵守统一捐款限额，禁止现任官员通过领导委员会筹款享受特权；可能影响：乔治亚州类似竞选筹款法律及其他州法规中存在的竞选捐款差别待遇相关条款，促使相关立法和实践调整，强化竞选资金的平等性和透明度。",
       "sourceGrounding": "解析基于美国第十一巡回上诉法院2026年6月12日发布的案号26-10854官方判决文件，详见https://media.ca11.uscourts.gov/opinions/pub/files/202610854.pdf中对案件事实、法律争议、法院判决以及法理分析的权威说明。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "3e1e05078131e402285ace23",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/242000.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/242000.U.pdf",
+      "chineseTitle": "雷纳森诉社会保障署专员案（第四巡回上诉法院，2026年）",
+      "summary": "第四巡回上诉法院审理了凯利·安·雷纳森针对社会保障署专员的上诉，涉及其残疾保险福利申请被行政法官（ALJ）拒绝一案。法院根据社会保障程序的标准审查，确认行政法官依法适用正确标准，且其事实认定基于实质证据支持，驳回上诉，维持地区法院判决。法院强调其不重新衡量证据冲突，也不替代行政法官的判断职能。",
+      "legalIssue": "社会保障残疾保险福利申请被拒，法院是否应根据实质证据原则 uphold行政法官的决定。",
+      "holdingOrRule": "当行政法官应用正确法律标准且其事实认定有实质证据支持时，上诉法院应维持行政决定；法院不重新评估证据或作出信誉判断，决定权属于行政法官。",
+      "impact": "直接法律效力：对本案申请人本人社会保障福利申请的裁决具有约束力。可能影响：明确第四巡回区内社会保障残疾福利案件审查标准，指导类似案件的证据评估和上诉程序。",
+      "sourceGrounding": "依据原文第四巡回上诉法院2026年官方未发表判决文件，特别是法院对实质证据标准及法律适用的说明。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3061,6 +3269,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "4b0476ccf96f58b02670259b",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/256329.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/256329.U.pdf",
+      "chineseTitle": "琼斯诉弗吉尼亚州惩教部门典狱长案—联邦上诉法院关于2254申请上诉资格的裁定",
+      "summary": "本案中，Arthur Jones针对联邦地区法院驳回其根据28 U.S.C. § 2254提起的救济申请提出上诉。第四巡回上诉法院审查后认定，Jones未能满足取得上诉许可证书的标准，即未能实质性显示其宪法权利被剥夺。法院因此拒绝发放上诉许可证书，驳回该上诉。此判决基于Jones未能在实体或程序性问题上提出有争议性或合理法官可能持不同意见的宪法主张。",
+      "legalIssue": "上诉人是否满足联邦刑事被拘留人提起联邦救济申请上诉中根据《联邦法典》第28编第2253条规定获得上诉许可证书的条件，即是否有实质性显示其宪法权利遭受侵害。",
+      "holdingOrRule": "联邦上诉法院裁定，上诉人在未能在实体宪法权利被剥夺或程序性驳回存在合理争议的情况下，不得获得上诉许可证书，拒绝其挑战地区法院驳回2254救济申请的决定。",
+      "impact": "本判决对寻求根据28 U.S.C.§2254渠道救济的羁押人员及其法律代表具有直接的程序限制效力，明确证书发放标准，提高上诉准入门槛；对类似案件具有指导意义，可能影响联邦狱政司法救济程序的处理方式。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月13日颁布的未公开判决书，地址https://www.ca4.uscourts.gov/opinions/256329.U.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "4bbb04c4b6fd0e8e9d8d15c1",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3090,6 +3314,22 @@
       "holdingOrRule": "依据《8 U.S.C. § 1252(g)》，第四巡回法院确认地区法院缺乏对移除程序事项的管辖权，因此驳回原告有关宣告移除程序非法及请求禁令的诉讼请求。官方材料不足，无法得知其他详细裁判理由。",
       "impact": "直接法律效力在于明确《8 U.S.C. § 1252(g)》限制联邦地区法院对移除程序司法审查的范围，有助于界定移民案件中法院管辖权范围；可能影响广泛移民案件当事人及相关执法部门在面对移民移除程序中的程序救济途径。",
       "sourceGrounding": "本解析依据美国联邦第四巡回上诉法院2026年8月10日未公开判决书全文材料，官方来源链接：https://www.ca4.uscourts.gov/opinions/261231.U.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "4e1d980b339161bf54690a79",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/252320.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/252320.P.pdf",
+      "chineseTitle": "奥雷利亚纳-拉莫斯案：因家庭成员身份申请庇护与驱逐缓留的因果关系认定",
+      "summary": "第四巡回上诉法院审理了埃尔萨尔瓦多公民奥雷利亚纳-拉莫斯女士及其子女的庇护申请，核心争议在于是否因她与家人身份形成的特定社会群体身份而遭受迫害。下级移民法官及移民上诉委员会认为其遭受的威胁属于私人纠纷，缺乏法定保护理由。高院纠正该错误，强调分析应聚焦迫害者威胁被申请人的原因，即家庭成员身份至少是迫害的核心原因之一，依法应予支持并发回重审。",
+      "legalIssue": "申请人是否因其作为‘家庭成员’这一受法律保护的‘特定社会群体’成员身份而遭受迫害，以满足美国移民法下庇护及驱逐缓留的‘因果关系’（nexus）要求？以及下级机关是否正确适用该因果关系分析标准？",
+      "holdingOrRule": "法院认定申请人因家庭成员身份而受迫害的事实有理据，下级机关将迫害归为与他人私人纠纷而非家庭成员身份联系的做法属法律错误。因果关系分析必须聚焦于迫害者针对申请人的理由，而非针对与申请人相关的其他个人。申请人所指的家庭成员身份须为迫害‘至少一个核心原因’。于是法院准许申请人复审请求，发回移民局进一步处理。",
+      "impact": "直接法律效力：该判决直接影响Orellana-Ramos女士及其子女的庇护和驱逐缓留案件结果，要求移民当局重新考虑案件因果关系。可能影响：对家庭成员作为‘特定社会群体’的认定与因果关系的分析标准在美国第四巡回区未来庇护案件中具有指导意义，可能推动类似案件中对‘私人纠纷’与‘法定保护理由’的区分标准更为严格和明确。",
+      "sourceGrounding": "基于美国第四巡回上诉法院2026年公开判决《Orellana-Ramos诉Blanche案》（案号25-2320），全文重点论述庇护案件中‘家庭成员身份’与‘因果关系’标准的适用，及对移民法官和移民上诉委员会认定的法律错误进行纠正。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3301,6 +3541,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "5c91d51e6ddb0a98e5ad05a3",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30629.0.pdf",
+      "title": "25-30629 USA v. Butler Aug 14, 2026 Unpublished Opinion PDF",
+      "chineseTitle": "美国第五巡回上诉法院关于被告持枪案的判决解析",
+      "summary": "本案被告Jarmar Butler承认非法持有枪械或弹药。地方法院超出量刑指南建议，判处其92个月监禁。被告质疑基于U.S.S.G. § 2K2.1(a)(4)(B)的基础犯罪等级调整适用存在明显错误，因未证实持有可装大容量弹匣的半自动枪械。法院认为即使存在错误，因量刑考虑更多§ 3553(a)因素，且量刑未基于该调整，故被告权利未受实质影响。关于变刑理由，被告指控法院错误依赖其持有上述枪械事实和犯罪历史。但法院认定法院合理考量案件事实及相关因素，且量刑幅度不失衡。被告请求补充上诉论点被拒。综上，判决维持。",
+      "legalIssue": "被告对量刑中适用U.S.S.G. § 2K2.1(a)(4)(B)基础犯罪等级调整及上诉提出异议，核心法律问题为地方法院是否存在明显法律错误及变刑是否合理。",
+      "holdingOrRule": "法院依审查，若即使存在§ 2K2.1(a)(4)(B)的适用错误，但量刑基于§ 3553(a)因素，且变刑考虑合理，不影响被告实质权利。变刑理由合理，刑期不显失当。未经原审上诉论点，后续提出视为放弃，非特别情况不予审理。",
+      "impact": "直接法律效力为确立量刑时即便基础等级适用存在争议，若判决综合考虑法律规定因素且变刑合理，法院仍可维持刑期，指导下级法院量刑时综合审查。可能影响对量刑争议处理和补充上诉请求的规范限制。",
+      "sourceGrounding": "美国第五巡回上诉法院2026年8月14日未公布意见书（案件号25-30629），详见官方法院档案及判决文档。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "5cd9323d03436861545115ca",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3429,6 +3685,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "63b469c1afadec4c98ca3b95",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254037.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254037.P.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于USSG §2B1.1(b)(16)(B)枪支加刑的判决解析",
+      "summary": "本案中，被告Franklin因盗窃及持有被盗邮件被判刑，地方法院依据美国量刑指南§2B1.1(b)(16)(B)对其犯罪加计两级枪支持有加重处罚。第四巡回上诉法院撤销该判决并发回重审，理由是地方法院未就枪支持有是否与犯罪行为有“关联”作具体事实认定。法院明确，“关联”应理解为枪支持有促进或可能促进该犯罪，且仅靠枪械与犯罪物品的接近不足以认定关联。该判决要求基层法院在适用类似加强处罚时须进行独立充分的事实评估。",
+      "legalIssue": "被告持有枪支是否符合美国量刑指南§2B1.1(b)(16)(B)规定的“与犯罪行为相关联”，进而决定枪支加刑是否适用。",
+      "holdingOrRule": "法院认定“与犯罪行为相关联”意味着枪支持有须促进或可能促进犯罪，而非单纯偶然存在。地方法院未做出具体事实认定，属于程序性错误，故撤销判决并发回重审。",
+      "impact": "直接法律效力：要求地方法院对类似增加枪支加刑的案件必须有明确事实认定，规范量刑程序。可能影响：对未来涉及枪支加刑相关案件的判决流程及上诉策略产生指导意义。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年公开判决书《United States v. Zerion Marcos Franklin》全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "642c828d923c6064bd1c4846",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3525,6 +3797,70 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "69331163739b4c786c13442e",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf",
+      "chineseTitle": "第四巡回上诉法院关于马文·拉沙德·卡明斯认罪协议及强制最低刑期错误告知的判决",
+      "summary": "本案中，被告卡明斯认罪协议涉及18 U.S.C. § 924(c)(1)(A)(ii)下的枪支犯罪强制最低刑期问题。初审法院在认罪听证中错误告知其强制最低刑期为7年，实为25年。卡明斯主张该误导导致认罪无效，法院通过综合认罪协议、认罪听证及量刑听证记录认定其已充分了解25年最低刑期且未提出异议，故不存在认罪无效。法院依此维持原判。",
+      "legalIssue": "认罪听证中法院错误告知强制最低刑期是否构成对认罪协议有效性的实质性影响？",
+      "holdingOrRule": "法院认定，被告虽被误告7年强制最低刑期，但基于认罪协议、认罪听证确认及量刑听证过程中被告均明白25年最低刑期且未异议，该错误未影响被告实质权利，认罪协议有效，应维持判决。",
+      "impact": "直接法律效力：确认法院认罪听证中错误告知最低刑期不必然致使认罪协议无效，明确被告需对认罪协议内容全面理解并在量刑阶段提出异议。可能影响：未来涉及联邦刑事认罪程序中对司法误导抗辩的判断标准，强化程序中全面确认认知和异议的重要性。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月11日就美国诉卡明斯案公开发表的非公开判决书。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "694c51b9e022cf15fe27b4b7",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254220.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254220.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于18 U.S.C. § 1519伪造文件以妨碍联邦调查罪的判决",
+      "summary": "约翰·奥斯丁·珀金斯三世因伪造文件妨碍联邦调查罪认罪并被判刑，上诉提出无效认罪程序、量刑程序违法及量刑不合理等问题。第四巡回上诉法院审查认为地区法院在接受认罪时符合联邦刑事诉讼规则第11条规定，量刑程序符合规则32要求，且量刑在指南范围内，综合考虑了第3553(a)条因素，其判决程序和实体上均合理，驳回上诉，维持判决。",
+      "legalIssue": "地区法院在接受被告伪造文件罪名认罪时是否遵守联邦刑事诉讼规则第11条？量刑程序是否符合规则32？判处的刑罚是否合理，符合第3553(a)条量刑因素？",
+      "holdingOrRule": "上诉法院确认被告认罪程序符合法定要求，量刑符合程序和实体合理性标准，尤其考虑了量刑指南和第3553(a)因素，判处在指南范围内的刑罚合理，驳回被告关于认罪无效及量刑不合理的上诉请求。",
+      "impact": "直接法律效力：维持被告伪造文件妨碍联邦调查罪的认罪和量刑决定。可能影响：指导第四巡回区内类似案件中对认罪程序与量刑合理性审查的标准及适用。",
+      "sourceGrounding": "依据美国第四巡回上诉法院公开判决书（案号25-4220）及案中引用的联邦刑事诉讼规则第11条、规则32条和18 U.S.C. § 1519等法律规定。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "6a5f9e327af6a3069a533cce",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-11000.1.pdf",
+      "title": null,
+      "chineseTitle": "美国第五巡回上诉法院关于约翰·安东尼·卡斯特罗伪造税务申报案的判决",
+      "summary": "约翰·安东尼·卡斯特罗因协助准备和提交虚假税务申报表，被判犯33项罪名，联邦地区法院依据情况对其量刑为188个月监禁，案涉刑事引起多项上诉诉求。第五巡回上诉法院部分因管辖权缺失驳回对纠正审判笔录动议的审查，实质上确认被告未能证明政府违反布雷迪规则义务，也确认被告已有效放弃对质证权利，法院维持了针对被告适用的组织者身份及妨碍司法的量刑加重处罚，最终除对笔录纠正动议外，驳回其余上诉请求。",
+      "legalIssue": "1. 是否具备审判笔录纠正动议和新审判动议的上诉管辖权？2. 被告是否因政府违反布雷迪规则获得新审判？3. 被告是否有效放弃其宪法上的对质权？4. 地区法院是否正确适用量刑指南中组织者身份及妨碍司法加重处罚？",
+      "holdingOrRule": "1. 对于审判笔录纠正动议，因未另行提起上诉，联邦巡回法院无审查管辖权；2. 新审判动议基于布雷迪规则不足以推翻定罪，地区法院拒绝举行听证也未构成滥用自由裁量权；3. 被告通过明确同意律师的证据认定条款，有效放弃对质权利；4. 根据事实证据，组织者及妨碍司法加重处罚适用合理且未错误认定。",
+      "impact": "直接法律效力：维持被告约翰·安东尼·卡斯特罗的定罪及量刑决定，明确宪法对质权的放弃标准及审判后动议的管辖程序规则。可能影响：税务欺诈类案件中证据呈示、布雷迪规则应用及刑事量刑加重判断标准的司法实践；律所经营合规与刑事风险防范。",
+      "sourceGrounding": "本解析依据美国第五巡回上诉法院2026年8月11日关于卡斯特罗案的官方判决书全文，摘录事实与法律分析，详见官方网站：https://www.ca5.uscourts.gov/opinions/unpub/24/24-11000.1.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "6abd7720d2bb9623eaa8303c",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251828.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251828.P.pdf",
+      "chineseTitle": "Gilead Sciences诉Meritain等案：外国市场药品进口是否构成Lanham法商标侵权及相关责任认定",
+      "summary": "本案涉及Gilead Sciences针对Meritain、ProAct及相关药房和个人的商标侵权诉讼。Gilead主张被告未经授权进口并销售仅供外国市场且与美国市场药品在包装和质量控制上存在实质差异的药物，导致消费者混淆，违反Lanham法。法院确认这些外国进口药品因标签信息、警示、追溯体系等方面的实质差异，非“真正”商品，且绕过了Gilead的质量控制体系，构成直接侵权；同时确认Meritain和ProAct对侵权行为存在明知或应知情形，承担间接侵权责任。法院支持Gilead的初步禁令，禁止被告继续进口及销售涉案药品。",
+      "legalIssue": "进口仅供外国市场、包装及信息与美国市场存在实质差异的正品药品，是否构成Lanham法下商标侵权？第三方服务机构在应知他人侵权情形下是否应承担贡献侵权责任？",
+      "holdingOrRule": "法院判定该类外国市场药品因实质标识与信息差异及非Gilead质量控制体系商品，不构成“真正”商品，销售行为存在商标侵权。相关第三方服务机构若明知或有理由知道侵权仍提供服务，则构成贡献性侵权。",
+      "impact": "直接法律效力：判决对涉案当事人具约束力，明确商标权利人在类似跨国药品进口侵权案件中的权利保障标准。可能影响：促进企业严格控制药品包装与质量管理体系，增强对海外进口药品的监管，并对自保医保计划与AFP间合作模式形成警示，影响医药进口贸易及医药福利管理实务。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2025年正式公开的判决文档《GILEAD SCIENCES, INC.诉MERITAIN HEALTH, INC.》及相关案件事实和法律分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "6b903ceaa9922e8b87dc241b",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3541,6 +3877,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "6f989c0d0fc220d7c02a4bf2",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254369.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254369.U.pdf",
+      "chineseTitle": "布鲁斯特毒品和医疗信息犯罪案上诉判决",
+      "summary": "美国第四巡回上诉法院审理了Jacqueline Brewster因违反《21 U.S.C. § 843(a)(3)》和《42 U.S.C. § 1320d-6(a)(2)》相关规定而被定罪后的量刑上诉。法院在审查过程中未发现可推翻原判的错误，故维持了南弗吉尼亚地区法院的判决。本案涉及毒品相关非法行为及医疗信息滥用，法院决定以书面形式驳回上诉，保持原判。",
+      "legalIssue": "被告是否能够成功上诉推翻基于其对两项联邦法律犯罪指控认罪后的量刑判决？",
+      "holdingOrRule": "法院经过审查认定原审判决无可推翻的明显错误，确认被告认罪及量刑决定合法有效，上诉理由不足，维持南弗吉尼亚地区法院判决。",
+      "impact": "此判决对被告具有直接法律效力，确认了其认罪后量刑的有效性；对类似案件提供司法参考，但作为非公开（unpublished）判决，其在第四巡回法院亦不具强制先例效力，故对其他案件及更广泛领域仅具有可能的说服影响。",
+      "sourceGrounding": "以上解析完全依据美国第四巡回上诉法院于2026年8月11日、经修改于8月12日发布的未公开判决文书《United States v. Brewster, No. 25-4369》，官方链接：https://www.ca4.uscourts.gov/opinions/254369.U.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "6f995fe22b3704f5d0695fa4",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30522.0.pdf",
+      "title": null,
+      "chineseTitle": "美国第五巡回上诉法院关于Jerusalia Bell案件的上诉判决概要",
+      "summary": "本案为Jerusalia Bell对西路易斯安那地区联邦地区法院刑事判决的上诉。法院指定律师根据Anders v. California程序提交无非浅显申诉理由报告，申请撤销代理资格。Bell提出回应。法院审查律师报告及案件记录后认定无非浅显上诉问题，准许律师撤回代理资格，终止律师职责，驳回Bell的上诉。",
+      "legalIssue": "Jerusalia Bell上诉过程中是否存在非无聊或者有实质可审问题以支撑有效上诉？",
+      "holdingOrRule": "法院根据Anders程序认定案件中无非无聊(无非无理)的上诉理由，准许代理律师撤回授权，驳回上诉。",
+      "impact": "直接法律效力：本判决终结本案上诉程序，维持地区法院判决。可能影响：对未来类似案件中采用Anders程序时律师撤回代理的案件审查标准有指导意义。",
+      "sourceGrounding": "解析依据美国第五巡回上诉法院2026年8月12日未指定为公开判例的法院意见书（案号25-30522），其中完整论述上诉程序及法院裁定。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "70f9378fd7ff323686d6f534",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3554,6 +3922,22 @@
       "holdingOrRule": "1. 传票未列明时间和地点的缺陷属于程序规则，非管辖权问题，若未及时提出异议即视为弃权（依照第四巡回法院《Cortez案》和BIA《Arambula-Bravo案》《Fernandes案》）；2. 庇护申请人若证词被认定不可信且缺乏独立证据支持，撤销庇护及保护申请属于合理裁量。",
       "impact": "直接法律效力于第四巡回法院辖区内移民案件，明确非合规传票的时间地点缺失不自动剥夺司法管辖权，强调申诉人须及时提出异议，否则视为放弃。可能影响其他联邦移民法庭对类似程序缺陷的认定标准及庇护申请证据审查，推动案件程序合规及证据确实性的司法实践。",
       "sourceGrounding": "依据2024年第四巡回上诉法院未公布裁决意见（案号24-2205）及引用的关键判例（如Cortez, Pereira, Niz-Chavez等）和移民上诉委员会判例（In re Arambula-Bravo, In re Fernandes）等官方一手材料总结。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "7273654e905bdeaa8a43e7e8",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/264047.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/264047.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于监督释放撤销的判决要点解析",
+      "summary": "本案中，上诉人Jermar Hardin对地区法院撤销其监督释放并判处其12个月监禁不服，主张政府已同意不追究相关违例且证据不足。第四巡回上诉法院确认地区法院遵循《刑事诉讼规则》第32.1条程序审理，基于优势证据认定Hardin违反监督释放条件，撤销监督释放决定无误。此外，就判刑程序合理性，上诉法院采用明显错误审查标准，判定无影响实质权利的错误，维持原判。",
+      "legalIssue": "地区法院在撤销监督释放时是否遵循了法定程序及证据标准，以及撤销判刑是否存在程序不合理的法律问题。",
+      "holdingOrRule": "法院可基于优势证据撤销监督释放，须遵守联邦刑事诉讼规则32.1规定的程序保障；未能及时提出的程序错误按明显错误原则审查，须证明影响实质权利才可推翻判决。",
+      "impact": "直接法律效力于联邦地区法院监督释放撤销程序，明确证据与程序要求；可能影响监督释放撤销案件中被告权利保障标准及上诉审查力度。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月7日未发布判决书全文，包括案件事实、法律分析及裁判结论。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3586,6 +3970,22 @@
       "holdingOrRule": "法院认为被害人陈述具明显可靠性及多重佐证，且其以第五修正案权利不出庭可构成政府合理无法对抗的正当理由，故传闻证据予以采信且不违反程序正义。经综合证据及被告部分承认，法院以优势证据认定监督释放条件被违反。法院在量刑时充分考虑18 U.S.C. §3553(a)相关因素，且未违反禁止依据原罪处罚的限制，判决驳回上诉维持原判。",
       "impact": "直接法律效力：本判决对第三巡回法院辖区监督释放撤销程序中传闻证据采纳和量刑解释具有指导意义。可能影响：其他联邦辖区参考本案对传闻证据平衡分析及量刑说明要求，促进程序正义与执法效率兼顾。",
       "sourceGrounding": "依据美国第三巡回法院2026年关于USA诉Delrico Clyburn案的官方上诉判决书全文内容详细分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "7691c54be0d7d7976e1f95e8",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251410.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251410.U.pdf",
+      "chineseTitle": "第四巡回上诉法院关于庇护申请的非公开判决—Paz Pineda案",
+      "summary": "本案件中，申请人Paz Pineda及其女儿请求复审移民上诉委员会（BIA）驳回其庇护、驱逐缓令及反酷刑公约保护申请的决定。上诉法院维持原裁定，认为申请人未能提供充分证据证明其因宗教迫害存在合理的客观恐惧，且洪都拉斯政府无法或不愿控制迫害者。法院确认对移民机构事实认定遵循事实认定规则，法律问题则进行独立审查。申请人未在BIA阶段提出可信度及记录完整性争议，法院因未履行申诉程序不予审理。最终，复审申请被驳回。",
+      "legalIssue": "申请人是否提供足够证据证明其因宗教迫害具有合理的客观恐惧及洪都拉斯政府无法或不愿保护其免受私人迫害者伤害，并因而有资格获得庇护、驱逐缓令及反酷刑公约保护？申请人对可信度判定及记录开发的异议是否可在上诉法院审理？",
+      "holdingOrRule": "法院支持移民机构认定，申请人未能证明其宗教迫害恐惧的客观依据及政府保护缺失，故不具庇护及驱逐缓令资格；针对反酷刑公约保护申请亦以证据不足驳回。申请人未在BIA程序中提出有关可信度及记录完整性争议，依法不予审理。",
+      "impact": "直接法律效力：本判决对Paz Pineda案具有直接约束力。可能影响：该判例强化了移民申请中客观恐惧及政府保护能力的证据标准，提示类似案件申请人程序中提出异议的重要性，对移民法实务具有指导意义。",
+      "sourceGrounding": "本解析完全依据美国第四巡回上诉法院2026年8月12日发布的非公开判决全文，包括法院对事实与法律标准的说明及最终裁定。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3685,6 +4085,54 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "7efd5d5ac9e9482afbf8c9e7",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-50066.0.pdf",
+      "title": "26-50066 USA v. Davis Reed Aug 14, 2026 Unpublished Opinion PDF",
+      "chineseTitle": "美国诉阿伦·戴维斯·里德案（第5巡回上诉法院，2026年8月14日）未发布意见",
+      "summary": "本案中，被告阿伦·戴维斯·里德因逃狱罪认罪后被判处18个月监禁。其上诉理由主要包括两点：一是地区法院在量刑时误以为其逃狱两次而非一次，但法院已承认该误解且认定无实质影响，判决属无害错误；二是首次上诉中，里德主张根据联邦量刑指引第4A1.1(e)条款因在服刑期间犯罪而加刑不当，认为构成双重惩罚，但该主张违背第五巡回法院既有判例且无支持性新案例，故未构成明显错误。最终，上诉被驳回，原判维持。",
+      "legalIssue": "地区法院在量刑时对事实认知错误是否构成程序性不合理？联邦量刑指引下对服刑期间犯罪加刑调整是否构成违法的双重惩罚？",
+      "holdingOrRule": "地区法院若承认其对事实的误解且明确表示该误解未影响量刑结果，则该错误为无害错误，不构成认知错误；基于U.S.S.G. §4A1.1(e)的加刑调整，即使被质疑为双重惩罚，只要违背的判例未被新案例推翻，申请人未能证明明显错误，则该调整有效。",
+      "impact": "此判决对联邦及第五巡回法院辖区内涉及逃狱罪或在服刑期间再犯的被告量刑程序和指引应用具有直接法律效力，明确了误解事实的无害错误原则及对量刑指引加刑条款的坚持标准。可能影响检察机关、被告及辩护律师对类似案件的量刑策略和上诉理由。",
+      "sourceGrounding": "依据2026年8月14日美国第五巡回上诉法院发布的未发表意见书（案号26-50066）全文内容及法院引用的相关联邦判例，包括Gall v. United States, United States v. Robinson, United States v. Vickers及相关联邦量刑指引条款。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "7f352d29fd0ae171a5d017c0",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/21/21-70010-CV2.pdf",
+      "title": "21-70010 Holberg v. Guerrero Aug 14, 2026 Published Opinion PDF",
+      "chineseTitle": "Holberg诉Guerrero案：关于Brady证据披露义务与联邦逮捕救济的严格适用",
+      "summary": "本案涉及Brittany Holberg于1996年残忍杀害一名年迈无力老人后，判处死刑并多次提出Brady证据未披露的申诉。联邦第五巡回上诉法院全院一致裁定支持下级法院裁决，依据《反恐怖主义和有效死刑法》（AEDPA）对再审理设限，认定州法院关于Brady声索的裁决合理，不构成明显错误，且被指控的证人作为警察线人的信息并非案件核心证据，未能影响判决结果。法院重点强调了AEDPA的高度宽容标准，指出联邦法院不得纠正州法院的明确错误，除非州法院裁判极端错误且不容合理异议。",
+      "legalIssue": "当州法院已就Brady诉讼中的证据披露问题做出裁定后，联邦法院在AEDPA设定的“再审理限制”(relitigation bar)下，是否可基于证人非本案相关的线人身份信息，认定州法院对Brady义务的适用存在不合理，并给予刑事被告联邦救济？",
+      "holdingOrRule": "联邦第五巡回法院全院一致裁定，AEDPA禁止联邦法院就州法院已实质裁判过的Brady声索重新审理，除非州法院裁定明显违背或不合理适用最高法院明确联邦法，或基于事实做出不合理判断。既无明显联邦法律违背，也无不合理事实认定，故确认州法院否定Brady违规的裁决有效，拒绝Holberg的申诉及刑事救济请求。",
+      "impact": "直接法律效力：确认AEDPA下联邦法院对州法院刑事Brady审查适用高度限制标准，防止重复审理，保障州刑事判决稳固。可能影响：类似因非核心证人身份信息未披露提出Brady申诉的案件联邦审理标准，强调了辩护策略、案件证据整体影响评估和对证据重要性的严格要求。",
+      "sourceGrounding": "解析摘自2026年8月14日美国第五巡回法院Holberg v. Guerrero案官方判决全文，详细论述Brady证据披露义务适用、AEDPA再审理限制原则及事实认定，包含多名法官意见。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "7f79a6c01201bcac26702830",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50039.0.pdf",
+      "title": null,
+      "chineseTitle": "关于18 U.S.C. § 922(g)(1)适用于简单持有毒品前科者之第二修正案合宪性——第五巡回上诉法院判决",
+      "summary": "本案中，圣·英尼斯·帕蒂诺因先前简单持有毒品的重罪定罪，违反18 U.S.C. § 922(g)(1)禁止持有枪支条款，被判定持有枪支罪。帕蒂诺上诉主张该条款违反其第二修正案权利。根据同巡回法院近日裁决United States v. Hembree，认为§ 922(g)(1)在适用于简单持有毒品重罪的被告时违反第二修正案。因帕蒂诺的前科属于简单持有毒品重罪，法院据此撤销其定罪。",
+      "legalIssue": "18 U.S.C. § 922(g)(1)禁止持枪条款是否在应用于因简单持有毒品重罪被定罪者时侵犯其第二修正案权利？",
+      "holdingOrRule": "第五巡回法院依United States v. Hembree判例判定，18 U.S.C. § 922(g)(1)作为对简单持有毒品重罪者的持枪禁令，违反第二修正案，故撤销帕蒂诺的持枪罪定罪。",
+      "impact": "直接法律效力：撤销本案被告基于简单持有毒品重罪而适用§ 922(g)(1)的持枪罪定罪。可能影响：未来第五巡回区内其他简单持有毒品重罪前科被告的类似枪支禁令定罪案件审理标准。",
+      "sourceGrounding": "解析依据美国第五巡回上诉法院2026年8月12日关于案号25-50039的裁决文件及引用的United States v. Hembree案判决内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "805bf23e67779a046f447f8e",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3701,6 +4149,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "812e1679244c5ec02aaf3e06",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/236914.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/236914.P.pdf",
+      "chineseTitle": "罗伯特·博伊德案：根据《亚当·沃尔什儿童保护与安全法案》撤销有条件释放的联邦上诉判决",
+      "summary": "本案涉及被认定为“具有性危险性”的罗伯特·博伊德，在接受有条件释放后违反释放条件（持有色情物品），联邦地区法院依据《亚当·沃尔什儿童保护与安全法案》撤销其有条件释放，重新将其收禁。第四巡回上诉法院确认撤销决定，判定政府已根据“优势证据”标准证明博伊德违反了治疗计划，且其精神障碍使其难以阻止再次犯罪，故不适宜继续社区矫治。判决强调撤销有条件释放需综合考量个案风险，法院对事实认定享有高度酌情权。",
+      "legalIssue": "在《亚当·沃尔什儿童保护与安全法案》框架下，撤销“性危险人物”有条件释放需满足何种证据标准且何种条件构成违反治疗计划及构成未来对社会的危险。",
+      "holdingOrRule": "法院确认适用“优势证据”标准判断撤销有条件释放，撤销条件包括：（1）被释放人未遵守规定的治疗措施；（2）被释放人患有严重精神疾病；（3）结合前述，其如继续留在社区，将难以控制其性暴力行为或猥亵行为。违反治疗规定（如持有色情素材）不仅构成撤销依据，且综合专家评估和行为模式可支持撤销决定。",
+      "impact": "直接法律效力体现在《亚当·沃尔什法案》适用的联邦性犯罪“性危险人物”有条件释放撤销程序中，为后续类似案件中撤销有条件释放设定了证据与事实认定标准。可能影响涉及性犯罪者社区矫治管理、释放条件设定及风险评估方法，对监管机构及司法判决具有参考价值。",
+      "sourceGrounding": "基于美国第四巡回上诉法院2026年8月6日发布的官方判决意见《United States v. Boyd, No. 23-6914》，该意见详细阐述案件事实、法律适用、法院审查标准及判决理由，提供判例一手权威材料。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "827e9bb4b09486eae1ed0303",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3714,6 +4178,38 @@
       "holdingOrRule": "法院确认退学学生基于已遭受的歧视性待遇，对损害赔偿及禁令救济具备诉讼资格；同时原则上学校应至少个案化考虑残疾学生的合理便利请求，但禁令本身不构成自动违法；已有个性化便利且可满足残疾学生平等受教育机会的情况下，学校拒绝推行强制口罩令属于合理，初步禁令请求应予驳回。",
       "impact": "直接法律效力：本案明确退学学生在提出因过去受歧视产生的赔偿及禁令请求时不失去诉权；强调学校在制定涉及残疾学生的政策时必须个案审查合理便利请求。可能影响：该判决可能影响其他学区疫情相关政策调整，明确学校禁令或政策调整需兼顾ADA和RA的合理便利义务，平衡公共卫生政策与残疾学生受教平等权利。",
       "sourceGrounding": "本解析基于美国第十一巡回上诉法院发布的官方判决文书（案号23-11741），包含对初审法院裁定的复核及终审意见，以及案件事实和法律适用部分的详细说明（见 https://media.ca11.uscourts.gov/opinions/pub/files/202311741.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "8308812133c8a01d1552df8a",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251570.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251570.U.pdf",
+      "chineseTitle": "美国联邦第四巡回上诉法院关于泰勒诉美国案的裁决分析",
+      "summary": "泰勒因被联邦调查局长期错误调查其涉嫌绑架和谋杀案，提起联邦侵权索赔诉讼。地方法院以联邦侵权索赔法中“自由裁量权例外”条款为由，认定联邦政府不承担责任，并驳回诉讼。上诉法院维持原判，认为泰勒未能充分提出宪法权利被侵犯的具体证据，故“自由裁量权例外”适用，诉讼缺乏管辖权。其他替代驳回理由亦未被挑战，故最终判决维持。",
+      "legalIssue": "联邦侵权索赔法中“自由裁量权例外”是否适用于FBI在刑事调查中的行为，以及该例外是否因涉嫌宪法权利侵害而不适用。",
+      "holdingOrRule": "法院确认FBI在调查犯罪过程中行使的自由裁量权受联邦侵权索赔法“自由裁量权例外”保护，除非有充分且具体的宪法权利侵犯指控。原告未能提出有效的宪法违反主张，故法院无管辖权审理其索赔请求。",
+      "impact": "直接法律效力：确立了联邦机构在刑事调查中行使自由裁量权受侵权索赔法“自由裁量权例外”保护的司法态度，限制了原告基于调查行为提起的民事索赔范围。可能影响：指导类似案件中FBI等联邦执法机构调查行为的法律风险评估，以及原告维权诉讼策略。",
+      "sourceGrounding": "依据美国联邦第四巡回上诉法院2026年8月11日未公开判决意见书全文，特别是关于联邦侵权索赔法“自由裁量权例外”适用分析及原告诉讼程序性争议情况。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "83bcf8e1520dc2df700c2cff",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254214.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254214.U.pdf",
+      "chineseTitle": "第四巡回上诉法院就甲基安非他命分销案判决的简要分析",
+      "summary": "被告Dequan Tyrie Payton因认罪涉及甲基安非他命分销罪名，根据21 U.S.C. §§ 841(a)(1), (b)(1)(A)被判刑。第四巡回上诉法院审查后未发现可推翻地区法院判决的明显错误，维持了底层法院的判决与刑罚。上诉法院未举行口头辩论，认为书面证据已充分反映事实和法律问题。该判决为未公开裁定，不具有巡回法院的约束性先例效力。",
+      "legalIssue": "被告就依据联邦毒品法第21 U.S.C. §§ 841条款被判甲基安非他命分销罪名提出的刑罚是否存在可推翻的明显法律或事实错误。",
+      "holdingOrRule": "法院认定地区法院判决及刑罚合理合法，未发现任何可推翻判决的错误，确认了被告因违反21 U.S.C. §§ 841(a)(1), (b)(1)(A)规定而被判刑的事实及法律基础。",
+      "impact": "直接法律效力：本案为未公开裁判意见，不构成第四巡回法院的具约束力判例，仅对案件当事人具有约束力。可能影响：对类似依21 U.S.C. § 841条起诉及认罪案件的审理提供参考，但不构成必然裁判指南。",
+      "sourceGrounding": "依据官方发布的美国第四巡回上诉法院未公开判决书，链接：https://www.ca4.uscourts.gov/opinions/254214.U.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -3941,6 +4437,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "95dfa44c1b5b7d962fcdeeed",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-10372-CV0.pdf",
+      "title": "25-10372 Guerra Quezada v. USA Aug 14, 2026 Published Opinion PDF",
+      "chineseTitle": "五巡回上诉法院关于瓜雷亚-克萨达等人美国公民身份认定的判决",
+      "summary": "本案涉及两名原告均从墨西哥出生，主张其美国公民身份系其祖母克鲁斯·罗德里格斯·德瓜雷亚通过血统传递。然而，法院认定根据1952年及1993年适用的移民与国籍法，公民家长必须实际在美国居住一定年限，且拒绝采纳移民上诉委员会提出的“建构性居留”原则，故两原告不具备美国公民资格。此外，法院缺乏对多项诉讼请求的管辖权，驳回所有请求。合议作者一致认为，国会有权限定公民传递条件，司法不得擅自扩张。",
+      "legalIssue": "原告是否通过祖母的美国出生公民身份，依现行国籍法及相关司法解释，合法继承美国国籍？法院是否对原告提出的损害赔偿、宣告性判决及其他诉讼请求拥有管辖权？",
+      "holdingOrRule": "一、法院拒绝采纳“建构性居留”原则，认定原告不符合1952年与1993年法定的实际居住时间要求，因而非美国公民。二、根据8 U.S.C. § 1252(g)，法院无权审理因行政执行驱逐相关程序引发的赔偿请求。三、宣告性诉讼需先行行政救济，原告未完成而被驳回。四、未确定存在最终的可被司法审查的行政行为，亚当斯诉案下不受理。五、诉求缺乏充分法律与事实依据，法院不予支持。",
+      "impact": "直接法律效力：裁决明确国籍传递适用严格的物理居留标准，不承认移民法委员会“建构性居留”例外，限制类似国籍认定案件的司法超越范围。可能影响：对在境外出生且主张血统传递美国国籍者的申请审查更趋严格，防止司法对国籍资格的扩展解释，指导移民相关诉讼及行政程序。",
+      "sourceGrounding": "依据2026年8月14日美国第五巡回上诉法院25-10372及25-10555号合并案官方判决文书，全文详述包括事实梳理、法律分析、合议及合议附带意见。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "960ee64cfe97539e10c6b475",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -3970,6 +4482,22 @@
       "holdingOrRule": "法院裁定，采纳起诉前调查报告中推荐的电子通讯搜查条件，并结合被告具体犯罪事实及背景，认定该条件程序和实质均属合理，不构成程序错误，其合理性在案卷中自明；且针对监督释放者，基于合理怀疑授权电子设备搜查符合相关程序与实质合理标准，无须被告在犯罪中实质使用电子设备为前提。",
       "impact": "【直接法律效力】美第二巡回法院确认在监督释放条件中合理授权电子通讯搜查，即便犯罪未涉及电子设备使用；【可能影响】指导各地法院在类似监督释放案件中如何设定电子通讯搜查条件，强调法院对特殊监督条件拥有广泛酌情权，且合理怀疑为搜查门槛，影响联邦监督释放案件管理实践。",
       "sourceGrounding": "依据美国第二巡回上诉法院2026年8月6日判决《United States v. Browning》（案号24-2861），审理意见全文及判决理由，分析法院对程序及实质合理性标准的适用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "9694c83f1bafe94da642af53",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
+      "chineseTitle": "第四巡回上诉法院关于宾夕法尼亚州对TitleMax南卡罗来纳州子公司行政执法的抽象停庭与案件成熟度分析",
+      "summary": "本案涉及宾夕法尼亚州银行与证券部根据州高利贷法规对南卡罗来纳州TitleMax公司展开行政执法程序，TitleMax主张侵犯《休眠商业条款》权利，联邦地区法院以Younger抽象停庭原则及案件未成熟为由驳回诉讼。第四巡回上诉法院确认行政程序属于拟刑事性质的民事执法范围，宾州对保护消费者与规范贷款业务拥有重要利益，且行政程序为司法性质且提供适当渠道提出联邦宪法异议，因此适用Younger原则联邦法院应避免干预，第二调查传票相关诉求因未呈现即刻损害不成熟，维持驳回决定。",
+      "legalIssue": "联邦法院在宾夕法尼亚州对境外贷款公司提起的行政执法程序中，是否应因Younger抽象停庭原则放弃管辖，以及针对新的调查传票，联邦司法介入的时机是否已成熟。",
+      "holdingOrRule": "（1）鉴于行政执法程序具有拟刑事性质，正在进行，涉及重要州利益，且能充分提出联邦法律抗辩，联邦法院须遵循Younger原则，避免干预该程序；（2）对2024年发出的新调查传票诉求因无当前具体损害，属未成熟，不能受理。故联邦法院驳回相关诉讼请求。",
+      "impact": "直接法律效力：要求联邦法院在州拟刑事行政执法程序中适用Younger原则，避免插手，限制联邦司法对相关行政程序的即时干预。可能影响：对跨州贷款公司面对州级行政执法的防御策略，及如何在适当程序后寻求法院介入提出指引。",
+      "sourceGrounding": "本文分析严格依据美国第四巡回上诉法院2026年8月5日公布判决文[No. 25-2027]，详细阐述Younger停庭原则及案件成熟度审查，及宾夕法尼亚州相关消费者贷款法令和行政程序规定。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4133,6 +4661,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "a063e3c6b82f5f8346bdfd9d",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10045.0.pdf",
+      "title": null,
+      "chineseTitle": "第五巡回上诉法院对Edith Marie Dunn案的上诉审查与驳回决定",
+      "summary": "本案为Edith Marie Dunn针对其刑事案件判决提出的上诉，法院指定辩护律师依据Anders v. California程序提交无理据上诉通知书。经审查，法院认为其上诉无实质性可辩议问题，因此准许辩护律师撤回，驳回上诉。本案显示法院对无实质争议上诉的程序性处理。",
+      "legalIssue": "被告Edith Marie Dunn对刑事定罪判决的上诉是否存在足够的非无理据（nonfrivolous）法律问题以支持继续审理。",
+      "holdingOrRule": "法院根据律师提交的Anders程序意见书以及相关记录认定本案上诉不具备非无理据的法律问题，准许律师退出并依法驳回上诉。",
+      "impact": "直接法律效力主要体现在本案被告上诉被驳回，维持地区法院判决生效；可能影响范围为同类情形下律师依据Anders程序对无理据上诉的处理方式及上诉法院对程序性上诉审查的示范作用。",
+      "sourceGrounding": "依据美国第五巡回上诉法院2026年8月11日公开的无指定出版判决全文，特别是法院对律师提出的撤回动议及Anders程序的应用说明。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "a1c4b077d31b9b22a0ffd8e1",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4197,6 +4741,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "a60aa9f1724c9f00dd46b586",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf",
+      "chineseTitle": "阿德约拉诉美国案联邦第四巡回上诉法院判决解析",
+      "summary": "本案中，原告阿德约拉依据《联邦侵权索赔法》和Bivens诉案提起诉讼，质疑其宪法第八修正案权利被侵害。地区法院认定该案构成新的Bivens情形，拒绝将Bivens救济扩展至本案，原告提出上诉。联邦第四巡回上诉法院经审查无可推翻原判理由，维持地区法院驳回原告救济请求的裁定，确认不扩展Bivens救济。",
+      "legalIssue": "本案法律核心问题为联邦法院是否应在新的Bivens情境下，扩展Bivens诉讼的宪法救济，以适用于依据《联邦侵权索赔法》提出的第八修正案权利侵害指控。",
+      "holdingOrRule": "联邦第四巡回上诉法院确认，涉及第八修正案权利的新Bivens情境中，不适宜扩展Bivens救济，维持地区法院驳回原告请求的决定。官方材料不足，无法确认具体裁判事实细节，仅确认法律原则和裁判结论。",
+      "impact": "此判决直接法律效力体现在限制联邦侵权下，针对第八修正案权利主张中扩大Bivens诉讼救济的可能性，影响范围包括未来类似联邦被告侵犯宪法权利案件的诉讼策略。可能影响联邦被告面临的诉讼风险以及原告寻求宪法救济的途径选择。",
+      "sourceGrounding": "依据美国联邦第四巡回上诉法院2026年8月5日未公布的官方判决文件（https://www.ca4.uscourts.gov/opinions/241244.U.pdf）直接解析裁判结论及法律适用，未使用任何商业法律摘要。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "a6b6f91a71ae458c4a5719ac",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4210,6 +4770,38 @@
       "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。",
       "impact": "该修正意见直接适用于本案文书文本的准确性修正，无其他明确直接法律效力。可能影响法庭文书文本规范性及类似案件文书校订标准。",
       "sourceGrounding": "依据美国联邦第一巡回上诉法院发布的2026年7月7日意见书及其随后公开的修正（errata）表。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "a7edaf5e4d2edb2d90693231",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251730.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251730.P.pdf",
+      "chineseTitle": "PSEG Renewable Transmission LLC诉产权所有人案——电力传输项目勘测访问权初步禁令案",
+      "summary": "本案涉及PSEG公司为申请马里兰州公共便利与必要证书（CPCN）依法进入私人土地进行勘测的权利。联邦第四巡回上诉法院确认，PSEG作为申请联邦公共事业监管的主体，具有根据马里兰州《不动产法》第12-111条在获得CPCN前进入私人土地进行必要环境和社会经济影响勘测的权利。法院认为若强制要求先取得CPCN再进行勘测，将导致立法宗旨无法实现，阻碍电力基础设施建设，且PSEG若不能及时进入土地勘测，可能遭受不可弥补的经济损失，因此授予了初步禁令，允许其进入相关地产完成勘测工作。",
+      "legalIssue": "PSEG是否在获得公共便利与必要证书（CPCN）前，依据马里兰州《不动产法》第12-111条，拥有作为具有征用权力的机构进入私人土地进行勘测的权利？",
+      "holdingOrRule": "根据马里兰州法律及立法目的，具备征用权力的实体为确保CPCN申请顺利完成，有权在获得CPCN前进入私人土地进行环境与社会经济影响的现场勘测，且PSEG通过州相关部门指令获得此项权利。强制先取得CPCN才允许访问土地将使法规整体不具可行性。",
+      "impact": "直接法律效力：确认申请公共便利与必要证书过程中，可提前取得征用权力以进行必要勘测；可能影响：为电力传输等大型公共基础设施项目的许可审批流程提供法律依据，可能推动项目建设进度，广泛影响类似联邦公共事业监管下的项目申请主体及马里兰州相关土地所有权者之间的权利义务关系。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年判决文书全文，案件名称PSEG Renewable Transmission LLC诉产权所有人，内容详见https://www.ca4.uscourts.gov/opinions/251730.P.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "a82fe8af16ce6fcb798542f7",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf",
+      "chineseTitle": "第四巡回上诉法院判决：LLC成员无权个人起诉公司权利归属之诉讼",
+      "summary": "本案中，Bayramov兄弟作为Total Auto Financing LLC的成员，针对第三方债权人与贷款服务商提起诉讼，主张个人权益受侵害。然而法院认定此类权利应属于LLC公司本身，成员无权以个人身份直接主张涉及公司的债权及责任争议。法院区分了“当事人资格”（claim-ownership）与宪法诉讼资格（Article III standing），强调前者为实体权利归属，属于实体法问题，非司法管辖权问题。Bayramov未能证明具备代表公司提出派生诉讼的法定程序，法院依法驳回其诉讼请求，维持破产资产由托管人管理，维护债权人优先权。",
+      "legalIssue": "LLC成员是否拥有以个人身份直接起诉第三方、主张针对给公司造成损害的权利，及其与公司权利归属及破产法中债权优先权的关系。",
+      "holdingOrRule": "法院确认，LLC成员不能以个人身份直接主张属于LLC公司的债权和权益，相关诉讼权利属于公司资产，进入破产程序时归属于破产托管人非法人成员。成员如欲起诉须满足衍生诉讼等法定程序，未满足者诉讼应被驳回；此外，所谓“当事人资格”属实体法问题，非联邦宪法诉讼资格。",
+      "impact": "直接法律效力：限制了LLC成员针对公司损失直接提起诉讼的权利，明确破产程序下权利归属原则；可能影响：引导债务人与企业成员理清权利边界，强调遵循公司治理和破产程序，避免个人诉讼绕过公司和托管人。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月5日判决全文（编号25-1490和25-1501），特别是判决中就LLC成员诉讼权利归属、区分实体法权利与宪法诉讼资格以及破产资产管理的原则裁示。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4373,6 +4965,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "b90e45dd3565e4328d97b6b9",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/244387.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/244387.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于圣克拉克斯堡联邦地区法院判决威廉·凯文·格洛弗涉贩毒案的裁决",
+      "summary": "美国第四巡回上诉法院对威廉·凯文·格洛弗的多项贩毒罪名判决予以确认。在四天审理后，陪审团认定其涉及芬太尼和甲基苯丙胺的共谋和销售等多项罪名。上诉法院驳回了被告关于证据排除、自行辩护、陪审团指示以及新审判请求的异议，且认定判决和327个月刑期合理。法院强调辩护律师未能具体反驳证据排除建议，及潜在陪审员的声明并不对陪审团造成实际偏见，维持初审判决。",
+      "legalIssue": "（1）被告动议排除证据是否被错误拒绝？（2）被告自行辩护动议是否被错误拒绝？（3）是否应指示陪审团被告不能与政府特工共谋？（4）潜在陪审员声明是否导致要求新审判的合理性？（5）被告判刑是否合理？",
+      "holdingOrRule": "法院确认：(1) 被告未就证据排除提出及时具体反对，视为弃权；(2) 被告自行辩护请求被正确拒绝；(3) 考虑到证据和指示整体，拒绝政府特工共谋指示不构成错误，因有充分证据显示与他人共谋；(4) 潜在陪审员表达经历未导致实际陪审偏见，法院拒绝新审判动议；(5) 判刑程序和实体均合理，327个月刑期维持。",
+      "impact": "本裁决直接法律效力局限于案件当事人及管辖范围内类似案件，强化了联邦毒品案件中举证责任、程序权限以及陪审团指示的司法标准；可能影响其他联邦巡回法院审理类似涉及政府特工共谋指示、潜在陪审员偏见及辩护权限制案件的司法实践。",
+      "sourceGrounding": "依据美国第四巡回上诉法院公布之未发布判决书（2026年8月6日）全文，包含判决理由及对各项上诉指标评析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "b9b82fcbf9bba7d48549e492",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60197.1.pdf",
+      "title": null,
+      "chineseTitle": "商讨农场产权纠纷及诉讼费用裁定案",
+      "summary": "原告Frank及Dorothy Merchant将农场房产转予兄弟Billy以规避债权人，后诉讼欲讨回。诉讼间，原告多次提出无事实基础且自相矛盾之主张，且未诚意和解。地方法院认定原告“手中有污点”行为阻碍其权益，判被告胜诉并判付诉讼费。第五巡回上诉法院确认原审法院依据密西西比诉讼费用法案认定诉讼无理，支持费用判决，但撤销原审判决中未及时提出的上诉阶段费用判决。此案强调诉讼行为诚信及费用请求时效。",
+      "legalIssue": "当诉讼当事方基于错误或恶意诉讼行为申请诉讼费用时，法院该如何适用《密西西比诉讼费用法案》判定费用是否应被授予及请求费用的期限要求。",
+      "holdingOrRule": "法院裁定：因原告诉讼无实质正当理由，且在诉讼过程中存在事实虚假、证据不足及不诚信行为，应依据密西西比诉讼费用法案判决其承担被告合理律师费用；但原告未在法定期限内申请上诉阶段诉讼费用，故撤销该部分费用判决。",
+      "impact": "直接法律效力：明确诉讼一方恶意、无理取闹诉讼可被判令支付律师费。案件中强调诉讼费用请求必须遵守法定期限，逾期不予支持。可能影响：引导此辖区内诉讼各方提高申诉实质依据及诚信标准，避免滥诉并规范诉讼费用申请程序。",
+      "sourceGrounding": "依据2026年美国第五巡回上诉法院未发布意见书（案号25-60197）全文判决书中相关事实陈述及判决理由。详见https://www.ca5.uscourts.gov/opinions/unpub/25/25-60197.1.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "ba127bd0ca22d102c57c62e6",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4389,6 +5013,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "ba9af05c933c93aa3f4cd2b2",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251350.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251350.P.pdf",
+      "chineseTitle": "凯利诉Altria客户服务有限公司等案——关于退休计划利益索赔、受托责任及文件披露的联邦上诉法院判决",
+      "summary": "本案涉及退休计划参与者凯利因未能及时兑现其401(k)账户而提起诉讼，指控计划管理方及记录保管方在交易时间预期及信息披露上的失误。法院依据ERISA法，分别审查了利益否认、受托责任违约及文件提供义务三项主张。法院认为，管理委员会行使自由裁量权合理，拒绝凯利利益请求；记录保管方非计划受托人，且无违约行为；但行政服务协议属计划运行文件，计划管理方应依法提供副本，相关罚款应予以重新评估，由此部分撤销下级法院裁定并发回。",
+      "legalIssue": "一、退休计划管理员拒绝利益请求是否构成滥用自由裁量权？二、记录保管方是否构成ERISA受托人并违反受托责任？三、行政服务协议是否属于退休计划“设立或运行”文件，管理方是否有义务提供？",
+      "holdingOrRule": "法院确认：1.管理委员会自由裁量权行使合理，拒绝利益请求不构成滥用；2.记录保管方虽提供信息，但未履行任意自由裁量职能，非ERISA受托人，即便是受托人亦无违约；3.行政服务协议为计划运行文件，管理方违反29 U.S.C. §1024(b)(4)未提供该协议，应予重新审查罚款适用性。",
+      "impact": "直接法律效力：明确退休计划管理方行使利益审查自由裁量权的合理性标准，减少参与者对管理方决定的质疑；澄清非管理方记录保管方的受托责任界限，避免纠纷扩大；明确行政服务协议等第三方服务合同文件属计划运行文件，依法应向参与者公开，提高透明度。可能影响：退休计划设计与管理合同的签订及信息披露流程，促使计划管理人在文件提供及沟通方式上加强规范。",
+      "sourceGrounding": "依据美国第四巡回上诉法院官方判决文书：https://www.ca4.uscourts.gov/opinions/251350.P.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "bc153467fc017ab4ce6b8705",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4402,6 +5042,22 @@
       "holdingOrRule": "纽约州最高法院明确裁定，相关州法及市法不授予个人在警察局对执法活动进行视频录制的权利，故纽约市警察局禁止在其设施内录制视频的政策合法。",
       "impact": "直接法律效力：确认纽约州与纽约市现有录制权法律不涵盖警察局大厅内的执法活动录制，合法化警方禁止录制的政策。可能影响：涉及公共安全、执法监督及公众录制权利的其他类似场所政策制定与裁判参考。",
       "sourceGrounding": "依据美国第二巡回上诉法院2026年8月6日判决文书及纽约州最高法院2026年6月23日最新裁判意见，详见官方判决文档：https://ww3.ca2.uscourts.gov/decisions/OPN/23-7640_2_opn.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "bce26c4b7655b6c5aeb18d99",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/256283.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/256283.U.pdf",
+      "chineseTitle": "联邦第四巡回上诉法院关于提起28 U.S.C. § 2241救济申请及复议动议的上诉裁定",
+      "summary": "本案中，联邦囚犯Tawoine Banks针对美国北卡罗来纳州东区地区法院对其根据28 U.S.C. § 2241条款提出的救济申请及后续复议动议的拒绝，提起上诉。第四巡回上诉法院认定，因Banks延迟提交对该救济申请的上诉通知，故该项上诉不符合程序时限要求，依法驳回。对于复议动议的拒绝决定，法院经审查无可复查错误，予以维持。最终，上诉法院部分维持，下部分驳回。",
+      "legalIssue": "是否因上诉时效未满足而导致对根据28 U.S.C. § 2241救济申请的上诉不可受理，以及对复议动议拒绝的复审标准和结果。",
+      "holdingOrRule": "一、上诉人提交上诉通知超出联邦规则规定的时限，故对拒绝28 U.S.C. § 2241救济申请的上诉应被驳回；二、对地区法院拒绝复议动议的决定经审查无可复查错误，维持原判。",
+      "impact": "直接法律效力：明确联邦囚犯提起28 U.S.C. § 2241救济申请的上诉程序时效要求，强化程序合规性；可能影响：指导下级法院及类似案件对相关复议动议的审查标准及上诉程序管理。",
+      "sourceGrounding": "依据美国联邦第四巡回上诉法院2026年8月10日公布的无编号判决书——Tawoine Banks诉Wardden M.L. King案官方文件。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4517,6 +5173,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "c53337c3dde9a1f89329d6d7",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf",
+      "chineseTitle": "哈斯伯特诉佛罗里达奥特贝克牛排馆案（第四巡回上诉法院，2026年）",
+      "summary": "原告哈斯伯特博士因在佛罗里达奥特贝克牛排馆滑倒受伤提起诉讼。首审因其律师多次不当行为导致法庭宣布审判无效，并撤销该律师的临时执业许可。案件重新提起时，法庭基于其未按时披露专家证言而排除该专家证人作证，并驳回其基于种族歧视排除陪审员的Batson异议。第四巡回上诉法院支持地区法院决定，认定原告无权质疑律师执业许可撤销，专家证言排除合理合法，Batson挑战未成立。最终，陪审团支持被告裁定。",
+      "legalIssue": "（1）原告是否有权就其律师被撤销临时执业许可一事主张程序正义权利？（2）地区法院排除未及时披露的专家证言是否滥用自由裁量权？（3）被告以种族为由使用免陪审权是否违反Batson原则？",
+      "holdingOrRule": "（1）原告未能证明具备第三方诉讼资格，故无权主张律师执业许可撤销违反程序正义；（2）鉴于专家证言披露迟延及案情复杂，地区法院在权衡不当行为、对对方不利影响、威慑必要性及替代制裁可行性后，合理排除专家证言；（3）被告提出年龄、沉默及职业等合法、非歧视性理由，地区法院关于未证实存在种族动机的Batson认定无明显错误。",
+      "impact": "本案裁决直接影响联邦地区法院对临时执业律师行为和资格管理的权力，以及专家证据披露规则的执行力度，强化对违反联邦民事诉讼规则的严肃制裁；同时明确Batson原则在民事诉讼中对免陪审权行使的审查标准，为类似种族歧视指控案件提供判例指导。此判决对联邦诉讼程序及律师行为规范具有直接法律效力，对律师执业资格管理、专家证据申报和陪审员选拔具有示范意义。",
+      "sourceGrounding": "本解析完全依据美国第四巡回上诉法院2026年8月10日公布的官方判决文书，网址：https://www.ca4.uscourts.gov/opinions/251332.P.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "c55027500f36c8311db03194",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4533,6 +5205,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "c7842d433119ad2ba37beb05",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11136.0.pdf",
+      "title": null,
+      "chineseTitle": "美国第五巡回上诉法院关于Greim案的不上诉裁定",
+      "summary": "本案涉及被告Maximus Dean Greim对北德克萨斯联邦地区法院刑事裁决的上诉。被告的联邦公设辩护律师依据Anders和Flores案提出无可争辩问题的无异议报告，且被告未提交回应。第五巡回上诉法院审查后认可律师意见，判定该案无非琐碎的上诉问题，批准辩护律师撤出，裁定驳回上诉。",
+      "legalIssue": "本案核心法律问题为是否存在非琐碎的上诉问题，足以支持被告Maximus Dean Greim对联邦地区法院刑事判决的上诉。",
+      "holdingOrRule": "法院认定律师提出的无异议报告合理且被告未反驳，故裁定不存在支持上诉的实质法律争议，批准律师撤回代理权限，驳回该上诉。",
+      "impact": "本裁决对上诉制度涉及无异议、无实质上诉问题的案件具有示范效应。直接法律效力限于本案及相似案件上诉程序，可能影响联邦刑事案件律师的撤出程序规范和法院审查标准。",
+      "sourceGrounding": "解析依据美国第五巡回上诉法院2026年8月13日发布的关于案号25-11136的官方裁决文件，详见：https://www.ca5.uscourts.gov/opinions/unpub/25/25-11136.0.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "c93ed213b62f8fc892e2e318",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4546,6 +5234,22 @@
       "holdingOrRule": "法院认定阿拉巴马DOC的精神卫生服务严重不足，构成第八修正案禁止的刻意漠视，命令实施系统性永久禁令以纠正其违宪行为。该禁令满足PLRA对救济的必要性、狭义性和非侵扰性标准，属永久禁令且可依据28 U.S.C. §1292(a)(1)上诉。相关监控和责任认定命令与禁令紧密关联，法院行使从属管辖权予以审理。",
       "impact": "【直接法律效力】对阿拉巴马州惩教部门强制执行系统性改进精神医疗的命令，要求改善医疗识别、治疗计划、心理治疗、监控和自杀预防等方面。对相关监控机构建立及运作亦有明确规定，形成全面监管框架。\n【可能影响】为其他州监狱精神卫生服务提供宪法标准参考，有助促进类似诉讼及制度改革，推动惩教系统内精神健康护理的提升和司法监督机制完善。",
       "sourceGrounding": "内容依据美国第十一巡回上诉法院判决全文（USCA11 Case: 22-10292，2026年6月24日公开文件），包括地区法院对精神卫生疏忽事实认定、PLRA救济要求分析、以及上诉权限判断等官方法律文本。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "c94ebf208a86f9c02638fc35",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-30772.0.pdf",
+      "title": null,
+      "chineseTitle": "Elliott案件中关于18 U.S.C. §§ 922(g)(1)和(o)刑事指控与量刑适用的上诉审查",
+      "summary": "Burneal Elliott因违反18 U.S.C. §§ 922(g)(1)和(o)及其他罪名认罪后，上诉挑战922(g)(1)和922(o)条款的宪法性及联邦量刑指南§ 2K2.1(b)(1)(B)的适用。法院依据最新判例Hembree认可922(g)(1)条款对Elliott的不当适用，撤销其该条款指控及相关刑罚，确认922(o)条款合宪，且判决量刑调整错误为无害错误，维持其它判决。案件反映当期第五巡回法院对相关武器罪名宪法解释及量刑细则审查中对程序时效性、相关结构及相关计量错误的处理原则。",
+      "legalIssue": "Elliott针对18 U.S.C. §§ 922(g)(1)和922(o)条款的宪法合规性提出异议，及联邦量刑指南§ 2K2.1(b)(1)(B)中与其火器数量相关的量刑增刑是否适用存在争议。",
+      "holdingOrRule": "法院依据先例判决，撤销922(g)(1)指控因其适用于被告的简单持毒前科属违宪；维持922(o)关于机枪管控合宪判定；并认定量刑增刑适用中可能存在计数误差但属无害错误，故维持增刑。鉴因撤销922(g)(1)指控及其与其他罪名的关联，依法撤销并发回重判第一至三项罪名刑罚。",
+      "impact": "直接法律效力为：撤销Elliott在922(g)(1)条款下的定罪及该部分相关刑罚，重审相关刑罚；确认922(o)条款持续适用不受影响；维持其余判决。此外，该判例明确第五巡回区对同类案件中的宪法审查标准及联邦量刑指南应用范围的司法态度，可能影响未来涉及类似法律条文及程序时效争议的案件裁判。",
+      "sourceGrounding": "依据2026年8月11日美国第五巡回法院未发表意见，案号24-30772，官方PDF全文文件，该案详细判决内容及裁判理由。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4594,6 +5298,22 @@
       "holdingOrRule": "法院判决确认，反垄断原告必须证明“更可能的确实情况下”FDA会提前批准仿制药上市，证据仅能显示“可能”提前审批不足以满足此要求，因此原告缺乏法定的反垄断起诉资格，导致针对Ranbaxy的诉讼失败，且其作为代表人不适合代表类案。",
       "impact": "直接法律效力：确认了反垄断案中原告需证明因被控行为导致实际且确定的市场延迟，强调反垄断诉讼中因果关系和损害的具体要求；可能影响：药品仿制领域相关反垄断诉讼的原告举证标准，提高了诉讼门槛，影响未来类似和解协议的反垄断案件诉讼策略及FDA批准程序的预期分析。",
       "sourceGrounding": "依据美国第三巡回上诉法院在Lipitor Antitrust Litigation案中2026年8月13日公开发布的官方判决文档，特别是法院对原告反垄断诉讼资格（antitrust standing）及FDA批准事实的详细认定和裁判理由。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "cf5b678e3a8674b9cf72e4b9",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于住宅搜查令时效性及关联性认定及排除证据规则的判决解析",
+      "summary": "本案涉及对一份针对玛丽兰州6740 N. Solomons Island Road住宅的无预告搜查令的合法性审查。法院认定，申请搜查令的宣誓书未能充分连接犯罪证据与被搜查住宅，所载事实非直接关联、非新近发生或两者兼具，无法满足第四修正案对住宅搜查令的时效性（timing）和关联性（nexus）要求。因事实缺乏具体且近期的犯罪活动直接证明证据将存在于住宅内，法院判定搜查令不具备实质性可能性的合理依据，不予支持。且执行警察无法合理信赖该搜查令，不能适用良好信赖例外。最终推翻地区法院裁定，撤销定罪，发回重审。",
+      "legalIssue": "申请搜查令所依据的宣誓书是否满足第四修正案规定的针对住宅搜查的时效性和关联性要求，即是否存在连接犯罪活动与住宅的合理推断及证据极有可能存在于住宅的事实，以支撑发出搜查令的实质性可能性。以及执行人员是否可合理信赖可能缺乏合理根据的搜查令而免除排除证据的法律后果。",
+      "holdingOrRule": "法院判决：宣誓书中相关事实非近期发生且未有效连接到6740住宅，无法支撑实质性可能性，有效搜查令要求的时效性与关联性不成立。执行警察对此搜查令的依赖不具客观合理性，良好信赖例外不适用。故推翻地区法院拒绝排除证据的裁决，撤销被告定罪，发回地方法院重新处理。",
+      "impact": "直接法律效力：本判决明确指引第四巡回辖区内对住宅搜查令的时效与关联性审查标准，强化对住宅搜查隐私权保护。可能影响：其他管辖区可参照本案例审理类似搜查令合法性问题，有助于界定搜查令实际依据的时效性及关联性要求，提高执法和司法审查的规范性。",
+      "sourceGrounding": "解析依据美国第四巡回上诉法院2026年8月14日发布的官方判决文件（https://www.ca4.uscourts.gov/opinions/224257.P.pdf），全文详述案情、法律适用及判决理由。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4661,6 +5381,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "d1dfc92bcada583835381098",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50311.0.pdf",
+      "title": "25-50311 Flores v. Perez Aug 14, 2026 Unpublished Opinion PDF",
+      "chineseTitle": "弗洛雷斯诉佩雷斯案（2026年美国第五巡回上诉法院未发布意见）",
+      "summary": "弗洛雷斯指控奥斯汀警察佩雷斯等三名警官在其逮捕过程中使用过度武力，导致严重伤害。地方法院拒绝警官请求合格豁免的简易判决，认为存在重要事实争议，陪审团可能判定警官违反第四修正案保护公民免受过度武力的明确权利。第五巡回法院维持此决定，确认，面对轻罪嫌疑人被动抗拒，警方迅速使用重力和强制动作违宪，警官未能获得合格豁免保护。",
+      "legalIssue": "是否在逮捕过程中，警方对被控轻罪且被动抵抗的嫌疑人使用过度武力，以及被告警官是否享有合格豁免权。",
+      "holdingOrRule": "法院认定，地方法院正确拒绝警官合格豁免判决，因存在事实争议且陪审团可认定警官在使用武力时违反了被告明确享有的免受过度武力权利。尽管对捕获行为存在不同意见，警官在控制地面上的行为（包括推压、膝压及扭动手臂）被认定超出合理范围，违反第四修正案。警官在快速采取武力行动前未充分给予警告或识别身份。",
+      "impact": "本案对警方执行逮捕中使用武力的法律边界有明确指导意义，强调即使面对轻罪嫌疑人，警方亦不得迅速使用严重身体强制动作，确保嫌疑人的宪法权利不被侵犯。直接法律效力适用于第五巡回区内相关案件，可能影响全国范围内处理类似轻罪逮捕使用武力争议的司法评判标准。",
+      "sourceGrounding": "依据2026年8月14日由美国第五巡回上诉法院发布的案件意见《25-50311 Flores v. Perez》，内容详见官方PDF文档https://www.ca5.uscourts.gov/opinions/unpub/25/25-50311.0.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "d38ad3d9c1408306b124550a",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/241523.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/241523.P.pdf",
+      "chineseTitle": "斯图尔特诉GES回收公司案：反报复解雇索赔的判决及分析",
+      "summary": "本案中，非裔员工斯图尔特诉称在GES回收公司遭受种族歧视及反报复解雇。初审法院以其终止系因其对上司使用粗俗语言并表现出所谓“挑衅”行为为由，判决被告GES公司胜诉。但第四巡回上诉法院认为，斯图尔特对其用语和行为的描述与公司陈述存在重大事实争议，GES公司此前对其解雇理由的表述亦不一致，存在欺骗之嫌。法院因此撤销原判，将案件发回重审，强调在反报复解雇诉讼中，原告须证明解雇“因报复”为根本原因，且对雇主理由的真伪有质疑权利。",
+      "legalIssue": "在种族歧视案件中，针对据称因投诉歧视而被解雇的反报复解雇索赔，原告如何证明雇主的解雇理由为虚假掩饰，从而确立反报复的因果关系？",
+      "holdingOrRule": "法院判决撤销企业关于反报复解雇索赔的简易判决，认为存在关键事实争议，包括解雇理由真伪及其是否随着时间变化，原告有权证明雇主理由为掩饰，案件需发回重审。",
+      "impact": "该判决对涉及职场歧视及反报复式解雇的案件具有较强指导意义，提醒法院应全面审视事实证据，保障原告质证权，增强职工在反报复案件中的诉讼地位。判决具有直接法律效力，对第四巡回区法院管辖案件适用；同时可能影响其他辖区类似案件的审理标准。",
+      "sourceGrounding": "解析基于美国第四巡回上诉法院2026年8月13日公开判决意见书全文，详见官方链接：https://www.ca4.uscourts.gov/opinions/241523.P.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "d38c912e95b02cc85abd53c6",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4674,6 +5426,22 @@
       "holdingOrRule": "1. 地方法院法官保持审判公正；2. 地方法官在Batson挑战第三步未进行明确的可信性判断，程序错误；3. 案件发回下级法院进行Batson程序重建或如不可行则重审。",
       "impact": "直接法律效力：督促下级法院在Batson挑战中明确针对每个被排斥陪审员审查辩方理由的真实性，保障陪审团选拔公正。可能影响：增加陪审团挑战程序的规范性审查，强化对种族歧视排斥行为的司法监督。",
       "sourceGrounding": "依据美国第二巡回上诉法院2026年8月7日正式判决全文（案号25-383-cv），并结合案件事实及判决理由撰写。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "d40bb008e53ef29d35a16339",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/244125.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/244125.U.pdf",
+      "chineseTitle": "第四巡回上诉法院关于Hicks与Mendoza电信诈骗案的裁决意见摘要",
+      "summary": "本案涉及两被告Hicks与Mendoza在未受金融顾问资格情况下，以举办成功理财讲座为名行骗，通过虚假文件和错误建议骗取学员资金，导致多名受害者经济严重受损。Hicks自行放弃律师权利法院允许其自辩，其本人主张以主权公民理论为辩护基础。法院审查合格放弃律师权利的合理性，并认定无强制或能力缺失；同时认定被告精神疾病状况不构成审判能力不足。Mendoza提出相关程序和证据异议均被驳回，其超出指南处罚理由充分。法院最终维持两被告的有罪判决及刑罚判决。",
+      "legalIssue": "被告自行放弃律师权利是否有效；法院是否应在未提出请求情况下自行进行被告审判能力评估；被告利用录像证词是否侵犯对质权；有罪判决及量刑依据是否充足合理。",
+      "holdingOrRule": "被告Hicks知情、自愿且明确放弃律师权利，允许其自辩；法院无合理依据须自动启动审判能力评估程序；录像形式的证词使用被告同意且符合法律程序，不侵犯对质权；证据充足支撑电信诈骗有罪判决；量刑上法院充分考量案情并作出合理判决，程序及实体合法。",
+      "impact": "直接法律效力：确认被告可自愿放弃律师权利且须法院审慎确认；法院无义务无因自动启动精神能力评估；确认视频远程证词在被告同意情形下不违反宪法；具体诈骗案件证据充足及量刑合法。可能影响：对涉及精神疾病辩护的审判程序制定指引；对远程证词采纳及使用的司法实践参考；促进审判中被告权利与法庭效率平衡。",
+      "sourceGrounding": "依据美国第四巡回上诉法院未经出版意见，案号24-4125及24-4127，官方网站：https://www.ca4.uscourts.gov/opinions/244125.U.pdf 中的详尽事实与法律分析。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4773,6 +5541,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "dcc66afd104de4932bfb295c",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50811.0.pdf",
+      "title": null,
+      "chineseTitle": "斯平克斯诉德克萨斯监狱健康服务局等案第五巡回上诉法院未发表意见",
+      "summary": "原告南希·杰克逊·斯平克斯自诉上诉，针对地区法院支持被告健康服务机构被告的简易判决提出异议。第五巡回法院认为，原告作为无律师代表的当事人，应当针对地区法院判决提出具体法律论证，但其未在上诉主文中质疑判决，构成放弃上诉理由。法院因此维持地区法院判决，拒绝原告诉求。",
+      "legalIssue": "无律师原告是否因未在上诉主要论点中提出具体异议而放弃对地区法院简易判决的挑战。",
+      "holdingOrRule": "当事人若未在上诉主文中提出反对理由，将视为放弃该异议。即使为无律师当事人，亦须提出具体法律论证以保留上诉权利。",
+      "impact": "直接法律效力在于加强对无律师当事人上诉书写义务的强调，提醒自诉上诉必须明确呈现异议，否则视为放弃。可能影响自诉及无律师诉讼当事人的上诉策略与案件准备。",
+      "sourceGrounding": "依据《25-50811号案》中第五巡回上诉法院8月11日未发表判决意见全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "ddf4c5f9184302c52d01e801",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10428.1.pdf",
+      "title": null,
+      "chineseTitle": "约翰·安东尼·卡斯特罗税务欺诈案联邦上诉判决分析",
+      "summary": "约翰·安东尼·卡斯特罗因涉嫌协助准备和提交虚假税务申报被判犯33项罪名，判处188个月监禁。上诉中部分申诉因缺乏管辖权被驳回，其余申诉被维持。法院确认：对于辩方关于新审判、庭审记录修改申请的管辖权有限；辩方未能证明政府违反布雷迪原则（Brady）并引发新审判；其本人通过律师同意的证据承认放弃了对质权；对加重刑罚中组织领导角色及妨碍司法两项加刑有充分证据支持。最终维持定罪及量刑。",
+      "legalIssue": "本案核心法律问题涵盖：上诉法院对辩方申请纠正庭审记录及新审判请求的管辖权范围；布雷迪原则下政府是否存在证据隐瞒；被告是否有效放弃对质权以承认部分证据；以及量刑中是否适当适用领导角色及妨碍司法的加刑规定。",
+      "holdingOrRule": "法院裁定：1）对庭审记录修改请求无管辖权；2）政府未违反布雷迪原则，未须新审判；3）辩方书面及庭审中未反对律师同意的证据承认，故放弃对质权；4）组织领导及妨碍司法的加刑有合理事实支持，法院未构成明显错误；5）驳回除庭审记录修改外的上诉请求，维持188个月刑期。",
+      "impact": "直接法律效力：维持被告税务欺诈定罪及量刑，确认加重刑罚适用标准。可能影响：对税务相关刑事案件中证据隐瞒、对质权弃权及量刑加重因素评估提供判例参考，尤其涉及复杂组织领导和妨碍司法行为的案例。",
+      "sourceGrounding": "根据美国第五巡回上诉法院2026年8月11日发布的裁判意见全文，包含案件事实、法院审理理由及判决书（官方链接：https://www.ca5.uscourts.gov/opinions/unpub/26/26-10428.1.pdf）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "de33db9ff6d8159f8890b116",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4802,6 +5602,22 @@
       "holdingOrRule": "法院确认克鲁兹关于请求的诉讼事实基础已不存在，故诉讼请求无效。决定认定克鲁兹为‘胜诉方’，但‘胜诉方’资格不足以对抗诉讼请求无效的裁决。故维持地区法院对所有诉求的驳回。官方材料节选内容充分支持该裁判结论。",
       "impact": "直接法律效力：该判决确认在相关扣款行为停止且赔偿资金已归还情况下，相关诉讼请求将因无效被驳回，影响类似宪法权利诉讼案件的实质审理。可能影响：法院对‘胜诉方’资格的解释可能影响未来涉及律师费申请的案件策略及法院对诉讼资格的认定。",
       "sourceGrounding": "依据美国第一巡回上诉法院2026年裁判意见全文，特别参照上诉法院对地区法院判决的讨论及最终维持裁决的部分。官方原文链接：https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "e04f86a3b3db9c14e1f6698b",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50705.0.pdf",
+      "title": null,
+      "chineseTitle": "非法重新入境案中判刑程序及合理性审查",
+      "summary": "本案涉及被告Ricardo Avila-Cruz因违反8 U.S.C. § 1326 (a)及(b)(2)非法重新入境美国，被判处超过适用刑期指引范围的72个月监禁及三年监督释放。被告上诉主张判刑程序存在错误（未充分说明加刑理由）及量刑不合理，并质疑对可驱逐外国人是否应基于个案具体情况决定监督释放期限。第五巡回上诉法院认为，地区法院适当考虑了18 U.S.C. § 3553(a)因素并给出充分理由，未构成程序或实体上的滥用自由裁量权。法院亦认可在特定案情下可对可驱逐外国人判处监督释放。最终维持原判。",
+      "legalIssue": "非法重新入境案中法院在量刑时是否存在程序错误及实体不合理，特别是未充分说明加刑理由及对可驱逐外国人适用监督释放是否合法。",
+      "holdingOrRule": "法院认定地区法院未违反程序要求，其量刑理由直接关联18 U.S.C. § 3553(a)因素且充分明确，因而不存在程序错误；同时，综合考量案情，法院未滥用自由裁量权判处超过指引的刑期；对于监督释放，法院确认可驱逐外国人虽可免于此项，法院仍可基于具体案情判定其必要性。",
+      "impact": "直接法律效力：本裁判明确了地区法院在量刑时对加刑理由的说明义务，以及对可驱逐外国人判处监督释放的自由裁量权范围，对同类非法重新入境案件具有约束力。可能影响：该判决对于联邦下级法院如何均衡考虑18 U.S.C. § 3553(a)因素、量刑合理性与监督释放适用提供指导，影响类似案件的量刑实践及上诉审查标准。",
+      "sourceGrounding": "依据美国第五巡回上诉法院2026年8月11日非公开判决书（案号25-50705）内容及引用的USS § 3553(a)条文，结合相关判例United States v. Fraga, Key及Dominguez-Alvarado案。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4837,6 +5653,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "e305d080aafe4e22347503a7",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
+      "chineseTitle": "第四巡回上诉法院关于判刑指南范围内事实认定与陪审团权利的裁定",
+      "summary": "本案中，上诉人Tyree May质疑地区法院对两项量刑指南加重情节的事实认定，并主张该事实应由陪审团根据《Apprendi案》审理。然而，第四巡回上诉法院依据《Apprendi案》及相关案例法，确认量刑指南范围内的事实认定可由法官根据证据优势标准裁定，且该判罚仅为建议性，未超出陪审团裁决的法定刑限。法院因而维持地区法院判决，认定事实认定合理且不违反宪法规定。",
+      "legalIssue": "法院在确定联邦刑事案件中量刑指南范围时，是否必须将加重刑罚因素的事实由陪审团裁定，如若该事实仅影响建议性量刑区间且未超出法定最高刑？",
+      "holdingOrRule": "依据《Apprendi v. New Jersey》等联邦最高法院判例，事实若仅用于调整指导性量刑范围且未超过陪审团裁定的法定最高刑限，法官可基于更可能的证据标准自行认定该事实，不违反宪法陪审权保障。",
+      "impact": "直接法律效力：确认在第四巡回法院辖区内，陪审团对量刑因子的认定限制于法定最高刑，法官可认定影响指导性量刑区间的事实。可能影响：其他联邦辖区及后续涉及量刑指南事实认定与陪审团权利的案件适用类似分析，但无全国强制约束力。",
+      "sourceGrounding": "解析依据美国第四巡回上诉法院2026年8月6日未发表意见书（案号24-4632），全文官方链接：https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "e3a60921fbea5e9b5c71352b",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4850,6 +5682,22 @@
       "holdingOrRule": "法院判定，FDCA第379r条明示排除因州法要求与联邦药物标签及广告规定不同或不一致而产生的诉讼请求；口服PE药品制造商遵守FDA标签要求，其标签不得因标识有效而被州法视为误导；基于未披露PED药无效信息的州法请求属联邦排除范围；但涉及“最大剂量”及通过FDA新药申请批准的品牌药标签相关州法请求不受本条款排除；消费者基于RICO法无法律诉讼资格。",
       "impact": "直接法律效力：明确指出符合FDA标签规定的非处方药进口、销售商和制造商免于绝大多数州误导性标注诉讼；限制基于FDA未批准标签内容临时增加警示的能力；明确消费者未获联邦RICO诉讼资格。可能影响：促使制药行业及零售商调整标注策略，加强对FDA规章的遵循；影响类似诉讼的立案数量及维权路径；引发对最大剂量及新药申请药品标签纠纷的进一步关注和审理。",
       "sourceGrounding": "依据《美国上诉法院第二巡回庭2026年口服伪麻黄碱案24-3296-cv》官方判决书（https://ww3.ca2.uscourts.gov/decisions/OPN/24-3296_opn.pdf），该案详细论述FDCA监管架构、FDA标签审批及排除程序，以及法院对州法诉讼权利与RICO诉讼资格的评析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "e4335980cc0e24dd7fae31e4",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251848.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251848.P.pdf",
+      "chineseTitle": "辛辛那提保险公司诉刘易·欧文斯一案（第四巡回上诉法院，2026年）",
+      "summary": "本案中，辛辛那提保险公司请求联邦地区法院声明其对其被保险人雇员韦恩·亨特在南卡罗来纳州错失死亡诉讼中，无辩护或赔偿义务，因其未及时收到诉讼通知且因此遭受实质性损害。州法院已对亨特作出缺席判决，亨特随后申请撤销该判决未果。联邦法院否决原告抗辩人的延期申请及反诉要求，并在未迟延审理情况下授予保险公司简易判决。第四巡回上诉法院确认联邦法院对宣告判决的管辖、公正审理无误，且联邦交管法MCS-90附录仅适用于保险单中明确定名的被保险人，非案涉亨特个体，被保险人与该附录义务无涉。判决驳回申诉，维持保险公司无义务辩护或赔偿。",
+      "legalIssue": "保险公司是否因未及时收到诉讼通知且遭受实质损害，而无义务为其非签名被保险人员工辩护或赔偿；联邦MCS-90附录是否适用于未被保险单明确定名的被保险员工，从而承担赔偿责任；联邦地区法院是否应因州法院后续程序待决而暂停审理。",
+      "holdingOrRule": "1. 保险公司未被及时通知导致实质性损害时，无义务为相关诉讼作出辩护或赔偿。2. 联邦法规规定MCS-90附录覆盖仅限于保险单中明确定名的机动车承运人（即被保险人），不适用于未在保险单中明确定名的员工。3. 联邦地区法院对宣告判决具备宪法和审慎管辖权，无需因州法院后续未决程序暂停审理。",
+      "impact": "直接法律效力范围：对涉案保险合同约定的被保险人范围明确，限制MCS-90附录义务仅涵盖明确定名机动车承运人，影响类似保单和附录赔偿责任界定。可能影响：对联邦法院处理与州法院相关诉讼程序交叉的宣告性判决案件司法管辖权行使，以及保险公司在被诉前未及时发现诉讼时的抗辩权利认定。",
+      "sourceGrounding": "依据美国第四巡回上诉法院发布的正式判决意见书，官方链接：https://www.ca4.uscourts.gov/opinions/251848.P.pdf",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -4965,6 +5813,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "e8e4dfc0cfe72383fff2570a",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251975.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251975.P.pdf",
+      "chineseTitle": "特里姆布尔诉Entrata, Inc.案：在线租金支付门户条款中单方面变更条款导致仲裁协议无效",
+      "summary": "本案中，Entrata公司运营的在线租金支付门户要求用户支付便利费并接受条款。原告以代理身份提起诉讼，指控Entrata未经许可收取便利费。Entrata请求强制仲裁，地区法院以仲裁条款因单方面变更条款允许Entrata无通知修改条款而缺乏对价，构成单方面承诺而无效，拒绝强制仲裁。第四巡回法院维持地区法院判决，认定根据马里兰法，单方面变更条款及缺乏事先通知使仲裁条款承诺虚幻，故合同无效。",
+      "legalIssue": "仲裁协议是否因包含授予一方单方面、更改合同条款的权利且无事先通知义务的变更条款，导致承诺虚幻而缺乏对价，从而无效？",
+      "holdingOrRule": "依据马里兰合同法，合同中允许一方无通知单方面随时修改条款的变更条款，导致该方承诺成为虚幻承诺，缺乏法律约束力，因而仲裁协议无效，法院拒绝强制执行该仲裁约定。",
+      "impact": "【直接法律效力】本判决对涉及单方面变更条款的在线服务合同仲裁协议的效力认定具有约束力，特别适用于马里兰州及同类法律原则适用地区。【可能影响】在线平台制定用户协议中变更条款和仲裁条款设计，推动提高修改合同条款的通知和接受标准，影响广大用户和相关商业实体。",
+      "sourceGrounding": "依据美国第四巡回上诉法院2026年8月11日公布案号25-1975的判决全文，该判决对马里兰州适用合同法原则、仲裁协议效力以及“虚幻承诺”法律界定进行了详细阐述。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "e91381b6e529fcf03282777e",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf",
+      "chineseTitle": "艾肯斯诉美国康宝莱公司案——第四巡回上诉法院摘要判决",
+      "summary": "本案中，原告艾肯斯对其前雇主康宝莱国际公司提起基于42 U.S.C. § 1981的歧视及报复诉讼。地区法院授予被告简易判决，认定原告未能提出实质性事实争议上诉请求即被驳回。上诉法院经审查称，无论采用McDonnell Douglas负担转移法框架还是依据§ 1981条文，原告均未证明存在关键事实争议，故维持简易判决。合议庭成员Quattlebaum法官另持一致意见，重申其对McDonnell Douglas框架的批评。",
+      "legalIssue": "本案核心法律问题为：在42 U.S.C. § 1981歧视与报复诉讼中，原告是否提出了足以支持继续诉讼的实质性事实争议？法院是否正确适用McDonnell Douglas负担转移框架及相关证据规则？",
+      "holdingOrRule": "法院判决支持被告被授予简易判决，确认原告未能就歧视和报复指控提出足够的实质性事实争议以支持其诉讼请求。法院采用McDonnell Douglas框架或直接依据§ 1981条文均认可该结论。Quattlebaum法官尤其指出McDonnell Douglas框架在司法实践中存在限制性和复杂性。",
+      "impact": "该判决对基于42 U.S.C. § 1981提起的就业歧视及报复诉讼中的事实评估与证据标准具有直接指导意义。判决明确了申请简易判决的条件，强调原告必须呈现实质性事实争议，否则诉讼难以继续。Quattlebaum法官的意见或对未来该框架的批评及改革呼声产生间接影响。",
+      "sourceGrounding": "本解析依据美国第四巡回上诉法院2026年8月5日公布的未发表意见（案号25-1285）及法官Quattlebaum的附带意见，原文链接https://www.ca4.uscourts.gov/opinions/251285.U.pdf。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "e9d1350cccc902aa411755e1",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -4997,6 +5877,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "ed091abbad9b8847ea2a3b18",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院判决：威尔德尔诉北卡罗来纳州皮特县种族歧视诉讼案",
+      "summary": "威尔德尔作为北卡罗来纳州皮特县首位黑人县律师，被县委会解雇后起诉，指控解雇因种族歧视。法院审理其依据《民权法案》第七章及联邦法§1981及§1983提出的控诉，认定原告未能提供足够事实支持因种族歧视而遭终止雇佣的合理推论，尤其未证明个别管理者主导决策的角色，也缺乏对县政府存在歧视政策或习惯的具体指控，因此支持下级法院以程序规则驳回其所有诉讼请求。",
+      "legalIssue": "案件核心法律问题为：原告是否提出了足够有事实根据的指控，证明其就业终止源于种族歧视，进而符合《民权法案》第七章及42 U.S.C. §§1981和1983所要求的合法救济条件？",
+      "holdingOrRule": "法院判决维持驳回，认定原告未能提出足够具体事实显示被告存在种族歧视动机及决策依据，无论是单一管理者“山猫爪”理论下的责任归属，还是对县政府种族歧视政策或习惯的合理推测，均缺乏相关事实支持，故原诉求不具备合理诉讼基础，依法予以驳回。",
+      "impact": "本判决对地方政府及雇员之间涉及种族歧视雇佣争议的诉讼具有指导意义，强调单凭概括性、推测性和管理分歧事实不足以构成种族歧视诉讼合理依据，促使原告在提起此类诉讼时必须提交具体且充分事实证明歧视动机。此判决具有直接法律效力，对第四巡回法院辖区内类似案件具有约束力。同时可能影响其他联邦法院对类似案件证据要求的理解和判断。",
+      "sourceGrounding": "本解析基于美国第四巡回上诉法院2026年8月5日发布的未公开判决书（案号25-1077）全文，包含对案件事实、诉讼过程、法律适用及法院裁判理由的综合分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "eebfc755aba4914b446fac8f",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -5010,6 +5906,38 @@
       "holdingOrRule": "法院认定单次邮件损坏不足以构成违宪言论审查；诉讼阻止原则适用，因先前案件与现案具有相同当事人、相同诉因及最终实质判决，现诉讼请求被宣告不予支持。",
       "impact": "直接法律效力为驳回本案所有诉求，确认诉讼阻止原则适用于多次邮件处理争议案件中。可能影响后续涉及监狱邮件管理的申诉案件，对于重复相似事实诉求的受理提供示范。",
       "sourceGrounding": "依据美国第三巡回上诉法院2026年判决文书，案号25-3239，判决详见官方PDF文档及判决内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "ef1d7cbaa85f07527beb2c13",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30135.0.pdf",
+      "title": "25-30135 Brown v. Wallace Aug 14, 2026 Unpublished Opinion PDF",
+      "chineseTitle": "布朗诉华莱士案：关于警方无证剥光及体腔搜查的合格豁免审查",
+      "summary": "此案涉及三名巴吞鲁日警察对布朗女士实施无令状的搜车、剥光及体腔搜查，布朗控告其侵犯第四修正案权利。上诉法院确认原审拒绝免诉请求合法，认为现有投诉材料不足以详尽说明搜查及逮捕时的合理怀疑及依据，需限于合格豁免问题展开巡查。法院明确，警察进行剥光及体腔搜查时，除非将被拘留者置入一般监狱人口，至少应基于合理怀疑其藏有武器或违禁品，否则构成违宪。由于具体事实不明确，暂时拒绝警察的合格豁免主张，发回下级法院局限发现后审理。",
+      "legalIssue": "无令状逮捕、搜车及对被拘留者实施剥光和体腔搜查涉及的合理怀疑和合格豁免的认定标准，以及警察实施此类搜查时所需的明确法律依据是否已充分明确。",
+      "holdingOrRule": "法院认定，针对被拘留人进行剥光及体腔搜查，除普遍羁押于一般监狱人口情况外，警方须有针对藏匿武器或违禁品的合理怀疑方可实施。案件初步事实不足以支持或驳回警方合格豁免请求，故暂拒绝免诉申请，限于合格豁免问题开展限制性发现并继续审理。",
+      "impact": "该判决直接法律效力限于涉案三名警官个人权利豁免审查，明确合理怀疑为进行高侵入性剥光及体腔搜查的法定门槛，对地方警察局制定搜查程序政策具有示范意义，或影响类似案件对合理怀疑标准的司法适用与合格豁免抗辩的处理规则。",
+      "sourceGrounding": "依据美国第五巡回上诉法院2026年8月14日Brown v. Wallace一案官方公开判决书全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "ef36cf43c62ef721e33f5a21",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-50246-CV0.pdf",
+      "title": null,
+      "chineseTitle": "德州参议院法案1号（S.B. 1）选举安全法案的联邦上诉法院判决解析",
+      "summary": "本案涉及德州2021年通过的旨在防止选举舞弊、保障选票安全的S.B. 1法案，多项规定被原审联邦地区法院认为违反美国残疾人法案（ADA）及1973年康复法案，颁布永久禁令。第五巡回上诉法院否定该判断，认为原告缺乏诉讼主体资格且没有充分法律依据支持其残疾歧视主张，撤销永久禁令。法院强调选举服务权益主要由州及地方选举机构提供，检察官仅负责执法，不构成对残疾选民的直接服务提供者，因此不构成该法律下的歧视责任。该判决体现司法对立法选举安全举措的支持及对诉讼主体资格的严格把控。",
+      "legalIssue": "德州S.B. 1法案中关于邮寄选票身份验证、选民协助及补偿限制条款是否违反美国残疾人法案（ADA）及1973年康复法案，且原告是否具备合适的诉讼主体资格（包括协会诉讼资格和组织自身诉讼资格）以挑战相关条款。",
+      "holdingOrRule": "法院驳回原告对身份验证、选民协助及补偿限制规定的挑战，认定原告未能证明其成员存在实质性未来伤害风险，缺乏诉讼资格。即使原告具有诉讼资格，该等规定也不构成针对残疾选民的歧视，因地方检察官仅执法且非公共服务的“提供方”，不负有残疾歧视责任。法院撤销了联邦地区法院针对九项S.B. 1条款的永久禁令。",
+      "impact": "直接法律效力：撤销了对德州S.B. 1法案关键条款的联邦永久禁令，允许州政府继续实施相关选举安全措施。可能影响：本判决强化州对抗选举舞弊的立法权威，收紧挑战选举法规的诉讼障碍，影响类似诉讼对选举法案的审查标准。",
+      "sourceGrounding": "全文依据2026年8月12日美国第五巡回上诉法院官方判决文书（案件编号25-50246）分析，该文书汇集了案件起诉、审理及判决的详细事实、法律辩论及法院裁判理由。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
@@ -5045,6 +5973,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {
+      "recordId": "f23e6d86e93c6a3d7f2bc305",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/231078R1.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/231078R1.U.pdf",
+      "chineseTitle": "第四巡回上诉法院关于B.P.J.诉西弗吉尼亚州教育委员会案的裁定",
+      "summary": "本案涉及跨性别女性学生B.P.J.挑战西弗吉尼亚州教育委员会关于体育参与的政策，诉讼经过最高法院发回重审，第四巡回上诉法院最终维持初审法院判决，支持州教育委员会的政策安排。法院的裁决确认了州在制定有关学生体育参与规则时的权利，尤其涉及跨性别学生的比赛资格界定。",
+      "legalIssue": "本案核心法律问题为：州教育委员会制定的关于跨性别女性学生参与女子体育竞赛的政策是否合法，是否违反相关联邦法律或宪法权利。",
+      "holdingOrRule": "第四巡回上诉法院确认原审判决，支持被告西弗吉尼亚州教育委员会关于跨性别学生体育参与的政策，判决维持原判。官方材料不足，无法进一步详细确认具体裁判理由。",
+      "impact": "该判决对西弗吉尼亚州及其教育系统直接具备法律效力，确认了州政府在此类体育参与政策上的权利与权限。此判决可能对其他州相关政策制定和类似案件产生影响，特别是在跨性别学生体育参与的法律争议领域。",
+      "sourceGrounding": "依据2026年8月13日美国第四巡回上诉法院官方公开判决文档。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
       "recordId": "f299274467bd88cf34dd9e54",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "US_CIRCUIT",
@@ -5058,6 +6002,22 @@
       "holdingOrRule": "1. 联邦法院对原告诉求不应基于Younger原则弃权，因原告诉求非直接要求禁止或阻碍正在进行的州刑事起诉。2. 第六修正案权利自初步提审时附着，但初步提审非要求律师陪同的关键阶段，故该阶段缺乏律师不构成违反第六修正案。3. 行政法官应依宾夕法尼亚刑事诉讼规则523考量所有相关因素（包括支付能力）设置保释金，但联邦法院可审查该程序合宪性。",
       "impact": "直接法律效力：联邦法院有权审理涉及保释金设置和初步提审程序宪法合规性的诉讼，且第六修正案不要求初步提审必须提供律师陪同。可能影响：宾夕法尼亚及类似司法辖区的保释金设定程序将面临更严格合宪性审查，促进司法透明和保护被告权利。对州级保释程序的调整和改革提出联邦宪法角度依据。",
       "sourceGrounding": "依据美国第三巡回上诉法院2026年判决意见（Gregory Hartmann v. Brian Chudzik，案号25-2762），判决全文详细阐述初步提审程序、保释金规则（宾夕法尼亚规则523）、第六修正案权利附着与关键阶段分析及Younger弃权原则适用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
+    },
+    {
+      "recordId": "f3cce3263d7683f03f7bc076",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254663.U.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/254663.U.pdf",
+      "chineseTitle": "美国第四巡回上诉法院关于被告违反监管释条件及持枪新罪的判决",
+      "summary": "被告Cortez Ireland在服监管释期间射击警车，因非法持有枪支被指控新罪名，并承认违反监管释条件。地区法院判处新罪165个月监禁，监管释违反刑期24个月，两刑期连续执行。第四巡回法院确认，即便地区法院在量刑指导规则应用上可能存在错误，该错误属无害错误，并且地区法院的量刑在实质上是合理的。此外，法院支持地区法院决定使两段刑期连续执行的判决，符合联邦量刑指导原则和案件事实。",
+      "legalIssue": "法院是否在量刑时正确应用联邦量刑指导规则，以及是否可将监管释违反刑期与新判刑连续执行？",
+      "holdingOrRule": "1. 即使地区法院在指导规则的交叉引用应用上可能存在错误，若该错误未影响最终实质合理判刑且地区法院声明判刑不变，该错误可视为无害。2. 联邦量刑指导规则建议对新罪与监管释违反判刑应连续执行，法院支持该原则及地区法院依据案件事实做出的连续执行决定。",
+      "impact": "直接法律效力于第四巡回法院辖区内涉及监管释违反及持枪新罪的量刑案件。可能影响其他巡回法院对类似量刑交叉引用错误的无害错误审查标准及监管释违反刑期连续执行的认可。",
+      "sourceGrounding": "基于美国第四巡回上诉法院2026年8月13日无发布判决意见，案号25-4663及25-4664，详见官方判决文档https://www.ca4.uscourts.gov/opinions/254663.U.pdf。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准"
     },
     {

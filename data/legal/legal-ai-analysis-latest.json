@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 112,
+  "count": 120,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -85,6 +85,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "154d29c815c9cb7231ff9381",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1445646/dl?inline",
+      "title": "ceptional situation warranting sua sponte reopening of removal proceedings where his equities were acquired years after he was ordered removed from the United States. HERRERA-NUNEZ",
+      "chineseTitle": "HERRERA-NUNEZ案：关于在终局遣返令下优先向国土安全部请求暂缓遣返的先例决定",
+      "summary": "本案讨论一名依据移民法被发出终局遣返令的外籍人士，在其配偶已提交移民签证申请且育有美国公民子女后，所提出的重新开启遣返程序及暂缓遣返请求。裁决核心在于，因移民法及相关行政法规规定，申请人应先向国土安全部提出暂缓遣返请求，待其回复后，方可向移民上诉委员会请求暂缓遣返，从而减少行政资源浪费，提升审理效率。此政策适用于本决定后提出的暂缓遣返请求。",
+      "legalIssue": "在一份终局遣返令下，申请人能否直接向移民上诉委员会请求暂缓遣返，或是否须先向有执行遣返权的国土安全部请求暂缓遣返？",
+      "holdingOrRule": "依据2026年BIA裁定，拥有终局遣返令的申请人应优先向国土安全部请求暂缓遣返，提交充分证明请求已递交国土安全部并有合理回应时间。国土安全部作为唯一有权执行遣返令的行政机构，应先行处理暂缓遣返请求，移民上诉委员会可在国土安全部否决后行使自由裁量权。该新规自本案决定后暂缓请求起施行。",
+      "impact": "直接法律效力：明确规定移民暂缓遣返请求的优先行政程序，要求向国土安全部先行提交请求，减少资源重复配置。可能影响：广大面临遣返程序的外籍人士及其法律代表、移民法院及上诉委员会的程序运行及案件管理效率。",
+      "sourceGrounding": "依据美国司法部执行移民审查办公室移民上诉委员会2026年6月12日发布的官方裁定文书29 I&N Dec. 691 (BIA 2026)及相关8 C.F.R.法规条文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "1710cfefdbb39ffb1e12dc12",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1449081/dl?inline",
+      "title": "ent in Jamaica based on her sexual orientation was inflicted by private individuals and she did not demonstrate that a public official would likely acquiesce to any torture. T-A-G-",
+      "chineseTitle": "关于是否可基于申请人潜在资格拒绝受理庇护申请的裁定——T-A-G-案",
+      "summary": "本案涉及移民法庭是否应当因申请人潜在享有加急亲属移民申请（I-130）资格而拒绝受理其庇护申请。上诉委员会认定，申请人潜在的其他移民救济资格不应成为拒绝受理庇护申请的依据，尤其当该潜在救济不在移民法官权限范围内时。案件发回移民法庭重新审理有关拒绝受理的动议。",
+      "legalIssue": "移民法官是否可以基于申请人潜在享有的其他移民救济资格（如I-130亲属移民申请）拒绝受理其庇护申请？",
+      "holdingOrRule": "移民法官不得以申请人可能获得的其他延期身份申请资格为由拒绝受理庇护申请，尤其当该资格不属于法官裁决权限；庇护申请是否受理应独立于其他潜在申请的处理结果。",
+      "impact": "直接法律效力：本裁定指导移民法庭在处理庇护申请中，不应以上诉人潜在其他救济申请资格为拒绝理由，有助于统一行政实践。可能影响：涉及庇护申请且同时具备其他移民申请的非公民申请人的案件处理流程。",
+      "sourceGrounding": "依据美国司法部执行移民审查办公室移民上诉委员会2026年案例29 I&N Dec. 715 (BIA 2026)官方判决文书全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "1aead7d4112c3ff54172f610",
       "datasetVersion": "09af0ac98afee759b05358be1cb3f48c45edf4f43bc15c3a2d90a32a8293c603",
       "sourceSystem": "BIA",
@@ -98,6 +130,22 @@
       "holdingOrRule": "若申请人关于其固定住所存在重大记录不一致，且未能提供有效证明，且未能说明此差异以消除潜逃风险，即使有待审庇护申请，法院也可认定申请人存在潜逃风险，不予保释。",
       "impact": "直接法律效力：对类似案件涉及居住地不一致导致潜逃风险判断有约束力，要求申请人提供一致和可信的居住证明。可能影响：移民法官在审理拘押及保释案件时，将更加重视居住地及担保人关系的真实性和一致性评估。",
       "sourceGrounding": "依据2026年美国司法部移民上诉委员会《Matter of Z-N-L-》29 I&N Dec. 511官方裁决全文及引用先例Matter of Akhmedov、Matter of Guerra等。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "1d0d5a230e01c8c3ccbddd8d",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1446476/dl?inline",
+      "title": "Matter of H- , 21 I&N Dec. 337, 347 (BIA 1996), distinguished. A-C-M-",
+      "chineseTitle": "关于安全第三国阻止申请庇护案件中不宜举行证据听证的裁定分析",
+      "summary": "美国移民上诉委员会在A-C-M-案中裁定，当外国人受到美厄庇护合作协议（ACA）约束且缺乏其在ACA国遭受个别迫害风险的证据时，一般无需进行证据听证以判定安全第三国阻止庇护资格条款的适用。移民法官不得延期多年举行听证，且相关争议多属法律问题非事实，案件应迅速审理。该裁定依托先例Matter of C-I-G-M- & L-V-S-G-明确法律适用与程序原则。",
+      "legalIssue": "当被移民法庭认定受安全第三国阻止庇护条款约束且无个别风险证据时，是否必须举行证据听证以决定该条款的适用？以及相关移民法官是否有权对国际接受程序、公共利益等进行事实认定？",
+      "holdingOrRule": "官方材料节选确认：缺乏关于申请人在ACA国遭受个别迫害或酷刑可能性真确证据时，通常不必举行证据听证。相关法律问题可由法官书面审查，无权限审查接收国意愿或程序完整性。听证不应无故延迟至多年后，应及时处理以符合ACA设立之快速筛查目的。",
+      "impact": "直接法律效力：规范移民法官处理安全第三国阻止庇护条款案件的程序，避免不必要证据听证和诉讼拖延。可能影响：涉及多个与美国签署ACA的国家申请者的庇护案件审理效率和一致性，提升移民法庭资源利用及案件公正处理。",
+      "sourceGrounding": "解析依据美国司法部执行移民审查办公室——移民上诉委员会2026年6月17日的Interim Decision #4207《Matter of A-C-M-》的官方公开裁决文本，及其中引用的先行判例Matter of C-I-G-M- & L-V-S-G-。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -309,6 +357,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "59c06e96d6203297be041dab",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1446391/dl?inline",
+      "title": "followed. Y-H-L-",
+      "chineseTitle": "Y-H-L- 案（2026年移民上诉委员会裁定）",
+      "summary": "本案涉及中国公民声称在中国被强迫堕胎的庇护申请。移民法官认为申请人证词可信但不具说服力，要求其提交合理可得的证据佐证，但申请人未能提供相应医疗记录等佐证材料，故申请被拒。移民上诉委员会（BIA）确认移民法官要求佐证的合法性及申请人的证词未获足够佐证，拒绝其重新审理及重新开案申请。同时，申请人关于律师提供无效援助的主张未被采纳，理由是律师合理依赖认证翻译材料。该裁决成为先例，对类似案件具有指导意义。",
+      "legalIssue": "在庇护申请中，移民法官是否可基于申请人证词虽可信但缺乏足够说服力，合理要求申请人提供可获得的佐证材料？在未提供佐证的情形下，申请能否被拒绝？申请人主张律师提供无效援助的标准及适用方法为何？",
+      "holdingOrRule": "(1) 移民法官合理要求申请人在证词可信但不具说服力时提供合理可得的佐证证明材料，否则可拒绝其庇护申请。(2) 申请人未能证明律师存在无效援助，合理依赖经认证的翻译材料不构成律师失责。",
+      "impact": "直接法律效力：本裁定作为BIA先例，适用于处理类似需要佐证严重人权迫害事件的庇护案件，以及评估律师失职申诉。可能影响：申请庇护者需注意提供充分佐证材料，而律师应注意合理核查翻译材料真实性。",
+      "sourceGrounding": "依据2026年5月8日BIA裁定《Matter of Y-H-L-》全文官方材料（29 I&N Dec. 698），包括裁判理由及相关法律条文引用。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "6d71998164d7fa814946b7a3",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -354,6 +418,22 @@
       "holdingOrRule": "BIA认为被告对MEK组织进行的宣传活动构成向恐怖组织提供实质支持，符合被强制拘留的条件。移民法官无权考虑其保释请求，被告应依据8 U.S.C. § 1226(c)(1)(D)条款被强制拘留。",
       "impact": "直接法律效力：为同类涉及恐怖组织实质支持指控的移民案件确立强制拘留的先例，限制移民法官对保释的管辖权。可能影响：提高类似案件中强制拘留的适用率，影响被告保释权利的审查和案件处理节奏。",
       "sourceGrounding": "依据2025年10月10日BIA案号29 I&N Dec. 376《Ghanbari案》官方裁决全文及相关法规条文，结合案件事实和法理分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "7fd779176c88220982e43976",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1447056/dl?inline",
+      "title": "e erred in denying the Department of Homeland Security’s motion to pretermit the respondents’ asylum applications based on their potential eligibility for collateral relief. P-A-C-",
+      "chineseTitle": "关于P-A-C-案中庇护申请的自由裁量权与禁止驱逐判定",
+      "summary": "本案中，移民法官授予被上诉人根据《移民与国籍法》免于驱逐的保护，但以自由裁量权否决其庇护、身份调整及取消驱逐申请。上诉委员会认可免驱逐保护对降低未来迫害风险的重要性，但鉴于被上诉人多次酒驾犯罪行为及相关严重不良因素，裁定不予给予庇护等救济的自由裁量权。该判决确认即便合规资格存在，负面因素仍可导致庇护等救济被否。",
+      "legalIssue": "移民案件中，如何平衡符合庇护资格的申请人与其不良行为的负面因素，决定是否应给予庇护等自由裁量救济？",
+      "holdingOrRule": "获得免于驱逐保护的申请人，其庇护申请可基于自由裁量权被拒，即使面临未来迫害风险；司法机关需综合评估有利与不利因素，重大负面行为（如多次酒驾）可以推翻庇护及其它身份救济的请求。",
+      "impact": "直接法律效力针对个案申请人的庇护及身份调整决定，指导移民法官在自由裁量权运用上加强对不良行为的重视；可能影响移民申请程序中负面因素评估标准，特别是涉及多次酒驾等严重违规行为的庇护及撤销驱逐申请者。",
+      "sourceGrounding": "根据美国司法部执行办公室移民审查局2026年6月22日发布的29 I&N Dec. 708号案例解析，内容详见官方判决全文。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -485,6 +565,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "a38bbffed7148a558a32acfc",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1445651/dl?inline",
+      "title": "assistance of counsel because it was not unreasonable for counsel to rely on a certified translation of evidence that was submitted by the respondent’s prior counsel. HERRERA-NUNEZ",
+      "chineseTitle": "HERRERA-NUNEZ案：移民局自行重新开启程序的裁量权及其限制",
+      "summary": "HERRERA-NUNEZ案中，移民上诉委员会拒绝了被告基于其2019年与美国公民配偶结婚请求自行重新开启已在2015年终结的遣返程序的动议。委员会指出，依照规定，只有特殊情况方可被动自行重新开启程序，且被告的权益是在已定移除令后多年取得，且其签证申请仍处于待处理状态，故不构成特殊情况。委员会同时拒绝了其暂停遣返的请求。",
+      "legalIssue": "移民上诉委员会是否应行使自行重新开启程序的裁量权，对于符合条件的晚期提交动议且权益为移除令后多年取得的案件，是否构成“特殊情况”以允许重新开启诉讼程序。",
+      "holdingOrRule": "委员会裁定，依据《移民和国籍法》及相关规章，晚于移除令90天后提交的重新开启申请通常不予受理。仅在确有特殊情况时，委员会才可能自行重新开启，且仅限极少数例外。单凭结婚及签证申请待处理状态，不足以构成特殊情况。相关过往判例明确，非立即权益且签证未获批准，不能构成重新开启程序的事实基础。",
+      "impact": "直接法律效力为所有美国移民法庭及上诉机构，对类似已获得移除令且试图通过结婚后申请签证请求重新开启案件具有约束力。可能影响范围包括寻求移民福利的被移民法庭终结程序的个案，明确其重新开启诉讼的限制。",
+      "sourceGrounding": "依据美国司法部执行移民复审办公室移民上诉委员会2026年6月12日发布的HERRERA-NUNEZ案（29 I&N Dec. 695）官方裁决文书及其中引用的法规和过往判例。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "b8ac3405b9d28dbe5ec444b9",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -597,6 +693,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "d4860047bf257c0b0454cb0a",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1449211/dl?inline",
+      "title": "ment of status in discretion because the respondent’s equities were outweighed by his serious and lengthy criminal history and lack of persuasive evidence of rehabilitation. G-L-C-",
+      "chineseTitle": "G-L-C案：毒品罪定性为特别严重罪行且难获庇护及反遣返保护",
+      "summary": "本案中，移民上诉委员会裁定申请人因违反宾夕法尼亚毒品法拥有意图贩卖的控制物质罪构成特别严重罪行，依法无资格获得庇护及反遣返保护（含CAT保护）。申请人未能证明若返回牙买加会因性取向受到公权力人员默许的酷刑风险。该案成为涉及毒品罪和酷刑保护重要先例。",
+      "legalIssue": "申请人是否因涉毒罪被认定犯有特别严重罪行而丧失庇护及反遣返保护资格？是否符合《防止酷刑公约》下的反遣返保护条件？",
+      "holdingOrRule": "基于犯罪性质、判刑及事实，涉案毒品罪被认定为特别严重罪行，申请人无资格获庇护和反遣返保护；申请人未证明返回祖国将面临公权力人员默许的酷刑，故也不合格获得《防止酷刑公约》下的保护。",
+      "impact": "直接法律效力：作为先例指导同类案件中涉严重毒品罪的庇护资格认定及CAT保护申请。可能影响：移民申请人需综合评估犯罪性质和返回国风险，法律实务中谨慎界定特别严重罪行。",
+      "sourceGrounding": "依据美国司法部移民审查执行办公室2026年5月21日由移民上诉委员会发布的官方判例文件（29 I&N Dec. 717）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "d5461d7a696cb9fd6379e4c8",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -626,6 +738,22 @@
       "holdingOrRule": "申请人被判严重危害儿童福利等罪，相关证据显示其涉性犯罪及毒品行为，权衡其违法行为严重性与积极因素，上诉委员会认定申请人不应获得酌情取消驱逐的救济，撤销原裁决，维持驱逐决定。",
       "impact": "直接法律效力：作为先例，指导未来涉及严重刑事犯罪且申请酌情取消驱逐案件的裁量标准。可能影响：移民法官评估类似案件时需严格核实犯罪及受害人陈述的真实性，审慎衡量申请人的负面行为与积极因素。",
       "sourceGrounding": "依据美司法部移民上诉委员会2025年8月13日发布的官方判决报告（29 I&N Dec. 249）。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "e7ab4dc1184a396a76ec77bd",
+      "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1388011/dl?inline",
+      "title": "Matter of Interiano-Rosa , 25 I&N Dec. 264 (BIA 2010), reaffirmed. DE JESUS PLATON",
+      "chineseTitle": "移民上诉委员会关于DE JESUS-PLATON案件的裁决（2025年）",
+      "summary": "本案中，被上诉人因加州刑法第422条之犯罪威胁罪被判定为道德败坏犯罪(CIMT)，故无资格申请取消驱逐。虽后因加州刑法1473.7条根据新证据申请撤销该罪名，但撤销原因未明确属于刑事程序或实体错误，委员会据此拒绝撤销判决并驳回上诉。案例确认联邦移民法对州刑罚的适用优先权，州法不能通过修改刑法影响联邦驱逐资格的判断。",
+      "legalIssue": "是否因为加州刑法1473.7条撤销的定罪能使被上诉人有资格申请取消驱逐，以及相关刑法修正是否影响联邦移民法关于CIMT及最高刑期的适用。",
+      "holdingOrRule": "依据Matter of Velasquez-Rios及相关联邦法规，州法对刑期的修正不影响联邦移民法227(a)(2)(A)(i)(II)条对CIMT的认定，且1473.7条的撤销必须基于程序或实体错误方可影响移民资格；本案中资料不足以证明撤销基于合法无效理由，故维持驱逐决定。",
+      "impact": "直接法律效力：本裁决作为先例，适用于联邦移民案件中对加州刑事定罪资格审查及撤销定罪时的法律标准。可能影响：影响有类似刑事定罪及后续州法撤销案件的非公民移民状况申诉策略及司法解释。",
+      "sourceGrounding": "解析依据来自美国司法部执行办公室移民审查委员会2025年1月17日正式裁决文本，具体含29 I&N Dec. 7案卷及其引用相关法律条文与先例。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

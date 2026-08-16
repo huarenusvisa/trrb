@@ -1,0 +1,23 @@
+name: APP Batch 1 Node 8
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'admin/index.html'
+      - 'admin/community-center.js'
+      - 'netlify/functions/community-admin.js'
+      - 'netlify/functions/_shared/supabase-admin.js'
+      - 'scripts/audit-app-batch1-node8.mjs'
+      - '.github/workflows/app-batch1-node8.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/audit-app-batch1-node8.mjs

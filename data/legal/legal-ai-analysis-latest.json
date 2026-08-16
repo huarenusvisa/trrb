@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
+  "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
   "scope": "AI-generated Chinese legal-information summaries grounded only in first-party official source text. Database layer; not ordinary news articles.",
-  "count": 128,
+  "count": 136,
   "analyses": [
     {
       "recordId": "08a247ccba28ef48d79f4ba6",
@@ -82,6 +82,22 @@
       "holdingOrRule": "官方材料节选不足，暂不判断裁判结论。鉴于案件事实及证据，移民上诉委员会驳回保护申请，理由在于移民法官对未来酷刑风险的预测性事实认定明显错误，申请人未能证明其遭受酷刑的可能性超过半数。",
       "impact": "直接法律效力：本裁决作为移民上诉委员会的先例决定，对类似事实和法律问题的案件具有约束力，指导如何判断禁止酷刑公约保护申请中的风险评估。可能影响：在类似毒品犯罪背景下申请庇护或禁止遣返者或相关法律实务中具有重要参考价值，促使法律实务更重视证据链的完整与充分。",
       "sourceGrounding": "依据2025年11月5日移民上诉委员会关于Matter of L-A-G-B-案的官方判决书（29 I&N Dec. 343）及相关联邦法规条文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "142fec7559441ac9a10b10b9",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
+      "title": "X LinkedIn Email A-K-R-",
+      "chineseTitle": "移民上诉委员会关于申请法律代理继续延期请求的裁决",
+      "summary": "本案中，移民法官依法驳回了被申请人多次延长寻找法律代理的请求，因其未能提供充分理由证明“合理原因”。案件强调法定程序中首次听证不得早于送达出庭通知10天，且被告有权自费选择代理律师。被申请人在首次听证后获两次延期机会仍未能取得律师，且未提交申请救济材料，法官遂认定无继续延期理由，作出驱逐决定。上诉委员会支持法官决定，驳回上诉。",
+      "legalIssue": "被申请人请求继续延期以寻找法律代理，是否基于\"合理原因\"且符合移民法及相关法规规定的程序要求。",
+      "holdingOrRule": "移民法官依规有自由裁量权，基于无合理原因拒绝进一步延期请求。保障被申请人法律代理权的唯一法定时间要求是首次听证不得早于送达出庭通知10天。超出此规定，未必必须延长寻找律师的期限。",
+      "impact": "直接法律效力：明确首次听证时间安排及延期请求的合理限度，对移民法庭及相关程序执行具有约束力。可能影响：指导其他移民法庭对延期请求的裁量标准，影响被拘留或移民程序中的当事人权益保障实践。",
+      "sourceGrounding": "依据美国司法部移民审查执行办公室移民上诉委员会2026年A-K-R-案件截选，29 I&N Dec. 839。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -373,6 +389,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "4154530609708ab4f82f43b9",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1455271/dl?inline",
+      "title": "tern or practice of persecution against a protected group still requires an objective showing of a clear probability of persecution and does not have a subjective component. I-S-M-",
+      "chineseTitle": "关于身份真实性与可信性认定对庇护及驱逐保护申请影响的裁定——I-S-M-案",
+      "summary": "本案中，移民法官因申请人身份信息多处不一致，认定其不具备可信度，拒绝其庇护、禁止驱逐及防止酷刑保护申请。申请人身份验证未获支持，且其有关受迫害的陈述缺乏充分证据，故最终上诉被驳回。",
+      "legalIssue": "申请人在庇护及禁止驱逐申请中，其身份真实性和证词可信度如何影响其能否获得救济？",
+      "holdingOrRule": "移民上诉委员会确认移民法官基于申请人身份信息多重不一致及不合理解释，正确作出不可信认定，申请人未能证明身份及迫害风险，故其庇护、禁止驱逐及防止酷刑保护申请被拒。I-S-M-案确立申请人身份为庇护关键要素，且不可信认定须基于全面证据和具体合理理由。",
+      "impact": "直接法律效力：本案作为BIA先例案，对类似身份不明确、证据矛盾的案件具有约束力，指导移民法官审查申请人身份及证词可信性的标准。可能影响：增强对庇护申请人身份核实的严格审查，有助于规范庇护程序，提高裁判质量，影响移民法实践。",
+      "sourceGrounding": "依据美国司法部移民上诉委员会2026年6月4日发布的29 I&N Dec. 811 (BIA 2026)《I-S-M-案》裁定全文及相关法规条文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "42e1e2c249e3e31109da32c2",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -386,6 +418,22 @@
       "holdingOrRule": "特定社会群体的社会区分性必须在全国范围内被社会认可，邻里或局部社区视角不足以满足社会区分性要求。对于家庭为基础的社会群体，成员身份必须是迫害行为的主要且非偶然原因，若迫害目标与家庭身份无关，则不构成基于该群体的迫害。",
       "impact": "该裁定对基于家庭为根基提出特定社会群体的庇护及身份保护申请有直接法律指导作用，要求申请人在国家社会范围内证明群体的可识别性和迫害关联性。此标准将影响移民法官及相关移民裁定机构的案件评审，有助于统一社会区分性的认定标准。",
       "sourceGrounding": "依据美国司法部执行移民审查办公室移民上诉委员会2026年发布的判例Department of Homeland Security prior to the Board considering a stay request filed in connection with a motion to reopen or reconsider a Board or Immigration Court order. S-E-M-Z-, 29 I&N Dec. 680 (BIA 2026)",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "438518db6ce716b939c6c008",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1457741/dl?inline",
+      "title": "Matter of C-B- , 25 I&N Dec. 888 (BIA 2012), modified. DELCARMEN-LARA",
+      "chineseTitle": "关于《移民和国籍法》第212(a)(9)(B)(i)(II)条款中“离境”定义的重新界定——Matter of DELCARMEN-LARA案解析",
+      "summary": "美国移民上诉委员会在Matter of DELCARMEN-LARA案中推翻了先前判例Arrabally案的结论，明确依据《移民和国籍法》（INA）第212(a)(9)(B)(i)(II)条款，持有提前假释许可的临时出境行为应视为“离境”，进而可能导致不被许可入境。此判决强调该条款未对持有提前假释者的“离境”行为设定例外，且新规则具有前瞻适用性，且拒绝了当事人重新启动身份调整程序的请求。",
+      "legalIssue": "是否根据美国《移民和国籍法》第212(a)(9)(B)(i)(II)条款，持有提前假释许可的外籍人士临时离境不应被认定为“离境”，即此类离境是否构成法规意义上的“离境”并导致入境禁令？",
+      "holdingOrRule": "推翻Matter of Arrabally and Yerrabelly判例，裁定根据INA第212(a)(9)(B)(i)(II)条款，外籍人士基于提前假释的临时出境应视为“离境”，该条款无例外适用于持提前假释许可者。关于案件具体影响，因新规只前瞻适用，故未对判决中的被申请人离境性质作最终认定。",
+      "impact": "直接法律效力：适用于后续基于第212(a)(9)(B)(i)(II)条款涉及“离境”评估的移民法案件，改变此前对提前假释出境不视为离境的解释；可能影响：影响正在申请调整身份或相关豁免的提前假释持有人身份审批及不良入境记录评估。",
+      "sourceGrounding": "依据2026年8月13日美国司法部执行移民复审办公室移民上诉委员会公开发布的案例《Matter of DELCARMEN-LARA》（29 I&N Dec. 830 (BIA 2026)）官方全文及其中对《移民和国籍法》第212(a)(9)(B)(i)(II)条款的解释及裁决内容。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -661,6 +709,38 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "a7dd3a0a5c57b1d4d2a59764",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1457656/dl?inline",
+      "title": "Matter of Arrabally and Yerrabelly , 25 I&N Dec. 771 (BIA 2012), overruled. BOYE",
+      "chineseTitle": "移民上诉委员会关于佐治亚州法院刑期“澄清”命令的移民适用性裁定",
+      "summary": "本案中，佐治亚州一法官于被告判刑6年后发布了刑期澄清命令，称其实际为纯缓刑而非拘禁12个月。移民法庭依据该澄清令决定终止驱逐程序。但移民上诉委员会认为，该澄清令非由原审法官发出，且超出州法律规定的修改期限，且内容与原判决相矛盾，不具有联邦移民法下承认的效力。故应认定被告确实被判处至少一年监禁，依此其犯有加重重罪，有资格被驱逐。",
+      "legalIssue": "佐治亚州法院逾期由异名法官发布的刑期澄清命令是否对联邦移民法下的刑罚认定及驱逐程序具有法律效力？",
+      "holdingOrRule": "移民上诉委员会裁定，非原审法官且超出州法律规定期限发布的刑期澄清命令，且内容与原判决矛盾，在联邦移民法中不被承认；故判定被告确实被判处包含至少一年监禁的刑期，可据此认定其加重重罪身份，并可基于该身份启动驱逐程序。",
+      "impact": "直接法律效力：联邦移民法庭及相关移民执法机构不承认类似超期且非原审法官发出的州法院刑期澄清命令作为刑期变更依据。可能影响：广大涉及刑罚认定的移民案件，尤其是刑罚澄清请求亦延误或由非原审法官签发的案件，法院在认定刑期时将更加谨慎，不会简单采纳州法院此类澄清命令。",
+      "sourceGrounding": "本解析严格依据2026年美国移民上诉委员会发布的官方判决《Matter of Nii Ahene Nunoo BOYE, 29 I&N Dec. 826 (BIA 2026)》全文内容，包含对佐治亚州法院刑期澄清令的详细事实认定及法律分析。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "b71e64a6712e638f74ca48af",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1455811/dl?inline",
+      "title": "ture persecution based on the feasibility of internal relocation without considering that the respondent had relocated and remained there for several years without harm. MOMPLAISIR",
+      "chineseTitle": "关于《移民与国籍法》第103节赋权的文件认证标准——Momplaisir案解析",
+      "summary": "本案审理中，国土安全部（DHS）通过附有District Records Manager签字的G-24表格，证明了I-213与I-94表格的真实性。上诉委员会认定，根据《移民与国籍法》第103节授权，该签字人具备合法认证文件的权限，推翻了下级法官排除证据并终止程序的裁定，案件发回重审。此判决强调了对行政文件认证的法定依据及程序审查标准。",
+      "legalIssue": "核心法律问题在于国土安全部提交的移民记录文件是否经《移民与国籍法》第103节及相关联邦法规授权的合法代理人正当认证，从而可作为确凿证据用于确定被诉人的外国人身份。",
+      "holdingOrRule": "上诉委员会裁定，通过附具由合法授权的District Records Manager签署的G-24表格认证，DHS提交的I-213及I-94表格文件已满足8 C.F.R. § 287.6(a)的认证要求，应予以采纳；排除该证据的裁决错误，案件应发回移民法庭重新审理。",
+      "impact": "该裁决对涉及行政文件认证领域的执法机构、移民法庭及被诉外国人均具直接法律效力，明确认可了基于《移民与国籍法》第103节授权的文书认证方式。可能影响未来类似案件中文件认证的审查标准和程序，提升行政机关证据采信的规范性和效率。",
+      "sourceGrounding": "依据美国司法部移民审查执行办公室2026年6月12日的BIA判例（Matter of Momplaisir, 29 I&N Dec. 820），官方文件及裁决全文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "b8ac3405b9d28dbe5ec444b9",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -706,6 +786,22 @@
       "holdingOrRule": "1. 通过ECAS发送至律师电子邮箱的通知，视为已合法送达。2. 送达存在较弱的推定，需对方提供实质性证据反驳。3. 当事人对新制度不熟悉或办公地址变更，不构成延期申请时限的足够理由。4. 未按期提交书面材料且未说明原因，董事会可依据规章程序摘要驳回上诉。",
       "impact": "直接法律效力：适用于所有使用ECAS系统电子送达的移民案件，确立电子通知的送达效力及反驳举证责任标准。可能影响：推动法律实践中电子送达普遍认可，促使律师更加重视系统内通知，减少因通知不达产生的延误和纠纷。",
       "sourceGrounding": "依据美国司法部移民上诉委员会2025年3月19日发布的先例决定《Matter of F-B-G-M- & J-E-M-G-》，官方文书及相关行政规章条文、公示和解释。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "c5da33c4c6310ae082e456cd",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1455106/dl?inline",
+      "title": "ion for adjustment of status was properly admitted because it was probative of the respondent’s prospects for obtaining lawful status and hence probative of his flight risk. L-L-R-",
+      "chineseTitle": "L-L-R-案：因协助子女非法入境被取消取消遣返资格",
+      "summary": "本案中，BIA确认申请人因在2021年雇佣并支付走私者帮助其未持合法证件的未成年子女从危地马拉进入美墨边境，构成协助非法入境，触犯移民国籍法第212(a)(6)(E)(i)条，导致申请人因不具备良好品格而不符合取消遣返的资格。申请人未提出充分证据证明其子女有合法入境依据，法院强调非法走私活动对未成年人存在固有危险，支持拒绝取消遣返。",
+      "legalIssue": "申请人是否因协助其未成年子女非法入境而构成移民国籍法禁止的协助非法入境行为，从而导致不具备法定良好品格，进而失去取消遣返资格？",
+      "holdingOrRule": "根据《移民国籍法》第212(a)(6)(E)(i)条及第101(f)(3)条规定，协助任何他人非法入境或试图非法入境美国的申请人，不具备良好品格，依法不符合取消遣返资格。案件认定申请人明知子女无合法入境证件，仍雇佣走私者协助其子女入境，构成该禁止行为。",
+      "impact": "直接法律效力适用于所有申请取消遣返且涉及协助他人非法入境案件，特别强调未成年子女相关走私行为的严重性。可能影响移民法律实践中对于协助走私行为认定的标准以及申请良好品格的资格审查。",
+      "sourceGrounding": "依据美国司法部执行移民审查办公室移民上诉委员会2026年7月31日关于L-L-R-案的具体裁决文书29 I&N Dec. 799（BIA 2026）。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
@@ -917,6 +1013,22 @@
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {
+      "recordId": "faa29e9662fc421685625689",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1401736/dl?inline",
+      "title": "al allegations or invalidate the charges of removability in the notice to appear and therefore is not a proper basis for granting a respondent’s motion to withdraw pleadings. D-E-B-",
+      "chineseTitle": "D-E-B-案：关于撤回申诉动议和重新开启程序的裁定",
+      "summary": "本案中，申请人请求重新开启遣返程序，理由包括先前辩护律师无效仲介、确认亲子关系及基于《反家庭暴力法》（VAWA）的保护申请。移民上诉委员会认定申请人未满足重新开启程序的严苛要求，未证明新证据具有实质性，并且申请的VAWA补充动议属于逾期第二次动议，故予以驳回。法院亦强调，申诉律师无效指控未符合规范程序。",
+      "legalIssue": "申请人提出重新开启遣返程序，是否满足法定程序和实质性证据标准，尤其涉及无效律师协助指控及《反家庭暴力法》相关救济的时效与资格问题。",
+      "holdingOrRule": "补充申请中若提出与初始申请根本不同的主张，应视为新动议；无效律师协助的投诉须严格或实质合规通知相关纪律机构，否则不予受理；重新开启遣返程序必须证明存在重要新证据且对案件结果有实质影响；基于VAWA的重新开启动议须在一年内提出，例外情形需证明特殊情况或极端困难，未满足则时间性限制不予豁免。",
+      "impact": "直接法律效力针对因程序限制、证据不足或提交不合规导致的动议程序拒绝案例，对移民被遣返程序、法律代表职责及VAWA救济程序适用范围具约束力；可能影响广大类似案件中动议的审查标准及法律代理规范，有助于规范再审请求和维护移民程序秩序。",
+      "sourceGrounding": "解析基于美国司法部执行移民审查办公室移民上诉委员会2025年2月4日发布的官方判例《Matter of D-E-B-, 29 I&N Dec. 83 (BIA 2025)》的全文内容。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
       "recordId": "fbf5592824f9a2855c0ad6ba",
       "datasetVersion": "0473a9bb82f7178501b8960593c8735cdf54e033926301b591d5de61e9491ec5",
       "sourceSystem": "BIA",
@@ -930,6 +1042,22 @@
       "holdingOrRule": "（1）对于由私人律师代理的非羁押外籍人士，推定其具备支付诉讼费的能力；（2）申请费减免时，若所有收入均申报为零且无合理说明，该申请推定无效；（3）申请人须提供充分证据证明无力支付诉讼费，否则申请将被拒绝。",
       "impact": "直接法律效力：明确了移民诉讼中非羁押外籍人士申请诉讼费减免的认定规则及举证责任，指导移民法庭审核相关申请。可能影响：影响非羁押移民申请费减免者如何准备申请材料，并影响代理律师对客户经济状况的核实与披露要求。",
       "sourceGrounding": "依据美国司法部执行办公室移民审查局（EOIR）2025年8月8日发布的加西亚·马丁内斯案（29 I&N Dec. 169 (BIA 2025)）判决书及相关法规条文。",
+      "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
+    },
+    {
+      "recordId": "fd56c456d7754a87899ffcbe",
+      "datasetVersion": "56b0be951cba7a42cbe42d96f5eaf956598ca9c51b304d9299d652e52d05cb59",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "officialUrl": "https://www.justice.gov/eoir/media/1402756/dl?inline",
+      "title": "A grant of withholding of removal that is pending on appeal does not justify release on bond where the factors regarding flight risk weigh strongly against release on bond. B-N-K-",
+      "chineseTitle": "关于行政终结程序及临时保护身份申请对驱逐程序影响的裁定——B-N-K案",
+      "summary": "本案中，移民法庭原裁定应基于申请人提交的临时保护身份（TPS）申请而认定驱逐程序行政终结。然而，上诉委员会认为行政终结应以案件是否有说服力理由继续审理为核心，且TPS申请属于附带救济，并不影响驱逐程序的实质结果。申请人被拘留状态也促使行政终结不宜适用。委员会撤销原裁定，恢复驱逐程序，强调行政终结不得成为无期限拖延案件程序的手段。",
+      "legalIssue": "在移民驱逐程序中，申请人基于待审的临时保护身份申请请求行政终结，是否应被批准，以及申请人被拘留状态是否影响行政终结的适用？",
+      "holdingOrRule": "行政终结的主要考虑因素是案件是否有充分理由继续审理并作出实质裁决；临时保护身份申请属于对驱逐程序无实质影响的附属申请，一般不支持行政终结；被拘留身份作为一项重要因素，通常反对行政终结的批准。",
+      "impact": "直接法律效力：重申和明确行政终结的适用标准，限制以TPS申请为由延迟或暂停驱逐程序；强调拘留身份对程序进展的约束。可能影响：移民法官及上诉委员会审理类似驱逐案件时对行政终结请求的审查标准司法指导，以及被拘留被申请人案件处理流程的管理。",
+      "sourceGrounding": "依据美国司法部执行移民审查办公室移民上诉委员会于2025年6月6日《B-N-K案》判决文本（29 I&N Dec. 96 (BIA 2025)），直接引用其中对行政终结标准、TPS申请性质及拘留身份影响的相关法律分析和结论。",
       "disclaimer": "仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准。"
     },
     {

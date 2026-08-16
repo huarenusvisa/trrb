@@ -1,0 +1,37 @@
+name: Round 17 Node 6 - Safe Analysis Version Sync
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/round17-node6-sync-analysis-version.mjs'
+      - '.github/workflows/round17-node6-version-sync.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Synchronize per-analysis datasetVersion only after official metadata check
+        run: node scripts/round17-node6-sync-analysis-version.mjs
+      - name: Commit synchronized metadata if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data/legal/legal-ai-analysis-latest.json; then
+            echo 'No analysis version metadata changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/legal/legal-ai-analysis-latest.json
+          git commit -m 'Round 17 node6: synchronize per-analysis dataset versions'
+          git push

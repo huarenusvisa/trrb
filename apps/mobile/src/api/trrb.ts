@@ -12,6 +12,16 @@ export type NewsArticle = {
   created_at?: string;
 };
 
+export type ArticlePage = {
+  articles: NewsArticle[];
+  offset: number;
+  limit: number;
+  next_offset: number | null;
+  has_more: boolean;
+  category?: string | null;
+  q?: string | null;
+};
+
 const API_BASE = 'https://trrb.net/.netlify/functions';
 
 async function readJson(response: Response) {
@@ -31,6 +41,28 @@ export async function fetchArticles(options: { category?: string; limit?: number
   const payload = await readJson(response);
   const articles = Array.isArray(payload?.articles) ? payload.articles : [];
   return articles as NewsArticle[];
+}
+
+export async function fetchArticlePage(options: { category?: string; q?: string; limit?: number; offset?: number } = {}): Promise<ArticlePage> {
+  const params = new URLSearchParams();
+  params.set('limit', String(Math.min(Math.max(options.limit ?? 30, 1), 60)));
+  params.set('offset', String(Math.max(options.offset ?? 0, 0)));
+  if (options.category) params.set('category', options.category);
+  if (options.q) params.set('q', options.q.trim());
+
+  const response = await fetch(`${API_BASE}/public-articles?${params.toString()}`, {
+    headers: { Accept: 'application/json' }
+  });
+  const payload = await readJson(response);
+  return {
+    articles: Array.isArray(payload?.articles) ? payload.articles : [],
+    offset: Number(payload?.offset || 0),
+    limit: Number(payload?.limit || options.limit || 30),
+    next_offset: payload?.next_offset == null ? null : Number(payload.next_offset),
+    has_more: Boolean(payload?.has_more),
+    category: payload?.category || null,
+    q: payload?.q || null
+  };
 }
 
 export async function fetchArticle(id: string | number) {

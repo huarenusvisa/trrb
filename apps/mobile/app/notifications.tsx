@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationLabel, notificationTarget, UserNotification } from '../src/community/notifications';
 
@@ -20,17 +20,25 @@ export default function NotificationsScreen() {
   useEffect(() => { void load(false); }, [load]);
 
   const openItem = async (item: UserNotification) => {
-    if (!item.is_read) {
-      await markNotificationRead(item.id);
-      setItems(old => old.map(x => x.id === item.id ? { ...x, is_read: true } : x));
+    try {
+      if (!item.is_read) {
+        await markNotificationRead(item.id);
+        setItems(old => old.map(x => x.id === item.id ? { ...x, is_read: true } : x));
+      }
+      const target = notificationTarget(item);
+      if (target) router.push(target as never);
+    } catch (e) {
+      Alert.alert('操作失败', e instanceof Error ? e.message : '请稍后重试。');
     }
-    const target = notificationTarget(item);
-    if (target) router.push(target as never);
   };
 
   const markAll = async () => {
-    await markAllNotificationsRead();
-    setItems(old => old.map(x => ({ ...x, is_read: true })));
+    try {
+      await markAllNotificationsRead();
+      setItems(old => old.map(x => ({ ...x, is_read: true })));
+    } catch (e) {
+      Alert.alert('操作失败', e instanceof Error ? e.message : '请稍后重试。');
+    }
   };
 
   return <><Stack.Screen options={{ title: '消息中心', headerBackTitle: '返回' }} />

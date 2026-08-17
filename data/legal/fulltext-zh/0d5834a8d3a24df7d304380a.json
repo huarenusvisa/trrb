@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "recordId": "0d5834a8d3a24df7d304380a",
+  "recordFingerprint": "87397553728bdb08dcc72eb0c2bd3c21800efaea3d76aac051abd334eea92fc0",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Homeland Security Department; Coast Guard",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16407/safety-zone-tv-denise-foss-on-1254223-honolulu-hi",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16407.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16407.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T20:05:36.980Z",
+  "sourceDigest": "c345a7686fa439096d971a7326294e2ec34cafe95b30975f8bad07f43b3d2d38",
+  "translatedAt": "2026-08-17T20:05:59.073Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 9,
+  "translatedSegmentCount": 9,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "612de4b53bdb286ed92148802a8543616a1cbf28a5b4fd4ea2d62986ab7efe5d",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 星期三，2026年8月12日 / 规则和条例 52023"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fe9070a14cb6058b3740fb5d6ff1c48ab3496377b2f675cd74a1b10dd87697ca",
+      "chineseText": "由港口船长（Captain of the Port，简称COTP）指派的人员以核实其获得的COTP或I的指示。表格：缩略语\n官方巡逻船只。联邦法规汇编（CFR）\n其经批准的许可条件的合规性。（e）执行期限。本条从2026年8月15日中午12:30起生效，至2026年8月16日下午5:30止。但仅在2026年8月15日中午12:30至下午5:30期间强制执行，除非因天气状况导致活动延期，则该时段将在8月16日同时时间内执行。\n(2) 活动巡逻指挥官（Event Patrol Commander，简称Event PATCOM）指的是由海岸警卫队各部门——港口船长指定，其为委任军官、军衔军官或士官，负责执行本条(d)款规定。\n(3) 官方巡逻船或官方巡逻指任命或批准的任何船只，船上有委任、军衔或士官，并悬挂海岸警卫队军旗（Coast Guard ensign），或依据现行地方协议由港口船长批准的州或地方执法船只。\n(4) 观众区域（Spectator area）指受纬度和经度限制的区域，勾画出为观看音乐会而预留的观众船只的边界。\n(5) 过境区域（Transit area）指在本条(a)款所述的受控区内设定的航道，允许船只安全通行。\n(c) 海上事件巡逻。港口船长可指派一艘或多艘官方巡逻船，依§100.40的描述，配备Event PATCOM监督巡逻。巡逻船及Event PATCOM可通过VHF–FM频道16进行联系。Event PATCOM可在为保护生命或财产需要时随时终止活动。\n(d) 规定。(1) 所有人员禁止在本条(a)款所述受控区内游泳。\n(2) 任何穿越过境区的船只必须直接通过，不得停留、捕鱼、系泊、抛锚或逗留，除非停靠现有锚泊球。\n(3) 进入及在受控区内移动须遵守“慢无浪”航速限制。船只不得产生浪涌，除非为保持最低操舵速度，速度不超过5节。\n(4) 申请偏离限制的人员或船只须向COTP或其指定代表申请许可。\n(e) 执行期限。本条自2026年8月13日中午12:30起至8月17日上午9:00止执行。\n地址：公开文件可在https://www.regulations.gov，搜索USCG–2026–0220获取。\n联系方式：如有疑问联系北新英格兰海岸警卫区MST1 Brad Snyder，电话800–552–6458，邮箱William.a.snyder@uscg.mil。受控区域人员须服从COTP或指定代表的合法命令或指示。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "570821193d5d6ec713494a7cf4bcd0ef4b3a8721a6c07b58382efdb369a393cf",
+      "chineseText": "通过VHF–FM频道16或拨打北新英格兰海岸警卫区指挥中心电话(833)449-2407联系COTP或其指定代表。受控区内人员须遵守COTP或其指定代表的所有合法命令或指示。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5b11f6d60d53f412e057fe500745687440184f2f77007f02eada0cf5a20fd8ea",
+      "chineseText": "2026年8月11日15:41发布，案号Jkt 268001，表格格式4700，文本格式4700，文件命名12AUR1.SGM，日期为2026年8月12日。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "03b9f7e3321d33a210d58cc4454a2ddb965d556e1a5365f6d8c3593e305754dc",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则和条例 52024"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2ed0a880eda5fdbceed14fd3cc6fb5fc722fdb9e7a412bfb4f13aa5f85fab023",
+      "chineseText": "提前通知。安全区涵盖DENISE FOSS号拖轮（注册号1254223）及其拖带船FOSS 3612号（注册号1255436）周边500码半径内的可航水域。除非由港口船长授权，否则禁止任何船只及人员进入该区域。受控区船只自身图片可通过在档案中搜索USCG-2026-0220获取。本项规定符合1995年无资金义务改革法案（2 U.S.C. 1531-1538），海岸警卫队认证本规则不会导致州、地方、部落政府或私人部门年度支出达一亿美元或以上（通货膨胀调整后）。\nD. 无资金义务改革法案\n我们依据多个相关法规和行政命令制定本条，以下为分析简述。\nE. 环境影响\n本规则按国土安全部环境规划指令023-01（修订版1）及其共同指导手册执行，符合国家环境政策法（42 U.S.C. 4321等），判定本行动不会单独或累计对人类环境产生产生重大影响。该规则为安全区性质，依据DHS指令附录A表1的L60(a)条款免于进一步审查。有记录环境考虑证明文档可在档案中查阅。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6e8784798f2421fb053b120ad59361db1432dec2652440ec2aa15321ebcef25a",
+      "chineseText": "B. 收集信息\n本规则不涉及《纸质减负法案》（44 U.S.C. 3501-3520）所规定的新信息收集要求。\nC. 联邦主义及印第安部落政府权力\n我们依据行政命令13132（联邦主义）进行分析，认定本规则符合基本联邦主义原则及先占条款。\n此外，本规则不存在行政命令13175（与印第安部落政府协商）所称的印第安部落相关影响。\nA. 对小实体的影响\n根据1980年《监管灵活性法案》（5 U.S.C. 601-612）规定，因本规定免除公告评论程序，故该法案不适用。若本规则影响您的小型企业或组织，可联系列明的联络人。\n根据1996年《小企业监管执行公平法案》（Pub.L. 104-121）第213条，如有疑问，可拨打1-888-REG-FAIR提出问询。海岸警卫队保证不会报复提出质疑的小实体。\n\nD. 违反法规的处罚及执行\n本规则适用及管理依据包括46 U.S.C. 70034、70051、70124；33 CFR 1.05-1、6.04-1、6.04-6、160.5；国土安全部授权编号00170.1修订版01.4。\n\n■ 2. 增加§165.T14-0220条，标题为：安全区；DENISE FOSS号拖轮（注册号1254223），夏威夷檀香山。\n(a) 区域。以下区域为安全区：DENISE FOSS号拖轮及其拖带船周边500码半径内的所有可航水域。\n此规则旨在管理该区域，以保护人员、船只及水域安全。\n\n[文件结束部分节选]"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5adbc3945d67f726042956f67ebc7f67c63ac6ead115e7d0c1874267179a2490",
+      "chineseText": "NPS-美国国家公园管理局\n标题：动力微出行设备\n机构：国家公园管理局，内政部\n动作：最终规则。\n摘要：国家公园管理局敲定了动力微出行设备在国家公园系统内的管理框架，独立于机动车、传统自行车、电动自行车和人力滑行设备，制定了其使用范围与方法的规则。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c47eddaab61305708206519c3ecc8f7e25b4eadc76ab42b4afb1f4aedf1b59ad",
+      "chineseText": "2026年8月11日15:41发布，案号Jkt 268001，表格格式4700，文本格式4700，文件命名12AUR1.SGM，日期为2026年8月12日。"
+    }
+  ]
+}

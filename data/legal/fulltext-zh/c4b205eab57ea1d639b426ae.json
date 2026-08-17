@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "c4b205eab57ea1d639b426ae",
   "recordFingerprint": "9a6b241fa0275160e4dc7b0259347fb13c778c3aa32a6d94f9c6bb38eb0b7c9c",
-  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Treasury Department; Financial Crimes Enforcement Network",
@@ -147,5 +147,6 @@
       "sourceTextHash": "91aade05d561b6dc3d2848b3629c1b2ae6b24f50da18e6d66d069e1903238357",
       "chineseText": "版本日期：2026年8月10日16:13，文件号Jkt 268001，表格00000，格式4700，版本4700，来源：联邦公报（FR）2026年8月11日，第A版（11AUR1.SGM 11AUR1）"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T19:59:35.421Z"
 }

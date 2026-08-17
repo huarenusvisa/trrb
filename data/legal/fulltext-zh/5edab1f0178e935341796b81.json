@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "5edab1f0178e935341796b81",
   "recordFingerprint": "c8b2ca62662e1c511899cbff36bde0716600d0df2c21190c1d85b2f255d3643d",
-  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Defense Department; Engineers Corps",
@@ -83,5 +83,6 @@
       "sourceTextHash": "cbada3ffd82ca430d6745a22aef160c09b255a033c61113c1d696753c159ff63",
       "chineseText": "2026年8月10日16:13 发布 文号Jkt 268001 第00000号页格式 4700 样式4700 文件E:\\FR\\FM\\11AUR1.SGM 11AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T19:59:35.421Z"
 }

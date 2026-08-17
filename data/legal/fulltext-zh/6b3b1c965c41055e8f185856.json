@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "recordId": "6b3b1c965c41055e8f185856",
+  "recordFingerprint": "a2818114a58fdc5cec4bf366cda4907f867e54037769868cf67ddef93fb4e4bd",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16393/amendment-of-class-e-airspace-over-staunton-va",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16393.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16393.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T20:05:02.093Z",
+  "sourceDigest": "0eaaab96115940a0037e093324b46ce3542e83f9f2de37a6e171ca50ac2fae05",
+  "translatedAt": "2026-08-17T20:05:23.826Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 12,
+  "translatedSegmentCount": 12,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e84ced5fc1ef2956b33f335f6a014faa9af4ff51149dbe38c46a338b82f0b697",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与法规 52003"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ec4dfc4dfd869d85276a78007f8fe5f672a48c240cf47b0dc164f0375c23aa59",
+      "chineseText": "系统。该时点的技术状态不支持数字化替代。Skyryse提议替换罗宾逊R66型号直升机上的现有机械主飞控，改为数字化线传（FBW）飞控系统。由于机械系统反馈给循环杆的飞行员意识丧失，特此通过这些特殊条件要求警告显示。特殊条件包含了管理员认为为建立与现有适航标准相当的安全水平所需的额外安全标准。鉴于机械主飞控被数字控制替代而产生的监管空白，特此制定特殊条件。根据14 CFR第27.695条款，该条款基于飞行员利用触觉反馈操控旋翼机的能力，这是拟议FBW设计中不存在的。因此，为提供相同安全水平，这些特殊条件要求显示主飞控的指令位置及FBW系统的操作状态。飞控系统的功能、控制、指示和警告必须设计成最大限度减少飞行员错误和对飞控操作的混淆，包括为持续安全飞行和着陆所需的任何降级功能。必须通过某种方式向飞行员指示当前操作模式。控制和指示应按照定义飞控功能的格式组织并呈现，显示内容在所有预期的照明条件下均应对飞行员可见。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2f3ce9090ca8ab70801289a1306302184db95a4c7b4eb7f5d8837878bb8a63bf",
+      "chineseText": "该数字FBW系统采用航空器无关的飞行自动化技术，即SkyOS，应用于罗宾逊R66螺旋桨旋翼机。来自FBW系统的飞控输入将替代推杆的触觉反馈。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "db123e4945a8ece4844cc256c3adbebe88dc4fa12f27e0417582ea2d9a5aa02f",
+      "chineseText": "日期时间戳：2026年8月11日15:41, Jkt 268001, PO 00000, 表格00007, 格式4700, 摘要4700, 电子文件地址：E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "972e0223629bdb7606e20074d8137cdf94704b1f5c618c95dd4993f4236a55f2",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与法规 52004"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a0ccd220009d6c8d84ab7a98c12d63e84878791942afbf150ad6e79cf234d2d4",
+      "chineseText": "从机场338°方位线附近，距离从8.3海里半径延伸至10海里外，改为从机场329°方位线附近，距离从8.3海里半径延伸至15.2海里外，向机场西北方向扩展。这一修改旨在为利用桥水空中公园的新型特殊仪表进场程序的仪表飞行规则（IFR）操作提供适当的空域限制。该规则符合联邦航空局（FAA）根据国家环境政策法（NEPA）及FAA环境程序令1050.1G章节B-2.5(a)下的类别排除资格，不预期导致任何重大环境影响，也无特殊情况需要准备环境影响评估。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1587dfb2c29b789576d3cbab2b15fc40cc69fbc424a31d258d5e2c2a80cb49e2",
+      "chineseText": "FAA发布特别规定，依据14 CFR 11.19及11.38条款，这些特殊规定成为型号认证依据（14 CFR 21.101）的一部分。罗宾逊R66直升机如经变更，须满足适用法规。Skyryse若申请补充型号合格证，改变同一型号证涵盖的其它型号，且采用相同新颖或非常规设计，则本特殊条件也适用于该型号。该新颖或非常规设计为用飞控线传飞控系统替代机械循环杆和集体杆。Skyryse申请补充型号合格证，将FBW系统用于罗宾逊R66。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "65619824ae986b2767309a57837a27d0100bee59f954db11e9bdeae6193fefb5",
+      "chineseText": "遵照联邦航空管理局授权执行规则。根据美国法典第49编相关条款，FAA制定出确保航空安全所需空域使用规则。此次规则修订根据罗宾逊R66新仪表进场程序，扩展了Staunton市区域内Class E5空域，从机场338°向西北8.3海里外延伸10海里，调整为从机场329°向西北8.3海里外延伸15.2海里。修订更新了Bridgewater Air Park在法律描述中的地理坐标。"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ef6c6f77bdf0ed6b3f2e8eec53c536272d7bd420635fbe0fdd864bfd0fd9cab3",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与法规 52005"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0168090ef591cbe8d7be2f3afc3fc9364125a11ce18195401a8e5c47bad92e12",
+      "chineseText": "于2026年8月7日在佐治亚州学院公园发布。执行1970年联合国教科文组织(UNESCO)关于禁止和防止非法进出口与转移文化财产所有权公约(823联合国条约系列231号(1972))（以下简称“公约”）。该公约允许美国与其他公约缔约方达成协议，对符合条件的考古和民族学材料实施进口限制。根据《文化财产实施法》(CPIA)，美国与尼泊尔联邦民主共和国(尼泊尔)签订了双边协议，限制尼泊尔特定类别的考古和民族学材料进口。本条规则宣布从即日起至2031年1月8日，美国对尼泊尔的某些考古和民族学材料类别施加进口限制。该期限可根据情况延长，每次延长不超过五年，前提是初始协议的理由依然存在，且无暂停协议的原因(19 U.S.C. 2602(a)(2), 2602(e); 19 CFR 12.104g(a))。该协议自签署之日起生效，使得对约公元前32,000年至公元1770年间的考古材料及约13世纪至1950年间某些民族学材料实施进口限制成为可能。附录中列明了受进口限制影响的考古及民族学材料类别。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0e7d104d79bc34e9003b9d4b6446155b90054440660357f671b4700b04932bd9",
+      "chineseText": "根据19 U.S.C. 2602(a)(1)，美国在签订进口限制协议前，须作出特定决定。2024年1月24日，美国国务院教育与文化事务助理国务卿，经文化财产咨询委员会的建议和咨询后，依据法律规定，就起源于尼泊尔的考古及民族学材料类别作出决定。决定包括：(1)尼泊尔文化遗产中的考古材料及民族学材料面临掠夺的严重威胁；(2)尼泊尔政府已采取符合公约的措施保护其文化遗产；(3)美国实施的进口限制将对阻止掠夺行为起到重大作用；(4)本最终规则规定的进口限制符合国际社会为促进国家之间科学、文化及教育性文化财产交流的一般利益(19 U.S.C. 2602(a)(1)(C)和(D))。助理国务卿还确认所述材料符合法定的“缔约国考古或民族学材料”定义(19 U.S.C. 2601(2))。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "622b0de40fccde8e5955170dc89d0a80637c5c7019d30a9d3536062e5b2147f1",
+      "chineseText": "根据本协议，标识为受限物品的进口材料应遵守19 U.S.C. 2606及19 CFR 12.104g(a)的规定，未满足19 U.S.C. 2606和19 CFR 12.104c中设定条件者将被限制进入美国。美国海关与边境保护局修订19 CFR 12.104g(a)，标明已施加上述进口限制。该进口限制自协议生效之日起生效，期限不超过五年，除非判断协议事实依据依旧存在且无暂停协议的理由，可继续延长不超过五年。除非延期，否则进口限制将于2031年1月8日到期。"
+    }
+  ]
+}

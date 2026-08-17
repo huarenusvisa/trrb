@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "recordId": "ba8545d15f21fcf6c1662906",
+  "recordFingerprint": "546192d25e887b452dd453e56b7b2073c908a9119a6a3a2a3a31caf93295f5d9",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Justice Department; Drug Enforcement Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16413/schedules-of-controlled-substances-temporary-placement-of-o-desmethyltramadol-in-schedule-i",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16413.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16413.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T20:06:15.002Z",
+  "sourceDigest": "31d6063d7380949cf66016f68a58263f079a76f0ded99313fcd44da675702909",
+  "translatedAt": "2026-08-17T20:07:50.963Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 29,
+  "translatedSegmentCount": 29,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2aed2810e72afa7acbad757c3f7d3a63ba456fa9eb4fd66b8dcdddb8385e238f",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则和条例 52013"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f7a1cbd17071d2fbea95a42b658cabff7d1caed2051d1b0f6d4d2a0df64becd5",
+      "chineseText": "查找最当前的（以临时修正案形式）新药申请（NDAs）关于O-的句子版本指南。添加O-去甲曲马多（其他DSM T）的名字：3-（2-（（二甲氨基）甲基）-1-羟基环己基）苯酚；O-DSMT；desmetramadol），其异构体、酯、醚、盐及异构体、酯和醚的盐，依照《管制物质法》（CSA）临时地列入附表I。O-DSMT当前未被列入CSA任一附表。代理署长曾表示，卫生与公共服务部（HHS）对将O-DSMT临时列入CSA附表I无异议。DEA依据美国法典第21卷第811(h)(4)条的要求，考量了前任代理署长的意见，并认定临时控制O-DSMT于附表I是为避免对公共安全的迫在眉睫的危害而必要的。若依21 U.S.C. 811(a)(1)条启动控制程序时该物质已依第811(h)条临时受控，司法部长可延长临时管控达一年。该命令根据发现，O-DSMT未被列于21 U.S.C. 812的其他附表，且不具联邦食品、药品和化妆品法案第505节的豁免或批准。此举旨在保护公众安全，施加适用的监管管控及行政、民事和刑事制裁给涉及（制造、分销、逆向分销、进口、出口、从事实验、教学活动或化学分析）或拟处理O-DSMT的人员。若此命令获延长或永久，则DEA将在联邦公报发布相关文件。本命令自2026年8月12日起生效，至2028年8月12日止。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0c56790e24a150570111c43b5acc318298b81d5353c938943f9b3a0339813a8b",
+      "chineseText": "依据21 U.S.C. 811(h)条，DEA依据联邦法典第21部分1308条暂时将物质列入附表I（最长两年），且无须符合第811(b)条的评估要求。卫生部部长已将制定国内药物附表建议的权力委托健康助理国务卿。依据21 U.S.C. 811(c)的规定，管理员在判断是否避免迫在眉睫的公共安全危害须考虑该物质的滥用历史和当前模式、滥用的范围、持续时间及重要性，以及对公共健康的风险。对这些因素的考量包括任何实际滥用、从合法渠道转移用途以及非法进口、制造或分销的相关信息。仅符合法律规定的临时列管条件的物质可被列入附表I。附表I的物质具有高滥用潜力，无现有公认的医疗用途，且不具医疗监督下的公认安全性。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "aab064ca58432435178352327594c43394c45409254c34b8ca47487ed496dafa",
+      "chineseText": "虽然DEA过去对临时列管令曾使用“最终命令”一词，但本次行动严格遵循法定表述。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5ecd7beeb79e7a6b393ebeec7624cf95c3e4ab9c863d1ff7cd21d868c7627cf6",
+      "chineseText": "2026年8月11日15:59发布，Jkt 268001，表格00000，格式4700，联邦公报，12AUR1.SGM文件内容。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b81ade3f5543ad1af1d42f918be5b0ed4fe49ab4d7ed26cca331c175d7460a72",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则和条例 52014"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3e99281064a049b738da865a2f45db2702e1d67136c793991beb129dbf3b42b4",
+      "chineseText": "O-DSMT是在摄入曲马多后产生的.mu-阿片激动剂，具有精神活性效应。在美国，由于曲马多仅获批为口服片剂，使用者必须口服曲马多后由肝脏代谢后，才能体验其止痛效果。因美国无获批的O-DSMT医疗产品或合法商业来源，导致生产O-DSMT的隐蔽制造行为。数据表明，O-DSMT对阿片受体亲和力显著高于曲马多原药，且止痛效力更强。国际及美国国内均有多起涉及O-DSMT的过量及死亡事件。因无获批医疗用途且安全性资料有限，O-DSMT已在设计师药物市场出现，对美国公共健康构成重大关切。综述现有数据表明，O-DSMT滥用潜力极高，且无公认的医疗用途及医疗监督下安全性。根据21 U.S.C. 811(h)条，临时列管时无需考虑是否具有公认医疗用途。卫生部亦未发现医疗人员广泛临床使用或认可O-DSMT医疗用途。根据传统五项测试及卫生部新增经验标准，均无证据表明O-DSMT具现有获批医疗用途。O-DSMT的药代动力学和镇痛作用已在103名健康受试者中通过随机、双盲、安慰剂及活性对照试验研究，结果表明20毫克O-DSMT镇痛效力与50毫克曲马多相当。O-DSMT主要由肝脏CYP2D6酶催化形成，且个体之间存在超快、中间及差异代谢者，对药效影响显著。DEA国家法医实验室信息系统共享自30州147起O-DSMT检测，推测实际报告数更高。O-DSMT曾以固体粉末、压制药片、胶囊、半固态糊剂及液体多种形式被查获，其中多数单独检测出O-DSMT。滥用情形首次报导于2011年，执法机关仍持续查获，公共安全面临连续威胁。O-DSMT常与其它药物如叶绿素碱（kratom生物碱）、海洛因、异丙基U-47700、甲基苯丙胺、芬太尼及其类似物等合并出现。注：NFLIS覆盖约96%美国州及地方法医实验室数据，广泛反映非法药物流通情况。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ebe468d1e642ea6ca37f63c5658588fff7275dbcac100540464b8024cbb2fe53",
+      "chineseText": "由监管医学执业实体认可的临床实践，所以化学结果仅来自已完成的分析。\n医学，且若是，(2) 是否存在至少一项医疗状况的可信科学支持，满足（1）部分。\n2025年6月11日的信函显示，司法部法律顾问办公室（OLC）于2024年4月11日发布意见，\n其中结论之一为HHS的两部分测试足以确立该测试。此外，NFLIS数据虽非滥用的直接证据，\n但可推断药物被转用和滥用。见《管制物质时间表：将卡利舒丙泊醇列入第四类管控物质》，\n2011年12月12日，联邦公报第76卷第77330页，第77332页。NFLIS查询日期：2026年5月11日；\n2025和2026年数据仍在报告中。HHS已告知DEA，目前无批准的新药申请或O-DSMT的试验性新药申请，\n且HHS对将O-DSMT临时列入管控物质第一类未提出异议。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ae6638555a7f5da38c7fc0a7942def58254ebd4d3372ad4be02399005c79cf79",
+      "chineseText": "两部分测试足以确立将O-DSMT列入《管制物质法案》第一类管控物质的合理性。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d1c446eb5541fcaa0d0c1f3bf349ef991f006352669b751ec195a4c4330da5c6",
+      "chineseText": "VerDate Sep<11>2014 15:41 Aug 11, 2026 Jkt 268001 PO 00000 Frm 00018 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ae75fe992d799e2a54e32bd28601882ea4e6cf689205b14fe9580007fb6a97f2",
+      "chineseText": "联邦公报/第91卷，第154号/2026年8月12日星期三/规则与条例，第52015页"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "12c0702f20ad35d4c2a965cc3464b3afbd3dec677bf0ed32b8add7be01f0608e",
+      "chineseText": "根据毒理学报告（参见因素6），O-DSMT被发现与克拉托姆植物混合，\n这是通过检测曲马多包装材料以及个人毒理学检测中确认O-DSMT和米曲洛宁而确定的。\n研究人员排除了服用曲马多的可能性，因为曲马多及其代谢物N-去甲曲马多均未检测到。\n结论认为，O-DSMT的最可能来源是含有克拉托姆生物碱和O-DSMT的“Krypton”产品。\n因素6：滥用O-DSMT对公共健康的风险\nO-DSMT滥用的公共健康风险涉及其与吗啡、羟考酮和芬太尼等已知阿片类药物的药理学相似性。\n摄入O-DSMT已导致严重不良反应，包括肺充血、脑水肿和死亡。\n以下简述的四个示例可在DEA的三因素分析全文中找到，网址为www.regulations.gov，\n编号为DEA–1641。\n2009年，瑞典报告了9例因O-DSMT与米曲洛宁联合中毒致死的案件，法医尸检确认。\n发生在2009年10月至2010年10月期间的10次法医医学调查发现这些死者血液中同时存在O-DSMT和米曲洛宁。\n其中9例死因被确定为O-DSMT中毒。虽鉴别出其他物质，但其水平不足以致毒。\n死者年龄从22至35岁不等，血液中O-DSMT浓度介于0.4至4.3毫克/克之间，均死于送医前，死亡均属意外。\n报告详细描述了使用“Krypton”（克拉托姆与O-DSMT混合物）后显著肺部充血与水肿。\n同一时期，德国一研究团队对一名前鸦片成瘾女性的尿样进行“Krypton”检测。\n该女性临床表现包括瞳孔缩小、瘙痒、不安及中度欣快感，持续三个月使用后。\n通过免疫测定和液相色谱-串联质谱（LC–MS/MS）检测，发现尿样中含米曲洛宁、生特洛宁、\nO-DSMT、生提奥宁、米曲利安等生物碱，约9毫克/L O-DSMT，未检测到曲马多及N-去甲曲马多。\n该女性承认饮用了“三至四瓶Krypton”。研究排除了服用曲马多的可能，因为未检测到曲马多及其代谢物。\n这表明O-DSMT是Krypton产品中的活性成分。\n在美国非法药物市场中被查获的O-DSMT未被认可具有医疗用途，仍因其精神活性被滥用。\n总之，报告表明O-DSMT使用后可导致严重不良反应，包括死亡。\n公共卫生风险因素6。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "be27b9fce9fc9c29336d85ea1bbc87067f722267fc7f2167f79819ba8fc45a30",
+      "chineseText": "O-DSMT的临时列入CSA第一类管制物质将自该命令公布之日起生效，\n并持续两年，届时可延长一年，直至完成常规（永久）排程程序。CSA针对药品及其他物质的排程设定特定标准。\n根据21 U.S.C. 811(a)的永久排程必须经正式规则制定程序，“在有听证机会后进行记录”；\n并适用5 U.S.C. 556及557条款。永久排程的规则制定程序为相关方提供适当程序，并允许政府提供补充信息，\n最终决定可接受司法审查。临时排程命令不适用司法审查。\n根据本临时命令生效日，O-DSMT将受制造、分发、反向分发、进口、出口、持有、研究、教学活动及化学分析等活动的监管，\n包括但不限于以下要求：\n1. 注册。任何在本命令生效日或之后处理（持有、制造、分发等）O-DSMT者必须向DEA注册，未注册者持有O-DSMT可能被起诉。\n2. 库存处理。不愿或无法注册者须交出所持有的全部O-DSMT。\n3. 安全措施。O-DSMT受第一类管控物质安全要求约束。\n4. 标签和包装。所有商业用途的标签、标识和包装须符合第一类管控物质标准。\n5. 库存盘点。持有任何数量O-DSMT的DEA注册人必须根据法律规定盘点库存。\n6. 记录保持。必须按照法规维护相关记录。\n7. 报告。应提交相关报告。\n8. 订单表格。依规定使用订购表。\n9. 进出口管理。进出口必须符合法律要求。\n10. 配额。制造必须符合配额规定。\n11. 责任。任何未经授权或违反CSA规定的行为均属违法，可能导致行政、民事或刑事制裁。\n如于2026年8月12日进行O-DSMT研究且已注册，可申请延续研究权限。\n此外，伪造模仿曲马多的药丸可能含有O-DSMT，且身份和纯度不确定，存在重大健康风险。\n数据和信息显示该物质符合临时排程的三个法定标准。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8b6612fd140bb973452244f14acc0f704eb2aa366a1185bad47db64f6d7cd302",
+      "chineseText": "VerDate Sep<11>2014 15:41 Aug 11, 2026 Jkt 268001 PO 00000 Frm 00019 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e7dce1ce6fc90d3e7344a85eb4b301a4cb5e5d59fc31f0e6d08633f804c76ca4",
+      "chineseText": "52016 联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "affa8a3cb618f4b9819bdf5a05faa2cf49273c276255a67ef5bba4e3d74d086b",
+      "chineseText": "联邦公报将发布该临时命令，其效力为期两年，可延长一年，等待常规（永久）排程完成。\nCSA设有药品及其他物质排程的特定标准和程序。\n永久排程须经正式规则制定程序并提供听证机会，符合5 U.S.C. 556及557条款规定，\n允许利益相关方提供信息并享受适当程序，结果可接受司法审查。\n而临时排程命令不适用司法审查。\n依据本命令生效日期，O-DSMT的所有处理活动（包括持有、制造、分发、反向分发、进口、出口、研究、教学及化学分析）\n必须经DEA注册，未注册非法处理将构成犯罪。\n持有O-DSMT者须依21 U.S.C. 827及958及相关21 CFR条例盘点库存，新注册者须在2026年8月12日起90日内提交注册申请以进行研究。\n未经批准不得进行分发、销售给公众，且应遵守订单表格、进出口和配额等相关法规。\n未经授权处理O-DSMT行为将面临行政、民事和刑事制裁。\n所有注册人必须保持完整记录，并按规定时间提交报告。\n研究人员持续进行研究需申请注册并经批准。\n以上规定详见2026年6月24日发布的联邦公报公告编号，并受相关联邦法规及法典条款约束。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "dc661b05ebbd01f7f479642749587ebce319f233075449c4b1db872cf4f17738",
+      "chineseText": "持有O-DSMT容器进行研究的注册者必须遵守21 U.S.C. 825和958(e)以及21 CFR第1302部分的要求。现有DEA注册者需在2026年8月12日起算30个日历日内，遵守所有标签和包装要求。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0314a29c7d8e0aa56a861cc0e72337023f3a43470d8aba40e60ab802fd5fbbe5",
+      "chineseText": "2026年8月11日15:41，案号268001，表格00000，格式4700，样式4700，文件路径E:\\FR\\FM\\12AUR1.SGM，编号12AUR1。"
+    },
+    {
+      "segmentId": "pdf-p5-s19",
+      "order": 19,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "b4a9caaa738370ddf5769c291dc28301f6a5c1e809d1af941c73585a482e3e42",
+      "chineseText": "联邦公报／第91卷，第154号／2026年8月12日星期三／规则与规章，第52017页。"
+    },
+    {
+      "segmentId": "pdf-p5-s20",
+      "order": 20,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "3db0c1d4cbdd100af75c01d3791afd7bfc8fcff1b94189a03d8db6d812c0a1f8",
+      "chineseText": "根据21 U.S.C. 811(h)(1)，被司法部长授权的管理者可通过命令暂时将物质列入附表I。此类命令不得早于以下两项的期限结束： (1) 在联邦公报刊登拟发此类命令意图的通知及其发出依据之日起30日，(2) 该临时列管命令拟议通知传达给卫生与公众服务部助理部长之日。鉴于第811(h)条款规定应以命令形式发布临时列管措施（区别于规则），并列明其发布程序，DEA认为《行政程序法》(APA)中适用于规则制订的通知与评论要求不适用于此类临时列管命令。APA明确区分“命令”与“规则”，定义“命令”为“机构在非规则制定事项上的最终裁决，无论其形式为肯定、否定、禁令还是声明性”（5 U.S.C. 551(6) 强调）。这与需要在听证后“公开记录”中进行的永久列管规则制定程序不同，后者完成后还须接受司法审查。国会特定用语意在表明DEA应以命令而非规则制定方式，针对临时列管。即便本行动受APA通知与评论影响，鉴于国会授权管理者依规则制订程序执行其他类型列管，仍特别授权以命令形式发布临时列管行动。此外，本命令依据行政命令12866，不构成重大监管行动，不需要预算管理办公室审核。本项行动亦不受行政命令14192与14294限制。该行动预计不会对州政府、联邦与州关系或权力分配产生重大直接影响，故根据行政命令13132，判定无联邦主义涵义，亦无需编制联邦主义评估。因本临时列管不属“规则”，不受《监管灵活性法案》限制，依据5 U.S.C. 603(a)不须进行监管灵活性分析。综上，DEA修订21 CFR第1308部分如下：■ 1. 部分1308的授权条文继续有效：授权依据21 U.S.C. 811、812、871(b)、956(b)，除非另有注明。■ 2. 删除1308.11节第(h)(65)段，并新增第(h)(88)段，内容如下："
+    },
+    {
+      "segmentId": "pdf-p5-s21",
+      "order": 21,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "cf4617ce98c29862e304096695bac69d8d639db1e22de3ea59253b5b96eeeb83",
+      "chineseText": "* * * * * * * (88) O-二甲基曲马多（其他名称：O-DSMT；desmetramadol；3-[(1R,2R)-2-[(二甲氨基)甲基]-1-羟基环己基]苯酚）............................................................................................................................................................... 9667"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "99b63843b8f41a0062fcb163ebb19d6b513d92eb91737fb68e87cc6f74b89e45",
+      "chineseText": "该文件由DEA管理员Terrance C. Cole于2026年8月6日签署。该文件含原始签名，DEA联邦公报联络官获授权签署并以电子形式提出，以DEA官方文件身份发布。此行政程序并不改变本文件公布于联邦公报后的法律效力。"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f364443cd1aa246bb1c24d8f7e5bacaa1b53fdefb48800b183bf6b95f1912032",
+      "chineseText": "本文件由美国缉毒局签署， DEA联邦公报联络官获授权签署并提交文件，使用电子格式作为DEA正式文件。此行政程序不影响文件于联邦公报发表时的法律效力。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f152f45fe971c892fd1f727b1a00f5cf841d112ddf97b39c603525fb4cbd8344",
+      "chineseText": "20 根据21 U.S.C. 811(h)(1)。22 根据21 U.S.C. 811(a)和877。21 5 U.S.C. 551(6)（加重强调）。23 参见21 U.S.C. 811(a)。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5d09e6659df6bc27e2b6282f192631cad08cb5195e83ce0682998eb585c0c34e",
+      "chineseText": "2026年8月11日15:41，案号268001，表格00000，格式4700，样式4700，文件路径E:\\FR\\FM\\12AUR1.SGM，编号12AUR1。"
+    },
+    {
+      "segmentId": "pdf-p6-s26",
+      "order": 26,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "95854796409bd97915486a3ba36864a18fa031688404394a95a694cea05c3b24",
+      "chineseText": "联邦公报／第91卷，第154号／2026年8月12日星期三／规则与规章，第52018页。"
+    },
+    {
+      "segmentId": "pdf-p6-s27",
+      "order": 27,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "14180523840df1f9709437278208976bbfd5906e00e74a5b519344dc430befb6",
+      "chineseText": "内政部海岸警卫队发布特别地方法规（SLR），涉及马里兰州克里斯菲尔德附近威灵顿海滩外的达尔蒂溪特定水域，此为临时最终规则。该规定针对2026年9月5日举行的动力快艇竞赛的安全需要而制定，竞赛将在恶劣天气情况下顺延至9月6日。规则禁止未获马里兰国家首都区域港口区指挥官（COTP）或其指定代表授权的人员与船只进入管理区。此规则仅于2026年9月5日当日12:30至15:00间执行，若延期，则于9月6日同一时段执行。"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "99ef91308ef18ffd21ba27e58419fca467f00b4ec754b44d6380389bef084f76",
+      "chineseText": "如有疑问，请联系马里兰国家首都区域港口区水道管理部MST1 Zachary Rudy，电话410-576-2596，邮箱SectorMD-NCR-SCC@uscg.mil。达尔蒂溪水域坐标在规则文本后附。除已注册参赛者外，任何船只或人员不得进入。\n\n缩略语表：CFR——联邦法规，FR——联邦公报，NPRM——拟定规则通知，SLR——特别地方法规，U.S.C.——美国法典。\n\n2026年3月23日，海岸警卫队收到基于33 CFR 100.15的史密斯岛蟹帆竞赛协会申请，拟在克里斯菲尔德及周边水域举办动力快艇竞赛。竞赛分三轮预赛，每轮约7艘22英尺快艇参赛，沿标定路线竞速。港口区指挥官根据46 U.S.C. 70041权力设立此SLR，因竞赛存在碰撞等安全风险，需保障参赛及非参赛船只和人员安全。鉴于紧急情况，海岸警卫队根据5 U.S.C. 553(b)(B)豁免提前公告规则拟定程序。本规则不征集新信息，且依据行政命令13132分析无联邦主义和印第安部落政府相关影响。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "66fc9b94fbede2bf5c9d9d8b397cd51d0e4ea5928918f64d183fbc9ecd859137",
+      "chineseText": "2026年8月11日15:41，案号268001，表格00000，格式4700，样式4700，文件路径E:\\FR\\FM\\12AUR1.SGM，编号12AUR1。"
+    }
+  ]
+}

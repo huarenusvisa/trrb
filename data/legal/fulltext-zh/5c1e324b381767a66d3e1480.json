@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordId": "5c1e324b381767a66d3e1480",
+  "recordFingerprint": "b633a0928d7f6f5196778529fd26d5dbafe0db9150fd5b8650617b4a60f8ad81",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16412/special-conditions-skyryse-robinson-helicopter-company-model-r66-helicopter-flight-control-system",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16412.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16412.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T20:05:59.100Z",
+  "sourceDigest": "a7f1a67449365d9901c835f8c95a350382c5087e92809f5af846c5ce1884645d",
+  "translatedAt": "2026-08-17T20:06:14.976Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 8,
+  "translatedSegmentCount": 8,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f86db18f371a8e532b71726ac92f90140979c0d13bbaf8ccaef6f70100066058",
+      "chineseText": "2026年8月12日星期三 Federal Register 第91卷第154号 规则与法规"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9363764f6c8fd04ac52e35e50c5983c79f414e5434326f77ad192c12564d29b5",
+      "chineseText": "依据美国宪法第五修正案，关于或许要求补偿的征用事项。 L. 依据其他行政命令和总统备忘录的审查 交通部 联邦航空管理局 14 CFR 第27部分 DOE已审查本临时最终规则并确定其与行政命令14192《通过放松管制释放繁荣》和14192号行政命令《确保合法治理及实施总统政府效率部》所列政策及指令相一致。根据2001年财政部及一般政府拨款法案（44 U.S.C. 3516，附注）规定，联邦机构应依各自制定的信息质量指南，审查公众信息的最广泛传播。OMB相关指南发布于2002年2月22日的67 FR 8452，DOE指南则发布于2002年10月7日的67 FR 62446。依照OMB备忘录M–19–15（2019年4月24日）——改善信息质量法的实施，DOE公布了更新指南，网址：www.energy.gov/cio/department-energy-information-quality-guidelines。DOE依据OMB和DOE指南审查本临时最终规则，确认其符合相关政策。 K. 依据行政命令13211的审查 E.O. 13211《对能源供应、分配或使用有重大影响的联邦规章行动》，2001年5月22日66 FR 28355，要求联邦机构为任何重大能源行动向OMB的OIRA提交能源影响陈述。重大能源行动指任何机构制定或预计制定最终规则，并且（1）是根据行政命令12866或继任命令的重大规章行动，且可能对能源供应、分配或使用产生重大不利影响，或（2）被OIRA指定为重大能源行动。对重大能源行动，机构必须详细说明若规则实施对能源供应、分配或使用的不良影响及合理备选方案及其预期收益。本临时最终废止过时交通控制规则不属于行政命令12866项下的重大规章行动，也不会对能源供应、分配或使用产生重大不利影响，亦未被OIRA指定为重大能源行动。因此，DOE未编制能源影响陈述。 V. 署长批准 署长已批准发布本临时最终规则请求意见。根据5 U.S.C. 801，DOE将于本临时最终规则生效前向国会报告，报告将说明该规则不属于5 U.S.C. 804(2)定义的“重大规则”。 签署于2026年7月28日，交通部能源署，署名James Danly，能源副部长。该文件由DOE保管，并委托DOE联邦公报联络员以电子形式签署和提交，符合法律效力。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7b7f6a24462c993959512861a552b88e585feba68dd3f17675c7058c7d02f32f",
+      "chineseText": "该规则废止了旧的交通控制规章，不涉及对能源供应、分配或使用的重大不利影响，亦非行政命令12866定义的重大规章，故未编制能源影响陈述。 [联邦公报文件2026年16425号，2026年8月11日提交；8:45AM] 计费代码6450-01-P"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ce0c3f5c2c0be2795607a553c0fa3a708b6695d321c33a99911e3e5d1d9debb7",
+      "chineseText": "2026年8月11日下午3:41 已提交 268001号案件 00000表单 00006页 格式4700 行样式4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e84ced5fc1ef2956b33f335f6a014faa9af4ff51149dbe38c46a338b82f0b697",
+      "chineseText": "2026年8月12日 星期三 第91卷第154号 联邦公报 规则与法规 52003页"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ec4dfc4dfd869d85276a78007f8fe5f672a48c240cf47b0dc164f0375c23aa59",
+      "chineseText": "系统。当时的技术状态不支持数字替代方案。Skyryse计划用基于可计算机计算的飞机系统SkyOS的数字飞行自动化技术，将罗宾逊R66直升机上的机械主飞行控制更换为数字FBW（线控飞行）系统。 SkyOS不修改发动机、主旋翼、副旋翼或物理行程限制的主飞行控制面。 14 CFR 第27部分 主题 清单 飞机、航空安全、报告与记录要求。 权限依据 依照以下法律授予的权限制定本特别条件：49 U.S.C. 106(f), 40113, 44701, 44702, 44704。 特别条件 因此，依据管理者授权，作为罗宾逊(Robinson)直升机公司Model R66直升机经Skyryse改装后的型号认证基础一部分，特此发布以下特别条件。 飞行控制系统 本飞行控制系统功能、控制、指示和警示须设计为最大限度地减少飞行人员对飞行控制系统操作的错误和混淆，包括为安全飞行和着陆所需的任何降级功能。 必须提供指示飞行员当前运行模式的手段。控制和指示须分类呈现，清楚定义飞行控制系统功能。显示信息需在所有预期光照条件下飞行员可见。 评论意见 2026年4月21日在联邦公报（91 FR 21268）发布罗宾逊Model R66直升机特别条件拟议通知No. 27–26–01–SC，收获一条未说明理由的不同意见，但未请求更改拟议特别条件。 本特别条件照原案采纳。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2f3ce9090ca8ab70801289a1306302184db95a4c7b4eb7f5d8837878bb8a63bf",
+      "chineseText": "适用性 依前述描述，这些特别条件适用于罗宾逊Model R66直升机。若Skyryse日后申请补充型式证书，将同样适用该型式证书下含有相同新颖或不寻常设计特征的其他型号。 概述 本特别条件针对罗宾逊Model R66直升机安装的主要飞行控制系统，将机械摇杆和集体控制替换为数字飞行控制系统(FCS)。Skyryse申请补充型式证书 (STC)，采用与飞行器无关的飞行自动化技术SkyOS。FBW系统的控制输入将取代机械推杆的触觉反馈。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "db123e4945a8ece4844cc256c3adbebe88dc4fa12f27e0417582ea2d9a5aa02f",
+      "chineseText": "[表格页尾无法识别文字轨迹]"
+    }
+  ]
+}

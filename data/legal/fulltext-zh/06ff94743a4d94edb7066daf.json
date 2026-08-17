@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "recordId": "06ff94743a4d94edb7066daf",
+  "recordFingerprint": "a127baacd7be99bf8ed4a542f81a7be21c8cf47367524b0c1fa76f702343e16d",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Nuclear Regulatory Commission",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16398/list-of-approved-spent-fuel-storage-casks-nac-international-inc-magnastor-storage-system-certificate",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16398.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16398.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T20:05:23.852Z",
+  "sourceDigest": "4dd82f3eb3743d4ae8d4478ff7a754b279958095362344a691100ec410719fb5",
+  "translatedAt": "2026-08-17T20:05:36.954Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 4,
+  "translatedSegmentCount": 4,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4d384785e807b7d5c517cf60c949a99d2e83ed3145cdeb67363e5f4e3cc9d8a1",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例 51999"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9a7f26fc98128b91a366bb0c1b23fe9d858792d7790556ea3750fb0059ecdd10",
+      "chineseText": "核管理委员会 认证合格证书编号1031，第10 CFR第72部分，内华达国家安全场所（NNSS，前称内华达试验场）相关技术规格变更及安全评估的法规报告可在ADAMS中获取，包裹接入号为ML26202A387。• NRC公共文件室（PDR）：公共文件室提供可公开查阅和复制的文件，可通过预约访问。如需预约，请发送电子邮件至PDR.Resource@nrc.gov或在周一至周五东部时间8点至16点间致电1–800–397–4209或301–415–4737，联邦假日除外。批准的乏燃料存储桶清单：NAC International, Inc.，MAGNASTOR®存储系统，认证合格证书编号1031，第16和17次修订及第0至16次修订的修订版本。机构：核管理委员会。行动：直接最终规则；确认生效日期。摘要：美国核管理委员会（NRC）确认2026年9月14日直接最终规则的生效日期，该规则于2026年7月1日公布于联邦公报。本直接最终规则修订了NAC MAGNASTOR系统于“批准的乏燃料存储桶清单”，包括第16和17次修订及第0至16次修订的修订，涉及认证合格证书编号1031。日期：直接最终规则公布于2026年7月1日（91 FR 39843），如无重大不利评论，将于2026年9月14日生效。NRC未收到任何评论，故此规则按计划生效。通信地址：联系NRC时请注明档案号NRC–2026–2047，您可以通过以下方式获取相关公共信息：• 联邦规则制定网站：电子访问https://www.regulations.gov，检索档案号NRC–2026–2047。涉及NRC档案的相关问题，请联系Helen Chang，电话301–415–3228，电子邮件Helen.Chang@nrc.gov。技术问题，请联系本文“联系信息”部分列出人员。• NRC机构文件访问与管理系统（ADAMS）：您可在线获取公开文件，网址https://www.nrc.gov/reading-rm/adams.html。点击“开始ADAMS公共搜索”。ADAMS问题请联系NRC公共文件室（PDR）工作人员，电话1–800–397–4209或301–415–4737，电子邮件PDR.Resource@nrc.gov。认证合格证书编号1031的第16及第17次修订及第0至16次修订的修订涉及的NRC法规及安全评估报告在ADAMS包裹接入号ML26202A387中可查。此项行动目的是移除因内华达国家安全场所现在适用内华达州交通执法法规而已废止的相关联邦法规。其效果是撤销无效法规。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9f5a7c1fe4524938595c703cb365f48caa4095309c2efefbd92f581e51a25056",
+      "chineseText": "请注意本次2026年8月12日生效的临时最终规则，评论必须在2026年9月11日之前电子提交。部门未必会审议期限后提交的评论。送达地址：鼓励相关人员通过联邦电子规则制定门户网站https://www.regulations.gov，档案号DOE–HQ–2026–0529提交评论。遵循提交评论的指示。该档案含联邦公报公告、评论及其它支持材料，均可于https://www.regulations.gov访问。档案网页列出所有材料索引，但非索引中所有文档均可公开，如依法不可公开的材料除外。档案网页为https://www.regulations.gov/docket/DOE-HQ-2026-0529。您可查阅该页面获取访问所有文件（包括公众评论）及临时最终规则摘要的指引。进一步信息请联系能源部门环境，健康，安全和保障办公室，联系人Mark Hojnacke，电话301–903–3311，电子邮件mark.hojnacke@hq.doe.gov。[FR Doc. 2026–16398 于2026年8月11日8:45am提交]账单代码7590–01–P。能源部补充说明，法规部分861内容目录:[DOE–HQ–2026–0529] 一、背景/授权 二、规则依据 三、发布临时最终规则依据 四、程序问题与法规审查 A. 依据执行令12866的审查 B. 根据法规灵活性法案的审查 C. 依据纸质工作减轻法案的审查 D. 根据1969年国家环境政策法的审查 E. 根据执行令13132的审查 F. 依据执行令12988的审查 G. 根据无资金负担法案的审查 H. 依据1999年财政部及一般拨款法案的审查。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "94b413ca0812c02ed22949708dc8a6e5861657d6fea20aa8cb086837c526d292",
+      "chineseText": "法规版本于2026年8月11日16:24，根据Jkt 268001 PO 00000 Frm 00003 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1发布。"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+name: 重要新闻与ICE双重展示数据库迁移
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/20260817152500_dual_placement_manual_category_ice_topic.sql"
+      - ".github/workflows/dual-placement-migrate.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-dual-placement-migration
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_POOLER_URL: ${{ secrets.SUPABASE_POOLER_URL }}
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL || secrets.SUPABASE_DATABASE_URL || secrets.DATABASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve Supabase database connection
+        id: db
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="${SUPABASE_POOLER_URL:-}"
+          if [[ -z "$url" ]]; then
+            url="${SUPABASE_DB_URL:-}"
+          fi
+          if [[ -z "$url" ]]; then
+            echo "缺少 Supabase 数据库连接 Secret。" >&2
+            exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Apply dual placement migration
+        env:
+          DATABASE_URL: ${{ steps.db.outputs.url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 \
+            -f supabase/migrations/20260817152500_dual_placement_manual_category_ice_topic.sql
+
+      - name: Verify trigger and target article
+        env:
+          DATABASE_URL: ${{ steps.db.outputs.url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          function_def="$(psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
+            "select pg_get_functiondef('public.assign_article_category_from_topic()'::regprocedure);")"
+          printf '%s\n' "$function_def" | grep -q 'has_primary_non_ice_category'
+
+          result="$(psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
+            "select coalesce(category_name,'') || '|' || coalesce(topic_key,'') from public.articles where lower(coalesce(slug,'')) like '%msxdhkl3-85c026%' or title like '5000字文章深扒庇护欺诈%' order by created_at desc nulls last limit 1;")"
+          echo "target_article=$result"
+          test "$result" = "重要新闻|ice"
+
+          echo "双重展示迁移完成：主栏目=重要新闻，ICE专题=ice。"

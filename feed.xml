@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 17 Aug 2026 15:12:34 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 15:34:35 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>波士顿执法逮捕涉2024巴西谋杀嫌犯</title>
+      <link>https://trrb.net/ice/ice-a8232e30f7588f415ec3a121d5a52171c52c8dc7</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-a8232e30f7588f415ec3a121d5a52171c52c8dc7</guid>
+      <pubDate>Mon, 17 Aug 2026 15:34:35 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>马萨诸塞州波士顿执法机构逮捕2024年巴西加重谋杀案嫌犯Maycon Souto Dos Reis，该嫌犯为非法移民。</description>
+      <enclosure url="https://pbs.twimg.com/media/HP7uTYOWcAALmnG.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>5000字文章深扒庇护欺诈：欺诈标准、ICE查处律师楼细节、庇护申请人与律师代理边界以及持续影响</title>
       <link>https://trrb.net/ice/5000%E5%AD%97%E6%96%87%E7%AB%A0%E6%B7%B1%E6%89%92%E5%BA%87%E6%8A%A4%E6%AC%BA%E8%AF%88%E6%AC%BA%E8%AF%88%E6%A0%87%E5%87%86ice%E6%9F%A5%E5%A4%84%E5%BE%8B%E5%B8%88%E6%A5%BC%E7%BB%86%E8%8A%82%E5%BA%87%E6%8A%A4%E7%94%B3%E8%AF%B7%E4%BA%BA%E4%B8%8E%E5%BE%8B%E5%B8%88%E4%BB%A3%E7%90%86%E8%BE%B9%E7%95%8C%E4%BB%A5%E5%8F%8A%E6%8C%81%E7%BB%AD%E5%BD%B1%E5%93%8D-msxdhkl3-85c026</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>社交媒体称麻州劳伦斯周末疑有ICE移送行动，官方未予确认。</description>
       <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2089047941768249344/img/BwTPh7V9EAYiYoMY.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>ICE拘留所女性囚犯疑因内衣问题感染阴道病</title>
-      <link>https://trrb.net/ice/ice-a621c1f6e23824ab3537f01cde060ae3fbdf3594</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-a621c1f6e23824ab3537f01cde060ae3fbdf3594</guid>
-      <pubDate>Sun, 16 Aug 2026 20:01:38 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>有消息称ICE拘留所女性囚犯因使用未洗内衣出现阴道感染，相关诉讼已提出，ICE未回应。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2089071309313429504/img/bLjliCbzj1bDbgVj.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

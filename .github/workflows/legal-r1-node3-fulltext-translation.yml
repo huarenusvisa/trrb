@@ -1,0 +1,124 @@
+name: LEGAL-R1 N3 - Full Text Chinese Translation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/legal-r1-node3-fulltext-translate.mjs'
+      - '.github/workflows/legal-r1-node3-fulltext-translation.yml'
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'docs/LEGAL-R1-FULL-TEXT-CHINESE-TRANSLATION-AND-DETAIL-UX.md'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-legal-r1-node3-fulltext-translation
+  cancel-in-progress: false
+
+jobs:
+  translate-current-official-fulltext:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      LEGAL_R1_N3_RECORD_BATCH: '4'
+      LEGAL_R1_N3_CHUNK_CHARS: '16000'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install official PDF text extractor
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends poppler-utils
+      - name: Validate required AI credential
+        run: test -n "$OPENAI_API_KEY" || { echo 'Missing OPENAI_API_KEY'; exit 1; }
+      - name: Validate N3 translator syntax
+        run: node --check scripts/legal-r1-node3-fulltext-translate.mjs
+      - name: Translate next strict full-text batch
+        run: node scripts/legal-r1-node3-fulltext-translate.mjs
+      - name: Audit saved translation bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const db = JSON.parse(fs.readFileSync('data/legal/unified-legal-authorities-latest.json','utf8'));
+          const index = JSON.parse(fs.readFileSync('data/legal/legal-fulltext-zh-index.json','utf8'));
+          const eligible = (db.records || []).filter(r => r?.officialPdfUrl || r?.officialUrl);
+          if (index.datasetVersion !== db.datasetVersion) throw new Error('N3 index datasetVersion mismatch');
+          if (index.eligibleRecordCount !== eligible.length) throw new Error(`N3 denominator mismatch: ${index.eligibleRecordCount}/${eligible.length}`);
+          if (index.duplicateBindingCount !== 0) throw new Error(`duplicate translation bindings=${index.duplicateBindingCount}`);
+          const dir = 'data/legal/fulltext-zh';
+          const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter(n => n.endsWith('.json')) : [];
+          let valid = 0;
+          for (const name of files) {
+            const x = JSON.parse(fs.readFileSync(path.join(dir,name),'utf8'));
+            if (!x.recordId || !x.recordFingerprint || !x.sourceDigest || !x.sourceUrl) throw new Error(`missing audit binding: ${name}`);
+            if (x.datasetVersion !== db.datasetVersion) throw new Error(`stale dataset binding: ${name}`);
+            if (!Array.isArray(x.segments) || x.segments.length === 0) throw new Error(`empty translation: ${name}`);
+            if (x.sourceSegmentCount !== x.segments.length || x.translatedSegmentCount !== x.segments.length) throw new Error(`segment count mismatch: ${name}`);
+            if (x.segments.some((s,i) => !s.segmentId || s.order !== i + 1 || !s.sourceTextHash || !String(s.chineseText || '').trim())) throw new Error(`invalid segment mapping: ${name}`);
+            valid++;
+          }
+          if (valid !== index.translatedRecordCount) throw new Error(`index/file count mismatch: ${index.translatedRecordCount}/${valid}`);
+          console.log(JSON.stringify({audit:'LEGAL-R1-N3-SAVED-BINDINGS',eligible:eligible.length,translated:valid,coveragePct:index.coveragePct,failures:index.failures?.length || 0,complete:index.complete},null,2));
+          NODE
+      - name: Advance node state only on strict 100 percent completion
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const index = JSON.parse(fs.readFileSync('data/legal/legal-fulltext-zh-index.json','utf8'));
+          if (!index.complete) {
+            console.log(`LEGAL-R1-N3 remains IN_PROGRESS ${index.translatedRecordCount}/${index.eligibleRecordCount}`);
+            process.exit(0);
+          }
+          if (index.coveragePct !== 100 || index.segmentCoveragePct !== 100 || index.duplicateBindingCount !== 0 || (index.failures || []).length !== 0) {
+            throw new Error('N3 cannot advance: strict completion metrics not satisfied');
+          }
+          const p = 'data/legal/legal-r1-status.json';
+          const status = JSON.parse(fs.readFileSync(p,'utf8'));
+          status.currentNode = Math.max(Number(status.currentNode || 3), 4);
+          status.nodes = status.nodes || {};
+          status.nodes.N3 = {
+            status: 'PASS',
+            name: '官方正文逐段一比一中文全文翻译流水线',
+            datasetVersion: index.datasetVersion,
+            eligibleRecordCount: index.eligibleRecordCount,
+            translatedRecordCount: index.translatedRecordCount,
+            coveragePct: index.coveragePct,
+            totalSourceSegments: index.totalSourceSegments,
+            totalTranslatedSegments: index.totalTranslatedSegments,
+            segmentCoveragePct: index.segmentCoveragePct,
+            duplicateBindingCount: index.duplicateBindingCount
+          };
+          if (!status.nodes.N4) status.nodes.N4 = {status:'IN_PROGRESS',name:'中英文段落映射、完整率与法律含义忠实度审计'};
+          fs.writeFileSync(p, JSON.stringify(status,null,2)+'\n');
+          console.log('LEGAL-R1-N3: 100% FULL-TEXT TRANSLATION PASS; advanced to N4');
+          NODE
+      - name: Commit translation progress and audit state
+        run: |
+          git config user.name 'TRRB LEGAL-R1 Translation Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/legal/fulltext-zh data/legal/legal-fulltext-zh-index.json data/legal/legal-r1-status.json
+          if git diff --cached --quiet; then
+            echo 'No LEGAL-R1 N3 translation changes to commit.'
+          else
+            git commit -m 'LEGAL-R1 N3: sync strict full-text Chinese translations'
+            for attempt in 1 2 3; do
+              if git pull --rebase origin main && git push origin HEAD:main; then
+                exit 0
+              fi
+              echo "Concurrent main update; retrying push ($attempt/3)"
+              sleep $((attempt * 5))
+            done
+            echo 'Unable to publish N3 translation progress after retries.'
+            exit 1
+          fi

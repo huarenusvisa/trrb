@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-ee0106cf51aa68caf55844a99055bc14756411c8</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:02:10.699Z</news:publication_date>
+        <news:title>亚特兰大FBI斐济逮捕遣返1.65亿美元加密庞氏嫌</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-b19d000758542a6ed367893f9ba67f2c6f6520be</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:02:01.800Z</news:publication_date>
+        <news:title>阿灵顿ICE特警电击18岁男子致重伤住院</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-a8f09f5da62bdfb07268af2892901012615fd399</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:01:18.056Z</news:publication_date>
+        <news:title>网传新泽西纽瓦克ICE拘押中心医疗条件差致婴儿死亡</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-59bceb1fad916660372c668dd9dc1afc57ce8a9d</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:00:21.984Z</news:publication_date>
+        <news:title>费城阿根廷籍保姆被ICE拘押后保释返家</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-d47ef893f09113c3f09ff7889ed66d63b8ce1ef4</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:00:09.619Z</news:publication_date>
+        <news:title>美国特朗普时期政策致合法移民数量骤减近半</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-f44ce517eaf9f5038a0ac7605a8e574f531b38a6</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

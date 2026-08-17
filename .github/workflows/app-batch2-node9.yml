@@ -1,0 +1,25 @@
+name: APP Batch 2 Node 9
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'scripts/audit-app-batch2-node9.mjs'
+      - '.github/workflows/app-batch2-node9.yml'
+      - 'docs/APP-BATCH-2-NEWS-EXPERIENCE-AND-ENGAGEMENT.md'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Verify node 9 performance and offline recovery
+        run: node scripts/audit-app-batch2-node9.mjs
+      - name: Typecheck mobile app
+        working-directory: apps/mobile
+        run: npm install --ignore-scripts && npm run typecheck

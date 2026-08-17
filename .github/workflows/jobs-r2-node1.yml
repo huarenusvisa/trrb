@@ -1,0 +1,26 @@
+name: JOBS-R2 Node 1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260817011000_jobs_r2_node1_search_location.sql'
+      - 'scripts/audit-jobs-r2-node1.mjs'
+      - 'docs/JOBS-R2-LOCATION-AWARE-JOB-DISCOVERY-UX.md'
+      - '.github/workflows/jobs-r2-node1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Audit JOBS-R2 N1 account-synced search location
+        run: node scripts/audit-jobs-r2-node1.mjs

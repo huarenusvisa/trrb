@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 1,
+  "recordId": "c34137a10aa5912a8bf03980",
+  "recordFingerprint": "a68db0259a67de2018a322a4dc4e1237bae2e646f12435ef3f5c53404c303834",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1400301/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1400301/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1400301/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:51:24.031Z",
+  "sourceDigest": "15acf46b030cc12928069ad20807f90b746cc9200af93dd6aa19c2659c400a25",
+  "translatedAt": "2026-08-17T16:00:42.183Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 52,
+  "translatedSegmentCount": 52,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引用为 29 I&N Dec. 52 (BIA 2025) 临时裁定 #4093"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e3a92b2a1705a8732e25a8376a05186581c53b75001c9c0922bdcb395eb7da07",
+      "chineseText": "F-B-G-M- 与 J-E-M-G- 事务，申请人\n2025年3月19日由委员会裁定\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ed46ad6660858370b30d71f7fcf2b8110b47508c5a1a0b58aa2bd9ba64de9d70",
+      "chineseText": "（1）在符合电子提交资格的案件中，向登记的电子邮件地址发送的简报时间表电子通知，构成充分的通知，无论外籍人士的律师或认可代表是否打开该电子邮件或通过移民复审执行办公室的法院及上诉（“ECAS”）案件门户访问该文件。\n（2）当一方已通过ECAS条例规定的程序收到简报时间表的电子通知时，适用可推翻的送达推定，但该推定比通过挂号邮件发送文件时适用的推定弱，因为通过ECAS的电子送达不涉及签收回执或其他积极的送达证据。\n代表被申请人：帕特里夏·加西亚·潘塔莱翁律师，纽约长岛市"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f2736479c7670db59a42c3f07a16a3ce8d3117454df2d65710568135ea379138",
+      "chineseText": "代表国土安全部：凯尔·T·辛普森，助理法律顾问"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "163f4db9a3c4708073b5ffe773f4c6076070466e5e6a99d07311fae71657f45c",
+      "chineseText": "出庭法官小组：曼恩、利博维茨及博尔科斯基，上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9b4629ce2151ed24a804dc445e550b38bfc59ec6863430d7db910f8a8c1e0bef",
+      "chineseText": "曼恩，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "083c6e88cf34eb99924c4cdbdd7e96a8b6f0f5ca2f32c1747e9f54dfaa993087",
+      "chineseText": "本案最后一次提交给委员会是在2023年12月18日，当时我们对申请人对移民法官裁决的上诉作出了简易驳回。申请人为危地马拉籍原告及其子女，已及时提交了对委员会裁定的复议动议。国土安全部（“DHS”）已提交通反对该动议的简报。复议动议予以驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e898d6a0d22ff343037903f2814940ecf0a7f267583b9d07087a191f61400ee6",
+      "chineseText": "本程序始于2021年9月10日，当时向移民法院提交了出庭通知。申请人提交了"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引用为 29 I&N Dec. 52 (BIA 2025) 临时裁定 #4093"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cb041bd8061bf15bfafdf81dd62c9918cb259b355e47c9523f40c1caad4020dd",
+      "chineseText": "依据《移民和国籍法》（“INA”）第208(b)(1)(A)条和第241(b)(3)(A)条，8 U.S.C. §§ 1158(b)(1)(A), 1231(b)(3)(A)（2018年版）提出的庇护申请和撤销遣返请求，以及根据执行《禁止酷刑公约》的相关规定提出的保护申请，该申请于2022年6月9日被移民法官驳回。被申请人就该决定及时提出上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "224238be25d133f63b9b160732e49657c43e4275eedce0e744597e97cbea7513",
+      "chineseText": "在他们提交的EOIR-26表格《上诉通知》中，被申请人表示打算提交单独的书面陈述或理由支持其上诉。2023年6月27日，董事会发布了提交简报的时间表，允许被申请人在2023年7月18日之前提交简报。但在截止日期之前未收到任何书面简报或陈述。2023年12月18日，依据8 C.F.R. § 1003.1(d)(2)(i)（2025年版）段落（A）和（E），董事会简要驳回了被申请人的上诉，理由是上诉通知未包含实质性说明上诉针对移民法官决定具体理由的陈述，且被申请人未提交单独的书面简报或陈述，也未说明未提交的原因。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "39409f51b5c073b2e7d89447960900fc20a76dd3fffb3f5e6a183637fcf8d8f0",
+      "chineseText": "2023年12月27日，被申请人针对2023年12月18日对其上诉的简要驳回决定提交了复议动议。2024年3月29日，国土安全部（DHS）提交了反对该复议动议的书面意见。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "73fa8c67acbf34e28fc0dfcd8a42cdc1f1a9b11c6f7cab1132075ba1c4a99c85",
+      "chineseText": "复议动议“应具体说明前一裁定中的法律或事实错误，并应附有相关权威依据。” INA § 240(c)(6)(C), 8 U.S.C. § 1229a(c)(6)(C)（2018年版）；同见8 C.F.R. § 1003.2(b)(1)（2025年版）。“动议方必须明确指出上诉中提出的事实和法律问题在本初裁定中被错误决定或被忽视，或必须说明法律变更如何实质影响本先前裁定。”见Matter of O-S-G-, 24 I&N Dec. 56, 58 (BIA 2006)。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "85c98debf4d34177c12e4fcff2502dbed5997c7171386fbaff9b1bf37390a7ff",
+      "chineseText": "在其动议中，被申请人辩称董事会在简要驳回其上诉时存在错误，因为他们未收到关于提交简报时间表的充分通知。他们主张，无论是他们本人还是其代理律师均未通过邮件收到时间表，且其代理律师也未通过直接电子邮件或由执行移民复审办公室（EOIR）电子案件管理系统（即EOIR法院与上诉系统，简称ECAS）的电子邮件提醒接收该时间表。"
+    },
+    {
+      "segmentId": "pdf-p2-s15",
+      "order": 15,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c0922fa6a1e40feb559c0827931f8ae562b0cf0cc4ba621c9dc6eab5d4996e8d",
+      "chineseText": "《禁止酷刑及其他残忍、不人道或有辱人格的待遇或处罚公约》，1984年12月10日，参见参议院条约文件第100-20号，1465联合国条约汇编第85页（美国于1994年11月20日生效）。第53页。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引证为29 I&N Dec. 52（BIA 2025）临时决定#4093。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b88b96cba1c67480678e4a1298ff372a180b6f130a95376502f1f6e80fca51cc",
+      "chineseText": "他们主张，通过ECAS发送的通知未能提供充分通知，因为这些邮件未明确指出其与提交简报时间表相关，且邮件主题或正文均未提供提交截止日期。此外，他们进一步主张董事会未发布公开声明或以其他方式充分通知，将不再通过邮件发送时间表，而是专门使用ECAS。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e7fc7c0ff0a4ad0f9214a1edd852bfbe64f159303a2a6874b4e6411c0294d1d8",
+      "chineseText": "国土安全部在其反对被申请人复议动议的书面意见中主张，通过ECAS提供的通知是充分的，且被申请人未能证明其未正确接收提交简报的时间表。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4a91406bdf54b9df0f2fe19dd003bfa86aa1bb3ff6aae164fa2aa7bb7c1c067a",
+      "chineseText": "2021年12月13日，EOIR发布了一项最终规则，实施电子提交和记录应用程序的使用，称为ECAS，适用于移民法庭和董事会审理的所有案件。见《移民审查执行办公室电子案件访问和提交》，86联邦公报70708号（2021年12月13日）（将在8 C.F.R.第1001、1003、1103、1208、1240、1245、1246、1292部分编纂）。该规则于2022年2月11日生效。见同页70708号。自该日起，通过ECAS进行的电子提交对于在所有符合电子提交条件的案件中出庭董事会的律师和认可代表而言是强制性的。见8 C.F.R. §§1003.2(g)(4)、1003.3(g)(1)、1003.31(a)（2025年）。要通过ECAS电子提交，用户必须通过eRegistry向EOIR注册，登录ECAS案件门户系统，并接受电子提交条款和条件。见ECAS用户手册，移民审查执行办公室，2022年9月25日，https://www.justice.gov/eoir/page/file/1300086/dl。在ECAS的条款和条件下，用户同意在ECAS中保持有效的电子邮件地址，并“通过ECAS提供的电子邮件地址电子接受EOIR生成文件的送达程序”。见ECAS案件门户使用条款和条件，移民审查执行办公室，2022年7月29日，https://www.justice.gov/eoir/page/file/1370246/dl。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "24fb358842384df26a9972398f7da0e6a508cbd847cc8e623671efbbccdd26cc",
+      "chineseText": "4 “符合电子提交条件的案件”一词指在EOIR为该法院正式建立电子提交系统后，DHS寻求提请移民法庭审理的任何案件，或任何具有电子诉讼记录的移民法庭或董事会面前的案件。见8 C.F.R. §1001.1(cc)（2025年）。本案具有电子诉讼记录。5 此为所有在移民法官或董事会面前执业的律师和认可代表必须注册的电子强制注册系统。见8 C.F.R. §1292.1(f)（2025年）；另见2013年4月1日78联邦公报19400号（将编纂于8 C.F.R.第1292部分）的律师和代表注册规定。第54页"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引证为29 I&N Dec. 52（BIA 2025）临时裁定#4093"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "16220dfa130acd14c9ec7a98de7472739d7488cdb282fd0eb0364f3dd0ab1988",
+      "chineseText": "与传统邮件送达不同，传统邮件中法律代表在其办公室收到文件，而ECAS用户在文件被添加至电子诉讼记录时通过电子邮件收到通知。邮件主题行包含被告的姓氏和外侨编号的后三位数字。邮件正文告知收件人寄送的通知类型、完整姓名和外侨编号及案件相关的其他信息。该文件随后可通过ECAS案件门户访问。EOIR认定当电子通知送达至用户提供的最后电子邮件地址时，文件即视为已送达。见8 C.F.R. §§1003.2(g)(9)(ii)、1003.3(g)(6)(ii)、1003.32(b)。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b840547bc4738c20e98842404fd5a9b4bef825c258973c45ec4aa90ae18a4f11",
+      "chineseText": "我们认定，上述流程电子送达的提交时间表为当事方提供了充分通知。见Arciniegas-Patino案，28 I&N Dec. 883, 885（BIA 2025）（认定收受电子通知且该通知告知诉讼记录中的提交时间表，送达行为适当）。如被告指出，通知和听闻机会为正当程序的基本要求。见如Mullane诉Central Hanover Bank & Tr. Co.，339 U.S. 306, 314（1950年）。正当程序要求以“在所有情形下合理计算能够告知相关当事人诉讼事项并给予其提出异议机会”的方式提供信息。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2cdf4f62c1a07293d0e13cea1dd7068dbc8bb6a9c458d53a6c335cb0404bc22d",
+      "chineseText": "我们观察到，其他法院系统采用类似的电子送达方式，且未被认定违反正当程序。见如联邦民事诉讼规则5(b)(2)(E)（规定可通过法院电子提交系统或由当事人书面同意的其他电子方式送达）；联邦上诉程序规则25(c)(2),(4)；另见Rio Properties, Inc.诉Rio Intl Interlink案，284 F.3d 1007, 1017–18（第九巡回法院2002年），支持使用电子邮件作为替代送达方式，并指出“宪法并未要求任何特定的送达方式，仅要求所选方式合理计算能提供通知并给予回应机会。”"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e02dd4115104f4fa040a9e4d2f003d62e9c3b92bb5aee9debeff65c381e91dab",
+      "chineseText": "当董事会在符合电子提交条件的案件中发出提交时间表时，向外侨的律师或认可代表提供的电子邮件地址发送的电子通知，合理计算可告知其提交时间表已加入ECAS案件门户，并给予其向董事会陈述上诉理由的机会。我们不认同被告关于电子通知因未在邮件主题或正文包含提交截止日期，或因为EOIR生成文件的通知与对方通过ECAS提交文件通知无区别，故不充分的论证。第55页"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引证为29 I&N Dec. 52（BIA 2025）临时裁定#4093"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "094bce811a25fc53982d8448650b863d8bc834b5913d1769abff7fc414097ef7",
+      "chineseText": "被告主张电子邮件未在主题行或正文中包含提交截止日期，或EOIR生成文件与对方在ECAS提交文件通知无区别，故不能提供充分的通知，我们对此不予采纳。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c350d5840157e624deb723978adfbf3bcd32eba7cb07d7c8bb08f4fac3972149",
+      "chineseText": "当通过邮件送达提交时间表时，信封外侧不会标识文件类型或截止期限等详情。收件人必须打开信封查看文件。类似地，接收电子通知的执业者必须登录ECAS案件门户查看提交时间表。被告的论点未能说服我们该过程繁琐到导致提交时间表通知失效。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d33dd85e649d3437c420a26d104e511b09faf7a229f54a284eba63783327050e",
+      "chineseText": "发送给当事方的电子通知表明发件人为EOIR，主题行包含外侨姓氏和外侨编号后三位。如前所述，邮件正文含新增至ECAS案件门户的文件性质及其他相关案件信息。出庭董事会的任何律师或认可代表有责任审查ECAS送达的所有文件，无论文件是由EOIR生成还是由对方提交。见8 C.F.R. §1003.38(g)(1)(ii)（规定代表被告出庭董事会的执业者必须接受诉讼程序中所有提交文件的送达）。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "58140258c228845b6e5a16920dda2bd7af643fd365edc4a4693c0fcc4c336d52",
+      "chineseText": "我们进一步认定，对于符合电子提交条件的案件，向记录电子邮件地址发送的提交时间表电子通知即为充分通知，无论外侨律师或认可代表是否打开邮件或通过ECAS案件门户访问文件。见Arciniegas-Patino案，28 I&N Dec. 885-86（认定尽管文件电子通知送至其律师的垃圾邮件文件夹，仍视为适当送达）；另见G-Y-R-案，23 I&N Dec. 181, 186–87（承认在符合法律及正当程序要求情况下，构成性通知可能足够）。"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "52dea89479c610af5cf689cc528c0ff5a7856dcf5cebe980a997b12dfceda109",
+      "chineseText": "鉴于ECAS系统最近实施，董事会尚未针对当事方质疑通过ECAS案件门户电子送达充分性的举证责任或证据标准作出裁定。INA及相关法规对此未作规定。处理类似情况的法院通常认可对电子送达文件的送达推定。第56页"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引证为29 I&N Dec. 52（BIA 2025）临时裁定#4093"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "cc389c5139a2e560a883f2072e93aefd8ab549134cc93f86d84bb3b7ca8fe66b",
+      "chineseText": "见如American Boat Co., Inc.诉Unknown Sunken Barge案，418 F.3d 910, 914（第八巡回法院2005年）（认定地区法院案件管理及电子案件提交系统发送的电子邮件应适用可推翻的送达推定）。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "da018e6ec2e0bea6f0d37a07d6136843c6b32c981bc4cce88845321fa86b6f33",
+      "chineseText": "虽然不直接适用于当前情形，董事会此前曾论及邮件送达时适用的送达推定。在Grijalva案，21 I&N Dec. 27, 37（BIA 1995）中，我们认定当驱逐程序通知通过美国邮政署的挂号邮件寄送，且有尝试送达及挂号邮件通知证明时，有强烈有效送达的推定。推翻该推定需“实质且有说服力的证据，如邮政服务的书面证据、第三方宣誓书或其他类似证据证明送达不当或未送达并非由于被告未提供可接收邮件的地址。”"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "112de397d64fe5add429226f951cb932cb04355ef79257c0e8c9bcb90b37ef43",
+      "chineseText": "在M-R-A-案，24 I&N Dec. 665, 673（BIA 2008）中，我们认定当传票或听证通知按正常办公室程序正确地址并通过普通邮件发送时，也有送达推定，但该推定比挂号邮件送达的推定弱。挑战该较弱推定的所有相关证据必须予以考虑。移民法官可考虑多种因素，包括但不限于被告及知情者的宣誓书、有无尽力处理该情况的努力、以往可能表明出庭动机的救济申请记录，以及被告先前出席移民程序的经历（如适用）。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "e3666abedf748f847780c6be40495da9c057bd64e2b567069611c84de2c8cfd7",
+      "chineseText": "同邮件送达文件一样，当当事方通过ECAS规定的程序接收提交时间表的电子通知时，适用可推翻的送达推定；但该推定较挂号邮件送达的推定弱，因为通过ECAS的电子送达不涉及签收回执或其他积极送达证据。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "4cc773e61b4469e6f52f2790240a23629a3dc8736aada1b907d07ef9b85b207b",
+      "chineseText": "我们得出结论，应考虑所有相关事实和证据，以确定一方是否已反驳该推定。参见同上（解释了对通过普通邮件送达的文件，采用“一刀切和死板的送达推定”是不适当的）。"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引用为29 I&N Dec. 52（BIA 2025）临时裁定#4093"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "9501c79c7d407a58a8a51a212342608f4301a4c70e44812d460381491e446057",
+      "chineseText": "可能的考虑因素包括但不限于：（1）是否将案情说明时间表上传至ECAS并向最后提供的电子邮件地址发送了通知；（2）未收到声明是否由在作伪证罪处罚下作出的宣誓书或声明支持；（3）该等宣誓书或声明是否基于对相关事实的个人了解；（4）律师或认可代表是否遵守了更新其电子邮件地址的程序；（5）对方当事人是否收到了电子邮件通知；及（6）任何其他表明可能未收到的情况。最终，每个案件必须根据其特定情况和证据进行评估。相关证据可包括来自执业机构或办公室的宣誓书、截图及其他与案件工作相关的记录。然而，我们警告，大多数情况下，仅凭否认收悉的陈述不足以反驳送达的推定。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8ac48e3ab6f64288c45b7686e99f445af57949f2ed46276fe373216bf2b8581c",
+      "chineseText": "我们已充分考虑被告方在其动议中提出的主张，包括其律师办公室自2023年6月起邮件送达遇到困难的主张。在本案中，行政记录显示，案情说明时间表于2023年6月27日通过发送电子通知至其律师提供的电子邮件地址，已正确送达给被告方。被告方动议中提交的唯一证据为律师的确认书。律师称其在彻底搜索其电子邮件后未能找到该电子通知，但并未否认该通知已发送或已被接收。律师提交的证据不足以反驳电子通知已送达律师邮箱的推定。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "fd83e9b6ae72f6ac52a4131149881d34e36e9a60e4be554ccd9310976148a406",
+      "chineseText": "我们对被告方声称未收到案情说明时间表的适当通知不予采信，理由是移民上诉局未发布公开声明或以其他方式通知将不再通过邮件发送案情说明时间表。如前所述，该程序变更于2021年12月13日公告，自2022年2月11日起生效（86联邦公报第70708页）。被告方主张移民上诉局在2022年2月11日之后，仍有时通过邮件发送案情说明时间表。然而，移民上诉局在其他案件中出于礼貌采取的此类行为，不构成对本案案情说明时间表通过邮件送达或免除律师积极监控其邮箱义务的合理预期。（注：被告方律师在动议中提交的书面确认书称，ECAS于2022年2月11日完全实施后，移民上诉局仍习惯性通过邮件送达案情说明时间表，但律师未具体指明任何具体案件，也未主张移民上诉局未在这些案件中电子送达。）"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "6025a1ff6c50a822a00da6604ff3991464351ad69c6af8220e0a3c46ae80a0e2",
+      "chineseText": "第58页"
+    },
+    {
+      "segmentId": "pdf-p8-s43",
+      "order": 43,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引用为29 I&N Dec. 52（BIA 2025）临时裁定#4093"
+    },
+    {
+      "segmentId": "pdf-p8-s44",
+      "order": 44,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "34436742d22bbf870167c5de652815b68a1325eb7c6debd9302166ac32f878c5",
+      "chineseText": "被告方不应合理期待本案案情说明时间表通过邮件送达，亦不应因此免除其律师主动监控电子邮箱收件箱的义务。参见86联邦公报第70710页（“通常，代表应警惕监控其电子邮箱收件箱，包括垃圾邮件文件夹，以接收EOIR的送达通知，就如同对任何重要的电子邮件通信一样。”）。同样，移民上诉局向被告本人通过邮件继续发送正式决定的礼貌副本，不影响在适当情况下采用电子送达案情说明时间表的合法性。"
+    },
+    {
+      "segmentId": "pdf-p8-s45",
+      "order": 45,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "cb091fc2b6a14d70081971475f3a2037d20494ef5eee46bec119a32a534495f5",
+      "chineseText": "综上所述，被告方未指出移民上诉局2023年12月18日决定驳回其上诉的事实或法律错误。向被告律师发送的电子通知已充分通知被告方其案情说明应于2023年7月18日或之前提交。因为在截止提交日期未收到书面案情说明或陈述，且上诉通知中未包含可实质告知移民上诉局上诉具体理由的陈述，故对该上诉的简易驳回是适当的。参见8 C.F.R. §1003.1(d)(2)(i)(A), (E)。"
+    },
+    {
+      "segmentId": "pdf-p8-s46",
+      "order": 46,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "05fcb7aa265f716736fdbbad44a5dddc24a54a99694d86f2139bacb822d4106f",
+      "chineseText": "最后，被告方未能证明其延迟提交的上诉案情说明应根据衡平原则予以接受。衡平时效并非延迟提交的一般补救措施，且要求当事人既能证明勤勉，又证明存在阻碍其及时提交的特殊情况。参见Holland v. Florida, 560 U.S. 631, 649 (2010)；参见Matter of Morales-Morales, 28 I&N Dec. 714, 717 (BIA 2023)（在逾期上诉情形中采用Holland案的衡平时效框架）。我们不采纳被告方称ECAS系统新颖及律师办公室搬迁构成阻碍其案情说明及时提交的特殊情况的论点。被告方未能证明其律师办公室搬迁阻止律师查收电子邮件或准时提交案情说明。此外，我们承认ECAS为新系统，且不同于先前做法，但对ECAS通知程序不熟悉不构成可支持衡平时效中断申述的特殊情况。"
+    },
+    {
+      "segmentId": "pdf-p8-s47",
+      "order": 47,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "88e59a02eb21a50931fc017c8ab0ae9edc7b2b5902fb46c750a8c8d27a12ecf4",
+      "chineseText": "注：记录显示，被告方在移民法官面前已由现任律师代理。记录证明被告方通过律师在下面审理程序中已电子接收多份文件。"
+    },
+    {
+      "segmentId": "pdf-p9-s48",
+      "order": 48,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "8845a669ba06f7073f5d03ed889c0403e38994e0827c99f2fb68b8e594da610f",
+      "chineseText": "引用为29 I&N Dec. 52（BIA 2025）临时裁定#4093"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "d9ca4b6c7c993a986fd5bbffb8810f6b239d773dfec4e26d2960d3d8e6ad6dff",
+      "chineseText": "基于上述理由，被告方的复议动议将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p9-s50",
+      "order": 50,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "aa9a207d8bc0df27b9b00e64fd1834f40bc7ee5ae56e1c4ddb60850e98a9b898",
+      "chineseText": "命令：被告方的复议动议被驳回。进一步命令：被告方请求接受其逾期提交的案情说明被驳回。"
+    },
+    {
+      "segmentId": "pdf-p9-s51",
+      "order": 51,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "0920db7fa89f17d242f249a17a53c121c604542fefc897f81062b4df91a12aa1",
+      "chineseText": "通知：若被告被判处最终驱逐令，且故意拒绝或未能根据该命令离开美国，未能诚信及时申请离开美国所必需的旅行或其他文件，未能按照国土安全部要求于指定时间和地点出现，或合谋或采取任何旨在阻碍或妨碍根据驱逐令离境的行为，则被告将面临高达每日998美元的民事罚款。参见《移民与国籍法》第274D条，8 U.S.C. § 1324d（2018）；8 C.F.R. § 280.53(b)(14)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p9-s52",
+      "order": 52,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "99a3d64ce146ecb013c533ea5b692984a3156eee5f2e65da4ba38f4fad81ae04",
+      "chineseText": "第60页"
+    }
+  ]
+}

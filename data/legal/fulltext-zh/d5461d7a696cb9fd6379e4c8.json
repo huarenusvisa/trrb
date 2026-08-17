@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "recordId": "d5461d7a696cb9fd6379e4c8",
+  "recordFingerprint": "d54ebb6264d7049b6e2aedcb08fe055cd7b3a23c4b4a06b0c1a27ae63657aa4f",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1435616/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1435616/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1435616/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:00:42.215Z",
+  "sourceDigest": "a0278cc6407d9bd7e50a7f8bc021cbd95b7c112005639e51abcde1def0f0a1ee",
+  "translatedAt": "2026-08-17T16:01:03.912Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 16,
+  "translatedSegmentCount": 16,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "559ed6336adcc3f6042dd542ffb78bfcbd79e5ce8abb00cf78a0d18a4a71e5cb",
+      "chineseText": "引用方式：29 I&N 决定第548号（BIA 2026年）临时决定#4180"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4a95fd5262f5c2aa2a6423c7b1731b915032647c61b06c27a926b03ce3ecc289",
+      "chineseText": "约翰·博利瓦尔-博利瓦尔案，当事人\n裁定日期：2026年4月10日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4958d04579c4094076c8d6db995d0f505ab4665529128f26854a268a244ad719",
+      "chineseText": "当被告被控在未经许可或临时释放的情况下居留美国，既无人出庭也无国土安全部出席，而案卷中有外国人身份的证据时，移民法官应进行缺席听证，而非终止遣返程序。\n被告代表：本人诉讼（无律师代理）\n国土安全部代表：助理首席律师凯利·阿德考克\n审理委员会成员：首席上诉移民法官马尔弗勒斯、副首席上诉移民法官拉迪克斯，上诉移民法官马哈塔布法尔"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62c4b042980c6ad2814ed9cc74d94e2a1f5dd38cf7beaab67651dc0fe8ed4270",
+      "chineseText": "首席上诉移民法官马尔弗勒斯发言："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "356bcee5a059a443ee238ac09a37e1c8f2c30b5b5cff742d6601ef59ecf283ff",
+      "chineseText": "2024年2月1日，移民法官因国土安全部未出席而无偏见地终止了本遣返程序。国土安全部对该决议提出上诉，而被告未对上诉作出回应。我们将支持该上诉，恢复程序，并将案卷发回移民法庭进行进一步审理。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a8f1d3f5b6f3f91bd5b593c721752821660e7df9934a51463b76d276ce674834",
+      "chineseText": "一、程序历史\n2022年11月14日，国土安全部向被告送达出庭通知，指控其根据《移民和国籍法》第212(a)(6)(A)(i)条款（8 U.S.C. § 1182(a)(6)(A)(i)，2018年）因未经许可或临时释放而非法居留美国。出庭通知载明初次听证时间为2024年2月1日上午8:30，地点为亚特兰大移民法庭。国土安全部已向移民法庭提交出庭通知，由此启动本程序。参见8 C.F.R. § 1003.14(a)（2026年）; 2024年1月25日，国土安全部向移民法庭提交了I-213表格《可遣返/不可入境外国人记录》，作为被告外国人身份的证据。在2024年2月1日按计划举行的听证会上，双方均已接获通知，但被告和国土安全部均未出席。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "559ed6336adcc3f6042dd542ffb78bfcbd79e5ce8abb00cf78a0d18a4a71e5cb",
+      "chineseText": "引用方式：29 I&N 决定第548号（BIA 2026年）临时决定#4180"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2e28be462ce3a6e1dcc01a83a6b8aba3464d1b93c6c2ae1fb5d7324e296a0024",
+      "chineseText": "移民法官基于国土安全部未出席，认定其未在听证前提交遣返证据或有关如何继续程序的动议，因此终止了程序。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5e63b2414c1f56ef58789c2c47c6f5cb4fbe3168504d07a4eaaacde259e15174",
+      "chineseText": "二、分析\n当被告未在移民法庭安排的听证会上出现时，如国土安全部能以明确、无可争议且令人信服的证据证明被告已收到缺席听证的合法通知且其可被遣返，移民法官应作出缺席遣返令。参见8 C.F.R. § 1003.26(c)（2026年）；同见INA § 240(b)(5)(A)，8 U.S.C. § 1229a(b)(5)(A)（2024年）。我们在不久前的Tepec-Garcia案中（29 I&N 决定第371号，第375页（BIA 2025年））裁定：“若被告和国土安全部均未出庭，且国土安全部未提前提交遣返证据，移民法官无偏见地终止程序不构成错误。”"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "927d3da70c5de80ee3a0435b1d883435a4b32a141e0ad41da75c5913c7a6935a",
+      "chineseText": "我们同意国土安全部的观点，认为移民法官终止程序的决定有误。虽被告和国土安全部均未出庭，但不同于Tepec-Garcia案，案卷显示国土安全部已于听证前提交被告外国人身份的证据。具体而言，国土安全部于2024年1月25日提交了I-213表格《可遣返/不可入境外国人记录》。见Mariscal-Hernandez案，28 I&N 决定第666号，第668页（BIA 2022年）（认定I-213表格是被告外国人身份的有力证据）。移民法官应审查该文档是否足以确认外国人身份，从而将举证责任转移给被告，要求其证明其不属于被控不合格身份。参见Mercado-Martinez案，29 I&N 决定第529号，第530-531页（BIA 2026年）（指出I-213表格具有推定可靠性）；8 C.F.R. § 1240.8(c)（论举证责任的转移）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5586c4930505532ccb726f991a93b54abd1dec80ed6472efe45080a28b5860f0",
+      "chineseText": "注 1：尽管本案不涉及，外国人身份还可通过除I-213表格以外的案卷证据证明，例如积极提交的I-589表格《庇护及遣返缓留申请》，其中包含被告承认其外国人身份的声明。参见8 C.F.R. § 1208.3(c)(1)（2026年）（规定庇护申请信息可作为启动遣返程序或满足遣返程序举证责任的依据）；8 C.F.R. § 1240.11(e)（2026年）（规定在遣返程序中提交的庇护申请，亦称防御性申请，“不得被视为承认外国人身份”）；另见Carrillo案，17 I&N 决定第30号，第32页（BIA 1979年）（裁定外国人身份的承认足以将举证责任转移至被告证明其在美国的合法存在）。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "559ed6336adcc3f6042dd542ffb78bfcbd79e5ce8abb00cf78a0d18a4a71e5cb",
+      "chineseText": "引用方式：29 I&N 决定第548号（BIA 2026年）临时决定#4180"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "00c58503756ea3290cd29c6227cb8b8fc0e6a6fb34a839c9f55752c5d9a4896d",
+      "chineseText": "虽然移民法官以国土安全部未提交如何继续诉讼的动议为由支持终止程序，但被告未出庭已触发《移民和国籍法》第240(b)(5)(A)条款（8 U.S.C. § 1229a(b)(5)(A)）及8 C.F.R. § 1003.26的规定，要求移民法官举行缺席听证，确认通知的有效性及遣返依据。当被告被控未经许可或临时释放滞留美国，且被告及国土安全部均未出庭，而案卷包含外国人身份证据时，移民法官应进行缺席听证而非终止遣返程序。鉴于本案案卷包含外国人身份证据，移民法官本应进行缺席听证，故无偏见地终止程序构成错误。参见INA § 240(b)(5)(A)，8 U.S.C. § 1229a(b)(5)(A)。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "26a3525ea31b686526dc6b7987d4b3d3882aa6ce72170517313d2146933ac509",
+      "chineseText": "三、结论\n基于上述理由，我们认定移民法官因国土安全部未出席而无偏见地终止程序的决定有误。我们将案卷发回移民法官，要求依据本决定继续审理，包括认定被告是否已获适当通知及遣返资格。参见INA § 240(b)(5)(A)，8 U.S.C. § 1229a(b)(5)(A)。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6d3e0ce0e1e34a42f8c573f4c10a52a9a17da72b6dbaf6b9693d5a758923539a",
+      "chineseText": "命令：支持国土安全部的上诉。\n进一步命令：撤销移民法官2024年2月1日的决定，恢复遣返程序，将案卷发回移民法官进行进一步审理并作出新的决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "aa2df9665559a2c72af237630376bed9f1620bd29a60a9f628c64423dc56e705",
+      "chineseText": "页码 550"
+    }
+  ]
+}

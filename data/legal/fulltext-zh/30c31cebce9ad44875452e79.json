@@ -1,0 +1,607 @@
+{
+  "schemaVersion": 1,
+  "recordId": "30c31cebce9ad44875452e79",
+  "recordFingerprint": "f19859c385e60c1bd2847e648a6e8016745f925460c81abf5de6cf78cd938bb1",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1429116/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1429116/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1429116/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:28:12.330Z",
+  "sourceDigest": "0542feaf123a55ac4a697e6648dd97b13a98bafa42864317dda1abe7a060c9b4",
+  "translatedAt": "2026-08-17T15:47:23.888Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 73,
+  "translatedSegmentCount": 73,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为 29 I&N Dec. 463（BIA 2026）临时裁定 #4166"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "61543d09c9911697c940fdb703bb2ae6a61705f8b9c52d6182322eec0513a9b2",
+      "chineseText": "弗朗西斯·裘德·福乔案，答辩人\n2026年2月26日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d232a275bea2e34f76ad4ff26168aae0c940c1027827076b9d636317947c884c",
+      "chineseText": "《移民与国籍法》（INA）第237(a)(1)(H)节，8 U.S.C. § 1227(a)(1)(H)（2024年）中“入境时”一词，指的是经移民官员检查和授权后，外籍人士合法进入美国，因此因身份调整时发生的欺诈和虚假陈述，不能根据本条款免除。案件：Agour案，26 I&N Dec. 566（BIA 2015），被推翻。\n答辩人代理律师：Luis C. Villarroel，律师，俄亥俄州沃辛顿\n国土安全部代理律师：Martha Vanessa Alvarez，助理法律顾问\n出庭法官：委员会小组：首席上诉移民法官Malphrus；上诉移民法官Hunsucker 和 Gemoets。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f2acf8b23f1362b8abee7397a1ea8af1f74a085aba734d712c5a446103f84767",
+      "chineseText": "上诉移民法官Hunsucker发言："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b4dc715add94cbe9dfd7b0190cbb36559637e5031f539a5895fd2ddb360d9561",
+      "chineseText": "在2021年9月20日的裁决中，移民法官拒绝了答辩人关于终止程序的动议、根据《移民与国籍法》第237(a)(1)(H)节（8 U.S.C. § 1227(a)(1)(H)（2018年））提出的豁免申请以及根据INA第212(i)节（8 U.S.C. § 1182(i)（2018年））提出的豁免申请。答辩人对该裁决提出上诉。我们在驳回答辩人上诉时，推翻了Agour案，26 I&N Dec. 566, 570（BIA 2015年），该案认为外籍人士的身份调整构成INA第237(a)(1)(H)节中“入境”的依据。我们现澄清，INA第237(a)(1)(H)节中使用的“入境”一词仅指外籍人士经移民官员检查和授权后合法进入美国。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2061dfef8ecdeb03d334254c91206e48fd63e5f1c34a36be1d51654c856ed791",
+      "chineseText": "一、事实及程序背景\n答辩人系加纳原籍及公民，于1995年以非移民身份获准入境美国。2002年，答辩人与美国公民“Emma”虚假结婚，Emma向美国公民及移民服务局（USCIS）为答辩人提交了I-130表格（外籍亲属申请）。在与Emma婚姻期间，答辩人与同为加纳籍的“Christy”建立关系。答辩人与Christy于2004年和2007年育有两名子女。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为 29 I&N Dec. 463（BIA 2026）临时裁定 #4166"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "67389f513ee78df1fbd71761ca050ed4dc4d4e6d016782fc781a4f0ac86b4683",
+      "chineseText": "答辩人与Christy均来自加纳。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f1cd48ea0976798fc3537b62a2601e54dca8243f585a184558167fde4ab61628",
+      "chineseText": "在答辩人于2007年参加Emma提交的签证申请面谈时，未披露其在婚姻之外育有两个子女。USCIS批准了该签证申请，并于2007年7月17日批准答辩人身份调整为合法永久居民。随后答辩人与Emma离婚，答辩人不久后与Christy结婚。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "73be80047917695d4e038ee07adaa1e5cfdb2c195119245a0fe5b66b7d402695",
+      "chineseText": "答辩人于2012年申请归化，面谈时承认自己是之前未披露的两个子女的父亲。USCIS拒绝了其归化申请，国土安全部于2013年启动本次驱逐程序，指控答辩人依据INA第237(a)(1)(A)节（8 U.S.C. § 1227(a)(1)(A) （2012年））为入境或身份调整时不可被接受的外籍人士，且根据INA第212(a)(6)(C)(i)节（8 U.S.C. § 1182(a)(6)(C)(i) （2012年））以欺诈或故意虚假陈述实质事实获得签证。答辩人于2015年承认可驱逐身份。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2b48dcec717be75680c5d662a3385aea5c0c4ea7e8d25dfee32e2e3b39947af6",
+      "chineseText": "作为免于驱逐的救济，答辩人依据INA第237(a)(1)(H)节（8 U.S.C. § 1227(a)(1)(H)）寻求因先前虚假陈述而可获豁免的资格。答辩人亦寻求基于现任妻子Christy为其提交的已批准签证申请调整身份，该妻子现已归化为美国公民，并寻求不可接受性豁免。此外，他基于不合规的出庭通知申请终止驱逐程序。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fa661d7d12f1e37b9cc4fa2027f983ca1a13dc20972cd2e5a82a093cac2c04d8",
+      "chineseText": "移民法官拒绝了答辩人终止程序的动议。移民法官进一步认定答辩人关于Christy与其子女关系及同住时间的证词不可信，以及答辩人在Emma签证申请期间未披露子女事实，且其称若返回加纳将无法自立生活的证词难以置信，考虑其金融分析师收入及资产所有权。虽然根据Agour案认定答辩人符合INA第237(a)(1)(H)节的豁免资格，移民法官基于自由裁量权拒绝授予该豁免。最后，移民法官拒绝了答辩人依据INA第212(i)节（8 U.S.C. § 1182(i)）提交的不可接受性豁免申请及相应的身份调整申请，理由是未能证明其被驱逐会对合格亲属造成极端困难。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0774a43fc62df7025f38d2d05f41f1799a5952bd0cb6ce1fcd75a5d32c982749",
+      "chineseText": "第464页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为 29 I&N Dec. 463（BIA 2026）临时裁定 #4166"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0784e1bc3cf9f247737e7755850d3927605b4c35ca5b3c7e17d629e0c2014075",
+      "chineseText": "答辩人及时提起上诉，委员会请求补充简报，关于答辩人依据INA第237(a)(1)(H)节（8 U.S.C. § 1227(a)(1)(H)）申请豁免的法定资格。我们特别要求双方讨论委员会在Agour案中是否错误解释INA第237(a)(1)(H)节中“入境”一词，包括身份调整。双方均提交了补充简报，我们已在裁决中予以评估。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a71f1294626fdffa62e703d8a982cbc2ecc2052eec1deff28cb8504d7b7da533",
+      "chineseText": "二、分析\nA. 终止动议"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e99fdf8741ee72826af1b14017462e1ce2d84a332e12e5cbb1edf99265262428",
+      "chineseText": "我们对移民法官是否正确拒绝答辩人终止程序的动议进行无偏见审查。见 8 C.F.R. § 1003.1(d)(3)(ii)（2026年）。答辩人主张，由于出庭通知缺失INA第239(a)(1)(G)(i)节（8 U.S.C. § 1229(a)(1)(G)(i) （2024年））所要求的日期和时间信息，应终止其驱逐程序。答辩人于2021年8月16日提交终止动议。上诉期间，委员会发布了Fernandes案，28 I&N Dec. 605, 608-11（BIA 2022），认为INA第239(a)(1)节（8 U.S.C. 1229(a)(1)）为诉讼程序规则，针对不合规出庭通知的异议须在诉讼答辩终结前提出，本案该期限为2015年。另见Larios-Gutierrez de Pablo与Pablo-Larios案，28 I&N Dec. 868, 875（BIA 2024）（确认Fernandes案具有追溯效力）。据此，我们同意移民法官认定答辩人未及时提出针对不合规出庭通知的诉讼程序异议，确认拒绝其终止动议的裁决。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "771e1b9fb89e75cd36a8535ffea6a291d37bddc37a16d2ad294c24ee04f2a1b2",
+      "chineseText": "B. 第237(a)(1)(H)节豁免"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2f14fd8ef9f4ecd99aa4d35e5c0c2723a7ebea23beeff6c0e597965b5f97df74",
+      "chineseText": "《移民及国籍法》第237(a)(1)(H)节，8 U.S.C. § 1227(a)(1)(H)，相关规定如下：\n本段涉及在美国境内因在入境时属于第212(a)(6)(C)(i)节[《移民及国籍法》，8 U.S.C. § 1182(a)(6)(C)(i)]所述的外籍人士而被遣返的条款，"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "05026c51389cc8ea4d22d52fb52c0ed6c3f6734ff0ffde272fe99aed237d77fc",
+      "chineseText": "1  在我们寻求补充陈述之前，国土安全部尚未提交陈述。我们不同意被上诉人所主张的上诉应被视为无异议的主张。在裁定上诉时，本委员会有裁量权决定对方未提交陈述所产生的影响（如果有）。国土安全部未提交反对陈述并不构成承认被上诉人的上诉应予维持。\n 第465页"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引用为 29 I&N Dec. 463 (BIA 2026) 临时裁定 #4166"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fb9df2a2e7695c731c16c3fd2159b24f6b7f5f8c67780e73f64f7d742fef7dc3",
+      "chineseText": "无论是否为故意或无意，本条款中有关拒绝入境外籍人士的遣返规定，可由司法部长酌情豁免，适用于符合以下条件的任何外籍人士……\n(i)(I) 是美国公民或合法永久居民的配偶、父母、子或女；\n(II) 在入境时持有移民签证或等效文件且符合入境资格[。]"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f93de185ddcff40756830ca8c5dbbf66967737d9f99c7e1a136c3e0c357fb2e8",
+      "chineseText": "（加粗为译者所加。）是否符合《移民及国籍法》第237(a)(1)(H)节，8 U.S.C. § 1227(a)(1)(H)项下豁免资格，是一个法律问题，我们采取无差别审查。参见8 C.F.R. § 1003.1(d)(3)(ii)。在Matter of Agour案中，26 I&N Dec. 566, 578–79 (BIA 2015)，本委员会作出分裂裁决，认为为确定第237(a)(1)(H)节8 U.S.C. § 1227(a)(1)(H)项下豁免资格，“入境时”短语包括在美国境内调整身份。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "92a7acbd38535b3829c106e395cca425badabef337b965d8fca534b7910cea3a",
+      "chineseText": "被上诉人认为重新审视Matter of Agour案不当，因为他的法定豁免资格并未在移民法官面前受到质疑。在审理上诉问题时，委员会不仅可考虑具体问题，也可考虑可能直接或间接影响这些问题的相关先例。参见Loper Bright Enterprises诉Raimondo, 603 U.S. 369, 407 (2024)（承认尽管有既判力原则，重审先例理由亦可能有其合理性）；Matter of Morales-Morales, 28 I&N Dec. 714, 716 (BIA 2023)（重审委员会是否有权接受逾期上诉并推翻Matter of Liadov案，23 I&N Dec. 990 (BIA 2006)）。详见8 C.F.R. § 1003.1(g)(3)(ii)–(v) (2026)（讨论决定发布先例裁决的考虑因素）。委员会有责任确保其先例符合法律现状，若仅限于直面上诉的问题方可复审先例，可能阻止对错误裁决问题的审查。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "caf3c8155e06360cb7c334330e0252e9cac92eae5abe94c53c6c5dac3ae62d59",
+      "chineseText": "“入境”一词在第237(a)(1)(H)节的涵义，是法条解释问题。基于法条解释原则，我们认定《移民及国籍法》第237(a)(1)(H)节，8 U.S.C. § 1227(a)(1)(H)项中“入境时”系指外籍人士经由移民官员检查与批准后的合法入境，因此，调整身份时的欺诈及虚假陈述不适用于本条款的豁免。作此裁决，我们将推翻Matter of Agour案。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "70a0c07f09f7f171d4ee1a60ef46d8a8bef1016ac359dc88fa95b5e1855395a5",
+      "chineseText": "第466页"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引用为 29 I&N Dec. 463 (BIA 2026) 临时裁定 #4166"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "b22a1b7cd336e8d0914641663ea34140ea08a95fd5ebabe8f625d8fe25b9bf5d",
+      "chineseText": "1. “入境”的含义"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a603601eeb52ad9c532172f3d845580c6db28e23fb577591f57bbffa62ab7c16",
+      "chineseText": "我们首先依据《移民及国籍法》的明文进行解释。见Jimenez诉Quarterman案, 555 U.S. 113, 118 (2009)（“任何法条解释问题，均应从法条明文开始分析。”）。《移民及国籍法》第237(a)(1)(H)节，8 U.S.C. § 1227(a)(1)(H)项中“入境时”的表述规定时间背景，即相关事宜须在何时发生，方可符合豁免资格。《移民及国籍法》定义“入境”为“外籍人士经移民官员检查与批准后合法进入美国。”INA § 101(a)(13)(A), 8 U.S.C. § 1101(a)(13)(A) (2024)。因此，第237(a)(1)(H)节的明示含义限制豁免适用于外籍人士经移民官员检查与批准后合法入境时发生的欺诈或虚假陈述。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e8c51fe8a7ff6564d4199a00dda1db2da97ba0765d6bb302c2200718c846cd8f",
+      "chineseText": "明晰且无歧义的法条语言应赋予其预期效力，除非在极少数情况下此做法与立法者意图明显冲突。Matter of Briones案, 24 I&N Dec. 355, 361 (BIA 2007)（引Demarest诉Manspeaker案, 498 U.S. 184, 190–91 (1991)）。对本豁免权的法条前身的研究支持我们结论，表明这非极少数情形，无歧义的“入境时”含义不应延伸至身份调整阶段。见Robinson诉Shell Oil Co.案, 519 U.S. 337, 341 (1997)（“法条语言的明晰度由语言本身、其使用的具体语境及法条整体语境共同决定。”）；Matter of Briones案, 24 I&N Dec.于362–66页（对法条意义解释时考察法条前身）。"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "74e5522f0f20508b65ba92a1a13dbbc73bc821e848b9d822257b19243a7259d7",
+      "chineseText": "最初允许基于入境时不可接纳理由遣返外籍人士的法条，系于1952年通过《移民及国籍法》设立，见Pub. L. No. 82-414, § 241(a)(1), 66 Stat. 163, 204 (1952)（法规载于8 U.S.C. § 1251(a)(1) (1952)）。1957年，国会为因欺诈或虚假陈述于入境时不可接纳的某些外籍人士设立遣返豁免，见1957年9月11日法案，Pub. L. No. 85-316, § 7, 71 Stat. 639, 640–41。1961年，国会将该豁免法定化，设于《移民及国籍法》旧第241(f)节，8 U.S.C. § 1251(f) (1964)。1961年9月26日法律，Pub. L. No. 87-301, § 16, 75 Stat. 650, 655–56；见亦Matter of Agour案, 26 I&N Dec. 575页。1981年，国会修订欺诈豁免以明确涵盖无意虚假陈述，见1981年《移民及国籍法修正案》，Pub. L. No. 97-116, § 8, 95 Stat. 1611, 1616；Matter of Fu案, 23 I&N Dec. 985, 987 (BIA 2006)。\n 第467页"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引用为 29 I&N Dec. 463 (BIA 2026) 临时裁定 #4166"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0a09b5c129406387b3f021ad1c49c095192de0ded2659fdebe5f6ee535f0f263",
+      "chineseText": "后经1990年《移民法》第602(a)节修订，Pub. L. No. 101-649, 104 Stat. 4978, 5077–79，国会扩充遣返理由，将可被遣返者范围拓展至入境时或调整身份时不可接纳者。见Matter of Agour案, 26 I&N Dec. 576页。国会同时废止原第241(f)节的豁免，设立新豁免于旧第241(a)(1)(H)节，即8 U.S.C. § 1251(a)(1)(H) (1994)，规制“因在入境时属于《移民及国籍法》第212(a)(6)(C)(i)节所述的外籍人士而被遣返”。1990年《移民法》第602(a)、(b)节，104 Stat. 5079, 5081；及Matter of Agour案, 26 I&N Dec. 576页。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "e3ee2671846b791432e8993ae1f8dc896346729023c61668da3be26c80895f64",
+      "chineseText": "最后，1996年通过《非法移民改革与移民责任法》("
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d974c8d3168c33acadfb801fed7685844368439cca320b55a12ee21ceb77f7aa",
+      "chineseText": "在IIRIRA生效之前，本委员会及多个巡回上诉法院——包括本案所在地第六巡回上诉法院——均解释前241(f)条款不允许对身份调整过程中发生的欺诈给予豁免，仅限于入境时发生的欺诈。参见Pereira-Barreira诉美国司法部，INS，523 F.2d 503, 507（第二区巡回法院，1975年）（拒绝外籍人士认为其身份调整构成美国“入境”，因此有资格根据前241(f)条款申请豁免的主张）；Khadjenouri诉INS，460 F.2d 461, 462（第九巡回法院，1972年）（承认为获得入境而实施的欺诈与入境后发生的欺诈在前241(f)条款的豁免目的上有区别）；Ferrante诉INS，399 F.2d 98, 104（第六巡回法院，1968年）（指出前241(f)条款“显然适用于那些因某种欺诈或虚假陈述而被拒绝入境的外籍人士”）；Matter of Connelly，19 I&N Dec. 156, 159（BIA 1984）（裁定前241(f)条款下的豁免仅限于存在于外籍人士入境时的排斥理由，不能“宽松解释”为包括外籍人士申请身份调整的后续时刻）。"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为29 I&N Dec. 463（BIA 2026）临时决定第4166号"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "2331d73431878a6e3b77067db2d660b8cfb1294cc57befa4eaab40cd593b22c3",
+      "chineseText": "1981年和1990年的修正案中没有任何内容表明国会意图扩大该豁免的范围以涵盖身份调整过程中发生的欺诈。参见Matter of Agour，26 I&N Dec. 583（Pauley，异议）。"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "24f4dc002757906d3bc15844d49a6ce04d73422b0a2c9b6bd1216b9c0a6c5d29",
+      "chineseText": "我们之前在Matter of Agour，26 I&N Dec. 577–78中确定，通过IIRIRA国会将豁免条款的重点从“入境”转向“准许入境”，支持将外籍人士的身份调整视为针对《移民与国籍法》第237(a)(1)(H)条，8 U.S.C. § 1227(a)(1)(H)豁免目的的“准许入境”。然而，经重新审查IIRIRA，将“entry”（入境）改为“admission”（准许入境）的措辞变化似乎仅为符合性修正，而非旨在产生实质性影响的修改。参见IIRIRA，第308(f)(1)(M)条，110 Stat. 第3009-621页（在标题为“其他条款的重新指派和重组；其他符合性修正”的章节中，用“admission”取代原INA前241(a)(1)(H)条中的“entry”，8 U.S.C. § 1251(a)(1)(H)）；另见Matter of Agour，26 I&N Dec. 584（Pauley，异议）。符合性修正通常不被视为对法定体系的重大变更，因为国会不会通过符合性修正“在小洞中藏大象”，即通过符合性修正作出“激进但完全隐含的法律改变”。参见Cyan, Inc.诉Beaver Cnty. Emps. Ret. Fund，583 U.S. 416, 431（2018）（原文有变动）（引文省略）。"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "e02337d2c90bf720117733671935fc33fb2ff174b05d73c675c9024933f0020c",
+      "chineseText": "此外，IIRIRA未对《移民与国籍法》第237(a)(1)(A)条，8 U.S.C. § 1227(a)(1)(A)作出修改，该条规定那些“入境或身份调整时”被拒绝准入的外籍人士为可被遣返对象。这与《移民与国籍法》第237(a)(1)(H)条，8 U.S.C. § 1227(a)(1)(H)形成对比，后者仅允许对“准许入境时”被拒绝准入的外籍人士提供欺诈行为豁免。在Matter of Agour，26 I&N Dec. 577–78中，我们认为这一差异造成了237(a)(1)(A)和(H)条款之间的“张力”，并通过扩大豁免至身份调整过程中的欺诈和虚假陈述加以解决，理由是如此解释符合国会防止家庭分离的人道主义目标。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "bcbcd7947b73f64032afe9ee702085aaa8c5baf1e61fd8754149fb03b81bdd9e",
+      "chineseText": "通过重新审视237(a)(1)(A)和(H)条款及其法定前身，以及巡回法院和本委员会对这些法规的解释，我们未发现支持将237(a)(1)(H)条款豁免范围扩大至入境时虚假陈述以外情形的矛盾。不论政策理由为何，国会在1990年修改《移民与国籍法》第241(a)(1)条遣返理由时造成了我们在Matter of Agour中所认定的矛盾，该修正将身份调整时被排斥的外籍人士包含在遣返理由内，但并未在前241(a)(1)(H)条设立的豁免中同样包括身份调整。1990年移民法案，第602(a)条，104 Stat. 5077–79。"
+    },
+    {
+      "segmentId": "pdf-p8-s41",
+      "order": 41,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为29 I&N Dec. 463（BIA 2026）临时决定第4166号"
+    },
+    {
+      "segmentId": "pdf-p8-s42",
+      "order": 42,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "a6445f43a2e8fb81813bf0984508786f44608334e0aaa9e4d1b0c5297dc9c5ff",
+      "chineseText": "（空）"
+    },
+    {
+      "segmentId": "pdf-p8-s43",
+      "order": 43,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "e0fe565c7c72288e46100e6289bbfb6329ffb4ea9d096a6028ed37563ddcebc6",
+      "chineseText": "我们推定国会理解他们在《移民与国籍法》（INA）第237(a)(1)(A)节和(H)节中对身份调整的处理有所不同。见Russello诉美国案，464 U.S. 16, 23 (1983)（“[当]国会在一项法案的某一部分包含特定用语，而在同一法案的另一部分省略时，通常推定国会有意且故意作出这样的包含或省略。”（引注省略））。我们还推定国会知晓判例法对第237(a)(1)(H)节前身条款的解释，认为该条款仅限于放弃入境时所实施的欺诈或虚假陈述。见Mann Constr., Inc.诉美国案，27 F.4th 1138, 1147 (第六巡回法院，2022)（承认“国会被推定知道对一项法规的行政或司法解释，并在重新制定该法规且未作修改时采纳该解释”（引自Lorillard诉Pons案，434 U.S. 575, 580 (1978)））。国会本可以通过《非法移民改革与移民责任法案》（IIRIRA）明确将第237(a)(1)(H)节的豁免范围扩大至包括在身份调整时不合格的外国人，但并未如此。如果国会意图通过IIRIRA对法规历史及判例法做出如此重大变更，合理预期会明确在第237(a)(1)(H)节，即《移民与国籍法》8 U.S.C. § 1227(a)(1)(H)中提及身份调整。我们未发现任何IIRIRA立法历史支持Matter of Agour案中的解释。"
+    },
+    {
+      "segmentId": "pdf-p8-s44",
+      "order": 44,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "cdcc494b48b1e9e44fe60e046bb21cece13990acf504d705dcdc31005ca3afef",
+      "chineseText": "最后，虽然移民上诉委员会在其他情形下认定身份调整构成入境，以避免荒谬或怪异的结果，但这些案例不足以说明第237(a)(1)(H)节的清晰明确定义（《移民与国籍法》，8 U.S.C. § 1227(a)(1)(H)）可以被违背。我们曾裁定，为依据严重刑事定罪判定可驱逐性之目的，身份调整构成入境。Matter of Chavez-Alvarez案，26 I&N Dec. 274, 276 (BIA 2014)。我们指出，作此解释的必要在于，未经检查入境并后调整身份的外国人，不会受第212(a)节的不可入境理由约束（《移民与国籍法》8 U.S.C. § 1182(a)），除非“身份调整构成'入境'，否则“他们将不会被驱逐出境。”见同案278页；另见Ocampo-Duran诉Ashcroft案，254 F.3d 1133, 1134–35 (第九巡回法院，2001)（指出国会不会为未曾检查入境且后依法调整身份后被判严重刑事罪行的外国人设立驱逐漏洞）。"
+    },
+    {
+      "segmentId": "pdf-p9-s45",
+      "order": 45,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引用格式为29 I&N Dec. 463 (BIA 2026) 临时决定#4166"
+    },
+    {
+      "segmentId": "pdf-p9-s46",
+      "order": 46,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "98e624a6ad76892b334e856b8237f4e01007bc4f82d7ba95a24c72e095f9fc53",
+      "chineseText": "我们也曾裁定，根据1966年11月2日通过的《古巴难民调整法案》（Pub. L. No. 89-732, 80 Stat. 1161，及其修正案），已调整为合法永久居民的外国人被视为依据《移民与国籍法》第237(a)节（8 U.S.C. § 1227(a)）“已入境美国”，以避免因其刑事定罪而免于被驱逐的荒谬结果。见Matter of Espinosa Guillot案，25 I&N Dec. 653, 655–56 (BIA 2011)。最后，我们认为，《移民与国籍法》第212(a)(9)(B)(i)(II)节的重犯条款中所用的“入境”包括身份调整，因为“如果‘入境’一词不包括身份调整，则该条款将阻止外国人通过边境作为移民入境取得合法永久居民身份，但允许同一外国人通过非法入境并申请身份调整来规避该限制。”See Matter of Rodarte, 23 I&N Dec. 905, 908 (BIA 2006)。国会不可能意图通过该法条激励外国人非法入境。"
+    },
+    {
+      "segmentId": "pdf-p9-s47",
+      "order": 47,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "775c0ea849cf566a6478f6ed0ac505c720f8e0edc4c09fa55e6068fa30a70927",
+      "chineseText": "我们认为，根据《移民与国籍法》第237(a)(1)(H)节（8 U.S.C. § 1227(a)(1)(H)）对“入境”一词的合理且合规定义，应当采用其明示且自然的含义，即经检查的入境。该解释仅允许豁免针对外国人实际进入美国时所犯的欺诈行为，而非其身份调整时的欺诈。见Matter of Agour案，26 I&N Dec. 584（Pauley持异议意见）。如前所述，该解释多年来一直被采纳，且从未被认为“导致荒谬或不合理后果，亦未产生违背正当程序的极端不公结果。”基于这些理由，我们推翻Matter of Agour案中所裁定的“身份调整构成‘入境’以适用于第237(a)(1)(H)节的豁免”的判决，明确“入境时”一词仅指外国人在经移民官员检查并获准入境后进入美国。"
+    },
+    {
+      "segmentId": "pdf-p9-s48",
+      "order": 48,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "1e596319df97efd92d5e1496201ebd2917542beb9b7a619d3e845513240cca5c",
+      "chineseText": "本决定仅限于当前议题，对于其他情况下我们是否认定身份调整构成“入境”不产生影响。"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "de9eac391b665b2a35dcd538bcc8cce049c0ce57639192aa648ee400940166c5",
+      "chineseText": "本决定限于当前议题，对我们在其他案例中是否认定身份调整可构成特定情形下的“入境”不作影响。"
+    },
+    {
+      "segmentId": "pdf-p10-s50",
+      "order": 50,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为29 I&N Dec. 463 (BIA 2026) 临时决定编号4166"
+    },
+    {
+      "segmentId": "pdf-p10-s51",
+      "order": 51,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "75bbc1e2ea13700c4314aa073bf645051512c4c7a5187ca36248394bc18c180f",
+      "chineseText": "2. 追溯效力"
+    },
+    {
+      "segmentId": "pdf-p10-s52",
+      "order": 52,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "2e50d721ca9601ea5d4a45032d7df5bb137d6e58e0f77df1ce2a375741c63453",
+      "chineseText": "鉴于我们明确推翻了《Agour案》中的董事会先例，我们必须进行追溯效力分析。参见《Cordero-Garcia案》，27 I&N Dec. 652, 656 (BIA 2019)（“‘追溯效力分析仅适用于“当一个机构有意识地推翻或变更其自身规则或规定”，或者“明确考虑并公开背离联邦巡回法庭判决”时。’”（引自Olivas-Motta诉Whitaker案，910 F.3d 1271, 1276 (第九巡回法院2018年)））。追溯效力的测试要求董事会考虑以下因素： (1) 案件是否为首例，(2) 新规则是否为对既定惯例的突然偏离或仅是试图填补法律不确定领域的空白，(3) 被适用新规则方对旧规则的依赖程度，(4) 追溯性命令对当事方施加的负担程度，(5) 尽管一方依赖旧标准，立法利益是否支持新规则的适用。"
+    },
+    {
+      "segmentId": "pdf-p10-s53",
+      "order": 53,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "7a57e23e9bdcbb51bf8272510810587438f70cbe8461081b2403c4b1ed9378c3",
+      "chineseText": "同上，658页（引文省略）。尽管此处提出的问题并非首例，如上所述，我们明确推翻了长期存在的相反董事会先例，因此上述测试的前三项因素支持我们的裁定仅具前瞻适用性。"
+    },
+    {
+      "segmentId": "pdf-p10-s54",
+      "order": 54,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "06320af20fd51a6e7bb224dcc20410cf87994b4f403977d53d6d533a24cda3b6",
+      "chineseText": "此外，我们的裁定将促成重大变化，涉及长期规则中对外国人身份调整是否构成根据《移民与国籍法》第237(a)(1)(H)条款（8 U.S.C. § 1227(a)(1)(H)）豁免的“承认”（admission）的更广泛解释。关于上述测试的第五项因素，尽管有一方依赖旧规则的期望，我们应用新规则的法定利益并不超过先前规则，尤其是其在董事会先例中的阐述，因此本决定仅适用于未来。"
+    },
+    {
+      "segmentId": "pdf-p10-s55",
+      "order": 55,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "c6c091067e43e05acdf0218f4927827ed5bfc34baa9d01512ba87e80bdea94a5",
+      "chineseText": "3. 酌情权"
+    },
+    {
+      "segmentId": "pdf-p10-s56",
+      "order": 56,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "f76e80a8a57eff53398d6ece5c0238192ad07a6003fa985b2a46d6e5b84e6062",
+      "chineseText": "鉴于我们推翻《Agour案》但规则仅具前瞻适用性，我们必须回应双方关于移民法官是否错误认定被申请人未能证明其根据《移民与国籍法》第237(a)(1)(H)条款（8 U.S.C. § 1227(a)(1)(H)）申请豁免应予酌情批准的争议。参见《Agour案》，26 I&N Dec. 582（承认申请人申请根据第237(a)(1)(H)条款豁免必须证明其在行使酌情权时值得获得救济）。我们将维持对酌情权否决的认可。"
+    },
+    {
+      "segmentId": "pdf-p10-s57",
+      "order": 57,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "4183bf9b468656e1ccdf15750e63e02d7711e6666912dd51f70a3e9af239d8cf",
+      "chineseText": "第472页"
+    },
+    {
+      "segmentId": "pdf-p11-s58",
+      "order": 58,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为29 I&N Dec. 463 (BIA 2026) 临时决定编号4166"
+    },
+    {
+      "segmentId": "pdf-p11-s59",
+      "order": 59,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "3c80d3959179ecdce54eaeee3a6ca38388f06e3e08f4474d1b1c1c79d2e84acd",
+      "chineseText": "判断是否因第237(a)(1)(H)条款豁免而有利于行使酌情权“需要平衡外国人作为永久居民的不受欢迎性与社会及人道因素。”《M-C-C-案》，29 I&N Dec. 401, 406 (BIA 2026)（引自《Tijam案》，22 I&N Dec. 408, 412 (BIA 1998)）。相关不利因素包括“欺诈或虚假陈述的性质及其背景情况；任何刑事记录的性质、严重性和近期性；以及有关该外国人不良品行或作为合法永久居民不受欢迎性的其他额外证据。”同上（引自《Tijam案》，22 I&N Dec. 412）。有利因素包括“‘在美家庭关系；在美长时间居住，尤其是自外国人年幼时开始；若被驱逐对外国人或其家属造成困难的证据；稳定的就业历史；财产或商业联系的存在；对社区的贡献及服务的证据；以及其他关于外国人良好品行的证据。’”同上（引自《Tijam案》，22 I&N Dec. 412-413）。"
+    },
+    {
+      "segmentId": "pdf-p11-s60",
+      "order": 60,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "143f94063f75f10f9b533e6908b95c23eb9702d74cef40ef958e9dbeaa820a53",
+      "chineseText": "被申请人的利益包括其在美国居住超过30年、其美国公民子女以及其长期就业和纳税记录。同时，移民法官未明显错误地认定被申请人与其前妻Emma以欺诈方式结婚，并因该婚姻调整了身份。我们维持移民法官对被申请人故意向移民官员隐瞒与Christy的关系及其子女事实长达20余年的认定，若移民官员知晓这些重要事实，极有可能拒绝其申请。见同上，404页（承认如虚假陈述“若能阻断一条预计可揭示外国人可入境性相关事实的调查线索，则属重大虚假陈述”）。移民法官合理认定被申请人多次向政府官员作虚假陈述，减轻了他在美国居住期间所积累权益的重要性，而该权益是基于这些虚假陈述所得身份。见同上，409页。综上，我们维持移民法官拒绝被申请人根据第237(a)(1)(H)条款申请豁免的决定，因其未能证明酌情权上的有利行使符合美国利益。"
+    },
+    {
+      "segmentId": "pdf-p11-s61",
+      "order": 61,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "c4ae5beed8a6c48daa04fd27f7b924de94bb3253ce48a7878289f37e7a99fcac",
+      "chineseText": "C. 第212(i)条款豁免"
+    },
+    {
+      "segmentId": "pdf-p11-s62",
+      "order": 62,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "94fdc75e002d59eaec3e0171537f3b7fe026050c349b0c9e3c2df913e73009e1",
+      "chineseText": "被申请人寻求基于其现任妻子递交的已批准签证申请再次提出身份调整申请。配合身份调整申请，他提交了I-601表格，即不可入境事由豁免申请，寻求豁免其...（第473页）"
+    },
+    {
+      "segmentId": "pdf-p12-s63",
+      "order": 63,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引证为29 I&N Dec. 463 (BIA 2026) 临时决定编号4166"
+    },
+    {
+      "segmentId": "pdf-p12-s64",
+      "order": 64,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "f17f464f66ee1b2cd5da76864a18f9e457fee45b2e9a8b4ae92f3c8c1465cce4",
+      "chineseText": "根据《移民和国籍法》(INA)第212(a)(6)(C)(i)节，8 U.S.C. § 1182(a)(6)(C)(i)，因欺诈或实质性事实虚假陈述而被拒绝入境。4《移民和国籍法》第212(i)节，8 U.S.C. § 1182(i)，为因欺诈或虚假陈述而导致的不可入境提供酌情豁免，适用于能够证明入境被拒将对其美国公民或合法永久居民的配偶或父母造成极端困难的外籍人士。5我们对移民法官关于被告未能证明所需极端困难的裁定进行独立复核。参见8 C.F.R. § 1003.1(d)(3)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p12-s65",
+      "order": 65,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "1e923fd37dbbe18fb0a038d92386de4c60e83ae3e57d98d6bc09ce305c21ada1",
+      "chineseText": "被告主张其美国公民妻子Christy曾经处于一个虐待关系中，他的遣返将导致其妻子在情感和心理上遭受极端困难，因为妻子不仅仅依赖其经济支持。被告还声称，如果其妻子和子女随其赴加纳，他们将因他和妻子无法获得相当就业而遭受经济困难，并且因适应新国家生活的困难而承受困苦。"
+    },
+    {
+      "segmentId": "pdf-p12-s66",
+      "order": 66,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "8d21eb26380b0c5f4372dc36f2c931ac5557654df9207d457506057f5a96265d",
+      "chineseText": "移民法官查明被告及其妻子Christy在一家知名金融公司均获得可观的年薪，被告退休后有资格领取社会保障金，且其拥有一处有按揭贷款的房屋，未见明显错误。此外，Christy及子女不依赖被告的健康保险，因为Christy可通过夫妻双方的雇主获得自己的保险。移民法官因此合理认定，Christy即使没有被告的收入，也能够在经济上支持自己和子女。参见Matter of Pilch, 21 I&N Dec. 627, 630–31 (BIA 1996)（认为虽然经济损失及生活水平下降相关，但不足以支持极端困难的认定），经第七巡回上诉法院确认，129 F.3d 969 (7th Cir. 1997)。"
+    },
+    {
+      "segmentId": "pdf-p12-s67",
+      "order": 67,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "d7ee78dba7be5071b95bc809782432ed1dd27d170b0538a84a364a9ed840e43d",
+      "chineseText": "此外，尽管我们承认被告被遣返将导致Christy经历情感上的痛苦，家庭成员间的分离在驱逐程序中常见，且不构成极端困难。参见上述判例，第631页。文化适应亦不构成极端困难。参见第632页。因此，我们确认根据《移民和国籍法》第212(i)节，8 U.S.C. § 1182(i)拒绝豁免不可入境，因为被告未能证明其遣返将对其美国公民配偶造成极端困难。6"
+    },
+    {
+      "segmentId": "pdf-p12-s68",
+      "order": 68,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "38f81d10b2e5b9956433976e74a96483af5cbdc5b60ed29113457c45cf021c02",
+      "chineseText": "4 尽管移民法官指出被告寻求豁免刑事不可入境理由，但记录中无任何迹象表明被告因刑事理由被判不可入境。我们视此错误为无害错误。 5 尽管移民法官及被告提及被告子女所受困苦，该困苦不构成《移民和国籍法》第212(i)节豁免的依据，仅在影响配偶遭受困苦时相关。第474页"
+    },
+    {
+      "segmentId": "pdf-p13-s69",
+      "order": 69,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "2881c78b032769e0db3c57f8a10c68a6bbc1c81beccf4f4bf82d4e70a59f0b5c",
+      "chineseText": "引用格式：29 I&N Dec. 463 (BIA 2026) 临时决定 #4166"
+    },
+    {
+      "segmentId": "pdf-p13-s70",
+      "order": 70,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "bfc8094dd8c681521c4c95e84452ee4d2a8dabc05f0366545a99010369dd2248",
+      "chineseText": "文化适应也不构成极端困难。参见上述判例，第632页。因此，我们确认拒绝根据《移民和国籍法》第212(i)节，8 U.S.C. § 1182(i)的不可入境豁免，因为被告未能证明其遣返将对其美国公民配偶造成极端困难。6"
+    },
+    {
+      "segmentId": "pdf-p13-s71",
+      "order": 71,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "1686dff861ea3b20b0740bc72f13cd08fd8fb7c4c9d7e2ea4a2bcf2e41645345",
+      "chineseText": "三、结论 根据上述理由，被告未能证明应予终止或其符合《移民和国籍法》第237(a)(1)(H)节和第212(i)节，8 U.S.C. §§ 1227(a)(1)(H), 1182(i)豁免条件。我们确认移民法官驳回被告动议及豁免的决定。同时，我们推翻Matter of Agour, 26 I&N Dec. 570一案中外籍人士身份调整构成《移民和国籍法》第237(a)(1)(H)节豁免所谓“入境”之裁定，明确“入境时被判不可入境”一词仅指外籍人士经检验和移民官员授权后合法入境美国。"
+    },
+    {
+      "segmentId": "pdf-p13-s72",
+      "order": 72,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "8fbe611801dbc700fe4746bd0de716b587813fd4029c37c8dee9d72d3d994209",
+      "chineseText": "命令：驳回上诉。 通知：如果被告受到终局驱逐令，且故意未按该命令离开美国，未及时善意申请离境所需旅行或其他文件，或未于规定时间和地点接受国土安全部的驱逐程序，或合谋或采取任何措施妨碍其根据驱逐令离境，均应对每违反一天处以最高998美元的民事罚款。参见《移民与国籍法》第274D节，8 U.S.C. § 1324d (2024); 8 C.F.R. § 280.53(b)(14) (2026)。此外，任何曾被拒绝入境、被驱逐或在排除、驱逐或遣返令下离境后，再次进入、试图进入或任何时候在美国境内被发现者，均应被罚款或判处最高两年监禁，或两者兼施。参见《移民与国籍法》第276(a)节，8 U.S.C. § 1326(a) (2024)。"
+    },
+    {
+      "segmentId": "pdf-p13-s73",
+      "order": 73,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "2f2ed7cc10db8762e40f4c6c31153df299111ba4199762f54e864747174f7a91",
+      "chineseText": "6 因此，无需确定被告是否已证明符合《移民和国籍法》第245(a)节调整身份的其他条件，8 U.S.C. § 1255(a) (2024)。参见INS诉Bagamasbad, 429 U.S. 24, 25 (1976)（合议）(\"一般规则是法院和机构无需针对非决定性问题作出裁定\"); Matter of L-A-C-, 26 I&N Dec. 516, 526脚注7 (BIA 2015)（在申请人依法不符合救济资格的情况下，拒绝就上诉中备用问题作裁定）。 第475页"
+    }
+  ]
+}

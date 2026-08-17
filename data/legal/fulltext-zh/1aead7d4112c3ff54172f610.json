@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "recordId": "1aead7d4112c3ff54172f610",
+  "recordFingerprint": "13b6d70af76d24f24e2f4e807ec23c1216ac65ce5404cff8f797b5a55f3f4e54",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1430911/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1430911/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1430911/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:50:04.554Z",
+  "sourceDigest": "91194b13597d3f46ab7ca2e7b3efe4cd0ca43f84b517fc316e56747b4fa208da",
+  "translatedAt": "2026-08-17T15:50:23.502Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 18,
+  "translatedSegmentCount": 18,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6f8a0b82c3eee012c70733c65b24b10f639457ed4c2492f9352b23ddae549768",
+      "chineseText": "引用自 29 I&N Dec. 511（BIA 2026）临时决定#4172"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "21bc096900c059180dc6cf0c266786f1df8b2249f37612f33274e62d069b181e",
+      "chineseText": "案名：Z-N-L- 一案，被申请人\n裁定日期：2026年3月12日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3389b895fbce9be4a136e0ad8409a8918bca0bb81851906dfe679e3cc9ced4c9",
+      "chineseText": "关于被申请人是否居住在其被捕地点俄克拉荷马州，还是其申请中声称的加利福尼亚州，案卷记录中存在不一致，综合考虑全部状况表明，被申请人有逃跑风险，不宜准予保释。遵循 Matter of Akhmedov, 29 I&N Dec. 166（BIA 2025）。被申请人代理：James J. Pasquali，俄克拉荷马城，俄克拉荷马州\n国土安全部代理：Max W. Rerucha，助理首席法律顾问\n合议庭成员：HUNSUCKER、OWEN 和 GEMOETS，上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a0993763af4b09335c4bb866da2ab90cab2371a91e8a201236545cc5d17eec53",
+      "chineseText": "上诉移民法官 OWEN 发言："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e85fe5edf0683b9c9bf542eb09eb81e5f5983c50176625cdc272276dfafb1166",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年9月22日的决定提出上诉，该决定批准了被申请人的羁押状态变更请求，并命令在缴纳7500美元保证金后释放被申请人。被申请人为中国出生及公民，反对该上诉。我们将支持上诉，撤销移民法官的决定，命令被申请人在DHS羁押下不得保释。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5c79a88c1942caa4766d08dd3c7496fcf401c8ceb00295a6bd30c57db846f5eb",
+      "chineseText": "移民法官在认定被申请人承担了证明其释放不会对人员或财产构成危险的举证责任，且7500美元保证金能够确保其出庭后，批准了被申请人的羁押状态变更请求。参见 8 C.F.R. § 1236.1(c)(8)（2026）。移民法官在决定是否释放外籍人士及保证金额度时拥有广泛自由裁量权。参见 Matter of Guerra, 24 I&N Dec. 37, 40（BIA 2006）。是否存在逃跑风险是本委员会重新审查的判断性问题，见8 C.F.R. § 1003.1(d)(3)(ii)（2026）；对事实认定则以明显错误为审查标准，见8 C.F.R. § 1003.1(d)(3)(i)（2026）。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6ab24e8a07754cc57039e95dae122e751c1d73e2ca894065877d4ecde1a84ca3",
+      "chineseText": "第511页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6f8a0b82c3eee012c70733c65b24b10f639457ed4c2492f9352b23ddae549768",
+      "chineseText": "引用自 29 I&N Dec. 511（BIA 2026）临时决定#4172"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3aa404264b355fe3a40991019a043e4b8d9f2d64bf8829781f25d5efb558f400",
+      "chineseText": "经重新审查，我们认为被申请人未能证明其无逃跑风险，或即使存在逃跑风险也能通过缴纳保证金减轻。于 Matter of Akhmedov, 29 I&N Dec. 166, 167–68（BIA 2025）中，我们裁定关于被申请人居住于不同州的重大矛盾及其未及时向移民法院提交变更地址通知的过往行为，均显示其具有逃跑风险，不适合保释。本案纪录亦存在关于被申请人是否在美国有固定地址的不一致证据。参见 Matter of Akhmedov, 29 I&N Dec. at 167（强调居住证据矛盾）；另见 Matter of Guerra, 24 I&N Dec. at 40（将固定地址列为评估外籍人士是否适合保释的因素）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "346b7f44ebf34d6590ee71c9fd55df94326dfa1887af9bddb8fc3e9bc11ce322",
+      "chineseText": "移民法官未考虑有关被申请人居住地的重大矛盾。根据I-213表格《可递解/不可入境外籍人士记录》，DHS探员曾在俄克拉荷马州一涉嫌非法种植大麻的商业场所，发现并拘捕被申请人。被申请人的保释申请工作表声称其是在“住所”被移民官拘留。然而，被申请人在向美国公民及移民服务局递交的庇护申请中表示其居住于加利福尼亚州。被申请人所称担保人亦声称住于加州同一地址。被申请人负有澄清记录中矛盾的举证责任，但其未能完成该责任。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a8200bdbeb4f8f9858613f92dd4cee9654aa98334dce39f4cd564917e01821bb",
+      "chineseText": "此外，虽然被申请人所述担保人在宣誓书中称为其表亲，但被申请人未提交任何证据证明此关系。参见 Matter of Dobrotvorskii, 29 I&N Dec. 211, 213–14（BIA 2025）（解释“担保人的合法性证据直接关联外籍人士是否有固定地址，属于逃跑风险因素”）。另外，被申请人有一项积极的庇护申请在审理中，并不足以充分减轻其逃跑风险。参见 Matter of R-A-V-P-, 27 I&N Dec. 803, 806–07（BIA 2020）（解释救济申请可能不足以形成确保出庭的强激励）；另见 Matter of E-Y-F-G-, 29 I&N Dec. 103, 104–05（BIA 2025）（指出即便移民法官批准救济，亦可能不足以减轻逃跑风险）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f1472416fd91276fe44fe0c7c498054a3650b469dbeff2f0ed94f2c15dcaf521",
+      "chineseText": "总而言之，有关被申请人是否居住在被捕地俄克拉荷马州或其申请中所称加利福尼亚州的记录矛盾，经综合考量整体情形，表明被申请人存在逃跑风险，不宜"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a4155a17d134f467fa526e2234bfc20350bd6899910f594b9049022082c32657",
+      "chineseText": "第512页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6f8a0b82c3eee012c70733c65b24b10f639457ed4c2492f9352b23ddae549768",
+      "chineseText": "引用自 29 I&N Dec. 511（BIA 2026）临时决定#4172"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "204dce40053bf3a4569320df6e87bf62733eb5c8ebb812800e217a1c11c43d78",
+      "chineseText": "获得保释。因此，我们将撤销移民法官的决定，命令被申请人不得保释羁押。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4d4109ed1995cc1d72348ebccfa20287c056e98bbf4865d4e85c08577c369860",
+      "chineseText": "裁定：支持DHS的上诉。\n附加裁定：撤销移民法官2025年9月22日下令被申请人以7500美元保证金获释的决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "dfddd2999498b26af829431ae5b753a66454bb31e358b3935696f3c41bcdab53",
+      "chineseText": "附加裁定：命令被申请人禁止保释羁押。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1cfddca4dadf8a9ab1df6ec15cca361d7dcce4b2506f19c4c75f03feefb8c3e9",
+      "chineseText": "第513页"
+    }
+  ]
+}

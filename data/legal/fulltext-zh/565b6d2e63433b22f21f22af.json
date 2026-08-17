@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "recordId": "565b6d2e63433b22f21f22af",
+  "recordFingerprint": "de6b9f6d0ff77dfe2c8a377e658dd513f0d1a0c9770c6b1d7e5d19a0dc3956c7",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/d9/2025-05/4092.pdf",
+  "officialPdfUrl": "https://www.justice.gov/d9/2025-05/4092.pdf",
+  "sourceUrl": "https://www.justice.gov/d9/2025-05/4092.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:47:23.920Z",
+  "sourceDigest": "365df706219f8610eccbea207ab0ab2ffbb11a756563b6426c568db3e2bc83e0",
+  "translatedAt": "2026-08-17T15:49:33.882Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 22,
+  "translatedSegmentCount": 22,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f5e259510b439ae1d92f08dab5efe3455997cdde8d0a65506b63f631698b5435",
+      "chineseText": "引证为 29 I&N Dec. 48 (BIA 2025) 临时裁决 #4092"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "49e3381b0665536acbeacf207777d168790358ebe672a424c8bde4af89bed58c",
+      "chineseText": "菲利佩·CHOCTUT 案，答辩人\n由委员会于 2025 年 2 月 25 日裁决\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dcc1bce686a3dad5e27c31d71ea0f3b07eba52edbec66d2c4c72544a8587bce6",
+      "chineseText": "虽然移民法官可以考虑州法院关于危险性及刑事诉讼中设定保释金额的决定，\n但移民法官在移民保释程序中并不须对州法院的羁押令给予尊重。\n答辩人代理律师：伊利诺伊州芝加哥  Niki I. Saleh 律师\n国土安全部代理律师：副首席法律顾问 Scott Jebson\n出席人员：委员会小组：副首席上诉移民法官 MALPHRUS，\n上诉移民法官 GOODWIN 和 CLARK。\n上诉移民法官 GOODWIN 说："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6f005f07344a278dc5bd0c7557fef8ec6b333e3b83feaf660ad8dd3b6b09a81a",
+      "chineseText": "国土安全部（“DHS”）对移民法官于 2024 年 7 月 23 日作出的保释令提出上诉，\n该保释令批准答辩人请求变更羁押状态并在缴纳4000美元保释金后释放其羁押。\n移民法官于 2024 年 9 月 22 日发出保释备忘录，解释其保释决定。\n答辩人反对 DHS 的上诉。上诉将被支持。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "61eab39e1fbdd82b836c4e39a93823cd11b4e44d5ecc0bd96187935e28a06d9d",
+      "chineseText": "作出羁押决定时，答辩人面临多项未决刑事指控。\n2024 年 4 月 14 日，答辩人因无驾驶执照及保险并涉交通事故被捕。\n随后在 2024 年 5 月 2 日，他因无照驾驶及鲁莽驾驶再次被捕。被捕时血液酒精浓度为 0.201。\n最后，2024 年 5 月 20 日，答辩人因鲁莽驾驶、酒驾、车内开着酒精饮料容器及无驾驶执照被捕。\n此次被捕时的血液酒精浓度为 0.214。答辩人"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bc6316a37ae74a057aabe0e58da1e0f37f6d18ef73c37990422c5f5d79d897e3",
+      "chineseText": "1\n依据 2025 年 5 月 2 日第 6254-2025 号令，总检察长指定本委员会在 Felipe Choc-Tut 案（2025年2月25日委员会决定）中的裁决为先例，适用于所有涉及相同问题或议题的程序。\n参见 8 C.F.R. § 1003.1(g)(3)（2025 年）。\n基于该案作为先例的指定，已做了编辑性修改。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fe8fd6309df7791261c62e14dee841b995e7d17dab0647d9f177fa96ad0d025c",
+      "chineseText": "第\n48 页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f5e259510b439ae1d92f08dab5efe3455997cdde8d0a65506b63f631698b5435",
+      "chineseText": "引证为 29 I&N Dec. 48 (BIA 2025) 临时裁决 #4092"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "917cf20dfe7b527f20eb402740963f07675c3e9e950e877dac0e877b9c639d57",
+      "chineseText": "在未决指控中，答辩人援引其第五修正案自证其罪权利，\n但其代理律师陈述，答辩人开始饮酒是因与儿子失去联系，起因是其前伴侣订婚他人。\n答辩人作证称未来无意酒后驾车，并将依赖家人接送。\n上诉中，答辩人表示在移民法官裁决后，承认以下罪名：\n(1) 根据肯塔基修订法规第 189A.010(5A) 条酒后驾车罪；\n(2) 肯塔基修订法规第 186.410(1) 条下无有效驾驶/摩托驾驶执照一项罪名。\n其余指控被驳回。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c374f7a540117c6f62208e2e5b6bff7f95f694e8ada5e74e4d361a5349d84078",
+      "chineseText": "移民法官认定答辩人可信，基于其证词及案卷文件，认定他不构成社区危险或逃逸风险。\n移民法官解释，答辩人第三次被捕后，刑事法院设定保释金为 1000 美元，后降为 500 美元，\n且未表示答辩人对社区有危险，尽管其在 2024 年 4 月及 5 月已有两次逮捕。\n移民法官指出，“若州法院认为答辩人对社区构成危险，鉴于其于 2024 年 4 月和 5 月的两次逮捕，州法院本可拒绝保释。”\nDHS 在上诉中辩称，移民法官在认定答辩人已满足不构成社区危险的举证责任时犯了错误。\n我们对移民法官的自由裁量决定进行全新审查。8 C.F.R. § 1003.1(d)(3)(ii)（2025 年）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6ea7f6658412f704d4075f5e1c324f035b1f0fa8d8debda7f45fcd1150469e92",
+      "chineseText": "根据《移民和国籍法》（“INA”）第 236(a) 条，8 U.S.C. § 1226(a)（2018 年），\n保释听证会的举证责任在答辩人，需令移民法官及委员会“满意”其“释放不会对财产或人身构成危险”，且答辩人可能出庭参与未来程序。\n8 C.F.R. § 1236.1(c)(8)（2025 年）；参见 Adeniji 案，22 I&N Dec. 1102, 1112（BIA 1999）；\n另见 Urena 案，25 I&N Dec. 140, 141（BIA 2009），“危险外侨应予以羁押，不得保释”；\nGuerra 案，24 I&N Dec. 37, 40（BIA 2006）。移民法官拥有广泛自由裁量权，可考虑其认为有关的任何事项，决定外侨保释释放是否合适或可取。\n见 Guerra 案，24 I&N Dec. 39。具有“合理基础”的羁押重新裁定将不会因上诉而被推翻。见同案，39–40。\n《INA》第 236(a) 条，8 U.S.C. § 1226(a) 并未赋予被羁押外侨保释释放权利。\n见 D-J- 案，23 I&N Dec. 572, 575（总检察长 2003）。该条款“仅授予移民法官在其认为适当时授予保释的权力。”\n第\n49 页"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f5e259510b439ae1d92f08dab5efe3455997cdde8d0a65506b63f631698b5435",
+      "chineseText": "引用为29 I&N Dec. 48 (BIA 2025) 临时决定 #4092"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4681c6e83fe047c6aae476939733a8f7584a5c0008b6cb4341e51e654e7c180f",
+      "chineseText": "在广泛酌情权的行使中，外国人获准保释是合理的。”同上（省略强调）。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c789167c2226aea21402f51896dafc827cdfa28b43f876e3598f3e7235d951c8",
+      "chineseText": "我们推翻移民法官认定被告已承担举证责任，证明自己不构成社区危险的决定。酒后驾驶对社区构成严重危险，是保释程序中的重要不利因素。见Siniauskas案，27 I&N Dec. 207, 209 (BIA 2018)；另见Begay诉美国，553 U.S. 137, 141-42 (2008)（承认“醉酒驾驶是一项极其危险的犯罪”，对他人的身体安全构成严重潜在风险），其部分内容因Johnson诉美国案，576 U.S. 591 (2015)而被废止。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3bfe619ff786a83b19f32970bd1cc1498c9ce7040b73b865acc32db994253e29",
+      "chineseText": "被告在酒后多次因交通违法被捕，包括在第一次类似行为被捕后仅18天再次被捕，显示其对公共安全极度漠视。见Portillo-Rendon诉Holder案，662 F.3d 815, 816 (7th Cir. 2011)（认定该外国人表现出“对汽车使用规章的蔑视”，且“酒后驾车或无驾驶证驾驶反映出对其他驾驶人和行人福利的漠视以及对已知法律义务的蔑视”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "02ffd92f1536b4af92ab1157f10b05e8b95ad5f909e2b764467e7acd4a14c527",
+      "chineseText": "移民法官似乎在很大程度上依赖于州法院未认定被告为危险人物，并最终设定了500美元的低额保释金。虽然移民法官可以考虑州法院在刑事程序中对危险性的判定及保释金额，但移民法官在移民保释程序中不对州法院的拘押令给予尊重。州法院保释的法律标准可能与移民法院不同，且移民法官可能有各种理由做出与州法院法官不同的决定。根据《移民和国籍法》（INA）的拘押复审条款及适用判例，判断危险性属于移民法官职责。见Panin案，28 I&N Dec. 771, 773 (BIA 2024)（“被告从联邦刑事审前拘留中获释，不排除移民法官根据INA第236(a)条款8 U.S.C. § 1226(a)拒绝被告请求保释的可能性。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "747e92978b5466bfc04c54f83f73785c55997678e91f5ad4e2d85cb08108f582",
+      "chineseText": "在本案中，我们不同意移民法官的保释决定。鉴于被告的行为多次且性质严重，包括在先前类似行为被捕18天后再次因酒驾被捕，我们认为"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f5e259510b439ae1d92f08dab5efe3455997cdde8d0a65506b63f631698b5435",
+      "chineseText": "引用为29 I&N Dec. 48 (BIA 2025) 临时决定 #4092"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b5f740a0a188189f6ce4623074033817e7711c42ca8fa95a2c17afe6bcdff15b",
+      "chineseText": "移民法官决定允许被告保释“缺乏合理基础”。见Guerra案，24 I&N Dec. 39–40；亦见Siniauskas案，27 I&N Dec. 208–10。在此情形下，我们不认为被告已承担举证责任，证明其不对社区构成危险。见Guerra案，24 I&N Dec. 40。因此，其保释不当。见Urena案，25 I&N Dec. 141（裁定只有在确认外国人不会对财产或人身构成危险时，移民法官方能决定为确保其出庭而设保释金额）。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "69fcfdc4cde130bafa9f00ac016908f862148aca2db02f43f95cec718e31c57f",
+      "chineseText": "命令：国土安全部上诉获支持。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ece276f375df7904deba3a97ab7890586532f06cefb135689cd935914da5a547",
+      "chineseText": "进一步命令：移民法官的拘押复审决定被撤销，被告被命令无保释拘留。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "1d9eb9b300fe8a9285263659c4245d79197d2c2a7d52df77baea30f9d5cf8d5b",
+      "chineseText": "第51页"
+    }
+  ]
+}

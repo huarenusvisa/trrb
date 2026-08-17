@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "recordId": "3741cc60635b231c10153c0c",
+  "recordFingerprint": "2ec1f152b5595440cc177bad6d47c2265c999a2eb6c8b3c2026d9a71d0f45fe6",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1438621/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1438621/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1438621/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:01:03.944Z",
+  "sourceDigest": "a74cc2b286799eda11a88cfe46f6d8802b3450d5b863df22262a93ef12d463bf",
+  "translatedAt": "2026-08-17T16:05:08.328Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 29,
+  "translatedSegmentCount": 29,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d9bd283f5350efa26512f0a91e4632c94ce7fec0534037043f67cb0572396a64",
+      "chineseText": "引证为 29 I&N Dec. 600（移民上诉委员会 2026）临时决定#4189"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a13e27cf1bff95861d055bf81e23f256232a8e8984b870e4390d1de7db7a0339",
+      "chineseText": "有关Angel Damian OROZCO BECERRA案，被申请人\n有关Neythan OROZCO BECERRA案，被申请人\n裁决日期：2026年4月29日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d7e481c71f2ff76eb655184619d32c7e70b9d2d970c384d3c6e0427d57fa1cca",
+      "chineseText": "当包括未成年被申请人在内的被申请人未出庭参加听证会，且国土安全部已证实其收到听证会的适当通知且被控可被驱逐时，移民法官无权行政性中止驱逐程序，必须依照《移民与国籍法》第240(b)(5)(A)节，8 U.S.C. § 1229a(b)(5)(A)（2018年版）以缺席方式进行驱逐程序。被申请人代表：无律师自行应诉\n国土安全部代表：Ihsan U. Ahmed，助理首席法律顾问\n合议庭成员：首席上诉移民法官 MALPHRUS；上诉移民法官 HUNSUCKER 和 GEMOETS"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62c4b042980c6ad2814ed9cc74d94e2a1f5dd38cf7beaab67651dc0fe8ed4270",
+      "chineseText": "首席上诉移民法官 MALPHRUS 发言："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b7c572f89171aa5dfa50a4d46d4ec54c2729529ae246112216092d35008a85a5",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年8月22日作出的行政性中止被申请人驱逐程序的决定提出中间上诉。被申请人未对上诉提出反对答辩。1 上诉委员会通常不受理中间上诉。参见Matter of M-D-, 24 I&N Dec. 138, 139（移民上诉委员会 2007）。然而，为确保行政中止程序的正确使用，我们将行使对该中间上诉的管辖权。参见Matter of Amico, 19 I&N Dec. 652, 653（移民上诉委员会 1988）。本案上诉予以支持，驱逐程序将被恢复，案件记录将被发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4320a5eaaaf4e976e9e578e05b0149ae6c1a6c565c38cece271fd50a66ef0a81",
+      "chineseText": "一、事实及程序背景"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "11e2b5bb6f92e41c81f2dfa95580ba69965d3b7dcef2712712619a1987a58ac0",
+      "chineseText": "被申请人为两名未成年人，均为墨西哥出生且拥有墨西哥国籍。他们于2023年6月22日在入境口岸与成年母亲及一名成年男性申请入境。一名移民官员亲自向"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "95ba4ef96dde684c250791bb8d72045b58b2e6443a20bf2b1c20aef281ca5670",
+      "chineseText": "1 国土安全部提出上诉后，我们要求当事双方提交补充意见。国土安全部提交了补充简报。被申请人未提交简报或其他回应。"
+    },
+    {
+      "segmentId": "pdf-p1-s9",
+      "order": 9,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7ad2fdf278f66e1cff9b1da1c4558d1bbf097ac1f1a35950be4716c83da992b1",
+      "chineseText": "第600页"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d9bd283f5350efa26512f0a91e4632c94ce7fec0534037043f67cb0572396a64",
+      "chineseText": "引证为 29 I&N Dec. 600（移民上诉委员会 2026）临时决定#4189"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "dc06a29fa10c4260cfb76744ab74b26b4aa6c5d0cd53a2f2b825a544b4c5fff4",
+      "chineseText": "被申请人母亲送达出庭通知，指控其及被申请人根据《移民与国籍法》（“INA”）第212(a)(7)(A)(i)(I)节，8 U.S.C. § 1182(a)(7)(A)(i)(I)（2018年版）因缺乏有效入境文件而不可入境。出庭通知告知被申请人及随行成年人必须于2024年10月30日上午9点，在加利福尼亚州旧金山的移民法官处出席首次驱逐听证会。被申请人及随行成年人未出庭，移民法官重新安排听证会至2025年4月2日。书面听证通知寄送至被申请人通知中提供的最后已知地址。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9a3ce5d2ff631c679ce5b35bc679c80ba3db730b506b7b36efa2758c6059a6c9",
+      "chineseText": "被申请人及随行成年人未出席重新安排的听证会。2025年4月2日听证会上，移民法官认定国土安全部提交的证据不足以证明被申请人及随行成年人的外国人身份。移民法官要求国土安全部提交更多证据以证明其外国人身份，并安排另一次听证会于2025年8月21日。听证通知再次邮寄至被申请人最后已知地址。国土安全部提交了被申请人及随行成年人的出生证明及随行成年人的身份证明证件以确立其外国人身份。被申请人及随行成年人未出席2025年8月21日的听证会，国土安全部请求移民法官发布缺席驱逐令。移民法官对被申请人母亲及其他随行成年人作出缺席驱逐令。然移民法官拒绝对未成年被申请人发布缺席驱逐令，认为他们不应为母亲未出席负责，发布缺席驱逐令将侵犯其正当程序权利。取而代之，移民法官在国土安全部反对下行政性中止未成年被申请人的驱逐程序。现提出本次上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ecd58ca19277e66c7a778ba8c58af8087872f4d1e677bdabc0224f33203162c8",
+      "chineseText": "二、讨论"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "41c4f53ef31ffe4ef9150b6ca7a53e68734454886f689691fb547a996810baa2",
+      "chineseText": "《移民与国籍法》第240(b)(5)节，8 U.S.C. § 1229a(b)(5)（2018年版）规定，任何未出席驱逐听证会的外国人“应缺席被命令驱逐”，条件是国土安全部证明已提供适当的书面通知且该外国人符合可驱逐条件。该法条明确强制移民法官对符合条件的未出庭外国人发布缺席驱逐令。参见 Bufkin v. Collins, 604 U.S. 369, 379 (2025)（“‘shall’一词明确规定强制性命令。”）；另见 Valencia-Fragoso v. INS, 321 F.3d 1204, 1206 (9th Cir. 2003)（“已明确规定，‘如果外国人已适当收到书面"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d9bd283f5350efa26512f0a91e4632c94ce7fec0534037043f67cb0572396a64",
+      "chineseText": "第601页\n引证为 29 I&N Dec. 600（移民上诉委员会 2026）临时决定#4189"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8a1b380a380d3ded84779805a041c6c1b33b379c04e771b22a6220aa278f12fd",
+      "chineseText": "若收到驱逐听证通知且未能出席，移民法官必须发布缺席驱逐令。”（引文省略）换言之，当证明适当通知和可驱逐的证据要求满足时，移民法官无权自行决定，必须发布缺席缺席未出庭的被告的驱逐令。见Matter of Tepec-Garcia, 29 I&N Dec. 371, 373 (BIA 2025)。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f6696a4af4fdd4a2ad0f74012d7e9ffb5a9c03332c8248996b3006436d619616",
+      "chineseText": "通过行政关闭被告的驱逐程序而非下令驱逐，移民法官错误地适用了带有自由裁量权的规定，而此种适用方式直接与国会明确强制性命令相冲突。适用的规定指出，“移民法官可以在考虑‘全部情况’后，依当事人动议行使自由裁量权，行政关闭案件。”8 C.F.R. § 1003.18(c)(1),(3) (2026)。然而，当自由裁量权与强制性法定命令相冲突时，移民法官无法行使该规定所赋予的自由裁量权。2参见Sec’y of Lab. v. W. Fuels-Utah Inc., 900 F.2d 318, 320 (D.C. Cir. 1990)（“[法规]必须解释为与其实施的法律目标协调、一致，而非冲突。”（引文省略））；参照Manhattan Gen. Equip. Co. v. Comm’r of Internal Revenue, 297 U.S. 129, 134 (1936)（裁定与国会意愿不符而与法律不一致的规定属无效）。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ed03c640efa9ceb5b0b8dfd1c6db916495263a703878d114cbc5e2f5ad0497cb",
+      "chineseText": "在此，移民法官对行政关闭规定的适用与明确的法定命令不符。根据法律规定，当被告未出庭且国土安全部已证明适当通知和可驱逐性时，移民法官应依法发布缺席驱逐令。移民法官无权用机构发布的更为一般性自由裁量规定替代国会制定的具体且明确的法定命令。3 参见Duke"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "be89bbee1f6c73e540fe17acfc8578486cd0e25cb6b55fac8500a3fe03f2d43e",
+      "chineseText": "页 602"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d9bd283f5350efa26512f0a91e4632c94ce7fec0534037043f67cb0572396a64",
+      "chineseText": "引证为29 I&N Dec. 600 (BIA 2026) 临时裁定#4189"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "1fdd0843dcf03b63ae7bef951250f9d3613f00ab6fdf7f34d1dd4d96fb8f6ddf",
+      "chineseText": "v. United States, 255 F.2d 721, 724 (9th Cir. 1958)（“如法规与法律抵触，则以前者必让步于后者。”）；Texas v. EPA, 726 F.3d 180, 195 (D.C. Cir. 2013)（“‘有效法律始终优先于相抵触的法规’，法规绝不能‘凌驾于法律明文之上。’”（引文省略））。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "623abc38fc08fda6e394b54423ab71eeed57a4b453759a09a779369ab03bb58f",
+      "chineseText": "此外，移民法官认为基于被告母亲未带其出庭而对其缺席发布驱逐令会侵犯其程序正义权的担忧是错误的。移民局对宪法申诉（包括程序正义主张）拥有管辖权。参见Matter of H-A-A-V-, 29 I&N Dec. 233, 237 n.6 (BIA 2025)。我们已明确拒绝过未成年人被告因负责任成年人已适当收到听证通知而未出庭即被处罚会侵犯其程序正义权的论点。见Matter of Gomez-Gomez, 23 I&N Dec. 522, 528 (BIA 2002)。驳回该论点时，我们指出国会未在缺席法令中为未成年人设立例外。id.；另参见Louisville & Nashville R.R. Co. v. Mottley, 219 U.S. 467, 479 (1911)（法院无权“基于衡平理由为法律增设例外，当国会未设此例外”）；Lopez v. Garland, 116 F.4th 1032, 1043 (9th Cir. 2024)（“语言清晰时，不得插入新词新句以新设法条条款。”（引自United States v. Temple, 105 U.S. 97, 99 (1881)））。鉴于缺席法令中无未成年人例外，我们认为“为未成年人接收通知的成年亲属负有确保未成年人出席听证的责任。”Matter of Gomez-Gomez, 23 I&N Dec. at 528；另参见Flores-Chavez v. Ashcroft, 362 F.3d 1150, 1157 (9th Cir. 2004)（“必须由法定责任成年人确保未成年人出庭。”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6958c9340f29084009958b1464e33f4eb223f713c59c227e2352740bf2dff054",
+      "chineseText": "第五修正案赋予驱逐程序中的非公民“在符合案件性质的情况下享有通知及聆讯机会。”Trump v. J.G.G., 604 U.S. 670, 673 (2025)（引自Mullane v. Central Hanover Bank & Trust Co., 339 U.S. 306, 313 (1950)）。本案记录表明，被告通过向其母亲送达出庭通知及听证通知，已获适当通知并多次获得出庭机会。其母亲负有确保其出席的责任，尽管已获适当通知，但被告仍未出庭。此外，缺席程序的法定框架保障被告可依据《移民及国籍法》第240(b)(5)(C)节（8 U.S.C. § 1229a(b)(5)(C)）的程序保护，寻求重新开庭及撤销任何缺席驱逐令。鉴于已提供之通知与出庭机会及可用的法定救济，针对被告发出缺席驱逐令并不侵犯其程序正义权。 页603"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d9bd283f5350efa26512f0a91e4632c94ce7fec0534037043f67cb0572396a64",
+      "chineseText": "引证为29 I&N Dec. 600 (BIA 2026) 临时裁定#4189"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5b9973f6c8837754cd48799cd5dece05cc7422abb58d6d6aad66ac7e8b64befb",
+      "chineseText": "基于已提供的通知及出庭机会，以及寻求撤销缺席驱逐令的法定救济，针对被告下达缺席驱逐令并不侵犯其程序正义权利。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c50ba76226bb6ab1f9daa14b22d47691f84df45cc298a555cceb264c1ca0896f",
+      "chineseText": "三、结论"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "3a21b496a35620bd7e668c039660fbc1099305bb3cbb201b0739dffa43d41a4a",
+      "chineseText": "当被告（包括未成年人）未出席听证，而国土安全部已证明其收到适当通知且符合可驱逐条件时，移民法官无权行政关闭驱逐程序，必须依《移民及国籍法》第240(b)(5)(A)节（8 U.S.C. § 1229a(b)(5)(A)）以缺席方式进行。鉴于移民法官未能在此情况下发出缺席驱逐令，构成错误，故本委员会将恢复本驱逐程序，并将记录发回移民法庭作进一步符合本意见的程序处理。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "32da715448df320a3447debec4ae899f8ed3b9f99785c95574f04b66b6adb2a5",
+      "chineseText": "命令：申诉获支持。进一步命令：恢复本驱逐程序，记录发还移民法庭，依上述意见办理后续程序，并作出新裁定。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "aa2b57a6adcb371ba5829bd418a04a612390417652b296c5a767e6eaf4f27791",
+      "chineseText": "页 604"
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "recordId": "902c4857c0c5c4d7b868c9db",
+  "recordFingerprint": "b4bd4ea043ed10a0f22d97fe56f610648ea179d2377588b2cae03c5a24fcc10c",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1430766/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1430766/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1430766/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:49:33.914Z",
+  "sourceDigest": "1cf356ae2360820487fd816d2a85ef290ab51f0d29c4c4b9ad525a2daf52092d",
+  "translatedAt": "2026-08-17T15:50:04.522Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 21,
+  "translatedSegmentCount": 21,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c2ebbd1e799d02a5fa1819607c08cd4793e7bfee2075d617a9c1239aa264222f",
+      "chineseText": "引证为 29 I&N Dec. 507（BIA 2026）临时决定第4171号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "15cdb0d5b0ccd54f21cfffdb67929a6541c92ed87637472c339497324fca3b94",
+      "chineseText": "朱利安·圣地亚哥·平松·罗索案，被申请人\n裁决日期：2026年3月11日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6bc71f8f42c0a940be25f536ae489734184382f21feb2b5c591c98ef0a43367f",
+      "chineseText": "移民法官错误地批准了被申请人的延期申请，被申请人持有经批准的特别移民少年（special immigrant juvenile）身份请愿书，获准延期等待签证名额，但被申请人的优先日期将在不确定且漫长的时间内不会变得当前。\n代表被申请人：乔安娜·T·桑切斯-阿尔巴拉辛律师，纽约韦恩斯科特\n代表国土安全部：爱德华·P·隆巴多，助理首席顾问\n出庭委员：审理小组：首席上诉移民法官马尔弗拉斯（MALPHRUS）；上诉移民法官查班（CHABAN）；临时上诉移民法官麦克洛斯基（MCCLOSKEY）"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62c4b042980c6ad2814ed9cc74d94e2a1f5dd38cf7beaab67651dc0fe8ed4270",
+      "chineseText": "马尔弗拉斯，首席上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9a3bf7771fe8794b8998e376c4d64d15aa08e8620b3007af7fda1f2ca31955dd",
+      "chineseText": "国土安全部（“DHS”）已针对移民法官于2025年12月8日作出的批准被申请人延期其驱逐程序的决定提出中间上诉。尽管委员会通常不受理中间上诉，但我们认为此次受理适当，旨在“纠正移民法官在处理延期请求中反复出现的问题”。参见M-D-案，24 I&N Dec. 138, 139（BIA 2007）。本案上诉将获支持，案件记录将发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ea84be2ea7bca7bd11f301e41a7c15e545e84c2173eb1a44cc03d28c41b12511",
+      "chineseText": "被申请人为哥伦比亚原籍公民，最后一次入境美国为2018年12月3日，身份为非移民访客，停留期限不超过6个月。其逾期滞留。2025年5月23日，即其刚满20岁不久，向美国公民及移民服务局（USCIS）提交依据移民及国籍法第101(a)(27)(J)条款（8 U.S.C. § 1101(a)(27)(J) （2024））的特别移民少年身份的签证请愿。数月后，国土安全部对其展开驱逐程序，并依据移民及国籍法第237(a)(1)(B)条款（8 U.S.C. § 1227(a)(1)(B)（2024））指控其逾期滞留。被申请人承认具有可驱逐身份，且声明其不会提交任何驱逐救济申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c2ebbd1e799d02a5fa1819607c08cd4793e7bfee2075d617a9c1239aa264222f",
+      "chineseText": "引证为29 I&N Dec. 507（BIA 2026）临时决定第4171号"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c7562b21c5623bee7f39e3c1e38331b07efbf66b2fe757ab1a403140ad84361d",
+      "chineseText": "被申请人表示其将动议请求移民法官基于当时待决的签证请愿行政关闭或终止驱逐程序。USCIS于2025年11月4日批准了被申请人的签证请愿。随后被申请人向移民法官提交动议，请求行政关闭或延期其驱逐程序以等待签证名额。移民法官驳回行政关闭请求，但同意将驱逐程序延期至2027年2月12日。现提起本上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ede16a48b1a64ba0929b3f9f41affbdb8e4143a625940e541e7ca06872ed99e5",
+      "chineseText": "移民法官“如有正当理由，可以批准延期申请。”见8 C.F.R. § 1003.29（2020）；另见L-A-B-R-案，27 I&N Dec. 405, 415（司法部长 2018）（“被申请人承担举证证明延期的正当理由的责任。”）。关于移民法官是否错误批准延期，该法律问题我们行使无事事实审查权。参见J-A-F-S-案，29 I&N Dec. 195, 198（BIA 2025）；8 C.F.R. § 1003.1(d)(3)(ii)（2026）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "26b23113012877ade6c9997c136070e6bb192fd6f08cb7bd75cf073ddbcc5ceb",
+      "chineseText": "在依据附带事项待审合理性请求延期时，移民法官“应主要关注两项因素：（1）外籍人士获得附带救济的可能性；（2）该救济是否实质性影响驱逐程序结果。”见L-A-B-R-案，27 I&N Dec. 405, 413。移民法官还应考虑次要因素，包括“外籍人士在追求该救济过程中是否尽到合理勤勉；国土安全部对延期动议的立场；延期请求的时长；案件的程序历史。”同上。两项主要因素并非决定性，当“存在权衡反对继续程序的相关次要因素时”亦然。见L-N-Y-案，27 I&N Dec. 755, 758（BIA 2020）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7bfe34952cd503cef108380f8b5ec8b03bffe586e1ebdd4d860249bc6fad61c2",
+      "chineseText": "经USCIS批准特别移民少年身份请愿的外籍人士仅当“移民签证即时可用”时，方可申请调整身份成为合法永久居民。见Cahuec Tzalam案，29 I&N Dec. 300, 304（BIA 2025）；另见INA § 245(a)，8 U.S.C. § 1255(a)（2024）（论述调整身份的一般条件）；8 C.F.R. §§ 245.1(a), 1245.1(a)（2026）（同）。签证（包括特别移民少年签证）的可用性由申请人的优先日期决定，即申请人提交请愿书的日期。见22 C.F.R. § 42.51(b)（2026）（规定签证号依申请人优先日期按时间顺序发放）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6f67098e2830e993c93daa8b65665b64fc541d3efe96a2138a6fe34cdc82af44",
+      "chineseText": "第 508 页"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c2ebbd1e799d02a5fa1819607c08cd4793e7bfee2075d617a9c1239aa264222f",
+      "chineseText": "引证为 29 I&N Dec. 507（BIA 2026）临时决定第4171号"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2665f0c307a40b47b24552c6a29677ce478d0e32504c4360d30ccd82c424465e",
+      "chineseText": "根据美国国务院签证公告，目前特别移民少年类别的签证仅向于2021年7月15日之前提交签证请愿的申请人开放。见美国国务院领事事务局，签证公告，第11卷第12号（2026年3月），https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2026/visa-bulletin-for-march-2026.html；另见Cahuec Tzalam案，29 I&N Dec. 300, 304（BIA 2025）（指出特别移民少年归类于第四优先就业基础签证类别）。当前优先日期前进速度时有波动，且可能因供不应求而发生“倒退”（retrogression），该现象发生于签证类别实际需求超过法律规定及国务院预计发放的签证数量时。详见Cheejati诉布林肯案，106 F.4th 388, 391–92（第五巡回上诉庭 2024）（解释签证配额与倒退机制）。因此，尽管因需求不同，合格优先日期有时变动，目前被申请人2025年5月23日的优先日期与当前可受理优先日期之间近4年差距。被申请人等待签证号的时间不确定且可能漫长。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3c779b8fb0aa1c875db453be28390292317137f2f9dd20be5251976589deb187",
+      "chineseText": "被申请人未能承担证明延期正当理由的举证责任。见L-A-B-R-案，27 I&N Dec. 405, 415。尽管签证可获时被申请人有资格调整身份，且调整身份资格会实质影响其驱逐结果，本案相关次要因素显著反对延期。当前合格与被申请人优先日期之间大幅时间间隙反对为“未知且可能漫长时期”延期等待签证名额。见L-N-Y-案，27 I&N Dec. 755, 759；另见Hernandez诉加兰案，编号21-6340，2024年2月6日第2巡回上诉庭判决（未公开）（认可移民上诉委员会未错误批准移民法官拒绝延期，因无即时可用特别移民少年签证，且优先日期仍有一年差距）；再见L-A-B-R-案，27 I&N Dec. 405, 418（裁定若优先日期过于遥远，则不存在正当延期理由）。长期以来本委员会亦持同立场：“获批准签证请愿书本身，不构成被申请人可推迟完成驱逐程序等待签证名额可用的理由。”参见Quintero案，18 I&N Dec. 348, 350（BIA 1982）。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a46111f7609b7e6833238d149a2cb9995877a3358fa8cbf0d720c453bd765c6b",
+      "chineseText": "第 509 页"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c2ebbd1e799d02a5fa1819607c08cd4793e7bfee2075d617a9c1239aa264222f",
+      "chineseText": "引证为 29 I&N Dec. 507（BIA 2026）临时决定第4171号"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0633f206d564c96e968235e328a1b65209988d3efe7b81a2a9b651a177cc2a4e",
+      "chineseText": "此外，申请延期时，被申请人负有证明其“在追求附带裁定过程中表现出合理勤勉”的举证义务。见L-A-B-R-案，27 I&N Dec. 405, 412。被申请人未对其为何自2018年最后入境美国至2025年即20岁时才提交签证请愿做出任何解释。见Pereida诉Wilkinson案，592 U.S. 224, 240（2021）（说明举证义务方在证据缺失时处不利地位）。其未展示勤勉态度，亦不利于批准延期。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0f8b641d8004123dd045d60c31e3107642712d15674b00771eb635bde0fe4fec",
+      "chineseText": "最后，国土安全部反对延期，基于其促使程序及时结束的公共利益，该因素在评断延期正当理由时亦属重要考虑。见L-A-B-R-案，27 I&N Dec. 405, 416；另见B-N-K-案，29 I&N Dec. 96, 99（BIA 2025）（指出促进移民程序“在保障各方公平机会充分陈述案情基础上，尽速终结”的公共利益）；引自INS诉阿布杜案，485 U.S. 94, 107（1988年）。被申请人承认其可被驱逐身份，且未向移民法官申请任何形式的驱逐救济。见B-N-K-案，29 I&N Dec. 96, 99（解释移民法官和委员会的角色是判定外籍人士是否有可驱逐身份及是否有资格获得驱逐救济，案件由DHS提出）。在无可争议的驱逐身份和救济资格下，持续无期限拖延驱逐程序，且国土安全部反对，将严重削弱“执法移民法律的及时性”之公共利益。见L-A-B-R-案，27 I&N Dec. 405, 406。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2130b732398f71209510b53bb916655048ebe796de283f5b41c98b7eb2270a13",
+      "chineseText": "在本案中，等待被申请人签证名额可用的时间不确定且可能漫长，以及国土安全部反对延期的立场，均强烈反对基于被申请人潜在调整身份资格而继续驱逐程序。综合主要与次要评估延期正当理由的相关因素，移民法官错误批准持有经批准特别移民少年请愿书的被申请人延期等待签证名额，而被申请人优先日期在不确定且漫长期间内不会变为当前。故本委员会将支持国土安全部上诉，并将案件记录发回重审。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4ac7d45ef4b9de31c2b3fb73f8e1eef1045514b94e7f8838086df8a4a2e83e2f",
+      "chineseText": "命令： 上诉获支持。\n进一步命令： 案件记录发回，依据上述意见继续进行后续程序，并作出新裁决。\n第 510 页"
+    }
+  ]
+}

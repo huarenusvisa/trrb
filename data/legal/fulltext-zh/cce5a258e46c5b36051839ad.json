@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "recordId": "cce5a258e46c5b36051839ad",
+  "recordFingerprint": "cca31fb0b4314cda51eeba5f1d0e9f9ddd0817fc45d2ff7f23aea5aa8f305c13",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1431066/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1431066/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1431066/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:50:23.535Z",
+  "sourceDigest": "42e173f47aacb5c1a3ba9dfe40f08430951dac69f1f0a39a8541d3c3e00a37f3",
+  "translatedAt": "2026-08-17T15:51:23.997Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 27,
+  "translatedSegmentCount": 27,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b72d83784f0309fe6630ce766451928aea50fb2eb23f3a575444b7be601994a8",
+      "chineseText": "引用自29 I&N Dec. 514（BIA 2026）临时决定第4173号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "378c8e7b9c08c4df18eb7db4a04b816e41b1667bbbc406c870fe18fb3688ca36",
+      "chineseText": "Terisita MEDINA MADRID案，受诉人\n裁定日期：2026年3月13日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d5fda2150e2c3b841527290ee08b5decfff2edaf5fca07697aef310751adc801",
+      "chineseText": "鉴于受诉人的遣返程序已被行政关闭超过13年，基于受诉人打算向美国公民及移民服务局申请临时非法逗留豁免，继续行政关闭不足为由。\n代表受诉人：无律师代理\n代表国土安全部：助理首席法律顾问Crystal Morales\n审理小组成员：OWEN和GALLOW，上诉移民法官；PICOS，临时上诉移民法官。\nGALLOW，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "108e0ae8c42a95c59beb991a0b907c449b8d00f4fd4a9a16806c01f67102425b",
+      "chineseText": "国土安全部（“DHS”）针对移民法官2025年10月6日驳回其重新排期听证动议的决定提出中间上诉。虽然我们通常不受理中间上诉，但鉴于确保对管理关闭案件重新排期相关规定的正确适用，我们认为此案适宜予以受理。参见Cahuec Tzalam案，29 I&N Dec. 300（BIA 2025）。本上诉将被支持，移民法官的决定将被撤销，案件将重新排期，记录发回移民法官处理。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2c0d4d72d5df6706456913b3dd2730cd1d748983ca55d59ceb38c06a1754f9ec",
+      "chineseText": "一、事实和程序经过\n受诉人为墨西哥出生及公民，于2004年被置于遣返程序中，并依据《移民与国籍法》（“INA”）第212(a)(6)(A)(i)条，8 U.S.C. § 1182(a)(6)(A)(i)（2000年）指控其为“未经许可或临时入境而在美国停留的外籍人士，或在美国任何时间或地点非经总检察长指定方式入境者”。2007年，受诉人依据INA第240A(b)(1)条，8 U.S.C. § 1229b(b)(1)（2006年）提交取消遣返申请，适用于某些非永久居民。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b72d83784f0309fe6630ce766451928aea50fb2eb23f3a575444b7be601994a8",
+      "chineseText": "引用自29 I&N Dec. 514（BIA 2026）临时决定第4173号"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ce51f30aea3c715cfeaa030ad971ecf1c947acc0aaa5eb2e92a1a6c7a64855e3",
+      "chineseText": "DHS基于检察裁量权提交行政关闭案件申请，受诉人未提出异议。移民法官于2013年1月24日批准该申请。六年后，受诉人与合法永久居民结婚。受诉人配偶于2019年10月1日为她提交了I-130表格，亲属移民申请，USCIS于2024年11月14日批准该申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5634fb9b5568a251766b28a665bd5e4049a1d366e3ae2abc41c3f3d5e3fcd142",
+      "chineseText": "DHS于2025年6月13日提交重新排期的动议。受诉人反对该动议，理由是其近日向USCIS提交了I-824表格，已批准申请的跟进行动申请，为提交I-601A表格，临时非法逗留豁免申请，准备通过领事程序申请移民签证。移民法官拒绝DHS动议，认定受诉人正在积极进行附带救济。对此决定提起本次上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7d7c666ece28950fb43e353f604a291367e10a1d2c892ad5195978fcaeecab76",
+      "chineseText": "二、讨论\n是否重新排期遣返程序属酌情决定，委员会予以全新审查。参见Ibarra-Vega案，29 I&N Dec. 476（BIA 2026）；8 C.F.R. § 1003.1(d)(3)(ii)（2026年）。“行政关闭旨在作为案卷管理工具，‘用于暂时将案件从移民法官的活跃日程或委员会案卷中移除。’”参见B-N-K-案，29 I&N Dec. 96（BIA 2025）（引自W-Y-U-案，27 I&N Dec. 17（BIA 2017））；另见8 C.F.R. § 1003.18(c)（2026年）（“行政关闭为案件的暂时中止。”）。“行政关闭非遣返救济形式，不提供任何移民身份，且不应被用于无限期拖延程序。”参见B-N-K-案，29 I&N Dec. 97。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9243b0b6dab71e1d7ab501ad62518f75293ecfe3e8ef8f833e7b74ff888641bb",
+      "chineseText": "任何一方均可提出重新排期申请。参见8 C.F.R. § 1003.18(c)(2)。“当重新排期动议遭非动议方反对时，移民法官必须综合考量全部情况决定是否酌情批准动议，”包括8 C.F.R. § 1003.18(c)(3)(ii)列明的因素及其他相关因素。参见Ibarra-Vega案，29 I&N Dec. 477–78。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "51e5f4d5a05dc12d9657f7874ae928861373e1772373608ef7ab688876b5ca2d",
+      "chineseText": "注：联邦法规标题8第1003.18(c)节规制移民法官行政关闭与重新排期。委员会受类似规制8 C.F.R. § 1003.1(l)约束。“鉴于近期最高法院判例，对行政关闭之合宪性提出严肃质疑。”参见Ibarra-Vega案，29 I&N Dec. 483注3。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "00cd61f5b04b76749814b2f96a0f662c353d92f5a1a72e0f46836a72439d9afc",
+      "chineseText": "第515页"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b72d83784f0309fe6630ce766451928aea50fb2eb23f3a575444b7be601994a8",
+      "chineseText": "引用自29 I&N Dec. 514（BIA 2026）临时决定第4173号"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f90b6593a415db588e9c5db36373d397661b3c09e69b8880d16ed40485dbf546",
+      "chineseText": "遵循相关规定，重新排期的首要考虑因素为是否有充分理由使案件继续审理并于实体上得出结论。参见B-N-K-案，29 I&N Dec. 100。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cb73db6a3fa7fb4f7649b28febaf6a2e3d6e21e49a233da1f1f00de454c6c0c9",
+      "chineseText": "基于此标准，我们认定移民法官在拒绝DHS重新排期动议时，未能综合全部事实情形。规定明确指出，若因允许外籍人士追求附带救济而行政关闭，需考虑行政关闭至其递交附带救济申请间的时间。8 C.F.R. § 1003.18(c)(3)(ii)(D)。若行政关闭缘由与外籍人士申请附带救济无关，但继续行政关闭以附带救济资格为由时，同样应关注行政关闭至申请递交之间的时间。超出短期后，继续行政关闭原则上不被支持。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2fd73be67662cb35f578d91ac2befe4512fa78f27ebdcdad0ef730ea655893de",
+      "chineseText": "本案中，遣返程序因检察裁量权行使于13年前行政关闭。参见8 C.F.R. § 1003.18(c)(3)(ii)(C)（“行政关闭后经过的时间长度”为重新排期决策相关因素）。受诉人六年后与合法永久居民结婚，已持续寻求附带救济七年。她反对重新排期，欲以更多时间申请临时非法逗留豁免。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fe64c63bd3021dc9ce5bf3b98b1bfd3380d8cf54a749ccda5789d4c9ab943978",
+      "chineseText": "受诉人获得临时非法逗留豁免之可能性尚属推测，因其尚未向USCIS递交申请。参见8 C.F.R. § 1003.18(c)(3)(ii)(F)（列举附带救济成功可能性为重新排期考量因素）。她基于未来潜在资格继续延缓遣返程序，非令人信服的反对重新排期理由。参见8 C.F.R. § 1003.18(c)(3)(ii)(B)（“反对重新排期之理由”为相关因素）。即使已递交申请，此类申请平均审理时长约28个月。USCIS，案件处理时间，https://egov.uscis.gov/processing-times（最后访问2026年3月11日）；参见Ibarra Vega案，29 I&N Dec. 481（指出“除个案特殊情况外，行政关闭超过6个月原则上不合理”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b72d83784f0309fe6630ce766451928aea50fb2eb23f3a575444b7be601994a8",
+      "chineseText": "引用自29 I&N Dec. 514（BIA 2026）临时决定第4173号"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5b808682e1555a12e270fe27ed45e6ffc01afbc18addfe64503143adf7a9c5c2",
+      "chineseText": "此外，受诉人获批的签证申请及提交临时非法逗留豁免申请的意图并不影响遣返程序的结果。参见B-N-K-案，29 I&N Dec. 101（结论为未影响遣返程序结果的附带申请一般不应支持行政关闭）。即便临时非法逗留豁免获批，受诉人须离境通过领事程序申请移民签证，因其未获准入或临时许可入境，美国境内不可调整身份。注释2详见INA § 245(a)，8 U.S.C. § 1255(a)（2024年）。且最终遣返令不妨碍受诉人如有已获USCIS批准之重新入境申请，仍可申请临时非法逗留豁免。参见8 C.F.R. § 212.7(e)(4)(iv)（2026年）。因此，本遣返程序无需行政关闭以便申请临时非法逗留豁免。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "10554de7692125d08dbd2f05e00983e0e1e5b96a9b3c2964c3f2dcdb43ff9a73",
+      "chineseText": "在此情形下，进一步行政关闭已超出合理短期之所有解释。参见Ibarra Vega案，29 I&N Dec. 482（认定近13年行政关闭超出“暂时”或合理短期的常理解释）。鉴于受诉人取消遣返申请未曾裁决，案件长时间行政关闭实质上等同大赦，令本应遣返外籍人士得以上述法律上虚构身份无限期居留美国。详见Galo-Garcia诉INS，86 F.3d 916, 918（第九巡回2026年）（解释委员会和移民法官无权授予INA或法规未提供之救济）；参见Medina案，19 I&N Dec. 734, 746（BIA 1988）（同）。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "969f4508a4c37fe6b9cf1408d3fc2cd209c784f559fc07752d3669af3b0edcc8",
+      "chineseText": "“期望DHS发起的程序能够得到结论。”参见B-N-K-案，29 I&N Dec. 99。鉴于受诉人遣返程序行政关闭已逾13年，基于受诉人拟向USCIS申请临时非法逗留豁免，继续行政关闭不合适。因此，有充分理由使此案继续审理并于实体上结案。参见同案第100页。考虑移民程序终结性之重大公共利益，我们认为应予以重新排期。参见W-Y-U-案，27 I&N Dec. 19。为此，我们将撤销移民法官拒绝DHS重新排期动议的决定。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "206da2568231438dffe1b7037a37e41fd79ee136991d45edd1e5a2464b1b82af",
+      "chineseText": "注释2：受诉人未显示符合INA第245(i)条8 U.S.C. § 1255(i)（2024年）之身份调整资格。\n第517页"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "b72d83784f0309fe6630ce766451928aea50fb2eb23f3a575444b7be601994a8",
+      "chineseText": "引用自29 I&N Dec. 514（BIA 2026）临时决定第4173号"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a3b2cd6dd1033b2f964b4908a43629af1a57c8ae874a283b9115abe7d22ffff9",
+      "chineseText": "支持DHS重新排期的上诉。遣返程序将重新排期，案件记录发回进一步处理。发回时不就案件最终结果发表任何意见。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "45aaa2a6d81cbca4ebd021aa03d4515a6011a5f2c9eae5b23692eb6f1352d80d",
+      "chineseText": "裁定：支持DHS上诉，撤销移民法官2025年10月6日决定，遣返程序重新排期。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "fe813e20b3833818194fb41e4868dd075b012d7b3d5d84fd67168c539382c775",
+      "chineseText": "后续裁定：案件记录发回移民法庭，按本意见续行程序。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "55acbb85d95d506061150c5fc4ce57de5b59b9043d6aaf330e916779b9301883",
+      "chineseText": "第518页"
+    }
+  ]
+}

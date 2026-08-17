@@ -29,5 +29,9 @@
 - 任何位置能力不得把“登录/注册”错误等同于获得GPS权限。
 - 不强制采集精确家庭地址。
 
+## 当前执行状态
+- JOBS-R2-N1：PASS。代码证据：`supabase/migrations/20260817011000_jobs_r2_node1_search_location.sql`；审计：`scripts/audit-jobs-r2-node1.mjs`；GitHub Actions `JOBS-R2 Node 1` run 32044831791 = SUCCESS，并输出 `JOBS-R2-N1 PASS`。统一账号级 `job_search_locations` 支持 current_location/fixed_location/zip/region/all_us；设备GPS必须有授权时间戳；IP粗定位不得保存精确坐标；RLS仅允许本人读写。
+- JOBS-R2-N2：VERIFYING。代码已进入 `jobs/search.html`、`jobs/search.js`、`supabase/migrations/20260817012000_jobs_r2_node2_pc_header.sql`；等待严格审计通过后才可标记PASS。
+
 ## 验收推进规则
 开发可并行，PASS严格N1→N10串行。当前节点FAIL时主动诊断、做最小必要修复并重验；PASS后自动进入下一节点，不等待用户确认。真实外部BLOCKED才通知用户，并明确用户需要执行的最小动作。

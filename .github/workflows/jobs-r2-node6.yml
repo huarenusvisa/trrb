@@ -1,0 +1,24 @@
+name: JOBS-R2 Node 6
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'jobs/search.js'
+      - 'jobs/search-r2-geo.js'
+      - 'scripts/audit-jobs-r2-node6.mjs'
+      - 'docs/JOBS-R2-LOCATION-AWARE-JOB-DISCOVERY-UX.md'
+      - '.github/workflows/jobs-r2-node6.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Audit JOBS-R2 N6 compact PC list
+        run: node scripts/audit-jobs-r2-node6.mjs

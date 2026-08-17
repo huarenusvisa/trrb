@@ -1,0 +1,24 @@
+{
+  "round": "LEGAL-R1",
+  "currentNode": 2,
+  "status": "ACTIVE",
+  "nodes": {
+    "N1": {
+      "status": "PASS",
+      "name": "官方法律正文可获取性、来源版本与 recordId 全量盘点",
+      "evidenceRunId": 32001176378,
+      "datasetVersion": "371f934b1b3148324fd388d9f8475ba26d89b956201a92d096ee6dd8ad58b5f3",
+      "inventoryVersion": "85c2fd60a7f5b4f2a3f8700b05e57b606873bb71a7036c4c24c5f9571430c1d2",
+      "totalLegalRecords": 597,
+      "recordsWithOfficialSource": 597,
+      "fullTextCandidateCount": 561,
+      "pdfCandidates": 561,
+      "htmlCandidates": 0,
+      "duplicateRecordIds": 0
+    },
+    "N2": {
+      "status": "IN_PROGRESS",
+      "name": "官方 PDF/HTML 正文提取与原文结构完整性治理"
+    }
+  }
+}

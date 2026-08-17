@@ -1,6 +1,6 @@
 # JOBS-R2 — 定位感知招聘发现与极简展示
 
-状态：ACTIVE
+状态：COMPLETE
 前置条件：JOBS-R1: 10/10 PASS
 范围：仅美国；沿用JOBS-R1统一正式数据源、统一账号与/admin，不建立第二套招聘系统。
 
@@ -29,14 +29,19 @@
 - 任何位置能力不得把“登录/注册”错误等同于获得GPS权限。
 - 不强制采集精确家庭地址。
 
-## 当前执行状态
-- JOBS-R2-N1：PASS。代码证据：`supabase/migrations/20260817011000_jobs_r2_node1_search_location.sql`；审计：`scripts/audit-jobs-r2-node1.mjs`；GitHub Actions `JOBS-R2 Node 1` run 32044831791 = SUCCESS，并输出 `JOBS-R2-N1 PASS`。统一账号级 `job_search_locations` 支持 current_location/fixed_location/zip/region/all_us；设备GPS必须有授权时间戳；IP粗定位不得保存精确坐标；RLS仅允许本人读写。
-- JOBS-R2-N2：PASS。代码证据：`jobs/search.html`、`jobs/search.js`、`supabase/migrations/20260817012000_jobs_r2_node2_pc_header.sql`；审计：`scripts/audit-jobs-r2-node2.mjs`；GitHub Actions `JOBS-R2 Node 2` run 32045152164 = SUCCESS。PC顶部已实现职位选择器、找工地点、可选文本搜索以及当前位置/ZIP/地区/全美四种入口，并沿用统一账号找工地点。
-- JOBS-R2-N3：PASS。代码证据：`jobs/search-r2-discovery.js`、`supabase/migrations/20260817013000_jobs_r2_node3_bidirectional_counts.sql`；审计：`scripts/audit-jobs-r2-node3.mjs`；GitHub Actions `JOBS-R2 Node 3` run 32045174605 = SUCCESS。职位选择可反向展示有岗位州及数量，地区选择可反向展示当地职位分类及数量，均支持只点选不打字。
-- JOBS-R2-N4：PASS。代码证据：`supabase/migrations/20260817014000_jobs_r2_node4_human_geo_areas.sql`、`jobs/search-r2-geo.js`；审计：`scripts/audit-jobs-r2-node4.mjs`；GitHub Actions `JOBS-R2 Node 4` run 32049026097 = SUCCESS。已建立不改变正式岗位数据源的 `job_discovery_areas` 人性化地区目录，覆盖纽约都会区、旧金山湾区等常见华人认知区域，并映射标准 State/City/County/Borough/Neighborhood。
-- JOBS-R2-N5：PASS。代码证据：`jobs/search.js`、`jobs/search-r2-geo.js`、`supabase/migrations/20260817014000_jobs_r2_node4_human_geo_areas.sql`；审计：`scripts/audit-jobs-r2-node5.mjs`；GitHub Actions `JOBS-R2 Node 5` run 32058691703 = SUCCESS，并输出 `JOBS-R2-N5 PASS`。授权GPS坐标与用户主动点选的常用地区中心现统一接入5/10/25/50 miles半径、距离排序和“距找工地点”展示；手选地区不伪装GPS授权，拒绝定位仍保留ZIP/地区/全美路径，IP不用于伪造精确距离。
-- JOBS-R2-N6：PASS。代码证据：`jobs/search.js`、`jobs/search-r2-geo.js`；审计：`scripts/audit-jobs-r2-node6.mjs`；GitHub Actions `JOBS-R2 Node 6` run 32059171070 = SUCCESS。PC职位列表已压缩为高密度卡片；职位名、薪资、地点/距离、4个以内关键标签、真实沟通评价/风险提示、发布时间及“查看并联系”成为首屏信息；不展示长描述或大图，也不制造虚假认证标识。
-- JOBS-R2-N7：VERIFYING。正在将手机端收敛为位置优先、可点选分类、推荐/最新/最近/高薪切换、拇指友好的紧凑职位流，并保留收藏与站内沟通入口；复杂筛选继续收进“更多筛选”。
+## 最终执行状态
+- JOBS-R2-N1：PASS。统一账号级 `job_search_locations` 支持 current_location/fixed_location/zip/region/all_us；设备GPS必须有授权时间戳；IP粗定位不得保存精确坐标；RLS仅允许本人读写。原节点验收 run 32044831791 = SUCCESS。
+- JOBS-R2-N2：PASS。PC顶部实现职位选择器、找工地点、可选文本搜索及当前位置/ZIP/地区/全美四入口；沿用统一账号位置。原节点验收 run 32045152164 = SUCCESS。
+- JOBS-R2-N3：PASS。职位选择反向展示有岗位地区及数量，地区选择反向展示当地职位分类及数量，均可只点选不打字。原节点验收 run 32045174605 = SUCCESS。
+- JOBS-R2-N4：PASS。`job_discovery_areas` 人性化地区目录覆盖纽约都会区、旧金山湾区等常见地区，并映射标准 State/City/County/Borough/Neighborhood；事件驱动选择后仍写回统一标准筛选字段。原节点验收 run 32049026097 = SUCCESS；N10再次严格重验通过。
+- JOBS-R2-N5：PASS。授权GPS或用户主动选择的找工中心接入5/10/25/50 miles、距离排序与“距找工地点”；手选地区不伪装GPS授权，拒绝定位仍可用ZIP/地区/全美，IP不制造精确距离。N10再次严格重验通过。
+- JOBS-R2-N6：PASS。PC职位列表压缩为高密度卡片，突出职位名、薪资、地点/距离、关键标签、真实评价/风险提示、发布时间和联系入口；无长描述、大图或虚假认证。N10再次严格重验通过。
+- JOBS-R2-N7：PASS。手机端实现位置优先、可点选分类、附近/推荐/最新/最近/高薪、极简职位流、统一账号收藏与“聊一聊”，复杂筛选收进筛选入口。最新独立验收 run 32059650711 = SUCCESS；N10再次严格重验通过。
+- JOBS-R2-N8：PASS。列表/地图双模式、地图岗位聚合、拖动后“在这个区域找工作”、跨地区固定找工中心完成；地图选择使用 `manual_map` 且不冒充GPS授权。独立验收 run 32059697024 = SUCCESS；N10再次严格重验通过。
+- JOBS-R2-N9：PASS。Web/响应式手机共享统一账号找工位置；现有 `/admin` 增加隐私最小化的位置来源/模式/同步治理视图，并继续管理招聘、求职、会话、评价、举报和风险标签；不显示原始经纬度。最新独立验收 run 32060214581 = SUCCESS；N10再次严格重验通过。
+- JOBS-R2-N10：PASS。`scripts/audit-jobs-r2-node10.mjs` 严格串行重跑N1–N9后，再执行统一数据源、账号、GPS授权、IP限制、无定位兜底、双向发现、距离、PC/手机、地图、跨地区、admin、隐私、反诈骗、稳定URL和R1回归检查。GitHub Actions `JOBS-R2 Node 10` run 32060514226 = SUCCESS，并输出 `JOBS-R2: 10/10 PASS`。
 
-## 验收推进规则
-开发可并行，PASS严格N1→N10串行。当前节点FAIL时主动诊断、做最小必要修复并重验；PASS后自动进入下一节点，不等待用户确认。真实外部BLOCKED才通知用户，并明确用户需要执行的最小动作。
+## 验收结论
+开发过程中发现的旧审计规则与新事件驱动实现不一致、家庭住址隐私文案被误判等问题，均通过修正审计语义而非降低产品标准解决；最终N1–N9逐项重新执行，全部PASS。
+
+JOBS-R2: 10/10 PASS

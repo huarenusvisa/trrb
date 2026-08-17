@@ -1,6 +1,6 @@
 {
   "round": "LEGAL-R1",
-  "currentNode": 2,
+  "currentNode": 3,
   "status": "ACTIVE",
   "nodes": {
     "N1": {
@@ -17,8 +17,21 @@
       "duplicateRecordIds": 0
     },
     "N2": {
+      "status": "PASS",
+      "name": "官方 PDF/HTML 正文提取与原文结构完整性治理",
+      "evidenceRunId": 32021997039,
+      "datasetVersion": "c7085f58b3a2593170864b68f67a5905818ed44551716218f0566bd606c3b031",
+      "eligible": 596,
+      "extracted": 596,
+      "needsOcr": 0,
+      "failed": 0,
+      "recovered": 1,
+      "artifactId": 9285756682,
+      "artifactDigest": "sha256:8145aeb44269811e0c15c09cee6083d8ca35d96f7328541471c9015c83d455e3"
+    },
+    "N3": {
       "status": "IN_PROGRESS",
-      "name": "官方 PDF/HTML 正文提取与原文结构完整性治理"
+      "name": "官方正文逐段一比一中文全文翻译流水线"
     }
   }
 }

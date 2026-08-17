@@ -22,6 +22,12 @@ export type ArticlePage = {
   q?: string | null;
 };
 
+export type TrendingSearch = {
+  term: string;
+  category?: string;
+  score: number;
+};
+
 const API_BASE = 'https://trrb.net/.netlify/functions';
 
 async function readJson(response: Response) {
@@ -62,6 +68,18 @@ export async function fetchArticlePage(options: { category?: string; q?: string;
     has_more: Boolean(payload?.has_more),
     category: payload?.category || null,
     q: payload?.q || null
+  };
+}
+
+export async function fetchTrendingSearches(): Promise<{ items: TrendingSearch[]; source: string; generatedAt: string }> {
+  const response = await fetch(`${API_BASE}/public-app-trending-searches`, {
+    headers: { Accept: 'application/json' }
+  });
+  const payload = await readJson(response);
+  return {
+    items: Array.isArray(payload?.items) ? payload.items : [],
+    source: String(payload?.source || ''),
+    generatedAt: String(payload?.generated_at || '')
   };
 }
 

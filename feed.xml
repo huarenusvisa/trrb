@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 17 Aug 2026 16:48:14 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 17:05:43 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>纽瓦克ICE拘捕涉嫌家庭暴力的无证移民</title>
+      <link>https://trrb.net/ice/ice-7ea391fc33bcef3e37990382441f7b934685f10e</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-7ea391fc33bcef3e37990382441f7b934685f10e</guid>
+      <pubDate>Mon, 17 Aug 2026 17:05:43 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>新泽西纽瓦克ICE拘捕涉嫌家庭暴力等罪行的无证移民，正等待遣返程序。</description>
+      <enclosure url="https://pbs.twimg.com/media/HP7vu5oWUAAVEnQ.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>塔沟武校疑曝欺凌视频！学生遭跪地羞辱，浴室虐待画面引发关注</title>
       <link>https://trrb.net/hot/%E5%A1%94%E6%B2%9F%E6%AD%A6%E6%A0%A1%E7%96%91%E6%9B%9D%E6%AC%BA%E5%87%8C%E8%A7%86%E9%A2%91%E5%AD%A6%E7%94%9F%E9%81%AD%E8%B7%AA%E5%9C%B0%E7%BE%9E%E8%BE%B1%E6%B5%B4%E5%AE%A4%E8%99%90%E5%BE%85%E7%94%BB%E9%9D%A2%E5%BC%95%E5%8F%91%E5%85%B3%E6%B3%A8-msxgwlrd-30cc96</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>加州Ventura市BlendersintheGrass店内，ICE执法人员成功拘捕一名试图逃跑的女性。</description>
       <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2089079733720076289/img/yQ7k_5STXSPNzDSj.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>迈阿密ICE疑强行驱逐车辆司机</title>
-      <link>https://trrb.net/ice/ice-ba2b98d124a11c0b2cc55a512018815e7033ebf0</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-ba2b98d124a11c0b2cc55a512018815e7033ebf0</guid>
-      <pubDate>Sun, 16 Aug 2026 21:31:14 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>迈阿密一名男子被疑似ICE人员强行拖出车辆，乘客被留在车内，事件有待调查。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2089100225461768192/img/_M36-_vIWgMWsO4I.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

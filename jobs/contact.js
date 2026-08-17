@@ -1,0 +1,20 @@
+(async function(){
+  const qs=new URLSearchParams(location.search); const listingId=qs.get('id');
+  const state=document.getElementById('contact-state'), card=document.getElementById('contact-card'), actions=document.getElementById('contact-actions'), messages=document.getElementById('messages');
+  if(!listingId||typeof supabaseClient==='undefined'){ state.textContent='岗位参数无效。'; return; }
+  const {data:{user}}=await supabaseClient.auth.getUser();
+  const {data:listing,error}=await supabaseClient.from('job_listings').select('id,employer_user_id,title,state_code,city,contact_method,contact_value,contact_public,status').eq('id',listingId).single();
+  if(error||!listing){state.textContent='岗位不存在或不可访问。';return;}
+  document.getElementById('contact-title').textContent=listing.title; document.getElementById('contact-location').textContent=`${listing.state_code} ${listing.city}`; card.hidden=false; state.textContent=user?'请选择联系方式。':'登录后可使用站内联系；公开电话/Email仍可直接联系。';
+  const methods=[];
+  if(user) methods.push(['platform','站内联系']);
+  if(listing.contact_public&&listing.contact_value){ if(listing.contact_method==='phone'){methods.push(['phone','拨打电话'],['sms','发送短信']);} if(listing.contact_method==='email') methods.push(['email','发送Email']); }
+  actions.innerHTML=methods.map(([m,t])=>`<button type="button" data-method="${m}">${t}</button>`).join(' ');
+  let conversation=null;
+  async function record(method){ if(!user) return; await supabaseClient.from('job_contact_events').insert({listing_id:listing.id,actor_user_id:user.id,employer_user_id:listing.employer_user_id,method,conversation_id:conversation?.id||null}); }
+  async function ensureConversation(){ if(!user) throw new Error('请先登录'); const found=await supabaseClient.from('job_conversations').select('id,status').eq('listing_id',listing.id).eq('employer_user_id',listing.employer_user_id).eq('seeker_user_id',user.id).maybeSingle(); if(found.data){conversation=found.data;return conversation;} const created=await supabaseClient.from('job_conversations').insert({listing_id:listing.id,employer_user_id:listing.employer_user_id,seeker_user_id:user.id}).select('id,status').single(); if(created.error) throw created.error; conversation=created.data; await record('platform'); return conversation; }
+  async function loadMessages(){ if(!user)return; try{await ensureConversation(); const r=await supabaseClient.from('job_messages').select('id,sender_user_id,body,created_at').eq('conversation_id',conversation.id).order('created_at'); if(r.error)throw r.error; messages.innerHTML=(r.data||[]).map(x=>`<p><b>${x.sender_user_id===user.id?'我':'对方'}：</b>${String(x.body).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}<br><small>${new Date(x.created_at).toLocaleString()}</small></p>`).join('')||'<p>还没有消息。</p>'; }catch(e){messages.textContent=e.message||'消息读取失败';}}
+  actions.addEventListener('click',async e=>{const b=e.target.closest('[data-method]'); if(!b)return; const m=b.dataset.method; if(m==='platform'){await loadMessages(); document.getElementById('message-body').focus(); return;} if(!listing.contact_value)return; if(user)await record(m); if(m==='phone')location.href=`tel:${listing.contact_value}`; if(m==='sms')location.href=`sms:${listing.contact_value}`; if(m==='email')location.href=`mailto:${listing.contact_value}`;});
+  document.getElementById('message-form').addEventListener('submit',async e=>{e.preventDefault(); if(!user){alert('请先登录');return;} try{await ensureConversation(); const body=document.getElementById('message-body').value.trim(); if(!body)return; const r=await supabaseClient.from('job_messages').insert({conversation_id:conversation.id,sender_user_id:user.id,body}); if(r.error)throw r.error; document.getElementById('message-body').value=''; await loadMessages();}catch(err){alert(err.message||'发送失败');}});
+  if(user) loadMessages();
+})();

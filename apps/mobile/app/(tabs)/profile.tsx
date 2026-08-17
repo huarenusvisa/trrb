@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import type { Session } from '@supabase/supabase-js';
 import { isAuthConfigured, supabase } from '../../src/auth/supabase';
@@ -51,7 +51,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View style={styles.page}>
+    <ScrollView style={styles.page} contentContainerStyle={styles.pageContent}>
       <Text style={styles.h1}>我的</Text>
       {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
         <Text style={styles.sub}>已登录 · {session.user.email || 'TRRB用户'}</Text>
@@ -81,8 +81,8 @@ export default function ProfileScreen() {
       </View>
       <Pressable style={styles.item}><Text style={styles.title}>推送设置</Text><Text style={styles.meta}>重大新闻 · ICE · 移民 · 判例新规（下一阶段接入）</Text></Pressable>
       <Pressable style={styles.item} onPress={() => Linking.openURL('https://trrb.net')}><Text style={styles.title}>打开 trrb.net</Text><Text style={styles.meta}>访问唐人日报网站</Text></Pressable>
-    </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({page:{flex:1,backgroundColor:'#f5f6f8',padding:16,paddingTop:58},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},loader:{marginVertical:20},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},item:{backgroundColor:'#fff',padding:18,borderRadius:14,marginBottom:12},title:{fontSize:18,fontWeight:'800',color:'#101828'},meta:{color:'#98a2b3',marginTop:6},fontRow:{flexDirection:'row',gap:8,marginTop:14},fontOption:{flex:1,borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:10,alignItems:'center',backgroundColor:'#fff'},fontOptionActive:{backgroundColor:'#c8211e',borderColor:'#c8211e'},fontOptionText:{fontWeight:'800',color:'#475467'},fontOptionTextActive:{color:'#fff'},login:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',marginBottom:12},signOutText:{color:'#475467',fontWeight:'800'}});
+const styles = StyleSheet.create({page:{flex:1,backgroundColor:'#f5f6f8'},pageContent:{padding:16,paddingTop:58,paddingBottom:40},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},loader:{marginVertical:20},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},item:{backgroundColor:'#fff',padding:18,borderRadius:14,marginBottom:12},title:{fontSize:18,fontWeight:'800',color:'#101828'},meta:{color:'#98a2b3',marginTop:6},fontRow:{flexDirection:'row',gap:8,marginTop:14},fontOption:{flex:1,borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:10,alignItems:'center',backgroundColor:'#fff'},fontOptionActive:{backgroundColor:'#c8211e',borderColor:'#c8211e'},fontOptionText:{fontWeight:'800',color:'#475467'},fontOptionTextActive:{color:'#fff'},login:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',marginBottom:12},signOutText:{color:'#475467',fontWeight:'800'}});

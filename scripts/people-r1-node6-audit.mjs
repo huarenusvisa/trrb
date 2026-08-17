@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const foundation=fs.readFileSync('supabase/migrations/20260817001500_people_r1_foundation.sql','utf8');
+const sql=fs.readFileSync('supabase/migrations/20260817142000_people_r1_n6_verification.sql','utf8');
+must(foundation.includes("verification_status text not null default 'unverified'"),'verification status foundation missing');
+for(const status of ['unverified','partially_verified','verified','self_verified','family_verified']) must(foundation.includes(status),`missing verification status ${status}`);
+must(foundation.includes('creator_type text not null'),'creator source must remain separately modeled');
+must(sql.includes('create table if not exists public.people_verification_events'),'verification audit history missing');
+must(sql.includes('evidence_source_id uuid references public.people_sources'),'verification must remain traceable to evidence');
+must(sql.includes("review_status = 'accepted'"),'verification must depend on separately accepted evidence');
+must(sql.includes("source_type = 'self'"),'self verification must require accepted self evidence');
+must(sql.includes("source_type = 'family'"),'family verification must require accepted family evidence');
+must(sql.includes('people_verification_evidence_guard'),'evidence guard trigger missing');
+must(sql.includes('people_verification_audit_log'),'verification status transitions must be audited');
+must(sql.includes('auth.uid()'),'reviewer identity should be captured when available');
+must(!sql.includes('creator_type =')&&!sql.includes('creator_user_id ='),'creator identity must never auto-grant verification');
+console.log('PEOPLE-R1-N6 PASS: creation source and verification are separated; verification states are evidence-backed and status changes are auditable.');

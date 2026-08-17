@@ -89,11 +89,12 @@
   }
 
   function scheduleCards(){ clearTimeout(decorateTimer); decorateTimer=setTimeout(decorateCards,140); }
-
-  document.addEventListener('DOMContentLoaded',()=>{
+  function init(){
     injectStyles(); ensureUI();
     const root=$('jobs-results'); if(root)new MutationObserver(scheduleCards).observe(root,{childList:true,subtree:true});
     root?.addEventListener('click',(e)=>{ const b=e.target.closest('[data-save-job]'); if(!b)return; e.preventDefault(); toggleSave(b.dataset.saveJob,b); });
     scheduleCards();
-  });
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
 })();

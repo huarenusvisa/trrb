@@ -44,6 +44,7 @@ jobs:
           let extracted = 0;
           let needsOcr = 0;
           let failed = 0;
+          const failures = [];
           for (const name of files) {
             const x = JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8'));
             if (!x.recordId || !x.datasetVersion || !x.sourceUrl) throw new Error(`missing audit binding: ${name}`);
@@ -56,14 +57,20 @@ jobs:
               if (x.segments.some((s, i) => !s.segmentId || s.order !== i + 1 || !s.text)) throw new Error(`bad segment structure: ${name}`);
             } else if (x.status === 'NEEDS_OCR') {
               needsOcr++;
+              failures.push({recordId:x.recordId,status:x.status,error:x.error});
             } else if (x.status === 'FAILED') {
               failed++;
+              failures.push({recordId:x.recordId,status:x.status,error:x.error});
             } else {
               throw new Error(`unknown extraction status: ${name}`);
             }
           }
-          console.log(JSON.stringify({audit:'LEGAL-R1-N2-FULL-COVERAGE', eligible:eligible.length, files:files.length, extracted, needsOcr, failed}, null, 2));
-          console.log('LEGAL-R1-N2 FULL EXTRACTION INVENTORY: PASS');
+          const audit = {audit:'LEGAL-R1-N2-FULL-COVERAGE', eligible:eligible.length, files:files.length, extracted, needsOcr, failed, failures};
+          console.log(JSON.stringify(audit, null, 2));
+          if (extracted !== eligible.length || needsOcr !== 0 || failed !== 0) {
+            throw new Error(`LEGAL-R1-N2 incomplete extraction: eligible=${eligible.length} extracted=${extracted} needsOcr=${needsOcr} failed=${failed}`);
+          }
+          console.log('LEGAL-R1-N2 FULL EXTRACTION: 100% PASS');
           NODE
       - name: Upload full extraction evidence
         if: always()

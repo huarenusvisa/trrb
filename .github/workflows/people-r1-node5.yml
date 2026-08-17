@@ -1,0 +1,20 @@
+name: PEOPLE-R1 Node 5 Acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'people/detail.html'
+      - 'people/detail.js'
+      - 'supabase/migrations/20260817080500_people_r1_n5_detail.sql'
+      - 'scripts/people-r1-node5-audit.mjs'
+      - '.github/workflows/people-r1-node5.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/people-r1-node5-audit.mjs

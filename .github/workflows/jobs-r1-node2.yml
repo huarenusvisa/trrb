@@ -1,0 +1,27 @@
+name: JOBS-R1 Node 2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'jobs-home.js'
+      - 'jobs/**'
+      - 'admin/index.html'
+      - 'admin/jobs-manager.js'
+      - 'supabase/migrations/20260817002000_jobs_r1_node2_home_admin_migration.sql'
+      - 'scripts/audit-jobs-r1-node2.mjs'
+      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
+      - '.github/workflows/jobs-r1-node2.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Strict N2 acceptance
+        run: node scripts/audit-jobs-r1-node2.mjs

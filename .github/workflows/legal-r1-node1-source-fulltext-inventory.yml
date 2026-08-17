@@ -1,0 +1,56 @@
+name: LEGAL-R1 N1 - Official Source Full Text Inventory
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'scripts/legal-r1-node1-source-fulltext-inventory-audit.mjs'
+      - 'docs/LEGAL-R1-FULL-TEXT-CHINESE-TRANSLATION-AND-DETAIL-UX.md'
+      - '.github/workflows/legal-r1-node1-source-fulltext-inventory.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  node1-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate audit script
+        run: node --check scripts/legal-r1-node1-source-fulltext-inventory-audit.mjs
+      - name: Audit repository inventory
+        run: node scripts/legal-r1-node1-source-fulltext-inventory-audit.mjs data/legal/unified-legal-authorities-latest.json /tmp/legal-r1-n1-repo.json
+      - name: Audit deployed production inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp=$(date +%s)
+          curl -fsSL --max-time 60 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?legalr1n1=$stamp" -o /tmp/legal-production.json
+          node scripts/legal-r1-node1-source-fulltext-inventory-audit.mjs /tmp/legal-production.json /tmp/legal-r1-n1-production.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const repo = JSON.parse(fs.readFileSync('/tmp/legal-r1-n1-repo.json','utf8'));
+          const prod = JSON.parse(fs.readFileSync('/tmp/legal-r1-n1-production.json','utf8'));
+          const same = repo.datasetVersion === prod.datasetVersion &&
+            repo.totalLegalRecords === prod.totalLegalRecords &&
+            repo.inventoryVersion === prod.inventoryVersion;
+          if (!same) {
+            console.error('LEGAL-R1-N1 FAIL: production inventory/version does not match main');
+            console.error(JSON.stringify({repo, prod}, null, 2));
+            process.exit(1);
+          }
+          console.log(`LEGAL-R1-N1 PRODUCTION: PASS (${prod.totalLegalRecords} records)`);
+          NODE
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: legal-r1-node1-inventory-evidence
+          path: |
+            /tmp/legal-r1-n1-repo.json
+            /tmp/legal-r1-n1-production.json

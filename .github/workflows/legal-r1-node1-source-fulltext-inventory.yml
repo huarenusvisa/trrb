@@ -1,5 +1,7 @@
 name: LEGAL-R1 N1 - Official Source Full Text Inventory
 
+# Scheduled revalidation is intentional: legal-sync commits created by GitHub Actions
+# do not recursively trigger downstream push workflows when using GITHUB_TOKEN.
 on:
   workflow_dispatch:
   schedule:

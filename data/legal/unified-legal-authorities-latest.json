@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 418,
+    "US_CIRCUIT": 421,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 614,
+  "count": 617,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2833,6 +2833,21 @@
       "sourceKey": "CIRCUIT:ca1:021959b64b13c438"
     },
     {
+      "id": "27f97d1f6c4aedd76e242f57",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1429 Kyick Holdings, LLC v. Bessent",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1429P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1429P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:052583a61b2cbfc9"
+    },
+    {
       "id": "954a604a63103c49925317c1",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3011,6 +3026,21 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2054P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2054P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:7b144c8c563690e9"
+    },
+    {
+      "id": "5cd9323d03436861545115ca",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-1805P.01A",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:80ae79879767775e"
     },
     {
       "id": "742ec4be70d431a94118222c",
@@ -3208,6 +3238,21 @@
       "sourceKey": "CIRCUIT:ca1:ce9f52b42ab435ac"
     },
     {
+      "id": "fa97d66b880716c600ac04d8",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1831 Giguere v. Tardif",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1831P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1831P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:d8b2a68367d629c7"
+    },
+    {
       "id": "56762ef5dedc53fe4b935b16",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3311,21 +3356,6 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:f970d442dfa65741"
-    },
-    {
-      "id": "522f4974f976fdad7abf5a18",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "24-1467P.01A",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:fabb9a679d55586f"
     },
     {
       "id": "e54c78e7d9d098f0cf823b17",
@@ -7421,6 +7451,21 @@
       "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-12/C:24-3296:J:Scudder:aut:T:fnOp:N:3589803:S:0",
       "officialPdfUrl": null,
       "sourceKey": "CIRCUIT:ca7:29e52ade897f1a9f"
+    },
+    {
+      "id": "d37e57f2c198a25f43c4f8e6",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Final Opinion",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-17/C:24-1431:J:Maldonado:aut:T:fnOp:N:3592430:S:0",
+      "officialPdfUrl": null,
+      "sourceKey": "CIRCUIT:ca7:357983971c3692d0"
     },
     {
       "id": "5ec556bcd225ad9aaaa0a38d",

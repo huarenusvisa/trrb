@@ -1,0 +1,25 @@
+name: JOBS-R1 Public Admin Closure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'jobs/**'
+      - 'jobs*.html'
+      - 'jobs*.js'
+      - 'admin/**'
+      - 'scripts/audit-jobs-r1-public-admin-closure.mjs'
+      - '.github/workflows/jobs-r1-public-admin-closure.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Enforce public jobs and admin management closure
+        run: node scripts/audit-jobs-r1-public-admin-closure.mjs

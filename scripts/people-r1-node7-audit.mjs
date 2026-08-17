@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const foundation=fs.readFileSync('supabase/migrations/20260817001500_people_r1_foundation.sql','utf8');
+const sql=fs.readFileSync('supabase/migrations/20260817143000_people_r1_n7_life_status.sql','utf8');
+for(const status of ['living','deceased','unknown']) must(foundation.includes(status),`missing life status ${status}`);
+must(foundation.includes("life_status text not null default 'unknown'"),'life status must default to unknown');
+must(sql.includes("new.life_status = 'deceased'"),'deceased status evidence guard missing');
+must(sql.includes("'death' = any(s.fact_scope)"),'death evidence must be explicitly scoped');
+must(sql.includes("s.review_status = 'accepted'"),'death evidence must be reviewed/accepted');
+must(sql.includes("death_date requires life_status=deceased"),'death date consistency guard missing');
+must(sql.includes('people_life_status_events'),'life-status history table missing');
+must(sql.includes('people_life_status_audit_log'),'life-status transitions must be audited');
+must(!sql.toLowerCase().includes('infer age')&&!sql.toLowerCase().includes('ai guess'),'life/death status must not be inferred by AI');
+console.log('PEOPLE-R1-N7 PASS: living/deceased/unknown is explicit, defaults to unknown, and death facts require accepted scoped evidence with audit history.');

@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 17 Aug 2026 07:29:48 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 08:03:02 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>越战剧本再现？金里奇警告伊朗复制北越策略，豪赌中期选举阻击特朗普</title>
+      <link>https://trrb.net/trump/%E8%B6%8A%E6%88%98%E5%89%A7%E6%9C%AC%E5%86%8D%E7%8E%B0%E9%87%91%E9%87%8C%E5%A5%87%E8%AD%A6%E5%91%8A%E4%BC%8A%E6%9C%97%E5%A4%8D%E5%88%B6%E5%8C%97%E8%B6%8A%E7%AD%96%E7%95%A5%E8%B1%AA%E8%B5%8C%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE%E9%98%BB%E5%87%BB%E7%89%B9%E6%9C%97%E6%99%AE-mswy576y-c04653</link>
+      <guid isPermaLink="true">https://trrb.net/trump/%E8%B6%8A%E6%88%98%E5%89%A7%E6%9C%AC%E5%86%8D%E7%8E%B0%E9%87%91%E9%87%8C%E5%A5%87%E8%AD%A6%E5%91%8A%E4%BC%8A%E6%9C%97%E5%A4%8D%E5%88%B6%E5%8C%97%E8%B6%8A%E7%AD%96%E7%95%A5%E8%B1%AA%E8%B5%8C%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE%E9%98%BB%E5%87%BB%E7%89%B9%E6%9C%97%E6%99%AE-mswy576y-c04653</guid>
+      <pubDate>Mon, 17 Aug 2026 08:03:02 GMT</pubDate>
+      <category>美国时政</category>
+      <description>唐人日报 8 月 17日讯：美国前众议院议长纽特·金里奇周日表示，伊朗正在试图消耗美国公众对战争的支持，并押注民主党在11月中期选举中重新控制国会，从政治层面阻碍总统唐纳德·特朗普实现军事目标。</description>
+      <enclosure url="https://images.openai.com/static-rsc-4/MJLVX2PUt28w6hYf89U2di-KXVFXfX1PqAdD4uQg0mhxWLjK7a_TtrFCCMrEYKB42gefy9bm1Ss4lTGwgF86260pk39zMZeK-DXsyvJfRzPs1YEln8vZ8MBJ9c9WJPjSSZeVul-HbJVa32LF2wKmyYQ6nmNMTY2Hwq5HiDXfSdbFt8cgDU_O2bwHgwuXRf5x?purpose=fullsize" type="image/jpeg" />
+    </item>
     <item>
       <title>“别让灾民买单！”纽森野火责任改革遭围攻，多方警告成本转嫁或推高保险压力</title>
       <link>https://trrb.net/us-politics/%E5%88%AB%E8%AE%A9%E7%81%BE%E6%B0%91%E4%B9%B0%E5%8D%95%E7%BA%BD%E6%A3%AE%E9%87%8E%E7%81%AB%E8%B4%A3%E4%BB%BB%E6%94%B9%E9%9D%A9%E9%81%AD%E5%9B%B4%E6%94%BB%E5%A4%9A%E6%96%B9%E8%AD%A6%E5%91%8A%E6%88%90%E6%9C%AC%E8%BD%AC%E5%AB%81%E6%88%96%E6%8E%A8%E9%AB%98%E4%BF%9D%E9%99%A9%E5%8E%8B%E5%8A%9B-mswwygos-4dc567</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>马萨诸塞联邦法院解除对索马里TPS持有者诉讼的暂停令，特朗普政府得以启动遣返程序。</description>
       <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-14/50395273-e696-49db-a30a-ffeadd5cf1a1-e7c4adf7-0ebf-44c6-b7d8-523e4ca6beb4.webp" type="image/webp" />
-    </item>
-    <item>
-      <title>蒙面男子暴力踩踏视频流出 ICE未证实有特工涉案</title>
-      <link>https://trrb.net/ice/ice-0ce082687cef64ab5ffcf5d25b0bce723a9bc3eb</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-0ce082687cef64ab5ffcf5d25b0bce723a9bc3eb</guid>
-      <pubDate>Fri, 14 Aug 2026 23:32:08 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>一账号发布蒙面男子暴力踩踏视频，暗示与ICE有关，官方未确认涉案信息。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088355435032260608/img/wxPVsuO8fiOHZv20.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

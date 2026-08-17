@@ -3,22 +3,26 @@ import { ActivityIndicator, Alert, Linking, Pressable, StyleSheet, Text, View } 
 import { router } from 'expo-router';
 import type { Session } from '@supabase/supabase-js';
 import { isAuthConfigured, supabase } from '../../src/auth/supabase';
+import { unreadNotificationCount } from '../../src/community/notifications';
 
 export default function ProfileScreen() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [unread, setUnread] = useState(0);
 
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data }) => {
+    supabase.auth.getSession().then(async ({ data }) => {
       if (mounted) {
         setSession(data.session);
         setLoading(false);
+        if (data.session) setUnread(await unreadNotificationCount().catch(() => 0));
       }
     });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
       setSession(nextSession);
       setLoading(false);
+      setUnread(nextSession ? await unreadNotificationCount().catch(() => 0) : 0);
     });
     return () => {
       mounted = false;
@@ -36,6 +40,8 @@ export default function ProfileScreen() {
       <Text style={styles.h1}>我的</Text>
       {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
         <Text style={styles.sub}>已登录 · {session.user.email || 'TRRB用户'}</Text>
+        <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>消息中心{unread ? ` · ${unread}条未读` : ''}</Text><Text style={styles.meta}>回复、点赞、关注与系统通知</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>我的评论</Text><Text style={styles.meta}>查看评论状态并返回对应新闻</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>查看新闻收藏；云端同步将在本批后续节点接入</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>最近阅读的新闻，最多保存100条</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>修改昵称、默认头像与公开简介</Text></Pressable>

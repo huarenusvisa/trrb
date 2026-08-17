@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 418,
+    "US_CIRCUIT": 419,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 614,
+  "count": 615,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -3013,6 +3013,21 @@
       "sourceKey": "CIRCUIT:ca1:7b144c8c563690e9"
     },
     {
+      "id": "5cd9323d03436861545115ca",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-1805P.01A",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:80ae79879767775e"
+    },
+    {
       "id": "742ec4be70d431a94118222c",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3943,21 +3958,6 @@
       "sourceKey": "CIRCUIT:ca11:7eb9888263941752"
     },
     {
-      "id": "5008bce20da2fd33ce4b633b",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "USA v. William Michael Spearman",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410300.pdf",
-      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410300.pdf",
-      "sourceKey": "CIRCUIT:ca11:84ae7ac05881ef20"
-    },
-    {
       "id": "e0b13df944c453f5d1d26d9e",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4061,6 +4061,21 @@
       "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510692.pdf",
       "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510692.pdf",
       "sourceKey": "CIRCUIT:ca11:a2f4ceb6820e7f6d"
+    },
+    {
+      "id": "833360f2fa8a68dc341d33bf",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Blake Warner v. Hillsborough County Clerk of Courts",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410748.pdf",
+      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410748.pdf",
+      "sourceKey": "CIRCUIT:ca11:aceda2a426a6bc0e"
     },
     {
       "id": "4968862075d7cc232e4eb62c",

@@ -1,0 +1,58 @@
+name: LEGAL-R1 N2 - Official Source Extraction
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/legal-r1-node2-extract-official-source.mjs'
+      - '.github/workflows/legal-r1-node2-source-extraction.yml'
+      - 'docs/LEGAL-R1-FULL-TEXT-CHINESE-TRANSLATION-AND-DETAIL-UX.md'
+
+permissions:
+  contents: read
+
+jobs:
+  extraction-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate extractor syntax
+        run: node --check scripts/legal-r1-node2-extract-official-source.mjs
+      - name: Install PDF text-layer utility
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends poppler-utils
+      - name: Extract representative official PDFs
+        run: node scripts/legal-r1-node2-extract-official-source.mjs --limit 3 --output /tmp/legal-r1-n2-source | tee /tmp/legal-r1-n2-summary.json
+      - name: Verify extracted structure is non-empty and auditable
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=$(find /tmp/legal-r1-n2-source -type f -name '*.json' | wc -l)
+          test "$count" -eq 3
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const dir = '/tmp/legal-r1-n2-source';
+          for (const name of fs.readdirSync(dir)) {
+            const x = JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8'));
+            if (!x.recordId || !x.datasetVersion || !x.sourceUrl) throw new Error(`missing audit binding: ${name}`);
+            if (x.status === 'EXTRACTED') {
+              if (!Array.isArray(x.segments) || x.segments.length === 0) throw new Error(`empty extracted body: ${name}`);
+              if (x.segments.some((s, i) => !s.segmentId || s.order !== i + 1 || !s.text)) throw new Error(`bad segment structure: ${name}`);
+            } else if (!['NEEDS_OCR','FAILED'].includes(x.status)) {
+              throw new Error(`unknown extraction status: ${name}`);
+            }
+          }
+          console.log('LEGAL-R1-N2 EXTRACTION CONTRACT: PASS');
+          NODE
+      - name: Upload extraction evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: legal-r1-node2-extraction-evidence
+          path: |
+            /tmp/legal-r1-n2-source
+            /tmp/legal-r1-n2-summary.json

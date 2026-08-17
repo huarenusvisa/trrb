@@ -2,6 +2,8 @@ name: LEGAL-R1 N1 - Official Source Full Text Inventory
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '23 * * * *'
   push:
     branches: [main]
     paths:

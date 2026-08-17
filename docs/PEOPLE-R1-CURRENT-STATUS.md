@@ -35,10 +35,15 @@
   - Photo/story visibility is governed; sensitive identity/financial data is not exposed through the public detail surface.
   - Dedicated acceptance workflow `PEOPLE-R1 Node 5 Acceptance` completed SUCCESS on main for commit `93f22b996b9d77ec0d8686ce5a30ec457dcc73a2`.
 
-- PEOPLE-R1-N6 — RUNNING
-- PEOPLE-R1-N7 — WAITING
+- PEOPLE-R1-N6 — PASS
+  - Verification states remain separate from creator identity and creation source.
+  - `partially_verified` / `verified` require accepted evidence; `self_verified` and `family_verified` require accepted self/family evidence respectively.
+  - Every verification-status transition is written to an audit history with evidence linkage and reviewer identity when available.
+  - Dedicated acceptance workflow `PEOPLE-R1 Node 6 Acceptance` completed SUCCESS on main for run `32038494451` at commit `3f5199eefb566649ab16a72737303e11e101374b`.
+
+- PEOPLE-R1-N7 — RUNNING
 - PEOPLE-R1-N8 — WAITING
 - PEOPLE-R1-N9 — WAITING
 - PEOPLE-R1-N10 — WAITING
 
-PASS registration is strictly serial. Do not mark N6 PASS until its dedicated acceptance has succeeded on `main`.
+PASS registration is strictly serial. Do not mark N7 PASS until its dedicated acceptance has succeeded on `main`.

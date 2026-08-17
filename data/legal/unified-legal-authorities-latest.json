@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "b12f3a23550c831b795f9e0379e628063c17d8ca48e459f039f0369e339c0bd1",
+  "datasetVersion": "e1c17f1299f4d9a414b74934cb80118a85b03f537fdf6dd7ff8d574771ada517",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 410,
+    "US_CIRCUIT": 407,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 606,
+  "count": 603,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -4453,21 +4453,6 @@
       "sourceKey": "CIRCUIT:ca2:6b483d24fc51b496"
     },
     {
-      "id": "0b72b1be8d43f3574ae3b4eb",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "23-6259",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/23-6259_opn.pdf",
-      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/23-6259_opn.pdf",
-      "sourceKey": "CIRCUIT:ca2:6be0dd58780338fc"
-    },
-    {
       "id": "de33db9ff6d8159f8890b116",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4526,21 +4511,6 @@
       "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-81_complete_opn.pdf",
       "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-81_complete_opn.pdf",
       "sourceKey": "CIRCUIT:ca2:9514556ef80fbd4a"
-    },
-    {
-      "id": "ba127bd0ca22d102c57c62e6",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "25-1378",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1378_opn.pdf",
-      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1378_opn.pdf",
-      "sourceKey": "CIRCUIT:ca2:9e458923e53bf65d"
     },
     {
       "id": "120d2d965f820634e8390ae4",
@@ -4661,21 +4631,6 @@
       "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1760_opn.pdf",
       "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1760_opn.pdf",
       "sourceKey": "CIRCUIT:ca2:cc0015c7a6a1c2ed"
-    },
-    {
-      "id": "3140bf8b1bc602e082003394",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "24-916(L); 24-2594",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-916_24-2594_unsealed_opn.pdf",
-      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-916_24-2594_unsealed_opn.pdf",
-      "sourceKey": "CIRCUIT:ca2:d185811f98bb22c6"
     },
     {
       "id": "393aa5d6bafc857b5309fe60",

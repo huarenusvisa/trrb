@@ -1,0 +1,26 @@
+name: JOBS-R1 Node 9
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260817009000_jobs_r1_node9_lifecycle_seo_governance.sql'
+      - 'jobs/manage.html'
+      - 'jobs/manage.js'
+      - 'jobs/listing.html'
+      - 'jobs/listing.js'
+      - 'admin/jobs-lifecycle.html'
+      - 'admin/jobs-lifecycle.js'
+      - 'scripts/audit-jobs-r1-node9.mjs'
+      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
+      - '.github/workflows/jobs-r1-node9.yml'
+  workflow_dispatch:
+jobs:
+  strict-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: JOBS-R1 N9 strict audit
+        run: node scripts/audit-jobs-r1-node9.mjs

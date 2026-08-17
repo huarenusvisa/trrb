@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const spec = fs.readFileSync('docs/JOBS-R2-LOCATION-AWARE-JOB-DISCOVERY-UX.md','utf8');
 const html = fs.readFileSync('jobs/search.html','utf8');
 const js = fs.readFileSync('jobs/search-r2-geo.js','utf8');
+const search = fs.readFileSync('jobs/search.js','utf8');
 const sql = fs.readFileSync('supabase/migrations/20260817014000_jobs_r2_node4_human_geo_areas.sql','utf8');
 
 const checks = [
@@ -18,8 +19,9 @@ const checks = [
   ['catalog explicitly does not replace listings', /not a second job-listings data source/i.test(sql) && /canonical public\.job_listings/.test(sql)],
   ['region picker loads catalog', /from\('job_discovery_areas'\)/.test(js)],
   ['metro rows are headings and children are clickable', /row\.area_type === 'metro'/.test(js) && /data-human-area/.test(js)],
-  ['click maps back to standard form fields', /state: row\.state_code/.test(js) && /city: row\.city/.test(js) && /county: row\.county/.test(js) && /borough: row\.borough/.test(js) && /neighborhood: row\.neighborhood/.test(js)],
-  ['click-only flow submits without typing', /requestSubmit/.test(js)],
+  ['picker dispatches selected canonical area', /jobs:r2-search-area-selected/.test(js) && /detail: row/.test(js)],
+  ['click maps back to standard form fields', /state: row\.state_code/.test(search) && /city: row\.city/.test(search) && /county: row\.county/.test(search) && /borough: row\.borough/.test(search) && /neighborhood: row\.neighborhood/.test(search)],
+  ['click-only flow searches without typing', /addEventListener\('jobs:r2-search-area-selected'/.test(search) && /applySelectedArea\(event\.detail\)/.test(search) && /await search\(true\)/.test(search)],
   ['UI explicitly reduces admin-geography burden', /不用理解州 \/ County \/ Borough/.test(js)],
   ['N4 script loaded on search page', /search-r2-geo\.js/.test(html)],
   ['mobile area groups collapse to one column', /human-area-groups\{grid-template-columns:1fr\}/.test(html)],

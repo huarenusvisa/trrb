@@ -36,17 +36,34 @@ insert into public.job_discovery_areas
 values
 ('nyc-metro','纽约都会区','New York metropolitan area','metro',null,null,null,null,null,'nyc-metro',40.712800,-74.006000,50,10),
 ('flushing-ny','法拉盛','Flushing','neighborhood','NY','New York City','Queens County','Queens','Flushing','nyc-metro',40.767500,-73.833100,10,11),
-('long-island-ny','长岛','Long Island','region','NY',null,null,null,null,'nyc-metro',40.789100,-73.135000,50,12),
-('north-nj','新泽西北部','North New Jersey','region','NJ',null,null,null,null,'nyc-metro',40.850000,-74.120000,25,13),
-('la-metro','洛杉矶地区','Los Angeles metropolitan area','metro','CA','Los Angeles',null,null,null,'la-metro',34.052200,-118.243700,50,20),
-('sf-bay-area','旧金山湾区','San Francisco Bay Area','metro','CA',null,null,null,null,'sf-bay-area',37.774900,-122.419400,50,30),
-('boston-metro','波士顿地区','Boston metropolitan area','metro','MA','Boston',null,null,null,'boston-metro',42.360100,-71.058900,25,40),
-('chicago-metro','芝加哥地区','Chicago metropolitan area','metro','IL','Chicago',null,null,null,'chicago-metro',41.878100,-87.629800,50,50),
-('seattle-metro','西雅图地区','Seattle metropolitan area','metro','WA','Seattle',null,null,null,'seattle-metro',47.606200,-122.332100,25,60),
-('houston-metro','休斯顿地区','Houston metropolitan area','metro','TX','Houston',null,null,null,'houston-metro',29.760400,-95.369800,50,70),
-('dallas-metro','达拉斯地区','Dallas–Fort Worth metropolitan area','metro','TX',null,null,null,null,'dallas-metro',32.776700,-96.797000,50,80),
-('las-vegas-metro','拉斯维加斯地区','Las Vegas metropolitan area','metro','NV','Las Vegas',null,null,null,'las-vegas-metro',36.169900,-115.139800,25,90),
-('dc-metro','华盛顿都会区','Washington metropolitan area','metro',null,'Washington',null,null,null,'dc-metro',38.907200,-77.036900,50,100)
+('queens-ny','皇后区','Queens','borough','NY','New York City','Queens County','Queens',null,'nyc-metro',40.728200,-73.794900,25,12),
+('brooklyn-ny','布鲁克林','Brooklyn','borough','NY','New York City','Kings County','Brooklyn',null,'nyc-metro',40.678200,-73.944200,25,13),
+('manhattan-ny','曼哈顿','Manhattan','borough','NY','New York City','New York County','Manhattan',null,'nyc-metro',40.783100,-73.971200,10,14),
+('long-island-ny','长岛','Long Island','region','NY',null,null,null,null,'nyc-metro',40.789100,-73.135000,50,15),
+('north-nj','新泽西北部','North New Jersey','region','NJ',null,null,null,null,'nyc-metro',40.850000,-74.120000,25,16),
+('la-metro','洛杉矶地区','Los Angeles metropolitan area','metro','CA',null,null,null,null,'la-metro',34.052200,-118.243700,50,20),
+('los-angeles-ca','洛杉矶','Los Angeles','city','CA','Los Angeles',null,null,null,'la-metro',34.052200,-118.243700,25,21),
+('monterey-park-ca','蒙特利公园','Monterey Park','city','CA','Monterey Park',null,null,null,'la-metro',34.062500,-118.122800,10,22),
+('san-gabriel-ca','圣盖博','San Gabriel','city','CA','San Gabriel',null,null,null,'la-metro',34.096100,-118.105800,10,23),
+('sf-bay-area','旧金山湾区','San Francisco Bay Area','metro',null,null,null,null,null,'sf-bay-area',37.774900,-122.419400,50,30),
+('san-francisco-ca','旧金山','San Francisco','city','CA','San Francisco','San Francisco County',null,null,'sf-bay-area',37.774900,-122.419400,25,31),
+('oakland-ca','奥克兰','Oakland','city','CA','Oakland','Alameda County',null,null,'sf-bay-area',37.804400,-122.271200,25,32),
+('san-jose-ca','圣何塞','San Jose','city','CA','San Jose','Santa Clara County',null,null,'sf-bay-area',37.338200,-121.886300,25,33),
+('fremont-ca','费利蒙','Fremont','city','CA','Fremont','Alameda County',null,null,'sf-bay-area',37.548500,-121.988600,25,34),
+('boston-metro','波士顿地区','Boston metropolitan area','metro',null,null,null,null,null,'boston-metro',42.360100,-71.058900,25,40),
+('boston-ma','波士顿','Boston','city','MA','Boston','Suffolk County',null,null,'boston-metro',42.360100,-71.058900,25,41),
+('chicago-metro','芝加哥地区','Chicago metropolitan area','metro',null,null,null,null,null,'chicago-metro',41.878100,-87.629800,50,50),
+('chicago-il','芝加哥','Chicago','city','IL','Chicago','Cook County',null,null,'chicago-metro',41.878100,-87.629800,25,51),
+('seattle-metro','西雅图地区','Seattle metropolitan area','metro',null,null,null,null,null,'seattle-metro',47.606200,-122.332100,25,60),
+('seattle-wa','西雅图','Seattle','city','WA','Seattle','King County',null,null,'seattle-metro',47.606200,-122.332100,25,61),
+('houston-metro','休斯顿地区','Houston metropolitan area','metro',null,null,null,null,null,'houston-metro',29.760400,-95.369800,50,70),
+('houston-tx','休斯顿','Houston','city','TX','Houston','Harris County',null,null,'houston-metro',29.760400,-95.369800,25,71),
+('dallas-metro','达拉斯地区','Dallas–Fort Worth metropolitan area','metro',null,null,null,null,null,'dallas-metro',32.776700,-96.797000,50,80),
+('dallas-tx','达拉斯','Dallas','city','TX','Dallas','Dallas County',null,null,'dallas-metro',32.776700,-96.797000,25,81),
+('las-vegas-metro','拉斯维加斯地区','Las Vegas metropolitan area','metro',null,null,null,null,null,'las-vegas-metro',36.169900,-115.139800,25,90),
+('las-vegas-nv','拉斯维加斯','Las Vegas','city','NV','Las Vegas','Clark County',null,null,'las-vegas-metro',36.169900,-115.139800,25,91),
+('dc-metro','华盛顿都会区','Washington metropolitan area','metro',null,null,null,null,null,'dc-metro',38.907200,-77.036900,50,100),
+('washington-dc','华盛顿特区','Washington, DC','city','DC','Washington',null,null,null,'dc-metro',38.907200,-77.036900,25,101)
 on conflict (slug) do update set
   label_zh=excluded.label_zh,
   label_en=excluded.label_en,
@@ -67,6 +84,6 @@ on conflict (slug) do update set
 grant select on public.job_discovery_areas to anon, authenticated;
 
 comment on table public.job_discovery_areas is
-  'JOBS-R2 human-friendly US job-search area catalog. It maps Chinese/common labels to standardized geography and/or a search center; it is not a second job-listings data source.';
+  'JOBS-R2 human-friendly US job-search area catalog. Metro rows are cognitive group headings; selectable child rows map Chinese/common labels to standard State/City/County/Borough/Neighborhood fields. It is not a second job-listings data source.';
 
 commit;

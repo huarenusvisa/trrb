@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-17T15:59:58.453Z",
+  "generatedAt": "2026-08-17T16:44:55.077Z",
   "node": "2 统一法律数据库自动重建与版本同步",
-  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
-  "count": 596,
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "count": 612,
   "expectedCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 400,
+    "US_CIRCUIT": 416,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
@@ -14,7 +14,7 @@
     "BIA": 68,
     "FEDERAL_REGISTER": 50,
     "SCOTUS": 68,
-    "US_CIRCUIT": 400,
+    "US_CIRCUIT": 416,
     "WHITE_HOUSE": 10
   },
   "checks": [
@@ -26,7 +26,7 @@
     {
       "ok": true,
       "label": "all five legal source systems represented",
-      "detail": "{\"BIA\":68,\"FEDERAL_REGISTER\":50,\"SCOTUS\":68,\"US_CIRCUIT\":400,\"WHITE_HOUSE\":10}"
+      "detail": "{\"BIA\":68,\"FEDERAL_REGISTER\":50,\"SCOTUS\":68,\"US_CIRCUIT\":416,\"WHITE_HOUSE\":10}"
     },
     {
       "ok": true,
@@ -36,7 +36,7 @@
     {
       "ok": true,
       "label": "US_CIRCUIT synchronized into unified database",
-      "detail": "source=400; unified=400"
+      "detail": "source=416; unified=416"
     },
     {
       "ok": true,
@@ -56,27 +56,27 @@
     {
       "ok": true,
       "label": "unified count metadata matches records",
-      "detail": "metadata=596; records=596"
+      "detail": "metadata=612; records=612"
     },
     {
       "ok": true,
       "label": "unified database rebuilt from current source snapshots",
-      "detail": "expected=596; actual=596"
+      "detail": "expected=612; actual=612"
     },
     {
       "ok": true,
       "label": "source keys remain unique",
-      "detail": "unique=596; records=596"
+      "detail": "unique=612; records=612"
     },
     {
       "ok": true,
       "label": "record IDs remain unique",
-      "detail": "unique=596; records=596"
+      "detail": "unique=612; records=612"
     },
     {
       "ok": true,
       "label": "dataset version matches normalized current records",
-      "detail": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e"
+      "detail": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde"
     },
     {
       "ok": true,

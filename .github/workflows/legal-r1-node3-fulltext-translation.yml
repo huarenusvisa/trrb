@@ -26,7 +26,7 @@ jobs:
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-      LEGAL_R1_N3_RECORD_BATCH: '4'
+      LEGAL_R1_N3_RECORD_BATCH: '8'
       LEGAL_R1_N3_CHUNK_CHARS: '16000'
     steps:
       - uses: actions/checkout@v4

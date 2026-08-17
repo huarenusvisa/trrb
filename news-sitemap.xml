@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-ddd64aa7b9323d12b65405a4880690a1cbe49569</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T20:37:35.587Z</news:publication_date>
+        <news:title>哥伦比亚毒贩José Ramiro美国判刑25年</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-ea2605a42bf47cc6f00ac3d619df239b62215bfe</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T20:37:35.375Z</news:publication_date>
+        <news:title>休斯顿ICE遣返洪都拉斯通缉犯罪嫌疑人Eduard</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-932922bbd4b37f478c90af82b3fa7871cc558231</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T20:37:35.141Z</news:publication_date>
+        <news:title>美国ICE驱逐非法入境犯罪移民</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-1a25d55a5fa66ff4f868683556ac9d441b1bd607</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

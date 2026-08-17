@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "recordId": "08a247ccba28ef48d79f4ba6",
+  "recordFingerprint": "345874bac4e01375ab3784e6100ded09d940d2713cc9c667ed6f3b96d24a082f",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1421106/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1421106/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1421106/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:58:50.158Z",
+  "sourceDigest": "e87f22217d07a166d17c756c5862ee749eca1e451bef9d3fbdd218c8b12a555b",
+  "translatedAt": "2026-08-17T14:59:27.071Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 24,
+  "translatedSegmentCount": 24,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d7f0f0a9d13df4b914c165d9032c3c1ffeed20a69634339d873e5fe048af5f19",
+      "chineseText": "引证为 29 I&N Dec. 358（BIA 2025）临时决定#4150"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "91bb9f62cde72f32f7870e03c6a612ab405f404b73fa470966acc88f6ead3752",
+      "chineseText": "Jose Alejandro RODRIGUEZ PENA 案，答辩人\n由委员会于2025年11月6日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6f12e2f6d26fa84bd3b8ffc1fb1cf00f1cd4094402dc8e7e122e8df506c9f982",
+      "chineseText": "移民法官错误地断定答辩人不对社区构成危险，尽管答辩人曾威胁杀人，对执法干预反应消极，并使用化名逃避逮捕。\n答辩人：自行辩护\n国土安全部代表：助理首席法律顾问 Gregory K. Mayer\n出席人员：委员会成员 HUNSUCKER 和 VOLKERT 上诉移民法官；临时上诉移民法官 MCCLOSKEY。\nVOLKERT，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8d991e4c4b5abf5c6420146236fe132ab078b50cecaf6751ea25c59bbec1a9a1",
+      "chineseText": "国土安全部（“DHS”）对移民法官于2025年5月1日发布的准许答辩人以7,500美元保释金获释的命令提出上诉。答辩人未书面反对该上诉。我们将支持该上诉，撤销移民法官准许答辩人保释获释的命令，并下令答辩人无保释拘押于DHS custodial custody。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "38339258cb280d853d068eb2dfdd8c128002d5039e14d4e790821b3563b0bf7e",
+      "chineseText": "移民法官认定答辩人既不构成社区危险，也非潜逃风险。经重新审查，我们将"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a4c5fe07b904452cc795f921e59614fb60618d7d392324cd3cb19f10dafe65eb",
+      "chineseText": "根据2025年12月8日颁布的第6525-2025号命令，司法部长指定Rodriguez Pena案（BIA 2025年11月6日）为涉及同一或相关问题的所有程序先例。见8 C.F.R. § 1003.1(g)(3)(2025)。编辑修改符合该案作为先例的指定。\nYajure Hurtado案（29 I&N Dec. 216, BIA 2025）不适用，因为答辩人于1996年4月19日以B2非移民身份入境美国，依据移民和国籍法第237(a)(1)(B)条款（8 U.S.C. § 1227(a)(1)(B) 2024）指控其可被驱逐。\n移民法官称“该答辩人不存在潜逃风险”与他必须缴纳7,500美元保释金以确保出庭的决定不符。“一旦确定外国人不构成...风险，则不应要求缴纳保释金。”见Drysdale案，20 I&N Dec. 815, 817 (BIA 1994)"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d7f0f0a9d13df4b914c165d9032c3c1ffeed20a69634339d873e5fe048af5f19",
+      "chineseText": "引证为 29 I&N Dec. 358（BIA 2025）临时决定#4150"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f3bc65b23d3bda6b95574e2695172752f83cd7b0fbb3e75d855b057828f27179",
+      "chineseText": "推翻移民法官认定答辩人已证明其非社区危险的决定。见8 C.F.R. §§ 1003.1(d)(3)(ii), 1236.1(c)(8) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7f80c0b4cb103e2834acb5cfde141616e49e346b9758910468ac6cdbf48e491e",
+      "chineseText": "根据移民和国籍法第236(a)条（INA），8 U.S.C.A. § 1226(a)（2025年西方法律），由外籍人士负担证明其不对社区构成危险的责任。见Guerra案，24 I&N Dec. 37, 40 (BIA 2006)；8 C.F.R. § 1236.1(c)(8)（2025）。对个人或财产构成危险的外籍人士，在驱逐程序进行期间不应获得释放。见Urena案，25 I&N Dec. 140, 141 (BIA 2009)；Drysdale案，20 I&N Dec. 815, 817 (BIA 1994)。决定是否准予外籍人士保释释放的相关因素包括任何犯罪行为的广泛性、近期性及严重性。见Guerra案，24 I&N Dec.第40页。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6f6f690e4f34e171242a2f1b2888d38dd3fdb8425a92678e9144ffce6b226fd8",
+      "chineseText": "国土安全部提供的背景调查显示答辩人与执法机关多次接触，包括1997年在北卡罗来纳州因涉及贩毒指控被逮捕，2010年在阿拉斯加与执法机关一次未知性质的接触，以及2019年因2007年涉嫌家庭暴力事件在新泽西被逮捕。记录中未包含这些逮捕的警方报告或其他描述逮捕情形的信息。尽管DHS主张答辩人曾因毒品指控被起诉，但所有指控最终均被撤销。因此，在此记录中，我们同意移民法官关于这些逮捕事件对评判其危险性证据价值不大之观点。见Arreguin案，21 I&N Dec. 38, 42 (BIA 1995)（“除非有定罪或支持指控的佐证证据，否则我们对逮捕报告赋予重要权重持谨慎态度。”）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b6d88a61eaaac6f3dbde426dbb6e1b751133840d1fe6dca67b785ee0719a1b28",
+      "chineseText": "然而，记录显示答辩人近来因对社区人士实施暴力和攻击行为而被逮捕。具体而言，DHS提交的逮捕令载明，2025年4月6日，在警方听到答辩人威胁杀害其朋友、称“我要去拿枪[然后]开枪打他”后将其逮捕。答辩人被控违反新泽西修订法规第2C:12-3(b)条的“恐怖威胁—杀人威胁”罪名。答辩人未对逮捕令内容提出异议。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a130373766ec49456d59b8ad6f696604a698b20a64f6cc90074a432eff6c5f3f",
+      "chineseText": "如果确定答辩人不构成潜逃风险，则无需保释金。见Drysdale案，20 I&N Dec. 815, 817 (BIA 1994)。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "bef694e04b629fbeb04a908fd8eb6a153416245fcda8569cceb6042f70154011",
+      "chineseText": "第359页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d7f0f0a9d13df4b914c165d9032c3c1ffeed20a69634339d873e5fe048af5f19",
+      "chineseText": "引证为 29 I&N Dec. 358（BIA 2025）临时决定#4150"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b9f3934aa67d6c43c6ee7b1a593d393e4929c9840f62f84419eca597556f5afe",
+      "chineseText": "新泽西州修订法规。答辩人未对逮捕令具体内容提出异议。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b2f63c0d5eb9a5996b16e4ee456c6db7fe7710027b4c93d4f2d8bc1db23c671a",
+      "chineseText": "为证明其对社区无危险，答辩人提交受害者的宣誓书，受害者称答辩人在一场因受害者推搡而发生的争执后对其进行了威胁。他表示因争执地点靠近警察局，不认为警方被召至现场，也不认为答辩人会伤害他。答辩人还递交了一份检察官的电子邮件，称受害者不愿起诉该案。移民法官认定该证据消除了任何危险性。然而移民法官似乎未考虑受害者进一步说明的内容，即“[答辩人]其实只是因为警方到场而感到恼火，且愤怒情绪加剧”，以及“警方介入时事情升级”“变得越发激烈”。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "894a7c25f28355d904bd3c21e3cf61aeafc922e74b43cbb078828d4c252e0fd2",
+      "chineseText": "目前尚不清楚该程序是仍在进行中还是已被驳回。即便如此，已确立的原则是，尚未产生定罪的具体、实质且可靠的刑事行为证据亦可显示个人对社区构成危险。见Guerra案，24 I&N Dec. 40-41（解释逮捕和定罪均可作为考量）。我们认为答辩人被捕的情境加强了对其行为戾气和不稳定性的担忧，而非减轻。见Siniauskas案，27 I&N Dec. 207, 208 (BIA 2018)（“保释程序中，适宜考量犯罪性质及具体行为环境。”）。因推搡而威胁杀人是明显不成比例的反应，表明危险性。此外，答辩人对执法机关为保障其朋友和公众安全而试图介入的消极反应，表明其对社区构成危险。我们注意到记录中无任何声明、康复证明或答辩人就其行为所作保证，且其律师在下级程序的陈述不构成证据。见J.J. Rodriguez案，27 I&N Dec. 762, 765-66 (BIA 2020)（律师陈述非证据，且无证据价值（引用INS诉Phinpathya案，464 U.S. 183, 188–89 n.6 (1984)））。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b81a2fbe5a5469ae1bb79bfc9da3391131c00771e6c1ea9eb8a323a54c18a5d6",
+      "chineseText": "此外，有证据显示答辩人过去曾虚假声称自己为名叫“Efrain Vazquez”的美国公民，出生于波多黎各。他使用化名逃避逮捕并虚报公民身份，显示其对我国刑事及移民法律的蔑视，因此表明其具有危险性。见例如Fatahi案，26 I&N Dec. 791, 794-95 (BIA 2016)（认定外籍人士使用欺诈护照及虚假陈述给执法部门带来重大安全隐患，足以证明其在驱逐程序期间继续拘押的合理性）。答辩人2025年被捕时正处于2019年以20,000美元保释金获释期间，这一点同样说明问题。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d7f0f0a9d13df4b914c165d9032c3c1ffeed20a69634339d873e5fe048af5f19",
+      "chineseText": "第360页"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "86e556a428a6970a1d2c3bcbb989a7e9e168d4bf92172a13e7dbe0a1ea56972f",
+      "chineseText": "引证为 29 I&N Dec. 358（BIA 2025）临时决定#4150"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d475742f7dad48fbee86ee7b9533aedbee7a8e4ecd070543f25059dd2ec4b25c",
+      "chineseText": "记录包含答辩人系美国公民配偶且有美国公民子女的证据，但“家庭及社区关系通常不减轻外籍人士的危险性。”见Siniauskas案，27 I&N Dec. 210。其其它品格推荐信可追溯至2019年先前保释程序，显著缺少配偶来信，亦未涉及其当前危险性。在此情形下，我们不认为答辩人已举证证明其不对社区构成危险。见Fatahi案，26 I&N Dec. 793-94。因此，我们认定答辩人无保释资格。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3805462fb88f290eaa402f47423630c9ba34bf5e24fbaca39cc7beb91fc0fe2b",
+      "chineseText": "裁令：支持DHS上诉，撤销移民法官于2025年5月1日作出的决定。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "dfddd2999498b26af829431ae5b753a66454bb31e358b3935696f3c41bcdab53",
+      "chineseText": "进一步裁令：答辩人应被无保释拘押。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5858906baa27667e9c7a20e5efc6d228eddcb67c2add72874fd6a929977a5720",
+      "chineseText": "第361页"
+    }
+  ]
+}

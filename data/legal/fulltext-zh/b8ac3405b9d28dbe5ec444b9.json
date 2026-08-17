@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "b8ac3405b9d28dbe5ec444b9",
+  "recordFingerprint": "ecf14f5b12c4101ea8df836708dea91622a476bc0f1d3e32d94afc58e32c0344",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1420851/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1420851/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1420851/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:55:24.469Z",
+  "sourceDigest": "2ba4e0a104955de3dbce16d817e99cf35bdb394b64b0bb9f789f82c2a2ad08ba",
+  "translatedAt": "2026-08-17T14:55:49.350Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3f08b2e2bad06444c696a6f91051590f26ae5c76e41f08ced14c3e921dfcb211",
+      "chineseText": "引用为 29 I&N Dec. 339（BIA 2025年）临时裁决编号4145"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9d18127fbc385061e15011123d3962bc98fbb8091fc41f3957b670bf58b8ba4e",
+      "chineseText": "Chong Sik KIM 案，答辩人\n2025年10月9日由上诉委员会决定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6dfd9865a92687faf0423a6582d45d7aa8ea065e197210af1dd945ed1f93c5cf",
+      "chineseText": "移民法官在认定答辩人因长期实施系统性刑事欺诈行为，仅因近期在监狱中表达悔意及接受康复努力，就应基于酌情权获得取消驱逐的有利裁量时存在错误。\n代表答辩人：无律师代理\n国土安全部代表：助理首席法律顾问Thelma Gonzalez\n主持：上诉委员会成员GOODWIN和VOLKERT，上诉移民法官；MCCLOSKEY，临时上诉移民法官。\nMCCLOSKEY，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fbdc5550593ffff078429e04d14ac3f07814e5ce26600eb05de54dd6125c8efb",
+      "chineseText": "国土安全部（\"DHS\"）对移民法官2025年4月23日作出的决定提出上诉，该决定批准答辩人根据《移民与国籍法》（\"INA\"）第240A(a)条，8 U.S.C. § 1229b(a)（2024年）申请的某些合法永久居民取消驱逐申请。答辩人，韩国出生及公民，反对该上诉。此上诉将被维持。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1970c9b4a1cc6507237cf7cb858e74d0b7dcf2c5148ae53034575bcb689e4e8c",
+      "chineseText": "答辩人于1979年以10岁身份来到美国，并于同年成为合法永久居民。1990年代末，他形成了赌博成瘾，2000年代初开始盗窃以支持赌博。随后二十年，答辩人在洛杉矶大都会区域经常实施欺诈及盗窃。他臭名昭著，以至于他最近期的一名受害者因识别出他是2020年NBC新闻报道中涉及多起诈骗案的嫌疑人，遂报警。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bc5ce17308738adadf9e16869faa7eb34568534f12232aed8cb0e7e5042e1d58",
+      "chineseText": "根据2025年12月8日发布的第6523-2025号命令，司法部长指定Kim案（BIA 2025年10月9日）为涉及相同问题或议题的所有程序的先例。参见8 C.F.R. § 1003.1(g)(3)（2025年）。编辑修改符合该案件作为先例的指定。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "68bbd8a8dc7a1a365bf5d4fe99cd1bb299f1d4015880ba2a5017e5ae0d40894f",
+      "chineseText": "第339页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3f08b2e2bad06444c696a6f91051590f26ae5c76e41f08ced14c3e921dfcb211",
+      "chineseText": "引用为 29 I&N Dec. 339（BIA 2025年）临时裁决编号4145"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a6685d595a5424cc6f4773bbe2839cfac4c6622a16b63d093eaa9e72323f8ec1",
+      "chineseText": "其惯用手法是假冒持牌承包商，诱使受害者支付家庭装修定金，然后断绝联系，携款潜逃。至少一次，他向受害者发出伪造退款支票以拖延时间。除欺诈客户外，他还从妻子处盗取至少30,000美元，导致离婚。关于其持续的欺诈计划，他被多次逮捕并反复监禁，但未改正行为。其30年未报税。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "49f72910f06ea0f19b67ef321557faf10c7560570acd4ebd1208d223f5061bd0",
+      "chineseText": "其最近一次逮捕发生于2022年，被控重大盗窃及入室盗窃。2023年5月1日，一名缓刑官为答辩人准备了判前报告。报告评价称：\n \"被告53岁，过往记录极为庞杂。已被判处八项轻罪和七项重罪。罪名包括入室盗窃、重大盗窃、无照承包、驾驶被吊销驾照及非法广告。虽曾置于缓刑、县监狱及州监狱服刑，仍继续参与非法活动。被告表现如同社会规章法律不适用于其自身。\""
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e8d7af49416c047e36abe51a63b7b90ac8d3211c864f091cc97e44d61c7ce467",
+      "chineseText": "答辩人被定罪并判处4年监禁。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5f0491f5596e787cf2e7ec69b7de2953ccb5cc38d57b09b1043357b26cf86942",
+      "chineseText": "在移民法官面前，答辩人作证称其最近的监禁让他幡然醒悟，找到了宗教信仰，并接受了针对赌博成瘾的康复治疗。移民法官权衡答辩人的犯罪史、其在美国长期居留、由于长年居美对韩国不熟悉、其与三名成年的美国公民子女维持密切联系且子女支持其移民程序、部分积极的就业历史及高中毕业情况。法官还认定答辩人对其罪行表现出诚恳悔意及承认责任，并已完成狱中康复项目。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "dbb9083a558f0f9503fb5678972d99f2edb8e13d561aaa392472d7f0d0c44b29",
+      "chineseText": "最终，移民法官裁定答辩人应获得酌情权的有利行使，本委员会对该裁定进行重新审查（de novo）。8 C.F.R. § 1003.1(d)(3)(ii) (2025)。在行使酌情权时，我们“必须平衡显示外籍人士作为永久居民不可取的负面因素与为其提出的社会及人道考虑，以确定授予救济是否符合本国最佳利益。”引用Matter of C-V-T-, 22 I&N Dec. 7, 11（BIA 1998）（引自Matter of Marin, 16 I&N Dec. 581, 584-85（BIA 1978））。\n第340页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3f08b2e2bad06444c696a6f91051590f26ae5c76e41f08ced14c3e921dfcb211",
+      "chineseText": "引用为29 I&N Dec. 339（BIA 2025年）临时裁决#4145"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ce9261f6f167c42754b9739ccc63e0f2eefaa6a842ef385f4bfc5d258775f817",
+      "chineseText": "经重新审查，答辩人未证明其应获得有利酌情权的行使。我们同意DHS的意见，纪录显示其有限的积极因素不足以抵消其严重且重大刑事犯罪史。答辩人自2000年代初以来，几乎未曾有过不系统性欺诈社区成员、政府及自家家庭的有效时间。尽管刑事司法系统多次干预，包括监禁，但他极度严重的欺诈行为持续不断。虽然移民法官对答辩人最近的监禁确实康复其态度深信不疑，DHS指出其此前所有监禁和康复均未成功，他也未提出任何出狱后就业、支持或维持康复的具体计划。即便监禁中答辩人真心悔过并自认已改头换面，我们仍无信心其出狱后不会恢复长期犯罪模式。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8b60d9902dc628ebf9aa1dbfa59eb082488998f9a55250ed220560b6f6f4adcf",
+      "chineseText": "我们承认答辩人自1979年童年起即在美居住。但其长期居留的积极因素被其成年大部分时间从事系统性刑事欺诈所削弱。其与成年子女的联系主要通过电话维持，该联系自韩国境内仍可持续。综合权衡所有正负因素，我们认定救济不符合美国之最佳利益。参见Matter of C-V-T-, 22 I&N Dec. 11。基于酌情权的行使，我们将拒绝答辩人的取消驱逐申请。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d3f84c2d62e0449b462d48df0f2cf3739fe5b596047ac517ba1e662b7f3c4ce8",
+      "chineseText": "命令：上诉获得支持。\n进一步命令：撤销移民法官2025年4月23日批准答辩人取消驱逐申请的决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4c6415f148b9ad6d9b315c04cb4d10dff075d1545acd4ffaa9c2b8662e3e9598",
+      "chineseText": "进一步命令：基于酌情权，答辩人的取消驱逐申请被拒绝。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5ea6e0bbcc15c2d2c10a15226e3e10711ea983dcbc276195491ec0452778495a",
+      "chineseText": "进一步命令：答辩人须被遣送回韩国。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5f2722e23a4ffb21121147e46e08bd7393e36d4bccf8edf4723c7acc375a094e",
+      "chineseText": "通知：如答辩人适用最终遣返令，且故意未按照该令离开美国，或未及时诚信申请旅行证件或其他离境所需文件，或未按时、按地向DHS呈现本人以执行遣返，或共谋或采取任何行动阻挠遣返，答辩人将面临每天最高998美元的民事罚款。参见INA第274D条，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2025）。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3f08b2e2bad06444c696a6f91051590f26ae5c76e41f08ced14c3e921dfcb211",
+      "chineseText": "第341页"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3480f80efcdcabcb123438479bfb12a2fb0f29756fb8f557c9ff13befd7abfaf",
+      "chineseText": "引用为29 I&N Dec. 339（BIA 2025年）临时裁决#4145"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3b563981cf9ee928cc4f327ea0ecdbf167909a3ad1c0886a48ae263d214cb619",
+      "chineseText": "第342页"
+    }
+  ]
+}

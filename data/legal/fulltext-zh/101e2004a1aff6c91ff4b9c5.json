@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "recordId": "101e2004a1aff6c91ff4b9c5",
+  "recordFingerprint": "d5ddb52c2b3d51637c8ea4810db3ca86a37807d70711fb416a591030943caeea",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1420856/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1420856/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1420856/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:55:49.382Z",
+  "sourceDigest": "122572593a82f19e52ebec7c6ba832a9167db1e27b24ece721d545e33ff96390",
+  "translatedAt": "2026-08-17T14:58:50.128Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 21,
+  "translatedSegmentCount": 21,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b750c8a0c8bfd7c3e48bc410070c5e1d79c71b3873e264d933287522fdf80542",
+      "chineseText": "引用为 29 I&N Dec. 343 (BIA 2025) 临时决定 #4146"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "95bf923a31e7d9f94810cc45381a1ed19fb98de90f44befbf541edf0de7cd338",
+      "chineseText": "L-A-G-B- 案，被申请人\n由委员会于2025年11月5日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0f58e24fa68acfe75c0fd68b6d1673a2b3a68f43c6269e57e4ed4ad2788ed9b4",
+      "chineseText": "移民法官基于一系列假设对被申请人在巴拿马可能遭受的伤害所做出的预测性事实认定明显错误，且不足以支持依据《禁止酷刑公约》给予保护的裁决。\n代表被申请人：Misael Cornelio，律师，纽约布鲁克林\n代表国土安全部：Julie A. Werdt，助理首席法律顾问\n审理人员：委员会合议庭成员：HUNSUCKER，GOODWIN及GEMOETS，上诉移民法官。\nGOODWIN，上诉移民法官意见如下："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "71a251d49e39f2d1ab562aaaaf530f8f77826c1cceae2a7b3775feb8f56db49f",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年2月7日的裁决提出上诉，该裁决批准了被申请人依据执行《禁止酷刑公约》（“CAT”）的法规申请的保护。被申请人，巴拿马原籍及公民，反对此上诉。该上诉将被支持，且被申请人将被命令遣返巴拿马。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "696459dc84aebb8b253b1f22e62705a273bdbf99903622b61a642b6395977840",
+      "chineseText": "移民法官认定，双方对此无异议，被申请人因共谋持有意图分销五公斤或以上可卡因的罪名成立，构成加重重罪及特别严重犯罪，使其无资格获得庇护、法定遣返扣留停止保护及CAT下的遣返扣留停止保护。参见"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f55641658d637bb5ef4f77b06ea8a4d1275141d780f631071a19e25486609209",
+      "chineseText": "根据2025年12月8日发布的第6526-2025号命令，司法部长将L-A-G-B-案（BIA 2025年11月5日）委员会裁决指定为所有涉及相同问题的程序的先例。参见2025年8 C.F.R. § 1003.1(g)(3)。已基于该先例指定进行了编辑修改。禁止酷刑及其他残酷、不人道或有辱人格待遇或惩罚公约，1984年12月10日，参见参议院条约文件第100-20号，1465联合国条约汇编第85页（美国于1994年11月20日生效）。8 C.F.R. §§ 1208.16(c), 1208.17 (2025); 8 C.F.R. § 1208.18(a) (2020)。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b750c8a0c8bfd7c3e48bc410070c5e1d79c71b3873e264d933287522fdf80542",
+      "chineseText": "引用为 29 I&N Dec. 343 (BIA 2025) 临时决定 #4146"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "11dac2b6d57c7143ce6c90199e097083b0435d707d15418632462ee1ab9f56cc",
+      "chineseText": "《移民及国籍法》（“INA”）第208(b)(2)(A)(ii)和241(b)(3)(B)(ii)条款规定，8 U.S.C. §§ 1158(b)(2)(A)(ii), 1231(b)(3)(B)(ii)（2024）；8 C.F.R. § 1208.16(d)(2)（2025）。移民法官在CAT项下批准被申请人的遣返停止保护申请时认定，被申请人证明了在巴拿马可能遭受私人行为者施加的酷刑，并且巴拿马公共官员对此默许（包括故意无视）。国土安全部在上诉中对该认定提出异议。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "21a1d22764d0f49b3fe21464250d6ec59b891903213f7854654f9b2fa2ea21a7",
+      "chineseText": "为确立CAT保护资格，申请人须证明其在本国被公共官员或其他官方身份的人士施以折磨或其同意、默认（包括故意无视）的可能性超过半数。见8 C.F.R. § 1208.16(c)(2); 8 C.F.R. § 1208.18(a)(1)（2020）。为确定被申请人是否证明了在遣返国家遭受未来酷刑的明显概率，移民法官必须首先就被申请人遣返后的可能遭遇作出事实认定，然后判断该遭遇是否符合法律意义上的酷刑定义。参见Myrie诉美国司法部长案，855 F.3d 509, 516（第三巡回法院2017年）。委员会对移民法官关于未来被申请人可能遭遇事实的认定以明显错误为审查标准，但对被申请人可能遭受的伤害是否达酷刑法律定义进行无疑审查。参见R-A-F-案，27 I&N Dec. 778, 779–80 (A.G. 2020)。移民法官应考虑与未来酷刑可能性相关的所有证据，包括但不限于：(1) 过去酷刑的证据；(2) 申请人是否能迁移至不太可能遭酷刑的国境另一地区的证据；(3) 严重、明目张胆或大规模侵犯人权的证据；(4) 其他相关国情信息。8 C.F.R. § 1208.16(c)(3)。若证据未显示假设性连锁事件中的每一步超过半数可能发生，则不得靠多重假设叠加确立CAT保护资格。参见J-F-F-案，23 I&N Dec. 912, 917-18, 918 n.4 (A.G. 2006)。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "969cf6cebdd715db6ef366bee2e0bac7d76bc517d9c5950f449ce415b91d7f23",
+      "chineseText": "我们将推翻移民法官关于被申请人在巴拿马遭受酷刑可能性的认定。我们承认被申请人曾在美国有帮派关系及其在美居住期间与其他帮派发生过冲突的历史。然而，基于该案记录，被申请人尚未证明其更可能将遭受酷刑。在认定被申请人未来或将面临达酷刑程度的伤害时，移民法官基于被申请人因可卡因指控而被捕及监禁的情形，认定其前帮派同伙，"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b750c8a0c8bfd7c3e48bc410070c5e1d79c71b3873e264d933287522fdf80542",
+      "chineseText": "引用为 29 I&N Dec. 343 (BIA 2025) 临时决定 #4146"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5a75783e3d48e3c97ad79a9917b3f654dc3a6d5a6cb2fed98c8bdfa074988136",
+      "chineseText": "Franklyn Sterling 与 King Ariano 家族认为被申请人从他们那里偷窃了可卡因并与执法机构合作。移民法官认定，被申请人将被 King Ariano 家族视为与执法部门合作，并将成为 King Ariano 家族针对的伤害对象，该伤害达酷刑级别，尽管移民法官也认定 King Ariano 家族已不再作为贩毒组织运作。移民法官还认定，被申请人将成为巴拿马其他帮派的目标，这些帮派要么是在 Franklyn Sterling 的指示下，要么是为了报复被申请人过去在美国窃取其他帮派财物（该行为受 Franklyn 指挥）。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6f0324f0dc45cb1ed59805c2931fe88b839001a7c5f1f6097b60d5030c870487",
+      "chineseText": "移民法官的预测性事实认定从记录中做出了无支持的推断，明显错误。参见 Matter of Z-Z-O-, 26 I&N Dec. 586, 590 (BIA 2015)（认定移民法官关于未来伤害的预测性事实认定须以明显错误标准复核）。例如，移民法官认定被申请人针对 Franklyn Sterling 及另一名前同伙 Xavier 的“陈述和合作”将导致 Franklyn 与 King Ariano 家族将被申请人作为伤害目标，此认定无记录支持。记录无任何客观证据显示被申请人为执法机构提供了任何协助，或在认罪协议中提供了有关 Xavier 或 Franklyn 的信息。除被申请人自身怀疑外，记录未显示有人认为他与执法部门合作。此外，记录也不支持移民法官推断 Franklyn 和 King Ariano 家族认为被申请人偷了他们的可卡因，因为被申请人仅被查获15公斤可卡因，而非20公斤。被申请人提交为证据的公开新闻稿显示，被申请人和 King Ariano 家族成员因在卧底执法的控制行动中走私可卡因被捕，被申请人是专程前往接收15公斤可卡因，而一名配合政府的共犯将15公斤可卡因交给被申请人，随后该可卡因被全部查获。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f057ad921c3d9901c91a4767a74dae063f88d877b957eaa6cd47956920a3b6de",
+      "chineseText": "移民法官认定，被申请人可能成为包括 Banda Norte 在内的其他帮派的目标，依据是被申请人声称2008年在 Franklyn 指使下从 Banda Norte 偷窃海洛因并因此遭受严重报复。然而，记录中没有证据显示被申请人曾遭 Banda Norte 伤害，也没有显示被申请人自2008年以来与 Banda Norte 有任何接触。此外，被申请人作证称他从未与现时在巴拿马运作的任何帮派接触，Xavier 已去世，Franklyn 目前在美国因其他毒品指控入狱。"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b750c8a0c8bfd7c3e48bc410070c5e1d79c71b3873e264d933287522fdf80542",
+      "chineseText": "引证为 29 I&N Dec. 343 (BIA 2025) 临时决定 #4146"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "bdf2ae7d5750eabd7f913922335f4c522c74920dd8351d55758c96377a4da104",
+      "chineseText": "考虑到缺乏任何人对被申请人存在兴趣并有能力与意愿在巴拿马寻找并伤害他的证据，移民法官认定被申请人很可能成为 Franklyn 或巴拿马帮派的严重伤害目标的结论明显错误。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "1845138abc8a3ebf9c0bf2183b11126bac83af17152358732d952ace066dc8e1",
+      "chineseText": "移民法官认定被申请人在巴拿马更可能受到升至酷刑程度的伤害，是基于多项假设而未获记录支持。参见 Matter of J-F-F-, 23 I&N Dec. 917–919（认定申请人有法律义务证明符合根据《禁止酷刑侵害者地位公约》（CAT）获得保护的资格，申请人不能仅凭串联假设形成假象情节链条，证明各环节均超过“更可能发生”的标准）。因此，被申请人未能证明会遭其前同伙或其他巴拿马帮派施以酷刑。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ddd70d0d297eaadd9747cfb8b7c26dbca24ee8ed39d0d95bb621d1aaad0be42c",
+      "chineseText": "基于上述理由，我们撤销移民法官对被申请人依据 CAT 授予保护的裁定。无需为补充事实调查或法律分析而发回，因相关记录不足以证明被申请人更可能在巴拿马任何地方被公职人员或其他执法身份人员同意或默许下遭受酷刑。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "31f2e44cfddf22605e65e526e0f30d105035b385c8195edcb8ee621b05346c05",
+      "chineseText": "命令：上诉获得支持。\n进一步命令：撤销移民法官根据《禁止酷刑侵害者地位公约》授予的撤销驱逐令延期。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "79bd4a460b0791804df7d95f4bc26482911ef8284cb079f130d7da8fb88f467f",
+      "chineseText": "进一步命令：命令被申请人驱逐出境至巴拿马。\n通知：如果被申请人受最终驱逐令约束，且故意拒绝或未能依该命令自美国离境，未能及时真诚申请出境所需之旅行或其他证件，未能在国土安全局规定时间地点出现，或共谋或采取任何设计阻止或妨碍其依驱逐令离境的行为，被申请人将面临每日最高998美元的民事罚款。参见 INA § 274D, 8 U.S.C. § 1324d (2024)；8 C.F.R. § 280.53(b)(14) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "92c44bd1acc86dc1a57affddc2e572e433a344e81e9dbd4a22c1b8ddf0f11c09",
+      "chineseText": "页码 346"
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "recordId": "56e8887c29cf9e22ec2349e5",
+  "recordFingerprint": "4726075b0de42e80783a2539bf037e8d4d8606b9194d2357730f95660d4fe74c",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1425671/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1425671/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1425671/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:11:05.454Z",
+  "sourceDigest": "a244b4591458df68570919705b877c2ee1a0ac554ef1e6351ca6c095f8f81745",
+  "translatedAt": "2026-08-17T15:14:32.464Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 16,
+  "translatedSegmentCount": 16,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9b13477e0768136f4e57f9480b4dfab9c3f209e725c0e816ae7d36ba808469d9",
+      "chineseText": "引用为 29 I&N Dec. 419 (BIA 2026) 临时决定 #4159"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "12f9f00c45dcbd9e04608f104fdeb2f5ab79f003f0aacb7855178707ccb1fd4e",
+      "chineseText": "关于 Mario Alberto LAURENT CASTRO 案，答辩人\n由委员会于 2025年12月30日裁定\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "02f47286766d49e7970244fc34271d6adf3b8a1a5557316ed0bd8ab2dbabeb5d",
+      "chineseText": "如果答辩人未出席听证会，已被适当送达缺席听证通知，并且国土安全部提供了答辩人可被驱逐的证据，则移民法官继续驱逐程序而非签发缺席驱逐令属于错误。\n答辩人代理：本人出庭\n国土安全部代理：Jessica E. Long，助理首席法律顾问\n出席委员会小组成员：OWEN 与 GALLOW，上诉移民法官；PICOS，临时上诉移民法官。\nOWEN，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ae9074ee81452ca3a02643e67baab368a1abcdbf0d76994da5c88bcc3fd60430",
+      "chineseText": "国土安全部（“DHS”）对移民法官于2025年10月14日自发决定将本驱逐程序延期的决定提出了中间上诉。作为一般规则，委员会不受理中间上诉。参见 Matter of M-D-, 24 I&N Dec. 138, 139 (BIA 2007)。然而，在本案中，我们认为适宜对该中间上诉行使管辖权。DHS的上诉将被支持，延期驱逐程序的命令将被撤销，记录将发回处理。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1eedee64560eed72e58d83aec9fc99dd098c9294df8bef3683ebdffd003da984",
+      "chineseText": "2025年10月14日，答辩人未出席首次主日程听证。DHS提出缺席继续进行的动议，并在移民法官面前辩称答辩人已通过普通邮件适当送达出庭通知，且可驱逐/不可入境外国人记录（I-213表）确认答辩人的可驱逐身份。参见《移民和国籍法》240(b)(5)(A)条款，"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "22f3fbf0a8f303350dc4a4e1988fe996c54426d56c8719ddc8081e7c7e494b61",
+      "chineseText": "1\n 根据2026年1月23日第6585-2026号命令，司法部长指定委员会于2025年12月30日就 Laurent Castro 案作出的决定为所有涉及相同问题的程序中的先例。参见 8 C.F.R. § 1003.1(g)(3)（2025年）。根据先例指定，对文本进行了编辑调整。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "52b56d48d7bee027b5caeed2cdf136f37cd0fb640ad861c4cbdc5a0f182690a6",
+      "chineseText": "第419页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9b13477e0768136f4e57f9480b4dfab9c3f209e725c0e816ae7d36ba808469d9",
+      "chineseText": "引用为 29 I&N Dec. 419 (BIA 2026) 临时决定 #4159"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "70dec4e2c02ec4d328693e984b20a77278e9a5e273a6d75cd211e208e729117b",
+      "chineseText": "美国法典第8编第1229a节第(b)(5)(A)款（2024年）（规定在向外籍人士或其代理律师提供了适当的书面通知后，如果外籍人士未出庭听证，且国土安全部通过明确、无可置疑且有说服力的证据证明已提供书面通知且该外籍人士应予驱逐，应对该外籍人士作出缺席驱逐令）；联邦法规第8章第1003.26节(c)款（2025年）；另见Judging Authority未决案G-Y-R-，23 I&N Dec. 181, 187–88（BIA 2001）（裁定一旦外籍人士知晓其更新地址的责任，移民法官可继续进行听证并对未出庭者作出缺席驱逐令）。移民法官否决了国土安全部要求缺席进行的请求，而是主动将驱逐程序延期至2025年11月25日。2025年11月24日，移民法官发布了听证通知，重新安排主日程听证至2027年1月6日。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "daae5d7b51100d976ceac177f8da6cf4e1d07844410476ba4aa123cebd2ca794",
+      "chineseText": "《移民与国籍法》第240(b)(5)(A)节，美国法典第8编第1229a节第b款第5款第A项，规定受案人于收到根据《移民与国籍法》第239(a)(1)或(2)节（8 U.S.C. § 1229(a)(1), (2)）（2024年）发出的可驱逐书面通知后，若其未出席驱逐听证且国土安全部证明已向受案人提供了书面通知，则应作出缺席驱逐令。该书面通知“如在根据《移民与国籍法》第239(a)(1)(F)节（8 U.S.C. § 1229(a)(1)(F)）提供的最新地址寄达，则视为充分”。《移民与国籍法》第240(b)(5)(A)节，美国法典第8编第1229a节第b款第5款第A项。缺席程序的目的在于确定国土安全部是否能够满足其证明义务，即未出庭的外籍人士是否已收到适当通知且符合驱逐条件。见Sanchez-Herbert案，26 I&N Dec. 43, 44（BIA 2012）。该法条中“shall”一词表明移民法官进行缺席程序的义务是强制性的。参见联邦法规第8章第1003.26节(c)(2)款（规定若确认外籍人士已收到“关于听证时间和地点的书面通知以及未出庭后果的书面通知”，则应对其作出缺席驱逐令）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9090951b892709fc5842e913f6d554c64329b4aebc4d0c60668de199c957c4fd",
+      "chineseText": "在本案中，国土安全部证明已向受案人提供了适当的听证通知，该通知内容已包含于送达证书所证实的邮寄送达的出庭通知中。出庭通知被邮寄至受案人最后已知地址，且无迹象表明未被接收。参见M-R-A-案，24 I&N Dec. 665, 673（BIA 2008）（裁定只要出庭通知或听证通知按正常办公程序妥善寄出，视为推定已送达）。因此，受案人已被适当告知其移民听证的时间、日期和地点。国土安全部提交了一份I-213表格，提供了明确且有说服力的驱逐证据，并请求进行缺席听证。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9b13477e0768136f4e57f9480b4dfab9c3f209e725c0e816ae7d36ba808469d9",
+      "chineseText": "引用为29 I&N Dec. 419（BIA 2026）临时裁决#4159"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "73f155fcedb1ea0049ea03cd849e6dfe6d4233da9bb657ad68d92d1b2b10e715",
+      "chineseText": "根据上述情况，应进行缺席听证。移民法官未提出任何令人信服的理由重置新的听证日期，而国土安全部已确定了驱逐事实。因此，现作如下裁定。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "18249f21a2ee33c3474d6779e05fa9fe972915c7eb3f247d4eec169d125c89ca",
+      "chineseText": "命令：支持国土安全部的上诉，撤销移民法官2025年10月14日关于延期该程序的决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3e72a33d43ac4e49f9288b46e3c57ae872e106feec22d035ca434b0309b74cfd",
+      "chineseText": "进一步命令：案件记录发回，按本裁决进行后续程序。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b7eb09cdfb469f835cbf42fece2ed4aff9d1c1ef6c4ac017eb0e6714c076b6e2",
+      "chineseText": "（页码421）"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "recordId": "7a6abb280c4672a5919212a2",
+  "recordFingerprint": "7677153451b0b4e09a2fb2b2690a5c545914008411f4ca883444cb6a920d9709",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1421901/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1421901/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1421901/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:59:27.101Z",
+  "sourceDigest": "89c6542f380651fc71fcbcdbec1a2bac9d34b40a017bdc0972afaa5709c40719",
+  "translatedAt": "2026-08-17T15:03:34.349Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 19,
+  "translatedSegmentCount": 19,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "789c8f05c037aad8cb3895ff326d75d0fddfe9a71b4f5e96a95343332e0e265c",
+      "chineseText": "引用为 29 I&N Dec. 376（BIA 2025）临时裁决第4153号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "66077e3b5f90364b0c164c095ab2fae6367ffd50bbe5f0ff5e96472d4083e08d",
+      "chineseText": "Gholam GHANBARI 案，答辩人\n 2025年10月10日裁定\n 美国司法部\n 移民审查执行办公室\n 移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "81a5dea06e84ac693641d4a8d05d67b13d14b7722c7efcb0905ba94b4d220e61",
+      "chineseText": "移民法官错误地认定答辩人未向恐怖组织提供实质性支持，且根据《移民与国籍法》第236(c)(1)(D)条款，8 U.S.C.A. § 1226(c)(1)(D)（2025年西文版）不适用强制拘留。\n答辩人代理律师：Bradley Maze，南菲尔德，密歇根州\n国土安全部代理律师：Timothy E. Garcia，助理首席法律顾问\n审理委员会成员：GOODWIN及HUNSUCKER，上诉移民法官；\nMcCLOSKEY，临时上诉移民法官。\nGOODWIN，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "217f06c062ef51f14405a434d9928e08b0041ed5adb7f17117673706a89aae1a",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年7月10日批准答辩人保释请求的裁决提出上诉。\n移民法官于2025年8月7日发布的保释备忘录阐明了其裁定依据。答辩人已提交反对DHS上诉的简报。此上诉将被支持。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4f91dea31068a2a7b1dad58586173922c3d949e6f2280f9f1c6035c9b9c59620",
+      "chineseText": "移民法官认定答辩人不属于《移民与国籍法》（“INA”）第236(c)条款规定的强制拘留对象，8 U.S.C.A. § 1226(c)（2025年西文版），因其未依据INA第237(a)(4)(B)条款，8 U.S.C. § 1227(a)(4)(B)（2024年），被认定为向恐怖组织提供实质性支持的外籍人士。移民法官认为答辩人已证明DHS在指控答辩人因向未指定恐怖组织提供实质性支持而可被遣返的论点上“极可能不会胜诉”。因此，移民法官依据INA第236(a)条款，8 U.S.C.A. § 1226(a)，进行了答辩人拘留状况重新评估听证。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0ae85bb7ee9045463ff8d694ab082ed3895960885fab89ff74c13c2ad61bb57c",
+      "chineseText": "1\n根据2025年12月19日第6534-2025号命令，司法部长指定本委员会2025年10月10日关于Ghanbari案的裁决作为涉及相同问题或事项的所有程序的先例。参见8 C.F.R. § 1003.1(g)(3)（2025年）。本翻译对编辑更改已与案件先例指定保持一致。\n2\n国土安全部请求对保释听证进行转录的要求被拒绝。\n 第376页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "789c8f05c037aad8cb3895ff326d75d0fddfe9a71b4f5e96a95343332e0e265c",
+      "chineseText": "引用为 29 I&N Dec. 376（BIA 2025）临时裁决第4153号"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fdeea00631a5bf204cae61ecbcdfc344507282a11eaeb86f78db1c37ef0eb921",
+      "chineseText": "移民法官裁定答辩人不是社区危险或潜逃风险。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "86125d50c6263bc477d4aecf7619f391d1c94e09b421c1bde3c23ff562f53a8d",
+      "chineseText": "我们同意DHS的意见，移民法官无权依据INA第236(c)(1)(D)条款，8 U.S.C.A. § 1226(c)(1)(D)，考虑答辩人解除拘留的请求。答辩人未能证明其不属于需强制拘留的该类外籍人士。参见8 C.F.R. § 1003.19(h)(2)(ii)（2025年）；另见Jennings诉Rodriguez案，583 U.S. 281, 289 n.1（2018年）；Joseph案，22 I&N Dec. 799, 802（BIA 1999年）。我们已裁定外籍人士无须因适用第236(c)条款而被指控遣返理由。参见Kotliar案，24 I&N Dec. 124, 126（BIA 2007年）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2ba40e8fc43ec1e54aba7000ede28258fb7d7843aeb4b0e6c94304d74bc4ddcf",
+      "chineseText": "正如DHS在上诉中所主张，保释程序记录显示，答辩人在其难民申请中声明，1980年至1987年期间，他为恐怖组织Mojahedin-e-Khalq（“MEK”）的同情者，并参与“宣传活动”。他还说，1981年6月28日，当局来到他家中，发现有关MEK运动的文件、传单和书籍，并因参与“穆贾希丁活动”而拘留他。国会研究处提供的资料显示，MEK参与了1979年伊朗革命，“支持占领美国大使馆，反对释放美国人质”。1980年代初，MEK对伊朗伊斯兰共和国发动袭击，其中包括1981年一次炸弹袭击，造成伊朗首席大法官及数十名其他官员死亡。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "597c4b9724f9e4f5487dafdd00b3347a447a2df4005afc8f0a311ed8d9ded196",
+      "chineseText": "此外，在Hosseini诉Nielsen案中，911 F.3d 366, 372-73（第六巡回上诉法院，2018年），本案所涉管辖辖区内的美国第六巡回上诉法院认定，MEK组织在1970年代至至少1981年9月期间作为恐怖组织运作。此外，法院认定，代表MEK分发传单构成对恐怖组织的实质支持。Hosseini，911 F.3d第377页（认定代表MEK分发非暴力传单构成实质支持，因为这给予该组织合法性，而该组织当时正从事恐怖活动）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c4ba80ab50d7bcd85685ccc19734841392e527bc2ef910601a5c22c8a4883cda",
+      "chineseText": "此外，我们不同意移民法官关于答辩人支持行为不构成实质支持的认定，理由是答辩人当时约为15至16岁，且直到1981年爆炸事件前，并未且合理不应知道MEK参与恐怖活动。移民法官忽视了答辩人在避难申请中的陈述，即伊朗官员指控其参与莫贾希丁（mojahidins）的活动，他曾被两次监禁，且有一名家庭成员也是“莫贾希丁”。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "789c8f05c037aad8cb3895ff326d75d0fddfe9a71b4f5e96a95343332e0e265c",
+      "chineseText": "引用为29 I&N Dec. 376（BIA 2025）临时决定#4153。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fa8e5dee49867167489e37007997aedffd260ab6c620b7a2eca6afe9d288c4d9",
+      "chineseText": "此外，答辩人在其保释听证会上未作证，亦未提供证据证明其不知晓MEK的暴力活动，或在得知暴力活动后与MEK决裂。比较Daneshvar诉Ashcroft案，355 F.3d 615, 628（第六巡回，2004年）（认定移民委员会认定答辩人16岁时从事恐怖活动存在错误，因其作证称不知MEK的暴力活动并在加入后仅一年主动与MEK脱离）。因此，我们不能认定国土安全部很难证实答辩人的行为符合《移民与国籍法》第237(a)(4)(B)条（8 U.S.C. § 1227(a)(4)(B)）下可驱逐的指控。参见Joseph案，22 I&N Dec. 806-07（指出“移民法官在案件实体审理结束前，必须有非常充分的理由推翻”强制拘留类别）；另见Kotliar案，24 I&N Dec. 127。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2f32cf23da3f8e321b4b2cb6da55adef2b007ad2059b43144decbcd5f764d674",
+      "chineseText": "因此，答辩人依据《移民与国籍法》第236(c)(1)(D)条（8 U.S.C.A. § 1226(c)(1)(D)）应接受强制拘留，移民法官无管辖权审理答辩人要求解除拘留的请求。参见8 C.F.R. § 1003.19(h)(2)(i)(D)。故答辩人将被无保释拘留。鉴于本裁定结果，我们无需对国土安全部在上诉中的其他论点作出裁决。参见INS诉Bagamasbad案，429 U.S. 24, 25（1976年）（per curiam）（“一般规则是，法院和行政机关无义务对其裁决结果不必要的问题作出裁定。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d047f0befe93c01959aa2207c1cd5c85acda533829fcd194cb8e12543ad0750b",
+      "chineseText": "据此，将作出如下命令。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b5cc9e33e3399904a9ff6c307afbe48e4bf6c206d2c9e1ce0a25c022f907c9f3",
+      "chineseText": "命令：上诉获支持。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7f1f5ed8f3769bbd4d9a94b328a1b1a6735815d797f2a13bdee7331409fa6184",
+      "chineseText": "进一步命令：撤销移民法官2025年7月10日的拘留决定，命令答辩人无保释拘留。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "21ef779311a43f0e067d0f4f600bb5451a8a7e093662086a1fe6a75d27d7892a",
+      "chineseText": "378"
+    }
+  ]
+}

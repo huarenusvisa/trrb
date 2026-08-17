@@ -1,0 +1,543 @@
+{
+  "schemaVersion": 1,
+  "recordId": "39a104ec894cd3526b3212e5",
+  "recordFingerprint": "191d79e2eff84b38fd428a3e7abc680db00de4ef28679dc109258485dec6be66",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1424031/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1424031/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1424031/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:03:34.380Z",
+  "sourceDigest": "f4f6a5797dfa5d321f897434e9b4438b512ff4deb211a9d3293354ec190e6257",
+  "translatedAt": "2026-08-17T15:11:05.423Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 65,
+  "translatedSegmentCount": 65,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为 29 I&N Dec. 401（BIA 2026）临时裁决第4157号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2c7b12fecdd4b7529db97e05cbcba39ba864f3796f9ba0519e9d108771db3059",
+      "chineseText": "M-C-C- 案，答辩人\n由上诉委员会于2025年12月2日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e13e8b6dc1e59d0ad17d480a54e7a054410dc49cd78b1191292e9434d03bc7d9",
+      "chineseText": "(1) 答辩人在其难民申请中故意隐瞒了其在波斯尼亚战争期间的军事服役这一重要事实，因为这种遗漏切断了一个预料之中会披露与其难民身份资格相关事实的调查途径。\n(2) 答辩人基于其在波斯尼亚战争期间关于军事服役的反复长期虚假陈述及其缺乏悔意，不符合移民与国籍法第237(a)(1)(H)节，8 U.S.C. § 1227(a)(1)(H)（2024年）下对欺诈豁免裁量性批准的资格。\n代理答辩人：Milva V. Lehm 律师，亚利桑那凤凰城\n代理国土安全部：Jennifer Wiles 高级律师\n出庭委员会成员：MALPHRUS 主席上诉移民法官；MULLANE 上诉移民法官。MCCLOSKEY 暂时性上诉移民法官发表同意及异议意见。\nMULLANE，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cbcd8b90935fe1b3cb9da010819f37b34e4a2497c1d5ec0926a5f811d1b6f04b",
+      "chineseText": "双方当事人向本委员会提起交叉上诉。参见 Lopez 诉 Garland，60 F.4th 1208, 1212–13（第九巡回法院2023年）。答辩人，前南斯拉夫共和国出生、波斯尼亚-黑塞哥维那公民，提起上诉，针对移民法官2013年6月28日维持依据移民与国籍法第237(a)(1)(A)节，8 U.S.C. § 1227(a)(1)(A)（2012年）移除指控的裁决。国土安全部针对移民法官2019年3月13日批准答辩人根据移民与国籍法第237(a)(1)(H)节提出的不予受理豁免请求的裁定提起上诉，"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bf12409eec9ae2441c5a789fdc5927b1577ea8c8d8f7d40ce0ca5f16c79e34ef",
+      "chineseText": "依据2026年1月9日第6580-2026号命令，司法部长将2025年12月2日本委员会在 M-C-C- 案中的裁决指定为处理相同问题的所有程序的先例。参见 8 C.F.R. § 1003.1(g)(3)（2025年）。已进行编辑调整，以符合该案先例指定。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dc4d306f80655f8b4f55775d5fd5fc2a7d1f49ff946f638319dc800f3270e1ff",
+      "chineseText": "第401页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为 29 I&N Dec. 401（BIA 2026）临时裁决第4157号"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "509a707cb33e963adba2fd8134d730b30d242752106416cb0bd8c7c2e0b7ab08",
+      "chineseText": "8 U.S.C. § 1227(a)(1)(H)。双方当事人关于增加页数限制的动议获准。答辩人关于接受回复状的动议获准。答辩人的上诉将被驳回。国土安全部的上诉将被支持，并将下令答辩人自美国驱逐出境。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a11429a3290f6f6edbfdf52a095597f4aefadfac865f2331cdb4584e9f08239b",
+      "chineseText": "本案程序背景涉及波斯尼亚战争，该战争“是前南斯拉夫解体引发的内战冲突。”参见 D-R- 案，25 I&N Dec. 445, 451（BIA 2011），并因其他理由发回，见 Radojkovic 诉 Holder，599 F. App’x 646（第九巡回2015年）。“战争于1991年至1995年间进行，交战双方为民族塞族主导的塞族共和国与由波斯尼亚穆斯林主导的波斯尼亚-黑塞哥维那联邦。”同上。塞族共和国交战期间的军队称为 Vojna Republika Srpska（简称“VRS”）。双方均不争议答辩人在波斯尼亚战争期间曾服役于VRS，且未在与衍生难民身份及身份调整相关的文件中披露该事实。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cf74392ed3b6bb9b69154022142aea2c377fd30af3a921a4d8a5b69f29e0c2e7",
+      "chineseText": "答辩人在1998年以妻子难民申请的衍生身份入境美国。2001年，其身份调整为合法永久居民，追溯至其难民入境日期。国土安全部后来将答辩人置于驱逐程序中，指控其依据移民与国籍法第237(a)(1)(A)节，8 U.S.C. § 1227(a)(1)(A) 可被驱逐，理由为其在入境或身份调整时基于欺诈或故意虚假陈述重要事实，试图获取（或已试图获取或已获取）签证、其他文件、入境许可或根据移民法享有的其他利益。见 INA § 212(a)(6)(C)(i), 8 U.S.C. § 1182(a)(6)(C)(i) （2024年）.国土安全部还指控答辩人在入境或身份调整时因缺少根据移民法第212(a)(7)(A)(i)(I)节，8 U.S.C. § 1182(a)(7)(A)(i)(I)要求的文件而不可接受。国土安全部虽多次修正具体指控，但核心依据是答辩人虚假陈述：1）其在波斯尼亚战争期间，包括1995年斯雷布雷尼察大屠杀期间的VRS服役经历；2）其填写衍生难民表格时在波斯尼亚的居住情况。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "62bf53d2893fd63b11f71c067a2220e2f7f5a02c5682fcd2ade273f722884e98",
+      "chineseText": "经过数次详尽听证，移民法官发布详细裁决，认定答辩人因军事服役相关指控应被驱逐。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "01107021f20280886c498238d90f9d5fceb7b17b90751c43310102299c9708bf",
+      "chineseText": "移民法官依此前2013年裁决之内容在2019年裁决中予以引用。\n第402页"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为 29 I&N Dec. 401（BIA 2026）临时裁决第4157号"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a106788410bda6711e44f72c2a601b7f7eb9d29c3790a6df8b85a39212630991",
+      "chineseText": "移民法官随后裁定，依据移民与国籍法第237(a)(1)(H)节，8 U.S.C. § 1227(a)(1)(H)，准许答辩人提出的不予受理豁免请求。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "af8f98e7bd6e2ad9034e6a9f5bb2423e15896683fba7d3c1945c7cff2ba3e005",
+      "chineseText": "移民法官首份裁定详尽总结了卷宗内大量证据，现为明晰起见摘录相关部分。双方对斯雷布雷尼察种族灭绝的历史背景无实质争议：1995年7月，VRS部队杀害数千名波斯尼亚穆斯林男子与男孩，同时强制驱逐数千女性与儿童出斯雷布雷尼察地区。双方当事人争议焦点在于答辩人在该屠杀中的具体角色。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9ad1d7481208cdc380dac0120319941128d1643d71f2a24acab13d58b51bd6fe",
+      "chineseText": "国土安全部提交证据表明答辩人1995年7月前后服役于第一Zvornik步兵旅第四步兵连第七步兵营。1995年7月，第七营驻扎于Zvornik镇正西方向。期间，一支波斯尼亚穆斯林队伍试图逃离斯雷布雷尼察，与第七营及其他VRS部队发生交战。国土安全部专家证实第七营参与了激烈战斗及搜索行动。第七营车辆记录显示运送过波斯尼亚穆斯林战俘，后未有其余踪迹。该专家指出，有广泛证据表明波斯尼亚穆斯林被发现即被立即处决，但不清楚答辩人的具体角色。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5ce29a1a8a28889019cebb944ab6d12b2de2c42473cb72d620e69a62f3b18fbc",
+      "chineseText": "该专家将未披露VRS服役的人员分为三类：第一类为直接参与犯罪行为的少数人；第二类为协助或教唆迫害，如助于分离或掩埋受害者者；第三类且最常见者为因担忧披露服役信息将导致申请被拒而选择不披露者。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3c94e3461196240541e27f196ac199b916f3da599282509bed4281b747e1b72d",
+      "chineseText": "被申请人作证称，1995年7月事件期间，他在战壕中提供后方防御。他否认在此期间与波斯尼亚穆斯林有任何接触，也否认当时听说过斯雷布雷尼察及周边地区发生的暴行，尽管他后来了解到这些暴行。他声称仅开枪射击动物。被申请人的专家同意第一轻步兵第七营的部分成员参与了战斗行动和搜捕波斯尼亚穆斯林的清剿行动。该专家还认为，被申请人关于守卫防御战壕的叙述与当时的战术形势相符，因为Zvornik旅担心面临的波斯尼亚克军队会对他们发起进攻。被申请人的专家也认为，根据被申请人的证词，被申请人不会参与监视、运输、虐待、埋葬或重新埋葬波斯尼亚穆斯林的战争罪行。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引证为29 I&N Dec. 401（BIA 2026）临时裁定第4157号"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f59180c103a435313797e42540d8542387b7f911b1b2f2ce70b1c2739754d678",
+      "chineseText": "Zvornik步兵旅参与了战斗行动和扫荡行动，旨在搜捕波斯尼亚穆斯林。该专家还认为，被申请人所述守卫防御性战壕的情况符合当时的战术态势，因为存在波斯尼亚克军队可能对Zvornik旅采取进攻行动的担忧。被申请人的专家还认为，根据被申请人的证词，被申请人不涉及守卫、运输、虐待、埋葬或重新埋葬波斯尼亚穆斯林等战争罪行。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b3bee7e8c305be883c481c9a58036d54862ac50f1339f4555869fbd295257d8e",
+      "chineseText": "在上诉中，被申请人辩称，移民法官认定他如被指控可被驱逐身份有误。国土安全部（DHS）则辩称，移民法官明显错误地认为被申请人的证词可信。DHS进一步辩称，被申请人既不符合法定资格获得237(a)(1)(H)条款豁免，也不应在自由裁量权范围内获得豁免。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e82f44e7975e472a702ffcec90e064b9d660fef861c5fcdd261a1af01fdcae9e",
+      "chineseText": "我们首先审查被申请人的可驱逐性。判定一外国人在《移民与国籍法》（INA）第212(a)(6)(C)(i)条（8 U.S.C. § 1182(a)(6)(C)(i)）下的虚假陈述是否“实质性”时，我们适用“自然倾向”测试，该测试取自最高法院在Kungys诉美国案（485 U.S. 759 (1988)）的判决。参见Matter of D-R-, 27 I&N Dec. 105, 113 (BIA 2017)（“Matter of D-R- II”）。具体而言，我们将考虑虚假陈述是否倾向于封闭与该外国人入境资格相关且可能预测性地揭示其获取签证、其他文件或入境美国资格的相关事实的调查途径。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "13952228f244a99fc922b406a771febfe646d2d11074d4db7dfe6f995e38a138",
+      "chineseText": "移民法官认定被申请人在波斯尼亚战争期间未披露在波斯尼亚塞族共和国军（VRS）服役属于实质性遗漏。基于裁决中陈述的理由，我们确认该实质性认定。移民法官在采信专家证词时未明显错误，该专家证词称难民和身份调整审查员接受过培训，会关注是否有以前的军旅经历——尤其是波斯尼亚战争期间的军旅经历。见8 C.F.R. § 1003.1(d)(3)(i) (2025)。移民法官认定，承认军旅经历将开启对该服役性质的调查，这种额外调查可能导致多种结果——从认定无禁止入境情况到积极认定申请人涉及迫害、法外杀人或种族灭绝。由此，该遗漏封闭了可能揭示相关事实的调查途径。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "28ed97999cb818c8c9dc273f86a55b72d74e3dd992d4e08163930dbb5256d16c",
+      "chineseText": "在上诉中，被申请人广泛论证其遗漏不构成实质性，因为他声称根据真实情况，他从未失去难民身份或身份调整资格。实质性可通过“外国人在真实事实下应被排除”来满足。Matter of Bosuego, 17 I&N Dec. 125, 127 (BIA 1979, 1980)。但此理论并非确认实质性的唯一方式。移民法官的推理有力地表明，被申请人的遗漏封闭了一个可能“预测性地揭示其他与其签证资格、其他文件或入境美国相关事实”的调查路径。见Matter of D-R- II, 27 I&N Dec.于113页；参见Matter of Bosuego, 17 I&N Dec.于127页（持有虚假陈述是否定性的标准为其倾向封闭相关调查路径，进而可能改变裁决结果）。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引证为29 I&N Dec. 401（BIA 2026）临时裁定第4157号"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "61f0c1adea88c591c61a85b40b49a0e8ccf92c23b8aa34b434d32fa8d2200908",
+      "chineseText": "被申请人辩称省略内容不属于实质性，因为他声称根据真实事实，其从未失去难民身份或身份调整资格。实质性可因“外国人根据真实事实可被排除”而满足。Matter of Bosuego, 17 I&N Dec. 125, 127 (BIA 1979, 1980)。然而，此理论非确立实质性的唯一方式。移民法官的理由令人信服地指出，被申请人的遗漏封闭了一条调查路径，该调查路径“可预测地揭露其他与其签证资格、其他文件或美国入境相关的事实”。见Matter of D-R- II, 27 I&N Dec.于113页；亦见Matter of Bosuego, 17 I&N Dec.于127页（认定虚假陈述实质性基于其倾向封闭可能改变裁定的相关调查路径）。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d7d65a42ec94f3ee0da1e2e56ba99421ddcf3c360b9224691de3c0f92fb3af70",
+      "chineseText": "然而，该认定并未终结调查。在Matter of D-R- II中，我们重申了认定“在DHS证明超过门槛后，举证责任转移至外国人，需证明‘不存在不予入境的恰当认定’。” 27 I&N Dec.于113页（引自Matter of Bosuego, 17 I&N Dec.于131页）。移民法官认定被申请人未满足该标准。该法官作出裁决时未质疑被申请人的可信度或诚意。移民法官认定证据对被申请人VRS服役是否应使其丧失难民资格存在矛盾。根据移民法官，被申请人无法在该矛盾记录上承担举证责任。我们同意该理据，并予确认。故此，我们将驳回被申请人的上诉。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "bfb01d54dae53a3b17d28d63db0ecafcc40d0cf262f651b7b480b9b083ddc1ec",
+      "chineseText": "接下来，我们审查DHS关于被申请人可信度的论点。在其初步裁定中，该裁定涉及可驱逐性及被申请人在2012年关于VRS服役的证词，移民法官未作明确的可信度认定，且认为无须质疑被申请人的可信度。在第二份裁定中，该裁定涉及免除驱逐救济及被申请人关于其在美国生活和家庭的证词，移民法官作出了积极的可信度认定。然而，在第二份裁定中，移民法官认定更可能的是被申请人与Zvornik地区的任何犯罪无关。该裁定特别引述专家意见，认为被申请人未涉及Zvornik地区的犯罪，这一意见基于被申请人证词的可信度、准确性和说服力。移民法官进一步指出，被申请人关于未参与种族灭绝的证词可信。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "36219a8600bed24c684dcfc99b5d8e04a9705d63a74dd9786113df97abdb9f35",
+      "chineseText": "即便假设移民法官对被申请人在2012年的证词作出了积极可信度认定，我们也无需触及该认定是否明显错误的较窄问题。参见INS诉Bagamasbad案，429 U.S. 24, 25 (1976)（“通常法院和行政机关无须就不影响最终裁决结果的事项作出决定。”）。我们假设被申请人在2012年及2019年的证词均为可信。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引证为29 I&N Dec. 401（BIA 2026）临时裁定第4157号"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0035801bd38dd5710578e8dc6496aaf704f74025a6dbd30d281a291834b0650f",
+      "chineseText": "INS诉Bagamasbad, 429 U.S. 24, 25 (1976)（“作为一般规则，法院和行政机构不必对裁决结果无需的问题作出认定。”）我们假设被申请人在2012年和2019年的证词是可信的。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f00af8f97334a639a88e1295bea751396fa4278a9a29cdd4f82f358a2c5cfd85",
+      "chineseText": "关于被申请人请求根据INA第237(a)(1)(H)条款豁免，DHS提出多项关于被申请人法定资格的论点。然我们无需对这些论点作出裁定。参见前文。即使被申请人具备法定资格，在新审查下，也不适合基于自由裁量获得该豁免。见8 C.F.R. § 1003.1(d)(3)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f92721def5c511c322916fe18f68003aa645f8f89010e9b7f8b757626b4fff6c",
+      "chineseText": "在根据INA第237(a)(1)(H)条款（8 U.S.C. § 1227(a)(1)(H)）行使自由裁量时，我们在决定是否授予救济时不受可考虑因素的限制。参见INS诉Yueh-Shaio Yang案，519 U.S. 26, 30 (1996)；Matter of Tijam, 22 I&N Dec. 408, 416 (BIA 1998)。“是否作出有利自由裁量取决于权衡外国人作为永久居民的劣势与存在的社会及人道因素”。Matter of Tijam, 22 I&N Dec.于412页。可考量的不利因素包括“涉及欺诈或虚假陈述的性质和基本情形；任何刑事记录的性质、严重程度及近期程度；及其他影响外国人品格或作为合法永久居民不被欢迎的证据”。同案页；见同案417页（裁定该法规旨在为权衡利弊超过首要欺诈及其衍生欺诈的外国人提供救济）。有利因素包括“在美国的家庭关系；长时间居住，尤指自幼开始居住；若被驱逐对外国人或其家庭带来的艰难；稳定的工作经历；拥有财产或商业联系；对社区的价值与服务证据；及其他显示外国人良好品格的证据”。同案412–413页。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d763e643c7b6b78bb97e52751ae36ad7b683674edd4563dadfc25e92ff89181f",
+      "chineseText": "即使被申请人在2012年的证词可信，无可争议的是，被申请人就其在VRS的服役及战争期间的居留作出了多项虚假陈述。这些虚假陈述出现在其衍生难民申请中，且是在其难民面谈中经过宣誓作出，也出现在其身份调整申请内。他在后续接受调查员访谈时继续掩盖并虚假陈述其战争经历。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d1d299a80be78de9dcf6a2148d22fa34da3011df75cbc1d1d34fad2f904a9fc1",
+      "chineseText": "这些虚假陈述发生在许多年和多个论坛中。“诚实的证词和披露对于移民法律的运作至关重要”，讲真话是一项基本义务。第406页"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为29 I&N Dec. 401（BIA 2026）临时决定#4157"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "330048c07fb1249f74830b1080a9fcaeaa81e9ae2fa60ae751ee04d5e15b89fa",
+      "chineseText": "Gomez-Beltran案，26 I&N Dec. 765, 768（BIA 2016）。被告承认他在其衍生难民申请中故意未披露其在VRS的服役，因为他认为如果披露，他无法移居美国。这段长期的不诚实历史明显与被告请求酌情减免的主张相悖。"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "d8e90ae5c7a57d562a8af4dd8ad5c708259736915367a6ff31907ea4db003fa0",
+      "chineseText": "当被质询未披露的VRS服役时，被告多次试图掩盖或淡化该服役。当他于2005年因移民指控被逮捕后接受讯问时，面对其VRS服役的证据，他表示不记得在哪支军队服役。被告不真实地称其服役持续3年，结束于斯雷布雷尼察大屠杀之前。他在2012年的证词更为坦诚，但该证词是在国土安全部（DHS）提供大量文件和专家证词披露被告真实VRS服役情况之后作出的。"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "53d7df5bc7af0156957083c387907cac52e78abc9615d9fc960d3bd856c46a13",
+      "chineseText": "被告还作证称他在VRS中无军衔。然而，这与记录中独立证据不符。国土安全部提交多份VRS文件显示被告实际上是一名下士。这些花名册战时普遍使用，反驳了被告声称这些仅是他服役南斯拉夫军队时的遗留信息。最终，即便认为该证词可信，被告到2012年主观认为自己无军衔，该证词鉴于冲突的文件证据亦不足以令人信服。参见Garland诉Ming Dai案，593 U.S. 357, 372（2021）“诚实并不总等同事实的准确，也不保证法律上的胜诉。”该证词在酌情考量被告虚假陈述的性质及其解释时，也无益于被告。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a9615ce7717a943fcf2b405f4e3d0e5a4d3d8ae3998b71e42901c6e5b2554155",
+      "chineseText": "被告主张的关键方面不具说服力。被告于2005年告诉国土安全部官员，他不知道斯雷布雷尼察大屠杀。他对国土安全部官员作轻率和回避性陈述，称有人说一回事，有人说另一事，而斯雷布雷尼察发生的事就在那里。被告称他不知道有数千人被杀，也不知道VRS对该屠杀负责。他在2012年作证称对斯雷布雷尼察大屠杀不熟悉，后来仅通过媒体了解。其否认当时对战争罪的个人了解。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "041a4c10992eb60541e202c9aff5807103b45ce712c992d61b0dbcf7e47ef036",
+      "chineseText": "第407页"
+    },
+    {
+      "segmentId": "pdf-p8-s42",
+      "order": 42,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为29 I&N Dec. 401（BIA 2026）临时决定#4157"
+    },
+    {
+      "segmentId": "pdf-p8-s43",
+      "order": 43,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "86df60d2013fb5f07893534154902dc30a7498b18ac3ef7d0e258a3bc07f4c31",
+      "chineseText": "国土安全部专家作证称，截至1995年7月12日，囚犯即将被处决已成公开常识。此外，人们开始对机会主义杀戮视而不见。随着杀戮增加，了解这些杀戮消息的人群也随之扩大。如前所述，被告所在营的部分人员参与了重大战斗和扫荡行动。VRS领导层无法限制杀戮消息的传播，因为屠杀数千人并强制驱散更多人需要大量人力。被告作证称他一直在壕沟射击动物，完全不知附近有成千上万波斯尼亚穆斯林被谋杀和被种族清洗（部分由同营战友实施），这在最好情况下也难以令人信服。他数年后仍轻描淡写自己对这一广为人知且臭名昭著的屠杀和种族灭绝的了解，完全不具说服力。"
+    },
+    {
+      "segmentId": "pdf-p8-s44",
+      "order": 44,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "ead3639e95a6a718d7232199f3e407036e1e6e9b59b01ac4fbae283f9ce567e5",
+      "chineseText": "被告还虚假陈述了其战时居住地。虽移民法官认定该虚假陈述不具实质性，但在衡量酌情决定时仍具相关性。在其衍生难民申请和身份调整申请中，被告均未提及他从1992年至约1996年居住在波斯尼亚。其衍生难民申请中，他不真实地称他于1992年从波斯尼亚流离失所。"
+    },
+    {
+      "segmentId": "pdf-p8-s45",
+      "order": 45,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "b8dee40b37a94d22e141617b9c64521d8299f5290b82f7c5c033e60cbad03b90",
+      "chineseText": "被告证实其于1992年至约1993年住在波斯尼亚塞帕克。VRS记录显示他整个战争期间住在那里。1993年某时，被告家人搬至塞尔维亚，但被告往返于波斯尼亚和塞尔维亚之间。"
+    },
+    {
+      "segmentId": "pdf-p8-s46",
+      "order": 46,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "5efabc1f75480773c7b6895ae3b93cac58beb6081bfd8039655d39ea8c51ea97",
+      "chineseText": "被告在有关其衍生难民及身份调整申请内容及其取得过程的提问中援引第五修正案自证其罪权利。对关于可能涉及种族灭绝的高度相关问题保持沉默，可推断为不利推论。参见Gutierrez诉Holder案，662 F.3d 1083, 1091（第九巡回法院2011）；美国诉Bilokumsky案，263 U.S. 149, 154（1923）“无明文禁止从保持沉默事实中作出不利推论。”在酌情判断中，我们作出不利推论。鉴于被告多年的否认及淡化VRS服役历史，这种不利推论适用。被告多次在申请移民福利过程中作出虚假陈述，之后又援引第五修正案，不应使其在酌情考虑中受益。"
+    },
+    {
+      "segmentId": "pdf-p8-s47",
+      "order": 47,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "50e886c5e4539658653782acaf83c885941c7427f717af46e879321726c9dc58",
+      "chineseText": "第408页"
+    },
+    {
+      "segmentId": "pdf-p9-s48",
+      "order": 48,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为29 I&N Dec. 401（BIA 2026）临时决定#4157"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "2fe53874dcfdf2437b10cd2001e41e532ace5b3f30bbc7519d578034f30eff0e",
+      "chineseText": "是否应赋予被告根据第237(a)(1)(H)节的豁免行政宽恕。"
+    },
+    {
+      "segmentId": "pdf-p9-s50",
+      "order": 50,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "5a4d48684ab45d1e42da4ba01f20b40c8d2a5e6b3fa0e46440afc8c99d9b36dd",
+      "chineseText": "在此，被告反复且长期的虚假陈述掩盖了其参与犯下臭名昭著的波斯尼亚穆斯林屠杀及种族清洗的武装部队。这是重要的负面酌情因素，移民法官未充分考量。即使被告后续证词可信，也不必然意味着其应获行政宽恕。被告本应完整披露过往，让移民官员初期能评估涉及VRS服役的申请。"
+    },
+    {
+      "segmentId": "pdf-p9-s51",
+      "order": 51,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "1d3a442b3e7bc52d70c5ecbf122b4e70cb244e2f7ab07b72ad58fb5850873d32",
+      "chineseText": "我们亦注意移民法官未认定被告有悔意。被告的上诉论点未提及悔意作为正面因素。被告未争议其作出虚假陈述（但争其实质性）。针对这些虚假陈述的悔意证据不足，是负面酌情因素。4"
+    },
+    {
+      "segmentId": "pdf-p9-s52",
+      "order": 52,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "5a41d1c8b15e262183ac2d3cd4452c166e2c0caf190d05eab80df641ec3bb842",
+      "chineseText": "我们已考虑被告的重大正面条件，包括2019年关于其在美国生活和家庭的可信证词。我们充分考虑被告在美长期居住、家庭关系、资产及就业。被告年龄较大，或使其被遣返时遭受额外困苦。尽管家庭团聚利益重要，但被告关于VRS服役的虚假陈述（涉及臭名昭著的战争罪和种族灭绝）最终超过正面条件。5参见Reid诉INS案，420 U.S. 619, 630（1975）（讨论前移民法第241(f)节下的欺诈豁免，8 U.S.C. §1251(f)（1970年），指出该豁免限于其欺诈行为被后续获取的家庭关系超过抵消的外国人）。因此，将作以下裁定。"
+    },
+    {
+      "segmentId": "pdf-p9-s53",
+      "order": 53,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "285d55ed8dbedec18b4791394930f266c3d7428df1875ae76d10224ca2429e48",
+      "chineseText": "裁定：驳回被告上诉。"
+    },
+    {
+      "segmentId": "pdf-p9-s54",
+      "order": 54,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "85a7b85267563ad7fc777dc379d89ac86b3931407d5f58d7edc68868a20f4c50",
+      "chineseText": "4 即便被告目前有悔意，我们仍将拒绝该申请，因为该悔意不足以影响酌情平衡。 5 即便假设被告未参与这些暴行，但鉴于其虚假陈述，不意味着其应获第237(a)(1)(H)节豁免。\n第409页"
+    },
+    {
+      "segmentId": "pdf-p10-s55",
+      "order": 55,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为29 I&N Dec. 401（BIA 2026）临时决定#4157"
+    },
+    {
+      "segmentId": "pdf-p10-s56",
+      "order": 56,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "a9ef7646b292608afa7a236f7710da58b5fa43dff7a86a8df3bd787bd7a9c03f",
+      "chineseText": "进一步裁定：支持国土安全部上诉，撤销移民法官2019年3月13日决定。"
+    },
+    {
+      "segmentId": "pdf-p10-s57",
+      "order": 57,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "ac5177fe1cc9efd77afc17c2d6443f2a0d307f75f582c665238822e884395186",
+      "chineseText": "进一步裁定：命令被告从美国遣返至波斯尼亚-黑塞哥维那。"
+    },
+    {
+      "segmentId": "pdf-p10-s58",
+      "order": 58,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "af6dcb5e65fac57fe817587a594e7731dede6e6a636548855ff33ec06529a6a8",
+      "chineseText": "通知：若被告受最终遣返令约束，且故意拒绝或不履行根据该令离开美国的义务，不及时、诚信申请必要的旅行或其他离境文件，或未按移民国土安全部要求的时间及地点呈现，或共谋或采取任何旨在阻碍、妨碍其按照遣返令离境的行动，被告将面临每日最高998美元的民事罚款。参见移民法第274D节，8 U.S.C. §1324d（2024）；8 C.F.R. §280.53(b)(14)（2025）。此外，任何被拒绝入境、被遣返或在有排除、驱逐或遣返令生效期间离境，且之后进入、试图进入或任何时间被发现在美国的被告，将被罚款或监禁不超过两年，或并罚。参见移民法第276(a)节，8 U.S.C. §1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p10-s59",
+      "order": 59,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "df49173b53cfecd604c4826d615b38abe1b847de06cb2012e59d6498f98aaa08",
+      "chineseText": "合议兼异议意见：临时上诉移民法官Paul A. McCloskey"
+    },
+    {
+      "segmentId": "pdf-p10-s60",
+      "order": 60,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "e82a8d824cd76f7cb1092e95d9d6c6aafbdcb12dfb94197a33ba211b0303fdf8",
+      "chineseText": "我对大多数意见的裁决表示尊重赞同。但我会审议可信性问题，并认定被告2012年作证不具备可信性。“已判定‘当虽有证据支持，但审查法院根据全部证据坚信存在错误时，认定为‘明显错误（clearly erroneous）’。’”R-S-H-案，23 I&N Dec. 629, 637（BIA 2003）（引自美国诉美国石膏公司案，333 U.S. 364, 395（1948））。法院不得仅因会权衡不同证据结果或事实不同认定而推翻事实认定。"
+    },
+    {
+      "segmentId": "pdf-p10-s61",
+      "order": 61,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "16ee88b84824ba99ce457e7f01e087591624c06c7eda0132180c86e26ff0363a",
+      "chineseText": "移民法官未说明被告2012年证词为何可信，未明确权衡质疑其可信性的众多因素。久已确定，移民法官必须“提供具体且有说服力的理由”支持可信性认定。Shrestha诉Holder案，590 F.3d 1034, 1044（第九巡回法院2010）（引文省略）。第410页"
+    },
+    {
+      "segmentId": "pdf-p11-s62",
+      "order": 62,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "75a44eebf79db91e89ac6f23ddf2942b8f73ec7c6d5b1c96a7111ba734423247",
+      "chineseText": "引用为29 I&N Dec. 401（BIA 2026）临时决定#4157"
+    },
+    {
+      "segmentId": "pdf-p11-s63",
+      "order": 63,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "2920bc533bfcb8d82688c0410d9bd7b56f77521256b227bfa000bc7e51d0ef38",
+      "chineseText": "如认定被告2012年证词可信，我必须忽略其先前关于Zvornik旅服役的所有虚假陈述和淡化，接受其2012年终于讲出全部真相，尽管其拒绝回答关于同样虚假陈述的相关问题。我必须接受其自称为低级义务兵，尽管有文件证据显示其为下士。我必须接受其称其一直处防御阵地，完全与近处暴行无关，尽管证据显示其营参与了那些暴行。我还必须接受被告反复谎报波斯尼亚战争服役及其在当时的存在与其参与或目睹的任何行为无关。因此，我必须作出对被告有利的每项推断，同时贬低或轻视相反证据，且被告拒绝回答涉及多项虚假陈述的问题。我缺乏信心作出此等推断，对被告证词的说服力毫无信心。综合考虑，我坚信被告2012年证词不可信。"
+    },
+    {
+      "segmentId": "pdf-p11-s64",
+      "order": 64,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "a7286b0904408c856743094022be4f2c27185d2f79fa04d3898ca5cfa98f1bcd",
+      "chineseText": "因此，我同意驳回被告有关可驱逐性的上诉。我进一步同意支持国土安全部上诉，并将酌情权下拒绝第237(a)(1)(H)节豁免。"
+    },
+    {
+      "segmentId": "pdf-p11-s65",
+      "order": 65,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "09435be6f9329ad8bef28845faae33bd64011346d7a37a925aeea3b7ef6e8d84",
+      "chineseText": "第411页"
+    }
+  ]
+}

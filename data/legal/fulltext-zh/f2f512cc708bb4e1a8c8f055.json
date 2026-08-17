@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "recordId": "f2f512cc708bb4e1a8c8f055",
+  "recordFingerprint": "82feb767a69d2814e015499d48b62e6c95a9fc0a2d2b8d93ca5855862f94e22e",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1426556/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1426556/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1426556/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:14:32.497Z",
+  "sourceDigest": "87f167b10a9dffd29df7b143e9dc75a90e56e36ca6efc96609db08753737a8a8",
+  "translatedAt": "2026-08-17T15:23:14.158Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 34,
+  "translatedSegmentCount": 34,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "55333eb7e7deae40d37254ac91d095b65320d45d63e6f11dc3dcf8a6d6bf9d55",
+      "chineseText": "引证为29 I&N Dec. 431 (BIA 2026) 临时决定#4161"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5dbbe1b13926152db7a28c696337f00f646b6259dd4a877ac0b4f14fc501c8bf",
+      "chineseText": "G-M-I- 案，答辩人\n2026年2月4日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5762f2cc4486f3f8947d1ba8b701c57be1b8cd7bc48c5d29f7f95fc40bf5665a",
+      "chineseText": "当专家证人的意见基于轶事或不准确的事实或数据时，其相关性和可靠性将大为削弱。\n代表答辩人：Benjamin J. Osorio律师，弗吉尼亚州费尔法克斯\n代表国土安全部：助理首席法律顾问Serena L. Podish\n审理小组：上诉移民法官Goodwin和Volkert；临时上诉移民法官McCloskey。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d50d06ed3b62bf7d6da1262aef6d7dccb45a0779f6dd97d7dd55612d441c854e",
+      "chineseText": "临时上诉移民法官McCloskey发言："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e421a2ba6d1cd7dcde1eefb1f351104519a9fdb86b4e45d78b67ac697043f1d9",
+      "chineseText": "本案最近一次由委员会审理是在2024年6月20日，当时我们将记录发回移民法官。2025年3月26日，移民法官批准了答辩人根据《禁止酷刑公约》（“CAT”）的延期遣返申请。国土安全部（“DHS”）对该决定提出上诉，质疑移民法官对答辩人专家证人证词的依赖。答辩人反对此上诉。现决定维持上诉。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e1eba80fae6b2f084a633bd8cc0254ffca9e05ead3164763dd6b064a2e56ae7c",
+      "chineseText": "一、事实和程序经过\n答辩人为中华人民共和国的本国公民。2014年，答辩人因密谋向美国走私150公斤以上可卡因罪被定罪，判处14年监禁。之后，DHS发出出庭通知，指控答辩人有可被遣返的理由。答辩人承认可被遣返，并提交了根据CAT的延期遣返申请。在充分采纳答辩人专家证人的陈述和证词后，移民法官认定中国政府将因答辩人犯有毒品犯罪而在其回国后拘留并施以酷刑，并对中国的声誉造成损害。因此，批准了答辩人根据CAT的延期遣返申请。\n1\n《禁止酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》，1984年12月10日，参见S. Treaty Doc. No. 100-20，1465 U.N.T.S. 85（美国于1994年11月20日生效）。2025年版联邦法规8 C.F.R. §§ 1208.16(c), 1208.17；2020年版8 C.F.R. § 1208.18(a)。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "55333eb7e7deae40d37254ac91d095b65320d45d63e6f11dc3dcf8a6d6bf9d55",
+      "chineseText": "引证为29 I&N Dec. 431 (BIA 2026) 临时决定#4161"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c99f2a601ecbec66e1b5e32fe715186859b5e5cada102fb578a7626bfe46f1c3",
+      "chineseText": "答辩人将因可能给中国造成声誉损害而被拘留和遭受酷刑，因此移民法官准许了其根据CAT的延期遣返申请。DHS在上诉中质疑给予专家证人证词的分量及移民法官基于CAT的延期遣返决定。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a3bd008f9064bb055e9b89c68064cc1f8385580abf12a7d62157a2cecf3c3364",
+      "chineseText": "二、法律分析\n根据CAT，答辩人必须证明其更有可能在中国被公共官员或其他履行公务职责之人教唆、默许或同意下遭受酷刑，才能获得延期遣返。8 C.F.R. §§ 1208.16(c)(2), 1208.17 (2025)；8 C.F.R. § 1208.18(a)(1) (2020)。“CAT保护的授予条件严格”，除非导致答辩人被酷刑的假设事件链条中每一步都更有可能发生，否则不予满足。见Matter of A-A-R-, 29 I&N Dec. 38, 46 (BIA 2025)；Matter of J-F-F-, 23 I&N Dec. 912, 917–18, 918 n.4 (A.G. 2006)。“一般酷刑可能性的证据不足以满足答辩人证明其更可能被针对进行酷刑的举证责任。”Matter of A-A-F-V-, 29 I&N Dec. 118, 121 (BIA 2025)。我们对移民法官的事实预测性结论进行明显错误的审查，但对答辩人是否满足举证责任的最终法律认定进行全新审查。见Matter of A-A-R-, 29 I&N Dec. 41（区分关于虐待类型与可能性的事实认定与该虐待行为构成酷刑的法律认定）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fda8bb8de2fb23c25691c09fd63f2a12ceccf1a036252a1e603409131000d1c6",
+      "chineseText": "A. 专家证人证据"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "31311e0691203e4df645d5484e98277f09936cdc4df1cdf5a712566f320212ee",
+      "chineseText": "移民法官认定答辩人已建立酷刑的必要可能性，主要依据为中华人民共和国法律体系专家的证词和书面宣誓书。专家证人的角色是“协助移民法官理解证据或决定事实争点”。Matter of J-G-T-, 28 I&N Dec. 97, 101 (BIA 2020)。当专家证词仅对移民法官常见且无需专家协助理解的证据类型如国家状况报告和新闻文章进行解释时，专家证词帮助程度较低。见同处（专家证人帮助移民法官进行其缺乏或无专门知识事项的事实认定）。“专家证人证词……在移民程序中同所有证据接受同等对待。”Matter of M-A-M-Z-, 28 I&N Dec. 173, 177 (BIA 2020)。作为事实裁定者，移民法官必须根据专家的专长领域及所提供意见是否有“充分事实依据”来决定给予其证据何种证明力。见同处177–78，180–81（引自Matter of J-G-T-）。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "55333eb7e7deae40d37254ac91d095b65320d45d63e6f11dc3dcf8a6d6bf9d55",
+      "chineseText": "引证为29 I&N Dec. 431 (BIA 2026) 临时决定#4161"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5f33d49b4a5320ba1f0a439a7336b25a6200948b04a3d5cb16c6e981d52c13b9",
+      "chineseText": "虽然专家证人“可能基于事实和数据做出合理推断”，Matter of J-G-T-, 28 I&N Dec. 101，但其意见“非决定性事实”。Matter of M-A-M-Z-, 28 I&N Dec. 180。只有移民法官“负责作出事实认定”及基于该事实的法律结论。见同处。移民法官“仅当专家意见有可靠事实或证据基础时才应认定其有说服力。”Matter of J-G-T-, 28 I&N Dec. 103。 “[当记录包含矛盾证据时，移民法官应解释为何专家的推断合理且较其他呈现证据更具说服力。”见同处106；参见Matter of M-A-M-Z-, 28 I&N Dec. 177–78（解释当移民法官做出与专家意见不符的事实认定时，应说明其认定理由）。移民法官不应仅仅服从专家的预测性推论，特别是当这些推论基于普遍理解的广泛证据且“实质上确立”了事实认定或法律结论时。见Matter of J-G-T-, 28 I&N Dec. 103–04。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "533b003b3d1daad3f64b1ca6a5414e7a51866997618f1fcaaa13b33ba72cd6a7",
+      "chineseText": "此案中，答辩人的专家证人提交了两份宣誓书及证词，其观点认为答辩人被遣返回中国后更可能遭受酷刑或处决，基于其评估：(1)中国通常对严重毒品贩运罪被判刑者施以酷刑和死刑；(2)中国预先知晓答辩人的遣返。该专家做出预测性推断的证据基础包括其宣誓书中提及的文章，这些文章描述了中国将毒品贩运犯罪视为公共安全威胁并关注国家全球声誉、中国较为频繁使用死刑，以及中国凭借广泛的监控体系追踪和监控公民与入境者。移民法官对该专家证人的证词和声明给予充分分量，并据此认定答辩人被酷刑的可能性较大。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2a30029a592c89621e830dd992411f1bd69823824e0a04897fb32aa31c38fc17",
+      "chineseText": "移民法官因此认定，答辩人被遣返回中国后更可能遭受酷刑，因而批准其CAT延期遣返申请。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "124bc47b20a5766c09dcc72fc2155375331ee7c9aa312a165ceaec2213c250f4",
+      "chineseText": "我们同意国土安全部（DHS）的观点，认为移民法官在给予专家证人证据充分权重时犯了错误。专家证人的意见没有“足够的事实依据”。首先，该专家没有声称自己对中国在境外判处毒品贩运罪者的酷刑行为有直接了解，也没有阐述自己过去在中国死刑案件或中国执行死刑方式方面的专业经验。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "55333eb7e7deae40d37254ac91d095b65320d45d63e6f11dc3dcf8a6d6bf9d55",
+      "chineseText": "引证如 29 I&N Dec. 431 (BIA 2026) 临时裁决编号#4161"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "02e668a1cb1c562900c0b397328ad997c2dbe827d5de29cc0f4a0646b6ecb359",
+      "chineseText": "专家在其报告中指出，“关于中国的酷刑和处决的统计数据稀缺”，“关于遣返毒贩的官方信息也非常少”。他也未能就被判处死刑的人数或被判罪者中死刑判决的比例提供任何有意义的估计。尽管他引用了一篇法律期刊文章，称中国95%的死刑涉及毒品罪、故意杀人和抢劫，但该统计数据并未进一步细分一个被判毒品罪的人被判死刑的可能性，或者像申请人这样在他国被判毒品贩运罪的人被判死刑的可能性。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8cadae2e0ac28fc114b6dfffd0725ce8a583b0354cfb5f9c2f54de5e42d918b2",
+      "chineseText": "专家承认确切知道申请人将遭遇何种情形非常困难，他声称有人权组织报告的例子显示，曾在其他国家被判毒品贩运罪的中国公民在回国后被拘留。为支持这一说法，专家仅依赖一则轶事，讲述一名加拿大国民在加拿大因毒品相关罪名定罪后试图进入中国时即被立即逮捕。专家还提及2017年一名香港富豪被从酒店房间绑架并带入非法拘禁的另一单一事件。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9e894579d8f3e85c3864de41d49c8602d8a6e89c465fa57cf3b93417f1a7c88c",
+      "chineseText": "在预测申请人在中国将遭受的伤害时，专家未区分在中国境内被判毒品罪者与在境外被判毒品罪后返国者的伤害，也未提供任何实际例证显示中国对在海外被判毒品贩运罪者施加酷刑或处决。涉及香港富豪绑架的轶事关联不明，专家模糊的证词未能充分说明申请人与该人的共同点。此外，专家对关于该加拿大国民的轶事的描述，进一步由提交的文章详细说明，存在错误。该事件并非如专家所述，一名在加拿大因毒品相关犯罪被逮捕并定罪的加拿大国民，而是一名在中国法院因中国境内的毒品贩运被逮捕和定罪的加拿大公民——这一事实已由DHS在开案陈述中指出。此外，文章的主要当事人最初判了15年徒刑，死刑判决仅在重审后作出（据称是对加拿大逮捕一名中国电信高管的报复）。因此，该轶事与申请人的情况几乎没有或根本没有相关性。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4cd88e639eeab53fb620b6269f818a0ab88911be503f6724d5a9987604cbb1ba",
+      "chineseText": "第 434 页"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "55333eb7e7deae40d37254ac91d095b65320d45d63e6f11dc3dcf8a6d6bf9d55",
+      "chineseText": "引证如 29 I&N Dec. 431 (BIA 2026) 临时裁决编号#4161"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "35424d9ed35638d24bfa0fdec1c1c391b3fcc455011fdca6efec0d24ba0e8d00",
+      "chineseText": "当专家证人的意见基于轶事性或不准确的事实或数据时，其意见的相关性和可靠性会大打折扣。由于该专家依赖两个与申请人情况不相似的轶事来支持其预测，认为申请人因在美国被判毒品贩运罪将被拘留和酷刑，移民法官在未合理考虑明显缺乏事实依据的情况下给予该专家意见重大权重，显然是错误的。参见J-G-T-案，28 I&N Dec. 第104页。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "453c338baf9413278b23997294e8ca6e06baf015a9f4b2966036792b440d2218",
+      "chineseText": "B. 反酷刑公约"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8e0ad28232dfc8007a4606f6265ed23c28d79c8ab16f99ae27fadcaaad93d9a2",
+      "chineseText": "转向被上诉人根据反酷刑公约（CAT）申请的暂缓驱逐，经重新审查，我们认为移民法官引用的证据，包括专家证人关于酷刑可能性的意见，均不足以满足被上诉人的举证责任。见8 C.F.R. § 1208.16(c)(2)。即便假设中国政府很可能得知被上诉人因毒品犯罪的定罪并在抵达时拘留他，专家证人的观点即被上诉人可能遭受酷刑，依赖的仍是那种我们已解释过不足以确立个别化明确酷刑概率的轶事和一般化国家情况证据。见例如，J-H-M-V案，29 I&N Dec. 278, 283（BIA 2025）（认定一些类似境遇个人遭受严重伤害的轶事证据不足以证明特定外籍人士更可能遭受达到该程度的伤害）；A-A-R案，29 I&N Dec. 41–42（同）；J-E案，23 I&N Dec. 291, 303–04（BIA 2002）（同）。专家证人的结论依赖于一般性证据，即中国曾发生可构成酷刑级别的伤害行为，并因公共安全及声誉原因对严重毒品贩运犯罪予以严厉处罚。然而，专家证人承认官方关于遣返毒品贩运者待遇的信息极少，且承认对中国刑法的具体细节及遣返程序不熟悉。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "6ce6850407ef9e37bec8184c060037e2a651f060668ce1399a485d0b57e115ad",
+      "chineseText": "关于酷刑一般可能性的证据不足以满足被上诉人证明其本人更可能遭受酷刑的负担，即使有些类似境遇人士曾遭受酷刑。见A-A-F-V案，29 I&N Dec. 121；Jean-Pierre诉美国司法部长案，500 F.3d 1315, 1324（第十一巡回法院2007）（裁定CAT保护申请人必须证明其个别酷刑风险）。此处，被上诉人未提出充分证据证明被中国境外定罪的毒品贩运者更可能遭受酷刑。"
+    },
+    {
+      "segmentId": "pdf-p6-s27",
+      "order": 27,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "55333eb7e7deae40d37254ac91d095b65320d45d63e6f11dc3dcf8a6d6bf9d55",
+      "chineseText": "引证为29 I&N Dec. 431（BIA 2026）临时裁决第4161号"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "fc9bee14a48380d5ff3bb2434838a49e5a5ca16eba008c1fd5a7bfb74df331e0",
+      "chineseText": "遭受酷刑的可能性。他亦未提供充分证据表明中国政府对其有任何特定或具体关注。他的论点最终依赖于泛泛的国家状况证据和基于相同泛泛证据的专家证人意见。那些原本不足以证明个别化明确酷刑概率的泛泛证据，仅因专家证人审查并认为被上诉人可能遭酷刑，亦不得视为充分。见M-A-M-Z案，28 I&N Dec. 177（指出专家证词与其他证据一视同仁，只有移民法官作出裁定）。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "fe76c26cc7e8fd79f30b380a693141493fb45e1b6b057e7204a3b7d94dec300f",
+      "chineseText": "关于中国对在中国境内犯毒品贩运罪者严厉惩罚及其监狱中酷刑使用的一般证据，无法证明被上诉人基于其在美国的毒品贩运定罪，更可能被拘押并遭非法或其他形式的酷刑。见例如M-B-A案，23 I&N Dec. 474, 479（BIA 2002）（认定尼日利亚恶劣且威胁生命的监狱条件，若被上诉人未能证明基于其美国毒品定罪更可能被拘押和酷刑，则不足以获得CAT保护）。经我们重新审查，认为包括专家证人意见在内的案卷证据不足以满足被上诉人根据CAT申请暂缓驱逐的举证责任。见M-S-I案，29 I&N Dec. 61, 62（BIA 2025）。因此，我们将撤销移民法官对此项救济的批准。被上诉人将依据移民法官的驱逐令被驱逐。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "b379d6420a8be6e88dac579127421c0a4f1cebf07c130efb85427aee0cd221d7",
+      "chineseText": "命令：国土安全部的上诉获支持，撤销移民法官2025年3月26日作出的根据反酷刑公约批准暂缓驱逐的裁定。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "de01764690ece2af6059fec39f59b4d909648b2169ee4d84df17d941362d0d25",
+      "chineseText": "通知：如果被告受到最终的遣返命令，并且故意未按该命令离开美国，未能及时善意地申请离开美国所需的旅行或其他文件，或未能在国土安全部（DHS）规定的时间和地点出现进行遣返，或者合谋或采取任何旨在阻止或妨碍被告根据遣返命令离开的行为，则被告将面临每天最高998美元的民事罚款。参见《移民与国籍法》（Immigration and Nationality Act，简称“INA”）第274D条，8 U.S.C. § 1324d（2024年）；8 C.F.R. § 280.53(b)(14)（2025年）。此外，任何在排除、驱逐或遣返命令有效期间被拒绝入境、被遣返或离开美国的被告，"
+    },
+    {
+      "segmentId": "pdf-p7-s32",
+      "order": 32,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "55333eb7e7deae40d37254ac91d095b65320d45d63e6f11dc3dcf8a6d6bf9d55",
+      "chineseText": "引证自29 I&N Dec. 431（BIA 2026）临时裁决第4161号"
+    },
+    {
+      "segmentId": "pdf-p7-s33",
+      "order": 33,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "e669f1872ce32c7975c48e6f4206ad7e9d7114b821a168bd3342246a134781c1",
+      "chineseText": "随后进入、尝试进入或在任何时间被发现身处美国的，应被处以罚款或监禁不超过2年，或两者并处。参见INA第276(a)条，8 U.S.C. § 1326(a)（2024年）。"
+    },
+    {
+      "segmentId": "pdf-p7-s34",
+      "order": 34,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "e5314d62f94cc0c2f7d20f0eb0e570b21f0d458edecc716d8f28e2d29aa792f3",
+      "chineseText": "第437页"
+    }
+  ]
+}

@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "recordId": "9afd14a346c04249377b8ea1",
+  "recordFingerprint": "0cb77c6b2d2fd8c7a484b9a211058de64a96ae0b81d508b3144f81b2196befd0",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1428266/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1428266/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1428266/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T15:23:14.189Z",
+  "sourceDigest": "8e135b846fa2f78316480459beb6b4a9fdc4329cb94e3a69027cf391e0d6f04d",
+  "translatedAt": "2026-08-17T15:27:49.948Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 38,
+  "translatedSegmentCount": 38,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8b9669cad4dd1b9662fc93026821ac456559bc004215ffde296fe067bae3437c",
+      "chineseText": "引证为 29 I&N Dec. 456 (BIA 2026) 临时裁定 #4165"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dced455e744b7fefd7acf641851ce632c1584aedb707e3153205f50110ba8dc3",
+      "chineseText": "F-B-A- 案，答辩人\n裁定日期：2026年2月20日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e3a0b524dea2c2833fd6d02fe858d50e858554daa0fa169f56ff26cdb14f98ba",
+      "chineseText": "(1) 儿童报告伤害时面临的独特障碍不适用于成年人，包括那些童年时期受害的成年人。见 C-G-T- 案，28 I&N Dec. 740（BIA 2023），予以澄清。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3f749eb490536683a5ab7294f2a9bc05d72d065c804d674d05ea0414470ed447",
+      "chineseText": "(2) 鉴于俄罗斯的广袤地域、答辩人隶属该国的多数宗教以及缺乏充分证据显示其家人在两年多前最后一次威胁她之后依然积极寻找她，移民法官认定答辩人无法合理重新安置以避免迫害的裁定明显错误。\n答辩人代理律师：伊琳娜·鲁萨诺娃律师，华盛顿州芒特莱克特莱斯\n审理小组成员：MULLANE、HUNSUCKER 和 GEMOETS，上诉移民法官。\nHUNSUCKER，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3d4b55f3f05f8133355cfc63dc5b155ad4d1d60d7fee6f255aac01c35d05ffcf",
+      "chineseText": "本案最近一次审理日期为2025年11月7日，当时我们支持国土安全部（“DHS”）对移民法官2025年3月14日裁定的上诉，该裁定批准了答辩人根据《移民和国籍法》第208(b)(1)(A)条（8 U.S.C. § 1158(b)(1)(A)（2024年））的庇护申请。支持DHS上诉的同时，我们撤销了移民法官的裁定并命令驱逐答辩人。2025年11月10日，答辩人（一名来自塔吉克斯坦的俄罗斯公民）及时提交复议动议。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2b38302bcf2de905b374f3c9a2652ae7dede922f00bf444ab8467ab82c39744b",
+      "chineseText": "根据答辩人复议动议中提出的具体论点及我们自身权限，我们将批准复议动议，旨在进一步澄清2025年11月7日裁定中的理由。见 8 C.F.R. § 1003.2(a)（2026）〔“本委员会可随时重新开启或复议……其作出裁决的任何案件。”〕复议后，我们将再次支持DHS的上诉并命令驱逐答辩人。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7245ce894ba922f80ef2aaa725610e56d759b10ca425d5199b5ed8287c0b2cd9",
+      "chineseText": "2025年11月19日，答辩人就其复议动议提交了补充材料。该动议及补充材料已被整体考虑。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8b9669cad4dd1b9662fc93026821ac456559bc004215ffde296fe067bae3437c",
+      "chineseText": "引证为 29 I&N Dec. 456 (BIA 2026) 临时裁定 #4165"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3d3c794dc06ba7a3e6cc16c1c138dde6bbc4d330ff9e6d225dab7ce29a4a260b",
+      "chineseText": "一、事实与程序经过\n答辩人为未婚成年女性，因其从伊斯兰教改信俄罗斯东正教，担忧包括其父母、兄弟和表亲在内的家庭成员会加害于她。具体来说，答辩人描述了因抵制伊斯兰教以及随后皈依基督教而遭其家庭成员施加的多种伤害。答辩人还说明，她担心未来会遭受伤害，因为其家人曾威胁要因她的叛教杀害她，其兄弟甚至威胁要为她带来的耻辱与羞辱砍下她的头颅。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d9073d8465e6d3bd4a10cb11fa7d7eae0560d7da800f2bf60f186943707eb9da",
+      "chineseText": "移民法官认定答辩人可信，并基于其可信证词、证据佐证及案卷中的国家状况证据，裁定答辩人建立了有充分根据的迫害恐惧。在上诉中，DHS未对移民法官认定答辩人因从伊斯兰教改信俄罗斯东正教极可能遭家庭迫害或杀害的判断提出异议。DHS挑战的焦点为移民法官认定俄罗斯当局无法或不愿保护答辩人及答辩人无法通过重新安置来避免未来伤害的判定。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5e1523cd332c043ef0a5afbd60022f61bd9d87d6c576e94d42acdc4603ee1af9",
+      "chineseText": "我们认可DHS的观点，即移民法官认定俄罗斯当局无法或不愿保护答辩人的结论明显错误。见 C-G-T- 案，28 I&N Dec. 740, 743（BIA 2023）〔“政府是否无法或不愿保护个人免受迫害属于事实问题，我们以明显错误标准审查。”〕具体而言，我们认定移民法官错误依赖关于家庭暴力的证据，而该答辩人的恐惧基于宗教迫害。我们认为，涉及家庭暴力的一般国家状况证据不足以证明俄罗斯政府无法或不愿保护答辩人免受因改信俄罗斯东正教而遭家庭伤害。我们还注意到答辩人未能证明其家庭对警方拥有影响力，从而使寻求警方帮助变得徒劳。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5072b2f7f88e99c201c4576c29620532c58f1e9e76ad084a041bce9372066686",
+      "chineseText": "二、分析\n答辩人在复议动议中主张，移民法官正确认定她向当局寻求帮助将无意义甚至危险。虽然未报告伤害“并非必然致其迫害主张失败”，答辩人未寻求当局协助的合理性，是审查政府是否无法或不愿保护答辩人的重要因素，需结合其他证据一并考虑。见 C-G-T- 案，28 I&N Dec. 743–44（引用略）。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8b9669cad4dd1b9662fc93026821ac456559bc004215ffde296fe067bae3437c",
+      "chineseText": "引证为 29 I&N Dec. 456 (BIA 2026) 临时裁定 #4165"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "11e413feb37bfa8398367eb8afbba2ed599f9f12f2935314925944b433c7c373",
+      "chineseText": "答辩人援引 C-G-T- 案，称她所处的社会及心理环境极具压迫和强制性，使得报告伤害无益且会招致额外伤害。她进一步主张，我们先前的裁定未能认识到她童年遭受性虐待及在“严格穆斯林家庭”中成长，如何影响其向俄罗斯当局寻求帮助的能力。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3e61502a89775ad32e68bde9eadaa9599b14d39e4f87861636737007f6ed6834",
+      "chineseText": "在 C-G-T- 案中，我们处理了一名童年遭父亲虐待的答辩人案例，承认对受亲属虐待的儿童而言，向当局报告伤害可能徒劳或危险。28 I&N Dec. 743–44。我们指出，出于年龄因素，儿童尤其幼童可能无法识别虐待、表达恐惧或寻求政府帮助。亦认识到，受虐儿童可能被施虐者控制，阻止其联系当局。Id. 页743。因此，我们认为，儿童答辩人的个人情况对于确定其能否向本国当局寻求保护的事实认定具有相关性。见 Id. 页744。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d1e4d1b89bbdbbc3800150448faf0eab64920234cdf4f872ad70bf458d9a5f72",
+      "chineseText": "在 C-G-T- 案中，我们处理了一个童年遭父亲虐待的答辩人，确认对那些受亲属伤害的儿童而言，报告伤害可能徒劳或危险。28 I&N Dec. 743–44。我们指出，儿童因年龄缘故，可能无法认知为虐待、表达恐惧或寻求政府帮助；且受虐控制者可能限制此类联系。Id. 页743。因此，儿童答辩人的个人境遇对决定其是否能寻求保护的事实认定具有重要意义。见 Id. 页744。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5dfdd58038aed9e8ad79e94683171aac24c8afd6e9d5ed54deccd29a37a9365a",
+      "chineseText": "被申请人论点中的缺陷在于，我们在Matter of C-G-T-案中概述了儿童，尤其是幼童，在试图向当局报告伤害时可能面临的独特障碍。儿童面临的此类独特的报告伤害障碍不适用于成年人，包括那些在孩提时遭受伤害的成年人。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3a3c8984f6fd896d1813fa61adedfa17d70f09f0f0dbe0248f6c5b22883c8689",
+      "chineseText": "虽然被申请人在孩提时开始遭受其家庭成员的伤害，但这种伤害持续到了成年期，且被申请人仍未向当局报告。作为成年人，被申请人曾多次前往远离其家庭的不同城市，有时甚至生活在家庭控制之外，但她从未寻求警方或其他当局的协助或保护。尽管被申请人辩称其家庭与她所在镇的警方保持联系，因此报告伤害将是徒劳或危险的，但被申请人作为成年人的身份、她能够离开家庭旅行以及她能够进行沟通，这些都表明被申请人本可以向其所在国的当局寻求帮助。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3cf895e1fcf0e0da38648ba9f87e9b1934b1c87bcb6596df834007c066878836",
+      "chineseText": "第 458 页"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8b9669cad4dd1b9662fc93026821ac456559bc004215ffde296fe067bae3437c",
+      "chineseText": "引用于 29 I&N Dec. 456（BIA 2026）临时决定 #4165"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ff778ee3de2dbb234893526a5b4abb9776ca3788e21fae786e8659c1c821e014",
+      "chineseText": "被申请人还辩称，“记录证据”与我们关于她皈依俄罗斯东正教使警察保护更可能的结论相矛盾，但其未对记录作任何引证。然而，被申请人皈依使她成为该国多数宗教的成员，记录显示俄罗斯东正教在俄罗斯享有特权地位，并与俄罗斯政府密切合作。鉴于这些事实，被申请人未能证明其实践伊斯兰教的家庭成员能够对俄罗斯当局产生实质影响。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "477fe5cf9ed9a25f6081de4085a7efff50a8e07c74121b42bcefc5f8db860f3f",
+      "chineseText": "被申请人也未能证明俄罗斯政府无法或不愿保护她免受因皈依俄罗斯东正教而遭受伤害的人。参见Mejia-Alvarenga诉Garland案，95 F.4th 319, 324（第五巡回 2024） （“为证明政府无法或不愿防范私人迫害，庇护申请人‘必须显示政府容忍私人的暴力，或者至少表现出完全无力保护[申请人]。’”（引文省略））。虽然被申请人提交了文件证据，显示俄罗斯某些地区的妇女遭受穆斯林家庭成员的暴力，以及这些妇女经常被当地当局送回家庭的证据，但这些证据未涉及异教暴力，也未表明俄罗斯政府是否会保护皈依俄罗斯东正教的人员免受穆斯林家庭成员的伤害。总体而言，移民法官明显错误地认定俄罗斯政府无法或不愿保护被申请人免受其所惧家庭成员的侵害。参见Matter of C-G-T-案，28 I&N Dec. 744（“单纯的‘主观信念’即报告是徒劳的，不足以确立政府无法或不愿提供保护。”（引文省略））；也见Sanchez-Amador诉Garland案，30 F.4th 529, 534（第五巡回 2022） （认定被申请人主观认为向当局报告犯罪徒劳，结合对当局无效性的普遍证据，不足以证明政府无法或不愿保护其）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9cae23b46f2d696ddda039c6305d29acca17b0bfa3256f63963a872e6784a2ff",
+      "chineseText": "移民法官认定被申请人无法通过在俄罗斯境内迁移以避免未来迫害的结论，也未被证据记录支持，因此显属明显错误。参见Matter of F-R-A-案，28 I&N Dec. 460, 470（BIA 2022）（指出上诉委员会审查移民法官关于通过迁移可以避免伤害的事实认定，标准为明显错误）；Matter of D-I-M-案，24 I&N Dec. 448, 451（BIA 2008）（因上诉委员会事实调查能力有限，发回移民法官重新认定迁移事宜）; 另见8 C.F.R. § 1208.13(b)(2)(ii) (2020)（规定如果申请人能够通过迁移至本国他处避免迫害，则其不构成有充分依据的迫害恐惧）。第 459 页"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8b9669cad4dd1b9662fc93026821ac456559bc004215ffde296fe067bae3437c",
+      "chineseText": "引用于 29 I&N Dec. 456（BIA 2026）临时决定 #4165"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "6436462b349f6580e41ef1836354c4e2d142bd6d832e7cf9f6751af2d43f8e2c",
+      "chineseText": "如果申请人能通过迁移至本国内其他地区避免迫害，而在所有情形下合理预期其会这么做，则其不符合有充分依据的迫害恐惧条件。对于因私人行为者可能伤害而恐惧迫害的被申请人，负有证明迁移不合理负担。8 C.F.R. § 1208.13(b)(3)(i)。移民法官认定被申请人不能在境内迁移，依据仅为一篇文章，声称被申请人每迁移一处都须登记住所，其家庭成员能够且会使用包括在俄罗斯当局协助下提出虚假报警等多种手段寻找被申请人。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "1d7361b7428c9c0ce6d38924b80bacffd1e5e83563bd2885d50edbeb468703e6",
+      "chineseText": "我们承认被申请人声称过去曾试图迁移但被家庭成员找到。然而鉴于俄罗斯面积广大、被申请人属于该国多数宗教成员，以及不足以证明其家庭在两年多前最后一次威胁后仍持续关心寻找她的证据，移民法官认定被申请人无法合理迁移以避免迫害显属明显错误。参见Anderson诉Bessemer City案，470 U.S. 564, 573（1985）（“当存在支持其认定的证据，但审查法院在全面证据下肯定且坚信认定存在错误，即属‘明显错误’。”（引文省略））。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ba442c3ec506f3536ddada3c5f7ec5740b21fb671611871c13bc3ed8db72ee86",
+      "chineseText": "由于被申请人未能证明俄罗斯政府无法或不愿保护其，且境内迁移非不合理，故其不具备申请庇护资格。参见Mejia-Alvarenga案，95 F.4th 324；8 C.F.R. § 1208.13(b)(2)(ii)。由此必然导致其亦不能满足申请撤销遣返令（withholding of removal）资格，后者亦要求证明政府无法或不愿保护其，且其不能境内迁移。见Gonzales-Veliz诉Barr案，938 F.3d 219, 228-29（第五巡回 2019）；8 C.F.R. § 1208.16(b)(2) (2026)。鉴于此等认定具决定性，我们不采纳关于被申请人庇护和撤销遣返令申请的其他论点。参见INS诉Bagamasbad案，429 U.S. 24, 25（1976）（“通常法院及机关无需对其裁决结果不必要的议题作出认定。”）。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "06b9de9909f78bac797b89c46208124a057fb274d51b4ffe2778f026d17f0b17",
+      "chineseText": "被申请人还请求我们重新考虑关于其根据《禁止酷刑和其他残忍、不人道或有辱人格待遇或处罚公约》（“CAT”）申请保护的决定，认为我们忽视了与其酷刑恐惧相关的相关事实，且需发回原审。2\n2\n《禁止酷刑及其他残忍、不人道或有辱人格的待遇或处罚公约》，1984年12月10日签订，美国签署文档编号S. Treaty Doc. No. 100-20，1465联合国条约汇编第85页（美国于1994年11月20日生效）。8 C.F.R. § 1208.16(c)(2)；8 C.F.R. § 1208.18(a)（2020）。第 460 页"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8b9669cad4dd1b9662fc93026821ac456559bc004215ffde296fe067bae3437c",
+      "chineseText": "引用于 29 I&N Dec. 456（BIA 2026）临时决定 #4165"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "ae475cbd61b7d92df342506b7f7c5384f536ecb20a8b86397712275370664f45",
+      "chineseText": "我们不认为需要发回原审，因为记录证据不能证明被申请人“更可能会”在被遣返回俄罗斯时，被公共官员指使、默许或同意的情况下遭受酷刑。见8 C.F.R. § 1208.16(c)(2)；8 C.F.R. § 1208.18(a)(1)（2020）；另见Pullman-Standard诉Swint案，456 U.S. 273, 292（1982）（认定当“记录仅允许对事实问题作出唯一判决”时，无需发回）；Ball诉LeBlanc案，792 F.3d 584, 596（第五巡回 2015）（同）"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9c87de29076a04a29d02bfdee51ad2d6b943e7b0e97dc645cbead6c6e562ee2c",
+      "chineseText": "记录反映，被申请人未能证实因其家庭的未来伤害而无法在俄罗斯境内迁移避免伤害。境内迁移的可行性对保护申请构成相关权衡因素。见8 C.F.R. § 1208.16(c)(3)(ii)（“应考虑所有与未来酷刑可能性相关的证据，包括……[申诉人]能否迁往遣返国境内不太可能被酷刑折磨的地区的证据。”）；还见Tzompantzi-Salazar诉Garland案，32 F.4th 696, 705（第九巡回 2022）（说明“在CAT申请中，迁移的合理性不相关，机关仅考察是否可能安全迁移，而非合理性（或舒适度、便利性）”，且由申请人承担证据责任证明其更可能会遭酷刑）。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7258aebe5f11cda16ef77a2ac99f488c8f14450851043dd0e3d7807e5f2316c8",
+      "chineseText": "此外，由于被申请人未能证明当局不愿或无力保护她免受所惧家庭成员侵害，故其亦未能证明公共官员在其官方职务范围内会对这些家庭成员施加的酷刑表示默许。见Matter of O-A-R-G-案，29 I&N Dec. 30, 36（BIA 2025）（“在CAT语境中，默许要求政府共谋程度较庇护语境中证明政府无法或不愿保护申请人更高。”）。因此，被申请人无法证明其符合CAT保护资格。鉴于此，虽然我们将批准被申请人的重新考虑动议，但我们将再次支持国土安全部的上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8fdec8663789d50597a927b73a8334e60eafb275f897462b298c9d299628937e",
+      "chineseText": "命令：被告的复议动议获准。\n进一步命令：国土安全部（DHS）的上诉成立。\n进一步命令：此前发布的暂停驱逐令被取消。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "1dba13d21783d742952bf6b3e91b570f3fac6588db1c4485773e552d56c17311",
+      "chineseText": "第461页"
+    },
+    {
+      "segmentId": "pdf-p7-s35",
+      "order": 35,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8b9669cad4dd1b9662fc93026821ac456559bc004215ffde296fe067bae3437c",
+      "chineseText": "引用格式：29 I&N Dec. 456（移民上诉委员会，2026年）临时决定＃4165"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "312b5050bd3ef420b6664d690c6378dd4ba1132d8484626a8951d05d9cf465f6",
+      "chineseText": "进一步命令：移民法官于2025年3月14日作出的庇护决定被取消，被告被命令从美国驱逐至俄罗斯。"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "014a1fe4919de8f092460e2a96596adb6d26f816080ac493102fedc6a3b73d88",
+      "chineseText": "通知：如果被告受到最终驱逐令的约束并故意未能或拒绝根据该令离开美国，未能及时以诚信方式申请离开美国所需的旅行或其他证件，或者未能在国土安全部要求的时间和地点出现，或阴谋采取或实施任何旨在阻止或妨碍被告依照驱逐令离开的行为，该被告将面临每天最高998美元的民事罚款。参见移民及国籍法案（INA）第274D节，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何被拒绝入境、被驱逐出境或在排除令、驱逐令或驱逐令生效期间离开美国，并随后进入、试图进入或任何时间被发现处于美国境内的被告，将被罚款或监禁不超过两年，或两者并罚。参见INA第276(a)节，8 U.S.C. § 1326(A)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "60340c81237df0007c45013e2d543b180e54030ef608cda37290da12e93f3e1d",
+      "chineseText": "第462页"
+    }
+  ]
+}

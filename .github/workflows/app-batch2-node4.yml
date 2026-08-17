@@ -1,0 +1,24 @@
+name: APP Batch 2 Node 4
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'supabase/migrations/20260816150000_trrb_comment_thread_integrity.sql'
+      - 'supabase/migrations/20260816154500_trrb_comment_governance.sql'
+      - 'scripts/audit-app-batch2-node4.mjs'
+      - '.github/workflows/app-batch2-node4.yml'
+      - 'docs/APP-BATCH-2-NEWS-EXPERIENCE-AND-ENGAGEMENT.md'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Verify node 4 comment product experience
+        run: node scripts/audit-app-batch2-node4.mjs

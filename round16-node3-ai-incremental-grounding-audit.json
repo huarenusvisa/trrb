@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-17T01:58:28.815Z",
+  "generatedAt": "2026-08-17T03:16:23.246Z",
   "node": "3 AI中文解析增量更新与事实约束",
-  "datasetVersion": "e1c17f1299f4d9a414b74934cb80118a85b03f537fdf6dd7ff8d574771ada517",
-  "count": 603,
-  "currentVersionAnalyses": 603,
+  "datasetVersion": "2e2c0c2417a7e2478855aaac48bbe0836c8190e07cf7b3bf4d3b7b952948761f",
+  "count": 604,
+  "currentVersionAnalyses": 604,
   "orphan": 0,
   "urlMismatch": 0,
   "authorityMismatch": 0,
@@ -16,17 +16,17 @@
     {
       "ok": true,
       "label": "AI dataset pointer synchronized to unified database",
-      "detail": "ai=e1c17f1299f4d9a414b74934cb80118a85b03f537fdf6dd7ff8d574771ada517; db=e1c17f1299f4d9a414b74934cb80118a85b03f537fdf6dd7ff8d574771ada517"
+      "detail": "ai=2e2c0c2417a7e2478855aaac48bbe0836c8190e07cf7b3bf4d3b7b952948761f; db=2e2c0c2417a7e2478855aaac48bbe0836c8190e07cf7b3bf4d3b7b952948761f"
     },
     {
       "ok": true,
       "label": "AI count metadata matches analyses",
-      "detail": "metadata=603; analyses=603"
+      "detail": "metadata=604; analyses=604"
     },
     {
       "ok": true,
       "label": "incremental AI analysis corpus is non-empty",
-      "detail": "analyses=603"
+      "detail": "analyses=604"
     },
     {
       "ok": true,
@@ -71,7 +71,7 @@
     {
       "ok": true,
       "label": "current dataset produced or refreshed incremental analyses",
-      "detail": "currentVersion=603/603"
+      "detail": "currentVersion=604/604"
     },
     {
       "ok": true,

@@ -1,0 +1,17 @@
+name: Publish APP preview OTA
+
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'apps/mobile/app/**'
+      - 'apps/mobile/src/**'
+      - 'apps/mobile/assets/**'
+
+jobs:
+  publish_preview_update:
+    name: Publish preview update
+    type: update
+    params:
+      platform: all
+      channel: preview

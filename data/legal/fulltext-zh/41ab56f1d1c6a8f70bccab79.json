@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "41ab56f1d1c6a8f70bccab79",
   "recordFingerprint": "8d75e39e81769489d577c6ff4530533b63801c34ebb12db79cc026e158e1ce23",
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Energy Department",
@@ -147,5 +147,6 @@
       "sourceTextHash": "ce0c3f5c2c0be2795607a553c0fa3a708b6695d321c33a99911e3e5d1d9debb7",
       "chineseText": "【运输部联邦航空管理局】 14 CFR 第27部分 特别条件：Skyryse公司对Robinson R66直升机的飞行控制系统控制通告。编号：FAA–2025–5245；特别条件No. 25–895–SC。机构：联邦航空管理局（FAA），交通部。行动：特别条件最终规则。摘要：本特别条件发布针对Robinson直升机公司型号R66直升机。该型号由Skyryse公司改装，将采用数字化线控飞行控制系统（FBW），替代现有机械飞控。现行适航规章未涵盖此类设计特征，因此本特别条件载明FAA认为必要的附加安全标准，以确保安全水平等同于现有适航标准。生效日期：2026年9月11日。联系方式：Johannes VanHoudt，FAA飞机认证服务政策标准司产品政策管理，电话(816)329–4144，邮箱john.g.van.houdt@faa.gov。背景说明：2023年4月10日，Skyryse申请补充型式认证(STC)，用于替换R66直升机主要飞行控制系统。该直升机为单引擎、最大起飞重量2700磅、可载五名乘客的单驾驶员夜间视觉飞行规则（VFR）正常类旋翼机。第27.695条于1964年发布，适用于带基本机械飞控的旋翼机。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:59:39.644Z"
 }

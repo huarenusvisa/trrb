@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "b14a6a15f53d145ee7074992",
   "recordFingerprint": "ff36b287bbf6cce14b2d2e96bff97d7fd037f36939cb7526a1314b1aebe27f5b",
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Homeland Security Department; Coast Guard",
@@ -83,5 +83,6 @@
       "sourceTextHash": "c11a178c8eceb86cbc62c542318997053e744b54c86512e05f8dcb6ceb5d93ac",
       "chineseText": "2026年8月11日15:41归档，档号268001，文件编号00000，版面23，格式4700，版权4700，文件位于E:\\FR\\FM\\12AUR1.SGM，文件名：12AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:59:39.644Z"
 }

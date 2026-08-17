@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "033185133a02fa0315503b14",
   "recordFingerprint": "3b7a635bc5e25dfd8ce6ce0e14d610f3b416be255b7bf74a25e15a9ffb1a676e",
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Homeland Security Department; Coast Guard",
@@ -187,5 +187,6 @@
       "sourceTextHash": "5b11f6d60d53f412e057fe500745687440184f2f77007f02eada0cf5a20fd8ea",
       "chineseText": "VerDate Sep<11>2014 15:41 Aug 11, 2026 Jkt 268001 PO 00000 Frm 00027 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:59:39.645Z"
 }

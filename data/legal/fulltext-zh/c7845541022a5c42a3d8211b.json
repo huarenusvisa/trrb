@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "c7845541022a5c42a3d8211b",
   "recordFingerprint": "c22c603ea6d3e5340220ca1dff9503ec2dfe9078c860cbc1aa8d74a9ed14d450",
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Merit Systems Protection Board",
@@ -115,5 +115,6 @@
       "sourceTextHash": "d79273202f948f0a98e25b6ee005cd80392a35321f6ce2844ee42263eade3b9a",
       "chineseText": "VerDate 2014年9月11日 15:41 2026年8月11日 Jkt 268001 PO 00000 Frm 00002 Fmt 4700 Sfmt 9990 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:59:39.646Z"
 }

@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "recordId": "b98f16d5a3f0f663c601d83c",
+  "recordFingerprint": "51ab5e6c7db3aebf1ee9583a3cda90a2b7a7389f3b3e38b0322082e12fd1ee03",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Environmental Protection Agency",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16510/determination-of-attainment-by-the-attainment-date-and-clean-data-determination-for-the-2012-annual",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16510.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16510.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T22:16:14.921Z",
+  "sourceDigest": "d3d4d0b8b05630eb67c4dcc0d2d3d10ee09abf84670008309d62532e8988cd7a",
+  "translatedAt": "2026-08-17T22:16:32.699Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 12,
+  "translatedSegmentCount": 12,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "762468e4fdd0fee50ead5b053410c57b0b4e662d8b8beb489229e0ba75e6ac83",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规章与条例 52249"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "35c8a3b0b92c53e1d4a6c4e60604e0fca62f995b5477d0d6ef6c83f55e216272",
+      "chineseText": "环境保护署 补充信息：整个文件中，“我们”、“我们方”及“我们的”均指EPA。根据《清洁空气法》（Clean Air Act, CAA），Portola PM2.5非达标区符合CAA对于重新指定为达标区的要求，其中包括一项获批准的维护计划，显示该地区将在未来10年持续符合1997年年度PM2.5国家环境空气质量标准（NAAQS）。请参见2026年5月14日我们拟议规则的更多背景及详细解释。5 EPA于2026年5月14日提出规则，基于2023年至2025年完整（或经验证）且质量保证并经过认证的数据，确定Portola PM2.5非达标区已于2025年12月31日的达标日期达到了2012年年度PM2.5 NAAQS的要求。1 根据40 CFR 51.1015，我们还拟议为Portola PM2.5非达标区就2012年年度PM2.5 NAAQS发布清洁数据认定（CDD），基于2023-2025年数据。2 EPA拟议说明若最终确定CDD，直到（1）该地区被重新指定为达标区，相关提交的达标规划规定（包括达标示范、合理进一步进展计划、定量里程碑、定量里程碑报告及应急措施）将被暂停，或（2）EPA确定该地区重新违反PM2.5 NAAQS，则上述要求将恢复，届时该州应由EPA确定的未来日期提交《严重》非达标区的达标规划要素。3 《严重》非达标区的排放清单、最佳可行控制措施（包括控制技术）及新源审查许可程序要求将保持有效。4 尽管目录中列有部分材料，但某些信息（例如机密商业信息（CBI）或法律禁止披露的信息）不公开。版权资料等某些材料不在网络公开，仅以纸质形式公开。如需非英语语言支持或合理便利，请联系下文联系人。 4 同上。5 91 FR 27724 (2026年5月14日)。6 同上。7 EPA空气质量系统（AQS）设计值报告，报告ID：2367374，日期2026年3月31日。8 EPA空气质量系统设计值报告，报告ID：2390857，日期2026年6月23日。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b27fc7a5e0b300041cffc23dd38bcdd047d3d4ddc7f3087f933ede98eb57e784",
+      "chineseText": "如需进一步信息，请联系：Lindsay Wickersham，规划处（AIR–2–1），EPA第九地区办事处，地址：75 Hawthorne Street, San Francisco, CA 94105；电话：(415) 947–4192；电子邮件：wickersham.lindsay@epa.gov。 1 见91 FR 27224（2026年5月14日）。2 同上。3 40 CFR 51.1015(b)。83 FR 64774, 64788。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1e69642b0cdc15fae1f1413c4f4d7ca87444fb22cefc2c8104a425b78876be6a",
+      "chineseText": "（格式化代码，不含实质内容）"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "49a6ac8d6451538f6b69a86092ae27c33eba450b354c801be8886e8fd36a180a",
+      "chineseText": "52250 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规章与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "affdfa4078456f137f7e40026ac857b11054b56e15ac3651ff1e5326caff756f",
+      "chineseText": "包括达标示范、合理进一步进展计划、定量里程碑、定量里程碑报告及应急措施，只要该地区继续达标将被暂停。该最终确定Portola非达标区达到2012年度PM2.5 NAAQS并不构成该区重新指定为达标区。Portola非达标区将保持\"严重\"非达标身份，直到EPA根据CAA第107条和175A条确定该区符合重新指定为达标的条件，包括批准的维护计划，显示该区将持续10年满足该标准。 4 本行动不会产生联邦主义影响，不会实质性影响各州，联邦与州政府关系或权力分配。 9 本行动无部落政府关联。《国家技术转让和进步法》（NTTAA）第12(d)条指示EPA在监管活动中应使用自愿共识标准，除非与适用法律不一致或不切实际。EPA认为本行动不受该要求约束。依据《国会审查法》（CRA），EPA将向国会两院及政府问责署提交规则报告。本行动非“重大规则”，无部落影响，也不对部落保留地等有负担。根据CAA第307(b)(1)条，任何司法审查请求应于2026年10月13日前提交相应上诉法院。提出复议申请不影响裁决终局性，不延缓规则实施，也不得后续阻碍条例执行。依据《行政命令》及相关法律规定，EPA对本次行动的合规性进行详述。 5 相关法规及 Executive Orders 可见EPA网站。 6 本行动非显著规制，无需向管理与预算办公室（OMB）提交审查。 7 本行动不构成信息收集负担，依据《信息收集管理法》（PRA）。 8 本行动对小型实体无重大经济影响，依据《规制灵活性法》（RFA），不加强州法规定之外要求。 9 本行动无未资助任务，根据《未资助使命改革法》（UMRA）。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f975324c90f3e26752664327ea9cdfbeb4fca361ae3bbc05a9900b3fe0550c4d",
+      "chineseText": "执行当局：42 U.S.C. 7401及以下条款。 本行动不包含UMRA所定义的未资助任务。 9 EPA第九区认证部落地图见：https://www.epa.gov/tribal-pacific-sw/map-federally-recognized-tribes-epas-pacific-southwest-region-9。 ■ 修改40 CFR第52.247节，增补(u)款如下："
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2d98f08e3a61643a59e39169d1658a2fbb83fb7357b7283045c2b5f876677cc7",
+      "chineseText": "（格式化代码，不含实质内容）"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f5dce9c12f0312d85393dd259d673524070ac64f6222a546faa15578db733b35",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规章与条例 52251"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c235e0a44e10c69fcf2fe6d7d3a2f9883011f13379f894b04be0534e73455a1f",
+      "chineseText": "§ 52.247 控制策略和规章：为残疾人无障碍而设，适用于日照县细颗粒物的截止日期。以及标签在适用期限内的展示）。进行口头特别程序的人士提醒，呈现必须（1）列出对该会议出席或以其他方式参与的所有人员，以及（2）总结会议期间所呈现的数据和论点。如果陈述中全部或部分包括已反映于该发言者的书面意见、备忘录或诉讼文件中的数据或论点，该发言人可提供此类数据或论点的引用（注明相关页码和/或段落号），以替代在备忘录中总结内容。于特别程序会议期间向委员会职员展示并于2026年7月23日发布的文件，视为书面特别程序陈述，且必须依据委员会规则§1.1206(b)的规定提交。在受委员会规则§1.49(f)规管，或委员会已提供电子提交方式的程序中，口头特别程序陈述和总结口头特别程序陈述的备忘录及所有附件，必须在可行时通过该程序的电子评论提交系统提交，且须以其原生格式（可搜索的.pdf等）提交。于2026年9月14日生效，环保署（EPA）基于2023年至2025年的环境空气质量数据，已确定波尔托拉（Portola）PM2.5未达标区已在适用的2012年度PM2.5国家环境空气质量标准（NAAQS）的截止日期2025年12月31日前达标。因此，EPA依据《清洁空气法》（CAA）第179(c)(1)条满足了对该区域是否达标的判定要求。根据EPA PM2.5实施规则规定（见40 CFR 51.1015），该判定暂停了该区域提交达标演示、合理进一步进展计划、定量里程碑、定量里程碑报告、应急措施及任何其他与达标相关的规划SIP修订的要求，只要该区域持续满足2012年度PM2.5 NAAQS。若EPA经过公告及意见征询确认该区域不再满足2012年度PM2.5 NAAQS，该区域的相应达标判定将被撤销。委员会作为持续减轻文书负担的努力，将邀请公众及政府管理和预算办公室（OMB）对本文档中《文书减负法案》规定的信息收集要求进行评论。委托联系方式为消费者与政府事务局Michelle Branigan，电话(202) 418-1345，邮箱Michelle.Branigan@fcc.gov。请参考FCC 26-48号命令（2026年7月22日通过），全文可于https://docs.fcc.gov/public/attachments/FCC-26-48A1.pdf在线查阅。公告：本命令为最终规则，联邦通信委员会在“赋能宽带消费者通过透明度”案中的文件CG 案号22-2，GN 案号25-133。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1acc2056a5deeefd2410516c081c771d6479e0fdcb02e4f560d695ab881ea0a8",
+      "chineseText": "信息；在销售点使用链接或图标以避免信息过多令消费者不堪负荷；并取消超出我们授权范围的要求。与此同时，委员会确保标签仍保留必要信息。参与本程序者应熟悉委员会特别程序规则。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "42b8943f02c73b4ae3ab718c94492c20567ca2edd2b12a2d423b372baefb47e1",
+      "chineseText": "版本日期2026年8月12日，时间15:47，法规编号268001，表格编号00000，格式4700，文件编号13AUR1.SGM 13AUR1"
+    }
+  ]
+}

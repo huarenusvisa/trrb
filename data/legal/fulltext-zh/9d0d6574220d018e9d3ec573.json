@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "9d0d6574220d018e9d3ec573",
   "recordFingerprint": "5e6b4c64ba38e71e34e08691ab1c6112902a0e82c65747eaec55137701e2f468",
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Library of Congress; Copyright Office, Library of Congress",
@@ -155,5 +155,6 @@
       "sourceTextHash": "cb191499030292614e9a96126fb8ed80eb29aa09062b96ce6dcaea00671ac626",
       "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00023 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:59:39.646Z"
 }

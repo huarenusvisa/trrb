@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "recordId": "dd9ba770574bd0c35bca839b",
+  "recordFingerprint": "af3e65072857d3c0141505b42e2e33c3a58f5ec739b4164191355216f46e0d32",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16507/airworthiness-directives-airbus-helicopters",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16507.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16507.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T22:06:02.417Z",
+  "sourceDigest": "1513402ecae1dca47fe4e3ea13a00c62f0676759dfc95150c776e68f5667291c",
+  "translatedAt": "2026-08-17T22:06:35.266Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 18,
+  "translatedSegmentCount": 18,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "87682130f285c5054470490a514a35c99622bcb04db6ee612fc58267311a735d",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52221"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5a56a74f10489380bf3b2c89ededdf4f2e2c89b543d253ad0d44ee7daf8659b0",
+      "chineseText": "致国际验证分支经理，请发送至本AD第(k)段中指定人员的注意事项，并发送电子邮件至：AMOC@faa.gov。\n(2) 在使用任何已批准的AMOC之前，请通知您的主检察官，或者如果缺少主检察官，则通知当地飞行标准区办公室/持证区办公室经理。\n(k) 其他信息\n如需了解本AD的更多信息，请联系FAA航空安全工程师Zakaria Abdi，地址：纽约州西伯里斯特沃特大街1600号410室，电话：(316) 946-4141；邮箱：zakaria.f.abdi@faa.gov。\n(l) 纳入材料引用\n(1) 联邦登记处署长根据美国法典552(a)条及联邦法规第1 CFR部分51批准将本段所列材料纳入引用。\n(2) 除非本AD另有规定，必须自适用之日起使用本材料以执行本AD要求的动作。\n(i) 欧洲联盟航空安全局(EASA) AD 2025–0191，日期为2025年9月4日。\n(ii) [保留]\n(3) 如需获取本AD中指定的EASA材料，请联系欧洲科隆Konrad-Adenauer-Ufer 3号，邮编50668，电话：+49 221 8999 000，邮箱：ADs@easa.europa.eu，网站：easa.europa.eu。您可在EASA网站ad.easa.europa.eu查询该材料。\n(4) 您可在FAA飞行安全产品部、作业安全分部，地址：德克萨斯州沃思堡市希尔伍德公园路10101号处查阅该材料。电话：(817) 222–5110了解FAA处该材料的可用性。\n(5) 您可在美国国家档案和记录管理局(NARA)查阅该材料。查询方式见网址www.archives.gov/federal-register/cfr/ibr-locations或邮箱fr.inspection@nara.gov。\n发文日期：2026年7月30日。\n署名：Steven W. Thompson，署理副主任，合规与适航司，飞机认证服务部。\n[联邦公报文件号2026–16506，2026年8月12日上午8:45备案]\n计费代码4910–13–P\n运输部联邦航空管理局 14 CFR第39部分\n[Docket No. FAA–2026–4646; 项目识别码MCAI–2025–01763–R; 修正案号39–23435; AD 2026–16–05]\n条例编号2120–AA64\n附件说明：FAA针对某些特定型号空客直升机发布新的适航指令(AD)。本AD源于关于主伺服控制三个电磁阀、调节器块和尾部伺服控制电磁阀因二极管未恰当安装而导致磁化的报告。\n本AD要求对后转子驱动阀进行断电测试，并根据测试结果执行纠正措施。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e27473c650f4481d015b966dd2879e5286acce704f55188f6ca09d16a2c33471",
+      "chineseText": "适航指令；空客直升机\n机构：联邦航空管理局(FAA)，交通运输部(DOT)。\n行动：最终规则。\n背景\nFAA发布拟议规则通知(NPRM)，拟修订14 CFR第39部分，添加适用于某些空客直升机型号AS350B2的适航指令(AD)。该NPRM由欧洲联盟航空安全局(EASA，即欧盟成员国技术代理)发布的适航指令(EASA AD 2025–0263，2025年11月26日发布，2025年12月9日改正)促成。\n该适航指令（MCAI）指出，维护期间发现主伺服控制三个电磁阀、调节器块及尾部伺服控制存在磁化现象，系因液压回路中未正确安装二极管所致。\n在NPRM中，FAA提议要求对后转子执行断电测试，并根据测试结果执行纠正措施。\nFAA发布本AD旨在解决这些产品存在的不安全状态。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fdae7b41f5a5aca59fa93264a5400296937d0705a8a9291ef3256b4d0d4eb6d4",
+      "chineseText": "（格式噪声，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c55b9e37236c947fe2d32e0a53f7cc826c1dc0984fa494ead26d80f6f08c8f29",
+      "chineseText": "52222 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2f646c668ea3f831fc717ea655943acce79ddb0421981f5e3cdf6014ad0bc9ed",
+      "chineseText": "或通过“地址”部分中所述方式获取。\nFAA估计本AD影响美国注册的12架直升机。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d5d719b2a0a6684d2f2a414da3a66eb233d21ddada4eb2979fbd00974bb29773",
+      "chineseText": "估计费用\n每项行动劳务费用 零件费用 产品单价 美国运营者总费用\n执行断电测试 ................... 3工时 × 每小时85美元 = 255美元 ........ 0美元 255美元 3,060美元"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "34564913661c77cdab7e74974edd963b8621d3f8614d9ad3507f891d3235b272",
+      "chineseText": "FAA根据测试结果估算了可能需要进行的安装或更换的费用。运营机构数量无法确定。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e71e1c8f664880d9c435c23646871a4b28ba0b1e8b2bf96cf20fff3640e0e199",
+      "chineseText": "状态相关费用\n每项行动劳务费用 零件费用 产品单价\n更换二极管 .............. 1工时 × 85美元 = 85美元 .................... 180美元 265美元\n安装二极管 .............. 5工时 × 85美元 = 425美元 ................... 1000美元 1425美元"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "aca45e5e12743d3f740125f4ccdfc996752b6ee4acbee3dc871a86901cc4a08f",
+      "chineseText": "制定此次规则的依据\n依据《美国法典》第49篇。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4e3061daf3a954fd66e133eac40b6f2e02660e4a965b30bc327f3d50caafa92b",
+      "chineseText": "(d) 主题\n联合航空系统组件编码(JASC)编号2900，液压动力系统。\n(e) 不安全状况\n本AD因对主伺服控制三个电磁阀、调节器块及尾部伺服控制电磁阀发生磁化现象的报告而制定，磁化源于液压回路中二极管安装不当。该AD旨在防止偏航负载补偿器效率丧失及三个主伺服控制和尾部伺服控制液压辅助失效。若不加以解决，可能导致直升机控制降低。\n(f) 合规要求\n除非已完成，否则必须在规定时间内执行本AD。\n■ 1. 第39部分的权限授权引用保持不变：授权依据：49 U.S.C. 106(g), 40113, 44701。\n■ 2. FAA修改第39.13条，新增以下适航指令：\n2026–16–05 空客直升机：适航指令修正案39–23435；Docket No. FAA–2026–4646；项目识别码MCAI–2025–01763–R。\n(g) 规定的措施\n除第(h)及(i)段特别说明外，应依照EASA AD 2025–0263执行所有规定措施及其合规时间。\n(h) EASA AD 2025–0263例外事项\n(1) EASA AD 2025–0263中提及的生效日期应采用本AD的生效日期。\n(2) EASA AD 2025–0263中按飞行小时计算的合规时间，应调整为按飞行时间（小时TIS）计算。\n(3) EASA AD 2025–0263中“移除二极管43D2”文字替换为“将二极管43D2报废”。\n(4) 本AD不采纳EASA AD 2025–0263中的“备注”部分。\n(i) 无报告要求\n尽管EASA AD 2025–0263要求向制造商提交某些信息，本AD不要求该项行动。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "16eb09d4650f757c244b4495ab728cd9a8cce38f88182bb2be44caab3fcbda78",
+      "chineseText": "(c) 适用范围\n本AD适用于所有按照EASA适航指令2025–0263（2025年11月26日发布，2025年12月9日更正）定义的空客直升机型号AS350B2。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "04c512abd6c2dfb84cf109138b9589bf791539805240a3912687a809162944d8",
+      "chineseText": "(1) 根据行政命令12866，本AD不是“重大监管行动”。\n(2) 不影响阿拉斯加州内州航空。\n(3) 持续未对大量小实体产生重大经济影响（正面或负面）。\n联邦航空管理局署理局长授权\n其目的是解决该产品潜在或现存的不安全条件。\n修改立法符合法规灵活性法案标准。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "13d169f972b8f19aff2140a3555bf39549b40866871c0f6eb298ac1bd74252ac",
+      "chineseText": "（格式噪声，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "af147a8ecce46d6cd7aa92e149d4833aac6d286337ae7fc687842f93aebcd000",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52223"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d6b04b06d2cf7d895b019976149ff1d9f7102d36a29f8b23a831b2c15eed84e0",
+      "chineseText": "(j) 替代合规方法（AMOCs）\n（1）联邦航空管理局（FAA）国际验证分支处经理有权根据14 CFR 39.19的程序批准本空中适航指令（AD）的替代合规方法。如有请求，应按照14 CFR 39.19的规定，将请求发送给您的主要检查员或当地飞行标准区域办公室（Flight Standards District Office），如果直接提交信息给国际验证分支负责人，请发送至本AD第(k)段标识的人，电子邮箱为：AMOC@faa.gov。\n（2）在使用任何已批准的AMOC之前，必须通知您的主要检查员，或如果无主要检查员，则通知当地飞行标准区域办公室/持证区域办公室负责人。\n(k) 附加信息\n如需更多关于本AD的信息，请联系FAA航空安全工程师Aryanna Sanchez，地址：1600 Stewart Avenue, Suite 410, Westbury, NY 11590；电话：(817) 222–5110；电子邮件：aryanna.t.sanchez@faa.gov。\n(l) 纳入引用材料\n（1）根据5 U.S.C. 552(a)及1 CFR部分51，联邦登记处主任批准了本段列表材料的纳入引用。\n（2）除非本AD另有规定，执行本AD所要求的操作时必须使用该材料。\n(i) 欧洲联盟航空安全局（EASA）AD 2025–0263，日期2025年11月26日，修正于2025年12月9日。\n(ii) [保留]\n（3）关于本AD中提及的EASA材料，请联系德国科隆Konrad-Adenauer-Ufer 50668；电话：+49 221 8999 000；电子邮件：ADs@easa.europa.eu；网站：easa.europa.eu。\n（4）您可以在FAA航空适航产品部操作安全分支，地址10101 Hillwood Parkway, Fort Worth, TX 76177查阅该材料。请致电(817) 222–5110了解FAA材料的可用性。\n（5）该材料也可在美国国家档案和记录管理局（NARA）查阅，详情请访问www.archives.gov/federal-register/cfr/ibr-locations或发送电子邮件至fr.inspection@nara.gov。\n颁布日期：2026年7月30日。\n代理副主任，合规与适航司，飞机认证服务处，Steven W. Thompson。\n运输部联邦航空管理局（FAA）发布。\n本AD从2026年7月10日（83联邦公报25885，2018年6月5日）生效。\n（1）针对安装了补充型式认证（STC）ST01920SE的波音公司767-300及-300F系列飞机，且装备了特定翼梢小翼。本AD超越了先前的AD 2018-11-14，并增加适用范围。\n2018-11-14 AD要求对外侧机翼下部蒙皮进行高频涡流检测（HFEC）检查，并视情况进行修理或修改。\n本AD由疲劳裂纹报告促成，裂纹位于弦杆L-9.5内侧紧固件附近的翼下蒙皮及弦杆L-6.5的翼下蒙皮上。\nAD 2018-11-14还要求执行以下三种后续行动之一：重复HFEC操作安全检查5次；修改特定内部弦杆并扩大已有紧固孔同时堵塞；或修改外部加劲板（doublers/tripler）并进行重复的后续检查。\n本AD由以下原因触发：疲劳裂纹出现在STC ST01920SE安装的装有航空合作伙伴波音（Aviation Partners Boeing, APB）翼梢小翼的飞机中；FAA决定对于某些飞机，必须检查关键内侧端紧固件附近的下翼蒙皮区域。\n（k）本AD材料在FAA和regulations.gov均可查阅，Docket No. FAA-2026-0023。\n联系方式：Sarah Illg，FAA航空安全工程师，电话206-231-3517，邮箱Sarah.A.Illg@faa.gov。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7d3185179937f979a9d875479acfa0f091b51797d07169bcd7de286bb1812396",
+      "chineseText": "[联邦公报文件编号2026-16507于2026年8月12日上午8:45提交]\n计费代码4910-13-P\n联邦登记处主任已于2026年9月17日批准纳入本AD所列某些出版物的引用。\n联邦登记处主任必须批准纳入本AD所列其他部分出版物的引用。\n该AD发布的背景是，针对某些飞机，必须检查已安装修理加劲板关键内侧端紧固件附近的下翼蒙皮区域。\nFAA发布本AD旨在防止下翼蒙皮出现疲劳裂纹。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "51058cd7901529cdc2a64c4ba9baab3b7eff26dbc333cef1e162461e824cb2d2",
+      "chineseText": "发布时间：2026年8月12日，协调世界时15:47\n文件编号：Jkt 268001\n联邦登记处，代码PO 00000格式4700，样式4700，文件名13AUR1.SGM，文档编号13AUR1。"
+    }
+  ]
+}

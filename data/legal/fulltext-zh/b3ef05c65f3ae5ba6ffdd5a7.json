@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "recordId": "b3ef05c65f3ae5ba6ffdd5a7",
+  "recordFingerprint": "c82888d305c8aa4f7f249287b00041f7a6cc5b0a26fdff5cdf8426128399ef87",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16506/airworthiness-directives-airbus-helicopters",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16506.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16506.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T22:05:25.213Z",
+  "sourceDigest": "5bf25f4cf76b99a8c6964408dab98205a01f2037dd11b4d13bee38693476a271",
+  "translatedAt": "2026-08-17T22:06:02.387Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 17,
+  "translatedSegmentCount": 17,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5b675c4a63fbc84ebc0478f244d3c63093d57d6a1eca7df8618dbf1485c92fd7",
+      "chineseText": "52219"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3ea12c69a2fdec907c060fc11ac3ef8bc4817ba1984c3599bca5078098f9ffb0",
+      "chineseText": "联邦法规规则与条例 联邦公报 第91卷 第155号"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ca3055f4c67a7a23d4580b9446d83936fd7f060e5312b0b7dcc390e8961cb82e",
+      "chineseText": "2026年8月13日 星期四"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1066e938eaa1d762e9e99a40271f9893df2c54c1b2054051be7e34ff0af3da61",
+      "chineseText": "本部分联邦公报包含具有一般适用性和法律效力的监管文件，大部分文件与联邦法规汇编（CFR）对应并被编纂，联邦法规汇编共发布50卷，依据44 U.S.C. 1510。联邦法规汇编由文件主管销售。您可在以下地点查阅与本规则相关的材料和文件：联邦航空局（FAA）airworthiness产品部门，运营安全分支，地址10101 Hillwood Parkway，沃斯堡，TX 76177，电话（817）222-5110；也可在regulations.gov通过Docket No. FAA-2026-3880查询本AD档案。本次适航指令（AD）涉及空中客车直升机EC 155 B及EC 155 B1型号直升机。该AD因确定需要实施新的或更严格的适航限制而发布。该AD要求修订现行维修手册（MM）或继续适航说明（ICA）中的适航限制部分（ALS），以及现有获批的维修或检查程序（如适用）。该AD旨在解决这些产品存在的不安全状况。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7f56c34b79b8fc41ddf470caf05e76c8665b88787c690fdfd3e670ccf84638fa",
+      "chineseText": "AD档案允许您查阅本最终规则、强制性持续适航信息（MCAI）、收到的任何评论及其他相关信息。Docket操作地址为美国交通部，Docket Operations, M-30，West Building Ground Floor，W12-140，1200 New Jersey Avenue SE，Washington, DC 20590。您可在regulations.gov使用Docket No. FAA-2026-3880查询。本次AD生效日期为2026年9月17日。MCAI由欧洲联盟航空安全局（EASA）于2025年9月4日发布（EASA AD 2025-0191），作为适航限制的技术代理，内容要求在超过寿命限制前及时更换部件，并在适航限制规定的门槛值和间隔内完成所有相关维护任务。此外，MCAI要求通过纳入信赖的维护计划（AMP）来修订其限制、任务及相关门槛和间隔，作为终止记录更换部件和维护任务的要求。空中客车直升机发布了相应的ALS修订版以明确上臂附件的更换和合规时间。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "22b32f747078d85c72bf6a5082c0f2a3ad16f7002fcc4be992c88fe7abf8badb",
+      "chineseText": "（文档编号信息，格式噪声）"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ef0e7d6e0e0db8d93af1fa7f556086bd3be401f299bc64062603c6af1ed07ed9",
+      "chineseText": "52220 联邦公报 / 第91卷 第155号 / 2026年8月13日 星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "012e42d6e6c165f106a5436a134f13902a59a6a9fccc0059e4d46fba91e07435",
+      "chineseText": "依据AD，FAA在拟议规则中提出要求修订现有维修手册或ICA中的适航限制部分（ALS），以及现有获批的维护或检查程序（如适用），以解决这些产品存在的不安全状况。MCAI要求在12个月内修订获批的维护计划（AMP），而本AD要求在30天内修订现有维修手册或ICA中的ALS，并澄清如果适用的ALS中包含的限制或门槛在本AD生效后30天内先到达，仍允许在30天内完成修订。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d5d719b2a0a6684d2f2a414da3a66eb233d21ddada4eb2979fbd00974bb29773",
+      "chineseText": "估计的合规成本"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cb26fe9821abfe84e8c5d5ae53a5aa4884e1ca3089f15ce1546397959b33536f",
+      "chineseText": "修订ALS …………………… 1工时 × 85美元/小时 = 85美元，零件成本0美元，每台产品成本85美元，16台产品合计成本1,360美元。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "846c64546c59f4962c33e0f7e55847a8667b893278155dfcc3d860d7a1add850",
+      "chineseText": "本规则制定权限根据美国法典第49编赋予FAA颁布航空安全规则的权限。根据FAA管理者授权，FAA修订14 CFR第39部分，新增第2026-16-04号空中适航指令，修订版本为39-23434，档案号FAA-2026-3880，项目标识MCAI-2025-01428-R。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8d699f4c973f81317fb236f60ac66fb4195c41363c2d06014d8bcf922267004e",
+      "chineseText": "（h）对EASA AD 2025-0191的例外规定：\n(1) 本AD引用的生效日期为本AD的生效日期；\n(2) 本AD不采纳EASA AD 2025-0191的第(1)、(2)、(4)及(5)段；\n(3) EASA AD 2025-0191第(3)段关于“自本AD生效日起12个月内修订获批维护计划”，本AD改为“自本AD生效日起30天内修订现行维护手册或继续适航说明中的适航限制部分及维护或检查程序（如适用）”；\n(4) 初始合规时间为在获批限制和相关门槛的适用要求期限内，且不迟于本AD生效日起30天；\n(5) 本AD不采纳EASA AD中的“备注”段。\n(i) 备选措施及间隔规定：\n完成本AD第(g)段要求的修订后，除非经批准，否则不允许采用替代措施或更改门槛及间隔（含寿命限制）；\n(j) 备选合规方式（AMOCs）：FAA国际验证分部经理有权审批本AD的备选合规方式，申请应根据14 CFR 39.19程序提交。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "64aaba72c210932bb81daefcb9bad56b32011da0a17ca685825bc97ce06e67b1",
+      "chineseText": "（文档编号信息，格式噪声）"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "87682130f285c5054470490a514a35c99622bcb04db6ee612fc58267311a735d",
+      "chineseText": "52221 联邦公报 / 第91卷 第155号 / 2026年8月13日 星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5a56a74f10489380bf3b2c89ededdf4f2e2c89b543d253ad0d44ee7daf8659b0",
+      "chineseText": "向国际验证处经理发送时，请注明本航空适航指令(AD)第(k)段中确定的人员，并发送电子邮件至：AMOC@faa.gov。\n(2) 在使用任何获批的替代方法。(AMOC)之前，应通知您相应的首席检查员，或如果没有首席检查员，则应通知当地飞行标准地区办公室/持证地区办公室经理。\n(k) 其他信息\n有关本AD的更多信息，请联系FAA飞机安全工程师Zakaria Abdi，地址为纽约州Westbury市Stewart大道1600号410室；电话：(316) 946–4141；电子邮件：zakaria.f.abdi@faa.gov。\n(l) 引用材料\n(1) 联邦登记处主任已根据美国法典第552(a)条和联邦法规第1 CFR部分51章批准纳入本段所列材料作为引用材料。\n(2) 除非另有规定，必须在适用时使用本材料来执行本AD要求的操作。\n(i) 欧洲联盟航空安全局(EASA)AD 2025–0191，发布日期2025年9月4日。\n(ii) 预留。\n(3) 如需本AD中提及的EASA材料，联系EASA，地址：德国科隆市Konrad-Adenauer-Ufer 3，邮编50668；电话：+49 221 8999 000；电子邮件：ADs@easa.europa.eu；网址：easa.europa.eu。您可在EASA网站ad.easa.europa.eu查找EASA材料。\n(4) 您可在FAA，飞航适航产品科，运营安全分部，10101 Hillwood Parkway，Fort Worth, TX 76177查阅该材料。有关FAA材料的可用情况，请致电(817) 222–5110。\n(5) 您也可在国家档案和记录管理局(NARA)查阅该材料。有关NARA材料的可用信息，请访问www.archives.gov/federal-register/cfr/ibr-locations，或发电子邮件至fr.inspection@nara.gov。\n颁布日期：2026年7月30日。\nSteven W. Thompson，代理副主任，合规与适航司，飞机认证服务，运营安全分部。[FR文档号2026–16506，2026年8月12日8:45发布]\n计费代码4910–13–P\n运输部\n联邦航空管理局\n14 CFR 第39部分\n[Docket No. FAA–2026–4646；项目标识MCAI–2025–01763–R；修正案39–23435；AD 2026–16–05]\n修订案编号：2120–AA64\n附加信息摘要：FAA针对某些Airbus Helicopters AS350B2型号直升机颁布新航空适航指令(AD)。该AD由欧洲航空安全局(EASA)发布的安全信息促发，涉及液压回路中一个未正确安装的二极管导致主舵机电磁阀、调节器块及尾舵伺服控制器的电磁阀磁化风险。AD要求执行后转子执行器的截断测试，并根据测试结果实施纠正措施。FAA依据经批准的相关EASA材料制定此AD，确保对应不安全状况的处置，保障飞行安全。此AD自2026年9月17日起生效。文件中详细说明了申诉和咨询联系方式及相关材料的获取途径。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e27473c650f4481d015b966dd2879e5286acce704f55188f6ca09d16a2c33471",
+      "chineseText": "执行截断测试，如果发现任何异常（测试失败），则更换任何受影响的二极管或安装缺失的二极管。该材料因有关方面可通过正常业务渠道获得而被认为合理可用。FAA曾发布拟议规则通告（NPRM），拟修订14 CFR第39部分，新增适用于某些Airbus Helicopters AS350B2型号直升机的航空适航指令（AD）。此行动为最终规则。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fdae7b41f5a5aca59fa93264a5400296937d0705a8a9291ef3256b4d0d4eb6d4",
+      "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00003 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    }
+  ]
+}

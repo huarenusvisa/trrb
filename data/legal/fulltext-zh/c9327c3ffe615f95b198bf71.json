@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "c9327c3ffe615f95b198bf71",
   "recordFingerprint": "62412a473371891bf21db98007afec735e06fff9eff40d6c0200396fc8d2d24e",
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Interior Department; National Park Service",
@@ -388,5 +388,5 @@
       "chineseText": "（此节仅包含版式信息，未提供实质性文字内容）"
     }
   ],
-  "reboundAt": "2026-08-17T21:02:55.897Z"
+  "reboundAt": "2026-08-17T21:59:39.643Z"
 }

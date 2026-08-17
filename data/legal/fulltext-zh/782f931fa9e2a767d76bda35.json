@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "782f931fa9e2a767d76bda35",
   "recordFingerprint": "50cf63ab596303346cd25fe712d05b8055f467e9160a141ddb83e55f94841238",
-  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Health and Human Services Department; Food and Drug Administration",
@@ -155,5 +155,6 @@
       "sourceTextHash": "5ecd7beeb79e7a6b393ebeec7624cf95c3e4ab9c863d1ff7cd21d868c7627cf6",
       "chineseText": "2026年8月11日15:59发布 美国联邦公报 编号268001 表格00000 页面00017 格式4700 排版4700 文件位置：E:\\FR\\FM\\12AUR1.SGM 12AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:59:39.644Z"
 }

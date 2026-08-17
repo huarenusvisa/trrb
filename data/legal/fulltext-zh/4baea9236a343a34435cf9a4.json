@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "recordId": "4baea9236a343a34435cf9a4",
+  "recordFingerprint": "7e87f19db4506b39736826a766bf63a0e2e42e04f519f77ed9cb775be4609ea1",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16505/airworthiness-directives-airbus-helicopters",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16505.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16505.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T22:04:16.403Z",
+  "sourceDigest": "fc32609ea1b65ea79f50aea690d70266ba7a279356753e8aa7dbe05c576586f4",
+  "translatedAt": "2026-08-17T22:05:25.187Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 35,
+  "translatedSegmentCount": 35,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cdf05b42de5055b35f50b61b13bafb82e4e07c17d7fe5dc8c89923c13f3bb8b7",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52231"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ca78934458a71504875834abc9015d0cfa144cab2be601c6e720f9af2114be2e",
+      "chineseText": "Partners Boeing 服务公告 AP767–57–010，第14版，日期为2025年11月17日；及 Aviation Partners Boeing 服务公告 AP767–57–014，第3版，日期为2025年11月17日。根据14 CFR 39.19，向您的主管检查员或负责的飞行标准办公室提交请求，视情况而定。如果直接发送给认证办公室经理，请寄给该处负责此AD材料的人。该材料根据2018年7月10日（83 FR 25885，2018年6月5日）批准纳入参考资料（IBR）。有关本AD第(r)段中指定的服务规范信息，可以电邮至：AMOC@faa.gov。在使用任何已批准的AMOC前，须通知您的主管检查员，或如无主管检查员，则通知负责飞行标准办公室的经理。符合安全级别的AMOC可用于本AD要求的任何维修、改装或更改，前提是该方法经波音授权授权经理批准确认该结果。除非本AD特别指定，否则必须使用本段所列材料执行本AD要求。以下材料于2026年9月17日批准纳入IBR：(i) Aviation Partners Boeing 服务公告 AP767–57–010，第14版，日期2025年11月17日。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7c1bf1b44a946b6ad1054937fc98913bcd7ec8d5f79a3ec8cca4431b08a8d3c7",
+      "chineseText": "2024年7月9日修订的Aviation Partners Boeing 服务公告 AP767-57-014，第2版，或2024年4月12日修订的Aviation Partners Boeing 服务公告 AP767-57-014，第1版。(2) 您必须使用适用的材料以执行本AD所要求的行动，除非本AD另有规定。(q) 替代合规方法（AMOCs）（1）AIR–770，西部认证分支经理有权限审批本AD的AMOCs，如根据14 CFR 39.19提出申请。(3) 以下材料于2026年9月17日批准纳入IBR。(i) Aviation Partners Boeing 服务公告 AP767-57-010，第14版，日期2025年11月17日。(3) 以下材料于2018年7月10日纳入IBR并获批准：(i) Aviation Partners Boeing 服务公告 AP767-57-010，第11版，日期2017年4月3日；(ii) Aviation Partners Boeing 服务公告 AP767-57-014，第1版，日期2017年4月12日；(5) 对于本AD中识别的Aviation Partners Boeing材料，联系方式是航空合作伙伴波音公司，地址：华盛顿塔奎拉Andover Park West 555号200室；电话206–830–7699；电邮 certification@aviationpartners.com；网址 aviationpartnersboeing.com。您可在FAA，2200 South 216th St., Des Moines, WA的适航产品部操作安全分支部门查阅材料，电话206-231-3195。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b7bb0a4d7f086f4dc94770a5374c45c5969c363988245efff4afff8dafd96484",
+      "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00013 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "338f1c835b777aabbf98570af75b646b95334b7ae0ae27bafad6ec41c53a5928",
+      "chineseText": "52232 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5e005f9d62713e6ef415af6fe0e18d63b0398fbd185ec1eb006039c4cb58f238",
+      "chineseText": "生效日期：本AD自2026年9月17日起生效。联邦公报主管批准纳入参考的出版物自2026年9月17日起生效。地址：AD档案您可在regulations.gov上的档案号FAA–2025–3420查询AD档案；或在工作日9时至17时（联邦假日除外）亲自到访交通部档案处。档案处地址为：美国交通部，档案处，M–91，西楼五楼，W58–213号房间，New Jersey Avenue SE 1200号，华盛顿特区20590。纳入参考材料：欧洲联盟航空安全局(EASA)材料，联系地址：德国科隆市Konrad-Adenauer-Ufer 3号，50668；电话+49 221 8999 000；邮箱ADs@easa.europa.eu；网址easa.europa.eu。您也可在FAA，运行安全分支，Airworthiness Products Section，10101 Hillwood Parkway，Fort Worth，TX 76177查阅该材料，联系电话（817）222-5110；该材料亦可在regulations.gov上的档案号FAA–2025–3420查阅。联系人：Michael Yeshiambel，航空安全工程师，电话（316）946-4133，电子邮件michael.m.yeshiambel@faa.gov。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b266e4be507b105b73355695c222bff55901b276f801c063416595c90c7ad6ad",
+      "chineseText": "讨论最终适航指令收到来自五名评论者的意见，其中包括Citizens Rulemaking Alliance、Elite Rotorcraft、Heli Chicago及两名个人。两名个人支持NPRM未变更。以下为NPRM收到的评论及FAA的回复。请求取消拟议AD的Citizens Rulemaking Alliance要求FAA提供绕过告知与评论程序的合理依据、将本行动转为NPRM或暂停执法以允许提交意见从而证实“飞行前”合规期限的紧急合理性。Elite Rotorcraft和Heli Chicago声称不安全状态源于不当维修且未遵循制造商的平衡调节指南。他们指出已保持风扇平衡，减少引起裂纹的振动，且建议必须解决风扇振动以消除裂纹问题。此外，两评论者要求FAA提供更多相关数据。FAA不同意该意见，依据14 CFR部分39，FAA在产品存在不安全状态且该状态可能存在或产生时发布适航指令。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "381e58472f7fc4bbe7e0f8bd050f69423c523b2d0b99784eeec6e64ffe698844",
+      "chineseText": "据成员国航空安全技术代理欧洲联盟航空安全局（EASA）报告，定期维护后尾转子传动风扇的左右侧支腿发生裂纹。多起事件中，在定期维护过程中发现裂纹及破损。该状态若未及时处理，可能导致支腿断裂，风扇组件位移，引发发动机及主齿轮箱冷却功能丧失，尾转子驱动丧失及飞机失控。此外，空客直升机公司仍在调查裂纹根本原因，FAA将本AD视为识别与修正该不安全状态的临时措施，未来如有最终修正措施将考虑进一步规则制定。"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "89775a915ecd5388135ea58209ff0130c7b1db94c54b9cd97bd0da6d9f2ec980",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52233"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fc6eabf8d6f019f9fab24f53439129701fda0b8d5aae4a83a2487b3e927deec4",
+      "chineseText": "在获得对IBR材料的访问权限后，该材料将被添加到AD案卷中。小企业监管执法公平法案（Small Business Regulatory Enforcement Fairness Act of 1996，公法104-121，110统计857，1996年3月29日）和行政命令12866所规定的EASA AD 2025-0052被纳入引用，而非制造商的服务信息。FAA在联邦登记册发布NPRM时已将EASA AD 2025-0052发布至AD案卷。EASA AD 2025-0052中引用的材料只能在该材料已公开或获得材料所有者书面同意的情况下，在最终规则发布前发布。此外，FAA在NPRM中已通知，EASA AD 2025-0052引用的材料将在本AD发布后在AD案卷中提供。因此，FAA因该评论未修改本AD。FAA注意到本AD第(i)段规定本AD不要求报告。若AD要求报告，AD的序言中将包含一段名为“文书工作减少法案”的段落，包含适用的OMB控制号码、所需的PRA声明和收集所需信息的估计时间（负担）。任何与报告要求相关的费用均会包含在AD序言的“遵守成本”部分内。因此，FAA未因该评论修改本AD。FAA使用小企业监管灵活性法案（RFA）关于小企业定义用于本次分析。RFA定义小实体为小企业、小政府机构或小型组织。5 U.S.C. 601(3)中，RFA将“小企业”定义为《小企业法》第3条所指的小型企业。小企业法授权小企业管理局（SBA）通过颁布相关标准定义“小企业”。SBA针对不同经济活动或行业制定了规模标准，通常基于员工数量或年收入确定。值得注意的是，SBA对小企业的定义适用于母公司及其所有关联企业作为一个整体。FAA通过确定实体或母公司的主要NAICS，并利用不同数据来源（如公司年报、交通统计局）信息，判断实体是否符合适用规模标准。本AD影响25个实体，其中13个为小实体，3个非小实体，9个缺乏足够数据分类。以下表格列出了16个已知实体的数量和所属行业。根据FAA评估，本AD不会对小企业产生显著经济影响。尽管影响实体众多，但本AD的高估成本与各小企业年收入比重最大发生1.24%。因此，根据5 U.S.C. 605(b)的规定，FAA确认本AD不会对大量小企业产生显著经济影响。FAA审查了相关数据并考虑了意见，认为本AD为满足航空安全需要应予采纳。依照FAA与该国家的双边协议，该国家的民用航空管理机关已向FAA通报了本AD所述的不安全状况。制造商仍在调查不安全状况的根本原因，因此FAA将本AD视为暂时措施。如未来确定最终措施，FAA可能进一步制定法规。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f0bfe43fd5a786d2546e0ca36f1f8609ff63b6bbf5d72818313f0f2a62a0af15",
+      "chineseText": "受影响实体和小实体数量"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8fd72c009b7bb8017281c54b7a0108dddc8999f9db074c01d12c5d3118781126",
+      "chineseText": "NAICS行业分类代码 影响实体数量 航空器数量 小实体数量 小实体占比（%）"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a76d19ba7199cac224ad5cc8646f994376e91b69cbfd03d841b9ab5d844aa64f",
+      "chineseText": "423860……运输设备及用品（机动车辆除外）批发商 2 2 1 50\n481219……其他非定期航空运输 5 7 5 100"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b6add5a34735fff28c2150155d9456eb09a27afe5d89821bbad9d4e7548b3db3",
+      "chineseText": "2026年8月12日15:47，卷。268001，法院登记 00000，格式4700，日期4700，E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e45554d13c6581015138fb45e166aaf7b22b2dc23d2acf8fdc37dde40c211fdb",
+      "chineseText": "2026年8月13日星期四联邦公报/ 第91卷第155号/规则和规章页52234"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0c3e364019b46d848304640804180202c72b5e11149d1fce146feb87359eaa23",
+      "chineseText": "受影响实体和小实体数量——续表\n NAICS行业分类代码 影响实体数量 航空器数量 小实体数量 小实体占比（%）"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fee11a11cf1b5dccfcf238f76fe71e40a1032f27ca7729966f9ee27c7c84d8b7",
+      "chineseText": "488119……其他机场运营 5 7 5 100\n488510……货运运输安排 1 1 0 0\n492110……快递和快运服务 1 3 0 0\n541611……行政管理和一般管理咨询服务 1 1 1 100\n561320……临时帮助服务 1 1 1 100"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "66a857ac319b972ac77b3d01c52787f9818349d1992274cb1aa61f83d6cbf2cd",
+      "chineseText": "下列表格呈现本AD对所有13个小实体的高估成本影响。高估成本定义为检测费用（每架直升机128美元），之后如果发现需更换，费用为2640美元。这些费用详述于最终规则的“遵守成本”部分。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "37646766eaaeef2ff28c3f1e29c997026e9eb20bf732a64dd9d7d942ed17e086",
+      "chineseText": "AD对小实体的影响\n NAICS代码 NAICS描述 年均收入1 高估成本2 收入占比3"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5777f189f747becf30e7bfd9500b5007dc19497b679f68929e1a9065739a3069",
+      "chineseText": "423860……运输设备及用品（机动车辆除外）批发商 $1,060,000 $2,768 0.26\n481219……其他非定期航空运输 $869,362 $3,875 0.49\n488119……其他机场运营 $1,019,898 $3,875 0.68\n541611……行政管理和一般管理咨询服务 $226,340 $2,768 1.22\n561320……临时帮助服务 $223,050 $2,768 1.24\n1 来源：邓白氏，D&B Hoovers，2026年5月14日检索。\n2 通过将所有小实体拥有的航空器数量乘以高估成本，然后除以实体数量计算得出。\n3 各行业所有实体平均收入占比。例如，对于其他机场运营，个体实体面临的成本分别为其总收入的1.02%、0.25%、0.35%、0.51%和1.28%，平均为0.68%。该数值可能与平均高估成本除以平均年收入不同，更能反映对个别实体的影响。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e881aca8f07a69094b89c4fe407e3505561a04c68d12d16eb6138253efbf314f",
+      "chineseText": "上述RFA结论。FAA审查了相关数据，考虑了收到的评论，认定为确保航空安全须采纳本AD。除了一些小的编辑修改，将受影响直升机数从38架更正为34架，并伴随相应成本变化外，本AD与NPRM一致，无其他变更。任何修改不会增加运营者的经济负担。MCAI要求将检测结果报告制造商，而本AD则不要求。FAA将本AD视为临时措施。制造商仍在调查本AD所示不安全状况的根本原因。如果后续发现最终措施，FAA可能进行进一步立法。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "aee5f500c5a1e23a99add641322fea245eb37499b9024f0a180ab09abd2fca75",
+      "chineseText": "2026年8月12日15:47，卷。268001，法院登记 00000，格式4700，日期4700，E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7dc26588d313c8c95d2966976ea293cc7e632a9dbfac7ed116c33cdaad8f0545",
+      "chineseText": "联邦公报/ 第91卷第155号/ 2026年8月13日星期四/ 规则和规章页52235"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d5d719b2a0a6684d2f2a414da3a66eb233d21ddada4eb2979fbd00974bb29773",
+      "chineseText": "估计费用\n 操作名称 工时成本 零件成本 单件成本 美国运营商总体成本"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "409d2593f84bdd261e4af941b6929d52af8fc56f343fb50a95b3db26a36348e9",
+      "chineseText": "检查两侧支撑结构......1.5工时×85美元/工时=128美元；零件成本$0，合计$128，34架直升机总计$4,352。\n FAA估计操作人员的工时成本为每小时85美元，此为2026财年飞机机械师（69.85美元，负责60%工时）和一般及运营经理（108.15美元，负责40%工时）加权平均全额工资。该工资基于2024年航运业的BLS统计数据，经1.42倍福利因子调整，并使用GDP隐含价格平减指数2.8%调整至2026美元水平。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a24e88cd2e5600ee4cf2f7ba2a48b99070e8f8e3d4f2d37101cbcab6cf3d5be1",
+      "chineseText": "FAA估计根据检查结果需进行的后续维修成本。机构无可用数据确定可能需维修的直升机数量："
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "aca45e5e12743d3f740125f4ccdfc996752b6ee4acbee3dc871a86901cc4a08f",
+      "chineseText": "条件修复费用\n 操作名称 工时成本 零件成本 单件成本"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ee96dd7e85d17cd06fd671c153fd0ede0fa1528c7b1eab4d6acfcbdec1a9b793",
+      "chineseText": "更换两侧支撑结构......24工时×85美元/工时=2,040美元；零件成本600美元，合计2,640美元。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "db5048a925a0735af37d4ee87ec28847f24418d6c32c3db5e6cbab606f5e760d",
+      "chineseText": "本规则制定权限 (3) 不会对大量小实体产生重大（正面或负面）经济影响\n美国法典第49编规定了联邦航空管理局（FAA）制定航空安全规则的权限。第一子标题（Subtitle I）第106节描述了FAA 管理员的权限。第七子标题（Subtitle VII）“航空项目”详细描述了该机构的安全授权范围。\n安全。\nFAA依据副标题VII，A部分，第三分部，第44701节：一般要求，颁布本规则。根据该节，国会授权FAA通过规定适用于航空运输的安全所需的行为、方法和程序，以促进民用航空器的安全飞行。\n本规则制定符合该权限范围，因为它处理的是本规则制定中所指定产品上可能存在或发生的不安全状况。\n■ 1. 第39部分的权限引用如下：\n权限：49 U.S.C. 106(g), 40113, 44701。\n■ 2. FAA修改第39.13节，新增以下适航指令（AD）：\n规则修订\n（d）主题\n联合航空系统部件代码（JASC）6500，尾桨传动系统。\n（e）不安全状况\n本适航指令是由于报告尾桨传动风扇侧支撑腿存在裂纹而制定。FAA发布本AD是为了检测和纠正尾桨传动风扇侧支撑腿裂纹问题。\n如果不处理该不安全状况，可能导致支撑尾桨传动风扇的侧支撑腿断裂，尾桨传动风扇组件移位，进而导致引擎和主变速箱冷却功能失效、尾桨驱动失效，最终导致直升机失控。\n（f）合规性\n除非已完成，否则必须按照规定的时间遵守本AD。\n（g）要求动作\n除本AD第(h)和(i)段另有规定外，应遵守欧洲联盟航空安全局（EASA）AD 2025–0052（2025年2月28日），以完成规定的所有动作和合规时间。\n\n监管评估\n本AD根据行政命令2026–16–03没有联邦主义影响。编号为2026–16–03；法规修正39–23433；案件编号13132。本AD不会对州、本地政府间的权力分配构成重大直接影响，也不会对国家政府与各州的关系造成影响。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "3d7d0ab3d074e03b02e88dec1bc8d02a59e0d75c46cd88bb36ba44f5acbcc83a",
+      "chineseText": "（b）相关适航指令\n无。\n（c）适用范围\n本AD适用于所有获证类别的Airbus Helicopters AS355E、AS355F、AS355F1、AS355F2和AS355N型号直升机。\n（1）根据行政命令12866，本AD不属于 \"重大监管行动\"。\n（2）除阿拉斯加州外，不影响州内航空。\n（3）根据EASA AD 2025–0052第2段关于飞行小时数合规要求时，本AD改为使用飞行时间（小时数）计时合规。\n（4）根据EASA AD 2025–0052关于其生效日期的规定，本AD的生效日期为2026年9月17日。\n（5）对于EASA AD 2025–0052第2段中规定的“按照服务公告（ASB）指令更换受影响部件”的内容，本AD要求将该语句替换为“按照ASB指令拆卸所有受影响部件并更换为新的（零飞行时间）部件”。"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "032660d7e72d01fbfa3c81c1c4077717eda058db1164dac4d32622b94ddaa631",
+      "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00017 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "56aec1ac63577ac5eb254c1a742679e83df955015883406d2b042b92086ed42a",
+      "chineseText": "52236 联邦公报 / 第91卷，第155期 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "2b27e800df92b165eb0f129aecadc11538430a0cefbd44d656496b83d9fac3de",
+      "chineseText": "（4）本AD不采纳EASA AD 2025–0052的“备注”部分。\n（i）无报告要求\n虽然EASA AD 2025–0052及其引用材料要求向制造商提交相关信息，但本AD不包含该报告义务。\n（j）特殊飞行许可\n依据14 CFR 21.197及21.199的规定，不允许特殊飞行许可。\n（k）替代合规方式（AMOCs）\n（1）FAA国际验证组经理有权批准本AD的替代合规方式，若申请者依照14 CFR 39.19的程序提出请求。请求须提交至主要检查员或当地航线标准区办公室（FSDO），如直接发送至国际验证组经理，则须抄送本AD段落(l)所指明的负责人，电子邮件地址AMOC@faa.gov。\n（2）使用任何批准的AMOC前，须通知相应的主要检查员，若无主要检查员则通知当地FSDO负责人。\n（l）附加信息\n如需了解本AD更多信息，请联系FAA安全工程师Michael Yeshiambel，地址：1600 Stewart Avenue, Suite 410, Westbury, NY 11590；电话：(316) 946–4133；电子邮件：michael.m.yeshiambel@faa.gov。\n（m）引用纳入材料\n（1）根据5 U.S.C. 552(a)和1 CFR第51部分，联邦登记处署长批准纳入下述材料作为引用。\n（2）除本AD另有说明外，必须使用本材料执行本AD规定的行为。\n（i）欧洲联盟航空安全局（EASA）2025–0052号适航指令，日期为2025年2月28日。\n(ii) [保留]\n本AD由报告的未安装于螺旋桨变速箱的喷油喷嘴及若干螺丝促发，要求对螺旋桨变速箱实施一次性目视检查，如喷油喷嘴及螺丝缺失，根据结果更换服务适航的螺旋桨变速箱。禁止在发动机上安装受影响的螺旋桨变速箱，除非满足特定条件。发布本AD旨在解决这些产品上的安全隐患。\n（3）有关EASA材料，联系EASA（地址：Konrad-Adenauer-Ufer 3, 50668 Cologne, Germany；电话：+49 221 8999 000；电子邮箱：ADs@easa.europa.eu；网站：easa.europa.eu）。EASA网站上可查阅该材料。日期：本AD自2026年8月28日起生效。\n联邦登记处署长核准纳入本AD中所有列示出版物的时间点为2026年8月28日。\n（4）可在FAA空勤安全产品处，运行安全部门，地址：10101 Hillwood Parkway, Fort Worth, TX 76177，电话：(817) 222–5110查阅该材料。\n（5）可在国家档案和记录管理局（NARA）查阅该材料。有关NARA材料可用性，请访问www.archives.gov/federal-register/cfr/ibr-locations或发送邮件至fr.inspection@nara.gov。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "62f036e0c80a1fde6976964d0a4764e127b01f28b6b2061e6cda699c47e87c7e",
+      "chineseText": "本AD须在2026年9月28日前收到意见。\n意见应遵循14 CFR 11.43及11.45的程序，可通过以下任何方式提交：\n除非涉及商业机密（CBI）且符合下文规定，FAA将按原文公布收到的所有意见。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "1a9851ffd7dc9f11c421a664927c04af57f685e37c48d6375d1c140b110f64f7",
+      "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00018 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    }
+  ]
+}

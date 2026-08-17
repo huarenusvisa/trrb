@@ -1,0 +1,2527 @@
+{
+  "schemaVersion": 1,
+  "recordId": "2be31a95963dd160a05319d5",
+  "recordFingerprint": "b701320b66b5797ba567dcb3cd2cf9b2899062e041009aa4a249e2d115cd3486",
+  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Health and Human Services Department; Centers for Medicare & Medicaid Services",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16508/medicaid-program-prohibition-on-federal-medicaid-and-childrens-health-insurance-program-funding-for",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16508.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16508.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T22:06:35.294Z",
+  "sourceDigest": "62f32631a121902c9e5e115d7ef10db9fe2be210f61c84781570fc7837ff0eac",
+  "translatedAt": "2026-08-17T22:16:14.893Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 313,
+  "translatedSegmentCount": 313,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dbf75703f4ad80d3bfefe5bf14926c90f06faf87d6832f907b8e9e653b9c1c01",
+      "chineseText": "联邦登记册 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与法规 52406"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "00c96cb6d81c32768d57bfd4a5fbdd58aeae63c0f06dbf2825704d2ead92bc70",
+      "chineseText": "卫生与公共服务部 中心医疗保险与医疗补助服务中心（CMS）根据《法案》第XXI标题授权联邦政府向各州提供补助金，以通过单独的儿童健康保险计划（CHIP）、医疗补助扩展计划或两者结合方式，为19岁以下的目标低收入儿童提供健康援助。42 CFR第441和457部分 [CMS–2451–F] RIN 0938–AV73 医疗补助计划：禁止联邦医疗补助和儿童健康保险计划资金用于向未满18岁儿童提供性别拒绝相关医疗程序。本规则最终要求州医疗补助计划规定，医疗补助机构不得为未满18岁的儿童支付性别拒绝程序费用，且禁止使用联邦医疗补助资金为未满18岁者资助此类程序。此外，本规则要求州儿童健康保险计划（CHIP）规定，CHIP机构不得为未满19岁儿童支付性别拒绝程序费用，且同样禁止使用联邦CHIP资金资助此类程序。已积极接受跨性别激素治疗的医疗补助和CHIP受益人，在本规则生效之日起6个月内，州医疗补助和CHIP机构可继续为激素治疗费用请求联邦财政参与。每个州医疗补助计划和CHIP计划必须在联邦批准的州计划下描述和实施。本规则依照《法案》第十九标题规定的资格标准、福利包和适用支付标准编制，确保遵循联邦法规。根据《法案》第2104节权威，国家根据批准的计划及季度支出，支付相应金额。联邦财政参与比例（FMAP）根据《法案》第1905节(b)定义，进行相应调整且不得超过85%。本规则自2026年10月13日起生效。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f54dcf779c46fcaaa3fc8ccf2ace9f768461bd4bbe387a657237625c1b8053e7",
+      "chineseText": "如需更多信息，请联系 MedicaidSRPInquiries@cms.hhs.gov。附录信息：一、背景 1 本文件包含指向非美国政府网站的链接，因其含有相关附加信息。我们无法保证该等第三方网站或标示资料的准确性，链接仅供参考，链接非美国政府网站并不等同CMS、HHS或其员工的认可。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "474dceaa7b0df2a28931810dd498c0feb1a5e9d6627f62c54e67629a54b455e7",
+      "chineseText": "根据《法案》，联邦政府依《法案》第1903节按货币配比标准向拥有批准计划的州支付医疗补助支出，依第2105节规定向州支付相应儿童健康援助资金。CHIP计划为目标低收入未投保儿童提供医疗服务，要求确保服务效率，同时需与其它儿童健康福利覆盖项目协调。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fcb58d32cd078fc4e9a849c715c6ccef3804a04ae2e54353944a47a312964bae",
+      "chineseText": "刊登于2026年8月13日联邦登记册第91卷第155期，页码52406-52407。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a498237594874fb28511c009dae19f75e030100cac9934add3af21f79365fc30",
+      "chineseText": "联邦登记册 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与法规 52407"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8474a2500e688f0adf12e93f15e3d7c812ea94c85922d41b804e58f67397d121",
+      "chineseText": "根据《法案》第1102节，卫生与公共服务部长须制定与《法案》不冲突、保障高效管理职责的规则法规。对医疗补助项目而言，部长负责监督州医疗补助计划，确保其符合法案第1902(a)(19)及1902(a)(30)(A)条款。对CHIP项目，则承担第2101(a)节规定的监督职责，要求高效管理CHIP并与其他健康项目（含医疗补助）协调，并执行与医疗补助相关的条款。本规则旨在于42 CFR第441部分新增子章节N，禁止联邦医疗补助资金用于资助18岁以下个体的性别拒绝相关程序；同时修订第457部分子章节D，禁止CHIP资金用于资助19岁以下个体的同类程序。本规则不妨碍各州使用州资金或其他非联邦资金（如私人保险）为这些程序提供支付。本规则于指定生效日期生效，且不违背任何法院命令。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c1c8e0e64715aea0fd379f2e5aa1ea302ac5c1f9d7c68205d9c6cd2a1c8b5662",
+      "chineseText": "CMS知悉西华盛顿联邦地区法院发布初步禁令，禁止相关被告机构执行、实施或依据特朗普总统于2025年1月28日发布的行政命令14187第5(a)节所涉命令；该行政令旨在根据E.O.14168及E.O.14187部分条款，对被认定提供“性别确认医疗服务”的医疗机构或专业人员停止或限制联邦资金。马里兰地区法院同年12月18日亦发布初步禁令，禁止联邦政府依据上述行政令相关条款，因向未满19岁患者提供“性别确认医疗”而终止或限制联邦资金支付。上述司法决定不影响本规则，因为本规则基于独立法律依据与E.O.14187第5(a)节授权，且不依赖或替代任何司法声明。本规则不将性别拒绝程序服务提供者排除于联邦医疗项目之外，亦不要求提供者向患者传达特定建议。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b7865a9ba3317484f7479a7b8be17ab0cf8aad6e7cc6416f2bca0c67c9244a25",
+      "chineseText": "刊登于2026年8月13日联邦登记册第91卷第155期，页码52407-52408。"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "42e29804ffb4742039847aa1c6abb63f1d9aacc2335855a301fd56dd670cffab",
+      "chineseText": "联邦登记册 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与法规 52408"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7f1fac5885fc1a8809958f3311f12eb91a8dc202fae1957dcc2d5ab25ee333d9",
+      "chineseText": "政策。4 本次审查旨在提供最准确、最及时的信息，关于治疗性别焦虑症的证据基础，涉及相关医学领域的现状以及相应的伦理考虑。5 这份美国卫生与公众服务部（HHS）审查旨在作为一项客观的研究综合评估，全国范围内相关领域文献的当前状况；6 虽然其他国家也进行过类似综述，但HHS希望结合美国本土的相关研究，同时借鉴国外研究成果。如后文所述，迄今为止最具影响力的国际努力是英国的Cass评审——一次为期四年的儿科性别医疗独立评估，于2024年4月发布。Cass评审在许多方面确认了HHS审查强调的许多相同问题和关注点。在制定本规则时，我们依赖HHS审查、Cass评审及其他众多医学领域现状的研究成果。作为负责管理医疗补助（Medicaid）和儿童健康保险计划（CHIP）的机构——两者共为美国3550万儿童提供全面健康保险，CMS有责任确保我们的州合作伙伴遵守相关义务，包括《法案》第1902(a)(19)、1902(a)(30)(A)、2101(a)及2102(a)(7)(A)条款。HHS审查和Cass评审及相关研究协助我们了解当前医学状况，以便协助州合作伙伴。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cf03ae27f3fce8537707e33673b99c16f214cf4a3d5f68a659842ae436d57924",
+      "chineseText": "2011年至2021年间，英国儿童和青少年中记录的性别焦虑/不符现象显著增加，尤其是女性病例。13 关于“跨性别”身份的调查显示，青少年中患病率为1.2%，而“性别多样”身份的比例高达8.4%。14 WPATH亦指出，女性青少年寻求此类程序的比例是男性的两到七倍。15"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "28021554897fa5ac431fde97ecc8521629632cf3d0cee0707cb51807ded23f7b",
+      "chineseText": "9 Jarvis 等人，“性别焦虑的流行病学，”第619页。15 Coleman 等人，“护理标准”，第S43页。4 详见美国卫生与公共服务部人口事务办公室，“政策说明”，网址https://opa.hhs.gov/about/mission。5 美国卫生与公共服务部，“儿科性别焦虑治疗的研究”，2025年11月19日，第10至11页，https://opa.hhs.gov/sites/default/files/2025-11/gender-dysphoria-report.pdf（以下简称“HHS审查”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "83b191304e41c568fe9f9c7d8fb08f6bfde3804d5508e806863f455180268b32",
+      "chineseText": "6 “综述”被定义为一种高层级的研究综合方法，评估并汇总多个来源关于同一主题的研究结果。综述是现有医学领域最高级别的证据之一。详见Paolo Fusar-Poli与Joaquim Radua，“进行综述的十条简易规则，”《循证心理健康》21卷第3期（2018年），第95-100页，doi:10.1136/ebmental-2018-300014。7 Stuart William Jarvis 等，“英国性别焦虑与不符的流行病学与趋势分析”，《儿童疾病档案》110卷（2025年）：612。8 Christian J. Bachmann 等，“德国年轻人中的性别认同障碍及趋势分析”，《德国医生国际杂志》121卷（2024年）：370-371。9 Jarvis 等，“性别焦虑的流行病学，”第619页。10 HHS审查，第59页。Henriette A. Delemarre-van de Waal 与 Peggy T. Cohen-Kettenis，“青少年性别认同障碍的临床管理：心理学与儿科内分泌学的协议，”《欧洲内分泌学杂志》155卷增刊1（2006年）：S131-S137。11 Coleman 等，“护理标准”，第S50、S56、S58页。12 Wylie C. Hembree 等，“性别焦虑/不符个体的内分泌治疗：内分泌学会临床实践指南，”《临床内分泌学与代谢杂志》102卷第11期（2017年）：3869-3903。13 E. Coleman 等，“护理标准”，第S43页。14 E. Coleman 等，“护理标准”，第S25页。15 E. Coleman 等，“护理标准”，第S43页。16 医疗转变指根据HHS审查改编提供的激素或者外科干预。17 Jennifer Block，“美国跨性别健康指南允许临床判断决定治疗启动年龄，”《英国医学杂志》378卷（2022年），https://doi.org/10.1136/bmj.o2303。18 HHS审查，第57-58页。Luca Borah 等，“州级限制与地理访问对跨性别青少年医疗护理的影响，”《美国医学会杂志》330卷第4期（2023年）：375-378。19 本最终规则中，采用“性别拒绝程序”（sex-rejecting procedures）一词，特指定义中所包含的相关程序集合。20 HHS审查，第9页。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c91ae0b5b4840b523bad2ea2320912c3d118b1869c5fe103b29428883df3182d",
+      "chineseText": "21 Jason D. Wright 等，“美国性别肯定手术的全国估计，”《美国医学会网络公开》6卷第8期（2023年），doi:10.1001/jamanetworkopen.2023.30348。22 Robin Respaut 与 Chad Terhune，“关注寻求性别护理儿童数量的增长，”路透社，2022年10月6日，https://www.reuters.com/investigates/special-report/usa-transyouth-data/。23 “HHS发布关于性别焦虑儿童与青少年医疗干预的全面评估，”美国卫生与公共服务部，2025年5月1日发布，https://www.hhs.gov/press-room/gender-dysphoria-report-release.html。24 HHS审查，1页。“HHS发布对儿科性别拒绝程序的同行评审报告，”美国卫生与公共服务部，2025年8月11日访问，https://aspe.hhs.gov/topics/data/information-quality-guidelines。25 参见“信息质量指南，”规划与评估助理部长办公室（ASPE），2025年8月11日访问。26 HHS审查，第14、117-123、125-133页。27 HHS审查，第14、117-123、125-133页。28 HHS审查，第14、117-123、125-133页。29 HHS审查，第14、117-123、125-133页。30 HHS审查，第63-65页。31 HHS审查，第10、117-123、125-133页。32 HHS审查，第230页。33 Stacy Weiner，“各州正在禁止所谓‘性别肯定治疗’的性别拒绝程序。”"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "efef78dadd173980f461c4becbd930f10d093ddf8ba578813c62cabf9412ffe6",
+      "chineseText": "法规文本结束，日期为2026年8月12日，时间17:06。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fcd1295411817013339305f4c2aa51d1333ed6ea02f3080d926e7c63608e8c60",
+      "chineseText": "联邦公报 / 第91卷 / 第155号 / 2026年8月13日星期四 / 规则和条例 52409页"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f1cdc1821ce47e498151fd8ff97450c8ca4166a0ea9b7c4839fb86af8bc61acd",
+      "chineseText": "包括逾3200次医学干预，如青春期阻断剂、交叉性别激素和试图帮助儿童和青少年改变性别的手术。例如，超过3200名儿童接受了乳房或胸部手术，超过400名儿童接受了生殖器手术。21 另一项分析发现，2017年至2021年间，年龄在6至17岁之间的儿童中，有超过12万被诊断为性别焦虑，其中超过4700人开始使用青春期阻断剂，超过1.4万人开始接受激素治疗。22 然而，如本最终规则后文所述，现有医学证据不支持使用化学或外科手术治疗儿童性别焦虑的有利风险/收益比。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "059507fc62f5a174ea78a1d4ce1309e854c86600652ada6746db0720d840253d",
+      "chineseText": "二、关于儿童性别拒绝程序的医学证据目前，支持儿童及青少年性别焦虑治疗的指南在方法学严谨程度和质量上存在差异。如上文所述，2025年5月1日，卫生与公众服务部发布了HHS审查，这是对促进诊断为性别焦虑的儿童青少年健康的证据与最佳实践的全面评估。23 2025年11月19日，HHS发布了经过同行评审流程的最终版HHS审查。24 该审查特别进行了系统综述（亦称“综述”）的综述，评估用于治疗性别焦虑儿童和青少年的激素及手术干预的益处与危害的证据。已经评估了包括多项欧洲卫生当局依据的方法学质量较高的系统综述。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "947cc19ce5249431d962d982f9a640d40bce34f5352dcd3a7382c8d6bc69fe47",
+      "chineseText": "HHS审查采用循证医学方法，显示对青春期阻断剂、交叉性别激素及手术存在严重担忧，并指出某些情况下这些医疗干预的某些不良结果是可预期的短期及长期后遗症。21 Jason D. Wright等，“美国性别肯定手术国家估计”，JAMA网络开放，2023年第6卷第8期。22 Robin Respaut与Chad Terhune，“关注寻求性别护理儿童数量的上升”，路透社，2022年10月6日。23 “HHS发布关于性别焦虑儿童与青少年医疗干预的全面评估”，美国卫生与公共服务部，2025年5月1日。24 “HHS发布儿科性别拒绝程序的详尽同行评审报告”，美国卫生与公共服务部，2025年8月。25 另请参见ASPE信息质量指南，2025年8月访问。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fa5da2868c4de33eea5aa767983cf8605403170d2d6466025397b71493452f6e",
+      "chineseText": "该审查指出，尽管缺乏关于益处的可靠证据，但证据表明相关药理学机制及使用的药物存在已知且显著的风险，包括青春期阻断剂、交叉性别激素和手术的不可逆害处如不孕、性功能障碍、骨密度降低、认知影响、心血管疾病、代谢紊乱、精神障碍、手术并发症及后悔行为。29 此外，HHS审查强调，当前证据证明少年期医学过渡的风险/利益比远为不确定。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "cc007f42ad91d93af65110172c70e5afa8c858ff674c12079481ac8c24109084",
+      "chineseText": "HHS审查记录了青少年使用青春期阻断剂、交叉性别激素和手术的显著风险，包括不可逆转的伤害，如不孕等，且发现益处证据极为薄弱。该审查还证实国际上对青春期阻断剂、交叉性别激素和手术治疗儿童性别焦虑的做法正在收缩，部分国家出现回避使用趋势，并强调上述治疗方式具有可能导致严重长期不良反应的风险。31 32"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "eb5cb9066961d520fd191450179f6928d420f48ec1d9fad3e5df873a89bb7db7",
+      "chineseText": "我们了解到，约有17个州的医疗补助项目为儿童覆盖一种或多种性别拒绝程序，根据几大美国医学专业协会（美国医学会、美国儿科学会、美国心理学会）先前发布的声明，这些所谓“性别肯定治疗”的程序被认为既不安全也不有效。33 34 35 36 我们注意到，助理部长办公室（ASPE）也访问和分析了相关数据，进一步支持了这一结论。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4eee8c77fec8a77f54d97f48e4e5ae79f214b360d2dcc54949616625e32d1f6f",
+      "chineseText": "服务，发布于2025年11月19日，https://aspe.hhs.gov/hhs-information-quality-peer-review。确认对未成年人的护理。这对患者和提供者意味着什么？《AAMC新闻》，2024年2月20日，https://www.aamc.org/news/states-are-支持未成年人的确认护理。26《HHS评述》，第15期，95–96页。27《HHS评述》，第15期。28《HHS评述》，第134页。续"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9d0c301af161b7d6402c6f8596f9b1f1028036991a5228e249ff384341113db6",
+      "chineseText": "日期标记2014年9月11日 17:06 2026年8月12日 Jkt 268001 PO 00000 表格 00005 格式 4701 格式化 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "0df829fb0b5d5de85f6ea046cb403ec55c2aeccfd493eab2107895e1ce8890c3",
+      "chineseText": "《联邦公报》/卷91，第155号/ 2026年8月13日星期四/规则和规定 52410"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c24d03a9236d9f3b506d53ac32997033704a3679add0f74392a1551b802cd9f8",
+      "chineseText": "相反，2026年初，美国整形外科医生协会（ASPS）正式更新其立场，建议反对对儿童进行“与性别相关的手术”。这些医学社会认可被引用为支持全国临床医生采用性别拒绝手术的理由。HHS评述解释了为何此类指导方针，包括SOC-8，根据公认的指导方针质量评估标准不值得信任。正如HHS评述详细记录，SOC-8的制定标志着“明显偏离了无偏见、证据驱动的临床指南制定原则”。在制定建议的过程中，WPATH压制了系统性证据综述，未能管理利益冲突，并依赖法律和政治考量而非临床考量。一项最新的国际指南质量系统综述认为，“医疗专业人员在利用[WPATH和内分泌学会的国际指南]作为实践推荐时，应考虑可用指南的质量和独立性缺失。”HHS评述当前的结论与多国欧洲国家的结论一致。瑞典、芬兰和英国分别委托进行了独立的系统性证据综述。2024年4月，Cass审查的结论促使英国性别认同发展服务中心(GIDS)关闭，该中心于2021年被护理质量委员会评为“不合格”。该审查建议重组护理模式——从集中的“性别诊所”模式转向以地区中心为基础，聚焦于心理社会支持的更整体框架。Cass审查的发现还导致英国禁止在临床试验外使用青春期阻断剂，并严格限制交叉性激素的使用。英国儿童通过国家卫生服务体系（NHS）从未接受过与性别认同障碍相关的手术。此外，2026年3月9日，英国NHS England建议不再作为常规委托项目，通过Cambridge推荐交叉性激素使用的理由包括“有关安全性、风险、获益和结果的有限证据。”"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5a271af1ce7c20bd1bc661dce9a712059d391a9278971ee58b3e6df12ff587f0",
+      "chineseText": "瑞典国家卫生和福利委员会（Socialstyrelsen）于2022年12月审查并更新了18岁以下儿童的指南。瑞典NBHW确定青春期阻断剂（GnRH类似物，注射药物阻止卵巢和睾丸产生性激素）和确认性激素治疗的风险可能超过潜在益处。38《HHS评述》，第181页。39《HHS评述》，第182页。40 Jo Taylor等人，《针对经历性别不安或性别不一致的儿童和青少年的临床指南（第1部分）》，《儿童疾病档案》109卷，增刊2 (2024): s65–s72。41 42 43 44 45 参考 Jonas F. Ludvigsson等，《针对经历性别不安的儿童的激素治疗系统综述》，《儿科学报》，112卷，第11期（2023）：2279–2292，https://doi.org/10.1111/apa.16791；英国国家卫生与护理卓越研究所（NICE），《对于经历性别不安儿童和青少年的确认性激素证据综述》（2020），https://cass.independent-review.uk/wp-content/uploads/2022/09/20220726_Evidence-review_Gender-affirming-hormones_For-upload_Final.pdf; I. Pasternack等，‘针对性别变异相关不安的医学方法：系统综述’（芬兰语），Summary Oy (2019)；Jo Taylor等，《针对经历性别不安或性别不一致青少年的男性化或女性化激素干预系统综述》，《儿童疾病档案》109卷，增刊2 (2024): s48–s56。46 Hilary Cass，“针对儿童及青少年性别认同服务的独立审查：终报”，（2024年），https://cass.independent-review.uk/home/publications/final-report/。47 NHS England，《实施Cass审查建议的儿童及青少年性别服务临床政策》，2024年8月29日最后更新，https://www.england.nhs.uk/long-read/children-and-young-peoples-gender-services-implementing-the-cass-review-recommendations/。48 NHS England，《针对经历性别不安青少年开具男性化和女性化激素的临床政策——公开咨询指南》，2026年3月9日发布，https://www.england.nhs.uk/long-read/clinical-policy-prescribing-of-masculinising-and-feminising-hormones-for-children-and-adolescents-who-have-gender-incongruence-or-dysphoria-public-consultation-guide/。49 瑞典国家卫生和福利委员会（Socialstyrelsen），《经历性别不安的儿童及青少年护理国家指南摘要》，2022年12月，https://www.socialstyrelsen.se/globalassets/sharepoint-dokument/artikelkatalog/kunskapsstod/2023-1-8330.pdf。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "00e57b07e6aca1b7a682f2e6ad352711ae76a4fccdecb849e790f471f65b2d80",
+      "chineseText": "Jo Taylor等，《针对遭受性别不安或性别不一致影响的儿童和青少年临床指南质量系统综述（第1部分）》，《儿童疾病档案》109卷，增刊2 (2024): s65–s72，DOI:10.1136/archdischild-2023-326499。45“芬兰打破WPATH '护理标准' 一年后，”循证性别医学协会，2021年7月2日，https://segm.org/Finland_deviates_from_WPATH_prioritizing_psychotherapy_no_surgery_for_minors 。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "b9429b1eb85224928620b09771b351b0a1f8e6e705d76e1c012be978aec06b6f",
+      "chineseText": "日期标记2014年9月11日 17:06 2026年8月12日 Jkt 268001 PO 00000 表格 00006 格式 4701 格式化 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "3cb44b7ce218abe027878cfad36b5d48c7488e11b8726b35112c2d215e64699e",
+      "chineseText": "《联邦公报》/卷91，第155号/ 2026年8月13日星期四/规则和规定 52411"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "adba9021e2aef4a0571756a93d9556c2bfdc49c77f480c552c6536f766b796cc",
+      "chineseText": "瑞典国家卫生福利局（NBHW）指出，最初的性别不一致者。美国心理学协会（APA）发布的治疗建议包括：定义心理健康支持和探究性成熟阻滞剂和外科手术治疗作为心理护理。激素干预可作为某些青少年的最后手段。瑞典已决定不在研究环境之外向儿童提供性别拒绝程序，并限制性别不安的早期童年发作者的资格。2020年，芬兰卫生服务委员会，作为该国公共卫生服务的监管机构，发布了指南，呼吁心理社会支持为第一线治疗，激素疗法需经个别案例仔细考虑，且儿童不得接受手术治疗。芬兰限制激素疗法适用对象为早期童年发作的性别不安儿童且无精神卫生共病。在丹麦，2016年至2022年间，有1300多名性别不一致的儿童被\"转介到国家服务\"，且转介人数逐年增加，其中70%为女性。对于这些程序的转诊数量增加及激素引发身体变化的后悔或逆转报告，丹麦采取了以评估和对儿童提供心理社会支持为重点的方法，并推迟对激素治疗的决定，包括性成熟阻滞剂和跨性别激素，尤其在性别不一致经历时间短暂时，或有性别认同稳定性担忧时。挪威，独立国有机构挪威医疗服务调查委员会（UKOM）于2023年就儿童及青少年的治疗提出建议，反映患者安全方面的关注。挪威公共卫生当局表示有意回应UKOM的关切，考虑是否需调整当前治疗指南。其他限制对非常年幼儿童治疗措施（或计划限制）的国家包括新西兰、意大利、巴西和澳大利亚。正如HHS审查提到的，有越来越多的国际关注聚焦于对儿科性别不安患者采取激素和外科干预的使用。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "c869508fab41083cd52bff09aab9996024990c4651bf620a6b3d8069cc3273cf",
+      "chineseText": "医学专业学会在支持性别拒绝程序方面发挥了关键作用。其中包括美国医学会（AMA）、美国儿科学会（AAP）等。这种明显的共识主要由少数专业委员会推动，受到世界专业跨性别卫生协会（WPATH）的影响，尚不清楚这些协会的官方观点是否被更广泛的医学界甚至其成员大多数共享。有证据表明，一些医学及精神卫生协会曾在其成员中压制异议，遏制有关此问题的辩论。内分泌学会（ES）于2017年发布了《性别不安/性别不一致者的内分泌治疗》临床实践指南。正如HHS审查所指出：在WPATH和ES指南中，交叉性激素（CSH）的主要目标是诱导典型异性身体特征。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "52d176026f2a19da3e1af83146f7c014c0bfa1a8b2a50491ccea4b7bf66ab6d5",
+      "chineseText": "当激素水平超出个体生物性别的典型参考范围时，ES指南建议以个体认同性别而非生物性别作为激素浓度的目标参考范围。但批评者指出，感知的性别认同并不改变生物学性别。HHS审查还提到，专业组织的声明和指南存在质量较低的问题，且相关建议不宜立即实施。其他国家如新西兰、意大利、巴西及澳大利亚等也对儿童的治疗方法采取了不同限制或考虑限制。美国儿科学会（AAP）继续支持对跨性别青少年的护理。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "38f339f658ca967fce2388bc43a433784146ccec6c5d97fca5be0df65b790335",
+      "chineseText": "（此段为格式及文献引用信息，无具体实质内容翻译）"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "3c8a2c2b70500d41844222f0a8b9b58d9dac4bcc27bd8071ccb43aeb816860d5",
+      "chineseText": "（此段为联邦法规官方发布信息页眉，非实质法律内容）"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "e9c0228d4a5e9c331e4fe9e32d4c0c5b268a5c02c0252de8bffdc342abc20a3a",
+      "chineseText": "生理过程，这种信念可能导致对政治压力的干预不适当且潜在危险的激素剂量。68 HHS评审指出：\"建议使用谨慎的语言，声明ES 2017指南使用了GRADE（推荐分级、评估、发展与评价）框架，但因证据基础薄弱而被批评为在激素干预方面作出强烈推荐。值得注意的是，支持ES指南的系统性回顾均未基于儿童或青少年的结果。ES建议使用促性腺激素释放激素激动剂阻断青春期，是基于对实现‘满意的体貌’赋予更高价值，同时对避免身体伤害赋予最低价值。对于性别转换激素的启动年龄不早于16岁，是基于赋予个体对激素治疗有意义同意能力的较高价值，同时对可能延长青春期抑制造成的伤害赋予较低价值。69 HHS评审第9章解释，WPATH发布的指南被认为质量最低，未被系统回顾推荐，且已作为美国性别焦虑（GD）青少年医疗体系的基础。尽管缺乏公信力，WPATH指南作为医疗干预的基础已有十多年。75 SOC–8指南放宽了儿童接受性别矫正手术的资格标准，但仅正式建议为希望接受此类手术的青少年提供全面的生物-社会-心理评估，且指南强调灵活性以适应临床实践的巨大变异。77 78 AAP于2018年发布支持青春期阻滞剂、交叉性别激素和手术的政策声明。78 AAP认为应持续维持性别转换，尤其是在使用CSH前。虽无明确标准，只提供模糊且临床意义不明的“数年”指导，关键决定开放解读，应包含多学科评估。74 关于WPATH，HHS评审称SOC–8推荐临床医生开展全面生物-社会-心理评估，以了解青少年的优点、弱点及诊断特征。同时建议将疾病编码为ICD-11中“青春期及成年期性别不一致”，不区分性别不安，使用的“跨性别”定义广泛。SOC–8界定“跨性别”为“性别认同或表现与出生时分配性别不同的群体”，未明确区分跨性别与性别不合群体，实际涵盖群体广泛。SOC–8未对精神健康支持作出强制要求，反而暗示此类规定类似“转换疗法”。76 HHS评审指出，虽然WPATH不建议禁止精神健康支持，但也未将其作为开展性别发展治疗的前置条件。AAP的2018政策声明虽非正式CPG，但被广泛引用为影响如何应对拥有性别焦虑儿童和青少年的指引。基于其涵盖从社会过渡、青春期阻滞剂、性别激素至手术等各阶段的临床建议，约克团队按照CPG评估标准使用AGREE II工具评价了其可信度，结果该政策声明在国际指南中得分次低（满分7分，得分2分），其使用“性别多样（gender diverse）”一词涵盖范围极广，被批评文献中存在大量引用错误和不准确引用。尽管组织成员持续呼吁提供基于证据的更新指南，AAP于2023年仍选择重申其政策声明，尚未发布扩展指南。79 80"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "b13d382fd4380515fcbfc182d5eae816b041acff3766cf676a5b3ea6fa026015",
+      "chineseText": "HHS评审进一步说明：AAP 2018政策声明技术上并非临床实践指南，但广泛被认为对美国儿科医生如何响应患有性别焦虑的儿童和青少年有重大影响。声明涵盖从社会过渡期到青春期阻滞剂、交叉性别激素和手术等治疗各步骤的详细临床建议。约克研究团队采用AGREE II标准对其可信性进行评估，得分2分（满分7分），为国际指南中第二低。第二章指出，政策声明中使用的“性别多样”术语涵盖范围极广，被同行评审文章批评存在大量引用错误和不准确引用。尽管其会员持续主张该组织尽快发布基于循证的更新指南，AAP于2023年选择重申其政策立场，但截至2026年7月尚未公布新的扩展指南。79 80"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "b26b1db92d8d0359b130190a8c6f8c11d91e668ff1075ad8dc21b15e438b5f72",
+      "chineseText": "（本页无正文，仅为文件编号和格式标识）"
+    },
+    {
+      "segmentId": "pdf-p8-s40",
+      "order": 40,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "06b8f0dd80ae6595339c44aa322ac5426fc3d5539f00e83604477696f16b5df3",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日，星期四 / 规则与规章 52413"
+    },
+    {
+      "segmentId": "pdf-p8-s41",
+      "order": 41,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "be509a944999e5445d613e42c56efc082a1919e5d221b6b4aa30ae2f29020f52",
+      "chineseText": "作为回应，我们收到大量关于一项由犹他州立法机构委托的研究结论的评论，旨在为未来关于儿童性别矫正手术的立法限制提供信息。该研究（称为犹他州评审）由犹他大学药学院药物方案评审中心进行，并于2025年公开发布。81 然而，HHS评审指出，犹他研究“缺乏方法学有效的证据评价”。82 犹他评审对原始研究的审查未对研究问题进行明确定义，未进行全面文献搜寻，未对所有所含研究进行批判性评价。最关键的是，未执行系统综述的两项关键步骤——正式的证据综合及证据确定性评价，故不符合系统证据综述标准。评审在缺乏科学方法基础的情况下得出“证据共识支持治疗有效性”的结论。83 我们还收到关于2023年发表在《新英格兰医学杂志》上的一项题为“青春期后两年跨性别青少年的心理社会功能”的研究结论的多条评论。84 HHS评审认为该研究采用观察性、非对照方法，不支持作者使用“跨性别激素治疗（CSH）改善外貌一致性及心理功能”这样的随意表达。85 评论指出该研究缺乏对照组是最大限制。HHS评审总结：尽管最近有系统综述能够纳入如研究失访和偏倚风险评估等问题，但此类综述无法捕捉更多与研究伦理相关的重大担忧（例如，方案与发表内容不符可能导致“事后假设（HARKing）”）。86 针对Chen等人的研究，同行评审指出其方法问题。"
+    },
+    {
+      "segmentId": "pdf-p8-s42",
+      "order": 42,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "8a5438be17af64ca29e641fd6f86d6211f8a10827626db33222b8b5a02bb47f2",
+      "chineseText": "Peer-reviewed critiques addressing the issues with Chen et al. were eventually published in NEJM, but not until nearly a year after the article first appeared.86 or sexual anatomy does not develop in typical ways due to genetic, hormonal, and or other medical factors that can be medically verified. • Any infection, injury, disease, or disorder that has been caused or exacerbated by the performance of sex-rejecting procedures. • A physical disorder, physical injury, or physical illness that would otherwise place the child in danger of death or impairment of bodily function. We noted that 12 States provide tapering off periods for patients who started puberty blockers or hormones before enactment of the State restriction, with some specifying specific dates (for example, in South Carolina services could not go beyond January 31, 2025) and others specifying a period of time from the time of enactment (ranging between 6 months and 1 year). Ten States have grandfather clauses primarily allowing children who were already receiving treatment to continue receiving it indefinitely. However, we noted that many of these States do not provide such exceptions or grandfather clauses for purposes of prohibitions on State funding, including for State funding under the Medicaid program and CHIP, for sex-rejecting procedures. 81 University of Utah College of Pharmacy, Drug Regimen Review Center,"
+    },
+    {
+      "segmentId": "pdf-p8-s43",
+      "order": 43,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "0de7a56ac5455324d8a292909da9b7f83dcbd3dfec157d3b46a8cd06b72edd41",
+      "chineseText": "le.utah.gov/AgencyRP/reportingDetail.jsp?rid=636。蒙大拿州法律（SB 99）限制未成年人接受性别抑制手术的权利。然而，2023年州长发布行政命令，取消了该州医疗计划中对性别抑制手术的覆盖排除，并禁止向州雇员提供调查协助。蒙大拿州诉Cross案，案号DV–23–541（蒙大拿州地区法院，2025年5月13日）。丹·陈等人，《跨性别青少年接受激素治疗两年后的心理社会功能》，新英格兰医学杂志388期（2023年），https://www.nejm.org/doi/full/10.1056/NEJMoa2206297。HHS审查，第107页。亚利桑那州目前不禁止使用药物进行性别抑制手术。内布拉斯加州限制但未全面禁止使用药物进行性别抑制手术，因此未被计入该统计。内布拉斯加州未对提供、协助、寻求或获得\"性别肯定护理\"的人或实体施加刑事或民事责任或专业制裁。"
+    },
+    {
+      "segmentId": "pdf-p8-s44",
+      "order": 44,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "7cfd2c781614162b5a761d6830de2903e9f854a99f838ca95528d1e292664953",
+      "chineseText": "VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00009 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p9-s45",
+      "order": 45,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "e704f0b76524d3ee1c11454ece575060a67175f1920e56503a6f2e9884414a7d",
+      "chineseText": "52414 联邦公报／第91卷，第155号／2026年8月13日星期四／规则及条例"
+    },
+    {
+      "segmentId": "pdf-p9-s46",
+      "order": 46,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "c8ad71360c46ccfb65c93f443b7a563566ab5db3a4ca36b4ed523534216c684b",
+      "chineseText": "允许16岁及以上未成年人在监护人拒绝性别抑制手术的情况下接受激素治疗的法律对联邦对此类儿童手术的支付有一定限制；但这些提供者仍有其他途径继续获得提供医疗干预的报酬。若手术目的是治疗儿童的先天性缺陷、性早熟、疾病或身体伤害，SB1允许医疗提供者实施。2025年6月18日，法院认定SB1禁止对确诊性别焦虑症儿童进行某些医疗程序且基于年龄和医疗用途的分类而非儿童性别，不符合美国宪法第十四修正案平等保护条款的高度审查标准，并认定该法律符合合理基础审查。正如本最终规则后文所述，类似Skrmetti案中涉及的法律，本规则不会基于性别进行歧视，也无敌意目的，而是着眼于防止联邦资助对存在重大且可能不可逆风险的程序支付。该最终规则聚焦于儿童安全，限制性别抑制程序在某些医疗用途的联邦支付，即调整儿童的身体外观或体形以符合其与生理性别不同的自我认同。"
+    },
+    {
+      "segmentId": "pdf-p9-s47",
+      "order": 47,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "4ff78910a8441dbd66744bde2e4fb425b68d7d079d42520687ed27ff1cafc473",
+      "chineseText": "某些医疗提供者可能依赖于继续获得用于性别抑制程序的联邦资金，因而面临因失去该收入而带来的财务损失。这些提供者认为，禁止联邦医疗补助和儿童健康保险计划资金用于性别抑制手术，会限制儿童获得此类手术的能力，并可能加剧共同患病症状，导致不良心理健康结果并增加自杀风险。我们此前指出，Cass审查强调缺乏关于使用青春期阻滞剂和跨性别激素治疗儿童及青少年性别焦虑症及不协调感的有效性强有力证据。"
+    },
+    {
+      "segmentId": "pdf-p9-s48",
+      "order": 48,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "cb78878905ee0e8bb9fb8757769cdd7e5cdafbf133d2f2197c048da3a98acdea",
+      "chineseText": "Taylor等人近期对23个国际、国家和地区临床指南进行了回顾，这些指南涉及性别焦虑症儿童和青少年适当的管理。研究发现大多数指南缺乏独立或依证据的制定方法，对现有指南的可信度提出质疑。瑞典国家卫生当局建议，“帮助青少年应对天生青春期的心理社会支持应作为选择治疗措施时的首选”。尽管医学和外科干预改善精神健康或缓解性别焦虑症症状的证据不足，心理治疗对于许多神经发育障碍和精神健康状况的儿童和青少年被证明是有效的，其中许多与性别焦虑症患者共病。心理治疗和心理健康咨询是非侵入性干预，且将在医疗补助计划项下儿童早期定期筛查、诊断和治疗（EPSDT）中继续提供。"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "7d5f6b4ccd69adb5d41f589266c418514d3aed50fd72ea7e750b5db01a89adcd",
+      "chineseText": "VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00010 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p9-s50",
+      "order": 50,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "4a840540eecd9731554ec44746ee6e1a0e4cdf34cdd7ea2712e64882b291a762",
+      "chineseText": "100 Centers for Medicare and Medicaid Services, \"青春期阻滞剂、跨性别激素和手术与性别焦虑症相关,\" 2025年4月11日，khammond on DSK9W7S144PROD with RULES2"
+    },
+    {
+      "segmentId": "pdf-p10-s51",
+      "order": 51,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "6c504e4e975fbe9fd8b8494a22ccf5a7c772b68860184583b674abcff0fddba9",
+      "chineseText": "联邦公报／第91卷，第155号／2026年8月13日星期四／规则及条例 52415"
+    },
+    {
+      "segmentId": "pdf-p10-s52",
+      "order": 52,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "849cbdb476d87c5b00181dd17419ea81e6ebaa30ff4b72516f1449a8bbf6f353",
+      "chineseText": "根据《法案》第1902(a)(19)条款，州医疗补助机构必须确保医疗补助覆盖的服务以符合受益人最佳利益的方式提供；就本最终规则相关，指18岁以下儿童。此外，根据《法案》第1902(a)(30)(A)条款，州必须确保为医疗补助支付的费用符合质量护理标准。根据《法案》第2101(a)条款，儿童健康保险计划（CHIP）须以有效和高效的方式为无保险、低收入儿童提供医疗服务。我们于2025年4月11日向州医疗补助主管发函，确保各州意识到性别焦虑症儿童使用某些干预措施的增加，并提醒各州确保医疗补助支付符合质量护理规范，服务提供符合受益人最佳利益。函中指出因证据不足，使用性别抑制程序治疗性别焦虑症缺乏长期益处的可靠证据，且已知对部分儿童有长期且不可修复的伤害。2025年5月28日第二封函件发给多家医院，关注针对诊断为性别焦虑症儿童的特定程序的质量标准、信息同意政策，儿童做出潜在改变生命决定的能力评估及家长同意时间，临床实践指南及近期综合回顾带来的变化，医疗证据及不良事件数据，以及医院关于所有儿科性别抑制手术的完整财务数据。正如本最终规则此前概述，我们对缺少严谨科学数据证明性别抑制程序有效性以及有关风险的大量证据极为重视。鉴于潜在风险与效益不明确，性别抑制程序缺乏必需的长期效果数据。"
+    },
+    {
+      "segmentId": "pdf-p10-s53",
+      "order": 53,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "b7c2e7166c09728605c2f55220f0fb98ca7dac4ec776dcec7dff23cfccae5048",
+      "chineseText": "94 Cass，“Cass 评论。”\n 各州医疗补助计划和儿童健康保险计划（CHIPs）详见 https://www.cms.gov/files/document/letter-stm.pdf。\n 95 Jo Taylor 等人，“经历性别焦虑或不一致的儿童及青少年的临床指南：指南质量的系统回顾（第一部分），”《儿童疾病档案》109卷，增刊2（2024年）：s65–s72，doi:10.1136/archdischild-2023-326499。\n 96 HHS 审查，256页。\n 97 HHS 审查，257–260页。\n 100 美国医疗保险和医疗补助服务中心确定该类“青春期阻断剂”程序的支付对医疗补助目的而言是适用的。\n 101 美国卫生与公共服务部、医疗保险和医疗补助服务中心，“儿童和青少年”，医疗补助，访问日期2025年6月12日，https://www.medicaid.gov/medicaid/benefits/behavioral-health-services/children-and-youth。\n 98 “关于质量标准和性别转换程序的紧急审查”，2025年5月28日，https://www.cms.gov/files/document/hospital-oversight-letter-generic.pdf。"
+    },
+    {
+      "segmentId": "pdf-p10-s54",
+      "order": 54,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "adb3532e0a2cce674f2e5ea650a4801760c62ca182f0ec0ad86955ad7b85f012",
+      "chineseText": "VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00011 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p11-s55",
+      "order": 55,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "a957a54abbffd21ee3f717855e23d5d67d22f819a290b617c5f0cf24bd1a0fa1",
+      "chineseText": "52416 联邦公报 / 第91卷第155号 / 规则与条例，2026年8月13日，星期四"
+    },
+    {
+      "segmentId": "pdf-p11-s56",
+      "order": 56,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "e7c2feb1b16447763afe7749fee1d94d59bba9d476698fec2a1160c8ea41da44",
+      "chineseText": "关于性别拒绝程序，我们认为，用联邦医疗补助（Medicaid）或儿童健康保险计划（CHIP）资金覆盖这些程序，对于医疗补助受益人来说，与其最佳利益及护理质量不符；对于儿童健康保险计划受益人来说，也与向无保险低收入儿童提供有效、高效且与其他健康福利来源协调的卫生保健服务不符。我们确实注意到，在仔细分析收到的评论和关于儿童性别拒绝程序的关切后，我们最终允许联邦财务参与（FFP）对于受影响受益人的有限递减期。具体而言，对于在本最终规则生效之日已接受作为性别拒绝程序一部分的跨性别激素治疗的现有医疗补助和儿童健康保险计划受益人，州医疗补助和儿童健康保险计划机构可继续申请这些跨性激素治疗药物的联邦资金，递减期最长为本最终规则生效日起6个月。该递减期旨在为受益人及其治疗提供者提供合理机会，以临床自由裁量的方式有序停止这些药物，如所愿。此递减期已被纳入规章文本。重要的是，6个月的递减期并非临床指南。治疗者可能认为更短的递减时间表是医学上适当的。青春期阻断剂的使用不在此递减规定范围内，因为停止青春期阻断剂后，青春期表现通常会在数月内恢复。青春期阻断剂主要针对性早熟儿童进行研究，停止用药后，青春发育通常在相对较短时间内恢复至正常轨道。研究显示，停止青春期阻断剂治疗后，女性一般在6至18个月内恢复青春期。此时间线反映临床研究中观察到的典型模式，表明青春期的激素发展和身体变化将在此时间范围内恢复。对于男性，青春期恢复的时间表类似。以上情况不支持继续联邦资金支持，且不合理地延长使用联邦资金支持我们已断定不符合受益人最佳利益的程序的时间，也与护理质量及为无保险低收入儿童提供有效且高效的健康服务不一致。此递减规定有若干重要限制。首先，仅适用于本最终规则生效日已接受作为性别拒绝程序一部分的跨性激素治疗的医疗补助或儿童健康保险计划登记儿童。不适用于规则生效后开始跨性激素治疗的儿童，新启动的儿童性别拒绝程序药物不享受联邦资金支持。其次，此递减期仅适用于跨性激素治疗药物；联邦资金对外科性别拒绝手术或青春期阻断剂的资助自本规则生效日起终止。我们还注意到，联邦医疗补助和儿童健康保险的资金仍可用于性别焦虑患者的心理健康咨询和心理治疗服务。州医疗补助和儿童健康保险机构被鼓励确保接受跨性激素治疗的转换性别者能在治疗期间及之后获得这些服务。我们已考量是否应允许更长的过渡期，如部分评论者建议的12个月期，认为6个月期在为个人考虑停止跨性激素治疗提供合理时间和避免不当延长联邦资金支持之间取得平衡。基于本最终规则及HHS审查，以及更广泛证据本文所述的考虑，我们认定性别拒绝程序的风险/收益情况支持此判断。"
+    },
+    {
+      "segmentId": "pdf-p11-s57",
+      "order": 57,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "511ff954c1d9a8f524feaae9b30d90ae3dc80afff9428495a2899a769d6270e4",
+      "chineseText": "相关时间范围内临床观察得到证实。对于女性，停用青春期阻断剂后，一般在6至18个月内恢复青春期。103对男性而言，青春期恢复时间类似。102Jean-Claude Carel医学博士与Juliane Léger医学博士，“性早熟，”《新英格兰医学杂志》358卷22号（2008年）：2366–77，https://www.nejm.org/doi/full/10.1056/NEJMcp0800459；103 Vickie Wu等人，“影响垂体释放激素激动剂治疗后月经来潮时间的临床发现，”《儿科学报》164卷（2014年）：912–916.e1，doi:10.1016/j.jpeds.2013.12.009。104 Marisa M. Fisher等人，“摘除雄激素抑制器后女生和男生青春期恢复，”《儿科学杂志》164卷（2014年）：912–916.e1，doi:10.1016/j.jpeds.2013.12.009。\n105 《患者保护与平价医疗法案》（Pub. L. 111–148，124 Stat. 119）于2010年3月23日颁布。《医疗保健与教育和解法案》（Pub. L. 111–152，124 Stat. 1049）于2010年3月30日通过，对《患者保护与平价医疗法案》多个条款进行了修订和补充。该规则制定过程中文件中两部法规合称为“患者保护与平价医疗法案”、“平价医疗法案”或“ACA”。"
+    },
+    {
+      "segmentId": "pdf-p11-s58",
+      "order": 58,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "0fdf4e9b84c281d312c7b5c84ef4e178f4b4b21e1ddbd1f977e531773ff07337",
+      "chineseText": "VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00012 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p12-s59",
+      "order": 59,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "cc1e3f80dcc4064b1d07613e640c8802236a575b0917982aefcad8780d712f30",
+      "chineseText": "联邦公报 / 第91卷第155号 / 规则与条例，2026年8月13日，星期四 52417"
+    },
+    {
+      "segmentId": "pdf-p12-s60",
+      "order": 60,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "2c6508bfd54c6885a7b3a6ceb7e6042c3f3851b619bc3f5681ecd5d67b6d32b7",
+      "chineseText": "92.208.106 HHS随后发布公告，声明其无法也不会调查或执行关于被取消的第1557节中性别认同条款的合规情况。此外，HHS基于美国最高法院在Skrmetti案中根据第十四修正案平等保护条款的判决立场，采取了该立场，即“基于诊断依据监管医疗程序并不自动构成基于性别的歧视”。我们提议禁止对用于治疗儿童先天性缺陷、早熟、疾病或身体伤害的性别拒绝手术的联邦医疗补助和儿童健康保险项目的资金支持。在Skrmetti案中，美国最高法院分析了田纳西州SB1法案并判定，该法案不针对基于性别的分类，因此无需严格审查。换言之，该法律并未在受保护类别的基础上实行歧视。最高法院还指出“该法律并未禁止一性别允许的行为而允许另一性别”。同样，本最终规则将对所有注册医疗补助且年龄未满18岁的儿童及注册儿童健康保险计划的19岁以下儿童统一适用，与儿童性别无关。本最终规则将在其联邦资助的医疗补助和儿童健康保险项目中，禁止州医疗补助或CHIP机构支付本规则定义的性别拒绝程序。我们基于本规则第一部分I.B节详细说明的事实以及对基于现有证据的风险与利益的评估，认定儿童性别拒绝程序的风险超过其获益。我们持续支持医疗补助和儿童健康保险项目为研究显示可能有助于治疗儿童性别焦虑的护理项目付款，前提是不包括与性别拒绝程序相关的风险，例如心理治疗。同时，虽然各州法律可能不同，州医疗补助机构目前并未被联邦法律明确禁止为18岁及以上的医疗补助受益人或19岁及以上的CHIP受益人覆盖性别拒绝程序。我们注意到HHS已经单独提议修订其第504节规定，明确非因性功能障碍而引起的性别焦虑不构成残疾资格。无论该分开规则的解决如何，本医疗补助和CHIP规则并不系统性地排除对性别焦虑个体的护理；它限制联邦资金对特定药物和手术干预的使用，同时保留对心理健康服务、心理治疗和其他护理的联邦资金支持。针对特定治疗的有针对性限制不构成基于残疾的歧视。最后，本最终规则与1975年年龄歧视法案及第1557节禁止基于年龄包括其他因素的歧视规定保持一致。年龄歧视法案禁止在联邦资助项目中基于年龄的歧视，但明确允许采取合理考虑年龄作为合法项目正常运作所必需因素的行动。各版本的HHS实施第1557节的法规均承认某些与年龄相关的区分是允许的。"
+    },
+    {
+      "segmentId": "pdf-p12-s61",
+      "order": 61,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "05a35c45e1be3b4132993f476a16b706eb7e179175e484a9004772b27c923597",
+      "chineseText": "155和156条款。108美国作为法庭之友提交的意见书支持上诉人/交叉被上诉人案，L.B.诉Premera Blue Cross，第9巡回法院案号25-5803和25-6143，于2026年7月13日提交。109田纳西州法典第68-33-101条及后续条款。110根据SB1规定，“未成年人”指年龄低于18岁的个人，见田纳西州法典第68-33-102条。111美国诉Skrmetti案，605 U.S. 495，第514至515页（2025年）。112关于基于残疾的非歧视规则，见联邦登记规章，90 FR 59478（2025年12月19日）。113见42 U.S.C. 18116条款（涵盖受禁止的歧视依据及其执行机制，见42 U.S.C. 6101及后来条文）。"
+    },
+    {
+      "segmentId": "pdf-p12-s62",
+      "order": 62,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "51429cb9e46e061968ca53f74ee9daafabe82ca69091b9c46b3c4a688ff1b8cb",
+      "chineseText": "个体指未满十八（18）岁的个人。田纳西州法典第68-33-102条。111美国诉斯克梅蒂案，605 U.S. 495，第514至515页（2025年）。禁止及由42 U.S.C. 6101及其后续法规提供的执行机制。"
+    },
+    {
+      "segmentId": "pdf-p12-s63",
+      "order": 63,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "6aa1fa71ad180fa719f31880d099792407e466b3b934ce73b28b72cc34072058",
+      "chineseText": "序号：VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00013 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p13-s64",
+      "order": 64,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "a2009db8eb424b279e985e7c35be550a7855749841108955719c3c6050d5a415",
+      "chineseText": "52418联邦登记 / 卷91，期号155 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p13-s65",
+      "order": 65,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "92b098e69c7a48c102b1c7fc8434c28b7e977aa62f48ac59ac9294b08ff5c92c",
+      "chineseText": "区分。114本规则中关于拒绝儿童性别拒绝程序的年龄区分—将FFP限制于适当年龄门槛下的儿童—是实现保护医疗补助和儿童健康保险计划受益人免受童年期间不可逆转干预风险的法定目标所必需的。因此，这些区分并不违反年龄歧视法案或第1557节关于基于年龄的歧视禁止条款（在该条款适用范围内）。此外，本规则并不旨在规范适用于医疗保健专业人员的伦理标准。自患者护理全过程中，医疗护理专业人员不得通过不合理障碍阻碍适当医疗的获取。患者可自由通过非联邦资金或联邦资金之外途径获得性别拒绝程序或医生可执行该等活动，前提是州法律允许。此外，尽管本规则对部分合格受益人的有限减量规定设定了为期六个月联邦资助限制，该等受益人可继续通过非联邦资金接受性别拒绝程序。第2章 与限制不合理医疗障碍相关法律（患者保护与平价医疗法案第1554节）交叉影响患者保护与平价医疗法案第1554节一般限制HHS发布阻碍医疗服务获取的规定。第1554节部分内容禁止制定造成个人获取适当医疗服务的障碍、妨碍及时获得医疗服务、违反医疗保健专业伦理标准或限制整个患者护理过程医疗治疗提供的规则。加州诉Azar案（第9巡回法院2020）明确指出，1554节旨在防止联邦政府直接干预医疗保健，而非限制其资金决策。法院强调，该法案禁止联邦政府对医疗服务进行不合理阻挠，而非强制为所有医疗程序提供资金。本最终规则符合1554节要求。正如前述，HHS审查了多项研究及风险评估数据，发现针对儿童的性别拒绝程序缺乏足够证据证明其获益大于风险。基于此，最终规则禁止按42 CFR 457.402(x)为性别拒绝程序提供联邦资金支持。同加州诉Azar案等判决中否定违反1554节的论点类似，本规则不阻碍相关服务在联邦资金撤出情况下通过其他渠道继续提供。由于本规则未限制服务提供者行为或患者就医权利，故不属于1554节所禁止的阻碍。3. 与医疗服务数量、期限、范围充足性条款的交叉影响114见2024年5月6日联邦登记（89 FR 37522, 37604-37605），2020年6月19日联邦登记（85 FR 37160, 37177），和2016年联邦登记（81 FR 31375）详细论述。"
+    },
+    {
+      "segmentId": "pdf-p13-s66",
+      "order": 66,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "b8ae2fc18033926e644146e23fd870a6a9008a9a7fbdde1ca043ba992d227f20",
+      "chineseText": "31408（2016年5月18日）。457.60 还要求各州在添加或删除州计划中的特定福利类别时提交州计划修正案。本最终规则也将与《社会保障法》第1902(a)(10)(B)和(C)(ii)条款及其实施法规42 CFR 440.230保持一致，该法规规定州医疗补助计划必须具体说明所涵盖服务的风险/收益状况、数量、持续时间和范围。CMS长期以来给予州政府自由决定是否覆盖治疗选项。在确定是否应对儿童患者接受的性别否认手术禁用联邦医疗补助资金时，本最终规则考虑到了性别否认手术的风险/收益配置，以及替代治疗的可用性。"
+    },
+    {
+      "segmentId": "pdf-p13-s67",
+      "order": 67,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "74b5201cd0d2c053a8975446ef3622639a88147317494655d8d864f946947164",
+      "chineseText": "VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00014 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p14-s68",
+      "order": 68,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "9602bea990069e3a994dd1988a9e45b955a7b58ce04cc6139141d28b527cc2bf",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 公布日期 2026年8月13日，星期四 / 规则与条例 52419"
+    },
+    {
+      "segmentId": "pdf-p14-s69",
+      "order": 69,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "c8d85d61db8c4f9a21e7f7368606be4d122732b7db6bc48afd5537ee97bec7ab",
+      "chineseText": "在 CHIP 中适用于19岁以下人员的治疗对该类个体的长期健康产生影响，包括生育力的影响，以及这些治疗是否导致或增加了性功能障碍、骨密度受损、不良认知影响及先前提及的其他健康异常的风险。尽管某些服务可能受到EPSDT福利的覆盖，州医疗补助计划仍有权根据适用法律和法规“做出个案医疗必要性认定”。根据本规定，州政府应在EPSDT福利范围内做出医疗必要性认定。该最终规则还与州政府在EPSDT福利项下的义务保持一致。根据EPSDT，州政府必须为大多数21岁以下医疗补助符合资格儿童覆盖由《社会保障法》第1905(a)条描述的医疗必要服务，即使这些服务在州计划中未被覆盖。儿童符合EPSDT资格通常包括：通过具有分类需要群体资格条件加入医疗补助且年龄21岁以下者；通过具医疗需求资格且所处州已选择在医疗需求福利中包含EPSDT者；在扩展医疗补助的CHIP项目中；或进入已选择包含EPSDT的独立CHIP项目的儿童。其中包括因入住机构护理水平而符合医疗补助资格的儿童，该资格是基于其参加家居及社区基础服务（HCBS）及《社会保障法》第1915(c)条款下豁免的情况。正如本最终规则前文所述，我们考虑了依赖CMS对这些服务提供联邦医疗补助及CHIP支付的各州、提供者及受益者的关切。即使对州、提供者及个人而言，因本禁令造成潜在财务负担及因想获得该等服务的受益者所承受的心理和身体影响，基于HHS审查的发现，发现缺乏证据支持，经继续使用上述相关服务的联邦支付将不符合《社会保障法》第1902(a)(19)、1902(a)(30)(A)及2101(a)条的法定标准，我们认为，此次规则中的州、提供者及受益者的关切被防范儿童受到的潜在损害所超越，包括持续且不可逆的损害风险。"
+    },
+    {
+      "segmentId": "pdf-p14-s70",
+      "order": 70,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "9a49d8bfcbe2255de168de22658ca7f4464ed728521a1d2d6bb507bd1fb7c0e9",
+      "chineseText": "性别否认手术对儿童可能产生的影响，包括潜在的长期伤害，尤其是当这些服务的可能益处尚未被证实且该等手术可能具有不可逆性。"
+    },
+    {
+      "segmentId": "pdf-p14-s71",
+      "order": 71,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "18a2f0cffa5e8d5daf625422dd295b856762c6621bed59257344c553d6b0b200",
+      "chineseText": "需要更多数据来确定，最终规则所定义的针对18岁以下儿童的性别否认手术的具体影响。"
+    },
+    {
+      "segmentId": "pdf-p14-s72",
+      "order": 72,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "42febc2820267dadc8590bd40d627b1760d51f239ba59386daf6f66d3bbd438f",
+      "chineseText": "依据《医疗补助早期和定期筛查、诊断及治疗服务》（EPSDT）指南、案例Garrido诉Dudek案，731 F.3d 1152, 1161（第十一巡回上诉法院，2013年）（裁定州政府必须确保为EPSDT覆盖的任何服务均符合医疗必要性标准）。"
+    },
+    {
+      "segmentId": "pdf-p14-s73",
+      "order": 73,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "dca2f1f898173d4a9f78b0453e0b1dff0ce92f3f3a9f3857f885adf0164ca652",
+      "chineseText": "VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00015 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p15-s74",
+      "order": 74,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "583456a3fa2863aaef00c1ca283b88138a1bfb262a831eddc310549c4f33a83c",
+      "chineseText": "52420 联邦公报 / 第91卷，第155号 / 2026年8月13日，星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p15-s75",
+      "order": 75,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "4c83be5812af9f22b6c57ecf8933228acc477350a161cfe99763f0cbedc19a7a",
+      "chineseText": "包括《社会保障法》第1902(a)(19)、1902(a)(30)(A)和2101(a)各条款。基准覆盖选项包括：(1) 根据§ 457.420的基准覆盖；(2) 根据§ 457.430的基准等效覆盖；(3) 根据§ 457.440的现有综合州级覆盖；以及(4) 根据§ 457.450的经秘书批准的覆盖。不论州选择哪种类型的健康覆盖，均必须向CHIP注册的儿童提供§ 457.410(b)所列的所有服务，此外，州拥有根据§ 457.402选择涵盖额外服务和治疗的灵活性，§ 457.402列举了“儿童健康援助”包含的服务。除了规定的服务外，§ 457.402(x)允许州选择额外服务和治疗以涵盖，遵循《社会保障法》第2110(a)(24)条款的法定用语。大多数独立CHIP州已选择经秘书批准覆盖。根据§ 457.450项下的经秘书批准覆盖，秘书有自由裁量权决定州所提供的覆盖是否适合目标低收入儿童群体。最近，关于允许CHIP基准覆盖选项的程序已出现变更。本最终规则后续部分具体描述。2025年6月20日发布了《患者保护和平价医疗法案：市场完整性及可负担性》最终规则（90 FR 27074）（以下简称“2025年市场最终规则”），该规则禁止非祖传计划发售者，即个体和小团体市场的健康保险计划发售者，提供“特定性状修改程序”的覆盖，作为基本健康福利（EHB）从2026计划年度起实施。该禁令提出并实施的原因包括《平价医疗法案》第1302(b)(2)(A)条款，规定EHB的覆盖范围必须等同于典型雇主计划的福利范围，而通常雇主计划不包含此类程序。2025年1月31日，美国人事管理办公室发布了2025-01A号函，禁止联邦雇员健康福利计划（FEHB）及邮政服务健康福利计划（PSHB）涵盖化学和外科手术方式的性别特征修改（包括“性别转变”服务）的费用，并明确载体不得拒绝涵盖全部药品类别，例如“促性腺激素释放激素激动剂可用于体外受精、减轻子宫内膜异位症或子宫肌瘤及癌症治疗等。”如前所述，《社会保障法》第2101(a)条授权各州启动和扩展为无医保的低收入儿童提供儿童健康援助服务，该服务需有效、高效且与其他儿童健康保障来源协调。前述规则将对禁止联邦资金支付性别否认程序的执行起到协调效果，涵盖医疗补助、FEHB和EHB计划。尽管《社会保障法》第21标题对独立CHIP项目未适用EHB规则，但必须覆盖的服务应为EHB。类似医疗补助，此次CHIP拟议的修改将禁止联邦支付19岁以下儿童接受性别否认手术，除用于治疗医疗上确证的性发育异常且非出于调整儿童身体或外观之目的。该措施确保CHIP、医疗补助、FEHB及EHB规则协调一致。"
+    },
+    {
+      "segmentId": "pdf-p15-s76",
+      "order": 76,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "e80275f036021770ef328976e8ecc0b386894c76a0f209e61233655a133551f1",
+      "chineseText": "州政府能够保证联邦雇员健康福利计划（FEHB Program）承运人函，函件编号2025–01A，“2026计划年度呼叫函附录”，2025年1月31日，https://www.opm.gov/healthcare-insurance/carriers/fehb/2025/2025-1a.pdf。"
+    },
+    {
+      "segmentId": "pdf-p15-s77",
+      "order": 77,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "a98feba41afff93bcfd06e1c8748e1896be868da5937219c555e5fa7742a2a71",
+      "chineseText": "该法规第2103条和§457.410规定，允许各州选择以下四类单独儿童健康保险计划（CHIP）覆盖的健康福利：(1)2025市场最终规则的部分内容曾受到质疑，FEHB计划承运人函，函件编号2025–01B，“2026计划年度关于化学和外科性特征改变服务的提案”，2025年8月15日，https://www.opm.gov/healthcare-insurance/carriers/fehb/2025/2025-01b.pdf。"
+    },
+    {
+      "segmentId": "pdf-p15-s78",
+      "order": 78,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "ab6fc5e2132ee3ef52ed13a6633aca79dcb520b7a7e422cea1c95dddfd1e06ed",
+      "chineseText": "（此段内容为格式噪声，无实质文字）"
+    },
+    {
+      "segmentId": "pdf-p16-s79",
+      "order": 79,
+      "page": 16,
+      "type": "paragraph",
+      "sourceTextHash": "948c213eff0ba77a119b57907eb8fb8e768a52cb088bb7b0bb0c55e7b6ce965b",
+      "chineseText": "《联邦公报》第91卷，第155号，2026年8月13日星期四，规则与条例，第52421页。"
+    },
+    {
+      "segmentId": "pdf-p16-s80",
+      "order": 80,
+      "page": 16,
+      "type": "paragraph",
+      "sourceTextHash": "d39056b3345fba4431e695435b27ef885f0d977031bc067307479dd6d7c88224",
+      "chineseText": "认同不同于儿童出生性别的身份；或治疗由于性别拒绝程序导致或加重的任何感染、受伤、疾病或障碍的并发症。我们非常重视有关儿童性别拒绝程序安全性或有效性证据基础薄弱，以及潜在伤害的证据，故按照定义目的提出禁止联邦CHIP资金用于此类程序。值得强调，这些监管变更不会禁止联邦儿童健康保险计划资金用于心理健康交叉性别障碍等疾病的治疗。"
+    },
+    {
+      "segmentId": "pdf-p16-s81",
+      "order": 81,
+      "page": 16,
+      "type": "paragraph",
+      "sourceTextHash": "466e2af4815c81572eb40cee9b85d3dac46fa1f7309f222507930c42ffa50f08",
+      "chineseText": "对此，我们认真考虑并最终确认执行规定的两项修改。第一，对于从本最终规则生效日起不超过六个月的有限减药期，允许联邦资金用于提供交叉性别激素治疗。第二，将性别拒绝程序定义中关于“儿童”的表述改为“个体”，适用于所有年龄。保持对联邦医疗补助和儿童健康保险计划资金的禁止适用于法规未另行规定的人群。我们已收到大量公开评论，涉及医疗伦理、科学证据及过渡期问题，详细分析回复如下。"
+    },
+    {
+      "segmentId": "pdf-p16-s82",
+      "order": 82,
+      "page": 16,
+      "type": "paragraph",
+      "sourceTextHash": "5231627b6330ec4494715282963b67e893f48149080d0844413e84ffeb2e62f0",
+      "chineseText": "（此段内容为格式噪声，无实质文字）"
+    },
+    {
+      "segmentId": "pdf-p17-s83",
+      "order": 83,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "7be6d2dd4c2ad69680880c449597fb86e8e83416803fed3bd6695954a66e709c",
+      "chineseText": "（此段内容为格式噪声，无实质文字）"
+    },
+    {
+      "segmentId": "pdf-p17-s84",
+      "order": 84,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "1bc6f6e402fa344f8baa06455ba0b2a8d5c395ed2a363bb74e770481af95c4a7",
+      "chineseText": "该六个月减药期旨在给予受影响受益人及其医疗提供者合理机会，逐步停用交叉性别激素治疗，允许临床判断做出适当调整。该时间长度与多个已限制性别拒绝程序的州所采取的做法一致。该规定仅适用于截至本规则生效日已在接受交叉性别激素治疗的儿童，不包括之后新启用交叉性别激素治疗的儿童，且不适用于外科手术和青春期阻断剂。联邦医疗补助和儿童健康保险计划资金将自本规则生效日起停止用于此类手术和青春期阻断剂。联邦资金仍将支持性别焦虑相关心理健康治疗。我们认为六个月减药期适当平衡了维持连续接受治疗的患者关怀与防止联邦资金支持潜在有害治疗的需求。我们未采纳更长过渡期或全面祖父条款，认为其违背医疗质量和患者最佳利益。我们感谢公众评论并重视患者安全，现最终确认此政策。"
+    },
+    {
+      "segmentId": "pdf-p17-s85",
+      "order": 85,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "5473bc537799117415e2b0430514b63a5bd7be8c9aa93487f26fa38bae98cee9",
+      "chineseText": "提供了比允许减少剂量的过渡期更长的时间，适用于那些在2024年8月1日之前开始对未满19岁的儿童进行治疗的医疗专业人员，该治疗包括跨性激素的处方。此过渡期为6个月，123该过渡期允许在这段期间内逐渐减少使用青春期阻断剂或跨性激素的剂量，该 tapering 期一般为6至12周，以方便未满18岁者有序减少药物或激素剂量。见“TRICARE 政策手册”，TRICARE，第7章，第1.2节，最近更新于2025年6月11日，https://manuals.health.mil/pages/DisplayManualHtmlFile/2025-08-12/AsOf/tpt5/c7s1_2.html。见 TriWest 医疗联盟2025年5月22日修订之“政策重点：性别失调”，https://tricare.triwest.com/globalassets/tricare/provider/TRICARE-West-Region-Gender-Dysphoria-PK.pdf。举例，印第安纳州实施了一个6个月的性别转变治疗减量方案，涉及青春期阻断药物、跨性激素或二者。"
+    },
+    {
+      "segmentId": "pdf-p17-s86",
+      "order": 86,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "4fda2224771211d9a6a7adbf1244c11e990682700ead020b3fcd3947d296ff67",
+      "chineseText": "“TRICARE 政策手册”，TRICARE，第7章，第1.2节，最近更新于2025年6月11日，https://manuals.health.mil/pages/DisplayManualHtmlFile/2025-08-12/AsOf/tpt5/c7s1_2.html。121 Jean-Claude Carel 医学博士和 Juliane Légér 医学博士，《性早熟》，《新英格兰医学杂志》358卷第22期（2008年）：2366-2377，https://www.nejm.org/doi/full/10.1056/NEJMcp0800459。122“政策重点：性别失调”，TriWest医疗联盟，2025年5月22日修订，https://tricare.triwest.com/globalassets/tricare/provider/TRICARE-West-Region-Gender-Dysphoria-PK.pdf。另如路易斯安那州纳入了一个为期一年的减量期条款，条件是医疗专业人员须在病历中证明立即终止儿童对药物或激素的使用将对儿童造成伤害（路易斯安那州修订法典 § 44-42-320）。126 其他例如内布拉斯加州在其州法律中规定，禁止性别改变手术的规定不适用于治疗使用青春期阻断药物、跨性激素或两者的继续治疗，前提是治疗过程始于2023年10月1日之前（内布拉斯加修订统计 § 71-7304）。北卡罗莱纳州允许医疗专业人员继续为未成年人实施包括外科性别转变手术或青春期阻断药物及跨性激素的治疗，只要治疗过程开始于2023年8月1日之前（北卡罗莱纳州普通法典 § 90-21.152）。"
+    },
+    {
+      "segmentId": "pdf-p17-s87",
+      "order": 87,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "a40546d7f87019edd2651efc6ddc6082b4d6d1c764b5527c6509518f597566bd",
+      "chineseText": "2014年9月11日版本，2026年8月12日17:06，Jkt 268001，PO 00000，表格00018，格式4701，样式4700，E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p18-s88",
+      "order": 88,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "3a47645b58dac8fb64870408806feac707f61f58ba8ede2b8ae86432d4050eb5",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52423"
+    },
+    {
+      "segmentId": "pdf-p18-s89",
+      "order": 89,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "503cb6cc72d56b6412123274db0837abd10f6d7fc26d2abd0ef2f392473cb57c",
+      "chineseText": "州法律或政策。一位评论者还指出，提供者必须将他们的病例重新分配给精神卫生保健提供者，该评论者声称这将导致性别失调青少年医疗体系中需求和资源的转移。一些评论者请求为各州、医疗补助（Medicaid）及儿童健康保险计划（CHIP）及提供者给予额外的时间以实施拟议变更，并为具体实施时间框架提出建议。其中一位评论者请求 CMS 采纳不少于12个月的实施时间框架，自最终规则发布后开始计算，或另择首个至少晚于最终规则发布12个月的州财政年度开始实施。另一评论者请求任何执法和停止补偿的生效时间不早于2027年1月1日或2028年1月1日，以保证规则最终确定后至少有8个月的期限。最后一位评论者表示，CMS未在拟议规则中说明各州、患者及实体从生效日起有多少时间遵守该规则。该评论者指出，鉴于此，医疗提供者及其患者将无法适当规划是否及如何安全合法地逐步中止治疗。回应：我们已确定本最终规则属于重大规则，因而依据《国会审查法》（5 U.S.C. 801(a)(3)）要求60天的延期生效时间。与之相符，最终规则将在联邦公报发布后60天内生效。我们认为此时限给予各州充足通知以开始实施所需变更，包括提交 SPA，同时反映本规则背后的儿童安全紧迫性。我们认可实施过程需要各州及管理护计划采取操作步骤，包括修订政策文件、提供者沟通和理赔处理系统，但不认为运营负担应导致某些评论者建议的如此长时间延迟。由于提交反映禁止规定的 SPA 及更新政策文档等行政任务均在各州医疗补助机构正常运营能力范围内。即使在拟议规则发布前，CMS曾于2025年4月向州医疗补助主管发出信函，阐述机构对此问题的看法。该评论者基于2026年10月1日生效日期的不确定性，认为60天的后续公示期与上文提及短暂滴定期偏差较大，不足以使 CMS 充分考虑及回应评论者关切，以及信息与监管事务办公室（OIRA）的90天“重大”规则审核期和规则发布后30天的延迟生效要求。该评论者称 CMS未解释为何将生效日期定为2026年10月1日优于其他备选日期，并担忧因涉及众多个人与实体，规则设于2026年10月1日的假设在监管影响分析（RIA）中既不切实际亦不合理。回应：感谢评论者关注此问题。正如对前一条评论的回应所述，本最终规则的生效日期为联邦公报发布后60天。RIA中的2026年10月1日生效日期为规划假设，并非规则的法律生效日期。我们承认拟议规则应对此点予以澄清，现已于本最终规则中体现。还强调依据适用监管审查规定，本最终规则经OIRA审核后方予发布，且所采用的生效日期符合《国会审查法》关于60天延迟生效的要求。评论：支持拟议规则的众多评论者认为性别拒绝程序本质上有害且危险。许多评论者表示性别拒绝程序是毁损身体、虐待、野蛮、破坏性、非人道或邪恶的行为。许多评论者支持本规则，是因为他们认为儿童不应接受永久改变生理的干预措施。许多评论者指出实施性别拒绝程序的医生违反了他们的“勿伤害”誓言，许多人因此支持该规制以保护儿童。部分评论者认为无科学证据证明性别拒绝程序"
+    },
+    {
+      "segmentId": "pdf-p18-s90",
+      "order": 90,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "fc15c7f18d3aad26bf80622cb43c92d1974db968b59bfa5091a0d59ab29ad9f6",
+      "chineseText": "的实施涉及提交反映禁止的州计划修正案及更新政策文件，均在州医疗补助机构正常运作能力范围内。即便在拟议规则发布之前，CMS于2026年4月向州医疗补助主管发函，阐述其关于支付性别拒绝程序与州义务在法案第1902(a)(19)及(a)(30)(A)条款之间关系的观点。部分评论者还认为拟议规则的评论期应延长15至30天，因为评论结束时间的具体时区不明确。有人指出拟议规则中述及于下午5点（无时区）截止，而 regulations.gov 上的评论截止时间为东部标准时间晚上11:59。另有评论者建议延长评论期90天。回应：经确认拟议规则中所述评论截止时间属权威性截止时间，任何与 regulations.gov 显示不符乃平台级别显示问题，不影响官方评论期有效性。我们认为提供公众以有意义的评论机会，且大量支持与反对意见均得以表达，扩展评论期既无必要也不可行。"
+    },
+    {
+      "segmentId": "pdf-p18-s91",
+      "order": 91,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "042f7628627036733061a0fd9b751edcf70ab8835348ab26c634009f8a5cbaee",
+      "chineseText": "2014年9月11日版本，2026年8月12日17:06，Jkt 268001，PO00000，表格00019，格式4701，样式4700，E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p19-s92",
+      "order": 92,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "e72bc1fc6f62025dc722512be1e41bb7269072a470edba7288ba817e6b6d71a6",
+      "chineseText": "52424 联邦公报 / 第91卷，第155期 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p19-s93",
+      "order": 93,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "7f06dcf63ffb0efe0db03162f0b36a025952d5e9d753b4a97c3137737cdeac03",
+      "chineseText": "某些程序对患者有益。被诊断为性别焦虑症的儿童，他们的观点认为儿童在心理、情感和身体上仍处于发展阶段。他们引用了主要研究和系统性回顾，发现这些干预措施要么没有益处，要么没有显示伤害的证据。此外，许多评论者指出，关于性别拒绝程序尤其是其潜在长期不良健康后果的可信研究普遍缺乏。许多评论者支持该规则，因为他们认为性别拒绝程序通常导致严重的负面健康后果，包括不孕症、性功能和骨盆底功能障碍、精神疾病、功能障碍、骨密度减少、心血管并发症、大脑健康负面影响、内分泌失调、血栓栓塞、高血压、肥胖、乳腺癌、脱发及失禁。许多评论者指出，接受性别拒绝程序的儿童可能需要终生的常规医疗干预。许多评论者同意限制性别拒绝程序，因为他们认为这些程序无法解决潜在的心理健康问题，包括抑郁、产生自杀意念和建立健康关系的能力。若干评论者支持提议规则，认为性别焦虑属于需要咨询或其他心理治疗的心理健康问题，而非生理干预。有些评论者指出，部分患者可能仅关注这些干预措施而忽视心理健康治疗。一些评论者认为联邦资金应用于扩大为性别焦虑儿童提供心理健康服务。少数评论者引用了美国医学协会最近的指导意见，建议反对性别拒绝程序。另有评论者指出，儿童可能后来对性别拒绝程序的决定感到后悔，可能经历创伤、抑郁或甚至考虑自杀。一位评论者分享了其子女因接受性别拒绝程序后自杀的案例。回应：CMS感谢对提议规则支持的评论，包括对儿童接受性别拒绝程序的潜在危害的关注。如本最终规则序言I.B节所述，我们已审查当前医学证据，并与这些评论者对这些程序风险/利益特征的担忧保持一致。"
+    },
+    {
+      "segmentId": "pdf-p19-s94",
+      "order": 94,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "2ec3e0711950e0d10de0cc645380524dea9216c5148f049e8cd3fc6649d09b58",
+      "chineseText": "我们注意到，拟议规则和本最终规则均非临床实践指南，且不认可或要求任何特定治疗方式。精神健康治疗和心理治疗，部分评论者认为这是适当的替代方案，将继续通过联邦资助在医疗补助计划（包括医疗补助的EPSDT条款）和儿童健康保险计划中提供。我们不对个别医疗提供者的动机进行推测或评论，并假定绝大多数提供性别拒绝程序的提供者均依据现有临床指南本着诚信行事。本规则依据《法案》第1902(a)(19)和1902(a)(30)(A)条款制定，要求医疗补助付款应符合护理质量，且所提供的医疗服务应符合受益人最佳利益。该规则同样依据《法案》第2101(a)条，规定儿童健康保险计划应有效、高效地提供与其他健康福利来源协调一致的医疗服务。部分评论者认为儿童需要受到更高保护，或应由政府承担保护责任。少数评论者认为儿童易受影响、轻信或容易被强迫。一位评论者指出，接受医疗补助和儿童健康保险计划服务的儿童特别容易受影响，是“最无力”的群体，难以理性参与关于性别拒绝程序手术结果的讨论。回应：我们承认评论者对儿童是否具有为性别拒绝程序提供知情同意能力的担忧。如本最终规则序言中所述，禁止联邦医疗补助资金用于儿童（医疗补助中18岁以下，儿童健康保险计划中19岁以下）的性别拒绝程序，部分原因在于担心儿童可能无法充分理解这些程序的不可逆或长期风险，或难以在治疗开始后持续向提供者表达其偏好。我们指出，本规则并不做出针对所有医疗和情境中儿童均无同意能力的普遍认定。本规则专门针对一类手术的联邦资金，当前证据不支持该类别手术具备有利的风险/收益特征，且潜在不可逆伤害较大。本规则不妨碍各州以州资金覆盖相关程序，也不妨碍医疗提供者与患者及其家属讨论所有可用治疗选项。"
+    },
+    {
+      "segmentId": "pdf-p19-s95",
+      "order": 95,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "8b713fc1e577c42d24a3b00ea9e9c9bf1aa94cd5f0b5bd9a9efb7c0f904ae931",
+      "chineseText": "（此段为排版代码和版面信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p20-s96",
+      "order": 96,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "ab92e05f6398b17cdc1161b776ad40e9c11c76cdd782bbc52f5ce28fb455c422",
+      "chineseText": "（此段为排版代码和页眉信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p20-s97",
+      "order": 97,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "b55b4f6b15fe6026ba4d2058e3cff386d02dddad6ff6c246c8dddf3969fbd375",
+      "chineseText": "我们鼓励各州制定实施方案，反映各州具体项目结构和受众特点，同时确保遵守禁止联邦医疗补助资金用于儿童性别拒绝程序的要求。虽未采纳某些评论建议的分阶段实施方法，但我们最终确定，对于跨性别激素治疗存在有限渐进的联邦资金支持过渡期，如上文最终规则详细讨论。我们指出，本规则不影响现有针对宗教附属医疗机构的保护措施，虽然这些保护不在本规则制定范围内。评论：大多数评论反对提议规则。反对者多认为该规则构成歧视、偏见或偏袒特定政治/意识形态立场，超过关注受医疗补助及儿童健康保险计划受益人的福祉。许多反对者担忧规则将降低CMS及美国政府的公信力。许多反对者认为，规则对仅占少数的群体限制性别拒绝程序的资金投入不成比例，且其他更紧迫事项被忽视。许多人认为，规则借规则框架强化污名，可能被用来迫害跨性别群体及其他群体。多位评论者称规则设计具敌意或惩罚性质，称其相当于暴力或抹消。许多评论者担忧规则将破坏社会凝聚力、社区联系，许多认为规则不公平地加重了本应受到保护不被歧视的人群负担。近日亦有评论指出规则剥夺了符合医疗补助及儿童健康保险计划资格的受益人可获得应享医疗服务的权利，损害了平等医疗机会。回应：我们理解并尊重评论者的意见和担忧。"
+    },
+    {
+      "segmentId": "pdf-p20-s98",
+      "order": 98,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "5d5c13c3fc088e17de77a4d7a67961e52d47a57b903fb7b4d3bcb6192e001e24",
+      "chineseText": "许多反对者认为，规则对性别拒绝程序的限制基于偏见或误导，对相关证据的解读缺乏严谨性。多数反对者称，支持性别拒绝程序及相关治疗指南的证据基础与针对其他疾病治疗的证据一样严谨，且性别拒绝程序应视为接受高度的循证标准。一些评论者指出，关于性别焦虑等状况的随机对照试验有伦理争议，因试验可能对接受照护的个体产生误导。有评论者认为，心理治疗的积极作用存在，但难以在伴随激素治疗使用的情况下独立评估其效果，部分青年通常先接受心理治疗，随后转为激素治疗（有时去除激素治疗目标）。回应：我们不同意将证据基础描述为偏见或误导的观点。本规则基于对现有系统评价的全面审核，包括HHS审查，评估了现存的系统评价证据。该规则并不针对跨性别个体，而是针对缺乏风险/收益平衡的特定药物和外科手术干预。此规则并不禁止各州以州资金支持性别拒绝程序，也不禁止联邦资金外对性别焦虑儿童提供心理健康服务。"
+    },
+    {
+      "segmentId": "pdf-p20-s99",
+      "order": 99,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "82d6abf6d310302a32d2697bbcd018fac4fd4a1cd9fad84d9643dd8929b6a5d3",
+      "chineseText": "（此段为排版代码和版面信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p21-s100",
+      "order": 100,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "35fbacaf3521587bc51b9068e9494b40abc0dfbb9c13e4826eda34ffffd1fb47",
+      "chineseText": "（此段为排版代码和页脚信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p21-s101",
+      "order": 101,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "1566625231a40ba0c81f165de08e54ff8fa182d4b3930c4fd5011d05efc1a1d2",
+      "chineseText": "采用公认的方法论规则进行的评审将使得研究儿童性别排斥程序影响的难度更大。HHS评审指出了性别排斥程序在性别不安症治疗中使用与相同药物或其他医疗状况治疗中的用法之间的关键区别。具体来说，评审指出青春期阻滞剂最初被批准用于治疗中枢性性早熟——一种以青春期过早发作为特征的疾病。在此背景下，青春期阻滞剂被用来暂时阻断异常的发育过程。然而，当青春期阻滞剂用于性别不安症治疗时，其使用被视为超出标签范围。HHS评审强调，没有进行临床试验来评估使用青春期阻滞剂停止正常时序青春期的影响。这是一个重要的关注点，因为其在性早熟治疗中的风险特征可能未知。此外，HHS评审提出了关于儿科性别医学中典型治疗顺序的额外担忧。评审指出青春期阻滞剂几乎总是紧随交叉性别激素的使用，而这种组合未经过FDA监管的临床试验。我们不同意该规则会阻碍研究能力的说法。该规则专门设计为禁止联邦医疗补助（Medicaid）和儿童健康保险计划（CHIP）为性别排斥程序资金提供支持。"
+    },
+    {
+      "segmentId": "pdf-p21-s102",
+      "order": 102,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "d250ce3f6bc996164fa77ad00d3042ba5e84a7851f241b7770c231640f3fa9be",
+      "chineseText": "反对者中许多人认为该规则与当前科学共识不符，包括最新的同行评审研究和关于认同性别儿童及性别排斥程序的现有证据。许多评论者认为青春期阻滞剂、乳房切除术及其他医疗程序被证实适用于非性别排斥用途，成功地用于其它医疗状况，因此缺乏相关治疗这些性别排斥治疗手段的证据是不合理的。多名评论者请求CMS进一步研究性别排斥程序，倾听医疗专业人员及跨性别人群的建议。"
+    },
+    {
+      "segmentId": "pdf-p21-s103",
+      "order": 103,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "b32388e372f76953a35cdc5de2909db5aab697970640f8c2f8fa3b885f36041a",
+      "chineseText": "（该段为文件页面底部格式信息，无实质内容翻译。）"
+    },
+    {
+      "segmentId": "pdf-p22-s104",
+      "order": 104,
+      "page": 22,
+      "type": "paragraph",
+      "sourceTextHash": "8163a356f445ea044208c073776e8495b93fe8ddd2163f54e89d2a2559d177e3",
+      "chineseText": "（该段为官方刊登信息，非正文内容。）"
+    },
+    {
+      "segmentId": "pdf-p22-s105",
+      "order": 105,
+      "page": 22,
+      "type": "paragraph",
+      "sourceTextHash": "1245cdef1e0f4b5870628c27faa1623188f6178e725c9b9fb5f5ae2221b2997a",
+      "chineseText": "根据现有证据，我们不认为为儿童的性别排斥程序提供联邦资金符合质量护理及最高效标准。HHS继续支持联邦医疗补助对包括心理治疗在内的心理健康服务的覆盖，证据显示其对许多伴随性别不安症的状况有效。许多反对者指出WPATH的护理标准第8版（SOC–8）忽视了系统评审，取消了推荐的最低年龄，更多出于政治压力而非临床证据，且依赖法律和政治考量多于临床意见。独立研究评估发现WPATH、ES和AAP发布的指南方法学严谨性低，存在透明度和利益冲突问题。美国整形外科医生协会（ASPS）于2026年2月发表立场声明，建议外科医生将与性别相关的乳房/胸部、生殖器及面部手术延迟至患者至少19岁之后，声明中引用了对精神健康结果极低/低确定性的最近研究，同时表达了对可能长期伤害及不可逆手术操作的担忧。多名评论者认为追求性别排斥程序的决定并非仓促作出，过程涉及多步骤、多个专科医生及家庭参与，且谨慎评估。"
+    },
+    {
+      "segmentId": "pdf-p22-s106",
+      "order": 106,
+      "page": 22,
+      "type": "paragraph",
+      "sourceTextHash": "83dd097d56d212eea0cc22ccd6135da43dba96467db2ab119d33cb1dfea60bfa",
+      "chineseText": "一些评论者指出对于经历性别不安症或性别不一致的儿童与青少年的诊断增加，若HHS以此为理由禁止相关治疗覆盖，则缺乏合理依据。评论中还指出，现有研究显示接受性别排斥程序的个人后悔率较低，甚至低于接受其它类型手术（如背部或膝关节手术）的患者。N"
+    },
+    {
+      "segmentId": "pdf-p22-s107",
+      "order": 107,
+      "page": 22,
+      "type": "paragraph",
+      "sourceTextHash": "155aae343d8767445e49b5cdc9b0a6e6ddb73885c65135836a9ac315d9d8da40",
+      "chineseText": "（该段为文件页面底部格式信息，无实质内容翻译。）"
+    },
+    {
+      "segmentId": "pdf-p23-s108",
+      "order": 108,
+      "page": 23,
+      "type": "paragraph",
+      "sourceTextHash": "cdf6bff6e2b709515dca44c84cfa10fafc71301129fe0fa4dc90fe065f58350f",
+      "chineseText": "（该段为官方刊登信息，非正文内容。）"
+    },
+    {
+      "segmentId": "pdf-p23-s109",
+      "order": 109,
+      "page": 23,
+      "type": "paragraph",
+      "sourceTextHash": "f18477ccf04a60b4c145160c8889b94af6bab13a475a2e19af48eacc3208a20f",
+      "chineseText": "回应：我们感谢评论者指出，拒绝某些程序可能由于缺乏对照组、短暂的随访时间、高辍学率及出版偏差等情况而难以得出结论。声称这些程序可可靠减少自杀意念并改善儿童心理健康的说法，尚未获得可靠证据支持。与此同时，已知且合理的重大且不可逆转伤害风险——包括对生育力、骨密度、心血管健康和性功能的影响——已有充分的文献记载。这些结论与英国、瑞典和芬兰等公共卫生机关的发现一致，这些国家均进行了独立的证据审查并随后限制或重组了儿童性别拒绝程序。回应中并不同意评论者关于限制此类程序将导致儿童被迫接受不受欢迎的青春期发展的论断。我们鼓励各州与提供者根据合理的临床判断，谨慎管理这些过渡。行为法第1902(a)(19)及1902(a)(30)(A)条款要求医疗补助支付必须符合质量护理要求及以符合受益人最佳利益的方式提供，另外第2101(a)条规定儿童健康保险计划（CHIP）应以有效、高效且与其他儿童健康保障协调的方式提供服务。基于当前证据，我们认为联邦资金参与儿童性别拒绝程序不符合这些标准。我们重视有性别焦虑儿童的心理和身体健康问题，审慎考量了研究、临床意见及个人陈述。我们否认将心理治疗视为‘转换治疗’的说法——正如美国卫生与公共服务部审查指出，任何旨在减轻未成年人对其身体或社会角色焦虑的做法被错误地称为‘转换治疗’是有害的修辞手法。"
+    },
+    {
+      "segmentId": "pdf-p23-s110",
+      "order": 110,
+      "page": 23,
+      "type": "paragraph",
+      "sourceTextHash": "2b3c712d3675d8c50bdc82af945dc3ffbc1f51b3034fa717226f750e6848576d",
+      "chineseText": "社会、学校和就业参与度、同伴和家庭关系以及社区互动。许多儿科评论者认为拟议规则将加剧现有的健康不平等并造成就医障碍，恐失去性别拒绝程序服务的访问权。评论者指出支持这些程序心理健康益处的研究，常被批评存在显著的方法论缺陷。"
+    },
+    {
+      "segmentId": "pdf-p23-s111",
+      "order": 111,
+      "page": 23,
+      "type": "paragraph",
+      "sourceTextHash": "cb9831c186ce583a2e7eb24b94ca38a0c38a1c4af3c7a86a420cb35ec334abc8",
+      "chineseText": "许多评论者反对拟议规则，称限制资助性别拒绝程序不会带来成本节约，反而导致公共财政长期支出增加及更广泛的经济伤害。许多评论者指出限制联邦资金支持儿童和青少年提供的性别拒绝程序，将导致更昂贵的危机级精神健康照护需求，包括危机稳定服务、急诊、精神科住院及与自我伤害相关的医疗，给整个医疗体系带来不稳定和压力。"
+    },
+    {
+      "segmentId": "pdf-p23-s112",
+      "order": 112,
+      "page": 23,
+      "type": "paragraph",
+      "sourceTextHash": "a69edda9572c7497e7e839461b8e71eae41d9d7e98742e595fdf49b29f92d041",
+      "chineseText": "{\"text\":\"注：此段仅包含格式化与标识信息，无需翻译内容。\"}"
+    },
+    {
+      "segmentId": "pdf-p24-s113",
+      "order": 113,
+      "page": 24,
+      "type": "paragraph",
+      "sourceTextHash": "9e558721dba62232450e411fa98219ac332f947726bfc2b5d08db19805b9360e",
+      "chineseText": "{\"text\":\"注：此段仅包含格式化与标识信息，无需翻译内容。\"}"
+    },
+    {
+      "segmentId": "pdf-p24-s114",
+      "order": 114,
+      "page": 24,
+      "type": "paragraph",
+      "sourceTextHash": "8fa423978c06208ff2ff4019378839e84adcc9323926bdbcfb274692c120ef9f",
+      "chineseText": "许多评论者表示，限制联邦资金用于性别拒绝程序不会节省开支，反而会增加长期公共支出。部分评论者认为，拟议规则特别是配合拟议医院条件参与规定，几乎相当于对所有保险或自付能力者的全国性禁止。一些评论者表示，想法是该规则会导致更高的社会服务支出，比如住房和营养补助计划（SNAP）等其他服务。我们强调，这条规则不禁止各州使用州政府资金提供基于儿童性别拒绝的医疗服务，也不影响私人保险覆盖。针对担忧该规则与拟议医院参与规定合起来成为全国禁令的说法，我们说明两者法律依据不同，分别独立审议。最终规则仅涉及医疗补助和儿童健康保险计划下支付相关程序的联邦资金参与。评论者担心规则会导致对性别拒绝心理健康服务的限制，我们强调心理治疗和其他心理健康服务依然通过医疗补助标准利益设计及法定早期和定期筛查诊断及治疗（EPSDT）条款得到支持，且有证据证明对与性别焦虑常见的抑郁和焦虑等共病有效。瑞典、芬兰和英国国家卫生机构均推荐心理社会支持作为治疗青少年性别焦虑的一线方案。"
+    },
+    {
+      "segmentId": "pdf-p24-s115",
+      "order": 115,
+      "page": 24,
+      "type": "paragraph",
+      "sourceTextHash": "dfa6a3bd1141828122dfe2f5412e16eca761b0904f154e80333707f5c2455bc6",
+      "chineseText": "部分评论者认为，拟议规则将限制低收入跨性别儿童获取医疗服务，导致他们无法获得据称是医学上必要的基于证据的护 理。许多评论者认为限制医疗补助和儿童健康保险资金用于性别拒绝程序，会造成基于家庭经济状况的两极分化，经济条件较好的家庭将继续私人获得此类护理，而依赖医疗补助和儿童健康保险的低收入家庭将完全失去获取途径。一些评论者指出，医疗补助和儿童健康保险项目服务包括大量弱势群体，如种族或族裔少数群体、寄养儿童、残障儿童及农村家庭，规则将系统性加剧对这些人口的社会不公和不平等。部分评论者认为，尽管州政府可用自己资金提供性别拒绝程序，由于资金紧张、医疗补助预算削减及联邦管理措施，许多州将难以负担，导致服务网络萎缩，甚至部分私人保险也可能跟随联邦政府做法停止覆盖此类项目。部分评论者忧虑规则将导致未接受性别拒绝程序治疗的性别焦虑青少年因无法压制青春期，成年后需要更昂贵的干预措施。"
+    },
+    {
+      "segmentId": "pdf-p24-s116",
+      "order": 116,
+      "page": 24,
+      "type": "paragraph",
+      "sourceTextHash": "67f7db0bed59e20159db556c46129742e781b13ce4e867b52ed214dfa8120de2",
+      "chineseText": "{\"text\":\"注：此段仅包含格式化与标识信息，无需翻译内容。\"}"
+    },
+    {
+      "segmentId": "pdf-p25-s117",
+      "order": 117,
+      "page": 25,
+      "type": "paragraph",
+      "sourceTextHash": "ed8d5d55d26041b5bbbc80aca829b805d54600b6327a3feb326709df7f8e4dd7",
+      "chineseText": "{\"text\":\"注：此段仅包含格式化与标识信息，无需翻译内容。\"}"
+    },
+    {
+      "segmentId": "pdf-p25-s118",
+      "order": 118,
+      "page": 25,
+      "type": "paragraph",
+      "sourceTextHash": "d04cb30db85c089641258a93bb67dc8a7744b8442232968fac8a2169e358f7fc",
+      "chineseText": "正如拟议规则中所述，此规则不会禁止希望继续为儿童提供性别拒绝相关程序的医疗服务提供者。也不会影响医疗服务提供者从除联邦资助的医疗补助（Medicaid）和儿童健康保险计划（CHIP）之外的其他渠道寻求支付的能力，包括仅由州资金支持的计划、私人保险、自费及其他安排。该规则还不会影响医疗服务提供者接收医疗补助和儿童健康保险计划针对其他涵盖服务支付的能力，包括对患有性别焦虑儿童的心理健康护理。我们指出此项规定不会直接影响科研或教育补助资金。我们在监管影响评估（RIA）中估计，此规则对整个医疗保健产业收入的影响低于总收入的1%，且我们认为该阈值不符合《监管灵活性法案》对显著经济影响的定义。我们承认对某些依赖性别拒绝相关程序收入较大个别提供者的影响较重。许多评论者反映此规则对医疗服务提供者造成寒蝉效应，导致他们在合法允许的情况下也会预先停止提供性别拒绝相关程序，因害怕经济报复。许多评论者指出该规则将强迫医疗服务提供者在遵循医学最佳实践和维护联邦资助访问之间作出选择。部分评论者认为该规则会引入重大行政负担，加剧医护人员职业倦怠和道德伤害，可能导致医疗服务提供者迁出所在州或退出医疗补助项目。许多评论者指出该规则可能造成财政后果，尤其对农村医院和诊所、联邦资质健康中心（Federally Qualified Health Centers）及其他安全网医疗服务机构影响深远，因为这些机构已面临财政压力和人手短缺，难以承受额外负担。部分评论者担忧因失去医疗补助资助，提供性别拒绝程序的医院、健康中心和诊所可能被迫关闭。少数评论者注意到涉及性别拒绝相关领域的职业风险加剧和研究教育补助减少，可能减少从业者培训并引发长期人员短缺及价格稀缺。部分评论者担忧因遵守行政要求导致履约时间增加，转移医护人员从事患者教育，且存在被起诉的恐惧及终止治疗需向患者说明的压力，加重职业倦怠。许多评论者反映此规则对贫困儿童和家庭极为不利，会惩罚贫穷，剥夺其尊严、公正和基本保护，并使他们在财务稳定与子女健康之间难以抉择。一些评论者反对该规则，认为性别拒绝程序是性别焦虑青少年表达自我的重要途径，剥夺其接受的权利不人道。另有评论者反对该规则，认为其违背宗教信仰。有建议在最终制定规则前，应考虑其他方案，如增加性别拒绝程序相关研究经费，推动各州资助相关研究，与医学专业组织制订符合临床指南的覆盖指引，使用现有的利用管理工具监督性别拒绝相关程序，设定医学必要性例外条款，举办家庭与州政府的听证会，或开展各州的相关审查。我们理解并认真对待评论者对规则可能过度影响依赖医疗补助和儿童健康保险的低收入家庭、农村及其他弱势人群的关切。与此同时，本法案要求医疗补助付款应符合护理质量，医疗补助覆盖的护理和服务应符合受益人最大利益原则。儿童健康保险计划付款应符合有效率标准。我们认为根据《法案》第1902(a)(19)、1902(a)(30)(A)与2101(a)条款，禁止为儿童提供的性别拒绝相关程序的联邦配套资金是适当的。现有证据未能证明这类程序对儿童临床获益大于已知和可能的显著及潜在不可逆风险。一些家庭可能在医疗补助或儿童健康保险之外获得该等程序，并不影响我们对联邦资金支持适切性的评估。此外，CMS无权监管其之外的项目。我们也认识到该规则可能致使经济因素差异带来的性别拒绝程序获取不均，并可能更重创低收入家庭等弱势群体。我们已经在制定最终规则时认真考虑了这些担忧。"
+    },
+    {
+      "segmentId": "pdf-p25-s119",
+      "order": 119,
+      "page": 25,
+      "type": "paragraph",
+      "sourceTextHash": "96b7d12d0f6278059a5f57744c2f8bc87fdc225f37f6540990dd33feb647666e",
+      "chineseText": "我们注意到该规则维持了对患有性别焦虑儿童的心理健康服务、心理治疗及其他风险/收益状况较佳的支持性服务的联邦支付资格，且各州保留权力覆盖性别拒绝程序。"
+    },
+    {
+      "segmentId": "pdf-p25-s120",
+      "order": 120,
+      "page": 25,
+      "type": "paragraph",
+      "sourceTextHash": "9bb81e562b3bc6a2d2b11584e9a94c2281378342e1d195cf20d555117e5fdd43",
+      "chineseText": "（页面格式信息，无正文内容）"
+    },
+    {
+      "segmentId": "pdf-p26-s121",
+      "order": 121,
+      "page": 26,
+      "type": "paragraph",
+      "sourceTextHash": "e9261b30df1889ce6d0592014efe67547088717a809f7dcb1c1f0c6223fcdaa9",
+      "chineseText": "（页面格式信息，无正文内容）"
+    },
+    {
+      "segmentId": "pdf-p26-s122",
+      "order": 122,
+      "page": 26,
+      "type": "paragraph",
+      "sourceTextHash": "926de554336b40a345af8c1f9b02a64fbc134d925b9fbca6ba3f5f8ac0edcd21",
+      "chineseText": "答复：我们已认真考虑对拟议规则提交的所有评论，包括大量的一般反对意见。我们承认这是一个许多人深切关注的问题，非常感谢评论者花费时间分享观点、个人经历及支持性证据。我们现在认同可采取替代措施，如除2025年4月致州医疗补助主任信函建议各州基于卫生与公众服务部审查（HHS Review）所述证据避免提供这些服务外，还可发布次级指导文件、制定监管规定以要求先期的利用管理，确保各州对这些服务的适当监管，或允许继续联邦配套资助这些服务。我们也理解评论认为拟议规则可能限制病患获得医疗必需护理的观点。我们没有采纳部分评论者提出的研究框架等超出CMS监管权限范围的建议。鉴于现有证据中指出性别拒绝程序涉及显著风险包括可能的不可逆害处，以及国际上对使用青春期阻断剂、跨性激素治疗及手术的渐趋收缩，我们认为短期内禁止对性别拒绝程序（提供给医疗补助及儿童健康保险项目下的儿童）的联邦支付是合理的。"
+    },
+    {
+      "segmentId": "pdf-p26-s123",
+      "order": 123,
+      "page": 26,
+      "type": "paragraph",
+      "sourceTextHash": "7ae0062f7be5896734dad08d2ef30d1503a41e21b7d38ef999b1923bbf587980",
+      "chineseText": "我们强调，儿童性别焦虑患者仍可通过医疗补助和儿童健康保险获得精神健康服务与社会心理支持，且各州拥有以州资金保障受益人连续护理的权力。我们将持续监测临床证据的发展，并考虑依据新证据调整相关政策。任何未来调整均会通过公告及征求意见程序制定。"
+    },
+    {
+      "segmentId": "pdf-p26-s124",
+      "order": 124,
+      "page": 26,
+      "type": "paragraph",
+      "sourceTextHash": "951d7e5fcfa0b1d71d7d56f5de1a0a2f60b8888b12882600507065cb76ebd951",
+      "chineseText": "（页面格式信息，无正文内容）"
+    },
+    {
+      "segmentId": "pdf-p27-s125",
+      "order": 125,
+      "page": 27,
+      "type": "paragraph",
+      "sourceTextHash": "7cb68437e00850cf26f89d9218ce33fc9dd453291687fffc9668aca88ca6efb0",
+      "chineseText": "答复：许多评论者关切CMS未充分考虑青春期阻断剂及其他程序的复杂性，这些通常用于治疗多种非性别焦虑状况，包括但不限于男性乳房发育（gynecomastia）、早发育、激素失调、癌症、多囊卵巢综合症（PCOS）、痤疮、更年期、睾丸功能减退、特纳综合症、子宫内膜异位症、多毛症及勃起功能障碍。评论者认为CMS未说明如何仅当这些性别拒绝程序用于试图将儿童身体外观或身体与其自认的性别相符时，即为禁止的“性别拒绝程序”，若用于其他医学目的例如早发育、癌症、睾丸功能减退等，则不属于禁止项目并仍可获得联邦资助。正如前文所述，规则中“性别拒绝程序”定义采取以目的为导向的方法。药物或外科干预仅当其目的是试图根据主张的身份改变儿童身体表征才构成禁止的性别拒绝程序。若用于其他目的，则不属禁止。在HHS审查中明确区分了针对性别焦虑者使用性别拒绝程序的情况与该程序用于其他医疗状况的应用。审查指出青春期阻断剂最初获批用于治疗中枢性早发育（一种青春期过早启动的异常发育过程）。在此背景下，青春期阻断剂用来暂时中断异常发育过程。然而，若用于治疗性别焦虑，其用法属于非标签适应（off-label）。HHS审查进一步指出，青春期阻断剂几乎总是先于跨性别激素的使用，而该组合方案尚未接受FDA监管和任何临床试验评估其效果。我们同意拟议规则中所述相关药物和疗法也用于非性别焦虑的多种医学指征，针对性别焦虑使用的特殊性由其治疗目的界定。"
+    },
+    {
+      "segmentId": "pdf-p27-s126",
+      "order": 126,
+      "page": 27,
+      "type": "paragraph",
+      "sourceTextHash": "60dec06964e2e99f1951f44730ff651bc8c7a249c5fa890504d394bed93e8c39",
+      "chineseText": "关于生长激素缺乏的激素治疗、促性腺激素释放激素类似物治疗性早熟，以及为非性别否认目的提供的其他药物或外科手术干预措施，不受本禁令影响。我们认识到同一药物或程序可能因患者不同而具有不同目的，且本禁令基于目的性质，需要谨慎执行。我们致力于与各州合作，制定切实可行的方法，减少对医疗提供者和患者的负担，同时确保符合本规则。一些评论者指出，如果药物用于非性别否认目的，并且制造商根据第1927节已签订回扣协议且符合包括参与340B项目在内的计划要求，该药物仍有资格获得联邦医疗补助覆盖和联邦资金支持。许多评论者反对拟议规则，认为其构成联邦对私人医疗决策的不当干预，认为家长或监护人应作为共享决策者参与临床关系，医疗提供者应有权决定适当的循证医疗。许多评论者表示，禁止为可能医学必要的护理提供联邦资金，会削弱提供者的临床判断，影响其为患者最佳利益服务的能力。许多评论者强调对于性别否认程序，决策复杂，应由医疗专家个案评估，而非由统一规则或政治意识形态决定。多位评论者表达对患者及其家庭决定权的重视。"
+    },
+    {
+      "segmentId": "pdf-p27-s127",
+      "order": 127,
+      "page": 27,
+      "type": "paragraph",
+      "sourceTextHash": "aafede6b40a4048042e394eb3e1736282e6e675cf9686ee4028b98530136873e",
+      "chineseText": "在医疗专家咨询基础上作出最能改善患者福祉的医疗决策。许多评论者认为，拟议规则将侵蚀医患关系的基础要素，如信任和开放沟通。对此，回应指出该规则规定了联邦资金在医疗补助和儿童健康保险计划下的适用条件，但不限制医疗提供者的言论、临床判断或在非医疗补助/儿童健康保险资金覆盖范围外提供服务的能力。该规则不限制医疗提供者与患者讨论所有可用治疗方案的能力。多位评论者认为，该规则侵犯儿童身体自主权，剥夺个人对自身身体的决定权，并以此为由认为医疗应是人人无论性取向均可获得的人权。也有人认为该规则可能成为限制其他类别医疗服务联邦资金支持的先例，包括成人性别否认治疗用药等。部分评论者认为政府的适当角色是保护和照顾儿童，而非限制其服务获取。"
+    },
+    {
+      "segmentId": "pdf-p27-s128",
+      "order": 128,
+      "page": 27,
+      "type": "paragraph",
+      "sourceTextHash": "cc3dcf6018b8832c071e2428a399d3f113c8b60b1dbb68123a9b2c06e8372d8c",
+      "chineseText": "（该段仅含格式信息，无实质法律内容，无需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p28-s129",
+      "order": 129,
+      "page": 28,
+      "type": "paragraph",
+      "sourceTextHash": "b76d96c43208d1411cd5da08d837a03c2b60106d84ac1e5602140a3ca612d051",
+      "chineseText": "（该段仅含格式信息，无实质法律内容，无需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p28-s130",
+      "order": 130,
+      "page": 28,
+      "type": "paragraph",
+      "sourceTextHash": "cb10b15dfd07324f6b303673d97be8557a32fe3686d1c1f4fea36608e846cd0c",
+      "chineseText": "联邦与各州的合作关系中，针对使用联邦项目资金设置的条件，是合法且必要的，而非联邦权力的过度伸展。身体自主权虽具重大道德意义并受到法律保护，但超出本规则制定范围。联邦医疗保健项目一贯涉及对联邦资金覆盖服务类别的判断，例如《海德修正案》禁止对21岁以下个体的绝育提供联邦资金，以及保障基本健康福利(EHB)框架对某些服务的排除。对于部分评论者质疑CMS无权制定全国范围的具体限制或服务覆盖决策，CMS不认同，认为其依据《法案》相关条款具有明确授权。法案第1902(a)(19)节规定，通过各州医疗补助计划提供的服务应以符合受益人最佳利益的方式进行。"
+    },
+    {
+      "segmentId": "pdf-p28-s131",
+      "order": 131,
+      "page": 28,
+      "type": "paragraph",
+      "sourceTextHash": "15ee563e5968adf8658c2a75ba5289787bc299b9ff5276c11670ab3d5922fcd9",
+      "chineseText": "该规则基于对性别否认程序的风险与效益的细致证据分析，确定联邦资金不得用于长期效益证据薄弱且潜在不可逆伤害显著的此类干预。法案第1902(a)(30)(A)节要求支付方式应符合“质量护理”，该标准不可在证据薄弱且不可逆伤害风险显著情况下满足。对于儿童健康保险计划（CHIP），第2101(a)节要求儿童健康援助以有效和高效的方式提供，此标准同样不支持为长期疗效极低且伤害潜在极高的干预提供资助。此前对绝育限制的年龄基于规定也体现了目的与年龄基础的资金限制原则。更重要的是，该规则体现了对接受此类高风险干预儿童健康的关切。性别否认程序可能具备长期、不可逆的生育、性功能及健康影响。"
+    },
+    {
+      "segmentId": "pdf-p28-s132",
+      "order": 132,
+      "page": 28,
+      "type": "paragraph",
+      "sourceTextHash": "46113ef64e6cd0ad2cb19a56484bda4dab9098759f925b21300cee221b16bb71",
+      "chineseText": "正如马萨诸塞最高司法法院引用第1902(a)(30)(A)节所指出，“毫无疑问，马萨诸塞医疗补助机构有权拒绝对被认为‘不必要’的服务进行报销。”（马萨诸塞眼耳医院诉医疗援助主任，705 NE 2d 592 (Mass. 1999)）。本规则根据由国会在第1902(a)(19)、1902(a)(30)(A)及2101(a)节确立的法定框架，体现了对不必要且潜在不可逆风险干预不予支持的决定。"
+    },
+    {
+      "segmentId": "pdf-p28-s133",
+      "order": 133,
+      "page": 28,
+      "type": "paragraph",
+      "sourceTextHash": "83dbe9345d1227de0963b2fa9f7b84571050e19c2690e0bf16c6225fe62f438b",
+      "chineseText": "（该段仅含格式信息，无实质法律内容，无需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p29-s134",
+      "order": 134,
+      "page": 29,
+      "type": "paragraph",
+      "sourceTextHash": "92cef96ea71291de147323da1b5289cf519f98826ebe324084e54600ca71694f",
+      "chineseText": "（该段仅含格式信息，无实质法律内容，无需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p29-s135",
+      "order": 135,
+      "page": 29,
+      "type": "paragraph",
+      "sourceTextHash": "406e44c298311e546e741deb6c93ae5b40cb4e1632c19eb4a4003e02b4f66a1f",
+      "chineseText": "评论：一位评论者表示，对他们的子女的决定既不是国会也不是部长的权限。136 本规则属于该既定框架之内。国会在H.R.1中提出了对FFP的法定限制条款，但这些条款最终未被通过；因此，性别拒绝性程序的联邦资金继续可用。回应：国会未能通过提议的法定限制并不剥夺本机构的现有权力。我们的权限来源于法案第1902(a)(19)、1902(a)(30)(A)和2101(a)条款。父母希望通过允许此类护理的州、非联邦资助项目、私人保险或自费方式为其子女寻求性别拒绝性程序，均可如此。该规则不要求参与政府禁止性别拒绝性程序，也不要求在联邦资助的医疗补助和儿童健康保险计划之外采纳任何有关此类程序的特定政策。该规则不影响参与政府在其辖区内规范医疗实践、为私人保险制定保险要求以及资助使用非联邦资金的医疗补助和儿童健康保险计划中性别拒绝性程序的权限。该规则的唯一效力是确定联邦医疗补助或儿童健康保险计划资金不得用于支付自本规定生效日起为儿童提供这些特定干预的性别拒绝性程序。评论：许多评论者反对此规则违反了联邦主义原则，认为其是对州政府治理医疗保健政策和管理医疗补助与儿童健康保险计划权力的联邦过度干预。多名评论者指出，该规则通过条件联邦资金的使用方式来胁迫和惩罚参与政府，他们认为这可能迫使州改变现有针对特定服务的条件。还有人认为国会赋予参与州政府独家权力决定哪些服务纳入医疗补助与儿童健康保险计划，CMS不得设立联邦条件。我们不同意此观点。国会未设立任何无限权力授予，覆盖任何服务的联邦匹配资金。相反，国会建立了一个有边界的框架，在此框架内，参与政府拥有重大灵活性，包括服务需以受益人最佳利益为前提提供（第1902(a)(19)条规定），且支付需与护理质量相符（第1902(a)(30)(A)条规定），并规定秘书有权并负有义务执行。秘书根据第1902(b)条批准或拒绝州医疗补助计划，并根据第1904条执行不合规的权限，体现了实质性联邦监管角色，而非仅限程序或管理职能。对于儿童健康保险计划，2101(a)条明确规定联邦支付匹配换取参与政府承诺遵守联邦法定及规章要求。回应：我们承认并尊重父母和监护人在为子女（包括患有性别焦虑症的儿童）做医疗决策中的关键作用，本规则不干涉父母依法享有的医疗保健决策权。"
+    },
+    {
+      "segmentId": "pdf-p29-s136",
+      "order": 136,
+      "page": 29,
+      "type": "paragraph",
+      "sourceTextHash": "fccae20a59361c786c3b331d1abf99020cc27418bfa609b3a01a159cdf0a7e0d",
+      "chineseText": "本规则未对父母决定医疗保健的法定权利进行规制。回应：我们认可并尊重父母和监护人在为其子女作医疗保健决定中的关键角色，包括性别焦虑症儿童。该规则不规管父母作医疗保健选择的法律权利。"
+    },
+    {
+      "segmentId": "pdf-p29-s137",
+      "order": 137,
+      "page": 29,
+      "type": "paragraph",
+      "sourceTextHash": "9433ed06b55beb9438935657a3c2729955c33c77115aeeea4274969a24d6b0f0",
+      "chineseText": "2014年9月11日17:06 2026年8月12日 Jkt 268001 PO 00000 Frm 00030 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p30-s138",
+      "order": 138,
+      "page": 30,
+      "type": "paragraph",
+      "sourceTextHash": "d35b6334642965ff8ce494a512672c0bd6257c2aa9b20ede3d6ed1cdd677ef94",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则和条例 52435"
+    },
+    {
+      "segmentId": "pdf-p30-s139",
+      "order": 139,
+      "page": 30,
+      "type": "paragraph",
+      "sourceTextHash": "3e04aefd6a7612fa4443d3fa85e6c4935d3ed88682e45c15432e65f2b0c8ead3",
+      "chineseText": "类似医疗补助法案第2106条授权部长批准或拒绝儿童健康保险计划并执行其合规性。因此，部长对第21标题的监督职责不限于程序性或行政事项。我们承认，对于目前通过其联邦匹配的医疗补助和儿童健康保险计划涵盖性别拒绝性程序的地区，此规则可能带来财政及运营挑战。我们亦理解评论者关于联邦主义的论点，基于医疗补助法及CMS历史上给予参与州广泛的覆盖决定权及设定覆盖范围、期限限制的做法。然而，联邦法律同样设立了界限 —— 包括本规则执行的1902(a)(19)及1902(a)(30)条 —— 以强制执行州灵活性边界。该规则基于特定的证据记录设立具体条件，符合部长基于法案的权限。最高法院曾指出，引用法案第1902(a)(19)条，“社会保障法赋予各州在覆盖范围、限额及期限上具有实质性选择权，只要护理服务以受益人最佳利益为原则提供。”137 对儿童健康保险计划，2101(a)条明确国会建立了以有效且高效的方式，协调其他儿童健康保险覆盖来源的结构。评论者指出该规则可能限制了州使用州内自有资金资助性别拒绝性程序的权力，而这规则设计在于平衡联邦监管与州灵活性。评论：一些评论者同意该规则保留州用自有资金覆盖性别拒绝程序的自治权。少数评论支持该规则认为其平衡了联邦监管和州决策权。少数评论认为该规则是合法行使限制联邦资金资格的权力。一评论强调该规则适当限制了风险及实验性性别拒绝程序的联邦资金。回应：我们感谢评论者支持，认同本规则是合法行使依据法定要求设定联邦医疗补助和儿童健康保险资金使用条件的权限，确保符合受益人最佳利益及护理质量的标准。第一修正案：本规则不限制提供者、患者、家庭或倡导者就性别拒绝程序、性别焦虑或相关议题的言论内容与观点。该规则限制的是联邦资金，不规定患者及家庭咨询或信息请求的权利。第一修正案保护免于政府对私人表达的限制，但不强制政府资助某项活动。138"
+    },
+    {
+      "segmentId": "pdf-p30-s140",
+      "order": 140,
+      "page": 30,
+      "type": "paragraph",
+      "sourceTextHash": "12a3a2408e7b39837b8a3536fb826b516104673b738c492753f234c35fd2f8fd",
+      "chineseText": "我们有权根据法案和受益人最佳利益及标准质量护理的规定，设定联邦医疗补助和儿童健康保险资金使用条件。第一修正案保护免受政府对私人话语内容或观点的限制，但不阻止患者或家庭就相关程序的信息讨论或要求。第一修正案并不要求政府必须资助相关程序。137 引用Alexander v. Choate案；138 引用Rust诉Sullivan案。"
+    },
+    {
+      "segmentId": "pdf-p30-s141",
+      "order": 141,
+      "page": 30,
+      "type": "paragraph",
+      "sourceTextHash": "dc25641e693cccef6f692e32e7fe6adceddf3880caa196b1e7aa7d9dc46f5417",
+      "chineseText": "2014年9月11日17:06 2026年8月12日 Jkt 268001 PO 00000 Frm 00031 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p31-s142",
+      "order": 142,
+      "page": 31,
+      "type": "paragraph",
+      "sourceTextHash": "d302b7a0fec63083506b9dd6f7b743714481d9a54e5d881f0930e612e4e25b8f",
+      "chineseText": "52436 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则和条例"
+    },
+    {
+      "segmentId": "pdf-p31-s143",
+      "order": 143,
+      "page": 31,
+      "type": "paragraph",
+      "sourceTextHash": "217359bb92c0d9e97805523f2b94fe8154fb9a67eab78bcd98f4c27f6d824093",
+      "chineseText": "事实上，Skrmetti 判决适用于一项明确禁止健康和儿童健康保险项目（CHIP）护理提供者为任何未成年人开处、管理或发放青春期抑制剂或任何激素以达到以下目的之一的法律：(1) 使未成年人认同或以其被认为与其生物性别不一致的身份生活，或(2) 治疗未成年人因其生物性别与其认同身份不一致而产生的不适或痛苦。该规则中对联邦医疗补助和CHIP资金的限制是一种覆盖限制，而非惩罚性措施。我们的决定基于有关性别拒绝程序风险/收益现状的证据，遵循第十修正案：第十修正案保留宪法未赋予联邦政府的权力给各州。权力分立：我们不同意此规则违反权力分立的观点。我们也注意到有论点认为此规则涉及最高法院的“重大问题”原则，该原则要求针对具有重大经济和政治意义的机构行动必须获得国会明确授权。我们认为此原则在本案中的适用性不如评论者所建议的那样。本规则仅针对年龄分别为18岁和19岁的医疗补助和CHIP受益人提供的性别拒绝程序限制联邦资金，HHS审查估计这一类支出约为3100万美元，占医疗补助和CHIP总支出的极小部分。这并非机构声称在国会未涉足领域的广泛新权力，而是机构基于实质性证据评估对特定服务类目实施其既定监督权限。支付条款：支付条款禁止附加州参与时无法预见的联邦资金条件。州政府长期以来知晓医疗补助和CHIP计划承载CMS依据法律监督资金合理使用的要求，本规则对此不构成违反。评论者指出本规则符合总统行政命令14187（“保护儿童免受化学和外科阉割”）和14168（“捍卫妇女免受性别意识形态极端主义并重建联邦政府对生物学真相的承认”）旨在通过采取行动终止对儿童性别拒绝程序的联邦资金支持的指示。"
+    },
+    {
+      "segmentId": "pdf-p31-s144",
+      "order": 144,
+      "page": 31,
+      "type": "paragraph",
+      "sourceTextHash": "01677ec377b31e51f58217cdd762d50e35520ad579a9e45d1ef8f5debe6766d4",
+      "chineseText": "第八修正案禁止酷刑和非常规处罚，适用于刑事处罚和刑事拘禁条件，不适用于联邦机构关于自愿医疗保险覆盖范围界定的决定，亦非刑罚范围。有关生命、自由和追求幸福权利的独立原理被作为反映宪法价值观的一部分援引，针对相关的正当程序和平等保护论点，我们已回复。若这些主张仅作为道德价值观主张，亦已进行了回应。"
+    },
+    {
+      "segmentId": "pdf-p31-s145",
+      "order": 145,
+      "page": 31,
+      "type": "paragraph",
+      "sourceTextHash": "ff3b3b8dbc6a7389403ada74aca65f2c077504301d1807f7267fd8cd1a4de80f",
+      "chineseText": "（此段为页脚及格式信息，无实质文字内容。）"
+    },
+    {
+      "segmentId": "pdf-p32-s146",
+      "order": 146,
+      "page": 32,
+      "type": "paragraph",
+      "sourceTextHash": "23119e9b71920a4c15a3601632e8bde1e967e01828e03b64893c8d32dfb6ca9d",
+      "chineseText": "《联邦公报》/ 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52437"
+    },
+    {
+      "segmentId": "pdf-p32-s147",
+      "order": 147,
+      "page": 32,
+      "type": "paragraph",
+      "sourceTextHash": "985039bf2e81c30239c4cfa3ef324a9ec7e6542d805869f4e39de529eba59880",
+      "chineseText": "本规则还基于《联邦医疗补助法》1902(a)(19)、1902(a)(30)(A)及2101(a)条款的法定授权。这一点重要，因为该规则具有法律授权基础，且即使没有行政命令，其实质内容亦属适当。本规则并未依赖现被禁令限制的行政命令14187或14168条款。感谢评论者支持并认可该规则制定是保护儿童免受性别拒绝程序风险的更广泛努力一部分。有评论认为总统14187和14168号行政命令中保护儿童终止针对性别拒绝程序联邦资金支持的指示不足以为规则制定提供正当理由。称总统无权制定法规，该权力仅由国会掌管。一评论者认为，虽然“总统命令若依据法定授权或国会授权授予其法律效力，”但本规则与国会对医疗补助和CHIP计划授予州政府的权限存在冲突。我们同意行政命令本身不足以构成超越国会授权的实体规则制定依据，然而本最终规则基于《联邦医疗补助法》1902(a)(19)、1902(a)(30)(A)、2101(a)条款的独立法定授权及14187号行政命令第5(a)条的法律指导。该行政命令指示卫生部长依照适用法律采取适当行动；本规则体现了CMS对禁止对儿童性别拒绝程序使用联邦资金的决定，基于现有证据状况。"
+    },
+    {
+      "segmentId": "pdf-p32-s148",
+      "order": 148,
+      "page": 32,
+      "type": "paragraph",
+      "sourceTextHash": "f119aaeb59b6810ac4db12f6136544ce19c77d6d441890ef25d34506e587a6ed",
+      "chineseText": "一些评论者认为14187行政命令规定性别拒绝程序为“化学和外科阉割”。对此，我们注意到部分评论者质疑我们对此证据的解释，认为性别拒绝程序收益确凿。我们已认真考虑这些观点。虽科学界存在分歧，但我们的证据阅读并非因对任何群体存有偏见。CMS确认性别拒绝程序风险/收益状况不足以支持联邦资金，并据此启动规则制定，基于《联邦医疗补助法》1902(a)(19)、1902(a)(30)(A)、2101(a)条款，确保医疗补助服务提供符合受益人最大利益和护理质量，CHIP支付满足有效和效率标准。有评论者表示拟议规则企图规避或违反2025年华盛顿诉特朗普案和PFLAG诉特朗普案的禁令。我们不同意本规则违反两案中的初步禁令。禁令仅限制被告机构执行14187行政命令第4条及14168行政命令第3(e)和3(g)条，而本最终规则基于14187行政命令第5(a)条及独立法定授权制定。该规则通过行政程序法规定的公告和评论程序制定，并有实质证据依据。"
+    },
+    {
+      "segmentId": "pdf-p32-s149",
+      "order": 149,
+      "page": 32,
+      "type": "paragraph",
+      "sourceTextHash": "0f320ab011e2f0c4296e286a850467c2cfb2c0465d635fe024dda2ed67af9480",
+      "chineseText": "（此段为页脚及格式信息，无实质文字内容。）"
+    },
+    {
+      "segmentId": "pdf-p33-s150",
+      "order": 150,
+      "page": 33,
+      "type": "paragraph",
+      "sourceTextHash": "e6bde4326d3d776091b5feb62783087fe53b4501ff3960115a2acac66eec3e6a",
+      "chineseText": "52438 《联邦公报》/ 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p33-s151",
+      "order": 151,
+      "page": 33,
+      "type": "paragraph",
+      "sourceTextHash": "89fa43250e1408c8cc30738b769ca7b951586a2e274989db9e26ea818342d667",
+      "chineseText": "在华盛顿诉特朗普案（Washington v. Trump）和PFLAG, Inc.诉特朗普案（PFLAG, Inc. v. Trump）中，第14187号和第14168号行政命令的裁决涉及国会程序，因此不符合授权条件。联邦医疗补助计划（Medicaid）或儿童健康保险计划（CHIP）资金只有在为尝试使儿童的身体外观或身体特征与其性别认同相符的目的提供相关服务时，才禁止用于性别否定程序。评论者指出，当同一种药物或外科干预用于不同目的，例如治疗早熟、激素缺乏症、癌症或其他医疗公认病症时，该类干预明确不属于性别否定程序范畴，且在其他情况下仍有资格获得联邦资金支持。我们承认同一药物或程序可能既用于性别否定目的，也用于其他临床指征，并且该定义的性质需要临床判断和服务提供理由的记录。这与医疗补助计划在许多情况下的运作方式一致，覆盖范围可能依赖于临床指示。如先前评论所述，我们不认为这构成不可接受的歧视。正如最高法院在美国诉斯克梅蒂案（United States v. Skrmetti, 605 U.S. 495 (2025)）中所承认，限制某些医疗程序的法律依据于患者年龄和医疗使用目的，而非患者性别，不构成基于性别的分类，也不需根据平等保护条款接受严格审查。该理由同样适用于本规则，该禁令基于对这些干预措施在儿科人群中特定使用目的风险受益分析的关切，而非对任何群体的偏见。一些评论者认为拟议规则可能带来重大的行政和操作挑战，部分评论者指出“为了避免与‘除调整身体外观以外的目的’相关术语造成的混淆，CMS未提供判定提供服务意图的标准，可能导致处理申诉时困难。FCC诉福克斯电视台案（FCC v. Fox Television Stations, Inc., 567 U.S. 239 (2012)）要求监管方清晰了解要求。评论者表示CMS未就如何实现该流程及与家长和医疗服务提供者的沟通提供清晰指导。”"
+    },
+    {
+      "segmentId": "pdf-p33-s152",
+      "order": 152,
+      "page": 33,
+      "type": "paragraph",
+      "sourceTextHash": "f501c678c4b483177efafffb95e9171399fd19c1ead459e1d8cd00f058138532",
+      "chineseText": "联邦政府不得将接受联邦资金的条件附加于超出国会授权范围的要求，这一原则源自法院对行政命令的分析，但不适用于本规则，因为本规则是依据《行政程序法》（Administrative Procedure Act）通过公示征求意见程序制定的，且依托特定、明确的法定授权。"
+    },
+    {
+      "segmentId": "pdf-p33-s153",
+      "order": 153,
+      "page": 33,
+      "type": "paragraph",
+      "sourceTextHash": "3d0d11c1ac624852f020a5fe14f468c0227fdb98994c5b3897a0ed65a8497bd1",
+      "chineseText": "（此段为版面格式标识，无实质内容）"
+    },
+    {
+      "segmentId": "pdf-p34-s154",
+      "order": 154,
+      "page": 34,
+      "type": "paragraph",
+      "sourceTextHash": "ed3ba0cc957ccf07a1e0f6fc0d3211de291c3113e4129e154a6504120e87d9a7",
+      "chineseText": "（此段为版面格式标识，无实质内容）"
+    },
+    {
+      "segmentId": "pdf-p34-s155",
+      "order": 155,
+      "page": 34,
+      "type": "paragraph",
+      "sourceTextHash": "f210c90cf859e913177c15b86c8dbda59744f474f6499eb686b7c2493aa85067",
+      "chineseText": "某评论者以PFLAG, Inc.诉特朗普案为例，指出拟议规则将加剧跨性别识别者与他人间的医疗护理差距。我们回应称：我们承认该案对该行政命令的初步禁令判决认定“性别肯定治疗”资金限制对原告及他人造成了不可弥补的伤害，但该禁令的法律及程序背景与本规则制定背景显著不同。PFLAG案涉及未进行表述征求及无具体立法依据的直接行政限制执行，而本规则则通过完整的征求意见程序制定，广泛采纳公众意见，且基于详实的法定和证据依据。法院在PFLAG案中未认定部长期缺乏设定资金条件的法定授权。本规则明确依据《医疗补助法案》（Sections 1902(a)(19)和1902(a)(30)(A)）及CHIP法（Section 2101(a)）授权设定联邦资金拨付条件，并基于详尽的事实依据。某评论者称拟议规则未充分说明在急诊或住院连续治疗中某些药物或治疗是否仍合格并有权获得联邦资金，且关注州政府批准部分治疗索赔产生的行政负担及访问风险。我们认为先前授权程序及用量管理是在保障不申报性别否定程序的主要机制，并确认用于性别否定目的的药物因其其他适应症仍可能获得覆盖，但联邦资金不得用于帮助将儿童身体外观调整为与其出生性别不符。部分评论者质疑如何核实疾病诊断以区别治疗目的。我们承认存在行政及操作挑战，同时指出外购药物当前编码未包含诊断信息，可能导致识别治疗目的困难。"
+    },
+    {
+      "segmentId": "pdf-p34-s156",
+      "order": 156,
+      "page": 34,
+      "type": "paragraph",
+      "sourceTextHash": "4c39145f4c790d37f60c5f2614f005f49b42d76e79fb0ca1fce5bbaada5d5133",
+      "chineseText": "该规则反映了对儿童安全关切的考量，禁止为性别否定目的提供资金支持。该限制依据《医疗补助法案》第1902条和相关授权条款的明确权限设定，且结合详实的证据基础。"
+    },
+    {
+      "segmentId": "pdf-p34-s157",
+      "order": 157,
+      "page": 34,
+      "type": "paragraph",
+      "sourceTextHash": "71e29febcaf0d2f7b02995dc827e8afd9e8953e0a34889f93ea607169abb7b9a",
+      "chineseText": "评论者指出，包括针对性别否定程序的医疗补助限制和治疗禁令已被证实导致护理获取受损，造成不可弥补的伤害。"
+    },
+    {
+      "segmentId": "pdf-p34-s158",
+      "order": 158,
+      "page": 34,
+      "type": "paragraph",
+      "sourceTextHash": "5838a6c25afa5f0ad51838717e07cf5e2cd12f92bb775bf641420648c3f13c6e",
+      "chineseText": "（此段为版面格式标识，无实质内容）"
+    },
+    {
+      "segmentId": "pdf-p35-s159",
+      "order": 159,
+      "page": 35,
+      "type": "paragraph",
+      "sourceTextHash": "71916b4b1d930c063a1484e1a390e7635e31a927366f06d66383c9e173faab6c",
+      "chineseText": "（此段为版面格式标识，无实质内容）"
+    },
+    {
+      "segmentId": "pdf-p35-s160",
+      "order": 160,
+      "page": 35,
+      "type": "paragraph",
+      "sourceTextHash": "6eb6abc7d08b5d5029b7747d63404b79b936987188b8183a38989585edda0618",
+      "chineseText": "这并不意味着联邦政府代替性别进行诊断。回应：我们不同意评论者的观点，即本规则禁止基于性别使用性别拒绝手术的规则缺乏独立授予权。联邦医疗补助计划（Medicaid）和儿童健康保险计划（CHIP）在这些计划中有独立的法律权限来规范由联邦政府资助的护理类型。事实上，第十九条款充满了联邦政府为联邦医疗补助和CHIP资金的使用设定条件的例子。例如，州不能为大多数精神疾病机构的受益人或公共机构的大多数囚犯提供的医疗补助服务获得匹配资金。州不能通过不可允许的提供者税或捐赠方式获得医疗救助的资金份额。若药物制造商未参与医疗补助药物回扣计划，也未遵守第1927节的其他要求，比如参与340B计划，州不能为涵盖的门诊药物开支获得联邦匹配资金。州只能就医疗及儿童健康援助为某些非公民（除法案第1903(v)(2)节紧急医疗补助和第1903(v)(4)节孕妇及儿童选项外）申领联邦匹配资金，除美国公民与国民外。州医疗补助计划通常不能支付超过上限的款项。州医疗补助计划必须有机制为服务不成比例地服务低收入患者的医院支付额外款项。州对于其计划具有重大酌情权，但此酌情权必须在联邦法律设定的框架内运作。部长具有根据法案第1902(a)(19)，1902(a)(30)(A)及2101(a)节独立设定联邦财政参与条件的权限。Skrmetti案涉及州的合法性，并未限制部长设定联邦资助条件的权力。回应：我们不同意部分评论者认为本规则基于性别歧视的主要论点。我们分别回应评论者的观点。我们不认为第1557节要求联邦医疗健康计划必须涵盖性别拒绝手术，或禁止联邦资金限制此类覆盖条件。根据平权法案第1557节，禁止健康计划或活动中基于性别的歧视，其整合了第九条款的性别歧视规定。评论者认为该规定延伸至性别认同和跨性别状态的基于性别的歧视，主要依赖最高法院在Bostock v. Clayton County案的判决。我们对此有数点不同看法。首先，最高法院在Bostock案的分析仅限于1964年民权法案第七章，法院明确拒绝讨论该理是否适用于其他法律，声明：“此案中无其他[性别歧视]法律，我们尚未就这些条文含义进行对抗性测试，今日亦不预判此类问题。” Skrmetti案指出Bostock“不会改变”其平权分析，且维持田纳西州法律的理由不受Bostock影响。其次，南密西西比地区联邦地方法院在State of Tennessee v. Kennedy一案中判定，卫生与公众服务部（HHS）超越权限，错误解读第九条款为涵盖“性别认同”歧视，并在实施关于“性别认同”和“性别肯定护理”的1557规定时亦超越权限。法院认为Bostock中关于第七章的分析不适用于并入1557的第九条款，并取消了扩展第九条款性别歧视定义至性别认同的相关1557规定。"
+    },
+    {
+      "segmentId": "pdf-p35-s161",
+      "order": 161,
+      "page": 35,
+      "type": "paragraph",
+      "sourceTextHash": "7fa8856d8a444e099ffa9f60fb947e4cf43f57c06226aef062b2d570cb25f386",
+      "chineseText": "评论：许多评论者表示他们认为拟议规则违反了《平价医疗法案》第1557节的不歧视保护。许多评论者声称该拟议规则违反了该法案第1557节，因其基于性别和/或性别而对跨性别人群进行歧视。一些评论者认为拟议规则触及加强审查标准，且他们认为该规则不能满足此标准。少数评论者认为拟议规则基于性别歧视违反了《平价医疗法案》第1557节。另有少数评论者认为拟议规则违反了由《南达科他州诉多尔案》确立的联邦开支条件“合理性”标准，理由是其基于性别认同进行歧视。一名评论者表示，《平价医疗法案》第1557节已被提供更广泛保护的州法律取代，不能适用。另一评论者指出第1557节禁止基于任何涵盖的理由的歧视。另有评论者认为第1557节禁止故意歧视和不利影响，且拟议规则对患有性别焦虑症的青年造成不利影响，违反了不利影响禁止条款。"
+    },
+    {
+      "segmentId": "pdf-p35-s162",
+      "order": 162,
+      "page": 35,
+      "type": "paragraph",
+      "sourceTextHash": "a20147d70efe1cc684f2ea2bc4bfe176dd50b422f78b6e7083dfacbb93f60ea8",
+      "chineseText": "最高法院在Bostock诉克莱顿县案中于2020年明确此裁决。相应的联邦判决是美国诉Skrmetti案，法院于2025年做出判决。"
+    },
+    {
+      "segmentId": "pdf-p35-s163",
+      "order": 163,
+      "page": 35,
+      "type": "paragraph",
+      "sourceTextHash": "60ba9aad857d7983f6f059cf0f2d989dfe7920050bd8c2be8cc10e0dcab1c93e",
+      "chineseText": "（此段为页脚及格式信息，无实质内容需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p36-s164",
+      "order": 164,
+      "page": 36,
+      "type": "paragraph",
+      "sourceTextHash": "fb0eaaa64783753b4b3a684080f08f5ee58e32abbaf78c07b40165004d71fc29",
+      "chineseText": "（此段为联邦登记及条目格式信息，无实质内容需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p36-s165",
+      "order": 165,
+      "page": 36,
+      "type": "paragraph",
+      "sourceTextHash": "b6096d2048909a31d555982ee9c165253a94e63c202979724ef560a153be4f20",
+      "chineseText": "第三，根据第1557节，本规则不构成基于性别的歧视，且该用词根据Skrmetti案中确立的平权保护分析应如此理解。Skrmetti案表明，限制某些医学治疗类型统一适用于所有儿童的规则，根据年龄和医学用途进行分类，不属于基于性别的歧视。采用相同的理由，规定不属于基于性别的歧视。无论性别如何，儿童均依据适用年龄阈值受到限制，且限制基于儿童年龄及医学干预目的。该规则禁止区别对待，而是统一适用于所有儿童。本规则禁止联邦医疗补助和CHIP资金下覆盖某些药物和外科干预措施，同时保留对心理健康服务、心理治疗和其他干预措施的资金支持。针对一系列特定治疗的联邦资金限制不构成基于残疾的歧视。一些评论者认为性别焦虑症属于《美国残疾人法案》和《康复法案》涵盖的残疾，因而本规则违反第1557节。需要指出的是，卫生与公众服务部（HHS）已拟议修订504条款的规定，以澄清非由身体损伤引起的性别焦虑症不属于涵盖的残疾。不论该单独规则的最终解决结果如何，本医疗补助和CHIP规则并未彻底排除对有性别焦虑症个体的护理，限于联邦资金支持特定药物和手术，而保留心理健康服务和其他干预措施的资金支持。"
+    },
+    {
+      "segmentId": "pdf-p36-s166",
+      "order": 166,
+      "page": 36,
+      "type": "paragraph",
+      "sourceTextHash": "175ae3f7e53b10132a82ca3930a2f50c96b25823aee459e0046028607565b4f6",
+      "chineseText": "一些评论者基于《1975年年龄歧视法案》提出年龄歧视的论点。年龄歧视法案禁止在接受联邦财政资助的项目中基于年龄的歧视，但明确豁免在正常运作或实现法定目标时以年龄为必要因素的行为。根据本规则限制在适用年龄阈值以下儿童使用性别拒绝手术的联邦资金，是为了实现保护医疗补助和CHIP受益人免受不可逆转童年干预风险的法定目标，这些年龄区分符合合理必要性。联邦资金限制反映了议会确立的护理质量和最佳利益标准，并非对适当护理的任意障碍。"
+    },
+    {
+      "segmentId": "pdf-p36-s167",
+      "order": 167,
+      "page": 36,
+      "type": "paragraph",
+      "sourceTextHash": "d69e094b7055a557642b855ffefca3515cd5cff0b7c2022d229d6a122694b2b6",
+      "chineseText": "关于性别焦虑症诊断的不同处理是合理的，因为不同诊断的治疗风险/收益特征不同，与Bostock案中讨论的裁判理由无关。一些评论者声称，联邦医疗补助的比较性要求收到多项联邦法院判决支持，要求医疗补助必须支付性别拒绝手术的医疗必要治疗。一些评论者批评CMS提供的证据不足以证明基于诊断差异的不同处理是合理的。然而，我们不同意这些评论者的观点。该规则未创建对适当医疗的非理性障碍，限制联邦资金用于特定程序，但不禁止提供者提供这些程序，也不禁止州用仅州资金覆盖该类程序。性别焦虑症的精神健康服务和其他适当干预仍然完全开放。根据第1554节，禁止部长制定“制造不合理障碍”或“妨碍及时获得医疗服务”的法规。我们认为本规则不构成此类障碍。根据第1902(a)(10)(B)节和42 CFR 440.240规定，医疗补助服务须在同类群体内平等提供，包括数量、期限和范围，禁止基于诊断病种的任意拒绝或减少服务，该禁止意旨禁止任意区别，而非禁止所有基于目的或证据的区分。本规则所设限制非任意，我们已开展详尽证据评审，包括英国、瑞典和芬兰公共卫生部门委托的治疗儿童性别焦虑症的最佳实践综合性审查，结论支持本规则关于风险/收益的评估。"
+    },
+    {
+      "segmentId": "pdf-p37-s168",
+      "order": 168,
+      "page": 37,
+      "type": "paragraph",
+      "sourceTextHash": "f3b8536759af3ff992238c2be43ef18aed21e5dd2bf392b5924d668b83478f77",
+      "chineseText": "（此段为页脚及格式信息，无实质内容需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p37-s169",
+      "order": 169,
+      "page": 37,
+      "type": "paragraph",
+      "sourceTextHash": "887f2a0294a04f7bfcfbaed36e1603d85883ed51512644a403ba17fb41d55939",
+      "chineseText": "与儿童性别不同的生理特征，本规则依据各州特定的医疗必要性规则制定，禁止对这些程序给予联邦财政参与（Federal Financial Participation，FFP），以控制服务的使用。多名评论者指出，此类程序的获益证据极为有限，再加上合理且某些情况下有充分记录的重大且潜在不可逆的风险，包括对生育能力、骨密度、心血管功能和认知发展的影响，构成本规则的实质性、基于证据的依据。关键在于，本规则的判定依据是程序执行的目的，而非受益者的身份或诊断。相同的药物及适用的外科手术干预，在医疗认可的其他用途下（例如，用于治疗中枢性性早熟的GnRH激动剂或针对性发育医学验证的手术干预）仍然符合联邦财政参与资格。基于用途的区别并不矛盾于同质性要求；我们未发现有要求必须覆盖药物或程序所有用途的规定。事实上，法规第1927(d)(2)(A)节允许各州排除针对体重减轻处方的药物覆盖。故许多州不涵盖因减重而开具的GLP-1激动剂，但会涵盖针对糖尿病患者的血红蛋白A1C控制而处方的同类药物。我们注意到联邦法院曾在同质性要求框架下，针对州医疗补助计划中性别焦虑症治疗的分类排除作出判决。这些判决针对缺乏风险与效益实质性基于证据分析的分类排除。不同的是，本规则依据法规第1902(a)(19)和1902(a)(30)(A)节，确保FFP仅限于符合护理质量及受益者最大利益的服务，并且以严谨的证据记录为基础。多名评论者认为此前法院判决表明，州不得对医疗必要治疗实施绝对禁止，并强调医疗必要性框架的个案化特征。部分评论者认为CMS必须批准满足法定要求的州计划修正案(SPA)，且不能因涵盖州认定的医疗必要服务而否决SPA。该评论者指出，CMS为州设定了基本要求，即州必须提供充足的服务数量、持续时间及范围，但这并不意味着CMS允许限制州能覆盖的服务之数量、持续时间或范围。另一评论者指出，医疗补助SPA须指定服务的数量、持续时间及范围，而法规中无任何联邦条款授权CMS拒绝提供联邦匹配资金给州批准的服务。我们也指出，我们会审查州计划修正案以确保其符合法律要求，审查过程一直包含我们对拟议州覆盖方法是否符合联邦标准的判断。认为无论证据如何，联邦匹配资金都不可因州选择覆盖该服务而被拒绝的说法，将使我们评估州计划修正案是否符合法规第1902(a)(19)和1902(a)(30)(A)节的义务形同虚设。我们强调，本规则并不阻止各州为医疗补助和儿童健康保险计划(CHIP)受益人覆盖性别拒绝程序；规则规定，联邦资金不适用于本规则所述目的的该类程序。该规则不限制各州依据相关州法用州级资金资助此类服务。该做法合理地将联邦医疗补助资金参与条件建立于联邦政府对护理质量和最佳利益标准(法规第1902(a)(19)及(a)(30)(A)节)的执行合规性之上。多名评论者担心，不允许州制定州特定的医疗必要性和使用控制程序，会引发关于食品药品管理局(FDA)在处方药审批中作用的混淆。我们理解担忧，但并不同意规则会产生该种混淆。针对性别拒绝程序无专门处方药；使用的药物均已获批用于其它指征。因此，这些药物对其它适应症的覆盖将继续符合法规第1927节及医疗补助药品回扣协议框架。FDA对药品审批的职能及医疗补助药品回扣计划的运营不因本规则而改变。"
+    },
+    {
+      "segmentId": "pdf-p37-s170",
+      "order": 170,
+      "page": 37,
+      "type": "paragraph",
+      "sourceTextHash": "5427745ec544cd8ada0e817a311d462c7f4843d2c7908f7ec8e55c7f68a4b898",
+      "chineseText": "我们限制联邦财政参与某些特定药物的特定使用——即当用于试图使儿童的身体外观或体型与其生理性别不匹配的身份一致的目的时（但有适用例外）。各州仍有权为涵盖的性别拒绝程序制定医疗必要性标准和使用管控程序。我们相信，本规则对性别拒绝程序的定义具有限制性，足以使各州能够依照本规则和法规第1927节一致施行药物覆盖。多名评论者认为本规则违反《早期和定期筛查、诊断和治疗》（EPSDT）要求，即《法案》第1905(a)(4)(B)及1905(r)节所定。EPSDT要求州为21岁以下合格儿童依据第1905(a)节授权的服务提供覆盖，这些服务必须“必要于纠正或缓解医学必要的缺陷及身体和精神疾病和状况”。虽此要求宽泛但并非无限制，不强制FFP覆盖任何供应者认为医学必要的服务。一些评论者表示，禁止对儿童提供性别拒绝程序，尽管供应者认为其医学必要，违背了EPSDT的个案化医疗必要性框架。另有评论者指出，CMS在拟议规则中曾表示性别拒绝程序从不医学必要，他们不同意该表述。部分评论者认为，国会赋予的权力预先否定州在EPSDT下的医学必要性决定的权限有限，且未针对性别拒绝程序行使。还有评论者认为，CMS未充分说明针对长期实施的EPSDT政策该规则为何实施反转。部分评论者援引2024年6月发布的CMS EPSDT州指南，其中指示各州“考虑儿童需求各方面”，并禁止设定任何“硬性”护理限制。一评论者认为CMS尝试将性别拒绝程序区分于EPSDT责任，理由是这些程序可能不符合青少年长期需求，但CMS未考虑支持性别拒绝程序长期益处的证据。"
+    },
+    {
+      "segmentId": "pdf-p37-s171",
+      "order": 171,
+      "page": 37,
+      "type": "paragraph",
+      "sourceTextHash": "0d10e9ef9673fca53bde80fd71c1675a0ff087834e896ea287a56dc52849ddd9",
+      "chineseText": "（本段包含订单号和法律公报格式信息，无实质法律内容可翻译。)"
+    },
+    {
+      "segmentId": "pdf-p38-s172",
+      "order": 172,
+      "page": 38,
+      "type": "paragraph",
+      "sourceTextHash": "d68f5910cf1a887276f921f94e48b941bbeb9e1f32f0a8966073e6cab3b0c74f",
+      "chineseText": "（本段标题及页眉，仅含联邦公报版次信息，无实质法律文本内容。）"
+    },
+    {
+      "segmentId": "pdf-p38-s173",
+      "order": 173,
+      "page": 38,
+      "type": "paragraph",
+      "sourceTextHash": "c5c3f17d1b1b990d7995a0a36ea57ccb47743fc121482a653f92a16971d75906",
+      "chineseText": "本规则限制特定药物——即用于试图使儿童外观与其性别身份对齐时的使用——享有联邦财政参与资格。多名评论者称拟议规则违反了EPSDT法规的要求。一些评论者援引近期联邦地区法院判例，这些判例认定将性别焦虑症青少年性别拒绝程序排除在医疗补助范围之外，违反了EPSDT法令。我们承认，尚无联邦立场认为特定个体接受的某项服务必然不具医学必要性，但我们基于现有证据作出判断。现有证据在性别拒绝程序是否有效改善长期心理健康、减轻性别焦虑症状或带来其他有意义益处方面存在不确定性。但证据同时显示可能存在重大且不可逆转或潜在不可逆转的风险。这些发现共同构成实质性的证据基础，表明根据本规则所述目的，性别拒绝程序不符合护理质量与医疗补助受益者最大利益标准，因此不属于EPSDT符合联邦财政参与的医学必要服务。我们承认本最终规则声明该禁令适用于“即使供应者认定性别拒绝程序对诊断为性别焦虑症的儿童医学必要”的情况。我们坚持该声明。EPSDT的医学必要性标准并不无条件听从个别医疗供应者判断；该标准须根据现有证据及保障护理质量与服务最大利益的责任进行评估。因性别拒绝程序在儿童性别焦虑症环境中的证据基础不确定，我们有权判定即使临床推荐，FFP亦不适用。该规则不使性别焦虑症儿童无照护可寻。本规则不影响联邦医疗补助对心理健康服务的资金覆盖，包括多国际卫生权威认为为适当首选的心理治疗。我们注意到，EPSDT要求州为儿童提供广泛的覆盖。"
+    },
+    {
+      "segmentId": "pdf-p38-s174",
+      "order": 174,
+      "page": 38,
+      "type": "paragraph",
+      "sourceTextHash": "23623b6e2a24609c0fe083780b1880c79d0b9deb121a1dd5682acc3225dd8fc1",
+      "chineseText": "（本段含链接及脚注内容）CMS已于2014年6月发布“EPSDT—州指南：儿童及青少年医疗补助福利覆盖”，指导各州遵循EPSDT标准。另根据2026年5月版本的EPSDT指南，医学必要性需考虑儿童的长期需求、全方位健康及可用所有干预措施，而非单一供应者建议的治疗方案。判断某服务对EPSDT合格儿童是否医学必要，须个案评估其特殊需求，包括其长期需求及整体健康状况。缺乏实质证据支持长期收益或存在重大且不可逆风险，即足以认定该服务不符合联邦医疗补助配套资金覆盖。"
+    },
+    {
+      "segmentId": "pdf-p38-s175",
+      "order": 175,
+      "page": 38,
+      "type": "paragraph",
+      "sourceTextHash": "70d1b91f70441be6ec3dfda2d29b1e53f655c724a05552005c2436c7f4b20657",
+      "chineseText": "（本段包含订单号和法律公报格式信息，无实质法律内容可翻译。)"
+    },
+    {
+      "segmentId": "pdf-p39-s176",
+      "order": 176,
+      "page": 39,
+      "type": "paragraph",
+      "sourceTextHash": "c69c9742dc52872ca268210b28c4c0dd5d9404435d3667e18d68c6a01206135b",
+      "chineseText": "（本段包含页码及版次信息，无实质法律文本内容。）"
+    },
+    {
+      "segmentId": "pdf-p39-s177",
+      "order": 177,
+      "page": 39,
+      "type": "paragraph",
+      "sourceTextHash": "64095cc970fdc15600ce799a3b3d098640d8c08acb71bc69be7f1d6fb30f7db8",
+      "chineseText": "该规则并不依赖于作为医疗服务类别、是否符合受益人最佳利益和法定权限等框架的精神健康和行为健康服务体系。该规则的授权依据是《联邦医疗补助法》（Medicaid Act）第1902(a)(19)条和第1902(a)(30)(A)条。此前我们已针对某些外科手术设定了联邦医疗补助（Medicaid）金融参与（FFP）的年龄限制，最显著的是《联邦医疗补助》第441.253条中对21岁以下个体进行绝育手术的联邦资金禁止。这一先例虽然基于不同的法定背景，但说明我们有权在特定情况下限制特定医疗程序的联邦支付支持。现行规则同样基于联邦医疗补助支付须与护理质量一致且护理服务应符合受益人最佳利益的法定支付条件。"
+    },
+    {
+      "segmentId": "pdf-p39-s178",
+      "order": 178,
+      "page": 39,
+      "type": "paragraph",
+      "sourceTextHash": "434102daeb9f40d9eab22db6d6c5226dbea0d617087f1eec999286ae3d4ebb48",
+      "chineseText": "评论者指出，联邦雇员健康福利（FEHB）和基本健康福利（EHB）计划中禁止联邦资金支持性别认同相关医疗程序的条款不适用于医疗补助项目，因为这些计划并不专门提供医疗补助福利。我们回应认为FEHB和EHB的法律框架与医疗补助项目的法律权限不同，前者不适用于后者。"
+    },
+    {
+      "segmentId": "pdf-p39-s179",
+      "order": 179,
+      "page": 39,
+      "type": "paragraph",
+      "sourceTextHash": "944445f7de91e16dec3b96c990abae7ad5a44587ef09d41afee607dc98773226",
+      "chineseText": "（此段无可译文字，仅为排版信息）"
+    },
+    {
+      "segmentId": "pdf-p40-s180",
+      "order": 180,
+      "page": 40,
+      "type": "paragraph",
+      "sourceTextHash": "2285f75becae484e00457c68eb988e2ac424edf5c8ca4f183a713a8ac41231f2",
+      "chineseText": "联邦公报 / 第91卷，第155期 / 2026年8月13日星期四 / 规则与规章 52445"
+    },
+    {
+      "segmentId": "pdf-p40-s181",
+      "order": 181,
+      "page": 40,
+      "type": "paragraph",
+      "sourceTextHash": "faee5519467524c32bf458a7db4d526dcdd1bc31e89a02b80a173521170c7816",
+      "chineseText": "我们认为贯彻前述两个条款对支付方法的规定，可以确保付款与护理质量相符。评论者称，规则中所设的限制与例外及医疗补助与儿童健康保险计划（CHIP）中不同的年龄标准，给项目管理带来不少复杂性。一些评论者引用了CMS创新中心关于“护理质量”的关键概念，指出HHS对“护理质量”的解释为卫生服务提升个体和群体期望健康结果的程度，并一致于当前专业知识，强调高质量护理应当基于最新医疗证据，并作出符合患者价值、需求和偏好的决策。"
+    },
+    {
+      "segmentId": "pdf-p40-s182",
+      "order": 182,
+      "page": 40,
+      "type": "paragraph",
+      "sourceTextHash": "fe79550f1266bcc9946f7b19f898f7bee59aa2683bb5a3876fff67c72df2ac17",
+      "chineseText": "我们不同意某些评论意见，认为禁止联邦资金支持性别认同相关程序与医疗补助受益人的最佳利益或护理质量要求相悖。我们的决定反映了对证据的全面审查。HHS评审对多项系统综述进行了汇总分析，这些综述评估了针对诊断为性别焦虑的儿童和青少年的激素和外科干预的益处与风险，发现现有证据质量总体较低，且明确识别出包括不育、性功能障碍、骨密度降低、认知影响、心血管和代谢失调、精神健康障碍及手术并发症等潜在重大风险。结合英国、瑞典和芬兰等欧洲国家卫生当局以及美国整形外科学会的独立评估，支持我们结论，即本规则所述目的用途的性别认同相关程序的联邦资金支持不符合护理质量标准和受益人最佳利益。我们详细审阅了反对此规则的同行评审研究和临床指南，承认有研究报告支持性别认同相关程序带来积极的心理健康结果，但也存在证据质量不足或高度不确定的情况。"
+    },
+    {
+      "segmentId": "pdf-p40-s183",
+      "order": 183,
+      "page": 40,
+      "type": "paragraph",
+      "sourceTextHash": "a7da89acddac17c06bfbc6387c0ed65f4579f782a1222de1349ec63369648488",
+      "chineseText": "（此段无可译文字，仅为排版信息）"
+    },
+    {
+      "segmentId": "pdf-p41-s184",
+      "order": 184,
+      "page": 41,
+      "type": "paragraph",
+      "sourceTextHash": "91ddcc006e7f88b1307968098e758f99630540d2208b2f045514c781ab55f90e",
+      "chineseText": "52446 联邦公报 / 第91卷，第155期 / 2026年8月13日星期四 / 规则与规章"
+    },
+    {
+      "segmentId": "pdf-p41-s185",
+      "order": 185,
+      "page": 41,
+      "type": "paragraph",
+      "sourceTextHash": "6b3a909fe253055b85daf288e15981e67f4c0b7c183abe89506790f479378400",
+      "chineseText": "医学干预。然而，正如州计划修正案、基于当地人口协调福利与管理式医疗计划和提供者、健康需求以及卫生与公共服务部（HHS）评审和独立系统性评估所解释的，这些研究在方法学上存在缺陷，随访时间短，样本量小，流失率高，且对混杂因素的关注不足。依赖这些研究的临床指南，包括WPATH发布的，被独立评估者认定未达到循证医学公认标准。多个指南开发标准，包括利益冲突管理、证据评审透明度及将倡导与科学评估分离，都未充分体现。所示临床指南既有拒绝性别否认手术的，也有报告部分益处的研究。然而，在拟议的医院参与条件（Hospital Condition of Participation，简称Hospital COP）规则中，CMS表示其有权建立参与条件，尽管整体证据基础存在很低的确定性和潜在不可逆转的伤害风险，因此依然禁止联邦医疗补助（Medicaid）和儿童健康保险计划（CHIP）资金支付该等性别否认手术。评估医疗质量需要实质性证据评估，我们已基于此认定该规则涵盖的服务未达到联邦财务参与（FFP）的护理质量标准。我们亦注意到，CMS创新中心对“护理质量”的定义——即“为个人和人群提供的卫生服务提高实现期望健康结果的可能性且符合当前专业知识”——在某种程度上支持我们的立场。目前的专业知识状态，如HHS评审和多欧洲卫生机构的重新评估所示，未能证明性别否认手术可可靠提高被诊断为性别认同障碍的儿童的期望健康结果。关于医学管理复杂性，我们承认基于目的的限制引入了需关注的操作考虑。正如本最终规则其他部分所述，CMS已考虑实施问题，包括州所需行政步骤及CHIP要求与医疗补助框架的一致性。我们也认识到，州可能需进行更新行政措施、协调利益、聘请法律顾问及高级领导以推动执行。"
+    },
+    {
+      "segmentId": "pdf-p41-s186",
+      "order": 186,
+      "page": 41,
+      "type": "paragraph",
+      "sourceTextHash": "5c0cf683da612cb9dac5bde516dd76a5255a3e3231952d6a28603e3c7e116cbf",
+      "chineseText": "例如，更新管理措施等。多位评论者认为，拟议规则侵犯了州控制医疗执业的权利。一位评论者指出拟议规则可能使联邦合格健康中心（Federally Qualified Health Centers）和认证社区行为健康中心（Certified Community Behavioral Health Centers）与州职业范围法律发生冲突。对此，我们不同意认为本规则违反社会保障法第1801条（42 U.S.C. 1395），该条禁止联邦政府控制医疗执业的评论者观点。我们将分别回应本议题及评论中提出的其他关注。\n社会保障法第1801条并不要求我们资助联邦医疗补助和儿童健康保险计划用于性别否认手术。第1801条规定，医疗保险法案（第十八章）中任何内容“不得解释为授权任何联邦官员或雇员对医疗执业或医疗服务提供方式进行监督或控制。”该条款属于医疗保险法标题部分，且不适用于医疗补助或儿童健康保险计划。本规则符合先前医疗补助规则中对联邦资金支付服务的条件限制。无论如何，本规则不指示医生可推荐或提供何种医疗服务；不规定医疗服务提供方式；不对提供性别否认手术的提供者处以制裁；不排除提供者参与联邦医疗项目；不改变州法律下的职业执业范围；不管理任何机构、机构人员的选任、任期、薪酬；也不控制任何医疗机构、机构或人员的运营或管理。"
+    },
+    {
+      "segmentId": "pdf-p41-s187",
+      "order": 187,
+      "page": 41,
+      "type": "paragraph",
+      "sourceTextHash": "127ecbb022dd283ea5d06727475138972c0e69235dd873141e9b34591aeaf1ad",
+      "chineseText": "（原文为版面信息，无需翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p42-s188",
+      "order": 188,
+      "page": 42,
+      "type": "paragraph",
+      "sourceTextHash": "b02f5ea731e5966b0da6f64f5bb2e3e2b8738fc02556f2466ee8bf5d66d0822a",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与规章 52447"
+    },
+    {
+      "segmentId": "pdf-p42-s189",
+      "order": 189,
+      "page": 42,
+      "type": "paragraph",
+      "sourceTextHash": "7d05350c9d863e3b42a0cbb14198a265b70057aaf7b559a746ad93ad470e6855",
+      "chineseText": "医院参与条件拟议规则。本规则的有效性独立基于社会保障法第1902(a)(19)、1902(a)(30)(A)及2101(a)条款。我们同意评论者认为州份历来利用其警察权监管医疗执业。最高法院也曾指出，不轻易假设国会剥夺州监管权（如N.Y. Conference of Blue Cross & Blue Shield Plans诉Traveler’s Insurance Co., 514 U.S. 645 (1995)）。但该推定非绝对，尤其涉及联邦资金或全国统一利益时，如医疗保险项目已预先排斥部分州法（如医疗保险优势计划、部分D计划）。因此，我们不同意CMS对州传统医疗监管警察权的不当干预指控。\n几位评论者认为，社会保障法第1902(a)(19)及1902(a)(30)(A)条款并未授权CMS根据卫生与公共服务部部长对医疗实践接受标准的解释作出资助决定。部分评论质疑规则违背CMS历来尊重州和医疗机构在医疗必要性和临床护理方面判断的做法，且认为CMS无充足依据取代医学界对性别认同障碍治疗的共识。一回应称该规则基于政治压力的突然政策逆转。还有评论担忧规则违背社会保障法第1902(a)(19)条“合理医疗标准”基本目的，且在未经充分证据的情况下，CMS取代全美国医学机构的临床判断。另一评论指出拟议规则将医疗判断政治化，与医疗专业知识衔接不足。"
+    },
+    {
+      "segmentId": "pdf-p42-s190",
+      "order": 190,
+      "page": 42,
+      "type": "paragraph",
+      "sourceTextHash": "f7dfb718fb0cb5413ae8a6a5ff56924929cdfd09b11099ca630f19507f197cd5",
+      "chineseText": "有评论强调，规则要求基于合理医疗标准和认可医学证据，执行第1902(a)(19)及1902(a)(30)(A)条款，是确保州遵守法案规定的理性执行。另一评论表示支持本规则与CMS授权一致，并强调规则符合联邦资金参与质量和效率的法定指导原则。一评论说明，CMS未授权在非医疗必要性条件下资助全部医疗程序，当前对性别否认手术的循证证据不足以支持其为医疗服务，并认为联邦政府在儿童重大且不可逆损伤风险环境中负有更高保护义务。该评论进一步认为，联邦支付参与要求基于充分证据，且联邦政府的职责在于制定涵盖质量与效率的资金参与范围，确保州利用州预算资金资助具争议服务，实现联邦主义平衡。医疗必要性要求需超越临床主观判断，需具备合理证据证明所介入治疗疗效大于风险，避免资金用于试验性、不安全或有害儿童福利的干预，性别否认手术不满足医疗必要性标准不应由联邦资金补贴。"
+    },
+    {
+      "segmentId": "pdf-p42-s191",
+      "order": 191,
+      "page": 42,
+      "type": "paragraph",
+      "sourceTextHash": "75ee1966adaa7d84495358cd3295be5e011059c36152ec4e66feba1b1b354dfb",
+      "chineseText": "评论感谢认可本规则符合社会保障法第1902(a)(19)及1902(a)(30)(A)条款。当前针对儿童性别否认手术的循证资料显示极低益处确定性，且有显著不可逆风险证据，故不支持联邦资金参与这些程序。我们基于责任确保州履行法定标准，对该决策作出合理实施。评论者认为规则提案与CMS授权相符。"
+    },
+    {
+      "segmentId": "pdf-p43-s192",
+      "order": 192,
+      "page": 43,
+      "type": "paragraph",
+      "sourceTextHash": "7f839cd80e102efb7f2b9c24d53e37e6487659fa3029193c414e608c8347c9f1",
+      "chineseText": "（原文为版面信息，无需翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p43-s193",
+      "order": 193,
+      "page": 43,
+      "type": "paragraph",
+      "sourceTextHash": "0b6704fece7e58d1a1ad59ccb958bfb33f0c5acd1c84b3e0eec334ccbe6f6ac9",
+      "chineseText": "同意CMS对评论的解释：一位支持治疗的评论者感谢CMS认可儿童健康保险计划（CHIP）涵盖的儿童年龄界定为最高至19岁，这一点与在该规则下儿童的定义保持一致，并赞扬了CMS在肩负质量和患者保护义务方面的权威。该评论者还指出，拟议规则保留了联邦主义原则，允许各州使用仅限州资助的资金为性别拒斥手术提供资金。另一位评论者指出，CMS拥有基于质量考虑定义联邦资金匹配份额（FFP）范围的法定权威，CHIP计划也存在于该授权范围内。回应：我们感谢评论者对CMS监管CHIP提供服务权限的支持，也感谢他们认可本规则通过允许各州使用州政府自有资金资助性别拒斥手术而保留了联邦主义原则。"
+    },
+    {
+      "segmentId": "pdf-p43-s194",
+      "order": 194,
+      "page": 43,
+      "type": "paragraph",
+      "sourceTextHash": "d14e39a07469298063fb7662e0e898dfb1fb380ad500cf036247631c96a2f06b",
+      "chineseText": "评论：许多评论者认为拟议规则不应适用于“19岁以下儿童”，因为在18岁时个人被视为法律成年人，能够自主决定，因此该规则影响成年人的医疗护理。一些评论者指出，此规定会给医疗提供者带来负担，需要核实18岁患者是否已在医疗补助（Medicaid）或CHIP中注册，然后才能决定治疗方案。回应：我们承认评论者关于将CHIP禁止条款应用于18岁成年受益人的担忧。正如拟议规则及最终规则所述，CHIP中“19岁以下”的年龄门槛反映了国会在《法案》第2110(c)(1)节中对“针对低收入儿童”的法定定义，即“未满19岁个人”。我们采用该门槛直接遵循国会所定义的CHIP资格标准，与该计划的法律结构相一致。虽然这在18岁Medicaid受益人与18岁CHIP受益人之间造成了操作上的区分（前者的联邦资金匹配不受本规则限制，后者受限），但这一区分反映了医疗补助与CHIP的不同法定定义，本规则绪论中加以说明。我们重申，州政府可以使用州自有资金覆盖18岁CHIP受益人的性别拒斥手术。"
+    },
+    {
+      "segmentId": "pdf-p43-s195",
+      "order": 195,
+      "page": 43,
+      "type": "paragraph",
+      "sourceTextHash": "fbfdbb94032b33c329de77fcb08f39e49da0e9cb89e439a0828750517a29e5f8",
+      "chineseText": "此外，我们重申，州政府不被禁止用州自有资金为18岁CHIP受益人覆盖性别拒斥程序。"
+    },
+    {
+      "segmentId": "pdf-p43-s196",
+      "order": 196,
+      "page": 43,
+      "type": "paragraph",
+      "sourceTextHash": "319aa554438f6cdea20fe9722ddee93b5b7c193058edbead61bb7df4004e625b",
+      "chineseText": "（该段存在格式噪声，未检测到实质文字内容，故不予翻译。）"
+    },
+    {
+      "segmentId": "pdf-p44-s197",
+      "order": 197,
+      "page": 44,
+      "type": "paragraph",
+      "sourceTextHash": "ab81b2fd33f5687d7c6a894acf82e028ee230b77aafce69bf63ff9212c4e3346",
+      "chineseText": "联邦公报 / 卷91，第155号 / 2026年8月13日星期四 / 规则与条例 52449"
+    },
+    {
+      "segmentId": "pdf-p44-s198",
+      "order": 198,
+      "page": 44,
+      "type": "paragraph",
+      "sourceTextHash": "2411bbb1012321312a1496a8386b95c288c453a3fc5605d79d9f2220c4ee8de6",
+      "chineseText": "通过法规的权限，我们有限度地允许州政府在本规则生效日起6个月的缓冲期内继续为当前接受交叉性别激素治疗的Medicaid和CHIP受益人申报联邦资金匹配。这一缓冲期旨在给予受益人及其医疗提供者合理的时间，允许临床自由裁量权下逐步停用这些药物，避免不必要地延长联邦资金对存在儿童安全风险程序的支持。6个月的缓冲期并非临床指南，若医疗提供者认为不同的停药时间线更合适，可以实施。"
+    },
+    {
+      "segmentId": "pdf-p44-s199",
+      "order": 199,
+      "page": 44,
+      "type": "paragraph",
+      "sourceTextHash": "c4d3b156f76bb8b6117a181f450d1b944455fe17b3542f2eb75b9282128efff3",
+      "chineseText": "我们援引《法案》1902(a)(19)、1902(a)(30)(A)和2101(a)节赋予CMS设定联邦资金匹配条件的法定权力。本规则即是该权力的行使。拟议规则曾考虑过不采取行动的方案，并详述为何需采取联邦监管行动。相较于全面禁止，本规则是更为稳健的措施：定义的性别拒斥药物或手术仍可获得联邦匹配资金，前提是为具有医学上可验证的性别发育障碍的个体治疗，且非出于改变个人外表以符合其与出生性别不同的认同，或治疗因执行性别拒斥手术引发或加重的并发症。这种针对性、目的明确的方式代表了我们的努力，妥善平衡利益。"
+    },
+    {
+      "segmentId": "pdf-p44-s200",
+      "order": 200,
+      "page": 44,
+      "type": "paragraph",
+      "sourceTextHash": "cd60987f8e6297f38823470ee9b444eff08799d7e20245b51a669a0d3a4bd1d8",
+      "chineseText": "（该段存在格式噪声，未检测到实质文字内容，故不予翻译。）"
+    },
+    {
+      "segmentId": "pdf-p45-s201",
+      "order": 201,
+      "page": 45,
+      "type": "paragraph",
+      "sourceTextHash": "581284d9650b89da045aeaa53035209a2b60de567ea2139f2839fbf46ba2ca38",
+      "chineseText": "联邦公报 / 卷91，第155号 / 2026年8月13日星期四 / 规则与条例 52450"
+    },
+    {
+      "segmentId": "pdf-p45-s202",
+      "order": 202,
+      "page": 45,
+      "type": "paragraph",
+      "sourceTextHash": "a3cc97f18e08bbb19b4265a409328713518a32a9e7f7848f599c6fdc2a67dc0e",
+      "chineseText": "《法案》第1927(d)(2)(K)条款中含有针对其他目的的例外，即“经美国食品药品监督管理局（FDA）批准的用途”。同样，各州必须已经制定流程，确保覆盖经批准用途的药物，同时拒绝覆盖法案规定排除的用途。我们相信，各州有能力制定和实施编码修改，以同样的方式拒绝覆盖被禁止用于性别拒绝手术的门诊药物，就像他们实施拒绝覆盖用于体重减轻或性功能障碍等其他可能选择不覆盖的药物用途一样。我们认为，《法案》第1902(a)(19)和1902(a)(30)(A)条款提供了独立的授权，允许限制对我们判断与护理质量和受益人保护标准不符的门诊药物用途提供联邦资金支持，尽管第1927条款对药物覆盖有一般框架。我们认为，第1927条并未消除执行机关为确保医疗补助资金以符合护理质量和受益人最佳利益的方式支出的更广泛责任，尤其是在我们基于实质性证据评估确定某一药物用途对特定人群存在安全性、有效性或长期危害重大关切的情况下。评论：若干评论者认为拟议规则违反了保护残疾人权益的各种法律法规，认为规则歧视残疾人。一些评论者认为拟议规则违反了《康复法》第504节，因提供不平等医疗服务。还有的认为违反了《美国残疾人法》（ADA），因歧视残疾人公共服务和便利，包括医院服务。亦有评论者认为违反了《康复法》第508节，该条禁止基于残疾的多种歧视行为。一位评论者称，2022年第四巡回法院在Williams诉Kincaid案中裁定，性别焦虑症可被视为《美国残疾人法》下的残疾。一位评论者认为HHS知晓拟议规则违反《康复法》，这一点通过卫生与公共服务部民权办公室（OCR）提出的拟议规则证明，该规则将“未因身体障碍引起的性别焦虑症”纳入“不源于身体障碍的性别身份失调”排除条款之中。这名评论者提出，HHS OCR拟议规则“与该法案的立法目的和历史含义不符”。本次医疗补助与儿童健康保险计划（CHIP）拟议规则同样违反了《康复法》，因为该规则未能为由身体障碍引起的性别焦虑症提供充分例外。患有性别焦虑症的医疗补助与CHIP参保儿童仍能获得包括心理治疗在内的全范围联邦资助心理健康服务。评论：若干评论者就CMS于拟议规则中将禁止为儿童提供的性别拒绝手术的联邦资金支持（FFP）与禁止为未满21岁人士提供永久性绝育手术的FFP进行比较提出意见，认为该比较不当。一些评论者认为，禁止向儿童提供永久性绝育手术的联邦资金支持，可以直接追溯至国会关于“计划生育服务”的法定定义，该定义要求对相关服务获得知情同意，因此禁令依赖了国会授权，且该授权不适用于性别拒绝手术。少数评论者认为这种比较不适用，因为他们认为性别拒绝手术不是不可逆转的，而永久性绝育手术是。另有少数评论者认为对性别拒绝手术的禁令与对绝育手术的禁令不可比，因为没有证据表明参保的儿童和青少年在医疗补助和CHIP中被迫或胁迫接受性别拒绝手术，而先前被绝育的儿童和青少年则不同。另有评论者认为该比较不适用，因为性别拒绝手术不像绝育手术属于计划生育服务。一名评论者认为该比较不适用，因为“没有同样有效的替代服务可用于治疗患有性别焦虑症的青少年”。回应：我们认可评论者关于本规则与§441.253规定的法律与事实差异的观察。无论如何，本规则不会因诊断或残疾状况而拒绝对患有性别焦虑症的个体提供医疗补助覆盖。规则对FFP的限制基于特定药物及外科手术所服务的目的，即是否用于使儿童的身体外观或体态符合与其生物性别不同的认同性。该限制对所有拟用于该目的的儿童一视同仁，不论其残疾状况如何。患有性别焦虑症的医疗补助与CHIP参保儿童仍能获得包括心理治疗在内的全范围联邦资助心理健康服务。我们不同意认为本规则违反《美国残疾人法》和《康复法》第504节，理由是它基于残疾歧视患有性别焦虑症的个体。我们与HHS民权办公室2025年《第504节拟议规则》持相同立场：不因身体障碍引起的性别焦虑症不构成受保护的残疾。更多关于HHS《第504节》拟议规则及其在504节和ADA下的分析，参见联邦公报90 FR 59478、59480（2025年12月19日）。"
+    },
+    {
+      "segmentId": "pdf-p45-s203",
+      "order": 203,
+      "page": 45,
+      "type": "paragraph",
+      "sourceTextHash": "058bad0e09e3091695e28a4879a3f2dd85695a614e8b8640c18bfe77573f00bc",
+      "chineseText": "2022年，第四巡回法院在Williams诉Kincaid案（45 F.4th 759）中裁定，性别焦虑症可被视为《美国残疾人法》下的残疾。一位评论者认为HHS知晓拟议规则违反《康复法》，这可从卫生与公共服务部民权办公室（OCR）2025年提出的第504节拟议规则中看到，该规则将“未因身体障碍引起的性别焦虑症”纳入“不属于身体障碍的性别身份障碍”排除条款。该评论者认为拟议规则与《康复法》的目的和历史意义不符。回应：我们不完全同意这些看法。"
+    },
+    {
+      "segmentId": "pdf-p45-s204",
+      "order": 204,
+      "page": 45,
+      "type": "paragraph",
+      "sourceTextHash": "2632ecf072fef7457c792379667b725ac249ad0a73cb59043107028968aad7af",
+      "chineseText": "（此段仅包含刊载信息，无实质内容待译。）"
+    },
+    {
+      "segmentId": "pdf-p46-s205",
+      "order": 205,
+      "page": 46,
+      "type": "paragraph",
+      "sourceTextHash": "03a5dbab5e6accb21b58fd5d3afe0a6127a17303ff89ae45503628a9dec2fd9f",
+      "chineseText": "（此段仅包含刊载信息，无实质内容待译。）"
+    },
+    {
+      "segmentId": "pdf-p46-s206",
+      "order": 206,
+      "page": 46,
+      "type": "paragraph",
+      "sourceTextHash": "331043da0261bb6d38582ef2fbdfa50b50c737c7d90085265fab6adb00551834",
+      "chineseText": "计划生育服务的法律背景与《康复法》或任何其他联邦并行行动的语境不同。本次拟议规则明确指出本规则不依赖于被暂停执行的行政命令14168和14187的条款。我们基于上述法律权限及我们对儿童性别拒绝手术证据评估的实质性结论，独立提出该政策。本规则不会违反任何法院命令。任何相关规则条款将在指定生效日期后生效。我们认识到最近多项联邦关于儿童性别拒绝手术的举措同时发布，评论者指出这些行动如何相互影响及其对州、服务提供者和受益人的综合影响存在疑问。我们将为州、提供者及其他相关方提供明确、一致的指引，帮助理解适用的联邦法规范围和相互关系。\n此外，正如我们在对评论的进一步回应中所述，本规则基于《医疗补助法案》第1902(a)(19)和1902(a)(30)(A)条款以及《儿童健康保险计划》（CHIP）相关条款，独立于其他涉及性别拒绝手术的相关联邦行动。本规则不依赖于肯尼迪声明、医院条件参与提案规则或OCR提案规则等。尽管评论者认为拟议规则、医院参与条件“禁止儿童性别拒绝手术”提案规则、OCR规则及FDA禁止向儿童非法营销乳腺绑定器的警告信等构成对性别焦虑儿童的针对性行动，我们认为每一行动均基于适用的独立法定职权和证据基础。本规则反映了对性别拒绝手术安全性和必要性的关注，并意在保护儿童的安全。\n评论：许多评论者提出拟议规则与《医疗补助法》相悖，理由是规则将拒绝向个别患者提供医学必要护理。有评论者提到该规则与CMS发布的“医院参加条件：禁止儿童性别拒绝手术”规则、HHS OCR提出的参与联邦资助项目或活动中不得以残疾为由歧视的规则、FDA对非法向儿童推广乳腺绑定产品的警告、HHS部长罗伯特·F·肯尼迪（Robert F. Kennedy, Jr.）发布的关于儿童及青少年性别拒绝手术的“安全、有效性及专业护理声明”（肯尼迪声明）以及司法部就收到性别拒绝手术未成年人个人健康信息的传票有关公开说明，均构成针对性别焦虑儿童的集中打击。部分评论者提及了拟议规则与上述多项行政行动的交叉和互动存在不明确之处。\n回应：我们承认本规则是近期数项针对儿童性别拒绝手术相关政策中的一项，每项均基于其适用的法律依据和证据基础，所针对的程序和监管范围有所不同。"
+    },
+    {
+      "segmentId": "pdf-p46-s207",
+      "order": 207,
+      "page": 46,
+      "type": "paragraph",
+      "sourceTextHash": "105663bfb44e65cf6f8e241593373f487a2efd30865a4bc0734088ba33bcd4f6",
+      "chineseText": "本规则依据《医疗补助法案》第1902(a)(19)及1902(a)(30)(A)条款，以及《儿童健康保险计划》（CHIP）相关条款，独立于其他儿童性别拒绝手术相关联邦行动，不依赖肯尼迪声明、医院条件参与提案规则或OCR提案规则。本规则指出，不因病状诊断或残疾状态而拒绝对患有性别焦虑症个体提供医疗补助覆盖。限制联邦资金支持（FFP）基于具体药物和手术的提供目的，即是否用于使儿童的身体外表或体态符合其生物性别不同的认同。该限制对所有计划用于该目的的儿童一视同仁，无论其残疾状态如何。患有性别焦虑症的医疗补助及CHIP参保儿童仍然可以获得包括心理治疗在内的联邦资助心理健康服务的全部内容。\n我们不同意部分评论者认为本规则违反ADA和《康复法》第504节，理由是该规则基于残疾歧视患有性别焦虑症的个体。我们与HHS民权办公室2025年发布的第504节拟议规则保持同一立场，即不基于身体障碍的性别焦虑症不构成受保护的残疾。更多关于HHS第504节拟议规则及其在504节和ADA下的分析，详见2025年12月19日联邦公报第90卷59478页。\n评论中亦有提及，拟议规则所禁止的性别拒绝手术的FFP限制与禁止在21岁以下对象进行绝育的FFP限制不可类比。理由包括性别拒绝手术不可逆转性存疑，拒绝录入绝育手术相关法规是基于过去在联邦项目中发生的强制绝育行为，并基于授权计划生育服务的法定要求，而本规则未存在类似情况。另有评论者指出性别拒绝手术不属于计划生育服务。另有评论者指出拟议规则未充分说明其与HIPAA、隐私保护、急诊医疗与劳工法案、未资助任务改革法案、农村发展法以及州地官员协商等多项联邦法规间的关系和互动。部分评论者还提出拟议规则违反了国际人权公约、联邦相关儿童保护法案以及心理健康平价法案等。还有评论者担心拟议规则可能导致农村和安全网医疗服务设施承担额外法律风险。我们将在后续说明中继续回应此类评论。"
+    },
+    {
+      "segmentId": "pdf-p46-s208",
+      "order": 208,
+      "page": 46,
+      "type": "paragraph",
+      "sourceTextHash": "136b65930515d371f89ed56a4a038fe7f72ae9de63daf929dfd495888329d6d6",
+      "chineseText": "（此段仅包含刊载信息，无实质内容待译。）"
+    },
+    {
+      "segmentId": "pdf-p47-s209",
+      "order": 209,
+      "page": 47,
+      "type": "paragraph",
+      "sourceTextHash": "ac1a8f0b32d7fe87d2f60be359c93b26b76342682a2b6b28fbc7d4518acafb13",
+      "chineseText": "（此段包含刊载信息，无实质内容待译。）"
+    },
+    {
+      "segmentId": "pdf-p47-s210",
+      "order": 210,
+      "page": 47,
+      "type": "paragraph",
+      "sourceTextHash": "c4d6b22305aa43a0dd24c528995ff9a7377c66e3a63793a27c45af22b2240eba",
+      "chineseText": "剥夺法官听取案件具体事实和做出最佳利益决策的能力。规则制定程序提供评论者表示，拟议规则为州和地方官员提供了评论机会。拟议规则承认该规则将对州获得联邦医疗补助和儿童健康保险计划资金用于性别拒绝手术产生重大直接影响。执行令13132关于联邦主义规定的一位评论者认为拟议规则违反了《法案》第1102条，因部长授权CMS的权限仅限于与部长“所负责职能的有效管理”一致且“不与医疗补助法案不一致”的法规，评论者认为拟议规则违反了这两个原则。一位评论者称拟议规则违反了《负担得起的医疗法案》。一位评论者认为CMS可能因最终制定拟议规则而根据42 U.S.C. 1983、18 U.S.C. 241和18 U.S.C. 242而被起诉。一位评论者认为拟议规则构成医疗事故。另一位评论者称他们认为拟议规则构成“虐待儿童”，并可能因此被起诉。回应：我们已认真考虑评论者提出的各项法律关切，并在下文处理主要挑战。部落权利与主权。我们致力于履行对部落民族以及依赖印第安健康服务和部落健康项目的美洲印第安人和阿拉斯加原住民的法律责任。我们将与部落民族开展政府间磋商，关于本规则的实施，符合我们的部落协商政策。我们将确保规则实施符合适用的联邦印第安健康法，包括印第安医疗护理改进法。精神健康等价和成瘾公平法案（MHPAEA）。本规则不限制医疗补助或儿童健康保险计划涵盖的针对性别不安个体的精神健康服务。精神健康服务包括心理治疗，其已被多项卫生权威确定为治疗儿童性别不安的适当一线疗法，仍在医疗补助和儿童健康保险计划下获得联邦配比。规则中对性别拒绝手术的定义限于为特定目的提供的药物和手术干预，不包括心理健康咨询、心理治疗或其他精神健康治疗。我们认为本规则与MHPAEA要求不存在任何不一致。联邦行政命令13132和联邦主义。我们遵守了行政命令13132的指示，通过联邦登记程序提供州政府和地方政府官员评论的机会。拟议规则承认，规则将对州获得联邦医疗补助和儿童健康保险计划的资金产生重大直接影响。一位评论者称该规则违反了执行令13132关于必要的效率管理职能的一致性要求。我们已考虑评论过程中州政府官员表达的关切，并在本规则中回应。"
+    },
+    {
+      "segmentId": "pdf-p47-s211",
+      "order": 211,
+      "page": 47,
+      "type": "paragraph",
+      "sourceTextHash": "d7e013ce8971e8d84a4dbdc1f4bec5c34ec4ebc39661865cf3ebf1b4b7b73e23",
+      "chineseText": "心理治疗或其他精神健康治疗。我们认为本规则不会与《精神健康等价和成瘾公平法案》（MHPAEA）的有关要求发生冲突。联邦行政命令13132及联邦主义。本机构通过联邦登记册公告程序，已遵守执行令13132的各项指令，充分考虑州和地方政府官员的意见。拟议规则承认规则的实施将对州获得联邦医疗补助及儿童健康保险计划资金产生重要直接影响。规则指出，类似于42 CFR 441.251对绝育手术的目的性定义，类似的定义用于识别不合联邦资金资助的医疗程序。一位评论者就此提供了其他法律论据支持拟议规则。"
+    },
+    {
+      "segmentId": "pdf-p47-s212",
+      "order": 212,
+      "page": 47,
+      "type": "paragraph",
+      "sourceTextHash": "755aadf1f0659972eb11d7a249b2d9afa968045a510ad02dfdf5f805b3f95942",
+      "chineseText": "2026年8月12日17:06发布，联邦登记册文件编号：Jkt 268001，法规实施记录00000，格式4701，联邦登记册第13号文件【文本噪声，未翻译】"
+    },
+    {
+      "segmentId": "pdf-p48-s213",
+      "order": 213,
+      "page": 48,
+      "type": "paragraph",
+      "sourceTextHash": "13d97335b52f2ec18c710515001735aacb7deca08c7547ee63e3778db4c9320b",
+      "chineseText": "联邦登记册 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52453"
+    },
+    {
+      "segmentId": "pdf-p48-s214",
+      "order": 214,
+      "page": 48,
+      "type": "paragraph",
+      "sourceTextHash": "64b9fa8ff605eefdd35947170b31a47f8aa935ed8e7b10bbe6d4ab8464e51a6d",
+      "chineseText": "对诊断为性别不安的儿童和青少年激素及手术干预的益处和危害的循证证据。HHS评估报告发现，关于性别拒绝手术对心理结果、生活质量、后悔或长期健康的总体证据质量很低。我们同意评论者指出的，这一证据环境特征为微弱的效益证据及显著且有时不可逆的风险，支持禁止联邦资金支持向儿童提供性别拒绝手术的基础。我们亦同意评论者指出，心理治疗和其他非侵入性精神健康服务为治疗儿童性别不安提供了更多证据支持的一线方法，强调此类服务继续纳入医疗补助和儿童健康保险计划保障范围且不受本规则影响。有关本规则中性别拒绝手术的定义为仅限于特定目的的药物和手术干预，不包括心理健康咨询、心理治疗或其他精神健康治疗。许多评论者质疑HHS评估报告的有效性与应用。多位声称HHS评估报告未全面支持全面禁止，并指出该报告承认对益害均存在不确定性，且其所提及的欧洲国家通常在研究框架内减少或集中管理而非全面禁止。此外，部分评论指出HHS评估报告政治动机明显、科学缺陷突出，认为其旨在支持预设政策结论，称其作者缺乏相关临床专业知识或持反跨性别立场，有意见领袖未被纳入，质疑其过程中是否违背联邦咨询委员会法案。许多评论同时批评其对GRADE框架的错误应用，存在证据标准不对称，忽视益处证据而接受推测性害处证据。"
+    },
+    {
+      "segmentId": "pdf-p48-s215",
+      "order": 215,
+      "page": 48,
+      "type": "paragraph",
+      "sourceTextHash": "8db14695626f65bb6795952639152ac0bc735c01bcbd575210dd3a21c9c02106",
+      "chineseText": "回应：我们感谢支持HHS评估报告和拟议规则的评论者。正如拟议规则及本最终规则所述，HHS评估报告对现有循证医学关于性别拒绝手术对儿童疗效及风险进行了统一综述。HHS评估报告经卫生与公共服务部人口事务办公室发布，并通过正式的同行评审程序，符合适用信息质量指南，最终版本于2025年11月发布。评审采用了广泛接受的伞形综述方法，评估现有系统综述的方法学质量。我们认识到评论者对评审贡献者视角及关联的质疑，但科学评审的有效性应由其方法学和所整合证据质量决定，而非作者的立场。我们审视了HHS评估报告及其他可用证据，结合法定职责，形成独立政策判断。我们不同意HHS评估报告科学上无效的观点，亦不认同其被政治驱动的指责。此外，我们确认HHS评估报告核心发现，即性别拒绝程序疗效证据不确定且对某些生理害处（如不孕、性功能障碍等）有较确定的风险的结论，为联邦资金不应用于儿童性别拒绝手术提供支持。法定管理规定于此基础之上，认定此禁止是合规、基于证据的政策判断。"
+    },
+    {
+      "segmentId": "pdf-p48-s216",
+      "order": 216,
+      "page": 48,
+      "type": "paragraph",
+      "sourceTextHash": "fa8b22fbc1a39801123236ec58c05193e30fbd3034f91a534239b6cee0319b14",
+      "chineseText": "2026年8月12日17:06发布，联邦登记册文件编号：Jkt 268001，法规实施记录00000，格式4701，联邦登记册第13号文件【文本噪声，未翻译】"
+    },
+    {
+      "segmentId": "pdf-p49-s217",
+      "order": 217,
+      "page": 49,
+      "type": "paragraph",
+      "sourceTextHash": "8717d01a8185a0d61a2b8a23b02673a5e1789f258aa1f5408ec1b6b9226152d0",
+      "chineseText": "联邦登记册 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52454"
+    },
+    {
+      "segmentId": "pdf-p49-s218",
+      "order": 218,
+      "page": 49,
+      "type": "paragraph",
+      "sourceTextHash": "f5d546e1a663e27b7ef782a3e469b760219d551424cc304882431f103731ec98",
+      "chineseText": "关于骨密度、生育力和内分泌功能相关的医学156，其声称挑战了卡斯（Cass）审查方法论的评论者，我们表示感谢。这些评论者表示支持我们依赖卡斯审查的做法。如拟议规则和本最终规则所述，卡斯审查是英国国家卫生服务体系委托进行的为期四年的独立评估。其发现包括缺乏针对儿童性别焦虑症青春期抑制和跨性激素长期有效性的有力证据，与规则中引用的其他系统综述及HHS审查的综述一致。我们没有单独依赖卡斯审查，而是将其视为构成更广泛国际证据体系的一部分，这些证据促成了联邦医疗补助和儿童健康保险计划资金不应用于向儿童提供性别转变排斥性操作的决定。若干评论者对卡斯审查作者的背景和资历发表评论，称该审查由一些没有儿童性别焦虑医疗经验且被描述为公开反跨性别倡导者的研究人员领导。少数评论者指出卡斯审查遭受美国主要医学组织的批评，包括内分泌学会、儿童医学会和美国心理学会，以及世界卫生组织和世界跨性别健康专业协会（WPATH）。还有评论者表示卡斯审查不是经过同行评审的研究，并对其语言存在偏见及政治动机表示担忧。我们不同意这些将卡斯审查描述为科学不可靠或不支持本规则最终政策方案的评论。卡斯审查由英格兰国家卫生署委托，历时四年，由一个独立团队完成，包括一系列采用既定评估标准的系统综述。我们承认一些医学组织和研究者对卡斯审查的方法论及结论提出批评。科学讨论是证据发展的正常且健康现象，尤其在临床不断演进的领域中。然而，评论中指出的卡斯审查方法论批评，并未否定该审查关于儿科性别转变排斥性手术证据质量低下的核心发现——这些发现与拟议规则中引用的其他独立系统综述结果一致。"
+    },
+    {
+      "segmentId": "pdf-p49-s219",
+      "order": 219,
+      "page": 49,
+      "type": "paragraph",
+      "sourceTextHash": "0a58611dc520189d6bfa9b1aed52e8e7a06cfed30d6b4bbb35104eeed235a212",
+      "chineseText": "许多评论者还质疑卡斯审查的科学有效性，称其基于不可靠的科学和证据曲解，且受到严厉批评，未遵循评估证据质量的既定标准。一些评论者指出了BMC医学研究方法学杂志、耶鲁大学（Noone等人）155和《新英格兰医学杂志》等同行评审研究，并提到现有的性别焦虑治疗模型与WPATH和内分泌学会描述的性别确认护理模型一致，强调交叉性别激素和不可逆手术治疗性别焦虑的长期安全性和有效性尚未证实，并指出报告中提供了此类方法的危险证据以及去转变（detransition）的可能性。少数评论者认为性别转变排斥行为是一种不适应性应对机制，有的支持卡斯审查并称性别转变排斥程序具有恐惧同性恋倾向（homophobic）性质。一名评论者认为英国禁止青春期阻断剂是正确的伦理举措。"
+    },
+    {
+      "segmentId": "pdf-p49-s220",
+      "order": 220,
+      "page": 49,
+      "type": "paragraph",
+      "sourceTextHash": "788547d8b01bb96e6eeeece7d0c9268318adc27b85177de0632552b3f96d9a85",
+      "chineseText": "（正文空白，仅包含版面日期及刊物信息）"
+    },
+    {
+      "segmentId": "pdf-p50-s221",
+      "order": 221,
+      "page": 50,
+      "type": "paragraph",
+      "sourceTextHash": "408a9d1576815a63b3e5eed6ac246fc698f7e3e41eec4f09ccf7489d6a260c15",
+      "chineseText": "联邦公报 / 第91卷第155号 / 2026年8月13日星期四 / 规则及条例 52455"
+    },
+    {
+      "segmentId": "pdf-p50-s222",
+      "order": 222,
+      "page": 50,
+      "type": "paragraph",
+      "sourceTextHash": "f00ef7560d507e0128a2daea2d6bfc3fb9328cf8f5543f9e7a23657478071e9a",
+      "chineseText": "缺陷，与我们确定联邦资金不应支持针对儿童的这些程序的决定完全一致。我们作为更广泛证据记录的一部分审阅了卡斯审查，没有将其作为制定本规则的唯一或决定性依据。我们的独立政策判断反映了这些材料的累积权重，包括国际系统综述和HHS审查，均指出证据中存在显著不确定性，同时潜在存在不可逆损害风险。该证据基础足以支持本规则最终政策方案。我们还指出，卡斯审查对外科干预的议论仅及其一瞥，出于对不可逆害处、缺乏扎实证据及可能重大伤害潜力的担忧，将外科性别转变排斥手术纳入本规则禁止之列。很多评论者提供了额外研究、引用或详情，支持CMS考虑用于拟议规则的性别转变排斥程序。若干评论者指出，WPATH护理标准缺乏可靠证据，受倡导影响。另有评论者提到芬兰、瑞典、丹麦和英国等国研究，显示因证据不足且风险大于收益而限制性别转变排斥程序。若干评论者称，关于青春期阻断剂、激素和儿童手术的公开系统综述极少，实际难以评估该类护理的可靠性和安全性。少数评论者提供了强调儿童易受影响风险及美国不可逆性性别改变程序广泛使用的研究数据库。自2025年12月拟议规则发布以来，有判决反对性别转变排斥程序提供者。该评论者还认为美国整形外科医师学会和美国医学会近期调整了对性转排斥程序的立场。157评论者称医院和卫生系统政策与拟议规则不符。"
+    },
+    {
+      "segmentId": "pdf-p50-s223",
+      "order": 223,
+      "page": 50,
+      "type": "paragraph",
+      "sourceTextHash": "919bfc933b51f3a966a6a132cc33ef264d48c634bfce05f34f4f16f65cf0de1e",
+      "chineseText": "157在本条评论提交后，美国医学会发表声明澄清“美国医学会关于性别确认护理的政策未变”，见《医学会董事会简讯》，美国医学会（2026年3月），https://cloud.e.ama-assn.org/newsletter。部分评论者引用未在拟议规则中包含的其他国家国际政策。158"
+    },
+    {
+      "segmentId": "pdf-p50-s224",
+      "order": 224,
+      "page": 50,
+      "type": "paragraph",
+      "sourceTextHash": "db6aef52e944d2c95b0576e4b8c1901d490430b46507a5cbde454abcb80bf4fc",
+      "chineseText": "158《针对有性别焦虑的儿科患者的性别确认医疗治疗》，犹他大学药学院药物用药管理中心（Drug Regimen Review Center），2024年8月6日，https://le.utah.gov/AgencyRP/reportingDetail.jsp?rid=636。"
+    },
+    {
+      "segmentId": "pdf-p50-s225",
+      "order": 225,
+      "page": 50,
+      "type": "paragraph",
+      "sourceTextHash": "61a449af594dcda9ce3ab0e472b76c70039416d9b53c63210b7fca9ee0bbb26b",
+      "chineseText": "（正文空白，仅包含版面日期及刊物信息）"
+    },
+    {
+      "segmentId": "pdf-p51-s226",
+      "order": 226,
+      "page": 51,
+      "type": "paragraph",
+      "sourceTextHash": "e096ef75471a0e22b049b05e458e9c7cc7e20a98d1237888b74edadaacc89d1d",
+      "chineseText": "52456 联邦公报 / 第91卷第155号 / 2026年8月13日星期四 / 规则及条例"
+    },
+    {
+      "segmentId": "pdf-p51-s227",
+      "order": 227,
+      "page": 51,
+      "type": "paragraph",
+      "sourceTextHash": "3ad1bac67a10742b4a3d27f34b8ff75d1ced57e8f68307332df4446f973c1f15",
+      "chineseText": "我们也不同意部分评论者关于我们遵循《法案》第十九编（title XIX）条款的说法，他们认为我们包括《法案》第1902(a)(19)和1902(a)(30)(A)条款及CMS的强制、知情同意和患者发展被错误地基于国际政策数据所描述。如实施法规和拟议规则中所讨论，瑞典、芬兰及英国均独立进行了系统性评审，根据这些评审结果，它们有意义地限制了儿童在其公共卫生系统中接受性别拒绝程序的通路。我们承认这些国家尚未采取与本规则完全相同的政策，这些程序在某些情况下仍然可用。然而，这些国家对儿童性发育抑制和跨性别激素广泛获得的方向转变，直接关系到我们对不断发展的国际证据基础的评估，并被适当引用于拟议规则中。我们同样承认其他国家仍继续提供这些干预措施的较广泛获得，我们不声称国际政策完全支持我们的做法。相反，国际证据只是更广泛证据记录的一个元素，而我们的主要判断是独立基于《法案》第1902(a)(19)、1902(a)(30)(A)和2101(a)条款的法定要求。最后，我们指出，本规则并未禁止用州政府自有资金提供性别拒绝程序，亦未阻止研究人员研究这些干预措施，或限制提供者根据适用法律提供这些治疗。本规则专注于联邦医疗补助（Medicaid）和儿童健康保险计划（CHIP）资金的使用，符合我们的法定权限。B.对性别拒绝程序的医疗补助支付的禁止（§ 441.800）我们提议于42 CFR第441部分新增子部分N，以确保护理和服务符合医疗补助受益人的最大利益，并确保护理质量的支付一致性。为此，拟议§441.802(a)规定，医疗补助计划必须保证医疗补助机构不会为18岁以下儿童的性别拒绝程序付款。根据42 CFR 430.10，州计划是州确保其医疗补助项目依照医疗补助计划的工具。"
+    },
+    {
+      "segmentId": "pdf-p51-s228",
+      "order": 228,
+      "page": 51,
+      "type": "paragraph",
+      "sourceTextHash": "512115f8ad2dc78dd6e57b8b1a8df2a6436c16ebceb451078a456f6136ab6ebd",
+      "chineseText": "必须保证医疗补助机构不会为18岁以下的儿童的性别拒绝程序作付款。根据42 CFR 430.10，州计划是各州医疗补助项目管理的保证工具。CMS已长期禁止在§441.253条款下对21岁以下个体进行的永久绝育联邦资金支付，出于对这种程序可能造成的伤害的考虑。"
+    },
+    {
+      "segmentId": "pdf-p51-s229",
+      "order": 229,
+      "page": 51,
+      "type": "paragraph",
+      "sourceTextHash": "b998a3d90ccc4d32ebf9a5662d29906f89ec36319189ff6bbc86ae518c159cb3",
+      "chineseText": "（此段仅包含页脚编排信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p52-s230",
+      "order": 230,
+      "page": 52,
+      "type": "paragraph",
+      "sourceTextHash": "a4a2ea805f015c8fb6dd82e7e3f0a5e5f94d78c1f8d213d7cd8419c9496db252",
+      "chineseText": "（此段仅包含页脚编排信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p52-s231",
+      "order": 231,
+      "page": 52,
+      "type": "paragraph",
+      "sourceTextHash": "9cacd5239c35bbfede241c935851295e11fd7df0aa180aaac689a5b4c8f1cbd9",
+      "chineseText": "正如我们为CHIP提议的那样，尽管年龄19对医疗补助计划无特殊含义，且通常晚于几乎所有美国州及地区的合法成年年龄一年，CHIP中根据《法案》第2110(c)(1)条对“儿童”的法定定义为19岁以下个体。我们就州政府执行18岁以下禁令和CHIP中19岁以下禁令的操作可行性征求了意见，公众意见及回应总结见本节末尾。根据《法案》第1902(a)(19)和1902(a)(30)(A)条款要求，州必须确保医疗补助项目中的服务既符合受益人利益，也符合护理质量。鉴于拟议规则和本最终规则中讨论的原因，CMS认为禁止联邦医疗补助资金用于18岁以下儿童的性别拒绝程序是合理的，以促使各州履行这些法律义务。我们认为性别拒绝程序定义为识别哪些程序受限于拟议§441.802禁止规定，提供了适当的明确性和确定性。此定义范围合理，专门排除我们认为安全性和效果不足的治疗项目。例如治疗早熟（青春早发症）、针对创伤后治疗、或激素替代治疗治疗生长激素缺乏的程序，不属于性别拒绝程序定义范畴，因此联邦医疗补助资金可用于这些医学必要的治疗。HHS评审说明早熟和性别焦虑为不同临床状况。此外，由于定义具有针对性，我们认为各州能以符合法规及《法案》第1927条的要求的方式提供符合医疗补助法规的药物覆盖。"
+    },
+    {
+      "segmentId": "pdf-p52-s232",
+      "order": 232,
+      "page": 52,
+      "type": "paragraph",
+      "sourceTextHash": "e351195888f72e50339d8dfcd81c370b89b8efb55fc09369de37adfd112f72ce",
+      "chineseText": "根据G.A. Parker等人的研究，配子大小的差异及相关的配子生产时间差，导致稳定的性二型性及两性群体的形成，雌性产生卵子（ova），雄性产生精子。近期文献承认性角色差异，但仍认为这些差异可追溯于配子的异形（anisogamy）概念及由此导致的性二型性，这仍是性别选择、性角色和性别生物学决定的根本原因。我们相信，“女性”、“男性”和“性”这些定义恰当地植根于生物学概念。我们也就“性”、“男性”和“女性”的拟议定义可能给州政府实施该联邦资金限制带来的挑战征求了意见。我们收到的公众意见中，许多人支持该拟议规则，特别是支持该“男性”、“女性”和“性”的定义，理由是他们认为性别是天生的且不可改变，DNA不会被性别拒绝程序改变，无人可“生错性别”。许多评论者基于宗教信仰支持拟议规则，认为试图改变性别违背神的设计。我们也收到了支持拟议规则的评论者，他们认为应维持基于生物学的性别定义。"
+    },
+    {
+      "segmentId": "pdf-p52-s233",
+      "order": 233,
+      "page": 52,
+      "type": "paragraph",
+      "sourceTextHash": "0627405283db32ecd8479597f89b279742f5d65f308b051da6e739a6fbe316cf",
+      "chineseText": "VerDate 2014年9月11日 17:06 2026年8月12日 Jkt 268001 PO 00000 Frm 00053 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p53-s234",
+      "order": 234,
+      "page": 53,
+      "type": "paragraph",
+      "sourceTextHash": "893170623cb66722865f629264638f4a5aa0257749275e9ff8f9b0d8427593d0",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日 星期四 / 规则与条例 52458"
+    },
+    {
+      "segmentId": "pdf-p53-s235",
+      "order": 235,
+      "page": 53,
+      "type": "paragraph",
+      "sourceTextHash": "4c55e62026c1e40493201d6901abb734748ccc1852b4cedc4b9afba1229d5757",
+      "chineseText": "试图改变性别是一种不道德的、科学上错误的、有害的或医学上不必要的行为，应当停止的做法。若干评论者表示，治疗性别焦虑的儿童只应提供心理护理。若干评论者认为，对儿童和青少年进行性别拒绝程序的做法将病理化许多儿童随着成长对身体形象的正常挣扎。部分评论者指出，这些程序会中断或干扰正常的青少年发育，若干评论者认为这些干预是非必要的，因为他们预计性别焦虑会在没有医学干预的情况下自行缓解。回复：我们感谢那些支持拟议的“性别”、“男性”和“女性”定义的评论者。正如规则序言中所述，这些定义基于异配配子产生（anisogamy）以及由此产生的性别二态性（sexual dimorphism）的生物学概念，这构成了两性基础。对基于宗教理由支持的评论，我们指出，本规定既非基于也不支持任何特定宗教教义或信仰，而是依据《法案》第1902(a)(19)、1902(a)(30)(A)、2101(a)及2102(a)(7)(A)条款及当前医学证据，涉及针对儿童进行性别拒绝程序的风险/收益情况。我们理解保护儿童免受可能有害及不可逆转的医疗干预的关切在社区间广泛存在。对于认为性别焦虑应仅通过心理治疗解决的评论，CMS指出，本规定不影响联邦医疗补助（Medicaid）及儿童健康保险计划（CHIP）资金继续用于心理健康治疗和心理疗法。如规则序言的I.D节所述，心理治疗代表一种无创干预，经证实对经常与性别焦虑共存的多种精神健康状态有效。许多独立审查证据的国家建议将心理社会支持作为一线治疗。我们认为，对性别拒绝程序不提供联邦匹配资金（FFP）体现了联邦资金应针对具有更有利和更好建立的证据基础的实践。"
+    },
+    {
+      "segmentId": "pdf-p53-s236",
+      "order": 236,
+      "page": 53,
+      "type": "paragraph",
+      "sourceTextHash": "e521ae466202695b306f2977378b6adac4ca8a7c42ad0243070e194052aed555",
+      "chineseText": "评论者表达了对拟议的女性和男性定义范围的多样意见。一名评论者支持并认为定义医学及科学准确。一些评论者提出建议，包括增加“有意义的知情同意”的定义以及统一42 CFR第441部分和482部分规则的定义。一些评论者不同意这些定义，认为其范围过宽、不清晰、难以执行，未被相关法规授权，或者使得性别肯定护理及参与者受到贬低。该规则所采纳的定义——“女性”指具有生殖系统且在成熟时（无破坏或先天异常）产生卵子（ova）的性别， “男性”指具有生殖系统且在成熟时（无破坏或先天异常）产生精子者——与性别二态性和配子生产的生物学科学基础一致。这些定义也符合本规则中“性别拒绝程序”的目的性定义，此方法比简单地排除特定药物或程序的做法更为精确且范围较窄，体现了我们对本规则涵盖的多种医学用途的深思熟虑。回复：我们感谢支持本规则定义的评论者，同意以生物学为基础的清晰定义对于政策实施的重要性。我们说明，该定义未纳入性别认同（gender identity）的概念，这在设计上是有意的。本规则的定义旨在反映与禁止性别拒绝程序的目的相关的生物学性别，通过将儿童的身体外观或身体与其生物学性别之外的认定身份加以区分。"
+    },
+    {
+      "segmentId": "pdf-p53-s237",
+      "order": 237,
+      "page": 53,
+      "type": "paragraph",
+      "sourceTextHash": "b3b3e8d8220f40421afbb4214b72861f7ce1635eaa607e5e7011644bcbd25cfe",
+      "chineseText": "VerDate 2014年9月11日 17:06 2026年8月12日 Jkt 268001 PO 00000 Frm 00054 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p54-s238",
+      "order": 238,
+      "page": 54,
+      "type": "paragraph",
+      "sourceTextHash": "35adb0e7bf8e154be95cac489851e76081f83f1e026f1ae20f6d19fae0a08442",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日 星期四 / 规则与条例 52459"
+    },
+    {
+      "segmentId": "pdf-p54-s239",
+      "order": 239,
+      "page": 54,
+      "type": "paragraph",
+      "sourceTextHash": "896db5c7f9b2deccb7f01efc1a67d20998051fc9559f0db254a137f8d4fa9f8e",
+      "chineseText": "许多评论者对CMS拟议的性别定义表示不同意。许多评论者认为科学证明性别并非二元，性别复杂且拟议规则未能涵盖间性人群。一些评论者称该定义具有歧视性和政治及意识形态动机。部分评论者指出，性别与性别认同不同且不总是相符。一评论者认为联邦政府不应介入或有权“将人类简化为生殖细胞制造者”。回复：我们不同意声称本规则性别定义科学不准确或忽略生物复杂性的评论。定义中的“性别”指人的不可变的生物学分类为男性或女性，反映了既定的生物学理解，即性生殖涉及两种不同的生殖策略：大型配子（卵子）和小型配子（精子），由此产生稳定的性别二态性。该认识在科学文献中证实，如规则序言所述。人类不可能拥有同时可功能性的两套生殖系统。在受精时，胚胎将从卵细胞和精子中获得一套固定的染色体，这遗传蓝图最终指导胎儿沿男性或女性途径发育。人的性发育组织为：一旦胚胎开始向男性或女性发育路径分化，另一方向被抑制，且发育过程不可逆转。我们认可性别发育不总是典型，部分个体存在性器官发育异常的少数情况，这些情况下组织可能同时含有睾丸和卵巢组织。"
+    },
+    {
+      "segmentId": "pdf-p54-s240",
+      "order": 240,
+      "page": 54,
+      "type": "paragraph",
+      "sourceTextHash": "e68783505a98e83e8aa31ad4dab1f62f144da3f461a661edda83d2593391a7a7",
+      "chineseText": "我们承认评论者关于婴幼儿及性别发育异常儿童非自愿外科手术干预的关切。此类关切不在本规则范围内。我们感谢支持本规则性别定义的评论者，认同生物学基础清晰的定义对于本规则政策和明确州、提供者及受益人的管理性十分重要。一些评论者建议修改“女性”和“男性”的定义，包括建议与Chloe Cole法案相符，即“女性指自然拥有、曾拥有、将拥有但因先天异常或有意或无意损害而未拥有的生殖系统，该系统在成熟时（无破坏或先天异常）产生、运输及利用大型配子（卵子）”，“男性指自然拥有、曾拥有、将拥有但因先天异常或有意或无意损害而未拥有的生殖系统，该系统在成熟时（无破坏或先天异常）产生、运输及利用小型配子（精子）”。另有评论建议在定义中包括XX和XY染色体标识。回复：我们已全面考虑这些建议，并决定维持原拟定定义。我们认为最终定义基于生殖系统功能及配子生产，科学准确且便于实施，定义中的“无破坏或先天异常”足够灵活，涵盖了非典型生殖发育者。本规则不限制或否定对性别发育异常者的医学护理，包括必要的外科和药物干预。我们声明，这些患者不在性别拒绝程序联邦匹配资金禁令范围内。"
+    },
+    {
+      "segmentId": "pdf-p54-s241",
+      "order": 241,
+      "page": 54,
+      "type": "paragraph",
+      "sourceTextHash": "f853e4d50a6eb012e6a35a550708cd6ef0c22375e1bd5320c6c2c3e4a0c792e8",
+      "chineseText": "VerDate 2014年9月11日 17:06 2026年8月12日 Jkt 268001 PO 00000 Frm 00055 Fmt 4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p55-s242",
+      "order": 242,
+      "page": 55,
+      "type": "paragraph",
+      "sourceTextHash": "15c04f6a1adde0623c78cc83d666dbc9e0449db6bcf5b3c04dd9bde775e70402",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日 星期四 / 规则与条例 52460"
+    },
+    {
+      "segmentId": "pdf-p55-s243",
+      "order": 243,
+      "page": 55,
+      "type": "paragraph",
+      "sourceTextHash": "ef7917d6a2a6a4c6b860fb0bd707fdf85d7b0d1a93bf3acb7683db9d28bc8a34",
+      "chineseText": "（例如，评论者建议的卵睾丸发育异常性障碍，涉及性发育异常）。在这种情况下，建议对42 CFR 440.230进行修订，以禁止提供特定定义的性别拒绝程序，要求许可提供者遵守护理标准。回应：我们承认评论者对规定时间内的护理行为评估和“性别拒绝程序”一词的担忧，并认识到该术语目前并非主要医疗组织使用的标准临床词汇，这些组织通常使用“性别肯定护理”（gender-affirming care）一词。然而，我们认为“性别肯定护理”不能准确描述和表征这些干预措施的严重且可能不可逆的性质，同时也呈现出偏袒激素和外科手术的治疗倾向。正如HHS审查所述：“在此语境中，避免排斥性或病理化语言的合理愿望——加上该领域根深蒂固的信念——导致了一种在科学上缺乏依据且预设伦理争议答案，并在其他方面具有误导性的词汇和交流方式。” HHS审查还指出：“‘肯定’一词具有正面含义，反对‘性别肯定手术’的人被认为缺乏同情心。委婉语‘胸部手术’和‘顶胸手术’掩盖了乳房被切除的事实。”本规则所用术语并非用作临床描述，而是描述本规则特指的药物和手术干预，即试图将儿童的身体外观或体态与其性别认同相一致的干预，这些干预不属于例外情况。本规则中“性别拒绝程序”的定义是目的导向的，意味着同一药物或手术干预是否构成性别拒绝程序，取决于其提供的目的。我们承认评论者对基于目的的定义在操作层面的可行性提出了担忧，包括付款方如何确定提供者主张的目的等问题。我们将在对管理和操作挑战的回应中解决这些问题。我们也承认本规则用词不同于2025年市场诚信与可负担性最终规则中使用的“指定性别特征修改程序”（specified sex-trait modification procedure）一词。该术语在表面上过于宽泛且缺乏明确的目的性元素，而“性别拒绝程序”则更一致、简洁、准确、精确地指代涉及时涉及的激素和手术干预。此外，最近国务院某项规定已使用“性别拒绝程序”一词，禁止援助接受者提供该类程序。我们认为不同监管环境中用词不同不构成不一致，因为每项规则适用于其各自的法定框架和不同的项目及人群。"
+    },
+    {
+      "segmentId": "pdf-p55-s244",
+      "order": 244,
+      "page": 55,
+      "type": "paragraph",
+      "sourceTextHash": "925923c557473371ddf229f94f096b1cb36d1aba5c1898f5200cff27497d2a39",
+      "chineseText": "“指定性别特征修改程序”（specified sex-trait modification procedure）一词在2025年市场诚信与可负担性最终规则中使用，但受到评论者批评，认为该术语过于宽泛且缺乏明确的目的性元素。与此相对的是，HHS审查自身使用的“儿科医学转变”（pediatric medical transition）一词与CMS的术语有所区别，且CMS的措辞覆盖了医学决定范围之外的事宜，产生了偏差。"
+    },
+    {
+      "segmentId": "pdf-p55-s245",
+      "order": 245,
+      "page": 55,
+      "type": "paragraph",
+      "sourceTextHash": "2c0cdc13839e4774e3be94913ef7832a57e6f19c92f912214bf0e1fdf65cc287",
+      "chineseText": "（内容续前文）"
+    },
+    {
+      "segmentId": "pdf-p55-s246",
+      "order": 246,
+      "page": 55,
+      "type": "paragraph",
+      "sourceTextHash": "4c97e0c86b09e25c0426f9bf8443f44ccf0e4c7c3968274e635730e0e8da582f",
+      "chineseText": "2014年9月11日后版本信息，2026年8月12日17:06记录，案件编号268001，相关程序编号00000，文件格式4701，状态格式4700，来源文件路径E:\\FR\\FM\\13AUR2.SGM，发布日期2026年8月13日，编号13AUR2。"
+    },
+    {
+      "segmentId": "pdf-p56-s247",
+      "order": 247,
+      "page": 56,
+      "type": "paragraph",
+      "sourceTextHash": "8974c3a522952181e77a3b96b70be551c5f1897e0408965a8d1f500fa2a21467",
+      "chineseText": "联邦公报 / 第91卷，第155期 / 2026年8月13日星期四 / 规则与规定，52461页。"
+    },
+    {
+      "segmentId": "pdf-p56-s248",
+      "order": 248,
+      "page": 56,
+      "type": "paragraph",
+      "sourceTextHash": "564ea00974520a10f9deb9a32320f49561ebfecdcc5766ef46c9bb7b38059686",
+      "chineseText": "收到的评论指出，2025年市场诚信与可负担性拟议规则使用的“指定性别特征修改程序”一词过于宽泛且缺乏明确的目的元素，而“性别拒绝程序”则更适合区分用于治疗性发育障碍的程序与用于使个体身体与其性别认同相一致的程序。另外，评论者关注CMS用语偏离了HHS审查使用的“儿科医学转变”，并取代了临床决定。"
+    },
+    {
+      "segmentId": "pdf-p56-s249",
+      "order": 249,
+      "page": 56,
+      "type": "paragraph",
+      "sourceTextHash": "a181f2b21da01d34b095ea8b7bea2f39f32b06e98209fc88ea0d5580d5eb9504",
+      "chineseText": "我们采纳了提交的相关评论，将“儿童”一词在“性别拒绝程序”定义中修改为“个体”。事实上，这些程序并不区分儿童和成年人，但联邦财政支持对这些程序的禁止仅适用于年龄未满18岁的医疗补助受益人及年龄未满19岁的儿童健康保险计划（CHIP）受益人。我们在法规条款441.802(c)中新增规定，确保在本规则生效日起6个月内，对于持续接受激素疗法者，允许渐进式的停药治疗。"
+    },
+    {
+      "segmentId": "pdf-p56-s250",
+      "order": 250,
+      "page": 56,
+      "type": "paragraph",
+      "sourceTextHash": "ed72be0b3ff3abaa1695185aa80c0fbfcec61ea0c52308ef9376e2ade43809af",
+      "chineseText": "2026年8月12日17:06记录，案件编号268001，相关程序编号00000，文件格式4701，状态格式4700，来源文件路径E:\\FR\\FM\\13AUR2.SGM，发布日期2026年8月13日，编号13AUR2。"
+    },
+    {
+      "segmentId": "pdf-p57-s251",
+      "order": 251,
+      "page": 57,
+      "type": "paragraph",
+      "sourceTextHash": "4a715cd43f9523fd0656426d602dae9f63486df70d6be3bef752f14d5cb0b363",
+      "chineseText": "联邦公报 / 第91卷，第155期 / 2026年8月13日星期四 / 规则与规定，52462页。"
+    },
+    {
+      "segmentId": "pdf-p57-s252",
+      "order": 252,
+      "page": 57,
+      "type": "paragraph",
+      "sourceTextHash": "cab7eac0d672047e1046688dcc708328307a963f244e19ac9fd7f1465a1fa7cc",
+      "chineseText": "禁止联邦医疗补助联邦资金参与（FFP）用于儿童健康保险计划（CHIP）下的性别拒绝手术的权限。虽然州法律认可这些规定，但国会赋予各州在设计其 CHIP 福利套餐（包括根据法案第 2110(a)(24) 条的权限覆盖服务）方面相当大的灵活性，但我们认为，该权限并不意味着对于州法律认可的服务，这些规定即强制要求提供 FFP。应将这些章节与法案第 2102(a)(7)(A) 条结合解读，该条款要求州 CHIP 计划描述如何“确保护理的质量和适当性，特别是关于......良好儿童保健。”我们不认为在本规则认为性别拒绝程序医学必要性证据不足的情形下，允许州在其计划中将该服务包括在内是可能的。州认可的灵活性，与 CHIP 下的其他州灵活性一样，需遵守各项联邦标准。我们根据现有证据记录，确定针对本规则描述的性别拒绝程序不符合 FFP 标准。希望在 CHIP 项目中覆盖此类服务的各州，可选择仅用州资金提供。我们根据《信息自由法》（OMB）要求，将相关信息收集规定提交以供审查和批准。为了给予各州灵活性以提供且公平评估是否依据州法律提供这些服务，我们不认为该条款强制要求为州认可的任何服务提供 FFP。2025 年 12 月 19 日的拟议规则（CMS–2451–P）征求了公众意见，涉及该信息收集要求，未收到相关评论。以下为每个信息收集要求部分下的评论总结及回复。 A. 工资数据 我们使用美国劳工统计局 2025 年 5 月国家职业就业与工资统计数据（https://www.bls.gov/oes/tables.htm）估算平均成本。表 1 显示 BLS 的平均时薪、福利和其他间接成本（按工资 100%计算）以及调整后的时薪。"
+    },
+    {
+      "segmentId": "pdf-p57-s253",
+      "order": 253,
+      "page": 57,
+      "type": "paragraph",
+      "sourceTextHash": "0d9e27f23f847cbed39a6a98bf217be50db6bb2a9ba30bd600b027bbd4324276",
+      "chineseText": "如前所述，我们在 60-/30-天 PRA 过程中，调整员工时薪估算，并会酌情修订。 B. 信息收集要求（ICRs） 1. 关于定义的 ICRs（§ 441.801）（新增并定义“女性”、“男性”、“性别”和“性别拒绝程序”） 通过标准非规则 PRA 程序（包括 60 天和 30 天的联邦公报公告）提供供公众审阅和评论，可能导致部分州需修订现有政策/手册文件，以消除与本最终规则规定不一致之处。但我们预计这不会影响现有申报/计费表格或指令。"
+    },
+    {
+      "segmentId": "pdf-p57-s254",
+      "order": 254,
+      "page": 57,
+      "type": "paragraph",
+      "sourceTextHash": "e39acf89ad4fcd42d3cfc03b02edebeafeafc1138e5684ce2625241b8349e1ca",
+      "chineseText": "我们将重新审视这些规定。 根据《联邦报刊案卷编号》及美国劳工统计局数据，我们合理地用双倍时薪来估计总成本，因边际福利和其他间接成本随雇主而异，而估算方法在研究间也差异显著。"
+    },
+    {
+      "segmentId": "pdf-p57-s255",
+      "order": 255,
+      "page": 57,
+      "type": "paragraph",
+      "sourceTextHash": "ce44e004b2a96cbd425291e60887d675af11017f770c104d48e330f0c5c6ef2f",
+      "chineseText": "我们将重新审视这些规定。"
+    },
+    {
+      "segmentId": "pdf-p57-s256",
+      "order": 256,
+      "page": 57,
+      "type": "paragraph",
+      "sourceTextHash": "5e0931d30e76141cb874d9a345ac29b0776edf7c6fb4889689c1d279839ef532",
+      "chineseText": "2026 年 8 月 12 日星期三 17:06，联邦报刊编号 268001，第 58 页。"
+    },
+    {
+      "segmentId": "pdf-p58-s257",
+      "order": 257,
+      "page": 58,
+      "type": "paragraph",
+      "sourceTextHash": "78cc32cd0135c60a3ec128d36553bf6b3a63f2d881a34e5108543f63cd563735",
+      "chineseText": "联邦公报 / 第 91 卷，第 155 期 / 2026 年 8 月 13 日星期四 / 规则与条例 第 52463 页。"
+    },
+    {
+      "segmentId": "pdf-p58-s258",
+      "order": 258,
+      "page": 58,
+      "type": "paragraph",
+      "sourceTextHash": "5e740ca88cecb83fbd68f3ab84981aca8c4a9854f4349b9500a3145e77cea567",
+      "chineseText": "我们估计有 56 个医疗补助响应方和 56 个 CHIP 响应方，包括 50 个州、哥伦比亚特区、美属萨摩亚、北马里亚纳群岛、关岛、波多黎各和美属维尔京群岛。根据本最终规则第一部分 I.1.C.（美国各州对性别拒绝程序的禁止和覆盖）所述研究，我们进一步估算约 27 个州和 1 个领地已经颁布法律，限制部分或全部本规则涵盖的性别拒绝程序。对于这些州和领地，我们不预计医疗补助或 CHIP 的州工作人员需对政策文件进行审查，因为这些程序当前已经被禁止（或将被禁止）。对于其余 28 个州和领地，我们假设州工作人员将审查并修订其医疗补助及 CHIP 政策文件，以符合本最终规则的规定。我们估计需要一名业务运营专家花费 3 小时，按每小时 89.26 美元审核现有州政策文件，确保定义一致性；1 小时由一位总经理审阅并批准相关政策文件变更，时薪 129.74 美元。累计估计一次性州负担为 112 小时（28 州 × 4 小时/响应），费用为 11,131 美元（3 小时 × 89.26 美元 × 28 州 + 1 小时 × 129.74 美元 × 28 州）。考虑联邦行政配比 50% 后，估计一次性州成本为 5,566 美元（11,131 × 0.5）。我们假设符合定义的所有服务将不再由医疗补助或 CHIP 覆盖，因此不符合联邦配比资金。"
+    },
+    {
+      "segmentId": "pdf-p58-s259",
+      "order": 259,
+      "page": 58,
+      "type": "paragraph",
+      "sourceTextHash": "19873cf72325dfeb7fea201b4e8c84edd597305c446af43768939e14708b19f1",
+      "chineseText": "关于本规则的公众评论： 数位评论者指出 CMS 低估了本规则信息收集要求的行政负担，认为估算未完整反映州和领地（包括已实施禁止的地区）为审查和调整政策文件、更新州计划修正案、协调管理式医疗计划、服务提供者及州立法机关等外部利益相关者，以及进行必要法律和领导审查所需的全部工作范围。回应：我们认可评论者对行政负担可能未完全涵盖所有州和领地所涉及行政工作范围的关注。我们意识到各州可能需与多方内部和外部利益相关者（包括管理式医疗计划、服务提供商和立法人员）协作，且审查过程可能需法律顾问及高级管理层参与，超过我们估算范围。我们将在前述 PRA 流程中审视并调整这些初步估算。此规则最终版本规定，所有州和领地必须提交声明遵守禁止申报联邦资金支付性别拒绝程序的州计划修正案（SPA）作为州计划的一部分。"
+    },
+    {
+      "segmentId": "pdf-p58-s260",
+      "order": 260,
+      "page": 58,
+      "type": "paragraph",
+      "sourceTextHash": "78be6695f2a454d80627ef977a6382c9bf816de0e5d0570de1104fd54d397aba",
+      "chineseText": "我们将于标准 PRA 流程中审视这些初步估算，必要时进行修订。根据本规则最终版本规定，州与领地需提交表明遵守禁止申报联邦资金支付性别拒绝程序的 SPA。我们承认，有州可能仍需进行一定程度的审查，以确认符合本规则规定的联邦要求。"
+    },
+    {
+      "segmentId": "pdf-p59-s261",
+      "order": 261,
+      "page": 59,
+      "type": "paragraph",
+      "sourceTextHash": "2b0468242ae1e073864a6ef7b4141c538eb613cc3c0992fa08fdd71e1ff7ed7d",
+      "chineseText": "2026 年 8 月 12 日星期三 17:06，联邦报刊编号 268001，第 59 页。"
+    },
+    {
+      "segmentId": "pdf-p59-s262",
+      "order": 262,
+      "page": 59,
+      "type": "paragraph",
+      "sourceTextHash": "6d73ce1b5d5ede0f11676d30eb80e94d30987b16edc9a4b00cec992e0600d124",
+      "chineseText": "我们预计已颁布限制本规则涵盖部分或全部程序的州和领地的行政负担将有限，因为其规定与现有州政策大致一致。然而，我们也承认，即使是这些州仍需进行一定程度的审查以确认符合本规则设定的联邦要求。我们将在修订的估算中考虑这一点。我们感谢并认可支持本规则信息收集方法的评论者意见，他们认为本规则符合《信息自由法》的目标，行政指令旨在减少行政负担、明确监管范围，并确保对联邦资金的适当管理。我们分享这些目标，并认为本规则相关的行政要求是适当且必要的。 C. 要求摘要与负担估算"
+    },
+    {
+      "segmentId": "pdf-p59-s263",
+      "order": 263,
+      "page": 59,
+      "type": "paragraph",
+      "sourceTextHash": "e61375c86d4ad8fcc1778d07476031335795ec74c0fddb75c32fc288580c889c",
+      "chineseText": "四、监管影响分析 \"改进监管与审查\"；第14192号行政命令（E.O. 14192），\"通过放松管制释放繁荣\"；监管灵活性法案（RFA）（公法96-354）；《社会保障法》第1102(b)条；以及1995年《无资金授权改革法案》（公法104-4）的第202条。根据我们的估计，第12866号和第13563号行政命令指导机构评估所有可用监管选择的成本与利益，如果有必要，选择那些最大化净效益（包括潜在的经济、环境、公共卫生和安全以及其他优势；分配影响）的监管方案。第12866号行政命令第3(f)(1)条规定，需为具有重大影响的监管行动准备监管影响分析（RIA）。管理与预算办公室（OMB）的信息与监管事务办公室（OIRA）已确定本规则制定根据第3(f)条具有重大意义。因此，我们已准备了监管影响分析，尽最大努力呈现本次规则制定的成本与收益。"
+    },
+    {
+      "segmentId": "pdf-p59-s264",
+      "order": 264,
+      "page": 59,
+      "type": "paragraph",
+      "sourceTextHash": "d4f1f146a92056f0b39baab82bb066a837e2770161618c16f7f48f5a3db47dad",
+      "chineseText": "B. 综合影响\n我们根据第12866号行政命令、《监管规划与审查》、第13132号行政命令\"联邦主义\"、第13563号行政命令，以及监管灵活性法等法规，审查了本最终规则的影响。"
+    },
+    {
+      "segmentId": "pdf-p59-s265",
+      "order": 265,
+      "page": 59,
+      "type": "paragraph",
+      "sourceTextHash": "ca089b3458eb6884db248c085a8158c63a11d2f5807b619741c2c15b9f7fc202",
+      "chineseText": "C. 详细经济分析\n1. 对联邦开支和其他转移支付的影响\n我们估计本规则将使联邦医疗补助(Medicaid)开支在2027财年至2036财年期间减少约1.75亿美元（以2027年实际美元计）。为估计该影响，我们分析了2023年T–MSIS与TAF v8.0数据，选取了所有带有性别焦虑症诊断且以下类别中的索赔：住院手术；门诊手术；专业服务及处方药物伴有激素治疗。"
+    },
+    {
+      "segmentId": "pdf-p59-s266",
+      "order": 266,
+      "page": 59,
+      "type": "paragraph",
+      "sourceTextHash": "2f719c87784930515f0b486b992572f4c4d5686ae89f749fc7d5ae429679f2f3",
+      "chineseText": "（该段仅为时间戳和文件标识，无翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p60-s267",
+      "order": 267,
+      "page": 60,
+      "type": "paragraph",
+      "sourceTextHash": "1389ffd45aded8bb5e015688e9af0f6c482d9fc176a1145d786b99c019caa8d1",
+      "chineseText": "美国联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52465"
+    },
+    {
+      "segmentId": "pdf-p60-s268",
+      "order": 268,
+      "page": 60,
+      "type": "paragraph",
+      "sourceTextHash": "a800e9bbc7e1f1a53f0e9fbb29d6a7869af808dc9ed95f4279e7192b499735b7",
+      "chineseText": "我们包含了费用服务和管理式医疗的就诊数据。我们仅统计了带有以下ICD–10诊断代码的索赔：F64.0（变性症）；F64.1（青少年或成人性别认同障碍）；F64.2（儿童性别认同障碍）；F64.8（其他性别认同障碍）；F64.9（未说明的性别认同障碍）；以及Z87.890（性别重置个人史）。"
+    },
+    {
+      "segmentId": "pdf-p60-s269",
+      "order": 269,
+      "page": 60,
+      "type": "paragraph",
+      "sourceTextHash": "985590872822f42de4a55add11f500da3c4d368aa547462c57dfe3d7efc04770",
+      "chineseText": "6至17岁儿童的激素治疗总开支为2380万美元（假设15至18岁组中有25%为18岁以上）。其中88%（2100万美元）为GnRH类似物（或青春期阻断剂），其余280万美元用于雌激素/抗雄激素和睾酮。我们依照总统2027财政年度预算预测2023年至2036年儿童医疗补助与儿童健康保险计划(CHIP)开支增长，假定这些服务均不符合联邦医疗补助或CHIP匹配资金资格。我们征求意见，是否现有州若继续涵盖该服务但无联邦资金支持，将如何影响。"
+    },
+    {
+      "segmentId": "pdf-p60-s270",
+      "order": 270,
+      "page": 60,
+      "type": "paragraph",
+      "sourceTextHash": "6aeeb74f9cf169d40b859dd3b2308394356c2e9b56b867fdedb62b6cc1bba203",
+      "chineseText": "（该段仅为页面底部文件标识，无翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p60-s271",
+      "order": 271,
+      "page": 60,
+      "type": "paragraph",
+      "sourceTextHash": "f94a19c25d266c6d0f74e51e5b50b06ac18e662575e1005fa40d3cd20d4aea5d",
+      "chineseText": "（该段仅为时间戳和文件标识，无翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p61-s272",
+      "order": 272,
+      "page": 61,
+      "type": "paragraph",
+      "sourceTextHash": "287f28f825129a34de14e7eabbc90e5d40d3151c42522ebd17325a560653bf85",
+      "chineseText": "52466 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p61-s273",
+      "order": 273,
+      "page": 61,
+      "type": "paragraph",
+      "sourceTextHash": "c8bf6ad71cbd0005b384649e22f0ac0ceaf14475510025adac2ff7f359d3717e",
+      "chineseText": "我们对个体未来可能如何使用这些服务进行了合理假设。系统数据显示2023年全部可计费的医疗补助及CHIP开支约3100万美元，该数据含联邦和州资金份额，涵盖17岁及以下者。政策不会禁止州医疗补助机构向18岁患者支付此类服务成本，而那些2023年尚未禁止的州则占这类开支的76%，包括住院手术92%以及门诊手术87%。"
+    },
+    {
+      "segmentId": "pdf-p61-s274",
+      "order": 274,
+      "page": 61,
+      "type": "paragraph",
+      "sourceTextHash": "a26c3686e7bc6abf5a81a05679c95609fbaffd120e201e49984402b191e27b48",
+      "chineseText": "D. 监管灵活性法案（RFA）\nRFA要求机构分析当一项规则对大量小型实体产生重大经济影响时，相关的监管救济选项。2025年1月28日，特朗普总统签署第14187号行政命令，旨在“保护儿童免受化学和外科切割”。5(a)条指示部长采取一切符合法律规定的措施结束所谓的儿童化学和外科切割，包括针对此类项目如医疗补助的监管行动。鉴于医疗保健行业中医院及大多数其他医疗提供者多为小型实体，无论是非营利组织还是符合小型企业局（SBA）的定义，本规则对多数小型实体的经济影响预计有限。对此，HHS以年度收入变化3%至5%作为重大经济影响的衡量标准。"
+    },
+    {
+      "segmentId": "pdf-p61-s275",
+      "order": 275,
+      "page": 61,
+      "type": "paragraph",
+      "sourceTextHash": "3bf3c3bd43f4b4b53dd75bf0b450660f444d68451d6501ceee4571ab08c0cdc5",
+      "chineseText": "为RFA目的，约96%的医疗保健行业小型企业受影响，均符合美国小企业管理局(SBA)关于小型企业规模标准。医疗保健行业受影响企业的NAICS代码分别为：446110（药房和药店），621111（医师诊所，除精神卫生专家外），621112（精神卫生专家诊所），621493（独立门诊外科及急诊中心），621498（其他门诊护理中心），622110（综合医疗与外科医院）。表5展示了这些医疗保健行业的行业规模标准。"
+    },
+    {
+      "segmentId": "pdf-p61-s276",
+      "order": 276,
+      "page": 61,
+      "type": "paragraph",
+      "sourceTextHash": "49de84d7f2a3e43570967f2a8078b76628de7efe818f8c28102a95aba9c0dce0",
+      "chineseText": "注释：169 见美国小企业管理局，宣传办公室，关于《健康与人类服务部》确保法规合法及促进创新的请求信息的评论信，2025年7月14日，链接：https://advocacy.sba.gov/wp-content/uploads/2025/07/Comment-Letter_Advocacy-Comments-to-HHS-Deregulatory-RFI.pdf。170 见表11，“企业数量”栏，累加小型企业和大型企业总数。"
+    },
+    {
+      "segmentId": "pdf-p61-s277",
+      "order": 277,
+      "page": 61,
+      "type": "paragraph",
+      "sourceTextHash": "2cf3f1c97f60f599367df9ba25c57a51b8d63823ad6f9ccb912cc2d7cf66d804",
+      "chineseText": "（该段包含注释与网页链接，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p61-s278",
+      "order": 278,
+      "page": 61,
+      "type": "paragraph",
+      "sourceTextHash": "2e45de49571b13cf44b79e172575bd0bfbd4dfe1654d71c0932eed33adbe82a5",
+      "chineseText": "（该段仅为时间戳和文件标识，无翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p62-s279",
+      "order": 279,
+      "page": 62,
+      "type": "paragraph",
+      "sourceTextHash": "14f0a8ee741e6ad29f54d140cd2abac94ac25863d4048c07326404bef595569c",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日 星期四 / 规则与条例 52467"
+    },
+    {
+      "segmentId": "pdf-p62-s280",
+      "order": 280,
+      "page": 62,
+      "type": "paragraph",
+      "sourceTextHash": "bfb8050015580800ffd73ef8a78722215faf8d03b8bff10567708548e7ea5527",
+      "chineseText": "表6至11显示了6位数NAICS代码层面的企业及收入分布，这些表旨在展示小型企业与大型企业间的比例差异及影响程度。"
+    },
+    {
+      "segmentId": "pdf-p62-s281",
+      "order": 281,
+      "page": 62,
+      "type": "paragraph",
+      "sourceTextHash": "160bb81c60292513f28155d095a7a1e5984515af0b305878ad100b127a3d1fbe",
+      "chineseText": "（该段主要为文件标识，无翻译文本）"
+    },
+    {
+      "segmentId": "pdf-p62-s282",
+      "order": 282,
+      "page": 62,
+      "type": "paragraph",
+      "sourceTextHash": "725d6aa8b7979eb39f53952a6101703f69a334dd6ec575365e1a36d67396beda",
+      "chineseText": "（该段仅为时间戳和文件标识，无翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p63-s283",
+      "order": 283,
+      "page": 63,
+      "type": "paragraph",
+      "sourceTextHash": "f426b5ea1c9939c05f4330c20833c1596f4909371ff8a6132449261ca1376fee",
+      "chineseText": "52468 联邦公报 / 第91卷，第155号 / 2026年8月13日 星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p63-s284",
+      "order": 284,
+      "page": 63,
+      "type": "paragraph",
+      "sourceTextHash": "2bf43bcf904d0a00ed70bbab8be38d7fe281475970e733fd34dfb9f8fa5dba06",
+      "chineseText": "（该段为页脚文件标识，无正文内容）"
+    },
+    {
+      "segmentId": "pdf-p63-s285",
+      "order": 285,
+      "page": 63,
+      "type": "paragraph",
+      "sourceTextHash": "b7301804cdc056787eca7efc196dbc0ede848fdcfae8a6f9e00c88096cd9b403",
+      "chineseText": "（该段为页脚文件标识，无正文内容）"
+    },
+    {
+      "segmentId": "pdf-p63-s286",
+      "order": 286,
+      "page": 63,
+      "type": "paragraph",
+      "sourceTextHash": "60c0389c3106b0ec9332db7baf0d40cd5708c0a6e92ab847120007794ee2884e",
+      "chineseText": "（该段仅为时间戳和文件标识，无翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p64-s287",
+      "order": 287,
+      "page": 64,
+      "type": "paragraph",
+      "sourceTextHash": "95753cf7a1019a4902a392ada28595fde8031298a357f656265ca4e6cf3ac404",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52469"
+    },
+    {
+      "segmentId": "pdf-p64-s288",
+      "order": 288,
+      "page": 64,
+      "type": "paragraph",
+      "sourceTextHash": "ca4c6fa96f2fe0005a60574ef306cf75b21f74c1f49ac3648e90040cd6f16d56",
+      "chineseText": "根据2022年经济普查，所有受影响的医疗保健行业总计约获得2,364,153,884,000美元营收，而所有小型企业合计营收约为325,819,624,000美元。表12显示，所有行业合计的货币转移减少不到1%，无论是对整个医疗保健行业的总营收还是对各个受影响行业内小型企业的总营收而言，均低于1%。由此，本最终规则预计对受影响医疗保健行业的营收变动均小于1%。"
+    },
+    {
+      "segmentId": "pdf-p64-s289",
+      "order": 289,
+      "page": 64,
+      "type": "paragraph",
+      "sourceTextHash": "fac485ee8b74b3fe652f644262b4557f6e40afd3a3379938dd3acf9b97daa7a1",
+      "chineseText": "（该段为文件标识，无翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p64-s290",
+      "order": 290,
+      "page": 64,
+      "type": "paragraph",
+      "sourceTextHash": "64d85a84a1c56812739f833a09e2433fd56ed06a5dbd0fe32c998eaa6acb4c1b",
+      "chineseText": "第13节V.E中估计受影响的护理行业金额为3160万美元。"
+    },
+    {
+      "segmentId": "pdf-p64-s291",
+      "order": 291,
+      "page": 64,
+      "type": "paragraph",
+      "sourceTextHash": "26185013c5bb98afd52b47e4a34a5aad71531eb169a508e21288309d81e984c6",
+      "chineseText": "2014年9月11日17:06 2026年8月12日，美国联邦案件编号268001 PO 00000，第65页 格式4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p65-s292",
+      "order": 292,
+      "page": 65,
+      "type": "paragraph",
+      "sourceTextHash": "7ec233810f6cac257a219eafc0c0f9550df0ba936ee7ff7012815002db919816",
+      "chineseText": "52470 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与规定"
+    },
+    {
+      "segmentId": "pdf-p65-s293",
+      "order": 293,
+      "page": 65,
+      "type": "paragraph",
+      "sourceTextHash": "ee0544579c50198a0776ec4664d48265cdb0f30f04bcc67cbec30d05da31b05d",
+      "chineseText": "作为其重大教学医院的衡量标准。171 相较之下，表11中显示的医院平均值。经济影响在于相当数量的小实体，HHS使用的是3至5个百分点以上的营收变化。根据表12，我们认为本规则对NAICS 446110药店及药品商店；622111医生办公室（精神健康专家除外）；621112医生办公室，精神健康专家；621493独立门诊手术及急诊中心；621498其他门诊护理中心；或622110综合医务及外科医院的要求，不会达到3至5个百分点的阈值。医院中未成年儿科性别拒绝手术的执行数量据报道为数十家。我们审查了医疗机构组织名单，这些组织据称已经停止或宣布计划逐步淘汰儿科性别拒绝服务，以应对最终规则。名单上共有42个组织，其中四分之三属于学术医疗中心或教学医院。这些提供者的运营规模属于行业中最大提供者之一。其报告的年收入平均为80亿美元，其中34家收入超过10亿美元，且收入规模超过表11中小型医院组织的分类，显示受影响的提供者拥有较大的收入规模。至少42家医院中的33家能够承受3160万美元的年度转移，并且此金额低于其收入的3%，而3%正是部门经济影响的下限。因此，部长已经认证，本最终规则不会对这些行业中的大量小实体产生重大经济影响。此外，《法案》第1102(b)节要求我们准备一份重大影响小农村医院操作的分析。该分析必须符合《监管灵活性法》第603节的条款。就第1102(b)节而言，我们定义了小型农村医院，即医疗保险支付系统外位于非大都市统计区且床位少于100张的医院。我们未为1102(b)节的分析准备额外内容，因为我们已确定并且部长认证，该最终规则不会对大量小农村医院的运营产生重大影响。"
+    },
+    {
+      "segmentId": "pdf-p65-s294",
+      "order": 294,
+      "page": 65,
+      "type": "paragraph",
+      "sourceTextHash": "ea0eb57d16dd8e2b6dee67fa4f5f670f3d380d4ec9f73e076570345fefeefccb",
+      "chineseText": "在2016-2020年的全国加权宏观分析中，88.4%的住院患者和医院门诊手术患者被归类为接受性别拒绝手术且集中于城市教学医院。"
+    },
+    {
+      "segmentId": "pdf-p65-s295",
+      "order": 295,
+      "page": 65,
+      "type": "paragraph",
+      "sourceTextHash": "ad5ed954ea1723e992698b027e8b6d67395088c6989c4a426948833a328a52fd",
+      "chineseText": "同时还要求机构评估"
+    },
+    {
+      "segmentId": "pdf-p65-s296",
+      "order": 296,
+      "page": 65,
+      "type": "paragraph",
+      "sourceTextHash": "b49c026d3672d036aeabf1477c1e8c42db1c29b693940d3cadade2ba78189d24",
+      "chineseText": "2014年9月11日17:06 2026年8月12日，美国联邦案件编号268001 PO 00000，第66页 格式4701 Sfmt 4700 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    },
+    {
+      "segmentId": "pdf-p66-s297",
+      "order": 297,
+      "page": 66,
+      "type": "paragraph",
+      "sourceTextHash": "750fea6b3aa5da0471ccb483bc91a6d4e365db66d0dd421cfbf6d33cebd1c630",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与规定 52471"
+    },
+    {
+      "segmentId": "pdf-p66-s298",
+      "order": 298,
+      "page": 66,
+      "type": "paragraph",
+      "sourceTextHash": "39791a3cfed8786f9e0e1eb9589ceca4507331d6741c6396c48ea72cf0d40e5b",
+      "chineseText": "预计费用和收益，在发布任何年度支出达到193亿美元（以2026年通胀调整的1995年100万美元基础上）的规则前进行评估。本最终规则不会使州、地方或部落政府在总体或私营部门中产生显著的支出成本。2025年1月31日发布的第14192号总统行政命令“通过解除管制释放繁荣”，要求“任何新规产生的任何增量成本应在法律允许的范围内通过至少消除10项先前法规相关成本来抵消。”根据OMB会计方法的脚注1，本最终规则免于适用第14192号行政命令下的相关要求。第13132号行政命令规定了机构发布对国家与州关系、州权力和职责分配有实质直接影响的规则时必须满足的要求。本最终规则将对州获得联邦医icaid资金以供向18岁以下儿童提供性别拒绝程序以及获得联邦儿童健康保险计划(CHIP)资金以供向19岁以下儿童提供该程序产生实质直接影响。我们收到关于本《监管灵活性法案》(RFA)分析的公众意见，以下为意见的总结及我们的回应。意见称提案规则的RFA分析未能准确评估对小实体的经济影响。评论者指出，CMS假设几乎所有提供者均为小实体，未分析哪些提供者真正提供这些程序，也未核实其是否符合小实体定义，并且该假设将成本分摊给所有提供者，导致评估的营收变化被人为低估，不符合HHS指导关于不应利用低平均影响掩盖显著影响的原则。评论者还指出分析仅基于营收变化，未考虑程序提供者为患者继续提供的其他无关服务，未考虑规则生效后患者群的性别拒绝程序支出减少低于3-5%显著性门槛，也未考虑联邦医疗补助服务中心(CMS)指导中识别的其他合规成本如培训、新政策和程序、技术及保险相关成本，以及小型执业因患者需求突然增加或CMS分析监管救济方案义务带来的负担。回应中指出，提案规则中已经估计了对小实体的潜在经济影响，考虑到公众意见后仍认为适用的显著性门槛未被达到，因此部长认证本最终规则不会对大量小实体产生显著经济影响。根据RFA，绝大多数医院及其他医疗提供者均为小实体，符合SBA规模标准，并且我们已确定涉及的医疗行业具体NAICS代码以及相应的SBA规模标准、企业分布和收入情况。使用3160万美元的年化转移收入减少估算，计算结果显示该减少只占每个医疗行业及其中小企业收入的不到1%。HHS采用营收变动超过3-5%作为判断对大量小实体产生显著经济影响的阈值，本规则未达到该阈值，部长已认证本最终规则不会对大量小实体产生显著经济影响。本次规则的经济影响主要由大型学术医疗中心承担，且城市教学医院提供了绝大多数性别拒绝手术，形成了受规则影响的小实体中较小的子集。"
+    },
+    {
+      "segmentId": "pdf-p66-s299",
+      "order": 299,
+      "page": 66,
+      "type": "paragraph",
+      "sourceTextHash": "6fd047ccf50d07833cdcae96e6697d94580409cb0984e231d6b4366d8d184ab1",
+      "chineseText": "“14192号行政命令下的会计方法，”信息和监管事务办公室，2026年7月10日访问：https://www.reginfo.gov/public/pdf/eo14192/Accounting_Methods_under_EO_14192.pdf。"
+    },
+    {
+      "segmentId": "pdf-p66-s300",
+      "order": 300,
+      "page": 66,
+      "type": "paragraph",
+      "sourceTextHash": "2498a886643c9d686753bc3633c47fcf6ccb5bd4a2ddb2a13e2c2ef95d842fa3",
+      "chineseText": "美国卫生与公共服务部，“规则制定中关于小实体适当考虑的指导意见，”（2003年5月）：第9页，https://aspe.hhs.gov/sites/default/files/documents/dd6288d1b8db19ee8a1f37b3ce775003/guidance-proper-consideration-hhs-2003-rulemaking.pdf。"
+    },
+    {
+      "segmentId": "pdf-p66-s301",
+      "order": 301,
+      "page": 66,
+      "type": "paragraph",
+      "sourceTextHash": "b9ca7b491b38ccc5e0fdf2ec42eed2db7959aac15e05c772e204b77e1a317cf8",
+      "chineseText": "美国卫生与公共服务部，“规则制定中关于小实体适当考虑的指导意见，”（2003年5月）：第2-3页，https://aspe.hhs.gov/sites/default/files/documents/dd6288d1b8db19ee8a1f37b3ce775003/guidance-proper-consideration-hhs-2003-rulemaking.pdf。"
+    },
+    {
+      "segmentId": "pdf-p67-s302",
+      "order": 302,
+      "page": 67,
+      "type": "paragraph",
+      "sourceTextHash": "c8e53ca6886c8d47e11dbe40ab26588e4a55647e630978bbfecf78ab5be5eaaa",
+      "chineseText": "52472 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与规定"
+    },
+    {
+      "segmentId": "pdf-p67-s303",
+      "order": 303,
+      "page": 67,
+      "type": "paragraph",
+      "sourceTextHash": "0de5dd99f909597479c20bd285cca5a007c979e9d7c56cd2895b53a9272197ea",
+      "chineseText": "表13显示了年度化的关切事项。我们不同意关于利益的观点，我们无法量化在《监管影响分析》（RIA）中所要求的此类货币化转移价值。我们认为该RIA在按照OMB A-4通函的规定来进行半折现率7%的货币化转移时存在实质性的缺陷或方法论上的不健全。根据7%的折现率，向联邦政府的年度化货币化转移为1360万美元，向各州为950万美元，反映了对医疗服务提供者支付减少的情况。按照3%的折现率，向联邦政府的年度化货币化转移为1370万美元，向各州为960万美元。我们收到了关于本RIA的公众评论，以下是评论摘要及我们的回应。评论指出，拟议规则的RIA未能充分考虑与规则相关的各项成本，包括各州、服务提供者、托管式医疗组织、保险商、个人以及药品制造商的成本，以及个体放弃治疗或自费接受手术的长期成本。评论者还指出，RIA低估了规则潜在的危害，包括对受影响个人的身心健康影响及对专业服务提供者的影响，同时未充分量化相关程序的益处。此外，有评论者对RIA的假设方法，包括未支持的患者切换率假设、手术数量估计不准确、RIA与伴随规则不一致以及未能考虑两条规则的联合财政影响提出质疑。"
+    },
+    {
+      "segmentId": "pdf-p67-s304",
+      "order": 304,
+      "page": 67,
+      "type": "paragraph",
+      "sourceTextHash": "f924b06c9222ccf3c568dde1eb3cfa067e78354408ecc7c4696a2e916d7562ed",
+      "chineseText": "回应：我们感谢收到的详细意见并认真考虑了其建议。在RIA中，我们使用了最新可用的项目数据和与标准联邦监管分析惯例一致的合理假设。如拟议规则中指出，我们从2023年开始使用既定方法预测支出，并承认了可用数据的局限性，包括缺乏直接经验研究来支持此类限制的影响。由于缺乏精确估算相关影响的数据，RIA采用了合理假设并透明披露这些前提。RIA未包含可用于量化本规则影响的数据或研究。关于有评论建议RIA未量化相关程序对心理和身体健康带来的正面影响，我们指出，相关科学证据质量极低。如HHS评审指出，目前的证据基础不足以支持这些性别否认手术对改善儿童性别焦虑的心理健康的长期益处的结论。我们也澄清，在我们的分析中，因住院和门诊而确认的支出总额（约2023年为240万美元）相对较低，表明所涉保险理赔并不庞大。"
+    },
+    {
+      "segmentId": "pdf-p67-s305",
+      "order": 305,
+      "page": 67,
+      "type": "paragraph",
+      "sourceTextHash": "b90676071e0fe12ea4636a243c43eee749e961de3efdadb56c0ef87d24f1ec89",
+      "chineseText": "我们已澄清在分析中所采用的方法，并进行了细致考虑。"
+    },
+    {
+      "segmentId": "pdf-p67-s306",
+      "order": 306,
+      "page": 67,
+      "type": "paragraph",
+      "sourceTextHash": "01c2fbc3fe16718d02338bee6b1f1b913206d23bb30f6cb9925671daf98262c8",
+      "chineseText": "（该段仅为文件页眉、页尾和格式信息，无可翻译实质内容）"
+    },
+    {
+      "segmentId": "pdf-p68-s307",
+      "order": 307,
+      "page": 68,
+      "type": "paragraph",
+      "sourceTextHash": "fe5e4bf18889700713f428a9b372a03ad7c6ec34c93aae26ffed9d3ad546d862",
+      "chineseText": "（该段仅为文件页眉、页尾和格式信息，无可翻译实质内容）"
+    },
+    {
+      "segmentId": "pdf-p68-s308",
+      "order": 308,
+      "page": 68,
+      "type": "paragraph",
+      "sourceTextHash": "c8cbb31d51267897092e91fcba38b0430bd90da6ae0a684ad383b4b914813da5",
+      "chineseText": "我们承认影响分析未提供对其他项目影响的估算。受益人、服务提供者和各州可能以不同方式对本规则做出反应，包括通过其他项目或私人支付方支付这些服务费用，或各州选择无联邦配套资助自行支付这些服务。我们在影响分析中已新增对这些潜在反应的描述。评论指出，RIA未有意义地考虑拟议规则的合理备选方案，如知情同意要求、利用控制、卓越中心路径、以证据为基础的覆盖以及类似欧洲的监管框架，也未满足包括OMB通函A-4分配分析、交叉健康公平分析和家庭政策评估等分析要求，且担忧规则成本将不成比例地影响脆弱群体如乡村受益人、残障人士、部落社区和司法涉入青少年等。"
+    },
+    {
+      "segmentId": "pdf-p68-s309",
+      "order": 309,
+      "page": 68,
+      "type": "paragraph",
+      "sourceTextHash": "ccd8924ad731897f5f15ccd744057560dbdf45df54502c1249119b3eb2332830",
+      "chineseText": "回应：我们不同意评论中称RIA未有意义地考虑备选方案或未满足适用分析要求的观点。关于监管备选方案，如拟议规则所述，我们曾考虑过不采取行动。在制定最终规则时，我们断定允许使用联邦医疗补助和儿童健康保险项目资金支付儿童性别否认手术与《法案》第1902(a)(19)、1902(a)(30)(A)和2101(a)条款所要求的为受益人利益提供服务且支付符合护理质量、有效且高效标准的要求不符。我们承认可采取其他行动，例如发布次级法规指导各州基于HHS评审中的证据避免提供这些服务、制定利用管理规程以确保这些服务受到适当州级监督，或继续支持这些服务的联邦匹配资金。尽管这些行为依然可行，但我们未将其视为替代方案，因为我们认为立即禁止联邦资金参与是合理的。"
+    },
+    {
+      "segmentId": "pdf-p68-s310",
+      "order": 310,
+      "page": 68,
+      "type": "paragraph",
+      "sourceTextHash": "249589dc776c9358c59c15e790933f1523c2a8e0a1245cd730ec20c74d68e681",
+      "chineseText": "我们承认，患者、提供者和州等各方面可能以不同方式应对本规则，包括向其他项目或私人支付方寻求支付，或州自行支付无联邦配套资金的情况下提供服务。我们已在影响分析中添加对这些潜在响应的描述。"
+    },
+    {
+      "segmentId": "pdf-p69-s311",
+      "order": 311,
+      "page": 69,
+      "type": "paragraph",
+      "sourceTextHash": "57eea6df2f109718a35cc8afb512b36efaf42ea9387d8d5b11a807ac1217ab21",
+      "chineseText": "第42部分441章修订案\n第441章——服务：适用于特定服务的要求和限制\n附录N——禁止联邦医疗补助资金支付向18岁以下儿童提供的性别否认手术\n§441.800 基础和目的。\n本附录旨在实施《法案》第1902(a)(19)和1902(a)(30)(A)条款，以保护医疗补助受益人，确保医疗补助支付符合护理质量要求，禁止联邦资金参与各州对18岁以下儿童提供的性别否认手术的支付。\n(a) 关于本附录，第1902(a)(19)条款要求各州确保服务以符合受益人最佳利益的方式提供。\n(b) 关于本附录，第1902(a)(30)(A)条款要求……（内容未包含全文）"
+    },
+    {
+      "segmentId": "pdf-p69-s312",
+      "order": 312,
+      "page": 69,
+      "type": "paragraph",
+      "sourceTextHash": "b098dd70b97d27f78b587761bac3e830d4e56ca87653c0466f19aef5601ade83",
+      "chineseText": "各州的支付方式应与护理质量一致。(3) 本定义中，权威机构指：42 U.S.C. 1302。\n■ 4. 新增 § 457.476，内容如下：\n§ 441.801 定义。\n本子部分中使用的术语——\n女性指的是具有生殖系统特征的人（除非存在损伤或先天异常），该生殖系统具有产生卵子（ova）生物功能。\n联邦财政参与（FFP）指联邦财政资金的参与。\n男性指的是具有生殖系统特征的人（除非存在损伤或先天异常），该生殖系统具有产生精子生物功能。\n性别指一个人的不可改变的生物分类，即男性或女性。\n“拒绝性别手术”指的是除本定义(3)段规定以外，任何药物或外科干预，试图将个体的身体外观或身体与其申称的与本人性别不同的身份对齐。\n(3)对本定义而言，拒绝性别手术不包括以下程序——\n(i) 治疗具有医学可验证的性别发育障碍的个体；或\n(ii) 除了试图将个体的身体外观或身体与其申称的不同于个体性别的身份对齐之外的用途；或\n(iii) 治疗因执行拒绝性别手术而导致或加重的任何感染、伤害、疾病或障碍的并发症。\n§ 441.802 一般规则。\n(a) 除非本节(c)段另有规定，州计划必须规定医疗补助机构不得根据计划为18岁以下儿童支付拒绝性别手术费用。\n(b) 除非本节(c)段另有规定，联邦财政参与不得用于州针对18岁以下儿童的拒绝性别手术的开支。\n(c) 联邦财政参与仍适用于以下情况：\n(1) 故意抑制或减少自然生物功能（包括主要或次要性别特征）的正常发展；或\n(2) 故意改变个人的身体外观或身体，包括截肢、最小化或破坏主要或次要性别特征，如性别及生殖器官。\n\n§ 457.476 覆盖限制：拒绝性别手术。\n(a) 本节目的是确保儿童健康保险计划（CHIP）以有效和高效的方式运作，协调包括医疗补助在内的其他健康福利来源，禁止联邦财政参与各州为19岁以下儿童支付拒绝性别手术费用，符合本法案第2101(a)条款规定。\n(b) 各州对儿童拒绝性别手术的联邦财政支付禁止，适用于本章§441.802中描述的医疗补助州管理单独CHIP的情况，但适用于按§457.310定义的针对低收入儿童的19岁以下儿童。\n(c) 针对接受变性激素治疗的受益人，从2026年10月13日起，最多6个月的逐渐停药疗程内，联邦财政参与仍然可用，这些受益人截至2026年10月13日已在接受该疗法。\n\n罗伯特·F·肯尼迪，\n卫生与公共服务部部长。\n\n■ 3. 第457部分的权限引用继续保持如下：\n[2026年第16508号文件，2026年8月11日提交，下午4:15]\n账单编码4169–69–P\n\nkhammond在DSK9W7S144PROD上的RULES2"
+    },
+    {
+      "segmentId": "pdf-p69-s313",
+      "order": 313,
+      "page": 69,
+      "type": "paragraph",
+      "sourceTextHash": "daa055a073e412c2c602a459a1e16b7263385e6e64cbb35054204b72c114fadb",
+      "chineseText": "VerDate Sep<11>2014 17:06 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00070 Fmt 4701 Sfmt 9990 E:\\FR\\FM\\13AUR2.SGM 13AUR2"
+    }
+  ]
+}

@@ -29,4 +29,4 @@ jobs:
 
 # Strict node 1 revalidates on relevant user-authored dataset changes.
 # Revalidation marker: workflow-generated backfill commits do not recursively trigger GitHub Actions.
-# Strict restart revalidation after latest legal database synchronization: 2026-08-16T22:39Z.
+# Strict restart revalidation after current 606/606 grounded analysis synchronization: 2026-08-17T00:30Z.

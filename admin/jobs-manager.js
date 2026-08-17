@@ -1,5 +1,6 @@
 (function () {
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+  const contactText = (row) => row.contact_method === 'platform' || !row.contact_method ? '站内联系' : `${row.contact_method}${row.contact_public && row.contact_value ? ` · ${row.contact_value}` : ' · 未公开'}`;
 
   async function loadJobsAdmin() {
     const message = document.getElementById('jobs-admin-message');
@@ -9,7 +10,7 @@
     message.textContent = '正在读取统一招聘求职数据…';
 
     const [listingsResult, seekersResult] = await Promise.all([
-      supabaseClient.from('job_listings').select('id,employer_user_id,title,state_code,city,status,created_at').order('created_at',{ascending:false}).limit(200),
+      supabaseClient.from('job_listings').select('id,employer_user_id,title,category_slug,employment_type,state_code,city,status,contact_method,contact_value,contact_public,created_at').order('created_at',{ascending:false}).limit(200),
       supabaseClient.from('job_seeker_posts').select('id,seeker_user_id,headline,state_code,city,status,created_at').order('created_at',{ascending:false}).limit(200)
     ]);
 
@@ -21,10 +22,10 @@
 
     const listings = listingsResult.data || [];
     const seekers = seekersResult.data || [];
-    message.textContent = `已读取招聘 ${listings.length} 条、求职 ${seekers.length} 条。发布者ID与生命周期状态均可追溯。`;
+    message.textContent = `已读取招聘 ${listings.length} 条、求职 ${seekers.length} 条。这里直接管理与 Web/APP 相同的正式数据表，不使用影子后台。`;
 
     listingsBody.innerHTML = listings.length ? listings.map((row) => `
-      <tr><td><b>${esc(row.title)}</b><br><small>${esc(row.id)}</small></td><td><small>${esc(row.employer_user_id)}</small></td><td>${esc(row.state_code)} ${esc(row.city)}</td><td>${esc(row.status)}</td><td>
+      <tr><td><b>${esc(row.title)}</b><br><small>${esc(row.id)}</small><br><small>${esc(row.category_slug)} · ${esc(row.employment_type)} · ${esc(contactText(row))}</small></td><td><small>${esc(row.employer_user_id)}</small></td><td>${esc(row.state_code)} ${esc(row.city)}</td><td>${esc(row.status)}</td><td>
         <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(row.id)}" data-jobs-status="open">开放</button>
         <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(row.id)}" data-jobs-status="paused">暂停</button>
         <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(row.id)}" data-jobs-status="unlisted">下架</button>

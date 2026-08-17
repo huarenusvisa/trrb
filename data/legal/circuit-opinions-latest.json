@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T17:48:23.371Z",
+  "generatedAt": "2026-08-17T18:57:50.766Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -95,10 +95,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
           "title": "24-1524P.01A"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
-          "title": "24-1805P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340P-01A.pdf",
@@ -525,6 +521,22 @@
       "sourceFinalUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
       "documents": [
         {
+          "url": "https://www.ca4.uscourts.gov/opinions/244556.p.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244556.p.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/242260.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/242260.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244630.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244630.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254125.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254125.U.pdf"
+        },
+        {
           "url": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf"
         },
@@ -707,22 +719,6 @@
         {
           "url": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf"
         }
       ],
       "notes": []
@@ -1330,6 +1326,10 @@
         },
         {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489167.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489226.pdf",
           "title": null
         },
         {

@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "6e8aa927af217cf5c03b2359bc7b1c3261b524bd9291b53700523e35dfc48cb6",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 401,
+    "US_CIRCUIT": 402,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 597,
+  "count": 598,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2846,6 +2846,21 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:07722a41dfd0bf2a"
+    },
+    {
+      "id": "e626478cbad999dd8ea50aed",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-1524P.01A",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:0a40ffbc971671e0"
     },
     {
       "id": "3bbfc927f458d0bca0b17dc6",

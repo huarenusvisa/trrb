@@ -1,0 +1,33 @@
+name: PEOPLE-R1 Node 10 Acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/people-r1-node10-audit.mjs'
+      - 'scripts/audit-people-r1-node1.mjs'
+      - 'scripts/people-r1-node2-audit.mjs'
+      - 'scripts/people-r1-node3-audit.mjs'
+      - 'scripts/people-r1-node4-audit.mjs'
+      - 'scripts/people-r1-node5-audit.mjs'
+      - 'scripts/people-r1-node6-audit.mjs'
+      - 'scripts/people-r1-node7-audit.mjs'
+      - 'scripts/people-r1-node8-audit.mjs'
+      - 'scripts/people-r1-node9-audit.mjs'
+      - 'people/**'
+      - 'topic-config.js'
+      - 'apps/mobile/app/people.tsx'
+      - 'apps/mobile/app/(tabs)/index.tsx'
+      - 'netlify/functions/public-people.js'
+      - 'supabase/migrations/*people_r1*'
+      - '.github/workflows/people-r1-node10.yml'
+  workflow_dispatch:
+jobs:
+  final-acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Revalidate PEOPLE-R1 N1-N10
+        run: node scripts/people-r1-node10-audit.mjs

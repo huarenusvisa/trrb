@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "recordId": "fde11685da47a6bb2aba599a",
+  "recordFingerprint": "2451baa502fc7cc64825c935038f65166428b5ba4686cb60f3bf73b2c94291d1",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1401621/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1401621/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1401621/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:29:32.565Z",
+  "sourceDigest": "ab19becbbec707cf66348d056aa5983986bd3c99d5df10ad09539ebe12278fe0",
+  "translatedAt": "2026-08-17T17:29:59.640Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 24,
+  "translatedSegmentCount": 24,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "42aa1c51ddfb39024cd6f323b249a59ee60df98721b11f1fee20bde2fdf40bf0",
+      "chineseText": "引证为29 I&N Dec. 72（BIA 2025）临时裁决第4096号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3415254520519f3fd624f05186585b0d6a4805bf10be43de392917be5d20f681",
+      "chineseText": "吉尔顿·贝恩（Gilton BAIN）案，答辩人\n由委员会于2025年2月6日裁决\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "acb99d47490b0dd623423dec6653535d0f1af1188cb21e90880415485c65850e",
+      "chineseText": "考虑到答辩人近期且反复的刑事犯罪记录以及缺乏康复证明，我们根据对全部记录的综合考量和平衡本案存在的各种因素，得出结论，答辩人未能证明其在酌情权范围内值得被批准取消驱逐。\n答辩人代表：无代理，亲自出庭\n国土安全部代表：助理首席法律顾问阿什莉·沃尔德罗普（Ashley Waldrop）\n审理委员会：穆兰（MULLANE）、奥康纳（O’CONNOR）、纳哈斯（NAHAS）三位移民上诉法官。\n穆兰，移民上诉法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5bfc81202958d36f1254a699ccc27e6167514f987896e2adb67efc702baef95f",
+      "chineseText": "国土安全部（“DHS”）对移民法官于2024年7月12日作出的裁决提出上诉，该裁决批准答辩人根据《移民与国籍法》第240A(a)条（8 U.S.C. § 1229b(a)（2018））的申请，酌情取消驱逐。答辩人为巴哈马公民，反对该上诉。上诉将被支持，移民法官批准取消驱逐的决定将被撤销，答辩人将被命令驱逐回巴哈马。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "338203064128d4a5be47c9f9c2e4717e526483d98f940d7290c9995a3dd904ee",
+      "chineseText": "答辩人承担证明其有资格获得免除驱逐救济的举证责任。2 8 C.F.R. § 1240.8(d)（2025年版）。即使答辩人已证明其符合法定救济资格，也须承担举证责任以证明其在酌情权范畴内值得获得该救济。见\n1\n 根据2025年5月23日发布的第6272-2025号命令，司法部长指定本委员会关于贝恩案（BIA 2025年2月6日）的决定作为涉及相同问题所有诉讼的先例，见8 C.F.R. § 1003.1(g)(3)（2025年版）。已根据案件作为先例的指定作了编辑性修改。\n2\n 记录显示答辩人在2024年3月5日的听证会上承认自己可被驱逐，并承认起诉通知中的指控。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "10486ccbbdd60eb92acd1cb79db5eb830df969843ced438f63f1e5eda060069a",
+      "chineseText": "第72页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "42aa1c51ddfb39024cd6f323b249a59ee60df98721b11f1fee20bde2fdf40bf0",
+      "chineseText": "引证为29 I&N Dec. 72（BIA 2025）临时裁决第4096号"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4a04de2743bfc19aac9b418a73aa516eff1469bc558c9775efccad8173eee0a0",
+      "chineseText": "阿赖案，13 I&N Dec. 494, 495（BIA 1970）。随着不利酌情因素日益严重，答辩人必须显示“抵销的有利因素，某些情况下这些因素可能必须涉及非同寻常或突出的公平考量。”看C-V-T案，22 I&N Dec. 7, 11–12（BIA 1998）（引自Edward案，20 I&N Dec. 191, 195–96（BIA 1990））。答辩人的犯罪历史可构成重大不利因素。见C-A-S-D案，27 I&N Dec. 692, 699（BIA 2019）。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "211009800874d3140aa1a436af52b921564f35bbbc2b5ed01a6c4462051b4934",
+      "chineseText": "尽管我们对移民法官的事实认定仅适用明显错误标准，但对答辩人是否值得获得有利酌情裁决的最终判定属于法律定性，我们给予无偏见复核。8 C.F.R. § 1003.1(d)(3)(i),(ii)（2025年版）。虽然移民法官的事实认定无明显错误，但我们不同意其基于酌情权批准答辩人取消驱逐申请的决定。3 见索特洛案，23 I&N Dec. 201, 203（BIA 2001）（讨论积极与消极因素的平衡酌情判定）；C-V-T案，22 I&N Dec. 7, 11（同前）；马林案，16 I&N Dec. 581, 585（BIA 1978）（同前）。基于下述理由，答辩人不符合法律上的酌情取消驱逐条件。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "48f1c8166e28cafd7a04e99e5186d2f80a42e41af08dfa09dd7e63ab99ada76d",
+      "chineseText": "移民法官认定答辩人在美国展现了诸多公平考量。现年35岁答辩人自1998年起居住于美国，2011年起为合法永久居民。他有重要的家庭纽带，包括多名美国公民亲属。答辩人曾在美国接受小学、初中及高中教育，但中途辍学，仍在努力取得GED。他之前曾和叔叔一同做木匠工作，也做过麦当劳和洗车店的零工。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4eb2d757bd45c71837615825d7723fb2e5e893946180f2cbd1c09b2fa6031c1f",
+      "chineseText": "答辩人在2018年或2019年成为无家可归者，失业期间乞讨以支付子女抚养费。答辩人仅曾申报过一次税，且COVID疫情期间部分时间失业。答辩人称可寄住于其兄弟处，但移民法官指出该兄弟未提交相关声明。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7223c2da060938da7c2b8cc5913a08df7e832069782a4453a59cb2f62b68d1b4",
+      "chineseText": "3\n答辩人称证据展品6与其无关，且做帮派归属判断的访谈官员对其持偏见。虽国土安全部承认展品6最后一页提及一位与答辩人监狱编号相近的女性，但指出展品6的第1-21页均指涉答辩人，含其脸部、身体及纹身照片。国土安全部称移民法官未给予该帮派归属证据应有重视属错误。鉴于本案记录中有大量不利因素，我们对此证据不予考虑、亦未依赖之。\n第73页"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "42aa1c51ddfb39024cd6f323b249a59ee60df98721b11f1fee20bde2fdf40bf0",
+      "chineseText": "引证为29 I&N Dec. 72（BIA 2025）临时裁决第4096号"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4e9e66de10e9ac7148112356783b76f9695eebece1e53fb00cd5341e43e40be2",
+      "chineseText": "答辩人未在监禁期间参与任何康复课程。答辩人未提供其他任何康复努力证据，且否认曾参加戒毒课程。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0950ec7fc2c47787c8d845b97b0820c1578a2896e3460f8efe7f406aedac455c",
+      "chineseText": "移民法官亦注意到答辩人的多项严重不利因素，包含其2013年至2021年间在佛罗里达州的广泛犯罪记录。4 答辩人首次被捕于2013年，罪名为持有MDMA毒品。该案件因参与毒品法庭项目最终被撤销并抹销指控。2018年，答辩人因无有效驾照驾驶被定罪。记录显示，被告的毒品相关犯罪包括六项贩卖或交付管制药物罪。其刑事案件资料表明，答辩人在四个不同日期（2019年11月1日、2019年11月12日、2020年1月10日及2020年1月17日）贩卖或交付可卡因、芬太尼和海洛因。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "dddac9c03882d16fd488ad236aa4aa1358812151eebab8fd23f5909c2b9656b7",
+      "chineseText": "经重新审视，我们同意国土安全部的上诉理由，认为答辩人的公平考量不足以抵销其广泛的犯罪历史。我们理解答辩人表现出自我提升意愿，且思念家人和子女，但记录未支持答辩人已充分证明康复，特别是考虑到其此前的毒品相关犯罪。见C-V-T案，22 I&N Dec. 12（“拥有犯罪记录的答辩人通常需出示康复证据，方可获批准给予酌情救济。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f97ff33691a1ad84871a380e08595b7387c2708f515322901d4e93631662d7da",
+      "chineseText": "我们认可答辩人若被驱逐，可能对其本人及其家人造成重大困难。本案中的公平考虑及人道因素不可小觑。但答辩人的犯罪记录近期、严重且有累犯特征。\n4\n答辩人主张其定罪所涉毒品未经过检测，但除非刑事法院撤销或推翻定罪，在移民法律上定罪仍有效。见Adetiba案，20 I&N Dec. 506, 508（BIA 1992）（定罪一经最终确定，除非被推翻，否则持续生效）；Roberts案，20 I&N Dec. 294, 301（BIA 1991）（虽可调查犯罪环境以决定是否酌情批准救济，但不可翻案重新评判被告罪责）；另见Ponce De Leon案，21 I&N Dec. 154（司法部长和移民上诉委员会1997年及1996年决定）。此处答辩人未证明其定罪已被撤销，故该定罪对移民事项仍具效力。另见Pickering案，23 I&N Dec. 621, 624（BIA 2003）（论述何种情形下撤销定罪不再构成定罪），后被第六巡回法院于Pickering诉Gonzales, 465 F.3d 263（2006年）推翻。\n第74页"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "42aa1c51ddfb39024cd6f323b249a59ee60df98721b11f1fee20bde2fdf40bf0",
+      "chineseText": "引证为29 I&N Dec. 72（BIA 2025）临时裁决第4096号"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e0cb904e955da134041d45d63f67360c3243f587b994554fb3decc37d47a8835",
+      "chineseText": "考虑到其犯罪历史的近期性及反复性事实，以及缺乏康复证明，我们综合审视全部资料并平衡本案各项因素后，认定答辩人未能证明其应在酌情权范畴内获得取消驱逐。故此，经无偏见复审，我们不同意移民法官对答辩人作出有利酌情裁定的结论，驳回移民法官批准取消驱逐之决定。由此，将作出以下命令。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "536866c9c811a03c790d60f75718ed91c81f2e39f997f955c80e784bd9b7ffa6",
+      "chineseText": "命令：国土安全部提出的上诉获支持。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "50999b796dda333eab631b37632f6797a46e6e64bd4672f60ed2a80c6be8ec5e",
+      "chineseText": "进一步命令：撤销移民法官于2024年7月12日作出的批准答辩人取消驱逐申请的决定。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a913740cd2c0fd4fb0c51b4fc65da46222a80467070be7ed8d9a05ecf3a40972",
+      "chineseText": "进一步命令：命令答辩人从美国驱逐至巴哈马。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e36dc82f9793cac7e68813da012838ba702c532fc0fae75445435699fff55d66",
+      "chineseText": "通知：如答辩人受最终驱逐令约束，且故意拒绝或不履行按该驱逐令离开美国的义务，不及时诚信申请旅行或其他离境必需证件，或不按国土安全部要求在规定时间和地点出现，或密谋或采取任何阻碍其根据驱逐令离境的行为，答辩人将面临每日高达998美元的民事罚金。见INA第274D条，8 U.S.C. § 1324d（2018）；8 C.F.R. § 280.53(b)(14)（2025年版）。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e5038302a830d3876e25eae93b2d01ad09a65227ff62c7f845aaa3bbb0224afa",
+      "chineseText": "第75页"
+    }
+  ]
+}

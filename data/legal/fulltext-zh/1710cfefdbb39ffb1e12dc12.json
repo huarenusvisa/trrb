@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "recordId": "1710cfefdbb39ffb1e12dc12",
+  "recordFingerprint": "55cc7f8ba7d7309831711b73f8944c6a449e60b660432db1062fdee529e2fe0b",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1449081/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1449081/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1449081/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:22:09.151Z",
+  "sourceDigest": "4c4fe892d18f6398f4fad186d7ecc84b2c901393617aff02c16fbaf3b1bab694",
+  "translatedAt": "2026-08-17T17:22:26.567Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 11,
+  "translatedSegmentCount": 11,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0436fe924ad753762a5dbe3b823e84dc9945f7be56ef7b95c1654e748f757e9d",
+      "chineseText": "引用为 29 I&N 第715号决定（BIA 2026）临时决定 #4209"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e9cbabe9e1ebe52881d01b506c51c3a3a3145e2a71e8175ea04664e3e5d34ef4",
+      "chineseText": "关于T-A-G-等案，答辩人\n于2026年6月23日裁决\n美国司法部\n移民审查行政办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3176327adb51ce9bad7e57ce16b34d342637e711ec26ba4bbe6310d1ac25486c",
+      "chineseText": "移民法官在拒绝国土安全部基于答辩人可能有资格获得附带救济而提出的驳回答辩人庇护申请的动议时犯了错误。\n答辩人律师：Sheree Wright，律师，亚利桑那州凤凰城\n美国国土安全部代理主任律师：Simona D. Roberts\n出席人员：上诉委员会成员：MAHTABFAR、OWEN及GALLOW，上诉移民法官。\nGALLOW，上诉移民法官发言："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f3c81ca43354150b6021a0295c282e251aa93b7432e46f04b83b3117ffe80a18",
+      "chineseText": "美国国土安全部（“DHS”）已对移民法官2026年1月2日拒绝DHS提出的驳回答辩人庇护申请的动议提出中间上诉，理由是答辩人可能是待决外籍亲属请愿（I-130表格）的潜在受益人。尽管我们通常不受理中间上诉，但鉴于移民法官案件处理中的反复出现的问题，我们认为适当受理此案。参见M-D-案，24 I&N 第138号，第139页（BIA 2007）。本中间上诉获准，移民法官决定被撤销，案卷予以发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "079223cb99b0c99f010f14ba43387759e3182e934e69ac69401687d37b25472a",
+      "chineseText": "2023年3月，答辩人，伯利兹的本国公民，提交了三份庇护申请中的第一份。2025年12月31日，DHS提出动议，要求驳回答辩人的申请，理由是其申请存在若干瑕疵应被驳回，且答辩人受适用于洪都拉斯、危地马拉和厄瓜多尔的庇护合作协议（“ACA”）约束。参见移民和国籍法第208(a)(2)(A)节（INA），8 U.S.C. § 1158(a)(2)(A)（2024）；另参见H-A-A-V-案，29 I&N 第233号，第238页（BIA 2025）（解释移民法官可驳回庇护申请）；C-I-G-M- & L-V-S-G-案，29 I&N 第291号，第295-297页（BIA 2025）（概述基于一项或多项ACA的驳回动议审理程序）。2026年1月2日的主日历听证会上，双方同意将主日历听证会重新安排至2026年10月1日。同日，移民法官作出裁定，在未审查案情实质的情况下，拒绝了DHS的驳回答辩人庇护申请的动议，“待代表答辩人提交的I-130表格审理后”。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0436fe924ad753762a5dbe3b823e84dc9945f7be56ef7b95c1654e748f757e9d",
+      "chineseText": "引用为 29 I&N 第715号决定（BIA 2026）临时决定 #4209"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "21c67f8fd81425e2f1f6582371413e29f37609bc9f683b90deb1ceac3a22c466",
+      "chineseText": "我们认定移民法官在基于答辩人可能获得附带救济资格而拒绝DHS驳回答辩人庇护申请的动议时犯了错误。答辩人可能获得另一种救济资格并非移民法官审理驳回庇护申请动议时应考虑的因素。参见一般规定C-I-G-M- & L-V-S-G-案，29 I&N 第299页（裁定移民法官因ACA障碍拒绝DHS动议驳回庇护申请属错误，案件发回进一步审理该障碍）；H-A-A-V-案，29 I&N 第238页（结论为当庇护申请事实不构成初步符合救济资格时，移民法官可未进行全面听证即驳回庇护申请）。此点尤为重要，如本案所示，答辩人潜在的另一种救济形式不属于移民法官权力范围。本案中，移民法官命令确认答辩人被列为抵达外籍人士，故无法在遣返程序中申请身份调整。参见INA § 245(a)，8 U.S.C. § 1255(a)（2024）。因此，答辩人遣返程序的结果不受其待决I-130表格审批结果影响。参见Medina Madrid案，29 I&N 第514号，第517页（认定待批附带救济申请不构成无限期行政中止遣返程序的适当依据）。若确定可遣返且答辩人不符合救济资格，移民法官应签发遣返令。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6ab70e72b86514e2c68dc83d359de88833b7af9bfc3c4e5a3575146f092cc425",
+      "chineseText": "因此，我们将支持DHS的上诉，并将案卷发回移民法官重新审理DHS的驳回动议。在发回时，我们不对本程序最终结果发表意见。参见L-O-G-案，21 I&N 第413号，第422页（BIA 1996）。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "405407d75a4fbdd5d88baaf186a89afe7a4929efb844082a57d951d08f701faf",
+      "chineseText": "命令：支持DHS的中间上诉，撤销移民法官2026年1月2日的决定。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "64b20a56fff564242cd254fed8383adc13c21b112aee19f5f0dbddf54500aba9",
+      "chineseText": "进一步命令：将案卷发回移民法庭，按照上述意见进行进一步程序，并作出新的决定。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "90c583fb52a016580f3f6ec9dfd1c10c592b1f6abf8809de80a587ac8c92c6f8",
+      "chineseText": "第716页"
+    }
+  ]
+}

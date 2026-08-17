@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "recordId": "0e7391d4a4739fe40b959ac1",
+  "recordFingerprint": "bb4f6adbbd8c76ed6fb1ba795c3b879db3aef56e1410a192c96714460e476ed6",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1449611/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1449611/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1449611/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:29:59.673Z",
+  "sourceDigest": "6ab5a85452847dcc0359cc70e806634c6d33a6d472d5ff8275aa3d210d2cd9d3",
+  "translatedAt": "2026-08-17T17:30:20.330Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 21,
+  "translatedSegmentCount": 21,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c3a597d9c260b13b9324bff1b3ab0e0d77b173f251867b98b379b45b9349a7be",
+      "chineseText": "引用为29 I&N Dec. 723（BIA 2026）临时裁决＃4211"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "415967b54580e96c7df4cb0eb09cb44e1ad6674034dddd41696ad342645c858a",
+      "chineseText": "拉辛·斯特凡·贝斯特案，答辩人\n由移民上诉委员会于2026年5月7日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "24583f2ff302ba8c295b12e51c3d05cf21438486f43de66a909e3ed52eebfbbd",
+      "chineseText": "（1）根据《移民与国籍法》第212(h)条款，8 U.S.C. § 1182(h)，答辩人的家属因答辩人被驱逐将经历的情感和经济困难不构成极端困难。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f07777cf5f82109460a8b201ffdaa0c3bf341d7a3c7ff63cbd56fdb1becc40d5",
+      "chineseText": "（2）移民法官在基于自由裁量权批准答辩人不予准入豁免和地位调整时存在错误，因为答辩人的权益被其严重和长期的刑事犯罪记录及缺乏具有说服力的康复证据所抵消。\n答辩人代理人：雷蒙德·赛克斯律师，纽约，纽约\n国土安全部代理人：乔安娜·M·里德，助理首席律师\n审理小组：戈尔曼副首席上诉移民法官；沃尔克特，上诉移民法官；麦克洛斯基，临时上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d50d06ed3b62bf7d6da1262aef6d7dccb45a0779f6dd97d7dd55612d441c854e",
+      "chineseText": "麦克洛斯基，临时上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5dcfefb75eadcbf0f5389b33802bc9e523657d0006100842a8dd529d705e40e0",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年7月2日的决定提起上诉，该决定批准答辩人根据《移民与国籍法》（“INA”）第212(h)条款，8 U.S.C. § 1182(h)（2024年）申请的不予准入豁免，以及答辩人依据《INA》第245(a)条款，8 U.S.C. § 1255(a)（2024年）的身份调整申请。答辩人为巴巴多斯原籍及公民，反对此上诉。上诉将被支持，答辩人将被下令驱逐。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "92fb313f4f960711ad4cb52b26280403800f5a18b099da97c8c06a8bf4c196bb",
+      "chineseText": "我们推翻移民法官关于答辩人已证明其驱逐将对其符合条件的亲属——其美国公民配偶及两名子女（一名9岁、一名15岁）及其合法永久居民母亲——造成极端困难的认定。参见一般规定Matter of Ngai, 19 I&N Dec. 245, 246–47 (Comm’r 1984)（极端困难定义）。移民法官认定答辩人的配偶支付家庭开支，将遭遇经济困难，可能无力支付账单、前往巴巴多斯探视答辩人或获取硕士学位。移民法官还指出，如答辩人被驱逐，她计划再与答辩人生育子女将受阻。移民法官进一步认定答辩人为其母亲的非营利组织提供帮助，愿意在其母亲变老之际继续协助。答辩人亦主张其子女将因其被驱逐遭受情感影响。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "961b770c7990b074298c3679d2db2ab7041f1381883584e598008084305aa111",
+      "chineseText": "根据2026年6月18日发布的第6937-2026号命令，代理总检察长将本案Matter of Best（BIA 2026年5月7日）裁决指定为所有涉及相同问题或议题程序的先例见8 C.F.R. § 1003.1(g)(3)（2026）。编辑变更已根据先例案裁定进行了调整。"
+    },
+    {
+      "segmentId": "pdf-p1-s9",
+      "order": 9,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e102c2120349aa6a464c6295f8b7bd3993bf8b95e1b1a29c879133143f3664c4",
+      "chineseText": "第723页"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c3a597d9c260b13b9324bff1b3ab0e0d77b173f251867b98b379b45b9349a7be",
+      "chineseText": "引用为29 I&N Dec. 723（BIA 2026）临时裁决＃4211"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0af22a063753dfc4c0c5ecb6a0f681428b6f7e6e9647b79d9a5ae951fc42c232",
+      "chineseText": "9岁和15岁的两名子女，以及其合法永久居民母亲。总体见Matter of Ngai, 19 I&N Dec. 245, 246–47（1984）（极端困难定义）。移民法官发现答辩人配偶承担家庭开支，将面临经济困难，可能支付不起账单、无法前往巴巴多斯探望答辩人或攻读硕士学位。移民法官还指出，若答辩人被驱逐，其配偶计划再次与其生育子女将受阻。移民法官进一步发现答辩人为其母亲的非营利组织提供协助，并愿在母亲年老时继续帮助。答辩人亦主张其子女将受其被驱逐的情感影响。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5fbac3b082c89a502760a99b9e527ef9c6e588a79f962771bfb62b1e6351e1ec",
+      "chineseText": "我们承认，答辩人的家属因其被驱逐将经历情感和部分经济困难。然而，答辩人自2013年未能解除永久居留条件后便未曾工作，其配偶自那时起一直提供家庭支持。我们认定本案中的情感和经济困难不足以达到《移民与国籍法》第212(h)条，8 U.S.C. § 1182(h)要求的极端困难标准。参见同法案（断定仅因分离和经济困难，且无其他情况，不构成极端困难）。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4f17bc0b46471d0538a7659ab07251f2d1de7f59a9b08fbea2f1da529c8e8914",
+      "chineseText": "我们亦推翻移民法官关于答辩人有资格获得身份调整及不予准入豁免自由裁量权裁定。参见Matter of Mendez, 21 I&N Dec. 296, 300（1996）（解释身份调整案件及不予准入豁免案件中自由裁量分析差异）；Matter of Arai, 13 I&N Dec. 494, 495–96（1970）（关于身份调整申请一般自由裁量因素）。无可争议，答辩人在2017年有两项涉及欺诈的道德败坏犯罪定罪（欺骗性盗窃和使用欺诈交易设备），以及2017年妨碍逮捕定罪，2016年无证驾驶定罪，和2014年扰乱治安定罪。答辩人未成年时曾两次被捕，成人时约被捕10次。这些逮捕涉及轻微盗窃、大麻持有、持有伪造身份证件及非法持有枪支等罪名。答辩人最近一次被捕为2023年家庭暴力事件，涉及对其妻子的试图攻击、威胁及骚扰指控。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c1bc085a7292536beef6816b0a5f0e297ac079b46a0588029189a2463a074b33",
+      "chineseText": "第724页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c3a597d9c260b13b9324bff1b3ab0e0d77b173f251867b98b379b45b9349a7be",
+      "chineseText": "引用为29 I&N Dec. 723（BIA 2026）临时裁决＃4211"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "eac2f69f4dc7e153925bea3b852664e197de837ccd81dc8d6460cc039509e557",
+      "chineseText": "虽然移民法官正确认定答辩人多次逮捕未导致定罪，但我们强调，对于《移民与国籍法》而言，尚未形成最终定罪的刑事行为仍是自由裁量决定的适当考量因素。参见Matter of Thomas, 21 I&N Dec. 20, 23（1995）。因此，缺乏具有说服力的康复证据的情况下，我们认定答辩人的权益，如家庭及社区联系、在美国的居住时间、建立时尚事业的计划及其配偶、子女和母亲可能面临的困难，都不能抵消其严重且长期的刑事犯罪历史，后者为重大不利因素。参见例如Matter of Mendez, 21 I&N Dec. 305。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "afb287d39c5fd7c9e0a55835297fbccca8e7eefa08f8d10a0769ed232c5d3770",
+      "chineseText": "命令：支持国土安全部上诉。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "dac942dfc89b83eb687e8f8dd7ee7509a27d8e58762046aab88bddf899a33b8d",
+      "chineseText": "进一步命令：撤销移民法官2025年7月2日的裁决。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b5eeab4a9d93df1ba0c4c851d28c755f902a4f21f5a12bea4baa062753651efc",
+      "chineseText": "进一步命令：拒绝答辩人根据《移民与国籍法》第212(h)条款，8 U.S.C. § 1182(h)申请的不予准入豁免，以及依据第245(a)条款，8 U.S.C. § 1225(a)申请的身份调整。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "69fc0e00fe7583717339e5f9ab001c1de80f0e802c8b6d6fdef0178dfe0db20f",
+      "chineseText": "进一步命令：根据出庭通知中的指控，命令答辩人驱逐回巴巴多斯。"
+    },
+    {
+      "segmentId": "pdf-p3-s21",
+      "order": 21,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "28c91b3bcda4d643bdf017c6cbb5cc7dcb3141c58e7bd3c2bad71d4e35002684",
+      "chineseText": "注意：若答辩人受最终驱逐令约束，且故意拒绝或未能按该令离开美国，或未能及时善意申请离境所需旅行或其他证件，或未能在国土安全部指定的时间和地点出现，或共谋或采取任何阻碍或妨碍依照驱逐令离境的行动，答辩人将面临每日最高998美元的民事罚款。见《移民与国籍法》第274D条，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何在排除、驱逐或移除令存在期间被拒绝入境、移除或离开美国，随后进入、试图进入或在任意时间被发现身处美国的答辩人，将被罚款或监禁不超过2年，或两者兼施。见《移民与国籍法》第276(a)条，8 U.S.C. § 1326(a)（2024）。"
+    }
+  ]
+}

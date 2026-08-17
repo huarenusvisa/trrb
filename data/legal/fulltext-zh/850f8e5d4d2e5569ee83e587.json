@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "850f8e5d4d2e5569ee83e587",
   "recordFingerprint": "2f8cdef886852b994c1c389b78bd5fb143cc982a40fabfa6db0427d7bc948d6c",
-  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
   "sourceSystem": "BIA",
   "authorityType": "BIA Precedent Decision",
   "issuingBody": "Board of Immigration Appeals",
@@ -123,5 +123,6 @@
       "sourceTextHash": "51eba9fdee98f25dff486053214066db0ab0094a111a2a0e49fdb50a53236426",
       "chineseText": "裁定：支持国土安全部的上诉。进一步裁定：撤销移民法官的决定，命令答辩人不得保释拘留。 第657页"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T17:03:10.122Z"
 }

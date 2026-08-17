@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "recordId": "1d0d5a230e01c8c3ccbddd8d",
+  "recordFingerprint": "49a3c0182826daaacdec86507725569b9cb739b0ededc86fd4c1871710dbf016",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1446476/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1446476/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1446476/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:11:47.405Z",
+  "sourceDigest": "7dc5c22a4def7f26ed731ffbc03fc91811a61bd36e97e12124d6f5ca420978cb",
+  "translatedAt": "2026-08-17T17:14:20.733Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 29,
+  "translatedSegmentCount": 29,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cec9d17eb194ecac5ac8fd84b402c031e61e9e79c5a77c2f590d85e79fed61e5",
+      "chineseText": "引用为 29 I&N Dec. 703（BIA 2026）临时裁决 #4207"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "530cabc49b35a828f6fbb605c100e955372060ccf19d051c2aa92930d775fbda",
+      "chineseText": "案号 A-C-M-，被申请人\n裁决日期 2026年6月17日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d01ded86c9ef4f443aecae9a12fded458bc6e2bc8bdb607264f8513d8b396949",
+      "chineseText": "当外籍人士受到庇护合作协议（“ACA”）的约束，且记录中缺乏显示该外籍人士在ACA指定的遣返国面临个别化危害风险的证据时，通常无需举行证据听证会以确定安全第三国拒庇护条款的适用性。遵照 Matter of C-I-G M- & L-V-S-G-, 29 I&N Dec. 291（BIA 2025）。\n被申请人：无代理律师自行辩护\n国土安全部代理人：副首席法律顾问 David Cantor\n审理小组成员：OWEN、GALLOW 和 HANSELL，移民上诉法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a0993763af4b09335c4bb866da2ab90cab2371a91e8a201236545cc5d17eec53",
+      "chineseText": "审理法官 OWEN："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bf2a66cfb02076b5ac01c4634afcb2c39e881209ab979bb5d6d9031f6e8217e7",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年8月26日的裁决提出中间上诉，该裁决拒绝其请求，驳回对被申请人根据《移民和国籍法》（“INA”）第208(b)(1)(A)节，8 U.S.C. § 1158(b)(1)(A)（2018年版）申请庇护及根据INA第241(b)(3)(A)节，8 U.S.C. § 1231(b)(3)(A)（2018年版）请求排除遣返，以及根据实施《禁止酷刑公约》（“CAT”）的法规寻求保护的申请的剥夺程序。1 被申请人在移民法官面前由律师代理，未对DHS的上诉提出回应。该上诉将获得支持，案卷将发回移民法庭。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6b0676a975994006e8eab97fd017cb31c18e469cbd847f9d2ebcae550382ff23",
+      "chineseText": "DHS在其动议中请求驳回被申请人的申请，理由是她受到根据INA第208(a)(2)(A)节，8 U.S.C. § 1158(b)(2)(A)（2018年版）所规定的安全第三国庇护拒绝条款约束，并由8 C.F.R. § 1240.11(h)（2026年版）实施。我们最近在Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 291（BIA 2025）一案中讨论了该庇护资格拒条款，并就该法规的正确适用提供了指导。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b78b7b8b4245edcc57190a9aafc2a9a93549b23dca4b9e3b390a0793194c7286",
+      "chineseText": "1《禁止酷刑及其他残忍、不人道或有辱人格的待遇或处罚公约》，1984年12月10日，参议院条约文档第100-20号，1465联合国条约汇编85页（美国于1994年11月20日生效）。8 C.F.R. §§ 1208.16(c)、1208.17（2026年版）；8 C.F.R. § 1208.18(a)（2020年版）。\n 第703页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cec9d17eb194ecac5ac8fd84b402c031e61e9e79c5a77c2f590d85e79fed61e5",
+      "chineseText": "引用为 29 I&N Dec. 703（BIA 2026）临时裁决 #4207"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "82134aeb4cbd90d7fc82a25a8cda5fa81c2bde787d6e65a667f7c2b9ce48fd36",
+      "chineseText": "正如 Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 291（BIA 2025）所述，尽管委员会通常不受理中间上诉，但鉴于移民法官在适用8 C.F.R. § 1240.11(h)和Matter of C-I-G-M- & L-V-S-G-时反复存在误用情况，我们认为在此受理适当，以纠正该类问题。另见 Matter of M-D-, 24 I&N Dec. 138, 139（BIA 2007）（指出为“纠正移民法官处理案件中反复出现的问题”，受理中间上诉是合适的）。确定事实是否构成安全第三国庇护拒绝条款的适用是法律问题，我们进行无事实认定的独立审查。见8 C.F.R. § 1003.1(d)(3)(i)（2026年版）；Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec.第293页。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4320a5eaaaf4e976e9e578e05b0149ae6c1a6c565c38cece271fd50a66ef0a81",
+      "chineseText": "一、事实和程序经过"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f70904352da84d876607dec1c765cdea5b038b3b83749196387f9674b758a3e3",
+      "chineseText": "被申请人为古巴籍原籍及公民，2021年8月8日非法进入美国，未经过审查。DHS于次日向被申请人送达出庭通知，并向移民法庭提交该通知，启动遣返程序。被申请人于2022年4月16日在移民法官面前提交庇护、排除遣返及CAT保护申请。2025年8月7日，DHS提交驳回被申请人申请的动议，称其因根据美厄庇护合作协议（“ACA”）可将遣返地定为厄瓜多尔，故不具备申请庇护及相关保护资格。2"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "511c0440ed5ce5af3f6378fb6923791b18924844ae9a21b9880512d3e0f7735e",
+      "chineseText": "被申请人针对DHS动议提交反对意见，主张：（1）DHS已弃权驳回申请的议题；（2）DHS未能证明厄瓜多尔愿接受她；（3）DHS未能证明厄瓜多尔会提供完整且公平的程序审理其保护请求；（4）厄瓜多尔存在一般化暴力状况；（5）她在与厄瓜多尔签署ACA之前抵达美国并申请庇护；（6）基于公共利益，应准许其庇护申请；（7）基于INA和CAT，她已构成拒绝遣返至厄瓜多尔的初步案例，因为“厄瓜多尔是一个同情古巴的国家，迫害古巴叛逃者”。她的反对意见附带了厄瓜多尔暴力的综合国情证据。她未提交任何证明其曾到访厄瓜多尔的证据。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3231e63c91fc3990d92122e26c21d179d3e377d378b4ee354de2548e5b732ec6",
+      "chineseText": "2 美国与厄瓜多尔于2025年7月23日签订ACA，该协议于2025年11月17日在《联邦公报》公布。见《美国政府与厄瓜多尔共和国就向厄瓜多尔转移第三国国民的协议》，90 Fed. Reg. 51376（2025年11月17日）；另见 Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 293–94页（讨论ACA在遣返程序中的适用）。\n 第704页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cec9d17eb194ecac5ac8fd84b402c031e61e9e79c5a77c2f590d85e79fed61e5",
+      "chineseText": "引用为 29 I&N Dec. 703（BIA 2026）临时裁决 #4207"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "62045bebc2745452e7f4bd5d3f70b181c8a6fe8d3526e0d83cd0d5925a263486",
+      "chineseText": "被申请人未提交任何其曾到厄瓜多尔的证据。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "bc3d38a68fdf748ed4ef8915fd4b22681774ecab67a6cdc7ed237662a269393e",
+      "chineseText": "移民法官无偏见地驳回了国土安全部(DHS)的免审动议。移民法官声称依赖于《Matter of C-I-G-M- & L-V-S-G-》案，认定她被“阻止”在未先举行证据听证会以“解决有争议事实”的情况下免审涉案人的庇护和保护申请。移民法官进一步指出，在主日程会议中举行证据听证会不合适，因为她在主日程案件中时间有限。移民法官将关于ACA 禁令适用性的个案听证定于2030年3月19日进行。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ecd58ca19277e66c7a778ba8c58af8087872f4d1e677bdabc0224f33203162c8",
+      "chineseText": "二、讨论"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4cc7462ce804eac69d4aefdc4f47d226c562efc8175760a7aaaea5c5e2ff6376",
+      "chineseText": "在《Matter of C-I-G-M- & L-V-S-G-》案中，我们解释到，当案中人声称因未来在ACA遣返国将遭受迫害或酷刑，故安全第三国禁止庇护资格不应适用时，只有在“解决有争议事实”必要时，才必须举行证据听证会。29 I&N Dec.第296页；另见8 C.F.R. § 1240.11(h)(2)(iii)（规定若境外申请人能证明在ACA国中更可能遭因受保护理由的迫害或酷刑，则可有资格申请美国庇护）。我们进一步解释称，若声称者与该国无实质联系，移民法官通常应能在不举行完整证据听证的情况下决定安全第三国禁令的适用性。Id. 快速审理安全第三国禁令，旨在推动ACA法规的首要目的，即“进行初步筛查以确定申请人是否因ACA规定被禁止在美国申请庇护。”Id.（引述《根据移民和国籍法实施双边与多边庇护合作协议》，84联邦法规63994,63998页（2019年11月19日）(临时规则)）。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "865c8965e6d532c69a6594ba2654acdea7df68a2a08890257a23a3039b3f0767",
+      "chineseText": "移民法官错误地认定此案中必须举行证据听证以解决涉及安全第三国禁令的有争议事实。涉案人关于放弃的主张涉及法律问题，对于其主张所依赖的事实无争议。参见Biscayne Beach Club Condo. Ass’n, Inc.诉Westchester Surplus Lines Ins. Co., 111 F.4th 1182, 1185–86 (第十一巡回法庭，2024年)（说明放弃为法律问题）。移民法官无权限审查涉案人关于厄瓜多尔是否愿意接收她、是否有全面公正程序以及是否符合公众利益允许其在美国寻求庇护的论点。参见《Matter of C-I-G-M- & L-V-S-G-》，29 I&N Dec.第295页注4，298页。此外，厄瓜多尔与美国签署的ACA是在涉案人入境美国并于此提出庇护申请后生效的事实，不涉及追溯适用问题。Id.第298页。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "cec9d17eb194ecac5ac8fd84b402c031e61e9e79c5a77c2f590d85e79fed61e5",
+      "chineseText": "引用为29 I&N Dec. 703（BIA 2026年）临时裁决第4207号"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fa8d38449c3f8567f6c48bbec782a24b62ec7f57719dc669eb5ab6067d4176a2",
+      "chineseText": "厄瓜多尔是否愿意接收她、是否有全面公正程序以及公众利益等问题，移民法官无权审理。参见《Matter of C-I-G-M- & L-V-S-G-》，29 I&N Dec.第295页注4，298页。而且，涉案人入境美国并申请庇护后才生效的与厄瓜多尔签订的ACA，不涉及追溯适用的顾虑。Id.第298页。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "56434629b1e742628b1f5660cdbcf88339e32c754b4ab7dea9cddd78d795c4c2",
+      "chineseText": "此外，涉案人在回应国土安全部动议时提交的有关厄瓜多尔国情的泛泛证据，明显不足以满足根据8 C.F.R. § 1240.11(h)(2)(iii)规定的举证责任，即证明其在厄瓜多尔更可能遭因受保护理由的迫害或遭酷刑。《Matter of C-I-G-M- & L-V-S-G-》，29 I&N Dec.第297页。她模糊主张“厄瓜多尔是古巴同情国家，会迫害古巴逃兵”，缺乏任何记录证据支持，不足以形成真实的事实争议。参见Ellis诉England, 432 F.3d 1321, 1326 (第十一巡回法庭，2005年)(per curiam)（“对于事实问题需具有真实的记录依据……例如，单纯结论和无支持的事实陈述法律上不足以提出真实事实争议。”（引文省略））。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "7a712dd707e52f6da7878de29617545e3769c7639d837bcc27f763069fd871c3",
+      "chineseText": "像本案一样，若移民申请人受ACA约束，且记录无证据显示申请人在遣返的ACA国面临个别化风险，则通常无须举行证据听证以确定安全第三国禁令的适用性。参见《Matter of C-I-G-M- & L-V-S-G-》，29 I&N Dec.第296页（“因涉案人通常与相关第三国无实质联系，评估其对第三国未来将遭迫害或酷刑的主张‘较为直接’，相比于‘对申请人本国所面临迫害恐惧的复杂评估’更简单。”（引用自84联邦法规第64004页））。在此情况下，如移民法官认为在主日程简短听证期间，因时间不足难以解决ACA问题，应以双方提交的文件证据和辩论，出具书面裁定做决定。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "177dc657cbfdc59c0a1367cdbb3109c89ebf64fa1ad1a00228ccec695c140418",
+      "chineseText": "该主张似属可疑，考虑到厄瓜多尔最近驱逐了古巴全部外交使团。见《古巴关闭其驻基多大使馆，厄瓜多尔驱逐古巴外交官》，美联社（2026年3月6日），https://apnews.com/article/ecuador-cuba-embassy-noboa-diezcanel-d0bd76fa4679c657c8d9ea29e8118e9c。我们可行政公告当前事件。8 C.F.R. § 1003.1(d)(3)(iv)(A)(1)。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "cec9d17eb194ecac5ac8fd84b402c031e61e9e79c5a77c2f590d85e79fed61e5",
+      "chineseText": "引用为29 I&N Dec. 703（BIA 2026年）临时裁决第4207号"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c50ba76226bb6ab1f9daa14b22d47691f84df45cc298a555cceb264c1ca0896f",
+      "chineseText": "三、结论"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7d4acde3995f9502ee0689d023d33d28578e194ae70d77f7e19a59a070881c96",
+      "chineseText": "移民法官认定必须举行证据听证，以确定本案是否适用安全第三国禁令，存在错误，因为记录中不存在只能通过证人证言解决的真实事实争议。此外，即使进行听证以解决某些事实争议是必要的，移民法官将案件设定为将近5年后的免审动议听证也是不合理的。应在安排个别听证前先解决ACA免审问题。因此，我们将支持国土安全部的上诉，并将记录发回移民法官，令其迅速确定本案是否适用安全第三国禁令。移民法官可基于双方所提交的证据和论点，书面裁定或在迅速安排的主日程听证期间作出决定。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "46f6ffe1ee9b46e4e3b23a011d5091e0a256f0862feaecbd97d688ffe685a510",
+      "chineseText": "命令：上诉获支持。进一步命令：案件记录发回移民法庭，依本意见进行进一步程序并作出新的裁决。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ddfd57f71336a64e8dcb08debaf415c71159cb3830352510595f9fc519de24bf",
+      "chineseText": "页码 707"
+    }
+  ]
+}

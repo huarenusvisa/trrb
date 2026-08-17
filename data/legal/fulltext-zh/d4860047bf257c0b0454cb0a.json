@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 1,
+  "recordId": "d4860047bf257c0b0454cb0a",
+  "recordFingerprint": "4c9ac98dd12cbc3564c8ba0aa7423660fd08a89d47b0efa70dd4bb12df2979cc",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1449211/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1449211/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1449211/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:22:26.599Z",
+  "sourceDigest": "1ca98204c8a6bea0af7a54bf6d0eb7927b10bf419db66166b469cb1a5d7d3624",
+  "translatedAt": "2026-08-17T17:29:32.535Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 37,
+  "translatedSegmentCount": 37,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e0c5a5d138cb744d34897f4229459194cf80a6946ba60d9f4281cc8398432b7d",
+      "chineseText": "引用格式：29 I&N Dec. 717（BIA 2026） 临时决定 #4210"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bc4e372c1a7467f87b24cb64a5a2263ab36693945e11961072ca33725de4185e",
+      "chineseText": "G-L-C-案，申请人\n美国移民上诉委员会2026年5月21日裁定\n美国司法部\n移民事务执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4bd059d6dfdab317ad0be5e2e21a773cde98998be3803be96449a111d24c0e54",
+      "chineseText": "（1）申请人因违反宾夕法尼亚州综合法规第35篇第780-113(a)(30)条，持有受控物质意图交付而被定罪，该罪为特别严重罪行，依法使其无资格获得庇护和阻止遣返。\n（2）申请人未能证明根据禁止酷刑公约有资格获得遣返延期，因其在牙买加基于性取向的过去虐待系私人实施，且未能证明公务员很可能默许任何酷刑。\n申请人代理律师：Laura L. Shoaps，科罗拉多州西敏市律师\n国土安全部代理律师：Carmen F. Rickard，助理首席法律顾问\n审理团成员：执行副首席上诉移民法官GORMAN；上诉移民法官VOLKERT；临时上诉移民法官MCCLOSKEY。\n临时上诉移民法官MCCLOSKEY议审："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3efe95449436902ae00d758e2a2650d2a8458ed70c6143b86dd6db9636d64326",
+      "chineseText": "申请人系牙买加本土及公民。国土安全部对移民法官2020年10月15日依据《移民与国籍法》第208条(b)(1)(A)项批准申请人庇护申请的决定提出上诉。申请人反对该上诉。上诉获维持，申请人将被命令遣返至牙买加。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a716fae0368f1ebfd140b15c2e668a8cc0964db4372fbd69cfa75aaf2795c538",
+      "chineseText": "依2026年6月18日第6936-2026号令，代理检察长指定本委员会2026年5月21日G-L-C-案作为所有涉及同一法律问题程序之先例。参见8 C.F.R. § 1003.1(g)(3)（2026）。经编辑修改，本案符合先例指定。\n因申请人为跨性别女性，故文中使用女性代词。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6c4cfe7e8f458dadf1ac3dfd5c7468d7f5032ca6bd36e6663a7cc7bb96ee051c",
+      "chineseText": "第717页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e0c5a5d138cb744d34897f4229459194cf80a6946ba60d9f4281cc8398432b7d",
+      "chineseText": "引用格式：29 I&N Dec. 717（BIA 2026） 临时决定 #4210"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2153697c4b27e39eae423d5c74132c384eb2aab98d9d955c47cb2b19e7aed7c4",
+      "chineseText": "本案最后一次审理于2020年2月5日，当时本委员会维持申请人对移民法官2019年3月27日驳回其庇护、依据《移民与国籍法》第241条(b)(3)项阻止遣返及根据禁止酷刑公约实施条款保护申请的上诉。虽认定申请人2011年6月因持有受控物质意图交付违宾夕法尼亚州综合法规第35篇第780-113(a)(30)条而被定罪，非加重重罪，故非庇护特别严重罪行，但发回下级移民法官裁定该犯罪是否构成禁止庇护和阻止遣返的特别严重罪行，根据N-A-M-案，24 I&N Dec. 336, 342 (BIA 2007)，第10巡回法院确认，587 F.3d 1052 (10th Cir. 2009)。同时指示移民法官判断申请人是否实质合格获庇护或法定阻止遣返。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1813c6eb09756b23e7c3dd54b9b8b5eb6f7fd3c2c62f9c2757604241975a7ccd",
+      "chineseText": "基于申请人有罪证据，其负有在证据优势下证明特别严重罪行阻止申请庇护及阻止遣返不适用的举证责任。8 C.F.R. § 1240.8(d) (2026)。双方争议移民法官是否正确认定申请人已满足举证责任。我们依据N-A-M-案对该问题进行重新审查。参见E-A-S-O-案，29 I&N Dec. 422, 426 (BIA 2026)。我们将推翻认定申请人未被定性为特别严重罪行的结论。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1a74f518f0c17237ad286dbd44b5232c52578181f44d57c711492cda00e08086",
+      "chineseText": "首先审查申请人定罪性质，即犯罪要素是否可能将其归入特别严重罪行类别。参见N-A-M-案，24 I&N Dec. 342。定罪条文禁止“未注册人员制造、交付或持有意图制造或交付控制物质，或知情制作、交付或持有意图交付伪造受控物质。”宾夕法尼亚统计与综合法规第35篇第780-113(a)(30)条 (West 2011)。正如先前判决所述，该法规非绝对属于加重重罪，因为最低可处罚行为为无报酬少量大麻分发。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3a1d2aa7e09046e7c2b7ed683b2fe726c94b4db0e67919d32ea0b558d2b5cbfa",
+      "chineseText": "第718页"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e0c5a5d138cb744d34897f4229459194cf80a6946ba60d9f4281cc8398432b7d",
+      "chineseText": "引用格式：29 I&N Dec. 717（BIA 2026） 临时决定 #4210"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2594b45636aaaf5351426f623f6ea9f161d8e5ab0ea42d2d12dfddbf5a7c794d",
+      "chineseText": "Walker诉美国总检察长，625 F. App’x 87, 90–91 (3d Cir. 2015)；Evanson诉美国总检察长，550 F.3d 284, 293 (3d Cir. 2008)。然而，考虑宾夕法尼亚州综合法规第35篇第780-113(a)(30)条涵盖的全部犯罪行为范围，我们认定该罪属于特别严重罪行范畴。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6f39f6a3cdb247e1b3f8270fc45deb8f88053f14a0655d9b383b194754124a3c",
+      "chineseText": "接着考虑判刑种类。参见N-A-M-案，24 I&N Dec. 342。申请人所获3至5年监禁刑期重大，表明该罪尤为严重。参见R-B-E-案，29 I&N Dec. 499, 505 (BIA 2026)(认定4年缓刑加赔偿支持罪行属特别严重)。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "402c252cc87244212464c030904a87dfec4d9015d0ea2332dec88065ca7687f1",
+      "chineseText": "最后评估定罪的“情况及基本事实”。参见N-A-M-案，24 I&N Dec. 342。既然犯罪要件可能涵盖特别严重罪行，“可考量所有可靠信息判断是否特别严重罪行，包括定罪记录及判刑信息及定罪记录外其他信息。”同案；另参见E-A-S-O-案，29 I&N Dec. 425–26。记录显示申请人2010年5月18日在一次汽车事故中致他人重伤。申请人称不记得定罪情形，系通过警方报告获知。警方报告记载目击者见申请人事故后试图丢弃车内一箱旅行箱。警方后来找到该箱，内有“大量疑似压缩大麻，包裹于透明塑料膜中”，尺寸13” x 22” x 10”，后经检测为大麻。移民法官认定罪行非特别严重，因申请人箱内无称重器或大量现金，且非暴力犯罪。然而，记录显示申请人持有大量非法包装毒品，试图向执法机关隐匿，且因违反宾夕法尼亚州统计与综合法规第35篇第780-113(a)(30)条获重判。故根据事实与定罪情况，结论为申请人未证明其罪行为非特别严重罪行。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5d803319aefb6b60577b5ff9d3a3a0e658038e73347125272f3c29a51f4af41d",
+      "chineseText": "Y-L-、A-G-与R-S-R-案件，23 I&N Dec. 270（检察长2002）因此不适用于本案。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e8f6f680ea7acf0397a95dce08d15a431dd4bb29bb3e7cd882b8deae76da69d1",
+      "chineseText": "第719页"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e0c5a5d138cb744d34897f4229459194cf80a6946ba60d9f4281cc8398432b7d",
+      "chineseText": "引用格式：29 I&N Dec. 717（BIA 2026） 临时决定 #4210"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "95d0a4bd33ade67a98c177b5d462b5614dce9185a95a65223e7d0b47d3875047",
+      "chineseText": "综上，根据申请人定罪事实及相关情况，申请人未能证明其罪行非属于特别严重罪行。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c10c19d941efbef77b7b674b72acd1e64377b7d65034fca4640ce31600c07c81",
+      "chineseText": "基于这些理由，我们撤销依据《移民与国籍法》第208(b)(2)(A)(ii)节，8 U.S.C. § 1158(b)(2)(A)(ii)授予的庇护。我们还认定，根据《移民与国籍法》第241(b)(3)(B)(ii)节，8 U.S.C. § 1231(b)(3)(B)(ii)，被申请人不符合拒绝遣返的资格。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5f86d77c7ec9d37da8ac7890bea96ff02faa9543420cd818eedb447d6a787365",
+      "chineseText": "移民法官认为无需确定被申请人是否有资格享受《联合国反酷刑公约》（CAT）保护。在我们之前的裁决中，我们将案卷发回重审，被申请人申请庇护和法定拒绝遣返的资格问题，而未涉及2019年3月27日的裁定，即被申请人未能证明符合CAT延期遣返的资格。因此，我们不同意国土安全部(DHS)的论点，即根据既判原则，被申请人的CAT保护申请不应由我们审理。参见Spann诉全国律师考试委员会，166 F.4th 1201, 1207（第十巡回区2026年）（确认既判原则适用于“法院已经对某一问题作出裁决后”，该裁决将在同一案件的后续阶段继续适用同一问题）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "02a377233b1199834f5c0f49f425924c85d04b5cde672c8831ee3fb79c53d679",
+      "chineseText": "在反对国土安全部上诉时，被申请人未提出应发回重审以进一步完善其CAT保护资格记录的替代性主张。被申请人也未指控2019年3月27日拒绝其CAT延期遣返申请存在错误。我们现对2019年3月27日拒绝CAT保护的裁决进行审查，"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3276e1cc29ff007e3531f077e56402b76fcfd38cf202fd82757734813b557842",
+      "chineseText": "尽管被申请人被诊断患有适应障碍、人格障碍未指明类型（具有自恋和偏执特征）及创伤后应激障碍，然而她未声称精神健康状况与犯罪行为存在任何关联。参见B-Z-R-案，28 I&N Dec. 563, 567（总检察长2022）（推翻G-G-S-案，26 I&N Dec. 339（移民上诉委员会2014），并裁定移民法官可在判定一外国人“经最终判决被定罪犯有特别严重罪行是否构成对美国社区的危险”时考虑其精神健康状况（引用省略））。鉴于特别严重罪行问题具有决定性，我们无需对当事人在庇护及法定拒绝遣返资格实质上的举证义务相关争议作出裁定。参见INS诉Bagamasbad，429 U.S. 24, 25（1976）（per curiam，“一般规则是，法院与机构不必就其判决结果不需要决定的问题作出裁定”）；L-A-C-案，26 I&N Dec. 516, 526 n.7（移民上诉委员会2015）（在申请人因法定不合格而无权获得救济时，拒绝审理关于救济资格的替代争议）。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ca474d1e15a3978dcc1a5ed09a5e83977cde4e27bebe4e342ac961b2cce27d5d",
+      "chineseText": "第720页"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e0c5a5d138cb744d34897f4229459194cf80a6946ba60d9f4281cc8398432b7d",
+      "chineseText": "引用方式为29 I&N Dec. 717（移民上诉委员会2026年）临时裁决编号4210"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "33f4ad29910baf66055305a7a9e2eaa1e4921bf78deecb3ff48bc82b476ca25e",
+      "chineseText": "我们考虑被申请人在对该裁决提出上诉时提出的论点。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7056ab126cd78c6a3d3992406e2368d547cb6d5ad5419209860a5eaca335fb48",
+      "chineseText": "要符合CAT的延期遣返资格，被申请人必须证明她“很可能”在被遣返至牙买加后，将遭受公职人员同意或默认（包括故意视而不见）的酷刑。参见8 C.F.R. § 1208.17(a)；另见Garcia-Botello诉Bondi，168 F.4th 1245, 1257（第十巡回区2026年）。我们对移民法官关于被申请人将遭受之虐待类型及可能性的事实认定进行明显错误审查，对是否构成酷刑的法律认定进行全新审查。参见J-H-M-H-案，29 I&N Dec. 278, 283（移民上诉委员会2025年）（引述A-A-R-案，29 I&N Dec. 38, 41（移民上诉委员会2025年）及R-A-F-案，27 I&N Dec. 778, 779（总检察长2020年））。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "81997e964a585949ee2017268b69f0aa34d826f2d38a45444863b78d44af22ba",
+      "chineseText": "虽然被申请人在牙买加曾因其性取向遭到六次虐待，但我们确认移民法官认定的该等伤害因由私人公民施加且未获公职人员默认，未构成8 C.F.R. § 1208.18(a)意义上的“酷刑”。移民法官合情合理地将过去无酷刑经历作为评估被申请人未来遭受酷刑可能性的依据。参见8 C.F.R. § 1208.16(c)(3)(i)。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "bc5ec8da75ff041d02f2b77c399eedb81e84ba639ceb7f2ffda72a0a91e3e011",
+      "chineseText": "记录进一步支持移民法官的裁定，即申请人在2016年最近一次在牙买加居住6至7个月期间身体未受到伤害，在此期间她搬家数次。英国内政部的一份报告也指出，“当LGBT人士遭遇社会敌意时，他们可能通过迁移到牙买加的其他地方来避免此类敌意。”考虑到这一点，移民法官合理地认定申请人可以通过在牙买加境内搬迁来避免遭受酷刑。见8 C.F.R. § 1208.16(c)(3)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "6721b84535980b190c1dc249db32156db9858cef3c163ae61b35eed89ca18398",
+      "chineseText": "此外，移民法官在评估背景证据时未明显错误，认定申请人在被驱逐后受酷刑的可能性并不超过一般可能性。见8 C.F.R. § 1208.16(c)(3)(iii)–(iv)。美国国务院民主、人权与劳工局2017年牙买加人权状况报告支持移民法官关于牙买加政府已试图应对政府当局侵犯人权的裁断。此外，牙买加一项禁止“严重猥亵行为”的法律仅在涉及性侵犯和猥亵儿童案件中执行，且未用于起诉男子之间的自愿同性性行为。英国内政部报告"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "e0c5a5d138cb744d34897f4229459194cf80a6946ba60d9f4281cc8398432b7d",
+      "chineseText": "案号：29 I&N Dec. 717 (BIA 2026) 中期决定 #4210"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "c1ce2aa55e70579787e9e527f07134bd1be06244ca71a1bf9829a46b1b59059f",
+      "chineseText": "也支持移民法官的认定，即“牙买加法律并不将性取向或性别认同的变化本身定为犯罪，政府亦不容忍针对LGBT人士的歧视或暴力。”相反，政府已采取措施应对恐同和恐跨暴力，并取得了一定进展。虽然申请人对证据提出特定解读，但移民法官对证据的不同评估不构成明显错误。参见Matter of D-R-, 25 I&N Dec. 445, 454 (BIA 2011)（规定移民法官可基于对整份记录直接及间接证据的合理推断作事实认定），其他理由发回，案号Radojkovic v. Holder, 599 F. App’x 646 (9th Cir. 2015)。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "af5d246c5090c8a8f2b47952a97476a577b2baf529f85677f4978d9950061741",
+      "chineseText": "最后，记录支持移民法官认定申请人从未被当局拘留，也未被警察或其他牙买加政府官员直接伤害。申请人亦未向警方报案其所遭受的攻击。移民法官合理地依据这些事实认定申请人未能证明政府公务员更可能默许其遭受酷刑。见8 C.F.R. § 1208.18(a)(7)（“公务员的默许要求该公务员在构成酷刑的行为发生前已知晓此类行为，并随后未履行其法律职责干预阻止该行为。”）；Matter of S-V-, 22 I&N Dec. 1306, 1313 (BIA 2000)（指出“必须存在具体理由表明该个人将面临个人风险”受酷刑）。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "a9548b926e65c651bbd44b0555dfa080b50d14fcb2d83ad16d061186528a51f8",
+      "chineseText": "总体而言，我们确认移民法官关于申请人未能证明其更可能遭受牙买加政府公务员的酷刑及其默许（包括故意视而不见）的认定。见8 C.F.R. §§ 1208.17(a)及1208.18(a)；Garcia-Botello v. Bondi, 168 F.4th 1257；Matter of S-V-, 22 I&N Dec. 1313。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "430ba2594b1f02777d751a84daa361c4664d0c2261b822ca47b4be86ce36c607",
+      "chineseText": "裁定：国土安全部(DHS)的上诉获支持，准许庇护的决定被撤销。补充裁定：申请人无资格获得庇护、拒绝遣返保护及《禁止酷刑公约》(CAT)下的延期遣返。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f57852414818be3c9c3bfd901607294fc55397380b6a96dbe4da0ec7afa3b1ae",
+      "chineseText": "补充裁定：根据移民法官关于可驱逐性的裁定，命令申请人遣返回牙买加。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "51b495f02c4b19973f91cf0d60e80e92016bccbaa60e3dcbac6d2d1c494e7661",
+      "chineseText": "第722页"
+    }
+  ]
+}

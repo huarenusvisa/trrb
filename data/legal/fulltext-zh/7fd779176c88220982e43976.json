@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "recordId": "7fd779176c88220982e43976",
+  "recordFingerprint": "a10ac60e66571453e86da5e0b9f6785895099417dd4a611fdc3418b0e284437e",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1447056/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1447056/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1447056/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:14:20.770Z",
+  "sourceDigest": "cc44e7eb1bafa9287758b9b8fbdd99e2d0ceccb1a92b1cc7c1021a2bc9a9495b",
+  "translatedAt": "2026-08-17T17:22:09.120Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 42,
+  "translatedSegmentCount": 42,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8787b68e2c33a3bb6fa706e0420f78afe0d5ab6ee9c381dafa2e526ef07fe3c7",
+      "chineseText": "引用为29 I&N Dec. 708（BIA 2026）临时决定号4208"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3b110e57bff43f4e9ff5009d30147e077be9cf0cbcf2d83db6d18765e05384ab",
+      "chineseText": "P-A-C-案，答辩人\n2026年6月22日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "10595d710c29f93ee311d1a1f301cf095e928b0b20526516246c40a407a13aa2",
+      "chineseText": "答辩人根据《移民和国籍法》获得撤销驱逐（withholding of removal）的事实，是是否基于权衡有利与不利因素而行使自由裁量权拒绝答辩人庇护申请的重要考虑因素，考虑撤销驱逐决定对未来迫害风险的减轻影响。参见Kasinga案，21 I&N Dec. 357，367（BIA 1996）；及与H-案，21 I&N Dec. 337，347（BIA 1996）相区别。答辩人代理人：Lisa S. Anderson律师，加利福尼亚好莱坞。国土安全部代理人：Trent Fucci，助理首席法律顾问。合议庭成员：MALPHRUS，首席上诉移民法官；CHABAN，上诉移民法官；MCCLOSKEY，临时上诉移民法官。MCCLOSKEY，临时上诉移民法官发言："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6f85a74444669754b8f2698c0de2e84975453c144b7504cb24574fb93fd15763",
+      "chineseText": "2023年5月8日，移民法官根据《移民和国籍法》第241(b)(3)条款，8 U.S.C. § 1231(b)(3)（2018年），批准答辩人基于撤销驱逐的申请，将其送回喀麦隆，但基于自由裁量权拒绝答辩人根据《移民和国籍法》第208(b)(1)(A)条款，8 U.S.C. § 1158(b)(1)(A)（2018年），提出的庇护申请，及根据第245(a)条款，8 U.S.C. § 1255(a)（2018年），提出的身份调整申请，和根据第240A(b)(1)条款，8 U.S.C. § 1229b(b)(1)（2018年），提出的某些非永久居民撤销驱逐申请。1 答辩人对上述自由裁量权拒绝救济申请提出上诉。该上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d0a5b2627ffc4f2ccefa4de4180cb058612429317f5aa9941f6678707a41f2b2",
+      "chineseText": "1 答辩人已撤回其根据执行《反酷刑和其他残忍、不人道或有辱人格待遇或处罚公约》（1984年12月10日，参见S. Treaty Doc. No. 100-20，1465 U.N.T.S. 85，美国于1994年11月20日生效）相关规定提出的保护申请。8 C.F.R. §§ 1208.16(c), 1208.17（2026）；8 C.F.R. § 1208.18（2020）。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bfe85642ffc44321df48dfef7a7b3e72f8d73083b9183086c58fa1b53c4c38e0",
+      "chineseText": "第708页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8787b68e2c33a3bb6fa706e0420f78afe0d5ab6ee9c381dafa2e526ef07fe3c7",
+      "chineseText": "引用为29 I&N Dec. 708（BIA 2026）临时决定号4208"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7f38cc8970175c647361830a79c64ae3d731f353a8ed4053629d0d4953b830a3",
+      "chineseText": "一、程序经过\n答辩人系喀麦隆本国公民，2001年4月作为非移民入境美国，但之后未经授权一直滞留美国。答辩人于2016年被列入驱逐程序，并承认自己具备被驱逐的事实依据。2"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5c1991c039b1f6e15663847ee6b813876199f4eb24c2dfe55bee1d2e5d288ff4",
+      "chineseText": "答辩人递交了身份调整、撤销驱逐、庇护和撤销驱逐申请。从2016年至2021年，答辩人案件因各种原因被多次延期。在2022年及2023年的实质听证会上，答辩人出庭作证，并传唤了检查其心理状况的心理医生、妻子、姐妹、成年继子、叔叔、一名多年好友以及一名关喀麦隆国情的专家作为证人。移民法官认定答辩人可信，并认为其已满足撤销驱逐至喀麦隆的资格要求。双方对移民法官在这方面的认定和决定均未提出上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "da26b35b32ee4207b78c9a84d911d4225ddce41d717e2de2c3fe82bfb595eee0",
+      "chineseText": "移民法官裁定，尽管答辩人满足庇护的法定条件，但其未能证明自己应享有庇护的自由裁量待遇。参见《移民和国籍法》第208(b)(1)条，8 U.S.C. § 1158(b)(1)（规定“总检察长可以给予申请庇护的外国人庇护”）（强调为原文），及相关规定8 C.F.R. § 1208.14(a)（2026）。同样，移民法官认为尽管身份调整和撤销驱逐无法定障碍，但答辩人未能证明其应以自由裁量权获准上述申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f5d979d6d5c8fb0bf9ff4e7a7c9e3944c6cb6959dcc6093df93bdf0ba611801d",
+      "chineseText": "申请人在上诉中辩称，移民法官在驳回上述救济申请时滥用了自由裁量权。我们对移民法官自由裁量权的行使进行重新审查，并确认移民法官的裁决。8 C.F.R. § 1003.1(d)(3)(ii)（2026）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d64f8b4b88538c7f7a5b3d81b6342c96635ba78bd4e79432eb2e9b14d73aad01",
+      "chineseText": "二、分析 甲. 庇护中的自由裁量考虑因素"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "294c1a4fcbd18a2e266c46539f5886c79009b1ac68510db9b33131ecdca1e8e6",
+      "chineseText": "正如我们长期以来所坚持的，“法定和规章上获得庇护的资格……并不必然导致庇护的批准。”＂H-案＂，21 I&N 决定 337, 347（BIA 1996）；另见＂Jean案＂，23 I&N 决定 373, 384（总检察长 2002）（“［即使确定符合庇护资格，是否批准申请仍由总检察长自由裁量决定。］”）；＂Pula案＂，19 I&N 决定 467, 473–74（BIA 1987）（涉及庇护自由裁量的行使）。庇护申请人承担证明应予以自由裁量上有利考虑的责任。＂H-案＂，21 I&N 决定 347–48；同意Kalubi诉Ashcroft案，364 F.3d 1134, 1137（第九巡回法院 2004）（“庇护是两步程序，申请人首先须证明其符合法定‘难民’定义的庇护资格，其次须显示其有权根据自由裁量获得庇护。”）。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "20fb81425b3ed51e5059a8fd76e112b5588e293e839d49cee47668430dfe6d97",
+      "chineseText": "第709页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8787b68e2c33a3bb6fa706e0420f78afe0d5ab6ee9c381dafa2e526ef07fe3c7",
+      "chineseText": "引用为29 I&N 决定 708（BIA 2026） 临时决定 #4208"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b2aaa37b76b937a3478160fbf7df38f01e15e4627175b878a43c39460f47065c",
+      "chineseText": "373, 384（总检察长 2002）（“［即使庇护资格已确定，是否授予申请，由总检察长自由裁量决定。］”）；＂Pula案＂，19 I&N 决定 467, 473–74（BIA 1987）（关于庇护的自由裁量权行使）。庇护申请人负有证明有利自由裁量应予考虑的责任。＂H-案＂，21 I&N 决定 347–48；同意Kalubi诉Ashcroft案，364 F.3d 1134, 1137（第九巡回法院 2004）（“庇护为两步流程，申请人首先证明其符合‘难民’法定定义以确立庇护资格，其次证明基于自由裁量应授予庇护。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7ca6e41bfcb30afddf2fe12cd270b649d51dfb3daa7fa7f48f0506dc4b35d1c8",
+      "chineseText": "在自由裁量分析中，应权衡和考虑有利及不利因素，并综合全部情形。＂H-案＂，21 I&N 决定 347–48。在开创性案件＂Pula案＂，19 I&N 决定 473–74中，委员会规定，有利因素涵盖人道主义考量，包括申请人的年龄、健康状况及家庭关系。我们亦强调在庇护可能获准前，应考虑申请人进入或尝试进入美国的相关情形，包括申请人是否遵循其经过国家可行的有序难民程序、是否为规避该程序而从事欺诈行为，以及是否在第三国有安全避难所。＂Pula案＂，同理。若确认有过往迫害，申请人若被遣返回迫害国的人道主义因素可能在自由裁量分析中占重要地位。＂H-案＂，21 I&N 决定 347–48；另见一般案例Gulla诉Gonzales案，498 F.3d 911, 916–19（第九巡回法院 2007）（考虑诸如迫害、健康问题、强有力的关系、无欺诈政府行为及无刑事记录等因素）。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e118f8c35b1a406ddc127f56a46a6fc3c2c426bd2d7b895a25ea7a1b7cc81b6a",
+      "chineseText": "不利因素可能包括不足以构成强制性庇护拒绝理由的刑事及欺诈行为。＂H-案＂，21 I&N 决定 347–48；另见例如Htun诉Lynch案，818 F.3d 1111, 1120–21（第八巡回法院 2016）（考虑欺诈婚姻、刑事记录与缺乏可信度等不利因素）；Kouljinski诉Keisler案，505 F.3d 534, 543（第六巡回法院 2007）（认定三次酒驾定罪支持机构自由裁量拒绝庇护）；Hosseini诉Gonzales案，471 F.3d 953, 957（第九巡回法院 2006）（考虑整个移民程序中的移民欺诈）；Ibrahim诉Gonzales案，434 F.3d 1074, 1079（第八巡回法院 2006）（考虑……）。注：虽然为逃避迫害而使用欺诈性文件通常不是自由裁量拒绝庇护的依据，但与逃避迫害无直接关联的欺诈行为则可作为适当考虑因素。见＂D-X- & Y-Z-案＂，25 I&N 决定 664, 666（BIA 2012）。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "167d2ef0c04ec38419fa0616f01f30da375bc08880f50e80c04e2565bdea9b81",
+      "chineseText": "第710页"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8787b68e2c33a3bb6fa706e0420f78afe0d5ab6ee9c381dafa2e526ef07fe3c7",
+      "chineseText": "引证为29 I&N Dec. 708（BIA 2026）临时裁决编号4208"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "327344565930a4a5fa2b2bd004ea01d56ec910f8337d83f954201585609871a8",
+      "chineseText": "向移民和执法部门提交虚假陈述的历史；Jean案，23 I&N Dec. 373, 385（总检察长，2002）（裁定刑事定罪应出于自由裁量权拒绝庇护）。帮派成员身份和参与也属适当考量。Benitez Ramos诉Holder，589 F.3d 426, 431（第七巡回，2009）（指出暴力犯罪帮派成员实施暴力行为的，“可能因自由裁量权被拒绝获得[庇护]”）。4"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "74a054a8c72b9d627c812880c0174c7b79fd5940a3a280891a2063d8aa409bdb",
+      "chineseText": "委员会此前曾声明，未来迫害的危险是一项自由裁量因素，可以超过大多数不利因素，比如申请人在逃离迫害国期间的行为引发的不利因素，或那些非“最恶劣”不利因素。Kasinga案，21 I&N Dec. 357, 367（BIA 1996）；同意H-案，21 I&N Dec. 347-48。然而，本案申请人获得对喀麦隆的撤离阻止令，这使本案有别于Kasinga案和H-案的事实。此外，这些先前案件未考虑对迫害危险给予更高自由裁量权的基础理由。如Pula案所述，对迫害危险给予更大权重源自我们所认可的“特别关注的情形[针对]已证明符合庇护法定资格但无法满足撤销驱逐更高举证责任的外国人。”Pula案，19 I&N Dec. 474。在能满足撤销驱逐更高举证责任的情况下，该关切被消除。Kasinga案和H-案未指出授予撤销驱逐令的重要性，我们因该理由区别于这些判决。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "139c99457b1fb8d80bafafbbe0cc9d9d466864413f955ee0fb2af41283605098",
+      "chineseText": "申请人获得撤销驱逐令是评估是否可基于利弊权衡自由裁量权拒绝庇护的重要考量，需考虑撤销驱逐令在减轻未来迫害风险方面的缓解作用。与Pula案一致，我们明确指出，在本案类似情形下，申请人依据INA获得撤销驱逐令，即使存在未来迫害危险，也可基于自由裁量权拒绝庇护，尽管相关不利因素非“最恶劣”，因禁止将申请人遣返可能遭迫害国。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "be506dd74397c233a2235612ad270841acfd2af0d5c771004388a7439d043864",
+      "chineseText": "4 帮派成员身份和参与的证据必须可靠，方可作为适当考量。Diaz Ortiz诉Garland，23 F.4th 1,17（第一巡回，2022）。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ecf4621dbeeb848d38c2b2ed7245accc92590f6f6412276456ac7e453209e3b5",
+      "chineseText": "第711页"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8787b68e2c33a3bb6fa706e0420f78afe0d5ab6ee9c381dafa2e526ef07fe3c7",
+      "chineseText": "引证为29 I&N Dec. 708（BIA 2026）临时裁决编号4208"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "65caef2c6c32ad3b811f9771b0b6079988442b8f15ffd75cb4e3971c40b7efac",
+      "chineseText": "本案中，移民法官在行使自由裁量权时适当考虑了有利和不利因素及整体情境。法官决定列举多项公平因素，包括申请人与美国的紧密且有意义的家庭关系、其长期居住美国、企业所有权、教会参与、纳税记录、医疗和心理诊断、戒酒努力以及其在喀麦隆遭受及恐惧的迫害。虽这些优势显著，但被申请人刑事记录所带来的重大不利因素超过，刑事记录包括2004年至2011年间四起酒后驾驶（DUI）定罪。部分DUI案件带有加重因素。例如，一起涉及汽车事故，另一涉及因损坏警车而被判恶作剧罪。申请人还有多起其他违规行为，均因其在驾驶证无效或被吊销状态下继续驾驶。此外有证据表明申请人在其驾驶证被吊销期间某种程度上为拖车公司及送货人工作。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "59c6e9615bf639d447f22f69ceeebc16426731ca68e91ebc4801c6e84f2c3b86",
+      "chineseText": "Castillo-Perez案，27 I&N Dec. 664, 671（总检察长，2019）中，总检察官指出，“有多起DUI定罪的外国人可能不配获得……自由裁量救济。”尽管Castillo-Perez案系取消驱逐申请，多起DUI定罪在庇护等情境也属相关且重要不利因素。我们认可并赞扬申请人戒除酗酒和避免进一步执法接触的努力，但其“多次DUI定罪严重玷污其记录，反映其对他人安全及法律的漠视”，且作为自由裁量不利因素具有重大权重。见同案670页。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "6ccf2b9846229f0faf4c2930b52a24e4b758189a411f9b0ebfa2a223d51fd357",
+      "chineseText": "我们行使自由裁量权时权衡所有有利与不利因素。特别承认申请人在喀麦隆遭受的迫害与创伤。但需认识到除非发生根本变化（或本案未显示相关其它理由），申请人因撤销驱逐令获得保护，不被遣返回喀麦隆。见Kalubi案，364 F.3d 1141（指出“撤销驱逐令消除未来迫害风险，因为[外国人]不得被遣返其逃离国家”）；另见8 C.F.R. §1208.24(b)（述及撤销驱逐终止）。综观案卷，我们同意移民法官认定负面因素，特别是申请人重复且危险的犯罪史，超过本案公平因素。见一般性Kouljinski案，505 F.3d 543（认为基于申请人多次酒驾定罪的自由裁量拒绝无滥用裁量）。故移民法官适当以自由裁量权拒绝申请人的庇护申请。5"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8787b68e2c33a3bb6fa706e0420f78afe0d5ab6ee9c381dafa2e526ef07fe3c7",
+      "chineseText": "引证为29 I&N Dec. 708（BIA 2026）临时裁决编号4208"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "abbae9dc1447aea0721b94d3e5d624447e7e24d67a3746d6ea3cc1b0d4258663",
+      "chineseText": "负面因素包括申请人犯罪记录中反复出现且具有危险性的性质，超过本案公平因素。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "c9c2ca88fd8a2f0ba7caf026eaeabec444bb7c17af536946880192ec9a89efb3",
+      "chineseText": "B. 其他救济申请"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "528439f3587a83795e7258e734456844f1cb402da599fdaa5fd4b3e116fa0972",
+      "chineseText": "我们在评估申请人其他自由裁量救济申请时，考虑并权衡移民法官已识别并于前述讨论的相同有利与不利因素。见Sotelo案，23 I&N Dec. 201, 203–04（BIA 2001）（阐释权衡分析）；C-V-T-案，22 I&N Dec. 7, 11–12（BIA 1998）（列明相关考量因素并强调“涉及有罪外国人的申请须逐案评估，康复为自由裁量考虑因素”）；Edwards案，20 I&N Dec. 191, 195–96（BIA 1990）（指出更严重的不利因素需由更有力的有利因素平衡）；另见Ridore诉Holder，696 F.3d 907, 920–22（第九巡回，2012）（讨论权衡正负自由裁量因素）。我们结论为申请人未充分证明其有利自由裁量权以支持身份调整和取消驱逐申请。见INA §240(c)(4)(A)(ii)，8 U.S.C. §1229a(c)(4)(A)(ii)（2018）。尽管其提出的公平因素非无关紧要，但不及其多起醉驾定罪所产生的重大不利自由裁量影响。见Castillo-Perez案，27 I&N Dec. 671（认定多起醉驾定罪因涉及醉驾犯罪的“鲁莽且危险性质”，外国人可能不值得自由裁量救济）。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8e506287287b6ad0b4b7752c1b9c56a745529c9ea6566eec4ba137de963208b8",
+      "chineseText": "因此，我们驳回申请人针对庇护、身份调整及取消驱逐申请被拒的上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "285d55ed8dbedec18b4791394930f266c3d7428df1875ae76d10224ca2429e48",
+      "chineseText": "命令：申请人的上诉被驳回。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "ea4136067b132252aa2046911ff739ae98f485dc1cc2bb50500f5b082a3cfb28",
+      "chineseText": "5 申请人依据INA获得撤销驱逐令，但因自由裁量权原因单独被拒庇护，移民法官未依照8 C.F.R. §1208.16(e)（2020）重新审议自由裁量拒绝事项。然申请人在听证会未提出家庭团聚相关关注，且上诉中亦未提及此问题。故我们视此议题为放弃。见P-B-B-案，28 I&N Dec. 43, 44 注1（BIA 2020）（指出未在上诉中提出的论点视为放弃）。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "949344fda7a8acb2c1344422933af3e044dcb69b3fb0cc32f90117bda87265c4",
+      "chineseText": "第713页"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8787b68e2c33a3bb6fa706e0420f78afe0d5ab6ee9c381dafa2e526ef07fe3c7",
+      "chineseText": "引证为 29 I&N Dec. 708 (BIA 2026) 临时裁决编号#4208"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a506e4ed23590812a41a781c6e8560c33b560f004acf05024f127555b929b983",
+      "chineseText": "进一步命令：移民法官根据《移民与国籍法》批准被申请人申请禁令遣返的决定予以确认。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "db807ee9d2f8c0ce9dea227599e9f97f3eaf9e804e44279ab9c34e2352e03d6e",
+      "chineseText": "致被申请人/申请人与国土安全部/美国公民及移民服务局（USCIS）的联系通知：移民上诉委员会已对您的案件作出最终决定。根据您获得的救济或避免驱逐保护的类型，您可能有权获得证明您在美国合法身份的文件，或者您可能有资格在美国工作。 但是，为了获得任何文件，您需要联系负责签发证明您身份和/或工作许可文件的国土安全部（DHS）下属的美国公民及移民服务局（USCIS）。有关特定USCIS指示的信息，请访问 www.uscis.gov（搜索“命令后指示”或“移民法官或移民上诉委员会授予移民福利个人通知”）查阅获取身份文件或工作许可的程序。此外，移民审查执行办公室（EOIR）网站 www.justice.gov/eoir 提供了指向USCIS网页的链接，该网页又链接至“命令后指示”。您也可以致电USCIS全国客户服务电话1-800-375-5283。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8d421deb2ecffda082fb3a467a402346abe54b529fe13f7340b088d93c49ce27",
+      "chineseText": "通知：如果被申请人受到最终驱逐令的约束，并且故意未能或拒绝按该命令离开美国，未能诚信及时申请出入境或其他离开美国所必需的文件，或未能按照国土安全部要求的时间和地点自首，或密谋或采取任何妨碍或阻碍其根据驱逐令离境的行为，则该被申请人将面临每天最高998美元的民事罚款。参见《移民与国籍法》第274D条，8 U.S.C.§1324d（2018）；8 C.F.R.§280.53(b)(14)（2026）。此外，任何被拒绝入境、被驱逐或在排除、驱逐或遣返令有效期间离开美国，事后进入、试图进入或被发现身处美国的被申请人，将被处以最高2年罚款或监禁，或两者并罚。参见《移民与国籍法》第276(a)条，8 U.S.C.§1326(a)（2018）。"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a43dd4d730505b793071ae698d7a8c6435973de0a37688cd50287edf6d3e66a1",
+      "chineseText": "第714页"
+    }
+  ]
+}

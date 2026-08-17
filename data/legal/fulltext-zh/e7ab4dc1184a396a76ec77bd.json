@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "recordId": "e7ab4dc1184a396a76ec77bd",
+  "recordFingerprint": "8281ccbf2b2404d742e96d5059847b8da56b3c399becbc7032014a902f948ac6",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1388011/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1388011/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1388011/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:07:33.331Z",
+  "sourceDigest": "ccf0ca77123a80fa45fbfeb6626046ab90ee978942c8338747d28e125dfe5cf5",
+  "translatedAt": "2026-08-17T17:11:47.374Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 33,
+  "translatedSegmentCount": 33,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5bc78e4598d16a6b8d61582bcacc225ec734d430e5f36ed46b1aa01dbed56cb8",
+      "chineseText": "引证为 29 I&N Dec. 7（BIA 2025）临时决定#4086"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2c41062b52b3140b7f75f132e69bbe6dcfed1d487a29dc9a55356e51d5638995",
+      "chineseText": "德·赫苏斯-普拉顿，Leobardo DE JESUS-PLATON 事项，被告\n由董事会于2025年1月17日决定\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "32347850d681d5c7ab016b7b6489e890180e1ef8fa0ab9ba809b8567ddd3b20f",
+      "chineseText": "被告为支持其驳回复审动议所提交的根据加利福尼亚刑法第1473.7条的判后救济证据，并未证明其定罪因程序性或实体上的缺陷而被撤销，且并非基于康复或移民困难的理由。\n辩护代理人：Arnold S. Jaffe律师，加利福尼亚圣巴巴拉\n审理委员会成员：MALPHRUS，副首席上诉移民法官，CREPPY和CLARK，上诉移民法官。\nCREPPY，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c32c5c0ef87dfa6b5ccf50a81f08b19a73be696f0f378d590eda29f8f5f8db6c",
+      "chineseText": "被告，墨西哥出生及公民，提起上诉反对2019年12月19日移民法官的裁决，该裁决认为被告因被定罪犯有涉及道德败坏罪行（\"CIMT\"）而无资格获得取消驱逐。依据《移民与国籍法》第240A(b)(1)(C)条，8 U.S.C. § 1229b(b)(1)(C)（2018年）。在本案上诉待审期间，被告提交补充文件，显示其唯一的定罪已依据加利福尼亚刑法第1473.7条被撤销，并请求发回重审。国土安全部（DHS）未提交答辩意见。被告的驳回复审请求将被拒绝，上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1a25ed64207241a6f18853f89a51f67222ebac9fe818003a7f5ffcdf89aa4f93",
+      "chineseText": "最初，移民法官认定被告于2012年依加利福尼亚刑法第422条的犯罪威胁行为定罪属涉及道德败坏罪行（CIMT），最高可判处一年徒刑，因而被判定无资格获得取消驱逐。见"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d03e21694bd153dc8d75412bd00b4c13050a23067e2b0397b6ee8707c815bab9",
+      "chineseText": "依据2025年1月31日第6186-2025号命令，代理总检察长指定本委员会关于德·赫苏斯-普拉顿案（BIA 2025年1月17日）决定作为处理相同问题的先例。见8 C.F.R. § 1003.1(g)(3)（2025年）。编辑性更改已依照先例指定处理。\n补充简报的受理请求将被批准。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3ac81d60167aa960b6252c80d48b720148b52b7296adb21a0f57d92634cb4e57",
+      "chineseText": "第7页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5bc78e4598d16a6b8d61582bcacc225ec734d430e5f36ed46b1aa01dbed56cb8",
+      "chineseText": "引证为 29 I&N Dec. 7（BIA 2025）临时决定#4086"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "47e73a401cc52b58513eb0283a261d3762d87cbf2dfbd1058dae6e6daf540579",
+      "chineseText": "Latter-Singh诉霍尔德案，668 F.3d 1156, 1163（第九巡回法庭2012年）；另见INA § 237(a)(2)(A)(i)(II), 8 U.S.C. § 1227(a)(2)(A)(i)(II)（2018年）。委员会确认移民法官决定，被告向第九巡回上诉法院提出复审申请。第九巡回法院基于加利福尼亚刑法第18.5条的法律变更发出发回命令，该变更调整加州县监禁最高刑期不得超过364天。委员会遂将案件发回移民法院，重新审查被告基于加州法律变更后是否符合取消驱逐资格。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b0c52565100be21e938b4ba969bbefb8ffe7d4cc6b032105462fb2d2fcbd4a09",
+      "chineseText": "发回后，委员会公布Velasquez-Rios事项，判定加州刑法第18.5条修正案不影响《移民与国籍法》第237(a)(2)(A)(i)(II)条适用，该条款涉及因CIMT定罪且可判处一年或以上刑期者。27 I&N Dec. 470, 473（BIA 2018），第九巡回法院确认，988 F.3d 1081（2021年）。2019年12月19日，移民法官作出新裁定，维持被告无资格获得取消驱逐。被告对该裁定提起上诉并向委员会提交质疑Velasquez-Rios事项适用性的简报。我们对相关法律问题进行全新审查。8 C.F.R. § 1003.1(d)(3)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8b751369230269d85f067fd5d49062ae56edc692486ba92c0a6ffd30d1c168fb",
+      "chineseText": "基于Velasquez-Rios事项，27 I&N Dec. 473，我们确认移民法官裁定，认定加州刑法第18.5条修正案未使被告符合取消驱逐资格。移民法官认定，被告在定罪时所面对的最高刑期为1年。因此，根据INA第237(a)(2)(A)(i)(II)条，8 U.S.C. § 1227(a)(2)(A)(i)(II)，该条款要求“回溯审视被告定罪时可判处的最长期限”，被告被认定犯有CIMT，且依据定罪时的法律，该罪可被判处一年或以上刑期。Velasquez-Rios事项，27 I&N Dec. 472。我们承认对加州刑法第18.5条的修订具有追溯效力，但该修正不影响INA第237(a)(2)(A)(i)(II)条的适用性。故此，我们结论为被告由于被判处可达一年或更长刑期的CIMT，仍无资格获得取消驱逐。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e2bf883244080612cc1f22c74d64ad35c7f5dc14e35b08798bd7207b5daada2a",
+      "chineseText": "被告辩称Velasquez-Rios事项违反美国宪法第十修正案以及联邦主义原则。第九巡回上诉法院已认定Velasquez-Rios事项并未违反第十修正案，也未不当干涉州权。见Velasquez-Rios诉Wilkinson案，988 F.3d 1081, 1089（第九巡回2021年）（确认Velasquez-Rios事项，认定加州刑法第18.5条修正案不具备回溯性适用于INA第237(a)(2)(A)(i)(II)条）。第九巡回法院确认联邦政府对移民法拥有主导权，联邦移民法“不得被州法律行为回溯修改或抵触。”同上。我们同意Velasquez-Rios事项并未不当干涉州定义刑法的权利。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5bc78e4598d16a6b8d61582bcacc225ec734d430e5f36ed46b1aa01dbed56cb8",
+      "chineseText": "第8页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "98f07bc7f59b1327dd4d99716f6f4ab9ac07910d32b6ff482598483fa6b83821",
+      "chineseText": "引证为 29 I&N Dec. 7（BIA 2025）临时决定#4086"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1fcc1025d05eb2b021b7bc9c6a317a52d15211292ad6a6cc7b6b2e8403380bc5",
+      "chineseText": "被告进一步辩称Velasquez-Rios事项排斥州法权威。然而，正如Velasquez-Rios诉Wilkinson案所认定，Velasquez-Rios事项不存在排斥问题，因为“并未产生州法与联邦法的冲突。”988 F.3d 1088。Velasquez-Rios事项“与加州是否可为其州法目的回溯减少轻罪定罪最高刑期无关。”同上。故此，我们认定Velasquez-Rios事项不涉及相对于加州法律的排斥问题。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6eb790d04728e8a95700003b13136704323a2e036ffc0c5025c7e276a51991a4",
+      "chineseText": "被告辩称Velasquez-Rios事项与Cota-Vargas事项，23 I&N Dec. 849（BIA 2005），及Song事项，23 I&N Dec. 173（BIA 2001）不一致。然该等事项涉及州法院的nunc pro tunc判刑修改，而本案并无此情形。见Velasquez-Rios，988 F.3d 1088。此外，该等事项已被总检察长推翻。见Thomas and Thompson事项，27 I&N Dec. 674, 686（A.G. 2019）（解释因撤销定罪案件中不适用全面信任原则，因移民法官仅解释INA下“定罪”定义，而非“重新评估或质疑州法院判决的有效性”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "98f180319d9ff9e8df33d3cb0a12ab095e9a60449cc98679846f3da899826e42",
+      "chineseText": "被告亦辩称委员会依赖McNeill诉美国案，563 U.S. 816（2011）及美国诉Diaz案，838 F.3d 968（第九巡回2016）为不当。然在Velasquez-Rios诉Wilkinson案中，法院认知该等案件非直接适用，因其处理刑事刑期法令。988 F.3d 1087。尽管如此，法院认可该等案件理由具有说服力。988 F.3d 1086–87。我们认为被告关于这些案件不相关的论点不能成立。第9页"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5bc78e4598d16a6b8d61582bcacc225ec734d430e5f36ed46b1aa01dbed56cb8",
+      "chineseText": "引用方式：29 I&N Dec. 7（BIA 2025）临时决定#4086"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d13cca6fb9846b46446196399c2a9dd4392d521a87181e8e4a0668b2ed60caba",
+      "chineseText": "被告辩称Latter-Singh诉Holder案，668 F.3d 1163号判决不再是约束性权威，且他的定罪不绝对构成严重不端行为犯罪（CIMT）。我们不同意。我们认定Latter-Singh案法院认为加州刑法第422条构成严重不端行为犯罪的判决在第九巡回法院具约束力。在Flores-Vasquez诉Garland案中，法院解释加州刑法第422条绝对构成CIMT，因为其要求同时具有恶意或恶意意图以及对他人造成实质性实际伤害。80 F.4th 921, 928（第九巡回法院2023年）（引自Latter-Singh案，668 F.3d 1162）。被告未能对其案情与Latter-Singh案作有意义区分。我们确认被告的定罪构成严重不端行为犯罪（CIMT）。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ee0090c18008f576f5a9cbc0c625b1ad80dc957a5572ee3f927d306389feec90",
+      "chineseText": "被告进一步辩称，他在加州刑法第18.5条颁布之前并无定罪，因为其刑罚尚未执行完毕。无论是本局还是《移民和国籍法》（INA）均不要求个人在考虑为犯罪定罪时必须完成刑期。参见INA § 101(a)(48)(A), 8 U.S.C. § 1101(a)(48)(A)（2018）；参见Matter of S. Wong, 28 I&N Dec. 518, 520（BIA 2022），经确认，Wong诉Garland, 95 F.4th 82（2024），后被撤销，见No. 24-92，2024 WL 4654950（2024年11月4日）；Matter of J. M. Acosta, 27 I&N Dec. 420, 432（BIA 2018）；Matter of Punu, 22 I&N Dec. 224, 225-27（BIA 1998）。我们还认为，被告因严重不端行为犯罪定罪发生于进入美国后16年余，对其申请取消驱逐资格无影响。参见Matter of Ortega-Lopez, 27 I&N Dec. 382, 398（BIA 2018）（认定如申请人因CIMT被判处或可判处一年以上刑期，则无资格申请取消驱逐，无论其是否满足移民上的不可准入或驱逐条件）。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "7a65da514531cc47c2e55c5267092eee3824ce4c93126df3652659fc43afa450",
+      "chineseText": "在被告上诉期间，州法院依据加州刑法第1016.5条与第1473.7条准许被告提出的刑后救济请求，并允许其撤销唯一使其不具备取消驱逐资格的认罪。管辖区内的权威先例认定加州刑法第1473.7(a)(1)条“提供一种程序用以撤销因实质性或程序性错误而‘法律上无效’的定罪[且]不允许州法院为缓解因定罪或判刑所产生的任何移民后果而撤销定罪。”Bent诉Garland案, 115 F.4th 934, 940（第九巡回法院2024）（省略强调）。然而，被告为支持案件发回的新证据称其定罪是依第1473.7条一般规定撤销，而非特指第1473.7(a)(1)款。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "947219b18fe765898176a07adcf970d39be481298b07fbfb0cde9347715f7b4d",
+      "chineseText": "第10页"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5bc78e4598d16a6b8d61582bcacc225ec734d430e5f36ed46b1aa01dbed56cb8",
+      "chineseText": "引用方式：29 I&N Dec. 7（BIA 2025）临时决定#4086"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ad8d7d7c068869e9617595ed5b7f37f0f21b8de3683ee5dccf3d96913d1bf153",
+      "chineseText": "被告提交的新证据未具体显示适用于其案情的相关法定条款细节。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c67e95429723a0afdd0b7c61097030c368064b8c11af558e881c237c59b3986e",
+      "chineseText": "我们依照重新开启动议的标准考虑被告关于刑后救济的新证据以支持发回重审。参见Matter of Coelho, 20 I&N Dec. 464, 471（BIA 1992）（适用重新开启动议标准于发回动议）。我们认定被告的新证据具有实质性且先前不可获得。8 C.F.R. § 1003.2(c)(1)（2025）。然而，由于被告的新证据未能确定其定罪撤销适用的具体法定条款，我们认定被告未能满足取消驱逐的初步资格负担。参见Matter of Azrag, 28 I&N Dec. 784, 787（BIA 2024）；Matter of Chavez, 24 I&N Dec. 272, 274（BIA 2007）；Matter of L-O-G-, 21 I&N Dec. 413, 420（BIA 1996）（关于初步资格的标准讨论）；另见Pereida诉Wilkinson案, 592 U.S. 224, 233（2021）（认定被告负有证明其未被判定为不合格罪行的负担）。在此， 被告未能提交撤销动议或能反映适用法定条款和根本理由的其他证据。参见Matter of Dingus, 28 I&N Dec. 529, 536（BIA 2022）。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "19feef14ae2f63fc1bba6be2514b8060b940f81a97d14302f0c1e5a106a63fdc",
+      "chineseText": "被告的证据未能证明其定罪是因程序性或实质性缺陷而被撤销，而非因康复或移民难处等原因。参见Matter of Thomas and Thompson, 27 I&N Dec. 674, 689-90（BIA 2019）；Matter of Pickering, 23 I&N Dec. 621, 624（BIA 2003），其余理由被第六巡回法院465 F.3d 263（2006年）推翻；对比Nath诉Gonzales案, 467 F.3d 1185（第九巡回法院2006）（认定在可驱逐性框架下政府承担举证责任）。我们因此拒绝基于此理由发回被告案情复审。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "10faa291d7c983940c42e642433f6caa8d67f8f8fa091999f1afc4b0cdbc10a2",
+      "chineseText": "3 加州刑法第1473.7条列明撤销判决的三种理由："
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a205173e32fdaecd8518b4a1e7031d45b549e1dbf2a5342e48ff92801e27e489",
+      "chineseText": "（a）非刑事羁押人员得就以下任一理由提出撤销判决或刑罚的动议：\n（1）定罪或刑罚因有害性错误导致法律无效，损害申请人对定罪或刑罚造成实际或潜在不利移民后果的明智理解、防御或接受能力。法律无效的认定可包括但不必定包含无效辩护。\n（2）存在新发现的实际无罪证据，依法或基于公平原则必须撤销定罪或刑罚。\n（3）定罪或刑罚基于种族、族裔或国家出身的不正当原因而追求、获得或判定，违反第745条（a）款规定。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "4f2dee5cdaa715238bec1f5503e05ba6b4e2ebb74351d05c450590df99c5fedc",
+      "chineseText": "加州刑法§1473.7（2025年）。第11页"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "5bc78e4598d16a6b8d61582bcacc225ec734d430e5f36ed46b1aa01dbed56cb8",
+      "chineseText": "引用方式：29 I&N Dec. 7（BIA 2025）临时决定#4086"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "68f19295a802cc744a6a40a915165415f0eea325d4a874800b5352dfa83cfd0c",
+      "chineseText": "鉴于以上理由，我们拒绝基于此撤销动议发回被告案件。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9e1e00aea697b5110d051b59d558d9f1b5dbcb4969f22f9bf0437e8f81da8874",
+      "chineseText": "命令：被告的上诉被驳回。\n进一步命令：被告的发回动议被拒绝。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "1a8c9220f0031efb162f5d678e25ed6e4ce1056017136a75dd4e77e24b76782b",
+      "chineseText": "第12页"
+    }
+  ]
+}

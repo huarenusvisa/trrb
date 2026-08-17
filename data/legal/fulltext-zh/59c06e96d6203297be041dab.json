@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "recordId": "59c06e96d6203297be041dab",
+  "recordFingerprint": "e14de361c5cfa1ce9fa0820634c50248f6b746e527a460e0e69d2d29a01cdbf2",
+  "datasetVersion": "e3537d64aba1f09d7bcd7cf07feb53d2bb3c3ba5dcf9ddb6c5f395ca1be1fdde",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1446391/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1446391/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1446391/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T17:03:10.162Z",
+  "sourceDigest": "06147a9085963714cbc9b20f4b50f3eaec977b2672238a8c8baca1f2da90c754",
+  "translatedAt": "2026-08-17T17:07:33.300Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 27,
+  "translatedSegmentCount": 27,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0d86772bfc20c0aa439efede65c8b003a2c4ecd653d35bf5623b126f56a9ae2d",
+      "chineseText": "引证为 29 I&N Dec. 698 (BIA 2026) 临时决定 #4206"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1bf9cb90e24addaff7ad1a9ceee4b4f9e6ad38a713d909d8518d58e99a8954f1",
+      "chineseText": "Y-H-L-案，申请人\n于2026年5月8日由移民上诉委员会裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dfcef4afafb274d4cc79e798302af746f5ff7fb43b0a44761118f6c5cf7e676f",
+      "chineseText": "(1) 当申请人未能证明移民法官适当要求对可信但不具说服力的证词进行佐证以及移民法官适当认定对中国涉嫌强制堕胎有合理可得的佐证时，不应当重新考虑。\n(2) 申请人未能证明律师无效援助，因为律师依赖由申请人前律师提交的经认证的证据翻译并非不合理。\n代表申请人：Theodore N. Cox律师，纽约，纽约\n合议组成员：GORMAN，副首席上诉移民法官，GOODWIN，上诉移民法官，MCCLOSKEY，临时上诉移民法官。\nMCCLOSKEY，临时上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "38d31bbf7e526f0da9256a9820beb0c9c6b9df58bbe7b8da2bb9d479fd24ac61",
+      "chineseText": "本案最后于2025年3月18日审理，当时我们驳回了申请人对2020年6月9日移民法官裁决的上诉，该裁决驳回了其寻求庇护和拒绝驱逐的申请。依据《移民和国籍法》(INA)第208(b)(1)(A)条及第241(b)(3)(A)条，8 U.S.C. §§ 1158(b)(1)(A), 1231(b)(3)(A)（2018）。申请人为中华人民共和国出生及公民，已提交了及时的重新考虑及重新开启动议。依据INA § 240(c)(6)(B), (c)(7)(C)(i)，8 U.S.C. § 1229a(c)(6)(B), (c)(7)(C)(i)（2024）。国土安全部未对任一动议作出回应。动议将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7b53716a2c1614b089dcb8edbe90564d59f5d39ff2ba908be9c5380ebe3edc90",
+      "chineseText": "申请人证词称，在中国生育两个孩子后，其第三次怀孕被强制堕胎，医院工作人员告诉她返回施行输卵管结扎术。在上诉审查中，我们确认移民法官认定申请人证词不具说服力，且未提供合理可得的证据来佐证其主张。1\n依据命令号6933-2026，于2026年6月15日，代理司法部长指定本委员会于2026年5月8日作出的Y-H-L-案决定作为涉及同一问题的所有诉讼中具有先例效力。见8 C.F.R. § 1003.1(g)(3)（2026）。已进行编辑修改以符合案件先例指定。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cd5ade7759ebcfd5521ae1a0ec2ada0a5eb4e2c7eae31ce538c5dae155d69cf6",
+      "chineseText": "第698页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0d86772bfc20c0aa439efede65c8b003a2c4ecd653d35bf5623b126f56a9ae2d",
+      "chineseText": "引证为 29 I&N Dec. 698 (BIA 2026) 临时决定 #4206"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "20576efbe8f761daa122ce6dfdcb395f515f550cfdd412c65f18c2a4ab963289",
+      "chineseText": "我们确认了移民法官认定申请人证词不具说服力，且未提交合理可得的证据以佐证其主张的裁定。见INA §§ 208(b)(1)(B)(ii), 241(b)(3)(C), 8 U.S.C. §§ 1158(b)(1)(B)(ii), 1231(b)(3)(C)；另见Liu诉Holder案，575 F.3d 193, 196（第二巡回法院2009年）（认可移民法官可要求对即使可信的证词进行佐证）；Wei Sun诉Sessions案，883 F.3d 23, 28（第二巡回法院2018年）（解释申请人在未提出合理可得的佐证时，其证词可能不足以使事实认定者信服其关键事实的准确性）。申请人现请求我们重新考虑裁定。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "faf2642d4f6037e8aa5d59331981248d7c494821d3ee9f43ebcd5d423fde5559",
+      "chineseText": "我们将驳回重新考虑动议，因为申请人未指出我们先前裁定中的事实或法律错误。依据INA § 240(c)(6)(C), 8 U.S.C. § 1229a(c)(6)(C)；另见8 C.F.R. § 1003.2(b)(1)（2026）。在重新考虑动议中，申请人主张委员会错误地确认了移民法官基于申请人未提交中国医疗记录而作出的佐证要求。申请人援引Pinel-Gomez诉Garland案，52 F.4th 523（第二巡回法院2022年），该案指出移民法官拒绝申请人因缺乏佐证应具有两个要素：(1) 法官必须认定申请人应提供佐证其可信的证词；(2) 法官必须认定必要的佐证是否已为申请人所有或申请人合理可获取。申请人认为移民法官的分析缺少上述两个要素，故委员会确认其佐证不足的认定存在错误。我们不同意。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8f8ee63bb2c9d1b50ff3dfa34f1f674574de0ada89beacefbf331e74b1a6b563",
+      "chineseText": "本案中，移民法官认定申请人之证词不具说服力，因此应提交证据以佐证其本来可信的证词。我们认定移民法官基于国土安全部提交的证据，适当给予申请人证词有限权重。申请人动议中的论证并未使我们认为该结论有误，因此我们再次确认移民法官关于鉴于证词有限权重及说服力，申请人应提交佐证证据的认定。见Pinel-Gomez案，52 F.4th 529–30（认定委员会对需佐证的初步认定进行新审查）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8b415386995371b3ff82d987826657356448e12efb5789ee9c92d956c8fdf570",
+      "chineseText": "移民法官进一步认定申请人未充分佐证其被强制堕胎的主张。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0d86772bfc20c0aa439efede65c8b003a2c4ecd653d35bf5623b126f56a9ae2d",
+      "chineseText": "第699页"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2299b2c7f176707d4d4570b132709fa1dcd4b1b1db8cb02e6865487a3bb90c62",
+      "chineseText": "移民法官采信一名庇护官的证词，该证词指在与申请人基本事实模式相同的欺诈案件中，申请人无法出示堕胎或随访就诊应产生的检查手册或医疗记录。采信该证词即隐含认定，在非欺诈的中国强制堕胎庇护案件中，检查手册或医疗记录是会产生且合理可得的。国土安全部律师就记录中缺乏该类证据质问申请人，并给予其说明机会。移民法官结论为，“考虑到申请人不具说服力的证词和缺乏合理可得的文件，申请人未能满足举证责任。”其认定申请人合理可得但未提供如检查手册或医疗记录等文件，我们未发现该认定有明显错误。见Cooper诉Harris案，581 U.S. 285, 293（2017）（认定明显错误审查标准为：“在整个记录中‘合理’的认定——即使存在同样或更合理的另一认定——应当控制”（引文略））。我们认定移民法官符合Pinel-Gomez案之要求，满足第二巡回法院认定佐证不足的两个必要组成部分。Pinel-Gomez，52 F.4th 529。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f1844a53145565c3c4c1004d224d7b80a56ab867ad717d202f2b19c676686998",
+      "chineseText": "此外，我们不认为申请人2012年美国妇科病历足以佐证其2007年在中国被强制堕胎的主张。尽管律师对申请人体检文件作解释，律师陈述非证据，且记录中无足够证据支持律师解释。见Mariscal-Hernandez案，28 I&N Dec. 666, 673（BIA 2022）；J.J. Rodriguez案，27 I&N Dec. 762, 765–66（BIA 2020）。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7e485568966520987e373cbf465af5625a493cd1c41d5cc538ee248b621d1eef",
+      "chineseText": "最后，基于我们先前决定中所解释的理由，我们不认为移民法官有义务让被告面对医院据称威胁进行绝育的矛盾，因为这一矛盾明显源自记录证据，这些证据是她自己提交的，且不应令被告感到意外。基于上述理由，我们将驳回重新考虑的动议。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2e669e1d8f9e04b48ed1df503b51ede9ecde0728575e594fb16d1c8bf05d5594",
+      "chineseText": "被告还在一项重新开启的动议中单独主张，她申请庇护和阻止递解出境的成功直接受到她的两名前律师，Gavlin 律师和"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "be7d9a7b06c35b469aadab71fe4d94af72c52810fd8c1f8fff3477eaaaf96b8e",
+      "chineseText": "页面 700"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0d86772bfc20c0aa439efede65c8b003a2c4ecd653d35bf5623b126f56a9ae2d",
+      "chineseText": "引用格式：29 I&N Dec. 698（BIA 2026）临时决定 #4206"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a13f43c25bc19dfacc6bf1a6b2442a44a7dbd6768f8249ea68ef2daac034eb9e",
+      "chineseText": "Zhang 律师的影响。她断言两位律师都因未能识别和纠正她前男友信件中的翻译错误，以及未能主张应给予她的证人信件和医疗记录适当的证据权重而表现出不称职。该动议进一步声称，Gavlin 律师未能有效应对国土安全部（DHS）提出的质疑被告申请涉嫌欺诈的观点，理由是她的申请与她一名前律师所准备的其他申请相似，而该律师后被判定犯有欺诈罪。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e14bb846b6ce79b6c12d1362cf40997074bfda020b86373f33b06d5dc1184614",
+      "chineseText": "我们不认为 Gavlin 律师或 Zhang 律师提供了低效的代理服务。被告于2011年提交了其前男友信件的认证翻译版，当时两位律师均未进入其案件代表。鉴于该翻译被认证为真实准确，代理律师依赖该翻译并非不合理。律师可以合理依赖由译员认证其外语能力且确认翻译真实准确的翻译。此外，被告未提供有说服力的证据证明所谓的翻译错误，因为随动议提交的替代翻译未获认证。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6ee2c35e0c3a9ea272eb08f7ce2732926f159a9a9bdfad25e7587461d144b9a5",
+      "chineseText": "关于被告对其前律师提出的其他指控，申诉中提出的论点不足以证明 Gavlin 律师或 Zhang 律师提供了无效代理，亦或若无所指控错误，诉讼结果有合理可能不同。基于上述理由，我们将驳回重新开启动议。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d047f0befe93c01959aa2207c1cd5c85acda533829fcd194cb8e12543ad0750b",
+      "chineseText": "因此，将作出如下命令。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "bdab531670d456a03b11521e695296a275d51a16a812d7a866f359f6e0057c3a",
+      "chineseText": "命令：驳回重新考虑动议。进一步命令：驳回重新开启动议。通知：若被告受最终递解出境令约束且故意拒绝或未能按照令状离开美国，未能及时并善意申请旅行证件或其他离境必需文件，或未能按国土安全部要求的时间和地点出示，或共谋或采取任何旨在阻止或妨碍根据递解出境令离境的行为，被告将面临每日最高998美元的民事罚款。见《移民与国籍法》第274D节，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何被拒绝入境、被递解出境或在排除、驱逐或递解令尚未解除时离开美国后，随后进入、试图进入或任何时候被发现在美国境内的被告，将被罚款或监禁不超过两年，或两者并罚。见 INA § 276(a)，8 U.S.C. § 1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2932b2b59f35b45f4c735f54f8f6f233020d452cb237937076cfedc8fe1c6f36",
+      "chineseText": "注释2 尽管被告的动议中提及“Attorney Gavil”，但我们的记录显示该律师姓氏的正确拼写为 Gavlin。 页面 701"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "0d86772bfc20c0aa439efede65c8b003a2c4ecd653d35bf5623b126f56a9ae2d",
+      "chineseText": "引用格式：29 I&N Dec. 698（BIA 2026）临时决定 #4206"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "38f961641b0e07585eff334f7592de4bc1778c6f72166d6f4ef683e38a30f7ff",
+      "chineseText": "民事罚款上限为每日998美元，见《移民与国籍法》第274D节，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何在排除令、驱逐令或递解令有效期间被拒绝入境、被递解或自愿离境后，再次进入、试图进入或任何时间发现在美国的被告，均将被处以罚款或监禁不超过两年，或两者并罚。见 INA § 276(a)，8 U.S.C. § 1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c69722d3d09d2e60b1e687aec6e026b856a7760c09bba963f6da52ef21505fe1",
+      "chineseText": "页面 702"
+    }
+  ]
+}

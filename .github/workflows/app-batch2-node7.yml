@@ -1,0 +1,25 @@
+name: APP Batch 2 Node 7
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'supabase/migrations/20260816220100_app_batch2_push_tokens.sql'
+      - 'supabase/migrations/20260817031500_app_batch2_push_governance.sql'
+      - 'netlify/functions/admin-push.js'
+      - 'scripts/audit-app-batch2-node7.mjs'
+      - '.github/workflows/app-batch2-node7.yml'
+      - 'docs/APP-BATCH-2-NEWS-EXPERIENCE-AND-ENGAGEMENT.md'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Verify node 7 push system
+        run: node scripts/audit-app-batch2-node7.mjs

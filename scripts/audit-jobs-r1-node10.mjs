@@ -18,6 +18,6 @@ const checks=[
  ['security RLS',/enable row level security/.test(n1)&&/enable row level security/.test(n8)&&/enable row level security/.test(n9)],
  ['performance bounded pages and cache',/pageSize = 30/.test(webSearch)&&/max-age=60/.test(feed)&&/limit:String\(limit\)/.test(feed)],
  ['mobile retry refresh surface',/onRefresh=\{load\}/.test(mobile)&&/重试/.test(mobile)],
- ['N10 status running before close',/JOBS-R1-N10：RUNNING/.test(spec)]
+ ['N10 state is running or formally closed',/JOBS-R1-N10：(RUNNING|PASS)/.test(spec)]
 ];
 const failed=checks.filter(([,ok])=>!ok);for(const [name,ok] of checks)console.log(`${ok?'PASS':'FAIL'} ${name}`);if(failed.length){console.error(`JOBS-R1-N10 FAIL (${failed.length})`);process.exit(1)}console.log('JOBS-R1: 10/10 PASS');

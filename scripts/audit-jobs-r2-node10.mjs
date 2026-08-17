@@ -48,7 +48,7 @@ const checks=[
  ['admin does not render raw precise coordinates',/不显示原始经纬度/.test(governance)&&!/\$\{[^}]*row\.latitude[^}]*\}|\$\{[^}]*row\.longitude[^}]*\}/.test(governance)],
  ['saved jobs remain account-scoped canonical references',/job_listing_saves/.test(n7sql)&&/references public\.job_listings/.test(n7sql)&&/auth\.uid\(\) = user_id/.test(n7sql)],
  ['stable public listing/contact URLs remain present',/\/jobs\/listing\.html\?id=/.test(geo)&&/\/jobs\/contact\.html\?id=/.test(mobile)],
- ['no forced home-address collection added',!/homeAddress|家庭住址|家庭地址/.test(search+mobile+html)],
+ ['no forced home-address collection added',!/homeAddress|name=["'](?:home_?address|address)["']|id=["'](?:home-?address|home_address)["']/i.test(search+mobile+html)&&/不是家庭住址|不.*家庭住址/.test(html+governance+n1sql)],
  ['R1 lifecycle/privacy/anti-fraud requirements remain documented',/生命周期/.test(r1)&&/隐私/.test(r1)&&/反诈骗/.test(r1)&&/SEO/i.test(r1)]
 ];
 

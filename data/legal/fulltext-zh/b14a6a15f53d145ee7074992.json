@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordId": "b14a6a15f53d145ee7074992",
+  "recordFingerprint": "ff36b287bbf6cce14b2d2e96bff97d7fd037f36939cb7526a1314b1aebe27f5b",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Homeland Security Department; Coast Guard",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16426/special-local-regulation-daugherty-creek-crisfield-md",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16426.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16426.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T21:06:56.912Z",
+  "sourceDigest": "58505c740b9c20186576d8e59e2219d8e6a837457abeb3954e5f456a2aff2912",
+  "translatedAt": "2026-08-17T21:07:11.569Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 8,
+  "translatedSegmentCount": 8,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "95854796409bd97915486a3ba36864a18fa031688404394a95a694cea05c3b24",
+      "chineseText": "2026年8月12日星期三 / 第91卷第154号联邦公报 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "14180523840df1f9709437278208976bbfd5906e00e74a5b519344dc430befb6",
+      "chineseText": "电子格式作为DEA的官方文件发布。本次国土安全部（DHS）行政程序不会影响该文件在《联邦公报》（FR）发表后的法律效力。提议规则公告（NPRM）海岸警卫队港口队长（Captain of the Port，COTP）参与者允许在未获得COTP或其指定代表的许可的情况下进入受管制区域。IV. 监管分析 我们在经过对多项涉及立法和行政命令的综合考量后制定了本规则。A. 对小型实体的影响 1980年《监管灵活性法》（5 U.S.C. 601-612）的监管灵活性分析不适用于无需进行公告征求意见的规则。鉴于海岸警卫队因充分理由免除了适用于本规则的提议规则公告（NPRM）及征求意见程序，相关监管灵活性分析条款不适用。依据1996年《小企业监管执法公平法》（Pub. L. 104-121）第213(a)条，如本规则影响您的小企业、组织或政府管辖区且您有相关问题，请联系“进一步信息联系”栏目所列人员。小企业可致电1-888-REG-FAIR（1-888-734-3247）向小企业与农业监管执法监察员及地区小企业监管公平委员会发送意见，海岸警卫队不会因质疑或抱怨本规则或任何政策或行动而进行报复。B. 信息收集 本规则不要求根据1995年《文书工作减负法》（44 U.S.C. 3501–3520）开展新的信息收集。C. 联邦制与印第安部落政府 我们已根据13132号行政命令分析本规则，确定其符合该命令中规定的基本联邦制原则和覆盖范围。此外，根据13175号行政命令，本规则对印第安部落政府无实质性影响，亦不影响联邦政府与部落政府的关系及权力分配。II. 背景与权限 2026年3月23日，海岸警卫队依据33 CFR 100.15收到斯密斯岛螃蟹小艇协会的水上活动许可申请，以举办2026年9月5日在马里兰州Crisfield附近的Daugherty Creek水域举行的历史性的斯密斯岛螃蟹小艇比赛。赛事包括三轮预赛，每场比赛约7艘22英尺长的小艇在指定标记航线竞速。马里兰-国家首都区域港口队长（COTP）依据46 U.S.C. 70041发布本特别区域管理（SLR），旨在防止比赛风险（如碰撞）对参赛及非参赛船只产生安全影响。规则禁止未经COTP授权的任何人或船只进入受管制区域。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "99ef91308ef18ffd21ba27e58419fca467f00b4ec754b44d6380389bef084f76",
+      "chineseText": "联系方式：如对本规则有疑问，请联系马里兰-国家首都区域海岸警卫队水域管理部门MST1 Zachary Rudy，电话410-576-2596，邮箱SectorMD-NCR-SCC@uscg.mil。附录中含Daugherty Creek水域坐标。I. 缩略语释义 CFR: 《联邦法规》；COTP: 港口队长（Captain of the Port）。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "66fc9b94fbede2bf5c9d9d8b397cd51d0e4ea5928918f64d183fbc9ecd859137",
+      "chineseText": "2026年8月11日15:41归档，档号268001，文件编号00000，版面22，格式4700，版权4700，文件位于E:\\FR\\FM\\12AUR1.SGM，文件名：12AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "09f272928c618080cd567a523dad0466b3b28bc29b56659a66c8750dd604b422",
+      "chineseText": "2026年8月12日星期三 / 第91卷第154号联邦公报 / 规则与条例 52019"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4206879bef9f60dd2c505fa9fe3fc366495a9a732d92d5301dae6d9ccaf2350d",
+      "chineseText": "D. 未资金要求改革法案 依据《未资金要求改革法案》（2 U.S.C. 1531-1538），海岸警卫队认证本规则不会导致州、地方或部落政府或私人部门年度支出达到或超过1亿美元（经通胀调整）。E. 环境 本规则经“国土安全部指令023-01修订版1”及相关执行指令审查，符合《国家环境政策法案》（42 U.S.C. 4321及后续条款）规定，确定该行为为“分类免除”，对人类环境无重大个别或累积影响。该规则属于特别区域管理，依据该指令附录A表1第L61段分类免除，无需进一步环境评估。规则概要 海岸警卫队根据46 U.S.C. 70041及33 CFR第100部分授权，发布以下特别区域管理（SLR）：（a）地点 本规则适用于以下受管制水域：(1) Daugherty Creek水域，水面至水底，由坐标点连接线围定，起点坐标为北纬37°59′63.21\"，西经75°51′43.19\"，依次连接至坐标37°59′62.43\"N、75°51′38.87\"W，37°59′46.65\"N、75°51′46.06\"W，37°59′47.97\"N、75°51′55.68\"W，回到起点。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4aab3a35d615e6e1783d1bb793fc958723137b8f92da089ff3b391610dcb45d6",
+      "chineseText": "DHS：国土安全部；FR：联邦公报；NPRM：拟议规则公告；SLR：特别区域管理；TFR：临时最终规则；§：章节；U.S.C.：美国法典。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c11a178c8eceb86cbc62c542318997053e744b54c86512e05f8dcb6ceb5d93ac",
+      "chineseText": "2026年8月11日15:41归档，档号268001，文件编号00000，版面23，格式4700，版权4700，文件位于E:\\FR\\FM\\12AUR1.SGM，文件名：12AUR1"
+    }
+  ]
+}

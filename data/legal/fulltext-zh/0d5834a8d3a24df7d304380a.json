@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "0d5834a8d3a24df7d304380a",
   "recordFingerprint": "87397553728bdb08dcc72eb0c2bd3c21800efaea3d76aac051abd334eea92fc0",
-  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Homeland Security Department; Coast Guard",
@@ -91,5 +91,6 @@
       "sourceTextHash": "c47eddaab61305708206519c3ecc8f7e25b4eadc76ab42b4afb1f4aedf1b59ad",
       "chineseText": "2026年8月11日15:41发布，案号Jkt 268001，表格格式4700，文本格式4700，文件命名12AUR1.SGM，日期为2026年8月12日。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:02:55.897Z"
 }

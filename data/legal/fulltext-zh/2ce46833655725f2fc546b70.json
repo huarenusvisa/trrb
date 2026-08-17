@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "2ce46833655725f2fc546b70",
   "recordFingerprint": "509a6a424d2908a9352bcf84de04a222de5893fe1772eecdcec966d52e6dc73e",
-  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Small Business Administration",
@@ -211,5 +211,6 @@
       "sourceTextHash": "fe090f2681230c795543cb6ca539feeb681018726cc1ead9ee00e3e101919fe5",
       "chineseText": "VerDate Sep<11>2014 16:13 Aug 10, 2026 Jkt 268001 PO 00000 Frm 00025 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\11AUR1.SGM 11AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:02:55.896Z"
 }

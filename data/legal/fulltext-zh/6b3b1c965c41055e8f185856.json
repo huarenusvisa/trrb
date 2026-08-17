@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "6b3b1c965c41055e8f185856",
   "recordFingerprint": "a2818114a58fdc5cec4bf366cda4907f867e54037769868cf67ddef93fb4e4bd",
-  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Transportation Department; Federal Aviation Administration",
@@ -115,5 +115,6 @@
       "sourceTextHash": "622b0de40fccde8e5955170dc89d0a80637c5c7019d30a9d3536062e5b2147f1",
       "chineseText": "根据本协议，标识为受限物品的进口材料应遵守19 U.S.C. 2606及19 CFR 12.104g(a)的规定，未满足19 U.S.C. 2606和19 CFR 12.104c中设定条件者将被限制进入美国。美国海关与边境保护局修订19 CFR 12.104g(a)，标明已施加上述进口限制。该进口限制自协议生效之日起生效，期限不超过五年，除非判断协议事实依据依旧存在且无暂停协议的理由，可继续延长不超过五年。除非延期，否则进口限制将于2031年1月8日到期。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:02:55.897Z"
 }

@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "recordId": "c7845541022a5c42a3d8211b",
+  "recordFingerprint": "c22c603ea6d3e5340220ca1dff9503ec2dfe9078c860cbc1aa8d74a9ed14d450",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Merit Systems Protection Board",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16456/appellate-jurisdiction-update-ii",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16456.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16456.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T21:11:27.134Z",
+  "sourceDigest": "2ae7402403412cefe12e4d54b8f78d8960eb143711585a6eccb178b365fe5dd3",
+  "translatedAt": "2026-08-17T21:11:37.847Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 12,
+  "translatedSegmentCount": 12,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6e7ec9322f23520087ca22b7549b72b0a5ddf23639c43356d270ec251368fb95",
+      "chineseText": "51997"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "79d49a9ba6021dfdca81f9b41d85b4fac463e20a52509a083de199533d65d95d",
+      "chineseText": "联邦法规规则和规定 联邦公报\n 第91卷，第154号"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1fb3f52bd231b40496fd51a3e7c0305cfeaf9cf030ae5e5f38f2c620799f5cec",
+      "chineseText": "2026年8月12日，星期三"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "17e0cca8fdfee043167dbf3bda3cfa9e543645051b0ba83d26e097978caa836f",
+      "chineseText": "本部分联邦公报包含具有一般适用性和法律效力的监管文件，其中大多数文件基于适用于并编纂于《联邦法规汇编》（Code of Federal Regulations，简称CFR），该汇编依据美国法典第44卷第1510条发布。联邦法规汇编由文件主管机构销售。美国公务员保护委员会（Merit Systems Protection Board，简称MSPB）已接受基于2026年9月2日之前实施的行动所提出的申诉。当前清单包括1201.3(a)(3)，反映了对于在其初始或监督试用期内被终止的员工赋予申诉权；1201.3(a)(6)，反映了针对被裁减人员的员工的申诉权；以及1201.3(a)(9)，反映了针对适格性行动（suitability action）涉及员工的申诉权。OPM先前规定了MSPB对除外交服务中影响职业或职业候选人任命者的裁员外的每一种此类申诉类型的管辖权。MSPB现依据法规修订1201.3(a)(6)条款以反映OPM撤销了先前规定的这些MSPB申诉权。该修订不影响外交服务中职业或职业候选人任命者根据22 U.S.C. 4010a法规对RIF行动申诉MSPB的独立法定权利。最终规则保留了该申诉权，只是将引用由22 U.S.C. 4011更改为22 U.S.C. 4010a。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "63e800cfe254b7216a83860d1e9c6e98638d6ae131a0d00678792259e52cec53",
+      "chineseText": "《公务员改革法》授予MSPB依据法律、规则或规章听取可申诉行动的申诉管辖权，详见5 U.S.C. 7701(a)。为方便MSPB的利益相关者，MSPB在其5 CFR第1201.3条中列出可申诉的案件类型。OPM于2025年6月24日发布最终规则，宣布由总统令14284号（2025年4月24日发布，联邦公报第90卷17729页）发布的“加强联邦服务期试用期”规定，废除了CFR第5部分第315分部H小节，包括原先赋予MSPB在试用期内被终止员工的申诉权。该规则撤销了MSPB对这些员工的管辖权，并改由OPM负责处理。OPM最终规则适用于2026年9月2日及以后发生的案件，不适用于现有或后续于规则生效日前发生的案例。这一变更涵盖了裁减人员和适格性行动引起的申诉权利变更。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2e739b8b14bef3c5e06e5c04f3a1915483f3d35a65c637efd3bcffb13f946afb",
+      "chineseText": "VerDate 2014年9月11日 15:41 2026年8月11日 Jkt 268001 PO 00000 Frm 00001 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9bcee483d4fd2c84750b6190d52a618de687faba6435e8a2bc8742119e571507",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日，星期三 / 规则和规定 51998"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2ce1faf849447941a2095debf739b128083f9d19da856f728a038b2d9cb2e24d",
+      "chineseText": "MSPB修订了1201.3(a)条 appellate jurisdiction中可申诉案件列表，撤销了针对试用期被终止、裁减人员以及适格性行动的员工的MSPB申诉权。MSPB声明前述规则不会对联邦政府机构、员工或申请者造成重大经济影响，且规则自身未引入新变更，仅反映OPM对MSPB管辖权的修订。规则的正式生效日期为2026年9月2日。MSPB承诺对2026年9月2日前发生且仍待处理的案件继续行使管辖权。该规则遵守行政程序法、联邦主义相关行政令并符合《1995年信息收集减少法》。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ef322dbccf8eef6cf50e93313b0260ac44d92ddb20c6844f62bf4267f54feec0",
+      "chineseText": "根据5 U.S.C. 553(b)(B)，MSPB认定有充分理由发布本最终规则，无需事先通知和征求意见。该规则仅反映撤销MSPB管辖权的法规基础。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "779cab8c54c863f1c9049202f69d76a137ba2b50235ce28d0be7c77eb2a22c1b",
+      "chineseText": "本规定符合行政令12988号（1996年2月5日）第3(a)和(b)(2)条款规定的适用标准。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4f8bc2e6a9f8c2852bd51fc043716f6004a63291a2ba4e0bd63b8b350efc7859",
+      "chineseText": "根据《1995年未资助义务改革法》，该规则不会导致州、地方或部落政府或私营部门每年超过1亿美元的支出，所以不需进行未资助义务评估。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d79273202f948f0a98e25b6ee005cd80392a35321f6ce2844ee42263eade3b9a",
+      "chineseText": "VerDate 2014年9月11日 15:41 2026年8月11日 Jkt 268001 PO 00000 Frm 00002 Fmt 4700 Sfmt 9990 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    }
+  ]
+}

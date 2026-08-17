@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "1d2d1417f88c04c0896b9a49",
   "recordFingerprint": "46f0bff8d3e3474d010ebba294a9a9ec68ca79fa2d63962f3c1de9af37954651",
-  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
   "sourceSystem": "BIA",
   "authorityType": "BIA Precedent Decision",
   "issuingBody": "Board of Immigration Appeals",
@@ -204,5 +204,5 @@
       "chineseText": "页码 113"
     }
   ],
-  "reboundAt": "2026-08-17T19:59:35.402Z"
+  "reboundAt": "2026-08-17T21:02:55.816Z"
 }

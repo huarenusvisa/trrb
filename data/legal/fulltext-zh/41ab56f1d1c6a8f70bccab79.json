@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "recordId": "41ab56f1d1c6a8f70bccab79",
+  "recordFingerprint": "8d75e39e81769489d577c6ff4530533b63801c34ebb12db79cc026e158e1ce23",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Energy Department",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16425/rescission-of-does-procedures-for-traffic-control-on-the-nevada-test-site",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16425.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16425.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T21:06:27.673Z",
+  "sourceDigest": "39dbb49bbedf99729a8d0c754d31349ad8e4ec9281f1d49c6c29eb51e362a977",
+  "translatedAt": "2026-08-17T21:06:56.883Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 16,
+  "translatedSegmentCount": 16,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4d384785e807b7d5c517cf60c949a99d2e83ed3145cdeb67363e5f4e3cc9d8a1",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例 51999"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9a7f26fc98128b91a366bb0c1b23fe9d858792d7790556ea3750fb0059ecdd10",
+      "chineseText": "核能管制委员会 合规证书编号1031，关于内华达国家安全站点（NNSS，以前称为内华达试验场）的规章及相关变更的技术规范和安全评估报告，现可在ADAMS中查询，存取编号ML26202A387。• 核能管制委员会公共文件室（PDR）：公共文件室于预约制开放，您可查阅并订购公开文件。预约访问PDR请发送电子邮件至PDR.Resource@nrc.gov或致电1-800-397-4209或301-415-4737，时间为东部时间周一至周五上午8点至下午4点，联邦假日除外。批准的乏燃料存储筐清单：NAC国际公司，MAGNASTOR®存储系统，合规证书编号1031，修正案第16和17号，以及修正案第0至16号的修订。机构：核能管制委员会。行动：直接最终规则；确认生效日期。摘要：美国核能管制委员会（NRC）确认2026年9月14日直接最终规则的生效日期，该规则于2026年7月1日在联邦公报上发布。该直接最终规则修订了批准的乏燃料存储筐清单中NAC MAGNASTOR系统，纳入第16和17号修正案及第0至16号的修订，更改合规证书编号1031。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9f5a7c1fe4524938595c703cb365f48caa4095309c2efefbd92f581e51a25056",
+      "chineseText": "对于该直接最终规则，如果未收到重大不利意见，则该规则将在2026年9月14日生效。核能管制委员会未收到任何针对该直接最终规则的意见，因此该规则将按计划生效。有关此行动信息的公开资料可通过以下方式获取：• 联邦规则制定网站：https://www.regulations.gov，搜索Docket ID NRC-2026-2047。有关NRC档案问题，请联系Helen Chang，电话301-415-3228，邮箱Helen.Chang@nrc.gov。技术问题请联系本文件“联系方式”部分指定人员。• NRC全局文件访问与管理系统（ADAMS）：可在线访问https://www.nrc.gov/reading-rm/adams.html，选择“开始ADAMS公开搜索”。如遇问题，请联系NRC公共文件室（PDR）工作人员，电话1-800-397-4209或301-415-4737，或电邮PDR.Resource@nrc.gov。 关于第16和17号修正案及第0至16号的修订，NNSS位于内华达州奈县境内，是完全归DOE所有和管理的场地。美国能源部（DOE）环境、健康、安全和安保办公室发布的关于撤销内华达测试站点交通控制程序的临时最终规则，将删除已废止的部分861规章，因为NNSS交通执法由内华达州交通法规管辖。本次行动将删除废止规章。日期：临时最终规则自2026年8月12日起生效。评论必须在2026年9月11日前以电子方式提交。能源部未必会考虑截止日期后收到的评论。地址：鼓励通过联邦电子规则制定门户网站https://www.regulations.gov提交评论，案号DOE-HQ-2026-0529。请按照提交评论的说明操作。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "94b413ca0812c02ed22949708dc8a6e5861657d6fea20aa8cb086837c526d292",
+      "chineseText": "版本日期：2014年9月11日，2026年8月11日16:24，文件号Jkt 268001，财务办公格式4700，格式类型4700，电子文件路径：E:\\FR\\FM\\12AUR1.SGM，文件名12AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f48c84cd119d576c4a7181391007929977ce72b8b29ba88633aeca881c906283",
+      "chineseText": "52000 联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "293e4c0f64874c4372f098d7a0870d899374bce10a9ad15e372d909b26ca64b6",
+      "chineseText": "I. 根据行政命令12630的审查 B. DOE征求意见 虽然DOE已确定撤销部分861的临时最终规则不需要发表拟议规则通知（以及征求意见），但DOE仍自愿征求公众意见。DOE认为公众参与是规则制定请愿过程中非常重要的环节。DOE积极鼓励公众参与并互动。DOE将接受在本文件开头“日期”部分规定日期前提交的关于该临时最终规则的评论。感兴趣的各方可参阅本文件开头“地址”部分的说明进行评论提交。收到的评论将被审核和考虑。本临时最终规则可能会有后续正式规则发布，并针对意见做出回应，反映DOE在实施期间得到的经验。所有评论将未经修改发布在www.regulations.gov，包括任何个人信息（基于本节原因除外）。请勿包括您不希望公开的个人信息，包括社保信息、家庭住址或其他个人身份信息。DOE对您提供的信息不承担共享责任。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7094a4e001ea37863d30d286a1612682f757790212a19ace4cc370ac9f37296c",
+      "chineseText": "本规则涉及公共财产代理机构管理 10 CFR 861部分的目的是设定内华达国家安全站点（NNSS，由DOE完全拥有和管理）交通控制与执法的管理标准。该部分是基于《1954年原子能法案》（Public Law 83-703，现编为42 U.S.C. 2011及以下条款）授予DOE的权力，特别是42 U.S.C. 2282c(a)(1)，授权DOE制定核设施工业与建设健康安全法规。该部分861最早于1976年12月30日（41 FR 56788）公布，规定了对NNSS交通的各项管控措施，包括限速、交通标志信号、停车及停车限制，并明确由内华达现场办公室经理制定和发布“内华达测试站点交通管理条例”，并具有同等效力（10 CFR 861.4(b)）。规则还规定了违规处罚和公告程序。该规则自1987年以来未被实际采用，NNSS交通由内华达州通过与奈县警长办公室的合同安排执法。因此，该规则已废止，应予废止。该临时最终规则基于《1954 年原子能法案》授予DOE制定核设施健康安全相关法规的授权。依据42 U.S.C. 2282c(a)(3)，能源部长拥有灵活性，可按效率调整法规。DOE认为废止861部分将淘汰过时规定，减轻不必要的联邦执法职能负担，行政管理更为高效合理。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1cdd3296a15659879fc965fab4e21fa0511937ab89132b7a61dc88c2afaf1c0f",
+      "chineseText": "IV. 程序性问题及法规审查 A. 根据行政命令12866的审查 行政命令12866第6(a)款要求机构向信息和监管事务办公室（OIRA）提交“重大监管行动”进行审查。OIRA认定本临时最终规则不属于12866条款3(f)定义的“重大监管行动”。因此，本临时最终规则未经OIRA审查。 B. 根据《监管灵活性法案》的审查 《监管灵活性法案》（5 U.S.C. 601及以下条款）要求拟对公众征求意见的规则制定初步监管灵活性分析（IRFA）及最终监管灵活性分析（FRFA），除非机构证明该规则不会对大量的小实体产生显著经济影响。根据行政命令13272“适当考虑小实体”的要求，"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "44a8a0eabf662d84ba5c405fdaa116a8d02125b596d28e77d6b4d88378d3f990",
+      "chineseText": "联邦公报 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例 52001"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "320bd6d4b4bbd785b5f95943ace44f33789c89ca8e64470c543153d23af06a2e",
+      "chineseText": "《联邦机构规则制定》，67 FR 53461（2002年8月16日），能源部（DOE）于2003年2月19日公布了相关程序和政策，以确保其规则对小型实体的潜在影响在制定规章的过程中得到妥善考虑。68 FR 7990。能源部已将其程序和政策发布于总法律顾问办公室网站（www.energy.gov/gc/office-general-counsel）。能源部依据《监管灵活性法案》及2003年2月19日公布的相关政策和程序审查了本临时最终规则。该规则如前述，废止了过时的规章。因此，能源部初步认为，本临时最终规则对大量小型实体不会造成“重大经济影响”，因此不需要准备《初步监管灵活性分析》（IRFA）。能源部将把此认证及事实依据说明转交给美国小企业管理局（SBA）首席辩护顾问，以供根据5 U.S.C. 605(b)核查。C. 《信息收集减少法案》审查 本临时最终规则不涉及新增信息或记录保存要求，故不需向预算管理局（OMB）申请信息收集审批（44 U.S.C. 3501及以下条文）。D. 《1969年国家环境政策法》（NEPA）审查 DOE依据NEPA规定（10 CFR 第1021部分）及其实施程序（详见https://www.energy.gov/nepa/doe-nepa-implementing-procedures）对本次行动进行了分析，认定本临时最终规则为行政常规行为，不适用NEPA审查（见DOE NEPA实施程序第2.1(c)(5)节）。E. 行政命令第13132号《联邦主义》审查 行政命令13132号（64 FR 43255，1999年8月10日）规定，联邦机构在制定预先排斥州法且具有联邦主义影响的政策或规章时，应审视宪法及法定授权。本规章相关审查已完成，本临时最终规则在法律允许范围内符合E.O. 12988相关标准。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7b5a1f02ccd2a5128826a7e90f18a6d596f933b765d59dbbe9b0aba268574550",
+      "chineseText": "其联邦主义方面的影响。该行政命令要求机构审查任何限制各州政策制定自主权的行为的宪法和法定依据，仔细评估对各州政策的影响。2015年3月14日，能源部公布了一项政策声明，阐述其在制定可能导致联邦主义规则的规章时，将如何进行相关的政府间协商流程。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6485f543a6fbd38361b985de0f18e5c327ffcc3d5dabc5a415c7ede64384e9de",
+      "chineseText": "（此段仅为印刷格式编号及日期，无实质文本内容。）"
+    },
+    {
+      "segmentId": "pdf-p4-s13",
+      "order": 13,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f86db18f371a8e532b71726ac92f90140979c0d13bbaf8ccaef6f70100066058",
+      "chineseText": "（此段为联邦公报页眉及版面信息，无实质内容。）"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9363764f6c8fd04ac52e35e50c5983c79f414e5434326f77ad192c12564d29b5",
+      "chineseText": "需要根据美国宪法第五修正案进行补偿的征用行为。能源部经审查认定，本临时最终规则符合行政命令14192《通过放松管制释放繁荣》和行政命令14219《确保合法治理及实施总统“政府效率部长”放松管制计划》的政策和指令。根据《财政及一般政府拨款法案，2001年》第515节，联邦机构需根据信息质量法案的实施要求审查向公众发布的绝大多数信息。OMB关于信息质量的一般指导原则于2002年2月22日公告（67 FR 8452），能源部相关指导于2002年10月7日公布（67 FR 62446）。根据OMB备忘录M-19-15，能源部于2019年4月24日发布更新的部门信息质量指导方针，详见www.energy.gov/cio/department-energy-information-quality-guidelines。能源部已依据上述指导审查本临时最终规则，认为其符合相关政策。K. 根据行政命令13211号审查 本临时最终规则非重大能量行动，依据行政命令12866号，不会对能源的供应、分配或使用产生重大不利影响，故未准备能量影响声明。"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "7b7f6a24462c993959512861a552b88e585feba68dd3f17675c7058c7d02f32f",
+      "chineseText": "基于序言所述理由，依照42 U.S.C. 2201条授权，能源部决定撤销并保留10 CFR 第861部分。DOE文档于2026年7月28日经能源部副部长James Danly签署。DOE授权联邦公报联络官Treena V. Garrett在电子格式中签署并提交该文档。本临时最终规则废止过时的交通管制规章，不构成重大监管行动，亦无重大不利影响能源供应、分配或使用，且未被OMB指定为重大能量行动。DOE据此未准备能量影响声明。电传法院文件编号2026-16425，发布日期2026年8月11日，上午8时45分。"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ce0c3f5c2c0be2795607a553c0fa3a708b6695d321c33a99911e3e5d1d9debb7",
+      "chineseText": "【运输部联邦航空管理局】 14 CFR 第27部分 特别条件：Skyryse公司对Robinson R66直升机的飞行控制系统控制通告。编号：FAA–2025–5245；特别条件No. 25–895–SC。机构：联邦航空管理局（FAA），交通部。行动：特别条件最终规则。摘要：本特别条件发布针对Robinson直升机公司型号R66直升机。该型号由Skyryse公司改装，将采用数字化线控飞行控制系统（FBW），替代现有机械飞控。现行适航规章未涵盖此类设计特征，因此本特别条件载明FAA认为必要的附加安全标准，以确保安全水平等同于现有适航标准。生效日期：2026年9月11日。联系方式：Johannes VanHoudt，FAA飞机认证服务政策标准司产品政策管理，电话(816)329–4144，邮箱john.g.van.houdt@faa.gov。背景说明：2023年4月10日，Skyryse申请补充型式认证(STC)，用于替换R66直升机主要飞行控制系统。该直升机为单引擎、最大起飞重量2700磅、可载五名乘客的单驾驶员夜间视觉飞行规则（VFR）正常类旋翼机。第27.695条于1964年发布，适用于带基本机械飞控的旋翼机。"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "31e5531fbda0b9e4f6da0559",
   "recordFingerprint": "6a959857cb73c599cde7fb9f4688b387faa48faadcf24c854a5d33f2ede539d2",
-  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Nuclear Regulatory Commission",
@@ -491,5 +491,6 @@
       "sourceTextHash": "4c944d503da11ef4e607b8747b02ed4abae0d37e5d94045479a339e47411d495",
       "chineseText": "（无实质内容，页码和文件格式信息）"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:02:55.896Z"
 }

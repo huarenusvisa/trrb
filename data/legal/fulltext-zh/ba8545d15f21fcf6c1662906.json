@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "ba8545d15f21fcf6c1662906",
   "recordFingerprint": "546192d25e887b452dd453e56b7b2073c908a9119a6a3a2a3a31caf93295f5d9",
-  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Justice Department; Drug Enforcement Administration",
@@ -251,5 +251,6 @@
       "sourceTextHash": "66fc9b94fbede2bf5c9d9d8b397cd51d0e4ea5928918f64d183fbc9ecd859137",
       "chineseText": "2026年8月11日15:41，案号268001，表格00000，格式4700，样式4700，文件路径E:\\FR\\FM\\12AUR1.SGM，编号12AUR1。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:02:55.898Z"
 }

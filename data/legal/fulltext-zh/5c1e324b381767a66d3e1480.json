@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "5c1e324b381767a66d3e1480",
   "recordFingerprint": "b633a0928d7f6f5196778529fd26d5dbafe0db9150fd5b8650617b4a60f8ad81",
-  "datasetVersion": "82c0459a27e58d141bd35effaea2e9509c21db7f9cda924e9657d41e19f9f914",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Transportation Department; Federal Aviation Administration",
@@ -83,5 +83,6 @@
       "sourceTextHash": "db123e4945a8ece4844cc256c3adbebe88dc4fa12f27e0417582ea2d9a5aa02f",
       "chineseText": "[表格页尾无法识别文字轨迹]"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T21:02:55.897Z"
 }

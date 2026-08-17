@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "recordId": "033185133a02fa0315503b14",
+  "recordFingerprint": "3b7a635bc5e25dfd8ce6ce0e14d610f3b416be255b7bf74a25e15a9ffb1a676e",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Homeland Security Department; Coast Guard",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16428/special-local-regulation-casco-bay-flotilla-to-fight-cancer-long-island-me",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16428.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16428.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T21:07:11.597Z",
+  "sourceDigest": "0204b5205b9b0018173a20fdbf5e0ff4a9a8e81f4d94ee513c887b659b3264a7",
+  "translatedAt": "2026-08-17T21:08:06.016Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 21,
+  "translatedSegmentCount": 21,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "09f272928c618080cd567a523dad0466b3b28bc29b56659a66c8750dd604b422",
+      "chineseText": "联邦登记册 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例 52019"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4206879bef9f60dd2c505fa9fe3fc366495a9a732d92d5301dae6d9ccaf2350d",
+      "chineseText": "D. 未拨款授权改革法案 根据1995年未拨款授权改革法案（2 U.S.C. 1531–1538）的要求，美国海岸警卫队证明本规则不会导致州、地方或部落政府累计或私人部门年度支出达到或超过1亿美元（经通胀调整）。 E. 环境 我们根据国土安全部指令023-01修订版1及其相关实施说明，对本规则进行了分析，指导海岸警卫队遵守1969年《国家环境政策法》（42 U.S.C. 4321等条），并已确定该行动属于不会对人类环境产生重大影响的类别。本规则为特别地方法规，依据国土安全部手册023-01-001-01修订版附录A表1段落L61被排除进一步审查。 本规则由海岸警卫队，国土安全部发布，行动为临时最终规则。 摘要：海岸警卫队正在为缅因州长岛镇Cow Island附近的Casco湾可航水域设立临时特别地方法规，以保护参加“抗癌船队”赛事的观众和航行者免受水上大型聚集活动相关的安全风险。规范将暂定确立一个观众区域和两条安全通行通道供参赛船只通行及应急响应，同时禁止游泳并施加限速/禁止波浪航行区。 生效日期：本规则自2026年8月15日12:30起至8月16日17:30止生效。仅在2026年8月15日12:30至17:30间强制执行，除非因天气延迟，则相应推迟至8月16日同时间段执行。 详见33 CFR第100部分及新增§100.T599–0994，编号USCG–2026–0734，规章编号1625–AA08。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4aab3a35d615e6e1783d1bb793fc958723137b8f92da089ff3b391610dcb45d6",
+      "chineseText": "§100.T599-0994 特别地方法规；马里兰州Crisfield Daugherty Creek。 (a) 地点。 本特别地方法规适用以下管制区域： (1) 管制区域。所有Daugherty Creek水域，自表面至水底，被连接点界限围绕，起始点为北纬37°59′6452\"，西经075°51′4341\"，依次至北纬37°59′6269\"，西经075°51′3556\"，再至北纬37°59′4437\"，西经075°51′4381\"，再至北纬37°59′4762\"，西经075°51′5845\"，再回至起点。 坐标基于世界大地测量系统（WGS 84）。 (2) 赛事区。该区由一条线围绕，起点为北纬43°41′27\"，西经070°11′31\"，向西北至Cow岛西北端，再沿Cow岛Falmouth侧海岸向东至东北端，再向北至北纬43°41′49\"，西经070°11′9\"，再向西北至北纬43°41′53\"，西经070°11′18\"，再向西南至北纬43°41′34\"，西经070°11′41\"，再回起点。 本坐标基于北美1983年基准（NAD 83）。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c11a178c8eceb86cbc62c542318997053e744b54c86512e05f8dcb6ceb5d93ac",
+      "chineseText": "VerDate Sep<11>2014 15:41 Aug 11, 2026 Jkt 268001 PO 00000 Frm 00023 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ce70704ff138307453417dcf1867e660c04fd54b507307a6a939983a80ced60b",
+      "chineseText": "52020 联邦登记册 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d46587507ec97a330df6651f0e8bc3151245f61346c4a61b963e6dcd7dfdec08",
+      "chineseText": "II. 背景信息与监管历史 2026年3月4日，年度“抗癌船队慈善音乐会”活动发起人在33 CFR 100.15条款下提交申请，计划于2026年8月15日在缅因州长岛Cow Island Falmouth一侧的Casco湾举行离岸音乐会，雨天备用日期为8月16日，活动预计约持续5小时。该音乐会被视为“赛艇或海上游行”，属于依预定日程安排的组织水上活动，符合33 CFR 100.05(a)定义。主办方依33 CFR 100.15提出申请，因活动性质造成特别或额外危险，导致本规则发布时间不足30天，故豁免公告征求意见程序。 延迟本规则生效日期30天不切实际，因活动开始时间临近且规则有效期少于30天。 COTP（港口区长）获授权对所在区内获批的赛艇或海上游行活动制定必要特别地方法规，保障活动前中后航道生命安全，具体见33 CFR 100.35条。 鉴于该离岸音乐会备受关注，预计将有大量观众舰艇和支援船只，可能导致Casco湾内交通拥堵，北新英格兰海岸警卫队区港口区长因此决定本活动可能产生碰撞、紧急疏散瓶颈等安全隐患。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "553e9bd9c763524a048544536f8a4ff5f53d658714aeadfcea481a7481818e61",
+      "chineseText": "VerDate Sep<11>2014 15:59 Aug 11, 2026 Jkt 268001 PO 00000 Frm 00024 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s8",
+      "order": 8,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4535c46c112b3580de7e8ba86c3d7605bb7acc62a0cacaf628fdb895494bc5df",
+      "chineseText": "联邦登记册 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例 52021"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9f3b4e5c74685a4ed6171177250c50f1937db70022e3649d87368bee3f9a80e3",
+      "chineseText": "编号 9110–04–C 本临时特别地方法规自2026年8月15日12:30起至8月16日17:30止生效。 初步设施包括明确设立观众区及两条安全通行航道，通道宽240英尺，分别连接Cow岛西北、东北点，与赛事舞台驳船定位处。 舞台驳船周围区域列入通道范围，禁止停留、钓鱼、抛锚等行为。第二通行区垂直穿过观众区中心，允许所有方向进出观众区并确保紧急船只通道。 不允许运动员及非参赛船只进入规定区域，且区域内禁止游泳。 规定船只航速限于无波航速，即最高不超5节速度，除非因操控需要允许更高航速。目的是保持演出期间水域内人员和船只安全。"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "be93785d431204a4e4a2a408611495d6269287eec4a7f9c174cc60b27d165697",
+      "chineseText": "任一业务、组织或政府管辖权若对本规则有疑问，可联系下面所列相关负责人获得合规建议。 海岸警卫队已分析本规则并确认其与行政命令13132关于联邦主义的核心原则和先行要求相符，亦符合联邦与地方政府间权责分配。 此外，本规则不依据行政命令13175涉及印第安部落政府协商规定，不产生对印第安部落或联邦政府与部落关系、权力分配之重大直接影响。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "17e4bf8189c3f455cf989c4b2ae1490ab3096088ab636380f315552c8f62a450",
+      "chineseText": "若您的小型企业受本规则影响，并欲就海岸警卫队执行员工的行为提出意见或投诉，请拨打1-888-REG-FAIR（1-888-734-3247）。海岸警卫队不会因表达意见而报复相关企业或个人。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "be4582edb39c47e0657c950333d4e435aedded37ae4c4da050a554b924a718c7",
+      "chineseText": "在《未拨款授权改革法案》（2 U.S.C. 1531–1538）要求下，海岸警卫队认证本规则不会导致州、地方或部落政府累计支出达到或超过1亿美元（经通胀调整），也不会导致私人部门累计超支。"
+    },
+    {
+      "segmentId": "pdf-p4-s13",
+      "order": 13,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8a72e4939adc05c5f9a1a4b5be9e14bf16a4f48243ff78208bf045f2446522b3",
+      "chineseText": "52022 联邦登记册 / 第91卷，第154号 / 2026年8月12日星期三 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "12340c170138f13b69ea262966c25d793c3d13752300a7129ca9cc8bea665de6",
+      "chineseText": "环境规划 COMDTINST 5090.1（系列）指导海岸警卫队遵守1969年《国家环境政策法》（42 U.S.C. 4321–4370f），并确定该行动属于对人类环境无重大单独或累积影响的行动类别。鉴于序言中讨论的原因，海岸警卫队修订了33 CFR第100部分内容如下：\n■ 1. 第100部分的授权条款保持不变，内容为：授权：46 U.S.C. 70041；33 CFR 1.05–1节。\n■ 2. 新增第100.T199–0734条，全文如下：\n第100.T199–0734条 特别地方规章；缅因州长岛卡斯科湾“抗癌舰队”\n（a）管理区域。卡斯科湾长岛Falmouth岛牛岛侧附近所有可通航水域，形成管理区域，界线见本节(a)段定义。具体为坐标点43°41′34″N，070°11′41″W西南方向至位于43°41′27″N，070°11′31″W的起点。坐标基于世界大地测量系统（WGS 84）/北美测地基准83（NAD 83）。\n（1）观众区。卡斯科湾牛岛Falmouth岛侧附近所有可通航水域继续如(a)段描述管理。\n（2）通道区。图1显示两处通道区，分别为：\n第一通道区域从牛岛西北点连线至东北点，向北延伸至两坐标：43°41′27″N，070°11′31″W及43°41′49″N，070°11′9″W，演唱会舞台驳船位于中心，舞台驳船后方区域划为此通道区一部分。\n第二通道区域自观众区中心垂直于舞台驳船方向向下延伸，宽240英尺。两通道区允许船只从各方进出观众区，并为紧急艇提供通行。\n（b）定义。"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "118c551bb9ed1f40aa36754e966886dc5cda869263ba0cc18f93942bf37a1d3b",
+      "chineseText": "【账单编码】9110–04–C\n(1) 港口船长代表指经指定，持有委任证书、准尉或海军准士官的海岸警卫队官员，或港口船长代表意指经港口船长指名的人员。"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5af9d10d96cc237acb4ae77dc6a6ba9e338b705d964eb769dbf542bb4eb0bc5c",
+      "chineseText": "本节中使用的定义——"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b47c08b52f60190f6fd8be5910dfded4fdce7ed04a2c1345601e888898217522",
+      "chineseText": "VerDate Sep<11>2014 15:59 Aug 11, 2026 Jkt 268001 PO 00000 Frm 00026 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    },
+    {
+      "segmentId": "pdf-p5-s18",
+      "order": 18,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "612de4b53bdb286ed92148802a8543616a1cbf28a5b4fd4ea2d62986ab7efe5d",
+      "chineseText": "《联邦公报》 / 卷91，第154号 / 2026年8月12日星期三 / 规则与规章 52023"
+    },
+    {
+      "segmentId": "pdf-p5-s19",
+      "order": 19,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "fe9070a14cb6058b3740fb5d6ff1c48ab3496377b2f675cd74a1b10dd87697ca",
+      "chineseText": "（续前页）\n由港口船长指派的人员（2）活动巡逻指挥官（PATCOM）是经各海岸警卫队区港口船长指定的持有委任证书、准尉或海军准士官，负责执行(d)段规章。\n（3）官方巡逻船指经各区港口船长指派，搭载有持有委任证书、准尉或海军准士官的人员，升挂海岸警卫队军旗，或经港口船长根据地方协议批准的州或地方执法舰船。\n（4）观众区指在管理区域内以纬度和经度限定的区域，作为观众船只观看演唱会的界线。\n（5）通道区指允许船只安全通行的区域。\n（c）海事活动巡逻。港口船长可指派一艘或多艘官方巡逻船参与管理活动。活动巡逻指挥官（PATCOM）负责监督巡逻。巡逻船及PATCOM可用VHF-FM 16频道联络。活动PATCOM可随时终止活动以保护生命财产。\n(d) 规章。\n（1）所有人在(a)段规定的管理区内禁游泳。\n（2）在通道区航行的船只须直线通行，不得停留、钓鱼、抛锚或闲逛，除非系泊于规定系泊球。\n（3）进入管理区需遵守“慢速-无波”限速，除非为保持操纵速度而需更高速度，否则不得产生波浪，且速度不得超过5节。\n（4）寻求偏离限制者须请求港口船长或其指定代表许可。\n（e）执行期限。本节自2026年8月15日12:30起至8月16日17:30止生效。只有在2026年8月15日12:30至17:30（若因天气推迟则包括8月16日同一时段）期间执法。\n地址：请访问https://www.regulations.gov，检索USCG–2026–0220查阅相关文件。\n欲了解更多信息，请联系北新英格兰区海岸警卫队水道管理分队MST1 Brad Snyder，电话800-552-6458，邮箱William.a.snyder@uscg.mil。\n管理区内人员须遵守港口船长或指定代表的合法命令。"
+    },
+    {
+      "segmentId": "pdf-p5-s20",
+      "order": 20,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "570821193d5d6ec713494a7cf4bcd0ef4b3a8721a6c07b58382efdb369a393cf",
+      "chineseText": "联系MST1 Brad Snyder，北新英格兰区海岸警卫队水道管理分队，电话800-552-6458，邮箱William.a.snyder@uscg.mil。管制区内人员须遵守港口船长或其指定代表通过VHF-FM海事频道16或北新英格兰区海岸警卫队指挥中心（电话833-449-2407）传达的所有合法指令。\n\n根据港口船长指派，本规则自8月13日6时起至8月17日9时生效。执法的具体日时将取决于T/V DENISE FOSS（登记号1254223）及其拖船FOSS 3612（登记号1255436）抵达夏威夷钻石头岬附近Mamala湾的时间，并将向公众公布。"
+    },
+    {
+      "segmentId": "pdf-p5-s21",
+      "order": 21,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5b11f6d60d53f412e057fe500745687440184f2f77007f02eada0cf5a20fd8ea",
+      "chineseText": "VerDate Sep<11>2014 15:41 Aug 11, 2026 Jkt 268001 PO 00000 Frm 00027 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\12AUR1.SGM 12AUR1"
+    }
+  ]
+}

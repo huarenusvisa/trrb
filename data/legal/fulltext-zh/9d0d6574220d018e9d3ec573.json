@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "recordId": "9d0d6574220d018e9d3ec573",
+  "recordFingerprint": "5e6b4c64ba38e71e34e08691ab1c6112902a0e82c65747eaec55137701e2f468",
+  "datasetVersion": "98ae477daf080af2851e7e636ea6e66162e1332649781e2413edf7e6ee6a3d09",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Library of Congress; Copyright Office, Library of Congress",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16465/group-registration-of-updates-to-a-news-website",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16465.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16465.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T21:11:37.878Z",
+  "sourceDigest": "9bb79ee73a4299366410b5d7e207b677280c87266d5944d6f8760b7a23e5ebd4",
+  "translatedAt": "2026-08-17T21:12:11.971Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 17,
+  "translatedSegmentCount": 17,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "992f9dc1ce7332d38fd36938aef08e32dd9b1c8e9f41d6cbac7fdd1fa827bf0a",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规章和规定 52239"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a6077b03e49143d6b8b4ff6c794e9accf7a0d7c64faefed05beb87ca10a51684",
+      "chineseText": "段落（c）附表1——装有受影响发动机的飞机—续\n发动机\n型号证书持有者 飞机型号 发动机型号"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2123242ab0d93e6177886e634bc241dbb79f20ec62a314e330fc1d3b422344c5",
+      "chineseText": "Diamond Aircraft Industries Inc ........................................................ DA20–A1 ............................................................... 912 A3。\nHOAC-奥地利 ................................................................................... DV 20 KATANA ..................................................... 912 A3。\nMagnaghi Aeronautica S.p.A ............................................................ Sky Arrow 650 TC ................................................. 912 A2。\nSCHEIBE–AIRCRAFT–GMBH .......................................................... SF 25C .................................................................. 912 A2或912 A3。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c1023631a55d45e832276ae0cb78441b0f7474418a629d4a95edc42a9fe35703",
+      "chineseText": "（1）首次安装（交付时）在发动机上安装有螺旋桨齿轮箱且序列号已在第4）附录第4.1段中列明的发动机，符合Rotax Alert Service Bulletin ASB–2026–001R00的要求。（h）安装禁令\n在发动机上安装的齿轮箱，根据2026年6月22日发布的Rotax Alert Service Bulletin ASB–2026–001R00（Rotax Alert Service Bulletin ASB–2026–001R00）；\n（2）作为带有序列号的螺旋桨齿轮箱备件交付，该序列号已在第4）附录第4.2段中列明，符合Rotax Alert Service Bulletin ASB–2026–001R00的要求。\n（d）主题\n联合飞机系统组件（JASC）代码8510，活塞发动机前部组件。\n（e）不安全状况\n本AD由发现螺旋桨齿轮箱上未安装喷油喷嘴及若干螺钉的报告引发。FAA发布本AD以检测并解决此问题。\n如不予解决，该不安全状况可能导致飞行中发动机油泄漏、发动机飞行中熄火及飞机失控。\n（f）合规要求\n除非已完成，否则应在规定的合规时间内遵守本AD。\n（g）要求的措施\n（1）应在以下合规时间内，按照Rotax Alert Service Bulletin ASB–2026–001R00第3.5）维护（重）相关信息，第3.5.1）段——912（系列）螺旋桨齿轮箱目视检查；或者第3.5.2）段——914和912 i（系列）螺旋桨齿轮箱目视检查，视发动机型号和配置而定，进行螺旋桨齿轮箱喷油喷嘴组件和M7X16六角螺钉的目视检查。\n（i）在本AD生效日期后，累计飞行时间少于25小时的发动机，应立即进行检查。\n（ii）累计飞行时间达到或超过25小时的发动机，应在本AD生效日期后5小时内进行检查。\n（2）如检查中发现未安装喷油喷嘴组件或M7X16六角螺钉，应在继续飞行前依照第3.5）维护（重）相关信息第3.5.3）段更换受影响的螺旋桨齿轮箱。\n（d）（i）按(g)(2)段要求更换螺旋桨齿轮箱，若于检查（g)(1)段要求的时间之前或同时完成，视为完成终止动作。\n（4）您可以在美国联邦航空局FAA，位于德克萨斯州沃斯堡10101 Hillwood Parkway，航空适航产品分部，运营安全科，查阅相关材料。电话：+43 7246 601 0；网址：flyrotax.com。\n（5）您也可以在国家档案和记录管理局（NARA）查阅材料。详情请访问 archives.gov。\n发行日期：2026年8月4日。\nSteven W. Thompson，代理副主任，符合性及适航分部，飞机认证服务处。\n[FR Doc. 2026–16512 于2026年8月11日11:15发布]\n计费代码4910–13–P\n（j）替代合规方法（AMOCs）\n国际验证分部经理拥有批准本AD替代合规方法的权限，需依据14 CFR 39.19程序提交申请。申请应发送至指定联系人，电子邮件地址为AMOC@faa.gov。\n采用替代方法前，应通知主要检查员或当地飞行标准地区办公室经理。\n（k）附加信息\n如需进一步了解本AD，请联系FAA航空安全工程师Joseph Catanzaro，地址：纽约州Westbury，1600 Stewart Avenue，410室，电话：（516）228–7366，电子邮件：joseph.catanzaro@faa.gov。\n（l）纳入引用材料\n（1）联邦公报局局长批准根据5 U.S.C. 552(a)及1 CFR部分51将以下材料纳入引用。\n（i）BRP-Rotax GmbH & Co KG（Rotax）警告服务通告ASB–2026–001R00，发布日期2026年6月22日。\n（2）必须按本AD要求采用该材料，除非另有说明。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b598a7ce1b2dd00e1dee055919bf1bab393597564de8e569132ef776fcca381e",
+      "chineseText": "本AD生效日起，对于飞行时间累计少于25小时（TIS）的发动机，应在进一步飞行前执行本规定的检查。\n（2）若在(g)(1)段规定的检查中，发现螺旋桨齿轮箱油喷嘴组件或M7X16六角螺钉未安装，应在继续飞行前，按照第3.5）维护（重）相关信息第3.5.3）段更换受影响的螺旋桨齿轮箱。\n（3）针对本AD规定的Rotax材料，联系方式为BRP-Rotax GmbH & Co KG。\n版本号和格式见原文。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cfb2650f27f7afaeb49208021b083d051a3fbc68f323228005cd31bc006c5719",
+      "chineseText": "已于2026年8月12日15:47记录，Jkt 268001 PO 00000。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b252106d06f1acc6f116219db619df17d5a74cb9f1a815a05296dd7dca058af5",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规章和规定 52240"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3587dfa5fc2c89cd9663420988728cca438be07a7be014abc796a0cbd8c33c66",
+      "chineseText": "更新新闻网站的群组注册，简称“GRNW”。1 该规则将“新闻网站”定义为“设计为主要的信息来源，涵盖当前事件，无论是地方性、国家性还是国际性的，内容涵盖广泛的所有主题和活动，而不限于特定主题。”2 在制定该定义时，版权局说明，其“涵盖报道当前事件且提供多样化话题信息的新闻网站。”3 主要聚焦特定议题但“不限定于特定主题”或“不针对狭窄或特定读者群体”的网站均纳入定义。4 同时版权局表示，若定义“过于僵硬或难以执行”，愿意进行修订。5 \n自2024年规则生效以来，版权局通过GRNW选项已接收超过四千份申请。6 在此期间，我们继续收到来自利益相关方针对“新闻网站”定义的反馈。基于初步审查及利益相关方意见，我们认为应澄清“新闻网站”的定义。7 2026年5月28日，版权局发布拟议规则（NPRM），提出修订定义。8 \n如NPRM中所述，当前定义“在应用中反复引发质疑”，包括严格应用可能“无意排除聚焦特定领域或主题的合格新闻网站。”9 因此，版权局拟修订定义以明确该选项涵盖的作品，并“适应现代新闻发布实践的多样化。”10 \n根据反馈和实施经验评论，定义现状呈现如：“例如，新闻网站可能通过特定视角报道技术或娱乐相关的文章，但仍覆盖该领域内多个主题。例如，视频游戏网站报道业务发展、产品公告、流行文化及对游戏产业的调查报道，这些都属于新闻发布的特征。”11 新媒体联盟（NMA）评论称，修订后的定义“是重大成功案例，能鼓励更多注册。”12 多方评论普遍支持定义修订，预测将促进注册。13 全国广播协会（NAB）表示，本规则“扩展了注册参与范围，增强了新闻发布者保护其在线版权内容的能力。”14 公众知识组织认为，定义“适当排除了缺乏真实新闻报道内容的网站。”15 \n版权联盟表示，数字新闻正趋向于“针对特定兴趣主题定制，因为读者经常寻找具体主题或议题的新闻文章。”16 NMA指出，该规则“尊重现代新闻媒体的运营现实，报道受到用户需求驱动，读者兴趣高度分散。”17 修订提高了定义的实用性与包容性，符合传播现实。18 一些评论建议版权局进一步扩大GRNW资格，或对定义做更宽泛调整。19 \n注释：\n1 版权局2024年7月22日公告。\n2 见公告细节。\n3 同上。\n4 同上。\n5 同上。\n6 同上。\n7 同上。\n8 同上。\n9 同上。\n10 同上。\n11 解释举例。\n12 NMA评论。\n13 多方支持意见。\n14 NAB评论。\n15 公众知识发言。\n16 版权联盟说明。\n17 NMA评论。\n18 公众意见。\n19 建议扩展意见。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c051c45b0c1d794930d476fb7eb1dc52e52c0d5b7dbce7a0f9d4ab91a90c18ce",
+      "chineseText": "6 截至2026年7月16日，办公室收到的GRNW申请数量。\n7 89 FR 58991，58994（解释办公室愿意“根据管理此规则的经验”“重新审视该问题”）。\n8 91 FR 31684（2026年5月28日）。\n9 同上，第31684页及脚注5。\n10 同上，第31684页。\n23 见89 FR 58991，58995-96（2024年7月22日）（指出移除作为定制作品资格要求的行政挑战）；同上58994（说明“如果新闻出版商寻求登记在应用程序上发布的作品，刊物或新闻网站的注册将保护这些包含相同内容的作品”）；NMA评论第3页；Public Knowledge评论第2页。\n14 NAB评论第2页；版权联盟评论第3页；NMA评论第3页；Public Knowledge评论第2页。\n15 NAB评论第2页。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9ff91c2ce54b006c58d4781cc9fe39e07ef18b967173ca14f2db7cba9e26cfee",
+      "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00022 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "93bfbf065cb87336e0f74b6e00b4b1dd066698b6d3c9924fc260ea1ae3629f6d",
+      "chineseText": "联邦公报 / 卷 91，期号 155 / 2026年8月13日星期四 / 规则和条例 52241"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cbe581dd6a04dc03672a25f6626714f5a0433084ff54d3a29c1a79c6007ce80e",
+      "chineseText": "本次规则制定范围之外有提供意见。22 这些额外建议，许多已在2024年规则制定中被办公室考虑和回应，23 并无理由推迟如提议所示明确“新闻网站”的定义。24 办公室将立即采纳最终规则生效。25 由于本次规则制定意在取消限制并扩大GRNW登记选项的资格范围，我们认为有充分理由这么做。26\n2026年8月10日。\nShira Perlmutter，美国版权局局长兼版权所有办公室主任。\n批准人：\nRobert Newlen，代理国会图书馆馆长。\n[联邦公报文档号2026-16465 于2026年8月12日 8:45 am备案]\n账单代码 1410–30–P\n本规则实施信息受法律限制。某些资料（如受版权保护材料）未上网，仅以纸质形式公开。公开的档案材料可通过 https://www.regulations.gov 获得，或请联系“进一步信息联系”部分指定联系人。若您需要非英语语言援助或作为残疾人士需要免费合理便利，请联系“进一步信息联系”部分指定联系人。\n环境保护署\n37 CFR 第202部分主题列表及40 CFR 第52部分\n版权，版权索赔，预登记和登记。\n为此，版权局修订37 CFR 第202部分如下：\n整本文档中，“我们”意指EPA。\n第202部分——版权索赔的预登记和登记\n■ 1.第202部分的授权条文保持如下：\n授权：17 U.S.C. 408(f), 702。\n■ 2.修订202.4条第(m)(1)(i)段如下：\n§ 202.4 集体登记。\n* * *\n(m)* * *\n(1) 定义。对于本段(m)规定：\n(i)新闻网站，意指主要设计为发布当前事件书面信息的本地、国家或国际范围的网站。\n* * * * *\n环境保护署(EPA)\n行动：最终规则\n摘要：环保署采取最终行动，确定加利福尼亚州河滨县（科切拉谷）1997年臭氧国家环境空气质量标准（NAAQS）极端非符合区已于2025年6月15日认可的达标日期前达标。\n期限：本规则自2026年9月14日起生效。\n地址：EPA在 https://www.regulations.gov 建立了本行动的案卷编号EPA–R09–OAR–2025–3127，文档均登载其中。\n联系信息：Tom Kelly，EPA第九区，75 Hawthorne St., San Francisco, CA 94105，电话：(415) 972-3856，邮箱：kelly.thomasp@epa.gov\n补充信息：\nI. 拟议行动\nII. 公众意见与EPA回应\nIII. EPA行动\nIV. 法律和行政命令审查\nI. 拟议行动\n本决定基于2022至2024年的质控认证环境空气监测数据。\nEPA于2026年1月15日拟定科切拉谷达标决定，履行《清洁空气法》第181(b)(2)条法定义务，确认是否按适用达标日期已达标。此前EPA已于2024年6月15日批准该非符合区延期一年至2025年6月15日。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8a0c7ba0ab513ce64e559d4b491ff9cafee40fadba27e35ce15b59e0ca399cd7",
+      "chineseText": "表1——1997年臭氧国家环境空气质量标准极端区行动摘要\n2022-2024年1997年NAAQS是否由极端非符合区设计值达标？\n（ppm）"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cbf9e5e00d0ffe04987551d44b9ce95efd51bcbdd7d33da5cbfb4ec7ce95b68c",
+      "chineseText": "科切拉谷 ........................................................................................................... 0.084 达标。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2e6b05ad9e5ca22025c11c6ca26bb9c4659cbbc8b9378b50aa0e4bad227841f0",
+      "chineseText": "网站如果通过此选项登记包含相同内容的作品，将予以保护，见91 FR 14724（2026年3月26日）；美国版权局，2026年秋季实施新费率计划草案，第28-29,42页，网址：https://www.copyright.gov/rulemaking/feestudy2026/proposed-fee-schedule.pdf；国家音乐协会评论第5页（拟议更新将最优促进行政效率，任何延迟为多余或违背公共利益）。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6c5ace8c428491f15831cb9337ec527caf71ced528ebed7aa3ba64a7261df080",
+      "chineseText": "“将大幅改变其范围”的说明见网址，并附注释。24 办公室继续考虑如何使作品登记的法定利益更易获得，并承认利益相关者对其他集体登记选项的持续兴趣，已征求公众意见并继续制定新的企业版权系统(ECS)，以提升登记及其他服务的可及性。25 有两位评论者请求最终规定立即生效。26 依据5 U.S.C. 553(d)(1), (3)。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cb191499030292614e9a96126fb8ed80eb29aa09062b96ce6dcaea00671ac626",
+      "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00023 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T03:15:50.571Z",
+  "generatedAt": "2026-08-17T04:26:03.196Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -93,6 +93,10 @@
           "title": "24-1467P.01A"
         },
         {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
+          "title": "24-1524P.01A"
+        },
+        {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
           "title": "24-1805P.01A"
         },
@@ -155,10 +159,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1781P-01A.pdf",
           "title": "25-1781 Rhode Island Truck Ctr., LLC v. Daimler Trucks North America, LLC"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/20-1170U-01A.pdf",
-          "title": "20-1170 US v. Figueroa-Roman"
         }
       ],
       "notes": []
@@ -933,22 +933,6 @@
       "sourceFinalUrl": "https://www.opn.ca6.uscourts.gov/opinions/opinions.php?todo=today/1000",
       "documents": [
         {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0222p-06.pdf",
-          "title": "26a0222p-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0223p-06.pdf",
-          "title": "26a0223p-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0224p-06.pdf",
-          "title": "26a0224p-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0225p-06.pdf",
-          "title": "26a0225p-06.pdf"
-        },
-        {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0226p-06.pdf",
           "title": "26a0226p-06.pdf"
         },
@@ -983,10 +967,6 @@
         {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0234p-06.pdf",
           "title": "26a0234p-06.pdf"
-        },
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0354n-06.pdf",
-          "title": "26a0354n-06.pdf"
         },
         {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0355n-06.pdf",

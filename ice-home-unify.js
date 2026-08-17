@@ -9,6 +9,12 @@
     return ICE_ALIASES.has(name) ? ICE_CATEGORY : name;
   }
 
+  function isIceArticle(item) {
+    const topic = String(item?.topic_key || "").trim().toLowerCase();
+    const primary = String(item?.category || item?.category_name || "").trim();
+    return topic === "ice" || ICE_ALIASES.has(primary);
+  }
+
   function install() {
     if (typeof window.renderCategorySection !== "function") return false;
 
@@ -19,10 +25,19 @@
 
     const baseRenderCategorySection = window.renderCategorySection;
     window.renderCategorySection = function unifiedCategorySection(category, articles) {
-      const normalizedArticles = (Array.isArray(articles) ? articles : []).map((item) => ({
-        ...item,
-        category: normalizeCategory(item?.category || item?.category_name)
-      }));
+      const normalizedArticles = (Array.isArray(articles) ? articles : []).map((item) => {
+        const primaryCategory = normalizeCategory(item?.category || item?.category_name);
+
+        // ICE is a secondary topic membership. When the ICE block is rendered, expose
+        // topic_key=ice articles to that block without changing their stored primary category.
+        // The same article can therefore also remain visible under 重要新闻/美国时政/etc.
+        if (category === ICE_CATEGORY && isIceArticle(item)) {
+          return { ...item, category: ICE_CATEGORY, primary_category: primaryCategory };
+        }
+
+        return { ...item, category: primaryCategory };
+      });
+
       let html = baseRenderCategorySection(category, normalizedArticles);
       if (category === ICE_CATEGORY) {
         html = html.replace(

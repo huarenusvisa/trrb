@@ -1,0 +1,25 @@
+name: JOBS-R1 Node 5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
+      - 'jobs/**'
+      - 'admin/jobs-manager.js'
+      - 'admin/index.html'
+      - 'supabase/migrations/20260817005000_jobs_r1_node5_publish.sql'
+      - 'scripts/audit-jobs-r1-node5.mjs'
+      - '.github/workflows/jobs-r1-node5.yml'
+  workflow_dispatch:
+
+jobs:
+  audit-node5:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Strict JOBS-R1-N5 acceptance audit
+        run: node scripts/audit-jobs-r1-node5.mjs

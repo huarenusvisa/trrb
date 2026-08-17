@@ -27,10 +27,7 @@
   }
   function relatedCard(r){const detail=`/legal/detail.html?id=${encodeURIComponent(r.id)}`;return `<article class="legal-card"><div class="legal-card-top"><span class="badge">${esc(labels[r.sourceSystem]||r.sourceSystem)}</span><span class="badge kind">${esc(cleanField(r.authorityType)||'法律资料')}</span></div><h3><a class="legal-title-link" href="${detail}">${esc(titleOf(r))}</a></h3><div class="meta"><span>${esc(displayBody(r))}</span><span>${esc(displayDate(r.publicationDate))}</span>${r.docket?`<span>案号 ${esc(cleanField(r.docket))}</span>`:''}</div><div class="card-actions"><a class="primary" href="${detail}">查看详情</a>${r.officialUrl?`<a href="${esc(r.officialUrl)}" target="_blank" rel="noopener noreferrer">官方原文</a>`:''}</div></article>`}
   function renderRelated(base,records){const related=relatedRecords(base,records);$('#detail-related-list').innerHTML=related.length?related.map(relatedCard).join(''):'<p class="muted">当前数据库中暂无可确认的相关记录。</p>'}
-  function analysisHtml(a){
-    if(!a)return '<p class="muted">这条资料的中文裁判要旨/规则解析尚未生成。当前页面仅展示已经从官方来源采集的结构化信息，请先以官方原文为准。</p>';
-    return `${a.chineseTitle?`<h3>${esc(a.chineseTitle)}</h3>`:''}<p><strong>要旨：</strong>${esc(a.summary||'')}</p><p><strong>法律问题：</strong>${esc(a.legalIssue||'')}</p><p><strong>裁判/规则：</strong>${esc(a.holdingOrRule||'')}</p><p><strong>影响范围：</strong>${esc(a.impact||'')}</p><p class="muted">${esc(a.disclaimer||'')}</p>`;
-  }
+  function analysisHtml(a){return `${a.chineseTitle?`<h3>${esc(a.chineseTitle)}</h3>`:''}<p><strong>要旨：</strong>${esc(a.summary||'')}</p><p><strong>法律问题：</strong>${esc(a.legalIssue||'')}</p><p><strong>裁判/规则：</strong>${esc(a.holdingOrRule||'')}</p><p><strong>影响范围：</strong>${esc(a.impact||'')}</p><p class="muted">${esc(a.disclaimer||'')}</p>`;}
   function applySeo(r,a,title,canonical){
     const summary=(a&&a.summary)||`${labels[r.sourceSystem]||r.sourceSystem||'美国法律资料'}：${displayBody(r)}${r.citation?`，${cleanField(r.citation)}`:''}`;
     document.title=`${title}｜美国判例与新规｜唐人日报`;
@@ -62,6 +59,7 @@
       if(!r){fail('这条法律资料当前不在数据库中，可能已被官方更新、合并或更正。');return}
       let a=null;
       if(aiRes.ok){const ai=await aiRes.json();a=(ai.analyses||[]).find(item=>String(item.recordId)===recordId)||null}
+      if(!a){fail('该记录未通过中文内容完整性校验，请直接查看官方原文。');return}
       const title=titleOf(r);
       const canonical=`https://trrb.net/legal/detail.html?id=${encodeURIComponent(recordId)}`;
       applySeo(r,a,title,canonical);

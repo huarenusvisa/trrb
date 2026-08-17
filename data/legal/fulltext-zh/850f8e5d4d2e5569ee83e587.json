@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "recordId": "850f8e5d4d2e5569ee83e587",
+  "recordFingerprint": "2f8cdef886852b994c1c389b78bd5fb143cc982a40fabfa6db0427d7bc948d6c",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1442701/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1442701/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1442701/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:06:08.409Z",
+  "sourceDigest": "17fed725c165e5202e30d18c123f9422d3f3c02d9156727f947fa4b4fb51ed95",
+  "translatedAt": "2026-08-17T16:06:23.979Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 13,
+  "translatedSegmentCount": 13,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "064cc5647afeb25daf6ba5868202ba6735ac02943d3398a9605a84dd69b78aff",
+      "chineseText": "引用自29 I&N Dec. 656（BIA 2026年）临时裁决编号4198"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2f4270f15c5e94bd2ba6f612eb4814cbd812138a82b1cc2f0cfa63e675d55008",
+      "chineseText": "曼努埃尔·德赫苏斯·马丁内斯-罗德里格斯案，答辩人，移民上诉委员会于2026年4月29日裁决，美国司法部移民审查执行办公室移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "42139de82d03be479af6083f5fb35a01bea49d8b48c9f41eed11bafe452219d2",
+      "chineseText": "答辩人因非法软禁罪被定罪及因其他指控被逮捕，表明其对社会存在危险性，不应获准保释释放。答辩人代理律师：Philip J. Hunter，原籍路易斯安那巴吞鲁日，国土安全部代表律师：Luke Oberhansley。合议庭成员：副首席上诉移民法官RADICS，及上诉移民法官OWEN和GALLOW。GALLOW，上诉移民法官发言："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c565dff63307e2f34ef7fff0c915484d4fb8144e9a77eda487a5f679468de208",
+      "chineseText": "国土安全部（“DHS”）对移民法官于2026年2月17日的命令提出上诉，该命令批准答辩人以15000美元保释金获得释放。移民法官于2026年3月11日发布备忘录，说明裁决理由。我们将支持上诉，并撤销移民法官的保释决定。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "12c43b1c0f55b362dbb40b4ac1b4a40547cdcb81851cd94ff74f8baa963b8906",
+      "chineseText": "答辩人负有证明其不对社会构成危险的举证责任。参见Choc-Tut案，29 I&N Dec. 48, 49（BIA 2025）；Siniauskas案，27 I&N Dec. 207, 207-09（BIA 2018）；Guerra案，24 I&N Dec. 37, 40（BIA 2006）（其中裁定“外侨的犯罪记录，包括犯罪活动的广泛性、近期性及罪行的严重性”，对判断外侨是否应获保释有相关性）。外侨是否对社会构成危险属于裁量判断，我们对该判断进行全新审查，但其事实认定则依照明显错误标准审查。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2fe7b14eac8b0088ff16cca33498dc5e850816940e93ded4615f62f9ca1e9b7a",
+      "chineseText": "1 根据2026年5月26日发布的第6873-2026号命令，代理检察长指定本委员会关于Martinez-Rodriguez案（BIA 2026年4月29日）的裁决作为涉及相同问题的所有程序的先例。参见8 C.F.R. § 1003.1(g)(3)(2026)。编辑更改已根据此先例指定做相应调整。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4dcd6a888e9dd0ece04d03f13d2ad70264468888a04a58fd467b03ecd792e7cd",
+      "chineseText": "第656页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "064cc5647afeb25daf6ba5868202ba6735ac02943d3398a9605a84dd69b78aff",
+      "chineseText": "引用自29 I&N Dec. 656（BIA 2026年）临时裁决编号4198"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "13d936c45b4169dcc0196c7fcfe6955a91d5ce05604ce8f246747f520f3d3176",
+      "chineseText": "8 C.F.R. § 1003.1(d)(3)(i)-(ii) (2026)；Beltrand-Rodriguez案，29 I&N Dec. 76, 77（BIA 2025）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2b54097fe5957ce3a7262d65535c4c6dce4053c411390e1c17440a01f47ce569",
+      "chineseText": "经我们全新审查，认为移民法官认定答辩人已履行其举证责任，证明其不对社会构成危险的结论有误。答辩人于2019年4月25日在田纳西州诺克斯县因破坏财物、家庭暴力及加重入室盗窃罪被逮捕。答辩人于2021年8月11日承认犯有非法软禁一项罪名，并被判处州监禁348天。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3697ca6e04efa0b0d3f9cf12f0ba0982086fb569aca130dcfd92c4347b1eda28",
+      "chineseText": "尽管认可移民法官的认定，但考虑答辩人犯罪历史的性质及严重性，我们认定答辩人未能以明确且令人信服的证据证明其不对社会构成危险。参见Guerra案，24 I&N Dec. 39-40（裁定移民法官在重新决定拘留事项时享有广泛自由裁量，可考量多种因素且不限于刑事定罪来判断外侨是否对社会有害）；Thomas案，21 I&N Dec. 23（BIA 1995）（指出不利行为证据，包括尚未有最终定罪的刑事行为，可用于裁量决定）；另见V-A-K-案，28 I&N Dec. 630, 636（BIA 2022）（指出一般盗窃属本质上危险犯罪，因为“可能导致犯罪者与居民、看护人或调查人员之间发生暴力冲突”）（引文略）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6fb505b2b7ec6b8c3ae40af7ce2294c9dc5f0ff3d5d62001995dac0272b3cd74",
+      "chineseText": "因此，我们认定答辩人未能履行举证责任，证明其不会对社会构成危险，故不具备保释资格。保释程序中对未来危险性的认定是答辩人是否有资格获释的法律决定性因素。参见Urena案，25 I&N Dec. 140, 141（BIA 2009）；Drysdale案，20 I&N Dec. 815, 817（BIA 1994）（“若外侨未能证明其不对社会构成危险，应予以拘留”）。因此，我们无需对DHS关于答辩人应因具有潜逃风险而被拒保释的论点作进一步裁定。参见Urena案，25 I&N Dec. 141（指出“仅当外侨能证明其不对社会构成危险时，移民法官才继续判断潜逃风险”）。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "51eba9fdee98f25dff486053214066db0ab0094a111a2a0e49fdb50a53236426",
+      "chineseText": "裁定：支持国土安全部的上诉。进一步裁定：撤销移民法官的决定，命令答辩人不得保释拘留。 第657页"
+    }
+  ]
+}

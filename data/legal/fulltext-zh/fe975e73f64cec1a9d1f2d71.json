@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "recordId": "fe975e73f64cec1a9d1f2d71",
+  "recordFingerprint": "f10909728c97b019719a9c97f546f165895ba84274c4edc7b37910070a61421d",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1442486/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1442486/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1442486/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:05:41.343Z",
+  "sourceDigest": "88381aa239e6dda5080bff46944e7a980c05925d0bf7e5fde8cd5ed53e15f2d5",
+  "translatedAt": "2026-08-17T16:06:08.381Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 22,
+  "translatedSegmentCount": 22,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "97f8e08eda5035d006ef6e80fdd8a3f9706848267c9f9f0fda62f32a6aa959cd",
+      "chineseText": "引用为 29 I&N Dec. 648 (BIA 2026) 临时决定 #4196"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3d7a3f9719ec31d3081407599270173597b77bd11d35dfacb071c50ca4803dec",
+      "chineseText": "关于 Gontrand Raphael GERMAIN 案，答辩人\n2026年4月6日由委员会裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4eeed1c73d6a60f66e62f5012f1368cda350b621a5e96a9f5dea9f8138376166",
+      "chineseText": "答辩人的犯罪记录，包括未导致定罪的指控，及其不愿承担刑事责任的态度，超过了与取消驱逐自由裁量权相关的有利因素。\n答辩人代理律师：Anthony Drago, Jr.，马萨诸塞州波士顿\n国土安全部代理律师：Christy M. DiOrio，助理首席法律顾问\n出庭：委员会成员：GOODWIN 和 VOLKERT，上诉移民法官；\nMCCLOSKEY，临时上诉移民法官。\nMCCLOSKEY，临时上诉移民法官发言："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f143e05a1ee0f0a71f23d46f4b2ca76f8a77dabd22beab0c1a6af3cedd34cc5b",
+      "chineseText": "国土安全部（“DHS”）对移民法官2018年12月7日根据《移民和国籍法》（“INA”）第240A(a)条（2018年8 U.S.C. § 1229b(a)）裁定行使自由裁量权批准取消驱逐提出上诉。答辩人为合法永久居民，是海地出生和公民，反对该上诉。上诉将被维持。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5817214c0a90d880cb1d2c2f577ac573b6f475311db7b5728187b8a00fc54f0b",
+      "chineseText": "经我们对案卷重新审查，认定不利因素，尤其是答辩人的犯罪记录，超过该案的积极因素。参见Bain案，29 I&N Dec. 72, 73（BIA 2025）：“答辩人的犯罪记录可构成重大不利因素。”；C-V-T-案，22 I&N Dec. 7, 11（BIA 1998）（讨论确定是否给予救济“似乎符合本国利益”时权衡的因素）"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f37a3a17993ad0e0217429c36ecec16b89fc198f85e0f0ce7177978ad565788f",
+      "chineseText": "依据编号6871-2026号命令，日期为2026年5月26日，代理总检察长指定Germain案（BIA 2026年4月6日）作为涉相同问题所有程序的先例。参见8 C.F.R. § 1003.1(g)(3)（2026）。编辑改动已根据该案指定为先例进行。\n委会员已经接受DHS上诉，且无力撤销其为时效过期的请求。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "17609cdf08c121b93c9f1dcdf9322614ac17777719913465e026acd43c73e2a0",
+      "chineseText": "第648页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6dc346b3275dcdf623d77c3733fe2ad618a4624f3564cbc474dd43f505e935cd",
+      "chineseText": "引用为29 I&N Dec. 628 (BIA 2026) 临时决定 #4193"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "92ea6d7a5e04a6ae716ca4ed18fb1320540c2f99cea6488f50054a47a8432d93",
+      "chineseText": "“符合本国利益”（引自Marin案，16 I&N Dec. 581, 584-85（BIA 1978））的判断标准。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "81883089aa920cdd986c90ff85d3e45562414921338e87ac8a02f508b404d2d7",
+      "chineseText": "我们承认答辩人具有重要权益，包括在美国的密切家庭联系。其直系及扩展家庭成员均为美国公民（含其子）或合法永久居民。答辩人自1986年居住于美国，自1997年起为合法永久居民。他还通过志愿执教其子运动队为社区做贡献。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d08a2aaf5043bcd538da98b86c3d4be88ed678e665c84ca43a3eb0fe590648db",
+      "chineseText": "对此积极因素，我们权衡答辩人的犯罪记录，包括2003年和2007年两次攻击与殴打定罪，以及2008年涉及同一事件的三项与枪支有关定罪，服刑18个月。答辩人曾于2000年因肇事逃逸（涉及财产损失）被控，2013年与2014年两次因无牌出租车驾驶被控，2014年因与酒店经理互动被发出威胁犯罪传票。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ec5be4dc7a7446a499ac9003d124a7680aab7799cb331ea051ec2d30da8b4084",
+      "chineseText": "我们同意DHS观点，即移民法官未充分考量答辩人全部犯罪记录。尽管2013年和2014年无牌出租车控诉被驳回，且2014年的威胁犯罪传票未导致定罪，但相关行为可纳入自由裁量权分析。参见Arias-Minaya诉Holder案，779 F.3d 49, 54（第一巡回，2015）（承认逮捕及其背后情况对决定外籍人员自由裁量权救济适用性的证明价值）；Thomas案，21 I&N Dec. 20, 23-24（BIA 1995）（解释未导致最终定罪的犯罪活动证据对自由裁量权行使的相关性）。忽视未成定罪但不利行为，导致移民法官未能注意到答辩人多次违法美国法律的事实，包括其刑满释放后。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b55db1bddbaaf3a78299bc063e2c02eafe8da7589de8a40620bc7ee207e4c2fe",
+      "chineseText": "此外，记录未表明答辩人对其被定罪的罪行表现出悔意或承担责任。答辩人淡化其攻击与殴打罪行，但未提供警方报告文本以证实其说法。其否认2014年对酒店经理的威胁行为，也否认2000年肇事逃逸造成财产损失，与记录中警方报告相悖。尽管移民法官采纳答辩人称服刑经历令其家人失望且艰难的证词，但该证词并非悔意或承担责任的体现。答辩人以自2009年以来无定罪证明其已改过自新，忽视了其刑释后不利行为。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "12e8a89ab922622a9b93db7c1d8e8113f9bb4581b989a2604b6049647326c8bf",
+      "chineseText": "注释：两案均以“延期处理无裁决”结案，构成移民法意义上的定罪。见INA § 101(a)(48)(A)，8 U.S.C. § 1101(a)(48)(A)（2024）。\n第649页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6dc346b3275dcdf623d77c3733fe2ad618a4624f3564cbc474dd43f505e935cd",
+      "chineseText": "引用为29 I&N Dec. 628 (BIA 2026) 临时决定 #4193"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2e945ca76d500b21ddbc7c16cb6e29f3a2c5bb4cfcd99ffb1b2baee111f18d5a",
+      "chineseText": "答辩人否认2000年肇事逃逸造成财产损失，与案卷中的警察报告相反。虽然移民法官采纳其服刑经历给家庭带来失望和挣扎之证词，但该证词并非悔过或承担责任的反映。答辩人声称自2009年以来无定罪即代表改造成功，但对此不利行为未予理会。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b1f50a6dd82c3a8af5c47e642b37e17cc6641257e980c66a75658619a2fd06a7",
+      "chineseText": "因此，权衡积极因素与答辩人犯罪历史及其不愿承担罪责的不利因素后，我们认定行使自由裁量权予以救济不符合美国最大利益。答辩人未能证明其出于自由裁量理应获救济。参见INA § 240(c)(4)(A)(ii)，8 U.S.C. § 1229a(c)(4)(A)(ii)（2024）；8 C.F.R. § 1240.8(d)（2026）。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d047f0befe93c01959aa2207c1cd5c85acda533829fcd194cb8e12543ad0750b",
+      "chineseText": "据此，将作出以下命令。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "760fec5b9d3fea4a2f3b1df57410dc9a397d74b5991961fa828d203a90bfd3b7",
+      "chineseText": "命令：维持国土安全部上诉，撤销移民法官2018年12月7日依据《移民和国籍法》第240A(a)条款所做的取消驱逐决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b70c9ae216d47050e64cebf2866094ecd230e7bd8ab347b69c8516222b98a67b",
+      "chineseText": "进一步命令：命令答辩人被遣送出美国，返回海地。"
+    },
+    {
+      "segmentId": "pdf-p3-s21",
+      "order": 21,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d75c29de9f8178d0c12eca80549ed12490d86aff0832ad5f032f5ed928be3722",
+      "chineseText": "通知：若答辩人受到最终驱逐令，且故意不按该令离境、不善意及时申请旅行或其他必要证件，或不按国土安全部要求的时间地点自我呈现，或合谋采取任何行为阻碍驱逐，答辩人将面临每天最高998美元的民事罚款。参见INA § 274D，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何在排除、驱逐或遣返令生效期间被拒入、驱逐或离境，且之后进入、尝试进入或发现在美国境内者，将被罚款或判处不超过2年监禁，或两者兼施。见INA § 276(a)，8 U.S.C. § 1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p3-s22",
+      "order": 22,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "16136b38cc93f367714ac8cea19cc4e96a987d794ae9c95133f250f7dc95b658",
+      "chineseText": "第650页"
+    }
+  ]
+}

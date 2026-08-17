@@ -1,0 +1,519 @@
+{
+  "schemaVersion": 1,
+  "recordId": "42e1e2c249e3e31109da32c2",
+  "recordFingerprint": "dbdc83b7e15f2cdfde5d037c877fe9b1d9623abc81f47435a51061b0118351f8",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1444566/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1444566/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1444566/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:15:43.761Z",
+  "sourceDigest": "1a0aae3d2ff7700710de8c5da0d163e20e526b106cf4b68ddedf37287ee74335",
+  "translatedAt": "2026-08-17T16:28:43.771Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 62,
+  "translatedSegmentCount": 62,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为 29 I&N Dec. 680（BIA 2026）临时裁决 #4203"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a203651141a501e9e863a1c03e3d06a803d122cc1ac0e5baeed3c6a00c3a2271",
+      "chineseText": "S-E-M-Z案，申请人\n裁决日期：2026年6月5日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "76f192ab67f365577c97b619c51af82511f8fa21c5b948ff23bcf7f096352a3b",
+      "chineseText": "特定社会群体中的“社会区别”要素通常应当以全国范围为基准衡量，而非从某一街区或该国内其他有限地理位置的角度衡量。\n申请人代理律师：Jarom J. Yates，律师，德克萨斯州达拉斯\n国土安全部代理律师：Stacy Norcross，助理首席法律顾问\n委员会小组成员：MALPHRUS，首席上诉移民法官；GEMOETS，上诉移民法官；MCCLOSKEY，临时上诉移民法官。\n发言人：GEMOETS，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1ce7babf1b9bd43229fcc731c64a23d0d2a18146b551eee3c45435234c774fd8",
+      "chineseText": "国土安全部（“DHS”）对移民法官2019年3月5日的裁决提出上诉，该裁决批准了申请人根据《移民与国籍法》（“INA”）第241(b)(3)条款，8 U.S.C. § 1231(b)(3)（2018年）提出的撤销遣返请求。申请人反对此上诉。该上诉将被支持，案件记录将被发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fe3ced4e62fac98b330fa11da761d80814c35b3cd33978037a0c7151b040c4b6",
+      "chineseText": "一、事实与程序背景\n申请人系洪都拉斯出生及公民，现处于仅限撤销遣返程序中。2016年10月，MS-13帮派成员试图招募申请人之女为其贩毒、为其卖淫及进一步协助其犯罪活动。申请人因反对其女受招募而遭威胁将被杀害。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cadb137a5842e56fbd21a202b7ff09655ffcb527b7febce3fd01b9c7d4a938c1",
+      "chineseText": "申请人之女于2016年10月被绑架，申请人、其侄子及一名年轻男子得以找到该女子。随后侄子开车将申请人与其女送至申请人母亲居住之农村村庄。有被视为帮派成员的陌生人到村庄询问申请人。申请人及她女遂离开洪都拉斯前往美国。协助寻找申请人之女的侄子随后被发现遇害。\n第680页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为 29 I&N Dec. 680（BIA 2026）临时裁决 #4203"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "85b03604656739f38661c5c03a4ca2a13c037833fec380e47c8484b7dd79b9c0",
+      "chineseText": "移民法官认定申请人在洪都拉斯因其基于家庭的特定社会群体成员身份遭受过迫害，洪都拉斯当局无法或不愿保护其，且国土安全部未能推翻由此产生的、基于其因同一原因于洪都拉斯未来生命或自由将受威胁的法规推定。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0a7782e82080f8260e794854ba12af602c3a62547a23966af0bc520268ee1e80",
+      "chineseText": "二、分析\n（一）特定社会群体成员资格"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "208e6a22addd3984a3117daf30ad48d7d5c43f370ce98eef9ed17d8bf96bc68b",
+      "chineseText": "国土安全部主张申请人所依赖之基于家庭的特定社会群体不具认知性。基于以下理由，我们予以同意。¹"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1d1a402306fb461f661d88c1e322f82e21750f774da238fe25da95a041e972d9",
+      "chineseText": "合法认知的特定社会群体须具备不可变更的特质，须明确界定，且须在相关社会内具备社会区别性。《W-G-R-案》，26 I&N Dec. 208，212–218（BIA 2014），因其他理由部分撤销，案号Reyes v. Lynch, 842 F.3d 1125（第九巡回上诉法院2016年）。在《L-E-A- II案》中，总检察长裁定，申请人的直系家庭“通常不会在社会层面上具有区别性，无论其是否引起意图利用该家庭关系实施犯罪的罪犯注意。”27 I&N Dec. 582。为符合法规及委员会先例，当申请人提议以特定家庭单位组成群体时，必须证明其所提群体在社会中具有更广泛的意义。见同案第594页。“仅凭迫害者眼中家庭被区别对待并不足够，因为关键在于相关社会的认知——而非有关申请人实际或潜在迫害者的认知。”同前。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5eb403936420c4eeafd13c91cfc76ab007e73420b05b73c0575275f8ad6eb37f",
+      "chineseText": "¹ 移民法官认定特定社会群体具有认知性，明确依赖我们在《L-E-A- I案》中之裁决，27 I&N Dec. 40（BIA 2017）（“L-E-A- I”）。该案裁定，“家庭关系可能满足特定社会群体要求，视案件事实和情形而定。”《L-E-A- I案》27 I&N Dec. 42。上诉期间，总检察长推翻了《L-E-A- I案》。见《L-E-A- II案》，27 I&N Dec. 581（总检察长2019）（“L-E-A- II”）。该案随后一度被《L-E-A- III案》推翻，见27 I&N Dec. 304（总检察长2021）（“L-E-A- III”）。然而，总检察长近期撤销了《L-E-A- III案》并指示裁决者在所有待决及未来案件中遵循《L-E-A- II案》之裁定。见《R-E-R-M- & J-D-R-M-案》，29 I&N Dec. 202，205（总检察长2025）。因此，我们依据《L-E-A- II案》裁析本案主张。同样适用于总检察长于《A-B- I案》，27 I&N Dec. 316（2018）及《A-B- II案》，28 I&N Dec. 199（2021）之裁定。参考《S-S-F-M-案》，29 I&N Dec. 207（总检察长2025）（恢复《A-B- I案》和《A-B- II案》）。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1b131a7a59d7332fe82588fc3c46043cad314acbeaff32f2740e673447e29ffc",
+      "chineseText": "第681页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为 29 I&N Dec. 680（BIA 2026）临时裁决 #4203"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a7a9bc2d5300099a9e97f415926fa1b9a3217ee156388812c352dc9f6c9ac8a6",
+      "chineseText": "“关键在于相关社会，而非申请人实际或潜在迫害者的认知。”同前。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "02e404befd9368eb29c335489547fea05b35707ffee5a56e9bbbcf64e92714b7",
+      "chineseText": "在认定申请人建立了有效的基于家庭的特定社会群体时，移民法官发现洪都拉斯社区内的人们彼此相识，并且对社区内的家庭细节非常熟悉。虽然这一发现有事实依据且并非明显错误，移民法官却错误地专注于特定社区来确定社会区别的概念，而非相关的整体社会。“核心家庭或其他广泛认可的家庭单位通常具有社会重要性，这并不意味着特定的核心家庭能够被整个社会认知。”Matter of L-E-A- II, 27 I&N Dec. 594（引文已修改）。为了满足社会区别要求，直系家庭必须具有“更大的社会重要性”。同上，594页。我们承认在有限的地理及居住区域内，邻居们可能彼此认识；然而，这种认识并不表明，在庇护和拒绝驱逐权利主张及针对具体家庭时，该家庭单位被整个社会承认为独立且有区别的。遵循此范围的调查符合难民的概念，即无法返回整个国家，而非国家内单一社区或有限地理区域。INA § 101(a)(42)；8 U.S.C. § 1101(a)(42) (2018)。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "70f74e22d5762071d658c941e404a19de86a2257dfd6ecc11886dbe0df761d71",
+      "chineseText": "我们的先例并不支持从邻里视角衡量社会区别的结论。我们首次在Matter of Acosta, 19 I&N Dec. 211 (BIA 1985)中阐述“特定社会群体”的定义，后被Matter of Mogharrabi, 19 I&N Dec. 439 (BIA 1987)以其他理由推翻。在Matter of Acosta中，我们认定此类群体的成员必须“共享一个共同且不可改变的特征。”同上，第233页。由于该案聚焦于不变性的概念，我们无须明确论述相关社会如何看待声称的特定社会群体。然而，我们强调基于恐惧的保护的重要性，即“难民必须无法或不愿返回特定‘国家’。”同上，第235页（引自INA § 101(a)(42)(A), 8 U.S.C. § 1101(a)(42)(A)）。“寻求满足难民定义的外籍人士必须不只是显示对某国家内特定地点或住处的迫害确有其事的合理恐惧，而必须表明迫害威胁存在于其国家各地。”同上（加重强调）。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "849a1c618540d28fded880d2e95bb20d38c5fd1c0f562e8e1637041b119eea30",
+      "chineseText": "在后续案件中，我们重点关注社会的认知，使用不同术语描述此要求。例如，我们指出索马里“具有独特且可识别的氏族及子氏族”。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为29 I&N Dec. 680（BIA 2026） 临时裁决#4203"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a726fa2fcd5ac8f111a12669ddca16ce6dd7563dee2fe806dd275a6f08a4f9fd",
+      "chineseText": "Matter of H-, 21 I&N Dec. 337, 343 (BIA 1996)（加重强调）。在Matter of C-A-, 23 I&N Dec. 951, 959–60 (BIA 2006)一案中，经以Castillo-Arias诉美国总检察长案（第十一巡回法院，446 F.3d 1190 (11th Cir. 2006)）确认，我们认定“‘可见性’是识别特定社会群体存在及其可识别性的一个重要因素。”我们得出结论，“哥伦比亚反对卡利毒品卡特尔的非犯罪线人”不构成特定社会群体，部分原因是该群体对相关社会并不显眼。见同上，第961页。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d2096d2e013638b40d4898b9083278c9696f77264dae2a45aa8c95c31159e620",
+      "chineseText": "我们后来指出，“提议的群体是否具有具有必要‘社会可识别性’的共享特征，必须在涉及的国家及所恐惧的迫害情境中加以考虑。”Matter of A-M-E- & J-G-U-, 24 I&N Dec. 69, 74 (BIA 2007)，经Ucelo-Gomez诉Mukasey案（第二巡回法院，509 F.3d 70 (2d Cir. 2007)）确认。我们随后澄清称，“‘可见性’一词无意中引发了混淆。”Matter of W-G-R-, 26 I&N Dec. 216。我们因此改称该要求为“社会区别”，以澄清社会可见性不意味着“肉眼可见”——无论是整体群体还是群体内单个成员——正如持有受保护宗教或政治信仰者不必向社会他人“肉眼”可见一样。见同上。在同案中，我们认定“出于庇护目的，一个群体的认知由相关社会的感知决定，而非迫害者的感知。”Matter of M-E-V-G-, 26 I&N Dec. 227, 242 (BIA 2014)。自此以后，我们一直应用该框架。另见Matter of A-B- I, 27 I&N Dec. 326（“但贯穿特定社会群体框架的关键线索是，社会群体必须是整个社会可辨识的类别。”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ba9f6818c5a945f5a3dae6c53ffbe2acbad0d43e83c1def92a0523eba8540d3b",
+      "chineseText": "在庇护及拒绝驱逐权利主张中，对于特定社会群体的考量限定于申请人相关社会及其在其中经历的过往伤害和预期恐惧。该所指的社会必须在其法定背景下被视为全国范围的迫害，这是基于恐惧的救济的基本方面。正如Matter of Acosta所述，“难民身份内涵着个体需要国际保护，因为其原籍国或惯常居住国不再安全。”19 I&N Dec. 235页；参照 INA § 241(b)(3)(A), 8 U.S.C. § 1231(b)(3)(A)（规定根据INA拒绝驱逐时，“若总检察长认定外籍人士的生命或自由将因其种族、宗教、国籍、特定社会群体成员身份或政治见解在该国受到威胁，则不得将其遣返该国”，加重强调）。另见Robinson诉Shell Oil Co., 519 U.S. 337, 341 (1997)（审查“文字本身、该语言所用的具体语境及整个法规的更广背景”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "7d9bdf658f8079f8836f75bbbbd215838c2a5d5c3774ec22b4ea47bc5bbd6f15",
+      "chineseText": "【此段仅为页码标识，省略翻译】"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为29 I&N Dec. 680（BIA 2026） 临时裁决#4203"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e0ed7256c7a384f193676b674f6697b408271282abe4bdbb010dada6be21a170",
+      "chineseText": "此处查看“文字本身，该语言所处的具体环境以及法规整体的更广语境”。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d942df71fadf0513777e319b508902e2f73b37d01ed2b5de690d1508dbc9f08d",
+      "chineseText": "此外，法规明确要求裁决员确定申请人在其国内是否能合理迁移。8 C.F.R. §§ 1208.13(b), 1208.16(b) (2020)；参见Matter of D-I-M-, 24 I&N Dec. 448, 449–51 (BIA 2008)（讨论庇护资格的相关法规框架）。在这方面，即便申请人已基于受保护的理由证明过去遭受迫害，若国土安全部（DHS）能证明“申请人可以通过移居其国籍国的其他地区，或若无国籍，则其最后惯常居住国的其他地区来避免未来迫害，并且在现有情况下，合理预期申请人应如此行事。” 8 C.F.R. § 1208.13(b)(1)(i)(B)，裁决员亦应以自由裁量权拒绝庇护。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a1ca7c92de3ac840f4875e9221741f0bfc9cad9321c476a6b83700e94a2b4354",
+      "chineseText": "仅关注提议的群体在邻里或国家内其他有限地理区域是否具有社会区别，与庇护和法定拒绝驱逐救济所预期的全国性保护目的不符。仅聚焦有限地理区域则无视为何该群体在更大的人群中不具有区别。如果得出结论认为特定社会群体仅在单一社区内具社会区别，而未考虑该群体在更大社会的区别，则属反常。相比之下，基于宗教或政治见解（作为独立且明确的受保护理由）的主张，并不限于狭小地理区域的身份或遭受虐待，而是在全国范围的伤害背景下加以考虑。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "250c625e8269153e473713780513f5bf89c4294287820b27fb9100cad302f8ec",
+      "chineseText": "“‘特定社会群体成员资格’的要求与其他迫害理由一致，[且]适用的整体负担相当于基于其他理由提出主张的申请人。”Matter of M-E-V-G-, 26 I&N Dec. 244。我们长期认为，基于非政府行为的庇护主张若申请人证据仅涉及其国籍国的极小区域，则“不足以充分建立。”Matter of Fuentes, 19 I&N Dec. 658, 663 (BIA 1988)。我们也认定，“依据INA，政治见解必须与针对国家政府或事实上的政府的特定原因或信念表达相关联。”Matter of D-G-E-A- & N-G-G-E-, 29 I&N Dec. 570, 575–76 (BIA 2026)（加重强调）。若审查仅限于邻居在彼此熟识但该情形不适用于国家其他地区的极小地理范围，该社会区别概念将毫无意义。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为29 I&N Dec. 680（BIA 2026） 临时裁决#4203"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "4fd3395991a3497b9491abee88f6bd9b591a34dcbe9851740da74e19c283ce52",
+      "chineseText": "本案中，将邻里或其他有限地理区域作为社会区别调查的相关社会，与INA强调的全国性迫害不符，也与确立庇护申请人“须证明对其的迫害威胁存在于全国”这一既定原则不一致。Matter of Acosta, 19 I&N Dec. 235。正如前文所述，裁决员在授予庇护前必须考虑申请人是否合理避迁国内其他地区。见如8 C.F.R. § 1208.13(b)(1)(i)。因此，我们结论认为，社会区别应一般在全国范围内衡量，而非依据邻里或国家内其他有限地理区域视角。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "40b4f35da54fbc7923b0f7c4e1976f2fae161fee6a337059545bacec7debf7bf",
+      "chineseText": "巡回上诉法院的判决经常涉及一个国家的社会。参见Amezcua-Preciado诉美国总检察长，943 F.3d 1337, 1344 (第11巡回法庭 2019)（“此外，境况证据中无任何内容显示Amezcua-Preciado所提议的社会团体在墨西哥社会中具有社会上的区别性。”）；Rivera-Barrientos诉霍尔德，666 F.3d 641, 653 (第10巡回法庭 2012)（“Rivera Barrientos未提供任何证据表明萨尔瓦多社会认为抵制帮派招募的年轻女性是一个独特的社会团体。”）；Conde Quevedo诉Barr，947 F.3d 1238, 1243 (第9巡回法庭 2020)（“更关键的是，这些文件中没有任何一份宣称危地马拉社会承认仅仅举报帮派暴力的人为一独特群体。”）；Lemus-Coronado诉Garland，58 F.4th 399, 402 (第8巡回法庭 2023)（“我们同意[移民上诉委员会]的观点，即申请人未能证明‘配合执法的证人’被危地马拉社会认定为社会上的独立群体，因此驳回申请。”）；Zaldana Menijar诉Lynch，812 F.3d 491, 500 (第6巡回法庭 2015)（“与Zaldana的文件证据一样，他提交的证词未能推翻机构结论，即‘积极长期的前帮派成员’在萨尔瓦多社会中缺乏必要的社会区别性。”）；Gonzales-Veliz诉Barr，938 F.3d 219, 232 (第5巡回法庭 2019)（“Gonzales-Veliz同样未能解释洪都拉斯社会如何将无法离开其关系的女性视为一个社会独特群体。”）；Morales诉Garland，51 F.4th 553, 557–58 (第4巡回法庭 2022)（“仅仅拟议团体的成员自认为是社会上有区别的群体是不够的，关键是整个萨尔瓦多社会的看法。”）；S.E.R.L.诉美国总检察长，894 F.3d 535, 556–57 (第3巡回法庭 2018)（“S.E.R.L.未能指出记录中有任何内容迫使得出结论，洪都拉斯社会将无法离开家庭暴力关系女性的直系家庭成员视为社会上独立群体。”）；Quintanilla-Mejia诉Garland，3 F.4th 569, 590 (第2巡回法庭 2021)（“虽然[可能有]一些证据表明萨尔瓦多政府认为前帮派成员社会上具有区别性——至少在纹身去除计划的主要受益人方面——但这并不足以推断整个萨尔瓦多社会将参加此计划的帮派成员视为社会上独特群体。”）；Espinoza-Ochoa诉Garland，89 F.4th 222, 235 (第1巡回法庭 2023)（“我们将由[移民上诉委员会]第一时间决定Espinoza-Ochoa的社会团体是否在危地马拉社会中具有社会区别性，此判决意见不影响其裁定。”）。这些案件涵盖大且多元的人口和地理范围广泛的国家，也涉及较小、人口较少的国家。它们并不表明一个邻里可以作为衡量社会区别性的相关社会。"
+    },
+    {
+      "segmentId": "pdf-p7-s32",
+      "order": 32,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引证为29 I&N Dec. 680 (BIA 2026) 临时决定#4203"
+    },
+    {
+      "segmentId": "pdf-p7-s33",
+      "order": 33,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "af95ad0dcd3e1030da20a01be577a5c6369d0dee9bf18a23fdbe3be8f6d37b1d",
+      "chineseText": "该等案件包括人口众多、多样且地域广阔的国家，也包括较小、人口较少的国家。它们未表明邻里可以成为衡量社会区别性的相关社会。"
+    },
+    {
+      "segmentId": "pdf-p7-s34",
+      "order": 34,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "6313411f82fd42f5b499bc2116941ca0111b3d66890eb416bd912b232e7a9934",
+      "chineseText": "我们承认我们的一些措辞曾提及小于国家范围的概念。例如，我们曾说“该群体的共有特征通常应被社区中的他人识别……”，见Matter of A-M-E- & J-G-U-, 24 I&N Dec. 74。我们也曾指出，“若迫害仅限于国家的偏远地区，或许可以针对该国家社会中更有限的子集进行调查，如Matter of Kasinga，21 I&N Dec. 357, 366 (BIA 1996)一案中，我们考虑了部族中特定的社会团体。”见Matter of M-E-V-G-, 26 I&N Dec. 243。第十巡回上诉法院曾表明，“社会可见性要求相关特征能被社区成员识别，因其显著或相关信息公开可得。” Rivera-Barrientos, 666 F.3d 652。然而，没有任何案件认为邻里或国家内的其他有限地理位置即构成社会区别性的社会范围。"
+    },
+    {
+      "segmentId": "pdf-p7-s35",
+      "order": 35,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "946b2963cf617ae6ba683fc76004bfd7d48aa3c77d5330da734b11090b36c940",
+      "chineseText": "拟议的“社会团体必须避免在证据支持下，既过于宽泛以致界限不清，也过于狭隘而缺乏社会上的更大意义。”Matter of A-B- I, 27 I&N Dec. 336。过于狭窄地聚焦社会子集会有风险，即拟议团体缺乏对社会的更广泛意义。通过[证据如国家状况报告、专家证词、新闻报道涉及歧视性法律政策、历史敌对等]，申请人可以证明群体存在并被观念社会视为“独特”或“他者”，见Matter of M-E-V-G-, 26 I&N Dec. 244。若某特征在社区内可被识别，然并非在外部社区均可识别，则申请人有责任有说服力地展示该特征如何使该群体在INA意义上社会区别。"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "210d8c3b5595ceecd64c1f2199a39ff1e5f940f87e18915883b9b3b07e33b0cd",
+      "chineseText": "申请人所提出的家庭社会团体符合此项要求。该家庭在其居住的相应邻里或据称的迫害者中可能具有意义。"
+    },
+    {
+      "segmentId": "pdf-p8-s37",
+      "order": 37,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引证为29 I&N Dec. 680 (BIA 2026) 临时决定#4203"
+    },
+    {
+      "segmentId": "pdf-p8-s38",
+      "order": 38,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "bd3577352dc31ca1ed29ada77678680a55208fa4e36b6a804d860cb4ed800591",
+      "chineseText": "然而，缺乏足够证据表明该家庭在洪都拉斯社会中具有更大的意义。"
+    },
+    {
+      "segmentId": "pdf-p8-s39",
+      "order": 39,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "322460dd7d1888d0e81d47263c37e1d2790642baa1e4eb087ff20fc4c9e39af8",
+      "chineseText": "B. 关联性"
+    },
+    {
+      "segmentId": "pdf-p8-s40",
+      "order": 40,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "c4315912116213e2d9426ee17fc5aa43cac250970ac4ae3f6519ca8390214e6d",
+      "chineseText": "我们也推翻了移民法官关于关联性的认定。见Matter of M-E-V-G-, 26 I&N Dec. 242（指出区分某群体是否为“特定社会团体”和某人是否因所属特定社会团体而受到迫害的重要性）。即便此处立即家庭被认定为有效的社会团体，但所主张的伤害与其并无关联。\"庇护申请人属于基于家庭的特定社会团体并不必然意味着迫害者施加或威胁的任何伤害是因为家庭成员身份。\" Matter of L-E-A- I, 27 I&N Dec. 43。“如果迫害者即便不存在该家庭的保护特征，也会以相同方式对待申请人，则申请人未在此理由上建立权利主张。”同上，43-44页。"
+    },
+    {
+      "segmentId": "pdf-p8-s41",
+      "order": 41,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "45a5e99b4a2d337d3bff7678403dfc31cd7e88c157b9de69c5b7d5f8ab5f164e",
+      "chineseText": "总检察长采纳了Matter of L-E-A- I中提出的测试标准，用以判断可能存在混合动机案件中的关联性。“为确立必要的关联性，该保护理由：（1）必须是侵害行为者行为的‘若非’原因；（2）并且必须起到超过次要作用，即不能是附带的或与行为的另一个理由无关的因素。” Matter of A-B- II, 28 I&N Dec. 208-09（引自Matter of L-E-A- I, 27 I&N Dec. 43-44）。"
+    },
+    {
+      "segmentId": "pdf-p8-s42",
+      "order": 42,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "e350deffde42857daae560f3130e70a5ab86ec69bf35f844eb9583b77044ad21",
+      "chineseText": "联邦法院总体上接受了Matter of L-E-A- I的关联性分析。例如，第二巡回法院明确引用了该分析。Garcia-Aranda v. Garland, 53 F.4th 752, 757 (2d Cir. 2022)。“迫害者威胁申请人及其家庭成员的事实不必然意味着威胁是由家庭关系驱使。” 同上（原文中有改动）（引自Matter of L-E-A- I, 27 I&N Dec. 45）。“因为家庭成员身份不能是伤害的次要、附带或无关因素，‘迫害者仅将家庭成员作为达成目的的手段’一事实本身不足以建立权利主张，尤其当该目的与另一受保护理由无关时。” 同上（引自Matter of L-E-A- I, 27 I&N Dec. 44-46）。法院进一步收集了其他巡回法院采纳实质类似标准的案例。 同上，757脚注4（引用Thayalan诉美国检察长，997 F.3d 132, 142-44 (3d Cir. 2021)；Orellana-Recinos诉Garland，993 F.3d 851, 856-59 (10th Cir. 2021)；Sanchez-Castro诉美国检察长，998 F.3d 1281, 1286-88 (11th Cir. 2021)；Fuentes诉Barr，969 F.3d 865, 871-72 (8th Cir. 2020)）。"
+    },
+    {
+      "segmentId": "pdf-p9-s43",
+      "order": 43,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为29 I&N Dec. 680（移民上诉委员会2026年）临时裁决第4203号"
+    },
+    {
+      "segmentId": "pdf-p9-s44",
+      "order": 44,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "38243aa78fda421b26626948c79a3f72c1e5e6ff7fc6a233649c8fbfc73eff1e",
+      "chineseText": "第九巡回法院明确采纳Matter of A-B- II的测试作为确立关联性的一种方法，另一方法是“来自受保护理由的动机本身是否足以导致伤害。” Manzano诉Garland，104 F.4th 1202, 1207-09 (9th Cir. 2024)。"
+    },
+    {
+      "segmentId": "pdf-p9-s45",
+      "order": 45,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "c4e8d8cc0a9f1942bf57d6515ec9ec64362ffc6f95ae7ab757b24a90040e5d46",
+      "chineseText": "然而，第四巡回法院未采纳此方法。在分析基于家庭的社会团体主张时，第四巡回法院认定母亲与其子女的关系是她，而非他人被针对的原因。Hernandez-Avalos诉Lynch，784 F.3d 944, 949-50 (4th Cir. 2015)。总检察长和第十一巡回法院均认为该分析与REAL ID法案“主要原因测试”不一致。见Matter of A-B- II, 28 I&N Dec. 209（“即使保护特征只是被机会性利用，第四巡回法院似乎认为因果关系足以作为法律上的关联性依据。”）；Sanchez-Castro, 998 F.3d 1287（“我们拒绝采纳此理由，因为其将关联性调查扩展到即使家庭身份为次要附带理由，也视为主要原因。”（引文有所修改））。"
+    },
+    {
+      "segmentId": "pdf-p9-s46",
+      "order": 46,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "556eb1827ce8c614c81c6ca1b8b84554893843f5beb4dc08423106f00df7462f",
+      "chineseText": "移民法官认定，帮派最初以申请人的女儿为招募对象，随后因申请人是该女儿的母亲而针对申请人。根据Matter of L-E-A- I及Matter of A-B- II的框架，该结论不当。即使家庭关系构成对申请人伤害的“若非”因果关系，招募和维持帮派权力及控制是本案伤害的唯一核心原因。"
+    },
+    {
+      "segmentId": "pdf-p9-s47",
+      "order": 47,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "eb89910c97aa2e1857ce1e844bf674e9320ba6f86923f1211270dbb691d2e9bd",
+      "chineseText": "我们曾声明，“仅仅因为存在某个特定的社会群体成员且家庭成员遭受伤害，并不能建立起关联性(nexus)。”案件编号L-E-A- I，27 I&N Dec.第45页。“这就是为什么委员会制定了双重标准来证明关联性：申请人的受保护身份必须既是其受迫害的必要原因，也必须在导致伤害的原因中起超过次要作用，且该作用既非附带也非边缘性的。”"
+    },
+    {
+      "segmentId": "pdf-p9-s48",
+      "order": 48,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "7d92de72a19ee43b0cdd34a22a33301742180d6ce4529e10be57d6c8971062c9",
+      "chineseText": "2 第三巡回上诉法院一般采纳此标准，但不接受我们关于受保护理由不可“从属”于另一原因的先例。Ndayshimiye 诉 美国司法部长，557 F.3d 124, 129–31 (3d Cir. 2009)；参见案件编号J-B-N- & S-M-，24 I&N Dec. 208, 214 (BIA 2007)（主张受保护理由“不能是偶然的、边缘的、表面的或从属于导致伤害的另一理由”），经确认，Ndayshimiye 诉 美国司法部长，557 F.3d 124 (3d Cir. 2009)。"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "3ea1626fdfc54265dd47beae1841225fa1356c4870df4f4717ade18b26b8ab80",
+      "chineseText": "第688页"
+    },
+    {
+      "segmentId": "pdf-p10-s50",
+      "order": 50,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为29 I&N Dec. 680 (BIA 2026) 临时决定#4203"
+    },
+    {
+      "segmentId": "pdf-p10-s51",
+      "order": 51,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "fb8d7be7bcc07d5b287e734f24aa4d1a5de5be185fb7a176df55036dc76cd5a3",
+      "chineseText": "伤害的原因或实现非受保护目的手段。”案件编号A-B- II，28 I&N Dec.第211页。"
+    },
+    {
+      "segmentId": "pdf-p10-s52",
+      "order": 52,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "46da3f9c872ec27124735383f24e63f81110c0057fd791d43a4058d69f2b3e1d",
+      "chineseText": "申请人的专家证称，“任何侵蚀[帮派]控制的因素都会成为遭受伤害的理由。”帮派采用多种方法，包括对他人的威胁，以实现其控制目标。参见如案件编号M-F-O-，28 I&N Dec. 408, 412 (BIA 2021)。申请人声称她因直系亲属身份而被迫害，且该身份是她害怕遭受伤害的核心原因之一，但其支持者—侄儿被谋杀一事削弱了这一主张，因为这反映了帮派暴力不仅针对直系亲属。此悲惨暴力表明帮派针对任何被视为实现其目标的工具的人或事，且不考虑受害者的直系亲属身份。"
+    },
+    {
+      "segmentId": "pdf-p10-s53",
+      "order": 53,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "45a0f45f7dab4be9b36e81755504850b50023f433d2a2b23e9bf701020206091",
+      "chineseText": "移民法官引用了Hernandez-Avalos案，该案源于另一个巡回上诉法院，并且如前所述，司法部长已声明该案与REAL ID法案的核心原因测试不一致。移民法官虽然引用了，但未充分考虑本巡回法院的第五巡回上诉法院案Ramirez-Mejia 诉 Lynch，794 F.3d 485 (5th Cir. 2015)。该案中，“帮派成员向Ramirez-Mejia打听其兄弟的情况，单凭此证据不足以支持帮派以其家庭为由意图迫害她的主张。”Ramirez-Mejia, 794 F.3d 第493页。"
+    },
+    {
+      "segmentId": "pdf-p10-s54",
+      "order": 54,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "027ad75b0a2b03100d100b2fb70c57152f6640b1dc2cb7aef8e13a1aca75fc3c",
+      "chineseText": "现有证据更类似于Ramirez-Mejia案。正如专家证词所述，帮派针对任何可能对其构成威胁的人，而申请人也证实帮派针对广泛人群。无差别伤害与受保护理由无关联。证据未充分证明“迫害者基于家庭的生物学关系、历史地位或该家庭单位特有的其他特征，对家庭或[申请人]有任何恶意。”案件编号L-E-A- I，27 I&N Dec.第47页。本案中任何家庭关系并非法定伤害的核心原因。"
+    },
+    {
+      "segmentId": "pdf-p10-s55",
+      "order": 55,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "8f39115df084341ea437fadf221d8cf94c44f0869aa32eb99b3cec135e3ad7d1",
+      "chineseText": "三、结论\n因此，申请人不符合法定阻止遣返的资格，我们撤销移民法官授予的该项遣返豁免。我们无需对国土安全部关于该救济授予的其他辩点作出裁决。参见INS诉 Bagamasbad，429 U.S. 24, 25 (1976)（全院意见），“一般原则上，法院和机构不必对其判决结果不需要涉及的问题作出裁定。”移民法官未对申请人基于实施《反酷刑公约》的相关法规申请保护的主张作出裁决，我们将仅为此目的将案件发回。3"
+    },
+    {
+      "segmentId": "pdf-p10-s56",
+      "order": 56,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "2a7901ab1ce3767ac179a50a3386207e8aa8a0c3a8ee56150d43b035a05ad9d7",
+      "chineseText": "第689页"
+    },
+    {
+      "segmentId": "pdf-p11-s57",
+      "order": 57,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "a24d549f3283e99f2fb5e09e7d210aed3b5b7d09d97a9fbe0bbc83e669955b82",
+      "chineseText": "引用为29 I&N Dec. 680 (BIA 2026) 临时决定#4203"
+    },
+    {
+      "segmentId": "pdf-p11-s58",
+      "order": 58,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "a9a08db0b7be4d98247b401651d7e144bde3013bdf34e4a38e94914236ca2cf3",
+      "chineseText": "申请人基于实施《反酷刑公约》相关法规申请保护的主张，移民法官未作裁决，我们将仅为此目的将案卷发回。3"
+    },
+    {
+      "segmentId": "pdf-p11-s59",
+      "order": 59,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "e9c78b1d75690385744917bfe817bd9abb203c91738d33bf32b8c8f273acb975",
+      "chineseText": "命令：支持国土安全部的上诉，撤销移民法官对法定阻止遣返的裁定。"
+    },
+    {
+      "segmentId": "pdf-p11-s60",
+      "order": 60,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "0a1ab9c7791c378d4a8d8efc24327846cc2b62b3ba4a541b72c0ed45ebf2b75a",
+      "chineseText": "进一步命令：案卷发回移民法庭，进行与本决定一致的进一步程序并作出新决定。"
+    },
+    {
+      "segmentId": "pdf-p11-s61",
+      "order": 61,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "1e86691d56a4e5e5e90e75a75e8d714a2e60a115ea89e326aa7a38632073188e",
+      "chineseText": "3 《防止酷刑及其他残忍、不人道或有辱人格的待遇或处罚公约》，1984年12月10日，S. Treaty Doc. No. 100-20，1465 U.N.T.S. 85（美国于1994年11月20日生效）。8 C.F.R. §§ 1208.16(c), 1208.17 (2026)；8 C.F.R. § 1208.18(a) (2020)。"
+    },
+    {
+      "segmentId": "pdf-p11-s62",
+      "order": 62,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "da14f33347e31a9521906eb1e474fadda2e77ba7fba541b96287d80fb40617f5",
+      "chineseText": "第690页"
+    }
+  ]
+}

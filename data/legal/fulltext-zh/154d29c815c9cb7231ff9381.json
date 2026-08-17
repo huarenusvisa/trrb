@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "recordId": "154d29c815c9cb7231ff9381",
+  "recordFingerprint": "43aeec883317c5acdc44cdd570fdaf8af113295e59e69ccd3e648c5cf3fbffcd",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1445646/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1445646/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1445646/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:28:43.798Z",
+  "sourceDigest": "003d317f05e20ea10b89f9d260ac683cd732303ded939d7e9a9318b06432f5b5",
+  "translatedAt": "2026-08-17T16:29:15.460Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 25,
+  "translatedSegmentCount": 25,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4f4e775f54d9718fb00a7679aee2835ff3e3cf19ffe3e749331646a866ba6498",
+      "chineseText": "引用为 29 I&N Dec. 691 (BIA 2026) 临时裁定 #4204"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4e51a38195cdf6febf55c909efeef135b3563cff10eb151425cec5d0fa44d67e",
+      "chineseText": "菲利普·德·赫苏斯·埃雷拉-努涅斯案件，当事人 被告\n裁决日期 2026年6月12日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d22249f52e1b420c255b3545de9fa8346e053e1a5a1efe12d9e2d2254b3d5505",
+      "chineseText": "受最终驱逐令约束的外国人应首先向国土安全部请求暂缓执行，随后委员会才考虑与复开或复议委员会或移民法院命令相关的暂缓请求。 \n代理被告：Isadora Velazquez-Rivas 律师，佛罗里达迈阿密\n法官组：MALPHRUS，首席上诉移民法官；CHABAN，上诉移民法官；WHITE，临时上诉移民法官。\nMALPHRUS，首席上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8417d1bb26fe383c80cf551111f15c82b7e1e4be0d32302db04358b1911d4a36",
+      "chineseText": "被告为墨西哥出生及公民，已提交暂缓驱逐请求，待同时提交的复开动议裁决后决定。 1"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "714963cefab1bbdc4048dd76ea64d9c4262ff0071d868abf17c3792fdf41d79d",
+      "chineseText": "移民法官签发的驱逐令于2015年10月5日行政生效，本委员会驳回了被告上诉。参见2026年8 C.F.R. § 1241.1(a)。被告于近十年后，即2025年5月提交逾期的复开动议。鉴于复开动议逾期，我们仅能依据2026年8 C.F.R. § 1003.2(a)规则行使自由裁量权主动复开。参见《移民和国籍法》（INA）第240(c)(7)(C)(i)节，8 U.S.C. § 1229a(c)(7)(C)(i)(2024)（规定复开动议90天时限）。被告动议中提交的证据显示，2019年其与一美国公民结婚，该美国公民随后为其申请的移民签证仍在美国公民及移民服务局审理中，并于2020年育有一名美国公民子女。被告请求复开以申请调整为合法永久居民身份，并请求在动议审理期间暂缓驱逐。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "429fef8bb8e44804bb0fe5eea97c50a6fbbfb323ff45c44692a89c13b6fe69de",
+      "chineseText": "1  本为临时命令。被告的复开动议仍在本委员会审理中，将另行裁定。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f55a0bbd13b3fd4debc4cde33feaec99c68ab306c1ff441cf76bbb0ea8c8e8a3",
+      "chineseText": "第 691 页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4f4e775f54d9718fb00a7679aee2835ff3e3cf19ffe3e749331646a866ba6498",
+      "chineseText": "引用为 29 I&N Dec. 691 (BIA 2026) 临时裁定 #4204"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "acab0d424b45406665efe102f76a0db4fb1144f530963eb4be9f620b3c8d3191",
+      "chineseText": "国土安全部（DHS）依据INA第241(a)(1)节，8 U.S.C. § 1231(a)(1)(2024)享有执行移民法官驱逐令的专属权力，通过将相关外国人实际遣送出美国实现该权力。2 参见2026年8 C.F.R. § 241.2。受最终驱逐令约束的外国人可随时向DHS请求自由裁量的驱逐暂缓。8 C.F.R. § 241.6 (2026)。拥有待审复开或复议动议的外国人，得向具有相关动议管辖权的审裁机关申请自由裁量的驱逐暂缓。见2026年8 C.F.R. §§ 1003.2(f), 1003.23(b)(1)(v)。对移民法官驳回其复开动议的裁决依然上诉中的外国人，可以向委员会申请自由裁量暂缓。3 8 C.F.R. § 1003.6(b) (2026)。DHS曾拒绝暂缓请求，并不排除委员会或移民法官在相关动议审理中授权自由裁量的暂缓。8 C.F.R. § 1241.6(b) (2026)。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9ae91190d0c34dfff18ce88be292abb570387356b7cd18c017245bdf391ff4d4",
+      "chineseText": "如上所述，依据规章，受最终驱逐令约束且有待审复开或复议动议的外国人，可选择向DHS、拥有动议管辖权的执行办公室移民审查机构（EOIR）审裁机关，或两者同时提出自由裁量的驱逐暂缓请求。这导致DHS和EOIR审裁官可能重复处理同一暂缓请求的无谓工作。许多提交复开或复议动议的外国人也向委员会或移民法院提交驱逐暂缓请求，进一步增加EOIR已“负荷过重”的案件积压。引用Moncrieffe v. Holder, 569 U.S. 184, 201 (2013)；另见Quinteros v. Att’y Gen. of U.S., 945 F.3d 772, 794 (3d Cir. 2019)（McKee法官附带意见），指出委员会及审裁官工作量极大。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "021f28c1ccb95c568811892d0732247aeda003580a780f55b6fe2663479d983b",
+      "chineseText": "是否批准或拒绝暂缓请求，属我方自由裁量权范围，参见Dada v. Mukasey, 554 U.S. 1, 21 (2008)，本委员会亦具备"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "be4acdde9cc13dbaf48fe1f81829f77b98e09689602bd5602e7e2bede5dba7bb",
+      "chineseText": "2\n依据2002年国土安全法案第1517节（HSA），公众法案第107-296号，116 Stat. 2135, 2311（2006年6 U.S.C. § 557 (2006) 编纂），《移民和国籍法》中描述由司法部长或司法部其他官员转移至国土安全部的职能中任何对司法部长的称谓，“应被视为指国土安全部长”。\n3\n根据INA第240(b)(5)(C)节，8 U.S.C. § 1229a(b)(5)(C)（2024年），对缺席情况下作出的驱逐令提交复开及撤销的动议，自动暂缓执行该驱逐令。见2026年8 C.F.R. § 1003.23(b)(4)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6e34424150c198a7602f4575cb0b11865f79d89d58a424a22ac8b7a84c7cd5ef",
+      "chineseText": "第 692 页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4f4e775f54d9718fb00a7679aee2835ff3e3cf19ffe3e749331646a866ba6498",
+      "chineseText": "引用为 29 I&N Dec. 691 (BIA 2026) 临时裁定 #4204"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a9350489bc2fe06af2837bec7954ebb35e9015f53cc1d8d26d9d6ae08b4a0c66",
+      "chineseText": "自由裁量权，且有权宣布“指引我们自由裁量行使的通用政策”，参见INS v. Yueh-Shaio Yang, 519 U.S. 26, 32 (1996)。另见Reyes v. Garland, 11 F.4th 985, 992 (9th Cir. 2021)（解释委员会“仅通过其先例决议建立政策”）。本委员会亦“有权制定符合正当程序条款宽泛限制的程序规则”，参见Lopez v. Garland, 60 F.4th 1208, 1212 (9th Cir. 2023)；另见Mejia-Alvarenga v. Garland, 95 F.4th 319, 326–27 (5th Cir. 2024)（指出国会赋予委员会管理自身程序的责任，故机构应自由制定程序规则及探查方法以履行职责（引用经修改））。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8dfe873af93bb471f21b641e962441786ef3f771ee3db537e4709309351ddc94",
+      "chineseText": "基于上述考量，作为今后的通用政策，对于受最终驱逐令约束的外国人，委员会在考虑与复开或复议动议相关的暂缓请求前，应首先要求该外国人向DHS提出暂缓请求。参见Honcharov v. Barr, 924 F.3d 1293, 1296 (9th Cir. 2019)（全体法官会议）（认定“程序违失规则”与委员会“制定审理程序规则的权力”一致）。未来，外国人应先请求DHS暂缓，并提交已向DHS请求暂缓的证明。暂缓请求通常应提前充分时间提交给DHS，以便其作出回应，并随向委员会提交的暂缓请求附上DHS的决定副本。否则，外国人应说明为何未能给予DHS充分时间处理请求。4"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "82494d94efc9c6d12e519eca43ae292477c306c7379048d34828d21baa9d05a1",
+      "chineseText": "作为唯一具备执行驱逐令权力与自由裁量权、以及有时实际拘押涉案外国人的机关，我们认为DHS最适合初步审理暂缓请求。我们亦认为该规定有利于促进行政效率、节省EOIR有限审裁资源，并有助于有序处理自由裁量的暂缓请求。如果DHS批准暂缓请求，委员会就无须投入有限资源审理该事项或向当事人通报暂缓的批准。鉴于DHS拒绝暂缓请求并不“排除移民法官或委员会对待审动议相关的暂缓授权”，8 C.F.R. § 1241.6(b)，外国人不会因此被剥夺向委员会或移民法官请求暂缓的充分公平机会。5 委员会保留在任何待审动议中审理暂缓请求的自由裁量权。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "44b470cb44c6cb1549558a10c0265a65c1fb6d5caaea69db7c7cb18a8ac60b40",
+      "chineseText": "4\n暂缓请求分为紧急与非紧急类别，其中“紧急”暂缓请求可立即裁决，“非紧急”请求则在常规审理程序中处理。《EOIR政策手册》第三部分：委员会实践手册，第5.3(c)(2)(A)-(B)节（2026年3月18日）。仅当外国人处于DHS物理拘押且驱逐、遣返或排除迫在眉睫时，才视为紧急。我们承认某些情况下暂缓请求属紧急，且未能提前给予DHS充分时间作出响应。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "804749e7ce83a510c802c06d3e29da65b3e216c20be32fb6f4611c445d2c2c89",
+      "chineseText": "第 693 页"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4f4e775f54d9718fb00a7679aee2835ff3e3cf19ffe3e749331646a866ba6498",
+      "chineseText": "引用为 29 I&N Dec. 691 (BIA 2026) 临时裁定 #4204"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "20803bed39cd67d17f4b0e22fb2ac29077b2c5561f9a6b07632db38b64722135",
+      "chineseText": "若DHS批准暂缓，则委员会无需耗费有限资源审理或通知当事人。鉴于DHS拒绝暂缓请求不排除移民法官或委员会在待审动议中有权授予暂缓，外国人将获有充分公平机会向委员会或移民法官请求暂缓。5 委员会保留与任何待审动议相关的暂缓请求自由裁量审理权。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5c7732786b3e4c84e28caee0202fa564e1c6f0792de987a630d330bb9af56dae",
+      "chineseText": "本委员会今日宣布的新规则，仅对本裁决后提交的暂缓请求适用，属前瞻性适用。参见赫托（Matter of Forjoe），29 I&N Dec. 463, 472 (BIA 2026)（讨论是否适用新规则追溯生效的相关因素）。被告关于驱逐暂缓请求的实质内容，将另行裁定。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d71a673b823597ed8d6fcab9995f57092db5578db3bf8b3acf273876cdfae812",
+      "chineseText": "特此命令。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "44c9c02e2ea201deb23e5e86fdc63d58f9ebee75450b6cb794e411db17734308",
+      "chineseText": "5\n我们承认DHS对暂缓请求收费，见8 C.F.R. § 103.7(d)(6)。但DHS可免除此类费用。见同处。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "705c5285abf730bb54a5d16c1a9251d574ed70a11856567bd9ae5bdf1c388edc",
+      "chineseText": "第 694 页"
+    }
+  ]
+}

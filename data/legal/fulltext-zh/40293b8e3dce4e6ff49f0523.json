@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "recordId": "40293b8e3dce4e6ff49f0523",
+  "recordFingerprint": "cb8bd5cebf2a2f533c4a47f976275914d038df74176fecbad821114d6ca5db08",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1443566/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1443566/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1443566/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:11:34.837Z",
+  "sourceDigest": "dab88352c5333d9d5fc29437ad680441d510331de8f83a7f69575bd7fafc7272",
+  "translatedAt": "2026-08-17T16:15:43.734Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 33,
+  "translatedSegmentCount": 33,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fa4d02b739446a7ab5fab5eca7b7aa950a6a7317eb6f7c61bfcab09d4ac10134",
+      "chineseText": "引证为29 I&N Dec. 662（BIA 2026）临时决定#4200"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f3ba1bd7566da342217fc0ab06c3d5c85075915cac60770b2607a31f5da1a34a",
+      "chineseText": "N-A-G-C-案，答辩人\n裁决日期2026年6月2日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "094deb79738fa07f141fc56b8035d5af736652aa417fd127da37f72fb3d96cdf",
+      "chineseText": "以往被指定为无陪伴未成年外侨（UAC）或经批准的特别移民未成年（SIJ）申请，均不赋予移民法官对未获准入境美国的外侨的监护状况重新裁定的权限。遵循N-A-G-C-案（Matter of Yajure Hurtado, 29 I&N Dec. 216（BIA 2025））。\n答辩人代理人：Michelle J. Moodispaw 律师，马里兰州格伦伯尼\n国土安全部代理律师：Jeffery D. Lindsay，助理首席法律顾问\n出庭法官小组：HUNSUCKER 和 VOLKERT，上诉移民法官；GILLIES，临时上诉移民法官。\nHUNSUCKER，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8a1a6b9054217ca92098ce26816227fce29dc4dad5f5967c010ebe600b323fdb",
+      "chineseText": "国土安全部（以下简称“DHS”）对移民法官2025年10月14日作出的保释令提起上诉，该保释令批准答辩人对监护状况的变更请求，并在缴纳4,000美元保释金后允许其获释。移民法官于2026年3月31日发布备忘录说明该保释决定。答辩人反对该上诉。我们将支持DHS的上诉，撤销移民法官的保释决定，并命令答辩人在无保释情况下被拘留。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "93eac124cb1683cb99345b07edd39c31cba05b75334b30d26a87d91f50b9fb12",
+      "chineseText": "答辩人为萨尔瓦多原籍及公民，于2022年11月30日左右抵达美国，入境时年仅17岁，被指定为无陪伴未成年外侨（UAC）。约于2022年12月18日，难民安置署（ORR）将答辩人交由其生物学兄长照顾。随后，于2025年1月21日，马里兰一法院判定答辩人的监护权归其母亲所有，原因其母亲居住在美国境内。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2c67d445cfd8d80135e856b877a745896045cf18f5b8bcf25da63e3904844737",
+      "chineseText": "2023年4月17日，DHS向答辩人送达出庭通知，指控其违反移民和国籍法（INA）第212(a)(6)(A)(i)条，8 U.S.C. § 1182(a)(6)(A)(i)（2018），即作为未获准入或假释的在美外侨非法存在。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "521a9898a93215d7fadfe7298f7badac747bcbc5846984a6ee6602b31c378364",
+      "chineseText": "第662页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fa4d02b739446a7ab5fab5eca7b7aa950a6a7317eb6f7c61bfcab09d4ac10134",
+      "chineseText": "引证为29 I&N Dec. 662（BIA 2026）临时决定#4200"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6e583ae87d50f2f9f3f9ea17c9b6e148586b91b41d91117d8eb46a2aa2d94031",
+      "chineseText": "2025年9月，答辩人被DHS拘留，移民法官举行了监护状态重新裁定听证会。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8aa6f3a00f99e985cc05e99387ef22185dca50c6979610c9c86b8355bf1a35e5",
+      "chineseText": "移民法官认定其根据INA第236(a)条，8 U.S.C. § 1226(a)（2024年版）有权重新裁定答辩人的监护状况。移民法官驳回了DHS认为答辩人作为入境申请人应强制拘留、依据INA第235(b)(2)(A)条，8 U.S.C. § 1225(b)(2)(A)（2024年版）的论点。移民法官认定，上诉委员会在N-A-G-C-案（Matter of Yajure Hurtado, 29 I&N Dec. 216（BIA 2025））中的决定不具约束力，因为答辩人在2022年17岁入境时已被指定为UAC，且拥有特别移民未成年（SIJ）身份的I-360表格批准。移民法官进一步判定，答辩人不构成对人或财产的危险，4,000美元保释金足以保证其将来出席诉讼程序。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0031c8d08ca35d8a73c4736925cb581ca4eef258a269d75bff59b0aec858cfb3",
+      "chineseText": "DHS在上诉中主张，移民法官无权对答辩人的监护状况重新裁定，因为答辩人系入境申请人，应受INA第235(b)(2)(A)条，8 U.S.C. § 1225(b)(2)(A)所规定的拘留体制约束，依据上诉委员会在N-A-G-C-案中的具有约束力的先例。我们同意，既往的UAC身份认定或SIJ申请批准均不赋予移民法官对未获准入境美国的外侨重新裁定监护状态的权限。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "12ace054b724649ae9b6942fa010ad321373b4ceac3f09013344f32bb7f74631",
+      "chineseText": "经重新审查（de novo），我们认定N-A-G-C-案为本案裁决的指导性判例。根据INA的文本及结构，移民法官无法获得法定权力重新裁定答辩人的监护状况。INA明确规定，“未获准入境而已在美国境内的外侨，应视为申请入境者。” INA第235(a)(1)条，8 U.S.C. § 1225(a)(1)（2024年版）。答辩人未经合法入境或假释进入美国且未声称任何合法入境身份。因此，依据法律明确规定，答辩人为“申请入境者”。参见N-A-G-C-案，29 I&N Dec. 216页220–28段；Lemus案，25 I&N Dec. 734, 743及注6（BIA 2012）。申请入境者的拘留权由INA第235(b)条，8 U.S.C. § 1225(b)规定，移民法官无权为此类外侨考虑保释。INA第236(a)条，8 U.S.C. § 1226(a)涉及另一法定类别，不适用于国会对申请入境者制定第235条拘留条例的情形。详见Nielsen诉Preap案，586 U.S. 392, 406–14（2019）（解析INA第236条，8 U.S.C. § 1226）。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fa4d02b739446a7ab5fab5eca7b7aa950a6a7317eb6f7c61bfcab09d4ac10134",
+      "chineseText": "第663页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5e56c027cf0e475c43d09c0c110ac549f789fd440319980e004440fb89b3e6c1",
+      "chineseText": "引证为29 I&N Dec. 662（BIA 2026）临时决定#4200"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f4ed0537ceadc8c957af14ef8782aea0b97a6f702d09c50101b4561a82ad346c",
+      "chineseText": "申请入境者适用的法定框架仍为INA第235条，8 U.S.C. § 1225，即便这些外侨在美国境内逗留时间较长，该框架亦不变。非法入境不构成合法入境，逾期非法逗留亦不能将非法入境转换为合法入境。参见Lemus案，25 I&N Dec. 734, 743及注6（BIA 2012）（指出“许多并非以寻求正常入境许可方式入境的人士[包括未被准入境而已在美国境内的外侨]，依移民法被视为‘寻求入境’。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8d0fb1fcc2734affdaa509ea0472f0da81d8bb38e52bd3f596a2a6cf403bedd5",
+      "chineseText": "相反，国会以入境身份作为关键法定区分标准。INA第235(a)(1)条，8 U.S.C. § 1225(a)(1)适用于“未获准入境但已在美国境内的任何外侨”，无时间限制。法院不得在法律未载明的情况下自行设定时间限制或境内逮捕限制。Jennings诉Rodriguez案，583 U.S. 281, 300–01（2018）；参见Buenrostro-Mendez诉Bondi案，166 F.4th 494, 506（第5巡回，2026）（指出“政府过去的惯例与法律文本无关。文本内容明确，不因历届政府的决定而改变。长期惯例不能证明对明显与法律文本不符的解释的正当性。”，引自Pereira诉Sessions案，585 U.S. 198, 204（2018））。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b2d4c72c73ddcad42e783ed37dbd36b9a3de74fac8c85f792165c27b49e0d023",
+      "chineseText": "移民法官还认为，答辩人先前作为无陪伴未成年外侨的身份认定、其获得的SIJ申请批准，以及2008年威廉·威尔伯福斯贩运受害者保护再授权法案（William Wilberforce Trafficking Victims Protection Reauthorization Act of 2008，公法编号110-457，法典第122 Stat. 5044节）中的保护措施，……"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ac432880aaedecfd1b09df930d575ec8b72d6ef1eac42fa5fe7a124452f456c0",
+      "chineseText": "第664页"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fa4d02b739446a7ab5fab5eca7b7aa950a6a7317eb6f7c61bfcab09d4ac10134",
+      "chineseText": "引证为29 I&N Dec. 662（移民上诉委员会 2026年）临时决定 #4200"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "325ea351a5b8b857eedd10d44e32e5220eafd4ff0f3a684afb4b46d66c6564b9",
+      "chineseText": "《TVPRA》，将其从适用于入境申请人的拘留框架中移除。我们认为移民法官犯了错误。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "43e454d47b2dc1b59125a0a79961c772ec02fd80c1be60764acd6c083f2246ca",
+      "chineseText": "该被申请人曾被认定为无陪伴未成年人（UAC），但他在2023年7月已满18岁，即比国土安全部拘留他并请求移民法官重新确定拘留身份早了超过两年；因此，他不再符合UAC资格。见6 U.S.C. § 279(g)(2)；另见Matter of M-A-C-O-, 27 I&N Dec. 477, 479–80（移民上诉委员会 2018年）（裁定此前的UAC认定并不必然适用于移民年满18岁之后的后续程序，因为适用的法律将UAC定义为“未满18周岁的人”）。本案不涉及未成年人的初次安置于儿童及家庭管理局（ORR）拘留或根据8 U.S.C. § 1232(c)(2)(B)（2026）将满18岁的人从ORR拘留转至国土安全部拘留。同样，关于国土安全部安置决定或《TVPRA》下义务的问题不在本拘留上诉中。我们唯一关注的问题是移民法官是否有权根据《移民与国籍法》第236(a)节，8 U.S.C. § 1226(a)，重新确定拘留。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "62b016b9401e91e690efc160fd2f08a0ec589b33d8e68e0cd9a87fc4f1b4012d",
+      "chineseText": "被申请人的情况不构成对美国的入境，其不改变《移民与国籍法》第235(a)(1)节，8 U.S.C. § 1225(a)(1)中对入境申请人的法定定义，也不赋予移民法官根据《移民与国籍法》第236(a)节，8 U.S.C. § 1226(a)重新确定拘留的权限，尽管被申请人仍受第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)规定的拘留框架的约束。国会未规定先前的UAC认定赋予移民法官保释管辖权，法院不得通过推断创造该权限。见Louisville & Nashville R.R. Co.诉Mottley案，219 U.S. 467, 479（1911），“法院不能基于衡平理由为国会未制定例外的情况添加例外。”"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9d670103a9c93e453d62445d88c6a4e002ff7be214ec245fb50777daefd0a9a1",
+      "chineseText": "我们不认可被申请人依赖地区法院判决的理由，该判决认为特别移民青少年（SIJ）身份将外国人从《移民与国籍法》第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)下的拘留中移除。见例如Rodriguez诉Perry案，747 F. Supp. 3d 911（E.D. Va. 2024）。联邦地区法院的判决对移民上诉委员会不具约束力。见Matter of K-S-, 20 I&N Dec. 715, 718（移民上诉委员会 1993）此外，批准的SIJ申请并不改变移民法官重新确定拘留的法定框架。例如，《移民与国籍法》第245(h)(2)(A)节，8 U.S.C. § 1255(h)(2)(A)（2024）规定某些不可入境理由，包括第212(a)(6)(A)节，8 U.S.C. § 1182(a)(6)(A)，在确定某些特别移民调整身份时不适用。第665页"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "fa4d02b739446a7ab5fab5eca7b7aa950a6a7317eb6f7c61bfcab09d4ac10134",
+      "chineseText": "引证为29 I&N Dec. 662（移民上诉委员会 2026年）临时决定 #4200"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "b4f429ff17b5b661688b7f6158676421bf5fcb6fc2778a45bc100ffcf087c985",
+      "chineseText": "但该有限的身份调整规定不构成根据《移民与国籍法》第212(d)(5)节，8 U.S.C. § 1182(d)(5)（2024）的入境许可或实际假释，亦不改变外国人作为《移民与国籍法》第235(a)(1)节，8 U.S.C. § 1225(a)(1)定义的入境申请人的身份，也不例外适用于第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)的拘留规定。虽被申请人批准的SIJ申请可能影响调整身份的潜在资格，但不赋予移民法官根据第236(a)节，8 U.S.C. § 1226(a)重新确定拘留的权力。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "4981a2647ce47aa3357498ed2070d7a032f6eb28f63422e4e37b33056dc6779e",
+      "chineseText": "我们不认可移民法官认定被申请人先前的UAC认定使其“免于多种遣返理由”，或移民法官依赖Loper Bright Enterprises诉Raimondo案，603 U.S. 369（2024）来作为在此情况下重新确定拘留权的依据。保释程序“与遣返听证‘完全分开’”，仅针对被申请人在遣返程序期间是否应继续被拘留作出决定。见Matter of Shentu, 29 I&N Dec. 595, 599（移民上诉委员会 2026）引用Matter of Guerra, 24 I&N Dec. 37, 40 n.2（移民上诉委员会 2006）；另见Matter of R-A-V-P-, 27 I&N Dec. 803, 804（移民上诉委员会 2020）（区分保释程序与遣返程序）。移民程序属民事性质。见Zadvydas诉Davis案，533 U.S. 678, 690（2001）。遣返程序期间的拘留是合宪允许的程序组成部分。见Demore诉Kim案，538 U.S. 510, 523（2003）。与其他民事保释义务类似，移民拘留决定受授权的法定条款管辖，须严格解释。见一般性案例United States诉Western Surety Co., 118 F.2d 703, 704（第九巡回法庭1941）（严格解释移民保释条件的法定规定）。移民法官仅拥有法定及规章授权的权限。见8 C.F.R. §§ 1003.19(a), 1236.1(d)（2026）。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e788bd39540a94f5957c63284e1907afd4eda60678968feccc3122243f9a51c7",
+      "chineseText": "由于被申请人仍是根据《移民与国籍法》第235(a)(1)节，8 U.S.C. § 1225(a)(1)的入境申请人，他仍受第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)拘留框架的约束，故移民法官无权根据第236(a)节，8 U.S.C. § 1226(a)重新确定拘留，尽管被申请人早前被认定为UAC且SIJ申请获准。见Matter of Yajure Hurtado案，29 I&N Dec. 220–28页。2"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "3812336c773ba42048915179e0b596b9c9a87ea8db11c4547e843f008c279231",
+      "chineseText": "2 由于移民法官无权批准保释，我们无需论及移民法官关于危险性或潜逃风险的认定。见Matter of Yajure Hurtado, 29 I&N Dec. 229脚注8（引用INS诉Bagamasbad案，429 U.S. 24, 25（1976）（未署名意见））。第666页"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "fa4d02b739446a7ab5fab5eca7b7aa950a6a7317eb6f7c61bfcab09d4ac10134",
+      "chineseText": "引证为29 I&N Dec. 662（移民上诉委员会 2026年）临时决定 #4200"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0d6a5ba44e0c8ad64b4389b1bebeddd833cb059fe1763e79d79dbfeb95a1659f",
+      "chineseText": "国会已明确规定拘留并省略保释权限，我们不能通过推断赋予该管辖权。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d047f0befe93c01959aa2207c1cd5c85acda533829fcd194cb8e12543ad0750b",
+      "chineseText": "因此，将作出以下命令。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "54ea2e7370a18a0bc78194997c23f46753d1f205391e9b65aca716cdeac58ac3",
+      "chineseText": "命令：国土安全部的上诉获支持。\n进一步命令：撤销移民法官的保释决定，命令被申请人无保释继续拘留。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d32dd8502be12b47932380e91ac0f3a1ec4cff641f71e427968fdc84ca1de08e",
+      "chineseText": "第667页"
+    }
+  ]
+}

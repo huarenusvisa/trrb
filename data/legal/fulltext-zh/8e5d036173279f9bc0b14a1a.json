@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "8e5d036173279f9bc0b14a1a",
+  "recordFingerprint": "5c8547b2b32e6c69d95857b9ccdb0d4649dff5a4b61ab4510068d0899490736b",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1442711/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1442711/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1442711/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:06:24.007Z",
+  "sourceDigest": "b1fc0896bac9b27c2ba6251cd0228ee7b80c9c7801eeb634fcf260874f01c263",
+  "translatedAt": "2026-08-17T16:09:46.117Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4942cb836410992728de07c62b03fa5c32781b640b165b23f13903eae024be3d",
+      "chineseText": "引证为29 I&N Dec. 658 （BIA 2026）临时决定第4199号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4c388bfa47cf2b82d263b2a160b95e88713a446fc9dfc4751266dca22aa98ad0",
+      "chineseText": "伊尔林·奥兰德·阿欣沙·理查兹案，被申诉人\n由移民上诉委员会于2026年4月21日裁决\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "450eb7badc58863d96b8071ee9194266224a7e0e40b097a5fc1771560e8f1904",
+      "chineseText": "某外籍人士对其刑事史不坦诚，在对取消驱逐申请行使自由裁量权时为一重大不利因素。\n被申诉人代理律师：迈克尔·Z·戈德曼，纽约，纽约州\n出庭法官：委员会小组成员：亨萨克（HUNSUCKER）与查班（CHABAN），上诉移民法官；特里恩（TERRIEN），临时上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4e57919382c3e80deaf0dd2df843d37e53fe82b6fb4080b351cedf44be3232e2",
+      "chineseText": "特里恩，临时上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "28eadb7acb5593f2c131d229b7020b18c8746f267f7d11722c712ca45c1712ea",
+      "chineseText": "被申诉人为圣文森特和格林纳丁斯土生土著及公民，且为美国合法永久居民，现对移民法官2025年5月16日驳回其依据《移民与国籍法》（“INA”）第240A(a)条款，8 U.S.C. § 1229b(a) (2024) 提出的取消驱逐申请决定提出上诉。国土安全部（“DHS”）未提交上诉简报。该上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0a3a057f147b28b3672da25555da8e20a447c5e205df0b9a12405091144c6fcf",
+      "chineseText": "被申诉人于1992年5月4日成为美国合法永久居民。2009年11月16日，被申诉人因违反德克萨斯州健康与安全法典第481.121(b)(1)条款的规定，因持有大麻被定罪。2025年3月9日，被申诉人申请作为返美合法永久居民入境美国。DHS向被申诉人发出出庭通知，指定其为入境外籍人士，并以《移民与国籍法》第212(a)(2)(A)(i)(II)条款，8 U.S.C. § 1182(a)(2)(A)(i)(II) (2024) 指控其因“定罪、承认犯有或承认实施构成违反联邦管制物质相关州法律的实质要件”的行为而不受入境许可。移民法官"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "98337ad7e842af6cc38a6ea6c1141dd815b1b1e11ed03886f5f1fc7cd1cb8e5d",
+      "chineseText": "根据2026年5月26日第6874-2026号命令，代理司法部长将理查兹案（BIA，2026年4月21日）裁决指定为涉及同一问题之所有程序的先例。见8 C.F.R.§ 1003.1(g)(3)(2026)条款。根据案件作为先例的指定，进行了编辑性修订。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ae242ed018caae7439bce99246f090e322a163a7135844ac0994b2f06f1f3b74",
+      "chineseText": "第658页"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4942cb836410992728de07c62b03fa5c32781b640b165b23f13903eae024be3d",
+      "chineseText": "引证为29 I&N Dec. 658 （BIA 2026）临时决定第4199号"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cde2aca87fdbaa394dd0fdecc89c1ee7147aa1fbb45a4be11fc44404e3a8453c",
+      "chineseText": "移民法官支持了驱逐可变性指控。移民法官还认定被申诉人证词不可信，因此基于自由裁量权拒绝了被申诉人的取消驱逐申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d0a6eee02f037caf331cae615fc4bca2ca1d51e5259bd7c689e78e6fcaafa6e1",
+      "chineseText": "首先，我们确认移民法官作出的不利可信度裁定，因其无明显错误。见8 C.F.R. § 1003.1(d)(3)(i) (2026)；Alimbaev诉美国司法部长案，872 F.3d 188, 196–97 (第3巡回法庭 2017)（指出移民法官的可信度裁定享有“特殊尊重，鉴于移民法官’唯有能观察外籍人士的语气和举止、探究证词中的矛盾，并应用可行且一致的标准评估证言证据’”（引自Abdulrahman诉Ashcroft案，330 F.3d 587, 597 (第3巡回法庭 2003)））。移民法官在考量各方情况时，提供了支持不利可信度裁定的具体而有说服力的理由。见INA § 240(c)(4)(C), 8 U.S.C. § 1229a(c)(4)(C) (2024); Abdulrahman, 330 F.3d 于597页（指出不利可信度裁定须“基于记录中证据”和“具体且有说服力理由”）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "62cab4734612e53f560e72e95d4446317e0a33accd5e32a12ed1194816f2ea8d",
+      "chineseText": "具体而言，移民法官依赖了被申诉人关于其刑事史的证词与DHS提交的联邦调查局（“FBI”）刑事史报告之间的实质性矛盾。见Sunuwar诉美国司法部长案，989 F.3d 239, 251–52 (第3巡回法庭 2021)（支持基于矛盾和遗漏的不利可信度裁定）。被申诉人证称其刑事史仅限于2005或2006年因持有大麻被捕，相关于上述定罪。然而，FBI刑事史报告显示，被申诉人多次因伪报执法机关、持有赃物、故意展示假牌照、使用被吊销驾驶执照、涉及家庭暴力的攻击及违反保护令等多项刑事案件被捕或指控，部分案件已被定罪。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "24e76b1da14187971bb27ebbf28991d6785c540c843355957eeed946c238c652",
+      "chineseText": "移民法官允许拒绝接受被申诉人无记忆其他事件的解释，考虑到其与执法部门的广泛接触以及其证词中否认存在记忆障碍的说明。见E-F-N- 案，28 I&N Dec. 591, 595 (BIA 2022)（承认移民法官不必接受申请人对记录不符的解释，若存在其他合理证据观点）。被申诉人"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4ce6d45ab773d74f76c781a08e51b508c41caba9a25dd458e8c6e2cc4c822663",
+      "chineseText": "第659页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4942cb836410992728de07c62b03fa5c32781b640b165b23f13903eae024be3d",
+      "chineseText": "引证为29 I&N Dec. 658 （BIA 2026）临时决定第4199号"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5f17e9fdada16569520e1a2848102692f234195a8d4d74e1c9cd4bdd701e76ce",
+      "chineseText": "提出的竞争性证据观点我们承认，但移民法官有权在多种合理解释中做出推断，而这里即为如此。见Cooper诉哈里斯案，581 U.S. 285, 299, 309 (2017)（明确错误审查中，法院仅在“明确且坚定相信存在错误”时方才推翻，而证据存在“两种许可解释”时，事实认定者的选择不构成明显错误（引用略））；J-Y-C-案，24 I&N Dec. 260, 263 (BIA 2007)（解释事实认定并非因存在两种合理解释即为“明显错误”（引用美国房地产协会诉案，339 U.S. 485, 495 (1950)））。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fb5fd8dd3d1851b788bb3e901b91fd61da43033a0291071cfc4dd67c31bc9e8f",
+      "chineseText": "我们进一步确认对被申诉人取消驱逐申请自由裁量拒绝的裁定。见Castillo-Perez案，27 I&N Dec. 664, 670–71 (司法部长 2019); C-V-T-案，22 I&N Dec. 7, 11–12 (BIA 1998)。移民法官考量了被申诉人的积极利益因素，包括其长时间在美国居住、紧密的家庭关系及既有的就业历史。见Marin案，16 I&N Dec. 581, 584–85 (BIA 1978)（认定长期居住和就业历史为适宜的自由裁量考量因素）。移民法官亦考量了对被申诉人子女可能造成的困苦。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c102fdbbae211b6d5b0d949c34b3fcb852f46beaf69dbaa91cedfb950627202b",
+      "chineseText": "上述积极因素重要，但我们同意移民法官的观点，即被申诉人对其刑事史缺乏坦诚，及其刑事记录，使得这些积极因素失去权重。见同案第584页（列举存在刑事记录作为适宜自由裁量权衡因素）；Thomas案，21 I&N Dec. 20, 23 (BIA 1995)（指出包括未定罪的刑事不良行为可纳入自由裁量分析）。我们承认被申诉人上诉中认为自2008年以来未有逮捕或犯罪行为证明其已达改造要求的论点。然而，对此事实认定我们无明显错误之见。见8 C.F.R. § 1003.1(d)(3)(i)。移民法官合理认定，被申诉人对其刑事史缺乏坦诚削弱了其改造努力及对此作证。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "58206c781e103f47bd9818f84f10fca86dcb4d05d109c21d5f03f0cf8585a27f",
+      "chineseText": "第660页"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4942cb836410992728de07c62b03fa5c32781b640b165b23f13903eae024be3d",
+      "chineseText": "引证为29 I&N Dec. 658 （BIA 2026）临时决定第4199号"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6e9ec190fefdc03806c89bc7ef0124ba3c04915700547879420cbca16eacfba6",
+      "chineseText": "被申诉人对移民法官最终裁决结果的异议，尚不足以证明该结果因事实证据不当认定而发生错误。见D-R-案，25 I&N Dec. 445。故综合本案全部情况及相关因素衡量，我们同意移民法官基于自由裁量拒绝被申诉人取消驱逐申请的决定。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a057c28c9918062d1724b32ee567ee980da710beb3676639990a8c430310f475",
+      "chineseText": "命令：驳回上诉。通知：若被申诉人受最终驱逐令约束，且故意拒绝或未能依该命令离开美国，未及时善意申请离境所需旅行或其他文件，或未在DHS要求的时间地点出庭，或合谋或采取任何行动阻碍或妨碍依驱逐令离境，则被申诉人将面临最高每日998美元的民事罚款。见INA § 274D, 8 U.S.C. § 1324d (2024); 8 C.F.R. § 280.53(b)(14) (2026)。此外，任何被拒绝入境、被驱逐或者在驱逐令生效期间离境者，若之后进入、企图进入或任何时间被发现在美国境内，均可被罚款或监禁不超过两年，或两者并罚。见INA § 276(a), 8 U.S.C. § 1326(a) (2024)。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d8ae1951e685b6c4f69f1df2497beb72745ee59793c22803faa92ab26329c67a",
+      "chineseText": "第661页"
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "recordId": "a38bbffed7148a558a32acfc",
+  "recordFingerprint": "b6fec841b99a571c12b1050948a3a2f8a4b6acf3a1d9e5a7b56cd806892842d6",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1445651/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1445651/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1445651/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:29:15.486Z",
+  "sourceDigest": "fa02cfdca3c7deb6cdc87bda44bfec5ea9f376dd8858718d0fa407df777b6b41",
+  "translatedAt": "2026-08-17T16:29:33.876Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 17,
+  "translatedSegmentCount": 17,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b74b159af9f072cd0ae7b20afbf3fcd31a6240d6db4abf6b703a163672c5136c",
+      "chineseText": "引用为 29 I&N Dec. 695（BIA 2026）临时决定编号4205"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4e51a38195cdf6febf55c909efeef135b3563cff10eb151425cec5d0fa44d67e",
+      "chineseText": "菲利普·德·赫苏斯·埃雷拉-努涅斯案，答辩人\n裁定日期：2026年6月12日\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9c33a69154f862e7245468c5e5a8d3e9097a98bbe1d067176eba55399fb11ba5",
+      "chineseText": "答辩人未能证明存在值得自动重新开启驱逐程序的特殊情况，其权益是在被判定从美国驱逐多年后获得的。\n答辩人委托律师：Isadora Velazquez-Rivas，佛罗里达迈阿密\n出庭委员会成员：MALPHRUS，首席上诉移民法官；CHABAN，上诉移民法官；WHITE，临时上诉移民法官。\n首席上诉移民法官MALPHRUS发言："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e5fe9c9a8733fb05adfb3962921c0e2f4bf6804fb0efa9900c110efa2918338d",
+      "chineseText": "答辩人为墨西哥出生及公民，已提交一份逾期的重新开启驱逐程序动议，该程序于2015年10月5日已结行政终局。参见移民与国籍法（INA）第240(c)(7)(C)(i)节，8 U.S.C. § 1229a(c)(7)(C)(i)（2024）；8 C.F.R. § 1003.2(c)(2)（2026）。答辩人亦请求于其动议审理期间暂停驱逐。重新开启动议将被驳回，暂停请求因无实际争议而被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8f38e5e3400cfbf1d364f4c29acc5d0e21f42180292c364d9711ce28ba36d91e",
+      "chineseText": "答辩人提交动议，请求委员会行使权力主动（sua sponte）重新开启程序，以便其根据2019年与美国公民配偶的婚姻申请身份调整。1\n其签证申请尚处于美国公民及移民服务局（USCIS）审理中。2\n答辩人亦声称其驱逐令对其配偶造成重大困难，若执行将导致明显的不公及违反正当程序。为支持动议，答辩人提交了配偶签证申请的收据通知副本、其与配偶的结婚证副本、其6岁美国公民儿子的出生证副本、配偶的声明及医疗记录、朋友和同事的支持信件及其他支持文件。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "09ec50b951aa8ac21eaba4a52d2c4e1228c01d824da63c77c9e3b3c1a8ec5ea9",
+      "chineseText": "1\n“sua sponte”一词为拉丁语，意为“无提示或建议；自行行动”。《布莱克法律词典》（第12版，2024）。委员会拥有自行决定主动重新开启我们已作出决定案件的自由裁量权。8 C.F.R. § 1003.2(a)（2026）。“sua sponte”不指当事人请求重新开启的权利。实际上，答辩人仅有权在判决作出后90日内提交一份重新开启动议，该权利此处不适用。参见INA § 240(c)(7)，8 U.S.C. § 1229a(c)(7)；8 C.F.R. § 1003.2(c)(2)。\n2\n答辩人的动议中亦偶尔提及其女儿提交的已批准签证申请，但此似有误，因为答辩人未提交其有女儿或除配偶外有人为其提交签证申请的证据。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d8b5ee10306c9f4410d7b9289f0616ae5f7e74b62299954b30c8715f37e20a77",
+      "chineseText": "引用为29 I&N Dec. 6（BIA 2026）临时决定编号4205"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e3357e351468bcb243fd524d9938d466011062e3974345c227d4d0c69062afba",
+      "chineseText": "答辩人的驱逐令对其配偶造成了重大困苦，且如若被执行，将导致明显的不公正及违反正当程序。为支持动议，答辩人提交了配偶签证申请的收据通知、双方婚姻证书副本、其6岁美国公民子女的出生证明、配偶的声明及医疗记录、朋友及同事的支持信及其它证件材料。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e3a8b9680e7eba219cc460591b3a8d445f872ebe631cfaf8d6d6a09b674c4929",
+      "chineseText": "委员会主动重新开启程序的权力仅限于真正的特殊情况。 赫德案件（Matter of G-D-），22 I&N Dec. 1132, 1133–34 (BIA 1999)。该主动权力“不应用作修正提交流程缺陷的通用手段，或规避法规，否则可能导致困难”。J-J-案件（Matter of J-J-），21 I&N Dec. 976, 984 (BIA 1997)。在被判决驱逐后仍非法留美期间所获得权益，通常不构成特殊情况。H-Y-Z-案件（Matter of H-Y-Z-），28 I&N Dec. 156, 161 (BIA 2020)。我们最近于雅达夫案件（Matter of Yadav），29 I&N Dec. 438, 439–40 (BIA 2026)重申此观点，该案中我们拒绝主动重新开启于2014年完成的驱逐程序，该外籍人士基于2017年与美国公民结婚及USCIS于2020年批准其签证申请而寻求重新开启程序。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2f3ce592e65f72776bd2bf1dfc3fbb695be5db9a7180ba6dcd4a0cd5bf9fa1ca",
+      "chineseText": "本案中，答辩人于2015年被判决驱逐，2019年结婚，签证申请亦在当年提交。由此，其权益是在被判驱逐多年后获得的。此外，雅达夫案中的外籍人士已获批准签证，而本案答辩人的签证申请仍在等待中。答辩人承认其可被驱逐，且未提供任何显示其驱逐程序不公的迹象，我们对其笼统主张驱逐将导致明显不公或侵犯正当程序不予采纳。参见，例如，Vetcher诉Barr案，953 F.3d 361, 369–70 (第5巡回 2020)（解释第五修正案保障外籍人士在驱逐程序中享有正当程序权利，且正当程序要求驱逐程序基本公平进行）。因此，我们拒绝行使自由裁量权主动重新开启该程序。由于本委员会已对重新开启动议作出裁决，答辩人关于暂停执行的请求已无实际争议。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2d90b0fea5f846713b0e6db577aa34a8ef423a9a5cd1a9aa83004a11b4da3a4a",
+      "chineseText": "命令：重新开启动议被驳回。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "47337cd3b3734b03ab6ab891e4c8e5586bafec10cc473c81cc17b0faaa79ebea",
+      "chineseText": "答辩人未提供证据证明其有女儿或有除配偶之外的任何人为其提交签证申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "80305f8161c420031b44346eeb46d35fc6dfef157adbb43056c931218d440a34",
+      "chineseText": "第696页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d8b5ee10306c9f4410d7b9289f0616ae5f7e74b62299954b30c8715f37e20a77",
+      "chineseText": "引用为29 I&N Dec. 6（BIA 2026）临时决定编号4205"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "221abaf843c03a066efaa1076faeeba44cf21deb2398254c6b9e1c33ef241167",
+      "chineseText": "进一步命令：关于暂停驱逐的请求因无实际争议而被驳回。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d10ec3505efa446ac93c5ccb353a1c4efe2e2aa8ac03ac30f70d34007c2088cb",
+      "chineseText": "通知：若答辩人受到最终驱逐令约束，且故意拒绝或未按时善意申请离开美国所需的旅行或其他文件，或未于国土安全部要求的时间和地点现身执行驱逐，或串谋或采取任何阻止或妨碍根据驱逐令离境的行为，该答辩人将每违约一天被处以最高998美元的民事罚款。参见INA第274D节，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何在排斥、驱逐或移除令生效期间被拒绝入境、被驱逐或离开美国后，再进入、试图进入或随时被发现处于美国境内者，将被罚款或监禁不超过2年，或两者并处。参见INA第276(a)节，8 U.S.C. § 1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "81e2bc3a81b62ffb2ea4b90f5bf8c41adaa1f12543a5f2b193d8c99cde7ad64c",
+      "chineseText": "第697页"
+    }
+  ]
+}

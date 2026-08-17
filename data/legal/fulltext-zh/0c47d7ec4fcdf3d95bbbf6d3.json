@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "recordId": "0c47d7ec4fcdf3d95bbbf6d3",
+  "recordFingerprint": "56f89ad966f2f93a40dab50697204c6b29710036ec261c0355af900082c04321",
+  "datasetVersion": "15915ecff4f564140553766258c382068cb036242d6df9f6f162931f5188fd5e",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1400431/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1400431/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1400431/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T16:09:46.143Z",
+  "sourceDigest": "da198ca45406b6cff2f0ad4574387d9ff2ea4be7aa5ed036dcbae9a0693dd43a",
+  "translatedAt": "2026-08-17T16:11:34.811Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 34,
+  "translatedSegmentCount": 34,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d8cdc27ee3cbf644c89d283f1b331ef0402868f7b02ec7d3b6796929fba8f6e4",
+      "chineseText": "引证为29 I&N Dec. 66（BIA 2025）临时决定#4095"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5e09499973e7652d89261b04bdd49061c44ec873b8f150c8354522ffc1a8209b",
+      "chineseText": "Q. LI 案，答辩人\n裁定日期：2025年5月15日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a44f89d06cb1215ad813c44ffc6675877abddb4df1ba75043503e34563e69f4a",
+      "chineseText": "(1) 一名申请入境者，无论是否在入境口岸抵达，在抵达美国时若被无令状逮捕和拘留，且随后被置于遣返程序中，依据《移民与国籍法》（INA）第235(b)条款，8 U.S.C. § 1225(b)（2018），其拘留状态即属该条规定，且无资格根据INA第236(a)条款，8 U.S.C. § 1226(a)（2018），获得任何后续的保释释放。\n(2) 根据INA第235(b)条款，8 U.S.C. § 1225(b)被拘留的外国人，若依据INA第212(d)(5)(A)条款，8 U.S.C. § 1182(d)(5)(A)（2018）获得临时释放（parole），且该临时释放后被终止，则其应根据第235(b)条款重新被拘留，直至遣返程序完成。\n答辩人代理律师：Baolin Chen，律师，俄勒冈州波特兰市"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ac8c3e15ba21f2929ad76be6bbf0bf9a075aca5a741c87c1886c8b0299474833",
+      "chineseText": "审理团成员：\n主审上诉移民法官：MALPHRUS\n上诉移民法官：GOODWIN\n一致意见法官：MULLANE，上诉移民法官。\n主审法官MALPHRUS发言："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8dd450c45ba5c146b3384e44c8a485e6c7462e8257a5b6e3c594505c9181a048",
+      "chineseText": "答辩人对移民法官2024年12月30日驳回其重新决定拘留请求的命令提出上诉。移民法官认定其无权审理答辩人保释释放请求，因为答辩人依据《移民与国籍法》235(b)(2)(A)条款，8 U.S.C. § 1225(b)(2)(A) （2018）被拘留。上诉中，答辩人主张移民法官错误认定其依据第235(b)条拘留，辩称其应为可依据第236(a)条，8 U.S.C. § 1226(a)（2018）获得保释释放资格的拘留状态。因我们认定答辩人拘留依据为第235(b)(2)(A)条，故驳回上诉。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bc3c3c04342bc3e2cee7b5cfa895261f370b417f7dd9dfc093c4cb97e1c85d4d",
+      "chineseText": "1 2025年1月24日的保释备忘录阐述了移民法官命令的理由。\n第66页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d8cdc27ee3cbf644c89d283f1b331ef0402868f7b02ec7d3b6796929fba8f6e4",
+      "chineseText": "引证为29 I&N Dec. 66（BIA 2025）临时决定#4095"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6e3aa25db881ba60f3fa037d480d6fd53f0699cc9aed1aa255058b818d9a3417",
+      "chineseText": "一、事实与程序背景\n2022年6月27日，答辩人，为中华人民共和国公民，未经检查及许可非法跨越美国南部边境。国土安全部（DHS）官员在距指定入境口岸约5.4英里且北移约100码处遇见答辩人。答辩人告知官员无合法入境或居留文件。官员无令状逮捕并送至处理中心。次日，DHS依据INA第212(d)(5)(A)条，8 U.S.C. § 1182(d)(5)(A) （2018），给予答辩人假释释放入境。作为假释条件，答辩人须定期向DHS现场办事处报到。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "634b057aa53f877100913c388f8998db85644feb6ddf33beed64d78cafe52203",
+      "chineseText": "2024年10月30日，国际刑警组织通知DHS发布红色通缉令，因答辩人在西班牙涉伪造旅行证件与人口走私犯罪被通缉。2024年11月25日，答辩人赴DHS办事处进行约定报到，DHS官员随后拘留她，并发出出庭通知及拘留决定通知。出庭通知指控答辩人依据INA第212(a)(6)(A)(i)条，8 U.S.C. § 1182(a)(6)(A)(i)，因未经合法许可或在非指定地点或时间入境而具可驱逐身份。答辩人请求重新决定拘留，移民法官予以拒绝。本案随即提起上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2d44ae299a533ec3691d5a3ff318eee0b3b4287c023dada49204f311af8e9bb7",
+      "chineseText": "二、讨论\n移民法官拒绝答辩人重新决定拘留的请求，理由为其依INA第235(b)(2)(A)条款，8 U.S.C. § 1225(b)(2)(A)拘留，因而无保释资格。答辩人上诉称，她非依据第235(b)条拘留，而是依INA第236(a)条，8 U.S.C § 1226(a)拘留，故有资格保释。答辩人的保释资格属法律问题，委员会对此进行无偏见审查。见8 C.F.R. § 1003.1(d)(3)(ii) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "403d54ceaef910f9f1e9327d57b059a0b8b5547156cda7fdbdc134c22375461e",
+      "chineseText": "INA第235(b)(2)(A)条款，8 U.S.C. § 1225(b)(2)(A)规定，“对于申请入境者，若审查移民官员确定其入境申请不明确无疑获准，则应根据第240条款进行程序拘留。”"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d8cdc27ee3cbf644c89d283f1b331ef0402868f7b02ec7d3b6796929fba8f6e4",
+      "chineseText": "引证为29 I&N Dec. 66（BIA 2025）临时决定#4095"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7e48d6bcadab39248fc1567284f422deb7e59c15c069477c69af70d02705b052",
+      "chineseText": "“申请入境者”定义包括“无论是否在指定入境口岸入境抵达”的外国人。INA § 235(a)(1)，8 U.S.C. § 1225(a)(1)相关部分。像答辩人此类“非法尝试入境美国的外国人”视为“申请入境者”，见DHS 诉 Thuraissigiam, 591 U.S. 103, 140 (2020)（引自INA § 235(a)(1)，8 U.S.C. § 1225(a)(1)）。美国最高法院明确，“非法入境后不久被拘留的外国人不能被认为已经‘完成入境’”，其法律地位等同于在入境口岸申请入境的外国人。见同案（引自Zadvydas 诉 Davis, 533 U.S. 678, 693 (2001)）"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d04fd1e3f0ad335de048a0dfbf9be7cb302f2fddc6297b99c29bab5167d7b228",
+      "chineseText": "同理，我们在其他案例中认定，“抵达”涵盖“于当天在南部边境内部被拘捕，但非入境口岸”的外国人，如答辩人。见Matter of M-D-C-V-, 28 I&N Dec. 18, 23 (BIA 2020)。故答辩人为依据INA第235(a)(1)条，8 U.S.C. § 1225(a)(1)定义“抵达美国的外国人”。2"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2b5ddd3d1068a55bad6c026b6cddcc8c553e678fe4b51f60a9e36c5a4fd31e7e",
+      "chineseText": "DHS得依据INA第235(b)(1)条，8 U.S.C. § 1225(b)(1)将抵达美国外国人置于快速遣返程序，或依据第240条，8 U.S.C. § 1229a (2018)置于全面遣返程序。对于被置快速遣返程序且转介移民法官审查庇护申请者，INA第235(b)(1)(B)(ii)条，8 U.S.C. § 1225(b)(1)(B)(ii)规定需拘留至庇护申请终审。参见Matter of M-S-, 27 I&N Dec. 509, 516 (A.G. 2019)。对于直接置入全面遣返程序之抵达者，INA第235(b)(2)(A)条，8 U.S.C. § 1225(b)(2)(A)则规定“直至遣返程序结案”须拘留。见Jennings 诉 Rodriguez, 583 U.S. 281, 299 (2018)。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "500e0f157d80295505171b6d9e1ac0a1796ae525b2886e80bb7414c69823ad20",
+      "chineseText": "2 因答辩人系依据INA第235(a)(1)条，8 U.S.C. § 1225(a)(1)定义之“抵达美国外国人”，故无须判定其是否为2025年版8 C.F.R. § 1001.1(q)之“arriving alien”（抵达外侨），从而无须适用8 C.F.R. § 1003.19(h)(2)(i)(B)（2025）规定的保释资格限制。INA第235(a)(1)条适用范围较广。参见Matter of M-S-, 27 I&N Dec. 509, 518 (A.G. 2019)(“第1003.19(h)(2)(i)条款非关保释限制类别的详尽列举。”)\n3 申请入境者“虽非通常意义上请求许可入境，但仍视作根据移民法‘寻求入境’”。见Matter of Lemus, 25 I&N Dec. 734, 743 (BIA 2012)。\n第68页"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d8cdc27ee3cbf644c89d283f1b331ef0402868f7b02ec7d3b6796929fba8f6e4",
+      "chineseText": "引证为29 I&N Dec. 66（BIA 2025）临时决定#4095"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a39036f1d51dc464c7f8a41daeac51bc2b0e53a388f222a1c9e32f427d1f8411",
+      "chineseText": "答辩人上诉称，其非依据INA第235(b)条拘留，而依第236(a)条8 U.S.C. § 1226(a)拘留。第235(b)条授权拘留抵达美国的外国人，第236(a)条授权DHS凭令状逮捕拘留境内外国人以待遣返。除INA第236(c)条8 U.S.C § 1226(c)之例外外，据第236(a)(2)条款，他们可获得酌情保释。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3bd021d16c89a4854a171026a9f334009a7c75e5d3850b63473df6ba15d66f4f",
+      "chineseText": "与依据第236(a)条拘留的外国人不同，依据第235(b)(1)或(b)(2)条拘留的抵达外国人没有保释资格，因两条“均规定申请入境者应归案待决遣返程序结束”。参见Jennings, 583 U.S. 298。综上，与Matter of M-S-, 27 I&N Dec. 515–16的裁决一致，初置于快速遣返程序的外国人须拘留至任何后续程序结束，我们认定被无令状逮捕且拘留于抵达美国期间之申请入境人，无论是否在入境口岸，且后续为遣返程序拘留，均依据INA第235(b)条，8 U.S.C. § 1225(b)，其后续保释罪不成立。4"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e65767a630253249798371f6f156e1ae49af61475011330c17d16219bc3d80e6",
+      "chineseText": "依据INA第235(b)条拘留的外国人，其唯一获释例外为依INA第212(d)(5)(A)条，8 U.S.C. § 1182(d)(5)(A)享有的假释权。见Jennings, 583 U.S. 300。若假释终止，则“当即归返或被归返原假释拘留状态”。INA § 212(d)(5)(A), 8 U.S.C. § 1182(d)(5)(A)；另见8 C.F.R. § 212.5(e)(2)(i)（2025）(规定假释终止时，应恢复假释时之身份)。因此，依据第235(b)条拘留，获准假释后被撤销假释资格者，须依据第235(b)条被重新拘留，直至遣返程序完成。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "283aba6a5a757ecbc17a68c65e7d144a47255302caf0522df923dc14059c5c00",
+      "chineseText": "4 一旦依据第235(b)条拘留，DHS不得通过追溯性签发令状将拘留依据由第235(b)条转为第236(a)条。最高法院认定，将第235(b)条和第236(a)条解读为：DHS可“在边境无令状拘留外国人”，但又必须“为维持拘留发出逮捕令”不合逻辑。Jennings, 583 U.S. 302。针对第236(a)条授权的逮捕，DHS规章要求此令状在逮捕之前签发。见8 C.F.R. § 236.1(b)(1)（2025）。最高法院亦指出，第236(a)的令状是“逮捕外国人的令状”。Jennings, 583 U.S. 302。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f2328bbe9d06c04a6baee5a33630210f8b9e299fc18f954ae8f38f8c4cc09231",
+      "chineseText": "第69页"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d8cdc27ee3cbf644c89d283f1b331ef0402868f7b02ec7d3b6796929fba8f6e4",
+      "chineseText": "引证为29 I&N Dec. 66（BIA 2025）临时决定#4095"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c6bf9242ec82f373c097b6b73451b11d51d1879d91b81df9b8c27dd778b0a701",
+      "chineseText": "另见8 C.F.R. § 212.5(e)(2)(i) (2025)规定，假释被终止时，应恢复假释时之身份。故依据第235(b)条拘留，获准假释后假释被终止者，须根据第235(b)条重新拘留，等待遣返程序完成。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c3d4b29bf81a5217c38b077e0f25a57b62109a08f9a614b07261a9ed69fba34a",
+      "chineseText": "答辩人辩称未被置于快速遣返程序，仅被直接置入全面遣返程序从而获得保释资格，论据不足。答辩人首次于未经令状情况下于美国南部边境北侧不到100码处被DHS逮捕，属于未经许可非法入境。5第236(a)条“适用于已在美国境内的外国人”，且“仅授权在由司法部长签发的令状基础上逮捕拘留”。参见Jennings, 583 U.S. 302–303（强调该令状系逮捕令）；Matter of M-S-, 27 I&N Dec. 515 （解释第236条仅凭司法部长令状拘留）。反之，第235(b)条“主要适用于寻求入境美国的外国人”，授权DHS“在边境无令状拘留外国人”。Jennings, 583 U.S. 297, 302。答辩人作为无令状逮捕时抵达美国者，其拘留依据为INA第235(b)条，8 U.S.C. § 1225(b)，无论DHS选择快速遣返程序或依据第235(b)(2)(A)条直接置入全面遣返程序，均属如此。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "092134f9d88bdb8ea32481cc51b6f8d6264c01c98401ae146c4155c773daad94",
+      "chineseText": "虽然DHS依据INA第212(d)(5)(A)条，8 U.S.C. § 1182(d)(5)(A)授予答辩人临时释放权，该假释在其收到出庭通知时自动终止。参见8 C.F.R. § 212.5(e)(2)(i)。假释终止后，答辩人须“当即归返或被归返”其被假释时的第235(b)条拘留状态。INA § 212(d)(5)(A), 8 U.S.C. § 1182(d)(5)(A)。由于答辩人被直接置入全面遣返程序非快速遣返程序，ENA第235(b)(2)(A)条款，8 U.S.C. § 1225(b)(2)(A)规定其须“拘留直至遣返程序完成”。见Jennings, 583 U.S. 299。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "fb5d599f7c5849c5e82b4b684082da4723e20ccef547bce725b127cecb86ec56",
+      "chineseText": "5 本条款赋予移民官及DHS职员权力，“逮捕任何其眼见正违反入境、排除、驱逐或遣返法律或规定尝试入境的外国人。” INA § 287(a), 8 U.S.C. § 1357(a)。\n第70页"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d8cdc27ee3cbf644c89d283f1b331ef0402868f7b02ec7d3b6796929fba8f6e4",
+      "chineseText": "引证为29 I&N Dec. 66（BIA 2025）临时决定#4095"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "603072350eef919705afb98040030114e86d33209607269386cd55ea8eac86fb",
+      "chineseText": "答辩人须拘留“直至遣返程序完成”。Jennings, 583 U.S. 299."
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "c1083ef2a7dcfaea770f8c06d3bdb05a817fac8c15387ff66500718556c29faa",
+      "chineseText": "三、结论\n综上理由，遵循司法部长Matter of M-S-案逻辑，27 I&N Dec. 515–19，答辩人作为申请入境者，在抵达美国时无令状被逮捕，后进入遣返程序，拘留依据为INA第235(b)(2)(A)条，8 U.S.C. § 1225(b)(2)(A)，拘留至遣返程序结束。故她无保释资格，上诉的移民法官保释决定判决将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "059e2426c5ef72008d88dabd0da0eef42f3db66448dbbb0fceaa44a124bd5519",
+      "chineseText": "命令：驳回上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7d5d9d13133537b22d136c28ca77e7fda075daa975ea9ed4b3cb19cf7d302c09",
+      "chineseText": "附带意见：Hugh Mullane，上诉移民法官"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "49d148bf216f659820a3049ca72d8dd3cbaf40bd21eaa1f34c73a3706140a7c5",
+      "chineseText": "“抵达外侨”可依移民与国籍法第212(d)(5)(A)条，8 U.S.C. § 1182(d)(5)(A)（2018）享有国土安全部长授予的假释释放权。答辩人的假释确认其“抵达外侨”身份。依规，“移民法官不得对‘抵达外侨包括依据第212(d)(5)条获释的入境外侨’的拘留条件作重新裁定。”8 C.F.R. § 1003.19(h)(2)(i)(B) (2025)（加重强调）。我基于此理由，同意驳回答辩人上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7c80716851da9671f59db1dda1f9c8359cf559abdb9448fec299f9e52834d7b7",
+      "chineseText": "第71页"
+    }
+  ]
+}

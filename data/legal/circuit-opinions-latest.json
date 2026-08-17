@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T14:48:17.057Z",
+  "generatedAt": "2026-08-17T15:37:51.681Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -95,6 +95,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
           "title": "24-1524P.01A"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+          "title": "24-1805P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340P-01A.pdf",
@@ -1141,12 +1145,52 @@
       "sourceFinalUrl": "https://ecf.ca8.uscourts.gov/cgi-bin/TodayOpn.pl",
       "documents": [
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252021P.pdf",
-          "title": "252021P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251322U.pdf",
+          "title": "251322U.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252021P.pdf",
-          "title": "252021P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251506U.pdf",
+          "title": "251506U.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251788P.pdf",
+          "title": "251788P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251963P.pdf",
+          "title": "251963P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252743P.pdf",
+          "title": "252743P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/253062U.pdf",
+          "title": "253062U.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251322U.pdf",
+          "title": "251322U.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251506U.pdf",
+          "title": "251506U.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251788P.pdf",
+          "title": "251788P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251963P.pdf",
+          "title": "251963P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252743P.pdf",
+          "title": "252743P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/253062U.pdf",
+          "title": "253062U.pdf"
         }
       ],
       "notes": []

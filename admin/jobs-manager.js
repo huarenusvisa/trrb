@@ -1,92 +1,26 @@
-(function () {
-  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
-  const contactText = (row) => row.contact_method === 'platform' || !row.contact_method ? '站内联系' : `${row.contact_method}${row.contact_public && row.contact_value ? ` · ${row.contact_value}` : ' · 未公开'}`;
-
-  async function loadJobsAdmin() {
-    const message = document.getElementById('jobs-admin-message');
-    const listingsBody = document.getElementById('jobs-listings-body');
-    const seekersBody = document.getElementById('jobs-seekers-body');
-    if (!message || !listingsBody || !seekersBody || typeof supabaseClient === 'undefined') return;
-    message.textContent = '正在读取统一招聘求职数据…';
-
-    const [listingsResult, seekersResult, profilesResult] = await Promise.all([
-      supabaseClient.from('job_listings').select('id,employer_user_id,title,category_slug,employment_type,state_code,city,status,contact_method,contact_value,contact_public,created_at').order('created_at',{ascending:false}).limit(200),
-      supabaseClient.from('job_seeker_posts').select('id,seeker_user_id,headline,state_code,city,status,created_at').order('created_at',{ascending:false}).limit(200),
-      supabaseClient.from('job_seeker_profiles').select('user_id,display_name,experience,bio,target_role,target_state_code,target_city,target_county,target_borough,target_neighborhood,phone_public,email_public,updated_at').order('updated_at',{ascending:false}).limit(200)
-    ]);
-
-    if (listingsResult.error || seekersResult.error || profilesResult.error) {
-      const error = listingsResult.error || seekersResult.error || profilesResult.error;
-      message.textContent = `招聘求职数据读取失败：${error.message}`;
-      return;
-    }
-
-    const listings = listingsResult.data || [];
-    const seekers = seekersResult.data || [];
-    const profiles = profilesResult.data || [];
-    const profileByUser = new Map(profiles.map((row) => [row.user_id, row]));
-    message.textContent = `已读取招聘 ${listings.length} 条、求职 ${seekers.length} 条、求职档案 ${profiles.length} 条。这里直接管理与 Web/APP 相同的正式数据表，不使用影子后台。`;
-
-    listingsBody.innerHTML = listings.length ? listings.map((row) => `
-      <tr><td><b>${esc(row.title)}</b><br><small>${esc(row.id)}</small><br><small>${esc(row.category_slug)} · ${esc(row.employment_type)} · ${esc(contactText(row))}</small></td><td><small>${esc(row.employer_user_id)}</small></td><td>${esc(row.state_code)} ${esc(row.city)}</td><td>${esc(row.status)}</td><td>
-        <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(row.id)}" data-jobs-status="open">开放</button>
-        <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(row.id)}" data-jobs-status="paused">暂停</button>
-        <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(row.id)}" data-jobs-status="unlisted">下架</button>
-      </td></tr>`).join('') : '<tr><td colspan="5">暂无招聘记录。</td></tr>';
-
-    seekersBody.innerHTML = seekers.length ? seekers.map((row) => {
-      const profile = profileByUser.get(row.seeker_user_id);
-      const profileText = profile
-        ? `${profile.display_name || '未填写姓名'} · 目标：${profile.target_role || row.headline || '未填写'}<br><small>经历：${esc((profile.experience || '').slice(0,180)) || '未填写'}${(profile.experience || '').length > 180 ? '…' : ''}</small><br><small>简介：${esc((profile.bio || '').slice(0,180)) || '未填写'}${(profile.bio || '').length > 180 ? '…' : ''}</small><br><small>公开电话：${profile.phone_public ? '是' : '否'} · 公开Email：${profile.email_public ? '是' : '否'}</small>`
-        : '尚无对应求职档案';
-      return `
-      <tr><td><b>${esc(row.headline)}</b><br><small>${esc(row.id)}</small><br>${profileText}</td><td><small>${esc(row.seeker_user_id)}</small></td><td>${esc(row.state_code)} ${esc(row.city)}</td><td>${esc(row.status)}</td><td>
-        <button class="small-btn" data-jobs-kind="seeker" data-jobs-id="${esc(row.id)}" data-jobs-status="seeking">求职中</button>
-        <button class="small-btn" data-jobs-kind="seeker" data-jobs-id="${esc(row.id)}" data-jobs-status="paused">暂停</button>
-        <button class="small-btn" data-jobs-kind="seeker" data-jobs-id="${esc(row.id)}" data-jobs-status="unlisted">下架</button>
-        ${profile?.phone_public ? `<button class="small-btn" data-jobs-profile-user="${esc(row.seeker_user_id)}" data-jobs-profile-action="hide_phone">关闭电话公开</button>` : ''}
-        ${profile?.email_public ? `<button class="small-btn" data-jobs-profile-user="${esc(row.seeker_user_id)}" data-jobs-profile-action="hide_email">关闭Email公开</button>` : ''}
-      </td></tr>`;
-    }).join('') : '<tr><td colspan="5">暂无求职记录。</td></tr>';
-  }
-
-  async function govern(event) {
-    const statusButton = event.target.closest('[data-jobs-kind][data-jobs-id][data-jobs-status]');
-    if (statusButton && typeof supabaseClient !== 'undefined') {
-      const table = statusButton.dataset.jobsKind === 'listing' ? 'job_listings' : 'job_seeker_posts';
-      const id = statusButton.dataset.jobsId;
-      const status = statusButton.dataset.jobsStatus;
-      statusButton.disabled = true;
-      const { error } = await supabaseClient.from(table).update({status,updated_at:new Date().toISOString()}).eq('id',id);
-      statusButton.disabled = false;
-      if (error) {
-        alert(`更新失败：${error.message}`);
-        return;
-      }
-      await loadJobsAdmin();
-      return;
-    }
-
-    const profileButton = event.target.closest('[data-jobs-profile-user][data-jobs-profile-action]');
-    if (!profileButton || typeof supabaseClient === 'undefined') return;
-    const userId = profileButton.dataset.jobsProfileUser;
-    const action = profileButton.dataset.jobsProfileAction;
-    const patch = action === 'hide_phone' ? {phone_public:false} : action === 'hide_email' ? {email_public:false} : null;
-    if (!patch) return;
-    profileButton.disabled = true;
-    const { error } = await supabaseClient.from('job_seeker_profiles').update({...patch,updated_at:new Date().toISOString()}).eq('user_id',userId);
-    profileButton.disabled = false;
-    if (error) {
-      alert(`档案治理失败：${error.message}`);
-      return;
-    }
-    await loadJobsAdmin();
-  }
-
-  document.addEventListener('click', govern);
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('refresh-jobs-admin')?.addEventListener('click', loadJobsAdmin);
-    document.querySelector('[data-page="jobs-admin"]')?.addEventListener('click', loadJobsAdmin);
-  });
-  window.TRRB_loadJobsAdmin = loadJobsAdmin;
+(function(){
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const contactText=r=>r.contact_method==='platform'||!r.contact_method?'站内联系':`${r.contact_method}${r.contact_public&&r.contact_value?` · ${r.contact_value}`:' · 未公开'}`;
+function ensureContactPanel(){const page=document.getElementById('jobs-admin-page');if(!page||document.getElementById('jobs-contact-body'))return;const p=document.createElement('div');p.className='panel';p.innerHTML='<h3>联系与站内会话</h3><p>与 Web/APP 共用 job_conversations、job_messages、job_contact_events。管理员可查看参与者/状态并关闭或阻止异常会话。</p><div class="table-wrap"><table><thead><tr><th>岗位/会话</th><th>参与者</th><th>状态</th><th>联系事件</th><th>治理</th></tr></thead><tbody id="jobs-contact-body"></tbody></table></div>';page.appendChild(p);}
+async function loadJobsAdmin(){
+ const message=document.getElementById('jobs-admin-message'),listingsBody=document.getElementById('jobs-listings-body'),seekersBody=document.getElementById('jobs-seekers-body');if(!message||!listingsBody||!seekersBody||typeof supabaseClient==='undefined')return;ensureContactPanel();const contactBody=document.getElementById('jobs-contact-body');message.textContent='正在读取统一招聘求职数据…';
+ const [lr,sr,pr,cr,er]=await Promise.all([
+  supabaseClient.from('job_listings').select('id,employer_user_id,title,category_slug,employment_type,state_code,city,status,contact_method,contact_value,contact_public,created_at').order('created_at',{ascending:false}).limit(200),
+  supabaseClient.from('job_seeker_posts').select('id,seeker_user_id,headline,state_code,city,status,created_at').order('created_at',{ascending:false}).limit(200),
+  supabaseClient.from('job_seeker_profiles').select('user_id,display_name,experience,bio,target_role,phone_public,email_public,updated_at').order('updated_at',{ascending:false}).limit(200),
+  supabaseClient.from('job_conversations').select('id,listing_id,employer_user_id,seeker_user_id,status,updated_at').order('updated_at',{ascending:false}).limit(200),
+  supabaseClient.from('job_contact_events').select('id,listing_id,actor_user_id,employer_user_id,method,conversation_id,created_at').order('created_at',{ascending:false}).limit(500)
+ ]);
+ const error=lr.error||sr.error||pr.error||cr.error||er.error;if(error){message.textContent=`招聘求职数据读取失败：${error.message}`;return;}
+ const listings=lr.data||[],seekers=sr.data||[],profiles=pr.data||[],conversations=cr.data||[],events=er.data||[];const profileByUser=new Map(profiles.map(x=>[x.user_id,x]));const listingById=new Map(listings.map(x=>[x.id,x]));
+ message.textContent=`已读取招聘 ${listings.length} 条、求职 ${seekers.length} 条、求职档案 ${profiles.length} 条、会话 ${conversations.length} 条、联系事件 ${events.length} 条。全部来自 Web/APP 相同正式数据源。`;
+ listingsBody.innerHTML=listings.length?listings.map(r=>`<tr><td><b>${esc(r.title)}</b><br><small>${esc(r.id)}</small><br><small>${esc(r.category_slug)} · ${esc(r.employment_type)} · ${esc(contactText(r))}</small></td><td><small>${esc(r.employer_user_id)}</small></td><td>${esc(r.state_code)} ${esc(r.city)}</td><td>${esc(r.status)}</td><td><button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(r.id)}" data-jobs-status="open">开放</button> <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(r.id)}" data-jobs-status="paused">暂停</button> <button class="small-btn" data-jobs-kind="listing" data-jobs-id="${esc(r.id)}" data-jobs-status="unlisted">下架</button></td></tr>`).join(''):'<tr><td colspan="5">暂无招聘记录。</td></tr>';
+ seekersBody.innerHTML=seekers.length?seekers.map(r=>{const p=profileByUser.get(r.seeker_user_id);return `<tr><td><b>${esc(r.headline)}</b><br><small>${esc(r.id)}</small><br>${p?`${esc(p.display_name||'未填写姓名')} · 目标：${esc(p.target_role||r.headline||'未填写')}<br><small>公开电话：${p.phone_public?'是':'否'} · 公开Email：${p.email_public?'是':'否'}</small>`:'尚无对应求职档案'}</td><td><small>${esc(r.seeker_user_id)}</small></td><td>${esc(r.state_code)} ${esc(r.city)}</td><td>${esc(r.status)}</td><td><button class="small-btn" data-jobs-kind="seeker" data-jobs-id="${esc(r.id)}" data-jobs-status="seeking">求职中</button> <button class="small-btn" data-jobs-kind="seeker" data-jobs-id="${esc(r.id)}" data-jobs-status="paused">暂停</button> <button class="small-btn" data-jobs-kind="seeker" data-jobs-id="${esc(r.id)}" data-jobs-status="unlisted">下架</button></td></tr>`}).join(''):'<tr><td colspan="5">暂无求职记录。</td></tr>';
+ const eventCount=new Map();events.forEach(e=>eventCount.set(e.conversation_id,(eventCount.get(e.conversation_id)||0)+1));contactBody.innerHTML=conversations.length?conversations.map(c=>`<tr><td>${esc(listingById.get(c.listing_id)?.title||c.listing_id)}<br><small>${esc(c.id)}</small></td><td><small>雇主 ${esc(c.employer_user_id)}<br>求职者 ${esc(c.seeker_user_id)}</small></td><td>${esc(c.status)}</td><td>${eventCount.get(c.id)||0}</td><td><button class="small-btn" data-jobs-conversation="${esc(c.id)}" data-jobs-conversation-status="open">开放</button> <button class="small-btn" data-jobs-conversation="${esc(c.id)}" data-jobs-conversation-status="closed">关闭</button> <button class="small-btn" data-jobs-conversation="${esc(c.id)}" data-jobs-conversation-status="blocked">阻止</button></td></tr>`).join(''):'<tr><td colspan="5">暂无会话。</td></tr>';
+}
+async function govern(event){
+ const sb=event.target.closest('[data-jobs-kind][data-jobs-id][data-jobs-status]');if(sb&&typeof supabaseClient!=='undefined'){const table=sb.dataset.jobsKind==='listing'?'job_listings':'job_seeker_posts';sb.disabled=true;const {error}=await supabaseClient.from(table).update({status:sb.dataset.jobsStatus,updated_at:new Date().toISOString()}).eq('id',sb.dataset.jobsId);sb.disabled=false;if(error){alert(`更新失败：${error.message}`);return;}await loadJobsAdmin();return;}
+ const cb=event.target.closest('[data-jobs-conversation][data-jobs-conversation-status]');if(cb&&typeof supabaseClient!=='undefined'){cb.disabled=true;const {error}=await supabaseClient.from('job_conversations').update({status:cb.dataset.jobsConversationStatus,updated_at:new Date().toISOString()}).eq('id',cb.dataset.jobsConversation);cb.disabled=false;if(error){alert(`会话治理失败：${error.message}`);return;}await loadJobsAdmin();}
+}
+document.addEventListener('click',govern);document.addEventListener('DOMContentLoaded',()=>{document.getElementById('refresh-jobs-admin')?.addEventListener('click',loadJobsAdmin);document.querySelector('[data-page="jobs-admin"]')?.addEventListener('click',loadJobsAdmin);});window.TRRB_loadJobsAdmin=loadJobsAdmin;
 })();

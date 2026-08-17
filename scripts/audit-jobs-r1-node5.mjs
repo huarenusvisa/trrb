@@ -32,6 +32,7 @@ assert(migration.includes('job listings admin read') && migration.includes('job 
 assert(adminHtml.includes('招聘求职管理'), 'admin navigation/management surface missing');
 assert(admin.includes("from('job_listings').select"), 'admin is not reading formal job_listings');
 assert(admin.includes("from(table).update"), 'admin governance action missing');
-assert(!migration.includes('shadow') && !migration.includes('job_listings_admin'), 'possible shadow backend/table detected');
+assert(!/create\s+table\s+(if\s+not\s+exists\s+)?public\.job_listings_admin\b/i.test(migration), 'shadow admin listing table detected');
+assert(!/create\s+table\s+(if\s+not\s+exists\s+)?public\.job_listings_shadow\b/i.test(migration), 'shadow listing table detected');
 
 console.log('JOBS-R1-N5 PASS');

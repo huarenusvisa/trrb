@@ -15,8 +15,14 @@
   - Empty inventory is rendered as a truthful empty state; no example people, fabricated biographies, or AI-generated facts are used as filler.
   - Dedicated acceptance workflow `PEOPLE-R1 Node 2 Acceptance` completed SUCCESS on main for commit `4dd4cbd206bab394adf7e14e96135fa0d9584d47`.
 
-- PEOPLE-R1-N3 — RUNNING
-- PEOPLE-R1-N4 — WAITING
+- PEOPLE-R1-N3 — PASS
+  - Published-person search supports name and alias matching plus state, city, occupation, and life-status filters.
+  - Duplicate names are intentionally allowed; permanent `person_id` remains the identity key.
+  - Search results expose only coarse public disambiguators: birth/death year, U.S. arrival year, U.S. regions, occupation, and verification status.
+  - Public search excludes sensitive identity/financial identifiers and uses bounded pagination.
+  - Dedicated acceptance workflow `PEOPLE-R1 Node 3 Acceptance` completed SUCCESS on main for commit `38e9b436ea6b6836c0241eb6e6ab90e331145a04`.
+
+- PEOPLE-R1-N4 — RUNNING
 - PEOPLE-R1-N5 — WAITING
 - PEOPLE-R1-N6 — WAITING
 - PEOPLE-R1-N7 — WAITING
@@ -24,4 +30,4 @@
 - PEOPLE-R1-N9 — WAITING
 - PEOPLE-R1-N10 — WAITING
 
-PASS registration is strictly serial. Do not mark N3 PASS until its dedicated acceptance has succeeded on `main`.
+PASS registration is strictly serial. Do not mark N4 PASS until its dedicated acceptance has succeeded on `main`.

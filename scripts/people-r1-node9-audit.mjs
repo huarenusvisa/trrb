@@ -16,3 +16,4 @@ must(sql.includes('record_version :=') || sql.includes('new.record_version := v_
 must(sql.includes('to_jsonb(new)'),'version snapshot capture missing');
 must(sql.includes('preserves source/evidence rows rather than deleting history'),'source/evidence preservation rule missing');
 console.log('PEOPLE-R1-N9 PASS: sensitive identifiers are publication-blocked, major/disputed facts require accepted evidence and review, privacy/safety cases can block publication, and private version/source history is preserved.');
+// Strict acceptance is intentionally source-based and deterministic; production SQL execution is rechecked by N10.

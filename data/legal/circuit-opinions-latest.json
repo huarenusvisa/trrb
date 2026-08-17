@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T13:05:09.548Z",
+  "generatedAt": "2026-08-17T13:52:16.737Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -87,6 +87,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2086P-01A.pdf",
           "title": "24-2086 US v. Gonzalez"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
+          "title": "24-1467P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
@@ -1707,12 +1711,12 @@
           "title": "NIELSEN COMPANY (US), LLC v. TVISION INSIGHTS, INC. [OPINION]"
         },
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
-          "title": "CUMMINS v. US [OPINION]"
-        },
-        {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1388.OPINION.8-14-2026_2739444.pdf",
           "title": "BRIMER v. NAVY [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
+          "title": "CUMMINS v. US [OPINION]"
         },
         {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1538.OPINION.8-14-2026_2739398.pdf",

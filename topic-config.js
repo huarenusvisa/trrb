@@ -1,4 +1,4 @@
-window.TRRB_TOPIC_CONFIG={trump:{title:'特朗普实时动态'},ice:{title:'ICE执法追踪'},election:{title:'2026中期选举实时动态'}};
+window.TRRB_TOPIC_CONFIG={trump:{title:'特朗普实时动态'},ice:{title:'ICE执法追踪'},election:{title:'2026中期选举实时动态'},people:{title:'美国华人人物志'}};
 
 (function installUnifiedHomepageChannels() {
   const fallbackChannels = [
@@ -21,8 +21,19 @@ window.TRRB_TOPIC_CONFIG={trump:{title:'特朗普实时动态'},ice:{title:'ICE�
   function canInstall(){return typeof window.renderCategorySection==="function"&&typeof window.renderExposureWallCard==="function";}
   function installRenderer(){if(!canInstall())return false;window.renderSections=function renderUnifiedSections(articles){const normalized=normalizeHomepageArticles(articles);window.TRRB_LAST_HOME_ARTICLES=normalized;const sections=activeNewsCategories().map(category=>window.renderCategorySection(category,normalized));sections.push(window.renderExposureWallCard());const root=document.querySelector("#sections-grid");if(root)root.innerHTML=sections.join("");};const current=Array.isArray(window.TRRB_LAST_HOME_ARTICLES)?window.TRRB_LAST_HOME_ARTICLES:(typeof window.localArticleIndex==="function"?window.localArticleIndex():[]);if(current.length)window.renderSections(current);return true;}
   function loadChannelConfig(){if(Array.isArray(window.TRRB_CHANNELS)&&window.TRRB_CHANNELS.length){installRenderer();return;}const existing=document.querySelector('script[data-trrb-channel-config="true"]');if(existing)return;const script=document.createElement("script");script.src="./config/channels.js?v=31.1";script.async=true;script.dataset.trrbChannelConfig="true";script.addEventListener("load",()=>installRenderer());script.addEventListener("error",()=>installRenderer());document.head.appendChild(script);}
+  function installPeopleTopicEntry(){
+    const list=document.querySelector('#topic-focus .topic-focus-list');
+    if(!list||list.querySelector('[data-topic="people"]'))return;
+    const card=document.createElement('a');
+    card.className='topic-focus-card topic-people';
+    card.href='/people/';
+    card.dataset.topic='people';
+    card.setAttribute('aria-label','进入美国华人人物志专题');
+    card.innerHTML='<div class="topic-focus-copy"><h3>美国华人人物志</h3><p>记录在美国生活过的华人故事与人生轨迹</p><span class="topic-status"><i></i> 人物档案</span><div class="topic-latest">可检索 · 可纠错 · 可认领</div></div>';
+    list.appendChild(card);
+  }
 
   window.TRRB_inferArticleCategory=inferArticleCategory;
   window.addEventListener("trrb:categories-ready",()=>installRenderer());
-  installHomepageStyles();installRenderer();loadChannelConfig();installFocusHero();
+  installHomepageStyles();installRenderer();loadChannelConfig();installFocusHero();installPeopleTopicEntry();
 })();

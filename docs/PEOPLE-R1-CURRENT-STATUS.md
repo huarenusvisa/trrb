@@ -46,8 +46,13 @@
   - Changing a person to `deceased` requires accepted evidence scoped to death/life-status facts.
   - Dedicated acceptance workflow `PEOPLE-R1 Node 7 Acceptance` completed SUCCESS on main for run `32038566424` at commit `096a5cb39946047642b043630848ba41bd9b9ea5`.
 
-- PEOPLE-R1-N8 — RUNNING
-- PEOPLE-R1-N9 — WAITING
+- PEOPLE-R1-N8 — PASS
+  - Self/family claim, supplement, correction, dispute and deletion request records are governed under RLS and bound to permanent person IDs.
+  - Request evidence and status history are auditable; requesters may inspect only their own request/evidence surface while review remains server/editor controlled.
+  - Relationship foundation reserves parent/child/spouse/sibling/grandparent/grandchild interfaces with private-by-default visibility; PEOPLE-R1 does not expose a genealogy tree.
+  - Dedicated acceptance workflow `PEOPLE-R1 Node 8 Acceptance` completed SUCCESS on main for run `32041660386` at commit `42335a6da3ea734739d9c6133a6faaa0569769be`.
+
+- PEOPLE-R1-N9 — RUNNING
 - PEOPLE-R1-N10 — WAITING
 
-PASS registration is strictly serial. Do not mark N8 PASS until its dedicated acceptance has succeeded on `main`.
+PASS registration is strictly serial. Do not mark N9 PASS until its dedicated acceptance has succeeded on `main`.

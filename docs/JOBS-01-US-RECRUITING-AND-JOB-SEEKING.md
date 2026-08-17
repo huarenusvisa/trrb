@@ -1,6 +1,7 @@
 # JOBS-01 — 美国招聘求职第一批
 
 状态：ACTIVE
+统一编号：JOBS-R1
 范围：仅美国（United States only）
 工程线：JOBS，独立于 APP-BATCH 与 LEGAL-ROUND。
 
@@ -22,7 +23,7 @@
 7. 联系闭环：Web与APP站内消息同步；电话、短信、Email快捷联系；聊天绑定具体岗位；联系方式采用渐进式设置，默认不增加复杂勾选。
 8. 真实联系后的评价与反诈骗：contactEvent后站内邀请评价；沟通评分、信息一致度、薪资/内容一致性、风险标签；涉嫌诈骗可一键举报；雇主可回复/申诉；公众匿名可选但平台账户可追溯。
 9. 生命周期、SEO与治理：招聘中/已招满/暂停/下架/重新上架/删除；求职中/已找到/暂停/下架/重新上架/删除。未主动删除的历史页面长期保留稳定URL并明确“已结束”，不混入当前招聘搜索；删除公开内容不清除必要举报/处罚/反欺诈记录；防重复刷屏、过期提醒、图片隐私/版权、举报审核。
-10. Web + APP + 移动端 + SEO + 安全 + 性能生产总验收，只有全部严格PASS才输出 JOBS-01: 10/10 PASS。
+10. Web + APP + 移动端 + SEO + 安全 + 性能生产总验收，只有全部严格PASS才输出 JOBS-R1: 10/10 PASS。
 
 ## 招聘分类初始集合
 餐饮；美甲/美容；按摩；装修/建筑；物流/仓库；卡车/司机；超市/零售；家政/护理；律师/法律；会计/金融；地产；教育；IT/科技；办公室/行政；销售；其他。
@@ -42,3 +43,15 @@
 - 下架/关闭/已招满后评价保留；重新上架继续关联原岗位历史。
 - 发布者可申请复核/删除不实、侵权、隐私泄露或违规评价，由平台按规则处理。
 - 岗位历史公开与平台安全记录分层；必要安全记录不因账号/岗位删除自动消失。
+
+## 当前执行状态
+- JOBS-R1-N1：PASS。代码证据：`supabase/migrations/20260817001000_jobs_r1_node1_foundation.sql`；审计：`scripts/audit-jobs-r1-node1.mjs`；GitHub Actions `JOBS-R1 Node 1` run 31993475474 = SUCCESS，日志标准为 `JOBS-R1-N1 PASS`。
+- JOBS-R1-N2：RUNNING。
+- JOBS-R1-N3：WAITING。
+- JOBS-R1-N4：WAITING。
+- JOBS-R1-N5：WAITING。
+- JOBS-R1-N6：WAITING。
+- JOBS-R1-N7：WAITING。
+- JOBS-R1-N8：WAITING。
+- JOBS-R1-N9：WAITING。
+- JOBS-R1-N10：WAITING。

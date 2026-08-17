@@ -1,0 +1,25 @@
+name: JOBS-R1 Node 6
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
+      - 'jobs/**'
+      - 'admin/jobs-manager.js'
+      - 'admin/index.html'
+      - 'supabase/migrations/20260817006000_jobs_r1_node6_seeker_profile.sql'
+      - 'scripts/audit-jobs-r1-node6.mjs'
+      - '.github/workflows/jobs-r1-node6.yml'
+  workflow_dispatch:
+
+jobs:
+  audit-node6:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Strict JOBS-R1-N6 acceptance audit
+        run: node scripts/audit-jobs-r1-node6.mjs

@@ -1,0 +1,23 @@
+name: JOBS-R1 Node 7
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260817007000_jobs_r1_node7_contact_loop.sql'
+      - 'jobs/contact.html'
+      - 'jobs/contact.js'
+      - 'admin/jobs-manager.js'
+      - 'scripts/audit-jobs-r1-node7.mjs'
+      - '.github/workflows/jobs-r1-node7.yml'
+      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Strict JOBS-R1 N7 audit
+        run: node scripts/audit-jobs-r1-node7.mjs

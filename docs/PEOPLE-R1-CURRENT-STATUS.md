@@ -22,12 +22,18 @@
   - Public search excludes sensitive identity/financial identifiers and uses bounded pagination.
   - Dedicated acceptance workflow `PEOPLE-R1 Node 3 Acceptance` completed SUCCESS on main for commit `38e9b436ea6b6836c0241eb6e6ab90e331145a04`.
 
-- PEOPLE-R1-N4 — RUNNING
-- PEOPLE-R1-N5 — WAITING
+- PEOPLE-R1-N4 — PASS
+  - Authenticated users can submit a person as self, family/friend, netizen, or editorial creator; editorial creation is role-gated.
+  - Creation source and relationship label are recorded separately from verification status.
+  - New records enter review as `unverified`; creation never grants verification or public publication.
+  - Submitters can inspect only their own submission metadata under RLS.
+  - Dedicated acceptance workflow `PEOPLE-R1 Node 4 Acceptance` completed SUCCESS on main for commit `89ef4bf3e3675ca8a69b3dbe176eb9bc56de949f`.
+
+- PEOPLE-R1-N5 — RUNNING
 - PEOPLE-R1-N6 — WAITING
 - PEOPLE-R1-N7 — WAITING
 - PEOPLE-R1-N8 — WAITING
 - PEOPLE-R1-N9 — WAITING
 - PEOPLE-R1-N10 — WAITING
 
-PASS registration is strictly serial. Do not mark N4 PASS until its dedicated acceptance has succeeded on `main`.
+PASS registration is strictly serial. Do not mark N5 PASS until its dedicated acceptance has succeeded on `main`.

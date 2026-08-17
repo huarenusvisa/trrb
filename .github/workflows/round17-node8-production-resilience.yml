@@ -56,3 +56,5 @@ jobs:
           fi
           node scripts/round17-node8-production-resilience-audit.mjs /tmp/legal-app.js /tmp/legal-detail.js
           echo 'ROUND 17 NODE 8 PRODUCTION: PASS'
+
+# Strict restart revalidation after nodes 1-7 passed current production: 2026-08-17T02:34Z.

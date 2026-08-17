@@ -29,11 +29,16 @@
   - Submitters can inspect only their own submission metadata under RLS.
   - Dedicated acceptance workflow `PEOPLE-R1 Node 4 Acceptance` completed SUCCESS on main for commit `89ef4bf3e3675ca8a69b3dbe176eb9bc56de949f`.
 
-- PEOPLE-R1-N5 — RUNNING
-- PEOPLE-R1-N6 — WAITING
+- PEOPLE-R1-N5 — PASS
+  - Public biography detail pages render approved biography, U.S. migration/work history, important years, governed photos, stories, and timeline content without inventing missing facts.
+  - Public detail APIs expose only published/approved material and keep source/evidence relationships auditable.
+  - Photo/story visibility is governed; sensitive identity/financial data is not exposed through the public detail surface.
+  - Dedicated acceptance workflow `PEOPLE-R1 Node 5 Acceptance` completed SUCCESS on main for commit `93f22b996b9d77ec0d8686ce5a30ec457dcc73a2`.
+
+- PEOPLE-R1-N6 — RUNNING
 - PEOPLE-R1-N7 — WAITING
 - PEOPLE-R1-N8 — WAITING
 - PEOPLE-R1-N9 — WAITING
 - PEOPLE-R1-N10 — WAITING
 
-PASS registration is strictly serial. Do not mark N5 PASS until its dedicated acceptance has succeeded on `main`.
+PASS registration is strictly serial. Do not mark N6 PASS until its dedicated acceptance has succeeded on `main`.

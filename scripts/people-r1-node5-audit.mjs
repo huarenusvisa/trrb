@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const html=fs.readFileSync('people/detail.html','utf8');
+const js=fs.readFileSync('people/detail.js','utf8');
+const sql=fs.readFileSync('supabase/migrations/20260817080500_people_r1_n5_detail.sql','utf8');
+for(const label of ['生平','来美经历','事业与工作','重要年份与时间线','照片','人生故事']) must(html.includes(label),`missing detail section: ${label}`);
+must(js.includes("get_public_person_detail"),'detail page must use governed public detail RPC');
+must(js.includes("personId=params.get('id')"),'permanent person ID must drive detail lookup');
+must(js.includes('esc('),'detail rendering must escape public text');
+must(sql.includes('create table if not exists public.people_photos'),'photos table missing');
+must(sql.includes('create table if not exists public.people_stories'),'stories table missing');
+must(sql.includes("review_status = 'accepted'"),'photos/stories must be moderation gated');
+must(sql.includes("publication_status='published'"),'detail RPC must only expose published people');
+must(sql.includes('security invoker'),'detail RPC must preserve RLS');
+must(!sql.includes('ssn')&&!sql.includes('a_number')&&!sql.includes('bank_account'),'sensitive identifiers must not be exposed');
+console.log('PEOPLE-R1-N5 PASS: biography, US arrival, career, timeline, moderated photos and life stories are present behind published/RLS gates.');

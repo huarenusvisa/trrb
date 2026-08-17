@@ -29,6 +29,9 @@ export type TrendingSearch = {
 };
 
 const API_BASE = 'https://trrb.net/.netlify/functions';
+const REQUEST_TIMEOUT_MS = 12000;
+const MAX_RETRIES = 2;
+const inflight = new Map<string, Promise<any>>();
 
 async function readJson(response: Response) {
   const payload = await response.json().catch(() => null);
@@ -36,15 +39,53 @@ async function readJson(response: Response) {
   return payload;
 }
 
+function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function requestJson(url: string, attempt = 0): Promise<any> {
+  const existing = inflight.get(url);
+  if (existing) return existing;
+
+  const task = (async () => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    try {
+      const response = await fetch(url, {
+        headers: { Accept: 'application/json' },
+        signal: controller.signal
+      });
+      if (response.status >= 500 && attempt < MAX_RETRIES) {
+        await wait(350 * (attempt + 1));
+        return requestJson(url, attempt + 1);
+      }
+      return await readJson(response);
+    } catch (error) {
+      if (attempt < MAX_RETRIES) {
+        await wait(350 * (attempt + 1));
+        return requestJson(url, attempt + 1);
+      }
+      if (error instanceof Error && error.name === 'AbortError') throw new Error('请求超时，请检查网络后重试');
+      throw error;
+    } finally {
+      clearTimeout(timer);
+    }
+  })();
+
+  inflight.set(url, task);
+  try {
+    return await task;
+  } finally {
+    if (inflight.get(url) === task) inflight.delete(url);
+  }
+}
+
 export async function fetchArticles(options: { category?: string; limit?: number } = {}) {
   const params = new URLSearchParams();
   params.set('limit', String(Math.min(Math.max(options.limit ?? 40, 1), 200)));
   if (options.category) params.set('category', options.category);
 
-  const response = await fetch(`${API_BASE}/public-home-articles?${params.toString()}`, {
-    headers: { Accept: 'application/json' }
-  });
-  const payload = await readJson(response);
+  const payload = await requestJson(`${API_BASE}/public-home-articles?${params.toString()}`);
   const articles = Array.isArray(payload?.articles) ? payload.articles : [];
   return articles as NewsArticle[];
 }
@@ -56,10 +97,7 @@ export async function fetchArticlePage(options: { category?: string; q?: string;
   if (options.category) params.set('category', options.category);
   if (options.q) params.set('q', options.q.trim());
 
-  const response = await fetch(`${API_BASE}/public-articles?${params.toString()}`, {
-    headers: { Accept: 'application/json' }
-  });
-  const payload = await readJson(response);
+  const payload = await requestJson(`${API_BASE}/public-articles?${params.toString()}`);
   return {
     articles: Array.isArray(payload?.articles) ? payload.articles : [],
     offset: Number(payload?.offset || 0),
@@ -72,10 +110,7 @@ export async function fetchArticlePage(options: { category?: string; q?: string;
 }
 
 export async function fetchTrendingSearches(): Promise<{ items: TrendingSearch[]; source: string; generatedAt: string }> {
-  const response = await fetch(`${API_BASE}/public-app-trending-searches`, {
-    headers: { Accept: 'application/json' }
-  });
-  const payload = await readJson(response);
+  const payload = await requestJson(`${API_BASE}/public-app-trending-searches`);
   return {
     items: Array.isArray(payload?.items) ? payload.items : [],
     source: String(payload?.source || ''),
@@ -85,10 +120,7 @@ export async function fetchTrendingSearches(): Promise<{ items: TrendingSearch[]
 
 export async function fetchArticle(id: string | number) {
   const params = new URLSearchParams({ id: String(id) });
-  const response = await fetch(`${API_BASE}/public-article?${params.toString()}`, {
-    headers: { Accept: 'application/json' }
-  });
-  const payload = await readJson(response);
+  const payload = await requestJson(`${API_BASE}/public-article?${params.toString()}`);
   return (payload?.article || null) as NewsArticle | null;
 }
 

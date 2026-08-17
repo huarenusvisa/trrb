@@ -9,6 +9,9 @@ on:
       - 'data/legal/**'
       - 'sitemap-legal.xml'
       - 'robots.txt'
+      - 'index.html'
+      - 'homepage-refresh-guard.js'
+      - 'articles-home-live-fix.js'
       - 'scripts/round17-node*.mjs'
       - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
       - '.github/workflows/round17-node10-final-production-audit.yml'
@@ -33,6 +36,8 @@ jobs:
         run: |
           node --check scripts/round17-node10-final-production-audit.mjs
           node --check scripts/round17-node6-sync-analysis-version.mjs
+          node --check homepage-refresh-guard.js
+          node --check articles-home-live-fix.js
       - name: Re-verify Round 17 nodes 1-9 at code/data level
         shell: bash
         run: |
@@ -69,6 +74,9 @@ jobs:
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/legal/legal.css?round17node10=$stamp" -o /tmp/round17-production/legal.css || ok=0
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap-legal.xml?round17node10=$stamp" -o /tmp/round17-production/sitemap.xml || ok=0
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/robots.txt?round17node10=$stamp" -o /tmp/round17-production/robots.txt || ok=0
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/?round17node10=$stamp" -o /tmp/round17-production/home-index.html || ok=0
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-refresh-guard.js?round17node10=$stamp" -o /tmp/round17-production/homepage-refresh-guard.js || ok=0
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home-live-fix.js?round17node10=$stamp" -o /tmp/round17-production/articles-home-live-fix.js || ok=0
             if [ "$ok" = 1 ] && node scripts/round17-node10-final-production-audit.mjs /tmp/round17-production; then
               exit 0
             fi
@@ -77,3 +85,5 @@ jobs:
           done
           echo 'ROUND 17 FINAL PRODUCTION AUDIT: FAIL'
           exit 1
+
+# Strict restart final: requires current 603/603 Chinese coverage, zero placeholders and homepage 4-day live-only published_at ordering.

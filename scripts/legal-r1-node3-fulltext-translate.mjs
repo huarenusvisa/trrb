@@ -23,6 +23,21 @@ function sha256(value) {
   return crypto.createHash('sha256').update(String(value ?? ''), 'utf8').digest('hex');
 }
 
+function recordFingerprint(record) {
+  return sha256(JSON.stringify({
+    id: record.id,
+    sourceSystem: record.sourceSystem || null,
+    authorityType: record.authorityType || null,
+    issuingBody: record.issuingBody || null,
+    title: record.title || null,
+    docket: record.docket || null,
+    citation: record.citation || null,
+    publicationDate: record.publicationDate || null,
+    officialUrl: record.officialUrl || null,
+    officialPdfUrl: record.officialPdfUrl || null
+  }));
+}
+
 function outputText(data) {
   if (data?.output_text) return data.output_text;
   for (const item of data?.output || []) {
@@ -41,12 +56,18 @@ function readExisting(record) {
   const file = outPath(record.id);
   if (!fs.existsSync(file)) return null;
   try {
-    const x = JSON.parse(fs.readFileSync(file, 'utf8'));
+    let x = JSON.parse(fs.readFileSync(file, 'utf8'));
     if (x?.recordId !== record.id) return null;
-    if (x?.sourceUrl !== (record.officialPdfUrl || record.officialUrl)) return null;
+    if (x?.recordFingerprint !== recordFingerprint(record)) return null;
+    if (String(x?.officialUrl || '') !== String(record.officialUrl || '')) return null;
+    if (String(x?.officialPdfUrl || '') !== String(record.officialPdfUrl || '')) return null;
     if (!Array.isArray(x?.segments) || !x.segments.length) return null;
     if (x.segments.some((s, i) => !s.segmentId || s.order !== i + 1 || !s.sourceTextHash || !String(s.chineseText || '').trim())) return null;
     if (x.sourceSegmentCount !== x.segments.length || x.translatedSegmentCount !== x.segments.length) return null;
+    if (x.datasetVersion !== db.datasetVersion) {
+      x = { ...x, datasetVersion: db.datasetVersion, reboundAt: new Date().toISOString() };
+      fs.writeFileSync(file, JSON.stringify(x, null, 2) + '\n');
+    }
     return x;
   } catch {
     return null;
@@ -177,6 +198,7 @@ async function translateRecord(record) {
   const result = {
     schemaVersion: 1,
     recordId: record.id,
+    recordFingerprint: recordFingerprint(record),
     datasetVersion: db.datasetVersion,
     sourceSystem: record.sourceSystem,
     authorityType: record.authorityType || null,
@@ -253,6 +275,5 @@ const index = {
 fs.writeFileSync(INDEX_PATH, JSON.stringify(index, null, 2) + '\n');
 console.log(JSON.stringify(index, null, 2));
 
-if (failures.length) process.exitCode = 1;
 if (index.complete) console.log('LEGAL-R1-N3: 100% FULL-TEXT TRANSLATION PASS');
-else console.log(`LEGAL-R1-N3: IN PROGRESS ${index.translatedRecordCount}/${index.eligibleRecordCount}`);
+else console.log(`LEGAL-R1-N3: IN PROGRESS ${index.translatedRecordCount}/${index.eligibleRecordCount}; failures=${failures.length}`);

@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 
-const categories = ['重要新闻', '热门头条', '美国时政', '美国警情', '中国官场', '庇护百科'];
+const categories = ['重要新闻', '美国时政', '美国警情', '中国官场', '庇护百科'];
 
 type WeatherState = { temperature: number | null; code: number | null; isDay: boolean };
 
@@ -21,6 +21,21 @@ function weatherLabel(code: number | null, isDay: boolean) {
   return { icon: '☁️', text: '天气' };
 }
 
+function shortDate(value?: string) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('zh-CN', {
+    month: 'numeric',
+    day: 'numeric',
+    timeZone: 'America/New_York',
+  }).format(date);
+}
+
+function articleDate(item: NewsArticle) {
+  return shortDate(item.published_at || item.created_at);
+}
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const [articles, setArticles] = useState<NewsArticle[]>([]);
@@ -35,7 +50,8 @@ export default function HomeScreen() {
     try {
       setError('');
       const global = await fetchArticles({ limit: 120 });
-      const supplements = await Promise.all(categories.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
+      const requested = ['热门头条', ...categories];
+      const supplements = await Promise.all(requested.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
       const seen = new Set<string>();
       const merged = sortNewestFirst([...global, ...supplements.flat()]).filter((item) => {
         const key = String(item.id);
@@ -63,7 +79,7 @@ export default function HomeScreen() {
         isDay: data?.current?.is_day !== 0,
       });
     } catch {
-      // Weather is secondary to news. Keep the compact fallback instead of blocking home.
+      // Weather is secondary to news and never blocks the homepage.
     }
   }
 
@@ -79,83 +95,263 @@ export default function HomeScreen() {
   }, [hotHeadlines.length]);
 
   const lead = useMemo(() => articles.find((item) => item.category_name !== '热门头条' && item.cover_image) || articles.find((item) => item.cover_image) || articles[0], [articles]);
-  const list = lead ? articles.filter((item) => String(item.id) !== String(lead.id)) : articles;
+  const leadStack = useMemo(() => articles.filter((item) => String(item.id) !== String(lead?.id)).slice(0, 4), [articles, lead]);
+  const rankItems = useMemo(() => (hotHeadlines.length ? hotHeadlines : articles).slice(0, 8), [articles, hotHeadlines]);
+  const categoryGroups = useMemo(() => categories.map((category) => ({
+    category,
+    items: articles.filter((item) => item.category_name === category).slice(0, 6),
+  })), [articles]);
   const weatherInfo = weatherLabel(weather.code, weather.isDay);
   const dateLabel = useMemo(() => new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'America/New_York' }).format(new Date()), []);
+
+  const openArticle = (item: NewsArticle) => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } });
+  const openCategory = (category: string) => router.push({ pathname: '/category/[name]', params: { name: category } });
 
   if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>正在读取唐人日报最新内容…</Text></View>;
 
   return (
     <View style={styles.screen}>
-      <FlatList
+      <ScrollView
         style={styles.page}
-        contentContainerStyle={[styles.content, { paddingTop: insets.top + 8 }]}
+        contentContainerStyle={[styles.content, { paddingTop: insets.top + 6 }]}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void load(); void loadWeather(); }} />}
         scrollEventThrottle={16}
         onScroll={({ nativeEvent }) => {
-          const next = nativeEvent.contentOffset.y > 86;
+          const next = nativeEvent.contentOffset.y > 100;
           if (next !== showStickyBrand) setShowStickyBrand(next);
         }}
-        ListHeaderComponent={
+      >
+        <View style={styles.utilityRow}>
+          <View style={styles.utilityCell}><Text style={styles.utilityIcon}>📍</Text><Text style={styles.utilityText}>纽约</Text></View>
+          <Text style={styles.utilityDate}>{dateLabel}</Text>
+          <View style={styles.utilityWeather}><Text>{weatherInfo.icon}</Text><Text style={styles.utilityText}>{weather.temperature == null ? '--°C' : `${weather.temperature}°C`} {weatherInfo.text}</Text></View>
+        </View>
+
+        <View style={styles.brandRow}>
           <View>
-            <View style={styles.weatherRow}>
-              <View style={styles.weatherCellLeft}><Text style={styles.pin}>📍</Text><Text style={styles.city}>New York City</Text></View>
-              <Text style={styles.dateTop}>{dateLabel}</Text>
-              <View style={styles.weatherCellRight}><Text style={styles.weatherIcon}>{weatherInfo.icon}</Text><Text style={styles.weatherText}>{weather.temperature == null ? '--°C' : `${weather.temperature}°C`} {weatherInfo.text}</Text></View>
-              <Pressable accessibilityLabel="搜索" style={styles.iconSearch} onPress={() => router.push('/search')}><Text style={styles.iconSearchText}>⌕</Text></Pressable>
-            </View>
-
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryRow}>
-              {categories.map((category) => <Pressable key={category} style={styles.chip} onPress={() => router.push({ pathname: '/category/[name]', params: { name: category } })}><Text style={styles.chipText}>{category}</Text></Pressable>)}
-            </ScrollView>
-
-            {activeHot ? <Pressable style={styles.hotTicker} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(activeHot.id) } })}>
-              <Text style={styles.hotLabel}>热门头条</Text>
-              <Text style={styles.hotTitle} numberOfLines={1}>{activeHot.title}</Text>
-              <Text style={styles.hotArrow}>›</Text>
-            </Pressable> : null}
-
-            <Pressable style={styles.topicBanner} onPress={() => router.push('/people')}>
-              <Text style={styles.topicLabel}>专题</Text>
-              <Text style={styles.topicTitle}>美国华人人物志</Text>
-              <Text style={styles.topicSub}>人物 · 生平 · 在美经历</Text>
-              <Text style={styles.topicArrow}>›</Text>
-            </Pressable>
-
-            {error ? <Text style={styles.error}>{error}</Text> : null}
-            {lead ? (
-              <Pressable style={styles.hero} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(lead.id) } })}>
-                {lead.cover_image ? <Image source={{ uri: lead.cover_image }} style={styles.heroImage} /> : null}
-                <View style={styles.heroBody}><Text style={styles.category}>{lead.category_name || '最新新闻'}</Text><Text style={styles.heroTitle}>{lead.title}</Text></View>
-              </Pressable>
-            ) : null}
-            <Text style={styles.sectionTitle}>最新报道</Text>
+            <Text style={styles.brand}>唐人日报</Text>
+            <Text style={styles.brandEn}>TANG REN DAILY</Text>
           </View>
-        }
-        data={list}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <Pressable style={styles.card} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}>
-            {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.thumb} /> : <View style={styles.thumbPlaceholder} />}
-            <View style={styles.cardBody}><Text style={styles.category}>{item.category_name || '新闻'}</Text><Text style={styles.title} numberOfLines={3}>{item.title}</Text><Text style={styles.date}>{item.published_at ? new Date(item.published_at).toLocaleString('zh-CN') : ''}</Text></View>
+          <Pressable accessibilityLabel="搜索" style={styles.searchButton} onPress={() => router.push('/search')}>
+            <Text style={styles.searchIcon}>⌕</Text>
           </Pressable>
-        )}
-      />
+        </View>
+        <Text style={styles.slogan}>立足美国 · 服务华人</Text>
 
-      {showStickyBrand ? <View style={[styles.stickyHeader, { paddingTop: insets.top, height: insets.top + 46 }]}>
-        <Text style={styles.stickyBrand}>唐人日报</Text>
-        <Pressable accessibilityLabel="搜索" onPress={() => router.push('/search')} style={styles.stickySearch}><Text style={styles.stickySearchText}>搜索</Text></Pressable>
-      </View> : null}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.navRow}>
+          {['重要新闻', '热门头条', '美国时政', '美国警情', '中国官场', '移民美国', '招聘求职', 'ICE执法动态'].map((item) => (
+            <Pressable
+              key={item}
+              style={styles.navItem}
+              onPress={() => {
+                if (item === '移民美国') router.push('/immigration');
+                else if (item === '招聘求职') router.push('/jobs');
+                else openCategory(item);
+              }}
+            >
+              <Text style={styles.navText}>{item}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+
+        {activeHot ? (
+          <Pressable style={styles.breakingRow} onPress={() => openArticle(activeHot)}>
+            <View style={styles.liveDot} />
+            <Text style={styles.breakingLabel}>热门</Text>
+            <Text style={styles.breakingTitle} numberOfLines={1}>{activeHot.title}</Text>
+            <Text style={styles.chevron}>›</Text>
+          </Pressable>
+        ) : null}
+
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+
+        {lead ? (
+          <Pressable style={styles.heroCard} onPress={() => openArticle(lead)}>
+            {lead.cover_image ? <Image source={{ uri: lead.cover_image }} style={styles.heroImage} /> : <View style={styles.heroImagePlaceholder} />}
+            <View style={styles.heroOverlay} />
+            <View style={styles.heroCopy}>
+              <Text style={styles.heroCategory}>{lead.category_name || '重要新闻'}</Text>
+              <Text style={styles.heroTitle} numberOfLines={3}>{lead.title}</Text>
+            </View>
+          </Pressable>
+        ) : null}
+
+        <View style={styles.leadStack}>
+          {leadStack.map((item) => (
+            <Pressable key={String(item.id)} style={styles.leadRow} onPress={() => openArticle(item)}>
+              {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.leadThumb} /> : <View style={styles.leadThumbPlaceholder} />}
+              <View style={styles.leadBody}>
+                <Text style={styles.leadCategory}>{item.category_name || '最新'}</Text>
+                <Text style={styles.leadTitle} numberOfLines={2}>{item.title}</Text>
+                <Text style={styles.leadDate}>{articleDate(item)}</Text>
+              </View>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={styles.sectionCard}>
+          <View style={styles.sectionHead}>
+            <Text style={styles.sectionTitle}>24小时热榜</Text>
+            <Pressable onPress={() => openCategory('热门头条')}><Text style={styles.more}>更多 ›</Text></Pressable>
+          </View>
+          {rankItems.map((item, index) => (
+            <Pressable key={String(item.id)} style={styles.rankRow} onPress={() => openArticle(item)}>
+              <Text style={[styles.rankNo, index < 3 && styles.rankNoHot]}>{String(index + 1).padStart(2, '0')}</Text>
+              <Text style={styles.rankTitle} numberOfLines={2}>{item.title}</Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={styles.sectionCard}>
+          <View style={styles.sectionHead}>
+            <Text style={styles.sectionTitle}>专题聚焦</Text>
+          </View>
+          <Pressable style={styles.focusRow} onPress={() => router.push('/people')}>
+            <View style={styles.focusBadge}><Text style={styles.focusBadgeText}>人物</Text></View>
+            <View style={styles.focusBody}><Text style={styles.focusTitle}>美国华人人物志</Text><Text style={styles.focusSub}>人物 · 生平 · 在美经历</Text></View>
+            <Text style={styles.focusArrow}>›</Text>
+          </Pressable>
+          <Pressable style={styles.focusRow} onPress={() => router.push('/immigration')}>
+            <View style={styles.focusBadge}><Text style={styles.focusBadgeText}>移民</Text></View>
+            <View style={styles.focusBody}><Text style={styles.focusTitle}>移民美国知识库</Text><Text style={styles.focusSub}>7大路径 · 签证 · 绿卡 · 身份</Text></View>
+            <Text style={styles.focusArrow}>›</Text>
+          </Pressable>
+          <Pressable style={styles.focusRow} onPress={() => router.push('/jobs')}>
+            <View style={styles.focusBadge}><Text style={styles.focusBadgeText}>工作</Text></View>
+            <View style={styles.focusBody}><Text style={styles.focusTitle}>招聘求职</Text><Text style={styles.focusSub}>美国华人招聘与求职信息</Text></View>
+            <Text style={styles.focusArrow}>›</Text>
+          </Pressable>
+        </View>
+
+        {categoryGroups.map(({ category, items }) => {
+          if (!items.length) return null;
+          const first = items[0];
+          const rest = items.slice(1);
+          return (
+            <View key={category} style={styles.sectionCard}>
+              <View style={styles.sectionHead}>
+                <Text style={styles.sectionTitle}>{category}</Text>
+                <Pressable onPress={() => openCategory(category)}><Text style={styles.more}>更多 ›</Text></Pressable>
+              </View>
+              <Pressable style={styles.categoryLead} onPress={() => openArticle(first)}>
+                {first.cover_image ? <Image source={{ uri: first.cover_image }} style={styles.categoryLeadImage} /> : <View style={styles.categoryLeadPlaceholder} />}
+                <Text style={styles.categoryLeadTitle} numberOfLines={3}>{first.title}</Text>
+              </Pressable>
+              {rest.map((item) => (
+                <Pressable key={String(item.id)} style={styles.textNewsRow} onPress={() => openArticle(item)}>
+                  <View style={styles.newsDot} />
+                  <Text style={styles.textNewsTitle} numberOfLines={2}>{item.title}</Text>
+                  <Text style={styles.textNewsDate}>{articleDate(item)}</Text>
+                </Pressable>
+              ))}
+            </View>
+          );
+        })}
+
+        <View style={styles.serviceCard}>
+          <View style={styles.sectionHead}>
+            <Text style={styles.sectionTitle}>服务与数据库</Text>
+          </View>
+          <View style={styles.serviceGrid}>
+            <Pressable style={styles.serviceItem} onPress={() => router.push('/immigration')}><Text style={styles.serviceTitle}>移民美国</Text><Text style={styles.serviceSub}>签证 · 绿卡 · 身份路径</Text></Pressable>
+            <Pressable style={styles.serviceItem} onPress={() => router.push('/legal')}><Text style={styles.serviceTitle}>判例新规</Text><Text style={styles.serviceSub}>判例 · BIA · 联邦新规</Text></Pressable>
+            <Pressable style={styles.serviceItem} onPress={() => router.push('/people')}><Text style={styles.serviceTitle}>华人人物</Text><Text style={styles.serviceSub}>人物档案与在美经历</Text></Pressable>
+            <Pressable style={styles.serviceItem} onPress={() => router.push('/jobs')}><Text style={styles.serviceTitle}>招聘求职</Text><Text style={styles.serviceSub}>岗位与求职信息</Text></Pressable>
+          </View>
+        </View>
+
+        <View style={styles.footerBlock}>
+          <Text style={styles.footerBrand}>唐人日报 Tang Ren Daily</Text>
+          <Text style={styles.footerText}>立足美国 · 服务华人</Text>
+          <Text style={styles.footerText}>新闻、移民知识、判例新规与华人生活服务</Text>
+        </View>
+      </ScrollView>
+
+      {showStickyBrand ? (
+        <View style={[styles.stickyHeader, { paddingTop: insets.top, height: insets.top + 46 }]}>
+          <Text style={styles.stickyBrand}>唐人日报</Text>
+          <Pressable accessibilityLabel="搜索" onPress={() => router.push('/search')} style={styles.stickySearch}><Text style={styles.stickySearchText}>搜索</Text></Pressable>
+        </View>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen:{flex:1,backgroundColor:'#f5f6f8'},page:{flex:1,backgroundColor:'#f5f6f8'},content:{paddingHorizontal:16,paddingBottom:30},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085'},
-  weatherRow:{height:48,flexDirection:'row',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#e4e7ec',marginBottom:10,gap:8},weatherCellLeft:{flexDirection:'row',alignItems:'center',minWidth:118,flex:1.2},pin:{fontSize:15,marginRight:5},city:{fontSize:15,fontWeight:'700',color:'#101828'},dateTop:{fontSize:14,color:'#667085',fontWeight:'600',flex:0.95,textAlign:'center'},weatherCellRight:{flexDirection:'row',alignItems:'center',justifyContent:'flex-end',minWidth:90,flex:1},weatherIcon:{fontSize:18,marginRight:4},weatherText:{fontSize:14,color:'#101828',fontWeight:'700'},iconSearch:{width:30,height:30,borderRadius:15,alignItems:'center',justifyContent:'center'},iconSearchText:{fontSize:23,color:'#101828',fontWeight:'700'},
-  categoryRow:{gap:8,paddingBottom:10},chip:{backgroundColor:'#fff',borderRadius:999,paddingHorizontal:14,paddingVertical:9},chipText:{color:'#344054',fontWeight:'800'},
-  hotTicker:{backgroundColor:'#fff',borderRadius:12,minHeight:46,paddingHorizontal:12,marginBottom:10,flexDirection:'row',alignItems:'center'},hotLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginRight:10},hotTitle:{flex:1,color:'#101828',fontWeight:'800',fontSize:15},hotArrow:{fontSize:24,color:'#98a2b3',marginLeft:8},
-  topicBanner:{backgroundColor:'#fff',borderRadius:14,paddingHorizontal:14,paddingVertical:12,marginBottom:14,flexDirection:'row',alignItems:'center'},topicLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginRight:10},topicTitle:{color:'#101828',fontWeight:'900',fontSize:16,marginRight:8},topicSub:{flex:1,color:'#98a2b3',fontSize:12},topicArrow:{fontSize:26,color:'#98a2b3'},
-  stickyHeader:{position:'absolute',left:0,right:0,top:0,zIndex:30,backgroundColor:'#fff',borderBottomWidth:1,borderBottomColor:'#eaecf0',paddingHorizontal:16,flexDirection:'row',alignItems:'flex-end',paddingBottom:8,justifyContent:'space-between'},stickyBrand:{color:'#c8211e',fontSize:21,fontWeight:'900'},stickySearch:{paddingHorizontal:10,paddingVertical:4},stickySearchText:{color:'#101828',fontWeight:'800'},
-  error:{color:'#b42318',marginBottom:12},hero:{backgroundColor:'#fff',borderRadius:18,overflow:'hidden',marginBottom:20},heroImage:{width:'100%',height:195,backgroundColor:'#e4e7ec'},heroBody:{padding:15},heroTitle:{fontSize:22,lineHeight:29,fontWeight:'900',color:'#101828',marginTop:6},sectionTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:12},card:{flexDirection:'row',backgroundColor:'#fff',borderRadius:14,marginBottom:12,overflow:'hidden',minHeight:112},thumb:{width:120,minHeight:112,backgroundColor:'#e4e7ec'},thumbPlaceholder:{width:120,backgroundColor:'#eaecf0'},cardBody:{flex:1,padding:12},category:{color:'#c8211e',fontSize:13,fontWeight:'800'},title:{marginTop:5,color:'#101828',fontSize:17,lineHeight:23,fontWeight:'800'},date:{marginTop:7,color:'#98a2b3',fontSize:12}
+  screen: { flex: 1, backgroundColor: '#f4f5f7' },
+  page: { flex: 1, backgroundColor: '#f4f5f7' },
+  content: { paddingHorizontal: 14, paddingBottom: 34 },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
+  muted: { color: '#667085' },
+  utilityRow: { minHeight: 34, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#e5e7eb' },
+  utilityCell: { flex: 1, flexDirection: 'row', alignItems: 'center' },
+  utilityIcon: { fontSize: 12, marginRight: 3 },
+  utilityText: { fontSize: 11, color: '#667085', fontWeight: '600' },
+  utilityDate: { flex: 1, textAlign: 'center', fontSize: 11, color: '#98a2b3' },
+  utilityWeather: { flex: 1, flexDirection: 'row', gap: 4, justifyContent: 'flex-end', alignItems: 'center' },
+  brandRow: { marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  brand: { color: '#b51d1a', fontSize: 29, lineHeight: 34, fontWeight: '900', letterSpacing: 1 },
+  brandEn: { color: '#344054', fontSize: 9, letterSpacing: 2.5, marginTop: 1, fontWeight: '700' },
+  slogan: { color: '#667085', fontSize: 12, marginTop: 7, marginBottom: 12 },
+  searchButton: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' },
+  searchIcon: { color: '#101828', fontSize: 24, lineHeight: 26, fontWeight: '700' },
+  navRow: { gap: 7, paddingBottom: 12 },
+  navItem: { backgroundColor: '#fff', borderRadius: 7, paddingHorizontal: 11, paddingVertical: 8 },
+  navText: { color: '#101828', fontSize: 12, fontWeight: '800' },
+  breakingRow: { minHeight: 42, backgroundColor: '#fff', borderRadius: 8, paddingHorizontal: 11, flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
+  liveDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#c8211e', marginRight: 7 },
+  breakingLabel: { color: '#c8211e', fontSize: 12, fontWeight: '900', marginRight: 8 },
+  breakingTitle: { flex: 1, color: '#101828', fontSize: 13, fontWeight: '800' },
+  chevron: { color: '#98a2b3', fontSize: 22, marginLeft: 5 },
+  error: { color: '#b42318', marginBottom: 10 },
+  heroCard: { height: 238, borderRadius: 10, overflow: 'hidden', backgroundColor: '#101828', marginBottom: 10, position: 'relative' },
+  heroImage: { width: '100%', height: '100%', backgroundColor: '#e4e7ec' },
+  heroImagePlaceholder: { width: '100%', height: '100%', backgroundColor: '#344054' },
+  heroOverlay: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.38)' },
+  heroCopy: { position: 'absolute', left: 15, right: 15, bottom: 16 },
+  heroCategory: { alignSelf: 'flex-start', color: '#fff', backgroundColor: '#c8211e', paddingHorizontal: 7, paddingVertical: 4, borderRadius: 4, fontSize: 11, fontWeight: '900', marginBottom: 8 },
+  heroTitle: { color: '#fff', fontSize: 22, lineHeight: 29, fontWeight: '900' },
+  leadStack: { backgroundColor: '#fff', borderRadius: 10, paddingHorizontal: 11, marginBottom: 12 },
+  leadRow: { minHeight: 82, flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eaecf0' },
+  leadThumb: { width: 92, height: 62, borderRadius: 6, backgroundColor: '#e4e7ec' },
+  leadThumbPlaceholder: { width: 92, height: 62, borderRadius: 6, backgroundColor: '#eaecf0' },
+  leadBody: { flex: 1, paddingLeft: 10 },
+  leadCategory: { color: '#c8211e', fontSize: 10, fontWeight: '900' },
+  leadTitle: { color: '#101828', fontSize: 14, lineHeight: 19, fontWeight: '800', marginTop: 3 },
+  leadDate: { color: '#98a2b3', fontSize: 10, marginTop: 4 },
+  sectionCard: { backgroundColor: '#fff', borderRadius: 10, padding: 12, marginBottom: 12 },
+  sectionHead: { minHeight: 31, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 2, borderBottomColor: '#c8211e', marginBottom: 9 },
+  sectionTitle: { color: '#101828', fontSize: 17, fontWeight: '900' },
+  more: { color: '#667085', fontSize: 11, fontWeight: '700' },
+  rankRow: { minHeight: 43, flexDirection: 'row', alignItems: 'center', borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eaecf0' },
+  rankNo: { width: 31, color: '#98a2b3', fontSize: 13, fontWeight: '900' },
+  rankNoHot: { color: '#c8211e' },
+  rankTitle: { flex: 1, color: '#101828', fontSize: 13, lineHeight: 18, fontWeight: '700' },
+  focusRow: { minHeight: 64, flexDirection: 'row', alignItems: 'center', paddingVertical: 7, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eaecf0' },
+  focusBadge: { width: 45, height: 45, borderRadius: 23, backgroundColor: '#fce8e7', alignItems: 'center', justifyContent: 'center' },
+  focusBadgeText: { color: '#c8211e', fontSize: 11, fontWeight: '900' },
+  focusBody: { flex: 1, paddingHorizontal: 10 },
+  focusTitle: { color: '#101828', fontSize: 14, fontWeight: '900' },
+  focusSub: { color: '#98a2b3', fontSize: 11, marginTop: 3 },
+  focusArrow: { color: '#98a2b3', fontSize: 23 },
+  categoryLead: { marginBottom: 7 },
+  categoryLeadImage: { width: '100%', height: 154, borderRadius: 7, backgroundColor: '#e4e7ec' },
+  categoryLeadPlaceholder: { width: '100%', height: 154, borderRadius: 7, backgroundColor: '#eaecf0' },
+  categoryLeadTitle: { color: '#101828', fontSize: 16, lineHeight: 22, fontWeight: '900', marginTop: 8 },
+  textNewsRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#eaecf0' },
+  newsDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: '#c8211e', marginRight: 7 },
+  textNewsTitle: { flex: 1, color: '#344054', fontSize: 13, lineHeight: 18, fontWeight: '700' },
+  textNewsDate: { color: '#98a2b3', fontSize: 9, marginLeft: 8 },
+  serviceCard: { backgroundColor: '#fff', borderRadius: 10, padding: 12, marginBottom: 12 },
+  serviceGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  serviceItem: { width: '48.5%', minHeight: 82, borderRadius: 8, backgroundColor: '#f7f8fa', padding: 11, justifyContent: 'center' },
+  serviceTitle: { color: '#c8211e', fontSize: 14, fontWeight: '900' },
+  serviceSub: { color: '#667085', fontSize: 10, lineHeight: 15, marginTop: 5 },
+  footerBlock: { backgroundColor: '#1f242b', borderRadius: 10, paddingHorizontal: 15, paddingVertical: 20, marginTop: 1 },
+  footerBrand: { color: '#fff', fontSize: 15, fontWeight: '900' },
+  footerText: { color: '#c9ced6', fontSize: 11, lineHeight: 18, marginTop: 4 },
+  stickyHeader: { position: 'absolute', left: 0, right: 0, top: 0, zIndex: 30, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#eaecf0', paddingHorizontal: 16, flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 8, justifyContent: 'space-between' },
+  stickyBrand: { color: '#c8211e', fontSize: 21, fontWeight: '900' },
+  stickySearch: { paddingHorizontal: 10, paddingVertical: 4 },
+  stickySearchText: { color: '#101828', fontWeight: '800' },
 });

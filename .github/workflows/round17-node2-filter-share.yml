@@ -26,3 +26,5 @@ jobs:
           node-version: '22'
       - name: Audit Round 17 node 2
         run: node scripts/round17-node2-filter-share-audit.mjs
+
+# Strict restart revalidation after node 1 passed against current 603/603 legal dataset: 2026-08-17T02:26Z.

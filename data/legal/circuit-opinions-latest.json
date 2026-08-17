@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T15:59:43.070Z",
+  "generatedAt": "2026-08-17T16:44:39.430Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -103,6 +103,62 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340P-01A.pdf",
           "title": "25-1340P.01A"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf",
+          "title": "25-1063 North End Chamber of Commerce, Inc. v. City of Boston"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1254O-01A.pdf",
+          "title": "26-1254 African Communities Together v. Mullin"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1376O-01A.pdf",
+          "title": "26-1376 African Communities Together v. Mullin"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
+          "title": "25-1079 US v. Rosado Maldonado"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1314E-01A.pdf",
+          "title": "25-1314 Czerno v. General Electric Company"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf",
+          "title": "25-1862 Rana v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf",
+          "title": "26-1774 State of California v. Trump"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1975P-01A.pdf",
+          "title": "23-1975 US v. Irizarry-Irizarry"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
+          "title": "23-2011 Cruz v. UIA"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
+          "title": "25-1555 Grant v. Trial Court of the Commonwealth of Massachusetts"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
+          "title": "26-1699 State of California v. Mullin"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
+          "title": "25-1862 Rana v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
+          "title": "25-1817 Recchia v. Campbell"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1781P-01A.pdf",
+          "title": "25-1781 Rhode Island Truck Ctr., LLC v. Daimler Trucks North America, LLC"
         }
       ],
       "notes": []
@@ -259,6 +315,10 @@
       "sourceFinalUrl": "https://www2.ca3.uscourts.gov/recentop/week/recprec.htm",
       "documents": [
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/251489p.pdf",
+          "title": "USA v. Jose Tavares"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251490p.pdf",
           "title": "Jose Aristy-Rosa v. Attorney General United States of America"
         },
@@ -337,6 +397,14 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/242415p.pdf",
           "title": "Association of New Jersey Rifle and Pistol Clubs I v. Attorney General New Jersey"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252396np.pdf",
+          "title": "Sara Slattery v. Main Line Health Inc"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/232916np.pdf",
+          "title": "USA v. Jose Torres"
         },
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251131np.pdf",
@@ -445,18 +513,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/253032np.pdf",
           "title": "Bezalel Grossberger v. Robert Cormack"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252817np.pdf",
-          "title": "Eric Weiss v. Deborah Posner"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252790np.pdf",
-          "title": "Samson Orusa v. Warden Allenwood FCI"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252676np.pdf",
-          "title": "Ronald Alonzo v. Joe Terra"
         }
       ],
       "notes": []
@@ -975,6 +1031,10 @@
       "sourceFinalUrl": "https://media.ca7.uscourts.gov/cgi-bin/rssExec.pl?Submit=Submit&Time=week",
       "documents": [
         {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-17/C:24-2913:J:Taibleson:aut:T:fnOp:N:3592032:S:0",
+          "title": "Final Opinion"
+        },
+        {
           "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-14/C:25-2428:J:PerCuriam:aut:T:fnOp:N:3591581:S:0",
           "title": "Final Opinion"
         },
@@ -1147,11 +1207,35 @@
       "sourceFinalUrl": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml",
       "documents": [
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6465.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6470.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/24-7706.pdf",
           "title": null
         },
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6214.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6224.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-5137.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6223.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6475.pdf",
           "title": null
         },
         {
@@ -1221,30 +1305,6 @@
         {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/23-16164.pdf",
           "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7265.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/21-71380.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7312.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7032.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7037.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/24-7300.pdf",
-          "title": null
         }
       ],
       "notes": []
@@ -1256,6 +1316,10 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://www.ca10.uscourts.gov/opinions/new/daily_decisions.rss",
       "documents": [
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489013.pdf",
+          "title": null
+        },
         {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/01019202759.pdf",
           "title": "00-6235 - United States v. Anderson [1470367] 12/13/2001"
@@ -1306,6 +1370,10 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
+        {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202512478.pdf",
+          "title": "Ernest N. Finley, Jr., et al v. Thomas Albritton, et al"
+        },
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202413967.pdf",
           "title": "USA v. Thomas Sheely, Jr."
@@ -1501,10 +1569,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202412547.pdf",
           "title": "C. W. v. Steve Smith, et al"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202610854.pdf",
-          "title": "Richard Jackson, et al v. William Jones, et al"
         }
       ],
       "notes": []

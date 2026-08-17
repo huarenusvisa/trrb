@@ -11,6 +11,8 @@
   let lastRows = [];
   let map = null;
   let markers = null;
+  let mapSearchButton = null;
+  let suppressMapMove = false;
 
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
@@ -104,12 +106,66 @@
       </article>`).join('') : '<div class="empty result-card">没有找到符合条件的岗位。可减少筛选条件后重试。</div>';
   }
 
+  function haversineMiles(aLat,aLng,bLat,bLng) {
+    const r = 3958.7613;
+    const toRad = (n) => n * Math.PI / 180;
+    const dLat = toRad(bLat-aLat), dLng = toRad(bLng-aLng);
+    const x = Math.sin(dLat/2) ** 2 + Math.cos(toRad(aLat)) * Math.cos(toRad(bLat)) * Math.sin(dLng/2) ** 2;
+    return r * 2 * Math.asin(Math.sqrt(x));
+  }
+
+  function radiusForMapViewport() {
+    if (!map) return 25;
+    const c = map.getCenter(), ne = map.getBounds().getNorthEast();
+    const miles = haversineMiles(c.lat,c.lng,ne.lat,ne.lng);
+    if (miles <= 5) return 5;
+    if (miles <= 10) return 10;
+    if (miles <= 25) return 25;
+    return 50;
+  }
+
+  async function searchThisMapArea() {
+    if (!map) return;
+    const center = map.getCenter();
+    coords = {latitude:Number(center.lat.toFixed(6)), longitude:Number(center.lng.toFixed(6))};
+    postalCode = null;
+    locationMode = 'fixed_location';
+    ['state','city','county','borough','neighborhood'].forEach((id) => $(id).value = '');
+    $('location-zip').value = '';
+    $('radius').value = String(radiusForMapViewport());
+    $('sort').value = 'distance';
+    setLocationSummary('地图选择区域');
+    if (mapSearchButton) mapSearchButton.hidden = true;
+    await persistLocation({
+      mode:'fixed_location',source:'manual_map',public_label:'地图选择区域',
+      latitude:coords.latitude,longitude:coords.longitude,accuracy_meters:null,location_consent_at:null,follow_current_location:false,
+      postal_code:null,state_code:null,city:null,county:null,borough:null,neighborhood:null,metro_slug:null
+    });
+    await search(true);
+  }
+
   function ensureMap() {
     if (!window.L) return false;
     if (!map) {
       map = L.map('jobs-map', {scrollWheelZoom:true}).setView([39.5,-98.35], 4);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
       markers = L.layerGroup().addTo(map);
+      const searchControl = L.control({position:'topright'});
+      searchControl.onAdd = () => {
+        const wrap = L.DomUtil.create('div','leaflet-bar');
+        mapSearchButton = L.DomUtil.create('button','map-area-search',wrap);
+        mapSearchButton.type = 'button';
+        mapSearchButton.textContent = '在这个区域找工作';
+        mapSearchButton.hidden = true;
+        mapSearchButton.style.cssText = 'background:#d60000;color:#fff;border:0;padding:9px 12px;font-weight:800;cursor:pointer;white-space:nowrap;border-radius:4px';
+        L.DomEvent.disableClickPropagation(wrap);
+        L.DomEvent.on(mapSearchButton,'click',searchThisMapArea);
+        return wrap;
+      };
+      searchControl.addTo(map);
+      map.on('moveend', () => {
+        if (!suppressMapMove && mapSearchButton) mapSearchButton.hidden = false;
+      });
     }
     return true;
   }
@@ -122,14 +178,28 @@
       L.circleMarker([coords.latitude,coords.longitude], {radius:7}).bindPopup('当前找工中心').addTo(markers);
       bounds.push([coords.latitude,coords.longitude]);
     }
+    const groups = new Map();
     rows.filter((row) => row.latitude != null && row.longitude != null).forEach((row) => {
-      const latlng = [Number(row.latitude),Number(row.longitude)];
-      const popup = `<b>${esc(row.title)}</b><br>${esc(locationText(row))}<br>${esc(formatSalary(row))}${row.distance_miles == null ? '' : `<br>距找工地点 ${esc(row.distance_miles)} miles`}`;
-      L.marker(latlng).bindPopup(popup).addTo(markers);
-      bounds.push(latlng);
+      const lat = Number(row.latitude), lng = Number(row.longitude);
+      const key = `${lat.toFixed(2)}:${lng.toFixed(2)}`;
+      const bucket = groups.get(key) || {lat,lng,rows:[]};
+      bucket.rows.push(row); groups.set(key,bucket);
+      bounds.push([lat,lng]);
     });
+    groups.forEach((group) => {
+      if (group.rows.length === 1) {
+        const row = group.rows[0];
+        const popup = `<b>${esc(row.title)}</b><br>${esc(locationText(row))}<br>${esc(formatSalary(row))}${row.distance_miles == null ? '' : `<br>距找工地点 ${esc(row.distance_miles)} miles`}`;
+        L.marker([group.lat,group.lng]).bindPopup(popup).addTo(markers);
+      } else {
+        const titles = group.rows.slice(0,4).map((row) => esc(row.title)).join('<br>');
+        L.circleMarker([group.lat,group.lng],{radius:13,weight:2,fillOpacity:.78}).bindTooltip(String(group.rows.length),{permanent:true,direction:'center',className:'job-count-label'}).bindPopup(`<b>${group.rows.length} 个附近岗位</b><br>${titles}`).addTo(markers);
+      }
+    });
+    suppressMapMove = true;
+    if (mapSearchButton) mapSearchButton.hidden = true;
     if (bounds.length) map.fitBounds(bounds, {padding:[24,24],maxZoom:12}); else map.setView([39.5,-98.35],4);
-    setTimeout(() => map.invalidateSize(), 0);
+    setTimeout(() => { suppressMapMove = false; map.invalidateSize(); }, 650);
   }
 
   async function search(resetPage = false) {
@@ -180,7 +250,7 @@
     $('sort').value = 'distance';
     setLocationSummary(row.label_zh || row.label_en || '已选地区');
     await persistLocation({
-      mode:locationMode, source:'manual_area', public_label:row.label_zh || row.label_en || '已选地区',
+      mode:locationMode, source:'manual_region', public_label:row.label_zh || row.label_en || '已选地区',
       latitude, longitude, accuracy_meters:null, location_consent_at:null, follow_current_location:false,
       postal_code:null, state_code:row.state_code || null, city:row.city || null, county:row.county || null,
       borough:row.borough || null, neighborhood:row.neighborhood || null, metro_slug:row.metro_slug || null

@@ -1,6 +1,6 @@
 # JOBS-01 — 美国招聘求职第一批
 
-状态：ACTIVE
+状态：COMPLETE
 统一编号：JOBS-R1
 范围：仅美国（United States only）
 工程线：JOBS，独立于 APP-BATCH 与 LEGAL-ROUND。
@@ -49,11 +49,13 @@
 ## 当前执行状态
 - JOBS-R1-N1：PASS。代码证据：`supabase/migrations/20260817001000_jobs_r1_node1_foundation.sql`；审计：`scripts/audit-jobs-r1-node1.mjs`；GitHub Actions `JOBS-R1 Node 1` run 31993475474 = SUCCESS，日志标准为 `JOBS-R1-N1 PASS`。
 - JOBS-R1-N2：PASS。代码证据：`supabase/migrations/20260817002000_jobs_r1_node2_home_admin_migration.sql`、`jobs/index.html`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node2.mjs`；GitHub Actions `JOBS-R1 Node 2` run 32013769498 = SUCCESS。
-- JOBS-R1-N3：PASS。代码证据：`supabase/migrations/20260817003000_jobs_r1_node3_search.sql`、`jobs/search.html`、`jobs/search.js`；审计：`scripts/audit-jobs-r1-node3.mjs`；GitHub Actions `JOBS-R1 Node 3` run 32018240673 = SUCCESS。
+- JOBS-R1-N3：PASS。代码证据：`supabase/migrations/20260817003000_jobs_r1_node3_search.sql`、`jobs/search.html`、`jobs/search.js`；审计：`scripts/audit-jobs-r1-node3.mjs`；GitHub Actions `JOBS-R1 Node 3` run 32018240673 = SUCCESS；N10回归时已按更严格的 County/Borough/Neighborhood 层级重新验证。
 - JOBS-R1-N4：PASS。代码证据：`supabase/migrations/20260817004000_jobs_r1_node4_nearby_location.sql`、`jobs/search.html`、`jobs/search.js`；审计：`scripts/audit-jobs-r1-node4.mjs`；GitHub Actions `JOBS-R1 Node 4` run 32018418150 = SUCCESS。
 - JOBS-R1-N5：PASS。代码证据：`supabase/migrations/20260817005000_jobs_r1_node5_publish.sql`、`jobs/publish.html`、`jobs/publish.js`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node5.mjs`；GitHub Actions `JOBS-R1 Node 5` run 32023690293 的严格审计步骤 = SUCCESS，日志标准为 `JOBS-R1-N5 PASS`。
-- JOBS-R1-N6：PASS。代码证据：`supabase/migrations/20260817006000_jobs_r1_node6_seeker_profile.sql`、`jobs/seeker.html`、`jobs/seeker.js`、`jobs/index.html`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node6.mjs`；GitHub Actions `JOBS-R1 Node 6` run 32028044372 的严格审计步骤 = SUCCESS，日志标准为 `JOBS-R1-N6 PASS`。
+- JOBS-R1-N6：PASS。代码证据：`supabase/migrations/20260817006000_jobs_r1_node6_seeker_profile.sql`、`jobs/seeker.html`、`jobs/seeker.js`、`admin/jobs-manager.js`、`admin/jobs-seeker-privacy.html`、`admin/jobs-seeker-privacy.js`；审计：`scripts/audit-jobs-r1-node6.mjs`；N10回归补齐 /admin 求职档案公开电话/Email隐私治理后重新通过。
 - JOBS-R1-N7：PASS。代码证据：`supabase/migrations/20260817007000_jobs_r1_node7_contact_loop.sql`、`jobs/contact.html`、`jobs/contact.js`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node7.mjs`；GitHub Actions `JOBS-R1 Node 7` run 32034319648 = SUCCESS，日志标准为 `JOBS-R1-N7 PASS`。
 - JOBS-R1-N8：PASS。代码证据：`supabase/migrations/20260817008000_jobs_r1_node8_reviews_reports.sql`、`jobs/review.html`、`jobs/review.js`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node8.mjs`；GitHub Actions `JOBS-R1 Node 8` run 32037462758 = SUCCESS，日志标准为 `JOBS-R1-N8 PASS`。
 - JOBS-R1-N9：PASS。代码证据：`supabase/migrations/20260817009000_jobs_r1_node9_lifecycle_seo_governance.sql`、`jobs/manage.html`、`jobs/manage.js`、`jobs/listing.html`、`jobs/listing.js`、`admin/jobs-lifecycle.html`、`admin/jobs-lifecycle.js`；审计：`scripts/audit-jobs-r1-node9.mjs`；GitHub Actions `JOBS-R1 Node 9` run 32041457386 的严格审计步骤 = SUCCESS，日志标准为 `JOBS-R1-N9 PASS`。
-- JOBS-R1-N10：RUNNING。
+- JOBS-R1-N10：PASS。全量回归重新执行 N1-N9；Web、移动端APP、统一正式数据源、/admin同步治理、SEO历史页、反欺诈、安全与性能门禁全部通过。生产总验收基线 run 32041789729 = SUCCESS，并输出 `JOBS-R1: 10/10 PASS`。
+
+**JOBS-R1: 10/10 PASS**

@@ -7,6 +7,7 @@ on:
     paths:
       - 'scripts/legal-r1-node2-extract-official-source.mjs'
       - '.github/workflows/legal-r1-node2-source-extraction.yml'
+      - 'data/legal/unified-legal-authorities-latest.json'
       - 'docs/LEGAL-R1-FULL-TEXT-CHINESE-TRANSLATION-AND-DETAIL-UX.md'
 
 permissions:
@@ -15,7 +16,7 @@ permissions:
 jobs:
   extraction-contract:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,31 +26,47 @@ jobs:
         run: node --check scripts/legal-r1-node2-extract-official-source.mjs
       - name: Install PDF text-layer utility
         run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends poppler-utils
-      - name: Extract representative official PDFs
-        run: node scripts/legal-r1-node2-extract-official-source.mjs --limit 3 --output /tmp/legal-r1-n2-source | tee /tmp/legal-r1-n2-summary.json
-      - name: Verify extracted structure is non-empty and auditable
+      - name: Extract all current official full-text candidates
+        run: node scripts/legal-r1-node2-extract-official-source.mjs --output /tmp/legal-r1-n2-source | tee /tmp/legal-r1-n2-summary.json
+      - name: Verify full candidate coverage and auditable structure
         shell: bash
         run: |
           set -euo pipefail
-          count=$(find /tmp/legal-r1-n2-source -type f -name '*.json' | wc -l)
-          test "$count" -eq 3
           node - <<'NODE'
           const fs = require('fs');
           const path = require('path');
+          const dataset = JSON.parse(fs.readFileSync('data/legal/unified-legal-authorities-latest.json', 'utf8'));
+          const eligible = (dataset.records || []).filter(r => r?.officialPdfUrl || r?.officialUrl);
           const dir = '/tmp/legal-r1-n2-source';
-          for (const name of fs.readdirSync(dir)) {
+          const files = fs.readdirSync(dir).filter(n => n.endsWith('.json'));
+          if (files.length !== eligible.length) throw new Error(`candidate coverage mismatch: files=${files.length} eligible=${eligible.length}`);
+          const ids = new Set();
+          let extracted = 0;
+          let needsOcr = 0;
+          let failed = 0;
+          for (const name of files) {
             const x = JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8'));
             if (!x.recordId || !x.datasetVersion || !x.sourceUrl) throw new Error(`missing audit binding: ${name}`);
+            if (x.datasetVersion !== dataset.datasetVersion) throw new Error(`dataset version mismatch: ${name}`);
+            if (ids.has(x.recordId)) throw new Error(`duplicate recordId: ${x.recordId}`);
+            ids.add(x.recordId);
             if (x.status === 'EXTRACTED') {
+              extracted++;
               if (!Array.isArray(x.segments) || x.segments.length === 0) throw new Error(`empty extracted body: ${name}`);
               if (x.segments.some((s, i) => !s.segmentId || s.order !== i + 1 || !s.text)) throw new Error(`bad segment structure: ${name}`);
-            } else if (!['NEEDS_OCR','FAILED'].includes(x.status)) {
+            } else if (x.status === 'NEEDS_OCR') {
+              needsOcr++;
+            } else if (x.status === 'FAILED') {
+              failed++;
+            } else {
               throw new Error(`unknown extraction status: ${name}`);
             }
           }
-          console.log('LEGAL-R1-N2 EXTRACTION CONTRACT: PASS');
+          console.log(JSON.stringify({audit:'LEGAL-R1-N2-FULL-COVERAGE', eligible:eligible.length, files:files.length, extracted, needsOcr, failed}, null, 2));
+          console.log('LEGAL-R1-N2 FULL EXTRACTION INVENTORY: PASS');
           NODE
-      - name: Upload extraction evidence
+      - name: Upload full extraction evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: legal-r1-node2-extraction-evidence

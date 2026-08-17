@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-e78441e70e6798d1dc77180a43c28611b27b6a66</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T15:09:17.957Z</news:publication_date>
+        <news:title>前议员：ICE拦截车辆行动须有具体合理怀疑，禁止仅凭种族或口音等主观因素</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-223c6def7d0aba84ed06436e0eb596e475dc737c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T15:08:45.802Z</news:publication_date>
+        <news:title>美网友呼吁起诉遣返“非法投票”移民</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-95c1a34c8f0822d3aaa7bc2fc0720198f9739d4a</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

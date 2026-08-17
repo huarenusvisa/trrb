@@ -5,8 +5,25 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 17 Aug 2026 15:08:13 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 15:09:17 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>前议员：ICE拦截车辆行动须有具体合理怀疑，禁止仅凭种族或口音等主观因素</title>
+      <link>https://trrb.net/ice/ice-e78441e70e6798d1dc77180a43c28611b27b6a66</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-e78441e70e6798d1dc77180a43c28611b27b6a66</guid>
+      <pubDate>Mon, 17 Aug 2026 15:09:17 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>ICE拦截车辆行动须有具体合理怀疑，禁止仅凭种族或口音等主观因素。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2089364333629423616/img/ukOf4KtOP_YCwk6J.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>美网友呼吁起诉遣返“非法投票”移民</title>
+      <link>https://trrb.net/ice/ice-223c6def7d0aba84ed06436e0eb596e475dc737c</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-223c6def7d0aba84ed06436e0eb596e475dc737c</guid>
+      <pubDate>Mon, 17 Aug 2026 15:08:45 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>部分社交媒体账号呼吁对涉嫌非法投票的移民进行起诉和遣返，官方尚未确认相关行动。</description>
+    </item>
     <item>
       <title>奥巴马任命法官支持美国最高法院索马里遣返判决</title>
       <link>https://trrb.net/ice/ice-95c1a34c8f0822d3aaa7bc2fc0720198f9739d4a</link>
@@ -888,24 +905,6 @@
       <category>ICE执法动态</category>
       <description>新奥尔良ICE于8月16日逮捕洪都拉斯籍非法移民Angel Cruz Ortiz，曾因毒品贩运罪被定罪。</description>
       <enclosure url="https://pbs.twimg.com/media/HPdO1V3WcAAqfMK.png" type="image/png" />
-    </item>
-    <item>
-      <title>加州莫德斯托ICE逮捕多项犯罪墨西哥籍男子</title>
-      <link>https://trrb.net/ice/ice-fed7d65317f47bccccc37f84b7b2857908e2760a</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-fed7d65317f47bccccc37f84b7b2857908e2760a</guid>
-      <pubDate>Sun, 16 Aug 2026 17:56:05 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>加州莫德斯托ICE拘押持有多项犯罪记录的墨西哥籍非法移民，等待遣返。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPtyt-CXUAEWPLS.png" type="image/png" />
-    </item>
-    <item>
-      <title>凤凰城ICE加油站拘捕嫌疑非法移民受阻</title>
-      <link>https://trrb.net/ice/ice-52d9561cdb6360b4c44410ff05aa3199312f6851</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-52d9561cdb6360b4c44410ff05aa3199312f6851</guid>
-      <pubDate>Sun, 16 Aug 2026 16:01:20 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>亚利桑那州凤凰城，ICE执法人员在加油站试图拘留一名涉嫌非法移民人员，对方拒绝下车引发执法冲突。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2088995907538952192/img/fcYnry9lyVfbpf72.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

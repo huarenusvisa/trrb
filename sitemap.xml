@@ -61,6 +61,18 @@
       <priority>0.7</priority>
     </url>
   <url>
+      <loc>https://trrb.net/ice/ice-e78441e70e6798d1dc77180a43c28611b27b6a66</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-223c6def7d0aba84ed06436e0eb596e475dc737c</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-95c1a34c8f0822d3aaa7bc2fc0720198f9739d4a</loc>
       <lastmod>2026-08-17</lastmod>
       <changefreq>weekly</changefreq>

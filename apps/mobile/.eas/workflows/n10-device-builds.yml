@@ -1,0 +1,22 @@
+name: APP-R2 N10 device builds
+
+jobs:
+  register_ios_device:
+    name: Register iOS test device
+    type: apple-device-registration-request
+
+  build_ios_preview:
+    name: Build iOS preview
+    needs: [register_ios_device]
+    type: build
+    params:
+      platform: ios
+      profile: preview
+      refresh_ad_hoc_provisioning_profile: true
+
+  build_android_preview:
+    name: Build Android preview
+    type: build
+    params:
+      platform: android
+      profile: preview

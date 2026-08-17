@@ -13,6 +13,8 @@ const seekerJs = mustRead('jobs/seeker.js');
 const jobsIndex = mustRead('jobs/index.html');
 const admin = mustRead('admin/jobs-manager.js');
 const adminHtml = mustRead('admin/index.html');
+const privacyAdmin = mustRead('admin/jobs-seeker-privacy.js');
+const privacyAdminHtml = mustRead('admin/jobs-seeker-privacy.html');
 
 assert(spec.includes('6. 求职者档案/求职发布'), 'fixed N6 spec missing');
 assert(spec.includes('PC/Web 前端公开上线与 /admin 管理必须同闭环完成'), 'front/admin same-release hard rule missing');
@@ -32,13 +34,12 @@ assert(migration.includes('phone_public boolean not null default false') && migr
 assert(migration.includes('job_seeker_profiles_public'), 'public-safe seeker profile view missing');
 assert(migration.includes('case when phone_public then phone else null end') && migration.includes('case when email_public then email else null end'), 'non-public contact redaction missing');
 assert(migration.includes('public.is_jobs_admin()'), 'admin authorization bridge missing');
-assert(adminHtml.includes('招聘求职管理'), 'admin management surface missing');
-assert(admin.includes("from('job_seeker_profiles').select"), 'admin cannot inspect formal seeker profiles');
+assert(adminHtml.includes('招聘求职管理') && privacyAdminHtml.includes('求职档案公开联系方式治理'), 'admin management surfaces missing');
+assert(admin.includes("from('job_seeker_profiles').select") && privacyAdmin.includes("from('job_seeker_profiles').select"), 'admin cannot inspect formal seeker profiles');
 assert(admin.includes("from('job_seeker_posts').select"), 'admin cannot inspect formal seeker posts');
-assert(admin.includes("from('job_seeker_profiles').update"), 'admin cannot govern seeker profile public-contact state');
+assert(privacyAdmin.includes("from('job_seeker_profiles').update"), 'admin cannot govern seeker profile public-contact state');
 assert(admin.includes("from(table).update"), 'admin cannot govern seeker post lifecycle state');
-assert(admin.includes('data-jobs-profile-action="hide_phone"') && admin.includes('data-jobs-profile-action="hide_email"'), 'admin contact privacy governance controls missing');
+assert(privacyAdmin.includes('data-jobs-profile-action="hide_phone"') && privacyAdmin.includes('data-jobs-profile-action="hide_email"'), 'admin contact privacy governance controls missing');
 assert(!/create\s+table\s+(if\s+not\s+exists\s+)?public\.job_seeker_(profiles|posts)_(admin|shadow)\b/i.test(migration), 'shadow seeker admin table detected');
 
-// Dedicated strict acceptance marker for JOBS-R1-N6.
 console.log('JOBS-R1-N6 PASS');

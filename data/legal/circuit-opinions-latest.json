@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T20:42:48.523Z",
+  "generatedAt": "2026-08-17T20:47:34.961Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -95,6 +95,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
           "title": "24-1524P.01A"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+          "title": "24-1805P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340P-01A.pdf",
@@ -1028,6 +1032,10 @@
       "documents": [
         {
           "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-17/C:24-2913:J:Taibleson:aut:T:fnOp:N:3592032:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-17/C:24-1431:J:Maldonado:aut:T:fnOp:N:3592430:S:0",
           "title": "Final Opinion"
         },
         {

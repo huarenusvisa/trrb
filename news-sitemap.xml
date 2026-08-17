@@ -544,28 +544,4 @@
         <news:title>ICE公布全国重点执法案件打击多领域犯罪</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-2e63aad4f1d699e2f032759157bea0a5ef834abb</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T01:46:15.315Z</news:publication_date>
-        <news:title>美国遣返涉及杀人重罪的危地马拉非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-bc4812e94d1cfdd2f9a859267aeed623fe037039</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T01:46:14.639Z</news:publication_date>
-        <news:title>美国ICE遣返多名涉重罪非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-f4e600bc389673cbd749f258d04b4f60c05a5394</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T01:41:06.014Z</news:publication_date>
-        <news:title>亚利桑那古迪尔ICE突击Quetico物流设施 多名疑似非法移民强行逃脱</news:title>
-      </news:news>
-    </url>
 </urlset>

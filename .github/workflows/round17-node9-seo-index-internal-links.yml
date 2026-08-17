@@ -56,3 +56,5 @@ jobs:
           done
           echo 'Production SEO state did not converge.'
           exit 1
+
+# Strict restart revalidation after nodes 1-8 passed current production: 2026-08-17T02:35Z.

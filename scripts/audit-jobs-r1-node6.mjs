@@ -40,4 +40,5 @@ assert(admin.includes("from(table).update"), 'admin cannot govern seeker post li
 assert(admin.includes('data-jobs-profile-action="hide_phone"') && admin.includes('data-jobs-profile-action="hide_email"'), 'admin contact privacy governance controls missing');
 assert(!/create\s+table\s+(if\s+not\s+exists\s+)?public\.job_seeker_(profiles|posts)_(admin|shadow)\b/i.test(migration), 'shadow seeker admin table detected');
 
+// Dedicated strict acceptance marker for JOBS-R1-N6.
 console.log('JOBS-R1-N6 PASS');

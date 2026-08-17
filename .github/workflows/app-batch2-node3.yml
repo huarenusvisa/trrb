@@ -1,0 +1,22 @@
+name: APP Batch 2 Node 3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'scripts/audit-app-batch2-node3.mjs'
+      - '.github/workflows/app-batch2-node3.yml'
+      - 'docs/APP-BATCH-2-NEWS-EXPERIENCE-AND-ENGAGEMENT.md'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+      - name: Verify node 3 complete reading experience
+        run: node scripts/audit-app-batch2-node3.mjs

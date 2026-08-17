@@ -1,0 +1,25 @@
+name: JOBS-R1 Node 4
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'jobs/search.html'
+      - 'jobs/search.js'
+      - 'admin/jobs-manager.js'
+      - 'supabase/migrations/20260817004000_jobs_r1_node4_nearby_location.sql'
+      - 'scripts/audit-jobs-r1-node4.mjs'
+      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
+      - '.github/workflows/jobs-r1-node4.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Strict N4 acceptance
+        run: node scripts/audit-jobs-r1-node4.mjs

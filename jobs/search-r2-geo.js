@@ -3,7 +3,7 @@
   const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
   const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const $ = (id) => document.getElementById(id);
-  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+  const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#039;'}[ch]));
   let areas = [];
 
   function ensurePicker() {
@@ -21,19 +21,9 @@
   }
 
   function applyArea(row) {
-    const mapping = {
-      state: row.state_code || '',
-      city: row.city || '',
-      county: row.county || '',
-      borough: row.borough || '',
-      neighborhood: row.neighborhood || ''
-    };
-    Object.entries(mapping).forEach(([id,value]) => { if ($(id)) $(id).value = value; });
-    if ($('location-summary')) $('location-summary').textContent = row.label_zh;
+    window.dispatchEvent(new CustomEvent('jobs:r2-search-area-selected', { detail: row }));
     if ($('location-panel')) $('location-panel').classList.add('hidden');
     if ($('human-area-picker')) $('human-area-picker').classList.add('hidden');
-    if ($('advanced-filters')) $('advanced-filters').open = false;
-    $('jobs-search-form')?.requestSubmit();
   }
 
   function render() {
@@ -45,7 +35,7 @@
       return;
     }
     box.innerHTML = metros.map((metro) => {
-      const children = areas.filter((row) => row.area_type !== 'metro' && row.metro_slug === metro.slug && ['city','borough','neighborhood'].includes(row.area_type));
+      const children = areas.filter((row) => row.area_type !== 'metro' && row.metro_slug === metro.slug && ['city','borough','neighborhood','region'].includes(row.area_type));
       if (!children.length) return '';
       return `<div class="human-area-group"><strong>${esc(metro.label_zh)}</strong><div class="human-area-buttons">${children.map((row) => `<button type="button" data-human-area="${esc(row.slug)}">${esc(row.label_zh)}</button>`).join('')}</div></div>`;
     }).join('');
@@ -53,7 +43,7 @@
 
   async function loadAreas() {
     ensurePicker();
-    const {data,error} = await client.from('job_discovery_areas').select('slug,label_zh,label_en,area_type,state_code,city,county,borough,neighborhood,metro_slug,sort_order').eq('is_active',true).order('sort_order');
+    const {data,error} = await client.from('job_discovery_areas').select('slug,label_zh,label_en,area_type,state_code,city,county,borough,neighborhood,metro_slug,center_latitude,center_longitude,default_radius_miles,sort_order').eq('is_active',true).order('sort_order');
     if (!error && data) areas = data;
     render();
   }

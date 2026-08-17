@@ -51,3 +51,5 @@ jobs:
           if(new Set(keys).size!==keys.length)throw new Error('production duplicate sourceKeys detected');
           console.log('ROUND 17 NODE 5 PRODUCTION: PASS');
           NODE
+
+# Strict restart revalidation after nodes 1-4 passed on current 603-record production dataset: 2026-08-17T02:29Z.

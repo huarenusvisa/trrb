@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "datasetVersion": "2288529cf4fd3c4149cae715f7822fd24c5bc2769fda562d7ec6c9736d51525c",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 402,
+    "US_CIRCUIT": 404,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 598,
+  "count": 600,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -4468,6 +4468,21 @@
       "sourceKey": "CIRCUIT:ca2:6ee5f574920afc5c"
     },
     {
+      "id": "4553e6da13a05cb7021b60d9",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1104",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1104_complete_opn.pdf",
+      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1104_complete_opn.pdf",
+      "sourceKey": "CIRCUIT:ca2:782fc004a7dd6954"
+    },
+    {
       "id": "bc153467fc017ab4ce6b8705",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4526,6 +4541,36 @@
       "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-2865_opn.pdf",
       "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-2865_opn.pdf",
       "sourceKey": "CIRCUIT:ca2:9ffe12d61e6b3dd7"
+    },
+    {
+      "id": "3badc0d8744c8a18324b3abb",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-293",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-293_opn.pdf",
+      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-293_opn.pdf",
+      "sourceKey": "CIRCUIT:ca2:a2a3b08145a0a1d9"
+    },
+    {
+      "id": "d84c2527836374600bef9ccd",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "23-461",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/23-461_complete_opn.pdf",
+      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/23-461_complete_opn.pdf",
+      "sourceKey": "CIRCUIT:ca2:a9a3f5ae15c3b803"
     },
     {
       "id": "4707571f6b359b04d7fedd6c",
@@ -8696,21 +8741,6 @@
       "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-1092-2184914.pdf",
       "officialPdfUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-1092-2184914.pdf",
       "sourceKey": "CIRCUIT:cadc:fcc0d5e5a428ba9c"
-    },
-    {
-      "id": "f9765044e18f1d4106e5e792",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Federal Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "ICHARTS LLC v. TABLEAU SOFTWARE, LLC [OPINION]",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1302.OPINION.8-10-2026_2736010.pdf",
-      "officialPdfUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1302.OPINION.8-10-2026_2736010.pdf",
-      "sourceKey": "CIRCUIT:cafc:2090f9adedf46796"
     },
     {
       "id": "5cb43687f023845114c546d7",

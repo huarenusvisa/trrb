@@ -34,24 +34,45 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          stamp=$(date +%s)
-          curl -fsSL --max-time 60 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?legalr1n1=$stamp" -o /tmp/legal-production.json
-          node scripts/legal-r1-node1-source-fulltext-inventory-audit.mjs /tmp/legal-production.json /tmp/legal-r1-n1-production.json
-          node - <<'NODE'
+          # Netlify production can trail a freshly synchronized main commit by several
+          # minutes. N1 still requires an exact version/count match; retry only gives
+          # the deployment time to become observable and does not relax the gate.
+          matched=0
+          for attempt in $(seq 1 20); do
+            stamp=$(date +%s)
+            if curl -fsSL --max-time 60 -H 'Cache-Control: no-cache' "https://trrb.net/data/legal/unified-legal-authorities-latest.json?legalr1n1=$stamp" -o /tmp/legal-production.json && \
+               node scripts/legal-r1-node1-source-fulltext-inventory-audit.mjs /tmp/legal-production.json /tmp/legal-r1-n1-production.json; then
+              if node - <<'NODE'
           const fs = require('fs');
           const repo = JSON.parse(fs.readFileSync('/tmp/legal-r1-n1-repo.json','utf8'));
           const prod = JSON.parse(fs.readFileSync('/tmp/legal-r1-n1-production.json','utf8'));
           const same = repo.datasetVersion === prod.datasetVersion &&
             repo.totalLegalRecords === prod.totalLegalRecords &&
             repo.inventoryVersion === prod.inventoryVersion;
-          if (!same) {
-            console.error('LEGAL-R1-N1 FAIL: production inventory/version does not match main');
-            console.error(JSON.stringify({repo, prod}, null, 2));
-            process.exit(1);
-          }
+          if (!same) process.exit(1);
           console.log(`LEGAL-R1-N1 PRODUCTION: PASS (${prod.totalLegalRecords} records)`);
           NODE
+              then
+                matched=1
+                break
+              fi
+            fi
+            echo "LEGAL-R1-N1: production has not reached audited main version yet (attempt $attempt/20)"
+            sleep 30
+          done
+          if [ "$matched" -ne 1 ]; then
+            echo 'LEGAL-R1-N1 FAIL: production inventory/version did not match audited main within deployment grace window' >&2
+            node - <<'NODE'
+          const fs = require('fs');
+          const repo = JSON.parse(fs.readFileSync('/tmp/legal-r1-n1-repo.json','utf8'));
+          let prod = null;
+          try { prod = JSON.parse(fs.readFileSync('/tmp/legal-r1-n1-production.json','utf8')); } catch {}
+          console.error(JSON.stringify({repo, prod}, null, 2));
+          NODE
+            exit 1
+          fi
       - name: Upload audit evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: legal-r1-node1-inventory-evidence

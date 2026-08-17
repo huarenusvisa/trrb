@@ -5,6 +5,7 @@ const html = fs.readFileSync('jobs/search.html','utf8');
 const search = fs.readFileSync('jobs/search.js','utf8');
 const geo = fs.readFileSync('jobs/search-r2-geo.js','utf8');
 const areaSql = fs.readFileSync('supabase/migrations/20260817014000_jobs_r2_node4_human_geo_areas.sql','utf8');
+const locationSql = fs.readFileSync('supabase/migrations/20260817011000_jobs_r2_node1_search_location.sql','utf8');
 
 const checks = [
   ['spec node 5 exists', /5\. 距离感知与附近工作/.test(spec)],
@@ -17,8 +18,8 @@ const checks = [
   ['area picker requests centers and dispatches selection', /center_latitude,center_longitude,default_radius_miles/.test(geo) && /jobs:r2-search-area-selected/.test(geo)],
   ['selected area event is consumed by main search', /addEventListener\('jobs:r2-search-area-selected'/.test(search) && /applySelectedArea\(event\.detail\)/.test(search)],
   ['selected area becomes distance-aware center', /coords = \{latitude, longitude\}/.test(search) && /\$\('radius'\)\.value = String\(radius\)/.test(search) && /\$\('sort'\)\.value = 'distance'/.test(search)],
-  ['manual area is not misrepresented as GPS consent', /source:'manual_area'/.test(search) && /location_consent_at:null/.test(search) && /follow_current_location:false/.test(search)],
-  ['selected area remains account-synced', /await persistLocation\(\{[\s\S]*?source:'manual_area'/.test(search)],
+  ['manual area uses an allowed non-GPS source', /source:'manual_region'/.test(search) && /manual_region/.test(locationSql) && /location_consent_at:null/.test(search) && /follow_current_location:false/.test(search)],
+  ['selected area remains account-synced', /await persistLocation\(\{[\s\S]*?source:'manual_region'/.test(search)],
   ['list shows distance from chosen job-search center', /距找工地点/.test(search) && /row\.distance_miles/.test(search)],
   ['map also shows center and listing distance', /当前找工中心/.test(search) && /renderMap/.test(search) && /distance_miles/.test(search)],
   ['radius is disabled when there is no trustworthy center', /if \(\$\('radius'\)\.value && !coords\) \$\('radius'\)\.value = ''/.test(search)],

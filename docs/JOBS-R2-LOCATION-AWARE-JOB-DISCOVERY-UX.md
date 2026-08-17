@@ -33,7 +33,8 @@
 - JOBS-R2-N1：PASS。代码证据：`supabase/migrations/20260817011000_jobs_r2_node1_search_location.sql`；审计：`scripts/audit-jobs-r2-node1.mjs`；GitHub Actions `JOBS-R2 Node 1` run 32044831791 = SUCCESS，并输出 `JOBS-R2-N1 PASS`。统一账号级 `job_search_locations` 支持 current_location/fixed_location/zip/region/all_us；设备GPS必须有授权时间戳；IP粗定位不得保存精确坐标；RLS仅允许本人读写。
 - JOBS-R2-N2：PASS。代码证据：`jobs/search.html`、`jobs/search.js`、`supabase/migrations/20260817012000_jobs_r2_node2_pc_header.sql`；审计：`scripts/audit-jobs-r2-node2.mjs`；GitHub Actions `JOBS-R2 Node 2` run 32045152164 = SUCCESS。PC顶部已实现职位选择器、找工地点、可选文本搜索以及当前位置/ZIP/地区/全美四种入口，并沿用统一账号找工地点。
 - JOBS-R2-N3：PASS。代码证据：`jobs/search-r2-discovery.js`、`supabase/migrations/20260817013000_jobs_r2_node3_bidirectional_counts.sql`；审计：`scripts/audit-jobs-r2-node3.mjs`；GitHub Actions `JOBS-R2 Node 3` run 32045174605 = SUCCESS。职位选择可反向展示有岗位州及数量，地区选择可反向展示当地职位分类及数量，均支持只点选不打字。
-- JOBS-R2-N4：VERIFYING。已加入 `job_discovery_areas` 人性化地区目录、纽约都会区/旧金山湾区等都会区分组及可点击标准化子地区，并在 `jobs/search-r2-geo.js` 接入前台；等待严格N4工作流审计通过后才可标记PASS。
+- JOBS-R2-N4：PASS。代码证据：`supabase/migrations/20260817014000_jobs_r2_node4_human_geo_areas.sql`、`jobs/search-r2-geo.js`；审计：`scripts/audit-jobs-r2-node4.mjs`；GitHub Actions `JOBS-R2 Node 4` run 32049026097 = SUCCESS。已建立不改变正式岗位数据源的 `job_discovery_areas` 人性化地区目录，覆盖纽约都会区、旧金山湾区等常见华人认知区域，并映射标准 State/City/County/Borough/Neighborhood。
+- JOBS-R2-N5：VERIFYING。正在把授权设备坐标与用户主动选择的常用地区中心统一接入 5/10/25/50 miles 距离排序和“距找工地点”展示；IP粗定位继续禁止冒充GPS精确距离。
 
 ## 验收推进规则
 开发可并行，PASS严格N1→N10串行。当前节点FAIL时主动诊断、做最小必要修复并重验；PASS后自动进入下一节点，不等待用户确认。真实外部BLOCKED才通知用户，并明确用户需要执行的最小动作。

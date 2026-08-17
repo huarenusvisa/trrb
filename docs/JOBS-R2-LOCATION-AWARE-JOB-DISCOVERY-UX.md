@@ -35,7 +35,8 @@
 - JOBS-R2-N3：PASS。代码证据：`jobs/search-r2-discovery.js`、`supabase/migrations/20260817013000_jobs_r2_node3_bidirectional_counts.sql`；审计：`scripts/audit-jobs-r2-node3.mjs`；GitHub Actions `JOBS-R2 Node 3` run 32045174605 = SUCCESS。职位选择可反向展示有岗位州及数量，地区选择可反向展示当地职位分类及数量，均支持只点选不打字。
 - JOBS-R2-N4：PASS。代码证据：`supabase/migrations/20260817014000_jobs_r2_node4_human_geo_areas.sql`、`jobs/search-r2-geo.js`；审计：`scripts/audit-jobs-r2-node4.mjs`；GitHub Actions `JOBS-R2 Node 4` run 32049026097 = SUCCESS。已建立不改变正式岗位数据源的 `job_discovery_areas` 人性化地区目录，覆盖纽约都会区、旧金山湾区等常见华人认知区域，并映射标准 State/City/County/Borough/Neighborhood。
 - JOBS-R2-N5：PASS。代码证据：`jobs/search.js`、`jobs/search-r2-geo.js`、`supabase/migrations/20260817014000_jobs_r2_node4_human_geo_areas.sql`；审计：`scripts/audit-jobs-r2-node5.mjs`；GitHub Actions `JOBS-R2 Node 5` run 32058691703 = SUCCESS，并输出 `JOBS-R2-N5 PASS`。授权GPS坐标与用户主动点选的常用地区中心现统一接入5/10/25/50 miles半径、距离排序和“距找工地点”展示；手选地区不伪装GPS授权，拒绝定位仍保留ZIP/地区/全美路径，IP不用于伪造精确距离。
-- JOBS-R2-N6：VERIFYING。正在压缩PC职位卡信息密度，确保职位名、薪资、距离/地点、关键条件、可信度、发布时间和立即沟通成为首屏视觉核心；长描述、完整标签和大图继续留在详情层。
+- JOBS-R2-N6：PASS。代码证据：`jobs/search.js`、`jobs/search-r2-geo.js`；审计：`scripts/audit-jobs-r2-node6.mjs`；GitHub Actions `JOBS-R2 Node 6` run 32059171070 = SUCCESS。PC职位列表已压缩为高密度卡片；职位名、薪资、地点/距离、4个以内关键标签、真实沟通评价/风险提示、发布时间及“查看并联系”成为首屏信息；不展示长描述或大图，也不制造虚假认证标识。
+- JOBS-R2-N7：VERIFYING。正在将手机端收敛为位置优先、可点选分类、推荐/最新/最近/高薪切换、拇指友好的紧凑职位流，并保留收藏与站内沟通入口；复杂筛选继续收进“更多筛选”。
 
 ## 验收推进规则
 开发可并行，PASS严格N1→N10串行。当前节点FAIL时主动诊断、做最小必要修复并重验；PASS后自动进入下一节点，不等待用户确认。真实外部BLOCKED才通知用户，并明确用户需要执行的最小动作。

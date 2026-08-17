@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "1d2d1417f88c04c0896b9a49",
+  "recordFingerprint": "46f0bff8d3e3474d010ebba294a9a9ec68ca79fa2d63962f3c1de9af37954651",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1404721/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1404721/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1404721/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T11:08:29.263Z",
+  "sourceDigest": "3b80ccc820a0f4a590b379197be79081f6baa431aa913c1bc963d9ec1bc7cb0c",
+  "translatedAt": "2026-08-17T11:09:03.880Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1ab072be2d315c4e94f9d47761b5cd8243815510be08ac18ddd7ec702649f487",
+      "chineseText": "引用为29 I&N Dec. 110 (BIA 2025) 临时裁决 #4104"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "531f47c3e8b43054e93541ff777a5a541a318816d9f0f98aeb00ebf012f4e69a",
+      "chineseText": "Cesar Rolando MAYORGA IPINA案，被告\n裁决日期：2025年6月26日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5bee864b25c5d4c73d49b17f2a0bb7388f34a593787d5ae27c219b71b62480f4",
+      "chineseText": "被告因违反弗吉尼亚法典第18.2-387条而被判无礼暴露罪，该罪行涉及道德败坏罪，因为对“猥亵展示或暴露”的要求必然包含下流意图。Cortes Medina案，26 I&N Dec. 79 (BIA 2013)，重申。\n代表被告：自行辩护\n代表国土安全部：助理首席律师 Nicholas J. Bolzman\n审理团：MULLANE、O’CONNOR、MAHTABFAR，上诉移民法官。\nO’CONNOR，上诉移民法官:"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9d798a1b1c183f6f471f9c1222135a60258c00fab57bdf517f135a3b70689793",
+      "chineseText": "2020年6月18日，移民法官命令在支付保释金后将被告从国土安全部（简称“DHS”）拘留中释放。DHS对此决定提出上诉，主张被告基于涉及道德败坏罪的定罪必须被强制拘留。被告通过代理律师提交了反对上诉的简报。此上诉将被维持。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4da8634bddc6eb706ac6690b70362e6a60a94b9fc478f5e29a5742a1c3f6f2e6",
+      "chineseText": "被告为危地马拉原籍与公民，2017年因违反弗吉尼亚法典第18.2-387条被判无礼暴露罪。后来被DHS拘留并提出重新审定拘留请求。DHS主张被告基于涉及道德败坏罪的定罪须被强制拘留。在"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c5f6f658a835db54b8d3c03091362a6ecc25d55ea121afe92fe9b4a7c0ba0173",
+      "chineseText": "1\n2020年9月1日，移民法官发布了书面保释备忘录以支持保释令。\n2\n2025年6月4日，我们批准了代理律师Pooja Bhagat的撤回申请。\n3\n本委员会此前于2025年5月16日对本案作出裁决。2025年6月4日，我们发出临时令，重新开启案件并恢复DHS的上诉。\n 页码 110"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1ab072be2d315c4e94f9d47761b5cd8243815510be08ac18ddd7ec702649f487",
+      "chineseText": "引用为29 I&N Dec. 110 (BIA 2025) 临时裁决 #4104"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5c3e5992d7526c27d12d45f1c7ab4070a6ad0fc6bfce39286431a4f7e8fd29eb",
+      "chineseText": "2020年2月28日，前任移民法官驳回了被告的重新审定拘留请求。2020年6月18日，现任移民法官自行重新考虑先前法官的决定，设定保释金1500美元。移民法官认定被告的定罪并非绝对属涉及道德败坏罪。具体而言，他发现该法规惩罚的行为不一定旨在唤起下流或猥亵兴趣，如暴露胸部以日光浴、政治抗议或裸体主义兴趣；公共小便；或为舒适调整内衣。DHS对此决定提出上诉。4 我们对是否适用强制拘留进行无偏见审查。8 C.F.R. § 1003.1(d)(3)(ii) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f5cee9fb565465bcef770eb31480031f7eb34db03fbf4187c134c5ac34b28522",
+      "chineseText": "根据移民与国籍法（“INA”）第236(c)(1)(A)条，8 U.S.C. § 1226(c)(1)(A) (2018)，“任何因根据第212(a)(2)条（INA 8 U.S.C. § 1182(a)(2) (2018)）涉及的罪行而被判定不可入境的外国人”须被强制拘留。 INA第212(a)(2)(A)(i)(I)条，8 U.S.C.§ 1182(a)(2)(A)(i)(I)，规定因涉及道德败坏罪犯罪被定罪的外国人被认定为不可入境。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "42c4286b94d964e3a2ccb3b8a951f871b625efc2a6917b9ee770b39d28a912e1",
+      "chineseText": "为确定一罪行是否涉及道德败坏罪，我们采用类别性方法。Prudencio诉Holder案，669 F.3d 472, 484 (第4巡回法院 2012)；Silva-Trevino案，26 I&N Dec. 826, 830 (BIA 2016)。在审查时，我们关注犯罪的构成要素，而非被告的具体行为，以判断其是否符合道德败坏罪的通用定义。参见Moncrieffe诉Holder案，569 U.S. 184, 190 (2013)；Prudencio案，669 F.3d 484。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6231d8d5eeb4ee535c34138e4845e71f2402acc7a6672997f0c045c64b7beba1",
+      "chineseText": "道德败坏“通常指的是‘本质上卑鄙、可憎或腐化，且违背被接受的道德规范以及人际间或对社会应尽的义务’的行为。” Silva-Trevino案，26 I&N Dec. 833（引文略）；参见Ortega-Lopez案，26 I&N Dec. 99, 100 (BIA 2013)，该案部分理由被9巡回法院834 F.3d 1015推翻。“涉及道德败坏罪的犯罪需满足两个基本要素：可责备的行为与有罪的心态。” Silva-Trevino案，26 I&N Dec. 834；Ortega-Lopez案，26 I&N Dec. 100。有罪心态包括知情、故意或犯罪鲁莽的行为。参见Sotnikau诉Lynch案，846 F.3d 731, 736 (第4巡回法院2017)。如果行为震惊良知并违反道德规范，则该行为属可责备。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d758d14f7e64a6d98e56c2392f522aa4ca666a60ffce344a65b5c376d607bf7f",
+      "chineseText": "4\n在本上诉审理期间，被告已获释。\n 页码 111"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1ab072be2d315c4e94f9d47761b5cd8243815510be08ac18ddd7ec702649f487",
+      "chineseText": "引用为29 I&N Dec. 110 (BIA 2025) 临时裁决 #4104"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "619252475483473156b7ba89d9649cf6f5ded1fdae5f0bb3ad9b009f17d4836a",
+      "chineseText": "见Mohamed诉Holder案，769 F.3d 885, 888 (第4巡回法院 2014)。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b53f7003bf7c1178aa696a80c9c46bb2803499319daea6974904772d0f0a2686",
+      "chineseText": "弗吉尼亚法典第18.2-387条规定，相关条文为：“任何人在任何公共场所，或有他人在场的地方，故意做出猥亵的个人展示或暴露其身体私密部位，或促使他人如此暴露者，构成一级轻罪。” Va. Code Ann. § 18.2-387 (West 2017)。此法规需有有罪心态，无争议。然而，移民法官判定该法规不要求下流意图，故不构成违反道德规范的罪行。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "365a8697e2358d96915a253a785b5022d1549c19e30821001aafaa928434cbf3",
+      "chineseText": "为了使无礼暴露构成涉及道德败坏的罪行，“禁止该行为的法规不仅必须要求故意暴露隐私部位，还必须有下流意图。” Cortes Medina案，26 I&N Dec. 79, 83 (BIA 2013)。尽管弗吉尼亚法第18.2-387条未使用“下流”一词，但其要求“猥亵的展示或暴露”。弗吉尼亚法典将猥亵定义为：\n“整体上，其主导主题或目的对性具有引起不当兴趣的呼吁，即对裸体、性行为、性兴奋、排泄功能或其产物或施虐受虐的可耻或病态兴趣，且明显超出描述或表现此类内容的习惯坦率限度，整体上不具备严肃的文学、艺术、政治或科学价值。”"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4ab60aefe5fae455b39e180ed628e1df28babcc4224a830bec0b325895a6b260",
+      "chineseText": "Va. Code Ann. § 18.2-372 (West 2017)；另见Copeland诉联邦，525 S.E.2d 9, 10 (弗吉尼亚上诉法院 2000)（“为认定猥亵，行为必须违反当代社区在性坦率方面的标准。”（引House诉联邦案，169 S.E.2d 572, 576 (弗吉尼亚1969)））。本委员会此前在下流意图语境中将“下流”定义为“猥亵或不端。”Cortes Medina案，26 I&N Dec. 82（引文略）。因此，“下流”与“猥亵”具有相同含义。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "efcff4c21af700ad573a4bc18fef1efe5cc007db943002a6859f3058686b0256",
+      "chineseText": "我们同意DHS的观点，移民法官错误认定被告所违反法规所涵盖的最低行为不涉及道德败坏。猥亵是弗吉尼亚法第18.2-387条定罪的必要要素。若无猥亵行为，移民法官所举例的赤膊日光浴、公共小便及调整内衣以求舒适均不足以构成定罪。参见Price诉联邦案，201 S.E.2d 798, 800 (弗吉尼亚1974)（指出“裸体的表现法律上不足以支持猥亵的认定”（引House案，169 S.E.2d 577））。因弗吉尼亚法第18.2-387条明确且毫无歧义地要求“猥亵展示或暴露”，故该罪名涵盖了使其归入道德败坏罪范畴的可责备行为。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "1ab072be2d315c4e94f9d47761b5cd8243815510be08ac18ddd7ec702649f487",
+      "chineseText": "引用为29 I&N Dec. 110 (BIA 2025) 临时裁决 #4104"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "29bce7e69860f4a124e036d02401a25a80ab864300acdcfb1b43684b3f40db9e",
+      "chineseText": "鉴于上述理由，我们认定被告因违反弗吉尼亚法第18.2-387条的无礼暴露罪的定罪属涉及道德败坏罪，因为“猥亵展示或暴露”的要求必然包含下流意图。被告因涉及道德败坏罪而被定罪，依据INA第236(c)(1)(A)条款，8 U.S.C. § 1226(c)(1)(A)，被强制拘留。故此，我们支持上诉，推翻移民法官准许被告保释获释的决定。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8e8dd50119311d173fb0e1c9d56759f124b4fa98fc0c060a6137bff97975b4c7",
+      "chineseText": "命令：支持国土安全部的上诉。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "180a056927d829303d9309d837dc297bd97a306c46dfb16f8671d00c7fbec8dc",
+      "chineseText": "进一步命令：撤销移民法官2020年6月18日的保释令。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fa0d5a241dd94db0dc6b0ff7ac9484b5706233df09e0d8b55805b71165529a10",
+      "chineseText": "页码 113"
+    }
+  ]
+}

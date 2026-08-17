@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "recordId": "3d4e19d7136df5cb7ad74678",
+  "recordFingerprint": "889a71b013d17296498bdb5beec452daf92034eceb26dd7f6ea4f030c6354c51",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1404086/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1404086/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1404086/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T11:06:52.219Z",
+  "sourceDigest": "e7478eebee0ff7b42d237fa5affbd523d9a8a6b533f7d0034453b8a89a33243a",
+  "translatedAt": "2026-08-17T11:08:29.229Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 22,
+  "translatedSegmentCount": 22,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "729a21a3f49171db8a55c0cb4c6a1b3fb985e67d9c6231add53e0725e37cc929",
+      "chineseText": "引证：29 I&N Dec. 106（BIA 2025）临时决定 #4103"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b9f1e520528048c98f0826b16bdc0ef3f4d72648168c64d988546e03da183911",
+      "chineseText": "以色列·恩里克·罗克-伊萨达案，被告\n裁定日期：2025年6月20日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "06b571b0ee139ed29d4580e7716b99d2c96e721af478f01b86336fd0d7d0ffaa",
+      "chineseText": "终止递解出境程序并不适当，仅基于对美国公民及移民服务局（“USCIS”）将根据《1966年11月2日古巴难民调整法案》（公法第89-732号，80 Stat. 1161，修订版）第212(d)(5)(A)条款（《移民与国籍法》第212(d)(5)(A)条，8 U.S.C. § 1182(d)(5)(A)（2018））授予被告人假释的猜测，允许被告人向USCIS申请身份调整。\n被告律师：Hiedy M. Marcus，律师，亚利桑那州凤凰城\n国土安全部律师：Peter F. Mather，助理首席律师\n审理人员：委员会小组：MANN，BAIRD，MAHTABFAR，移民上诉法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b57d2864d21d93bc964ac02f573790b667d29dd6bacfa70c8045bb10fdac34e6",
+      "chineseText": "BAIRD，移民上诉法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8fa5485f5c217f42ccb7c864791164416dd87989c646f53087f8881f3d6421b3",
+      "chineseText": "在2024年6月21日的决定中，移民法官批准了被告中止程序的动议，以便被告依据1966年11月2日《古巴难民调整法案》（公法第89-732号，80 Stat. 1161，修订版）（“古巴调整法案”）向美国公民及移民服务局（USCIS）申请身份调整。国土安全部对该决定提起上诉，主张中止程序不当，因为被告人未被正式入境或获假释进入美国，且未初步具备身份调整资格。被告反对此上诉。我们将支持上诉，恢复程序，并将案卷发回移民法庭继续处理。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a01ef58bc7064ace3c672a497c5f9b1c11c965bd6a4468f559423a3be0db3621",
+      "chineseText": "一、程序经过\n被告于2022年5月2日接收出庭通知。出庭通知称其非美国公民，系古巴原籍及公民，且于约2022年4月30日在亚利桑那州圣路易斯附近首次进入美国。被告承认上述指控，但否认未被入境或假释入境的指控。被告称，其于约2022年5月2日依据《移民与国籍法》第212(d)(5)条款（8 U.S.C. § 1182(d)(5)（2018））获得假释。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "729a21a3f49171db8a55c0cb4c6a1b3fb985e67d9c6231add53e0725e37cc929",
+      "chineseText": "引证：29 I&N Dec. 106（BIA 2025）临时决定 #4103"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fca07454a47554f156842ecfb03b442bbcdf227ee7f77c0bf96c3e3b057cd326",
+      "chineseText": "然而，被告承认根据《移民与国籍法》第212(a)(6)(A)(i)条款（8 U.S.C. § 1182(a)(6)(A)(i)），其具备可驱逐资格，承认出庭通知的发布终止了其假释身份，其身份恢复为未被入境或假释的外籍人士。参见2025年版8 C.F.R. § 212.5(e)(2)(i)；另见Arambula-Bravo案，28 I&N Dec. 388, 392–93（BIA 2021）。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6849d379b2cbee11203c08cc4f8c712542589cd63a319ea35e661fd1d03fc9e1",
+      "chineseText": "2024年6月14日，被告提交终止程序动议，旨在依据古巴调整法案向USCIS申请身份调整。国土安全部反对此动议，认为被告并未初步具备身份调整资格。移民法官批准被告动议，非无条件地终止程序。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c1f56043840503a3d9928a6524de0f6818d18dacbf536d6ea00b15037166e7eb",
+      "chineseText": "移民法官依据Coronado Acevedo案（28 I&N Dec. 648, 651-52 （司法部长2022））认为，终止程序适宜允许被告向USCIS申请古巴调整法案身份调整。移民法官认定，因被告未被入境或假释入境，移民法官无权依据Cabrera-Fernandez案（28 I&N Dec. 747, 750 （BIA 2023））审理身份调整申请。但移民法官结论认为，因USCIS可能在古巴调整法案申请待决期间依据《移民与国籍法》第212(d)(5)(A)条款（8 U.S.C. § 1182(d)(5)(A)）授予人道主义假释，故终止程序得当。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d25ca64d2db04097759c8b603349aae470f55dcb42e98ceed4da5ec5bc3bae58",
+      "chineseText": "二、讨论\n我们依据2025年版8 C.F.R. § 1003.1(d)(3)(ii)规定，对移民法官终止程序是否存在错误进行独立审查。在Coronado Acevedo案中，司法部长认为移民法官可以在“为被告申请USCIS移民救济所需”时，考虑并酌情批准中止或驳回程序。1 此处，"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "729a21a3f49171db8a55c0cb4c6a1b3fb985e67d9c6231add53e0725e37cc929",
+      "chineseText": "引证：29 I&N Dec. 106（BIA 2025）临时决定 #4103"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "043bb577c5e0b4dc5a94db24af386ec0d3c83deb9748e88ebd2e7bee6aa71287",
+      "chineseText": "终止程序以便被告依据古巴调整法案向USCIS申请身份调整并非必要或适当。与移民法官的结论相反，Cabrera-Fernandez案（28 I&N Dec. 750）未认定移民法官无权审理未获入境或假释入境外籍人士的古巴调整法案身份调整申请。相反，Cabrera-Fernandez案认定，依据《移民与国籍法》第236(a)(2)(B)条款（8 U.S.C. § 1226(a)(2)(B)（2018））获条件假释入境的申请人，而非依据第212(d)(5)(A)条款（8 U.S.C. § 1182(d)(5)(A)）获人道主义假释者，未被视为根据古巴调整法案第1条“已被检查和入境或获得假释”，且不具备调整身份资格。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "046d0bb16c49bde4c873f67d066cfde0746b1652f098763a41fd5d8ca9d1f198",
+      "chineseText": "移民法官拥有专属管辖权审理在递解出境程序中被告提交的任何身份调整申请，惟“抵达外籍人士”类别被告除外。2025年版8 C.F.R. § 1245.2(a)(1)；另见Silitonga案，25 I&N Dec. 89, 91–92 （BIA 2009）及Martinez-Montalvo案，24 I&N Dec. 778, 783 （BIA 2009）（涉一抵达外籍人士依据古巴调整法案申请身份调整）。被告在终止程序动议中承认其未被认定为出庭通知中的“抵达外籍人士”。参见2025年版8 C.F.R. § 1001.1(q)（“抵达外籍人士”定义）。因此，移民法官有管辖权审理被告依据古巴调整法案提出的身份调整申请。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "bbccc0534d876b126e56a67dbb991155f64ae608f0ad680d8b5d8ecbf8ac5150",
+      "chineseText": "终止程序亦不适当，因为被告未能证明其初步符合古巴调整法案身份调整的资格。参见2025年版8 C.F.R. § 1003.18(d)(1)(ii)（规定当外籍人士初步符合USCIS身份调整资格时，移民法官可酌情终止程序）。根据古巴调整法案第1条，调整身份要求被告已获“入境或假释”进入美国。被告未能提交证据支持其依据《移民与国籍法》第212(d)(5)条款（8 U.S.C. § 1182(d)(5)）获得假释的主张，"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "019cee1b5951446d4745936d762444e703118093b3a738fdf38d7e9fea4c02e6",
+      "chineseText": "1\n在移民法官做出决定之前，针对移民法官终止程序权限发布了新规。参见2025年版8 C.F.R. § 1003.18(d)(1)(ii)。该条款（8 C.F.R. § 1003.18(d)(1)(ii)(B)）相关部分规定，移民法官有酌情权在被告证明（1）初步符合身份调整资格且（2）USCIS有权限审理身份调整申请（若被告不处于递解程序中）时终止程序。新规大致与Coronado Acevedo案司法部长决定保持一致，移民法官据此终止程序。参见《移民程序中高效案件及案卷管理》，89 Fed. Reg. 46742, 46742（2024年5月29日）（拟入8 C.F.R. pts. 1001, 1003, 1239, 1240）（指出“拟规则旨在基本法典化现行惯例”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "729a21a3f49171db8a55c0cb4c6a1b3fb985e67d9c6231add53e0725e37cc929",
+      "chineseText": "引证：29 I&N Dec. 106（BIA 2025）临时决定 #4103"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e95f629ca9e0805b9606570ca42af6ecc048d80ec6c505edc42bcfdd250c13ed",
+      "chineseText": "被告亦未能有力区分其自国土安全部监护中获释之情形与Cabrera-Fernandez案中所涉的条件假释（28 I&N Dec. 747, 750）。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8b6f4570eeaa914f3e93bf8e03c546c22c05a8d25721ec61a6ea134e1495d068",
+      "chineseText": "被告声称USCIS未来将行使其权力授予其假释，使其符合身份调整资格，该主张顶多属猜测。虽被告主张且移民法官认定USCIS曾向部分古巴国民授予人道主义假释，但依据《移民与国籍法》第212(d)(5)(A)条款（8 U.S.C. § 1182(d)(5)(A)）的人道主义假释，仅可因“紧急人道原因或重大公共利益”发放，且需“个案考量”。被告终止程序动议未举证证明其有人道主义假释资格。故我们认定，基于对USCIS将授予被告依据第212(d)(5)(A)条款假释的猜测，终止递解程序以允许被告向USCIS申请古巴调整法案身份调整，不适当。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "cee2cf0d7002ba436744ad20ce63370d484dd54c127fd6dd697d0c160b173d00",
+      "chineseText": "三、结论\n被告对USCIS身份调整资格的猜测不足以支持终止其递解程序。移民法官具管辖权审理被告依据古巴调整法案提出的身份调整申请，故终止程序非必要。见Coronado Acevedo案，28 I&N Dec. 651-52。此外，案卷中无充分证据支持被告此前遭授予或未来将获授依据《移民与国籍法》第212(d)(5)(A)条款（8 U.S.C. § 1182(d)(5)(A)）的人道主义假释。因此，其未初步符合所求救济资格。参见2025年版8 C.F.R. § 1003.18(d)(1)(ii)。遂国土安全部上诉获支持，递解程序恢复，案卷发回移民法庭继续处理。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "15089f23420ce42a4d6fa3fe17d1567fee928eac2a863f51aae5629781bf07ed",
+      "chineseText": "命令：国土安全部上诉获支持。\n进一步命令：移民法官2024年6月20日决定被撤销，递解程序恢复，案卷发回移民法官进行进一步程序并作出新决定。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4be7e3e3825e1cdbb9702a07246b8f69c3b9acf1be9c57a84c1a068b1cea9921",
+      "chineseText": "引证页码：第109页"
+    }
+  ]
+}

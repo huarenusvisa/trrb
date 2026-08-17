@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-17T11:12:16.822Z",
+  "node": "LEGAL-R1-N3",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "eligibleRecordCount": 597,
+  "translatedRecordCount": 2,
+  "coveragePct": 0.335,
+  "totalSourceSegments": 45,
+  "totalTranslatedSegments": 45,
+  "segmentCoveragePct": 100,
+  "duplicateBindingCount": 0,
+  "translatedNow": 2,
+  "attemptedNow": 4,
+  "failures": [
+    {
+      "recordId": "6d71998164d7fa814946b7a3",
+      "error": "segmentId/order mismatch"
+    },
+    {
+      "recordId": "2b585941a003981e539eb258",
+      "error": "segmentId/order mismatch"
+    }
+  ],
+  "complete": false
+}

@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "recordId": "f930aa9b00b7f788fc2c0489",
+  "recordFingerprint": "3c89609cca2bd72ede86185146fe1755fe1c6ba96c3f6be137d38c47ad31b812",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1411806/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1411806/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1411806/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:23:08.720Z",
+  "sourceDigest": "8e5831026d180432b8950c521885256a8127181dcf1e689391d9e6d4a9947f0f",
+  "translatedAt": "2026-08-17T13:24:53.764Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 28,
+  "translatedSegmentCount": 28,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "85d9ece66a954419a89086ab8384c3124e5a42446dc22675fca5027fbf261779",
+      "chineseText": "引证为29 I&N 决定第190号（移民上诉委员会2025年） 临时决定 #4118"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c25faccdf4575db3904981b0b7715d6d3a6e60339a4d4f366d0231d2b647ca94",
+      "chineseText": "O-Y-A-E-案，当事人\n2025年7月23日移民上诉委员会决定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e68afffcb5e2d029d8cb953141f4d31a6daf790a4d3878977d9c95862ce2999a",
+      "chineseText": "委内瑞拉的人权侵害证据及对当事人以往的威胁，因最后一次威胁发生在当事人离开该国多年之前，且当事人在威胁发生后未受其他伤害，故不足以证明针对该当事人的个别化酷刑风险。\n当事人代理：亚利桑那州图森市，Brent Johnson律师\n国土安全部代理：助理首席法律顾问Bret J. Engstrom\n出席：移民上诉法官小组：MULLANE、HUNSUCKER 和 GOODWIN，复审移民法官。\nGOODWIN，复审移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b336736ae172b4c2f62101ed5b02bb2eabbae3a31a64304d1a79dea130dcf034",
+      "chineseText": "国土安全部（“DHS”）对2024年12月4日移民法官批准当事人依据反酷刑公约（“CAT”）实施条例请求保护的决定提起上诉。当事人为委内瑞拉籍，本国出生及公民身份。被上诉方反对DHS上诉，并请求我们维持移民法官决定。上诉将被维持。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "04e939a3ae97a5f3cd433f2d6d7507ef9a8af6ad0f2aad9dd77054c965f27964",
+      "chineseText": "当事人曾在委内瑞拉军队任反间谍官员及中尉。她担心若返回委内瑞拉，将因拒绝服从指挥官Ortado3的伪造文件命令而遭受殴打、绑架、拘留、酷刑和/或杀害。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b5d8d6e97f4e760c5d528c135e7666828ea8ea7155474facbfbc18bf09b03b4a",
+      "chineseText": "1 根据2025年8月20日第6380-2025号命令，总检察长宣布移民上诉委员会2025年7月23日O-Y-A-E-案决定为同类议题程序之先例。见8 C.F.R. § 1003.1(g)(3)（2025年）。根据先例指定对文稿作出编辑修改。 2 《反酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》，1984年12月10日，S. Treaty Doc. No. 100-20, 1465 U.N.T.S. 85（美国于1994年11月20日生效）。8 C.F.R. §§ 1208.16(c), 1208.17(a)（2025年）；8 C.F.R. § 1208.18(a)（2020年）。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2397346b45823e070f6fc72ac94c0a999d234c472479f0e26b30cdf5942db854",
+      "chineseText": "190"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "85d9ece66a954419a89086ab8384c3124e5a42446dc22675fca5027fbf261779",
+      "chineseText": "引证为29 I&N 决定第190号（移民上诉委员会2025年） 临时决定 #4118"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1a4f0bfa3b9cd5e41b03aaff0141e7bfa835ee57c6ceeb4b4a11170bb38ec589",
+      "chineseText": "因拒绝执行指挥官Ortado3的一项伪造文件命令4，当事人担心被打、绑架、拘留、施酷刑及/或杀害。移民法官初步认定，严重非政治犯罪和迫害者豁免条款适用于本案，使当事人无资格获得庇护、依据移民国籍法（“INA”）或依据CAT的免除遣返保护。参见INA §§ 208(b)(2)(A)(i), (iii), 241(b)(3)(B)(i), (iii), 8 U.S.C. §§ 1158(b)(2)(A)(i), (iii), 1231(b)(3)(B)(i), (iii); 8 C.F.R. § 1208.16(d)(2)（2025年）。但移民法官认定当事人可信，并认定其满足在CAT框架下暂缓遣返的举证责任。见8 C.F.R. § 1208.17(a)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9bdd89a7029e02b10dee1f350c9a69f91c5171bbb836d09442604d89004ab1a9",
+      "chineseText": "具体而言，移民法官发现，当事人虽未遭受过去的酷刑，但指挥官Ortado曾威胁绑架、拘禁、酷刑及杀害当事人及其家属。移民法官认定当事人可信地作证称她亲眼目睹另一名官员Ozuna遭受酷刑。移民法官还认定，当事人在请求退休后，仍遭指挥官Ortado派遣武装军队上门找寻并威胁。移民法官进一步认定，鉴于当事人曾任反间谍军官，委内瑞拉政府具备必要资源，能在其返回后立即识别其身份。基于此以及显示委内瑞拉政权施行酷刑与侵犯人权的国情资料，移民法官认定当事人返回委内瑞拉后，遭受拘押及酷刑的可能性超过一般概率。DHS随后提起本次上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "96e8a7922b2cce378d5ba1805d36b44f99e022122e8f8632dfb047df6b9e4d47",
+      "chineseText": "尽管我们对移民法官的事实认定遵循明显错误审查标准，但对当事人是否满足CAT暂缓遣返的最终举证责任进行全新审查。见R-A-F-案，27 I&N 决定第778页，第779页（总检察长2020年）。上诉中，DHS辩称当事人对指挥官Ortado或委内瑞拉军方酷刑的恐惧过于推测。DHS主张，唯一显示“未来政府行动或默认可能对当事人施以酷刑”之证据，系当事人在2021年7月之前，作为军事指挥官亲眼目睹Ortado的行动。DHS称当事人自2021年7月起未遭伤害或威胁，直至2024年2月离开委内瑞拉，且在此期间未与Ortado或其下属接触。DHS又称当事人已成功退伍，指挥官Ortado并未表达负面态度。DHS进一步指出，移民法官错误地认为军方造访发生在其退休或请求退休之后，实则当事人证实该造访为其决定退休的导火索。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0f1c38ba7bb3fe173bda6bf87972dddc01046b53de9c29f9ce61e39901369def",
+      "chineseText": "3\n当事人双方及纪录对同一人名各异称呼，如Carlos Teran Hurtado、Carlos Turan Ortado、General Teran Hurtado、Commander Tehran Ortado、General Carlos Duran Ortado及Commander Tehran。我们依移民法官口头决定摘录称其为“指挥官Ortado”。\n4\n当事人解释其拒签的非法文件，涉及军方某部门涉嫌策划恐怖袭击计划。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "70260742c2952154c84e2ea9f68b1a7397f49b6d343da1ed284093c0bd72c742",
+      "chineseText": "191"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "85d9ece66a954419a89086ab8384c3124e5a42446dc22675fca5027fbf261779",
+      "chineseText": "引证为29 I&N 决定第190号（移民上诉委员会2025年） 临时决定 #4118"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8e823f0935800cb4a20c938b7a4420d7cecea29810d689fc90880fc8af87cc56",
+      "chineseText": "DHS主张，唯一显示未来政府可能参与或默认对当事人施酷刑的证据，是当事人在2021年7月之前亲眼见证Ortado作为军事指挥官的行为。DHS认为，当事人承认自2021年7月后直至2024年2月逃离前未受到伤害或威胁，也未与Ortado或其下属接触。DHS又称当事人顺利退休，Ortado未表现负面感情。DHS提出移民法官错误称军方访问发生于当事人退休或请求退休后，证据显示该访问为当事人退休决定的催化剂。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4883da0f86ac157217500cd4e1ef242211004ed3004d63bd06b425e2cc436f3f",
+      "chineseText": "当事人提交反对DHS上诉的简要陈述，称移民法官正确认定其返回委内瑞拉后更可能遭受军事酷刑。她重申，指挥官Ortado因其军方人权侵犯行为受欧盟（“EU”）制裁，此点由欧盟记录文件证实。她称2021年7月收到初次威胁后请求调岗，指挥官又威胁若不服从将监禁她，并嘲弄其“你哪儿也去不了”。反对简述称，此后指挥官两次派军队到其住处威胁，促使她请求退休。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "464061b894bf5983923973bfeaf8d399622c2986e77e58507f5597821583710f",
+      "chineseText": "纪录显示，当事人作证两次Ortado指挥的军队访其住处皆为2021年7月，二访后她决定请求退休。纪录亦确认，她作证自2021年7月后未再遭伤害或威胁。故移民法官认定指挥官在当事人2021年7月退休请求后仍派武装军队上门威胁，明显错误。参见8 C.F.R. § 1003.1(d)(3)(i)（2025年）；见亦Ridore诉Holder案，696 F.3d 907, 911（第9巡回上诉法院2012年）（说明委员会审查事实认定仅限明显错误，且必须说明理由）。移民法官此错误事实认定是其批准CAT保护决定的主要依据之一。因此，我们也认定移民法官关于当事人返回委内瑞拉后更可能遭受酷刑的预测事实认定存在明显错误。见R-A-F-案，27 I&N 决定第779页（指示对移民法官对返回后情形的预测事实认定审查标准为明显错误）。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "eb3be230bbd2844b1f5d8f2e4fab9ffba8ab22cfeeb69c4c1361993ba4f377b9",
+      "chineseText": "192"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "85d9ece66a954419a89086ab8384c3124e5a42446dc22675fca5027fbf261779",
+      "chineseText": "引证为29 I&N 决定第190号（移民上诉委员会2025年） 临时决定 #4118"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9e794de1ec0f4229d175f9d131782fafe451d17fa373bdeeafc4eec6edc622f3",
+      "chineseText": "移民法官预测性事实认定是否将发生于当事人返回后的情形，须以明显错误标准审查。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "bd8d3ae5caecfec102292d1d140cc012c4b77ce4c811c56d8eb02dd4990a526f",
+      "chineseText": "如前所述，自2021年7月起，当事人未遭威胁或伤害，且一直留在委内瑞拉直至2024年2月，期间未与指挥官Ortado或其下属发生接触。纪录未显示指挥官或委内瑞拉军方在她2021年12月正式退伍后仍在寻找她或对她保持关注。当事人称其退伍后多次搬迁，亦证实军方知悉其所有住址，却未寻访。虽然纪录显示指挥官Ortado遭欧盟制裁、国情反映委内瑞拉政府人权侵害，然此证据不足以证明当事人返回后遭受酷刑概率超过一般可能性。见8 C.F.R. § 1208.16(c)(2)。基于上述理由，我们认定当事人未能确立委内瑞拉个别化酷刑风险。参见Dhital诉Mukasey案，532 F.3d 1044, 1051（第9巡回法院2008年）（认定CAT申请人须证明面临“特定的酷刑威胁”）；另见Tzompantzi-Salazar诉Garland案，32 F.4th 696, 706–07（第9巡回法院2022年）（判定国情证据虽认定墨西哥一般性犯罪及警察腐败，未能证明申请人面临特定且持续的酷刑风险，故机构结论无误）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "779abeb97a9a36af9900872e6a591ed4766b2d72ad485f2770db0c7be5fe7dc0",
+      "chineseText": "据此，我们认定当事人未获证明其有资格依据CAT获得暂缓遣返，撤销移民法官批准该请求的决定。现发布如下命令。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d5cbfc44f3553d07134602751fbf28e6cf175d41be402e8704004e2988c0f49f",
+      "chineseText": "命令：上诉维持。\n进一步命令：当事人被命令遣返至委内瑞拉。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "25629a17a39be39e41125bd4a938e6f9b02eeb1caf8bf271d55743599e01f70e",
+      "chineseText": "通知：如当事人受最终遣返令管辖，且故意拒绝或未能依该命令离境，未及时诚信申请离境所需旅行或其他文件，或未在国土安全部要求的时间地点出现，或密谋或采取任何行动妨碍或阻碍遣返，律令规定当事人应承担每日高达998美元的民事罚款。见INA § 274D, 8 U.S.C. § 1324d（2018年）；8 C.F.R. § 280.53(b)(14)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "684fe39f03758de6a882ae61fa62312b67e5b1e665928cbf3dc3d8f4f53e3562",
+      "chineseText": "193"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "85d9ece66a954419a89086ab8384c3124e5a42446dc22675fca5027fbf261779",
+      "chineseText": "引证为29 I&N 决定第190号（移民上诉委员会2025年） 临时决定 #4118"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e7e67be1056c031d2fe93064a69ea44db26e8c975c0bdaa57b44b3887926acc5",
+      "chineseText": "如当事人被最终遣返令管辖，若其故意不遵守遣返令内容，包括不按时申请离境所需文件、未出席要求的时间地点等，或采取任何妨碍遣返实施之行动，将每日处以最高998美元之民事罚款。参见INA § 274D, 8 U.S.C. § 1324d（2018年）；8 C.F.R. § 280.53(b)(14)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7559ca4a957c8c82ba04781cd66a68d6022229fca0e8e88d8e487c96ee4446d0",
+      "chineseText": "194"
+    }
+  ]
+}

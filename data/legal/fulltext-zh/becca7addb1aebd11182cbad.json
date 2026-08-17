@@ -1,0 +1,303 @@
+{
+  "schemaVersion": 1,
+  "recordId": "becca7addb1aebd11182cbad",
+  "recordFingerprint": "d0a3a5a7cf3f9417d34d71e6ecdb48963cb5b63dd84bdf67fa31c0270cf8c6a1",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1413846/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1413846/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1413846/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:51:30.573Z",
+  "sourceDigest": "c513dbe94f0c1dd5eba40ec9a7d1b1a36e4dd25a15eba5b788c53c7d8e39d320",
+  "translatedAt": "2026-08-17T13:52:35.515Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 35,
+  "translatedSegmentCount": 35,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "292ac9068247c1ac97499e1c78c603584c03ecd67e8303bc0d18a8ec7410e9b3",
+      "chineseText": "引用至29 I&N Dec. 233 (BIA 2025) 临时决定#4127"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fe5184eb2614eabba9150d6ae8a6f045ac3b8020a132a29d55ee8b9a0b88d6af",
+      "chineseText": "H-A-A-V-案，答辩人\n裁定日期：2025年9月11日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "02a5df002adde5b142f78f60f7828a258e51b7044884e16e36d1726669cce763",
+      "chineseText": "如果支持庇护、阻止驱逐或《反酷刑公约》保护请求的事实指控，按最有利于答辩人的角度审视，未能初步证明获得救济或保护的资格，移民法官可以在不举行事实审理的情况下搁置该申请。\n答辩人的代理律师：Reuben S. Kerben，纽约奎园\n出庭委员会成员：委员会小组：首席上诉移民法官MALPHRUS；上诉移民法官HUNSUCKER；临时上诉移民法官MCCLOSKEY。\n首席上诉移民法官MALPHRUS发表意见："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f05f5452948fa1dba6aea8c220ed1ef5e3e6d5576ddb6ee345ce9996f4a94c0e",
+      "chineseText": "在2025年5月8日发布的裁定中，移民法官搁置了答辩人提出的庇护、阻止驱逐及依据《反酷刑公约》（“CAT”）实施条例的保护申请。适用条款包括《移民与国籍法》（“INA”）第208(b)(1)(A)和241(b)(3)(A)节，8 U.S.C. §§ 1158(b)(1)(A)、1231(b)(3)(A)（2018年版）；8 C.F.R. § 1208.16(c)（2025年版）。答辩人对移民法官的决定提出上诉。鉴于我们认定移民法官在对未提出初步救济或保护请求的申请进行搁置时并未出错，上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c89225a7f5ef20874d3f2f5317b2e5c06ad598716a4bcf88e08e2a35f2b93f60",
+      "chineseText": "一、事实与程序背景\n答辩人为秘鲁籍及公民。其被置于驱逐程序中，并通过代理律师提交了基于秘鲁犯罪团伙勒索所提出的I-589表格庇护及阻止驱逐申请。在首次审理程序会议上，答辩人做出口头答辩并承认可被驱逐。于2025年5月8日的下一次审理程序会议中，国土安全部（DHS）提出口头动议，要求搁置答辩人的救济申请。在确认无争议事实后，移民法官认定答辩人未能初步证明庇护或相关救济的资格，搁置其申请，且命令将其驱逐回秘鲁。答辩人在上诉中主张，移民法官的决定与现有委员会判例相抵触，且通过搁置其救济申请，违反了其正当法律程序权利及法定和规章权利。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "292ac9068247c1ac97499e1c78c603584c03ecd67e8303bc0d18a8ec7410e9b3",
+      "chineseText": "引用至29 I&N Dec. 233 (BIA 2025) 临时决定#4127"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d0e2c0f307e674fe7c59b6df658b3a5fb37764e37a000fa04fcfdc75339d8f54",
+      "chineseText": "移民法官确定答辩人未证明庇护、阻止驱逐或《反酷刑公约》保护的初步资格，搁置申请，且下令将答辩人驱逐回秘鲁。答辩人认为该决定违背既有委员会判例，且剥夺其正当程序和法定及法规权利。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "34bced2d4d0f3b61dffb376a4e7b6b0d7ea44bdb3dac2f41891e6020b8898d14",
+      "chineseText": "二、分析\n移民法官是否在搁置答辩人的庇护及相关救济申请时犯错，为委员会应当独立审查的法律问题。见8 C.F.R. § 1003.1(d)(3)(ii)（2025年版）。《移民与国籍法》第240(b)(4)(B)节，8 U.S.C. § 1229a(b)(4)(B)（2018年版），规定处于驱逐程序中的外国人“应有合理机会审查对其不利的证据，就自身提交证据，并对政府证人进行交叉询问。”2 相关规定第240(c)(4)(B)节，8 U.S.C. § 1229a(c)(4)(B)，列举评估答辩人是否满足任何救济申请举证责任的标准，指出移民法官应评估答辩人及证人的证词，并“权衡可信的证词与其他记录中的证据”。针对庇护及阻止驱逐申请实施的规章规定，移民法官应“于证据听证会后，解决事实争议后决定该等救济申请”，8 C.F.R. § 1240.11(c)(3)（2025年版），并且在该等听证会上，答辩人“须宣誓接受其申请的讯问，且可为自己提出证据及证人”，8 C.F.R. § 1240.11(c)(3)(iii)。上述规章同样适用于依据《反酷刑公约》提出的阻止或延缓驱逐申请。参见C-B-案，25 I&N Dec. 888, 890–91 (BIA 2012)。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3553215aeb8c4fc55c684c8c78c1996423c3b60bd8eafc8aa447052f97ce24d7",
+      "chineseText": "上述法定及规章条款确保答辩人有机会提交支持任何救济申请的证据，并对国土安全部提出的证据予以回应。然而，若无事实争议，该等规定并不要求全面的证据听证。见8 C.F.R. § 1240.11(c)(3)。移民法官拥有广泛自由裁量权控制移民程序，并可决定听证的时长和类型。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4e2cf495643d26bf5a267d31e8b2ff7edf4fcd9d05cf6c889f0dcb9d981da45e",
+      "chineseText": "2 法案包含一项与国家安全信息相关的例外情形，本案不适用。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c2c2ccac0d9ca04a678e4dd63a96dc6833218bb6ce439df0dbb16899bacca112",
+      "chineseText": "第234页"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "292ac9068247c1ac97499e1c78c603584c03ecd67e8303bc0d18a8ec7410e9b3",
+      "chineseText": "引用至29 I&N Dec. 233 (BIA 2025) 临时决定#4127"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b4b244f180b6fe02734cfe61179d123720b73b36fef030b0ceb73f84f8e73dba",
+      "chineseText": "参见Interiano-Rosa案，25 I&N Dec. 264, 265 (BIA 2010)；另见《移民与国籍法》第240(b)(1)节，8 U.S.C. § 1229a(b)(1)（2018年版）；8 C.F.R. § 1240.1(c)（2025年版）。移民法官无义务就不完整或申请人不具备救济资格的申请举行实质听证，并可搁置此类申请。3 例如，参见C-A-R-R-案，29 I&N Dec. 13, 15 (BIA 2025)（裁定移民法官无须审理不完整的I-589申请实质）；J-G-P-案，27 I&N Dec. 642, 643, 650 (BIA 2019)（确认因刑事定罪而搁置的取消驱逐申请）。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "699118a5c0ae503379910a6db610f8bd3142531f04bdcda35d11419177b9898e",
+      "chineseText": "答辩人提出的论点，即移民法官未适当审查其救济申请，我们不予采纳。首先，答辩人拥有合理机会提交证据支持其立场，因其有律师代理，且I-589表格说明及相关规章明确告知递交完整庇护申请及支持证据的重要性。参见INA § 240(b)(4)(B), 8 U.S.C. § 1229a(b)(4)(B)；8 C.F.R. § 1208.3(a)（2025年版）；8 C.F.R. § 1208.3(c)(3)（2020年版）；另见C-A-R-R-案，29 I&N Dec. 15。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "31fca45bf58cf84801e2fbe29003f0feba446549fccdaccd0c97f442d5a6440b",
+      "chineseText": "其次，答辩人的主张在审理程序会议阶段进行简略听证。移民法官与代理确认无事实争议，并给予答辩人律师机会提出特定社会群体以支持庇护请求。然而，答辩人律师未提出任何具体社会群体供移民法官审查，且未表明为何需要全面证据听证。答辩人在上诉中亦未主张存在任何重大事实争议，亦未被剥夺充分提出救济依据的机会。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d6b13488d6adf41c5cfc5944f3abb55bde40950ec3435e532dac931b96e908ad",
+      "chineseText": "3 联邦法院亦有解决无需完整证据陪审或法官审理的案件的程序。在民事诉讼中，根据联邦民事诉讼规则第12(b)(6)条提出的驳回动议，当法官假设原告诉状中所有事实指控属实并给予原告最大利益时，仍认定原告未陈述可获救济的主张，则可作出批准。参见McChesney诉联邦选举委员会案，900 F.3d 578, 583–84 (第八巡回法院2018年)。此外，当法官认定在对非提出动议方有利的事实视角下，不存在任何需诉讼或证据听证的事实争议，且一方依法应获判决时，法官可依据联邦民事诉讼规则第56条作出简易判决。见Valderas诉拉伯克市案，937 F.3d 384, 388 (第五巡回法院2019年)。\n4 如C-A-R-R-案29 I&N Dec. 15注1所述，本条规现行版本为2020版本，且经2022年《可信恐惧筛查及庇护、阻止驱逐与反酷刑公约保护申请程序》联邦公报修订。见87 Fed. Reg. 18078, 18221 (2022年3月29日)（收录于8 C.F.R. 第1003、1208、1235、1240部分）。\n第235页"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "292ac9068247c1ac97499e1c78c603584c03ecd67e8303bc0d18a8ec7410e9b3",
+      "chineseText": "引用至29 I&N Dec. 233 (BIA 2025) 临时决定#4127"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3b212be98c7a84b1b8c93ef02f239f9ff5c93a470f840791a015e7f8b63a010a",
+      "chineseText": "答辩人未能提出具体社会群体供移民法官考虑，亦未就为何需举行全面证据听证提供理由。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "79cf6ddc022924530c9d0940e5b00d69f00036d6031f10863391fd1bfc9a8b57",
+      "chineseText": "我们同意移民法官的认定，即答辩人案件的无争议事实不足以满足庇护、阻止驱逐或《反酷刑公约》保护的要求。答辩人主张因秘鲁犯罪团伙勒索而申请救济。美国第五巡回上诉法院，管辖本案之法院，屡次认定其“不承认经济勒索构成移民法下的迫害形式。”见Ramirez-Mejia诉Lynch案，794 F.3d 485, 493 (5th Cir. 2015)（原文有改动）（引自Castillo-Enriquez诉Holder案，690 F.3d 667, 668 (5th Cir. 2012)）；参照Gonzalez-Soto诉Lynch案，841 F.3d 682, 684 (5th Cir. 2016)；Garcia诉Holder案，756 F.3d 885, 890 (5th Cir. 2014)。因答辩人遭受的过去勒索未构成迫害，亦未满足“酷刑”标准（更高门槛）。见Roy诉Ashcroft案，389 F.3d 132, 140 (5th Cir. 2004)（引证略）。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2d26921efa7bc0d3fa3b5ae2c3ddb70a3cc5594853ec212cb640c5074105658f",
+      "chineseText": "答辩人的I-589表格未描述除勒索之外过去的其他伤害，也未指明其未来恐惧的具体暴力形式。答辩人亦未在获机会时阐明特定社会群体或其他受保护理由作为其申请基础。见W-Y-C- & H-O-B-案，27 I&N Dec. 189, 191 (BIA 2018)（“申请人若以特定社会群体身份为申诉依据，负有明确指出其所属特定社会群体之职责。”（引文省略））。因此，答辩人未提出庇护、阻止驱逐或《反酷刑公约》保护的初步资格案件。见L-O-G-案，21 I&N Dec. 413, 419 (BIA 1996)（认定初步资格要求合理可能满足救济条件）。故无需就实质进行全面证据听证。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "241ec988af6f4b723e86f68f96f0953b3f63998f21d007575fb29d2292c2118b",
+      "chineseText": "我们注意到，在Fefe案，20 I&N Dec. 116, 118 (BIA 1989)中，委员会认为，若无提供口头证词支撑庇护书面申请，移民法官“不应裁决该庇护申请”。委员会指出，为公平起见并防止声称虚构的申请被默认可信，“通常需对申请人进行全面讯问”。Fefe案，20 I&N Dec. 118。委员会进一步提出，至少应“让申请人宣誓，并询问书面申请内容是否完整及正确。”该裁定在E-F-H-L-案，26 I&N Dec. 319, 324 (BIA 2014)中被重申，认定即便未建立初步资格，庇护及阻止驱逐申请人仍有权获得针对其实质的听证。然而，该裁定被司法部长在E-F-H-L-案，27 I&N Dec. 266 (A.G. 2018)中撤销。"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "292ac9068247c1ac97499e1c78c603584c03ecd67e8303bc0d18a8ec7410e9b3",
+      "chineseText": "引用至29 I&N Dec. 233 (BIA 2025) 临时决定#4127"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "04b710db8408782f4901bd662610a5f9918e7c7d2845836eeb79594c8a074685",
+      "chineseText": "答辩人援引Fefe案理由不当。Fefe案早于《移民与国籍法》第240(b)(4)(B)节颁布，见非法移民改革与移民责任法案（1996年），公法第104-208号，分部C，第304(a)(3)节，110 Stat. 3009-546, 3009-590。此外，Fefe案所依据的规章现已失效。另见Ramirez诉Sessions案，902 F.3d 764, 771注1 (第八巡回法院2018年)，质疑Fefe案持续适用性。故Fefe案不再具约束效力。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e2f0e27aeec9fd0abd03d7bd433201f1201cdb39ed6dad372dc877084fe86693",
+      "chineseText": "移民法官基于代理律师承认的事实行事的权力已充分确立。5 参见Martinez诉Bally’s Louisiana, Inc.案，244 F.3d 474, 476 (5th Cir. 2001)（指出“司法承认系当事人或代理在诉状或协议中作出的正式让步，具有约束力”，并具有“使该事实不再有争议”的效力）；Velasquez案，19 I&N Dec. 377, 382–83 (BIA 1986)（认定移民当事人一般受其代理承认及让步拘束）。因此，移民法官可依赖代理律师断言：若接受申请中所列事实，则无事实争议。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "fe96a34ad988a9b4db6e23debcd31f038b78c6c5fa885d5ea00ef4ee010d3a81",
+      "chineseText": "相反于答辩人上诉中的主张，移民法官并未剥夺其享有完整及公平听证的正当程序权。正当程序要求移民程序中的答辩人在“有意义的时间与方式内获得听证机会”。参见Mathews诉Eldridge案，424 U.S. 319, 333 (1976年)（引文省略）。6 当答辩人出庭，获准对指控进行答辩并提交救济申请及支持证据，但其本人及其法律代表未在书面或口头上证明其具备初步资格时，正当程序未被侵犯。见Okpala诉Whitaker案，908 F.3d 965, 971 (5th Cir. 2018)（指出一般而言，正当程序要求外国人享有公平听证机会）。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "221e88ac2d97ee4a8ab11d6e643a21abb14c18cd448d187ba34d264ca7086bd9",
+      "chineseText": "5 若答辩人自辩无代理律师，移民法官需宣誓其申请完整准确后，方可判断是否建立初步主张。见8 C.F.R. § 1240.11(c)(3)(iii)。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "04d4cd399d59a66d1003a4d1b5ac648e630f70142cc4a4082ebb922072cb4f8b",
+      "chineseText": "委员会有权审查宪法问题，包括答辩人是否受到美国宪法第五修正案之正当程序权利侵害。参见例如M-D-C-V-案，28 I&N Dec. 18, 29–30 (BIA 2020)（认定答辩人正当程序权利未受侵犯）。第237页"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "292ac9068247c1ac97499e1c78c603584c03ecd67e8303bc0d18a8ec7410e9b3",
+      "chineseText": "引用至29 I&N Dec. 233 (BIA 2025) 临时决定#4127"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "5c4c49df62e91b3f06e783bc753393194a2b937623c3e440067c8aa1a2d5832d",
+      "chineseText": "答辩人基本的正当程序权利未受侵犯，因移民法官搁置其庇护或相关救济申请之前，答辩人出庭接受聆讯，有机会就指控进行答辩，提交救济申请及支持证据，且未能证明初步资格。见Okpala诉Whitaker案，908 F.3d 965, 971 (第五巡回法院2018年)。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "679dca2445c2a7ed125a2280a0a27d59d215895b944ed6415e7e484bec8c3171",
+      "chineseText": "答辩人称移民法官非“中立仲裁者”或“独立行使职权”，该论点无法说服我们。答辩人指称移民法官对其庇护请求存有偏见，但我们已认定，在无事实争议情况下，移民法官有权搁置未能建立初步资格的申请。见Liteky诉美国案，510 U.S. 540, 555 (1994年)（认定法律裁决通常不构成偏见）；另见Exame案，18 I&N Dec. 303, 306 (BIA 1982)（“申请人不能因移民法官对法律或政策问题持观点而认定其审判不公。”）。因此，我们不采纳答辩人关于移民法官非中立或不独立的主张，认定答辩人的正当程序权利在此方面未受侵犯。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "e9feba49498686697e15dc6be9e05bbbb5c6f2c1f559524273b7ed76ae345f73",
+      "chineseText": "我们承认，许多庇护及相关救济和保护的申请涉及有关被诉方是否有资格获得庇护或相关救济的有争议事实问题，因此在案件解决前需要进行全面听证及对被诉方和证人的交叉询问。然而，如果从有利于被诉方的角度审视，支持庇护、阻止驱逐或根据《联合国禁止酷刑公约》（CAT）请求保护的事实指控并未初步证明有资格获得救济或保护，移民法官可以在未经该申请实质证据听证的情况下驳回申请。在本案中，移民法官适当举行了听证，遵守了相关法律法规，并给予被诉方应有的正当程序。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "35b339949d2a36286665abd46648581f8eac0a8392f6e9d7e983284f8a9b2c2c",
+      "chineseText": "三、结论 鉴于上述理由，我们确认移民法官对被诉方庇护及相关救济申请的驳回决定。同时，我们也认定案卷记录反映了被诉方的程序是公平的，并符合《移民及国籍法》（INA）及相关法规的要求。  第238页"
+    },
+    {
+      "segmentId": "pdf-p7-s33",
+      "order": 33,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "292ac9068247c1ac97499e1c78c603584c03ecd67e8303bc0d18a8ec7410e9b3",
+      "chineseText": "引用自 29 I&N Dec. 233 (BIA 2025) 临时裁决第4127号"
+    },
+    {
+      "segmentId": "pdf-p7-s34",
+      "order": 34,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "1e6cf66b51dbb3bcd1f8be517833cbb3a3f231b972faaa8c0d8261d851bc11e3",
+      "chineseText": "命令：被诉方的上诉被驳回。 通知：若被诉方受到最终驱逐令的约束，并故意未能或拒绝依照该命令离开美国，未能善意及时申请离境所必需的旅行或其他证件，或未按国土安全部（DHS）要求的时间和地点出现接受驱逐，或串谋采取或实施任何旨在阻止或妨碍其依驱逐令离境的行为，被诉方将面临每日最高998美元的民事罚款。参见《移民及国籍法》第274D条，8 U.S.C. § 1324d (2018)；《联邦法规》第8卷第280.53(b)(14)节（2025年版）。"
+    },
+    {
+      "segmentId": "pdf-p7-s35",
+      "order": 35,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "28fa79ae32204ec487fd6904fd0d329483292f65f1a28035fb5d05405bbe97a9",
+      "chineseText": "第239页"
+    }
+  ]
+}

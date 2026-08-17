@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "ceb069a62e4cd4ca0f6d3336",
+  "recordFingerprint": "ac53d42d58bbe87673ee549fdd392aa1d841f68c39a8a7d522838c045c3c6f22",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1395581/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1395581/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1395581/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:24:53.797Z",
+  "sourceDigest": "093eb7cf348757840788a1bb2223ceaa95456c5282422afec459c0c0ea8205d2",
+  "translatedAt": "2026-08-17T13:31:30.465Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0012861609ef043f62e8d5beb704419be9f6fc8e129c69758f53e85134780b9e",
+      "chineseText": "引用为 29 I&N Dec. 20（BIA 2025）临时决定 #4088"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "df2287ea0a706ab9276894dff17bb433cf92d4430454c73e1536dc3e614676e3",
+      "chineseText": "Jonalson DOR 案，答辩人\n2025年3月18日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f06ad00ca7aa1259a2da296dfc10a3bc6ede9dd2a6ef09477529afb3c949023f",
+      "chineseText": "认定时间为确定答辩人州级定罪是否依据《移民与国籍法》第237(a)(2)(B)(i)条款（8 U.S.C. § 1227(a)(2)(B)(i)（2018））构成受控物质犯罪的相关时点，而非答辩人可驱逐状态在移民程序中被裁定的时间。\n答辩人代理律师：Claire E. Maguire，Esquire，马萨诸塞州林恩市\n出庭合议庭：主席法官MALPHRUS（代理首席上诉移民法官）；PETTY和CLARK，上诉移民法官。\nMALPHRUS，代理首席上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bf99bdfe404acbdca7ccfcb7a58e0f624f35d2f579e3c8803895320fe6d9a989",
+      "chineseText": "2024年7月11日的裁决中，移民法官驳回了答辩人终止驱逐程序的动议，认定答辩人已构成受控物质犯罪，因而具备美国驱逐资格。答辩人对此裁决提起上诉，主张在比较州与联邦受控物质清单时，应以答辩人可驱逐指控最终裁决时生效的联邦清单为准。该上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "acb3fd1d3b242d62dd67645d07ce5dcd8b64c0b175aad91ff61c13f44b61ce00",
+      "chineseText": "一、背景\n答辩人为海地原籍公民，是美国合法永久居民。2018年8月，答辩人因违反马萨诸塞州普通法第94C章第32C(a)条款，涉及意图制造、分销、发放或种植“大麻”，被判定有罪。国土安全部（DHS）依据《移民与国籍法》第237(a)(2)(B)(i)条款（8 U.S.C. § 1227(a)(2)(B)(i)(2018)）指控答辩人具备驱逐资格，该条款规定，“任何外国人于入境后被判违反……任何州的有关受控物质（定义见第21章802条）之法律或规章……均符合驱逐资格。”答辩人对此提起终止驱逐程序的动议，主张马萨诸塞州的大麻定义相较联邦定义过于宽泛。移民法官驳回了该终止动议，答辩人遂提起上诉。我们对答辩人定罪是否构成受控物质犯罪进行全新审查。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "70dcda6dbbebd78c0c39e0dd14b546f945884a7ae2b2f1079316d58cef9e71c6",
+      "chineseText": "注释：本命令采用“marihuana”一词而非“marijuana”，以符合马萨诸塞州及联邦法律的拼写规范。\n第20页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0012861609ef043f62e8d5beb704419be9f6fc8e129c69758f53e85134780b9e",
+      "chineseText": "引用为 29 I&N Dec. 20（BIA 2025）临时决定 #4088"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d73c4d24d9f1b05e1247acc41d17ca2875ee35f5531d971d3e37b90a56a6aacd",
+      "chineseText": "根据第21章第802条的定义……是可驱逐的。”答辩人提出终止驱逐程序的动议，理由是马萨诸塞州的大麻定义相对于联邦定义过于宽泛。移民法官拒绝该终止动议，答辩人提出上诉。我们依据2025年版8 C.F.R. § 1003.1(d)(3)(ii)条款对答辩人定罪是否构成受控物质犯罪进行全新审查。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fceb6e8ebdcd6351552dae59b940e21adda82baafa1962e08eb5e31538baae8c",
+      "chineseText": "二、讨论\n为确定答辩人定罪是否导致其具备驱逐资格，我们采用类别法（categorical approach），即考察答辩人定罪的构成要素是否与《移民与国籍法》第237(a)(2)(B)(i)条款（8 U.S.C. § 1227(a)(2)(B)(i)）一致。见Matter of Laguerre, 28 I&N Dec. 437, 438–39（BIA 2022）。为证实一致性，国土安全部必须“将被告定罪的某一要素与位于[21 U.S.C. § 802]下的受控药物相联系。” Mellouli诉Lynch案，575 U.S. 798, 813（2015）。鉴于无争议答辩人定罪涉及大麻，该审查必然要求马萨诸塞州所用的大麻定义与联邦《受控物质法案》中的对应定义相匹配或更为狭窄。双方争议在于采用何时点的定义进行比较。\n移民法官驳回终止动议时，认定应比较答辩人2018年8月定罪时马萨诸塞州与联邦大麻定义。基于当时的定义比较，移民法官裁定答辩人可驱逐，因马萨诸塞州大麻定义较联邦法律更为狭窄。答辩人则主张适当比较时点应为驱逐指控最终裁决时联邦大麻定义。依据该方法，答辩人不具备驱逐资格，因为马萨诸塞州现在的大麻定义比联邦更为宽泛。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a352778f2ef640e4fee4bf7f506c474ff0527fac16e99c263e25569658d2f81f",
+      "chineseText": "第21页"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0012861609ef043f62e8d5beb704419be9f6fc8e129c69758f53e85134780b9e",
+      "chineseText": "引用为 29 I&N Dec. 20（BIA 2025）临时决定 #4088"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d0325aa0d53c67db66fe4b3d314ad42e193873fc0e1ccd28f7bcd29dfcd9b312",
+      "chineseText": "《移民与国籍法》规定，外国人“如被判违反……任何州关于[联邦]受控物质的法律或规章，‘即属可驱逐。’” INA § 237(a)(2)(B)(i), 8 U.S.C. § 1227(a)(2)(B)(i)。单独从法条文本无法解决目前的时间点争议。但美国四个巡回上诉法院均曾明确审理该问题，且均否定答辩人所主张的以驱逐时点为准的观点，支持以定罪时点为准。该等判例包括：Medina-Rodriguez诉Barr案，979 F.3d 738, 749（第九巡回2020）；Gordon诉美国总检察长案，962 F.3d 1344, 1351 n.4（第十一巡回2020）；Martinez诉总检察长案，906 F.3d 281, 287（第三巡回2018）；Doe诉Sessions案，886 F.3d 203, 208–09（第二巡回2018）。这些判例在相关巡回法院辖区内的驱逐程序中具约束力。参见Matter of Anselmo, 20 I&N Dec. 25, 31（BIA 1989）（联邦巡回法院的有先例力意见对本委员会及移民法官具有约束力）。一审巡回法院即本案所涉辖区法院尚未明确对该问题作出裁定。我们认同所有已审理该问题的巡回法院看法，认定定罪时点为确定答辩人州定罪是否构成《移民与国籍法》第237(a)(2)(B)(i)条款（8 U.S.C. § 1227(a)(2)(B)(i)）下受控物质犯罪的适用时点，而非答辩人可驱逐性被最终裁定的时点。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "339a3422b7b17686da8ad47fe1c2e3661929312103a0387631e25d6212421e14",
+      "chineseText": "4 自2018年12月起，联邦法律定义的大麻（marihuana）不包括所有“工业大麻（hemp）”，而马萨诸塞州则仍仅排除“工业大麻”。比较马萨诸塞州普通法典第94C章第1节（2024年）与美国法典第21编第802(16)节（西部2024年）。\n5 我们此前曾假定以定罪时间为相关比较时间点，尽管没有出现在争议该问题的案件中。见Ferreira案，26 I&N Dec. 415, 418（BIA 2014）。数个上诉法院显然也采取了类似做法。见Aguirre-Zuniga诉Garland案，37 F.4th 446, 451（第七巡回法院2022年）（“唯一问题是...在Aguirre-Zuniga定罪时，‘甲基苯丙胺（methamphetamine）’的定义在印第安纳州法律下是否比联邦法律更广泛。”）；Vazquez诉Sessions案，885 F.3d 862, 870–71（第五巡回法院2018年）（比较2013年请愿人在俄克拉荷马州定罪时俄克拉荷马州与联邦受控物质清单）。\n6 第六巡回法院在量刑语境中赞同引用了这些先例。美国诉Clark案，46 F.4th 404, 410（第六巡回法院2022年）（引证Doe、Gordon和Martinez案，并解释“鉴于犯罪定罪立即导致的递解出境后果，定罪时间规则在移民语境下的理由最为充分”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "41ca7645bc642acc37e12f023be8cd16a7e71f6dfcd8d4a2d512d74b3fb0b8ea",
+      "chineseText": "第22页"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0012861609ef043f62e8d5beb704419be9f6fc8e129c69758f53e85134780b9e",
+      "chineseText": "引用方式：29 I&N Dec. 20（BIA 2025）临时裁决第4088号"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ee524c3af5eedd0c8d0150398dfff54aeaa3079d99b76b89895fa14a2885f87a",
+      "chineseText": "在移民程序中。除下文讨论，为最佳法律理解外，使用定罪时间将促进全国范围内移民法律应用的一致性和可预见性，这是非常重要的目标。见C-T-L案，25 I&N Dec. 341, 347（2010）。\n被诉人声称，因国会已将工业大麻从联邦大麻定义中除外，他认为拥有用于分销的工业大麻不应构成驱逐理由。因此，他主张对其适用定罪时间规则“违背”且“超越”国会意愿，且实际上无正当程序地惩罚其过去行为。我们认为这些论点不具说服力。\n国会决定将某物质纳入或剔除联邦受控物质清单，反映其关于涉及该物质的特定行为是否应当被定为犯罪的判断。这些具有普遍适用性的刑事法律主要不关于移民，因而涉及该物质的犯罪是否导致递解出境属于次要问题。本案中，被诉人于2018年因其行为被定罪，该行为在马萨诸塞州及联邦法律下当时为非法，无论之后该州与联邦政府如何选择对工业大麻的处理。“依据定罪时的刑法具有明确益处，因其将移民后果附加于被告当时的实际行为及责任。”Vasquez诉Garland案，80 F.4th 422, 431（二巡回法院2023年）。此外，美国最高法院在Brown诉美国案，602 U.S. 101, 114–15, 123（2024年）中，在刑事量刑语境讨论了类似观点，并与我们此处采纳的方法一致，裁定“如该州毒品定罪涉及当时列入联邦清单的毒品，即构成《武装职业罪犯法》（Armed Career Criminal Act）的前科。”\n我们历来在确定定罪的移民后果时，着眼于定罪时间，而非关注案件在常常漫长的移民程序中审理时刑事法律的现行状况。见Velasquez-Rios案，27 I&N Dec. 470, 472（BIA 2018），经确认，988 F.3d 1081（第九巡回法院2021年）。我们采纳的方法的理由不仅适用于受控物质情形，也适用于刑事定罪的更一般情况。\n被诉人还主张，最高法院在Mellouli诉Lynch案，575 U.S. 798和Moncrieffe诉Holder案，569 U.S. 184（2013年）中假定相关比较时间为递解时间。但目前我们面临的时间点问题，Mellouli和Moncrieffe案中并未提出，因此最高法院在这些案件中无须决定相关时间点是定罪时间还是递解时间。见美国诉Abdulaziz案，998 F.3d 519, 530（第一巡回法院2021年）（认定“在Mellouli案中，双方均未主张联邦毒品清单在Mellouli 2010年堪萨斯州定罪与2012年递解程序间有实质性变动”）。“对仅隐含于案卷中，未被法庭关注或裁决的问题，不应视为已被裁决而构成先例。”Cooper Indus., Inc.诉Aviall Servs., Inc.案，543 U.S. 157, 170（2004年）（引用Webster诉Fall案，266 U.S. 507, 511（1925年））。事实上，仅当（如本案）州与联邦毒品清单在被诉人定罪时一致，但随后在递解程序结束前产生分歧，选择两种解释才成为必要。\n按照被诉人主张的递解时间规则，州毒品定罪的移民后果将难以预测且缺乏时间确定性，每当联邦受控物质清单在定罪后且递解程序结束前增加（不是缩减）时，就会带来严重的通知和溯及既往问题。比较Vasquez案，80 F.4th第431页及脚注5（基于类似理由拒绝州量刑法追溯应用于联邦移民程序）。鉴于涉案外籍人刑事程序中必须被告知认罪的移民后果，见Padilla诉Kentucky案，559 U.S. 356, 369（2010年），我们采纳第二巡回法院观点，即“分类方法的‘起点’应当使外籍人及其辩护律师能够获得‘公正通知和有效协助’，关注定罪时生效的《受控物质法》（Controlled Substances Act）清单。”Doe案，886 F.3d第210页（省略引文）。“这种‘定罪时间’规则在最关键时刻为政府和外籍人提供最大清晰度，使外籍人能够与辩护律师协同评估‘待决刑事指控是否可能带来不利移民后果’。”（引自Padilla，559 U.S.第369页）。\n被诉人承认此潜在风险，但建议我们采取“单向棘轮”式的递解时间论，即除非损害其利益或违背其依赖预期时方不适用。然此方案误解了问题实质，是法条解释问题而非政策问题。被诉人实质上要求我们以违背溯及既往推定的方式解释法规，见Vartelas诉Holder案，566 U.S. 257, 266（2012年），而有一个解释风险明显较小的选项可用。此外，我们解释保障了递解程序中更高的确定性与可预见性。如采纳只适用于部分外籍人或部分时候的法条解释，将有违“法官可对同一法条作不同解释”的危险原则。见Clark诉Martinez案，543 U.S. 371, 386（2005年）。因此，我们解释《移民与国籍法》第237(a)(2)(B)(i)节，8 U.S.C. § 1227(a)(2)(B)(i)，为规定任何入境后被定罪违反州相关受控物质法律，且该物质于定罪时为联邦控制物质者均应被递解。"
+    },
+    {
+      "segmentId": "pdf-p5-s17",
+      "order": 17,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "0012861609ef043f62e8d5beb704419be9f6fc8e129c69758f53e85134780b9e",
+      "chineseText": "引用方式：29 I&N Dec. 20（BIA 2025）临时裁决第4088号"
+    },
+    {
+      "segmentId": "pdf-p5-s18",
+      "order": 18,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "112c3a7f2a7121b9d5aa4187d9107f4826b19e96b5bd3dc8c5c15768742bb58b",
+      "chineseText": "当前提交给我们的时间点问题，Mellouli案和Moncrieffe案中未曾提及，故最高法院在上述案件中无须决定比较时间是定罪时点还是递解时点。见美国诉Abdulaziz案，998 F.3d 519, 530（第一巡回法院2021年）（承认“在Mellouli案中，双方均未主张联邦毒品清单在Mellouli 2010年堪萨斯州定罪与2012年递解程序间有重大扩张或缩减”）。“未被法院明示裁决的问题，如果仅隐含于案卷，且未被关注或裁断，不应视为已决问题而构成先例。”Cooper Indus., Inc.诉Aviall Servs., Inc.案，543 U.S. 157, 170（2004年）（引自Webster诉Fall案，266 U.S. 507, 511（1925年））。实际上，必须在被诉人定罪时州与联邦毒品清单匹配但在递解程序结束前出现分歧时，才需决定采用何种时点。\n按被诉人所主张的递解时点论，州毒品定罪相关的移民后果将出现不可预见性和时间上的不确定，尤其当联邦受控物质清单在定罪后且递解程序结束之前发生增加时，这会造成严重的通知和溯及既往问题。比较Vasquez案，80 F.4th第431页及注释5（因类似理由拒绝州量刑法追溯适用于联邦移民程序）。考虑到刑事程序中的外籍人须被告知其认罪的移民后果，见Padilla诉Kentucky案，559 U.S. 356, 369（2010年），我们赞同第二巡回法院之观点，“分类方法的’起点’应聚焦于定罪时生效的《受控物质法》清单，以确保外籍人获得‘公正的通知和有效辩护帮助’。”Doe案，886 F.3d第210页（省略引文）。“定罪时间规则在最关键的阶段为政府与外籍人提供了最大程度的明确性，使外籍人能够在辩护律师帮助下评估‘待决刑事指控是否可能带来不利的移民后果’。”（引用Padilla，559 U.S.第369页）。\n被诉人虽意识到此潜在风险，但建议我们通过“单向棘轮”方式应用递解时间规则，即除非损害其利益或违背其依赖预期，否则适用递解时间规则。但此提议误解了问题本质，该问题属法定解释而非政策。被诉人实则希望我们以系统性违反溯及既往推定的方式解释法律，见Vartelas诉Holder案，566 U.S. 257, 266（2012年），而且存在一个几乎无溯及既往问题的替代解释。我们解释的方法也大幅提升递解程序的确定性和可预见性。采纳仅部分适用的法条解释，将违背“同一法律文本在不同案件中可以有不同含义”的危险原则。见Clark诉Martinez案，543 U.S. 371, 386（2005年）。因此，我们解释《移民与国籍法》第237(a)(2)(B)(i)节，8 U.S.C. § 1227(a)(2)(B)(i)，为，任何入境后被定罪违反州控制的物质法律且该物质在定罪时为联邦管控物质者，应认定为可递解。"
+    },
+    {
+      "segmentId": "pdf-p6-s19",
+      "order": 19,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0012861609ef043f62e8d5beb704419be9f6fc8e129c69758f53e85134780b9e",
+      "chineseText": "引用方式：29 I&N Dec. 20（BIA 2025）临时裁决第4088号"
+    },
+    {
+      "segmentId": "pdf-p6-s20",
+      "order": 20,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "c532408f0e79fcc4c4a567038cd34efc26f65755f30f16da14d86f452c17eef8",
+      "chineseText": "【本段已涵盖于pdf-p6-s18段落翻译，无额外内容】"
+    },
+    {
+      "segmentId": "pdf-p6-s21",
+      "order": 21,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d8aaabda85397873c0805edc9ed0040b92a464ba8ceb4c73de9d075dd380b8a8",
+      "chineseText": "三、结论\n基于上述理由，我们认定移民法官正确判定被诉人依据《移民与国籍法》第237(a)(2)(B)(i)节，8 U.S.C. § 1227(a)(2)(B)(i)条款可被递解。本案上诉未涉及其他问题，因此我们驳回被诉人上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s22",
+      "order": 22,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "059e2426c5ef72008d88dabd0da0eef42f3db66448dbbb0fceaa44a124bd5519",
+      "chineseText": "命令：驳回上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s23",
+      "order": 23,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "1c723898875c8e17c602dcae6f616a7fae478e75e66f928d45c248f0c7949271",
+      "chineseText": "第25页"
+    }
+  ]
+}

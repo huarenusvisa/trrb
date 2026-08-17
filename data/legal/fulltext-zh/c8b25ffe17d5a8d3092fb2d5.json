@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "c8b25ffe17d5a8d3092fb2d5",
+  "recordFingerprint": "905dfbdafc630ca772ef6ce0614daf988d241f3c8b79141136d53d8792fa2891",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1411661/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1411661/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1411661/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:22:28.349Z",
+  "sourceDigest": "3cf61b8aef2ccaa2946ff04c899d040f6f4707cbe2fbf45ce6281ccef08b7f62",
+  "translatedAt": "2026-08-17T13:23:08.687Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "eb6b43c27446cc5fa232fc1dfc8c978c3a37e9f993cedcb9b0a7d47a11c5b30d",
+      "chineseText": "引证为29 I&N Dec. 186（BIA 2025）临时决定#4117"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a98707a7e3e76a61119a8d39a82b7baf9f392128763bffcb048eafb39772b9e1",
+      "chineseText": "事由：迪亚哥·乔瓦尼·布里·莫拉（Diego Geovanny BURI MORA）案，被告\n2025年7月21日，移民上诉委员会裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "eaccea81933cd7d103d828294c97cf023382586f6beaf802e0c81f58c1ed872e",
+      "chineseText": "被告未能基于经济损害和家庭分离证明其合格亲属遭受的例外且极为罕见的严重困难，尤其是在合格亲属将留在美国，且其心理健康状况和发育迟缓的治疗不受被告遣返影响的情况下。\n被告代理律师：梅尔文·R·所罗门（Melvin R. Solomon），律师，纽约哈肯萨克\n国土安全部代表：助理首席律师梅丽莎·诺伊斯（Melissa Noyes）\n审理法官小组：穆兰（MULLANE）、亨萨克（HUNSUCKER）、古德温（GOODWIN），上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c8769bad289be346816b5a3c40485e26fcf984f258ecb61d1343be7e88eb9449",
+      "chineseText": "古德温，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "41181af1ed582f03b72e6dd0bc387c8d9d702c8a71ddc2b8f23e0454cf8eb297",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年2月4日裁定准许被告依据《移民与国籍法》第240A(b)(1)条款（8 U.S.C. § 1229b(b)(1) (2018)）申请取消某些非永久居民遣返的决定提出上诉。被告为厄瓜多尔籍且持有该国国籍，反对本次上诉。该上诉将被支持。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "595d53c556c49edb02222098e56c8787737ade138d73daa12b7e715049c5fd22",
+      "chineseText": "移民法官裁定被告符合法定取消遣返资格，且行使自由裁量权应予批准。上诉中，DHS主张移民法官认定被告合格亲属若被遣返将遭受例外且极其罕见困难的裁决有误，被告展现良好品德及值得自由裁量权支持的认定亦有误。经重新审查，我们裁定"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "23e7ecaebd3ed1ff7bdf9091fc56a097e13d0d29fc5c9ea50b5ce80523b954cc",
+      "chineseText": "2025年8月18日第6377-2025号命令，司法部长制定本案布里·莫拉（Buri Mora）（BIA 2025年7月21日）为处理同一问题的所有程序先例。参见8 C.F.R. § 1003.1(g)(3) (2025)。本案作为先例裁决时做有编辑调整。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b419adaf0bfa07f61f776f2a3d09955d92161a87c8680364025b84c9b22fda94",
+      "chineseText": "第186页"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "eb6b43c27446cc5fa232fc1dfc8c978c3a37e9f993cedcb9b0a7d47a11c5b30d",
+      "chineseText": "引证为29 I&N Dec. 186（BIA 2025）临时决定#4117"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "17015975c2e8cdc8528df628c0d227d384b9f6f5704efda4f523b9c3e32fae81",
+      "chineseText": "我们认定被告未能证明遣返至厄瓜多尔将给其三名美国公民子女及美国公民妻子即合格亲属带来例外且极其罕见的困难。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "887c1fe2cd5445626b68dfcc1734f250086cbac8d2c1a824e57d14a64db655e6",
+      "chineseText": "为证明例外且极其罕见的困难，被告必须显示合格亲属将遭受“远超通常因亲密家庭成员遣返所期待的”伤害。参见布里·莫拉案，23 I&N Dec. 56, 59 (BIA 2001)（省略强调）（引用文献略）。关键考虑因素为合格亲属的年龄、健康和具体状况。见布里·莫拉案，23 I&N Dec. 63（指出唯一依赖被告的年长亲属或患有严重健康问题/特殊需求的合格子女可能构成强有力案件）。若困难基于合格亲属健康，需证明健康状况严重，且若亲属随遣返，被遣国家缺乏合理可得医疗。见J-J-G-案，27 I&N Dec. 808, 811 (BIA 2020)。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d5de0a57b4195211214fea094b25b856aff6039e759dde7aa1981512290ec34f",
+      "chineseText": "我们尊重地不同意移民法官关于被告遣返给其美国公民子女及妻子带来的困难“远超通常预期”的判断，即使聚合考虑困难因素亦然。参见布里·莫拉案，23 I&N Dec. 65。被告女儿被诊断为自闭症及焦虑症，儿子有发育迟缓，但这三名美国公民子女的状况均由个别教育计划或早期干预服务管理。子女均将随被告美国公民妻子留在美国，继续通过州医疗补助计划接受治疗并获得新泽西州提供的专业教育支持。参见J-J-G-案，27 I&N Dec. 812（认定即使合格亲属有严重医疗状况，被告未证明缺乏合理医疗）。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a93a77b51803bb9d779a666b8b7cc9d0cdc4dbab0b981d8e9dc00b4692746265",
+      "chineseText": "移民法官认定被告遣返将给合格亲属带来经济压力，因其美国公民妻子须加班补偿缺失的经济支持。然而，被告美国公民妻子全职担任外科协调员，继续获得美国家庭的经济支持及州政府的儿童医疗保障。此类经济损害为父母离境时常见。参见安达佐拉案，23 I&N Dec. 319, 323 (BIA 2002)（解释单纯经济损害不足以构成所需困难，援引匹尔奇案，21 I&N Dec. 627 (BIA 1996)，第七巡回法院取消上诉，129 F.3d 969 (7th Cir. 1997)）。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "eb6b43c27446cc5fa232fc1dfc8c978c3a37e9f993cedcb9b0a7d47a11c5b30d",
+      "chineseText": "第187页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "31aa888cbb4913ea946ca171d84d288b6219bf0a4cb4bb45c6716a856f8c335a",
+      "chineseText": "引证为29 I&N Dec. 186（BIA 2025）临时决定#4117"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "061cc4107a8594304c8439a196448364aab05103449aabb4da33911176bc6b5e",
+      "chineseText": "被告遣返还将给合格亲属带来情感困难。如移民法官指出，被告与女儿感情尤为亲密，拘留后女儿行为和成绩均下滑。但被告妻子的整个家庭均在美国，能够协助照看被告的美国公民子女，正如过去所为。尽管家庭分离是显著困难，但通常不构成“例外且极其罕见”的高标准。参见匹尔奇案，21 I&N Dec. 631（承认家庭分离所致情感困难是遣返常见结果）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f6c46a64186b9a1672021870bc15dcacf6062546bb20cc411fb17242f2392b80",
+      "chineseText": "故此，我们认定证据不足以符合法律要求，被告未能证明其遣返将给妻子及子女造成例外且极罕见的困难。此论点决定被告救济资格，我们无需处理DHS关于良好品德及自由裁量权的上诉论点。参见INS诉巴加马斯巴德案，429 U.S. 24, 25 (1976)（\"通常，法院及机构无需就对判决结果不必要的问题作出裁决\"）。宣布支持上诉，撤销移民法官裁定，被告遣返厄瓜多尔。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "20b336057f09b1294241beaefce94716ce48079c6fc3627f46a42ffe58cec039",
+      "chineseText": "命令：支持DHS上诉。\n进一步命令：撤销移民法官2025年2月4日依据《移民与国籍法》第240A(b)(1)条（8 U.S.C. § 1229b(b)(1)）批准被告取消遣返申请的决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "96cb7b6f71a6c2ccdcf0f2fc347f5ffc8d86d284d3da4af763a236d46b01e80f",
+      "chineseText": "进一步命令：命令被告从美国遣返厄瓜多尔。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "024c512f78d1f8bbcdf7087a3364541c2120cfd13be03b2fb86ef16f69812c35",
+      "chineseText": "通知：如被告受最终遣返令约束，且故意未按令离开美国，未善意及时申请旅行或其他离境必要文件，或未按国土安全部指定时间地点出现，或共谋或采取任何阻止或妨碍依遣返令离境的行为，被告将面临每天最高998美元的民事罚款。参见《移民与国籍法》第274D条，8 U.S.C. § 1324d (2018)；8 C.F.R. § 280.53(b)(14) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "eb6b43c27446cc5fa232fc1dfc8c978c3a37e9f993cedcb9b0a7d47a11c5b30d",
+      "chineseText": "第188页"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2ee7b9bc6273aada196624c77593c82322946d8475cc8c88cd1bc39214b75c81",
+      "chineseText": "引证为29 I&N Dec. 186（BIA 2025）临时决定#4117"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f13f3d83c186d7d5349c2ac1a332dff34006b24ce9eb0b97ae204ec26eb517e8",
+      "chineseText": "第189页"
+    }
+  ]
+}

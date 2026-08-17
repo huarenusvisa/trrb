@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "recordId": "e4e3f81b5fbfd5904b53d8d7",
+  "recordFingerprint": "9cfe22d1023660c3ff7de72d03990037f41e5928c98aad6d27cbabf4c49b21cb",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1414981/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1414981/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1414981/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:52:35.550Z",
+  "sourceDigest": "0c04f5a73d8ed216a99471cc12b3e2eeeb5e8c456eb3e5841881529b5351cb67",
+  "translatedAt": "2026-08-17T13:53:14.132Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 24,
+  "translatedSegmentCount": 24,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "033b8dd14816b940c41065a41610ba44c5a92cd65ea44828322adbf5c2f85119",
+      "chineseText": "引用作 29 I&N Dec. 249 (BIA 2025) 临时决定 #4129"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b08cf626ba016d02a8d9e7f9827da2158ec5aeff9bfe82efd213201b98a03916",
+      "chineseText": "塞缪尔·迈克尔·麦克唐纳案，答辩人\n由移民上诉委员会于2025年8月13日裁决\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "33cdeaa8423e9a9a5c8ed0b68d36856480d08e7ff0ae0e78f8a1a6d5ff209f11",
+      "chineseText": "答辩人因危害儿童福利的定罪，结合起诉文件和受害人陈述中描述的答辩人行为，表明答辩人不应获得有利的自由裁量权行使。\n代表答辩人：托马斯·M·格里芬律师，宾夕法尼亚州费城\n代表国土安全部：杰弗里·F·博伊尔斯，助理首席法律顾问\n法庭成员：HUNSUCKER 和 GOODWIN，上诉移民法官；\nMCCLOSKEY，临时上诉移民法官。\nHUNSUCKER，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8adb2de1fd2f98c8670b37c7912492116b8e35a9f7814f1829c8f738146f5b4d",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年1月15日的裁决提出上诉，后者批准答辩人（一名美国合法永久居民、加拿大出生及公民）根据《移民与国籍法》（“INA”）第240A(a)条款，8 U.S.C. § 1229b(a) (2018) 以自由裁量权取消驱逐。答辩人反对上诉。DHS的上诉将被支持。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e7c0edd2cb6a2c586b9ea64ba19753659ecc78dbe6e6d4fca8341bee88603dfb",
+      "chineseText": "我们按照“明显错误”标准复核移民法官作出的事实认定，包括可信度认定。参考 8 C.F.R. § 1003.1(d)(3)(i) (2025)。我们对法律问题、自由裁量权及判断以及所有其他上诉事宜按照全新审查标准复核。参考 8 C.F.R. § 1003.1(d)(3)(ii)。答辩人有责任证明其符合取消驱逐的所有适用资格要求并且值得获得裁量权的批准。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "44b135583812bad372a9d9b0e8b1a9c5663ae9af150745f30996bd845f1fab63",
+      "chineseText": "根据2025年9月22日第6406-2025号命令，司法部长指定本案麦克唐纳案（BIA 2025年8月13日）作为涉及相同问题的所有程序的先例。见 8 C.F.R. § 1003.1(g)(3) (2025)。已按案件作为先例的指定做出编辑更改。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d3ba68c35a0a49922a5543435ea27d8bd8643c42c86d343c7313555a3c9af88f",
+      "chineseText": "第249页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "033b8dd14816b940c41065a41610ba44c5a92cd65ea44828322adbf5c2f85119",
+      "chineseText": "引用作 29 I&N Dec. 249 (BIA 2025) 临时决定 #4129"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5424cdcb6b342539dd1d8266bd83c75da1556b35c36740ff13ff2c8349a7f727",
+      "chineseText": "根据INA第240(c)(4)(A)条，8 U.S.C. § 1229a(c)(4)(A)（2018）；8 C.F.R. § 1240.8(d)（2025），答辩人有责任证明其符合取消驱逐的所有适用资格要求并配得获得救济。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1d71cec1f27fbd1f9b3625b46c81364483e2cb2b0817d00efa61dba39be160ea",
+      "chineseText": "答辩人于1991年5月4日以约24岁身份获准成为美国合法永久居民，自那时以来一直居住在美国。移民法官基于自由裁量因素考量批准答辩人取消驱逐，认定其权益大于不利因素，包括答辩人在美国的长期居住、美国家庭关系、就业及健康历史，以及若被驱逐其美籍女儿将遭受 hardship。见麦克唐纳案，22 I&N Dec. 7, 11 (BIA 1998)。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c71237891d5c1a0907916f668bfcc7fe8447105922e1fb203ca3b715096c66e2",
+      "chineseText": "在评估答辩人是否配得自由裁量行使有利取消申请时，我们“必须权衡显示该外国人作为永久居民不受欢迎的不利因素与其所呈社会及人道考虑因素，从而确定给予救济是否符合本国利益。”见上述案（引文省略）。“有利因素包括美国境内家庭关系、长期居住（尤其自幼始）、若驱逐给答辩人及家人造成 hardship、服役经历、就业历史、资产或商业关系、对社区的贡献与服务、若有刑事记录则有真诚改造证据，以及其他彰显答辩人品德的证据。”不利因素包括“导致排外或驱逐（现称驱逐）事由的性质及基本情形、本国移民法重要违规行为、刑事记录及其性质、时间距离及严重性，以及其他表明答辩人品德不良或作为永久居民不受欢迎的证据。”"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8862f16b7df932f40412304faf7e575728e534aae2d2e66b1736270dfc63deb1",
+      "chineseText": "移民法官认定答辩人因违反纽约刑法第260.10(1)条对危害儿童福利负两项罪名，该条为A类轻罪，涵盖广泛行为，且不限于任何性虐待或接触。（加重强调）"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9125331045f48ef9acf96d075c9c950a23f64c023defe9efd1ba1c74d56f3492",
+      "chineseText": "纽约刑法第260.10(1)条规定：\n若某人采取行为，明知可能危及未满十七岁儿童的身体、精神或道德福利，或指使或授权该儿童从事存在生命或健康实质危险的职业，该人即构成危害儿童福利罪。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "033b8dd14816b940c41065a41610ba44c5a92cd65ea44828322adbf5c2f85119",
+      "chineseText": "第250页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "18f25e2ade408902a1b517844a6072434cf3826ce577ee147602f0c86e7804b6",
+      "chineseText": "国土安全部在上诉中辩称移民法官假设未发生性行为是错误的，基于无性犯罪定罪之事实。鉴于该法规文本不排除性活动，且2021年起诉文件包含性行为指控，我们同意DHS观点。见麦克唐纳案，21 I&N Dec. 20, 23-26 (BIA 1995)（基于不得案下刑事定罪的犯罪证据考虑自由裁量权）。因此，移民法官明显错误认定答辩人未实施受害人指称的性行为。见8 C.F.R. § 1003.1(d)(3)(i)。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4fefed12ada0eb4af63249af169050d7e90c0201220cd7c39795d74bc2b32d36",
+      "chineseText": "我们重新审查自由裁量决定时，考虑受害人陈述称答辩人为14岁受害人购买性玩具和药物（包括可卡因），试图引诱受害人与其及另一女性发生性关系，偏好有精神健康问题的女孩，且安排受害人与另一成年男性进行性行为。我们承认答辩人声称受害人在陈述中梦游或被教唆，且其与受害人关系纯属友谊。然而，我们亦认可移民法官无争议的认定，即答辩人曾陪同14岁受害人获得可卡因，且随后陪同其出售Xanax。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8d5fcde459a3999232e5436d5caa284c28f98ef236988cd9146269472dacafa2",
+      "chineseText": "答辩人有显著的就业历史，虽目前依赖公共援助获取收入、食物及医疗。答辩人成年女儿与伴侣同住，患自闭症及精神健康问题，答辩人自身亦有健康问题，并长期居住美国。即便假设与14岁受害人关系仅是友谊，答辩人不争议的严重且近期刑事行为亦构成极其显著的不利因素。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "061300f20690c79c338446feaf604ddb95293ea1c838fb9c84a36b5343cf7f3d",
+      "chineseText": "经过全新审查，我们认为答辩人严重且近期的刑事行为超过其案中积极因素的分量。因此判定答辩人未充分证明其配得获得有利自由裁量行使，我们将撤销并废止取消驱逐的批准。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "071307dd996e383c5783de13473c6873addd294e28d98551186270662525bcd0",
+      "chineseText": "授权该儿童从事存在其生命或健康重大危险的职业者，触犯该罪。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "033b8dd14816b940c41065a41610ba44c5a92cd65ea44828322adbf5c2f85119",
+      "chineseText": "第251页"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c4c347973b828282eeaf0e8b8e75ad9c8a00af81b46a2fc2b886280d58b3efc6",
+      "chineseText": "DHS还在上诉中称移民法官错误地认定答辩人总体可信，但对其关于性取向的证词不可信。答辩人称未对受害人有性兴趣因其“性别不符”，该观点基于不可信证词。见INA § 240(c)(4)(C)，8 U.S.C. § 1229(c)(4)(C)（认可信度决定基于全部情境及相关因素，包括申请人的反应性、账户的内在可信度、书面与口头陈述间的一致性及各陈述的内部一致性）。虽答辩人在该领域的不可信性影响了其余证词之可信度，特别是与受害人关系性质相关的部分，但因另有理由撤销自由裁量批准，故无需发回移民法官进一步认定。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "022411acdf2e40a6deec5d4b23393b60f3e18359beca68972370d2136fc824f8",
+      "chineseText": "命令：支持国土安全部的上诉。\n进一步命令：撤销并废止移民法官对取消驱逐之批准。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f20fbe2e0bef34d0e629cafb01729b2df0b33d84e5189b0117c599aeee1bab5a",
+      "chineseText": "进一步命令：命令答辩人被驱逐至加拿大。\n通知：若答辩人受终审驱逐令约束，且故意拒绝或逃避根据该令离境、不及时诚信申请离境所需旅行或其他文件，或未按国土安全部要求的时间和地点出现，或阴谋或采取任何行动阻碍其依驱逐令离境，答辩人将面临每天最高998美元的民事罚款。见INA § 274D, 8 U.S.C. §1324d (2018)；8 C.F.R. § 280.53(b)(14) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4edd78747689d6b130e17fbc09b7e91da4869e19cbf7839811d72eb0250c0364",
+      "chineseText": "第252页"
+    }
+  ]
+}

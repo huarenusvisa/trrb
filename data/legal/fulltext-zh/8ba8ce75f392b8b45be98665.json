@@ -1,0 +1,487 @@
+{
+  "schemaVersion": 1,
+  "recordId": "8ba8ce75f392b8b45be98665",
+  "recordFingerprint": "6e03da064e284ae95f8dbfb1f39044e3a8988fff9eed6319f274d301fd8a4ac1",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1411476/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1411476/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1411476/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:09:49.888Z",
+  "sourceDigest": "061e5d6ecefe8239b667459eae425deac1379729bc72860034b7e4b90ff0246c",
+  "translatedAt": "2026-08-17T13:22:28.315Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 58,
+  "translatedSegmentCount": 58,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用自29 I&N Dec. 176（BIA 2025）临时决定#4116"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1a8090edd3a959d7ed7e148af5553a9b494121d38eddeb70b5abbc18a466292f",
+      "chineseText": "G-C-I-案，被告人\n2025年8月19日决定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4f45f83b737991935c94c5a4df9d8cc7bafbb189fbeb1ad2d1d4cffd774b23a0",
+      "chineseText": "（1）被告人的无回应及回避性证词，包括与证据佐证问题相关时，支持对其可信度做出不利认定。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9c0a49db5320001834861c1c2b464d1ebff177adbfc53c4a1d1b94bd6d69a4a0",
+      "chineseText": "（2）缺乏证据佐证可作为独立依据，认定被告人未能满足其提出庇护或拒绝遣返申请的举证责任。 \n代表被告人：Evan M. Gelobter律师，路易斯安那州巴吞鲁日\n出庭审理：合议庭成员：MALPHRUS，首席上诉移民法官；MULLANE及GOODWIN，移民上诉法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62c4b042980c6ad2814ed9cc74d94e2a1f5dd38cf7beaab67651dc0fe8ed4270",
+      "chineseText": "首席上诉移民法官MALPHRUS："
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6d7e1099badc4057a59cdc7274c2fcaaf0f8386314a0f050f73621a2fc704f49",
+      "chineseText": "2024年12月5日发布的一项决定中，移民法官拒绝了被告人根据《移民及国籍法》第241(b)(3)(A)节（8 U.S.C. § 1231(b)(3)(A)（2018年））提出的拒绝遣返申请及根据实施《反酷刑公约》（“CAT”）的法规寻求保护的申请。具体而言，移民法官认定被告人的证词缺乏可信度，且未能充分提供证据佐证其主张。被告人的上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c5fd70f89279cd128cadc1e406cd6a28809b382ff6cfdc5b7fc1db5b2e7aac87",
+      "chineseText": "一、事实及程序背景\n被告人为乔治亚州本国公民。他声称因其是统一民族运动（United National Movement，简称UNM）反对党派的成员及支持者，遭到乔治亚州警方的身体伤害及威胁。他作证称，为支持UNM，他协助运送选民赴投票站，并帮助其兄弟（后者是UNM青年翼的领导人）。他声称，乔治亚州警方曾两次对其进行身体伤害。第一次发生在"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3325ef4e1c727526e08f51f6084a9a0a7331c5733bceebb171a1fa83c3744930",
+      "chineseText": "1\n《联合国禁止酷刑及其他残忍、不人道或有辱人格的待遇或处罚公约》，1984年12月10日，美国参议院条约文件第100-20号，1465联合国条约汇编第85页（1994年11月20日美国生效）。\n第176页"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用自29 I&N Dec. 176（BIA 2025）临时决定#4116"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ccf7976ba8f8b3822f46d9b719d6f7fd453d7e36978d09b3ed9dfebdc41b25ce",
+      "chineseText": "2020年乔治亚州选举之夜，当时他正在运送选民。他作证称，警方击打其头部，致使其住院治疗。曾尝试在法国寻求庇护未果后，被告人声称于2024年4月参加集会时再次遭乔治亚警方殴打并住院治疗。他作证称，当月晚些时候离开乔治亚，途经多个国家后抵达美国。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2b7fa7617a41226854cecb523b1561b70d332d605aff72098df615516d22a0a3",
+      "chineseText": "移民法官驳回了被申请人的撤销遣返和《反酷刑公约》（CAT）保护申请，理由是发现其证词不具可信性，且未提供证据予以修复其不可信的证词。移民法官另行裁定，无论可信性如何，被申请人均未符合买方举证责任，因为他未提供合理可得的佐证证据。被申请人对上述裁定提出异议。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ca9fe87bfc14b6846f8a3701c9434b5f32989845aed0c3632bc4cec9e326f6d2",
+      "chineseText": "二、法律分析\nA. 可信性"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0791a2470c2a35758c43ab8c1947273ef05bc33d822ad01598f3351f670cd0a1",
+      "chineseText": "“庇护或撤销遣返申请人负有举证责任，需证明符合获得救济或保护免于遣返的资格。”见《H-C-R-C案》，28移民与归化裁决第809页，第810页（BIA 2024）；参见《移民与国籍法》§§ 208(b)(1)(B)(i), 240(c)(4)(A)，美国法典8 U.S.C. §§ 1158(b)(1)(B)(i), 1229a(c)(4)(A)（2018）；《移民与国籍法》第241条(b)(3)(C)，8 U.S.C.§ 1231(b)(3)(C)（引用适用于庇护的可信性及佐证规定）。移民法庭不假定申请人具有可信性，且申请人需自行举证证明其可信性。见《H-C-R-C案》，28 I&N Dec. 第811页。作为事实认定者，移民法官“可全部采信、部分采信、或完全不采信申请人的证词，前提是裁定应考虑‘情形总体及所有相关因素’。”同上（引用《移民与国籍法》§§ 208(b)(1)(B)(iii), 240(c)(4)(C)，8 U.S.C. §§ 1158(b)(1)(B)(iii), 1229a(c)(4)(C)）。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b7e0694a0d133b6f65a9aa0bc928b90231f6485fd8855f3b65b5778bfc26b5e8",
+      "chineseText": "移民法官可考虑诸如行为举止、坦诚度、反应程度、“申请人陈述的内在合理性，申请人书面与口头陈述之间的一致性，"
+    },
+    {
+      "segmentId": "pdf-p2-s15",
+      "order": 15,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1b514922c49e257a4be87d8daa85524170f709a579d0616cf482b912baf4eca4",
+      "chineseText": "2\n被申请人经律师承认基于2023年5月16日施行的“规避合法途径”规则，88联邦公报31314、31451页，现行法规8 C.F.R. § 1208.33（2025）不符合庇护资格。故本申请不在本案审理范围内。见《H-L-S-A案》，28 I&N Dec. 228, 240注10（BIA 2021）（说明委员会不处理首次上诉时提出的问题）。"
+    },
+    {
+      "segmentId": "pdf-p2-s16",
+      "order": 16,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d572eac76c78a8a78386383b9fc46dc94dba6ad295428c4eb133345f7bf2ac50",
+      "chineseText": "第177页"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为 29 I&N Dec. 176 (BIA 2025) 临时裁决#4116"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "36aaeb5553d63dcfec844d82a3830787e6e469a64848621a07a0279c857e98c5",
+      "chineseText": "内在一致性，每项陈述的内部一致性，以及陈述与案卷中其他证据的一致性”，以及其他因素。\n《移民与国籍法》§§ 208(b)(1)(B)(iii), 240(c)(4)(C)，8 U.S.C. §§ 1158(b)(1)(B)(iii), 1229a(c)(4)(C)。移民法官可依不一致或不准确之处作决定，无论其是否“触及申请人诉求的核心”。同上。不利的可信性认定“必须有具体且令人信服的理由支持。”见《H-C-R-C案》，28 I&N Dec. 第811页（引自Wang诉Holder案，569 F.3d 531, 537（第五巡回法院，2009））；同见Nkenglefac诉Garland案，34 F.4th 422, 430（第五巡回法院，2022）。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "41dc4c6e5d96828a73c9dc7777f421bc8b76ccfb5a4a6e6065aa50e1ef114cb2",
+      "chineseText": "我们未发现移民法官做出不利可信性认定存在明显错误。见8 C.F.R. § 1003.1(d)(3)(i)（2025）；另见Cooper诉Harris案，581美国最高法院报告285页，299页，309页（2017）（阐释明显错误为尊重性的审查标准）。移民法官针对被申请人证词不可信，提供了具体且令人信服的理由。见Nkenglefac案，34 F.4th第430页。具体而言，移民法官发现被申请人关于何时与新墨西哥大学（UNM）产生联系的证词前后不一致，认为其证词中的若干方面缺乏可信性，并发现被申请人在解释缺少佐证方面缺乏坦诚。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f1a4473dc9857564cec3d68266beba682c6835f62de5c6dddb15874444ff5422",
+      "chineseText": "移民法官在认定被告关于其参与联合国运动党（UNM）开始时间的证词与其在可信恐惧面谈中的陈述不一致时，没有明显错误。见 8 C.F.R. § 1003.1(d)(3)(i)。尽管他证实自己于2015年成为党的积极支持者，但其在可信恐惧面谈中的陈述显示，他于2005年就已开始参与该党。当在听证会上被要求解释这种不一致时，被告表示他可能在可信恐惧面谈时记忆有所不同。移民法官认定该解释不具说服力，进一步削弱了被告的可信度，并无明显错误。"
+    },
+    {
+      "segmentId": "pdf-p3-s21",
+      "order": 21,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "768907798a1633fc52f91106636f9b67e2716ddfb59c09497ad7b06442ed8c3c",
+      "chineseText": "在上诉中，被告辩称，该不一致可由其证词解释为其更直接的激进主义始于2015年。3然而，他在听证会上并未提供此解释，且被告上诉通知书中的无支持主张不构成事实或证据。见 INS v. Phinpathya, 464 U.S. 183, 188 n.6 (1984)；Matter of Khan, 28 I&N Dec. 850, 862 (BIA 2024)（同）。被告对证据的解释不足以构成移民法官认定的明显错误。3被告律师在听证会上询问他关于“2015年左右变得更活跃”的证词含义。被告陈述：“从2015年起，我拥有一辆小汽车”，他“帮助人们在选举期间运送到投票站……向人们宣传联合国运动党的理念”，并协助其兄弟参与党的活动。第178页"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为 29 I&N Dec. 176 (BIA 2025) 临时裁决 #4116"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3a8ccfa3ab1443958116d8c8e6536a1512e8006b24b2a3e5ba43d79241529d01",
+      "chineseText": "被告对证据的解释不足以构成移民法官认定的明显错误。见 Matter of D-R-, 25 I&N Dec. 445, 455 (BIA 2011)（认定移民法官无义务以申请人主张的方式解释证据），经 Radojkovic v. Holder, 599 F. App’x 646 (9th Cir. 2015) 以他因而理由发回重审。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "968db6cb9786fdcfdfa3daa4ad7d5cd35982be9bab17064d77c3aa0e42f467e9",
+      "chineseText": "基于可信恐惧面谈中陈述的整体内容，移民法官合理认定被告称其于2005年参与联合国运动党的说法与听证会上的证词不一致。见 Anderson v. City of Bessemer City, 470 U.S. 564, 574 (1985)（“当证据存在两个可接受解释时，事实认定者在两者间的选择不能认定为明显错误。”）；另见 Matter of A.J. Valdez和Z. Valdez, 27 I&N Dec. 496, 501 (BIA 2018)（说明移民法官有权“从整体案卷的直接和间接证据中作出合理推断”（引自 Matter of D-R-, 25 I&N Dec. 454–55））。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "37b5ec4629ea10d3fdd65df6397855da3e8ea33f6fae534c0dbf6b6ed032aade",
+      "chineseText": "移民法官还认定被告证词中的部分内容不可信。具体而言，移民法官认为被告未调查如何合法进入美国或未与美国境内家人沟通最佳入境方式，不具可信性。鉴于被告曾通过多个国家广泛旅行以进入美国，且有在法国寻求庇护体系的经验，以及其声明在途中与美国家人沟通，我们未发现移民法官对此评估有明显错误。同样，移民法官认定被告声称离开美国两年后，在格鲁吉亚接到匿名电话被告知不要前往集会，但其后在另一城镇参加集会时，尽管身处成千上万抗议者中，仍被警方在黑暗中认出一事不可信，该认定亦无明显错误。见 INA § 208(b)(1)(B)(iii), 8 U.S.C. § 1158(b)(1)(B)(iii)（指示裁判者考量“申请人或证人陈述的内在可信性”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f31de71da6970d4b2ed749e2d65b37c00ed11c4432ad636d463dac9229379aaa",
+      "chineseText": "此外，移民法官发现被告在多次接受有关其努力获取佐证证据的质询时，作出不回应和回避的答辩。被告在包括有关佐证问题的证词中的不回应和回避，支持不利的可信度裁定。见同上。被告在请求延期以收集更多证据时，曾被问及针对收集医疗记录所采取的具体措施。其答复未直接回应该问题，而转而聚焦于格鲁吉亚的政治气候，声称人们害怕参与其案件。他未回答为何抗议会阻止其朋友或家人获取其医疗记录的具体问题。在交叉询问中再次被问及无法提供医疗记录时，被告也作出类似含糊的答复。移民法官认定这些回避性答复显示缺乏坦率，我们对此认定未见明显错误。此种缺乏坦率进一步削弱了被告的可信度。见同上。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为 29 I&N Dec. 176 (BIA 2025) 临时裁决 #4116"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "dced55daa997c6b54d07e3d77d1b5a6368dc5620ed5782eaaeeebe4fa2f60f5e",
+      "chineseText": "（段落内容无正文，只有引用）"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7a86db555f591196a1df9685c154dda0403ef6915d4914227dda2e760be5cfb0",
+      "chineseText": "移民法官在考虑所有情况后，认定上述问题削弱了被申请人证词的可信度，并没有明显错误。参见同上。因此，我们对移民法官作出的不利可信度认定没有发现明显错误。参见8 C.F.R. § 1003.1(d)(3)(i)."
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a4d78aeecef4050d49717d5fe425e51bc310a5979337e486e634f88cdf62890b",
+      "chineseText": "B. 证据佐证"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7d0c6f76d342a35163abbdd0133640fafa9d7ce2e32f778277503c31a427e8e4",
+      "chineseText": "移民法官还认为被申请人没有充分佐证其主张。可信度和证据佐证是《移民与国籍法》（INA）中不同但相关的问题，分别在不同条款中予以讨论，需分别分析。参见INA § 208(b)(1)(B)(ii), (iii), 8 U.S.C. § 1158(b)(1)(B)(ii), (iii)；另见Garland诉Ming Dai案，593 U.S. 357, 371（2021）（解释称“可信度和说服力是紧密相关的概念”）。寻求庇护或拒绝遣返申请人的证词，“在没有佐证的情况下，可能足以满足申请人的举证责任，但前提是申请人使事实裁决者相信其证词具备可信度、说服力，并提及足以证明申请人是难民的具体事实。” INA § 208(b)(1)(B)(ii), 8 U.S.C. § 1158(b)(1)(B)(ii)；另见Mohndamenang诉Garland案，59 F.4th 211, 215（第五巡回法院，2023）；Matter of H-C-R-C-案，28 I&N Dec.在810–11页。"
+    },
+    {
+      "segmentId": "pdf-p5-s32",
+      "order": 32,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "91861065f36072eda9c781ed7dac78faea60b05ee208848a6590f32f06fe2829",
+      "chineseText": "如果移民法官充分说明其理由，移民法官可以在个案中认定申请人可信的证词足以满足举证责任。参见Matter of S-H-案，23 I&N Dec. 462, 465（BIA 2002）（说明移民法官必须作出清晰完整的认定）。然而，《2005年REAL ID法案》第101(a)(3)条（公共法律编号109-13，119 Stat. 231, 303）颁布了现行的可信度和证据佐证规定，预期佐证通常是满足申请人举证责任所必需。参见Matter of L-A-C-案，26 I&N Dec. 516, 518–19（BIA 2015）（讨论REAL ID法案的立法历史）；参见INA § 208(b)(1)(B)(ii)，"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为：29 I&N Dec. 176（BIA 2025）临时裁定编号4116"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "a29de530f3d6385ada7a985a1bf8b1413a81e462d831f1137ce9217d9bd47d92",
+      "chineseText": "8 U.S.C. § 1158(b)(1)(B)(ii)；Ming Dai案，593 U.S. 371页（“为了使外国人的证词单独成立，法规要求外国人必须满足事实裁决者对全部三点的信服——表明其‘证词是可信的、具有说服力的，并且涉及足以证明申请人是难民的具体事实。’”（引文省略））；Mohndamenang案，59 F.4th 215页（强调“必须提供佐证性证据”，除非申请人证明此类证据无法合理获得）。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "dcb31e2d14f3d9a944eca765225bfa794cb07dbae49c259f97873861649050b5",
+      "chineseText": "移民法官通常首先考虑被申请人的证词是否可信，然后评估证词是否足够可靠且详细，以满足其在无其他证据情况下的举证责任。证据佐证在被申请人或其他关键证人证词缺乏坚实基础，或者本身并非完全有说服力时尤为重要，即使证词存在问题不足以导致不利可信度认定。通过这种方式，佐证可填补证词本身不具体或不足以单独令人信服所造成的证据空白。参见INA § 208(b)(1)(B)(ii), 8 U.S.C. § 1158(b)(1)(B)(ii)；另见Ming Dai案，593 U.S. 371页。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7cc4f001212bd6ed0943e68a67a347b972b1200f1e8a1044b579b19ef7325e15",
+      "chineseText": "除不利可信度认定外，移民法官还基于缺乏证据佐证否定了被申请人的拒绝遣返申请。缺乏佐证可以作为独立理由，认定被申请人未达到建立庇护或拒绝遣返主张的举证责任。参见Mohndamenang案，59 F.4th 215页；另见INA § 208(b)(1)(B)(iii), 8 U.S.C. § 1158(b)(1)(B)(iii)。美国最高法院解释道，“INA明确区分可信度、说服力和举证责任。” Ming Dai案，593 U.S. 371页。“可信度不等于事实准确，也不保证法律胜诉。” 同案，372页。移民法官可能不会认定被申请人“不具可信度——意指他或她在撒谎或‘不值得信赖’，”但其证词可能被其他证据所抵消，以致不够有说服力而未满足举证责任。 同案（引述Black’s Law Dictionary第10版，2014年，448页）。在此情况下，证据佐证或其缺失直接关系到是否满足举证责任。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d068c50b8b86a5fa284350934ea682f83b161182dd95d4b834878f4abe06d54d",
+      "chineseText": "如果移民法官认定需要佐证性证据，“除非申请人没有该证据且无法合理获得该证据”，否则必须提供此类证据。 INA § 208(b)(1)(B)(ii), 8 U.S.C. § 1158(b)(1)(B)(ii); 另见Mohndamenang案，59 F.4th 215页。"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为 29 I&N Dec. 176 (BIA 2025) 临时决定 #4116"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "20c598f0d19de3e47adc3a0b998553a9c6f5d4f7ddfc64395c7a49cb4e35752c",
+      "chineseText": "当移民法官认定需要具体证据时，应“(1) 给申请人‘解释为何他无法合理获得该等证据的机会，’(2) ‘确保申请人的解释被纳入记录，’(3) ‘清楚陈述记录该解释是否充分，’以及 (4) 若申请延期，应‘决定是否批准延期以便申请人获取额外证据。’”4 Avelar-Oliva诉Barr案，954 F.3d 757, 770 (第5巡回法院 2020)（引用Matter of L-A-C-, 26 I&N Dec.第518–522页）；另见Mohndamenang案，59 F.4th第215–216页（说明该程序只在移民法官要求“具体证据”时适用，不适用于移民法官“对为何可信证词未被所提供证据证实进行了全面分析”的情况）。然而，移民法官无须提前通知申请人满足举证责任所需的具体证据，也无需自动批准延期让申请人取得证据。5 另见Avelar-Oliva案，954 F.3d第770页；Matter of L-A-C-, 26 I&N Dec.第524页。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "31dba0c3815fd360dd89715e00a298822751e7406dd0bcb167ce3bc2ff9fc211",
+      "chineseText": "移民法官正确认定申请人未提交合理可得的证实性证据。参见INA § 208(b)(1)(B)(ii)，8 U.S.C. § 1158(b)(1)(B)(ii)。作为其主张的支持，申请人仅提交了关于格鲁吉亚政治动荡的一般国家状况证据。然而，此类总体证据并不能证实申请人声称其本人遭受伤害或未来面临个别化伤害风险之说。参见Maryam诉Gonzales案，421 F.3d 60, 63 (第一巡回法院 2005)（一般而言，针对所有公民普遍存在的暴力和侵犯人权行为的证据不足以证明迫害）（引文省略）。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "dc849f7253cec5ef58d66631376dd68ce3f277f08b14e4a155e6f63c320d053f",
+      "chineseText": "移民法官指出数份证据本可证实申请人主张的某些方面，包括医疗"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "bedf6b7cf9e1462d249d0332094a017f4e1423d61970920d45c9b7258fbe79db",
+      "chineseText": "4 尽管申请人在移民法官处请求了延期，但其未对延期动议被拒提出上诉，我们视该议题为放弃。参见Matter of W-E-R-B-, 27 I&N Dec. 795, 795 n.1 (BIA 2020)。 5 美国多数巡回上诉法院均持此见解。参见Wambura诉Barr案，980 F.3d 365, 373-74 (第四巡回法院 2020)（收集案例）。但某些巡回法院持相反观点。参见Chukwu诉美国总检察长案，484 F.3d 185, 192 (第三巡回法院 2007)；Ren诉Holder案，648 F.3d 1079, 1090-93 (第九巡回法院 2011)。鉴于本案属第五巡回法院管辖，我们不受上述判例约束，且不采纳其说法。参见Matter of U. Singh, 25 I&N Dec. 670, 672 (BIA 2012)。我们鼓励持相反观点的巡回法院重新审视该问题。 第182页"
+    },
+    {
+      "segmentId": "pdf-p8-s43",
+      "order": 43,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为 29 I&N Dec. 176 (BIA 2025) 临时决定 #4116"
+    },
+    {
+      "segmentId": "pdf-p8-s44",
+      "order": 44,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "3d3379f6af09b694b0db20b18a01334f83a35df691b262d42427a9d8ec46a663",
+      "chineseText": "文件或其兄弟写的信件，申请人声称其兄弟的政治活动导致申请人所遭受的伤害及其担忧。移民法官给予申请人机会，解释为何该类证据未能提交或无法提交。参见Avelar-Oliva案，954 F.3d第770页；Matter of L-A-C-, 26 I&N Dec.第521页。"
+    },
+    {
+      "segmentId": "pdf-p8-s45",
+      "order": 45,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "b79cbb1901a5f418f0ae008307098fe7d8b1f44682272024dace0774e30997b8",
+      "chineseText": "如上所述，申请人就医疗记录的可得性所作证词模糊且无回应。移民法官认为申请人无法明确说明其采取了何种措施搜集医疗证据，且未对为何无法提交该等证据作出清楚解释，仅提出了关于格鲁吉亚政治局势的一般性说辞。"
+    },
+    {
+      "segmentId": "pdf-p8-s46",
+      "order": 46,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "313adc53ac06bb302ef2244e82556ba3df3e28aa07cd41f2ba976b06a0633192",
+      "chineseText": "申请人亦未提交其兄弟的信件，该兄弟在终审听证时居住于美国，且为申请人在格鲁吉亚政治活动的重要证人。问及为何未提交其兄弟的信件支持申请时，申请人证称其兄愿意写信，但其本人未曾请求。鉴于兄弟在申请人主张中的关键角色及其居住在美国，移民法官认定该证据合理可得，理应提交。参见Aben诉Garland案，113 F.4th 457, 467-68 (第五巡回法院 2024)（强调应考虑申请人“是否‘合理可得’证实性证据” (引自INA § 208(b)(1)(B)(ii), 8 U.S.C. § 1158(b)(1)(B)(ii))）。申请人未就无法提供其兄证据作有力解释，造成评估申请人主张时存在重大证据缺口。"
+    },
+    {
+      "segmentId": "pdf-p8-s47",
+      "order": 47,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "205cb67ea611aa7f61dd197e7b5dce518f47c5131a9b9d0d7a018aea42241655",
+      "chineseText": "基于上述理由，我们同意移民法官的认定：不论申请人可信与否，其未提交合理可得证据以证实主张的重要要素，因而未能满足建立资格的举证责任。参见INA § 208(b)(1)(B)(ii)，8 U.S.C. § 1158(b)(1)(B)(ii)；Mohndamenang案，59 F.4th第215页；Rui Yang诉Holder案，664 F.3d 580, 586-87 (第五巡回法院 2011)（确认未提供合理可得证据为拒绝救济的独立依据）；Matter of L-A-C-, 26 I&N Dec.第518-519页（声明不论申请人是否被认定可信，其负有证实主张的重要要素的责任，“当合理预期某些申请人主张细节应有证实性证据时，应当提供该等证据”（引自Matter of S-M-J-, 21 I&N Dec. 722 (BIA 1997)））。 第183页"
+    },
+    {
+      "segmentId": "pdf-p9-s48",
+      "order": 48,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为 29 I&N Dec. 176 (BIA 2025) 临时决定 #4116"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "70fb126419c741d8fd9ea426ce16a80ee548703621f86f11b9884b9d76e7b05b",
+      "chineseText": "鉴于否定可信性及未提交合理可得证据两项独立认定，我们确认移民法官关于依照INA驳回阻止遣返申请的决定。"
+    },
+    {
+      "segmentId": "pdf-p9-s50",
+      "order": 50,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "9331d1d5d67582a95207e96df66581cf1547426d1f287e3ca6ec9788fc337dd7",
+      "chineseText": "C. 反酷刑公约保护"
+    },
+    {
+      "segmentId": "pdf-p9-s51",
+      "order": 51,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "8d55a589f5ac504f051fefa3e5af5339a49f7e2d28fdcb78321030a7c4f728c7",
+      "chineseText": "申请人亦对移民法官拒绝给予反酷刑公约（CAT）保护提出异议。我们上述已认定移民法官未明显错误地认定申请人证词不可信。然而，第五巡回法院阐释称，“当申请人提出的证据可能独立支撑其获得反酷刑公约保护的资格时，单一的负面可信性认定不能否定其救济资格。” Aguilar-Quintanilla诉McHenry案，126 F.4th 1065, 1071 (第五巡回法院 2025)（引自Ndifon诉Garland案，49 F.4th 986, 989 (第五巡回法院 2022)）。"
+    },
+    {
+      "segmentId": "pdf-p9-s52",
+      "order": 52,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "c3facca0f4590825254452c057c8926181ab5edb5870a3a879ef1d5f2d3bb1a2",
+      "chineseText": "与申请人上诉主张相反，移民法官考虑了唯一呈现的独立证据，即有关一般国家状况的文章和报告。此类“[一般的]国家状况证据很少揭示国家行为者是否会折磨任何特定个人。” Qorane诉Barr案，919 F.3d 904, 911 (第五巡回法院 2019)；另见Matter of J-J-G-, 27 I&N Dec. 808, 817 (BIA 2020)（说明“关于暴力和犯罪的一般性证据”不足以构成反酷刑公约保护之资格）。虽然证据讨论了格鲁吉亚政治反对派所面临状况，但未涉及申请人的政治活动或任何既往伤害，这些为评估其未来可能遭受酷刑的重要依据。参见8 C.F.R. § 1208.16(c)(3) (2025)（指示裁判人员应考虑“所有与未来酷刑可能性相关的证据”，包括“申请人过去所受酷刑的证据”）。"
+    },
+    {
+      "segmentId": "pdf-p9-s53",
+      "order": 53,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "ce4cd77ea5ed5fbd4b51cf2c32eed8c2b4e082b6c7b4c79489dd61b674033ad5",
+      "chineseText": "基于负面可信性认定及缺乏支持个别遭酷刑风险的独立证据，我们同意移民法官认定申请人未能证明其未来被格鲁吉亚国家官员或其他具有官方身份人士实施、教唆或默许的酷刑之概率大于否。6 参见8 C.F.R. § 1208.16(c)(2)；8 C.F.R. § 1208.18(a)(1) (2020)。"
+    },
+    {
+      "segmentId": "pdf-p9-s54",
+      "order": 54,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "9bf111f9e4e3b0090b699bdf040667a33d34d1a47c7b386390ee6b1876d821b7",
+      "chineseText": "6 由于我们基于上述理由确认移民法官决定，故无需处理上诉中提出的其他问题。参见INS诉Bagamasbad案，429 U.S. 24, 25 (1976)（说明“一般原则上，法院及机构无需针对对决策结果无必要之议题作出裁定”）。 第184页"
+    },
+    {
+      "segmentId": "pdf-p10-s55",
+      "order": 55,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "8134f7df7464f117e1fb19a533cc6e9469aee08d770a35812667ad759fe07560",
+      "chineseText": "引用为 29 I&N Dec. 176 (BIA 2025) 临时决定 #4116"
+    },
+    {
+      "segmentId": "pdf-p10-s56",
+      "order": 56,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "6258051a08bef0a9d938f3befd822a33791a89dd04c1fdaea4ef194b780769f8",
+      "chineseText": "因此，我们确认移民法官拒绝反酷刑公约保护的决定。鉴于申请人未建立其获得INA下阻止遣返救济或CAT保护的资格，我们将驳回其上诉。"
+    },
+    {
+      "segmentId": "pdf-p10-s57",
+      "order": 57,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "5dc8a6c36ca1eabf3b7e7c2de397c3f22282908d64a59c2a95af8a023405db02",
+      "chineseText": "命令：上诉驳回。 通知：若申请人受到最终遣返令且故意不遵守或拒绝依据该命令离开美国，未善意及时申请旅行或其他离境所需文件，或不在移民和国土安全部要求的时间地点出现，或合谋采取任何行动以阻止或妨碍依据遣返令离境，将面临每天最高998美元的民事罚款。参见INA § 274D，8 U.S.C. § 1324d (2018)；8 C.F.R. § 280.53(b)(14) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p10-s58",
+      "order": 58,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "38e5f08fc4150b585da8572ffc0e5d40c35a2141b9121a339477c7c68292f938",
+      "chineseText": "第185页"
+    }
+  ]
+}

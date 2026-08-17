@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "recordId": "40b6030c6b52c92089168a46",
+  "recordFingerprint": "00314ccfdb349b92203be5f8dab06f77c5205ab1812e9e98da121771b7f0d39f",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1411216/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1411216/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1411216/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:08:50.510Z",
+  "sourceDigest": "9b054de86d3a776d1d4ac49b97e42c534e5e9d0f60cecf6533ae205135e3e16c",
+  "translatedAt": "2026-08-17T13:09:49.851Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 18,
+  "translatedSegmentCount": 18,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "83879cd0e7af0a93a79b60bc52d67cf51af6a5c8a6011086704076ac86d5fb0d",
+      "chineseText": "引证为 29 I&N Dec. 173（BIA 2025）临时决定＃4115"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3d975209870800208a7670ca265f2fa6a1a3140ac3831dca52a45a67437b9f16",
+      "chineseText": "何塞·路易斯·萨拉斯·佩纳案，受访人\n2025年7月31日由委员会裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d78cd5d99a78ef2391b485e1b542e1510bd0b2413d924b15c1276b46f73b475a",
+      "chineseText": "受访人最近因贩运大量可卡因被逮捕，表明其对社区构成危险，不应准予以保证金释放。\n代表受访人：埃德加·M·皮尼亚律师，南卡罗来纳州哥伦比亚\n代表国土安全部：德文·K·里斯助理首席法律顾问\n审理小组成员：MALPHRUS，首席上诉移民法官；HUNSUCKER 和 GOODWIN，上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c8769bad289be346816b5a3c40485e26fcf984f258ecb61d1343be7e88eb9449",
+      "chineseText": "GOODWIN，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "63207b8f6f46ae1a5c0027c0b7379699849691fc4625a57195a42fdd02a1ac4a",
+      "chineseText": "国土安全部（“DHS”）对2023年2月2日移民法官的保证金令提出上诉，该令批准受访人请求更改拘留状态并在缴纳5000美元保证金后释放其拘留。移民法官于2023年3月14日发布保证金备忘录说明其保证金决定。受访人反对国土安全部的上诉。上诉将被支持。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "345338241a2650782879beed2960f3b1e6d97ff8c9d5e1fdf55705f975436020",
+      "chineseText": "移民法官在确定受访人已证明自己不是逃跑风险，且其释放不会对他人或财产构成危险后，批准了拘留状态变更。见Guerra案，24 I&N Dec. 37, 40（BIA 2006）；亦见《移民和国籍法》（“INA”）第236(a)节，8 U.S.C. § 1226(a)（2018年）。国土安全部在上诉中认为移民法官在关于危险性的认定上存在错误。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4cc76958143658cd0b24946ccca14c95c34f69d1cc6af0f86b1e4eea08a15c76",
+      "chineseText": "尽管受访人的刑事记录包括2007年9月4日因持开放容器、超速和无证驾驶被逮捕，以及2022年10月4日因贩运约2077克可卡因被逮捕，移民法官认定受访人不是社区的危险分子。1\n根据2025年8月13日第6369-2025号命令，司法部长指定委员会于2025年7月31日就Salas Pena案（BIA）作出的决定作为所有涉及相同法律问题的程序的先例。见8 C.F.R. § 1003.1(g)(3)(2025)。已作出与该案先例性质一致的编辑修改。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "96dc8a17fb618fd95675146965f5b4c526cf91b9255f3ac481dd760635b0e12e",
+      "chineseText": "第173页"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "83879cd0e7af0a93a79b60bc52d67cf51af6a5c8a6011086704076ac86d5fb0d",
+      "chineseText": "引证为 29 I&N Dec. 173（BIA 2025）临时决定＃4115"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fc2992d71110f0f33ebe9d2bd5c8526516b3f4048564f49dc2d2615d41cb9927",
+      "chineseText": "受访人在2007年9月4日因持开放容器、超速和无证驾驶被捕，2022年10月4日因贩运约2077克可卡因被捕。移民法官认定，“警方报告对于针对受访人的待决指控缺乏可靠性标志”。具体而言，刑事指控“站不住脚，因为未在受访人身上发现毒品”，其仅由接收了含有可卡因的联邦快递包裹的女性牵连。移民法官进一步认定，在受访人住所发现的含有可卡因痕迹的35张100美元钞票及其他物品不足以证实其参与毒品贩运。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9febd79f606512be6704fdb81182e418d9f086670abcd187aea5c08cf0b288ac",
+      "chineseText": "依据《移民和国籍法》第236(a)节，8 U.S.C. § 1226(a)进行的保证金听证会上，举证责任由受访人承担，须向移民法官证明其释放不会对人员或财产构成危险，且将有可能出席今后程序。见Guerra案，24 I&N Dec. 39-40；Adeniji案，22 I&N Dec. 1102, 1112-13（BIA 1999）；8 C.F.R. § 1236.1(c)(8)（2025）；另见Urena案，25 I&N Dec. 140, 141（BIA 2009）。移民法官对决定是否允许或建议合法拘留者得以保证金释放拥有广泛酌情权。见Guerra案，24 I&N Dec. 39-40。《移民和国籍法》第236(a)节并不赋予被拘留外籍人士保证金释放的权利，而仅授权司法部长在行使广泛酌情权时，如认为保证金释放合理，可予准许。见D-J-案，23 I&N Dec. 572, 575（A.G. 2003）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1415a1a449b01372ee776e4d858d67b90012c1d9efe880dfa7a52a833658c2fd",
+      "chineseText": "经重新审查，我们推翻移民法官关于受访人已证实其释放不会对社区构成危险的认定。见8 C.F.R. §§ 1003.1(d)(3)(ii), 1236.1(c)(8)（2025）。我们承认涉毒品贩运指控尚在审理中，受访人未被定罪。但如我们在Guerra案，24 I&N Dec. 40-41中所言，在保证金程序中，移民法官考虑外籍人士是否对社区构成危险并不局限于刑事定罪。见Panin案，28 I&N Dec. 771, 773（BIA 2024）（认定“联邦刑事预审阶段释放并不妨碍移民法官根据INA第236(a)节8 U.S.C. § 1226(a)拒绝外籍人士移民拘留保证金释放请求”）。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0aeed604cd3e4f2001e8f583c6928b69cff5a654bb00e338a25d30c469601032",
+      "chineseText": "第174页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "83879cd0e7af0a93a79b60bc52d67cf51af6a5c8a6011086704076ac86d5fb0d",
+      "chineseText": "引证为 29 I&N Dec. 173（BIA 2025）临时决定＃4115"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "047d141dbead21cdad7b61584a364118a34f126a6e7d95c0673222979f2de7a2",
+      "chineseText": "我们不同意移民法官关于“警方报告缺乏可靠性标志”的结论，且对该报告赋予比移民法官更大分量。见H-L-H- & Z-Y-Z-案，25 I&N Dec. 209, 212（BIA 2010）（“[委]有权对证据赋予与移民法官不同的权重”）。警方报告显示，受访人使用他人地址寄送一包约2077克的可卡因，协调她取货；受访人在交通拦截时被捕，持有伪造的南卡罗来纳州驾驶执照，其车辆内有35张含麻醉品痕迹的100美元钞票、一本似为账本的笔记本及小袋子（常见于麻醉品销售）。此外，随后搜查其住所，在保险箱内发现一把手枪，一个银行信封内有384.51美元及一个塑料袋内装有未知白色粉末，K-9犬对此地点有阳性警示。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fd6d276540219ba90446fba85051b5f0ab1a9cfc58f00b72296437a6d7d614a7",
+      "chineseText": "考虑警方报告中概述的全部情况，这些情况明显显示毒品贩运的强烈迹象，并结合该罪行的严重性，我们认定受访人未能举证其释放不会对人员或财产构成危险。见Guerra案，24 I&N Dec. 39-40；8 C.F.R. § 1236.1(c)(8)；另见INA第236(a)节，8 U.S.C. § 1226(a)；Y-L-、A-G-和R-S-R-案，23 I&N Dec. 270, 275（A.G. 2002）（讨论非法药品贸易所致危害）；U-M-案，20 I&N Dec. 327, 329-30（BIA 1991）（论及毒品犯罪的严重性及其对社区的威胁）。故此，我们推翻移民法官关于受访人获保证金释放之裁定。见Siniauskas案，27 I&N Dec. 207, 208-10（BIA 2018）（推翻移民法官认定受访人非社区危险人的决定）；泛指Guerra案，24 I&N Dec. 39-41。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "838590024d5823c0a504bf4fa0177a6c9623a02091674995c45ce2a6de62cf4e",
+      "chineseText": "命令：国土安全部的上诉获支持。\n进一步命令：移民法官的决定予以撤销，命令受访人无保证金继续拘留。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "317e5176081a4c3477f3db99ac0094c84445796dff48979aae7714a2141016a7",
+      "chineseText": "第175页"
+    }
+  ]
+}

@@ -1,0 +1,671 @@
+{
+  "schemaVersion": 1,
+  "recordId": "cde0657843ba7f48ebf00322",
+  "recordFingerprint": "57895bb4c1bc0a064e425f7909fd538047b9d23d862e4bc9db9ef03e1a64e67c",
+  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1413311/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1413311/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1413311/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:31:30.497Z",
+  "sourceDigest": "50ac283add9994d9b9505e4343b0c62df0037734101ecfad4caaa526238d43b6",
+  "translatedAt": "2026-08-17T13:51:30.538Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 81,
+  "translatedSegmentCount": 81,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为 29 I&N Dec. 216 (BIA 2025) 临时决定 #4125"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2398f9c301708502101e933e38dcaf96d078eebcb79780f1af74683a5982316b",
+      "chineseText": "Jonathan Javier YAJURE HURTADO 事项，当事人\n2025年9月5日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ad7368b2680f35715d265b41ba13fda906ebe65a169eaa052b503843c3668032",
+      "chineseText": "根据《移民与国籍法》第235(b)(2)(A)条款的明文规定，8 U.S.C. § 1225(b)(2)(A) (2018)，移民法官无权审理保释请求或向未经准入即在美国境内的外国人授予保释。\n被告代理律师：Gabriel Harrison Esq.，华盛顿贝灵汉\n国土安全部代理律师：Cassidy A. Cloninger，助理法律顾问\n审理委员会成员：HUNSUCKER 与 MONTANTE 上诉移民法官；MCCLOSKEY 临时上诉移民法官。\nHUNSUCKER，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "702d9c1bf802772ef13b500b9f4f5ee0d5997a82d42435d832c5d5bfe092e1bc",
+      "chineseText": "被告，委内瑞拉原籍及公民，现上诉反对移民法官2025年4月18日关于否决其重新确定拘留身份请求的命令。移民法官确定其无权审理被告的保释请求，因被告受《移民与国籍法》第235(b)(2)条款强制拘留规定约束，8 U.S.C. § 1225(b)(2) (2018)，或作为替代理由，认为被告有逃跑风险。本案涉及移民上诉委员会此前未以先例形式审理过的议题——即移民法官是否有权为未经检验而进入美国境内的外国人举行保释听证会。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cc04bbe6d800f9d638e397188bf72a23be452aa3ece29df84eeecbcd07b7b8e8",
+      "chineseText": "一、事实和程序背景\n被告于2022年11月在得克萨斯州埃尔帕索附近未经检验越境进入美国。美国公民及移民服务局于2024年授予其临时保护身份，"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dfbc2360d42b6c6308030fdc77914b6a21e9c8813bd89b11889194b132657d00",
+      "chineseText": "注释1：在本决定剩余部分，我们将使用“保释听证会”一词指代所有移民法官审议任何有关外国人拘留或释放条件的听证会。\n注释2：2025年4月30日，移民法官发布了支持保释命令的书面备忘录。\n第216页"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为 29 I&N Dec. 216 (BIA 2025) 临时决定 #4125"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b7c6db71f4b389de5f6cda7422fee34737fc2f9bc197cae2cc5b9aff9d1d6cf9",
+      "chineseText": "但该身份于2025年4月2日失效。被告被移民官员拘捕，2025年4月8日，国土安全部向被告发出出庭通知，指控其根据《移民与国籍法》第212(a)(6)(A)(i)条款，8 U.S.C. § 1182(a)(6)(A)(i) (2018)，因“未经准入或假释即在美国境内的外国人，或在非总检察长指定时间或地点入境的外国人”而不获准入境。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "17911736980674db77ce15d54948e1c5f068fb520f1de04e6422e5d18605ccf8",
+      "chineseText": "被告请求移民法官举行保释听证会。听证会上，移民法官认定基于被告案情无权设置保释。作为替代理由，移民法官表示将拒绝保释，因被告有逃跑风险。被告及时向委员会提起上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "44a32513ecdaaba51dcaf0d1f20a2a186ca375a7c3cf13e15fada186bb0d7318",
+      "chineseText": "2025年7月18日，委员会发出补充提交材料请求，要求双方具体论述移民法官是否有权为未经准入即在美境内的外国人举行保释听证会。双方均提交了补充材料。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "565b6858c9b8a28c3b751f1354aa3ac1f9a65ea4f81615cddf2adcb8336288e7",
+      "chineseText": "二、法定与法规背景\n我们对移民法官是否有权审理未经准入且已在美国境内居留至少两年的外国人的保释请求进行无偏见审查。参见 8 C.F.R. § 1003.1(d)(3)(i) (2025)。移民法官审理任何事项的权限，包括保释请求，均限于《移民与国籍法》及通过法规由总检察长授权的权限。参见 8 C.F.R. § 1003.10(b) (2025)；另参见 A-W- 事项，25 I&N Dec. 45, 46 (BIA 2009)；D-J- 事项，23 I&N Dec. 572, 575 (A.G. 2003)。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "045f1600051546a9ce73d4be057729fed8c69e0620749282009c6a5f0abc31a1",
+      "chineseText": "注释3：移民法官审理保释请求的权限受到诸多法律条文限制。例如，移民法官无权为排除程序中的外国人进行重新拘留决定听证会。参见 8 C.F.R. § 1003.19(h)(2)(i)(A) (2025)。移民法官也无权为入境外国人（包括根据《移民与国籍法》第212(d)(5)条款在入境后被假释的外国人）进行重新拘留决定听证会。参见 8 C.F.R. § 1003.19(h)(2)(i)(B)；另参见 Oseiwusu 事项，22 I&N Dec. 19, 20 (BIA 1998)。《移民与国籍法》和相关法规的其他章节进一步禁止移民法官在某些情况下考虑重新拘留决定。参见 INA § 235(b)(1)(B)(iii)(IV), (b)(2)(A)，8 U.S.C. § 1225(b)(1)(B)(iii)(IV), (b)(2)(A)；INA § 236(c)，8 U.S.C.A. § 1226(c) (West 2025)；8 C.F.R. §§ 235.3(b)(1), 1003.19(h)(1)(i)(A)–(E) (2025)。\n第217页"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为 29 I&N Dec. 216 (BIA 2025) 临时决定 #4125"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "51297a6560e7e22c653c31afeb6c8724ce868437f224fb52076aa3e29ada9783",
+      "chineseText": "A. 根据第235条的拘留规定"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "483c3e468bc291b2a6ad060e4b773619b54f3dc0b84cdfa933ff0ea916e286df",
+      "chineseText": "未经准入的外国人的检查、拘留和遣返受《移民与国籍法》第235条，8 U.S.C. § 1225，规定的管辖。该条将“入境申请人”定义为“在美国境内尚未准入的外国人，或于非总检察长指定时间或地点（含因在国际或美国水域被拦截后被带至美国的外国人）抵达美国的外国人。”INA § 235(a)(1), 8 U.S.C. § 1225(a)(1)。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "05bc4f16e23bbc62c9439821307b4008c5b1911c7aae079b15df6ff5f856cf08",
+      "chineseText": "根据第235条，国会设定了三类入境申请人。前两类涵盖于 INA § 235(b)(1)(A), 8 U.S.C. § 1225(b)(1)(A)。分别是：（1）根据第212(a)(6)(C)或212(a)(7)条款不获准入的入境外国人，8 U.S.C. § 1182(a)(6)(C), (a)(7)；（2）未获准入或假释入境且根据第212(a)(6)(C)或212(a)(7)条款不获准入、且未向移民官充分证明其在作出不获准入裁定前至少连续在美居留满两年的外国人。INA § 235(b)(1)(A)(i), (iii)(II), 8 U.S.C. § 1225(b)(1)(A)(i), (iii)(II)；详见 8 C.F.R. § 235.3(b)(1) (2025)。法律明确规定上述两类外国人必须强制拘留至移民程序结束，INA § 235(b)(1)(B)(ii), (iii)(IV), 8 U.S.C. § 1225(b)(1)(B)(ii), (iii)(IV)；见 8 C.F.R. § 235.3(b)(2)(iii)。因此，移民法官无权审理上述两类入境申请人的保释请求。见 M-S- 事项，27 I&N Dec. 509, 515–19 (A.G. 2019)。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "031995ee5b3a28eda6350c4ad25aba215d7f99c9125e74e6b284a892ee15698d",
+      "chineseText": "第三类入境申请人为根据第235条所规定检查、拘留及遣返程序适用的外国人，即那些寻求入境且被移民官员认定“未经明确且确凿地有权被准入”的外国人。INA § 235(b)(2)(A), 8 U.S.C. § 1225(b)(2)(A)。此类属“涵盖所有非第235(b)(1)条款涵盖的入境申请人的兜底条款。”Jennings v. Rodriguez, 583 U.S. 281, 287 (2018)。如同前述两类入境申请人，法律明确要求第三类兜底条款的入境申请人必须强制拘留至其移民程序结束。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "387e31fb3e6480f0f4b9e39aa52c464eda08efe5f167e9dedd74a35713b906d9",
+      "chineseText": "第218页"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216（BIA 2025）临时决定#4125"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e4df1932c630ee4e3146a05de9d4c165c606da64598a5da02f579763b23582ca",
+      "chineseText": "移民程序。见INA第235(b)(2)(A)条款，8 U.S.C.§1225(b)(2)(A)；另见Jennings案，583 U.S.第299页（解释235(b)(1)和(2)条款的“字面意义”，认为入境申请者必须在其移民程序期间被强制拘留）；8 C.F.R.§235.3(b)(1)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "216974502ad5232dae3d1ea2f7c2935b0f6448a7f9141a3792e04ce3db8d9d30",
+      "chineseText": "B. 根据第236条款的拘留"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "edf56156436e695681e874b008362998624465d795c807d69aa8a24149e2283f",
+      "chineseText": "INA第236条，8 U.S.C.A.§1226（West 2025），为尚未决定是否将该外国人从美国驱逐的人提供了额外的逮捕和拘留指导。INA §236(a)，8 U.S.C.A.§1226(a)。第236条“通常管理依据第237(a)条可被驱逐外国人的逮捕和拘留程序”，包括“入境时不获许可或自入境后因某些刑事罪行被定罪的外国人。”Jennings案，583 U.S.第288页（引自INA §237(a)(1)、(2)条，8 U.S.C.§1227(a)(1)、(2)）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "87f2f6d2d4caf2921e0a0b9cc2e278b06dca48d28b50818bc1c030082e1bb4a4",
+      "chineseText": "第236条的拘留规定区分两类外国人。第一类为经DHS发出逮捕令被捕的外国人，受某些限制，可被拘留或保释释放，或有条件假释。INA §236(a)，8 U.S.C.A.§1226(a)。8 C.F.R.§1236.1(d)（2025）授权移民法官“依据INA第236条权限……拘留该外国人，释放该外国人，并依据本章第1003.19条确定释放该被告的保释金额（如有）。”第二类为第236条规定的某些特定“刑事外国人”类别，根据INA第236(c)条，8 U.S.C.A.§1226(c)，其拘留为强制性。移民法官无权审议该类外国人的保释请求。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "389160e81fc5ad0665de26428374a847c9dbc758a3a491d69943298d06f0e38d",
+      "chineseText": "第236条未意图推翻INA第235(b)(1)和(2)条明文规定的抵达外国人和入境申请人的强制拘留要求。8 U.S.C.§1225(b)(1)、(2)。因此，虽然某些不获许可的外国人若能证明已"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e489d46b1f925c41d03e4e014bd48a875b4602138440d1bfba73d66f7cec6e1e",
+      "chineseText": "4 虽然这些外国人可能由司法部长或DHS予以假释，但移民法官无权考虑该事项。见INA §212(d)(5)(A)，8 U.S.C.§1182(d)(5)(A)；8 C.F.R.212.5(a)（2025）（指定有权授予假释者）；另见Jennings案，583 U.S.第300页（指出司法部长可基于“紧急人道理由或重大公共利益”为依据，对依据235(b)(1)和(b)(2)条被拘外国人短暂假释入境”（引自INA §212(d)(5)(A)，8 U.S.C.§1182(d)(5)(A)）。第219页"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216（BIA 2025）临时决定#4125"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "42068c308ed1507a9781be423927b3932a9b8e43b63e4bf03ac4278a8facee6f",
+      "chineseText": "居留美国超过两年的情况下，不适用迅速驱逐程序，但该外国人仍“应被拘留以参加240条程序。”INA §235(b)(2)(A)，8 U.S.C.§1225(b)(2)(A)。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "bdaf839af5e09ab0e73c0bfc394aa603f3accedf2a7c58a8c44beb17301b2301",
+      "chineseText": "III. 被告申请事项上诉所涉及的问题为法律解释：INA是否要求所有入境申请者——即便是像被告这样未经许可入境并在美国境内无合法身份居住多年者——在移民程序期间必须强制拘留，从而移民法官无权处理此类别外国人的保释请求？解决该问题时，委员会必须从INA的“字面语言”出发。见Jimenez诉Quarterman案，555 U.S.113,118（2009）（“任何法律解释问题皆应从法条字面语言开始分析。”）。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "41442d5a80cba5d6363abbac39ba47dc4aab12921ee95d449b08de26337c605e",
+      "chineseText": "“法条语言之明晰或模糊，依据语言本身、其所处具体语境，以及法令整体语境判定。”Robinson诉Shell Oil Co.案，519 U.S.337,341（1997）；另见Beecham诉美国案，511 U.S.368,372（1994）（“我们寻求理解决定的是整体法条的明白含义，而非孤立句子的含义。”）。委员会“不孤立解读法规语言，而是……‘将用词放入语境，结合整个法规结构加以理解。’”Matter of C-T-L-案，25 I&N Dec.341,345（BIA 2010）（引自FDA诉Brown & Williamson Tobacco Corp.案，529 U.S.120,133（2000））；另见Stenberg诉Carhart案，530 U.S.914,942（2000）（“法案若含明确定义，即使与其通常意思不同，亦须遵循该定义。”）。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c475a5142129a948b788838604afcf580a69d45fdc7935e6ced95865374aae60",
+      "chineseText": "根据INA的字面解释，我们确认移民法官对保释请求无权裁决的判定，因未经许可进入美国的外国人为INA §235(b)(2)(A), 8 U.S.C.§1225(b)(2)(A)所定义的入境申请者，应在驱逐程序期间被拘留。见Jennings案，583 U.S.第300页（判定INA“无疑规定处于第235(b)(1)及(2)条范围内的外国人‘应当’被拘留”，且“‘应当’一词一般含义是义务，与‘可’字暗示酌情权不同”（引自Kingdomware Technologies, Inc.诉美国案，579 U.S.162,171（2016）））。"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "69efdc1974b04f910d1923de41199d88ebac03e38baba01f9776279cf4c4d78b",
+      "chineseText": "第220页"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216（BIA 2025）临时决定#4125"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "bebbad7838d619afc06ef9cd1935521af59169e174bd23f11156be1598f60efe",
+      "chineseText": "被告承认，他依据INA §235(a)(1), 8 U.S.C.§1225(a)(1)，因未经检验入境，属于“入境申请者”。然而，被告亦主张，因其自2022年11月未经检验入境后，已在美国境内居住近3年，故不应视为INA §235(b)(2)(A), 8 U.S.C.§1225(b)(2)(A)中所述的“寻求入境”者。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "eab45357e261401314fd84ec7420692c9696a135364c8d1eaa19b7de6708cf11",
+      "chineseText": "被告的主张无INA字面依据，且造成法律困境。若他未获准入境（其亦承认），又非“寻求入境”（其主张），其法律地位如何？被告未提供法律依据说明，居住在美国境内无合法身份一段未限定时间后，INA竟规定入境申请者不再“寻求入境”，并以某种方式转换身份，使其有资格依据INA §236(a), 8 U.S.C.A.§1226(a)请求保释听证。见Matter of Lemus, 25 I&N Dec. 734, 743及注6（BIA 2012）（指出“许多事实上未以通常意义请求入境许可的人[包括未被承认进入美国的外国人]依然被视为依据移民法‘寻求入境’”）。被告主张亦未解答，若入境申请者在未获入境及无合法身份的情况下多年留美，反而不受§235(b)(2)(A)约束，改受§236约束，则谁会受§235(b)(2)(A)保护？"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "704808fd8f8df0c60d99bdc2b42d52dec9cdd5e5e6beac52d49ef8090672bd91",
+      "chineseText": "被告进一步主张，移民法官对§235(b)(2)(A)条适用于无检验进入美国外国人的解释，致使§236(c)(1)(A)、(D)、(E)条款（8 U.S.C.A.§1226(c)(1)(A),(D),(E)）——针对特定类别不获准入境外国人禁止依据§236(a)条（8 U.S.C.A.§1226(a)）请求保释——变得无意义。被告认为，若那些外国人已受§235(b)(2)(A)条强制拘留约束，国会不可能同时制定236(c)条文并通过近年《Laken Riley法案》，Pub. L. No. 119-1, § 2, 139 Stat. 3, 3 (2025)加以修订。5被告的主张为"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f340b89c409fb4ffa6564a58cb7db681e910c442a1acec43809cbce41fcf52d7",
+      "chineseText": "5\n《莱肯·赖利法案》修订了《移民与国籍法》（INA）第236(c)节，8 U.S.C.A. § 1226(c)，规定必须由司法部长拘留某些被视为不可接纳的刑事外国人，包括那些根据INA第212(a)(6)(A)(i)节，8 U.S.C. § 1182(a)(6)(A)(i)因“未经准入而居留在美国”而被认定不可接纳的，包括因盗窃等特定犯罪被逮捕、指控或定罪的人员。\n  第221页"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216（BIA 2025）临时决定 #4125"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "39677feca0482468b72452bc1c2fbf99941c60d3579357a2e7a4d5632e4ada3e",
+      "chineseText": "然而，这种主张无效，因为《移民与国籍法》第236(c)节的法定文本，包括《莱肯·赖利法案》所作修订的文本，并未意图更改或削弱《移民与国籍法》第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)的规定，该节要求符合该法律定义的外国人“应被拘留，以进行第240节下的程序。”"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0babca82b02f3d217bd9a9d7547b0d7b2b620f6c1cf4b32be6e1a917215eea58",
+      "chineseText": "被诉人的解释实际上会使《移民与国籍法》第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)变得多余。将第236(c)节的规定解释为使第235(b)(2)(A)节（甚至是第235(b)(1)节，8 U.S.C. § 1225(b)(1)）的规定无效，违反了“法定解释的基本原则”，即法院应“在可能的情况下，赋予法规每一款和每一词以效力”，而不是废弃整节法规。美国诉梅纳什案，348 U.S. 528, 538–39 (1955)（引证略）。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a90188b513f12813007ee66b5f478da8ce1938d3880ca1a5c46e9375f86dfdd2",
+      "chineseText": "此外，《移民与国籍法》第236(c)节，8 U.S.C.A. § 1226(c)强制拘留的外国人子类正属于第235(b)(2)(A)节强制拘留规定所涵盖的外国人类别，这并不构成认定第235(b)(2)(A)节无效的理由。见巴顿诉巴尔案，590 U.S. 222, 239 (2020)（判定“冗余在立法起草中常见——有时是国会为确保无误，有时是因国会疏忽或未预见，或仅因人类沟通的局限”，“法规局部的冗余并不许可对法规的其他部分进行文本相违的重写或削弱”）。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "75378df9beb9600663f906ab69518621a1b01d52a36643d872f633f7f543b34f",
+      "chineseText": "被诉人还主张，《移民与国籍法》的相关立法历史支持对《移民与国籍法》的解读，即授权对未经准入进入美国的外国人依据第236(a)节进行保释及保释听证。恰恰相反，立法历史支持本委员会此处采取的解释。《移民与国籍法》第235(a)(1)节，8 U.S.C. § 1225(a)(1)中“入境申请人”的法定定义是在1996年《非法移民改革和移民责任法案》（IIRIRA），Pub. L. No. 104-208, Div. C, § 302(a), 110 Stat. 3009-546, 3009-579通过时加入的。在IIRIRA通过之前，INA仅规定外来人抵达入境口岸时进行检查。见原INA第235(a)节，8 U.S.C. § 1225(a)（1994）（讨论“抵达美国口岸的外国人”）；另见"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8936a3999152d1c73e46b3481b554b648862a4e161392ac281af1e6eec10dc5b",
+      "chineseText": "假释入境”，依据《移民与国籍法》第212(a)(6)(A)(i)节，8 U.S.C. § 1182(a)(6)(A)(i)，已被逮捕、被指控或被定罪的特定犯罪，包括盗窃。  第222页"
+    },
+    {
+      "segmentId": "pdf-p8-s43",
+      "order": 43,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216（BIA 2025）临时决定 #4125"
+    },
+    {
+      "segmentId": "pdf-p8-s44",
+      "order": 44,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "cc5f6d3c08929a828d90aed0bdb033b70c62b962d9cdc2acc44df3ac40f3baf0",
+      "chineseText": "原INA第235(b)节，8 U.S.C. § 1225(b)（讨论“入境口岸的审查移民官对外国人进行拘留”）。在入境口岸按旧第235节，8 U.S.C. § 1225，申请入境的外国人，或被假释入境但确定为应被排除者，会被置于排除程序，实施强制拘留，唯一可能获释的方式是依据旧第212(d)(5)节，8 U.S.C. § 1182(d)(5)的假释批准。另见原INA第212(a)、235(a)至(b)、236节，8 U.S.C. §§ 1182(a), 1225(a)–(b), 1226 （1994）；另见8 C.F.R. § 235.3(a)–(c)（1995）。"
+    },
+    {
+      "segmentId": "pdf-p8-s45",
+      "order": 45,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "d08d593fbba78dc067b18d73164a5f0f1acf09409caef38489f92ba5d0017e7f",
+      "chineseText": "同时，位于美国境内且属于某些可驱逐外来人类别的外国人，包括“未经检查入境或在非司法部长指定的时间或地点进入美国者”，根据原INA第241(a)节，8 U.S.C. § 1251(a)（1994），被认定为可驱逐，并被置于驱逐程序。这些外国人有权申请保释。见原INA第242(a)(1)节，8 U.S.C. § 1252(a)(1)（1994）；另见8 C.F.R. § 242.2(c)(1)（1995）。因此，1996年IIRIRA通过前，外国人是否被置于排除或驱逐程序，取决于其是否根据INA含义已“入境”。见原INA第101(a)(13)节，8 U.S.C. § 1101(a)(13)（1994）（“入境”定义为“外籍人从外国口岸或地点或属地进入美国的任何行为”）。"
+    },
+    {
+      "segmentId": "pdf-p8-s46",
+      "order": 46,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "bf094d27db5f90dd859fccceb1ddb184411ca7e579f2d698879e639203d542f9",
+      "chineseText": "1996年，国会通过IIRIRA，其中包括将术语“入境”替换为“准入”（admission），并将驱逐程序和排除程序合并为移除程序。见马丁内斯诉美国司法部长案，693 F.3d 408, 413 n.5 (3d Cir. 2012)（“1996年修正前，INA依据‘入境’而非‘准入’来评估身份。”）。国会部分意图纠正“无意且不理想的后果”，即制定了一个制度，允许未经检查入境的外国人在驱逐程序中享有更大的程序和实质权利，包括申请保释的权利，而那些“实际上向当局呈递接受检查的外国人”则受“更加简易的排除程序”限制，且被要求强制拘留。引自兴森诉霍尔德案，602 F.3d 1092, 1100 (9th Cir. 2010)。"
+    },
+    {
+      "segmentId": "pdf-p8-s47",
+      "order": 47,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "553918e176f61ceb92a6931670a6a5c6dd13823e87284a57d381baf34d652a5d",
+      "chineseText": "IIRIRA的立法历史解释说，在用“准入”及“已准入”的定义替代“入境”定义时，国会：打算替换现有的“入境学说”的某些方面，依据该理论未经检查进入美国的非法外国人在移民程序中获得的权益和特权，是不适用于在入境口岸向官员呈递接受检查的外国人的。因此，确定外国人身份的关键因素，将是其是否已被合法准入。"
+    },
+    {
+      "segmentId": "pdf-p8-s48",
+      "order": 48,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "b040e38fc3707091a53371fc2fb148d5c9d128e2c2c6acea3038754bd3897d30",
+      "chineseText": "第223页"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216（BIA 2025）临时决定 #4125"
+    },
+    {
+      "segmentId": "pdf-p9-s50",
+      "order": 50,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "d8860cc196da1c34d22d6f03c4dcb1039a0d4c4b3b2bd5aa8f88a18b46a83101",
+      "chineseText": "众议院司法委员会关于将成为IIRIRA一部分的报告进一步说明：目前，未经检验入境的外国人根据第241(a)(1)(B)节被驱逐。依据新的“准入”学说，这类外国人不被视作已准入，因此，必须基于其未经准入的身份，适用不可接纳的理由，而非驱逐理由。（驱逐理由将保留给那些已被准入美国的外国人。）"
+    },
+    {
+      "segmentId": "pdf-p9-s51",
+      "order": 51,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "ff34adc8c16089bfbeca3122074c24e187a7561bfc33f5028474775a6cfefd45",
+      "chineseText": "同上，226页。"
+    },
+    {
+      "segmentId": "pdf-p9-s52",
+      "order": 52,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "aacc163091b558120c45b3a511e9ae86eb08da19d8ec9c791821cb909529800a",
+      "chineseText": "同上，226页。"
+    },
+    {
+      "segmentId": "pdf-p9-s53",
+      "order": 53,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "b58acb184749b856362788267d74e84485bf08814ec9ebc99cd2b547e79e1711",
+      "chineseText": "因此，在1996年通过IIRIRA后，未经检查或入境许可而进入美国的外国人，根据《美国移民和国籍法》（INA）第235(a)(1)条款，8 U.S.C. § 1225(a)(1)，被视为“入境申请人”，并受第235(b)条款，8 U.S.C. § 1225(b)的检查、拘留和驱逐程序的约束。立法历史证实，根据第235(b)(1)和(2)条款的字面解读，8 U.S.C. § 1225(b)(1), (2)，移民法官无权为抵达的外国人和入境申请人举行保释听证会。参见Chapman诉Houston福利权组织案，441 U.S. 600, 608 (1979)（指出最高法院的“任务是根据国会欲实现的目的来解释这些法令的措辞。”）；另见Kaiser Aluminum & Chem. Corp.诉Bonjorno案，494 U.S. 827, 835 (1990)（“解释法令的起点‘是法令本身的语言。除非有明确表达相反立法意图，否则该语言通常应被视为具有决定性。’”（引自Consumer Prod. Safety Comm’n诉GTE Sylvania, Inc.案，447 U.S. 102, 108 (1980)））。"
+    },
+    {
+      "segmentId": "pdf-p9-s54",
+      "order": 54,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "fbe0477a738a291a57f61e6db99eca36a3858c05792cb9792d6fb471737dfdd5",
+      "chineseText": "被申请人主张，众议院司法委员会报告中“第236(a)条重述了第242(a)(1)条关于总检察长有权逮捕、拘留和对非法居留美国的外国人释放保释的现行规定”的陈述，显示国会意在保留在1996年IIRIRA通过前对非法美国境内外国人相同的自由裁量拘留机制。参见H.R. Rep. No. 104-469，第1部分，第229页。然而，被申请人的论点无效，因为其引用的该报告部分内容并未暗示旨在削弱或修改同一报告中此前关于未经检查进入美国的外国人将被视为“寻求入境”的陈述。见同处，第225页。众议院司法委员会报告明确表明，国会意在取消先前法定方案，该方案赋予未经检查进入美国的外国人比向当局自我申报接受检查者更多的程序及实质性权利。见同处；另见Martinez案，693 F.3d 413脚注5。如被申请人主张的方式解读INA的相关规定，实质上即废止国会通过1996年IIRIRA所作的法定修正。"
+    },
+    {
+      "segmentId": "pdf-p10-s55",
+      "order": 55,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引证为29 I&N Dec. 216 (BIA 2025) 临时决定#4125"
+    },
+    {
+      "segmentId": "pdf-p10-s56",
+      "order": 56,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "6d3f27575339eab96ba0bc6bfc0b86927085f7ba5912dbc2f5b087d0778c3e4e",
+      "chineseText": "见第224页。"
+    },
+    {
+      "segmentId": "pdf-p10-s57",
+      "order": 57,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "065920da2f75ab86044ad37783f3c25aa43c68f44c384e18065fa0b4efa2e81b",
+      "chineseText": "正如立法历史所示，移民法官将被申请人解读为《美国移民和国籍法》第235(b)(2)(A)条款下的入境申请人，8 U.S.C. § 1225(b)(2)(A)，因而被强制拘留且无权申请保释听证的解释，得到INA字面语言的支持。参见Jennings案，583 U.S. 297（“最自然的解读是，[第235(b)(1)] 和 (b)(2)条款因此强制要求对入境申请人进行拘留，直至相关程序结束。第[235(b)(1)]条款的外国人因‘进一步审理庇护申请’而被拘留，而[第235(b)(2)]条款的外国人则因‘（驱逐）程序’而被拘留。”（括号内二处改动为原文所示））。因此，我们确认移民法官的解释，并依据第235(b)(2)(A)条款的字面语言，8 U.S.C. § 1225(b)(2)(A)，裁定移民法官无权听取或批准如被申请人这类未经允许入境的外国人的保释请求。"
+    },
+    {
+      "segmentId": "pdf-p10-s58",
+      "order": 58,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "e26b93b8f1fd8abe77493079ae2e6d32e9ea4cec72eb415bbf4a5bdad66c5344",
+      "chineseText": "被申请人在补充陈述中援引Loper Bright Enterprises诉Raimondo案，603 U.S. 369 (2024)，主张国土安全部（DHS）“长期以来的惯例”是将未经检查进入美国的外国人视为依据第236(a)条款，8 U.S.C.A. § 1226(a)，被拘留且有资格获得保释，这支持其自身亦受第236(a)条款拘留的论点。见Loper Bright案，603 U.S. 386（“政府的长期‘惯例’——如任何其他释义辅助工具——‘可以为法院确定“法律是什么”提供启示。’”（引文省略））。类似地，被申请人主张国会亦曾……"
+    },
+    {
+      "segmentId": "pdf-p10-s59",
+      "order": 59,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "cfce6629141302843ce4875f3ae4648f728725fedcd2c003c5e08f9b3d265d80",
+      "chineseText": "我们承认，多年来移民法官一直为未经检查进入美国的外国人举行保释听证会。然而，我们不记得DHS或其前身移民归化服务局此前曾提出目前审理的议题。事实上，1997年临时规则补充说明《外国人检查与加速驱逐；外国人拘留与驱逐；驱逐程序之实施；庇护程序》，62 Fed. Reg. 10312, 10323 (1997年3月6日)，显示移民归化服务局当时立场是，“尽管为入境申请人，未经许可或临时许可入境的外国人（前称为未经检查入境的外国人）将有资格获得保释及保释复议。”见第225页。"
+    },
+    {
+      "segmentId": "pdf-p11-s60",
+      "order": 60,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引证为29 I&N Dec. 216 (BIA 2025) 临时决定#4125"
+    },
+    {
+      "segmentId": "pdf-p11-s61",
+      "order": 61,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "ff909cbcc7b4a262a8be8282224eb86db0772a80d966c774ea817675724fe0af",
+      "chineseText": "并不打算将《移民与国籍法》（INA）第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)的规定适用于那些在美国居住超过2年后被逮捕的外国人，这一点在国土安全部（DHS）将这些外国人视为依据《移民与国籍法》第236节，8 U.S.C. § 1226被拘留的做法中得以体现。"
+    },
+    {
+      "segmentId": "pdf-p11-s62",
+      "order": 62,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "aa25fb3d69b55568c78267c0edb4629a102bec686faf39759b8ff127df382ad6",
+      "chineseText": "然而，申请人的论点无效，因为最高法院在Loper Bright案中做出该陈述时，特指对“存在疑义和模糊”的法律进行司法解释。见该案第385–86页。如上所述，INA的法定文本并非“存在疑义和模糊”，而是明确要求必须拘留所有入境申请者，无论该外国人在美国非法居住了多少年。见INA第235(b)(1)和(b)(2)节，8 U.S.C. § 1225(b)(1)，(2)。最高法院在Loper Bright案中并未裁定政府沿用多年的惯例能够以某种方式改变或甚至废除与之相反的明确法定文本。见603 U.S. 第385–86页；另见Niz-Chavez诉Garland案，593 U.S. 155，171 (2021)（指出“任何政策论述都无法克服明白的法定命令”）。"
+    },
+    {
+      "segmentId": "pdf-p11-s63",
+      "order": 63,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "ce7a202f092ce75e25a107202afcc72e919b0193ec791aefc488388d39399055",
+      "chineseText": "同样，申请人援引的Akhmedov案，29 I&N Dec. 166 (BIA 2025)，并不支持其论点。该委员会在该决定中指出，尽管申请人未经检查入境，美国境内，申请人的拘留决定适用INA第236(a)节，8 U.S.C.A. § 1226(a)，但这并不以某种方式废除或无效INA第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)，也不赋予移民法官对申请人保释请求的管辖权。是否申请人依据INA第235(b)(2)(A)节被强制拘留，以及移民法官是否有权审理保释请求，均不是该案提交委员会审理的问题。"
+    },
+    {
+      "segmentId": "pdf-p11-s64",
+      "order": 64,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "a03a00800662b93985a0c8257790c96e75a794b58595153282d03ce8631f8137",
+      "chineseText": "申请人还辩称，由于国土安全部在发出出庭通知书及拘留决定通知书的同时签发逮捕令，因此国土安全部是根据INA第236(a)节，8 U.S.C.A. § 1226(a)拘留申请人的，故移民法官具有法定及规章赋予的权力考虑其保释请求。申请人援引Q. Li案，29 I&N Dec. 66 (BIA 2025)支持其论点。Q. Li案，29 I&N Dec. 第69页裁定："
+    },
+    {
+      "segmentId": "pdf-p11-s65",
+      "order": 65,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "56b6004ff9ddc1c7d3821779bbb0173fa9ee0c0d263b2f60c6360eb70bfa0d85",
+      "chineseText": "[一位入境申请人在抵达美国时被无令逮捕拘留，无论是否在入境口岸，随后进入递解程序，即依据INA第235(b)节，8 U.S.C. § 1225(b)被拘留，且不符合以后依据INA第236(a)节，8 U.S.C. § 1226(a)申请任何保释的资格。]"
+    },
+    {
+      "segmentId": "pdf-p12-s66",
+      "order": 66,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用格式：29 I&N Dec. 216 (BIA 2025) 临时决定 #4125"
+    },
+    {
+      "segmentId": "pdf-p12-s67",
+      "order": 67,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "58db37876005e2d2be5f3f3142e91ca725f55d968005d107033957e1938d38f1",
+      "chineseText": "依据INA第235(b)节，8 U.S.C. § 1225(b)拘留，并且不符合依据INA第236(a)节，8 U.S.C. § 1226(a)后续保释的资格。"
+    },
+    {
+      "segmentId": "pdf-p12-s68",
+      "order": 68,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "fd016fccfc57f07b5b6649760d5c7b7870cda5ae7aeabaffc8536a71c3271016",
+      "chineseText": "Q. Li案，29 I&N Dec. 第69页进一步指出，“根据INA第236(c)节，8 U.S.C. § 1226(c)所规定的某些例外情况，依据INA第236(a)节拘留的外国人，可能有资格依据INA第236(a)(2)节，8 U.S.C. § 1226(a)(2)获得自由裁量保释。”"
+    },
+    {
+      "segmentId": "pdf-p12-s69",
+      "order": 69,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "07714b624db34ac4505605d3f0415a64496126425fddd5d8ae3e33ee1f6ef702",
+      "chineseText": "我们在Q. Li案中得出的结论是，在抵达美国时未经拘捕令被拘留的外籍人士，根据《移民与国籍法案》第235(b)节，8 U.S.C. § 1225，应当被强制拘留，这与我们本案的裁定是一致的。尽管被申请人解读Q. Li案似乎表明，在美国境内被拘留并持有逮捕令的外籍人士根据第236(a)节被拘留，但该问题超出了我们在该案中的裁定范围。我们承认“根据第236(a)节被拘留的外籍人士可能有资格获得有条件保释”，这并不意味着所有在美国境内持有逮捕令被拘留的外籍人士均根据第236(a)节被拘留，并有权在移民法官面前接受保释听证，无论他们是否是根据《移民与国籍法案》第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)项下的入境申请人。"
+    },
+    {
+      "segmentId": "pdf-p12-s70",
+      "order": 70,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "c96b3eb31bd63c8e38ee40db0c1f8a934328ccb380e6cbb1d96b22ef343ae771",
+      "chineseText": "简言之，单单拘捕令的签发并不赋予移民法官对适用《移民与国籍法案》第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)条款的外籍人士设定保释的权力。参见A-W-案，25 I&N Dec. 第46页（讨论移民法官权力的限制）；D-J-案，23 I&N Dec.第575页（同）；8 C.F.R. § 1003.10(b)；另见8 C.F.R. § 235.3(b)(1)(ii)。若赋予此权，将使上述众多对移民法官设定保释权力的禁止规定失去意义。"
+    },
+    {
+      "segmentId": "pdf-p12-s71",
+      "order": 71,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "378f02da0ca9e38bd888459d6b2e27d1be8d9764a0b7352c956df605a6d8c4af",
+      "chineseText": "归根结底，关于法条解释的问题因各项法律分别在不同时期实施且为解决不同问题而设立而显得复杂。《移民与国籍法案》是一套复杂的法律条文，于不同时间创建并历经多年修改。当这些条款相互影响时，不得孤立解读。参见C-T-L-案，25 I&N Dec.第345页（BIA 2010）（解释本委员会不“孤立看待法条语言，而是应‘在上下文中并结合其在整体法律架构中的位置’阅读文辞”（引文省略））。此外，某一法条明确禁止移民法官实施特定行为，不得理解为允许移民法官实施其他未被明确禁止的行为。"
+    },
+    {
+      "segmentId": "pdf-p12-s72",
+      "order": 72,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "f8a535d476ac264e3fd78489bcb15cb40804063761de14fb78ceb06b6baae213",
+      "chineseText": "第227页"
+    },
+    {
+      "segmentId": "pdf-p13-s73",
+      "order": 73,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216 (BIA 2025) 临时决定第4125号"
+    },
+    {
+      "segmentId": "pdf-p13-s74",
+      "order": 74,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "7023ac17c7949915c87cee2938cda042dbe8030ad6f0a7de4ecf49da80a80807",
+      "chineseText": "“‘在美国境内尚未获准入境的外籍人士……’被视为‘入境申请人’。” DHS诉Thuraissigiam案，591 U.S. 103，109（2020）（引述《移民与国籍法案》第235(a)(1)节，8 U.S.C. § 1225(a)(1)）；另见Lemus案，25 I&N Dec.第743页（“国会以非常规意义界定了‘入境申请人’的概念，不仅包含明示申请入境许可者，还包括那些未正式请求或获得许可而已在本国境内的人员……”）。除非移民官员确定申请人“明确且无疑应获准入境”，否则申请人身份持续存在。《移民与国籍法案》第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)。未能明确且无疑表明有入境资格者，应根据该条被“拘押以待根据第240节进行程序”。另见Jennings案，583 U.S.第288页。"
+    },
+    {
+      "segmentId": "pdf-p13-s75",
+      "order": 75,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "0695f1658caaa7e110dda4b8a2eeb93c741d35bb7c903463211cdc19e7378b5f",
+      "chineseText": "如本案被申请人般秘密越境入境的外籍人士，除非经移民官依法检查并准许入境，否则仍为入境申请人。在未接受检查而在美逗留较长期间仅此情况本身并不构成“准入”。参见《移民与国籍法案》第101(a)(13)(A)节，8 U.S.C. § 1101(a)(13)(A)（2018年）（准入定义）。同样，依据逮捕令被捕并进入遣返程序并不等同于准入。因此，正如移民法官无权重新决定在入境口岸自我申报的抵达外籍人士的羁押状态，他们也无权重新决定秘密非法越境且未被检查者的羁押条件，即使该外籍人士逃避被捕已超过两年。"
+    },
+    {
+      "segmentId": "pdf-p13-s76",
+      "order": 76,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "33dc5e464932c728fd69dbf7c958b090b60fd5d03e195bb25c613446f9f9ed69",
+      "chineseText": "若持相反观点解读《移民与国籍法案》，则意味着国会意图使未经检查非法入境，尤其是成功逃避逮捕超过两年的外籍人士，有资格在移民法官面前获得保释听证机会，而在入境口岸向官员报到者则无此资格。此类结果不仅前后矛盾，也不为该法案的明确语言或任何合理解释所支持。7"
+    },
+    {
+      "segmentId": "pdf-p13-s77",
+      "order": 77,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "16e724bb012936b4ac29f76a4d5d3199f8a0659bb0703e8c780ec6bbcc54b0e2",
+      "chineseText": "7 违反《移民与国籍法案》及相关规章常导致寻求救济和保护的外籍人士遭受不利后果。例如，参见《规避合法途径》，88 Fed. Reg. 31314, 31314 (2023年5月16日)（编纂于8 C.F.R.第1003和1208部分），该规定针对未“采取合法、安全、有序路径前往美国”或未“在经过的国家寻求庇护或其他保护”的特定外籍人士设定了“可反驳的避难资格不予认定推定”。例如，未被“检查并准入或获准暂准入美国”的外籍人士，不得依据《移民与国籍法案》第245(a)节，8 U.S.C. § 1255(a)（2018年）调整身份。另见Sanchez诉Mayorkas案，593 U.S. 409，414（2021年）。同样，除非有特殊或变更情形，否则未在最后一次入境美国一年内提交庇护申请者，将无法获得救济。见《移民与国籍法案》第208(a)(2)(B)，(D)节，8 U.S.C. § 1158(a)(2)(B)，(D)。"
+    },
+    {
+      "segmentId": "pdf-p14-s78",
+      "order": 78,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "f7321054c847a8d0416e1a39958acab2fc320d626a2a2c37ebaa0c2719320de9",
+      "chineseText": "引用为29 I&N Dec. 216 (BIA 2025) 临时决定第4125号"
+    },
+    {
+      "segmentId": "pdf-p14-s79",
+      "order": 79,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "6db4a071a99e395989e243ea21f0726dd42944149ae7d82917bf2842b268c5c7",
+      "chineseText": "四、结论\n移民法官正确裁定其无权审理被申请人提出的保释请求，因为被申请人为入境申请人，依《移民与国籍法案》第235(b)(2)(A)节，8 U.S.C. § 1225(b)(2)(A)及8 C.F.R. § 235.3(b)(1)(ii)规定应被强制拘留。8 因此，以下命令将被发布。"
+    },
+    {
+      "segmentId": "pdf-p14-s80",
+      "order": 80,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "059e2426c5ef72008d88dabd0da0eef42f3db66448dbbb0fceaa44a124bd5519",
+      "chineseText": "命令：驳回上诉。"
+    },
+    {
+      "segmentId": "pdf-p14-s81",
+      "order": 81,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "2eaa95857a7f442c23f02b2ec0349a3d27dab53c19224b8e9354ce23cbf43be6",
+      "chineseText": "转案，因移民法官认定无管辖权审理被申请人的保释动议，我们无需讨论移民法官拒绝保释的备选裁定——即被申请人未能证明非逃跑风险，亦无需审视被申请人在上诉中针对该备选裁定的抗辩。参见INS诉Bagamasbad案，429 U.S. 24，25（1976年）（法院观点）（“一般规则是，法院和行政机构不需针对其裁决所不必依赖事项作出事实认定。”）。\n第229页"
+    }
+  ]
+}

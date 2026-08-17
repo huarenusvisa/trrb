@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-1a25d55a5fa66ff4f868683556ac9d441b1bd607</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T19:38:07.037Z</news:publication_date>
+        <news:title>国土安全部称波士顿市长无权阻止ICE私有财产执法</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-f179041c7ae7f563bd0285b8811259d3a750bd44</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T19:38:06.353Z</news:publication_date>
+        <news:title>纽约警方逮捕盗窃嫌疑女性移交ICE</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-4dbd584956244213b21f473f800cd5bf41fd1ccf</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1286,22 +1302,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-15T21:16:46.933Z</news:publication_date>
         <news:title>马萨诸塞州劳伦斯ICE拘留一非法移民现场其妻痛哭</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-484df76b77cbe853984e69018267c000d02f9052</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T19:32:37.175Z</news:publication_date>
-        <news:title>ICE遣返服刑27月墨西哥籍可卡因贩运罪犯卢克斯</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-97b9e3ed443fb9d3ea80013bbf2d9ded349bfa11</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T19:32:36.452Z</news:publication_date>
-        <news:title>马萨诸塞沃尔瑟姆ICE拘捕危地马拉刑事非法移民</news:title>
       </news:news>
     </url>
 </urlset>

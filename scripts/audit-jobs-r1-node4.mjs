@@ -1,0 +1,22 @@
+import fs from 'node:fs';
+const read = (p) => fs.readFileSync(p, 'utf8');
+const must = (c,m) => { if (!c) throw new Error(m); };
+const spec = read('docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md');
+const sql = read('supabase/migrations/20260817004000_jobs_r1_node4_nearby_location.sql');
+const page = read('jobs/search.html');
+const js = read('jobs/search.js');
+const admin = read('admin/jobs-manager.js');
+
+must(spec.includes('4. 地理与附近岗位：授权定位后支持5/10/25/50 miles'), 'fixed N4 definition missing');
+for (const radius of ['5 miles','10 miles','25 miles','50 miles']) must(page.includes(radius), `missing ${radius}`);
+must(js.includes('navigator.geolocation'), 'device-location authorization missing');
+must(js.includes('未获得定位授权，可继续手动选择州、城市、County/Borough 或 Neighborhood'), 'manual fallback after location denial missing');
+must(js.includes("L.map('jobs-map'") && js.includes('L.marker('), 'map mode missing');
+must(page.includes('列表模式') && page.includes('地图模式'), 'list/map mode controls missing');
+must(sql.includes('normalize_job_listing_location'), 'canonical location normalization trigger missing');
+must(sql.includes("new.country_code := 'US'") && sql.includes('upper(btrim(new.state_code))'), 'US/state normalization missing');
+must(sql.includes('p_radius_miles') && sql.includes('s.miles <= p_radius_miles'), 'radius filtering missing');
+must(js.includes('p_radius_miles'), 'frontend must pass radius to canonical search RPC');
+must(admin.includes("from('job_listings')"), 'unified admin must still use canonical job_listings');
+must(!sql.match(/create table\s+public\.(nearby_jobs|job_locations_shadow|jobs_map)/i), 'shadow location/jobs data source prohibited');
+console.log('JOBS-R1-N4 PASS');

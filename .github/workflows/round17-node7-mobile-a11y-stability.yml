@@ -41,3 +41,5 @@ jobs:
         run: |
           node scripts/round17-node7-mobile-a11y-stability-audit.mjs /tmp/index.html /tmp/detail.html /tmp/legal.css /tmp/app.js /tmp/detail.js
           echo 'ROUND 17 NODE 7 PRODUCTION: PASS'
+
+# Strict restart revalidation after node 6 achieved 603/603 strict production coverage: 2026-08-17T02:31Z.

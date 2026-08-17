@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/trump/%E6%88%91%E6%95%A2%E5%AF%B9%E7%89%B9%E6%9C%97%E6%99%AE%E8%AF%B4%E4%B8%8D%E5%B8%83%E5%85%B0%E5%A5%87%E5%BC%BA%E7%A1%AC%E8%A1%A8%E6%80%81%E5%8D%B4%E6%8B%92%E7%BB%9D%E6%89%BF%E8%AF%BA%E5%8F%B8%E6%B3%95%E9%83%A8%E7%8B%AC%E7%AB%8B%E4%BA%8E%E7%99%BD%E5%AE%AB-mswmqp3q-0cb28f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T02:43:50.294Z</news:publication_date>
+        <news:title>“我敢对特朗普说不！”布兰奇强硬表态，却拒绝承诺司法部独立于白宫</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/trump/%E6%B0%91%E4%B8%BB%E5%85%9A%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE%E6%88%96%E6%8E%80%E5%A4%A7%E5%8F%8D%E6%94%BB%E5%8D%A1%E7%BB%B4%E5%B0%94%E8%AD%A6%E5%91%8A%E7%89%B9%E6%9C%97%E6%99%AE%E4%B8%8E%E5%85%B1%E5%92%8C%E5%85%9A%E6%9C%AA%E6%9D%A5%E4%B8%A4%E5%B9%B4%E6%81%90%E9%99%B7%E6%94%BF%E6%B2%BB%E8%A1%80%E6%88%98-mswme097-47b91a</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T02:33:58.219Z</news:publication_date>
+        <news:title>民主党中期选举或掀大反攻！卡维尔警告：特朗普与共和党未来两年恐陷政治血战</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/trump/%E7%89%B9%E6%9C%97%E6%99%AE%E4%B8%A2%E4%B8%8B%E5%A5%B9%E8%87%AA%E5%B7%B1%E9%80%83%E4%BA%86%E8%8E%B1%E7%BB%B4%E7%89%B9%E8%BE%9E%E8%81%8C%E5%90%8E%E4%BC%8A%E6%9C%97%E6%8A%9B%E5%87%BA%E9%9C%87%E6%92%BC%E8%83%8C%E5%8F%9B%E6%8C%87%E6%8E%A7-mswlrdjb-d3b484</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T02:16:22.343Z</news:publication_date>
+        <news:title>“特朗普丢下她自己逃了！”莱维特辞职后，伊朗抛出震撼“背叛”指控</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-9058ce51ce4aaea8f86eaa26210a4ad2e0798a50</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -534,14 +558,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-15T03:26:06.051Z</news:publication_date>
         <news:title>丹佛ICE拘留墨西哥酒驾男子凯文·鲁比奥</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-4222f6d0bbf98d4e0d3b6cabcea4809a063613f6</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T02:39:53.801Z</news:publication_date>
-        <news:title>ICE公布全国重点执法案件打击多领域犯罪</news:title>
       </news:news>
     </url>
 </urlset>

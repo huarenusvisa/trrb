@@ -54,6 +54,6 @@
 - JOBS-R1-N5：PASS。代码证据：`supabase/migrations/20260817005000_jobs_r1_node5_publish.sql`、`jobs/publish.html`、`jobs/publish.js`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node5.mjs`；GitHub Actions `JOBS-R1 Node 5` run 32023690293 的严格审计步骤 = SUCCESS，日志标准为 `JOBS-R1-N5 PASS`。
 - JOBS-R1-N6：PASS。代码证据：`supabase/migrations/20260817006000_jobs_r1_node6_seeker_profile.sql`、`jobs/seeker.html`、`jobs/seeker.js`、`jobs/index.html`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node6.mjs`；GitHub Actions `JOBS-R1 Node 6` run 32028044372 的严格审计步骤 = SUCCESS，日志标准为 `JOBS-R1-N6 PASS`。
 - JOBS-R1-N7：PASS。代码证据：`supabase/migrations/20260817007000_jobs_r1_node7_contact_loop.sql`、`jobs/contact.html`、`jobs/contact.js`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node7.mjs`；GitHub Actions `JOBS-R1 Node 7` run 32034319648 = SUCCESS，日志标准为 `JOBS-R1-N7 PASS`。
-- JOBS-R1-N8：RUNNING。
-- JOBS-R1-N9：WAITING。
-- JOBS-R1-N10：WAITING。
+- JOBS-R1-N8：PASS。代码证据：`supabase/migrations/20260817008000_jobs_r1_node8_reviews_reports.sql`、`jobs/review.html`、`jobs/review.js`、`admin/jobs-manager.js`；审计：`scripts/audit-jobs-r1-node8.mjs`；GitHub Actions `JOBS-R1 Node 8` run 32037462758 = SUCCESS，日志标准为 `JOBS-R1-N8 PASS`。
+- JOBS-R1-N9：PASS。代码证据：`supabase/migrations/20260817009000_jobs_r1_node9_lifecycle_seo_governance.sql`、`jobs/manage.html`、`jobs/manage.js`、`jobs/listing.html`、`jobs/listing.js`、`admin/jobs-lifecycle.html`、`admin/jobs-lifecycle.js`；审计：`scripts/audit-jobs-r1-node9.mjs`；GitHub Actions `JOBS-R1 Node 9` run 32041457386 的严格审计步骤 = SUCCESS，日志标准为 `JOBS-R1-N9 PASS`。
+- JOBS-R1-N10：RUNNING。

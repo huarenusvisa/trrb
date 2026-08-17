@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
@@ -6388,21 +6388,6 @@
       "sourceKey": "CIRCUIT:ca5:0baa7e83bcec7ab5"
     },
     {
-      "id": "ddf4c5f9184302c52d01e801",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10428.1.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10428.1.pdf",
-      "sourceKey": "CIRCUIT:ca5:0dce2422408bff85"
-    },
-    {
       "id": "e04f86a3b3db9c14e1f6698b",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6523,6 +6508,21 @@
       "sourceKey": "CIRCUIT:ca5:2c10e82d77240dc3"
     },
     {
+      "id": "18fce0a2a44fba333fdb5ff8",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-20231 Randel v. Travelers Lloyds of Texas Aug 17, 2026 Unpublished Opinion PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-20231.0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-20231.0.pdf",
+      "sourceKey": "CIRCUIT:ca5:2cda3578e8b1e35e"
+    },
+    {
       "id": "d1dfc92bcada583835381098",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6566,21 +6566,6 @@
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11037.0.pdf",
       "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11037.0.pdf",
       "sourceKey": "CIRCUIT:ca5:346b350b0ad29083"
-    },
-    {
-      "id": "163d5c2cd55ea2312168f90b",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10058.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10058.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:41582f26d2777c39"
     },
     {
       "id": "90e0165591a59de7828edc28",
@@ -6686,36 +6671,6 @@
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-30772.0.pdf",
       "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-30772.0.pdf",
       "sourceKey": "CIRCUIT:ca5:75904832f6d051e3"
-    },
-    {
-      "id": "6a5f9e327af6a3069a533cce",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-11000.1.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-11000.1.pdf",
-      "sourceKey": "CIRCUIT:ca5:7b6b657c29508a6f"
-    },
-    {
-      "id": "c2cfdc8e88a62e2dc870a25f",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/24/24-60529-CV0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/24/24-60529-CV0.pdf",
-      "sourceKey": "CIRCUIT:ca5:829c26aa5c66fffe"
     },
     {
       "id": "3245d33b05a01e8a14429533",
@@ -6838,6 +6793,21 @@
       "sourceKey": "CIRCUIT:ca5:94a1bdd14ff7085f"
     },
     {
+      "id": "058f5695ac1580c94bb0dd58",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-50728 USA v. Brown Aug 17, 2026 Unpublished Opinion PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50728.0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50728.0.pdf",
+      "sourceKey": "CIRCUIT:ca5:9522fe630884480e"
+    },
+    {
       "id": "b05d0e03c3f015dc4be1e870",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6851,21 +6821,6 @@
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/23/23-11184-CV1.pdf",
       "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/23/23-11184-CV1.pdf",
       "sourceKey": "CIRCUIT:ca5:9697b44f72dcdddf"
-    },
-    {
-      "id": "d5a274f2c48bce1f4e2a46b4",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/23/23-40605-CV1.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/23/23-40605-CV1.pdf",
-      "sourceKey": "CIRCUIT:ca5:9a44367fa413fb06"
     },
     {
       "id": "d688869f1b008f9900617893",
@@ -7018,6 +6973,21 @@
       "sourceKey": "CIRCUIT:ca5:bb0e3b532ed5533a"
     },
     {
+      "id": "7b561d6e487c760fa86a8167",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "26-30139 Williams v. Town of Clinton Aug 17, 2026 Unpublished Opinion PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30139.0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30139.0.pdf",
+      "sourceKey": "CIRCUIT:ca5:bc728f15d2598836"
+    },
+    {
       "id": "9d80987fc476882a9cf8fb0c",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -7033,6 +7003,21 @@
       "sourceKey": "CIRCUIT:ca5:be925dee793ca26c"
     },
     {
+      "id": "d086ae8db602d6d7bdc80fa6",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-40542 Meeks v. Ray Aug 17, 2026 Published Order PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-40542-CV0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-40542-CV0.pdf",
+      "sourceKey": "CIRCUIT:ca5:c1e55cb573157df5"
+    },
+    {
       "id": "d849c9c8d880fb50223c433b",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -7046,6 +7031,21 @@
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60202-CV0.pdf",
       "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60202-CV0.pdf",
       "sourceKey": "CIRCUIT:ca5:e33be98a702e2326"
+    },
+    {
+      "id": "5ed3252076641ce13a62fe10",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-50656 Bissell v. Mata Aug 17, 2026 Unpublished Opinion PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50656.0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50656.0.pdf",
+      "sourceKey": "CIRCUIT:ca5:e3b59b7b7a880152"
     },
     {
       "id": "b083ead7f3c7726498b3b35f",

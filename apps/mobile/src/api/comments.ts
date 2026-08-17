@@ -16,7 +16,7 @@ export type CommentRow = {
 export type CommentCursor = { created_at: string; id: string } | null;
 const PAGE_SIZE = 30;
 
-async function currentUserId() {
+export async function currentUserId() {
   const { data } = await supabase.auth.getUser();
   if (!data.user) throw new Error('请先登录。');
   return data.user.id;
@@ -34,6 +34,13 @@ export async function listComments(articleId: string, cursor: CommentCursor = nu
   return { items, nextCursor: hasMore && last ? { created_at: last.created_at, id: last.id } : null };
 }
 
+export async function listOwnComments(limit = 100) {
+  const userId = await currentUserId();
+  const { data, error } = await supabase.from('comments').select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,updated_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(Math.min(Math.max(limit, 1), 200));
+  if (error) throw error;
+  return (data || []) as CommentRow[];
+}
+
 export async function createComment(articleId: string, content: string, parentId: string | null = null) {
   const text = content.trim();
   if (!text || text.length > 3000) throw new Error('评论内容需要在 1–3000 字之间。');
@@ -44,7 +51,8 @@ export async function createComment(articleId: string, content: string, parentId
 }
 
 export async function deleteOwnComment(commentId: string) {
-  const { error } = await supabase.from('comments').update({ status: 'deleted', content: '[已删除]' }).eq('id', commentId);
+  const userId = await currentUserId();
+  const { error } = await supabase.from('comments').update({ status: 'deleted', content: '[已删除]' }).eq('id', commentId).eq('user_id', userId);
   if (error) throw error;
 }
 

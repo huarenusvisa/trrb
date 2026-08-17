@@ -1,0 +1,27 @@
+name: JOBS-R1 Node 3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'jobs/index.html'
+      - 'jobs/search.html'
+      - 'jobs/search.js'
+      - 'admin/jobs-manager.js'
+      - 'supabase/migrations/20260817002000_jobs_r1_node2_home_admin_migration.sql'
+      - 'supabase/migrations/20260817003000_jobs_r1_node3_search.sql'
+      - 'scripts/audit-jobs-r1-node3.mjs'
+      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
+      - '.github/workflows/jobs-r1-node3.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Strict N3 acceptance
+        run: node scripts/audit-jobs-r1-node3.mjs

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17T19:01:41.558Z",
+  "generatedAt": "2026-08-17T19:41:56.978Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -87,6 +87,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2086P-01A.pdf",
           "title": "24-2086 US v. Gonzalez"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
+          "title": "24-1467P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
@@ -1387,6 +1391,10 @@
           "title": "Ann Johnson v. Russell Investments Trust Company, et al"
         },
         {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410748.pdf",
+          "title": "Blake Warner v. Hillsborough County Clerk of Courts"
+        },
+        {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202512478.pdf",
           "title": "Ernest N. Finley, Jr., et al v. Thomas Albritton, et al"
         },
@@ -1577,10 +1585,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202311057.pdf",
           "title": "Antonio U. Akel v. USA"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410300.pdf",
-          "title": "USA v. William Michael Spearman"
         }
       ],
       "notes": []

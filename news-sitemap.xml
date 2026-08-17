@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-9058ce51ce4aaea8f86eaa26210a4ad2e0798a50</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T01:05:02.987Z</news:publication_date>
+        <news:title>西雅图ICE拘押墨西哥籍女移民启动遣返</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-3254dfa2efb0abb27e98e8972722aada444543c7</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -558,38 +566,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-15T01:41:06.014Z</news:publication_date>
         <news:title>亚利桑那古迪尔ICE突击Quetico物流设施 多名疑似非法移民强行逃脱</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-99d85dc6260ab99adc5946ff6523e1f7b88981e9</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T01:04:33.268Z</news:publication_date>
-        <news:title>墨西哥违法者JorgeMartinez-Guerr</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-b8916dc6a4240883001b5c5f35de6f7cec16cb0a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T01:04:33.058Z</news:publication_date>
-        <news:title>国土安全部遣返涉非法枪支制造墨籍移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-62d9eda6aa3c4e09443a0f2638d264a8134091b6</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T01:04:32.803Z</news:publication_date>
-        <news:title>美国遣返涉多重罪名印度籍非法移民辛格</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-4640107bcecbd24cc021c722435f4c0b380d9fde</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T01:04:32.488Z</news:publication_date>
-        <news:title>美国遣返涉住宅盗窃智利非法移民威廉姆斯</news:title>
       </news:news>
     </url>
 </urlset>

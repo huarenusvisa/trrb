@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Aug 2026 21:31:35 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 01:05:02 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>西雅图ICE拘押墨西哥籍女移民启动遣返</title>
+      <link>https://trrb.net/ice/ice-9058ce51ce4aaea8f86eaa26210a4ad2e0798a50</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-9058ce51ce4aaea8f86eaa26210a4ad2e0798a50</guid>
+      <pubDate>Mon, 17 Aug 2026 01:05:02 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>西雅图ICE拘押49岁墨西哥女移民，因进口毒品等罪被判刑，已进入遣返程序。</description>
+      <enclosure url="https://pbs.twimg.com/media/HPsOLBFaYAAHCpa.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>亚利桑那古迪尔仓库误报ICE致员工出口被封</title>
       <link>https://trrb.net/ice/ice-3254dfa2efb0abb27e98e8972722aada444543c7</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>美国边境巡逻局发现走私团伙利用拖拉机拖车运输非法移民，暴露走私活动极端危险性。</description>
       <enclosure url="https://pbs.twimg.com/media/HPsdHmMXEAAyq_l.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>加州科切拉谷边境局逮捕逾期滞留旅游者</title>
-      <link>https://trrb.net/ice/ice-7b21086f06fb1fee14369d6dd62eaf1cf4387393</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-7b21086f06fb1fee14369d6dd62eaf1cf4387393</guid>
-      <pubDate>Fri, 14 Aug 2026 18:03:46 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>加州科切拉谷一名旅游逾期逾十年人士被境局逮捕，涉及伪造罪及未决重罪指控。</description>
-      <enclosure url="https://pbs.twimg.com/media/HPsr0_0WYAAl10f.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

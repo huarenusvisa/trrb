@@ -154,6 +154,41 @@
     $('next-page').disabled = rows.length < pageSize;
   }
 
+  async function applySelectedArea(row) {
+    if (!row) return;
+    const latitude = Number(row.center_latitude);
+    const longitude = Number(row.center_longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      $('search-status').textContent = '这个常用地区暂时缺少地图中心点，可使用ZIP或高级地区筛选。';
+      return;
+    }
+    const allowedRadius = new Set([5,10,25,50]);
+    const radius = allowedRadius.has(Number(row.default_radius_miles)) ? Number(row.default_radius_miles) : 25;
+    coords = {latitude, longitude};
+    postalCode = null;
+    locationMode = row.area_type === 'region' ? 'region' : 'fixed_location';
+    const mapping = {
+      state: row.state_code || '',
+      city: row.city || '',
+      county: row.county || '',
+      borough: row.borough || '',
+      neighborhood: row.neighborhood || ''
+    };
+    Object.entries(mapping).forEach(([id,value]) => { if ($(id)) $(id).value = value; });
+    $('location-zip').value = '';
+    $('radius').value = String(radius);
+    $('sort').value = 'distance';
+    setLocationSummary(row.label_zh || row.label_en || '已选地区');
+    await persistLocation({
+      mode:locationMode, source:'manual_area', public_label:row.label_zh || row.label_en || '已选地区',
+      latitude, longitude, accuracy_meters:null, location_consent_at:null, follow_current_location:false,
+      postal_code:null, state_code:row.state_code || null, city:row.city || null, county:row.county || null,
+      borough:row.borough || null, neighborhood:row.neighborhood || null, metro_slug:row.metro_slug || null
+    });
+    $('advanced-filters').open = false;
+    await search(true);
+  }
+
   function hydrateFromQuery() {
     const p = new URLSearchParams(location.search);
     ['q','category','employment','state','city','county','borough','neighborhood','salary','radius','sort'].forEach((key) => {
@@ -182,6 +217,7 @@
   $('next-page').addEventListener('click', () => { page += 1; search(false); });
   $('list-view').addEventListener('click', showList);
   $('map-view').addEventListener('click', showMap);
+  window.addEventListener('jobs:r2-search-area-selected', (event) => { applySelectedArea(event.detail); });
   $('location-trigger').addEventListener('click', () => $('location-panel').classList.toggle('hidden'));
   $('choose-region').addEventListener('click', () => {
     $('advanced-filters').open = true;

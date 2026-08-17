@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "recordId": "1b65877dfb597cba3f364db6",
+  "recordFingerprint": "8e0ef386b0f9f8a48c0731ae82858eaefc94619840e3d790812b4565e6f47ed9",
+  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1401626/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1401626/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1401626/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T18:27:20.526Z",
+  "sourceDigest": "242d6bd4cb0fb9cf84ba6f6d7834845967f8061f8711f60aeafc843160afeb40",
+  "translatedAt": "2026-08-17T18:27:36.652Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 18,
+  "translatedSegmentCount": 18,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dca9e200786bc4479ed8128cdeb70033f86992488abb9485c64dd9ce67ee5f1d",
+      "chineseText": "引用格式：29 I&N Dec. 76（BIA 2025）临时决定#4097"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "32db8aa39e94de635d2e252f69776704813c0c6c92adc20304c8ec9a530525d8",
+      "chineseText": "关于Christofer Alejandro BELTRAND-RODRIGUEZ一案，答辩人，2025年3月27日由移民上诉委员会裁决\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b7dc8902ec69fd1246f41f2addb0645df240c079509c72e63003c78c8a076f86",
+      "chineseText": "基于答辩人的危险行为，该行为使一位因年龄及与答辩人之间的家庭关系而格外脆弱的人遭受非法性行为，故答辩人获释保释将对社区构成危险。\n答辩人代理律师：Raquel G. Posada，法务专员，加利福尼亚蒙特贝洛\n国土安全部代表：Christopher R. Brown，助理首席法律顾问\n出庭委员：移民上诉委员会小组：副首席上诉移民法官MALPHRUS；上诉移民法官PETTY及GOODWIN。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c8769bad289be346816b5a3c40485e26fcf984f258ecb61d1343be7e88eb9449",
+      "chineseText": "上诉移民法官GOODWIN："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f81fc158194846ed785d5917fa49c83970451990b1ed7cf1b0c28fa7be351f7c",
+      "chineseText": "国土安全部（以下简称“DHS”）对移民法官2022年9月6日作出的决定提出上诉，该决定下令答辩人支付1万美元保释金并遵守特定条件后获释。答辩人未提交上诉简报。我们将维持上诉，撤销2022年9月6日的保释令，并命令答辩人留在DHS监管之下。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "77442b900a910d21087bd06d8429ad3c845af8e617461f60e1681eb63f004857",
+      "chineseText": "我们维持DHS的上诉，因根据我们对事实及法律的重新审查，移民法官认定DHS未能以确凿且令人信服的证据证明答辩人获释将构成危险的判断存在错误。\n根据2025年5月23日第6273-2025号命令，司法部长指定本委员会于2025年3月27日在Matter of Beltrand-Rodriguez一案中的裁决对涉及同一问题的所有程序具有先例效力。参见8 C.F.R. § 1003.1(g)(3) (2025) 。文中已进行编辑以符合先例案之规范。\n2022年9月29日，移民法官发布书面备忘录支持保释决定。\n移民法官依据Rodriguez诉Robbins案（804 F.3d 1060, 1087, 1089（第九巡回法院2015年），后被Jennings诉Rodriguez案（583 U.S. 281 (2018)）推翻）的权限举行保释听证会，该案规定DHS负有以确凿且令人信服的证据证明持续拘留被告合理的举证责任。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "dca9e200786bc4479ed8128cdeb70033f86992488abb9485c64dd9ce67ee5f1d",
+      "chineseText": "引用格式：29 I&N Dec. 76 (BIA 2025) 临时决定#4097"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ce538b20a94401422dd403167cc178098a7b11d186cec59e2aabe5bb09176136",
+      "chineseText": "基于对事证及法律的重新审视，我们认为移民法官未能证明DHS未能以确凿而令人信服的证据证明答辩人获释将对社区构成危险，系误判。参见8 C.F.R. § 1003.1(d)(3)(ii)（2025）；另参见Matter of Guerra，24 I&N Dec. 37, 40（BIA 2006）（指出决定被申请人是否应获释移民拘留的相关因素包括其犯罪行为的严重性、近因性及范围大小）。答辩人是否对社区构成危险或存在潜逃风险为判断问题，我们进行重新审查，然而此类判断所依据事实认定仅进行明显错误（clear error）审查。参见8 C.F.R. § 1003.1(d)(3)(i)–(ii)（2025）。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "04c7e1f9a5173b9abf48c7af6a21f0b3d621eb548e2902e86e67eefe90fd8830",
+      "chineseText": "我们未发现移民法官认定的事实存在明显错误，该认定事项包括：答辩人于2022年1月25日因违反加州刑法第288(a)条，即对未满14岁未成年人实施猥亵或淫乱行为被判罪成立，判处县监狱365天及4年正式缓刑。移民法官还认定，答辩人因违反加州刑法第288.2(a)(2)条，即向未成年人发送有害信息被判罪成立，且判处4年缓刑，缓刑判决暂缓执行。移民法官同样认定，两项罪行的最高合并刑期为11年监禁。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1201de8a0af02deb62a73cf797678ef1229fb3ebdae49ee91853be04e5a65d55",
+      "chineseText": "我们亦未发现移民法官关于答辩人被令登记为性犯罪者期限为10年，须完成52周性犯罪者课程，并须远离受害人10年的认定存在明显错误。移民法官认定，判决基于答辩人与其12岁的同父异母妹妹数次接吻，并向其发送涉及自己并包含性行为的视频及性露骨照片的行为亦无明显错误。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "65ba1dd5fdc00aa3b8a26bf7506f1fb1e00c5ab713114b2942daa3f65841a533",
+      "chineseText": "移民法官还认定记录中无证据显示答辩人有先前刑事记录或之前有任何性偏差行为，且DHS未提交证据证明答辩人可能违反刑事法院签发有效期10年的保护令。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ae4fb25fc7f3c83a2a3a6a5309ae3ca3cafd9e4db599ccfb101a334456fa120b",
+      "chineseText": "移民法官的事实认定有事实记录支持，且并非明显错误。参见Brnovich诉民主党全国委员会案，594 U.S. 647, 687 (2021)（阐释当事实审判者对证据的“观点在整体事实记录中合理，则即便上诉法院确信其首审对证据评价不同，也不得推翻”）；及Cooper诉Harris案，581 U.S. 285, 309 (2017)（说明明显错误审查标准仅在“保留明确而坚定的信念即发生错误”时予以推翻（引文省略））。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "dca9e200786bc4479ed8128cdeb70033f86992488abb9485c64dd9ce67ee5f1d",
+      "chineseText": "引用格式：29 I&N Dec. 76 (BIA 2025) 临时决定#4097"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ec780435f50ae41c02759576e943c5a194dabc357e2352349a0e1d84d474189c",
+      "chineseText": "然而，经过我们重新审查事实及法律，我们认定移民法官在认定事实不支持DHS以确凿且令人信服的证据证明答辩人构成危险的观点上存在错误。答辩人与其12岁半血妹妹发生性行为，该行为危险，且使因其年龄及家庭关系特别脆弱的个人遭受非法性行为。参见McKune诉Lile案，536 U.S. 24, 32 (2002)（指出“性犯罪者在本国是严重威胁”）；另见Matter of Guerra，24 I&N Dec. 41（认定犯罪活动的证据与答辩人是否对社区构成危险相关）。据此，本委员会依据重新审查标准认定DHS已满足以确凿且令人信服的证据证明答辩人获释将对社区构成危险的举证责任，而移民法官批准答辩人保释存在错误。参见Matter of Urena，25 I&N Dec. 140, 141 (BIA 2009)（“危险外侨应依法无保释拘留”）。据此，发出如下命令。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "341fdc49660db7af5c06ad55e7102b245f5c87a5dc146ec15aa1cc5c9b63e632",
+      "chineseText": "命令：维持DHS的上诉。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3564b438f6a7833b2610e5530c1aa93162d12c654ddb6876c902df3b3834b2d6",
+      "chineseText": "进一步命令：撤销移民法官2022年9月6日准许答辩人支付10,000美元保释金并遵守特定条件后释放的命令。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5af27f61599ee1c1172af80906c82b23af57c98e2fdb3905e4d7846c0619bbc0",
+      "chineseText": "进一步命令：命令答辩人无保释留置于DHS监管之下。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a324b20503886a24ff561d43c3beba9753f2957839e16eae0d6731cbd2569df0",
+      "chineseText": "第78页"
+    }
+  ]
+}

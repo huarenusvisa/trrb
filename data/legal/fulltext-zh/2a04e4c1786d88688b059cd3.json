@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "recordId": "2a04e4c1786d88688b059cd3",
+  "recordFingerprint": "c3a4600c7ee1ff9895831c12e0243a50099bec58614b4f018b2ee82a4f8cad38",
+  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1449436/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1449436/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1449436/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T18:03:11.504Z",
+  "sourceDigest": "3a46553871b6917bb53f910e3a9a50c49432a4fc4a36e6eb06c771761ebec30b",
+  "translatedAt": "2026-08-17T18:12:12.173Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 32,
+  "translatedSegmentCount": 32,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "94d8abaa3905dede2a2f044a5ff886c99c53f82a11f941f021e9b3c0e0683635",
+      "chineseText": "引证为 29 I&N Dec. 726（BIA 2026）临时裁定 #4212"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a9787aed691e12623dae2dcdf7ab118a0307fd1ccc06d124e4fa852d6a2fd674",
+      "chineseText": "案号 C-L-R-，申请人\n2026年5月4日由移民上诉委员会裁定\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "42665bf620618047908a38c96af605ec4a9af8c305dfff19c984711054739d7c",
+      "chineseText": "（1）申请人因精神能力不足，被认定不适合仅限于其拒绝遣返程序的目的，因而被指定了一名合资格代表代为提交申请材料，申请人获得了充分保障以确保其程序的公正性。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1212d31700af3e1ddbaf4769b2c31a560593edf5597435ddc21d85bcfc334372",
+      "chineseText": "（2）移民法官正确裁定申请人未能确立因其属于基于精神健康的特定社会群体而面临未来迫害的明显可能性，因为案件记录中的证据未能证明存在具体的未来迫害风险。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e9192dc9632ad1e53e6ea07e7417357f96e2a88d2e463ef4521686772b745941",
+      "chineseText": "代理申请人：Monique R. Sherman 律师，科罗拉多州威斯敏斯特\n审理人员：委员会组员：GOODWIN 和 VOLKERT，上诉移民法官；\nMCCLOSKEY，临时上诉移民法官。\nGOODWIN，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "993d2dc67f9e1aaf72a8989811c783b7576ea8b67a5f07e98826300d8c592aec",
+      "chineseText": "申请人系洪都拉斯出生且持有该国国籍人士，对2025年7月11日移民法官关于拒绝其根据《移民与国籍法》第241(b)(3)节（8 U.S.C. § 1231(b)(3) （2024年））提出的拒绝遣返申请以及根据实施《禁止酷刑公约》条例寻求保护的决定提出上诉。国土安全部（DHS）未就本上诉作出回应。现将驳回该上诉。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2dc2e7857a6c94f58cab62caa181e9d4e6b37d79a050086ddd0bbfaf6b7c86ed",
+      "chineseText": "1\n根据2026年6月18日第6938-2026号命令，代理总检察长已指定移民上诉委员会于2026年5月4日裁定的 C-L-R- 案作为涉及同一问题或问题的所有其他程序中的先例。参见联邦法规标题8 第1003.1(g)(3)节（2026年）。本案作为先例被指定，编辑更改与该指定保持一致。\n2\n《禁止酷刑及其他残忍、不人道或有辱人格的待遇或处罚公约》，1984年12月10日，参议院条约文件第100-20号，1465号联合国条约汇编第85页（美国于1994年11月20日生效）。联邦法规标题8，第1208.16(c)节（2026年）；第1208.18(a)节（2020年）。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5690dc4a1af1f006a1c40a3dbda4a97095b754627931da0f55f63cff0dc9acd0",
+      "chineseText": "第726页"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "94d8abaa3905dede2a2f044a5ff886c99c53f82a11f941f021e9b3c0e0683635",
+      "chineseText": "引用为 29 I&N Dec. 726（BIA 2026）临时裁决 #4212"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "aa8f0d7ae0a5f36563d508ec2ff44dad30018f20c6c8c1a0ca2ed8d1885c91c3",
+      "chineseText": "申请人被诊断患有精神分裂症、创伤后应激障碍、重度抑郁症和轻度认知障碍，自5岁起便出现视觉幻觉。在进行司法能力调查并下令进行法医能力评估后，移民法官认定申请人在仅限扣留救济的程序中能力不足。移民法官通过移民审查执行办公室的国家合资格代表项目任命了一名合资格代表。移民法官于2024年12月16日拒绝了合资格代表的终止程序动议，但批准了合资格代表提出的其他保障请求，这些保障措施在程序中得以实施。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "066926c0bcda5ab874b5f5eb753c0a5dd6aaecf93e2505bd1e84391230361e11",
+      "chineseText": "首先，申请人主张移民法官错误地拒绝了其作为保障措施的终止仅限扣留程序的动议。这些论点已被J-A-N-M案（29 I&N Dec. 287，289 (BIA 2025)）所排除，该案中我们裁定移民法官依据8 C.F.R. § 1208.2(c)(3)(i)（2026）禁止在仅限扣留程序中考虑除扣留及推迟遣返以外的任何救济措施，包括终止程序。因此，终止程序是没有依据的。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ec18733fc0248e42ec864fb07166d2f7d192762f1b942723d55ebecfaac48b9d",
+      "chineseText": "即使假设申请人支持终止程序的论点未被J-A-N-M案排除，本案提供的保障措施足以确保程序的公正。参见M-J-K案，26 I&N Dec. 773，775–76（BIA 2016）（裁定合议庭对移民法官选择和实施适当保障措施的决定进行重新审查）。鉴于申请人精神能力不足，为使程序以基本公正性继续进行，必须为其提供保障措施以保护其“权利和特权”。M-A-M案，25 I&N Dec. 474，481（BIA 2011）（援引INA第240(b)(3)条，8 U.S.C. § 1229a(b)(3) (2006)）。这包括法律代理以及“合理机会”审查及提交证据及交叉询问证人。该申请人已有一位合资格代表代理，代表其请求了保障措施，包括提供饮用水、休息时间及调整质询方式，且这些请求获准。我们认可合资格代表关于其未能请求某些额外保障措施（如访问家人或照护者），以及申请人在现有保障下仍难以提供具体信息的论点。然而，合资格代表能够提交动议，协助申请人申请救济及免于遣返保护，包括提交国别报告和与其个人特点相关的专家证词，并代理其提交上诉简报。见M-J-K案，26 I&N Dec. 777（强调律师参与提升移民程序公平进行的可能性）。我们确认移民法官认为，在请求的保障措施下，本程序具有基本公正性的结论。见M-A-M案，25 I&N Dec. 479（“民事移民程序中能力不足并不意味着听证无法继续；而是要求程序公正。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "94d8abaa3905dede2a2f044a5ff886c99c53f82a11f941f021e9b3c0e0683635",
+      "chineseText": "引用为 29 I&N Dec. 726（BIA 2026）临时裁决 #4212"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8f91ff90b7adcbe464e4a2de148754606dd94001f63caa05cb484eff1e7efb74",
+      "chineseText": "代理已提交与申请人个人情况相关的专家证词，并代表其提交上诉简报。参见M-J-K案，26 I&N Dec. 777（强调律师参与提高移民程序公平进行的可能性）。我们确认移民法官认定在请求的保障措施下，程序具有基本公正性的结论。见M-A-M案，25 I&N Dec. 479（“民事移民程序中能力不足并不意味着听证无法继续；而是要求程序公正。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a95172acfc64a97dcc955573d45c1503eb163b4b23741356619fbe3cb475f2b4",
+      "chineseText": "我们接下来审理申请人依照《移民与国籍法》（INA）提出的扣留撤销申请。申请人担忧来自其兄弟及姐夫的伤害，他们在美国涉及贩毒活动，且与其兄弟有关联的贩毒集团成员。目前申请人的兄弟及姐夫居住在洪都拉斯。与申请人兄弟相关联的贩毒集团成员曾于约2002年在申请人遣返至洪都拉斯时袭击并抢劫申请人，原因是申请人未协助其兄弟狱中事务，且拒绝帮助其兄弟贩毒。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5b2bce1dbb3e59eebb5677cff8dbac1eadd61dc38c1d3b1f7516ac800257bd46",
+      "chineseText": "申请人并未实质性挑战移民法官认定其未能基于受保护理由证明童年时兄弟实施的性虐待构成过去迫害的结论。对此问题，我们视为放弃。见V-A-K案，28 I&N Dec. 630，630 注2（BIA 2022）（指出未在上诉中实质质疑的问题即视为放弃）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0bfd97e2abd2a7a16c9cf247b29b9c249a344945fe14d0a486db45f093475e7f",
+      "chineseText": "我们确认移民法官的结论，即申请人未能证明他因属于一个特定社会群体——被定义为“拒绝参与有组织犯罪集团要求的犯罪行为的个人”——而遭受过或将可能遭受迫害。移民法官认定，攻击并抢劫申请人的个人的动机是为了经济利益和报复申请人拒绝协助其兄弟及兄弟妻子贩毒，这不是受保护的理由。移民法官关于申请人过去遭受的伤害动机的事实认定没有明显错误。参见N-M-案，25 I&N Dec. 526, 532 (BIA 2011)（“迫害者的实际动机是一个事实问题，由移民法官决定，本委员会审查是否存在明显错误。”）；另见Rodas-Orellana诉Holder案，780 F.3d 982, 996 (10th Cir. 2015)（指出帮派的伤害不是因受保护理由，因申请人的证词表明帮派想拿走他的金钱或招募他）。申请人主张专家证据和国别报告支持他的主张，因为这些材料记录了帮派控制区域和识别目标的能力。该论点只是证据的另一种解读，不足以证明移民法官关于动机的认定存在明显错误。参见Cooper诉Harris案，581 U.S. 285, 293 (2017)（裁定，在明显错误审查中，“在完整记录中，‘合理’的认定——即使另一种认定同样合理或更合理——必须被采纳”（引自Anderson诉Bessemer City案，470 U.S. 564, 574 (1985)））。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1a7a1f3991ecfce6d28598b7ea14c7c57bba3a4c35dcc536119643278a32ec4b",
+      "chineseText": "我们承认所提出的群体也被定义为“拒绝服从参与贩毒活动要求的个人”。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8276dbede6dd8763617577bff90fd4db262f3a9d79dcaaf1cc1f161d19c7cf84",
+      "chineseText": "第728页"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "94d8abaa3905dede2a2f044a5ff886c99c53f82a11f941f021e9b3c0e0683635",
+      "chineseText": "引用自29 I&N Dec. 726 (BIA 2026) 临时裁决 #4212"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3352940cedb5b85cd2189e0155c419ce3256b0eba764ffd73487b9c96d647f4d",
+      "chineseText": "他的金钱或招募他）。申请人主张专家证据和国别报告确立了他的主张，因为这些报告记录了帮派控制领土和识别目标的能力。该论点属于对证据的另一种看法，无法证明移民法官关于动机认定的明显错误。参见Cooper诉Harris案，581 U.S. 285, 293 (2017)（裁定，在明显错误审查中，“即使另一种看法同样或更合理，‘合理’的认定也应占主导地位”（引用Anderson诉Bessemer City案，470 U.S. 564, 574 (1985)））。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "47681dd913a229d95122e58e189fb6d156b85b147150787d78cd6c25efb131cf",
+      "chineseText": "我们也确认移民法官的结论，即申请人未能证明基于其精神健康状况的特定社会群体身份，他将来被迫害的可能性有明显概率。申请人从5岁起就患有未治疗的精神疾病，但他在学校表现良好，完成高中学业，在洪都拉斯有稳定工作，并在墨西哥和美国获得就业，且尽管被诊断患病，仍能应对美国移民体系。与申请人在上诉中提出的相反，移民法官认可了专家证人和国别情况证据，显示残障人士可能受到歧视和暴力对待。然而，移民法官认为，申请人在洪都拉斯没有遭受过伤害，加上他的教育和工作经历，削弱了他更可能被迫害的主张。移民法官的认定有记录支持，记录未证实未来迫害的具体风险。参见Xue诉Lynch案，846 F.3d 1099, 1109–10 (10th Cir. 2017)（认定缺乏具体迫害风险削弱了申请人对未来迫害的恐惧）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f9b51db604923208097a373bf0ac41c9ad795d6825059b45c0ac84a362108eb5",
+      "chineseText": "申请人主张其过去无家可归和遭受伤害的证据整体支持其对未来迫害的恐惧。申请人还认为，若被驱逐回洪都拉斯，他可能经历不稳定，因为他将失去家庭支持并难以找到新工作。他进一步声称，由于精神疾病及洪都拉斯自其上次被驱逐后国情恶化，他将遭受更多困境。然而，申请人未能提交证据证明针对他的袭击是基于其精神疾病。就现有记录，申请人关于他可能在洪都拉斯遭遇艰难处境的一般性论点不足以证明他个人更可能因精神疾病而遭受迫害。参见Kapcia诉INS案，944 F.2d 702, 708 (10th Cir. 1991)（说明申请人必须提供具体证据才能建立有理由害怕未来伤害的证据）。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "94d8abaa3905dede2a2f044a5ff886c99c53f82a11f941f021e9b3c0e0683635",
+      "chineseText": "引用自29 I&N Dec. 726 (BIA 2026) 临时裁决 #4212"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "2ccb4b9d1626b0520279514faae7810848ceab4426f49800f55f44562a4c3b4e",
+      "chineseText": "申请人在上诉中主张因其精神健康状况而遭受迫害的群体存在一种模式或惯例，然而他在移民法官面前并未实质性地提出这一论点。我们不会处理其在上诉中首次提出的此项论点。参见Matter of J-Y-C-, 24 I&N Dec. 260, 261 注1（BIA 2007）。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ea35b52092fae4277911037723b4ced151d9f97c443e5c295e3947fa61604bb9",
+      "chineseText": "我们确认移民法官关于申请人不符合难民遣返保护条约（CAT）保护资格的裁定。即便假设并不决定申请人过去所受的伤害达到了酷刑的程度，这也仅是我们评估申请人未来可能遭受酷刑的因素之一。参见8 C.F.R. § 1208.16(c)(3)。我们不同意申请人认为移民法官错误适用了CAT标准，且不恰当地将分析重点放在申请人过往伤害上，而忽视其余记录证据的说法。移民法官考虑了申请人对未来酷刑的恐惧，但认为申请人遭受酷刑的可能性不足半数以上，因其主张存在不当的推测性。移民法官还发现缺乏证据证明申请人遭受官方公职人员以职务身份实施酷刑的可能性超过半数。为支持该裁定，移民法官认定精神卫生机构的恶劣条件的证据不足以证明申请人遭受具备特定意图的酷刑的可能性超过半数。移民法官对此证据记录的评估属于许可范围。参见Matter of D-R-, 25 I&N Dec. 445, 455（BIA 2011），另案理由被下级法院发回审理，案名为Radojkovic v. Holder, 599 F. App'x 646（第九巡回法院2015年）。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e42fb331f5bad4e9834fedbbee576bd5c240ba4cc8d3ecddf065c8bcec8517a6",
+      "chineseText": "申请人主张，洪都拉斯的心理健康设施和监狱由政府雇员管理，有证据表明精神病患者在洪都拉斯，包括在心理健康设施中，遭受犯罪分子和公职人员的身体和性虐待。他还主张，关于洪都拉斯紧急状态、帮派暴力及对精神病患者污名化的国家状况和专家意见证据显示，他遭受酷刑的可能性超过半数。然而，申请人引用的关于酷刑的轶事报告以及关于暴力普遍存在的国家状况的普通证据，均不足以证明他本人遭受酷刑的可能性超过半数。参见Matter of A-A-R-, 29 I&N Dec. 38, 41-42（BIA 2025）；另见Matter of O-A-R-G-, 29 I&N Dec. 30, 36（BIA 2025）。虽然申请人认为其过去的伤害带有特定意图，且帮派和警方以特定意图针对个人进行酷刑，但这些论点同样不足以证明他在洪都拉斯遭受酷刑的可能性超过半数。参见Escobar-Hernandez诉Barr，"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "94d8abaa3905dede2a2f044a5ff886c99c53f82a11f941f021e9b3c0e0683635",
+      "chineseText": "引证为29 I&N Dec. 726（BIA 2026）临时裁定第4212号"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "801ee4f83eb903ee20e531697a8abb3a2efbb20dab5196ce72db498b08d7cab6",
+      "chineseText": "第10巡回法院判决书940 F.3d 1358, 1362（2019）指出，“仅凭申请人所在国普遍存在的暴力，通常不足以证明申请人返回该国后遭受酷刑的可能性超过半数。”"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "275c9ab25a7769e98d8399cc0b3804b2348cfb23d722597b131b931ed708a460",
+      "chineseText": "尽管申请人称因过去无家可归、曾遭犯罪分子攻击及其被驱逐者身份等因素，面临帮派、毒贩及公职人员实施酷刑的重大风险，但他未能充分指出移民法官忽视的证据，证明其在洪都拉斯遭受酷刑的可能性超过半数。基于以上理由，我们确认移民法官拒绝给予CAT保护的裁决。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "ab2ff7aa234977ce92ae48c4f32550324f95587bae57cdc972d6cb6ddb6e71f4",
+      "chineseText": "命令：驳回上诉。\n通知：若申请人受最终遣返令管辖，且故意拒绝或不履行按该令离开美国、诚实及时申请旅行或其他必要离境文件，或未按国土安全部规定的时间和地点呈现，或与他人共谋或采取任何妨碍或阻挠其根据遣返令离境的行动，申请人将面临每日最高998美元的民事罚款。参见《移民与国籍法》第274D条，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何被拒绝入境、被驱逐或在排除令、驱逐令或遣返令有效期间离开美国后，若再次进入、试图进入或在美国境内被发现的申请人，均将被判处最高不超过2年的罚款或监禁，或两者并罚。参见《移民与国籍法》第276(a)条，8 U.S.C. § 1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "578997b4aa11516d3fe5db3f10da43052e8d24bab3b28a9f46624812eace312d",
+      "chineseText": "第731页"
+    }
+  ]
+}

@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "recordId": "152a4606dfb3b08853cb27ca",
+  "recordFingerprint": "b85ddc69fccff509652878a7d1c345ada9de65140da0a4cbd4c403afb5c55600",
+  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1451996/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1451996/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1451996/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T18:21:56.923Z",
+  "sourceDigest": "01489887ca3e3c6ff8eb716a48d3fb4cab19a72bdfbea8648fcbf5ab56e3525a",
+  "translatedAt": "2026-08-17T18:27:20.493Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 46,
+  "translatedSegmentCount": 46,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7fc4eed4323879b8d1f4092a5b15ce8f14bea10c68361163b48ab3df9d0440ff",
+      "chineseText": "引证为29 I&N Dec. 746（移民上诉委员会2026年）临时决定#4216"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b347dd73a38feff8fe8e6302f932f2c18f166c8af46bb4446c74fd7d968d4b67",
+      "chineseText": "E-A-R-M-等人的事项，答辩人\n裁决日期：2026年7月10日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9493d099c702de775097b3a093ef4b463d48e911a3392319d76f6b0aa7a2b981",
+      "chineseText": "国土安全部对答辩人的庇护及相关保护申请提出口头拒绝动议，已足以提供其根据庇护合作协议拟将答辩人移送第三国的意图的必要通知。\n答辩人：自行代理\n国土安全部代理律师：Luis Zupo\n合议庭成员：RADICS，副上诉移民法官，OWEN与GALLOW，上诉移民法官。\nOWEN，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "33d23769dd06eee00d0b2ff682c885ae4c1b9814b95a94e2192b99bd744fb367",
+      "chineseText": "国土安全部（“DHS”）针对移民法官于2026年3月24日作出的拒绝其关于拒绝审理答辩人依据《移民与国籍法》（“INA”）第208(b)(1)(A)条及241(b)(3)(A)条款，8 U.S.C. §§ 1158(b)(1)(A)，1231(b)(3)(A)（2024年）的申请庇护及避免驱逐的动议，并拒绝答辩人依据实施《反酷刑公约》（“CAT”）的规章寻求保护的决定，提出的中间上诉。答辩人未对DHS的上诉提交答辩。上诉将获得支持，案件记录将被发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f07482ffcfd47adf88d5ec8cad8bee7e7e4b0fe781435f27fb49f831943eb476",
+      "chineseText": "在其动议中，DHS寻求拒绝审理答辩人的申请，理由是答辩人根据INA第208(a)(2)(A)条款，8 U.S.C. § 1158(a)(2)(A)（2024年），受到庇护安全第三国限制的约束，"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3c01f73fcf722a16a694996c895f300bbbff17e077ca93d6ff646facb346b875",
+      "chineseText": "1\n《反酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》，1984年12月10日，参见参议院条约文档100-20号，1465联合国条约系列第85页（美国于1994年11月20日生效）。2026年8 C.F.R. §§ 1208.16(c), 1208.17；2020年8 C.F.R. § 1208.18(a)。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "28596c36813db1f278d32158b4925073ad468f07a279b5626482104f9256803e",
+      "chineseText": "第746页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7fc4eed4323879b8d1f4092a5b15ce8f14bea10c68361163b48ab3df9d0440ff",
+      "chineseText": "引证为29 I&N Dec. 746（移民上诉委员会2026年）临时决定#4216"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ccc3c64b31e4ce505cd4d27fd98dde4ae076882f03006aaac12391fb5a5bf9eb",
+      "chineseText": "实施依据2026年8 C.F.R. § 1240.11(h)条款。我们最近在Matter of C-I-G-M- & L-V-S-G-，29 I&N Dec. 291（移民上诉委员会2025年）中讨论了该庇护限制并提供了该规定正确适用的指导。另见Matter of A-C-M-，29 I&N Dec. 703（移民上诉委员会2026年）（裁定一般不需听证确定安全第三国条款是否适用于ACA移送国）。虽然本委员会通常不受理中间上诉，但考虑到移民法官反复错误适用8 C.F.R. § 1240.11(h)及Matter of C-I-G-M- & L-V-S-G-，本次认为受理适当。参见Matter of M-D-，24 I&N Dec. 138, 139（移民上诉委员会2007年）（指出为纠正移民法官处理案件中反复出现的问题，可适当审理中间上诉）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4320a5eaaaf4e976e9e578e05b0149ae6c1a6c565c38cece271fd50a66ef0a81",
+      "chineseText": "一、事实与程序历史"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "41a398ce5105c5f75d6d329029c538a675efd87877da8f55cc7829d94bb94bc6",
+      "chineseText": "女成年答辩人与未成年答辩人为委内瑞拉国籍与公民。男成年答辩人为哥伦比亚国籍与公民。答辩人于2024年4月3日未经检查非法入境美国。DHS向每名答辩人送达出庭通知并向移民法院提交出庭通知书，启动驱逐程序。成年答辩人于2024年9月13日在移民法官前提交庇护、避免驱逐及《反酷刑公约》保护申请。DHS于2026年1月28日听证会上口头提出拒绝审理答辩人申请的动议，主张答辩人因根据美国与厄瓜多尔间的庇护合作协议（“ACA”）可被移送厄瓜多尔审理相关申请，故无资格申请庇护及相关保护。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1f3b33ff1869646c6e0b68b191c452b88bd6955866cf79274f04d825a33b0079",
+      "chineseText": "答辩人对DHS动议提出反对，称庇护合作协议具有不当溯及力且厄瓜多尔非安全第三国。2026年3月6日，移民法官发布安排命令，要求DHS（1）确认是否意图将答辩人移送厄瓜多尔审理其庇护及保护申请；（2）若是，具体说明根据INA第241(b)(2)条，8 U.S.C. § 1231(b)(2)，DHS请求移民法官指定的法定依据。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3a8868a21d646814e3a9910d657e12ecef0413e672496badc8e17cc6a66f2aed",
+      "chineseText": "2\n答辩人是一个家庭单位。首席答辩人和成年男性答辩人提交了庇护及相关救济的申请。未成年答辩人作为衍生庇护申请人列在这些申请中，但未提交自己的救济申请。\n3\n参见美国政府与厄瓜多尔共和国政府关于第三国国民转移至厄瓜多尔的协议，90 联邦公报 51376（2025年11月17日）。\n页码\n747"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7fc4eed4323879b8d1f4092a5b15ce8f14bea10c68361163b48ab3df9d0440ff",
+      "chineseText": "引证为 29 I&N Dec. 746 (BIA 2026) 临时决定 #4216"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d5ec71fd0d96c6a75ac16d6b0fc55e2cf85dc01433de98a208118e4e52d4c35d",
+      "chineseText": "厄瓜多尔作为遣返国；以及(3) 如果国土安全部依赖《移民与国籍法》第241(b)(2)(E)(vii)条，8 U.S.C. § 1231(b)(2)(E)(vii)（2024），请说明国土安全部是否认为厄瓜多尔政府将接受答辩人，并且如若主张，请陈述该立场的依据。国土安全部未对调度令作出回应。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fb98c60a7b53075ad5557f1452b6f48aa6e46e4e0e7163e534fba4383a2beb7a",
+      "chineseText": "移民法官否决了国土安全部的排除审理动议，认定由于国土安全部尚未就将答辩人遣返至厄瓜多尔以审理其庇护及保护申请表明意图，移民法官不存在需要解决的争议问题，因此无需确定安全第三国禁止条款的适用性。或者，移民法官认为他无法确定与厄瓜多尔的 ACA 是否适用于答辩人，且由他指定厄瓜多尔为遣返国将是不当的。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2149ff9d8827917d5a7dd4c52a4e3725ddce7e0f5a30dddd9ecadd9e0c2b6df8",
+      "chineseText": "上诉中，国土安全部主张移民法官超越了其规章权限，且未遵循基于 ACA 的排除审理动议的正确程序。是否认定安全第三国禁止条款适用于庇护为法律问题，我们进行无事实审查（de novo）。见 8 C.F.R. § 1003.1(d)(3)(ii)（2026）；案号 Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 293。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ecd58ca19277e66c7a778ba8c58af8087872f4d1e677bdabc0224f33203162c8",
+      "chineseText": "二、讨论"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "74072a4152e4150f82aa4f0fd0e38d82dbf926a2c160cff2a31a73986cd05f21",
+      "chineseText": "本案涉及根据《移民与国籍法》第208(a)(2)(A)条，8 U.S.C. § 1158(a)(2)(A)项下的安全第三国禁止庇护条款，以及依据 8 C.F.R. § 1240.11(h)（2026）条款，移民法官适用与厄瓜多尔之间双边 ACA 的权限。见案号 Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 292–99（解释与洪都拉斯的 ACA 法律背景及相关驱逐程序）。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3d9f4ff87bc94c90c5796b07c2c2a97a995627db059440300545ae0c22b81959",
+      "chineseText": "根据安全第三国禁止庇护条款，若总检察长确定，依据双边或多边协议，外国人可以被遣返至一个国家（该国既非该外国人的国籍国，亦非无国籍者之前的惯常居住国），且该国不会因该外国人的种族、宗教、国籍、特定社会群体成员身份或政治观点对其生命或自由构成威胁，并且该外国人在该国能获得完整且公平的庇护或同等临时保护的程序，除非总检察长认定出于公共利益，该外国人应在美国获得庇护，该外国人即无资格申请美国庇护。"
+    },
+    {
+      "segmentId": "pdf-p3-s21",
+      "order": 21,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9ad18550563d8e76911ff345e638323b00830cc16049c78e7b9dd13fabcab95e",
+      "chineseText": "页码\n748"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "7fc4eed4323879b8d1f4092a5b15ce8f14bea10c68361163b48ab3df9d0440ff",
+      "chineseText": "引证为 29 I&N Dec. 746 (BIA 2026) 临时决定 #4216"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "225fef57dc6cf3624f46b7135214250b4d8156f39f446f6d5e3c68b30dcd7a81",
+      "chineseText": "《移民与国籍法》第208(a)(2)(A)条，8 U.S.C. § 1158(a)(2)(A)。该禁止条款在相关部分通过 8 C.F.R. § 1240.11(h) 实施，该条款规范移民法官适用美国与除加拿大之外国家间 ACA 的权限。参见《根据移民与国籍法实施双边及多边庇护合作协议》，84 联邦公报 63994, 64010 (2019年11月19日)（临时规则，称“ACA规则”）。该规章“仅对2019年11月19日或之后抵达美国入境口岸，或在口岸之间进入或尝试进入美国的外国人适用，且‘为实施所有现有及未来尚未实施的 ACA 提供一般机制。’”详见同规章 63995–96页。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8126b6b133082b01ad530204c17612cde8071cc22068eb734e5110b2f315f358",
+      "chineseText": "美国于2025年11月17日与厄瓜多尔签署了ACA。参见《联邦公报》90卷51376页。该ACA不适用于无人陪伴未成年人、厄瓜多尔国民或厄瓜多尔习惯性居民。见同上，51378–79页。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "cde15e24f336155508a38323629325b269d2d16e8abee8c2e9ddbd26e9fe84c9",
+      "chineseText": "A. 关于意图将被诉外国人移送至安全第三国的通知"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "039c351ee085907601df0f4122d99bd555738cd9937345562629ac9697dbe270",
+      "chineseText": "当国土安全部(DHS)在提交弃权动议时，向外国人提供关于将其移送至安全第三国以依据该国与美国签订的ACA审理其庇护和保护申请的适当通知时，举证责任转移到该外国人，须以优势证据证明ACA不适用于其案件。案号：Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 295页。相关法定及规章条款确保外国人有合理机会提交证据并回应DHS提出的任何证据。见同上。"
+    },
+    {
+      "segmentId": "pdf-p4-s27",
+      "order": 27,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e87203ccc0edeb0be3ec47d94c31c31782ba9817f8ad32aba57f0fe8b13d7aae",
+      "chineseText": "在评估被诉外国人是否已满足该举证责任时，移民法官的权力受规章限制。移民法官可作出以下判断：(i) 协议是否不适用于被诉外国人或不排除其申请庇护；(ii) 被诉外国人是否符合已公布于联邦公报中ACA及其例外情形的例外规定；(iii) 被诉外国人是否证明其在厄瓜多尔更可能基于受保护理由遭受迫害或被折磨。见8 C.F.R. § 1240.11(h)(2)–(3)。然而，移民法官不得要求DHS证明厄瓜多尔愿意接收被诉外国人，且无权判断被诉外国人在厄瓜多尔是否能获得充分、公正程序或"
+    },
+    {
+      "segmentId": "pdf-p4-s28",
+      "order": 28,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4df236570f87643b53156f619e882bf9b0188ece42ead6938c181d667a3ff771",
+      "chineseText": "美国国土安全部长近期批准了ACA规章。参见相关批复，90 Fed. Reg. 42309（2025年9月2日）。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7fc4eed4323879b8d1f4092a5b15ce8f14bea10c68361163b48ab3df9d0440ff",
+      "chineseText": "引用格式：29 I&N Dec. 746（BIA 2026）临时决定#4216"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "cbc36d1b502970264c79040203f5ff0be24f1f790c394911a4e1e3b5c7bbe864",
+      "chineseText": "或者判断允许被诉外国人在美国继续其庇护申请是否符合公共利益。案号：Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 295 n.4, 298页。"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "deca8e988310561ea4644d710105cf8665637f048d30f1e43b2d4679f6ee456e",
+      "chineseText": "移民法官错误认定DHS未向被诉外国人提供其意图将其移送至厄瓜多尔以审理其庇护及保护申请的通知。“DHS必须以口头或书面形式通知，被诉外国人DHS意图将其移送至相关第三国审查其庇护申请。”案号：Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 295页。另见《关于根据移民与国籍法实施双边及多边庇护合作协议》，84 Fed Reg. 64000页（“本临时规则规定，将可能受ACA约束的外国人告知其可能根据双边或多边协议被移送至第三国。”）。本案中，DHS在口头提出基于与厄瓜多尔ACA的拒绝审理动议时已提供此类通知，且无须依据移民法官的日程安排令另行提交书面意图确认。与移民法官结论相反，DHS就被诉外国人的庇护及相关保护申请提出的口头拒绝审理动议足以视为其依据ACA意图将被诉外国人移送至厄瓜多尔的必要通知。"
+    },
+    {
+      "segmentId": "pdf-p5-s32",
+      "order": 32,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "68345610b33784689d3a9c709d73e6392c05b792356c17e90b482189e6cdb0a1",
+      "chineseText": "B. 替代性结论"
+    },
+    {
+      "segmentId": "pdf-p5-s33",
+      "order": 33,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "6b1c04c4ae076085e213fed93be6e2ec828559dac1164781feae01e325268ac9",
+      "chineseText": "移民法官另作出结论，认为由于DHS未表明意图将被诉外国人转移至厄瓜多尔且美国与厄瓜多尔之间无执行计划，故ACA不适用于被诉外国人。该结论超出移民法官权限。正如我们在案号Matter of C-I-G-M- & L-V-S-G-中所述，移民法官不得要求DHS证明ACA规定的移送国愿接收受ACA约束的被诉外国人。29 I&N Dec. 295页注释4。移民法官亦无权判断被诉外国人在该第三国是否可获得充分公正程序。见同上，298页。"
+    },
+    {
+      "segmentId": "pdf-p5-s34",
+      "order": 34,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8cdd6e77194f072f59990fddebfc7767693444114c0953c0c7c8f6e8937d2f78",
+      "chineseText": "移民法官对执行计划缺失的依赖不当，因为任何后续执行计划不属于ACA本身且未包含在公布ACA及其例外情形的联邦公报文档中。见90 Fed. Reg. 51376–86页（厄瓜多尔ACA）；另见84 Fed. Reg. 63995页（“协议将公布于联邦公报文档中。”）；84 Fed. Reg. 63997页（“根据第208(a)(2)(A)节签署的ACA将公布于联邦公报。”）；"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7fc4eed4323879b8d1f4092a5b15ce8f14bea10c68361163b48ab3df9d0440ff",
+      "chineseText": "引用格式：29 I&N Dec. 746（BIA 2026）临时决定#4216"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "e47b7b6e1ba8957d8c7fed1562a9a811ed079306ec87363089acd207a5a159c5",
+      "chineseText": "8 C.F.R. § 1240.11(h)(3)（“除加拿大以外国家的协议例外情形，详见适用的联邦公报公布文件，该文件列明各协议及其例外情形。”）。相关法规及法案不要求除协议外另有执行计划。见INA § 208(a)(2)(A)、8 U.S.C. § 1158(a)(2)(A)。移民法官亦承认，任何此类执行计划将由国务院另行公布。因此，该计划系ACA的附属文件，并非ACA正式公布中允许采纳为例外情形的依据。见8 C.F.R. § 1240.11(h)(2)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "4f53b402a8d5966010c4ce81f801cdd194725a1af6ab72fea9cf54284b75d714",
+      "chineseText": "最后，移民法官错误拒绝在DHS表明意图基于ACA将被诉外国人移送厄瓜多尔后指定厄瓜多尔为移送国。案号：Matter of C-I-G-M- & L-V-S-G-, 29 I&N Dec. 297页（“移民法官应下令将被诉外国人移送至相关第三国。”）。根据2026年8 C.F.R. § 1241.15，移民局及移民法官无权审查DHS关于可将外国人移送至何国的任何决定。另见8 C.F.R. § 241.15（2026年）及案号Matter of A-S-M-, 28 I&N Dec. 282, 285页（BIA 2021）。移民法官误解我方在案号Matter of A-S-M-中的判决，认为该判决仅适用于DHS在遣返程序结束后指定移送国。案号Matter of A-S-M-, 28 I&N Dec. 285页（判决指出，在随后恢复此前遣返令后仅限于非驱逐遣返程序，外国人可向DHS指定的第三国申请限制遣返，且移民法官无权审查DHS的第三国指定）。移民法官未引述有说服力的权威支持对我方判决及相关规章进行如此狭义解读。"
+    },
+    {
+      "segmentId": "pdf-p6-s38",
+      "order": 38,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "c50ba76226bb6ab1f9daa14b22d47691f84df45cc298a555cceb264c1ca0896f",
+      "chineseText": "III. 结论"
+    },
+    {
+      "segmentId": "pdf-p6-s39",
+      "order": 39,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "fd8875761c81992b7ce07f051755f1db8b7e52e525818de171f8a38f42257d80",
+      "chineseText": "我们认为移民法官超越其规章权限，且未遵循正确程序决定基于ACA的拒绝审理动议。因此，我们将支持DHS的上诉，并将案件记录发回下级法院，由移民法官迅速决定本案是否适用安全第三国限制。移民法官可通过书面裁定，或在及时安排的主日程听证会上，在综合考虑双方提交的证据和论点后作出决定。"
+    },
+    {
+      "segmentId": "pdf-p6-s40",
+      "order": 40,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d047f0befe93c01959aa2207c1cd5c85acda533829fcd194cb8e12543ad0750b",
+      "chineseText": "据此，将发出如下命令。"
+    },
+    {
+      "segmentId": "pdf-p6-s41",
+      "order": 41,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "3e405025e6f5fcbd0461261caeb1c420666351eef13ee008c25360e5da3f0519",
+      "chineseText": "命令：支持DHS的中间上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s42",
+      "order": 42,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "73830cd958e5ed377e9841fe8986214286d3ab7140378ebd0b359e521f654b4d",
+      "chineseText": "第751页"
+    },
+    {
+      "segmentId": "pdf-p7-s43",
+      "order": 43,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "7fc4eed4323879b8d1f4092a5b15ce8f14bea10c68361163b48ab3df9d0440ff",
+      "chineseText": "引用格式：29 I&N Dec. 746（BIA 2026）临时决定#4216"
+    },
+    {
+      "segmentId": "pdf-p7-s44",
+      "order": 44,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "86c26e178a04afb8d88a90811e5a900604d12e7a3ab25fd80935174369cc96b1",
+      "chineseText": "另行命令：撤销移民法官于2026年3月24日作出的驳回DHS拒绝审理动议的裁定。"
+    },
+    {
+      "segmentId": "pdf-p7-s45",
+      "order": 45,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0eb1ca67279e07ab22d4d96f94c5af0f102286c3f3b74146b5103842de83eb06",
+      "chineseText": "另行命令：案件记录发回移民法院，按照上述意见进一步审理并做出新裁定。"
+    },
+    {
+      "segmentId": "pdf-p7-s46",
+      "order": 46,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "b9a9dc4476dc400b0471ab8aec700514134fcf77336512d0e9737034c2d71983",
+      "chineseText": "第752页"
+    }
+  ]
+}

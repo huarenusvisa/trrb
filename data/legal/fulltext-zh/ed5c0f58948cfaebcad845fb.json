@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "recordId": "ed5c0f58948cfaebcad845fb",
+  "recordFingerprint": "2dcd400c87503f284cdbcb95d69a1f2f73ac4a42b3afe2a396ec334b7c79d98f",
+  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1453181/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1453181/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1453181/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T18:27:36.686Z",
+  "sourceDigest": "e17a6c4d378a1aa430a8392ae05c1f640476b5f2faf896ddc696915b9c5083b2",
+  "translatedAt": "2026-08-17T18:28:06.355Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 25,
+  "translatedSegmentCount": 25,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "eabd43045c93d578e8415b145b24ff34940f3121a938eef1015f9944fa051360",
+      "chineseText": "引用作 29 I&N Dec. 767（BIA 2026）临时决定 #4220"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b7c76a4cd9c39ad8cfe77c5936edb3a61455a3994a17d1c32afcfa738099c5bc",
+      "chineseText": "H-L-S-M 案，申请人\n由移民上诉委员会于2026年6月18日裁定\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ae2345f7a3df8eb6b2cbd65bd7d69ee95707729d771cba9104e2d0dd50e54a4a",
+      "chineseText": "(1) 移民法官基于一般国家状况证据和关于腐败的专家证人证词，断定申请人被遣返到墨西哥或危地马拉后更可能遭受酷刑，但明显错误，因忽视了申请人个案的关键事实，包括无既往酷刑经历，收到威胁后的时间间隔，以及威胁的模糊和间接性质。\n(2) 申请人未能证明公共官员可能会默认帮派成员对其施行酷刑，记录显示政府部分机构已采取措施打击犯罪组织，尽管此类努力未必有效。\n代理申请人：Benjamin T. Wiesinger 律师，亚利桑那州菲尼克斯\n国土安全部代理律师：Michael Schmitz\n合议庭：HUNSUCKER 同志和 CHABAN 同志，上诉移民法官；WHITE 临时上诉移民法官。\nHUNSUCKER，上诉移民法官:"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "80e32efe3574a54e1940bb587e741aaf0f6158c886ab0e8060867024c82c5a28",
+      "chineseText": "国土安全部（“DHS”）对移民法官2025年10月17日作出授予申请人根据实施《禁止酷刑公约》（“CAT”）法规的撤销驱逐决定提出上诉，支持其对危地马拉和墨西哥两地的撤销驱逐请求。申请人，"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "00342b06199298c5fe35a890833c12a919428fc85d3cddbee204e319351c1055",
+      "chineseText": "依据2026年7月16日第7024号令，代理总检察长指定本委员会对H-L-S-M案（BIA 2026年6月18日）作出的裁决为涉及同一问题之所有程序的先例。见8 C.F.R. § 1003.1(g)(3) （2026）。\n为符合先例案件的裁决内容，已作编辑性修改。\n《禁止酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》，1984年12月10日，参见S. Treaty Doc. No. 100-20，1465 U.N.T.S. 85（美国于1994年11月20日生效）。8 C.F.R. §§ 1208.16(c), 1207.17（2026）；8 C.F.R. § 1208.18(a)（2020）。\n因DHS向移民法院提交了移民法官转介通知（“I-863表”），申请人处于仅限撤销驱逐程序。见8 C.F.R. §§ 1208.2(c)(2), 1208.31(e), 1241.8(e) （2026）。申请人承认其不符合撤销驱逐资格，且未寻求该项救济。因此，该问题不在本案审理范围。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "eabd43045c93d578e8415b145b24ff34940f3121a938eef1015f9944fa051360",
+      "chineseText": "引用作 29 I&N Dec. 767（BIA 2026）临时决定 #4220"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3a2c75c29d9a3bad2d164cb8c1b8143c9e49f949d3b7ca3e5aed30763739f8d7",
+      "chineseText": "申请人为危地马拉本国公民，对上诉提出反对。现决定维持上诉。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "57d6f1daaf81690967a525cdb5a86525585fd6e457c51cec8e0b4fcf09659636",
+      "chineseText": "申请人之申诉基于其在美国作证控告拉丁国王帮和MS-13帮派成员。他称其2007年成为拉丁国王帮成员，曾参与并目睹多起刑事犯罪。2008年因持有未经授权的枪械被捕并定罪，亦因合谋参与敲诈勒索组织被起诉，依18 U.S.C. § 1962(d)。他向酒精、烟草、火器及爆炸物管理局特工作证，控诉帮派成员，并在拉丁国王帮成员审判时出庭作证。期间，拉丁国王帮一成员闯入其监室，试图刺伤并威胁若其配合法律，将予杀害。其得知自己被列入拉丁国王帮“见即杀”名单，该名单亦与MS-13等帮派共享。申请人称其在狱中及出狱后曾参加证人保护计划，后因违反安全规则致电友人而被开除。他认为帮派成员仍在寻找他。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "443cdf1d26c3d989cb9390407c689d4d9d11f96b368f7a0e88ca60e80dc9187b",
+      "chineseText": "寻求CAT保护的申请人须证明更可能的是，他们将被遣返国的公共官员或以官方身份行事的其他人有意或默许（包括“故意视而不见”）施以酷刑。8 C.F.R. §§ 1208.16(c)(2), 1208.17(a), 1208.18(a)(1)。“委员会对移民法官关于申请人将来可能遭遇的事实认定进行清楚错误审查，但对申请人可能遭受的伤害是否构成法律意义上的酷刑，则进行全新审查。”Matter of L-A-G-B-, 29 I&N Dec. 343, 344 (BIA 2025)。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "40ad825e52389d5e5d126651bc70140ca70b3780bb07095fe019a67ccc3d2ce8",
+      "chineseText": "我们将推翻移民法官认定申请人在墨西哥和危地马拉更可能遭受酷刑的决定。针对危地马拉，移民法官认为“申请人更可能遭MS-13刺杀或酷刑，且危地马拉政府默认其行为。”针对墨西哥，移民法官认为“申请人更可能遭MS-13或拉丁国王帮刺杀或酷刑，且墨西哥政府默认其行为。”然而，两项认定几乎仅基于关于两国腐败的泛泛国家状况证据和专家证人证词，忽视了申请人个案的关键事实。参见Park v. Garland, 72 F.4th 965, 980 (9th Cir. 2023)（“单纯暴力和犯罪的泛泛证据不足以证明酷刑的可能性。”）；Matter of G-C-I-, 29 I&N Dec. 176, 184 (BIA 2025)（说明“泛化国家证据对估计国家行为者对某特定人实施酷刑的可能性助益甚微” (引自Qorane v. Barr, 919 F.3d 904, 911 (5th Cir. 2019)）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4ab967e8385a888b8219cf4d3f7ab7990fbf35a56fc4665b18d238caa3f46887",
+      "chineseText": "申请人承认其不具备撤销驱逐资格，亦未寻求此项救济。因此该问题不予审理。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e7b356ec7e8dd8e1c99ddd102b1e2756bdcc9a5836ee3c8a1b480a978013cc12",
+      "chineseText": "页码 768"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "eabd43045c93d578e8415b145b24ff34940f3121a938eef1015f9944fa051360",
+      "chineseText": "引用作 29 I&N Dec. 767（BIA 2026）临时决定 #4220"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a5c7f4f58b3677cc905b80f6320efda607f13b644de945a840c338a3a30bf403",
+      "chineseText": "移民法官未充分考虑申请人的个案情形。申请人从未在墨西哥或危地马拉遭受过酷刑。这一点在评估未来遭遇酷刑风险时尤为重要。见8 C.F.R. § 1208.16(c)(3)(i)（指示审理者考虑“申请人所受现有酷刑之证据”）；另见Nuru v. Gonzales, 404 F.3d 1207, 1217–18 (9th Cir. 2005)（“既往酷刑是评估未来酷刑风险的首要因素，因为历史行为经常揭示个人或政府未来的行为模式。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "15fd87d98c888a0a7da088dd9988d65fbec57f795fbb739a10c689be381f183a",
+      "chineseText": "我们承认申请人当前的恐惧源自其在美国的经历，具体为因配合法律而遭帮派成员威胁。然而，移民法官未能恰当考量减轻严重未来伤害风险的申请人证词细节，属明显错误。例如，申请人作证说明自获释后，MS-13帮派成员未直接威胁其人，而是通过社交媒体间接归咎拉丁国王帮某次针对MS-13的起诉，并说“我们会找他们的”。此类模糊及间接威胁显示执行威胁的可能性降低。见Sharma v. Garland, 9 F.4th 1052, 1062–63 (9th Cir. 2021)（说明威胁的背景相关，且“威胁往往虚张声势”（引自Hoxha v. Ashcroft, 319 F.3d 1179, 1182 (9th Cir. 2003)））。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6de4e59d3fe3416de3aac976ff7c7791920e57b4486c039ae66e987eaec49658",
+      "chineseText": "移民法官亦未考虑申请人受到威胁以来的长时间间隔。申请人作证称2009年发现自己被列入“见即杀”名单，2013年2月被驱逐出证人保护计划。尽管如此，他证实自2009年狱中遭遇未遂刺杀和威胁以来未遭帮派攻击，且离开证人保护计划后亦未被帮派成员接触。该证词显示帮派对申请人缺乏严重且近期的兴趣，移民法官据此判断申请人更可能遭帮派伤害的结论明显错误。参见Matter of J-C-A-G-, 29 I&N Dec. 331, 332 (BIA 2025)；另见Matter of L-A-G-B-, 29 I&N Dec. 346（认定预测性事实认定明显错误，理由是“无证据显示任何人曾或仍对申请人感兴趣”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7b98448fe8b3e0b661157c32830a34f9de4313f0a9e7b403aed7bdc2c4584ea2",
+      "chineseText": "移民法官在评估专家证人证词时亦明显错误。见Matter of M-A-M-Z-, 28 I&N Dec. 173, 177 (BIA 2020)（说明专家证人证词的重要性属事实问题）；8 C.F.R. § 1003.1(d)(3)(i)（2026）（规定事实认定审查标准为“明显错误”）。我们与移民法官一样，认可关于墨西哥及危地马拉的暴力、犯罪和腐败报告。然申请人专家证人亦证实危地马拉及墨西哥政府已对境内犯罪组织采取行动。专家虽称此类努力未见效，但政府相关行为本已被移民法官采纳为证词概要却未纳入分析，这减轻了申请人担忧的未来受酷刑风险，因该酷刑须由政府官员或其代表同意或默许。见Matter of O-A-R-G-, 29 I&N Dec. 30, 36 (BIA 2025)（“就CAT而言，默许需更高程度的政府合谋，比庇护案件中认定政府无力或不愿保护申请人的要求更高。”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "eabd43045c93d578e8415b145b24ff34940f3121a938eef1015f9944fa051360",
+      "chineseText": "引用作 29 I&N Dec. 767（BIA 2026）临时决定 #4220"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6882bd9e30a7cf029d2c6e90e24991653f91d6c71210bc9b073005e6936f0192",
+      "chineseText": "因未充分考虑此无可争辩之证据，移民法官明显错误地判定申请人在墨西哥或危地马拉更可能遭受酷刑。参见Matter of L-A-G-B-, 29 I&N Dec. 344。申请人虽可能面临伤害风险，然鉴于其受威胁多数为间接，且长时间未遭受伤害或帮派身体接触，以及两国对打击有组织犯罪所为的努力，申请人未证明更可能被公共官员或代表官方人士（含“故意视而不见”）煽动、同意或默许施加酷刑。8 C.F.R. §§ 1208.16(c)(2), 1208.17(a), 1208.18(a)(1)。据此，我们支持DHS的上诉，撤销移民法官根据CAT授予的撤销驱逐决定。参见Matter of L-A-G-B-, 29 I&N Dec. 345–46（推翻CAT授予决定，因“移民法官的预测性事实认定从记录中得出无支撑推论，明显错误”，并说明无需为额外事实认定或分析而发回重审）。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f528a3627142a59a43c066fb75800cffa571eff30fdc9cdda45875183a79b15f",
+      "chineseText": "移民法官明显错误地判定申请人在墨西哥或危地马拉更可能遭受酷刑，因其未充分考虑申请人专家证人证词中有关政府努力打击犯罪的证据。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c7695d790f9b5fd64814f4fcef4ee0c92d26e0d804c11edc6f2b195e6c52f57c",
+      "chineseText": "未充分考量此无可争辩证据，移民法官判决存在明显错误。申请人虽面临风险，但其威胁多数间接，且长时间未遭伤害或帮派接近，加之两国打击有组织犯罪之努力，为公共官员同意或默许实施酷刑之可能性减轻。故支持DHS上诉，撤销移民法官CAT撤销驱逐决定。"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "eabd43045c93d578e8415b145b24ff34940f3121a938eef1015f9944fa051360",
+      "chineseText": "引用作 29 I&N Dec. 767（BIA 2026）临时决定 #4220"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "cc13e21f4dbfaad423f4527841af70d5bfe34fc60531d3c310d4585ffab071d4",
+      "chineseText": "命令：DHS的上诉获维持。\n进一步命令：撤销移民法官2025年10月17日的裁定。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "39600ee46fd9264d80400814efe7d99168da188d6cf32ee50013dad9dd32eebc",
+      "chineseText": "注意：若申请人服从最终驱逐令意图拒不离境，或未善意及时申请必要旅行文件以离境，或未按DHS要求时间地点自我出示，或合谋妨碍依驱逐令离境，则每日最高可处998美元民事罚款。见INA § 274D, 8 U.S.C. § 1324d (2024)；8 C.F.R. § 280.53(b)(14) (2026)。此外，任何被拒绝入境、被驱逐或在排除、驱逐令生效期间离境者，若此后进入、尝试进入或随时在美境内，最高可判罚款或监禁两年，或并处。见INA § 276(a), 8 U.S.C. § 1326(a) (2024)。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "789e1775147e9128d93b000d17617e31c604439c378a64aa1df679ba08a2b8bd",
+      "chineseText": "页码 771"
+    }
+  ]
+}

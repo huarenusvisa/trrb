@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "recordId": "82a0eb899bbab83679fd0d84",
+  "recordFingerprint": "37f0bb2b706d3391fdce4fba842cecddef2c9fd4189375d45076493f52deace7",
+  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1451396/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1451396/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1451396/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T18:12:12.206Z",
+  "sourceDigest": "afc8fd1f3fd741ff84cd2d3a484fa390b6a1c84ef96511f9988ed895bdf68b5d",
+  "translatedAt": "2026-08-17T18:21:56.889Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 42,
+  "translatedSegmentCount": 42,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f20778ca91a42af9a8304fd558371fdc967741603f3275bcbbc48904f144e366",
+      "chineseText": "引用为 29 I&N Dec. 739（BIA 2026）临时裁决号4215"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c90d030da7231de1e84999a64b3b29f6e81ff42229020cc53cf7c2550c852e1c",
+      "chineseText": "R-A-N- 事项，被告人\n裁决日期：2026年7月7日\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "eb60fd346e6b0dd29a517654fe8af7a9ec3d726b00eee81eb7519668ecf6d95f",
+      "chineseText": "(1) 征兵在没有与受保护理由相关联的情况下，不构成单独的庇护依据。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ac457d37201bbe4dfc24a7b13fcae6f442f9168fd647395451b4063f5fb11f85",
+      "chineseText": "(2) 若征兵要求外国人从事国际社会谴责的不人道行为，只有当征兵或所要求的行为与受保护理由相关联时，方构成迫害。A-G-事项，19 I&N Dec. 502，506（BIA 1987），经澄清。\n(3) 国际社会对俄罗斯军队的谴责不足以使征兵构成迫害；相反，被告必须证明，如果被征兵，他本人出于受保护理由必须从事不人道行为。\n被告代理律师：Amir Naim，律师，佐治亚州亚特兰大\n国土安全部代理律师：Mary Ellen Withrow，法律顾问\n审理委员会成员：HUNSUCKER和GOODWIN，上诉移民法官。\n附带意见：MULLANE，上诉移民法官。\nGOODWIN，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "aaeaf9bdfbec6cd715dbe2a74c4435ae96b374419cb0b767aeee11608f3c1b56",
+      "chineseText": "国土安全部（\"DHS\"）针对移民法官2024年11月19日的裁决提出上诉，该裁决批准了被告依据移民和国籍法（\"INA\"）第208(b)(1)(A)条款，8 U.S.C. § 1158(b)(1)(A)（2024年）的庇护申请。被告为俄罗斯籍原告，反对该上诉。我们收到了来自DHS、被告及法庭之友的补充简报。此案于2026年2月10日举行口头辩论。我们将支持上诉，并将案卷发回移民法庭审理。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cc08f75b44384f3e7524c89396d2c279bfc966ed1e5be0a86a995b5a2f0175ab",
+      "chineseText": "被告寻求庇护及相关救济，理由是其持反对政治观点并担心在俄罗斯被强制征兵。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e7356eb07584ca4cccc85ca6518385d963974c0c0e2c03065a66bad089386864",
+      "chineseText": "我们已接受并考虑了Connection e.V.及Russian America for Democracy in Russia作为法庭之友提交的简报。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1de841693a36782fe496d75d0f4f8b851e65e3830e3a44f9432cf53830ad6308",
+      "chineseText": "第739页"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f20778ca91a42af9a8304fd558371fdc967741603f3275bcbbc48904f144e366",
+      "chineseText": "引用为 29 I&N Dec. 739（BIA 2026）临时裁决号4215"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c4592452c65fd914bc5da19f9220b84a830b142a1c510a2f6639828ba86e4890",
+      "chineseText": "他作证称，因俄罗斯军事动员和征兵命令加剧，他于2022年10月逃至土耳其。2023年3月，两名穿政府制服的男子造访被告在俄罗斯的登记住址，询问其母亲关于他的下落。同一批男子一周后再次拜访被告母亲，称被告须服兵役并需进行军事部署前的体检。2023年10月，市政府官员第三次访问其母亲，询问被告下落。最终，2024年9月，军方人员前往被告母亲住所，递交传票，要求被告出席为军事部署进行的体检。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "48dd65210eaec69acbdb8ec4b2f6e7da6baa27ff23499bbb2c0ec21add629688",
+      "chineseText": "移民法官认定被告未能证明过去遭受的伤害达到迫害程度，因而未能证明过去遭受迫害。移民法官发现被告因其政治观点有主观上的恐惧未来迫害，但此恐惧缺乏客观合理性。移民法官认为被告未能证明其所惧怕的伤害与政治观点或其他任何受保护理由之间存在必需的关联。然而，移民法官基于被告对因应征入伍入一个在国际上被谴责的军队而有合理的迫害恐惧，批准其庇护申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "30b951676364074166f877fecd84a605763873a3c4f6049246a4b1c893223de2",
+      "chineseText": "申请庇护者须依据移民和国籍法第101(a)(42)(A)条，8 U.S.C. § 1101(a)(42)(A)（2024年）定义，证明其为“难民”方有资格。INA § 208(b)(1)(A)，8 U.S.C. § 1158(b)(1)(A)；Ponce诉美国检察长案，141 F.4th 1214，1215（第十一巡回法院，2025年）。“难民”在相关部分定义为：（1）在其国籍国以外，（2）不能或不愿返回该国，（3）且不能或不愿意接受该国保护，（4）原因是因种族、宗教、国籍、特定社会团体成员身份或政治观点而受到迫害或有合理的迫害恐惧。INA § 101(a)(42)(A)，8 U.S.C. § 1101(a)(42)(A)；8 C.F.R. § 1208.13(b)(2)(i)(A)（2020年）。因法定受保护理由遭受迫害，意指迫害动机来自受害人的受保护理由，而非迫害者的理由。INS诉Elias-Zacarias案，502 U.S. 478，482（1992年）。此外，"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5aded3890a64e052b4966ea44c46584b43165a899b699b0655828903cfee4a71",
+      "chineseText": "2024年听审时，国土安全部因被告迁往土耳其提出坚定重新安置阻碍论点。移民法官认定被告未在土耳其获得坚定重新安置，因为其持有的居留许可对居住有“重大限制”。国土安全部未对该认定提出上诉，故视为放弃该争议。参见P-B-B-事项，28 I&N Dec. 43，44注释1（BIA 2020）（未于上诉中提出的论点视为放弃）。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "299ec4238bc7b1a81a4b99902a8af7c2283ac6730ded89fcbaa0d237405ce173",
+      "chineseText": "第740页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f20778ca91a42af9a8304fd558371fdc967741603f3275bcbbc48904f144e366",
+      "chineseText": "引用为 29 I&N Dec. 739（BIA 2026）临时裁决号4215"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f1cc6aa68defb36d1c0df8a84089d1c311ed0cb55c5a04f97c6965d502068bb4",
+      "chineseText": "此类关联（nexus）分析要求外国人提供直接或间接证据，证明迫害者的动机是基于外国人实际或被假定的受保护理由。见同案，483页。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d80bcd1046b1d51ec7d5f6d1677039da0c042c6baff130949f7668c8da9c9816",
+      "chineseText": "本案上诉争议焦点为：征兵在缺乏与受保护理由关联的情况下，是否可作为单独的庇护依据。我们判定不可。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8ad28e946574ec82da1e5c1c03b0e40d8ee60515f0236e6c2bde919fca9e6131",
+      "chineseText": "美国最高法院在INS诉Elias-Zacarias案，502 U.S.第478页，对此问题提供了指导。在该案中，法院分析了外国人被强制征兵的主张，考察其与政治见解的联系，而非将其作为独立主张。502 U.S. 478, 482–83。法院指出，移民和国籍法（INA）中的难民定义“使动机成为关键”，强调负担在于外国人须证明其会因受保护理由而遭受迫害。Id.第483页。双方未指出任何无须申请人证明与受保护理由存在联系即获授庇护的案例，包括移民法官依据以授予庇护的Mohammed诉美国总检察长案，547 F.3d 1340（第11巡回法庭，2008年）。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ea2ceef3545912a1553c9721ce96168c45e71f53f8cfcb07007961d56510ffd8",
+      "chineseText": "移民上诉委员会及多个联邦巡回上诉法院长期认为军事征兵本身不构成迫害。例如，Mekhoukh诉Ashcroft案，358 F.3d 118, 126（第一巡回，2004年）指出，国家有权实施征兵法律，通常对逃避军事服役的惩罚不被视为迫害；Matter of Vigil案，19 I&N Dec. 572, 578（BIA 1988）称，国际法长期确立主权政府有权征召公民及维持军队以自卫；Matter of A-G-案，19 I&N Dec. 502, 506（BIA 1987）坚持长期接受的立场，国家要求公民服兵役不构成迫害。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "56a91e7af755080b0edfb3668fa1cc5aceb6c8f20ff08d6de7701996e9ae411c",
+      "chineseText": "我们认为，拒绝服兵役在某些非常特殊的例外情况下可能构成迫害主张，即当因INA第101(a)(42)(A)条列举的五种理由之一而导致“处罚显著严厉”，或当因政府要求的服兵役，外国人必然被要求从事非人道行为时。Matter of A-G-，19 I&N Dec. 506页。然而，这些例外情况不构成独立的受保护理由。此类例外仍必须与难民定义中列明的五项理由之一挂钩：种族、宗教、国籍、特定社会团体成员身份或政治见解。见INA § 101(a)(42)(A), 8 U.S.C. § 1101(a)(42)(A)。缺乏与受保护理由相关的迫害意图，强制征兵主张不会支持授予庇护。第741页"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f20778ca91a42af9a8304fd558371fdc967741603f3275bcbbc48904f144e366",
+      "chineseText": "引用自29 I&N Dec. 739（BIA 2026年）临时裁定＃4215"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "bee6b2da8ddceead0786f889108cd398eaf23f0285dd638a47c81a075d548b1a",
+      "chineseText": "支持授予庇护。见Matter of Canas案，19 I&N Dec. 697, 708–711（BIA 1988）结论认为，当良心拒服兵役者未能证明征兵法仅对有宗教反对的对象制定或适用时，不予授庇；Matter of Vigil案，19 I&N Dec. 578-579指出未证明征兵基于五个受保护理由之一；认可Matter of A-G-案，19 I&N Dec. 506。3"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e59b9f748c9846cfc544c641492312dc763c9abc040f86a6cb48599139909723",
+      "chineseText": "这些极为罕见的情况在本案中不存在，因为移民法官无明显错误地认定，申请人“无合理理由恐惧因受保护理由而遭受未来迫害”。尽管移民法官随后因认定俄罗斯军队遭国际谴责且申请人被征召可能性至少为10%而授予庇护，但本委员会重新审理后认定移民法官法律分析有误。征兵不是INA中的独立第六项受保护理由。申请人未能证明自己为难民，因为未证明与受保护理由存在联系。4"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e4cd74596a42d31f030ed6d2c14386421a2f95dedd1151104adf6de7f7d50cc8",
+      "chineseText": "我们承认，第九巡回上诉法院曾作出两项未公开判决，暗示考虑必要从事非人道行为例外时，不要求与受保护理由存在联系。见Razzouk诉Garland案，845 F. App’x 575, 576（第九巡回，2021）；Cardoza-Herrera诉INS案，67 F.3d 305（第九巡回，1995年，未公开判决，被《联邦记者无判决意见案件表》收录）。3\n联邦巡回上诉法院亦持相同立场。见例如Lopez Ordonez诉Barr案，956 F.3d 238, 244（第四巡回，2020）（要求对被征召入一个国际谴责的军队的外国人抵制非人道行为时，须证明与一受保护理由存在联系）；Ghebrehiwot诉美国总检察长案，467 F.3d 344, 353注7（第三巡回，2006）（指出征兵本身不视为基于宗教原因的迫害）；Pelinkovic诉Ashcroft案，366 F.3d 532, 538–39（第七巡回，2004）（认为外籍人士未证明因其族裔而遭受更严厉惩罚以避免征兵）；Melkonian诉Ashcroft案，320 F.3d 1061, 1068–69（第九巡回，2003）（处理因族裔和宗教理由被强制征兵）；Alvarenga诉INS案，9 F.3d 103（第五巡回，1993，经法院全体法官一致裁定）（支持征兵非基于申请人所属特定社会团体）。4\n移民法官另行认定因拒绝服役于俄罗斯军队而受处罚过重使申请人符合庇护资格，亦有误，因为未考虑该处罚是否因受保护理由而为之。见Matter of R-R-案，20 I&N Dec. 547, 551（BIA 1992）（此类主张需证明与受保护理由存在联系）。尤其在战争时期，许多国家包括美国对逃避征兵采取严厉处罚。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b56afcb34ed013767f343fc3f5c443808e2e2fb5a89470d3cd538b41386b5324",
+      "chineseText": "第742页"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f20778ca91a42af9a8304fd558371fdc967741603f3275bcbbc48904f144e366",
+      "chineseText": "引用自29 I&N Dec. 739（BIA 2026年）临时裁定＃4215"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "1d0d71f31055552db105b0560d604914ec2c34463e7ac3db4a6a485b1fe3749d",
+      "chineseText": "在这些案件中，第九巡回上诉法院首先确定严重惩罚例外无关联性，然后在未提及关联性的情况下考虑不人道行为例外。这些案件并未明确说明，也未解释当发现无关联性时，申请人如何基于不人道行为例外获得庇护或禁止遣返资格。这两起案件中的用语似乎源自Matter of A-G-案，19 I&N Dec. 506，可能被解读为仅针对严重惩罚例外要求关联性。现予以澄清，根据Matter of A-G-，不人道行为例外亦必须与受保护理由相关，因征兵本身不构成迫害，且无相关理由时，申请人不符合难民定义，无法获得这些形式的救济。因此，若要求外国人从事国际社会谴责的不人道行为的征兵，只有在该征兵或被要求行为与受保护理由相关时，才构成迫害。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d0410405c5c045a8fbd945ef26c8dc328d93da62c5080acb39110828c7306240",
+      "chineseText": "因此，移民法官认定被征兵者将遭受迫害仅因俄罗斯军队是“国际谴责的军事组织”属于错误。国际社会对俄罗斯军队行动的谴责不足以使征兵构成迫害；相反，被征兵者必须证明，如被征召，他本人“必然被要求基于受保护理由从事不人道行为”。参照Matter of R-R-案，20 I&N Dec. 551（引述Matter of A-G-案，19 I&N Dec. 502）。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c0a50e6aa2192f0582aad4d3b54adb6d9c89e001e2d31aca9f3cadfa5570a996",
+      "chineseText": "移民法官援引Mohammed诉美国总检察长案，547 F.3d 1346，被申请人辩称该案制定的标准与Matter of R-R-案，520 I&N Dec. 551不同。我们不同意Mohammed案或第十一巡回上诉法院内的其他判例在法律标准上优于Matter of R-R-案及Matter of A-G-案。Mohammed案援引Mekhoukh诉Ashcroft案，358 F.3d 126，认为被强制服兵于一个国际谴责的军队即构成迫害。Mohammed诉美国总检察长案，547 F.3d 1346。Mekhoukh案就该问题的判决总结为，申请人须证明“如果返回祖国，将被征兵、分配作战任务，并被迫违反人权”。358 F.3d 128（加重点）。被申请人辩称这个简化概念，但未改变完整判决，即只有在被迫从事不人道行为时，强制服兵国际谴责军队才构成迫害。实际上，Mohammed案未涉及后者分析，其依据是申请人未证明将被强制服兵。547 F.3d 1347。第743页"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f20778ca91a42af9a8304fd558371fdc967741603f3275bcbbc48904f144e366",
+      "chineseText": "引证为29 I&N Dec. 739（BIA 2026）临时裁决#4215"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "64d63c5248047200240561a9a7d6dfbaf07b49eaba559aaee2642290a4726fa8",
+      "chineseText": "故此，我们认定移民法官在认定政府军事行为的国际谴责或士兵因不人道行为被谴责即可构成对征兵的迫害豁免时，犯有法律错误。相反，被申请人应证明不仅“他必然因政府要求的军役被迫从事不人道行为（即国际社会谴责为违反基本人类行为准则的行为）”，还须证明该行为与受保护理由存在关联。Matter of R-R-案，20 I&N Dec. 551。被申请人未能做到这一点。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "32de8d5260d097a80628c9f8306549825ff1342a5ce10685bddb63ebafc037b6",
+      "chineseText": "综上，被申请人未能证明其符合庇护资格，且移民法官在将征兵视为独立于种族、宗教、国籍、特定社会群体成员身份和政治观点之外的受保护理由以授予庇护时犯有法律错误。参见《移民暨国籍法》§101(a)(42)(A)，8 U.S.C. §1101(a)(42)(A)；8 C.F.R. §1208.13(b)(2)(i)(A)。缺乏与受保护理由的关联性使被申请人依据《移民暨国籍法》不具备庇护与禁止遣返资格。参见8 C.F.R. §1208.16(b)(2)（2026）；另见如Jathursan诉美国总检察长案，17 F.4th 1365, 1375（第11巡回法院 2021）（论及关联性问题对庇护及禁止遣返的影响）。因为移民法官未审理被申请人依据实施《禁止酷刑公约》之规定提出的替代保护请求5，我们将案件发回重审该请求6。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d047f0befe93c01959aa2207c1cd5c85acda533829fcd194cb8e12543ad0750b",
+      "chineseText": "因此，将作出以下裁定。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7c4113279deaf30921ddee571f447a1fd428f33b95800846f1e8df14f9ba62a0",
+      "chineseText": "裁定：国土安全部的上诉获支持，移民法官于2024年11月19日作出的授予庇护决定撤销。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "db2e6fb24c77646b0561befe7d60208e6d7f9816360133bb4786335bec21b331",
+      "chineseText": "进一步命令：将记录发回移民法庭，根据相关法规裁定保护申请。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9414a3742887241db1b41d809e32c3400b1e688348c01f96b5f14f962e88dd81",
+      "chineseText": "根据1984年12月10日通过的《禁止酷刑及其他残忍、不人道或有辱人格的待遇或处罚公约》（S. Treaty Doc. No. 100-20, 1465 U.N.T.S. 85）（美国于1994年11月20日生效）。8 C.F.R. §§ 1208.16(c)，1208.17（2026）；8 C.F.R. § 1208.18(a)（2020）。被申请人亦提交了发回动议。被申请人的动议未能显示移民法官关于受保护理由的明显错误，也未能纠正移民法官认定被申请人服兵役构成迫害的法律错误。因此，我们驳回被申请人的动议。我们的发回仅限于被申请人基于禁止酷刑公约的保护请求。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "3b1777d6950b81400d0199f93156af7d661e8ac3b36332921691ee565a0af785",
+      "chineseText": "第744页"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "f20778ca91a42af9a8304fd558371fdc967741603f3275bcbbc48904f144e366",
+      "chineseText": "引证为29 I&N Dec. 739（BIA 2026）临时决定#4215"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0250b5d9f72ab19ff54a35afdc53939195f3f9b730880d0e0fe756c383dea3a5",
+      "chineseText": "依照上述意见，依据禁止酷刑公约实施保护，并作出新裁决。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "44c9c06281cedfa121d5e3fd6ac4aa6780ccefca6351ba1cc8ccbdea3d1a8e58",
+      "chineseText": "协同意见：休·G·穆兰（Hugh G. Mullane），上诉移民法官"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a28b32cedfe4a723bcbab6a5391663408ad6a09a22bb7fd93bf0f794e3bea218",
+      "chineseText": "我同意大多数法官所作出的结果。没有任何一方对移民法官认定被申请人未能证明因其政治观点（唯一声称的受保护理由）而遭受过去迫害或有充分理由害怕迫害表示异议。本案中移民法官的法律错误在于未能正确适用INS诉埃利亚斯-扎卡里亚斯案（INS v. Elias-Zacarias, 502 U.S. 478 (1992)）中规定的关联性要求。最高法院在该案中裁定：“条款§ 101(a)(42)中‘因……政治观点遭受迫害’一语的普通含义，是指因受害人的政治观点而遭受迫害，而非迫害者的政治观点。”（502 U.S. 482页）因此，移民法官仅凭被申请人害怕在俄罗斯被征兵便认定其满足举证责任的结论，被埃利亚斯-扎卡里亚斯案排除。我仅基于此将撤销给予庇护的决定，并发回，以便被申请人有机会根据禁止酷刑公约提出保护请求。"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "23b4538cc5e589bb9670ce5d2f31b68ae85e9457d8190e221a4b331a32698353",
+      "chineseText": "第745页"
+    }
+  ]
+}

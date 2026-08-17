@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "recordId": "c5da33c4c6310ae082e456cd",
+  "recordFingerprint": "8893961a2d1d61528b7e3c8ffa11843d2672566ac001f9c32d590037303bf697",
+  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1455106/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1455106/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1455106/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T18:39:51.975Z",
+  "sourceDigest": "6de53e05cb2be8e318cad4bdc181af8a4e2aa68cf34c5cdb7817fefe3378e148",
+  "translatedAt": "2026-08-17T18:45:19.772Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 31,
+  "translatedSegmentCount": 31,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8c60b2c03309c323acd55aee074423124ef7a5a92c1c1a77c64bb2773fa7814d",
+      "chineseText": "引用为 29 I&N Dec. 799（BIA 2026）临时决定 #4226"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0ae313bdb9c145ef4d18ecb00a2316fed7b6f046e9fa75cf9014ce289cb531f3",
+      "chineseText": "L-L-R- 案，申请人\n裁定日期：2026年7月31日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "10546b02e36c00479f5635bc3d6ab3b4f26f5e4c03c409ff325360fe337b217a",
+      "chineseText": "申请人不符合撤销驱逐资格，因为其行为及与走私人员合谋将其子女带入美国的行为构成根据移民与国籍法（INA）第212(a)(6)(E)(i)条款（8 U.S.C. § 1182(a)(6)(E)(i)）中“协助或教唆他人非法进入或试图进入美国”的行为，触发了 INA 第101(f)(3)条款（8 U.S.C. § 1101(f)(3)）所规定的良好品格禁止项。\n申请人代理律师：Gloria L. Contreras Edin, 律师，明尼苏达州圣保罗\n合议庭成员：上诉移民法官 HUNSUCKER 和 GEMOETS；临时上诉移民法官 TERRIEN。\nGEMOETS，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fde61646f9a467e8cca8437b66253dddd576c540a106f5c28cb5a09d8271063d",
+      "chineseText": "申请人——危地马拉本土公民，就移民法官于2025年6月30日做出的根据移民与国籍法（INA）第240A(b)(1)条（8 U.S.C. § 1229b(b)(1)）（2024年版）驳回其撤销驱逐申请的决定提出上诉。我们将驳回该上诉。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "058387cba1d89480a3cce60b46e26921ac16160257f2f690103f6e0929c2644c",
+      "chineseText": "根据 INA 第240A(b)(1)条（8 U.S.C. § 1229b(b)(1)），申请人要符合撤销驱逐资格，必须证明其在申请前10年内为具有良好道德品格的人。见 INA § 240A(b)(1)(B)，8 U.S.C. § 1229b(b)(1)(B)。该10年期限自申请最终裁定之日起向前计算。见 Ortega-Cabrera 案，23 I&N Dec. 793, 797–98 (BIA 2005)。移民法官驳回申请人的申请，理由是其无法证明满足撤销驱逐所需的良好道德品格，因为其协助和教唆非法移民走私。见 INA §§ 101(f)(3), 240(c)(4)(A), 8 U.S.C. §§ 1101(f)(3), 1229a(c)(4)(A)（2024年版）。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d16163ed88c3e3bae43943ef6da2a6656c0f01ee33b737308fa32f36cd193089",
+      "chineseText": "1 申请人未对移民法官认定其依法无法获得针对非法移民走私不准入理由的豁免一事提出异议，我们视此议题为已弃权。见 INA § 212(d)(11), 8 U.S.C. § 1182(d)(11)（2024年版）；F-C-S- 案，28 I&N Dec. 788, 789 n.3 (BIA 2024)（未在上诉中提出相关议题即视为弃权）。\n页码 799"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8c60b2c03309c323acd55aee074423124ef7a5a92c1c1a77c64bb2773fa7814d",
+      "chineseText": "引用为 29 I&N Dec. 799（BIA 2026）临时决定 #4226"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b56054715cbec73a8dd9d4f69e2dec07d273005cf35e186c90b2be8f5d3132f0",
+      "chineseText": "移民法官认定申请人在2021年聘请并支付走私者，从危地马拉将其14岁儿子带至美国边境。申请人及其妻子当时居住在美国，其子女在危地马拉缺乏适当的家庭照料。申请人明知其子无权进入美国，仍为其安排此行。上诉中，申请人不对上述事实提出异议，但辩称仅安排其儿子被带到美墨边境不构成非法移民走私，因此不应影响其良好道德品格的证明。2"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c2798b4b584398e55de0080e071877254fb1d2663009c222709d133e4089617b",
+      "chineseText": "虽然“良好道德品格”缺乏法定定义，国会通过法律规定了其不蕴含的内容。见 Castillo-Perez 案，27 I&N Dec. 664, 666 (总检察长 2019)。根据 INA 第101(f)(3)条款（8 U.S.C. § 1101(f)(3)），若移民符合 INA 第212(a)(6)(E)条款（8 U.S.C. § 1182(a)(6)(E)）（2024年版）定义的类别，则不得认定其具有良好道德品格，不论该移民是否因该条款被拒绝入境。INA 第212(a)(6)(E)(i)条款（8 U.S.C. § 1182(a)(6)(E)(i)）规定：“任何移民若曾知情协助、助长、教唆或协助其他移民非法进入或试图进入美国，均属不准入。”"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8477de5535d343e94f668926716b0515c03b04a199f6307fa8373679dc6ad538",
+      "chineseText": "申请人承认其寻找并支付走私者协助将未成年子女从危地马拉运至美墨边境。但申请人辩称，其仅支付走私者将儿子带到边境，并非协助其非法入境或规避检查。申请人主张其子于抵达时向入境口岸自报身份，并独立申请庇护，因此申请人不应被认为协助非法入境。3"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e904c247368fe9c5f11a8549204206251cffca573e9c65a2c2ec5ddc25af9a27",
+      "chineseText": "申请人未提供任何证据支持该观点的合理性，亦无相关法律依据支持其观点，即便合理亦不成立。4 参见 Pereida v. Wilkinson 案，592 U.S. 224, 231–40 (2021)（确认外籍人士负有证明撤销驱逐条件资格的责任）。申报至入境口岸的外籍人士必须证明其有合法入境美国的授权，即使其请求庇护也不例外。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2c14d684068b7c205cc8b42e31e38ed35fbb0ddb254e07e747b0878c2b3656ae",
+      "chineseText": "2 申请人主张其子当时为13岁。\n3 与申请人证词相反，申请人的妻子证称其子在沙漠中被移民官员拘捕。\n4 申请人缺乏证据支持的主张，与其妻子关于其子入境的证词相抵触，证词称“我们把他带过来”、“我们把他带过沙漠”。\n页码 800"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8c60b2c03309c323acd55aee074423124ef7a5a92c1c1a77c64bb2773fa7814d",
+      "chineseText": "引用为 29 I&N Dec. 799（BIA 2026）临时决定 #4226"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6814a1a58dc6a89bfb1ccbf483e22066c3d1f0b78bfc5f5481f8879f330f343c",
+      "chineseText": "寻求庇护者必须合法入境才能申请庇护。法律规定，“凡希望合法进入美国的外籍人士，必须首先被‘准许入境’。在 INA 中，‘准许入境’（admission）是专门术语，意指‘经过移民官员检查和授权后，外籍人士合法进入美国’。”Mullin v. Al Otro Lado 案，146 S. Ct. 2079, 2087 (2026)（引自 INA 第101(a)(13)(A)条款，8 U.S.C. § 1101(a)(13)(A) (2024)）。“若庇护官确定申请人确有可信恐惧，则必须拘留申请人并进一步审核其庇护申请。”Id. 2087–88。庇护申请人可在美国境内续行恐惧认定程序；不过，未经合法入境者提交的庇护申请属于“防御性”申请，在驱逐程序中寻求合法停留许可。Brizuela v. Garland 案，71 F.4th 1087, 1091 n.3 (8th Cir. 2023)。因此，庇护申请身份并非合法入境的方式，而是若获得批准后寻求合法身份的状态。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e84fe00c4f6ac63a523c89e3348735bb940fce36aeddbb6e38b22fe148073fe3",
+      "chineseText": "申请人虽声称无意协助其子非法入境美国，但该陈述不足以证明法律规定的良好品格禁止不适用于其案，且申请人无证据证明其实仅支付走私者将其未成年子女运至美墨边境的说法成立。申请人未提供证词或证据证明其子持有允许合法入境的文件，申请人知悉其未成年孤身子女有能力或了解如何合法入境，申请人为其子安排合法入境，安排子女仅停留在美墨边境，或其子以合法方式入境美国。值得注意的是，申请人递交的证据包含以其子名义提交的申请，表明其子入境时为“无合法身份”。因此，纪录缺乏足够证据证明申请人未参与或协助子女非法入境美国。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1b297abc692ca09d3a2f4a1c429532982a62137f20ec33aa9093ba399b4d5248",
+      "chineseText": "INA 第212(a)(6)(E)(i)条款（8 U.S.C. § 1182(a)(6)(E)(i)）所界定的非法协助者范围包括知情给予协助或教唆他人“进入或试图进入”美国的行为，与庇护法中要求申请人“必须实际身处美国境内”或“抵达美国”的用语形成对比。见 INA 第208(a)(1)条，8 U.S.C. § 1158(a)(1)（2024年版）；参见 Mullin v. Al Otro Lado 案，146 S. Ct. 2090–95（讨论试图从墨西哥入境美国的外籍人士是否“抵达”美国）。\n页码 801"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8c60b2c03309c323acd55aee074423124ef7a5a92c1c1a77c64bb2773fa7814d",
+      "chineseText": "引用自 29 I&N Dec. 799（BIA 2026）临时裁决号4226"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0f23ca6ea7730e5f2d89167410a0058c290aa484da83ee1974d6aea2e8465ada",
+      "chineseText": "“在美国抵达”当其还处于墨西哥边境时。在 Mullin 诉 Al Otro Lado 案中，美国最高法院强调了法定语言中这些区别的重要性：\n“数处法定上下文表明，1158(a)(1)节和1225(a)(1)节中‘抵达美国’一词的含义符合普通用法。首先，这些条文中未提及尝试入境。移民与国籍法的其它条文同时提及实际进入美国和尝试进入。例如，在不合适的时间或地点‘进入或试图进入’该国的外国人，犯轻罪，见第1325(a)(1)节；被驱逐后‘进入’或‘试图进入’该国的外国人，犯重罪，见第1326(a)(2)(B)节。移民官员可逮捕‘非法进入或试图进入美国’的外国人，见第1357(a)(2)节。”"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9a57437392367b13c4f4f15dbf1bd916496c970891b8c2549c2e0c91a276816b",
+      "chineseText": "Mullin 诉 Al Otro Lado 案，146 S. Ct.第2091页。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "82d6db535be31fc18e9376796cf052ea55821c47fbf9c5389bdcf72772306c8b",
+      "chineseText": "法定语言的这种区别削弱了被告辩称其不属于移民与国籍法第212(a)(6)(E)(i)节所述外国人（8 U.S.C. § 1182(a)(6)(E)(i)）的论点，理由仅为走私者责任止于美墨边境或其子此后申请庇护。被告不争辩其雇佣走私者的意图是为了让其子女与家人在美国团聚。移民法官认定被告与其妻子为其子女来美安排的事实无明显错误。走私外国人非亲临美国大陆即可构成不得入境，鼓励或协助外国人“尝试入境”违反法律已足以成立。见 INA § 212(a)(6)(E)(i)，8 U.S.C. § 1182(a)(6)(E)(i)。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "26ebf20f368512f9a1ae7ed94b91d7ad076e6af0038cf97eb3598a93baf308a2",
+      "chineseText": "被告及其妻子证词表明，被告明知资助并与走私者沟通安排其子运输事宜，目的是在夫妻二人在美国时让子女到达。被告子无合法证件入境边境。被告承认其未成年子将通过走私方式到达美墨边境，至少表明合理预期其子将被送往该处进而尝试入境美国。鉴于被告承认付费走私者将未成年子带至美墨边境且期望其子与居美家庭团聚，以及子年龄和被告知其子无合法入境文件，我们同意移民法官判定被告属 INA § 212(a)(6)(E)(i)节（8 U.S.C. § 1182(a)(6)(E)(i)）所述外国人，明知地协助其未成年子女“非法进入或试图进入美国”。"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8c60b2c03309c323acd55aee074423124ef7a5a92c1c1a77c64bb2773fa7814d",
+      "chineseText": "引用自 29 I&N Dec. 799（BIA 2026）临时裁决号4226"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "6d9c14e2ff73159bdfed6eb56afb97bc5f95b9672cc5a26a96158f111feb6d3d",
+      "chineseText": "被告属于移民与国籍法第212(a)(6)(E)(i)节（8 U.S.C. § 1182(a)(6)(E)(i)）所述外国人，明知协助其未成年子女“非法进入或试图进入美国”。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f800644c390d4b7db0b9d7748e35f118300ec4ad11b0407e4f1a8ccdb97c1afe",
+      "chineseText": "此外，被告的行为并非展示试图陪同子女入美，而是聘请一名未知人士，通过雇用该人服务将未成年子女从危地马拉运送至美国。将无人陪伴的未成年人交予走私者存在的固有危险及潜在剥削，不仅发生于美墨边境，而是整个走私过程中。被告未曾声称对未成年子女在走私过程中免受潜在危害做过任何努力。有关良好品德的法定禁止及其对取消递解资格的适用，根植于人口走私行为的内在危险性，尤其针对无人陪伴的未成年外国人。参见美国诉得克萨斯州案，144 F.4th 632, 692（第五巡回法院）（Oldham法官持反对意见）（论述人口走私的危险，含无人陪伴未成年），因其它理由撤销，150 F.4th 656（第五巡回法院 2025）；美国诉 Reyes 案，772 F.3d 1152, 1161（第九巡回法院 2014）（承认合理预期走私行为可能包含胁迫、暴力及身体伤害）。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "502f7c2da8337e543a98f832d40a015c0c11018f9d559ed837b57d7f9a95802c",
+      "chineseText": "我们承认被告作为父亲希望带其子入美的亲情利益。然而，鉴于走私行为所具有的严重潜在伤害及剥削，被告安排未成年无人陪伴子女通过该方式运送至美国的行为，体现了国会意图防止的行为。因此，基于缺乏证据显示被告子有合法依据合法入境，且被告将子置于美墨边境，证明其协助子女非法入境或试图入境美国。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "2efb5fb00f5150420328c798ab9840dafd043b86d0b1b248ae3700c1d2f6df66",
+      "chineseText": "因而，我们断定被告不符合取消递解资格，其行为及与走私者合谋将子带至美国构成协助或援助“外国人非法进入或试图进入美国”根据移民与国籍法第212(a)(6)(E)(i)节（8 U.S.C. § 1182(a)(6)(E)(i)），触发第101(f)(3)节（8 U.S.C. § 1101(f)(3)）下的良好品德禁止。此等行为发生于2021年，被告不能证明过去十年内一直具备良好品德，故无资格申请取消递解。"
+    },
+    {
+      "segmentId": "pdf-p6-s27",
+      "order": 27,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8c60b2c03309c323acd55aee074423124ef7a5a92c1c1a77c64bb2773fa7814d",
+      "chineseText": "引用自 29 I&N Dec. 799（BIA 2026）临时裁决号4226"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "a0e2268050a8bc3f24138fc0c09cac247f776d7f80e6fb8285ce7c5e99324021",
+      "chineseText": "取消递解资格参见 INA §§ 101(f)(3), 240A(b)(1)(B), 8 C.F.R. §§ 1101(f)(3), 1229b(b)(1)(B)。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d64dbccf6cac8782b3ee76dd2abd21872500334ca50d0131c9f12c397b02497a",
+      "chineseText": "据此，我们将驳回被告上诉。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "eba0ffbf15d9a9c1b0e7b139cca5bff5f41af4123b66419320c8f7c4ad4291ab",
+      "chineseText": "命令：驳回上诉。通知：如被告受最终递解令约束故意拒绝或无故未离境，未及时且诚信申请离境所需旅行或其他证件，未按国土安全部指定时间和地点报告，或合谋或采取任何阻碍离境行为，将处以每日最高998美元的民事罚款。见移民与国籍法第274D节，8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何因拒绝入境、递解离境或在排除、递解或驱逐令有效期间离境，后再次入境、试图入境或任何时间被发现留在美国者，将被处以不超过两年监禁、罚款或两者兼施。见 INA § 276(a)，8 U.S.C. § 1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "5ea70b7cdd404c5409ab4f0be1de9f02d23ae3cebce36877f7fd31dd07c575c9",
+      "chineseText": "第804页"
+    }
+  ]
+}

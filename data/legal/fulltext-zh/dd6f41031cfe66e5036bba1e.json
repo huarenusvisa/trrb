@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "recordId": "dd6f41031cfe66e5036bba1e",
+  "recordFingerprint": "e4a9b3df7edb9c68ea7a3e1e9c51b4cb3b4b2cddf030e03b61e546c0c096db7c",
+  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1453751/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1453751/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1453751/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T18:28:06.391Z",
+  "sourceDigest": "b1379d80fb1f7ebece0f40961c181750c71c49c102789f8eb344f844982b77ee",
+  "translatedAt": "2026-08-17T18:39:51.938Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 39,
+  "translatedSegmentCount": 39,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e34663c7b609dc525ebbbc34a2fbd91ba9bca38e2612c3d163c168f292279b81",
+      "chineseText": "引证为29 I&N Dec. 780（BIA 2026）临时决定#4223"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "702af13538b5202b109b505db5dc74b690f1ead37536034ede7e23aea7c73222",
+      "chineseText": "Omar Eliodoro LOPEZ RICO 案，答辩人\n裁决日期：2026年7月23日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6fae41645adf65facb1cdb33df3014638f7aa6b1bd824e2564cf6a9d47033a0b",
+      "chineseText": "（1）当答辩人根据第五修正案主张自证其罪特权，以拒绝回答与其能否获得裁量权上的有利处理相关的重要问题时，移民法官可对答辩人拒绝提供重要证词的行为作出合理的不利推断。\n（2）非法投票是决定是否给予裁量性救济的重大不利因素。\n代理答辩人：加利福尼亚州特雷西市，Michael Martin律师\n审理小组：MALPHRUS，首席上诉移民法官；RADICS，副首席上诉移民法官；WHITE，临时上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3f0776990ac362f0ee8a0acbd98712c02255881160e922697a08e1f93f20e35a",
+      "chineseText": "副首席上诉移民法官RADICS的意见："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "51ac4edbf95805fb4962784016d029d31be9a70ecf55d81d5445963268ecc019",
+      "chineseText": "本案上一次提交本委员会审理是在2020年7月22日，当时我们支持国土安全部（DHS）对移民法官终止答辩人驱逐程序决定的上诉。我们恢复了程序，并将案卷发回移民法庭。移民法官于2025年1月30日作出裁决，拒绝了答辩人根据《移民和国籍法》第240A(a)条（INA），8 U.S.C. § 1229b(a)（2024年）提出的取消驱逐申请。答辩人系墨西哥出生和公民，且为美国合法永久居民，其对该决定提起上诉。我们将驳回该上诉。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4320a5eaaaf4e976e9e578e05b0149ae6c1a6c565c38cece271fd50a66ef0a81",
+      "chineseText": "一、事实及程序历史"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2ec803b95ab9b71180727f068cc55aa5a49ff1b14cf26ebca94ff609d2c6739a",
+      "chineseText": "答辩人于2001年2月22日作为合法永久居民入境美国。2012年11月6日，答辩人在加利福尼亚州斯坦尼斯劳斯县参加了2012年总统大选。答辩人在2015年2月17日提交的归化申请书（表格N-400）以及2015年6月9日的宣誓声明中均承认参加了联邦选举。2016年5月2日，国土安全部发出出庭通知，指控答辩人根据INA第237(a)(6)条，8 U.S.C. § 1227(a)(6)（2012年）身份为“违反任何联邦、州或地方宪法规定、法规、条例或规章投票的外国人”以及根据INA第237(a)(3)(D)条，8 U.S.C. § 1227(a)(3)(D)（2012年）身份为伪称美国公民的外国人。移民法官支持根据INA第237(a)(6)条认定答辩人因非法投票具备可驱逐身份，并基于裁量权拒绝了答辩人的取消驱逐申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e34663c7b609dc525ebbbc34a2fbd91ba9bca38e2612c3d163c168f292279b81",
+      "chineseText": "引证为29 I&N Dec. 780（BIA 2026）临时决定#4223"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "84fe15cbf405e208124cc83d09cd15f6d421564616ee73c1df94173aa31c83a3",
+      "chineseText": "“该外国人违反任何联邦、州或地方宪法规定、法规、条例或规章进行投票”，以及根据INA第237(a)(3)(D)条，8 U.S.C. § 1227(a)(3)(D)（2012年）伪称自己为美国公民。移民法官支持根据INA第237(a)(6)条认定答辩人因非法投票具备可驱逐身份，并基于裁量权拒绝了答辩人的取消驱逐申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ecd58ca19277e66c7a778ba8c58af8087872f4d1e677bdabc0224f33203162c8",
+      "chineseText": "二、讨论"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f3f175e0a6c391964e4470e85a0d68cf8b88cb9b3feb92e1dfefedfb85faa70e",
+      "chineseText": "A. 可驱逐性"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c810834f504c812dbda192d291f0b7b087da4f6df2bde2414eb3296f500d7280",
+      "chineseText": "答辩人主张国土安全部未能依据INA第237(a)(6)条，8 U.S.C. § 1227(a)(6)，确立其可驱逐身份，理由为未明确指出非法投票指控的具体法律依据，且未证明必要的主观要件。我们不赞同该观点。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "092f41779c632cc3e7c2c40b93ce19d3622b34d94937ee92d8e6dd6f02ec4dfb",
+      "chineseText": "在Fitzpatrick案，26 I&N Dec. 559, 560–61（BIA 2015）中，我们裁定违反18 U.S.C. § 611(a)，该条通常禁止外国人在联邦选举中投票，构成根据INA第237(a)(6)条，8 U.S.C. § 1227(a)(6)的可驱逐行为。虽然国土安全部未明确援引18 U.S.C. § 611(a)作为指控依据，但驱逐理由已在案卷中充分体现。具体而言，国土安全部依赖答辩人的宣誓承认，即在其作为合法永久居民期间，登记并于2012年总统选举中投票。答辩人未对上述事实提出异议。移民法官基于这些承认认定答辩人在未经授权情况下参与联邦选举投票，因而违反联邦法律。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5435ffcee7fc91be58e88efad544b0f6715231155fb05f732ecf25a5af39b914",
+      "chineseText": "我们亦不采信答辩人关于国土安全部未能证明必要的主观要件的论点。权属本案管辖的美国第九巡回上诉法院承认，根据INA第237(a)(6)条，8 U.S.C. § 1227(a)(6)，被驱逐身份取决于违法投票相关规定的构成要件。参见McDonald诉Gonzales案，400 F.3d 684, 688–89（9th Cir. 2005）（确认若未证明外国人具有违反相关州投票法的主观罪过，无驱逐理由）。在Fitzpatrick案中，我们审查了18 U.S.C. § 611(a)的构成要件，认定其为一项普通故意犯罪法案，无需证明外国人知悉投票行为违法。26 I&N Dec. 559, 560–61；另见Kimani诉Holder案，695 F.3d 666, 669（7th Cir. 2012）（确认18 U.S.C. § 611为普通故意犯罪，区分McDonald案）；United States诉Knight案，490 F.3d 1268, 1270−71（11th Cir. 2007）（确认18 U.S.C. § 611为普通故意法案）。我们关于Fitzpatrick案的结论与第九巡回法院McDonald案判决不矛盾，后者涉及的州法规定与18 U.S.C. § 611(a)不同，该州法要求证明外国人具有知晓投票未经授权的主观状态。McDonald案，400 F.3d 684, 688–89。因此，尽管移民法官认定答辩人错误地认为自己有投票资格且不知晓其行为违法，但该认定不排除其违反联邦投票法及国土安全部已根据INA第237(a)(6)条，8 U.S.C. § 1227(a)(6)，清晰且令人信服地证明其具备可驱逐身份的结论。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e34663c7b609dc525ebbbc34a2fbd91ba9bca38e2612c3d163c168f292279b81",
+      "chineseText": "引证为29 I&N Dec. 780（BIA 2026）临时决定#4223"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "07154cb2497e05932cf4c7a5124fededa8e9854ce762e04ddd877c10f2723f36",
+      "chineseText": "综上所述，我们同意移民法官的判断，国土安全部已通过确凿且令人信服的证据证明答辩人根据INA第237(a)(6)条，8 U.S.C. § 1227(a)(6)具备可驱逐身份。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9647c7d270804e6f346711bf332ccefb365b47864856224325bc6eb6477a3a48",
+      "chineseText": "B. 酌情权的行使"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1aeefb8d08e29cf326c304503a3e9c7ef06a058cd24d5c68e0d34a2ef2cc7b32",
+      "chineseText": "在重新审查中，我们也确认对被申请人取消遣返申请的酌情否决。参见卡斯蒂略-佩雷斯案（Matter of Castillo-Perez），27 I&N Dec. 664, 670–71（司法部长，2019）（描述酒驾定罪在酌情分析中的影响）；C-V-T案（Matter of C-V-T-），22 I&N Dec. 7, 11–12（移民上诉委员会，1998）（列出依据《移民与国籍法》第240A(a)条（8 U.S.C. § 1229b(a)）取消遣返时相关酌情因素）。行使酌情权时，我们“必须权衡证明该外籍人士不宜成为永久居民的不利因素与其所提出的社会和人道考虑，以决定是否授予……救济符合本国最佳利益。”同上11页（引用马林案，Matter of Marin，16 I&N Dec. 581, 584–85（移民上诉委员会，1978））。与酌情权有关的因素包括在美国的家庭关系、在该国的居住时间、若遣返将给申请人家庭造成的困难证据、军队服役、就业历史、财产或商业联系、社区服务，以及如存在犯罪记录，则需提供康复证明。同上。若存在不利因素，申请人应提出抵消的不利因素的有利证据，"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6832b2996fc09f782a0d27943455d3235d8c31065ef8ecd0b815905b614376ed",
+      "chineseText": "被申请人还辩称记录中未明确移民法官是否维持了关于根据《移民与国籍法》第237(a)(3)(D)条（8 U.S.C. § 1227(a)(3)(D)）提出的虚假声称美国公民事实指控的事实主张。即便存在任何模糊，该模糊不影响我们对本案的处理，因为我们仅针对《移民与国籍法》第237(a)(6)条（8 U.S.C. § 1227(a)(6)）确认移民法官关于可遣返性的裁定。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e34663c7b609dc525ebbbc34a2fbd91ba9bca38e2612c3d163c168f292279b81",
+      "chineseText": "引证为 29 I&N Dec. 780（移民上诉委员会，2026）临时裁决第4223号"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "048532415a78c56abf1c800778c952a7b93afb9b70e83b340070cebef5bd564e",
+      "chineseText": "在某些情况下，这可能需要不寻常甚至卓越的权衡利益，以超过负面因素。同上。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "76d1f5ecc3496abbaddd476f3059bb482d34a09b4337b2a505945b2ca458278e",
+      "chineseText": "与被申请人在上诉中的主张相反，移民法官适当考虑了其有利因素，包括其在美国的长期居住、与美国公民的家庭关系、就业历史、作为家庭主要经济支柱的角色，以及遣返对其妻子和子女造成的困难。我们不同意被申请人认为移民法官在其酌情分析中设定了不当的困难门槛要求。综合全文来看，裁决显示移民法官将遣返对被申请人家庭成员造成的困难作为有利因素予以考虑，并将该困难与记录中其他积极和消极因素一并权衡。该裁决因此体现了我们判例法所设想的权衡分析，而非设定门槛式困难要求。虽被申请人的有利因素较为显著，我们同意移民法官的看法，即其有利因素被其犯罪历史、拒绝提供关于该犯罪历史的重要证词及非法投票违规行为所抵消。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "04af4880037585de0751cfba81d573501e3e698f1ed64335455e6a417777201d",
+      "chineseText": "移民法官允许考虑被申请人在2016年的酒后驾驶（“DUI”）定罪，以及有关2024年因酒后驾驶相关逮捕的证据，被申请人证实该案仍待处理。参见马林案（Matter of Marin）, 16 I&N Dec. 584页（把犯罪记录的存在作为适当的酌情权衡因素）；托马斯案（Matter of Thomas）, 21 I&N Dec. 20, 23页（移民上诉委员会，1995）（判定“尚未最终定罪的犯罪行为”依具证明力的证据成立时，仍作为不利的酌情因素相关）。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "25849ed92e7181a95a3134d540c972d45065b5c82fa6e382c4a2a03865546550",
+      "chineseText": "与被申请人的主张相反，移民法官未将待决的刑事案件视同有罪判决。相反，移民法官综合考量了记录中反映的所有情况，包括被指控行为的新近性及严重性、其行为与被申请人既往定罪相似，以及有限的康复证明。参见贝因案（Matter of Bain），29 I&N Dec. 72, 74–75（移民上诉委员会，2025）（基于被申请人刑事历史的新近和反复性以及缺乏康复证明，拒绝取消遣返的酌情决定）；另见贝盖诉美国案（Begay v. United States），553 U.S. 137, 141（2008）（指出“酒后驾驶是一种极其严重的罪行”，“存在对他人造成严重身体伤害的潜在重大风险”）。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e34663c7b609dc525ebbbc34a2fbd91ba9bca38e2612c3d163c168f292279b81",
+      "chineseText": "引用自 29 I&N Dec. 780（移民上诉委员会 2026年）临时裁决 #4223"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "66a569b8d2c88300a1caa4c08d740cbb82ccb710dd5cdf9f10169682d170cd92",
+      "chineseText": "移民法官多次给予被申请人解释其2016年酒驾定罪及随后2024年与酒驾相关逮捕情况的机会，这些事项与自由裁量审查直接相关。然而，被申请人未能就这些事件提供有意义的证词，而是援引第五修正案中的自我不入罪权利，拒绝回答实质性问题。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7d74946b1f8c75b793e2c8587d75b41f80be4447063994fd0ae422491bc8c545",
+      "chineseText": "我们驳回被申请人的主张，即移民法官因其援引自我不入罪权利而对其施加不当处罚。移民法官并非仅因被申请人援引该权利而拒绝救济，而是在自由裁量权决定中，合法考虑了被申请人拒绝提供与核心事项相关证词的行为，并据此合理推断不利结论，认定被申请人未能证明其符合获得免除驱逐的自由裁量条件。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ae93e5266fd721c88798e0d781394a7a42b98fd2f735cd0bf21d4e286e68d086",
+      "chineseText": "我们承认被申请人有权根据第五修正案援引自我不入罪权利，拒绝回答有关其涉嫌刑事行为的问题。然而，援引该权利并不妨碍移民法官审查被申请人拒绝提供与其自由裁量救济申请有关的实质性证词，且在适当情形下可作出合理不利推论。在Marques案（16 I&N Dec. 314, 316（移民上诉委员会 1977年））中，我们解释道：“被申请人完全有权主张其根据第五修正案的权利。但这样做的风险是，其可能未能承担说服责任，证明其自由裁量救济申请的合理性。”我们进一步指出，由于被申请人拒绝提供与自由裁量审查相关的信息，“移民法官因此无法得出关于被申请人是否有权获得其请求的自由裁量救济的结论。”同理见Li案（15 I&N Dec. 514, 515（移民上诉委员会 1975年））；Mariani案（11 I&N Dec. 210, 211–12（移民上诉委员会 1965年））。3 与此推理一致，美国最高法院解释说，若国会将举证责任置于外国人，“证据缺口……将对寻求免除合法驱逐令的外国人不利。”——Pereida诉Wilkinson案，592 U.S. 224, 240（2021年）。3我们已区分国土安全部承担举证责任的问题，如证明可驱逐性，与由被申请人承担举证责任的问题，如证明符合自由裁量救济资格。参见Guevara案（20 I&N Dec. 238, 242–44（移民上诉委员会 1991年））（认可可从沉默中得出不利推论，但仅此不足以满足国土安全部证明驱逐依据的责任）与Marques案（16 I&N Dec. 314, 316）（判定“当外国人寻求司法部长的自由裁量惠顾时，有责任提供其知晓的信息”）。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "e34663c7b609dc525ebbbc34a2fbd91ba9bca38e2612c3d163c168f292279b81",
+      "chineseText": "引用自 29 I&N Dec. 780（移民上诉委员会 2026年）临时裁决 #4223"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "2ea0d34ce5f6b5bcd0d00b48fe1975784647526a182433432490e2460551ffb1",
+      "chineseText": "寻求免除合法驱逐令的外国人所面临的举证责任以及随之而来的证据缺口，将对其不利。——Pereida诉Wilkinson案，592 U.S. 224, 240（2021年）。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "860af93855b51a4adc53387d29a150284a9c8e29c0994441eecf20b73f37c0a0",
+      "chineseText": "事实上，最高法院长期承认，在移民程序中可以从被申请人的沉默推断不利结论。——美国控诉人Bilokumsky诉Tod案，263 U.S. 149, 153–54（1923年）；另见Baxter诉Palmigiano案，425 U.S. 308, 318（1976年）（承认在民事诉讼中，第五修正案并不禁止从当事人拒绝就有证据的问题作证中推断不利结论）。此外，第九巡回上诉法院也持相同立场，认为在民事移民程序中，“当申请人援引其第五修正案自我不入罪权利时，并无禁止作出不利推断。”——Gutierrez诉Holder案，662 F.3d 1083, 1091（第九巡回 2011年）；同理见Zuniga诉Garland案，86 F.4th 1236, 1240（第九巡回 2023年）。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "dd1dac373e10db9c4fe6f73e3c4098cdbdb2f35954c726512f5108c9d5d5ff11",
+      "chineseText": "因此，正如本案所示，若被申请人根据第五修正案援引自我不入罪权利，拒绝就影响其获得自由裁量惠顾资格的实质性问题作答，移民法官可对被申请人拒绝提供重要证词的行为作出合理不利推断。在此方面，移民法官认定，被申请人拒绝提供实质性证词，导致法庭无法获得2016年定罪及2024年逮捕背后行为及情形的任何有意义解释，并因此对此证据缺口作出对被申请人不利的推断。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7929bc81361de8b147ad5c6162a30e1988ef13986e52468614ccf1d08e20795a",
+      "chineseText": "就被申请人主张移民法官对其非法投票违规行为给予了过重权重的论点，我们不同意。移民法官明确承认了相关的减轻情节，包括被申请人在违法行为时的年龄、其证词中表示其不明白自己没有投票资格，以及促使其注册和投票的情形。非法投票的严重性不仅体现在国会决定将此类行为定为犯罪，见18 U.S.C. § 611(a)，还体现在国会认定此类行为应导致可被驱逐的决定。见《移民与国籍法》第237(a)(6)节，8 U.S.C. § 1227(a)(6)；Marin案，16 I&N Dec. 584–85页（承认导致可驱逐的性质与情形构成裁量分析中的适当不利考虑因素）。国会对该违法行为的处理强调了政府保持“公众对选举过程诚信的信心”的重要且强烈利益，该利益已被最高法院多次认定为我们民主制度正常运行的关键。参见Crawford诉Marion县选举委员会案，553 U.S. 181, 196（2008年）；同 Brnovich 诉民主党全国委员会案，594 U.S. 647, 685（2021年）；Doe诉Reed案，561 U.S. 186, 197–98（2010年）；Purcell诉Gonzalez案，549 U.S. 1, 4（2006年）。因此，非法投票是裁量救济是否批准中的一个重要不利因素。鉴于国会对该行为的严重性及其涉及的政府利益，移民法官本可对被申请人非法投票违规行为赋予更大的不利权重，而非最终所给予的权重。"
+    },
+    {
+      "segmentId": "pdf-p7-s34",
+      "order": 34,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "e34663c7b609dc525ebbbc34a2fbd91ba9bca38e2612c3d163c168f292279b81",
+      "chineseText": "引用为29 I&N Dec. 780（BIA 2026年） 临时决定编号4223"
+    },
+    {
+      "segmentId": "pdf-p7-s35",
+      "order": 35,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "e591769f0a9c9ccca845fdeccb18f8484e29c166464824c3714950ba391f8c73",
+      "chineseText": "民主党全国委员会诉案，594 U.S. 647, 685（2021年）；Doe诉Reed案，561 U.S. 186, 197–98（2010年）；Purcell诉Gonzalez案，549 U.S. 1, 4（2006年）。因此，非法投票是在评估是否应予裁量性救济时的一个重大不利因素。鉴于国会对这类行为赋予的严重性以及其所涉及的政府利益，移民法官可以对被申请人的非法投票违规给予比最终所赋予更大程度的不利权重。"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "c50ba76226bb6ab1f9daa14b22d47691f84df45cc298a555cceb264c1ca0896f",
+      "chineseText": "三、结论"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a9d1df98492652a09ab2c422b9e7ae61b2abccf360e6bc6e32a25f33837e2da6",
+      "chineseText": "经审阅完整案卷，我们认定被申请人未能证明其在行使裁量权时应获取消驱逐。尽管被申请人提出了实质性权益，但移民法官正确认定，这些权益被案卷中的不利因素所抵消，包括被申请人的犯罪记录、其拒绝就该犯罪记录提供重要证词，以及其非法投票违规行为。"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "b0255c527db928e553ede971a19603001551d0fa27c7ecdde0a0f092c88b9765",
+      "chineseText": "命令：驳回上诉。 通知：若被申请人受到最终驱逐令，且故意不遵守或拒绝按照该命令离开美国，不及时善意申请离美所需的旅行或其他文件，或未能在移民局要求的时间和地点报告出境，或共谋采取任何妨碍或阻止根据驱逐令出境的行动，被申请人将面临每天最高998美元的民事罚款。见《移民与国籍法》第274D节，8 U.S.C. § 1324d（2024年）；8 C.F.R. § 280.53(b)(14)（2026年）。此外，任何已被拒绝入境、遭驱逐或在排除、驱逐或遣返令仍有效期间离境的被申请人，若随后进入、试图进入或任何时候被发现在美国境内，将被罚款或监禁不超过2年，或两者并罚。见《移民与国籍法》第276(a)节，8 U.S.C. § 1326(a)（2024年）。"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "9707e7370b24c2c0c3db5c78dadcff7372c38d591d7204d6b8a77c709b7dceeb",
+      "chineseText": "第786页"
+    }
+  ]
+}

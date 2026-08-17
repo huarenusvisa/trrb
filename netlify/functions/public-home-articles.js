@@ -23,7 +23,7 @@ exports.handler = async (event) => {
     const limit = Math.min(Math.max(Number.isFinite(requested) ? requested : 120, 1), 200);
     const category = String(event.queryStringParameters?.category || "").trim().slice(0, 80);
     const query = {
-      select: "id,title,slug,summary,content,category_name,cover_image,author,status,published_at,created_at",
+      select: "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,published_at,created_at",
       status: "eq.published",
       order: "published_at.desc.nullslast,created_at.desc",
       limit: String(limit)

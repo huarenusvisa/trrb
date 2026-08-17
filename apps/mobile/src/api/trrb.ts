@@ -74,6 +74,12 @@ export async function fetchArticle(id: string | number) {
   return (payload?.article || null) as NewsArticle | null;
 }
 
+export async function fetchRelatedArticles(article: NewsArticle, limit = 4) {
+  if (!article.category_name) return [] as NewsArticle[];
+  const page = await fetchArticlePage({ category: article.category_name, limit: Math.min(Math.max(limit + 1, 2), 12), offset: 0 });
+  return page.articles.filter((item) => String(item.id) !== String(article.id)).slice(0, limit);
+}
+
 export function publicationTime(item: NewsArticle) {
   const raw = item.published_at || item.created_at || '';
   const value = new Date(raw).getTime();

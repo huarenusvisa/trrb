@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 17 Aug 2026 16:44:15 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 16:48:14 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>塔沟武校疑曝欺凌视频！学生遭跪地羞辱，浴室虐待画面引发关注</title>
+      <link>https://trrb.net/hot/%E5%A1%94%E6%B2%9F%E6%AD%A6%E6%A0%A1%E7%96%91%E6%9B%9D%E6%AC%BA%E5%87%8C%E8%A7%86%E9%A2%91%E5%AD%A6%E7%94%9F%E9%81%AD%E8%B7%AA%E5%9C%B0%E7%BE%9E%E8%BE%B1%E6%B5%B4%E5%AE%A4%E8%99%90%E5%BE%85%E7%94%BB%E9%9D%A2%E5%BC%95%E5%8F%91%E5%85%B3%E6%B3%A8-msxgwlrd-30cc96</link>
+      <guid isPermaLink="true">https://trrb.net/hot/%E5%A1%94%E6%B2%9F%E6%AD%A6%E6%A0%A1%E7%96%91%E6%9B%9D%E6%AC%BA%E5%87%8C%E8%A7%86%E9%A2%91%E5%AD%A6%E7%94%9F%E9%81%AD%E8%B7%AA%E5%9C%B0%E7%BE%9E%E8%BE%B1%E6%B5%B4%E5%AE%A4%E8%99%90%E5%BE%85%E7%94%BB%E9%9D%A2%E5%BC%95%E5%8F%91%E5%85%B3%E6%B3%A8-msxgwlrd-30cc96</guid>
+      <pubDate>Mon, 17 Aug 2026 16:48:14 GMT</pubDate>
+      <category>热门头条</category>
+      <description>唐人日报 8 月 17日讯：8月14日上午6时30分左右，浙江省湖州市长兴县和平镇潭龙桥村发生泥石流灾害，突如其来的强降雨成为此次灾害的起因。泥石流发生后，一栋民居倒塌，造成人员伤亡和失踪。</description>
+      <enclosure url="https://pbs.twimg.com/media/HP5rMCPbEAAkOYS?format=jpg&amp;name=medium" type="image/jpeg" />
+    </item>
     <item>
       <title>广西博主探访受灾老人：洪水冲走假牙，八旬夫妇灾后生活陷困境</title>
       <link>https://trrb.net/hot/%E5%B9%BF%E8%A5%BF%E5%8D%9A%E4%B8%BB%E6%8E%A2%E8%AE%BF%E5%8F%97%E7%81%BE%E8%80%81%E4%BA%BA%E6%B4%AA%E6%B0%B4%E5%86%B2%E8%B5%B0%E5%81%87%E7%89%99%E5%85%AB%E6%97%AC%E5%A4%AB%E5%A6%87%E7%81%BE%E5%90%8E%E7%94%9F%E6%B4%BB%E9%99%B7%E5%9B%B0%E5%A2%83-msxgrhdn-ba155b</link>
@@ -23,6 +32,7 @@
       <pubDate>Mon, 17 Aug 2026 16:39:27 GMT</pubDate>
       <category>ICE执法动态</category>
       <description>美国国土安全部宣布将持续行动，逮捕并遣返非法移民，重申其无居留资格。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-17/cb671c5f-39dd-4ec0-a8c2-875c42140a8b-38d87baf-8948-4b99-a18c-00b93dfdf697.webp" type="image/webp" />
     </item>
     <item>
       <title>ICE加强驱逐涉暴非法移民批拜登政府</title>
@@ -895,15 +905,6 @@
       <category>ICE执法动态</category>
       <description>迈阿密一名男子被疑似ICE人员强行拖出车辆，乘客被留在车内，事件有待调查。</description>
       <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2089100225461768192/img/_M36-_vIWgMWsO4I.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>美前议员：ICE机构人员构成复杂，类型多样</title>
-      <link>https://trrb.net/ice/ice-7d7a9731ab84b3b02553602f4186baab4f01fcad</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-7d7a9731ab84b3b02553602f4186baab4f01fcad</guid>
-      <pubDate>Sun, 16 Aug 2026 20:06:19 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>美国ICE机构内部包含包括真诚信奉者和暴力成瘾者等多个复杂人员类型。</description>
-      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-16/037d1dcf-eba9-4931-baf7-5e156e6effae-6946e59c-fbbb-45b1-82e2-4bff6a5d4cb0.webp" type="image/webp" />
     </item>
   </channel>
 </rss>

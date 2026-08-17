@@ -2,6 +2,8 @@ name: LEGAL-R1 N2 - Official Source Extraction
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
   push:
     branches: [main]
     paths:

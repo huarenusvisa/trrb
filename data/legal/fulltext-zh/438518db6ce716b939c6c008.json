@@ -1,0 +1,431 @@
+{
+  "schemaVersion": 1,
+  "recordId": "438518db6ce716b939c6c008",
+  "recordFingerprint": "878f47400c42b654d106b9dd68a5a557b74b0898bd4e17683cb9f4df1e0a103e",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1457741/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1457741/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1457741/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:23:49.713Z",
+  "sourceDigest": "b2191302a6d579a5013a2607ce566a12be30f03f3f256607b5247ffdc63376d4",
+  "translatedAt": "2026-08-17T19:36:51.367Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 51,
+  "translatedSegmentCount": 51,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引用为 29 I&N Dec. 830（BIA 2026）临时裁决 #4233"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4a1bb13076e8d4e8acf722b2fc0e537aa0a0b93692045b112e3829d01314c59b",
+      "chineseText": "关于 Milagro DELCARMEN-LARA 案，答辩人\n裁定日期：2026年8月13日\n美国司法部\n移民法执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "73b074b5f07a24612d8dcd4e5d2797f84f1815911b451f3e0552015044c82a6b",
+      "chineseText": "根据提前假释许可离开美国构成移民和国籍法第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)意义上的“离境”。推翻 Matter of Arrabally 和 Yerrabelly, 25 I&N Dec. 771 (BIA 2012)。\n代表答辩人：Idalis Perez 律师，佛罗里达迈阿密\n代表国土安全部：Milor D. Perdomo，法律顾问\n法官席位组成：GORMAN，副首席上诉移民法官；MONTANTE 和 GALLOW，上诉移民法官。\n副首席上诉移民法官 GORMAN 发表意见："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4cf3df01778b04600760a4e8e1387cd63aad2d2448445ab262819732a15efe4e",
+      "chineseText": "答辩人提交重新开庭动议，申请根据移民和国籍法（“INA”）第245(a)条，8 U.S.C. § 1255(a)（2024年版）调整身份。为支持该动议，答辩人提交证据，证明她于2024年1月1日依据提前假释许可被准许入境美国。我们驳回答辩人的动议，并推翻 Matter of Arrabally 和 Yerrabelly, 25 I&N Dec. 771 (BIA 2012)，该案裁定依据提前假释许可短暂离开美国的外籍人士不构成 INA 第212(a)(9)(B)(i)(II)条款下的“离境”，8 U.S.C. § 1182(a)(9)(B)(i)(II)（2024年版）。我们现明确，INA该条款中的“离境”一词不含对依据提前假释许可临时离境者的例外。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fd7cc7ac58156016fb1e617bdf61b797fd1b8ae4caaa65da2efb9e950cb47c4a",
+      "chineseText": "一、事实和程序背景\n答辩人为萨尔瓦多的出生公民。2006年12月7日，一名移民法官裁定答辩人根据 INA 第212(a)(6)(A)(i)条款，8 U.S.C. § 1182(a)(6)(A)(i)（2006年版），存在可遣返理由，确定她无资格获得临时保护身份（Temporary Protected Status，TPS），并下令将其驱逐出美国。委员会于2008年6月17日维持移民法官的决定。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引用为 29 I&N Dec. 830（BIA 2026）临时裁决 #4233"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e9d4cc8fb409e281c07b5424ab327776a3dac650ba8a8cfb09679bafe4501bb2",
+      "chineseText": "2013年，答辩人获准受童年抵美者暂缓遣返（Deferred Action for Childhood Arrivals，DACA）待遇。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8e59cd4edc26552ed13d6ef5d79ef66a50fc7e630125118a8f585dc39426c22d",
+      "chineseText": "2015年6月30日，答辩人提出重新开庭动议，旨在提交临时非法居留豁免申请（I-601A表格），以基于 INA 第212(a)(9)(B)条款，8 U.S.C. § 1182(a)(9)(B)豁免其不可入境身份并通过领事处理获得移民签证。该动议附带证据显示其丈夫曾为其提交亲属移民申请（I-130表格），美国公民及移民服务局（USCIS）于2014年7月9日批准该申请。委员会于2015年8月6日驳回该动议，理由是其逾期且答辩人因最终遣返令而无资格获得豁免。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "269a3df0595fd5e5165094dde6c5a503af3290570caee3f9b61ae1af0a8d54e1",
+      "chineseText": "2025年5月27日，答辩人再次提出重新开庭动议，基于其丈夫为其递交的获批签证申请，寻求根据 INA 第245(a)条，8 U.S.C. § 1255(a)身份调整支持该动议，答辩人提供文件证明她曾临时离开美国，并于2024年1月1日依提前假释许可重返美国。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d7efc9ad9a9a2653394748d19fb83df74d0768e4a92e03d2d133b2a4da0c665a",
+      "chineseText": "我们请求并收取了双方关于是否应重新考虑委员会对 INA 第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)中“离境”一词的解释的补充陈述，及是否依据提前假释许可临时离境的外籍人士构成该“离境”的问题。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "445e2b93849ab656ec6eb5ddaed471f210bc36c0d4e6fdbe03cdabb60bf5c427",
+      "chineseText": "二、分析\nA. 根据 INA 第212(a)(9)(B)(i)(II)条款的不可入境性"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "64ea4eafad26aa3c38af1ec3dd587a380507ceaed6881e9b7dd157c4eb0afab4",
+      "chineseText": "INA规定，外籍人士“非法居留美国达一年或以上，并且自该外籍人士离开或被驱逐出美国之日起的10年内再次寻求入境者，属于不可入境。” INA § 212(a)(9)(B)(i)(II)，8 U.S.C. § 1182(a)(9)(B)(i)(II)。 INA要求身份调整申请人证明其“可被准许永久居留美国。” INA § 245(a)，8 U.S.C. § 1255(a)。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5965f2ecab66f12c0d3ec2004be0c6cfdbf8a5a1e6aef6bce42344a2395e38c7",
+      "chineseText": "第831页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引用为 29 I&N Dec. 830（BIA 2026）临时裁决 #4233"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a4d56183d80eab174563b99ab146d1f2ca545ca31318db143150cdc0291aace3",
+      "chineseText": "在 Matter of Arrabally and Yerrabelly, 25 I&N Dec. 779，我们以分裂意见裁定，依据提前假释许可短暂离开美国的外籍人士，不构成 INA 第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)中的“离境”。我们理由是，依据提前假释许可的离境在性质上不同于其他离境，因为其假定外籍人士将被准许随后返回美国，且返美后将继续推进其离境前提交的身份调整申请。见 id. 778页。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7a974e18dfa78008b1ffcbeea5a0be1388e94c4b382a02738379a536a7336fce",
+      "chineseText": "该裁决旨在澄清先前委员会判决。在 Matter of Lemus, 24 I&N Dec. 373 (BIA 2007)（“Lemus I”）中，我们裁定，外籍人士即使非因驱逐令或作为驱逐程序期间的自愿离境，其依据 INA 第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(2)(B)(i)(II)属于不可入境。我们依据法文本义，没有认为国会意图以此方式限制“离境”定义。见第376-377页。我们在 Matter of Lemus, 25 I&N Dec. 734 (BIA 2012)（“Lemus II”）中确认该判断。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "bd5e519085ca842d92f600349f482d64b13f9fdfaa7e3cc4a4a6de65155da73f",
+      "chineseText": "本案待决问题——“离境”一词在 INA 中的含义——属于法律文义解释问题。参见如 Lemus II, 25 I&N Dec. 740。基于对法文本义的解释，我们现裁定，根据提前假释许可从美国离境构成 INA 第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)意义上的“离境”。我们将推翻 Matter of Arrabally and Yerrabelly。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "17964418db6cf5c6992e6325c50039661d64704535aab6bc4e3d50f14239a825",
+      "chineseText": "为判定外籍人士是否构成根据 INA 第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)的“离境”，我们首先依据法文明确含义进行评估。Lamie v. United States Tr., 540 U.S. 526, 534 (2004)。我们推定国会“法案中所言即所指，所指即所言。” Connecticut Nat’l Bank v. Germain, 503 U.S. 249, 254 (1992)。裁决者须遵循无歧义法文含义，除非此举导致荒谬或怪诞结果，与起草者意图“明显相悖”。Matter of Forjoe, 29 I&N Dec. 463, 467 (BIA 2026)（引用 Matter of Briones, 24 I&N Dec. 355, 361 (BIA 2007)）。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4fef5ea62fb6f8eb14e5e970604055441034474dc845e557e51bd6cf14f74816",
+      "chineseText": "经对法文本义审视，我们未发现足够证据表明国会意图限制“离境”一词定义。INA 中未对“离开”或“离境”下定义。见 Matter"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引用第29卷移民和国籍决定第830页（BIA 2026年）临时决定#4233"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "42c7f73457dbeb4e8c2dfd5cc723d4d135eb6a9d4270c3d1706b2c49416ff7f9",
+      "chineseText": "参考Arrabally和Yerrabelly案，25卷移民和国籍决定第774页。为确定未定义法条的普通含义，裁决者可以参考词典定义以获得指导。美国诉Lopez案，590 F.3d 1238, 1248（第十一巡回上诉法院，2009年）。正如我们在发布Arrabally和Yerrabelly案时所观察的，“depart”的定义是“离开：离去”。Depart，Merriam-Webster词典，https://www.merriam-webster.com/dictionary/depart（最后访问日期2026年8月13日）。该法条文本未包含排除某些离开的限制性语言。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8fd67f7e86c84a2b4120a9b7b48832d0afdd9d851ffbd9a8768e93f6ef45d731",
+      "chineseText": "立法历史亦无迹象显示国会意图将依据预先假释（advance parole）进行的离开排除在“departure”含义之外。见Arrabally和Yerrabelly案，25卷移民和国籍决定第776页（指出《移民与国籍法》（INA）第212(a)(9)(B)(i)(II)节的立法历史较为简略）。相关法条文本依据1996年非法移民改革和移民责任法案（IIRIRA）第301(b)节制定，1996年第104-208号公法，110 Stat. 3009-546, 3009-575（自1997年4月1日起生效）。我们曾指出，“第212(a)(9)节的统一主题是其所有分款均旨在加重违反移民法规者离境后再合法入境的难度。”Rodarte案，23卷移民和国籍决定第905, 909页（BIA 2006年）。尽管国会授予美国总检察长根据INA第212(a)(9)(B)(v)节在某些情况下可酌情减免不可入境身份，8 U.S.C. § 1182(a)(9)(B)(v)，但无充分证据表明国会拟将依据预先假释的离开排除在“departure”的定义之外。见Cheruku诉美国总检察长案，662 F.3d 198, 207（第三巡回上诉法院，2011年）（承认此类离开可能导致“严厉结果”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2e8f7f1db7eed7c484d7a77f3ffcdcfe49d3816ea020027590e9decc9143ef62",
+      "chineseText": "正如我们在Lemus I案中早前认可的，“每当国会扩大不可入境外国人调整身份资格时，均以明确方式进行。”Lemus I案，24卷移民和国籍决定第378页。例如，国会明确为根据尼加拉瓜调整及中美洲救济法案（NACARA），公法第105-100号，111 Stat. 2193（经公法第105-139号修正，111 Stat. 2644，1997年）及1998年海地难民移民公平法案（HRIFA），第九章，公法第105-277号，112 Stat. 2681-538，寻求调整身份的外国人设立了212(a)(9)(B)节不可入境理由的豁免。参见前述。国会为NACARA和HRIFA调整申请者明示不可入境豁免，支持结论即国会未意图在INA第212(a)(9)(B)(i)(II)节中排除预先假释者的“departure”定义。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e074d2f77fccf94c38b2512f12c2e6c2e9fb669196fbebaa24b5e224d8ef0d75",
+      "chineseText": "第833页"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引用第29卷移民和国籍决定第830页（BIA 2026年）临时决定#4233"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "4ab332fb2b336803c7524b91a1f9960e0f369414c1c60af27e35475c5549248e",
+      "chineseText": "INA第212(a)(9)(B)(i)(II)节，8 U.S.C. § 1182(a)(9)(B)(i)(II)并未将预先假释者排除在“departure”之外。见相关案文；亦见Briones案，24卷移民和国籍决定第367–368页。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "8e206ab8737783de52f3d2d2695f52bd35dbca97973db45b6d118b9372bbb7c5",
+      "chineseText": "我们还认为，国会在INA中除第212(a)(9)(B)(i)(II)节之外的其他部分明确阐明了预先假释者离开的后果。例如：INA § 201(c)(4)(A)，8 U.S.C. § 1151(c)(4)(A)（2024年）规定，家庭担保移民的数额限制包括被假释入境但“未在365天内（无预先假释）离开美国”或未符合其他特定条件的外国人；INA § 245A(g)(2)(B)(ii)，8 U.S.C. § 1255a(g)(2)(B)(ii)（2024年）规定，依据预先假释程序在美国境外的时间不应计入合法居住所需的连续身体存在期间。“当国会在一部法案的某一条款中包含特定用语，而在另一条款中省略时，通常推定国会意图不同地包括或排除该用语。”Russello诉美国案，464 U.S. 16, 23（1983年）（引文省略）。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "34cb4c40447d2eb8584e8c5c26b91bd48211f57f39374e4051f460da80478a9e",
+      "chineseText": "国会还在INA其他允许短暂离开的条款中明确了离开的后果，例如可能带来不利影响的条款。见INA § 240A(d)(2)，8 U.S.C. § 1229b(d)(2)（2024年），规定海外离开“超过90天或累计超过180天”将导致申请特定取消驱逐的外国人被认定未保持连续居住；另见INA § 244(c)(4)，8 U.S.C. § 1254a(c)(4)（2024年），指明对于有资格获得临时庇护身份（TPS）的外国人，“短暂、偶尔且无意的”离开不影响其连续居住。我们推定国会有意区分预先假释者的离开在整个INA中的待遇。因此，国会未明确将预先假释者排除在INA第212(a)(9)(B)(i)(II)节“departure”的定义之外极具重要性。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c30aa1921fd7951e775d0e7d5423271f70ef6b3b04beb748062744b47da140d0",
+      "chineseText": "在《Arrabally 和 Yerrabelly 案》之前，人们普遍认为，依据预先假释（advance parole）离境可能会带来重大且不利的后果。在《IIRIRA》实施至《Arrabally 和 Yerrabelly 案》发布期间，国土安全部（DHS）及前移民及归化局（INS）的内部政策备忘录将依照预先假释授权的离境解释为《INA》第212(a)(9)(B)(i)(II)条款含义中的“离境”，即8 U.S.C. § 1182(a)(9)(B)(i)(II)。详见《Arrabally 和 Yerrabelly 案》，25 I&N Dec. 834"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引证为 29 I&N Dec. 830 (BIA 2026) 临时裁决 #4233"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "e76fddc8fd42ffc541363c5a9b50acff8b04aee8c87ce500d62d96bb85f9e743",
+      "chineseText": "Pauley法官在反对意见中指出第781-782页。授权预先假释的文件也明确警示，假释者若无有效豁免证书，或将被视为不具备入境资格且不符合身份调整资格。详见 Cheruku 案，662 F.3d 208（讨论预先假释警告）；又见《Arrabally 和 Yerrabelly 案》，25 I&N Dec.，第779页注释7（同上）。此证据进一步支持该委员会非法释义了《INA》第212(a)(9)(B)(i)(II)条款中“离境”的定义，错误地为依预先假释离境的外籍人士设立了例外。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "b993111b64e57c6680073741fea8156252340f73923bfff028a0628028db2ba2",
+      "chineseText": "当事人未提出，我们亦未发现，为避免对获准预先假释的外籍人士产生荒谬或怪异后果，而应对“离境”一词作出另一种解释的证据。本委员会此前表达过担忧，过宽泛的“离境”定义可能包括因意外、欺骗、威胁或暴力而发生的离境情况。详见《Arrabally 和 Yerrabelly 案》，25 I&N Dec. 775。本委员会强调本判决适用于依据预先假释权利临时出境后，依据《INA》第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)而变为不具备入境资格的外籍人士。本判决未考虑《Arrabally 和 Yerrabelly 案》中规制的额外情形，因其超出本案范围。在无证实预先假释者遭遇荒谬或怪异后果的情况下，本委员会不得拒绝适用法条的字面含义。参见 Jian Le Lin 诉 美国总检察长，681 F.3d 1236, 1240（第十一巡回法院，2012年）。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "2515427786840affe049e7e8c9909e65109f11a95e40781d95be3948a5fd2db1",
+      "chineseText": "本委员会现予澄清，《INA》第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)中所指“离境”一词，不包含对依预先假释暂时出境者的例外。本判决符合“离境”一词的自然含义，以及在《Arrabally 和 Yerrabelly 案》之前政府对该词的长期权威解释。因此，《Arrabally 和 Yerrabelly 案》被推翻。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "865f6d42ba53ecd6fb774d1515f8e5169988f55eb9b92ca250ce7b365f5b6259",
+      "chineseText": "注释 1：我们注意到，第十一巡回上诉法院作为本案管辖权，有采用《Arrabally 和 Yerrabelly 案》中所阐释的“离境”的定义。见 Ortiz-Bouchet 诉 美国总检察长，714 F.3d 1353, 1357（第十一巡回，2013年）(per curiam)。我们不认为 Ortiz-Bouchet 的判决语言排斥本委员会重新审视《INA》第212(a)(9)(B)(i)(II)条款，8 U.S.C. § 1182(a)(9)(B)(i)(II)中“离境”定义的可能性。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "ca8372dd117649f5b0c58ec7221f1791c2ba7ab2384c4d8f78d2973b2698c35a",
+      "chineseText": "页 835"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引证为 29 I&N Dec. 830 (BIA 2026) 临时裁决 #4233"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "ab39e262fb17a006d19c839870d2a4067fb8c2684f286f944f5d2637c2d3c7ec",
+      "chineseText": "B. 回溯性"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "16bace267a22fa70112c9f92b27d1dcf87826952781315c18336e9241455a9bb",
+      "chineseText": "我们必须进行追溯效力分析，因为我们明确推翻了委员会的先例。Matter of Forjoe, 29 I&N Dec. 472。追溯效力的测试要求委员会考虑以下因素：\n(1)该案件是否为初次审理，(2)新规则是否代表对既定惯例的突然背离，或仅仅试图填补尚未确定法域的空白，(3)适用新规则的一方在多大程度上依赖于旧规则，(4)追溯性命令给一方施加的负担程度，以及(5)即使一方依赖旧标准，法律规定仍然有兴趣适用新规则。"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "071b58a1c29f1d336d94d9390da40dfbd2d8c282053649ac2800fb827e545f34",
+      "chineseText": "Matter of Cordero-Garcia, 27 I&N Dec. 652, 658 (BIA 2019)（引证省略）。本案不是初次审理的案件。然而，我们认定上述测试中的前三个因素支持我们前瞻性适用本裁定，因为我们明确推翻了长期以来的委员会先例Matter of Arrabally and Yerrabelly。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "95550e59723959a68054db4b22890b47214556fbd0f33f5b42de97c3504a6450",
+      "chineseText": "关于追溯效力测试的第四个因素，我们指出，我们的裁定将对《移民和国籍法》（INA）第212(a)(9)(B)(i)(II)条，8 U.S.C. § 1182(a)(9)(B)(i)(II)下“离境”（departure）的含义以及根据INA第245(a)条，8 U.S.C. § 1255(a)调整身份资格的理解构成重大变更。我们亦认定，委员会在适用新阐述规则方面的利益不超过基于先前规则产生的过去预期。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "43adf169933606389ced5cd0e5c47cfa673390f07926623719900f83e50a55d5",
+      "chineseText": "综上所述，我们将前瞻性适用本项新裁定。鉴于裁定具有前瞻性，我们不会判定被上诉人的临时出行是否构成INA第212(a)(9)(B)(i)(II)条，8 U.S.C. § 1182(a)(9)(B)(i)(II)所指的“离境”，该行为是否使其不可入境及失去调整身份资格。相反，我们必须根据双方其余论点处理被上诉人重新开庭申请以申请调整身份。"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "b813ed7dd80da6ce6cabaaa8d00cbbaf5ede56039cc305a8b6173c11bfc8cd46",
+      "chineseText": "C. 重开申请"
+    },
+    {
+      "segmentId": "pdf-p7-s43",
+      "order": 43,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "4a6bc8067392e94ec734ce7e1babc2c18c38af67a808495d154a29383b814d2e",
+      "chineseText": "我们将驳回被上诉人的重开申请。通常，外籍人士可在最终行政命令作出之日起不迟于90天内提交一次重开申请。INA § 240(c)(7), 8 U.S.C. § 1229a(c)(7) (2024); 8 C.F.R. § 1003.2(c)(2) (2026)。被上诉人于2025年5月27日提交的重开申请，距本案我们于2008年6月17日作出的最终行政命令已超过16年，因此其申请不符时效。此外，此次申请是其第二次重开申请，因此属于次数限制，不能受理。"
+    },
+    {
+      "segmentId": "pdf-p8-s44",
+      "order": 44,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引用为29 I&N Dec. 830 (BIA 2026) 临时决定第4233号"
+    },
+    {
+      "segmentId": "pdf-p8-s45",
+      "order": 45,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "07dd0ec25ad8c841f5c2b22259611e444dd35f71948445eaae575bc05c888585",
+      "chineseText": "被上诉人未能证明其重开申请符合INA第240(c)(7)(C)条，8 U.S.C. § 1229a(c)(7)(C)或8 C.F.R. § 1003.2(c)(3)（2026年）中列举的重开申请时间和次数限制的任何例外情形。"
+    },
+    {
+      "segmentId": "pdf-p8-s46",
+      "order": 46,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "eabee7d79ed1ce997858a7a08449c118a39f6ee0d67f865412665ca6b5df07f3",
+      "chineseText": "被上诉人的情况也不构成罕见情形，足以使我们在本案中行使主动重新开庭权。见Matter of G-D-, 22 I&N Dec. 1132, 1133–34 (BIA 1999)（指出“我们通常谨慎行使主动作业权”）；另见Matter of J-J-, 21 I&N Dec. 976, 984 (BIA 1997)（承认主动重新开庭权限限于罕见情形，且非为弥补申请缺陷或规避规定设计，当规章实施可能导致困难时除外）。多年后可能符合救济资格本身不足以构成罕见情形。见Matter of Yauri, 25 I&N Dec. 103, 105 (BIA 2009)（表明可能符合调整身份资格一般不构成准予超时重开申请的依据）；再见Matter of H-Y-Z-, 28 I&N Dec. 156, 161 (BIA 2020)（认可因被下令遣返后非法滞留美国而获得的权利和利益一般不足以支持酌情重新开庭）。综上，我们将驳回被上诉人超时且次数受限的重开申请。2"
+    },
+    {
+      "segmentId": "pdf-p8-s47",
+      "order": 47,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "6a8457a07cfa98d1f0bac08b520cd77836db81c2db5e08cbf41144061cad0a05",
+      "chineseText": "三、结论\n基于上述理由，被上诉人未能证明重开程序的合理性。我们推翻Matter of Arrabally and Yerrabelly, 25 I&N Dec. 779中关于外籍人士根据预先许可（advance parole）暂时离开美国不构成INA第212(a)(9)(B)(i)(II)条8 U.S.C. § 1182(a)(9)(B)(i)(II)所示“离境”之裁定。我们亦明确指出，外籍人士因获得预先许可进行境外旅行可因此条款而构成不可入境。"
+    },
+    {
+      "segmentId": "pdf-p8-s48",
+      "order": 48,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "73f97ee60a8d8bb9ae21637938e37685f1763ea118add5642219392e90e1ee8c",
+      "chineseText": "命令：驳回被上诉人的重开申请。\n通知：如被上诉人受最终遣返令约束，且故意不遵从遣返令自美国离境，未及时以诚信提交旅行或其他必要文件申请以离境，或未在DHS指定时间和地点接受遣返，或共谋或采取任何阻碍遣返行为，依据INA第274D条，8 U.S.C. § 1324d（2024年）及8 C.F.R. § 280.53(b)(14) (2026年)，被上诉人将面临每天最高998美元的民事罚款。此外，任何在排除、驱逐或遣返令生效期间被拒入境、被遣返或离境后，再进入、试图进入或任何时候在美的被上诉人，将面临最高两年罚款或监禁，或两者并罚。见INA § 276(a), 8 U.S.C. § 1326(a) (2024年)。"
+    },
+    {
+      "segmentId": "pdf-p9-s49",
+      "order": 49,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "a9c80f76a9e45f2c2aa06a867bdaeb54db53bcbfef3089d6fac2160004406045",
+      "chineseText": "引用为29 I&N Dec. 830 (BIA 2026) 临时决定第4233号"
+    },
+    {
+      "segmentId": "pdf-p9-s50",
+      "order": 50,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "e849ba9d52e1e4a950a7fea8e97bb695a08e25de9f9240ebd4e32c721b54093f",
+      "chineseText": "（页码837）"
+    },
+    {
+      "segmentId": "pdf-p9-s51",
+      "order": 51,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "76b69a605f086e862db2884179a7c9ef4a25a2cf2f20c6f712da6dc1ca185ae0",
+      "chineseText": "（页码838）"
+    }
+  ]
+}

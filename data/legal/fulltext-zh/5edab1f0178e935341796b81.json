@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordId": "5edab1f0178e935341796b81",
+  "recordFingerprint": "c8b2ca62662e1c511899cbff36bde0716600d0df2c21190c1d85b2f255d3643d",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Defense Department; Engineers Corps",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/11/2026-16359/danger-zone-pacific-ocean-at-marine-corps-base-hawaii-kaneohe-bay-island-of-oahu-hawaii",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-11/pdf/2026-16359.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-11/pdf/2026-16359.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:48:32.802Z",
+  "sourceDigest": "befd4f9cac7fc9aca163693d4a02ed08526a5765cefed90a1f434d52c6688dd6",
+  "translatedAt": "2026-08-17T19:48:52.962Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 8,
+  "translatedSegmentCount": 8,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "02c67edb820dec1c433af8559a5b499da031c4fb2a0e17afe2fe778bf033e1a4",
+      "chineseText": "2026年8月11日星期二 / 联邦法规汇编第91卷第153号 / 规则与规章 51594"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "85f704298b5c9a4753f75cfbaa617fdede8229494939465a215ee32b010896a7",
+      "chineseText": "(湖密歇根港口局长(COTP)或其指定代表。 (2) 除非获得湖密歇根港口局长或其指定代表许可，此安全区禁止所有船只通行。 (d) 执法时间。该安全区将于2026年8月23日早上6点至10点30分执行。 R.N. Macon，美国海岸警卫队湖密歇根港口局长。 [联邦文件号 2026–16341 于2026年8月10日上午8:45提交] 计费代码 9110–04–P 美国国防部 33 CFR第334部分 [COE–2023–0010] 危险区域：夏威夷瓦胡岛卡内奥赫湾海军陆战队基地太平洋海域 机构：美国陆军工程兵团，国防部。 行动：最终规则。 摘要：美国陆军工程兵团（陆军工程兵团）正在修改夏威夷卡内奥赫湾附近海军陆战队乌卢帕克雷特武器训练场现有危险区的规定。海军陆战队请求更改现有武器射击时间。本修订为确保公众安全所必需。 生效日期：2026年9月10日。 联系人：Linda Speerstra，运营与监管司总部，邮箱linda.speerstra@usace.army.mil，电话202-945-2101。 补充信息：根据《1917年河流和港口法》第7节及《1919年陆军拨款法》第19章，美国陆军工程兵团依据其授权修改33 CFR 334.1380条，调整乌卢帕克雷特武器训练场武器射击时间。此次修订符合适用联邦法规。 陆军工程兵团收到三则实质评论，摘要如下。 夏威夷规划暨可持续发展办公室（OPSD）表示，该危险区修订需接受科州滨海区域管理法（CZMA）联邦一致性审查，由美国陆军工程兵团处理，该问题已作为分类环境检查（CATEX）解决，OPSD已认可。 一人针对区域边界、影响、告警灯位置、射击频率、106条款、濒危物种法（ESA）和重要水生生境（EFH）提出多项评论，一些评论因通知文本错误已自行调整。 关于修订的射击时间，战术武器训练自1942年起一直在乌卢帕火山口进行，本次拟议射击时间类似自2009年以来的作业时间，拟修订与80余年前现场实况一致。 关于告警灯位置，北向告警灯坐标为21.458833°，-157.724557°，东向告警灯坐标为21.450469°，-157.727293°，均符合安全标准，可在危险区内清晰见到。 针对射击频率和时间长度的评论，遵从海军陆战队训练任务需要灵活调整，射击频率和持续时间无固定限制。 关于106条款、ESA和EFH，海军陆战队为负责相关法规遵守的联邦机构。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2dc4d6c10faae1078e7f3c75cc98314aaaa849f015c5946d0e1b3cdd6741d009",
+      "chineseText": "危险区修订系美国国防部为履行10 U.S.C. 5062项下职责，即维护、训练并装备战备军队，威慑侵略并维护航海自由所必需。 本危险区为确保公共安全必要。 根据《执行命令》12866及13563条款，该规则因涉及国防军事职能而不适用相关规定。 b. 经《小企业监管灵活性法》（1996年修正）审查，该规则预计不会对大量小型企业和政府产生重大经济影响，因此无需准备经济影响分析。 c. 据《国家环境政策法》准备环境评估（EA），结论为修订不会对人类环境质素产生重大影响，故无需环境影响声明（EIS）。环境评估和无重大影响决定书可于联系地址处查阅或通过信息自由法请求获得。 d. 本规则不构成私人部门或州、地方及部落政府的强制义务，不属于《无资金授权改革法案》1995年版第202或205条适用范围，也不构成政府特定强制要求。 e. 根据《国会审查法》，颁布规则前须向国会两院及政府问责署提交规则报告。陆军工程兵团正在按规定提交相关文件。 规则将在《联邦注册》公布30天后生效。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0daff77a1a648c6cb52d6bd81103b2a2aebfada486eac0f6a869d591eed9827e",
+      "chineseText": "2026年8月10日18:36 发布 文号Jkt 268001 第00000号页格式 4700 样式4700 文件E:\\FR\\FM\\11AUR1.SGM 11AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "208ebeb0a0edc44808c922ca1bfeb9c43e591298075899b495a5f650003b5d87",
+      "chineseText": "2026年8月11日星期二 / 联邦规则汇编第91卷第153号 / 规则与规章 51595"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "813911e9ded1da494affdc6199e1790bcd984859f21ec8834f990dabc631109a",
+      "chineseText": "环境保护署（EPA）针对亚利桑那州马里科帕县空气质量局（MCAQD）关于有机挥发物（VOC）排放管控的细则352号和353号作出临时最终决定。该决定暂缓因之前EPA于2025年对MCAQD提交材料有限否决而导致的抵消和公路制裁生效。若EPA最终批准相关规则，则制裁将永久延期。 生效日期：2026年8月11日，公众评论截至2026年9月10日。 评论可通过Docket ID No. EPA–R09– OAR–2026–5743于https://www.regulations.gov提交。 EPA联系方式：Donnique Sherman，EPA第九区，地址：75 Hawthorne St.，旧金山，CA 94105，电话：(415) 947–4129，电子邮箱：sherman.donnique@epa.gov。 本文作者署名为Stephen L. Hill，土木工程作业及监管司主任。 本规则修改联邦法规40 CFR 第52部分，涉及违反《清洁空气法案》（CAA）关于易挥发性有机化合物从有机液体及汽油装载作业中排放的州实施计划（SIP）。 本规则定义多项环保专有名词及机构缩写，便于文中引用。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0fdf86d8aeb1f0a8bb334aea141025c62bfec4001eec1d3a13d3fa86c9e7fb4f",
+      "chineseText": "EPA正式宣布，亚利桑那州环境质量部（ADEQ）代表马里科帕县空气质量局（MCAQD）提交的规章已解决此前EPA指认在控制汽油装载VOC排放方面存在不足的问题。EPA此前于2025年1月10日针对MCAQD规则进行有限批准与有限否决，要求该州满足《清洁空气法》第182(b)(2)条合理可行控制技术（RACT）要求，但发现缺陷导致RACT示范无法通过。此次临时最终决定推迟CAA触发对非符合地区新源审查（NSR）开展制裁的时间，从最初2025年2月10日起18个月后开始，公路制裁亦同步推迟。公众可对此决定提出意见。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cbada3ffd82ca430d6745a22aef160c09b255a033c61113c1d696753c159ff63",
+      "chineseText": "2026年8月10日16:13 发布 文号Jkt 268001 第00000号页格式 4700 样式4700 文件E:\\FR\\FM\\11AUR1.SGM 11AUR1"
+    }
+  ]
+}

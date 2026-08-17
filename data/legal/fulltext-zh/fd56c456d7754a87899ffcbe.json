@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "recordId": "fd56c456d7754a87899ffcbe",
+  "recordFingerprint": "f12d119fa91f4714e466a439add03c5591924f2ff9ed782ebd21ac863f667b52",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1402756/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1402756/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1402756/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:41:58.161Z",
+  "sourceDigest": "735a7baf2d2b02e7bc7a881165bcee2e82a2f1ef46f425a77ae1b059ee712e9f",
+  "translatedAt": "2026-08-17T19:48:32.765Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 42,
+  "translatedSegmentCount": 42,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0a2aa20657ec48912b303a3e841a9d324c85c61ac19e8dabd04e1b5193f4757b",
+      "chineseText": "引用为 29 I&N Dec. 96（移民上诉委员会 2025）临时裁定编号4101"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "99f1eb67435f1acb0c09f8604fb95b3d37d494d6c45c2603568568046fea8247",
+      "chineseText": "B-N-K-案，被上诉人\n裁定日期：2025年6月6日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8a4996fd894cacc65ecf2afa72f71f147f53770728de7902808c6710d33b4006",
+      "chineseText": "（1）鉴于移民法官和委员会有义务及时且公平地结束驱逐程序，是否存在令人信服的理由使案件得以继续并就实质内容作出裁决，是在考虑全部情形下判定行政关闭是否适当的主要考量。W-Y-U-案，27 I&N Dec. 17（移民上诉委员会 2017），重申。\n（2）一般而言，临时保护身份（Temporary Protected Status，TPS）的申请待审，不足以支持授予行政关闭。\n被上诉人代理律师：Daniel P. Brown，明尼苏达州明尼阿波利斯市\n国土安全部代理律师：Allen Ross，助理首席律师"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fd1b783e17d64753316d09037a89eb24560f387d2301eab9587f67062892b1fd",
+      "chineseText": "审理小组：法院首席上诉移民法官MALPHRUS；上诉移民法官MULLANE和GOODWIN。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62c4b042980c6ad2814ed9cc74d94e2a1f5dd38cf7beaab67651dc0fe8ed4270",
+      "chineseText": "首席上诉移民法官MALPHRUS发言："
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "263f0f451328affd9f48f88fc7c23a2c552fc26c0779911b4139268151224839",
+      "chineseText": "本案最近一次提交委员会审理是在2024年10月21日，当时我们驳回了国土安全部（“DHS”）对移民法官于2024年5月7日作出的决定的中间上诉，该决定批准了被上诉人关于行政关闭诉讼程序的动议。此后，DHS提出向移民法官申请重新安排驱逐程序的动议，该动议于2024年11月19日被拒绝。DHS对该拒绝提出中间上诉。基于以下理由，委员会将对该中间上诉行使管辖权，上诉将被支持，原记录将被发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "25ade8259f1e11c2121b091f4c39d073880dcab8bda708322d775f7c2b81aabb",
+      "chineseText": "一、程序经过\n2024年5月6日，被上诉人（现被DHS拘押）提交书面动议，基于其依据移民与国籍法（Immigration and Nationality Act，INA）第244(a)条，8 U.S.C. § 1254(a)（2018年修订）申请的临时保护身份（Temporary Protected Status，TPS）待审，申请行政关闭驱逐程序，该申请向美国公民及移民服务局（USCIS）提出。移民法官通过表格命令批准了该动议，称该动议为双方联席请求。DHS对移民法官的决定提出中间上诉，主张未提交联席动议且行政关闭不当。2024年10月21日，委员会拒绝受理该上诉，指出DHS可请求移民法庭重新安排程序。随后DHS向移民法官提出重新安排程序的动议。2024年11月19日，移民法官以无变更情形或正当理由为由驳回该动议。DHS对驳回重新安排动议提出中间上诉。该中间上诉现正审理中。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0a2aa20657ec48912b303a3e841a9d324c85c61ac19e8dabd04e1b5193f4757b",
+      "chineseText": "引用为 29 I&N Dec. 96（移民上诉委员会 2025）临时裁定编号4101"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "845469f68f58af02a3b68d299e50d35b5574c87113f8a97adcbe6dfcf878d32d",
+      "chineseText": "美国公民及移民服务局（USCIS）"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "42227819a75c202a9baf9b4b8e6be8ccdffbab70bc8b9865482020d320e7dbee",
+      "chineseText": "二、讨论\n行政关闭系案件管理工具，用于“暂时将案件从移民法官的活动日程或委员会的案卷中移除。”W-Y-U-案，27 I&N Dec. 17，17-18页（移民上诉委员会 2017）（引述Avetisyan案，25 I&N Dec. 688，692页（移民上诉委员会 2012））。行政关闭非驱逐救济，不赋予外籍人士任何移民身份，亦非用以无限期延迟诉讼程序。参见同案18-19页。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3050fb1460319a3274cf984bd7d4b8912a398e3e640b76e5310b86cbcbfcc342",
+      "chineseText": "在Avetisyan案之前，行政关闭需取得双方同意。Gutierrez案，21 I&N Dec. 479，480页（移民上诉委员会 1996）（引证案例显示“任何一方反对，即不得行政关闭”），后由Avetisyan案推翻，25 I&N Dec. 688（移民上诉委员会 2012）。Avetisyan案，25 I&N Dec.第692-694页，委员会推翻二十余年先例，判定一方反对不绝对阻止行政关闭。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8e0780b284c47a294e8e15fe4c90885511fdcdb3cca875d8a988b3daa91b6e8c",
+      "chineseText": "注释1\n虽然委员会通常不受理中间上诉，但明确指出当事人“可通过提出中间上诉立即审查移民法官关于行政关闭诉讼程序的决定。”Avetisyan案，25 I&N Dec. 688，695页（移民上诉委员会 2012）。我们承认此前拒绝审理本案的决定，造成对DHS是否能对行政关闭决定寻求审查及重新安排程序要求的不确定性。为避免混淆，我们将对现有中间上诉行使管辖权，审查移民法官关于行政关闭的批准及DHS重新安排动议的拒绝。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "452c8c2001d3c6bc55086ade9e233774c839ed856079515f73325332722e84c9",
+      "chineseText": "第97页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0a2aa20657ec48912b303a3e841a9d324c85c61ac19e8dabd04e1b5193f4757b",
+      "chineseText": "引用为 29 I&N Dec. 96（移民上诉委员会 2025）临时裁定编号4101"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4942a52b5cefc0608092bdbcc6174a2da179f31ae6d14ad7bed4ad4b99f97dc0",
+      "chineseText": "委员会进一步指出，移民法官应考虑下列因素：\n（1）寻求行政关闭的理由；（2）反对行政关闭的基础；（3）被上诉人在驱逐程序外，申请或诉求成功的可能性；（4）预计关闭的时长；（5）任何一方对现有或预计延期所负的责任；（6）案件重新安排后驱逐程序的最终结局。Avetisyan案，25 I&N Dec. 696页。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cfce071ac2cd08d772b9727e1c1ad8844228316110517b573686ca1dbb19a8e8",
+      "chineseText": "委员会后续澄清，“主要考量是反对行政关闭一方是否提出了令人信服的理由，证明案件应继续进行并就实质内容作出裁决。”W-Y-U-案，27 I&N Dec. 20页。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d757d7e2b0dd54f4bd0174cb17db7444807d5fe0ecdb019c118f3b2297148982",
+      "chineseText": "移民法官在本案中批准行政关闭后，机构颁布了将Avetisyan案因素法规化的规章。见2025年修订的8 C.F.R. §§ 1003.1(l)(3)(i)、1003.18(c)(3)(i)；《移民诉讼程序中高效案件与案卷管理》，联邦公报第89卷46742页，第46789及46792页，2024年5月29日。新规加入两个额外考量因素：“案件必须行政关闭，才能向DHS提交或获得申请、请愿或其他行为的批准”和“非公民的ICE拘留状态”。8 C.F.R. §§ 1003.1(l)(3)(i)(C)、(H)、1003.18(c)(3)(i)(C)、(H)。新规进一步规定，移民法官和委员会应在决定是否批准行政关闭动议或重新安排时，综合考虑所有相关因素，且“无任何单一因素具决定性”。8 C.F.R. §§ 1003.1(l)(3)、1003.18(c)(3)；见Avetisyan案，25 I&N Dec. 696页。行政关闭是否适当属于法律判断，委员会对此采取独立审查标准。参见8 C.F.R. § 1003.1(d)(3)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "84f86586ea04148d23b5eeb857d1c08a2339f3ee2e813c8cd948583cfb4be277",
+      "chineseText": "2 当时，《Avetisyan 案》（Matter of Avetisyan, 25 I&N Dec. 692–696）的判决是一项重大变革，它将决定案件是否应当进入实质审理的权力，从当事人手中转移至法官，后者需通过多方面、具体事实的测试对每个案件逐案适用。对此为何需要如此重大变革，几乎没有给予解释。详见 Gamble v. United States案，587 U.S. 678, 691 (2019)（强调“背离先例‘需要特别理由’”，尤当此背离将推翻多年来多项重要判决时（引用省略））。第98页"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0a2aa20657ec48912b303a3e841a9d324c85c61ac19e8dabd04e1b5193f4757b",
+      "chineseText": "引证为 29 I&N Dec. 96（BIA 2025）临时决定#4101"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "deed40572eb66a74289d943b3cd4b0339ccc5dc11e417da68cf37132ba242bd0",
+      "chineseText": "A. 行政中止标准"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "eef736bd69217639dbb3345ec02b67d57f43fae4012baa75c4e46682abe6c145",
+      "chineseText": "相关法规列明确定是否行政中止或重新排期案件时应考虑的因素清单，但未规定这些因素之间应如何相互权衡。虽然必须从整体上考虑所有因素且无单一因素决定性，但法规并不要求移民法官与委员会给予各因素同等重要性。见 8 C.F.R. §§ 1003.1(l)(3)(i)–(ii), 1003.18(c)(3)(i)–(ii)。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d560fb130278e774ca4db687cd3ca4e27c38560b69f7ed607a673d9c0e1613ad",
+      "chineseText": "在评估何时适宜行政中止时，须重视行政中止的目的以及移民法官和委员会在移民体系中的角色。驱逐程序具有对抗性质，移民法官与委员会的职责是裁决外国人是否可被驱逐及是否有资格获得驱逐豁免，此类案件由国土安全部（DHS）提起。见 Matter of W-Y-U-, 27 I&N Dec. 19；Matter of Gomez-Beltran, 26 I&N Dec. 765, 767 (BIA 2016)，证实于 792 F. App’x 498 (9th Cir. 2020)。委员会与移民法官无权干涉 DHS 的检察裁量权，包括其是否对外国人提起诉讼及将诉讼进行至终结的决定。参见 Matter of Quintero, 18 I&N Dec. 348, 350 (BIA 1982); Matter of Roussis, 18 I&N Dec. 256, 258 (BIA 1982); Matter of Yazdani, 17 I&N Dec. 626, 630 (BIA 1991)。“一旦 DHS 启动驱逐程序，移民法官不得审查 DHS 行动的明智性，但必须迅速履行职责，确定驱逐指控是否具备所需证据。”Matter of Quintero, 18 I&N Dec. 350。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9b3f3ff7606b295fba41e4eb0daa0c1dc2deb1447b0ac9ad4bed81ae57132e6d",
+      "chineseText": "“移民程序的终局性具有重要的公共利益，”Matter of W-Y-U-, 27 I&N Dec. 19，并且“在给对立方公平机会充分准备及陈述各自案件的条件下，尽快结束诉讼也符合利益。”INS v. Abudu案，485 U.S. 94, 107 (1988)。预期由 DHS 发起的诉讼将进入实质结论。因此，尽管“行政中止或许可等候与移民诉讼相关但当事人或法院无法控制的行动或事件时是适当的”，Matter of Avetisyan, 25 I&N Dec. 692，授予行政中止之理由必须与在合理短期内促成诉讼可预见的解决方案相关。行政中止不得被用作无限期拖延诉讼的手段，且必需限定为临时期间。见 Matter of W-Y-U-, 27 I&N Dec. 20（“诉讼解决的无理拖延可能损害外国人，使其无法获得可提供合法身份的救济；反之，也可能‘挫败提供驱逐规定的法令之执行’，允许外国人无限期非法居留美国。”（引用省略））。第99页"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "0a2aa20657ec48912b303a3e841a9d324c85c61ac19e8dabd04e1b5193f4757b",
+      "chineseText": "引证为 29 I&N Dec. 96（BIA 2025）临时决定#4101"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d496b53beeb53e831a27b8354d48d7121ad7ac366e772afce5350cc9d0515123",
+      "chineseText": "诉讼解决的无理拖延可能损害外国人，使其无法获得可提供合法身份的救济；反之，也可能‘挫败提供驱逐规定的法令之执行’，允许外国人无限期无合法身份居留美国。（引用省略）。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "158b12c3ec7b9cc5044c785e014f5c3e98e97f96a1650bb27ecbe942c8b16cf7",
+      "chineseText": "虽然移民法官负有协助调查案情的一般职责，但移民法官或委员会均不应取代任何一方当事人的角色。见 Matter of J-F-F-, 23 I&N Dec. 912, 922 (A.G. 2006)（“移民法官协助记录收集属适当……但移民法官不得充当辩护人角色。”）。因此，考虑行政中止是否适当时，基于整体情况，移民法官及委员会应首先强烈考虑双方当事人的意见。见 8 C.F.R. §§ 1003.1(l)(3)(i)(A)–(B), 1003.18(c)(3)(i)(A)–(B)。虽然某方反对行政中止不具决定性，但移民法官和委员会应认真考量该反对理由。见 8 C.F.R. §§ 1003.1(l)(3)(i)(B), 1003.18(c)(3)(i)(B)。因移民法官和委员会有职责迅速且公正终结驱逐程序，决定行政中止适当与否时，是否存在令人信服的理由使案件得以实质判决是核心考量。见 8 C.F.R. §§ 1003.1(l)(3)(i)(B), 1003.18(c)(3)(i)(B); 另见 Matter of W-Y U-, 27 I&N Dec. 20。3"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "e0ff5e79db82935d21569019a7cea3e255cb9a9abce316aecb5faee77c8090a6",
+      "chineseText": "B. 对本案的适用"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5ddfbf5b62ecf58aaf8d441f429585226972872ab16f670b8676beaf10991783",
+      "chineseText": "关于 DHS 目前的中间上诉，我们认定先前批准行政中止系错误，重新排期适宜。此案中，DHS 主张且案卷显示其未加入被告请求行政中止的动议，且 DHS 在上诉中重申反对行政中止。故移民法官明确错误地认定行政中止动议系双方共同请求。见 Matter of R-S-H-, 23 I&N Dec. 629, 637 (BIA 2003)（论述事实认定的清楚错误标准）。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5318b939890f7c1d4bc885f8739b818ada089bc83c90fdd8eac60ef04d7032f2",
+      "chineseText": "3 我们承认最终规则评论称“若委员会在 Matter of W-Y-U- 中的持判与本规则所执行的无权重、‘整体情形’标准不一致，则 27 I&N Dec. 17 的 Matter of W-Y-U- 被取代。”89 Fed. Reg. 46753。在行政中止环境中，“主要考虑”指的是初步且重要但非凌驾一切的考虑。因此我们认为 Matter of W-Y-U- 的持判与整体情形标准是一致的。第100页"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0a2aa20657ec48912b303a3e841a9d324c85c61ac19e8dabd04e1b5193f4757b",
+      "chineseText": "引证为 29 I&N Dec. 96（BIA 2025）临时决定#4101"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "db0ea13c903a68cc65d0fcfd2ac61092c99938f89bf91ac5f3c233b8cf990eea",
+      "chineseText": "因此，移民法官在未经进一步分析或解释的情况下，以摘要命令批准该动议存在错误。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "468aff15eb9eee147a29e8db722b7766e7f3271ececf7fff1dd4678e0efa3835",
+      "chineseText": "进一步地，审议被告原始动议并适用 Matter of Avetisyan, 25 I&N Dec. 696 及相关法规规定的因素，基于整体情形，我们不认为行政中止是适当的。被告请求行政中止的原因是等待其暂时保护身份（TPS）申请的决定，其宣称“现有的移民利益使其庇护申请的任何不利决定均属时效外。”被告主张已初步符合 TPS 资格，但未说明中止预计持续期间或 TPS 批准如何影响重新排期后驱逐程序的结果。DHS 反对行政中止，理由是被告的庇护申请可实质审理，驱逐程序可完成且不会对 TPS 申请造成不利影响。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "62b3877ef43b30915cff181fabec2f991e1bbf2ada72ceb2f72785abe2999804",
+      "chineseText": "综合考虑整体情形，包括是否有令人信服的理由使驱逐程序得以实质解决，我们认为行政中止不当。被告的庇护及相关救济申请已准备好由移民法官审理。被告庇护申请及相关救济的解决，以及任何直接上诉，将终结本驱逐程序。此外，TPS 属附带利益，不影响驱逐程序结果。虽 USCIS 持有被告 TPS 申请的初步管辖权，但即使有最终驱逐令，被告仍有资格获得 TPS。见 INA § 244(a)(1)(A), 8 U.S.C. § 1254a(a)(1)(A); 8 C.F.R. §§ 244.7(a), 1244.7(a) (2025); 另见 Duarte v. Mayorkas, 27 F.4th 1044, 1053–54 (5th Cir. 2022)（论述驱逐令与 TPS 关系）。且 TPS 仅临时保护持有人免于驱逐。见 Matter of Sosa Ventura, 25 I&N Dec. 391, 393 (BIA 2010)（认定 TPS 批准仅在特定时段内防止执行驱逐令，但被告仍因资格不合而可被驱逐）。因此，被告 TPS 申请的任何结果不会影响本驱逐程序的最终结论。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "066aeaeac7749cb79bb1b7ca10e47ff867158242fc2fc4ab29a029e84392e9cf",
+      "chineseText": "此外，本案的适当结果因被告被拘留而更加明确，该情况是法规明确规定的因素。8 C.F.R. §§ 1003.1(l)(3)(i)(H), 1003.18(c)(3)(i)(H)。在第101页"
+    },
+    {
+      "segmentId": "pdf-p7-s35",
+      "order": 35,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0a2aa20657ec48912b303a3e841a9d324c85c61ac19e8dabd04e1b5193f4757b",
+      "chineseText": "引用自29 I&N Dec. 96（BIA 2025） 临时决定 #4101"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "d22751ae5eac4bd3d7ec0a3bdb5eb6690be6f99cbed3c6f9f067039844ab6d3f",
+      "chineseText": "在Matter of L-N-Y-案，27 I&N Dec. 755, 759（BIA 2020）中，我们裁定，在基于附带救济申请评估是否存在“正当理由”延期时，移民法官应考虑外籍人士的被拘留状态。我们进一步强调，“批准无限期延期会极大影响行政效率，尤其是在……外籍人士被拘留的情况下。”同案中，在行政终止程序情形下，关闭期限通常不确定，外籍人士的被拘留状态尤为重要，通常强烈反对批准行政终止。"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "2d4cc1dac5aeee107d7b6fded2b4de641ad1cf5527e57d0d2056b94c97ecefdb",
+      "chineseText": "尽管被告的被拘留状态支持我们的结论，即本案不宜批准行政终止，但即便被告未被拘留，结果亦将相同。通常，等待处理的TPS（临时保护身份）申请不会支持批准行政终止。"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "5f7b02d3662e536cadccbe263eedd2634cd857929f307a981a59852bf60bd5a3",
+      "chineseText": "三、结论\n 移民法官和委员会在裁决行政终止和重新排期的动议时，应考虑所有相关因素，但案件是否有充分理由继续进行并实质裁决，是主要考量。在此方面，我们重申Matter of W-Y-U-案，27 I&N Dec. 17, 20（BIA 2017）的裁定。"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "21e04dca69b2b1fa2db08ced2413c6158f92cb4389da8166511b14e2b40fd487",
+      "chineseText": "基于以上讨论理由，我们认定本案不宜批准行政终止，故将撤销移民法官对国土安全部（DHS）重新排期动议的拒绝。因而，我们将支持国土安全部的上诉，恢复本次遣返程序，并将案卷发回以作进一步程序。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0cf75cadc0bd02c9be3138ebb9db06ef177344ffc65007b499f6b48e192196ad",
+      "chineseText": "命令：支持国土安全部的上诉，撤销2024年11月19日移民法官的决定，恢复遣返程序。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "c8bee4914239a1e759082f11c504e7d74e07e57a29198cebd03c6fee944c4bca",
+      "chineseText": "进一步命令：将案卷发回移民法官，进行符合上述意见的进一步程序，并作出新的决定。"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8c3060305fd7b9edf331aee39bf3af2dc916e0983ff0c40fbdee48ed81ba4b0e",
+      "chineseText": "第102页"
+    }
+  ]
+}

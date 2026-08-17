@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "recordId": "a7dd3a0a5c57b1d4d2a59764",
+  "recordFingerprint": "1bfdd3175db9c6d92c1e5f2274c3978296adcaa3f0fa73bf91399fcf1eb58ca9",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1457656/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1457656/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1457656/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:16:33.332Z",
+  "sourceDigest": "e9f807a2d31c54a486127e1ef66a61f5cae926565b34e31f62257f170e4aaa0c",
+  "translatedAt": "2026-08-17T19:17:17.209Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 25,
+  "translatedSegmentCount": 25,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a5e5ece6fc5a0f28a0af991553bac94732f1ad7496426c4dd96aef802d2d102e",
+      "chineseText": "引用为29 I&N Dec. 826（BIA 2026）临时决定 #4232"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "23090d6977c62fe9ae1ed3ec53bd2d340857671ba16553feaa66d1aefa55900f",
+      "chineseText": "尼·阿亨·努努·BOYE 案，答辩人\n裁定日期：2026年8月12日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "94d105c21d5d225e1c87ea2c1629870a286910e59b7821fa999ea057d06dddb2",
+      "chineseText": "佐治亚州一名不同法官在原判决发布后六年多，并且答辩人已被置入驱逐程序后发布的判决“澄清”命令，不具有移民用途的效力。\n答辩人代理律师：Carlos E. Solomiany，亚特兰大，乔治亚州\n国土安全部代理律师：Adilina Malave\n审理委员会小组成员：RADICS，代理首席上诉移民法官；MAHTABFAR，上诉移民法官；PICOS，临时上诉移民法官。\nRADICS，代理首席上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cdf2b17996eb126dc192f1ea40b259427538b0aeedcd5fbf6a18426de89488bc",
+      "chineseText": "国土安全部（“DHS”）对移民法官2023年8月25日准许答辩人终止本案程序的裁决提出上诉。答辩人为加纳出生及公民，且为美国合法永久居民，反对该上诉。上诉获支持，移民法官裁决被撤销，案件记录发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "39f33d6edbcec6983dc8922cb1bffb0611ce4b184b7159049711386b2b97bfd1",
+      "chineseText": "2017年4月11日，答辩人因违反佐治亚州法典第16-5-23.1(f)条款被判定为家庭暴力电击罪。答辩人被判处“12个月的监禁”，但获准缓刑执行整刑期。六年多后，即2023年8月4日，佐治亚卡罗尔县州法院另一法官准许答辩人的“判刑澄清动议”，并发出命令称答辩人判刑为“连续12个月缓刑”。该命令进一步说明，“判刑从未也不应为‘12个月监禁执行缓刑’。”澄清命令未说明依据何项佐治亚州法律发布，且澄清动议未纳入案卷记录。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9c73650294a6e74f22e58b61987faf8e264508654c1eb0d243ffa0bcd6a171f1",
+      "chineseText": "2023年8月25日，移民法官基于佐治亚州法院的判决“澄清”，认定答辩人未被判处12个月的监禁期，因而准许答辩人终止本案程序。该移民法官认为，因答辩人未被判12个月监禁，他未构成《移民和国籍法》（“INA”）第237(a)(2)(A)(iii)条款所定义的加重暴力重罪，也是第237(a)(2)(E)(i)条款所称的家庭暴力犯罪。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a5e5ece6fc5a0f28a0af991553bac94732f1ad7496426c4dd96aef802d2d102e",
+      "chineseText": "引用为29 I&N Dec. 826（BIA 2026）临时决定 #4232"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7bac2dec0bbe0b995b06633ae7ddbadf17cd77facec84a02121474f2d2029660",
+      "chineseText": "“澄清”答辩人未被判处12个月的监禁期。移民法官判定，因答辩人未被判处12个月监禁，他未构成根据《移民和国籍法》第237(a)(2)(A)(iii)条款定义的加重暴力重罪，亦非根据第237(a)(2)(E)(i)条款定义的家庭暴力犯罪。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d4354bd0bab3409c46b9586734ce57bd53cecaf7f619351f3ea5dcb8a506b70b",
+      "chineseText": "双方不争议答辩人被判定为根据《移民和国籍法》第101(a)(43)(F)条款定义的暴力犯罪，因此其定罪属于根据第237(a)(2)(A)(iii)条款定义的加重罪行。双方争议仅在于答辩人是否被判处至少1年的监禁期。参见Edwards诉美国总检察长案，97 F.4th 725, 742（第11巡回法院2024年）（判定，被判定根据乔治亚州法典§16-5-23.1条进行家庭暴力电击，并判处至少1年监禁，即可列为加重罪犯可驱逐）；Talamantes-Enriquez诉美国总检察长案，12 F.4th 1340, 1353（第11巡回法院2021年）（判定，即使被告获准部分或全部监禁期间缓刑执行，只要量刑为不少于1年的监禁，仍满足8 U.S.C. § 1101(a)(43)(F)的监禁期限要求）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d9168a06b6822c27e745aaf0ebb4954829ae12ddcfc73c70684fab3ab1924516",
+      "chineseText": "我们承认答辩人从佐治亚州法院获得了一个旨在澄清其原判刑词的判令。然而，该州法院的判刑澄清令在移民用途上无效。参见Thomas 和 Thompson 案，27 I&N Dec. 674, 690（总检察长2019）（裁定只有基于刑事程序的实质或程序性缺陷的州法院澄清令才对移民有效）；另见Edwards案，97 F.4th 733, 742（裁定总检察长在Thomas 和 Thompson 案中之裁定有效，故为避免移民后果而发出的州法院判刑修改令对移民法无效）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "57f4acdffda6f897d5918d40efb066033f6c568277f0ab01e865aac8c04f0096",
+      "chineseText": "判刑是否包含《移民和国籍法》第101(a)(48)(B)条款定义的“监禁期”是联邦移民法问题。Edwards案，97 F.4th 735。本案中，答辩人判刑令明确说明其被“判处12个月监禁”，并“缓刑执行”，表明答辩人确实被判处监禁期。与此相矛盾的澄清令称“判刑从未也不应为‘12个月监禁执行缓刑’”，不构成对原判决的澄清，而是自相矛盾的否定。因此，该澄清令显然非基于O.C.G.A. § 17-1-3允许的勘误纠正。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a5e5ece6fc5a0f28a0af991553bac94732f1ad7496426c4dd96aef802d2d102e",
+      "chineseText": "引用为29 I&N Dec. 826（BIA 2026）临时决定 #4232"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6dbec4ab3fe396f7229c022205522fadb04587ca49ba33fec0b53a4109af9b05",
+      "chineseText": "“判刑从未也不应为‘12个月监禁执行缓刑’”的澄清令并未澄清原判决，而是与之矛盾。故该澄清令显然不是基于O.C.G.A.第17-1-3条关于誊写错误的勘误。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d6571216c66fa94c037b7bcf23d93ebb6a22cc5f0cae71389c7e1d92b67a63db",
+      "chineseText": "此外，O.C.G.A.第17-10-1(f)(1)条规定，任何纠正、减轻或修改判刑的动议须在判刑后1年内或上诉判决确认之后的120天内提出。答辩人的动议未在该期限内提交。O.C.G.A.第42-8-34(g)条允许判刑法官在缓刑期间任何时候修改缓刑判刑。但本案澄清令在答辩人判刑期满多年后发出，因此显然非依据O.C.G.A. § 42-8-34(g)条。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2c42cee67c69577dc860340b9176bdd97f674fedd4c91e4bce0bfa8e480df1c0",
+      "chineseText": "综上，我们未见任何法定依据支持答辩人判刑澄清令的发布。该澄清令在判刑发布6年后，由非原判刑法官签发。“澄清令与判刑令完全相悖。” United States v. Garza-Mendez, 735 F.3d 1284, 1288 n.2（第11巡回法院2013）（涉及类似澄清令）。“且后续州法官未与原判法官进行任何协商。”同案。 “[签署澄清令的法官]仅在多年后审核并解释他人判刑令。” Talamantes-Enriquez案，12 F.4th 1354。在此情形下，我们“拒绝完全采信该‘澄清’令，更无义务受其约束。”同案。故我们不对答辩人的判刑澄清令给予移民法上完全信赖。参见Thomas 和 Thompson案，27 I&N Dec."
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0e0dcb652c2bf594c0e7589a5853b2f6159e20a7567019128ba62b7930731511",
+      "chineseText": "1\nO.C.G.A.第17-10-1(f)(1)条规定："
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b2f829e48af7f0bdf10a3016dc7a8d10c57a2bc8fb93d5a1be5cc9b6a4cb6597",
+      "chineseText": "判刑发布之日起一年内，或上诉判决确认后判刑法院收到正式回执之日起120天内，以较晚者为准，判刑法院拥有纠正或减轻判刑以及缓期执行全部或部分判刑的管辖权、权力和职权。该款规定的期限要求被告须在规定时间内提出动议；但法院不必在该期限内下达命令或听案。更改判刑前必须通知检察官并给予听证机会。无通知及听证而作出的判刑修改命令无效。本款不限制法院依据本法典章节或§ 42-8-34小节（g）赋予的其他管辖权。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a5e5ece6fc5a0f28a0af991553bac94732f1ad7496426c4dd96aef802d2d102e",
+      "chineseText": "引用为29 I&N Dec. 826（BIA 2026）临时决定 #4232"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f428bb84ea4ee8828ab1b0ddb4d5c97d998c36a351da4f7302de000c4a63d2c3",
+      "chineseText": "Thomas 和 Thompson案，27 I&N Dec. 686–87（说明委员会可依《移民和国籍法》定义解释定罪，且不违背完全信赖原则）。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "aabf47a1f05952c037f8b07c8652dd6d03b142bb34eaae18f3d5e67a4f28790a",
+      "chineseText": "基于上述，佐治亚州法院由他法官在原判刑6年后且答辩人已进入驱逐程序后发出的判刑“澄清”命令，不具有移民法效力。我们因此认定答辩人实际上判处了至少1年的监禁期。参见Thomas 和 Thompson案，27 I&N Dec. 690；Edwards案，974 F.4th 472（判定佐治亚州法院为避免驱逐而将答辩人家庭暴力电击罪判刑从12个月缓刑修改为11个月27天缓刑，未改变其联邦移民法律视角下的监禁期限）。因此，答辩人基于加重罪定罪可被驱逐。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6d58286bf252c8ac2b8be19ccb0cfd708c67742580c9c10ab22b749a8a474dcd",
+      "chineseText": "最后，根据《移民和国籍法》第237(a)(2)(E)(i)条款，家庭暴力罪的可驱逐性不要求任何监禁期。因此，答辩人被判缓刑或监禁并非认定其根据该条款是否合格的决定因素。故与移民法官结论相反，基于判刑澄清令终止程序不当。发回重审时，移民法官应重新评估答辩人是否基于家庭暴力罪根据第237(a)(2)(E)(i)条可被驱逐。我们对本案最终结果不表意见。参见L-O-G-案，21 I&N Dec. 413, 422（BIA 1996）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d047f0befe93c01959aa2207c1cd5c85acda533829fcd194cb8e12543ad0750b",
+      "chineseText": "据此，作出如下命令。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f4729e22d7da24b16730ead85c617235da946fc487790d6eff2eac852d80c918",
+      "chineseText": "命令：国土安全部上诉获支持，移民法官2023年8月25日裁决撤销。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0eb1ca67279e07ab22d4d96f94c5af0f102286c3f3b74146b5103842de83eb06",
+      "chineseText": "进一步命令：案卷发回移民法庭，依照上述意见进行后续程序及作出新裁决。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e4023068fd2428f5d568e016caee8c9492644f272951f31f705172be7ed6ede1",
+      "chineseText": "页码 829"
+    }
+  ]
+}

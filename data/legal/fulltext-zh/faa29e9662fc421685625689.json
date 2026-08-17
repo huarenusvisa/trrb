@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 1,
+  "recordId": "faa29e9662fc421685625689",
+  "recordFingerprint": "e88398f96dc8c417c8196cd5dcde4e0672c1ab832a34afb7887d91823628e3a7",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1401736/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1401736/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1401736/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:17:17.244Z",
+  "sourceDigest": "bed307aec870d88c706aeb52dcf9efb0059e625ee60f757d0f929cf9d6f8e42a",
+  "translatedAt": "2026-08-17T19:23:49.678Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 41,
+  "translatedSegmentCount": 41,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0169ef65d975a85e20a05ccb58059581cbc08d9d0befe37b2fdf34274f6d65f9",
+      "chineseText": "引用为29 I&N Dec. 83（BIA 2025）临时决定＃4099"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "830f84d98832ecc4b7747759c13052943423b7b5dfb74b53702fd14bd99c44fc",
+      "chineseText": "D-E-B-案，申请人\n美国司法部决定\n移民审查执行办公室\n移民上诉委员会\n2025年2月4日"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1f5d85bbac055c08b6944a70c81a2ddefe6586212a7bc8bd69a1b8fd872888a0",
+      "chineseText": "对重新开庭动议的补充提交若提出与原动议根本不同的主张，则视为单独的动议。\n代表申请人：Lauren C. Picciallo律师，新泽西纽瓦克\n审理委员组：MALPHRUS副首席上诉移民法官，GOODWIN与CLARK上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c8769bad289be346816b5a3c40485e26fcf984f258ecb61d1343be7e88eb9449",
+      "chineseText": "GOODWIN，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4ba9e359028f1b254ee5649cf5294bd5bb174d9800ce8871e6cb1974d3810714",
+      "chineseText": "本案最后一次在委员会审理时间为2021年7月30日，当时我们驳回了申请人对移民法官2021年2月10日决定的上诉，该决定驳回了其根据《移民与国籍法》第240A(b)(1)节（2018年8 U.S.C. § 1229b(b)(1)）（以下简称“EOIR 42B”）提出的取消遣返申请。申请人系牙买加出生及公民，现提出重新开庭的动议。国土安全部（“DHS”）未对此动议作出回应。该动议将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "147819697a793c8abaa60b72417ae1e9d4c51e0473fe667ac86a6c874b1cf270",
+      "chineseText": "重新开庭动议要求同时满足对救济的初步适格性证明及提出之前未能获取且不能在前次听证中发现或出示的重要证据。见Coelho案，20 I&N Dec. 464，472（BIA 1992）。申请人主张应予重新开庭，理由是新近、之前未有的证据显示：（1）其在移民法官前的辩护律师提供了无效协助；（2）他拥有符合取消遣返资格的亲属；（3）根据《反暴力妇女法》（“VAWA”），因为申诉听证后发生的配偶虐待，他具有初步获得救济的资格。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c488a564fc13ffc0456b2146f90323a5d27579f6ec99ccd0f470201193576aca",
+      "chineseText": "根据2025年5月23日签发的第6275-2025号命令，司法部长指定本委员会于2025年2月4日作出的D-E-B-案决定作为涉及同一问题的所有程序的先例。参见2025年8 C.F.R. § 1003.1(g)(3)。编辑调整已依该先例指定进行。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ec9fad5b675872fef292352815a923b5623124e1a83b62942a93b39bb53819fc",
+      "chineseText": "页码\n83"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0169ef65d975a85e20a05ccb58059581cbc08d9d0befe37b2fdf34274f6d65f9",
+      "chineseText": "引用为29 I&N Dec. 83（BIA 2025）临时决定＃4099"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ea9d556526b4724b7f6bcaac3bb69b2afb14cc772f590ba9ba62121a8df40b44",
+      "chineseText": "根据《反暴力妇女法》（VAWA），由于申诉听证后发生的配偶虐待。该动议予以驳回。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "caca444b63e16bf6240dc17e48394af5d5075fbfb63fc2dde87ec26f586fd66e",
+      "chineseText": "简述相关个人及程序历史，据案卷记录显示，申请人于2008年4月4日作为非移民访客入境美国。申请人的美国公民女儿于2011年8月5日出生，生母为S女士。申请人随后于2012年11月3日与G女士结婚。申请人曾基于G女士为其提交的亲属资格批准申请调整身份，但该对夫妻于2018年7月16日离婚，后美国公民及移民服务局（USCIS）拒绝了申请人的申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7fe2aa06c82cabba1c542863ace6ee7d002a60b3500e00673e0ac3d19e64a7b9",
+      "chineseText": "申请人于2020年8月31日因骚扰被捕后进入遣返程序。2021年2月10日，移民法官因认定其欠缺良好道德品行，未能证明其女儿为符合资格的亲属，且其遣返至牙买加将不会导致特殊且极端异常的困难，且其未获酌情救济，因而驳回其EOIR 42B申请。记录显示，申请人与G女士在遣返程序中重新复合，并于2021年5月22日再婚。我们于2021年7月30日对移民法官关于困难与酌情裁定予以维持。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8abcb5b84be2417ac29876b6b40f4d000a0ee66348595c0b7d24265bacc4beb4",
+      "chineseText": "申请人于2021年10月27日及时提交重新开庭动议，主张其律师提供了无效协助，并且新证据证明其为其女儿的生父。参见2025年8 C.F.R. § 1003.2(c)(2)。该动议亦请求我们将案卷发回，以便申请人基于与G女士再婚调整身份及重新提出EOIR 42B申请。2023年2月6日，申请人提交对2021年10月27日动议的“补充”，撤回基于与G女士婚姻的EOIR-42B取消遣返主张，而改为请求发回考虑其是否有资格依据VAWA调整身份或取消遣返，并提交支持证据，表明G女士在其首次及第二次婚姻期间虐待了他。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fcb6ab9e9e89a769272bf562e91896303cb04d3d8ec5e36b159e0bda1c9dcfe7",
+      "chineseText": "我们注意到申请人援引若干未公开的委员会决定支持其论点。此类决定非具有约束力的先例，且基于具体事实情形，该情形不可查阅，仅适用于所述申请人。参见Matter of D-K-, 25 I&N Dec. 761, 764 注2 (BIA 2012)（引自Matter of Echeverria, 25 I&N Dec. 512, 519 (BIA 2011)）。"
+    },
+    {
+      "segmentId": "pdf-p2-s15",
+      "order": 15,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c8079a3311c37c3886a144136b628236d9f7c09f6c8ede8d36cae7c1b7cbb9b5",
+      "chineseText": "页码\n84"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0169ef65d975a85e20a05ccb58059581cbc08d9d0befe37b2fdf34274f6d65f9",
+      "chineseText": "引用为29 I&N Dec. 83（BIA 2025）临时决定＃4099"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "19ddaa4600807d6cd00661a8799d24448f19613e64d736f6465e5c2afd59900e",
+      "chineseText": "2023年5月8日，申请人提交额外补充证据，即2023年1月11日美国公民及移民服务局出具的信函，该信函表示其自我请愿已被认定建立了“根据[VAWA]自我请愿条款归类的初步案件”。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0684a25aff407adb764f80bdcd5144dd693d769f852c05bb77ddaffbc28212a8",
+      "chineseText": "一、律师无效协助"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b6320b332416b89a8b17bc457737c622c5bb7eb6c858e2f387200bac224f6fcb",
+      "chineseText": "被告首先主张其在移民法官面前的律师未能与他沟通、未能充分准备其EOIR 42B申请，亦未指示他基于害怕返回牙买加向移民法院申请庇护、阻止遣返以及根据实施《反酷刑公约》的法规寻求保护。参见INA §§ 208(b)(2), 241(b)(3)，8 U.S.C. §§ 1158(b)(1), 1231(b)(3) (2018)。他辩称，随其动议提交的新证据是此前不可得的，证明了他符合获得这些救济和保护的资格。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "071754b560ed2a7b63a01ce760b4512fffb3387a5a2b55da9c0a192493959123",
+      "chineseText": "美国第三巡回上诉法院裁定，按照《洛扎达案》19 I&N Dec. 637, 639 (BIA 1988)中规定的程序严格提起无效律师协助申诉的要求并非必要，只要当事人实质性遵守并实现这些步骤背后的目的即可。参见Rranci诉美国检察长案，540 F.3d 165, 173–75 (3d Cir. 2008)。然而，我们发现被告未实质遵守针对其前任律师的程序要求，也未实现这些要求背后的目的；特别是，被告未遵守或实现《洛扎达案》关于律师纪律投诉的要求。参见《洛扎达案》，19 I&N Dec. 637, 639 (BIA)（列示要求），获确认，857 F.2d 10 (1st Cir. 1988)。"
+    },
+    {
+      "segmentId": "pdf-p3-s21",
+      "order": 21,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "bc79223b08bdd03c632e301b7918b9024f2987f6875d74389d3b5b7c8d1d4bf4",
+      "chineseText": "被告本人未提交律师纪律投诉，也未充分解释未提交的原因。被告的动议附有Ms. G于2020年12月30日写给相关纪律委员的信件，指控被告的前律师索取额外费用，但并未提交完整EOIR 42B申请，且未与她或被告充分沟通。虽然我们承认被告文盲，但没有证据表明纪律委员曾获得被告本人关于其前律师代理情况的说明，且被告及Ms. G随动议附上的宣誓书均未描述被告是否参与起草该信。我们注意到被告的宣誓书提出了Ms. G信中未述及的对其前律师的指控，包括前律师未建议其申请基于恐惧的救济。记录未显示纪律委员对此指控有所了解。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0169ef65d975a85e20a05ccb58059581cbc08d9d0befe37b2fdf34274f6d65f9",
+      "chineseText": "引用为29 I&N Dec. 83 (BIA 2025) 中期裁决编号4099"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ddfe01090ff6899eb0f7bc77dd1880278ea65a02d525489b1e83ce371d658e8b",
+      "chineseText": "被告本人未就其前律师代理情况向相关纪律委员陈述事实，且被告及Ms. G随动议附的宣誓书均未说明其是否参与信件的起草。我们注意到被告宣誓书中提出了对前律师的新指控，包括未建议申请基于恐惧的保护，然而记录未表明纪律委员已获悉这些指控。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5465fa0924fe5c6a2a61c75687007955f838d827c7008cca0164e6f7db7861d9",
+      "chineseText": "此外，2021年10月1日，纪律委员代表通过电子邮件向被告现任律师请求于2021年10月7日前提交更多文件和信息，以协助调查前律师。然而，被告2021年10月27日的动议和2023年2月6日的补充文件均未反映律师是否回应了该请求，或若未回应，原因何在。参见《洛扎达案》，19 I&N Dec. 639（要求当事人说明是否提交律师纪律投诉）。提交律师纪律投诉的核心目的，是让纪律机关评估是否存在需要处理的律师不当行为模式。参见《梅尔加案》，28 I&N Dec. 169, 170 (BIA 2020)。在本案中，被告未充分说明其是否配合实现该目的。参见《里维拉案》，21 I&N Dec. 599, 603, 606–07 (BIA 1996)（确认被告必须充分解释其是否符合律师纪律投诉要求，说明缺失或不充分解释“显著减弱了对律师明显不当行为所引发问题的关注”，因此可拒绝动议），经确认，122 F.3d 1062 (4th Cir. 1997)；另见《梅尔加案》，28 I&N Dec. 170（指出“《洛扎达案》未规定任何......解释即满足律师纪律投诉要求”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "384c245ce04c8a80797b167ad5d28dea808b0f8e656642d87b561a62ae4bc59a",
+      "chineseText": "基于上述理由，我们不认为因被告声称的律师无效协助而应重新开启案件。参见Zivku诉美国检察长案，811 F. App’x 123 (3d Cir. 2020)（说明移民委员会有“广泛自由裁量权”驳回基于《洛扎达案》的律师无效协助申诉（引自Lu诉Ashcroft案，259 F.3d 127, 133 (3d Cir. 2001)））；Lu案，259 F.3d 132–33 (3d Cir. 2001)（支持《洛扎达案》的一般要求作为移民委员会合理行使自由裁量权，同时警示不要“严格、公式化解释”）。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ddc1102e81eaaebd27a70c5e0cd9e7b05739dc193b8c1d906ce5679955d5e9c2",
+      "chineseText": "二、EOIR 42B申请 关于被告基于其与美国公民女儿的关系提出的取消遣返申请，唯一的新证据...（内容截断，不完整）"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "0169ef65d975a85e20a05ccb58059581cbc08d9d0befe37b2fdf34274f6d65f9",
+      "chineseText": "引用为29 I&N Dec. 83 (BIA 2025) 中期裁决编号4099"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c6993e306fdff57c3910c0648d4c4b977a2beae7ba6170513eb66a37505acc55",
+      "chineseText": "其动议中提交的先前在我们最终行政裁定时不可得的证据为一份2021年7月30日的亲子鉴定，确定他是其美国公民女儿的生物学父亲。参见《移民与国籍法》第240A(b)(1)(D)节，8 U.S.C. § 1229b(b)(1)(D)（2018年）（要求对美国公民或合法永久居民的配偶、父母或子女造成的困难进行证明）。然而，被申请人未能证明此证据具有实质性或会改变本案结果，因为下级移民法官已裁定——我们在上诉中予以确认——即使假设他确立了其女儿的亲子关系，驱逐他也不会对其女儿造成例外且极端不寻常的困难。参见Coelho案，20 I&N Dec. 464, 472–73（BIA 1992）（说明申请人承担“重大负担”以证明享受所请求救济的初步资格）。此外，被申请人所称的“新”证据在2021年2月的实质性听证时已可获得，仅仅是对其关于其女儿所称经济、教育和情感困难证词的佐证，而移民法官已全面考虑此等证据，但认为其属于父母被驱逐时预期会产生的困难。参见Recinas案，23 I&N Dec. 467, 472（BIA 2002）（裁定困难因素须累积评估）；Monreal案，23 I&N Dec. 56, 65（BIA 2001）（裁定困难须显著超出通常预期）。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "93b4f17758ee4f61f54ca58290cc32da2798d794b7b583fd47ebb21a4b21405d",
+      "chineseText": "此外，被申请人的动议未涉及移民法官在酌情权行使中对该救济请求的拒绝。参见《移民与国籍法》第240(c)(4)(A)(ii)、240A(b)(1)节，8 U.S.C.§§ 1229a(c)(4)(A)(ii)、1229b(b)(1)（2018年）。我们注意到，移民法官在酌情分析中尚将被申请人之女作为一个积极因素，尽管亲子关系存在疑问，最后仍认定被申请人的不利因素超过该积极因素。因此，不宜为重新考虑其EOIR 42B申请而重开程序，因为被申请人未能证明其享有该救济的初步资格。参见Chen案，28 I&N Dec. 676, 682（BIA 2023）。因此，我们无须评估被申请人声称证明其良好品德的新证据是否支持重开程序。参见《移民与国籍法》第240A(b)(1)(B)节，8 U.S.C.§ 1229b(b)(1)(B)；INS诉Bagamasbad案，429 U.S. 24, 25–26（1976年）（指出法院和机关通常无需对不影响裁决结果的问题作出认定）。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "69c8525a84e08b93af34b2f52856c78c5da56dabe7fdd7364278a48652fe00f3",
+      "chineseText": "三、基于《暴力侵害妇女法》（VAWA）的救济\n被申请人也声称，因其于2023年2月6日提交的“补充文件”以及其2021年10月27日的重开动议中所提供的证据及论点，显示他自实质性听证以来已具备作为美国公民被虐配偶自我申请身份调整和申请取消驱逐的初步资格。参见《移民与国籍法》第204(a)(1)(A)(iii)节，8 U.S.C. § 1154(a)(1)(A)(iii)（2018年）；8 C.F.R. § 204.2(c)（2025年）（身份调整）；另参见《移民与国籍法》第240A(b)(2)(A)节，8 U.S.C. § 1229b(b)(2)(A)（取消驱逐）。"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0169ef65d975a85e20a05ccb58059581cbc08d9d0befe37b2fdf34274f6d65f9",
+      "chineseText": "引用方式：29 I&N Dec. 83（BIA 2025）临时裁定#4099"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7c53ae110705230b2c832242769aef635ec3ba454621ee9d43fcd97d6f0be99b",
+      "chineseText": "允许被申请人针对身份调整自我申请及作为美国公民被虐配偶申请取消驱逐的动议提出资格初步证明。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7c4829fae1502af38d9bc9c7d063beb8e21f81d9afc42f7cbd157712b58827c9",
+      "chineseText": "被申请人可提交一份重开程序动议，“但此限制不得阻止提交依《移民与国籍法》第240(c)(7)(C)(iv)条所述的动议”，包括基于VAWA申请救济的动议。参见《移民与国籍法》第240(c)(7)(A)节，8 U.S.C.§ 1229a(c)(7)(A)。基于VAWA自我申请的重开动议若于最终行政驱逐令后的1年内提交，即视为及时。参见《移民与国籍法》第240(c)(7)(C)(iv)(III)节，8 U.S.C. § 1229a(c)(7)(C)(iv)(III)。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "4d4250cd99653f2f64c4e5a49bea370fada6c9ccfe3f189e8c20b1cb08c75234",
+      "chineseText": "本案中，委员会于2021年7月30日作出最终行政裁定，被申请人于2021年10月27日及时提出重开请求。其于2023年2月6日提交旨在请求VAWA救济之“补充文件”，则是在最终裁定逾18个月后。两份申请内容全无关联。申称被申请人遭遇配偶施暴或极端残忍对待的动议，本质上与申称该配偶已为被申请人申请成为合法永久居民或若被申请人被驱逐该配偶将遭受例外极端困难的动议不同。因此，我们认定被申请人请求基于VAWA申请身份调整和取消驱逐的“补充”重开动议，实为第二份重开动议，且未在最终行政驱逐令后1年内及时提交。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "63c9f6a220e3ea8dac97674cca152db5fc6f3012c213e5c6845d54f5d8cf23ac",
+      "chineseText": "我们可酌情决定豁免基于VAWA申请身份调整或取消驱逐的重开动议的时效限制，条件是被申请人证明存在特殊情形或其子女将遭受极端困难。参见《移民与国籍法》第240(c)(7)(C)(iv)(III)节，8 U.S.C.§ 1229a(c)(7)(C)(iv)(III)。被申请人未提出任何特殊情形供我们考虑，但主张其女儿若他被驱逐将遭受极端困难。然而，由于我们将以酌情权否决其动议，故不评估其女儿未来可能的困难。参见8 C.F.R. § 1003.2(a)（“是否批准或拒绝重开或重新考虑动议，由委员会酌情决定，受本节限制。”）。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d4b0e65729ebda417f3db181d0573826010cea9a323e0637c7696bfa0b7decbd",
+      "chineseText": "委员会长期以来认为，即使假设对所寻求的基本救济具有初步资格，重新开庭的动议也可以因纯属自由裁量的理由而被否决，"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0169ef65d975a85e20a05ccb58059581cbc08d9d0befe37b2fdf34274f6d65f9",
+      "chineseText": "引证为29 I&N Dec. 83（BIA 2025）临时决定#4099"
+    },
+    {
+      "segmentId": "pdf-p7-s38",
+      "order": 38,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "3e350deba27a28108143a3ca79e412ff35d770f687d31c20db108a283f5ce432",
+      "chineseText": "包括当记录显示案件实质成功的可能性较小或基于被申请人的行为有重大理由拒绝重新开庭时。参见Reyes案，18 I&N Dec. 249, 253–54（BIA 1982）。被申请人未提供足够证据以显示在重新开庭程序中，根据VAWA申请的任何救济有利于自由裁量行使的可能性。如前所述，我们采纳并确认移民法官基于多个不利因素对他的取消驱逐申请的自由裁量拒绝，其中包括关于其骚扰定罪的证据，显示他挥舞一把长达一英尺的菜刀恐吓受害者。被申请人未解释其新旧证据如何缓解其案件中存在的重大不利自由裁量因素。"
+    },
+    {
+      "segmentId": "pdf-p7-s39",
+      "order": 39,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "dbb278b23a4391c6f0dde9f409161e4b3b40c08fc6795ddac7680f11ab486aa7",
+      "chineseText": "总之，考虑到记录中的不利因素，我们认定在行使自由裁量权时，不适合重新开庭以申请基于VAWA的救济。参见INS诉Rios-Pineda案，471 U.S. 444, 449（1985）（判定司法部长有权拒绝重新开庭动议，在该情况下，无需考虑申请救济的法定资格）；另见INA § 240(c)(7)(C)(iv)(III)，8 U.S.C. § 1229a(c)(7)(C)(iv)(III)。将作出以下命令。"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0e091e25a4a5b9a336acfc445f78a6019497958750b0435fb73576cdc5fbe6b2",
+      "chineseText": "命令：被申请人的重新开庭动议被拒绝。\n通知：如果被申请人受到最终驱逐令的约束并故意未按照该命令离开美国，未能及时诚信申请旅行或其他必要文件以离开美国，或未按国土安全部要求的时间和地点出席驱逐程序，或合谋或采取任何行动旨在阻止或妨碍其根据驱逐令离境， 被申请人将被处以每天最高998美元的民事罚款。参见INA § 274D, 8 U.S.C. § 1324d (2018)；8 C.F.R. § 280.53(b)(14) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "b47dc8423ccdb6bed60535b6a737f6cc9ba76261be4ddcfb35d0c2cb69fd5e39",
+      "chineseText": "第89页"
+    }
+  ]
+}

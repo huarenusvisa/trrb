@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "recordId": "c4b205eab57ea1d639b426ae",
+  "recordFingerprint": "9a6b241fa0275160e4dc7b0259347fb13c778c3aa32a6d94f9c6bb38eb0b7c9c",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Treasury Department; Financial Crimes Enforcement Network",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/11/2026-16365/geographic-targeting-order-imposing-recordkeeping-and-reporting-requirements-on-certain-financial",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-11/pdf/2026-16365.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-11/pdf/2026-16365.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:48:52.996Z",
+  "sourceDigest": "6c57e8205ef704d721d292d0a32de3d2ba6097f99907e0b3b4ef661099c0dba2",
+  "translatedAt": "2026-08-17T19:49:25.487Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 16,
+  "translatedSegmentCount": 16,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b24d14e66cf61228501543f38fcc90be85fee47cc27df1b27c5a20b64f2167e4",
+      "chineseText": "51588 联邦公报 / 第91卷，第153号 / 2026年8月11日星期二 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9e1ad141c06698536b544659b99b7d5be8563da6086867d10913ea7ca54c7d00",
+      "chineseText": "根据行政命令13211的定义，该规则不属于重大能源行动，因此不需要准备经济分析和能源影响声明。该部门在作出该规则不会对大量小实体产生重大经济影响的决定时，依赖了相应联邦法规的数据和假设。这些联邦法规被认定不构成无偿负担。因此，不需要包含无偿负担法案(2 U.S.C. 1531及以下条款)要求的信息声明。本规则：（a）不会对经济产生每年1亿美元以上的影响；（b）不会造成消费者、单个行业、联邦、州或地方政府机构成本或价格的重大增加；（c）不会对竞争、就业、投资、生产力、创新或以美国为基地的企业与外国企业竞争能力产生显著不利影响。基于对相应联邦法规的分析，这些法规被认定不构成重大规则。根据国家环境政策法案(42 U.S.C. 4332(2)(C))第501(a)和702(d)条款以及内政部部门手册第516部分第13.5(A)节的规定，州计划修正案不属于重大联邦行动的范畴。该声明基于相应联邦法规的分析结果。这项规则不含对个人、合伙企业或公司的信息收集请求，也无须向管理预算办公室提交文书工作减少法案(44 U.S.C. 3501及以下条款)的请求。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fede23c8ebcaae9bb249f95f64cf201aedc6350134d6ed9285b4c00badce3b74",
+      "chineseText": "原始修正案 提交日期 最终发布日期 引用/描述"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c6995271bc4f7d0a7a246b70c9df8d3509f233ca03476e356d4202702748260c",
+      "chineseText": "* * * * * * *\n2022年11月30日……2026年8月11日……NDCC 38–14.1–19(1)/ 将非正式会议预约时间由30天改为45天。\nNDCC 38–14.1–22(3)/ 将许可证续期申请时间由120天改为180天。\nNDCC 38–14.1–03(12)、NDCC 38–14.1–21(2)、NDAC 69–05.2–09–02(8)、NDAC 69–05.2–09–05、NDAC 69–05.2–13–07、NDAC 69–05.2–16–02、NDAC 69–05.2–16–04(c和g)、NDAC 69–05.2–16–05(1)(b)(1)、NDAC 69–05.2–16–20(1)、NDAC 69–05.2–19–02(1)、NDAC 69–05.2–19–04/ 更新语法并将职责转移至新成立的北达科他州环境质量部。\nNDCC 38–14.1–03(12)、NDCC 38–14.1–14(1)(n)、NDCC 38–14.1–21(2)、NDCC 38–14.1–24(7)、NDCC 38–14.1–25(1)、NDAC 69–05.2–05–06(1)(d)/ 更新语法并将职责转移至新设立的北达科他州水资源部及州工程师办公室。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f4e52c7465f57851ccae3fe349ceb42662ed4286b3212548a31c65decc80a191",
+      "chineseText": "[联邦公报文档编号 2026–16318 于2026年8月10日提交，上午8:45] 财政部 行动：命令。 账单代码4310–05–P 财务犯罪执法网络摘要：FinCEN发布本地理定位命令，要求位于明尼苏达州亨内平县和拉姆齐县的银行及资金转移机构保存并报告金额为3000美元或以上的某些支付记录。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2880a48aac4287fad98fb4843715eb1c30228da8cefcf9d2bcb62b8daf67b02a",
+      "chineseText": "地理定位命令 在明尼苏达州对某些金融机构强加的记录保存和报告要求 生效日期：本行动自2026年8月11日起生效。 机构：财政部金融犯罪执法网络（FinCEN）。 如需更多信息，请通过网址www.fincen.gov/contact提交询问或联系fincenappshd@fincen.gov。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b2d846513a9f864d68eb4a595fd69b8ddf0e199d9130c7da8d40be547754fd03",
+      "chineseText": "（此页为格式页，包含版本号、时间等信息，无明确正文内容。）"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "da52126484e82d6cf5f20ccf2ad4b3c1441076a1699860f26e5832ecceef0594",
+      "chineseText": "51589 联邦公报 / 第91卷，第153号 / 2026年8月11日星期二 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e697e9e9e3760462cb6d1f015f6faad2963b4f96422380fbb922d07182581f9f",
+      "chineseText": "补充信息： II. 地理定位命令\nI. 背景 A. 适用的业务和交易\n1. 就本命令而言，“受覆盖业务”指根据31 CFR 1010.100(d)定义的银行，或根据31 CFR 1010.100(ff)(5)定义的资金转移机构，在受覆盖地理区域内设有分支机构、子公司或办事处的前述银行或资金转移机构。\n2. 对于本命令，“受覆盖交易”指根据31 CFR 1020.410(a)或31 CFR 1010.410(e)要求保存记录的资金转移，包括起始银行或转发金融机构接受的对应付款单或转账单。\n3. 就本命令而言，受覆盖地理区域指明尼苏达州的亨内平县和拉姆齐县。\n4. 受覆盖业务须通过FinCEN的金融行业门户网站提交所有受覆盖交易报告。登录网址为fincen.gov/resources/financial-institutions。如遇技术问题，请联系fincenappshd@fincen.gov。\n5. 如受覆盖业务为银行，则须报告所有31 CFR 1020.410(a)(1)和(2)要求保存的记录，另需包含本命令列明的其他信息，无论该信息是否随付款单提供。报告须于交易发生当月结束前提交，且可依赖付款人提供的信息，前提是没有证据合理怀疑信息的真实性。\n6. 如受覆盖业务为资金转移机构，则须报告31 CFR 1010.410(e)(1)和(2)要求保存的所有信息，另需包含本命令列明的其他信息，无论该信息是否随转账单提供。报告须于交易发生当月结束前提交，且可依赖转发人提供的信息，前提是没有证据合理怀疑信息的真实性。\n7. 本命令要求采取的记录保存和报告义务，依据《银行保密法》（BSA）为预防及阻止逃避BSA之必要措施。FinCEN主管已行使财政部秘书授权发布本地理定位命令（GTO）。GTO最高有效期为180天，除非续期。\n8. 所有未定义用语均采用31 CFR第1010部分释义。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6a94f2c4a584ebcaabb908fe4e265fc5e156b5b6cbec56c54693346b15a722b4",
+      "chineseText": "4 参见31 U.S.C. 5326(d)及31 CFR 1010.370(d)(1)的相关规定。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6aa814d5687ab0e452777336df561c9a7a20b33ed77de35cb3dc2d3f5acd7ee4",
+      "chineseText": "5 财政令180-01（2020年1月14日）；另见31 U.S.C. 310(b)(2)(I)条款，规定FinCEN主任\"应管理本标题子章II、第53章、公共法91-508第I章以及联邦存款保险法第21条的执行，前提为财政部长授予此权限\"。提交报告时，应选择\"特别措施\"作为文件类型，并输入代码\"FIN-65547-X3M6T\"。若对FinCEN金融行业门户有技术问题，请联系fincenappshd@fincen.gov。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "efe0c20c102eef706e1d16054325e2ca17acffd01cdc06d04d48c735800b3ab5",
+      "chineseText": "（此页为格式页，包含版本号、时间等信息，无明确正文内容。）"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "bf0565bd6dc3450b810086dc087f12cd89c1bdc51f429de9583088ab8f200dd9",
+      "chineseText": "51590 联邦公报 / 第91卷，第153号 / 2026年8月11日星期二 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "710bd9ce35dbdeb39e5081790e5d0d640cefbf7267ff55f5081dc268ea34d61d",
+      "chineseText": "a. 在覆盖地理区域内的被覆盖业务的每个代理人及其所在机构的名称和雇主识别号；被覆盖业务还必须向其首席执行官或其他类似职务的经理传达本命令。\nb. 接收者的姓名；\nc. 接收者的地址；\nd. 接收者的出生日期；\ne. 接收者的电话号码；\nf. 接收者的电子邮件地址；\ng. 该转账是否来源于现金、支票、信用卡或借记卡等；\nh. 转账资金是否包括来自任何联邦、州或地方政府合同或福利计划的支付；\ni. 若问题(h)为是，该等支付是否来自于转账人拥有任何所有权权益的政府机构向实体支付；\nj. 转账的形式（电汇、可转换虚拟货币传输、账本记录或其他）；\nk. 若转账为账本记录且涉及国际hawaladars，是否使用现金携带者结算该等借项。\nC. 命令期限 本命令的条款自2026年8月11日起生效，至2027年2月6日终止。\nD. 记录保存 被覆盖业务必须：（1）保存为遵守本命令而提交的所有报告及与遵守本命令相关的其他记录，自本命令生效之日（包括任何续期）起保存五年；（2）以合理时间内可访问的方式存储该等记录；（3）根据适用法律，应请求向财务犯罪执法网络（FinCEN）或其他相关执法或监管机构提供该等记录。\nE. 不影响BSA或其实施规则的其他规定 本命令未修改或影响《银行保密法》（BSA）或其实施规则中未明确阐述的任何条款。\nF. 保密性 本命令公开发布，其条款不具保密性。\nG. 合规性 被覆盖业务必须监督并对其每位高管、董事、员工和代理人遵守本命令的条款负责。被覆盖业务还必须向其首席执行官或其他类似职位的管理人员传达本命令。\nH. 不合规的处罚 被覆盖业务及其任何高管、董事、员工和代理人，可能因故意违反本命令的任何条款而承担民事或刑事处罚责任，且不受限制。禁止在执行期间未经东部五大湖港口船长或其指定代表授权进入受规区域的人员和船只。\nI. 命令的有效性 如任何司法裁定认为本命令的任何条款无效，该无效不影响本命令其他条款的有效性，其他条款将继续全面有效。本命令的签署原件具有完全的法律效力。\nJ. 《文书减负法案》 本命令所涉及的信息收集已获管理和预算办公室（OMB）批准，控制编号为1506-0056。未经显示有效OMB控制编号，任何机构不得进行或资助信息收集，任何人也无义务回应。\nK. 咨询 如对本命令有任何疑问，应联系金融犯罪执法网络（FinCEN），网址：https://www.fincen.gov/contact。依据：31 U.S.C. 5326。\nII. 背景和权限 2026年1月7日，一组织通知海岸警卫队将于2026年8月29日在克利夫兰的Cuyahoga河上，克利夫兰划艇基金会附近举办克利夫兰龙舟节。海岸警卫队在联邦法规中列出年度海事活动，东部五大湖区的特别地方法规（SLR）规定见33 CFR 100.901。克利夫兰龙舟节为年度划桨竞技及娱乐活动，赛艇为团队赛制，队伍沿商业航道竞速，事件带来船只拥堵等危害。2026年6月25日，海岸警卫队发布了名为“特别地方法规；五大湖年度海事活动—俄亥俄州克利夫兰Cuyahoga河”的拟议规则通知（NPRM）。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "aa31360ae1e279834712a7c0afb46643a33bfc9a652cbc7a38a2694c255b09c2",
+      "chineseText": "机构：海岸警卫队，国土安全部。\n行动：最终规则。（91 FR 38352）。\n摘要：海岸警卫队正在为某些可航行水域建立定期特别地方法规（SLR），以管理克利夫兰龙舟节相关活动。\nG. 合规性 被覆盖业务必须监督并对其每位高管、董事、员工和代理人遵守本命令条款负责。被覆盖业务必须将本命令传达给其首席执行官或其他类似职务的管理人员。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "91aade05d561b6dc3d2848b3629c1b2ae6b24f50da18e6d66d069e1903238357",
+      "chineseText": "版本日期：2026年8月10日16:13，文件号Jkt 268001，表格00000，格式4700，版本4700，来源：联邦公报（FR）2026年8月11日，第A版（11AUR1.SGM 11AUR1）"
+    }
+  ]
+}

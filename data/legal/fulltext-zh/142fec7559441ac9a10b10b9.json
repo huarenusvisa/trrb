@@ -1,0 +1,247 @@
+{
+  "schemaVersion": 1,
+  "recordId": "142fec7559441ac9a10b10b9",
+  "recordFingerprint": "f51efd439f8507a33b9b4dd7fda75027c9b6fd9592a0476dd372a9001b70f97b",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:36:51.402Z",
+  "sourceDigest": "778a09d4387a640cbf113067975ba3667a3ab1296dc3974cbebbab1e6cdbd953",
+  "translatedAt": "2026-08-17T19:41:58.127Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 28,
+  "translatedSegmentCount": 28,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "769f6821741be5e4e2b9e180695df63dd9830d3e74b6da2e7450d1895881ca49",
+      "chineseText": "引用格式：29 I&N Dec. 839（BIA 2026）临时决定#4234"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "58012bef4e0bd25acc4eb250fdbc470e27143386bcf7d974ecc42c33ad41e68d",
+      "chineseText": "A-K-R- 事项，答辩人\n裁决日期：2026年8月14日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b9b43df7250375befd8a9a4498b7c1597c941e9e207708b8245471e073c3a448",
+      "chineseText": "（1）移民法官适当拒绝了答辩人基于缺乏充分理由而请求的进一步延期以寻求法律代理的申请，符合相关法规和规章的规定。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "73992c0d54b75291290592c8cd63cf6e1ce27a03be7281782f8144847f6184e0",
+      "chineseText": "（2）保护外国人享有法律代理权的唯一法定或规章时间要求是，首次听证不得安排在送达出庭通知后少于10天之内，依据《移民与国籍法》第239(b)(1)节，8 U.S.C. § 1229(b)(1)。参见C-B-事项，25 I&N Dec. 888 (BIA 2012)，经修订。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f1bfa2875643cd9f479c10e6c3f6cac4d8aafccce2d87cfd8a94372511681460",
+      "chineseText": "答辩人代理：无代理，自行应诉"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c1fa299facbf43755016c03919feb953ac723de6a85fc160607f84fa0641b5ed",
+      "chineseText": "国土安全部代理：Jae Il Lee，律师\n审理小组：MALPHRUS，首席上诉移民法官；\nHUNSUCKER及CHABAN，上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62c4b042980c6ad2814ed9cc74d94e2a1f5dd38cf7beaab67651dc0fe8ed4270",
+      "chineseText": "首席上诉移民法官MALPHRUS："
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6112b49419f07f92dd524a5368477c744202aa165897f0f88dba87f5b6386c2d",
+      "chineseText": "答辩人，印度籍及印度公民，现对移民法官于2026年3月18日作出的决定提起上诉，该决定拒绝其延期申请，认定其申请救济的机会已被放弃，并下达了驱逐令。我们将驳回该上诉。"
+    },
+    {
+      "segmentId": "pdf-p1-s9",
+      "order": 9,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "42d5ccbcceb5c0976de8d7fb2c101901a662ce87b63e97551d34622f17751d2f",
+      "chineseText": "答辩人非法进入美国，并于2026年1月8日被签发出庭通知并拘留。2026年2月3日，答辩人出席了首次主日程听证，接受了标准告知，并获准两周时间寻找律师或提交救济申请。2026年2月17日的下一次听证中，答辩人请求额外时间寻找律师，获准再延长两周。然而，移民法官警告答辩人，必须在下一次听证时有律师代理，或者准备自行辩护，因为不再批准进一步的延期以寻找律师。"
+    },
+    {
+      "segmentId": "pdf-p1-s10",
+      "order": 10,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a723baf0c73e5aeb016d4c10b37f79fecff5793af75438fce7e20c68314cbf3b",
+      "chineseText": "2026年3月2日的下一次听证中，答辩人未有律师出席，并承认了出庭通知中的指控。移民法官维持驱逐指控，并且"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "769f6821741be5e4e2b9e180695df63dd9830d3e74b6da2e7450d1895881ca49",
+      "chineseText": "引用格式：29 I&N Dec. 839（BIA 2026）临时决定#4234"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "812b94b1e4dc48347b5df24021a01ffe7956b75a8400712505439495ab05da3a",
+      "chineseText": "答辩人表示害怕返回印度，并告知其可能有资格申请撤销驱逐或根据《反酷刑公约》寻求保护。移民法官命令其必须于2026年3月18日之前提交救济申请，否则将被下达驱逐令。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f3643f67c793c2882d29624b818d28a7e2d77cf8cf489dfabdab035a7c4ed851",
+      "chineseText": "2026年3月18日，答辩人未提交任何申请出庭，解释其因无法获得任何文件而未能提交申请，并请求再度延期。移民法官拒绝延期请求，并命令答辩人驱逐出境。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ca5078e041ddbdc5d5b583d0114151c34f4bf042cf1e68acfc4c8bf13fffd901",
+      "chineseText": "在上诉中，答辩人陈述其因缺乏资金或拘留外没有人帮助，无法联系律师或取得支持其主张的文件。此外，答辩人声称其缺乏完成救济申请所需的教育水平。他仍未提交完整的撤销驱逐救济申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s15",
+      "order": 15,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "82c9f50348b76350f8a16c57421fae019993c0929cecf752b8f165deb33e51f8",
+      "chineseText": "移民法官可酌情决定是否批准延期，“以显示有正当理由”为条件。见 8 C.F.R. § 1003.29（2020）；另见 Sibrun 案，18 I&N Dec. 354, 355–57（BIA 1983）。处于驱逐程序中的外籍人士依法及根据监管规定享有由其选择的律师免费代理的特权。参见《移民与国籍法》（INA）第240(b)(4)(A)和第292条，8 U.S.C. §§ 1229a(b)(4)(A), 1362（2024）；8 C.F.R. §§ 1003.16(b), 1240.3, 1240.11(c)(1)(iii)（2026）。为了确立此特权，国会规定：(1) 驱逐程序通知须注明外籍人士可由律师代理，并附有可提供免费代理律师的名单；(2) 首次听证日期不得早于通知送达后的10天。INA § 239(a)(1)(E), (b)(1)–(3), 8 U.S.C. § 1229(a)(1)(E), (b)(1)–(3)（2024）。该法规进一步规定：“本小节任何内容均不得被解释为妨碍司法部长在第(1)款所述的[10天]期限届满且外籍人士未获得律师代理时，根据第240条对外籍人士采取行动。” INA § 239(b)(3), 8 U.S.C. § 1229(b)(3)。"
+    },
+    {
+      "segmentId": "pdf-p2-s16",
+      "order": 16,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2bd8053619550061ae8077e3051c1255523222bb8ad0523372ac1f08dc6d0b6f",
+      "chineseText": "我们承认，在 C-B- 案，25 I&N Dec. 888, 889（BIA 2012）中，我们曾声明，为了“切实实现法律代理的法定及监管特权”，“移民法官必须给予合理且现实的时间，为答辩人提供公平机会寻找、会谈并聘请律师。”然而，我们未对该观点引用任何权威依据，且该语言偏离了明确的法定文本。C-B- 案的答辩人正确主张，他在传送驱逐通知书（NTA）与首次听证之间仅有8天的间隔，违反了 INA 第239(b)(1)条，8 U.S.C. § 1229(b)(1)的规定，但 C-B- 案并未引用该法规语言。C-B- 案中关于其意图确立的法律代理权标准的陈述背离法定文本，属于附带意见。我们撤回 C-B- 案中作为法定或监管强制要求的该陈述。见 INA § 239(a)(1)(E), (b)(1), (b)(3), 8 U.S.C. § 1229(a)(1)(E), (b)(1), (b)(3)。因此，保护外籍人士法律代理权的唯一法定及监管时间要求是，首场听证不得早于通知送达后的10天。INA § 239(b)(1), 8 U.S.C. § 1229(b)(1)。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "769f6821741be5e4e2b9e180695df63dd9830d3e74b6da2e7450d1895881ca49",
+      "chineseText": "引证为 29 I&N Dec. 839（BIA 2026）临时裁定编号4234"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7aec7bdeab872c87def661b6e2eb0527b5609b99afc832a38d6e10f6d9139e23",
+      "chineseText": "答辩人主张其首次听证是在NTA送达26天后举行，移民法官曾批准其两次延期寻求律师代理。此显然符合任何法定和监管要求，且答辩人未能证明有正当理由继续延期。答辩人声称无法联系任何律师或家人。然其亦声明曾与之前的律师讨论案件，且家人告知所有联系的律师均要求补充文件以完成并提交申请。他表示无经济资源聘请新律师，移民法官曾告知其免费或低价法律服务名单。并无迹象表明答辩人寻求律师代理的努力可能很快获得成功。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "52fcc13b7eef23e22da0eb3e595cf313853ac2d9193364e5a01a91cb1acd3faa",
+      "chineseText": "此处略。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c8cfb09356d90d12d916f744f08e51e6782a1b777b7a0cd9c590c6014147696d",
+      "chineseText": "答辩人表示，因缺乏教育背景，无法自行填写申请表，正在试图寻求帮助，但未具体说明其采取了何种勤勉措施以完成申请或寻求协助。在本案事实状况下，移民法官本可不批准答辩人获得律师的第二次延期。"
+    },
+    {
+      "segmentId": "pdf-p3-s21",
+      "order": 21,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2d91b3435fb209c648e12d6cbcefd5583180c3b5f6695efad5d65410a907a74c",
+      "chineseText": "上述情形下，移民法官拒绝进一步延期符合适用法规。"
+    },
+    {
+      "segmentId": "pdf-p3-s22",
+      "order": 22,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "565d44a9c61b0ea1304c561f1fb4586026950586b2af0a34c9594968cb807f05",
+      "chineseText": "第4巡回上诉法院近期援引 C-B- 案中此陈述，认定外籍人士在其律师大约提前一个月退出后被拒绝延期寻求新律师，构成其法定代理权的侵犯。Rodriguez-Solis v. Blanche, 177 F.4th 266, 273–75 (4th Cir. 2026)。然而，C-B- 案语言并非基于法定文本，我们已撤回该语言作为法定及监管标准。我们同意 Rodriguez-Solis 案的异议者意见，基于该案情形，外籍人士获得足够时间寻找新律师。Id. at 285–87 (Quattlebaum, J., dissenting)。此外，我们同意异议者认为“遵守该[法定]条文即足以保障外籍人士律师代理权特权”和“多数派要求更多，创造了法规文本无之权利”观点。Id. at 283–284（引用有所变动）。单一申请者如答辩人必须随申请提交的文件，仅包括持有的所有护照或旅行证件副本，及任何美国移民文件副本（若有）。参见避难及扣留申请说明书，第一部分第六条（2026年7月28日）。"
+    },
+    {
+      "segmentId": "pdf-p3-s23",
+      "order": 23,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "54e56dc308f973b500ebf6de7130c7c58de7508006473cdc5ce5951758526456",
+      "chineseText": "（本页空白）"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "769f6821741be5e4e2b9e180695df63dd9830d3e74b6da2e7450d1895881ca49",
+      "chineseText": "引证为 29 I&N Dec. 839（BIA 2026）临时裁定编号4234"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "666285da05ca0ff8ac4cef83c37975d406c8e4e3150822088318b39f8fcac561",
+      "chineseText": "答辩人还称因缺乏教育背景无法自行完成申请，故寻求协助，但未具体说明其是否进行任何勤勉步骤以完成申请或寻找帮忙。在此案事实情况下，移民法官可拒绝答辩人第二次延期申请。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9392eb4f1219b639c3625a7d5faf571fd3b0928ed612d6193be030c42da2c580",
+      "chineseText": "第五巡回法院作为本案管辖法院，虽未决定，但曾假设外籍人士无第六修正案规定的法律代理权，但可能享有第五修正案的正当程序代理权。见 Mai v. Gonzales, 473 F.3d 162, 165 (5th Cir. 2006)（指出，外籍人士在驱逐程序无第六修正案法律代理权，但其声称代理权遭侵犯可能涉及第五修正案正当程序问题）。然而，本案事实不存在未提供正当程序或代理权被侵犯的合理论点。见 Ogbemudia v. INS, 988 F.2d 595, 599 (5th Cir. 1993)（认为拘留外籍人士一月时间寻找律师足够）。移民法官基于无正当理由拒绝答辩人进一步延期申请律师代理请求，符合法规规定。因此，我们驳回答辩人的上诉。"
+    },
+    {
+      "segmentId": "pdf-p4-s27",
+      "order": 27,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5a87769b4588fc61552010b84457d4c2c468ef67dfbb7d11bc04175590d08572",
+      "chineseText": "命令：上诉驳回。通知：如答辩人受最终驱逐令约束，且故意不离境、未按时诚信申请为离境所需旅行或其他文件、未在国土安全部要求的时间地点接受遣返、或合谋或采取任何阻止或妨碍依据驱逐令离境行为，答辩人将每日面临最高998美元的民事罚款。见 INA § 274D, 8 U.S.C. § 1324d（2024）；8 C.F.R. § 280.53(b)(14)（2026）。此外，任何已被拒绝入境、被驱逐、或在排除、递解或驱逐令有效期内离境后，再入境、试图入境或在美国被发现者，将被罚款或监禁不超过2年，或两者并罚。见 INA § 276(a), 8 U.S.C. § 1326(a)（2024）。"
+    },
+    {
+      "segmentId": "pdf-p4-s28",
+      "order": 28,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "77a56b2fdc7f74c4a631c0c8129a427615ffdc1eb74362219426de98cfd66896",
+      "chineseText": "（本页空白）"
+    }
+  ]
+}

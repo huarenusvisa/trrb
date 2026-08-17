@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "recordId": "b71e64a6712e638f74ca48af",
+  "recordFingerprint": "1941d66e0a4978dce6c5fcf62ddc7b37d9ef69039b6ef879a5912748d692708c",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1455811/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1455811/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1455811/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T19:15:55.605Z",
+  "sourceDigest": "b197f14eb2202b23627d2344dc60d10b9f7f3033bea431b0dd8f261b7d9ec89c",
+  "translatedAt": "2026-08-17T19:16:33.298Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 20,
+  "translatedSegmentCount": 20,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "690d8f13db21fa8f16e491c7865061b9ee92a2ce45c3b7d3e9b8625c90cd41f0",
+      "chineseText": "引用为 29 I&N Dec. 820 (BIA 2026) 临时决定 #4230"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6b0d825cb3014353ccae1874cdc86697025fc62f09534ec604d8b12faa321d37",
+      "chineseText": "里卡多·MOMPLAISIR 案，回应人\n2026年6月12日由移民上诉委员会决定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "04ae1f7199258aa47b9a39991124e5f772d483dc36d94dbcd4adb835828b0fb0",
+      "chineseText": "国土安全部通过向每份文件附加由地区档案管理员签署的G-24表格（文件认证），正确地对I-213表格（可驱逐/不可接受外国人记录）和I-94表格（入境/离境记录）进行了认证。\n回应人代理律师：Judah Ben Lakin，律师，加利福尼亚州奥克兰\n国土安全部代理律师：Electronica S. Kleinschmit，助理首席法律顾问\n出庭官员：委员会成员：VOLKERT和CHABAN，上诉移民法官；\nGILLIES，临时上诉移民法官。\nGILLIES，临时上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a4207e83ff95064b4e12888cdf58bc67a7b23a37eb7c98043cd96b72d18b80a0",
+      "chineseText": "国土安全部（“DHS”）对2019年6月11日移民法官的决定提出上诉，该决定批准了回应人的中止诉讼动议。回应人是合法永久居民，反对该上诉。上诉被支持，记录将被发回处理。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9257fca682e6a3124c6eee89f6afd6ad7baf86e669508645256e513d0d2f222d",
+      "chineseText": "DHS负有通过明确且令人信服的证据证明回国合法永久居民的不受理资格的责任。移民和国籍法（“INA”）第240(c)(3)(A)条款，8 U.S.C. § 1229a(c)(3)(A)（2018年）。DHS还负有证明外国人身份的责任。8 C.F.R. § 1240.8(a)（2026年）；Guevara案，20 I&N Dec. 238, 242 (BIA 1991)（引用Woodby诉INS案，385 U.S. 276 （1966年））。为证明回应人的外国人身份，DHS提交了包含回应人有关其外国人身份陈述的I-213表格（可驱逐/不可接受外国人记录）和I-94表格（入境/离境记录）..."
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "37822663730d4d5b6011f5e0a98193d10339ac989d14734959238a1be803c9f3",
+      "chineseText": "依据2026年7月24日第7030-2026号命令，代理司法部长指定本委员会关于Momplaisir案（BIA 2026年6月12日）针对同一法律问题在所有诉讼中的先例效力。参见8 C.F.R. § 1003.1(g)(3)（2026年）。编辑修改已根据案件作为先例的指定作出调整。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62c4173f1d841ce7d9ae7653db7f5a51a53cd3d0721a6ff8ad1e10a92957fe7f",
+      "chineseText": "第820页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "690d8f13db21fa8f16e491c7865061b9ee92a2ce45c3b7d3e9b8625c90cd41f0",
+      "chineseText": "引用为 29 I&N Dec. 820 (BIA 2026) 临时决定 #4230"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cdd364d97105ade00adab904cfc7a3abebe9eff6f68fdeddef5d9a6baa2f8a06",
+      "chineseText": "该I-94表格提及回应人的海地公民身份及护照号码。DHS提供了由“George Y. Leong，地区档案管理员”签署的G-24表格（文件认证）以证明每份文件的真实性。DHS未提出或主张其他认证方式。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "bf49f0dda90a394c1d590313c654291a7bc8a6fe1c20c5915be32b87788bd82f",
+      "chineseText": "移民法官裁定，因DHS未能证明该文件是由“具有法律档案保管权的官方或授权代理人”认证的副本，故未能合法认证I-213表格。依据8 C.F.R. § 287.6(a)（2026年）。因此，移民法官排除了I-213表格，判定DHS未能以明确且令人信服的证据证明回应人的外国人身份，终止诉讼程序。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "02009efa7da0f3a3f9bf87af42045c815eefa7ecae0cb47d410e79c0cbc2ba09",
+      "chineseText": "DHS上诉时主张其根据8 C.F.R. § 287.6(a)适当认证了I-213表格和I-94表格。DHS称Leong先生是“依据法律由法律规定为合法保管人的国土安全部部长的授权代理人”。为支持观点，DHS在上诉中提交了2017年由美国公民及移民服务局地区主任John Kramer发出的内部备忘录副本，委托地区档案管理员Leong先生认证位于该局和旧金山现场办公室的档案、文件及记录的副本。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "dc9b263c59005c2ea84f5c06e1e1998aacb829e2141889a314f3c2bb7022d6a1",
+      "chineseText": "我们同意DHS观点，驳回移民法官关于终止诉讼的决定。随I-213表格和I-94表格附带的每份认证文件均采用官方国土安全部美国公民及移民服务局（“USCIS”）信头，声明依据INA第103节，8 U.S.C. § 1103，DHS部长为记录的法律保管人。每份文件指明George Y. Leong作为旧金山地区的USCIS地区档案管理员认证了I-213表格和I-94表格作为“原件或其副本”，其权限由INA及相应法规赋予。INA第103节，8 U.S.C. § 1103，授权DHS部长可以赋予任何DHS雇员行使部长权力、特权或职责，包括对USCIS所有档案与记录的控制、指导与监督的权力。相关法规也规定部长可授权特定官员认证记录。结合法规及相关规定，这些认证文件清楚表明George Y. Leong是具有法律档案保管权的官方人员，拥有认证所提交文件真实性的委托权。2 我们认定每份认证文件均适当认证了附属的I-213表格和I-94表格。参见Espinoza诉INS案，45 F.3d 308, 310（第九巡回上诉法院，1995年）（认定一份I-213表格由移民归化局洛杉矶地区主任认证后，被合法认证并采纳为证据）。移民法官排除这些文件并终止诉讼的行为有误。3"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0a97f33ba20852e270f1dac58068a136de21dad5227d284c8a1fff30812ce4d3",
+      "chineseText": "第821页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "690d8f13db21fa8f16e491c7865061b9ee92a2ce45c3b7d3e9b8625c90cd41f0",
+      "chineseText": "引用为 29 I&N Dec. 820 (BIA 2026) 临时决定 #4230"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "37fb22f079a150f6e0c8f0fef416a9b70bd9a3eed66a4f67bf307d54095b68ac",
+      "chineseText": "认证所附的文件表明，George Y. Leong作为合法保管人，有权签署认证文件。2 虽然我们不依赖DHS首次在上诉中提交的2017年内部备忘录，参见Fedorenko案，19 I&N Dec. 57, 73–74 (BIA 1984)，但该备忘录与我们的结论一致。3 依照INA第103节，8 U.S.C. § 1103及相关法规所述，我们的结论已成，因此无需对DHS基于联邦证据规则的备选论点予以讨论。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ccd0c7b079c90c4883c07af4c6e0bf0c91bed2698d327d6571be6fcf1b937e13",
+      "chineseText": "因此，我们将发回记录，供移民法官在认定回应人的外国人身份及可驱逐性事实时，考虑I-213表格和I-94表格。INA第240(c)(3)(A)条款，8 U.S.C. § 1229a(c)(3)(A)；8 C.F.R. § 1003.1(d)(3)(iv)。作出认定时，移民法官亦应考虑DHS上诉时提交的内部备忘录。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5e5387eec9b3c84b89288af10a8a063490ca43c62fe2622557025efb67a537fe",
+      "chineseText": "命令：上诉获准。\n进一步命令：2019年6月11日移民法官的决定撤销。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0ce7dc87c0047ee95fc61f1eca9440603a257034ec3dadf33713f6ab3fff185c",
+      "chineseText": "进一步命令：案例记录发回移民法庭，依照上述意见进行后续程序，并作出新决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "38b2d47f2a7d2be6549355c856f3d6f01330e07c35d830f81fc33ad8afbc35f4",
+      "chineseText": "2 虽然我们不依据DHS首次上诉中提交的2017年内部备忘录，见Fedorenko案，19 I&N Dec. 57, 73–74 (BIA 1984)，但该备忘录与我们的结论相符。\n3 鉴于我们依据INA第103节，8 U.S.C. § 1103及相关法规的结论，无需审议DHS基于联邦证据规则的备选请求。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b51cb71effa107578769410c901e8f40b9dddb6cae35e50572b62cd1e2b83a3d",
+      "chineseText": "第822页"
+    }
+  ]
+}

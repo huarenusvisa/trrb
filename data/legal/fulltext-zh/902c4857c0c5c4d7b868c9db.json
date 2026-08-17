@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "902c4857c0c5c4d7b868c9db",
   "recordFingerprint": "b4bd4ea043ed10a0f22d97fe56f610648ea179d2377588b2cae03c5a24fcc10c",
-  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
   "sourceSystem": "BIA",
   "authorityType": "BIA Precedent Decision",
   "issuingBody": "Board of Immigration Appeals",
@@ -188,5 +188,5 @@
       "chineseText": "命令： 上诉获支持。\n进一步命令： 案件记录发回，依据上述意见继续进行后续程序，并作出新裁决。\n第 510 页"
     }
   ],
-  "reboundAt": "2026-08-17T18:03:11.453Z"
+  "reboundAt": "2026-08-17T19:15:55.555Z"
 }

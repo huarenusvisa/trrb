@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "recordId": "fbf5592824f9a2855c0ad6ba",
+  "recordFingerprint": "a3aee461404aeb53895571f2d7d8a03dc06385fc9296836e9ab806f3b8ce3be1",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1410586/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1410586/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1410586/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T12:55:31.916Z",
+  "sourceDigest": "9c32614adc4cfbc602a5df03fb9c48f9213582682296a6b331be8fcd2f15c835",
+  "translatedAt": "2026-08-17T13:01:02.623Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 27,
+  "translatedSegmentCount": 27,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9c4f110ed143969b5598453587ce6ac5b9ffe731c648b62e8c0e3c75a6cea393",
+      "chineseText": "引用为29 I&N Dec. 169（BIA 2025年）临时决定第4114号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a72fa1d60951e606bb8053872c22b8cb83700bf75f2d200b67fed168fd526c1b",
+      "chineseText": "路易斯·安赫尔·加西亚·马丁内斯案，受答辩人\n裁决日期：2025年8月8日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4e9bc74087097fe5275a97f01853c0e6c3e7aa74ee444a1bae6baeed3855fbd1",
+      "chineseText": "（1）由私人律师代理的非被拘留外籍人士，推定其有能力支付移民法官和委员会所要求的任何申请费。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "44ef52664cf2f79d27250c364381f9fe6f58dfdb9a6ca498d41f6568bfc00573",
+      "chineseText": "（2）非被拘留成年人外籍人士提交的所有收入栏均为零的免缴费用申请，原则上被视为无效。\n受答辩人代理律师：马里奥·阿科斯塔 Jr.，律师，加利福尼亚圣菲斯普林斯\n出庭法官组成员：主席法官马尔弗拉斯，首席上诉移民法官；贝尔德和马赫塔布法尔，上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b57d2864d21d93bc964ac02f573790b667d29dd6bacfa70c8045bb10fdac34e6",
+      "chineseText": "贝尔德，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4a4f0c5066722689f2efc9919a0faaae335879bea27d48c7b89187dcbef8fc0a",
+      "chineseText": "2023年10月5日，受答辩人通过律师提交了迟延的重新考虑和重新开庭动议，并附有免缴费用申请（EOIR-26A表格）。鉴于我们认为受答辩人未能满足其无法支付申请费的举证义务，该动议将因错误提交予以拒绝。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cedd05c21dfb270712d8be7fa58fd8b33e0b0ec6601dd09391dfbff673a7f978",
+      "chineseText": "受答辩人为墨西哥出生及公民，于2018年2月26日接收出庭通知，依据《移民与国籍法》（INA）第212(a)(6)(A)(i)节，8 U.S.C. § 1182(a)(6)(A)(i)（2018年）指控其可被驱逐。受答辩人于2018年10月聘请私人律师后，依据INA第240A(b)节，8 U.S.C. § 1229b(b)（2018年），提交取消驱逐申请。移民法官驳回其申请，并命令其被驱逐回墨西哥。受答辩人及时提起上诉，委员会于2019年6月3日驳回。2022年3月8日，受答辩人基于新符合条件的亲属及其美国公民配偶提出的签证申请获批，提交迟延的重新开庭动议。委员会于2023年8月25日驳回该动议。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "09eae88c883f353d0d98829a90e74fc3702917fd8c99df968808683ca72f4776",
+      "chineseText": "随后，受答辩人针对该决定提交了本次重新考虑动议。随动议附提交了EOIR-26A表格，申请豁免当前动议提交的费用。受答辩人在EOIR-26A中声明，其从雇佣、房地产、利息或其他任何来源的收入均为零，住房、水电费、生活费用、未偿债务、医疗费用、税款及律师费等开支亦均为零。受答辩人未声明任何申请费豁免例外情形。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9c4f110ed143969b5598453587ce6ac5b9ffe731c648b62e8c0e3c75a6cea393",
+      "chineseText": "引用为29 I&N Dec. 169（BIA 2025年）临时决定第4114号"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4864be50383a9c8e2a89bef81349661d456066af261c6dd25ac5c1ae6c17b29f",
+      "chineseText": "联邦和州法院系统常常要求申请费用以分摊诉讼成本并防止无理诉讼。参见如，\n安德森案（In re Anderson），511 U.S. 364, 365–66（1994）（指出“申请费和律师费……阻止……诉讼人提起无理诉讼”（引文省略））；\n威廉姆斯诉罗伯茨案（Williams v. Roberts），116 F.3d 1126, 1127（第5巡回法庭1997）（裁定申请费乃“为获得提出上诉特权而征收”）。\n《移民与国籍法》第286(m)节，8 U.S.C. § 1356(m)（2018年），授权司法部长通过规章设定移民程序中审理服务费用，“费用等级应确保回收提供所有此类服务的全额成本。”\n移民审查执行办公室依据INA第286(m)节授权，将费用及相关规定法文化，见8 C.F.R. §§ 1003.8, 1003.24, 1103.7（2025年）。参见移民审查执行办公室；定义；费用；国土安全部官员和雇员在驱逐程序中的权力和权限，69联邦公报44903, 44906–07（2004年7月28日）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cd2eb468979ce8c796467f5b7c4c756fdcea7266f8c7dfd0a3891731e9f5b281",
+      "chineseText": "相关法规规定，委员会可在受答辩人已证明无力支付所需申请费的情况下，准予申请费豁免。见8 C.F.R. § 1003.8(a)(1),(3)。豁免费用必须通过提交EOIR-26A表格申请，表中包含受答辩人须在伪证刑责下签署的声明，以证明其无力支付费用。见8 C.F.R. § 1003.8(a)(3)。豁免费用为例外情况，不应作为惯例予以批准。参见一般性案例圣路易斯第七巡回法庭2012年Lumbert诉伊利诺伊州惩教部案，827 F.2d 257, 259（1987）（认可申请费在司法系统中的重要作用）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4a6deb33f8afe44c6feca672a032bddc902abd1b2ddce8be7a8763e504727ac5",
+      "chineseText": "外籍人士有义务准确完整填写官方政府表格，包括免缴申请费用表格。参见A.J.瓦尔德斯与Z.瓦尔德斯案，27 I&N"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a60a60d27d5f7dc85ae1cf40ffea89eec1aee3b037c792273440890fc8bea1ce",
+      "chineseText": "Dec. 428 (BIA 2020)（强调提交政府表格时的准确义务）。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "786913e03b01fd04c35c4fc309828f7f1947f1f22667861744bacb9a04b7fd7f",
+      "chineseText": "1\n本案动议提交后，《一大美好账单法案》（One Big Beautiful Bill Act），Pub. L. No. 119-21，标题X，子标题A，部分1，139 Stat. 72，已颁布为法律。本案不涉及该法案规定的任何费用征收或提高。\n2\nEOIR-26A表格还要求受聘律师出具证明，表示其已审核费用豁免申请内包含的信息，并确认该申请为善意提出。\n页码170"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9c4f110ed143969b5598453587ce6ac5b9ffe731c648b62e8c0e3c75a6cea393",
+      "chineseText": "引用为29 I&N Dec. 169（BIA 2025）临时决定#4114"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "dbc5fbb060bc1d8eecdc07dd82cb0145a7f4bdc5ce0e70894d15de6a3745d586",
+      "chineseText": "第496页，第500页（BIA 2018）（“合理预期外籍人士将采取措施核实他们所签署文件的准确性……”）；另见Gomez-Beltran案，26 I&N Dec. 765，768（BIA 2016）（“真实的证词和披露对于移民法院系统的有效运作至关重要。”），经第九巡回法院确认，792 F. App’x 498（9th Cir. 2020）。提交虚假文件可能有负面自由裁量影响。见Gonzalez Jimenez案，29 I&N Dec. 129，131–32（BIA 2025）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "aa03f1b24a2fff1c802a75777e234118d0fed479d5d76c60c934195774812f3a",
+      "chineseText": "在以伪证处罚的风险声明其EOIR-26A表格中所含信息，根据其所知真实准确后，申诉人声明其没有任何收入来源，也没有任何支出。申诉人的律师证明免缴费用请求是出于善意。未提供额外信息或文件解释申诉人——非被拘留状态——如何在声称无任何收入的情况下，为自己提供基本生活必需品，包括食物和衣物，以及支付多年来律师的服务费用。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "62ca9317d5b05d2fab670d826237e2c5fc1b72c77f0beb5c9a637af650482ed0",
+      "chineseText": "申诉人支付律师代理其驱逐程序相关法律费用的能力，是申诉人能够支付诉讼相关费用的证据。一般见Nuttall案，334 B.R. 921，925（Bankr. W.D. Mo. 2005）（在破产案中认定“能够支付律师费用的一方很可能也能支付申请费”）。在Medrano-Dominguez诉INS案，73 F.3d 369（第九巡回法院1995）（非正式判决）中，第九巡回上诉法院确认了本委员会认定申诉人未能证明其无法支付上诉申请费的裁定，该裁定部分基于其向律师支付法律费用及其先前的就业证词。非被拘留的外籍人士若由私人律师代理，推定其有能力支付移民法官及本委员会要求的任何申请费。申请免缴费用的外籍人士需说明其能支付法律费但无法支付申请费的原因。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "52963a30309938f718598e620355166a40ec62b91956deb491e5df2999a98c31",
+      "chineseText": "我们进一步认定，非被拘留成年外籍人士提交全收入栏为零的免缴费用申请，推定为无效。成人申诉人提交的全部为零的EOIR-26A表格，尤其当申诉人非无律师自诉且未被拘留时，若未附带解释其无收入或无法支付相关费用之证据，应当被拒绝。第五巡回法院此前在非公开判决中认定，申请免缴费用的外籍人士须充分披露细节，以便本委员会适当评估贫困主张。见Popoola诉INS案，995 F.2d 222（第五巡回1993）（非公开）（确认本委员会拒绝免缴费用请求，且认定仅凭申诉人笼统声明无力支付上诉费不足以支持免缴请求）。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9c4f110ed143969b5598453587ce6ac5b9ffe731c648b62e8c0e3c75a6cea393",
+      "chineseText": "引用为29 I&N Dec. 169（BIA 2025）临时决定#4114"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "bb9669df9b59541a68216056cf738b302f12f379d829299bf3473c8c9b25cecd",
+      "chineseText": "贫困。见Popoola诉INS案，995 F.2d 222（第五巡回1993）（非公开）（确认本委员会拒绝免缴费用请求，并同意申诉人仅凭其无钱支付上诉费的结论性陈述不足）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c3485a1aa341af703a403108c6d679c186004363c910b664a98caa335673da0e",
+      "chineseText": "申诉人未能证明其无法支付其动议的申请费。申诉人在美国居住超过24年，部分基于他对其拥有美国国籍的配偶及两名美国籍子女的支持，已寻求并持续寻求自由裁量救济，自2018年起聘请私人律师在移民法官及本委员会面前代理其案件。尽管如此，他在宣誓下声称无任何收入与支出，但未提供任何支持文件或解释其如何维持自己和家人生活，及其如何在过去数年为律师支付费用。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "544d517979c75f5dca57861e2e76334579bdd479e39a47ede54f2651c3a6a4c7",
+      "chineseText": "基于上述，申诉人的免缴费用请求被拒。因申诉人既未缴纳必要的申请费，也未证明其无力支付该费用，故本委员会视其复议动议为不当提交。根据规定，允许申诉人在15天内重新提交附带适当申请费的动议，或新的免缴费用请求并附上支持文件。详见8 C.F.R. § 1003.8(a)(3)。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c580cf3c0a4c745125e54a625d57495c4d21ad9787aaa6781108939158916061",
+      "chineseText": "命令：申诉人的复议动议因不当提交而予以拒绝。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "60cc2e9e10443f6ec7bb782517400c57382fb3c3d4f1afea85519ccb17657798",
+      "chineseText": "进一步命令：准许申诉人在15天内重新提交附适当申请费的动议或新的免缴费用请求。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e36dc82f9793cac7e68813da012838ba702c532fc0fae75445435699fff55d66",
+      "chineseText": "通知：若申诉人受最终驱逐令约束，且故意不遵守该令不离开美国，未及时善意申请离境所需的旅行或其他文件，或未按国土安全部要求的时间和地点现身进行驱逐，或合谋或采取任何行动阻碍驱逐，该申诉人每日将面临最高998美元的民事罚款。见《移民与国籍法》第274D条，8 U.S.C. § 1324d（2018）；8 C.F.R. § 280.53(b)(14)（2025）。"
+    },
+    {
+      "segmentId": "pdf-p4-s27",
+      "order": 27,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9e1ebaed066e8002869c6260ae0f377eb204f7fc251797c4a25b7a55025df96c",
+      "chineseText": "第172页"
+    }
+  ]
+}

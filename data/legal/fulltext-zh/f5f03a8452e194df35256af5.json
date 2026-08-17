@@ -1,0 +1,591 @@
+{
+  "schemaVersion": 1,
+  "recordId": "f5f03a8452e194df35256af5",
+  "recordFingerprint": "ef9a28ecbe1d01392ec2267c6d2dad9120455608435a0767be3bbaa5ce99b705",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1408366/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1408366/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1408366/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T12:44:43.489Z",
+  "sourceDigest": "2824b5098fe731757aaa84d2d44bc867b457509a2bdb4b507e887559dd3c2a5c",
+  "translatedAt": "2026-08-17T12:55:31.884Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 71,
+  "translatedSegmentCount": 71,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用方式：29 I&N Dec. 145（BIA 2025）临时裁定#4111"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d31af0ad6e54e019555bf4b45b1a4560936ba81942009bb249ec32cbde5f00d8",
+      "chineseText": "K-E-S-G-案，答辩人\n2025年7月18日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bcaf71cbf98409320aee12ac6f34c535fda542ba873074576e5ee28ddca31a4c",
+      "chineseText": "以移民个人的性别或性别与国籍定义的特定社会群体，单独来看，范围过宽且不够具体，因而不可认定。\n答辩人代理律师：Maya Lugasy，律师，俄亥俄州克利夫兰\n国土安全部代理律师：Enoch Y. Chang，助理法律顾问\n出席法官小组：HUNSUCKER、MONTANTE、BAIRD，移民上诉法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b57d2864d21d93bc964ac02f573790b667d29dd6bacfa70c8045bb10fdac34e6",
+      "chineseText": "BAIRD，移民上诉法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6eda7866b69bcb2a649bf183c1286c4776a9bf9db574c1bb693a45d943402a1a",
+      "chineseText": "本案根据2024年6月25日美国第六巡回上诉法院的命令提交本委员会审理。第六巡回法院批准政府未被反对的将案件发回重审动议，以进一步审议答辩人的庇护申请和拒绝遣返申请。依据《移民与国籍法》第208(b)(1)(A)条款和241(b)(3)(A)条款，8 U.S.C. § 1158(b)(1)(A)，1231(b)(3)(A)（2018年）。双方在发回重审后提交了辩论意见，包括应本委员会要求的补充意见。答辩人另提交独立的发回重审动议，寻求申请新救济。因我们认定答辩人不属于可认定的特定社会群体，故上诉将再次被驳回，案件记录发回重审。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e479ace5a1bed9e6d81d8a701929657dead1d8e99ebe31cdea8a3d69f5dcae47",
+      "chineseText": "一、诉讼程序历程\n2019年，移民法官基于负面可信性认定，且替代理由为答辩人未证明其所提出的“萨尔瓦多妇女”和“被视作财产的萨尔瓦多妇女”两特定社会群体的可认定性，拒绝了答辩人的庇护和拒绝遣返申请。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c6533d9da066c1a191f1466d24e9939e18cf1ef87f1ed62a26652d40b6ec22d9",
+      "chineseText": "第145页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用方式：29 I&N Dec. 145（BIA 2025）临时裁定#4111"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6d5c762c5949ebc07eae7692c3524099a8a1fe308485869ff2ea92bed42a1309",
+      "chineseText": "同时，移民法官拒绝了答辩人根据执行《反酷刑公约》规定的保护申请。答辩人提起上诉，2023年8月7日，本委员会驳回了上诉。答辩人向第六巡回法院提出复审请愿。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "30404a2c50c4d1b93cce3b0c9e416f8b8bb73d0e8258afb014ec857310dbe665",
+      "chineseText": "2024年，政府请求发回重审，要求机构更充分地考虑答辩人提出特定社会群体的具体性。政府的发回重审动议指出，移民法官的决定多次引用了《A-B-案》（Matter of A-B-，27 I&N Dec. 316（司法部长2018年），“A-B-I案”），但该案在移民法官决定后根据《A-B-案》（Matter of A-B-，28 I&N Dec. 307（司法部长2021年），“A-B-III案”）被撤销。第六巡回法院批准发回重审，并将记录返还本委员会。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "08b8087bf5e8cc7a27c7c5cac9cd11ed9bb6deb2857a61f5294dab1f34fd5480",
+      "chineseText": "二、特定社会群体\n“特定社会群体成员资格”一词含糊，且极难定义。本委员会在Matter of M-E-V-G-案中曾论述（26 I&N Dec. 227，230（BIA 2014））；第三巡回法院Fatin诉移民与归化局案（12 F.3d 1233，1238（3d Cir. 1993））亦指明该术语如广义理解几乎无边无际。美国最高法院明确承认，在特定情形下，巡回法院应将案件发回本委员会，判断庇护申请人是否属于法定“特定社会群体”。见Gonzales诉Thomas案，547 U.S. 183，185-187（2006）（裁定巡回法院直接认定社会群体是否可认定不当，应先发回机构作初步认定）；另见INS诉Aguirre-Aguirre案，526 U.S. 415，425（1999）（强调在移民事务中应特别尊重行政机关裁量权）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "395b6b2c2855aadb5370da97583b9f9e0824e6dbecb9570d96e5f937c326440a",
+      "chineseText": "1\n我们拒绝依赖不利的可信性认定，且在分析中视答辩人为可信。\n2\n《反酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》（Convention Against Torture and Other Cruel, Inhuman or Degrading Treatment or Punishment），1984年12月10日制定，参见条约文件S. Treaty Doc. No. 100-20，1465 U.N.T.S. 85（美国于1994年11月20日生效）。\n3\n第六巡回法院的发回重审及政府未被反对的动议均未要求本委员会重新考虑CAT保护申请，且重审后双方未提出相关事项。我们视CAT保护的拒绝为最终且未受动摇，故不在此重新审议。类似地，我们视先前决定中移民法官对事务管辖权的认定为最终。\n4\n依照《A-B-III案》指示，本委员会遵循《A-B-I案》之前的先例，包括Matter of A-R-C-G-案，26 I&N Dec. 388（BIA 2014），据此我们独立作出结论，不依赖《A-B-I案》。我们拒绝答辩人请求将案件发回移民法官重新评估庇护及相关救济资格的请求，因为移民法官的认定和结论均有相关法律及先例支持。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "219eea5133c6ccf66112d9312c38970ea45b21f27b4d2c0a5307ebf6a9cae7a9",
+      "chineseText": "第146页"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用方式：29 I&N Dec. 145（BIA 2025）临时裁定#4111"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8cac18261e3ddc8258f8ac718728de35c60a5995e7b69a6aca6944e83a7cb2b8",
+      "chineseText": "美国最高法院曾明确指出，巡回法院在特定情形下应将庇护申请人是否符合“特定社会群体”法定定义问题发回本委员会作出决定。见 Gonzales诉 Thomas案，547 U.S. 183，185-187（2006）（认为巡回法院直接认定社会群体是否可认定不当，应先发回机构初步认定）；另见 INS诉Aguirre-Aguirre案，526 U.S. 415，425（1999）（指出在移民领域应给予行政部门特别的司法尊重）。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8958ce1235c977fe9df76e0a52ed92cf2d69b5570b281fe1b59517f5c02b8253",
+      "chineseText": "本委员会先前认定，可认定的特定社会群体必须满足以下条件：“（1）成员共享共同的不可变特征，（2）定义具体明确，以及（3）在相关社会中具备社会识别性。” Matter of M-E-V-G-案，26 I&N Dec. 237（BIA 2014）；亦见 Matter of W-G-R-案，26 I&N Dec. 208，212–218（BIA 2014），后被部分撤销于 Reyes诉Lynch案，842 F.3d 1125（9th Cir. 2016）。虽然“具体性”和“社会识别性”两要件有一定重叠，但均为准确认定INA下可认定群体所必需的。见 Matter of M-E-V-G-案，26 I&N Dec. 240–241。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2361b61a5238c00111e4ddcf4c971173fb6ce025838c538905aa7cc4b5f63fa1",
+      "chineseText": "为满足具体性要求，申请的“群体必须……明确且具有可界定的边界——不得模糊、范围过宽、分散或主观。” Matter of M-E-V-G-案，26 I&N Dec. 239；Matter of W-G-R-案，26 I&N Dec. 214。作为具体性要求的一部分，社会因素必将在判断群体是否明确或模糊时发挥作用。见 Matter of M-E-V-G-案，26 I&N Dec. 241；Matter of W-G-R-案，26 I&N Dec. 214。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "188daa8e7a7288ff70a72bcad71630bf1816e851528f77e77594806bb81ab2a6",
+      "chineseText": "我们对答辩人提出的“萨尔瓦多妇女”及“被视作财产的萨尔瓦多妇女”两个特定社会群体是否可认定，进行无偏审查。参见 Matter of A-R-C-G-案，26 I&N Dec. 388，390（BIA 2014）；8 C.F.R. § 1003.1(d)(3)(ii)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "15969d7bb9f0dd89de631d87a62d436305f83cf185907d3e0f6138f44c1da590",
+      "chineseText": "答辩人在第六巡回法院发回后提交的补充辩论中主张，我们先前的决定错误地将其提出的社会群体与移民法官认定的群体表述不同。先前决定提及“被视作财产对待的萨尔瓦多妇女”。我们已应其要求更正，现在按照移民法官具体识别的特定社会群体进行分析。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "194fc417a4d49f44a7d25a7e3c79d16dcb3124f5b265ff27d884dd35d048af6f",
+      "chineseText": "第147页"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用方式：29 I&N Dec. 145（BIA 2025）临时裁定#4111"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ff62556ecb3fa75b89399aa73eb24343b52d1c73fe9470369f1b614958c9f191",
+      "chineseText": "A. 基于性别的特定社会群体"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3d14d9aa78cd904f326704faf19e5efdb49eec1e457337987c7d67bd27720e35",
+      "chineseText": "我们承认性别是一种不可改变的特征。参见 Matter of Acosta, 19 I&N Dec. 211, 233 (BIA 1985)（承认性别为天生特征），但该案因其他理由被 Matter of Mogharrabi, 19 I&N Dec. 439 (BIA 1987) 推翻。然而，“并非所有‘不可改变的特征’都足够精确以界定特定社会群体。”参见 Matter of M-E-V-G-, 26 I&N Dec. 第239页。仅以性别或性别和国籍为基础提出的特定社会群体，还必须满足可认定群体的特异性和社会区别要求。参见 Matter of M-E-V-G-, 26 I&N Dec. 第237页；另见 Matter of W-G-R-, 26 I&N Dec. 第212–218页。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "193d8022b1ca9aa312613f692119aab2f45ce7b97da38bade5ed186cd9516843",
+      "chineseText": "1. 巡回法院判例法"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d103f1fa7b2abc6a5b075ff8f2c5d7ff66dc8c8d439c8089169603a157fe27b9",
+      "chineseText": "我们开始分析时承认，一些巡回法院，尤其是第九巡回法院，对仅以性别定义的特定社会群体过于宽泛，不能在《移民与国籍法》（INA）下被认可的前提提出质疑。参见 Perdomo v. Holder, 611 F.3d 662, 667–69 (9th Cir. 2010)；另见 De Pena-Paniagua v. Barr, 957 F.3d 88, 97 (1st Cir. 2020)（指出第一巡回法院“从未裁定……‘女性’作为群体的描述词缺乏特异性”）。在 Perdomo v. Holder 案中，第九巡回法院拒绝了委员会关于外国人提出的“危地马拉所有女性”特定社会群体不能被认可的结论，理由是该群体过于宽泛、内部多样，构成“纯粹的人口学划分……而非特定社会群体”。611 F.3d 第668页。法院指出，仅仅因为所提出的群体规模较大，且可能包含该外国人本国的“广泛人口学划分”，并不表示该群体必然不可认定。第668–669页。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "99fe02d945f978ced60ea4c7c95da09fa6874ae25d7f6cd1f62713cf9e795a72",
+      "chineseText": "第九巡回法院亦不同意过度宽泛和内部多样性的特征使得所提出群体不可认定的观点。参见同案。法院根据先前委员会判例认为，应着重于被提出的特定社会群体是否由“天生特征”定义，并指出其曾认定另外两个群体——“同性恋者”和“吉普赛人”——为可认定，尽管这两个群体规模大且内部多样。该院进一步指出，当其拒绝某些提出的特定社会群体为过于宽泛时，是因为“没有统一的关系或特征可将这些多样且疏离的群体加以缩小”。参见第668页（原文有改动）（引自 Ochoa v. Gonzales, 406 F.3d 1166, 1171 (9th Cir. 2005)）。法院将案件发回委员会，以决定危地马拉女性是否构成其先例及委员会所认定的特定社会群体。"
+    },
+    {
+      "segmentId": "pdf-p4-s27",
+      "order": 27,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "dfa42b6a2f7f6d7bbade004ff9c420da36379d795496c7992552f68c1287abd9",
+      "chineseText": "第148页"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用请见 29 I&N Dec. 145 (BIA 2025) 临时决定 #4111"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c858e1a6ec46a9d3b20874cb0ba26c86eabd889656ab127634e6281c59c49b70",
+      "chineseText": "法院将案件发回以确定危地马拉女性是否根据其先例及委员会判例构成特定社会群体。"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "16008b53cae8bd96dfa52c3ee9be46a87f23dfe731080e70c8a1a87eace8bc74",
+      "chineseText": "第九巡回法院在 Perdomo 一案中的判决基于先前对特定社会群体的定义。在第九巡回法院发回重审后，委员会发布了 Matter of M-E-V-G-, 26 I&N Dec. 第237页，及 Matter of W-G-R-, 26 I&N Dec. 第212–218页，澄清特定社会群体的要求为不可改变性、特异性和社会区别性。在 Reyes v. Lynch, 842 F.3d 1133案中，第九巡回法院认可了 Matter of M-E-V-G-和 Matter of W-G-R- 中所阐述的确定特定社会群体的三部分测试。另见 Villegas Sanchez v. Garland, 990 F.3d 1173, 1180 (9th Cir. 2021)。在审视特异性要求时，第九巡回法院解释道：委员会对“特异性”要求的目的和功能的陈述，在表面上并未对提出的社会群体数量设置限制，亦未排除超出特定范围或规模的群体；其也不违反特定社会群体中存在多样性的原则，不认为多样性是特异性分析的必要条件。相反，委员会施加“特异性”要求，是为了区分离散的社会群体与模糊不清的群体。"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "356fa7a93dbe69021f75976fa1fc0c13a611bcc04849b38ffbb59917d62fa72f",
+      "chineseText": "Reyes, 842 F.3d 第1135页（引文略）。"
+    },
+    {
+      "segmentId": "pdf-p5-s32",
+      "order": 32,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "4e9b41284f3bbd7c9450ab1c254529887f1a55ead0e89bccc8403253aa5d075a",
+      "chineseText": "自 Perdomo 案以来，第九巡回法院维持了委员会裁定申请人未能证明其所提出的社会群体具备足够特异性的决定，部分原因是该群体规模过大。参见例如 Macedo Templos v. Wilkinson, 987 F.3d 877, 882 (9th Cir. 2021)（认定提出的富裕企业主社会群体不具特异性，“因为它可能包括社区中的大量人员及各种交叉群体”）；Mendoza Alvarez v. Holder, 714 F.3d 1161, 1164 (9th Cir. 2013)（认为申请人提出的社会群体不具特异性，因为它们“涵盖大量不同条件和不同处境的人群”，“涉及庞大且差异较大的群体”）。"
+    },
+    {
+      "segmentId": "pdf-p5-s33",
+      "order": 33,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ba82bb3985c4eca24345d735e3b8110bc5f2e6ecfa9c4d6e40d66bcbd71d1416",
+      "chineseText": "其他巡回法院在特定社会群体（particular social group）定义更新后对Perdomo案中的推理提出质疑。在Chavez-Chilel诉美国律师总长案（Chavez-Chilel v. Att’y Gen. U.S.），20 F.4th 138, 146注释8（第三巡回法院，2021年）中，第三巡回法院明确拒绝采纳第九巡回法院在Perdomo案中的推理，指出Perdomo“基于第九巡回法院的两部分特定社会群体定义”，而该定义与第三巡回法院和委员会所采纳的三部分特定社会群体测试标准不一致。在该案中，第三巡回法院认定，“单凭群体规模不足以使群体不具备[特定社会群体]资格”。Chavez-Chilel, 20 F.4th 第146页。然而，外籍人士提出的社会群体“危地马拉妇女”未具备特别性，因为“无证据显示所有危地马拉妇女具有统一特征，使其仅基于其[性别]被针对任何形式的迫害。”其亦承认其他法院结论认为以某一国所有女性为基础的特定社会群体过于宽泛，第三巡回法院未找到“偏离这一普遍规则的[理由]”。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用为29 I&N Dec. 145（BIA 2025）临时裁决第4111号"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "4a2e24dbdc350299fa613a81f35fb7bcf673da8bc022971249d9544b08f4d613",
+      "chineseText": "该案中，第三巡回法院认定，“单凭群体规模不足以使群体不具备[特定社会群体]资格。” Chavez-Chilel, 20 F.4th 第146页。然而，外籍人士提出的社会群体“危地马拉妇女”未定义具体，因为没有证据显示所有危地马拉妇女共享一个统一特征，导致她们仅基于其[性别]而遭受任何形式的迫害。该法院认可其他法院已认定基于某特定国家所有女性的特定社会群体过于宽泛，第三巡回法院未找到偏离这一一般规则的理由。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "58a95fe8ef5e82979682446719e34f892dabfc41194b8942b4560d52319f0884",
+      "chineseText": "其他多个巡回法院承认，单独以个体的性别，或性别与国籍结合，均不足以构成可认定的社会群体。如第二巡回法院所认定，“特定社会群体的属性必须是可识别且明确的”，“拥有广泛的特征如青年和[性别]，本身不足以赋予个体特定社会群体成员身份。” Gomez诉INS案，947 F.2d 660, 664（第二巡回法院，1991年）。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "33d5b4b64e3809ff7086638c3a1c73c5f242543a32c16bf4c0a6253b0f3b0927",
+      "chineseText": "在最近的案件中，第五巡回法院拒绝了申请人提出的社会群体，因为在剔除非法迫害因素后，其仅包括“洪都拉斯妇女”，第五巡回法院认定该群体不够具体。Jaco诉Garland案，24 F.4th 395, 407（第五巡回法院，2021年）。第十一巡回法院在评估“无法离开家庭关系的墨西哥妇女”群体时，同样指出，作为女性的不可变特性“单独不足以使其根据《移民与国籍法》（INA）被认定为特定社会群体。” Amezcua-Preciado诉美国律师总长案，943 F.3d 1337, 1344（第十一巡回法院，2019年）。此外，第十巡回法院承认，“[性别]单独不足以构成基于‘社会群体’的‘难民’认定。” Maatougui诉Holder案，738 F.3d 1230, 1241（第十巡回法院，2013年）。最后，第八巡回法院先前拒绝了“所有伊朗妇女”作为提议群体，理由是尽管她们面临严厉限制，“……没有事实认定者能合理认定所有伊朗妇女仅基于其[性别]而具有合理恐惧迫害的依据。”"
+    },
+    {
+      "segmentId": "pdf-p6-s38",
+      "order": 38,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9ad4cfda9d8a41c3b93cfd6a5a377b2665f0d45e373a37ea287078d9b51aeb24",
+      "chineseText": "尽管第六巡回法院尚未在已发行判决中处理该问题，但在未公开判决中拒绝了基于性别的提议群体，认为其过于宽泛。见Rodriguez-Lopez诉Garland案，案号20-4087, 2021年7月26日第6巡回法院WL 3140324，第4页（针对“危地马拉妇女”及“危地马拉土著妇女”提议群体，法院表示“法院经常驳回因过宽或过于概括的提议社会群体，且驳回的群体通常比本案提出的更狭窄。”）。"
+    },
+    {
+      "segmentId": "pdf-p6-s39",
+      "order": 39,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "5d62d04b705d54b0c598100936a2a20f911e064b814c19e300615a3fd3a7a061",
+      "chineseText": "引用为第150页"
+    },
+    {
+      "segmentId": "pdf-p7-s40",
+      "order": 40,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用为29 I&N Dec. 145（BIA 2025）临时裁决第4111号"
+    },
+    {
+      "segmentId": "pdf-p7-s41",
+      "order": 41,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0fda54aa715f0f9b81a8a09a4f0f8744963c3d08102ce21a0cf8b8ba106e5570",
+      "chineseText": "基于该性别的所有“伊朗妇女”群体被拒绝，因尽管他们受限制，但没有事实认定机关能合理认定所有伊朗妇女仅因其[性别]而具备合理恐惧被迫害的理由。 Safaie诉INS案，25 F.3d 636, 640（第八巡回法院，1994年），后被其他法律法规取代，即1996年非法移民改革与移民责任法案，公众法律第104-208号，C分部，第304(a)(3)、306(a)(2)节，110 Stat. 3009-546，3009-597，3009-607至3009-608页。"
+    },
+    {
+      "segmentId": "pdf-p7-s42",
+      "order": 42,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "3447c47af5cceb05c99c7446ac819463bf0dbd39d931796ea6237cff48f0bf92",
+      "chineseText": "2. 仅以性别为基础不构成受保护理由"
+    },
+    {
+      "segmentId": "pdf-p7-s43",
+      "order": 43,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "8fe120bcc0136865387b22deec563af17522bf0f3716d06a036fa4ff7607963c",
+      "chineseText": "与上述联邦巡回法院的判决一致，我们裁定，仅以外籍人之性别或性别和国籍定义的特定社会群体，单独来看，范围过广且不够具体，不符合《移民国籍法》（INA）的认定标准。参见案号W-G-R-，26 I&N Dec. 214段（解释特定性“主要涉及界定问题”）。仅由性别和国籍特征定义的群体缺少诸如特定年龄范围或在该国社会或经济中具体地位等限缩性特征。所提出的群体过于宽泛且分散，涵盖社会上各种年龄、社会经济地位、婚姻状况、家庭背景及生活方式各异的多样群体。参见Alvarado诉美国总检察长，984 F.3d 982, 992 (第11巡回法院，2020)（部分基于性别拒绝类似理由下提出的群体）。"
+    },
+    {
+      "segmentId": "pdf-p7-s44",
+      "order": 44,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "1c295c1795a431294fcb2bc37567b5955b63af1776d51e534c0d7ded614b562a",
+      "chineseText": "若我们认定仅以性别定义的群体可被认定，实际上将为《移民国籍法》（INA）增设另一保护理由——“性别”，并将其加入种族、宗教、国籍、特定社会群体成员资格或政治观点这些理由中。倘若国会或1951年7月28日开放签署、1954年4月22日生效的联合国难民地位公约（Convention）（19 U.S.T. 6259, 189 U.N.T.S. 150）或1967年1月31日开放签署、1967年10月4日生效、美国于1968年11月1日生效的联合国难民地位议定书（Protocol）（19 U.S.T. 6223, 606 U.N.T.S. 267）草拟者本意将性别本身作为受保护理由，他们本可明确将其列为独立理由。参见一般性INA § 101(a)(42), 8 U.S.C. § 1101(a)(42) (2018)。"
+    },
+    {
+      "segmentId": "pdf-p7-s45",
+      "order": 45,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "a106b3c5636ae19d379d20fb12658d8a0e8aae710bb82681b846a9a29d5655c6",
+      "chineseText": "被申请人未引用《移民国籍法》、公约、议定书或相关文书谈判历史中任何反映起草者意图将性别作为特定保护理由的内容。7 在随后涉及女性割礼案件中，第八巡回法院区分Safaie案并认定“索马里女性”构成特定社会群体，因该国女性割礼的普遍性达到98%。Hassan诉Gonzales, 484 F.3d 513, 515, 518 (8th Cir. 2007)。8 本案不涉及女性割礼主张，我们的裁定不影响未来此类主张的有效性。"
+    },
+    {
+      "segmentId": "pdf-p8-s46",
+      "order": 46,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用格式见29 I&N Dec. 145 (BIA 2025) 临时裁决#4111。"
+    },
+    {
+      "segmentId": "pdf-p8-s47",
+      "order": 47,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "26c3cecc034258431f92429d61574b9fcbd6f9bfaf4916bfac23e2ff5f91a443",
+      "chineseText": "案卷起草者并未将性别指定为具体受保护理由。参见一般性Sale诉Haitian Centers Council, Inc., 509 U.S. 155, 171 (1993)（在阐释撤销驱逐保护条款时，考虑公约文本与谈判历史及INA文本结构）。与种族和国籍类似，性别是个体无法改变的特质。Frontiero诉Richardson, 411 U.S. 677, 686 (1973)（“性别，类似于种族和民族血统，是出生偶然决定的不可改变特征……”）。若意图单独以性别作为保护基础，实为明显选择将该理由纳入明文列举之内。"
+    },
+    {
+      "segmentId": "pdf-p8-s48",
+      "order": 48,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "565845108f65eb524ac0284f7b5579016a7774eafab2ad2cceefe80947b02232",
+      "chineseText": "增设未由国会及公约和议定书制定者包含的特定保护理由并非本委员会职责。参见Chan诉韩国航空公司，490 U.S. 122, 1335 (1989)（“我们应依据适用于主题之解释规则揭示当事人意图；既已发现，则职责在于遵循其所及之处，止于其止之处——无论其留下何种不足或困难。”（引《The Amiable Isabella》，19 U.S. (6 Wheat.) 1，71 (1821)））。国会与公约及议定书制定者均未明确将性别认定为受保护理由，我们审视该问题及若干联邦巡回法院意见后认定，单独基于性别的特定社会群体不具充分认定资格。"
+    },
+    {
+      "segmentId": "pdf-p8-s49",
+      "order": 49,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "d5a41e49b68b3cc3b28e11115c2dcea076f1693e9cfb9b8b8cfe739d67f29285",
+      "chineseText": "3. 对被申请人的适用情况"
+    },
+    {
+      "segmentId": "pdf-p8-s50",
+      "order": 50,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "1ecdca899c3e91d391c43ea416b9b44f370ffc39cd6d455b626c95f12781fec7",
+      "chineseText": "移民法官正确认定被申请人未能证明其主张的“萨尔瓦多女性”特定社会群体符合认定资格所需的具体性要求。9 见9 同一具体性分析适用于基于女性与男性提出的群体。委员会曾拒绝多起基于性别（至少部分）定义的男性申请人的特定社会群体主张，这些申请涉及庇护及相关救济。参见案号Sanchez与Escobar，19 I&N Dec. 276, 285 (BIA 1985)，并经确认，案名Sanchez-Trujillo诉INS，801 F.2d 1571 (9th Cir. 1986)。在该案中，我们拒绝包含“18至30岁、城市、工人阶级、服兵役或明示支持萨尔瓦多政府者除外的男性”的群体主张，尽管数据显示统计层面“萨尔瓦多人中多为年轻男性遇害”。另见案号Vigil，19 I&N Dec. 572, 575 (BIA 1988)（拒绝主张涵盖“男性、年轻、城市、未入伍”萨尔瓦多人）。另案S-E-G-，24 I&N Dec. 579, 585 (BIA 2008)亦拒绝拒绝因拒绝帮派招募的年轻男性为群体主张，理由是该群体“构成社会中潜在庞大且分散的部分”。"
+    },
+    {
+      "segmentId": "pdf-p9-s51",
+      "order": 51,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用格式见29 I&N Dec. 145 (BIA 2025) 临时裁决#4111。"
+    },
+    {
+      "segmentId": "pdf-p9-s52",
+      "order": 52,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "cfeb145c295c0135d9f4d7d4fd7ebcf8195abab4658dbb20c8a6d95f6cc9c454",
+      "chineseText": "参见案号M-E-V-G-，26 I&N Dec. 237段及W-G-R-，26 I&N Dec. 213–215段。该群体虽具有“来自萨尔瓦多的女性”特征，实则包含萨尔瓦多人口中广泛分散且彼此缺乏联系的部分，仅有极少统一特征。10 参见案号S-E-G-，24 I&N Dec. 579, 585 (BIA 2008)（认定拟议群体因构成“潜在庞大且分散的社会部分”而非具体）。该群体涵盖不同年龄段、不同社会经济地位、教育水平、宗教及文化背景广泛多样的女性。参见案号J-G-D-F-, 27 I&N Dec. 82, 89 (BIA 2017)（认定拟议群体不具体，因其模糊且缺乏明确界限）。因此，该拟议群体过于宽泛、分散，不符合具体性要求。"
+    },
+    {
+      "segmentId": "pdf-p9-s53",
+      "order": 53,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "0488efc752ef4823c47d9b95779e8810842d93290aefdb49710f17af3344bea1",
+      "chineseText": "被申请人主张索尔瓦多女性遭受不成比例暴力及法律保护证据使其群体具有独立性，我们对此不为所动。11 国家状况证据显示，“萨尔瓦多帮派暴力和犯罪广泛存在，危害风险……涉及各阶层群体”。"
+    },
+    {
+      "segmentId": "pdf-p9-s54",
+      "order": 54,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "32698565fa288d83587a640723c9782f5e203a3c3e951583557ab43445af06db",
+      "chineseText": "10 被申请人在补充简报中援引若干巡回法院案例支撑仅以性别定义的社会群体自然可认定之主张，但相关案例可区分，因为（除其他外）其认定的社会群体不仅仅以性别或性别和国籍定义，群体同时包含至少一项其他统一特征，如少数宗教女性独居或寡妇等。比如，Cece诉Holder, 733 F.3d 662, 671–672 (第七巡回法院2013)（认定在阿尔巴尼亚年轻女性、少数宗教、独居组合构成认可社会群体）；Ngengwe诉Mukasey, 543 F.3d 1029, 1034 (第八巡回法院2008)（认定Cameroonian寡妇构成特定社会群体，因记录显示对未亡夫妇女广泛歧视）。此外，上述案涉及女性割礼，本案不涉此类主张，故不予讨论。11 被申请人在补充简报中引用了委员会未公开案卷决定，且案卷随简报一并提交。未公开委员会决定无先例效力。参见案号D-E-B-, 29 I&N Dec. 83, 84 注2 (BIA 2025);见8 C.F.R § 1003.1(g)(2) (2025)（指示公开决定具有先例效力）。"
+    },
+    {
+      "segmentId": "pdf-p10-s55",
+      "order": 55,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用格式见29 I&N Dec. 145 (BIA 2025) 临时裁决#4111。"
+    },
+    {
+      "segmentId": "pdf-p10-s56",
+      "order": 56,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "d60b6bcc63ec6afd54a506c7f3fd54854f31c51b7e7cbebaa16eff254f07e4e5",
+      "chineseText": "Umaña-Ramos诉Holder, 724 F.3d 667, 674 (第六巡回法院2013)（引自案号S-E-G-）。"
+    },
+    {
+      "segmentId": "pdf-p10-s57",
+      "order": 57,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "e1727616e176d19244292dfe30d020197ef70b1a240b0ec03b0ee8375e03ab2b",
+      "chineseText": "某些特征可能增加个体遭受暴力的脆弱性，但此类特征不必然构成认定的特定社会群体。参见如Fuentes诉Barr, 969 F.3d 865, 872 (第八巡回法院2020)（驳回“萨尔瓦多女性户主”拟议群体，尽管证据显示此类女性易受侵害）；Mayorga-Vidal诉Holder, 675 F.3d 9, 16–17 (第一巡回法院2012)（驳回“抵抗帮派招募且缺乏家庭保护的年轻萨尔瓦多男性”特定社会群体）；Garcia-Callejas诉Holder, 666 F.3d 828, 830 (第一巡回法院2012)（指出法院曾“驳回基于外表财富的社会群体，即使反映为对犯罪易感”）。“犯罪受害者或害怕犯罪者并非有效社会群体成员”已成定论。案号H-L-S-A-, 28 I&N Dec. 228, 231 (BIA 2021);另见Ucelo-Gomez诉Mukasey, 509 F.3d 70, 73 (第二巡回法院2007)（“当一群体成员遭受的伤害源自普通罪犯激励而非迫害，则此群体不应认定为‘特定社会群体’”）。"
+    },
+    {
+      "segmentId": "pdf-p10-s58",
+      "order": 58,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "85fb44c8b8644a4258daec9e955f681f158163e6d7fba681bf299204cdaee073",
+      "chineseText": "鉴于我们同意移民法官关于被申请人提出的“萨尔瓦多女性”群体不符合具体性要求的认定，我们无需评述该拟议群体是否满足社会区分性要求。见案号W-G-R-, 26 I&N Dec. 214段（指出尽管具体性与社会区分性有部分重叠，但它们是独立要求，两者均必需构成可认定群体）。"
+    },
+    {
+      "segmentId": "pdf-p10-s59",
+      "order": 59,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "7d28c7c89d8b8d4eb187186b820e62ff5e40c8da592b530eeecb590e3f2fd494",
+      "chineseText": "B. 被视为财产之女性特定社会群体"
+    },
+    {
+      "segmentId": "pdf-p10-s60",
+      "order": 60,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "77bbf5041e2980a4f9c05306ac90a654b19cdccb9516a839d75862b6f2e4c11f",
+      "chineseText": "关于被申请人第二个提出的“被视为财产之萨尔瓦多女性”群体，该群体缺乏构成可认定特定社会群体所需的具体性。该群体缺少明确的界定标准来确定何人属于该群体。例如，案号W-G-R-, 26 I&N Dec. 214段。被申请人未提交证据显示“被视为财产”在萨尔瓦多有普遍公认的定义。案号M-E-V-G-, 26 I&N Dec. 239段。不清楚哪些女性被视为财产，也不明哪些人持此观念。因此，该群体过于“模糊、范围过大、分散或主观”，难以根据《移民国籍法》认定为特定社会群体。案号M-E-V-G-, 26 I&N Dec. 239段;另见"
+    },
+    {
+      "segmentId": "pdf-p11-s61",
+      "order": 61,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用格式见29 I&N Dec. 145 (BIA 2025) 临时裁决#4111。"
+    },
+    {
+      "segmentId": "pdf-p11-s62",
+      "order": 62,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "50f230ff79ede055d9afe8440b2a55f796f0eb4a82c2221c5aa8d448216b0aeb",
+      "chineseText": "Alvarado, 984 F.3d 982, 992 (确认委员会认定“被视为财产的洪都拉斯女性”缺乏足够具体性，不构成特定社会群体，因该群体“可能包含各年龄、各族裔及不同社会阶层中，在各种关系中或无关系的女性”)。"
+    },
+    {
+      "segmentId": "pdf-p11-s63",
+      "order": 63,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "3c130f7fc93f20597d5b87dc35ba7dd4bd5c06726084627f0bd444d06df3dfbd",
+      "chineseText": "被申请人亦未证明萨尔瓦多社会普遍视被视为财产之女性为社会中某一独特群体，不能满足社会区分性要求。案号W-G-R-, 26 I&N Dec. 216–217段。被申请人引用针对女性暴力及普遍性别歧视的普遍证据不足以证明“社会普遍认知、考虑或承认具有该特征者为一个群体”。案号W-G-R-, 26 I&N Dec. 216段;另见Villegas Sanchez诉Garland, 990 F.3d 1173, 1181–1182 (第九巡回法院2021)（认定针对“萨尔瓦多女性可受虐待”的泛泛统计数据不足以证明具体拟议群体具有社会区分性）。"
+    },
+    {
+      "segmentId": "pdf-p11-s64",
+      "order": 64,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "839b9ee24757f12e1663a444babf22db2c70a590d7db5cba5c0f2a4328899e61",
+      "chineseText": "被申请人未能证明其属于可认定的特定社会群体，且未主张依据《移民国籍法》其他法定保护理由获得庇护或撤销驱逐。故其不符合庇护或撤销驱逐资格。见INA §§ 208(b)(1)(B)(i), 241(b)(3)(A), 8 U.S.C. §§ 1158(b)(1)(B)(i), 1231(b)(3)(A)。因缺乏可识别社会群体决定申请庇护和撤销驱逐，本委员会无须针对其其他上诉理由作裁决。参见INS诉Bagamasbad, 429 U.S. 24, 25 (1976)(全院)（“通常原则为法院及机构无需对非决定性问题作裁定”）；案号L-A-C-, 26 I&N Dec. 516, 526 注7 (BIA 2015)（当申请人依据法定理由存在不合格情形时，拒绝针对备选问题作裁决）。上诉予以驳回。"
+    },
+    {
+      "segmentId": "pdf-p11-s65",
+      "order": 65,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "bfde5b1d92e32e617bc95e93c248c5f401d329ea1aa150202477358beb439cf6",
+      "chineseText": "III. 重新发回动议 该案经第六巡回法院发回后，被申请人提交重新发回动议，拟申请新救济——即依据《移民国籍法》第240A(b)(1)节（8 U.S.C. § 1229b(b)(1) (2018)）申请撤销驱逐。12 被申请人已提交"
+    },
+    {
+      "segmentId": "pdf-p11-s66",
+      "order": 66,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "e4ff7448f05f425ce771108fd3fd06e23f649ae50af194057d95014e30096241",
+      "chineseText": "12 第六巡回法院的发回令使我们先前的裁定变为非终局性。见Martinez-Marroquin诉Gonzales, 489 F.3d 778, 778 (第六巡回法院2007)。因此，本动议不受针对最终行政驱逐令的重新开庭动议时间及次数限制。参见Akhtar诉Gonzales, 406 F.3d 399, 409 (第六巡回法院2005);另见8 C.F.R. § 1003.2(c)(2) (2025)（规定申请人只能在最终行政决定后90天内提交一次重新开庭动议）。"
+    },
+    {
+      "segmentId": "pdf-p12-s67",
+      "order": 67,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "db3ef10948ba53ab4d184e8a773f77fc353349f2845aaf4d8b098685988764a9",
+      "chineseText": "引用格式见29 I&N Dec. 145 (BIA 2025) 临时裁决#4111。"
+    },
+    {
+      "segmentId": "pdf-p12-s68",
+      "order": 68,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "78eb2e985edc64e37aabacae720fa4091c65aa711b66b2fadb057fe228091e9e",
+      "chineseText": "被申请人一并提交了撤销驱逐申请及充足证据，以证明其符合撤销驱逐的初步资格要求。参见Hernandez-Perez诉Whitaker, 911 F.3d 305, 319–321 (第六巡回法院2018)（就重新开庭动议评估初步资格标准进行讨论）。"
+    },
+    {
+      "segmentId": "pdf-p12-s69",
+      "order": 69,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "bf9201a885f1a8de5f8549ea2d3a1fbb4c6b10a459bce3fc3d6628ad62fc6a64",
+      "chineseText": "基于上述陈述，将批准该动议，并将案卷发回移民法官，限于考虑被申请人撤销驱逐申请的实质内容。我们对本案件最终结果不作任何意见。"
+    },
+    {
+      "segmentId": "pdf-p12-s70",
+      "order": 70,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "03533c03034207035dc239be3f15d282d8db559b4a2b173a1092a79667f0a8d1",
+      "chineseText": "命令：被申请人上诉驳回。附加命令：被申请人动议获准，案卷限于给予被申请人申请撤销驱逐之机会，发回移民法官处理。"
+    },
+    {
+      "segmentId": "pdf-p12-s71",
+      "order": 71,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "af066897224a6cd9a88ccdfff2c883bfb14b7655191f87bcb2710a5eb7576cab",
+      "chineseText": "本案发回使得此前的裁定非终局，动议因此不受限于针对终局行政驱逐裁决的重新开庭动议的时间和次数限制。参见Akhtar诉Gonzales, 406 F.3d 399, 409 (第六巡回法院2005);另见8 C.F.R. § 1003.2(c)(2) (2025)（规定在最终行政裁决后的90天内仅可提交一次重新开庭动议）。"
+    }
+  ]
+}

@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "recordId": "6d71998164d7fa814946b7a3",
+  "recordFingerprint": "0e2b8bdeee4708ceb1e6c622f109e028a092248acd7fce75a940949e00377d00",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1388206/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1388206/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1388206/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T12:22:29.761Z",
+  "sourceDigest": "db27cc28b235226e29962cad749d9d076e083e2acb773dd3d936fd51ca406738",
+  "translatedAt": "2026-08-17T12:31:25.625Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 36,
+  "translatedSegmentCount": 36,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "48dcd723bc9254966997602cf480eb633452f8ad8c094b658f8f02c894d706ce",
+      "chineseText": "引用格式：29 I&N Dec. 1（BIA 2025）临时决定＃4085"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6e21d09b0ac7a3bd017e531e8235d932cefb2dc7f668c3a14fe82291881a5db6",
+      "chineseText": "Carlos Manuel BAEZA-GALINDO 案，答辩人\n裁决日期：2025年1月31日\n美国司法部\n移民审查执行局\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3dd19c967638415369be4243c4b5b24f1fd8a0d7452b4f9d0e112baf2d3bded3",
+      "chineseText": "（1）时间上的接近性是根据《移民与国籍法》第237条(a)(2)(A)(ii)款（8 U.S.C. § 1227(a)(2)(A)(ii) (2018)）认定两项犯罪源自单一犯罪行为计划的必要条件，但非充分条件。Matter of Adetiba, 20 I&N Dec. 506, 509 (BIA 1992) 得以澄清。\n（2）两宗涉及道德败坏（moral turpitude）的犯罪，基于两个不同目的的败坏行为，且任一败坏行为均非为完成另一行为而实施，构成独立的犯罪行为计划。\n答辩人代理律师：Stephen W. Spurgin，律师，得克萨斯州埃尔帕索\n国土安全部代理律师：Jennifer A. Cordova，助理首席法律顾问"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9bc5aed4abecfa254d6ddde433aa71d70f13d5afbf3c43be8e82738f6785c833",
+      "chineseText": "出庭法官小组：GOODWIN、PETTY 和 CLARK，上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "580de4a2d8094fbc56cdf9a6714a57fee1901c162a27648e9329065a93ce7345",
+      "chineseText": "PETTY，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "60e762d1989ff414f9a6f8de1cc5de974b413dcc47b507eeddb34e2d7eb8f21b",
+      "chineseText": "答辩人在酒后驾驶时用其卡车撞击一群行人，造成一人死亡、另外三人受伤，随后驾车逃离。答辩人被判持致命武器加重攻击罪及未停车救助罪。移民法官终止诉讼程序，认定答辩人虽被判两项涉及道德败坏的罪名，但系源于单一犯罪行为计划。我们予以推翻。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "05e5de4264a4b17161250d2e04c373365b5f20c9a559a00644c4207af6924030",
+      "chineseText": "一、背景\n事实无争议。答辩人为墨西哥籍，本国公民，1989年获准合法永久居民身份入境美国。2008年7月23日，答辩人酒后驾驶其皮卡车时，撞击并致死一名22岁女性，伤及其26岁弟媳、8个月大的儿子及弟媳的9个月大女儿，四人当时正步行回家，地点在得克萨斯州米德兰。受害者的儿子因肝脏撕裂伤需空运至卢博克接受急诊治疗。弟媳及其女儿送至本地医院经治疗轻伤后获释。撞击四名受害者后，答辩人驾车返家，向妻子称感觉似有物体撞击其卡车。事后发现婴儿车部件嵌入卡车前格栅，卡车轮罩内有血迹及衣物纤维。目击者认为卡车行驶速度极快，撞击后更是加速。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "48dcd723bc9254966997602cf480eb633452f8ad8c094b658f8f02c894d706ce",
+      "chineseText": "引用格式：29 I&N Dec. 1（BIA 2025）临时决定＃4085"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "666c1b7858e2ca05776d3a686d3bc318937f44d4e13e59bc8954f9eddfbca2b6",
+      "chineseText": "受害者弟媳及其女儿被送医后治愈出院。撞击事发后，答辩人驾车返回家中，告知妻子感觉卡车遭撞击。后发现婴儿车零件嵌入卡车前格栅，卡车轮罩内有血渍及衣物纤维。目击证人称卡车行驶时速度极快，撞击后更进一步加速。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0add588c58f21d7541ec8012551f20b78747ec843e95bcc5074d4445ec14e667",
+      "chineseText": "2008年12月12日，答辩人因违反得克萨斯州刑法典第22.02(a)(2)条款的持致命武器加重攻击罪及违反得克萨斯州交通法典第550.023条款的未停车救助罪被定罪。国土安全部指控答辩人违反《移民与国籍法》第237条(a)(2)(A)(ii)款（8 U.S.C. § 1227(a)(2)(A)(ii) (2018)），指其入境后任意时刻被判两项涉及道德败坏的罪名，且非出于单一犯罪行为计划，因而可被遣返。双方均无异议，答辩人两项定罪均构成涉道德败坏罪行。答辩人请求终止程序，主张两项定罪源于单一犯罪行为计划。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "df83ed391a28bf49a6bc4e3694bebd591606013f285a0a2e7ccd65af1e3e2fc1",
+      "chineseText": "移民法官认定答辩人定罪确实源于单一犯罪行为计划，因此不能仅依据这一指控支持遣返。具体而言，移民法官指出攻击行为与逃逸或未停车行为之间无显著时间间隔。此外，移民法官解释称，“若无紧接其后的攻击行为，未停车行为本身不构成犯罪。”但移民法官亦承认答辩人未停车行为“乃为避免因攻击被捕的直接结果。”"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f13f0c523e852cbc735211876cacaa037687be7906f6bc826e0ed9a7e0283d3b",
+      "chineseText": "本案唯一争议在于答辩人两项定罪是否源自“单一犯罪行为计划”。[1]《移民与国籍法》第237条(a)(2)(A)(ii)款，8 U.S.C. § 1227(a)(2)(A)(ii)。我们对该法律问题进行无偏见审查。参见 8 C.F.R. § 1003.1(d)(3)(ii) (2025)；参见Matter of Islam, 25 I&N Dec. 637, 639 (BIA 2011)。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "041f17b0efbba14a6f84a4b54b868c34e024846fa7e7de253d3b188e87f378e8",
+      "chineseText": "[1] 移民上诉委员会于2024年10月8日就此议题进行了口头辩论。原委员Keith Hunsucker曾参与本案面板听审，后被Deborah K. Goodwin委员替代，后者已熟悉本案程序记录及口头辩论记录。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "48dcd723bc9254966997602cf480eb633452f8ad8c094b658f8f02c894d706ce",
+      "chineseText": "引用格式：29 I&N Dec. 1（BIA 2025）临时决定＃4085"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "240f13e3d0320b8e31ddecef3c0377d289931655430dfeadedbe2fd5b0057df7",
+      "chineseText": "二、讨论\n《移民与国籍法》第237条(a)(2)(A)(ii)款，8 U.S.C. § 1227(a)(2)(A)(ii)规定：“任何外籍人士，在入境后任何时间被判两项或以上涉及道德败坏的犯罪，且非源于单一犯罪行为计划，无论是否因此被监禁，亦无论定罪是否来自同一审判，均属可被遣返。”该条文缺乏有意义的立法背景指引解释。参见Matter of Islam, 25 I&N Dec. 639（引自Nason v. INS, 394 F.2d 223, 227 (2d Cir. 1968)；Matter of Adetiba, 20 I&N Dec. 506, 509 (BIA 1992)）。七十余年来，我们坚持对“单一计划”一词的初始解读，特别强调相对时间的重要性。[2]\n    对我们而言，该法条语义自然而合理的含义是：当一名外籍人士实施某一行为，该行为本身构成完整的、独立的犯罪；当其再次实施此类行为，并均被定罪时，即构成遣返理由。行为间即使时间极为接近，甚至紧接发生，此情形亦无影响。”"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "405dd9b682e409fdf48d65f5d79982fef9863fd2986ca1c1c514328c5058a891",
+      "chineseText": "Matter of D-, 5 I&N Dec. 728, 729 (BIA 1954)（加重部分），裁定一致；Akindemowo v. U.S. INS, 61 F.3d 282, 285 (4th Cir. 1995)（指出移民上诉委员会“始终”遵循Matter of D-）；另见Okoro v. INS, 125 F.3d 920, 927 (5th Cir. 1997)（“两行为之时间相近或目的相似，皆不阻止其构成两个独立犯罪。”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "29e561579b48bf2b5f32f1ab87c5cc2fc8bce00695c16fec8bc614f2118b65d9",
+      "chineseText": "在Matter of Adetiba一案中，我们重新讨论了两犯罪行为的时间相对性，指出“要认定为‘单一计划’，该计划必须在同一时间内完成，即不得有重大中断，否则犯罪者可借以脱离其行为并反思其所为。”20 I&N Dec. 509–10。然Matter of Adetiba仅认定重大中断的存在可决定性地表明两罪非同一计划。反之不成立，即重大中断缺失不能决定性证明两罪属同一计划。Matter of D-及其后续案例表明，虽无中断时间相关，但不足以确定两罪属单一计划。参见Matter of Islam, 25 I&N Dec. 639（案例集）。但见Szonyi v. Whitaker, 915 F.3d 1228, 1239 (9th Cir. 2019)（法官Fisher异议），主张委员会...（后文未完）"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6bcda563e954dbead5169dab81e8cf3e285ad211caecd99e6737e42887fd4640",
+      "chineseText": "[2] 法条使用“计划（scheme）”一词，我们长期将其等同于“行为（act）”，例如Matter of B-, 8 I&N Dec. 236, 238 (BIA 1958)，主要为避免提前策划多项犯罪行为导致罪犯免于遣返的不良结果。参见Matter of Z-, 6 I&N Dec. 167, 171 (BIA 1954)。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "48dcd723bc9254966997602cf480eb633452f8ad8c094b658f8f02c894d706ce",
+      "chineseText": "引证为 29 I&N Dec. 1（BIA 2025）临时决定 #4085"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "12633a5c228742aaa323b10bd697a31bdedce700f3277adbb82ea0e654b72adb",
+      "chineseText": "先例认为，缺乏实质性中断是独立具有决定性的因素。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3fe0a12952499cf2b82cdc00bc8637827336a150b7a22b2de183462a52d56f6c",
+      "chineseText": "总结来说，当两个刑事行为之间存在实质性中断时，这些行为必然属于不同的犯罪方案。参见 Adetiba 案，20 I&N Dec. 第509–510页。然而，时间上接近的两项罪行可能属于同一犯罪方案，但也可能是不同的犯罪方案，甚至完全无关。换句话说，时间接近是根据《移民和国籍法》第237(a)(2)(A)(ii)条款（8 U.S.C. § 1227(a)(2)(A)(ii)）认定两项罪行源自单一犯罪方案的必要但不充分条件。因此，移民法官不应仅依赖于缺乏中间时间间隔来认定两项涉及道德败坏的罪行源于单一犯罪方案。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a2362780519e53520342e1fdb01f913958b226e5db562a5d6ec74a53ce519d06",
+      "chineseText": "移民法官还认为，被告的定罪源于单一犯罪方案，因为除非有之前紧接的连贯攻击行为，否则不停止的行为本身不构成犯罪。我们的案例法对此要求更高。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "cb5ab6ea9d0ed493e23b97c4802bdd12dbbedc150fc1bbac70260d34ec1b51ab",
+      "chineseText": "现为《移民和国籍法》第237(a)(2)(A)(ii)条款（8 U.S.C. § 1227(a)(2)(A)(ii)）的原始版本规定，被告因涉及道德败坏的罪行被“多次判处”一年或以上监禁的，应当被驱逐出境。参见1917年2月5日《移民法》，第29章，第19节，39 Stat. 874, 889。1948年，美国最高法院解释此条款仅在定罪是在不同审判后作出时适用。参见 Fong Haw Tan 诉 Phelan 案，333 U.S. 6, 9–10（1948）。1952年《移民与国籍法》中，国会制定了新规定，即“不论定罪是否在单一审判中”，但加入了当前限制，即相关定罪“不得源自单一犯罪方案”。另见 B- 案，8 I&N Dec. 236, 238–239（BIA 1958）。国会在此意图保护那些因实质上一行为被两次定罪的外国人不被驱逐。第238页（强调添加）。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "57d3b5e2fa3c62c66f6332d555d70b51685ba062807b0b8f0674b90fc0e6d7f4",
+      "chineseText": "我们承认，“实质上一行为”指被告实施的单一身体行为在法律上从两个视角被看待。第239页。这包括“一项犯罪构成另一项较轻罪的情形。”参见 Adetiba 案，20 I&N Dec. 第511页。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "aaae7d18a736f97cd3d6b38773a252eb9faf6d497231c48597af7b52bddfbe36",
+      "chineseText": "第4页"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "48dcd723bc9254966997602cf480eb633452f8ad8c094b658f8f02c894d706ce",
+      "chineseText": "引证为 29 I&N Dec. 1（BIA 2025）临时决定 #4085"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "bfe1b099e98e8336112a8a65f408da8e9ee75c535e263ac191e6cc4483d54e8f",
+      "chineseText": "这还包括被告实施单一行为，同时以基本相同方式对多个受害人造成伤害的情形。参见 B- 案，8 I&N Dec. 第239页（认可单一方案“当存在一系列发生在‘同一时间’的类似行为时”，如“被告同时抢劫了A、B和C”）；另参 Abdelqadar 诉 Gonzales 案，413 F.3d 668, 675（第七巡回法庭 2005），“在一场牌局中抢劫六人因此属于单一方案，即使导致多项定罪……”该案不涉上述情形。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "1801b89987e39f67cd6562c921c3273197ab67886177ece03453865c29c628a6",
+      "chineseText": "我们还将多项卑劣行为视为源于单一犯罪方案，这些行为“发生在相对短的时间内，涉及相同当事人，且首项行为是为促成最终犯罪行动的特定犯罪目的而实施。”见 B- 案，8 I&N Dec. 第239页；另见 Z- 案，6 I&N Dec. 167, 171（BIA 1954），“当两项罪行均为为实现具体有限犯罪目的而进行的犯罪行为的一部分时，即成立“单一方案”。典型例子是在实施盗窃时袭击警卫。另见 Islam 案，25 I&N Dec. 第640页（认为入室盗窃期间的袭击属于单一方案）；Adetiba 案，20 I&N Dec. 第509页（同）。尽管这些犯罪情节涉及多项卑劣行为，若它们具有相同整体目的，且一项犯罪的实施发生于完成另一项犯罪过程中，将违背国会意图视为不同方案。参见 B- 案，8 I&N Dec. 第238–239页。我们解释该情况下“道德上……只有一项错误。”见 D- 案，5 I&N Dec. 第730页。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "a46cbbdb784f609de1820b48af898fb578fd270b89935e5db3b07be19de88647",
+      "chineseText": "试图避免因已完成的犯罪被抓获或承担责任，并不能促进犯罪的完成。参见 Nguyen 诉 INS 案，991 F.2d 621, 625（第十巡回法庭 1993），“申请人无需向警官开枪即可成功实施偷车行为，车辆数小时前已被成功盗走。”试图逃避为已完成犯罪被捕是另一个道德错误，并带有新的犯罪目的，而非为同一犯罪目的服务的附属性行为。见 D- 案，5 I&N Dec. 第730页。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "48dcd723bc9254966997602cf480eb633452f8ad8c094b658f8f02c894d706ce",
+      "chineseText": "第5页"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "834b0fdc3d2f7659ffbc6e003177cd4bcabbd5356198bcfc9b1711bdc1c495a4",
+      "chineseText": "引证为 29 I&N Dec. 1（BIA 2025）临时决定 #4085"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "bc76f632682e037a0d351073fd55bd3d228e111292eb04b10c8723c3865b72a6",
+      "chineseText": "认定多项犯罪是否源自单一犯罪方案可能需要对此进行具体事实认定。然而，本案中移民法官已认定，被告未停车行为“直接归因于试图避免因袭击被捕”，而非完成袭击。我们亦认同移民法官观点，即袭击必须先发生，但持有致命武器的加重袭击并非为促成之后的未停车和救助行为。参见 Z- 案，6 I&N Dec. 第171页。无记录显示被告蓄意驾驶卡车撞击两名年轻母亲及其婴儿，以致其伤亡后弃于路边。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "48e41ac640c3df1759673dc1d0aad51390945d6fbfba0a82a8f8a2222b0a2357",
+      "chineseText": "两项涉及道德败坏的犯罪基于不同的败德行为且具有不同目的，且均非为完成另一犯罪而实施，构成独立的犯罪方案。因此，根据《移民和国籍法》第237(a)(2)(A)(ii)条款（8 U.S.C. § 1227(a)(2)(A)(ii)），被告因入境后曾被判两项非源自单一犯罪方案的道德败坏犯罪而可被驱逐。我们将支持上诉，推翻移民法官终止被告驱逐程序的决定。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "5a1c8236376a73be30fd9aa739c37ab7490cdc44e7b37e0aed5588feaf2a0e4a",
+      "chineseText": "命令：国土安全部的上诉获支持，移民法官的决定被推翻。"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f7bfa0058303c4b094b252b03150078c052d30e1da3908262221c2962748e484",
+      "chineseText": "进一步命令：将案卷发回，进行与本意见相符的进一步程序，并作出新决定。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "43bd2199ae74b6c725fda701eed07c3417ea651896e5d2854304d4b8ca804e88",
+      "chineseText": "第6页"
+    }
+  ]
+}

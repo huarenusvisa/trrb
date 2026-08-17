@@ -1,34 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-17T12:15:09.582Z",
+  "generatedAt": "2026-08-17T13:01:02.627Z",
   "node": "LEGAL-R1-N3",
-  "datasetVersion": "03bba9deaebe865ea8f4aade8dde7ea3cacfaa5048e7926e93ab7c3403a42c16",
-  "eligibleRecordCount": 584,
-  "translatedRecordCount": 2,
-  "coveragePct": 0.3425,
-  "totalSourceSegments": 45,
-  "totalTranslatedSegments": 45,
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "eligibleRecordCount": 598,
+  "translatedRecordCount": 6,
+  "coveragePct": 1.0033,
+  "totalSourceSegments": 216,
+  "totalTranslatedSegments": 216,
   "segmentCoveragePct": 100,
   "duplicateBindingCount": 0,
-  "translatedNow": 0,
+  "translatedNow": 4,
   "attemptedNow": 4,
-  "failures": [
-    {
-      "recordId": "6d71998164d7fa814946b7a3",
-      "error": "The operation was aborted due to timeout"
-    },
-    {
-      "recordId": "2b585941a003981e539eb258",
-      "error": "segmentId/order mismatch"
-    },
-    {
-      "recordId": "f5f03a8452e194df35256af5",
-      "error": "segmentId/order mismatch"
-    },
-    {
-      "recordId": "fbf5592824f9a2855c0ad6ba",
-      "error": "segmentId/order mismatch"
-    }
-  ],
+  "failures": [],
   "complete": false
 }

@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 1,
+  "recordId": "2b585941a003981e539eb258",
+  "recordFingerprint": "2262ae059a0d3d2e30fcc5a251b780eb34c97a2b894983094999d881abe720e9",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1407386/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1407386/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1407386/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T12:31:25.660Z",
+  "sourceDigest": "786dcab36920bf50eb78c851a36b7eea53835023736d99944c5e2e469b56d8d7",
+  "translatedAt": "2026-08-17T12:44:43.454Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 37,
+  "translatedSegmentCount": 37,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f111bc45542f469321ff33f5492f4dea25fae39d1202ca02572ebeca2580c358",
+      "chineseText": "引证为29 I&N 决定 129（移民上诉委员会 2025年） 临时决定#4108"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "06b886925c900aea26d8b200373948e53afc1fb8c5c0d63dae82373207af67ec",
+      "chineseText": "帕西亚西奥·冈萨雷斯·希门尼斯案，被告人\n裁决日期：2025年7月9日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9e77e403cdcbb1e020798edee8aed500886d442b439c2f5f755fc7703d24be0a",
+      "chineseText": "（1）使用虚假或被盗的社会保障号码以及在纳税申报表上提供虚假信息，是不利因素，不利于裁量权的有利行使。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1aa63ea03b0f1f2c464dca646a41089d9b55ce05275a7f2294dd9401c8c6d5a8",
+      "chineseText": "（2）当被告人试图以依赖专业意见为由为其行为辩解时，被告人应提供所给出的具体建议的证据，并说明为何依赖该建议是合理的。\n代表被告人：Jill Aleshire，律师，佛罗里达州那不勒斯\n代表国土安全部：Evagelia Solomos，助理首席顾问\n审理小组：主席MALPHRUS，上诉移民法官；MULLANE和GOODWIN，上诉移民法官。\n主席MALPHRUS发言："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d759325c4a5c1001b838a3b03abf9240e9b8615c419ea6dedf2ed8af5f100c47",
+      "chineseText": "在2024年12月19日的裁决中，移民法官拒绝了被告人依据《移民和国籍法》（“INA”）第240A(b)(1)条和第240B(b)(1)条，8 U.S.C. §§ 1229b(b)(1), 1229c(b)(1)（2018年）的撤销驱逐和自愿离境申请。被告人对移民法官的裁决提出上诉。国土安全部（“DHS”）反对此上诉。由于我们认定被告人不符合获得有利裁量的条件，该上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7813381461c5e830da47687f774237f01d9c56d8eb8fe6f12512966d4446b75a",
+      "chineseText": "被告人为墨西哥出生且具有该国国籍。通过代理律师，被告人承认其作为未获准入或临时入境的外国人，属于可驱逐对象。 INA § 212(a)(6)(A)(i), 8 U.S.C. § 1182(a)(6)(A)(i)（2018年）。随后，被告人提出适用于某些非永久居民的撤销驱逐申请，并作为替代请求提出自愿离境。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "314e856eacfdb449210e69d6b414699b8e9b19fdb47d1e5af2b1094e2f93f11e",
+      "chineseText": "移民法官认定被告人不符合撤销驱逐和自愿离境的资格，理由是未能证明良好道德品格或其被驱逐会给其美国公民子女造成特殊且极端的不寻常困难。 INA §§ 240A(b)(1)(B), (D), 240B(b)(1)(B), 8 U.S.C. §§ 1229b(b)(1)(B), (D), 1229c(b)(1)(B)。移民法官还备选认定，被告人不应得到有利裁量的行使。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f111bc45542f469321ff33f5492f4dea25fae39d1202ca02572ebeca2580c358",
+      "chineseText": "引证为29 I&N 决定 129（移民上诉委员会 2025年） 临时决定#4108"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0a58a28aa75fa10c7394acca59539a4483d6a3ef02ac8cb5ba218671579b9679",
+      "chineseText": "被告人未能获得撤销驱逐及自愿离境申请，移民法官依据法条规定否定其申请，理由包括未能证实良好道德特质及未能证明其被遣返将给其美籍子女带来特殊且极端的困难。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fccc259166010bf6f7e5338a51d454400083692bb2f5ca9fbd6909cafb7b5429",
+      "chineseText": "撤销驱逐和自愿离境均为有裁量权的救济形式。参见INA §§ 240A(b)(1), 240B(b)(1), 8 U.S.C. §§ 1229b(b)(1), 1229c(b)(1)；Paine案，29 I&N 决定 72, 72-73（移民上诉委员会 2025年）（撤销驱逐）；Pinzon案，26 I&N 决定 189, 195（移民上诉委员会 2013年）（自愿离境）。申请此类救济的被告人负有证明其满足所有法定资格条件并值得有利裁量的举证责任。见Paine案，29 I&N 决定 72；Pinzon案，26 I&N 决定 195；另见INA § 240(c)(4)(A), 8 U.S.C. § 1229a(c)(4)(A)（2018年）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8ae9ff2a1e590d5cd559460769443aca53abc72d6a78df29cda0aba7a3ad39fb",
+      "chineseText": "在行使裁量权时，我们必须“权衡显示外国人作为永久居民不受欢迎的负面因素与其在社会和人道方面所提出的有利考虑，以确定授予……救济是否符合本国利益。” CVT案，22 I&N 决定 7, 11（移民上诉委员会 1998年）（引自Marin案，16 I&N 决定 581, 584（移民上诉委员会 1978年））。与裁量权相关的因素包括在美家庭联系、在美居住年限、若遣返给被告人家庭带来的困难、服兵役、就业历史、财产或商业联系、社区服务，以及在有犯罪记录情况下的康复证明。若存在不利因素，被告人应提出抵消有利证据，可能需要非凡甚至杰出的权益，以超过消极因素。参见上述案情；另见DAC案，27 I&N 决定 575, 578（移民上诉委员会 2019年）（关于临时保护状态的裁量权授予，认定“任何不利因素，包括近期犯罪行为，必须被显著额外权益所抵消”）；Arai案，13 I&N 决定 494, 496（移民上诉委员会 1970年）（结论为，在对敌意因素加以考虑的调整身份申请中，申请人可能需通过展示“非同寻常甚至杰出权益”加以抵消）。我们对被告人是否值得有利裁量权的行使进行重新审查。8 C.F.R. § 1003.1(d)(3)(ii)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f9746c50f27bafa7b4a90b99bc43e6ace68ca7ce351ffb9fc260ef399e2cd75c",
+      "chineseText": "我们先考虑被告人的权益。被告人在青少年时期进入美国，已在本国居住近20年，具有显著的家庭纽带。他保持持续稳定的有偿就业，并获得雇主及邻居的表彰。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f111bc45542f469321ff33f5492f4dea25fae39d1202ca02572ebeca2580c358",
+      "chineseText": "引证为29 I&N 决定129（移民上诉委员会2025年） 临时决定#4108"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b38b112bcce6c0dcc57003b0c28c9b26ce9469aeccc2e86ff1678900ceb77862",
+      "chineseText": "我们承认，将被告遣返回墨西哥将给其本人及家人造成重大困难。其四名美国公民子女将面临与被告人分离或随其迁移至一个陌生且生活水平较低、资源较少的国家的局面。这四名子女中有三人曾被诊断出医学状况及发育迟缓，曾在美国接受治疗。然而，最近的医疗记录为2020年，且被告未证明他们目前接受或需要密集的医疗或教育干预，因此其预期面临的困难仍不确定。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "71ee2a5b847a96cc15475688c50f1f91f21ba916d2264ae8a87f9b0175c8b523",
+      "chineseText": "我们同意移民法官的认定，上述权益被本案负面因素所抵消。最重要的负面因素是被告人在2024年于佛罗里达州因酒驾被捕，当时血液酒精含量高，且其当时10岁的儿子在车内。见Thomas案，21 I&N 决定20, 23-25（移民上诉委员会1995年）（认定“尚未最终定罪的犯罪行为”，当有确凿证据时，仍为不利裁量因素相关）。酒驾是一种极其危险的犯罪行为，严重危害他人生命及财产安全。Begay诉美国案，553 U.S. 137,141（2008年），虽被Johnson诉美国案，576 U.S. 591（2015年）其他理由推翻；另见Castillo-Perez案，27 I&N 决定664, 669-70（司法部长2019年）（案例汇编）。基于移民法官关于逮捕情形的事实认定，被告人饮酒约20瓶啤酒后酒驾且携带幼子，在风险程度上尤为严重。饮酒数量及其危害儿童安全的行为，加剧其酒驾逮捕的不利影响。1"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "02680dd1bf89209694735940aae64e743a51d499059a1b93a43c85bbb474fb04",
+      "chineseText": "不利于有利裁量行使的还有被告人在与美国的交往中表现出的不诚实，反复使用虚假或被盗的社会保障号码用于纳税和工作资格目的。移民法官未明显犯错，认定被告人使用了两个不同的社会保障号码，其中一个属于已故的美国公民。见8 C.F.R. § 1003.1(d)(3)(i)。被告人还在一些纳税申报表上提供了虚假信息，将其在墨西哥的堂兄妹列为与其同住的侄子侄女，作为"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b4ba9f1b4d2257f940b475730a0af2cbc77930943fca92463069b5d7c6f1a7a5",
+      "chineseText": "1\n答辩人作证称他没有接受过酗酒的治疗，并且不认为自己是酗酒者。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c231761a2286b0ab54d6a865f64449135219d1ececa6141af1de7e7069b05bf2",
+      "chineseText": "第131页"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f111bc45542f469321ff33f5492f4dea25fae39d1202ca02572ebeca2580c358",
+      "chineseText": "引证为29 I&N Dec. 129（BIA 2025）临时决定 #4108"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ea55799bf0a1f04cdff6c57738d34676774e270a8d3e9e5feb15243286a536d6",
+      "chineseText": "家庭赡养人，并声称享有他无权获得的所得税抵免。 2"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f60344c1eaac0fd3b7f6c1febb25a010984928508edb020e225aea224bb2e359",
+      "chineseText": "使用伪造或被盗的社会保障号码以及在报税时提供虚假信息是负面因素，不利于酌情考虑的有利结果。提交伪造的社会保障号码和虚假报税信息属于具有欺骗性的行为，反映出外籍人士的人格负面。参见Cuenca-Arroyo诉Garland案，123 F.4th 781, 785（第5巡回法庭2024年）（认可“报税表上的虚假陈述，例如声称有一位居住在墨西哥的侄子作为赡养人，而该侄子不符合美国税法的资格……对[该外籍人士]的可信度和品格产生不利影响，这些是酌情分析中的相关因素”）；Marin-Rodriguez诉Holder案，710 F.3d 734, 739（第7巡回法庭2013年）（“通过故意向雇主呈交伪造的社会保障卡以获得和维持未授权的就业，[该外籍人士]……从事了欺骗性行为。”）。使用未授权的社会保障号码“破坏了政府监督社会保障账户管理的能力；影响了合法税收征收工作；并且在保护个人信息的努力中造成了公共成本。”参见Munoz-Rivera诉Wilkinson案，986 F.3d 587, 592（第5巡回法庭2021年）。此外，尽管此案中情况并非如此，这类行为可能导致刑事起诉。参见例如26 U.S.C. § 7206(1)（对报税表上作重大虚假陈述者进行刑事处罚）；42 U.S.C. § 408(a)(7)(B)（对以任何目的虚假陈述社会保障号码为本人号码者进行刑事处罚）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9ce2b048ee84d0bd33928c9777a19be944167633638d7fe9cce5ba70a686e0ae",
+      "chineseText": "答辩人主张他不知道此类行为违法，并且在报税时合理依赖了专业建议。具体而言，他声称他的所有报税表均为英文，而他不会讲也不会读英文，并且他的报税专业人士告诉他可以将墨西哥的亲属作为他的税务赡养人。关于社会保障号码，答辩人作证称他只使用了一个社会保障号码，并且他认为该号码是属于他的。他进一步作证说，一名律师给了他所用的社会保障号码，并告诉他这是他的号码。他声称他不知道该号码属于他人。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6462b31bc6df62bc7f8d61ffc432fa12a345a5497ccab768a0b01734f8ea2771",
+      "chineseText": "移民法官不采信答辩人在这部分的作证，反而认定他在使用社会保障号码及对报税虚假陈述的知情方面作出了虚假作证。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "642d860f2f841f267de7e8c29f20018f6c0a42267cdd469236fbe19b3e751ebd",
+      "chineseText": "2\n答辩人未主张其对这些家庭成员提供经济支持。  \n 第132页"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f111bc45542f469321ff33f5492f4dea25fae39d1202ca02572ebeca2580c358",
+      "chineseText": "引证为29 I&N Dec. 129（BIA 2025）临时裁定 #4108"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "20bc2b981a5f3934d0cc7064ee375f0b85df3f18fc138e810c6ed37bde95fcb7",
+      "chineseText": "返还。“‘缺乏坦诚本身就是一个不利因素，影响对宽大裁量权的有利行使。’”Burbano案，20 I&N Dec. 872, 876（BIA 1994）；另见Gomez-Beltran案，26 I&N Dec. 765, 768（BIA 2016）（“真实的证言和披露对移民法庭系统的有效运作至关重要。”）。我们认为移民法官关于被申诉人可信度的事实认定无明显错误。见8 C.F.R. § 1003.1(d)(3)(i)。被申诉人称其仅使用一个社会安全号码的证词，与其报税表和W-2表格上显示的两个社会安全号码的书面证据相矛盾。此外，被申诉人称他是在距2024年听证约8年前经律师获得社会安全号码的证词，与他自2007年起的报税表和W-2表格中显示的两个虚假社会安全号码不符。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5cfa2b23e1182ba70fe1e886cd9143a988e1b6346104fb4c3efa42626ebef54c",
+      "chineseText": "即使撇开移民法官认定被申诉人提供了虚假证词，该被申诉人声称的无知也不足以抵消本案中的负面考虑因素。法律早已确立，法律无知不能作为非法行为的辩解或抗辩。参见Jerman诉Carlisle, McNellie, Rini, Kramer & Ulrich LPA案，559 U.S. 573, 581（2010）（“我们长期承认‘所有人普遍熟知的格言，即无知法律不成为任何人无论在民事或刑事上的免责理由。’”（引文省略））；另见Cheek诉美国案，498 U.S. 192, 199（1991）（指出“根深蒂固”的一般规则即法律无知不是辩护理由）。被申诉人有责任确保其向政府机关作出的任何陈述的准确性。参见A.J. Valdez与Z. Valdez案，27 I&N Dec. 496, 500（BIA 2018）（“合理期望外国人将采取措施确认其签署文件的准确性。”）。被申诉人在其税表与就业表格上签署后，以伪证罪进行处罚，移民法官合理推断其知悉并同意其内容。见同案499-500页（裁定外国人在移民申请上的签名，在没有欺诈或他人不法行为证据的情况下，产生强烈推定，即其知悉并同意申请内容）。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "0a7ec198fc484c8615f5d020670203a8ab1e6de06537aa896331cf847a171613",
+      "chineseText": "被申诉人声称其在报税时依赖了税务准备人员的专业建议及为其获得社会安全号码的律师的建议。合理依赖专业建议的主张预设此类建议是在诚信前提下寻求的，"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "4ac0dfdc0cc844a38ee308e086716618886661ad959c16656aca650172e662d7",
+      "chineseText": "3 被申诉人未主张无效律师协助的主张。 第133页"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f111bc45542f469321ff33f5492f4dea25fae39d1202ca02572ebeca2580c358",
+      "chineseText": "引证为29 I&N Dec. 129（BIA 2025）临时裁定 #4108"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9e03014215e11232ec1a858c1044f8a49553e79ed473b3fd780b42e4250e26f2",
+      "chineseText": "且在依赖此类建议时，非有意无视真相。参见Bautista诉Star Cruises案，396 F.3d 1289, 1301（第十一巡回法庭2005）（认可“一般原则：‘签署书面合同却对其内容不知情的人，不得以无知作为不履行义务的理由，除非存在欺诈和虚假陈述’”（原文改动）（引文省略））。当被申诉人以依赖专业建议为由试图为其行为开脱时，应提交具体建议的证据并说明为何合理依赖该建议。参照Garland诉Ming Dai案，593 U.S. 357, 371（2021）（裁定机构无需认定可信证词具说服力或单凭可信证词即能满足被申诉人的举证责任）；L-A-C-案，26 I&N Dec. 516, 519（BIA 2015）（“无论申请人是否被认定可信，在证据合理可得且移民法官无提前通知的情况下，申请人负有确认诉讼关键事实的举证责任。”）。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "8f4a2c86165f1cf3ed749d12240bf76d730203d5561e6746658c2e2a631bde9f",
+      "chineseText": "本案中，被申诉人含糊地证称基于律师提供的“10年法”于听证8年前取得社会安全号码，然该律师的姓名和信息不明确，该证词与其先前使用两个虚假社会安全号码报税的证据相矛盾。因此，证据不足以支持其合理相信该社会安全号码合法取得的主张。关于被申诉人在报税中虚假申报扶养人的主张，其未提交税务准备人员或其他税务专业人士的任何证据，支持其被告知可将其未负担的墨西哥亲属申报为扶养人的说法。根据所提供的证据，被申诉人未证明在其税表及就业文件中填写虚假或窃取的社会安全号码并虚报海外亲属为扶养人以获取税收抵免时，有合理依赖专业建议的依据。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "45b5a7e3e47b32a1041256754f18c5660a94d70e5a47e3e0229bfb3498a12dc7",
+      "chineseText": "权衡被申请人利益与这些负面因素，我们综合判断，做出有利裁量权的决定不符合美国的最佳利益。参见C-V-T一案，22 I&N Dec. 11。因此，我们将拒绝他关于取消驱逐和自愿离境的申请。本庭无需对被申请人关于良好道德品质和困难的论点作出裁决。参见INS诉Bagamasbad案，429 U.S. 24, 25（1976）（全体法官意见）“一般情况下，法院和机构无需就对后果无影响的问题作出裁决。”）。本次上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "662482c4618ec18d64e51b2565bcebd30460b238eba4c7baf6384a4eedacaa8e",
+      "chineseText": "第134页"
+    },
+    {
+      "segmentId": "pdf-p7-s35",
+      "order": 35,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "f111bc45542f469321ff33f5492f4dea25fae39d1202ca02572ebeca2580c358",
+      "chineseText": "引证为29 I&N Dec. 129（BIA 2025）临时决定编号#4108"
+    },
+    {
+      "segmentId": "pdf-p7-s36",
+      "order": 36,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "1e6cf66b51dbb3bcd1f8be517833cbb3a3f231b972faaa8c0d8261d851bc11e3",
+      "chineseText": "命令：被申请人的上诉被驳回。\n注意：如果被申请人受到最终驱逐令的约束，且故意未能或拒绝根据该令离开美国，未能善意及时申请离境所需的旅行证件或其他文件，或未能按国土安全部（DHS）要求的时间和地点出示本人，或合谋或采取任何旨在阻止或妨碍其根据驱逐令离境的行为，则被申请人将面临每天最高998美元的民事罚款。参见《移民与国籍法》§274D，8 U.S.C. §1324d（2018）；8 C.F.R.§280.53(b)(14)（2025）。"
+    },
+    {
+      "segmentId": "pdf-p7-s37",
+      "order": 37,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "444ffe4d81c2507a2be621cc150fe54cc1f4b8e1ff1d3da72009e1e5c0c839ac",
+      "chineseText": "第135页"
+    }
+  ]
+}

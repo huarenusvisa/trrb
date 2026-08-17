@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/trump/%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE%E9%A3%8E%E6%9A%B4%E5%8E%8B%E5%A2%83%E7%89%B9%E6%9C%97%E6%99%AE%E6%B7%B1%E9%99%B7%E6%88%98%E4%BA%89%E7%89%A9%E4%BB%B7%E4%B8%8E%E6%B0%91%E8%B0%83%E5%8D%B1%E6%9C%BA%E5%85%B1%E5%92%8C%E5%85%9A%E6%81%90%E4%B8%A2%E5%9B%BD%E4%BC%9A-mswnumua-85cbcf</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T03:14:53.600Z</news:publication_date>
+        <news:title>中期选举风暴压境！特朗普深陷战争、物价与民调危机，共和党恐丢国会</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/trump/%E8%BF%99%E6%98%AF%E5%AF%B9%E5%86%9B%E4%BA%BA%E7%9A%84%E8%83%8C%E5%8F%9B%E7%BE%8E%E5%86%9B%E8%88%AA%E6%AF%8D%E6%B0%B4%E5%85%B5%E9%95%BF%E6%9C%9F%E9%83%A8%E7%BD%B2%E6%9A%B4%E7%98%A6%E5%AE%B6%E5%B1%9E%E6%80%92%E6%96%A5%E7%89%B9%E6%9C%97%E6%99%AE%E8%B5%AB%E6%A0%BC%E5%A1%9E%E6%96%AF%E6%B7%A1%E5%8C%96%E5%8D%B1%E6%9C%BA-mswn9r31-c92846</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -558,14 +566,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-15T13:38:59.451Z</news:publication_date>
         <news:title>得州拉雷多联合行动拘捕12人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-d137cdb0a4bc30646c4bcacdfe3a58c30a8fa8a7</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T03:26:06.051Z</news:publication_date>
-        <news:title>丹佛ICE拘留墨西哥酒驾男子凯文·鲁比奥</news:title>
       </news:news>
     </url>
 </urlset>

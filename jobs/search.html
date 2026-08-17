@@ -4,16 +4,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>美国招聘搜索｜唐人日报</title>
-  <meta name="description" content="搜索美国境内招聘岗位，支持州、城市、County/Borough、Neighborhood、行业、全兼职、薪资和排序筛选。" />
+  <meta name="description" content="搜索美国境内招聘岗位，支持州、城市、County/Borough、Neighborhood、行业、全兼职、薪资、附近岗位和地图模式。" />
   <link rel="canonical" href="https://trrb.net/jobs/search.html" />
   <link rel="stylesheet" href="/styles.css?v=29.9" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    body{background:#f8fafc;color:#101828}.shell{max-width:1120px;margin:0 auto;padding:32px 18px 80px}.head a{color:#d60000;text-decoration:none}.head h1{margin:16px 0 8px;font-size:clamp(28px,4vw,44px)}.head p{color:#667085}.search-card,.result-card{background:#fff;border:1px solid #e4e7ec;border-radius:16px;box-shadow:0 8px 30px rgba(16,24,40,.05)}.search-card{padding:18px;margin:24px 0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.grid label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#475467}.grid input,.grid select{min-height:42px;border:1px solid #d0d5dd;border-radius:10px;padding:8px 10px;background:#fff}.wide{grid-column:span 2}.actions{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}.actions button{border:0;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer}.primary{background:#d60000;color:#fff}.secondary{background:#eef2f6;color:#344054}.status{color:#667085;font-size:14px}.results{display:grid;gap:12px}.result-card{padding:18px}.result-card h2{font-size:21px;margin:0 0 8px}.meta{display:flex;flex-wrap:wrap;gap:8px;color:#667085;font-size:14px}.pill{background:#f2f4f7;border-radius:999px;padding:4px 9px}.salary{font-weight:700;color:#101828}.empty{padding:28px;text-align:center;color:#667085}.pagination{display:flex;justify-content:center;gap:10px;margin-top:18px}@media(max-width:820px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.grid{grid-template-columns:1fr}.wide{grid-column:span 1}}
+    body{background:#f8fafc;color:#101828}.shell{max-width:1120px;margin:0 auto;padding:32px 18px 80px}.head a{color:#d60000;text-decoration:none}.head h1{margin:16px 0 8px;font-size:clamp(28px,4vw,44px)}.head p{color:#667085}.search-card,.result-card{background:#fff;border:1px solid #e4e7ec;border-radius:16px;box-shadow:0 8px 30px rgba(16,24,40,.05)}.search-card{padding:18px;margin:24px 0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.grid label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:#475467}.grid input,.grid select{min-height:42px;border:1px solid #d0d5dd;border-radius:10px;padding:8px 10px;background:#fff}.wide{grid-column:span 2}.actions{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}.actions button{border:0;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer}.primary{background:#d60000;color:#fff}.secondary{background:#eef2f6;color:#344054}.status{color:#667085;font-size:14px}.view-switch{display:flex;gap:8px;margin:0 0 14px}.view-switch button.is-active{background:#101828;color:#fff}.results{display:grid;gap:12px}.result-card{padding:18px}.result-card h2{font-size:21px;margin:0 0 8px}.meta{display:flex;flex-wrap:wrap;gap:8px;color:#667085;font-size:14px}.pill{background:#f2f4f7;border-radius:999px;padding:4px 9px}.salary{font-weight:700;color:#101828}.empty{padding:28px;text-align:center;color:#667085}.pagination{display:flex;justify-content:center;gap:10px;margin-top:18px}#jobs-map{height:560px;border-radius:16px;border:1px solid #e4e7ec;background:#eef2f6}.hidden{display:none!important}@media(max-width:820px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.grid{grid-template-columns:1fr}.wide{grid-column:span 1}#jobs-map{height:460px}}
   </style>
 </head>
 <body>
   <main class="shell">
-    <header class="head"><a href="/jobs/">← 返回招聘求职</a><h1>搜索美国招聘岗位</h1><p>仅限美国。可从州逐级筛选到城市、County/Borough 与 Neighborhood，并按关键词、行业、全/兼职、薪资、最新或距离排序。</p></header>
+    <header class="head"><a href="/jobs/">← 返回招聘求职</a><h1>搜索美国招聘岗位</h1><p>仅限美国。可手选州、城市、County/Borough 与 Neighborhood；授权设备位置后可查看 5/10/25/50 miles 附近岗位。拒绝定位不会影响手动地区搜索。</p></header>
     <section class="search-card">
       <form id="jobs-search-form">
         <div class="grid">
@@ -26,15 +27,19 @@
           <label>Borough<input id="borough" placeholder="Queens" /></label>
           <label>Neighborhood<input id="neighborhood" placeholder="Flushing" /></label>
           <label>最低薪资<input id="salary" type="number" min="0" step="1" placeholder="例如 20" /></label>
+          <label>附近范围<select id="radius"><option value="">不限距离</option><option value="5">5 miles</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50">50 miles</option></select></label>
           <label>排序<select id="sort"><option value="relevance">综合</option><option value="latest">最新</option><option value="salary">薪资</option><option value="distance">距离</option></select></label>
         </div>
-        <div class="actions"><button class="primary" type="submit">搜索岗位</button><button class="secondary" type="button" id="use-location">授权当前位置用于距离排序</button><span class="status" id="search-status">正在连接正式招聘数据源…</span></div>
+        <div class="actions"><button class="primary" type="submit">搜索岗位</button><button class="secondary" type="button" id="use-location">授权当前位置</button><button class="secondary" type="button" id="clear-location">关闭附近定位</button><span class="status" id="search-status">正在连接正式招聘数据源…</span></div>
       </form>
     </section>
+    <div class="view-switch"><button class="secondary is-active" id="list-view" type="button">列表模式</button><button class="secondary" id="map-view" type="button">地图模式</button></div>
     <section id="jobs-results" class="results" aria-live="polite"></section>
+    <section id="jobs-map" class="hidden" aria-label="附近招聘岗位地图"></section>
     <nav class="pagination"><button class="secondary" id="prev-page" type="button">上一页</button><button class="secondary" id="next-page" type="button">下一页</button></nav>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./search.js?v=20260817-r1n3"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./search.js?v=20260817-r1n4"></script>
 </body>
 </html>

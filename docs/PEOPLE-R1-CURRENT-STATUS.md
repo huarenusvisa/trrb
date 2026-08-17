@@ -58,6 +58,9 @@
   - Private record-version snapshots retain accepted source linkage; public RLS does not expose moderation/version history.
   - Dedicated acceptance workflow `PEOPLE-R1 Node 9 Acceptance` completed SUCCESS on main for run `32063525978` at commit `0e7bac66d39395ff84eb13d33d7bfaa0e292bb92`.
 
-- PEOPLE-R1-N10 — RUNNING
+- PEOPLE-R1-N10 — PASS
+  - N1-N9 were rerun in strict serial order by the final acceptance workflow.
+  - Web independent product, Topic entry, search/disambiguation, mobile APP entry/feed, SEO markers, privacy, evidence governance, review and relationship-foundation constraints all passed together.
+  - Final workflow `PEOPLE-R1 Node 10 Acceptance` completed SUCCESS on main for run `32063901572` and explicitly printed `PEOPLE-R1: 10/10 PASS`.
 
-PASS registration is strictly serial. Do not mark N10 PASS until N1-N9 are revalidated together and the final workflow explicitly prints `PEOPLE-R1: 10/10 PASS`.
+PEOPLE-R1: 10/10 PASS

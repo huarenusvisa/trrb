@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-2ad6997b5494deacf884990ef43916fa527cadac</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:34:22.151Z</news:publication_date>
+        <news:title>波士顿ICE公布可在私有财产执法权利</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-ea9bc0b53f478055c318410e9a40308467a1d166</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:34:21.853Z</news:publication_date>
+        <news:title>加州监狱转移数百刑事非法移民至联邦拘押</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-74ba38548916e040c742800f4a4771da0a9ce8b9</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:34:21.530Z</news:publication_date>
+        <news:title>洛杉矶ICE范奈斯逮捕66岁多次非法入境非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-5249b293882ead47c9b25a1d64216978a7893cd5</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:34:21.021Z</news:publication_date>
+        <news:title>洛杉矶ICE拘留38岁俄罗斯籍男子巴拉诺夫等待遣返</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-b250efc0808a9b3e9aa260c8bc817de7169f2160</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:34:20.654Z</news:publication_date>
+        <news:title>新罕布什尔一男子涉嫌诱骗未成年人被逮捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-8791d5acf6b2e3aa909f601fe1704df50624a1ba</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-17T23:34:20.064Z</news:publication_date>
+        <news:title>美国USCIS发布移除令要求个体遵守程序</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-c63042147544c87c5aed56a4fb7b50821a5df8f3</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1414,22 +1462,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-16T01:46:45.876Z</news:publication_date>
         <news:title>西雅图ICE拘捕墨西哥籍甲基苯丙胺犯罪嫌疑人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-0bd46488728fbeceecfe98549593807b1352bc4c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T23:28:17.941Z</news:publication_date>
-        <news:title>冰岛仓库ICE突袭仓库拘留员工 锁门时遭反抗</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-34fe522dddf04bd072033a25a2654fd0c8b79c6f</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T23:27:18.735Z</news:publication_date>
-        <news:title>纽约将终止12机构287(g)协议限制警方协助移民</news:title>
       </news:news>
     </url>
 </urlset>

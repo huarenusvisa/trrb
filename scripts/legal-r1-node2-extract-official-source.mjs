@@ -98,14 +98,14 @@ function fetchSourceWithCurl(url) {
     '--fail', '--location', '--silent', '--show-error',
     '--retry', '3', '--retry-all-errors', '--retry-delay', '1',
     '--connect-timeout', '20', '--max-time', '120',
-    '--user-agent', 'Mozilla/5.0 (compatible; TRRB-Legal-R1/1.1; +https://trrb.net)',
+    '--user-agent', 'Mozilla/5.0 (compatible; TRRB-Legal-R1/1.2; +https://trrb.net)',
     '--header', 'Accept: text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.5',
     url
   ], { encoding: 'buffer', maxBuffer: 128 * 1024 * 1024 });
   return { buf, contentType: '', bytes: buf.length, finalUrl: url, transport: 'curl-fallback' };
 }
 
-async function fetchSource(url) {
+async function fetchSourceDirect(url) {
   let lastError;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
@@ -113,25 +113,96 @@ async function fetchSource(url) {
         redirect: 'follow',
         signal: AbortSignal.timeout(60000),
         headers: {
-          'user-agent': 'Mozilla/5.0 (compatible; TRRB-Legal-R1/1.1; +https://trrb.net)',
+          'user-agent': 'Mozilla/5.0 (compatible; TRRB-Legal-R1/1.2; +https://trrb.net)',
           accept: 'text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.5',
           'cache-control': 'no-cache'
         }
       });
-      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      if (!res.ok) {
+        const error = new Error(`HTTP ${res.status} for ${url}`);
+        error.httpStatus = res.status;
+        throw error;
+      }
       const buf = Buffer.from(await res.arrayBuffer());
       return { buf, contentType: res.headers.get('content-type') || '', bytes: buf.length, finalUrl: res.url, transport: 'fetch' };
     } catch (error) {
       lastError = error;
+      if (error?.httpStatus === 404) break;
       if (attempt < 3) await sleep(500 * attempt);
     }
   }
+  if (lastError?.httpStatus === 404) throw lastError;
   try {
     return fetchSourceWithCurl(url);
   } catch (curlError) {
     const fetchMessage = String(lastError?.message || lastError || 'fetch failed');
     const curlMessage = String(curlError?.message || curlError || 'curl failed');
     throw new Error(`${fetchMessage}; curl fallback failed: ${curlMessage}`);
+  }
+}
+
+function ca8CaseNumberFromOpinionUrl(url) {
+  const m = String(url || '').match(/^https:\/\/ecf\.ca8\.uscourts\.gov\/cgi-bin\/(\d{2})(\d{4})[PU](?:\d+)?\.pdf(?:[?#].*)?$/i);
+  return m ? `${m[1]}-${m[2]}` : null;
+}
+
+function officialPdfCandidatesFromHtml(html, baseUrl) {
+  const candidates = [];
+  const seen = new Set();
+  const add = value => {
+    if (!value) return;
+    let resolved;
+    try { resolved = new URL(decodeEntities(value), baseUrl).href; } catch { return; }
+    if (!/\.pdf(?:$|[?#])/i.test(resolved) || seen.has(resolved)) return;
+    seen.add(resolved);
+    candidates.push(resolved);
+  };
+  let m;
+  const href = /href=["']([^"']+\.pdf(?:\?[^"']*)?)["']/gi;
+  while ((m = href.exec(html))) add(m[1]);
+  const visible = /\b(\d{6}[PU](?:\d+)?\.pdf)\b/gi;
+  while ((m = visible.exec(html))) add(m[1]);
+  return candidates;
+}
+
+async function recoverCa8Opinion(url) {
+  const caseNumber = ca8CaseNumberFromOpinionUrl(url);
+  if (!caseNumber) return null;
+  const caseIndexUrl = `https://ecf.ca8.uscourts.gov/cgi-bin/opnByCase.pl?caseno=${encodeURIComponent(caseNumber)}&getOpn=1`;
+  const indexMeta = await fetchSourceDirect(caseIndexUrl);
+  const html = indexMeta.buf.toString('utf8');
+  const candidates = officialPdfCandidatesFromHtml(html, caseIndexUrl);
+  const caseDigits = caseNumber.replace('-', '');
+  candidates.sort((a, b) => {
+    const aa = path.basename(new URL(a).pathname).startsWith(caseDigits) ? 0 : 1;
+    const bb = path.basename(new URL(b).pathname).startsWith(caseDigits) ? 0 : 1;
+    return aa - bb;
+  });
+  for (const candidate of candidates) {
+    try {
+      const meta = await fetchSourceDirect(candidate);
+      if (!looksLikePdf(meta, candidate)) continue;
+      return {
+        ...meta,
+        recoveryMethod: 'ca8-official-case-index',
+        recoveryIndexUrl: caseIndexUrl,
+        recoveredFrom: url,
+        recoveredSourceUrl: candidate
+      };
+    } catch {}
+  }
+  return null;
+}
+
+async function fetchSource(url) {
+  try {
+    return await fetchSourceDirect(url);
+  } catch (error) {
+    if (error?.httpStatus === 404 && ca8CaseNumberFromOpinionUrl(url)) {
+      const recovered = await recoverCa8Opinion(url);
+      if (recovered) return recovered;
+    }
+    throw error;
   }
 }
 
@@ -144,17 +215,13 @@ function extractPdfBuffer(meta, tempPdf) {
 
 async function extractPdf(url, tempPdf) {
   const meta = await fetchSource(url);
-  if (!looksLikePdf(meta, url)) throw new Error(`Expected PDF but official source returned ${meta.contentType || 'non-PDF content'} for ${url}`);
+  if (!looksLikePdf(meta, meta.recoveredSourceUrl || url)) throw new Error(`Expected PDF but official source returned ${meta.contentType || 'non-PDF content'} for ${url}`);
   return extractPdfBuffer(meta, tempPdf);
 }
 
 async function extractHtml(url, tempPdf) {
   const meta = await fetchSource(url);
-  // Several federal appellate courts expose extensionless CGI links that return the
-  // opinion PDF directly. Sniff the payload before treating the response as HTML so
-  // those official opinions retain page/paragraph structure instead of becoming
-  // false "no semantic HTML" failures.
-  if (looksLikePdf(meta, url)) return extractPdfBuffer(meta, tempPdf);
+  if (looksLikePdf(meta, meta.recoveredSourceUrl || url)) return extractPdfBuffer(meta, tempPdf);
   const html = meta.buf.toString('utf8');
   const segments = segmentsFromHtml(html);
   return { ...meta, segments, extractionMethod: 'semantic-html-blocks', sourceFormat: 'html' };
@@ -198,7 +265,7 @@ for (const r of selected) {
       continue;
     }
     fs.writeFileSync(outPath, JSON.stringify({ ...base, sourceUrl, status: 'EXTRACTED', ...meta, segmentCount: segments.length, segments }, null, 2) + '\n');
-    summary.push({ recordId: r.id, status: 'EXTRACTED', segmentCount: segments.length, sourceFormat: meta.sourceFormat });
+    summary.push({ recordId: r.id, status: 'EXTRACTED', segmentCount: segments.length, sourceFormat: meta.sourceFormat, recoveryMethod: meta.recoveryMethod || null });
   } catch (error) {
     fs.writeFileSync(outPath, JSON.stringify({ ...base, status: 'FAILED', segments: [], error: String(error?.message || error) }, null, 2) + '\n');
     summary.push({ recordId: r.id, status: 'FAILED', error: String(error?.message || error) });
@@ -214,5 +281,6 @@ console.log(JSON.stringify({
   extracted: summary.filter(x => x.status === 'EXTRACTED').length,
   needsOcr: summary.filter(x => x.status === 'NEEDS_OCR').length,
   failed: summary.filter(x => x.status === 'FAILED').length,
+  recovered: summary.filter(x => x.recoveryMethod).length,
   results: summary
 }, null, 2));

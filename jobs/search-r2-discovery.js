@@ -79,12 +79,22 @@
     });
   }
 
+  function loadMobileLayer() {
+    if (document.querySelector('script[data-jobs-r2-mobile]')) return;
+    const script = document.createElement('script');
+    script.src = './search-r2-mobile.js?v=20260817-r2n7';
+    script.async = true;
+    script.dataset.jobsR2Mobile = '1';
+    document.body.appendChild(script);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     bindClicks();
     $('category')?.addEventListener('change', loadRegionHints);
     ['state','city','borough','neighborhood'].forEach((id) => $(id)?.addEventListener('change', loadCategoryHints));
     $('all-us')?.addEventListener('click', () => setTimeout(loadCategoryHints,0));
     $('use-zip')?.addEventListener('click', () => setTimeout(loadCategoryHints,0));
+    loadMobileLayer();
     setTimeout(() => { loadRegionHints(); loadCategoryHints(); }, 600);
   });
 })();

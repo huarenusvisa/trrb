@@ -61,6 +61,48 @@
       <priority>0.7</priority>
     </url>
   <url>
+      <loc>https://trrb.net/ice/ice-e89b1346e400de28e2bc38068e8c2b8426c550ae</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-75f4bb5547077416456ac659b20152e346ec1398</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-b5ddaafed697a2e713c52a29b595e626326818d8</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-8a7df6eea9228be4536984c233706cde69fde2d4</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-d3ad3118406231794f3960ca265b5ca868043d19</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-97b4dc4464f48f852ddd1fcf35f0dfa0badd9ba0</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-a0cc5e7e531329997f0b333a3997d26951caa639</loc>
+      <lastmod>2026-08-17</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.6</priority>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-7ea391fc33bcef3e37990382441f7b934685f10e</loc>
       <lastmod>2026-08-17</lastmod>
       <changefreq>weekly</changefreq>
@@ -20598,6 +20640,12 @@
       <changefreq>weekly</changefreq>
       <priority>0.6</priority>
     </url>
+  <url>
+    <loc>https://trrb.net/ice/ice-72c4b99d4c5d61812b4d4b3b2efc977c1f95c900</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
   <url>
     <loc>https://trrb.net/ice/ice-699d2c9e2346a474d4c9f0b3e0e290d20657becc</loc>
     <lastmod>2026-08-16</lastmod>

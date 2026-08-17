@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "ad3ef322229d7936b9ad2d2343aa2f106ad5017f364b4bd8e3829c768512b1d4",
+  "datasetVersion": "3d9330fed323d63fc9c68d5280e86192ddd83d8b207d967e8db4cdc7c7554469",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
@@ -1888,18 +1888,18 @@
       "sourceKey": "SCOTUS:24-1068:2026-06-25"
     },
     {
-      "id": "8bbb551654bd30d83c4ccc65",
+      "id": "69cbadf42c367310c2b87f5a",
       "sourceSystem": "SCOTUS",
       "authorityType": "Supreme Court Opinion",
       "issuingBody": "Supreme Court of the United States",
       "jurisdiction": "United States",
       "publicationDate": "2026-04-29",
       "docket": "24-109",
-      "title": "Louisiana v. Callais Revisions : 5/04/26",
-      "citation": "608/1",
+      "title": "Louisiana v. Callais",
+      "citation": "608 U.S. 85",
       "precedentialStatus": "opinion_of_the_court",
-      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-109_new_jifl.pdf",
-      "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/24-109_new_jifl.pdf",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/608us1r29_n648.pdf",
+      "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/608us1r29_n648.pdf",
       "sourceKey": "SCOTUS:24-109:2026-04-29"
     },
     {
@@ -3013,21 +3013,6 @@
       "sourceKey": "CIRCUIT:ca1:7b144c8c563690e9"
     },
     {
-      "id": "5cd9323d03436861545115ca",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "24-1805P.01A",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:80ae79879767775e"
-    },
-    {
       "id": "742ec4be70d431a94118222c",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3506,6 +3491,21 @@
       "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010126574.pdf",
       "officialPdfUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010126574.pdf",
       "sourceKey": "CIRCUIT:ca10:83178cb2a4b77027"
+    },
+    {
+      "id": "1a61b55098c8fe5217e6b8b2",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": null,
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489226.pdf",
+      "officialPdfUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489226.pdf",
+      "sourceKey": "CIRCUIT:ca10:a626a64736ede8de"
     },
     {
       "id": "417f5ccaff3bf68018da946c",
@@ -5833,6 +5833,21 @@
       "sourceKey": "CIRCUIT:ca4:567db7c9ef8508f8"
     },
     {
+      "id": "c849ee0f75be53d3aa81c006",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/242260.U.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/242260.U.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/242260.U.pdf",
+      "sourceKey": "CIRCUIT:ca4:574a2aba0af96d65"
+    },
+    {
       "id": "9694c83f1bafe94da642af53",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -5878,51 +5893,6 @@
       "sourceKey": "CIRCUIT:ca4:68aab00498653a97"
     },
     {
-      "id": "e91381b6e529fcf03282777e",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251285.U.pdf",
-      "sourceKey": "CIRCUIT:ca4:6f9f69ff23c95866"
-    },
-    {
-      "id": "a60aa9f1724c9f00dd46b586",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/241244.U.pdf",
-      "sourceKey": "CIRCUIT:ca4:79a0e475537ff2fc"
-    },
-    {
-      "id": "118d068f71f52cfa450e30ab",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/254122.U.pdf",
-      "sourceKey": "CIRCUIT:ca4:7c192e87b8ec7f13"
-    },
-    {
       "id": "63b469c1afadec4c98ca3b95",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -5951,6 +5921,21 @@
       "officialUrl": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
       "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
       "sourceKey": "CIRCUIT:ca4:96933b47bf1b7b88"
+    },
+    {
+      "id": "f6df447b81029c2e4847c4f9",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/254125.U.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254125.U.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/254125.U.pdf",
+      "sourceKey": "CIRCUIT:ca4:9ebcef3e8ae60679"
     },
     {
       "id": "cf5b678e3a8674b9cf72e4b9",
@@ -6103,21 +6088,6 @@
       "sourceKey": "CIRCUIT:ca4:b286cac5e2080a21"
     },
     {
-      "id": "ed091abbad9b8847ea2a3b18",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251077.U.pdf",
-      "sourceKey": "CIRCUIT:ca4:b8205f62694576ed"
-    },
-    {
       "id": "08bb4f8c8ab1d28ed5c8e282",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6161,6 +6131,21 @@
       "officialUrl": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf",
       "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf",
       "sourceKey": "CIRCUIT:ca4:bf970437ca3aaab9"
+    },
+    {
+      "id": "b542160a24c37c0c65857d8a",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/244630.U.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/244630.U.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/244630.U.pdf",
+      "sourceKey": "CIRCUIT:ca4:bfb60027d97c403d"
     },
     {
       "id": "4b0476ccf96f58b02670259b",
@@ -6236,6 +6221,21 @@
       "officialUrl": "https://www.ca4.uscourts.gov/opinions/254663.U.pdf",
       "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/254663.U.pdf",
       "sourceKey": "CIRCUIT:ca4:e59f4aba1271ddea"
+    },
+    {
+      "id": "838482e05889d774624870d6",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/244556.p.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/244556.p.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/244556.p.pdf",
+      "sourceKey": "CIRCUIT:ca4:e63c82d578ae42dd"
     },
     {
       "id": "a7edaf5e4d2edb2d90693231",

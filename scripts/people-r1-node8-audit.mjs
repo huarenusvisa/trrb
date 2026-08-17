@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+const must=(ok,msg)=>{if(!ok)throw new Error(msg)};
+const sql=fs.readFileSync('supabase/migrations/20260817151500_people_r1_n8_claims_relations.sql','utf8');
+for(const type of ['claim','supplement','correction','dispute','deletion']) must(sql.includes(`'${type}'`),`missing request type ${type}`);
+for(const rel of ['self','parent','child','spouse','sibling','grandparent','grandchild','family']) must(sql.includes(`'${rel}'`),`missing requester relationship ${rel}`);
+must(sql.includes('people_profile_request_evidence'),'request evidence table missing');
+must(sql.includes('people_profile_request_history'),'request audit history missing');
+must(sql.includes("status text not null default 'pending'"),'requests must default to pending review');
+must(sql.includes('requester_user_id = auth.uid()'),'request ownership RLS missing');
+must(sql.includes('Review/approval remains server/editor controlled'),'requesters must not self-approve');
+must(sql.includes('people_relationships'),'future family relationship foundation missing');
+for(const rel of ['parent','child','spouse','sibling','grandparent','grandchild']) must(sql.includes(`'${rel}'`),`missing relationship type ${rel}`);
+must(sql.includes('person_id <> related_person_id'),'self relationships must be blocked');
+must(sql.includes("visibility text not null default 'private'"),'family relationships must default private');
+must(sql.includes("verification_status text not null default 'unverified'"),'family relationships must default unverified');
+must(sql.includes('does not render a genealogy/family tree'),'R1 must not expand into a genealogy product');
+console.log('PEOPLE-R1-N8 PASS: claim/supplement/correction/dispute/deletion requests are review-gated and auditable; family relationship IDs are safely reserved without building a genealogy product.');

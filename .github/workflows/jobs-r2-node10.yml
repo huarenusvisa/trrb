@@ -33,4 +33,14 @@ jobs:
           node --check admin/jobs-manager.js
           node --check admin/jobs-location-governance.js
       - name: Revalidate JOBS-R2 N1-N9 and global regression
-        run: node scripts/audit-jobs-r2-node10.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/audit-jobs-r2-node10.mjs 2>&1 | tee jobs-r2-node10-report.txt
+      - name: Upload N10 validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jobs-r2-node10-report
+          path: jobs-r2-node10-report.txt
+          if-no-files-found: warn

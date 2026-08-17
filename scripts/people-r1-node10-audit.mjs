@@ -46,3 +46,4 @@ must(topic.includes('美国华人人物志') && topic.includes('/people/'),'Topi
 
 console.log('PEOPLE-R1-N10 PASS: N1-N9 were serially revalidated; Web, APP, search, SEO, privacy, evidence governance and review surfaces remain aligned.');
 console.log('PEOPLE-R1: 10/10 PASS');
+// Final acceptance remains deterministic and reruns every prior PEOPLE-R1 node audit in strict order.

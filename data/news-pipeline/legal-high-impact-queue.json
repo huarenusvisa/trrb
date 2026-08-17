@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceDatasetVersion": "e1c17f1299f4d9a414b74934cb80118a85b03f537fdf6dd7ff8d574771ada517",
+  "sourceDatasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
   "threshold": 80,
   "scope": "High-impact legal authority candidates routed from the legal database into the Tang Ren Daily editorial news production queue. Candidate status never means automatic publication.",
   "count": 158,

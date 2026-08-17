@@ -1,0 +1,25 @@
+name: PEOPLE-R1 Node 2 Acceptance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'people/**'
+      - 'topic-config.js'
+      - 'scripts/people-r1-node2-audit.mjs'
+      - '.github/workflows/people-r1-node2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Audit PEOPLE-R1-N2
+        run: node scripts/people-r1-node2-audit.mjs

@@ -10,7 +10,7 @@
   }
 
   function isIceArticle(item) {
-    const topic = String(item?.topic_key || "").trim().toLowerCase();
+    const topic = String(item?.topicKey || item?.topic_key || "").trim().toLowerCase();
     const primary = String(item?.category || item?.category_name || "").trim();
     return topic === "ice" || ICE_ALIASES.has(primary);
   }

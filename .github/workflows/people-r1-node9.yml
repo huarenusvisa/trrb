@@ -1,0 +1,18 @@
+name: PEOPLE-R1 Node 9 Acceptance
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260817160000_people_r1_n9_privacy_versioning.sql'
+      - 'scripts/people-r1-node9-audit.mjs'
+      - '.github/workflows/people-r1-node9.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node scripts/people-r1-node9-audit.mjs

@@ -84,29 +84,77 @@ function segmentsFromHtml(html) {
   return segments.map(({ level, ...s }) => level ? { ...s, level } : s);
 }
 
-async function fetchSource(url) {
-  const res = await fetch(url, {
-    redirect: 'follow',
-    headers: {
-      'user-agent': 'TRRB-Legal-R1/1.0 (+https://trrb.net)',
-      accept: 'text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.5'
-    }
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  const buf = Buffer.from(await res.arrayBuffer());
-  return { buf, contentType: res.headers.get('content-type') || '', bytes: buf.length, finalUrl: res.url };
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function extractPdf(url, tempPdf) {
-  const meta = await fetchSource(url);
+function looksLikePdf(meta, url = '') {
+  const magic = meta?.buf?.subarray(0, 5)?.toString('ascii') || '';
+  return /application\/pdf/i.test(meta?.contentType || '') || magic === '%PDF-' || /\.pdf(?:$|[?#])/i.test(url);
+}
+
+function fetchSourceWithCurl(url) {
+  const buf = execFileSync('curl', [
+    '--fail', '--location', '--silent', '--show-error',
+    '--retry', '3', '--retry-all-errors', '--retry-delay', '1',
+    '--connect-timeout', '20', '--max-time', '120',
+    '--user-agent', 'Mozilla/5.0 (compatible; TRRB-Legal-R1/1.1; +https://trrb.net)',
+    '--header', 'Accept: text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.5',
+    url
+  ], { encoding: 'buffer', maxBuffer: 128 * 1024 * 1024 });
+  return { buf, contentType: '', bytes: buf.length, finalUrl: url, transport: 'curl-fallback' };
+}
+
+async function fetchSource(url) {
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(url, {
+        redirect: 'follow',
+        signal: AbortSignal.timeout(60000),
+        headers: {
+          'user-agent': 'Mozilla/5.0 (compatible; TRRB-Legal-R1/1.1; +https://trrb.net)',
+          accept: 'text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.5',
+          'cache-control': 'no-cache'
+        }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+      const buf = Buffer.from(await res.arrayBuffer());
+      return { buf, contentType: res.headers.get('content-type') || '', bytes: buf.length, finalUrl: res.url, transport: 'fetch' };
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await sleep(500 * attempt);
+    }
+  }
+  try {
+    return fetchSourceWithCurl(url);
+  } catch (curlError) {
+    const fetchMessage = String(lastError?.message || lastError || 'fetch failed');
+    const curlMessage = String(curlError?.message || curlError || 'curl failed');
+    throw new Error(`${fetchMessage}; curl fallback failed: ${curlMessage}`);
+  }
+}
+
+function extractPdfBuffer(meta, tempPdf) {
   fs.writeFileSync(tempPdf, meta.buf);
   const raw = execFileSync('pdftotext', ['-layout', tempPdf, '-'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   const segments = segmentsFromPdfText(raw);
   return { ...meta, segments, extractionMethod: 'pdftotext-text-layer', sourceFormat: 'pdf' };
 }
 
-async function extractHtml(url) {
+async function extractPdf(url, tempPdf) {
   const meta = await fetchSource(url);
+  if (!looksLikePdf(meta, url)) throw new Error(`Expected PDF but official source returned ${meta.contentType || 'non-PDF content'} for ${url}`);
+  return extractPdfBuffer(meta, tempPdf);
+}
+
+async function extractHtml(url, tempPdf) {
+  const meta = await fetchSource(url);
+  // Several federal appellate courts expose extensionless CGI links that return the
+  // opinion PDF directly. Sniff the payload before treating the response as HTML so
+  // those official opinions retain page/paragraph structure instead of becoming
+  // false "no semantic HTML" failures.
+  if (looksLikePdf(meta, url)) return extractPdfBuffer(meta, tempPdf);
   const html = meta.buf.toString('utf8');
   const segments = segmentsFromHtml(html);
   return { ...meta, segments, extractionMethod: 'semantic-html-blocks', sourceFormat: 'html' };
@@ -136,10 +184,10 @@ for (const r of selected) {
       } catch (pdfError) {
         if (!r.officialUrl || r.officialUrl === r.officialPdfUrl) throw pdfError;
         sourceUrl = r.officialUrl;
-        result = await extractHtml(r.officialUrl);
+        result = await extractHtml(r.officialUrl, tempPdf);
       }
     } else {
-      result = await extractHtml(r.officialUrl);
+      result = await extractHtml(r.officialUrl, tempPdf);
     }
     const { buf, segments, ...meta } = result;
     if (!Array.isArray(segments) || segments.length === 0) {

@@ -1280,12 +1280,4 @@
         <news:title>马萨诸塞沃尔瑟姆ICE拘捕危地马拉刑事非法移民</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-d8dd27b9762bb3685f0fc3e2d996a7f78379ff32</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-15T17:58:14.812Z</news:publication_date>
-        <news:title>加州莫德斯托ICE拘捕涉重罪墨西哥籍嫌疑人</news:title>
-      </news:news>
-    </url>
 </urlset>

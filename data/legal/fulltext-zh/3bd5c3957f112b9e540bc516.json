@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "recordId": "3bd5c3957f112b9e540bc516",
+  "recordFingerprint": "973e7d85a038ca40744968b1a7742b3404aaefcf634e7b3fef2911b130c3ead3",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1417811/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1417811/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1417811/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:21:45.466Z",
+  "sourceDigest": "c3f4e7d4a6c8c01c0b81a508da57cdf3547cc62a0dac5608ddc98fbea705f934",
+  "translatedAt": "2026-08-17T14:36:51.598Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 30,
+  "translatedSegmentCount": 30,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "024613c11f369b406312977589eff6353f07c7a4f342f48a95479f6c9761f4d0",
+      "chineseText": "引用为29 I&N Dec. 307（BIA 2025）临时裁决号4139"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c8fbce6a79a2bb3a59347e18f13270d63ab25cfee88fbbed27654e08e437a181",
+      "chineseText": "K-S-H-案，被上诉人\n2025年11月17日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7de726677f331c201cc0c7fda4fde213273467377b5fa1879f5e1b60f2422f1b",
+      "chineseText": "仅凭一次向地方警察报告私人行为者造成伤害的尝试，且无警察自身进一步伤害或其与所谓迫害者普遍勾结的证据，不构成政府整体上无法或不愿意保护被上诉人免遭迫害的证明。\n被上诉人代理律师：加州伯灵格姆的Ashwani K. Bhakhri律师。\n审理团：MULLANE、CREPPY及GOODWIN，上诉移民法官。\n上诉移民法官GOODWIN："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2c66c054783774fe714c8fd50dc2ee63ec6113333f895f41c21f89378cb5a86e",
+      "chineseText": "被上诉人对移民法官2022年12月6日的裁决提出上诉，该裁决拒绝了他的庇护、撤销遣返和根据实施《反酷刑公约》（“CAT”）的规定所申请的保护。1 《移民与国籍法》（“INA”）第208(b)(1)(A)和241(b)(3)(A)节，8 U.S.C. §§ 1158(b)(1)(A)、1231(b)(3)(A)（2018）。上诉中，被上诉人质疑移民法官未认定其证明了政府无力或不愿控制的力量对其进行迫害的决定。该上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3ea3875a174835c028a1adcd25da35fd11ee8aa6adad87470e8fbedea6e4dcac",
+      "chineseText": "被上诉人为锡克教徒，印度出生及公民。他担心印度的印度教徒及RSS党成员迫害，2该等人在2018年5月及8月两次袭击并威胁他。他作证称，两次袭击中，攻击者均殴打他，并警告若不结束与其印度教女友——部分袭击者的姐妹——的关系，将有不良后果。被上诉人进一步作证称，试图报告首次袭击时，警方拒绝受理，因其女友之父为印度人民党（“BJP”）的有影响力成员。\n1\n《防止酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》，1984年12月10日，S. Treaty Doc. No. 100-20，1465 U.N.T.S. 85（美国于1994年11月20日生效）。8 C.F.R. § 1208.16(c)（2025）；8 C.F.R. § 1208.18(a)（2020）。\n2\n“RSS”缩写未在诉讼记录中详细说明，但被上诉人指其为一私人民族主义印度教组织，印度人民党即源自该组织。\n第307页"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "024613c11f369b406312977589eff6353f07c7a4f342f48a95479f6c9761f4d0",
+      "chineseText": "引用为29 I&N Dec. 307（BIA 2025）临时裁决号4139"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f9ee990952d5b5297316a8051ce7371cf3a7d8127f16db27e42ed0e3350c32ae",
+      "chineseText": "警方拒绝受理其报告，理由是其女友之父为印度人民党（“BJP”）的重要成员。具体而言，警察告诉被上诉人，他因试图对BJP成员提出报告而“疯狂”，若试图举报将被拘留。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "422895bc3755416dad21c3dfff9c1ab34124ae66ca3c409a8c478fc166e014a6",
+      "chineseText": "移民法官认定被告人可信。他确定，尽管被告人因其宗教信仰受到伤害，但他未能证明此类伤害是由政府或政府无法或不愿控制的力量所实施。移民法官承认一名警察拒绝接受被告人的报案，并提到了被告人女友的父亲在印度人民党（BJP）中的职位。然而，移民法官认定女友的父亲未参与攻击事件，没有证据表明他曾干预警察接受被告人的报案，并且印度人民党当时并非政府的官方组成部分。移民法官还认定，被告人在首次事件报案失败后，从未寻求政府的进一步帮助。移民法官得出结论，基于被告人与其女友已有五年无任何联系，他对未来迫害的恐惧缺乏客观合理性，并且移民法官认为没有理由相信其女友家人仍会试图伤害他。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "aa3e496e72f1ad29769f6657720ef5d05184f7df043156d84a78f382aef1caa1",
+      "chineseText": "移民法官在认定被告人未能证明其在印度遭受的伤害是“由政府[]或政府无法或不愿控制的力量实施”的事实认定上没有明显错误。见罗德里格斯·托尔内斯诉加兰，993 F.3d 743, 751（第九巡回法院，2021年）；另见C-G-T-案，28 I&N Dec. 740, 743（移民上诉委员会，2023年）（裁定政府是否无法或不愿保护个人免遭迫害属于事实问题，上诉委员会对此进行清楚错误审查）。被告人在上诉中声称，警察威胁要拘留他并因其女友父亲参与BJP而拒绝接受他的报案，证明政府无法或不愿控制他所称的迫害者。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0b5d9b38c643b59bf7aa5c19825cc1bf4306dc1a44e713e5f9f785515fc95aab",
+      "chineseText": "被告人未对移民法官认定其在此单次尝试报案后未寻求任何其他政府帮助的事实提出异议。见布林加斯-罗德里格斯诉塞申斯，850 F.3d 1051, 1069（第九巡回法院，2017年）（全院）“（是否曾向当局报告或试图报告暴力或虐待，是可考虑的因素，正如可信的证词或书面证据解释为何未报告一样）。此外，虽然警察显然害怕被告人的女友父亲，但无证据表明此父亲参与了拒绝受理报案或对被告人的攻击。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "024613c11f369b406312977589eff6353f07c7a4f342f48a95479f6c9761f4d0",
+      "chineseText": "引用自29 I&N Dec. 307（移民上诉委员会2025年）临时裁定第4139号"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d971de30cf9f98d97db92f86762b47567ca05b7a956b93cb4475485986096b80",
+      "chineseText": "该父亲所属的政党当时并未执政。总的来说，一名地方警察因担忧一位当地BJP成员而拒绝受理报案，并不能证明印度政府整体无法或不愿控制被告人所称的迫害者。见加兰诉明岱，593 U.S. 357, 366（2021年）（裁定，“只要记录中包含‘相反证据’，该证据具有‘合理事实认定者可以认为足够’的‘类型和质量’，审查法院不得推翻机构事实认定”，且“审查法院还须注意，机构与任何合理的事实认定者一样，有权‘只采信部分证人证词’，而不必‘全部接受’。”（原文中第二次改动））。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "792718bcbf86784d8e22e488f160c7828b717553f9532e91bada5ca4284e16a2",
+      "chineseText": "我们在本案中的结论得到了几个美国巡回上诉法院判决的支持，尽管这些判决在本司法管辖区内不具约束力，但具有说服力。在辛格-卡尔诉邦迪案，137 F.4th 94, 101（第二巡回法院，2025年），第二巡回法院认为，“警察仅在一次场合未能协助[一名外国人]，而无其他情形，不足以证明整个政府无法或不愿保护该人。”该案中，申请人尝试报案时，被迫等待超过两小时，遭到两次掌掴，并被赶出警察局。该法院认定，此“一次轻微的警察行为不当事件”和案卷中的一般国家状况不足以证明政府整体无法或不愿为其提供协助。见id. 第103至104页。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "794e10ba7ee422aed4d9b2ddbc57c82e7e4293cb5fbf5dfd04f63c1bdaf94873",
+      "chineseText": "我们还采纳第七巡回法院在瓦霍拉诉霍尔德案，707 F.3d 904, 909–10（第七巡回法院，2013年）中的推理，即与一名非监督警官的单次对话中该警官告诉外国人不要透露其迫害者身份，并不意味着政府无法或不愿协助该外国人。同样，第七巡回法院在奥索里奥-莫拉莱斯诉加兰案，72 F.4th 738, 743（第七巡回法院，2023年）指出，“与一名不合作的官员进行的一次对话，并不必然显示政府‘无法或不愿’保护受害者。”（引文省略）。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a78067f6d417cca14e114c315759efc2ac9e24e939233d0adcadbec8c96213b8",
+      "chineseText": "最后，我们的结论与第十巡回上诉法院在Singh诉Bondi案中（130 F.4th 848 (10th Cir. 2025)）的裁决一致。第十巡回法院认定，一名申请人未能证明政府无法或不愿保护他，因为他试图报告一次攻击事件，但被告知第二天再来，随后被“踢”出了警察局。Singh, 130 F.4th 第864页。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fe2c17268bd0898406c2959372767d6f57166bb2165c110ec6f731ec0b221126",
+      "chineseText": "我们承认，在Davila诉Barr案中（968 F.3d 1136, 1142–44 (9th Cir. 2020)），该案所处辖区内的第九巡回法院认为，一名外国人满足了证明尼加拉瓜政府无法或不愿控制其施虐者的负担，该认定基于她可信的证词，即她的施虐者贿赂了她联系的警察，随后为了报复她的举报行为对她施加了更严厉的殴打，她的证词还指出警察对她母亲关于家庭暴力的报告同样不予响应，以及相关国家情况证据显示尼加拉瓜政府对家庭暴力的漠视。该法院认为该外国人的证词和文件证据解释了她为何未举报后续的虐待，包括她因举报而受到伤害。Davila, 968 F.3d 第1143页；另见Ornelas-Chavez诉Gonzales案，458 F.3d 1052, 1058 (9th Cir. 2006)（认定如果举报会徒劳或危险，申请人无须举报虐待）。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "024613c11f369b406312977589eff6353f07c7a4f342f48a95479f6c9761f4d0",
+      "chineseText": "引用为29 I&N Dec. 307 (BIA 2025) 临时裁决 #4139。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4eba506ba5812d7293ed33923d3fd48f3df52175fd055fb00253994c75da3ede",
+      "chineseText": "不适用。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "cbca3803544e0b4a2aa0ff363ec7bccf606c007cb05393e51ea75164c261d63c",
+      "chineseText": "被申请人的案件与Davila明显不同，因为他在试图向警方报告伤害时或之后，并未遭遇任何身体暴力。申请人也未在上诉中主张进一步尝试向当地或更高级政府机关举报将是徒劳或危险。参见Matter of C-G-T-, 28 I&N Dec. 第743页。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "acd3c2423ee90248ed3058a8e162739904c83d6d6a201be38a8c835a6b0bcf17",
+      "chineseText": "我们裁定，单次尝试向当地警方报告私人行为者造成的伤害，且未遭受警方本身的进一步伤害或证据显示警方广泛与所谓迫害者勾结，不足以证明整个政府无法或不愿保护申请人免受迫害。因此，移民法官在本案事实基础上合理认定，被申请人未能证明政府无法或不愿控制其所谓的迫害者。参见Truong诉Holder案，613 F.3d 938, 941–42 (9th Cir. 2010)（认定避难申请人未证明政府“共谋或不愿打击”申请人所称迫害）。因此，根据现有记录，我们维持移民法官认定被申请人未证明过去曾遭受迫害。鉴于此，他必须证明对未来迫害有合理的恐惧，才能满足避难申请的负担。8 C.F.R. § 1208.13(b) (2020)；另见Matter of D-I-M-, 24 I&N Dec. 448, 450 (BIA 2008)。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "466759085ecc933b2c4609c164a96167422f3792cbf84ffad0bc7a08bfcb4735",
+      "chineseText": "在上诉中，被申请人的律师认为，被申请人女友的家属仍有伤害被申请人的意图。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6e8b5d394526d18a26023bc477ae20295f5e51dd22769f9547f19f6de9bd47bc",
+      "chineseText": "3\n我们也承认第九巡回法院曾判定，申请人无需证明政府无法或不愿在全国范围内控制迫害，调查范围应限定为“本城市或区域”。参见Mashiri诉Ashcroft案，383 F.3d 1112, 1122（第九巡回法院，2004年）。本案中我们的结论与该观点并不矛盾，因为我们的分析并不要求申请人寻求本城市或区域之外的援助。在本案中，申请人从未在其本城市或区域内寻求其他警方援助。第310页"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "024613c11f369b406312977589eff6353f07c7a4f342f48a95479f6c9761f4d0",
+      "chineseText": "引证为29 I&N Dec. 307 (BIA 2025) 临时判决#4139"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "33528276c31848e87466541ec7f017f19d5d3d4fb5be83c3e40814a9b59568de",
+      "chineseText": "由于在印度名誉杀人普遍，该家庭蒙羞，且“恢复名誉”的唯一途径是杀害申请人。然而，律师并未引用任何证据证明该家庭对名誉杀人有兴趣，或申请人害怕遭受名誉杀人。律师的无证言论非证据事实。参见INS诉Phinpathya案，464 U.S. 183, 188 n.6（1984年）。因此，申请人未能证明移民法官关于其未显示其女友家属持续意图伤害他的认定存在明显错误。我们因而确认移民法官认定申请人未能证明有客观合理的未来迫害恐惧的决定。参见Matter of Z-Z-O-案，26 I&N Dec. 586, 590–91（BIA 2015）（认定“是否申请人已证明客观合理的迫害恐惧”为法律决定，董事会进行新审查）。"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "cd4af767af2bc77797c785b542eb34749c920bd5203a90ffa7745735996e29fb",
+      "chineseText": "基于上述理由，我们认定申请人未能证明有资格获得庇护及撤销驱逐保护。INA §§ 208(b)(1)(B)(i), 241(b)(3)(A)，8 U.S.C. §§ 1158(b)(1)(B)(i), 1231(b)(3)(A)；另见Davila案，968 F.3d 1142（“未达到庇护较低标准的申请人，自然未达到更严格的撤销驱逐标准，后者需‘明确可能性’证明申请人在拟遣返国将面临生命或自由威胁。”）；Ornelas-Chavez案，458 F.3d 1056–58（在撤销驱逐背景下适用“无法或不愿”标准）。由于上述理由已决定申请人的庇护及撤销驱逐申请，故无需审理其余上诉理由。参见INS诉Bagamasbad案，429 U.S. 24, 25（1976年）（全体法官意见）（“一般规则为法院及行政机构无须对其决定结果不必要的事项作出裁定。”）。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "20e992b923762396f666b2e08d914c64ec01d85c20df3b806feb4efaec5cb62b",
+      "chineseText": "我们确认移民法官对申请人根据《禁止酷刑受害者保护法》（CAT）请求的拒绝。移民法官认定申请人可通过内部迁移避免未来伤害，且其未证明返回印度更可能遭受酷刑。申请人上诉称，移民法官认为其可在印度境内迁移以避酷刑的不利裁定存在错误，因未对其迁移前景进行个别评估。此论点无法证明移民法官认定申请人未证明若被遣返将成为目标有明显错误。参见Matter of R-A-F-案，27 I&N Dec. 778（司法部长，2020年）（认定董事会对移民法官对未来预测进行明显错误审查）。移民法官第311页"
+    },
+    {
+      "segmentId": "pdf-p6-s27",
+      "order": 27,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "024613c11f369b406312977589eff6353f07c7a4f342f48a95479f6c9761f4d0",
+      "chineseText": "引证为29 I&N Dec. 307（BIA 2025）临时判决#4139"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "d133c6c326f0a75fa2727bce50c21145e3935842ad0b7a121093815594d949d0",
+      "chineseText": "未明显错误认定申请人五年来未与其女友接触，且无理由怀疑若返回印度，其女友家人仍会继续针对他。因此，我们确认移民法官关于申请人未证明更可能在印度遭受酷刑的裁定。参见8 C.F.R. § 1208.16(b)（2025年）；另见Matter of J-F-F-案，23 I&N Dec. 912, 917–18, 918 n.4（司法部长，2006年）（认定若证据未显示假设事件链中每一步更可能发生，则不能通过串联推测认定申请人符合CAT保护资格）。本案上诉将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "87d98cc287ec69278b514e88aa721e70a5a8fda5a0cdd87916f02ac5abef9171",
+      "chineseText": "命令：上诉被驳回。通知：如果被申请人受最终递解出境命令约束，并且故意未能或拒绝根据该命令离开美国、及时以诚信方式申请出境所需的旅行或其他文件、或在国土安全部要求的时间和地点未出现，或者合谋或采取任何旨在阻碍或妨碍被申请人根据递解出境命令离境的行为，被申请人将面临每天高达998美元的民事罚款。详见《移民与国籍法》第274D条，8 U.S.C. § 1324d（2018年）；8 C.F.R. § 280.53(b)(14)（2025年）。此外，任何被拒绝入境、被递解出境或在排除、驱逐或递解命令有效期间离开美国而后进入、试图进入或在任何时候被发现处于美国境内的被申请人，将被处以不超过2年的罚款或监禁，或二者并罚。详见《移民与国籍法》第276(a)条，8 U.S.C. § 1326(a)（2018年）。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "008c17ed7e166cdf461e12ab0c6743bf841f034c66029de0e019617a11fe6099",
+      "chineseText": "第312页"
+    }
+  ]
+}

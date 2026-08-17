@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 1,
+  "recordId": "6e78e9478cb87341590d4fad",
+  "recordFingerprint": "cad662ed5bfb4b3e564929ee5be4b455e86362af41406312acb7bdcd04ea8c1d",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1418881/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1418881/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1418881/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:36:51.626Z",
+  "sourceDigest": "8e32f591db38ab07e68aa6fa600649c7766de2c330e11e06b954703ad84abcf7",
+  "translatedAt": "2026-08-17T14:40:59.766Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 37,
+  "translatedSegmentCount": 37,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "61e65b4cd02742fd302ca1da4307da1ecc38f25c5ab1ea541e209f3c432fa632",
+      "chineseText": "引证为 29 I&N Dec. 313（BIA 2025）临时裁定 #4140"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a9d9ac9226736080aea8b47247d475ae8993aa48a12301bddd661f3420c2e6cd",
+      "chineseText": "B-S-H- 案，答辩人案\n裁定日期：2025年11月19日\n美国司法部\n移民复审执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b16e5e29ed2ad5bc5f51942ff0b195c4834cc1ceb98fe3ae93ead847186b143d",
+      "chineseText": "根据《移民与国籍法》第240(c)(7)(C)(iv)(III)条款（8 U.S.C. § 1229a(c)(7)(C)(iv)(III) （2018年））的明确规定，复议申请中关于重新开启动议的时间限制的特殊或极端困难豁免仅适用于申请依据《反暴力侵害妇女法》（Violence Against Women Act）救济的重新开启动议的时间限制，而不适用于此类动议的数量限制。\n答辩人代理律师：Ali F. Sayyid，纽约，纽约\n合议庭成员：MONTANTE 与 OWEN，上诉移民法官；GILLIES，临时上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5264e2de4391e0b922520bcc85b6a9d158d2defe427f8f542b6bdf9cbf0ba18b",
+      "chineseText": "裁判官 MONTANTE："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "20869441302765c29b1f865fa31c71e030b6cee8414b7dc9148b8f74e4fcd0ee",
+      "chineseText": "本案最后一次提交委员会审理是在2024年10月10日，当时我们驳回了答辩人依据1994年《暴力犯罪控制与执法法案》（Violent Crime Control and Law Enforcement Act of 1994），公共法第103-322号，联邦公报第108卷1796页，第1902页（“VAWA”）第四章规定，以及根据《移民与国籍法》（INA）第240A(b)(2)条规定对受虐配偶实施特别条款取消驱逐的动议，答辩人意图为调整身份而提出的重新开启动议。\n2024年11月，答辩人提交了现时的复议动议，该动议将在实体上被驳回。该动议性质亦属于重新开启动议。鉴于我们认定该重新开启动议因数量限制而不得受理，故动议将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "611151be8c9991cce4456cd6aa93808c1178bae48ac269e0334ec9333bf965dd",
+      "chineseText": "一、程序历史\n答辩人为印度本国公民。国土安全部（“DHS”）于2016年对其启动驱逐程序，答辩人在移民法官面前申请了多种形式的救济，移民法官驳回了答辩人的申请。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "da34c1368046a5628a766a88853cbefd7073657d2ed95333378ea6cc1cd2dff7",
+      "chineseText": "第313页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "61e65b4cd02742fd302ca1da4307da1ecc38f25c5ab1ea541e209f3c432fa632",
+      "chineseText": "引证为 29 I&N Dec. 313（BIA 2025）临时裁定 #4140"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "64348fdb1e641eb3c38848b56e56c5c5a088e87a8234de7b8dd8f171370a209e",
+      "chineseText": "答辩人提起上诉，2022年11月22日，委员会维持移民法官的裁决。1"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8883fed616f43d8343884e14f4ced12be31c794ffb133dbaf3a4724cf0785059",
+      "chineseText": "2023年11月，答辩人基于其与美国公民及移民服务局（“USCIS”）提交的待决VAWA自我申请以及其宣称符合《移民与国籍法》第240A(b)(2)(A)条（8 U.S.C. § 1229b(b)(2)(A)）特别规定的取消驱逐资格，提出重新开启动议。答辩人称其在上诉期间与其美国公民妻子结婚，婚后某时其妻开始虐待他并利用其移民身份。随后，答辩人向动议补充提交了美国公民及移民服务局关于其VAWA自我申请初步认定的证据。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "50b79a0770e78307904f5cdf06240dc3fdcaef7a1746b980ad2e671539cbe160",
+      "chineseText": "2024年10月10日，委员会驳回了答辩人的重新开启动议，理由是答辩人未能建立救济的表面资格。委员会指出，VAWA自我申请仍处于审理中，USCIS的表面认定为初步认定，并不表明USCIS必然批准该自我申请。委员会还认为答辩人未能表面证明符合取消驱逐特别条款要求的必要困难及家庭暴力或残忍对待条件。详见 INA § 240A(b)(2)(A)(i)及(v)，8 U.S.C. § 1229b(b)(2)(A)(i),(v)。2024年11月，答辩人提出现时动议。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c346cc485109689f1795007490d0e53e771b4926b4801eefae2b1ec2eae79c03",
+      "chineseText": "二、讨论\n尽管标注为复议动议，答辩人的动议既为复议动议，也属重新开启动议。“复议动议针对原决定所依据既有事实记录的正确性提出质疑，[而]重新开启动议......基于新证据或先前未能提供的证据请求新一轮听审。” 参见 Matter of O-S-G-, 24 I&N Dec. 56, 57–58 (BIA 2006)。请求复议的一方寻求重新审视原裁定，理由包括之前的法律或事实错误、法律变更，或案件中被忽视的论点或方面。参见 Id. 57；Matter of Cerna, 20 I&N Dec. 399, 402 注释2 (BIA 1991)；另参 INA § 240(c)(6)(C), 8 U.S.C. § 1229a(c)(6)(C)（2018年）（规定复议动议须具体说明先前裁定中的法律或事实错误）。本案中，答辩人质疑委员会先前裁定，并寻求提交额外证据以支持基于其尚未决的VAWA自我申请或特别规定取消驱逐请求的重新开启。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4992b8c411d30efef491fddaed7fbb1635aca9414d0f44d0955e900f280a7ff8",
+      "chineseText": "1\n2025年1月7日，美国第二巡回上诉法院驳回了答辩人对委员会裁决的审查请求。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "74133f362160ac14ab887868467cdac40c7fb6182e12cf21cf9a57193e2bca75",
+      "chineseText": "第314页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "61e65b4cd02742fd302ca1da4307da1ecc38f25c5ab1ea541e209f3c432fa632",
+      "chineseText": "引证为 29 I&N Dec. 313（BIA 2025）临时裁定 #4140"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e242f893cb8f3bef75a002791eedb141d9a5a4c26b9f1b810afbb4b2ddc21e43",
+      "chineseText": "答辩人寻求提交更多证据以支持其基于尚处审理中的VAWA自我申请或特别规则取消驱逐的身份调整请求。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d314434ae22abc7744bd9f3234bad69c6da4d6f902aa7ba5b245d696ca37d3c8",
+      "chineseText": "A. 复议动议"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5751b5aec66abf93247be595f959bacff40e663cddba6209753800eb056dc44d",
+      "chineseText": "复议动议应具体说明“先前委员会裁决中的事实或法律错误，并应附相关依据。” 8 C.F.R. § 1003.2(b)(1) (2025)；参见 Matter of O-S-G-, 24 I&N Dec. 56 (第56页)。答辩人的动议未能证明我们先前驳回重新开启的裁定存在任何错误。答辩人主张委员会错误认定其身份调整申请的管辖权仅归属USCIS，而我们在裁决中并未作出此类决定。我们也不接受答辩人主张我们对所呈证据，尤其是USCIS表面认定的评估存在错误的论点。参见 8 C.F.R. § 204.2(c)(6)(ii), (iv)（2025）（规定表面认定不免除VAWA自我申请人提供额外证据的义务，不表示该申请具备资格，不作为支持申请的证据，不构成对申请随附任何证据可信性或证明力的决定，也不免除申请人遵守所有证据要求的义务）。对结果的分歧不足以构成我们先前裁定之错误。因此，复议动议予以驳回。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "05b02cb59c5ab4cfaa898394d6049bc9e30aacfe253a2676ee256a09f9b266cc",
+      "chineseText": "B. 重新开启动议"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b8d18ef7cc8c5a1585126f4ba907da1f199f93095d961b5f6c6738816d93eb68",
+      "chineseText": "《移民和国籍法》(INA) 对重新开启动议设定了时间限制和次数限制。重新开启动议必须在最终行政遣返令作出之日起90天内提交。INA 第240条(c)(7)(C)(i)款，8 U.S.C. § 1229a(c)(7)(C)(i)；8 C.F.R. § 1003.2(c)(2)。一般的90天重新开启动议时间限制不适用于根据《暴力侵害妇女法》(VAWA)提出的重新开启动议，若该动议在最终遣返令之日起1年内提交。INA 第240条(c)(7)(C)(iv)(III)款，8 U.S.C. § 1229a(c)(7)(C)(iv)(III)。此外，总检察长可在自由裁量权范围内对该1年时间限制予以豁免，前提是答辩人证明存在“特殊情况或对答辩人子女的极端困难”。同上。"
+    },
+    {
+      "segmentId": "pdf-p3-s21",
+      "order": 21,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4c0a458a0eadd690301c104bf7e6d46f78eaf6d2192e77ce053f8c174460fed4",
+      "chineseText": "《移民和国籍法》通常仅允许提交一次重新开启动议。INA 第240条(c)(7)(A)款，8 U.S.C § 1229a(c)(7)(A)。但“此限制不得适用于为申请根据《暴力侵害妇女法》救济而提交的一次重新开启动议。”同上。"
+    },
+    {
+      "segmentId": "pdf-p3-s22",
+      "order": 22,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "eed3edd086fb31433329a6cf390dd738587f568d8ddbf681a658639fdd5e61f7",
+      "chineseText": "第 315 页"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "61e65b4cd02742fd302ca1da4307da1ecc38f25c5ab1ea541e209f3c432fa632",
+      "chineseText": "引用为 29 I&N Dec. 313 (BIA 2025) 临时决定 #4140"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b5571aaf30b7dd7e8c8d106cdefd831b497cdd51013c3a99fc00ee7197f63620",
+      "chineseText": "不应阻止提交一项重新开启动议[以申请根据《暴力侵害妇女法》所提供的救济]。同上。"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4591fda1ee4b550a2ababd70d0f5bccbc4eaeabb48acf77b687104943d60121f",
+      "chineseText": "作为重新开启动议，答辩人在2024年11月提交的根据《暴力侵害妇女法》申请救济的动议不符合时效性，因为其未在2022年11月22日董事会作出最终行政遣返令之日起1年内提交。INA 第240条(c)(7)(C)(iv)(III)款，8 U.S.C. § 1229a(c)(7)(C)(iv)(III)。该动议亦因不是答辩人第一次提交根据VAWA申请救济的重新开启动议而被次数限制禁止。INA 第240条(c)(7)(A)款，8 U.S.C. § 1229a(c)(7)(A)。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "63005042f4c5b65661ba1e8918161ba97adac7b74d147b972e0a093affcfcf00",
+      "chineseText": "虽然《移民和国籍法》允许对根据VAWA申请救济的重新开启动议的1年时间限制予以豁免，但此规定不适用于次数限制。INA 第240条(c)(7)(C)(iv)款，8 U.S.C. § 1229a(c)(7)(C)(iv)相关部分规定： 本条款下对提交此类动议截止日期的任何限制均不适用……(III) 如果重新开启动议是在最终遣返令作出之日起1年内提交，惟总检察长可自由裁量豁免该时间限制，针对证明特殊情况或对其子女极端困难的外籍人士……"
+    },
+    {
+      "segmentId": "pdf-p4-s27",
+      "order": 27,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e08a66ead5516d2173fbb740ae9e91bfc447e1472f88c7abd67807b4e32e9b55",
+      "chineseText": "《移民和国籍法》第240条(c)(7)(C)款关于重新开启动议提交截止日期的“任何限制”指的是该款中的时间限制。重新开启动议的次数限制见于第240条(c)(7)(A)款。2另外，第240条(c)(7)(C)(iv)(III)款专门提供了对“时间限制”的豁免，未提及次数限制。最后，第240条(c)(7)(A)款规定，“外籍人士限提交一项第(C)(iv)款所述的重新开启动议”，即禁止提交第二次根据VAWA申请救济的重新开启动议。"
+    },
+    {
+      "segmentId": "pdf-p4-s28",
+      "order": 28,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5f5865910455e75cab51007cce109015baba052077140e9d630b56904ffd7e17",
+      "chineseText": "2 唯一审理此问题的巡回上诉法院为第三巡回法院，该法院在一项未公布判决中认为，“《移民和国籍法》第240条(c)(7)(C)(iv)款中‘任何限制’的表述明确适用于重新开启动议提交的‘截止期限’，申请人未证明该表述也适用于出现在其他条款中的次数限制，后者限制申请人仅能提交一次VAWA重新开启动议。”见 Wane诉美国总检察长案，案号23-3229，2024年9月16日第三巡回法院2024 WL 4200583，第2页。 第 316 页"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "61e65b4cd02742fd302ca1da4307da1ecc38f25c5ab1ea541e209f3c432fa632",
+      "chineseText": "引用为 29 I&N Dec. 313 (BIA 2025) 临时决定 #4140"
+    },
+    {
+      "segmentId": "pdf-p5-s30",
+      "order": 30,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "00ca6d3b5f61996534e4e7158ed90416d0f7cdf9e188a7be1d0379357a9e6a1c",
+      "chineseText": "根据《移民和国籍法》第240条(c)(7)(C)(iv)(III)款的明文规定，重新开启动议中的特殊情况或极端困难豁免仅适用于根据VAWA提出重新开启动议的时间限制，而不适用于该类动议的次数限制。见苏丹共和国诉哈里森案，587 U.S. 1, 8 (2019)（指出解释法律时应着眼于法律语言）；另见博斯托克诉克莱顿县案，590 U.S. 644, 654 (2020)（指出法院应“根据法律颁布时其用语的普通公众含义解释法律”）。鉴于这是答辩人第二次根据VAWA提出重新开启动议，该动议受次数限制禁止。该次数禁止不可因INA第240条(c)(7)(C)(iv)(III)款的规定获得豁免。"
+    },
+    {
+      "segmentId": "pdf-p5-s31",
+      "order": 31,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "863fec85037eb6e592470be498e90f2961de79240640c36524cae4a5827bf067",
+      "chineseText": "答辩人敦促我们依照2025年8 C.F.R § 1003.2(a)自行重新开启程序。本委会自行重新开启权限不是“解决动议法令和规章中时间限制和次数限制施加困难的一般救济手段。”参见G-D-案，22 I&N Dec. 1132, 1133–34 (BIA 1999)。该权限是酌情行使的，须谨慎使用，作为“为极为特殊状况保留的非常救济”。同案1134页；参见J-J-案，21 I&N Dec. 976, 984 (BIA 1997)。是否适宜自行重新开启取决于各案呈现的全部事实和情况。"
+    },
+    {
+      "segmentId": "pdf-p5-s32",
+      "order": 32,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "fd516105bcbb5c808362ca50abd365eed1bc2f5014cfc2149db21b56718218c6",
+      "chineseText": "我们审议了动议及其证据，认为本案整体情况不具备适用我们自行重新开启权限的例外性质。见J-J-案，21 I&N Dec. 984页；8 C.F.R. § 1003.2(a)。因此，我们拒绝行使自由裁量权自行重新开启程序。"
+    },
+    {
+      "segmentId": "pdf-p5-s33",
+      "order": 33,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "06b83dcb905d17a16a8df79cb203443dc406d91fc135ef527d7316b67157a02d",
+      "chineseText": "三、结论 答辩人提出的动议既是复议动议，也是逾期且受次数限制禁止的重新开启动议。鉴于支持其资格的证据有限，复议动议未能证明我们先前否决答辩人申请根据VAWA及特别规则取消遣返的重新开启动议存在任何错误。重新开启动议逾期，因未在最终行政遣返令作出后1年内提交，且是答辩人第二次根据VAWA提出的重新开启动议。允许总检察长对一次重新开启动议的1年时间限制予以豁免的法定规定，不涵盖对第二次依据VAWA提出的重新开启动议的次数限制豁免。基于以上，"
+    },
+    {
+      "segmentId": "pdf-p6-s34",
+      "order": 34,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "61e65b4cd02742fd302ca1da4307da1ecc38f25c5ab1ea541e209f3c432fa632",
+      "chineseText": "引用为 29 I&N Dec. 313 (BIA 2025) 临时决定 #4140"
+    },
+    {
+      "segmentId": "pdf-p6-s35",
+      "order": 35,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f774184b7a8b93b2b2b1588867485c01d96f87d94eb71c086a7d8db93c124d9b",
+      "chineseText": "答辩人的动议将被拒绝，其申请暂缓遣返的请求将因无实际意义而被拒绝。"
+    },
+    {
+      "segmentId": "pdf-p6-s36",
+      "order": 36,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "6745b42bf6a8cc4f6913b2692b53c1001e99675b394175edd2ebf9daa6ebca39",
+      "chineseText": "命令：拒绝答辩人的动议。 通知：若答辩人受到最终遣返令约束，却故意不离开美国，或未能善意及时申请旅行证件或其他离境所需文件，或未按国土安全部指定的时间和地点出席遣返，或共谋或采取任何行为阻挠其依据遣返令离境，将面临每天最高998美元的民事罚款。见INA第274D条，8 U.S.C. § 1324d (2018)；8 C.F.R. § 280.53(b)(14) (2025)。此外，任何曾因驱逐、遣返或出境且遣返令未撤销的外籍人士，若随后未经许可进入、试图进入或在美国境内被发现，将被处以不超过两年罚款或监禁，或两者并罚。见INA第276(a)条，8 U.S.C. § 1326(a)。"
+    },
+    {
+      "segmentId": "pdf-p6-s37",
+      "order": 37,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "3feb9e71d8a9b0481c16fd4c988414a0e3c00e6786ecadd4084cc0973532fb59",
+      "chineseText": "第 318 页"
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "recordId": "93de4f8335c300157f7c79bb",
+  "recordFingerprint": "7edf01e3d9c670d291fe9dff305839637936a32d3ca177043db9b1797773c35a",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1420751/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1420751/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1420751/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:54:24.170Z",
+  "sourceDigest": "01421c8cf7c490d033f0141bed7691fc137d42fc3261bcfe333e0f5e7024e8bd",
+  "translatedAt": "2026-08-17T14:55:02.758Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 20,
+  "translatedSegmentCount": 20,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "11deed797b957b61ba2acee06e04fca6b88fc375b6bc0aee53fb72da43f459b3",
+      "chineseText": "引用为29 I&N Dec. 335（BIA 2025）临时裁决第4144号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2bb217f9ec79ef920ecfe60357103d298d915bed2b6391ebe960da70f84c1392",
+      "chineseText": "关于奥斯卡·阿尔弗雷多·杜邦·米兰达（Oscar Alfredo DUBON MIRANDA）案，被告人\n本案由移民上诉委员会于2025年9月22日裁决\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "db4f4d99ad6187a8d0a666ee8f7169588e161e88c23f018431d55aa54dbbb5a8",
+      "chineseText": "鉴于被告人与其继女的不当且令人担忧的行为，其因酒后驾驶和扰乱治安的刑事定罪，\n以及缺乏相关信息解释扰乱治安定罪事由，被告未能满足其证明自己对社区不构成危险的举证责任。\n代表被告人：John D. DeWald，律师，内布拉斯加州奥马哈\n代表国土安全部：Kourtney A. Greenfield，助理首席律师\n审理小组：MULLANE、HUNSUCKER 和 GEMOETS，移民上诉法官。\n审判法官：HUNSUCKER，移民上诉法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d0adfb14dc2152746c92c792edd97c22290957221d2f63ee63e7baaf719ea8ce",
+      "chineseText": "国土安全部（DHS）对移民法官2024年7月17日做出的决定提出上诉，该决定命令在支付7,000美元保证金且遵守DHS酌情决定的条件下，释放被告人。移民法官于2024年8月20日发布保证金备忘录说明作出该决定的理由。被告人反对该上诉。我们将支持DHS的上诉，撤销移民法官的保证金决定，并命令被告人继续由DHS羁押。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ebd9daff658d77fdac1cd7a11476a61e2b41323e15e7a1018494d19fe38e7cd8",
+      "chineseText": "移民法官认定被告人已证明其不构成对社区的危险。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3eac714507eb5a7daf46a96f600b0e77d489bbfd49892c022c14e023f96b479d",
+      "chineseText": "根据2025年12月8日第6522-2025号命令，司法部长指定本委员会在2025年9月22日裁决的杜邦·米兰达案（Matter of Dubon Miranda）作为同类问题全部程序的判例。见2025年版8 C.F.R. § 1003.1(g)(3)。本案为符合判例资格，对格式进行了编辑调整。上诉期间本委员会发布了Yajure Hurtado案，认定“移民法官无权审理未获准入境的外国人保释请求或授予保释。”见29 I&N Dec. 216, 225 (BIA 2025)。虽然双方未提出管辖权问题，但被告可能未获准入境而在美存在。如属事实，移民法官将无管辖权审理保释请求。鉴于本决定理由，被告将被无保释羁押，故现阶段无需讨论管辖权问题。见INS诉Bagamasbad，429 U.S. 24, 25 (1976)（法院及机构原则上无需对非关键事项作出裁决）。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "11deed797b957b61ba2acee06e04fca6b88fc375b6bc0aee53fb72da43f459b3",
+      "chineseText": "引用为29 I&N Dec. 335（BIA 2025）临时裁决第4144号"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d5fee94f6048503df5d47fde1e72449e0b0eb0423556688c48dc2cfc4d1a4732",
+      "chineseText": "DHS争辩移民法官认定被告不对社区构成危险的观点有误。在保释程序中，被告负有举证责任，必须证明其不对社区构成危险或不构成无论何种保证金金额均无法保证其出庭的逃跑风险。见Matter of Urena, 25 I&N Dec. 140, 141 (BIA 2009)；Matter of Guerra, 24 I&N Dec. 37, 38 (BIA 2006)。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2f8c20091f8ba439795c57261015e7079515fd57d7a8abc2be197e2ff3393601",
+      "chineseText": "经我们全新审查，认定移民法官在判定被告已履行证明其不危害社区的责任上存在错误。见Matter of Beltrand-Rodriguez, 29 I&N Dec. 76, 77 (BIA 2025)（“外国人释放后是否对社区构成危险或有逃跑风险为判断问题，本委员会进行全新审查，但相关事实发现仅适用明显错误标准”）；另见2025年版8 C.F.R. § 1003.1(d)(3)(i)–(ii)。不争事实包括被告于2022年9月28日被控三级儿童性侵犯罪，及于2022年7月10日被控两项三级儿童性侵犯罪。指控源自被告多次对其继女进行性接触并在其7至12岁期间发送短信要求做其女友。虽然指控被撤销且继女撤回身体接触陈述，移民法官对该等因素赋予如此决定性权重明显出错。鉴于其他严重因素，该等事实并未确定被告对继女或其他儿童构成危险问题。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "bdcadd847aaedddf567f31d7ecba7434d3437d0e28417cc7d9ac00546fc80616",
+      "chineseText": "具体而言，移民法官无明显错误发现，被告向其继女发送短信表达想做其男友的意愿，移民法官恰当界定该短信为“不当行为”。移民法官亦无明显错误地认定被告曾醉酒试图进入继女房间。被告对未成年人的不当男友请求及醉酒企图进入房间的行为，至少显示其可能已试图“使因年龄及与被告的亲属关系而特别脆弱之人遭受非法性行为”。见Matter of Beltrand-Rodriguez, 29 I&N Dec. 78。此类行为高度表明其对社区构成危险。见同上。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5460e7ab25b1fe8b3aaf43734cb1a39495da444d1734769e47fbbad3a2fc984a",
+      "chineseText": "如上文所述，若被告属未获准入境而在美存在，移民法官将无权受理其保释请求。惟鉴于被告将无保释羁押，本决定暂不涉及管辖权问题。见INS诉Bagamasbad, 429 U.S. 24, 25 (1976)（说明法院及机构无需对不影响最终结果的问题作裁决）。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "11deed797b957b61ba2acee06e04fca6b88fc375b6bc0aee53fb72da43f459b3",
+      "chineseText": "引用为29 I&N Dec. 335（BIA 2025）临时裁决第4144号"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e163e3bdd9d1ed3c8e9b94a3fbdc6e3f323ee0252d7efd20c243663dde284c74",
+      "chineseText": "移民法官亦无明显错误发现，被告因与继女有关的事件认罪两项扰乱治安罪，该刑事定罪亦显示其危险性。见Matter of Guerra, 24 I&N Dec. 40（指出“外国人的犯罪记录”为保释决定相关因素）。移民法官无明显错误地认定，当问及犯罪细节时，被告答称其认罪是“希望一切结束”。该答复非针对实质问题，且缺乏说明扰乱治安定罪详情的其他证据，导致其行为细节存疑，而行为细节对评估危险性至关重要。鉴于被告对继女不当行为及涉案定罪似与继女相关，情况尤为令人担忧。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b93eb8dbc4066c6aac6575c1d847ddfe2829686eba82e17600e79a26c2578aa9",
+      "chineseText": "最后，毋庸置疑被告于2010年因酒后驾驶被判罪。该事实进一步证实被告的危险性，特别结合移民法官对其近期与继女相关醉酒行为的认定。见Matter of Choc-Tut, 29 I&N Dec. 48, 50 (BIA 2025)（“酒后驾驶对社区构成严重危险，是保释程序中的重要不利因素”）。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "616ed474c1f7df1bdd642685e0de4019fa476accc3dbda1ddc774ac6483acbf3",
+      "chineseText": "如前所述，被告负有证明其不构成对社区危险的举证责任。见Matter of Urena, 25 I&N Dec. 141；Matter of Guerra, 24 I&N Dec. 38。鉴于被告与继女之间不当且令人担忧的行为、酒后驾驶及扰乱治安的刑事定罪，以及缺乏对扰乱治安定罪的细节说明，被告未满足该举证责任。“危险的外国人适宜无保释羁押”，故本委员会将撤销移民法官所准予的保释。见Matter of Urena, 25 I&N Dec. 141。鉴于被告未能证明其不构成对社区之危险，亦无需就移民法官关于逃跑风险的认定作出评价。见同上案（“只有当外国人证明不对社区构成危险时，移民法官才应继续就其逃跑风险程度作出判断”）。据此，作出如下命令。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d19c82099148de58b7d1a7cfb4b24d83f0ed259dff33e489260fb1877da907db",
+      "chineseText": "命令：支持国土安全部的上诉。\n进一步命令：撤销移民法官于2024年7月17日作出的准许被告以7,000美元保证金获释的决定。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d9479078bf0dc5f91c2acb924977295cb60128da9d5afbb74c031e94745d8f8d",
+      "chineseText": "第337页"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "11deed797b957b61ba2acee06e04fca6b88fc375b6bc0aee53fb72da43f459b3",
+      "chineseText": "引用为29 I&N Dec. 335（BIA 2025）临时裁决第4144号"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "5af27f61599ee1c1172af80906c82b23af57c98e2fdb3905e4d7846c0619bbc0",
+      "chineseText": "进一步命令：被告人被命令继续无保释由国土安全部羁押。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3e295eb9e0fba2fc9f8cb99aefef40f6e9658d3ce8036aade0b7465321420eb5",
+      "chineseText": "第338页"
+    }
+  ]
+}

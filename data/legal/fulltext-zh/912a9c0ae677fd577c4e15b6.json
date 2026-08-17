@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "912a9c0ae677fd577c4e15b6",
+  "recordFingerprint": "457ade2736973ae540c4ede00daa20feca231dd5bc8c7fae7170660dfdcd20c9",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1416591/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1416591/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1416591/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:18:57.301Z",
+  "sourceDigest": "91fcba3df0c0bf8b526bda949e7c69ee9b08b4d558612f264d4e262a2e45c8a5",
+  "translatedAt": "2026-08-17T14:21:45.436Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8e4a686807db905dcb72b244dcd0f10d73e8d576927e81aae5db143897ffd9ac",
+      "chineseText": "引用为 29 I&N Dec. 287（BIA 2025）临时决定 #4136"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "eabf08fa32edfbe698bc24992b457f39299b2ab392a8455029986cb01cbfcccd",
+      "chineseText": "J-A-N-M-案，申请人\n2025年10月23日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7ec20a963e8b14291ce877f13073868dece02c20aba561c3eb31cf031271f208",
+      "chineseText": "根据2025年8 C.F.R. § 1208.2(c)(3)(i)，禁止对申请人的仅限扣押程序进行酌情终止。\n申请人：无律师代表\n国土安全部代理律师：Anastasia S. Norcross，助理首席法律顾问\n审理小组：MULLANE、HUNSUCKER 与 GOODWIN，上诉移民法官。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e539291169c68720090530db28d4e74f91036bdc1fbb3952d66e8da37d4e42cd",
+      "chineseText": "MULLANE，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5e7695e3ef643b02f58f0ada9349dffa02c714c1e865f82ae9ae201ade1667c9",
+      "chineseText": "2024年12月26日，移民法官拒绝了申请人依据《移民和国籍法》第241(b)(3)(A)节（INA），美国法典第8编第1231条第(b)(3)(A)款（2018年版），以及根据实施《禁止酷刑公约》（CAT）相关法规申请的扣押保护。移民法官还驳回了申请人要求行政中止的动议，但批准了申请人仅限扣押程序的酌情终止请求。国土安全部对程序终止提出上诉。申请人为洪都拉斯原籍及公民，未就申请被拒提出上诉，也未对国土安全部的上诉作出回应。国土安全部的上诉将被维持。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b40d56158b1a808d5a03ad12a9e037889bfcacf9b17dd89bb11933d58ac6b41a",
+      "chineseText": "申请人于2006年8月28日被下令从美国移除。移除后，申请人非法重新入境美国，国土安全部于2024年7月11日通过发布I-871表格——“恢复先前移除令的意图通知/决定”，恢复了先前的移除令。申请人表达了返回恐惧，且一名庇护官认定申请人对其原籍洪都拉斯存在合理的迫害或酷刑恐惧。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5cd1d93e2dfa1b8f181bd2a205018f74ce3a30f294869ade162cc196abcfba33",
+      "chineseText": "1 《禁止酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》，1984年12月10日，参议院条约文件第100-20号，1465联合国条约系列85号（美国于1994年11月20日生效）。2025年8 C.F.R. § 1208.16(c)；2020年8 C.F.R. § 1208.18(a)。\n 页码 287"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8e4a686807db905dcb72b244dcd0f10d73e8d576927e81aae5db143897ffd9ac",
+      "chineseText": "引用为 29 I&N Dec. 287（BIA 2025）临时决定 #4136"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8156c7d47df833d1d84a222919e565ae131c0f14fb5f7b3ed8499c32f285c36b",
+      "chineseText": "申请人表达了恐惧，2024年10月9日，国土安全部发布I-863表格——转交移民法官通知，将申请人转交至仅限扣押程序。参见2025年8 C.F.R. §§ 1208.2(c)(2)、1208.31(e)。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f155403b6b049cf145104e500cfc64dd019ccacd38a68fe9f30dda5fcccaef11",
+      "chineseText": "移民法官在分析申请人的主张后，认为其不可信，因而拒绝了其扣押保护和CAT保护申请。申请人还基于符合U类非移民签证资格提出行政中止动议，被移民法官驳回。听证期间，移民法官表示她不倾向于在被拘留案件中授予行政中止，但理解法规可能允许她酌情终止程序。申请人律师称申请人希望考虑酌情终止。移民法官给予国土安全部回应机会，国土安全部提出反对酌情终止的意见。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b90710bbab4c965746a78853978f758b322ef03bfb42c5cffac8c122363216e8",
+      "chineseText": "移民法官根据2025年8 C.F.R. § 1003.18(d)(2)(ii)，平衡申请人案中利弊因素，并认同申请人尽管有先前移除令仍可继续申请U类非移民签证后，批准了申请人仅限扣押程序的酌情终止。我们对移民法官终止仅限扣押程序的行为进行无偏审查。参见2025年8 C.F.R. § 1003.1(d)(3)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3232e4634941e17843cfa25b185962e48137e0fdf1d9d0ee59dc1dd1b0e68b04",
+      "chineseText": "像本案申请人一样，非法重新进入美国的被移除外籍人士须重新执行先前的移除令，并依法无权享受任何酌情救济。参见INA第241(a)(5)节，美国法典第8编第1231条第(a)(5)款（规定受恢复执行移除令约束的外籍人士“无资格且不得申请本章下任何救济”）；Fernandez-Vargas诉Gonzales, 548 U.S. 30, 35 (2006)（指出该节“适用于所有非法重新入境者，明确阻止撤销移除令，且通常排除对恢复执行移除令条款的酌情救济”）。若该外籍人士表达返回恐惧，且庇护官认定其有合理迫害或酷刑恐惧，该官员应将案件转交给移民法官，“仅审理扣押保护请求”。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "56f20d49ce0eebcbc03a35161a37a4b73a498c1c7de4437800372afc280eb409",
+      "chineseText": "2 相关法规规定，申请人即使持有最终移除令，也可独立于本程序直接向美国公民及移民服务局继续申请U类非移民签证。参见2025年8 C.F.R. § 214.14(c)(1)（讨论U类非移民签证申请程序，包括持有最终移除令的外籍人士）。\n 页码 288"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8e4a686807db905dcb72b244dcd0f10d73e8d576927e81aae5db143897ffd9ac",
+      "chineseText": "引用为 29 I&N Dec. 287（BIA 2025）临时决定 #4136"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "fd164b46c924080ae00660291d091e3a51e7cc49adb05f76a620ce54e35c8c2a",
+      "chineseText": "庇护官将案件提交移民法官进行“仅限扣押保护请求的完整审理”。2025年8 C.F.R. § 1208.31(e)。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f72d3cc263cc35b3a6ae34f42f1b6a9020f9f936a0d0f0a62ed818c00b0b4e7d",
+      "chineseText": "仅限扣押程序的复审范围限于确定外籍人士是否有资格获得扣押令或延期执行。2025年8 C.F.R. § 1208.2(c)(3)(i)；参见Johnson诉Guzman Chavez，594 U.S. 523, 535–36 (2021)（重申仅限扣押程序应遵守8 C.F.R. § 1208.2(c)(3)(i)之规定）。“在[仅限扣押程序]期间，各方禁止提出或考虑任何其他事项，包括但不限于入境资格、可驱逐性、豁免资格及其他救济资格问题。” 2025年8 C.F.R. § 1208.2(c)(3)(i)；另见Ruiz-Perez诉Garland, 49 F.4th 972, 977–79 (第5巡回法院2022年)（认定“恢复执行法令适用于‘非法重新入境美国的所有已被遣返者’，该案中申请人处于仅限扣押程序，故无资格申请特别取消驱逐的救济（援引INA第241(a)(5)节，美国法典第8编第1231条第(a)(5)款）”。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f589d27b7b229f2aa02cf56afb58a5d1763e41565fc81b48278484f1f5a1f425",
+      "chineseText": "移民法官依据8 C.F.R. § 1003.18(d)(2)(ii)批准酌情终止程序，遭到8 C.F.R. § 1003.18(d)(2)(iii)列明的限制排除：“本条(d)(2)(i)及(ii)款不得授权移民法官在其他法规有禁止规定时终止案件。” 本案中，移民法官被2025年8 C.F.R. § 1208.2(c)(3)(i)禁止考虑除扣押及延期执行以外的任何救济，包括终止程序。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7235cfb28bbe664d17894e89bc2232d647b09227f053e0d898039a73d897aa74",
+      "chineseText": "综上所述，我们认定根据2025年8 C.F.R. § 1208.2(c)(3)(i)，禁止酌情终止申请人的仅限扣押程序。因此，移民法官无权基于申请人声称符合U类非移民签证资格，终止其仅限扣押程序。国土安全部的上诉将被维持，移民法官批准酌情终止的部分判决被撤销。申请人应依先前恢复执行的移除令被遣返。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "db02641e604b7fc19f7f3c1056b4ccee3f82f2914425f011ea792422d53e3087",
+      "chineseText": "3 申请人选择追求终止其仅限扣押程序，可视为撤回扣押及CAT保护申请，因其持有最终移除令且其恐惧主张时由其请求置于仅限扣押程序。我们另注意申请人保留了上诉权，但最终未对移民法官驳回其扣押及CAT保护申请提起上诉。\n 页码 289"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8e4a686807db905dcb72b244dcd0f10d73e8d576927e81aae5db143897ffd9ac",
+      "chineseText": "引用为 29 I&N Dec. 287（BIA 2025）临时决定 #4136"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "dada7f17e0af164bccd8ee85871c03ecdcda25a652fca3abd575784e8cabbde6",
+      "chineseText": "命令：国土安全部上诉成立。\n进一步命令：撤销2024年12月26日移民法官准予申请人仅限扣押程序酌情终止的部分。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b1b181f6fd2a21dbd4391e0372732c3ff2268fb395c73f961fbae5bed5c48d6a",
+      "chineseText": "通知：若申请人遭最终移除令约束，且故意未按命令离开美国、未及时诚信申请离境所需旅行或其他证件、未按要求时间及地点向国土安全部报到，或共谋或采取任何妨碍或阻碍按移除令离境的行为，申请人将被处以最高每日998美元的民事罚款。参见INA第274D节，美国法典第8编第1324d条（2018年）；2025年8 C.F.R. § 280.53(b)(14)。此外，任何曾被拒绝入境、被移除或持移除令离开美国后的申请人，若随后入境、试图入境或任何时候被发现在美国，将被处以最高2年监禁、罚款或两者兼施。参见INA第276(a)节，美国法典第8编第1326条（2018年）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9d077fcb76357c34a5d766031f45d18e9dc7753189274907a35531b063ab7fb8",
+      "chineseText": "页码 290"
+    }
+  ]
+}

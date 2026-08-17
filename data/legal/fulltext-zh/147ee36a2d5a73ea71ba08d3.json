@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "recordId": "147ee36a2d5a73ea71ba08d3",
+  "recordFingerprint": "b40cd3619879a8f4137011f7e0311a4c17eed0231493df0a57b7d8fcfd1a24f5",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1415011/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1415011/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1415011/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T13:53:53.277Z",
+  "sourceDigest": "dde1e8da5e96be5d31f1d64d3702384a21715d0936d38785e2a8435050378793",
+  "translatedAt": "2026-08-17T14:03:23.577Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 30,
+  "translatedSegmentCount": 30,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4be5148ddef0fc159bf85c891ec55cbaee61e8826dd88239e541d6e30b1cdc59",
+      "chineseText": "引证为 29 I&N Dec. 253（BIA 2025）临时决定第4130号"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f3672f3c6d48d2f19a40badb028d73c0739e401a325ba6d210005820b5bfc672",
+      "chineseText": "J-A- 案，答辩人\n由委员会于2025年8月8日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e1fd8ad32bfdf260a3d6200f613150b3777225589ab1715696fa12ad3a279412",
+      "chineseText": "乌兹别克政府对答辩人提出恐怖活动指控，他在被遣返后将被拘留，并且存在零星酷刑事件的证据，并不足以证明他更可能遭受酷刑，因为没有足够证据证明他将因不正当理由被起诉。\n答辩人代理人：加利娜·拉基堤安斯卡娅律师，马里兰州罗克维尔\n国土安全部代理律师：梅丽莎·诺耶斯，助理首席法律顾问\n审理委员：穆兰（上诉移民法官）、古德温（上诉移民法官）、格莫茨（临时上诉移民法官）\n穆兰，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d08cd3441237f2de233439880e57f3146a287f3e55ea0786e45c3fd686f3c188",
+      "chineseText": "国土安全部（“DHS”）对移民法官于2024年10月28日作出的决定提出上诉，该决定根据《禁止酷刑公约》（“CAT”）实施条例批准了答辩人的遣返缓期申请。答辩人，乌兹别克斯坦的本国公民，同样对该决定提出上诉，质疑移民法官认定其根据《移民和国籍法》（“INA”）第208(b)(1)(A)条及241(b)(3)(A)条（2018年美国法典第8编第1158(b)(1)(A)节、第1231(b)(3)(A)节）不符合庇护和停止遣返资格的裁定。答辩人的上诉将被驳回，DHS的上诉将被支持，并裁定答辩人被遣返回乌兹别克斯坦。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c987b21ca419ce58ef3199530802725c1f6c254ba8ff6bcde1eb576877b9c72d",
+      "chineseText": "根据2025年9月22日第6404-2025号命令，总检察长指定本委员会关于J-A-案（BIA 2025年8月8日）之裁决为涉及相同事项的所有程序中的判例。参见2025年联邦法规第8卷第1003.1(g)(3)条。为符合案件作为判例的指定，编辑上进行了调整。\n《禁止酷刑及其他残忍、不人道或有辱人格待遇或处罚公约》，1984年12月10日，参议院条约文书第100-20号，联合国条约汇编第1465卷，第85页（美国于1994年11月20日生效）。2025年联邦法规第8卷第1208.16(c)、1208.17条；2020年第8卷第1208.18(a)条。\n 页码 253"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4be5148ddef0fc159bf85c891ec55cbaee61e8826dd88239e541d6e30b1cdc59",
+      "chineseText": "引证为 29 I&N Dec. 253（BIA 2025）临时决定第4130号"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9805e900ccb49553f39e0a4c11a50cda24d360e8600f967fb9b5061919fe6d6d",
+      "chineseText": "答辩人作证称，乌兹别克政府官员基于虚假指控策划了他在俄罗斯的逮捕，指称他加入了一个与恐怖组织相关的网络团体。答辩人在俄罗斯被拘留了一年，期间乌兹别克官员试图将他引渡。答辩人声称其后前往土耳其，遭到六名带有乌兹别克口音的男子袭击并试图绑架。答辩人于2024年4月根据国际刑警组织红色通缉令在美国被捕，随后申请庇护及相关保护。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "bee7d86b8c0fc5ff6b91756b5580af9b71ac6ea1b1af552020dbdcee77f903b3",
+      "chineseText": "移民法官认定答辩人不是可信的证人，且未提交足够、可靠、令人信服的证据以使其不可信的证词得以恢复。因此，移民法官因答辩人未能满足必要举证责任，拒绝其庇护及停止遣返申请。移民法官进一步认定答辩人构成国家安全风险，故根据《禁止酷刑公约》禁止授予其停止遣返。移民法官批准答辩人根据《禁止酷刑公约》的遣返缓期申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8d5ad4e102d7133e0801ad33833a440c45f6de427518995b06ad8d00baba964b",
+      "chineseText": "我们采纳并确认移民法官拒绝答辩人的庇护及停止遣返申请的决定。参见Burbano案，20 I&N Dec. 872, 874 (BIA 1994)（“我们的独立复审权限不排除委员会在同意移民法官理由及结果时，整体或部分采纳或确认其决定。”）。移民法官恰当基于答辩人证词中存在重大不一致，以及证词与其他证据之间的显著差异和省略，作出了不利可信度认定。参见INA § 208(b)(1)(B)(iii)，8 U.S.C. § 1158(b)(1)(B)(iii)。答辩人在上诉中大致主张移民法官错误依赖“少数微小不一致”且未给予解释机会，但未具体举例支持该主张。相反，移民法官的决定包含长达八页的详细可信度讨论，指出诸多实质性不一致和省略，并对答辩人的若干解释予以回应。我们确认移民法官的不利可信度认定，答辩人未证明该认定明显错误。参见Cooper诉Harris案，581 U.S. 285, 293 (2017)（裁定在明显错误复审中，“基于完整记录合理的认定——即使另有认定同样合理或更合理——应予维持。”）（引文省略）；另见美国诉美国石膏公司案，333 U.S. 364, 395 (1948)（解释明显错误推翻需基于“全体证据”的坚定确信）。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "48c37b5771ce9b3e547d38129212cd692d13dda8567575d2d53327da03d500be",
+      "chineseText": "答辩人关于允许补交迟延提交的申请被拒，上诉中论点仅署于上诉通知中。\n 页码 254"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4be5148ddef0fc159bf85c891ec55cbaee61e8826dd88239e541d6e30b1cdc59",
+      "chineseText": "引证为 29 I&N Dec. 253（BIA 2025）临时决定第4130号"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "626731e80cf5c9ac6b65ceaec2d1449de55def4648ebb212b60c2e6aae40813d",
+      "chineseText": "必须遵守。”（引用省略）；另见美国诉美国石膏公司案，333 U.S. 364, 395（1948）（解释明显错误推翻需基于“全体证据”的坚定确信）。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "dccb13ec68588a1168ab7ae277c8c29d1a80b66901e29847b4837e375291fe97",
+      "chineseText": "缺乏可信证词的情况下，答辩人未能提交足够、可靠且令人信服的证据以恢复其不可信的证词，亦未尽举证责任以支持庇护或停止遣返申请。参见INA §§208(b)(1)(B)(i)，241(b)(3)(C)，8 U.S.C. §§1158(b)(1)(B)(i)、1231(b)(3)(C)。即使答辩人的证据被视为可信，行政机关仍无须认为该证据足够有说服力或符合法律要求的举证标准。Garland诉Ming Dai案，593 U.S. 357, 371–72（2021）（裁定将可信度视为令人信服性及法律充分性之决定性因素系错误）。答辩人无需直接佐证主张之每一细节，但我们认为其提交的材料，无论单独或整体，均不足以恢复或佐证其证词。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c07b68e80bcaeff5dc36482ec8e312859f6dc03e3a15f537e9ae84bd11b434cc",
+      "chineseText": "答辩人亦在上诉中主张移民法官错误采纳联邦调查局（FBI）备忘录作为其构成国家安全威胁之依据。若答辩人实质质疑移民法官对其排除证据动议的驳回，我们同意移民法官基于决定中说明之理由，认为答辩人未提出初步证据，支持排除该FBI备忘录。若答辩人更广义上质疑移民法官允许该备忘录入案并予以充分采纳，我们则不予认同。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5c800f364172e8f5e612a676ba3409207a13c19ab070859861c7594108c79e6a",
+      "chineseText": "答辩人主张该FBI备忘录未获适当认证，因DHS未出具支持其所称正式刑事指控之宣誓书副本。然而，文档未正式认证并不必然导致其证据被拒绝或排除。相反，“在移民程序中，证据采纳的唯一标准是证据是否具备证明力且其采纳是否根本公正。”参见Mariscal-Hernandez案，28 I&N Dec. 666, 668（BIA 2022）（引文省略）。移民法官恰当认定，虽FBI备忘录未认证，但与涉及答辩人的联邦刑事调查事实相关且具证明力，该调查涉及裁量权及答辩人是否构成国家安全威胁。我们同意答辩人未提供足够证据证明FBI备忘录信息系通过胁迫或酷刑获取，亦非因严重不当行为而得。答辩人上诉中的论点不足以证明"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4be5148ddef0fc159bf85c891ec55cbaee61e8826dd88239e541d6e30b1cdc59",
+      "chineseText": "引证为29 I&N Dec. 253（BIA 2025）临时决定#4130"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "dc42dbe14909e7ad5e27d33c50b4fb2e6106da14124ba78443f0de3e58eac47a",
+      "chineseText": "移民法官允许联邦调查局备忘录作为证据是不公平的。我们得出结论，移民法官在评估被告是否构成国家安全风险时，适当地准许、权衡并依赖了联邦调查局备忘录。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e6ffb674c3695347688ae88798cda4f3a871e1a9ceb36218e79b296b7f0b78a3",
+      "chineseText": "关于被告依据《反酷刑公约》（CAT）的保护申请，我们同意移民法官的观点，理由如裁决中所述，被告构成国家安全风险，因此根据《移民与国籍法》第241条(b)(3)(B)(iv)款，8 U.S.C. § 1231(b)(3)(B)(iv)及8 C.F.R. § 1208.16(d)(2)，其拒绝给予基于CAT的扣留驱逐保护是适当的。经过重新审查，我们认为移民法官在认定被告已满足CAT下的暂缓驱逐证明义务方面存在错误，因此我们撤销该部分裁决。见8 C.F.R. § 1003.1(d)(3)(ii)（2025年版）。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b1d3ae7feb14432a041f26e6d2d98ffddef67d96d9ab6fb44755da70b9289a7c",
+      "chineseText": "为了确定被告是否已满足证明其在被遣返后“更可能被酷刑折磨”的举证责任，移民法官必须审查两个不同问题：“（1）被告被遣返后可能发生什么；（2）可能发生的情形是否符合法律上酷刑的定义？”见Myrie诉美国总检察长案，855 F.3d 509, 516（第三巡回法院，2017年）（引用省略）；同见Quinteros诉美国总检察长案，945 F.3d 772, 787（第三巡回法院，2019年）。第一个问题为事实问题，移民法官必须对被告遣返后具体遭遇作出事实认定。见Kaplun诉美国总检察长案，602 F.3d 260, 271（第三巡回法院，2010年）。第二个问题为法律问题，移民法官须判断被告遣返后的遭遇是否构成酷刑。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "79b2240ae239783575c6e06bd9ba0c2cfd057052330bcf8c5ee1165befbcdfb9",
+      "chineseText": "被告并未声称曾遭乌兹别克政府官员酷刑，但担忧遣返后会遭酷刑。移民法官认为，被告遣返乌兹别克后更可能被立即拘留并遭乌兹别克政府官员施以酷刑。移民法官的分析错误地将被告遭逮捕的风险与酷刑风险混为一谈。即使假设被告确实会被关押并因涉嫌恐怖主义关系面临起诉，证据不足以证明他很可能遭受上升至酷刑程度的伤害。移民法官部分依赖了欧洲人权法院（ECHR）的判决，该判决具有一般性，并未采用移民法官分析CAT申请时必须适用的标准。ECHR文件认定“有充分理由相信申请人在该国面临遭受不当对待的真实风险”。"
+    },
+    {
+      "segmentId": "pdf-p5-s21",
+      "order": 21,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "4be5148ddef0fc159bf85c891ec55cbaee61e8826dd88239e541d6e30b1cdc59",
+      "chineseText": "引证为29 I&N Dec. 253（BIA 2025）临时决定#4130"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "4b6efb9f08008f5a681d54fd63cb18b78854bc9b3573cd7a43c31bf66ab66e36",
+      "chineseText": "然而，该证据不足以满足被告的举证责任，因为被告必须证明其所面临的伤害具有明显概率上升至CAT所定义的酷刑水平，酷刑的严重程度高于“遭受不当对待”。见8 C.F.R. § 1208.18(a)；另见8 C.F.R. § 1208.16(c)(2)。"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c10fd36c2faeefae3314de9f54d782a559ee78db17a9109dea1817104eb20904",
+      "chineseText": "移民法官在分析中还犯错在于依赖了“一些零星的虐待或死亡轶事，远不足以支持酷刑发生的明显概率”。见Matter of A-A-F-V-, 29 I&N Dec. 118, 120（BIA 2025）；另见Matter of A-A-R-, 29 I&N Dec. 38, 41-42（BIA 2025）（认定部分严重伤害或死亡的轶事报告不足以证明该外国人本人更可能在监狱中遭受酷刑）。移民法官援引了美国国务院的国际宗教自由报告及乌兹别克国家报告，其中包含乌兹别克部分酷刑案例。虽该证据确认乌兹别克存在零星酷刑行为，但档案不支持移民法官关于“酷刑普遍存在”的结论，被告也未能证明此类酷刑如此常见，以致其个人遭遇酷刑的可能性超过一半。见Matter of J-R-G-P-, 27 I&N Dec. 482, 487（BIA 2018）。“对酷刑一般可能性的证据不足以满足被告举证责任，即其更可能因酷刑而遭受针对。”见Matter of A-A-F-V-, 29 I&N Dec. 121；另见Matter of S-V-, 22 I&N Dec. 1306, 1313（BIA 2000），“必须存在具体理由表明个人存在被针对的风险”。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "781f0f1aebf72421a60e5f34dba9384e5a973d064b8456bf8f8ab57694820433",
+      "chineseText": "最后，移民法官在分析被申请人是否证明乌兹别克政府官员有特定意图对其施加酷刑时也存在错误。移民法官的事实认定，即被申请人在遣返至乌兹别克斯坦后更可能被拘留，并无明显错误，因为该认定得到了记录中独立、客观证据的支持。参见8 C.F.R. § 1003.1(d)(3)(i)。然而，记录并未证明被申请人作为囚禁者可能面临的任何潜在伤害是出于特定意图致其痛苦或折磨。参见Matter of A-A-F-V-，29 I&N Dec.第120页。移民法官引用了乌兹别克政府利用“虚假”刑事指控针对和拘留宗教个体的一般证据，但未作出具体认定以支持对本案被申请人提出虚假指控的明显可能性。尽管乌兹别克政府正依据恐怖主义活动指控起诉被申请人，记录中缺乏足够证据证明该起诉是基于被申请人的宗教或政治观点而非合法理由所启动。\n第257页"
+    },
+    {
+      "segmentId": "pdf-p6-s25",
+      "order": 25,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "4be5148ddef0fc159bf85c891ec55cbaee61e8826dd88239e541d6e30b1cdc59",
+      "chineseText": "引用自29 I&N Dec. 253 (BIA 2025) 中期裁定编号4130"
+    },
+    {
+      "segmentId": "pdf-p6-s26",
+      "order": 26,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "6ea9b7824c89792b3858c249969de56fc53a40181defafd569a18026b30d494c",
+      "chineseText": "即使假定被申请人在被遣返至乌兹别克斯坦后将被拘留，移民法官的决定也未提供充分依据得出乌兹别克政府更可能出于故意对其施加酷刑的动机。参见Matter of J-F-F-，23 I&N Dec. 912, 917–18（司法部长2006年裁定）（认定为符合《禁止酷刑公约》保护资格的证据，必须显示假设事件链中的每一个步骤更可能发生，且“整个链条将联合起来导致被申请人遭受酷刑的可能性”）。因此，将作出以下命令。"
+    },
+    {
+      "segmentId": "pdf-p6-s27",
+      "order": 27,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f758b3b843002c9e433bfb554ce7b6104bfee574c429d3a133b68d67b9fd433a",
+      "chineseText": "命令：驳回被申请人的上诉。\n进一步命令：国土安全部的上诉获得支持，撤销移民法官2024年10月28日关于根据《禁止酷刑公约》批准被申请人延期遣返申请的决定。"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "55c947c71238f0552fdc4cda959bbfbc09b537382627f98159494e3641d10a8f",
+      "chineseText": "进一步命令：被申请人被命令自美国遣返至乌兹别克斯坦。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "351cc05f6008da605adf7f976103d6b9a3f4109f09bf69b0ac11e552a4bd266f",
+      "chineseText": "通知：若被申请人受到最终遣返令，并故意不离开美国，或未及时善意申请离开美国所需的旅行或其他文件，或未按照国土安全部要求的时间和地点出示本人，或密谋或采取任何旨在防止或阻碍其根据遣返令离开的行为，该被申请人将就其每一天的违规行为受到最高998美元的民事罚款。参见美国法典第8编第1324d节（2018年）；8 C.F.R. § 280.53(b)(14)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "b40a731e0d41b83df141aaa6a2d8ba6e649c41be2d0858fb39836611feeeef93",
+      "chineseText": "第258页"
+    }
+  ]
+}

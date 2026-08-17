@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "recordId": "363a2839a9e040793e71f876",
+  "recordFingerprint": "2a051bc70609d26aaa99fc7aa44ddda6579047771ec5e1032c34f4482e6a299a",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1415166/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1415166/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1415166/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:07:52.492Z",
+  "sourceDigest": "e1f4a16a3ae3bf5e992b1d2179b690373d6e620a2077694de4b48fff37855ce9",
+  "translatedAt": "2026-08-17T14:18:57.274Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 29,
+  "translatedSegmentCount": 29,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62704a16958887ca423353dfcfdc325c78c3910c1c15fe379c336cda13e48dfb",
+      "chineseText": "引证为29 I&N Dec. 264（BIA 2025）临时裁决编号4132"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1795669915962b498b1189f8fce46b602883901cc41a616976df985e3a98b803",
+      "chineseText": "亚历山德罗·科特鲁福（Alessandro COTRUFO）一案，被告人\n由移民上诉委员会于2025年8月28日裁定\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d141991669d8dcf61fceb2825761e7955ae5bec5fd64fe3a0f1cb708f2e9e40e",
+      "chineseText": "被告人近期因与未成年人发生非法性行为被定罪，结合为量刑目的提交的缓刑官报告，显示被告人对社区构成危险。\n被告人代理律师：罗伯特·F·雅各布斯律师，加利福尼亚州圣菲斯普林斯\n国土安全部代理律师：赛达·K·乌勒助理首席法律顾问\n出庭审理：委员会小组：汉萨克（HUNSUCKER），上诉移民法官；盖莫茨（GEMOETS）和麦克洛斯基（MCCLOSKEY），临时上诉移民法官。\n汉萨克，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "078cbf5082a19818fd98f59d95ed4d8743b29a1794e87477acc8c41dcb2ca87f",
+      "chineseText": "国土安全部（“DHS”）对移民法官2024年11月1日的决定提出上诉，该决定下令被告人以6500美元保释金获释，并由DHS自行决定替代拘留措施。被告人已提交上诉简报。我们将支持DHS的上诉，撤销移民法官的保释令，并下令被告人在DHS监管下继续羁押，不得保释。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "372592218b74938153f844a904fc68b84244f880680975581d4ce11e5e4c74fc",
+      "chineseText": "我们支持DHS的上诉，因为根据我们的重新审查，移民法官在认定被告人已证明其获释不会对社区构成危险时存在错误。参见E-A-G-案，24 I&N Dec. 37, 40（BIA 2006）（“外籍人士负有向移民法官证明其应获保释的举证责任。”）。外籍人士获释后是否对社区构成危险是一个裁量判断，我们重新审查，但判断所依据的事实认定则适用明显错误标准。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "72c197c59156f4e3d7f767112ed726dc4ac0fe40a16c8aefba1b85f600b2a72a",
+      "chineseText": "根据2025年9月23日第6419-2025号命令，司法部长指定本委员会于2025年8月28日就Cotrufo案作出的决定为涉及同一或相似问题的所有程序的先例。参见8 C.F.R. § 1003.1(g)(3)（2025年）。本文件经过编辑调整，以符合该案作为先例的指定。\n2024年11月20日，移民法官发布书面决定支持保释令。 页码264"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "62704a16958887ca423353dfcfdc325c78c3910c1c15fe379c336cda13e48dfb",
+      "chineseText": "引证为29 I&N Dec. 264（BIA 2025）临时裁决编号4132"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "75abcf01131990d79c359644c4ef94f70e8a0946c9dc66fb034f3c42b3a9e097",
+      "chineseText": "依据8 C.F.R. § 1003.1(d)(3)(i)–(ii)（2025年），我们对移民法官作出裁决所依据的事实认定适用明显错误审查标准。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a4a2195025a0328ef7470f63541fb8b01b02e9a4d40f31771745bfd287482e2a",
+      "chineseText": "我们未发现移民法官认定被告人近期因违反加利福尼亚刑法第261.5(c)条款的一项重罪非法与未成年人发生性关系罪，以及违反加利福尼亚刑法第287(b)(1)条款的一项重罪及一项轻罪对18岁以下人员进行口交罪的判决事实存在明显错误。第261.5(c)条款规定如下：\n\"与年龄比自己小三年以上的未成年人发生非法性交的人，构成轻罪或重罪，将处以不超过一年县监禁，或按第1170节(h)款规定执行监禁。\""
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ae45d8c719d9f25eba69cb8e4506a94a19db534822166304b44a96170552a405",
+      "chineseText": "加利福尼亚刑法第261.5(c)条（2024年西部版）。第287(b)(1)条款规定如下：\n\"除第288条另有规定外，任何人与未满18岁的他人进行口交行为者，将被判处州监监禁，或县监一年以下监禁。\""
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "571e4fccab18b2a9289a5cb63e3a5dc94c00aad95e2a9b6434a534c7dd18ddb3",
+      "chineseText": "加利福尼亚刑法第287(b)(1)条（2024年西部版）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f4250b4cd3451ed679e31ea226d5de94a5a5420881cb965f781793fe429ed962",
+      "chineseText": "我们亦未发现移民法官认定加州法庭对被告人判处180天监禁、24个月缓刑及赔偿的事实存在明显错误。我们亦未发现移民法官认定以下事实存在明显错误：被告人在18岁时与一名14岁女性发生性交和口交，该女性最初曾告知被告自己为16岁。移民法官还正确认定被告人无其他定罪且已成功完成刑期。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "aaf71e6a22def22d757c4037897e600d55b79737cc5fb1e8c30f861469f6f740",
+      "chineseText": "我们亦未发现移民法官认定以下事实存在明显错误：为州法院准备的2024年7月26日缓刑官报告显示，缓刑官进行了两项客观评估，俄亥俄风险评估（Ohio Risk Assessment）和静态99（Static 99），结果显示被告人再犯风险为低或中等。然而，记录同时反映，缓刑官报告描述被告人行为为操控一名“特别脆弱”的14岁女孩，被告人展现出“犯罪老练或专业性”，即其知晓该女孩过去遭受性侵害的创伤并利用此满足自己的性欲，"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "62704a16958887ca423353dfcfdc325c78c3910c1c15fe379c336cda13e48dfb",
+      "chineseText": "引证为29 I&N Dec. 264（BIA 2025）临时裁决编号4132"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1c4b33310d1c33b335ab565c2e5f180e547632cf006ecc16e8eddab7b46d2827",
+      "chineseText": "且被告人造成了身体或情感伤害，并且似乎没有表现出悔意。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5e2f8ccaf2806769800d68b336686e282683106fbc882c81281a812d12432431",
+      "chineseText": "移民法官决定仅限于审查缓刑官报告中“无争议的事实和客观数据”，理由是证人无法接受交叉质询，此决定属不合理。参见Matter of Guerra, 24 I&N Dec. 第40页（裁定“移民法官在决定可考虑的羁押重新裁定因素时拥有广泛裁量权”，且“只要决定合理，移民法官可选择对某一因素赋予比其他因素更大权重”）。“在羁押重新裁定的上下文中，移民法官评估外国人是否对社区构成危险时，不限于考虑刑事定罪。”同上，第40页。“记录中任何具有证明力和具体性的证据[包括刑事活动证据]均可被考虑。”同上，第40-41页。缓刑官报告基于官员对记录证据及证人访谈的评估，已提供给州法院以考虑在判处被告罪行时参考，且与其是否构成对社区释放的危险有关。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "331d1b4a0786d7126d7914c4a1d4d7ce13b2b1de2c1adaed3e3af7ca39f68ba2",
+      "chineseText": "此外，尽管被告以报告含有传闻证据为由反对移民法官考虑缓刑官报告，“移民程序中传闻规则不具约束力”且“移民程序中唯一的证据采纳标准是证据是否具有证明力且其采纳是否基本公平。”参见Matter of E-F-N-, 28 I&N Dec. 591, 593 (BIA 2022)(引证省略)。缓刑官报告对被告犯罪行为情况具有证明力，且采纳该报告属基本公平，因为在债券程序中负有举证责任的被告有机会提交证据对抗缓刑官报告中的陈述。事实上，上诉中被告并未反对将缓刑官报告纳入记录，反而引用该报告支持其不构成危险的主张，因州法院判决包括未要求被告登记为性犯罪者的决定部分基于缓刑官报告。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d1a9b49d6362043fda75f25a65c4ac21ed0c1183049840e734751e30d62f30df",
+      "chineseText": "根据我们的全新审查，我们认定移民法官认定被告已负举证责任，证明其不构成危险的决定有误。参见8 C.F.R. § 1003.1(d)(3)(ii)。被告近期因涉及与被告18岁时一名14岁女孩非法性交和口交的两项重罪及一项轻罪被判定有罪。尽管被告起初认为该女性是16岁，后得知她14岁，但仍继续与其发生非法性行为。被告故意与一名因年幼且曾遭受过性虐待而尤其脆弱的女孩发生非法性关系。被告的行为反映出其有意愿和能力操纵脆弱者从事非法行为以满足其欲望，且此行为对受害者造成极大伤害。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "62704a16958887ca423353dfcfdc325c78c3910c1c15fe379c336cda13e48dfb",
+      "chineseText": "引证为29 I&N Dec. 264 (BIA 2025) 临时裁决#4132"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c904b7e1bf07de5e2edd50e641a99af273015c0e7bb0d9be2a3ad621dbb77d6e",
+      "chineseText": "被告最初认为该女生16岁，后得知她14岁，然而仍继续与她进行非法性关系。被告故意与该名因年龄幼小及曾受性虐待而特别脆弱的女孩发生非法性行为。被告的行为显示其有意愿和能力操纵脆弱的人从事非法行为以满足己欲，并对她们造成极大伤害。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "127721acdd3717889f7de4485fea1a8e77a1501b8491b88da6c2a5f68ef9d543",
+      "chineseText": "因此，被告未能负举证责任证明其释放不会对社区构成危险。参见Matter of Beltrand-Rodriguez, 29 I&N Dec. 76, 78 (BIA 2025)(裁定国土安全部以明确且令人信服的证据证明危险性，因为该外国人与其同父异母姐妹、12岁女童发生性行为，其行为是“危险的，导致特别脆弱的因年龄及其与被告的亲属关系而特别容易受害者遭受非法性行为。”); 另参见McKune诉Lile, 536 U.S. 24, 32 (2002)(指出“性犯罪者是本国的严重威胁”); Gonzalez-Cervantes诉Holder, 709 F.3d 1265, 1270 (9th Cir. 2013)(“性虐待……在良知尚存的美国人中被普遍谴责，不仅因其错误，更因其危害社会。”（原文省略）(引用省略)); Matter of Guerra, 24 I&N Dec. 第41页（指出刑事活动证据对于评估被告是否对社区构成危险是相关的）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "45c8a2aa18f40181b0b35141da3a7be03994b14f918ef716092dfa089b3be56f",
+      "chineseText": "此外，尽管俄亥俄风险评估显示被告再犯风险低，静态99风险评估则显示被告再犯风险处于平均水平，这进一步支持认为被告未负举证责任证明其释放不会对社区构成危险。此外，虽然州法院未要求被告登记为性犯罪者，州法院仍以两项重罪及一项轻罪定被告非法与未成年者发生性行为罪名成立，并判处其180天监禁。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ecb7e8a15d7262694295c3b4cbd4da5396546ff83ecb0dbce7b4c6b10cc6a8d9",
+      "chineseText": "被告辩称，州法院接受了州方与被告刑事辩护律师之间协商的辩诉协议，且州法院判决未要求被告登记为性犯罪者等，支持其不构成社区危险的认定。相反，对于这些移民债券程序，移民法官及移民上诉委员会不应对州法院判决的任何特定方面，包括州法院不要求被告登记性犯罪者的决定，给予尊重。参见Matter of Choc-Tut, 29 I&N Dec. 48, 50 (BIA 2025)(指出移民法官“不对州法院的羁押命令给予尊重……因为州法院对保释的法律标准可能与移民法庭不同，且移民法官可能因各种原因做出与州法院法官不同的裁定”)。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "62704a16958887ca423353dfcfdc325c78c3910c1c15fe379c336cda13e48dfb",
+      "chineseText": "引证为29 I&N Dec. 264 (BIA 2025) 临时裁决#4132"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "bb25d188958c4e717c670f5d2fda1cd55042bed445a3ed4bedd7d3fe7f001d74",
+      "chineseText": "参见Matter of Choc-Tut, 29 I&N Dec. 48, 50 (BIA 2025)(指出移民法官“不对州法院羁押命令给予尊重……因为州法院保释的法律标准可能与移民法庭不同，且移民法官可能因多种原因做出与州法院法官不同的裁定”)。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "da8c0dd2576acb9c7c5a11244106ba7098b1832761f2dd88471e18c48d47c35e",
+      "chineseText": "被告亦引用记录中的积极因素，包括其对社区的贡献，作为其不构成危险的证据。被告的论点无效，因为“家庭和社区关系通常不足以减轻外国人的危险性。”Matter of Siniauskas, 27 I&N Dec. 207, 210 (BIA 2018)。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "62e7ef8a9a11f7a4026221a3c9aea28e858fe40d499db38e1a3b535b7dad81cb",
+      "chineseText": "根据我们的全新审查，我们裁定被告未负举证责任证明其释放不会对社区构成危险，且移民法官批准被告保释的决定有误。参见Matter of Urena, 25 I&N Dec. 140, 141 (BIA 2009)(“危险的外国人应适当无保释羁押。”)。因此，将作出以下命令。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "cc6a4cd0e10355e1478f3a96cd62e4414fd69def5632e84de246fd01e24e024d",
+      "chineseText": "命令：国土安全部上诉获支持。进一步命令：撤销移民法官2024年11月1日的保释令，命令被告在国土安全部羁押下无保释释放。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f3d87fde5e5f017e1c0b11dc2795d8627c1e7a67c0d94d78341f03917a1091fb",
+      "chineseText": "第268页"
+    }
+  ]
+}

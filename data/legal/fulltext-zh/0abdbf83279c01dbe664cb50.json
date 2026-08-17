@@ -1,0 +1,287 @@
+{
+  "schemaVersion": 1,
+  "recordId": "0abdbf83279c01dbe664cb50",
+  "recordFingerprint": "249c832e160f1ce4d1b1077d9faf6c88dc43dacdd2707ae08c3900da4c7baedf",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1420671/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1420671/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1420671/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:40:59.793Z",
+  "sourceDigest": "4cc5a682b9cc4593f676663e6a1f6eac6d0d31496fb5736519a4339b5a522e78",
+  "translatedAt": "2026-08-17T14:54:24.142Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 33,
+  "translatedSegmentCount": 33,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "f22c06ddb4f307c5b7c49f22cbee48780c2670dd922f2ecd419d87e10e48f11f",
+      "chineseText": "引用为 29 I&N Dec. 325 (BIA 2025) 临时裁决 #4142"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "87a584ebbbf6e16b52eb162e7bcdf464ac57c11207ad3881187b505e5e67ab67",
+      "chineseText": "关于 Maricruz JIMENEZ-AYALA 案，回应人\n2025年9月26日由委员会裁定\n美国司法部\n移民审查行政办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8845d3185297e48d16968dd8feff0e770c172324ca8797e5be0321d4ced16c69",
+      "chineseText": "回应人的药物使用犯罪记录及其使子女暴露于毒品环境，\n超过了本案中的有利因素，包括其声称的悔意及未来避免使用毒品的意图，\n因此支持酌情拒绝取消遣返令。\n代表回应人：Cristobal Colindres 律师，得克萨斯州达拉斯\n代表国土安全部：Miranda N. Leach 助理首席律师\n审理小组：HUNSUCKER、GEMOETS 和 VOLKERT 三位移民上诉官。\nGEMOETS，移民上诉官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bbcedbeeea52543b908c9b245d772b2c1531cb40e0f4b901ab6b6a705d5aab47",
+      "chineseText": "国土安全部（“DHS”）针对移民法官于2025年4月16日作出的裁决提出上诉，\n该裁决批准了回应人根据《移民与国籍法》第240A(a)条（8 U.S.C. § 1229b(a) (2024)）\n申请的永久居民特定身份取消遣返。回应人已提交反对上诉的答辩状。上诉将被支持，回应人将被命令遣返墨西哥。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "89452541f6d3d03e178ec30277750471b7bc43d40bb1a6ce4935264f1b613890",
+      "chineseText": "移民法官基于自由裁量权批准了回应人——一位墨西哥出生且公民、\n自1998年11月10日起为美合法永久居民——的取消遣返申请。\n是否应作出有利的自由裁量决定属于我们重新审查的范围。\n8 C.F.R. § 1003.1(d)(3)(ii)（2025）。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dd08d96ff171b6e0c6a361f187cb80f42cd63321b5a194694e6ae6d8e5251492",
+      "chineseText": "2021年9月30日，回应人在德克萨斯州波特县因违反《德克萨斯刑法典》第22.041(f)条，\n被判定遗弃或危害儿童罪。国土安全部依据《移民与国籍法》第237(a)(2)(E)(i)条，\n8 U.S.C. § 1227(a)(2)(E)(i) (2018)，以其为入境后任何时间犯下家庭暴力罪、\n跟踪罪或虐待、忽视、遗弃儿童罪的外籍人士，提出驱逐指控。\n移民法官认定回应人符合被驱逐条件，回应人随后申请了永久居民特定身份的取消遣返救济。\n双方同意回应人在法定上符合救济资格，移民法官基于自由裁量权批准了该申请。1"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f22c06ddb4f307c5b7c49f22cbee48780c2670dd922f2ecd419d87e10e48f11f",
+      "chineseText": "引用为 29 I&N Dec. 325 (BIA 2025) 临时裁决 #4142"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e31b300cbc5043d057b8255fff2ee626c8fdc154981ec266ada909fb2bd98acd",
+      "chineseText": "回应人因家庭暴力罪、跟踪罪或虐待、忽视、遗弃儿童罪被认定应当被驱逐，\n国土安全部依据《移民与国籍法》第237(a)(2)(E)(i)条提出驱逐指控。\n移民法官认定回应人应被驱逐，回应人申请特定永久居民身份的取消遣返救济。\n双方同意回应人符合法规规定的救济资格条件。\n移民法官认定回应人符合法律要求，基于自由裁量权批准了回应人的救济申请。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f1a0fec3fd4f9c393bb79194a366004ac9baf5ab4f384ac9c6a54e55aef76ee9",
+      "chineseText": "在上诉中，国土安全部主张移民法官未正确考虑整体案卷，将不利因素与案中权衡因素全面比较，并错误地裁定回应人符合有利的自由裁量权行使条件。\n经重新审核，我们同意国土安全部的观点，认为回应人不应获给予自由裁量权下的取消遣返救济。 8 C.F.R. § 1003.1(d)(3)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a95c176318c6b44231180e81d437612cf38d08490f7cb6fd48c6a467af1ca600",
+      "chineseText": "在取消驱逐案件中进行酌情分析时，移民上诉委员会（Board）不会在权衡案件中的有利因素和不利因素之前，先应用“非同寻常或 outstanding equities”的门槛测试。Matter of Sotelo，23 I&N Dec. 201，204（BIA 2001）。相反，我们着眼于“呈现在我们面前的全部证据”，以判断被申请人是否值得被酌情批准。Id.（引证省略）。当存在严重不当行为时，被申请人必须呈现额外的有利证据以抵消该等不利因素。Matter of Sotelo，23 I&N Dec. 于203；另见 Matter of Marin，16 I&N Dec. 581，585（BIA 1978）。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "727b762784136d0aa968faacc7cdce3b73240bbc8ca388e2ecb8fa4e995a96aa",
+      "chineseText": "复审时，我们将首先考虑有利因素。应考虑的有利因素包括在美国的家庭联系、在美国的长期居住（尤其是在年幼时开始居住）、如果被驱逐将对被申请人及其家庭造成的困难证据、在美国的军事服役、就业历史、财产或商业关系的存在、对社区的价值和服务的证据、如果存在犯罪记录，则有真实康复的证明，以及其他体现被申请人良好品格的证据。Matter of C-V-T-，22 I&N Dec. 7，11（BIA 1998）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "dd1133aa9ec01cf6dc4386c90f9d2a8da7005eff54755f9d6970d81fc54ae98d",
+      "chineseText": "我们承认，如同移民法官所认定，被申请人自婴儿时期起便居住在美国。被申请人的母亲、父亲、伴侣、子女以及许多扩大家庭成员均作为公民或合法永久居民居住在美国。被申请人"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f22c06ddb4f307c5b7c49f22cbee48780c2670dd922f2ecd419d87e10e48f11f",
+      "chineseText": "引用自 29 I&N Dec. 325（BIA 2025） 临时裁决编号4142"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cce82a9cd550c0f8856d1b59bc8b0c104ab9a40b486b1b8b0105c6d3d59439e0",
+      "chineseText": "在美国接受至11年级的教育。被申请人的母亲、父亲和伴侣在其庭审中代表其作证。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ecb30897f8ed03e7eb900ea853b75894faff460f5b289891d4091a17fb01484e",
+      "chineseText": "2021年被定罪后，被申请人开始参与作为缓刑一部分的康复计划，包括参加匿名戒毒会（Narcotics Anonymous）及在看守期间参加课程。被申请人在2024年5月药物复吸后，完成了指定给她的在线课程。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "42da39859783ea2d0daba5826e8d5131b8e59fea54c804998b25e5fb6c1e2e6f",
+      "chineseText": "被申请人还开始阅读《圣经》，并作证称在感到压力时会翻阅它。被申请人表示，她一直在努力修正导致她于2024年5月复吸的原因，并已接受需要依靠像家人这样支持她度过艰难时期的人。她感到儿女被带走让她重新认识了自己。被申请人对其行为表示歉意和悔恨。参见 Matter of Arreguin，21 I&N Dec. 38，40（BIA 1995）（解释承认责任可作为康复的证据）；比较 Matter of Khalik，17 I&N Dec. 518，520–21（BIA 1980）（裁定否认错误为不利酌情因素）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "182e813f59d15170a50a435c2bbf559063560b010a72226292b2c191e6c04f95",
+      "chineseText": "接下来，我们审视不利因素。应考虑的不利因素包括涉及的驱逐理由的性质及其基本情况、额外重大违反移民法律的存在、犯罪记录的存在及其性质、最近性和严重性，以及其他表明被申请人品行不良或作为该国永久居民不受欢迎的证据。Matter of C-V-T-，22 I&N Dec. 11。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a41e29f3fac5cf72da0ccf801e94b57c5993b10ce8103254bc9b06b1902a8689",
+      "chineseText": "尽管申请人的积极因素及其表达出的康复意向具有说服力，但这些不足以压倒本案中令人担忧的负面因素。申请人从事了既导致定罪又未导致定罪的刑事行为。参见《托马斯案》（Matter of Thomas），21 I&N Dec. 20, 23-24（BIA 1995）（解释在审查酌情救济申请中的不利因素时，裁决者可以考虑不利行为的证据，包括未形成最终定罪的刑事行为以符合《移民和国籍法》（INA）的目的）。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "19e4db1843f1cd1d49d45eb9f8e8ed109ae416df392bebf30ba0ca53ae5fe69b",
+      "chineseText": "具体来说，申请人承认她在2014年开始使用甲基苯丙胺，并在2019年染上毒瘾，且在怀第四胎时继续使用该毒品。在申请人的听证会上，申请人作证称她与伴侣在有子女在场的家中使用甲基苯丙胺。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f22c06ddb4f307c5b7c49f22cbee48780c2670dd922f2ecd419d87e10e48f11f",
+      "chineseText": "引用为29 I&N Dec. 325（BIA 2025）临时裁决编号4142"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3af9d91ef1ad66d7648c85b5f4867905ebec2172ef5d919d11a0ea551788ec5e",
+      "chineseText": "在申请人第四个孩子出生后，她因三个日前吸食过甲基苯丙胺而药检呈阳性，药物使用是通过外部干预被发现，而非自愿披露，因为她的孩子仍在医院的重症监护室。因甲基苯丙胺检测呈阳性，申请人被刑事指控，承认有罪，并被判处四年社区监管。在申请人生育后的一次调查中，她的另外两个孩子被检测出甲基苯丙胺呈阳性，并且在2024年5月，她因再次检测出该药物阳性而违反了监管条款。申请人的刑事定罪事实和情形可用于评估其是否应获酌情救济。参见《D. Rodriguez案》（Matter of D. Rodriguez），28 I&N Dec. 815, 824（BIA 2024）。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "31eeb5ab3580d156f4acd57a1b880dffcb7c51321ae8d689ebb970d6f10f8ac2",
+      "chineseText": "虽然我们认可申请人声称她致力于克服毒瘾，并利用现有工具戒毒，将其转折点标志为为违反缓刑规定完成的90天内90小时强制在线课程，但我们认为这不足以克服案件中的负面因素。在申请人缓刑期间，她于2024年5月使用甲基苯丙胺，从而违反缓刑规定。这次复吸发生在她的孩子们因检测出甲基苯丙胺而被从家中移走之后。尽管申请人在拘留期间完成了多项辅助康复的计划，但拘禁状况可能使评估康复困难。参见《C-V-T-案》（Matter of C-V-T-），22 I&N Dec. 13-14。申请人的康复努力均处于法院命令下或拘留状况中，在此环境下她滥用药物或犯罪的能力受到限制。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "bae2f278fa0fb618433c44db511236d71c3f4f3552ba4469022296e8a4c05ed4",
+      "chineseText": "尽管我们相信申请人真心希望改变，但证据不足以证明她已经康复，或将避免从事危及他人，特别是她那些已检测出毒品阳性或在她使用毒品时在场的子女的行为。参见《Siniauskas案》（Matter of Siniauskas），27 I&N Dec. 207, 209（BIA 2018）（“[申请人的]行为比其相反保证更能反映其未来行为。”）；《Castillo-Perez案》（Matter of Castillo-Perez），27 I&N Dec. 664, 670（A.G. 2019）（认定多次酒驾定罪可能导致酌情拒绝，部分原因是此类行为反映了“对他人安全的漠视”）；《Roberts案》（Matter of Roberts），20 I&N Dec. 294, 303（BIA 1991）（指出仅凭申请人的保证不足以显示真诚康复）。值得注意的是，在申请人既非拘留亦未受法院命令期间，她未主动寻求治疗或康复计划。此外，申请人仍与过去数年共同使用甲基苯丙胺的伴侣保持关系，该伴侣曾于2021年因同一罪名被逮捕，这进一步削弱了持续康复的可能性。此外，尽管申请人作证称失去子女监护权困难且是改变的动力，她仍继续使用甲基苯丙胺，导致2024年5月再次被安排参加课程。而且，尽管其母亲作证称在申请人被捕后见她约每月一次，质疑了该家庭支持系统的广度。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "f22c06ddb4f307c5b7c49f22cbee48780c2670dd922f2ecd419d87e10e48f11f",
+      "chineseText": "引用为29 I&N Dec. 325（BIA 2025）临时裁决编号4142"
+    },
+    {
+      "segmentId": "pdf-p5-s25",
+      "order": 25,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d6802f044f5883a0efd5248e5b95500b86d9c6154b1450ce8fb24159880a5a5d",
+      "chineseText": "该伴侣因同一罪行于2021年被捕，这一点进一步削弱了持续康复的可能性。并且，虽然申请人证称失去对其子女的监护权极为困难，是促使她改变的动因，但她仍继续使用甲基苯丙胺，导致2024年5月被安排参加另一项课程。并且，尽管有关其家庭支持系统重要性的证词存在，申请人的母亲证称自申请人被捕后，她大约每月只见申请人一次，质疑了该支持的实际程度。"
+    },
+    {
+      "segmentId": "pdf-p5-s26",
+      "order": 26,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5aed538fe52ee304727d63803ab07d32bbafb79733f8c625cdc5dab58573f98f",
+      "chineseText": "当事人的犯罪历史和累犯行为，最近最严重的是2024年5月违反缓刑——对此她轻描淡写地称之为“打嗝”与“一次简单的错误”——以及她仅参与法院指定的康复项目，这些并不足以支持她的康复主张。参见Siniauskas案，27 I&N Dec. 209（结论认为，一名外国人因醉酒驾驶被捕，且十年前曾因同一罪行被定罪，\"削弱了他……证明康复的论点\"）。综合考虑全部情况，包括当事人长期使用甲基安非他命、被捕性质、其子女尿检呈甲基安非他命阳性、她在子女面前使用毒品及其近期犯罪行为，我们认定负面因素超过正面因素，影响当事人作为永久居民的不可取性。参见Sotelo案，23 I&N Dec. 203–04。"
+    },
+    {
+      "segmentId": "pdf-p5-s27",
+      "order": 27,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7bc9073938ae1a12462df30c454cd6d8db937f4d69749fdc2a4279f1a5b53f78",
+      "chineseText": "我们承认当事人在美国有相当的权益。然而，鉴于其犯罪记录，当事人未能提供足够证据证明其康复或其他积极因素，以致于在酌情权行使时倾向有利于她。参见Silva-Trevino案，26 I&N Dec. 826, 837（BIA 2016）（指出由当事人提出有利证据以抵消档案中严重负面酌情因素的责任）。虽其家人可能真诚希望她留在美国，我们无法认定其持续留美符合美国最大利益。因此，我们认定当事人未满足证明其应获有利酌情权行使的举证责任。"
+    },
+    {
+      "segmentId": "pdf-p5-s28",
+      "order": 28,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "251d0afadf6ebbf937c6aab4416249ed1df531460599c5ca137a76cbe0220c8c",
+      "chineseText": "基于此，我们撤销移民法官依据《移民与国籍法》第240A(a)条，8 U.S.C. § 1229b(a) 授予的撤销遣返的酌情裁定。"
+    },
+    {
+      "segmentId": "pdf-p5-s29",
+      "order": 29,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "3489acb5a6958a714147627cff102530258dd40ca2a079032ad43a5cf0cd3679",
+      "chineseText": "命令：国土安全部的上诉获得支持。第329页"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "f22c06ddb4f307c5b7c49f22cbee48780c2670dd922f2ecd419d87e10e48f11f",
+      "chineseText": "引用为 29 I&N Dec. 325 (BIA 2025) 临时裁定 #4142"
+    },
+    {
+      "segmentId": "pdf-p6-s31",
+      "order": 31,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "df11cb7d78c7b947ae83583d6c2a0c766de094171e34abab8171e014e509329e",
+      "chineseText": "进一步命令：撤销2025年4月16日移民法官根据《移民与国籍法》第240A(a)条，8 U.S.C. § 1229b(a)，对当事人授予的撤销遣返命令，并命令当事人自美国遣返至墨西哥。撤销当事人作为合法永久居民的身份。"
+    },
+    {
+      "segmentId": "pdf-p6-s32",
+      "order": 32,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0920db7fa89f17d242f249a17a53c121c604542fefc897f81062b4df91a12aa1",
+      "chineseText": "通知：如果当事人受到最终遣返令，且故意拒绝或不遵守遣返令离开美国，未按时诚信申请离境所需的旅行或其他文件，或未按国土安全部要求的时间和地点出庭，或共谋或采取任何旨在阻碍或妨碍依遣返令离境的行为，则当事人应对每违反一天承担高达998美元的民事罚款。参见《移民与国籍法》第274D条，8 U.S.C. § 1324d (2018)；8 C.F.R. § 280.53(b)(14) (2025)。"
+    },
+    {
+      "segmentId": "pdf-p6-s33",
+      "order": 33,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "a219557f0436c06f64a0c1a35b54e1f9197209aae71c15e8ceeacc54265fbdf3",
+      "chineseText": "第330页"
+    }
+  ]
+}

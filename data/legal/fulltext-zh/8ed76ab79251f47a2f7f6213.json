@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "8ed76ab79251f47a2f7f6213",
+  "recordFingerprint": "235cbb9f7743df3496dd109ac2bcd277e91dc7b0b9da8ca553c15c320cd2a27b",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
+  "sourceSystem": "BIA",
+  "authorityType": "BIA Precedent Decision",
+  "issuingBody": "Board of Immigration Appeals",
+  "officialUrl": "https://www.justice.gov/eoir/media/1395961/dl?inline",
+  "officialPdfUrl": "https://www.justice.gov/eoir/media/1395961/dl?inline",
+  "sourceUrl": "https://www.justice.gov/eoir/media/1395961/dl?inline",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T14:03:23.606Z",
+  "sourceDigest": "a75d9a2ffdacc399630683d032dd0de003e74b8d0c0235948c3a02ec1978980f",
+  "translatedAt": "2026-08-17T14:07:52.466Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "459a6ca0194938a16c55f11d90484308e97a8aa463ebb11b9fe0395432dd8479",
+      "chineseText": "引证为 29 I&N Dec. 26 (BIA 2025) 临时裁决 #4089"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1a8763311fba9f4997ff445c246066297c1f36b18ca950c7b091b777d1c76911",
+      "chineseText": "扎伊德·伊斯坎达拉尼案，答辩人\n裁定日期：2025年4月8日\n美国司法部\n移民审查执行办公室\n移民上诉委员会"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "00204d8825eba53933de7ba04da667ce99b607fc65a36ccd5d97082325e6dea6",
+      "chineseText": "当移民法官口头作出裁决时，30天的上诉提交期限自裁决作出之日起计算，不受随后寄送口头裁决摘要备忘录的影响。\n代表答辩人：华勒·M·艾哈迈德律师，肯塔基州列克星敦\n出庭法官组成员：穆兰、曼恩与贝尔德，上诉移民法官。\n贝尔德，上诉移民法官："
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a9f7d14f52bc31354417347337fa5d7fb24e5694cfe2c03e51b9f6c55097aa3e",
+      "chineseText": "此案于2024年6月12日最后提交委员会审理，当时我们因答辩人上诉逾期而驳回其上诉。2024年6月27日，答辩人提交了一份及时的复议动议，主张委员会在计算其上诉截止日期时存在错误。基于以下理由，该动议将被驳回。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2072e0ed7646a2add66978fdc8fe42b190b5b40f8a94d1a6c98347cc374ebd4a",
+      "chineseText": "移民法官在2023年9月14日听证结束时口头作出裁决。通过口译员，移民法官告知由律师代理的答辩人其上诉截止日期为2023年10月16日。于2023年9月14日，移民法官准备了一份包含口头裁决摘要且标明2023年10月16日上诉截止日期的备忘录。移民法庭于2023年9月25日将该备忘录邮寄给双方当事人。答辩人的上诉最初于2023年10月18日被委员会收到。1 我们因上诉逾期而驳回该上诉，答辩人随后提出本动议。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "18868d5f5bffea0b265cdd96d7c7afcac6547908319a2b721720c78512bdce54",
+      "chineseText": "复议动议必须指出前一裁决中的事实或法律错误。参见《移民与国籍法》第240(c)(6)(C)条，8 U.S.C. § 1229a(c)(6)(C)（2018）；Z-S-G-案，24 I&N Dec. 56, 56（BIA 2006）；8 C.F.R. § 1003.2(b)(1)（2025）。答辩人"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4226bdebb959c8727f947417643fb66e4e5ead8fd7047db80f3e1b0ce5499890",
+      "chineseText": "1\n答辩人随后于2023年11月1日重新提交了上诉。在我们驳回该上诉的决定中，我们已声明即使将上诉视为于2023年10月18日提交，亦属逾期。\n第\n26页"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "459a6ca0194938a16c55f11d90484308e97a8aa463ebb11b9fe0395432dd8479",
+      "chineseText": "引证为 29 I&N Dec. 26 (BIA 2025) 临时裁决 #4089"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "92c973e1a571025bf66246e5a6d3a45a0b239761a87a7a9570aa5469bcf1b02c",
+      "chineseText": "主张委员会错误地驳回其上诉，理由是上诉逾期。\n具体而言，他认为上诉截止日期应自摘要裁定寄送至其律师之日计算，而非自移民法官作出口头裁决之日计算。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "da8372547165c6eec792aa5647fcbcb81b9a8473011531189b2d0b28eeaf0186",
+      "chineseText": "对移民法官决定的上诉通知（表格 EOIR-26）必须在移民法官口头裁决作出之日起30个日历日内或口头裁决书面通知的邮寄或电子通知之日起30个日历日内提交至委员会。8 C.F.R. § 1003.38(b)（2025）。若最后一天为周末或法定假日，则上诉必须不迟于下一工作日收到。8 C.F.R. § 1003.38(b), (c)。答辩人主张因摘要裁定于2023年9月25日寄出，他的上诉截止日应为2023年10月25日。2"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "98e5a3f9337e8387ebc1f2a6ca2c630d692d2ba0f73d89b305066f3264879595",
+      "chineseText": "我们不同意答辩人对该法规语言的解释。联邦法规第8编第1003.37(a)条规定移民法官作出裁决有两种形式：口头或书面。该条同时规定移民法官应如何作出裁决并向当事人传达。口头裁决“应由移民法官在双方当事人面前陈述，且应向双方当事人送达一份口头裁决摘要备忘录。”8 C.F.R. § 1003.37(a)（2025）。书面裁决“应以亲自送达、邮寄或电子通知方式送达当事人。”同上。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "28be3910d9b6e0335379460ff965335892ed16b76f1b6a75ea40326ada2d32e0",
+      "chineseText": "引发30天上诉提交期限的事件是移民法官裁决的作出，该日期取决于裁决是口头还是书面。参见 8 C.F.R. § 1003.38(b)。对于口头裁决，上诉期限自“移民法官口头裁决陈述”之时起算。同理，对于书面裁决，上诉期限自“移民法官书面裁决的邮寄之时”起算。同一规定在上诉通知书的说明中有所明确，说明中指出：“您必须确保上诉通知书在移民法官口头裁决作出后三十（30）个日历日内，或在"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6f96089d599ede32904694833ace063456cf95d8c40f871f5f750e47560a1492",
+      "chineseText": "被申请人通过其律师辩称，移民审查执行办公室（\"EOIR\"）的在线案件管理系统显示2023年10月25日为上诉截止日期。被申请人本人在未有律师代理的情况下提交了基础上诉，且未提交声明或任何其他证据表明他知道并依赖该信息。无论如何，如上所述，移民法官在最终听证会上已通知被申请人2023年10月16日为上诉截止日期。我们强调，本案未通过EOIR的法院与上诉系统进行电子提交。相反，所有文件和提交材料均为纸质诉讼记录的一部分。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "681974a6070d8d51971644bdbf402d6748e0333af503bca31f9470fd8f2f86e8",
+      "chineseText": "第27页"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "459a6ca0194938a16c55f11d90484308e97a8aa463ebb11b9fe0395432dd8479",
+      "chineseText": "引用为29 I&N Dec. 26（BIA 2025）临时裁决＃4089"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a6f36c442172dd9577db8c47c0c142d5fdf8b02a5077b79681ea56e00a3c9577",
+      "chineseText": "移民法官的书面裁决邮寄日期（如果未作出口头裁决）。\" 关于移民法官裁决的上诉通知，一般说明，1页（2022年11月）（省略括号内强调文字和添加内容）。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "123827e5e4baa33e54b62d41dc9bffa0da3864f04b5b5e017f79016ac02a8141",
+      "chineseText": "仅因移民法官准备了总结口头裁决的备忘录，口头裁决并不因此转变为书面裁决。3 即使移民法官准备备忘录后通过邮寄方式发送给当事各方，此亦同。4 当通过视频进行听证且各方未与移民法官处于同一物理地点时，移民法官无法在准备总结命令时当场手递该命令。但总结命令的邮寄送达并不改变上诉时限。因此，当移民法官作出口头裁决时，30天上诉提交期限自裁决作出之日起计算，不受随后邮寄总结口头裁决备忘录的影响。参见8 C.F.R. §§ 1003.37(a), 1003.38(b)。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6ec27e7f2729f14b9b2da301bc70fe604522198222d45671072fb8eb34fe6b87",
+      "chineseText": "本案事实并非特殊，受规章明文规定约束。移民法官于2023年9月14日听证结束时，在各方在场下作出口头裁决。记录显示，当时移民法官清楚向被申请人之律师解释了上诉程序及适用期限，包括2023年10月16日的上诉截止日期，且口译员将该信息翻译给被申请人。移民法官通过口译员直接告知被申请人上诉截止日期，并询问其是否有任何疑问。随后，移民法院将总结移民法官口头裁决的备忘录邮寄给被申请人律师。移民法官未准备单独书面裁决。被申请人未于2023年10月16日或之前提交上诉，故其上诉被正当驳回。因此，被申请人未能证明移民上诉委员会先前裁决在事实或法律上存在错误。参见"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d96d585d1c3cf21ad1cef65d30f715a11df8d0285ef03307ccf21b6164cf1b32",
+      "chineseText": "3 我们不同意被申请人关于2023年9月25日邮寄表明被申请人自邮寄之日起有30天期限提交上诉的主张。附于总结命令的封面信——亦称为传递信或“FF”信——涵盖多种应对不同情况的选项。被申请人引用和依赖的该段文字未被选中或标记。故该文字不适用于本案。4 另行邮寄的“法律附录”或纳入移民法官口头裁决的其他文件，同样不会改变上诉截止日期。第28页"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "459a6ca0194938a16c55f11d90484308e97a8aa463ebb11b9fe0395432dd8479",
+      "chineseText": "引用为29 I&N Dec. 26（BIA 2025）临时裁决＃4089"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "7df7f0e5a2fff04ae4740ad49ab2492d48f1d8816b6c0f8177167f56bd427a60",
+      "chineseText": "根据《移民与国籍法》第240(c)(6)(C)条，8 U.S.C. § 1229a(c)(6)(C)，鉴于此，我们将驳回被申请人的复议动议。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "dd93f6b891198866aa82d003c0ae50855694ad2c3d165cdf9eb3efeb1a3c452e",
+      "chineseText": "命令：驳回被申请人的复议动议。注意：若被申请人受终止遣返命令约束，且故意不遵从或拒绝依据该命令离开美国，未能及时善意申请离境所需旅行证件或其他文件，或未能按国土安全部指定的时间和地点出现接受遣返，或图谋或采取任何旨在阻止或妨碍依遣返命令离境的行为，被申请人将面临每天最高998美元的民事罚金。参见《移民与国籍法》第274D条，8 U.S.C. § 1324d（2018年）；8 C.F.R. § 280.53(b)(14)（2025年）。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f4166c08a2829c0b2aea0298aa10bd117f5440f278a9d9c9fb1de7da68d30b89",
+      "chineseText": "第29页"
+    }
+  ]
+}

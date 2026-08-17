@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "cde0657843ba7f48ebf00322",
   "recordFingerprint": "57895bb4c1bc0a064e425f7909fd538047b9d23d862e4bc9db9ef03e1a64e67c",
-  "datasetVersion": "488193a3391934b77a333ccf3dde9f4122de1d8a1ede41ae4186efbccea03898",
+  "datasetVersion": "7a76ee2388cadcfc434b33668759e2c616883a9db908abab7a612f48edc1b5b5",
   "sourceSystem": "BIA",
   "authorityType": "BIA Precedent Decision",
   "issuingBody": "Board of Immigration Appeals",
@@ -667,5 +667,6 @@
       "sourceTextHash": "2eaa95857a7f442c23f02b2ec0349a3d27dab53c19224b8e9354ce23cbf43be6",
       "chineseText": "转案，因移民法官认定无管辖权审理被申请人的保释动议，我们无需讨论移民法官拒绝保释的备选裁定——即被申请人未能证明非逃跑风险，亦无需审视被申请人在上诉中针对该备选裁定的抗辩。参见INS诉Bagamasbad案，429 U.S. 24，25（1976年）（法院观点）（“一般规则是，法院和行政机构不需针对其裁决所不必依赖事项作出事实认定。”）。\n第229页"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T13:53:53.246Z"
 }

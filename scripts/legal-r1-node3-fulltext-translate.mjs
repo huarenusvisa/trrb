@@ -76,20 +76,23 @@ function readExisting(record) {
 
 function extractRecord(record) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'legal-r1-n3-'));
-  const proc = spawnSync(process.execPath, [
-    'scripts/legal-r1-node2-extract-official-source.mjs',
-    '--record-id', record.id,
-    '--output', tmp
-  ], { encoding: 'utf8', timeout: 180000, maxBuffer: 32 * 1024 * 1024 });
-  if (proc.status !== 0) throw new Error(`N2 extractor failed for ${record.id}: ${(proc.stderr || proc.stdout || '').slice(0, 1200)}`);
-  const file = path.join(tmp, `${record.id}.json`);
-  if (!fs.existsSync(file)) throw new Error(`N2 extractor did not produce ${record.id}.json`);
-  const x = JSON.parse(fs.readFileSync(file, 'utf8'));
-  fs.rmSync(tmp, { recursive: true, force: true });
-  if (x.status !== 'EXTRACTED' || !Array.isArray(x.segments) || !x.segments.length) {
-    throw new Error(`N2 verified structure unavailable for ${record.id}: status=${x.status}`);
+  try {
+    const proc = spawnSync(process.execPath, [
+      'scripts/legal-r1-node2-extract-official-source.mjs',
+      '--record-id', record.id,
+      '--output', tmp
+    ], { encoding: 'utf8', timeout: 180000, maxBuffer: 32 * 1024 * 1024 });
+    if (proc.status !== 0) throw new Error(`N2 extractor failed for ${record.id}: ${(proc.stderr || proc.stdout || '').slice(0, 1200)}`);
+    const file = path.join(tmp, `${record.id}.json`);
+    if (!fs.existsSync(file)) throw new Error(`N2 extractor did not produce ${record.id}.json`);
+    const x = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (x.status !== 'EXTRACTED' || !Array.isArray(x.segments) || !x.segments.length) {
+      throw new Error(`N2 verified structure unavailable for ${record.id}: status=${x.status}`);
+    }
+    return x;
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
   }
-  return x;
 }
 
 function chunkSegments(segments) {
@@ -110,7 +113,23 @@ function chunkSegments(segments) {
   return chunks;
 }
 
-async function translateChunk(record, chunk, chunkIndex, chunkCount) {
+function validateAndOrderTranslations(chunk, translations) {
+  if (!Array.isArray(translations) || translations.length !== chunk.length) throw new Error('translation count mismatch');
+  const expectedIds = chunk.map(s => s.segmentId);
+  const expectedSet = new Set(expectedIds);
+  const byId = new Map();
+  for (const item of translations) {
+    const id = String(item?.segmentId || '');
+    if (!expectedSet.has(id)) throw new Error(`unexpected segmentId: ${id || '(empty)'}`);
+    if (byId.has(id)) throw new Error(`duplicate segmentId: ${id}`);
+    if (!String(item?.chineseText || '').trim()) throw new Error(`empty Chinese translation: ${id}`);
+    byId.set(id, String(item.chineseText).trim());
+  }
+  if (byId.size !== expectedIds.length) throw new Error(`missing segmentId bindings: ${byId.size}/${expectedIds.length}`);
+  return expectedIds.map(segmentId => ({ segmentId, chineseText: byId.get(segmentId) }));
+}
+
+async function requestTranslation(record, chunk, chunkLabel) {
   const schema = {
     type: 'object',
     additionalProperties: false,
@@ -141,37 +160,44 @@ async function translateChunk(record, chunk, chunkIndex, chunkCount) {
     text: s.text
   }));
 
-  const prompt = `你是美国法律官方原文的专业中文全文翻译器。你的任务不是摘要、不是改写、不是法律评论，而是逐段完整翻译。\n\n硬规则：\n1. 只翻译输入中提供的官方原文，不添加任何原文不存在的事实、解释、背景或结论。\n2. 每个 segmentId 必须恰好返回一次，顺序不得改变，不得遗漏、合并或拆分段落。\n3. chineseText 必须完整覆盖该段原文的全部实质内容，包括标题、脚注文字、案号、引证、日期、数字、当事人称谓、法条、裁判结论、命令性语句和限定语。\n4. 法律专有名词应准确、稳定；必要时可在中文后保留英文原词，但不得用解释替代翻译。\n5. 不得把“may / could / alleged / according to”等限定语翻成确定事实；不得把不同法律主体、程序阶段或裁判结果混淆。\n6. 原文若存在格式噪声，只忠实翻译可识别文字；不得自行补全文字。\n7. 不得输出摘要、免责声明、注释或额外字段。\n\n记录绑定：${JSON.stringify({recordId: record.id, sourceSystem: record.sourceSystem, title: record.title || null, docket: record.docket || null, citation: record.citation || null, chunk: `${chunkIndex + 1}/${chunkCount}`})}\n\n待逐段翻译的官方原文 JSON：\n${JSON.stringify(payload)}\n\n只返回符合 schema 的 JSON。`;
+  const prompt = `你是美国法律官方原文的专业中文全文翻译器。你的任务不是摘要、不是改写、不是法律评论，而是逐段完整翻译。\n\n硬规则：\n1. 只翻译输入中提供的官方原文，不添加任何原文不存在的事实、解释、背景或结论。\n2. 每个 segmentId 必须恰好返回一次，不得遗漏、重复、合并或拆分段落。\n3. chineseText 必须完整覆盖该段原文的全部实质内容，包括标题、脚注文字、案号、引证、日期、数字、当事人称谓、法条、裁判结论、命令性语句和限定语。\n4. 法律专有名词应准确、稳定；必要时可在中文后保留英文原词，但不得用解释替代翻译。\n5. 不得把“may / could / alleged / according to”等限定语翻成确定事实；不得把不同法律主体、程序阶段或裁判结果混淆。\n6. 原文若存在格式噪声，只忠实翻译可识别文字；不得自行补全文字。\n7. 不得输出摘要、免责声明、注释或额外字段。\n\n记录绑定：${JSON.stringify({recordId: record.id, sourceSystem: record.sourceSystem, title: record.title || null, docket: record.docket || null, citation: record.citation || null, chunk: chunkLabel})}\n\n待逐段翻译的官方原文 JSON：\n${JSON.stringify(payload)}\n\n只返回符合 schema 的 JSON。`;
 
+  const res = await fetch('https://api.openai.com/v1/responses', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: MODEL,
+      input: prompt,
+      max_output_tokens: 12000,
+      text: { format: { type: 'json_schema', name: 'legal_fulltext_translation', strict: true, schema } }
+    }),
+    signal: AbortSignal.timeout(180000)
+  });
+  const raw = await res.text();
+  if (!res.ok) throw new Error(`OpenAI ${res.status}: ${raw.slice(0, 700)}`);
+  const parsed = JSON.parse(outputText(JSON.parse(raw)) || '{}');
+  return validateAndOrderTranslations(chunk, parsed.translations);
+}
+
+async function translateChunk(record, chunk, chunkLabel, depth = 0) {
   let lastError = null;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const res = await fetch('https://api.openai.com/v1/responses', {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: MODEL,
-          input: prompt,
-          max_output_tokens: 12000,
-          text: { format: { type: 'json_schema', name: 'legal_fulltext_translation', strict: true, schema } }
-        }),
-        signal: AbortSignal.timeout(180000)
-      });
-      const raw = await res.text();
-      if (!res.ok) throw new Error(`OpenAI ${res.status}: ${raw.slice(0, 700)}`);
-      const parsed = JSON.parse(outputText(JSON.parse(raw)) || '{}');
-      const translations = parsed.translations;
-      if (!Array.isArray(translations) || translations.length !== chunk.length) throw new Error('translation count mismatch');
-      const expected = chunk.map(s => s.segmentId);
-      const actual = translations.map(t => t.segmentId);
-      if (actual.some((id, i) => id !== expected[i])) throw new Error('segmentId/order mismatch');
-      if (translations.some(t => !String(t.chineseText || '').trim())) throw new Error('empty Chinese translation');
-      return translations;
+      return await requestTranslation(record, chunk, chunkLabel);
     } catch (error) {
       lastError = error;
       if (attempt < 3) await new Promise(r => setTimeout(r, 2000 * attempt));
     }
   }
+
+  if (chunk.length > 1 && depth < 5) {
+    const mid = Math.ceil(chunk.length / 2);
+    console.warn(`LEGAL-R1-N3 retry-split ${record.id} ${chunkLabel} size=${chunk.length}: ${lastError?.message || lastError}`);
+    const left = await translateChunk(record, chunk.slice(0, mid), `${chunkLabel}.1`, depth + 1);
+    const right = await translateChunk(record, chunk.slice(mid), `${chunkLabel}.2`, depth + 1);
+    return [...left, ...right];
+  }
+
   throw lastError || new Error('translation failed');
 }
 
@@ -180,7 +206,7 @@ async function translateRecord(record) {
   const chunks = chunkSegments(source.segments);
   const translated = new Map();
   for (let i = 0; i < chunks.length; i++) {
-    const result = await translateChunk(record, chunks[i], i, chunks.length);
+    const result = await translateChunk(record, chunks[i], `${i + 1}/${chunks.length}`);
     for (const item of result) translated.set(item.segmentId, item.chineseText);
   }
   if (translated.size !== source.segments.length) throw new Error(`record segment coverage mismatch ${translated.size}/${source.segments.length}`);

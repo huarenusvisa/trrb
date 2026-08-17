@@ -41,9 +41,13 @@
   - Every verification-status transition is written to an audit history with evidence linkage and reviewer identity when available.
   - Dedicated acceptance workflow `PEOPLE-R1 Node 6 Acceptance` completed SUCCESS on main for run `32038494451` at commit `3f5199eefb566649ab16a72737303e11e101374b`.
 
-- PEOPLE-R1-N7 — RUNNING
-- PEOPLE-R1-N8 — WAITING
+- PEOPLE-R1-N7 — PASS
+  - Life status remains strictly `living | deceased | unknown`; no age-based or AI inference may set death status.
+  - Changing a person to `deceased` requires accepted evidence scoped to death/life-status facts.
+  - Dedicated acceptance workflow `PEOPLE-R1 Node 7 Acceptance` completed SUCCESS on main for run `32038566424` at commit `096a5cb39946047642b043630848ba41bd9b9ea5`.
+
+- PEOPLE-R1-N8 — RUNNING
 - PEOPLE-R1-N9 — WAITING
 - PEOPLE-R1-N10 — WAITING
 
-PASS registration is strictly serial. Do not mark N7 PASS until its dedicated acceptance has succeeded on `main`.
+PASS registration is strictly serial. Do not mark N8 PASS until its dedicated acceptance has succeeded on `main`.

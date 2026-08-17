@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "b98f16d5a3f0f663c601d83c",
   "recordFingerprint": "51ab5e6c7db3aebf1ee9583a3cda90a2b7a7389f3b3e38b0322082e12fd1ee03",
-  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Environmental Protection Agency",
@@ -115,5 +115,6 @@
       "sourceTextHash": "42b8943f02c73b4ae3ab718c94492c20567ca2edd2b12a2d423b372baefb47e1",
       "chineseText": "版本日期2026年8月12日，时间15:47，法规编号268001，表格编号00000，格式4700，文件编号13AUR1.SGM 13AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T22:59:45.342Z"
 }

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "recordId": "358f65170b354febfc74b84c",
+  "recordFingerprint": "514c7d801d8b05eb440a7fe799f9f083e54c9f2986092847a0f18eb43db99716",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Environmental Protection Agency",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16515/air-plan-approval-missouri-clean-data-determination-for-the-2015-8-hour-ozone-standard-for-the",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16515.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16515.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:01:47.205Z",
+  "sourceDigest": "2f24536266237128b1f8ce170bd0481147bde0a3a357ceb8ac70928b80f213b1",
+  "translatedAt": "2026-08-17T23:02:09.020Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 16,
+  "translatedSegmentCount": 16,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ab3d6e903c6f2a9fff8c7c1c0dbedcd8bd8528dd7bd69a9e4cbc63476c0215d6",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与规章 52243"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b863eb4d8477435f84bd82fb0a5e0d6affef02f3ad0504ac94efd276340140f3",
+      "chineseText": "包括南海岸空气质量管理区，自那时起已满足清洁空气法案（CAA）110(a)(2)(F)(iii)的多个国家环境空气质量标准（NAAQS）要求，且美国环保署（EPA）已批准加利福尼亚州实施计划（SIP）同时满足CAA110(a)(2)(F)(iii)对1997年臭氧NAAQS的两个要求。9 根据CAA第307(b)(1)节，本行动的司法复议申请必须于2026年10月13日前向相应巡回法院提交。提交对本最终规则的复议申请，不影响本行动的最终性，也不延长司法复议申请的期限，并且不得推迟该规则或行动的生效。本行动不是《美国法典》第5编804(2)条所定义的“重大规则”。三、EPA行动：基于拟议规则及本文档的论述，EPA最终确定Coachella Valley已于2025年6月15日达到被废止的1997年臭氧NAAQS，基于2022年至2024年的经过质量保证和认证的环境空气质量监测数据。四、法定及行政命令审查：本行动：• 不是《管理和预算办公室》根据1993年10月4日生效的行政命令12866（58 FR 51735）认定的重大监管行动；• 不是2025年2月6日生效的行政命令14192（90 FR 9065）所规定的监管行动，因为该行动根据行政命令12866不重大；• 不构成《信息收集再授权法案》（44 U.S.C. 3501及以下）规定下的信息收集负担；• 根据《监管灵活性法案》（5 U.S.C. 601及以下）确认为对大量小实体无重大经济影响；• 不包含根据1995年《无资金授权改革法案》（公法104-4）对小政府有重大或特殊影响的非资金授权；• 不包含行政命令13132（64 FR 43255，1999年8月10日）规定的联邦主义影响；• 不适用行政命令13045（62 FR 19885，1997年4月23日），因其批准州计划；• 不属于行政命令13211（66 FR 28355，2001年5月22日）认定的重大监管行动；• 不适用1995年《国家技术转移与进步法》（15 U.S.C. 272注）第12(d)节要求，因为适用该要求与CAA不符。\n美国环保署将根据《国会审查法案》（CRA）向国会两院及美国审计长提交规则报告。该行动不构成重大规则。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d881faaa9c7bc16edca569ce5119b75dc43201e6fdcffe5f13a7b2b5793bba4c",
+      "chineseText": "PDF第1页，内容包含：该决定基于针对1997年空气质量标准的完整、经过质量保证和认证的空气监测数据（2022-2024年）。参见81 FR 18766（2016年4月1日）和79 FR 63350（2014年10月23日）。文件编号2026-16511，发布于2026年8月12日，08:45。账单代码6560-50-P。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4b857f2661ce1708f49e78e23c0a7d7cb22e55556fc08d40c70efe1b7b3763b7",
+      "chineseText": "文档日期格式及页眉页脚信息，未含实质内容。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b3123f421910dd2801282ceba5bf17aa02f5b69ce70093f2c221ea96ae5d9b7a",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与规章 52244"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "dbaf7f5da64ea49ef321c94add7916e4c260fffad5a5aad19c58ba610f18f3e4",
+      "chineseText": "信息联系部分：2026年2月26日（91 FR 9159），EPA发布拟议规则通知，提议确定2015年臭氧国家环境空气质量标准（NAAQS）符合情况，针对密苏里州圣路易斯区域。EPA根据2023-2025年的完整、经过质量保证和认证的环境空气监测数据，提出了所谓的清洁数据确定（CDD）结论。该地区3年臭氧设计值为0.070 ppm，符合2015年臭氧NAAQS标准。2025年11月3日，密苏里州环境自然资源部（MoDNR）提交了特殊事件请求，EPA于2026年1月27日同意。该清洁数据决定暂停该州提交部分非达标区规划要求的义务，直到该区域持续达到该标准。另一行动中，EPA也将对圣路易斯伊利诺伊州部分作出类似决定。发布日期为2026年9月14日。EPA设立了Docket ID EPA-R07-OAR-2026-0463，所有文档均可在https://www.regulations.gov查询，但部分信息如商业机密不公开，受版权材料等限制的部分仅提供纸质版本。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c3cd4b9d3fb38a5862e26b1ea52bd3ea02fbdae7ae068f7b5b0b704b421408e3",
+      "chineseText": "根据EPA对2022年至2024年数据的质量保证和认证，该地区在2025年6月15日达到了1997年臭氧国家环境空气质量标准。该数据经EPA审核符合相关排放限制要求。根据《清洁空气法案》第107(d)(1)(B)节，EPA需对新修订的NAAQS做出区域指定，圣路易斯地区被指定为边缘（Marginal）非达标区，2018年6月4日（83 FR 25776）。2022年10月7日（87 FR 60897），EPA确定该区域未按边缘达标日期达到标准，依法将区域重新分类为中度（Moderate）非达标区。2024年11月25日（89 FR 92816）和2024年12月17日（89 FR 101901），EPA分别确定密苏里州与伊利诺伊州部分均未达到中度达标日期标准，两州部分被依法再次分类为严重（Serious）非达标区。虽然EPA的规则正在联邦上诉法院中受审理，但本更新不改变州内任何监测站的设计值。EPA仅同意密苏里州提交的一部分野火影响超标日数据，对该同意目的是为了维护符合监管目的的准确数据，而非特意偏向某种监管结果。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d0bd66024b82cd62b96e643ecd5f209f9dfff1da74c66b9485b345903834fcd6",
+      "chineseText": "文档页眉页脚格式信息，不包含翻译内容。"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5b4c51f81bf96f17f8809458c6fdf094622114bfc3684fcaf80c0499498a4a64",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与规章 52245"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "085f17a697a0cec706f48f3faebc825a72a896684d9067c368b23a28eedf6d24",
+      "chineseText": "与本次行动相关的监管决定观察、地面测量、2025年11月3日的统计分析，并得到EPA于2026年1月27日的支持和一致同意。EPA的一致同意基于对每个具有监管意义的日子的完整技术评估，该州提供了充分的示范以支持每一天的清洁数据认定（CDD），且EPA审查后同意。此外，EPA认为对其他日子的进一步同意并非必要。如NPRM及RTC所述，2023至2025年间该区域所有臭氧监测站的认证数据均表明设计值在0.070 ppm或以下，证明该区域已达到2015年臭氧国家环境空气质量标准（NAAQS）。EPA还回应了Sierra Club关于长期臭氧趋势、前体气体排放轨迹及未来排放增长预测的评论。RTC认为这类问题超出CDD的范畴，CDD仅基于最近三年完整且质量有保障的监测数据。EPA指出评论者提到的2025年底超标情况已在2023-2025年的设计值计算中充分考虑。EPA审查了Sierra Club关于排除受野火影响数据对公共健康可能影响的担忧。EPA承认高臭氧暴露的健康影响，并指出《特殊事件规则》依据《清洁空气法》第319(b)条由国会授权，旨在确保受不可控自然事件影响的数据不会被用于不适当的监管决定。Sierra Club还担忧州正在避免执行与臭氧NAAQS相关的重要规划和减排要求。根据拟议规则及RTC的解释，密苏里州在该区域重新指定为达到标准前，仍需履行所有适用的《州实施计划》要求；根据40 CFR 51.1318，部分规划规定及其相关要求仅在最终清洁数据认定并且该区域继续达到标准时才暂停执行。RTC还对评论质疑特殊事件示范是否确立了明确的野火烟雾与臭氧超标的因果关系进行了回应。EPA基于完整的技术记录和多种证据方法，包括但不限于HYSPLIT后向轨迹模型、卫星数据及气象证据，提供了支持意见，EPA完整评估认为密苏里州提交了充分的示范，EPA基于40 CFR 51.1318的规定通过最终确定认为该区域已达到2015年臭氧NAAQS。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a891c55cd8c31ceeed9a11241b253541d34232030f4b1d96230c2a22e76d20fb",
+      "chineseText": "的关系。基于完整技术记录和证据权重方法，包括HYSPLIT后向轨迹模型、卫星数据和气象证据，EPA同意密苏里州的异常事件请求。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "cd67e044c66886de87a3fa4edb6ba26e19a8b4c3a6fbda3ffaa53df82c8af171",
+      "chineseText": "2026年8月12日15:47，行政记录编号Jkt 268001，文件编号00000，格式F0，页面27，格式4700，样式4700，电子联机文件：FR/FM/13AUR1.SGM，标识为13AUR1。"
+    },
+    {
+      "segmentId": "pdf-p4-s13",
+      "order": 13,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "93b2aee1f071249ab65e26c032aaa911c3bfd81601c2b90735c51a485f6eb855",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例，页码52246。"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9998662d1d0c07948632bb01c6158c8504a1ed94cb27001bb88138407f1ff3c7",
+      "chineseText": "不对任何州、地方政府或部落政府及私人部门施加可执行的义务。本行动不会在之后的执法程序中被挑战。根据《清洁空气法》（CAA），伊利诺伊州圣路易斯非达标区（以下简称“圣路易斯区”或“该区”）部分已经实现2015年国家环境空气质量标准（NAAQS）的清洁数据。此确定基于2023至2025年完整、质量有保障且认证的环境空气监测数据，显示该区伊利诺伊州部分已经达到2015年臭氧NAAQS。该确定还依赖EPA对伊利诺伊州环境保护局（Illinois EPA）于2025年12月18日提交的异常事件请求的同意，EPA于2026年1月12日一致认可。因此，EPA正在对此异常事件请求采取最终行政行动。另有行动中，EPA正在为圣路易斯区密苏里州部分作出类似确定。该最终确定暂停该区域提交达标示范、相关的合理可获得控制措施（RACM）、合理进一步进展（RFP）计划、未达标或未合理进展应急措施以及其他与2015臭氧NAAQS达标相关的规划要求，只要该区持续满足2015臭氧标准。"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3451bdf903240f262715741839b74f47f286a319182e1814a8582739c33ec953",
+      "chineseText": "生效日期：本最终规则自2026年9月14日起生效。地址：EPA已为本行动建立了档案，档案编号为EPA–R05–OAR–2026–0695。档案中的所有文档均可在https://www.regulations.gov网站查询。尽管在索引中列表，但某些信息不可公开，例如保密的商业信息（CBI）或法律限制披露的信息。某些其他材料，比如版权材料，不会上载至网络，公开形式仅限于纸质版。公开档案材料可通过https://www.regulations.gov获得，或联系下述信息联系人了解详情。信息联系人：Alexis Bender，空气与辐射部门（AR–18J），环境保护署Region 5，地址：77 West Jackson Boulevard，芝加哥，伊利诺伊州60604，电话：(312) 886–9497，电子邮件：bender.alexis@epa.gov。"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "924781e7e52929bb5b03ec6a4aab3a4d05f6e20066e34136d5006d091f5b0c08",
+      "chineseText": "2026年8月12日15:47，行政记录编号Jkt 268001，文件编号00000，格式F0，页面28，格式4700，样式4700，电子联机文件：FR/FM/13AUR1.SGM，标识为13AUR1。"
+    }
+  ]
+}

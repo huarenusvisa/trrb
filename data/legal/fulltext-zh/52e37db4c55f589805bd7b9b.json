@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "recordId": "52e37db4c55f589805bd7b9b",
+  "recordFingerprint": "92bd537dc72a96da3347827a606ff3031dba9973d08b316a379ecee5e66a327d",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Commerce Department; National Oceanic and Atmospheric Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16537/fisheries-off-west-coast-states-modification-of-the-west-coast-salmon-fisheries-inseason-action",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16537.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16537.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:02:09.055Z",
+  "sourceDigest": "9e981ae1514bebca7a9753ec3547ed1c5686a5fba5ccfa9f25e30dad50711d3a",
+  "translatedAt": "2026-08-17T23:02:19.165Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 7,
+  "translatedSegmentCount": 7,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5533f587d3553deb376ce253f036c09fee9a2ec6b1ee8f187de11dc97404d20c",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52261"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "cb91c5f68b659457ef283877b895f371c2fc5768dc248df445b1f3bc85a64a4f",
+      "chineseText": "图标或链接直接连接至标签），直至2026-2027年调整渔业管理措施生效日期，相关措施已于联邦公报发布。NMFS获授权根据新信息实施渔业季节内调整，以调整2026年鲑鱼标签季节、捕捞限额及其它渔业管理措施，考虑规章（50 CFR 660.409）中描述的因素。鲑鱼渔业季节内措施可由NMFS直接采取（50 CFR 660.409(a)——固定季节内管理条款），或经与太平洋鱼类管理委员会主席协商后采取（50 CFR 660.409(b)——灵活季节内管理条款）。2026年3月4日至9日委员会会议期间，鲑鱼技术小组（STT）提交了2026年管理的鲑鱼种群丰度预测报告，这些种群受太平洋沿岸鲑鱼鱼类管理计划的管理（美国/加拿大边界至俄勒冈州卡普法尔康的北部区域，和卡普法尔康以南至美墨边界的南部区域）。该通知描述的是2025-2026管理周期的季节内措施。这些措施影响了南部区域（SOF）商业及娱乐鲑鱼渔业，如下文“季节内行动”部分所述。该措施的咨询于2026年3月9日进行，参与方包括NMFS、俄勒冈州鱼类野生动物部门及加利福尼亚州鱼类野生动物部门代表，同时也有鲑鱼咨询小组和鲑鱼技术小组参与。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "89e9b9602e370eeca61c69a1ced6116b84fc5a920d7cb0cbe0507accafb3f1e8",
+      "chineseText": "2025-2026年海洋鲑鱼渔业年度管理措施（2025年5月16日，90 FR 20810）涵盖了从美加边界至美墨边界的商业和娱乐渔业，自2025年5月16日太平洋夏令时间零时零分起生效，直到2026年5月15日生效的2026-2027年调整管理措施实施前。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "149bd2c27bba7d212f169d5e7af99e8fc35bafbdd9eedfc4a2181c15d7701649",
+      "chineseText": "编号268001号令，2026年8月12日15时47分 发布于《联邦公报》。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9449a96de34deb7bcdd7262b0341a39bbd70fbbcb3ab0ed02c6f40e992b5d3c8",
+      "chineseText": "52262 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cbcbb1001a42664079a1179b8f17697d569833c9fcad21e3720626fb42ca32a2",
+      "chineseText": "以下所述季节内措施针对2026年4月4日凌晨12时01分起至2026年5月15日晚上11时59分的海洋鲑鱼娱乐渔业实施，从加利福尼亚州点灯岩至鸽子点（旧金山管理区）渔区关闭；同时，2026年4月4日起至4月10日的点灯岩至美墨边界（蒙特雷管理区）区域娱乐渔业关闭；2026年4月16日至5月15日期间，加利福尼亚州纬度40°10′北至点灯岩（福特布拉格管理区）之间的商业鲑鱼拖钓渔业关闭。其它2025-2026年海洋鲑鱼渔业管理限制和规章保持不变。季节内行动23号调整了从俄勒冈州卡普法尔康至俄加边界的商业鲑鱼拖钓渔业，关闭了原计划一些开放日期的渔业。该措施自2026年3月25日凌晨12时起至4月13日晚上11时59分有效，关闭卡普法尔康至汉巴格山路段商业鲑鱼拖钓渔业；2026年3月15日至4月13日期间关闭汉巴格山至俄加边界路段的商业鲑鱼拖钓渔业。季节内行动24号调整了从俄加边界至美墨边界的娱乐及商业鲑鱼渔业，关闭了相关渔业。该措施自2026年5月1日起至5月15日有效，关闭俄加边界至加州纬度40°10′北（加州克拉码斯管理区）区域的娱乐鲑鱼渔业；2026年4月4日至5月15日间，关闭加州纬度40°10′北至点灯岩（福特布拉格管理区）之间的娱乐鲑鱼渔业。 NMFS西海岸区域管理员基于关于鲑鱼种群丰度、捕捞数量和渔业影响的新信息和预测，判断这些季节内措施必要以保证符合捕捞配额和保护目标，同时快速应对鱼类快速迁移与不同时间渔业资源组合的变化，因此在程序允许范围内实施这些措施，免除事先公开评论程序。措施前通过电话热线和海岸警卫队广播通知渔民。措施依据适用法律法规授权执行，其有效性符合联邦管理目标。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "975f89451057e7a9eba1742888294c7555ffea5a6fe86bd1b8649aa1a5ced74d",
+      "chineseText": "编号268001号令，2026年8月12日15时47分 发布于《联邦公报》。"
+    }
+  ]
+}

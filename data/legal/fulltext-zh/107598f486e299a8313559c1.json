@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "107598f486e299a8313559c1",
   "recordFingerprint": "2977e551d8132473e5ec2f07881613881d532a734e229f2c57a8480b04d15ad1",
-  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Environmental Protection Agency",
@@ -139,5 +139,6 @@
       "sourceTextHash": "4b857f2661ce1708f49e78e23c0a7d7cb22e55556fc08d40c70efe1b7b3763b7",
       "chineseText": "日期：2026年8月12日15:47，文件编号 PO 00000，以标准格式4700发布，电子联邦登记册文件名13AUR1.SGM，文件于2026年8月13日发布。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T22:59:45.342Z"
 }

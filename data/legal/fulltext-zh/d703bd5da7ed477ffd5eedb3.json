@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "recordId": "d703bd5da7ed477ffd5eedb3",
+  "recordFingerprint": "e518eb07ee3faafb63b8a887d65344d29b998db59dccbc6a93eaae87908bea14",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Environmental Protection Agency",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16627/approval-of-source-specific-air-quality-implementation-plan-new-york-big-six-towers-inc",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16627.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16627.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:08:25.656Z",
+  "sourceDigest": "710c5d5687fe41749bc5e76f0b36579f3f128c35774951e3fdefb203bb4b28ce",
+  "translatedAt": "2026-08-17T23:09:15.520Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 17,
+  "translatedSegmentCount": 17,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d619a37ac7e10e65647b5a4eafb9f3bfd286a9cbd1b4d6fa15d5cb5522207323",
+      "chineseText": "52534 联邦公报 / 第 91 卷，第 156 号 / 2026 年 8 月 14 日星期五 / 规则与规章"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b1d07c4e8f7f91fbbd4502d989d92567fb984264d02ab88f3dde9a329e3e9287",
+      "chineseText": "请联系前述 FURTHER INFORMATION CONTACT 部分列出人员。支持此判定的环境考虑记录随案卷可查。安全区内人员必须遵守 COTP 或其指定代表发出的所有合法命令或指示。小企业可致电 1-888-REG-FAIR（1-888-734-3247）向小企业及农业监管执法专员和地区小企业监管公平委员会发送意见。海港、水上安全、航行（水域）、报告和记录保存要求、安全措施 等属于 33 CFR 第 165 部分主题。执法期限自 2026 年 8 月 16 日中午 12 点至下午 6 点。卡伦·C·达蒙，美国海岸警卫队底特律港口警卫队队长。[联邦公报文档 2026–16644 于 2026-08-13 8:45am 备案] 计费代码 9110-04-P\nB. 信息收集条款 本规则不涉及根据 1995 年《信息处理减少法案》（44 U.S.C. 3501-3520）规定的新信息收集。\nC. 联邦主义与印第安部落政府 我们根据联邦主义行政命令 13132 分析本规则，认定其符合该命令中描述的联邦主义基本原则和排他要求。此外，依据行政命令 13175（印第安部落政府协商与协调）分析，本规则不涉及对一个或多个印第安部落的重大直接影响，也不影响联邦政府与印第安部落之间的权力及职责分配。\nD. 无资金强制法案 根据 1995 年《无资金强制法案》（2 U.S.C. 1531-1538），海岸警卫队证明本规则不会导致州、地方法律或部落政府，或私营领域，年度开支达到或超过 1 亿美元（经通胀调整）。\nE. 环境 本规则根据国土安全部指令 023-01 Rev.1 及环境规划命令 COMDTINST 5090.1 系列进行分析，符合国家环境政策法（42 U.S.C. 4321等）。该项措施属于不对环境产生重大个别或累计影响的类别。\n此规则为安全区，依照 DHS 指导手册 023-01-001-01 Rev.1 附录 A 表 1 第 L60(a) 条款，免于进一步审查。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "97e15fd64ec4c78924433052087c2c33b1cea1d7d647968d842f40eda163b00f",
+      "chineseText": "根据本部分子部分 C 中的一般安全区规章，除非获得 COTP 或其指定代表的授权，否则禁止进入第(a)段所述的安全区。申请进入权限，请通过 VHF-FM 频道 16 联系 COTP 或其代表。安全区内的人员必须遵守 COTP 或其指定代表发出的所有合法命令或指示。某些信息（如商业机密（CBI）、专有商业信息（PBI）或依法限制披露的其他信息）不公开，而某些材料如版权材料则不在网络发布，仅作为纸质文件公开。公开可获得的案卷材料可通过 https://www.regulations.gov 在线查阅。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a3003d3b7aece18ccde17c70657aa4ed841c87c037b4e15af5f1363fc5daa1c0",
+      "chineseText": "2026 年 8 月 13 日 16:20 记录 Jkt 268001 PO 00000 形式 00060 格式 4700 规范 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "2d82bb591e461fad2b66e3cad6a9e37b790cea3aebefc35b31195b24516a649d",
+      "chineseText": "联邦公报 / 第 91 卷，第 156 号 / 2026 年 8 月 14 日星期五 / 规则与规章 52535"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c032db57ec6407e9d4b7d017371378def456c1c8774f02ba8a0967ce09a5a466",
+      "chineseText": "联系方式：Stephanie Lin，美国环保署空气项目分部，290 Broadway，25 楼，纽约，纽约 10007-1866；电话：(212) 637-3711；邮箱：lin.stephanie@epa.gov。\n附录内容\nI. 执行摘要\nA. EPA 采取何种行动？\nB. 法律依据及相关要求\nII. 背景\nIII. 纽约州提交内容摘要\nIV. EPA 对纽约提交内容的评估\nV. EPA 收到的意见\nVI. 参考文献采纳\nVII. 法规和行政命令审查\n\nI. 执行摘要\nA. EPA 采取的行动\nEPA 批准于 2024 年 7 月 24 日提交的设施源特定 SIP 修订，因为该修订中有关 1-STACK（EU 1-STACK）排放单元，即设施三台油机（0ENG2、0ENG4、0ENG6）的排放限值，经证明实施了适当可行控制技术（RACT）。具体包括：(1) 设施不得超过三台油机的交替 NOx RACT 排放限值 5.0 克/马力小时（g/bhp-hr），依据 2022 年 6 月的 RACT 分析证明；(2) 设施须于任何烟囱测试的前至少 90 天提交测试方案给纽约州环保署（NYSDEC）批准；(3) 业主或运营方须现场保存至少五年的相关记录。\nB. 法律依据及要求\nNYSDEC RACT 规章第 6 NYCRR 227-2 对该类设施的 NOx 排放设定要求，于 2013 年 7 月 12 日纳入纽约 SIP。设施的三台油机属于第 227-2.4(f)(3) 条款管辖，因其为运行燃油的固定内燃机。该条规定的 NOx RACT 排放限为 2.3 g/bhp-hr。鉴于技术及经济可行性不足，NYSDEC 允许针对设施提出源特定 RACT 判定，该限值适用。\n设施位于 Queens Woodside，47 街 59-55，名为 Big Six，具备大宽容工业设施，含六台内燃机（三台天然气机和三台油机）及三台锅炉。天然气机符合预设 RACT 限 1.5 g/bhp-hr，故不在本次措施范围。\nEPA 审查了 NYSDEC 于 2024 年 7 月 24 日提交的 RACT 证明和变异排放限，对比 2008 年及 2015 年臭氧 NAAQS 标准内容，认定符合《清洁空气法》要求。EPA 于 2026 年 5 月 28 日公布了拟批准规则，现为最终规则。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cf38d2d137810f83952bcac0b668fbb332e918827522026d44e7f363d5b0f9f5",
+      "chineseText": "纽约 SIP 中接纳的 6 NYCRR 227-2 RACT 规章最后经 EPA 于 2013 年 7 月 12 日批准。设施三台油机因其油燃内燃机特征，适用 6 NYCRR 227-2.4(f)(3) 规定，该条款预设 RACT 排放限为 2.3 g/bhp-hr。然而，根据 NYSDEC 规章，允许针对设施采取源特定 RACT 判定，如拟议排放限经批准视为实施了 RACT。\n设施负责产生电力及蒸汽用于公寓综合楼宇及混合零售空间。三台油机的 RACT 排放限被评定为 5.0 g/bhp-hr，为适用技术经济可行性最低限。该限值载于设施 2024 年 4 月 4 日发放，至 2029 年 4 月 3 日有效的环境许可（Permit ID 2–6304–00404/00004）中的条件 19、30、31、32 和 40；并包含监测、报告和记录保存要求。相关变异排放限获得州环保部门批准后，提交至 EPA 纳入联邦 SIP 并获最终批准即具联邦强制执行效力。\nEPA 认为此 5.0 g/bhp-hr 限值实施 RACT 合理：（1） 6 NYCRR 227-2.4 所述的 2.3 g/bhp-hr 限值对设施而言技术和经济上不可行；（2） 三台油机现用燃烧优化措施无须额外控制技术。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f3cb72a2e3e0cf9926094ac9f681515ce455b53c0bf124f9aa9102df603dadc1",
+      "chineseText": "2026 年 8 月 13 日 16:20 记录 Jkt 268001 PO 00000 形式 00061 格式 4700 规范 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1d5ad7759e65cad46118529a61a29171bdf4463185705eb525b7d8fc7c38786b",
+      "chineseText": "52536 联邦公报 / 第 91 卷，第 156 号 / 2026 年 8 月 14 日星期五 / 规则与规章"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "47aad7f71321a3c3b0e9aa70b22dd2e6e4aa283e4db8f3338a1d120ea81b4d83",
+      "chineseText": "在任何EPA或印第安部落已经证明该部落拥有管辖权的区域内，均技术上和经济上可行，并将通过引用或在下一次SIP汇编更新中纳入。该SIP修订包含足够的与排放限值相关的监测和报告要求。在印第安领地内的这些区域，规则不具备部落含义，不会对部落政府产生实质性直接成本，也不会如执行令13175（2000年11月9日，65 FR 67249）所规定的那样，取代部落法律。(见42 U.S.C. 7410(k); 40 CFR 52.02(a))。根据CAA，管理员必须批准符合CAA及适用联邦法规规定的SIP提交。EPA的角色是批准州的选择，前提是其符合CAA标准。因此，该行为仅批准符合联邦要求的州法律，并不会超出州法律施加的附加要求。针对EPA批准行为的理由已在EPA于2026年5月28日发布的拟规则中解释，此处不再复述。通过本最终规则，EPA批准将2-6304-00404/00004许可条件19、30、31、32和40并入纽约州SIP。EPA为该拟规则提供了30天的评审和评论期，截止于2026年6月29日，期间未收到任何评论。经批准的材料已由EPA作为州实施计划的一部分予以纳入，并在最终EPA批准规则生效之日起，依据CAA第110及113条款，完全具备联邦强制执行力。此外，SIP未获批准适用于任何印第安保留地土地。本规则不属于执行管理与预算办公室依据执行令12866 (58 FR 51735, 1993年10月4日)审查的重大监管行动，不属执行令14192 (90 FR 9065, 2025年2月6日)的监管行动，不构成纸质工作减少法案（44 U.S.C. 3501及后续条款）下的信息收集负担，不含无资金支持的授权，且不显著影响小型政府或实体，也不涉及联邦主义问题或执行令13045、13211及国家技术转移和进步法案第12(d)节的相关要求。根据CAA第307(b)(1)条款，针对本规则的司法复审应于2026年10月13日前在美国相应巡回上诉法院提起，且提出复审申请不会影响本规则的最终性或复审期的延长，也不应推迟规则或操作的生效。此外，后续在执行强制要求中不得以本次行动提出异议。40 CFR第52部分第52.1670条款中，新增“大六塔”（Big Six Towers）源特定条目，包含2024年4月4日州生效日期及2026年8月14日EPA批准日期，详列排放限值及相关设备编号。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3450d6f920568be00491dda34cb0e3205cb4b3c25c6a104e8ecfcedd30cc548b",
+      "chineseText": "2026年8月13日16:20发布  Jkt 268001 电子联邦注册系统 下卷号及页码不详"
+    },
+    {
+      "segmentId": "pdf-p4-s12",
+      "order": 12,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8dcabf41b66dc759e898f687d41a11bb169de641e3a8f039fc05aaca64eb66ea",
+      "chineseText": "联邦公报 / 第91卷 第156号 / 2026年8月14日 星期五 / 规则与条例 52537页"
+    },
+    {
+      "segmentId": "pdf-p4-s13",
+      "order": 13,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "98d7fc0d0b5f874439c68a78e0720896d2edcd9a23d16d0aeadc0566d7db377f",
+      "chineseText": "EPA批准的纽约州源特定条款\n州生效日期  源名称   标识号   EPA批准日期   备注"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "fecd768cc79a8e56193221aca40f4fdb48248c737622ad483eea71f4851c7333",
+      "chineseText": "* * * * * * *\n大六塔  2-6304-00404/00004  2024年4月4日  2026年8月14日 91 FR [插入联邦公报文档起始页码] 排放限值条件19、30、31、32和40，包括单位1-排放口，以及排放源0ENG2、0ENG4、0ENG6。"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "975a854840eaf7d8f7620fbfd7aa222dae06910a2144e0b9e2bf03ef7463b0c7",
+      "chineseText": "* * * * * 附加说明：\n[联邦公报文档 2026-16627号 2026年8月13日提交 8:45 AM]\n计费代码 6560–50–P\n背景说明\nA. 目的\n总务管理局（GSA）正在撤销根据标题六、《1964年民权法》（Title VI，42 U.S.C. 2000d）颁布的部分规章，分别见41 CFR 101–4、101–6、101–8和105–10部分，以使其规章与禁止蓄意歧视行为的法规保持一致（见42 U.S.C. 2000d）。GSA当前的标题六规章因超出针对蓄意歧视的限制，禁止产生无意差别影响的行为，而在法律上存在严重的法定及宪法争议，且未充分符合公共利益。本次修订还使GSA规章符合行政命令14281《恢复平等机会与任人唯贤》（2025年4月23日，90 FR 17537）。该命令指出，美国政策尽最大努力消除所有环境下差别影响责任的适用，以避免触犯宪法、联邦民权法律及美国基本价值观。（同令17537页）该命令还指示联邦机构确保其民权规章与标题六保持一致。为响应该要求，2025年12月10日，司法部发布了修订后的标题六规章（90 FR 57141），尽管GSA此次修订是基于自身考量，但与司法部修订及行政令14281相一致。该修订调整了GSA在《联邦财产管理法规》（FPMR）中的标题六规章，将其移至现行的《总务管理局财产管理规章》（GSPMR），同时更新过时条款，提升条文清晰度和行政效率，而未改变标题六所规定的法律义务。"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f43a3107d994a6b238c3d613eb867ef02ee5c2a996dd9c5a2acba6f3c0cd81b9",
+      "chineseText": "如需进一步信息，请联系民权办公室（OCR）外部项目部门负责人Lisa Lee Anderson，电话202-501-0767，邮箱lisa.anderson@gsa.gov。关于内容阐释，亦可联系此人。1958年行政命令12250《领导与协调反歧视法律》（45 FR 72995，1980年11月2日）授权司法部长协调实施标题六及相关法规的执法工作。1973年7月，GSA修订并重新发布了部分规章，基于1971年12月的拟规则通知（38 FR 17973，1973年7月5日），更新和澄清了法规涵盖范围。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "902da24243b13f85a6354fd3471b5cbd6c4066e8b821a0f5bf479d52d93ebd1a",
+      "chineseText": "2026年8月13日16:20发布  Jkt 268001 电子联邦注册系统 下卷号及页码不详"
+    }
+  ]
+}

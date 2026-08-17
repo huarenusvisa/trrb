@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "recordId": "75f8b5354772e33f151dc894",
+  "recordFingerprint": "3448f5e464ff928188e67946cdb757484e64194d571ea2d3d2a3f9dc3066491c",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Environmental Protection Agency",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16514/air-plan-approval-illinois-clean-data-determination-for-the-illinois-portion-of-the-st-louis-area",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16514.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16514.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:01:22.498Z",
+  "sourceDigest": "b6ad7b8617422d3950a335bbd1333b263e6ff2da871e42962df47ffc28c8a944",
+  "translatedAt": "2026-08-17T23:01:47.171Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 16,
+  "translatedSegmentCount": 16,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "93b2aee1f071249ab65e26c032aaa911c3bfd81601c2b90735c51a485f6eb855",
+      "chineseText": "52246 联邦公报 / 第 91 卷，第 155 号 / 2026 年 8 月 13 日，星期四 / 规章与规例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9998662d1d0c07948632bb01c6158c8504a1ed94cb27001bb88138407f1ff3c7",
+      "chineseText": "各级政府。本项行动不对任何州、地方或部落政府或私营部门施加可执行义务。该行动不会对各州实施其职责时带来后续诉讼挑战（见第 307(b)(2) 节）。F. 行政命令 13132：联邦主义 本行动无联邦主义影响。它不会对各州、国家政府与州之间的关系或者各级政府间权力和职责的分配产生重大直接影响。该行动最终确定了《清洁空气法》（CAA）下密苏里州圣路易斯区域的清洁数据决定。如引言所述，环保署修订了第 40 编 CFR 第 52 部分如下：G. 行政命令 13175：与印第安部落政府协调 本规则无部落影响，如行政命令 13175 所规定。它不会对部落政府产生重大直接影响。因此，行政命令 13175 不适用于本规则。第 52 部分权限引用继续如下：权限：42 U.S.C. 7401 及以下条款。H. 行政命令 13045：保护儿童免受环境健康和安全风险 EPA 解释行政命令 13045 仅适用于 EPA 有理由认为可能不成比例地影响儿童的环境健康或安全风险的规制行为，依据行政命令第 2-202 节中“涵盖的法规行为”的定义。本行动仅为清洁数据决定，故不受行政命令 13045 约束。I. 行政命令 13211：对能源供应、分配或使用产生重大影响的行动 本行动不属于根据行政命令 12866 的重大监管行动，因而不受行政命令 13211 约束。本行动受《国会审查法》约束，EPA 将向国会两院和美国政府问责署提交规则报告。本行动不属于 5 U.S.C. 804(2) 定义的“重大规则”。根据《清洁空气法》第 307(b)(1) 节，必须于 2026 年 10 月 13 日前在美国相应巡回法院提起对本行动的司法审查请愿。向本规则管理者提出复议请愿不影响本行动司法审查的最终性，也不延长提起司法审查请愿的期限，不得推迟本规则或行动的生效。本行动可能在 https://www.regulations.gov 通过案号 EPA-R05-OAR-2026-0695 查询。联系方式见下文。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3451bdf903240f262715741839b74f47f286a319182e1814a8582739c33ec953",
+      "chineseText": "本最终规则的管理者提出复议请愿不影响本行动司法审查的最终性，也不延长提起司法审查请愿的期限，不得推迟本规则或行动的生效。联系方式如下：联系人：Alexis Bender，空气与辐射部门（AR-18J），环保署第五区，地址：77 West Jackson Boulevard, Chicago, Illinois 60604，电话：(312) 886-9497，电子邮件：bender.alexis@epa.gov。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "924781e7e52929bb5b03ec6a4aab3a4d05f6e20066e34136d5006d091f5b0c08",
+      "chineseText": "（此段为印刷格式信息，无实质内容）"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "bff0dfd9454d2a00c09eadfc8bc84ccb14a79e04258a93b0fc48ccf493e37fbe",
+      "chineseText": "（此段为印刷格式信息，无实质内容）"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c5f8152819ac60ddfb1abf36c4487e61db2d8a6e4c191d998ac125f3c7c063df",
+      "chineseText": "补充信息：2026 年 2 月 26 日发布的拟议清洁数据决定中，EPA 拟对异常事件一致性给予最终行动，该一致性移除设计值中受事件影响的数据，并公开征求公众对 EPA 一致性的评论。I. 背景 2015 年 10 月 1 日，EPA 修订了 8 小时臭氧国家环境空气质量标准（NAAQS）为 0.070 ppm。见 80 FR 65292（2015 年 10 月 26 日）。依据《清洁空气法》第 107(d)(1)(B) 节，EPA 需将违反 NAAQS 的地区指定为非达标，基于最近三年经质量保证的臭氧监测数据。2018 年 6 月 4 日（83 FR 25776），EPA 将圣路易斯市（跨密苏里州-伊利诺伊州）指定为轻微非达标区，范围涵盖密苏里州的福兰克林县博尔斯镇、杰斐逊县、圣查尔斯县、圣路易斯县及圣路易斯市，以及伊利诺伊州的麦迪逊县、门罗县和圣克莱尔县。2022 年 10 月 7 日（87 FR 60897），EPA 判定该区域未能达到轻微非达标期限，自动升级为中度非达标。2024 年 11 月 25 日（89 FR 92816）及 12 月 17 日（89 FR 101901），EPA 进一步判定密苏里及伊利诺伊州部分均未达到中度非达标期限，依法升为严重非达标1。2026 年 2 月 26 日（91 FR 9519），EPA 拟定基于 2023-2025 年期间完整、质量保证且认证的环境空气监测数据，认定该区域达到 2015 年臭氧标准。此清洁数据决定基于 EPA 的异常事件一致性，伊利诺伊州 EPA 于 2025 年 12 月 18 日提交请求，EPA 于 2026 年 1 月 12 日一致同意。II. EPA 对评论的回应 公共评论期从 2026 年 2 月 26 日起至 3 月 30 日止，收获一条支持意见。III. EPA 采取的行动 EPA 依据《清洁空气法》认定伊利诺伊州圣路易斯区域达到 2015 年臭氧标准，基于 2023-2025 年完整、质量保证且认证的环境空气监测数据。EPA 也对伊利诺伊州 EPA 于 2025 年 12 月 18 日提交，并于 2026 年 1 月 12 日 EPA 同意的异常事件请求采取最终行动。EPA 在另行行动中对密苏里州部分做出类似认定。环境保护署暂停该区域提交达标示范、相关合理可行控制措施（RACM）、合理进一步进展（RFP）计划、应急措施及其他规划 SIP 要素的要求，条件是该区域持续达到 2015 年臭氧标准。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3ce0e64869392244227b10af5a9cfbdb9cbe774afb47916794140ab13d3969e7",
+      "chineseText": "EPA 于 2026 年 1 月 12 日对伊利诺伊州提交的异常事件示范表示同意。EPA 同时对密苏里州圣路易斯区域采取类似决定；这两项决定正处于美国第八巡回上诉法院与第七巡回上诉法院的诉讼中1。EPA 因此暂停该区域提交达标示范、合理可行控制措施（RACM）、合理进一步进展（RFP）计划、应急措施及其他相关 SIP 规划要求。此行动不向任何州、地方或部落政府及私营部门施加可执行义务。F. 行政命令 13132：联邦主义 本行动无联邦主义影响。它不会对州政府产生重大直接影响，亦不会影响国家政府与州之间的关系或不同政府层级间的权力与职责分配。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4685d2cea3cab5160d5230d5a7cfff9085b535dace027fd0c21410af346c3e70",
+      "chineseText": "（此段为印刷格式信息，无实质内容）"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "93f55472930c2b9caab992c14df7109cca1286ed39ef4676284eb66659119f67",
+      "chineseText": "52248 联邦公报 / 第 91 卷，第 155 号 / 2026 年 8 月 13 日，星期四 / 规章与规例"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a0530882acb0686ade1a05bf31de5fd59d4c157567e2e5bb9169f566547f0ce1",
+      "chineseText": "对各州的直接影响，关于国家政府与各州之间的关系，或关于权力分配和各级政府之间的职责分工。本行动不受行政命令13211（《显著影响能源供应、分配或使用的行动》）的约束，详见第307(b)(2)节。本行动不是根据行政命令12866定义的重大监管行动，而是根据《清洁空气法》（CAA）对圣路易斯区伊利诺伊州部分的清洁数据认定。G. 行政命令13175：与印第安部落政府的协调 本规章对部落政府无影响，故不适用行政命令13175，不会对部落政府产生重大直接影响。因此，行政命令13175不适用于本规章。H. 行政命令13045：保护儿童免受环境健康与安全风险  环境保护局解释行政命令13045仅适用于那些涉及环境健康或安全风险且EPA认为可能对儿童产生不成比例影响的监管行动，根据“涵盖的监管行动”的定义。本行动仅发布清洁数据认定，不受该命令约束。I. 行政命令13211：显著影响能源供应、分配或使用的行动  本行动不受行政命令13211约束，因为其非重大监管行动。J. 国家技术转让法  本规则制定不涉及技术标准。K. 国会审查法  本行动受国会审查法约束，EPA将向国会两院及美国审计署提交规则报告。根据5 U.S.C. 804(2)的定义，本行动不是“重大规则”。L. 司法审查 根据CAA第307(b)(1)节，针对本行动的司法审查请于2026年10月13日前向相应巡回上诉法院提交申请。向本最终规则的管理员提交重新审议申请不影响本规则的最终性，也不延长司法审查的期限，且不应推迟该规则或行动的生效。本行动不能在后续程序中受到挑战。授权：42 U.S.C. 7401及其后续条款。具体修订如下：1. 第52部分的授权引用继续有效；2. 在§ 52.720段落(e)的“达标和维持计划”表格中，“臭氧（8小时，2015年）清洁数据认定”新条目被添加至“芝加哥区臭氧（8小时，2008年）重新指定和维持计划”之后，内容如下：* * * * *"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "799e85af1b851400e63fe5381501b61144b5ea046380e4c4dfaa12c2ab72b1ac",
+      "chineseText": "EPA批准的伊利诺伊州非监管性及准监管性条款 适用州地理区域或非达标区域 名称 SIP提交日期 EPA批准日期 备注"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9cdb6c2ea5dd78c4f323e63a0cda445d2e0d5bd1422aad0bed764fe9dab9e906",
+      "chineseText": "* * * * * * * 达标和维持计划"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e67bb7839a151aa86bee47c9b419a541b871461b1d1cd257817362edd03eba06",
+      "chineseText": "* * * * * * * 臭氧（8小时，2015年）清洁数据认定 圣路易斯区 ................................... 不适用 2026年8月13日，联邦公报第91卷 [插入联邦公报页面] EPA最终决定暂停伊利诺伊州环保局提交的达标演示及圣路易斯区相关非达标计划要求，只要该区域持续符合2015年臭氧国家环境空气质量标准（NAAQS）。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "83068c3bb4882e81cde2c91e535297d9660d39aaafe2dad6aacb479b81e2513d",
+      "chineseText": "* * * * * * * khammond 于 DSK9W7S144PROD 使用规则"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5036b020e89369b708b9b8a2097392d0552a58661dca3eedc98fab6855a45168",
+      "chineseText": "* * * * *  [联邦公报文档2026–16514，文件日期2026年8月12日；上午8:45] 计费代码：6560-50-P"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5afc57dfe95788541956c080008dd3e809f658a45d5418ff8d4e0c0cddb8185c",
+      "chineseText": "版本日期 2014年9月11日，15:47，2026年8月12日   Jkt 268001 PO 00000 Frm 00030 Fmt 4700 Sfmt 9990  E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    }
+  ]
+}

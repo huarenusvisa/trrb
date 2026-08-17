@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "2f4c79e91f20e79054cc3ecf",
   "recordFingerprint": "2e1588210cd5ee8f95321e3a76d6e1c656fa149eda4f1405ccd8796404db53e4",
-  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Federal Communications Commission",
@@ -419,5 +419,6 @@
       "sourceTextHash": "149bd2c27bba7d212f169d5e7af99e8fc35bafbdd9eedfc4a2181c15d7701649",
       "chineseText": "（以下为格式信息：VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00043 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1）"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T22:59:45.337Z"
 }

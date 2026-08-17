@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "dd9ba770574bd0c35bca839b",
   "recordFingerprint": "af3e65072857d3c0141505b42e2e33c3a58f5ec739b4164191355216f46e0d32",
-  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Transportation Department; Federal Aviation Administration",
@@ -163,5 +163,6 @@
       "sourceTextHash": "51058cd7901529cdc2a64c4ba9baab3b7eff26dbc333cef1e162461e824cb2d2",
       "chineseText": "发布时间：2026年8月12日，协调世界时15:47\n文件编号：Jkt 268001\n联邦登记处，代码PO 00000格式4700，样式4700，文件名13AUR1.SGM，文档编号13AUR1。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T22:59:45.338Z"
 }

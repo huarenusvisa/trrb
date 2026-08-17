@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "recordId": "59ef4fee187e074b91203071",
+  "recordFingerprint": "007d06738d2b0437b3842d5631216f9656eaeee65582dd4d88931a9cd1877814",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16512/airworthiness-directives-brp-rotax-gmbh-and-co-kg-formerly-brp-powertrain-gmbh-and-co-kg-and",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16512.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16512.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T22:59:45.383Z",
+  "sourceDigest": "6044994aa51d94b89187ccbb37cbe72459d76eed54cb4b7cdb0f335819bc5df4",
+  "translatedAt": "2026-08-17T23:01:22.465Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 26,
+  "translatedSegmentCount": 26,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "56aec1ac63577ac5eb254c1a742679e83df955015883406d2b042b92086ed42a",
+      "chineseText": "52236 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2b27e800df92b165eb0f129aecadc11538430a0cefbd44d656496b83d9fac3de",
+      "chineseText": "(4) 本适航指令（AD）不采纳2026年7月30日发布的“备注”部分。• 联邦eRulemaking门户网站：请访问regulations.gov，按照提交意见的指示操作。• 传真：(202) 493-2251。• 邮寄地址：美国交通部，文件操作部，M-30号，西大楼一层，W12-140室，1200 New Jersey Avenue SE，华盛顿特区20590。• 亲自递交：请在周一至周五上午9点至下午5点（联邦假日除外）将材料送至上述地址。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "62f036e0c80a1fde6976964d0a4764e127b01f28b6b2061e6cda699c47e87c7e",
+      "chineseText": "(5) 您可以在美国国家档案与记录管理局（NARA）查看本材料。有关NARA材料的可用性信息，请访问www.archives.gov/federal-register/cfr/ibr-locations或发送电子邮件至fr.inspection@nara.gov。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1a9851ffd7dc9f11c421a664927c04af57f685e37c48d6375d1c140b110f64f7",
+      "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00018 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e959eb52d851fd495dfac32ae9aa347a19e3e325482aa7b091c20171c29296f0",
+      "chineseText": "联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例 52237"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5237d316e28e7aee5d0b6f76b87e00db0a48052fb85c59a2c4b1578c6517d766",
+      "chineseText": "regulations.gov，包括您提供的任何个人信息。该机构还将发布一份总结所有实质性口头联系的报告。机密商业信息（CBI）是指业主既习惯性又实际上将其视为私人信息的商业或财务信息。根据《信息自由法》(FOIA)(5 U.S.C. 552)，CBI免于公开披露。如您提交的评论包含响应本适航指令的商业或财务信息，且您实际上将其视为私人，并希望其保密，请清晰标明该评论为CBI。请在含CBI内容的每页上标注“PROPIN”。FAA会将标注的提交视为根据FOIA保护的机密文件，且不会纳入本AD的公开档案。含CBI的提交应发送至Joseph Catanzaro，航空安全工程师，FAA，1600 Stewart Avenue，Suite 410，Westbury，NY 11590。否则，FAA接收的未指定为CBI的评论将纳入公开档案。FAA收到的任何评论会被总结于公开报告中。欧洲联盟航空安全局(EASA)作为欧盟成员国的技术代理，已发布紧急适航指令2026-0121-E，日期为2026年6月24日（EASA紧急AD 2026-0121-E）（亦称为MCAI），以纠正所有Rotax型号912 F2、912 F3、912 F4、912 iSc2 Sport、912 iSc3 Sport、912 S2、912 S3、912 S4、914 F2、914 F3和914 F4发动机，以及型号912 A1、912 A2和912 A3发动机存在的不安全状况。MCAI指出制造商报告最近生产的一台发动机的螺旋桨齿轮箱缺少油喷嘴和用于固定齿轮箱内螺旋桨主轴轴承的M7 x 16六角螺钉，可能导致主轴及其前轴承在齿轮箱内产生轻微位移。进一步调查发现这些部件未在生产时安装。为解决该潜在不安全状况，Rotax发布了服务材料，载明受影响的齿轮箱序列号及视觉检查和必要时更换的程序。若未及时处理，可能导致发动机油泄漏，进而引发发动机飞行中停机和飞机失控。FAA评估该风险后，决定发布本AD，要求对螺旋桨齿轮箱实施一次性视觉检查，确认油喷嘴和相关螺钉是否安装，若未安装则更换为合格齿轮箱。此外，禁止在任何发动机上安装受影响的齿轮箱，除非满足特定条件。MCAI适用于上述Rotax型号发动机的所有序列号，其中型号912 A1、912 A2和912 A3未在美国类型认证，但作为某些飞机类型设计的一部分。本AD适用于所有上述型号。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5b7abeb374ee4e325c196ce0c6d0f6b684b531ddfabcce3052b6c81d2b6889c3",
+      "chineseText": "该AD要求一次性视觉检查螺旋桨齿轮箱，确认油喷嘴及相关螺钉是否安装，若缺失则更换为合格齿轮箱。同时，禁止安装受影响齿轮箱。MCAI与本AD的区别在于，EASA紧急AD 2026-0121-E适用于上述所有型号及特定序列号的发动机，而型号912 A1、912 A2、912 A3未在美国类型认证但为某些飞机类型设计组成部分。本AD对这些型号全部适用。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6fb05af06bb618e59ea58aa5fd560339dc0ce917a7bb5fec37277d563112d9a3",
+      "chineseText": "法定授权《行政程序法》第553(b)条授权机构于发现“正当理由”时可跳过公告及征求意见程序发布规则，即当该程序“不切实际、不必要或违背公众利益”。本FAA判定本AD存在正当理由，因缺失油喷嘴及固定螺钉可能导致轴向位移，进而引起发动机油泄漏和飞行中停机、飞机失控风险，且无相关风险传播速度信息。为保护飞行公众安全，决定立即实施本AD，无需事先发布公告征求意见。另根据553(d)条，机构可在不足30天内令规则生效。"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "90d88227fd1222b79cbe06f5fdd5ffbfdeb926a6cae8512b9c258b9639be5ae8",
+      "chineseText": "52238 联邦公报 / 第91卷，第155号 / 2026年8月13日星期四 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ed582094c1abd88dae831b866e94aabf911ce0a91ede341246a8b1ee0f35ee63",
+      "chineseText": "鉴于该AD影响180台安装于美国注册飞机上的发动机，FAA估算如下遵守本AD的费用："
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d5d719b2a0a6684d2f2a414da3a66eb233d21ddada4eb2979fbd00974bb29773",
+      "chineseText": "估算费用\n每项劳动成本 零件成本 单位成本 美国运营商总成本"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2b90e79a8106064877e7a8b1e48dd610ec388288f4d3f75787a62f5f80ae16f0",
+      "chineseText": "对螺旋桨齿轮箱实施视觉检查............2工时×85美元/小时＝170美元........0美元 170美元 30600美元"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2d4ac55805d7ec294bb4944b8ca7bd8ac34fdf532d4011bdcac82b86dd38ede3",
+      "chineseText": "FAA估计根据检查结果，可能需要更换齿轮箱，但无法确定需更换齿轮箱的台数。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "aca45e5e12743d3f740125f4ccdfc996752b6ee4acbee3dc871a86901cc4a08f",
+      "chineseText": "按需费用\n操作   劳动成本    零件成本    单位成本"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e71c2e109f07466ce0a3bc626bdf8a450fe04b04472a75deee93e29b5d340ee2",
+      "chineseText": "更换螺旋桨齿轮箱................................3.5工时×85美元/小时＝297.5美元....................5600美元 5897.5美元"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ae0e1516f5c14d6cb5e5137b1a7501de7c6b019339d81909a77cb859acc6300b",
+      "chineseText": "FAA已在其成本估算中包含所有已知的监管发现费用。根据制造商的说法，本AD的一些费用可能通过保修来承担，从而降低对受影响运营者的成本影响。 权限：49 U.S.C. 106(g), 40113, 44701。 本AD不会根据行政命令13132对联邦主义产生影响。本AD不会对各州产生实质直接影响，也不会影响国家与州之间的关系或各级政府之间的权力分配。 根据上述原因，我认证本AD： (1) 不属于行政命令12866规定的“重大监管行动”；且 (2) 不影响阿拉斯加州内的州内航空。 本规则依据美国法典第49编第七篇航空计划中的第44701节权限制定。该条款规定FAA主管负责通过制定必要的航空安全规范来促进民用航空器在航空商业中的安全飞行。本规章属于该权限范围内，因为它涉及一项可能存在或发展于本规则所列产品上的不安全状况。 因此，根据管理员授予我的权限，FAA修订14 CFR第39部分，新增如下适航指令： 2026-16-11 BRP-Rotax GmbH & Co KG（前称BRP-Powertrain GMBH & CO KG及Bombardier-Rotax GmbH）及其他各类飞机：修正案39-23441；案号FAA-2026-7235；项目标识符MCAI-2026-00679-E。 (a) 生效日期 本适航指令自2026年8月28日起生效。 (b) 受影响的适航指令 无。 (c) 适用范围 本适航指令适用于 BRP-Rotax GmbH & Co KG（前称BRP-POWERTRAIN GMBH & CO KG及Bombardier-Rotax GmbH）（Rotax）生产的型号912 F2、912 F3、912 F4、912 iSc2 Sport、912 iSc3 Sport、912 S2、912 S3、912 S4、914 F2、914 F3及914 F4发动机；以及安装在表1中所列飞机上的型号912 A1、912 A2及912 A3发动机，这些飞机作为其型号合格基础的一部分被认证且配备满足(c)(1)或(c)(2)段中标准的螺旋桨变速箱。 ◆第39部分—适航指令 权限文号继续如下："
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "d31e402c525cf998b1ce914b06e2ef088f81d579a15097002eea90e074078566",
+      "chineseText": "表1至(c)段——装备受影响发动机的飞机 khammond于DSK9W7S144PROD处理规则信息"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "73cb9cde7b0181100092c7192df043338ae3a97df16eea9f2e9bd9d381e7db4a",
+      "chineseText": "发动机 型号证书持有人 飞机型号 发动机型号"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a49add54da781d8e6d99430fb5861936c2b2109f7926dc70239ce55f476d7038",
+      "chineseText": "Aeromot-Industria Mecanico-Metalurgica Ltda ................................. AMT–200（超级Ximango） ................................... 912 A2。 Diamond Aircraft Industries ................................................................ HK 36 R “超级迪蒙纳” ......................................... 912 A1。 Diamond Aircraft Industries GmbH .............................................................. HK 36 TC及HK 36 TS ................................................... 912 A3。"
+    },
+    {
+      "segmentId": "pdf-p3-s20",
+      "order": 20,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3c5f57f8bd62154bd93e71b45858ca7422266fbe6f0a031c62f9efcf81f1dfd1",
+      "chineseText": "2026年8月12日15:47，联邦登记处文件编号Jkt 268001 PO 00000，格式4700，样式4700，电子文件路径FR/FM/13AUR1.SGM，档案编号13AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "992f9dc1ce7332d38fd36938aef08e32dd9b1c8e9f41d6cbac7fdd1fa827bf0a",
+      "chineseText": "联邦登记处 / 第91卷，第155号 / 2026年8月13日星期四 / 规章和条例 第52239页"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "a6077b03e49143d6b8b4ff6c794e9accf7a0d7c64faefed05beb87ca10a51684",
+      "chineseText": "表1至(c)段——装备受影响发动机的飞机——续 发动机 型号证书持有人 飞机型号 发动机型号"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "2123242ab0d93e6177886e634bc241dbb79f20ec62a314e330fc1d3b422344c5",
+      "chineseText": "Diamond Aircraft Industries Inc ........................................................ DA20–A1 ............................................................... 912 A3。 HOAC-Austria ................................................................................... DV 20 KATANA ..................................................... 912 A3。 Magnaghi Aeronautica S.p.A ............................................................ Sky Arrow 650 TC ................................................. 912 A2。 SCHEIBE–AIRCRAFT–GMBH .......................................................... SF 25C .................................................................. 912 A2或912 A3。"
+    },
+    {
+      "segmentId": "pdf-p4-s24",
+      "order": 24,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c1023631a55d45e832276ae0cb78441b0f7474418a629d4a95edc42a9fe35703",
+      "chineseText": "(1) 初始安装（交付时）在配备具有序列号的螺旋桨变速箱的发动机上——该序列号详见Rotax警示服务通告ASB–2026–001R00第四章附录4.1段（齿轮箱安装在发动机上）。 (h) 安装禁令 生效日期后，禁止安装具有Rotax警示服务通告ASB–2026–001R00第四章附录4.1段螺旋桨变速箱序列号的发动机变速箱，或作为备用零件交付的具有该序列号的螺旋桨变速箱，除非按照本AD第(g)段进行了检查。 (d) 主题 联合飞机系统组件（JASC）代码8510，往复式发动机前部。 (e) 不安全状况 本AD因发现螺旋桨变速箱未安装喷油嘴及某些螺钉而发出。FAA发布本AD旨在检测并解决喷油嘴及螺钉未安装问题。该不安全状况未被纠正可能导致飞行中发动机失油、发动机失效及飞行器控制丧失。 (f) 合规性 按规定的时间内遵守本AD要求，若已完成则无需重复。 (g) 要求措施 (1) 按照Rotax警示服务通告ASB–2026–001R00第3.5节相关说明，分别针对912系列或914及912 i系列发动机，根据发动机型号及配置，在规定时限内对螺旋桨变速箱的喷油嘴组装件及M7X16六角螺钉进行目视检查。 (i) 对于在本AD生效日前累计飞行时间少于25小时的发动机，必须在继续飞行前完成检查。 (ii) 对于累计飞行时间达到或超过25小时的发动机，须在本AD生效日起5小时内完成检查。 (2) 若检查发现喷油嘴或六角螺钉缺失，须在下一次飞行前根据服务通告相关章节更换受影响螺旋桨变速箱。 (3) 有关Rotax资料，请联系奥地利Gunskirchen Rotaxstrasse 1号电话：+43 7246 601 0，网址flyrotax.com。 (4) 你可以在FAA适航产品部，运营安全分部，10101 Hillwood Parkway, Fort Worth, TX 76177查阅本材料，联系电话(817)222-5110。 (5) 也可在国家档案记录管理局（NARA）查阅材料，网址：www.archives.gov/federal-register/cfr-ibr-locations，邮件fr.inspection@nara.gov。 颁布日期：2026年8月4日。签发人：Steven W. Thompson，合规与适航部代理副主任，飞机认证服务部。 [联邦记录编号2026-16512，2026年8月11日11:15发布] 计费代码4910-13-P (j) 替代符合方法（AMOCs） 国际认证分部主管有权批准本AD的替代符合方法，申请请遵循14 CFR 39.19程序。申请时可向主管或地方飞行标准区办公室提交，也可直接发送至国际认证分部主管电子邮箱AMOC@faa.gov。使用已批准替代符合方法前，须通知你的主要检查员或地方区办公室主管。 (k) 其他信息 如需更多信息，请联系FAA航空安全工程师Joseph Catanzaro，地址纽约威尔斯伯里Stwrt Avenue 1600号410室，电话（516）228-7366；电子邮件joseph.catanzaro@faa.gov。 (l) 引用材料 本规则采用联邦公报主任根据5 U.S.C. 552(a)及1 CFR第51部分规定批准引用的材料。 (1) BRP-Rotax GmbH & Co KG（Rotax）警示服务通告ASB–2026–001R00，2026年6月22日发布。 (2) [保留]"
+    },
+    {
+      "segmentId": "pdf-p4-s25",
+      "order": 25,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "b598a7ce1b2dd00e1dee055919bf1bab393597564de8e569132ef776fcca381e",
+      "chineseText": "(2) 必须使用上述材料执行本AD规定的操作，除非本AD另有规定。 (3) 有关Rotax资料请联系奥地利Gunskirchen Rotaxstrasse 1号，电话：+43 7246 601 0，网站flyrotax.com。 (d) 终止措施 按本AD (g)(2)段更换螺旋桨变速箱，若在或早于本AD要求的检查期限内完成，则可终止(g)(1)段视觉检查要求。"
+    },
+    {
+      "segmentId": "pdf-p4-s26",
+      "order": 26,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "cfb2650f27f7afaeb49208021b083d051a3fbc68f323228005cd31bc006c5719",
+      "chineseText": "联邦登记处编号Jkt 268001 PO 00000，格式4700，样式4700，电子文件路径FR/FM/13AUR1.SGM，档案编号13AUR1"
+    }
+  ]
+}

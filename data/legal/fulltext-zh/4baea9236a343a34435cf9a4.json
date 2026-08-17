@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "4baea9236a343a34435cf9a4",
   "recordFingerprint": "7e87f19db4506b39736826a766bf63a0e2e42e04f519f77ed9cb775be4609ea1",
-  "datasetVersion": "512f07dd49019dd83477f359891fdcd6bc1d7ded434745f586865a9280fb4335",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Transportation Department; Federal Aviation Administration",
@@ -299,5 +299,6 @@
       "sourceTextHash": "1a9851ffd7dc9f11c421a664927c04af57f685e37c48d6375d1c140b110f64f7",
       "chineseText": "VerDate Sep<11>2014 15:47 Aug 12, 2026 Jkt 268001 PO 00000 Frm 00018 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\13AUR1.SGM 13AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-17T22:59:45.338Z"
 }

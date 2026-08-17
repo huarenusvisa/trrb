@@ -1,0 +1,887 @@
+{
+  "schemaVersion": 1,
+  "recordId": "965e37f914a019749bdd3e85",
+  "recordFingerprint": "ebde78a48779bcc222a180b0a17adfd27eae6002ba3d2cef6806460189dd3e5c",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Treasury Department; Financial Crimes Enforcement Network",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16576/beneficial-ownership-information-reporting-requirement-revision",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16576.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16576.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:02:19.198Z",
+  "sourceDigest": "0a5acdea4e27cad218e16c319a9797cad6d6b93e423141323a4c50e19bd12f3e",
+  "translatedAt": "2026-08-17T23:05:16.967Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 108,
+  "translatedSegmentCount": 108,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0652d9fa942ea35e2cf645f8180e0b5f0b9bfb5951dc83d95b34774c000f2390",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与法规 52508"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3019f1014b780be6476a483d653e43e4c1ebc6fae9d6285a9fcaa458654c321a",
+      "chineseText": "经过实际涡轮发动机验证（实验或生产）性能数据。受控物品清单载于CTA第6403节以及ECCN标题中，修订了银行保密法案（BSA），新增第5336节，受益所有权信息报告要求，加入31篇美国法典第53章第II分章。该节为许多公司、有限责任公司及其他类似在美运营实体设定新的BOI报告要求，但排除特定类别企业的报告义务。CTA还授权财政部长（简称“部长”）豁免任何“实体或实体类别”，经司法部长与国土安全部长书面同意，并规认为“要求该实体或实体类别提供受益所有权信息……不符合公共利益”，“对国家安全、情报和执法机构为侦查、防范或起诉洗钱、恐怖融资、扩散融资、严重税务欺诈或其他犯罪活动无高度用处。”此外，BSA规定部长可豁免BSA或其相关规章中规定的要求。这些条款共同授权制定可能对CTA要求设定额外豁免的规章。财政部长须制定实施CTA报告要求的法规。财政部长已将这些及其他CTA执行职能委托予财政部下属的金融犯罪执法网络（FinCEN）。[参见财政部文件2026–16628，签发日期2026年8月13日8:45 am。计费代码3510–33–P]"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ec62b710bc9b76c6f4c0304cbb8f275cc7326976cc4cd814c0940a53a72d7bf0",
+      "chineseText": "本规则自2026年8月14日起生效。STA许可例外不可用于运输或转移本文所列技术到A国集团的目的地（详见EAR第740部分附录1，国家集团A：6）。如需进一步咨询，请联系FinCEN监管支持部，网址：www.fincen.gov/contact。受控物品清单与相关管制：详见ECCN 9E101和1E002.f（有关\"技术\"对受控结构、层压板或材料的维修控制）。“技术”指为9A005至9A011设备的“开发”或9D103和9D105中描述的软件，受ITAR管制。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "dfa1ac5543c21a0ab136a116bac7d3cdeb7f2c5a85b926aa5627ec27343b3903",
+      "chineseText": "CTA于2021年1月1日作为更广泛《2020年反洗钱法》（Anti-Money Laundering Act of 2020）的一部分被国会立法通过。CTA是2021财政年度威廉·M·（Mac）桑伯里国家防务授权法案（NDAA）LXIV标题，公共法第二条第53章第II分章，自2021年编入法律。财务部已授权FinCEN主任执行、管理及执法BSA及其实施细则。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "8e1c21a2fcce0adaa570c88d13a3b167adbb308e09d6728e924dc6a414cc8ba3",
+      "chineseText": "2026年8月13日16:20 制版。案件编号Jkt268001，页面格式4700，样式Sfmt4700，文档来源E:\\FR\\FM\\14AUR1.SGM 14AUR1。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d4d6b19fe62e1214970e787034153b842b3c666a7b2ebb395a78357280b8646f",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与法规 52509"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "eec09380d5a6ee2a64c1b692ae11ecf8cd3dd6bceef745f4ea1d15ac66ee0010",
+      "chineseText": "B. 报告规则发布及后续进展 2022年9月30日，FinCEN发布了《受益所有权信息报告要求最终规则》（Reporting Rule），实施CTA报告要求（31 U.S.C. 5336(b)）。该规则载于31 CFR 1010.380，自2024年1月1日起生效，要求报告公司报告关于其自身、其所有或控制其的受益所有者的信息，并针对2024年1月1日起成立或注册的公司要求其申请者报告信息。起初，规则要求在2025年1月1日前（自规则生效一年后）提交首次BOI报告。后来，诉讼阻止了该规则的实施，多个联邦地区法院发出全国适用禁令，阻止FinCEN执行CTA并暂停1010.380条款生效，导致报告截止日期受影响，FinCEN随后延长了报告截止时间至2025年3月21日。2025年3月2日财政部宣布暂停对美国公民及境内报告公司的CTA执法，并计划修订报告规则，将不符合公共利益且对国家安全、情报和执法工作无高度用处的实体类别豁免。IFR（临时最终规则）于2025年3月26日发布并立即生效，实施了两项主要豁免：一是豁免所有定义为“境内报告公司”的实体，二是豁免仅具有美国人受益所有权的外国报告公司，后者仍需报告非美国人有重大控制权的相关受益人。IFR还调整了对外国联合投资工具的特殊报告义务。相关细节和诉讼情况详述。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5f9ec3f43fff277474134dd8ac2b14a3b7343dd60c7f5f94469721a004a44c0d",
+      "chineseText": "财政部宣布暂停针对美国公民及境内报告公司的CTA执法，并发布了相应的临时最终规则。根据该规则，2024年新成立境内报告公司须按照延期的新截止日期提交报告，外国报告公司如仅有美国人受益所有权则须报送相关信息。参见31 CFR 1010.380(a)(1)(iii)、(b)(2)(iv)及相关规定。司法程序对CTA执行产生影响，包括2024年12月3日东德克萨斯地区法院的初步禁令，以及2025年1月和2月间美国最高法院针对诉讼的相关裁定。IFR中解释，无重大控制美国人受益所有权的外国联合投资机构无需报告受益信息。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1da9cb81dbea39d3b88ae9fca87218a66262dc1321ecf2260fb21dde24cc4ccf",
+      "chineseText": "2026年8月13日16:20 制版。案件编号Jkt268001，页面格式4700，样式Sfmt4700，文档来源E:\\FR\\FM\\14AUR1.SGM 14AUR1。"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8fc985e794ca35527e8a393077456168c832f115dea17c48b664016e4adc9d44",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与法规 52510"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5a8b66447e603c643e1372bd4093acf9e93a1a7250a0559767bb98770badef24",
+      "chineseText": "至2025年4月25日）或在其申请在美国注册开展业务后的30天内延长30天以遵守其报告要求。32 该措施旨在减轻美国人民身上的不必要监管负担。\"27 按照美国公司法案（CTA）中赋予的豁免权力及总统的指令，临时最终规则（IFR）体现了国务卿对报告规则范围内披露的有用性和监管负担之间平衡的重新评估。财政犯罪执法网络（FinCEN）向公众征求对IFR的意见，并声明将根据收到的意见，适当评估IFR的效果。20\r\n2. 减轻小型企业和透明度的负担\r\nIFR的变更减轻了美国小型企业因报告规则造成的负担，国务卿认定这些负担未被报告产生的实用信息所证明的有用性所正当化。21 这一判定符合CTA，CTA指示国务卿‘在收集[受益所有权]信息时，应尽量减少与此有关的报告公司负担……同时考虑合法企业的合规费用’。22 如上文第一部分第一节所述，CTA还授权国务卿在特定适当情况下通过31 U.S.C. 5336(a)(11)(B)(xxiv)完全豁免‘一定类别的实体’的受益所有权报告。23 FinCEN长期认识到受益所有权报告带来的负担。例如，在2022年首次发布报告规则时，FinCEN回应了多方意见，指出规则对许多小型企业构成过度财务负担。24 FinCEN强调‘敏感于小型企业对新规遵守的担忧，致力于尽量减少不必要的合规负担。’25 FinCEN还指出实现CTA目标——收集“高度有用”且“最小化报告公司负担”的信息，需要‘微妙的平衡。’26 2025年1月20日，行政权更迭。27 2025年1月31日，总统特朗普发布行政命令（E.O.）14192《通过放松管制释放繁荣》，重新评估报告规则的平衡点。一致于CTA授予的豁免权和总统的指示，IFR反映了国务卿对报告规则范围内数据收集实用性和监管负担之间平衡的重新审视。\r\nFinCEN收到118封针对IFR的意见函，意见者包括小企业主、行业贸易团体、律师事务所、执法机构、透明度组织、美国州国务卿以及多名美国参议员。在这些意见函中，40份明确支持FinCEN决定缩窄受益所有权报告要求，28份强烈反对，50份意见未明确支持或反对IFR。许多意见者表示赞同FinCEN豁免国内实体和美国自然人受益所有权报告的决定，他们包括个别小企业主、代表小企业的协会、会计和律师等服务提供者以及某些美国州的国务卿。许多意见者赞扬IFR采取务实和以风险为基础的合规方法，既解决打击金融犯罪的必要性，也让绝大多数美国的企业免于复杂冗余的规定负担。意见者提到国税局（IRS）已经收集部分受益所有权相关信息，并支持取消冗余这一要求。有些意见还希望国会能将IFR内容立法确定，以避免FinCEN将来恢复针对美国公司的报告要求。31\r\n3. 收到的意见\r\n同时，IFR也要求外国报告公司报告其受益所有权，但豁免了与美国人有关的受益所有权信息。31 部分意见建议剔除某些特定实体类别（如业主协会）无论其国籍均应免于报告。并且，一些意见强烈希望FinCEN取消已经报告在受益所有权信息技术系统（简称“BO IT系统”）且保持数据更新的美国自然人受益所有权信息的再次报告要求。有关此类问题详见下文第二和第三部分。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4c641ee1000fddf66835ceda00a87e44f798c800d5c57f1f265046a3c8ae721e",
+      "chineseText": "“无论直接或间接、全部或部分”为“外国人拥有”。32 同注释31, p. 13690。\n20 同注释31, p. 13689。\n21 参见同注释31, p. 13691。31 U.S.C. 5336(a)(11)(B)(xxiii)。31 此外，如IFR所述，若外国报告公司其受益所有人皆为美国人，则仍须向FinCEN提交报告，但不需报告有关这些受益所有人的信息。90 FR第13692页。详见31 CFR 1010.380(e)。\n22 见31 U.S.C. 5336(b)(1)(F)(iii)。\n23 见同法第(b)(1)(A)(xxiv)条款。\n24 报告规则，87 FR第59550页。\n25 同上。\n26 同上。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1481f89eb056016c830e4feda929451ebaaab0ef6f828d4d3b02e25bf0fdfd62",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00036 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8e372082a749d7629e875ba27a25b62f6aaad533e93c6b084b89faf65197f1f8",
+      "chineseText": "联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与条例 52511"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8db8c521fce95d6e590b197879d65cb26ce974703576d4bcfadf7d4b3ca38c89",
+      "chineseText": "美国财政犯罪执法网络（FinCEN）已计划修订客户尽职调查（CDD）规则，以符合CTA的要求，并探讨减轻受CDD规则约束金融机构负担的措施。这些评论亦涉及CTA及报告规则落实的整体问题，包括针对FinCEN常见问题解答和有关受益所有权（BOI）报告要求执法的一般方法，这些内容将在下述第三部分B、C和D节详细讨论。\n对IFR持批评态度的评论者，涵盖了企业透明度倡导组织、智库、执法代表机构及4名美国参议员，基本分为两类：一为敦促FinCEN撤销IFR并恢复原报告规则；二为对IFR提出有针对性的局部批评而非全盘否定。部分评论者建议缩小IFR中豁免范围但不取消，也提出应对国内实体的BOI报告要求采取更优替代方案建议，这些内容将于第二部分第三节详述。\n评论者还提到与IFR相关但不涉及修改规则文本的其他问题，包括与2016年金融机构客户尽职调查规则的关系，如期望豁免所有美国人BOI报告的实体等。最终规则对上述意见做出回应，详见后续内容。\n鉴于以上背景，并综合考虑收到的评论及IFR实际影响，FinCEN现颁布对BOI报告规则的最终修订，不再沿用临时性质，并对IFR规定做出调整和扩充，回应评论，详见第二部分第二节和第三节按条款讨论。\n另外，涉及BOI提交给FinCEN后处理、注销境内报告公司的国内实体BOI管理等相关议题，详见第三部分后续章节。\n部分评论者强烈质疑IFR，称其“废除”了CTA，涉嫌违反权力分立原则及总统确保法规忠实执行的宪法义务（一项评论指出，FinCEN对CTA要求的忽视严重到违反Take Care Clause，即美国宪法第二条第三款关于总统执法职责的条款）。FinCEN对此“废除”指控予以否认，说明CTA明确赋予部长广泛豁免权，并强调IFR及最终规则仍要求海外实体报送在美登记的相关公司的BOI，保障执法和国家安全机构的需求。\n最终规则依据31 U.S.C. 5336(a)(11)(B)(xxiv)豁免国内报告公司BOI报告要求，依据31 U.S.C. 5318(a)(7)豁免报告规则中的外国报告公司要求，同时修订针对美国人公司申请人与受益所有人信息的报告要求，提升规则的清晰度与一致性。\nFinCEN也对相关数据保护和信息更新等具体操作细节做出回应，包括取消美国自然人持有的FinCEN ID信息更新义务，以及对外资实体申报美国相关人员BOI的调整措施。整体目标为保留法规核心目标同时最大限度减轻合规负担。\n2026年8月14日，修订后的联邦公报正式发布该最终规则。"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "44fd9de76467834e575efce76e0d422b68cb33796a45b22241bebe25a65f8553",
+      "chineseText": "FinCEN ID是FinCEN向在提供特定信息后向个人或报告实体发放的唯一识别号码，见规则31 CFR 1010.380(f)(2)。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e73d9383639e8acf5d2916d2b5be7da6dadb4ba2b2010a8cbfaabf45cc152176",
+      "chineseText": "FinCEN于2016年5月11日发布的《金融机构客户尽职调查要求》（客户尽职调查规则）详见81 FR 29398。31 U.S.C. 5318(a)(7)授权国务卿规定程序以豁免报告规则中某些实体。美国宪法第二条第三款要求“总统确保法律的忠实执行”。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6d2a349811cbd04167b4444bd27428ac226f25bb96f619f295464d3578c284bd",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00037 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p5-s19",
+      "order": 19,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "422f6c212477b8517293980a0d1cc0976fe8d8008e708d96fbde1295a181bee0",
+      "chineseText": "联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与条例 52512"
+    },
+    {
+      "segmentId": "pdf-p5-s20",
+      "order": 20,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "22adaafe5dfb378b58b02430d5af550720cf56288b7c6f0d6ed5363431c4adee",
+      "chineseText": "关于CTA具体细节的分歧强调了根据各州法律成立的实体所形成的优先事项，这是执行部门实施的一个因素。第6402节中前述的“必要”条款用来实现特定目标的立法授权，并不是“国会意图”违宪行为的证据。该规章指出，在制定收集实益所有权信息（BOI）规定时，部长应当“在最大程度上切实可行的范围内”，并符合CTA的目的，“寻求减少报告实体因收集实益信息而产生的负担”，且“以合理设计的形式和方式收集信息，旨在生成高度有用的数据库”。然而，必须整体考虑该法规。该法赋予部长显著自由裁量权，决定是否要求任何实体报告BOI。如前所述，CTA第31 U.S.C. 5336(a)(11)(B)(xxiv)条款赋予部长极广泛的豁免权：部长可免除“任何实体或实体类别”（强调新增），只要部长在经司法部长和国土安全部长书面同意后，通过法规确定“要求该实体或实体类别报告实益所有权信息……将不符合公共利益”，且“在考虑对其合规成本的情况下，会加重报告实体的负担”，且“不会对国家安全、情报和执法机构防范、打击洗钱、恐怖融资、扩散融资、严重税务欺诈或其他犯罪活动的努力具有高度效用”。CTA这项规定是CTA的“国会意图”部分中的语言，在制定BOI报告规定的操作条款第6403节中几乎逐字重复，因此赋予的豁免权比CTA“国会意图”部分中其他语言更为重要。实际上，该“减少负担”语言现已成为《银行保密法》（BSA）中的法定要求，而非CTA解释的指导原则。因此，财政部视对此评论中质疑IFR与国会意图背离的论点为不同意见，认为这是对在法律强制中执行信息收集与最小负担之间平衡的分歧。虽然财政部的平衡方法与评论者偏好不同，但仍符合CTA法律框架，特别是该法令对“减少负担”指令的赋权赋予应有适当权重。如IFR所述，部长已经决定豁免美国个人是恰当的：这确保了报告规则的设定能消除不被效益所抵销的负担，符合公共利益。评论者未能提供有力论据表明IFR的豁免超出CTA法规框架。类似地，评论者未能就法律依据提出令人信服的论述。"
+    },
+    {
+      "segmentId": "pdf-p5-s21",
+      "order": 21,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "bd5a100f7939fa7dcb24aba321d76c32cbe2bc61173d5b0dc351ab11c41b83b8",
+      "chineseText": "该方案中有两处关键地方体现了该立法中的“国会意图”，即“联邦立法提供有关根据各州法律成立的公司、有限责任公司或类似实体收集实益所有权信息的措施，以应对洗钱、恐怖融资或其他非法活动”。有一评论者指出，IFR与需要联邦立法以要求收集“根据州法律成立的实体”BOI的国会意图相冲突，认为该法律基础不足以支撑为原始报告规则下的“外国报告公司”及报告公司中的美国受益所有人设定特定豁免。另有一评论者认为，IFR偏离了CTA的具体措辞，可能不符合法院的判决标准。31 U.S.C. 5318(a)(7)明确赋予部长对本法规任何“适当豁免”的权限，包括31 U.S.C. 5311至5336条款及相关法规中的要求。正如第一部分A节所述，CTA的BOI报告要求已纳入31 U.S.C. 5336中，因此该授权允许部长给予要求的豁免。虽有评论者声称IFR部分内容与CTA不符，财政部认为该评论未充分重视部分法条对减少负担的重视。"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "2b2957ef7140c41fbbec060dcf69b9a66af75b9e0ef2f12d2b0c6568e2f3f38e",
+      "chineseText": "该文件的底部为联邦公报格式信息，包含发布日期和案号等，未含法律实质内容。"
+    },
+    {
+      "segmentId": "pdf-p6-s23",
+      "order": 23,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "6e2bbb0a0ffea6754e954295ca1a653178edd6f301f76de82224a1b7fe9a6402",
+      "chineseText": "联邦公报 / 第91卷 / 第156号 / 2026年8月14日星期五 / 规则与条例 52513"
+    },
+    {
+      "segmentId": "pdf-p6-s24",
+      "order": 24,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0668fe990d8b7575749c6b95882841d22a485333d4aef55289b0db73923de652",
+      "chineseText": "“人民。”31 U.S.C. 5318(a)(7)赋予的法律授权足以使部长在判断的基础上作出决定。"
+    },
+    {
+      "segmentId": "pdf-p6-s25",
+      "order": 25,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9d170ede210962e3705bc70d5ba97789a405b17d951f9aa227e326163b27ddb1",
+      "chineseText": "关于保留和获取实益所有权信息的指导（2010年3月5日），网址：https://www.fincen.gov/resources/statutes-regulations/guidance/guidance-obtaining-and-retaining-beneficial-ownership；美国政府问责办公室(GAO)于2025年4月8日发布的《联邦项目中的欺诈：FinCEN应采取措施提升监察长确定公司实益所有权能力的报告》，网址：https://www.gao.gov/products/gao-25-107143。"
+    },
+    {
+      "segmentId": "pdf-p6-s26",
+      "order": 26,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "a9a941b9c8f0eea2ae7c9e07b30538235d67e1467f0a5e4255e331c60eeefe1a",
+      "chineseText": "行政命令14192《通过金融监管解除繁文缛节释放繁荣》，90 FR 9065。见5 U.S.C. 551-559条款。见31 U.S.C. 5336(a)(11)(B)(xxiv)条款。国务院2024年《Loper Bright Enterprises诉Raimondo》案判决，603 U.S. 369, 395页 （2024年）。31 U.S.C. 5336(b)(1)(F)(iii)条款，由CTA于第6403(a)节新增。财政部，FIN-2017-A003，2017年8月22日，面向金融机构和房地产公司及专业人士的实益所有权咨询，网址：https://www.fincen.gov/sites/default/files/advisory/2017-08-22。"
+    },
+    {
+      "segmentId": "pdf-p6-s27",
+      "order": 27,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9fe2adc8fe2db1ac060199d2795ae8bf9ac565852bf59c31ea72be5919522c43",
+      "chineseText": "该文件的底部为联邦公报格式信息，包含发布日期和案号等，未含法律实质内容。"
+    },
+    {
+      "segmentId": "pdf-p7-s28",
+      "order": 28,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "93bbf0e52f13d0a68ce0d4c23e683220e4d05dbac4377ae48d77c5bfd67893bc",
+      "chineseText": "联邦公报 / 第91卷 / 第156号 / 2026年8月14日星期五 / 规则与条例 52514"
+    },
+    {
+      "segmentId": "pdf-p7-s29",
+      "order": 29,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "0781fd28ad2dde0544f42354b86be8961836c5f6be405b010c0d56e718d50f1d",
+      "chineseText": "依赖耗时的传票或国际法律协助。这些评论者认为IFR（初步规则）中的报告豁免可能导致金融行动特别工作组（FATF）将美国列入“加强监测司法管辖区”（即“灰色名单”）。另一位评论者表示，IFR将使美国成为一个异常国家，因为越来越多的国家采纳广泛的法人受益所有权信息（BOI）透明度措施，要求实体广泛报告BOI，结果使美国在非法金融活动方面相较其他国家更具吸引力。首先，IFR要求外国报告公司报告其外国受益所有人的BOI，意味着情报、执法和国家安全机构将继续能够访问有关在美运营实体的BOI。第二，作为《公司透明度法案》（CTA）中豁免权限行使的前提，法律要求部长获得司法部长和国土安全部长的书面同意，确认“要求实体或一类实体报告受益所有权信息……不符合公共利益”，且“这种信息对国家安全、情报和执法机构在检测、预防和起诉洗钱、恐怖融资、扩散融资、严重税务欺诈或其他犯罪中的作用并不高度有用”。司法部和国土安全部如果IFR严重损害执法和国家安全活动，不太可能确认IFR中的豁免。最后，豁免国内实体报告BOI和豁免报告公司报告美国人BOI的方法，意味着某些现有遏制非法金融风险的办法回归至报告规则实施前的状态，而非恶化。正如IFR指出的，这些办法包括继续利用涵盖金融机构根据2016年客户尽职调查规则（CDD Rule）的客户身份识别义务，显著减轻由美国人及持有美国利益的外国实体引起的非法金融风险。下文III.C节对此点有更详尽讨论。财政部评估，IFR及本最终规则中提出的有针对性、基于风险的BOI收集方法不会——尽管有评论者的担忧——削弱执法和国家安全，因为它确保收集对执法高度有用的BOI，同时将负担降至最低。"
+    },
+    {
+      "segmentId": "pdf-p7-s30",
+      "order": 30,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "1a33aa2b727d350b70d3ee60e922aa35bb38ffd9e9a7bc7b9578be0bc8e4096e",
+      "chineseText": "应确保有充分、准确且最新的法人受益所有权及控制信息，能被主管机关快速高效获取，无论是通过受益所有权登记册或替代机制。财政部不同意某些评论者的观点，即IFR的报告期限应与国外某些实体的BOI报告期限一致。例如，各国在监管或税务截止日期上各不相同，建立异期限体系既不可行也难以执行。此外，申请人识别号（EIN）问题已在FinCEN的BOI报告常见问答（BOI FAQs）中提出实用解决方案。"
+    },
+    {
+      "segmentId": "pdf-p7-s31",
+      "order": 31,
+      "page": 7,
+      "type": "paragraph",
+      "sourceTextHash": "c9606c4f565e3a0b388adf41f4f47befc3814800c07fc63e2b4b5c2c67b3cac6",
+      "chineseText": "（本段内容为文件编号和版权信息，无实质内容应翻译。）"
+    },
+    {
+      "segmentId": "pdf-p8-s32",
+      "order": 32,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "7d7e7ac931f5228965cb363309df87bddeb3b5ed05249f1ddc0f016f71ca7b59",
+      "chineseText": "（本段内容为联邦登记册卷号、期号、日期及页码等出版信息，无实质内容应翻译。）"
+    },
+    {
+      "segmentId": "pdf-p8-s33",
+      "order": 33,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "961d1adc50b1da0a5988044ec677462a91aa4b0d6bb0d93ab2e810097362739e",
+      "chineseText": "报告规则（Reporting Rule）延长了向FinCEN注册的“外国报告公司”提交初始BOI报告的期限。对于IFR发布前（2025年3月26日）已成为报告公司的实体，其初次提交、更新或更正BOI报告的期限为发布日期后30天内。对于后来成为报告公司的实体，规定其须在实际获知其在美注册营业或相关州务卿等机构首次公开通知之日起30天内提交初次报告。实体须在已报告信息发生变动的30天内更新或更正。IFR还技术性修正了1010.380(a)节，将“报告公司”的定义统一为仅指之前提及的“外国报告公司”，去除“国内”和“外国”用语。部分评论者建议延长初次提交报告期限，有者提议从30天延至90天，另有人指出新成立外国实体在未获EIN之前无法及时提交报告，建议允许“过程中的”回复，以后更新完整信息，或与外国的申报时间同步。财政部未采纳修改申请，维持IFR的30天提交期限。"
+    },
+    {
+      "segmentId": "pdf-p8-s34",
+      "order": 34,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "6cbe62ab4257a831db4660e946ac492f3820e1daa3ae6902ec78195375f4f4df",
+      "chineseText": "一般而言，报告公司应尽早筹备所需信息（如税号），并在收到EIN等信息后尽快提交报告。作为最佳实践，报告公司可保留文档证明其为及时遵守BOI报告义务所付出的努力。"
+    },
+    {
+      "segmentId": "pdf-p8-s35",
+      "order": 35,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "8090dcf2efebea2b855e0abc3022bf9b5c6d2546cb696c7a11acc89cb5b57c84",
+      "chineseText": "根据财政部长2025年3月2日有关BOI报告的声明，财政部未对美国公民、国内报告公司及其受益所有人强制执行BOI报告截止期限，包括更新和更正FinCEN ID信息的截止期限。"
+    },
+    {
+      "segmentId": "pdf-p8-s36",
+      "order": 36,
+      "page": 8,
+      "type": "paragraph",
+      "sourceTextHash": "c52bc54804b2d3b6d470b45270d58824e42e13830625781cf39054a6bc77a99e",
+      "chineseText": "（本段内容为文件编号和版权信息，无实质内容应翻译。）"
+    },
+    {
+      "segmentId": "pdf-p9-s37",
+      "order": 37,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "3471645611208c58d175f7bfa96684b4443e7a0f58628688d912dcbbb796ab67",
+      "chineseText": "（本段内容为联邦登记册页码和出版年份等出版信息，无实质内容应翻译。）"
+    },
+    {
+      "segmentId": "pdf-p9-s38",
+      "order": 38,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "65570e0c0c4704fd2fc8f542e2e5b05009348f1e3d5575cf80667e50aee885ee",
+      "chineseText": "大多数评论者敦促取消针对未提出过报告要求的评论者的更新/更正要求，尽管如此，他们对个人实益所有人和法律主体的观点大致相同：那就是要求美国人士——无论是个人还是法律实体——以FinCEN ID持有者的身份报告BOI是不一致且不公平的，当FinCEN不再要求以FinCEN ID持有者身份报告相关的同样信息时。许多评论者指出，公司申请人也提出了类似观点：例如，一位评论者指出，组建国内报告公司的个人不再是公司申请人，如果他们为报告公司申请人身份而获得FinCEN ID，则不应持续保持这些信息更新。此外，这一第三组评论者还包括那些对美国报告规则该条款提出过批评的人士：他们认为，要求个人公司申请人终生更新更正信息本质上是不公平或不合理的。某位评论者指出，报告公司并不需要在BOI报告中更新公司申请人信息，但已获得FinCEN ID的公司申请人则需要保持信息最新。另一评论者提出了关于披露个人信息（尤其是那些可能不再参与报告公司且其个人信息与公司当前经营无关的人员）的隐私、安全、身份盗窃和欺诈方面的根本关切。他还指出，持续更新带来了重大且不必要的行政负担，特别是当个人未来不打算成为公司申请人或实益所有人的情况下。几位评论者指出，CTA授权部长“通过规章[规定]任何FinCEN标识符的程序和标准”（31 U.S.C. 5336(b)(4)(A)）赋予了提供此类救济的权力，旨在针对FinCEN ID持有者设立撤销方案，FinCEN也在认真评估允许个人撤销FinCEN ID的选项。至少有一位评论者还敦促FinCEN销毁不再使用的FinCEN ID相关信息。FinCEN基于FAQ M.6中其正在考虑允许个人撤销FinCEN ID的说明，继续要求外籍FinCEN ID持有者更新更正向FinCEN提供的信息，这是根据报告规则最初的要求。"
+    },
+    {
+      "segmentId": "pdf-p9-s39",
+      "order": 39,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "7375c6d82e73162c4fac4ee9fc15e9391ef6c0ed23fe3597508a8b8790b6fc14",
+      "chineseText": "FinCEN正在积极评估允许个人撤销FinCEN标识符的方法，以便他们无需更新相关的个人信息。有关该功能的额外指导将在该过程完成后提供。"
+    },
+    {
+      "segmentId": "pdf-p9-s40",
+      "order": 40,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "b11d2dab771aee1ea18950f2b3766cc168c5637387489a2be87e2fd016d8b044",
+      "chineseText": "一些未明确主张废除更新/更正要求的评论者提出，为无需持续更新基础个人信息，FinCEN应创建FinCEN ID撤销方法并提出若干撤销方案。"
+    },
+    {
+      "segmentId": "pdf-p9-s41",
+      "order": 41,
+      "page": 9,
+      "type": "paragraph",
+      "sourceTextHash": "6e173b28073147b02743d37dafb8e7df4e1e50efe93ab20f88a39bb898045705",
+      "chineseText": "（此段为文档格式信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p10-s42",
+      "order": 42,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "d35854fcf0b8661698bfbe6065fd6277f09e12e4062e19585dfca5e380c6bcad",
+      "chineseText": "（此段为文档格式信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p10-s43",
+      "order": 43,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "30c4689850d65f61032d3ab01c9d47618a973002836a968accb63110e8f85fc8",
+      "chineseText": "有评论者建议设立分层报告系统，将重点放在风险最高的实体，同时对大多数国内实体保持广泛豁免。一位评论者具体要求FinCEN要求国内空壳公司报告BOI，并希望国内的“前台”公司也须报告BOI。其他评论者提出更窄的豁免建议，如针对一人或两人企业，或房主协会。即便是普遍支持IFR（临时最终规则）的评论者，也强烈要求FinCEN不要豁免接受外国资金的国内免税非营利组织的报告义务。根据CTA所设评估框架，财政部不认为评论者提出的针对U.S.实体子类的其他豁免措施在效益-负担比方面同IFR的全面豁免办法一样有效。最终规则因此采用了IFR的整体豁免方法，避免了为特定U.S.实体子类创造附加豁免的需求如房主协会。5. U.S.实益所有人，31 CFR 1010.380(d)IFR意在减轻个人U.S.人士及U.S.法律实体负担，通过引入一个豁免，免除报告公司向其提交任何U.S.人的BOI信息的义务。这一举措依据财政部长根据法规制定适当豁免的权力（31 U.S.C. 5318(a)(7)）。IFR重新定义“报告公司”，将国内实体排除在外，使得目前持有FinCEN ID的所有U.S.人无需继续更新或更正信息。此外，IFR保留了对注册于美国的外国实体的报告义务，包含自2024年1月1日起在美国注册的外国实体必须报告其公司申请信息，且该规定适用于U.S.或非U.S.公司申请人。部分 crític IFR的评论者倾向于将此豁免视为国内报告公司更广泛豁免的一部分，非个别适用到其他不同报告情形的独立豁免。财政部认为，将此豁免仅视为较大豁免的一部分会误解其本质，因为‘实益所有人’定义是从属于‘报告公司’定义，此豁免限定‘报告公司’定义后适用，专门针对U.S.人实益所有人。FinCEN承认，豁免条款靠近‘实益所有人’定义部分可能引发误解。为避免混淆，FinCEN正将实益所有人豁免语言重新定位至报告内容、形式及模式的章节31 CFR 1010.380(b)中，使其意义更清晰。"
+    },
+    {
+      "segmentId": "pdf-p10-s44",
+      "order": 44,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "72975ba40743cc6410d7f5ca262d3893a805db369802e64cc30f228dbfed1028",
+      "chineseText": "如前所述，IFR的重新定位扩大了该豁免，适用于U.S.公司申请人。这种做法回应了IFR保留了报告规则中某些报告公司报告其公司申请信息的要求的评论意见。由于IFR重新定义“报告公司”，国内实体不再被视为报告公司，因而无需报告其公司申请信息，无论该申请人是否为U.S.人。但IFR保留了对在美国注册的外国实体的报告义务，其中包括在2024年1月1日及之后注册的实体。部分评论者建议豁免U.S.人公司申请人提供信息，类似于其已免除作为实益所有人的地位，理由是两者应待遇一致。评论者指出，财政部长已判定U.S.人实益所有人报告义务的负担超过收益，因此应同样免除U.S.人公司申请人报告义务。财政部同意此逻辑，并认为U.S.人公司申请人更新FinCEN ID的要求亦应予以免除，包括使用FinCEN ID代替报告公司申请人BOI的U.S.人士。最终规则反映了将BOI报告及FinCEN ID更新与更正豁免拓展到U.S.人公司申请人和实益所有人。"
+    },
+    {
+      "segmentId": "pdf-p10-s45",
+      "order": 45,
+      "page": 10,
+      "type": "paragraph",
+      "sourceTextHash": "d589685e637e69959781168b49335d4636dfc145226890ba46f689445bf02547",
+      "chineseText": "（此段为文档格式信息，无需翻译）"
+    },
+    {
+      "segmentId": "pdf-p11-s46",
+      "order": 46,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "578a2b76f3cc604e3f40c57c9c08c527c15a97a0602b758b53dffd150ae840f5",
+      "chineseText": "除直接影响本最终规则规定的事项外，评论者还针对IFR有关多项其他主题发表意见，包括如何处理已录入BOI系统中的U.S.人和因IFR调整不再受BOI报告义务约束的国内实体有关BOI报告的问题。另外，评论者也关注IFR的执行状况以及客户尽职调查规则（CDD Rule）与报告规则变更之间的关系。"
+    },
+    {
+      "segmentId": "pdf-p11-s47",
+      "order": 47,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "ec4483b690da96bbeccb10b716a1a6bca48c4218f77f9bb5cc3a3b88484d0bf0",
+      "chineseText": "规则。本节处理这些问题及其他一些杂项问题。FinCEN ID——在BO IT系统中，FinCEN允许小企业主确认其数据已被删除。FinCEN合理认为提供的标识文件系美国人（例如，美国护照、美国驾照）。目前，FinCEN不预期要求或请求美国公司或美国人与FinCEN联系，要求删除其BOI。另外，FinCEN不打算为美国公司或美国人的BOI删除提供任何确认或确认书。FinCEN将在其网站向公众发布通知，表明已完成删除过程。为了高效完成此删除，FinCEN预计将进行一次性整体项目处理数据库，而不是定期周期性清理。为此，尽管FinCEN打算实施一个流程以删除现因IFR和本最终规则豁免的美国公司和美国人的BOI，FinCEN只计划完成这一次透明的销毁过程。如果涉及的BOI在2027年2月10日之后的备案中不慎或故意包含美国公司或美国人的信息，FinCEN不打算删除该信息。FinCEN认为，增加额外的通知和报告要求，不仅不明智，也不必要，且会增加删除工作的时间和费用。总结相关问题，有评论者表示，不论FinCEN采用何种销毁方式，安全销毁FinCEN不应保留的信息将进一步强化公众的隐私保护、信息安全和信任。"
+    },
+    {
+      "segmentId": "pdf-p11-s48",
+      "order": 48,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "d45b3f447e604cb72595cadaf185c30e555fea8020cff19a2a093bb7431db446",
+      "chineseText": "同意最终规则应解释FinCEN此类信息处置方案的评论者，在应对此事上意见不一，关于除解释和实际删除之外，FinCEN应采取何种措施。一些评论者建议FinCEN发布电子删除通知，确认每个国内申报人其BOI记录已被移除且不再被任何机构或金融机构访问。FinCEN预计将与美国国家档案与记录管理局（NARA）合作，实施删除公司申请人、实益拥有人或接收人相关个人信息的流程。"
+    },
+    {
+      "segmentId": "pdf-p11-s49",
+      "order": 49,
+      "page": 11,
+      "type": "paragraph",
+      "sourceTextHash": "9769467d944b229ee9fd909c571038f4749403348d95d08e9dce8c12da7b8bb1",
+      "chineseText": "（本段为版面注释，无正文内容）"
+    },
+    {
+      "segmentId": "pdf-p12-s50",
+      "order": 50,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "90af53bca39a63ac10fc6a5c48c80509888f4815624fe27ef492c24ee0bc205a",
+      "chineseText": "联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与条例 52519"
+    },
+    {
+      "segmentId": "pdf-p12-s51",
+      "order": 51,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "80740720ee9a71be08a27054ac69cf7efcad8c5b2bad8f77233d6540d967a3a9",
+      "chineseText": "一些评论者认为针对不符合要求的处罚过于严苛，有评论者称之为“文书工作违规”。这些评论者建议修订处罚制度，部分建议采用分级处罚体系，将最严厉的处罚仅适用于最严重的违规行为。一些评论者建议国会和财政部推行“基于风险”的执法态度，重点依据金融犯罪相关的数据模式，实现优先执法。部分评论者解释说，通过优先考察具有实际风险的实体，规则能在维护国家安全的同时尊重守法企业主的隐私和权利。另有评论者建议出台指导，明确只有“故意”未提交报告或提交虚假信息的企业才会受罚。最终规则未修改报告违规规定。FinCEN认为《公司透明度法》（CTA）和报告规则中的“故意”标准为施加民事或刑事处罚提供了足够明确的法律依据，执法不会针对无意犯错或缺乏了解的行为。考虑到IFR和最终规则将BOI报告范围缩小至对国家安全风险最高的实体，即外国申报公司，针对BOI报告违规的执法将基于风险有针对性地进行。"
+    },
+    {
+      "segmentId": "pdf-p12-s52",
+      "order": 52,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "a2efebe5dec430b218cd51303a3dda36beedbd1d830b816217906cc8c49404df",
+      "chineseText": "同意最终规则应解释FinCEN对该信息处置的评论者中，关于除解释与实际删除外，FinCEN应执行何种处理意见分歧。一些评论者建议FinCEN发布电子删除通知，确认每个国内申报人其BOI记录已被移除且不再被任何机构或金融机构访问。FinCEN预计将与国家档案与记录管理局（NARA）合作，实施删除公司申请人、实益拥有人或接收人相关个人信息的流程。"
+    },
+    {
+      "segmentId": "pdf-p12-s53",
+      "order": 53,
+      "page": 12,
+      "type": "paragraph",
+      "sourceTextHash": "021e3fd24088d2c148e54700b4afd3798504d966abcd896b0a5926362ccfada6",
+      "chineseText": "（本段为版面注释，无正文内容）"
+    },
+    {
+      "segmentId": "pdf-p13-s54",
+      "order": 54,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "b291a76512f33ec9e075b24a3c61a640f7daf0e5a95bf4f6b081f0b539303005",
+      "chineseText": "52520 联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p13-s55",
+      "order": 55,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "719e0c7caa1b3b72ada47b256cbb9de96eac8ba4c8fc50d96238eefa046eba47",
+      "chineseText": "报告公司和美国个人利益相关者，75 根据某些会计处理成本的差异，可能不会出现某些报告公司申请人的差异。76 若与分析相关，下文讨论会注意成本处理的区别。规则为2022年报告规则估计了32,556,929家报告公司。78 这导致了一个约20,000家预期现有报告公司和另外5,000家新注册报告公司，总计25,000家外国报告公司在IFR第一年内的估计。由于最终规则引入了对IFR的额外修改，FinCEN进行了额外分析以更新其人口估计，以反映自基准报告规则原始分析以来的时间经过。这包括对IRS税务数据的重新评估。79基于此分析，FinCEN将IFR中约25,000家预期报告公司的基线人口估计上调至28,000家。80截至2025年底，FinCEN已经收到约13,000份来自外国报告公司的报告，表明在原有的已存在报告公司的初始预期人口中，约有15,000家仍需要新增报告。81 依托相同的IRS税务数据来源，FinCEN一般性地提高了准确性，考虑到自IFR以来的额外数据和分析。第二，最终规则进一步豁免了仍受IFR报告规则义务约束的部分当事人。"
+    },
+    {
+      "segmentId": "pdf-p13-s56",
+      "order": 56,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "b6ef747a49890312de930a0f6c7860c4635bcc2e1e110f3b4c26166214ad3d95",
+      "chineseText": "68 5 U.S.C. 601及以下条款。69 2 U.S.C. 1532。70 44 U.S.C. 3501及以下条款。71 见第II.A节。72 见第V.A.2.b.ii节。73 参见同上注26。74 详见第V.A.4.i和ii以及V.E节。75 见下文第V.E节。76 例如，收集美国个人公司申请人信息的成本如果由报告公司承担则被豁免，但该信息仍需为业务目的收集（如银行开户或其他金融交易），若完成该工作的当事人可以以更低成本完成，则信息成本的经济意义上会降低。77 见FinCEN，有关受益所有权信息报告要求的修订及截止日期，90 FR 13695页。78 见报告规则，87 FR 59568页。79 具体而言，FinCEN审查了(1)提交IRS表格1120-F（“外国公司美国所得税申报表”）的外国公司，以及(2)提交国外合伙企业税表（IRS表格1065）的外国合伙企业。80 FinCEN对更新的IRS税务数据的审查表明，截至2025年底，可能的报告公司约计63,000家。但FinCEN估计其中大量实体会因符合一个或多个报告豁免而免除提交义务。81 28,000预期报告公司减去已报告的13,000家，剩余15,000家需继续报告。"
+    },
+    {
+      "segmentId": "pdf-p13-s57",
+      "order": 57,
+      "page": 13,
+      "type": "paragraph",
+      "sourceTextHash": "91370d19c251b0754e2e07bbd1a098624fb1d9a4cd3b032ecbfdacbee78e85a3",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00046 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p14-s58",
+      "order": 58,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "16890fb36904ab350e8a7d2b5ad68aefeab0dd56ef024738fd4bf3555688e5f5",
+      "chineseText": "联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与法规 52521"
+    },
+    {
+      "segmentId": "pdf-p14-s59",
+      "order": 59,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "00463228669f981fcab2ce133aed516d537786c51961632df76099d993972ea9",
+      "chineseText": "FinCEN进一步预计每年大约有1,800家新的外国报告公司将被要求报告，包括第一年内。82 ii. 新受影响当事人的估计 最终规则包括涉及FinCEN ID美国持有人的新规定，包括美国公司申请人以及适用于美国公司申请人的额外条款。截至2025年日历年末，FinCEN识别了约760,000名美国个人FinCEN ID持有人（约占所有持有人的97%），最终规则中新增条款将豁免其更新要求。尽管绝大多数这些FinCEN ID是在IFR发布前获得，FinCEN仍持续收到来自外籍和美国人的FinCEN ID申请。但其中一些申请似乎是自愿进行的，因为提交的美国个人FinCEN ID申请数量超过了与新注册报告公司相关的美国个人公司申请者数目。自IFR以来，FinCEN收到的每份BOIR报告对应大约一名美国个人公司申请人。FinCEN关于新增受影响美国公司申请人的估计包括：1）已经获得FinCEN ID且不再需提供更新BOI的美国公司申请人成分；2）未来新报告公司相关的美国公司申请人，后者无需提供其BOI，约760人，接近估计的1,800个新报告公司的年新增规模。FinCEN估计这一年内可能涉及的人数不超过760,300人，实际规模可能接近三分之一。iii. 美国公司申请人 i. IFR发布后的BOIR提交 IFR发布前，FinCEN每接收两份国外报告公司报告，仅得一份美国个人公司申请人报告。自IFR发布后，该比例有所上升，FinCEN大约每收到一份BOIR即有一名美国个人公司申请人。此增因美国公司申请人仅需报告2024年1月1日后成立的公司。自IFR以来，大多数新报告都是由该日期后成立的公司提交，而此前报告多系注册在美国的既有公司提交。3. 最终修正内容说明 最终对报告规则的修正如II.A节所述。表1总结了这些规定。"
+    },
+    {
+      "segmentId": "pdf-p14-s60",
+      "order": 60,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "a923e0369f14fc27ab556f429bdf9cc17bada05cacf116bcebce8ed0368da1b9",
+      "chineseText": "表1—监管文本与分析的概览/对应表\n第二节考虑的范围 受影响实体 最终规则将... 监管文本分析 监管影响分析子节 章节位置"
+    },
+    {
+      "segmentId": "pdf-p14-s61",
+      "order": 61,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "bd3aa05dcf3553e71645e23027bcf44817155cdcd5f79f3107b8273553129f0f",
+      "chineseText": "报告公司 免除其根据31 U.S.C. 5336及31 CFR 1010.380对任何作为受益所有人或公司申请人的美国人的BOI报告义务。II.A V.A.4.i和ii 31 CFR 1010.380(b)(5)(i)。 删除31 CFR 1010.380(d)(4)(i)，该条款豁免其报告任何作为受益所有人的美国人BOI。无相关内容，文字已删除。 美国人 免除其根据31 U.S.C. 5336及31 CFR 1010.380对其作为受益所有人或公司申请人，向任何报告公司提供BOI的义务。II.A V.A.4.i和ii 31 CFR 1010.380(b)(5)(ii)。"
+    },
+    {
+      "segmentId": "pdf-p14-s62",
+      "order": 62,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "8f96df381699213b2ed1c3727ef6682f9d37f12525a3b73d69a50ff15718d374",
+      "chineseText": "82 如上所述，FinCEN预计截至2025年底大约有63,000个可能的报告公司，即约45%的总数；基于IRS税务数据，年新增报告公司约1,800家。基于每年约4,000家新增公司的估计。"
+    },
+    {
+      "segmentId": "pdf-p14-s63",
+      "order": 63,
+      "page": 14,
+      "type": "paragraph",
+      "sourceTextHash": "0d3a276869a6418f245801691a41c4dcbc5e2d7e0c55ca1873a419d7002c8dce",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00047 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p15-s64",
+      "order": 64,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "757114dc30fb4dffcd75cff29c2f55ba8ed3869761c6147bf14ce56fbb7a8857",
+      "chineseText": "52522 联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与法规"
+    },
+    {
+      "segmentId": "pdf-p15-s65",
+      "order": 65,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "61deb169bf0c0a273a8a5cbdd9cad07b2058b5d6574d7d47b8108b792e0beb70",
+      "chineseText": "表1—监管文本与分析的概览/对应表（续）\n第二节考虑的范围 受影响实体 最终规则将... 监管文本分析 监管影响分析子节 章节位置"
+    },
+    {
+      "segmentId": "pdf-p15-s66",
+      "order": 66,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "32f7ceb2d6cb2cfc90cd584d5659cf3f086941c9d79aa3e048b4cf0e64e05099",
+      "chineseText": "删除31 CFR 1010.380(d)(4)(ii)，该条款豁免其提供其作为任何报告公司的受益所有人BOI。无相关内容，文字已删除。 已获得FinCEN ID的美国人 取消此前要求更新或更正已提交至FinCEN的FinCEN ID申请信息的规定。II.A V.A.4.i和ii 31 CFR 1010.380(b)(4)(iii)(A)."
+    },
+    {
+      "segmentId": "pdf-p15-s67",
+      "order": 67,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "fb821e307ae420c9ba1f325c13a54a6556b64e61a706732c11632dc23888fc1f",
+      "chineseText": "4. 预期经济影响 洗钱方式 美国减少信息报告的影响 将不明确。鉴于FinCEN尚未能够进行估算此类信息增量价值所需的强有力量化分析，尽管其相关估值迄今仍带有部分推测性，但已获国内及国际执法和国安伙伴的反馈。FinCEN预计部分相关方因本最终规则引入的变更可能体验到利益减损，但预期其影响相对较小，其中包括执法机构、金融机构及其他受影响方，这些方访问BOI将比原报告规则收益减少，主要涉及有关美国自然人公司的更新信息与FinCEN ID更新。减少的预期利益在某些情形下，可能因其他替代信息来源（例如商业可获信息）的存在而有所缓解，前提是这些替代来源可视为替代品而非补充品。"
+    },
+    {
+      "segmentId": "pdf-p15-s68",
+      "order": 68,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "9aa19163f8ac3dbbf8fc712abf63794dd865e7b31aa52a48778935b0d2aa15e4",
+      "chineseText": "估计因IFR相较报告规则引入的某些U.S. person公司申请人相关直接成本不再出现，这可视为IFR的利益，但包含于后文预期成本变化的估算中。报告规则原未考虑这些替代信息的价值。"
+    },
+    {
+      "segmentId": "pdf-p15-s69",
+      "order": 69,
+      "page": 15,
+      "type": "paragraph",
+      "sourceTextHash": "2ee7ac9b139da86b04acb904fdad4108b8c84d5cf30733e44510ca9bd27b041d",
+      "chineseText": "（该段为页面格式编码信息，无可翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p16-s70",
+      "order": 70,
+      "page": 16,
+      "type": "paragraph",
+      "sourceTextHash": "c68213a474c26a48548e2a6978fbc072311830e373fe74ecae22dd672216fcfd",
+      "chineseText": "（该段为页面格式编码信息，无可翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p16-s71",
+      "order": 71,
+      "page": 16,
+      "type": "paragraph",
+      "sourceTextHash": "f9f8a47b9b09ded8daa6c4c6970c38abc68ce4eca0c9be074a2bd5eca9be8740",
+      "chineseText": "本最终规则确认IFR相较于报告规则在BOI报告要求上的成本大幅削减的永久性。IFR定义的国内报告公司不再包括前定义的“国内报告公司”，且外国实体已不再须报告其任何美国自然人受益所有人信息。IFR显著减少了报告公司的范围和数量，特别是在原报告规则拘束的国内及外国实体方面。本最终规则保留该范围减少，带来显著监管节约。FinCEN原规则分析估计2024年报告公司总数为32,556,929，年新增4,998,468，其中不含已豁免实体。在发布IFR前，FinCEN接收约1500万份国内报告公司报告，余约1750万份仍未提交，加上2025年和2026年预估的1000万份，合计約2750万家报告公司自IFR后已免除报告义务。基于报告平均每份成本665.71美元估算，自IFR起被归类为国内报告公司的实体节约约180亿美元。"
+    },
+    {
+      "segmentId": "pdf-p16-s72",
+      "order": 72,
+      "page": 16,
+      "type": "paragraph",
+      "sourceTextHash": "47a4efb460a0bf9e4e79f90eee002146b8e77e0bcc28d6e535f0dc515138985b",
+      "chineseText": "（该段为页面格式编码信息，无可翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p17-s73",
+      "order": 73,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "a5a6faea742d6d4f8cfb109545c828e60cf9e58d155e028ea54edc8f95c361ff",
+      "chineseText": "（该段为页面格式编码信息，无可翻译内容）"
+    },
+    {
+      "segmentId": "pdf-p17-s74",
+      "order": 74,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "14a74bfb882ad41707b7d82c8685877311998cf54637585e5d0f9130f0a301d0",
+      "chineseText": "表2 — 与新的FinCEN ID更新和更正要求豁免相关的估计增量年度成本节约\n 豁免方数量 百分比 更新数量 每次更新节约小时数 小时工资率 总节约成本 总节约小时数\n760,000 2.5% 19,000 0.17 65.09美元 206,103美元 3,167\n小时节约数据为呈现目的四舍五入到小数点后两位，成本节约数据基于未四舍五入的准确数字计算。"
+    },
+    {
+      "segmentId": "pdf-p17-s75",
+      "order": 75,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "91af2a9b5a98815b7dad8471dbfb0bf5dbb6754d7f2908a99fd1cfda93d19787",
+      "chineseText": "FinCEN最终规则还豁免报告公司在其BOIR中包含美国自然人公司申请人信息。这一豁免免除报告公司收集并提交其美国自然人公司申请人信息。基于IFR后海外报告公司BOIR数据，FinCEN估计多数外国报告公司平均各包含一个公司申请人。虽然一些公司申请人可能重复，FinCEN估计绝大多数申请人是唯一的，且约15%申请人为美国自然人，现拟被豁免。正如V.A.ii.2.a节所述，FinCEN预计第一年约有16,800家报告公司，随后每年约有1,800家。根据此数据，FinCEN预估这些新豁免美国自然人申请人的成本节约。"
+    },
+    {
+      "segmentId": "pdf-p17-s76",
+      "order": 76,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "7d7c5f91ddc508ac0a9ad4e28df2e5b4ba83ac2cc3099fe59e1d8c73d8c85852",
+      "chineseText": "表3 — 与新的FinCEN公司申请人豁免相关估计增量成本节约\n 年度 豁免公司申请人数量 每个申请人节约小时数 总节约小时数 小时工资率 总节约成本\n1 2,520 0.17 420 65.09美元 27,336美元\n2及以后 270 0.17 45 65.09美元 2,929美元\n小时节约数据为呈现目的四舍五入到小数点后两位，成本节约数据基于未四舍五入的准确数字计算。"
+    },
+    {
+      "segmentId": "pdf-p17-s77",
+      "order": 77,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "6182faec9e0c594c5385584e66677c5a2df014602eaabcdc2ad5f37b887ab348",
+      "chineseText": "（页面格式无实质内容翻译）"
+    },
+    {
+      "segmentId": "pdf-p17-s78",
+      "order": 78,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "3dac30c4c6e10f33c774d8046b861ce3eb8c1093d68dbde8b24d06192d884668",
+      "chineseText": "（页面格式无实质内容翻译）"
+    },
+    {
+      "segmentId": "pdf-p17-s79",
+      "order": 79,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "e36b05d097b3b5da32fba314b4026109969050cdf49842ff1013277344737003",
+      "chineseText": "5. 考虑的替代方案影响及公平性)。行政命令13563强调量化成本和收益、降低成本、协调规则和促进灵活性的重要性。法规灵活性法案（RFA），公法96–354，仅适用于根据5 U.S.C. 553(b)发布一般规章拟议通知的规则。该规则作为最终规则立即发布，且未事先发布拟议规则通知，因此RFA不适用。\nB. 行政命令12866、13563和14192\n本规则已被认定为行政命令12866第3(f)节所定义的“重大监管行动”，因此已由管理和预算办公室（OMB）审查。预计此举将被视为行政命令14192的放松管制措施。由于该规则免除了某些本应作为公司申请人报告的美国个人或向FinCEN提供信息的义务，因此不会对大量美国企业或作为受益所有人或外国报告公司的公司申请人的美国个人产生新的合规负担。此外，RFA不适用于此规则。在考虑政策替代方案时，FinCEN充分考虑了评论者针对临时最终规则（IFR）提出的所有潜在方案，并在第二部分C节中详细说明未采纳替代方案的理由，相关内容此处引用。行政命令12866和13563要求机构评估可用监管替代方案的成本和收益，并在必要时选择净收益最大的监管方法（包括潜在的经济、环境及公众健康安全影响；分配影响；及公平性）。行政命令13563还认识到某些收益难以量化，在法律允许范围内，机构可考虑并讨论难以或无法量化的定性价值。"
+    },
+    {
+      "segmentId": "pdf-p17-s80",
+      "order": 80,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "eed1cbf0c9546cb2e41ae7fc8d7f8553b8e84ce334b888412cd1af7a5c0b2738",
+      "chineseText": "94 如果第一年收到的16,800份BOIR（包括15,000份现有报告公司加1,800份新报告公司）平均包含一名公司申请人，则结果为16,800名公司申请人。95 如果随后的1,800份新BOIR估计平均包含一名公司申请人，则结果为1,800名公司申请人。96 详见5 U.S.C. 601及以下条款。"
+    },
+    {
+      "segmentId": "pdf-p17-s81",
+      "order": 81,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "3533de628cac7d6988540ce160209d491660b1a4a7af62926b30e48a506da55d",
+      "chineseText": "（包括15,000份现有报告公司加1,800份新报告公司）如果平均每份BOIR包含一名公司申请人，则总计为16,800名公司申请人。16,800名公司申请人的15%为2,520名美国个人公司申请人。1,800份新报告公司的15%为270名美国个人公司申请人。"
+    },
+    {
+      "segmentId": "pdf-p17-s82",
+      "order": 82,
+      "page": 17,
+      "type": "paragraph",
+      "sourceTextHash": "bae28ca35bcfa5ba0125a1c1fabc5d9238225421f70357f7e3da1ed69f5cebce",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00050 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p18-s83",
+      "order": 83,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "2cad4b5d80ce1e8136bb9e6b4d132a2c64991115916d87abf623820a8b9640d9",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52525"
+    },
+    {
+      "segmentId": "pdf-p18-s84",
+      "order": 84,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "a834dd72c006c450d843990db3fed5cb82baa64f3e265bdb7d3782798f3bb00e",
+      "chineseText": "不适用于非以小企业、小型非营利组织和小型政府管辖区下的美国个人为自然人身份所产生的监管负担，因此不适用于本最终规则采纳的修正暂行最终规则（IFR）对上述个人的影响。FinCEN根据未资助的法规改革法案（UMRA）第202节（公共法104-4）规定，需在制定可能导致州、地方及部落政府或私营部门年度新增开支累计达1.93亿美元或以上的规则前编制预算影响声明。FinCEN确定本规则不会导致超过此限额的新增开支，故未编制预算影响声明。此外，FinCEN认为其第二部分C节及第五部分A.5节对政策替代方案的考量已足够具体且完整，此处引用。E. 文书工作负担减少法案（PRA）及其相关规定，对联邦机构开展信息收集有约束要求。根据PRA，如法规涉及信息收集，必须经OMB审批。本规则中涉及信息收集要求已获OMB根据控制编号1506-0076批准。"
+    },
+    {
+      "segmentId": "pdf-p18-s85",
+      "order": 85,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "ac4fd798315de85a652551effcbce50bb04b0e9d49bc003c38f9e19c33910b16",
+      "chineseText": "1921=survey&1903=13#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDMsM10sImRhdGEiOltbIk5hdGVCYXNlVG FibGVfTGlzdCIsIjEzIl0sWyJDYXRlZ29yaWVzIiwiU3VydmV5Il0sWyJGaXJzdF9ZZWFyIiwiMTk5NSJ dLFsiTGFzdF9ZZWFyIiwiMjAyNSJdLFsiU2NhbGUiLCIwIl0sWyJTZXJpZXMiLCJBIl1dfQ==。102 44 U.S.C. 第35章；5 CFR第1320部分。101 44 U.S.C. 3506(c)(2)(A)，3507(a)(1)(D)。103 31 U.S.C. 5336(b)；31 CFR 1010.380(b)。104 对BOI报告而言，首次提交报告及后续报告是不同阶段，后者是信息变更或校正之前报告错误时所需。"
+    },
+    {
+      "segmentId": "pdf-p18-s86",
+      "order": 86,
+      "page": 18,
+      "type": "paragraph",
+      "sourceTextHash": "fdfb39304c4bd4517ee810a3311ed78db2fb7b090d3bfd128aa84c5b6af7fa03",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00051 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p19-s87",
+      "order": 87,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "3577cb47f68aba5fc5a893b0aae3d6d08a18f6528ae488f9c3ed2071abe3d268",
+      "chineseText": "52526 联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p19-s88",
+      "order": 88,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "55ec80cd59f58b2060a955f8794670dab27ff855f0338dbe71a6eeec05996944",
+      "chineseText": "利用上述工时估算和费用说明，FinCEN估计初次BOIR的总成本为第一年470万美元，随后每年50.6万美元，三年平均为190万美元。FinCEN预计，更新BOIR将在第一年为申报公司带来约782工时，第二年830工时，第三年877工时的负担。ii. 更新BOIR\n预估回复数量：平均每年1,106份公司更新报告。预估累计报告成本：平均每年164,588美元。在BOIT系统开放后两年内，FinCEN共收到约900份更新或更正报告，涉及约13,000份外国报告公司BOIR，占总报告量的3.5%。第一年若收到15,000份报告，估计总报告数达28,000份，包括1,800份新报告，总计29,800份，3.5%的更新率对应1,043份更新。第二年新增1,800份报告，总计31,600份，3.5%更新率约1,106份。第三年新增1,800份，总计33,400份，3.5%更新率约1,169份，三年平均每年约1,106份更新报告。更新BOIR的预计平均填报时间为130分钟。FinCEN基于IFR的工资率估算更新BOIR填写成本为每家公司32.54美元（简单额度）至497.63美元（复杂额度），三年均值为约164,588美元。2. 个人FinCEN身份编号（ID）\n控制编号：1506-0076。规则继续要求收集个人信息。"
+    },
+    {
+      "segmentId": "pdf-p19-s89",
+      "order": 89,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "d467ca1aca190776e0b602ce32f92e9d9cb5565276647988749f2c777c3feda5",
+      "chineseText": "报告公司。使用IFR中提供的简单外国受益所有权结构的小时工资率，FinCEN估计每家报告公司提交初始BOIR的平均成本从65.09美元（适用于具有简单外国受益所有权结构的公司）到930.17美元（适用于具有复杂外国受益所有权结构的公司）不等。应用报告公司具有复杂外国受益所有权结构的构造作为105％的16,800家报告公司，其中75％（12,600家）耗时一小时，25％（4,200家）耗时两小时，在第一年产生总计21,000小时。"
+    },
+    {
+      "segmentId": "pdf-p19-s90",
+      "order": 90,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "a9642e3ccf0161d8db19b3aa3eb84f289bb3705266362928928bbf5a5de377c8",
+      "chineseText": "更新对应75分钟（1.5小时），其中75％（12,600家）耗时一小时，25％（4,200家）耗时两小时，第一年总计16,800家报告公司，总计21,000小时工作量。"
+    },
+    {
+      "segmentId": "pdf-p19-s91",
+      "order": 91,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "b550254745c2ea283accb357e2a3597718bc04afd2c7f13eee415a259156f099",
+      "chineseText": "每年新增报告公司1,800家，75％（1,350）耗时一小时，25％（450）耗时两小时，预计第二年及以后总计2,250小时。"
+    },
+    {
+      "segmentId": "pdf-p19-s92",
+      "order": 92,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "d2ff1bed5a65a1ef40f453e6f4bcc521659623559416e37a9d89264129b9fb57",
+      "chineseText": "对于具有简单外国受益所有权结构的公司，FinCEN估计每次更新耗时一小时，75％（782次）劳动成本为每小时65.09美元的32.54美元，25％（261次）劳动成本为497.63美元。共计16,800份报告，75％（12,600份）劳动成本65.09美元，25％（4,200份）劳动成本930.17美元。见脚注91。"
+    },
+    {
+      "segmentId": "pdf-p19-s93",
+      "order": 93,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "c90a2bb2093f4bcec41fc57e9f698b352e1267481d508a44b6a540b4637713c5",
+      "chineseText": "对于具有复杂外国受益所有权结构的公司，FinCEN估计两小时劳动，每小时65.09美元，加上一小时专业协助（律师或会计师），费用约400美元每小时。专业协助费率源自原报告规则。见报告规则，联邦公报87 FR 59498。见第五部分A.2.ii.a节。"
+    },
+    {
+      "segmentId": "pdf-p19-s94",
+      "order": 94,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "33869715a77a8b8433ee7884d87e56cc74bf7208ad7689483c719f32d40d27e1",
+      "chineseText": "首次报告公司总计1,106份更新报告，75％（830份）劳动成本为32.54美元，25％（277份）劳动成本为497.63美元，第二年总成本4,726,790美元。"
+    },
+    {
+      "segmentId": "pdf-p19-s95",
+      "order": 95,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "828672c6950c1967e2b41d60da6b0fd64f879f5e94e1399631c0df9a8d19d6aa",
+      "chineseText": "每年新增报告公司1,800份报告，75％（1,350份）劳动成本65.09美元，25％（450份）劳动成本930.17美元，第二年总成本506,442美元。每年更新报告总计1,169份，75％（877份）劳动成本32.54美元，25％（292份）劳动成本497.63美元，第三年总成本173,963美元。"
+    },
+    {
+      "segmentId": "pdf-p19-s96",
+      "order": 96,
+      "page": 19,
+      "type": "paragraph",
+      "sourceTextHash": "3b9239dfd72c097a2fd61aef9e977858e266fc3e85e81d9dae178c719caf6308",
+      "chineseText": "2026年8月13日16:20记录编号Jkt 268001文件00000 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1。"
+    },
+    {
+      "segmentId": "pdf-p20-s97",
+      "order": 97,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "f3bf9f44e63675457465d12377f2b38dcc1c622960337747ca312f9c43ac2534",
+      "chineseText": "联邦公报／卷91，号156／2026年8月14日星期五／规章及条例，第52527页。"
+    },
+    {
+      "segmentId": "pdf-p20-s98",
+      "order": 98,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "95311b94979e1a51d62ea753b021daa546628fd01cd02d1d313e223fad86edaf",
+      "chineseText": "为其分配FinCEN ID。121这是一种自愿收集。该规则要求个人按照《公司透明度法》（CTA）报告某些个人信息以获得FinCEN ID。122个人还需根据需要提交其识别信息的更新。FinCEN将这些信息存储于其BOI数据库中供授权用户访问。频率：按需求提交。受影响公众描述：选择请求独立于公司通过其BOIR提交请求的FinCEN ID的与外国报告公司相关的个人。对于请求FinCEN ID的个人，FinCEN承认任何符合法定标准的人都可以根据规则申请FinCEN ID。但个别实益所有者申请FinCEN ID的主要激励可能是数据安全（个人可能认为直接向FinCEN提交个人识别信息风险较小，且效率更高），并且相应的公司申请人可能也有激励限制访问其个人信息的公司数量。基于自IFR以来的外国报告公司BOIR数据，FinCEN估计每个新增（外国）报告公司平均关联六个个人FinCEN ID。然而，自IFR以来，FinCEN估计只有约10%的FinCEN ID申请与外国人相关（美国境内人员现已免于作为公司申请人报告）。基于此数据，FinCEN估计第一年预计10800份FinCEN ID申请。"
+    },
+    {
+      "segmentId": "pdf-p20-s99",
+      "order": 99,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "e9c6d62dcadb7e5327c19f6fe5134b9be9c4aac32fd0bd446ca952744879f3c7",
+      "chineseText": "预计每年平均4080份响应。根据BOIR数据，FinCEN估计截至IFR已收到约38000份更新和更正，合计约780000个活动FinCEN ID，约占2.5%。根据第五部分E.2.a节，第一年FinCEN预计有10080份总申请，其中10%即1080份的更新申请。后续每年同理。"
+    },
+    {
+      "segmentId": "pdf-p20-s100",
+      "order": 100,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "723d808f668e20b86762050bf8783aeb636f7bbdd62ade6a8807b8a5b30d432e",
+      "chineseText": "每份FinCEN ID初始申请预计约需20分钟时间（10分钟阅读表格理解所需信息，10分钟填写并提交请求，含附带可接受身份证明图像），所需信息对申请人而言应可轻易获得。"
+    },
+    {
+      "segmentId": "pdf-p20-s101",
+      "order": 101,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "07652480710c939703adf22161102ef3df1e4ee7e6685275d3f92deeb02a0ddd",
+      "chineseText": "121 FinCEN未对实体请求FinCEN ID单独计算成本估算，因其假定此成本已包含在BOI报告提交过程及费用中。"
+    },
+    {
+      "segmentId": "pdf-p20-s102",
+      "order": 102,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "60f35d62a34c111f67509be81f24136a42b46b8c95106eb698cb10931c24e566",
+      "chineseText": "122 31 U.S.C. 5336(b)(3)(A)(i); 31 CFR 1010.380(b)(4)。"
+    },
+    {
+      "segmentId": "pdf-p20-s103",
+      "order": 103,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "efe8b5458254577a9bec0c32a96a9c1a694417beda8a1e16dd6bc51c48c20a36",
+      "chineseText": "123 每年六份FinCEN ID申请对应每份BOIR包含16800份BOIR。10%的10800份对应10080份。"
+    },
+    {
+      "segmentId": "pdf-p20-s104",
+      "order": 104,
+      "page": 20,
+      "type": "paragraph",
+      "sourceTextHash": "d8c6be7c02dfb7087955dc0a5e74d484a1ec24bb8eab40d510f97c8a6c981d7c",
+      "chineseText": "124 每年六份FinCEN ID申请对应每份后续BOIR包含1800份BOIR。10%的10800份对应1080份后续更新申请。"
+    },
+    {
+      "segmentId": "pdf-p21-s105",
+      "order": 105,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "257d9df6d38bdca3c9175eed2d0fbc73336a14165c789a4cff2874ef13a5152a",
+      "chineseText": "52528联邦公报／卷91，号156／2026年8月14日星期五／规章及条例"
+    },
+    {
+      "segmentId": "pdf-p21-s106",
+      "order": 106,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "8f3b477049cbabe12bc9e17f7f1493e9adb9fe83aed6f271189a5d5a714c9251",
+      "chineseText": "未将非劳动成本估算分配给这些信息收集，因FinCEN假设报告公司已经拥有遵守监管要求所需的设备和工具。对本最终规则中规定的违反条例的故意行为，依据31 U.S.C. 5336(h)和颁布的31 CFR 1010.380(g)的法规，可以处以刑事处罚。刑事责任的法定依据要求在31 U.S.C. 5336(h)下，须具备故意（willfulness）心理状态作为要素。FinCEN在起草本声明时，已与司法部协商。\n\nF. 国会审查法\n根据《1996年小企业监管执法与公平法案》（也称为国会审查法CRA）之E小节，如果OMB的信息与监管事务办公室将本规则定为CRA意义上的“重大规则”，则根据CRA，此类规则通常不得早于在《联邦公报》上发布后60日内生效。尽管有此要求，CRA允许机构在确定“关于规则的通知和公开程序”不可行、不必要或违背公众利益的情况下，因善意理由取消第801节的相关要求。若机构认定该善意理由，规则应在颁布机构确定的时间生效。\n\n根据第808(2)节和第四节“生效日期”所述原因，FinCEN因善意理由认定，公开通知或允许公众就本最终规则发表评论是不切实际、不必要且违背公共利益的。\n\nG. 行政命令14294\n行政命令14294第5节规定，所有在《联邦公报》上发布的拟议规则通知和最终规则，其违反可能构成刑事监管犯罪的，应包括声明标识该规则或拟议规则为刑事监管犯罪及其授权法规。行政命令14294还指导机构在起草该声明时需与司法部协商。该命令进一步指示自2023年5月9日起，在《联邦公报》上发布的具有刑事后果的拟议和最终规则的监管文本，应明确规定每一刑事监管犯罪要素的心理状态要求，并附有相关授权法规的引证。\n\n(b) * * *\n(4) * * *\n(iii) * * *\n(A) 任何获得FinCEN标识符且非美国人士，应更新或更正此前提交给FinCEN的相关申请信息。\n(1) 若之前提交给FinCEN的相关信息有所变化，非美国人士需在变更发生日起30日历日内提交更新申请。\n(2) 若申请提交时信息有误且持续错误，非美国人士需自知晓信息不准确之日起30日历日内提交更正申请。若在该30日内提交更正申请，则根据31 U.S.C. 5336(h)(3)(C)(i)(I)(bb)，此申请视为在错误申请提交之日起90日内提交。\n\n(5) 特殊豁免\n(i) 报告公司免于根据31 U.S.C. 5336及本节规定要求报告任何美国人士的实益所有权信息，若该美国人士为实益所有人或公司申请人。\n(ii) 美国人士免于根据31 U.S.C. 5336及本节规定，提供其为实益所有人或公司申请人的任何报告公司的实益所有权信息。\n\n鉴于前述原因，临时修订31 CFR第1010部分的规则，自2026年3月26日第90 FR 13688号联邦公报发布的规则予以采纳，并作以下变更。\n\n第1010部分——通用规定\n■ 1. 第1010部分的权限引述继续如下：\n授权：12 U.S.C. 1829b和1951–1959；31 U.S.C. 5311–5314, 5316–5336；第III标题，第314节，公法107–56，第115卷第307页；第2006节，公法114–41，第129卷第457页；第701节，公法114–74，第129卷第599页；第6403节，公法116–283，第134卷第3388页。\nAndrea M. Gacki，金融犯罪执法网络主任。\n[联邦文件编号2026–16576于2026年8月13日提交，上午8:45]\n■ 2. 修订1010.380节的规定如下：\n■ a. 修订(b)(4)(iii)(A)段\n■ b. 新增(b)(5)段\n■ c. 删除(d)(4)段。"
+    },
+    {
+      "segmentId": "pdf-p21-s107",
+      "order": 107,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "d42827f94f3f1204679a9f4c5d3e1b0d1ce4bd5094d4d252656ac6c68a4da559",
+      "chineseText": "修订和新增内容如下：\n\n§ 1010.380 有关实益所有权信息的报告。\n\n* * * * *"
+    },
+    {
+      "segmentId": "pdf-p21-s108",
+      "order": 108,
+      "page": 21,
+      "type": "paragraph",
+      "sourceTextHash": "666b081cd763ad912c59827110f4797ed17114280d4d7fe505f1dfbee8e8ebfe",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00054 Fmt 4700 Sfmt 9990 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    }
+  ]
+}

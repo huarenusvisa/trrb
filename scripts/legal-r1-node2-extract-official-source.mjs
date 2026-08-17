@@ -20,8 +20,27 @@ if (recordId && selected.length !== 1) throw new Error(`record not found or not 
 fs.mkdirSync(outputDir, { recursive: true });
 
 function normalizeText(s) {
-  return s.replace(/\r\n/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  return String(s || '').replace(/\r\n/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
 }
+
+function decodeEntities(s) {
+  const named = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+  return String(s || '').replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (_, entity) => {
+    if (entity[0] === '#') {
+      const hex = entity[1]?.toLowerCase() === 'x';
+      const n = Number.parseInt(entity.slice(hex ? 2 : 1), hex ? 16 : 10);
+      return Number.isFinite(n) ? String.fromCodePoint(n) : _;
+    }
+    return named[entity.toLowerCase()] ?? _;
+  });
+}
+
+function stripTags(s) {
+  return normalizeText(decodeEntities(String(s || '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')));
+}
+
 function segmentsFromPdfText(text) {
   const pages = text.split('\f');
   const segments = [];
@@ -30,39 +49,122 @@ function segmentsFromPdfText(text) {
     const cleaned = normalizeText(page);
     if (!cleaned) return;
     const paragraphs = cleaned.split(/\n\s*\n/).map(normalizeText).filter(Boolean);
-    for (const paragraph of paragraphs) segments.push({ segmentId: `p${pageIndex + 1}-s${++order}`, order, page: pageIndex + 1, type: 'paragraph', text: paragraph });
+    for (const paragraph of paragraphs) {
+      segments.push({ segmentId: `pdf-p${pageIndex + 1}-s${order + 1}`, order: ++order, page: pageIndex + 1, type: 'paragraph', text: paragraph });
+    }
   });
   return segments;
 }
-async function download(url, dest) {
-  const res = await fetch(url, { redirect: 'follow', headers: { 'user-agent': 'TRRB-Legal-R1/1.0' } });
+
+function segmentsFromHtml(html) {
+  let body = String(html || '')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<(script|style|noscript|svg|canvas|template|form|button|nav|header|footer|aside)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ');
+  const main = body.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1]
+    || body.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i)?.[1]
+    || body;
+  const segments = [];
+  const block = /<(h[1-6]|p|li|blockquote|pre|caption|dt|dd|tr)\b[^>]*>([\s\S]*?)<\/\1>/gi;
+  let m;
+  let order = 0;
+  const seen = new Set();
+  while ((m = block.exec(main))) {
+    const tag = m[1].toLowerCase();
+    let text = stripTags(m[2]);
+    if (tag === 'tr') {
+      text = normalizeText(decodeEntities(m[2].replace(/<t[dh]\b[^>]*>/gi, '').replace(/<\/t[dh]>/gi, ' | ').replace(/<[^>]+>/g, ' '))).replace(/\s*\|\s*$/, '');
+    }
+    if (!text || text.length < 2) continue;
+    const key = `${tag}:${text}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const type = /^h[1-6]$/.test(tag) ? 'heading' : tag === 'li' ? 'list-item' : tag === 'tr' ? 'table-row' : 'paragraph';
+    segments.push({ segmentId: `html-s${order + 1}`, order: ++order, type, level: /^h[1-6]$/.test(tag) ? Number(tag[1]) : undefined, text });
+  }
+  return segments.map(({ level, ...s }) => level ? { ...s, level } : s);
+}
+
+async function fetchSource(url) {
+  const res = await fetch(url, {
+    redirect: 'follow',
+    headers: {
+      'user-agent': 'TRRB-Legal-R1/1.0 (+https://trrb.net)',
+      accept: 'text/html,application/xhtml+xml,application/pdf;q=0.9,*/*;q=0.5'
+    }
+  });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   const buf = Buffer.from(await res.arrayBuffer());
-  fs.writeFileSync(dest, buf);
-  return { contentType: res.headers.get('content-type') || '', bytes: buf.length, finalUrl: res.url };
+  return { buf, contentType: res.headers.get('content-type') || '', bytes: buf.length, finalUrl: res.url };
+}
+
+async function extractPdf(url, tempPdf) {
+  const meta = await fetchSource(url);
+  fs.writeFileSync(tempPdf, meta.buf);
+  const raw = execFileSync('pdftotext', ['-layout', tempPdf, '-'], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const segments = segmentsFromPdfText(raw);
+  return { ...meta, segments, extractionMethod: 'pdftotext-text-layer', sourceFormat: 'pdf' };
+}
+
+async function extractHtml(url) {
+  const meta = await fetchSource(url);
+  const html = meta.buf.toString('utf8');
+  const segments = segmentsFromHtml(html);
+  return { ...meta, segments, extractionMethod: 'semantic-html-blocks', sourceFormat: 'html' };
 }
 
 const summary = [];
 for (const r of selected) {
-  const sourceUrl = r.officialPdfUrl || r.officialUrl;
+  const primarySourceUrl = r.officialPdfUrl || r.officialUrl;
   const tempPdf = path.join(os.tmpdir(), `legal-r1-${r.id}.pdf`);
   const outPath = path.join(outputDir, `${r.id}.json`);
-  const base = { schemaVersion: 1, recordId: r.id, sourceSystem: r.sourceSystem, datasetVersion: dataset.datasetVersion, officialUrl: r.officialUrl || null, officialPdfUrl: r.officialPdfUrl || null, sourceUrl, extractedAt: new Date().toISOString(), extractionMethod: 'pdftotext-text-layer', sourceFormat: r.officialPdfUrl ? 'pdf' : 'unknown' };
+  const base = {
+    schemaVersion: 2,
+    recordId: r.id,
+    sourceSystem: r.sourceSystem,
+    datasetVersion: dataset.datasetVersion,
+    officialUrl: r.officialUrl || null,
+    officialPdfUrl: r.officialPdfUrl || null,
+    sourceUrl: primarySourceUrl,
+    extractedAt: new Date().toISOString()
+  };
   try {
-    if (!r.officialPdfUrl) throw new Error('HTML extraction not yet implemented; metadata/summary substitution is forbidden');
-    const meta = await download(sourceUrl, tempPdf);
-    const raw = execFileSync('pdftotext', ['-layout', tempPdf, '-'], { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
-    const segments = segmentsFromPdfText(raw);
-    if (segments.length === 0) {
-      fs.writeFileSync(outPath, JSON.stringify({ ...base, status: 'NEEDS_OCR', ...meta, segments: [], error: 'PDF text layer yielded no usable body text' }, null, 2) + '\n');
-      summary.push({ recordId: r.id, status: 'NEEDS_OCR' });
+    let result;
+    let sourceUrl = primarySourceUrl;
+    if (r.officialPdfUrl) {
+      try {
+        result = await extractPdf(r.officialPdfUrl, tempPdf);
+      } catch (pdfError) {
+        if (!r.officialUrl || r.officialUrl === r.officialPdfUrl) throw pdfError;
+        sourceUrl = r.officialUrl;
+        result = await extractHtml(r.officialUrl);
+      }
+    } else {
+      result = await extractHtml(r.officialUrl);
+    }
+    const { buf, segments, ...meta } = result;
+    if (!Array.isArray(segments) || segments.length === 0) {
+      const status = result.sourceFormat === 'pdf' ? 'NEEDS_OCR' : 'FAILED';
+      const error = result.sourceFormat === 'pdf' ? 'PDF text layer yielded no usable body text' : 'Official HTML yielded no usable semantic body blocks';
+      fs.writeFileSync(outPath, JSON.stringify({ ...base, sourceUrl, status, ...meta, segments: [], error }, null, 2) + '\n');
+      summary.push({ recordId: r.id, status, error });
       continue;
     }
-    fs.writeFileSync(outPath, JSON.stringify({ ...base, status: 'EXTRACTED', ...meta, segmentCount: segments.length, segments }, null, 2) + '\n');
-    summary.push({ recordId: r.id, status: 'EXTRACTED', segmentCount: segments.length });
+    fs.writeFileSync(outPath, JSON.stringify({ ...base, sourceUrl, status: 'EXTRACTED', ...meta, segmentCount: segments.length, segments }, null, 2) + '\n');
+    summary.push({ recordId: r.id, status: 'EXTRACTED', segmentCount: segments.length, sourceFormat: meta.sourceFormat });
   } catch (error) {
     fs.writeFileSync(outPath, JSON.stringify({ ...base, status: 'FAILED', segments: [], error: String(error?.message || error) }, null, 2) + '\n');
     summary.push({ recordId: r.id, status: 'FAILED', error: String(error?.message || error) });
-  } finally { try { fs.unlinkSync(tempPdf); } catch {} }
+  } finally {
+    try { fs.unlinkSync(tempPdf); } catch {}
+  }
 }
-console.log(JSON.stringify({ audit: 'LEGAL-R1-N2-EXTRACT', datasetVersion: dataset.datasetVersion, selected: selected.length, extracted: summary.filter(x => x.status === 'EXTRACTED').length, needsOcr: summary.filter(x => x.status === 'NEEDS_OCR').length, failed: summary.filter(x => x.status === 'FAILED').length, results: summary }, null, 2));
+
+console.log(JSON.stringify({
+  audit: 'LEGAL-R1-N2-EXTRACT',
+  datasetVersion: dataset.datasetVersion,
+  selected: selected.length,
+  extracted: summary.filter(x => x.status === 'EXTRACTED').length,
+  needsOcr: summary.filter(x => x.status === 'NEEDS_OCR').length,
+  failed: summary.filter(x => x.status === 'FAILED').length,
+  results: summary
+}, null, 2));

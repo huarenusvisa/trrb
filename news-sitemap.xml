@@ -1456,12 +1456,4 @@
         <news:title>纽约布法罗举办DHS职业博览会招募ICE遣返官员</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-ef0cc5433858b260ce14cd57b257fc68e1e476e2</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T01:46:45.876Z</news:publication_date>
-        <news:title>西雅图ICE拘捕墨西哥籍甲基苯丙胺犯罪嫌疑人</news:title>
-      </news:news>
-    </url>
 </urlset>

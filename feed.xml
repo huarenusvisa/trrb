@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 18 Aug 2026 05:40:53 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2026 05:45:40 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>白宫新闻体系或迎重大调整 特朗普考虑内阁成员轮流主持发布会</title>
+      <link>https://trrb.net/trump/%E7%99%BD%E5%AE%AB%E6%96%B0%E9%97%BB%E4%BD%93%E7%B3%BB%E6%88%96%E8%BF%8E%E9%87%8D%E5%A4%A7%E8%B0%83%E6%95%B4-%E7%89%B9%E6%9C%97%E6%99%AE%E8%80%83%E8%99%91%E5%86%85%E9%98%81%E6%88%90%E5%91%98%E8%BD%AE%E6%B5%81%E4%B8%BB%E6%8C%81%E5%8F%91%E5%B8%83%E4%BC%9A-msy8oe2w-5612c2</link>
+      <guid isPermaLink="true">https://trrb.net/trump/%E7%99%BD%E5%AE%AB%E6%96%B0%E9%97%BB%E4%BD%93%E7%B3%BB%E6%88%96%E8%BF%8E%E9%87%8D%E5%A4%A7%E8%B0%83%E6%95%B4-%E7%89%B9%E6%9C%97%E6%99%AE%E8%80%83%E8%99%91%E5%86%85%E9%98%81%E6%88%90%E5%91%98%E8%BD%AE%E6%B5%81%E4%B8%BB%E6%8C%81%E5%8F%91%E5%B8%83%E4%BC%9A-msy8oe2w-5612c2</guid>
+      <pubDate>Tue, 18 Aug 2026 05:45:40 GMT</pubDate>
+      <category>美国时政</category>
+      <description>唐人日报 8 月 18日讯：美国总统特朗普正在考虑白宫新闻秘书卡罗琳·莱维特离任后的职位安排，包括是否长期由内阁成员轮流主持白宫新闻发布会。莱维特此前宣布将在第二个孩子出生后辞职，以便投入更多时间陪伴家人，特朗普称她是“我最信任的助手之一”。</description>
+      <enclosure url="https://images.openai.com/static-rsc-4/FmxSF165nSWeJhEX0a6CpOm5E40YC84e5thvrUCDPehPMx2g60rxxgZPOQM_IZhdf8bFKZCSK3Rak-2BzCwU5IK6nQmKPA69B62bS5xRCkAwe7Y88X2fTvqDHNrwvbtR9_3GPDXIH9bjHhf9maQ2BLO9pjLtAcTUV84HVa0J1Jo?purpose=inline" type="image/jpeg" />
+    </item>
     <item>
       <title>特朗普FBI总部布局遭法院阻击 联邦法官暂停迁回华盛顿计划</title>
       <link>https://trrb.net/trump/%E7%89%B9%E6%9C%97%E6%99%AEfbi%E6%80%BB%E9%83%A8%E5%B8%83%E5%B1%80%E9%81%AD%E6%B3%95%E9%99%A2%E9%98%BB%E5%87%BB-%E8%81%94%E9%82%A6%E6%B3%95%E5%AE%98%E6%9A%82%E5%81%9C%E8%BF%81%E5%9B%9E%E5%8D%8E%E7%9B%9B%E9%A1%BF%E8%AE%A1%E5%88%92-msy8i8vv-a66b73</link>
@@ -896,15 +905,6 @@
       <category>ICE执法动态</category>
       <description>新奥尔良ICE联手警方逮捕一名拥有甲基苯丙胺和可卡因重罪记录的墨西哥非法移民。</description>
       <enclosure url="https://pbs.twimg.com/media/HPdPHFfXgAEi21x.png" type="image/png" />
-    </item>
-    <item>
-      <title>犹他州男子性侵19项罪名司法寻撤销入籍</title>
-      <link>https://trrb.net/ice/ice-9dd8efe7ce3b891a8e74b02be15d0a5d57b10655</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-9dd8efe7ce3b891a8e74b02be15d0a5d57b10655</guid>
-      <pubDate>Mon, 17 Aug 2026 14:15:51 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>犹他州一名男子因性侵多名幼小姐妹被判19项罪名，司法部正寻求撤销其入籍资格。</description>
-      <enclosure url="https://pbs.twimg.com/media/HP7SK-RXwAAT4Fr.png" type="image/png" />
     </item>
   </channel>
 </rss>

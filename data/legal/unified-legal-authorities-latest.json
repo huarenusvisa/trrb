@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "99404b9aba3cc0c124f646cea548215b4b16eabc7f0fde1dfbe4aef9906070d6",
+  "datasetVersion": "dd64f16560904e7e3329e8a1f299d44027e058f511a72b9764f386f8da4aa035",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 416,
+    "US_CIRCUIT": 418,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 612,
+  "count": 614,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -4333,6 +4333,21 @@
       "sourceKey": "CIRCUIT:ca2:245b833eecb4853d"
     },
     {
+      "id": "f4065197076f338a440c28fa",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-2956-cr",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-2956_complete_opn.pdf",
+      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-2956_complete_opn.pdf",
+      "sourceKey": "CIRCUIT:ca2:2a701ab2face20d5"
+    },
+    {
       "id": "e2e3ca32841ba7a6a3fc2d18",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4751,6 +4766,21 @@
       "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-383_complete_opn.pdf",
       "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-383_complete_opn.pdf",
       "sourceKey": "CIRCUIT:ca2:e895a37c0b221fdf"
+    },
+    {
+      "id": "6a33ea55db1b26254077ce4a",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1085-cv",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1085_opn.pdf",
+      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1085_opn.pdf",
+      "sourceKey": "CIRCUIT:ca2:e9b49d7b190612e4"
     },
     {
       "id": "ad6b3d264eb27d83a29e7a4f",
@@ -8938,19 +8968,19 @@
       "sourceKey": "CIRCUIT:cadc:fcc0d5e5a428ba9c"
     },
     {
-      "id": "5cb43687f023845114c546d7",
+      "id": "0f45b24cd66350e6527f38a0",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Federal Circuit",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "CHITLIK v. HHS [OPINION]",
+      "title": "ROBERT BOSCH LLC v. WESTPORT FUEL SYSTEMS CANADA INC. [OPINION]",
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1804.OPINION.8-10-2026_2735973.pdf",
-      "officialPdfUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1804.OPINION.8-10-2026_2735973.pdf",
-      "sourceKey": "CIRCUIT:cafc:33b724817c6663f4"
+      "officialUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1455.OPINION.8-18-2026_2740810.pdf",
+      "officialPdfUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1455.OPINION.8-18-2026_2740810.pdf",
+      "sourceKey": "CIRCUIT:cafc:220d5e005d8581aa"
     },
     {
       "id": "2f9f6c155d55c5e36d285a4d",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T13:12:40.009Z",
+  "generatedAt": "2026-08-18T13:56:57.204Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -174,6 +174,14 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://ww3.ca2.uscourts.gov/nav/rss.html",
       "documents": [
+        {
+          "url": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-1085_opn.pdf",
+          "title": "25-1085-cv"
+        },
+        {
+          "url": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-2956_complete_opn.pdf",
+          "title": "24-2956-cr"
+        },
         {
           "url": "https://ww3.ca2.uscourts.gov/decisions/OPN/23-461_complete_opn.pdf",
           "title": "23-461"
@@ -1771,12 +1779,16 @@
       "sourceFinalUrl": "https://www.cafc.uscourts.gov/home/case-information/opinions-orders/",
       "documents": [
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1371.OPINION.8-14-2026_2739381.pdf",
-          "title": "NIELSEN COMPANY (US), LLC v. TVISION INSIGHTS, INC. [OPINION]"
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1455.OPINION.8-18-2026_2740810.pdf",
+          "title": "ROBERT BOSCH LLC v. WESTPORT FUEL SYSTEMS CANADA INC. [OPINION]"
         },
         {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
           "title": "CUMMINS v. US [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1371.OPINION.8-14-2026_2739381.pdf",
+          "title": "NIELSEN COMPANY (US), LLC v. TVISION INSIGHTS, INC. [OPINION]"
         },
         {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1388.OPINION.8-14-2026_2739444.pdf",
@@ -1787,16 +1799,12 @@
           "title": "JACKI EASLICK, LLC v. CJ EMERALD [OPINION]"
         },
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1196.OPINION.8-11-2026_2736888.pdf",
-          "title": "FUSONG JINLONG WOODEN GROUP CO., LTD. v. US [OPINION]"
-        },
-        {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1160.OPINION.8-11-2026_2736904.pdf",
           "title": "FEDMET RESOURCES CORPORATION v. US [OPINION]"
         },
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1804.OPINION.8-10-2026_2735973.pdf",
-          "title": "CHITLIK v. HHS [OPINION]"
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1196.OPINION.8-11-2026_2736888.pdf",
+          "title": "FUSONG JINLONG WOODEN GROUP CO., LTD. v. US [OPINION]"
         }
       ],
       "notes": []

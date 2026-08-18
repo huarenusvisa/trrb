@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-6c0529da254cb9f170b357871417dc833fe201d6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T19:35:01.588Z</news:publication_date>
+        <news:title>弗吉尼亚ICE释放联邦监狱时再拘洪都拉斯籍嫌犯</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-82b917f6516d5459c1b6f44947acd551f6a59642</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T19:26:22.797Z</news:publication_date>
+        <news:title>明尼苏达状告德州州长拒绝引渡ICE特工受审</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-332125f6f223d396539b4160db01a93fa61cd3c7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T19:25:54.656Z</news:publication_date>
+        <news:title>德州埃尔帕索机场ICE拘留合法大联盟棒球工作人员</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-2d83e4024fdceab407e8f226f1ead4951f65cad8</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

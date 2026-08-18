@@ -1,0 +1,19 @@
+appId: net.trrb.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "唐人日报"
+    timeout: 25000
+- tapOn: "搜索"
+- extendedWaitUntil:
+    visible: "热搜"
+    timeout: 15000
+- tapOn: "搜索新闻标题或摘要"
+- inputText: "特朗普"
+- tapOn: "搜索"
+- extendedWaitUntil:
+    visible: "搜索：特朗普"
+    timeout: 20000
+- assertVisible:
+    id: "category-news-list"

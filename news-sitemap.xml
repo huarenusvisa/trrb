@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-8d2857637c60b08ca0083ccb3694dcc2514fa548</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T20:19:57.927Z</news:publication_date>
+        <news:title>美国ICE拘留逾期居留者马丁·洪伯托·莫希</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-85c7cde51409292081965b8b5223eea64fc586b9</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T20:19:39.148Z</news:publication_date>
+        <news:title>俄克拉荷马城警方拘留合法居留男子涉嫌强奸</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-117ba7bfa68a1f0b8b19ed95a02afbd74a21c76f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T20:19:18.654Z</news:publication_date>
+        <news:title>加州圣安娜约翰韦恩机场ICE执法带走一男子</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-e23910e855c1631de8657eccdfcb316961820b61</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T20:18:58.429Z</news:publication_date>
+        <news:title>华盛顿Toppenish市ICE执法遭司机冲撞 执法人员随后将司机制服</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-6c0529da254cb9f170b357871417dc833fe201d6</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1990,110 +2022,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-16T21:31:14.291Z</news:publication_date>
         <news:title>迈阿密ICE疑强行驱逐车辆司机</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7d7a9731ab84b3b02553602f4186baab4f01fcad</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:06:19.110Z</news:publication_date>
-        <news:title>美前议员：ICE机构人员构成复杂，类型多样</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-8da6e4ccc3891a6602cdbc21c79e112ead9ed198</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:05:33.927Z</news:publication_date>
-        <news:title>塔科马社区举办声援集会支持ICE处理中心外移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-f036e4409622c056c0d2ef9938032459d66ec53b</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:05:19.823Z</news:publication_date>
-        <news:title>宾州警方逮捕两名涉嫌持械抢劫的委内瑞拉非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-3fd9bf54e04fc31b29b9d8b7d5017cc1cd7672fb</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:05:09.728Z</news:publication_date>
-        <news:title>佛蒙特南伯灵顿校长涉案录音遭质疑有删改</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-00abdcaf1b956ff5c7c2a8db93f82f4dca97d7b6</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:04:23.367Z</news:publication_date>
-        <news:title>佛州杰克逊维尔ICE在DollarTree外强制拘留</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-c225dfbf8b5c26aaeba66e925fcf653784d44a06</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:04:12.683Z</news:publication_date>
-        <news:title>宾夕法尼亚多芬县两委内瑞拉非法移民抢劫被捕</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-3de4881d1c302529236be9a4d3f43f4962841e60</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:04:04.359Z</news:publication_date>
-        <news:title>佛蒙特南伯灵顿ICE抓捕致多车相撞引发执法争议</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-91cfdbd4cf3c91541fe00db75ef95cc6b21f657a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:03:29.190Z</news:publication_date>
-        <news:title>美军女兵父亲7月4日遣返引发失望情绪</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-839d2aec616586280280d5f9df1e2279c55d02ca</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:03:21.075Z</news:publication_date>
-        <news:title>田纳西Wayne半路屋报警须主管同意 引员工忧虑</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7b6ab40f52499ee3b70246196f12ec8a98db4cdc</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:02:50.038Z</news:publication_date>
-        <news:title>纽约联邦法院限制ICE无保释拘押并终止12县287</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-dc365f90802d03f708150746e3e22c1f0fd76a95</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:02:39.472Z</news:publication_date>
-        <news:title>缅因州劳伦斯ICE联手警方拘捕一疑似非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-1e17632de920a5603efb840fcd7186a699c5c6bc</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:02:30.979Z</news:publication_date>
-        <news:title>美市民：建议本周优先驱逐海地与索马里移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-ee388063abd3c5945823830304d92bc1e16bf94a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:02:09.548Z</news:publication_date>
-        <news:title>麻州劳伦斯周末疑ICE移送行动</news:title>
       </news:news>
     </url>
 </urlset>

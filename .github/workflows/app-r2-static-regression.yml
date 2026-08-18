@@ -1,0 +1,43 @@
+name: APP-R2 Static Regression
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'scripts/audit-app-batch2-node*.mjs'
+      - '.github/workflows/app-r2-static-regression.yml'
+  workflow_dispatch:
+
+jobs:
+  static-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+
+      - name: Install mobile dependencies
+        working-directory: apps/mobile
+        run: npm ci
+
+      - name: TypeScript typecheck
+        working-directory: apps/mobile
+        run: npm run typecheck
+
+      - name: APP-R2 N1-N9 audits
+        run: |
+          set -euo pipefail
+          for n in 1 2 3 4 5 6 7 8 9; do
+            echo "::group::APP-R2 node $n"
+            node "scripts/audit-app-batch2-node${n}.mjs"
+            echo "::endgroup::"
+          done
+          echo "APP-R2 N1-N9 STATIC REGRESSION: PASS"

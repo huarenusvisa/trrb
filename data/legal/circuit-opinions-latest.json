@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T14:00:06.599Z",
+  "generatedAt": "2026-08-18T14:52:47.175Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -91,6 +91,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
           "title": "24-1467P.01A"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
+          "title": "24-1524P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
@@ -1039,6 +1043,10 @@
       "sourceFinalUrl": "https://media.ca7.uscourts.gov/cgi-bin/rssExec.pl?Submit=Submit&Time=week",
       "documents": [
         {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:25-1770:J:Jackson-Akiwumi:aut:T:fnOp:N:3592678:S:0",
+          "title": "Final Opinion"
+        },
+        {
           "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-17/C:24-2913:J:Taibleson:aut:T:fnOp:N:3592032:S:0",
           "title": "Final Opinion"
         },
@@ -1379,6 +1387,10 @@
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
         {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202214192.pdf",
+          "title": "USA v. Steven Chun, et al"
+        },
+        {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510692.pdf",
           "title": "Ann Johnson v. Russell Investments Trust Company, et al"
         },
@@ -1573,10 +1585,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410516.pdf",
           "title": "Winston Lloyd Hayles v. U.S. Attorney General"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202311057.pdf",
-          "title": "Antonio U. Akel v. USA"
         }
       ],
       "notes": []

@@ -1,0 +1,25 @@
+appId: net.trrb.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "唐人日报"
+    timeout: 25000
+- tapOn: "美国"
+- extendedWaitUntil:
+    visible: "美国时政 · 美国警情"
+    timeout: 20000
+- tapOn: "移民"
+- extendedWaitUntil:
+    visible: "7大知识中心"
+    timeout: 15000
+- assertVisible: "赴美留学"
+- tapOn: "判例新规"
+- extendedWaitUntil:
+    visible: "美国判例与新规"
+    timeout: 20000
+- tapOn: "我的"
+- extendedWaitUntil:
+    visible: "阅读字号"
+    timeout: 15000
+- assertVisible: "我的"

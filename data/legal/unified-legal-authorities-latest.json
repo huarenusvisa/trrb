@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "65de42ed5350ecaf328bc94da0586f070f0b54a38d62de1f164929ccbcd30b8a",
+  "datasetVersion": "2beb46c442a42f3c5d144a645a1aeccacd16ca2496cd6d4cb2b39c9af51388c3",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
@@ -8143,21 +8143,6 @@
       "sourceKey": "CIRCUIT:ca9:1fcf18640ce65475"
     },
     {
-      "id": "436d2250d686eeb11f380a80",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/16-71147.pdf",
-      "officialPdfUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/16-71147.pdf",
-      "sourceKey": "CIRCUIT:ca9:235ba569154fe689"
-    },
-    {
       "id": "632697aba74d37b5cc54f318",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -8486,6 +8471,21 @@
       "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
       "officialPdfUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
       "sourceKey": "CIRCUIT:ca9:e25611d8dd2105bd"
+    },
+    {
+      "id": "926e6dd67113a10f573b4fe7",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": null,
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/18/23-15903.pdf",
+      "officialPdfUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/18/23-15903.pdf",
+      "sourceKey": "CIRCUIT:ca9:e5290a2a2bb108ab"
     },
     {
       "id": "49a8554ce52574e716048166",

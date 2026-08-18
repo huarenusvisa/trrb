@@ -2096,12 +2096,4 @@
         <news:title>麻州劳伦斯周末疑ICE移送行动</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a621c1f6e23824ab3537f01cde060ae3fbdf3594</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T20:01:38.190Z</news:publication_date>
-        <news:title>ICE拘留所女性囚犯疑因内衣问题感染阴道病</news:title>
-      </news:news>
-    </url>
 </urlset>

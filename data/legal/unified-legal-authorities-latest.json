@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "dd64f16560904e7e3329e8a1f299d44027e058f511a72b9764f386f8da4aa035",
+  "datasetVersion": "d38f41f5ac30398b5be94757f7081265cda55af913599381410acd41fb8f8a3c",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 418,
+    "US_CIRCUIT": 419,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 614,
+  "count": 615,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -3823,6 +3823,21 @@
       "sourceKey": "CIRCUIT:ca11:6d08ff4109d48582"
     },
     {
+      "id": "5577171373c31a0d80d24cd2",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "USA v. Steven Chun, et al",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202214192.pdf",
+      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202214192.pdf",
+      "sourceKey": "CIRCUIT:ca11:7733753d410733df"
+    },
+    {
       "id": "f15217d772f7ed7a965d3748",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3881,21 +3896,6 @@
       "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202411069.pdf",
       "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202411069.pdf",
       "sourceKey": "CIRCUIT:ca11:7dde1de913c6dfbb"
-    },
-    {
-      "id": "d01d7f6f96188a9f5b40f1e0",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "Antonio U. Akel v. USA",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202311057.pdf",
-      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202311057.pdf",
-      "sourceKey": "CIRCUIT:ca11:7eb9888263941752"
     },
     {
       "id": "e0b13df944c453f5d1d26d9e",
@@ -7661,6 +7661,21 @@
       "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-1392:J:Pryor:aut:T:fnOp:N:3590386:S:0",
       "officialPdfUrl": null,
       "sourceKey": "CIRCUIT:ca7:d22b3520919c3f56"
+    },
+    {
+      "id": "c378afaf11d8798d7a1413c4",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Final Opinion",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:25-1770:J:Jackson-Akiwumi:aut:T:fnOp:N:3592678:S:0",
+      "officialPdfUrl": null,
+      "sourceKey": "CIRCUIT:ca7:d2deb7e59fff69cd"
     },
     {
       "id": "1023c8669d258c847eb90928",

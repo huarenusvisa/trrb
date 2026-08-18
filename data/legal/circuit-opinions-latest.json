@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T16:52:36.531Z",
+  "generatedAt": "2026-08-18T17:47:37.261Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -415,6 +415,14 @@
           "title": "USA v. David Cunningham"
         },
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252610np.pdf",
+          "title": "Greg Kerr v. General Motors LLC"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252551np.pdf",
+          "title": "Sunoco Pipeline LP v. Daniel La Hart"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/252152np.pdf",
           "title": "Daniel La Hart v. Sunoco Pipeline LP"
         },
@@ -517,14 +525,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/243180np.pdf",
           "title": "Yoke Tan v. Allstate Insurance Co"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252836np.pdf",
-          "title": "Dameon Allen v. Attorney General United States of America"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252085np.pdf",
-          "title": "Martin and Harris Private Ltd v. Merck & Co Inc"
         }
       ],
       "notes": []
@@ -747,36 +747,64 @@
       "sourceFinalUrl": "https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions",
       "documents": [
         {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30192-CR0.pdf",
+          "title": "25-30192 USA v. Augillard Aug 18, 2026 Published Order PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20415-CV0.pdf",
+          "title": "25-20415 Quadvest v. San Jacinto River Auth Aug 18, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60462-CV0.pdf",
+          "title": "25-60462 Bonds v. Woodall Aug 18, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-70012-CV0.pdf",
+          "title": "25-70012 Wessinger v. Vannoy Aug 18, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50791.0.pdf",
+          "title": "25-50791 Anyanwu v. City of San Antonio Aug 18, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50946.0.pdf",
+          "title": "25-50946 Anderson v. Americredit Aug 18, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11226.0.pdf",
+          "title": "25-11226 USA v. Manzo-Cardenas Aug 18, 2026 Unpublished Opinion PDF"
+        },
+        {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-40542-CV0.pdf",
-          "title": "25-40542 Meeks v. Ray Aug 17, 2026 Published Order PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50656.0.pdf",
-          "title": "25-50656 Bissell v. Mata Aug 17, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-20231.0.pdf",
-          "title": "25-20231 Randel v. Travelers Lloyds of Texas Aug 17, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50728.0.pdf",
-          "title": "25-50728 USA v. Brown Aug 17, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30139.0.pdf",
-          "title": "26-30139 Williams v. Town of Clinton Aug 17, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30063.0.pdf",
-          "title": "26-30063 USA v. Gilmore Aug 17, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10642.0.pdf",
-          "title": "25-10642 USA v. Crabtree Aug 17, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60640.0.pdf",
-          "title": "25-60640 Cardoza-Bonilla v. Blanche Aug 17, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20584-CV0.pdf",
@@ -917,34 +945,6 @@
         {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/23/23-11184-CV1.pdf",
           "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60689.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40552.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30522.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50039.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50705.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50811.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-30772.0.pdf",
-          "title": null
         }
       ],
       "notes": []
@@ -1047,7 +1047,19 @@
           "title": "Final Opinion"
         },
         {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:25-1556:J:Pryor:aut:T:fnOp:N:3593130:S:0",
+          "title": "Final Opinion"
+        },
+        {
           "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:24-3104:J:Maldonado:aut:T:fnOp:N:3592905:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:24-2219:J:Scudder:con:T:fnOp:N:3593042:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:24-2219:J:Hamilton:aut:T:fnOp:N:3593042:S:0",
           "title": "Final Opinion"
         },
         {
@@ -1353,6 +1365,14 @@
           "title": null
         },
         {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490303.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490406.pdf",
+          "title": null
+        },
+        {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/01019202759.pdf",
           "title": "00-6235 - United States v. Anderson [1470367] 12/13/2001"
         },
@@ -1402,6 +1422,10 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
+        {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510073.pdf",
+          "title": "USA v. Kenneth Mininger"
+        },
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202214192.pdf",
           "title": "USA v. Steven Chun, et al"
@@ -1597,10 +1621,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202412653.pdf",
           "title": "U.S. All Star Federation, Inc. v. Open Cheer & Dance Championship Series, LLC, et al"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410516.pdf",
-          "title": "Winston Lloyd Hayles v. U.S. Attorney General"
         }
       ],
       "notes": []

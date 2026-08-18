@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T17:47:37.261Z",
+  "generatedAt": "2026-08-18T18:56:35.358Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -537,6 +537,26 @@
       "sourceFinalUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
       "documents": [
         {
+          "url": "https://www.ca4.uscourts.gov/opinions/251413.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251413.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251512.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251512.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251828.p.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251828.p.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244587.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244587.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254032.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254032.U.pdf"
+        },
+        {
           "url": "https://www.ca4.uscourts.gov/opinions/244556.p.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/244556.p.pdf"
         },
@@ -715,26 +735,6 @@
         {
           "url": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251221.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251221.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf"
         }
       ],
       "notes": []
@@ -1423,6 +1423,10 @@
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
         {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410029.op2.pdf",
+          "title": "Ricardo Devengoechea v. Bolivarian Republic of Venezuela"
+        },
+        {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510073.pdf",
           "title": "USA v. Kenneth Mininger"
         },
@@ -1617,10 +1621,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202210292.pdf",
           "title": "Edward Braggs, et al v. Commissioner, Alabama Department of Corrections, et al"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202412653.pdf",
-          "title": "U.S. All Star Federation, Inc. v. Open Cheer & Dance Championship Series, LLC, et al"
         }
       ],
       "notes": []

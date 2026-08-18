@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "705419d1bcbd5c1136492bdf9ab0b70d87041cb400839630f89175cf62c395d3",
+  "datasetVersion": "65de42ed5350ecaf328bc94da0586f070f0b54a38d62de1f164929ccbcd30b8a",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 417,
+    "US_CIRCUIT": 434,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 613,
+  "count": 630,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2848,6 +2848,21 @@
       "sourceKey": "CIRCUIT:ca1:052583a61b2cbfc9"
     },
     {
+      "id": "954a604a63103c49925317c1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1555 Grant v. Trial Court of the Commonwealth of Massachusetts",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:07722a41dfd0bf2a"
+    },
+    {
       "id": "e626478cbad999dd8ea50aed",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -2861,6 +2876,21 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:0a40ffbc971671e0"
+    },
+    {
+      "id": "3bbfc927f458d0bca0b17dc6",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "23-1975 US v. Irizarry-Irizarry",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1975P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1975P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:22c65f58d7898308"
     },
     {
       "id": "f66ad0de36547966647d7916",
@@ -2906,6 +2936,36 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467E-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467E-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:44256ceb5d821947"
+    },
+    {
+      "id": "04e25b49dc66be1f278c7006",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-2042 Kim v. Blanche",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2042P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2042P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:4dd719bbe62c2fba"
+    },
+    {
+      "id": "8d5733057d0929671f6f14f8",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1314 Czerno v. General Electric Company",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1314E-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1314E-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:69d3f307048c69b2"
     },
     {
       "id": "1e39c415528a307825d03b01",
@@ -2983,6 +3043,66 @@
       "sourceKey": "CIRCUIT:ca1:80ae79879767775e"
     },
     {
+      "id": "742ec4be70d431a94118222c",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "26-1774 State of California v. Trump",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:82f04038e4147c8a"
+    },
+    {
+      "id": "e9d1350cccc902aa411755e1",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "26-1376 African Communities Together v. Mullin",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1376O-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1376O-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:858cb118373ba9a9"
+    },
+    {
+      "id": "df053c05724a92ac914774b4",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "23-2011 Cruz v. UIA",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:8795548337c142a4"
+    },
+    {
+      "id": "a8c3f4f8352836bd41c3cb14",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-2086 US v. Gonzalez",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2086P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2086P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:8f44911d16ed0842"
+    },
+    {
       "id": "acad9c62473663b52e656f1b",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -2996,6 +3116,21 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1703P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1703P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:9442d6b123ad9425"
+    },
+    {
+      "id": "1553dc49477b50a38480aec9",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1817 Recchia v. Campbell",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:9cb15625075ff660"
     },
     {
       "id": "5b31dd876e83b5716ddc61f5",
@@ -3026,6 +3161,51 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:a205735fbf118cb9"
+    },
+    {
+      "id": "b3b80f75c307c3a579e8d0d0",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1862 Rana v. Blanche",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:b1824b4ae53f1a5c"
+    },
+    {
+      "id": "d0f84583b7c1b4f89896b119",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "26-1699 State of California v. Mullin",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:c1f09bd1cbbd362a"
+    },
+    {
+      "id": "9e246f148fb4d777c6593476",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "26-1254 African Communities Together v. Mullin",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1254O-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1254O-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:ce3b08d3f42f1a39"
     },
     {
       "id": "c0efa21ffb0e021966d022a5",
@@ -3073,6 +3253,21 @@
       "sourceKey": "CIRCUIT:ca1:d92384333d217329"
     },
     {
+      "id": "20affe9ca377a214567ddd1d",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1063 North End Chamber of Commerce, Inc. v. City of Boston",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:e4e1505382ba6535"
+    },
+    {
       "id": "d78f49e74c3e8d830a8fc2b7",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3103,6 +3298,21 @@
       "sourceKey": "CIRCUIT:ca1:f31549cee8ee6b6f"
     },
     {
+      "id": "4e8e20ab90b006d5881fb624",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1862 Rana v. Blanche",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:f70ba16c3df99c81"
+    },
+    {
       "id": "49e57b0eb42f56514707bd22",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3116,6 +3326,21 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1832O-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1832O-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:f95eec4662b3bf76"
+    },
+    {
+      "id": "0566de13ca4e0e0707f77647",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-1079 US v. Rosado Maldonado",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:f970d442dfa65741"
     },
     {
       "id": "522f4974f976fdad7abf5a18",
@@ -7348,6 +7573,21 @@
       "sourceKey": "CIRCUIT:ca7:53854d87b23d9133"
     },
     {
+      "id": "fb8584885296db6bf8b643ae",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Final Opinion",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:25-2721:J:Brennan:aut:T:fnOp:N:3593416:S:0",
+      "officialPdfUrl": null,
+      "sourceKey": "CIRCUIT:ca7:57bcf6f0fed05596"
+    },
+    {
       "id": "025d8e779e1502f04c2452ae",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -7631,6 +7871,21 @@
       "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-13/C:25-2251:J:Easterbrook:aut:T:fnOp:N:3590741:S:0",
       "officialPdfUrl": null,
       "sourceKey": "CIRCUIT:ca7:e8bc3fcc89aa0b2b"
+    },
+    {
+      "id": "0ea763f09dc1d218a86a129e",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Final Opinion",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:24-1168:J:Easterbrook:aut:T:fnOp:N:3593432:S:0",
+      "officialPdfUrl": null,
+      "sourceKey": "CIRCUIT:ca7:ed87239c31a28c7b"
     },
     {
       "id": "6365ee3b91144598418faaf1",

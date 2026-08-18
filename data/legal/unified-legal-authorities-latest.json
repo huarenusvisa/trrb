@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "33578d9d29be4f3902f72509b89e72940eaa63178c08fed0b4defa0c25b2c6ef",
+  "datasetVersion": "305272d2b43463fa6e02f86eb54e150efbbea3fc202d171f09be7966c5395738",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 432,
+    "US_CIRCUIT": 431,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 628,
+  "count": 627,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -1003,19 +1003,19 @@
       "sourceKey": "BIA:29:830"
     },
     {
-      "id": "142fec7559441ac9a10b10b9",
+      "id": "4fcaaf69103f3d338509ece3",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
       "issuingBody": "Board of Immigration Appeals",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "X LinkedIn Email A-K-R-",
-      "citation": "X LinkedIn Email A-K-R-, 29 I&N Dec. 839 (BIA 2026)",
+      "title": "X LinkedIn Email M-M-L-J-",
+      "citation": "X LinkedIn Email M-M-L-J-, 29 I&N Dec. 843 (BIA 2026)",
       "precedentialStatus": "precedential",
-      "officialUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
-      "officialPdfUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
-      "sourceKey": "BIA:29:839"
+      "officialUrl": "https://www.justice.gov/eoir/media/1458296/dl?inline",
+      "officialPdfUrl": "https://www.justice.gov/eoir/media/1458296/dl?inline",
+      "sourceKey": "BIA:29:843"
     },
     {
       "id": "fd56c456d7754a87899ffcbe",
@@ -2861,21 +2861,6 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:07722a41dfd0bf2a"
-    },
-    {
-      "id": "e626478cbad999dd8ea50aed",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "24-1524P.01A",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:0a40ffbc971671e0"
     },
     {
       "id": "3bbfc927f458d0bca0b17dc6",

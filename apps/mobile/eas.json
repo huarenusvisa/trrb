@@ -13,6 +13,18 @@
         "image": "latest"
       }
     },
+    "e2e-test": {
+      "withoutCredentials": true,
+      "channel": "e2e",
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      }
+    },
     "production": {
       "channel": "production"
     }

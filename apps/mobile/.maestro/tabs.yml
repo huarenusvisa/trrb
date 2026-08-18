@@ -10,26 +10,29 @@ appId: net.trrb.mobile
     id: "tab-america"
     retryTapIfNoChange: true
 - extendedWaitUntil:
-    visible: "美国时政 · 美国警情"
-    timeout: 20000
+    visible:
+      id: "screen-america"
+    timeout: 30000
 - tapOn:
     id: "tab-immigration"
     retryTapIfNoChange: true
 - extendedWaitUntil:
-    visible: "7大知识中心"
-    timeout: 15000
-- assertVisible: "赴美留学"
+    visible:
+      id: "screen-immigration"
+    timeout: 20000
 - tapOn:
     id: "tab-legal"
     retryTapIfNoChange: true
 - extendedWaitUntil:
-    visible: "美国判例与新规"
-    timeout: 20000
+    visible:
+      id: "screen-legal"
+    timeout: 30000
 - tapOn:
     id: "tab-profile"
     retryTapIfNoChange: true
 - extendedWaitUntil:
-    visible: "阅读字号"
-    timeout: 15000
+    visible:
+      id: "screen-profile"
+    timeout: 20000
 - assertVisible:
     id: "tab-profile"

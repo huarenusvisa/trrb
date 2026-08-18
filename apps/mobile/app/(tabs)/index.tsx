@@ -121,14 +121,15 @@ export default function HomeScreen() {
     return () => clearInterval(timer);
   }, [hotHeadlines.length]);
 
-  const importantNews = useMemo(() => articles.filter((item) => item.category_name === '重要新闻'), [articles]);
+  const homepageArticles = useMemo(() => articles.filter((item) => item.category_name !== '移民美国'), [articles]);
+  const importantNews = useMemo(() => homepageArticles.filter((item) => item.category_name === '重要新闻'), [homepageArticles]);
   const lead = useMemo(() => importantNews.find((item) => item.cover_image) || importantNews[0] || null, [importantNews]);
-  const leadStack = useMemo(() => articles.filter((item) => String(item.id) !== String(lead?.id)).slice(0, 4), [articles, lead]);
-  const rankItems = useMemo(() => (hotHeadlines.length ? hotHeadlines : articles).slice(0, 8), [articles, hotHeadlines]);
+  const leadStack = useMemo(() => homepageArticles.filter((item) => String(item.id) !== String(lead?.id)).slice(0, 4), [homepageArticles, lead]);
+  const rankItems = useMemo(() => (hotHeadlines.length ? hotHeadlines : homepageArticles).slice(0, 8), [homepageArticles, hotHeadlines]);
   const categoryGroups = useMemo(() => categories.map((category) => ({
     category,
-    items: articles.filter((item) => item.category_name === category).slice(0, 6),
-  })), [articles]);
+    items: homepageArticles.filter((item) => item.category_name === category).slice(0, 6),
+  })), [homepageArticles]);
   const topicLatest = useMemo(() => ({
     trump: articles.find((item) => item.title.includes('特朗普')),
     ice: articles.find((item) => item.category_name === 'ICE执法动态' || item.title.toUpperCase().includes('ICE')),
@@ -301,7 +302,7 @@ export default function HomeScreen() {
       </ScrollView>
 
       {showStickyBrand ? (
-        <View style={[styles.stickyHeader, { paddingTop: insets.top, height: insets.top + 46 }]}>
+        <View style={[styles.stickyHeader, { paddingTop: insets.top, height: insets.top + 46 }]}> 
           <Text style={styles.stickyBrand}>唐人日报</Text>
           <Pressable accessibilityLabel="搜索" onPress={() => router.push('/search')} style={styles.stickySearch}><Text style={styles.stickySearchText}>搜索</Text></Pressable>
         </View>

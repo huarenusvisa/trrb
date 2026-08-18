@@ -1,10 +1,37 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 
 const categories = ['重要新闻', '美国时政', '美国警情', '中国官场', '庇护百科'];
+
+const topicCards = [
+  {
+    key: 'trump',
+    title: '特朗普实时动态',
+    subtitle: '相关新闻与公开发言自动汇总',
+    status: '实时追踪',
+    image: 'https://trrb.net/assets/topic-focus/trump-portrait.jpg?v=30',
+    url: 'https://trrb.net/trump',
+  },
+  {
+    key: 'ice',
+    title: 'ICE执法动态',
+    subtitle: '执法行动、拘留、遣返与法律应对',
+    status: '自动更新',
+    image: 'https://trrb.net/assets/topic-focus/ice-badge.jpg?v=30',
+    url: 'https://trrb.net/ice',
+  },
+  {
+    key: 'election',
+    title: '2026中期选举实时动态',
+    subtitle: '选情变化与关键州追踪',
+    status: '实时更新',
+    image: 'https://trrb.net/assets/topic-focus/election-ballot.jpg?v=30',
+    url: 'https://trrb.net/listing.html?q=%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE',
+  },
+] as const;
 
 type WeatherState = { temperature: number | null; code: number | null; isDay: boolean };
 
@@ -94,18 +121,25 @@ export default function HomeScreen() {
     return () => clearInterval(timer);
   }, [hotHeadlines.length]);
 
-  const lead = useMemo(() => articles.find((item) => item.category_name !== '热门头条' && item.cover_image) || articles.find((item) => item.cover_image) || articles[0], [articles]);
+  const importantNews = useMemo(() => articles.filter((item) => item.category_name === '重要新闻'), [articles]);
+  const lead = useMemo(() => importantNews.find((item) => item.cover_image) || importantNews[0] || null, [importantNews]);
   const leadStack = useMemo(() => articles.filter((item) => String(item.id) !== String(lead?.id)).slice(0, 4), [articles, lead]);
   const rankItems = useMemo(() => (hotHeadlines.length ? hotHeadlines : articles).slice(0, 8), [articles, hotHeadlines]);
   const categoryGroups = useMemo(() => categories.map((category) => ({
     category,
     items: articles.filter((item) => item.category_name === category).slice(0, 6),
   })), [articles]);
+  const topicLatest = useMemo(() => ({
+    trump: articles.find((item) => item.title.includes('特朗普')),
+    ice: articles.find((item) => item.category_name === 'ICE执法动态' || item.title.toUpperCase().includes('ICE')),
+    election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
+  }), [articles]);
   const weatherInfo = weatherLabel(weather.code, weather.isDay);
   const dateLabel = useMemo(() => new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'America/New_York' }).format(new Date()), []);
 
   const openArticle = (item: NewsArticle) => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } });
   const openCategory = (category: string) => router.push({ pathname: '/category/[name]', params: { name: category } });
+  const openTopic = (url: string) => { void Linking.openURL(url); };
 
   if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>正在读取唐人日报最新内容…</Text></View>;
 
@@ -139,13 +173,12 @@ export default function HomeScreen() {
         <Text style={styles.slogan}>立足美国 · 服务华人</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.navRow}>
-          {['重要新闻', '热门头条', '美国时政', '美国警情', '中国官场', '移民美国', '招聘求职', 'ICE执法动态'].map((item) => (
+          {['重要新闻', '热门头条', '美国时政', '美国警情', '中国官场', '招聘求职', 'ICE执法动态'].map((item) => (
             <Pressable
               key={item}
               style={styles.navItem}
               onPress={() => {
-                if (item === '移民美国') router.push('/immigration');
-                else if (item === '招聘求职') router.push('/jobs');
+                if (item === '招聘求职') router.push('/jobs');
                 else openCategory(item);
               }}
             >
@@ -170,7 +203,7 @@ export default function HomeScreen() {
             {lead.cover_image ? <Image source={{ uri: lead.cover_image }} style={styles.heroImage} /> : <View style={styles.heroImagePlaceholder} />}
             <View style={styles.heroOverlay} />
             <View style={styles.heroCopy}>
-              <Text style={styles.heroCategory}>{lead.category_name || '重要新闻'}</Text>
+              <Text style={styles.heroCategory}>重要新闻</Text>
               <Text style={styles.heroTitle} numberOfLines={3}>{lead.title}</Text>
             </View>
           </Pressable>
@@ -205,22 +238,23 @@ export default function HomeScreen() {
         <View style={styles.sectionCard}>
           <View style={styles.sectionHead}>
             <Text style={styles.sectionTitle}>专题聚焦</Text>
+            <Text style={styles.more}>与PC端同步</Text>
           </View>
-          <Pressable style={styles.focusRow} onPress={() => router.push('/people')}>
-            <View style={styles.focusBadge}><Text style={styles.focusBadgeText}>人物</Text></View>
-            <View style={styles.focusBody}><Text style={styles.focusTitle}>美国华人人物志</Text><Text style={styles.focusSub}>人物 · 生平 · 在美经历</Text></View>
-            <Text style={styles.focusArrow}>›</Text>
-          </Pressable>
-          <Pressable style={styles.focusRow} onPress={() => router.push('/immigration')}>
-            <View style={styles.focusBadge}><Text style={styles.focusBadgeText}>移民</Text></View>
-            <View style={styles.focusBody}><Text style={styles.focusTitle}>移民美国知识库</Text><Text style={styles.focusSub}>7大路径 · 签证 · 绿卡 · 身份</Text></View>
-            <Text style={styles.focusArrow}>›</Text>
-          </Pressable>
-          <Pressable style={styles.focusRow} onPress={() => router.push('/jobs')}>
-            <View style={styles.focusBadge}><Text style={styles.focusBadgeText}>工作</Text></View>
-            <View style={styles.focusBody}><Text style={styles.focusTitle}>招聘求职</Text><Text style={styles.focusSub}>美国华人招聘与求职信息</Text></View>
-            <Text style={styles.focusArrow}>›</Text>
-          </Pressable>
+          {topicCards.map((topic) => {
+            const latest = topicLatest[topic.key];
+            return (
+              <Pressable key={topic.key} style={styles.focusCard} onPress={() => openTopic(topic.url)}>
+                <Image source={{ uri: topic.image }} style={styles.focusImage} />
+                <View style={styles.focusBody}>
+                  <Text style={styles.focusTitle}>{topic.title}</Text>
+                  <Text style={styles.focusSub}>{topic.subtitle}</Text>
+                  <View style={styles.focusStatusRow}><View style={styles.focusStatusDot} /><Text style={styles.focusStatus}>{topic.status}</Text></View>
+                  <Text style={styles.focusLatest} numberOfLines={1}>{latest?.title || '正在读取最新动态…'}</Text>
+                </View>
+                <Text style={styles.focusArrow}>›</Text>
+              </Pressable>
+            );
+          })}
         </View>
 
         {categoryGroups.map(({ category, items }) => {
@@ -253,7 +287,6 @@ export default function HomeScreen() {
             <Text style={styles.sectionTitle}>服务与数据库</Text>
           </View>
           <View style={styles.serviceGrid}>
-            <Pressable style={styles.serviceItem} onPress={() => router.push('/immigration')}><Text style={styles.serviceTitle}>移民美国</Text><Text style={styles.serviceSub}>签证 · 绿卡 · 身份路径</Text></Pressable>
             <Pressable style={styles.serviceItem} onPress={() => router.push('/legal')}><Text style={styles.serviceTitle}>判例新规</Text><Text style={styles.serviceSub}>判例 · BIA · 联邦新规</Text></Pressable>
             <Pressable style={styles.serviceItem} onPress={() => router.push('/people')}><Text style={styles.serviceTitle}>华人人物</Text><Text style={styles.serviceSub}>人物档案与在美经历</Text></Pressable>
             <Pressable style={styles.serviceItem} onPress={() => router.push('/jobs')}><Text style={styles.serviceTitle}>招聘求职</Text><Text style={styles.serviceSub}>岗位与求职信息</Text></Pressable>
@@ -327,12 +360,15 @@ const styles = StyleSheet.create({
   rankNo: { width: 31, color: '#98a2b3', fontSize: 13, fontWeight: '900' },
   rankNoHot: { color: '#c8211e' },
   rankTitle: { flex: 1, color: '#101828', fontSize: 13, lineHeight: 18, fontWeight: '700' },
-  focusRow: { minHeight: 64, flexDirection: 'row', alignItems: 'center', paddingVertical: 7, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eaecf0' },
-  focusBadge: { width: 45, height: 45, borderRadius: 23, backgroundColor: '#fce8e7', alignItems: 'center', justifyContent: 'center' },
-  focusBadgeText: { color: '#c8211e', fontSize: 11, fontWeight: '900' },
+  focusCard: { minHeight: 92, flexDirection: 'row', alignItems: 'center', paddingVertical: 9, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eaecf0' },
+  focusImage: { width: 68, height: 76, borderRadius: 7, backgroundColor: '#eaecf0' },
   focusBody: { flex: 1, paddingHorizontal: 10 },
   focusTitle: { color: '#101828', fontSize: 14, fontWeight: '900' },
-  focusSub: { color: '#98a2b3', fontSize: 11, marginTop: 3 },
+  focusSub: { color: '#667085', fontSize: 10, lineHeight: 15, marginTop: 3 },
+  focusStatusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
+  focusStatusDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: '#16a34a', marginRight: 5 },
+  focusStatus: { color: '#667085', fontSize: 9, fontWeight: '700' },
+  focusLatest: { color: '#98a2b3', fontSize: 9, marginTop: 4 },
   focusArrow: { color: '#98a2b3', fontSize: 23 },
   categoryLead: { marginBottom: 7 },
   categoryLeadImage: { width: '100%', height: 154, borderRadius: 7, backgroundColor: '#e4e7ec' },

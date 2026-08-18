@@ -28,10 +28,10 @@ jobs:
           set -euo pipefail
           for n in 1 2 3 4 5 6 7 8 9; do
             echo "Running APP-R2 node $n audit"
-            node "scripts/audit-app-batch2-node${n}.mjs"
+            node "../../scripts/audit-app-batch2-node${n}.mjs"
           done
           echo "APP-R2 N1-N9 STATIC REGRESSION: PASS"
-        working_directory: ../..
+        working_directory: .
 
   build_android:
     name: Build Android emulator app

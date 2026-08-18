@@ -43,26 +43,56 @@ jobs:
       platform: ios
       profile: e2e-test
 
-  test_android:
-    name: Android automated UI regression
+  test_android_home:
+    name: Android home/category/article regression
     needs: [build_android]
     type: maestro
     params:
       build_id: ${{ needs.build_android.outputs.build_id }}
-      flow_path:
-        - '.maestro/home-category-article.yml'
-        - '.maestro/search.yml'
-        - '.maestro/tabs.yml'
+      flow_path: '.maestro/home-category-article.yml'
       retries: 2
 
-  test_ios:
-    name: iOS automated UI regression
+  test_android_search:
+    name: Android search regression
+    needs: [build_android]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path: '.maestro/search.yml'
+      retries: 2
+
+  test_android_tabs:
+    name: Android tabs regression
+    needs: [build_android]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path: '.maestro/tabs.yml'
+      retries: 2
+
+  test_ios_home:
+    name: iOS home/category/article regression
     needs: [build_ios]
     type: maestro
     params:
       build_id: ${{ needs.build_ios.outputs.build_id }}
-      flow_path:
-        - '.maestro/home-category-article.yml'
-        - '.maestro/search.yml'
-        - '.maestro/tabs.yml'
+      flow_path: '.maestro/home-category-article.yml'
+      retries: 2
+
+  test_ios_search:
+    name: iOS search regression
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path: '.maestro/search.yml'
+      retries: 2
+
+  test_ios_tabs:
+    name: iOS tabs regression
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path: '.maestro/tabs.yml'
       retries: 2

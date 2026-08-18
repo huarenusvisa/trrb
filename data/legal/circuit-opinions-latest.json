@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T21:02:03.271Z",
+  "generatedAt": "2026-08-18T21:37:58.718Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -1255,6 +1255,10 @@
           "title": null
         },
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/18/23-15903.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6465.pdf",
           "title": null
         },
@@ -1344,10 +1348,6 @@
         },
         {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/16-71147.pdf",
           "title": null
         }
       ],

@@ -22,8 +22,9 @@ export default function AmericaScreen() {
   }
 
   useEffect(() => { load(); }, []);
-  if (loading) return <View style={styles.center}><ActivityIndicator color="#c8211e" /></View>;
+  if (loading) return <View testID="screen-america" style={styles.center}><ActivityIndicator color="#c8211e" /></View>;
   return <FlatList
+    testID="screen-america"
     style={styles.page}
     contentContainerStyle={styles.content}
     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(); }} />}

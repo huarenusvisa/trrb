@@ -103,7 +103,7 @@ function centerUrl(path: string, topic?: string) {
 
 export default function ImmigrationScreen() {
   return (
-    <ScrollView style={styles.page} contentContainerStyle={styles.content}>
+    <ScrollView testID="screen-immigration" style={styles.page} contentContainerStyle={styles.content}>
       <View style={styles.headingRow}>
         <View>
           <Text style={styles.h1}>移民美国</Text>

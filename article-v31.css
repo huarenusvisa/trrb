@@ -1,5 +1,31 @@
 /* TRRB V31.4: article navigation, random related reading and engagement CTA */
 
+.article-page .article-header .tag.category-jump {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+}
+
+.article-page .article-header .tag.category-jump::after {
+  content: "›";
+  margin-left: 6px;
+  font-size: .92em;
+  line-height: 1;
+}
+
+.article-page .article-header .tag.category-jump:hover {
+  transform: translateY(-1px);
+  filter: brightness(.96);
+  box-shadow: 0 5px 14px rgba(214, 0, 0, .14);
+}
+
+.article-page .article-header .tag.category-jump:focus-visible {
+  outline: 3px solid rgba(214, 0, 0, .24);
+  outline-offset: 3px;
+}
+
 .article-page .article-neighbors {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -218,9 +244,4 @@
   .article-engagement-card { min-height: 104px; padding: 13px; }
   .article-engagement-card strong { font-size: 15px; }
   .article-engagement-card span { font-size: 12px; }
-}
-
-@media (max-width: 380px) {
-  .article-page .related-track,
-  .article-engagement-grid { grid-template-columns: 1fr; }
 }

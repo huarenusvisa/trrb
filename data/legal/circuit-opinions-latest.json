@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T05:49:19.768Z",
+  "generatedAt": "2026-08-18T07:03:29.634Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -1324,26 +1324,6 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://www.ca10.uscourts.gov/opinions/new/daily_decisions.rss",
       "documents": [
-        {
-          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489013.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489073.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489105.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489167.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111489226.pdf",
-          "title": null
-        },
         {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/01019202759.pdf",
           "title": "00-6235 - United States v. Anderson [1470367] 12/13/2001"

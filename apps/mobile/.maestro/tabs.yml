@@ -3,8 +3,8 @@ appId: net.trrb.mobile
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: "唐人日报"
-    timeout: 25000
+    visible: "美国"
+    timeout: 30000
 - tapOn: "美国"
 - extendedWaitUntil:
     visible: "美国时政 · 美国警情"

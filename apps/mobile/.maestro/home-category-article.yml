@@ -1,0 +1,26 @@
+appId: net.trrb.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "唐人日报"
+    timeout: 25000
+- assertVisible: "重要新闻"
+- tapOn: "重要新闻"
+- extendedWaitUntil:
+    visible:
+      id: "category-screen-title"
+    timeout: 20000
+- assertVisible:
+    id: "category-news-list"
+- tapOn:
+    id: "category-article-0"
+- extendedWaitUntil:
+    visible: "进入重要新闻栏目"
+    timeout: 20000
+- tapOn: "进入重要新闻栏目"
+- extendedWaitUntil:
+    visible:
+      id: "category-screen-title"
+    timeout: 20000
+- assertVisible: "重要新闻"

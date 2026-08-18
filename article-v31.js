@@ -18,6 +18,39 @@
     return raw;
   }
 
+  function categoryHref(category) {
+    const routes = {
+      "重要新闻": "/important-news",
+      "热门头条": "/hot-headlines",
+      "美国时政": "/us-politics",
+      "美国警情": "/us-crime",
+      "中国官场": "/china-officialdom",
+      "移民美国": "/immigrate/",
+      "ICE执法动态": "/ice",
+      "ICE执法": "/ice",
+      "驱逐快报": "/ice",
+      "庇护百科": "/listing.html?category=%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91"
+    };
+    return routes[category] || `/listing.html?category=${encodeURIComponent(category || "新闻")}`;
+  }
+
+  function makeCategoryTagClickable(tag, category) {
+    if (!tag) return null;
+    const href = categoryHref(category);
+    let link = tag;
+    if (String(tag.tagName || "").toLowerCase() !== "a") {
+      link = document.createElement("a");
+      link.className = tag.className || "tag";
+      tag.replaceWith(link);
+    }
+    link.classList.add("category-jump");
+    link.textContent = category;
+    link.href = href;
+    link.setAttribute("aria-label", `查看${category}栏目`);
+    link.setAttribute("title", `查看${category}栏目`);
+    return link;
+  }
+
   function resolveImage(value, category) {
     let text = String(value || "").replaceAll("\\u0026", "&").trim();
     if (!text || text.includes("image-placeholder.svg") || /^(?:javascript|vbscript):/i.test(text)) return "";
@@ -85,7 +118,7 @@
     const currentTitle = root.querySelector(".article-header h1")?.textContent?.trim() || "";
     const tag = root.querySelector(".article-header .tag");
     const currentCategory = inferCategory({ category: tag?.textContent || "新闻", title: currentTitle });
-    if (tag) tag.textContent = currentCategory;
+    makeCategoryTagClickable(tag, currentCategory);
 
     const currentIndex = list.findIndex((item) => String(item.id) === String(currentId));
     const previous = currentIndex > 0 ? list[currentIndex - 1] : null;

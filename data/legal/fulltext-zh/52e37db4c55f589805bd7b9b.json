@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "52e37db4c55f589805bd7b9b",
   "recordFingerprint": "92bd537dc72a96da3347827a606ff3031dba9973d08b316a379ecee5e66a327d",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Commerce Department; National Oceanic and Atmospheric Administration",
@@ -75,5 +75,6 @@
       "sourceTextHash": "975f89451057e7a9eba1742888294c7555ffea5a6fe86bd1b8649aa1a5ced74d",
       "chineseText": "编号268001号令，2026年8月12日15时47分 发布于《联邦公报》。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.297Z"
 }

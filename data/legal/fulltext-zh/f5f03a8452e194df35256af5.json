@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "f5f03a8452e194df35256af5",
   "recordFingerprint": "ef9a28ecbe1d01392ec2267c6d2dad9120455608435a0767be3bbaa5ce99b705",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "BIA",
   "authorityType": "BIA Precedent Decision",
   "issuingBody": "Board of Immigration Appeals",
@@ -588,5 +588,5 @@
       "chineseText": "本案发回使得此前的裁定非终局，动议因此不受限于针对终局行政驱逐裁决的重新开庭动议的时间和次数限制。参见Akhtar诉Gonzales, 406 F.3d 399, 409 (第六巡回法院2005);另见8 C.F.R. § 1003.2(c)(2) (2025)（规定在最终行政裁决后的90天内仅可提交一次重新开庭动议）。"
     }
   ],
-  "reboundAt": "2026-08-17T22:59:45.307Z"
+  "reboundAt": "2026-08-18T04:05:50.110Z"
 }

@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordId": "96c3a52b0f11e8ae25e56049",
+  "recordFingerprint": "92ea02fa55a7e446fcb854d994a5c8edb80112aba46c16022734572da9d9314c",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16659/airworthiness-directives-gulfstream-aerospace-lp-type-certificate-previously-held-by-israel-aircraft",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16659.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16659.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T04:05:50.332Z",
+  "sourceDigest": "887b3b3f9ea65d21134c275a0e3ab1c021e3cbb28f1cfee63f6e9b3fb71452ca",
+  "translatedAt": "2026-08-18T04:06:04.369Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 8,
+  "translatedSegmentCount": 8,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ba3a06860b5a1f505b5952ac6a692bd7cba36789dc75f8bd97848a29e0b4c6f2",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则和条例 52499"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "488c944d97f118a8ab3f2a6bdac1104f67d4e980a67a8e2fe2ac457650d4db27",
+      "chineseText": "(5) 您可以在国家档案和记录管理局（NARA），地址：华盛顿，特区新泽西大道东南1200号，W12–140，查阅此材料。有关NARA提供此材料情况的信息，请访问 www.archives.gov/federal-register/cfr/ibr-locations 或发送电子邮件至 fr.inspection@nara.gov。签发日期：2026年7月30日。代理副主任，综合管理部，飞机认证部门布莱恩·克诺普(Bran Knaup)。您可以在CAAI服务网站 www.gov.il/en/pages/israeli-airworthiness-directives 查阅此材料。• 您也可以在FAA航行安全分部，地址：华盛顿州得梅因市南216街2200号，空勤产品科查阅此材料。有关FAA材料的可用性，请致电 206–231–3195。该规则亦可在 regulations.gov，案号FAA–2026–4652 下查阅。[案号 FAA–2026–4652; 项目标识 MCAI–2025–01418–T; 修订39–23439; AD 2026–16–09]。联邦航空局(FAA)"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "435f737c15f1e14962a05fd16aea0a5f7c243c700a5b9454cca9c00290990974",
+      "chineseText": "联邦政府运输部，案件接收处办公时间为周一至周五9点至17点（联邦假日除外）。AD案件包含本最终规则、强制性继续适航信息（MCAI）、收到的评论以及其他信息。地址为美国运输部案件接收处，西建筑地面层，M–30室。您可在 regulations.gov，案件号 FAA–2026–4652 查阅MCAI。进一步信息请联系：FAA，1600 Stewart Avenue，Suite 410，Westbury，NY 11590，电话：404–474–5526，电子邮件：Frank.Huynh@faa.gov。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "3322690ab80040a6354812c85b5b833783c5339086e8259e9cba108781dcd13e",
+      "chineseText": "当前文字格式说明。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1f755f6965b00cf9dc0d7e780ed0660cc5976a3b79e050d5b6dc651e8f9b27c8",
+      "chineseText": "联邦公报第91卷，第156号，2026年8月14日星期五，规则和条例 52500"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f97586aa6069259e78833836bf44c8bc08466e849a78b859b16aea69a9688b1e",
+      "chineseText": "联邦航空局(FAA)依据联邦航空行政管理局（FAA），交通运输部 (DOT) 采取最终规则形式，对所有Gulfstream Aerospace LP生产的Gulfstream 200和Galaxy型号飞机实行新的适航指令（AD）。该指令源于以色列民航局（CAAI）于2025年9月1日发布的AD ISR I–05–2025–09–1，要求修订现有维护或检查程序，纳入新的或更严格的适航限制，目的是解决该型号飞机主结构要素的疲劳损伤。若不予解决，则可能导致飞机结构强度降低。FAA在联邦公报于2026年6月5日发布的拟规公告中提出了该AD草案，公示公众评论，审议相关数据后，确认为了航空安全必须实施本AD，遂予采纳，除少量编辑修改外，采纳原提案内容，不增加运营商经济负担。根据FAA与该设计国民航局双边协议，后者已通报FAA存在上述不安全状态。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "3a9ac41aaab241aaebd3eb47cdaca896c291c7f409ac5c13accbb99f1987c26b",
+      "chineseText": "告知公众的申诉意见。FAA依据49 U.S.C.第44701节第VII编A部III分部中赋予的权力发布本规则。无收到针对此NPRM或成本评估的公开评论。本法令适用于所有Gulfstream Aerospace LP生产且取得适航证的Gulfstream 200和Galaxy飞机。要求运营商按照CAAI AD ISR I–05–2025–09–1所规定的，在规定期限内修订现有维护或检查程序，实施新的或更严格的适航限制。修订后的维护程序不得随意变更，除获FAA批准的替代方案。十分重申本AD旨在解决结构疲劳导致的飞机安全隐患。完成时间为有效期后90天内或指定周期，以后如有例外另行说明。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "17e861f4dba811d73dbb392b7898accc9fd108f3ea420f15d3639867f03bde2a",
+      "chineseText": "Paul R. Bernado，航空合规及适航部门代理主任。该AD自2026年9月18日起生效。无指定废止AD。根据FAA授权，该AD由国际验证分部经理按照14 CFR 39.19条款负责批准替代合规方法(AMOCs)，请求时应先向主检查员或负责飞行标准办公室报告。获得制造商的指令时，按分部经理、CAAI或其授权代表批准的方法执行。详细信息请联系FAA安全工程师 Frank Huynh，电话404–474–5526，邮件Frank.Huynh@faa.gov。动用引用资料包含2025年9月1日CAAI发布的AD ISR I–05–2025–09–1，可在FAA及国家档案馆等指定处查阅。"
+    }
+  ]
+}

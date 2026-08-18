@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordId": "64445aef880927d6c8f62531",
+  "recordFingerprint": "5f427f17084bdc6a9dc857cf6763af7a5afa0ef3711fb18de415b77dfc37d148",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Homeland Security Department; Coast Guard",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16660/special-local-regulation-chattawake-wakesurfing-event-tennessee-river-chattanooga-tn",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16660.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16660.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T04:06:04.395Z",
+  "sourceDigest": "3cd452ec516aac88312a7cb912da3285cb099ab771414920162f8539a3f66105",
+  "translatedAt": "2026-08-18T04:06:22.824Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 8,
+  "translatedSegmentCount": 8,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "de653abaf644406dc02635bbab2bd0836fbeb438d78d12ba8f26abd3b76f2b49",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与法规 52529"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1fc412884421a6fd208ec3821b8dffe99baf07b45a1aa41b9614854e9576dc20",
+      "chineseText": "国土安全部 海岸警卫队 33 CFR 第100部分 [案号 USCG–2026–0951] RIN 1625–AA08 特别地方规章；ChattaWake 滑水冲浪活动，田纳西河，田纳西州查塔努加 代理机构：国土安全部海岸警卫队。 行动：临时最终规则。 摘要：海岸警卫队正在为位于田纳西州查塔努加附近田纳西河第462英里标记至第466英里标记的ChattaWake滑水冲浪比赛设立特别地方规章（SLR）。本规则将创建一个特别管制区域，要求非参赛者以无浪速航行，以保护滑水冲浪者免受水域潜在危害。鉴于这些潜在危害，海岸警卫队正在发布该规则，无先行通知和评论。由于法规灵活性法案的灵活性分析条款不适用于本次规则制定。根据1996年小型企业监管执法公平法（公法104-121）第213(a)条，如果本规则影响您的小型企业、组织或政府管辖区并且您有疑问，请联系本规则进一步信息部分中列明的联络人。小型企业可致电1(888) REG-FAIR (1-888-734-3247)向小型企业和农业监管执法监察员及地区小企业监管公平委员会提交意见。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7dd0b9bafa36c06ecd3606dbab1121a25c291dd444ab7bd54555ceeca475bb84",
+      "chineseText": "海岸警卫队已于2026年6月3日获知此活动通知，但我们必须于2026年8月13日前建立此SLR以保护人员、船只及海洋环境。因此，我们没有足够时间征求和回应意见。同样原因，海岸警卫队发现，根据5 U.S.C. 553(d)(3)，有充分理由使本规则在公报发表后不到30天生效。 规则从2026年8月13日7时起至8月16日17时止生效。可于https://www.regulations.gov搜索USCG-2026-0951查看相关文件。 如有问题，请联系纳什维尔航道管理处U.S. Coast Guard MST2 Jason Brincefield，电话(206) 815-7006，电子邮件STL-SMB-MSDNASHVILLE@USCG.MIL。 这项规则根据若干法规和行政命令制定。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "01b110757e098fec829cc79a218432f1e298879ea24a6fcb5c7ad37510e1ada9",
+      "chineseText": "于2026年6月3日，相关组织通知海岸警卫队将于2026年8月13日至16日在田纳西州查塔努加田纳西河第464英里标举办ChattaWake 2026滑水冲浪比赛。该赛事预计约有90名参赛者和5艘以上观察船艇，参与者将在引领船只的浪后进行冲浪。根据《航线港口长权利法》(46 U.S.C. 70041)，俄亥俄谷港口长(COTP)发布此特别地方管制令。参赛者及观察船艇于2026年8月13日至16日7时至17时在第462英里到第466英里河段间航行，非参赛及观察船只可通行但须保持无浪速，保护滑水冲浪者及活动安全。 荷载完整规则文本置于本文末尾。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fd2793809e9494b151ef6f0e6a9f625a3562d2717725a191038e8336decd07a9",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与法规 52530"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "34209493bc973e30577bf78478f7f9dc77326482a5fb4dc051b85382f5eaf67a",
+      "chineseText": "海岸警卫队已确定滑水冲浪活动存在潜在风险，包括大量参赛及观众船只聚集于河道的狭小区域，滑水冲浪者可能进入水中接近其他船只，以及高速船只为冲浪和参赛者回收而操作。在此背景下，COTP对人员、船只和海洋环境安全采取必要保护措施。 鉴于上述潜在危险，海岸警卫队发布本规则，依5 U.S.C. 553(b)(B)免予事先通知和征询意见，因不切实际且有违公众利益。同样依据5 U.S.C. 553(d)(3)，确定该规则可在联邦公报刊登少于30天后生效。 此规则从2026年8月13日7时至8月16日17时生效，涵盖田纳西河第462英里至第466英里水域。未经许可，禁止人员或船只进入本规则界定的区域。违反规定的船舶或人员将受公安部门责令遵守或处罚。 规则联络人为纳什维尔航道管理处Jason Brincefield，电话(206) 815-7006。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9f7f13833531641a886a8c8b41e5bb700d608d2adb032c3579ddc33145ec68ad",
+      "chineseText": "(续) 非参赛及观众船只通行该区域时须以无浪速通过。所有在该安全区内的个体必须服从港口长或其指定代表发布的所有合法指令或命令。有关本规则的具体问题，可通过VHF-FM频道16或电话+1 (800) 253–7465联系港口长或其代表。 本规则执行时段为2026年8月13日至8月16日，每日7时至17时。 术语说明： CFR 指《联邦法规》（Code of Federal Regulations）；COTP 即港口长（Captain of the Port）；DHS 即国土安全部（Department of Homeland Security）；FR 指《联邦公报》（Federal Register）；NPRM 即《拟议规则通知》（Notice of Proposed Rulemaking）；§ 指法条条款；U.S.C. 即《美国法典》（United States Code）。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1723f8a3553a3b8c209851b50954e908598484621878b90fb97b27dc33a44c05",
+      "chineseText": "本规则制定参考了众多法规和行政命令。 以下为对相关法规和行政命令的简要分析摘要： A. 对小型实体的影响\n 根据1980年《监管灵活性法案》（5 U.S.C. 601–612）的监管灵活性分析条款，本规则未适用因为其不涉及事先公告征询意见程序。 海岸警卫队依据国土安全部指令023–01及相关执行说明，以及环境规划指令COMDTINST 5090.1系列，指导海岸警卫队遵守1969年《国家环境政策法》(42 U.S.C. 4321 et seq.)。 本规则属于此类操作，不会单独或累积对人类环境造成重大影响；因此本规则已从进一步环境评审中豁免，且已确定该行动不涉及重要环境影响。"
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "recordId": "b48eb6ae0890a51e4aab0cbe",
+  "recordFingerprint": "1c32059d3af39f54f86cda35c05601fce5d940436ea5d838748e64616a8e17d1",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16672/airworthiness-directives-air-tractor-inc-airplanes",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16672.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16672.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T04:06:22.850Z",
+  "sourceDigest": "cd6dd8ffe802e0af8a92d7bf7c886c7bd641360492d1846919805abbe7c3cd07",
+  "translatedAt": "2026-08-18T04:07:07.881Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 20,
+  "translatedSegmentCount": 20,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c988370162052fa1a54146292ab59e4f5905b796ca4d9db186db6f2e0afcc8fd",
+      "chineseText": "52490 联邦公报 / 第91卷，第156号 / 2026年8月14日 星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c72879ade7d45e4b87f431b2a3384f415d26d4a32c5eff163830a188ba3bc9d1",
+      "chineseText": "加拿大，运输加拿大 国家飞机认证，159 Cleopatra Drive，Nepean，安大略省，K1A 0N5，加拿大；电话：（888）663–3639；电子邮件：tc.airworthinessdirectives-consignesdenavigabilite.tc@tc.gc.ca。您可以在运输加拿大网站 tc.canada.ca/en/aviation 上查阅运输加拿大材料。（4）您可以在FAA航空安全产品部，运营安全分支，1200 District Avenue，Burlington，MA 01803查阅该材料。有关在FAA处材料可用性的信息，请致电（817）222–5110。（5）您可以在国家档案与记录管理局（NARA）查阅该材料。有关NARA材料可用性的信息，请访问 www.archives.gov/federal-register/cfr/ibr-locations 或发送电子邮件至 fr.inspection@nara.gov。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0d04500a74832e7a210535b78e6714d4ee6752bc3443194b5a7aefd49423e507",
+      "chineseText": "加拿大运输部门批准本航空适航指令（AD）自2026年8月31日起生效。《联邦公报》署长批准将本AD所列某些出版物纳入引用，截至2026年8月31日。FAA批准将本AD中另一出版物纳入引用，自2024年9月4日起生效（89 FR 67267，2024年8月20日）。本AD需在2026年9月28日前收到公众意见。除下述涉及机密业务信息（CBI）外，FAA将根据14 CFR 11.35、11.43和11.45的程序，以以下任何方式接收意见：联邦电子规章门户网站 regulations.gov，传真：（202）493–2251，邮寄：美国运输部Docket Operations，M–30，西楼一层，W12–140室，1200 New Jersey Ave SE，Washington，DC 20590，亲自递交地址同上，受理时间为周一至周五，上午9点至下午5点，联邦假日除外。AD档案编号FAA–2026–7236；项目识别号AD–2026–00543–A。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c75835e4c5971aa3cb667e8695be40e7185a4e0b1333c22f7e8f72a3e3aa87a1",
+      "chineseText": "代理机构：联邦航空管理局（FAA），运输部。行为：最终规则；征求意见。摘要：FAA废止适航指令（AD）2024–16–06，适用于所有安装有Wipaire公司补充型号证书（STC）编号SA01795CH的Air Tractor Inc.（简称Air Tractor）AT–802和AT–802A型飞机。2024–16–06 AD要求对左右前后水平安定面主梁进行反复检查，发现裂纹或损坏时更换，安装浴缸法兰并向FAA报告检查结果。发出2024–16–06 AD后，陆续报告了安装垂直尾翼结构支撑托架处，水平安定面主梁出现裂纹的情况。为解决该不安全状况，现发布本AD，要求附加检查并保留2024–16–06中的所有要求。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "837b1b126c96606ff88216188693da3e429099f50f7638dfc1aa44de5e5dde85",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日 星期五 / 规则与条例 52491"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4934da8da9e006d731e3694829e7db1b51014f56cbbc4e4a793f73e326479605",
+      "chineseText": "本AD符合2024–16–06的要求并加入对相关部位的追加检查。本AD还要求按照2024–16–06中规定提交检查结果。根据《美国行政程序法》（APA）第553条，机构在有合理理由时，可发布最终规则而不先通知和征求意见。因本不安全状况须立即实施本AD，公共利益要求免除先行通知与征求意见。与Wipaire SL 253D和SL 253H说明书相比，本AD设定的初次检查合规期限为安装STC SA01795CH后7日内或飞机累积飞行时间110小时（以较晚者为准），而说明书则分别为1500小时和200小时周期检查。本AD检查期限远短于说明书及公众评论和规则发布所需时间。安装受影响STC的飞机大多用于灭火任务，负荷频繁且利用率高（约每月100飞行小时），截止目前发现不少裂纹，需在规定短时间内检查。FAA正在评估将来可能的规则修订，拟设定主梁寿命限制，以进一步降低不安全隐患。本AD属临时措施。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5a068edd583633f7150fc690be509b83a048d9f1f02140c9254cf2d393f81dfe",
+      "chineseText": "本AD采用了Wipaire公司于2026年7月27日发布的253版修订H版和277版修订C版指令，包含对左右前后水平安定面主梁及翼梁安装处、斜撑支架的反复检查程序及浴缸法兰的安装要求。相关材料经联邦公报署长批准引用，自2024年9月4日起生效。该材料公众可通过正常途径或以上提供的地址获取。FAA认为本AD为临时措施，将继续评估未来方案。"
+    },
+    {
+      "segmentId": "pdf-p3-s8",
+      "order": 8,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "684fa72b001127fa9cee3f95674a515458a1b68d1167752c73453879424531a0",
+      "chineseText": "52492 联邦公报 / 第91卷，第156号 / 2026年8月14日 星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "390656e301d290b6723657dda172bffa08abd0f48b8c3bedfb03a6b6e11a6a6d",
+      "chineseText": "预计成本\n 单价 成本（单位） 总成本（美国运营商）"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6534b0caa08688ccb38c653f4e7c064cf11260b1b475efd0a87114ed899e0522",
+      "chineseText": "检查水平安定面主梁（无浴缸法兰）20工时 × 85美元/工时 = 1,700美元，零件费0美元，每做一次检查每架飞机1,700美元，每次检查美国运营商总计59,500美元。安装浴缸法兰40工时 × 85美元/工时 = 3,400美元，零件费用3,100美元，总计6,500美元，所有飞机共计227,500美元。检查水平安定面主梁（安装浴缸法兰）3工时 × 85美元/工时 = 255美元，零件0美元，每次检查每架255美元，总计8,925美元。检查后部斜撑支架6工时 × 85美元/工时 = 510美元，零件0美元，每次检查510美元，总计17,850美元。报告检查结果1工时 × 85美元/工时 = 85美元，零件0美元，每次报告85美元，总计2,975美元。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "bf9ac897480f555da5b1f86fb9a9a2e036996cb02c0b4e8564cb87dd2e3ffc23",
+      "chineseText": "FAA估计了完成必要更换的成本（若检查发现缺陷需更换），但无从确认需要更换的飞机数量。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f20a41b0746919ff403871678055ff0314e1bbed045d00e4f8f425376348d5ad",
+      "chineseText": "基于具体情况需承担的费用\n 每架飞机成本"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e41ac018a9691457c729491798facf9c808b0bdfe643c226f02beb871fc44a42",
+      "chineseText": "更换水平安定面主梁40工时 × 85美元/工时 = 3,400美元，零件费用2,800美元，总计6,200美元。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "09bf24152a98ff518a5832b989d157428e8ae11a664bac977b4c7ffaa10d1eff",
+      "chineseText": "联邦航空局（FAA）已将所有已知成本纳入其成本估算中。然而，根据制造商的说法，该适航指令（AD）的一些费用可能由保修覆盖，从而降低受影响运营商的成本影响。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ce5b461bff24e1d301b54f3b5b5edd4c4d1c4089bd59d92b31efb1e799ea0c08",
+      "chineseText": "（1）根据行政命令12866、美国法典第49编和联邦航空局颁布航空安全规则的权力，本规则制定不属于“重大监管行动”。（2）不影响阿拉斯加的州内航空活动。根据联邦《文书工作减负法案》，除非信息收集显示有效的管理和预算办公室（OMB）控制号，否则联邦机构不得开展或资助信息收集。该信息收集的OMB控制号为2120-0056。此信息收集的公众报告时间约为每次1小时，包括审阅说明、检索数据源、收集和维护所需数据以及完成审查。对此收集的所有回应均为强制性。发送有关负担估计或其他方面的意见至联邦航空管理局信息收集清理官员。FAA依据管理者授权，依照美国法典49编副标题VII第A部分第III分部第44701节制定本规章，旨在促进商业航空民用飞机的安全飞行，规定必要的航空安全规程。此规章符合该权限范围，因为其针对的产品存在或可能存在不安全状况。依据上述权力，FAA修改14 CFR第39部分如下："
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5ce03e63732671259c44c2fc99e2209041cad0707b25800f3768b71154de9e63",
+      "chineseText": "第39部分——适航指令"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "97d4d0849b4afe477a576026134da3bea274bd28d2579c0fe727c137324c25d7",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则和规章 第52493页"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "441c200f3f50162b05ec82fe31abffba0eace626449061ce4629cf0064ad0a9e",
+      "chineseText": "（b）受影响的适航指令 本AD取代适航指令2024-16-06，2024年8月20日联邦公报第89卷13132号，修正案39-22812（89 FR 67267）（AD 2024-16-06）。 （c）适用范围 本AD适用于安装了Wipaire, Inc.补充型号证书（STC）编号SA01795CH的Air Tractor, Inc.型号AT-802和AT-802A飞机，所有序列号，任何类别适航证。 （d）主题 联合飞机系统组件代码5510，水平安定面结构；5511，水平安定面，梁/肋；5514，水平安定面杂项结构；5530，垂直安定面结构。 （e）不安全状况 本AD因报道称垂直尾翼结构支撑撑杆安装处于水平安定面梁发生裂纹，FAA发布本AD以防止水平安定面梁结构失效。未加以解决的不安全状况可能导致水平尾翼结构失效，进而导致飞机失控。 （f）合规性 除非已完成，否则必须在规定期限内执行本AD要求。 （g）继承于AD 2024-16-06的必需动作 （1）自2024-16-06生效日起7天内，或者安装STC SA01795CH后累计时间不超过110飞行小时，取较晚者起，并在之后不超过110飞行小时间隔内，按照Wipaire, Inc.服务信函253，修订版D（2024年7月3日）中工作指令检查方法1步1~9，检查左、右水平安定面梁裂纹。 （2）若根据上述检查发现裂纹，则须在进一步飞行前更换该梁。 （3）于2024-16-06生效后12个月或累计300飞行小时内（以先到者为准）依据Wipaire, Inc.服务信函253修订版D，按照工作指令安装浴缸配件（服务包编号1012347-01或1012347-02）。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "e02372781c090f440d6c2225c8fe6f8aea6060ccecde6e4b9cbdde67f1e9b2c4",
+      "chineseText": "（h）自AD 2024-16-06保留的必需行动（2） 在使用任何经批准的替代合规方法（AMOC）前，须通知相应的主要检查员，或者若无主要检查员，则通知当地飞行标准区办公室或持证区办公室经理。 （i）本AD新增的必需行动 1. 自本AD生效日起50飞行小时或7天内（以先到者为准），并随后每50飞行小时内不超过间隔，依Wipaire, Inc.服务信函277修订版C（2026年7月27日）步骤1至9检查水平安定面尾部的拉杆支撑安装处左右两侧梁是否存在裂纹；若发现裂纹，须在进一步飞行前更换该梁。 2. 在每次检查后的5天内，将按本AD(j)(1)至(j)(9)条款列明的信息报告至ccbc-cos@faa.gov。（j）报告要求 （k）先前行为的抵免 详见原文内容。 （l）替代合规方法（AMO C） 由FAA中央认证处经理根据14 CFR 39.19批准。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f323e862ba385fe4153c058f939e35830c619c015af4023c9552ad4ea9ce9e37",
+      "chineseText": "如需提交AMOC申请，请发送至认证处经理及本AD(m)(1)条指定人员，电邮：AMOC@faa.gov。"
+    }
+  ]
+}

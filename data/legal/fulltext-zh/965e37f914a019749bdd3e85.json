@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "965e37f914a019749bdd3e85",
   "recordFingerprint": "ebde78a48779bcc222a180b0a17adfd27eae6002ba3d2cef6806460189dd3e5c",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Treasury Department; Financial Crimes Enforcement Network",
@@ -883,5 +883,6 @@
       "sourceTextHash": "666b081cd763ad912c59827110f4797ed17114280d4d7fe505f1dfbee8e8ebfe",
       "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00054 Fmt 4700 Sfmt 9990 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.297Z"
 }

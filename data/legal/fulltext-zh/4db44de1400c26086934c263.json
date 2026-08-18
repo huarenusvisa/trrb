@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "4db44de1400c26086934c263",
   "recordFingerprint": "afc8aa2ea0f250851dc908c4f8db1b2e847f1d87e62621a78f7cb79a9dc00fd2",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Transportation Department; Federal Aviation Administration",
@@ -187,5 +187,6 @@
       "sourceTextHash": "3322690ab80040a6354812c85b5b833783c5339086e8259e9cba108781dcd13e",
       "chineseText": "适航信息 指令。FAA根据第七篇第一部分，第三子部分，44701节的权限制定该规则。根据该条款，国会赋予FAA职责，确保民用航空的安全飞行。 评论 FAA未收到对NPRM内容及成本估计的任何意见。 2026年8月13日 16:20 Jkt 268001 PO 00000 Frm 00025 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.299Z"
 }

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "c9b9f40a9d67527bee246c8a",
   "recordFingerprint": "569c70735f564afb5d87ccac9509082ac5d0884cadc6a25dc23c476e39739203",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Homeland Security Department; Coast Guard",
@@ -123,5 +123,6 @@
       "sourceTextHash": "6d5318a01b7602623e466a345117e9c505b4fa7c2b8886a1dc15778ff838ea29",
       "chineseText": "年轻美·文（Youngmee Moon），美国海岸警卫队东南新英格兰区港口长。[FR文件号2026–16645 于2026年8月13日发布]"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.300Z"
 }

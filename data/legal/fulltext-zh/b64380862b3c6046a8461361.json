@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "b64380862b3c6046a8461361",
   "recordFingerprint": "111cca89bc7b5bc23166308408b349b0233761b97efe3413a1bbaa773023d904",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "General Services Administration",
@@ -475,5 +475,6 @@
       "sourceTextHash": "1f367dfd7a4be1ba40133820bd2bc26b0b06a975d5760597ca7d29e1ad795ebc",
       "chineseText": "（无实质内容，仅为联邦登记册信息）"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.298Z"
 }

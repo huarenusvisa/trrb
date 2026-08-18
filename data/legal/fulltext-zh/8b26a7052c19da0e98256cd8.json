@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "8b26a7052c19da0e98256cd8",
   "recordFingerprint": "c0cf12dbe5d52742284e8ec07c404596995915bc79954e515c81e14ec7c9ab58",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Commerce Department; Industry and Security Bureau",
@@ -283,5 +283,6 @@
       "sourceTextHash": "8e1c21a2fcce0adaa570c88d13a3b167adbb308e09d6728e924dc6a414cc8ba3",
       "chineseText": "财政部金融犯罪执法网络（FinCEN）发布最终规则，确认2025年3月26日颁布的临时最终规则若干有限变更，规定企业应报告实益所有权信息（BOI）。该规则免除部分报告公司的BOI报告义务，并豁免美国公司申请者向报告公司提供信息的义务。所涉技术受NS、MT、AT三种管控理由限制，具体见补遗1。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.299Z"
 }

@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "recordId": "2dff4d81bd54148a1b662fbd",
+  "recordFingerprint": "56dfe1d838932599e27faab1cfd70ae169b171763f678e3aa716972e46621126",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Environmental Protection Agency",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/17/2026-16720/calcium-carbonate-exemption-from-the-requirement-of-a-pesticide-tolerance",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-17/pdf/2026-16720.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-17/pdf/2026-16720.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T04:09:01.930Z",
+  "sourceDigest": "f0ccbcf43c214a06f8de92ef522dc72f2d7a2758173f6e6cd70552248b61750d",
+  "translatedAt": "2026-08-18T04:09:38.694Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 15,
+  "translatedSegmentCount": 15,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ec5aa6e293a3e87a0237f5d0ff2e75d40bc0815a0a60a78dff6e258d06647911",
+      "chineseText": "53196 联邦公报 / 第 91 卷，第 157 期 / 星期一，2026 年 8 月 17 日 / 规则和法规"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "00e3bd282ffc1889e7720134dad24f9cd4a06dcc24e842cc89004f7295c88d60",
+      "chineseText": "环境保护署（EPA）提供指南帮助读者判断本文件是否适用于其自身： 40 CFR 第 180 部分 • 作物生产（北美工业分类系统码 111）。 • 动物生产（北美工业分类系统码 112）。 • 食品制造（北美工业分类系统码 311）。 • 农药制造（北美工业分类系统码 32532）。 钙碳酸盐；免除农药残留限量要求 若您对本动作的适用性有任何疑问，请咨询“欲了解更多信息”部分列出的联系人。 行动机构：环境保护署（EPA）。 行动类型：最终规则。 摘要：本规则建立钙碳酸盐（CAS 编号 471-34-1）在按照标签说明和良好农业规范使用时，允许在所有食品农产品中残留免除农药残留限量的要求。 Columbia River Carbonates 根据联邦食品、药品及化妆品法（FFDCA）向 EPA 提交请愿，申请免除农药残留限量的要求。该规定消除了在所有食品农产品中必须设定钙碳酸盐最大允许残留限度的必要，前提是符合免除条件。 日期：本规定自 2026 年 8 月 17 日生效。对本条例的异议和听证请求须于 2026 年 10 月 16 日之前收到，并须按照 40 CFR 178 部的指示提交（参见本文件 I.C 单元） 地址：本行动档案编号为 EPA-HQ-OPP-2022-0743 的档案可在 https://www.regulations.gov 查阅。有关档案的一般信息及现场查看档案的指示，请访问 https://www.epa.gov/dockets。 联络人：Shannon Borges，生物农药与污染预防部（7511P），农药项目办公室，环境保护署，1200 Pennsylvania Ave. NW，Washington, DC 20460-0001，电话：（202）566-1606，邮箱：BPPDFRNotices@epa.gov。 补充信息： 一、执行摘要 A. 本行动是否适用于您？ EPA 发布本规则依据联邦食品、药品及化妆品法（FFDCA）第 408 条，21 U.S.C. 346a，规定 EPA 可在确定排除是“安全的”前提下，对某农药化学残留物在食品上的容许限量要求设立免除。FFDCA 第 408(c)(2)(A)(ii)条定义“安全”为“对某农药化学残留物的总暴露（包括预期的膳食暴露及所有无可靠信息的其他暴露）合理确定不会造成伤害。” 本次规则依据该授权发布。 EPA 行政法法官部（ALJD）所在的听证文员（Hearing Clerk）敦促各方采用电子方式提交文件，详见 2025 年 12 月 3 日《敦促电子提交和送达令》（https://www.epa.gov/system/files/documents/2025-12/2025-12-03-order-urging-electronic-filing-and-service.pdf）。 任何对该规则的异议或听证请求必须书面形式在 2026 年 10 月 16 日之前送达听证文员，且必须填写档案编号 EPA–HQ–OPP–2022–0743 并写明主题栏。 各方除须按照 40 CFR 178 部向听证文员提交异议或请求听证外，还须将非机密业务信息（不包括保密商业信息，CBI）副本提交至公众档案（https://www.regulations.gov），不得在线提交任何认为是保密商业信息的内容。若需包含保密商业信息，应参照 https://www.epa.gov/dockets/commenting-epa-dockets#rules 的指示提交并在信息上清晰标注。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fc37919ed050aaa1a02149541494b4ccdfeb2cdfc264a04b8cdba247f901b91f",
+      "chineseText": "如果您是农业生产者、食品制造商或农药制造商，您可能会因本行动受到影响。以下列出的北美工业分类系统（NAICS）代码并非详尽无遗，仅供参考。 根据 FFDCA 第 408(g) 条，21 U.S.C. 346a，任何个人可对该规则的任一方面提出异议，且可以请求就相关异议进行听证。如果未在规则规定的期限内提出异议，则放弃对最终规则提出异议及请求听证的权利。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6544b8e9dedf3dde4f62e1eeb232d91c0cf3d3edb88633531f9fd8a0bf485344",
+      "chineseText": "2022 年 9 月 23 日联邦公报（第 87 卷第 58047 号，《联邦公报》编号 FRL–9410–05–OCSPP）中，EPA 根据 FFDCA 第 408(d)(3) 条，21 U.S.C. 346a(d)(3)，发布文件公告 Columbia River Carbonates 提交的农药容许限量请愿（PP 2F9018）。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b85794ace99e79f6fec36c01fe233b1b8f8e48837c169b7eb612c3e85bb1e116",
+      "chineseText": "VerDate Sep<11>2014 16:11 Aug 14, 2026 Jkt 268001 PO 00000 Frm 00016 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\17AUR1.SGM 17AUR1  53197 联邦公报 / 第 91 卷，第 157 期 / 星期一，2026 年 8 月 17 日 / 规则和法规"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d386fc8b4fba8b250b7bbee5d040de8ccce891438551d0a13ba9a3e43bbf1ecc",
+      "chineseText": "地址为：华盛顿州沃德兰市北佩金路 300 号，邮编 98674。请愿人请求修订 40 CFR 第 180 部，建立钙碳酸盐残留的免除容许限量要求。请愿文件引用了 Columbia River Carbonates 准备的请愿摘要，可于 https://www.regulations.gov 档案中查阅。未收到对此请愿的任何意见。基于对支持请愿数据的审查以及依据 FFDCA 第 408(d)(4)(A)(i) 条的授权，EPA 正如第三单元所述，建立该免除容许限量规定。 三、总体风险评估及安全性判定 依据 FFDCA 第 408(c)(2)(A)(i) 条，EPA 仅在确定免除“安全”的情况下设立食品中农药化学残留容许限量的免除。21 U.S.C. 346a(c)(2)(A)(i)。FFDCA 第 408(c)(2)(A)(ii) 条定义“安全”为“合理确定对农药化学残留物的总体暴露（包括所有预期膳食暴露以及不存在可靠信息的其他暴露）不会产生伤害。” 这包括饮用水和住宅环境中的暴露，但不包括职业暴露。 依据 FFDCA 第 408(c)(2)(B) 条，在设立或维持容许限量免除时，EPA 应考虑 FFDCA 第 408(b)(2)(C) 和 (D) 条中规定的因素。FFDCA 第 408(b)(2)(C) 条要求 EPA 特别关注婴幼儿对农药化学残留物的暴露，以确保“合理确定婴幼儿接触该农药化学残留物不会产生伤害”。FFDCA 第 408(b)(2)(D) 条要求 EPA 考虑有关某农药残留的累积效应以及“具有共同毒性机制的其他物质”。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7b9c852bb0b24b914142589ac6efbe93978addcf50add7d89158c91a66a3bb3c",
+      "chineseText": "基于 EPA 所支持的可用科学数据及其他相关信息，EPA 对钙碳酸盐的危害及该容许限量免除所涵盖的总体暴露作出评估。 EPA 认为目前钙碳酸盐的毒理学数据库完整且适宜评估对婴幼儿的潜在早期和晚期毒性。未发现其在发育或生殖毒性试验中表现出定量或定性上的敏感性增加，也未甄别出膳食暴露终点。 对钙碳酸盐的毒理学特征如下：钙碳酸盐具有低急性口服毒性（毒性类别 III）、低急性皮肤毒性（毒性类别 III）以及低吸入毒性（毒性类别 IV）；非眼刺激物（毒性类别 IV）；非皮肤刺激物和非皮肤致敏物。 EPA 发现非职业性短期和中期（1 天至 6 个月）吸入暴露终点为基于大鼠 90 天吸入毒性研究得出的无可观察不良作用水平（NOAEL）为 0.123 mg/L；最低可观察不良作用浓度（LOAEC）为 0.212 mg/L，该 LOAEC 依据因吸入导致的支气管肺泡灌洗液中 ALP 和 LDH 酶及中性粒细胞和蛋白水平升高而判断，女性受试体效应显著。LOAEC 被保守地选择，反映的是最高剂量产生效应的拐点，因缺乏中剂量组的测量及体重信息。最高剂量（0.399 mg/L）未观察到全身性毒性。 对职业性吸入暴露，采用 30 倍（3X 的物种间外推和 10X 的个体间变异）安全系数，且考虑到体内毒代动力学差异，物种间外推不涉及毒效动力学。 EPA 结论是目前不需要设定额外的食品质量保护法（FQPA）安全系数，因为数据库完善，且未发现表明婴儿和儿童在发育或生殖毒性上更敏感的证据。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4e82469eb9119408178c37c0e89b9158a2f22326beb3278b407ba4b10bc9fabc",
+      "chineseText": "基于目前可用数据未发现钙碳酸盐及其代谢物具有与其他化学品共享的共同毒性机制。为本规则目的，EPA 假定钙碳酸盐不与其他物质共享毒性机制。"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8f696ea3dafbd173306429c10110f7438e28ba06664b177086ddcf00b954e168",
+      "chineseText": "53198 联邦公报 / 第 91 卷，第 157 期 / 星期一，2026 年 8 月 17 日 / 规则和法规"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "054af6af945cbddf2e96e62c2c2b2c469b8dabae0f1938d8c1e33a3d6be34d9d",
+      "chineseText": "E. 美国环保署（EPA）安全性认定根据行政命令12866免于审查，因为EPA判断慢性膳食农药暴露是否安全。C. 文书减少法案（PRA）\n本项行动不构成PRA（44 U.S.C. 3501及以下）下的信息收集负担，因为其不包含任何信息收集活动。本规则最终确认了根据联邦食物、药品和化妆品法案（FFDCA）批准的限量措施，EPA须对婴幼儿和儿童的暴露给予特别考虑，确保“对聚合暴露于农药化学残留存在合理确定的不造成伤害的保证”（FFDCA 408(b)(2)(C)），并已记录相关评估文件于https://www.regulations.gov。\nD. 管理灵活性法案（RFA）\n本行动不适用RFA（5 U.S.C. 601及以下），因该法案仅适用于需发布通知和评论规则制定程序的规则。本规则不受行政程序法（APA）约束，但依FFDCA 408(d)应予考虑。\nE. 无资金负担改革法案（UMRA）\n本行动未包含1995年美元价值调整后超过1亿美元的无资金负担，故不受UMRA（2 U.S.C. 1531–1538）限制。\nF. 分析执行方法学\n因本行动为对碳酸钙免除限量要求，不包含数值限制，故无需分析确认方法。\nIV. 结论\n基于人类健康风险评估数据，EPA认为对包括婴幼儿在内的美国总体及所有亚群体，聚合暴露于碳酸钙残留不构成危害，故对碳酸钙残留建立限量豁免。\nG. 行政命令13132：联邦主义\n本行动无联邦主义影响（64 FR 43255，1999年8月10日），不会对州、国家关系或权力分配产生实质直接影响。\nH. 行政命令13175：与印第安部落政府协商及协调\n本行动无印第安部落政府影响（65 FR 67249，2000年11月9日），不会对联邦政府与印第安部落权责产生实质直接影响。\nI. 行政命令13211：显著影响能源供应、分配或使用的行动\n本行动不受行政命令13211（66 FR 28355，2001年5月22日）限制，因免于12866号行政命令审查，且不显著或独特影响小政府。\nJ. 国家技术转移法案（NTTAA）\n本行动不涉及NTTAA第12(d)节（15 U.S.C. 272）所规定之需考虑的技术标准。\nK. 国会审查法案（CRA）\n本行动受CRA（5 U.S.C. 801及以下）约束，EPA将向国会两院和美国总审计署提交规则报告。本行动非CRA定义之“重大规则”（5 U.S.C. 804(2)）的一部分。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7588417c4cff7c5aaa0c9378d0a48ff7ed0d9af2225f65f4473d4135067eac8d",
+      "chineseText": "B. 行政命令14192：通过放松管制释放繁荣\n行政命令14192（90 FR 9065，2025年2月6日）不适用于根据FFDCA第408节设定限量的行动。\nH. 行政命令13045：保护儿童免受环境健康风险及安全风险\n本行动不适用行政命令13045（62 FR 19885，1997年4月23日），因为其非第3(f)(1)节定义的显著管制行动。\n■ 1. 第180部分的授权引证继续如下：\n授权：21 U.S.C. 321(q), 346a 和 371。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e5a85fa1526b52aedc2962f825e17d0e443e6c73816d7784748c3204d9fc55e6",
+      "chineseText": "VerDate Sep<11>2014 16:11 Aug 14, 2026 Jkt 268001 PO 00000 Frm 00018 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\17AUR1.SGM 17AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s13",
+      "order": 13,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "aa866b0b589bd6128d42a228901cb5858ecf654c1025332901d7743b241558bc",
+      "chineseText": "联邦登记/ 第91卷第157号/ 2026年8月17日星期一/ 规则与条例 53199"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c0d3a8731fdac944c16896326242f4b88fcd21136825ddddc32ced1d97085243",
+      "chineseText": "■ 2. 于附录D新增§ 180.1423，内容如下：\n§ 180.1423 碳酸钙；豁免限量要求。\n对所有原料农产品上的碳酸钙残留，依据标签说明和良好农业规范使用，建立了限量豁免。 [联邦文档编号2026-16720，2026年8月14日提交；上午8:45]\n计费代码6560-50-P"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "29eb328b383e10d305fdad4a03ed33a93cb159e835c29804c8b2ad6d084617ae",
+      "chineseText": "VerDate Sep<11>2014 16:11 Aug 14, 2026 Jkt 268001 PO 00000 Frm 00019 Fmt 4700 Sfmt 9990 E:\\FR\\FM\\17AUR1.SGM 17AUR1"
+    }
+  ]
+}

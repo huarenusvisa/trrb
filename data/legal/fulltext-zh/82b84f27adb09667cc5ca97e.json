@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "recordId": "82b84f27adb09667cc5ca97e",
+  "recordFingerprint": "917aa02f64a10823f09641bbabd14de8e5bd2e6e7d86abc9581efc5da2c24805",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Treasury Department; Alcohol and Tobacco Tax and Trade Bureau",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/17/2026-16701/establishment-of-the-columbia-hills-viticultural-area",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-17/pdf/2026-16701.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-17/pdf/2026-16701.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T04:08:02.445Z",
+  "sourceDigest": "0fb5c93fe92e9f468b9abfbe1fdfaed9aa59257188e9f42e36746531f891d4be",
+  "translatedAt": "2026-08-18T04:09:01.902Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 17,
+  "translatedSegmentCount": 17,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fadddbaa6dd2efcf859087c6a9b39ae5a3883fb2416a622c6b08e0f47a03a7a3",
+      "chineseText": "联邦公报 / 第91卷，第157号 / 2026年8月17日星期一 / 规则与条例 53191"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "92d8ade49266a2adb3eab644c123c21d99c307e80025646605c9a6b55c722762",
+      "chineseText": "与每个样本的测试及结果解释相关，包括控件、程序和用户培训要求，适用时，财政部酒精和烟草税务贸易局（Alcohol and Tobacco Tax and Trade Bureau）27 CFR 第9部分（酒精和烟草税务贸易局规则）。(vi) 设备性能数据证明设备的稳健性，经FDA认定为适当。研究须评估各种适用的耐受范围。(vii) 设备性能数据证明定量结果的线性，使用覆盖设备测量范围的样本，适用时。(viii) 设备性能数据证明样本稳定性，基于设备预期用途的样本类型，适用时。(ix) 使用预期用途样本群的临床数据生成，证明设备对预期用途的性能，经FDA认定为适当。例如: (ii) 测试结果解释和报告的标准规格，包括设备阈值（如临床阈值或阳性阴性分界点）或其他相关标准，区分阳性和阴性定量结果。该信息必须包括所选阈值的理由，包括正常上限参考值或其他相关标准以及支持临床阈值的结果。所有适用信号的评分标准须包含其中。(iii) 设备性能数据证明设备对其预期用途的临床性能，经FDA认定为适当。所使用样本类型应临床染色体核型正常，或经FDA认定为适当的替代方法，例如探针灵敏度和探针限制。(iv) 设备性能数据证明设备对预期用途样本类型的分析特异性，经FDA认定为适当，例如探针特异性、干扰研究、交叉反应及交叉污染测试。(v) 设备性能数据证明设备以临床样本代表预期样本类型及生物标志物的精密度及重复性，调查主要变异来源（如多批试剂、操作员、系统、不同天数及读者内外精密度）。代用样本如能充分代表临床样本类型和生物标志物，经FDA认定可作为补充。若设备将在多地点使用，需证明跨多地点的充分重复性。此外，需评估设备在临床决策阈值附近及可报告范围边界样本的精密度和重复性。还应包括展示不同信号及相关阈值和控件的精密度数据，FDA认定为适当。设备精度亦应从这些数据体现。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "faa823f36b2d64d126a7d1fda474ca7cd02b6c2b5123e0c3439b7b66b7f0801f",
+      "chineseText": "设备性能数据必须包括不同信号和相关阈值及控件的研究所得的适当精密度，FDA认定为适当。此外，设备精密度必须覆盖不同信号，满足FDA认可的要求。设备精度还必须通过不同信号及相关阈值和控件的研究体现，FDA认定为适当。精准度必须通过评估不同信号及相关阈值和控件的研究来体现。此外，设备准确度必须满足FDA认定的要求。格蕾丝·R·格雷厄姆，政策、立法及国际事务副专员。[FR 文档 2026-16727 于 2026年8月14日提交，上午8:45]"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "b4b0718a288e6dbc889aab2e32e05795e5ea55d9ee23ef5cb08fcf6c64b82187",
+      "chineseText": "（本页无正文，仅为版面格式指示）"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e9bbe9346c9f75ec9522f17270b21d3d93f9019c587070a8c9c723d613237681",
+      "chineseText": "53192 联邦公报 / 第91卷，第157号 / 2026年8月17日星期一 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "274ae80effb3dad13e5af4de47cbb297704fc747e9ee903138476f5cfbba2563",
+      "chineseText": "TTB条例第4部分（27 CFR第4部分）授权TTB设立确定性的葡萄栽培产区，及规范其名称作为产地标示在葡萄酒标签及广告上的使用。TTB条例第9部分（27 CFR第9部分）规定提交美国葡萄酒产区（AVA）设立或修改请愿的标准，并列出获批AVA。 Columbia Hills 请愿定义TTB条例第4.25(e)(1)(i)节（27 CFR 4.25(e)(1)(i)）将美国葡萄酒葡萄栽培产区定义为限界的葡萄种植区域，具有第9部分所述的独特特征，一旦获批，则名称及界限编入第9部分规则。该指定使酿酒商与消费者能将葡萄种植产地的质量、声誉或其他特性归属于所产葡萄酒。AVA的设立令酿酒商更准确地说明葡萄酒产地，帮助消费者识别其购买葡萄酒。设立AVA非TTB对该产区葡萄酒的认可或批准。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fe5b40760e5a351973183a4a7d19dc8012c7f59594c5b657a9287cdb0f4c95bf",
+      "chineseText": "AVA设立要求TTB条例第4.25(e)(2)节（27 CFR 4.25(e)(2)）阐述设立AVA的程序，允许任何利益相关方请愿规定的葡萄种植区域为AVA。TTB条例第9.12节（27 CFR 9.12）规定AVA设立或修改请愿的标准。请愿必须包括：• 证明拟议AVA界定区域在国家或地方上已知该AVA名称；• 拟议AVA界定依据解释；• 拟议AVA特征叙述，涵盖气候、地质、土壤、地形及海拔等影响葡萄栽培的因素，使拟议AVA能区别于毗邻地区。• 如拟议AVA位于或重叠于现有AVA，须说明拟议AVA符合现有AVA特征，且有明显区别。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5e0b30cdf568b688a35f23314f373f64579a64502cc1aecbb76aa4993b5a9a84",
+      "chineseText": "拟议AVA内80%的土地由19个不同产权人所有，此外还有4个葡萄酒厂。拟议\"Columbia Hills\" AVA位于华盛顿州Klickitat县，完全包含于已设立的Columbia Valley AVA（27 CFR 9.74）内。拟议AVA位于Columbia Hills山脊南坡，该山脊为沿Columbia河北侧平行的长约35英里的地带。冰川期洪水地貌侵蚀该区形成阶地及缓坡砾石流，适合种植葡萄园。拟议区土壤主要为Cheviot-Horseflat-Rockly-Kiona土壤单元，属排水良好、基岩风化残积与冲积物混合的玄武岩基质；另一类为Ewall-Dallesport-Rock Outcrop土壤单元，为风成堆积沙覆盖砾石基岩，排水极佳，较常见于Columbia河谷。土壤质地较粗，促成葡萄根系深扎。拟议区气候温暖，全年平均生长季温度为63.9至67.7华氏度，生长季最高温74.5至80.2华氏度，最低温53至55.3华氏度。无霜期平均194至254天，生长季积温（GDD）3091至3588，年降水量通常介于10至20英寸。"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "197ac27181d74f059d333410323eb624855f19b5df0c5a137151fefd179ae00e",
+      "chineseText": "（本页无正文，仅为版面格式指示）"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "eec6990540a81e069bfaaef7e0bb5e4d093028cc6905c04b481d2e7418a03a97",
+      "chineseText": "拟议AVA内的温度低于规定的其他葡萄种植区，TTB设立“Columbia Hills”AVA，位于华盛顿州Klickitat县，生效日期为本文件公布后30天。V75 Vineyard的另一位代表（评论2）描述了该地区的风、累积生长度日（GDD）和地质，认为这些是支持该区域独特性的特征，从而将该地区区分开来。TTB还确定Columbia Hills AVA将继续作为已设立的Columbia Valley AVA的一部分。该评论者还指出AVA名称的适当性。Columbia Hills AVA与已设立的AVA共享一些广泛的特征。例如，拟议AVA和Columbia Valley AVA均具有超过150天的生长季节、有限的年降雨量和通常超过2000的GDD累计值。然而，与周围的Columbia Valley AVA不同，拟议的Columbia Hills AVA不是大面积无树盆地，而是位于深切河谷内的山坡和洪泛阶地区域。关闭意见期截止于2025年2月3日，TTB共收到五条意见，其中四条明确支持拟议AVA。V75 Vineyard的代表（评论4）描述该区域具有独特的风土特色，不同于Columbia Hills AVA以西的Columbia Gorge AVA，其海拔更高，地形更为多样。所述地区的土壤多样性源于基岩、高度和坡度角度的显著变化。拟议AVA的平均生长季温度在58至59.7华氏度之间，年GDD累积范围为2006到2255。Columbia Gorge AVA的平均生长季温度在58.7至62华氏度之间，GDD累积范围为2107至2647。TTB在12月5日的联邦公告(89 FR 96623)中发布第235号通知，提议设立Columbia Hills AVA，概述了名称、边界及识别特征的证据，同时邀请公众评议。公告内还比较了拟议AVA与周边地区的鉴别特征。TTB未收到关于名称证据充分性的质疑。关于现有葡萄酒标签的影响，中TTB法规第27 CFR第4部分规定，禁止在标签中使用暗示葡萄酒产地与事实不符的参考。使用AVA名称作为葡萄酒标签或品牌名必须满足至少85%葡萄来源于该区域等资格要求，否则必须更换标签。若品牌名中含AVA名称且品牌于1986年7月7日前获批，适用不同规则。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "5795cafc0a8bcac6926921dbf4577ebaf2fe8522bd6d31cb112e92d235ddc002",
+      "chineseText": "TTB于2025年2月3日关闭第235号通知的评论期，收到五条意见，其中四条支持拟议的AVA。其中一条来自V75 Vineyard代表（评论4），描述该区域葡萄种植具有独特特性，支持设立Columbia Hills AVA。基于对建议书及收到意见的仔细审查，TTB发现申请人提供的证据足以支持设立Columbia Hills AVA。据此，依据2002年国土安全法案第1111(d)节、联邦酒类管理局(FAA)法案及TTB法规第4和9部分的授权，现正式确认Columbia Hills AVA的设立。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "24629449d381ec1b686968b44b306b704ee5f720164426ab48202aac6d70db00",
+      "chineseText": "（此段仅为页面格式及标识，包含日期及文件编号，未含实质性法律内容，故不做译文。）"
+    },
+    {
+      "segmentId": "pdf-p4-s13",
+      "order": 13,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6da90394e34f08501f27bacabd54acfd83772b7d9c7424df34f99dd40a7e05ce",
+      "chineseText": "（此段为联邦公报页眉及文件标题，未提供实质法律内容，无需翻译。）"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "4686b66abe968964170f0311ff91e49e411aab15fb1716f94e8acf41117b2f5a",
+      "chineseText": "“Columbia Hills”名称将根据TTB法规§4.39(i)(3)（27 CFR 4.39(i)(3)）被认可为具有葡萄酒产区意义的名称。法规文本对此作了明确说明。因此，凡在品牌名（包括商标）或其他标签中使用“Columbia Hills”指示葡萄酒原产地的酒瓶商，需确保该产品符合使用该AVA名称作为原产地名称的资格条件。Columbia Hills AVA的设立不会影响现有Columbia Valley AVA的状态，仍允许使用“Columbia Valley”作为符合条件葡萄酒的原产地名称或品牌名。TTB发布本规则不会对大量小企业产生重大经济影响，不增加报告、记录或其他行政负担。任何因使用AVA名称产生的利益，均来源于地区内葡萄种植者和酿酒者的努力以及消费者认可。根据行政命令12866，本规则不属于重要监管行动。现对27 CFR第9部分作出如下修订，新增第9.301节，正式设立Columbia Hills AVA。该AVA位于华盛顿州Klickitat县，其边界依据两幅1:100,000比例的美国地质调查局地形图（Hood River OR–WA, 1982和Goldendale WA–OR, 1980）确定。详细边界描述包括自哥伦比亚河北岸至未命名小溪、不同等高线及地形特征的指示路线。\n\n同时，美国海岸警卫队发布临时安全区域规章，设立于威斯康星州Green Bay的Fox River航道水域，保护人员、船只及海洋环境免受水上烟花表演潜在危险，具体时间为2026年9月5日21时至21时45分，未经许可禁止进入该安全区。此规则依据《美国法典》第46卷第70034条授权。"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "1fa3c1fef4103d41c963b08d43ff5ce703462054b0060fe668b22e15de374bb6",
+      "chineseText": "本最终规则不属于行政命令12866定义的重大监管行动，故无需进行监管评估。法规草拟由监管与裁定司Karen A. Thornton完成。TTB依据《美国法典》第27卷第205条授权，对27 CFR第9部分进行修订，正式设立Columbia Hills AVA。"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "69eea1ae3d3a524e02f822d017f9ad68511c5ecb3d5fef7d24737495b575fb73",
+      "chineseText": "TTB正式颁布第9部分修正案，设立Columbia Hills AVA。已有Columbia Valley AVA继续有效，使用该AVA名称或其品牌的酒庄不受影响。Columbia Hills AVA赋予酿酒者在产品符合条件的情况下，使用“Columbia Hills”、“Columbia Valley”或二者作为产区名称的权利。公开的海岸警卫队临时安全区规则亦同时发布。（此段包含公告结束与签署信息。）"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "60f3474edbd92682de49fb21649606daa087078a6ab747c211d6537f16906225",
+      "chineseText": "（此段为页面格式标识信息，无实质法律内容，无需翻译。）"
+    }
+  ]
+}

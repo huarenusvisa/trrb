@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "recordId": "3cf749aa6ce25541161b8c38",
+  "recordFingerprint": "da3d0aa01d206e9f6af8ed85fb0200c226622c9135ce582673b3ce41f1d07469",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Agriculture Department; Agricultural Marketing Service",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/17/2026-16723/walnuts-grown-in-california-changes-to-administrative-requirements",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-17/pdf/2026-16723.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-17/pdf/2026-16723.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T04:09:38.721Z",
+  "sourceDigest": "6e9bc80400dab4a160721f7ccc16e38f89e5efbe2f5386d3dbd411067df7bb1d",
+  "translatedAt": "2026-08-18T04:10:13.010Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 18,
+  "translatedSegmentCount": 18,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "47ef30c329ebf5c54daed2d5c1cfb29ffa24e6c0f8cbbddbc5f371e471c57401",
+      "chineseText": "53181"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "bd487f18d7872a0d478a7fb3139ccb296f4f3b93cf6eb1ef331fc455a21bd7c0",
+      "chineseText": "规则与条例 联邦公报 第91卷，第157号"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0c7edecef7d8d861e9aa41bbe93075c60aee4b60fb430201d48eaf170683c88d",
+      "chineseText": "2026年8月17日，星期一"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "a79abbb026cc122a3c8cd064838370c6ee393cc839ed833b42a164b80e7a5dfb",
+      "chineseText": "本节联邦公报包含适用于某一生产领域且具有普遍适用性和法律效力的监管文件，其中大部分内容已归入并刊载于联邦法规汇编（Code of Federal Regulations）44 U.S.C. 1510规定的50个标题中。联邦法规汇编由官方文书主管出售。本规则是根据管理与预算办公室（OMB）条例豁免审查的。该最终规则修订了现有的加利福尼亚州生核桃营销令第984号（7 CFR部分984），必要于该令的持续实施。此外，本行动豁免于农业市场服务局（AMS）根据《咨询与协调美洲原住民政府总统令》（Executive Order 13175）针对联邦法规制定中是否涉及部落事项的审查。本规则未预见对联邦政府与印第安部落关系及权力及职责分配产生重大直接影响。根据行政命令12988号《民事司法改革》，本规则无追溯效力。该法案规定必须先行行政程序后方可诉诸法院。根据该法案第608(c)(15)(A)条，任何受营销令管辖的托运人可向美国农业部提交请愿，声称令中条款或义务违法，请求修改或豁免该令。托运人有听证机会，听证后农业部将对请愿作出裁定。美国地区法院对托运人所在辖区拥有复审权，并须在裁定后20日内提起诉讼。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4bce16d1fbdc1da8710818498d7d6ab68995dc0a932d174796831b2f8745fa55",
+      "chineseText": "本最终规则根据1937年修订的农业市场协议法案（7 U.S.C. 601-674）修订第984号营销令（7 CFR部分984），规范加利福尼亚州生核桃的处理。该令由由核桃种植者和托运人组成的委员会地方管理，委员会经投票一致批准于2024年8月8日及11月6日会议通过本项变更，投票结果为八票赞成，无反对。该最终规则设定明确的托运人缴纳评估费计划，建立逾期评估费的利息及滞纳金，修订托运人收购报告程序，旨在增强委员会对方案运作的监督及行政管理效率，促进遵守。本规则获得行政机构审查通过并豁免特定行政命令。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "72c468d9884da83c547d10a99cdfc100dcc0bc45218719396a64e19f8de56934",
+      "chineseText": "根据联邦法规版本—联邦公报第91卷第157号，2026年8月14日登记，编号268001，页码00001起始，格式4700，版本4700，见档案17AUR1.SGM"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "465d8626f486c3a01db226e3d4243808aad59fc1713f65506e6ae545220f0534",
+      "chineseText": "53182 联邦公报/第91卷第157号/2026年8月17日星期一/规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "efd950c8712316af93ea8cb955aaa01341fbca33eddaa7db1ce3f07297812dcf",
+      "chineseText": "本规则将启动明确的托运人评估费付款计划，每一托运人须按照第984.473节规定，于市场年度的1月31日、4月30日及7月31日分三期缴纳，根据报告的核桃数量支付评估费。该计划基于行业惯例，分摊费款将稳定和均衡委员会的收入流，有助于减少不确定性。依据第984.69(c)节，设立了逾期付款的滞纳金和利息，滞纳金为逾期60天内未缴款项的10%，超过60天后每月加收1.5%利息，本规则为到账逾期确定了明确的计算方法，激励托运人遵守及时缴款要求。规则还修订了第984.473节“核桃收购报告”，新增要求托运人在1月15日报告截止后收购的核桃也须按月报告与缴费，以消除因晚报果而导致的评估及缴费混乱。基于农业部国家农业统计服务（NASS）数据，加利福尼亚州约4500名核桃种植者的平均年产值约16.4万美元，远低于小型农业经营者标准375万美元，表明绝大多数种植者与约68名托运人均属小型业者。该规则符合小企业法规要求，减少其行政负担。托运人在2023-2024年度，多数核桃货值低于3400万美元，也符合小型托运人定义。委员会审议了不同报告方式、分期缴款方案、滞纳金比例及利率，也考虑维持现状，最终认为本规则更有效率且财务上合理。根据1995年减轻文书负担法案，委员会信息收集职责已获管理与预算办公室批准，编号0581-0178，类别“蔬果及特色农作物”，本规则调整相关要求。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "42a4a111ef6f37f19493c3a86f834f13f919d83bf6d0f57a53c07b83d737af65",
+      "chineseText": "农业部国家农业统计局（NASS）数据显示，相应3年平均产值约为7.371亿美元。这些数据支持委员会在营销令下调整报告收购核桃期限，建立缴费的分期方案，并赋予滞纳金及利息收取权利，以完善行政管理、促进行政履约，强化核桃产业秩序与持续有效。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5b60c451dd56f26b1845595bbb6275e6f87d6f64973092918590fafd8cc8d784",
+      "chineseText": "根据联邦公报第91卷第157号，发布时间2026年8月14日，档案编号268001，见页码00002，文件格式和版本信息同前。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a860c237bd012215d6cc2896b5626f877e4e236c23d3309400c49fc8e86c4cf3",
+      "chineseText": "联邦公报/第91卷第157号/2026年8月17日星期一/规则与条例 53183"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8e1a36737233abb3278e8f7a05bb8f9e05f9b82b6061d9577cd9c97526cd9b44",
+      "chineseText": "董事会现行的CWB表格#1。此外，表达了对提案的支持，一份额外的报告和记录保存要求可能导致部分经营者提交更多报告。然而，更改较小，目前批准的表格负担只会因这些更改而略微增加。修订后的表格已提交至OMB审批。本最终行动可能对加州核桃经营者，无论规模大小，施加一些额外的报告或记录保存要求。然而，董事会预期仅少数经营者会受到影响，因为须提交的补充收购报告只针对1月15日之后收购的核桃。正如所有联邦市场订购方案，报告和表格会定期审查，以减少信息需求和行业及公共部门机构的重复。AMS致力于遵守电子政府法，推动互联网及其他信息技术的使用，增加公民获取政府信息和服务的机会。AMS未发现本最终规则有任何相关联邦规则重复、重叠或冲突。2025年10月1日《联邦公报》刊登了针对该行动的拟议规则(90 FR 47248)，拟议规则副本已发放给所有加州核桃经营者，并通过AMS和《联邦公报》网站提供了网络公开访问。提供了截止至2025年10月31日的30天公众评论期。AMS在评论期间收到9条意见，以下分别回复。收到的评论中，5条建议修改支付计划、逾期支付及利息费用和/或宽限期。评论者未自称为受监管生产区内的经营者或生产者。这些评论者表示理解通过支付计划以及逾期罚款和利息费用强化行政要求的必要性以激励及时收取费用和高效运营。但评论表达了对该提议可能对小企业造成经济影响的担忧。4条剩余意见中，2条建议修改支付计划、逾期利息费用和/或宽限期。1条不讨论提议优劣，1条提出程序性缺陷担忧。评论者建议增加或延长宽限期，根据经营者规模设定分级罚款结构、较低罚款率和利息费用，及更灵活的支付计划。本规则包含了60天宽限期，AMS和董事会认为这一安排合理且恰当，有助于减轻特别是小企业的财务负担。增设分级罚款和延长宽限期虽能延缓收款，但可能导致不同利率而非统一1.5%罚款费率，进而引发经营者及生产者间的公平性担忧。此外，在不同时间点支付可能增加行政负担。由当地负责执行订购案的董事会认为采用60天宽限期及月度罚款结构能确保管理上的一致性，促进及时及一致付款，实现订购案运行效率。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ce48a14a557ce339859bbf62bfb8a94c44398c822d48b9259eaeda6617f10d6c",
+      "chineseText": "一条评论担忧新报告需求及增加的额外文书工作将给小企业带来负担，另一条建议简化收购报告或提供技术援助。虽此行动可能对部分经营者施加额外申报或记录保存要求，AMS预计影响比例有限。AMS审查评论后确认该规则调整得当，将加强评估征收的有效收取，并确保罚款按比例、无偏见地对所有经营者执行。最后，针对总书记令12866有关程序的评论，AMS重申该规则属于OMB豁免审查范畴。经过审查所有相关资料，包括董事会及其他方信息和建议，AMS认定本最终规则符合并执行法案既定政策。"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "4969a15b25d1c8052ec1231a8e005a187a80f8a3b08997f10babd1127fcfddc0",
+      "chineseText": "VerDate Sep<11>2014 16:11 Aug 14, 2026 Jkt 268001 PO 00000 Frm 00003 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\17AUR1.SGM 17AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "9f8ace3fc8a0c5352bf92e7a387f8550b478b9fd0842c6f20d8aaef951516287",
+      "chineseText": "53184 《联邦公报》/ 第91卷，第157号 / 2026年8月17日星期一 / 规章与条例"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "236cbf3f95c63be031c83d55e3f6c875133eb5f61b771818f70e49fdd3c1d667",
+      "chineseText": "表格已提交至OMB审批。本最终规则符合《文书减少法》有关信息收集要求。鉴于此，AMS在审查并考虑所有评论后，未对拟议规则作出变更。最后，针对执行令12866的评论，AMS重申本最终规则属于OMB根据执行令12866免审查的规制行动类别。AMS确认本规则与其他采用逾期付款和利息费的市场订购方案一致，确保公平和高效征收。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f42998afd746d1f83cbfc287ff3e93aef0ba215d990fb04db13ee59892ebda63",
+      "chineseText": "（a）每个经营者应按§ 984.473(a)报告的核桃收入支付三期费用，董事会分别于每个销售年1月31日、4月30日和7月31日开票。（b）根据董事会需求，每个经营者应按§ 984.473(b)报告的核桃收入即时支付费用。\n■ 3. 添加§ 984.349条，题为“逾期付款和利息费用”。\n（a）董事会应对任何经营者未在其评估说明单显示发票日后六十（60）日内支付评估费用，征收10%的逾期付款费用。\n（b）对未在发票日后六十（60）日内收到的付款，董事会应加收每月1.5%的利息，利息适用于包括任何逾期付款费用的未付评估总额，计至下一个每30天周期结束直到完成付款。\n补充信息：\n一、背景——监管授权\n《联邦食品、药物和化妆品法》（FD&C法案）确立了针对人用医疗器械的全面监管制度。FD&C法案第513条（21 U.S.C. 360c）设立了三类医疗器械，反映为保障其安全性和有效性所需的监管强度。三类设备分别为：I类（一般控制）、II类（特殊控制）和III类（上市前批准）。1976年5月28日前未投放或商业分发的设备（通常称为“修订后设备”）自动依据FD&C法案第513(f)(1)条归为III类，需经FDA上市前批准申请（PMA），除非FDA将该设备重新分类至I类或II类，或认定其与不需PMA的“判例设备”实质等同。FDA通过符合FD&C法案第513(i)条的程序判定新设备是否与判例设备具有实质等同性。\nFDA正发布一项最终命令，重新分类用于配合获批肿瘤治疗产品（产品代码NYQ、MVD、OWE和PNK）的原位杂交（ISH）测试系统，该类III级的修订后设备将根据FD&C法案第513(f)(3)条被重新归类为II类（特殊控制），需进行上市前通知（510(k)）。\n本命令于2026年9月16日生效。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d07464a0b33ca8c3ff5a380d6ff000f8de9e2318bab3bdbe3d468ca64ae813ac",
+      "chineseText": "FDA依赖《联邦食品、药物和化妆品法》第513(a)(3)条及21 CFR定义的“有效科学证据”来支持该重新分类决策。如需进一步信息，请联系Soma Ghosh，电话240-402-5333，地址为食品药品监督管理局（FDA）放射卫生部，10903 New Hampshire Ave., Bldg. 66, Rm. 3316, Silver Spring, MD 20993，电邮Soma.Ghosh@fda.hhs.gov。\n■ 4. 修订§ 984.473为：“核桃接收报告”。\n（a）每个经营者应于每营销年1月15日前，就从种植者处接收的核桃提交由董事会提供的报告表。\n（b）经营者如果在提交了上述§ 984.473(a)的初始核桃收入报告后收购核桃，应于收购后第15日提交修订后的核桃收入报告，使用董事会提供的表格。\n【FR Doc. 2026–16723 Filed 8–14–26; 8:45 am】"
+    }
+  ]
+}

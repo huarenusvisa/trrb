@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "recordId": "e7e3679cd172e738db69f4f9",
+  "recordFingerprint": "3607b7917fe4c9718180d2f18068a05dc3d402dcfce50f626d7510684ce2115d",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Personnel Management Office",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16687/differential-pay-for-prescribed-wildland-fire-activities",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16687.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16687.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T04:07:07.908Z",
+  "sourceDigest": "d5d0d45d92e39352fee01788e2da345d2d316564aab7c0145a429bcc10625067",
+  "translatedAt": "2026-08-18T04:08:02.415Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 30,
+  "translatedSegmentCount": 30,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1429df484e3a1f65c929d366cc1f5aa1cd726f7cf04e1adfb81a62648c2ccbf2",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52479"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "da9da8070e8023e9a859be49f972be282d4fb3546f45bf103a0296dd9931ed96",
+      "chineseText": "(b) 每当授予变更时，主管官员应在官方记录中注明，以显示：“一般会计”一词被替换为“政府问责制”。 ■ 16. 在第10.1节中，删除直接涉及规定野外火灾的实施和控制的火线工作队伍的字样。评议者主要针对以下问题提出意见：雇员是否包含在名为“GW”的薪酬计划下，以及0456野外火灾管理职业系列的雇员；是否应为指派的火灾任务提供与野火火线职责相同的25%差异补偿；除点火前准备活动外的排除；法律权限和对重复补偿的担忧；与其他林务局危险职责的比较；潜在成本和运营激励；请求扩大覆盖范围至跳伞员熟练度或训练跳跃及航空或空中加油站工作人员。人事管理办公室（OPM）在考虑意见后，采用提议的法规文本和25%的差异补偿，未作更改。评论的回应见第三节。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ab2280ea1eaa79ab7f61a378a31dba3dfed5a211930d9ab587d2f4eebc9ee6da",
+      "chineseText": "程序（规则X）\n■ 15.为第10部分添加权限引用如下：权限：行政命令13197，66 FR 7853，3 CFR，2001年汇编，第750页；行政命令14410，91 FR 34893。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "09c4d768101e4f52b5e069fb8504b899573a8df8ec36b191faa6bd3a3e8822b9",
+      "chineseText": "2026年8月13日16:20版本 Jkt 268001 PO 00000 Frm 00005 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "cfdea07d125684650cd32c2e63c2aa6e506e9ff8cfa271b7cd248618c2464726",
+      "chineseText": "52480 联邦公报 / 第91卷，第156号 / 2026年8月14日 星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a9cabbdf11741bdffdf025e21fc437f846f65f635d0819428f855d0dcf5a7e80",
+      "chineseText": "本规则不将差异补偿扩展至点火前准备活动。OPM保留此限制，因为支持覆盖的危险与活跃火灾环境及其火线的直接后果相关，而不包括火灾点燃前的准备工作。对于联邦工资系统（FWS）雇员，OPM于2024年7月18日在联邦最低工资咨询委员会会议上提出增加针对规定野外火灾活动的环境差异补偿（EDP）类别的提案，委员会一致推荐该变更。对于普通公务员（GS）雇员，最终规则同时增加第5 CFR 550.904(f)条款，明确根据5 U.S.C. 5545(d)(1)和5 CFR 550.904(a)-(b)的规定，基于职务分类的排除不适用于完成规定野外火灾任务的职务。 b. 法律权限、岗位分类及重复补偿担忧\n众多意见认为，实际问题不是规定的火灾是否危险，而是依据OPM法规授权是否有法律依据。评论者主张，根据2021年11月15日第117号公共法案修正的5 U.S.C. 5545(d)(1)，支付GW薪酬计划0456野外火灾管理职业系列雇员的危险补偿不合法。诸如点火、控火、巡逻、清理火线和挂树活动使雇员暴露于明火、辐射和对流热、烟雾、不稳定地形、火灾削弱的树木、燃烧化学产物及生物危害。OPM认定这些危险不能仅靠培训、个人防护设备或标准作业控制充分缓解，且危险程度与支持25%野火火线工作差异补偿的危险相当。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "278d2f207c7b65baa1985392e5c9cf622398cbf0f0bd06ebe8bf321c9a3823a3",
+      "chineseText": "1 注释中提供的评论在公共记录中的具体位置已被计入类似工作中，评论编号末尾提供了跨公共记录的注释链接。评论公开可在 https://www.regulations.gov/comment/OPM-2026-0199-00nn 获得，其中“nn”为评论编号。根据职位分类（即与档案对应的三位数字编号）提交的评论表示，国会于2021年修订的5 U.S.C. 5545(d)(1)(A)明确为以防火、控制、扑灭或管理野外火灾为主要职责的职业序列员工设立了例外。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "99f6dd4a3eccdbe837c6dd8e0bf8ea46fa4a057aa1843e5936f9c96b44511fd5",
+      "chineseText": "2026年8月13日16:20版本 Jkt 268001 PO 00000 Frm 00006 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s9",
+      "order": 9,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1750f61ea951f07e32369de8f51844b9bb22fc339c4cf15f88edadc7dc2ab6df",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52481"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2b4061472f18891c77ade6fa39a08a6a8ede3a273a08646d10ead12b0318d595",
+      "chineseText": "仅为GS和FWS官员以及清洁和维护休闲场所的员工，以及参与预防、控制、镇压或管理野火的消防队队员规定野外差别危险津贴(hazard pay)，使他们即使其职位描述中未包括该风险时，也能获得危险津贴。此外，2022年基础设施投资和就业法案(Pub. L. 117–58)未给予每位消防员工永久性的2万美元加薪，而是仅给予合格的USDA和DOI野外消防员每年最高2万美元或基础工资50%的临时补贴。野外消防员工资改革通过了2025年全年度持续拨款和延期法案(Public Law 119–4)第1807条，设立了GS和FWS消防员的特殊基本工资待遇。涉GS和FWS执行野外消防活动的员工公平性问题，应通过确保他们依据现有法律和规章得到适当薪酬，而非拒绝授权法令许可的危险津贴。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "33e0c3eae370fe108de3666d4e106e9f8c800f9015c3f1095350f757dcc3f1f5",
+      "chineseText": "有关将危险津贴扩展至规定火烧工作的问题，评论者反对OPM的提案，认为经过良好规划和执行的规定火烧作业是受控活动，设计目的是减少人员风险，不比其他未涵盖危险津贴的“林业工作”天生更加危险。此外，烧制计划提前制定，危险天气将避免点火，设备和人员预先部署，现场风险可识别和缓解，且不同于往往快速且不可预测的野火行动。评论中还提出，待烧制窗口等待期间的人员和设备调动不应成为危险津贴的触发因素。此外，虽然规定的危险火烧准备活动未涵盖，但执行火线点火、维持、巡逻、倒伐和善后阶段的员工仍面临火焰、辐射热、烟雾、不稳定地形、病弱的树木及无法完全缓解的化学和生物危险。"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "b3a58e10e5e5b7aca1c225704449448ec478ac19df93c8216af0a9fea65cc720",
+      "chineseText": "VerDate Sep<11>2014 16:20 Aug 13, 2026 Jkt 268001 PO 00000 Frm 00007 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s13",
+      "order": 13,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "f49af7a5af6442eee8bd80f87cda8cbb2a56b3aa4a7a0ad3e2bad628ac5889d7",
+      "chineseText": "52482 联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则及规则"
+    },
+    {
+      "segmentId": "pdf-p4-s14",
+      "order": 14,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "867dbd414d0242a9add77ddea57d6b71081212c0f060738e26a9678fa478cd31",
+      "chineseText": "实施和控制规定野外火灾。空中跳伞员（Smokejumper）熟练或训练跳伞、航空作业、停机坪作业及空中加油基地活动存在本规则未涉及的独特问题。这些活动如需额外的津贴类别，应通过基于证据的评审及未来规则制定单独考虑。本规则限制于OPM基于USDA和DOI请求评估的危害范围，未涵盖其他风险较高的活动，不表示其他工作无风险。"
+    },
+    {
+      "segmentId": "pdf-p4-s15",
+      "order": 15,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "be545093cfdf74fbc2740c74c0b835bef68ef1506833260dc9ab5f6f2d86910b",
+      "chineseText": "OPM正在修订5 CFR第550部分附录A，新增消防员类别，授权对作为消防队成员直接参与实施和控制规定野外火灾的GS员工支付25%差额津贴。该津贴基于薪酬状态小时支付，符合EDP计划第二部分结构。所有其他消防员EDP类别保持不变。USDA估计按当前GS和FWS工资率提供HDP和EDP的成本约为每年2000万美元，DOI估计约1250万美元。森林服务部门参与规定火烧和野火响应的所有员工使用单一工资账户。基于FY 2025的总量，DOI比较了近似增长10%的2026及2027财政年度规定火烧目标。为适应工作量和工资增长，包括2026年1月1%的年度薪资调整，DOI相应上调2026年危险津贴预算至9百万美元，2027年预算升至950万美元。"
+    },
+    {
+      "segmentId": "pdf-p4-s16",
+      "order": 16,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ed2cb021fcf9ec82c8929e2cbd08e2ca447f823d4ba0448a8f39e02c07630124",
+      "chineseText": "本最终规则旨在解决从事规定野外火灾活动的联邦员工，与执行同类野火火线任务员工之间的薪酬差距，并助力招聘和留用GS和FWS员工。相同危险的补偿显示对应工作的风险被认可。OPM预计约有10,000名GS员工和2,500名FWS员工受到影响，未收到相关估计的公开评议。该规则遵循相关行政命令关于评估规则成本与收益的要求，在经济、环境、公众健康安全及分配效果方面择优采取监管措施。"
+    },
+    {
+      "segmentId": "pdf-p5-s17",
+      "order": 17,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "c141ea0d431bbc7d54bde264bff704bb5dff30577a53d5e6ac5eb20f499d8475",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则及规则 52483"
+    },
+    {
+      "segmentId": "pdf-p5-s18",
+      "order": 18,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "45596927be2bac3f5f909306c5326833fd4622f49f4492cfd3e6f9b72c9f5ea1",
+      "chineseText": "影响和公平）。相关法规要求各机构在发布任何对政府雇员产生年度经济影响达到1亿美元或以上，或对州、地方、部落政府、私营部门的经济、经济行业、生产力、竞争、就业、环境、公共健康或安全造成实质性负面影响的规则之前，必须对相关成本和收益进行预计影响分析并加以评估。本规则制定未达到该门槛，未被认定为根据行政命令12866第3(f)条款的“重大监管行动”。本规则未被视为行政命令14192规定的监管行动，因其带来的成本不超过最低影响限额。F. 国会审查法案 根据小企业监管执法公平法案1996年的附录E（被称为国会审查法案CRA，5 U.S.C. 801及以下条款）要求多数最终规则须在生效前向国会提交。OPM将向国会和美国审计总署提交关于本规则的报告。预算管理局信息与监管事务办公室已确定本规则不属于CRA定义的重大规则。OPM主任Scott Kupor已审查并批准本文件，授权下述签署人电子签名并提交联邦公报局出版。人事管理办公室，Jerson Matias，联邦公报联络人。因此，OPM对5 CFR部分532和550进行如下修订：第532部分—现行薪资体系 权限引用继续为5 U.S.C. 5343、5346。第532.707条根据5 U.S.C. 552同时发布。2. 在第532部分子部分E的附录A中，通过添加一项新活动至环境差异项目“10.灭火”类别下的《附录A-第II部分—出勤小时支付》表，内容如下：G. 文书工作减少法案 本规则制定未施加任何依照文书工作减少法案（44 U.S.C. 第35章修订版）而需报告或记录的信息要求。潜在受影响者的清单 5 CFR第532部分 行政管理和程序，索赔，政府雇员，工资。"
+    },
+    {
+      "segmentId": "pdf-p5-s19",
+      "order": 19,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "5314fce9b832f19badb8381907224d24b9cac959931c72f455caea6ab541959d",
+      "chineseText": "第II部分——基于出勤小时的付款\n 差异率　适用类别　生效日期\n （百分比）"
+    },
+    {
+      "segmentId": "pdf-p5-s20",
+      "order": 20,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "7d7e7e37b6e3d7b4214fe760c02d18c7f9f61c11bc505aa6ecaa4d483eafcead",
+      "chineseText": "* * * * * * *\n 10.灭火。参与或协助火场现场灭火行动，并直接暴露于遏制或扑灭火源所固有的危险中。\n 25 ............. 高度危险..\n — 在火线上扑灭森林和牧场火灾 .................................................................................... 1972年7月1日生效。\n — 作为灭火队成员参与火线上的活动，直接涉及处方野火的实施和控制。 2026年9月14日或之后的首个支薪期开始生效。"
+    },
+    {
+      "segmentId": "pdf-p5-s21",
+      "order": 21,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "d29946ccc6f46a9ef0301e907c3a72715231650d2c4799a0f8879a4e44fbc2d4",
+      "chineseText": "* * * * * * *\nlotter on DSK8BHNXB4PROD with RULES1"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "240488a32defb3112e0fa0b2669218ffb013cabd93c974e54f35435814eea2bc",
+      "chineseText": "签发日期 2026年8月13日17:11，文件号Jkt 268001 PO 00000 格式4700 版式4700，联邦公报文件 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p6-s23",
+      "order": 23,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "44bf9c9abd4c92e04b4a4250f6fc6b4fa4cafa22454bb6dee5524333edb00937",
+      "chineseText": "联邦公报 第91卷，第156号 / 2026年8月14日星期五 / 规则和规章 52484页"
+    },
+    {
+      "segmentId": "pdf-p6-s24",
+      "order": 24,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "1d7ecbed8400e3d1d5a86a16ef32c5b1a48a5897c93fd3942a11e63cf0e3a617",
+      "chineseText": "* * * * * (f) 本节关于危险津贴支付的规定，当岗位分类中考虑危险或物理负荷时，不适用于职位主要职责涉及防止、控制、扑灭或管理野火的职业类别。\n第550部分—薪酬管理（通则）\n权限引用继续为5 U.S.C. 5545(d)、5548(b)。\n■ 4. 在§550.904中，添加段落(f)如下：\n* * * * *\n■ 5. 在第550部分子部分I的附录A中—危险工作授权薪酬差异表，修订“灭火”类别如下：\n* * * * *"
+    },
+    {
+      "segmentId": "pdf-p6-s25",
+      "order": 25,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "80e7d0f271b10ef0df3a28b1f2882dd130f8695e8beab95f0feb5c902a6cbb7b",
+      "chineseText": "危险津贴支付率　义务　生效日期\n （百分比）"
+    },
+    {
+      "segmentId": "pdf-p6-s26",
+      "order": 26,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "0dab9195494a2953d43bbab028e2ff8c55e0e9073d94750f514f78a3ae7f504f",
+      "chineseText": "* * * * * * *\n 灭火：\n (1) 森林和牧场火灾。在火线上作为灭火队成员参与扑灭森林和牧场火灾。\n 25　1969年7月1日以后首个支薪期开始。\n (2) 处方野火行动。作为灭火队成员参与火线上的活动，直接涉及处方野火的实施和控制。\n 25　2026年9月14日或之后首个支薪期开始。\n (3) 设备、设施或建筑物火灾。作为灭火队紧急成员参与扑灭设备、设施或建筑物的火灾。\n 25　1969年7月1日以后首个支薪期开始。\n (4) 水下码头灭火作业。参与水下码头灭火（涉及比陆地灭火更危险的风险，如强流、低温）。\n 25　同上。"
+    },
+    {
+      "segmentId": "pdf-p6-s27",
+      "order": 27,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "5d41f07abddd70a3fd8be3827705d908c8d1c5facc5c642298c24e4a2a37b838",
+      "chineseText": "* * * * * * *"
+    },
+    {
+      "segmentId": "pdf-p6-s28",
+      "order": 28,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "49ff3cf1702ec7a649685d1e1c77b8627dc9164c49c6ada476f0beefa91fdf69",
+      "chineseText": "* * * * *FAA根据AD 2023-21-10已确定需要扩大适用范围，要求对水平尾翼前肋及中间箱体内部区域进行检查，如发现不符需采取纠正措施。FAA发布此AD为解决该类产品存在的安全隐患。交通部联邦航空管理局 (FAA) 对ATR–GIE区域性运输飞机发布适航指令，更新了部分型号适航要求。公开日期：2026年9月18日。说明：FAA根据之前2023年AD要求对指定型号进行持续适航检查并增加必要维修。"
+    },
+    {
+      "segmentId": "pdf-p6-s29",
+      "order": 29,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "7768ac2221ab7560a557ef027762d18ad55c1f5e997a688a254b7dd9dcf48885",
+      "chineseText": "联系信息：FAA航空安全工程师 Christopher Spencer，地址纽约西伯里1600 Stewart Avenue，410室，电话 516-228-7332，邮箱 9-AVS-AIR-BACO-COS@faa.gov。公众可通过regulations.gov查阅该AD相关资料，或亲临FAA场所查询。"
+    },
+    {
+      "segmentId": "pdf-p6-s30",
+      "order": 30,
+      "page": 6,
+      "type": "paragraph",
+      "sourceTextHash": "9f9eefb83a909ea4d1396a55efda1213a9ce8655f5eed3913cb7eddfb46d3321",
+      "chineseText": "签发日期 2026年8月13日 16:20，文件号Jkt 268001 PO 00000 格式4700 版式4700，联邦公报文件 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    }
+  ]
+}

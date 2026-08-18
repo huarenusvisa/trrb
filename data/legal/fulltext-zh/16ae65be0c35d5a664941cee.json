@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "16ae65be0c35d5a664941cee",
   "recordFingerprint": "4501cae7e8d329d34dc1761afd36c8a40d71dd2f96960d41c326b1715f09ed51",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Transportation Department; Federal Aviation Administration",
@@ -155,5 +155,6 @@
       "sourceTextHash": "6bcea98ee20abb2af9f053d833bc0cdca46ba8242f7bde51de9ae259fdde6927",
       "chineseText": "联邦航空管理局（FAA）拟定通知，提议修订14 CFR第39部分，新增适航指令（AD），适用于所有劳斯莱斯德国有限公司（Rolls-Royce Deutschland Ltd & Co KG）生产的Trent 1000系列发动机，包括Trent 1000–A2、Trent 1000–AE2、Trent 1000–C2、Trent 1000–CE2、Trent 1000–D2、Trent 1000–E2、Trent 1000–G2、Trent 1000–H2、Trent 1000–J2、Trent 1000–K2及Trent 1000–L2型号。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.300Z"
 }

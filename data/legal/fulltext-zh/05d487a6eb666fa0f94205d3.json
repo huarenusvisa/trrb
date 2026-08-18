@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "05d487a6eb666fa0f94205d3",
   "recordFingerprint": "ee39e1cd0ed78e2cde1b757dafdb5bbd8a4373c4116d3956ca7a7e1dea91bc1f",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Homeland Security Department; Coast Guard",
@@ -83,5 +83,6 @@
       "sourceTextHash": "a3003d3b7aece18ccde17c70657aa4ed841c87c037b4e15af5f1363fc5daa1c0",
       "chineseText": "遵守本安全区时，必须服从港长或其指定代表发布的所有合法命令和指示。规则于2026年8月16日12:00至18:00期间执行。规则不对小企业产生重大影响，因此《1980年监管灵活性法》不适用。小企业如有疑问，可联系小企业和农业监管执法监察专员。此安全区规则适用联邦法规第33 CFR 165部分审核和管理。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.300Z"
 }

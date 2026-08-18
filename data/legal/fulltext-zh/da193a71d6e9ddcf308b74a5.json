@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "da193a71d6e9ddcf308b74a5",
   "recordFingerprint": "691ed306d7b71c98b71463780bf1fea3916e757caa3b3181327d523e1e461ea7",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Homeland Security Department; U.S. Customs and Border Protection",
@@ -276,5 +276,5 @@
       "chineseText": "日期：2026年8月11日15:41，文件编号Jkt 268001，表格00000，格式4700，文件编号FM 12AUR1.SGM 12AUR1"
     }
   ],
-  "reboundAt": "2026-08-17T22:59:45.336Z"
+  "reboundAt": "2026-08-18T04:05:50.291Z"
 }

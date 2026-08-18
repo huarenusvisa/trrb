@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordId": "358f65170b354febfc74b84c",
   "recordFingerprint": "514c7d801d8b05eb440a7fe799f9f083e54c9f2986092847a0f18eb43db99716",
-  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
   "sourceSystem": "FEDERAL_REGISTER",
   "authorityType": "Federal Register Final Rule",
   "issuingBody": "Environmental Protection Agency",
@@ -147,5 +147,6 @@
       "sourceTextHash": "924781e7e52929bb5b03ec6a4aab3a4d05f6e20066e34136d5006d091f5b0c08",
       "chineseText": "2026年8月12日15:47，行政记录编号Jkt 268001，文件编号00000，格式F0，页面28，格式4700，样式4700，电子联机文件：FR/FM/13AUR1.SGM，标识为13AUR1。"
     }
-  ]
+  ],
+  "reboundAt": "2026-08-18T04:05:50.297Z"
 }

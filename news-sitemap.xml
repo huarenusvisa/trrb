@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-59b18262a316896d3dcd7cfb1c7045cddde420d5</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:45:20.561Z</news:publication_date>
+        <news:title>纽约新罗谢尔94 Union Ave ICE拘捕一男子</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-363d41623ccc8d37d9a011654cedc24f80e046fe</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:45:07.192Z</news:publication_date>
+        <news:title>德州达拉斯男子因性侵未成年遭ICE扣押</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-c8df9786da591d7d5b77a1b9d866c92154815338</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:44:54.954Z</news:publication_date>
+        <news:title>美国DSA激进分子对ICE设施全天候监控</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-7062afd13f677aadd6a9f74d2c2b85d9b554db50</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

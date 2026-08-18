@@ -24,8 +24,9 @@ export default function LegalScreen() {
     return [...rows].sort((a,b) => String(b.publicationDate || '').localeCompare(String(a.publicationDate || '')) || String(a.title || '').localeCompare(String(b.title || '')));
   }, [items, q]);
 
-  if (loading) return <View style={styles.center}><ActivityIndicator color="#c8211e" /></View>;
+  if (loading) return <View testID="screen-legal" style={styles.center}><ActivityIndicator color="#c8211e" /></View>;
   return <FlatList
+    testID="screen-legal"
     style={styles.page}
     contentContainerStyle={styles.content}
     ListHeaderComponent={<View><Text style={styles.h1}>美国判例与新规</Text><Text style={styles.sub}>官方法律资料数据库 · App 原生详情</Text>{error ? <Text style={styles.error}>{error}</Text> : null}<TextInput value={q} onChangeText={setQ} placeholder="搜索案名、案号、引证或机构" placeholderTextColor="#98a2b3" style={styles.search} /><Text style={styles.count}>共 {filtered.length} 条</Text></View>}

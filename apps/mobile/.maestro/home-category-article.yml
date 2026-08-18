@@ -24,10 +24,11 @@ appId: net.trrb.mobile
     id: "category-article-0"
     retryTapIfNoChange: true
 - extendedWaitUntil:
-    visible: "进入重要新闻栏目"
+    visible:
+      id: "article-category-button"
     timeout: 25000
 - tapOn:
-    text: "进入重要新闻栏目"
+    id: "article-category-button"
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:

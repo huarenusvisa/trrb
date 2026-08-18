@@ -1,0 +1,69 @@
+name: APP-R2 Automated E2E Regression
+
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'apps/mobile/app/**'
+      - 'apps/mobile/src/**'
+      - 'apps/mobile/assets/**'
+      - 'apps/mobile/eas.json'
+      - 'apps/mobile/app.json'
+      - 'apps/mobile/package.json'
+      - 'apps/mobile/package-lock.json'
+      - 'apps/mobile/.maestro/**'
+      - 'apps/mobile/.eas/workflows/auto-e2e-regression.yml'
+
+jobs:
+  static_regression:
+    name: Typecheck and APP-R2 N1-N9 regression
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - run: npm run typecheck
+      - run: |
+          cd ../..
+          for n in 1 2 3 4 5 6 7 8 9; do
+            echo "Running APP-R2 node $n audit"
+            node "scripts/audit-app-batch2-node${n}.mjs"
+          done
+
+  build_android:
+    name: Build Android emulator app
+    needs: [static_regression]
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+
+  build_ios:
+    name: Build iOS simulator app
+    needs: [static_regression]
+    type: build
+    params:
+      platform: ios
+      profile: e2e-test
+
+  test_android:
+    name: Android automated UI regression
+    needs: [build_android]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path:
+        - '.maestro/home-category-article.yml'
+        - '.maestro/search.yml'
+        - '.maestro/tabs.yml'
+      retries: 1
+
+  test_ios:
+    name: iOS automated UI regression
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path:
+        - '.maestro/home-category-article.yml'
+        - '.maestro/search.yml'
+        - '.maestro/tabs.yml'
+      retries: 1

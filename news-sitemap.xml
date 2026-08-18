@@ -1936,12 +1936,4 @@
         <news:title>新奥尔良ICE逮捕洪都拉斯涉毒重罪非法移民</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-fed7d65317f47bccccc37f84b7b2857908e2760a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T17:56:05.853Z</news:publication_date>
-        <news:title>加州莫德斯托ICE逮捕多项犯罪墨西哥籍男子</news:title>
-      </news:news>
-    </url>
 </urlset>

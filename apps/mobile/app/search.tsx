@@ -34,9 +34,10 @@ export default function SearchScreen() {
   const active = Boolean(query || category);
 
   return (
-    <View style={styles.page}>
+    <View style={styles.page} testID="search-screen">
       <View style={styles.searchBar}>
         <TextInput
+          testID="search-input"
           value={input}
           onChangeText={setInput}
           onSubmitEditing={() => submit()}
@@ -45,11 +46,11 @@ export default function SearchScreen() {
           returnKeyType="search"
           style={styles.input}
         />
-        <Pressable style={styles.button} onPress={() => submit()}><Text style={styles.buttonText}>搜索</Text></Pressable>
+        <Pressable testID="search-submit" style={styles.button} onPress={() => submit()}><Text style={styles.buttonText}>搜索</Text></Pressable>
       </View>
 
       {active ? (
-        <View style={styles.results}>
+        <View style={styles.results} testID="search-results">
           <View style={styles.filterRow}>
             {category ? <Pressable style={styles.filterChip} onPress={() => setCategory('')}><Text style={styles.filterText}>栏目：{category} ×</Text></Pressable> : null}
             <Pressable onPress={() => { setQuery(''); setCategory(''); setInput(''); }}><Text style={styles.cancel}>返回搜索首页</Text></Pressable>
@@ -62,7 +63,7 @@ export default function SearchScreen() {
           />
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.discovery}>
+        <ScrollView contentContainerStyle={styles.discovery} testID="search-discovery">
           <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>热搜</Text><Text style={styles.audit}>来自正式已发布新闻数据</Text></View>
           <View style={styles.chips}>
             {trending.map((item) => (

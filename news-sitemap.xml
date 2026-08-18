@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-7c97754231619840ca915cfaa78ba39da82d47f3</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T20:34:59.716Z</news:publication_date>
+        <news:title>圣地亚哥ICE拘捕墨西哥籍涉毒及鲁驾非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-0a68e4af91fc05414344ff46f522178586d75d9b</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T20:34:58.980Z</news:publication_date>
+        <news:title>佐治亚隆普金斯斯图尔特拘留中心迎多位众议员参观</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-8d2857637c60b08ca0083ccb3694dcc2514fa548</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

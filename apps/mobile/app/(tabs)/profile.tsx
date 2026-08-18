@@ -51,7 +51,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <ScrollView style={styles.page} contentContainerStyle={styles.pageContent}>
+    <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
       <Text style={styles.h1}>我的</Text>
       {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
         <Text style={styles.sub}>已登录 · {session.user.email || 'TRRB用户'}</Text>

@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-33d2f54a1008368c57461c1cddb3b4beede5686d</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T21:02:34.789Z</news:publication_date>
+        <news:title>华盛顿雅基马及Toppenish地区ICE多点执法 多人被带走</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-6fcf0f9063479e057fcd96c030a8edf73a249618</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T21:02:21.551Z</news:publication_date>
+        <news:title>佛罗里达ICE对涉嫌谋杀非法移民发出扣押令</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-cf76be970421c83f457e6abb3cc002e7a30d820b</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T21:02:08.986Z</news:publication_date>
+        <news:title>伊利诺伊本森维尔ICE行动疑致数美国公民受袭</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-7c97754231619840ca915cfaa78ba39da82d47f3</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

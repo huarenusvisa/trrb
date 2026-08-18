@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "7261f7d2e650d6acf47d7346b601aab5dc224a2328656791a73739728cf9e22f",
+  "datasetVersion": "33578d9d29be4f3902f72509b89e72940eaa63178c08fed0b4defa0c25b2c6ef",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 427,
+    "US_CIRCUIT": 432,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 623,
+  "count": 628,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -3388,6 +3388,21 @@
       "sourceKey": "CIRCUIT:ca10:1fb3dcdc912f5e0f"
     },
     {
+      "id": "7e054d0e080b62de4ee4de4c",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": null,
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490406.pdf",
+      "officialPdfUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490406.pdf",
+      "sourceKey": "CIRCUIT:ca10:4aac51383bbdc73d"
+    },
+    {
       "id": "a50ccc454b0e65b137610f06",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3538,6 +3553,21 @@
       "sourceKey": "CIRCUIT:ca10:d4ad3132dc4236ce"
     },
     {
+      "id": "bd5d5331ef05e905f8c839ff",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Tenth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": null,
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490303.pdf",
+      "officialPdfUrl": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490303.pdf",
+      "sourceKey": "CIRCUIT:ca10:dff034333aae9c93"
+    },
+    {
       "id": "c1faba93862510fe6ea70eea",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3581,6 +3611,21 @@
       "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510011.pdf",
       "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510011.pdf",
       "sourceKey": "CIRCUIT:ca11:050c8b8f79fdaffb"
+    },
+    {
+      "id": "48160e5726f536fe2c94ee99",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "USA v. Kenneth Mininger",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510073.pdf",
+      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510073.pdf",
+      "sourceKey": "CIRCUIT:ca11:08675acd283da34b"
     },
     {
       "id": "7d1f11eb7e9a6c7d7a0f7317",
@@ -3928,6 +3973,21 @@
       "sourceKey": "CIRCUIT:ca11:7c0c68346e6308cd"
     },
     {
+      "id": "443a9e2a4b5f0595eb1bcfd9",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Ricardo Devengoechea v. Bolivarian Republic of Venezuela",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410029.op2.pdf",
+      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410029.op2.pdf",
+      "sourceKey": "CIRCUIT:ca11:7c4a925e2979c440"
+    },
+    {
       "id": "ae8b520e3a3741563573685f",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4091,36 +4151,6 @@
       "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202412662.pdf",
       "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202412662.pdf",
       "sourceKey": "CIRCUIT:ca11:b9c6cd9671f3df7d"
-    },
-    {
-      "id": "19fc71560a757d5949653f90",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "U.S. All Star Federation, Inc. v. Open Cheer & Dance Championship Series, LLC, et al",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202412653.pdf",
-      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202412653.pdf",
-      "sourceKey": "CIRCUIT:ca11:bdca7c581f1986f2"
-    },
-    {
-      "id": "43b7506a417e999ec6278db7",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "Winston Lloyd Hayles v. U.S. Attorney General",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410516.pdf",
-      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410516.pdf",
-      "sourceKey": "CIRCUIT:ca11:c002e41e55ee784b"
     },
     {
       "id": "54faaaac889581c856941741",
@@ -5353,6 +5383,21 @@
       "sourceKey": "CIRCUIT:ca3:b76ab7844016900a"
     },
     {
+      "id": "40d3d8de08adda4cce94f060",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Sunoco Pipeline LP v. Daniel La Hart",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/252551np.pdf",
+      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/252551np.pdf",
+      "sourceKey": "CIRCUIT:ca3:bc214fe05f818264"
+    },
+    {
       "id": "95a7289a08ef43a6a91bc7ef",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -5381,6 +5426,21 @@
       "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/251281np.pdf",
       "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/251281np.pdf",
       "sourceKey": "CIRCUIT:ca3:c2ac8a11a158b1e5"
+    },
+    {
+      "id": "b1077abaca143d6ab0ac8618",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Greg Kerr v. General Motors LLC",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/252610np.pdf",
+      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/252610np.pdf",
+      "sourceKey": "CIRCUIT:ca3:c93140e25514a6cc"
     },
     {
       "id": "c8b832121b8ed50bd5f54aed",
@@ -5518,21 +5578,6 @@
       "sourceKey": "CIRCUIT:ca3:f3d879a1b0e2015a"
     },
     {
-      "id": "e5cc5fc4983800227aa4e335",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "Martin and Harris Private Ltd v. Merck & Co Inc",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/252085np.pdf",
-      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/252085np.pdf",
-      "sourceKey": "CIRCUIT:ca3:f6f1967ace247bbb"
-    },
-    {
       "id": "158db104aee6229c146d6c32",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -5546,21 +5591,6 @@
       "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/242867np.pdf",
       "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/242867np.pdf",
       "sourceKey": "CIRCUIT:ca3:f924b40acdb82ec3"
-    },
-    {
-      "id": "8b9fd8a49cdcbb2d82fdeb06",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "Dameon Allen v. Attorney General United States of America",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/252836np.pdf",
-      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/252836np.pdf",
-      "sourceKey": "CIRCUIT:ca3:fc607c9e7ddd37d2"
     },
     {
       "id": "d8a67ca0789b7da088336507",
@@ -5591,6 +5621,21 @@
       "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/252867np.pdf",
       "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/252867np.pdf",
       "sourceKey": "CIRCUIT:ca3:fd79517113f9eed5"
+    },
+    {
+      "id": "76cebc8349e1b67e27d7de3b",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/251512.P.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251512.P.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251512.P.pdf",
+      "sourceKey": "CIRCUIT:ca4:0b7b851cf07a2b90"
     },
     {
       "id": "673d5f428024abc7d73ba526",
@@ -5758,19 +5803,19 @@
       "sourceKey": "CIRCUIT:ca4:32f6982289da86d1"
     },
     {
-      "id": "10f3479cda7e5ce2e064cf16",
+      "id": "05f495de5c38c6493f418948",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/251221.P.pdf",
+      "title": "https://www.ca4.uscourts.gov/opinions/244587.U.pdf",
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251221.P.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251221.P.pdf",
-      "sourceKey": "CIRCUIT:ca4:36f6a5bff4e545b3"
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/244587.U.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/244587.U.pdf",
+      "sourceKey": "CIRCUIT:ca4:37693b186fb92baa"
     },
     {
       "id": "08e727ce3bc8f025a0b6374d",
@@ -5878,21 +5923,6 @@
       "sourceKey": "CIRCUIT:ca4:574a2aba0af96d65"
     },
     {
-      "id": "9694c83f1bafe94da642af53",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/252027.P.pdf",
-      "sourceKey": "CIRCUIT:ca4:58a09559d3800479"
-    },
-    {
       "id": "f23e6d86e93c6a3d7f2bc305",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -5953,6 +5983,21 @@
       "sourceKey": "CIRCUIT:ca4:96933b47bf1b7b88"
     },
     {
+      "id": "08c5d3a4855f05e6b0884adf",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/251828.p.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251828.p.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251828.p.pdf",
+      "sourceKey": "CIRCUIT:ca4:9ca9a598cdfa0d0a"
+    },
+    {
       "id": "f6df447b81029c2e4847c4f9",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -5981,21 +6026,6 @@
       "officialUrl": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf",
       "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/224257.P.pdf",
       "sourceKey": "CIRCUIT:ca4:a12c99570f16134f"
-    },
-    {
-      "id": "1ba869e532cd3885c1863f20",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/254223.U.pdf",
-      "sourceKey": "CIRCUIT:ca4:a2e1a73ccf1d0222"
     },
     {
       "id": "694c51b9e022cf15fe27b4b7",
@@ -6058,21 +6088,6 @@
       "sourceKey": "CIRCUIT:ca4:a5241b2a8a312e1f"
     },
     {
-      "id": "a82fe8af16ce6fcb798542f7",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251490.P.pdf",
-      "sourceKey": "CIRCUIT:ca4:a5e0282128fa1d57"
-    },
-    {
       "id": "d40bb008e53ef29d35a16339",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6116,21 +6131,6 @@
       "officialUrl": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf",
       "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf",
       "sourceKey": "CIRCUIT:ca4:b286cac5e2080a21"
-    },
-    {
-      "id": "08bb4f8c8ab1d28ed5c8e282",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
-      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/254301.U.pdf",
-      "sourceKey": "CIRCUIT:ca4:bba3883f77551306"
     },
     {
       "id": "d38ad3d9c1408306b124550a",
@@ -6206,6 +6206,36 @@
       "officialUrl": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf",
       "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf",
       "sourceKey": "CIRCUIT:ca4:c7b385a71014d1fd"
+    },
+    {
+      "id": "8fbb059277b16417412b2d32",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/251413.P.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/251413.P.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/251413.P.pdf",
+      "sourceKey": "CIRCUIT:ca4:ca3bb7c57d9c2886"
+    },
+    {
+      "id": "93cab8097b9eb0cce8cff92c",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fourth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "https://www.ca4.uscourts.gov/opinions/254032.U.pdf",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca4.uscourts.gov/opinions/254032.U.pdf",
+      "officialPdfUrl": "https://www.ca4.uscourts.gov/opinions/254032.U.pdf",
+      "sourceKey": "CIRCUIT:ca4:d575477f282dd705"
     },
     {
       "id": "ba9af05c933c93aa3f4cd2b2",
@@ -6343,21 +6373,6 @@
       "sourceKey": "CIRCUIT:ca4:ff1f303e5d5e393e"
     },
     {
-      "id": "6f995fe22b3704f5d0695fa4",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30522.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30522.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:098ecac78f412251"
-    },
-    {
       "id": "37ae74fbe14a518ef3b4c6df",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6371,21 +6386,6 @@
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60698.0.pdf",
       "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60698.0.pdf",
       "sourceKey": "CIRCUIT:ca5:0baa7e83bcec7ab5"
-    },
-    {
-      "id": "e04f86a3b3db9c14e1f6698b",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50705.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50705.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:0f5b081df289f1e8"
     },
     {
       "id": "5c91d51e6ddb0a98e5ad05a3",
@@ -6416,21 +6416,6 @@
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-50066.0.pdf",
       "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-50066.0.pdf",
       "sourceKey": "CIRCUIT:ca5:110deb39828f155d"
-    },
-    {
-      "id": "12cfe366048afbc0a6b0f49e",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40552.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40552.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:166581a3ad5d8584"
     },
     {
       "id": "2abf250b2e5c1d18a5314110",
@@ -6470,7 +6455,7 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "26-30063 USA v. Gilmore Aug 17, 2026 Unpublished Opinion PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30063.0.pdf",
@@ -6478,19 +6463,19 @@
       "sourceKey": "CIRCUIT:ca5:25dc7edf78105f27"
     },
     {
-      "id": "7f79a6c01201bcac26702830",
+      "id": "7cd0eb59e688c8da57f27b75",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": null,
+      "title": "25-50791 Anyanwu v. City of San Antonio Aug 18, 2026 Unpublished Opinion PDF",
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50039.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50039.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:2c10e82d77240dc3"
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50791.0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50791.0.pdf",
+      "sourceKey": "CIRCUIT:ca5:2bfd5b6dcf823262"
     },
     {
       "id": "18fce0a2a44fba333fdb5ff8",
@@ -6500,7 +6485,7 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "25-20231 Randel v. Travelers Lloyds of Texas Aug 17, 2026 Unpublished Opinion PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-20231.0.pdf",
@@ -6553,6 +6538,21 @@
       "sourceKey": "CIRCUIT:ca5:346b350b0ad29083"
     },
     {
+      "id": "20ed1bc49884d051d78afa10",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-50946 Anderson v. Americredit Aug 18, 2026 Unpublished Opinion PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50946.0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50946.0.pdf",
+      "sourceKey": "CIRCUIT:ca5:41912605a0cf6c03"
+    },
+    {
       "id": "90e0165591a59de7828edc28",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6560,7 +6560,7 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "25-60640 Cardoza-Bonilla v. Blanche Aug 17, 2026 Unpublished Opinion PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60640.0.pdf",
@@ -6613,21 +6613,6 @@
       "sourceKey": "CIRCUIT:ca5:4bc9deac2c5bb6a2"
     },
     {
-      "id": "dcc66afd104de4932bfb295c",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50811.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50811.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:4dea9c96acdcb46c"
-    },
-    {
       "id": "95dfa44c1b5b7d962fcdeeed",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6643,19 +6628,34 @@
       "sourceKey": "CIRCUIT:ca5:505a9f73e920f349"
     },
     {
-      "id": "c94ebf208a86f9c02638fc35",
+      "id": "c0fec19bff5f78473715756a",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": null,
+      "title": "25-70012 Wessinger v. Vannoy Aug 18, 2026 Published Opinion PDF",
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-30772.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/24/24-30772.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:75904832f6d051e3"
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-70012-CV0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-70012-CV0.pdf",
+      "sourceKey": "CIRCUIT:ca5:50d157e02e399b7e"
+    },
+    {
+      "id": "3182101d80aac825bc525671",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-11226 USA v. Manzo-Cardenas Aug 18, 2026 Unpublished Opinion PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11226.0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11226.0.pdf",
+      "sourceKey": "CIRCUIT:ca5:7768b0c9d32fbb3d"
     },
     {
       "id": "3245d33b05a01e8a14429533",
@@ -6725,12 +6725,27 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "25-10642 USA v. Crabtree Aug 17, 2026 Unpublished Opinion PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10642.0.pdf",
       "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10642.0.pdf",
       "sourceKey": "CIRCUIT:ca5:91b1ca1e435665b9"
+    },
+    {
+      "id": "006abc5ea75b64dedb650bbc",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-30192 USA v. Augillard Aug 18, 2026 Published Order PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30192-CR0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30192-CR0.pdf",
+      "sourceKey": "CIRCUIT:ca5:9254e8b3f067d47f"
     },
     {
       "id": "9f1fa38fe725834397456ffc",
@@ -6785,7 +6800,7 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "25-50728 USA v. Brown Aug 17, 2026 Unpublished Opinion PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50728.0.pdf",
@@ -6808,19 +6823,19 @@
       "sourceKey": "CIRCUIT:ca5:9697b44f72dcdddf"
     },
     {
-      "id": "d688869f1b008f9900617893",
+      "id": "3a2f1f0fd04e12e348273950",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": null,
+      "title": "25-60462 Bonds v. Woodall Aug 18, 2026 Published Opinion PDF",
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60689.0.pdf",
-      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60689.0.pdf",
-      "sourceKey": "CIRCUIT:ca5:a720b1b2c6c99761"
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60462-CV0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60462-CV0.pdf",
+      "sourceKey": "CIRCUIT:ca5:980fd92e33a2d9ad"
     },
     {
       "id": "ee0b2b4d103f64f265498587",
@@ -6913,6 +6928,21 @@
       "sourceKey": "CIRCUIT:ca5:b5645b884e4081f1"
     },
     {
+      "id": "67ca0cb3f0228aa25464f8b6",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Fifth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-20415 Quadvest v. San Jacinto River Auth Aug 18, 2026 Published Opinion PDF",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20415-CV0.pdf",
+      "officialPdfUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20415-CV0.pdf",
+      "sourceKey": "CIRCUIT:ca5:b571015038a716c9"
+    },
+    {
       "id": "0f8d1ab40c197262eb5f5ff7",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -6965,7 +6995,7 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "26-30139 Williams v. Town of Clinton Aug 17, 2026 Unpublished Opinion PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30139.0.pdf",
@@ -6995,7 +7025,7 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "25-40542 Meeks v. Ray Aug 17, 2026 Published Order PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/pub/25/25-40542-CV0.pdf",
@@ -7025,7 +7055,7 @@
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "25-50656 Bissell v. Mata Aug 17, 2026 Unpublished Opinion PDF",
+      "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
       "officialUrl": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50656.0.pdf",
@@ -7513,6 +7543,21 @@
       "sourceKey": "CIRCUIT:ca7:5149620c5afa9bf3"
     },
     {
+      "id": "93e6f131c0393ec1c020d01c",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Final Opinion",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:24-2219:J:Scudder:con:T:fnOp:N:3593042:S:0",
+      "officialPdfUrl": null,
+      "sourceKey": "CIRCUIT:ca7:535921e94c28f2e1"
+    },
+    {
       "id": "fd79e22b05e7292483f1ab9e",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -7601,6 +7646,36 @@
       "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-14/C:25-2428:J:PerCuriam:aut:T:fnOp:N:3591581:S:0",
       "officialPdfUrl": null,
       "sourceKey": "CIRCUIT:ca7:879815b3ce1aaefa"
+    },
+    {
+      "id": "0fe7240feed5eff1e6f80145",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Final Opinion",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:25-1556:J:Pryor:aut:T:fnOp:N:3593130:S:0",
+      "officialPdfUrl": null,
+      "sourceKey": "CIRCUIT:ca7:8c466de349d76b57"
+    },
+    {
+      "id": "487420ce0007120684d6861e",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Seventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Final Opinion",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:24-2219:J:Hamilton:aut:T:fnOp:N:3593042:S:0",
+      "officialPdfUrl": null,
+      "sourceKey": "CIRCUIT:ca7:a6b77498ce074a69"
     },
     {
       "id": "223db6440578a7b29825dae2",

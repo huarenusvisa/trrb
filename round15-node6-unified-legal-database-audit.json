@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-18T23:03:34.729Z",
+  "generatedAt": "2026-08-18T23:35:31.613Z",
   "schemaVersion": 1,
-  "datasetVersion": "2beb46c442a42f3c5d144a645a1aeccacd16ca2496cd6d4cb2b39c9af51388c3",
+  "datasetVersion": "e770c88c445146421bd552634aa2bbec244de50512f3ccec46f4fa680b9a11d7",
   "count": 630,
   "sourceCounts": {
     "SCOTUS": 68,
@@ -54,7 +54,7 @@
     {
       "ok": true,
       "label": "content-addressed dataset version generated",
-      "detail": "2beb46c442a42f3c"
+      "detail": "e770c88c44514642"
     },
     {
       "ok": true,

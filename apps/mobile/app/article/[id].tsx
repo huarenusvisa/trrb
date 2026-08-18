@@ -83,7 +83,7 @@ export default function ArticleDetailScreen() {
 
   return <><Stack.Screen options={{ title: '', headerShown: true, headerBackTitle: '返回', headerShadowVisible: false, gestureEnabled: true }} /><ScrollView style={styles.page} contentContainerStyle={styles.content} contentInsetAdjustmentBehavior="automatic">
     {offline ? <View style={styles.offline}><Text style={styles.offlineText}>{error}</Text><Pressable onPress={() => void load()}><Text style={styles.retry}>重新连接</Text></Pressable></View> : null}
-    <Pressable style={styles.categoryButton} onPress={openArticleSection} accessibilityRole="button" accessibilityLabel={`进入${article.category_name || '新闻'}栏目`}>
+    <Pressable testID="article-category-button" style={styles.categoryButton} onPress={openArticleSection} accessibilityRole="button" accessibilityLabel={`进入${article.category_name || '新闻'}栏目`}>
       <Text style={styles.category}>{article.category_name || '新闻'}</Text>
       <Text style={styles.categoryArrow}>›</Text>
     </Pressable>

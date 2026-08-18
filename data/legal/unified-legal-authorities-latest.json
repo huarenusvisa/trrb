@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "d93987d6740a5cb7d9f5debdb5fbc60ea35c426017b95ea10ab6062596ab688a",
+  "datasetVersion": "cf19edce2c74bc0a7f35f8119a4c65aa1b5b39ef91ab9db27e0bf9fbd869f6ed",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 422,
+    "US_CIRCUIT": 420,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 618,
+  "count": 616,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -3073,21 +3073,6 @@
       "sourceKey": "CIRCUIT:ca1:858cb118373ba9a9"
     },
     {
-      "id": "1e45f048e4aecf60e105f698",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "25-1781 Rhode Island Truck Ctr., LLC v. Daimler Trucks North America, LLC",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1781P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1781P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:86bf38d8ab991d52"
-    },
-    {
       "id": "df053c05724a92ac914774b4",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3356,21 +3341,6 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:f970d442dfa65741"
-    },
-    {
-      "id": "522f4974f976fdad7abf5a18",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "24-1467P.01A",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:fabb9a679d55586f"
     },
     {
       "id": "e54c78e7d9d098f0cf823b17",

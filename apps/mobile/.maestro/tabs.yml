@@ -3,23 +3,33 @@ appId: net.trrb.mobile
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: "美国"
+    visible:
+      id: "tab-america"
     timeout: 30000
-- tapOn: "美国"
+- tapOn:
+    id: "tab-america"
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible: "美国时政 · 美国警情"
     timeout: 20000
-- tapOn: "移民"
+- tapOn:
+    id: "tab-immigration"
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible: "7大知识中心"
     timeout: 15000
 - assertVisible: "赴美留学"
-- tapOn: "判例新规"
+- tapOn:
+    id: "tab-legal"
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible: "美国判例与新规"
     timeout: 20000
-- tapOn: "我的"
+- tapOn:
+    id: "tab-profile"
+    retryTapIfNoChange: true
 - extendedWaitUntil:
     visible: "阅读字号"
     timeout: 15000
-- assertVisible: "我的"
+- assertVisible:
+    id: "tab-profile"

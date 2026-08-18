@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/%E7%BB%BF%E5%8D%A1%E5%A4%A7%E5%8F%98%E5%A4%A9uscis%E9%87%8D%E5%90%AF%E5%85%AC%E5%85%B1%E8%B4%9F%E6%8B%85%E5%AE%A1%E6%9F%A59%E6%9C%8818%E6%97%A5%E8%B5%B7%E7%94%B3%E8%AF%B7%E4%BA%BA%E9%9D%A2%E4%B8%B4%E4%B8%A5%E5%AE%A1-msysjh1x-0a62c3</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T15:01:43.317Z</news:publication_date>
+        <news:title>绿卡大变天！USCIS重启“公共负担”审查，9月18日起申请人面临严审</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/hot/%E5%85%BB%E8%82%B28%E5%B9%B43%E5%AD%A9%E7%AB%9F%E5%9D%87%E9%9D%9E%E4%BA%B2%E7%94%9F%E6%A1%88%E5%BC%80%E5%BA%AD%E5%A5%B3%E6%96%B9%E8%A2%AB%E6%8C%87%E6%89%BF%E8%AE%A4%E5%87%BA%E8%BD%A8%E8%B5%94%E5%81%BF%E4%BA%89%E8%AE%AE%E6%88%90%E7%84%A6%E7%82%B9-msys9mtw-8477d5</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1830,46 +1838,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-16T16:01:06.839Z</news:publication_date>
         <news:title>美网友：称美军曾承诺保护移民父亲 ICE于7月4日依旧将其遣返</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-b8f065e31e7d9006492492afe36c9ed562078f5d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T15:04:37.916Z</news:publication_date>
-        <news:title>德州穆斯林移民伊玛目被指支持恐怖主义引驱逐呼声</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-520926c00777402a78c9f2c55aede2d78c071141</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T15:04:28.925Z</news:publication_date>
-        <news:title>新奥尔良Roblox程序员涉持未成年人淫秽物被捕</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-26f8ea2d068f34b70ccbed5791e90d55b0b74047</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T15:04:18.113Z</news:publication_date>
-        <news:title>美国终止索马里TPS近2500人失临时身份</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-014aa811074725d1e72fc8ad0573f3384fbef3d6</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T15:04:10.457Z</news:publication_date>
-        <news:title>佛罗里达贝县非法移民沙奎尔因汉堡王持刀伤人被捕</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e9b956f8f1689dbbba90a022ca3e92126edbe8ae</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T15:03:17.672Z</news:publication_date>
-        <news:title>休斯敦警方逮捕五名涉暴力入室绑架非法入境者</news:title>
       </news:news>
     </url>
 </urlset>

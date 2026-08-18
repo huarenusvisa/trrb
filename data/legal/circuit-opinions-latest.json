@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-18T15:49:57.085Z",
+  "generatedAt": "2026-08-18T16:49:06.471Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -327,6 +327,10 @@
       "sourceFinalUrl": "https://www2.ca3.uscourts.gov/recentop/week/recprec.htm",
       "documents": [
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/251435p.pdf",
+          "title": "USA v. Kenneth Strickland"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251489p.pdf",
           "title": "USA v. Jose Tavares"
         },
@@ -403,12 +407,36 @@
           "title": "Cheryl Hileman v. West Penn Allegheny Health System Inc"
         },
         {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/243144p.pdf",
-          "title": "City of Chester Pennsylvania v."
+          "url": "https://www2.ca3.uscourts.gov/opinarch/261723np.pdf",
+          "title": "Fuhai Li v."
         },
         {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/242415p.pdf",
-          "title": "Association of New Jersey Rifle and Pistol Clubs I v. Attorney General New Jersey"
+          "url": "https://www2.ca3.uscourts.gov/opinarch/253067np.pdf",
+          "title": "USA v. David Cunningham"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252152np.pdf",
+          "title": "Daniel La Hart v. Sunoco Pipeline LP"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/251804np.pdf",
+          "title": "Virgin Grand Estates #60 Villa Association v. Inter Ocean Insurance Agency St Thomas LLC"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/251295np.pdf",
+          "title": "Carolyn Gardner v. Kutztown University"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/242867np.pdf",
+          "title": "Richard Silverberg v. DuPont De Nemours Inc"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/242689np.pdf",
+          "title": "Meshinsky & Associates LLC v. Continental Casualty Co"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/242563np.pdf",
+          "title": "Craig Chiaccheri v. Zurich American Insurance Co"
         },
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/252396np.pdf",
@@ -497,34 +525,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/252085np.pdf",
           "title": "Martin and Harris Private Ltd v. Merck & Co Inc"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251981np.pdf",
-          "title": "USA v. Randall Hayes"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251892np.pdf",
-          "title": "Arefin Chowdhury v. Attorney General United States of America"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251465np.pdf",
-          "title": "USA v. Delrico Clyburn"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/243168np.pdf",
-          "title": "Ildar Niyazov v. Attorney General United States of America"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/253239np.pdf",
-          "title": "Christopher Mbewe v. Superintendent Mahanoy SCI"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/253098np.pdf",
-          "title": "Cristofer Ortega-Varela v. Attorney General United States of America"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/253032np.pdf",
-          "title": "Bezalel Grossberger v. Robert Cormack"
         }
       ],
       "notes": []
@@ -1047,6 +1047,10 @@
           "title": "Final Opinion"
         },
         {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:24-3104:J:Maldonado:aut:T:fnOp:N:3592905:S:0",
+          "title": "Final Opinion"
+        },
+        {
           "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-17/C:24-2913:J:Taibleson:aut:T:fnOp:N:3592032:S:0",
           "title": "Final Opinion"
         },
@@ -1227,6 +1231,10 @@
       "sourceFinalUrl": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml",
       "documents": [
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/18/24-3227.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/17/25-6465.pdf",
           "title": null
         },
@@ -1321,10 +1329,6 @@
         {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/16-71147.pdf",
           "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/10/23-16164.pdf",
-          "title": null
         }
       ],
       "notes": []
@@ -1338,6 +1342,14 @@
       "documents": [
         {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490181.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490282.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490269.pdf",
           "title": null
         },
         {
@@ -1601,6 +1613,42 @@
       "sourceFinalUrl": "https://media.cadc.uscourts.gov/opinions/",
       "documents": [
         {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-1193-2188689.pdf",
+          "title": "24-1193"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-7120-2188698.pdf",
+          "title": "24-7120"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-1039-2188709.pdf",
+          "title": "25-1039"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-1158-2188717.pdf",
+          "title": "25-1158"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5041-2188724.pdf",
+          "title": "25-5041"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5054-2188728.pdf",
+          "title": "25-5054"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5256-2188737.pdf",
+          "title": "25-5256"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5387-2188750.pdf",
+          "title": "25-5387"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5425-2188755.pdf",
+          "title": "25-5425"
+        },
+        {
           "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-7135-2188251.pdf",
           "title": "24-7135"
         },
@@ -1755,26 +1803,6 @@
         {
           "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-7152-2182059.pdf",
           "title": "24-7152"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-1282-2185998.pdf",
-          "title": null
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3130-2186012.pdf",
-          "title": null
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3162-2186022.pdf",
-          "title": null
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-5199-2186031.pdf",
-          "title": null
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-5111-2186049.pdf",
-          "title": null
         }
       ],
       "notes": []

@@ -67,16 +67,12 @@ export default function ArticleDetailScreen() {
   const openArticleSection = () => {
     if (!article) return;
     const category = article.category_name || '新闻';
-    if (article.topic_key === 'trump') {
-      void Linking.openURL('https://trrb.net/trump');
-      return;
-    }
-    if (article.topic_key === 'ice' || category === 'ICE执法动态' || category === 'ICE执法' || category === '驱逐快报') {
-      router.push({ pathname: '/category/[name]', params: { name: 'ICE执法动态' } });
-      return;
-    }
     if (category === '移民美国') {
       router.push('/immigration');
+      return;
+    }
+    if (category === 'ICE执法动态' || category === 'ICE执法' || category === '驱逐快报') {
+      router.push({ pathname: '/category/[name]', params: { name: 'ICE执法动态' } });
       return;
     }
     router.push({ pathname: '/category/[name]', params: { name: category } });

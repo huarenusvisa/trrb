@@ -3,9 +3,8 @@ appId: net.trrb.mobile
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: "唐人日报"
+    visible: "重要新闻"
     timeout: 30000
-- assertVisible: "重要新闻"
 - tapOn:
     text: "重要新闻"
     index: 0

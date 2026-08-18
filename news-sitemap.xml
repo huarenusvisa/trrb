@@ -1544,36 +1544,4 @@
         <news:title>伊利诺伊州传反ICE抗议教授被捕及控诉</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-c717621397dbd3f94001f5ec6ba81356d1ced47f</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T04:43:52.032Z</news:publication_date>
-        <news:title>亚利桑那古迪尔一公司遭ICE移民执法</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-fffff583b88e0f7876dc2d15aaa09abc7829fa76</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T04:43:40.523Z</news:publication_date>
-        <news:title>DHS或在机场登机前增设ICE身份核查环节</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-4689d78d40e14ddbc8683ba3a5614c4fa565e661</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T04:42:44.828Z</news:publication_date>
-        <news:title>一公民男子呼吁非法入境引ICE拘留没问题，但需要提高人道主义待遇</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e4c242fe89206ea742f327196419c9fd03b0692c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-16T04:41:36.674Z</news:publication_date>
-        <news:title>前DACA助理DiegodelaVega自愿离境返</news:title>
-      </news:news>
-    </url>
 </urlset>

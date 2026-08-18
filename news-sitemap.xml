@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-4b50817c25abd967c92f3952b3c08b1df356d8fa</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:35:49.714Z</news:publication_date>
+        <news:title>德州拉雷多非法移民走私致两人死亡嫌犯认罪</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-fdf940d57931db3c4be7e1763903e72e24b2e3b4</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:35:48.994Z</news:publication_date>
+        <news:title>圣安东尼奥HSI警示武器走私严惩</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-95d6691e2cdcafe72ef2fe7049f2c2173ee2f253</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:35:48.264Z</news:publication_date>
+        <news:title>纽约11人涉数千万美元婚姻欺诈被HSI拘留提审</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-5eece7a4dfe80fba3be9b0fbc6fdbe4a8f29bc43</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:35:47.554Z</news:publication_date>
+        <news:title>美国国土安全部称委内瑞拉非法移民逾期居留逾8年</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-0990fa5d6b187053cfa43f8db808abe11f0b1362</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:35:46.814Z</news:publication_date>
+        <news:title>ICE官员持续保持高备战状态</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-9c595ce2d1062086cb0fc38f88e318570876119c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-18T22:35:45.999Z</news:publication_date>
+        <news:title>波士顿ICE逮捕康州释放墨西哥籍重罪犯</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-33d2f54a1008368c57461c1cddb3b4beede5686d</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

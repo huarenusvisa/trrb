@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-18T10:45:58.310Z",
+  "generatedAt": "2026-08-18T12:02:20.604Z",
   "scope": "Federal Register documents classified by the official API as Rule. FederalRegister.gov is used for discovery/metadata; official PDF links should be used for authoritative legal text.",
   "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE",
   "count": 50,
@@ -48,7 +48,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/18/2026-16828/changes-to-delegations",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-18/pdf/2026-16828.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16828.pdf?1786970727",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -74,7 +74,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/18/2026-16807/safety-zone-lake-michigan-gary-in",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-18/pdf/2026-16807.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16807.pdf?1786970723",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -100,7 +100,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/18/2026-16806/safety-zone-anchor-floating-production-unit-fpu-outer-continental-shelf-facility-green-canyon-block",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-18/pdf/2026-16806.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16806.pdf?1786970723",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -126,7 +126,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/18/2026-16805/safety-zone-ohio-street-beach-swim-course-lake-michigan-chicago-harbor-chicago-il",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-18/pdf/2026-16805.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16805.pdf?1786970722",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },

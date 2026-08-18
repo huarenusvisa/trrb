@@ -62,6 +62,7 @@ export function PaginatedNewsList({ title, category, q, emptyText = '暂时没�
 
   return (
     <FlatList
+      testID="category-news-list"
       style={styles.page}
       contentContainerStyle={styles.content}
       data={items}
@@ -69,11 +70,11 @@ export function PaginatedNewsList({ title, category, q, emptyText = '暂时没�
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(true); }} />}
       onEndReachedThreshold={0.45}
       onEndReached={() => { if (!loadingMore && nextOffset != null) load(false); }}
-      ListHeaderComponent={<View style={styles.header}><Text style={styles.title}>{title}</Text>{error ? <Text style={styles.error}>{error}</Text> : null}</View>}
+      ListHeaderComponent={<View style={styles.header}><Text testID="category-screen-title" style={styles.title}>{title}</Text>{error ? <Text style={styles.error}>{error}</Text> : null}</View>}
       ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText}</Text></View>}
       ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color="#c8211e" /> : nextOffset == null && items.length ? <Text style={styles.end}>已经到底了</Text> : null}
-      renderItem={({ item }) => (
-        <Pressable style={styles.card} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}>
+      renderItem={({ item, index }) => (
+        <Pressable testID={`category-article-${index}`} accessibilityLabel={`打开新闻：${item.title}`} style={styles.card} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}>
           {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.thumb} /> : <View style={styles.placeholder} />}
           <View style={styles.body}>
             <Text style={styles.category}>{item.category_name || '新闻'}</Text>

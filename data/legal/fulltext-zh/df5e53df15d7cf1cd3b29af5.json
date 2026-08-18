@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "recordId": "df5e53df15d7cf1cd3b29af5",
+  "recordFingerprint": "d5057bee8c7e9c69dd1d03314a42184f73ca74da470fa2e93087a5c3e7d8e3d4",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16657/airworthiness-directives-atr-gie-avions-de-transport-rgional-airplanes",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16657.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16657.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T00:01:52.270Z",
+  "sourceDigest": "acfa8dc2c0b7846d90f07715c6111a3b12f01006e5eaac1bb4930e85a969aa28",
+  "translatedAt": "2026-08-18T00:02:34.069Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 23,
+  "translatedSegmentCount": 23,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "44bf9c9abd4c92e04b4a4250f6fc6b4fa4cafa22454bb6dee5524333edb00937",
+      "chineseText": "52484联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1d7ecbed8400e3d1d5a86a16ef32c5b1a48a5897c93fd3942a11e63cf0e3a617",
+      "chineseText": "* * * * * (f) 关于在职位分类中考虑危险或身体困难时支付危险津贴的规定，本节中有关部分的条款通过修订“消防员”类别的危险津贴差额表予以授权成为子部分I的一部分，具体内容如下： ■ 3. 子部分I的授权依据仍为：权限：5 U.S.C. 5545(d), 5548(b)。 ■ 4. 在§550.904中，新增第(f)款内容如下：* * * * * ■ 5. 在第550部分子部分I的附录A中——工资差额表的内容更新如下："
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "80e7d0f271b10ef0df3a28b1f2882dd130f8695e8beab95f0feb5c902a6cbb7b",
+      "chineseText": "危险津贴率\n职责类型 生效日期\n差额（百分比）"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0dab9195494a2953d43bbab028e2ff8c55e0e9073d94750f514f78a3ae7f504f",
+      "chineseText": "* * * * * * *\n消防作业：\n(1) 森林和牧场火灾。作为消防队成员参与在火线上扑灭森林和牧场火灾。 危险津贴率25% 自1969年7月1日之后的第一个工资周期起生效。\n(2) 规定的野外火灾作业。作为消防队成员参与火线上的活动，直接涉及规定野外火灾的实施和控制。 危险津贴率25% 自2026年9月14日或之后的第一个工资周期起生效。\n(3) 设备、设施或建筑火灾。作为消防队紧急成员参与扑灭设备、设施或建筑物火灾。 危险津贴率25% 自1969年7月1日之后的第一个工资周期起生效。\n(4) 水下码头下消防作业。参与水下码头下消防作业（涉及比陆地消防更为危险的情况，如强流、低水温）。 危险津贴率25% 同上。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "5d41f07abddd70a3fd8be3827705d908c8d1c5facc5c642298c24e4a2a37b838",
+      "chineseText": "* * * * * * *"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "49ff3cf1702ec7a649685d1e1c77b8627dc9164c49c6ada476f0beefa91fdf69",
+      "chineseText": "* * * * * 适用的纠正措施。鉴于FAA发布了AD 2023-21-10，确定更多飞机受影响，且需检查更多区域。该AD继续要求执行AD 2023-21-10中的措施，并要求扩大适用范围，检查HS前梁腹板及中心箱内部区域的缺陷并实施适用的纠正措施。FAA发出该AD是为解决这些产品的不安全状况。\n联邦航空管理局（FAA），运输部\n14 CFR 第39部分\n[Docket No. FAA-2026-3878; 项目识别号 MCAI-2025-00913-T; 修正案39-23437; AD 2026-16-07]\n生效日期：2026年9月18日。\n\n地址：\n• 关于欧洲联盟航空安全局（EASA）材料的版权请联系EASA，地址：Konrad-Adenauer-Ufer 3, 50668哥伦比亚，德国；电话 +49 221 8999 000；邮箱ADs@easa.europa.eu。\n该材料可在EASA网站ad.easa.europa.eu查阅。\n• 关于ATR-GIE Avions de Transport Régional材料请联系ATR—GIE Avions de Transport Régional，地址：1 Allée Pierre Nadot, 31712 Blagnac Cedex, 法国；电话 +33(0)5 62 21 62 21；传真 +33(0)5 62 21 67 18；邮箱continued.airworthiness@atr-aircraft.com；网站atr-aircraft.com。\n• 您也可以在FAA适航产品部门，操作安全分部，地址：2200 South 216th St., Des Moines, WA，办公时间周一至周五09:00-17:00（联邦假日除外）现场查阅该材料。查询材料可用性，请致电206-231-3195。\n• 您还可通过regulations.gov网站，Docket No. FAA-2026-3878号进行查阅。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "7768ac2221ab7560a557ef027762d18ad55c1f5e997a688a254b7dd9dcf48885",
+      "chineseText": "AD 2023-21-10要求对水平安定面（HS）左右前缘侧肋、中央箱之间的盒子、中央箱上部面板及HS前备件进行检查异常和纠正措施。FAA发布AD 2023-21-10的目的是应对松动、缺失、不正确安装的紧固件、复合材料分层及裂纹等问题导致的飞机结构完整性降低。"
+    },
+    {
+      "segmentId": "pdf-p1-s8",
+      "order": 8,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9f9eefb83a909ea4d1396a55efda1213a9ce8655f5eed3913cb7eddfb46d3321",
+      "chineseText": "发布日期2026年8月13日，时间16:20，Jkt 268001，联邦登记册第00000号，格式E:\n联邦公报/联邦监察14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e6db4058c00912ab3374d520c678ab50286423b3bb5c7101d1468540531e9dde",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52485"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1d82a5c468f2b00696c47632c54d2acacaeb2c9527438e74071bbad8b7452a65",
+      "chineseText": "补充说明：材料纳入引用依据1 CFR第51部分\n背景\nFAA发布拟议规则通告（NPRM），计划修订14 CFR第39部分，废止AD 2023-21-10（第39卷修正案39-22582；88联邦公报83820，2023年12月1日）。AD 2023-21-10适用于某些ATR-GIE Avions de Transport Régional ATR42-500及ATR72-212A机型。该AD要求对HS受影响部位（左右前缘肋、中央箱间盒子、中央箱上部板及HS前备件）进行缺陷检查和纠正措施。FAA依据欧洲航空安全局（EASA）2025-0110号AD（也称为MCAI），制定本次AD以消除安全隐患。该MCAI指出，新增更多机器序列号被确认受影响，且须检查HS前梁腹板及中心箱内部区域，排查松动、缺失或错误安装紧固件、复合材料分层及裂纹问题。本NPRM随即发布于2026年5月4日（91联邦公报23919）。公众评论收到后，FAA决定维持本AD规定，以消除该产品的不安全条件。 FAA还审查了ATR公司多份服务通告，识别出受影响飞机序列号。通过与该设计国民航管理局的双边协议，EASA已将不安全状况通报FAA。该材料可通过正常业务渠道或前述地址获得。成本估算包括原AD任务和新增任务，涉及16架美国注册飞机。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e9376794ff66f9986a131438047af723f60cedbd5cfe769f343ffb2a2a2ee680",
+      "chineseText": "所需行动预估费用\n 每架飞机成本　　美国运营商总成本\n人工费　　　零部件费\n保留自AD 2023-21-10的任务：8工时 ×85美元/小时 =680美元　　　　　　　0美元　　 680美元　10,880美元\n新增任务：14工时 ×85美元/小时=1,190美元　　　　　　0美元　　 1,190美元　19,040美元"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b44bb3c21a9dc9fbbf65a6ad834a6e902b74730e5a651145870c32bccbbaf818",
+      "chineseText": "FAA尚无充分数据支持对本AD规定的基于状态的修理进行成本估算。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6e34cd79b18b3a6176179828060b357a2e119a537d4dbf430ee9c166efbd2e59",
+      "chineseText": "本规则制定依据\n根据《美国法典》第49编，FAA拥有制定航空安全规则的权力。第I编第106节描述FAA署长职权。第VII编航空项目部分详细说明本机构权限。按照授予的权限，本规章涵盖FAA履行职责所需，旨在确保民用航空飞行安全。按照上述理由，FAA确认本AD： (1)不是《行政命令12866》所称的“重大监管行动”； (2)不影响阿拉斯加州的州内航空规制； (3)根据《监管灵活性法案》，对大量小实体无显著经济影响。"
+    },
+    {
+      "segmentId": "pdf-p2-s14",
+      "order": 14,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "132119c0168c22336ed28384a8e315b788f78d4803d41ff9fec652ee87c87ab3",
+      "chineseText": "监管结论\nFAA依据第VII编第A部分第III子部分第44701节的权力发布本规章。根据该节，国会授权FAA通过制定规则，推动民用航空安全运输。依据此权力范围，FAA发行本规则以消除预期存在或可能出现的产品不安全状况。鉴于上述分析，本规章(1)非重大监管行动；(2)不影响阿拉斯加内部航空；(3)无重大经济影响于众多小型企业。"
+    },
+    {
+      "segmentId": "pdf-p2-s15",
+      "order": 15,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "eee08cfb2d4e3d036a648fe7f6b7f38b5f520a2a6a20bd3f6dd00279b52a09e7",
+      "chineseText": "发布日期为2026年8月13日，17:11，Jkt 268001，联邦登记册编号00000，格式文件路径E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2986586b9d97605a52235ffb6ac77a8cb18b6d103319a896945128b52fd8e3d6",
+      "chineseText": "52486联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "701be18e22ab872c90fde2189198151fb5283078c602709c378bad4ae23352ec",
+      "chineseText": "14 CFR 第39部分主题列表\n(f) 向您的主管检查员或负责的飞行标准办公室提出合规请求，如适用。若直接向国际验证安全分支经理发送信息，请发给指定人员，并通过电子邮件发送到：AMOC@faa.gov。在使用任何经批准的替代合规方法（AMOC）之前，须通知您的主管检查员，若无主管检查员，则通知负责的飞行标准办公室经理。\n(2) 联系制造商：对于本AD中须从制造商处获取说明的任何要求，须使用FAA国际验证分支经理批准的方法，或欧洲航空安全局（EASA）批准的方法，或ATR-GIE Regional Transport Avions的EASA设计组织授权（DOA）批准的方法。若经DOA批准，批准须包括由DOA授权的签字。\n(k) 本AD中指定的要求和遵守本AD段(k)中确定的要求需依照欧洲联盟航空安全局（EASA）2025-0110号适航指令（AD）执行。\n(h) 对EASA AD 2025-0110的例外规定：\n(1) 当EASA AD 2025-0110的“Group 3”飞机定义中提及“SB2”时，本AD要求用“ATR服务通告ATR42-55-0025号，日期为2025年2月3日；或ATR服务通告ATR72-55-1018号，日期为2025年2月3日；视情况而定”替代该文本。\n(2) 当EASA AD 2025-0110提及“2023年7月6日[EASA AD 2023-0125的生效日期]”时，本AD要求使用2024年1月5日（AD 2023-21-10的生效日期）。\n(3) 当EASA AD 2025-0110提及其生效日期时，本AD要求使用本AD的生效日期。\n(4) 当EASA AD 2025-0110附录2指定“如果在适用的SB1或SB2中定义的任何差异被发现，须在下次飞行前联系ATR获取修理说明，并在指定的合规时间内完成维修说明。若维修说明中未指定合规时间，则须在下次飞行前完成维修。”时，本AD要求替代为“如果发现裂纹，须在进一步飞行前，使用FAA国际验证分支经理、EASA或ATR-GIE Regional Transport Avions批准的方法进行修理。”。\n(5) 本AD不采纳EASA AD 2025-0110的“备注”部分。\n(l) 引用材料\n(1) 联邦登记处主任批准将本段列出的材料作为引用材料，依据美国法典第5篇第552(a)节和联邦法规第1部分第51条。\n(2) 需使用本材料执行本AD所要求的操作，除非本AD另有规定。\n(i) 适航通告ATR42-55-0020号，03版，2025年1月31日。\n(ii) 适航通告ATR42-55-0025号，2025年2月3日。\n(iii) 适航通告ATR72-55-1013号，03版，2025年1月31日。\n(iv) 适航通告ATR72-55-1018号，2025年2月3日。\n(v) 欧洲联盟航空安全局（EASA）2025-0110号适航指令，2025年5月14日。\n(3) 关于本AD中提及的EASA材料，联系EASA，地址：Konrad-Adenauer-Ufer 3，50668 Cologne，德国；电话：+49 221 8999 000；电子邮件：ADs@easa.europa.eu。该材料可在EASA网站ad.easa.europa.eu查阅。\n(4) 关于本AD中提及的ATR-GIE Regional Transport Avions材料，联系ATR-GIE Regional Transport Avions，地址：1 Allée Pierre Nadot, 31712 Blagnac Cedex, 法国；电话：+33 (0) 5 62 21 62 21；传真：+33 (0) 5 62 21 67 18；电子邮件：continued.airworthiness@atr-aircraft.com。也可在ATR官方网站atr-aircraft.com查阅该材料。\n(5) 该材料可在FAA审定产品处的操作安全分部现场查阅，地址：2200 South 216th St., Des Moines, WA，电话：206-231-3195。\n(6) 该材料亦可在国家档案与记录管理局（NARA）查阅，访问网址：www.archives.gov/federal-register/cfr/ibr-locations ，或电子邮件fr.inspection@nara.gov。\n■ 1. 第39部分的权限引用继续如下：\n授权：美国法典第49编§106(g)，40113，44701。\n■ 2. FAA对§39.13条款修订如下：\n（一）移除适航指令AD 2023-21-10，修订39-22582（88 FR 83820，2023年12月1日）；\n（二）增加以下新适航指令：\n2026-16-07号ATR-GIE Regional Transport Avions，修订39-23437；文件号FAA-2026-3878；项目识别码MCAI-2025-00913-T。\n(c) 适用范围\n本AD适用于ATR-GIE Regional Transport Avions型号ATR42-500和ATR72-212A飞机，所有类别，识别依据如下制造商发出的ATR服务通告ATR42-55-0020号03版（2025年1月31日），ATR72-55-1013号03版（2025年1月31日），ATR42-55-0025号（2025年2月3日），ATR72-55-1018号（2025年2月3日），按情况适用。\n(d) 课题\n美国运输协会（ATA）代码55，稳定器。\n(e) 不安全状态\n本AD起因于水平尾翼(HS)左右前缘横梁、连接箱中心上面板和HS前备份安装座出现紧固件松动及裂纹报告。此外发现更多飞机受该不安全状态影响，且HS前梁网和箱体内区也需检查。FAA发布本AD旨在解决紧固件缺失、安装错误、复合材料分层及裂纹问题。若不处理，该不安全状态可能导致飞机结构完整性降低。\n(i) 无报告要求\n尽管EASA AD 2025-0110中提及向制造商提交特定信息，本AD不包括该要求。\n(j) 附加适航指令条款\n以下条款亦适用：\n(1) 替代合规方法（AMOCs）：FAA国际验证分支经理有权批准本AD的AMOCs。需按照14 CFR 39.19的程序提出申请。\n(2) 联系制造商以获得指导，必须使用FAA、EASA或经过DOA批准的方法。\n(3) 任何发现在适航通告SB1或SB2中定义的偏差，将按照规定流程处理。\n(4) 若检测到裂纹，必须在继续飞行前经批准修理。\n(5) 本AD未采用EASA AD 2025-0110的备注部分。\n(6) 本AD相关材料可在FAA和NARA处查阅。"
+    },
+    {
+      "segmentId": "pdf-p3-s18",
+      "order": 18,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "678f1269381a02d0bdc5eb7e151d0ba829b093ed853ac2b9373f282448b4a42c",
+      "chineseText": "该AD因发现水平尾翼（HS）左右前缘横梁、连接箱中间盒上面板及前备份连接件存在紧固件松动和裂纹而发布。此外，确定更多飞机受影响，且HS前梁网及中心箱内部区域也需进行检查。FAA发布该AD旨在处理紧固件松动、缺失或错误安装、复合材料分层及裂纹问题。若该不安全状态未被处理，可能导致飞机结构完整性降低。\n按照14 CFR 第39.19条的程序，将您的请求发送至FAA国际验证分支经理，经批准可以采用替代合规方法。"
+    },
+    {
+      "segmentId": "pdf-p3-s19",
+      "order": 19,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6dab96b18dd457bf50466bdef4650d1d64de510b38fa10437cd2de0e868b60af",
+      "chineseText": "2026年8月13日，美国联邦法规第268001号技术文件16:20发布。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "088cd4f25c029b29f3b88e7e265fe3adaa53e15df9d85c167e1b5a1ea9a94190",
+      "chineseText": "联邦公报 / 第91卷 第156号 / 星期五 2026年8月14日 / 规则与条例 第52487页"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "d0a34eae04ad5bd8550ed5ef37c75139ca6866052a7eecdfcb8f314e0f938c0d",
+      "chineseText": "发布于2026年7月30日。\n• 传真：(202) 493-2251。\n• 邮寄：美国交通部，文件管理部门M-30，西楼底层大厅，房间W12-140，1200新泽西大道东南，华盛顿特区20590。\n• 亲自交付：在周一至周五，上午9点至下午5点之间送达上述地址（联邦假日除外）。\nAD文件柜可通过regulations.gov网站在Docket No. FAA–2026–7238号下查看，或于联邦法规第39部分文件管理部门办公时间亲自查阅（周一至周五，上午9点至下午5点，联邦假日除外）。\n法规编号：FAA–2026–7238；项目识别码MCAI–2026–00764–E；修订39–23443；适航指令2026–16–13。\n规则主题：适航指令；普惠加拿大公司（Pratt & Whitney Canada Corp.）发动机材料引用。\n机构：联邦航空管理局（FAA），交通部（DOT）。\n行动：最终规则；征求意见。\n摘要：FAA正在取代适航指令2026–13–09，该指令适用于普惠加拿大公司型号PW210A、PW210A1和PW210S发动机。2026–13–09 AD要求对涡轮排气框架进行重复目视裂纹检查，视检查结果可替换涡轮排气框架。生产过程中发现某些用料抗热应力开裂能力较差。新AD基于材料差异要求不同的初检时间，并根据检查结果进行必要的部件更换。FAA发布该AD以应对此类不安全状态。\n生效日期：本AD自2026年8月31日起生效。\n联邦登记处主任已批准本AD所引用的相关材料于2026年8月31日纳入参考。\nFAA必须在2026年9月28日前收到公众对此AD的意见。\n提交意见地址：通过下述任何方式提交，包括联邦电子规则制定门户网站：https://www.regulations.gov，提交时请注明“Docket No. FAA–2026–7238；Project Identifier MCAI–2026–00764–E”。\n背景：普惠加拿大发动机排气框架因热应力导致外表层圆周裂纹，2016–13–09 AD因而发布，要求周期性目视检查并根据结果替换排气框架并防止失效带来的严重后果。"
+    },
+    {
+      "segmentId": "pdf-p4-s22",
+      "order": 22,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "86a492016c3f6cbd62b2c4263c7807f046bfac0a564732bbfe13f37988d3d045",
+      "chineseText": "提交评论方法：使用14 CFR 11.43和11.45条规定的方法之一：\n• 联邦电子规则制定门户：访问regulations.gov并遵循说明提交评论。\n• 邮寄、传真、亲自交付，均见AD公布地址。\nFCC会考虑截至截止日期收到的所有评论，并可能根据评论修改最终规则。\n除非特别标明为商业机密信息(CBI)的内容，所有评论均列入公共文件。\n商业机密信息(CBI)根据《信息自由法》(FOIA)（5 U.S.C. 552）通常不予公开，如您的评论涉及CBI，请明确标记并每页注明“PROPIN”，FAA将保密处理该信息。\n联系方式：Barbara Caufield，FAA航空安全工程师，电话：(781) 238-7146，电子邮件：barbara.caufield@faa.gov。\n背景补充：本AD为改进类AD，取代之前针对普惠加拿大发动机的AD 2026–13–09，以应对加热条件下材料质量不同导致的裂纹风险。"
+    },
+    {
+      "segmentId": "pdf-p4-s23",
+      "order": 23,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "590d9fc575ba729e7536840ff772e5c3ea42904691d35ab12bf006718379b836",
+      "chineseText": "2026年8月13日，美国联邦法规发布时间16:20。"
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "recordId": "c3e2c7b853b880bc91932339",
+  "recordFingerprint": "ed318187f4b76514283a13a1edbef6347d9a73d27b70ee1f1e972ac103ac8f31",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Personnel Management Office",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16630/updates-and-amendments-to-the-civil-service-rules",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16630.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16630.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:57:56.700Z",
+  "sourceDigest": "9368da65bb6528634e6098d18ff9b2f5ea861b6f3ff2c22fab2f174ccd7d7b7c",
+  "translatedAt": "2026-08-17T23:58:33.011Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 24,
+  "translatedSegmentCount": 24,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "061a964820af7bc6295beab45f8a36b9e49c346c8382109f54bff0ee018d7df1",
+      "chineseText": "52475"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "56b0fc75aab6521afb3da6c9f35c02bc67b7d628cc58357ab5c7d552d2a5f986",
+      "chineseText": "联邦公报规章与条例\n第91卷，第156号"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "33026ac046aa3a4d61948dbc8d03cbf73526ec08e537b583597e2de7cb8364b2",
+      "chineseText": "2026年8月14日，星期五"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ca505453c4b42e905d53bda58bcfc68342601134b5c419276e9442c445673541",
+      "chineseText": "本部分《联邦公报》涵盖管理办公厅、艾森豪威尔总统行政命令（E.O.）中的具有一般适用性和法律效力的规章文件，这些规章大多被编纂入《联邦法规汇编》（Code of Federal Regulations），该汇编根据44 U.S.C. 1510出版，共50卷。\n《联邦法规汇编》由文件管理局出售。公文管理局（OPM）\n人事管理办公室\n5 CFR第2、3、5、6、9及10部分\n[案件编号：OPM–2026–0562]\nRIN 3206–AP19\n《公务员规则的更新与修订》\n机构：人事管理办公室。\n行为：直接最终规则。\n摘要：依据总统在行政命令14410《实行排班政策/除外服务职业》中的指示，人事管理办公室（OPM）发布直接最终规则，修订公务员规则中过时且无实质影响机构运行的内容。\n生效日期：本规则自2026年10月13日起生效，除非2026年9月14日前收到重大反对意见，否则OPM将撤回相关条款。\n地址：可通过联邦电子规则制定门户网站https://www.regulations.gov/提交评论。\n补充信息：\n一、背景\n公务员规则起源于基于绩效的公务员制度的起源。最初的公务员规则由切斯特·A·亚瑟总统于1883年5月7日颁布，当时距1883年1月16日通过的潘德尔顿法案（Pendleton Act，22 Stat. 403）几个月。该法案要求对当时所谓的“分类服务”职位实行公开、竞争性考试；规定了分类服务任命的试用期；保护该服务员工不被强迫从事政治活动。潘德尔顿法案还成立了公务员委员会，即OPM的前身机构，负责执行这些要求。\n亚瑟总统的公务员规则定义了分类服务的范围，重述并扩展了潘德尔顿法案对该分类服务的规定，包括考试的实施和评分方法及试用期的执行。此后历任总统先后通过修订公务员规则扩大了分类服务范围。自艾森豪威尔总统以来，公务员规则未作全面修订，故包含大量过时、废止或被取代的法定条文；引用已废止报告；已不存在的部门和职位；以及已被视为过时的术语。\n在行政命令14410第2(g)条，91 FR 34893《实行排班政策/除外服务职业》中，特朗普总统指示OPM在60天内“采取措施编制和发布修订版，删除或更新对公务员规则中不实质影响机构运作的过时条款。”\n本直接最终规则即予以实施，移除或更新公务员规则中不实质影响机构运作的陈旧条款，无更改当前的权利、义务或机构运作。通过此修订，公务员规则得以为联邦雇员、申请人及机构提供明确指导，消除陈旧条款和过时术语对权威性的削弱或干扰。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "beb1cecd925829e9923ffb5d72f0bab6685f4fe793953c2298a832df0c084c05",
+      "chineseText": "所有收到的评论和其它提交通常将在regulations.gov网站原文发布，不作修改，包括任何个人信息。但OPM保留编辑第三方敏感信息的权利。"
+    },
+    {
+      "segmentId": "pdf-p1-s6",
+      "order": 6,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6a70e632811c38422383a4d1f95f7440089550335d4856d75b13a9420635a62e",
+      "chineseText": "本规则的摘要可在本次规则制定的档案中查阅，网址为www.regulations.gov。"
+    },
+    {
+      "segmentId": "pdf-p1-s7",
+      "order": 7,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "13edc537a99bb08f129d78b40b8321885aaca3513dcffae1b15a4135643b74f7",
+      "chineseText": "发布时间：2026年8月13日，星期四，Jkt 268001 PO 00000 Frm 00001 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a197ae84e8053b4cdde0c11bdf0cbb3a7dd286fc6f81594b404d03f5abb65713",
+      "chineseText": "52476 联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规章与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "506c552c24169add48bbb4c2e246a2d3357ea52a2215ba663ba8a4bc49031ba0",
+      "chineseText": "OPM正删除5 CFR 2.1(c)，该条涉及第四类邮政站长职位的考生资格条款，属历史遗留条款，源自公务员委员会时代。1970年邮政重组法案（1970年公共法91-375，84 Stat. 719）将邮政人员移除竞争性服务体系，设立美国邮政局，规定邮政人员的任用应遵循邮政局设定的程序（39 U.S.C. 1001(b)）。此外，邮政员工无机会获得竞争性身份，见5 U.S.C. 2105(e)，该规定将邮政员工排除在公务员“员工”定义之外，故不属于竞争性服务。\nOPM亦删除5 CFR 2.2(a)(4)，该条为职业条件任命规则中的邮政现场服务职位例外，相关职位的薪资依据1945年邮政员工薪资法案（公共法79-134, 59 Stat. 435）确定。现今邮政局任用依据第39编美国法典，不适用OPM管理的竞争性服务名单。39 U.S.C. 1001(a)授权邮政局自行任命员工，39 U.S.C. 1001(b)规定这些任命按邮政局程序执行。并且，邮政及邮政监管委员会员工一般不视为第5编下的员工（5 U.S.C. 2105(e)）。\nOPM也删除5 CFR 2.3，该条规定华盛顿特区总部人员任命应按各州及辖区人口比例分配。此规定源自潘德尔顿法案，原载于5 U.S.C. 3306。1978年公共法95-228（92 Stat. 25）废止了此项分配要求，故2.3条款已过时。\n二、对公务员规则III的变更\nOPM更新5 CFR 3.1(a)(2)条，将“退伍军人事务管理局局长”改为“退伍军人事务部长”，符合该部门1989年升格为内阁级部门后称谓的变化。将“1943年3月24日法案（57 Stat. 43）”改为现代名称。\nOPM修改5 CFR 3.1(b)条，将“残疾员工”替换为现代用语“有残疾的员工”，将“弱智员工”改为“智能障碍员工”。\nOPM调整5 CFR 3.2条，要求非竞争聘用理由的详尽陈述应发布于OPM网站，而非“OPM年度报告”。1980年前，5 U.S.C. 1308要求OPM公布年度报告，故此要求于1980年国会《报告废止法》后终止。"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a3902322e4eb7ee80f5ff33cef778a0bf7e782675f1246cdcfd2772831cbcad0",
+      "chineseText": "OPM进一步修订5 CFR 5.1，将关于变通措施的信息发布要求由“联邦人员手册信函或公告以及主任的下一次年度报告”调整为“在《联邦公报》或OPM网站上及时发布”。自1993年联邦人员手册废止及自1980年起不再发布全面年度报告后，原规定已过时。\nOPM调整格式，清晰地分列四个记录保存要素，并进行措辞简化，使规则更易理解。\n三、对公务员规则V的变更\nOPM删除5 CFR 2.2(a)(4)中涉及的第四类邮政站长资格条款，该旧条款指20世纪邮政委员会时期已废止的任用系统；邮政重组法案已使邮政雇员不属于竞争服务且由邮政局自管招聘。"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "92a29ba141d64ff6900c12eabc62d7ddf9f4372b4221b5325eedd08f03cfb818",
+      "chineseText": "网站发布的变通措施信息地址为https://www.opm.gov/policy-data-oversight/hiring-information/variations/。另参见《路径总统管理学者项目：变通措施》，90 FR 38603（2025年8月11日）。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6f545ce547e6de30cfa45ec889e11af3b4e38e8f904c703124d6c7ecf1708f0b",
+      "chineseText": "发布时间：2026年8月13日，星期四，Jkt 268001 PO 00000 Frm 00002 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "aabb8f7c66af04e21323d88e315ad1474de9b8abc67960d21fb06e89fb729b15",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规章与条例 52477"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f0b896bf71a7c541b7ed26036739b1f5f946de070d4def68b21a24c1b99e8969",
+      "chineseText": "高级别至GS-15及以下级别的官员，若自1975年2月15日起未进入全国地理空间情报局竞争服务体系，且曾“作为商务部或内政部部长在各自区域的主要代表”，则被调任为附表C任务。人事管理办公室（OPM）更新了对美国政府问责办公室（General Accounting Office）的引用，以反映该机构的现名称——政府问责办公室（Government Accountability Office）。5 CFR 6.8(a)中对非职业执行任务、有限执行任务和职业执行任务的提及，源自已废止的公务员规则第九条旧版本，该版本针对GS-16、GS-17及GS-18职位制定。本规则适用于直接最终规则制定，因本规则无争议，符合联邦法律和政策，且不会对联邦机构运营或雇员产生实质性影响，主要针对过时条文进行修订，OPM预计不会收到对此些小幅修改的重大不利意见。本规则将有利于政府机构及公众，提高公务员规则的可用性，但不改变任何相关方的法律义务或权利。新修订于2026年10月13日生效，若于2026年9月14日前收到重大不利意见，相关条文将撤回并以拟议规则形式公开征求意见。收到的意见除非说明规则失效或不可接受，否则不会被视为重大不利。OPM仅在部分章节遭到严重不利意见时，撤销受影响部分，其余部分继续生效。5 CFR 6.8(a)用于调动某些现任区域官员到非职业职位的条款，因社区服务局和行动局已相继撤销，该条款已无效；5 CFR 6.8(c)源自里根总统行政命令12300，也因两机构取消而成为过时条款而被删除。OPM确认本条款对当前职位、任命及机构运营均无影响。"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3238a728d9c24c4fc635bf750684c8025bd4dfd943b7f1f782c35e883f30e19b",
+      "chineseText": "国家影像测绘局（含潜在经济、环境、公共健康和安全等权益）的法规影响评估的说明。依据总统令11839修改的公务员规则第九条部分内容，随着1991年总统令12748废止原规则，第九条相关内容亦被撤销。若本规则任何条款被认定为无效或无法执行，其他条款依其独立性原则继续有效，不受影响。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0920b867f48fe3d4daf76dd7f464b59937e5a6b33f055f15c50c3cb09a45df6b",
+      "chineseText": "2026年8月13日16时20分，法规文件编号268001号正式发布。"
+    },
+    {
+      "segmentId": "pdf-p4-s17",
+      "order": 17,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "8b04e3613d05978adfd7afc1a6b626f13ad3041c61a38d2968ffa87f50a42c5d",
+      "chineseText": "联邦公报 / 第91卷第156号 / 2026年8月14日星期五 / 规则与条例部分页码52478。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "6367eb48e42bb4732568be34f8fcd4e2a84c37489b0205911291f6ddd6266f16",
+      "chineseText": "百万美元以上，或对经济、经济部门、生产率、竞争、就业、环境、公共健康或安全，或州、地方、部落政府或社区造成实质性不利影响的法规，必须进行监管影响分析。本次监管行动未引入新的报告或记录要求，无需《信息资源保护法》审批。本次规则修改将《5 CFR》第3.1条中“退伍军人事务部管理员”的表述修改为“退伍军人事务部部长”，并删除“1943年3月24日法案(第57卷第43页)”字样，改为“《美国法典》第38编第31章”；并修订第3.1条第(b)款内容，规定经用人机构推荐，并经人事管理办公室批准，符合条件的残疾员工可非竞争性取得公务员资格，包括身体严重残疾、智力残疾及精神残疾员工，在被竞争服务排除的岗位上完成至少两年的满意服务。根据总统令14410，OPM修订了相关公务员规则部分条款，涉及公告发布、调整引用法条权限、人员任命及调查执法程序，确保相关规定与最新法律或行政管理需求一致。该修订不会对小型实体产生显著经济影响，且对州政府权力分配亦无实质影响，无需进行联邦主义评估。本规则符合总统令12988关于司法改革的要求，且不属于《无资金授权改革法》覆盖的强制支出法规，因此无需制定资金支出评估报告。根据国会监管法，OMB办公厅判定本规则不符合重大规则标准，因本次规定属于机构管理或人事事务，不受报告要求限制。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "586b8f819f4c3986b73a1325d4a9265221ee26e2f19f90f66bc8dbb502e4c88e",
+      "chineseText": "具体修订包括：《5 CFR》第3.1条(a)(2)款中删除“退伍军人事务部管理员”措辞，改以“退伍军人事务部部长”；修改第2.1条，删除(c)款；调整第2.2条(a)(2)、(3)款，并删除(a)(4)款；删除第2.3条；改订第3.2条，删除“OPM年度报告中”的字样，替换为“OPM网站上”；以及更新权威引用说明。条款修订旨在简化程序，确保规定符合最新法律及行政要求。根据规则第三部分，符合条件残疾员工可根据推荐及审批程序获得非竞争性职位资格。此外，OPM可针对实际困难，灵活给予合理的规定变通，以保障政府效能及竞争服务公开透明。此类规定修订不会产生新文书工作负担。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "647814bb633e3af366e4f94c01b9b9a8dccb701039fd676dc2c5feaa3dd90003",
+      "chineseText": "2026年8月13日16时20分，法规文件编号268001号正式发布。"
+    },
+    {
+      "segmentId": "pdf-p5-s21",
+      "order": 21,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "1429df484e3a1f65c929d366cc1f5aa1cd726f7cf04e1adfb81a62648c2ccbf2",
+      "chineseText": "联邦公报 / 第91卷第156号 / 2026年8月14日星期五 / 规则与条例部分页码52479。"
+    },
+    {
+      "segmentId": "pdf-p5-s22",
+      "order": 22,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "da9da8070e8023e9a859be49f972be282d4fb3546f45bf103a0296dd9931ed96",
+      "chineseText": "(b) 无论何时批准变更，主管应在官方记录中注明，以显示：\"政府问责制（Government Accountability）\"，并替换第10.1节中的\"一般会计（General Accounting）\"一词。\n16. 在第10.1节中，删除涉及处方野外火灾实施和控制的消防线上的船员直接参与的相关词汇。\n(1) 涉及的具体实际困难或困难；\n(2) 允许以何种替代方式符合规定要求；\n(3) 保护政府效率和竞争服务诚信的情形；\n(4) 说明变更仅在导致其产生的条件继续存在时适用。\n(c) 在存在类似条件时应授予类似变更。所有关于变更的决定和信息应及时在联邦公报或办公室网站上公布。\n差异薪酬（Differential Pay）针对处方野外火灾活动\n机构：人事管理局（Office of Personnel Management）\n行动：最终规则。\n摘要：人事管理局发布最终规则，明确规定GS（通用计划）和FWS（联邦工资系统）员工作为消防队成员参与火线直接涉及处方野外火灾实施和控制活动时，可获得25%的危险工作差异薪酬（HDP）和环境差异薪酬（EDP）。\n6部分——竞争服务例外（规则VI）\n授权依据：5 U.S.C. 3301, 3302；行政命令14410，91 FR 34893。\n第6.1节修订：删除\"例外发生的财政年度人事报告\"相关文字，替换为\"联邦公报或人事管理局网站\"。\n第6.8节修订：删除(a)、(b)、(c)段落，重新编号(d)、(e)为(a)、(b)。\n9部分——劳动力信息（规则IX）\n增加授权条款，依据行政命令13197和14410。\n第9.1节修订：删除\"影像测绘\"，替换为\"地理空间情报（Geospatial-Intelligence）\"。\n背景信息：\n2026年4月14日，人事管理局发布拟议规则（91 FR 19081），新增处方野外火灾活动为HDP和EDP类别，公开征求意见，截止2026年6月15日，收到92条意见，包括联邦员工、工会、公共部门和私营部门组织。公众意见除少数异议外，普遍支持为GS员工（包括GW支付计划的森林消防员）和FWS员工授予25%的差异薪酬。\n美国农业部（USDA）林务局和内政部（DOI）支持将处方野外火灾活动归为覆盖类别，理由是相关人员面临与野火火线相似的物理、化学和生物危害。\n最终规则限于参与消防队的员工，活动直接涉及处方野外火灾的实施和控制。"
+    },
+    {
+      "segmentId": "pdf-p5-s23",
+      "order": 23,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "ab2280ea1eaa79ab7f61a378a31dba3dfed5a211930d9ab587d2f4eebc9ee6da",
+      "chineseText": "第10部分——机构问责系统；人事管理审查权限（规则X）\n第10部分增加授权依据：行政命令13197，66 FR 7853；行政命令14410，91 FR 34893。\n该规则授权为GS员工，包括GW支付计划的森林消防员，以及FWS员工，授予25%的差异薪酬。适用范围限于作为消防队成员直接参与处方野外火灾实施和控制活动的员工。"
+    },
+    {
+      "segmentId": "pdf-p5-s24",
+      "order": 24,
+      "page": 5,
+      "type": "paragraph",
+      "sourceTextHash": "09c4d768101e4f52b5e069fb8504b899573a8df8ec36b191faa6bd3a3e8822b9",
+      "chineseText": "（此页为联邦公报格式信息，无需翻译正文内容）"
+    }
+  ]
+}

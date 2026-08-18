@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "recordId": "16ae65be0c35d5a664941cee",
+  "recordFingerprint": "4501cae7e8d329d34dc1761afd36c8a40d71dd2f96960d41c326b1715f09ed51",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16641/airworthiness-directives-airbus-helicopters",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16641.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16641.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:59:56.426Z",
+  "sourceDigest": "ef0daa86ed2033fb0c91164ba4b75666f68fd45a595f91269520a7f1ee1bf180",
+  "translatedAt": "2026-08-18T00:00:23.128Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 17,
+  "translatedSegmentCount": 17,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "e42b8c58a6e6faf45232c51d61270e803e896096cc15d353d0be59497ee0df20",
+      "chineseText": "52494 联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与规定"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2deab45d551978737c1dba0fe4d74b64043e1d6aaa6ff7873a10a8da752136c9",
+      "chineseText": "运输部 你可在网站 ad.easa.europa.eu 找到此材料。联邦航空管理局 • 你可在 FAA, 适航产品部，运营安全分部，10101 Hillwood Parkway，德克萨斯州沃斯堡查阅此材料。 [案号 FAA–2026–4644；项目标识 MCAI–2024–00418–R；修正案 76177。有关 FAA 案卷中此材料的获取信息， 请致电（817）222–5110。 该材料亦可在 regulations.gov 的 FAA 案卷号 FAA–2026–4644 下查阅。 议题：适航指令；空中客车直升机 联系人：Eric Rivera，航空安全工程师，FAA，1600 Stewart Avenue，Suite 410，纽约州韦斯特伯里11590；电话：(773) 412–9048；电子邮件：eric.rivera01@faa.gov。 代理机构：联邦航空管理局（FAA），交通部（DOT）。 行动：最终规则。 补充信息： 摘要：FAA 正在废止适航指令（AD）2023–25–14，该指令适用于某些空中客车直升机 EC130T2 型号。AD 2023–25–14 修订了检查尾旋桨传动轴振动水平的程序，并根据结果要求更换某些部件。自 FAA 发布 AD 2023–25–14 后，制造商开发了后传动轴的改进，包括滑动法兰和平键套。此 AD 要求安装该改进，并重复检查尾旋桨传动轴的振动水平。该 AD 还禁止安装某些部件，并禁止在未满足特定要求时执行平衡修正。FAA 发布此 AD 以解决这些产品上的不安全状况。 生效日期：本 AD 自2026年9月18日起生效。 联邦登记官批准将本 AD 中列出之某出版物纳入引用，生效日同上。 地址：EASA AD 2024–0144，2024年7月19日发布（下称 MCAI），由欧洲航空安全局（EASA）发布，作为欧洲联盟成员国的技术代理。MCAI 指出制造商开发了包含新后传动轴、新滑动法兰和新平键套的改进，且虽减少裂纹的可能性，但数据不足以作为终止重复检查的依据。此外，MCAI 扩充了受影响部件号清单，禁止在任何直升机上安装某些尾旋桨传动轴、滑动法兰及平键套。此材料可通过正常业务途径或本 AD “地址”部分标明的方式获得。 本 AD 为临时措施。FAA 可能基于检查结果要求进一步规则制定。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0676bba51e6037ab897c54f3f7f70e2c9bc2de677aee7ff1f70f20dab706d9b0",
+      "chineseText": "• 关于欧洲联盟航空安全局（EASA）本 AD 中所引用的材料， 请联系欧洲航空安全局，地址：德国科隆 Konrad-Adenauer-Ufer 3，邮编50668；电话：+49 221 8999 000；邮箱：ADs@easa.europa.eu； FAA 在建议规则中提议要求安装此改进并重复检测尾旋桨传动轴振动水平。建议规则还提议禁止安装某些部件，且除替换特定部 件外，禁止执行平衡修正。 本材料因相关方可通过正常业务途径或上述“地址”部分所示方式获得而合理可获取。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "4a83aae26d47afa03339e9a0372774ca01c1560eb796533959b31e730a5f08ed",
+      "chineseText": "（此段无可辨识文字，格式代码）"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f1962becb2bc7817fbd5a4a57cca42229141307d449e6506f8ab9de330f11a0b",
+      "chineseText": "联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与规定 52495"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c43e8d189534116bfd81a44039b5ec607a4f977ac4cfe5eb1d0400dc42c972b2",
+      "chineseText": "访问渠道为其正常业务流程或“地址”部分标明的方式。 差异 本 AD 与 MCAI 之间的差异 如果 EASA AD 要求联系空客直升机，该 AD 则要求联系 FAA 国际验证分支主管、EASA，或空客直升机欧洲设计组织授权（DOA）。 FAA 估计本 AD 影响美国注册的108架直升机。 FAA 认为本 AD 为临时措施。如有后续措施，则另行制定规则。 FAA 估计遵守本 AD 的相关费用如下："
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "025c650cfe37b8e745e4c1a8d8255f55f8faedc13eb742a9574577484672296c",
+      "chineseText": "预计成本 单位成本 美国运营者总成本 行动 劳动成本 部件成本 产品成本 振动水平检测 1工时×每小时85美元＝85美元 0美元 85美元 9,180美元 安装改进滑动法兰、装配平键套及后传动轴 8工时×每小时85美元＝680美元 61,716美元 62,396美元 6,738,768美元"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "e94e13106eb4876b5d974fe63057c8ffdfcfab8070ca1a1c30d73df96df2bc5b",
+      "chineseText": "FAA 估计，为实施更换可能需要根据检查结果而定。机构无法确定需要更换的直升机数量。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "aca45e5e12743d3f740125f4ccdfc996752b6ee4acbee3dc871a86901cc4a08f",
+      "chineseText": "按条件成本 单位成本 行动 劳动成本 部件成本 产品成本"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "7fe1126b4d0f2feee7fb4d4a3a23873a29a27a56995385c4445fc5ad52c59ee4",
+      "chineseText": "更换滑动法兰及装配平键套 8工时×每小时85美元＝680美元 72,749美元 73,429美元 平衡修正 3工时×每小时85美元＝255美元 0美元 255美元"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "4993859c3850caad635124010dde30afe130435926ad234d7246298e00eac281",
+      "chineseText": "对于根据适用维修手册指令（AMM）在本 AD 生效日前已完成平衡修正的直升机，除非该修正是在安装新（零总飞行小时）滑动法兰和平键套后下一次飞行前完成，否则可能需要变更措施。 该措施因机型不同可能大相径庭。FAA 无数据能确定更换成本及受影响直升机数量。 法规认定 FAA 根据 FAA 行政长官权力和美国法典第49编第106(g)、40113和44701条发布此规则。 FAA 认定本 AD 不构成行政命令13132下的实质联邦主义影响、不会对州产生实质直接效应，不影响联邦与州间权责分配。 该 AD 亦非行政命令12866规定的“重大监管行动”，不会对阿拉斯加州州内航空活动产生影响，且不会对大量小企业产生显著经济影响。 根据这些原因，FAA 认证本 AD 符合相关法律要求，无重大负面影响。 本 AD 修订了联邦法规第14部分第39章，废止 2023–25–14号适航指令（修正案 39–22641）。 新加适航指令编号为2026–16–10，项目标识 MCAI–2024–00418–R。"
+    },
+    {
+      "segmentId": "pdf-p2-s12",
+      "order": 12,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "f1058f3c486ede0cd755a4ddec710a8257176ba54142d8dd99ea66334efd377d",
+      "chineseText": "适用范围 本 AD 适用于所有经认证的空中客车直升机 Model EC130T2，任何类别，按照欧洲联盟航空安全局 AD 2024–0144（2024年7月19日）中的识别要求。"
+    },
+    {
+      "segmentId": "pdf-p2-s13",
+      "order": 13,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a1a27b7253350e107e7985f3d77845699afd0077aec799fc4ad80fde13fba5ac",
+      "chineseText": "（此段无可辨识文字，格式代码）"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "1eb4cf507e72f76849346b9b9bfa69f17bd5b0de3ec385ebdc9e146ff8d5c3bc",
+      "chineseText": "52496 联邦公报 / 第91卷，第156期 / 2026年8月14日星期五 / 规则与规定"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "af02ee573f0e8cbb8e1ce25e74bb35d761931409be6245775c73360b81efaa0f",
+      "chineseText": "(d) 主题 (k) 关于接收到联合航空系统组件（JASC）代码6510，尾旋翼传动轴的开裂报告所引发的额外信息。更多有关此适航指令（AD）的信息，请联系联邦航空管理局（FAA）航空安全工程师Eric Rivera，地址：1600 Stewart Avenue，Westbury，纽约11590，电话：(773) 412–9048；电子邮件：eric.rivera01@faa.gov。\n(e) 不安全状况 本AD是基于尾吊舱开裂报告而制定。FAA发布本AD旨在解决尾旋翼传动轴过度振动问题。如果该不安全状况不予解决，可能导致尾旋翼传动轴失效及直升机偏航控制丧失。\n(f) 合规性 请按规定的合规时间执行本AD，除非已完成相关要求。\n(g) 要求的措施 除本AD(h)和(i)条另有规定外，按EASA AD 2024–0144中规定的所有要求动作和合规时限执行。\n(h) 对EASA AD 2024–0144的例外情况 (1) 当EASA AD 2024–0144要求以飞行小时为合规标准时，本AD要求以服务时数（hours time-in-service）作为合规标准。 (2) 当EASA AD 2024–0144提及其生效日期，或提及2023年11月6日作为EASA紧急AD 2023–0190–E的生效日时，本AD要求以本AD的生效日作为合规基准。 (3) EASA AD 2024–0144中出现的“checks”一词，在本AD中需要替换为“检查”（inspections）。 (4) EASA AD 2024–0144第4条款规定需“联系Airbus Helicopters以获得批准的指令”，本AD要求替换为“按由FAA、EASA或Airbus Helicopters设计组织批准的方式执行纠正措施。如为设计组织批准，必须包含授权签字”。 (5) 本AD不采纳EASA AD 2024–0144中的“备注”部分。\n(i) 无报告要求 尽管EASA AD 2024–0144中要求向制造商提交相关信息，本AD不包含此项要求。\n(j) 替代合规方法 (AMOCs) (1) FAA国际验证分支经理有权批准本AD的AMOCs，申请应按14 CFR 39.19规定向相应主管检查员或本地飞行标准分区办公室提交。若直接提交至国际验证分支经理，应注明收件人为该部门负责人，并发送至AMOC@faa.gov电子邮箱。 (2) 使用已批准的AMOC前，应通知相应主管检查员或当地飞行标准分区办公室/证书持有区办公室经理。\n(l) 结合引用材料 (1) 联邦登记主任根据5 U.S.C. 552(a)和1 CFR第51部分批准将本AD中确定的材料纳入引用。 (2) 需使用本AD所指定的引用材料来完成所需动作。\n(3) 联系欧洲联盟航空安全局（EASA）获取本AD引用的材料，地址：德国科隆Konrad-Adenauer-Ufer 3号，邮编50668，电话：+49 221 8999 000，电子邮件：ADs@easa.europa.eu，网站：easa.europa.eu。材料可在EASA网站ad.easa.europa.eu上查看。\n(4) 可在FAA航空适航产品部门，德克萨斯州沃斯堡Hillwood Parkway 10101号，飞行安全分支机构查阅。电话：(817) 222–5110。或者在国家档案和记录管理局（NARA）查阅，联系方式请访问www.archives.gov/federal-register/cfr-ibr-locations，或发送电子邮件至fr.inspection@nara.gov。地址：美国交通部，西楼地面层30室，1200 New Jersey Avenue SE，华盛顿DC 20590。\n本AD于2026年9月18日生效。\n(5) 本AD不采纳EASA AD 2024–0144的“Remarks”章节。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "47f87ddf4389a90ce8193330c6457c5437ea84bb5eecc8548b9dcd2b66f8c489",
+      "chineseText": "(2) 使用任何已批准的替代合规方法（AMOC）之前，应通知相关主管检查员，若无主管检查员，则通知当地飞行标准分区办公室/证书持有区办公室经理。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6bcea98ee20abb2af9f053d833bc0cdca46ba8242f7bde51de9ae259fdde6927",
+      "chineseText": "联邦航空管理局（FAA）拟定通知，提议修订14 CFR第39部分，新增适航指令（AD），适用于所有劳斯莱斯德国有限公司（Rolls-Royce Deutschland Ltd & Co KG）生产的Trent 1000系列发动机，包括Trent 1000–A2、Trent 1000–AE2、Trent 1000–C2、Trent 1000–CE2、Trent 1000–D2、Trent 1000–E2、Trent 1000–G2、Trent 1000–H2、Trent 1000–J2、Trent 1000–K2及Trent 1000–L2型号。"
+    }
+  ]
+}

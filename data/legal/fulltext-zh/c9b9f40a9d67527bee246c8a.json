@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "recordId": "c9b9f40a9d67527bee246c8a",
+  "recordFingerprint": "569c70735f564afb5d87ccac9509082ac5d0884cadc6a25dc23c476e39739203",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Homeland Security Department; Coast Guard",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16645/safety-zone-west-passage-narragansett-bay-narragansett-ri",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16645.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16645.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T00:01:04.927Z",
+  "sourceDigest": "0712a0a4e5db4d22bfb3ac0df2a2a89809adb32aa755e5f5e720a64c460f7481",
+  "translatedAt": "2026-08-18T00:01:23.162Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 13,
+  "translatedSegmentCount": 13,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "70f826a972a6f7c6fd384b8049dd7a1bcfa87f435a05f60dcb5bd67610a9e0c1",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52531"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "c7d1bdb5f8ac3fff83d213cef0e8a758480b7d3edf569c6d65bda31cb36d9014",
+      "chineseText": "1980年法案，第5卷美国法典第601–612条，不适用于不受通知和评论程序约束的规则。由于海岸警卫队基于正当理由放弃了通常适用于本规则制定的通知和评论要求，因此《监管灵活性法案》的灵活性分析条款不适用。根据1996年小企业监管执法公平法案（公法104-121）第213(a)条，如果本规则将影响您的小企业、组织或政府管辖区，并有疑问，请联系“进一步信息联系”部分列出的人士。小企业可致电1-888-REG-FAIR（1-888-734-3247）向小企业和农业监管执法监察员及地方小企业监管公平委员会发送评论。海岸警卫队不会针对质疑或投诉本规则或任何海岸警卫队政策或行动的小实体进行报复。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "23dbc5b9ea4476e8e85ae30a03a0609c2fc79b15ca837e38b89eddf26f81ddeb",
+      "chineseText": "本规则不涉及新的信息收集，依据1995年《信息管理简化法案》（美国法典第44卷第3501–3520节）。我们根据第13132号总统行政命令（联邦制）分析本规则，确认其符合基本的联邦制原则和优先权要求。此外，本规则不涉及根据第13175号总统行政命令（与印第安部落政府协商与协调）的部落影响，因为其对一个或多个印第安部落、联邦政府与印第安部落之间的关系或权力与责任的分配无实质直接影响。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d22684ef909ffbfc85bc7ab6579578f046715a42359e009520efc16398e676c9",
+      "chineseText": "根据1995年《无资金授权法案》（2 U.S.C. 1531–1538），海岸警卫队认证本规则不会导致州、地方或部落政府或私营部门累计年度支出达到1亿美元或以上（经通胀调整）。我们依据国土安全部指令023–01修订版1及实施说明，分析本规则环境影响，并依据1969年《国家环境政策法》（42 U.S.C. 4321及后续条款）确定此行动属不对人类环境产生重大个别或累积影响的类别。"
+    },
+    {
+      "segmentId": "pdf-p1-s5",
+      "order": 5,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "0fffe5a9c098917fb08ee666b00146805dcecb5097da006dd1bcad82193839cc",
+      "chineseText": "本规则为安全区。具体内容和执行细节见以下条款。"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "5f09fee8c433b2f91971c9ddeb782db3a5b0a00501a9c94d880f59b198209fcc",
+      "chineseText": "52532 联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8aacba8ca02c1bb9df15f155f081e56bd6d2d5a0ea552fbdef24a227130b3082",
+      "chineseText": "联系方式：若对本规则有疑问，请联系美国海岸警卫队东南新英格兰辖区水路管理部MST2 Anna Medow，电话866-819-9128，电子邮件Anna.L.Medow@uscg.mil。补充信息：本规则设立纳拉甘西特湾西通道临时安全区，保护游泳者、工作人员、船只及海洋环境免受游泳活动潜在危险。规则有效期及执行时间基于天气情况在2026年8月18日上午10:30至8月19日下午1点之间，具体执行时间详述于规则正文。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "6ddb9bf579865b2714ed4e55f9fc101f0ef90bca1acffe13cb20351d0cc4d874",
+      "chineseText": "授权依据：46 U.S.C. 70034, 70051, 70124；33 CFR 1.05–1, 6.04–1, 6.04–6, 160.5；DHS委托书第00170.1号，修订版01.4。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fb09c71774fafe1896ccafb882bfd5205993814ea4d03cbd421f3d7cb081b5e2",
+      "chineseText": "根据第13132号行政命令（联邦制）分析，本规则符合联邦制原则及优先权要求。"
+    },
+    {
+      "segmentId": "pdf-p3-s10",
+      "order": 10,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "96d78e12e4c2107aca36094fe8a088679b4b189e147c4287bf8553f02f28948d",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52533"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "ea0b4267a231852abeeadb8a95bb7d7a838014c8730a8fd15a4b489650d235e2",
+      "chineseText": "§ 165.T01–0498 安全区；罗德岛纳拉甘塞特湾西通道\n摘要：海岸警卫队设立圣克莱尔河（St. Clair River）导航水域的临时安全区，自密歇根州港口休伦（Port Huron）起始长7.5英里。海岸警卫队认定不发布本规则拟议通告（NPRM）存在合理理由，因为不可行。虽然此次活动为未经批准的非许可船舶事件，该安全区为保障波特休伦附近于2026年8月16日举行的筏漂活动期间，航行水域生命安全所必需。未经底特律港口长（COTP）或其指定代表授权，禁止任何船只或非活动参与者进入该区域。鉴于时间紧迫，无法征询或回应公众意见，依照美国法典5 U.S.C. 553(d)(3)亦认定本规则自联邦公报发布后少于30天生效合理。\n(a) 位置。以下区域为安全区：罗德岛纳拉甘塞特湾西通道从水面至底部内，以北纬41°29′32.5\"，西经71°25′12.0\"起，沿中心线至北纬41°29′48.3\"，西经71°24′15.4\"，范围内500码水域。坐标基于世界大地测量系统WGS 84。\n(b) 定义。本节所指指定代表为海岸警卫队巡逻指挥官，包括沿海岸警卫队船舶执勤的领航员、小军官或其他军官，以及由或协助新英格兰东南区港口长（COTP）执法的联邦、州、地方官员。\n(c) 规章。(1) 根据本部分C小节的一般安全区规定，除非由港口长或其指定代表授权，不得进入(a)款所述安全区域。(2) 申请进入许可，请通过VHF-FM频道16联系港口长或其指定代表。安全区内人员须服从港口长或其指定代表的一切合法命令。\n(d) 执法期限。本节自2026年8月18日10:30至8月19日13:00生效并执法，除非因天气延迟，执法时段对应推迟至8月19日同一时间。海岸警卫队于2026年7月1日通过社交媒体获悉该活动，但必须于2026年8月16日设置安全区，保护人员、船只及海洋环境。\n更多信息，请访问 https://www.regulations.gov，搜索编号USCG–2026–0995。如有疑问，请联系底特律港口水道管理部Tracy Girard，电话(313) 475-7475，邮箱D09-SMB-SecDetroit-WWM@uscg.mil。\n（二）背景及权限\n海岸警卫队获悉一未经批准的公共活动，预计超过5000人将于2026年8月16日下午12点至18点，在圣克莱尔河段使用内胎等浮具漂流。该活动未获得海岸警卫队私人或市政许可，且自2009年以来每年8月的第三个星期日举行。底特律港口长认为此活动存在安全隐患，针对水路、参与人员实施安全区管理，确保安全。\n（三）规章讨论\n此规则适用时间为2026年8月16日中午12点至下午6点，安全区起点为灯塔海滩，涵盖圣克莱尔河内所有美国水域，边界由底特律港口北侧的一点，沿国际边界向东、向南再向西直至起点形成闭合线。未经授权的船只与非参与者禁止进入。\n\n[FR文档2026–16645，于2026年8月13日8:45发布]\n印刷代码9110–04–P"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "2a89da2b001f7ddf64a4a8433f2e93e266522603df207bca23467a6be9f0be46",
+      "chineseText": "安全区；密歇根州港口休伦圣克莱尔河内导航水域\n机构：国土安全部海岸警卫队\n行动：临时最终规则。\n鉴于活动存在潜在安全风险，海岸警卫队基于5 U.S.C. 553(b)(B)授权，免于事先通知和评论程序，直接颁布本规则。根据1980年监管灵活性法案（5 U.S.C. 601–612），由于本规则不适用常规通知和评论，相关灵活性分析规定不适用。"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "6d5318a01b7602623e466a345117e9c505b4fa7c2b8886a1dc15778ff838ea29",
+      "chineseText": "年轻美·文（Youngmee Moon），美国海岸警卫队东南新英格兰区港口长。[FR文件号2026–16645 于2026年8月13日发布]"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "recordId": "6a038cf08edcd6451733b21b",
+  "recordFingerprint": "54dad73ed4d896f28705e0a8545c5c4566f07d50050aaa8e627f2d76502edfba",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Homeland Security Department; Coast Guard",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16643/safety-zone-atlantic-ocean-culebra-puerto-rico",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16643.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16643.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T00:00:23.163Z",
+  "sourceDigest": "338ebd4d569f027ec6354b11c18a37e3b574e787d6acbf78605b5e1a6dd86599",
+  "translatedAt": "2026-08-18T00:00:38.907Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 9,
+  "translatedSegmentCount": 9,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "fd2793809e9494b151ef6f0e6a9f625a3562d2717725a191038e8336decd07a9",
+      "chineseText": "联邦公报 / 卷 91，第 156 号 / 2026 年 8 月 14 日星期五 / 规则和条例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "34209493bc973e30577bf78478f7f9dc77326482a5fb4dc051b85382f5eaf67a",
+      "chineseText": "确定该行动属于不会对人类环境单独或累积产生重大影响的行动类别。特别规定区。海岸警卫队收到通知，称潜在的未爆弹药在波多黎各库莱布拉卡洛斯·罗萨里奥海滩西部被发现。预计2026年8月底将进行清除作业。未爆军事弹药的危险包括意外发射和危险弹丸，这些将阻碍船只通行、持续的潜水作业以及给工作人员和公众带来各种水下危险。圣胡安市港口长（COTP）已确定与弹药及其清除作业相关的潜在危险对区域内200码范围内的所有人员构成安全隐患。因此，港口长根据46 U.S.C. 70034的权力，发布此规则，以保护人员、船只及海洋环境。鉴于潜在危险，海岸警卫队现发布此规则，免于事先公告和评论。根据5 U.S.C. 553(b)(B)的授权，海岸警卫队认定不进行公示征求意见有正当理由。海岸警卫队必须于2026年8月10日前设立本安全区，以防安全隐患，保障人员和环境安全，因此无充裕时间征求和回应意见。基于相同理由，依据5 U.S.C. 553(d)(3)，决定本规则自发布日起不足30天即生效。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "9f7f13833531641a886a8c8b41e5bb700d608d2adb032c3579ddc33145ec68ad",
+      "chineseText": "联邦法规集（CFR）代码 COTP：港口长 DHS：国土安全部 FR：联邦公报 NPRM：拟定规则公告 §：法规条款 美国法典（U.S.C.） 本节中，指定代表指海岸警卫队巡逻指挥官，包括执勤的船长、水手长或其他军官，以及为海岸长官或其指定代表协助执法的联邦、州或地方官员。参与者指按赛事主办方登记的所有人员和船只。规章：(1) 非参与者经过管制区须以无浪速通行。(2) 须服从港口长或其指定代表的所有合法命令和指示。(3) 有疑问可通过VHF–FM频道16或电话+1 (800) 253–7465联系港口长或其代表。执法时间为8月13日至16日的每日7:00至17:00。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1723f8a3553a3b8c209851b50954e908598484621878b90fb97b27dc33a44c05",
+      "chineseText": "2026年8月13日16:20，法规编号268001，联邦公报第14页47段。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "70f826a972a6f7c6fd384b8049dd7a1bcfa87f435a05f60dcb5bd67610a9e0c1",
+      "chineseText": "联邦公报 / 卷 91，第 156 号 / 2026 年 8 月 14 日星期五 / 规则和条例 52531"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c7d1bdb5f8ac3fff83d213cef0e8a758480b7d3edf569c6d65bda31cb36d9014",
+      "chineseText": "1980年法规法案，5 U.S.C. 601–612，不适用于无须公示评论的规则。海岸警卫队基于正当理由放弃本次规章制定的公示评论要求，因此规制灵活性分析不适用。根据1996年小企业监管执法公平法案（公法104-121）第213条(a)，若本规则影响您的小企业、组织或政府管辖区，欢迎联系下述人员。小企业可致电1-888-734-3247向小企业和农业监管冤案监察专员及地区小企业监管公平委员会提交意见。海岸警卫队不会报复质疑或投诉本规则或政策的任何小实体。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "23dbc5b9ea4476e8e85ae30a03a0609c2fc79b15ca837e38b89eddf26f81ddeb",
+      "chineseText": "联邦法规集（CFR）联邦规章编号 CFR 职权人 COTP 港口长 DHS 国土安全部 FR 联邦公报 NPRM 拟定规则公告 § 章 节 美国法典（U.S.C.） 本规则不含新信息收集需求，依据1995年信息管理减少法案（44 U.S.C. 3501-3520）。F。联邦主义与印第安部落政府 本规则遵循联邦主义原则和优先适用要求，符合行政命令13132及联邦法规33 CFR 1.05-1, 6.04-1, 6.04-6及160.5。也不涉及印第安部落政府的重大直接影响，符合行政令13175条款。G。未资助的授权改革法案 本规则不涉及国家、地方或部落政府或私营部门年度一亿美元以上支出（经通胀调整）。H。环境 本规则依据国土安全部指令023-01 Rev.1及国家环境政策法(42 U.S.C. 4321等)指引进行，无对人类环境显著影响。相关支撑资料详见案卷。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d22684ef909ffbfc85bc7ab6579578f046715a42359e009520efc16398e676c9",
+      "chineseText": "国土安全部 海岸警卫队 33 CFR 第165部分 规则修订 本规则新增§165.T07–1030，波多黎各库莱布拉大西洋安全区条款。授权依据：46 U.S.C. 70034, 70051, 70124; CFR 1.05–1等。内容： 本安全区是指定区域，涵盖地理坐标18°19′30.45″ N, 65°19′54.12″ W处，位于库莱布拉卡洛斯·罗萨里奥海滩以西200码范围内的水域，水面至水底。该坐标采用WGS 84/北美测地系1983 (NAD 83)。限制：除非获得东南新英格兰区域港口长或其指定代表特别许可，禁止任何船只和人员进入该区域。生效时间：2026年8月18日10:30至8月19日13:00，仅在活动期间执法；若因天气延迟，执法时段顺延至8月19日相同时间。相关文件在https://www.regulations.gov，搜索USCG-2026-0498可查。咨询联系人：东南新英格兰区域水路管理部MST2 Anna Medow。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "0fffe5a9c098917fb08ee666b00146805dcecb5097da006dd1bcad82193839cc",
+      "chineseText": "2026年8月13日16:20，法规编号268001，联邦公报第14页57段。"
+    }
+  ]
+}

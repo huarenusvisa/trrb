@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "recordId": "98f5a6fde12fd236c2776947",
+  "recordFingerprint": "e0027cd8dd0492708f85fe950cbd8046707bd8d09d4f49dbee221eb69eeaa87d",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16655/airworthiness-directives-pratt-and-whitney-canada-corp-engines",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16655.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16655.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T00:01:23.195Z",
+  "sourceDigest": "4558ea45375a0ca9ee3dd503fd7e0dcf62090e3ad0c3a84e8b976b82a5297dc4",
+  "translatedAt": "2026-08-18T00:01:52.238Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 21,
+  "translatedSegmentCount": 21,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "088cd4f25c029b29f3b88e7e265fe3adaa53e15df9d85c167e1b5a1ea9a94190",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规则与规章 52487"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "d0a34eae04ad5bd8550ed5ef37c75139ca6866052a7eecdfcb8f314e0f938c0d",
+      "chineseText": "2026年7月30日发布。•传真：(202) 493–2251。以下段落及14 CFR 11.35中描述的其他信息，联邦航空局（FAA）将未经修改地发布所有收到的评论，包括您提供的任何个人信息，至regulations.gov。机构还将发布关于此最终规则所收到的每条实质性口头意见的报告。 机密商业信息（CBI）是指被其所有者习惯性和实际当作私密的商业或财务信息。联邦假日除外，您可以在工作日的上午9点至下午5点之间，亲自到上述地址的联邦航空局（FAA）文件操作处查看AD案卷。此AD案卷中含有本最终规则、强制性持续适航信息（MCAI）、收到的评论及其他信息。AD案卷编号为FAA–2026–7238，项目识别码为MCAI–2026–00764–E；修正案编号39–23443；AD编号2026–16–13。 美国运输部联邦航空局（FAA）发布了针对普惠加拿大公司（Pratt & Whitney Canada Corp.）引擎的适航指令。 采用通过引用包含的文件。 代理机构：联邦航空局（FAA），DOT。 行动：最终规则；征求意见。  摘要：FAA正在废止适航指令（AD）2026–13–09，该指令适用于所有普惠加拿大公司（P&WC）PW210A、PW210A1和PW210S型号引擎。AD 2026–13–09要求对涡轮排气框架进行重复目视检查以发现裂纹，根据检查结果更换排气框架。自FAA发布AD 2026–13–09以来，制造商的分析显示某些材料制造的涡轮排气框架在承受热应力时耐用性较差，更易产生裂纹。本AD要求基于制造排气框架所用材料，设定不同的初始检查期限进行重复目视检查，并根据检查结果更换排气框架。FAA发布本AD以解决这些产品存在的不安全状况。 生效日期：2026年8月31日。 联邦登记处主任批准在2026年8月31日起通过引用方式采纳某些出版物。 FAA必须在2026年9月28日前收到对此AD的评论。  地址：您可以通过14 CFR 11.43和11.45规定的方法，通过以下方式提出评论：• 联邦电子规则制定门户网站：访问regulations.gov，按照提交评论的指示操作。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "86a492016c3f6cbd62b2c4263c7807f046bfac0a564732bbfe13f37988d3d045",
+      "chineseText": "使用14 CFR 11.43和11.45中规定的程序，通过以下任一方式提交评论：• 联邦电子规则制定门户网站：访问regulations.gov，按照提交评论的说明操作。 评论需包含“Docket No. FAA–2026–7238；项目识别码MCAI–2026–00764–E”，并越具体引用文中部分越有帮助。 FAA将考虑截止日期前收到的所有评论，并可能根据评论修改本最终规则。 除了联邦法规中所描述的机密商业信息(CBI)，FAA将把收到的评论以原文在公共案卷中公布。  机密商业信息是指商业或财务信息，该信息通常且实际由其所有者视为私密。 若您的评论包含此类信息，请明确标注为“PROPIN”，并在每页上标注。FAA将根据信息自由法案(FOIA)对这些标注部分予以保护，不会放入公开案卷。  关于运输加拿大材料，可联系运输加拿大国家适航部门，地址为159 Cleopatra Drive, Nepean, Ontario, K1A 0N5, Canada；电话：(888) 663–3639；邮箱：tc.airworthinessdirectives-consignesdenavigabilite.tc@tc.gc.ca。您也可在运输加拿大网站tc.canada.ca/en/aviation查找材料。 您可在FAA位于马萨诸塞州伯灵顿市1200 Avenue的航空安全分部实地查看相关材料，联系人为安全工程师Barbara Caufield，电话：(781) 238–7146，邮箱：barbara.caufield@faa.gov。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "590d9fc575ba729e7536840ff772e5c3ea42904691d35ab12bf006718379b836",
+      "chineseText": "登记日期：2026年8月13日下午4:20，案号268001，记录形式为：00000，格式4700。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "dc5e61ff856bb09f2ccf3e4150f1fbea8bdf3fd55c8891e261787f54ba2083aa",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规则与规章 52488"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "1af776cb6876bfda3daecbc93454742f34624e0cc9df5780b276f16fdf6c17de",
+      "chineseText": "自AD 2026–13–09发布以来的行动  FAA自发布AD 2026–13–09以来，运输加拿大已废止运输加拿大紧急AD CF–2026–23，并于2026年7月15日发布了运输加拿大紧急AD CF–2026–35（以下简称MCAI）。该MCAI称，制造商的分析显示，根据普惠加拿大服务公告PW210–72–57123，使用某材料制造的涡轮排气框架比之前使用Waspaloy材料的排气框架更易在较早阶段产生热应力裂纹。为解决此不安全状况，制造商发布了更新的服务材料，规定了基于制造用材料不同的排气框架不同的初始检查期限的重复目视检查程序。本状况若未纠正，可能导致涡轮排气框架失效，进而导致轴向约束失效、零部件脱落及直升机损伤。 您可在regulations.gov的AD案卷FAA–2026–7238中查阅MCAI。FAA审查了运输加拿大紧急AD CF–2026–35，要求执行涡轮排气框架裂纹的重复目视检查及必要时更换排气框架。该材料对公众已可通过正常商业或ADDRESSES节所述途径获得。 FAA与制造商及民航当局合作，利用部分CAA适航指令作为遵守FAA适航指令要求的信息源。本AD全文采用对运输加拿大紧急AD CF–2026–35的引用，除本AD法规文本中标明的例外。  本AD要求在生效日期后5小时飞行时数或20次发动机启动（以先到者为准）内完成首次检查，期限短于公众评论及最终规则发布所需时间。故根据5 U.S.C. 553(b)规定，FAA在未事先公告征求意见的情况下发布本AD。 FAA认为紧急废止旧指令的风险对飞行公众利益极大，构成豁免公告征求意见的正当理由。根据《行政程序法》553(b)、(d)条，及《监管灵活性法》FAA发布本AD不适用该法规定，因符合“正当理由”标准。  费用评估 FAA估计本AD影响48台在册美国引擎。  合规费用估计：  费用项  劳动成本   零件成本  单位成本  影响总成本  涡轮排气框架目视检查 ... 0.5工作小时 × 85美元/小时 =  42.50美元        2040美元"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "fb0b975caf2a269e041654aa6c42b09917d0660a51f989f92b54cf60f38ccac5",
+      "chineseText": "费用估算"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "682eb9f1b84f0aec12334852dd2e3062c153368fc572c3e053df345a1fa03de5",
+      "chineseText": "每项行动  劳动成本  零件成本  单台费用  美国运营商总费用"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "c1457254b0f39b261f8614da1468e1badf0b51d0e6541c3dc5cd11c9ff14579d",
+      "chineseText": "涡轮排气框架目视检查......0.5工时 × 每小时85美元 = 85美元.......... 0美元 42.50美元 2,040美元"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9a2ce42c635ea24e6196e9c9b7f32e9452cd2c56a8ee3ff04efb7b8fb5ab3192",
+      "chineseText": "登记日期：2026年8月13日下午4:20，案号268001，记录形式为：00000，格式4700。"
+    },
+    {
+      "segmentId": "pdf-p3-s11",
+      "order": 11,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "9cb8a43618b9a2b77fc1515ac51650960ec81d20f2b31dd1ba9245b30b8e140c",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规则与规章 52489"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f4e073bc5f9fb94b5fe607a92ae32ea9ece4d6b281d17f9a7fcbf093c8b7ba2e",
+      "chineseText": "FAA估计以下需要根据目视检查结果进行的必要更换所产生的费用。机构没有办法确定需要更换的数量："
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "3a3af936d89eec0727d28aec9b58609c1da1433ca715f6a10483b8778db2af92",
+      "chineseText": "按条件费用"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "a21fbfa102c27e377a1282e1603919443a784f3279b54d5aa5f1ee9e6399f480",
+      "chineseText": "行动  劳动成本  零件成本  单台费用  涡轮排气框架更换 ........................ 9工时 × 85美元/小时 = 765美元 ........................... 125,000美元 125,765美元"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "8d2246e3a1da48bb9fc275ad6eb0494028c7a488c6b33134a894a3590e229676",
+      "chineseText": "本规则制定的授权依据 第39部分—适航性及遵守时间 本规则依据美国法典第49编授权，具体见Transport Canada应急适航指令CF-2026-35，2026年7月15日发布，规定了FAA发布航空安全规则的权限。 美国法典第49编第106节描述FAA管理者的权限，标题VII“航空项目”更详细描述了该机构的权限范围。 依据该章节，国会赋予FAA职责以促进民用航空安全。本规则涵盖的内容属于该权限范围，因为它涉及本次规则制定中指定产品的潜在安全隐患。 本FAA规则依据标题VII，部分A，第44701节：通用要求制定。 具体修改如下： 移除适航指令2026-13-09，修订39-23391（联邦公报FR 38991，2026年6月29日）； 新增以下适航指令2026-16-13：普惠加拿大公司（Pratt & Whitney Canada Corp.）型号PW210A、PW210A1及PW210S发动机，修订39-23443，案件编号FAA-2026-7238，项目标识MCAI-2026-00764-E。 本规则将于2026年8月31日起生效。 本适航指令取代2026-13-09。 本规则不会对联邦主义或国家间权责分配产生影响。 本适航指令旨在预防因发动机启动引起的热应力导致涡轮排气框架外部表面产生环形裂纹，若不加以处理，可能导致涡轮叶片接触排气框架，导致叶片轴向遏制失效、部件释放及损坏直升机。 本规则没有报告要求。 FAA运营安全分部的经理拥有批准其它适航指令替代符合方法（AMOC）的权限，遵守14 CFR 39.19条款的程序提出申请即可。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "7e9ff5a0fda7baa47682b7f4bd75d32d64aa48818b8ce5eeaf6bceabb8d0f8e3",
+      "chineseText": "本适航指令中，“发动机启动”定义为发动机为任何原因启动，即使不紧接飞行也包括在内。 根据管理员授权并委托给我的权力，FAA对14 CFR第39部分进行如下修正： 除本适航指令的(i)和(j)段另有规定外，必须遵守该适航指令指定的全部措施。 对于涉及Transport Canada应急适航指令CF-2026-35所提参考的材料，请联系加拿大运输部国家航空认证机构，地址为加拿大安大略省尼皮恩159 Cleopatra Drive，邮编K1A 0N5，电话： (888) 663–3639；邮箱：tc.airworthinessdirectives-consignesdenavigabilite.tc@tc.gc.ca。该材料可在Transport Canada官方网站tc.canada.ca/en/aviation查阅。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c59194f0e408301c0bd37b4c839b6bc25cb8236ad6dfa4ab05f825cec14ad1e4",
+      "chineseText": "原文字段仅包含联邦公报文件排版信息，无实质内容需翻译。"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c988370162052fa1a54146292ab59e4f5905b796ca4d9db186db6f2e0afcc8fd",
+      "chineseText": "原文字段仅包含联邦公报页脚描述，无实质内容需翻译。"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c72879ade7d45e4b87f431b2a3384f415d26d4a32c5eff163830a188ba3bc9d1",
+      "chineseText": "联邦航空局（FAA）通知 本适航指令于2026年8月31日生效。 联邦注册处处长已批准本适航指令所引用的文件依据5 U.S.C. 552(a)及1 CFR第51部分进行引用。 你可以通过以下途径提交关于本适航指令的意见： • 联邦规则制定门户网站 regulations.gov，按照操作指南提交意见； • 传真至(202) 493–2251； • 邮寄至：美国交通部档案管理处，地址：M-30，西座一楼，W12–140室，1200 New Jersey Avenue SE，Washington, DC 20590； • 亲自递送：于周一至周五上午9点至下午5点（联邦假日除外）送达上述地址。 你可以在上述会议时间内或通过网址regulations.gov查阅本适航指令案卷，案卷号FAA-2026-7236，项目标识AD-2026-00543-A。 以上资料包括最终规则、收到的意见及其它相关信息。 本适航指令涵盖所有安装了Wipaire，Inc.辅助型式证书STC No. SA01795CH的Air Tractor Model AT–802和AT–802A飞机。 FAA联系人为安全工程师John Emery，联系方式：电话(847) 294-7122，邮箱john.emery@faa.gov。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "0d04500a74832e7a210535b78e6714d4ee6752bc3443194b5a7aefd49423e507",
+      "chineseText": "此适航指令旨在应对此前AD 2024–16–06未能完全消除的安全隐患，该AD要求对Air Tractor AT–802和AT–802A机型的左右水平安定面前后主梁进行反复检查，发现裂纹或损坏需更换并安装浴缸型固定装置，并将结果报告FAA。 自AD 2024–16–06发布以来，更多裂纹被发现，特别是连接垂直安定面结构支撑撑杆的部位，存在裂纹或损坏。 本适航指令保留了AD 2024–16–06的所有检查和修复程序，并增加了对该附加区域的检查要求。 AD 2024–16–06源于关于水平安定面主梁发现裂纹的报告，及需要新的鳍缝附着设计的要求。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "c75835e4c5971aa3cb667e8695be40e7185a4e0b1333c22f7e8f72a3e3aa87a1",
+      "chineseText": "原文字段仅包含联邦公报文件排版信息，无实质内容需翻译。"
+    }
+  ]
+}

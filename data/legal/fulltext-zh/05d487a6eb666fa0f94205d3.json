@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "recordId": "05d487a6eb666fa0f94205d3",
+  "recordFingerprint": "ee39e1cd0ed78e2cde1b757dafdb5bbd8a4373c4116d3956ca7a7e1dea91bc1f",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Homeland Security Department; Coast Guard",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16644/safety-zone-st-clair-river-port-huron-mi",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16644.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16644.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-18T00:00:38.939Z",
+  "sourceDigest": "94d1dce22cc1ca6bedf38e6517880fbfa7748c5b474696ee81675cf5a1539786",
+  "translatedAt": "2026-08-18T00:01:04.895Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 8,
+  "translatedSegmentCount": 8,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "96d78e12e4c2107aca36094fe8a088679b4b189e147c4287bf8553f02f28948d",
+      "chineseText": "《联邦公报》/ 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52533"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "ea0b4267a231852abeeadb8a95bb7d7a838014c8730a8fd15a4b489650d235e2",
+      "chineseText": "§ 165.T01–0498 安全区；西通道 纳拉甘西特湾，罗得岛纳拉甘西特。摘要：海岸警卫队发现存在不发布拟议规则制定通知（NPRM）的正当理由，因为这不切实际。海岸警卫队于2026年7月1日通过社交媒体获知此事件，但必须于2026年8月16日建立此安全区，以保护人员、船只及海洋环境。因此，我们没有足够的时间征求和回应意见。基于相同原因，海岸警卫队根据5 U.S.C. 553(d)(3)发现存在正当理由，使本规则在联邦公报发布后少于30天生效。\n（a）位置。以下区域为安全区：从41°29′32.5″ N，71°25′12.0″ W开始，沿中心线向至41°29′48.3″ N，71°24′15.4″ W方向延伸500码范围内的纳拉甘西特湾西通道所有可通航水域。坐标基于全球大地测量系统（WGS 84）。\n（b）定义。为本节之用，指定代表指海岸警卫队巡逻指挥官，包括驾驶舵手、下士或其他操作海岸警卫队船只的军官，以及联邦、州及地方执法部门指定或协助底特律港区港长（COTP）的官员。\n（c）规章。(1) 根据本部分C小节的一般安全区规章，除非获得港长或其指定代表特别授权，否则不得进入本节(a)段描述的安全区。\n(2) 如需申请进入许可，请通过VHF–FM频道16联系港长或其指定代表。进入安全区内者须遵守港长或其指定代表发出的所有合法指令。\n(d) 执行期间。本节自2026年8月18日10:30至8月19日13:00有效，但仅在2026年8月18日10:30至13:00期间实施执法，除因天气原因延迟事件，否则推迟至2026年8月19日相同时段执法。\n海岸警卫队获悉一未获许可的非官方水上活动，预计2026年8月16日12:00至18:00在密歇根州港休伦圣克莱尔河7.5英里水域举行。该安全区须设置以保障航行安全和人员及海洋环境安全，禁止非授权船只及活动者进入。根据46 U.S.C. 70034港长权力颁布此规则。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "2a89da2b001f7ddf64a4a8433f2e93e266522603df207bca23467a6be9f0be46",
+      "chineseText": "安全区；圣克莱尔河；密歇根州港休伦。机构：美国国土安全部海岸警卫队。行动：临时最终规则。海岸警卫队因潜在危害，未经事先通知和评论即颁布此规则，依据5 U.S.C. 553(b)(B)授权。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6d5318a01b7602623e466a345117e9c505b4fa7c2b8886a1dc15778ff838ea29",
+      "chineseText": "2026年8月13日16:20发布，文件号Jkt 268001，表格00000，格式4700。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d619a37ac7e10e65647b5a4eafb9f3bfd286a9cbd1b4d6fa15d5cb5522207323",
+      "chineseText": "《联邦公报》/ 第91卷，第156号 / 2026年8月14日星期五 / 规则与条例 52534"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "b1d07c4e8f7f91fbbd4502d989d92567fb984264d02ab88f3dde9a329e3e9287",
+      "chineseText": "如有疑问，请联系以下信息联系人：特雷西·吉拉德，水路管理部，底特律港区海岸警卫队，电话（313）475–7475，邮箱D09-SMB-SecDetroit-WWM@uscg.mil。此规则自2026年8月16日12:00至18:00生效，安全区自灯塔海滩开始，包含港休伦圣克莱尔河所有美国水域，边界起点位于港休伦海岸警卫队站北侧土地43°00′24.96″ N，082°25′19.98″ W，向东至国际边界43°00′24.96″ N，082°25′01.98″ W，沿国际边界向南至42°54′30″ N，082°27′40.98″ W，再向西至斯塔格岛北侧土地42°54′30″ N，082°27′57.96″ W，最后沿美国岸线向北返回起点，所有坐标基于北美大地测量系统1983版（NAD 83）。未经港长或其代表授权，任何非参与船只或人员不得进入。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "97e15fd64ec4c78924433052087c2c33b1cea1d7d647968d842f40eda163b00f",
+      "chineseText": "本规则依据46 U.S.C. 70034、70051、70124及33 CFR 1.05–1、6.04–1、6.04–6和160.5授权发布。基于规则制定程序进行的多项法令和行政命令分析，制定本安全区Rule。规则生效日期为2026年9月14日，EPA编号EPA–R02–OAR–2025–3588。详见https://www.regulations.gov下相关文件。规则并无重大联邦制、印第安部落政府影响，符合国家环境政策法（NEPA）要求，属于类别排除。规则不要求新信息收集。"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a3003d3b7aece18ccde17c70657aa4ed841c87c037b4e15af5f1363fc5daa1c0",
+      "chineseText": "遵守本安全区时，必须服从港长或其指定代表发布的所有合法命令和指示。规则于2026年8月16日12:00至18:00期间执行。规则不对小企业产生重大影响，因此《1980年监管灵活性法》不适用。小企业如有疑问，可联系小企业和农业监管执法监察专员。此安全区规则适用联邦法规第33 CFR 165部分审核和管理。"
+    }
+  ]
+}

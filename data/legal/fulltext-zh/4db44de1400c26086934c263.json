@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "recordId": "4db44de1400c26086934c263",
+  "recordFingerprint": "afc8aa2ea0f250851dc908c4f8db1b2e847f1d87e62621a78f7cb79a9dc00fd2",
+  "datasetVersion": "90e555f52811bf84aafd62d08b9a4fbefc976c4fbfe4518ebf50556fc0c9c3f8",
+  "sourceSystem": "FEDERAL_REGISTER",
+  "authorityType": "Federal Register Final Rule",
+  "issuingBody": "Transportation Department; Federal Aviation Administration",
+  "officialUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16636/airworthiness-directives-rolls-royce-deutschland-ltd-and-co-kg-engines",
+  "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16636.pdf",
+  "sourceUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16636.pdf",
+  "sourceFormat": "pdf",
+  "extractionMethod": "pdftotext-text-layer",
+  "sourceExtractedAt": "2026-08-17T23:58:33.042Z",
+  "sourceDigest": "6c44149b92ca4d0b2588ef18d4c872f2096a6d1fea2bceb122baa979468fb4b9",
+  "translatedAt": "2026-08-17T23:59:56.394Z",
+  "model": "gpt-4.1-mini",
+  "translationMode": "complete-segment-preserving-official-source-translation",
+  "sourceSegmentCount": 21,
+  "translatedSegmentCount": 21,
+  "segments": [
+    {
+      "segmentId": "pdf-p1-s1",
+      "order": 1,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "1eb4cf507e72f76849346b9b9bfa69f17bd5b0de3ec385ebdc9e146ff8d5c3bc",
+      "chineseText": "52496 联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规则与条例"
+    },
+    {
+      "segmentId": "pdf-p1-s2",
+      "order": 2,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "af02ee573f0e8cbb8e1ce25e74bb35d761931409be6245775c73360b81efaa0f",
+      "chineseText": "(d) 主题 (k) 额外信息: 由联合作战飞机系统组件（Joint Aircraft System Component，简称JASC）代码6510-尾桨驱动轴的中压（IP）压缩机可变入气导向叶片（VIGVs）裂纹报告引发的。该AD要求对IP压缩机VIGVs进行重复内窥镜检查（BSIs），并根据检查结果，缩短重复BSI的检查间隔或要求从服役中拆除发动机并更换IP压缩机VIGVs。FAA 发布此AD以解决该不安全状态。有关本AD的更多信息，请联系FAA航空安全工程师Eric Rivera，地址：1600 Stewart Avenue, Suite 410, Westbury, NY 11590；电话：（773）412-9048；电子邮件：eric.rivera01@faa.gov。 (l) 通过引用纳入的材料 (1) 联邦公报总监根据5 U.S.C. 552(a)和1 CFR第51部分批准采用本AD中识别的材料作为引用。 (2) 除非本AD另有规定，否则必须按适用条件使用该材料来完成本AD所要求的动作。 (f) 服从性 请在规定的服从期限内执行本AD，除非已完成。 (g) 要求的动作 除非本AD的(h)和(i)段另有规定，否则按EASA AD 2024-0144的规定和要求执行所有动作和服从期限。 (h) 对EASA AD 2024-0144的例外 (1) 若EASA AD 2024-0144要求按飞行小时计服从，则本AD要求改为使用时间飞行小时计。 (2) 若EASA AD 2024-0144提及2023年11月6日（EASA紧急AD 2023-0190-E生效日期），本AD使用本AD有效日期。 (3) EASA AD中所称“检查”一词，本AD均替换为“检查”此词。 (4) EASA AD 2024-0144第4段要求“联系AH[Airbus Helicopters]获取已批准的指令”，本AD改为“根据FAA经理、EASA或Airbus Helicopters设计组织授权（DOA）批准的方法执行纠正措施，若由DOA批准，则必含有DOA授权签名”。 (5) 本AD不采用EASA AD 2024-0144中的“备注”部分。 (i) 无报告要求 尽管EASA AD 2024-0144中含提交给制造商的要求，本AD无此要求。 (j) 替代合规方法(AMOCs) (1) 国际验证分支经理有权批准本AD的AMOCs，依据14 CFR 39.19程序。申请人应通过其主要检查员或当地飞行标准分支办公室提交请求，若直接提交国际验证分支，应发邮件至AMOC@faa.gov，邮件注明本AD第(k)段中识别的负责人。 (2) 使用经批准的AMOC前，应通知相关主要检查员或飞行标准分支办公室经理。 (e) 不安全状态: 本AD因尾梁裂纹报告而发布。FAA采取本AD应对尾桨驱动轴过度振动不安全状态。若不采取措施，可能导致尾桨驱动轴失效及直升机偏航控制丧失。 (k) 额外信息: 由高循环疲劳扩展引起的中压压缩机可变入气导向叶片（VIGVs）裂纹报告促使该AD发布。该AD要求执行重复内窥镜检查以检测IP压缩机VIGVs裂纹，且基于检查结果缩短检查间隔或要求发动机拆除并更换。联邦公报总监批准将特定出版物纳入引用，自2026年9月18日起生效。查询材料可至FAA或EASA网站，联系信息及办公地址详见文中。"
+    },
+    {
+      "segmentId": "pdf-p1-s3",
+      "order": 3,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "47f87ddf4389a90ce8193330c6457c5437ea84bb5eecc8548b9dcd2b66f8c489",
+      "chineseText": "(续) 本段段落补充说明了替代合规方法(AMOCs)的应用说明。邮件地址AMOC@faa.gov是提交请求的联络方式。同时，在使用已批准的AMOC之前，应通知适当的主要检查员或飞行标准分支局负责人。"
+    },
+    {
+      "segmentId": "pdf-p1-s4",
+      "order": 4,
+      "page": 1,
+      "type": "paragraph",
+      "sourceTextHash": "6bcea98ee20abb2af9f053d833bc0cdca46ba8242f7bde51de9ae259fdde6927",
+      "chineseText": "无可翻译内容，页面编号及时间戳信息。"
+    },
+    {
+      "segmentId": "pdf-p2-s5",
+      "order": 5,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "ca3a1ed9162ae810e902151eb34091b7ba5e0d7c730cc8c186c4298844d11430",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日，星期五 / 规则与条例 52497"
+    },
+    {
+      "segmentId": "pdf-p2-s6",
+      "order": 6,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "a1d4dedb302d26ca2a7302acf75b537868a60f141ed05e83990f3f67bd69f26a",
+      "chineseText": "Trent 1000–AE2, Trent 1000–C2, Trent 1000–CE2, Trent 1000–D2, Trent 1000–E2, Trent 1000–G2, Trent 1000–H2, Trent 1000–J2, Trent 1000–K2, 和 Trent 1000–L2 发动机。 本NPRM依据欧洲联盟航空安全局（EASA）于2025年1月7日发布的AD 2025–0002（MCAI）提出。该MCAI称已报告Trent 1000系列发动机中压压缩机可变入气导向叶片（VIGVs）存在裂纹，随后调查指向高循环疲劳扩展现象为根本原因。发动机制造商已发布材料，要求对IP压缩机VIGVs进行重复内窥镜检查（BSIs），并根据检查结果缩短BSI检查间隔或从服役中拆除发动机更换VIGVs。未予解决时，可能导致部件破裂、持续状态激励以及非命令性飞行中停机(IFSD)，特别在双发IFSD时，飞机操控能力减弱。NPRM提议对IP压缩机VIGVs裂纹进行重复BSI检查，并根据检查结果调整检查间隔，或拆除更换发动机，以消除该不安全状况。FAA针对该问题拟定规定的合规期限待考虑飞行安全、零件可得性以及维护正常排程。运营商被允许在合规期限前执行AD。"
+    },
+    {
+      "segmentId": "pdf-p2-s7",
+      "order": 7,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d5d719b2a0a6684d2f2a414da3a66eb233d21ddada4eb2979fbd00974bb29773",
+      "chineseText": "成本估算 本AD估计受影响美国境内飞机上共计28台发动机。FAA评估本AD的遵守成本如下： 预计每项行动的人工成本 附件费用 单台发动机费用 运营商总成本"
+    },
+    {
+      "segmentId": "pdf-p2-s8",
+      "order": 8,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "045d464473693acbaad003b0c6bc4c97e2221b528a1504c59a602d8406dba1af",
+      "chineseText": "IP压缩机6的检视镜检查 6工时 × 每工时85美元 = 510美元 ............. 0美元 510美元 14,280美元\n可变导向叶片（VIGVs）。"
+    },
+    {
+      "segmentId": "pdf-p2-s9",
+      "order": 9,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "9a2ad5998993acd5afcfa3afdb9290bc4a86da90c73fa2c6c06c6eabe4108955",
+      "chineseText": "联邦航空管理局（FAA）估算以下检验费用。该机构没有可能需要这些费用进行必要维修的发动机，因此用此方法确定更换数量：\nl otter on DSK8BHNXB4PROD with RULES1"
+    },
+    {
+      "segmentId": "pdf-p2-s10",
+      "order": 10,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "d91c108d99ffc0db4177e1a8da5c113cbccd4372ae387b51a4252fc99cf238cc",
+      "chineseText": "将根据结果要求执行"
+    },
+    {
+      "segmentId": "pdf-p2-s11",
+      "order": 11,
+      "page": 2,
+      "type": "paragraph",
+      "sourceTextHash": "8e0b12e5b1e5a28cb87dd80d33275de45734d67a7326828946334ac0575d7063",
+      "chineseText": "VerDate 2014年9月11日 16:20 2026年8月13日 Jkt 268001 PO 00000 Frm 00023 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p3-s12",
+      "order": 12,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f8a65e22b634e735c24c69f6064587e11e4142baa12aa0a8e1103731dd81ded4",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则和条例 52498"
+    },
+    {
+      "segmentId": "pdf-p3-s13",
+      "order": 13,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "aca45e5e12743d3f740125f4ccdfc996752b6ee4acbee3dc871a86901cc4a08f",
+      "chineseText": "基于状况的费用\n 行动 每项\n人工费 零件费 产品"
+    },
+    {
+      "segmentId": "pdf-p3-s14",
+      "order": 14,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "f2d434ed5819469254ed330a2eb149a73102df866157cb2fb193187873110516",
+      "chineseText": "更换每个裂纹IP压缩机的可变导向叶片（VIGV） 110工时 × 每工时85美元 = 9,350美元 ................................................. 3,307美元 12,657美元"
+    },
+    {
+      "segmentId": "pdf-p3-s15",
+      "order": 15,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "0e7ba18dc00bcf70cd9554c8dc71a25e7e3f8e2cfa2e3ac7229b833ef9ec4dc8",
+      "chineseText": "制定本规则的权限 第39部分—适航性 (h) 对EASA AD 2025–0002的例外规定 (1) 当EASA AD 2025–0002提及其生效日期时，本AD要求使用本AD的生效日期。 ■ 1. 第39部分的权限引用 标题49的美国法典规定了FAA制定航空安全规则的权限。第一篇第106节描述了FAA管理员的权限。第七篇：航空计划，更详细地描述了该机构的权限范围。 § 39.13 [修订] ■ 2. FAA通过新增以下适航指令修订§39.13：2026–16–08 罗尔斯·罗伊斯德国有限公司发动机：第39–23438号修正案；Docket编号FAA–2026–2294；项目标识MCAI–2025–00011–E。 (a) 生效日期 本适航指令自2026年9月18日起生效。 (b) 受影响的AD 无。 (c) 适用范围 本AD适用于所有罗尔斯·罗伊斯德国有限公司型号Trent 1000–A2、Trent 1000–AE2、Trent 1000–C2、Trent 1000–CE2、Trent 1000–D2、Trent 1000–E2、Trent 1000–G2、Trent 1000–H2、Trent 1000–J2、Trent 1000–K2和Trent 1000–L2发动机。 (d) 主题 联合飞机系统组件（JASC）代码7200，发动机（涡轮/涡轮螺旋桨）；7230，涡轮发动机压缩机部分。 (e) 不安全状况 由于高循环疲劳（HCF）导致中压（IP）压缩机可变入口导叶（VIGV）开裂的报告促使制定本AD。此次AD旨在检测并纠正IP压缩机VIGVs的开裂。如果不解决该不安全状况，可能导致断裂部件释放，引发稳态失速，进而造成非指令性中断飞行关闭（IFSD），在双发动机IFSD时可能导致飞机控制能力降低。 (f) 服从性 按规定的期限内执行本AD，除非已经完成。 (g) 必要动作 根据EASA AD 2025–0002的规定执行。 (h) 对EASA AD 2025–0002的例外规定 (1) 当EASA AD 2025–0002提及FAA颁布航空安全规则的权限时，本AD使用第39部分的权限说明。 (2) 本AD不采用EASA AD 2025–0002的“备注”部分。 (i) 无报告要求 尽管EASA AD 2025–0002要求向制造商提交某些信息，本AD未包含该要求。 (j) 替代符合性方法（AMOCs） (1) AIR–520持续运行安全分支经理有权根据14 CFR 39.19批准本AD的替代符合性方法。根据14 CFR 39.19的规定，提交替代符合性请求应通过向主检查员或当地飞行标准区办公室发送请求，或者直接发送至AIR–520持续运行安全分支经理，并发送电子邮件至AMOC@faa.gov。"
+    },
+    {
+      "segmentId": "pdf-p3-s16",
+      "order": 16,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "e79bbe9ec077ce07787659951fdb11e6bc563b8e64ce1c026f073f652521b9dc",
+      "chineseText": "ad.easa.europa.eu。除非本AD第(h)和(i)款中另有规定，否则应在规定的时限内完成所有要求的动作。依据管理者委托的权限，FAA修订14 CFR第39部分如下： 按照欧洲联盟航空安全局（EASA）2025年1月7日发布的AD 2025–0002执行，遵守其中规定的时限和程序。 (4) 你可以在美国联邦航空管理局，适航产品部，运营安全分支，1200区大道，伯灵顿，麻省01803查阅此材料。如需了解FAA提供该材料的情况，请致电（817）222–5110。"
+    },
+    {
+      "segmentId": "pdf-p3-s17",
+      "order": 17,
+      "page": 3,
+      "type": "paragraph",
+      "sourceTextHash": "c5306eeff05cc0be234eec7cba84508189dd18f7e3ade6207fb0c3201660a8c3",
+      "chineseText": "于2014年9月11日16:20修订 2026年8月13日 Jkt 268001 PO 00000 Frm 00024 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    },
+    {
+      "segmentId": "pdf-p4-s18",
+      "order": 18,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "ba3a06860b5a1f505b5952ac6a692bd7cba36789dc75f8bd97848a29e0b4c6f2",
+      "chineseText": "联邦公报 / 第91卷，第156号 / 2026年8月14日星期五 / 规则与规章 52499"
+    },
+    {
+      "segmentId": "pdf-p4-s19",
+      "order": 19,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "488c944d97f118a8ab3f2a6bdac1104f67d4e980a67a8e2fe2ac457650d4db27",
+      "chineseText": "(5) 你可以在国家档案和记录管理局（NARA）查阅此材料。材料位置及可用情况请访问：www.archives.gov/federal-register/cfr/ibr-locations 或发送邮件至fr.inspection@nara.gov。 经批准的引用材料： • 对以色列民航管理局（CAAI）发布的材料，联系方式为CAAI，邮政信箱1101号，机场城，70100，以色列，电话972–3–9774665，传真972–3–9774592，电子邮件aip@mot.gov.il。材料可以在CAAI官网www.gov.il/en/pages/israeli-airworthiness-directives 查阅。 【联邦公报文件号：2026-16636 于2026年8月13日8:45提交】 计费代码4910–13–P • 你也可以在FAA适航产品部，运营安全分支，2200南216街，得梅因，华盛顿查阅该材料。查询FAA材料可拨打206-231-3195。 交通部 联邦航空管理局 14 CFR 第39部分 [Docket No. FAA–2026–4652; Project Identifier MCAI–2025–01418–T; Amendment 39–23439; AD 2026–16–09] Frank Huynh，航空安全工程师，FAA，1600 Stewart Avenue，410室，Westbury，纽约11590，电话404–474–5526，电子邮件Frank.Huynh@faa.gov。 法规识别码 RIN 2120–AA64 适航指令：Gulfstream Aerospace LP（前身为Israel Aircraft Industries，Ltd.）飞机。"
+    },
+    {
+      "segmentId": "pdf-p4-s20",
+      "order": 20,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "435f737c15f1e14962a05fd16aea0a5f7c243c700a5b9454cca9c00290990974",
+      "chineseText": "背景 FAA发布了拟议规则通知（NPRM），拟修改14 CFR第39部分，增加适用于所有Gulfstream Aerospace LP型号Gulfstream 200和Galaxy飞机的新适航指令。该NPRM于2026年6月5日在联邦公报发布（91 FR 34178）。拟议规则源于CAAI发布的ISR I–05–2025–09–1 AD（以色列民航局发布），该MCAI指令指出需要新的或更严格的适航限制。FAA之所以发布本AD，是为了应对这些产品上的疲劳损伤问题。 未及时解决该不安全状况，可能导致机体结构主承力部件完整性降低。 公众可在regulations.gov通过Docket No. FAA–2026–4652查看该MCAI、接收的评论及其它资料。 FAA地址为运输部Docket Operations，M–30，西楼底层，房间30，工作时间内开放（周一至周五，节假日除外）。 适航指令包含最终规则、强制性继续适航信息和公众意见等。"
+    },
+    {
+      "segmentId": "pdf-p4-s21",
+      "order": 21,
+      "page": 4,
+      "type": "paragraph",
+      "sourceTextHash": "3322690ab80040a6354812c85b5b833783c5339086e8259e9cba108781dcd13e",
+      "chineseText": "适航信息 指令。FAA根据第七篇第一部分，第三子部分，44701节的权限制定该规则。根据该条款，国会赋予FAA职责，确保民用航空的安全飞行。 评论 FAA未收到对NPRM内容及成本估计的任何意见。 2026年8月13日 16:20 Jkt 268001 PO 00000 Frm 00025 Fmt 4700 Sfmt 4700 E:\\FR\\FM\\14AUR1.SGM 14AUR1"
+    }
+  ]
+}

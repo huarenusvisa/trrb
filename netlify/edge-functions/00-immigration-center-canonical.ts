@@ -4,41 +4,39 @@ const SITE = "https://trrb.net";
 
 export const config = { path: ["/immigrate/center", "/immigrate/center.html"] };
 
-function canonicalUrl(path: string, topic = "") {
-  const url = new URL(`${SITE}/immigrate/center`);
-  url.searchParams.set("path", path);
-  if (topic) url.searchParams.set("topic", topic);
-  return url.toString();
+function redirect(path: string, marker: string): Response {
+  return new Response(null, {
+    status: 301,
+    headers: {
+      location: `${SITE}${path}`,
+      "cache-control": "public, max-age=3600, stale-while-revalidate=86400",
+      "x-trrb-immigration-canonical": marker
+    }
+  });
 }
 
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
 
   const url = new URL(request.url);
-  const requestedPath = String(url.searchParams.get("path") || "study").trim();
+  const requestedPath = String(url.searchParams.get("path") || "").trim();
   const requestedTopic = String(url.searchParams.get("topic") || "").trim();
-  const category = immigrationCategory(requestedPath);
 
-  let target = "";
-  if (!category) {
-    target = canonicalUrl("study");
-  } else if (requestedTopic && !immigrationTopic(category, requestedTopic)) {
-    target = canonicalUrl(category.slug);
-  } else if (url.pathname.endsWith(".html") || !url.searchParams.has("path")) {
-    target = canonicalUrl(category.slug, requestedTopic);
+  // /immigrate/center is not itself a stable landing page. The knowledge hub is.
+  if (!requestedPath) return redirect("/immigrate/", "missing-path-to-hub-v2");
+
+  const category = immigrationCategory(requestedPath);
+  if (!category) return redirect("/immigrate/", "invalid-path-to-hub-v2");
+
+  if (requestedTopic && !immigrationTopic(category, requestedTopic)) {
+    return redirect(`/immigrate/center?path=${encodeURIComponent(category.slug)}`, "invalid-topic-to-category-v2");
   }
 
-  if (!target) return context.next();
+  // Keep one public URL shape. The .html file remains only the implementation target.
+  if (url.pathname.endsWith("/center.html")) {
+    const topic = requestedTopic ? `&topic=${encodeURIComponent(requestedTopic)}` : "";
+    return redirect(`/immigrate/center?path=${encodeURIComponent(category.slug)}${topic}`, "html-to-clean-center-v2");
+  }
 
-  const current = `${url.origin}${url.pathname}${url.search}`;
-  if (current === target) return context.next();
-
-  return new Response(null, {
-    status: 301,
-    headers: {
-      location: target,
-      "cache-control": "public, max-age=300",
-      "x-trrb-immigration-canonical": "knowledge-center-v1"
-    }
-  });
+  return context.next();
 };

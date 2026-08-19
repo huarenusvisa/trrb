@@ -1,6 +1,6 @@
 const { rest } = require("./_shared/supabase-admin");
 
-const CORE_CATEGORIES = ["重要新闻", "热门头条", "美国时政", "美国警情", "中国官场", "庇护百科"];
+const CORE_CATEGORIES = ["重要新闻", "热门头条", "美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
 
 function response(statusCode, body) {
   return {
@@ -50,9 +50,8 @@ exports.handler = async (event) => {
     const perCategory = Math.min(Math.max(Number(event.queryStringParameters?.per_category || 12), 3), 20);
 
     // Start with one global query. Only categories that are underrepresented in
-    // that result receive a supplemental query. The previous implementation
-    // always issued six category queries even when the global 200 already held
-    // far more rows than the homepage could render.
+    // that result receive a supplemental query. This keeps the browser on one
+    // homepage request while still protecting sparse homepage sections.
     const globalRows = await fetchArticles(globalLimit);
     const counts = categoryCounts(globalRows);
     const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);

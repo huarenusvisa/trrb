@@ -1,11 +1,11 @@
 (() => {
   "use strict";
 
-  const CORE_CATEGORIES = ["重要新闻","热门头条","美国时政","美国警情","中国官场","庇护百科"];
-  const DYNAMIC_SELECTORS = ["#ticker", "#hero", "#top-list", "#sections-grid", "#rank-list"];
   const PLACEHOLDER_RE = /image-placeholder\.svg|category-placeholders|tang-ren-daily-placeholder|^data:image\/svg/i;
   const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
+  const REFRESH_INTERVAL = 2 * 60 * 1000;
   let lastRenderSignature = "";
+  let refreshPromise = null;
 
   document.documentElement.dataset.homeLoading = "true";
   const loadingStyle = document.createElement("style");
@@ -47,39 +47,58 @@
     return id ? `id:${id}` : `title:${String(item?.title || "").trim().toLowerCase()}`;
   }
 
-  function uniqueSorted(groups) {
+  function normalizeRow(row) {
+    return {
+      id: row.id,
+      title: row.title || "",
+      slug: row.slug || "",
+      categoryId: row.category_id || "",
+      category_id: row.category_id || "",
+      topicKey: row.topic_key || "",
+      topic_key: row.topic_key || "",
+      category: row.category_name || "新闻",
+      category_name: row.category_name || "新闻",
+      excerpt: row.summary || String(row.content || "").replace(/\s+/g, " ").slice(0, 120),
+      summary: row.summary || "",
+      image: row.cover_image || "",
+      cover_image: row.cover_image || "",
+      author: row.author || "Tang Ren Daily",
+      published_at: row.published_at || "",
+      created_at: row.created_at || "",
+      date: row.published_at || row.created_at || "",
+      time: row.published_at || row.created_at || "",
+      isLive: true
+    };
+  }
+
+  function uniqueSorted(items) {
     const seen = new Set();
-    return groups.flat().filter(isFresh).filter((item) => {
-      const key = keyOf(item);
-      if (!key || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    }).sort((a,b) => articleTime(b) - articleTime(a));
-  }
-
-  async function fetchLiveRows(limit = 200, category = "") {
-    const params = new URLSearchParams({ limit: String(Math.min(Math.max(Number(limit)||200,1),200)), _: String(Date.now()) });
-    if (category) params.set("category", category);
-    const response = await fetch(`/.netlify/functions/public-home-articles?${params}`, { cache: "no-store", headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`首页实时接口 ${response.status}`);
-    const payload = await response.json();
-    const rows = Array.isArray(payload?.articles) ? payload.articles : [];
-    return rows.map((row) => {
-      const mapped = typeof window.mapLiveArticle === "function" ? window.mapLiveArticle(row) : {
-        id: row.id, title: row.title || "", slug: row.slug || "", category: row.category_name || "新闻", topicKey: row.topic_key || "", excerpt: row.summary || "", image: row.cover_image || "", author: row.author || "Tang Ren Daily"
-      };
-      return { ...mapped, published_at: row.published_at || "", created_at: row.created_at || "" };
-    });
-  }
-
-  async function fetchUnifiedLive() {
-    const global = await fetchLiveRows(200);
-    const supplements = await Promise.all(CORE_CATEGORIES.map((name) => fetchLiveRows(12, name).catch(() => [])));
-    return uniqueSorted([global, ...supplements]);
+    return (Array.isArray(items) ? items : [])
+      .map(normalizeRow)
+      .filter(isFresh)
+      .filter((item) => {
+        const key = keyOf(item);
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .sort((a, b) => articleTime(b) - articleTime(a));
   }
 
   function signatureFor(items) {
     return items.slice(0, 100).map((item) => [keyOf(item), String(item?.published_at || ""), String(item?.title || ""), String(item?.image || ""), String(item?.category || "")].join("|")).join("\n");
+  }
+
+  async function fetchUnifiedLive() {
+    const params = new URLSearchParams({ limit: "200", per_category: "12", _: String(Date.now()) });
+    const response = await fetch(`/.netlify/functions/public-home-bundle?${params}`, {
+      cache: "no-store",
+      headers: { Accept: "application/json" }
+    });
+    if (!response.ok) throw new Error(`首页统一实时接口 ${response.status}`);
+    const payload = await response.json();
+    if (payload?.mode !== "homepage") throw new Error("首页统一实时接口返回格式异常");
+    return uniqueSorted(payload.articles);
   }
 
   function bindImageRecovery(root = document) {
@@ -102,30 +121,49 @@
     loadingStyle.remove();
   }
 
-  function clearDynamicHome(message) {
-    DYNAMIC_SELECTORS.forEach((selector) => { const el=document.querySelector(selector); if(el) el.innerHTML=""; });
-    const root = document.querySelector("#sections-grid");
-    if (root) root.innerHTML = `<div class="empty-state">${message}</div>`;
-  }
-
-  async function finalizeHome() {
-    if (typeof window.renderHome !== "function") return;
-    try {
-      const articles = await fetchUnifiedLive();
-      if (!articles.length) throw new Error("最近4天没有可展示的已发布新闻");
-      const signature = signatureFor(articles);
-      if (signature && signature !== lastRenderSignature) {
-        window.renderHome(articles);
-        lastRenderSignature = signature;
-      }
-      document.documentElement.dataset.homeFreshPolicy = "4d-published-at-desc";
-    } catch (error) {
-      console.warn("Homepage final live fetch unavailable", error);
-      clearDynamicHome("实时新闻暂时不可用，请稍后刷新。");
-    }
+  function adoptExistingRender() {
+    const items = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES.filter(isFresh) : [];
+    if (!items.length) return false;
+    lastRenderSignature = signatureFor(items);
+    document.documentElement.dataset.homeFreshPolicy = "4d-published-at-desc";
+    document.documentElement.dataset.homeLiveSource = "articles-home-initial";
     revealHome();
     bindImageRecovery(document);
+    return true;
   }
+
+  async function refreshHome({ revealOnFailure = false } = {}) {
+    if (refreshPromise) return refreshPromise;
+    refreshPromise = (async () => {
+      try {
+        if (typeof window.renderHome !== "function") return false;
+        const articles = await fetchUnifiedLive();
+        if (!articles.length) throw new Error("最近4天没有可展示的已发布新闻");
+        const signature = signatureFor(articles);
+        if (signature && signature !== lastRenderSignature) {
+          window.renderHome(articles);
+          lastRenderSignature = signature;
+        }
+        document.documentElement.dataset.homeFreshPolicy = "4d-published-at-desc";
+        document.documentElement.dataset.homeLiveSource = "public-home-bundle";
+        document.documentElement.dataset.liveNewsUpdatedAt = new Date().toISOString();
+        revealHome();
+        bindImageRecovery(document);
+        return true;
+      } catch (error) {
+        console.warn("Homepage unified live refresh unavailable", error);
+        // Never erase the server-delivered static snapshot on an API failure.
+        // If the initial renderer also failed, reveal the crawlable build snapshot.
+        if (revealOnFailure) revealHome();
+        return false;
+      } finally {
+        refreshPromise = null;
+      }
+    })();
+    return refreshPromise;
+  }
+
+  window.TRRB_refreshHomeLive = refreshHome;
 
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) mutation.addedNodes.forEach((node) => {
@@ -133,16 +171,26 @@
     });
   });
 
+  function waitForInitialRenderer(attempt = 0) {
+    if (adoptExistingRender()) return;
+    if (attempt < 40) {
+      window.setTimeout(() => waitForInitialRenderer(attempt + 1), 125);
+      return;
+    }
+    // Only if the normal renderer did not finish within five seconds do we make
+    // one fallback request. No parallel startup fetch storm.
+    refreshHome({ revealOnFailure: true });
+  }
+
   function start() {
     observer.observe(document.documentElement, { childList: true, subtree: true });
-    window.setTimeout(finalizeHome, 100);
-    window.setTimeout(finalizeHome, 1600);
-    window.setTimeout(finalizeHome, 7200);
+    waitForInitialRenderer();
+    window.setInterval(() => refreshHome(), REFRESH_INTERVAL);
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) window.setTimeout(() => refreshHome(), 250);
+    });
     window.setTimeout(() => {
-      if (document.documentElement.dataset.homeLoading === "true") {
-        clearDynamicHome("实时新闻暂时不可用，请稍后刷新。");
-        revealHome();
-      }
+      if (document.documentElement.dataset.homeLoading === "true") revealHome();
     }, 10000);
   }
 

@@ -7,9 +7,16 @@ const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
 const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
 const ROUTE_PREFIXES = new Set([
   "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
-  "us-crime", "china-officialdom", "asylum", "immigration", "deport", "expose",
-  "uscis", "dhs", "cbp", "visa", "china", "politics", "world"
+  "us-crime", "china-officialdom", "asylum", "immigration", "deport", "expose"
 ]);
+const FORBIDDEN_SITEMAP_ROUTES = [
+  /https:\/\/trrb\.net\/finance(?:\/|[?<]|$)/i,
+  /https:\/\/trrb\.net\/jobs(?:\/|[?<]|$)/i,
+  /https:\/\/trrb\.net\/people(?:\/|[?<]|$)/i,
+  /https:\/\/trrb\.net\/expose(?:\/|\?|<|$)/i,
+  /https:\/\/trrb\.net\/(?:thanks|delete-account)\.html(?:\?|<|$)/i,
+  /https:\/\/trrb\.net\/(?:uscis|dhs|cbp|visa|world)(?:\/|\?|<|$)/i
+];
 const errors = [];
 const warnings = [];
 const checked = { html: 0, links: 0, images: 0, scripts: 0, styles: 0 };
@@ -118,6 +125,16 @@ try {
   if (!/<(?:sitemapindex|urlset)\b/i.test(sitemap)) errors.push("sitemap.xml 结构无效");
   if (/http:\/\/trrb\.net/i.test(sitemap)) errors.push("sitemap.xml 包含非HTTPS地址");
 } catch {}
+
+for (const file of files.filter((item) => /(?:^|\/)sitemap[^/]*\.xml$/i.test(rel(item)))) {
+  const name = rel(file);
+  const xml = await readFile(file, "utf8");
+  for (const pattern of FORBIDDEN_SITEMAP_ROUTES) {
+    if (pattern.test(xml)) errors.push(`${name}: 包含 noindex、预发布或已退役路由`);
+  }
+  if (/https:\/\/www\.trrb\.net\//i.test(xml)) errors.push(`${name}: 包含 www.trrb.net URL`);
+  if (/\/article\.html\?id=/i.test(xml)) errors.push(`${name}: 包含旧 article.html?id= URL`);
+}
 
 const report = {
   generatedAt: new Date().toISOString(),

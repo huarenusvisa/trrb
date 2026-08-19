@@ -56,11 +56,8 @@ if (blocks.length) xml = xml.replace(/\s*<\/urlset>\s*$/i, `\n${blocks.join('\n'
 fs.writeFileSync(SITEMAP, xml);
 
 const finalArticleCount = [...xml.matchAll(/<loc>https:\/\/trrb\.net\/article\.html\?id=/g)].length;
-console.log(`[sitemap-assure] published=${articles.length}; added=${added}; finalArticleUrls=${finalArticleCount}`);
-if (finalArticleCount < Math.min(3, articles.length)) throw new Error(`Sitemap still has too few article URLs: ${finalArticleCount}`);
+console.log(`[sitemap-assure] published=${articles.length}; added=${added}; pre-upgradeArticleUrls=${finalArticleCount}`);
+if (finalArticleCount < Math.min(3, articles.length)) throw new Error(`Sitemap still has too few pre-upgrade article URLs: ${finalArticleCount}`);
 
-// Build-time crawlability fix: news-sitemap.xml is generated before this script.
-// Inject real, visible article anchors into the initial HTML for homepage and ICE pages.
-// Runtime JavaScript may replace these snapshots with live data after load, but crawlers
-// and no-JS clients always receive direct article links in the server-delivered HTML.
-await import('./inject-static-news-links.mjs');
+// Static homepage/ICE snapshots are injected only after upgrade-article-urls.mjs
+// has converted query URLs to canonical pretty routes.

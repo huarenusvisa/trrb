@@ -7,6 +7,7 @@ on:
     paths:
       - 'articles-home.js'
       - 'homepage-refresh-guard.js'
+      - 'articles-home-live-fix.js'
       - 'index.html'
       - 'netlify/functions/public-home-bundle.js'
       - '.github/workflows/fix-home-single-live-source.yml'
@@ -34,7 +35,9 @@ jobs:
           grep -q 'REFRESH_INTERVAL = 2 \* 60 \* 1000' homepage-refresh-guard.js
           grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
           grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' index.html
-          ! grep -q '<script[^>]*articles-home-live-fix.js' index.html
+          grep -q 'articles-home-live-fix.js?v=20260819-compat-shim-1' index.html
+          grep -q 'TRRB_HOME_LIVE_COMPAT_SHIM' articles-home-live-fix.js
+          ! grep -q 'setInterval' articles-home-live-fix.js
           ! grep -q '<script[^>]*articles-home-index.js' index.html
 
       - name: Verify production homepage live source
@@ -46,9 +49,11 @@ jobs:
             stamp="${GITHUB_RUN_ID}-${attempt}"
             home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?single-source=$stamp" || true)
             api=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?single-source=$stamp" || true)
+            shim=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home-live-fix.js?single-source=$stamp" || true)
             if printf '%s' "$home" | grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' \
               && printf '%s' "$home" | grep -q 'articles-home.js?v=20260819-seo-canonical-1' \
-              && ! printf '%s' "$home" | grep -q 'articles-home-live-fix.js' \
+              && printf '%s' "$home" | grep -q 'articles-home-live-fix.js?v=20260819-compat-shim-1' \
+              && printf '%s' "$shim" | grep -q 'TRRB_HOME_LIVE_COMPAT_SHIM' \
               && printf '%s' "$api" | grep -q '"mode":"homepage"'; then
               ok=1
               break

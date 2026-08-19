@@ -1,4 +1,4 @@
-name: 第十六轮节点4-首页“美国判例与新规”生产上线与缓存治理
+name: 第十六轮节点4-首页“美国判例与新规”生产验收
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ on:
       - ".github/workflows/round16-node4-home-legal-production.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: trrb-round16-node4-home-legal-production
@@ -24,39 +24,18 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
 
-      - name: 更新首页法律栏目静态资源版本
+      # Validation workflows must never rewrite index.html or push a rollback commit.
+      # Asset versions are owned by the source change that actually modifies the JS/CSS.
+      - name: 校验首页法律栏目资源版本声明
         shell: bash
         run: |
           set -euo pipefail
-          node <<'NODE'
-          const fs = require('fs');
-          const path = 'index.html';
-          let html = fs.readFileSync(path, 'utf8');
-          html = html.replace(/homepage-immigration-hub\.css\?v=[^"']+/g, 'homepage-immigration-hub.css?v=20260815-r16n4');
-          html = html.replace(/homepage-immigration-hub\.js\?v=[^"']+/g, 'homepage-immigration-hub.js?v=20260815-r16n4');
-          fs.writeFileSync(path, html);
-          NODE
-
-      - name: 提交缓存治理版本
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "TRRB Round16 Bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add index.html
-          if git diff --cached --quiet; then
-            echo "Round16 node4 cache version already current."
-          else
-            git commit -m "Round 16 node4: bust homepage legal hub cache"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
+          grep -q 'homepage-immigration-hub.js?v=20260819-seo-canonical-1' index.html
+          grep -q 'homepage-immigration-hub.css?v=20260815-r16n4' index.html
 
       - name: 安装 Chromium 真实浏览器
         run: |
@@ -73,7 +52,7 @@ jobs:
             home="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
             js="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-immigration-hub.js?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
             css="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-immigration-hub.css?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
-            if grep -q 'homepage-immigration-hub.js?v=20260815-r16n4' <<<"$home" \
+            if grep -q 'homepage-immigration-hub.js?v=20260819-seo-canonical-1' <<<"$home" \
               && grep -q 'homepage-immigration-hub.css?v=20260815-r16n4' <<<"$home" \
               && grep -q '美国判例与新规' <<<"$js" \
               && grep -q 'legal-knowledge-card' <<<"$css"; then

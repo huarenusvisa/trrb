@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'netlify/edge-functions/legacy-url-redirect.ts'
+      - 'netlify/edge-functions/00-wordpress-query-rescue.ts'
       - 'netlify/edge-functions/01-wordpress-archive-retire.ts'
       - 'retired-indexnow-urls.txt'
       - '.github/workflows/legacy-category-retirement-production.yml'
@@ -23,17 +24,19 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: 校验源码覆盖旧分类与WordPress系统归档
+      - name: 校验源码覆盖旧分类、根查询与WordPress系统归档
         shell: bash
         run: |
           set -euo pipefail
           grep -Fq '(?:/(?:page/)?\\d+)?' netlify/edge-functions/legacy-url-redirect.ts
           grep -q 'wordpress-system-page' netlify/edge-functions/legacy-url-redirect.ts
+          grep -q 'wordpress-root-post-id' netlify/edge-functions/00-wordpress-query-rescue.ts
+          grep -q 'wordpress-root-search' netlify/edge-functions/00-wordpress-query-rescue.ts
           grep -q '20\\d{2}' netlify/edge-functions/01-wordpress-archive-retire.ts
           grep -q 'tag|author|search' netlify/edge-functions/01-wordpress-archive-retire.ts
           grep -q 'wordpress-archive-system-route' netlify/edge-functions/01-wordpress-archive-retire.ts
 
-      - name: 等待生产并验证旧系统归档410
+      - name: 等待生产并验证旧系统归档与根查询救援
         shell: bash
         run: |
           set -euo pipefail
@@ -62,13 +65,25 @@ jobs:
             hot=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/category/hotnews/0/?legacy-system=$stamp" | tr -d '\r' || true)
             hot301=$(printf '%s' "$hot" | grep -c '^HTTP/.* 301' || true)
             hotLocation=$(printf '%s' "$hot" | grep -ci '^location: https://trrb.net/hot-headlines' || true)
-            echo "attempt=$attempt hotnews=$hot301/$hotLocation"
 
-            if [ "$all_ok" -eq 1 ] && [ "$hot301" -ge 1 ] && [ "$hotLocation" -ge 1 ]; then
+            post=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?p=117382" | tr -d '\r' || true)
+            post301=$(printf '%s' "$post" | grep -c '^HTTP/.* 301' || true)
+            postLocation=$(printf '%s' "$post" | grep -ci '^location: https://trrb.net/article.html?id=117382' || true)
+
+            search=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?s=immigration" | tr -d '\r' || true)
+            search301=$(printf '%s' "$search" | grep -c '^HTTP/.* 301' || true)
+            searchLocation=$(printf '%s' "$search" | grep -ci '^location: https://trrb.net/listing.html?q=immigration' || true)
+
+            echo "attempt=$attempt hotnews=$hot301/$hotLocation rootPost=$post301/$postLocation rootSearch=$search301/$searchLocation"
+
+            if [ "$all_ok" -eq 1 ] \
+              && [ "$hot301" -ge 1 ] && [ "$hotLocation" -ge 1 ] \
+              && [ "$post301" -ge 1 ] && [ "$postLocation" -ge 1 ] \
+              && [ "$search301" -ge 1 ] && [ "$searchLocation" -ge 1 ]; then
               echo 'LEGACY_WORDPRESS_SYSTEM_RETIREMENT_PASS=true'
               exit 0
             fi
             sleep 10
           done
-          echo 'Legacy WordPress system archives did not retire in production.'
+          echo 'Legacy WordPress system archives or query rescues did not converge in production.'
           exit 1

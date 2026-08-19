@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice%E9%81%AD%E5%8A%A0%E5%B7%9E%E6%96%AD%E6%8F%B4%E5%9C%A3%E5%9C%B0%E4%BA%9A%E5%93%A5%E5%8E%BF%E8%AD%A6%E9%95%BF%E7%A6%81%E6%AD%A2%E8%AE%AD%E7%BB%83%E5%92%8C%E6%9E%AA%E6%A2%B0%E8%AE%A4%E8%AF%81%E7%A7%BB%E6%B0%91%E6%89%A7%E6%B3%95%E5%86%B2%E7%AA%81%E5%8D%87%E7%BA%A7-mszwegft-6d0f37</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T09:37:33.880Z</news:publication_date>
+        <news:title>ICE遭加州“断援”！圣地亚哥县警长禁止训练和枪械认证，移民执法冲突升级</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/us-crime/%E8%B4%9D%E6%A3%AE%E7%89%B9%E8%A2%AD%E5%87%BB%E9%98%B4%E8%B0%8B%E6%A1%88%E5%AE%A3%E5%88%A4%E8%A2%AB%E5%91%8A%E8%AE%A4%E7%BD%AA%E8%8E%B7%E5%88%916%E5%B9%B41%E4%B8%AA%E6%9C%88%E6%9B%BE%E6%90%BA%E5%88%80%E5%92%8C%E7%87%83%E7%83%A7%E7%93%B6%E8%B5%B4%E5%8D%8E%E7%9B%9B%E9%A1%BF-mszvqyu2-f7dba4</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2206,22 +2214,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-17T09:43:40.463Z</news:publication_date>
         <news:title>布兰奇力挺皮罗！撤案风波升级，赫恩案件或迎司法部轻罪指控</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/%E9%98%BF%E6%8B%89%E6%96%AF%E5%8A%A0%E5%88%9D%E9%80%89%E7%88%86%E5%90%8C%E5%90%8D%E9%99%B7%E9%98%B1%E7%89%B9%E6%9C%97%E6%99%AE%E6%8C%87%E8%B4%A3%E6%B0%91%E4%B8%BB%E5%85%9A%E5%88%B6%E9%80%A0%E9%80%89%E7%A5%A8%E6%B7%B7%E6%B7%86%E5%8A%9B%E6%8C%BA%E6%B2%99%E5%88%A9%E6%96%87-msx1imyt-f99593</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T09:37:28.517Z</news:publication_date>
-        <news:title>阿拉斯加初选爆“同名陷阱”！特朗普指责民主党制造选票混淆，力挺沙利文</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/%E8%BF%99%E6%98%AF%E6%84%9A%E8%A0%A2%E7%9A%84%E4%BA%8B%E6%83%85%E5%85%B1%E5%92%8C%E5%85%9A%E5%8F%82%E8%AE%AE%E5%91%98%E5%8D%A1%E8%A5%BF%E8%BF%AA%E5%85%AC%E5%BC%80%E7%82%AE%E8%BD%B0%E7%89%B9%E6%9C%97%E6%99%AE%E7%96%AB%E8%8B%97%E8%A1%8C%E6%94%BF%E4%BB%A4-msx18hvc-84340a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T09:29:35.352Z</news:publication_date>
-        <news:title>“这是愚蠢的事情！”共和党参议员卡西迪公开炮轰特朗普疫苗行政令</news:title>
       </news:news>
     </url>
 </urlset>

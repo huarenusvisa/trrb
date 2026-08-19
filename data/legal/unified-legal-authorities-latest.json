@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "4c4fd5002491d9c17f461ebdec1a2ab4a6f562b242f4da71e20338932b52d1dd",
+  "datasetVersion": "3823d9b51db9a0f292b9dbba105ab0c041eb5b2918af7987d597788d3d168424",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 429,
+    "US_CIRCUIT": 433,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 625,
+  "count": 629,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -3028,6 +3028,21 @@
       "sourceKey": "CIRCUIT:ca1:7b144c8c563690e9"
     },
     {
+      "id": "5cd9323d03436861545115ca",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the First Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "24-1805P.01A",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+      "sourceKey": "CIRCUIT:ca1:80ae79879767775e"
+    },
+    {
       "id": "742ec4be70d431a94118222c",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4423,6 +4438,21 @@
       "sourceKey": "CIRCUIT:ca2:5716b3e8f7d2cf45"
     },
     {
+      "id": "2e7ac5fae274acd707c28be5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-720",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-720_opn.pdf",
+      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-720_opn.pdf",
+      "sourceKey": "CIRCUIT:ca2:5a61e5f2df29d1f0"
+    },
+    {
       "id": "fce220f975fbca12a99b1906",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4436,6 +4466,21 @@
       "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-35_opn.pdf",
       "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-35_opn.pdf",
       "sourceKey": "CIRCUIT:ca2:67c1240ef2ac4a0f"
+    },
+    {
+      "id": "16be71dde06946fbfcd4f0a5",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Second Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "22-6185",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/22-6185_2_opn.pdf",
+      "officialPdfUrl": "https://ww3.ca2.uscourts.gov/decisions/OPN/22-6185_2_opn.pdf",
+      "sourceKey": "CIRCUIT:ca2:6a4ac4f5bdc89dec"
     },
     {
       "id": "77d0baf55f2fb24d964243f0",
@@ -8966,6 +9011,21 @@
       "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-7146.pdf",
       "officialPdfUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-7146.pdf",
       "sourceKey": "CIRCUIT:cadc:bb855260c6e9fe2c"
+    },
+    {
+      "id": "e946da6254f972eba12ad465",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the District of Columbia Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "25-5041",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5041.pdf",
+      "officialPdfUrl": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5041.pdf",
+      "sourceKey": "CIRCUIT:cadc:be03311bccc0bc2c"
     },
     {
       "id": "9f4bd5e123f59bba94db18c3",

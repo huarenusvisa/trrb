@@ -1,0 +1,26 @@
+name: Admin Authorization Regression Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'netlify/functions/**'
+      - 'admin/admin.js'
+      - 'scripts/admin-auth-regression-audit.mjs'
+      - '.github/workflows/admin-auth-regression-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Audit staff authorization and service-role endpoints
+        run: node scripts/admin-auth-regression-audit.mjs

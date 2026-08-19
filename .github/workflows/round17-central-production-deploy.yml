@@ -20,6 +20,7 @@ on:
       - 'immigrate/*-knowledge-content.js'
       - 'immigrate/change-status-module.js'
       - 'immigrate/citizenship-module.js'
+      - 'netlify/functions/public-category-page.js'
       - 'scripts/split-sitemap-index.mjs'
       - '.github/workflows/round17-node*.yml'
       - '.github/workflows/round17-central-production-deploy.yml'
@@ -41,7 +42,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Debounce knowledge/legal commits and trigger one clean main build
+      - name: Debounce knowledge/legal/category-data commits and trigger one clean main build
         shell: bash
         run: |
           set -euo pipefail

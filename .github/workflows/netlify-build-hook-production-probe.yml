@@ -1,0 +1,84 @@
+name: Netlify Build Hook生产探针
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/netlify-build-hook-production-probe.yml'
+      - 'deploy-generation.txt'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-netlify-hook-probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 触发现有Netlify Build Hook
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK missing'; exit 2; }
+          code=$(curl -sS -o /tmp/hook-response.json -w '%{http_code}' -X POST "$NETLIFY_BUILD_HOOK")
+          echo "HOOK_HTTP=$code" >> "$GITHUB_ENV"
+          test "$code" -ge 200 -a "$code" -lt 300
+
+      - name: 等待生产发布窗口
+        run: sleep 180
+
+      - name: 检查生产是否真正吃到当前main
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          marker=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-generation.txt?probe=${GITHUB_RUN_ID}" 2>/dev/null | tr -d '\r\n[:space:]' || true)
+          home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?probe=${GITHUB_RUN_ID}" || true)
+          news_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?probe=${GITHUB_RUN_ID}" | tr -d '\r' || true)
+          legacy_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=wp-117123&probe=${GITHUB_RUN_ID}" | tr -d '\r' || true)
+
+          marker_ok=false
+          finance_ok=false
+          news_v4=false
+          legacy_410=false
+          [ "$marker" = 'trrb-seo-recovery-20260819-v1' ] && marker_ok=true
+          printf '%s' "$home" | grep -q 'href="/finance/"' && finance_ok=true || true
+          printf '%s' "$news_headers" | grep -qi '^x-trrb-news-sitemap: live-supabase-v4-latest1000-ice-safe-dedupe' && news_v4=true || true
+          printf '%s' "$legacy_headers" | grep -q '^HTTP/.* 410' && legacy_410=true || true
+
+          cat > reports/netlify-build-hook-production-probe.json <<EOF
+          {
+            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "hook_http_status": ${HOOK_HTTP:-0},
+            "expected_generation": "trrb-seo-recovery-20260819-v1",
+            "live_generation": "${marker}",
+            "generation_marker_live": $marker_ok,
+            "finance_card_live": $finance_ok,
+            "news_sitemap_v4_live": $news_v4,
+            "missing_wp_117123_is_410": $legacy_410
+          }
+          EOF
+          cat reports/netlify-build-hook-production-probe.json
+
+      - name: 保存探针结果
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "TRRB Netlify Probe Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add reports/netlify-build-hook-production-probe.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Update Netlify build-hook production probe [skip ci]"
+          git pull --rebase origin main
+          git push origin HEAD:main

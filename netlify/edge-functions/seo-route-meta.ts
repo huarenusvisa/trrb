@@ -5,7 +5,7 @@ export const config = {
   path: [
     "/", "/index.html",
     "/listing", "/listing.html",
-    "/important-news", "/hot-headlines", "/us-politics", "/us-crime", "/china-officialdom", "/asylum",
+    "/important-news", "/hot-headlines", "/us-politics", "/us-crime", "/china-officialdom", "/immigration", "/asylum",
     "/uscis", "/dhs", "/cbp", "/visa", "/china", "/politics", "/world",
     "/expose", "/expose.html",
     "/immigrate", "/immigrate/", "/immigrate/index.html",
@@ -29,6 +29,7 @@ const CATEGORY_SLUGS: Record<string, string> = {
   "美国时政": "us-politics",
   "美国警情": "us-crime",
   "中国官场": "china-officialdom",
+  "移民美国": "immigration",
   "庇护百科": "asylum",
   "USCIS": "uscis",
   "DHS": "dhs",
@@ -124,14 +125,6 @@ function listingSeo(url: URL): Seo {
       description: "唐人日报文章列表，汇总美国时政、移民、社会、警情、中国新闻及专题报道。",
       canonical: `${SITE}/listing`,
       robots: "noindex,follow,noarchive"
-    };
-  }
-
-  if (category === "移民美国") {
-    return {
-      title: "移民美国知识库 - 唐人日报",
-      description: "唐人日报移民美国知识库，系统整理美国签证、绿卡、庇护、身份转换与入籍相关知识。",
-      canonical: `${SITE}/immigrate/`
     };
   }
 
@@ -243,7 +236,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("link", `<${seo.canonical}>; rel=\"canonical\"`);
-    headers.set("x-trrb-seo-route-meta", "round10-v2");
+    headers.set("x-trrb-seo-route-meta", "round10-v3-immigration-news-canonical");
     if (/^noindex/i.test(seo.robots || "")) headers.set("x-robots-tag", seo.robots || "noindex,follow");
     else headers.delete("x-robots-tag");
     return new Response(request.method === "HEAD" ? null : body, { status: upstream.status, headers });

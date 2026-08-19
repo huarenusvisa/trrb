@@ -15,7 +15,13 @@
       AMZN:{symbol:'AMZN',name:'Amazon',market:'NASDAQ',price:246.18,change:2.57,after:0.11,open:240.01,high:247.30,low:239.42,prev:240.01,marketCap:'2.62T',pe:'41.6',volume:'49.2M',range52:'151–250',sector:'消费',description:'Amazon 经营电商、云计算、广告、物流和数字内容业务。',watch:false},
       META:{symbol:'META',name:'Meta Platforms',market:'NASDAQ',price:801.11,change:0.67,after:-0.05,open:795.02,high:808.20,low:790.41,prev:795.78,marketCap:'2.02T',pe:'29.8',volume:'16.7M',range52:'442–812',sector:'互联网',description:'Meta 运营 Facebook、Instagram、WhatsApp 等社交平台并发展人工智能和虚拟现实业务。',watch:false},
       GOOGL:{symbol:'GOOGL',name:'Alphabet',market:'NASDAQ',price:231.09,change:-0.03,after:0.04,open:231.42,high:233.50,low:228.16,prev:231.16,marketCap:'2.81T',pe:'28.2',volume:'31.1M',range52:'142–242',sector:'互联网',description:'Alphabet 是 Google 母公司，业务覆盖搜索、广告、云计算、YouTube 与人工智能。',watch:false},
-      BABA:{symbol:'BABA',name:'阿里巴巴',market:'NYSE',price:161.28,change:1.86,after:0.03,open:158.70,high:162.52,low:157.83,prev:158.33,marketCap:'385B',pe:'24.1',volume:'18.3M',range52:'73–176',sector:'中概互联网',description:'阿里巴巴经营电子商务、云计算、物流和数字媒体业务。',watch:true}
+      BABA:{symbol:'BABA',name:'阿里巴巴',market:'NYSE',price:161.28,change:1.86,after:0.03,open:158.70,high:162.52,low:157.83,prev:158.33,marketCap:'385B',pe:'24.1',volume:'18.3M',range52:'73–176',sector:'中概互联网',description:'阿里巴巴经营电子商务、云计算、物流和数字媒体业务。',watch:true},
+      AVGO:{symbol:'AVGO',name:'Broadcom',market:'NASDAQ',price:322.40,change:-4.21,after:0.12,open:335.10,high:337.20,low:319.80,prev:336.57,marketCap:'1.52T',pe:'47.0',volume:'35.1M',range52:'134–374',sector:'半导体',description:'Broadcom 提供半导体、网络基础设施与企业软件产品。',watch:false},
+      AMD:{symbol:'AMD',name:'AMD',market:'NASDAQ',price:171.40,change:-3.71,after:0.09,open:177.90,high:179.20,low:169.80,prev:178.00,marketCap:'278B',pe:'46.3',volume:'62.4M',range52:'76–227',sector:'半导体',description:'AMD 提供 CPU、GPU、数据中心与嵌入式计算产品。',watch:false},
+      MU:{symbol:'MU',name:'Micron',market:'NASDAQ',price:154.80,change:-0.27,after:0.06,open:155.20,high:157.10,low:152.90,prev:155.22,marketCap:'174B',pe:'22.8',volume:'22.2M',range52:'61–170',sector:'存储芯片',description:'Micron 提供 DRAM、NAND 与存储解决方案。',watch:false},
+      MRNA:{symbol:'MRNA',name:'Moderna',market:'NASDAQ',price:42.36,change:19.37,after:-0.31,open:36.70,high:44.10,low:36.20,prev:35.49,marketCap:'16B',pe:'—',volume:'31.8M',range52:'22–76',sector:'生物医药',description:'Moderna 开发基于 mRNA 平台的疫苗与治疗产品。',watch:false},
+      MSTR:{symbol:'MSTR',name:'Strategy',market:'NASDAQ',price:483.20,change:17.37,after:-0.40,open:430.50,high:493.70,low:425.10,prev:411.70,marketCap:'139B',pe:'—',volume:'27.4M',range52:'102–543',sector:'软件/数字资产',description:'Strategy 提供企业分析软件，并持有大量比特币资产。',watch:false},
+      CRM:{symbol:'CRM',name:'Salesforce',market:'NYSE',price:271.82,change:0.91,after:0.15,open:269.60,high:273.10,low:268.30,prev:269.37,marketCap:'258B',pe:'38.5',volume:'8.7M',range52:'226–369',sector:'软件',description:'Salesforce 提供客户关系管理、云软件与人工智能企业服务。',watch:false}
     },
     funds: [
       {symbol:'SPY',name:'SPDR S&P 500 ETF',category:'核心指数',price:770.23,change:0.22,expense:'0.09%',aum:'$680B',risk:'中等',holdings:['NVDA','AAPL','MSFT']},
@@ -71,13 +77,16 @@
     ];
   }
   function getWatchlist(){
-    let list=[];
-    try{ list=JSON.parse(localStorage.getItem('trfinance.watchlist')||'[]'); }catch(e){}
-    if(!Array.isArray(list)||!list.length) list=Object.values(demo.stocks).filter(s=>s.watch).map(s=>s.symbol);
-    return list.filter(s=>demo.stocks[s]);
+    const raw=localStorage.getItem('trfinance.watchlist');
+    if(raw===null) return Object.values(demo.stocks).filter(s=>s.watch).map(s=>s.symbol);
+    let list=[]; try{list=JSON.parse(raw)}catch(e){}
+    return Array.isArray(list)?list.filter(s=>demo.stocks[s]):[];
   }
   function setWatchlist(list){localStorage.setItem('trfinance.watchlist',JSON.stringify(Array.from(new Set(list)).filter(s=>demo.stocks[s])));}
   function toggleWatch(symbol){const list=getWatchlist();const i=list.indexOf(symbol);if(i>=0)list.splice(i,1);else if(demo.stocks[symbol])list.unshift(symbol);setWatchlist(list);return i<0;}
+  function getFundWatchlist(){let list=[];try{list=JSON.parse(localStorage.getItem('trfinance.fundWatchlist')||'[]')}catch(e){}return Array.isArray(list)?list.filter(s=>demo.funds.some(f=>f.symbol===s)):[];}
+  function setFundWatchlist(list){localStorage.setItem('trfinance.fundWatchlist',JSON.stringify(Array.from(new Set(list)).filter(s=>demo.funds.some(f=>f.symbol===s))));}
+  function toggleFundWatch(symbol){const list=getFundWatchlist();const i=list.indexOf(symbol);if(i>=0)list.splice(i,1);else if(demo.funds.some(f=>f.symbol===symbol))list.unshift(symbol);setFundWatchlist(list);return i<0;}
   function search(q){
     q=(q||'').trim().toLowerCase(); if(!q)return [];
     const stocks=Object.values(demo.stocks).filter(x=>x.symbol.toLowerCase().includes(q)||x.name.toLowerCase().includes(q)).map(x=>({...x,type:'stock'}));
@@ -92,6 +101,9 @@
     getWatchlist,
     setWatchlist,
     toggleWatch,
+    getFundWatchlist,
+    setFundWatchlist,
+    toggleFundWatch,
     search,
     spark
   };

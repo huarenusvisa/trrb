@@ -47,6 +47,7 @@ if (/https:\/\/trrb\.net\/immigrate\/center\.html(?:\?|<)/i.test(xml)) {
 const blocks = xml.match(/<url>[\s\S]*?<\/url>/g) || [];
 const staticBlocks = [];
 const articleBlocks = [];
+let prelaunchJobsExcluded = 0;
 const RESERVED_FIRST_SEGMENTS = new Set(['topic', 'immigrate', 'assets', 'admin', 'data', 'netlify', '.netlify', 'wp-content']);
 
 function isArticleBlock(block) {
@@ -63,9 +64,21 @@ function isArticleBlock(block) {
   return true;
 }
 
+function isPrelaunchJobsBlock(block) {
+  return /<loc>https:\/\/trrb\.net\/jobs(?:\/|\?|<)/i.test(block);
+}
+
 for (const block of blocks) {
+  if (isPrelaunchJobsBlock(block)) {
+    prelaunchJobsExcluded += 1;
+    continue;
+  }
   if (isArticleBlock(block)) articleBlocks.push(block);
   else staticBlocks.push(block);
+}
+
+if ([...staticBlocks, ...articleBlocks].some(isPrelaunchJobsBlock)) {
+  throw new Error('Prelaunch jobs routes leaked into the published sitemap');
 }
 
 for (const name of fs.readdirSync(ROOT)) {
@@ -96,4 +109,4 @@ const today = new Date().toISOString().slice(0, 10);
 const indexXml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${files.map((filename) => `  <sitemap>\n    <loc>${SITE}/${filename}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>`).join('\n')}\n</sitemapindex>\n`;
 fs.writeFileSync(sourcePath, indexXml);
 
-console.log(`[sitemap-index] ${blocks.length} URLs split into ${files.length} files (${staticBlocks.length} static, ${articleBlocks.length} articles); immigration knowledge ${expectedKnowledgeUrls.length}/${expectedKnowledgeUrls.length}`);
+console.log(`[sitemap-index] ${blocks.length} URLs split into ${files.length} files (${staticBlocks.length} static, ${articleBlocks.length} articles); immigration knowledge ${expectedKnowledgeUrls.length}/${expectedKnowledgeUrls.length}; prelaunch jobs excluded ${prelaunchJobsExcluded}`);

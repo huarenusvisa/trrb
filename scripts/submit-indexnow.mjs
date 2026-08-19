@@ -8,6 +8,8 @@ const KEY = '9d4f7b8c6a2e41d39b7c5e8f1a6d3c20';
 const KEY_LOCATION = `${ORIGIN}/${KEY}.txt`;
 const MAX = 10000;
 const ROOT = process.cwd();
+const INCLUDE_RETIRED = /^(?:1|true|yes)$/i.test(String(process.env.INDEXNOW_INCLUDE_RETIRED || ''));
+const RETIRED_FILE = 'retired-indexnow-urls.txt';
 
 function decodeXml(value) {
   return String(value || '')
@@ -32,9 +34,23 @@ function canonicalize(value) {
     url.hostname = HOST;
     url.port = '';
     url.hash = '';
-    // Never teach Bing a new legacy query URL. Restored old URLs are handled by
-    // 301/410 at request time, while IndexNow receives only current canonicals.
+    // Never teach Bing a legacy query URL as a current canonical. Explicitly
+    // retired URLs are handled separately below and are allowed to preserve the
+    // old query so crawlers can observe their 301/404/410/noindex state.
     if (/\/article\.html$/i.test(url.pathname) && url.searchParams.has('id')) return '';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+function canonicalizeRetired(value) {
+  try {
+    const url = new URL(value);
+    if (url.hostname !== HOST) return '';
+    url.protocol = 'https:';
+    url.port = '';
+    url.hash = '';
     return url.toString();
   } catch {
     return '';
@@ -43,6 +59,16 @@ function canonicalize(value) {
 
 function extractLocs(xml) {
   return rawLocs(xml).map(canonicalize).filter(Boolean);
+}
+
+function retiredUrls() {
+  if (!INCLUDE_RETIRED || !fs.existsSync(RETIRED_FILE)) return [];
+  return fs.readFileSync(RETIRED_FILE, 'utf8')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'))
+    .map(canonicalizeRetired)
+    .filter(Boolean);
 }
 
 function localSitemapPath(value) {
@@ -80,10 +106,16 @@ function collectSitemapUrls(filename, seen = new Set()) {
 
 const candidates = new Set();
 
-// Fresh news first. IndexNow accepts at most 10,000 URLs per request, so the
-// Google News feed must never be crowded out by a large historical sitemap.
+// Fresh news always wins the crawl budget.
 const freshNewsUrls = fs.existsSync('news-sitemap.xml') ? collectSitemapUrls('news-sitemap.xml') : [];
 freshNewsUrls.forEach((url) => candidates.add(url));
+
+// Deleted/redirected URLs are inserted before the historical sitemap only on
+// change/manual runs, so Bing can discover their retirement promptly without
+// resubmitting them every 15 minutes forever.
+const retired = retiredUrls();
+retired.forEach((url) => candidates.add(url));
+
 candidates.add(`${ORIGIN}/`);
 
 // split-sitemap-index.mjs may convert sitemap.xml into a sitemapindex before
@@ -114,5 +146,5 @@ const response = await fetch('https://api.indexnow.org/indexnow', {
 });
 
 const text = await response.text();
-console.log(`IndexNow提交 ${urls.length} 个规范URL（最新新闻优先 ${Math.min(freshNewsUrls.length, urls.length)} 条）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
+console.log(`IndexNow提交 ${urls.length} 个URL（最新新闻 ${freshNewsUrls.length}；本次退役通知 ${retired.length}）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
 if (![200, 202].includes(response.status)) process.exit(1);

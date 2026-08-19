@@ -16,7 +16,7 @@
   }
 
   function install() {
-    if (typeof window.renderCategorySection !== "function") return false;
+    if (typeof window.renderCategorySection !== "function" || typeof window.renderSections !== "function") return false;
 
     if (window.categoryIds) {
       delete window.categoryIds["驱逐快报"];
@@ -24,13 +24,14 @@
     }
 
     const baseRenderCategorySection = window.renderCategorySection;
+    const baseRenderSections = window.renderSections;
+
     window.renderCategorySection = function unifiedCategorySection(category, articles) {
       const normalizedArticles = (Array.isArray(articles) ? articles : []).map((item) => {
         const primaryCategory = normalizeCategory(item?.category || item?.category_name);
 
-        // ICE is a secondary topic membership. When the ICE block is rendered, expose
-        // topic_key=ice articles to that block without changing their stored primary category.
-        // The same article can therefore also remain visible under 重要新闻/美国时政/etc.
+        // ICE is secondary topic membership. Only the ICE card receives an ICE
+        // category projection; primary-category cards keep their original placement.
         if (category === ICE_CATEGORY && isIceArticle(item)) {
           return { ...item, category: ICE_CATEGORY, primary_category: primaryCategory };
         }
@@ -49,14 +50,19 @@
     };
 
     window.renderSections = function unifiedSections(articles) {
-      const normalizedArticles = (Array.isArray(articles) ? articles : []).map((item) => ({
-        ...item,
-        category: normalizeCategory(item?.category || item?.category_name)
-      }));
-      const categories = ["重要新闻", "热门头条", ICE_CATEGORY];
-      const sections = categories.map((category) => window.renderCategorySection(category, normalizedArticles));
+      const source = Array.isArray(articles) ? articles : [];
+
+      // Preserve the complete homepage section set owned by articles-home.js
+      // (US politics, crime, China officialdom, immigration, asylum, exposure wall).
+      baseRenderSections(source);
+
       const root = document.querySelector("#sections-grid");
-      if (root) root.innerHTML = sections.join("");
+      if (!root) return;
+
+      const iceHtml = window.renderCategorySection(ICE_CATEGORY, source);
+      const existing = root.querySelector("#ice");
+      if (existing) existing.outerHTML = iceHtml;
+      else root.insertAdjacentHTML("afterbegin", iceHtml);
     };
 
     return true;

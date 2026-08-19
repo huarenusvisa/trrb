@@ -1,0 +1,49 @@
+name: Category Pagination Production Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'listing.html'
+      - 'listing.js'
+      - 'listing-seo.js'
+      - 'netlify/functions/public-category-page.js'
+      - 'netlify/edge-functions/category-prerender.ts'
+      - 'netlify/edge-functions/01-listing-category-canonical.ts'
+      - 'netlify/edge-functions/01-immigration-knowledge-canonical.ts'
+      - 'netlify/edge-functions/01-trump-route-canonical.ts'
+      - 'netlify/edge-functions/01-people-retired.ts'
+      - 'netlify/edge-functions/02-public-nonindex.ts'
+      - 'health.html'
+      - 'scripts/category-pagination-production-audit.mjs'
+      - '.github/workflows/category-pagination-production-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Validate audit syntax
+        run: node --check scripts/category-pagination-production-audit.mjs
+      - name: Wait for production convergence and audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 90); do
+            echo "Category production audit attempt $attempt"
+            if SITE_ORIGIN=https://trrb.net node scripts/category-pagination-production-audit.mjs; then
+              echo 'CATEGORY PAGINATION PRODUCTION: PASS'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'CATEGORY PAGINATION PRODUCTION: FAIL'
+          exit 1

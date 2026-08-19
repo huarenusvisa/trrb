@@ -56,12 +56,18 @@ jobs:
           node scripts/round17-node7-mobile-a11y-stability-audit.mjs
           node scripts/round17-node8-production-resilience-audit.mjs
           node scripts/round17-node9-seo-index-internal-links-audit.mjs
-      - name: Trigger final production deployment
+      - name: Trigger Netlify only for manual final audit
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         run: |
           set -euo pipefail
           test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK is not configured'; exit 2; }
-          curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-round17-node10.txt
+          if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+            hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node10+manual"
+          else
+            hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node10+manual"
+          fi
+          curl -fsS -X POST "$hook_url" >/tmp/netlify-round17-node10.txt
       - name: Re-verify Round 17 nodes 1-9 on production and close node 10
         shell: bash
         run: |
@@ -92,4 +98,4 @@ jobs:
           echo 'ROUND 17 FINAL PRODUCTION AUDIT: FAIL'
           exit 1
 
-# Strict final: requires current legal coverage plus unified homepage bundle, four-day core freshness and sparse-category supplement preservation.
+# Push deployment is centralized in round17-central-production-deploy.yml.

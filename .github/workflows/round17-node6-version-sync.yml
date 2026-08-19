@@ -1,4 +1,4 @@
-name: Round 17 Node 6 - Safe Analysis Version Sync
+name: Round 17 Node 6 - Safe Analysis Version Audit
 
 on:
   workflow_dispatch:
@@ -9,10 +9,10 @@ on:
       - '.github/workflows/round17-node6-version-sync.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  sync:
+  audit:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -20,19 +20,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - name: Synchronize per-analysis datasetVersion only after official metadata check
+      - name: Verify analysis versions without mutating legal content
         run: node scripts/round17-node6-sync-analysis-version.mjs
-      - name: Commit synchronized metadata if changed
-        shell: bash
-        run: |
-          set -euo pipefail
-          if git diff --quiet -- data/legal/legal-ai-analysis-latest.json; then
-            echo 'No analysis version metadata changes required.'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/legal/legal-ai-analysis-latest.json
-          git commit -m 'Round 17 node6: synchronize per-analysis dataset versions'
-          git pull --rebase origin main
-          git push origin HEAD:main
+
+# This workflow intentionally has no write/commit step. A changed legal dataset
+# requires re-grounding through the AI analysis pipeline; datasetVersion must
+# never be rewritten merely to make stale analysis appear current.

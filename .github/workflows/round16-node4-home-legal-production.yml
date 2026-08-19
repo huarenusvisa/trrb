@@ -8,6 +8,7 @@ on:
       - "homepage-immigration-hub.js"
       - "homepage-immigration-hub.css"
       - "index.html"
+      - "scripts/optimize-homepage-performance.mjs"
       - "scripts/round16-node4-home-legal-production.mjs"
       - ".github/workflows/round16-node4-home-legal-production.yml"
 
@@ -28,13 +29,14 @@ jobs:
         with:
           node-version: "22"
 
-      # Validation workflows must never rewrite index.html or push a rollback commit.
-      # Asset versions are owned by the source change that actually modifies the JS/CSS.
-      - name: 校验首页法律栏目资源版本声明
+      # Source index may still carry the pre-build cache token. Netlify's final
+      # optimizer owns production cache versions, so validate the asset presence
+      # here and the exact optimized token against production below.
+      - name: 校验首页法律栏目资源声明
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'homepage-immigration-hub.js?v=20260819-seo-canonical-1' index.html
+          grep -q 'homepage-immigration-hub.js' index.html
           grep -q 'homepage-immigration-hub.css?v=20260815-r16n4' index.html
 
       - name: 安装 Chromium 真实浏览器
@@ -52,7 +54,7 @@ jobs:
             home="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
             js="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-immigration-hub.js?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
             css="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-immigration-hub.css?r16n4=${GITHUB_RUN_ID}-${attempt}" || true)"
-            if grep -q 'homepage-immigration-hub.js?v=20260819-seo-canonical-1' <<<"$home" \
+            if grep -q 'homepage-immigration-hub.js?v=20260819-reuse-bundle-2' <<<"$home" \
               && grep -q 'homepage-immigration-hub.css?v=20260815-r16n4' <<<"$home" \
               && grep -q '美国判例与新规' <<<"$js" \
               && grep -q 'legal-knowledge-card' <<<"$css"; then

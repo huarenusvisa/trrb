@@ -19,6 +19,13 @@ html = html.replace(/<script\s+src=["']\.\/articles-chunk-\d+\.js(?:\?[^"']*)?["
   return '';
 });
 
+// Jobs remains prelaunch/noindex. Older homepage shells exposed it in the main
+// navigation and loaded a DOM override that replaced the asylum card. Strip
+// both at build time; jobs-home.js itself is also a no-op compatibility shim.
+html = html
+  .replace(/<a\s+href=["']\/jobs\/?["'][^>]*>招聘求职<\/a>/gi, '')
+  .replace(/<script\s+src=["'](?:\.\/|\/)jobs-home\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi, '');
+
 // Keep the topic stylesheet in <head> when an old shell still discovers it at
 // the end of <body>. Accept any cache version instead of depending on Round11.
 const topicCssMatch = html.match(/<link\s+rel=["']stylesheet["']\s+href=["']\.\/topic-feed\.css\?v=[^"']+["']\s*\/?>(?:\s*)/i);
@@ -59,6 +66,12 @@ for (const [asset, version] of coreVersions) {
 // separate knowledge-center cards intentionally continue to use /immigrate/.
 html = html.replace('<a href="/immigrate/">移民美国</a>', '<a href="/immigration">移民美国</a>');
 
+// Remove avoidable internal redirects from the high-traffic homepage shell.
+html = html
+  .replace(/href=["']\.\/expose\.html["']/gi, 'href="/expose"')
+  .replace(/href=["']\.\/listing\.html["']/gi, 'href="/listing.html"')
+  .replace(/action=["']\.\/listing\.html["']/gi, 'action="/listing.html"');
+
 // Prefer canonical category routes in the static homepage shell as well.
 const canonicalCategories = new Map([
   ['重要新闻', '/important-news'],
@@ -83,7 +96,7 @@ if (!/<meta\b[^>]*name=["']robots["']/i.test(html)) seoTags.push('<meta name="ro
 if (!/<meta\b[^>]*property=["']og:type["']/i.test(html)) seoTags.push('<meta property="og:type" content="website" />');
 if (!/<meta\b[^>]*property=["']og:site_name["']/i.test(html)) seoTags.push('<meta property="og:site_name" content="唐人日报" />');
 if (!/<meta\b[^>]*property=["']og:title["']/i.test(html)) seoTags.push('<meta property="og:title" content="唐人日报 Tang Ren Daily - 中美新闻实时播报" />');
-if (!/<meta\b[^>]*property=["']og:description["']/i.test(html)) seoTags.push('<meta property="og:description" content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、ICE执法动态、招聘求职等内容。" />');
+if (!/<meta\b[^>]*property=["']og:description["']/i.test(html)) seoTags.push('<meta property="og:description" content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、ICE执法动态等内容。" />');
 if (!/<meta\b[^>]*property=["']og:url["']/i.test(html)) seoTags.push('<meta property="og:url" content="https://trrb.net/" />');
 if (!/<meta\b[^>]*property=["']og:image["']/i.test(html)) seoTags.push('<meta property="og:image" content="https://trrb.net/trrb-logo-cropped.webp" />');
 if (seoTags.length) html = html.replace('</head>', `    ${seoTags.join('\n    ')}\n  </head>`);
@@ -101,4 +114,4 @@ if (html === before) {
 }
 
 fs.writeFileSync(file, html);
-console.log(`Homepage optimizer: removed ${removedChunks} redundant archive chunks; normalized canonical routes, homepage SEO and core cache versions`);
+console.log(`Homepage optimizer: removed ${removedChunks} redundant archive chunks; normalized canonical routes, homepage SEO, prelaunch jobs state and core cache versions`);

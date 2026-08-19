@@ -20,6 +20,8 @@ on:
       - 'scripts/inject-static-news-links.mjs'
       - 'scripts/ensure-sitemap-articles.mjs'
       - 'scripts/upgrade-article-urls.mjs'
+      - 'scripts/generate-feed.mjs'
+      - 'scripts/finalize-redirects.mjs'
       - 'scripts/google-indexing-acceptance.mjs'
       - 'scripts/production-seo-diagnostic.mjs'
       - 'scripts/round14-node5-duplicate-thin-content-audit.mjs'

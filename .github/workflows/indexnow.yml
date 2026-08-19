@@ -15,6 +15,7 @@ on:
       - "retired-indexnow-urls.txt"
       - "scripts/generate-sitemaps.mjs"
       - "scripts/clean-sitemap-against-database.mjs"
+      - "scripts/filter-public-visibility-seo-feeds.mjs"
       - "scripts/split-sitemap-index.mjs"
       - "scripts/submit-indexnow.mjs"
       - "netlify/edge-functions/legacy-url-redirect.ts"
@@ -43,7 +44,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 生成最新站点地图
-        run: node scripts/generate-sitemaps.mjs && node scripts/clean-sitemap-against-database.mjs && node scripts/split-sitemap-index.mjs
+      - name: 生成最新站点地图并过滤非公开文章
+        run: |
+          node scripts/generate-sitemaps.mjs
+          node scripts/clean-sitemap-against-database.mjs
+          node scripts/filter-public-visibility-seo-feeds.mjs
+          node scripts/split-sitemap-index.mjs
       - name: 提交IndexNow
         run: node scripts/submit-indexnow.mjs

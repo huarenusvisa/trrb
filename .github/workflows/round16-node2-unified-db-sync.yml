@@ -13,9 +13,6 @@ on:
       - 'scripts/round15-node6-unified-legal-database.mjs'
       - 'scripts/round16-node2-unified-db-sync-audit.mjs'
       - '.github/workflows/round16-node2-unified-db-sync.yml'
-  workflow_run:
-    workflows: ['第十六轮节点1-五大官方法律源自动采集触发链闭环']
-    types: [completed]
 
 permissions:
   contents: write
@@ -26,7 +23,6 @@ concurrency:
 
 jobs:
   rebuild-verify-database:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

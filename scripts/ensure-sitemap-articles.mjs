@@ -1,6 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Every Netlify build path, including Build Hook deployments, runs this assurance
+// step. Stamp the exact checkout revision before SEO validation so production can
+// prove which main commit is actually serving traffic.
+await import('./write-deploy-version.mjs');
+
 const ROOT = process.cwd();
 const SITEMAP = path.join(ROOT, 'sitemap.xml');
 const NEWS_SITEMAP = path.join(ROOT, 'news-sitemap.xml');

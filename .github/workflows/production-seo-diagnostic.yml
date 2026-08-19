@@ -5,16 +5,31 @@ on:
   push:
     branches: [main]
     paths:
+      - "index.html"
+      - "article.html"
+      - "listing.html"
+      - "listing.js"
+      - "article-route-runtime.js"
+      - "article-live-neighbors.js"
+      - "articles-home.js"
+      - "topic-focus.js"
       - "scripts/production-seo-diagnostic.mjs"
       - "scripts/generate-sitemaps.mjs"
       - "scripts/clean-sitemap-against-database.mjs"
       - "scripts/ensure-sitemap-articles.mjs"
+      - "scripts/upgrade-article-urls.mjs"
+      - "scripts/inject-static-news-links.mjs"
+      - "scripts/generate-feed.mjs"
       - "scripts/finalize-redirects.mjs"
+      - "scripts/google-indexing-acceptance.mjs"
+      - "scripts/ice-breaking-news-index-audit.mjs"
+      - "scripts/submit-indexnow.mjs"
       - "netlify.toml"
       - "netlify/edge-functions/**"
-      - "article.html"
-      - "listing.html"
       - "topic/ice/**"
+      - "topic/trump/**"
+      - "trump/**"
+      - "immigrate/immigrate.js"
       - ".github/workflows/production-seo-diagnostic.yml"
 
 permissions:

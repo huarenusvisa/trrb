@@ -6,6 +6,8 @@ const db=JSON.parse(read('db.json'));
 const ai=JSON.parse(read('ai.json'));
 const index=read('index.html');
 const detailHtml=read('detail.html');
+const liveDetailHtml=read('legal-detail-live.html');
+const liveDetailHeaders=read('legal-detail-live.headers');
 const app=read('app.js');
 const detail=read('detail.js');
 const css=read('legal.css');
@@ -99,7 +101,11 @@ node(9,'法律SEO索引质量、Sitemap更新时效与内部链接完整性',[
  ['legal sitemap has no duplicates',new Set(locs).size===locs.length],
  ['every current detail URL is in sitemap',expectedLocs.every(u=>locSet.has(u))],
  ['robots advertises legal sitemap',robots.includes('Sitemap: https://trrb.net/sitemap-legal.xml')],
- ['dynamic canonical and structured data remain',detail.includes('https://trrb.net/legal/detail.html?id=${encodeURIComponent(recordId)}')&&detail.includes("'@type':'Legislation'")]
+ ['dynamic canonical and structured data remain',detail.includes('https://trrb.net/legal/detail.html?id=${encodeURIComponent(recordId)}')&&detail.includes("'@type':'Legislation'")],
+ ['real legal detail is server prerendered',liveDetailHtml.includes('data-trrb-legal-prerender="edge"')&&/^x-trrb-legal-detail-prerender:\s*legal-edge-v1/im.test(liveDetailHeaders)],
+ ['real legal detail is indexable in first response',/name=["']robots["'][^>]*content=["'][^"']*index,follow/i.test(liveDetailHtml)&&!/^x-robots-tag:.*noindex/im.test(liveDetailHeaders)],
+ ['real legal detail has parameterized canonical in first response',/rel=["']canonical["'][^>]*href=["']https:\/\/trrb\.net\/legal\/detail\.html\?id=[^"']+/i.test(liveDetailHtml)],
+ ['real legal detail exposes Chinese legal content before client JS',liveDetailHtml.includes('中文信息整理')&&liveDetailHtml.includes('法律问题：')&&liveDetailHtml.includes('裁判/规则：')]
 ]);
 
 const guardPos=homeIndex.indexOf('homepage-refresh-guard.js');

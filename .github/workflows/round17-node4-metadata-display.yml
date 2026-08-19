@@ -17,8 +17,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
     steps:
       - uses: actions/checkout@v4
@@ -27,19 +25,18 @@ jobs:
           node-version: '24'
       - name: Audit Round 17 node 4 locally
         run: node scripts/round17-node4-metadata-display-audit.mjs
-      - name: Trigger Netlify production deployment
+      - name: Trigger Netlify only for manual node run
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         run: |
           set -euo pipefail
-          if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
-            curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
-          elif [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && [ -n "${NETLIFY_SITE_ID:-}" ]; then
-            npm install --no-save netlify-cli@latest
-            npx netlify deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+          test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK is not configured'; exit 2; }
+          if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+            hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node4+manual"
           else
-            echo 'No Netlify deployment credential or build hook is configured.'
-            exit 2
+            hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node4+manual"
           fi
+          curl -fsS -X POST "$hook_url" >/tmp/netlify-hook-response.txt
       - name: Verify standardized metadata code on production
         shell: bash
         run: |
@@ -56,6 +53,4 @@ jobs:
           echo 'Production did not expose Round 17 node 4 metadata normalization.'
           exit 1
 
-# Strict restart revalidation after nodes 1-3 passed on current production: 2026-08-17T02:28Z.
-# Manual production redeploy trigger for legacy URL repair: 2026-08-18T21:38-04:00.
-# Redeploy latest legacy edge repair: 2026-08-18T21:40-04:00.
+# Push deployment is centralized in round17-central-production-deploy.yml.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceDatasetVersion": "99404b9aba3cc0c124f646cea548215b4b16eabc7f0fde1dfbe4aef9906070d6",
+  "sourceDatasetVersion": "e770c88c445146421bd552634aa2bbec244de50512f3ccec46f4fa680b9a11d7",
   "threshold": 80,
   "scope": "High-impact legal authority candidates routed from the legal database into the Tang Ren Daily editorial news production queue. Candidate status never means automatic publication.",
   "count": 162,
@@ -1281,23 +1281,6 @@
       "publicationPolicy": "candidate_only_not_auto_published"
     },
     {
-      "sourceRecordId": "142fec7559441ac9a10b10b9",
-      "sourceSystem": "BIA",
-      "authorityType": "BIA Precedent Decision",
-      "issuingBody": "Board of Immigration Appeals",
-      "title": "X LinkedIn Email A-K-R-",
-      "publicationDate": null,
-      "officialUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
-      "officialPdfUrl": "https://www.justice.gov/eoir/media/1458041/dl?inline",
-      "impactScore": 90,
-      "impactReason": "BIA公开先例裁决对移民行政裁判具有先例意义",
-      "analysisAvailable": true,
-      "chineseTitle": "移民上诉委员会关于申请法律代理继续延期请求的裁决",
-      "chineseSummary": "本案中，移民法官依法驳回了被申请人多次延长寻找法律代理的请求，因其未能提供充分理由证明“合理原因”。案件强调法定程序中首次听证不得早于送达出庭通知10天，且被告有权自费选择代理律师。被申请人在首次听证后获两次延期机会仍未能取得律师，且未提交申请救济材料，法官遂认定无继续延期理由，作出驱逐决定。上诉委员会支持法官决定，驳回上诉。",
-      "pipelineStage": "editorial_candidate",
-      "publicationPolicy": "candidate_only_not_auto_published"
-    },
-    {
       "sourceRecordId": "147ee36a2d5a73ea71ba08d3",
       "sourceSystem": "BIA",
       "authorityType": "BIA Precedent Decision",
@@ -1651,6 +1634,23 @@
       "analysisAvailable": true,
       "chineseTitle": "关于《移民和国籍法》第212(a)(9)(B)(i)(II)条款中“离境”定义的重新界定——Matter of DELCARMEN-LARA案解析",
       "chineseSummary": "美国移民上诉委员会在Matter of DELCARMEN-LARA案中推翻了先前判例Arrabally案的结论，明确依据《移民和国籍法》（INA）第212(a)(9)(B)(i)(II)条款，持有提前假释许可的临时出境行为应视为“离境”，进而可能导致不被许可入境。此判决强调该条款未对持有提前假释者的“离境”行为设定例外，且新规则具有前瞻适用性，且拒绝了当事人重新启动身份调整程序的请求。",
+      "pipelineStage": "editorial_candidate",
+      "publicationPolicy": "candidate_only_not_auto_published"
+    },
+    {
+      "sourceRecordId": "4fcaaf69103f3d338509ece3",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "title": "X LinkedIn Email M-M-L-J-",
+      "publicationDate": null,
+      "officialUrl": "https://www.justice.gov/eoir/media/1458296/dl?inline",
+      "officialPdfUrl": "https://www.justice.gov/eoir/media/1458296/dl?inline",
+      "impactScore": 90,
+      "impactReason": "BIA公开先例裁决对移民行政裁判具有先例意义",
+      "analysisAvailable": true,
+      "chineseTitle": "关于移民程序中重新开启动议数量限制的裁定",
+      "chineseSummary": "本案中，被告共提交四次重新开启移民案件的动议，但根据《移民国籍法》第240(c)(7)(A)条规定，一名外国人只能提出一次重新开动议，除非符合为伴侣或亲属遭受虐待的法定例外。案例明确拒绝了由于前律师无效代理而对限制数量进行衡平法暂停的请求，认定此限制具有最终性，且衡平法原则不适用于该数量限制。虽存在小部分巡回法院支持衡平法暂停的判例，但本案采纳第五巡回法院的全面分析，拒绝扩大例外，并拒绝行使自身自行重新开启裁量权。",
       "pipelineStage": "editorial_candidate",
       "publicationPolicy": "candidate_only_not_auto_published"
     },

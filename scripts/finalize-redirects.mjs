@@ -26,11 +26,14 @@ const required = [
   '/asylum /listing.html?category=%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91 200!',
   '/immigration /listing.html?category=%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%9B%BD 200!',
   '/ice /topic/ice/live-v6.html 200!',
-  '/ice/ /topic/ice/live-v6.html 200!',
+  '/ice/ /ice 301!',
   '/ice/news /listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81 200!',
-  '/ice/news/ /listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81 200!',
-  '/topic/ice /topic/ice/live-v6.html 200!',
-  '/topic/ice/ /topic/ice/live-v6.html 200!'
+  '/ice/news/ /ice/news 301!',
+  '/topic/ice /ice 301!',
+  '/topic/ice/ /ice 301!',
+  '/trump/ /trump 301!',
+  '/topic/trump /trump 301!',
+  '/topic/trump/ /trump 301!'
 ];
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];

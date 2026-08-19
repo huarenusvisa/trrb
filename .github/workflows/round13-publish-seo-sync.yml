@@ -52,11 +52,24 @@ jobs:
           node scripts/clean-sitemap-against-database.mjs
           node scripts/ensure-sitemap-articles.mjs
           node scripts/generate-feed.mjs
-          node scripts/upgrade-article-urls.mjs
+          node scripts/upgrade-article-urls.mjs --metadata-only
           # generate-sitemaps.mjs rewrites _redirects from active categories.
-          # Always restore canonical host/alias rules before committing so this
-          # scheduled bot can never roll back SEO redirect governance.
-          node scripts/finalize-redirects.mjs
+          # Restore canonical host/alias rules without invoking homepage mutation.
+          node scripts/finalize-redirects.mjs --redirects-only
+      - name: 拒绝任何页面或运行时文件被定时同步误改
+        shell: bash
+        run: |
+          set -euo pipefail
+          bad=0
+          while IFS= read -r line; do
+            [ -n "$line" ] || continue
+            file="${line:3}"
+            case "$file" in
+              sitemap.xml|news-sitemap.xml|feed.xml|_redirects) ;;
+              *) echo "Unexpected scheduled SEO side effect: $file"; bad=1 ;;
+            esac
+          done < <(git status --porcelain)
+          test "$bad" -eq 0
       - name: 仅在SEO文件变化时提交并触发Netlify部署
         shell: bash
         run: |

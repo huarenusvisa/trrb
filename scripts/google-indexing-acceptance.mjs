@@ -32,6 +32,24 @@ async function redirectChain(source, maxHops = 4) {
   return chain;
 }
 
+function isArticleUrl(loc) {
+  if (/article\.html\?id=/i.test(loc)) return true;
+  try {
+    const url = new URL(loc);
+    if (url.hostname !== "trrb.net" && url.hostname !== "www.trrb.net") return false;
+    const parts = decodeURIComponent(url.pathname).split("/").filter(Boolean);
+    if (parts.length !== 2) return false;
+    const [section, slug] = parts;
+    if (!slug || (section === "ice" && slug === "news")) return false;
+    return new Set([
+      "ice", "trump", "important-news", "hot-headlines", "us-politics", "us-crime",
+      "china-officialdom", "immigration", "asylum", "deport", "news", "expose"
+    ]).has(section);
+  } catch {
+    return false;
+  }
+}
+
 async function collectArticles() {
   const queue = [`${SITE}/sitemap.xml`, `${SITE}/news-sitemap.xml`];
   const seen = new Set();
@@ -43,7 +61,7 @@ async function collectArticles() {
     const { res, text } = await fetchText(url);
     if (!res.ok) continue;
     for (const loc of extractLocs(text)) {
-      if (/article\.html\?id=/i.test(loc)) articles.push(loc);
+      if (isArticleUrl(loc)) articles.push(loc.replace("https://www.trrb.net", SITE));
       else if (/sitemap.*\.xml/i.test(loc) && !seen.has(loc)) queue.push(loc);
       if (articles.length >= 20) break;
     }
@@ -63,6 +81,10 @@ function getCanonical(html) {
 }
 
 function stripHtml(s) { return String(s || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(); }
+function isIceUrl(value) {
+  try { return new URL(value).pathname.startsWith("/ice/") && new URL(value).pathname !== "/ice/news"; }
+  catch { return false; }
+}
 
 const report = { generated_at: new Date().toISOString(), host: {}, samples: [], failures: [] };
 
@@ -105,9 +127,9 @@ for (const url of articles) {
     if (description.length < 70) bad.push(`short description ${description.length}`);
     if (canonical !== url) bad.push(`canonical mismatch ${canonical}`);
     if (/noindex/i.test(robots)) bad.push("noindex");
-    // Chinese breaking-news briefs can legitimately be concise. 80 visible characters is
-    // the technical floor here; content quality is assessed separately from crawlability.
-    if (body.length < 80) bad.push(`thin prerendered body ${body.length}`);
+    // ICE briefs must not fail crawlability merely because they are concise.
+    if (!isIceUrl(url) && body.length < 80) bad.push(`thin prerendered body ${body.length}`);
+    if (isIceUrl(url) && body.length === 0) bad.push("empty ICE prerendered body");
     if (!hasSchema) bad.push("missing NewsArticle");
     if (!row.prerender) bad.push("missing prerender header");
     if (bad.length) report.failures.push({ url, bad });

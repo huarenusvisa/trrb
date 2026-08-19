@@ -1,43 +1,56 @@
-name: Fix Module Single Source Final
+name: Module Single Source Validation
 
 on:
-  push:
-    paths:
-      - 'scripts/fix-module-single-source-final.mjs'
-      - '.github/workflows/fix-module-single-source-final.yml'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'articles-home.js'
+      - 'homepage-refresh-guard.js'
+      - 'listing.html'
+      - 'listing.js'
+      - 'netlify/functions/public-home-articles.js'
+      - '.github/workflows/fix-module-single-source-final.yml'
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: validate-module-single-source-final
+  cancel-in-progress: true
 
 jobs:
-  repair:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Apply final module single-source repair
-        run: node scripts/fix-module-single-source-final.mjs
-      - name: Verify final module markers
+      - name: Verify current module architecture without mutating source
+        shell: bash
         run: |
+          set -euo pipefail
           grep -q 'listing.js?v=20260816-category-live-2' listing.html
           ! grep -q 'listing-live-category-fix.js' listing.html
-          grep -q 'articles-home.js?v=20260816-single-source-2' index.html
-          grep -q 'HOME_ARCHIVE_MERGE=false' scripts/fix-module-single-source-final.mjs
-          grep -q 'fetchLivePublishedArticles(12, name)' homepage-refresh-guard.js
-          grep -q 'fetchLivePublishedArticles(12, name)' articles-home-live-fix.js
-      - name: Commit repair
+          grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
+          grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' index.html
+          ! grep -q '<script[^>]*articles-home-live-fix.js' index.html
+          grep -q 'mode=homepage' homepage-refresh-guard.js
+          grep -q 'HOME_MAX_AGE_MS = 4' homepage-refresh-guard.js
+
+      - name: Production smoke check
+        shell: bash
         run: |
-          if git diff --quiet -- listing.html index.html homepage-refresh-guard.js articles-home-live-fix.js; then
-            echo 'No changes needed'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add listing.html index.html homepage-refresh-guard.js articles-home-live-fix.js
-          git commit -m 'Make homepage and category modules single-source live'
-          git push
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            stamp="${GITHUB_RUN_ID}-${attempt}"
+            home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?module-single=$stamp" || true)
+            listing=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?module-single=$stamp" || true)
+            if printf '%s' "$home" | grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' \
+              && printf '%s' "$listing" | grep -q 'data-seo-category-snapshot="edge"'; then
+              echo 'MODULE_SINGLE_SOURCE_VALIDATION_PASS=true'
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1

@@ -9,10 +9,13 @@ on:
       - '.github/workflows/round16-node9-production-deploy-recovery.yml'
       - 'netlify.toml'
       - 'netlify/edge-functions/article-prerender.ts'
+      - 'netlify/edge-functions/category-prerender.ts'
       - 'netlify/edge-functions/sitemap-live.ts'
       - 'netlify/edge-functions/news-sitemap-live.ts'
       - 'netlify/edge-functions/feed-live.ts'
       - 'article-route-runtime.js'
+      - 'listing.html'
+      - 'listing.js'
       - 'scripts/generate-sitemaps.mjs'
       - 'scripts/inject-static-news-links.mjs'
       - 'scripts/ensure-sitemap-articles.mjs'
@@ -20,6 +23,7 @@ on:
       - 'scripts/google-indexing-acceptance.mjs'
       - 'scripts/production-seo-diagnostic.mjs'
       - 'scripts/round14-node5-duplicate-thin-content-audit.mjs'
+      - 'scripts/ice-breaking-news-index-audit.mjs'
       - 'index.html'
       - 'topic/ice/live-v6.html'
       - 'topic/ice/index.html'
@@ -58,20 +62,28 @@ jobs:
           echo 'No Netlify deployment credential or build hook is configured in GitHub Actions secrets.'
           exit 2
 
-      - name: 验收首页、ICE、Sitemap和文章索引链
+      - name: 验收首页、栏目、ICE、Sitemap和文章索引链
         shell: bash
         run: |
           set -euo pipefail
           for attempt in $(seq 1 120); do
             stamp=$(date +%s)
             home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?seo-deploy=$stamp" || true)
+            category=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?seo-deploy=$stamp" || true)
+            asylum=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/asylum?seo-deploy=$stamp" || true)
             ice=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/ice?seo-deploy=$stamp" || true)
             sitemap=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" || true)
             news=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" || true)
             sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
+            category_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?seo-deploy=$stamp" | tr -d '\r' || true)
 
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
+            category_marker=$(printf '%s' "$category" | grep -c 'data-seo-category-snapshot="edge"' || true)
+            category_article_links=$(printf '%s' "$category" | grep -Eo 'href="/important-news/[^"]+' | wc -l | tr -d ' ')
+            category_header=$(printf '%s' "$category_headers" | grep -ci '^x-trrb-category-prerender: category-edge-v1' || true)
+            asylum_marker=$(printf '%s' "$asylum" | grep -c 'data-seo-category-snapshot="edge"' || true)
+            asylum_article_links=$(printf '%s' "$asylum" | grep -Eo 'href="/asylum/[^"]+' | wc -l | tr -d ' ')
             ice_marker=$(printf '%s' "$ice" | grep -c 'data-seo-static-snapshot="build"' || true)
             ice_article_links=$(printf '%s' "$ice" | grep -Eo 'href="/ice/[^"]+' | grep -v 'href="/ice/news' | wc -l | tr -d ' ')
             legacy_sitemap=$(printf '%s\n%s' "$sitemap" "$news" | grep -c 'article.html?id=' || true)
@@ -86,10 +98,10 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt home_marker=$home_marker home_links=$home_article_links ice_marker=$ice_marker ice_links=$ice_article_links legacy_sitemap=$legacy_sitemap sitemap_v3=$sitemap_v3 ice_article_ok=$ice_article_ok"
+            echo "attempt=$attempt home=$home_marker/$home_article_links category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy=$legacy_sitemap sitemap_v3=$sitemap_v3 ice_article_ok=$ice_article_ok"
 
-            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$sitemap_v3" -ge 1 ] && [ "$ice_article_ok" -eq 1 ]; then
-              echo 'PRODUCTION SEO DISCOVERY + ICE INDEXABILITY PASS'
+            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$sitemap_v3" -ge 1 ] && [ "$ice_article_ok" -eq 1 ]; then
+              echo 'PRODUCTION SEO DISCOVERY + CATEGORY SSR + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

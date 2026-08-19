@@ -1,7 +1,6 @@
 const SITE = "https://trrb.net";
 const MIN_INDEXABLE_BODY_LENGTH = 80;
 
-// Support both the legacy query URL and the new two-segment SEO URL.
 export const config = { path: ["/article.html", "/*/*"] };
 
 const RESERVED_SECTIONS = new Set([
@@ -18,6 +17,7 @@ const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
   "中国官场": "china-officialdom",
   "移民美国": "immigration",
   "庇护百科": "asylum",
+  "驱逐快报": "deport",
   "ICE执法动态": "ice",
   "ICE执法": "ice",
   "曝光墙": "expose"
@@ -75,11 +75,7 @@ function isIceArticle(article: any): boolean {
 
 function isIndexableArticle(article: any): boolean {
   const body = visibleText(article?.content || article?.summary || "");
-  if (isIceArticle(article)) {
-    // ICE briefs are judged upstream on news value/source/uniqueness. Do not
-    // noindex a published ICE story merely because it is short.
-    return Boolean(clean(article?.title)) && Boolean(body);
-  }
+  if (isIceArticle(article)) return Boolean(clean(article?.title)) && Boolean(body);
   return body.length >= MIN_INDEXABLE_BODY_LENGTH;
 }
 
@@ -143,6 +139,23 @@ async function getArticleBySlug(slug: string) {
   return Array.isArray(rows) && rows[0] ? rows[0] : null;
 }
 
+let archiveIndexPromise: Promise<string | null> | null = null;
+async function archiveIndex(request: Request): Promise<string | null> {
+  if (!archiveIndexPromise) {
+    archiveIndexPromise = fetch(new URL("/articles-home-index.js", request.url), { headers: { Accept: "application/javascript,text/plain,*/*" } })
+      .then(async (response) => response.ok ? await response.text() : null)
+      .catch(() => null);
+  }
+  return archiveIndexPromise;
+}
+async function archiveHasId(request: Request, id: string): Promise<boolean | null> {
+  if (!/^\d+$/.test(id)) return false;
+  const source = await archiveIndex(request);
+  if (source == null) return null;
+  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`"id"\\s*:\\s*"${escaped}"`).test(source);
+}
+
 async function getCategorySlug(article: any): Promise<string> {
   const topic = clean(article?.topic_key).toLowerCase();
   if (topic === "trump") return "trump";
@@ -150,19 +163,19 @@ async function getCategorySlug(article: any): Promise<string> {
 
   const fallback = FALLBACK_CATEGORY_SLUGS[clean(article?.category_name)] || "";
   const { base, key } = supabaseConfig();
-  if (!base || !key) return fallback || "news";
+  if (!base || !key) return canonicalSection(fallback || "news");
 
   const url = new URL(`${base}/rest/v1/categories`);
   url.searchParams.set("select", "slug");
   if (article?.category_id) url.searchParams.set("id", `eq.${article.category_id}`);
   else if (article?.category_name) url.searchParams.set("name", `eq.${article.category_name}`);
-  else return fallback || "news";
+  else return canonicalSection(fallback || "news");
   url.searchParams.set("is_active", "eq.true");
   url.searchParams.set("limit", "1");
 
   try {
     const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
-    if (!response.ok) return fallback || "news";
+    if (!response.ok) return canonicalSection(fallback || "news");
     const rows = await response.json();
     const slug = clean(Array.isArray(rows) && rows[0] ? rows[0].slug : "");
     return canonicalSection(slug || fallback || "news");
@@ -266,7 +279,9 @@ function injectBody(html: string, article: any, canonical: string) {
         <div class="story-meta">${esc(author)} · ${esc(published)}</div>
       </header>
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
-      <div class="article-body">${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>`;
+      <div class="article-body">${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+      <nav class="article-neighbors" aria-label="上一篇和下一篇"></nav>
+      <section class="related-news" hidden><h2>延伸阅读</h2><div class="related-carousel" aria-label="延伸阅读文章"><div class="related-track"></div></div></section>`;
   const data = `<script id="trrb-prerendered-article" type="application/json">${escJson(article)}</script>`;
   return html
     .replace(/<article class="container article-page" id="article-root">[\s\S]*?<\/article>/i,
@@ -276,13 +291,30 @@ function injectBody(html: string, article: any, canonical: string) {
 
 function disableLegacyClientLoaders(html: string): string {
   return html
+    .replace(/<script\s+src=["'](?:\.\/|\/)articles-home-index\.js[^"']*["'][^>]*><\/script>/i, "")
     .replace(/<script\s+src=["'](?:\.\/|\/)article\.js[^"']*["'][^>]*><\/script>/i, "")
     .replace(/<script\s+src=["'](?:\.\/|\/)article-index-guard\.js[^"']*["'][^>]*><\/script>/i, "")
     .replace(/<script\s+src=["'](?:\.\/|\/)article-seo\.js[^"']*["'][^>]*><\/script>/i, "");
 }
 
 function notFoundHtml() {
-  return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>文章不存在 - 唐人日报</title><meta name="robots" content="noindex,nofollow,noarchive"><link rel="canonical" href="${SITE}/article.html"></head><body><main><h1>文章不存在</h1><p>该文章已删除、下线或链接无效。</p><p><a href="${SITE}/">返回唐人日报首页</a></p></main></body></html>`;
+  return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>文章不存在 - 唐人日报</title><meta name="robots" content="noindex,nofollow,noarchive"></head><body><main><h1>文章不存在</h1><p>该文章已删除、下线或链接无效。</p><p><a href="${SITE}/">返回唐人日报首页</a></p></main></body></html>`;
+}
+
+function goneHtml(id: string) {
+  return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>旧文章已下线 - 唐人日报</title><meta name="robots" content="noindex,nofollow,noarchive"></head><body><main><h1>旧文章已下线</h1><p>旧版文章 ${esc(id)} 未找到可恢复的正文或新网址，该链接已停止提供。</p><p><a href="${SITE}/">返回唐人日报首页</a></p></main></body></html>`;
+}
+
+function gone(id: string, reason: string) {
+  return new Response(goneHtml(id), {
+    status: 410,
+    headers: {
+      "content-type": "text/html; charset=UTF-8",
+      "cache-control": "public, max-age=300",
+      "x-robots-tag": "noindex, nofollow, noarchive",
+      "x-trrb-retired-article": reason
+    }
+  });
 }
 
 function redirect(destination: string, reason: string) {
@@ -330,10 +362,33 @@ export default async (request: Request, context: any) => {
           headers: { "content-type": "text/html; charset=UTF-8", "cache-control": "no-store", "x-robots-tag": "noindex" }
         });
       }
+
       const article = await getArticleById(id);
-      if (!article) return context.next();
-      const canonical = await canonicalFor(article);
-      return redirect(canonical, "legacy-query-to-pretty");
+      if (article) {
+        const canonical = await canonicalFor(article);
+        return redirect(canonical, "legacy-query-to-pretty");
+      }
+
+      const wp = id.match(/^wp-(\d+)$/i);
+      if (wp) {
+        const numericId = wp[1];
+        const archived = await archiveHasId(request, numericId);
+        if (archived === true) return redirect(`${SITE}/article.html?id=${encodeURIComponent(numericId)}`, "wordpress-prefix-to-valid-archive");
+        if (archived === false) return gone(id, "wordpress-id-not-in-archive");
+        return context.next();
+      }
+
+      if (/^\d+$/.test(id)) {
+        const archived = await archiveHasId(request, id);
+        if (archived === true) return context.next();
+        if (archived === false) return gone(id, "numeric-id-not-in-archive");
+        return context.next();
+      }
+
+      return new Response(notFoundHtml(), {
+        status: 404,
+        headers: { "content-type": "text/html; charset=UTF-8", "cache-control": "no-store", "x-robots-tag": "noindex" }
+      });
     }
 
     const parts = routeParts(url.pathname);
@@ -344,7 +399,7 @@ export default async (request: Request, context: any) => {
     if (!article && /^(?:wp-)?\d+$/i.test(parts.slug)) {
       const legacy = new URL('/article.html', url.origin);
       legacy.searchParams.set('id', parts.slug);
-      return redirect(legacy.toString(), 'archived-id-to-legacy');
+      return redirect(legacy.toString(), 'archived-id-to-legacy-validator');
     }
     if (!article) return context.next();
 
@@ -364,7 +419,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
-    headers.set("x-trrb-prerender", "article-edge-v3-ice-safe");
+    headers.set("x-trrb-prerender", "article-edge-v4-archive-410-ice-safe");
     headers.set("link", `<${canonical}>; rel=\"canonical\"`);
     if (!isIndexableArticle(article)) headers.set("x-robots-tag", "noindex, follow");
     else headers.delete("x-robots-tag");

@@ -29,12 +29,20 @@ async function parseBrowserScript(path) {
 const index = await bytes("index.html");
 if (!startsText(index, "<!doctype html>")) failures.push("index.html is not HTML");
 if (!includesText(index, "category-runtime-v3.js")) failures.push("index.html is missing category CMS runtime");
+if (!includesText(index, "homepage-refresh-guard.js?v=20260819-bundle-supplements-2")) failures.push("index.html is missing current unified homepage refresh guard token");
+if (!includesText(index, "articles-home.js?v=20260819-single-bundle-2")) failures.push("index.html is missing current unified homepage renderer token");
+if (!includesText(index, "homepage-immigration-hub.js?v=20260819-reuse-bundle-2")) failures.push("index.html is missing current homepage hub bundle-reuse token");
+if (!includesText(index, '<a href="/immigration">移民美国</a>')) failures.push("index.html primary immigration navigation is not canonical /immigration");
+if (!includesText(index, '<a href="/jobs/">招聘求职</a>')) failures.push("index.html lost the independent jobs navigation entry");
 
 const listing = await bytes("listing.html");
 if (!startsText(listing, "<!doctype html>")) failures.push("listing.html is not HTML");
 if (!includesText(listing, "category-runtime-v3.js")) failures.push("listing.html is missing category CMS runtime");
+if (!includesText(listing, "listing-seo.js?v=20260819-pretty-category-2")) failures.push("listing.html is missing current pretty-category SEO runtime");
+if (!includesText(listing, "immigration-entry.js?v=20260819-news-canonical-1")) failures.push("listing.html is missing immigration news canonical guard");
 if (!includesText(listing, "nav-expose-link")) failures.push("listing.html is missing persistent expose navigation link");
 if (!includesText(listing, '<base href="/"')) failures.push("listing.html is missing root base href for rewritten category routes");
+if (!includesText(listing, '<a href="/immigration">移民美国</a>')) failures.push("listing.html immigration navigation is not canonical /immigration");
 
 const article = await bytes("article.html");
 if (!startsText(article, "<!doctype html>")) failures.push("article.html is not HTML");
@@ -53,14 +61,23 @@ if (!includesText(search, "bindSiteSearch")) failures.push("site-search.js is mi
 
 const categoryRuntime = await bytes("category-runtime-v3.js");
 if (!includesText(categoryRuntime, "show_in_navigation") || !includesText(categoryRuntime, "show_on_homepage")) failures.push("category runtime is not using canonical CMS fields");
+if (!includesText(categoryRuntime, "a[data-dynamic-category]")) failures.push("category runtime no longer preserves independent static navigation entries");
 
 await Promise.all([
   parseBrowserScript("site-common.js"),
   parseBrowserScript("site-search.js"),
   parseBrowserScript("category-runtime-v3.js"),
+  parseBrowserScript("listing-seo.js"),
+  parseBrowserScript("immigration-entry.js"),
   parseBrowserScript("listing.js"),
   parseBrowserScript("article.js"),
   parseBrowserScript("article-route-runtime.js"),
+  parseBrowserScript("articles-home.js"),
+  parseBrowserScript("homepage-refresh-guard.js"),
+  parseBrowserScript("homepage-immigration-hub.js"),
+  parseBrowserScript("articles-home-live-fix.js"),
+  parseBrowserScript("topic-focus.js"),
+  parseBrowserScript("ice-home-unify.js"),
   parseBrowserScript("admin/category-manager.js")
 ]);
 
@@ -102,7 +119,19 @@ if (!includesText(feed, "<rss version=\"2.0\"") || !includesText(feed, "<channel
 if (/\/article\.html\?id=/.test(feed.toString("utf8"))) failures.push("feed.xml still contains legacy article URLs");
 
 const redirects = await bytes("_redirects");
-if (!redirects.toString("utf8").trim()) failures.push("_redirects contains no category routes");
+const redirectsText = redirects.toString("utf8");
+if (!redirectsText.trim()) failures.push("_redirects contains no category routes");
+for (const rule of [
+  "http://trrb.net/* https://trrb.net/:splat 301!",
+  "http://www.trrb.net/* https://trrb.net/:splat 301!",
+  "https://www.trrb.net/* https://trrb.net/:splat 301!",
+  "/politics /us-politics 301!",
+  "/crime /us-crime 301!",
+  "/china /china-officialdom 301!",
+  "/immigration-us /immigration 301!"
+]) {
+  if (!redirectsText.includes(rule)) failures.push(`_redirects missing canonical rule: ${rule}`);
+}
 
 const headers = await bytes("_headers");
 if (headers[0] === 0xff && headers[1] === 0xd8) failures.push("_headers was replaced by an image");

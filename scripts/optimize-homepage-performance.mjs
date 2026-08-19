@@ -5,30 +5,47 @@ const file = 'index.html';
 let html = fs.readFileSync(file, 'utf8');
 const before = html;
 
-// The homepage renderer prefers articles-home-index.js and then refreshes from Supabase.
-// Full article body chunks are therefore redundant on the homepage and add many initial requests.
+// Full historical article body chunks are redundant on the homepage. Current
+// news is rendered from the unified live bundle and the build-time crawlable
+// snapshot remains in the HTML if the live API is unavailable.
 let removedChunks = 0;
 html = html.replace(/<script\s+src=["']\.\/articles-chunk-\d+\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi, () => {
   removedChunks += 1;
   return '';
 });
 
-// Avoid discovering a stylesheet at the very end of <body>, which can cause a late style recalculation.
-const topicCss = '<link rel="stylesheet" href="./topic-feed.css?v=36">';
-if (html.includes(topicCss)) {
-  html = html.replace(topicCss, '');
-  if (!html.includes('href="./topic-feed.css?v=36"')) {
-    html = html.replace('</head>', `    ${topicCss}\n  </head>`);
-  }
+// Keep the topic stylesheet in <head> when an old shell still discovers it at
+// the end of <body>. Accept any cache version instead of depending on Round11.
+const topicCssMatch = html.match(/<link\s+rel=["']stylesheet["']\s+href=["']\.\/topic-feed\.css\?v=[^"']+["']\s*\/?>(?:\s*)/i);
+if (topicCssMatch && html.indexOf(topicCssMatch[0]) > html.indexOf('</head>')) {
+  html = html.replace(topicCssMatch[0], '');
+  html = html.replace('</head>', `    ${topicCssMatch[0].trim()}\n  </head>`);
 }
 
-// Upgrade dynamically rendered homepage article links from legacy article.html?id= URLs
-// to the canonical /section/slug routes without loading full article body chunks.
+// The runtime route normalizer must be present before dynamic homepage modules.
+// It is only a fallback; renderers themselves should already emit pretty URLs.
 if (!html.includes('article-route-runtime.js')) {
-  const marker = '<script src="./articles-home.js?v=30.5-r11-routefix"></script>';
-  const runtime = '<script src="/article-route-runtime.js?v=20260814-r11"></script>';
-  if (html.includes(marker)) html = html.replace(marker, `${runtime}${marker}`);
+  const runtime = '<script src="/article-route-runtime.js?v=20260819-seo-v5"></script>';
+  const articleHome = html.match(/<script\s+src=["']\.\/articles-home\.js(?:\?[^"']*)?["'][^>]*><\/script>/i)?.[0] || '';
+  if (articleHome) html = html.replace(articleHome, `${runtime}${articleHome}`);
   else html = html.replace('</body>', `  ${runtime}\n  </body>`);
+}
+
+// Core homepage scripts are aggressively cached on the CDN/browser. Normalize
+// their cache tokens at build time so a production deploy cannot serve an older
+// renderer after the underlying file changed.
+const coreVersions = new Map([
+  ['article-route-runtime.js', '20260819-seo-v5'],
+  ['articles-home.js', '20260819-single-bundle-2'],
+  ['ice-home-unify.js', '20260819-preserve-sections-2'],
+  ['topic-focus.js', '20260819-live-2'],
+  ['homepage-refresh-guard.js', '20260819-single-live-1'],
+  ['articles-home-live-fix.js', '20260819-compat-shim-1']
+]);
+for (const [asset, version] of coreVersions) {
+  const escaped = asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(<script\\s+[^>]*src=["'](?:\\./|/)${escaped})(?:\\?[^"']*)?(["'][^>]*><\\/script>)`, 'gi');
+  html = html.replace(re, `$1?v=${version}$2`);
 }
 
 // Prefer canonical category routes in the static homepage shell as well.
@@ -54,9 +71,9 @@ html = html
   .replace('src="./trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily"', 'src="/trrb-logo-cropped.webp" alt="唐人日报 Tang Ren Daily"');
 
 if (html === before) {
-  console.log('Round 11 homepage optimizer: no changes required');
+  console.log('Homepage optimizer: no changes required');
   process.exit(0);
 }
 
 fs.writeFileSync(file, html);
-console.log(`Round 11 homepage optimizer: removed ${removedChunks} redundant article chunk requests; promoted topic-feed.css; enabled canonical article/category routes`);
+console.log(`Homepage optimizer: removed ${removedChunks} redundant archive chunks; normalized canonical routes and core cache versions`);

@@ -8,7 +8,7 @@ function record(ok,label,detail=''){checks.push({ok,label,detail});console.log(`
 const browser=await chromium.launch({headless:true});
 const context=await browser.newContext({viewport:{width:390,height:844},screen:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true,locale:'zh-CN',userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1'});
 const page=await context.newPage();
-const paths=['/','/important-news','/hot-headlines','/us-politics','/us-crime','/china-officialdom','/trump','/ice','/ice/news'];
+const paths=['/','/important-news','/hot-headlines','/us-politics','/us-crime','/china-officialdom','/immigration','/asylum','/trump','/ice','/ice/news'];
 for(const path of paths){
   const started=Date.now();
   const response=await page.goto(`${ORIGIN}${path}?node8=${Date.now()}`,{waitUntil:'domcontentloaded',timeout:30000}).catch(()=>null);
@@ -27,7 +27,7 @@ await page.waitForTimeout(1200);
 const toggle=page.locator('.mobile-menu-toggle').first();
 const toggleVisible=await toggle.isVisible().catch(()=>false);
 record(toggleVisible,'首页移动菜单按钮可见');
-if(toggleVisible){await toggle.click({timeout:10000}).catch(()=>{});await page.waitForTimeout(250);const expanded=await toggle.getAttribute('aria-expanded').catch(()=>null);const menuVisible=await page.locator('.mobile-menu,.nav-menu,.mobile-nav').filter({visible:true}).count().catch(()=>0);record(expanded==='true'||menuVisible>0,'首页移动菜单可展开',`aria-expanded=${expanded||''}; visibleMenus=${menuVisible}`);}
+if(toggleVisible){await toggle.click({timeout:10000}).catch(()=>{});await page.waitForTimeout(250);const expanded=await toggle.getAttribute('aria-expanded').catch(()=>null);const menuVisible=await page.locator('#site-navigation,.mobile-menu,.nav-menu,.mobile-nav').filter({visible:true}).count().catch(()=>0);record(expanded==='true'||menuVisible>0,'首页移动菜单可展开',`aria-expanded=${expanded||''}; visibleMenus=${menuVisible}`);}
 const hero=page.locator('#hero a.hero-link,a.hero-link').first();
 const heroVisible=await hero.isVisible().catch(()=>false);const heroHref=await hero.getAttribute('href').catch(()=>null);
 record(heroVisible&&Boolean(heroHref)&&!/article\.html\?id=/i.test(heroHref||''),'首页Hero首屏链接可交互且使用pretty URL',heroHref||'');

@@ -1,45 +1,86 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import path from 'node:path';
 
 const ORIGIN=String(process.env.SITE_ORIGIN||'https://trrb.net').replace(/\/+$/,'');
 const checks=[];const failures=[];
 function record(ok,label,detail=''){checks.push({ok:Boolean(ok),label,detail});console.log(`${ok?'PASS':'FAIL'} ${label}${detail?` — ${detail}`:''}`);if(!ok)failures.push({label,detail});}
-async function req(path){const r=await fetch(`${ORIGIN}${path}${path.includes('?')?'&':'?'}r14n9=${Date.now()}`,{redirect:'manual',headers:{'cache-control':'no-cache'}});return{status:r.status,headers:Object.fromEntries(r.headers.entries()),text:await r.text()};}
+async function req(pathname){const r=await fetch(`${ORIGIN}${pathname}${pathname.includes('?')?'&':'?'}r14n9=${Date.now()}`,{redirect:'manual',headers:{'cache-control':'no-cache'}});return{status:r.status,headers:Object.fromEntries(r.headers.entries()),text:await r.text()};}
 
-for(const path of ['/','/important-news','/hot-headlines','/us-politics','/ice']){
-  const r=await req(path);
-  record(r.status===200,`${path} HTTP 200`,`status=${r.status}`);
+for(const pathname of ['/','/important-news','/hot-headlines','/us-politics','/ice']){
+  const r=await req(pathname);
+  record(r.status===200,`${pathname} HTTP 200`,`status=${r.status}`);
   const h=r.headers;
-  record(/max-age=\d+/.test(h['strict-transport-security']||''),`${path} HSTS存在`,h['strict-transport-security']||'missing');
-  record((h['x-content-type-options']||'').toLowerCase()==='nosniff',`${path} nosniff存在`,h['x-content-type-options']||'missing');
-  record(Boolean(h['content-security-policy']),`${path} CSP存在`,h['content-security-policy']||'missing');
-  record(Boolean(h['referrer-policy']),`${path} Referrer-Policy存在`,h['referrer-policy']||'missing');
-  record(Boolean(h['permissions-policy']),`${path} Permissions-Policy存在`,h['permissions-policy']||'missing');
-  record(Boolean(h['x-frame-options'])||/frame-ancestors/i.test(h['content-security-policy']||''),`${path} 点击劫持防护存在`,h['x-frame-options']||h['content-security-policy']||'missing');
+  record(/max-age=\d+/.test(h['strict-transport-security']||''),`${pathname} HSTS存在`,h['strict-transport-security']||'missing');
+  record((h['x-content-type-options']||'').toLowerCase()==='nosniff',`${pathname} nosniff存在`,h['x-content-type-options']||'missing');
+  record(Boolean(h['content-security-policy']),`${pathname} CSP存在`,h['content-security-policy']||'missing');
+  record(Boolean(h['referrer-policy']),`${pathname} Referrer-Policy存在`,h['referrer-policy']||'missing');
+  record(Boolean(h['permissions-policy']),`${pathname} Permissions-Policy存在`,h['permissions-policy']||'missing');
+  record(Boolean(h['x-frame-options'])||/frame-ancestors/i.test(h['content-security-policy']||''),`${pathname} 点击劫持防护存在`,h['x-frame-options']||h['content-security-policy']||'missing');
 }
 
-for(const path of ['/netlify.toml','/.github/workflows/round14-node7-core-web-vitals.yml','/scripts/round14-node7-core-web-vitals-audit.mjs','/netlify/edge-functions/article-prerender.ts','/.env','/.git/config']){
-  const r=await req(path);
-  record([404,410].includes(r.status),`${path} 不对公网暴露`,`status=${r.status}`);
+// Repository root is the Netlify publish directory. These are source/control
+// artifacts, not website content, so they must be denied even if they exist in
+// the Git working tree.
+const blockedPublicPaths=[
+  '/netlify.toml',
+  '/.github/workflows/round14-node7-core-web-vitals.yml',
+  '/scripts/round14-node7-core-web-vitals-audit.mjs',
+  '/netlify/edge-functions/article-prerender.ts',
+  '/netlify/functions/public-home-bundle.js',
+  '/SUPABASE-ICE-MULTISOURCE.sql',
+  '/README-ICE-SNAPSHOT-V2.md',
+  '/FIX-REPORT-v29.7.txt',
+  '/docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md',
+  '/.env',
+  '/.git/config'
+];
+for(const pathname of blockedPublicPaths){
+  const r=await req(pathname);
+  record([404,410].includes(r.status),`${pathname} 不对公网暴露`,`status=${r.status}; marker=${r.headers['x-trrb-internal-source-block']||'none'}`);
 }
+
+// Verify the source blocker does not break intentional public data/routes.
+for(const pathname of ['/robots.txt','/data/legal/unified-legal-authorities-latest.json','/config/immigration-knowledge.js']){
+  const r=await req(pathname);
+  record(r.status===200,`${pathname} 仍保持公开可访问`,`status=${r.status}`);
+}
+const verification=await req('/08665bdb2ead4dcf7d8e6afc895c07d7.txt');
+record(verification.status===200,'搜索引擎验证TXT未被内部源码守卫误封',`status=${verification.status}`);
 
 const sensitivePatterns=[
-  /SUPABASE_SERVICE_ROLE_KEY\s*[:=]\s*["'`]?[A-Za-z0-9._-]{20,}/i,
-  /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,
-  /(?:password|passwd)\s*[:=]\s*["'`][^"'`]{8,}["'`]/i,
-  /sk-[A-Za-z0-9_-]{20,}/
+  {name:'Supabase service-role assignment',re:/SUPABASE_SERVICE_ROLE_KEY\s*[:=]\s*["'`][A-Za-z0-9._-]{20,}["'`]/i},
+  {name:'Supabase secret key',re:/sb_secret_[A-Za-z0-9._-]{20,}/i},
+  {name:'OpenAI secret key',re:/sk-(?:proj-)?[A-Za-z0-9_-]{30,}/},
+  {name:'Netlify auth token assignment',re:/NETLIFY_AUTH_TOKEN\s*[:=]\s*["'`][A-Za-z0-9._-]{20,}["'`]/i},
+  {name:'Private key block',re:/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/},
+  {name:'Literal password',re:/(?:password|passwd)\s*[:=]\s*["'`][^"'`]{8,}["'`]/i}
 ];
-const candidates=['netlify.toml','_headers','_redirects','listing.js','site-common.js','article-route-runtime.js'];
-let secretHits=[];
-for(const file of candidates){
-  if(!fs.existsSync(file))continue;
-  const text=fs.readFileSync(file,'utf8');
-  for(const re of sensitivePatterns){if(re.test(text))secretHits.push(`${file}:${re}`);}
+
+const IGNORE_DIRS=new Set(['.git','node_modules']);
+const SCAN_EXTENSIONS=new Set(['.html','.js','.mjs','.cjs','.ts','.tsx','.json','.toml','.yml','.yaml','.txt','.md','.sql']);
+const MAX_FILE=2*1024*1024;
+const secretHits=[];
+function walk(dir){
+  for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
+    if(IGNORE_DIRS.has(entry.name))continue;
+    const full=path.join(dir,entry.name);
+    if(entry.isDirectory()){walk(full);continue;}
+    if(!SCAN_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))continue;
+    let stat;try{stat=fs.statSync(full)}catch{continue}
+    if(stat.size>MAX_FILE)continue;
+    let text='';try{text=fs.readFileSync(full,'utf8')}catch{continue}
+    for(const item of sensitivePatterns){
+      if(item.re.test(text))secretHits.push(`${full}:${item.name}`);
+    }
+  }
 }
-record(secretHits.length===0,'核心公开源文件未发现高风险私密凭据',`hits=${secretHits.length}`);
+walk('.');
+record(secretHits.length===0,'仓库文本文件未发现高风险私密凭据字面值',`hits=${secretHits.length}${secretHits.length?`; ${secretHits.slice(0,5).join(' | ')}`:''}`);
+
 record(!fs.existsSync('package-lock.json')&&!fs.existsSync('package.json'),'生产仓库无Node运行时依赖清单，避免未管理依赖进入静态发布面',`package.json=${fs.existsSync('package.json')}; lock=${fs.existsSync('package-lock.json')}`);
 
-fs.writeFileSync('round14-node9-security-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),origin:ORIGIN,checks,failures,secretHits},null,2)+'\n');
+fs.writeFileSync('round14-node9-security-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),origin:ORIGIN,checks,failures,blockedPublicPaths,secretHits},null,2)+'\n');
 console.log(`ROUND14 NODE9 audit: checks=${checks.length}; failures=${failures.length}`);
-if(failures.length){console.log('ROUND14 NODE9 FAIL: security header / dependency / sensitive exposure issue detected');process.exit(1);}
-console.log('ROUND14 NODE9 PASS: security headers / dependencies / sensitive-file exposure verified');
+if(failures.length){console.log('ROUND14 NODE9 FAIL: security header / source exposure / credential issue detected');process.exit(1);}
+console.log('ROUND14 NODE9 PASS: security headers, internal source blocking and secret exposure verified');

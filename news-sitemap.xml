@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-87865bda50ca3d3afb6461ca14d700131a810f6f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:35:36.679Z</news:publication_date>
+        <news:title>美国终止特朗普时期部分TPS身份并开始遣返</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-5ac0b25610e29cf960e97b929dcf1d840f256501</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:35:36.094Z</news:publication_date>
+        <news:title>美国国土安全部宣布加强遣返数百万非法移民</news:title>
+      </news:news>
+    </url>
   
   
   

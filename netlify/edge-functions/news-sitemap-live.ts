@@ -35,25 +35,33 @@ function section(a:any,byId:Map<string,any>,byName:Map<string,any>){const t=clea
 export default async(request:Request,context:any)=>{
   if(!["GET","HEAD"].includes(request.method))return context.next();
   try{
+    const now=Date.now();
+    const cutoff=now-48*60*60*1000;
     const [cats,articles]=await Promise.all([
       rows("categories",{select:"id,name,slug,is_active,include_in_google_news",is_active:"eq.true",limit:"500"}),
-      rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at",status:"eq.published",order:"published_at.asc.nullslast,created_at.asc",limit:"1000"})
+      // Google News allows at most 1,000 recent news URLs. Fetch the newest 1,000
+      // rows first; the previous ascending query accidentally fetched the oldest
+      // 1,000 rows in the entire database and could omit today's news completely.
+      rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at",status:"eq.published",order:"published_at.desc.nullslast,created_at.desc",limit:"1000"})
     ]);
     const ids=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>String(x.id)));
     const names=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>clean(x.name)));
     const byId=new Map(cats.map((x:any)=>[String(x.id||""),x]));
     const byName=new Map(cats.map((x:any)=>[clean(x.name),x]));
-    const now=Date.now(),cutoff=now-48*60*60*1000;
+    const recent=articles
+      .map((a:any)=>({a,ts:Date.parse(a.published_at||a.created_at||"")}))
+      .filter((x:any)=>Number.isFinite(x.ts)&&x.ts>=cutoff&&x.ts<=now+300000&&clean(x.a.title))
+      // Earliest copy wins duplicate clusters; output is re-sorted newest-first later.
+      .sort((x:any,y:any)=>x.ts-y.ts);
+
     const seenTitles=new Set<string>();
     const seenBodies=new Set<string>();
     let excludedDuplicate=0;
     let excludedThin=0;
     let preservedShortIce=0;
-    const blocks:string[]=[];
+    const selected:{a:any;ts:number;loc:string}[]=[];
 
-    for(const a of articles){
-      const ts=Date.parse(a.published_at||a.created_at||"");
-      if(!Number.isFinite(ts)||ts<cutoff||ts>now+300000||!clean(a.title))continue;
+    for(const {a,ts} of recent){
       if(cats.length&&a.category_id&&!ids.has(String(a.category_id)))continue;
       if(cats.length&&!a.category_id&&a.category_name&&!names.has(clean(a.category_name)))continue;
 
@@ -72,16 +80,20 @@ export default async(request:Request,context:any)=>{
       const slug=clean(a.slug)||clean(a.id);
       if(!slug)continue;
       const loc=`${SITE}/${encodeURIComponent(section(a,byId,byName))}/${encodeURIComponent(slug)}`;
-      blocks.push(`  <url>\n    <loc>${esc(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${new Date(ts).toISOString()}</news:publication_date>\n      <news:title>${esc(a.title)}</news:title>\n    </news:news>\n  </url>`);
-      if(blocks.length>=1000)break;
+      selected.push({a,ts,loc});
     }
+
+    selected.sort((x,y)=>y.ts-x.ts);
+    const blocks=selected.slice(0,1000).map(({a,ts,loc})=>`  <url>\n    <loc>${esc(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${new Date(ts).toISOString()}</news:publication_date>\n      <news:title>${esc(a.title)}</news:title>\n    </news:news>\n  </url>`);
 
     const xml=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${blocks.join("\n")}\n</urlset>\n`;
     return new Response(request.method==="HEAD"?null:xml,{status:200,headers:{
       "content-type":"application/xml; charset=UTF-8",
       "cache-control":"public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-news-sitemap":"live-supabase-v3-ice-safe-dedupe",
+      "x-trrb-news-sitemap":"live-supabase-v4-latest1000-ice-safe-dedupe",
       "x-trrb-news-count":String(blocks.length),
+      "x-trrb-news-source-rows":String(articles.length),
+      "x-trrb-news-recent-candidates":String(recent.length),
       "x-trrb-news-excluded-thin":String(excludedThin),
       "x-trrb-news-preserved-short-ice":String(preservedShortIce),
       "x-trrb-news-excluded-duplicate":String(excludedDuplicate)

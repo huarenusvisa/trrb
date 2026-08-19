@@ -57,13 +57,16 @@
 
   if(window.visualViewport){
     const vv=window.visualViewport;
+    let viewportBaseline=Math.max(vv.height,document.documentElement.clientHeight,window.innerHeight||0);
     const syncKeyboard=()=>{
-      const base=Math.max(document.documentElement.clientHeight,window.innerHeight||0);
-      document.body.classList.toggle('finance-keyboard-open',vv.height<base*.74);
+      const current=Math.max(vv.height,document.documentElement.clientHeight,window.innerHeight||0);
+      if(current>viewportBaseline)viewportBaseline=current;
+      document.body.classList.toggle('finance-keyboard-open',vv.height<viewportBaseline*.74);
       document.documentElement.style.setProperty('--finance-vvh',`${Math.round(vv.height)}px`);
     };
     vv.addEventListener('resize',syncKeyboard,{passive:true});
     vv.addEventListener('scroll',syncKeyboard,{passive:true});
+    window.addEventListener('orientationchange',()=>{setTimeout(()=>{viewportBaseline=Math.max(vv.height,document.documentElement.clientHeight,window.innerHeight||0);syncKeyboard()},220)},{passive:true});
     syncKeyboard();
   }
 })();

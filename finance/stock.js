@@ -1,0 +1,27 @@
+(function(){
+  const D=window.FinanceData;if(!D)return;
+  const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const symbol=(new URLSearchParams(location.search).get('symbol')||'AAPL').toUpperCase();
+  const q=D.getQuote(symbol);const meta=D.getMeta?D.getMeta():null;
+  function renderNotFound(){document.title=`${symbol} 未找到｜唐人财经`;const top=$('#topSymbol');if(top)top.textContent=symbol;const price=$('#topPrice');if(price)price.textContent='—';const main=$('.stock-content');if(main)main.innerHTML=`<section class="not-found" role="status"><div class="code">${symbol}</div><h1>没有找到这只股票</h1><p>当前 V1 演示数据中没有 ${symbol}。我们不会用其他股票的数据替代它，以避免产生错误行情或公司信息。</p><a href="./#watch">返回自选与搜索</a></section>`;const fixed=$('.fixed');if(fixed)fixed.hidden=true;const share=$('#shareBtn');if(share)share.hidden=true}
+  if(!q){renderNotFound();return}
+  const money=v=>typeof v==='number'?v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}):v;const cls=v=>v>=0?'up':'down';
+  function notify(text){let t=$('#financeToast');if(!t){t=document.createElement('div');t.id='financeToast';t.className='finance-toast';t.setAttribute('role','status');t.setAttribute('aria-live','polite');document.body.appendChild(t)}t.textContent=text;t.classList.add('show');clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.classList.remove('show'),2200)}
+  document.title=`${q.name} (${q.symbol})｜唐人财经`;
+  function recordHistory(){let h=[];try{h=JSON.parse(localStorage.getItem('trfinance.history')||'[]')}catch(e){}h=[{type:'stock',symbol:q.symbol,name:q.name,ts:Date.now()},...h.filter(x=>!(x.type==='stock'&&x.symbol===q.symbol))].slice(0,20);try{localStorage.setItem('trfinance.history',JSON.stringify(h))}catch(e){}}
+  recordHistory();
+  $('#symbol').textContent=q.symbol;$('#name').textContent=q.name;$('#topSymbol').textContent=q.symbol;$('#topPrice').textContent=`$${money(q.price)}`;$('#price').textContent=`$${money(q.price)}`;$('#market').textContent=q.market;
+  $('#move').className=`move ${cls(q.change)}`;$('#move').textContent=`${q.change>=0?'▲':'▼'} $${Math.abs(q.price-q.prev).toFixed(2)} (${Math.abs(q.change).toFixed(2)}%)  Today`;
+  $('#after').className=`after ${cls(q.after)}`;$('#after').textContent=`${q.after>=0?'▲':'▼'} ${Math.abs(q.after).toFixed(2)}%  After-hours`;
+  if(meta&&$('#after'))$('#after').insertAdjacentHTML('afterend',`<div class="detail-data-note">${meta.source} · 非实时</div>`);
+  const metrics=[['今开',q.open],['最高',q.high],['最低',q.low],['昨收',q.prev],['市值',q.marketCap],['市盈率',q.pe],['成交量',q.volume],['52周区间',q.range52]];$('#metrics').innerHTML=metrics.map(x=>`<div class="metric"><small>${x[0]}</small><b>${typeof x[1]==='number'?money(x[1]):x[1]}</b></div>`).join('');
+  $('#stockNews').innerHTML=q.news.map(n=>`<article class="news"><div><b>${n.title}</b><small>${n.source} · ${n.time}</small></div><div class="thumb" aria-hidden="true">${n.tag}</div></article>`).join('');
+  $('#description').textContent=q.description;$('#sector').textContent=q.sector;
+  function chart(points){const max=Math.max(...points),min=Math.min(...points),w=800,h=400;const pts=points.map((v,i)=>`${(i/(points.length-1))*w},${h-30-((v-min)/(max-min||1))*(h-80)}`).join(' ');const end=pts.split(' ').at(-1).split(',')[1];return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="${q.symbol} 价格走势图，当前${q.change>=0?'上涨':'下跌'} ${Math.abs(q.change).toFixed(2)}%"><line x1="0" y1="${h*.72}" x2="${w}" y2="${h*.72}" stroke="#a8afb3" stroke-width="1" stroke-dasharray="3 5"/><polyline points="${pts}" fill="none" stroke="${q.change>=0?'#00c805':'#ff4d2e'}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${w-4}" cy="${end}" r="6" fill="${q.change>=0?'#00c805':'#ff4d2e'}"/></svg>`}
+  $('#chart').innerHTML=chart([...q.spark,...q.spark.map((v,i)=>v+(i%4)-2),...q.spark.slice(4)]);
+  $$('.range button[data-range]').forEach((b,i)=>b.addEventListener('click',()=>{$$('.range button[data-range]').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on))});const factor=i+1;$('#chart').innerHTML=chart(Array.from({length:46},(_,n)=>24+Math.sin((n+factor*3)/3)*11+Math.sin(n/7)*8+(n*factor%13)/3));notify(`已切换到 ${b.dataset.range} 走势图`)}));
+  const watchBtn=$('#watchBtn');function syncWatch(){const on=D.getWatchlist().includes(q.symbol);watchBtn.textContent=on?'✓ 已自选':'+ 加入自选';watchBtn.setAttribute('aria-pressed',String(on))}syncWatch();watchBtn.addEventListener('click',()=>{const on=D.toggleWatch(q.symbol);syncWatch();notify(`${q.symbol} 已${on?'加入':'移出'}自选`)});
+  const alertBtn=$('#alertBtn');function syncAlert(){const on=D.isAlertOn?D.isAlertOn(q.symbol):false;alertBtn.textContent=on?'✓ 已设置提醒':'设置提醒';alertBtn.setAttribute('aria-pressed',String(on))}syncAlert();alertBtn.addEventListener('click',()=>{const on=D.toggleAlert?D.toggleAlert(q.symbol):false;syncAlert();notify(`${q.symbol} 价格提醒已${on?'开启':'关闭'}`)});
+  $('#shareBtn').addEventListener('click',async()=>{try{if(navigator.share){await navigator.share({title:document.title,url:location.href});notify('已打开分享菜单')}else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);notify('链接已复制')}else{notify('当前浏览器不支持自动复制')}}catch(e){if(e&&e.name!=='AbortError')notify('分享暂时不可用')}});
+  const advanced=$('#advancedChartBtn');if(advanced)advanced.addEventListener('click',()=>notify('高级图表将在正式行情数据接入后启用'));
+})();

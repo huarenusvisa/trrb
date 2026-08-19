@@ -1,3 +1,5 @@
+import { immigrationCategory, immigrationTopic } from "./_shared/immigration-knowledge-routes.ts";
+
 const SITE = "https://trrb.net";
 const DEFAULT_IMAGE = `${SITE}/trrb-logo-cropped.webp`;
 
@@ -43,40 +45,6 @@ const CATEGORY_SLUGS: Record<string, string> = {
 const CATEGORY_NAMES_BY_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(CATEGORY_SLUGS).map(([name, slug]) => [slug, name])
 );
-
-const IMMIGRATION_PATHS: Record<string, { name: string; description: string }> = {
-  study: { name: "赴美留学", description: "唐人日报赴美留学知识中心，系统整理F-1学生签证、学校申请、I-20、OPT、CPT、身份维持与常见风险。" },
-  work: { name: "赴美工作", description: "唐人日报赴美工作知识中心，系统整理H-1B、L-1、O-1等工作签证的资格、申请流程、材料、时间节点与身份维护。" },
-  employment: { name: "职业移民", description: "唐人日报职业移民知识中心，系统整理EB-1、EB-2、NIW、EB-3等职业移民类别的资格、排期、材料与绿卡流程。" },
-  family: { name: "家庭移民", description: "唐人日报家庭移民知识中心，系统整理婚姻绿卡、亲属移民、I-130、I-485、领事程序、担保与面谈相关知识。" },
-  humanitarian: { name: "人道主义庇护", description: "唐人日报人道主义保护知识中心，系统整理庇护、递解抗辩、CAT、U签证、T签证等程序、材料与常见风险。" },
-  "change-status": { name: "境内身份转换", description: "唐人日报境内身份转换知识中心，系统整理美国境内身份延期、转换、I-539、身份衔接与常见合规风险。" },
-  citizenship: { name: "入籍美国公民", description: "唐人日报美国入籍知识中心，系统整理N-400申请资格、连续居住、英文与公民考试、面谈及宣誓流程。" }
-};
-
-const IMMIGRATION_TOPICS: Record<string, Record<string, string>> = {
-  study: {
-    f1: "F-1学生签证", j1: "J-1交流访问", m1: "M-1职业学生", cpt: "CPT", opt: "OPT", "stem-opt": "STEM OPT", "day-1-cpt": "Day 1 CPT"
-  },
-  work: {
-    h1b: "H-1B专业工作", l1: "L-1跨国公司派遣", o1: "O-1杰出人才", h2a: "H-2A农业工", h2b: "H-2B临时工", tn: "TN专业人士", "e1-e2": "E-1/E-2商业签证", r1: "R-1宗教工作者"
-  },
-  employment: {
-    eb1a: "EB-1A杰出人才", eb1b: "EB-1B教授研究员", eb1c: "EB-1C跨国高管", niw: "EB-2 NIW", "eb2-perm": "EB-2 PERM", eb3: "EB-3", eb4: "EB-4", eb5: "EB-5投资移民"
-  },
-  family: {
-    "citizen-spouse": "美国公民婚姻绿卡", f2a: "绿卡配偶F2A", k1: "K-1未婚夫/妻", parents: "父母移民", children: "子女移民", siblings: "兄弟姐妹移民", "cr1-ir1": "CR-1/IR-1配偶移民", "family-preference": "F1/F2B/F3/F4优先类别"
-  },
-  humanitarian: {
-    asylum: "政治庇护", withholding: "防止递解", cat: "禁止酷刑公约保护", vawa: "VAWA家暴保护", "u-visa": "U签证", "t-visa": "T签证", sijs: "SIJS特殊青少年", tps: "TPS临时保护身份"
-  },
-  "change-status": {
-    "b2-to-f1": "B-2转F-1", "f1-to-h1b": "F-1转H-1B", "j1-waiver": "J-1豁免", extension: "身份延期", reinstatement: "身份恢复", i485: "I-485境内调整身份", ead: "EAD工卡", "advance-parole": "Advance Parole旅行许可"
-  },
-  citizenship: {
-    n400: "N-400入籍申请", "continuous-residence": "连续居住", "physical-presence": "实际居住", tests: "英语与公民考试", interview: "入籍面试", oath: "入籍宣誓", n600: "N-600公民证明", "derived-citizenship": "衍生与取得公民"
-  }
-};
 
 function esc(value: unknown): string {
   return String(value ?? "")
@@ -142,22 +110,40 @@ function listingSeo(url: URL): Seo {
 }
 
 function immigrationCenterSeo(url: URL): Seo {
-  const requestedPath = String(url.searchParams.get("path") || "study").trim();
-  const path = IMMIGRATION_PATHS[requestedPath] ? requestedPath : "study";
-  const category = IMMIGRATION_PATHS[path];
-  const requestedTopic = String(url.searchParams.get("topic") || "").trim();
-  const topicName = requestedTopic ? IMMIGRATION_TOPICS[path]?.[requestedTopic] || "" : "";
-  if (topicName) {
+  const requestedPath = String(url.searchParams.get("path") || "").trim();
+  const category = immigrationCategory(requestedPath);
+  if (!category) {
     return {
-      title: `${topicName}完整指南｜${category.name}知识中心 - 唐人日报`,
-      description: `${topicName}。${category.description}系统整理申请资格、办理流程、材料准备、时间节点、常见风险与相关文章。`.slice(0,180),
-      canonical: `${SITE}/immigrate/center?path=${encodeURIComponent(path)}&topic=${encodeURIComponent(requestedTopic)}`
+      title: "移民美国知识库 - 唐人日报",
+      description: "唐人日报移民美国知识库，按赴美留学、赴美工作、职业移民、家庭移民、人道主义庇护、境内身份转换和入籍美国公民分类整理。",
+      canonical: `${SITE}/immigrate/`,
+      robots: "noindex,follow,noarchive"
     };
   }
+
+  const requestedTopic = String(url.searchParams.get("topic") || "").trim();
+  const topic = requestedTopic ? immigrationTopic(category, requestedTopic) : null;
+  if (requestedTopic && !topic) {
+    return {
+      title: `${category.name}完整指南｜美国移民知识中心 - 唐人日报`,
+      description: category.description,
+      canonical: `${SITE}/immigrate/center?path=${encodeURIComponent(category.slug)}`,
+      robots: "noindex,follow,noarchive"
+    };
+  }
+
+  if (topic) {
+    return {
+      title: `${topic.name}完整指南｜${category.name}知识中心 - 唐人日报`,
+      description: `${topic.name}。${category.description}系统整理申请资格、办理流程、材料准备、时间节点、常见风险与相关文章。`.slice(0, 180),
+      canonical: `${SITE}/immigrate/center?path=${encodeURIComponent(category.slug)}&topic=${encodeURIComponent(topic.slug)}`
+    };
+  }
+
   return {
     title: `${category.name}完整指南｜美国移民知识中心 - 唐人日报`,
     description: category.description,
-    canonical: `${SITE}/immigrate/center?path=${encodeURIComponent(path)}`
+    canonical: `${SITE}/immigrate/center?path=${encodeURIComponent(category.slug)}`
   };
 }
 
@@ -251,7 +237,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("link", `<${seo.canonical}>; rel=\"canonical\"`);
-    headers.set("x-trrb-seo-route-meta", "round10-v6-listing-failclosed");
+    headers.set("x-trrb-seo-route-meta", "round10-v7-shared-immigration-routes");
     if (/^noindex/i.test(seo.robots || "")) headers.set("x-robots-tag", seo.robots || "noindex,follow");
     else headers.delete("x-robots-tag");
     return new Response(request.method === "HEAD" ? null : body, { status: upstream.status, headers });

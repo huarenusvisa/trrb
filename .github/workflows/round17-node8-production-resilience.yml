@@ -26,7 +26,7 @@ jobs:
           node-version: '24'
       - name: Audit graceful degradation locally
         run: node scripts/round17-node8-production-resilience-audit.mjs
-      - name: Monitor production and recover if unhealthy
+      - name: Wait for central production deploy and recover only on manual run
         shell: bash
         run: |
           set -euo pipefail
@@ -41,20 +41,30 @@ jobs:
             grep -q '暂时无法加载资料' /tmp/legal-detail.js || return 1
             node -e "const d=require('/tmp/legal-db.json');if(!d.datasetVersion||!(d.records||[]).length)process.exit(1)" || return 1
           }
-          if health; then
-            echo 'Production health monitor: healthy on first check.'
-          else
-            echo 'Production health monitor: unhealthy; invoking recovery deployment.'
+
+          healthy=0
+          for attempt in $(seq 1 90); do
+            if health; then healthy=1; break; fi
+            sleep 10
+          done
+
+          if [ "$healthy" != 1 ] && [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            echo 'Manual resilience run still unhealthy; invoking one clean main recovery build.'
             test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'Recovery hook unavailable'; exit 2; }
-            curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-recovery.txt
-            recovered=0
+            if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+              hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node8+manual-recovery"
+            else
+              hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node8+manual-recovery"
+            fi
+            curl -fsS -X POST "$hook_url" >/tmp/netlify-recovery.txt
             for attempt in $(seq 1 90); do
-              if health; then recovered=1; break; fi
+              if health; then healthy=1; break; fi
               sleep 10
             done
-            test "$recovered" = 1 || { echo 'Recovery verification failed.'; exit 1; }
           fi
+
+          test "$healthy" = 1 || { echo 'Production did not converge after central deployment window.'; exit 1; }
           node scripts/round17-node8-production-resilience-audit.mjs /tmp/legal-app.js /tmp/legal-detail.js
           echo 'ROUND 17 NODE 8 PRODUCTION: PASS'
 
-# Strict restart revalidation after nodes 1-7 passed current production: 2026-08-17T02:34Z.
+# Push deployment is centralized in round17-central-production-deploy.yml.

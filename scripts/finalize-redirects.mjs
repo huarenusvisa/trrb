@@ -37,9 +37,35 @@ const required = [
 ];
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
-const filtered = lines.filter((line) => !required.some((rule) => line.split(/\s+/)[0] === rule.split(/\s+/)[0]));
-fs.writeFileSync(file, [...required, ...filtered].join('\n') + '\n');
-console.log(`[redirects] finalized ${required.length} canonical/special rules + ${filtered.length} generated rules`);
+const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
+const filtered = lines.filter((line) => !requiredPaths.has(line.split(/\s+/)[0]));
+const output = [...required, ...filtered].join('\n') + '\n';
+fs.writeFileSync(file, output);
+
+// This script is the final authority for generated redirect metadata. Fail in
+// the same process if another generated line managed to retain a conflicting
+// rule for one of the canonical paths.
+const outputLines = output.trim().split(/\r?\n/).filter(Boolean);
+for (const rule of required) {
+  if (!outputLines.includes(rule)) throw new Error(`required canonical redirect missing after finalize: ${rule}`);
+  const route = rule.split(/\s+/)[0];
+  const samePath = outputLines.filter((line) => line.split(/\s+/)[0] === route);
+  if (samePath.length !== 1) throw new Error(`conflicting redirect rules remain for ${route}: ${samePath.join(' || ')}`);
+}
+for (const [route, target] of [
+  ['/ice/', '/ice'],
+  ['/ice/news/', '/ice/news'],
+  ['/topic/ice', '/ice'],
+  ['/topic/ice/', '/ice'],
+  ['/trump/', '/trump'],
+  ['/topic/trump', '/trump'],
+  ['/topic/trump/', '/trump']
+]) {
+  const expected = `${route} ${target} 301!`;
+  if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);
+}
+
+console.log(`[redirects] finalized and verified ${required.length} canonical/special rules + ${filtered.length} generated rules`);
 
 // Netlify's normal build still runs the homepage optimizer through this script,
 // but scheduled metadata-only syncs can pass --redirects-only so they never

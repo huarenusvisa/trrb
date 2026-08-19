@@ -68,8 +68,7 @@ const FALLBACK_CATEGORY_SLUGS = new Map([
   ['庇护百科', 'asylum'],
   ['驱逐快报', 'deport'],
   ['ICE执法动态', 'ice'],
-  ['ICE执法', 'ice'],
-  ['曝光墙', 'expose']
+  ['ICE执法', 'ice']
 ]);
 const SECTION_ALIASES = new Map([
   ['important', 'important-news'],

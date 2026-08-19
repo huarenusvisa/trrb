@@ -4,6 +4,24 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const SITE = "https://trrb.net";
+const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || "";
+const FALLBACK_CATEGORY_SLUGS = new Map([
+  ["重要新闻", "important-news"],
+  ["热门头条", "hot-headlines"],
+  ["美国时政", "us-politics"],
+  ["美国警情", "us-crime"],
+  ["中国官场", "china-officialdom"],
+  ["移民美国", "immigration"],
+  ["庇护百科", "asylum"],
+  ["驱逐快报", "deport"],
+  ["ICE执法动态", "ice"],
+  ["ICE执法", "ice"]
+]);
+const SECTION_ALIASES = new Map([
+  ["important", "important-news"], ["hot", "hot-headlines"], ["politics", "us-politics"],
+  ["crime", "us-crime"], ["china", "china-officialdom"]
+]);
 
 function decodeXml(value = "") {
   return String(value)
@@ -24,9 +42,9 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#39;");
 }
 
-function attr(value = "") {
-  return escapeHtml(value);
-}
+function attr(value = "") { return escapeHtml(value); }
+function clean(value = "") { return String(value || "").replace(/\s+/g, " ").trim(); }
+function canonicalSection(value = "") { return SECTION_ALIASES.get(clean(value)) || clean(value); }
 
 function extract(block, tag) {
   const m = block.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`, "i"));
@@ -46,20 +64,68 @@ function parseNewsSitemap(xml) {
     if (url.hostname !== "trrb.net" && url.hostname !== "www.trrb.net") continue;
     rows.push({ loc: `${url.pathname}${url.search}`, title, date, ts: Date.parse(date) || 0 });
   }
+  return dedupeRows(rows);
+}
+
+function dedupeRows(rows) {
   const seen = new Set();
-  return rows
-    .sort((a, b) => b.ts - a.ts)
+  return (Array.isArray(rows) ? rows : [])
+    .sort((a, b) => Number(b.ts || 0) - Number(a.ts || 0))
     .filter((row) => {
-      if (seen.has(row.loc)) return false;
+      if (!row?.loc || !row?.title || seen.has(row.loc)) return false;
       seen.add(row.loc);
       return true;
     });
 }
 
+async function rest(table, params) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) return [];
+  const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
+  Object.entries(params || {}).forEach(([key, value]) => url.searchParams.set(key, String(value)));
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Accept: "application/json" }
+  });
+  if (!response.ok) throw new Error(`${table} ${response.status}`);
+  const rows = await response.json();
+  return Array.isArray(rows) ? rows : [];
+}
+
+async function latestDatabaseRows(limit = 120) {
+  if (!SUPABASE_URL || !SUPABASE_KEY) return [];
+  const [categories, articles] = await Promise.all([
+    rest("categories", { select: "id,name,slug", is_active: "eq.true", limit: "500" }),
+    rest("articles", {
+      select: "id,title,slug,category_id,category_name,topic_key,published_at,created_at,status",
+      status: "eq.published",
+      order: "published_at.desc.nullslast,created_at.desc",
+      limit: String(limit)
+    })
+  ]);
+  const byId = new Map(categories.map((row) => [String(row.id || ""), row]));
+  const byName = new Map(categories.map((row) => [clean(row.name), row]));
+  return dedupeRows(articles.map((article) => {
+    const id = clean(article.id);
+    const slug = clean(article.slug) || id;
+    if (!slug || !clean(article.title)) return null;
+    const topic = clean(article.topic_key).toLowerCase();
+    let section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : "";
+    if (!section) {
+      const category = byId.get(String(article.category_id || "")) || byName.get(clean(article.category_name));
+      section = canonicalSection(category?.slug || FALLBACK_CATEGORY_SLUGS.get(clean(article.category_name)) || "news");
+    }
+    const date = article.published_at || article.created_at || "";
+    return {
+      loc: `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`,
+      title: clean(article.title),
+      date,
+      ts: Date.parse(date) || 0
+    };
+  }).filter(Boolean));
+}
+
 function replaceExact(html, needle, replacement, file) {
-  if (!html.includes(needle)) {
-    throw new Error(`${file}: 找不到静态快照注入点 ${needle.slice(0, 80)}`);
-  }
+  if (!html.includes(needle)) throw new Error(`${file}: 找不到静态快照注入点 ${needle.slice(0, 80)}`);
   return html.replace(needle, replacement);
 }
 
@@ -148,10 +214,15 @@ async function updateTrump(rows) {
 }
 
 const sitemap = await readFile(path.join(ROOT, "news-sitemap.xml"), "utf8");
-const rows = parseNewsSitemap(sitemap);
-if (rows.length < 10) throw new Error(`news-sitemap.xml 新闻条目不足：${rows.length}`);
+const newsRows = parseNewsSitemap(sitemap);
+let databaseRows = [];
+try { databaseRows = await latestDatabaseRows(160); }
+catch (error) { console.warn(`静态快照数据库补充不可用：${error.message}`); }
+const rows = dedupeRows([...newsRows, ...databaseRows]);
+if (rows.length < 10) throw new Error(`可用于首页静态快照的已发布新闻不足：${rows.length}`);
+
 const iceRows = rows.filter((row) => row.loc.startsWith("/ice/") && !row.loc.startsWith("/ice/news"));
-if (iceRows.length < 3) throw new Error(`news-sitemap.xml ICE 条目不足：${iceRows.length}`);
+if (iceRows.length < 3) throw new Error(`可用于 ICE 静态快照的已发布新闻不足：${iceRows.length}`);
 const trumpRows = rows.filter((row) => row.loc.startsWith("/trump/"));
 
 const homeCount = await updateHome(rows);
@@ -159,6 +230,6 @@ const iceLiveCount = await updateIce("topic/ice/live-v6.html", iceRows);
 const iceLegacyCount = await updateIce("topic/ice/index.html", iceRows);
 let trumpCount = 0;
 if (trumpRows.length) trumpCount = await updateTrump(trumpRows);
-else console.warn("news-sitemap.xml 当前48小时没有特朗普专题条目，保留运行时专题加载，不阻断部署。");
+else console.warn("当前没有特朗普专题条目，保留运行时专题加载，不阻断部署。");
 
-console.log(`SEO静态发现链修复完成：首页 ${homeCount}；/ice ${iceLiveCount}；/topic/ice ${iceLegacyCount}；/trump ${trumpCount}。`);
+console.log(`SEO静态发现链完成：News48h ${newsRows.length}；DB补充 ${databaseRows.length}；首页 ${homeCount}；/ice ${iceLiveCount}；/topic/ice ${iceLegacyCount}；/trump ${trumpCount}。`);

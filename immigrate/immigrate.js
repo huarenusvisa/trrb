@@ -11,6 +11,7 @@
   const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
   const SUPABASE_KEY='sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
   const SECTIONS={'重要新闻':'important-news','热门头条':'hot-headlines','美国时政':'us-politics','美国警情':'us-crime','中国官场':'china-officialdom','移民美国':'immigration','庇护百科':'asylum','驱逐快报':'deport','ICE执法动态':'ice','ICE执法':'ice'};
+  const UUID_RE=/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i;
   let articles=[];
 
   function esc(v){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
@@ -20,8 +21,13 @@
   function articleUrl(a){
     if(typeof window.TRRB_articleUrl==='function'){const routed=window.TRRB_articleUrl(a);if(routed)return routed;}
     const slug=String(a?.slug||'').trim();
-    if(slug){const topic=String(a?.topic_key||a?.topicKey||'').trim().toLowerCase();const category=String(a?.category_name||a?.category||'').trim();const section=topic==='trump'?'trump':topic==='ice'?'ice':(SECTIONS[category]||'news');return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;}
-    return a?.id?`../article.html?id=${encodeURIComponent(a.id)}`:'../';
+    const id=String(a?.id||'').trim();
+    const topic=String(a?.topic_key||a?.topicKey||'').trim().toLowerCase();
+    const category=String(a?.category_name||a?.category||'').trim();
+    const section=topic==='trump'?'trump':topic==='ice'?'ice':(SECTIONS[category]||'news');
+    if(slug)return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+    if(UUID_RE.test(id))return `/${encodeURIComponent(section)}/${encodeURIComponent(id)}`;
+    return id?`/article.html?id=${encodeURIComponent(id)}`:'/';
   }
   function categoryUrl(cat){return `./center.html?path=${encodeURIComponent(cat.slug)}`;}
   function topicUrl(cat,item){return `./center.html?path=${encodeURIComponent(cat.slug)}&topic=${encodeURIComponent(item.slug)}`;}

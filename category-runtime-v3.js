@@ -35,13 +35,41 @@
     }));
   }
 
+  function routeKey(value) {
+    try {
+      const url = new URL(value, location.origin);
+      return url.pathname.replace(/\/$/, "") || "/";
+    } catch {
+      return String(value || "").replace(/\/$/, "") || "/";
+    }
+  }
+
   function renderNavigation(channels) {
     const nav = document.querySelector("#site-navigation .nav-inner");
     if (!nav) return;
+
+    // Only remove links that this runtime created on a previous pass. Static
+    // independent products such as /jobs/, /finance/ or /legal/ must survive a
+    // category refresh even though they are not rows in the categories table.
     nav.querySelectorAll("a[data-dynamic-category]").forEach((node) => node.remove());
-    nav.querySelectorAll(":scope > a:not(.nav-expose-link)").forEach((node) => node.remove());
+
     const anchor = nav.querySelector(".nav-expose-link");
+    const existing = Array.from(nav.querySelectorAll(":scope > a:not(.nav-expose-link)"));
+
     channels.filter((item) => item.showInNav).forEach((item) => {
+      const desiredRoute = routeKey(item.href);
+      const match = existing.find((node) =>
+        node.textContent.trim() === String(item.name || "").trim() || routeKey(node.getAttribute("href") || "") === desiredRoute
+      );
+
+      if (match) {
+        // Correct stale static aliases (for example /immigrate/ used as the old
+        // 移民美国 nav target) without deleting unrelated standalone entries.
+        match.href = item.href;
+        match.textContent = item.name;
+        return;
+      }
+
       const link = document.createElement("a");
       link.href = item.href;
       link.textContent = item.name;

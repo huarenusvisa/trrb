@@ -1,5 +1,5 @@
-# Manual production deploy trigger: legacy URL repair 2026-08-18
-name: 第十六轮节点9-生产部署恢复
+# Production deployment recovery + crawlability guard
+name: 生产部署恢复与SEO抓取验收
 
 on:
   workflow_dispatch:
@@ -7,6 +7,11 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/round16-node9-production-deploy-recovery.yml'
+      - 'scripts/inject-static-news-links.mjs'
+      - 'scripts/ensure-sitemap-articles.mjs'
+      - 'index.html'
+      - 'topic/ice/live-v6.html'
+      - 'topic/ice/index.html'
 
 permissions:
   contents: read
@@ -21,6 +26,7 @@ jobs:
       NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
     steps:
       - uses: actions/checkout@v4
+
       - name: 触发或执行Netlify生产部署
         shell: bash
         run: |
@@ -28,6 +34,7 @@ jobs:
           if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             echo 'Using configured Netlify build hook.'
             curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
+            cat /tmp/netlify-hook-response.txt || true
             exit 0
           fi
           if [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && [ -n "${NETLIFY_SITE_ID:-}" ]; then
@@ -38,19 +45,29 @@ jobs:
           fi
           echo 'No Netlify deployment credential or build hook is configured in GitHub Actions secrets.'
           exit 2
-      - name: 不降低节点9标准的生产资源确认
+
+      - name: 验收首页和ICE初始HTML可抓取新闻链接
         shell: bash
         run: |
           set -euo pipefail
           for attempt in $(seq 1 90); do
             stamp=$(date +%s)
-            detail=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/legal/detail.js?round16node9recovery=$stamp" || true)
-            sitemap=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap-legal.xml?round16node9recovery=$stamp" || true)
-            if printf '%s' "$detail" | grep -q 'legal-detail-jsonld' && printf '%s' "$sitemap" | grep -q '<urlset'; then
-              echo 'ROUND16 NODE9 PRODUCTION DEPLOY RECOVERY PASS'
+            home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?seo-deploy=$stamp" || true)
+            ice=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/ice?seo-deploy=$stamp" || true)
+
+            home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
+            home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
+            ice_marker=$(printf '%s' "$ice" | grep -c 'data-seo-static-snapshot="build"' || true)
+            ice_article_links=$(printf '%s' "$ice" | grep -Eo 'href="/ice/[^"]+' | wc -l | tr -d ' ')
+
+            echo "attempt=$attempt home_marker=$home_marker home_links=$home_article_links ice_marker=$ice_marker ice_links=$ice_article_links"
+
+            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ]; then
+              echo 'PRODUCTION SEO DISCOVERY LINKS PASS'
               exit 0
             fi
             sleep 10
           done
-          echo 'Production still does not expose the required node9 assets.'
+
+          echo 'Production did not expose the required server-delivered homepage/ICE article links in time.'
           exit 1

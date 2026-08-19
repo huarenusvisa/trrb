@@ -23,7 +23,7 @@ const visibleText = (value = '') => String(value)
 async function fetchRecentIce() {
   const cutoff = new Date(Date.now() - WINDOW_HOURS * 60 * 60 * 1000).toISOString();
   const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-  url.searchParams.set('select', 'id,title,content,source_url,published_at,created_at,category_name,status');
+  url.searchParams.set('select', 'id,title,slug,content,source_url,published_at,created_at,category_name,status,topic_key');
   url.searchParams.set('status', 'eq.published');
   url.searchParams.set('category_name', 'eq.ICE');
   url.searchParams.set('published_at', `gte.${cutoff}`);
@@ -44,11 +44,20 @@ async function fetchNewsSitemap() {
   const response = await fetch(`${ORIGIN}/news-sitemap.xml?ice-audit=${Date.now()}`, {
     headers: {
       'cache-control': 'no-cache',
-      'user-agent': 'TRRB-ICE-Breaking-News-Audit/1.0'
+      'user-agent': 'TRRB-ICE-Breaking-News-Audit/1.1'
     }
   });
   if (!response.ok) throw new Error(`News sitemap fetch failed: ${response.status}`);
   return await response.text();
+}
+
+function candidateUrls(article) {
+  const id = String(article.id || '').trim();
+  const slug = String(article.slug || '').trim() || id;
+  const candidates = [];
+  if (slug) candidates.push(`${ORIGIN}/ice/${encodeURIComponent(slug)}`);
+  if (id) candidates.push(`${ORIGIN}/article.html?id=${encodeURIComponent(id)}`);
+  return [...new Set(candidates)];
 }
 
 const articles = await fetchRecentIce();
@@ -60,15 +69,17 @@ const xml = await fetchNewsSitemap();
 const urls = new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1].trim().replace(/&amp;/g, '&')));
 
 const checked = shortIce.map((article) => {
-  const url = `${ORIGIN}/article.html?id=${encodeURIComponent(article.id)}`;
+  const candidates = candidateUrls(article);
+  const matchedUrl = candidates.find((url) => urls.has(url)) || null;
   return {
     id: article.id,
     title: article.title,
     bodyLength: article.bodyLength,
     sourceUrlPresent: Boolean(String(article.source_url || '').trim()),
     publishedAt: article.published_at || article.created_at || null,
-    url,
-    inNewsSitemap: urls.has(url)
+    canonicalCandidates: candidates,
+    matchedUrl,
+    inNewsSitemap: Boolean(matchedUrl)
   };
 });
 

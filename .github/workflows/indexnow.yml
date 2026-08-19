@@ -12,6 +12,7 @@ on:
       - "feed.xml"
       - "sitemap-index.xml"
       - "sitemaps/**"
+      - "retired-indexnow-urls.txt"
       - "scripts/generate-sitemaps.mjs"
       - "scripts/clean-sitemap-against-database.mjs"
       - "scripts/split-sitemap-index.mjs"
@@ -34,6 +35,9 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      # Retired URLs are event-driven changes, not recurring freshness signals.
+      # Scheduled 15-minute runs keep the queue disabled to avoid crawl-quota waste.
+      INDEXNOW_INCLUDE_RETIRED: ${{ github.event_name != 'schedule' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

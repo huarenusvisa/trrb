@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T16:16:06.272Z",
+  "generated_at": "2026-08-19T16:39:05.428Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -23,10 +23,14 @@
       "chain": [
         {
           "url": "http://www.trrb.net/",
-          "status": 301,
-          "location": "https://www.trrb.net/",
-          "error": ""
-        },
+          "status": 0,
+          "error": "fetch failed"
+        }
+      ],
+      "final_url": "http://www.trrb.net/"
+    },
+    "https://www.trrb.net/": {
+      "chain": [
         {
           "url": "https://www.trrb.net/",
           "status": 301,
@@ -40,16 +44,6 @@
         }
       ],
       "final_url": "https://trrb.net/"
-    },
-    "https://www.trrb.net/": {
-      "chain": [
-        {
-          "url": "https://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
-        }
-      ],
-      "final_url": "https://www.trrb.net/"
     }
   },
   "sitemaps": {
@@ -65,8 +59,8 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 137794,
-      "article_count": 276,
+      "bytes": 133471,
+      "article_count": 269,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v1"
@@ -282,7 +276,7 @@
     }
   },
   "failures": [
-    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
+    "bad host redirect chain http://www.trrb.net/ => [{\"url\":\"http://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
     {
       "page": "https://trrb.net/",
       "problem": "too few direct article links: 0/10"
@@ -346,7 +340,5 @@
     "legacy retired URL must be 410: 200",
     "legacy retired URL missing X-Robots-Tag noindex"
   ],
-  "warnings": [
-    "host redirect chain has 2 hops: http://www.trrb.net/"
-  ]
+  "warnings": []
 }

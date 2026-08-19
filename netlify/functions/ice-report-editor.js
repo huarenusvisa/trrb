@@ -1,41 +1,14 @@
-const crypto = require("node:crypto");
-
-const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
-const ANON_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const {
+  safeText,
+  rest,
+  authenticateStaff
+} = require('./_shared/supabase-admin');
 
 function json(statusCode, body) {
-  return { statusCode, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, body: JSON.stringify(body) };
+  return { statusCode, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }, body: JSON.stringify(body) };
 }
-function text(value, max = 20000) { return String(value ?? "").trim().replace(/\u0000/g, "").slice(0, max); }
+const text = safeText;
 function nowIso() { return new Date().toISOString(); }
-async function readJson(response) { const value = await response.text(); if (!value) return null; try { return JSON.parse(value); } catch { return { raw: value }; } }
-async function serviceFetch(path, options = {}) {
-  if (!SUPABASE_URL || !SERVICE_KEY) throw new Error("服务端数据库配置不完整");
-  const response = await fetch(`${SUPABASE_URL}${path}`, { ...options, headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}`, ...(options.headers || {}) } });
-  const body = await readJson(response);
-  if (!response.ok) { const error = new Error(body?.message || body?.details || body?.error || body?.raw || `数据库请求失败（${response.status}）`); error.statusCode = 502; throw error; }
-  return body;
-}
-async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
-  const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
-  Object.entries(query).forEach(([key, value]) => { if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); });
-  return serviceFetch(`/rest/v1/${table}${url.search}`, { method, headers: { "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
-}
-async function authenticate(event) {
-  const token = text(event.headers.authorization || event.headers.Authorization, 1000).replace(/^Bearer\s+/i, "");
-  if (!token) { const e = new Error("缺少后台登录凭证"); e.statusCode = 401; throw e; }
-  const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: ANON_KEY, Authorization: `Bearer ${token}` } });
-  const user = await readJson(response);
-  if (!response.ok || !user?.id) { const e = new Error("后台登录状态无效，请重新登录"); e.statusCode = 401; throw e; }
-  let rows = await rest("admin_users", { query: { select: "id,user_id,email,role,is_active", user_id: `eq.${user.id}`, is_active: "eq.true", limit: "1" } });
-  let admin = Array.isArray(rows) ? rows[0] : null;
-  const ownerEmail = text(process.env.TRRB_OWNER_EMAIL || "tangrenribao@gmail.com", 300).toLowerCase();
-  const ownerUid = text(process.env.TRRB_OWNER_UID || "4c491ee3-a9f0-42c9-9bee-1abb52b20b01", 100);
-  if (!admin && user.id === ownerUid && text(user.email, 300).toLowerCase() === ownerEmail) admin = { role: "owner", email: ownerEmail };
-  if (!admin || !["owner", "admin"].includes(String(admin.role || "").toLowerCase())) { const e = new Error("没有后台管理权限"); e.statusCode = 403; throw e; }
-  return user;
-}
 
 const AGENCIES = ["ICE", "HSI", "CBP", "DHS", "ERO", "USCIS", "美国移民与海关执法局", "国土安全部", "海关与边境保护局"];
 const COUNTRIES = ["中国", "哥伦比亚", "墨西哥", "印度", "委内瑞拉", "厄瓜多尔", "危地马拉", "洪都拉斯", "萨尔瓦多", "古巴", "海地", "巴西", "秘鲁", "多米尼加", "尼加拉瓜", "俄罗斯", "乌克兰", "越南", "韩国", "菲律宾", "巴基斯坦", "孟加拉国", "尼泊尔", "阿富汗"];
@@ -86,7 +59,7 @@ exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return json(204, {});
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
   try {
-    const user = await authenticate(event);
+    const { user } = await authenticateStaff(event, ["owner", "editor"]);
     const input = JSON.parse(event.body || "{}");
     const report = await getReport(input.report_id);
     const action = text(input.action, 30);

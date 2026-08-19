@@ -6,6 +6,12 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/round13-publish-seo-sync.yml"
+      - "scripts/generate-sitemaps.mjs"
+      - "scripts/clean-sitemap-against-database.mjs"
+      - "scripts/ensure-sitemap-articles.mjs"
+      - "scripts/generate-feed.mjs"
+      - "scripts/upgrade-article-urls.mjs"
+      - "scripts/finalize-redirects.mjs"
   schedule:
     - cron: "*/5 * * * *"
   workflow_run:
@@ -70,7 +76,7 @@ jobs:
             esac
           done < <(git status --porcelain)
           test "$bad" -eq 0
-      - name: 仅在SEO文件变化时提交并触发Netlify部署
+      - name: 仅在SEO文件变化时提交
         shell: bash
         run: |
           set -euo pipefail

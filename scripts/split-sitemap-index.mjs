@@ -65,7 +65,7 @@ function isArticleBlock(block) {
 }
 
 function isForbiddenStaticBlock(block) {
-  return /<loc>https:\/\/trrb\.net\/(?:jobs(?:\/|\?|<)|finance(?:\/|\?|<)|people(?:\/|\?|<)|expose(?:\/|\?|<))/i.test(block);
+  return /<loc>https:\/\/trrb\.net\/(?:jobs(?:\/|\?|<)|finance(?:\/|\?|<)|people(?:\/|\?|<)|expose(?:\/?(?:\?|<)))/i.test(block);
 }
 
 for (const block of blocks) {

@@ -8,10 +8,13 @@ on:
       - 'index.html'
       - 'articles-home.js'
       - 'homepage-refresh-guard.js'
+      - 'homepage-immigration-hub.js'
       - 'articles-home-live-fix.js'
       - 'listing.html'
       - 'listing.js'
+      - 'listing-seo.js'
       - 'netlify/functions/public-home-bundle.js'
+      - 'scripts/optimize-homepage-performance.mjs'
       - '.github/workflows/fix-module-single-source-final.yml'
 
 permissions:
@@ -31,15 +34,18 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'listing.js?v=20260816-category-live-2' listing.html
+          grep -q 'listing.js?v=20260819-seo-v2' listing.html
+          grep -q 'listing-seo.js?v=20260819-pretty-category-2' listing.html
           ! grep -q 'listing-live-category-fix.js' listing.html
-          grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
-          grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' index.html
-          grep -q 'articles-home-live-fix.js?v=20260819-compat-shim-1' index.html
+          grep -q 'fetchUnifiedHomeBundle' articles-home.js
+          grep -q 'public-home-bundle' homepage-refresh-guard.js
+          grep -q '4d-core-plus-category-supplements' homepage-refresh-guard.js
+          grep -q 'TRRB_LAST_HOME_ARTICLES' homepage-immigration-hub.js
           grep -q 'TRRB_HOME_LIVE_COMPAT_SHIM' articles-home-live-fix.js
           ! grep -q 'setInterval' articles-home-live-fix.js
-          grep -q 'public-home-bundle' homepage-refresh-guard.js
-          grep -q 'HOME_MAX_AGE_MS = 4' homepage-refresh-guard.js
+          grep -q 'sparseCategories' netlify/functions/public-home-bundle.js
+          grep -q '20260819-bundle-supplements-2' scripts/optimize-homepage-performance.mjs
+          grep -q '20260819-reuse-bundle-2' scripts/optimize-homepage-performance.mjs
 
       - name: Production smoke check
         shell: bash
@@ -51,10 +57,13 @@ jobs:
             listing=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?module-single=$stamp" || true)
             bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?module-single=$stamp" || true)
             shim=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home-live-fix.js?module-single=$stamp" || true)
-            if printf '%s' "$home" | grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' \
+            if printf '%s' "$home" | grep -q 'homepage-refresh-guard.js?v=20260819-bundle-supplements-2' \
+              && printf '%s' "$home" | grep -q 'articles-home.js?v=20260819-single-bundle-2' \
+              && printf '%s' "$home" | grep -q 'homepage-immigration-hub.js?v=20260819-reuse-bundle-2' \
               && printf '%s' "$home" | grep -q 'articles-home-live-fix.js?v=20260819-compat-shim-1' \
               && printf '%s' "$listing" | grep -q 'data-seo-category-snapshot="edge"' \
               && printf '%s' "$bundle" | grep -q '"mode":"homepage"' \
+              && printf '%s' "$bundle" | grep -q '"database_queries":' \
               && printf '%s' "$shim" | grep -q 'TRRB_HOME_LIVE_COMPAT_SHIM'; then
               echo 'MODULE_SINGLE_SOURCE_VALIDATION_PASS=true'
               exit 0

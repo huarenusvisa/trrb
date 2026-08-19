@@ -98,6 +98,15 @@ function iceSnapshot(rows) {
       </div>`;
 }
 
+function trumpSnapshot(rows) {
+  const items = rows.slice(0, 20).map((row) => `
+        <article class="trump-item no-image" data-seo-static-snapshot="build">
+          <div><h3><a href="${attr(row.loc)}">${escapeHtml(row.title)}</a></h3><div class="trump-meta">${escapeHtml(shortDate(row.date))} · 特朗普实时动态</div></div>
+        </article>`).join("");
+  return `<div id="trump-feed" class="trump-feed" data-seo-static-snapshot="build">${items}
+      </div>`;
+}
+
 function countArticleLinks(html) {
   return [...html.matchAll(/<a\b[^>]*href=["']([^"']+)["']/gi)]
     .map((m) => m[1])
@@ -126,14 +135,30 @@ async function updateIce(fileName, rows) {
   return count;
 }
 
+async function updateTrump(rows) {
+  const fileName = "trump/index.html";
+  const file = path.join(ROOT, fileName);
+  let html = await readFile(file, "utf8");
+  const needle = '<div id="trump-feed" class="trump-feed"><div class="trump-loading">正在读取特朗普本人最新动态…</div></div>';
+  html = replaceExact(html, needle, trumpSnapshot(rows), fileName);
+  const count = [...html.matchAll(/<a\b[^>]*href=["'](\/trump\/[^"']+)["']/gi)].length;
+  if (count < 1) throw new Error(`${fileName}: 构建后没有可抓取特朗普新闻链接`);
+  await writeFile(file, html);
+  return count;
+}
+
 const sitemap = await readFile(path.join(ROOT, "news-sitemap.xml"), "utf8");
 const rows = parseNewsSitemap(sitemap);
 if (rows.length < 10) throw new Error(`news-sitemap.xml 新闻条目不足：${rows.length}`);
 const iceRows = rows.filter((row) => row.loc.startsWith("/ice/") && !row.loc.startsWith("/ice/news"));
 if (iceRows.length < 3) throw new Error(`news-sitemap.xml ICE 条目不足：${iceRows.length}`);
+const trumpRows = rows.filter((row) => row.loc.startsWith("/trump/"));
 
 const homeCount = await updateHome(rows);
 const iceLiveCount = await updateIce("topic/ice/live-v6.html", iceRows);
 const iceLegacyCount = await updateIce("topic/ice/index.html", iceRows);
+let trumpCount = 0;
+if (trumpRows.length) trumpCount = await updateTrump(trumpRows);
+else console.warn("news-sitemap.xml 当前48小时没有特朗普专题条目，保留运行时专题加载，不阻断部署。");
 
-console.log(`SEO静态发现链修复完成：首页可抓取新闻链接 ${homeCount}；/ice 快照 ${iceLiveCount}；/topic/ice 快照 ${iceLegacyCount}。`);
+console.log(`SEO静态发现链修复完成：首页 ${homeCount}；/ice ${iceLiveCount}；/topic/ice ${iceLegacyCount}；/trump ${trumpCount}。`);

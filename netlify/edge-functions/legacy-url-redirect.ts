@@ -46,10 +46,13 @@ function matchScore(legacyTitle: string, currentTitle: string): number {
 }
 
 function legacySystemRedirect(pathname: string): string {
-  if (/^\/category\/hotnews(?:\/page\/\d+)?\/?$/i.test(pathname)) {
+  // WordPress produced both /category/slug/page/2/ and /category/slug/0/
+  // forms across older archive themes. The numeric form was previously missed,
+  // leaving stale category archives eligible to keep returning through the site.
+  if (/^\/category\/hotnews(?:\/(?:page\/)?\d+)?\/?$/i.test(pathname)) {
     return `${SITE_ORIGIN}/hot-headlines`;
   }
-  if (/^\/category\/[^/]+(?:\/page\/\d+)?\/?$/i.test(pathname)) return GONE;
+  if (/^\/category\/[^/]+(?:\/(?:page\/)?\d+)?\/?$/i.test(pathname)) return GONE;
   if (/^\/page\/\d+\/?$/i.test(pathname)) return GONE;
   if (/^\/(?:wp-admin|wp-login\.php|wp-json|xmlrpc\.php)(?:\/|$)/i.test(pathname)) return GONE;
   if (/^\/index\.php\/(?:author|page|category|tag)(?:\/|$)/i.test(pathname)) return GONE;

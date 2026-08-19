@@ -2,6 +2,18 @@ const TRRB_SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const TRRB_SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
 const TRRB_LIVE_CACHE_TTL = 60 * 1000;
 let currentCategorySlug = "";
+let currentCategoryPath = "";
+
+const PUBLIC_CATEGORY_ROUTES = {
+  "/important-news": { name: "重要新闻", slug: "important-news" },
+  "/hot-headlines": { name: "热门头条", slug: "hot-headlines" },
+  "/us-politics": { name: "美国时政", slug: "us-politics" },
+  "/us-crime": { name: "美国警情", slug: "us-crime" },
+  "/china-officialdom": { name: "中国官场", slug: "china-officialdom" },
+  "/immigration": { name: "移民美国", slug: "immigration" },
+  "/asylum": { name: "庇护百科", slug: "asylum" },
+  "/ice/news": { name: "ICE执法动态", slug: "ice" }
+};
 
 function readLiveCache(key) {
   try {
@@ -47,6 +59,30 @@ async function fetchLivePublishedArticles(limit = 60, category = "") {
     const payload = await response.json();
     const rows = Array.isArray(payload?.articles) ? payload.articles : [];
     return rows.map(mapLiveArticle).sort((a,b) => articleTimestamp(b)-articleTimestamp(a));
+  } finally { clearTimeout(timer); }
+}
+
+async function fetchLiveCategoryPage(category, page, pageSize = 24) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 6500);
+  try {
+    const params = new URLSearchParams({
+      category: String(category || ""),
+      page: String(Math.max(1, Number(page) || 1)),
+      page_size: String(Math.min(Math.max(Number(pageSize) || 24, 1), 50)),
+      _: String(Date.now())
+    });
+    const response = await fetch(`/.netlify/functions/public-category-page?${params.toString()}`, {
+      cache: "no-store",
+      headers: { Accept: "application/json", "Cache-Control": "no-cache" },
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`栏目分页接口 ${response.status}`);
+    const payload = await response.json();
+    return {
+      ...payload,
+      articles: (Array.isArray(payload?.articles) ? payload.articles : []).map(mapLiveArticle)
+    };
   } finally { clearTimeout(timer); }
 }
 
@@ -136,19 +172,29 @@ async function initListing() {
   let category = params.get("category") || "";
   const query = params.get("q") || "";
   const searchMode = params.get("type") === "search" || Boolean(query);
-  const page = Math.max(1, Number(params.get("page") || 1));
-  const pathSlug = window.location.pathname.replace(/^\/+|\/+$/g, "").toLowerCase();
+  const page = Math.max(1, Math.floor(Number(params.get("page") || 1)) || 1);
+  const pathname = window.location.pathname.replace(/\/$/, "") || "/";
+  const routeContext = window.TRRB_CATEGORY_CONTEXT && typeof window.TRRB_CATEGORY_CONTEXT === "object"
+    ? window.TRRB_CATEGORY_CONTEXT
+    : null;
+  const route = PUBLIC_CATEGORY_ROUTES[pathname] || null;
 
-  if (!category && pathSlug && pathSlug !== "listing.html") {
+  if (!searchMode && routeContext?.name && routeContext?.path) {
+    category = String(routeContext.name);
+    currentCategoryPath = String(routeContext.path);
+    currentCategorySlug = String(route?.slug || "");
+  } else if (!searchMode && route) {
+    category = route.name;
+    currentCategoryPath = pathname;
+    currentCategorySlug = route.slug;
+  }
+
+  if (!searchMode && category && currentCategorySlug) {
     try {
-      const categoryRow = await fetchCategoryBySlug(pathSlug);
-      if (categoryRow) {
-        category = categoryRow.name;
-        currentCategorySlug = categoryRow.slug;
-        applyCategorySeo(categoryRow);
-      }
+      const categoryRow = await fetchCategoryBySlug(currentCategorySlug);
+      if (categoryRow) applyCategorySeo(categoryRow, page);
     } catch (error) {
-      console.warn("Category slug lookup unavailable", error);
+      console.warn("Category SEO metadata unavailable", error);
     }
   }
 
@@ -160,9 +206,22 @@ async function initListing() {
   renderHeader(category, query);
 
   try {
-    const live = searchMode && query
-      ? await fetchLiveSearchArticles(query, 240)
-      : await fetchLivePublishedArticles(200, category);
+    if (searchMode && query) {
+      const live = await fetchLiveSearchArticles(query, 240);
+      renderListingDataset(live, category, query, page);
+      return;
+    }
+
+    if (category && currentCategoryPath) {
+      const payload = await fetchLiveCategoryPage(category, page, pageSize);
+      const live = Array.isArray(payload.articles) ? payload.articles : [];
+      renderHeader(category, "");
+      renderArticles(live, 1);
+      renderPagination(Number(payload.total) || live.length, page, category, "");
+      return;
+    }
+
+    const live = await fetchLivePublishedArticles(200, category);
     if (!live.length) {
       renderArticles([], page);
       return;
@@ -170,17 +229,24 @@ async function initListing() {
     renderListingDataset(live, category, query, page);
   } catch (error) {
     console.warn("Live articles unavailable", error);
+    // Keep the server-rendered category snapshot intact when live refresh fails.
+    if (category && currentCategoryPath && document.querySelector('[data-seo-category-snapshot="edge"]')) return;
     renderArticles([], page);
   }
 }
 
-function applyCategorySeo(category) {
-  if (category.seo_title) document.title = category.seo_title;
+function applyCategorySeo(category, page = 1) {
+  const basePath = currentCategoryPath || `/${encodeURIComponent(category.slug)}`;
+  const suffix = page > 1 ? `?page=${page}` : "";
+  if (category.seo_title) {
+    const title = String(category.seo_title).replace(/\s*-\s*唐人日报\s*$/i, "");
+    document.title = page > 1 ? `${title} 第${page}页 - 唐人日报` : category.seo_title;
+  }
   if (category.seo_description) setMeta("description", category.seo_description);
   if (category.seo_keywords) setMeta("keywords", category.seo_keywords);
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
-  canonical.href = `https://trrb.net/${encodeURIComponent(category.slug)}`;
+  canonical.href = `https://trrb.net${basePath}${suffix}`;
 }
 
 function setMeta(name, content) {
@@ -207,7 +273,7 @@ function renderHeader(category, query) {
   if (category) heading = category;
   if (query) heading = `搜索：${query}`;
   if (category && query) heading = `${category} · 搜索：${query}`;
-  if (!currentCategorySlug || query) document.title = `${heading} - 唐人日报`;
+  if (!currentCategoryPath || query) document.title = `${heading} - 唐人日报`;
   title.textContent = heading;
 }
 
@@ -235,7 +301,9 @@ function articleUrl(article) {
     "中国官场": "china-officialdom",
     "移民美国": "immigration",
     "庇护百科": "asylum",
-    "驱逐快报": "deport"
+    "驱逐快报": "deport",
+    "ICE执法动态": "ice",
+    "ICE执法": "ice"
   };
   const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (sections[String(article?.category || "").trim()] || "news");
   const isUuid = /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(id);
@@ -281,7 +349,10 @@ function pageLink(label, page, disabled, category, query) {
   if (query) params.set("q", query);
   params.set("page", page);
   if (disabled) return `<span class="page-link is-disabled">${label}</span>`;
-  if (currentCategorySlug && !query) return `<a class="page-link" href="/${encodeURIComponent(currentCategorySlug)}?${params.toString()}">${label}</a>`;
+  if (currentCategoryPath && !query) {
+    const suffix = page > 1 ? `?page=${page}` : "";
+    return `<a class="page-link" href="${escapeAttribute(currentCategoryPath + suffix)}">${label}</a>`;
+  }
   if (category) params.set("category", category);
   return `<a class="page-link" href="/listing.html?${params.toString()}">${label}</a>`;
 }

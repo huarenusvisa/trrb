@@ -5,7 +5,11 @@ on:
   push:
     branches: [main]
     paths:
-      - 'data/legal/**'
+      - 'data/legal/supreme-court-latest.json'
+      - 'data/legal/circuit-opinions-latest.json'
+      - 'data/legal/bia-precedent-latest.json'
+      - 'data/legal/whitehouse-executive-orders-latest.json'
+      - 'data/legal/federal-register-final-rules-latest.json'
       - 'scripts/round15-node6-unified-legal-database.mjs'
       - 'scripts/round16-node2-unified-db-sync-audit.mjs'
       - '.github/workflows/round16-node2-unified-db-sync.yml'
@@ -45,8 +49,6 @@ jobs:
       # caught up. The strict legal sitemap generator intentionally requires
       # exact N/N DB↔AI alignment, so running it in node2 would deadlock every
       # legitimate database update before the new DB could even be committed.
-      # The AI workflow is triggered by the DB commit below; sitemap generation
-      # remains a post-analysis responsibility.
       - name: 数据变化时仅提交统一法律数据库与数据库验收报告
         shell: bash
         run: |
@@ -69,4 +71,4 @@ jobs:
           VERSION=$(node -p "require('./data/legal/unified-legal-authorities-latest.json').datasetVersion")
           COUNT=$(node -p "require('./data/legal/unified-legal-authorities-latest.json').count")
           echo "ROUND16 NODE2 DATABASE PASS: version=$VERSION records=$COUNT"
-          echo 'The data/legal DB commit triggers the legal AI analysis workflow. Production legal sitemap/deploy must wait for strict DB↔AI N/N alignment.'
+          echo 'The unified DB commit triggers the legal AI analysis workflow. AI/analysis commits do not retrigger node2.'

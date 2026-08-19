@@ -1,6 +1,12 @@
 (() => {
   'use strict';
 
+  // site-common.js provides a fallback loader on pages that do not explicitly
+  // include this runtime. Some core templates also load it directly. Guard the
+  // runtime itself so only one route cache/MutationObserver can ever start.
+  if (window.__TRRB_ARTICLE_ROUTE_RUNTIME_STARTED__) return;
+  window.__TRRB_ARTICLE_ROUTE_RUNTIME_STARTED__ = true;
+
   const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
   const FALLBACK_CATEGORY_SLUGS = {

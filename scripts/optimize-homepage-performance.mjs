@@ -39,7 +39,8 @@ const coreVersions = new Map([
   ['articles-home.js', '20260819-single-bundle-2'],
   ['ice-home-unify.js', '20260819-preserve-sections-2'],
   ['topic-focus.js', '20260819-live-2'],
-  ['homepage-refresh-guard.js', '20260819-single-live-1'],
+  ['homepage-refresh-guard.js', '20260819-bundle-supplements-2'],
+  ['homepage-immigration-hub.js', '20260819-reuse-bundle-2'],
   ['articles-home-live-fix.js', '20260819-compat-shim-1'],
   ['category-runtime-v3.js', '20260819-preserve-independent-nav-1']
 ]);

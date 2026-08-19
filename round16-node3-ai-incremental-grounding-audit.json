@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-08-19T20:07:17.650Z",
+  "generatedAt": "2026-08-19T20:15:03.219Z",
   "node": "3 AI中文解析增量更新与事实约束",
-  "datasetVersion": "3ff85f33184d5b8efedcc98e3dfdb0facf78d852dff23597c51081a3dc8e9b6a",
-  "count": 631,
-  "currentVersionAnalyses": 631,
+  "datasetVersion": "587881e5a46c902baf5269a80ec8c15f74945dba42babb64eab4aa52c87dfc57",
+  "count": 630,
+  "currentVersionAnalyses": 630,
   "orphan": 0,
   "urlMismatch": 0,
   "authorityMismatch": 0,
@@ -16,17 +16,17 @@
     {
       "ok": true,
       "label": "AI dataset pointer synchronized to unified database",
-      "detail": "ai=3ff85f33184d5b8efedcc98e3dfdb0facf78d852dff23597c51081a3dc8e9b6a; db=3ff85f33184d5b8efedcc98e3dfdb0facf78d852dff23597c51081a3dc8e9b6a"
+      "detail": "ai=587881e5a46c902baf5269a80ec8c15f74945dba42babb64eab4aa52c87dfc57; db=587881e5a46c902baf5269a80ec8c15f74945dba42babb64eab4aa52c87dfc57"
     },
     {
       "ok": true,
       "label": "AI count metadata matches analyses",
-      "detail": "metadata=631; analyses=631"
+      "detail": "metadata=630; analyses=630"
     },
     {
       "ok": true,
       "label": "incremental AI analysis corpus is non-empty",
-      "detail": "analyses=631"
+      "detail": "analyses=630"
     },
     {
       "ok": true,
@@ -71,12 +71,12 @@
     {
       "ok": true,
       "label": "current dataset produced or refreshed incremental analyses",
-      "detail": "currentVersion=631/631"
+      "detail": "currentVersion=630/630"
     },
     {
       "ok": true,
       "label": "AI scope explicitly requires first-party official grounding",
-      "detail": "Chinese legal-information analyses grounded only in first-party official source text or, when the bound official text is unavailable, strictly limited to first-party record metadata with explicit insufficiency disclosure. Database layer; not ordinary news articles."
+      "detail": "Chinese legal-information analyses grounded only in first-party official source text or, when the bound official text is unavailable, strictly limited to first-party record metadata with explicit insufficiency disclosure. Each analysis is bound to an exact official-record fingerprint. Database layer; not ordinary news articles."
     }
   ],
   "failures": 0

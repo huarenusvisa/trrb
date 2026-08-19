@@ -12,6 +12,7 @@ on:
       - 'netlify/edge-functions/00-legacy-article-query-guard.ts'
       - 'netlify/edge-functions/article-prerender.ts'
       - 'netlify/edge-functions/category-prerender.ts'
+      - 'netlify/edge-functions/legacy-url-redirect.ts'
       - 'netlify/edge-functions/sitemap-live.ts'
       - 'netlify/edge-functions/news-sitemap-live.ts'
       - 'netlify/edge-functions/feed-live.ts'
@@ -95,14 +96,18 @@ jobs:
           set -euo pipefail
           if [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && [ -n "${NETLIFY_SITE_ID:-}" ]; then
             echo 'Using deterministic Netlify CLI production deploy for the configured site ID.'
-            npm install --no-save netlify-cli@latest
-            npx netlify deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+            npx --yes netlify-cli@latest deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
             exit 0
           fi
           if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             echo 'CLI credentials are unavailable; falling back to configured Netlify build hook.'
-            echo 'The subsequent deploy-version check must prove that this hook publishes the current main branch.'
-            curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
+            echo 'Forcing main branch and a clean build; the exact-SHA check below must still prove the target is trrb.net.'
+            if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+              hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true"
+            else
+              hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true"
+            fi
+            curl -fsS -X POST "$hook_url" >/tmp/netlify-hook-response.txt
             cat /tmp/netlify-hook-response.txt || true
             exit 0
           fi
@@ -146,8 +151,8 @@ jobs:
             ice_marker=$(printf '%s' "$ice" | grep -c 'data-seo-static-snapshot="build"' || true)
             ice_article_links=$(printf '%s' "$ice" | grep -Eo 'href="/ice/[^"]+' | grep -v 'href="/ice/news' | wc -l | tr -d ' ')
             legacy_sitemap=$(printf '%s\n%s' "$sitemap" "$news" | grep -c 'article.html?id=' || true)
-            sitemap_v3=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v3-ice-safe' || true)
-            news_v4=$(printf '%s' "$news_headers" | grep -ci '^x-trrb-news-sitemap: live-supabase-v4-latest1000-ice-safe-dedupe' || true)
+            sitemap_v4=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v4-topic-safe-ice-safe' || true)
+            news_v5=$(printf '%s' "$news_headers" | grep -ci '^x-trrb-news-sitemap: live-supabase-v5-latest1000-topic-safe-ice-safe-dedupe' || true)
             legacy_410=$(printf '%s' "$legacy_headers" | grep -c '^HTTP/.* 410' || true)
             legacy_noindex=$(printf '%s' "$legacy_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
             archive_200=$(printf '%s' "$archive_headers" | grep -c '^HTTP/.* 200' || true)
@@ -167,10 +172,10 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v3=$sitemap_v3 news_v4=$news_v4 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
+            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v4=$sitemap_v4 news_v5=$news_v5 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
 
-            if [ "$deploy_sha_ok" -eq 1 ] && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$finance_card" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$news_v4" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
-              echo 'PRODUCTION EXACT-SHA + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V4 + ICE INDEXABILITY PASS'
+            if [ "$deploy_sha_ok" -eq 1 ] && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$finance_card" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v4" -ge 1 ] && [ "$news_v5" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
+              echo 'PRODUCTION EXACT-SHA + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V5 + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

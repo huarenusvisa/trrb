@@ -28,10 +28,12 @@
   function relatedCard(r){const detail=`/legal/detail.html?id=${encodeURIComponent(r.id)}`;return `<article class="legal-card"><div class="legal-card-top"><span class="badge">${esc(labels[r.sourceSystem]||r.sourceSystem)}</span><span class="badge kind">${esc(cleanField(r.authorityType)||'法律资料')}</span></div><h3><a class="legal-title-link" href="${detail}">${esc(titleOf(r))}</a></h3><div class="meta"><span>${esc(displayBody(r))}</span><span>${esc(displayDate(r.publicationDate))}</span>${r.docket?`<span>案号 ${esc(cleanField(r.docket))}</span>`:''}</div><div class="card-actions"><a class="primary" href="${detail}">查看详情</a>${r.officialUrl?`<a href="${esc(r.officialUrl)}" target="_blank" rel="noopener noreferrer">官方原文</a>`:''}</div></article>`}
   function renderRelated(base,records){const related=relatedRecords(base,records);$('#detail-related-list').innerHTML=related.length?related.map(relatedCard).join(''):'<p class="muted">当前数据库中暂无可确认的相关记录。</p>'}
   function analysisHtml(a){return `${a.chineseTitle?`<h3>${esc(a.chineseTitle)}</h3>`:''}<p><strong>要旨：</strong>${esc(a.summary||'')}</p><p><strong>法律问题：</strong>${esc(a.legalIssue||'')}</p><p><strong>裁判/规则：</strong>${esc(a.holdingOrRule||'')}</p><p><strong>影响范围：</strong>${esc(a.impact||'')}</p><p class="muted">${esc(a.disclaimer||'')}</p>`;}
+  function setRobots(content){let meta=document.querySelector('meta[name="robots"]');if(!meta){meta=document.createElement('meta');meta.name='robots';document.head.appendChild(meta)}meta.setAttribute('content',content)}
   function applySeo(r,a,title,canonical){
     const summary=(a&&a.summary)||`${labels[r.sourceSystem]||r.sourceSystem||'美国法律资料'}：${displayBody(r)}${r.citation?`，${cleanField(r.citation)}`:''}`;
     document.title=`${title}｜美国判例与新规｜唐人日报`;
     document.querySelector('link[rel="canonical"]')?.setAttribute('href',canonical);
+    setRobots('index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
     let meta=document.querySelector('meta[name="description"]');
     if(!meta){meta=document.createElement('meta');meta.name='description';document.head.appendChild(meta)}
     meta.setAttribute('content',String(summary).slice(0,180));

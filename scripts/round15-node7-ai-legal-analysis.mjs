@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -12,6 +13,9 @@ const checks=[];let failures=0;
 function check(ok,label,detail=''){checks.push({ok:Boolean(ok),label,detail});if(!ok)failures++;console.log(`${ok?'PASS':'FAIL'} ${label}${detail?` — ${detail}`:''}`)}
 function outputText(data){if(data?.output_text)return data.output_text;for(const item of data?.output||[])for(const c of item?.content||[])if(c?.type==='output_text'&&c?.text)return c.text;return''}
 function cleanHtml(s=''){return s.replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&#39;/g,"'").replace(/&quot;/gi,'"').replace(/\s+/g,' ').trim()}
+function sha(value){return createHash('sha256').update(String(value)).digest('hex')}
+function bindingMetadata(record){return{sourceSystem:record.sourceSystem,authorityType:record.authorityType,issuingBody:record.issuingBody,officialUrl:record.officialUrl,officialPdfUrl:record.officialPdfUrl||null,title:record.title||null,publicationDate:record.publicationDate||null,docket:record.docket||null,citation:record.citation||null,precedentialStatus:record.precedentialStatus||null,sourceKey:record.sourceKey||null}}
+function recordFingerprint(record){return sha(JSON.stringify(bindingMetadata(record)))}
 async function fetchText(url,id){
   const r=await fetch(url,{redirect:'follow',headers:{'user-agent':'TRRB-Legal-AI/1.0 (+https://trrb.net)','accept':'application/pdf,text/html,*/*;q=0.8'}});
   if(!r.ok)throw new Error(`source ${r.status}`);
@@ -64,36 +68,54 @@ const recordMap=new Map((db.records||[]).map(r=>[String(r.id),r]));
 const map=new Map();
 const archivedOrphans=[];
 const staleMetadata=[];
+const seededFingerprints=[];
+const priorRootCurrent=String(prior.datasetVersion||'')===String(db.datasetVersion||'');
 for(const a of prior.analyses||[]){
-  const r=recordMap.get(String(a.recordId||''));
-  if(!r){archivedOrphans.push(String(a.recordId||''));continue;}
-  const metadataFields=['sourceSystem','authorityType','issuingBody','officialUrl','title'];
-  if(metadataFields.some(field=>String(a[field]??'')!==String(r[field]??''))){staleMetadata.push(String(a.recordId||''));continue;}
-  map.set(String(a.recordId),{...a,datasetVersion:db.datasetVersion,disclaimer:DISCLAIMER});
+  const id=String(a.recordId||'');
+  const r=recordMap.get(id);
+  if(!r){archivedOrphans.push(id);continue;}
+  const fingerprint=recordFingerprint(r);
+  const coreFields=['sourceSystem','authorityType','issuingBody','officialUrl','title'];
+  if(coreFields.some(field=>String(a[field]??'')!==String(r[field]??''))){staleMetadata.push(`${id}:core-metadata`);continue;}
+
+  if(String(a.recordFingerprint||'').trim()){
+    if(String(a.recordFingerprint)!==fingerprint){staleMetadata.push(`${id}:record-fingerprint`);continue;}
+  }else{
+    // One-time safe migration for analyses already accepted against exactly the
+    // current dataset. If the root/per-analysis version is not current, the old
+    // analysis must be regenerated rather than being silently relabelled.
+    if(!priorRootCurrent||String(a.datasetVersion||'')!==String(db.datasetVersion||'')){
+      staleMetadata.push(`${id}:missing-fingerprint-on-stale-version`);continue;
+    }
+    seededFingerprints.push(id);
+  }
+
+  map.set(id,{...a,...bindingMetadata(r),datasetVersion:db.datasetVersion,recordFingerprint:fingerprint,disclaimer:DISCLAIMER});
 }
 const priority={SCOTUS:0,BIA:1,US_CIRCUIT:2,WHITE_HOUSE:3,FEDERAL_REGISTER:4};
 const candidates=[...(db.records||[])].filter(r=>r.officialUrl&&!map.has(String(r.id))).sort((a,b)=>(priority[a.sourceSystem]??9)-(priority[b.sourceSystem]??9)||String(b.publicationDate||'').localeCompare(String(a.publicationDate||''))).slice(0,LIMIT);
 check((db.records||[]).length>0,'unified legal database available',`records=${(db.records||[]).length}`);
 check(db.datasetVersion&&/^[a-f0-9]{64}$/.test(db.datasetVersion),'unified dataset version available',String(db.datasetVersion).slice(0,16));
-check(candidates.length>0||map.size>0,'AI analysis has records to process or preserve',`new=${candidates.length}; existing=${map.size}`);
+check(candidates.length>0||map.size>0,'AI analysis has records to process or preserve',`newOrChanged=${candidates.length}; preserved=${map.size}; fingerprintsSeeded=${seededFingerprints.length}`);
 check(new Set([...map.keys()]).size===map.size,'active Chinese analyses have unique recordId bindings');
 let generated=0,sourceFailures=0,modelFailures=0,fallbacks=0;
 for(const r of candidates){
+  const binding={recordId:r.id,datasetVersion:db.datasetVersion,recordFingerprint:recordFingerprint(r),...bindingMetadata(r)};
   try{
     const sourceText=await fetchText(r.officialUrl,r.id);
     if(sourceText.length<250){
       sourceFailures++;console.log(`WARN source text too short ${r.id} chars=${sourceText.length}`);
       const a=await unavailableSourceFallback(r,'too-short');
-      map.set(String(r.id),{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a,disclaimer:DISCLAIMER});generated++;fallbacks++;
+      map.set(String(r.id),{...binding,...a,disclaimer:DISCLAIMER});generated++;fallbacks++;
       console.log(`PASS grounded unavailable-source fallback ${r.sourceSystem} ${r.id}`);
       continue;
     }
-    try{const a=await analyze(r,sourceText);map.set(String(r.id),{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a,disclaimer:DISCLAIMER});generated++;console.log(`PASS AI analysis ${r.sourceSystem} ${r.id}`)}catch(e){modelFailures++;console.log(`WARN model ${r.id}: ${e.message}`)}
+    try{const a=await analyze(r,sourceText);map.set(String(r.id),{...binding,...a,disclaimer:DISCLAIMER});generated++;console.log(`PASS AI analysis ${r.sourceSystem} ${r.id}`)}catch(e){modelFailures++;console.log(`WARN model ${r.id}: ${e.message}`)}
   }catch(e){
     sourceFailures++;console.log(`WARN source ${r.id}: ${e.message}`);
     try{
       const a=await unavailableSourceFallback(r,'unavailable');
-      map.set(String(r.id),{recordId:r.id,datasetVersion:db.datasetVersion,sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,title:r.title||null,...a,disclaimer:DISCLAIMER});generated++;fallbacks++;
+      map.set(String(r.id),{...binding,...a,disclaimer:DISCLAIMER});generated++;fallbacks++;
       console.log(`PASS grounded unavailable-source fallback ${r.sourceSystem} ${r.id}`);
     }catch(fallbackError){modelFailures++;console.log(`WARN fallback ${r.id}: ${fallbackError.message}`)}
   }
@@ -104,10 +126,11 @@ check(analyses.every(a=>a.chineseTitle&&a.summary&&a.legalIssue&&a.holdingOrRule
 check(analyses.every(a=>a.disclaimer===DISCLAIMER),'all analyses include legal-information disclaimer');
 check(analyses.every(a=>recordMap.has(String(a.recordId))),'all active analyses bind to current official records');
 check(analyses.every(a=>String(a.datasetVersion||'')===String(db.datasetVersion||'')),'all active analyses bind to current dataset version');
+check(analyses.every(a=>{const r=recordMap.get(String(a.recordId));return r&&String(a.recordFingerprint||'')===recordFingerprint(r)}),'all active analyses bind to exact current record fingerprints');
 check(modelFailures===0,'AI model calls completed without failures',`failures=${modelFailures}`);
 check(sourceFailures<=Math.max(3,Math.floor(candidates.length/2)),'official-source extraction reliability acceptable',`sourceFailures=${sourceFailures}/${candidates.length}; groundedFallbacks=${fallbacks}`);
 mkdirSync('data/legal',{recursive:true});
-writeFileSync('data/legal/legal-ai-analysis-latest.json',JSON.stringify({schemaVersion:1,datasetVersion:db.datasetVersion,scope:'Chinese legal-information analyses grounded only in first-party official source text or, when the bound official text is unavailable, strictly limited to first-party record metadata with explicit insufficiency disclosure. Database layer; not ordinary news articles.',count:analyses.length,analyses},null,2)+'\n');
-writeFileSync('round15-node7-ai-legal-analysis-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),datasetVersion:db.datasetVersion,candidates:candidates.length,generated,fallbacks,sourceFailures,modelFailures,count:analyses.length,archivedOrphans,staleMetadata,checks,failures},null,2)+'\n');
-console.log(`ROUND15 NODE7 audit: analyses=${analyses.length}; generated=${generated}; fallbacks=${fallbacks}; archivedOrphans=${archivedOrphans.length}; staleMetadata=${staleMetadata.length}; checks=${checks.length}; failures=${failures}`);
-if(failures===0)console.log('ROUND15 NODE7 PASS: grounded Chinese holdings, legal issues and impact analysis verified');else{console.log('ROUND15 NODE7 FAIL: Chinese legal analysis pipeline gaps remain');process.exitCode=1}
+writeFileSync('data/legal/legal-ai-analysis-latest.json',JSON.stringify({schemaVersion:2,datasetVersion:db.datasetVersion,scope:'Chinese legal-information analyses grounded only in first-party official source text or, when the bound official text is unavailable, strictly limited to first-party record metadata with explicit insufficiency disclosure. Each analysis is bound to an exact official-record fingerprint. Database layer; not ordinary news articles.',count:analyses.length,analyses},null,2)+'\n');
+writeFileSync('round15-node7-ai-legal-analysis-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),datasetVersion:db.datasetVersion,candidates:candidates.length,generated,fallbacks,sourceFailures,modelFailures,count:analyses.length,archivedOrphans,staleMetadata,seededFingerprints:seededFingerprints.length,checks,failures},null,2)+'\n');
+console.log(`ROUND15 NODE7 audit: analyses=${analyses.length}; generated=${generated}; fallbacks=${fallbacks}; archivedOrphans=${archivedOrphans.length}; staleMetadata=${staleMetadata.length}; seededFingerprints=${seededFingerprints.length}; checks=${checks.length}; failures=${failures}`);
+if(failures===0)console.log('ROUND15 NODE7 PASS: per-record fingerprinted grounded Chinese legal analysis verified');else{console.log('ROUND15 NODE7 FAIL: Chinese legal analysis pipeline gaps remain');process.exitCode=1}

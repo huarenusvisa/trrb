@@ -1,5 +1,23 @@
 begin;
 
+-- Existing Auth users predate the community/profile migration in production.
+-- Backfill them before tightening profile/comment permissions so every current
+-- account has the same profile/preferences foundation as future registrations.
+insert into public.profiles(id,display_name,avatar_key,bio,is_custom_name,is_custom_avatar,role,status)
+select
+  u.id,
+  '唐人用户' || substr(replace(u.id::text,'-',''),1,8),
+  'avatar_' || lpad((1 + (abs(hashtext(u.id::text)) % 120))::text,3,'0'),
+  '',false,false,'user','active'
+from auth.users u
+where not exists (select 1 from public.profiles p where p.id=u.id)
+on conflict(id) do nothing;
+
+insert into public.notification_preferences(user_id)
+select p.id from public.profiles p
+where not exists (select 1 from public.notification_preferences n where n.user_id=p.id)
+on conflict(user_id) do nothing;
+
 -- Keep notification preference columns aligned with the current mobile app and
 -- admin push service. Older environments may already have legal_updates and
 -- comment_replies from the foundation migration; preserve those columns but

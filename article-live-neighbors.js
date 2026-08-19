@@ -45,13 +45,13 @@
       if (routed) return routed;
     }
     const slug = String(article.slug || "").trim();
-    if (slug) {
-      const topic = String(article.topic_key || "").trim().toLowerCase();
-      const category = String(article.category_name || "").trim();
-      const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (SECTIONS[category] || "news");
-      return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
-    }
-    return article.id ? `/article.html?id=${encodeURIComponent(article.id)}` : "/";
+    const id = String(article.id || "").trim();
+    const topic = String(article.topic_key || "").trim().toLowerCase();
+    const category = String(article.category_name || "").trim();
+    const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (SECTIONS[category] || "news");
+    if (slug) return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+    if (UUID_RE.test(id)) return `/${encodeURIComponent(section)}/${encodeURIComponent(id)}`;
+    return id ? `/article.html?id=${encodeURIComponent(id)}` : "/";
   }
 
   function neighborHtml(article, label, title) {
@@ -64,7 +64,7 @@
     const image = imageUrl(article.cover_image, category);
     const fallback = typeof window.TRRB_categoryPlaceholder === "function"
       ? window.TRRB_categoryPlaceholder(category)
-      : "./image-placeholder.svg";
+      : "/image-placeholder.svg";
     return `<a class="related-item${image ? "" : " has-no-image"}" href="${esc(articleHref(article))}">${image ? `<img src="${esc(image)}" width="500" height="240" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-fallback="${esc(fallback)}" onerror="if(!this.dataset.fallbackTried&&this.dataset.fallback){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;}else{this.remove()}" alt="" />` : ""}<span>${esc(category)}</span><strong>${esc(article.title || "")}</strong></a>`;
   }
 
@@ -100,10 +100,11 @@
   }
 
   async function repair() {
-    const id = new URLSearchParams(location.search).get("id") || "";
+    const root = document.querySelector("#article-root");
+    const queryId = new URLSearchParams(location.search).get("id") || "";
+    const id = String(root?.dataset.articleId || queryId || "").trim();
     if (!UUID_RE.test(id)) return;
 
-    const root = document.querySelector("#article-root");
     const nav = root?.querySelector(".article-neighbors");
     const relatedSection = root?.querySelector(".related-news");
     const track = root?.querySelector(".related-track");
@@ -120,13 +121,8 @@
     const next = index >= 0 && index < merged.length - 1 ? merged[index + 1] : null;
 
     const neighborMarkup = `${neighborHtml(previous, "PREVIOUS", "上一篇")}${neighborHtml(next, "NEXT", "下一篇")}`;
-    if (neighborMarkup) {
-      nav.innerHTML = neighborMarkup;
-      nav.hidden = false;
-    } else {
-      nav.innerHTML = "";
-      nav.hidden = true;
-    }
+    nav.innerHTML = neighborMarkup;
+    nav.hidden = !neighborMarkup;
 
     const sameCategory = merged.filter((item) => String(item.id) !== id && item.category_name === current.category_name);
     const otherCategory = merged.filter((item) => String(item.id) !== id && item.category_name !== current.category_name);

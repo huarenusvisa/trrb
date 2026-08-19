@@ -23,12 +23,16 @@ exports.handler = async (event) => {
     const limit = Math.min(Math.max(Number.isFinite(requested) ? requested : 120, 1), 200);
     const category = String(event.queryStringParameters?.category || "").trim().slice(0, 80);
     const query = {
-      select: "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,published_at,created_at",
+      select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,published_at,created_at",
       status: "eq.published",
       order: "published_at.desc.nullslast,created_at.desc",
       limit: String(limit)
     };
-    if (category) query.category_name = "eq." + category;
+    if (category === "ICE执法动态") {
+      query.or = "(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报)";
+    } else if (category) {
+      query.category_name = "eq." + category;
+    }
     const rows = await rest("articles", { query });
 
     const articles = Array.isArray(rows) ? rows : [];

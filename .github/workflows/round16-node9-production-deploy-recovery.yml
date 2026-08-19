@@ -1,3 +1,4 @@
+# Manual production deploy trigger: legacy URL repair 2026-08-18
 name: 第十六轮节点9-生产部署恢复
 
 on:

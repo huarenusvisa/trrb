@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T16:46:41.953Z",
+  "generatedAt": "2026-08-19T17:39:31.066Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -87,10 +87,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340E-01A.pdf",
           "title": "25-1340 Muchiri v. Blanche"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
-          "title": "24-1467P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
@@ -427,6 +423,14 @@
           "title": "Jasir Massey-Campbell v. Bridgecrest Acceptance Corp."
         },
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252778np.pdf",
+          "title": "Nicole Dubose v. Morrison Healthcare"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252063np.pdf",
+          "title": "Lucas Francisco-Gonzalez v. Attorney General United States of America"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251824np.pdf",
           "title": "USA v. Anthony Bressi"
         },
@@ -525,14 +529,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/252554np.pdf",
           "title": "Winfield Scott Tower Urban Renewal LP v. Lorissa Luciani"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251448np.pdf",
-          "title": "Jameson Rosado v. Joseph Dickson"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251281np.pdf",
-          "title": "USA v. Michael Bragg"
         }
       ],
       "notes": []
@@ -755,64 +751,72 @@
       "sourceFinalUrl": "https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions",
       "documents": [
         {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30192-CR0.pdf",
-          "title": "25-30192 USA v. Augillard Aug 18, 2026 Published Order PDF"
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30603-CV0.pdf",
+          "title": "25-30603 Hamm v. Ochsner-Acadia Aug 19, 2026 Published Opinion PDF"
         },
         {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-40137-CV0.pdf",
-          "title": "25-40137 R J Reynolds Tobacco Company v. FDA Aug 18, 2026 Published Opinion PDF"
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/24/24-30684-CR0.pdf",
-          "title": "24-30684 USA v. Enclade Aug 18, 2026 Published Opinion PDF"
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20415-CV0.pdf",
-          "title": "25-20415 Quadvest v. San Jacinto River Auth Aug 18, 2026 Published Opinion PDF"
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60462-CV0.pdf",
-          "title": "25-60462 Bonds v. Woodall Aug 18, 2026 Published Opinion PDF"
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-70012-CV0.pdf",
-          "title": "25-70012 Wessinger v. Vannoy Aug 18, 2026 Published Opinion PDF"
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30396.0.pdf",
+          "title": "25-30396 Landmark Amer v. Ins Unlimited of LA Aug 19, 2026 Unpublished Opinion PDF"
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40567.0.pdf",
-          "title": "25-40567 USA v. Sethi Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-40137-CV0.pdf",
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10983.0.pdf",
-          "title": "25-10983 Gaither v. Carter Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10242.0.pdf",
-          "title": "26-10242 Ellis v. City of River Oaks, Texas Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60410.0.pdf",
-          "title": "25-60410 Zhuravlev v. Blanche Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-20374.0.pdf",
-          "title": "25-20374 USA v. Njoku Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/24/24-30684-CR0.pdf",
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40206.0.pdf",
-          "title": "25-40206 Degollado v. City of Port Lavaca Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20415-CV0.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60462-CV0.pdf",
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50791.0.pdf",
-          "title": "25-50791 Anyanwu v. City of San Antonio Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30192-CR0.pdf",
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50946.0.pdf",
-          "title": "25-50946 Anderson v. Americredit Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-70012-CV0.pdf",
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11226.0.pdf",
-          "title": "25-11226 USA v. Manzo-Cardenas Aug 18, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-40542-CV0.pdf",
@@ -944,14 +948,6 @@
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11136.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60698.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40588.0.pdf",
           "title": null
         }
       ],
@@ -1831,28 +1827,24 @@
           "title": "ROBERT BOSCH LLC v. WESTPORT FUEL SYSTEMS CANADA INC. [OPINION]"
         },
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
-          "title": "CUMMINS v. US [OPINION]"
-        },
-        {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1371.OPINION.8-14-2026_2739381.pdf",
           "title": "NIELSEN COMPANY (US), LLC v. TVISION INSIGHTS, INC. [OPINION]"
         },
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1538.OPINION.8-14-2026_2739398.pdf",
-          "title": "JACKI EASLICK, LLC v. CJ EMERALD [OPINION]"
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
+          "title": "CUMMINS v. US [OPINION]"
         },
         {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1388.OPINION.8-14-2026_2739444.pdf",
           "title": "BRIMER v. NAVY [OPINION]"
         },
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1160.OPINION.8-11-2026_2736904.pdf",
-          "title": "FEDMET RESOURCES CORPORATION v. US [OPINION]"
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1538.OPINION.8-14-2026_2739398.pdf",
+          "title": "JACKI EASLICK, LLC v. CJ EMERALD [OPINION]"
         },
         {
-          "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1196.OPINION.8-11-2026_2736888.pdf",
-          "title": "FUSONG JINLONG WOODEN GROUP CO., LTD. v. US [OPINION]"
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/26-1160.OPINION.8-11-2026_2736904.pdf",
+          "title": "FEDMET RESOURCES CORPORATION v. US [OPINION]"
         }
       ],
       "notes": []

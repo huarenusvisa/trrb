@@ -1,30 +1,75 @@
 {
-  "generated_at": "2026-08-19T14:44:32.804Z",
+  "generated_at": "2026-08-19T15:07:42.946Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
-      "status": 301,
-      "location": "https://trrb.net/",
-      "error": ""
+      "chain": [
+        {
+          "url": "http://trrb.net/",
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
+        }
+      ],
+      "final_url": "https://trrb.net/"
     },
     "http://www.trrb.net/": {
-      "status": 301,
-      "location": "https://www.trrb.net/",
-      "error": ""
+      "chain": [
+        {
+          "url": "http://www.trrb.net/",
+          "status": 301,
+          "location": "https://www.trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://www.trrb.net/",
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 0,
+          "error": "fetch failed"
+        }
+      ],
+      "final_url": "https://trrb.net/"
     },
     "https://www.trrb.net/": {
-      "status": 301,
-      "location": "https://trrb.net/",
-      "error": ""
+      "chain": [
+        {
+          "url": "https://www.trrb.net/",
+          "status": 0,
+          "error": "fetch failed"
+        }
+      ],
+      "final_url": "https://www.trrb.net/"
     }
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1191361,
-      "article_count": 3655,
-      "child_sitemaps": []
+      "bytes": 1193377,
+      "article_count": 3661,
+      "child_sitemaps": [],
+      "legacy_query_count": 0,
+      "version": "live-supabase-v2-dedupe"
+    },
+    "https://trrb.net/news-sitemap.xml": {
+      "status": 200,
+      "type": "application/xml; charset=UTF-8",
+      "bytes": 135260,
+      "article_count": 269,
+      "child_sitemaps": [],
+      "legacy_query_count": 0,
+      "version": "live-supabase-v1"
     }
   },
   "articles": [
@@ -147,6 +192,30 @@
       "body_length": 852,
       "schema": true,
       "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-politics/%E6%80%A7%E4%BE%B5%E4%B8%91%E9%97%BB%E9%80%BC%E9%80%80%E5%80%99%E9%80%89%E4%BA%BA%E8%B4%B9%E7%89%B9%E6%9B%BC%E7%82%AE%E8%BD%B0%E6%A1%91%E5%BE%B7%E6%96%AF%E6%B0%91%E4%B8%BB%E5%85%9A%E5%86%85%E6%88%98%E5%BD%BB%E5%BA%95%E5%BC%95%E7%88%86-mrfqdd6m",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/%E6%80%A7%E4%BE%B5%E4%B8%91%E9%97%BB%E9%80%BC%E9%80%80%E5%80%99%E9%80%89%E4%BA%BA%E8%B4%B9%E7%89%B9%E6%9B%BC%E7%82%AE%E8%BD%B0%E6%A1%91%E5%BE%B7%E6%96%AF%E6%B0%91%E4%B8%BB%E5%85%9A%E5%86%85%E6%88%98%E5%BD%BB%E5%BA%95%E5%BC%95%E7%88%86-mrfqdd6m",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 35,
+      "h1_length": 28,
+      "canonical": "https://trrb.net/us-politics/%E6%80%A7%E4%BE%B5%E4%B8%91%E9%97%BB%E9%80%BC%E9%80%80%E5%80%99%E9%80%89%E4%BA%BA%E8%B4%B9%E7%89%B9%E6%9B%BC%E7%82%AE%E8%BD%B0%E6%A1%91%E5%BE%B7%E6%96%AF%E6%B0%91%E4%B8%BB%E5%85%9A%E5%86%85%E6%88%98%E5%BD%BB%E5%BA%95%E5%BC%95%E7%88%86-mrfqdd6m",
+      "body_length": 856,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-politics/%E8%B5%AB%E6%A0%BC%E5%A1%9E%E6%96%AF%E5%BC%BA%E5%8A%BF%E4%BB%8B%E5%85%A5%E5%90%8E%E7%81%AB%E9%80%9F%E7%BF%BB%E7%9B%988%E5%90%8D%E9%98%BF%E5%B8%95%E5%A5%87%E9%A3%9E%E8%A1%8C%E5%91%98%E5%81%9C%E9%A3%9E%E4%BB%A4%E8%A2%AB%E8%A7%A3%E9%99%A4-mrfqnf5z",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/%E8%B5%AB%E6%A0%BC%E5%A1%9E%E6%96%AF%E5%BC%BA%E5%8A%BF%E4%BB%8B%E5%85%A5%E5%90%8E%E7%81%AB%E9%80%9F%E7%BF%BB%E7%9B%988%E5%90%8D%E9%98%BF%E5%B8%95%E5%A5%87%E9%A3%9E%E8%A1%8C%E5%91%98%E5%81%9C%E9%A3%9E%E4%BB%A4%E8%A2%AB%E8%A7%A3%E9%99%A4-mrfqnf5z",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 35,
+      "h1_length": 28,
+      "canonical": "https://trrb.net/us-politics/%E8%B5%AB%E6%A0%BC%E5%A1%9E%E6%96%AF%E5%BC%BA%E5%8A%BF%E4%BB%8B%E5%85%A5%E5%90%8E%E7%81%AB%E9%80%9F%E7%BF%BB%E7%9B%988%E5%90%8D%E9%98%BF%E5%B8%95%E5%A5%87%E9%A3%9E%E8%A1%8C%E5%91%98%E5%81%9C%E9%A3%9E%E4%BB%A4%E8%A2%AB%E8%A7%A3%E9%99%A4-mrfqnf5z",
+      "body_length": 961,
+      "schema": true,
+      "noindex": false
     }
   ],
   "pages": {
@@ -155,33 +224,129 @@
       "final_url": "https://trrb.net/",
       "asset_count": 35,
       "bad_assets": [],
-      "direct_article_links": 0
+      "direct_article_links": 0,
+      "marker_present": false,
+      "category_prerender": ""
+    },
+    "https://trrb.net/important-news": {
+      "status": 200,
+      "final_url": "https://trrb.net/important-news",
+      "asset_count": 17,
+      "bad_assets": [],
+      "direct_article_links": 0,
+      "marker_present": false,
+      "category_prerender": ""
+    },
+    "https://trrb.net/asylum": {
+      "status": 200,
+      "final_url": "https://trrb.net/asylum",
+      "asset_count": 17,
+      "bad_assets": [],
+      "direct_article_links": 0,
+      "marker_present": false,
+      "category_prerender": ""
     },
     "https://trrb.net/ice": {
       "status": 200,
       "final_url": "https://trrb.net/ice",
       "asset_count": 13,
       "bad_assets": [],
-      "direct_article_links": 0
+      "direct_article_links": 0,
+      "marker_present": false,
+      "category_prerender": ""
     },
     "https://trrb.net/ice/news": {
       "status": 200,
       "final_url": "https://trrb.net/ice/news",
       "asset_count": 17,
       "bad_assets": [],
-      "direct_article_links": 0
+      "direct_article_links": 0,
+      "marker_present": false,
+      "category_prerender": ""
+    },
+    "https://trrb.net/trump": {
+      "status": 200,
+      "final_url": "https://trrb.net/trump",
+      "asset_count": 5,
+      "bad_assets": [],
+      "direct_article_links": 0,
+      "marker_present": false,
+      "category_prerender": ""
+    }
+  },
+  "legacy": {
+    "https://trrb.net/article.html?id=wp-117123": {
+      "status": 200,
+      "location": "",
+      "xrobots": ""
     }
   },
   "failures": [
-    "host redirect http://www.trrb.net/ => 301 https://www.trrb.net/",
+    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
     {
       "page": "https://trrb.net/",
-      "problem": "too few direct article links: 0"
+      "problem": "too few direct article links: 0/10"
+    },
+    {
+      "page": "https://trrb.net/",
+      "problem": "missing prerender marker data-seo-static-snapshot=\"build\""
+    },
+    {
+      "page": "https://trrb.net/important-news",
+      "problem": "too few direct article links: 0/10"
+    },
+    {
+      "page": "https://trrb.net/important-news",
+      "problem": "missing prerender marker data-seo-category-snapshot=\"edge\""
+    },
+    {
+      "page": "https://trrb.net/important-news",
+      "problem": "missing category prerender header: "
+    },
+    {
+      "page": "https://trrb.net/asylum",
+      "problem": "too few direct article links: 0/3"
+    },
+    {
+      "page": "https://trrb.net/asylum",
+      "problem": "missing prerender marker data-seo-category-snapshot=\"edge\""
+    },
+    {
+      "page": "https://trrb.net/asylum",
+      "problem": "missing category prerender header: "
     },
     {
       "page": "https://trrb.net/ice",
-      "problem": "too few direct article links: 0"
-    }
+      "problem": "too few direct article links: 0/3"
+    },
+    {
+      "page": "https://trrb.net/ice",
+      "problem": "missing prerender marker data-seo-static-snapshot=\"build\""
+    },
+    {
+      "page": "https://trrb.net/ice/news",
+      "problem": "too few direct article links: 0/3"
+    },
+    {
+      "page": "https://trrb.net/ice/news",
+      "problem": "missing prerender marker data-seo-category-snapshot=\"edge\""
+    },
+    {
+      "page": "https://trrb.net/ice/news",
+      "problem": "missing category prerender header: "
+    },
+    {
+      "page": "https://trrb.net/trump",
+      "problem": "too few direct article links: 0/1"
+    },
+    {
+      "page": "https://trrb.net/trump",
+      "problem": "missing prerender marker data-seo-static-snapshot=\"build\""
+    },
+    "legacy retired URL must be 410: 200",
+    "legacy retired URL missing X-Robots-Tag noindex"
   ],
-  "warnings": []
+  "warnings": [
+    "host redirect chain has 2 hops: http://www.trrb.net/"
+  ]
 }

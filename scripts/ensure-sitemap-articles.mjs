@@ -60,6 +60,11 @@ if (articleLocs.length < 10) {
   throw new Error(`Generated sitemap has too few canonical article URLs: ${articleLocs.length}`);
 }
 
+// Public visibility is a second publication gate. Run a read-only source
+// contract audit here so both the scheduled SEO sync and full production build
+// fail immediately if any public Service Role/Edge reader drops the gate.
+await import('./audit-public-visibility-contract.mjs');
+
 // IMPORTANT: this step intentionally does not add articles. generate-sitemaps.mjs
 // is the single authority for thin-content, ICE-short-brief and duplicate rules.
 // Re-adding every published row here used to undo those filters.

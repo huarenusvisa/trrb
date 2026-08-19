@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: trrb-round15-node7-ai-legal-analysis
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   analyze:
@@ -63,5 +63,5 @@ jobs:
             git push origin HEAD:main
           fi
 
-# Round 17 strict N/N backfill: every 20 minutes, up to 60 grounded records per run until exact coverage reaches 100%.
-# Immediate node-1 recovery trigger: 2026-08-16 strict revalidation.
+# Stale concurrent runs are cancelled so an older DB snapshot cannot commit a
+# partial/outdated analysis file after a newer fingerprint-aware run starts.

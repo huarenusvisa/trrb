@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T18:00:25.675Z",
+  "generatedAt": "2026-08-19T18:53:58.676Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -87,10 +87,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340E-01A.pdf",
           "title": "25-1340 Muchiri v. Blanche"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
-          "title": "24-1467P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
@@ -545,6 +541,42 @@
       "sourceFinalUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
       "documents": [
         {
+          "url": "https://www.ca4.uscourts.gov/opinions/251699.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251699.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/231703.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/231703.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/232235A.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/232235A.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251541.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251541.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244558.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244558.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251733.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251733.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254112.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254112.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/256225.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/256225.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/264012.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/264012.U.pdf"
+        },
+        {
           "url": "https://www.ca4.uscourts.gov/opinions/251413.P.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/251413.P.pdf"
         },
@@ -707,42 +739,6 @@
         {
           "url": "https://www.ca4.uscourts.gov/opinions/261231.U.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/261231.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/234206.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/234206.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251970.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251970.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/254385.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/254385.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/264047.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/264047.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/236914.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/236914.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251730.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251730.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/242205.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/242205.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/244387.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/244387.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/244632.U.pdf"
         }
       ],
       "notes": []
@@ -1050,6 +1046,14 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://media.ca7.uscourts.gov/cgi-bin/rssExec.pl?Submit=Submit&Time=week",
       "documents": [
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-19/C:24-3258:J:Sykes:aut:T:fnOp:N:3594108:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-19/C:24-3258:J:Brennan:con:T:fnOp:N:3594108:S:0",
+          "title": "Final Opinion"
+        },
         {
           "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-18/C:25-2721:J:Brennan:aut:T:fnOp:N:3593416:S:0",
           "title": "Final Opinion"

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/trump/%E6%A1%91%E5%BE%B7%E6%96%AF%E6%8E%80%E8%B5%B7%E7%A4%BE%E4%BF%9D%E4%BF%9D%E5%8D%AB%E6%88%98%E6%8B%9F%E7%A6%81%E6%AD%A2%E8%81%94%E9%82%A6%E6%89%A3%E7%95%99%E7%A4%BE%E4%BC%9A%E4%BF%9D%E9%9A%9C%E9%87%91%E5%81%BF%E8%BF%98%E5%AD%A6%E7%94%9F%E8%B4%B7%E6%AC%BE%E5%80%BA%E5%8A%A1-mszthn1r-07ef9e</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T08:16:03.567Z</news:publication_date>
+        <news:title>桑德斯掀起“社保保卫战”！拟禁止联邦扣留社会保障金偿还学生贷款债务</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/us-politics/%E5%B7%B4%E6%96%AF%E8%BF%9E%E4%BB%BB%E7%AB%9E%E9%80%89%E7%88%86%E6%B0%91%E8%B0%83%E4%B8%91%E9%97%BB%E8%99%9A%E5%81%87%E9%A2%86%E5%85%88%E6%95%B0%E6%8D%AE%E6%9B%9D%E5%85%89%E6%B4%9B%E6%9D%89%E7%9F%B6%E9%80%89%E6%88%98%E9%99%B7%E4%BF%A1%E4%BB%BB%E5%8D%B1%E6%9C%BA-mszsy6yg-01bd80</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2230,14 +2238,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-17T08:20:45.596Z</news:publication_date>
         <news:title>缓刑期间涉嫌杀害继父并肢解！佛州44岁男子被控一级谋杀</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/us-crime/%E9%95%BF%E5%B2%9B%E8%A1%97%E5%A4%B4%E6%8E%A5%E7%AE%A1%E9%81%AD%E8%AD%A6%E6%96%B9%E9%87%8D%E5%87%BB15%E4%BA%BA%E8%A2%AB%E6%8D%957%E8%BE%86%E6%B1%BD%E8%BD%A6%E9%81%AD%E6%89%A3%E6%8A%BC-mswyhuhc-9100c5</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T08:12:52.751Z</news:publication_date>
-        <news:title>长岛街头“接管”遭警方重击！15人被捕、7辆汽车遭扣押</news:title>
       </news:news>
     </url>
 </urlset>

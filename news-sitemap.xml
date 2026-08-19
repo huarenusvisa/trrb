@@ -1022,20 +1022,4 @@
         <news:title>网传新泽西纽瓦克ICE拘押中心医疗条件差致婴儿死亡</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-59bceb1fad916660372c668dd9dc1afc57ce8a9d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:00:21.984Z</news:publication_date>
-        <news:title>费城阿根廷籍保姆被ICE拘押后保释返家</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-d47ef893f09113c3f09ff7889ed66d63b8ce1ef4</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:00:09.619Z</news:publication_date>
-        <news:title>美国特朗普时期政策致合法移民数量骤减近半</news:title>
-      </news:news>
-    </url>
 </urlset>

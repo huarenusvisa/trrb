@@ -8,6 +8,8 @@ on:
       - "articles-home.js"
       - "index.html"
       - "homepage-refresh-guard.js"
+      - "article-route-runtime.js"
+      - "scripts/optimize-homepage-performance.mjs"
       - ".github/workflows/fix-round11-home-cache-bust.yml"
 
 permissions:
@@ -19,13 +21,15 @@ jobs:
     timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
-      - name: 校验当前首页路由与缓存版本
+      - name: 校验当前首页路由与缓存架构
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
-          grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' index.html
-          grep -q 'article-route-runtime.js?v=20260819-seo-v4' index.html
+          grep -q 'fetchUnifiedHomeBundle' articles-home.js
+          grep -q '4d-core-plus-category-supplements' homepage-refresh-guard.js
+          grep -q '20260819-seo-v5' scripts/optimize-homepage-performance.mjs
+          grep -q '20260819-single-bundle-2' scripts/optimize-homepage-performance.mjs
+          grep -q '20260819-bundle-supplements-2' scripts/optimize-homepage-performance.mjs
           ! grep -q '30.5-r11-routefix' index.html
           ! grep -q '30.5-r11-routefix' scripts/optimize-homepage-performance.mjs
           echo 'ROUND11_STALE_CACHE_PATCHER_RETIRED=true'

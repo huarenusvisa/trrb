@@ -21,8 +21,9 @@ function timeOf(row) {
 
 async function fetchArticles(limit, category = "") {
   const query = {
-    select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,published_at,created_at",
+    select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at",
     status: "eq.published",
+    visibility: "eq.public",
     order: "published_at.desc.nullslast,created_at.desc",
     limit: String(limit)
   };
@@ -50,8 +51,8 @@ exports.handler = async (event) => {
     const perCategory = Math.min(Math.max(Number(event.queryStringParameters?.per_category || 12), 3), 20);
 
     // Start with one global query. Only categories that are underrepresented in
-    // that result receive a supplemental query. This keeps the browser on one
-    // homepage request while still protecting sparse homepage sections.
+    // that result receive a supplemental query. Public endpoints must never
+    // expose rows whose workflow status is published but visibility is private.
     const globalRows = await fetchArticles(globalLimit);
     const counts = categoryCounts(globalRows);
     const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);

@@ -5,7 +5,7 @@
   const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
   const FALLBACK_CATEGORY_SLUGS = {
     '重要新闻': 'important-news',
-    '热门头条': 'hot',
+    '热门头条': 'hot-headlines',
     '美国时政': 'us-politics',
     '美国警情': 'us-crime',
     '中国官场': 'china-officialdom',
@@ -16,6 +16,13 @@
     'ICE执法': 'ice',
     '曝光墙': 'expose'
   };
+  const SECTION_ALIASES = {
+    important: 'important-news',
+    hot: 'hot-headlines',
+    politics: 'us-politics',
+    crime: 'us-crime',
+    china: 'china-officialdom'
+  };
 
   const routeCache = new Map();
   const pendingIds = new Set();
@@ -24,6 +31,15 @@
 
   function safeSegment(value) {
     return encodeURIComponent(String(value || '').trim());
+  }
+
+  function canonicalSection(value) {
+    const raw = String(value || '').trim();
+    return SECTION_ALIASES[raw] || raw;
+  }
+
+  function isUuid(value) {
+    return /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(String(value || '').trim());
   }
 
   function legacyArticleUrl(article) {
@@ -77,9 +93,9 @@
     const categoryId = String(article.category_id || article.categoryId || '').trim();
     const categoryName = String(article.category_name || article.category || '').trim();
     const byId = categories?.byId?.get(categoryId);
-    if (byId?.slug) return String(byId.slug).trim();
+    if (byId?.slug) return canonicalSection(byId.slug);
     const byName = categories?.byName?.get(categoryName);
-    if (byName?.slug) return String(byName.slug).trim();
+    if (byName?.slug) return canonicalSection(byName.slug);
     return FALLBACK_CATEGORY_SLUGS[categoryName] || 'news';
   }
 
@@ -96,16 +112,16 @@
     const cached = routeCache.get(id);
     if (cached) return cached;
 
-    // Only articles with a real CMS slug may be sent directly to a pretty route.
-    // Archived WordPress/static rows commonly have only a numeric/wp-* id. Turning
-    // that id into /section/id creates a route that Supabase/Edge cannot resolve.
     const slug = String(article.slug || '').trim();
-    if (!slug) return legacyArticleUrl(article);
-
     const topic = String(article.topic_key || article.topicKey || '').trim().toLowerCase();
+    if (!slug) {
+      if (topic === 'ice' && isUuid(id)) return `/ice/${safeSegment(id)}`;
+      return legacyArticleUrl(article);
+    }
+
     const categoryName = String(article.category_name || article.category || '').trim();
     const section = topic === 'trump' ? 'trump' : topic === 'ice' ? 'ice' : (FALLBACK_CATEGORY_SLUGS[categoryName] || 'news');
-    return `/${safeSegment(section)}/${safeSegment(slug)}`;
+    return `/${safeSegment(canonicalSection(section))}/${safeSegment(slug)}`;
   };
 
   async function fetchRoutes(ids) {
@@ -138,9 +154,23 @@
     root.querySelectorAll?.('a[href*="article.html?id="]').forEach((anchor) => {
       const id = articleIdFromAnchor(anchor);
       if (!id) return;
+
       const route = routeCache.get(id);
-      if (route) anchor.setAttribute('href', route);
-      else pendingIds.add(id);
+      if (route) {
+        anchor.setAttribute('href', route);
+        return;
+      }
+
+      // ICE live rows are Supabase records and use UUID ids. Convert those query
+      // URLs immediately so the rendered DOM never advertises new legacy URLs.
+      if ((location.pathname === '/ice' || location.pathname.startsWith('/ice/') || location.pathname.startsWith('/topic/ice')) && isUuid(id)) {
+        const iceRoute = `/ice/${safeSegment(id)}`;
+        routeCache.set(id, iceRoute);
+        anchor.setAttribute('href', iceRoute);
+        return;
+      }
+
+      pendingIds.add(id);
     });
   }
 

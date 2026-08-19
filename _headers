@@ -7,6 +7,12 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Cross-Origin-Opener-Policy: same-origin-allow-popups
 
+/finance/
+  X-Robots-Tag: noindex, follow, noarchive
+
+/finance/*
+  X-Robots-Tag: noindex, follow, noarchive
+
 /topic/ice/*.html
   Cache-Control: public, max-age=0, must-revalidate
 

@@ -19,31 +19,44 @@ const visibleText = (value = '') => String(value)
   .replace(/\s+/g, ' ')
   .trim();
 
+function isIceArticle(article) {
+  const topic = String(article?.topic_key || '').trim().toLowerCase();
+  const category = String(article?.category_name || '').trim();
+  return topic === 'ice' || category === 'ICE执法动态' || category === 'ICE执法';
+}
+
 async function fetchRecentIce() {
   const cutoff = new Date(Date.now() - WINDOW_HOURS * 60 * 60 * 1000).toISOString();
-  const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-  url.searchParams.set('select', 'id,title,slug,summary,content,source_url,source_name,source_account,published_at,created_at,category_name,status,topic_key');
-  url.searchParams.set('status', 'eq.published');
-  url.searchParams.set('topic_key', 'eq.ice');
-  url.searchParams.set('published_at', `gte.${cutoff}`);
-  url.searchParams.set('order', 'published_at.desc.nullslast,created_at.desc');
-  url.searchParams.set('limit', '500');
-  const response = await fetch(url, {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
-      Accept: 'application/json'
-    }
-  });
-  if (!response.ok) throw new Error(`Supabase ICE query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);
-  return await response.json();
+  const rows = [];
+  for (let offset = 0; offset < 10000; offset += 1000) {
+    const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
+    url.searchParams.set('select', 'id,title,slug,summary,content,source_url,source_name,source_account,published_at,created_at,category_name,status,topic_key');
+    url.searchParams.set('status', 'eq.published');
+    url.searchParams.set('published_at', `gte.${cutoff}`);
+    url.searchParams.set('order', 'published_at.desc.nullslast,created_at.desc');
+    url.searchParams.set('limit', '1000');
+    url.searchParams.set('offset', String(offset));
+    const response = await fetch(url, {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        Accept: 'application/json'
+      }
+    });
+    if (!response.ok) throw new Error(`Supabase ICE query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);
+    const batch = await response.json();
+    if (!Array.isArray(batch)) break;
+    rows.push(...batch.filter(isIceArticle));
+    if (batch.length < 1000) break;
+  }
+  return rows;
 }
 
 async function fetchNewsSitemap() {
   const response = await fetch(`${ORIGIN}/news-sitemap.xml?ice-audit=${Date.now()}`, {
     headers: {
       'cache-control': 'no-cache',
-      'user-agent': 'TRRB-ICE-Breaking-News-Audit/2.0'
+      'user-agent': 'TRRB-ICE-Breaking-News-Audit/3.0'
     }
   });
   if (!response.ok) throw new Error(`News sitemap fetch failed: ${response.status}`);
@@ -89,7 +102,7 @@ const missing = checked.filter((item) => !item.inNewsSitemap);
 const sourceMissing = checked.filter((item) => !item.sourcePresent);
 const report = {
   generatedAt: new Date().toISOString(),
-  policy: 'Published ICE breaking-news briefs are evaluated by news value, uniqueness, concrete enforcement facts and reliable sourcing; length alone is never a rejection rule. This audit protects every non-empty ICE brief below 300 visible characters, including those below 80.',
+  policy: 'Published ICE breaking-news briefs are evaluated by news value, uniqueness, concrete enforcement facts and reliable sourcing; length alone is never a rejection rule. This audit protects every non-empty ICE brief below 300 visible characters, including those below 80, whether identified by topic_key or ICE category.',
   recentIceCount: articles.length,
   protectedShortIceCount: checked.length,
   under80Count: checked.filter((item) => item.bodyLength < 80).length,

@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 
 const ROOT = process.cwd();
 const SITE = 'https://trrb.net';
@@ -19,6 +20,44 @@ const STATIC_HUBS = [
   { loc: `${SITE}/jobs/`, priority: '0.7', changefreq: 'daily' },
   { loc: `${SITE}/legal/`, priority: '0.8', changefreq: 'daily' }
 ];
+
+function loadImmigrationKnowledgeEntries() {
+  const configPath = path.join(ROOT, 'config/immigration-knowledge.js');
+  const source = fs.readFileSync(configPath, 'utf8');
+  const sandbox = { window: {} };
+  vm.runInNewContext(source, sandbox, { filename: configPath, timeout: 1000 });
+  const config = sandbox.window.TRRB_IMMIGRATION_KNOWLEDGE;
+  const categories = Array.isArray(config?.categories) ? config.categories : [];
+  if (!categories.length) {
+    throw new Error('Immigration knowledge config has no categories; refusing to publish an incomplete sitemap.');
+  }
+
+  const entries = [];
+  const seen = new Set();
+  for (const category of categories) {
+    const categorySlug = String(category?.slug || '').trim();
+    if (!categorySlug) continue;
+    const categoryLoc = `${SITE}/immigrate/center?path=${encodeURIComponent(categorySlug)}`;
+    if (!seen.has(categoryLoc)) {
+      seen.add(categoryLoc);
+      entries.push({ loc: categoryLoc, priority: '0.7', changefreq: 'weekly' });
+    }
+    for (const topic of Array.isArray(category?.items) ? category.items : []) {
+      const topicSlug = String(topic?.slug || '').trim();
+      if (!topicSlug) continue;
+      const topicLoc = `${categoryLoc}&topic=${encodeURIComponent(topicSlug)}`;
+      if (seen.has(topicLoc)) continue;
+      seen.add(topicLoc);
+      entries.push({ loc: topicLoc, priority: '0.6', changefreq: 'weekly' });
+    }
+  }
+  if (!entries.length) {
+    throw new Error('Immigration knowledge config produced zero indexable URLs.');
+  }
+  return entries;
+}
+
+const IMMIGRATION_KNOWLEDGE_ENTRIES = loadImmigrationKnowledgeEntries();
 
 const FALLBACK_CATEGORY_SLUGS = new Map([
   ['重要新闻', 'important-news'],
@@ -190,7 +229,8 @@ if (!databaseArticles.length) {
 
 const staticEntries = [
   { loc: `${SITE}/`, lastmod: TODAY, priority: '1.0', changefreq: 'hourly' },
-  ...STATIC_HUBS.map((entry) => ({ ...entry, lastmod: TODAY }))
+  ...STATIC_HUBS.map((entry) => ({ ...entry, lastmod: TODAY })),
+  ...IMMIGRATION_KNOWLEDGE_ENTRIES.map((entry) => ({ ...entry, lastmod: TODAY }))
 ];
 if (categories.length) {
   for (const category of categories.filter((item) => item.include_in_sitemap !== false && cleanText(item.slug))) {
@@ -271,4 +311,4 @@ if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} canonical URLs; static hubs ${STATIC_HUBS.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);
+console.log(`[sitemap] generated ${entries.length} canonical URLs; static hubs ${STATIC_HUBS.length}; immigration knowledge ${IMMIGRATION_KNOWLEDGE_ENTRIES.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);

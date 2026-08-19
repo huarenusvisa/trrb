@@ -178,6 +178,10 @@ export default async (request: Request, context: any) => {
 
       const body = visibleText(article?.content || "");
       const ice = isIceArticle(article);
+      if (ice && !body) {
+        excludedThin++;
+        continue;
+      }
       if (!ice && body.length < MIN_INDEXABLE_BODY_LENGTH) {
         excludedThin++;
         continue;

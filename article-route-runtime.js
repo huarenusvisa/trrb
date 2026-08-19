@@ -101,9 +101,11 @@
 
   function prettyArticleUrl(article, categories) {
     if (!article) return '';
+    const id = String(article.id || '').trim();
     const slug = String(article.slug || '').trim();
-    if (!slug) return '';
-    return `/${safeSegment(sectionForArticle(article, categories))}/${safeSegment(slug)}`;
+    const routeKey = slug || (isUuid(id) ? id : '');
+    if (!routeKey) return '';
+    return `/${safeSegment(sectionForArticle(article, categories))}/${safeSegment(routeKey)}`;
   }
 
   window.TRRB_articleUrl = function TRRB_articleUrl(article) {
@@ -114,13 +116,14 @@
 
     const slug = String(article.slug || '').trim();
     const topic = String(article.topic_key || article.topicKey || '').trim().toLowerCase();
+    const categoryName = String(article.category_name || article.category || '').trim();
+    const section = topic === 'trump' ? 'trump' : topic === 'ice' ? 'ice' : (FALLBACK_CATEGORY_SLUGS[categoryName] || 'news');
+
     if (!slug) {
-      if (topic === 'ice' && isUuid(id)) return `/ice/${safeSegment(id)}`;
+      if (isUuid(id)) return `/${safeSegment(canonicalSection(section))}/${safeSegment(id)}`;
       return legacyArticleUrl(article);
     }
 
-    const categoryName = String(article.category_name || article.category || '').trim();
-    const section = topic === 'trump' ? 'trump' : topic === 'ice' ? 'ice' : (FALLBACK_CATEGORY_SLUGS[categoryName] || 'news');
     return `/${safeSegment(canonicalSection(section))}/${safeSegment(slug)}`;
   };
 

@@ -10,6 +10,7 @@ on:
       - '.github/workflows/round16-node4-home-legal-production.yml'
       - '.github/workflows/round13-publish-seo-sync.yml'
       - '_redirects'
+      - '_headers'
       - 'robots.txt'
       - 'netlify.toml'
       - 'netlify/edge-functions/**'
@@ -36,11 +37,17 @@ on:
       - 'listing.js'
       - 'listing-seo.js'
       - 'immigrate/immigrate.js'
+      - 'immigrate/center.html'
+      - 'immigrate/center.js'
+      - 'immigrate/center-seo.js'
       - 'immigrate/knowledge-article-filter.js'
+      - 'config/immigration-knowledge.js'
+      - 'jobs/index.html'
       - 'trump/index.html'
       - 'topic/trump/trump.js'
       - 'topic/ice/featured-video.js'
       - 'scripts/generate-sitemaps.mjs'
+      - 'scripts/split-sitemap-index.mjs'
       - 'scripts/inject-static-news-links.mjs'
       - 'scripts/ensure-sitemap-articles.mjs'
       - 'scripts/upgrade-article-urls.mjs'
@@ -133,6 +140,8 @@ jobs:
             news=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" || true)
             bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?seo-deploy=$stamp" || true)
             immigration_legacy=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/listing.html?category=%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%9B%BD&seo-deploy=$stamp" || true)
+            jobs_html=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/?seo-deploy=$stamp" || true)
+            finance_html=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/finance/?seo-deploy=$stamp" || true)
 
             sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
             news_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
@@ -144,6 +153,11 @@ jobs:
             www_sitemap_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://www.trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
             index_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/index.html?seo-deploy=$stamp" | tr -d '\r' || true)
             search_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/listing.html?q=seo-check&seo-deploy=$stamp" | tr -d '\r' || true)
+            jobs_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/?seo-deploy=$stamp" | tr -d '\r' || true)
+            finance_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/finance/?seo-deploy=$stamp" | tr -d '\r' || true)
+            people_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/people/?seo-deploy=$stamp" | tr -d '\r' || true)
+            ice_topic_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/topic/ice/?seo-deploy=$stamp" | tr -d '\r' || true)
+            ice_raw_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/topic/ice/live-v6.html?seo-deploy=$stamp" | tr -d '\r' || true)
 
             deploy_sha_ok=0
             [ "$live_sha" = "$DEPLOY_SHA" ] && deploy_sha_ok=1
@@ -163,7 +177,15 @@ jobs:
             ice_marker=$(printf '%s' "$ice" | grep -c 'data-seo-static-snapshot="build"' || true)
             ice_article_links=$(printf '%s' "$ice" | grep -Eo 'href="/ice/[^"]+' | grep -v 'href="/ice/news' | wc -l | tr -d ' ')
             legacy_sitemap=$(printf '%s\n%s' "$sitemap" "$news" | grep -c 'article.html?id=' || true)
-            sitemap_v4=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v4-topic-safe-ice-safe' || true)
+            sitemap_v5=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v5-static-authority-aligned' || true)
+            sitemap_knowledge_header=$(printf '%s' "$sitemap_headers" | sed -n 's/^x-trrb-sitemap-immigration-knowledge:[[:space:]]*//Ip' | tr -d '[:space:]' | head -1)
+            sitemap_knowledge_header=${sitemap_knowledge_header:-0}
+            sitemap_legal=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/legal/</loc>' || true)
+            sitemap_immigration_category=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/immigrate/center?path=study</loc>' || true)
+            sitemap_immigration_topic=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/immigrate/center?path=study&amp;topic=f1</loc>' || true)
+            sitemap_jobs=$(printf '%s' "$sitemap" | grep -Ec '<loc>https://trrb.net/jobs(?:/|\?|<)' || true)
+            sitemap_finance=$(printf '%s' "$sitemap" | grep -Ec '<loc>https://trrb.net/finance(?:/|\?|<)' || true)
+            sitemap_people=$(printf '%s' "$sitemap" | grep -Ec '<loc>https://trrb.net/people(?:/|\?|<)' || true)
             news_v5=$(printf '%s' "$news_headers" | grep -ci '^x-trrb-news-sitemap: live-supabase-v5-latest1000-topic-safe-ice-safe-dedupe' || true)
             legacy_410=$(printf '%s' "$legacy_headers" | grep -c '^HTTP/.* 410' || true)
             legacy_noindex=$(printf '%s' "$legacy_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
@@ -182,6 +204,20 @@ jobs:
             immigration_wrong_knowledge=$(printf '%s' "$immigration_legacy" | grep -c '<link rel="canonical" href="https://trrb.net/immigrate/' || true)
             search_noindex=$(printf '%s' "$search_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
 
+            jobs_noindex_header=$(printf '%s' "$jobs_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
+            jobs_noindex_meta=$(printf '%s' "$jobs_html" | grep -ci 'name="robots" content="noindex' || true)
+            jobs_prelaunch=$(printf '%s' "$jobs_html" | grep -c '上线准备中' || true)
+            finance_noindex_header=$(printf '%s' "$finance_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
+            finance_noindex_meta=$(printf '%s' "$finance_html" | grep -ci 'name="robots" content="noindex' || true)
+            people_410=$(printf '%s' "$people_headers" | grep -c '^HTTP/.* 410' || true)
+            people_noindex=$(printf '%s' "$people_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
+            people_marker=$(printf '%s' "$people_headers" | grep -ci '^x-trrb-retired-product: people-r1-gone-v1' || true)
+            ice_topic_301=$(printf '%s' "$ice_topic_headers" | grep -c '^HTTP/.* 301' || true)
+            ice_topic_location=$(printf '%s' "$ice_topic_headers" | grep -ci '^location: https://trrb.net/ice' || true)
+            ice_topic_marker=$(printf '%s' "$ice_topic_headers" | grep -ci '^x-trrb-ice-canonical: legacy-topic-to-ice-v1' || true)
+            ice_raw_301=$(printf '%s' "$ice_raw_headers" | grep -c '^HTTP/.* 301' || true)
+            ice_raw_location=$(printf '%s' "$ice_raw_headers" | grep -ci '^location: https://trrb.net/ice' || true)
+
             first_ice_url=$(printf '%s' "$news" | grep -Eo '<loc>https://trrb.net/ice/[^<]+' | head -1 | sed 's#<loc>##' || true)
             ice_article_ok=0
             pretty_no_archive_loader=0
@@ -196,7 +232,7 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/seo:$home_canonical/$home_robots/$home_og/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links host_www_category=$www_category_301/$www_category_location/$www_category_marker host_www_sitemap=$www_sitemap_301/$www_sitemap_location/$www_sitemap_marker index301=$index_301 immigration=$immigration_canonical/wrong:$immigration_wrong_knowledge searchNoindex=$search_noindex legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v4=$sitemap_v4 news_v5=$news_v5 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
+            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/seo:$home_canonical/$home_robots/$home_og/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links host_www_category=$www_category_301/$www_category_location/$www_category_marker host_www_sitemap=$www_sitemap_301/$www_sitemap_location/$www_sitemap_marker index301=$index_301 immigration=$immigration_canonical/wrong:$immigration_wrong_knowledge searchNoindex=$search_noindex legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v5=$sitemap_v5 knowledge=$sitemap_knowledge_header legal=$sitemap_legal immigrationKnowledge=$sitemap_immigration_category/$sitemap_immigration_topic forbiddenSitemap=jobs:$sitemap_jobs/finance:$sitemap_finance/people:$sitemap_people jobsPrelaunch=$jobs_noindex_header/$jobs_noindex_meta/$jobs_prelaunch financeNoindex=$finance_noindex_header/$finance_noindex_meta peopleGone=$people_410/$people_noindex/$people_marker iceCanonical=$ice_topic_301/$ice_topic_location/$ice_topic_marker/$ice_raw_301/$ice_raw_location news_v5=$news_v5 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
 
             if [ "$deploy_sha_ok" -eq 1 ] \
               && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] \
@@ -207,9 +243,16 @@ jobs:
               && [ "$www_sitemap_301" -ge 1 ] && [ "$www_sitemap_location" -ge 1 ] && [ "$www_sitemap_marker" -ge 1 ] && [ "$index_301" -ge 1 ] \
               && [ "$immigration_canonical" -ge 1 ] && [ "$immigration_wrong_knowledge" -eq 0 ] && [ "$search_noindex" -ge 1 ] \
               && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] \
-              && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v4" -ge 1 ] && [ "$news_v5" -ge 1 ] \
+              && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v5" -ge 1 ] && [ "$sitemap_knowledge_header" -ge 62 ] \
+              && [ "$sitemap_legal" -ge 1 ] && [ "$sitemap_immigration_category" -ge 1 ] && [ "$sitemap_immigration_topic" -ge 1 ] \
+              && [ "$sitemap_jobs" -eq 0 ] && [ "$sitemap_finance" -eq 0 ] && [ "$sitemap_people" -eq 0 ] && [ "$news_v5" -ge 1 ] \
+              && [ "$jobs_noindex_header" -ge 1 ] && [ "$jobs_noindex_meta" -ge 1 ] && [ "$jobs_prelaunch" -ge 1 ] \
+              && [ "$finance_noindex_header" -ge 1 ] && [ "$finance_noindex_meta" -ge 1 ] \
+              && [ "$people_410" -ge 1 ] && [ "$people_noindex" -ge 1 ] && [ "$people_marker" -ge 1 ] \
+              && [ "$ice_topic_301" -ge 1 ] && [ "$ice_topic_location" -ge 1 ] && [ "$ice_topic_marker" -ge 1 ] \
+              && [ "$ice_raw_301" -ge 1 ] && [ "$ice_raw_location" -ge 1 ] \
               && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
-              echo 'PRODUCTION EXACT-SHA + APEX HOST + HOMEPAGE CANONICAL + SEARCH NOINDEX + IMMIGRATION CANONICAL + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V5 + ICE INDEXABILITY PASS'
+              echo 'PRODUCTION EXACT-SHA + SITEMAP V5 STATIC AUTHORITY + PRELAUNCH/RETIRED NOINDEX + ICE CANONICAL + NEWS V5 + ARTICLE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

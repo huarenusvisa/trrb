@@ -1,43 +1,51 @@
-name: Fix Category Live Order and Asylum
+name: Category Live Order and Asylum Validation
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - 'scripts/fix-listing-category-live-order-and-asylum.mjs'
+      - 'listing.js'
+      - 'articles-home.js'
+      - 'netlify/functions/public-home-articles.js'
+      - 'netlify/edge-functions/category-prerender.ts'
       - '.github/workflows/fix-category-live-order-and-asylum.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  repair:
+  validate:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Apply category live-order and asylum repair
-        run: node scripts/fix-listing-category-live-order-and-asylum.mjs
-      - name: Verify repair markers
+      - name: Verify current category live-order architecture
+        shell: bash
         run: |
+          set -euo pipefail
           grep -q 'fetchLivePublishedArticles(200, category)' listing.js
-          grep -q 'sort((a,b) => articleTimestamp(b)-articleTimestamp(a))' listing.js
+          grep -q 'articleTimestamp(b)-articleTimestamp(a)' listing.js
           grep -q 'query.category_name' netlify/functions/public-home-articles.js
           grep -q '"庇护百科"' articles-home.js
-      - name: Commit repair
+          grep -q 'data-seo-category-snapshot' netlify/edge-functions/category-prerender.ts
+          echo 'CATEGORY_LIVE_ONLY=true'
+          echo 'CATEGORY_SORT=published_at_desc'
+          echo 'ASYLUM_CATEGORY_SUPPLEMENT=true'
+
+      - name: Production category smoke check
+        shell: bash
         run: |
-          if git diff --quiet -- listing.js articles-home.js netlify/functions/public-home-articles.js; then
-            echo 'No changes needed'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add listing.js articles-home.js netlify/functions/public-home-articles.js
-          git commit -m 'Fix category pages live ordering and asylum feed'
-          git push
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            stamp="${GITHUB_RUN_ID}-${attempt}"
+            important=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?category-verify=$stamp" || true)
+            asylum=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/asylum?category-verify=$stamp" || true)
+            if printf '%s' "$important" | grep -q 'data-seo-category-snapshot="edge"' \
+              && printf '%s' "$asylum" | grep -q 'data-seo-category-snapshot="edge"'; then
+              echo 'CATEGORY_PRODUCTION_VALIDATION_PASS=true'
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1

@@ -67,6 +67,13 @@ if (!includesText(hostCanonical, 'X-TRRB-Host-Canonical')) failures.push("00-hos
 const seoRouteMeta = await bytes("netlify/edge-functions/seo-route-meta.ts");
 if (!includesText(seoRouteMeta, '"移民美国": "immigration"')) failures.push("SEO route fallback still mixes immigration news with the knowledge center");
 if (!includesText(seoRouteMeta, '"/immigration"')) failures.push("SEO route fallback does not cover /immigration");
+if (!includesText(seoRouteMeta, 'robots: "noindex,follow,noarchive"')) failures.push("SEO route fallback no longer protects operational noindex pages");
+
+const legalPrerender = await bytes("netlify/edge-functions/legal-detail-prerender.ts");
+if (!includesText(legalPrerender, 'export const config = { path: "/legal/detail.html" }')) failures.push("legal detail Edge prerender is not bound to /legal/detail.html");
+if (!includesText(legalPrerender, 'x-trrb-legal-detail-prerender')) failures.push("legal detail Edge prerender is missing its production marker");
+if (!includesText(legalPrerender, 'analysisComplete')) failures.push("legal detail Edge prerender no longer gates incomplete analyses");
+if (!includesText(legalPrerender, 'status: 200')) failures.push("legal detail Edge prerender has no valid-record 200 response");
 
 const css = await bytes("styles.css");
 const cssHead = css.toString("utf8", 0, Math.min(css.length, 300)).trimStart();
@@ -97,6 +104,8 @@ await Promise.all([
   parseBrowserScript("articles-home-live-fix.js"),
   parseBrowserScript("topic-focus.js"),
   parseBrowserScript("ice-home-unify.js"),
+  parseBrowserScript("legal/detail.js"),
+  parseBrowserScript("jobs/listing.js"),
   parseBrowserScript("admin/category-manager.js")
 ]);
 
@@ -120,6 +129,7 @@ const sitemapStatic = await bytes("sitemap-static.xml");
 if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://trrb.net/</loc>")) failures.push("sitemap-static.xml is missing canonical root URL");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge hub");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/jobs/</loc>")) failures.push("sitemap-static.xml is missing jobs hub");
+if (!includesText(sitemapStatic, "<loc>https://trrb.net/legal/</loc>")) failures.push("sitemap-static.xml is missing legal hub");
 if (includesText(sitemapStatic, "<loc>https://trrb.net/finance/</loc>")) failures.push("sitemap-static.xml must not index finance demo preview");
 if (includesText(sitemapStatic, "https://www.trrb.net/")) failures.push("sitemap-static.xml still contains www.trrb.net URLs");
 
@@ -128,6 +138,13 @@ const sitemapArticlesText = sitemapArticles.toString("utf8");
 if (!includesText(sitemapArticles, "<urlset")) failures.push("sitemap-articles-1.xml is not a URL set");
 if (!/https:\/\/trrb\.net\/[^/<]+\/[^<]+/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml is missing pretty article URLs");
 if (/\/article\.html\?id=/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml still contains legacy article URLs");
+
+const legalSitemap = await bytes("sitemap-legal.xml");
+const legalSitemapText = legalSitemap.toString("utf8");
+if (!startsText(legalSitemap, "<?xml")) failures.push("sitemap-legal.xml is not XML");
+if (!includesText(legalSitemap, "<loc>https://trrb.net/legal/</loc>")) failures.push("sitemap-legal.xml is missing the legal hub");
+if (!/https:\/\/trrb\.net\/legal\/detail\.html\?id=[^<]+/.test(legalSitemapText)) failures.push("sitemap-legal.xml is missing parameterized legal detail URLs");
+if (includesText(legalSitemap, "https://www.trrb.net/")) failures.push("sitemap-legal.xml still contains www.trrb.net URLs");
 
 const newsSitemap = await bytes("news-sitemap.xml");
 if (!startsText(newsSitemap, "<?xml")) failures.push("news-sitemap.xml is not XML");
@@ -160,7 +177,11 @@ const headers = await bytes("_headers");
 const headersText = headers.toString("utf8");
 if (headers[0] === 0xff && headers[1] === 0xd8) failures.push("_headers was replaced by an image");
 if (!includesText(headers, "Cache-Control")) failures.push("_headers is missing cache rules");
-for (const route of ["/finance/", "/finance/*", "/jobs/publish.html", "/jobs/seeker.html"]) {
+for (const route of [
+  "/finance/", "/finance/*",
+  "/jobs/search.html", "/jobs/publish.html", "/jobs/seeker.html", "/jobs/manage.html", "/jobs/contact.html", "/jobs/review.html",
+  "/expose", "/expose.html", "/thanks.html", "/delete-account.html"
+]) {
   if (!headersText.includes(`${route}\n  X-Robots-Tag: noindex, follow, noarchive`)) failures.push(`_headers missing noindex protection for ${route}`);
 }
 

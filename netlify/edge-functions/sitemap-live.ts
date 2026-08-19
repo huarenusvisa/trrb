@@ -4,11 +4,11 @@ const MIN_INDEXABLE_BODY_LENGTH = 80;
 export const config = { path: "/sitemap.xml" };
 
 const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
-  "重要新闻": "important",
-  "热门头条": "hot",
-  "美国时政": "politics",
-  "美国警情": "crime",
-  "中国官场": "china",
+  "重要新闻": "important-news",
+  "热门头条": "hot-headlines",
+  "美国时政": "us-politics",
+  "美国警情": "us-crime",
+  "中国官场": "china-officialdom",
   "移民美国": "immigration",
   "庇护百科": "asylum",
   "驱逐快报": "deport",
@@ -17,8 +17,21 @@ const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
   "曝光墙": "expose"
 };
 
+const SECTION_ALIASES: Record<string, string> = {
+  important: "important-news",
+  hot: "hot-headlines",
+  politics: "us-politics",
+  crime: "us-crime",
+  china: "china-officialdom"
+};
+
 function clean(value: unknown): string {
   return String(value ?? "").replace(/\s+/g, " ").trim();
+}
+
+function canonicalSection(value: unknown): string {
+  const raw = clean(value);
+  return SECTION_ALIASES[raw] || raw;
 }
 
 function visibleText(value: unknown): string {
@@ -43,6 +56,12 @@ function esc(value: unknown): string {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
+}
+
+function isIceArticle(article: any): boolean {
+  const topic = clean(article?.topic_key).toLowerCase();
+  const category = clean(article?.category_name);
+  return topic === "ice" || category === "ICE执法动态" || category === "ICE执法";
 }
 
 function supabaseConfig() {
@@ -97,9 +116,9 @@ function sectionFor(article: any, byId: Map<string, any>, byName: Map<string, an
   if (topic === "trump") return "trump";
   if (topic === "ice") return "ice";
   const byCategoryId = byId.get(String(article?.category_id || ""));
-  if (byCategoryId?.slug) return clean(byCategoryId.slug);
+  if (byCategoryId?.slug) return canonicalSection(byCategoryId.slug);
   const byCategoryName = byName.get(clean(article?.category_name));
-  if (byCategoryName?.slug) return clean(byCategoryName.slug);
+  if (byCategoryName?.slug) return canonicalSection(byCategoryName.slug);
   return FALLBACK_CATEGORY_SLUGS[clean(article?.category_name)] || "news";
 }
 
@@ -129,16 +148,14 @@ export default async (request: Request, context: any) => {
 
     for (const category of categories) {
       if (category.include_in_sitemap === false || !clean(category.slug)) continue;
-      blocks.push(urlBlock(`${SITE}/${encodeURIComponent(clean(category.slug))}`, today, "hourly", "0.8"));
+      blocks.push(urlBlock(`${SITE}/${encodeURIComponent(canonicalSection(category.slug))}`, today, "hourly", "0.8"));
     }
     blocks.push(urlBlock(`${SITE}/ice/news`, today, "hourly", "0.7"));
 
-    // Keep the earliest published copy as the sitemap winner for exact duplicate
-    // titles or bodies. Pages remain accessible; this only prevents competing
-    // duplicate/thin URLs from being advertised as indexable discovery targets.
     const seenTitles = new Set<string>();
     const seenBodies = new Set<string>();
     let excludedThin = 0;
+    let preservedShortIce = 0;
     let excludedDuplicate = 0;
 
     for (const article of articles) {
@@ -149,7 +166,12 @@ export default async (request: Request, context: any) => {
       }
 
       const body = visibleText(article?.content || "");
-      if (body.length < MIN_INDEXABLE_BODY_LENGTH) { excludedThin++; continue; }
+      const ice = isIceArticle(article);
+      if (!ice && body.length < MIN_INDEXABLE_BODY_LENGTH) {
+        excludedThin++;
+        continue;
+      }
+      if (ice && body.length < MIN_INDEXABLE_BODY_LENGTH) preservedShortIce++;
 
       const titleKey = normalizedTitle(article?.title);
       const bodyKey = body.length >= 120 ? body : "";
@@ -171,9 +193,10 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v2-dedupe",
+      "x-trrb-sitemap": "live-supabase-v3-ice-safe",
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-excluded-thin": String(excludedThin),
+      "x-trrb-sitemap-preserved-short-ice": String(preservedShortIce),
       "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate)
     });
     return new Response(request.method === "HEAD" ? null : xml, { status: 200, headers });

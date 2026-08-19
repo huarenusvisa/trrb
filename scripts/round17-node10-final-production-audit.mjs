@@ -12,6 +12,7 @@ const css=read('legal.css');
 const sitemap=read('sitemap.xml');
 const robots=read('robots.txt');
 const homeIndex=read('home-index.html');
+const homeRenderer=read('articles-home.js');
 const homeGuard=read('homepage-refresh-guard.js');
 const homeLiveFix=read('articles-home-live-fix.js');
 const records=Array.isArray(db.records)?db.records:[];
@@ -106,13 +107,14 @@ const homePos=homeIndex.indexOf('articles-home.js');
 const liveFixPos=homeIndex.indexOf('articles-home-live-fix.js');
 const homepageChecks=[
  ['homepage loads freshness guard before normal home renderer',guardPos>=0&&homePos>guardPos],
- ['homepage refresh fix loads after normal renderer',liveFixPos>homePos],
- ['homepage guard uses only unified public live endpoint',homeGuard.includes('/.netlify/functions/public-home-articles')&&!/TRRB_ARTICLE_INDEX|TRRB_ARTICLES|TRRB_ARTICLE_CHUNK/.test(homeGuard)],
- ['homepage refresh uses only unified public live endpoint',homeLiveFix.includes('/.netlify/functions/public-home-articles')&&!/TRRB_ARTICLE_INDEX|TRRB_ARTICLES|TRRB_ARTICLE_CHUNK/.test(homeLiveFix)],
- ['homepage guard enforces exact 4-day maximum age',homeGuard.includes('4 * 24 * 60 * 60 * 1000')&&homeGuard.includes('filter(isFresh)')],
- ['homepage refresh enforces exact 4-day maximum age',homeLiveFix.includes('4 * 24 * 60 * 60 * 1000')&&homeLiveFix.includes('filter(fresh)')],
- ['homepage ordering is exact published_at/created_at timestamp descending',homeGuard.includes('item?.published_at || item?.created_at')&&homeGuard.includes('articleTime(b) - articleTime(a)')&&homeLiveFix.includes('item?.published_at || item?.created_at')&&homeLiveFix.includes('articleTime(b) - articleTime(a)')],
- ['homepage policy never backfills with fifth-day static archive',!homeGuard.includes('mergeArticles(')&&!homeLiveFix.includes('mergeArticles(')]
+ ['homepage refresh shim loads after normal renderer',liveFixPos>homePos],
+ ['homepage renderer loads one unified public bundle',homeRenderer.includes('fetchUnifiedHomeBundle')&&homeRenderer.includes('/.netlify/functions/public-home-bundle')],
+ ['homepage guard refreshes from unified public bundle without archive globals',homeGuard.includes('/.netlify/functions/public-home-bundle')&&!/TRRB_ARTICLE_INDEX|TRRB_ARTICLES|TRRB_ARTICLE_CHUNK/.test(homeGuard)],
+ ['ordinary homepage category sections enforce exact 4-day maximum age',homeRenderer.includes('4 * 24 * 60 * 60 * 1000')&&homeRenderer.includes('.filter(isFreshHomepageArticle)')],
+ ['homepage guard preserves sparse supplements while requiring fresh live health',homeGuard.includes('4d-core-plus-category-supplements')&&homeGuard.includes('articles.some(isFresh)')&&!homeGuard.includes('.filter(isFresh)')],
+ ['homepage compatibility shim delegates to primary guard and has no interval',homeLiveFix.includes('TRRB_HOME_LIVE_COMPAT_SHIM')&&homeLiveFix.includes('TRRB_refreshHomeLive')&&!homeLiveFix.includes('setInterval')],
+ ['homepage ordering remains publication timestamp descending',homeRenderer.includes('articleTimestamp(b) - articleTimestamp(a)')&&homeGuard.includes('articleTime(b) - articleTime(a)')],
+ ['homepage policy never backfills with static archive merge',!homeRenderer.includes('renderHome(mergeArticles')&&!homeGuard.includes('mergeArticles(')&&!homeLiveFix.includes('mergeArticles(')]
 ];
 for(const [label,ok] of homepageChecks)console.log(`${ok?'PASS':'FAIL'} HOMEPAGE: ${label}`);
 if(homepageChecks.some(([,ok])=>!ok))throw new Error('Homepage common strict rules failed');

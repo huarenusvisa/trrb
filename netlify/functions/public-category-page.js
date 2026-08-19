@@ -25,7 +25,7 @@ function json(statusCode, body) {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "public, max-age=30, stale-while-revalidate=60",
       "X-Content-Type-Options": "nosniff",
-      "X-TRRB-Category-Page": "category-page-v1"
+      "X-TRRB-Category-Page": "category-page-v2-public-only"
     },
     body: JSON.stringify(body)
   };
@@ -74,8 +74,9 @@ exports.handler = async (event) => {
 
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-    url.searchParams.set("select", "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,published_at,created_at");
+    url.searchParams.set("select", "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at");
     url.searchParams.set("status", "eq.published");
+    url.searchParams.set("visibility", "eq.public");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
     url.searchParams.set("limit", String(pageSize));
     url.searchParams.set("offset", String(offset));

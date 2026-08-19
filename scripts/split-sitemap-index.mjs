@@ -10,6 +10,40 @@ if (!xml.includes('<urlset')) {
   throw new Error('sitemap.xml is not a URL set');
 }
 
+function expectedImmigrationKnowledgeUrls() {
+  const configSource = fs.readFileSync(path.join(ROOT, 'config/immigration-knowledge.js'), 'utf8');
+  const sandboxWindow = {};
+  new Function('window', configSource)(sandboxWindow);
+  const categories = Array.isArray(sandboxWindow.TRRB_IMMIGRATION_KNOWLEDGE?.categories)
+    ? sandboxWindow.TRRB_IMMIGRATION_KNOWLEDGE.categories
+    : [];
+  if (!categories.length) throw new Error('Immigration knowledge config has no categories');
+  const urls = [];
+  for (const category of categories) {
+    const categorySlug = String(category?.slug || '').trim();
+    if (!categorySlug) continue;
+    const categoryUrl = `${SITE}/immigrate/center?path=${encodeURIComponent(categorySlug)}`;
+    urls.push(categoryUrl);
+    for (const topic of Array.isArray(category?.items) ? category.items : []) {
+      const topicSlug = String(topic?.slug || '').trim();
+      if (!topicSlug) continue;
+      urls.push(`${categoryUrl}&topic=${encodeURIComponent(topicSlug)}`);
+    }
+  }
+  return [...new Set(urls)];
+}
+
+const expectedKnowledgeUrls = expectedImmigrationKnowledgeUrls();
+for (const url of expectedKnowledgeUrls) {
+  const escaped = url.replaceAll('&', '&amp;');
+  if (!xml.includes(`<loc>${escaped}</loc>`)) {
+    throw new Error(`sitemap.xml is missing immigration knowledge URL: ${url}`);
+  }
+}
+if (/https:\/\/trrb\.net\/immigrate\/center\.html(?:\?|<)/i.test(xml)) {
+  throw new Error('sitemap.xml must use clean /immigrate/center canonical URLs, not center.html');
+}
+
 const blocks = xml.match(/<url>[\s\S]*?<\/url>/g) || [];
 const staticBlocks = [];
 const articleBlocks = [];
@@ -62,4 +96,4 @@ const today = new Date().toISOString().slice(0, 10);
 const indexXml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${files.map((filename) => `  <sitemap>\n    <loc>${SITE}/${filename}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>`).join('\n')}\n</sitemapindex>\n`;
 fs.writeFileSync(sourcePath, indexXml);
 
-console.log(`[sitemap-index] ${blocks.length} URLs split into ${files.length} files (${staticBlocks.length} static, ${articleBlocks.length} articles)`);
+console.log(`[sitemap-index] ${blocks.length} URLs split into ${files.length} files (${staticBlocks.length} static, ${articleBlocks.length} articles); immigration knowledge ${expectedKnowledgeUrls.length}/${expectedKnowledgeUrls.length}`);

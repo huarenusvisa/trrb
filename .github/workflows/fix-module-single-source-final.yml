@@ -10,7 +10,7 @@ on:
       - 'homepage-refresh-guard.js'
       - 'listing.html'
       - 'listing.js'
-      - 'netlify/functions/public-home-articles.js'
+      - 'netlify/functions/public-home-bundle.js'
       - '.github/workflows/fix-module-single-source-final.yml'
 
 permissions:
@@ -35,7 +35,7 @@ jobs:
           grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
           grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' index.html
           ! grep -q '<script[^>]*articles-home-live-fix.js' index.html
-          grep -q 'mode=homepage' homepage-refresh-guard.js
+          grep -q 'public-home-bundle' homepage-refresh-guard.js
           grep -q 'HOME_MAX_AGE_MS = 4' homepage-refresh-guard.js
 
       - name: Production smoke check
@@ -46,8 +46,11 @@ jobs:
             stamp="${GITHUB_RUN_ID}-${attempt}"
             home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?module-single=$stamp" || true)
             listing=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?module-single=$stamp" || true)
+            bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?module-single=$stamp" || true)
             if printf '%s' "$home" | grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' \
-              && printf '%s' "$listing" | grep -q 'data-seo-category-snapshot="edge"'; then
+              && ! printf '%s' "$home" | grep -q 'articles-home-live-fix.js' \
+              && printf '%s' "$listing" | grep -q 'data-seo-category-snapshot="edge"' \
+              && printf '%s' "$bundle" | grep -q '"mode":"homepage"'; then
               echo 'MODULE_SINGLE_SOURCE_VALIDATION_PASS=true'
               exit 0
             fi

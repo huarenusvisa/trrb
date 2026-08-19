@@ -1,15 +1,18 @@
 const crypto = require("node:crypto");
+const {
+  SUPABASE_URL,
+  SERVICE_KEY,
+  safeText,
+  rest,
+  authenticateStaff
+} = require('./_shared/supabase-admin');
 
-const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
-const ANON_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const PRIVATE_BUCKET = process.env.ICE_REPORT_PRIVATE_BUCKET || "ice-report-private";
 const PUBLIC_BUCKET = process.env.ICE_REPORT_PUBLIC_BUCKET || "ice-report-public";
 
 function json(statusCode, body) {
   return { statusCode, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" }, body: JSON.stringify(body) };
 }
-function safeText(value, max = 20000) { return String(value ?? "").trim().replace(/\u0000/g, "").slice(0, max); }
 function nowIso() { return new Date().toISOString(); }
 async function readJson(response) { const text = await response.text(); if (!text) return null; try { return JSON.parse(text); } catch { return { raw: text }; } }
 async function serviceFetch(path, options = {}) {
@@ -18,25 +21,6 @@ async function serviceFetch(path, options = {}) {
   const body = await readJson(response);
   if (!response.ok) { const error = new Error(body?.message || body?.details || body?.error || body?.raw || `数据库请求失败（${response.status}）`); error.statusCode = response.status; throw error; }
   return body;
-}
-async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
-  const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
-  Object.entries(query).forEach(([key, value]) => { if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); });
-  return serviceFetch(`/rest/v1/${table}${url.search}`, { method, headers: { "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }, body: body === undefined ? undefined : JSON.stringify(body) });
-}
-async function authenticate(event) {
-  const token = safeText(event.headers.authorization || event.headers.Authorization, 1000).replace(/^Bearer\s+/i, "");
-  if (!token) { const error = new Error("缺少后台登录凭证"); error.statusCode = 401; throw error; }
-  const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: ANON_KEY, Authorization: `Bearer ${token}` } });
-  const user = await readJson(response);
-  if (!response.ok || !user?.id) { const error = new Error("后台登录状态无效，请重新登录"); error.statusCode = 401; throw error; }
-  let rows = await rest("admin_users", { query: { select: "id,user_id,email,role,is_active", user_id: `eq.${user.id}`, is_active: "eq.true", limit: "1" } });
-  let admin = Array.isArray(rows) ? rows[0] : null;
-  const ownerEmail = safeText(process.env.TRRB_OWNER_EMAIL || "tangrenribao@gmail.com", 300).toLowerCase();
-  const ownerUid = safeText(process.env.TRRB_OWNER_UID || "4c491ee3-a9f0-42c9-9bee-1abb52b20b01", 100);
-  if (!admin && user.id === ownerUid && safeText(user.email, 300).toLowerCase() === ownerEmail) admin = { role: "owner", email: ownerEmail };
-  if (!admin || !["owner", "admin"].includes(String(admin.role || "").toLowerCase())) { const error = new Error("这个账号没有主后台管理权限"); error.statusCode = 403; throw error; }
-  return { user, admin };
 }
 function encodePath(path) { return String(path || "").split("/").map(encodeURIComponent).join("/"); }
 async function signedReadUrl(path, expiresIn = 3600) {
@@ -114,7 +98,7 @@ async function publishReport(report, actor, input) {
   const selected = safeText(input.cover_path || report.selected_cover_path, 500);
   const cover = publishedMedia.find((item) => item.source_path === selected || item.path === selected) || publishedMedia.find((item) => String(item.mime_type || "").startsWith("image/")) || null;
   const time = nowIso(); const duplicate = await existingArticle(report.id); const articleId = duplicate?.id || crypto.randomUUID();
-  const payload = { title: e.title, summary: e.summary, content: e.content, category_name: "现场线索", cover_image: cover?.url || report.cover_image || "", seo_keywords: "ICE,现场线索,随手拍,移民执法", author: "ICE随手拍", status: "published", published_at: time, topic_key: "ice", source_platform: "user_report", source_post_id: report.id, source_url: "https://trrb.net/topic/ice/", source_account: "ICE随手拍", source_created_at: report.created_at, review_status: "human_verified_user_report", metadata: { user_report_id: report.id, report_date: report.report_date, location_text: report.location_text, event_type: "arrest", people_count: e.facts.people_count || 0, country: e.facts.country, agency: e.facts.agency, published_media: publishedMedia, reviewer_email: actor.user.email || actor.admin.email || "", reviewed_at: time } };
+  const payload = { title: e.title, summary: e.summary, content: e.content, category_name: "现场线索", cover_image: cover?.url || report.cover_image || "", seo_keywords: "ICE,现场线索,随手拍,移民执法", author: "ICE随手拍", status: "published", published_at: time, topic_key: "ice", source_platform: "user_report", source_post_id: report.id, source_url: "https://trrb.net/ice", source_account: "ICE随手拍", source_created_at: report.created_at, review_status: "human_verified_user_report", metadata: { user_report_id: report.id, report_date: report.report_date, location_text: report.location_text, event_type: "arrest", people_count: e.facts.people_count || 0, country: e.facts.country, agency: e.facts.agency, published_media: publishedMedia, reviewer_email: actor.user.email || actor.admin.email || "", reviewed_at: time } };
   if (duplicate?.id) await rest("articles", { method: "PATCH", query: { id: `eq.${articleId}` }, body: payload, prefer: "return=minimal" });
   else await rest("articles", { method: "POST", body: { id: articleId, slug: `ice-report-${report.id}`, created_at: time, ...payload }, prefer: "return=minimal" });
   await patchReport(report.id, { status: "published", admin_title: e.title, admin_summary: e.summary, admin_content: e.content, cover_image: payload.cover_image, selected_cover_path: selected, article_id: articleId, review_note: safeText(input.review_note, 4000), reviewer_user_id: actor.user.id, reviewer_email: actor.user.email || actor.admin.email || "", reviewed_at: time, published_at: time });
@@ -144,7 +128,7 @@ exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return json(204, {});
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
   try {
-    const actor = await authenticate(event); const input = JSON.parse(event.body || "{}"); const action = safeText(input.action, 60);
+    const actor = await authenticateStaff(event, ["owner", "editor"]); const input = JSON.parse(event.body || "{}"); const action = safeText(input.action, 60);
     if (action === "list") return json(200, { reports: await listReports() });
     if (action === "detail") return json(200, await detailReport(input.report_id));
     const report = await getReport(input.report_id);

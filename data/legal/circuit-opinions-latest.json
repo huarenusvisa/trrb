@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T15:50:00.412Z",
+  "generatedAt": "2026-08-19T16:46:41.953Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -415,6 +415,26 @@
           "title": "Cheryl Hileman v. West Penn Allegheny Health System Inc"
         },
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/261594np.pdf",
+          "title": "Jason Morgan v. Eric Siegfried"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/261166np.pdf",
+          "title": "Marlowe v. Guzman"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/261026np.pdf",
+          "title": "Jasir Massey-Campbell v. Bridgecrest Acceptance Corp."
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/251824np.pdf",
+          "title": "USA v. Anthony Bressi"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/242385np.pdf",
+          "title": "Shanthi Hejamadi v. Midland Funding LLC"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/261723np.pdf",
           "title": "Fuhai Li v."
         },
@@ -513,26 +533,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251281np.pdf",
           "title": "USA v. Michael Bragg"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/261258np.pdf",
-          "title": "La'Keya Keo v. FBI"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252576np.pdf",
-          "title": "NAACP Delaware State Conference of Branches v. City of Wilmington"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251613np.pdf",
-          "title": "Timothy McLaughlin v. International Brotherhood of Teamsters Local 249"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252867np.pdf",
-          "title": "Jason Woodall v. Municipality of Monroeville"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/243180np.pdf",
-          "title": "Yoke Tan v. Allstate Insurance Co"
         }
       ],
       "notes": []
@@ -1239,6 +1239,14 @@
       "sourceFinalUrl": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml",
       "documents": [
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/19/25-4458.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/19/25-1532.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/18/24-3227.pdf",
           "title": null
         },
@@ -1329,14 +1337,6 @@
         {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/20-36024.pdf",
           "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/24-3479.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
-          "title": null
         }
       ],
       "notes": []
@@ -1402,6 +1402,10 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
+        {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410178.pdf",
+          "title": "Chase Peden, et al v. Glenn Stephens, et al"
+        },
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410029.op2.pdf",
           "title": "Ricardo Devengoechea v. Bolivarian Republic of Venezuela"
@@ -1597,10 +1601,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202412662.pdf",
           "title": "Dennis Scott, et al v. City of Daytona Beach, Florida"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202210292.pdf",
-          "title": "Edward Braggs, et al v. Commissioner, Alabama Department of Corrections, et al"
         }
       ],
       "notes": []

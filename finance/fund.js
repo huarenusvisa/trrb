@@ -1,7 +1,7 @@
 (function(){
   const D=window.FinanceData;if(!D)return;const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const symbol=(new URLSearchParams(location.search).get('symbol')||'SPY').toUpperCase();const f=D.getFund(symbol);const meta=D.getMeta?D.getMeta():null;
-  function renderNotFound(){document.title=`${symbol} 未找到｜唐人财经`;const top=$('#fundSymbol');if(top)top.textContent=symbol;const main=$('.stock-content');if(main)main.innerHTML=`<section class="not-found" role="status"><div class="code">${symbol}</div><h1>没有找到这个 ETF / 基金</h1><p>当前 V1 演示数据中没有 ${symbol}。系统不会用 SPY 或其他基金的数据代替，以避免产品信息和费用数据产生误导。</p><a href="./#funds">返回基金研究中心</a></section>`;const fixed=$('.fixed');if(fixed)fixed.hidden=true}
+  function renderNotFound(){document.title=`${symbol} 未找到｜唐人财经`;const top=$('#fundSymbol');if(top)top.textContent=symbol;const main=$('.stock-content');if(main)main.innerHTML=`<section class="not-found" role="status"><div class="code">${symbol}</div><h1>没有找到这个 ETF / 基金</h1><p>当前 V1 演示数据中没有 ${symbol}。系统不会用 SPY 或其他基金的数据代替，以避免产品信息和费用数据产生误导。</p><a href="./#funds">返回基金研究中心</a></section>`;const fixed=$('.fixed');if(fixed)fixed.hidden=true;document.documentElement.classList.add('detail-ready')}
   if(!f){renderNotFound();return}
   const money=v=>v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
   function notify(text){let t=$('#financeToast');if(!t){t=document.createElement('div');t.id='financeToast';t.className='finance-toast';t.setAttribute('role','status');t.setAttribute('aria-live','polite');document.body.appendChild(t)}t.textContent=text;t.classList.add('show');clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.classList.remove('show'),2200)}
@@ -13,4 +13,5 @@
   $$('.range button[data-range]').forEach((b,i)=>b.addEventListener('click',()=>{$$('.range button[data-range]').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on))});$('#fundChart').innerHTML=chart(i+1);notify(`已切换到 ${b.dataset.range} 走势图`)}));
   const btn=$('#fundWatchBtn');function sync(){const on=D.getFundWatchlist().includes(f.symbol);btn.textContent=on?'✓ 已关注':'+ 加入基金自选';btn.setAttribute('aria-pressed',String(on))}sync();btn.addEventListener('click',()=>{const on=D.toggleFundWatch(f.symbol);sync();notify(`${f.symbol} 已${on?'加入':'移出'}基金自选`)});
   const back=$('#fundBackBtn');if(back)back.addEventListener('click',()=>{if(history.length>1)history.back();else location.href='./#funds'});
+  requestAnimationFrame(()=>document.documentElement.classList.add('detail-ready'));
 })();

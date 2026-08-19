@@ -20,8 +20,6 @@ function normalizeTitle(value: string): string {
     .toLowerCase();
 }
 
-// Pinned recovery routes for legacy WordPress URLs that have been restored into Supabase.
-// This guarantees that high-value indexed URLs keep working even if fuzzy title matching changes.
 const LEGACY_ARTICLE_MAP = new Map<string, string>([
   [normalizeTitle("44岁科州男子被控杀妻-遭重罪指控"), "f0fb17df-d940-4039-8a77-76316e4e11a1"]
 ]);
@@ -49,7 +47,7 @@ function matchScore(legacyTitle: string, currentTitle: string): number {
 
 function legacySystemRedirect(pathname: string): string {
   if (/^\/category\/hotnews(?:\/page\/\d+)?\/?$/i.test(pathname)) {
-    return `${SITE_ORIGIN}/listing.html?category=${encodeURIComponent("热门头条")}`;
+    return `${SITE_ORIGIN}/hot-headlines`;
   }
   if (/^\/category\/[^/]+(?:\/page\/\d+)?\/?$/i.test(pathname)) return GONE;
   if (/^\/page\/\d+\/?$/i.test(pathname)) return GONE;
@@ -68,10 +66,8 @@ function decodePathname(pathname: string): string {
 
 function isLegacyCandidate(pathname: string): boolean {
   if (!pathname || pathname === "/") return false;
-
   const decodedPath = decodePathname(pathname);
   const lower = decodedPath.toLowerCase();
-
   if (SKIP_PREFIXES.some((prefix) => lower === prefix || lower.startsWith(prefix + "/") || lower.startsWith(prefix + "."))) return false;
   if (/\.[a-z0-9]{1,8}$/i.test(decodedPath)) return false;
   const segments = decodedPath.split("/").filter(Boolean);
@@ -103,7 +99,7 @@ async function isActiveCategorySlug(slug: string): Promise<boolean> {
 
 async function fetchCandidates(title: string): Promise<Array<{ id: string; title: string }>> {
   const { base, key } = supabaseConfig();
-  if (!base || !key) return [];
+  if (!base || !key) throw new Error("Supabase config missing");
 
   const headers = { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
   const exact = new URL(`${base}/rest/v1/articles`);
@@ -112,10 +108,9 @@ async function fetchCandidates(title: string): Promise<Array<{ id: string; title
   exact.searchParams.set("title", `eq.${title}`);
   exact.searchParams.set("limit", "2");
   const exactResponse = await fetch(exact, { headers });
-  if (exactResponse.ok) {
-    const rows = await exactResponse.json();
-    if (Array.isArray(rows) && rows.length) return rows;
-  }
+  if (!exactResponse.ok) throw new Error(`exact article lookup failed ${exactResponse.status}`);
+  const exactRows = await exactResponse.json();
+  if (Array.isArray(exactRows) && exactRows.length) return exactRows;
 
   const probes = Array.from(new Set([
     title.trim().slice(0, 24),
@@ -124,6 +119,7 @@ async function fetchCandidates(title: string): Promise<Array<{ id: string; title
   ].filter((item) => item.length >= 6)));
 
   const collected = new Map<string, { id: string; title: string }>();
+  let successfulProbe = false;
   for (const probeRaw of probes) {
     const probe = probeRaw.replace(/[\u0000-\u001f%*_(),]/g, " ").trim();
     if (probe.length < 6) continue;
@@ -135,10 +131,12 @@ async function fetchCandidates(title: string): Promise<Array<{ id: string; title
     fuzzy.searchParams.set("limit", "20");
     const response = await fetch(fuzzy, { headers });
     if (!response.ok) continue;
+    successfulProbe = true;
     const rows = await response.json();
     if (!Array.isArray(rows)) continue;
     rows.forEach((row) => row?.id && collected.set(String(row.id), row));
   }
+  if (probes.length && !successfulProbe) throw new Error("all fuzzy article lookups failed");
   return [...collected.values()];
 }
 
@@ -165,6 +163,18 @@ function gone(reason: string): Response {
       "Cache-Control": "no-store",
       "X-Robots-Tag": "noindex, nofollow",
       "X-TRRB-Retired": reason
+    }
+  });
+}
+
+function temporaryUnavailable(): Response {
+  return new Response("Temporary legacy lookup failure", {
+    status: 503,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+      "Retry-After": "300",
+      "X-TRRB-Legacy-Temporary": "lookup-unavailable"
     }
   });
 }
@@ -197,8 +207,8 @@ function retiredArticle(title: string, reason: string): Response {
 </head>
 <body><main class="wrap"><div class="brand">唐人日报 Tang Ren Daily</div><section class="card">
 <h1>${safeTitle}</h1>
-<p>这是一篇来自唐人日报旧版网站的历史链接。目前原始文章尚未完成迁移，因此不再显示空白的 “Gone” 页面。我们正在逐步恢复仍有搜索流量的旧新闻。</p>
-<div class="actions"><a class="btn primary" href="/">返回唐人日报首页</a><a class="btn secondary" href="/listing.html?category=${encodeURIComponent("热门头条")}">查看热门头条</a><a class="btn secondary" href="/listing.html?category=${encodeURIComponent("美国警情")}">查看美国警情</a></div>
+<p>这是一篇来自唐人日报旧版网站的历史链接。目前原始文章尚未完成迁移，因此该旧地址已停止收录。</p>
+<div class="actions"><a class="btn primary" href="/">返回唐人日报首页</a><a class="btn secondary" href="/hot-headlines">查看热门头条</a><a class="btn secondary" href="/us-crime">查看美国警情</a></div>
 <div class="note">如果该文章已经恢复，旧网址会自动跳转到恢复后的新闻页面。</div>
 </section></main></body></html>`;
 
@@ -220,9 +230,6 @@ export default async (request: Request, context: any) => {
   const host = url.hostname.toLowerCase();
   const isCcHost = host === "trrb.cc" || host === "www.trrb.cc";
 
-  // Canonical-domain migration: both .cc hosts must permanently consolidate into trrb.net.
-  // Root and current application routes keep path/query exactly; legacy Chinese-title URLs
-  // continue through the matcher below so they can land directly on the corresponding article.
   if (isCcHost && url.pathname === "/") {
     return redirect(`${SITE_ORIGIN}/${url.search}`, "cc-domain-migration-root");
   }
@@ -279,8 +286,7 @@ export default async (request: Request, context: any) => {
     return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(match.id)}`, `article-match-${match.score}`);
   } catch (error) {
     console.error("legacy redirect lookup failed", error);
-    // On .cc, never serve a duplicate copy even if the article lookup backend is temporarily unavailable.
     if (isCcHost) return redirect(canonicalSamePath(url), "cc-domain-migration-fallback");
-    return retiredArticle(legacyTitle, "wordpress-title-lookup-failed");
+    return temporaryUnavailable();
   }
 };

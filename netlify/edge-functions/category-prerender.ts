@@ -174,7 +174,7 @@ export default async (request: Request, context: any) => {
     const responseHeaders = new Headers(upstream.headers);
     responseHeaders.set("content-type", "text/html; charset=UTF-8");
     responseHeaders.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
-    responseHeaders.set("x-trrb-category-prerender", "category-edge-v2-social-clean");
+    responseHeaders.set("x-trrb-category-prerender", "category-edge-v1");
     responseHeaders.set("link", `<${canonical}>; rel=\"canonical\"`);
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: responseHeaders });
   } catch (error) {

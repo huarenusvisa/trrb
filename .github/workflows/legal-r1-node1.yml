@@ -1,0 +1,19 @@
+name: LEGAL-R1 Node 1
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'scripts/legal-r1-node1-audit.mjs'
+      - '.github/workflows/legal-r1-node1.yml'
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Audit official full-text availability and record bindings
+        run: node scripts/legal-r1-node1-audit.mjs

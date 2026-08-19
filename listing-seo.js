@@ -5,6 +5,7 @@
   const query = String(params.get('q') || '').trim();
   const type = String(params.get('type') || '').trim();
   const page = Math.max(1, Number(params.get('page') || '1') || 1);
+  const pathname = location.pathname.replace(/\/$/, '') || '/';
 
   const slugMap = {
     '重要新闻': 'important-news',
@@ -12,7 +13,10 @@
     '美国时政': 'us-politics',
     '美国警情': 'us-crime',
     '中国官场': 'china-officialdom',
+    '移民美国': 'immigration',
     '庇护百科': 'asylum',
+    'ICE执法动态': 'ice/news',
+    'ICE执法': 'ice/news',
     'USCIS': 'uscis',
     'DHS': 'dhs',
     'CBP': 'cbp',
@@ -20,6 +24,17 @@
     'China': 'china',
     'Politics': 'politics',
     'World': 'world'
+  };
+
+  const prettyCategoryByPath = {
+    '/important-news': '重要新闻',
+    '/hot-headlines': '热门头条',
+    '/us-politics': '美国时政',
+    '/us-crime': '美国警情',
+    '/china-officialdom': '中国官场',
+    '/immigration': '移民美国',
+    '/asylum': '庇护百科',
+    '/ice/news': 'ICE执法动态'
   };
 
   function setMeta(name, content) {
@@ -61,6 +76,18 @@
     setOg('og:image', `${SITE}/trrb-logo-cropped.webp`);
   }
 
+  function applyCategorySeo(name, slug) {
+    const baseCanonical = `${SITE}/${slug}`;
+    const canonical = page > 1 ? `${baseCanonical}?page=${page}` : baseCanonical;
+    const title = `${name}新闻${page > 1 ? ` 第${page}页` : ''} - 唐人日报`;
+    const description = `唐人日报${name}栏目，持续更新相关新闻、政策变化与重要事件。`;
+    document.title = title;
+    setMeta('description', description);
+    setMeta('robots', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
+    setCanonical(canonical);
+    applyOg(title, description, canonical);
+  }
+
   if (query || type === 'search') {
     const title = query ? `搜索：${query} - 唐人日报` : '新闻搜索 - 唐人日报';
     const description = query ? `唐人日报站内搜索结果：${query}。` : '唐人日报站内新闻搜索，查找已发布新闻与专题内容。';
@@ -70,6 +97,15 @@
     setMeta('robots', 'noindex,follow,noarchive');
     setCanonical(canonical);
     applyOg(title, description, canonical);
+    return;
+  }
+
+  // Pretty category routes are server-rendered by category-prerender. Preserve
+  // their indexability and canonical instead of downgrading them to /listing.
+  const prettyCategory = prettyCategoryByPath[pathname];
+  if (prettyCategory) {
+    const slug = slugMap[prettyCategory];
+    applyCategorySeo(prettyCategory, slug);
     return;
   }
 
@@ -85,27 +121,19 @@
     return;
   }
 
-  if (category === '移民美国') {
-    const title = '移民美国知识库 - 唐人日报';
-    const description = '唐人日报移民美国知识库，系统整理美国签证、绿卡、庇护、身份转换与入籍相关知识。';
-    const canonical = `${SITE}/immigrate/`;
-    document.title = title;
-    setMeta('description', description);
-    setMeta('robots', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
-    setCanonical(canonical);
-    applyOg(title, description, canonical);
+  const slug = slugMap[category] || '';
+  if (slug) {
+    applyCategorySeo(category, slug);
     return;
   }
 
-  const slug = slugMap[category] || '';
-  const baseCanonical = slug ? `${SITE}/${slug}` : `${SITE}/listing?category=${encodeURIComponent(category)}`;
-  const canonical = page > 1 ? `${baseCanonical}${baseCanonical.includes('?') ? '&' : '?'}page=${page}` : baseCanonical;
   const title = `${category}新闻${page > 1 ? ` 第${page}页` : ''} - 唐人日报`;
   const description = `唐人日报${category}栏目，持续更新相关新闻、政策变化与重要事件。`;
-
+  const baseCanonical = `${SITE}/listing?category=${encodeURIComponent(category)}`;
+  const canonical = page > 1 ? `${baseCanonical}&page=${page}` : baseCanonical;
   document.title = title;
   setMeta('description', description);
-  setMeta('robots', 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1');
+  setMeta('robots', 'noindex,follow,noarchive');
   setCanonical(canonical);
   applyOg(title, description, canonical);
 })();

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T13:36:58.288Z",
+  "generated_at": "2026-08-19T14:44:32.804Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -22,42 +22,166 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1181566,
-      "article_count": 0,
-      "child_sitemaps": []
-    },
-    "https://trrb.net/news-sitemap.xml": {
-      "status": 200,
-      "type": "application/xml; charset=UTF-8",
-      "bytes": 137190,
-      "article_count": 0,
+      "bytes": 1191361,
+      "article_count": 3655,
       "child_sitemaps": []
     }
   },
-  "articles": [],
+  "articles": [
+    {
+      "url": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
+      "status": 200,
+      "final_url": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 24,
+      "h1_length": 17,
+      "canonical": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
+      "body_length": 821,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/%E7%BE%8E%E5%8F%B8%E6%B3%95%E9%83%A8%E8%B5%B7%E8%AF%89%E9%A9%AC%E9%87%8C%E5%85%B0%E5%B7%9E%E6%B3%95%E8%A7%84%E5%A6%A8%E7%A2%8D%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E6%89%A7%E6%B3%95%E6%9D%83",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/%E7%BE%8E%E5%8F%B8%E6%B3%95%E9%83%A8%E8%B5%B7%E8%AF%89%E9%A9%AC%E9%87%8C%E5%85%B0%E5%B7%9E%E6%B3%95%E8%A7%84%E5%A6%A8%E7%A2%8D%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E6%89%A7%E6%B3%95%E6%9D%83",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 29,
+      "h1_length": 22,
+      "canonical": "https://trrb.net/ice/%E7%BE%8E%E5%8F%B8%E6%B3%95%E9%83%A8%E8%B5%B7%E8%AF%89%E9%A9%AC%E9%87%8C%E5%85%B0%E5%B7%9E%E6%B3%95%E8%A7%84%E5%A6%A8%E7%A2%8D%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E6%89%A7%E6%B3%95%E6%9D%83",
+      "body_length": 104,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/trump/%E6%95%91%E7%81%BE%E6%B2%A6%E4%B8%BA%E6%94%BF%E6%B2%BB%E5%B7%A5%E5%85%B7%E7%89%B9%E6%9C%97%E6%99%AE%E5%90%A6%E5%86%B3%E5%9B%9B%E8%93%9D%E5%B7%9E%E6%95%91%E7%81%BE%E7%94%B3%E8%AF%B7227-%E4%BA%BF%E6%8F%B4%E5%8A%A9%E5%85%A8%E9%A2%9D%E6%90%81%E6%B5%85-mreyvacy",
+      "status": 200,
+      "final_url": "https://trrb.net/trump/%E6%95%91%E7%81%BE%E6%B2%A6%E4%B8%BA%E6%94%BF%E6%B2%BB%E5%B7%A5%E5%85%B7%E7%89%B9%E6%9C%97%E6%99%AE%E5%90%A6%E5%86%B3%E5%9B%9B%E8%93%9D%E5%B7%9E%E6%95%91%E7%81%BE%E7%94%B3%E8%AF%B7227-%E4%BA%BF%E6%8F%B4%E5%8A%A9%E5%85%A8%E9%A2%9D%E6%90%81%E6%B5%85-mreyvacy",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 41,
+      "h1_length": 34,
+      "canonical": "https://trrb.net/trump/%E6%95%91%E7%81%BE%E6%B2%A6%E4%B8%BA%E6%94%BF%E6%B2%BB%E5%B7%A5%E5%85%B7%E7%89%B9%E6%9C%97%E6%99%AE%E5%90%A6%E5%86%B3%E5%9B%9B%E8%93%9D%E5%B7%9E%E6%95%91%E7%81%BE%E7%94%B3%E8%AF%B7227-%E4%BA%BF%E6%8F%B4%E5%8A%A9%E5%85%A8%E9%A2%9D%E6%90%81%E6%B5%85-mreyvacy",
+      "body_length": 1361,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/%E6%97%A5%E6%8A%932000%E4%BA%BA%E4%BB%8D%E5%AB%8C%E4%B8%8D%E5%A4%9F%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%BB%E6%B0%91%E6%89%A7%E6%B3%95%E5%86%8D%E5%8A%A0%E7%A0%81ice%E6%88%96%E6%9D%80%E5%85%A5%E5%8A%A1%E5%B7%A5%E5%9C%BA%E6%89%80-mrf3u4lk",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/%E6%97%A5%E6%8A%932000%E4%BA%BA%E4%BB%8D%E5%AB%8C%E4%B8%8D%E5%A4%9F%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%BB%E6%B0%91%E6%89%A7%E6%B3%95%E5%86%8D%E5%8A%A0%E7%A0%81ice%E6%88%96%E6%9D%80%E5%85%A5%E5%8A%A1%E5%B7%A5%E5%9C%BA%E6%89%80-mrf3u4lk",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 42,
+      "h1_length": 35,
+      "canonical": "https://trrb.net/ice/%E6%97%A5%E6%8A%932000%E4%BA%BA%E4%BB%8D%E5%AB%8C%E4%B8%8D%E5%A4%9F%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%BB%E6%B0%91%E6%89%A7%E6%B3%95%E5%86%8D%E5%8A%A0%E7%A0%81ice%E6%88%96%E6%9D%80%E5%85%A5%E5%8A%A1%E5%B7%A5%E5%9C%BA%E6%89%80-mrf3u4lk",
+      "body_length": 1620,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/%E6%97%A5%E6%8D%952000%E4%BA%BA%E7%99%BD%E5%AE%AB%E5%BC%BA%E5%88%B6%E6%91%8A%E6%B4%BEice%E6%8A%93%E6%8D%95%E9%9D%9E%E6%B3%95%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%A2%83%E5%86%85%E5%86%8D%E6%AC%A1%E8%BF%8E%E6%9D%A5%E6%8A%93%E6%8D%95%E6%BD%AE-mrf4afe7",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/%E6%97%A5%E6%8D%952000%E4%BA%BA%E7%99%BD%E5%AE%AB%E5%BC%BA%E5%88%B6%E6%91%8A%E6%B4%BEice%E6%8A%93%E6%8D%95%E9%9D%9E%E6%B3%95%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%A2%83%E5%86%85%E5%86%8D%E6%AC%A1%E8%BF%8E%E6%9D%A5%E6%8A%93%E6%8D%95%E6%BD%AE-mrf4afe7",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 44,
+      "h1_length": 37,
+      "canonical": "https://trrb.net/ice/%E6%97%A5%E6%8D%952000%E4%BA%BA%E7%99%BD%E5%AE%AB%E5%BC%BA%E5%88%B6%E6%91%8A%E6%B4%BEice%E6%8A%93%E6%8D%95%E9%9D%9E%E6%B3%95%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%A2%83%E5%86%85%E5%86%8D%E6%AC%A1%E8%BF%8E%E6%9D%A5%E6%8A%93%E6%8D%95%E6%BD%AE-mrf4afe7",
+      "body_length": 1271,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/%E7%AA%83%E5%90%AC%E5%99%A8-%E5%88%BA%E7%A9%BF%E7%BA%BD%E6%A3%AE%E6%9D%83%E5%8A%9B%E6%A0%B8%E5%BF%83%E4%BA%B2%E4%BF%A1%E5%80%92%E6%88%88-fbi%E5%8A%A0%E5%B7%9E-%E5%BA%87%E6%8A%A4%E7%A5%9E%E8%AF%9D-%E8%BD%B0%E7%84%B6%E7%A0%B4%E7%A2%8E-mrf4d7ks",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/%E7%AA%83%E5%90%AC%E5%99%A8-%E5%88%BA%E7%A9%BF%E7%BA%BD%E6%A3%AE%E6%9D%83%E5%8A%9B%E6%A0%B8%E5%BF%83%E4%BA%B2%E4%BF%A1%E5%80%92%E6%88%88-fbi%E5%8A%A0%E5%B7%9E-%E5%BA%87%E6%8A%A4%E7%A5%9E%E8%AF%9D-%E8%BD%B0%E7%84%B6%E7%A0%B4%E7%A2%8E-mrf4d7ks",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 45,
+      "h1_length": 38,
+      "canonical": "https://trrb.net/ice/%E7%AA%83%E5%90%AC%E5%99%A8-%E5%88%BA%E7%A9%BF%E7%BA%BD%E6%A3%AE%E6%9D%83%E5%8A%9B%E6%A0%B8%E5%BF%83%E4%BA%B2%E4%BF%A1%E5%80%92%E6%88%88-fbi%E5%8A%A0%E5%B7%9E-%E5%BA%87%E6%8A%A4%E7%A5%9E%E8%AF%9D-%E8%BD%B0%E7%84%B6%E7%A0%B4%E7%A2%8E-mrf4d7ks",
+      "body_length": 1033,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/%E5%85%AC%E7%84%B6%E8%BF%9D%E6%8A%97%E8%81%94%E9%82%A6%E7%A6%81%E4%BB%A4ice-%E7%BA%BD%E7%BA%A6%E7%A7%BB%E6%B0%91%E6%B3%95%E5%BA%AD%E5%91%A8%E8%BE%B9%E5%A4%A7%E8%82%86%E6%8A%93%E6%8D%95%E7%A7%BB%E6%B0%91%E8%AE%AE%E5%91%98%E6%80%92%E6%89%B9%E8%B7%B5%E8%B8%8F%E5%8F%B8%E6%B3%95%E6%9D%83%E5%A8%81-mrf4izav",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/%E5%85%AC%E7%84%B6%E8%BF%9D%E6%8A%97%E8%81%94%E9%82%A6%E7%A6%81%E4%BB%A4ice-%E7%BA%BD%E7%BA%A6%E7%A7%BB%E6%B0%91%E6%B3%95%E5%BA%AD%E5%91%A8%E8%BE%B9%E5%A4%A7%E8%82%86%E6%8A%93%E6%8D%95%E7%A7%BB%E6%B0%91%E8%AE%AE%E5%91%98%E6%80%92%E6%89%B9%E8%B7%B5%E8%B8%8F%E5%8F%B8%E6%B3%95%E6%9D%83%E5%A8%81-mrf4izav",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 47,
+      "h1_length": 40,
+      "canonical": "https://trrb.net/ice/%E5%85%AC%E7%84%B6%E8%BF%9D%E6%8A%97%E8%81%94%E9%82%A6%E7%A6%81%E4%BB%A4ice-%E7%BA%BD%E7%BA%A6%E7%A7%BB%E6%B0%91%E6%B3%95%E5%BA%AD%E5%91%A8%E8%BE%B9%E5%A4%A7%E8%82%86%E6%8A%93%E6%8D%95%E7%A7%BB%E6%B0%91%E8%AE%AE%E5%91%98%E6%80%92%E6%89%B9%E8%B7%B5%E8%B8%8F%E5%8F%B8%E6%B3%95%E6%9D%83%E5%A8%81-mrf4izav",
+      "body_length": 1257,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-%E8%BF%8E%E6%9D%A5%E7%A1%AC%E6%A0%B8%E6%8E%8C%E8%88%B5%E4%BA%BA%E7%89%B9%E6%9C%97%E6%99%AE%E7%A5%AD%E5%87%BA-29-%E5%B9%B4%E8%80%81%E8%AD%A6%E5%85%A8%E5%A2%83%E6%8A%93%E6%8D%95%E9%81%A3%E8%BF%94-%E8%AE%A1%E5%88%92%E5%85%A8%E9%80%9F%E6%8E%A8%E8%BF%9B-mrf4lsk3",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-%E8%BF%8E%E6%9D%A5%E7%A1%AC%E6%A0%B8%E6%8E%8C%E8%88%B5%E4%BA%BA%E7%89%B9%E6%9C%97%E6%99%AE%E7%A5%AD%E5%87%BA-29-%E5%B9%B4%E8%80%81%E8%AD%A6%E5%85%A8%E5%A2%83%E6%8A%93%E6%8D%95%E9%81%A3%E8%BF%94-%E8%AE%A1%E5%88%92%E5%85%A8%E9%80%9F%E6%8E%A8%E8%BF%9B-mrf4lsk3",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 47,
+      "h1_length": 40,
+      "canonical": "https://trrb.net/ice/ice-%E8%BF%8E%E6%9D%A5%E7%A1%AC%E6%A0%B8%E6%8E%8C%E8%88%B5%E4%BA%BA%E7%89%B9%E6%9C%97%E6%99%AE%E7%A5%AD%E5%87%BA-29-%E5%B9%B4%E8%80%81%E8%AD%A6%E5%85%A8%E5%A2%83%E6%8A%93%E6%8D%95%E9%81%A3%E8%BF%94-%E8%AE%A1%E5%88%92%E5%85%A8%E9%80%9F%E6%8E%A8%E8%BF%9B-mrf4lsk3",
+      "body_length": 1098,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/immigration/%E5%89%8D%E8%84%9A%E5%BA%87%E6%8A%A4%E8%8E%B7%E6%89%B9%E5%90%8E%E8%84%9A%E4%B8%8D%E6%83%B3%E5%8F%8D%E5%85%B1%E7%BD%91%E4%BC%A0%E6%88%AA%E5%9B%BE%E5%BC%95%E7%88%86%E5%8D%8E%E4%BA%BA%E5%9C%88%E4%BA%89%E8%AE%AE-mrf51lll",
+      "status": 200,
+      "final_url": "https://trrb.net/immigration/%E5%89%8D%E8%84%9A%E5%BA%87%E6%8A%A4%E8%8E%B7%E6%89%B9%E5%90%8E%E8%84%9A%E4%B8%8D%E6%83%B3%E5%8F%8D%E5%85%B1%E7%BD%91%E4%BC%A0%E6%88%AA%E5%9B%BE%E5%BC%95%E7%88%86%E5%8D%8E%E4%BA%BA%E5%9C%88%E4%BA%89%E8%AE%AE-mrf51lll",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 34,
+      "h1_length": 27,
+      "canonical": "https://trrb.net/immigration/%E5%89%8D%E8%84%9A%E5%BA%87%E6%8A%A4%E8%8E%B7%E6%89%B9%E5%90%8E%E8%84%9A%E4%B8%8D%E6%83%B3%E5%8F%8D%E5%85%B1%E7%BD%91%E4%BC%A0%E6%88%AA%E5%9B%BE%E5%BC%95%E7%88%86%E5%8D%8E%E4%BA%BA%E5%9C%88%E4%BA%89%E8%AE%AE-mrf51lll",
+      "body_length": 1202,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/trump/%E6%88%BF%E4%BB%B7%E7%A7%9F%E9%87%91%E5%8E%8B%E5%9E%AE%E6%B0%91%E4%BC%97%E4%B8%A4%E5%85%9A%E4%BD%8F%E6%88%BF%E6%B3%95%E6%A1%88%E6%97%A0%E9%9C%80%E7%89%B9%E6%9C%97%E6%99%AE%E7%AD%BE%E5%AD%97%E7%9B%B4%E6%8E%A5%E8%90%BD%E5%9C%B0-mrfpyewy",
+      "status": 200,
+      "final_url": "https://trrb.net/trump/%E6%88%BF%E4%BB%B7%E7%A7%9F%E9%87%91%E5%8E%8B%E5%9E%AE%E6%B0%91%E4%BC%97%E4%B8%A4%E5%85%9A%E4%BD%8F%E6%88%BF%E6%B3%95%E6%A1%88%E6%97%A0%E9%9C%80%E7%89%B9%E6%9C%97%E6%99%AE%E7%AD%BE%E5%AD%97%E7%9B%B4%E6%8E%A5%E8%90%BD%E5%9C%B0-mrfpyewy",
+      "prerender": "article-edge-v2-pretty",
+      "title_length": 33,
+      "h1_length": 26,
+      "canonical": "https://trrb.net/trump/%E6%88%BF%E4%BB%B7%E7%A7%9F%E9%87%91%E5%8E%8B%E5%9E%AE%E6%B0%91%E4%BC%97%E4%B8%A4%E5%85%9A%E4%BD%8F%E6%88%BF%E6%B3%95%E6%A1%88%E6%97%A0%E9%9C%80%E7%89%B9%E6%9C%97%E6%99%AE%E7%AD%BE%E5%AD%97%E7%9B%B4%E6%8E%A5%E8%90%BD%E5%9C%B0-mrfpyewy",
+      "body_length": 852,
+      "schema": true,
+      "noindex": false
+    }
+  ],
   "pages": {
     "https://trrb.net/": {
       "status": 200,
       "final_url": "https://trrb.net/",
       "asset_count": 35,
-      "bad_assets": []
+      "bad_assets": [],
+      "direct_article_links": 0
     },
     "https://trrb.net/ice": {
       "status": 200,
       "final_url": "https://trrb.net/ice",
       "asset_count": 13,
-      "bad_assets": []
+      "bad_assets": [],
+      "direct_article_links": 0
     },
     "https://trrb.net/ice/news": {
       "status": 200,
       "final_url": "https://trrb.net/ice/news",
       "asset_count": 17,
-      "bad_assets": []
+      "bad_assets": [],
+      "direct_article_links": 0
     }
   },
   "failures": [
     "host redirect http://www.trrb.net/ => 301 https://www.trrb.net/",
-    "article sitemap sample too small: 0"
+    {
+      "page": "https://trrb.net/",
+      "problem": "too few direct article links: 0"
+    },
+    {
+      "page": "https://trrb.net/ice",
+      "problem": "too few direct article links: 0"
+    }
   ],
   "warnings": []
 }

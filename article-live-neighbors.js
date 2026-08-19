@@ -4,6 +4,18 @@
   const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
   const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const SECTIONS = {
+    "重要新闻": "important-news",
+    "热门头条": "hot-headlines",
+    "美国时政": "us-politics",
+    "美国警情": "us-crime",
+    "中国官场": "china-officialdom",
+    "移民美国": "immigration",
+    "庇护百科": "asylum",
+    "驱逐快报": "deport",
+    "ICE执法动态": "ice",
+    "ICE执法": "ice"
+  };
 
   function esc(value) {
     return String(value ?? "")
@@ -26,9 +38,25 @@
     return url;
   }
 
+  function articleHref(article) {
+    if (!article) return "/";
+    if (typeof window.TRRB_articleUrl === "function") {
+      const routed = window.TRRB_articleUrl(article);
+      if (routed) return routed;
+    }
+    const slug = String(article.slug || "").trim();
+    if (slug) {
+      const topic = String(article.topic_key || "").trim().toLowerCase();
+      const category = String(article.category_name || "").trim();
+      const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (SECTIONS[category] || "news");
+      return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+    }
+    return article.id ? `/article.html?id=${encodeURIComponent(article.id)}` : "/";
+  }
+
   function neighborHtml(article, label, title) {
     if (!article) return "";
-    return `<a class="article-neighbor" href="./article.html?id=${encodeURIComponent(article.id)}"><span>${label}</span><strong>${title}：${esc(article.title)}</strong></a>`;
+    return `<a class="article-neighbor" href="${esc(articleHref(article))}"><span>${label}</span><strong>${title}：${esc(article.title)}</strong></a>`;
   }
 
   function relatedHtml(article) {
@@ -37,7 +65,7 @@
     const fallback = typeof window.TRRB_categoryPlaceholder === "function"
       ? window.TRRB_categoryPlaceholder(category)
       : "./image-placeholder.svg";
-    return `<a class="related-item${image ? "" : " has-no-image"}" href="./article.html?id=${encodeURIComponent(article.id)}">${image ? `<img src="${esc(image)}" width="500" height="240" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-fallback="${esc(fallback)}" onerror="if(!this.dataset.fallbackTried&&this.dataset.fallback){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;}else{this.remove()}" alt="" />` : ""}<span>${esc(category)}</span><strong>${esc(article.title || "")}</strong></a>`;
+    return `<a class="related-item${image ? "" : " has-no-image"}" href="${esc(articleHref(article))}">${image ? `<img src="${esc(image)}" width="500" height="240" loading="lazy" decoding="async" referrerpolicy="no-referrer" data-fallback="${esc(fallback)}" onerror="if(!this.dataset.fallbackTried&&this.dataset.fallback){this.dataset.fallbackTried='1';this.src=this.dataset.fallback;}else{this.remove()}" alt="" />` : ""}<span>${esc(category)}</span><strong>${esc(article.title || "")}</strong></a>`;
   }
 
   async function api(path) {
@@ -55,13 +83,13 @@
   }
 
   async function fetchCurrent(id) {
-    const fields = "id,title,category_name,cover_image,published_at,created_at";
+    const fields = "id,title,slug,category_id,category_name,topic_key,cover_image,published_at,created_at";
     const rows = await api(`select=${encodeURIComponent(fields)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`);
     return rows[0] || null;
   }
 
   async function fetchPublished(limit = 240) {
-    const fields = "id,title,category_name,cover_image,published_at,created_at";
+    const fields = "id,title,slug,category_id,category_name,topic_key,cover_image,published_at,created_at";
     return api(`select=${encodeURIComponent(fields)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`);
   }
 

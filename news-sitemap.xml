@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-d25e1a59494e4dc445e1ff7e77f6c0dcda04faad</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T01:43:40.317Z</news:publication_date>
+        <news:title>美国联邦法院认罪中国公民陈鼎伟涉军用设备案</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-4aa518e6073ea5bb904096a7c49faba13b6dfbb5</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T01:43:39.708Z</news:publication_date>
+        <news:title>华人陈定伟联邦认罪涉购美军用设备</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-cb5f657b242dda84225b52728d19657a9d645054</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T01:43:39.064Z</news:publication_date>
+        <news:title>西雅图ICE逮捕越南籍谋杀和抢劫罪犯</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-4ebeb63fc31042f63dfd8f11e9d6897b517ba18e</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T01:21:57.262Z</news:publication_date>
+        <news:title>明尼苏达Shakopee男子穿反特朗普T恤抗议ICE</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-53523ef4600489bc1b8deba2a1a6e02dad1e76e7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T01:04:16.702Z</news:publication_date>
+        <news:title>新奥尔良ICE移除涉嫌洗钱危地马拉逃犯</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-fba7dd83e573cae753ac3a2fef96eb80ea0aa2d3</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T00:50:30.026Z</news:publication_date>
+        <news:title>德州达拉斯县移民嫌疑人袭警被捕</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-a10e072bdac402289a636b995041805ab43cae7f</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2134,14 +2182,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-17T02:16:22.343Z</news:publication_date>
         <news:title>“特朗普丢下她自己逃了！”莱维特辞职后，伊朗抛出震撼“背叛”指控</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-9058ce51ce4aaea8f86eaa26210a4ad2e0798a50</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T01:05:02.987Z</news:publication_date>
-        <news:title>西雅图ICE拘押墨西哥籍女移民启动遣返</news:title>
       </news:news>
     </url>
 </urlset>

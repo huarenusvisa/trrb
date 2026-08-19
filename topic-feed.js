@@ -48,7 +48,17 @@
     });
   }
 
+  function syncFinanceCard() {
+    document.querySelectorAll('.topic-finance .topic-latest').forEach((box) => {
+      box.textContent = '新闻｜自选｜行情｜基金｜我的';
+    });
+    document.querySelectorAll('.topic-finance .topic-focus-copy > p').forEach((box) => {
+      box.textContent = '财经新闻 · 自选行情 · ETF基金 · 投资研究';
+    });
+  }
+
   async function loadTopicFeed() {
+    syncFinanceCard();
     const fallback = await loadFallback();
     await Promise.all(["trump", "ice"].map(async (topic) => {
       try {

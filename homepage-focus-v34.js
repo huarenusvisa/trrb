@@ -34,7 +34,7 @@
     hero.dataset.focusOnly = "true";
     hero.dataset.focusCount = "0";
     hero.innerHTML = `
-      <a class="hero-focus-empty" href="./listing.html?category=${encodeURIComponent("重要新闻")}">
+      <a class="hero-focus-empty" href="/important-news">
         <span>重要新闻</span>
         <strong>当前暂无重点新闻</strong>
         <small>普通新闻不会进入首页焦点大图</small>

@@ -8,7 +8,6 @@ on:
       - 'data/legal/**'
       - 'scripts/round15-node6-unified-legal-database.mjs'
       - 'scripts/round16-node2-unified-db-sync-audit.mjs'
-      - 'scripts/generate-legal-sitemap.mjs'
       - '.github/workflows/round16-node2-unified-db-sync.yml'
   workflow_run:
     workflows: ['第十六轮节点1-五大官方法律源自动采集触发链闭环']
@@ -22,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  rebuild-verify-production:
+  rebuild-verify-database:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -30,65 +29,44 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
       - name: 从五大官方源重建统一法律数据库
         run: node scripts/round15-node6-unified-legal-database.mjs
-      - name: 验收统一数据库与版本同步
+
+      - name: 验收统一数据库版本与去重完整性
         run: node scripts/round16-node2-unified-db-sync-audit.mjs
-      - name: 同步法律栏目Sitemap
-        run: node scripts/generate-legal-sitemap.mjs
-      - name: 数据变化时提交统一数据库、法律Sitemap和验收报告
+
+      # Do NOT generate sitemap-legal.xml here. A newly rebuilt legal database
+      # necessarily has a new datasetVersion before the AI analysis file has
+      # caught up. The strict legal sitemap generator intentionally requires
+      # exact N/N DB↔AI alignment, so running it in node2 would deadlock every
+      # legitimate database update before the new DB could even be committed.
+      # The AI workflow is triggered by the DB commit below; sitemap generation
+      # remains a post-analysis responsibility.
+      - name: 数据变化时仅提交统一法律数据库与数据库验收报告
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/legal/unified-legal-authorities-latest.json round15-node6-unified-legal-database-audit.json round16-node2-unified-db-sync-audit.json sitemap-legal.xml
+          git add data/legal/unified-legal-authorities-latest.json round15-node6-unified-legal-database-audit.json round16-node2-unified-db-sync-audit.json
           if git diff --cached --quiet; then
-            echo 'No unified database or legal sitemap changes to commit.'
-          else
-            git commit -m 'Round 16 node2: synchronize unified legal database version'
-            git pull --rebase origin main
-            git push origin HEAD:main
+            echo 'No unified legal database changes to commit.'
+            exit 0
           fi
-      - name: 读取本次统一数据库版本
-        id: version
+          git commit -m 'Round 16 node2: synchronize unified legal database version'
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: 记录数据库版本并交棒AI同步
+        shell: bash
         run: |
+          set -euo pipefail
           VERSION=$(node -p "require('./data/legal/unified-legal-authorities-latest.json').datasetVersion")
           COUNT=$(node -p "require('./data/legal/unified-legal-authorities-latest.json').count")
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
-          echo "Expected production version: $VERSION records=$COUNT"
-      - name: 等待生产部署并验证版本一致
-        env:
-          EXPECTED_VERSION: ${{ steps.version.outputs.version }}
-          EXPECTED_COUNT: ${{ steps.version.outputs.count }}
-        run: |
-          node <<'NODE'
-          const expectedVersion=process.env.EXPECTED_VERSION;
-          const expectedCount=Number(process.env.EXPECTED_COUNT);
-          const url='https://trrb.net/data/legal/unified-legal-authorities-latest.json';
-          let last='';
-          for(let i=0;i<20;i++){
-            try{
-              const res=await fetch(`${url}?round16node2=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
-              last=`HTTP ${res.status}`;
-              if(res.ok){
-                const data=await res.json();
-                last=`version=${data.datasetVersion} count=${data.count}`;
-                if(data.datasetVersion===expectedVersion && Number(data.count)===expectedCount){
-                  console.log(`PASS production unified legal database synchronized — ${last}`);
-                  console.log('ROUND16 NODE2 PRODUCTION PASS');
-                  process.exit(0);
-                }
-              }
-            }catch(e){last=e.message}
-            console.log(`Production not synchronized yet (${i+1}/20): ${last}`);
-            await new Promise(r=>setTimeout(r,15000));
-          }
-          console.error(`FAIL production unified database version mismatch: ${last}`);
-          process.exit(1);
-          NODE
-      - name: 节点2最终结论
-        run: |
-          echo 'ROUND16 NODE2 PASS: unified legal database automatic rebuild, content-addressed versioning, legal sitemap synchronization, and production synchronization verified'
+          echo "ROUND16 NODE2 DATABASE PASS: version=$VERSION records=$COUNT"
+          echo 'The data/legal DB commit triggers the legal AI analysis workflow. Production legal sitemap/deploy must wait for strict DB↔AI N/N alignment.'

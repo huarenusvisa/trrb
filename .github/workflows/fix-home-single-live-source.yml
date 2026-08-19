@@ -1,42 +1,56 @@
-name: Fix Homepage Single Live Source
+name: Homepage Single Live Source Validation
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - 'scripts/fix-home-single-live-source.mjs'
+      - 'articles-home.js'
+      - 'homepage-refresh-guard.js'
+      - 'index.html'
+      - 'netlify/functions/public-home-articles.js'
       - '.github/workflows/fix-home-single-live-source.yml'
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: validate-home-single-live-source
+  cancel-in-progress: true
 
 jobs:
-  repair:
+  validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Patch homepage live source
-        run: node scripts/fix-home-single-live-source.mjs
-      - name: Verify stale archive paths removed
+      - name: Verify current single-source architecture
+        shell: bash
         run: |
-          grep -q '/.netlify/functions/public-home-articles' articles-home.js
-          grep -q 'HOME_MAX_AGE_MS = 14' articles-home.js
-          ! grep -q 'articles-chunk-' index.html
-          ! grep -q 'articles-home-index.js' index.html
-          ! grep -q 'mergeFresh(live,' articles-home-live-fix.js
-      - name: Commit repair
+          set -euo pipefail
+          grep -q 'HOME_MAX_AGE_MS = 4' articles-home.js
+          grep -q 'window.renderHome = renderHome' articles-home.js
+          grep -q 'public-home-articles' homepage-refresh-guard.js
+          grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
+          ! grep -q '<script[^>]*articles-home-live-fix.js' index.html
+          ! grep -q '<script[^>]*articles-home-index.js' index.html
+
+      - name: Verify production homepage live source
+        shell: bash
         run: |
-          if git diff --quiet; then
-            echo 'No changes required'
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add articles-home.js articles-home-live-fix.js index.html
-          git commit -m 'Fix homepage stale news with single live source'
-          git push
+          set -euo pipefail
+          ok=0
+          for attempt in $(seq 1 60); do
+            stamp="${GITHUB_RUN_ID}-${attempt}"
+            home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?single-source=$stamp" || true)
+            api=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-articles?mode=homepage&single-source=$stamp" || true)
+            if printf '%s' "$home" | grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' \
+              && printf '%s' "$home" | grep -q 'articles-home.js?v=20260819-seo-canonical-1' \
+              && printf '%s' "$api" | grep -q '"mode":"homepage"'; then
+              ok=1
+              break
+            fi
+            sleep 5
+          done
+          test "$ok" = "1"
+          echo 'HOME_SINGLE_LIVE_SOURCE_VALIDATION_PASS=true'

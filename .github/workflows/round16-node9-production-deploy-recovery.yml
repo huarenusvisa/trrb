@@ -8,6 +8,7 @@ on:
     paths:
       - '.github/workflows/round16-node9-production-deploy-recovery.yml'
       - 'netlify.toml'
+      - 'netlify/edge-functions/00-legacy-article-query-guard.ts'
       - 'netlify/edge-functions/article-prerender.ts'
       - 'netlify/edge-functions/category-prerender.ts'
       - 'netlify/edge-functions/sitemap-live.ts'
@@ -78,6 +79,7 @@ jobs:
             news=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" || true)
             sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
             category_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?seo-deploy=$stamp" | tr -d '\r' || true)
+            legacy_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=wp-117123&seo-deploy=$stamp" | tr -d '\r' || true)
 
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
@@ -90,6 +92,8 @@ jobs:
             ice_article_links=$(printf '%s' "$ice" | grep -Eo 'href="/ice/[^"]+' | grep -v 'href="/ice/news' | wc -l | tr -d ' ')
             legacy_sitemap=$(printf '%s\n%s' "$sitemap" "$news" | grep -c 'article.html?id=' || true)
             sitemap_v3=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v3-ice-safe' || true)
+            legacy_410=$(printf '%s' "$legacy_headers" | grep -c '^HTTP/.* 410' || true)
+            legacy_noindex=$(printf '%s' "$legacy_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
             first_ice_url=$(printf '%s' "$news" | grep -Eo '<loc>https://trrb.net/ice/[^<]+' | head -1 | sed 's#<loc>##' || true)
             ice_article_ok=0
             if [ -n "$first_ice_url" ]; then
@@ -100,10 +104,10 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt home=$home_marker/$home_article_links category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy=$legacy_sitemap sitemap_v3=$sitemap_v3 ice_article_ok=$ice_article_ok"
+            echo "attempt=$attempt home=$home_marker/$home_article_links category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex sitemap_v3=$sitemap_v3 ice_article_ok=$ice_article_ok"
 
-            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$sitemap_v3" -ge 1 ] && [ "$ice_article_ok" -eq 1 ]; then
-              echo 'PRODUCTION SEO DISCOVERY + CATEGORY SSR + ICE INDEXABILITY PASS'
+            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$ice_article_ok" -eq 1 ]; then
+              echo 'PRODUCTION SEO DISCOVERY + CATEGORY SSR + LEGACY 410 + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

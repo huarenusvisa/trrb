@@ -1,0 +1,5 @@
+# Explicitly retired URLs. Submit only when this file changes or on manual runs.
+# Keep only URLs that are confirmed 301/404/410/noindex in production.
+https://trrb.net/category/https-www-trrb-cc/0/
+https://trrb.net/category/https-www-trrb-cc-cat8/0/
+https://trrb.net/article.html?id=wp-117123

@@ -1,0 +1,40 @@
+name: Runtime Security Production Bridge
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'netlify/functions/**'
+      - 'admin/**'
+      - 'scripts/admin-auth-regression-audit.mjs'
+      - 'scripts/round14-node9-security-audit.mjs'
+      - '.github/workflows/admin-auth-regression-audit.yml'
+      - '.github/workflows/runtime-security-production-bridge.yml'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: trrb-runtime-security-production-bridge
+  cancel-in-progress: true
+
+jobs:
+  dispatch-central-production:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate staff authorization before production dispatch
+        run: node scripts/admin-auth-regression-audit.mjs
+      - name: Dispatch central exact-SHA production deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method POST \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows/round16-node9-production-deploy-recovery.yml/dispatches" \
+            -f ref=main
+          echo 'Runtime/admin changes passed authorization audit; central production deployment dispatched.'

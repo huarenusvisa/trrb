@@ -13,6 +13,12 @@
 /finance/*
   X-Robots-Tag: noindex, follow, noarchive
 
+/jobs/
+  X-Robots-Tag: noindex, follow, noarchive
+
+/jobs/*
+  X-Robots-Tag: noindex, follow, noarchive
+
 /jobs/search.html
   X-Robots-Tag: noindex, follow, noarchive
 

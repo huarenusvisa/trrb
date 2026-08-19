@@ -69,21 +69,13 @@ async function authenticateStaff(event, allowedRoles = ["owner", "editor"]) {
     throw error;
   }
 
-  // Staff authorization is identity-bound. Do not fall back to email lookup:
-  // email addresses can be reused after an Auth user is deleted/re-created,
-  // while admin_users.user_id is the explicit authorization binding.
+  // admin_users.user_id is the single staff authorization source. No e-mail
+  // fallback and no environment-variable owner bypass: identity changes must be
+  // made explicitly in the protected admin_users table.
   const rows = await rest("admin_users", {
     query: { select: "id,user_id,email,role,is_active", user_id: `eq.${user.id}`, is_active: "eq.true", limit: "1" }
   });
-  let admin = Array.isArray(rows) ? rows[0] : null;
-
-  const email = safeText(user.email, 300).toLowerCase();
-  const ownerEmail = safeText(process.env.TRRB_OWNER_EMAIL, 300).toLowerCase();
-  const ownerUid = safeText(process.env.TRRB_OWNER_UID, 100);
-  if (!admin && ownerEmail && ownerUid && user.id === ownerUid && email === ownerEmail) {
-    admin = { user_id: ownerUid, email: ownerEmail, role: "owner", is_active: true };
-  }
-
+  const admin = Array.isArray(rows) ? rows[0] : null;
   const role = String(admin?.role || "").toLowerCase();
   if (!admin || !allowedRoles.includes(role)) {
     const error = new Error("这个账号没有所需后台权限");

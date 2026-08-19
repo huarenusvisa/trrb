@@ -34,6 +34,10 @@ if (!includesText(index, "articles-home.js?v=20260819-single-bundle-2")) failure
 if (!includesText(index, "homepage-immigration-hub.js?v=20260819-reuse-bundle-2")) failures.push("index.html is missing current homepage hub bundle-reuse token");
 if (!includesText(index, '<a href="/immigration">移民美国</a>')) failures.push("index.html primary immigration navigation is not canonical /immigration");
 if (!includesText(index, '<a href="/jobs/">招聘求职</a>')) failures.push("index.html lost the independent jobs navigation entry");
+if (!includesText(index, '<link rel="canonical" href="https://trrb.net/"')) failures.push("index.html is missing canonical https://trrb.net/");
+if (!/name=["']robots["'][^>]*content=["'][^"']*index,follow/i.test(index.toString("utf8"))) failures.push("index.html is missing index,follow robots directive");
+if (!includesText(index, 'property="og:title"')) failures.push("index.html is missing og:title");
+if (!includesText(index, 'property="og:url" content="https://trrb.net/"')) failures.push("index.html og:url is not canonical root");
 
 const listing = await bytes("listing.html");
 if (!startsText(listing, "<!doctype html>")) failures.push("listing.html is not HTML");

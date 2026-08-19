@@ -16,10 +16,18 @@
     if (value && typeof value === "object") return value;
     try { return typeof value === "string" ? JSON.parse(value) : {}; } catch { return {}; }
   }
+  function articleHref(row) {
+    if (typeof window.TRRB_articleUrl === "function") {
+      const routed = window.TRRB_articleUrl({ ...row, topicKey: "ice", topic_key: "ice", category: "ICE执法动态" });
+      if (routed) return routed;
+    }
+    const slug = String(row?.slug || row?.id || "").trim();
+    return slug ? `/ice/${encodeURIComponent(slug)}` : "/ice";
+  }
   async function load() {
     try {
       const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-      url.searchParams.set("select", "id,title,summary,cover_image,published_at,source_account,metadata,status,topic_key");
+      url.searchParams.set("select", "id,title,slug,summary,cover_image,published_at,source_account,metadata,status,topic_key");
       url.searchParams.set("topic_key", "eq.ice");
       url.searchParams.set("status", "eq.published");
       url.searchParams.set("order", "published_at.desc");
@@ -34,10 +42,11 @@
       });
       if (!featured) { box.hidden = true; box.innerHTML = ""; return; }
       const { row, meta } = featured;
+      const href = articleHref(row);
       box.hidden = false;
       box.innerHTML = `<article class="ice-featured-video-card">
         <div class="ice-featured-video-label">优先视频 · 48小时临时置顶</div>
-        <h3><a href="/article.html?id=${encodeURIComponent(row.id)}">${escapeHtml(row.title)}</a></h3>
+        <h3><a href="${escapeHtml(href)}">${escapeHtml(row.title)}</a></h3>
         <video controls playsinline preload="metadata" poster="${escapeHtml(meta.video_poster || row.cover_image || "")}">
           <source src="${escapeHtml(meta.video_url)}" type="video/mp4">
           您的浏览器暂不支持视频播放。

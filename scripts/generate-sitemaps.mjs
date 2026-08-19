@@ -53,6 +53,10 @@ const isIceArticle = (article) => {
   const category = cleanText(article?.category_name || '');
   return topic === 'ice' || category === 'ICE执法动态' || category === 'ICE执法';
 };
+const isSpecialTopicArticle = (article) => {
+  const topic = cleanText(article?.topic_key || '').toLowerCase();
+  return topic === 'ice' || topic === 'trump';
+};
 const isIndexableArticle = (article) => {
   const body = visibleText(article?.content || article?.summary || '');
   if (isIceArticle(article)) return Boolean(cleanText(article?.title || '')) && Boolean(body);
@@ -183,6 +187,9 @@ if (categories.length) {
   for (const category of categories.filter((item) => item.include_in_sitemap !== false && cleanText(item.slug))) {
     staticEntries.push({ loc: categoryUrl(category), lastmod: TODAY, priority: '0.8', changefreq: 'hourly' });
   }
+  if (!staticEntries.some((entry) => entry.loc === `${SITE}/trump`)) {
+    staticEntries.push({ loc: `${SITE}/trump`, lastmod: TODAY, priority: '0.8', changefreq: 'hourly' });
+  }
   staticEntries.push({ loc: `${SITE}/ice/news`, lastmod: TODAY, priority: '0.7', changefreq: 'hourly' });
 } else {
   [...FALLBACK_CATEGORY_SLUGS.values()].forEach((slug) => staticEntries.push({
@@ -191,9 +198,11 @@ if (categories.length) {
     priority: '0.7',
     changefreq: 'daily'
   }));
+  staticEntries.push({ loc: `${SITE}/trump`, lastmod: TODAY, priority: '0.8', changefreq: 'hourly' });
 }
 
 const isAllowed = (article, idSet, nameSet) => {
+  if (isSpecialTopicArticle(article)) return true;
   if (!categories.length) return true;
   if (article?.category_id) return idSet.has(String(article.category_id));
   if (article?.category_name) return nameSet.has(String(article.category_name));
@@ -205,10 +214,12 @@ const seenTitles = new Set();
 const seenBodies = new Set();
 let thinExcluded = 0;
 let shortIcePreserved = 0;
+let specialTopicPreserved = 0;
 let duplicateExcluded = 0;
 for (const article of databaseArticles) {
   if (!article?.id || !cleanText(article?.title)) continue;
   if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames)) continue;
+  if (isSpecialTopicArticle(article)) specialTopicPreserved += 1;
 
   const body = visibleText(article?.content || article?.summary || '');
   if (!isIndexableArticle(article)) {
@@ -251,4 +262,4 @@ if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} canonical URLs; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; excluded duplicate ${duplicateExcluded}`);
+console.log(`[sitemap] generated ${entries.length} canonical URLs; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);

@@ -6,7 +6,7 @@ const PRIVATE_BUCKET = process.env.ICE_REPORT_PRIVATE_BUCKET || "ice-report-priv
 const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_HOURS = 6;
 const MAX_FILES = 5;
-const MAX_PREPARED_UPLOADS = 20;
+const MAX_PREPARED_UPLOADS = 10;
 const MIME_LIMITS = {
   "image/jpeg": 15 * 1024 * 1024,
   "image/png": 15 * 1024 * 1024,
@@ -198,14 +198,30 @@ async function prepareUpload(event, input) {
   return { path, signed_url: signedUrl, expires_in: 7200 };
 }
 
-async function objectExists(path) {
+async function objectInfo(path) {
   const endpoint = `/storage/v1/object/info/${encodeURIComponent(PRIVATE_BUCKET)}/${path.split("/").map(encodeURIComponent).join("/")}`;
   try {
-    await serviceFetch(endpoint, { method: "GET" });
-    return true;
+    return await serviceFetch(endpoint, { method: "GET" });
   } catch {
-    return false;
+    return null;
   }
+}
+
+function actualObjectSize(info) {
+  const candidates = [info?.size, info?.metadata?.size, info?.metadata?.contentLength, info?.metadata?.content_length];
+  for (const candidate of candidates) {
+    const size = Number(candidate);
+    if (Number.isFinite(size) && size >= 0) return size;
+  }
+  return null;
+}
+
+function actualObjectMime(info) {
+  return safeText(
+    info?.contentType || info?.content_type || info?.mimetype || info?.mime_type ||
+    info?.metadata?.mimetype || info?.metadata?.contentType || info?.metadata?.content_type,
+    120
+  ).toLowerCase();
 }
 
 async function validUploadToken(path, type, size, hash) {
@@ -292,8 +308,21 @@ async function submitReport(event, input) {
       error.statusCode = 400;
       throw error;
     }
-    if (!(await objectExists(path))) {
+    const info = await objectInfo(path);
+    if (!info) {
       const error = new Error("有文件尚未上传完成，请重试");
+      error.statusCode = 400;
+      throw error;
+    }
+    const storedSize = actualObjectSize(info);
+    const storedMime = actualObjectMime(info);
+    if (storedSize !== null && storedSize !== size) {
+      const error = new Error("上传文件实际大小与准备记录不一致，请重新选择文件");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (storedMime && storedMime !== type) {
+      const error = new Error("上传文件实际类型与准备记录不一致，请重新选择文件");
       error.statusCode = 400;
       throw error;
     }

@@ -55,6 +55,12 @@ if (!includesText(article, "category-runtime-v3.js?v=20260819-preserve-independe
 if (!includesText(article, "article-route-runtime.js?v=20260819-seo-v5")) failures.push("article.html is missing current article route runtime");
 if (!includesText(article, "nav-expose-link")) failures.push("article.html is missing persistent expose navigation link");
 
+const jobsHub = await bytes("jobs/index.html");
+if (!startsText(jobsHub, "<!doctype html>")) failures.push("jobs/index.html is not HTML");
+if (!/name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(jobsHub.toString("utf8"))) failures.push("jobs prelaunch hub must remain noindex until the production jobs database is live");
+if (!includesText(jobsHub, "上线准备中")) failures.push("jobs prelaunch hub is missing its deployment-status disclosure");
+if (includesText(jobsHub, "均接入同一正式数据源")) failures.push("jobs prelaunch hub still claims a production data source is already live");
+
 // Redirect rules execute after Edge Functions. This alphabetically-first inline
 // Edge guard prevents article/category/sitemap/feed responders from ending the
 // chain with a www.trrb.net 200 before the host canonical redirect can happen.
@@ -128,16 +134,18 @@ if (!includesText(sitemap, "sitemap-articles-1.xml")) failures.push("sitemap.xml
 const sitemapStatic = await bytes("sitemap-static.xml");
 if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://trrb.net/</loc>")) failures.push("sitemap-static.xml is missing canonical root URL");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge hub");
-if (!includesText(sitemapStatic, "<loc>https://trrb.net/jobs/</loc>")) failures.push("sitemap-static.xml is missing jobs hub");
+if (includesText(sitemapStatic, "<loc>https://trrb.net/jobs/</loc>")) failures.push("sitemap-static.xml must not index the prelaunch jobs hub");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/legal/</loc>")) failures.push("sitemap-static.xml is missing legal hub");
 if (includesText(sitemapStatic, "<loc>https://trrb.net/finance/</loc>")) failures.push("sitemap-static.xml must not index finance demo preview");
 if (includesText(sitemapStatic, "https://www.trrb.net/")) failures.push("sitemap-static.xml still contains www.trrb.net URLs");
+if (/https:\/\/trrb\.net\/jobs(?:\/|\?|<)/i.test(sitemapStatic.toString("utf8"))) failures.push("sitemap-static.xml contains a prelaunch jobs route");
 
 const sitemapArticles = await bytes("sitemap-articles-1.xml");
 const sitemapArticlesText = sitemapArticles.toString("utf8");
 if (!includesText(sitemapArticles, "<urlset")) failures.push("sitemap-articles-1.xml is not a URL set");
 if (!/https:\/\/trrb\.net\/[^/<]+\/[^<]+/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml is missing pretty article URLs");
 if (/\/article\.html\?id=/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml still contains legacy article URLs");
+if (/https:\/\/trrb\.net\/jobs(?:\/|\?|<)/i.test(sitemapArticlesText)) failures.push("article sitemap contains a prelaunch jobs route");
 
 const legalSitemap = await bytes("sitemap-legal.xml");
 const legalSitemapText = legalSitemap.toString("utf8");
@@ -179,7 +187,7 @@ if (headers[0] === 0xff && headers[1] === 0xd8) failures.push("_headers was repl
 if (!includesText(headers, "Cache-Control")) failures.push("_headers is missing cache rules");
 for (const route of [
   "/finance/", "/finance/*",
-  "/jobs/search.html", "/jobs/publish.html", "/jobs/seeker.html", "/jobs/manage.html", "/jobs/contact.html", "/jobs/review.html",
+  "/jobs/", "/jobs/*", "/jobs/search.html", "/jobs/publish.html", "/jobs/seeker.html", "/jobs/manage.html", "/jobs/contact.html", "/jobs/review.html",
   "/expose", "/expose.html", "/thanks.html", "/delete-account.html"
 ]) {
   if (!headersText.includes(`${route}\n  X-Robots-Tag: noindex, follow, noarchive`)) failures.push(`_headers missing noindex protection for ${route}`);

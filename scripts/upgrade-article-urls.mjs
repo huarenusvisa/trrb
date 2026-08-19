@@ -68,7 +68,6 @@ function articleSection(article, categoriesById, categoriesByName) {
   const topic = String(article.topic_key || '').trim().toLowerCase();
   if (topic === 'trump') return 'trump';
   if (topic === 'ice') return 'ice';
-
   const byId = categoriesById.get(String(article.category_id || ''));
   if (byId?.slug) return canonicalSection(byId.slug);
   const byName = categoriesByName.get(String(article.category_name || '').trim());
@@ -94,20 +93,6 @@ function upgradeText(text, routes) {
   });
 }
 
-function escapeXml(value = '') {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;');
-}
-
-function dateOnly(value) {
-  const date = new Date(value || Date.now());
-  return Number.isNaN(date.getTime()) ? new Date().toISOString().slice(0, 10) : date.toISOString().slice(0, 10);
-}
-
 const categories = await fetchAll('categories', 'id,name,slug', { is_active: 'eq.true' });
 const categoriesById = new Map(categories.map((row) => [String(row.id || ''), row]));
 const categoriesByName = new Map(categories.map((row) => [String(row.name || '').trim(), row]));
@@ -126,43 +111,29 @@ for (const article of articles) {
 
 const files = ['sitemap.xml', 'news-sitemap.xml', 'feed.xml'];
 let replacements = 0;
-let sitemapAdded = 0;
+let upgradedUrls = 0;
 for (const file of files) {
   if (!fs.existsSync(file)) continue;
   const before = fs.readFileSync(file, 'utf8');
-  let after = upgradeText(before, routes);
-
-  if (file === 'sitemap.xml' && /<urlset\b/i.test(after)) {
-    const existing = new Set(
-      [...after.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)]
-        .map((match) => match[1].replaceAll('&amp;', '&').trim())
-    );
-    const blocks = [];
-    for (const article of articles) {
-      const id = String(article.id || '').trim();
-      const loc = routes.get(id);
-      if (!id || !loc || existing.has(loc) || !String(article.title || '').trim()) continue;
-      blocks.push(`  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${dateOnly(article.published_at || article.created_at)}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>`);
-      existing.add(loc);
-      sitemapAdded += 1;
-    }
-    if (blocks.length) {
-      after = after.replace(/\s*<\/urlset>\s*$/i, `\n${blocks.join('\n')}\n</urlset>\n`);
-    }
-  }
+  const beforeLegacy = (before.match(/https:\/\/(?:www\.)?trrb\.net\/article\.html\?id=/gi) || []).length;
+  const after = upgradeText(before, routes);
+  const afterLegacy = (after.match(/https:\/\/(?:www\.)?trrb\.net\/article\.html\?id=/gi) || []).length;
+  upgradedUrls += Math.max(0, beforeLegacy - afterLegacy);
 
   if (after !== before) {
     fs.writeFileSync(file, after);
     replacements += 1;
-    console.log(`[article-urls] upgraded ${file}`);
+    console.log(`[article-urls] upgraded ${file}: ${beforeLegacy} -> ${afterLegacy} legacy URLs`);
   } else {
     console.log(`[article-urls] no legacy article URLs in ${file}`);
   }
 }
 
-console.log(`[article-urls] route map ${routes.size}; sitemap late-publish additions ${sitemapAdded}; files changed ${replacements}`);
+// Do not append any published rows here. generate-sitemaps.mjs is the single
+// authority for duplicate/thin/ICE eligibility. Appending all rows here used to
+// reintroduce content that the sitemap generator intentionally excluded.
+console.log(`[article-urls] route map ${routes.size}; upgraded URLs ${upgradedUrls}; files changed ${replacements}`);
 
-// Only after sitemap/news-sitemap/feed have canonical pretty URLs do we write
-// server-delivered homepage and ICE discovery anchors. This prevents the build
-// itself from reintroducing /article.html?id= links into crawlable HTML.
+// Only after sitemap/news-sitemap/feed hold canonical pretty URLs do we write
+// server-delivered homepage and ICE discovery anchors.
 await import('./inject-static-news-links.mjs');

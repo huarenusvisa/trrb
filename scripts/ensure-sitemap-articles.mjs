@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-// Every Netlify build path, including Build Hook deployments, runs this assurance
-// step. Stamp the exact checkout revision before SEO validation so production can
-// prove which main commit is actually serving traffic.
-await import('./write-deploy-version.mjs');
+// This script is intentionally side-effect free. It runs both during full
+// Netlify builds and during the scheduled metadata-only SEO sync. Exact deploy
+// revision stamping belongs to optimize-homepage-performance.mjs, which only
+// runs in the full production build path.
 
 const ROOT = process.cwd();
 const SITEMAP = path.join(ROOT, 'sitemap.xml');

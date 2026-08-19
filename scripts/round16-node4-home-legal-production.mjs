@@ -2,7 +2,8 @@ import fs from 'node:fs';
 import { chromium } from 'playwright';
 
 const ORIGIN = (process.env.SITE_ORIGIN || 'https://trrb.net').replace(/\/$/, '');
-const EXPECTED_VERSION = '20260815-r16n4';
+const EXPECTED_JS_VERSION = '20260819-seo-canonical-1';
+const EXPECTED_CSS_VERSION = '20260815-r16n4';
 const expectedLinks = [
   ['最高法院', '/legal/?source=SCOTUS'],
   ['巡回法院', '/legal/?source=US_CIRCUIT'],
@@ -61,10 +62,10 @@ try {
   }
   check('legal database all-entry exists', state.links.some((item) => item.href === '/legal/' && item.text.includes('查看全部判例与新规')), 'href=/legal/');
 
-  const jsVersioned = state.resources.some((url) => url.includes(`homepage-immigration-hub.js?v=${EXPECTED_VERSION}`));
-  const cssVersioned = state.resources.some((url) => url.includes(`homepage-immigration-hub.css?v=${EXPECTED_VERSION}`));
-  check('homepage legal JS uses new cache-busted asset', jsVersioned, EXPECTED_VERSION);
-  check('homepage legal CSS uses new cache-busted asset', cssVersioned, EXPECTED_VERSION);
+  const jsVersioned = state.resources.some((url) => url.includes(`homepage-immigration-hub.js?v=${EXPECTED_JS_VERSION}`));
+  const cssVersioned = state.resources.some((url) => url.includes(`homepage-immigration-hub.css?v=${EXPECTED_CSS_VERSION}`));
+  check('homepage legal JS uses expected cache-busted asset', jsVersioned, EXPECTED_JS_VERSION);
+  check('homepage legal CSS uses expected cache-busted asset', cssVersioned, EXPECTED_CSS_VERSION);
 
   for (const [label, href] of expectedLinks) {
     const probe = await page.request.get(`${ORIGIN}${href}&r16n4=${Date.now()}`, { failOnStatusCode: false, timeout: 25000 });

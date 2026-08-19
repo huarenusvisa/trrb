@@ -7,11 +7,23 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/round16-node9-production-deploy-recovery.yml'
+      - 'netlify.toml'
+      - 'netlify/edge-functions/article-prerender.ts'
+      - 'netlify/edge-functions/sitemap-live.ts'
+      - 'netlify/edge-functions/news-sitemap-live.ts'
+      - 'netlify/edge-functions/feed-live.ts'
+      - 'article-route-runtime.js'
+      - 'scripts/generate-sitemaps.mjs'
       - 'scripts/inject-static-news-links.mjs'
       - 'scripts/ensure-sitemap-articles.mjs'
+      - 'scripts/upgrade-article-urls.mjs'
+      - 'scripts/google-indexing-acceptance.mjs'
+      - 'scripts/production-seo-diagnostic.mjs'
+      - 'scripts/round14-node5-duplicate-thin-content-audit.mjs'
       - 'index.html'
       - 'topic/ice/live-v6.html'
       - 'topic/ice/index.html'
+      - 'topic/ice/ice.js'
 
 permissions:
   contents: read
@@ -19,7 +31,7 @@ permissions:
 jobs:
   recover-production-deploy:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 30
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
@@ -46,28 +58,42 @@ jobs:
           echo 'No Netlify deployment credential or build hook is configured in GitHub Actions secrets.'
           exit 2
 
-      - name: 验收首页和ICE初始HTML可抓取新闻链接
+      - name: 验收首页、ICE、Sitemap和文章索引链
         shell: bash
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 90); do
+          for attempt in $(seq 1 120); do
             stamp=$(date +%s)
             home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?seo-deploy=$stamp" || true)
             ice=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/ice?seo-deploy=$stamp" || true)
+            sitemap=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" || true)
+            news=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" || true)
+            sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
 
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
             ice_marker=$(printf '%s' "$ice" | grep -c 'data-seo-static-snapshot="build"' || true)
-            ice_article_links=$(printf '%s' "$ice" | grep -Eo 'href="/ice/[^"]+' | wc -l | tr -d ' ')
+            ice_article_links=$(printf '%s' "$ice" | grep -Eo 'href="/ice/[^"]+' | grep -v 'href="/ice/news' | wc -l | tr -d ' ')
+            legacy_sitemap=$(printf '%s\n%s' "$sitemap" "$news" | grep -c 'article.html?id=' || true)
+            sitemap_v3=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v3-ice-safe' || true)
+            first_ice_url=$(printf '%s' "$news" | grep -Eo '<loc>https://trrb.net/ice/[^<]+' | head -1 | sed 's#<loc>##' || true)
+            ice_article_ok=0
+            if [ -n "$first_ice_url" ]; then
+              article_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' -A 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' "$first_ice_url?seo-deploy=$stamp" | tr -d '\r' || true)
+              article_html=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' -A 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' "$first_ice_url?seo-deploy=$stamp" || true)
+              if printf '%s' "$article_html" | grep -q 'data-trrb-edge-schema' && ! printf '%s\n%s' "$article_headers" "$article_html" | grep -qi 'noindex'; then
+                ice_article_ok=1
+              fi
+            fi
 
-            echo "attempt=$attempt home_marker=$home_marker home_links=$home_article_links ice_marker=$ice_marker ice_links=$ice_article_links"
+            echo "attempt=$attempt home_marker=$home_marker home_links=$home_article_links ice_marker=$ice_marker ice_links=$ice_article_links legacy_sitemap=$legacy_sitemap sitemap_v3=$sitemap_v3 ice_article_ok=$ice_article_ok"
 
-            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ]; then
-              echo 'PRODUCTION SEO DISCOVERY LINKS PASS'
+            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$sitemap_v3" -ge 1 ] && [ "$ice_article_ok" -eq 1 ]; then
+              echo 'PRODUCTION SEO DISCOVERY + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10
           done
 
-          echo 'Production did not expose the required server-delivered homepage/ICE article links in time.'
+          echo 'Production did not expose the required crawlable canonical SEO chain in time.'
           exit 1

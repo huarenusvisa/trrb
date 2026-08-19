@@ -1,61 +1,57 @@
-name: 修复首页过期旧闻与旧文章加载
+name: 首页实时源与历史文章兼容验收（只读）
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
-      - 'scripts/fix-home-stale-and-legacy-loader.mjs'
+      - 'article.html'
+      - 'articles-home.js'
+      - 'articles-home-index.js'
+      - 'netlify/edge-functions/00-legacy-article-query-guard.ts'
+      - 'netlify/edge-functions/article-prerender.ts'
       - '.github/workflows/fix-home-stale-and-legacy-loader.yml'
-  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: fix-home-stale-and-legacy-loader
-  cancel-in-progress: false
+  group: validate-home-live-and-legacy-loader
+  cancel-in-progress: true
 
 jobs:
-  patch-and-verify:
+  verify-only:
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: 修复首页数据源与旧文章加载
-        run: node scripts/fix-home-stale-and-legacy-loader.mjs
-      - name: 提交修复
+      - name: 校验源码不再使用旧自补丁结构
+        shell: bash
         run: |
-          git config user.name "TRRB Homepage Fix Bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add article.html articles-home.js
-          if git diff --cached --quiet; then
-            echo "Patch already applied."
-          else
-            git commit -m "Fix stale homepage archive entries and legacy article loading"
-            git push origin HEAD:main
-          fi
-      - name: 等待生产部署并验证
+          set -euo pipefail
+          grep -q 'fetchLivePublishedArticles(200)' articles-home.js
+          grep -q 'articles-home-index.js?v=20260819-archive' article.html
+          grep -q 'article.js?v=29.8-legacy-archive-rescue' article.html
+          grep -q 'archiveHasId' netlify/edge-functions/article-prerender.ts
+          grep -q 'archiveHasId' netlify/edge-functions/00-legacy-article-query-guard.ts
+
+      - name: 生产验收实时首页与历史文章
+        shell: bash
         run: |
           set -euo pipefail
           ok=0
           for attempt in $(seq 1 72); do
-            legacy=$(curl -sS --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=117302&homefix=${GITHUB_RUN_ID}-${attempt}" || true)
-            homejs=$(curl -sS --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home.js?homefix=${GITHUB_RUN_ID}-${attempt}" || true)
-            if printf '%s' "$legacy" | grep -q 'article.js?v=29.8-legacy-archive-rescue' \
-              && printf '%s' "$homejs" | grep -q 'fetchLivePublishedArticles(200)' \
-              && printf '%s' "$homejs" | grep -q 'renderHome(live);' \
-              && ! printf '%s' "$homejs" | grep -q 'renderHome(mergeArticles(live, archived));'; then
+            stamp="${GITHUB_RUN_ID}-${attempt}"
+            home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?home-legacy-verify=$stamp" || true)
+            archive_code=$(curl -sS -o /tmp/archive.html -w '%{http_code}' --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=117382&home-legacy-verify=$stamp" || true)
+            gone_code=$(curl -sS -o /tmp/gone.html -w '%{http_code}' --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=wp-117123&home-legacy-verify=$stamp" || true)
+            if printf '%s' "$home" | grep -q 'articles-home.js?v=20260819-seo-canonical-1' \
+              && [ "$archive_code" = "200" ] \
+              && [ "$gone_code" = "410" ]; then
               ok=1
               break
             fi
             sleep 5
           done
           test "$ok" = "1"
-          archive=$(curl -sS --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/data/articles.json?homefix=${GITHUB_RUN_ID}" || true)
-          printf '%s' "$archive" | grep -q '117302'
-          echo 'HOME_STALE_ARCHIVE_PRODUCTION_PASS=true'
-          echo 'LEGACY_ARTICLE_117302_LOADER_PRODUCTION_PASS=true'
+          echo 'HOME_LIVE_AND_LEGACY_ARCHIVE_VALIDATION_PASS=true'

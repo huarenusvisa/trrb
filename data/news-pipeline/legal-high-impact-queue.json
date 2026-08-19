@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "sourceDatasetVersion": "e770c88c445146421bd552634aa2bbec244de50512f3ccec46f4fa680b9a11d7",
+  "sourceDatasetVersion": "46635369b92fa0d162883c2774e66f4c89dba55aa276c03a27cf7d60f56b0be3",
   "threshold": 80,
   "scope": "High-impact legal authority candidates routed from the legal database into the Tang Ren Daily editorial news production queue. Candidate status never means automatic publication.",
-  "count": 162,
+  "count": 161,
   "candidates": [
     {
       "sourceRecordId": "864a376952f5c46e52421521",
@@ -2688,23 +2688,6 @@
       "analysisAvailable": true,
       "chineseTitle": "特别地方规章：缅因州长岛卡斯科湾抗癌船队活动管制",
       "chineseSummary": "根据美国国土安全部及海岸警卫队于2026年8月12日发布的特别地方规章，针对缅因州长岛卡斯科湾举行的抗癌船队活动实施特定的地方管制措施。该规章旨在确保公共安全和航行秩序，规定活动期间相关水域的限制和管理要求，保障赛事顺利进行并防止干扰。",
-      "pipelineStage": "editorial_candidate",
-      "publicationPolicy": "candidate_only_not_auto_published"
-    },
-    {
-      "sourceRecordId": "0d5834a8d3a24df7d304380a",
-      "sourceSystem": "FEDERAL_REGISTER",
-      "authorityType": "Federal Register Final Rule",
-      "issuingBody": "Homeland Security Department; Coast Guard",
-      "title": "Safety Zone; T/V DENISE FOSS (O.N. 1254223), Honolulu, HI",
-      "publicationDate": "2026-08-12",
-      "officialUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16407/safety-zone-tv-denise-foss-on-1254223-honolulu-hi",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16407.pdf",
-      "impactScore": 85,
-      "impactReason": "移民/司法相关联邦机构Final Rule",
-      "analysisAvailable": true,
-      "chineseTitle": "美国国土安全部海岸警卫队关于夏威夷檀香山T/V DENISE FOSS号船只安全区域的最终规则",
-      "chineseSummary": "根据2026年8月12日发布的联邦公报，美国国土安全部海岸警卫队设立了位于夏威夷檀香山的T/V DENISE FOSS（注册号1254223）周边的安全区。该安全区旨在保障该船只附近的航行安全，防止未经授权的船只进入指定区域，减少安全事故风险。该规则明确了具体的安全区域范围及管制措施，确保海上交通秩序。",
       "pipelineStage": "editorial_candidate",
       "publicationPolicy": "candidate_only_not_auto_published"
     },

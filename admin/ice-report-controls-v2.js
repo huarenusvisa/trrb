@@ -1,15 +1,20 @@
 (() => {
   "use strict";
-  const API = "/.netlify/functions/ice-report-integrated";
+  const MAINTENANCE_API = "/.netlify/functions/ice-admin-maintenance-v3";
+  const ACTION_MAP = {
+    unpublish: "user_report_unpublish",
+    delete_publication: "user_report_delete_article",
+    delete_report: "user_report_delete_all"
+  };
 
-  async function call(action, payload = {}) {
+  async function callMaintenance(action, payload = {}) {
     const { data } = await supabaseClient.auth.getSession();
     const token = data.session?.access_token;
     if (!token) throw new Error("登录状态已失效，请重新登录。");
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 15000);
+    const timer = setTimeout(() => controller.abort(), 20000);
     try {
-      const response = await fetch(API, {
+      const response = await fetch(MAINTENANCE_API, {
         method: "POST",
         signal: controller.signal,
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -78,19 +83,22 @@
       button.addEventListener("click", async () => {
         const report = window.__TRRB_ACTIVE_REPORT__;
         if (!report?.id) return;
-        const action = button.dataset.extraAction;
+        const uiAction = button.dataset.extraAction;
+        const action = ACTION_MAP[uiAction];
+        if (!action) return;
         const prompts = {
-          unpublish: "确认将这篇随手拍内容从前台下线，并保留为可编辑草稿？",
-          delete_publication: "确认删除已经发布的文章，但保留投稿草稿？",
-          delete_report: "确认彻底删除投稿和已发布文章？此操作不可恢复。"
+          unpublish: "确认将这篇随手拍内容从前台下线？公开副本会删除，原始私密投稿保留供重新审核。",
+          delete_publication: "确认删除已经发布的文章和公开素材副本，但保留原始私密投稿？",
+          delete_report: "确认彻底删除投稿、原始素材、公开素材副本和已发布文章？此操作不可恢复。"
         };
-        if (!confirm(prompts[action])) return;
+        if (!confirm(prompts[uiAction])) return;
         const message = document.getElementById("report-action-message");
         button.disabled = true;
         if (message) message.textContent = "正在处理…";
         try {
-          await call(action, { report_id: report.id });
-          if (message) message.textContent = "操作成功。";
+          const result = await callMaintenance(action, { report_id: report.id });
+          const removed = Number(result.public_media_deleted || result.public_deleted || 0) + Number(result.private_deleted || 0);
+          if (message) message.textContent = removed > 0 ? `操作成功，已清理 ${removed} 个存储文件。` : "操作成功。";
           if (typeof loadReports === "function") await loadReports();
           if (typeof loadArticles === "function") await loadArticles();
           setTimeout(() => document.getElementById("report-modal-close")?.click(), 500);

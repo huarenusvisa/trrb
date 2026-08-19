@@ -1,17 +1,24 @@
 import fs from 'node:fs';
 
-const file='netlify/edge-functions/article-prerender.ts';
-let text=fs.readFileSync(file,'utf8');
+// Read-only compatibility audit. Historical versions of this command patched
+// article-prerender.ts in place; modern routing owns these rules directly.
 
-const legacyOld=`      const article = await getArticleById(id);\n      if (!article) {\n        return new Response(notFoundHtml(), {\n          status: 404,\n          headers: { "content-type": "text/html; charset=UTF-8", "cache-control": "public, max-age=60", "x-robots-tag": "noindex" }\n        });\n      }\n      const canonical = await canonicalFor(article);`;
-const legacyNew=`      const article = await getArticleById(id);\n      // Static/WordPress archive IDs are not stored in Supabase. Let the original\n      // article.html + article.js archive loader handle those instead of returning\n      // a false 404 from the Edge layer.\n      if (!article) return context.next();\n      const canonical = await canonicalFor(article);`;
-if(!text.includes(legacyOld) && !text.includes(legacyNew)) throw new Error('legacy article block not found');
-text=text.replace(legacyOld,legacyNew);
+const edge = fs.readFileSync('netlify/edge-functions/article-prerender.ts', 'utf8');
+const guard = fs.readFileSync('netlify/edge-functions/00-legacy-article-query-guard.ts', 'utf8');
+const articleHtml = fs.readFileSync('article.html', 'utf8');
 
-const prettyOld=`    let article = await getArticleBySlug(parts.slug);\n    if (!article && /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(parts.slug)) article = await getArticleById(parts.slug);\n    if (!article) return context.next();`;
-const prettyNew=`    let article = await getArticleBySlug(parts.slug);\n    if (!article && /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(parts.slug)) article = await getArticleById(parts.slug);\n    // Earlier clients fabricated pretty URLs from archive ids, e.g.\n    // /important-news/117302. Preserve those inbound links by returning them to\n    // the legacy archive loader, which owns numeric and wp-* static article ids.\n    if (!article && /^(?:wp-)?\\d+$/i.test(parts.slug)) {\n      const legacy = new URL('/article.html', url.origin);\n      legacy.searchParams.set('id', parts.slug);\n      return redirect(legacy.toString(), 'archived-id-to-legacy');\n    }\n    if (!article) return context.next();`;
-if(!text.includes(prettyOld) && !text.includes(prettyNew)) throw new Error('pretty article block not found');
-text=text.replace(prettyOld,prettyNew);
+const checks = [
+  ['numeric archive IDs pass to the static loader when valid', edge.includes('archiveHasId') && edge.includes('return context.next()')],
+  ['invalid numeric archive IDs are retired with 410', edge.includes('status: 410') && edge.includes('retired-archive-id')],
+  ['wp-prefixed static archive links normalize to numeric IDs', guard.includes('wordpress-prefix-to-static-archive')],
+  ['legacy archive template still loads the static index', articleHtml.includes('articles-home-index.js?v=20260819-archive')],
+  ['legacy archive template still loads article.js', articleHtml.includes('article.js?v=29.8-legacy-archive-rescue')]
+];
 
-fs.writeFileSync(file,text);
-console.log('ARCHIVED_ARTICLE_ROUTE_COMPAT_PATCHED=true');
+let failures = 0;
+for (const [label, ok] of checks) {
+  console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`);
+  if (!ok) failures += 1;
+}
+console.log(`ARCHIVED_ARTICLE_ROUTE_READ_ONLY_AUDIT=true checks=${checks.length} failures=${failures}`);
+if (failures) process.exit(1);

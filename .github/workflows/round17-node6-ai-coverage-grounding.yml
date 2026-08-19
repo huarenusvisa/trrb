@@ -33,12 +33,18 @@ jobs:
           node --check scripts/round17-node6-sync-analysis-version.mjs
       - name: Audit repository AI coverage and grounding
         run: node scripts/round17-node6-ai-coverage-grounding-audit.mjs
-      - name: Trigger production deployment
+      - name: Trigger Netlify only for manual node run
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         run: |
           set -euo pipefail
           test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK is not configured'; exit 2; }
-          curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
+          if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+            hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node6+manual"
+          else
+            hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node6+manual"
+          fi
+          curl -fsS -X POST "$hook_url" >/tmp/netlify-hook-response.txt
       - name: Wait for synchronized production and audit
         shell: bash
         run: |
@@ -57,3 +63,5 @@ jobs:
           done
           echo 'Production did not converge to synchronized AI grounding state.'
           exit 1
+
+# Push deployment is centralized in round17-central-production-deploy.yml.

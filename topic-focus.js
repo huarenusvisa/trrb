@@ -1,7 +1,7 @@
 (function () {
-  const rules = {
-    trump: /特朗普|川普|白宫|总统行政令/i,
-    ice: /\bICE\b|移民与海关执法|移民执法|拘留|逮捕|驱逐/i,
+  const fallbackRules = {
+    trump: /特朗普|川普|Donald\s+Trump/i,
+    ice: /\bICE\b|Immigration and Customs Enforcement|移民与海关执法局|移民及海关执法局|ICE执法/i,
     election: /中期选举|选举|初选|参议员竞选|众议员竞选|关键州|选情/i
   };
   const UUID_RE = /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i;
@@ -17,6 +17,32 @@
     'ICE执法动态': 'ice',
     'ICE执法': 'ice'
   };
+
+  function topicKey(article) {
+    return String(article?.topicKey || article?.topic_key || '').trim().toLowerCase();
+  }
+  function categoryOf(article) {
+    return String(article?.category || article?.category_name || '').trim();
+  }
+  function topicText(article) {
+    return [article?.title, article?.excerpt, article?.summary, article?.category, article?.category_name].join(' ');
+  }
+  function matchesTopic(key, article) {
+    const topic = topicKey(article);
+    const category = categoryOf(article);
+    if (key === 'trump') {
+      if (topic === 'trump') return true;
+      if (topic && topic !== 'trump') return false;
+      return fallbackRules.trump.test(topicText(article));
+    }
+    if (key === 'ice') {
+      if (topic === 'ice') return true;
+      if (topic && topic !== 'ice') return false;
+      if (category === 'ICE执法动态' || category === 'ICE执法') return true;
+      return fallbackRules.ice.test(topicText(article));
+    }
+    return Boolean(fallbackRules[key] && fallbackRules[key].test(topicText(article)));
+  }
 
   function isRealImage(value) {
     const image = String(value || '').trim();
@@ -42,8 +68,8 @@
     }
     const slug = String(article.slug || '').trim();
     const id = String(article.id || '').trim();
-    const topic = String(article.topicKey || article.topic_key || '').trim().toLowerCase();
-    const category = String(article.category || article.category_name || '').trim();
+    const topic = topicKey(article);
+    const category = categoryOf(article);
     const section = topic === 'trump' ? 'trump' : topic === 'ice' ? 'ice' : (sections[category] || 'news');
     if (slug) return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
     if (UUID_RE.test(id)) return `/${encodeURIComponent(section)}/${encodeURIComponent(id)}`;
@@ -96,7 +122,7 @@
     document.querySelectorAll('[data-topic-latest]').forEach(function (el) {
       const key = el.getAttribute('data-topic-latest');
       const match = articles.find(function (article) {
-        return rules[key] && rules[key].test([article.title, article.excerpt, article.summary, article.category].join(' '));
+        return matchesTopic(key, article);
       });
       renderLatest(el, match);
     });

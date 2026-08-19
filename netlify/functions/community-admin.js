@@ -4,8 +4,9 @@ const json = (statusCode, body) => ({ statusCode, headers: { 'content-type': 'ap
 
 exports.handler = async (event) => {
   try {
-    const { user, admin } = await authenticateStaff(event, ['owner','admin','moderator']);
-    if (event.httpMethod === 'GET') {
+    const readOnly = event.httpMethod === 'GET';
+    const { user, admin } = await authenticateStaff(event, readOnly ? ['owner','editor','viewer'] : ['owner','editor']);
+    if (readOnly) {
       const [users, comments, reports] = await Promise.all([
         rest('profiles', { query: { select: 'id,display_name,avatar_key,role,status,created_at,updated_at', order: 'created_at.desc', limit: '200' } }),
         rest('comments', { query: { select: 'id,article_id,user_id,parent_id,content,status,is_pinned,created_at', order: 'created_at.desc', limit: '200' } }),
@@ -27,7 +28,7 @@ exports.handler = async (event) => {
     let auditAction = action;
 
     if (action === 'set_user_status') {
-      if (!['owner','admin'].includes(admin.role)) return json(403, { error: 'user_management_forbidden' });
+      if (!['owner','editor'].includes(admin.role)) return json(403, { error: 'user_management_forbidden' });
       if (!['active','restricted','suspended'].includes(value)) return json(400, { error: 'invalid_status' });
       await rest('profiles', { method: 'PATCH', query: { id: `eq.${id}` }, body: { status: value, updated_at: new Date().toISOString() }, prefer: 'return=minimal' });
       targetUserId = id;

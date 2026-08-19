@@ -12,9 +12,10 @@ const visible=(v='')=>clean(v).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' '
 const normTitle=(v='')=>visible(v).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu,'');
 function record(ok,label,detail=''){checks.push({ok,label,detail});console.log(`${ok?'PASS':'FAIL'} ${label}${detail?` — ${detail}`:''}`);if(!ok)failures.push({label,detail});}
 async function db(table,params){const u=new URL(`${SUPABASE_URL}/rest/v1/${table}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,String(v)));const r=await fetch(u,{headers:H,cache:'no-store'});if(!r.ok)throw new Error(`${table} ${r.status}: ${(await r.text()).slice(0,180)}`);return r.json();}
-async function get(path){const r=await fetch(`${ORIGIN}${path}?round13node3=${Date.now()}`,{headers:{'cache-control':'no-cache',pragma:'no-cache','user-agent':'TRRB-Round13-Node3/2.0'}});return {status:r.status,headers:r.headers,text:await r.text()};}
+async function dbAll(table,params,pageSize=1000){const out=[];for(let offset=0;offset<100000;offset+=pageSize){const rows=await db(table,{...params,limit:String(pageSize),offset:String(offset)});if(!Array.isArray(rows))break;out.push(...rows);if(rows.length<pageSize)break;}return out;}
+async function get(path){const r=await fetch(`${ORIGIN}${path}?round13node3=${Date.now()}`,{headers:{'cache-control':'no-cache',pragma:'no-cache','user-agent':'TRRB-Round13-Node3/2.1'}});return {status:r.status,headers:r.headers,text:await r.text()};}
 const categories=await db('categories',{select:'id,name,slug,is_active,include_in_sitemap,include_in_google_news,include_in_rss',is_active:'eq.true',limit:'500'});
-const articles=await db('articles',{select:'id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at',status:'eq.published',order:'published_at.asc.nullslast,created_at.asc',limit:'1000'});
+const articles=await dbAll('articles',{select:'id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at',status:'eq.published',order:'published_at.asc.nullslast,created_at.asc'});
 const byId=new Map(categories.map(x=>[String(x.id||''),x]));const byName=new Map(categories.map(x=>[clean(x.name),x]));
 function section(a){const t=clean(a.topic_key).toLowerCase();if(t==='trump')return'trump';if(t==='ice')return'ice';return clean(byId.get(String(a.category_id||''))?.slug)||clean(byName.get(clean(a.category_name))?.slug)||FALLBACK.get(clean(a.category_name))||'news';}
 function canonical(a){return `${ORIGIN}/${encodeURIComponent(section(a))}/${encodeURIComponent(clean(a.slug||a.id))}`;}
@@ -50,6 +51,7 @@ for(const a of articles.filter(a=>{const ts=timestamp(a);return ts>=cutoff&&ts<=
 const latestNews=[...newsEligible].sort((a,b)=>timestamp(b)-timestamp(a))[0]||null;
 const latestRss=[...articles].filter(a=>a?.id&&clean(a.title)&&clean(a.slug)&&allowed(a,'include_in_rss')).sort((a,b)=>timestamp(b)-timestamp(a))[0]||null;
 
+record(articles.length>=3000,'读取完整已发布文章库',`published=${articles.length}`);
 record(Boolean(latestSitemap&&latestRss&&latestNews),'取得三个实时SEO目标',`sitemap=${latestSitemap?.id||''}; news=${latestNews?.id||''}; rss=${latestRss?.id||''}`);
 const sitemap=await get('/sitemap.xml');const news=await get('/news-sitemap.xml');const feed=await get('/feed.xml');
 record(sitemap.status===200,'主 Sitemap HTTP 200',`status=${sitemap.status}`);

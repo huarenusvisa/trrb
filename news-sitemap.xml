@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   
+  
   <url>
       <loc>https://trrb.net/ice/ice-9e60dec72a6a7db4d827133e5078e1abc8a07315</loc>
       <news:news>
@@ -971,55 +972,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-17T23:03:54.964Z</news:publication_date>
         <news:title>伊利诺伊BroadviewICE拘留中心被曝遗弃未开封的联邦资助餐饮</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a38837d250ed4bae1260032c8550628eab3e4fa2</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:03:10.853Z</news:publication_date>
-        <news:title>ICE拒移除嫌疑人脚环致 MRI 扫描受阻</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-d21bf4196fc4a16c976a351ea458d22399457cc4</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:03:00.029Z</news:publication_date>
-        <news:title>佛罗里达福特迈尔斯警方联手ICE凌晨逮捕多名嫌疑人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7458a81240bdeefd2e706c19a9bd8d95f9dcc707</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:02:47.934Z</news:publication_date>
-        <news:title>得州Rusk县男子因袭警被捕持移民拘留令</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e1c11a139aa5d15b1276b93b2d76910756b5ef1c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:02:31.454Z</news:publication_date>
-        <news:title>加州圣地亚哥传ICE闯入住宅执法 带走疑似非法入境者</news:title>
-      </news:news>
-    </url>
-  
-  <url>
-      <loc>https://trrb.net/ice/ice-b19d000758542a6ed367893f9ba67f2c6f6520be</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:02:01.800Z</news:publication_date>
-        <news:title>阿灵顿ICE特警电击18岁男子致重伤住院</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a8f09f5da62bdfb07268af2892901012615fd399</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:01:18.056Z</news:publication_date>
-        <news:title>网传新泽西纽瓦克ICE拘押中心医疗条件差致婴儿死亡</news:title>
       </news:news>
     </url>
 </urlset>

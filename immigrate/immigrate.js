@@ -29,8 +29,8 @@
     if(UUID_RE.test(id))return `/${encodeURIComponent(section)}/${encodeURIComponent(id)}`;
     return id?`/article.html?id=${encodeURIComponent(id)}`:'/';
   }
-  function categoryUrl(cat){return `./center.html?path=${encodeURIComponent(cat.slug)}`;}
-  function topicUrl(cat,item){return `./center.html?path=${encodeURIComponent(cat.slug)}&topic=${encodeURIComponent(item.slug)}`;}
+  function categoryUrl(cat){return `/immigrate/center?path=${encodeURIComponent(cat.slug)}`;}
+  function topicUrl(cat,item){return `/immigrate/center?path=${encodeURIComponent(cat.slug)}&topic=${encodeURIComponent(item.slug)}`;}
 
   function renderPathways(){
     grid.innerHTML=cfg.categories.map((cat,i)=>`

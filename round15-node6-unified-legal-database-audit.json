@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-19T05:46:28.290Z",
+  "generatedAt": "2026-08-19T07:05:15.761Z",
   "schemaVersion": 1,
-  "datasetVersion": "ddf93d6cfbf5e1d41ccab0b0b273ee42b1cddbc3f1c8d83e42e6554c3bd7704d",
-  "count": 629,
+  "datasetVersion": "46635369b92fa0d162883c2774e66f4c89dba55aa276c03a27cf7d60f56b0be3",
+  "count": 609,
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 433,
+    "US_CIRCUIT": 413,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
@@ -54,12 +54,12 @@
     {
       "ok": true,
       "label": "content-addressed dataset version generated",
-      "detail": "ddf93d6cfbf5e1d4"
+      "detail": "46635369b92fa0d1"
     },
     {
       "ok": true,
       "label": "all five legal authority source systems represented",
-      "detail": "{\"SCOTUS\":68,\"US_CIRCUIT\":433,\"BIA\":68,\"WHITE_HOUSE\":10,\"FEDERAL_REGISTER\":50}"
+      "detail": "{\"SCOTUS\":68,\"US_CIRCUIT\":413,\"BIA\":68,\"WHITE_HOUSE\":10,\"FEDERAL_REGISTER\":50}"
     }
   ],
   "failures": 0

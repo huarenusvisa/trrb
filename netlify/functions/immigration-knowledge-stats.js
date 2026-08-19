@@ -30,8 +30,9 @@ exports.handler = async function handler(event) {
     const targetPerTopic = Math.max(1, Math.min(50, Number(event.queryStringParameters?.target || 10)));
     const cutoff = new Date(Date.now() - hours * 3600000).toISOString();
     const params = new URLSearchParams({
-      select: 'id,title,category_name,published_at,status',
+      select: 'id,title,category_name,published_at,status,visibility',
       status: 'eq.published',
+      visibility: 'eq.public',
       published_at: `gte.${cutoff}`,
       category_name: 'like.移民美国·*',
       order: 'published_at.asc',

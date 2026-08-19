@@ -40,7 +40,8 @@ const coreVersions = new Map([
   ['ice-home-unify.js', '20260819-preserve-sections-2'],
   ['topic-focus.js', '20260819-live-2'],
   ['homepage-refresh-guard.js', '20260819-single-live-1'],
-  ['articles-home-live-fix.js', '20260819-compat-shim-1']
+  ['articles-home-live-fix.js', '20260819-compat-shim-1'],
+  ['category-runtime-v3.js', '20260819-preserve-independent-nav-1']
 ]);
 for (const [asset, version] of coreVersions) {
   const escaped = asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

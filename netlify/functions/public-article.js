@@ -24,8 +24,9 @@ exports.handler = async (event) => {
     if (!id && !slug) return json(400, { error: 'id or slug is required' });
 
     const query = {
-      select: 'id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,published_at,created_at',
+      select: 'id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at',
       status: 'eq.published',
+      visibility: 'eq.public',
       limit: '1'
     };
     if (id) query.id = `eq.${id}`;

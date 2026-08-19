@@ -152,7 +152,6 @@ async function initListing() {
     }
   }
 
-  const archived = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : []; // disaster-recovery only
   const searchForm = document.querySelector("#listing-search");
   const searchInput = document.querySelector("#listing-search-input");
   if (searchForm) searchForm.hidden = !searchMode;
@@ -171,7 +170,6 @@ async function initListing() {
     renderListingDataset(live, category, query, page);
   } catch (error) {
     console.warn("Live articles unavailable", error);
-    // Never silently repopulate a normal category page with stale archive rows.
     renderArticles([], page);
   }
 }
@@ -223,23 +221,25 @@ function articleUrl(article) {
     const routed = window.TRRB_articleUrl(article);
     if (routed) return routed;
   }
+  const id = String(article?.id || "").trim();
   const slug = String(article?.slug || "").trim();
-  if (slug) {
-    const topic = String(article?.topicKey || article?.topic_key || "").trim().toLowerCase();
-    const sections = {
-      "重要新闻": "important-news",
-      "热门头条": "hot-headlines",
-      "美国时政": "us-politics",
-      "美国警情": "us-crime",
-      "中国官场": "china-officialdom",
-      "移民美国": "immigration",
-      "庇护百科": "asylum",
-      "驱逐快报": "deport"
-    };
-    const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (sections[String(article?.category || "").trim()] || "news");
-    return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
-  }
-  return `/article.html?id=${encodeURIComponent(article?.id || "")}`;
+  const topic = String(article?.topicKey || article?.topic_key || "").trim().toLowerCase();
+  const sections = {
+    "重要新闻": "important-news",
+    "热门头条": "hot-headlines",
+    "美国时政": "us-politics",
+    "美国警情": "us-crime",
+    "中国官场": "china-officialdom",
+    "移民美国": "immigration",
+    "庇护百科": "asylum",
+    "驱逐快报": "deport"
+  };
+  const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (sections[String(article?.category || "").trim()] || "news");
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(id);
+  const routeKey = slug || (isUuid ? id : "");
+  if (routeKey) return `/${encodeURIComponent(section)}/${encodeURIComponent(routeKey)}`;
+  if (/^\d+$/.test(id)) return `/article.html?id=${encodeURIComponent(id)}`;
+  return "/";
 }
 
 function renderCard(article) {

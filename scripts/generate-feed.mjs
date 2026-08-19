@@ -14,6 +14,7 @@ const FALLBACK={
 };
 const ALIASES={important:'important-news',hot:'hot-headlines',politics:'us-politics',crime:'us-crime',china:'china-officialdom'};
 const canonicalSection=(v='')=>ALIASES[clean(v)]||clean(v);
+const isSpecialTopic=(article)=>{const topic=clean(article?.topic_key).toLowerCase();return topic==='trump'||topic==='ice';};
 const mimeFromUrl=(value='')=>{const pathname=String(value).split('?')[0].toLowerCase();if(pathname.endsWith('.png'))return'image/png';if(pathname.endsWith('.webp'))return'image/webp';if(pathname.endsWith('.gif'))return'image/gif';if(pathname.endsWith('.avif'))return'image/avif';return'image/jpeg';};
 
 async function rest(pathname,params){
@@ -40,7 +41,7 @@ const allowedIds=new Set(categories.filter(x=>x.include_in_rss!==false).map(x=>S
 const allowedNames=new Set(categories.filter(x=>x.include_in_rss!==false).map(x=>String(x.name)));
 const byId=new Map(categories.map(x=>[String(x.id||''),x]));
 const byName=new Map(categories.map(x=>[clean(x.name),x]));
-const articles=(categories.length?rawArticles.filter(x=>x.category_id?allowedIds.has(String(x.category_id)):(!x.category_name||allowedNames.has(String(x.category_name)))):rawArticles).slice(0,100);
+const articles=(categories.length?rawArticles.filter(x=>isSpecialTopic(x)||(x.category_id?allowedIds.has(String(x.category_id)):(!x.category_name||allowedNames.has(String(x.category_name))))):rawArticles).slice(0,100);
 
 function articleSection(article){
   const topic=clean(article?.topic_key).toLowerCase();

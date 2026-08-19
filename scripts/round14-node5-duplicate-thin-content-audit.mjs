@@ -45,7 +45,7 @@ check(thinNonIceInSitemap.length===0,'非ICE薄内容未进入可索引 Sitemap'
 const shortIce=arts.filter(a=>isIce(a)&&clean(a.content||a.summary).length>0&&clean(a.content||a.summary).length<80);
 const shortIceInSitemap=shortIce.filter(a=>sitemap.text.includes(canonical(a)));
 check(shortIce.length===0||shortIceInSitemap.length>0,'短ICE快讯不会仅因篇幅短被整体排除',`shortIce=${shortIce.length}; indexed=${shortIceInSitemap.length}`);
-check(/live-supabase-v3-ice-safe/i.test(sitemap.headers['x-trrb-sitemap']||''),'Sitemap 已启用 ICE短讯保护与重复治理版本',sitemap.headers['x-trrb-sitemap']||'missing');
+check(/live-supabase-v4-topic-safe-ice-safe/i.test(sitemap.headers['x-trrb-sitemap']||''),'Sitemap 已启用专题保护、ICE短讯保护与重复治理版本',sitemap.headers['x-trrb-sitemap']||'missing');
 
 let thinNonIceNoindexBad=0;
 for(const a of thinNonIce.slice(0,20)){const r=await fetch(`${canonical(a)}?r14n5=thin`,{headers:{'user-agent':'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)','cache-control':'no-cache'}});const html=await r.text();const robots=(html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)||html.match(/<meta[^>]+content=["']([^"']+)[^>]+name=["']robots["']/i)||[])[1]||'';if(r.status===200&&!/noindex/i.test(robots))thinNonIceNoindexBad++;}

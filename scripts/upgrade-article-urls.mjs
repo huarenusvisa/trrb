@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const SITE = 'https://trrb.net';
 const SUPABASE_URL = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+const METADATA_ONLY = process.argv.includes('--metadata-only');
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
   console.warn('[article-urls] Supabase env missing; skip SEO URL upgrade');
@@ -134,10 +135,9 @@ for (const file of files) {
 // reintroduce content that the sitemap generator intentionally excluded.
 console.log(`[article-urls] route map ${routes.size}; upgraded URLs ${upgradedUrls}; files changed ${replacements}`);
 
-// Validate the active browser runtime before writing build snapshots. A syntax
-// error in homepage/article scripts must block the deploy instead of reaching production.
-await import('./validate-current-runtime.mjs');
-
-// Only after sitemap/news-sitemap/feed hold canonical pretty URLs do we write
-// server-delivered homepage and ICE discovery anchors.
-await import('./inject-static-news-links.mjs');
+// Scheduled metadata-only syncs must not touch index.html/ICE snapshots. Normal
+// Netlify builds keep the full runtime validation + crawlable snapshot injection.
+if (!METADATA_ONLY) {
+  await import('./validate-current-runtime.mjs');
+  await import('./inject-static-news-links.mjs');
+}

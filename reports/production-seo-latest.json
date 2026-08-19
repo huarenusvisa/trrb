@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T16:39:05.428Z",
+  "generated_at": "2026-08-19T17:36:46.087Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -23,14 +23,10 @@
       "chain": [
         {
           "url": "http://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
-        }
-      ],
-      "final_url": "http://www.trrb.net/"
-    },
-    "https://www.trrb.net/": {
-      "chain": [
+          "status": 301,
+          "location": "https://www.trrb.net/",
+          "error": ""
+        },
         {
           "url": "https://www.trrb.net/",
           "status": 301,
@@ -44,14 +40,31 @@
         }
       ],
       "final_url": "https://trrb.net/"
+    },
+    "https://www.trrb.net/": {
+      "chain": [
+        {
+          "url": "https://www.trrb.net/",
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
+        }
+      ],
+      "final_url": "https://trrb.net/"
     }
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1195590,
-      "article_count": 3671,
+      "bytes": 1199999,
+      "article_count": 3690,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v2-dedupe"
@@ -59,8 +72,8 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 133471,
-      "article_count": 269,
+      "bytes": 136007,
+      "article_count": 275,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v1"
@@ -276,7 +289,6 @@
     }
   },
   "failures": [
-    "bad host redirect chain http://www.trrb.net/ => [{\"url\":\"http://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
     {
       "page": "https://trrb.net/",
       "problem": "too few direct article links: 0/10"
@@ -340,5 +352,7 @@
     "legacy retired URL must be 410: 200",
     "legacy retired URL missing X-Robots-Tag noindex"
   ],
-  "warnings": []
+  "warnings": [
+    "host redirect chain has 2 hops: http://www.trrb.net/"
+  ]
 }

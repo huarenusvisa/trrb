@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import path from 'node:path';
 
 const HOST = 'trrb.net';
 const ORIGIN = `https://${HOST}`;
 const KEY = '9d4f7b8c6a2e41d39b7c5e8f1a6d3c20';
 const KEY_LOCATION = `${ORIGIN}/${KEY}.txt`;
 const MAX = 10000;
+const ROOT = process.cwd();
 
 function decodeXml(value) {
   return String(value || '')
@@ -14,6 +16,12 @@ function decodeXml(value) {
     .replaceAll('&gt;', '>')
     .replaceAll('&quot;', '"')
     .replaceAll('&apos;', "'");
+}
+
+function rawLocs(xml) {
+  return [...String(xml || '').matchAll(/<loc>([\s\S]*?)<\/loc>/gi)]
+    .map((match) => decodeXml(match[1].trim()))
+    .filter(Boolean);
 }
 
 function canonicalize(value) {
@@ -34,21 +42,55 @@ function canonicalize(value) {
 }
 
 function extractLocs(xml) {
-  return [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)]
-    .map((match) => canonicalize(decodeXml(match[1].trim())))
-    .filter(Boolean);
+  return rawLocs(xml).map(canonicalize).filter(Boolean);
+}
+
+function localSitemapPath(value) {
+  try {
+    const url = new URL(value);
+    if (!['trrb.net', 'www.trrb.net'].includes(url.hostname)) return '';
+    const relative = decodeURIComponent(url.pathname).replace(/^\/+/, '');
+    if (!relative || relative.includes('..') || !/\.xml$/i.test(relative)) return '';
+    const resolved = path.resolve(ROOT, relative);
+    if (!resolved.startsWith(`${ROOT}${path.sep}`) && resolved !== ROOT) return '';
+    return resolved;
+  } catch {
+    return '';
+  }
+}
+
+function collectSitemapUrls(filename, seen = new Set()) {
+  const absolute = path.resolve(ROOT, filename);
+  if (seen.has(absolute) || !fs.existsSync(absolute)) return [];
+  seen.add(absolute);
+  const xml = fs.readFileSync(absolute, 'utf8');
+
+  if (/<sitemapindex\b/i.test(xml)) {
+    const urls = [];
+    for (const loc of rawLocs(xml)) {
+      const child = localSitemapPath(loc);
+      if (!child || !fs.existsSync(child)) continue;
+      urls.push(...collectSitemapUrls(path.relative(ROOT, child), seen));
+    }
+    return urls;
+  }
+
+  return extractLocs(xml);
 }
 
 const candidates = new Set();
 
 // Fresh news first. IndexNow accepts at most 10,000 URLs per request, so the
 // Google News feed must never be crowded out by a large historical sitemap.
-if (fs.existsSync('news-sitemap.xml')) {
-  extractLocs(fs.readFileSync('news-sitemap.xml', 'utf8')).forEach((url) => candidates.add(url));
-}
+const freshNewsUrls = fs.existsSync('news-sitemap.xml') ? collectSitemapUrls('news-sitemap.xml') : [];
+freshNewsUrls.forEach((url) => candidates.add(url));
 candidates.add(`${ORIGIN}/`);
+
+// split-sitemap-index.mjs may convert sitemap.xml into a sitemapindex before
+// this script runs. Follow local child sitemaps recursively so IndexNow still
+// receives article canonicals rather than only sitemap-articles-N.xml URLs.
 if (fs.existsSync('sitemap.xml')) {
-  extractLocs(fs.readFileSync('sitemap.xml', 'utf8')).forEach((url) => candidates.add(url));
+  collectSitemapUrls('sitemap.xml').forEach((url) => candidates.add(url));
 }
 
 const urls = [...candidates].slice(0, MAX);
@@ -72,6 +114,5 @@ const response = await fetch('https://api.indexnow.org/indexnow', {
 });
 
 const text = await response.text();
-const freshNewsCount = fs.existsSync('news-sitemap.xml') ? extractLocs(fs.readFileSync('news-sitemap.xml','utf8')).length : 0;
-console.log(`IndexNow提交 ${urls.length} 个规范URL（最新新闻优先 ${Math.min(freshNewsCount, urls.length)} 条）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
+console.log(`IndexNow提交 ${urls.length} 个规范URL（最新新闻优先 ${Math.min(freshNewsUrls.length, urls.length)} 条）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
 if (![200, 202].includes(response.status)) process.exit(1);

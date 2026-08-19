@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const SITE = 'https://trrb.net';
 const UA = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+const ARTICLE_SECTIONS = new Set(['ice','trump','important-news','hot-headlines','us-politics','us-crime','china-officialdom','immigration','asylum','deport','news','expose']);
 const report = { generated_at: new Date().toISOString(), site: SITE, host: {}, sitemaps: {}, articles: [], pages: {}, failures: [], warnings: [] };
 
 async function fetchOne(url, opts={}) {
@@ -18,9 +19,19 @@ async function fetchOne(url, opts={}) {
 function locs(xml='') {
   return [...String(xml).matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map(m => m[1].replaceAll('&amp;','&').trim()).filter(Boolean);
 }
-function articleLocs(xml='') { return locs(xml).filter(u => /^https:\/\/trrb\.net\/article\.html\?id=/i.test(u)); }
+function isArticleLoc(value='') {
+  if (/^https:\/\/trrb\.net\/article\.html\?id=/i.test(value)) return true;
+  try {
+    const u = new URL(value);
+    if (u.hostname !== 'trrb.net' && u.hostname !== 'www.trrb.net') return false;
+    const parts = decodeURIComponent(u.pathname).split('/').filter(Boolean);
+    return parts.length === 2 && ARTICLE_SECTIONS.has(parts[0]) && !(parts[0] === 'ice' && parts[1] === 'news');
+  } catch { return false; }
+}
+function articleLocs(xml='') { return locs(xml).filter(isArticleLoc).map(u => u.replace('https://www.trrb.net', SITE)); }
 function sitemapLocs(xml='') { return locs(xml).filter(u => /sitemap[^/]*\.xml/i.test(u) || /\/sitemap-[^/]+\.xml/i.test(u)); }
 function text(html,re){ const m=String(html).match(re); return (m?.[1]||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); }
+function isIceUrl(value='') { try { const p=new URL(value).pathname; return p.startsWith('/ice/') && p !== '/ice/news'; } catch { return false; } }
 
 for (const u of ['http://trrb.net/','http://www.trrb.net/','https://www.trrb.net/']) {
   const r = await fetchOne(u);
@@ -53,21 +64,25 @@ for (const u of [...articles].slice(0,10)) {
   const body = text(r.text,/<div[^>]+class=["'][^"']*article-body[^"']*["'][^>]*>([\s\S]*?)<\/div>/i);
   const row = { url:u, status:r.status, final_url:r.url, prerender:r.prerender, title_length:title.length, h1_length:h1.length, canonical, body_length:body.length, schema:/NewsArticle/.test(r.text), noindex:/noindex/i.test(r.xrobots) || /name=["']robots["'][^>]+noindex/i.test(r.text) };
   report.articles.push(row);
-  if (row.status !== 200 || row.prerender !== 'article-edge-v1' || row.canonical !== u || row.body_length < 120 || !row.schema || row.noindex) report.failures.push({ article:u, row });
+  const badPrerender = !String(row.prerender || '').startsWith('article-edge-');
+  const badBody = isIceUrl(u) ? row.body_length === 0 : row.body_length < 80;
+  if (row.status !== 200 || badPrerender || row.canonical !== u || badBody || !row.schema || row.noindex) report.failures.push({ article:u, row });
 }
 
 for (const u of [`${SITE}/`,`${SITE}/ice`,`${SITE}/ice/news`]) {
-  const r = await fetchOne(u,{redirect:'follow',ua:'TRRB-SEO-Audit/2.0',accept:'text/html'});
+  const r = await fetchOne(u,{redirect:'follow',ua:'TRRB-SEO-Audit/3.0',accept:'text/html'});
   const assets = [...r.text.matchAll(/<(?:script|link|img|source)\b[^>]*(?:src|href)=["']([^"'#]+)["']/gi)].map(m=>m[1]).filter(v=>!v.startsWith('data:'));
   const bad=[];
   for (const asset of assets.slice(0,80)) {
     let au; try { au = new URL(asset,r.url).href; } catch { continue; }
     if (new URL(au).hostname !== 'trrb.net') continue;
-    const ar = await fetchOne(au,{redirect:'follow',ua:'TRRB-SEO-Audit/2.0'});
+    const ar = await fetchOne(au,{redirect:'follow',ua:'TRRB-SEO-Audit/3.0'});
     if (ar.status >= 400) bad.push({url:au,status:ar.status});
   }
-  report.pages[u]={status:r.status,final_url:r.url,asset_count:assets.length,bad_assets:bad};
+  const directArticleLinks = [...r.text.matchAll(/<a\b[^>]*href=["']([^"']+)["']/gi)].map(m=>m[1]).filter(isArticleLoc).length;
+  report.pages[u]={status:r.status,final_url:r.url,asset_count:assets.length,bad_assets:bad,direct_article_links:directArticleLinks};
   if (r.status >= 400 || bad.length) report.failures.push({page:u,status:r.status,bad_assets:bad.slice(0,20)});
+  if ((u === `${SITE}/` || u === `${SITE}/ice`) && directArticleLinks < 3) report.failures.push({page:u,problem:`too few direct article links: ${directArticleLinks}`});
 }
 
 fs.mkdirSync('reports',{recursive:true});

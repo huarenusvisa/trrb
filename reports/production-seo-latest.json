@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T20:21:23.151Z",
+  "generated_at": "2026-08-19T20:28:28.515Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -35,8 +35,9 @@
         },
         {
           "url": "https://trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
       "final_url": "https://trrb.net/"
@@ -45,11 +46,18 @@
       "chain": [
         {
           "url": "https://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
-      "final_url": "https://www.trrb.net/"
+      "final_url": "https://trrb.net/"
     }
   },
   "sitemaps": {
@@ -282,7 +290,6 @@
     }
   },
   "failures": [
-    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
     {
       "page": "https://trrb.net/",
       "problem": "too few direct article links: 0/10"

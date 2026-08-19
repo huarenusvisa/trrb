@@ -27,19 +27,23 @@ async function parseBrowserScript(path) {
 }
 
 const index = await bytes("index.html");
+const indexText = index.toString("utf8");
 if (!startsText(index, "<!doctype html>")) failures.push("index.html is not HTML");
 if (!includesText(index, "category-runtime-v3.js")) failures.push("index.html is missing category CMS runtime");
 if (!includesText(index, "homepage-refresh-guard.js?v=20260819-bundle-supplements-2")) failures.push("index.html is missing current unified homepage refresh guard token");
 if (!includesText(index, "articles-home.js?v=20260819-single-bundle-2")) failures.push("index.html is missing current unified homepage renderer token");
 if (!includesText(index, "homepage-immigration-hub.js?v=20260819-reuse-bundle-2")) failures.push("index.html is missing current homepage hub bundle-reuse token");
 if (!includesText(index, '<a href="/immigration">移民美国</a>')) failures.push("index.html primary immigration navigation is not canonical /immigration");
-if (!includesText(index, '<a href="/jobs/">招聘求职</a>')) failures.push("index.html lost the independent jobs navigation entry");
+if (/<a\s+href=["']\/jobs\/?["'][^>]*>招聘求职<\/a>/i.test(indexText)) failures.push("index.html exposes the prelaunch jobs product in primary navigation");
+if (/jobs-home\.js/i.test(indexText)) failures.push("index.html still loads the retired prelaunch jobs homepage override");
 if (!includesText(index, '<link rel="canonical" href="https://trrb.net/"')) failures.push("index.html is missing canonical https://trrb.net/");
-if (!/name=["']robots["'][^>]*content=["'][^"']*index,follow/i.test(index.toString("utf8"))) failures.push("index.html is missing index,follow robots directive");
+if (!/name=["']robots["'][^>]*content=["'][^"']*index,follow/i.test(indexText)) failures.push("index.html is missing index,follow robots directive");
 if (!includesText(index, 'property="og:title"')) failures.push("index.html is missing og:title");
 if (!includesText(index, 'property="og:url" content="https://trrb.net/"')) failures.push("index.html og:url is not canonical root");
+if (/href=["']\.\/expose\.html["']/i.test(indexText)) failures.push("index.html still emits legacy expose.html links");
 
 const listing = await bytes("listing.html");
+const listingText = listing.toString("utf8");
 if (!startsText(listing, "<!doctype html>")) failures.push("listing.html is not HTML");
 if (!includesText(listing, "category-runtime-v3.js?v=20260819-preserve-independent-nav-1")) failures.push("listing.html is missing current category runtime token");
 if (!includesText(listing, "listing-seo.js?v=20260819-ssr-safe-3")) failures.push("listing.html is missing current SSR-safe category SEO runtime");
@@ -48,18 +52,25 @@ if (!includesText(listing, "article-route-runtime.js?v=20260819-seo-v5")) failur
 if (!includesText(listing, "nav-expose-link")) failures.push("listing.html is missing persistent expose navigation link");
 if (!includesText(listing, '<base href="/"')) failures.push("listing.html is missing root base href for rewritten category routes");
 if (!includesText(listing, '<a href="/immigration">移民美国</a>')) failures.push("listing.html immigration navigation is not canonical /immigration");
+if (/\/index\.html#|\.\/expose\.html/i.test(listingText)) failures.push("listing.html still emits avoidable legacy internal redirects");
 
 const article = await bytes("article.html");
+const articleText = article.toString("utf8");
 if (!startsText(article, "<!doctype html>")) failures.push("article.html is not HTML");
 if (!includesText(article, "category-runtime-v3.js?v=20260819-preserve-independent-nav-1")) failures.push("article.html is missing current category runtime token");
 if (!includesText(article, "article-route-runtime.js?v=20260819-seo-v5")) failures.push("article.html is missing current article route runtime");
 if (!includesText(article, "nav-expose-link")) failures.push("article.html is missing persistent expose navigation link");
+if (/\/index\.html#|\/expose\.html/i.test(articleText)) failures.push("article.html still emits avoidable legacy internal redirects");
 
 const jobsHub = await bytes("jobs/index.html");
 if (!startsText(jobsHub, "<!doctype html>")) failures.push("jobs/index.html is not HTML");
 if (!/name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(jobsHub.toString("utf8"))) failures.push("jobs prelaunch hub must remain noindex until the production jobs database is live");
 if (!includesText(jobsHub, "上线准备中")) failures.push("jobs prelaunch hub is missing its deployment-status disclosure");
 if (includesText(jobsHub, "均接入同一正式数据源")) failures.push("jobs prelaunch hub still claims a production data source is already live");
+
+const jobsHome = await bytes("jobs-home.js");
+if (!includesText(jobsHome, "TRRB_JOBS_HOME_PRELAUNCH")) failures.push("jobs-home.js is not the prelaunch compatibility shim");
+if (/setInterval|MutationObserver|replaceAsylumCard/i.test(jobsHome.toString("utf8"))) failures.push("jobs-home.js still mutates homepage content while jobs is prelaunch");
 
 // Redirect rules execute after Edge Functions. This alphabetically-first inline
 // Edge guard prevents article/category/sitemap/feed responders from ending the
@@ -69,6 +80,11 @@ if (!includesText(hostCanonical, 'export const config = { path: "/*" }')) failur
 if (!includesText(hostCanonical, 'www.${CANONICAL_HOST}')) failures.push("00-host-canonical.ts does not normalize the www host");
 if (!includesText(hostCanonical, "status: 301")) failures.push("00-host-canonical.ts does not return a permanent redirect");
 if (!includesText(hostCanonical, 'X-TRRB-Host-Canonical')) failures.push("00-host-canonical.ts is missing its production verification marker");
+
+const immigrationCanonical = await bytes("netlify/edge-functions/00-immigration-center-canonical.ts");
+if (!includesText(immigrationCanonical, 'path: ["/immigrate/center", "/immigrate/center.html"]')) failures.push("immigration center canonical guard is not bound to both legacy and clean routes");
+if (!includesText(immigrationCanonical, "knowledge-center-v1")) failures.push("immigration center canonical guard is missing its production marker");
+if (!includesText(immigrationCanonical, "status: 301")) failures.push("immigration center canonical guard does not permanently normalize invalid/legacy routes");
 
 const seoRouteMeta = await bytes("netlify/edge-functions/seo-route-meta.ts");
 if (!includesText(seoRouteMeta, '"移民美国": "immigration"')) failures.push("SEO route fallback still mixes immigration news with the knowledge center");
@@ -112,12 +128,17 @@ await Promise.all([
   parseBrowserScript("ice-home-unify.js"),
   parseBrowserScript("legal/detail.js"),
   parseBrowserScript("jobs/listing.js"),
+  parseBrowserScript("jobs-home.js"),
+  parseBrowserScript("immigrate/center-link-canonical.js"),
   parseBrowserScript("admin/category-manager.js")
 ]);
 
 const manifest = await bytes("site.webmanifest");
-try { JSON.parse(manifest.toString("utf8")); }
-catch { failures.push("site.webmanifest is not valid JSON"); }
+try {
+  const parsed = JSON.parse(manifest.toString("utf8"));
+  if (parsed.start_url !== "/") failures.push("site.webmanifest start_url is not canonical root /");
+  if (parsed.scope !== "/") failures.push("site.webmanifest scope is not canonical root /");
+} catch { failures.push("site.webmanifest is not valid JSON"); }
 
 const logo = await bytes("trrb-logo-cropped.webp");
 if (!(logo.subarray(0, 4).toString("ascii") === "RIFF" && logo.subarray(8, 12).toString("ascii") === "WEBP")) failures.push("trrb-logo-cropped.webp is not WebP");
@@ -139,6 +160,8 @@ if (!includesText(sitemapStatic, "<loc>https://trrb.net/legal/</loc>")) failures
 if (includesText(sitemapStatic, "<loc>https://trrb.net/finance/</loc>")) failures.push("sitemap-static.xml must not index finance demo preview");
 if (includesText(sitemapStatic, "https://www.trrb.net/")) failures.push("sitemap-static.xml still contains www.trrb.net URLs");
 if (/https:\/\/trrb\.net\/jobs(?:\/|\?|<)/i.test(sitemapStatic.toString("utf8"))) failures.push("sitemap-static.xml contains a prelaunch jobs route");
+if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/center?path=study</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge category routes");
+if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/center?path=study&amp;topic=f1</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge topic routes");
 
 const sitemapArticles = await bytes("sitemap-articles-1.xml");
 const sitemapArticlesText = sitemapArticles.toString("utf8");
@@ -176,6 +199,11 @@ for (const rule of [
   "/politics /us-politics 301!",
   "/crime /us-crime 301!",
   "/china /china-officialdom 301!",
+  "/uscis /immigration 301!",
+  "/dhs /immigration 301!",
+  "/cbp /immigration 301!",
+  "/visa /immigration 301!",
+  "/world /important-news 301!",
   "/immigration-us /immigration 301!"
 ]) {
   if (!redirectsText.includes(rule)) failures.push(`_redirects missing canonical rule: ${rule}`);

@@ -107,6 +107,10 @@
 - [x] 行情 / 自选 / ETF 关键区域 Skeleton 首屏加载保护
 - [x] 个股 / ETF 操作统一 Toast 反馈
 - [x] 个股 / ETF 详情加载完成状态同步
+- [x] 个股 / ETF 图表支持鼠标悬停、触摸横向读取
+- [x] 个股 / ETF 图表支持键盘左右键 / Home / End / Escape 浏览
+- [x] 图表交互使用 requestAnimationFrame 节流，避免高频 pointermove 重绘
+- [x] ETF 主图升级为渐变面积图、终点光晕与轻网格
 - [x] 美股三大指数 / 热力图 / Top Movers
 - [x] Earnings / Upcoming / Macro / Crypto
 - [x] 自选本地状态
@@ -204,6 +208,15 @@
 - 搜索结果增加按压反馈；底栏图标跟随当前导航颜色，并保留 reduced-motion 模式。
 - 个股 / ETF 详情增加 `detail-ready` 状态，后续可用于更精细的首屏加载过渡。
 - 本轮继续保持 A 版设计方向，不推进实验 B 版；已经同步到 `finance-v1-preview`。
+
+### 第十一轮：终局图表交互
+- 个股走势图增加鼠标悬停、手指横向拖动读取功能，并显示十字参考线、定位点和演示价格气泡。
+- ETF 走势图同步升级为渐变面积图、终点光晕、轻网格和同规格触摸读数。
+- 图表容器支持键盘 Left / Right / Home / End 浏览位置，Escape 隐藏读数，提升桌面与无障碍体验。
+- 触摸图表使用 `touch-action: pan-y`，横向读数时仍保留页面纵向滚动能力。
+- pointermove 通过 `requestAnimationFrame` 节流，只更新参考线、定位点和读数气泡，不重新生成整张 SVG。
+- 所有读数明确标记“演示读数”，避免 demo 曲线被误解为真实历史行情。
+- 本轮继续保持 A 版视觉体系，不修改一级架构、不开放交易能力。
 
 ## 当前结论
 当前仍定义为 **V1 Candidate+**。四个一级页面、个股和 ETF 详情已经形成一致的高级视觉与交互语言；功能开发主体已经接近封板。下一阶段主要是实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复，完成后再标记 `V1 Complete`。

@@ -1,12 +1,12 @@
 (function () {
   const immigrationPaths = [
-    ["赴美留学", "/immigrate/?path=study"],
-    ["赴美工作", "/immigrate/?path=work"],
-    ["职业移民", "/immigrate/?path=employment"],
-    ["家庭移民", "/immigrate/?path=family"],
-    ["人道主义庇护", "/immigrate/?path=humanitarian"],
-    ["境内身份转换", "/immigrate/?path=change-status"],
-    ["入籍美国公民", "/immigrate/?path=citizenship"]
+    ["赴美留学", "/immigrate/center?path=study"],
+    ["赴美工作", "/immigrate/center?path=work"],
+    ["职业移民", "/immigrate/center?path=employment"],
+    ["家庭移民", "/immigrate/center?path=family"],
+    ["人道主义庇护", "/immigrate/center?path=humanitarian"],
+    ["境内身份转换", "/immigrate/center?path=change-status"],
+    ["入籍美国公民", "/immigrate/center?path=citizenship"]
   ];
 
   const legalPaths = [

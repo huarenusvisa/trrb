@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
   <url>
       <loc>https://trrb.net/ice/ice-9e60dec72a6a7db4d827133e5078e1abc8a07315</loc>
       <news:news>
@@ -1037,6 +1038,5 @@
         <news:title>美国特朗普时期政策致合法移民数量骤减近半</news:title>
       </news:news>
     </url>
-  
   
 </urlset>

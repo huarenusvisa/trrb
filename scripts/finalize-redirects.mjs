@@ -10,6 +10,9 @@ const required = [
   'https://www.trrb.net/* https://trrb.net/:splat 301!',
   '/important /important-news 301!',
   '/hot /hot-headlines 301!',
+  '/politics /us-politics 301!',
+  '/crime /us-crime 301!',
+  '/china /china-officialdom 301!',
   '/immigration-us /immigration 301!',
   '/asylum-guide /asylum 301!',
   '/important-news /listing.html?category=%E9%87%8D%E8%A6%81%E6%96%B0%E9%97%BB 200!',
@@ -29,5 +32,4 @@ const filtered = lines.filter((line) => !required.some((rule) => line.split(/\s+
 fs.writeFileSync(file, [...required, ...filtered].join('\n') + '\n');
 console.log(`[redirects] finalized ${required.length} canonical/special rules + ${filtered.length} generated rules`);
 
-// Round 11: trim redundant homepage payload immediately before the Netlify publish output is finalized.
 await import('./optimize-homepage-performance.mjs');

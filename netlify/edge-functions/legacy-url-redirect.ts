@@ -18,6 +18,12 @@ function normalizeTitle(value: string): string {
     .toLowerCase();
 }
 
+// Pinned recovery routes for legacy WordPress URLs that have been restored into Supabase.
+// This guarantees that high-value indexed URLs keep working even if fuzzy title matching changes.
+const LEGACY_ARTICLE_MAP = new Map<string, string>([
+  [normalizeTitle("44岁科州男子被控杀妻-遭重罪指控"), "f0fb17df-d940-4039-8a77-76316e4e11a1"]
+]);
+
 function commonPrefixLength(a: string, b: string): number {
   const limit = Math.min(a.length, b.length);
   let i = 0;
@@ -154,7 +160,51 @@ function gone(reason: string): Response {
     status: 410,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=300",
+      "Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex, nofollow",
+      "X-TRRB-Retired": reason
+    }
+  });
+}
+
+function escapeHtml(value: string): string {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function retiredArticle(title: string, reason: string): Response {
+  const safeTitle = escapeHtml(title || "这篇旧文章");
+  const body = `<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${safeTitle} - 唐人日报</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  *{box-sizing:border-box}body{margin:0;background:#f5f6f8;color:#202124;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}.brand{font-size:28px;font-weight:800;color:#b3261e;margin:14px 0 36px}
+  .card{background:#fff;border-radius:18px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,.08)}h1{font-size:25px;line-height:1.45;margin:0 0 18px}
+  p{font-size:16px;line-height:1.8;color:#5f6368}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}.btn{display:inline-block;text-decoration:none;border-radius:10px;padding:12px 18px;font-weight:700}
+  .primary{background:#b3261e;color:#fff}.secondary{background:#eef0f3;color:#202124}.note{margin-top:24px;padding-top:20px;border-top:1px solid #eee;font-size:14px;color:#777}
+</style>
+</head>
+<body><main class="wrap"><div class="brand">唐人日报 Tang Ren Daily</div><section class="card">
+<h1>${safeTitle}</h1>
+<p>这是一篇来自唐人日报旧版网站的历史链接。目前原始文章尚未完成迁移，因此不再显示空白的 “Gone” 页面。我们正在逐步恢复仍有搜索流量的旧新闻。</p>
+<div class="actions"><a class="btn primary" href="/">返回唐人日报首页</a><a class="btn secondary" href="/listing.html?category=${encodeURIComponent("热门头条")}">查看热门头条</a><a class="btn secondary" href="/listing.html?category=${encodeURIComponent("美国警情")}">查看美国警情</a></div>
+<div class="note">如果该文章已经恢复，旧网址会自动跳转到恢复后的新闻页面。</div>
+</section></main></body></html>`;
+
+  return new Response(body, {
+    status: 410,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
       "X-Robots-Tag": "noindex, nofollow",
       "X-TRRB-Retired": reason
     }
@@ -200,6 +250,11 @@ export default async (request: Request, context: any) => {
 
   if (legacyTitle.length < 4 || legacyTitle.length > 220) return gone("wordpress-title-invalid");
 
+  const pinnedArticleId = LEGACY_ARTICLE_MAP.get(normalizeTitle(legacyTitle));
+  if (pinnedArticleId) {
+    return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(pinnedArticleId)}`, "article-pinned-recovery");
+  }
+
   try {
     if (await isActiveCategorySlug(legacyTitle)) {
       if (isCcHost) return redirect(canonicalSamePath(url), "cc-active-category");
@@ -214,9 +269,9 @@ export default async (request: Request, context: any) => {
 
     const match = ranked[0];
     const runnerUp = ranked[1];
-    if (!match?.id) return gone("wordpress-title-no-current-article");
+    if (!match?.id) return retiredArticle(legacyTitle, "wordpress-title-no-current-article");
     if (runnerUp && match.score < 90 && match.score - runnerUp.score < 8) {
-      return gone("wordpress-title-ambiguous-retired");
+      return retiredArticle(legacyTitle, "wordpress-title-ambiguous-retired");
     }
 
     return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(match.id)}`, `article-match-${match.score}`);
@@ -224,6 +279,6 @@ export default async (request: Request, context: any) => {
     console.error("legacy redirect lookup failed", error);
     // On .cc, never serve a duplicate copy even if the article lookup backend is temporarily unavailable.
     if (isCcHost) return redirect(canonicalSamePath(url), "cc-domain-migration-fallback");
-    return context.next();
+    return retiredArticle(legacyTitle, "wordpress-title-lookup-failed");
   }
 };

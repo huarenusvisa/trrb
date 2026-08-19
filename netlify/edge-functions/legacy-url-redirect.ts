@@ -1,4 +1,6 @@
 const SITE_ORIGIN = "https://trrb.net";
+const FALLBACK_SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
+const FALLBACK_SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
 
 export const config = { path: "/*" };
 
@@ -78,8 +80,8 @@ function isLegacyCandidate(pathname: string): boolean {
 }
 
 function supabaseConfig() {
-  const base = (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, "");
-  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
+  const base = (Deno.env.get("SUPABASE_URL") || FALLBACK_SUPABASE_URL).replace(/\/+$/, "");
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || FALLBACK_SUPABASE_KEY;
   return { base, key };
 }
 

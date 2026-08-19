@@ -25,13 +25,13 @@
       "美国时政": "/us-politics",
       "美国警情": "/us-crime",
       "中国官场": "/china-officialdom",
-      "移民美国": "/immigrate/",
+      "移民美国": "/immigration",
       "ICE执法动态": "/ice",
       "ICE执法": "/ice",
       "驱逐快报": "/ice",
-      "庇护百科": "/listing.html?category=%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91"
+      "庇护百科": "/asylum"
     };
-    return routes[category] || `/listing.html?category=${encodeURIComponent(category || "新闻")}`;
+    return routes[category] || "/";
   }
 
   function makeCategoryTagClickable(tag, category) {
@@ -75,7 +75,7 @@
         return;
       }
       const script = document.createElement("script");
-      script.src = "./articles-home-index.js?v=31.4";
+      script.src = "/articles-home-index.js?v=20260819-archive";
       script.async = true;
       script.dataset.trrbRichIndex = "true";
       script.addEventListener("load", () => resolve(window.TRRB_ARTICLE_INDEX || []), { once: true });
@@ -93,11 +93,16 @@
     return copy;
   }
 
+  function archiveHref(article) {
+    const id = String(article?.id || "").trim();
+    return id ? `/article.html?id=${encodeURIComponent(id)}` : "/";
+  }
+
   function renderRelatedItem(article) {
     const category = inferCategory(article);
     const image = resolveImage(article.image || "", category);
-    const fallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(category) : "./image-placeholder.svg";
-    return `<a class="related-item${image ? "" : " has-no-image"}" href="./article.html?id=${encodeURIComponent(article.id)}" role="listitem">
+    const fallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(category) : "/image-placeholder.svg";
+    return `<a class="related-item${image ? "" : " has-no-image"}" href="${archiveHref(article)}" role="listitem">
       ${image ? `<img src="${escapeAttribute(image)}" width="500" height="281" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="if(!this.dataset.fallbackTried){this.dataset.fallbackTried='true';this.src='${escapeAttribute(fallback)}';}else{this.remove();}" alt="" />` : ""}
       <span>${escapeHtml(category)}</span><strong>${escapeHtml(article.title || "")}</strong></a>`;
   }
@@ -105,13 +110,13 @@
   function renderNeighbor(article, direction) {
     if (!article) return `<span class="article-neighbor is-empty" aria-hidden="true"></span>`;
     const isPrevious = direction === "previous";
-    return `<a class="article-neighbor ${isPrevious ? "is-previous" : "is-next"}" href="./article.html?id=${encodeURIComponent(article.id)}">
+    return `<a class="article-neighbor ${isPrevious ? "is-previous" : "is-next"}" href="${archiveHref(article)}">
       <span>${isPrevious ? "Previous One" : "Next Article"}</span>
       <strong>${isPrevious ? "上一篇" : "下一篇"}：${escapeHtml(article.title || "")}</strong>
     </a>`;
   }
 
-  async function rebuildNavigationAndRelated() {
+  async function rebuildArchiveNavigationAndRelated() {
     const richIndex = await ensureRichArticleIndex();
     const list = (Array.isArray(richIndex) ? richIndex : []).filter((item) => item && item.id && item.title);
     const currentId = new URLSearchParams(window.location.search).get("id") || "";
@@ -144,6 +149,15 @@
     section.dataset.relatedCount = String(candidates.length);
   }
 
+  function enhancePrerenderedArticle() {
+    const currentTitle = root.querySelector(".article-header h1")?.textContent?.trim() || "";
+    const tag = root.querySelector(".article-header .tag");
+    const currentCategory = inferCategory({ category: tag?.textContent || "新闻", title: currentTitle });
+    makeCategoryTagClickable(tag, currentCategory);
+    // article-live-neighbors.js owns real-time previous/next/related links on
+    // canonical pretty pages. Do not overwrite them with the historical index.
+  }
+
   function createEngagementPanel() {
     if (root.querySelector(".article-engagement")) return;
     const panel = document.createElement("section");
@@ -151,10 +165,10 @@
     panel.setAttribute("aria-labelledby", "article-engagement-title");
     panel.innerHTML = `<header class="article-engagement-header"><h2 id="article-engagement-title">参与唐人日报</h2><p>加入读者群、提交线索或曝光经历，所有公开内容均经过人工审核。</p></header>
       <div class="article-engagement-grid">
-        <a class="article-engagement-card is-primary" href="./index.html#community"><strong>加入读者群</strong><span>获取突发新闻与移民政策更新</span></a>
-        <a class="article-engagement-card" href="./expose.html"><strong>曝光墙</strong><span>提交真实经历和相关证据</span></a>
-        <a class="article-engagement-card" href="./index.html#submit"><strong>投稿爆料</strong><span>提交新闻线索、图片或视频</span></a>
-        <a class="article-engagement-card" href="./index.html#daily"><strong>订阅每日快报</strong><span>每日精选新闻直达邮箱</span></a>
+        <a class="article-engagement-card is-primary" href="/index.html#community"><strong>加入读者群</strong><span>获取突发新闻与移民政策更新</span></a>
+        <a class="article-engagement-card" href="/expose.html"><strong>曝光墙</strong><span>提交真实经历和相关证据</span></a>
+        <a class="article-engagement-card" href="/index.html#submit"><strong>投稿爆料</strong><span>提交新闻线索、图片或视频</span></a>
+        <a class="article-engagement-card" href="/index.html#daily"><strong>订阅每日快报</strong><span>每日精选新闻直达邮箱</span></a>
       </div>`;
     const related = root.querySelector(".related-news");
     if (related) related.insertAdjacentElement("afterend", panel); else root.appendChild(panel);
@@ -165,7 +179,16 @@
     if (root.dataset.v31Enhanced === "running" || root.dataset.v31Enhanced === "true") return true;
     root.dataset.v31Enhanced = "running";
     createEngagementPanel();
-    rebuildNavigationAndRelated().catch((error) => console.warn("TRRB article navigation/related rebuild failed", error)).finally(() => { root.dataset.v31Enhanced = "true"; });
+
+    if (root.dataset.prerendered === "true") {
+      enhancePrerenderedArticle();
+      root.dataset.v31Enhanced = "true";
+      return true;
+    }
+
+    rebuildArchiveNavigationAndRelated()
+      .catch((error) => console.warn("TRRB archive navigation/related rebuild failed", error))
+      .finally(() => { root.dataset.v31Enhanced = "true"; });
     return true;
   }
 

@@ -31,6 +31,16 @@ async function fetchArticles(limit, category = "") {
   return Array.isArray(rows) ? rows : [];
 }
 
+function categoryCounts(rows) {
+  const counts = new Map();
+  for (const row of rows) {
+    const category = String(row?.category_name || "").trim();
+    if (!category) continue;
+    counts.set(category, (counts.get(category) || 0) + 1);
+  }
+  return counts;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return response(204, {});
   if (event.httpMethod !== "GET") return response(405, { error: "Method not allowed" });
@@ -38,10 +48,17 @@ exports.handler = async (event) => {
   try {
     const globalLimit = Math.min(Math.max(Number(event.queryStringParameters?.limit || 200), 20), 200);
     const perCategory = Math.min(Math.max(Number(event.queryStringParameters?.per_category || 12), 3), 20);
-    const [globalRows, ...supplements] = await Promise.all([
-      fetchArticles(globalLimit),
-      ...CORE_CATEGORIES.map((category) => fetchArticles(perCategory, category).catch(() => []))
-    ]);
+
+    // Start with one global query. Only categories that are underrepresented in
+    // that result receive a supplemental query. The previous implementation
+    // always issued six category queries even when the global 200 already held
+    // far more rows than the homepage could render.
+    const globalRows = await fetchArticles(globalLimit);
+    const counts = categoryCounts(globalRows);
+    const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);
+    const supplements = await Promise.all(
+      sparseCategories.map((category) => fetchArticles(perCategory, category).catch(() => []))
+    );
 
     const seen = new Set();
     const articles = [globalRows, ...supplements].flat()
@@ -57,6 +74,8 @@ exports.handler = async (event) => {
       mode: "homepage",
       generated_at: new Date().toISOString(),
       count: articles.length,
+      database_queries: 1 + sparseCategories.length,
+      supplemented_categories: sparseCategories,
       articles
     });
   } catch (error) {

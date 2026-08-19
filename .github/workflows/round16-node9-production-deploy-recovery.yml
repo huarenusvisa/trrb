@@ -51,6 +51,7 @@ on:
       - 'scripts/ice-breaking-news-index-audit.mjs'
       - 'scripts/round16-node4-home-legal-production.mjs'
       - 'scripts/submit-indexnow.mjs'
+      - 'scripts/write-deploy-version.mjs'
       - 'index.html'
       - 'topic/ice/live-v6.html'
       - 'topic/ice/index.html'
@@ -66,48 +67,56 @@ concurrency:
 jobs:
   recover-production-deploy:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 35
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
       NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-      - name: 合并连续提交并只发布最新main
+      - name: 合并连续提交并锁定最新main版本
         shell: bash
         run: |
           set -euo pipefail
           sleep 30
           git fetch origin main
           git reset --hard origin/main
-          echo "deploying_main=$(git rev-parse HEAD)"
+          DEPLOY_SHA="$(git rev-parse HEAD)"
+          printf '%s\n' "$DEPLOY_SHA" > deploy-version.txt
+          echo "DEPLOY_SHA=$DEPLOY_SHA" >> "$GITHUB_ENV"
+          echo "deploying_main=$DEPLOY_SHA"
 
-      - name: 触发或执行Netlify生产部署
+      - name: 确定性发布Netlify生产站
         shell: bash
         run: |
           set -euo pipefail
-          if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
-            echo 'Using configured Netlify build hook.'
-            curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
-            cat /tmp/netlify-hook-response.txt || true
-            exit 0
-          fi
           if [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && [ -n "${NETLIFY_SITE_ID:-}" ]; then
-            echo 'Using Netlify CLI production deploy.'
+            echo 'Using deterministic Netlify CLI production deploy for the configured site ID.'
             npm install --no-save netlify-cli@latest
             npx netlify deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+            exit 0
+          fi
+          if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
+            echo 'CLI credentials are unavailable; falling back to configured Netlify build hook.'
+            echo 'The subsequent deploy-version check must prove that this hook publishes the current main branch.'
+            curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-hook-response.txt
+            cat /tmp/netlify-hook-response.txt || true
             exit 0
           fi
           echo 'No Netlify deployment credential or build hook is configured in GitHub Actions secrets.'
           exit 2
 
-      - name: 验收首页、栏目、ICE、Sitemap、旧档案和文章索引链
+      - name: 验收生产Commit、首页、栏目、ICE、Sitemap和旧档案
         shell: bash
         run: |
           set -euo pipefail
+          test -n "${DEPLOY_SHA:-}" || { echo 'DEPLOY_SHA missing'; exit 2; }
           for attempt in $(seq 1 120); do
             stamp=$(date +%s)
+            live_sha=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?seo-deploy=$stamp" 2>/dev/null | tr -d '\r\n[:space:]' || true)
             home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?seo-deploy=$stamp" || true)
             category=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?seo-deploy=$stamp" || true)
             asylum=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/asylum?seo-deploy=$stamp" || true)
@@ -122,9 +131,12 @@ jobs:
             archive_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=117382&seo-deploy=$stamp" | tr -d '\r' || true)
             invalid_uuid_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=00000000-0000-4000-8000-000000000000&seo-deploy=$stamp" | tr -d '\r' || true)
 
+            deploy_sha_ok=0
+            [ "$live_sha" = "$DEPLOY_SHA" ] && deploy_sha_ok=1
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
             home_single_guard=$(printf '%s' "$home" | grep -c 'homepage-refresh-guard.js?v=20260819-single-live-1' || true)
+            finance_card=$(printf '%s' "$home" | grep -c 'href="/finance/"' || true)
             bundle_ok=$(printf '%s' "$bundle" | grep -c '"mode":"homepage"' || true)
             category_marker=$(printf '%s' "$category" | grep -c 'data-seo-category-snapshot="edge"' || true)
             category_article_links=$(printf '%s' "$category" | grep -Eo 'href="/important-news/[^"]+' | wc -l | tr -d ' ')
@@ -155,14 +167,14 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt home=$home_marker/$home_article_links/$home_single_guard bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v3=$sitemap_v3 news_v4=$news_v4 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
+            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v3=$sitemap_v3 news_v4=$news_v4 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
 
-            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$news_v4" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
-              echo 'PRODUCTION SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID QUERY GUARDS + NEWS V4 + ICE INDEXABILITY PASS'
+            if [ "$deploy_sha_ok" -eq 1 ] && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$finance_card" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$news_v4" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
+              echo 'PRODUCTION EXACT-SHA + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V4 + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10
           done
 
-          echo 'Production did not expose the required crawlable canonical SEO chain in time.'
+          echo 'Production did not publish the exact current main commit with the required crawlable SEO chain in time.'
           exit 1

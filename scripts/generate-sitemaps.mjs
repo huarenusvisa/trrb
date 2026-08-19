@@ -14,9 +14,31 @@ if (!base || !key) {
   throw new Error('Supabase credentials are required to build production sitemaps. Static WordPress-era archives are no longer an indexing source.');
 }
 
+const FALLBACK_CATEGORY_SLUGS = new Map([
+  ['重要新闻', 'important-news'],
+  ['热门头条', 'hot-headlines'],
+  ['美国时政', 'us-politics'],
+  ['美国警情', 'us-crime'],
+  ['中国官场', 'china-officialdom'],
+  ['移民美国', 'immigration'],
+  ['庇护百科', 'asylum'],
+  ['驱逐快报', 'deport'],
+  ['ICE执法动态', 'ice'],
+  ['ICE执法', 'ice'],
+  ['曝光墙', 'expose']
+]);
+const SECTION_ALIASES = new Map([
+  ['important', 'important-news'],
+  ['hot', 'hot-headlines'],
+  ['politics', 'us-politics'],
+  ['crime', 'us-crime'],
+  ['china', 'china-officialdom']
+]);
+
 const cleanText = (value = '') => String(value)
   .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
   .trim();
+const canonicalSection = (value = '') => SECTION_ALIASES.get(cleanText(value)) || cleanText(value);
 const visibleText = (value = '') => cleanText(value)
   .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
   .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ')
@@ -25,32 +47,23 @@ const visibleText = (value = '') => cleanText(value)
   .replace(/&[a-z0-9#]+;/gi, ' ')
   .replace(/\s+/g, ' ')
   .trim();
-const isIndexableArticle = (article) => visibleText(article?.content || '').length >= MIN_INDEXABLE_BODY_LENGTH;
+const normalizedTitle = (value = '') => visibleText(value).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu, '');
+const isIceArticle = (article) => {
+  const topic = cleanText(article?.topic_key || '').toLowerCase();
+  const category = cleanText(article?.category_name || '');
+  return topic === 'ice' || category === 'ICE执法动态' || category === 'ICE执法';
+};
+const isIndexableArticle = (article) => {
+  const body = visibleText(article?.content || article?.summary || '');
+  if (isIceArticle(article)) return Boolean(cleanText(article?.title || '')) && Boolean(body);
+  return body.length >= MIN_INDEXABLE_BODY_LENGTH;
+};
 const escapeXml = (value = '') => cleanText(value)
   .replaceAll('&', '&amp;')
   .replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;')
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&apos;');
-
-const normalizeUrl = (raw) => {
-  if (!raw) return null;
-  try {
-    const url = new URL(raw, SITE);
-    if (!['trrb.net', 'www.trrb.net'].includes(url.hostname)) return null;
-    url.protocol = 'https:';
-    url.hostname = 'trrb.net';
-    url.hash = '';
-    return url.toString();
-  } catch {
-    return null;
-  }
-};
-
-const canonicalArticleUrl = (article) => article?.id
-  ? `${SITE}/article.html?id=${encodeURIComponent(article.id)}`
-  : normalizeUrl(article?.sourceUrl || article?.source_url);
-const categoryUrl = (category) => `${SITE}/${encodeURIComponent(cleanText(category?.slug || ''))}`;
 
 const parsePublicationDate = (article) => {
   const iso = cleanText(article?.published_at || article?.created_at || '');
@@ -103,9 +116,9 @@ async function fetchAllPublishedArticles() {
   const all = [];
   for (let page = 0; page < maxPages; page += 1) {
     const rows = await rest('articles', {
-      select: 'id,title,summary,content,category_id,category_name,status,published_at,created_at,source_url,cover_image',
+      select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at,source_url,cover_image',
       status: 'eq.published',
-      order: 'published_at.desc.nullslast,created_at.desc',
+      order: 'published_at.asc.nullslast,created_at.asc',
       limit: String(pageSize),
       offset: String(page * pageSize)
     });
@@ -116,18 +129,40 @@ async function fetchAllPublishedArticles() {
 }
 
 const categories = await fetchCategories();
+const categoriesById = new Map(categories.map((row) => [String(row.id || ''), row]));
+const categoriesByName = new Map(categories.map((row) => [cleanText(row.name || ''), row]));
+
+function articleSection(article) {
+  const topic = cleanText(article?.topic_key || '').toLowerCase();
+  if (topic === 'trump') return 'trump';
+  if (topic === 'ice') return 'ice';
+  const byId = categoriesById.get(String(article?.category_id || ''));
+  if (byId?.slug) return canonicalSection(byId.slug);
+  const byName = categoriesByName.get(cleanText(article?.category_name || ''));
+  if (byName?.slug) return canonicalSection(byName.slug);
+  return FALLBACK_CATEGORY_SLUGS.get(cleanText(article?.category_name || '')) || 'news';
+}
+
+function canonicalArticleUrl(article) {
+  const slug = cleanText(article?.slug || '') || cleanText(article?.id || '');
+  if (!slug) return null;
+  return `${SITE}/${encodeURIComponent(articleSection(article))}/${encodeURIComponent(slug)}`;
+}
+
+const categoryUrl = (category) => `${SITE}/${encodeURIComponent(canonicalSection(category?.slug || ''))}`;
+
 if (categories.length) {
   const specialRoutes = [
     '/ice /topic/ice/live-v6.html 200!',
     '/ice/ /topic/ice/live-v6.html 200!',
-    '/ice/news /listing.html?category=ICE 200!',
-    '/ice/news/ /listing.html?category=ICE 200!',
+    `/ice/news /listing.html?category=${encodeURIComponent('ICE执法动态')} 200!`,
+    `/ice/news/ /listing.html?category=${encodeURIComponent('ICE执法动态')} 200!`,
     '/topic/ice /topic/ice/live-v6.html 200!',
     '/topic/ice/ /topic/ice/live-v6.html 200!'
   ];
   const categoryRoutes = categories
-    .filter((item) => cleanText(item.slug) && cleanText(item.name) && cleanText(item.slug).toLowerCase() !== 'ice')
-    .map((item) => `/${cleanText(item.slug)} /listing.html?category=${encodeURIComponent(cleanText(item.name))} 200`);
+    .filter((item) => cleanText(item.slug) && cleanText(item.name) && canonicalSection(item.slug).toLowerCase() !== 'ice')
+    .map((item) => `/${canonicalSection(item.slug)} /listing.html?category=${encodeURIComponent(cleanText(item.name))} 200`);
   fs.writeFileSync(path.join(ROOT, '_redirects'), `${[...specialRoutes, ...categoryRoutes].join('\n')}\n`);
   console.log(`[routes] generated ${categoryRoutes.length} category rewrites plus ICE dashboard routes`);
 }
@@ -150,13 +185,12 @@ if (categories.length) {
   }
   staticEntries.push({ loc: `${SITE}/ice/news`, lastmod: TODAY, priority: '0.7', changefreq: 'hourly' });
 } else {
-  ['重要新闻', '热门头条', '驱逐快报', '美国时政', '美国警情', '中国官场', '移民美国', '庇护百科']
-    .forEach((name) => staticEntries.push({
-      loc: `${SITE}/listing.html?category=${encodeURIComponent(name)}`,
-      lastmod: TODAY,
-      priority: '0.7',
-      changefreq: 'daily'
-    }));
+  [...FALLBACK_CATEGORY_SLUGS.values()].forEach((slug) => staticEntries.push({
+    loc: `${SITE}/${slug}`,
+    lastmod: TODAY,
+    priority: '0.7',
+    changefreq: 'daily'
+  }));
 }
 
 const isAllowed = (article, idSet, nameSet) => {
@@ -167,14 +201,31 @@ const isAllowed = (article, idSet, nameSet) => {
 };
 
 const byUrl = new Map(staticEntries.map((entry) => [entry.loc, entry]));
+const seenTitles = new Set();
+const seenBodies = new Set();
 let thinExcluded = 0;
+let shortIcePreserved = 0;
+let duplicateExcluded = 0;
 for (const article of databaseArticles) {
   if (!article?.id || !cleanText(article?.title)) continue;
   if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames)) continue;
+
+  const body = visibleText(article?.content || article?.summary || '');
   if (!isIndexableArticle(article)) {
     thinExcluded += 1;
     continue;
   }
+  if (isIceArticle(article) && body.length < MIN_INDEXABLE_BODY_LENGTH) shortIcePreserved += 1;
+
+  const titleKey = normalizedTitle(article?.title || '');
+  const bodyKey = body.length >= 120 ? body : '';
+  if ((titleKey.length >= 8 && seenTitles.has(titleKey)) || (bodyKey && seenBodies.has(bodyKey))) {
+    duplicateExcluded += 1;
+    continue;
+  }
+  if (titleKey.length >= 8) seenTitles.add(titleKey);
+  if (bodyKey) seenBodies.add(bodyKey);
+
   const loc = canonicalArticleUrl(article);
   if (!loc) continue;
   const published = parsePublicationDate(article);
@@ -200,4 +251,4 @@ if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} canonical URLs; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}`);
+console.log(`[sitemap] generated ${entries.length} canonical URLs; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; excluded duplicate ${duplicateExcluded}`);

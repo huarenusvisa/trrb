@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "f952ba0fe487584d295c89ba1d661b86520a1de6462e1c10d9e43a84965a2c82",
+  "datasetVersion": "4c4fd5002491d9c17f461ebdec1a2ab4a6f562b242f4da71e20338932b52d1dd",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 428,
+    "US_CIRCUIT": 429,
     "BIA": 68,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 624,
+  "count": 625,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -3026,21 +3026,6 @@
       "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2054P-01A.pdf",
       "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-2054P-01A.pdf",
       "sourceKey": "CIRCUIT:ca1:7b144c8c563690e9"
-    },
-    {
-      "id": "5cd9323d03436861545115ca",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the First Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "24-1805P.01A",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
-      "officialPdfUrl": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
-      "sourceKey": "CIRCUIT:ca1:80ae79879767775e"
     },
     {
       "id": "742ec4be70d431a94118222c",
@@ -9178,6 +9163,21 @@
       "sourceKey": "CIRCUIT:cafc:b49a2e30522448a9"
     },
     {
+      "id": "eb70e5e9391e30d661c4943a",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Federal Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "VDPP, LLC v. VOLKSWAGEN GROUP OF AMERICA, INC. [OPINION]",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.cafc.uscourts.gov/opinions-orders/24-2226.OPINION.8-19-2026_2741445.pdf",
+      "officialPdfUrl": "https://www.cafc.uscourts.gov/opinions-orders/24-2226.OPINION.8-19-2026_2741445.pdf",
+      "sourceKey": "CIRCUIT:cafc:d5e6ff1656c29600"
+    },
+    {
       "id": "5fbbf5c3fa8a8c5b9f5f815d",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -9221,6 +9221,21 @@
       "officialUrl": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
       "officialPdfUrl": "https://www.cafc.uscourts.gov/opinions-orders/24-2166.OPINION.8-14-2026_2739357.pdf",
       "sourceKey": "CIRCUIT:cafc:faa4a2cb9e622bb3"
+    },
+    {
+      "id": "cd32053e857971e0f355f120",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Federal Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "10X GENOMICS, INC. v. PARSE BIOSCIENCES, INC. [OPINION]",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1199.OPINION.8-19-2026_2741460.pdf",
+      "officialPdfUrl": "https://www.cafc.uscourts.gov/opinions-orders/25-1199.OPINION.8-19-2026_2741460.pdf",
+      "sourceKey": "CIRCUIT:cafc:fc9601a50cfeaafa"
     },
     {
       "id": "3b02f4031a63690864c5ca0a",

@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-9e60dec72a6a7db4d827133e5078e1abc8a07315</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T21:45:51.857Z</news:publication_date>
+        <news:title>华盛顿Grandview法院外ICE拘留一名疑似非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-79a927ea474cce67a31b2e25bb263b6772dea3ca</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T21:45:26.542Z</news:publication_date>
+        <news:title>DHS对逾10万违反遣返命令者发出罚款通知，ICE推动执行</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-50fc414f6688d025c14164f6a030244cc2d7b6cc</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T21:44:52.561Z</news:publication_date>
+        <news:title>ICE特工在一移民前往医疗预约途中对其实施拘押和身体束缚</news:title>
+      </news:news>
+    </url>
   
   
   

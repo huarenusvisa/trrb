@@ -5,7 +5,8 @@ export const config = { path: "/sitemap.xml" };
 
 const STATIC_HUBS = [
   { loc: `${SITE}/immigrate/`, priority: "0.8", changefreq: "weekly" },
-  { loc: `${SITE}/jobs/`, priority: "0.7", changefreq: "daily" }
+  { loc: `${SITE}/jobs/`, priority: "0.7", changefreq: "daily" },
+  { loc: `${SITE}/legal/`, priority: "0.8", changefreq: "daily" }
 ];
 
 const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {

@@ -55,6 +55,24 @@ async function fetchLivePublishedArticles(limit = 60, category = "") {
   } finally { clearTimeout(timer); }
 }
 
+async function fetchUnifiedHomeBundle() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 7500);
+  try {
+    const params = new URLSearchParams({ limit: "200", per_category: "12", _: String(Date.now()) });
+    const response = await fetch(`/.netlify/functions/public-home-bundle?${params.toString()}`, {
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`首页统一实时接口 ${response.status}`);
+    const payload = await response.json();
+    if (payload?.mode !== "homepage") throw new Error("首页统一实时接口返回格式异常");
+    const rows = Array.isArray(payload?.articles) ? payload.articles : [];
+    return rows.map(mapLiveArticle).sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
+  } finally { clearTimeout(timer); }
+}
+
 function articleTimestamp(item) {
   const raw = item?.published_at || item?.created_at || item?.date || item?.time || "";
   const t = new Date(raw).getTime();
@@ -181,15 +199,9 @@ function renderHome(articles) {
 
 async function loadHome() {
   try {
-    const live = await fetchLivePublishedArticles(200);
-    if (!live.length) throw new Error("首页实时接口没有返回已发布新闻");
-    const coreCategories = ["重要新闻","热门头条","美国时政","美国警情","中国官场","庇护百科"];
-    const supplements = await Promise.all(coreCategories.map((name) => fetchLivePublishedArticles(12, name).catch(() => [])));
-    const seen = new Set();
-    const combined = [...live, ...supplements.flat()]
-      .filter((item) => { const key = String(item?.id || ""); if (!key || seen.has(key)) return false; seen.add(key); return true; })
-      .sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
-    renderHome(combined);
+    const live = await fetchUnifiedHomeBundle();
+    if (!live.length) throw new Error("首页统一实时接口没有返回已发布新闻");
+    renderHome(live);
   } catch (error) {
     console.error("首页实时新闻加载失败：", error);
     const root = document.querySelector("#sections-grid");
@@ -343,8 +355,6 @@ function escapeHtml(value) {
 }
 function escapeAttribute(value) { return escapeHtml(value).replaceAll("`", "&#096;"); }
 
-// Explicit globals are used by homepage wrappers (ICE unifier, focus renderer,
-// migration hub) and avoid relying on browser-specific top-level binding rules.
 window.localArticleIndex = localArticleIndex;
 window.renderHome = renderHome;
 window.renderHeroCarousel = renderHeroCarousel;

@@ -95,11 +95,7 @@
     if (!value) return "";
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return String(value).slice(5, 10);
-    const parts = new Intl.DateTimeFormat("en-US", {
-      timeZone: "America/New_York",
-      month: "2-digit",
-      day: "2-digit"
-    }).formatToParts(date);
+    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "2-digit", day: "2-digit" }).formatToParts(date);
     const month = parts.find((part) => part.type === "month")?.value || "";
     const day = parts.find((part) => part.type === "day")?.value || "";
     return `${month}-${day}`;
@@ -107,8 +103,10 @@
 
   function articleHref(row, section) {
     const slug = String(row.slug || "").trim();
+    const id = String(row.id || "").trim();
     if (slug) return `/${section}/${encodeURIComponent(slug)}`;
-    return `/article.html?id=${encodeURIComponent(row.id || "")}`;
+    if (/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(id)) return `/${section}/${encodeURIComponent(id)}`;
+    return id ? `/article.html?id=${encodeURIComponent(id)}` : "/";
   }
 
   function imageUrl(row) {
@@ -128,11 +126,7 @@
       const response = await fetch(url, {
         cache: "no-store",
         signal: controller.signal,
-        headers: {
-          apikey: TRRB_SUPABASE_KEY,
-          Authorization: `Bearer ${TRRB_SUPABASE_KEY}`,
-          Accept: "application/json"
-        }
+        headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
       });
       if (!response.ok) throw new Error(`Supabase ${response.status}`);
       const rows = await response.json();
@@ -150,18 +144,14 @@
     card.innerHTML = `
       <header>
         <h2>${escapeHtml(category)}</h2>
-        <a href="./listing.html?category=${encodeURIComponent(category)}">更多</a>
+        <a href="/${section}">更多</a>
       </header>
       <a class="section-lead" href="${articleHref(lead, section)}">
         <img src="${escapeHtml(imageUrl(lead))}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/category-placeholders/generic.svg'" alt="" />
         <h3>${escapeHtml(lead.title)}</h3>
       </a>
       <ul class="section-news-list">
-        ${subItems.map((row) => `
-          <li>
-            <a href="${articleHref(row, section)}">${escapeHtml(row.title)}</a>
-            <time>${escapeHtml(shortDate(row.published_at || row.created_at))}</time>
-          </li>`).join("")}
+        ${subItems.map((row) => `<li><a href="${articleHref(row, section)}">${escapeHtml(row.title)}</a><time>${escapeHtml(shortDate(row.published_at || row.created_at))}</time></li>`).join("")}
       </ul>`;
   }
 

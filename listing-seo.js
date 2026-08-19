@@ -130,10 +130,9 @@
       return;
     }
 
-    const title = `${category}新闻${page > 1 ? ` 第${page}页` : ''} - 唐人日报`;
-    const description = `唐人日报${category}栏目，持续更新相关新闻、政策变化与重要事件。`;
-    const baseCanonical = `${SITE}/listing?category=${encodeURIComponent(category)}`;
-    const canonical = page > 1 ? `${baseCanonical}&page=${page}` : baseCanonical;
+    const title = '未开放栏目 - 唐人日报';
+    const description = '该栏目不是唐人日报当前公开索引栏目，请通过正式栏目导航浏览已发布内容。';
+    const canonical = `${SITE}/listing`;
     document.title = title;
     setMeta('description', description);
     setMeta('robots', 'noindex,follow,noarchive');

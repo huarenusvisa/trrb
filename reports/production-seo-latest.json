@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T15:07:42.946Z",
+  "generated_at": "2026-08-19T15:26:58.905Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -45,19 +45,26 @@
       "chain": [
         {
           "url": "https://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
-      "final_url": "https://www.trrb.net/"
+      "final_url": "https://trrb.net/"
     }
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1193377,
-      "article_count": 3661,
+      "bytes": 1193968,
+      "article_count": 3664,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v2-dedupe"
@@ -65,8 +72,8 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 135260,
-      "article_count": 269,
+      "bytes": 135672,
+      "article_count": 271,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v1"
@@ -75,14 +82,12 @@
   "articles": [
     {
       "url": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
-      "prerender": "article-edge-v2-pretty",
-      "title_length": 24,
-      "h1_length": 17,
-      "canonical": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
-      "body_length": 821,
-      "schema": true,
+      "status": 0,
+      "title_length": 0,
+      "h1_length": 0,
+      "canonical": "",
+      "body_length": 0,
+      "schema": false,
       "noindex": false
     },
     {
@@ -282,7 +287,19 @@
     }
   },
   "failures": [
-    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
+    {
+      "article": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
+      "row": {
+        "url": "https://trrb.net/us-crime/44%E5%B2%81%E7%A7%91%E5%B7%9E%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8E%A7%E6%9D%80%E5%A6%BB-%E9%81%AD%E9%87%8D%E7%BD%AA%E6%8C%87%E6%8E%A7",
+        "status": 0,
+        "title_length": 0,
+        "h1_length": 0,
+        "canonical": "",
+        "body_length": 0,
+        "schema": false,
+        "noindex": false
+      }
+    },
     {
       "page": "https://trrb.net/",
       "problem": "too few direct article links: 0/10"

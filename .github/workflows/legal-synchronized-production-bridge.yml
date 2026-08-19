@@ -9,6 +9,7 @@ on:
       - 'data/legal/legal-ai-analysis-latest.json'
       - 'scripts/generate-legal-sitemap.mjs'
       - 'scripts/round17-node6-ai-coverage-grounding-audit.mjs'
+      - 'scripts/round15-node7-ai-legal-analysis.mjs'
       - '.github/workflows/legal-synchronized-production-bridge.yml'
 
 permissions:
@@ -38,22 +39,25 @@ jobs:
         run: |
           node <<'NODE'
           const fs=require('fs');
+          const {createHash}=require('crypto');
           const db=JSON.parse(fs.readFileSync('data/legal/unified-legal-authorities-latest.json','utf8'));
           const ai=JSON.parse(fs.readFileSync('data/legal/legal-ai-analysis-latest.json','utf8'));
           const records=Array.isArray(db.records)?db.records:[];
           const analyses=Array.isArray(ai.analyses)?ai.analyses:[];
           const required=['chineseTitle','summary','legalIssue','holdingOrRule','impact','sourceGrounding','disclaimer'];
           const byId=new Map(analyses.map(a=>[String(a.recordId||''),a]));
+          const binding=r=>({sourceSystem:r.sourceSystem,authorityType:r.authorityType,issuingBody:r.issuingBody,officialUrl:r.officialUrl,officialPdfUrl:r.officialPdfUrl||null,title:r.title||null,publicationDate:r.publicationDate||null,docket:r.docket||null,citation:r.citation||null,precedentialStatus:r.precedentialStatus||null,sourceKey:r.sourceKey||null});
+          const fingerprint=r=>createHash('sha256').update(JSON.stringify(binding(r))).digest('hex');
           const alignedVersion=Boolean(db.datasetVersion)&&String(db.datasetVersion)===String(ai.datasetVersion||'');
           const alignedCount=records.length>0&&Number(db.count)===records.length&&Number(ai.count)===analyses.length&&analyses.length===records.length;
           const complete=records.every(r=>{
             const a=byId.get(String(r.id||''));
-            return a&&String(a.datasetVersion||'')===String(db.datasetVersion||'')&&required.every(k=>String(a[k]||'').trim())&&String(a.disclaimer||'').includes('不构成法律意见');
+            return a&&String(a.datasetVersion||'')===String(db.datasetVersion||'')&&String(a.recordFingerprint||'')===fingerprint(r)&&required.every(k=>String(a[k]||'').trim())&&String(a.disclaimer||'').includes('不构成法律意见');
           });
           const ready=alignedVersion&&alignedCount&&complete&&byId.size===records.length;
           fs.appendFileSync(process.env.GITHUB_OUTPUT,`ready=${ready?'true':'false'}\n`);
-          console.log(`legal readiness: ready=${ready}; db=${records.length}; ai=${analyses.length}; dbVersion=${db.datasetVersion||'missing'}; aiVersion=${ai.datasetVersion||'missing'}`);
-          if(!ready) console.log('Legal data is in an expected intermediate state. Wait for AI synchronization; do not deploy this partial legal generation.');
+          console.log(`legal readiness: ready=${ready}; db=${records.length}; ai=${analyses.length}; dbVersion=${db.datasetVersion||'missing'}; aiVersion=${ai.datasetVersion||'missing'}; fingerprintBound=${complete}`);
+          if(!ready) console.log('Legal data is in an expected intermediate state. Wait for fingerprint-grounded AI synchronization; do not deploy this partial legal generation.');
           NODE
 
       - name: Strictly audit synchronized legal generation
@@ -72,8 +76,8 @@ jobs:
           gh api --method POST \
             "repos/${GITHUB_REPOSITORY}/actions/workflows/round16-node9-production-deploy-recovery.yml/dispatches" \
             -f ref=main
-          echo 'Legal DB + AI are strictly synchronized; central production deployment dispatched.'
+          echo 'Legal DB + AI are fingerprint-synchronized; central production deployment dispatched.'
 
       - name: Intermediate legal state stays non-failing
         if: steps.readiness.outputs.ready != 'true'
-        run: echo 'Legal production dispatch skipped until DB and AI reach strict N/N alignment.'
+        run: echo 'Legal production dispatch skipped until DB and AI reach strict N/N fingerprint alignment.'

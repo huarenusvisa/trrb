@@ -26,7 +26,7 @@ async function expoSend(messages) {
 
 exports.handler = async (event) => {
   try {
-    const { user, admin } = await authenticateStaff(event, ['owner', 'admin']);
+    const { user, admin } = await authenticateStaff(event, ['owner', 'editor']);
     if (event.httpMethod !== 'POST') return json(405, { error: 'method_not_allowed' });
 
     const body = JSON.parse(event.body || '{}');

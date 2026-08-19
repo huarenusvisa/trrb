@@ -1,0 +1,79 @@
+name: Legal Synchronized Production Bridge
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/unified-legal-authorities-latest.json'
+      - 'data/legal/legal-ai-analysis-latest.json'
+      - 'scripts/generate-legal-sitemap.mjs'
+      - 'scripts/round17-node6-ai-coverage-grounding-audit.mjs'
+      - '.github/workflows/legal-synchronized-production-bridge.yml'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: trrb-legal-synchronized-production
+  cancel-in-progress: true
+
+jobs:
+  gate-and-dispatch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Check whether legal DB and AI are ready as one production unit
+        id: readiness
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const db=JSON.parse(fs.readFileSync('data/legal/unified-legal-authorities-latest.json','utf8'));
+          const ai=JSON.parse(fs.readFileSync('data/legal/legal-ai-analysis-latest.json','utf8'));
+          const records=Array.isArray(db.records)?db.records:[];
+          const analyses=Array.isArray(ai.analyses)?ai.analyses:[];
+          const required=['chineseTitle','summary','legalIssue','holdingOrRule','impact','sourceGrounding','disclaimer'];
+          const byId=new Map(analyses.map(a=>[String(a.recordId||''),a]));
+          const alignedVersion=Boolean(db.datasetVersion)&&String(db.datasetVersion)===String(ai.datasetVersion||'');
+          const alignedCount=records.length>0&&Number(db.count)===records.length&&Number(ai.count)===analyses.length&&analyses.length===records.length;
+          const complete=records.every(r=>{
+            const a=byId.get(String(r.id||''));
+            return a&&String(a.datasetVersion||'')===String(db.datasetVersion||'')&&required.every(k=>String(a[k]||'').trim())&&String(a.disclaimer||'').includes('不构成法律意见');
+          });
+          const ready=alignedVersion&&alignedCount&&complete&&byId.size===records.length;
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`ready=${ready?'true':'false'}\n`);
+          console.log(`legal readiness: ready=${ready}; db=${records.length}; ai=${analyses.length}; dbVersion=${db.datasetVersion||'missing'}; aiVersion=${ai.datasetVersion||'missing'}`);
+          if(!ready) console.log('Legal data is in an expected intermediate state. Wait for AI synchronization; do not deploy this partial legal generation.');
+          NODE
+
+      - name: Strictly audit synchronized legal generation
+        if: steps.readiness.outputs.ready == 'true'
+        run: |
+          node scripts/round17-node6-ai-coverage-grounding-audit.mjs
+          node scripts/generate-legal-sitemap.mjs
+
+      - name: Dispatch central exact-SHA production deployment
+        if: steps.readiness.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method POST \
+            "repos/${GITHUB_REPOSITORY}/actions/workflows/round16-node9-production-deploy-recovery.yml/dispatches" \
+            -f ref=main
+          echo 'Legal DB + AI are strictly synchronized; central production deployment dispatched.'
+
+      - name: Intermediate legal state stays non-failing
+        if: steps.readiness.outputs.ready != 'true'
+        run: echo 'Legal production dispatch skipped until DB and AI reach strict N/N alignment.'

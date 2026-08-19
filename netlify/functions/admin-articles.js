@@ -15,6 +15,7 @@ const {
 } = require("./_shared/article-ai");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
+const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
 
 function json(statusCode, body) {
   return {
@@ -30,6 +31,37 @@ function json(statusCode, body) {
 
 function nowIso() {
   return new Date().toISOString();
+}
+
+function normalizeTitle(value) {
+  return String(value || "")
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[\p{P}\p{S}\s]+/gu, "")
+    .trim();
+}
+
+async function assertNoPublishedDuplicate(title, excludeId = "") {
+  const wanted = normalizeTitle(title);
+  if (wanted.length < 8) return;
+  const rows = await rest("articles", {
+    query: {
+      select: "id,title,published_at,status",
+      status: "eq.published",
+      order: "published_at.desc.nullslast,created_at.desc",
+      limit: "500"
+    }
+  });
+  const duplicate = (Array.isArray(rows) ? rows : []).find((row) =>
+    String(row?.id || "") !== String(excludeId || "") && normalizeTitle(row?.title) === wanted
+  );
+  if (duplicate) {
+    const error = new Error(`检测到重复稿：已有已发布文章「${duplicate.title}」`);
+    error.statusCode = 409;
+    error.existingArticleId = duplicate.id;
+    throw error;
+  }
 }
 
 async function listArticles() {
@@ -51,6 +83,20 @@ async function updateStatus(input) {
     error.statusCode = 400;
     throw error;
   }
+
+  if (status === "published") {
+    const existing = await rest("articles", {
+      query: { select: "id,title", id: `eq.${id}`, limit: "1" }
+    });
+    const article = Array.isArray(existing) ? existing[0] : null;
+    if (!article?.title) {
+      const error = new Error("找不到待发布文章");
+      error.statusCode = 404;
+      throw error;
+    }
+    await assertNoPublishedDuplicate(article.title, id);
+  }
+
   const patch = { status };
   if (status === "published") patch.published_at = nowIso();
   const rows = await rest("articles", {
@@ -84,14 +130,20 @@ async function saveArticle(input, actor) {
   const requestedStatus = safeText(input.status, 30) || "draft";
   const author = safeText(input.author, 120) || "Tang Ren Daily";
   const autoAiCover = Boolean(input.auto_ai_cover);
+  const isIceBrief = ICE_CATEGORIES.has(categoryName);
 
   if (title.length < 5) {
     const error = new Error("标题至少需要5个字");
     error.statusCode = 400;
     throw error;
   }
-  if (content.length < 30) {
-    const error = new Error("正文至少需要30个字");
+  if (!content.trim()) {
+    const error = new Error("正文不能为空");
+    error.statusCode = 400;
+    throw error;
+  }
+  if (!isIceBrief && content.length < 30) {
+    const error = new Error("普通文章正文至少需要30个字；ICE执法快讯不以篇幅作为发布门槛");
     error.statusCode = 400;
     throw error;
   }
@@ -100,6 +152,7 @@ async function saveArticle(input, actor) {
     error.statusCode = 400;
     throw error;
   }
+  if (requestedStatus === "published") await assertNoPublishedDuplicate(title);
 
   const summary = generateSummary(content, title);
   const seoKeywords = generateSeoKeywords(title, categoryName, content);
@@ -129,7 +182,8 @@ async function saveArticle(input, actor) {
       ai_cover_generated: false,
       ai_cover_processing: needsBackgroundCover,
       requested_status: requestedStatus,
-      published_by: actor.user.email || actor.admin.email || ""
+      published_by: actor.user.email || actor.admin.email || "",
+      ice_length_policy: isIceBrief ? "news-value-not-character-count" : undefined
     }
   };
 
@@ -170,6 +224,8 @@ exports.handler = async (event) => {
     return json(400, { error: "未知操作" });
   } catch (error) {
     console.error("Admin article API error:", error);
-    return json(error.statusCode || 500, { error: error.message || String(error) });
+    const payload = { error: error.message || String(error) };
+    if (error.existingArticleId) payload.existing_article_id = error.existingArticleId;
+    return json(error.statusCode || 500, payload);
   }
 };

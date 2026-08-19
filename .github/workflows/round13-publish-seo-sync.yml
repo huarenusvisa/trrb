@@ -53,6 +53,10 @@ jobs:
           node scripts/ensure-sitemap-articles.mjs
           node scripts/generate-feed.mjs
           node scripts/upgrade-article-urls.mjs
+          # generate-sitemaps.mjs rewrites _redirects from active categories.
+          # Always restore canonical host/alias rules before committing so this
+          # scheduled bot can never roll back SEO redirect governance.
+          node scripts/finalize-redirects.mjs
       - name: 仅在SEO文件变化时提交并触发Netlify部署
         shell: bash
         run: |
@@ -65,4 +69,5 @@ jobs:
             exit 0
           fi
           git commit -m "Round 13: sync published articles into SEO feeds"
+          git pull --rebase origin main
           git push origin HEAD:main

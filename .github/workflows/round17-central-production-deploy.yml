@@ -1,0 +1,47 @@
+name: Round 17 - Central Production Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'legal/**'
+      - 'data/legal/**'
+      - 'sitemap-legal.xml'
+      - 'robots.txt'
+      - 'scripts/round17-node*.mjs'
+      - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
+      - '.github/workflows/round17-node*.yml'
+      - '.github/workflows/round17-central-production-deploy.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-round17-central-production-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy-latest-main:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Debounce legal commits and trigger one clean main build
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK is not configured'; exit 2; }
+          sleep 30
+          if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+            hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+central"
+          else
+            hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+central"
+          fi
+          code=$(curl -sS -o /tmp/netlify-round17-central.txt -w '%{http_code}' -X POST "$hook_url")
+          echo "Netlify hook HTTP $code"
+          test "$code" -ge 200 -a "$code" -lt 300

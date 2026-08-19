@@ -161,7 +161,8 @@ function routeSeo(url: URL): Seo | null {
     return {
       title: "曝光墙投稿 - 唐人日报",
       description: "向唐人日报提交曝光材料，支持文字、图片和视频。可匿名公开，但必须留下电话或邮箱供编辑核实。",
-      canonical: `${SITE}/expose`
+      canonical: `${SITE}/expose`,
+      robots: "noindex,follow,noarchive"
     };
   }
   if (path === "/immigrate" || path === "/immigrate/index.html") {
@@ -236,7 +237,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("link", `<${seo.canonical}>; rel=\"canonical\"`);
-    headers.set("x-trrb-seo-route-meta", "round10-v3-immigration-news-canonical");
+    headers.set("x-trrb-seo-route-meta", "round10-v4-operational-noindex");
     if (/^noindex/i.test(seo.robots || "")) headers.set("x-robots-tag", seo.robots || "noindex,follow");
     else headers.delete("x-robots-tag");
     return new Response(request.method === "HEAD" ? null : body, { status: upstream.status, headers });

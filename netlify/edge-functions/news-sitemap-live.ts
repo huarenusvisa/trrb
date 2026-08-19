@@ -28,6 +28,7 @@ const visible=(v:unknown)=>clean(v).replace(/<script\b[^>]*>[\s\S]*?<\/script>/g
 const normalizedTitle=(v:unknown)=>visible(v).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu,"");
 const esc=(v:unknown)=>clean(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&apos;");
 function isIceArticle(a:any){const t=clean(a?.topic_key).toLowerCase();const c=clean(a?.category_name);return t==="ice"||c==="ICE执法动态"||c==="ICE执法";}
+function isSpecialTopicArticle(a:any){const t=clean(a?.topic_key).toLowerCase();return t==="ice"||t==="trump";}
 function cfg(){const base=(Deno.env.get("SUPABASE_URL")||"").replace(/\/+$/,'');const key=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||Deno.env.get("SUPABASE_ANON_KEY")||"";return{base,key};}
 async function rows(path:string,params:Record<string,string>){const{base,key}=cfg();if(!base||!key)throw new Error("Supabase config missing");const u=new URL(`${base}/rest/v1/${path}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u,{cache:"no-store",headers:{apikey:key,Authorization:`Bearer ${key}`,Accept:"application/json"}});if(!r.ok)throw new Error(`${path} ${r.status}`);const j=await r.json();return Array.isArray(j)?j:[];}
 function section(a:any,byId:Map<string,any>,byName:Map<string,any>){const t=clean(a.topic_key).toLowerCase();if(t==="trump")return"trump";if(t==="ice")return"ice";const byIdSlug=clean(byId.get(String(a.category_id||""))?.slug);if(byIdSlug)return canonicalSection(byIdSlug);const byNameSlug=clean(byName.get(clean(a.category_name))?.slug);if(byNameSlug)return canonicalSection(byNameSlug);return FALLBACK[clean(a.category_name)]||"news";}
@@ -39,9 +40,6 @@ export default async(request:Request,context:any)=>{
     const cutoff=now-48*60*60*1000;
     const [cats,articles]=await Promise.all([
       rows("categories",{select:"id,name,slug,is_active,include_in_google_news",is_active:"eq.true",limit:"500"}),
-      // Google News allows at most 1,000 recent news URLs. Fetch the newest 1,000
-      // rows first; the previous ascending query accidentally fetched the oldest
-      // 1,000 rows in the entire database and could omit today's news completely.
       rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at",status:"eq.published",order:"published_at.desc.nullslast,created_at.desc",limit:"1000"})
     ]);
     const ids=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>String(x.id)));
@@ -51,7 +49,6 @@ export default async(request:Request,context:any)=>{
     const recent=articles
       .map((a:any)=>({a,ts:Date.parse(a.published_at||a.created_at||"")}))
       .filter((x:any)=>Number.isFinite(x.ts)&&x.ts>=cutoff&&x.ts<=now+300000&&clean(x.a.title))
-      // Earliest copy wins duplicate clusters; output is re-sorted newest-first later.
       .sort((x:any,y:any)=>x.ts-y.ts);
 
     const seenTitles=new Set<string>();
@@ -59,11 +56,16 @@ export default async(request:Request,context:any)=>{
     let excludedDuplicate=0;
     let excludedThin=0;
     let preservedShortIce=0;
+    let preservedSpecialTopic=0;
     const selected:{a:any;ts:number;loc:string}[]=[];
 
     for(const {a,ts} of recent){
-      if(cats.length&&a.category_id&&!ids.has(String(a.category_id)))continue;
-      if(cats.length&&!a.category_id&&a.category_name&&!names.has(clean(a.category_name)))continue;
+      if(cats.length&&!isSpecialTopicArticle(a)){
+        if(a.category_id&&!ids.has(String(a.category_id)))continue;
+        if(!a.category_id&&a.category_name&&!names.has(clean(a.category_name)))continue;
+      }else if(isSpecialTopicArticle(a)){
+        preservedSpecialTopic++;
+      }
 
       const body=visible(a.content||a.summary||"");
       const ice=isIceArticle(a);
@@ -90,12 +92,13 @@ export default async(request:Request,context:any)=>{
     return new Response(request.method==="HEAD"?null:xml,{status:200,headers:{
       "content-type":"application/xml; charset=UTF-8",
       "cache-control":"public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-news-sitemap":"live-supabase-v4-latest1000-ice-safe-dedupe",
+      "x-trrb-news-sitemap":"live-supabase-v5-latest1000-topic-safe-ice-safe-dedupe",
       "x-trrb-news-count":String(blocks.length),
       "x-trrb-news-source-rows":String(articles.length),
       "x-trrb-news-recent-candidates":String(recent.length),
       "x-trrb-news-excluded-thin":String(excludedThin),
       "x-trrb-news-preserved-short-ice":String(preservedShortIce),
+      "x-trrb-news-preserved-special-topic":String(preservedSpecialTopic),
       "x-trrb-news-excluded-duplicate":String(excludedDuplicate)
     }});
   }catch(e){console.error("live news sitemap failed",e);return context.next();}

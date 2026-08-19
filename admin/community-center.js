@@ -2,8 +2,8 @@
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let state = { users: [], comments: [], reports: [], role: '' };
 
-  const canModerate = () => ['owner','admin','moderator'].includes(state.role);
-  const canManageUsers = () => ['owner','admin'].includes(state.role);
+  const canModerate = () => ['owner','editor'].includes(state.role);
+  const canManageUsers = () => ['owner','editor'].includes(state.role);
 
   async function authToken() {
     const { data } = await window.supabaseClient.auth.getSession();

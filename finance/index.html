@@ -26,12 +26,14 @@
       <div id="searchResults" class="search-results" role="listbox" aria-label="搜索结果"></div>
     </div>
   </div></header>
+  <div id="offlineBanner" class="offline-banner" role="status" hidden>当前设备处于离线状态。已加载的演示内容仍可浏览，但正式实时数据需要网络连接。</div>
 
   <main class="content">
     <section class="page active" data-page="market" aria-labelledby="marketTitle">
       <div class="eyebrow">Market now</div>
       <h1 id="marketTitle" class="hero-title">市场</h1>
       <div class="subline">先看价格，再看发生了什么</div>
+      <div id="dataStatus" class="data-status" role="status" aria-live="polite"><span class="status-dot"></span><span>正在读取数据状态…</span></div>
       <div class="tabs" role="tablist" aria-label="行情分类">
         <button id="tab-now" class="market-tab on" role="tab" aria-selected="true" aria-controls="panel-now" data-panel="now">现在</button>
         <button id="tab-upcoming" class="market-tab" role="tab" aria-selected="false" aria-controls="panel-upcoming" tabindex="-1" data-panel="upcoming">即将</button>
@@ -43,7 +45,7 @@
         <div class="market-layout">
           <div>
             <section class="section">
-              <div class="section-head"><h2>美股大盘</h2><span>演示数据 · 美东收盘</span></div>
+              <div class="section-head"><h2>美股大盘</h2><span id="marketSessionLabel">演示数据</span></div>
               <div id="indices" class="indexgrid"></div>
             </section>
             <section class="section">
@@ -140,8 +142,9 @@
         <div class="account-card"><strong>演示数据模式</strong><span>真实行情 API 尚未接入，所有演示数据均与交易功能隔离。</span></div>
       </section>
       <section class="section"><div class="section-head"><h2>偏好</h2><span>保存在本机</span></div><div class="service-list"><div class="service"><span>紧凑列表</span><button id="compactToggle" class="toggle" data-pref="compact" aria-label="切换紧凑列表" aria-pressed="false"></button></div><div class="service"><span>动态图表</span><button id="motionToggle" class="toggle on" data-pref="motion" aria-label="切换动态图表" aria-pressed="true"></button></div><div class="service"><span>涨跌颜色</span><b class="up">国际模式：涨绿跌红</b></div></div></section>
-      <section class="section"><div class="section-head"><h2>最近浏览</h2><span id="historyCount">0 条</span></div><div id="historyList" class="service-list"><div class="empty">浏览股票或 ETF 后会显示在这里。</div></div></section>
-      <section class="section"><div class="section-head"><h2>工具</h2><span></span></div><div class="service-list"><div class="service"><span>价格提醒</span><b id="alertCount">0</b></div><div class="service"><span>数据与隐私</span><span aria-hidden="true">›</span></div><div class="service"><span>风险说明</span><span aria-hidden="true">›</span></div></div></section>
+      <section class="section"><div class="section-head"><h2>最近浏览</h2><button id="clearHistoryBtn" class="text-button" type="button">清除</button></div><div id="historyList" class="service-list"><div class="empty">浏览股票或 ETF 后会显示在这里。</div></div><div id="historyCount" class="section-foot">0 条记录</div></section>
+      <section class="section"><div class="section-head"><h2>价格提醒</h2><button id="clearAlertsBtn" class="text-button" type="button">全部关闭</button></div><div id="alertList" class="service-list"><div class="empty">设置股票提醒后会显示在这里。</div></div></section>
+      <section class="section"><div class="section-head"><h2>数据与隐私</h2><span>仅当前设备</span></div><div class="service-list"><button id="clearLocalDataBtn" class="service service-button" type="button"><span><b>清除唐人财经本机数据</b><small>清除自选、浏览记录、提醒和显示偏好</small></span><span aria-hidden="true">›</span></button><div class="service"><span>风险说明</span><b>研究工具 · 不提供交易</b></div></div></section>
       <p class="risk">唐人财经 V1 不提供证券账户、基金购买或证券交易。相关模块只有在牌照、合作机构、隐私、协议与合规要求满足后才允许启用。</p>
     </section>
   </main>

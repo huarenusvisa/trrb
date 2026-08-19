@@ -64,6 +64,11 @@ function isIceArticle(article: any): boolean {
   return topic === "ice" || category === "ICE执法动态" || category === "ICE执法";
 }
 
+function isSpecialTopicArticle(article: any): boolean {
+  const topic = clean(article?.topic_key).toLowerCase();
+  return topic === "ice" || topic === "trump";
+}
+
 function supabaseConfig() {
   const base = (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, "");
   const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
@@ -157,12 +162,15 @@ export default async (request: Request, context: any) => {
     let excludedThin = 0;
     let preservedShortIce = 0;
     let excludedDuplicate = 0;
+    let preservedSpecialTopic = 0;
 
     for (const article of articles) {
       if (!article?.id || !clean(article?.title)) continue;
-      if (categories.length) {
+      if (categories.length && !isSpecialTopicArticle(article)) {
         if (article?.category_id && !allowedIds.has(String(article.category_id))) continue;
         if (!article?.category_id && article?.category_name && !allowedNames.has(clean(article.category_name))) continue;
+      } else if (isSpecialTopicArticle(article)) {
+        preservedSpecialTopic++;
       }
 
       const body = visibleText(article?.content || "");
@@ -193,10 +201,11 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v3-ice-safe",
+      "x-trrb-sitemap": "live-supabase-v4-topic-safe-ice-safe",
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-excluded-thin": String(excludedThin),
       "x-trrb-sitemap-preserved-short-ice": String(preservedShortIce),
+      "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),
       "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate)
     });
     return new Response(request.method === "HEAD" ? null : xml, { status: 200, headers });

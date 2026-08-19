@@ -96,8 +96,9 @@ async function latestDatabaseRows(limit = 120) {
   const [categories, articles] = await Promise.all([
     rest("categories", { select: "id,name,slug", is_active: "eq.true", limit: "500" }),
     rest("articles", {
-      select: "id,title,slug,category_id,category_name,topic_key,published_at,created_at,status",
+      select: "id,title,slug,category_id,category_name,topic_key,published_at,created_at,status,visibility",
       status: "eq.published",
+      visibility: "eq.public",
       order: "published_at.desc.nullslast,created_at.desc",
       limit: String(limit)
     })

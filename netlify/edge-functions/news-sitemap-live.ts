@@ -49,7 +49,7 @@ export default async(request:Request,context:any)=>{
     const recent=articles
       .map((a:any)=>({a,ts:Date.parse(a.published_at||a.created_at||"")}))
       .filter((x:any)=>Number.isFinite(x.ts)&&x.ts>=cutoff&&x.ts<=now+300000&&clean(x.a.title))
-      .sort((x:any,y:any)=>x.ts-y.ts);
+      .sort((x:any,y:any)=>y.ts-x.ts);
 
     const seenTitles=new Set<string>();
     const seenBodies=new Set<string>();
@@ -85,7 +85,6 @@ export default async(request:Request,context:any)=>{
       selected.push({a,ts,loc});
     }
 
-    selected.sort((x,y)=>y.ts-x.ts);
     const blocks=selected.slice(0,1000).map(({a,ts,loc})=>`  <url>\n    <loc>${esc(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${new Date(ts).toISOString()}</news:publication_date>\n      <news:title>${esc(a.title)}</news:title>\n    </news:news>\n  </url>`);
 
     const xml=`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${blocks.join("\n")}\n</urlset>\n`;
@@ -99,7 +98,8 @@ export default async(request:Request,context:any)=>{
       "x-trrb-news-excluded-thin":String(excludedThin),
       "x-trrb-news-preserved-short-ice":String(preservedShortIce),
       "x-trrb-news-preserved-special-topic":String(preservedSpecialTopic),
-      "x-trrb-news-excluded-duplicate":String(excludedDuplicate)
+      "x-trrb-news-excluded-duplicate":String(excludedDuplicate),
+      "x-trrb-news-dedupe-winner":"newest"
     }});
   }catch(e){console.error("live news sitemap failed",e);return context.next();}
 };

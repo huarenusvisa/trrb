@@ -11,16 +11,24 @@ const RESERVED_SECTIONS = new Set([
 ]);
 
 const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
-  "重要新闻": "important",
-  "热门头条": "hot",
-  "美国时政": "politics",
-  "美国警情": "crime",
-  "中国官场": "china",
+  "重要新闻": "important-news",
+  "热门头条": "hot-headlines",
+  "美国时政": "us-politics",
+  "美国警情": "us-crime",
+  "中国官场": "china-officialdom",
   "移民美国": "immigration",
   "庇护百科": "asylum",
   "ICE执法动态": "ice",
   "ICE执法": "ice",
   "曝光墙": "expose"
+};
+
+const SECTION_ALIASES: Record<string, string> = {
+  important: "important-news",
+  hot: "hot-headlines",
+  politics: "us-politics",
+  crime: "us-crime",
+  china: "china-officialdom"
 };
 
 function esc(value: unknown): string {
@@ -43,6 +51,11 @@ function clean(value: unknown): string {
   return String(value ?? "").replace(/\s+/g, " ").trim();
 }
 
+function canonicalSection(value: unknown): string {
+  const raw = clean(value);
+  return SECTION_ALIASES[raw] || raw;
+}
+
 function visibleText(value: unknown): string {
   return clean(value)
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
@@ -54,8 +67,20 @@ function visibleText(value: unknown): string {
     .trim();
 }
 
+function isIceArticle(article: any): boolean {
+  const topic = clean(article?.topic_key).toLowerCase();
+  const category = clean(article?.category_name);
+  return topic === "ice" || category === "ICE执法动态" || category === "ICE执法";
+}
+
 function isIndexableArticle(article: any): boolean {
-  return visibleText(article?.content || "").length >= MIN_INDEXABLE_BODY_LENGTH;
+  const body = visibleText(article?.content || article?.summary || "");
+  if (isIceArticle(article)) {
+    // ICE briefs are judged upstream on news value/source/uniqueness. Do not
+    // noindex a published ICE story merely because it is short.
+    return Boolean(clean(article?.title)) && Boolean(body);
+  }
+  return body.length >= MIN_INDEXABLE_BODY_LENGTH;
 }
 
 function isoDate(value: unknown): string {
@@ -140,14 +165,14 @@ async function getCategorySlug(article: any): Promise<string> {
     if (!response.ok) return fallback || "news";
     const rows = await response.json();
     const slug = clean(Array.isArray(rows) && rows[0] ? rows[0].slug : "");
-    return slug || fallback || "news";
+    return canonicalSection(slug || fallback || "news");
   } catch {
-    return fallback || "news";
+    return canonicalSection(fallback || "news");
   }
 }
 
 async function canonicalFor(article: any): Promise<string> {
-  const section = await getCategorySlug(article);
+  const section = canonicalSection(await getCategorySlug(article));
   const slug = clean(article?.slug) || clean(article?.id);
   return `${SITE}/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
 }
@@ -250,8 +275,6 @@ function injectBody(html: string, article: any, canonical: string) {
 }
 
 function disableLegacyClientLoaders(html: string): string {
-  // These scripts assume ?id= is visible in window.location and would overwrite
-  // the server-rendered pretty URL page or reset its canonical URL.
   return html
     .replace(/<script\s+src=["'](?:\.\/|\/)article\.js[^"']*["'][^>]*><\/script>/i, "")
     .replace(/<script\s+src=["'](?:\.\/|\/)article-index-guard\.js[^"']*["'][^>]*><\/script>/i, "")
@@ -308,9 +331,6 @@ export default async (request: Request, context: any) => {
         });
       }
       const article = await getArticleById(id);
-      // Static/WordPress archive IDs are not stored in Supabase. Let the original
-      // article.html + article.js archive loader handle those instead of returning
-      // a false 404 from the Edge layer.
       if (!article) return context.next();
       const canonical = await canonicalFor(article);
       return redirect(canonical, "legacy-query-to-pretty");
@@ -321,9 +341,6 @@ export default async (request: Request, context: any) => {
 
     let article = await getArticleBySlug(parts.slug);
     if (!article && /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(parts.slug)) article = await getArticleById(parts.slug);
-    // Earlier clients fabricated pretty URLs from archive ids, e.g.
-    // /important-news/117302. Preserve those inbound links by returning them to
-    // the legacy archive loader, which owns numeric and wp-* static article ids.
     if (!article && /^(?:wp-)?\d+$/i.test(parts.slug)) {
       const legacy = new URL('/article.html', url.origin);
       legacy.searchParams.set('id', parts.slug);
@@ -347,7 +364,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
-    headers.set("x-trrb-prerender", "article-edge-v2-pretty");
+    headers.set("x-trrb-prerender", "article-edge-v3-ice-safe");
     headers.set("link", `<${canonical}>; rel=\"canonical\"`);
     if (!isIndexableArticle(article)) headers.set("x-robots-tag", "noindex, follow");
     else headers.delete("x-robots-tag");

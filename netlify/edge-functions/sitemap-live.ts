@@ -13,8 +13,7 @@ const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
   "庇护百科": "asylum",
   "驱逐快报": "deport",
   "ICE执法动态": "ice",
-  "ICE执法": "ice",
-  "曝光墙": "expose"
+  "ICE执法": "ice"
 };
 
 const SECTION_ALIASES: Record<string, string> = {
@@ -104,8 +103,9 @@ async function fetchPublishedArticles() {
   const pageSize = 1000;
   for (let offset = 0; offset < 100000; offset += pageSize) {
     const rows = await fetchRows("articles", {
-      select: "id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at",
+      select: "id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",
       status: "eq.published",
+      visibility: "eq.public",
       order: "published_at.desc.nullslast,created_at.desc",
       limit: String(pageSize),
       offset: String(offset)
@@ -239,7 +239,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v5-static-authority-aligned",
+      "x-trrb-sitemap": "live-supabase-v6-public-only-static-authority-aligned",
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-static-blocks": String(staticBlocks.length),
       "x-trrb-sitemap-immigration-knowledge": String(immigrationKnowledgeCount),

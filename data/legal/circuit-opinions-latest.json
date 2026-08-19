@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T14:53:13.453Z",
+  "generatedAt": "2026-08-19T15:46:03.019Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -1197,52 +1197,36 @@
       "sourceFinalUrl": "https://ecf.ca8.uscourts.gov/cgi-bin/TodayOpn.pl",
       "documents": [
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/242817P.pdf",
-          "title": "242817P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/243444P.pdf",
+          "title": "243444P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251405P.pdf",
-          "title": "251405P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251987P.pdf",
+          "title": "251987P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252538U.pdf",
-          "title": "252538U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/253094U.pdf",
+          "title": "253094U.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252632P.pdf",
-          "title": "252632P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/261042U.pdf",
+          "title": "261042U.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/261067U.pdf",
-          "title": "261067U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/243444P.pdf",
+          "title": "243444P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/261236U.pdf",
-          "title": "261236U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251987P.pdf",
+          "title": "251987P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/242817P.pdf",
-          "title": "242817P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/253094U.pdf",
+          "title": "253094U.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251405P.pdf",
-          "title": "251405P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252538U.pdf",
-          "title": "252538U.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252632P.pdf",
-          "title": "252632P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/261067U.pdf",
-          "title": "261067U.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/261236U.pdf",
-          "title": "261236U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/261042U.pdf",
+          "title": "261042U.pdf"
         }
       ],
       "notes": []
@@ -1364,6 +1348,10 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://www.ca10.uscourts.gov/opinions/new/daily_decisions.rss",
       "documents": [
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111490989.pdf",
+          "title": null
+        },
         {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/01019202759.pdf",
           "title": "00-6235 - United States v. Anderson [1470367] 12/13/2001"

@@ -106,7 +106,7 @@ async function fetchPublishedArticles() {
     const rows = await fetchRows("articles", {
       select: "id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at",
       status: "eq.published",
-      order: "published_at.asc.nullslast,created_at.asc",
+      order: "published_at.desc.nullslast,created_at.desc",
       limit: String(pageSize),
       offset: String(offset)
     });
@@ -246,7 +246,8 @@ export default async (request: Request, context: any) => {
       "x-trrb-sitemap-excluded-thin": String(excludedThin),
       "x-trrb-sitemap-preserved-short-ice": String(preservedShortIce),
       "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),
-      "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate)
+      "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate),
+      "x-trrb-sitemap-dedupe-winner": "newest"
     });
     return new Response(request.method === "HEAD" ? null : xml, { status: 200, headers });
   } catch (error) {

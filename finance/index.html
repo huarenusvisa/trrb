@@ -4,95 +4,118 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>唐人财经｜唐人日报</title>
-  <meta name="description" content="唐人财经 UI 预览：财经新闻、自选股、市场行情、ETF与基金信息。" />
+  <meta name="description" content="唐人财经 UI 预览：自选股、市场行情、ETF与基金信息。" />
   <link rel="canonical" href="https://trrb.net/finance/" />
   <meta name="robots" content="index,follow" />
   <meta name="theme-color" content="#ffffff" />
   <style>
-    :root{--ink:#14213d;--muted:#7f8da6;--line:#edf0f5;--soft:#f5f7fb;--blue:#2f75e8;--green:#17ad49;--red:#ef3d43;--brand:#bd1117;--card:#fff;--max:980px}
-    *{box-sizing:border-box}html{background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}body{margin:0;background:#fff}.shell{width:min(var(--max),100%);margin:auto;min-height:100vh;padding-bottom:88px}.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(237,240,245,.85)}.topin{padding:18px 22px 13px}.brandrow{display:flex;align-items:center;justify-content:space-between;gap:14px}.brandbox{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}.logo{width:46px;height:46px;border-radius:12px;box-shadow:0 4px 18px rgba(15,99,233,.14)}.brandname{font-size:25px;font-weight:900;letter-spacing:-.02em}.badge{font-size:12px;color:#fff;background:#e7a96a;padding:4px 7px;border-radius:6px;margin-left:6px;vertical-align:3px}.back{font-size:13px;color:var(--blue);text-decoration:none;font-weight:700}.search{margin-top:15px;display:flex;align-items:center;gap:10px}.search input{width:100%;border:0;outline:0;background:#f3f5f9;border-radius:11px;padding:13px 15px;font-size:16px;color:var(--ink)}.search button{white-space:nowrap;border:0;background:transparent;color:var(--brand);font-size:16px;font-weight:800}.notice{margin-top:10px;font-size:12px;color:#8c98aa}.content{padding:0 22px}.page{display:none}.page.active{display:block}.subtabs{display:flex;gap:28px;overflow:auto;padding:18px 0 11px;border-bottom:1px solid var(--line);scrollbar-width:none}.subtabs::-webkit-scrollbar{display:none}.subtabs button{border:0;background:none;padding:0 0 9px;font-size:16px;color:#39465d;white-space:nowrap}.subtabs button.on{font-weight:800;color:var(--ink);border-bottom:4px solid var(--blue);border-radius:2px}.section-title{font-size:22px;font-weight:900;margin:24px 0 15px}.headline-list{counter-reset:rank;margin:0;padding:0;list-style:none}.headline-list li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.headline-list li::before{counter-increment:rank;content:counter(rank);font-weight:900;color:#ff7348;font-size:22px}.headline-list a{color:var(--ink);text-decoration:none;font-size:18px;line-height:1.5}.meta{font-size:12px;color:#97a2b4;margin-top:6px}.newsrow{display:grid;grid-template-columns:1fr 128px;gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}.thumb{height:82px;border-radius:10px;background:linear-gradient(135deg,#dfe9fa,#f6f8fc);display:flex;align-items:center;justify-content:center;color:#64748b;font-weight:800}.newsrow h3{font-size:18px;line-height:1.45;margin:0;font-weight:700}.market-tabs{display:flex;gap:26px;overflow:auto;padding:18px 0 12px;scrollbar-width:none}.market-tabs span{white-space:nowrap;font-size:17px}.market-tabs .on{font-weight:900;border-bottom:4px solid var(--blue);padding-bottom:8px}.stock-head,.stock-row{display:grid;grid-template-columns:minmax(180px,1.35fr) 110px 130px 125px;align-items:center;gap:14px}.stock-head{color:#8a97ab;font-size:13px;padding:8px 0 10px}.stock-row{min-height:78px;border-bottom:1px solid var(--line)}.stockname{font-size:18px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ticker{font-size:13px;color:#8390a4;margin-top:5px}.flag{display:inline-block;background:#4285ff;color:#fff;font-size:10px;padding:2px 4px;border-radius:3px;margin-right:5px}.tag{border:1px solid #78a7ff;color:#2f75e8;padding:2px 5px;border-radius:4px;margin-left:6px}.spark{width:90px;height:36px}.price{text-align:right;font-size:20px}.chg{text-align:center;color:#fff;border-radius:3px;padding:8px 4px;font-size:18px}.down{background:var(--green)}.up{background:var(--red)}.indexgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0 25px}.indexcard{background:#f7fbf8;border:1px solid #eef4ef;padding:18px 12px;text-align:center;border-radius:12px}.indexcard b{display:block;font-size:17px}.indexcard strong{display:block;font-size:24px;color:var(--green);margin:8px 0}.indexcard small{color:#66758a}.panel{border-top:9px solid var(--soft);margin-left:-22px;margin-right:-22px;padding:20px 22px}.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.tile{border-right:1px solid var(--line);text-align:center;padding:12px 8px}.tile:last-child{border-right:0}.tile b{display:block;font-size:16px}.tile strong{display:block;color:var(--red);font-size:21px;margin:7px 0}.service{margin:16px 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:0 18px}.service a{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:var(--ink);padding:18px 0;border-bottom:1px solid var(--line);font-size:17px}.service a:last-child{border-bottom:0}.profile-hero{background:linear-gradient(180deg,#eaf2ff 0,#f5f7fb 100%);margin:0 -22px;padding:28px 22px 22px}.profile-hero h2{margin:0 0 6px}.bottom{position:fixed;z-index:30;left:50%;bottom:0;transform:translateX(-50%);width:min(var(--max),100%);display:grid;grid-template-columns:repeat(5,1fr);background:rgba(255,255,255,.98);border-top:1px solid var(--line);padding:7px 10px max(8px,env(safe-area-inset-bottom));box-shadow:0 -6px 20px rgba(21,36,64,.04)}.bottom button{border:0;background:transparent;padding:6px 2px;color:#334155;font-size:12px}.bottom .ico{display:block;font-size:20px;margin-bottom:3px}.bottom button.on{color:var(--blue);font-weight:800}.empty-card{background:var(--soft);border-radius:16px;padding:24px;margin:18px 0;color:#59667a}.risk{font-size:12px;color:#8b96a8;line-height:1.65;margin:28px 0}.pillrow{display:flex;gap:9px;overflow:auto;margin:15px 0 22px}.pill{border:1px solid #dfe5ef;background:#fff;border-radius:999px;padding:8px 12px;white-space:nowrap;font-size:13px}.fundlist{display:grid;gap:10px}.fund{display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:center;border-bottom:1px solid var(--line);padding:15px 0}.fund strong{font-size:18px}.fund-hero{margin:18px 0 6px;background:linear-gradient(135deg,#f6f9ff,#eef4ff);border:1px solid #e1ebff;border-radius:18px;padding:22px}.fund-hero h2{font-size:24px;margin:0 0 8px}.fund-hero p{color:#68778f;line-height:1.65;margin:0}.fund-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}.fund-card{border:1px solid var(--line);border-radius:14px;padding:16px}.fund-card b{display:block;font-size:17px}.fund-card span{display:block;color:#8793a6;font-size:12px;margin:5px 0 10px}.fund-card strong{font-size:21px}.green{color:var(--green)}.red{color:var(--red)}
-    @media(max-width:700px){.shell{max-width:540px}.topin,.content{padding-left:16px;padding-right:16px}.panel{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}.brandname{font-size:22px}.stock-head,.stock-row{grid-template-columns:minmax(145px,1.2fr) 76px 95px 88px;gap:7px}.spark{width:70px}.price{font-size:18px}.chg{font-size:16px}.indexgrid{gap:8px}.indexcard strong{font-size:20px}.newsrow{grid-template-columns:1fr 105px}.thumb{height:72px}.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.fund{grid-template-columns:1fr auto auto;gap:8px}}
-    @media(max-width:420px){.stock-head,.stock-row{grid-template-columns:minmax(138px,1.3fr) 58px 78px 78px}.spark{width:56px}.stockname{font-size:16px}.price,.chg{font-size:15px}.tag{display:none}.indexcard{padding:14px 6px}.indexcard b{font-size:14px}.indexcard strong{font-size:18px}.fund-grid{grid-template-columns:1fr 1fr}}
+    :root{--green:#00c805;--green-dark:#00a805;--red:#ff4d2e;--ink:#101214;--muted:#737b83;--line:#e9edef;--soft:#f5f7f8;--card:#fff;--max:920px}
+    *{box-sizing:border-box}html{background:#fff;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}body{margin:0;background:#fff}.app{width:min(var(--max),100%);margin:auto;min-height:100vh;padding-bottom:92px}.top{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-bottom:1px solid rgba(233,237,239,.8)}.topin{padding:17px 22px 15px}.brandrow{display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}.logo{width:42px;height:42px;border-radius:13px}.brand strong{font-size:23px;letter-spacing:-.03em}.preview{font-size:11px;font-weight:800;background:#eaffea;color:#008f04;padding:4px 7px;border-radius:999px}.home-link{font-size:13px;color:var(--muted);text-decoration:none}.search{margin-top:14px;height:48px;border-radius:24px;background:#eef1f2;display:flex;align-items:center;padding:0 16px;gap:10px}.search span{font-size:21px}.search input{border:0;background:transparent;outline:0;width:100%;font-size:16px;color:var(--ink)}.content{padding:0 22px}.page{display:none}.page.active{display:block}.eyebrow{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:22px}.hero-title{font-size:34px;line-height:1.06;letter-spacing:-.04em;margin:7px 0 4px}.subline{color:var(--muted);font-size:14px}.tabs,.chips{display:flex;gap:20px;overflow:auto;scrollbar-width:none}.tabs{padding:22px 0 14px}.tabs::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}.tabs button,.chips button{border:0;background:transparent;font-size:16px;font-weight:760;color:#596168;padding:6px 0;white-space:nowrap}.tabs button.on{color:var(--ink);border-bottom:3px solid var(--green)}.chips{gap:9px;padding:5px 0 18px}.chips button{background:#f0f2f3;border-radius:999px;padding:9px 13px;font-size:13px}.chips button.on{background:var(--ink);color:#fff}.section{padding:25px 0;border-top:1px solid var(--line)}.section:first-child{border-top:0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:16px}.section-head h2{font-size:25px;margin:0;letter-spacing:-.03em}.section-head a,.section-head span{font-size:13px;color:var(--muted);text-decoration:none}.indexgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.indexcard{border:1px solid var(--line);border-radius:18px;padding:16px;min-height:118px;background:#fff}.indexcard b{font-size:15px}.indexcard strong{display:block;font-size:24px;margin:12px 0 5px;letter-spacing:-.03em}.indexcard small{font-size:13px}.up{color:var(--green-dark)}.down{color:var(--red)}.heat{border:1px solid var(--line);border-radius:22px;padding:14px;display:grid;grid-template-columns:1.35fr 1fr 1fr 1fr;grid-template-rows:88px 62px 54px;gap:4px;overflow:hidden}.heat div{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:850;border-radius:5px;line-height:1.15}.heat small{margin-top:6px;font-size:12px;font-weight:700}.h1{grid-row:span 2;background:#e8f9e9}.h2{background:#bff0c2}.h3{background:#ffe5de}.h4{background:#e4f8e5}.h5{grid-column:span 2;background:#ffbdac}.h6{background:#d8f5da}.h7{background:#ffd2c7}.h8{background:#eff9ef}.h9{background:#ffdfd7}.movers{display:flex;gap:9px;overflow:auto;scrollbar-width:none}.mover{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;padding:10px 14px;font-size:14px}.mover b{margin-left:8px}.event-list,.news-list,.watchlist,.fund-list,.service-list{display:grid}.event,.news,.watch,.fund,.service{border-bottom:1px solid var(--line)}.event{display:grid;grid-template-columns:1fr auto;gap:18px;padding:16px 0}.event b,.news b{font-size:17px;line-height:1.45}.event small,.news small{display:block;color:var(--muted);margin-top:6px}.event .right{text-align:right}.news{display:grid;grid-template-columns:1fr 90px;gap:14px;padding:17px 0}.thumb{height:72px;border-radius:14px;background:linear-gradient(135deg,#dff7e0,#f5f5f5);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);font-weight:800}.toolbar{display:flex;justify-content:space-between;align-items:center;padding:5px 0 12px;color:var(--muted);font-size:13px}.watch{display:grid;grid-template-columns:minmax(150px,1.2fr) 90px 104px 98px;gap:10px;align-items:center;padding:14px 0;text-decoration:none;color:var(--ink)}.watch .name{font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ticker{font-size:12px;color:var(--muted);margin-top:4px}.spark{width:86px;height:34px}.price{text-align:right;font-size:18px;font-weight:700}.change{text-align:center;border-radius:8px;padding:9px 5px;font-weight:850;color:#fff}.change.upbg{background:var(--green)}.change.downbg{background:var(--red)}.related{margin-top:18px;border-top:8px solid var(--soft);margin-left:-22px;margin-right:-22px;padding:22px}.fund-hero{margin:14px 0 22px;border-radius:24px;background:#f0fff1;padding:24px}.fund-hero h2{font-size:30px;margin:0 0 9px}.fund-hero p{margin:0;color:#4e5a52;line-height:1.6}.fund-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.fund-cat{border:1px solid var(--line);border-radius:17px;padding:15px 8px;text-align:center}.fund-cat strong{display:block;font-size:19px;margin-bottom:7px}.fund-cat small{color:var(--muted)}.fund{display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;padding:16px 0}.fund b{font-size:16px}.fund small{display:block;color:var(--muted);margin-top:5px}.fund .ret{font-weight:850}.profile-hero{background:linear-gradient(180deg,#ecffed,#fff);margin:0 -22px;padding:28px 22px 24px}.profile-hero h1{font-size:31px;margin:0 0 8px}.profile-hero p{color:var(--muted);margin:0}.account-card{border:1px solid var(--line);border-radius:22px;padding:20px;margin-top:18px}.account-card strong{font-size:20px}.account-card span{display:block;color:var(--muted);margin-top:7px}.service{padding:18px 0;display:flex;justify-content:space-between;font-size:16px}.risk{font-size:12px;color:#8a9298;line-height:1.6;margin:22px 0}.bottom{position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:50;width:min(var(--max),100%);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(255,255,255,.98);border-top:1px solid var(--line);padding:7px 8px max(8px,env(safe-area-inset-bottom))}.bottom button{border:0;background:transparent;color:#727a80;font-size:12px;padding:5px 2px}.bottom .ico{display:block;font-size:22px;margin-bottom:3px}.bottom button.on{color:var(--green-dark);font-weight:850}
+    @media(max-width:650px){.topin,.content{padding-left:16px;padding-right:16px}.related{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}.hero-title{font-size:31px}.indexgrid{gap:7px}.indexcard{padding:13px;min-height:106px}.indexcard strong{font-size:20px}.heat{grid-template-rows:78px 56px 48px}.watch{grid-template-columns:minmax(128px,1.25fr) 66px 82px 82px;gap:6px}.spark{width:62px}.price{font-size:16px}.change{font-size:14px}.fund-cats{grid-template-columns:repeat(2,1fr)}}
   </style>
   <script src="./feature-flags.js"></script>
 </head>
 <body>
-<div class="shell">
+<div class="app">
   <header class="top"><div class="topin">
-    <div class="brandrow"><a class="brandbox" href="/finance/"><img class="logo" src="/assets/topic-focus/finance-market.svg" alt="唐人财经"/><div><span class="brandname">唐人财经</span><span class="badge">UI预览</span></div></a><a class="back" href="/#topic-focus">返回专题</a></div>
-    <div class="search"><input type="search" placeholder="搜索股票 / ETF / 基金 / 财经新闻" aria-label="搜索"/><button type="button">搜索</button></div>
-    <div class="notice">当前为产品 UI 第一版，行情为演示数据，尚未接入实时行情或交易接口。</div>
+    <div class="brandrow"><a class="brand" href="/finance/"><img class="logo" src="/assets/topic-focus/finance-market.svg" alt="唐人财经"><strong>唐人财经</strong><span class="preview">V1</span></a><a class="home-link" href="/#topic-focus">唐人日报</a></div>
+    <label class="search"><span>⌕</span><input type="search" placeholder="搜索股票、ETF、基金" aria-label="搜索股票、ETF、基金"></label>
   </div></header>
 
   <main class="content">
-    <section class="page" data-page="news">
-      <div class="subtabs"><button>自选</button><button class="on">要闻</button><button>快讯</button><button>美股</button><button>ETF</button><button>基金</button></div>
-      <h2 class="section-title">市场头条 🔥</h2>
-      <ol class="headline-list"><li><div><a href="#">美股科技板块震荡，投资者重新评估利率与企业盈利预期</a><div class="meta">唐人财经 · 12分钟前</div></div></li><li><div><a href="#">黄金与白银波动加剧，避险交易再度升温</a><div class="meta">市场快讯 · 31分钟前</div></div></li><li><div><a href="#">AI、芯片与数据中心仍是资金关注主线</a><div class="meta">唐人财经 · 08:10</div></div></li></ol>
-      <div class="newsrow"><div><h3>美股盘前：大型科技股走势分化，市场等待新的经济数据</h3><div class="meta">唐人财经 · 07:51</div></div><div class="thumb">MARKET</div></div>
-      <div class="newsrow"><div><h3>ETF资金流向出现变化，科技与黄金产品关注度上升</h3><div class="meta">ETF观察 · 07:20</div></div><div class="thumb">ETF</div></div>
-      <div class="newsrow"><div><h3>中概股盘前活跃，互联网与新能源汽车板块受到关注</h3><div class="meta">美股 · 06:48</div></div><div class="thumb">US</div></div>
+    <section class="page active" data-page="market">
+      <div class="eyebrow">Market now</div><h1 class="hero-title">市场</h1><div class="subline">先看价格，再看发生了什么</div>
+      <div class="tabs"><button class="on">现在</button><button>即将</button><button>宏观</button><button>加密</button></div>
+      <section class="section">
+        <div class="section-head"><h2>美股大盘</h2><span>美东 16:00 收盘</span></div>
+        <div class="indexgrid">
+          <div class="indexcard"><b>道琼斯</b><strong class="up">53,463.05</strong><small class="up">▲ 0.22%</small></div>
+          <div class="indexcard"><b>纳斯达克</b><strong class="up">26,331.09</strong><small class="up">▲ 0.16%</small></div>
+          <div class="indexcard"><b>标普500</b><strong class="up">7,707.98</strong><small class="up">▲ 0.21%</small></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head"><h2>行业热力图</h2><span>美股</span></div>
+        <div class="heat">
+          <div class="h1">NVDA<small class="down">-0.74%</small></div><div class="h2">AAPL<small class="up">+2.02%</small></div><div class="h3">GOOGL<small class="down">-0.03%</small></div><div class="h4">MSFT<small class="up">+0.56%</small></div>
+          <div class="h5">AVGO<small class="down">-4.21%</small></div><div class="h6">META<small class="up">+0.67%</small></div><div class="h7">AMD<small class="down">-1.62%</small></div><div class="h8">AMZN<small class="up">+2.57%</small></div><div class="h9">MU<small class="down">-0.27%</small></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head"><h2>今日异动</h2><span>Top movers</span></div>
+        <div class="movers"><div class="mover">MRNA <b class="up">▲ 19.37%</b></div><div class="mover">MSTR <b class="up">▲ 17.37%</b></div><div class="mover">AVGO <b class="down">▼ 4.21%</b></div><div class="mover">AMD <b class="down">▼ 3.71%</b></div></div>
+      </section>
+      <section class="section">
+        <div class="section-head"><h2>财报</h2><span>今日</span></div>
+        <div class="event-list">
+          <div class="event"><div><b>Target</b><small>TGT <span class="down">▼ 2.14%</span></small></div><div class="right"><b>超预期</b><small>EPS $3.04</small></div></div>
+          <div class="event"><div><b>Viking Holdings</b><small>VIK <span class="up">▲ 7.38%</span></small></div><div class="right"><b>超预期</b><small>EPS $1.31</small></div></div>
+          <div class="event"><div><b>ZTO Express</b><small>ZTO <span class="down">▼ 6.10%</span></small></div><div class="right"><b>已发布</b><small>EPS $0.56</small></div></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-head"><h2>市场新闻</h2><a href="#">更多</a></div>
+        <div class="news-list">
+          <div class="news"><div><b>美股三大指数走高，科技股与医药股成为资金焦点</b><small>唐人财经 · 12分钟前</small></div><div class="thumb">MARKET</div></div>
+          <div class="news"><div><b>芯片板块分化，投资者重新评估 AI 资本开支与估值</b><small>唐人财经 · 31分钟前</small></div><div class="thumb">AI</div></div>
+          <div class="news"><div><b>ETF 资金流向变化，黄金与科技主题产品关注度上升</b><small>ETF观察 · 1小时前</small></div><div class="thumb">ETF</div></div>
+        </div>
+      </section>
+      <p class="risk">当前行情与财务数据为界面演示，不构成投资建议；实时数据源将在后续版本接入。</p>
     </section>
 
-    <section class="page active" data-page="watch">
-      <div class="market-tabs"><span class="on">全部</span><span>美股</span><span>ETF</span><span>中概股</span><span>港股</span><span>沪深</span><span>基金</span></div>
-      <div class="stock-head"><span>股票（12）</span><span></span><span style="text-align:right">最新价</span><span style="text-align:center">涨跌幅</span></div>
-      <div id="stocks"></div>
+    <section class="page" data-page="watch">
+      <div class="eyebrow">My watchlist</div><h1 class="hero-title">自选</h1><div class="subline">只看你真正关心的资产</div>
+      <div class="chips"><button class="on">全部</button><button>美股</button><button>ETF</button><button>中概股</button><button>港股</button><button>沪深</button></div>
+      <div class="toolbar"><span>股票（8）</span><span>最新价　涨跌幅</span></div>
+      <div class="watchlist">
+        <a class="watch" href="./stock.html"><div><div class="name">Apple</div><div class="ticker">US · AAPL</div></div><svg class="spark" viewBox="0 0 86 34"><polyline points="1,25 10,24 19,27 28,19 37,22 46,13 55,15 64,8 73,11 85,6" fill="none" stroke="#00c805" stroke-width="2"/></svg><div class="price">316.28</div><div class="change upbg">+2.22%</div></a>
+        <a class="watch" href="./stock.html"><div><div class="name">NVIDIA</div><div class="ticker">US · NVDA</div></div><svg class="spark" viewBox="0 0 86 34"><polyline points="1,7 10,9 19,14 28,12 37,18 46,15 55,23 64,20 73,25 85,27" fill="none" stroke="#ff4d2e" stroke-width="2"/></svg><div class="price">178.32</div><div class="change downbg">-0.74%</div></a>
+        <a class="watch" href="./stock.html"><div><div class="name">Microsoft</div><div class="ticker">US · MSFT</div></div><svg class="spark" viewBox="0 0 86 34"><polyline points="1,23 10,20 19,22 28,15 37,17 46,12 55,14 64,8 73,10 85,9" fill="none" stroke="#00c805" stroke-width="2"/></svg><div class="price">644.18</div><div class="change upbg">+0.56%</div></a>
+        <a class="watch" href="./stock.html"><div><div class="name">Amazon</div><div class="ticker">US · AMZN</div></div><svg class="spark" viewBox="0 0 86 34"><polyline points="1,27 10,23 19,25 28,18 37,13 46,16 55,9 64,11 73,7 85,5" fill="none" stroke="#00c805" stroke-width="2"/></svg><div class="price">245.12</div><div class="change upbg">+2.57%</div></a>
+        <a class="watch" href="./stock.html"><div><div class="name">Broadcom</div><div class="ticker">US · AVGO</div></div><svg class="spark" viewBox="0 0 86 34"><polyline points="1,5 10,7 19,12 28,11 37,19 46,26 55,22 64,28 73,25 85,29" fill="none" stroke="#ff4d2e" stroke-width="2"/></svg><div class="price">364.13</div><div class="change downbg">-4.21%</div></a>
+      </div>
+      <div class="related">
+        <div class="section-head"><h2>与你的自选相关</h2><span>新闻</span></div>
+        <div class="news-list"><div class="news"><div><b>Apple 走强，市场继续关注 AI 投入、服务业务与下一轮产品周期</b><small>唐人财经 · 24分钟前</small></div><div class="thumb">AAPL</div></div><div class="news"><div><b>半导体股走势分化，NVDA、AVGO 与 AMD 出现明显分歧</b><small>唐人财经 · 52分钟前</small></div><div class="thumb">CHIP</div></div></div>
+      </div>
     </section>
 
-    <section class="page" data-page="market">
-      <div class="market-tabs"><span class="on">美股</span><span>ETF</span><span>基金</span><span>中概股</span><span>港股</span><span>宏观</span></div>
-      <div class="indexgrid"><div class="indexcard"><b>道琼斯</b><strong>44,381.20</strong><small>-0.22%</small></div><div class="indexcard"><b>纳斯达克</b><strong>21,982.74</strong><small>-1.13%</small></div><div class="indexcard"><b>标普500</b><strong>6,423.10</strong><small>-0.69%</small></div></div>
-      <div class="panel"><h2 class="section-title" style="margin-top:0">热门行业</h2><div class="tiles"><div class="tile"><b>人工智能</b><strong>+3.82%</strong><small>NVDA</small></div><div class="tile"><b>半导体</b><strong>+2.45%</strong><small>AMD</small></div><div class="tile"><b>黄金</b><strong>+1.76%</strong><small>GLD</small></div></div></div>
-      <div class="panel"><h2 class="section-title" style="margin-top:0">热门概念</h2><div class="tiles"><div class="tile"><b>数据中心</b><strong>+4.10%</strong><small>VRT</small></div><div class="tile"><b>中概互联网</b><strong>+2.06%</strong><small>KWEB</small></div><div class="tile"><b>机器人</b><strong>+1.88%</strong><small>BOTZ</small></div></div></div>
-      <div class="panel"><h2 class="section-title" style="margin-top:0">ETF 排行</h2><div class="fundlist"><div class="fund"><strong>QQQ</strong><span>纳指100</span><b class="red">+1.42%</b></div><div class="fund"><strong>SPY</strong><span>标普500</span><b class="green">-0.61%</b></div><div class="fund"><strong>GLD</strong><span>黄金ETF</span><b class="red">+1.15%</b></div></div></div>
+    <section class="page" data-page="funds">
+      <div class="eyebrow">Funds & ETF</div><h1 class="hero-title">基金</h1><div class="subline">从指数、行业和主题寻找投资线索</div>
+      <div class="fund-hero"><h2>ETF 研究中心</h2><p>先提供行情、榜单、主题与研究信息；购买与账户功能暂不开放。</p></div>
+      <div class="fund-cats"><div class="fund-cat"><strong>ETF</strong><small>热门产品</small></div><div class="fund-cat"><strong>S&P</strong><small>核心指数</small></div><div class="fund-cat"><strong>AI</strong><small>科技主题</small></div><div class="fund-cat"><strong>Au</strong><small>黄金资产</small></div></div>
+      <section class="section"><div class="section-head"><h2>热门 ETF</h2><span>今日</span></div><div class="fund-list">
+        <div class="fund"><div><b>SPDR S&P 500 ETF</b><small>SPY · 美国大盘</small></div><div>593.21</div><div class="ret up">+0.31%</div></div>
+        <div class="fund"><div><b>Invesco QQQ</b><small>QQQ · 纳斯达克100</small></div><div>527.40</div><div class="ret up">+0.44%</div></div>
+        <div class="fund"><div><b>iShares Gold Trust</b><small>IAU · 黄金</small></div><div>75.18</div><div class="ret down">-0.22%</div></div>
+        <div class="fund"><div><b>VanEck Semiconductor ETF</b><small>SMH · 半导体</small></div><div>322.06</div><div class="ret down">-1.14%</div></div>
+      </div></section>
+      <section class="section"><div class="section-head"><h2>主题排行</h2><span>近1日</span></div><div class="movers"><div class="mover">医药 <b class="up">+4.8%</b></div><div class="mover">黄金 <b class="up">+2.1%</b></div><div class="mover">AI <b class="up">+1.7%</b></div><div class="mover">半导体 <b class="down">-1.2%</b></div></div></section>
+      <p class="risk">基金与 ETF 页面当前仅用于信息展示。销售、申购、KYC、适当性与账户能力继续由 feature flag 隐藏。</p>
     </section>
 
-    <section class="page" data-page="fund">
-      <div class="market-tabs"><span class="on">基金首页</span><span>ETF</span><span>指数</span><span>债券</span><span>黄金</span><span>跨境</span></div>
-      <div class="fund-hero"><h2>基金与 ETF</h2><p>先建设信息、筛选和研究能力。当前只展示产品信息与市场数据，不提供申购、赎回或交易入口。</p></div>
-      <div class="pillrow"><span class="pill">热门ETF</span><span class="pill">科技</span><span class="pill">标普500</span><span class="pill">纳斯达克100</span><span class="pill">黄金</span><span class="pill">债券</span></div>
-      <h2 class="section-title">热门产品</h2>
-      <div class="fund-grid"><div class="fund-card"><b>SPY</b><span>标普500 ETF</span><strong class="green">-0.61%</strong></div><div class="fund-card"><b>QQQ</b><span>纳指100 ETF</span><strong class="red">+1.42%</strong></div><div class="fund-card"><b>GLD</b><span>黄金 ETF</span><strong class="red">+1.15%</strong></div><div class="fund-card"><b>TLT</b><span>长期美债 ETF</span><strong class="green">-0.32%</strong></div></div>
-      <div class="panel"><h2 class="section-title" style="margin-top:0">ETF 排行</h2><div class="fundlist"><div class="fund"><strong>VGT</strong><span>信息科技</span><b class="red">+2.26%</b></div><div class="fund"><strong>SOXX</strong><span>半导体</span><b class="red">+1.93%</b></div><div class="fund"><strong>KWEB</strong><span>中概互联网</span><b class="green">-0.74%</b></div></div></div>
-      <div class="empty-card">下一阶段将继续加入基金详情、费用率、规模、持仓、历史表现、相关资讯和自选功能。</div>
+    <section class="page" data-page="profile">
+      <div class="profile-hero"><div class="eyebrow">Account</div><h1>我的</h1><p>自选同步、提醒与浏览记录</p></div>
+      <div class="account-card"><strong>唐人财经账户</strong><span>登录后可跨设备同步自选与提醒</span></div>
+      <section class="section"><div class="section-head"><h2>我的服务</h2></div><div class="service-list"><div class="service">自选管理 <span>›</span></div><div class="service">股票提醒 <span>›</span></div><div class="service">浏览记录 <span>›</span></div><div class="service">财报日历 <span>›</span></div></div></section>
+      <section class="section"><div class="section-head"><h2>设置</h2></div><div class="service-list"><div class="service">涨跌颜色 <span>涨绿跌红 ›</span></div><div class="service">通知设置 <span>›</span></div><div class="service">隐私与条款 <span>›</span></div></div></section>
+      <p class="risk">证券开户与交易入口仍处于关闭状态；未来仅在完成适用合规、合作机构与协议审核后启用。</p>
     </section>
-
-    <section class="page" data-page="me">
-      <div class="profile-hero"><h2>尊敬的用户，欢迎你</h2><div class="meta">登录后可同步自选、提醒、收藏与账户偏好</div></div>
-      <h2 class="section-title">我的内容</h2><div class="service"><a href="#">我的自选 <span>›</span></a><a href="#">浏览记录 <span>›</span></a><a href="#">新闻收藏 <span>›</span></a><a href="#">价格提醒 <span>›</span></a></div>
-      <h2 class="section-title">更多设置</h2><div class="service"><a href="#">通知设置 <span>›</span></a><a href="#">账户与安全 <span>›</span></a><a href="#">通用设置 <span>›</span></a></div>
-    </section>
-
-    <div id="brokerage-root" hidden aria-hidden="true"></div>
-    <p class="risk">风险提示：本页面为唐人财经产品 UI 第一版，仅用于产品设计与开发验证。演示行情、涨跌幅和基金信息并非实时市场数据，不构成投资建议、证券推荐或交易指令。</p>
   </main>
+
+  <nav class="bottom" aria-label="唐人财经主导航">
+    <button data-target="watch"><span class="ico">↗</span>自选</button>
+    <button class="on" data-target="market"><span class="ico">▥</span>行情</button>
+    <button data-target="funds"><span class="ico">◎</span>基金</button>
+    <button data-target="profile"><span class="ico">♙</span>我的</button>
+  </nav>
 </div>
-<nav class="bottom" aria-label="唐人财经主导航"><button data-target="news"><span class="ico">▣</span>新闻</button><button class="on" data-target="watch"><span class="ico">◉</span>自选</button><button data-target="market"><span class="ico">▥</span>行情</button><button id="fourth-nav" data-target="fund"><span class="ico">◇</span><span class="nav-label">基金</span></button><button data-target="me"><span class="ico">♙</span>我的</button></nav>
 <script>
-  const stocks=[
-    ['特斯拉','TSLA','336.87','-0.72%',false],['英伟达','NVDA','174.21','-1.88%',false],['Robinhood','HOOD','91.53','-4.90%',false],['美光科技','MU','140.76','-7.02%',false],['戴尔科技','DELL','128.65','-2.33%',false],['Palantir','PLTR','181.20','+2.91%',true],['苹果','AAPL','231.59','-0.84%',false],['亚马逊','AMZN','224.87','+1.16%',true],['微软','MSFT','521.64','-1.04%',false],['Meta','META','781.42','+0.73%',true],['SPY','SPY','642.31','-0.61%',false],['纳指100 ETF','QQQ','578.20','+1.42%',true]
-  ];
-  const paths=['M2 7 L13 17 L24 13 L36 27 L49 20 L63 30 L78 22','M2 28 L14 22 L27 7 L39 14 L51 9 L65 23 L78 18','M2 6 L14 20 L25 9 L36 22 L48 11 L61 17 L78 31'];
-  document.getElementById('stocks').innerHTML=stocks.map((s,i)=>`<div class="stock-row"><div><div class="stockname">${s[0]}</div><div class="ticker"><span class="flag">US</span>${s[1]}<span class="tag">自选</span></div></div><svg class="spark" viewBox="0 0 80 36" aria-hidden="true"><path d="${paths[i%paths.length]}" fill="none" stroke="${s[4]?'#ef3d43':'#17ad49'}" stroke-width="2"/></svg><div class="price">${s[2]}</div><div class="chg ${s[4]?'up':'down'}">${s[3]}</div></div>`).join('');
-
-  let pages=[...document.querySelectorAll('.page')];
-  let buttons=[...document.querySelectorAll('.bottom button')];
-  function refreshNavigation(){pages=[...document.querySelectorAll('.page')];buttons=[...document.querySelectorAll('.bottom button')];buttons.forEach(b=>{b.onclick=()=>openPage(b.dataset.target)});}
-  function openPage(name){pages.forEach(p=>p.classList.toggle('active',p.dataset.page===name));buttons.forEach(b=>b.classList.toggle('on',b.dataset.target===name));history.replaceState(null,'','#'+name);window.scrollTo({top:0,behavior:'instant'});}
-
-  const features=window.TR_FINANCE_FEATURES||{};
-  if(features.brokerage===true){
-    import('./brokerage-module.js').then(({mountBrokerage,brokerageStyles})=>{
-      const root=document.getElementById('brokerage-root');root.hidden=false;root.removeAttribute('aria-hidden');mountBrokerage(root);
-      const style=document.createElement('style');style.textContent=brokerageStyles;document.head.appendChild(style);
-      const fourth=document.getElementById('fourth-nav');fourth.dataset.target='brokerage';fourth.querySelector('.ico').textContent='ϟ';fourth.querySelector('.nav-label').textContent='开户';
-      refreshNavigation();
-      if(location.hash.slice(1)==='brokerage')openPage('brokerage');
-    });
-  }
-  refreshNavigation();
-  const initial=location.hash.slice(1);if(['news','watch','market','fund','me'].includes(initial))openPage(initial);
+  const pages=[...document.querySelectorAll('.page')],nav=[...document.querySelectorAll('.bottom button')];
+  function openPage(name){pages.forEach(p=>p.classList.toggle('active',p.dataset.page===name));nav.forEach(b=>b.classList.toggle('on',b.dataset.target===name));window.scrollTo({top:0,behavior:'smooth'});}
+  nav.forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.target)));
+  document.querySelectorAll('.tabs button,.chips button').forEach(b=>b.addEventListener('click',e=>{const wrap=e.currentTarget.parentElement;wrap.querySelectorAll('button').forEach(x=>x.classList.remove('on'));e.currentTarget.classList.add('on');}));
 </script>
 </body>
 </html>

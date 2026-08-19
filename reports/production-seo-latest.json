@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T19:32:37.734Z",
+  "generated_at": "2026-08-19T20:09:45.430Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -63,18 +63,20 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1200787,
-      "article_count": 3694,
+      "bytes": 1202166,
+      "article_count": 3701,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v2-dedupe"
     },
     "https://trrb.net/news-sitemap.xml": {
-      "status": 0,
-      "bytes": 0,
-      "article_count": 0,
+      "status": 200,
+      "type": "application/xml; charset=UTF-8",
+      "bytes": 137890,
+      "article_count": 280,
       "child_sitemaps": [],
-      "legacy_query_count": 0
+      "legacy_query_count": 0,
+      "version": "live-supabase-v1"
     }
   },
   "articles": [
@@ -287,8 +289,6 @@
     }
   },
   "failures": [
-    "sitemap https://trrb.net/news-sitemap.xml HTTP 0",
-    "Google News sitemap has no recent article URLs",
     {
       "page": "https://trrb.net/",
       "problem": "too few direct article links: 0/10"

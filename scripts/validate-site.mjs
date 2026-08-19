@@ -41,17 +41,28 @@ if (!includesText(index, 'property="og:url" content="https://trrb.net/"')) failu
 
 const listing = await bytes("listing.html");
 if (!startsText(listing, "<!doctype html>")) failures.push("listing.html is not HTML");
-if (!includesText(listing, "category-runtime-v3.js")) failures.push("listing.html is missing category CMS runtime");
-if (!includesText(listing, "listing-seo.js?v=20260819-pretty-category-2")) failures.push("listing.html is missing current pretty-category SEO runtime");
+if (!includesText(listing, "category-runtime-v3.js?v=20260819-preserve-independent-nav-1")) failures.push("listing.html is missing current category runtime token");
+if (!includesText(listing, "listing-seo.js?v=20260819-ssr-safe-3")) failures.push("listing.html is missing current SSR-safe category SEO runtime");
 if (!includesText(listing, "immigration-entry.js?v=20260819-news-canonical-1")) failures.push("listing.html is missing immigration news canonical guard");
+if (!includesText(listing, "article-route-runtime.js?v=20260819-seo-v5")) failures.push("listing.html is missing current article route runtime");
 if (!includesText(listing, "nav-expose-link")) failures.push("listing.html is missing persistent expose navigation link");
 if (!includesText(listing, '<base href="/"')) failures.push("listing.html is missing root base href for rewritten category routes");
 if (!includesText(listing, '<a href="/immigration">移民美国</a>')) failures.push("listing.html immigration navigation is not canonical /immigration");
 
 const article = await bytes("article.html");
 if (!startsText(article, "<!doctype html>")) failures.push("article.html is not HTML");
-if (!includesText(article, "category-runtime-v3.js")) failures.push("article.html is missing category CMS runtime");
+if (!includesText(article, "category-runtime-v3.js?v=20260819-preserve-independent-nav-1")) failures.push("article.html is missing current category runtime token");
+if (!includesText(article, "article-route-runtime.js?v=20260819-seo-v5")) failures.push("article.html is missing current article route runtime");
 if (!includesText(article, "nav-expose-link")) failures.push("article.html is missing persistent expose navigation link");
+
+// Redirect rules execute after Edge Functions. This alphabetically-first inline
+// Edge guard prevents article/category/sitemap/feed responders from ending the
+// chain with a www.trrb.net 200 before the host canonical redirect can happen.
+const hostCanonical = await bytes("netlify/edge-functions/00-host-canonical.ts");
+if (!includesText(hostCanonical, 'export const config = { path: "/*" }')) failures.push("00-host-canonical.ts does not cover all public paths");
+if (!includesText(hostCanonical, 'www.${CANONICAL_HOST}')) failures.push("00-host-canonical.ts does not normalize the www host");
+if (!includesText(hostCanonical, "status: 301")) failures.push("00-host-canonical.ts does not return a permanent redirect");
+if (!includesText(hostCanonical, 'X-TRRB-Host-Canonical')) failures.push("00-host-canonical.ts is missing its production verification marker");
 
 const css = await bytes("styles.css");
 const cssHead = css.toString("utf8", 0, Math.min(css.length, 300)).trimStart();

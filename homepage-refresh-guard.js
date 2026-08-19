@@ -75,7 +75,8 @@
     const seen = new Set();
     return (Array.isArray(items) ? items : [])
       .map(normalizeRow)
-      .filter(isFresh)
+      // Preserve category supplements that may be older than the global 4-day
+      // window. Individual homepage sections decide their own freshness policy.
       .filter((item) => {
         const key = keyOf(item);
         if (!key || seen.has(key)) return false;
@@ -122,10 +123,10 @@
   }
 
   function adoptExistingRender() {
-    const items = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES.filter(isFresh) : [];
-    if (!items.length) return false;
+    const items = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? uniqueSorted(window.TRRB_LAST_HOME_ARTICLES) : [];
+    if (!items.length || !items.some(isFresh)) return false;
     lastRenderSignature = signatureFor(items);
-    document.documentElement.dataset.homeFreshPolicy = "4d-published-at-desc";
+    document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
     document.documentElement.dataset.homeLiveSource = "articles-home-initial";
     revealHome();
     bindImageRecovery(document);
@@ -138,13 +139,14 @@
       try {
         if (typeof window.renderHome !== "function") return false;
         const articles = await fetchUnifiedLive();
-        if (!articles.length) throw new Error("最近4天没有可展示的已发布新闻");
+        if (!articles.length) throw new Error("首页统一实时接口没有返回已发布新闻");
+        if (!articles.some(isFresh)) throw new Error("最近4天没有可展示的实时新闻");
         const signature = signatureFor(articles);
         if (signature && signature !== lastRenderSignature) {
           window.renderHome(articles);
           lastRenderSignature = signature;
         }
-        document.documentElement.dataset.homeFreshPolicy = "4d-published-at-desc";
+        document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
         document.documentElement.dataset.homeLiveSource = "public-home-bundle";
         document.documentElement.dataset.liveNewsUpdatedAt = new Date().toISOString();
         revealHome();

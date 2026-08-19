@@ -12,8 +12,7 @@ const FALLBACK: Record<string,string> = {
   "庇护百科":"asylum",
   "驱逐快报":"deport",
   "ICE执法动态":"ice",
-  "ICE执法":"ice",
-  "曝光墙":"expose"
+  "ICE执法":"ice"
 };
 const ALIASES: Record<string,string> = {
   important:"important-news",
@@ -40,7 +39,7 @@ export default async(request:Request,context:any)=>{
     const cutoff=now-48*60*60*1000;
     const [cats,articles]=await Promise.all([
       rows("categories",{select:"id,name,slug,is_active,include_in_google_news",is_active:"eq.true",limit:"500"}),
-      rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at",status:"eq.published",order:"published_at.desc.nullslast,created_at.desc",limit:"1000"})
+      rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",status:"eq.published",visibility:"eq.public",order:"published_at.desc.nullslast,created_at.desc",limit:"1000"})
     ]);
     const ids=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>String(x.id)));
     const names=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>clean(x.name)));
@@ -91,7 +90,7 @@ export default async(request:Request,context:any)=>{
     return new Response(request.method==="HEAD"?null:xml,{status:200,headers:{
       "content-type":"application/xml; charset=UTF-8",
       "cache-control":"public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-news-sitemap":"live-supabase-v5-latest1000-topic-safe-ice-safe-dedupe",
+      "x-trrb-news-sitemap":"live-supabase-v6-public-only-ice-safe-dedupe",
       "x-trrb-news-count":String(blocks.length),
       "x-trrb-news-source-rows":String(articles.length),
       "x-trrb-news-recent-candidates":String(recent.length),

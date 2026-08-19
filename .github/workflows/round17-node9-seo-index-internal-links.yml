@@ -30,12 +30,18 @@ jobs:
           node-version: '24'
       - name: Audit repository SEO sitemap and internal links
         run: node scripts/round17-node9-seo-index-internal-links-audit.mjs
-      - name: Trigger production deployment
+      - name: Trigger Netlify only for manual node run
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         run: |
           set -euo pipefail
           test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK is not configured'; exit 2; }
-          curl -fsS -X POST "$NETLIFY_BUILD_HOOK" >/tmp/netlify-node9.txt
+          if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+            hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node9+manual"
+          else
+            hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true&trigger_title=TRRB+Round17+node9+manual"
+          fi
+          curl -fsS -X POST "$hook_url" >/tmp/netlify-node9.txt
       - name: Wait for current SEO assets and audit production
         shell: bash
         run: |
@@ -57,4 +63,4 @@ jobs:
           echo 'Production SEO state did not converge.'
           exit 1
 
-# Strict restart revalidation after nodes 1-8 passed current production: 2026-08-17T02:35Z.
+# Push deployment is centralized in round17-central-production-deploy.yml.

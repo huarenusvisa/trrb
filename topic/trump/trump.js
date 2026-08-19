@@ -27,22 +27,12 @@
     const summary = String(item?.summary || "").trim();
     const content = String(item?.content || "").trim();
     const combined = `${title} ${summary} ${content}`;
-
-    // 儿子、女儿、孙辈及其他家族成员为主体的新闻一律排除。
     if (FAMILY_PATTERN.test(title)) return false;
-
-    // 标题必须明确点名特朗普本人，避免仅因正文顺带提到而误收。
     if (!SELF_NAME_PATTERN.test(title)) return false;
-
-    // 仅写“特朗普政府”但没有特朗普本人的具体动作，不进入本人专题。
     const governmentOnly = /特朗普政府|Trump\s+administration/i.test(title)
       && !SELF_ACTION_PATTERN.test(title.replace(/特朗普政府|Trump\s+administration/ig, ""));
     if (governmentOnly) return false;
-
-    // 标题应体现特朗普本人的讲话、决定、行动或公开活动。
     if (SELF_ACTION_PATTERN.test(title)) return true;
-
-    // 对极少数标题简短的稿件，摘要首段必须明确由特朗普本人实施动作。
     const lead = `${summary} ${content.slice(0, 400)}`;
     return SELF_NAME_PATTERN.test(lead) && SELF_ACTION_PATTERN.test(lead) && !FAMILY_PATTERN.test(combined);
   }
@@ -51,6 +41,16 @@
     const image = String(value || "").trim();
     return (/^https?:\/\//i.test(image) || image.startsWith("/assets/news-images/"))
       && !/(category-placeholders|image-placeholder|tang-ren-daily-placeholder)/i.test(image);
+  }
+
+  function articleHref(item) {
+    if (!item) return "/trump";
+    if (typeof window.TRRB_articleUrl === "function") {
+      const routed = window.TRRB_articleUrl({ ...item, topicKey: "trump", topic_key: "trump" });
+      if (routed) return routed;
+    }
+    const slug = String(item.slug || item.id || "").trim();
+    return slug ? `/trump/${encodeURIComponent(slug)}` : "/trump";
   }
 
   function render() {
@@ -63,18 +63,19 @@
     }
 
     root.innerHTML = items.map((item) => {
+      const href = articleHref(item);
       const image = isUsableImage(item.cover_image)
-        ? `<a href="/article.html?id=${encodeURIComponent(item.id)}"><img src="${esc(item.cover_image)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest('.trump-item').classList.add('no-image');this.remove()"></a>`
+        ? `<a href="${esc(href)}"><img src="${esc(item.cover_image)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest('.trump-item').classList.add('no-image');this.remove()"></a>`
         : "";
       const summary = String(item.summary || item.content || "").replace(/\s+/g, " ").trim().slice(0, 260);
-      return `<article class="trump-item ${image ? "" : "no-image"}">${image}<div><h3><a href="/article.html?id=${encodeURIComponent(item.id)}">${esc(item.title || "特朗普最新动态")}</a></h3><p>${esc(summary)}</p><div class="trump-meta">${esc(formatTime(item.published_at || item.created_at))} · ${esc(item.category_name || "美国时政")}</div></div></article>`;
+      return `<article class="trump-item ${image ? "" : "no-image"}">${image}<div><h3><a href="${esc(href)}">${esc(item.title || "特朗普最新动态")}</a></h3><p>${esc(summary)}</p><div class="trump-meta">${esc(formatTime(item.published_at || item.created_at))} · ${esc(item.category_name || "美国时政")}</div></div></article>`;
     }).join("");
     $("trump-more").hidden = visible >= rows.length;
   }
 
   async function readPublished() {
     const endpoint = new window.URL(`${SUPABASE_URL}/rest/v1/articles`);
-    endpoint.searchParams.set("select", "id,title,summary,content,cover_image,category_name,published_at,created_at,topic_key,status");
+    endpoint.searchParams.set("select", "id,title,slug,summary,content,cover_image,category_name,published_at,created_at,topic_key,status");
     endpoint.searchParams.set("status", "eq.published");
     endpoint.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
     endpoint.searchParams.set("limit", "500");

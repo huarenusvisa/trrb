@@ -15,6 +15,10 @@ on:
       - 'netlify/edge-functions/sitemap-live.ts'
       - 'netlify/edge-functions/news-sitemap-live.ts'
       - 'netlify/edge-functions/feed-live.ts'
+      - 'netlify/functions/admin-articles.js'
+      - 'netlify/functions/admin-article-ai-publish-background.js'
+      - 'netlify/functions/_shared/article-ai.js'
+      - 'admin/admin-publisher-v2.js'
       - 'article.html'
       - 'article-route-runtime.js'
       - 'article-live-neighbors.js'
@@ -30,6 +34,8 @@ on:
       - 'listing.html'
       - 'listing.js'
       - 'immigrate/immigrate.js'
+      - 'immigrate/knowledge-article-filter.js'
+      - 'trump/index.html'
       - 'topic/trump/trump.js'
       - 'topic/ice/featured-video.js'
       - 'scripts/generate-sitemaps.mjs'
@@ -43,6 +49,7 @@ on:
       - 'scripts/round14-node5-duplicate-thin-content-audit.mjs'
       - 'scripts/ice-breaking-news-index-audit.mjs'
       - 'scripts/round16-node4-home-legal-production.mjs'
+      - 'scripts/submit-indexnow.mjs'
       - 'index.html'
       - 'topic/ice/live-v6.html'
       - 'topic/ice/index.html'
@@ -50,6 +57,13 @@ on:
 
 permissions:
   contents: read
+
+# Short bursts of repository automation used to start many Netlify builds at
+# once. Keep only the newest run. The debounce below means cancelled older runs
+# usually never reach the external Netlify build hook.
+concurrency:
+  group: trrb-production-deploy-main
+  cancel-in-progress: true
 
 jobs:
   recover-production-deploy:
@@ -61,6 +75,20 @@ jobs:
       NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: 合并连续提交并只发布最新main
+        shell: bash
+        run: |
+          set -euo pipefail
+          sleep 30
+          git fetch origin main
+          current=$(git rev-parse HEAD)
+          latest=$(git rev-parse origin/main)
+          echo "checked_out=$current latest_main=$latest"
+          if [ "$current" != "$latest" ]; then
+            echo 'A newer main commit exists; this run is obsolete and must not trigger Netlify.'
+            exit 78
+          fi
 
       - name: 触发或执行Netlify生产部署
         shell: bash
@@ -98,6 +126,7 @@ jobs:
             category_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?seo-deploy=$stamp" | tr -d '\r' || true)
             legacy_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=wp-117123&seo-deploy=$stamp" | tr -d '\r' || true)
             archive_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=117382&seo-deploy=$stamp" | tr -d '\r' || true)
+            invalid_uuid_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=00000000-0000-4000-8000-000000000000&seo-deploy=$stamp" | tr -d '\r' || true)
 
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
@@ -114,6 +143,8 @@ jobs:
             legacy_410=$(printf '%s' "$legacy_headers" | grep -c '^HTTP/.* 410' || true)
             legacy_noindex=$(printf '%s' "$legacy_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
             archive_200=$(printf '%s' "$archive_headers" | grep -c '^HTTP/.* 200' || true)
+            invalid_uuid_404=$(printf '%s' "$invalid_uuid_headers" | grep -c '^HTTP/.* 404' || true)
+            invalid_uuid_noindex=$(printf '%s' "$invalid_uuid_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
             first_ice_url=$(printf '%s' "$news" | grep -Eo '<loc>https://trrb.net/ice/[^<]+' | head -1 | sed 's#<loc>##' || true)
             ice_article_ok=0
             pretty_no_archive_loader=0
@@ -128,10 +159,10 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt home=$home_marker/$home_article_links category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 sitemap_v3=$sitemap_v3 news_v4=$news_v4 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
+            echo "attempt=$attempt home=$home_marker/$home_article_links category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v3=$sitemap_v3 news_v4=$news_v4 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
 
-            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$news_v4" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
-              echo 'PRODUCTION SEO DISCOVERY + CATEGORY SSR + LEGACY 410/ARCHIVE 200 + NEWS V4 + ICE INDEXABILITY PASS'
+            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$news_v4" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
+              echo 'PRODUCTION SEO DISCOVERY + CATEGORY SSR + LEGACY/UUID QUERY GUARDS + NEWS V4 + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

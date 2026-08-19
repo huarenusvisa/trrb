@@ -10,7 +10,7 @@ const escapeXml=(v='')=>clean(v).replaceAll('&','&amp;').replaceAll('<','&lt;').
 const FALLBACK={
   '重要新闻':'important-news','热门头条':'hot-headlines','美国时政':'us-politics','美国警情':'us-crime',
   '中国官场':'china-officialdom','移民美国':'immigration','庇护百科':'asylum','驱逐快报':'deport',
-  'ICE执法动态':'ice','ICE执法':'ice','曝光墙':'expose'
+  'ICE执法动态':'ice','ICE执法':'ice'
 };
 const ALIASES={important:'important-news',hot:'hot-headlines',politics:'us-politics',crime:'us-crime',china:'china-officialdom'};
 const canonicalSection=(v='')=>ALIASES[clean(v)]||clean(v);

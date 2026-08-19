@@ -71,10 +71,12 @@ check(asylum2.status === 200 && asylum2Links.length >= 12, '庇护百科第二�
 check(canonical(asylum.text) === `${ORIGIN}/asylum`, '庇护百科 canonical 正确', canonical(asylum.text));
 
 const iceLinks = articleLinks(ice.text);
+const invalidIceLinks = iceLinks.filter((url) => !/^\/(?:ice|trump)\//.test(url));
 check(ice.status === 200, 'ICE新闻列表 HTTP 200', `status=${ice.status}`);
 check(ice.headers.get('x-trrb-category-pagination') === 'server-v1', 'ICE新闻使用统一服务器分页', ice.headers.get('x-trrb-category-pagination') || 'missing');
 check(iceLinks.length >= 12, 'ICE新闻首包含真实文章内链', `links=${iceLinks.length}`);
-check(iceLinks.every((url) => /^\/ice\//.test(url)), 'ICE新闻卡片只指向ICE文章规范路径', `nonIce=${iceLinks.filter((url) => !/^\/ice\//.test(url)).length}`);
+check(invalidIceLinks.length === 0, 'ICE新闻卡片只使用ICE或Trump专题规范路径', `invalid=${invalidIceLinks.length}`);
+check(!iceLinks.some((url) => /(?:\/deport\/|article\.html\?id=)/i.test(url)), 'ICE新闻卡片不输出旧驱逐或模板详情URL');
 check(canonical(ice.text) === `${ORIGIN}/ice/news`, 'ICE新闻 canonical 正确', canonical(ice.text));
 
 const rawCategory = await get(`/listing.html?category=${encodeURIComponent('重要新闻')}`, { redirect: 'manual' });

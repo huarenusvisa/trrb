@@ -42,7 +42,7 @@ const articles = await db('articles', {
   select: 'id,title,slug,category_id,category_name,topic_key,status,published_at,created_at',
   status: 'eq.published',
   order: 'published_at.desc.nullslast,created_at.desc',
-  limit: '240'
+  limit: '300'
 });
 
 const byId = new Map(categories.map(x => [String(x.id || ''), x]));
@@ -74,13 +74,14 @@ const targets = [
   { name: '美国时政栏目', path: '/us-politics', expected: latestWhere(a => clean(a.category_name) === '美国时政', 16) },
   { name: '美国警情栏目', path: '/us-crime', expected: latestWhere(a => clean(a.category_name) === '美国警情', 16) },
   { name: '中国官场栏目', path: '/china-officialdom', expected: latestWhere(a => clean(a.category_name) === '中国官场', 16) },
+  { name: '移民美国栏目', path: '/immigration', expected: latestWhere(a => clean(a.category_name) === '移民美国', 16) },
   { name: '庇护百科栏目', path: '/asylum', expected: latestWhere(a => clean(a.category_name) === '庇护百科', 16) },
   { name: 'Trump专题', path: '/trump', expected: latestWhere(a => clean(a.topic_key).toLowerCase() === 'trump', 20) },
   { name: 'ICE专题', path: '/ice', expected: latestWhere(a => clean(a.topic_key).toLowerCase() === 'ice' || /ICE执法/i.test(clean(a.category_name)), 20) },
   { name: 'ICE新闻列表', path: '/ice/news', expected: latestWhere(a => clean(a.topic_key).toLowerCase() === 'ice' || /ICE执法/i.test(clean(a.category_name)), 20) }
 ].filter(t => t.expected.length > 0);
 
-record(targets.length >= 8, '取得首页/栏目/专题生产验收目标', `targets=${targets.length}`);
+record(targets.length >= 9, '取得首页/栏目/专题生产验收目标', `targets=${targets.length}`);
 
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ viewport: { width: 1365, height: 900 }, locale: 'zh-CN' });

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T19:12:11.687Z",
+  "generated_at": "2026-08-19T19:32:37.734Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -45,31 +45,36 @@
       "chain": [
         {
           "url": "https://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
-      "final_url": "https://www.trrb.net/"
+      "final_url": "https://trrb.net/"
     }
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1200393,
-      "article_count": 3692,
+      "bytes": 1200787,
+      "article_count": 3694,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v2-dedupe"
     },
     "https://trrb.net/news-sitemap.xml": {
-      "status": 200,
-      "type": "application/xml; charset=UTF-8",
-      "bytes": 135286,
-      "article_count": 273,
+      "status": 0,
+      "bytes": 0,
+      "article_count": 0,
       "child_sitemaps": [],
-      "legacy_query_count": 0,
-      "version": "live-supabase-v1"
+      "legacy_query_count": 0
     }
   },
   "articles": [
@@ -282,7 +287,8 @@
     }
   },
   "failures": [
-    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
+    "sitemap https://trrb.net/news-sitemap.xml HTTP 0",
+    "Google News sitemap has no recent article URLs",
     {
       "page": "https://trrb.net/",
       "problem": "too few direct article links: 0/10"

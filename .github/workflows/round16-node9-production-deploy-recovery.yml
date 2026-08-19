@@ -8,6 +8,8 @@ on:
     paths:
       - '.github/workflows/round16-node9-production-deploy-recovery.yml'
       - '.github/workflows/round16-node4-home-legal-production.yml'
+      - '.github/workflows/round13-publish-seo-sync.yml'
+      - '_redirects'
       - 'netlify.toml'
       - 'netlify/edge-functions/00-legacy-article-query-guard.ts'
       - 'netlify/edge-functions/article-prerender.ts'
@@ -28,13 +30,16 @@ on:
       - 'articles-home-index.js'
       - 'articles-home.js'
       - 'articles-home-live-fix.js'
+      - 'category-runtime-v3.js'
       - 'homepage-refresh-guard.js'
       - 'homepage-immigration-hub.js'
       - 'homepage-focus-v34.js'
       - 'topic-focus.js'
       - 'ice-home-unify.js'
+      - 'immigration-entry.js'
       - 'listing.html'
       - 'listing.js'
+      - 'listing-seo.js'
       - 'immigrate/immigrate.js'
       - 'immigrate/knowledge-article-filter.js'
       - 'trump/index.html'
@@ -46,6 +51,7 @@ on:
       - 'scripts/upgrade-article-urls.mjs'
       - 'scripts/generate-feed.mjs'
       - 'scripts/finalize-redirects.mjs'
+      - 'scripts/optimize-homepage-performance.mjs'
       - 'scripts/google-indexing-acceptance.mjs'
       - 'scripts/production-seo-diagnostic.mjs'
       - 'scripts/round14-node5-duplicate-thin-content-audit.mjs'
@@ -140,7 +146,7 @@ jobs:
             [ "$live_sha" = "$DEPLOY_SHA" ] && deploy_sha_ok=1
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
-            home_single_guard=$(printf '%s' "$home" | grep -c 'homepage-refresh-guard.js?v=20260819-single-live-1' || true)
+            home_single_guard=$(printf '%s' "$home" | grep -c 'homepage-refresh-guard.js?v=20260819-bundle-supplements-2' || true)
             finance_card=$(printf '%s' "$home" | grep -c 'href="/finance/"' || true)
             bundle_ok=$(printf '%s' "$bundle" | grep -c '"mode":"homepage"' || true)
             category_marker=$(printf '%s' "$category" | grep -c 'data-seo-category-snapshot="edge"' || true)

@@ -10,23 +10,44 @@ if (!xml.includes('<urlset')) {
   throw new Error('sitemap.xml is not a URL set');
 }
 
+function objectHasKey(source, key) {
+  const escaped = String(key).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(?:["']${escaped}["']|\\b${escaped}\\b)\\s*:`).test(source);
+}
+
 function expectedImmigrationKnowledgeUrls() {
   const configSource = fs.readFileSync(path.join(ROOT, 'config/immigration-knowledge.js'), 'utf8');
+  const sharedEdgeSource = fs.readFileSync(path.join(ROOT, 'netlify/edge-functions/_shared/immigration-knowledge-routes.ts'), 'utf8');
+  const seoEdgeSource = fs.readFileSync(path.join(ROOT, 'netlify/edge-functions/seo-route-meta.ts'), 'utf8');
   const sandboxWindow = {};
   new Function('window', configSource)(sandboxWindow);
   const categories = Array.isArray(sandboxWindow.TRRB_IMMIGRATION_KNOWLEDGE?.categories)
     ? sandboxWindow.TRRB_IMMIGRATION_KNOWLEDGE.categories
     : [];
   if (!categories.length) throw new Error('Immigration knowledge config has no categories');
+
   const urls = [];
   for (const category of categories) {
     const categorySlug = String(category?.slug || '').trim();
     if (!categorySlug) continue;
+    if (!sharedEdgeSource.includes(`slug: "${categorySlug}"`)) {
+      throw new Error(`Immigration Edge canonical table is missing category slug: ${categorySlug}`);
+    }
+    if (!objectHasKey(seoEdgeSource, categorySlug)) {
+      throw new Error(`SEO route metadata is missing immigration category slug: ${categorySlug}`);
+    }
+
     const categoryUrl = `${SITE}/immigrate/center?path=${encodeURIComponent(categorySlug)}`;
     urls.push(categoryUrl);
     for (const topic of Array.isArray(category?.items) ? category.items : []) {
       const topicSlug = String(topic?.slug || '').trim();
       if (!topicSlug) continue;
+      if (!sharedEdgeSource.includes(`["${topicSlug}",`)) {
+        throw new Error(`Immigration Edge canonical table is missing topic slug: ${categorySlug}/${topicSlug}`);
+      }
+      if (!objectHasKey(seoEdgeSource, topicSlug)) {
+        throw new Error(`SEO route metadata is missing immigration topic slug: ${categorySlug}/${topicSlug}`);
+      }
       urls.push(`${categoryUrl}&topic=${encodeURIComponent(topicSlug)}`);
     }
   }
@@ -109,4 +130,4 @@ const today = new Date().toISOString().slice(0, 10);
 const indexXml = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${files.map((filename) => `  <sitemap>\n    <loc>${SITE}/${filename}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>`).join('\n')}\n</sitemapindex>\n`;
 fs.writeFileSync(sourcePath, indexXml);
 
-console.log(`[sitemap-index] ${blocks.length} URLs split into ${files.length} files (${staticBlocks.length} static, ${articleBlocks.length} articles); immigration knowledge ${expectedKnowledgeUrls.length}/${expectedKnowledgeUrls.length}; forbidden static excluded ${forbiddenStaticExcluded}`);
+console.log(`[sitemap-index] ${blocks.length} URLs split into ${files.length} files (${staticBlocks.length} static, ${articleBlocks.length} articles); immigration knowledge ${expectedKnowledgeUrls.length}/${expectedKnowledgeUrls.length} edge-aligned; forbidden static excluded ${forbiddenStaticExcluded}`);

@@ -10,8 +10,12 @@ on:
       - 'sitemap-legal.xml'
       - 'robots.txt'
       - 'index.html'
+      - 'articles-home.js'
       - 'homepage-refresh-guard.js'
+      - 'homepage-immigration-hub.js'
       - 'articles-home-live-fix.js'
+      - 'netlify/functions/public-home-bundle.js'
+      - 'scripts/optimize-homepage-performance.mjs'
       - 'scripts/round17-node*.mjs'
       - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
       - '.github/workflows/round17-node10-final-production-audit.yml'
@@ -36,6 +40,7 @@ jobs:
         run: |
           node --check scripts/round17-node10-final-production-audit.mjs
           node --check scripts/round17-node6-sync-analysis-version.mjs
+          node --check articles-home.js
           node --check homepage-refresh-guard.js
           node --check articles-home-live-fix.js
       - name: Re-verify Round 17 nodes 1-9 at code/data level
@@ -75,6 +80,7 @@ jobs:
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap-legal.xml?round17node10=$stamp" -o /tmp/round17-production/sitemap.xml || ok=0
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/robots.txt?round17node10=$stamp" -o /tmp/round17-production/robots.txt || ok=0
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/?round17node10=$stamp" -o /tmp/round17-production/home-index.html || ok=0
+            curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home.js?round17node10=$stamp" -o /tmp/round17-production/articles-home.js || ok=0
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/homepage-refresh-guard.js?round17node10=$stamp" -o /tmp/round17-production/homepage-refresh-guard.js || ok=0
             curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home-live-fix.js?round17node10=$stamp" -o /tmp/round17-production/articles-home-live-fix.js || ok=0
             if [ "$ok" = 1 ] && node scripts/round17-node10-final-production-audit.mjs /tmp/round17-production; then
@@ -86,4 +92,4 @@ jobs:
           echo 'ROUND 17 FINAL PRODUCTION AUDIT: FAIL'
           exit 1
 
-# Strict restart final: requires current 603/603 Chinese coverage, zero placeholders and homepage 4-day live-only published_at ordering.
+# Strict final: requires current legal coverage plus unified homepage bundle, four-day core freshness and sparse-category supplement preservation.

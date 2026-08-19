@@ -82,13 +82,8 @@ jobs:
           set -euo pipefail
           sleep 30
           git fetch origin main
-          current=$(git rev-parse HEAD)
-          latest=$(git rev-parse origin/main)
-          echo "checked_out=$current latest_main=$latest"
-          if [ "$current" != "$latest" ]; then
-            echo 'A newer main commit exists; this run is obsolete and must not trigger Netlify.'
-            exit 78
-          fi
+          git reset --hard origin/main
+          echo "deploying_main=$(git rev-parse HEAD)"
 
       - name: 触发或执行Netlify生产部署
         shell: bash

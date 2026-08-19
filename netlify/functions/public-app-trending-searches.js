@@ -19,8 +19,9 @@ exports.handler = async (event) => {
   try {
     const rows = await rest('articles', {
       query: {
-        select: 'id,category_name,published_at,created_at,status',
+        select: 'id,category_name,published_at,created_at,status,visibility',
         status: 'eq.published',
+        visibility: 'eq.public',
         order: 'published_at.desc.nullslast,created_at.desc',
         limit: '200'
       }
@@ -40,7 +41,7 @@ exports.handler = async (event) => {
 
     return json(200, {
       generated_at: new Date().toISOString(),
-      source: 'articles:published:last-200:category-frequency',
+      source: 'articles:published-public:last-200:category-frequency',
       auditable: true,
       items
     });

@@ -4,6 +4,7 @@
   const API = "/.netlify/functions/admin-articles";
   const BACKGROUND_API = "/.netlify/functions/admin-article-ai-publish-background";
   const originalShowPage = showPage;
+  const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
   let titleTimer = null;
   let titleRequestPending = false;
   let lastTitleSignature = "";
@@ -53,6 +54,15 @@
     return el("article-category").selectedOptions?.[0]?.textContent || "重要新闻";
   }
 
+  function isIceBriefCategory() {
+    return ICE_CATEGORIES.has(categoryName().trim());
+  }
+
+  function contentMeetsPublishMinimum(content) {
+    const text = String(content || "").trim();
+    return isIceBriefCategory() ? text.length > 0 : text.length >= 30;
+  }
+
   function titleSignature() {
     const content = el("article-content").value.trim();
     return `${categoryName()}|${content.length}|${content.slice(0, 160)}|${content.slice(-80)}`;
@@ -82,7 +92,9 @@
     const content = el("article-content").value.trim();
     const status = el("article-title-status");
     if (content.length < 50) {
-      if (force && status) status.textContent = "正文至少需要50个字。";
+      if (force && status) status.textContent = isIceBriefCategory()
+        ? "短ICE快讯可直接填写标题并发布；AI标题建议需至少50个字。"
+        : "正文至少需要50个字，才能生成AI标题建议。";
       return;
     }
     const signature = titleSignature();
@@ -160,8 +172,8 @@
     const title = el("article-title").value.trim();
     const content = el("article-content").value.trim();
     const progress = el("ai-cover-progress");
-    if (!title || content.length < 30) {
-      if (!options.silent) alert("请先填写标题和正文。");
+    if (!title || !contentMeetsPublishMinimum(content)) {
+      if (!options.silent) alert(isIceBriefCategory() ? "请先填写标题和实际快讯内容。" : "请先填写标题和至少30个字的正文。");
       return "";
     }
     progress.classList.remove("hidden");
@@ -244,8 +256,10 @@
     const autoAiCover = el("auto-ai-cover").checked;
     const submitButton = el("article-submit");
 
-    if (title.length < 5 || content.length < 30) {
-      el("article-message").textContent = "请填写至少5个字的标题和至少30个字的正文。";
+    if (title.length < 5 || !contentMeetsPublishMinimum(content)) {
+      el("article-message").textContent = isIceBriefCategory()
+        ? "请填写至少5个字的标题和实际快讯内容。ICE快讯不按字数门槛淘汰。"
+        : "请填写至少5个字的标题和至少30个字的正文。";
       return;
     }
 

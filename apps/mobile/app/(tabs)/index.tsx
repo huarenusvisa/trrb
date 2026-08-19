@@ -289,7 +289,6 @@ export default function HomeScreen() {
           </View>
           <View style={styles.serviceGrid}>
             <Pressable style={styles.serviceItem} onPress={() => router.push('/legal')}><Text style={styles.serviceTitle}>判例新规</Text><Text style={styles.serviceSub}>判例 · BIA · 联邦新规</Text></Pressable>
-            <Pressable style={styles.serviceItem} onPress={() => router.push('/people')}><Text style={styles.serviceTitle}>华人人物</Text><Text style={styles.serviceSub}>人物档案与在美经历</Text></Pressable>
             <Pressable style={styles.serviceItem} onPress={() => router.push('/jobs')}><Text style={styles.serviceTitle}>招聘求职</Text><Text style={styles.serviceSub}>岗位与求职信息</Text></Pressable>
           </View>
         </View>

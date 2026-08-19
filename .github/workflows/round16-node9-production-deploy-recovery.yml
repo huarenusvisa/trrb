@@ -15,6 +15,7 @@ on:
       - 'netlify/edge-functions/sitemap-live.ts'
       - 'netlify/edge-functions/news-sitemap-live.ts'
       - 'netlify/edge-functions/feed-live.ts'
+      - 'netlify/functions/public-home-bundle.js'
       - 'netlify/functions/admin-articles.js'
       - 'netlify/functions/admin-article-ai-publish-background.js'
       - 'netlify/functions/_shared/article-ai.js'
@@ -58,9 +59,6 @@ on:
 permissions:
   contents: read
 
-# Short bursts of repository automation used to start many Netlify builds at
-# once. Keep only the newest run. The debounce below means cancelled older runs
-# usually never reach the external Netlify build hook.
 concurrency:
   group: trrb-production-deploy-main
   cancel-in-progress: true
@@ -116,6 +114,7 @@ jobs:
             ice=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/ice?seo-deploy=$stamp" || true)
             sitemap=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" || true)
             news=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" || true)
+            bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?seo-deploy=$stamp" || true)
             sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
             news_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
             category_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?seo-deploy=$stamp" | tr -d '\r' || true)
@@ -125,6 +124,8 @@ jobs:
 
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
+            home_single_guard=$(printf '%s' "$home" | grep -c 'homepage-refresh-guard.js?v=20260819-single-live-1' || true)
+            bundle_ok=$(printf '%s' "$bundle" | grep -c '"mode":"homepage"' || true)
             category_marker=$(printf '%s' "$category" | grep -c 'data-seo-category-snapshot="edge"' || true)
             category_article_links=$(printf '%s' "$category" | grep -Eo 'href="/important-news/[^"]+' | wc -l | tr -d ' ')
             category_header=$(printf '%s' "$category_headers" | grep -ci '^x-trrb-category-prerender: category-edge-v1' || true)
@@ -154,10 +155,10 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt home=$home_marker/$home_article_links category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v3=$sitemap_v3 news_v4=$news_v4 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
+            echo "attempt=$attempt home=$home_marker/$home_article_links/$home_single_guard bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v3=$sitemap_v3 news_v4=$news_v4 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
 
-            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$news_v4" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
-              echo 'PRODUCTION SEO DISCOVERY + CATEGORY SSR + LEGACY/UUID QUERY GUARDS + NEWS V4 + ICE INDEXABILITY PASS'
+            if [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v3" -ge 1 ] && [ "$news_v4" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
+              echo 'PRODUCTION SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID QUERY GUARDS + NEWS V4 + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

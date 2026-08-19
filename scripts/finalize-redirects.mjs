@@ -32,4 +32,9 @@ const filtered = lines.filter((line) => !required.some((rule) => line.split(/\s+
 fs.writeFileSync(file, [...required, ...filtered].join('\n') + '\n');
 console.log(`[redirects] finalized ${required.length} canonical/special rules + ${filtered.length} generated rules`);
 
-await import('./optimize-homepage-performance.mjs');
+// Netlify's normal build still runs the homepage optimizer through this script,
+// but scheduled metadata-only syncs can pass --redirects-only so they never
+// leave an unstaged index.html change that blocks git pull --rebase/push.
+if (!process.argv.includes('--redirects-only')) {
+  await import('./optimize-homepage-performance.mjs');
+}

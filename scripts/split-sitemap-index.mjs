@@ -10,11 +10,6 @@ if (!xml.includes('<urlset')) {
   throw new Error('sitemap.xml is not a URL set');
 }
 
-function objectHasKey(source, key) {
-  const escaped = String(key).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(?:["']${escaped}["']|\\b${escaped}\\b)\\s*:`).test(source);
-}
-
 function expectedImmigrationKnowledgeUrls() {
   const configSource = fs.readFileSync(path.join(ROOT, 'config/immigration-knowledge.js'), 'utf8');
   const sharedEdgeSource = fs.readFileSync(path.join(ROOT, 'netlify/edge-functions/_shared/immigration-knowledge-routes.ts'), 'utf8');
@@ -25,32 +20,54 @@ function expectedImmigrationKnowledgeUrls() {
     ? sandboxWindow.TRRB_IMMIGRATION_KNOWLEDGE.categories
     : [];
   if (!categories.length) throw new Error('Immigration knowledge config has no categories');
+  if (!seoEdgeSource.includes('./_shared/immigration-knowledge-routes.ts')) {
+    throw new Error('SEO route metadata is not using the shared immigration route table');
+  }
+  if (/IMMIGRATION_PATHS|IMMIGRATION_TOPICS/.test(seoEdgeSource)) {
+    throw new Error('SEO route metadata reintroduced a duplicate immigration route table');
+  }
 
   const urls = [];
+  const clientSet = new Set();
   for (const category of categories) {
     const categorySlug = String(category?.slug || '').trim();
     if (!categorySlug) continue;
     if (!sharedEdgeSource.includes(`slug: "${categorySlug}"`)) {
       throw new Error(`Immigration Edge canonical table is missing category slug: ${categorySlug}`);
     }
-    if (!objectHasKey(seoEdgeSource, categorySlug)) {
-      throw new Error(`SEO route metadata is missing immigration category slug: ${categorySlug}`);
-    }
 
     const categoryUrl = `${SITE}/immigrate/center?path=${encodeURIComponent(categorySlug)}`;
     urls.push(categoryUrl);
+    clientSet.add(`/immigrate/center?path=${categorySlug}`);
     for (const topic of Array.isArray(category?.items) ? category.items : []) {
       const topicSlug = String(topic?.slug || '').trim();
       if (!topicSlug) continue;
       if (!sharedEdgeSource.includes(`["${topicSlug}",`)) {
         throw new Error(`Immigration Edge canonical table is missing topic slug: ${categorySlug}/${topicSlug}`);
       }
-      if (!objectHasKey(seoEdgeSource, topicSlug)) {
-        throw new Error(`SEO route metadata is missing immigration topic slug: ${categorySlug}/${topicSlug}`);
-      }
       urls.push(`${categoryUrl}&topic=${encodeURIComponent(topicSlug)}`);
+      clientSet.add(`/immigrate/center?path=${categorySlug}&topic=${topicSlug}`);
     }
   }
+
+  const sharedSet = new Set();
+  const categoryPattern = /\{\s*slug:\s*"([^"]+)"[\s\S]*?topics:\s*\[([\s\S]*?)\]\.map\(\(\[slug, name\]\)/g;
+  let categoryMatch;
+  while ((categoryMatch = categoryPattern.exec(sharedEdgeSource))) {
+    const categorySlug = categoryMatch[1];
+    sharedSet.add(`/immigrate/center?path=${categorySlug}`);
+    const topicPattern = /\["([^"]+)",\s*"[^"]+"\]/g;
+    let topicMatch;
+    while ((topicMatch = topicPattern.exec(categoryMatch[2]))) {
+      sharedSet.add(`/immigrate/center?path=${categorySlug}&topic=${topicMatch[1]}`);
+    }
+  }
+  const missingFromEdge = [...clientSet].filter((route) => !sharedSet.has(route));
+  const missingFromClient = [...sharedSet].filter((route) => !clientSet.has(route));
+  if (missingFromEdge.length || missingFromClient.length || clientSet.size !== sharedSet.size) {
+    throw new Error(`Immigration knowledge route drift: missingFromEdge=${missingFromEdge.join('|') || 'none'}; missingFromClient=${missingFromClient.join('|') || 'none'}; client=${clientSet.size}; edge=${sharedSet.size}`);
+  }
+
   return [...new Set(urls)];
 }
 

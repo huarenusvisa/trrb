@@ -69,6 +69,20 @@ for (const [name, route] of canonicalCategories) {
   html = html.replace(new RegExp(`\\.\\/listing\\.html\\?category=${escaped}`, 'g'), route);
 }
 
+// The homepage is the strongest discovery page on the site. Make its canonical,
+// crawl directive and social identity explicit in the server-delivered HTML
+// rather than relying only on host redirects or client-side behavior.
+const seoTags = [];
+if (!/<link\b[^>]*rel=["']canonical["']/i.test(html)) seoTags.push('<link rel="canonical" href="https://trrb.net/" />');
+if (!/<meta\b[^>]*name=["']robots["']/i.test(html)) seoTags.push('<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />');
+if (!/<meta\b[^>]*property=["']og:type["']/i.test(html)) seoTags.push('<meta property="og:type" content="website" />');
+if (!/<meta\b[^>]*property=["']og:site_name["']/i.test(html)) seoTags.push('<meta property="og:site_name" content="唐人日报" />');
+if (!/<meta\b[^>]*property=["']og:title["']/i.test(html)) seoTags.push('<meta property="og:title" content="唐人日报 Tang Ren Daily - 中美新闻实时播报" />');
+if (!/<meta\b[^>]*property=["']og:description["']/i.test(html)) seoTags.push('<meta property="og:description" content="唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、ICE执法动态、招聘求职等内容。" />');
+if (!/<meta\b[^>]*property=["']og:url["']/i.test(html)) seoTags.push('<meta property="og:url" content="https://trrb.net/" />');
+if (!/<meta\b[^>]*property=["']og:image["']/i.test(html)) seoTags.push('<meta property="og:image" content="https://trrb.net/trrb-logo-cropped.webp" />');
+if (seoTags.length) html = html.replace('</head>', `    ${seoTags.join('\n    ')}\n  </head>`);
+
 // Root-relative critical assets are stable on every canonical route and avoid path-resolution regressions.
 html = html
   .replace('href="./site.webmanifest?v=29.8"', 'href="/site.webmanifest?v=29.8"')
@@ -82,4 +96,4 @@ if (html === before) {
 }
 
 fs.writeFileSync(file, html);
-console.log(`Homepage optimizer: removed ${removedChunks} redundant archive chunks; normalized canonical routes and core cache versions`);
+console.log(`Homepage optimizer: removed ${removedChunks} redundant archive chunks; normalized canonical routes, homepage SEO and core cache versions`);

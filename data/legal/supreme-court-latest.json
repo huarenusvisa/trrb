@@ -694,14 +694,19 @@
       "releaseNo": "29",
       "publicationDate": "2026-04-29",
       "docket": "24-109",
-      "caseName": "Louisiana v. Callais",
+      "caseName": "Louisiana v. Callais Revisions : 5/04/26",
       "justice": "A",
-      "officialCitation": "608 U.S. 85",
-      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/608us1r29_n648.pdf",
-      "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/608us1r29_n648.pdf",
+      "officialCitation": "608/1",
+      "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/24-109_new_jifl.pdf",
+      "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/24-109_new_jifl.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": []
+      "revisions": [
+        {
+          "date": "2026-05-04",
+          "url": "https://www.supremecourt.gov/opinions/25pdf/24-109diff_q8l1.pdf"
+        }
+      ]
     },
     {
       "source": "SCOTUS",

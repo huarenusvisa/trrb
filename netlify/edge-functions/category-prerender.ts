@@ -62,11 +62,6 @@ async function fetchArticles(category: any, name: string) {
     limit: "24"
   };
 
-  // Historical and automated publishing paths are not guaranteed to populate
-  // category_id. Match the stable category name as well so those articles stay
-  // visible in crawlable category HTML. ICE is secondary topic membership, so
-  // topic_key=ice must also appear under /ice/news even when its primary category
-  // remains 移民美国/美国时政/重要新闻.
   const filters: string[] = [];
   if (category?.id) filters.push(`category_id.eq.${category.id}`);
   if (name) filters.push(`category_name.eq.${name}`);
@@ -157,13 +152,21 @@ export default async (request: Request, context: any) => {
     <meta property="og:title" content="${esc(title)}" />
     <meta property="og:description" content="${esc(metaDescription)}" />
     <meta property="og:url" content="${esc(canonical)}" />
+    <meta property="og:image" content="${SITE}/trrb-logo-cropped.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="${esc(title)}" />
+    <meta name="twitter:description" content="${esc(metaDescription)}" />
+    <meta name="twitter:image" content="${SITE}/trrb-logo-cropped.webp" />
     <script type="application/ld+json" data-trrb-category-schema>${escJson(itemList)}</script>`;
 
     html = html
-      .replace(/<title>[\s\S]*?<\/title>/i, "")
-      .replace(/<meta\s+name=["']description["'][^>]*>/i, "")
-      .replace(/<meta\s+name=["']robots["'][^>]*>/i, "")
-      .replace(/<link\s+rel=["']canonical["'][^>]*>/i, "")
+      .replace(/<title>[\s\S]*?<\/title>/gi, "")
+      .replace(/<meta\s+name=["']description["'][^>]*>/gi, "")
+      .replace(/<meta\s+name=["']keywords["'][^>]*>/gi, "")
+      .replace(/<meta\s+name=["']robots["'][^>]*>/gi, "")
+      .replace(/<link\s+rel=["']canonical["'][^>]*>/gi, "")
+      .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, "")
+      .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, "")
       .replace(/<\/head>/i, `${seo}\n  </head>`)
       .replace(/<h1 id="listing-title">[\s\S]*?<\/h1>/i, `<h1 id="listing-title">${esc(route.name)}</h1>`)
       .replace(/<div class="listing-grid" id="listing-grid">[\s\S]*?<\/div><nav class="pagination"/i, `<div class="listing-grid" id="listing-grid" data-seo-category-snapshot="edge">${cards(articles, path, route.name)}</div><nav class="pagination"`);
@@ -171,7 +174,7 @@ export default async (request: Request, context: any) => {
     const responseHeaders = new Headers(upstream.headers);
     responseHeaders.set("content-type", "text/html; charset=UTF-8");
     responseHeaders.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
-    responseHeaders.set("x-trrb-category-prerender", "category-edge-v1");
+    responseHeaders.set("x-trrb-category-prerender", "category-edge-v2-social-clean");
     responseHeaders.set("link", `<${canonical}>; rel=\"canonical\"`);
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: responseHeaders });
   } catch (error) {

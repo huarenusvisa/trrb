@@ -104,7 +104,7 @@ async function fetchPublishedArticles() {
   const pageSize = 1000;
   for (let offset = 0; offset < 100000; offset += pageSize) {
     const rows = await fetchRows("articles", {
-      select: "id,title,slug,content,category_id,category_name,topic_key,status,published_at,created_at",
+      select: "id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at",
       status: "eq.published",
       order: "published_at.asc.nullslast,created_at.asc",
       limit: String(pageSize),
@@ -176,7 +176,9 @@ export default async (request: Request, context: any) => {
         preservedSpecialTopic++;
       }
 
-      const body = visibleText(article?.content || "");
+      // Match the static generator and article prerender exactly: summary is a
+      // valid body fallback, while ICE breaking news only needs non-empty text.
+      const body = visibleText(article?.content || article?.summary || "");
       const ice = isIceArticle(article);
       if (ice && !body) {
         excludedThin++;

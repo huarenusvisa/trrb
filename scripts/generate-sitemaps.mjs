@@ -14,6 +14,11 @@ if (!base || !key) {
   throw new Error('Supabase credentials are required to build production sitemaps. Static WordPress-era archives are no longer an indexing source.');
 }
 
+const STATIC_HUBS = [
+  { loc: `${SITE}/immigrate/`, priority: '0.8', changefreq: 'weekly' },
+  { loc: `${SITE}/jobs/`, priority: '0.7', changefreq: 'daily' }
+];
+
 const FALLBACK_CATEGORY_SLUGS = new Map([
   ['重要新闻', 'important-news'],
   ['热门头条', 'hot-headlines'],
@@ -182,7 +187,10 @@ if (!databaseArticles.length) {
   throw new Error('No published database articles were returned; refusing to publish an empty/stale sitemap');
 }
 
-const staticEntries = [{ loc: `${SITE}/`, lastmod: TODAY, priority: '1.0', changefreq: 'hourly' }];
+const staticEntries = [
+  { loc: `${SITE}/`, lastmod: TODAY, priority: '1.0', changefreq: 'hourly' },
+  ...STATIC_HUBS.map((entry) => ({ ...entry, lastmod: TODAY }))
+];
 if (categories.length) {
   for (const category of categories.filter((item) => item.include_in_sitemap !== false && cleanText(item.slug))) {
     staticEntries.push({ loc: categoryUrl(category), lastmod: TODAY, priority: '0.8', changefreq: 'hourly' });
@@ -262,4 +270,4 @@ if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} canonical URLs; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);
+console.log(`[sitemap] generated ${entries.length} canonical URLs; static hubs ${STATIC_HUBS.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);

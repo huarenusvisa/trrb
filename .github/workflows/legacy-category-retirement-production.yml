@@ -1,4 +1,4 @@
-name: 旧WordPress分类分页退役生产验收
+name: 旧WordPress系统归档退役生产验收
 
 on:
   workflow_dispatch:
@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - 'netlify/edge-functions/legacy-url-redirect.ts'
+      - 'netlify/edge-functions/01-wordpress-archive-retire.ts'
+      - 'retired-indexnow-urls.txt'
       - '.github/workflows/legacy-category-retirement-production.yml'
 
 permissions:
@@ -21,31 +23,52 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: 校验源码覆盖旧数字分页
+      - name: 校验源码覆盖旧分类与WordPress系统归档
         shell: bash
         run: |
           set -euo pipefail
           grep -Fq '(?:/(?:page/)?\\d+)?' netlify/edge-functions/legacy-url-redirect.ts
           grep -q 'wordpress-system-page' netlify/edge-functions/legacy-url-redirect.ts
+          grep -q '20\\d{2}' netlify/edge-functions/01-wordpress-archive-retire.ts
+          grep -q 'tag|author|search' netlify/edge-functions/01-wordpress-archive-retire.ts
+          grep -q 'wordpress-archive-system-route' netlify/edge-functions/01-wordpress-archive-retire.ts
 
-      - name: 等待生产并验证旧分类410
+      - name: 等待生产并验证旧系统归档410
         shell: bash
         run: |
           set -euo pipefail
+          retired_paths=(
+            '/category/https-www-trrb-cc/0/'
+            '/category/https-www-trrb-cc-cat8/0/'
+            '/2024/'
+            '/2024/12/'
+            '/2024/12/31/'
+            '/tag/legacy-tag/'
+            '/author/legacy-author/'
+            '/search/legacy-query/'
+            '/feed/'
+          )
           for attempt in $(seq 1 90); do
             stamp="${GITHUB_RUN_ID}-${attempt}"
-            a=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/category/https-www-trrb-cc/0/?legacy-category=$stamp" | tr -d '\r' || true)
-            b=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/category/https-www-trrb-cc-cat8/0/?legacy-category=$stamp" | tr -d '\r' || true)
-            a410=$(printf '%s' "$a" | grep -c '^HTTP/.* 410' || true)
-            b410=$(printf '%s' "$b" | grep -c '^HTTP/.* 410' || true)
-            anoindex=$(printf '%s' "$a" | grep -ci '^x-robots-tag:.*noindex' || true)
-            bnoindex=$(printf '%s' "$b" | grep -ci '^x-robots-tag:.*noindex' || true)
-            echo "attempt=$attempt categoryA=$a410/$anoindex categoryB=$b410/$bnoindex"
-            if [ "$a410" -ge 1 ] && [ "$b410" -ge 1 ] && [ "$anoindex" -ge 1 ] && [ "$bnoindex" -ge 1 ]; then
-              echo 'LEGACY_CATEGORY_NUMERIC_RETIREMENT_PASS=true'
+            all_ok=1
+            for path in "${retired_paths[@]}"; do
+              headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net${path}?legacy-system=$stamp" | tr -d '\r' || true)
+              code410=$(printf '%s' "$headers" | grep -c '^HTTP/.* 410' || true)
+              noindex=$(printf '%s' "$headers" | grep -ci '^x-robots-tag:.*noindex' || true)
+              echo "attempt=$attempt path=$path status410=$code410 noindex=$noindex"
+              if [ "$code410" -lt 1 ] || [ "$noindex" -lt 1 ]; then all_ok=0; fi
+            done
+
+            hot=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/category/hotnews/0/?legacy-system=$stamp" | tr -d '\r' || true)
+            hot301=$(printf '%s' "$hot" | grep -c '^HTTP/.* 301' || true)
+            hotLocation=$(printf '%s' "$hot" | grep -ci '^location: https://trrb.net/hot-headlines' || true)
+            echo "attempt=$attempt hotnews=$hot301/$hotLocation"
+
+            if [ "$all_ok" -eq 1 ] && [ "$hot301" -ge 1 ] && [ "$hotLocation" -ge 1 ]; then
+              echo 'LEGACY_WORDPRESS_SYSTEM_RETIREMENT_PASS=true'
               exit 0
             fi
             sleep 10
           done
-          echo 'Legacy numeric category archives did not retire in production.'
+          echo 'Legacy WordPress system archives did not retire in production.'
           exit 1

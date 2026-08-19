@@ -8,6 +8,7 @@ on:
       - 'index.html'
       - 'articles-home.js'
       - 'homepage-refresh-guard.js'
+      - 'articles-home-live-fix.js'
       - 'listing.html'
       - 'listing.js'
       - 'netlify/functions/public-home-bundle.js'
@@ -34,7 +35,9 @@ jobs:
           ! grep -q 'listing-live-category-fix.js' listing.html
           grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
           grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' index.html
-          ! grep -q '<script[^>]*articles-home-live-fix.js' index.html
+          grep -q 'articles-home-live-fix.js?v=20260819-compat-shim-1' index.html
+          grep -q 'TRRB_HOME_LIVE_COMPAT_SHIM' articles-home-live-fix.js
+          ! grep -q 'setInterval' articles-home-live-fix.js
           grep -q 'public-home-bundle' homepage-refresh-guard.js
           grep -q 'HOME_MAX_AGE_MS = 4' homepage-refresh-guard.js
 
@@ -47,10 +50,12 @@ jobs:
             home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?module-single=$stamp" || true)
             listing=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?module-single=$stamp" || true)
             bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?module-single=$stamp" || true)
+            shim=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/articles-home-live-fix.js?module-single=$stamp" || true)
             if printf '%s' "$home" | grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' \
-              && ! printf '%s' "$home" | grep -q 'articles-home-live-fix.js' \
+              && printf '%s' "$home" | grep -q 'articles-home-live-fix.js?v=20260819-compat-shim-1' \
               && printf '%s' "$listing" | grep -q 'data-seo-category-snapshot="edge"' \
-              && printf '%s' "$bundle" | grep -q '"mode":"homepage"'; then
+              && printf '%s' "$bundle" | grep -q '"mode":"homepage"' \
+              && printf '%s' "$shim" | grep -q 'TRRB_HOME_LIVE_COMPAT_SHIM'; then
               echo 'MODULE_SINGLE_SOURCE_VALIDATION_PASS=true'
               exit 0
             fi

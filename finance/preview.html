@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>唐人财经 V1 视觉预览</title>
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    html,body{margin:0;width:100%;height:100%;background:#fff;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+    #frame{border:0;width:100%;height:100%;display:block;background:#fff}
+    .badge{position:fixed;z-index:9999;right:max(10px,env(safe-area-inset-right));top:max(8px,env(safe-area-inset-top));font-size:11px;font-weight:800;background:rgba(11,13,14,.84);color:#fff;padding:6px 9px;border-radius:999px;pointer-events:none;backdrop-filter:blur(8px)}
+  </style>
+</head>
+<body>
+  <div class="badge">V1 Preview · 非生产</div>
+  <iframe id="frame" src="./index.html#market" title="唐人财经 V1"></iframe>
+  <script>
+    const frame=document.getElementById('frame');
+    frame.addEventListener('load',()=>{
+      try{
+        const d=frame.contentDocument;
+        const logo=d.querySelector('.logo');
+        if(logo){logo.style.display='none';const brand=d.querySelector('.brand');if(brand&&!brand.querySelector('.preview-mark')){const m=d.createElement('span');m.className='preview-mark';m.textContent='唐';m.style.cssText='width:40px;height:40px;border-radius:13px;background:#00c805;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;flex:0 0 auto';brand.prepend(m)}}
+        const home=d.querySelector('.home-link');if(home)home.style.visibility='hidden';
+      }catch(e){}
+    });
+  </script>
+</body>
+</html>

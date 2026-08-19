@@ -1,6 +1,7 @@
 http://trrb.net/* https://trrb.net/:splat 301!
 http://www.trrb.net/* https://trrb.net/:splat 301!
 https://www.trrb.net/* https://trrb.net/:splat 301!
+/index.html / 301!
 /important /important-news 301!
 /hot /hot-headlines 301!
 /politics /us-politics 301!

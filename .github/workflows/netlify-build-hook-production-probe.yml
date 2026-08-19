@@ -26,12 +26,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: 触发现有Netlify Build Hook
+      - name: 强制Netlify Hook构建main并清缓存
         shell: bash
         run: |
           set -euo pipefail
           test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK missing'; exit 2; }
-          code=$(curl -sS -o /tmp/hook-response.json -w '%{http_code}' -X POST "$NETLIFY_BUILD_HOOK")
+          sep='?'
+          case "$NETLIFY_BUILD_HOOK" in *\?*) sep='&' ;; esac
+          hook_url="${NETLIFY_BUILD_HOOK}${sep}trigger_branch=main&clear_cache=true&trigger_title=TRRB+SEO+main+probe"
+          code=$(curl -sS -o /tmp/hook-response.json -w '%{http_code}' -X POST "$hook_url")
           echo "HOOK_HTTP=$code" >> "$GITHUB_ENV"
           test "$code" -ge 200 -a "$code" -lt 300
 
@@ -61,6 +64,8 @@ jobs:
           {
             "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "hook_http_status": ${HOOK_HTTP:-0},
+            "forced_branch": "main",
+            "clear_cache": true,
             "expected_generation": "trrb-seo-recovery-20260819-v1",
             "live_generation": "${marker}",
             "generation_marker_live": $marker_ok,

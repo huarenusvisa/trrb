@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 19 Aug 2026 14:45:38 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 19 Aug 2026 14:53:47 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>5岁女童误吞50克金条！体内停留6小时，医生紧急胃镜取出</title>
+      <link>https://trrb.net/hot-headlines/5%E5%B2%81%E5%A5%B3%E7%AB%A5%E8%AF%AF%E5%90%9E50%E5%85%8B%E9%87%91%E6%9D%A1%E4%BD%93%E5%86%85%E5%81%9C%E7%95%996%E5%B0%8F%E6%97%B6%E5%8C%BB%E7%94%9F%E7%B4%A7%E6%80%A5%E8%83%83%E9%95%9C%E5%8F%96%E5%87%BA-mt07p4v9-084fb3</link>
+      <guid isPermaLink="true">https://trrb.net/hot-headlines/5%E5%B2%81%E5%A5%B3%E7%AB%A5%E8%AF%AF%E5%90%9E50%E5%85%8B%E9%87%91%E6%9D%A1%E4%BD%93%E5%86%85%E5%81%9C%E7%95%996%E5%B0%8F%E6%97%B6%E5%8C%BB%E7%94%9F%E7%B4%A7%E6%80%A5%E8%83%83%E9%95%9C%E5%8F%96%E5%87%BA-mt07p4v9-084fb3</guid>
+      <pubDate>Wed, 19 Aug 2026 14:53:47 GMT</pubDate>
+      <category>热门头条</category>
+      <description>唐人日报 8 月 19 日讯：近日，一名5岁女童在家中玩耍时误吞一块长约4厘米、重达50克的金条，引发关注。8月16日，首都儿童医学中心成功为这名误吞金条6小时的女童实施胃镜下异物取出术，目前孩子身体状况稳定，已无大碍。</description>
+      <enclosure url="https://q5.itc.cn/q_70/images03/20260819/06f06c8d08fa45a3a315524199b15eae.jpeg" type="image/jpeg" />
+    </item>
     <item>
       <title>升学喜宴秒变灾难现场！四川长宁临时雨棚瞬间坍塌，致5死17伤</title>
       <link>https://trrb.net/hot-headlines/%E5%8D%87%E5%AD%A6%E5%96%9C%E5%AE%B4%E7%A7%92%E5%8F%98%E7%81%BE%E9%9A%BE%E7%8E%B0%E5%9C%BA%E5%9B%9B%E5%B7%9D%E9%95%BF%E5%AE%81%E4%B8%B4%E6%97%B6%E9%9B%A8%E6%A3%9A%E7%9E%AC%E9%97%B4%E5%9D%8D%E5%A1%8C%E8%87%B45%E6%AD%BB17%E4%BC%A4-mt07en5s-04fef5</link>
@@ -23,6 +32,7 @@
       <pubDate>Wed, 19 Aug 2026 14:45:07 GMT</pubDate>
       <category>ICE执法动态</category>
       <description>佛罗里达杰克逊维尔ICE办事处根据常规执法程序提出拘留申请。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-19/8dbeaf04-7ea6-4873-b2ac-27949022530a-ba86e8fc-f458-4a50-8965-2df6a8834211.webp" type="image/webp" />
     </item>
     <item>
       <title>圣地亚哥ICE逮捕墨籍性侵前科非法入境者</title>
@@ -896,15 +906,6 @@
       <category>移民美国</category>
       <description>8月12日，俄克拉荷马城警方拘捕一名涉嫌强奸的男子，国土安全部确认其合法居留身份。</description>
       <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-18/ef744ca0-40c1-4866-92d3-f86f08975439-4fefb2bf-eb8d-48c9-a7aa-54e803d09ea0.webp" type="image/webp" />
-    </item>
-    <item>
-      <title>加州圣安娜约翰韦恩机场ICE执法带走一男子</title>
-      <link>https://trrb.net/ice/ice-117ba7bfa68a1f0b8b19ed95a02afbd74a21c76f</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-117ba7bfa68a1f0b8b19ed95a02afbd74a21c76f</guid>
-      <pubDate>Tue, 18 Aug 2026 20:19:18 GMT</pubDate>
-      <category>移民美国</category>
-      <description>8月18日加州圣安娜约翰韦恩机场一男子下飞机后被ICE带走，橙县警长办公室证实执法事件。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2089781993341059072/img/zR-sp1Oen-lM9npq.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

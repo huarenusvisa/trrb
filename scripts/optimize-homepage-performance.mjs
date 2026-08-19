@@ -55,7 +55,7 @@ const canonicalCategories = new Map([
   ['美国时政', '/us-politics'],
   ['美国警情', '/us-crime'],
   ['中国官场', '/china-officialdom'],
-  ['移民美国', '/immigrate/'],
+  ['移民美国', '/immigration'],
   ['庇护百科', '/asylum']
 ]);
 for (const [name, route] of canonicalCategories) {

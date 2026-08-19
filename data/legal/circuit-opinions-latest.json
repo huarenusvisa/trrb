@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T22:45:24.043Z",
+  "generatedAt": "2026-08-19T23:36:21.467Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -763,8 +763,52 @@
       "sourceFinalUrl": "https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions",
       "documents": [
         {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60369-CV0.pdf",
+          "title": "25-60369 American Vapor Company, L.L.C. v. FDA Aug 19, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60098-CV0.pdf",
+          "title": "25-60098 Elite Brothers, L.L.C. v. FDA Aug 19, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/24/24-60628-CV0.pdf",
+          "title": "24-60628 Vapermate, L.L.C. v. FDA Aug 19, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/24/24-60424-CV0.pdf",
+          "title": "24-60424 Lead by Sales, L.L.C. v. FDA Aug 19, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/24/24-60332-CV0.pdf",
+          "title": "24-60332 Vertigo Vapor, L.L.C. v. FDA Aug 19, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/24/24-60304-CV0.pdf",
+          "title": "24-60304 Breeze Smoke, L.L.C. v. FDA Aug 19, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/24/24-60272-CV0.pdf",
+          "title": "24-60272 NicQuid, L.L.C. v. FDA Aug 19, 2026 Published Opinion PDF"
+        },
+        {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30603-CV0.pdf",
           "title": "25-30603 Hamm v. Ochsner-Acadia Aug 19, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-60162.0.pdf",
+          "title": "26-60162 Montero v. CIR Aug 19, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50926.0.pdf",
+          "title": "25-50926 USA v. Gonzalez-Acuna Aug 19, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50658.0.pdf",
+          "title": "25-50658 USA v. Cope Aug 19, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60410.0.pdf",
+          "title": "25-60410 Zhuravlev v. Blanche Aug 19, 2026 Unpublished Opinion PDF"
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30396.0.pdf",
@@ -784,10 +828,6 @@
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-10242.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60410.0.pdf",
           "title": null
         },
         {
@@ -920,46 +960,6 @@
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-11185-CV0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60475-CV0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-30135.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60302-CV0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-51052-CR0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60197.1.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-10534-CV4.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-10534-CV3.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-10534-CV2.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-50346.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11136.0.pdf",
           "title": null
         }
       ],

@@ -3,10 +3,15 @@ name: Bing IndexNow自动推送
 on:
   workflow_dispatch:
   schedule:
-    - cron: "40 */6 * * *"
+    - cron: "*/15 * * * *"
   push:
     branches: [main]
     paths:
+      - "sitemap.xml"
+      - "news-sitemap.xml"
+      - "feed.xml"
+      - "sitemap-index.xml"
+      - "sitemaps/**"
       - "scripts/generate-sitemaps.mjs"
       - "scripts/clean-sitemap-against-database.mjs"
       - "scripts/split-sitemap-index.mjs"

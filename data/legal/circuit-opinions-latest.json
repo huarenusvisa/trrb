@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-19T18:58:04.431Z",
+  "generatedAt": "2026-08-19T19:38:38.269Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -95,6 +95,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524P-01A.pdf",
           "title": "24-1524P.01A"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805P-01A.pdf",
+          "title": "24-1805P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340P-01A.pdf",
@@ -427,6 +431,10 @@
           "title": "Nicole Dubose v. Morrison Healthcare"
         },
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252305np.pdf",
+          "title": "Peter Cresci v. Timothy McNamara"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/252063np.pdf",
           "title": "Lucas Francisco-Gonzalez v. Attorney General United States of America"
         },
@@ -525,10 +533,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/253280np.pdf",
           "title": "Lirong Xu v. Debra Todd"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/252554np.pdf",
-          "title": "Winfield Scott Tower Urban Renewal LP v. Lorissa Luciani"
         }
       ],
       "notes": []

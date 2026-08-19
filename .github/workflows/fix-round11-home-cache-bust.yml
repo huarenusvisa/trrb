@@ -1,46 +1,31 @@
-name: 第十一轮首页文章路由缓存清理
+name: 第十一轮首页文章路由缓存验收（只读）
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
+      - "articles-home.js"
+      - "index.html"
+      - "homepage-refresh-guard.js"
       - ".github/workflows/fix-round11-home-cache-bust.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  fix:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@v4
-      - name: 更新首页文章数据与脚本缓存版本
+      - name: 校验当前首页路由与缓存版本
+        shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          p=Path('articles-home.js')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace('trrb-live-v3-${limit}', 'trrb-live-v4-${limit}')
-          s=s.replace('trrb-live-article-v3-${id}', 'trrb-live-article-v4-${id}')
-          p.write_text(s, encoding='utf-8')
-
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace('./articles-home.js?v=30.4', './articles-home.js?v=30.5-r11-routefix')
-          p.write_text(s, encoding='utf-8')
-
-          p=Path('scripts/optimize-homepage-performance.mjs')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace('<script src="./articles-home.js?v=30.4"></script>', '<script src="./articles-home.js?v=30.5-r11-routefix"></script>')
-          p.write_text(s, encoding='utf-8')
-          print('homepage route cache/version bumped')
-          PY
-      - name: 提交缓存修复
-        run: |
-          git config user.name "TRRB Round 11 Bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add articles-home.js index.html scripts/optimize-homepage-performance.mjs
-          git diff --cached --check
-          git commit -m "Round 11: bust stale homepage routing cache"
-          git push origin main
+          set -euo pipefail
+          grep -q 'articles-home.js?v=20260819-seo-canonical-1' index.html
+          grep -q 'homepage-refresh-guard.js?v=20260819-single-live-1' index.html
+          grep -q 'article-route-runtime.js?v=20260819-seo-v4' index.html
+          ! grep -q '30.5-r11-routefix' index.html
+          ! grep -q '30.5-r11-routefix' scripts/optimize-homepage-performance.mjs
+          echo 'ROUND11_STALE_CACHE_PATCHER_RETIRED=true'

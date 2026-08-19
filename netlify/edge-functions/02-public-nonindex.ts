@@ -6,7 +6,8 @@ export const config = {
     "/expose",
     "/expose.html",
     "/thanks.html",
-    "/delete-account.html"
+    "/delete-account.html",
+    "/health.html"
   ]
 };
 

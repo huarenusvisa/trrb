@@ -17,6 +17,7 @@ on:
       - 'netlify/edge-functions/02-public-nonindex.ts'
       - 'health.html'
       - 'scripts/category-pagination-production-audit.mjs'
+      - 'scripts/article-category-consistency-audit.mjs'
       - '.github/workflows/category-pagination-production-audit.yml'
 
 permissions:
@@ -32,7 +33,11 @@ jobs:
         with:
           node-version: '24'
       - name: Validate audit syntax
-        run: node --check scripts/category-pagination-production-audit.mjs
+        run: |
+          node --check scripts/category-pagination-production-audit.mjs
+          node --check scripts/article-category-consistency-audit.mjs
+      - name: Verify published article category consistency
+        run: node scripts/article-category-consistency-audit.mjs
       - name: Wait for production convergence and audit
         shell: bash
         run: |

@@ -134,6 +134,10 @@ for (const file of files) {
 // reintroduce content that the sitemap generator intentionally excluded.
 console.log(`[article-urls] route map ${routes.size}; upgraded URLs ${upgradedUrls}; files changed ${replacements}`);
 
+// Validate the active browser runtime before writing build snapshots. A syntax
+// error in homepage/article scripts must block the deploy instead of reaching production.
+await import('./validate-current-runtime.mjs');
+
 // Only after sitemap/news-sitemap/feed hold canonical pretty URLs do we write
 // server-delivered homepage and ICE discovery anchors.
 await import('./inject-static-news-links.mjs');

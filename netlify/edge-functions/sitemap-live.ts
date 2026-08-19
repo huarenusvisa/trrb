@@ -3,6 +3,11 @@ const MIN_INDEXABLE_BODY_LENGTH = 80;
 
 export const config = { path: "/sitemap.xml" };
 
+const STATIC_HUBS = [
+  { loc: `${SITE}/immigrate/`, priority: "0.8", changefreq: "weekly" },
+  { loc: `${SITE}/jobs/`, priority: "0.7", changefreq: "daily" }
+];
+
 const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
   "重要新闻": "important-news",
   "热门头条": "hot-headlines",
@@ -149,7 +154,10 @@ export default async (request: Request, context: any) => {
     const byId = new Map(categories.map((x: any) => [String(x.id || ""), x]));
     const byName = new Map(categories.map((x: any) => [clean(x.name), x]));
     const today = new Date().toISOString().slice(0, 10);
-    const blocks: string[] = [urlBlock(`${SITE}/`, today, "hourly", "1.0")];
+    const blocks: string[] = [
+      urlBlock(`${SITE}/`, today, "hourly", "1.0"),
+      ...STATIC_HUBS.map((hub) => urlBlock(hub.loc, today, hub.changefreq, hub.priority))
+    ];
 
     for (const category of categories) {
       if (category.include_in_sitemap === false || !clean(category.slug)) continue;
@@ -212,6 +220,7 @@ export default async (request: Request, context: any) => {
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
       "x-trrb-sitemap": "live-supabase-v4-topic-safe-ice-safe",
       "x-trrb-sitemap-articles": String(articles.length),
+      "x-trrb-sitemap-static-hubs": String(STATIC_HUBS.length),
       "x-trrb-sitemap-excluded-thin": String(excludedThin),
       "x-trrb-sitemap-preserved-short-ice": String(preservedShortIce),
       "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),

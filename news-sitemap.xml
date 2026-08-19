@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   
   
+  
+  
+  
+  
+  
+  
+  
   <url>
       <loc>https://trrb.net/ice/ice-9e60dec72a6a7db4d827133e5078e1abc8a07315</loc>
       <news:news>
@@ -838,26 +845,6 @@
   
   
   
-  
-  
-  
-  
-  <url>
-      <loc>https://trrb.net/ice/ice-2ad6997b5494deacf884990ef43916fa527cadac</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:34:22.151Z</news:publication_date>
-        <news:title>波士顿ICE公布可在私有财产执法权利</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-ea9bc0b53f478055c318410e9a40308467a1d166</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T23:34:21.853Z</news:publication_date>
-        <news:title>加州监狱转移数百刑事非法移民至联邦拘押</news:title>
-      </news:news>
-    </url>
   
   
   

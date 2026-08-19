@@ -51,7 +51,7 @@ async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {
   });
 }
 
-async function authenticateStaff(event, allowedRoles = ["owner", "admin"]) {
+async function authenticateStaff(event, allowedRoles = ["owner", "editor"]) {
   requireSupabase();
   const token = safeText(event.headers.authorization || event.headers.Authorization, 2000).replace(/^Bearer\s+/i, "");
   if (!token) {
@@ -69,18 +69,15 @@ async function authenticateStaff(event, allowedRoles = ["owner", "admin"]) {
     throw error;
   }
 
-  const email = safeText(user.email, 300).toLowerCase();
-  let rows = await rest("admin_users", {
+  // Staff authorization is identity-bound. Do not fall back to email lookup:
+  // email addresses can be reused after an Auth user is deleted/re-created,
+  // while admin_users.user_id is the explicit authorization binding.
+  const rows = await rest("admin_users", {
     query: { select: "id,user_id,email,role,is_active", user_id: `eq.${user.id}`, is_active: "eq.true", limit: "1" }
   });
   let admin = Array.isArray(rows) ? rows[0] : null;
-  if (!admin && email) {
-    rows = await rest("admin_users", {
-      query: { select: "id,user_id,email,role,is_active", email: `ilike.${email}`, is_active: "eq.true", limit: "1" }
-    });
-    admin = Array.isArray(rows) ? rows[0] : null;
-  }
 
+  const email = safeText(user.email, 300).toLowerCase();
   const ownerEmail = safeText(process.env.TRRB_OWNER_EMAIL, 300).toLowerCase();
   const ownerUid = safeText(process.env.TRRB_OWNER_UID, 100);
   if (!admin && ownerEmail && ownerUid && user.id === ownerUid && email === ownerEmail) {
@@ -97,7 +94,7 @@ async function authenticateStaff(event, allowedRoles = ["owner", "admin"]) {
 }
 
 async function authenticateAdmin(event) {
-  return authenticateStaff(event, ["owner", "admin"]);
+  return authenticateStaff(event, ["owner", "editor"]);
 }
 
 module.exports = {

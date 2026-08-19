@@ -155,6 +155,9 @@ export default async (request: Request, context: any) => {
       if (category.include_in_sitemap === false || !clean(category.slug)) continue;
       blocks.push(urlBlock(`${SITE}/${encodeURIComponent(canonicalSection(category.slug))}`, today, "hourly", "0.8"));
     }
+    if (!blocks.some((block) => block.includes(`<loc>${SITE}/trump</loc>`))) {
+      blocks.push(urlBlock(`${SITE}/trump`, today, "hourly", "0.8"));
+    }
     blocks.push(urlBlock(`${SITE}/ice/news`, today, "hourly", "0.7"));
 
     const seenTitles = new Set<string>();

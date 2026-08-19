@@ -1,0 +1,45 @@
+name: ICE快讯索引保护验收
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 * * * *"
+  push:
+    branches: [main]
+    paths:
+      - "news-sitemap.xml"
+      - "scripts/generate-sitemaps.mjs"
+      - "netlify/edge-functions/news-sitemap-live.ts"
+      - "scripts/ice-breaking-news-index-audit.mjs"
+      - ".github/workflows/ice-breaking-news-index-audit.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-breaking-news-index-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SITE_ORIGIN: https://trrb.net
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 验收ICE短快讯没有因篇幅被错误排除
+        run: node scripts/ice-breaking-news-index-audit.mjs
+      - name: 保存ICE索引保护报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ice-breaking-news-index-audit
+          path: ice-breaking-news-index-audit.json
+          if-no-files-found: warn
+          retention-days: 30

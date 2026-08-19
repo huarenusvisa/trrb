@@ -1,0 +1,42 @@
+name: ICE孤儿素材安全清理
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/cleanup-ice-orphan-media.mjs'
+      - '.github/workflows/ice-orphan-media-cleanup.yml'
+  schedule:
+    - cron: '23 8 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-orphan-media-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      MAX_DELETE: '100'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 校验生产数据库密钥
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_SERVICE_ROLE_KEY"
+      - name: 安装Supabase客户端（不写入项目依赖）
+        run: npm install --no-save --no-package-lock @supabase/supabase-js@2
+      - name: 扫描并清理无引用ICE投稿素材
+        run: node scripts/cleanup-ice-orphan-media.mjs

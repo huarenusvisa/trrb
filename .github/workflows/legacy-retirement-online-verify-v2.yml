@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "netlify/edge-functions/legacy-url-redirect.ts"
+      - "netlify/edge-functions/01-wordpress-archive-retire.ts"
       - "scripts/generate-sitemaps.mjs"
       - "scripts/clean-sitemap-against-database.mjs"
       - "scripts/verify-legacy-retirement-online-v2.mjs"

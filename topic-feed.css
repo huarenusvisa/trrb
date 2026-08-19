@@ -306,3 +306,22 @@
     font-size: 13px !important;
   }
 }
+
+/* 唐人财经：替代已撤销人物志的专题槽位 */
+.topic-finance {
+  border-color: #bfd4ff;
+  background: linear-gradient(135deg, #f7faff 0%, #edf4ff 100%);
+}
+.topic-finance .topic-focus-copy h3 {
+  color: #145cc5;
+}
+.topic-finance .topic-status i {
+  background: #2f75e8;
+  box-shadow: 0 0 0 3px rgba(47, 117, 232, 0.14);
+}
+.topic-finance .topic-latest {
+  color: #29435f;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 1.35 !important;
+}

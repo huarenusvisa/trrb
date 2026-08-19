@@ -61,8 +61,22 @@ async function fetchArticles(category: any, name: string) {
     order: "published_at.desc.nullslast,created_at.desc",
     limit: "24"
   };
-  if (category?.id) params.category_id = `eq.${category.id}`;
-  else params.category_name = `eq.${name}`;
+
+  // Historical and automated publishing paths are not guaranteed to populate
+  // category_id. Match the stable category name as well so those articles stay
+  // visible in crawlable category HTML. ICE is secondary topic membership, so
+  // topic_key=ice must also appear under /ice/news even when its primary category
+  // remains 移民美国/美国时政/重要新闻.
+  const filters: string[] = [];
+  if (category?.id) filters.push(`category_id.eq.${category.id}`);
+  if (name) filters.push(`category_name.eq.${name}`);
+  if (name === "ICE执法动态") {
+    filters.push("category_name.eq.ICE执法");
+    filters.push("category_name.eq.驱逐快报");
+    filters.push("topic_key.eq.ice");
+  }
+  if (filters.length) params.or = `(${filters.join(",")})`;
+
   return fetchJson("articles", params);
 }
 function articleUrl(article: any, routePath: string): string {

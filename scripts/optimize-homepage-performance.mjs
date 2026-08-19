@@ -48,6 +48,10 @@ for (const [asset, version] of coreVersions) {
   html = html.replace(re, `$1?v=${version}$2`);
 }
 
+// Keep the homepage primary navigation on the immigration news category. The
+// separate knowledge-center cards intentionally continue to use /immigrate/.
+html = html.replace('<a href="/immigrate/">移民美国</a>', '<a href="/immigration">移民美国</a>');
+
 // Prefer canonical category routes in the static homepage shell as well.
 const canonicalCategories = new Map([
   ['重要新闻', '/important-news'],

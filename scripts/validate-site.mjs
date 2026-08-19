@@ -64,6 +64,10 @@ if (!includesText(hostCanonical, 'www.${CANONICAL_HOST}')) failures.push("00-hos
 if (!includesText(hostCanonical, "status: 301")) failures.push("00-host-canonical.ts does not return a permanent redirect");
 if (!includesText(hostCanonical, 'X-TRRB-Host-Canonical')) failures.push("00-host-canonical.ts is missing its production verification marker");
 
+const seoRouteMeta = await bytes("netlify/edge-functions/seo-route-meta.ts");
+if (!includesText(seoRouteMeta, '"移民美国": "immigration"')) failures.push("SEO route fallback still mixes immigration news with the knowledge center");
+if (!includesText(seoRouteMeta, '"/immigration"')) failures.push("SEO route fallback does not cover /immigration");
+
 const css = await bytes("styles.css");
 const cssHead = css.toString("utf8", 0, Math.min(css.length, 300)).trimStart();
 if (!(cssHead.startsWith(":root") || cssHead.startsWith("*") || cssHead.startsWith("body"))) failures.push("styles.css does not look like CSS");
@@ -114,6 +118,9 @@ if (!includesText(sitemap, "sitemap-articles-1.xml")) failures.push("sitemap.xml
 
 const sitemapStatic = await bytes("sitemap-static.xml");
 if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://trrb.net/</loc>")) failures.push("sitemap-static.xml is missing canonical root URL");
+if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge hub");
+if (!includesText(sitemapStatic, "<loc>https://trrb.net/jobs/</loc>")) failures.push("sitemap-static.xml is missing jobs hub");
+if (includesText(sitemapStatic, "<loc>https://trrb.net/finance/</loc>")) failures.push("sitemap-static.xml must not index finance demo preview");
 if (includesText(sitemapStatic, "https://www.trrb.net/")) failures.push("sitemap-static.xml still contains www.trrb.net URLs");
 
 const sitemapArticles = await bytes("sitemap-articles-1.xml");
@@ -140,6 +147,7 @@ for (const rule of [
   "http://trrb.net/* https://trrb.net/:splat 301!",
   "http://www.trrb.net/* https://trrb.net/:splat 301!",
   "https://www.trrb.net/* https://trrb.net/:splat 301!",
+  "/index.html / 301!",
   "/politics /us-politics 301!",
   "/crime /us-crime 301!",
   "/china /china-officialdom 301!",
@@ -149,8 +157,12 @@ for (const rule of [
 }
 
 const headers = await bytes("_headers");
+const headersText = headers.toString("utf8");
 if (headers[0] === 0xff && headers[1] === 0xd8) failures.push("_headers was replaced by an image");
 if (!includesText(headers, "Cache-Control")) failures.push("_headers is missing cache rules");
+for (const route of ["/finance/", "/finance/*", "/jobs/publish.html", "/jobs/seeker.html"]) {
+  if (!headersText.includes(`${route}\n  X-Robots-Tag: noindex, follow, noarchive`)) failures.push(`_headers missing noindex protection for ${route}`);
+}
 
 if (failures.length) {
   console.error("TRRB site integrity check failed:\n- " + failures.join("\n- "));

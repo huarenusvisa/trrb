@@ -1,10 +1,114 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-19T04:51:12.404Z",
+  "generatedAt": "2026-08-19T05:46:10.209Z",
   "scope": "Federal Register documents classified by the official API as Rule. FederalRegister.gov is used for discovery/metadata; official PDF links should be used for authoritative legal text.",
   "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE",
   "count": 50,
   "rules": [
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-16942",
+      "title": "Food Additives Permitted in Feed and Drinking Water of Animals; Chromium DL-methionine Chelate",
+      "publicationDate": "2026-08-19",
+      "agencies": [
+        {
+          "id": 221,
+          "name": "Health and Human Services Department",
+          "slug": "health-and-human-services-department"
+        },
+        {
+          "id": 199,
+          "name": "Food and Drug Administration",
+          "slug": "food-and-drug-administration"
+        }
+      ],
+      "abstract": "The Food and Drug Administration (FDA, we, or the Agency) is amending the regulations for food additives permitted in feed and drinking water of animals to provide for the safe use of chromium DL- methionine chelate as a nutritional source of chromium in cattle feed. This action is in response to a food additive petition filed by Zinpro Corp.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/19/2026-16942/food-additives-permitted-in-feed-and-drinking-water-of-animals-chromium-dl-methionine-chelate",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-19/pdf/2026-16942.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-16888",
+      "title": "Standard Instrument Approach Procedures, and Takeoff Minimums and Obstacle Departure Procedures; Miscellaneous Amendments",
+      "publicationDate": "2026-08-19",
+      "agencies": [
+        {
+          "id": 492,
+          "name": "Transportation Department",
+          "slug": "transportation-department"
+        },
+        {
+          "id": 159,
+          "name": "Federal Aviation Administration",
+          "slug": "federal-aviation-administration"
+        }
+      ],
+      "abstract": "This rule amends, suspends, or removes Standard Instrument Approach Procedures (SIAPs) and associated Takeoff Minimums and Obstacle Departure Procedures for operations at certain airports. These regulatory actions are needed because of the adoption of new or revised criteria, or because of changes occurring in the National Airspace System, such as the commissioning of new navigational facilities, adding new obstacles, or changing air traffic requirements. These changes are designed to provide for the safe and efficient use of the navigable airspace and to promote safe flight operations under instrument flight rules at the affected airports.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/19/2026-16888/standard-instrument-approach-procedures-and-takeoff-minimums-and-obstacle-departure-procedures",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-19/pdf/2026-16888.pdf",
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16888.pdf?1787057114",
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-16887",
+      "title": "Standard Instrument Approach Procedures, and Takeoff Minimums and Obstacle Departure Procedures; Miscellaneous Amendments",
+      "publicationDate": "2026-08-19",
+      "agencies": [
+        {
+          "id": 492,
+          "name": "Transportation Department",
+          "slug": "transportation-department"
+        },
+        {
+          "id": 159,
+          "name": "Federal Aviation Administration",
+          "slug": "federal-aviation-administration"
+        }
+      ],
+      "abstract": "This rule establishes, amends, suspends, or removes Standard Instrument Approach Procedures (SIAPS) and associated Takeoff Minimums and Obstacle Departure procedures (ODPs) for operations at certain airports. These regulatory actions are needed because of the adoption of new or revised criteria, or because of changes occurring in the National Airspace System, such as the commissioning of new navigational facilities, adding new obstacles, or changing air traffic requirements. These changes are designed to provide safe and efficient use of the navigable airspace and to promote safe flight operations under instrument flight rules at the affected airports.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/19/2026-16887/standard-instrument-approach-procedures-and-takeoff-minimums-and-obstacle-departure-procedures",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-19/pdf/2026-16887.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-16870",
+      "title": "Atlantic Highly Migratory Species; North Atlantic Swordfish, South Atlantic Swordfish, North Atlantic Albacore, and Atlantic Bluefin Tuna Quotas",
+      "publicationDate": "2026-08-19",
+      "agencies": [
+        {
+          "id": 54,
+          "name": "Commerce Department",
+          "slug": "commerce-department"
+        },
+        {
+          "id": 361,
+          "name": "National Oceanic and Atmospheric Administration",
+          "slug": "national-oceanic-and-atmospheric-administration"
+        }
+      ],
+      "abstract": "In this final rule, NMFS is implementing binding recommendations of the International Commission for the Conservation of Atlantic Tunas (ICCAT) on quotas for North Atlantic swordfish, South Atlantic swordfish, North Atlantic albacore tuna (northern albacore), and Atlantic bluefin tuna, including aspects of the management procedures for North Atlantic swordfish and northern albacore. For bluefin tuna, this action implements the increased U.S. baseline quota adopted by ICCAT in 2025, dividing it among the established regulatory domestic subquota categories, and implements changes to the bluefin tuna quota associated with pelagic longline bycatch adopted by ICCAT in 2025. Finally, this action transfers 30.8 metric tons (mt) of bluefin tuna quota from the Longline category to the Reserve category and temporarily adjusts the baseline quotas for U.S. North and South Atlantic swordfish, northern albacore, and the Atlantic bluefin tuna Reserve category for 2026 based on 2025 underharvests and applicable international quota transfers.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/19/2026-16870/atlantic-highly-migratory-species-north-atlantic-swordfish-south-atlantic-swordfish-north-atlantic",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-19/pdf/2026-16870.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
     {
       "authorityType": "Federal Register Final Rule",
       "documentNumber": "2026-16846",
@@ -1133,105 +1237,6 @@
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16413/schedules-of-controlled-substances-temporary-placement-of-o-desmethyltramadol-in-schedule-i",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16413.pdf",
       "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16413.pdf?1786452314",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16412",
-      "title": "Special Conditions: Skyryse, Robinson Helicopter Company Model R66 Helicopter; Flight Control System Annunciation of Control",
-      "publicationDate": "2026-08-12",
-      "agencies": [
-        {
-          "id": 492,
-          "name": "Transportation Department",
-          "slug": "transportation-department"
-        },
-        {
-          "id": 159,
-          "name": "Federal Aviation Administration",
-          "slug": "federal-aviation-administration"
-        }
-      ],
-      "abstract": "These special conditions are issued for the Robinson Helicopter Company (Robinson) Model R66 helicopter. This helicopter, as modified by Skyryse, will have a novel or unusual design feature when compared to the state of technology envisioned in the airworthiness standards for normal category helicopters. This design feature replaces the mechanical flight controls with a digital fly-by-wire (FBW) system. The applicable airworthiness regulations do not contain adequate or appropriate safety standards for this design feature. These special conditions contain the additional safety standards that the Administrator considers necessary to establish a level of safety equivalent to that established by the existing airworthiness standards.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16412/special-conditions-skyryse-robinson-helicopter-company-model-r66-helicopter-flight-control-system",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16412.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16412.pdf?1786452314",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16407",
-      "title": "Safety Zone; T/V DENISE FOSS (O.N. 1254223), Honolulu, HI",
-      "publicationDate": "2026-08-12",
-      "agencies": [
-        {
-          "id": 227,
-          "name": "Homeland Security Department",
-          "slug": "homeland-security-department"
-        },
-        {
-          "id": 53,
-          "name": "Coast Guard",
-          "slug": "coast-guard"
-        }
-      ],
-      "abstract": "The Coast Guard is establishing a temporary safety zone for navigable waters within a 500-yard radius of the T/V DENISE FOSS (O.N. 1254223) and its tow, FOSS 3612 (O.N. 1255436). The moving safety zone is needed to protect personnel, vessels, and the marine environment from potential hazards associated with the transportation of three ship-to-shore cranes. Entry of vessels or persons into this zone is prohibited unless specifically authorized by the Captain of the Port, Sector Honolulu, or their designated representative.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16407/safety-zone-tv-denise-foss-on-1254223-honolulu-hi",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16407.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16407.pdf?1786452313",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16398",
-      "title": "List of Approved Spent Fuel Storage Casks: NAC International, Inc., MAGNASTOR® Storage System, Certificate of Compliance No. 1031, Amendment Nos. 16 and 17 and Revisions to Amendment Nos. 0 through 16",
-      "publicationDate": "2026-08-12",
-      "agencies": [
-        {
-          "id": 383,
-          "name": "Nuclear Regulatory Commission",
-          "slug": "nuclear-regulatory-commission"
-        }
-      ],
-      "abstract": "The U.S. Nuclear Regulatory Commission (NRC) is confirming the effective date of September 14, 2026, for the direct final rule that was published in the Federal Register on July 1, 2026. This direct final rule amended the NAC MAGNASTOR System listing within the \"List of approved spent fuel storage casks\" to include Amendment Nos. 16 and 17 and revisions to Amendment Nos. 0 through 16 to Certificate of Compliance No. 1031.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16398/list-of-approved-spent-fuel-storage-casks-nac-international-inc-magnastor-storage-system-certificate",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16398.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16398.pdf?1786452312",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16393",
-      "title": "Amendment of Class E Airspace Over Staunton, VA",
-      "publicationDate": "2026-08-12",
-      "agencies": [
-        {
-          "id": 492,
-          "name": "Transportation Department",
-          "slug": "transportation-department"
-        },
-        {
-          "id": 159,
-          "name": "Federal Aviation Administration",
-          "slug": "federal-aviation-administration"
-        }
-      ],
-      "abstract": "This action amends Class E airspace over Staunton, VA. This action expands that portion of the Staunton, VA Class E5 airspace extending to the northwest of Bridgewater Air Park from \"within 1.5 miles either side of the 338[deg] bearing from the airport extending from the 8.3-mile radius to 10 miles northwest of the airport\" to \"within 3.2 miles each side of the 329[deg] bearing from the airport extending from the 8.3-mile radius to 15.2 miles northwest of the airport.\" This modification is necessary to contain Instrument Flight Rules (IFR) operations utilizing new special instrument approach procedures at Bridgewater Air Park. This action also updates the geographic coordinates for Bridgewater Air Park, Bridgewater, VA, in the Staunton, VA Class E5 airspace legal description.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/12/2026-16393/amendment-of-class-e-airspace-over-staunton-va",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16393.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16393.pdf?1786452311",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     }

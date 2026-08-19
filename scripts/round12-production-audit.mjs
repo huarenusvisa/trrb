@@ -6,6 +6,8 @@ const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
 const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1';
 const TIMEOUT = 15000;
+const MIN_INDEXABLE_BODY_LENGTH = 80;
+const ARTICLE_SECTIONS = new Set(['ice','trump','important-news','hot-headlines','us-politics','us-crime','china-officialdom','immigration','asylum','deport','news','expose']);
 const FALLBACK = new Map([
   ['重要新闻','important-news'],['热门头条','hot-headlines'],['美国时政','us-politics'],['美国警情','us-crime'],
   ['中国官场','china-officialdom'],['移民美国','immigration'],['庇护百科','asylum'],['驱逐快报','deport'],
@@ -72,6 +74,38 @@ function stableSuffix(slug) {
   const s = String(slug || '');
   return s.match(/-([a-z0-9]{6,14}-[a-z0-9]{6,14})$/i)?.[1] || s.match(/-([a-z0-9]{6,14})$/i)?.[1] || '';
 }
+function visibleText(value='') {
+  return String(value||'')
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,' ')
+    .replace(/<[^>]+>/g,' ')
+    .replace(/&nbsp;|&#160;/gi,' ')
+    .replace(/&[a-z0-9#]+;/gi,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+function normalizedTitle(value='') { return visibleText(value).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu,''); }
+function isIceArticle(a) {
+  const topic=String(a?.topic_key||'').trim().toLowerCase();
+  const category=String(a?.category_name||'').trim();
+  return topic==='ice'||category==='ICE执法动态'||category==='ICE执法';
+}
+function isSpecialTopic(a) {
+  const topic=String(a?.topic_key||'').trim().toLowerCase();
+  return topic==='ice'||topic==='trump';
+}
+function timeOf(a) {
+  const t=Date.parse(a?.published_at||a?.created_at||'');
+  return Number.isFinite(t)?t:0;
+}
+function isArticleCanonicalUrl(value='') {
+  try {
+    const u=new URL(value,ORIGIN);
+    if(u.hostname!=='trrb.net'&&u.hostname!=='www.trrb.net')return false;
+    const parts=decodeURIComponent(u.pathname).split('/').filter(Boolean);
+    return parts.length===2&&ARTICLE_SECTIONS.has(parts[0])&&!(parts[0]==='ice'&&parts[1]==='news');
+  } catch { return false; }
+}
 async function pool(items, limit, worker) {
   let cursor = 0;
   const runners = Array.from({length: Math.min(limit, items.length)}, async () => {
@@ -87,11 +121,40 @@ function uniqueBy(items, keyFn) {
   return items.filter((x) => { const k = keyFn(x); if (seen.has(k)) return false; seen.add(k); return true; });
 }
 
-const categories = await dbAll('categories', 'id,name,slug,is_active', {is_active:'eq.true'});
-const articles = await dbAll('articles', 'id,title,slug,category_id,category_name,topic_key,cover_image,status,published_at,created_at', {status:'eq.published', order:'published_at.desc.nullslast,created_at.desc'});
+const categories = await dbAll('categories', 'id,name,slug,is_active,include_in_sitemap', {is_active:'eq.true'});
+const articles = await dbAll('articles', 'id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,status,published_at,created_at', {status:'eq.published', order:'published_at.desc.nullslast,created_at.desc'});
 const byId = new Map(categories.map(x => [String(x.id || ''), x]));
 const byName = new Map(categories.map(x => [String(x.name || '').trim(), x]));
 const canonicalMap = new Map(articles.map(a => [String(a.id), canonicalFor(a, byId, byName)]));
+const allowedCategoryIds = new Set(categories.filter(x => x.include_in_sitemap !== false).map(x => String(x.id)));
+const allowedCategoryNames = new Set(categories.filter(x => x.include_in_sitemap !== false).map(x => String(x.name || '').trim()));
+
+function allowedInSitemap(a) {
+  if (isSpecialTopic(a)) return true;
+  if (!categories.length) return true;
+  if (a?.category_id) return allowedCategoryIds.has(String(a.category_id));
+  if (a?.category_name) return allowedCategoryNames.has(String(a.category_name).trim());
+  return true;
+}
+function expectedIndexArticles() {
+  const seenTitles=new Set();
+  const seenBodies=new Set();
+  const selected=[];
+  for(const a of [...articles].sort((x,y)=>timeOf(x)-timeOf(y))){
+    if(!allowedInSitemap(a))continue;
+    const body=visibleText(a.content||a.summary||'');
+    const ice=isIceArticle(a);
+    if(ice&&!body)continue;
+    if(!ice&&body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
+    const titleKey=normalizedTitle(a.title);
+    const bodyKey=body.length>=120?body:'';
+    if((titleKey.length>=8&&seenTitles.has(titleKey))||(bodyKey&&seenBodies.has(bodyKey)))continue;
+    if(titleKey.length>=8)seenTitles.add(titleKey);
+    if(bodyKey)seenBodies.add(bodyKey);
+    selected.push(a);
+  }
+  return selected;
+}
 
 // 1. 文章发布链路一致性治理：数据库层先保证每篇文章只有一个稳定 canonical。
 record(1, articles.length > 3000, '已加载完整已发布文章库', `published=${articles.length}`);
@@ -138,7 +201,7 @@ for (const a of rescueSamples) {
 
 // 4. 站内搜索系统：确认生产脚本已切换到全库 Supabase 检索，并用中文词真实查库。
 try {
-  const js = await (await req(`${ORIGIN}/listing.js?v=20260814-r12`, {headers:{'cache-control':'no-cache'}})).text();
+  const js = await (await req(`${ORIGIN}/listing.js?v=20260819-r12`, {headers:{'cache-control':'no-cache'}})).text();
   record(4, /fetchLiveSearchArticles/.test(js) && /content\.ilike/.test(js), '搜索脚本启用全库正文检索');
   record(4, /https:\/\/trrb\.net\//.test(js), '栏目 canonical 使用非www主域');
   const u = new URL(`${SUPABASE_URL}/rest/v1/articles`);
@@ -151,11 +214,12 @@ try {
   record(4, r.ok && Array.isArray(rows) && rows.length > 0 && rows.every(x => x.slug), '中文关键词数据库搜索可用', `status=${r.status}; results=${Array.isArray(rows)?rows.length:0}`);
 } catch (e) { record(4, false, '搜索生产检查', e.message || String(e)); }
 
-// 5. 首页热榜与推荐数据一致性：确保首页实时数据包含 slug/topic，且不再依赖旧 article?id 链路。
+// 5. 首页热榜与推荐数据一致性：确保首页实时数据包含 slug/topic，并使用统一 bundle 与 canonical pretty URL。
 try {
   const homeJs = await (await req(`${ORIGIN}/articles-home.js`, {headers:{'cache-control':'no-cache'}})).text();
   record(5, /"slug"/.test(homeJs) && /"topic_key"/.test(homeJs), '首页实时数据包含 slug/topic_key');
   record(5, /function articleUrl\(/.test(homeJs) && /important-news/.test(homeJs) && /us-crime/.test(homeJs), '首页直接生成 canonical pretty URL');
+  record(5, /public-home-bundle/.test(homeJs) && !/Promise\.all\(coreCategories/.test(homeJs), '首页首屏使用单一实时 bundle');
 } catch (e) { record(5, false, '首页数据链路检查', e.message || String(e)); }
 
 // 6. 新闻图片与封面链路：验证 placeholder 与最近文章中的同站图片；外站图片只记录可达性警告。
@@ -207,7 +271,7 @@ for (const path of ['/','/important-news','/us-crime','/trump','/ice','/listing.
 }
 record(8, false, '真实浏览器移动端视觉验收尚未执行', '等待 Playwright/iPhone viewport 工作流', 'warning');
 
-// 9. 全量索引：数据库当前 canonical 集合必须完整进入文章 Sitemap，且无多余旧URL。
+// 9. 全量索引：只比较当前应索引文章集合。重复稿与非ICE薄内容不应被旧验收强行塞回 Sitemap；短ICE必须保留。
 try {
   const root = await req(`${ORIGIN}/sitemap.xml`, {headers:{'cache-control':'no-cache'}});
   const rootXml = await root.text();
@@ -218,19 +282,22 @@ try {
     for (const mapUrl of articleMaps) {
       const r = await req(mapUrl, {headers:{'cache-control':'no-cache'}});
       const xml = await r.text();
-      sitemapUrls.push(...[...xml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map(m => m[1].trim().replaceAll('&amp;','&')));
+      sitemapUrls.push(...[...xml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map(m => m[1].trim().replaceAll('&amp;','&')).filter(isArticleCanonicalUrl));
     }
   } else {
-    sitemapUrls.push(...childLocs.filter(x => /^https:\/\/trrb\.net\/[^/]+\/.+/.test(x)));
+    sitemapUrls.push(...childLocs.filter(isArticleCanonicalUrl));
   }
-  const dbSet = new Set(canonicalValues);
+  const expectedArticles = expectedIndexArticles();
+  const dbSet = new Set(expectedArticles.map(a => canonicalMap.get(String(a.id))));
   const siteSet = new Set(sitemapUrls);
   const missingFromSitemap = [...dbSet].filter(x => !siteSet.has(x));
   const staleInSitemap = [...siteSet].filter(x => !dbSet.has(x));
-  record(9, siteSet.size === dbSet.size, '文章Sitemap数量与已发布数据库一致', `sitemap=${siteSet.size}; db=${dbSet.size}`);
-  record(9, missingFromSitemap.length === 0, '所有已发布 canonical 均在 Sitemap', `missing=${missingFromSitemap.length}`);
-  record(9, staleInSitemap.length === 0, 'Sitemap 无下线/过期文章URL', `stale=${staleInSitemap.length}`);
+  const shortIceExpected = expectedArticles.filter(a => isIceArticle(a) && visibleText(a.content||a.summary||'').length < MIN_INDEXABLE_BODY_LENGTH).length;
+  record(9, siteSet.size === dbSet.size, '文章Sitemap数量与当前应索引文章集合一致', `sitemap=${siteSet.size}; expected=${dbSet.size}`);
+  record(9, missingFromSitemap.length === 0, '所有应索引 canonical 均在 Sitemap', `missing=${missingFromSitemap.length}`);
+  record(9, staleInSitemap.length === 0, 'Sitemap 无下线/薄稿/重复稿多余URL', `stale=${staleInSitemap.length}`);
   record(9, !sitemapUrls.some(x => /article\.html\?id=|www\.trrb\.net/i.test(x)), 'Sitemap 无旧参数URL或www');
+  record(9, shortIceExpected === 0 || expectedArticles.filter(a => isIceArticle(a) && visibleText(a.content||a.summary||'').length < MIN_INDEXABLE_BODY_LENGTH).every(a => siteSet.has(canonicalMap.get(String(a.id)))), '短ICE不会仅因篇幅短被Sitemap排除', `shortIceExpected=${shortIceExpected}`);
 } catch (e) { record(9, false, '全量Sitemap索引检查', e.message || String(e)); }
 
 for (let i = 1; i <= 9; i++) {
@@ -243,9 +310,9 @@ const hardFailures = failures.length;
 nodes['10'].status = hardFailures === 0 && nodes['8'].status === 'pass' ? 'pass' : 'blocked';
 nodes['10'].checks.push({ok:nodes['10'].status==='pass', label:'第十二轮最终总验收', detail:`hardFailures=${hardFailures}; node8=${nodes['8'].status}`});
 
-const report = {generated_at:new Date().toISOString(), origin:ORIGIN, published_articles:articles.length, categories:categories.length, failures, warnings, nodes};
+const report = {generated_at:new Date().toISOString(), origin:ORIGIN, published_articles:articles.length, index_eligible_articles:expectedIndexArticles().length, categories:categories.length, failures, warnings, nodes};
 fs.writeFileSync('round12-production-audit.json', JSON.stringify(report, null, 2) + '\n');
-console.log(`Round 12 audit: published=${articles.length}; hardFailures=${failures.length}; warnings=${warnings.length}`);
+console.log(`Round 12 audit: published=${articles.length}; indexEligible=${expectedIndexArticles().length}; hardFailures=${failures.length}; warnings=${warnings.length}`);
 for (let i=1;i<=10;i++) console.log(`node ${i}: ${nodes[String(i)].status}`);
 if (failures.length) {
   failures.slice(0,80).forEach(x => console.error(`node ${x.node}: ${x.label} — ${x.detail}`));

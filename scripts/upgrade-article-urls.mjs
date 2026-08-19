@@ -22,6 +22,13 @@ const FALLBACK_CATEGORY_SLUGS = new Map([
   ['ICE执法', 'ice'],
   ['曝光墙', 'expose']
 ]);
+const SECTION_ALIASES = new Map([
+  ['important', 'important-news'],
+  ['hot', 'hot-headlines'],
+  ['politics', 'us-politics'],
+  ['crime', 'us-crime'],
+  ['china', 'china-officialdom']
+]);
 
 const headers = {
   apikey: SUPABASE_KEY,
@@ -52,6 +59,10 @@ async function fetchAll(table, select, extra = {}) {
 function safeSegment(value) {
   return encodeURIComponent(String(value || '').trim());
 }
+function canonicalSection(value) {
+  const raw = String(value || '').trim();
+  return SECTION_ALIASES.get(raw) || raw;
+}
 
 function articleSection(article, categoriesById, categoriesByName) {
   const topic = String(article.topic_key || '').trim().toLowerCase();
@@ -59,9 +70,9 @@ function articleSection(article, categoriesById, categoriesByName) {
   if (topic === 'ice') return 'ice';
 
   const byId = categoriesById.get(String(article.category_id || ''));
-  if (byId?.slug) return String(byId.slug).trim();
+  if (byId?.slug) return canonicalSection(byId.slug);
   const byName = categoriesByName.get(String(article.category_name || '').trim());
-  if (byName?.slug) return String(byName.slug).trim();
+  if (byName?.slug) return canonicalSection(byName.slug);
   return FALLBACK_CATEGORY_SLUGS.get(String(article.category_name || '').trim()) || 'news';
 }
 
@@ -121,10 +132,6 @@ for (const file of files) {
   const before = fs.readFileSync(file, 'utf8');
   let after = upgradeText(before, routes);
 
-  // The sitemap is built near the start of a Netlify deploy, while publishing can
-  // continue during the remaining build steps. Reconcile once more here, at the
-  // final URL-upgrade stage, so every article that is published before deploy
-  // validation is represented without weakening the production audit.
   if (file === 'sitemap.xml' && /<urlset\b/i.test(after)) {
     const existing = new Set(
       [...after.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)]
@@ -154,3 +161,8 @@ for (const file of files) {
 }
 
 console.log(`[article-urls] route map ${routes.size}; sitemap late-publish additions ${sitemapAdded}; files changed ${replacements}`);
+
+// Only after sitemap/news-sitemap/feed have canonical pretty URLs do we write
+// server-delivered homepage and ICE discovery anchors. This prevents the build
+// itself from reintroducing /article.html?id= links into crawlable HTML.
+await import('./inject-static-news-links.mjs');

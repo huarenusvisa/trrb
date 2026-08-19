@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-19T15:46:18.938Z",
+  "generatedAt": "2026-08-19T16:46:58.215Z",
   "node": "2 统一法律数据库自动重建与版本同步",
-  "datasetVersion": "b1fac0f6e9e8c79202cc978987226e613c90ed384b9050341664cf6477957e71",
+  "datasetVersion": "a66cf61db7c86b55f0cfdb8850c9e8d21d58eba7a0efa8027769a3367fe0fb4e",
   "count": 626,
   "expectedCounts": {
     "SCOTUS": 68,
@@ -76,7 +76,7 @@
     {
       "ok": true,
       "label": "dataset version matches normalized current records",
-      "detail": "b1fac0f6e9e8c79202cc978987226e613c90ed384b9050341664cf6477957e71"
+      "detail": "a66cf61db7c86b55f0cfdb8850c9e8d21d58eba7a0efa8027769a3367fe0fb4e"
     },
     {
       "ok": true,

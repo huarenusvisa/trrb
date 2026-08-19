@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "b1fac0f6e9e8c79202cc978987226e613c90ed384b9050341664cf6477957e71",
+  "datasetVersion": "a66cf61db7c86b55f0cfdb8850c9e8d21d58eba7a0efa8027769a3367fe0fb4e",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
@@ -3613,6 +3613,21 @@
       "sourceKey": "CIRCUIT:ca11:3471705ce5f9dc8a"
     },
     {
+      "id": "fcf48b0e9ec64b512d8a7eb9",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Chase Peden, et al v. Glenn Stephens, et al",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410178.pdf",
+      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202410178.pdf",
+      "sourceKey": "CIRCUIT:ca11:355e210a54314461"
+    },
+    {
       "id": "05e3bb11a649184cd3346a98",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -3761,21 +3776,6 @@
       "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510331.pdf",
       "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202510331.pdf",
       "sourceKey": "CIRCUIT:ca11:598ca2827e8d5c64"
-    },
-    {
-      "id": "c93ed213b62f8fc892e2e318",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Eleventh Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "Edward Braggs, et al v. Commissioner, Alabama Department of Corrections, et al",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202210292.pdf",
-      "officialPdfUrl": "https://media.ca11.uscourts.gov/opinions/pub/files/202210292.pdf",
-      "sourceKey": "CIRCUIT:ca11:5bfa258297264877"
     },
     {
       "id": "9eba24fdb404be73f1cc1eb2",
@@ -4903,21 +4903,6 @@
       "sourceKey": "CIRCUIT:ca3:239330515e32ed46"
     },
     {
-      "id": "16f41044142a92aa5e0dbc86",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "Yoke Tan v. Allstate Insurance Co",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/243180np.pdf",
-      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/243180np.pdf",
-      "sourceKey": "CIRCUIT:ca3:2e7e4a56d3139210"
-    },
-    {
       "id": "0eda97acbe2a269570d9ccbd",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -4931,21 +4916,6 @@
       "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/241439npa.pdf",
       "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/241439npa.pdf",
       "sourceKey": "CIRCUIT:ca3:31164ba8931ea20a"
-    },
-    {
-      "id": "31f2f3682d0302b7c3957a5f",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "La'Keya Keo v. FBI",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/261258np.pdf",
-      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/261258np.pdf",
-      "sourceKey": "CIRCUIT:ca3:339c0ddf4b5cd9f4"
     },
     {
       "id": "023642437914a8e1456ee110",
@@ -5051,6 +5021,21 @@
       "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/261291p.pdf",
       "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/261291p.pdf",
       "sourceKey": "CIRCUIT:ca3:4854541e9839c6cf"
+    },
+    {
+      "id": "d6f5d1670a28dfb77d60fdbd",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Jasir Massey-Campbell v. Bridgecrest Acceptance Corp.",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/261026np.pdf",
+      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/261026np.pdf",
+      "sourceKey": "CIRCUIT:ca3:494f19cd6d03576f"
     },
     {
       "id": "02478e9593b8b7cf3b8fe3fe",
@@ -5203,6 +5188,21 @@
       "sourceKey": "CIRCUIT:ca3:6809eaaf943d02fb"
     },
     {
+      "id": "d0e03d5bab3e05e25616d7ec",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Shanthi Hejamadi v. Midland Funding LLC",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/242385np.pdf",
+      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/242385np.pdf",
+      "sourceKey": "CIRCUIT:ca3:69f39c57712a4368"
+    },
+    {
       "id": "379080f1f13377fea7b73869",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -5293,19 +5293,19 @@
       "sourceKey": "CIRCUIT:ca3:b005a7d165b7a1ef"
     },
     {
-      "id": "f7a1929de7abc6222e4dffdb",
+      "id": "3c4736a0a927e29045248755",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Third Circuit",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "Timothy McLaughlin v. International Brotherhood of Teamsters Local 249",
+      "title": "Jason Morgan v. Eric Siegfried",
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/251613np.pdf",
-      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/251613np.pdf",
-      "sourceKey": "CIRCUIT:ca3:b211b1079738d42c"
+      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/261594np.pdf",
+      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/261594np.pdf",
+      "sourceKey": "CIRCUIT:ca3:b64377897837b0ed"
     },
     {
       "id": "445534ff95e7e35a7c1bd490",
@@ -5533,19 +5533,34 @@
       "sourceKey": "CIRCUIT:ca3:eab7ca642d5de0e4"
     },
     {
-      "id": "3fa1706a9232b64cfd3a6de3",
+      "id": "a674a27a9e011d86826ff328",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Third Circuit",
       "jurisdiction": "United States",
       "publicationDate": null,
       "docket": null,
-      "title": "NAACP Delaware State Conference of Branches v. City of Wilmington",
+      "title": "USA v. Anthony Bressi",
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/252576np.pdf",
-      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/252576np.pdf",
-      "sourceKey": "CIRCUIT:ca3:f3d879a1b0e2015a"
+      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/251824np.pdf",
+      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/251824np.pdf",
+      "sourceKey": "CIRCUIT:ca3:eba43d1fa06a0a57"
+    },
+    {
+      "id": "2f4833e157063977ca6effbe",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Marlowe v. Guzman",
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/261166np.pdf",
+      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/261166np.pdf",
+      "sourceKey": "CIRCUIT:ca3:f3e3c5cb891496b4"
     },
     {
       "id": "158db104aee6229c146d6c32",
@@ -5576,21 +5591,6 @@
       "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/251097p.pdf",
       "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/251097p.pdf",
       "sourceKey": "CIRCUIT:ca3:fc969cbdc4d002fd"
-    },
-    {
-      "id": "daa927499258e12d41a7ea28",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Third Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": "Jason Woodall v. Municipality of Monroeville",
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://www2.ca3.uscourts.gov/opinarch/252867np.pdf",
-      "officialPdfUrl": "https://www2.ca3.uscourts.gov/opinarch/252867np.pdf",
-      "sourceKey": "CIRCUIT:ca3:fd79517113f9eed5"
     },
     {
       "id": "76cebc8349e1b67e27d7de3b",
@@ -8008,6 +8008,21 @@
       "sourceKey": "CIRCUIT:ca8:f2d3121a859222bd"
     },
     {
+      "id": "c01e135759f8ade1af1e4603",
+      "sourceSystem": "US_CIRCUIT",
+      "authorityType": "Federal Appellate Opinion",
+      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": null,
+      "citation": null,
+      "precedentialStatus": "unknown",
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/19/25-4458.pdf",
+      "officialPdfUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/19/25-4458.pdf",
+      "sourceKey": "CIRCUIT:ca9:02187254c40bb5ec"
+    },
+    {
       "id": "c811a7df843e18cbc252833b",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -8218,21 +8233,6 @@
       "sourceKey": "CIRCUIT:ca9:9cbf2491299a1b63"
     },
     {
-      "id": "b8566ff0d0659e16a8a7001e",
-      "sourceSystem": "US_CIRCUIT",
-      "authorityType": "Federal Appellate Opinion",
-      "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
-      "jurisdiction": "United States",
-      "publicationDate": null,
-      "docket": null,
-      "title": null,
-      "citation": null,
-      "precedentialStatus": "unknown",
-      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/24-3479.pdf",
-      "officialPdfUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/24-3479.pdf",
-      "sourceKey": "CIRCUIT:ca9:9fd8c26e405e406b"
-    },
-    {
       "id": "1d6450a1ccf891396aceeaa0",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
@@ -8353,7 +8353,7 @@
       "sourceKey": "CIRCUIT:ca9:e0f76183b4d8691b"
     },
     {
-      "id": "3438fa165c8ea5001ce0c382",
+      "id": "d0cf85f395b0b22d7d8264d6",
       "sourceSystem": "US_CIRCUIT",
       "authorityType": "Federal Appellate Opinion",
       "issuingBody": "U.S. Court of Appeals for the Ninth Circuit",
@@ -8363,9 +8363,9 @@
       "title": null,
       "citation": null,
       "precedentialStatus": "unknown",
-      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
-      "officialPdfUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/11/23-4189.pdf",
-      "sourceKey": "CIRCUIT:ca9:e25611d8dd2105bd"
+      "officialUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/19/25-1532.pdf",
+      "officialPdfUrl": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/19/25-1532.pdf",
+      "sourceKey": "CIRCUIT:ca9:e35f89411f694286"
     },
     {
       "id": "926e6dd67113a10f573b4fe7",

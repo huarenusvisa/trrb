@@ -1,8 +1,5 @@
 const crypto = require("node:crypto");
-
-const SUPABASE_URL = String(process.env.SUPABASE_URL || "https://fwiznbpsqkfgkvyznebz.supabase.co").replace(/\/+$/, "");
-const ANON_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const { authenticateStaff, rest, safeText } = require("./_shared/supabase-admin");
 
 function json(statusCode, body) {
   return {
@@ -16,79 +13,8 @@ function json(statusCode, body) {
   };
 }
 
-function safeText(value, max = 20000) {
-  return String(value ?? "").trim().replace(/\u0000/g, "").slice(0, max);
-}
-
 function nowIso() {
   return new Date().toISOString();
-}
-
-async function readJson(response) {
-  const text = await response.text();
-  if (!text) return null;
-  try { return JSON.parse(text); } catch { return { raw: text }; }
-}
-
-async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
-  if (!SERVICE_KEY) throw new Error("Netlify尚未设置SUPABASE_SERVICE_ROLE_KEY");
-  const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
-  Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
-  });
-
-  const response = await fetch(url, {
-    method,
-    headers: {
-      apikey: SERVICE_KEY,
-      Authorization: `Bearer ${SERVICE_KEY}`,
-      "Content-Type": "application/json",
-      ...(prefer ? { Prefer: prefer } : {})
-    },
-    body: body === undefined ? undefined : JSON.stringify(body)
-  });
-  const data = await readJson(response);
-  if (!response.ok) {
-    throw new Error(data?.message || data?.details || data?.error || data?.raw || `Supabase ${response.status}`);
-  }
-  return data;
-}
-
-async function authenticate(event) {
-  const token = safeText(event.headers.authorization || event.headers.Authorization, 1000).replace(/^Bearer\s+/i, "");
-  if (!token) {
-    const error = new Error("缺少后台登录凭证");
-    error.statusCode = 401;
-    throw error;
-  }
-
-  const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers: { apikey: ANON_KEY, Authorization: `Bearer ${token}` }
-  });
-  const user = await readJson(response);
-  if (!response.ok || !user?.id) {
-    const error = new Error("后台登录状态无效，请重新登录");
-    error.statusCode = 401;
-    throw error;
-  }
-
-  let rows = await rest("admin_users", {
-    query: { select: "id,user_id,email,role,is_active", user_id: `eq.${user.id}`, is_active: "eq.true", limit: "1" }
-  });
-  let admin = Array.isArray(rows) ? rows[0] : null;
-  if (!admin && user.email) {
-    rows = await rest("admin_users", {
-      query: { select: "id,user_id,email,role,is_active", email: `ilike.${safeText(user.email, 300)}`, is_active: "eq.true", limit: "1" }
-    });
-    admin = Array.isArray(rows) ? rows[0] : null;
-  }
-
-  if (!admin || !["owner", "admin"].includes(String(admin.role || "").toLowerCase())) {
-    const error = new Error("这个账号没有ICE审核权限");
-    error.statusCode = 403;
-    throw error;
-  }
-  return { user, admin };
 }
 
 async function listStories() {
@@ -240,7 +166,7 @@ async function publishNow(story, actor, input) {
         topic_key: "ice",
         source_platform: sourcePlatform,
         source_post_id: sourceId,
-        source_url: post?.x_url || "https://trrb.net/topic/ice/",
+        source_url: post?.x_url || "https://trrb.net/ice",
         source_account: post?.source_username || "ICE人工审核",
         source_created_at: post?.source_created_at || story.last_seen_at || time,
         ai_confidence: story.ai_confidence,
@@ -305,7 +231,7 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
 
   try {
-    const actor = await authenticate(event);
+    const actor = await authenticateStaff(event, ["owner", "editor"]);
     const input = JSON.parse(event.body || "{}");
     const action = safeText(input.action, 60);
 

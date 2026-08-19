@@ -32,6 +32,7 @@ async function countRows(base, key, filters) {
   const url = new URL(`${base}/rest/v1/articles`);
   url.searchParams.set('select', 'id');
   url.searchParams.set('status', 'eq.published');
+  url.searchParams.set('visibility', 'eq.public');
   for (const [name, value] of Object.entries(filters)) url.searchParams.set(name, value);
   url.searchParams.set('limit', '1');
   const response = await fetch(url, {
@@ -50,8 +51,9 @@ async function countRows(base, key, filters) {
 
 async function latestArticle(base, key) {
   const url = new URL(`${base}/rest/v1/articles`);
-  url.searchParams.set('select', 'id,title,published_at,source_account,source_url');
+  url.searchParams.set('select', 'id,title,published_at,source_account,source_url,visibility');
   url.searchParams.set('status', 'eq.published');
+  url.searchParams.set('visibility', 'eq.public');
   url.searchParams.set('topic_key', `eq.${TOPIC_KEY}`);
   url.searchParams.set('order', 'published_at.desc');
   url.searchParams.set('limit', '1');

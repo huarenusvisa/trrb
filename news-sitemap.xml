@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/%E9%A9%B1%E9%80%90%E4%BB%A4%E6%BF%80%E5%A2%9E%E8%83%8C%E5%90%8E%E7%89%B9%E6%9C%97%E6%99%AE%E9%87%8D%E5%A1%91%E7%A7%BB%E6%B0%91%E6%B3%95%E9%99%A2%E4%BD%93%E7%B3%BB%E6%B3%95%E5%AE%98%E8%A3%81%E9%87%8F%E6%9D%83%E9%81%AD%E5%BC%BA%E5%8A%9B%E6%8C%A4%E5%8E%8B-mt01mgne-84a089</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T12:03:45.481Z</news:publication_date>
+        <news:title>驱逐令激增背后：特朗普重塑移民法院体系，法官“裁量权”遭强力挤压</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/trump/%E5%8F%8D%E9%82%AE%E5%AF%84%E6%8A%95%E7%A5%A8%E9%81%AD%E6%89%93%E8%84%B8%E7%89%B9%E6%9C%97%E6%99%AE%E8%BF%9E%E7%BB%AD%E4%B8%A4%E6%AC%A1%E9%82%AE%E5%AF%84%E6%8A%95%E7%A5%A8%E7%99%BD%E5%AE%AB%E5%9B%9E%E5%BA%94%E9%9A%BE%E5%B9%B3%E4%BA%89%E8%AE%AE-mszytb3z-353148</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2230,30 +2238,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-17T12:36:31.388Z</news:publication_date>
         <news:title>曼哈顿爆家庭血案！54岁男子持屠刀袭击75岁父亲，警方开枪击毙</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/%E7%89%B9%E6%9C%97%E6%99%AE%E7%9B%B4%E5%86%B2%E6%9C%80%E9%AB%98%E6%B3%95%E9%99%A2%E7%99%BD%E5%AE%AB%E5%AE%B4%E4%BC%9A%E5%8E%85%E9%A1%B9%E7%9B%AE%E9%81%AD%E5%8F%B8%E6%B3%95%E6%8B%A6%E6%88%AA%E6%80%BB%E7%BB%9F%E6%9D%83%E5%8A%9B%E8%BF%8E%E7%BB%88%E6%9E%81%E5%AF%B9%E5%86%B3-msx7a9f2-90b5ea</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T12:18:55.406Z</news:publication_date>
-        <news:title>特朗普直冲最高法院！白宫宴会厅项目遭司法拦截，总统权力迎终极对决</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-3443cf8218a5a675ee7088b7fd4dc2b2478a42a0</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T12:08:04.349Z</news:publication_date>
-        <news:title>德州Combes市逮捕有虐童前科墨西哥籍嫌犯</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/47%E5%B7%9E%E6%B0%91%E6%84%8F%E5%85%A8%E9%9D%A2%E7%BF%BB%E7%9B%98%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%AF%E6%8C%81%E7%8E%87%E8%B7%8C%E5%85%A5%E8%B4%9F%E5%80%BC%E6%B0%91%E4%B8%BB%E5%85%9A84%E6%A6%82%E7%8E%87%E6%8E%80%E8%B5%B7%E4%BC%97%E9%99%A2%E5%A4%BA%E6%9D%83%E6%88%98-msx6u0qm-bd55d2</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-17T12:06:17.662Z</news:publication_date>
-        <news:title>47州民意全面翻盘！特朗普支持率跌入负值，民主党84%概率掀起众院夺权战</news:title>
       </news:news>
     </url>
 </urlset>

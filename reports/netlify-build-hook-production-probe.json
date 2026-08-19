@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-08-19T15:31:43Z",
+  "hook_http_status": 200,
+  "forced_branch": "main",
+  "clear_cache": true,
+  "expected_generation": "trrb-seo-recovery-20260819-v1",
+  "live_generation": "",
+  "generation_marker_live": false,
+  "finance_card_live": false,
+  "news_sitemap_v4_live": false,
+  "missing_wp_117123_is_410": false
+}

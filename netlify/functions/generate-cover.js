@@ -1,7 +1,9 @@
 const crypto = require("node:crypto");
-
-const SUPABASE_URL = process.env.SUPABASE_URL || "https://fwiznbpsqkfgkvyznebz.supabase.co";
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
+const {
+  SUPABASE_URL,
+  SERVICE_KEY,
+  authenticateStaff
+} = require("./_shared/supabase-admin");
 
 function response(statusCode, body) {
   return {
@@ -11,74 +13,15 @@ function response(statusCode, body) {
   };
 }
 
-async function readJson(res) {
-  const text = await res.text();
-  if (!text) return null;
-  try { return JSON.parse(text); } catch { return { raw: text }; }
-}
-
-async function requireAdmin(event, serviceKey) {
-  const token = String(event.headers.authorization || event.headers.Authorization || "").replace(/^Bearer\s+/i, "").trim();
-  if (!token) {
-    const error = new Error("缺少后台登录凭证");
-    error.statusCode = 401;
-    throw error;
-  }
-
-  const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-    headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` }
-  });
-  const user = await readJson(userRes);
-  if (!userRes.ok || !user?.id) {
-    const error = new Error("后台登录凭证无效");
-    error.statusCode = 401;
-    throw error;
-  }
-
-  const adminUrl = new URL(`${SUPABASE_URL}/rest/v1/admin_users`);
-  adminUrl.searchParams.set("select", "id,user_id,email,role,is_active");
-  adminUrl.searchParams.set("user_id", `eq.${user.id}`);
-  adminUrl.searchParams.set("is_active", "eq.true");
-  adminUrl.searchParams.set("limit", "1");
-  const adminRes = await fetch(adminUrl, {
-    headers: {
-      apikey: serviceKey,
-      Authorization: `Bearer ${serviceKey}`,
-      Accept: "application/json"
-    }
-  });
-  const adminRows = await readJson(adminRes);
-  if (!adminRes.ok) {
-    const error = new Error("后台权限校验失败");
-    error.statusCode = 502;
-    throw error;
-  }
-
-  let admin = Array.isArray(adminRows) ? adminRows[0] : null;
-  const ownerEmail = String(process.env.TRRB_OWNER_EMAIL || "tangrenribao@gmail.com").trim().toLowerCase();
-  const ownerUid = String(process.env.TRRB_OWNER_UID || "4c491ee3-a9f0-42c9-9bee-1abb52b20b01").trim();
-  if (!admin && user.id === ownerUid && String(user.email || "").trim().toLowerCase() === ownerEmail) {
-    admin = { role: "owner", email: ownerEmail };
-  }
-
-  if (!admin || !["owner", "admin"].includes(String(admin.role || "").toLowerCase())) {
-    const error = new Error("没有后台图片生成权限");
-    error.statusCode = 403;
-    throw error;
-  }
-  return user;
-}
-
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return response(405, { error: "Method not allowed" });
 
   try {
-    const openaiKey = process.env.OPENAI_API_KEY;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!openaiKey) throw new Error("Netlify 尚未设置 OPENAI_API_KEY");
-    if (!serviceKey) throw new Error("Netlify 尚未设置 SUPABASE_SERVICE_ROLE_KEY");
+    await authenticateStaff(event, ["owner", "editor"]);
 
-    await requireAdmin(event, serviceKey);
+    const openaiKey = process.env.OPENAI_API_KEY;
+    if (!openaiKey) throw new Error("Netlify 尚未设置 OPENAI_API_KEY");
+    if (!SERVICE_KEY) throw new Error("Netlify 尚未设置 SUPABASE_SERVICE_ROLE_KEY");
 
     const input = JSON.parse(event.body || "{}");
     const title = String(input.title || "").slice(0, 220);
@@ -104,12 +47,12 @@ exports.handler = async (event) => {
 
     const bytes = Buffer.from(b64, "base64");
     const now = new Date();
-    const path = `ai/${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, "0")}/${Date.now()}-${crypto.randomUUID()}.png`;
-    const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/article-images/${path}`, {
+    const objectPath = `ai/${now.getUTCFullYear()}/${String(now.getUTCMonth() + 1).padStart(2, "0")}/${Date.now()}-${crypto.randomUUID()}.png`;
+    const uploadRes = await fetch(`${SUPABASE_URL}/storage/v1/object/article-images/${objectPath}`, {
       method: "POST",
       headers: {
-        apikey: serviceKey,
-        Authorization: `Bearer ${serviceKey}`,
+        apikey: SERVICE_KEY,
+        Authorization: `Bearer ${SERVICE_KEY}`,
         "Content-Type": "image/png",
         "x-upsert": "false",
         "Cache-Control": "31536000"
@@ -118,7 +61,7 @@ exports.handler = async (event) => {
     });
     if (!uploadRes.ok) throw new Error(`AI 图片上传失败：${await uploadRes.text()}`);
 
-    const url = `${SUPABASE_URL}/storage/v1/object/public/article-images/${path}`;
+    const url = `${SUPABASE_URL}/storage/v1/object/public/article-images/${objectPath}`;
     return response(200, { url, aiGenerated: true });
   } catch (error) {
     console.error(error);

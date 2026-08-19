@@ -1,32 +1,26 @@
 import fs from 'node:fs';
 
-const articleHtmlPath = 'article.html';
-const homeJsPath = 'articles-home.js';
+// Read-only compatibility audit. This command previously rewrote article.html
+// and articles-home.js and could bypass the unified homepage bundle if run on a
+// modern checkout.
 
-let articleHtml = fs.readFileSync(articleHtmlPath, 'utf8');
-let homeJs = fs.readFileSync(homeJsPath, 'utf8');
+const articleHtml = fs.readFileSync('article.html', 'utf8');
+const home = fs.readFileSync('articles-home.js', 'utf8');
+const articleEdge = fs.readFileSync('netlify/edge-functions/article-prerender.ts', 'utf8');
+const legacyGuard = fs.readFileSync('netlify/edge-functions/00-legacy-article-query-guard.ts', 'utf8');
 
-const legacyLoader = '<script src="/article.js?v=29.8-legacy-archive-rescue"></script>';
-if (!articleHtml.includes(legacyLoader)) {
-  const needle = '<script src="/article-v31.js?v=31.4"></script>';
-  if (!articleHtml.includes(needle)) throw new Error('article-v31 script marker not found');
-  articleHtml = articleHtml.replace(
-    needle,
-    `${legacyLoader}${needle}`
-  );
+const checks = [
+  ['homepage uses unified live bundle', home.includes('fetchUnifiedHomeBundle') && home.includes('public-home-bundle')],
+  ['numeric archive index remains available on legacy article template', articleHtml.includes('articles-home-index.js?v=20260819-archive')],
+  ['legacy archive loader remains available on legacy article template', articleHtml.includes('article.js?v=29.8-legacy-archive-rescue')],
+  ['article edge knows static archive IDs', articleEdge.includes('archiveHasId')],
+  ['legacy query guard knows static archive IDs', legacyGuard.includes('archiveHasId')]
+];
+
+let failures = 0;
+for (const [label, ok] of checks) {
+  console.log(`${ok ? 'PASS' : 'FAIL'} ${label}`);
+  if (!ok) failures += 1;
 }
-
-const oldBlock = `    const live = await fetchLivePublishedArticles(60);\n    if (live.length) {\n      renderHome(mergeArticles(live, archived));\n      return;\n    }`;
-const newBlock = `    const live = await fetchLivePublishedArticles(200);\n    if (live.length) {\n      // Production homepage must be driven only by current published rows.\n      // Archived static data is a disaster-recovery fallback, not a source for\n      // filling live category slots, otherwise old July stories can reappear.\n      renderHome(live);\n      return;\n    }`;
-
-if (homeJs.includes(oldBlock)) {
-  homeJs = homeJs.replace(oldBlock, newBlock);
-} else if (!homeJs.includes('fetchLivePublishedArticles(200)') || !homeJs.includes('renderHome(live);')) {
-  throw new Error('articles-home live rendering block not found');
-}
-
-fs.writeFileSync(articleHtmlPath, articleHtml);
-fs.writeFileSync(homeJsPath, homeJs);
-
-console.log('HOME_STALE_ARCHIVE_FIX=true');
-console.log('LEGACY_ARTICLE_LOADER_RESTORED=true');
+console.log(`HOME_LIVE_LEGACY_READ_ONLY_AUDIT=true checks=${checks.length} failures=${failures}`);
+if (failures) process.exit(1);

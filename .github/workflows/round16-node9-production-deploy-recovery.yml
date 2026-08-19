@@ -10,14 +10,9 @@ on:
       - '.github/workflows/round16-node4-home-legal-production.yml'
       - '.github/workflows/round13-publish-seo-sync.yml'
       - '_redirects'
+      - 'robots.txt'
       - 'netlify.toml'
-      - 'netlify/edge-functions/00-legacy-article-query-guard.ts'
-      - 'netlify/edge-functions/article-prerender.ts'
-      - 'netlify/edge-functions/category-prerender.ts'
-      - 'netlify/edge-functions/legacy-url-redirect.ts'
-      - 'netlify/edge-functions/sitemap-live.ts'
-      - 'netlify/edge-functions/news-sitemap-live.ts'
-      - 'netlify/edge-functions/feed-live.ts'
+      - 'netlify/edge-functions/**'
       - 'netlify/functions/public-home-bundle.js'
       - 'netlify/functions/admin-articles.js'
       - 'netlify/functions/admin-article-ai-publish-background.js'
@@ -52,6 +47,8 @@ on:
       - 'scripts/generate-feed.mjs'
       - 'scripts/finalize-redirects.mjs'
       - 'scripts/optimize-homepage-performance.mjs'
+      - 'scripts/validate-site.mjs'
+      - 'scripts/seo-integrity-audit.mjs'
       - 'scripts/google-indexing-acceptance.mjs'
       - 'scripts/production-seo-diagnostic.mjs'
       - 'scripts/round14-node5-duplicate-thin-content-audit.mjs'
@@ -120,7 +117,7 @@ jobs:
           echo 'No Netlify deployment credential or build hook is configured in GitHub Actions secrets.'
           exit 2
 
-      - name: 验收生产Commit、首页、栏目、ICE、Sitemap和旧档案
+      - name: 验收生产Commit、首页、栏目、主机归一、ICE、Sitemap和旧档案
         shell: bash
         run: |
           set -euo pipefail
@@ -135,12 +132,18 @@ jobs:
             sitemap=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" || true)
             news=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" || true)
             bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?seo-deploy=$stamp" || true)
+            immigration_legacy=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/listing.html?category=%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%9B%BD&seo-deploy=$stamp" || true)
+
             sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
             news_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/news-sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
             category_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/important-news?seo-deploy=$stamp" | tr -d '\r' || true)
             legacy_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=wp-117123&seo-deploy=$stamp" | tr -d '\r' || true)
             archive_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=117382&seo-deploy=$stamp" | tr -d '\r' || true)
             invalid_uuid_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/article.html?id=00000000-0000-4000-8000-000000000000&seo-deploy=$stamp" | tr -d '\r' || true)
+            www_category_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://www.trrb.net/important-news?seo-deploy=$stamp" | tr -d '\r' || true)
+            www_sitemap_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://www.trrb.net/sitemap.xml?seo-deploy=$stamp" | tr -d '\r' || true)
+            index_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/index.html?seo-deploy=$stamp" | tr -d '\r' || true)
+            search_headers=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/listing.html?q=seo-check&seo-deploy=$stamp" | tr -d '\r' || true)
 
             deploy_sha_ok=0
             [ "$live_sha" = "$DEPLOY_SHA" ] && deploy_sha_ok=1
@@ -167,6 +170,18 @@ jobs:
             archive_200=$(printf '%s' "$archive_headers" | grep -c '^HTTP/.* 200' || true)
             invalid_uuid_404=$(printf '%s' "$invalid_uuid_headers" | grep -c '^HTTP/.* 404' || true)
             invalid_uuid_noindex=$(printf '%s' "$invalid_uuid_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
+
+            www_category_301=$(printf '%s' "$www_category_headers" | grep -c '^HTTP/.* 301' || true)
+            www_category_location=$(printf '%s' "$www_category_headers" | grep -ci '^location: https://trrb.net/important-news' || true)
+            www_category_marker=$(printf '%s' "$www_category_headers" | grep -ci '^x-trrb-host-canonical: apex-https' || true)
+            www_sitemap_301=$(printf '%s' "$www_sitemap_headers" | grep -c '^HTTP/.* 301' || true)
+            www_sitemap_location=$(printf '%s' "$www_sitemap_headers" | grep -ci '^location: https://trrb.net/sitemap.xml' || true)
+            www_sitemap_marker=$(printf '%s' "$www_sitemap_headers" | grep -ci '^x-trrb-host-canonical: apex-https' || true)
+            index_301=$(printf '%s' "$index_headers" | grep -c '^HTTP/.* 301' || true)
+            immigration_canonical=$(printf '%s' "$immigration_legacy" | grep -c '<link rel="canonical" href="https://trrb.net/immigration"' || true)
+            immigration_wrong_knowledge=$(printf '%s' "$immigration_legacy" | grep -c '<link rel="canonical" href="https://trrb.net/immigrate/' || true)
+            search_noindex=$(printf '%s' "$search_headers" | grep -ci '^x-robots-tag:.*noindex' || true)
+
             first_ice_url=$(printf '%s' "$news" | grep -Eo '<loc>https://trrb.net/ice/[^<]+' | head -1 | sed 's#<loc>##' || true)
             ice_article_ok=0
             pretty_no_archive_loader=0
@@ -181,10 +196,20 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/seo:$home_canonical/$home_robots/$home_og/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v4=$sitemap_v4 news_v5=$news_v5 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
+            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/seo:$home_canonical/$home_robots/$home_og/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links host_www_category=$www_category_301/$www_category_location/$www_category_marker host_www_sitemap=$www_sitemap_301/$www_sitemap_location/$www_sitemap_marker index301=$index_301 immigration=$immigration_canonical/wrong:$immigration_wrong_knowledge searchNoindex=$search_noindex legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v4=$sitemap_v4 news_v5=$news_v5 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
 
-            if [ "$deploy_sha_ok" -eq 1 ] && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$home_canonical" -ge 1 ] && [ "$home_robots" -ge 1 ] && [ "$home_og" -ge 1 ] && [ "$finance_card" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v4" -ge 1 ] && [ "$news_v5" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
-              echo 'PRODUCTION EXACT-SHA + HOMEPAGE CANONICAL + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V5 + ICE INDEXABILITY PASS'
+            if [ "$deploy_sha_ok" -eq 1 ] \
+              && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] \
+              && [ "$home_canonical" -ge 1 ] && [ "$home_robots" -ge 1 ] && [ "$home_og" -ge 1 ] && [ "$finance_card" -ge 1 ] \
+              && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] \
+              && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] \
+              && [ "$www_category_301" -ge 1 ] && [ "$www_category_location" -ge 1 ] && [ "$www_category_marker" -ge 1 ] \
+              && [ "$www_sitemap_301" -ge 1 ] && [ "$www_sitemap_location" -ge 1 ] && [ "$www_sitemap_marker" -ge 1 ] && [ "$index_301" -ge 1 ] \
+              && [ "$immigration_canonical" -ge 1 ] && [ "$immigration_wrong_knowledge" -eq 0 ] && [ "$search_noindex" -ge 1 ] \
+              && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] \
+              && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v4" -ge 1 ] && [ "$news_v5" -ge 1 ] \
+              && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
+              echo 'PRODUCTION EXACT-SHA + APEX HOST + HOMEPAGE CANONICAL + SEARCH NOINDEX + IMMIGRATION CANONICAL + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V5 + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

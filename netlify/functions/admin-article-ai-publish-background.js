@@ -10,6 +10,36 @@ function nowIso() {
   return new Date().toISOString();
 }
 
+function normalizeTitle(value) {
+  return String(value || "")
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[\p{P}\p{S}\s]+/gu, "")
+    .trim();
+}
+
+async function assertNoPublishedDuplicate(title, excludeId) {
+  const wanted = normalizeTitle(title);
+  if (wanted.length < 8) return;
+  const rows = await rest("articles", {
+    query: {
+      select: "id,title,published_at,status",
+      status: "eq.published",
+      order: "published_at.desc.nullslast,created_at.desc",
+      limit: "500"
+    }
+  });
+  const duplicate = (Array.isArray(rows) ? rows : []).find((row) =>
+    String(row?.id || "") !== String(excludeId || "") && normalizeTitle(row?.title) === wanted
+  );
+  if (duplicate) {
+    const error = new Error(`检测到重复稿：已有已发布文章「${duplicate.title}」`);
+    error.statusCode = 409;
+    throw error;
+  }
+}
+
 async function getArticle(id) {
   const rows = await rest("articles", {
     query: {
@@ -48,6 +78,10 @@ exports.handler = async (event) => {
       throw new Error("这篇文章没有等待AI封面发布");
     }
 
+    // Re-check at the actual publication boundary. Two identical drafts can be
+    // created before either background image job finishes; only one may publish.
+    await assertNoPublishedDuplicate(article.title, articleId);
+
     const summary = safeText(article.summary, 600) || generateSummary(article.content, article.title);
     const coverImage = await generateCover({
       title: article.title,
@@ -55,6 +89,10 @@ exports.handler = async (event) => {
       summary,
       content: article.content
     });
+
+    // Check once more after image generation in case another process published
+    // a duplicate while this relatively slow AI task was running.
+    await assertNoPublishedDuplicate(article.title, articleId);
 
     await patchArticle(articleId, {
       cover_image: coverImage,

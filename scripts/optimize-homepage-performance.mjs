@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 
+// Full Netlify builds reach this optimizer through finalize-redirects.mjs.
+// Generate deploy-version.txt here so both direct CLI deploys and linked-repo
+// build-hook deploys expose the exact build commit (COMMIT_REF when available).
+await import('./write-deploy-version.mjs');
+
 const file = 'index.html';
 let html = fs.readFileSync(file, 'utf8');
 const before = html;

@@ -11,6 +11,16 @@ on:
       - 'robots.txt'
       - 'scripts/round17-node*.mjs'
       - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
+      - 'config/immigration-knowledge.js'
+      - 'immigrate/center.html'
+      - 'immigrate/center.js'
+      - 'immigrate/center-seo.js'
+      - 'immigrate/center.css'
+      - 'immigrate/study-knowledge-content.css'
+      - 'immigrate/*-knowledge-content.js'
+      - 'immigrate/change-status-module.js'
+      - 'immigrate/citizenship-module.js'
+      - 'scripts/split-sitemap-index.mjs'
       - '.github/workflows/round17-node*.yml'
       - '.github/workflows/round17-central-production-deploy.yml'
 
@@ -31,7 +41,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Debounce legal commits and trigger one clean main build
+      - name: Debounce knowledge/legal commits and trigger one clean main build
         shell: bash
         run: |
           set -euo pipefail

@@ -9,6 +9,7 @@
 
   const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
   const SUPABASE_KEY='sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
+  const SECTIONS={'重要新闻':'important-news','热门头条':'hot-headlines','美国时政':'us-politics','美国警情':'us-crime','中国官场':'china-officialdom','移民美国':'immigration','庇护百科':'asylum','驱逐快报':'deport','ICE执法动态':'ice','ICE执法':'ice'};
 
   // The generic center script may finish first and briefly render loosely matched
   // or cached articles. Replace that intermediate state with one stable loader.
@@ -85,6 +86,16 @@
 
   function normalize(value){return String(value||'').toLowerCase().replace(/[‐‑‒–—]/g,'-').replace(/\s+/g,' ').trim();}
   function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
+  function articleUrl(row){
+    if(typeof window.TRRB_articleUrl==='function'){
+      const routed=window.TRRB_articleUrl({id:row.id,slug:row.slug,category:row.category_name,category_name:row.category_name,topicKey:row.topic_key,topic_key:row.topic_key});
+      if(routed)return routed;
+    }
+    const slug=String(row.slug||'').trim();
+    if(slug){const topicKey=String(row.topic_key||'').trim().toLowerCase();const section=topicKey==='trump'?'trump':topicKey==='ice'?'ice':(SECTIONS[String(row.category_name||'').trim()]||'news');return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;}
+    const id=String(row.id||'').trim();
+    return id?`/news/${encodeURIComponent(id)}`:'/';
+  }
 
   function score(row,rule){
     const title=normalize(row.title);
@@ -108,7 +119,7 @@
   }
 
   async function applyStrictFilter(){
-    const select=['id','title','summary','content','category_name','status','published_at'].join(',');
+    const select=['id','title','slug','summary','content','category_name','topic_key','status','published_at'].join(',');
     const url=`${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast&limit=500`;
     try{
       const response=await fetch(url,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'});
@@ -119,7 +130,7 @@
         root.innerHTML='<div class="empty-state">该专题暂时没有符合要求的知识文章。新闻类、军事类和其他无关内容不会在这里显示。</div>';
         return;
       }
-      root.innerHTML=items.map(item=>`<article class="article-item"><small>${escapeHtml(item.category_name||'移民美国')}</small><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.summary||'查看完整知识内容与办理要点。')}</p><a href="../article.html?id=${encodeURIComponent(item.id)}">阅读全文 →</a></article>`).join('');
+      root.innerHTML=items.map(item=>`<article class="article-item"><small>${escapeHtml(item.category_name||'移民美国')}</small><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.summary||'查看完整知识内容与办理要点。')}</p><a href="${escapeHtml(articleUrl(item))}">阅读全文 →</a></article>`).join('');
     }catch(error){
       console.warn('Strict knowledge filter unavailable',error);
       root.innerHTML='<div class="empty-state">暂时无法读取最新内容，请稍后刷新。</div>';

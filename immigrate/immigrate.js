@@ -10,13 +10,19 @@
   const hotButtons=document.querySelectorAll('[data-search]');
   const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
   const SUPABASE_KEY='sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
+  const SECTIONS={'重要新闻':'important-news','热门头条':'hot-headlines','美国时政':'us-politics','美国警情':'us-crime','中国官场':'china-officialdom','移民美国':'immigration','庇护百科':'asylum','驱逐快报':'deport','ICE执法动态':'ice','ICE执法':'ice'};
   let articles=[];
 
   function esc(v){return String(v||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
   function normalize(v){return String(v||'').toLowerCase().replace(/\s+/g,' ');}
   function articleText(a){return normalize([a.title,a.summary,a.content,a.category_name,a.excerpt,a.category].filter(Boolean).join(' '));}
   function matchCategory(article,cat){const text=articleText(article);return cat.keywords.some(k=>text.includes(normalize(k)));}
-  function articleUrl(a){return `../article.html?id=${encodeURIComponent(a.id)}`;}
+  function articleUrl(a){
+    if(typeof window.TRRB_articleUrl==='function'){const routed=window.TRRB_articleUrl(a);if(routed)return routed;}
+    const slug=String(a?.slug||'').trim();
+    if(slug){const topic=String(a?.topic_key||a?.topicKey||'').trim().toLowerCase();const category=String(a?.category_name||a?.category||'').trim();const section=topic==='trump'?'trump':topic==='ice'?'ice':(SECTIONS[category]||'news');return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;}
+    return a?.id?`../article.html?id=${encodeURIComponent(a.id)}`:'../';
+  }
   function categoryUrl(cat){return `./center.html?path=${encodeURIComponent(cat.slug)}`;}
   function topicUrl(cat,item){return `./center.html?path=${encodeURIComponent(cat.slug)}&topic=${encodeURIComponent(item.slug)}`;}
 
@@ -42,7 +48,7 @@
 
   function localArticles(){const pools=[window.TRRB_ARTICLE_INDEX,window.TRRB_ARTICLES,window.TRRB_ARTICLE_CHUNK];return pools.find(Array.isArray)||[];}
   async function fetchArticles(){
-    const select=['id','title','summary','content','category_name','status','published_at'].join(',');
+    const select=['id','title','slug','summary','content','category_id','category_name','topic_key','status','published_at'].join(',');
     const url=`${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast&limit=500`;
     try{const r=await fetch(url,{cache:'no-store',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'}});if(!r.ok)throw new Error(r.status);const live=await r.json();const seen=new Set(live.map(x=>String(x.id)));articles=live.concat(localArticles().filter(x=>!seen.has(String(x.id))));}
     catch(e){console.warn('Immigration knowledge articles unavailable',e);articles=localArticles();}
@@ -50,7 +56,7 @@
   function renderMatches(items,label){
     matchedSection.hidden=false;matchedTitle.textContent=label;
     if(!items.length){matchedGrid.innerHTML='<div class="empty-knowledge">暂时没有符合该路径的已发布知识内容。新文章发布后会自动归入这里。</div>';return;}
-    matchedGrid.innerHTML=items.slice(0,60).map(({article,category})=>`<article class="knowledge-card"><small>${esc(category.nameZh)}</small><h3>${esc(article.title)}</h3><p>${esc(article.summary||article.excerpt||'查看完整内容与办理要点。')}</p><a href="${articleUrl(article)}">阅读全文 →</a></article>`).join('');
+    matchedGrid.innerHTML=items.slice(0,60).map(({article,category})=>`<article class="knowledge-card"><small>${esc(category.nameZh)}</small><h3>${esc(article.title)}</h3><p>${esc(article.summary||article.excerpt||'查看完整内容与办理要点。')}</p><a href="${esc(articleUrl(article))}">阅读全文 →</a></article>`).join('');
     matchedSection.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function search(){

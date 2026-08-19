@@ -1,8 +1,11 @@
 const SITE = "https://trrb.net";
 
 // Runs before article-prerender. It retires truly missing WordPress/numeric
-// query URLs, while preserving numeric IDs that still exist in the static archive.
+// query URLs, preserves valid numeric archives, and prevents deleted/invalid
+// UUID query URLs from falling through to the static article shell as HTTP 200.
 export const config = { path: "/article.html" };
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
   "重要新闻": "important-news",
@@ -46,7 +49,7 @@ function dbHeaders(key: string) {
 
 async function fetchLegacyArticle(id: string) {
   const { base, key } = supabaseConfig();
-  if (!base || !key) return null;
+  if (!base || !key) return { available: false, article: null };
   const variants = [...new Set([id, id.replace(/^wp-/i, ""), /^\d+$/.test(id) ? `wp-${id}` : ""].filter(Boolean))];
 
   for (const legacyId of variants) {
@@ -56,12 +59,30 @@ async function fetchLegacyArticle(id: string) {
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("limit", "1");
     const response = await fetch(url, { cache: "no-store", headers: dbHeaders(key) });
-    // Schema drift must never turn every historical article into a 410.
-    if (!response.ok) return null;
+    // Schema/network failure must never turn every historical article into a 410.
+    if (!response.ok) return { available: false, article: null };
     const rows = await response.json();
-    if (Array.isArray(rows) && rows[0]) return rows[0];
+    if (Array.isArray(rows) && rows[0]) return { available: true, article: rows[0] };
   }
-  return null;
+  return { available: true, article: null };
+}
+
+async function fetchPublishedArticleById(id: string) {
+  const { base, key } = supabaseConfig();
+  if (!base || !key) return { available: false, article: null };
+  const url = new URL(`${base}/rest/v1/articles`);
+  url.searchParams.set("select", "id,legacy_id,title,slug,category_id,category_name,topic_key,status,canonical_url");
+  url.searchParams.set("id", `eq.${id}`);
+  url.searchParams.set("status", "eq.published");
+  url.searchParams.set("limit", "1");
+  try {
+    const response = await fetch(url, { cache: "no-store", headers: dbHeaders(key) });
+    if (!response.ok) return { available: false, article: null };
+    const rows = await response.json();
+    return { available: true, article: Array.isArray(rows) && rows[0] ? rows[0] : null };
+  } catch {
+    return { available: false, article: null };
+  }
 }
 
 let archivePromise: Promise<string | null> | null = null;
@@ -118,14 +139,28 @@ function retiredHtml(id: string) {
   const safe = String(id).replace(/[<>&"']/g, "");
   return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>旧文章已下线 - 唐人日报</title><meta name="robots" content="noindex,nofollow,noarchive"></head><body><main style="max-width:720px;margin:60px auto;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif"><h1>这篇旧文章已下线</h1><p>旧链接 ${safe} 尚无可恢复的当前文章，搜索引擎应停止收录该地址。</p><p><a href="/">返回唐人日报首页</a></p></main></body></html>`;
 }
-function gone(id: string) {
-  return new Response(retiredHtml(id), {
+function missingHtml() {
+  return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>文章不存在 - 唐人日报</title><meta name="robots" content="noindex,nofollow,noarchive"></head><body><main style="max-width:720px;margin:60px auto;padding:0 20px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif"><h1>文章不存在</h1><p>该文章已删除、下线或链接无效。</p><p><a href="/">返回唐人日报首页</a></p></main></body></html>`;
+}
+function gone(id: string, request: Request) {
+  return new Response(request.method === "HEAD" ? null : retiredHtml(id), {
     status: 410,
     headers: {
       "content-type": "text/html; charset=UTF-8",
       "cache-control": "public, max-age=300",
       "x-robots-tag": "noindex, nofollow, noarchive",
       "x-trrb-retired": "legacy-article-id-not-migrated"
+    }
+  });
+}
+function notFound(request: Request) {
+  return new Response(request.method === "HEAD" ? null : missingHtml(), {
+    status: 404,
+    headers: {
+      "content-type": "text/html; charset=UTF-8",
+      "cache-control": "no-store",
+      "x-robots-tag": "noindex, nofollow, noarchive",
+      "x-trrb-missing": "invalid-or-deleted-article-query-id"
     }
   });
 }
@@ -146,29 +181,50 @@ export default async (request: Request, context: any) => {
   if (url.searchParams.get("__trrb_article_template") === "1") return context.next();
 
   const id = clean(url.searchParams.get("id"));
-  if (!id || !/^(?:wp-)?\d+$/i.test(id)) return context.next();
-  const numericId = id.replace(/^wp-/i, "");
+  if (!id) return context.next();
 
-  // A migrated legacy record gets the strongest response: permanent redirect to
-  // its current canonical article URL.
-  try {
-    const migrated = await fetchLegacyArticle(id);
-    if (migrated) return redirect(await canonicalFor(migrated), "legacy-id-to-canonical");
-  } catch (error) {
-    console.warn("legacy migration lookup unavailable", error);
-  }
+  if (/^(?:wp-)?\d+$/i.test(id)) {
+    const numericId = id.replace(/^wp-/i, "");
 
-  // The historical static index is the authority for still-readable numeric
-  // archive IDs. wp-123 and 123 refer to the same archived record here.
-  const archived = await archiveHasId(request, numericId);
-  if (archived === true) {
-    if (/^wp-/i.test(id)) return redirect(`${SITE}/article.html?id=${encodeURIComponent(numericId)}`, "wordpress-prefix-to-static-archive");
+    // A migrated legacy record gets the strongest response: permanent redirect
+    // to its current canonical article URL.
+    try {
+      const lookup = await fetchLegacyArticle(id);
+      if (lookup.article) return redirect(await canonicalFor(lookup.article), "legacy-id-to-canonical");
+      if (!lookup.available) {
+        console.warn("legacy migration lookup unavailable; will preserve archive if possible", id);
+      }
+    } catch (error) {
+      console.warn("legacy migration lookup unavailable", error);
+    }
+
+    // The historical static index is the authority for still-readable numeric
+    // archive IDs. wp-123 and 123 refer to the same archived record here.
+    const archived = await archiveHasId(request, numericId);
+    if (archived === true) {
+      if (/^wp-/i.test(id)) return redirect(`${SITE}/article.html?id=${encodeURIComponent(numericId)}`, "wordpress-prefix-to-static-archive");
+      return context.next();
+    }
+    if (archived === false) return gone(id, request);
+
+    // If the archive file is temporarily unavailable, fail open instead of
+    // permanently retiring a potentially valid historical page.
+    console.warn("legacy archive index unavailable; preserving request", id);
     return context.next();
   }
-  if (archived === false) return gone(id);
 
-  // If the archive file is temporarily unavailable, fail open instead of
-  // permanently retiring a potentially valid historical page.
-  console.warn("legacy archive index unavailable; preserving request", id);
-  return context.next();
+  if (UUID_RE.test(id)) {
+    const lookup = await fetchPublishedArticleById(id);
+    if (!lookup.available) {
+      // Database outage: preserve the request rather than falsely deleting a
+      // currently published article. article-prerender may still recover it.
+      return context.next();
+    }
+    if (!lookup.article) return notFound(request);
+    return redirect(await canonicalFor(lookup.article), "uuid-query-to-canonical");
+  }
+
+  // A non-numeric, non-UUID id cannot identify any supported current or
+  // historical article. Returning a real 404 avoids a crawlable soft-error shell.
+  return notFound(request);
 };

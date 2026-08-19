@@ -133,12 +133,11 @@ function listingSeo(url: URL): Seo {
 
   const slug = CATEGORY_SLUGS[category];
   if (slug) return categorySeo(category, slug, page);
-  const baseCanonical = `${SITE}/listing?category=${encodeURIComponent(category)}`;
-  const canonical = page > 1 ? `${baseCanonical}&page=${page}` : baseCanonical;
   return {
-    title: `${category}新闻${page > 1 ? ` 第${page}页` : ""} - 唐人日报`,
-    description: `唐人日报${category}栏目，持续更新相关新闻、政策变化、重要事件、背景信息与后续进展。`,
-    canonical
+    title: "未开放栏目 - 唐人日报",
+    description: "该栏目不是唐人日报当前公开索引栏目，请通过正式栏目导航浏览已发布内容。",
+    canonical: `${SITE}/listing`,
+    robots: "noindex,follow,noarchive"
   };
 }
 
@@ -252,7 +251,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("link", `<${seo.canonical}>; rel=\"canonical\"`);
-    headers.set("x-trrb-seo-route-meta", "round10-v5-immigration-topic-safe");
+    headers.set("x-trrb-seo-route-meta", "round10-v6-listing-failclosed");
     if (/^noindex/i.test(seo.robots || "")) headers.set("x-robots-tag", seo.robots || "noindex,follow");
     else headers.delete("x-robots-tag");
     return new Response(request.method === "HEAD" ? null : body, { status: upstream.status, headers });

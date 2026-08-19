@@ -53,11 +53,11 @@ jobs:
 
           marker_ok=false
           finance_ok=false
-          news_v4=false
+          news_v5=false
           legacy_410=false
           [ "$marker" = 'trrb-seo-recovery-20260819-v1' ] && marker_ok=true
           printf '%s' "$home" | grep -q 'href="/finance/"' && finance_ok=true || true
-          printf '%s' "$news_headers" | grep -qi '^x-trrb-news-sitemap: live-supabase-v4-latest1000-ice-safe-dedupe' && news_v4=true || true
+          printf '%s' "$news_headers" | grep -qi '^x-trrb-news-sitemap: live-supabase-v5-latest1000-topic-safe-ice-safe-dedupe' && news_v5=true || true
           printf '%s' "$legacy_headers" | grep -q '^HTTP/.* 410' && legacy_410=true || true
 
           cat > reports/netlify-build-hook-production-probe.json <<EOF
@@ -70,7 +70,7 @@ jobs:
             "live_generation": "${marker}",
             "generation_marker_live": $marker_ok,
             "finance_card_live": $finance_ok,
-            "news_sitemap_v4_live": $news_v4,
+            "news_sitemap_v5_live": $news_v5,
             "missing_wp_117123_is_410": $legacy_410
           }
           EOF

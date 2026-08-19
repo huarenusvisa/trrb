@@ -1,7 +1,7 @@
 (function(){
-  const now = new Date();
+  const demoAsOf = '2026-08-19T16:00:00-04:00';
   const demo = {
-    updatedAt: now.toISOString(),
+    updatedAt: demoAsOf,
     indices: [
       {symbol:'DJI',name:'道琼斯',price:53463.05,change:0.22},
       {symbol:'IXIC',name:'纳斯达克',price:26331.09,change:0.16},
@@ -63,13 +63,16 @@
     ]
   };
 
-  function clone(v){return JSON.parse(JSON.stringify(v));}
+  function clone(v){return v==null?v:JSON.parse(JSON.stringify(v));}
+  function read(key,fallback=null){try{const v=localStorage.getItem(key);return v===null?fallback:v}catch(e){return fallback}}
+  function write(key,value){try{localStorage.setItem(key,value);return true}catch(e){return false}}
+  function remove(key){try{localStorage.removeItem(key);return true}catch(e){return false}}
   function spark(symbol){
     const seed = Array.from(symbol).reduce((a,c)=>a+c.charCodeAt(0),0);
     return Array.from({length:18},(_,i)=>Math.round(20 + ((Math.sin((i+seed%7)/2.1)+1)*13) + ((seed*i)%11)/2));
   }
   function stockNews(symbol){
-    const s=demo.stocks[symbol]||demo.stocks.AAPL;
+    const s=demo.stocks[symbol]; if(!s)return [];
     return [
       {tag:symbol,title:`${s.name} 今日波动受到市场关注，投资者继续评估盈利与估值`,source:'唐人财经',time:'10分钟前'},
       {tag:'SECTOR',title:`${s.sector}板块出现分化，资金在龙头与高估值个股之间重新配置`,source:'市场观察',time:'1小时前'},
@@ -77,34 +80,54 @@
     ];
   }
   function getWatchlist(){
-    const raw=localStorage.getItem('trfinance.watchlist');
+    const raw=read('trfinance.watchlist',null);
     if(raw===null) return Object.values(demo.stocks).filter(s=>s.watch).map(s=>s.symbol);
     let list=[]; try{list=JSON.parse(raw)}catch(e){}
     return Array.isArray(list)?list.filter(s=>demo.stocks[s]):[];
   }
-  function setWatchlist(list){localStorage.setItem('trfinance.watchlist',JSON.stringify(Array.from(new Set(list)).filter(s=>demo.stocks[s])));}
-  function toggleWatch(symbol){const list=getWatchlist();const i=list.indexOf(symbol);if(i>=0)list.splice(i,1);else if(demo.stocks[symbol])list.unshift(symbol);setWatchlist(list);return i<0;}
-  function getFundWatchlist(){let list=[];try{list=JSON.parse(localStorage.getItem('trfinance.fundWatchlist')||'[]')}catch(e){}return Array.isArray(list)?list.filter(s=>demo.funds.some(f=>f.symbol===s)):[];}
-  function setFundWatchlist(list){localStorage.setItem('trfinance.fundWatchlist',JSON.stringify(Array.from(new Set(list)).filter(s=>demo.funds.some(f=>f.symbol===s))));}
-  function toggleFundWatch(symbol){const list=getFundWatchlist();const i=list.indexOf(symbol);if(i>=0)list.splice(i,1);else if(demo.funds.some(f=>f.symbol===symbol))list.unshift(symbol);setFundWatchlist(list);return i<0;}
+  function setWatchlist(list){return write('trfinance.watchlist',JSON.stringify(Array.from(new Set(list)).filter(s=>demo.stocks[s])))}
+  function toggleWatch(symbol){symbol=String(symbol||'').toUpperCase();const list=getWatchlist();const i=list.indexOf(symbol);if(i>=0)list.splice(i,1);else if(demo.stocks[symbol])list.unshift(symbol);else return false;setWatchlist(list);return i<0}
+  function getFundWatchlist(){let list=[];try{list=JSON.parse(read('trfinance.fundWatchlist','[]'))}catch(e){}return Array.isArray(list)?list.filter(s=>demo.funds.some(f=>f.symbol===s)):[]}
+  function setFundWatchlist(list){return write('trfinance.fundWatchlist',JSON.stringify(Array.from(new Set(list)).filter(s=>demo.funds.some(f=>f.symbol===s))))}
+  function toggleFundWatch(symbol){symbol=String(symbol||'').toUpperCase();const list=getFundWatchlist();const i=list.indexOf(symbol);if(i>=0)list.splice(i,1);else if(demo.funds.some(f=>f.symbol===symbol))list.unshift(symbol);else return false;setFundWatchlist(list);return i<0}
   function search(q){
     q=(q||'').trim().toLowerCase(); if(!q)return [];
     const stocks=Object.values(demo.stocks).filter(x=>x.symbol.toLowerCase().includes(q)||x.name.toLowerCase().includes(q)).map(x=>({...x,type:'stock'}));
     const funds=demo.funds.filter(x=>x.symbol.toLowerCase().includes(q)||x.name.toLowerCase().includes(q)).map(x=>({...x,type:'fund'}));
     return [...stocks,...funds].slice(0,8);
   }
+  function getMarketSession(date=new Date()){
+    try{
+      const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date).reduce((a,p)=>(a[p.type]=p.value,a),{});
+      if(['Sat','Sun'].includes(parts.weekday))return {code:'closed',label:'休市',note:'周末 · 美东时间'};
+      const mins=Number(parts.hour)*60+Number(parts.minute);
+      if(mins>=240&&mins<570)return {code:'pre',label:'盘前',note:'美东 04:00–09:30'};
+      if(mins>=570&&mins<960)return {code:'regular',label:'交易中',note:'美东 09:30–16:00'};
+      if(mins>=960&&mins<1200)return {code:'after',label:'盘后',note:'美东 16:00–20:00'};
+      return {code:'closed',label:'休市',note:'非交易时段'};
+    }catch(e){return {code:'unknown',label:'市场状态未知',note:'时间状态不可用'}}
+  }
+  function isAlertOn(symbol){return read(`trfinance.alert.${String(symbol||'').toUpperCase()}`,'0')==='1'}
+  function setAlert(symbol,on){symbol=String(symbol||'').toUpperCase();if(!demo.stocks[symbol])return false;return write(`trfinance.alert.${symbol}`,on?'1':'0')}
+  function toggleAlert(symbol){const next=!isAlertOn(symbol);setAlert(symbol,next);return next}
+  function getAlerts(){return Object.keys(demo.stocks).filter(isAlertOn).map(symbol=>({symbol,name:demo.stocks[symbol].name}))}
+  function clearHistory(){remove('trfinance.history')}
+  function clearAlerts(){Object.keys(demo.stocks).forEach(symbol=>remove(`trfinance.alert.${symbol}`))}
+  function clearLocalState(){
+    ['trfinance.watchlist','trfinance.fundWatchlist','trfinance.watchView','trfinance.history','trfinance.prefs'].forEach(remove);
+    clearAlerts();
+    return true;
+  }
+  function getMeta(){return {mode:'demo',source:'唐人财经演示快照',updatedAt:demo.updatedAt,realTime:false,session:getMarketSession()}}
   window.FinanceData={
     mode:'demo',
+    getMeta,
     getMarketSnapshot:()=>clone(demo),
-    getQuote:(symbol)=>{const s=demo.stocks[String(symbol||'AAPL').toUpperCase()]||demo.stocks.AAPL;return {...clone(s),spark:spark(s.symbol),news:stockNews(s.symbol)};},
-    getFund:(symbol)=>clone(demo.funds.find(f=>f.symbol===String(symbol||'SPY').toUpperCase())||demo.funds[0]),
-    getWatchlist,
-    setWatchlist,
-    toggleWatch,
-    getFundWatchlist,
-    setFundWatchlist,
-    toggleFundWatch,
-    search,
-    spark
+    getQuote:(symbol)=>{const s=demo.stocks[String(symbol||'').toUpperCase()];return s?{...clone(s),spark:spark(s.symbol),news:stockNews(s.symbol)}:null},
+    getFund:(symbol)=>clone(demo.funds.find(f=>f.symbol===String(symbol||'').toUpperCase())||null),
+    getWatchlist,setWatchlist,toggleWatch,
+    getFundWatchlist,setFundWatchlist,toggleFundWatch,
+    isAlertOn,setAlert,toggleAlert,getAlerts,clearAlerts,clearHistory,clearLocalState,
+    search,spark
   };
 })();

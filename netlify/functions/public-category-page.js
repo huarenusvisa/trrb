@@ -11,9 +11,6 @@ const CATEGORY_DEFINITIONS = new Map([
   ["ICE执法动态", { path: "/ice/news", mode: "ice" }]
 ]);
 
-// Derived from config/immigration-knowledge.js humanitarian keywords. Keep this
-// focused on terms that identify humanitarian/asylum coverage in news titles and
-// summaries without broad English fragments that can create false positives.
 const ASYLUM_TERMS = [
   "庇护", "政治庇护", "asylum", "i-589", "i589", "可信恐惧", "合理恐惧",
   "防止递解", "withholding", "禁止酷刑", "vawa", "家暴绿卡", "u签证",
@@ -77,7 +74,7 @@ exports.handler = async (event) => {
 
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-    url.searchParams.set("select", "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,published_at,created_at");
+    url.searchParams.set("select", "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,published_at,created_at");
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
     url.searchParams.set("limit", String(pageSize));

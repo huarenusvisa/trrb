@@ -147,6 +147,9 @@ jobs:
             home_marker=$(printf '%s' "$home" | grep -c 'data-seo-static-snapshot="build"' || true)
             home_article_links=$(printf '%s' "$home" | grep -Eo 'href="/(ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)/[^"]+' | wc -l | tr -d ' ')
             home_single_guard=$(printf '%s' "$home" | grep -c 'homepage-refresh-guard.js?v=20260819-bundle-supplements-2' || true)
+            home_canonical=$(printf '%s' "$home" | grep -c '<link rel="canonical" href="https://trrb.net/"' || true)
+            home_robots=$(printf '%s' "$home" | grep -ci 'name="robots" content="index,follow' || true)
+            home_og=$(printf '%s' "$home" | grep -c 'property="og:url" content="https://trrb.net/"' || true)
             finance_card=$(printf '%s' "$home" | grep -c 'href="/finance/"' || true)
             bundle_ok=$(printf '%s' "$bundle" | grep -c '"mode":"homepage"' || true)
             category_marker=$(printf '%s' "$category" | grep -c 'data-seo-category-snapshot="edge"' || true)
@@ -178,10 +181,10 @@ jobs:
               fi
             fi
 
-            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v4=$sitemap_v4 news_v5=$news_v5 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
+            echo "attempt=$attempt deploy_sha=$deploy_sha_ok live_sha=${live_sha:-missing} expected=$DEPLOY_SHA home=$home_marker/$home_article_links/$home_single_guard/seo:$home_canonical/$home_robots/$home_og/finance:$finance_card bundle=$bundle_ok category=$category_marker/$category_article_links/$category_header asylum=$asylum_marker/$asylum_article_links ice=$ice_marker/$ice_article_links legacy_sitemap=$legacy_sitemap legacy410=$legacy_410/$legacy_noindex archive200=$archive_200 invalidUUID=$invalid_uuid_404/$invalid_uuid_noindex sitemap_v4=$sitemap_v4 news_v5=$news_v5 ice_article_ok=$ice_article_ok pretty_clean=$pretty_no_archive_loader"
 
-            if [ "$deploy_sha_ok" -eq 1 ] && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$finance_card" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v4" -ge 1 ] && [ "$news_v5" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
-              echo 'PRODUCTION EXACT-SHA + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V5 + ICE INDEXABILITY PASS'
+            if [ "$deploy_sha_ok" -eq 1 ] && [ "$home_marker" -ge 1 ] && [ "$home_article_links" -ge 10 ] && [ "$home_single_guard" -ge 1 ] && [ "$home_canonical" -ge 1 ] && [ "$home_robots" -ge 1 ] && [ "$home_og" -ge 1 ] && [ "$finance_card" -ge 1 ] && [ "$bundle_ok" -ge 1 ] && [ "$category_marker" -ge 1 ] && [ "$category_article_links" -ge 10 ] && [ "$category_header" -ge 1 ] && [ "$asylum_marker" -ge 1 ] && [ "$asylum_article_links" -ge 3 ] && [ "$ice_marker" -ge 1 ] && [ "$ice_article_links" -ge 3 ] && [ "$legacy_sitemap" -eq 0 ] && [ "$legacy_410" -ge 1 ] && [ "$legacy_noindex" -ge 1 ] && [ "$archive_200" -ge 1 ] && [ "$invalid_uuid_404" -ge 1 ] && [ "$invalid_uuid_noindex" -ge 1 ] && [ "$sitemap_v4" -ge 1 ] && [ "$news_v5" -ge 1 ] && [ "$ice_article_ok" -eq 1 ] && [ "$pretty_no_archive_loader" -eq 1 ]; then
+              echo 'PRODUCTION EXACT-SHA + HOMEPAGE CANONICAL + SEO + SINGLE HOME BUNDLE + CATEGORY SSR + LEGACY/UUID GUARDS + NEWS V5 + ICE INDEXABILITY PASS'
               exit 0
             fi
             sleep 10

@@ -3,12 +3,6 @@ const MIN_INDEXABLE_BODY_LENGTH = 80;
 
 export const config = { path: "/sitemap.xml" };
 
-const STATIC_HUBS = [
-  { loc: `${SITE}/immigrate/`, priority: "0.8", changefreq: "weekly" },
-  { loc: `${SITE}/jobs/`, priority: "0.7", changefreq: "daily" },
-  { loc: `${SITE}/legal/`, priority: "0.8", changefreq: "daily" }
-];
-
 const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
   "重要新闻": "important-news",
   "热门头条": "hot-headlines",
@@ -122,6 +116,34 @@ async function fetchPublishedArticles() {
   return all;
 }
 
+function isForbiddenStaticBlock(block: string): boolean {
+  return /<loc>https:\/\/trrb\.net\/(?:jobs(?:\/|\?|<)|finance(?:\/|\?|<)|people(?:\/|\?|<))/i.test(block);
+}
+
+async function fetchStaticBlocks(request: Request): Promise<string[]> {
+  const url = new URL("/sitemap-static.xml", request.url);
+  url.searchParams.set("live-sitemap", String(Date.now()));
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: { Accept: "application/xml,text/xml;q=0.9,*/*;q=0.1", "Cache-Control": "no-cache" }
+  });
+  if (!response.ok) throw new Error(`sitemap-static.xml ${response.status}`);
+  const xml = await response.text();
+  if (!xml.includes("<urlset")) throw new Error("sitemap-static.xml is not a URL set");
+  const blocks = xml.match(/<url>[\s\S]*?<\/url>/g) || [];
+  const safe = blocks.filter((block) => !isForbiddenStaticBlock(block));
+  if (!safe.length || !safe.some((block) => block.includes(`<loc>${SITE}/</loc>`))) {
+    throw new Error("sitemap-static.xml has no safe canonical root block");
+  }
+  if (!safe.some((block) => block.includes(`<loc>${SITE}/immigrate/</loc>`))) {
+    throw new Error("sitemap-static.xml is missing immigration hub");
+  }
+  if (!safe.some((block) => block.includes(`<loc>${SITE}/legal/</loc>`))) {
+    throw new Error("sitemap-static.xml is missing legal hub");
+  }
+  return safe;
+}
+
 function sectionFor(article: any, byId: Map<string, any>, byName: Map<string, any>): string {
   const topic = clean(article?.topic_key).toLowerCase();
   if (topic === "trump") return "trump";
@@ -147,27 +169,24 @@ export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
 
   try {
-    const [categories, articles] = await Promise.all([fetchCategories(), fetchPublishedArticles()]);
+    const [staticBlocks, categories, articles] = await Promise.all([
+      fetchStaticBlocks(request),
+      fetchCategories(),
+      fetchPublishedArticles()
+    ]);
     if (!articles.length) return context.next();
 
     const allowedIds = new Set(categories.filter((x: any) => x.include_in_sitemap !== false).map((x: any) => String(x.id)));
     const allowedNames = new Set(categories.filter((x: any) => x.include_in_sitemap !== false).map((x: any) => clean(x.name)));
     const byId = new Map(categories.map((x: any) => [String(x.id || ""), x]));
     const byName = new Map(categories.map((x: any) => [clean(x.name), x]));
-    const today = new Date().toISOString().slice(0, 10);
-    const blocks: string[] = [
-      urlBlock(`${SITE}/`, today, "hourly", "1.0"),
-      ...STATIC_HUBS.map((hub) => urlBlock(hub.loc, today, hub.changefreq, hub.priority))
-    ];
+    const blocks: string[] = [...staticBlocks];
 
-    for (const category of categories) {
-      if (category.include_in_sitemap === false || !clean(category.slug)) continue;
-      blocks.push(urlBlock(`${SITE}/${encodeURIComponent(canonicalSection(category.slug))}`, today, "hourly", "0.8"));
+    const seenUrls = new Set<string>();
+    for (const block of staticBlocks) {
+      const match = block.match(/<loc>([^<]+)<\/loc>/i);
+      if (match?.[1]) seenUrls.add(match[1].replaceAll("&amp;", "&"));
     }
-    if (!blocks.some((block) => block.includes(`<loc>${SITE}/trump</loc>`))) {
-      blocks.push(urlBlock(`${SITE}/trump`, today, "hourly", "0.8"));
-    }
-    blocks.push(urlBlock(`${SITE}/ice/news`, today, "hourly", "0.7"));
 
     const seenTitles = new Set<string>();
     const seenBodies = new Set<string>();
@@ -185,8 +204,6 @@ export default async (request: Request, context: any) => {
         preservedSpecialTopic++;
       }
 
-      // Match the static generator and article prerender exactly: summary is a
-      // valid body fallback, while ICE breaking news only needs non-empty text.
       const body = visibleText(article?.content || article?.summary || "");
       const ice = isIceArticle(article);
       if (ice && !body) {
@@ -212,16 +229,20 @@ export default async (request: Request, context: any) => {
       const slug = clean(article?.slug) || clean(article?.id);
       if (!slug) continue;
       const loc = `${SITE}/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+      if (seenUrls.has(loc)) continue;
+      seenUrls.add(loc);
       blocks.push(urlBlock(loc, lastmod(article)));
     }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${blocks.join("\n")}\n</urlset>\n`;
+    const immigrationKnowledgeCount = staticBlocks.filter((block) => block.includes(`<loc>${SITE}/immigrate/center?path=`)).length;
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v4-topic-safe-ice-safe",
+      "x-trrb-sitemap": "live-supabase-v5-static-authority-aligned",
       "x-trrb-sitemap-articles": String(articles.length),
-      "x-trrb-sitemap-static-hubs": String(STATIC_HUBS.length),
+      "x-trrb-sitemap-static-blocks": String(staticBlocks.length),
+      "x-trrb-sitemap-immigration-knowledge": String(immigrationKnowledgeCount),
       "x-trrb-sitemap-excluded-thin": String(excludedThin),
       "x-trrb-sitemap-preserved-short-ice": String(preservedShortIce),
       "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),

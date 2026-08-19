@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 19 Aug 2026 07:48:59 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 19 Aug 2026 08:00:56 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>巴斯连任竞选爆民调丑闻！虚假“领先”数据曝光，洛杉矶选战陷信任危机</title>
+      <link>https://trrb.net/us-politics/%E5%B7%B4%E6%96%AF%E8%BF%9E%E4%BB%BB%E7%AB%9E%E9%80%89%E7%88%86%E6%B0%91%E8%B0%83%E4%B8%91%E9%97%BB%E8%99%9A%E5%81%87%E9%A2%86%E5%85%88%E6%95%B0%E6%8D%AE%E6%9B%9D%E5%85%89%E6%B4%9B%E6%9D%89%E7%9F%B6%E9%80%89%E6%88%98%E9%99%B7%E4%BF%A1%E4%BB%BB%E5%8D%B1%E6%9C%BA-mszsy6yg-01bd80</link>
+      <guid isPermaLink="true">https://trrb.net/us-politics/%E5%B7%B4%E6%96%AF%E8%BF%9E%E4%BB%BB%E7%AB%9E%E9%80%89%E7%88%86%E6%B0%91%E8%B0%83%E4%B8%91%E9%97%BB%E8%99%9A%E5%81%87%E9%A2%86%E5%85%88%E6%95%B0%E6%8D%AE%E6%9B%9D%E5%85%89%E6%B4%9B%E6%9D%89%E7%9F%B6%E9%80%89%E6%88%98%E9%99%B7%E4%BF%A1%E4%BB%BB%E5%8D%B1%E6%9C%BA-mszsy6yg-01bd80</guid>
+      <pubDate>Wed, 19 Aug 2026 08:00:56 GMT</pubDate>
+      <category>美国时政</category>
+      <description>唐人日报 8 月 19 日讯：洛杉矶市长凯伦·巴斯（Karen Bass）竞选团队近日陷入一场虚假民调风波。一份显示巴斯在连任竞选中大幅领先的民调被证实并不存在真实调查基础，发布该数据的Median Strategies公司随后承认相关结果为伪造，并表示其创建该项目是为了研究未经核实的民调信息…</description>
+      <enclosure url="https://images.openai.com/static-rsc-4/bAj843HbGpZaTgTuwVcdOlxY9Fc06deQzc3rDqfSr9MF3G4gIr3lg-ydPgCopXpd4Ochmi6lv1iBM7ekywu6LUx1WYoshXuATy_Q-5HzCg9igcxpdi2cYk1COx68SuikN8H1ebKuXOa6QfcJbTtbzTWXzxxICNipOC9ELGJgcyY?purpose=inline" type="image/jpeg" />
+    </item>
     <item>
       <title>美军介入选举疑虑升温！斯洛特金要求赫格塞斯保证军队远离中期选举</title>
       <link>https://trrb.net/trump/%E7%BE%8E%E5%86%9B%E4%BB%8B%E5%85%A5%E9%80%89%E4%B8%BE%E7%96%91%E8%99%91%E5%8D%87%E6%B8%A9%E6%96%AF%E6%B4%9B%E7%89%B9%E9%87%91%E8%A6%81%E6%B1%82%E8%B5%AB%E6%A0%BC%E5%A1%9E%E6%96%AF%E4%BF%9D%E8%AF%81%E5%86%9B%E9%98%9F%E8%BF%9C%E7%A6%BB%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE-mszsitj5-bd6c06</link>
@@ -897,15 +906,6 @@
       <category>ICE执法动态</category>
       <description>纽约州ICE逮捕一名持毒被判三年刑期的哥伦比亚男子，因入境后逾期居留近十年。</description>
       <enclosure url="https://pbs.twimg.com/media/HQAVf2qXUAEWEbU.png" type="image/png" />
-    </item>
-    <item>
-      <title>纽约上州ICE逮捕洪都拉斯籍性犯罪嫌疑人罗德里格斯</title>
-      <link>https://trrb.net/ice/ice-b858c11f058f8dd32ad6e3d6dadadd18772ab4de</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-b858c11f058f8dd32ad6e3d6dadadd18772ab4de</guid>
-      <pubDate>Tue, 18 Aug 2026 14:43:55 GMT</pubDate>
-      <category>ICE执法动态</category>
-      <description>纽约上州ICE逮捕46岁洪都拉斯籍罗德里格斯，因2019年起在河畔镇性犯罪被判约十年，等待遣返。</description>
-      <enclosure url="https://pbs.twimg.com/media/HQAVJPoXsAEUCh-.png" type="image/png" />
     </item>
   </channel>
 </rss>

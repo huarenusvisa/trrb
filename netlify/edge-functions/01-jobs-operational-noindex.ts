@@ -1,5 +1,9 @@
 export const config = {
   path: [
+    "/jobs",
+    "/jobs/",
+    "/jobs/index.html",
+    "/jobs/listing.html",
     "/jobs/search.html",
     "/jobs/publish.html",
     "/jobs/seeker.html",
@@ -14,7 +18,7 @@ export default async (request: Request, context: any) => {
   const upstream = await context.next();
   const headers = new Headers(upstream.headers);
   headers.set("x-robots-tag", "noindex, follow, noarchive");
-  headers.set("x-trrb-jobs-indexability", "operational-noindex-v1");
+  headers.set("x-trrb-jobs-indexability", "prelaunch-noindex-v2");
   return new Response(request.method === "HEAD" ? null : upstream.body, {
     status: upstream.status,
     statusText: upstream.statusText,

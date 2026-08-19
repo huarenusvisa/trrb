@@ -1,6 +1,10 @@
 import { immigrationCategory, immigrationTopic } from "./_shared/immigration-knowledge-routes.ts";
 
 const SITE = "https://trrb.net";
+// Keep the legacy build marker visible while v2 consolidates the previously
+// duplicated canonical guards. Runtime response markers below describe the
+// actual redirect reason.
+const BUILD_COMPAT_MARKER = "knowledge-center-v1";
 
 export const config = { path: ["/immigrate/center", "/immigrate/center.html"] };
 
@@ -10,7 +14,8 @@ function redirect(path: string, marker: string): Response {
     headers: {
       location: `${SITE}${path}`,
       "cache-control": "public, max-age=3600, stale-while-revalidate=86400",
-      "x-trrb-immigration-canonical": marker
+      "x-trrb-immigration-canonical": marker,
+      "x-trrb-immigration-canonical-build": BUILD_COMPAT_MARKER
     }
   });
 }

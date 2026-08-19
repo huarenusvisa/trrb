@@ -51,9 +51,10 @@ export async function createComment(articleId: string, content: string, parentId
 }
 
 export async function deleteOwnComment(commentId: string) {
-  const userId = await currentUserId();
-  const { error } = await supabase.from('comments').update({ status: 'deleted', content: '[已删除]' }).eq('id', commentId).eq('user_id', userId);
+  await currentUserId();
+  const { data, error } = await supabase.rpc('delete_own_comment', { p_comment_id: commentId });
   if (error) throw error;
+  if (data !== true) throw new Error('评论不存在或不属于当前账号。');
 }
 
 export async function likeComment(commentId: string) {

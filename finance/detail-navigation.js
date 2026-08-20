@@ -52,6 +52,13 @@
   if(!isFund&&moveEl&&'MutationObserver'in window){const moveObserver=new MutationObserver(()=>requestAnimationFrame(syncStockSecondary));moveObserver.observe(moveEl,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class']})}
 
   const chartHost=isFund?$('#fundChart'):$('#chart');
+  const assetCode=(new URLSearchParams(location.search).get('symbol')||$('#symbol')?.textContent||$('#fundSymbol')?.textContent||'').toUpperCase();
+  const syncChartA11y=()=>{
+    if(!chartHost)return;const range=$('.range button.on')?.dataset.range||'';chartHost.setAttribute('role','group');
+    if(!isFund&&chartHost.classList.contains('is-kline')){const gran=$('.kline-granularity button.on')?.textContent?.trim()||'K线';chartHost.setAttribute('aria-label',`${assetCode} ${range} ${gran} 演示K线图。鼠标或手指横向移动可查看开高低收读数，键盘左右键也可浏览。`)}
+    else chartHost.setAttribute('aria-label',`${assetCode} ${range} ${isFund?'ETF ':''}演示走势图。鼠标或手指横向移动可查看演示读数，键盘左右键也可浏览。`)
+  };
+  if(chartHost){requestAnimationFrame(()=>requestAnimationFrame(syncChartA11y));content.addEventListener('click',e=>{if(e.target.closest('.range button,.chart-view-toggle button,.kline-granularity button'))requestAnimationFrame(()=>requestAnimationFrame(syncChartA11y))})}
   if(chartHost&&'MutationObserver'in window){
     let lastVisible=false;
     const syncTip=()=>{
@@ -61,6 +68,6 @@
       else if(lastVisible)restoreHeader();
       lastVisible=lineVisible||klineVisible;
     };
-    const mo=new MutationObserver(()=>requestAnimationFrame(syncTip));mo.observe(chartHost,{subtree:true,childList:true,attributes:true,attributeFilter:['style']});syncTip();
+    const mo=new MutationObserver(()=>requestAnimationFrame(()=>{syncTip();syncChartA11y()}));mo.observe(chartHost,{subtree:true,childList:true,attributes:true,attributeFilter:['style']});syncTip();
   }
 })();

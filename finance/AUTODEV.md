@@ -127,6 +127,9 @@
 - [x] 行情 / 自选 / 基金筛选状态在详情往返期间保留
 - [x] 详情页返回来源自适应，不再固定返回自选
 - [x] 返回详情来源时恢复原页面并尽量恢复原滚动位置
+- [x] `resilience` / `navigation-memory` 在首页、个股、ETF 中显式确定加载
+- [x] 搜索结果 `aria-selected` / `aria-activedescendant` 与视觉高亮同步
+- [x] 搜索焦点离开、Escape、系统清除按钮后的状态统一收口
 - [x] 美股三大指数 / 热力图 / Top Movers
 - [x] Earnings / Upcoming / Macro / Crypto
 - [x] 自选本地状态
@@ -275,5 +278,12 @@
 - `product-polish.js` 与 `detail-navigation.js` 只负责加载和使用导航记忆层，未改变行情数据、交易边界或一级架构。
 - 已同步到 `finance-v1-preview`。本轮完成静态逻辑复核，但仍未把 iPhone / PC 真机往返验收标记为通过。
 
+### 第十六轮：确定性加载与搜索语义收口
+- 首页、个股、ETF HTML 现在直接声明 `resilience.css`、`resilience.js` 和 `navigation-memory.js`，浏览器首次解析时即可发现依赖，不再依赖后续脚本二次发现。
+- `product-polish.js` / `detail-navigation.js` 保留兼容兜底，但会识别已经存在的同名 CSS / JS，避免重复插入和重复请求。
+- 普通搜索与“最近浏览 / 热门搜索”统一同步 `aria-selected`、`aria-activedescendant` 和 `aria-expanded`，视觉高亮与辅助技术状态保持一致。
+- 搜索框失焦、Escape、系统清除按钮、上下键 / Enter 后统一清理或同步旧高亮状态，降低键盘与 iPhone 搜索交互状态冲突。
+- A 版预览已同步为相同依赖顺序和搜索逻辑；本轮仍只做静态代码复核，不宣称 Lighthouse 或真机最终 PASS。
+
 ## 当前结论
-当前仍定义为 **V1 Candidate+**。四个一级页面、个股和 ETF 详情已经形成一致的高级视觉与交互语言，主要假交互、空状态、弱网失效路径和详情返回上下文已逐步收口。下一阶段仍以实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复为主，完成后再标记 `V1 Complete`。
+当前仍定义为 **V1 Candidate+**。四个一级页面、个股和 ETF 详情已经形成一致的高级视觉与交互语言，主要假交互、空状态、弱网失效路径、详情返回上下文和搜索辅助状态已逐步收口。下一阶段仍以实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复为主，完成后再标记 `V1 Complete`。

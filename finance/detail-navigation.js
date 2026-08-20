@@ -8,7 +8,7 @@
   }
   loadResilience();loadNavigationMemory();
   const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-  const isFund=!!$('#fundName');
+  const isFund=/\/fund\.html$/i.test(location.pathname)||!!$('#fundName');
   function readContext(){
     if(window.FinanceNavigationMemory?.getContext)return window.FinanceNavigationMemory.getContext();
     try{return JSON.parse(sessionStorage.getItem('trfinance.navContext')||'null')}catch(e){return null}

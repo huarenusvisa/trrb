@@ -209,9 +209,44 @@
 .article-engagement-card strong { color: var(--red); font-size: 16px; }
 .article-engagement-card span { color: var(--muted); font-size: 13px; line-height: 1.5; }
 
+/* 文章页头部 Logo 使用真实宽高比，去掉左右白/灰色占位块 */
+.site-header .brand {
+  flex: 0 0 169px !important;
+  width: 169px !important;
+  max-width: 169px !important;
+  height: 81px !important;
+  display: flex !important;
+  align-items: center !important;
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+.site-header .brand img {
+  display: block !important;
+  width: 169px !important;
+  max-width: 169px !important;
+  height: 81px !important;
+  max-height: 81px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  background: transparent !important;
+}
+
 @media (max-width: 900px) {
   .article-page .related-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .article-engagement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .site-header .brand {
+    flex-basis: 127px !important;
+    width: 127px !important;
+    max-width: 127px !important;
+    height: 61px !important;
+  }
+  .site-header .brand img {
+    width: 127px !important;
+    max-width: 127px !important;
+    height: 61px !important;
+    max-height: 61px !important;
+  }
 }
 
 @media (max-width: 767px) {
@@ -244,4 +279,17 @@
   .article-engagement-card { min-height: 104px; padding: 13px; }
   .article-engagement-card strong { font-size: 15px; }
   .article-engagement-card span { font-size: 12px; }
+
+  .site-header .brand {
+    flex-basis: 102px !important;
+    width: 102px !important;
+    max-width: 102px !important;
+    height: 49px !important;
+  }
+  .site-header .brand img {
+    width: 102px !important;
+    max-width: 102px !important;
+    height: 49px !important;
+    max-height: 49px !important;
+  }
 }

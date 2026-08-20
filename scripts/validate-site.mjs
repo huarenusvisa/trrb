@@ -1,7 +1,5 @@
 import { readFile } from "node:fs/promises";
 
-// generate-sitemaps.mjs first creates one large URL set. Split it before the
-// deployment validation so Google receives a sitemap index with smaller files.
 await import("./split-sitemap-index.mjs");
 
 const failures = [];
@@ -34,8 +32,8 @@ if (!includesText(index, "homepage-refresh-guard.js?v=20260819-bundle-supplement
 if (!includesText(index, "articles-home.js?v=20260819-single-bundle-2")) failures.push("index.html is missing current unified homepage renderer token");
 if (!includesText(index, "homepage-immigration-hub.js?v=20260819-reuse-bundle-2")) failures.push("index.html is missing current homepage hub bundle-reuse token");
 if (!includesText(index, '<a href="/immigration">移民美国</a>')) failures.push("index.html primary immigration navigation is not canonical /immigration");
-if (/<a\s+href=["']\/jobs\/?["'][^>]*>招聘求职<\/a>/i.test(indexText)) failures.push("index.html exposes the prelaunch jobs product in primary navigation");
-if (/jobs-home\.js/i.test(indexText)) failures.push("index.html still loads the retired prelaunch jobs homepage override");
+if (!/<a\s+href=["']\/jobs\/?["'][^>]*>招聘求职<\/a>/i.test(indexText)) failures.push("index.html is missing live 招聘求职 navigation");
+if (!/jobs-home\.js/i.test(indexText)) failures.push("index.html is missing live jobs homepage loader");
 if (!includesText(index, '<link rel="canonical" href="https://trrb.net/"')) failures.push("index.html is missing canonical https://trrb.net/");
 if (!/name=["']robots["'][^>]*content=["'][^"']*index,follow/i.test(indexText)) failures.push("index.html is missing index,follow robots directive");
 if (!includesText(index, 'property="og:title"')) failures.push("index.html is missing og:title");
@@ -63,18 +61,15 @@ if (!includesText(article, "nav-expose-link")) failures.push("article.html is mi
 if (/\/index\.html#|\/expose\.html/i.test(articleText)) failures.push("article.html still emits avoidable legacy internal redirects");
 
 const jobsHub = await bytes("jobs/index.html");
+const jobsHubText = jobsHub.toString("utf8");
 if (!startsText(jobsHub, "<!doctype html>")) failures.push("jobs/index.html is not HTML");
-if (!/name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(jobsHub.toString("utf8"))) failures.push("jobs prelaunch hub must remain noindex until the production jobs database is live");
-if (!includesText(jobsHub, "上线准备中")) failures.push("jobs prelaunch hub is missing its deployment-status disclosure");
-if (includesText(jobsHub, "均接入同一正式数据源")) failures.push("jobs prelaunch hub still claims a production data source is already live");
+if (/name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(jobsHubText)) failures.push("jobs production hub must not contain prelaunch noindex meta");
+if (includesText(jobsHub, "上线准备中")) failures.push("jobs production hub still contains prelaunch disclosure");
+if (!includesText(jobsHub, "招聘与求职信息进入统一生产数据系统")) failures.push("jobs production hub is missing live data disclosure");
 
 const jobsHome = await bytes("jobs-home.js");
-if (!includesText(jobsHome, "TRRB_JOBS_HOME_PRELAUNCH")) failures.push("jobs-home.js is not the prelaunch compatibility shim");
-if (/setInterval|MutationObserver|replaceAsylumCard/i.test(jobsHome.toString("utf8"))) failures.push("jobs-home.js still mutates homepage content while jobs is prelaunch");
+if (!includesText(jobsHome, "TRRB_JOBS_HOME_PRELAUNCH = false")) failures.push("jobs-home.js is not marked production-live");
 
-// Redirect rules execute after Edge Functions. This alphabetically-first inline
-// Edge guard prevents article/category/sitemap/feed responders from ending the
-// chain with a www.trrb.net 200 before the host canonical redirect can happen.
 const hostCanonical = await bytes("netlify/edge-functions/00-host-canonical.ts");
 if (!includesText(hostCanonical, 'export const config = { path: "/*" }')) failures.push("00-host-canonical.ts does not cover all public paths");
 if (!includesText(hostCanonical, 'www.${CANONICAL_HOST}')) failures.push("00-host-canonical.ts does not normalize the www host");
@@ -112,24 +107,12 @@ if (!includesText(categoryRuntime, "show_in_navigation") || !includesText(catego
 if (!includesText(categoryRuntime, "a[data-dynamic-category]")) failures.push("category runtime no longer preserves independent static navigation entries");
 
 await Promise.all([
-  parseBrowserScript("site-common.js"),
-  parseBrowserScript("site-search.js"),
-  parseBrowserScript("category-runtime-v3.js"),
-  parseBrowserScript("listing-seo.js"),
-  parseBrowserScript("immigration-entry.js"),
-  parseBrowserScript("listing.js"),
-  parseBrowserScript("article.js"),
-  parseBrowserScript("article-route-runtime.js"),
-  parseBrowserScript("articles-home.js"),
-  parseBrowserScript("homepage-refresh-guard.js"),
-  parseBrowserScript("homepage-immigration-hub.js"),
-  parseBrowserScript("articles-home-live-fix.js"),
-  parseBrowserScript("topic-focus.js"),
-  parseBrowserScript("ice-home-unify.js"),
-  parseBrowserScript("legal/detail.js"),
-  parseBrowserScript("jobs/listing.js"),
-  parseBrowserScript("jobs-home.js"),
-  parseBrowserScript("immigrate/center-link-canonical.js"),
+  parseBrowserScript("site-common.js"), parseBrowserScript("site-search.js"), parseBrowserScript("category-runtime-v3.js"),
+  parseBrowserScript("listing-seo.js"), parseBrowserScript("immigration-entry.js"), parseBrowserScript("listing.js"),
+  parseBrowserScript("article.js"), parseBrowserScript("article-route-runtime.js"), parseBrowserScript("articles-home.js"),
+  parseBrowserScript("homepage-refresh-guard.js"), parseBrowserScript("homepage-immigration-hub.js"), parseBrowserScript("articles-home-live-fix.js"),
+  parseBrowserScript("topic-focus.js"), parseBrowserScript("ice-home-unify.js"), parseBrowserScript("legal/detail.js"),
+  parseBrowserScript("jobs/listing.js"), parseBrowserScript("jobs-home.js"), parseBrowserScript("immigrate/center-link-canonical.js"),
   parseBrowserScript("admin/category-manager.js")
 ]);
 
@@ -155,11 +138,9 @@ if (!includesText(sitemap, "sitemap-articles-1.xml")) failures.push("sitemap.xml
 const sitemapStatic = await bytes("sitemap-static.xml");
 if (!includesText(sitemapStatic, "<urlset") || !includesText(sitemapStatic, "<loc>https://trrb.net/</loc>")) failures.push("sitemap-static.xml is missing canonical root URL");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge hub");
-if (includesText(sitemapStatic, "<loc>https://trrb.net/jobs/</loc>")) failures.push("sitemap-static.xml must not index the prelaunch jobs hub");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/legal/</loc>")) failures.push("sitemap-static.xml is missing legal hub");
 if (includesText(sitemapStatic, "<loc>https://trrb.net/finance/</loc>")) failures.push("sitemap-static.xml must not index finance demo preview");
 if (includesText(sitemapStatic, "https://www.trrb.net/")) failures.push("sitemap-static.xml still contains www.trrb.net URLs");
-if (/https:\/\/trrb\.net\/jobs(?:\/|\?|<)/i.test(sitemapStatic.toString("utf8"))) failures.push("sitemap-static.xml contains a prelaunch jobs route");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/center?path=study</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge category routes");
 if (!includesText(sitemapStatic, "<loc>https://trrb.net/immigrate/center?path=study&amp;topic=f1</loc>")) failures.push("sitemap-static.xml is missing immigration knowledge topic routes");
 
@@ -168,7 +149,6 @@ const sitemapArticlesText = sitemapArticles.toString("utf8");
 if (!includesText(sitemapArticles, "<urlset")) failures.push("sitemap-articles-1.xml is not a URL set");
 if (!/https:\/\/trrb\.net\/[^/<]+\/[^<]+/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml is missing pretty article URLs");
 if (/\/article\.html\?id=/.test(sitemapArticlesText)) failures.push("sitemap-articles-1.xml still contains legacy article URLs");
-if (/https:\/\/trrb\.net\/jobs(?:\/|\?|<)/i.test(sitemapArticlesText)) failures.push("article sitemap contains a prelaunch jobs route");
 
 const legalSitemap = await bytes("sitemap-legal.xml");
 const legalSitemapText = legalSitemap.toString("utf8");
@@ -192,19 +172,9 @@ const redirects = await bytes("_redirects");
 const redirectsText = redirects.toString("utf8");
 if (!redirectsText.trim()) failures.push("_redirects contains no category routes");
 for (const rule of [
-  "http://trrb.net/* https://trrb.net/:splat 301!",
-  "http://www.trrb.net/* https://trrb.net/:splat 301!",
-  "https://www.trrb.net/* https://trrb.net/:splat 301!",
-  "/index.html / 301!",
-  "/politics /us-politics 301!",
-  "/crime /us-crime 301!",
-  "/china /china-officialdom 301!",
-  "/uscis /immigration 301!",
-  "/dhs /immigration 301!",
-  "/cbp /immigration 301!",
-  "/visa /immigration 301!",
-  "/world /important-news 301!",
-  "/immigration-us /immigration 301!"
+  "http://trrb.net/* https://trrb.net/:splat 301!", "http://www.trrb.net/* https://trrb.net/:splat 301!", "https://www.trrb.net/* https://trrb.net/:splat 301!",
+  "/index.html / 301!", "/politics /us-politics 301!", "/crime /us-crime 301!", "/china /china-officialdom 301!",
+  "/uscis /immigration 301!", "/dhs /immigration 301!", "/cbp /immigration 301!", "/visa /immigration 301!", "/world /important-news 301!", "/immigration-us /immigration 301!"
 ]) {
   if (!redirectsText.includes(rule)) failures.push(`_redirects missing canonical rule: ${rule}`);
 }
@@ -213,11 +183,7 @@ const headers = await bytes("_headers");
 const headersText = headers.toString("utf8");
 if (headers[0] === 0xff && headers[1] === 0xd8) failures.push("_headers was replaced by an image");
 if (!includesText(headers, "Cache-Control")) failures.push("_headers is missing cache rules");
-for (const route of [
-  "/finance/", "/finance/*",
-  "/jobs/", "/jobs/*", "/jobs/search.html", "/jobs/publish.html", "/jobs/seeker.html", "/jobs/manage.html", "/jobs/contact.html", "/jobs/review.html",
-  "/expose", "/expose.html", "/thanks.html", "/delete-account.html"
-]) {
+for (const route of ["/finance/", "/finance/*", "/expose", "/expose.html", "/thanks.html", "/delete-account.html"]) {
   if (!headersText.includes(`${route}\n  X-Robots-Tag: noindex, follow, noarchive`)) failures.push(`_headers missing noindex protection for ${route}`);
 }
 

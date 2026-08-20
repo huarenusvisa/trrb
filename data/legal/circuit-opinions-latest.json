@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-20T17:45:11.493Z",
+  "generatedAt": "2026-08-20T18:59:06.951Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -99,74 +99,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
           "title": "24-1467P.01A"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
-          "title": "24-1524 US v. Fulcar"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1805E-01A.pdf",
-          "title": "24-1805 Cortes-Ramos v. Martin-Morales"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1340E-01A.pdf",
-          "title": "25-1340 Muchiri v. Blanche"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2042P-01A.pdf",
-          "title": "24-2042 Kim v. Blanche"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-2086P-01A.pdf",
-          "title": "24-2086 US v. Gonzalez"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1063P-01A.pdf",
-          "title": "25-1063 North End Chamber of Commerce, Inc. v. City of Boston"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1254O-01A.pdf",
-          "title": "26-1254 African Communities Together v. Mullin"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1376O-01A.pdf",
-          "title": "26-1376 African Communities Together v. Mullin"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1079E-01A.pdf",
-          "title": "25-1079 US v. Rosado Maldonado"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1314E-01A.pdf",
-          "title": "25-1314 Czerno v. General Electric Company"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf",
-          "title": "25-1862 Rana v. Blanche"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf",
-          "title": "26-1774 State of California v. Trump"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1975P-01A.pdf",
-          "title": "23-1975 US v. Irizarry-Irizarry"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
-          "title": "23-2011 Cruz v. UIA"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
-          "title": "25-1555 Grant v. Trial Court of the Commonwealth of Massachusetts"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
-          "title": "26-1699 State of California v. Mullin"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
-          "title": "25-1862 Rana v. Blanche"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
@@ -553,6 +485,34 @@
       "sourceFinalUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
       "documents": [
         {
+          "url": "https://www.ca4.uscourts.gov/opinions/241467.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/241467.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251235.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251235.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/232019.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/232019.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/234471.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/234471.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244594.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244594.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/252009.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/252009.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/254319.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/254319.U.pdf"
+        },
+        {
           "url": "https://www.ca4.uscourts.gov/opinions/251699.P.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/251699.P.pdf"
         },
@@ -723,34 +683,6 @@
         {
           "url": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251332.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251350.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251350.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251848.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251848.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/252320.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/252320.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/254403.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/256283.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/256283.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/261231.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/261231.U.pdf"
         }
       ],
       "notes": []
@@ -1070,6 +1002,14 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://media.ca7.uscourts.gov/cgi-bin/rssExec.pl?Submit=Submit&Time=week",
       "documents": [
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-20/C:25-2740:J:Lee:aut:T:fnOp:N:3594913:S:0",
+          "title": "Final Opinion"
+        },
+        {
+          "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-20/C:25-2740:J:Brennan:con:T:fnOp:N:3594913:S:0",
+          "title": "Final Opinion"
+        },
         {
           "url": "https://media.ca7.uscourts.gov/cgi-bin/OpinionsWeb/processWebInputExternal.pl?Submit=Display&Path=Y2026/D08-19/C:25-1799:J:Maldonado:aut:T:op:N:3594235:S:0",
           "title": "Opinion"
@@ -1709,6 +1649,10 @@
       "sourceFinalUrl": "https://media.cadc.uscourts.gov/opinions/",
       "documents": [
         {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-1148-2189173.pdf",
+          "title": "25-1148"
+        },
+        {
           "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-1193-2188689.pdf",
           "title": "24-1193"
         },
@@ -1725,7 +1669,7 @@
           "title": "25-1158"
         },
         {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5041-2188724.pdf",
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5041.pdf",
           "title": "25-5041"
         },
         {
@@ -1743,10 +1687,6 @@
         {
           "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5425-2188755.pdf",
           "title": "25-5425"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5041.pdf",
-          "title": "25-5041"
         },
         {
           "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-7135-2188251.pdf",

@@ -5,8 +5,33 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Aug 2026 01:51:53 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 02:00:25 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>佛罗里达社交媒体出现ICE涉暴言论 官方提醒谨慎辨别</title>
+      <link>https://trrb.net/ice/ice-7b830154e07c6b8fb35e1fe4c6bf24a0cc6dbc39</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-7b830154e07c6b8fb35e1fe4c6bf24a0cc6dbc39</guid>
+      <pubDate>Thu, 20 Aug 2026 02:00:25 GMT</pubDate>
+      <category>移民美国</category>
+      <description>佛罗里达部分社交平台关于ICE及移民政策出现未证实言论，官方提醒谨慎辨别。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2090229395243913216/img/vuJbyWsafX88tcu7.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>DHS未向监督机构提供数据，被监督机构ItsYourGov起诉索取信息</title>
+      <link>https://trrb.net/ice/ice-196a4a7148a077723e607b1374e494c85b5bd19e</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-196a4a7148a077723e607b1374e494c85b5bd19e</guid>
+      <pubDate>Thu, 20 Aug 2026 01:59:53 GMT</pubDate>
+      <category>移民美国</category>
+      <description>美国曝大规模遣返，DHS未向监督机构提供数据，被起诉索取信息。</description>
+    </item>
+    <item>
+      <title>ICE遣返一名多次非法入境的重犯，该人遣返前曾通过GoFundMe筹资</title>
+      <link>https://trrb.net/ice/ice-060b72e9af0b548a5a55830b252a3630d253d336</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-060b72e9af0b548a5a55830b252a3630d253d336</guid>
+      <pubDate>Thu, 20 Aug 2026 01:59:02 GMT</pubDate>
+      <category>移民美国</category>
+      <description>2026年8月16日，ICE遣返一名多次非法入境的重犯，该人遣返前曾通过GoFundMe筹资。</description>
+    </item>
     
     
     
@@ -511,9 +536,6 @@
       <description>唐人日报8月19日讯：美国移民法院体系正在经历特朗普政府第二任期以来的大规模调整。前任和现任移民法官表示，司法部下属移民审查执行办公室（EOIR）通过解雇大量法官、修改法院管理规则以及加快案件处理速度，对移民案件审理方式产生重大影响。</description>
       <enclosure url="https://static.notus.org/dims4/default/e7f7dab/2147483647/strip/true/crop/7318x4879+0+0/resize/1464x976!/format/webp/quality/90/?url=https%3A%2F%2Fk2-prod-aji.s3.us-east-1.amazonaws.com%2Fbrightspot%2F16%2Fdc%2Fe2eeb83e4e62be36187fefe6561a%2Fap26209592454409.jpg" type="image/jpeg" />
     </item>
-    
-    
-    
     
   </channel>
 </rss>

@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-7b830154e07c6b8fb35e1fe4c6bf24a0cc6dbc39</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T02:00:25.064Z</news:publication_date>
+        <news:title>佛罗里达社交媒体出现ICE涉暴言论 官方提醒谨慎辨别</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-196a4a7148a077723e607b1374e494c85b5bd19e</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:59:53.778Z</news:publication_date>
+        <news:title>DHS未向监督机构提供数据，被监督机构ItsYourGov起诉索取信息</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-060b72e9af0b548a5a55830b252a3630d253d336</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:59:02.787Z</news:publication_date>
+        <news:title>ICE遣返一名多次非法入境的重犯，该人遣返前曾通过GoFundMe筹资</news:title>
+      </news:news>
+    </url>
   
   
   

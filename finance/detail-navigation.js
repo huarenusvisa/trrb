@@ -3,10 +3,29 @@
     if(!document.querySelector('link[data-finance-resilience]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./resilience.css';l.dataset.financeResilience='1';document.head.appendChild(l)}
     if(!document.querySelector('script[data-finance-resilience]')){const s=document.createElement('script');s.src='./resilience.js';s.async=false;s.dataset.financeResilience='1';document.head.appendChild(s)}
   }
-  loadResilience();
+  function loadNavigationMemory(){
+    if(document.querySelector('script[data-finance-nav-memory]'))return;const s=document.createElement('script');s.src='./navigation-memory.js';s.async=false;s.dataset.financeNavMemory='1';document.head.appendChild(s)
+  }
+  loadResilience();loadNavigationMemory();
   const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
-  const top=$('.stock-top'),content=$('.stock-content'),hero=$('.stock-hero'),ticker=$('.stock-ticker');if(!top||!content||!hero||!ticker)return;
   const isFund=!!$('#fundName');
+  function readContext(){
+    if(window.FinanceNavigationMemory?.getContext)return window.FinanceNavigationMemory.getContext();
+    try{return JSON.parse(sessionStorage.getItem('trfinance.navContext')||'null')}catch(e){return null}
+  }
+  function markReturn(){
+    if(window.FinanceNavigationMemory?.markReturn)return window.FinanceNavigationMemory.markReturn();
+    const ctx=readContext();if(!ctx||Date.now()-(ctx.ts||0)>30*60*1000)return null;ctx.restore=true;ctx.ts=Date.now();try{sessionStorage.setItem('trfinance.navContext',JSON.stringify(ctx))}catch(e){}return ctx
+  }
+  function setupContextBack(){
+    const ctx=readContext(),fallbackPage=isFund?'funds':'watch',page=['market','watch','funds','profile'].includes(ctx?.page)?ctx.page:fallbackPage;
+    const pageLabels={market:'行情',watch:'自选',funds:'基金',profile:'我的'},label=pageLabels[page]||'财经';const target=`./#${page}`;
+    const controls=[$('.back'),$('#fundBackBtn')].filter(Boolean);
+    controls.forEach(el=>{if(el.tagName==='A')el.href=target;el.setAttribute('aria-label',`返回${label}`);if(el.id==='fundBackBtn')el.textContent=`返回${label}`;el.addEventListener('click',e=>{e.preventDefault();e.stopImmediatePropagation();const saved=markReturn();if(saved&&history.length>1)history.back();else location.href=target},true)});
+  }
+  setupContextBack();
+
+  const top=$('.stock-top'),content=$('.stock-content'),hero=$('.stock-hero'),ticker=$('.stock-ticker');if(!top||!content||!hero||!ticker)return;
   const labels=isFund?['概览','基金概览','核心持仓','相关资讯','风险说明']:['概览','关键数据','新闻','分析师评级','营收与利润','财报','公告','热度','公司概览'];
   const sections=[hero,...$$('.stock-section',content)];
   sections.forEach((s,i)=>{if(!s.id)s.id=`detail-section-${i}`});

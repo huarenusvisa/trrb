@@ -1737,12 +1737,4 @@
         <news:title>德州达拉斯县移民嫌疑人袭警被捕</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a10e072bdac402289a636b995041805ab43cae7f</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T23:56:34.047Z</news:publication_date>
-        <news:title>纽约前市长直播支持废除ICE及推动医保改革</news:title>
-      </news:news>
-    </url>
 </urlset>

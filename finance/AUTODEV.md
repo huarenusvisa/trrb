@@ -48,6 +48,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 自选删除使用删除前股票 + ETF 快照，撤销精确恢复，不再依赖二次 toggle
 - [x] 最新价 / 涨跌幅升降序与恢复原顺序
 - [x] 排序偏好本机保存；BFCache 返回后重新读取并应用
+- [x] `FinanceAppState.refreshWatch()` 直接重绘当前筛选下的自选；storage / finance:resume 不再通过模拟点击筛选按钮刷新
 
 ### ETF / 基金
 - [x] ETF 主题研究页与核心指数 / 科技 / 黄金 / 半导体真实筛选
@@ -74,6 +75,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] BFCache / session 恢复使用临时恢复标记，合成点击不再触发“用户主动切换”live-region 播报
 - [x] `FinanceNavigationMemory.isRestoring()` 提供只读恢复状态，供 QA 验证恢复静默性
 - [x] `FinanceDetailStateSync.snapshot()` 提供详情按钮同步原因 / 次数只读状态，区分 init / storage / finance:resume / pageshow
+- [x] `FinanceAppState.snapshot()` 提供首页当前页、筛选、管理态与直接刷新次数 / 原因只读状态
 - [x] 弱网 / 离线 / 加载失败恢复条与空状态操作入口
 - [x] readiness observer 完成后断开，多恢复事件合并，sessionStorage 滚动写入节流
 - [x] 个股 / ETF 顶部栏 iPhone safe-area-inset-top
@@ -100,7 +102,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 ## QA / 验收基础设施
 - [x] `acceptance-check.js`：仅 `qa=1` 时加载
 - [x] `qa-interactions.js`：真实操作搜索、导航、自选排序、精确撤销、ETF筛选、K线、YTD、键盘图表读取
-- [x] `qa-detail-state.js`：仅 QA Suite 加载，包装个股 / ETF case 验证 storage 与 finance:resume 后按钮状态同步
+- [x] `qa-detail-state.js`：仅 QA Suite 加载，包装首页 / 个股 / ETF case 验证直接刷新、storage 与 finance:resume 状态同步
 - [x] `qa-suite.html`：12 个常规多视口 case + 4 个异常路径 case，共 16 个 case
 - [x] 常规视口：首页 / AAPL / QQQ × 360 / 390 / 430 / 1280px
 - [x] 异常 case：未知股票 ZZZZ、未知 ETF FAKE、slow-ready、data-missing
@@ -113,6 +115,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 首页 QA 捕获“自选筛选 → 股票详情”来源，不真正导航；改乱状态后通过 synthetic `pageshow.persisted` 验证页签、筛选和滚动恢复
 - [x] 首页 QA 同样验证“黄金 ETF 筛选 → ETF 详情”来源恢复
 - [x] 上下文恢复期间 live region 使用 sentinel；恢复产生任何用户操作播报或恢复标记残留都 FAIL
+- [x] 首页 QA 暂时改变 AAPL 自选并派发 storage / finance:resume，要求自选 DOM 通过 `FinanceAppState` 直接刷新，同时捕获 `.watch-filter` click；出现任何合成筛选点击即 FAIL
 - [x] 个股 QA 暂时移出当前股票自选 / 提醒后派发 storage，要求按钮同步；随后恢复数据并派发 finance:resume，要求按钮回到真实状态
 - [x] ETF QA 暂时移出基金自选后派发 storage，要求关注按钮同步；随后恢复数据并派发 finance:resume，要求按钮回到真实状态
 - [x] 首屏 + 当前渲染页面全长触控扫描
@@ -174,6 +177,15 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - 新增仅 QA Suite 使用的 `qa-detail-state.js`，在现有个股 / ETF case 后附加 storage 与 finance:resume 状态同步测试；测试结束精确恢复本机列表 / 提醒。
 - `stock.html` / `fund.html` 显式加载 `detail-state-sync.js`；开发分支与 A 版预览新脚本、详情页和 QA Suite 已同步。
 - 本轮首先尝试从当前执行容器访问 RawGitHack，但 DNS 仍返回 temporary failure in name resolution，因此没有把真实浏览器 / iPhone / Lighthouse 标记为通过。
+
+### 第三十二轮：首页直接刷新接口与合成点击清理
+- 新增只读/安全的 `FinanceAppState`：仅提供自选、基金、我的重绘入口和当前页面 / 筛选 / 刷新次数快照，不开放交易或数据写入能力。
+- `reference-features.js` 的自选 BFCache / `finance:resume` 与跨标签 `storage` 刷新改为调用 `FinanceAppState.refreshWatch()`，不再执行当前 `.watch-filter` 的 synthetic click。
+- 直接刷新后仍在下一帧重新应用当前排序，因此自选列表、当前筛选和价格 / 涨跌幅排序保持一致。
+- storage 的 `key=null` 也会触发安全刷新，兼容另一标签页执行整段 storage clear 的情况。
+- `qa-detail-state.js` 扩展首页回归检查：修改 AAPL 自选、派发 storage / finance:resume，要求 DOM 与刷新快照同步，并捕获筛选按钮 click；任何合成筛选 click 都直接 FAIL。
+- 开发分支与 A 版预览的 `app.js`、`reference-features.js`、`qa-detail-state.js` 内容 SHA 已同步一致。
+- 本轮为代码与静态逻辑复核，没有把真实 iPhone / Safari、桌面浏览器或 Lighthouse 标记为通过。
 
 ## 当前结论
 当前状态：**V1 Candidate+ / 功能冻结**。

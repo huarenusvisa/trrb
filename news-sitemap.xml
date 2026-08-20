@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/hot-headlines/%E8%BD%A6%E5%BA%93%E7%AB%9F%E5%8F%98%E9%81%97%E4%BD%93%E5%AD%98%E6%94%BE%E7%82%B9%E5%B9%BF%E4%B8%9C%E6%B9%9B%E6%B1%9F%E6%88%BF%E4%B8%9C%E5%8F%91%E7%8E%B0%E5%BC%82%E5%B8%B8%E8%AD%A6%E6%96%B9%E4%BB%8B%E5%85%A5-mt1oesnb-d97666</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T15:29:25.127Z</news:publication_date>
+        <news:title>车库竟变遗体存放点！广东湛江房东发现异常，警方介入</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/hot-headlines/%E8%B5%A4%E8%A3%B8%E5%A5%B3%E7%AB%A5%E4%BA%8B%E4%BB%B6%E5%8F%8D%E8%BD%AC%E5%9B%BA%E5%AE%89%E5%A6%87%E8%81%94%E9%80%9A%E6%8A%A5%E9%9D%9E%E9%81%97%E5%BC%83%E8%84%B1%E8%A1%A3%E5%9B%A0%E5%A4%A9%E6%B0%94%E7%82%8E%E7%83%AD-mt1o989h-38d809</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T15:25:05.429Z</news:publication_date>
+        <news:title>“赤裸女童”事件反转！固安妇联通报：非遗弃，脱衣因天气炎热</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/hot-headlines/%E5%BC%BA%E6%8B%86%E8%80%85%E5%85%88%E5%8A%A8%E6%89%8B%E5%B1%8B%E4%B8%BB%E5%8F%8D%E5%87%BB%E8%87%B4%E5%91%BD%E9%99%95%E8%A5%BF%E6%B3%95%E9%99%A2%E6%9C%80%E7%BB%88%E5%88%A4%E5%AE%9A%E6%AD%A3%E5%BD%93%E9%98%B2%E5%8D%AB%E6%97%A0%E7%BD%AA-mt1nuqxw-4a0ac5</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1868,14 +1884,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-18T16:09:19.885Z</news:publication_date>
         <news:title>78岁老人娶45岁保姆6年后婚变！存款争议、离婚受阻，晚年打响财产保卫战</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-1ecdd7c802f11aa9164db38997e0ffda721e1728</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T15:46:29.126Z</news:publication_date>
-        <news:title>美国国土安全部宣布终止所有TPS身份并启动遣返程序</news:title>
       </news:news>
     </url>
 </urlset>

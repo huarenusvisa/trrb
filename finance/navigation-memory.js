@@ -8,13 +8,15 @@
   const currentPage=()=>{if(isDetail)return null;const p=$('.page.active')?.dataset.page||location.hash.slice(1)||'market';return validPages.includes(p)?p:'market'};
   function selectionState(){return {marketPanel:$('.market-tab.on')?.dataset.panel||'now',watchFilter:$('.watch-filter.on')?.dataset.filter||'all',fundFilter:$('.fund-cat.on')?.dataset.fundFilter||'all'}}
   function saveSelections(){const page=currentPage();if(!page)return;write(STATE_KEY,{...read(STATE_KEY,{}),...selectionState(),page,ts:Date.now()})}
+  let restoreDepth=0;
+  function withRestoreSilence(fn){restoreDepth++;window.__financeRestoringNavigation=true;try{return fn()}finally{requestAnimationFrame(()=>{restoreDepth=Math.max(0,restoreDepth-1);if(!restoreDepth)window.__financeRestoringNavigation=false})}}
   function clickIfNeeded(selector,desired,attr){
     if(!desired)return;
     if(desired==='all'&&attr==='data-fund-filter'){const active=$(`${selector}.on`);if(active)active.click();return}
     const target=$(`${selector}[${attr}="${desired}"]`);if(!target)return;
     const active=target.classList.contains('on')||target.getAttribute('aria-pressed')==='true'||target.getAttribute('aria-selected')==='true';if(!active)target.click();
   }
-  function restoreSelections(state){if(!state||isDetail)return;clickIfNeeded('.market-tab',state.marketPanel,'data-panel');clickIfNeeded('.watch-filter',state.watchFilter,'data-filter');clickIfNeeded('.fund-cat',state.fundFilter||'all','data-fund-filter')}
+  function restoreSelections(state){if(!state||isDetail)return;withRestoreSilence(()=>{clickIfNeeded('.market-tab',state.marketPanel,'data-panel');clickIfNeeded('.watch-filter',state.watchFilter,'data-filter');clickIfNeeded('.fund-cat',state.fundFilter||'all','data-fund-filter')})}
   let lastSavedY=-1,lastScrollWriteAt=0,scrollTimer=0,pendingScrollY=0;
   function captureContext(link){
     if(isDetail||!link)return;const href=link.getAttribute('href')||'';if(!/(?:stock|fund)\.html\?/i.test(href))return;
@@ -23,7 +25,7 @@
   }
   function markReturn(){const ctx=read(CONTEXT_KEY,null);if(ctx&&Date.now()-ctx.ts<30*60*1000){ctx.restore=true;ctx.ts=Date.now();write(CONTEXT_KEY,ctx);return ctx}return null}
   function clearContext(){try{sessionStorage.removeItem(CONTEXT_KEY)}catch(e){}}
-  window.FinanceNavigationMemory={getContext:()=>read(CONTEXT_KEY,null),markReturn,clearContext};
+  window.FinanceNavigationMemory={getContext:()=>read(CONTEXT_KEY,null),markReturn,clearContext,isRestoring:()=>!!window.__financeRestoringNavigation};
   if(isDetail)return;
 
   function flushScroll(force=false){
@@ -44,7 +46,7 @@
     const state=read(STATE_KEY,{});restoreSelections(state);const ctx=read(CONTEXT_KEY,null);if(!ctx)return;
     const nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0],backForward=forceBack||!!(nav&&nav.type==='back_forward');
     if(!(ctx.restore||backForward)||Date.now()-ctx.ts>30*60*1000)return;
-    if(validPages.includes(ctx.page)&&currentPage()!==ctx.page){const btn=$(`.bottom button[data-target="${ctx.page}"]`);if(btn)btn.click()}
+    if(validPages.includes(ctx.page)&&currentPage()!==ctx.page){const btn=$(`.bottom button[data-target="${ctx.page}"]`);if(btn)withRestoreSilence(()=>btn.click())}
     lastSavedY=Math.max(0,ctx.scrollY||0);requestAnimationFrame(()=>{restoreSelections(ctx);requestAnimationFrame(()=>window.scrollTo({top:lastSavedY,behavior:'auto'}))});
     ctx.restore=false;ctx.ts=Date.now();write(CONTEXT_KEY,ctx);
   }

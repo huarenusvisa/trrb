@@ -6,6 +6,7 @@ const optional = (path) => fs.existsSync(path) ? read(path) : '';
 const appCategories = read('apps/mobile/src/news/categories.ts');
 const channels = read('config/channels.js');
 const redirects = read('_redirects');
+const redirectFinalizer = read('scripts/finalize-redirects.mjs');
 const homepage = read('index.html');
 const listing = read('listing.html');
 const article = read('article.html');
@@ -30,14 +31,19 @@ for (const [name, source] of topLevelSources) {
   }
 }
 
-if (!/^\/asylum\s+\/immigrate\/center\?path=humanitarian\s+301!$/m.test(redirects)) {
-  failures.push('missing /asylum -> humanitarian knowledge center 301');
-}
-if (!/^\/asylum\/:slug\s+\/immigration\/:slug\s+301!$/m.test(redirects)) {
-  failures.push('missing /asylum/:slug -> /immigration/:slug 301');
-}
-if (/\/asylum\s+\/listing\.html\?category=.*(?:E5|庇护)/i.test(redirects)) {
-  failures.push('legacy /asylum internal rewrite is still present');
+for (const [name, source] of [['committed redirects', redirects], ['redirect generator', redirectFinalizer]]) {
+  if (!source.includes('/asylum /immigrate/center?path=humanitarian 301!')) {
+    failures.push(`${name} missing /asylum -> humanitarian knowledge center 301`);
+  }
+  if (!source.includes('/asylum/ /immigrate/center?path=humanitarian 301!')) {
+    failures.push(`${name} missing /asylum/ -> humanitarian knowledge center 301`);
+  }
+  if (!source.includes('/asylum/:slug /immigration/:slug 301!')) {
+    failures.push(`${name} missing /asylum/:slug -> /immigration/:slug 301`);
+  }
+  if (/\/asylum(?:\/?|\/:slug)\s+\/listing\.html\?category=.*(?:%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91|庇护百科)/i.test(source)) {
+    failures.push(`${name} still contains legacy asylum encyclopedia internal rewrite`);
+  }
 }
 
 for (const [name, source] of [['RSS', feed], ['Sitemap', sitemap], ['Google News', googleNews]]) {
@@ -58,7 +64,7 @@ if (failures.length) {
 }
 
 console.log('PASS: retired asylum encyclopedia is absent from top-level APP/web navigation');
-console.log('PASS: legacy /asylum routes have permanent redirects');
+console.log('PASS: committed and generated legacy /asylum routes have permanent redirects');
 console.log('PASS: static RSS/Sitemap/Google News surfaces do not expose retired category routes');
 console.log('PASS: APP legacy category values resolve into 移民美国');
 console.log('APP-R2 ASYLUM RETIREMENT: PASS');

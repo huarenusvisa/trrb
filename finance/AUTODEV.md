@@ -36,17 +36,16 @@
 - Chromium + Python Playwright 可用。
 - GitHub Connector 可读取 `finance-v1-preview/finance/` 全部 A 版源码与 QA 文件。
 - 当前执行容器仍无法通过 DNS 直接访问 GitHub/RawGitHack/API GitHub/Netlify/trrb.net，不能直接下载 A 版或打开远程预览。
-- A 版预览 PR #23（`finance-v1-preview` → `main`）仍为 draft/open；最新 head=`e639e44cf9e8664c78cc99149b1da3a93d6b961d`。
-- 对该最新 head 的 `netlify/trrb/deploy-preview` 状态已从 pending 落为 `failure`，目标 deploy=`6a87542dc6f9b500088e664a`；仍无可用预览页供 Chromium 直接执行 16-case。
+- A 版预览 PR #23（`finance-v1-preview` → `main`）仍为 draft/open；当前 head=`aab777a16ecb88466c297dfc3f239257a0269309`。
+- 当前 head 的 `netlify/trrb/deploy-preview` 已落为 `failure`，目标 deploy=`6a8761eae70c0a00087858b9`；仍无可用预览页供 Chromium 直接执行 16-case。
 - 目前没有新的真实产品 FAIL/WARN 证据，因此不继续无依据修改核心产品代码。
 
-## 本轮（第44轮）
-- 先读取并遵守本文件旧 checkpoint。
-- 复核 PR #23：仍 draft/open，最新 head=`e639e44cf9e8664c78cc99149b1da3a93d6b961d`。
-- 复核最新 head 的 Netlify Deploy Preview：`failure`；没有把这次基础设施失败误判为财经产品 FAIL。
-- 复核 `feature-flags.js`：`brokerage=false`、`liveMarketData=false`、`trading=false`，交易/开户/KYC/基金购买边界继续关闭。
-- 重新比较 `main...finance-v1-robinhood`：status=`diverged`，财经分支 ahead 198 / behind 159；GitHub compare 返回的全部差异文件仍位于 `finance/`，未触碰保护范围。
-- 本轮没有发现新的、可静态确定且值得冒险修改的封板缺陷，因此不新增产品代码，不虚报 16-case、iPhone、桌面或 Lighthouse PASS。
+## 本轮（第45轮）
+- 先读取并遵守本文件第44轮 checkpoint。
+- 复核 PR #23：仍 draft/open、未合并，当前 head=`aab777a16ecb88466c297dfc3f239257a0269309`。
+- 复核当前 head 的 Netlify Deploy Preview：`failure`，deploy=`6a8761eae70c0a00087858b9`；没有把预览基础设施失败误判为财经产品 FAIL。
+- 重新比较 `main...finance-v1-robinhood`：status=`diverged`，财经分支 ahead 199 / behind 206；GitHub compare 返回的全部差异文件仍位于 `finance/`，未触碰保护范围。
+- 本轮未发现新的、可静态确定且值得冒险修改的封板缺陷，因此按功能冻结要求停止新增产品代码，不虚报 16-case、iPhone、桌面或 Lighthouse PASS。
 
 ## 当前结论
 状态：**V1 Candidate+ / 功能冻结**。

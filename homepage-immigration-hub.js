@@ -24,6 +24,20 @@
     ["庇护百科", "asylum", "asylum"]
   ];
 
+  const blueCollarPriority = [
+    "restaurant",
+    "construction",
+    "logistics-warehouse",
+    "truck-driver",
+    "retail-grocery",
+    "beauty-nail",
+    "massage",
+    "home-care"
+  ];
+
+  let jobsCache = null;
+  let jobsLoading = null;
+
   function escapeHtml(value) {
     return String(value || "")
       .replaceAll("&", "&amp;")
@@ -63,6 +77,73 @@
       <a class="immigration-hub-all legal-hub-all" href="/legal/">查看全部判例与新规</a>`;
   }
 
+  function formatSalary(job) {
+    const min = Number(job?.salary_min || 0);
+    const max = Number(job?.salary_max || 0);
+    const period = ({ hour: "/小时", day: "/天", week: "/周", month: "/月", year: "/年", job: "/项目" })[job?.salary_period] || "";
+    if (min && max) return `$${min}-${max}${period}`;
+    if (min) return `$${min}+${period}`;
+    if (max) return `最高$${max}${period}`;
+    return "薪资面议";
+  }
+
+  function formatJobLocation(job) {
+    return [job?.neighborhood, job?.borough, job?.city, job?.state_code].filter(Boolean).slice(0, 2).join(" · ") || "美国";
+  }
+
+  function sortJobs(items) {
+    return items.slice().sort((a, b) => {
+      const ai = blueCollarPriority.indexOf(String(a?.category_slug || ""));
+      const bi = blueCollarPriority.indexOf(String(b?.category_slug || ""));
+      const ar = ai === -1 ? 999 : ai;
+      const br = bi === -1 ? 999 : bi;
+      if (ar !== br) return ar - br;
+      return Date.parse(b?.published_at || b?.updated_at || 0) - Date.parse(a?.published_at || a?.updated_at || 0);
+    });
+  }
+
+  function jobsMarkup(items) {
+    const rows = Array.isArray(items) ? items.slice(0, 4) : [];
+    const links = rows.length
+      ? rows.map((job, index) => {
+          const id = encodeURIComponent(job?.id || "");
+          const title = escapeHtml(job?.title || "招聘岗位");
+          const meta = escapeHtml(`${formatJobLocation(job)} · ${formatSalary(job)}`);
+          return `<a class="${index === rows.length - 1 && rows.length % 2 === 1 ? "is-wide" : ""}" href="/jobs/listing.html?id=${id}"><strong>${title}<br><small style="font-size:12px;color:#667085;font-weight:600">${meta}</small></strong><span aria-hidden="true">›</span></a>`;
+        }).join("")
+      : `<a href="/jobs/search.html"><strong>餐饮 · 仓库 · 司机</strong><span aria-hidden="true">›</span></a><a href="/jobs/search.html"><strong>装修 · 零售 · 美业</strong><span aria-hidden="true">›</span></a><a class="is-wide" href="/jobs/search.html"><strong>查看美国华人最新招聘岗位</strong><span aria-hidden="true">›</span></a>`;
+
+    return `
+      <header class="immigration-hub-head legal-hub-head">
+        <h2>招聘求职</h2>
+        <a href="/jobs/search.html">更多岗位</a>
+      </header>
+      <a class="immigration-hub-feature legal-hub-feature" href="/jobs/search.html" aria-label="进入招聘求职岗位大厅">
+        <strong>先看工作 · 华人高频蓝领岗位优先</strong>
+      </a>
+      <div class="immigration-hub-grid legal-hub-grid">${links}</div>
+      <a class="immigration-hub-all legal-hub-all" href="/jobs/search.html">查看全部招聘岗位</a>`;
+  }
+
+  async function loadJobs() {
+    if (jobsCache) return jobsCache;
+    if (jobsLoading) return jobsLoading;
+    jobsLoading = fetch("/.netlify/functions/public-jobs?limit=30", { headers: { Accept: "application/json" }, cache: "no-store" })
+      .then(async (response) => {
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload?.error || `HTTP ${response.status}`);
+        jobsCache = sortJobs(Array.isArray(payload?.items) ? payload.items : []);
+        return jobsCache;
+      })
+      .catch((error) => {
+        console.error("首页招聘岗位加载失败", error);
+        jobsCache = [];
+        return jobsCache;
+      })
+      .finally(() => { jobsLoading = null; });
+    return jobsLoading;
+  }
+
   function replaceImmigrationCard(root) {
     const card = root.querySelector("#immigration") || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "移民美国");
     if (!card || card.dataset.knowledgeHub === "true") return;
@@ -81,11 +162,27 @@
     card.innerHTML = legalMarkup();
   }
 
+  function replaceJobsCard(root) {
+    const card = root.querySelector("#asylum") || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "庇护百科");
+    if (!card) return;
+    card.id = "jobs-home-hub";
+    card.dataset.jobsHub = "true";
+    card.classList.add("immigration-knowledge-card", "legal-knowledge-card", "jobs-knowledge-card");
+    card.innerHTML = jobsMarkup(jobsCache || []);
+    if (!jobsCache) {
+      loadJobs().then((items) => {
+        const current = document.querySelector("#jobs-home-hub");
+        if (current) current.innerHTML = jobsMarkup(items);
+      });
+    }
+  }
+
   function replaceCards() {
     const root = document.querySelector("#sections-grid");
     if (!root) return;
     replaceImmigrationCard(root);
     replaceExposureCard(root);
+    replaceJobsCard(root);
   }
 
   function shortDate(value) {
@@ -169,9 +266,6 @@
     if (!root) return;
     refreshCategoryCards(root);
 
-    // articles-home.js replaces the direct children of #sections-grid whenever
-    // the unified bundle refreshes. Reuse that same dataset instead of opening
-    // four additional Supabase connections every minute.
     new MutationObserver(() => {
       replaceCards();
       refreshCategoryCards(root);

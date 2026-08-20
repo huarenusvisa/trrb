@@ -23,17 +23,17 @@
     $$('.stock-ticker.chart-reading').forEach(x=>x.classList.remove('chart-reading'));
   }
   function cleanupTransient(){closeSearch();dismissToast();resetChartReading();document.body.classList.remove('finance-keyboard-open');health.cleanups++}
-  function resyncVisualState(){
+  function resyncVisualState(reasons){
     const viewportChanged=syncViewport();
     const top=$('.top');if(top)top.classList.toggle('is-compact',window.scrollY>72);
     const stockTop=$('.stock-top'),hero=$('.stock-hero');if(stockTop&&hero)stockTop.classList.toggle('detail-scrolled',window.scrollY>Math.max(110,hero.offsetTop+90));
     if(viewportChanged)window.dispatchEvent(new CustomEvent('finance:viewportchange',{detail:{height:lastViewportHeight}}));
-    window.dispatchEvent(new CustomEvent('finance:resume',{detail:{reasons:Array.from(pendingReasons)}}));
+    window.dispatchEvent(new CustomEvent('finance:resume',{detail:{reasons}}));
   }
   function flushResume(){
     resumeRaf=0;const persisted=pendingPersisted,reasons=Array.from(pendingReasons);pendingPersisted=false;pendingReasons.clear();
     health.resumes++;health.lastResumeAt=Date.now();health.lastReason=reasons.join(',');if(persisted)health.bfcacheRestores++;
-    cleanupTransient();requestAnimationFrame(resyncVisualState)
+    cleanupTransient();requestAnimationFrame(()=>resyncVisualState(reasons))
   }
   function scheduleResume(reason,{persisted=false}={}){
     pendingReasons.add(reason);if(persisted)pendingPersisted=true;

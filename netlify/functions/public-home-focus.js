@@ -1,6 +1,6 @@
 const { rest } = require("./_shared/supabase-admin");
 
-const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
+const HOME_MAX_AGE_MS = 72 * 60 * 60 * 1000;
 const MIN_LONGFORM_CHARS = 1500;
 const PREFERRED_LONGFORM_CHARS = 2200;
 const MANUAL_FORCE = "force";
@@ -65,9 +65,9 @@ function scoreRow(row, now = Date.now()) {
   if (override === MANUAL_EXCLUDE) return -100000;
 
   const published = timeOf(row);
-  const ageHours = published ? Math.max(0, (now - published) / 3600000) : 96;
+  const ageHours = published ? Math.max(0, (now - published) / 3600000) : 72;
   const length = textLength(row?.content);
-  let score = Math.max(0, 96 - ageHours) * 1.25;
+  let score = Math.max(0, 72 - ageHours) * 1.25;
 
   if (override === MANUAL_FORCE || row?.is_featured === true) score += 10000;
   if (row?.is_breaking === true) score += 180;

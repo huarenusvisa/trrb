@@ -7,6 +7,7 @@ on:
       - 'apps/mobile/**'
       - 'scripts/audit-app-batch2-node*.mjs'
       - 'scripts/audit-app-r2-asylum-retirement.mjs'
+      - 'scripts/finalize-redirects.mjs'
       - 'config/channels.js'
       - '_redirects'
       - 'index.html'

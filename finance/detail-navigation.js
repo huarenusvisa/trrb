@@ -51,7 +51,13 @@
   const chartHost=isFund?$('#fundChart'):$('#chart');
   if(chartHost&&'MutationObserver'in window){
     let lastVisible=false;
-    const syncTip=()=>{const tip=$('.chart-scrub-tip',chartHost);if(!tip)return;const visible=tip.style.opacity==='1';if(visible){const price=(tip.childNodes[0]?.textContent||tip.textContent||'').trim(),range=$('.range button.on')?.dataset.range||'';showReading(price,range)}else if(lastVisible)restoreHeader();lastVisible=visible};
+    const syncTip=()=>{
+      const lineTip=$('.chart-scrub-tip',chartHost),klineTip=$('.kline-tip',chartHost);const lineVisible=!!lineTip&&lineTip.style.opacity==='1',klineVisible=!!klineTip&&klineTip.style.opacity==='1';
+      if(lineVisible){const price=(lineTip.childNodes[0]?.textContent||lineTip.textContent||'').trim(),range=$('.range button.on')?.dataset.range||'';showReading(price,range)}
+      else if(klineVisible){const raw=(klineTip.textContent||'').replace(/\s+/g,' '),match=raw.match(/收\s*\$?([\d,.]+)/),price=match?`$${match[1]}`:basePrimary,range=$('.range button.on')?.dataset.range||'';showReading(price,`${range} · K线`)}
+      else if(lastVisible)restoreHeader();
+      lastVisible=lineVisible||klineVisible;
+    };
     const mo=new MutationObserver(()=>requestAnimationFrame(syncTip));mo.observe(chartHost,{subtree:true,childList:true,attributes:true,attributeFilter:['style']});syncTip();
   }
 })();

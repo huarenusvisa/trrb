@@ -8,7 +8,7 @@
   const localSet=(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}};
   const line=(points,positive=true)=>{const max=Math.max(...points),min=Math.min(...points),w=86,h=34;const p=points.map((v,i)=>`${(i/(points.length-1))*w},${h-3-((v-min)/(max-min||1))*(h-6)}`).join(' ');return `<svg class="spark" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${p}" fill="none" stroke="${positive?'#00c805':'#ff4d2e'}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`};
 
-  function announce(text){let el=$('#financeAnnouncer');if(!el){el=document.createElement('div');el.id='financeAnnouncer';el.className='sr-only';el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');document.body.appendChild(el)}el.textContent='';requestAnimationFrame(()=>{el.textContent=text})}
+  function announce(text){if(window.__financeRestoringNavigation)return;let el=$('#financeAnnouncer');if(!el){el=document.createElement('div');el.id='financeAnnouncer';el.className='sr-only';el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true');document.body.appendChild(el)}el.textContent='';requestAnimationFrame(()=>{if(!window.__financeRestoringNavigation)el.textContent=text})}
   function notify(text,undoFn=null){
     let t=$('#financeToast');if(!t){t=document.createElement('div');t.id='financeToast';t.className='finance-toast';t.setAttribute('role','status');t.setAttribute('aria-live','polite');document.body.appendChild(t)}
     clearTimeout(notify.timer);t.replaceChildren();const msg=document.createElement('span');msg.textContent=text;t.appendChild(msg);t.classList.toggle('has-action',!!undoFn);
@@ -44,8 +44,10 @@
     return items.map(s=>`<a class="watch" href="${recordHref(s)}"><div><div class="name">${s.name}</div><div class="ticker">${s.symbol} · ${s.market}</div></div>${line(s.spark,s.change>=0)}<div class="price">$${money(s.price)}</div><div class="change ${s.change>=0?'upbg':'downbg'}">${s.change>=0?'+':''}${s.change.toFixed(2)}%</div></a>`).join('')
   }
   function removeWatchRecord(type,symbol){
-    const toggle=()=>type==='fund'?D.toggleFundWatch(symbol):D.toggleWatch(symbol);toggle();renderWatch();announce(`${symbol} 已移出自选`);
-    notify(`${symbol} 已移出自选`,()=>{toggle();renderWatch();announce(`${symbol} 已恢复到自选`)})
+    const beforeStocks=D.getWatchlist(),beforeFunds=D.getFundWatchlist();
+    if(type==='fund')D.setFundWatchlist(beforeFunds.filter(s=>s!==symbol));else D.setWatchlist(beforeStocks.filter(s=>s!==symbol));
+    renderWatch();announce(`${symbol} 已移出自选`);
+    notify(`${symbol} 已移出自选`,()=>{D.setWatchlist(beforeStocks);D.setFundWatchlist(beforeFunds);renderWatch();announce(`${symbol} 已恢复到自选`)})
   }
   function renderWatch(){
     const el=$('#watchlist');if(!el)return;const items=watchRecords(watchFilter);if(!items.length)watchManage=false;

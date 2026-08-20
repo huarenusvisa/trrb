@@ -12,30 +12,21 @@
 - 一级导航：自选｜行情｜基金｜我的；默认行情。
 - 新闻是解释层，不是一级频道。
 - V1 不开放开户、Trade/下单、KYC、基金购买/申购、券商账户连接。
-- `feature-flags.js` 当前确认：`brokerage=false`、`liveMarketData=false`、`trading=false`。
+- `feature-flags.js` 当前复核：`brokerage=false`、`liveMarketData=false`、`trading=false`。
 - demo/fallback 数据必须明确标识；未知股票/ETF 不得用 AAPL/SPY 冒充。
 
 ## 已封板核心能力
-- 首页：三大指数、走势、市场状态、热力图、Top Movers、财报/宏观/加密/新闻解释层。
-- 搜索：股票/ETF/基金；键盘上下、Enter、Escape、ARIA。
-- 自选：股票+ETF统一；全部/美股/中概/ETF/港股/沪深；列表/热力图、排序、管理、精确撤销。
-- ETF/基金：主题筛选、参数化详情、费率/规模/风险/持仓/资讯、走势图。
-- 个股：1D/1W/1M/3M/YTD/1Y/5Y；走势/K线；日K/周K/月K；OHLC+成交量；鼠标/触摸/键盘读取；自选/提醒/分享。
-- 导航/恢复：Hash 路由、前进后退、详情来源自适应返回、Safari/BFCache/visualViewport/iPhone 键盘处理。
-- `FinanceAppState.setPage / setMarketPanel / setWatchFilter / setFundFilter` 已完成 setter 化；恢复路径不再用 synthetic click 恢复一级页、行情 Tab、自选筛选或 ETF 主题。
-- 韧性：offline / data-missing / slow 分离；弱网/离线/加载失败恢复条。
-- 视觉/无障碍：360–430px 静态防溢出；900/1180/1440+ 桌面布局；safe-area、reduced-motion、高对比、focus-visible、关键触控目标与图表 ARIA。
+- 首页、搜索、自选、ETF/基金、个股详情、Hash 路由、BFCache/Safari 恢复、韧性状态、移动/桌面适配与无障碍基础均已进入 Candidate+。
+- `FinanceAppState.setPage / setMarketPanel / setWatchFilter / setFundFilter` 已 setter 化；恢复路径不再通过 synthetic click 恢复一级页、行情 Tab、自选筛选或 ETF 主题。
 
 ## 当前 QA 基础设施
 - `acceptance-check.js`：仅 `qa=1` 加载。
-- `qa-interactions.js`：真实操作搜索、四栏导航、自选排序、精确撤销、ETF筛选、K线、YTD、键盘图表读取。
-- `qa-detail-state.js`：验证首页/个股/ETF 的 storage、finance:resume、BFCache 恢复。
-- BFCache 断言：page / marketPanel / watchFilter / fundFilter 全恢复，且四类导航控件 synthetic click 次数必须为 0。
+- `qa-interactions.js`：覆盖搜索、四栏导航、自选排序/撤销、ETF筛选、K线/YTD、键盘图表读取。
+- `qa-detail-state.js`：验证 storage、finance:resume、BFCache 恢复；BFCache 断言 page / marketPanel / watchFilter / fundFilter 全恢复且 synthetic click=0。
 - `qa-suite.html`：16 case = 首页/AAPL/QQQ × 360/390/430/1280 + 未知股票 + 未知ETF + slow-ready + data-missing。
-- 每 case 使用独立 `trfinance.*` localStorage/sessionStorage 沙盒；深度交互捕获 `error` / `unhandledrejection`。
 
 ## 尚未关闭的上线验收
-- [ ] 在真实 Chromium/浏览器运行 A 版 `qa-suite.html`，清零实际 FAIL，人工判断 WARN。
+- [ ] 真实 Chromium/浏览器运行 A 版 `qa-suite.html`，清零实际 FAIL，人工判断 WARN。
 - [ ] 360–430px 实际 iPhone / Safari 人工视觉验收。
 - [ ] 桌面实际浏览器人工视觉验收。
 - [ ] Lighthouse Performance / Accessibility / Best Practices。
@@ -43,18 +34,19 @@
 
 ## 当前执行阻塞
 - Chromium + Python Playwright 可用。
-- GitHub Connector 可以读取 `finance-v1-preview/finance/` 中全部 A 版源码与 QA 文件。
-- 当前执行容器仍无法通过 DNS 访问 GitHub、RawGitHack、API GitHub、Netlify 或 trrb.net，因此不能直接下载 A 版或访问远程预览。
-- 已确认用于 A 版视觉验收的 PR #23（`finance-v1-preview` → `main`）仍为 draft/open；其当前 head `36412727ae162e29bdd366a0e6f6060009906565` 的唯一可见状态检查 `netlify/trrb/deploy-preview` 仍为 `failure`，目标 deploy 为 Netlify deploy `6a87464373c0a40007711006`，尚无可用预览页可供 Chromium 直接跑 16-case。
-- Connector 目前没有直接把整套目录落盘到 Chromium 本地目录的动作，因此 16-case 尚未真实执行。
-- 以上属于 QA 执行/预览通道阻塞，不是已确认产品缺陷；在真实回归条件缺失时，不继续无依据修改核心产品代码。
+- GitHub Connector 可读取 `finance-v1-preview/finance/` 全部 A 版源码与 QA 文件。
+- 当前执行容器仍无法通过 DNS 直接访问 GitHub/RawGitHack/API GitHub/Netlify/trrb.net，不能直接下载 A 版或打开远程预览。
+- A 版预览 PR #23（`finance-v1-preview` → `main`）仍为 draft/open；最新 head=`e639e44cf9e8664c78cc99149b1da3a93d6b961d`。
+- 对该最新 head 的 `netlify/trrb/deploy-preview` 状态已从 pending 落为 `failure`，目标 deploy=`6a87542dc6f9b500088e664a`；仍无可用预览页供 Chromium 直接执行 16-case。
+- 目前没有新的真实产品 FAIL/WARN 证据，因此不继续无依据修改核心产品代码。
 
-## 最近关键封板事实
-- 第31–35轮：详情状态同步、首页直接刷新、setter 化、恢复链移除 synthetic click、增加 BFCache 四类状态回归。
-- 第36–40轮：反复确认 Chromium/Playwright 正常、外网 DNS 失败、现有 CI 无可直接复用 finance 浏览器验收 workflow、A版 `preview.html` 只是同目录 `index.html#market` 包装器；未发现新的确定性状态恢复缺陷。
-- 第41轮：重新读取权威 checkpoint；确认 `feature-flags.js` 三个交易/实时能力旗标仍全部为 false；重新比较 `main...finance-v1-robinhood`，状态 diverged，财经分支 ahead 195 / behind 125，当前 compare 返回的差异文件全部位于 `finance/`，未触碰保护范围。A版 `qa-suite.html` 仍为完整16-case入口。由于真实浏览器源码落盘通道仍未打通，本轮不新增产品代码、不虚报 iPhone/桌面/Lighthouse/16-case PASS。
-- 第42轮：发现并核验现有财经 A 版预览 PR #23，可作为绕过本地 GitHub 源码下载的真实 QA 入口；但其 Netlify `deploy-preview` 对当前 head 返回 failure。容器同时对 Netlify/trrb.net 继续 DNS 失败，因此尚不能真实运行 16-case。重新比较 `main...finance-v1-robinhood` 为 ahead 196 / behind 136，compare 返回差异仍全部位于 `finance/`。本轮未修改产品代码或受保护配置，仅更新 checkpoint。
-- 第43轮：重新读取权威 checkpoint并直接核验 PR #23 最新状态；PR 仍为 draft/open，head=`36412727ae162e29bdd366a0e6f6060009906565`，`netlify/trrb/deploy-preview` 仍为 failure，未出现新的产品 FAIL/WARN 证据。重新比较 `main...finance-v1-robinhood` 为 ahead 197 / behind 146，compare 返回差异文件仍全部位于 `finance/`。因此本轮不改产品代码，只更新阻塞事实与 checkpoint，不虚报 16-case、iPhone、桌面或 Lighthouse PASS。
+## 本轮（第44轮）
+- 先读取并遵守本文件旧 checkpoint。
+- 复核 PR #23：仍 draft/open，最新 head=`e639e44cf9e8664c78cc99149b1da3a93d6b961d`。
+- 复核最新 head 的 Netlify Deploy Preview：`failure`；没有把这次基础设施失败误判为财经产品 FAIL。
+- 复核 `feature-flags.js`：`brokerage=false`、`liveMarketData=false`、`trading=false`，交易/开户/KYC/基金购买边界继续关闭。
+- 重新比较 `main...finance-v1-robinhood`：status=`diverged`，财经分支 ahead 198 / behind 159；GitHub compare 返回的全部差异文件仍位于 `finance/`，未触碰保护范围。
+- 本轮没有发现新的、可静态确定且值得冒险修改的封板缺陷，因此不新增产品代码，不虚报 16-case、iPhone、桌面或 Lighthouse PASS。
 
 ## 当前结论
 状态：**V1 Candidate+ / 功能冻结**。

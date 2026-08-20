@@ -18,8 +18,8 @@
   }
   function dismissToast(){const toast=$('#financeToast');if(toast)toast.classList.remove('show','has-action')}
   function resetChartReading(){
-    $$('.chart-scrub-tip').forEach(t=>{t.style.opacity='0';t.style.transform='translateY(3px)'});
-    $$('[data-scrub-overlay]').forEach(x=>x.setAttribute('visibility','hidden'));
+    $$('.chart-scrub-tip,.kline-tip').forEach(t=>{t.style.opacity='0';t.style.transform='translateY(3px)'});
+    $$('[data-scrub-overlay],[data-kline-cross]').forEach(x=>x.setAttribute('visibility','hidden'));
     $$('.stock-ticker.chart-reading').forEach(x=>x.classList.remove('chart-reading'));
   }
   function cleanupTransient(){closeSearch();dismissToast();resetChartReading();document.body.classList.remove('finance-keyboard-open');health.cleanups++}

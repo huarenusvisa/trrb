@@ -5,7 +5,6 @@
   function aborted(signal){if(signal?.aborted){const e=new Error('QA detail state aborted');e.name='AbortError';throw e}}
   async function waitFor(fn,{signal=null,timeout=1000,interval=28}={}){const start=Date.now();while(Date.now()-start<timeout){aborted(signal);try{const v=fn();if(v)return v}catch(e){}await delay(interval)}aborted(signal);try{return fn()||null}catch(e){return null}}
   function storageEvent(win,key){try{win.dispatchEvent(new win.StorageEvent('storage',{key}))}catch(e){const ev=new win.Event('storage');try{Object.defineProperty(ev,'key',{value:key})}catch(err){}win.dispatchEvent(ev)}}
-  function sameList(a,b){return Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((x,i)=>x===b[i])}
   async function stockChecks(win,signal){
     const D=win.FinanceData,sync=win.FinanceDetailStateSync,watch=win.document.querySelector('#watchBtn'),alert=win.document.querySelector('#alertBtn');if(!D||!sync||!watch||!alert)return [result('详情状态同步层已加载',false,'股票详情缺少 FinanceDetailStateSync 或按钮')];
     const symbol=(new URLSearchParams(win.location.search).get('symbol')||'AAPL').toUpperCase(),beforeWatch=D.getWatchlist(),beforeAlert=D.isAlertOn?D.isAlertOn(symbol):false,items=[];

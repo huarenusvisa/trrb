@@ -2,7 +2,7 @@
   if(window.__financeNavigationMemoryLoaded)return;window.__financeNavigationMemoryLoaded=true;
   const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const STATE_KEY='trfinance.navState';const CONTEXT_KEY='trfinance.navContext';
-  const validPages=['market','watch','funds','profile'];const isDetail=!!$('.stock-app');
+  const validPages=['market','watch','funds','profile'];const isDetail=!!$('.stock-app');const qaSandbox=new URLSearchParams(location.search).get('qaEmbed')==='1';
   const read=(key,fallback={})=>{try{return JSON.parse(sessionStorage.getItem(key)||JSON.stringify(fallback))}catch(e){return fallback}};
   const write=(key,value)=>{try{sessionStorage.setItem(key,JSON.stringify(value))}catch(e){}};
   const currentPage=()=>{if(isDetail)return null;const p=$('.page.active')?.dataset.page||location.hash.slice(1)||'market';return validPages.includes(p)?p:'market'};
@@ -39,7 +39,7 @@
     if(e.target.closest('.market-tab,.watch-filter,.fund-cat,.bottom button'))requestAnimationFrame(saveSelections);
   },true);
   window.addEventListener('scroll',scheduleScrollSave,{passive:true});
-  window.addEventListener('pagehide',()=>{flushScroll(true);saveSelections()});
+  window.addEventListener('pagehide',()=>{if(qaSandbox){if(scrollTimer){clearTimeout(scrollTimer);scrollTimer=0}return}flushScroll(true);saveSelections()});
   function restoreContext(forceBack=false){
     const state=read(STATE_KEY,{});restoreSelections(state);const ctx=read(CONTEXT_KEY,null);if(!ctx)return;
     const nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0],backForward=forceBack||!!(nav&&nav.type==='back_forward');

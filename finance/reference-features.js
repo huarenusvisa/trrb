@@ -46,11 +46,14 @@
     const symbol=(new URLSearchParams(location.search).get('symbol')||'AAPL').toUpperCase(),q=D.getQuote(symbol);if(!q)return;
     const labelMap={1D:'今日',1W:'1周',1M:'1个月',3M:'3个月',YTD:'年初至今',1Y:'1年',5Y:'5年'};
     const spreadMap={1D:.025,1W:.045,1M:.07,3M:.10,YTD:.13,1Y:.18,5Y:.34};
+    const rangeOrder=['1D','1W','1M','3M','YTD','1Y','5Y'],klineMinimum={day:'1M',week:'3M',month:'1Y'};
     let mode='line',granularity='day';
     const bar=document.createElement('div');bar.className='chart-viewbar';bar.innerHTML='<div class="chart-view-toggle" role="group" aria-label="图表类型"><button type="button" class="on" data-chart-view="line" aria-pressed="true">走势</button><button type="button" data-chart-view="kline" aria-pressed="false">K线</button></div><div class="kline-granularity" role="group" aria-label="K线周期" hidden><button type="button" class="on" data-kline="day" aria-pressed="true">日K</button><button type="button" data-kline="week" aria-pressed="false">周K</button><button type="button" data-kline="month" aria-pressed="false">月K</button></div><span class="chart-demo-tag">Demo chart</span>';
     chartEl.insertAdjacentElement('beforebegin',bar);if(advanced)advanced.hidden=true;
     const viewButtons=$$('button[data-chart-view]',bar),granularityBox=$('.kline-granularity',bar),granularityButtons=$$('button[data-kline]',bar);
     function activeRange(){return $('.range button[data-range].on')?.dataset.range||'1D'}
+    function setRangeState(rangeKey){const target=$(`.range button[data-range="${rangeKey}"]`);if(!target)return activeRange();$$('.range button[data-range]').forEach(x=>{const on=x===target;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on))});updatePeriodMove(rangeKey);return rangeKey}
+    function syncKlineConstraints(){const minKey=klineMinimum[granularity]||'1M',minIndex=rangeOrder.indexOf(minKey);$$('.range button[data-range]').forEach(b=>{const disabled=mode==='kline'&&rangeOrder.indexOf(b.dataset.range)<minIndex;b.disabled=disabled;b.setAttribute('aria-disabled',String(disabled))});const current=activeRange();if(mode==='kline'&&rangeOrder.indexOf(current)<minIndex)return setRangeState(minKey);return current}
     function normalizedSeries(rangeKey){
       if(rangeKey==='1D')return [q.prev,q.open,(q.open+q.high)/2,q.low,(q.low+q.price)/2,q.price];
       const raw=D.spark(q.symbol)||[],n={1W:18,1M:26,3M:32,YTD:38,1Y:44,5Y:52}[rangeKey]||26,spread=spreadMap[rangeKey]||.08;
@@ -74,11 +77,11 @@
       const fromPointer=e=>{const r=chartEl.getBoundingClientRect(),x=Math.max(0,Math.min(r.width,e.clientX-r.left)),i=Math.floor((x/r.width)*candles.length);cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>show(i))};
       chartEl.onpointerenter=e=>{if(e.pointerType!=='touch')fromPointer(e)};chartEl.onpointermove=e=>{if(e.pointerType!=='touch'||touching)fromPointer(e)};chartEl.onpointerleave=e=>{if(e.pointerType!=='touch')hide()};chartEl.onpointerdown=e=>{if(e.pointerType==='touch'){touching=true;fromPointer(e)}};chartEl.onpointerup=chartEl.onpointercancel=()=>{touching=false;hide()};chartEl.onfocus=()=>show(selected);chartEl.onblur=hide;chartEl.onkeydown=e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();show(selected+(e.key==='ArrowRight'?1:-1))}else if(e.key==='Home'){e.preventDefault();show(0)}else if(e.key==='End'){e.preventDefault();show(candles.length-1)}else if(e.key==='Escape')hide()};
     }
-    function setMode(next){mode=next;viewButtons.forEach(b=>{const on=b.dataset.chartView===mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))});granularityBox.hidden=mode!=='kline';if(mode==='kline'){renderKline();notify('已切换到 K 线演示图')}else{chartEl.classList.remove('is-kline');const b=$('.range button[data-range].on');if(b)b.click();notify('已切换到走势演示图')}}
+    function setMode(next){mode=next;viewButtons.forEach(b=>{const on=b.dataset.chartView===mode;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))});granularityBox.hidden=mode!=='kline';const before=activeRange(),after=syncKlineConstraints();if(mode==='kline'){renderKline();notify(before!==after?`已切换到 K 线演示图 · ${labelMap[after]} 日K窗口`:'已切换到 K 线演示图')}else{chartEl.classList.remove('is-kline');const b=$('.range button[data-range].on');if(b)b.click();notify('已切换到走势演示图')}}
     viewButtons.forEach(b=>b.addEventListener('click',()=>{if(b.dataset.chartView!==mode)setMode(b.dataset.chartView)}));
-    granularityButtons.forEach(b=>b.addEventListener('click',()=>{granularity=b.dataset.kline;granularityButtons.forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on))});if(mode==='kline')renderKline();announce(`已切换到${b.textContent}`)}));
-    range.addEventListener('click',e=>{const b=e.target.closest('button[data-range]');if(!b)return;if(mode==='kline'){e.preventDefault();e.stopImmediatePropagation();$$('.range button[data-range]').forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on))});updatePeriodMove(b.dataset.range);renderKline();announce(`K线区间已切换到${labelMap[b.dataset.range]||b.dataset.range}`)}else requestAnimationFrame(()=>updatePeriodMove(b.dataset.range))},true);
-    updatePeriodMove(activeRange());
+    granularityButtons.forEach(b=>b.addEventListener('click',()=>{granularity=b.dataset.kline;granularityButtons.forEach(x=>{const on=x===b;x.classList.toggle('on',on);x.setAttribute('aria-pressed',String(on))});const before=activeRange(),after=syncKlineConstraints();if(mode==='kline')renderKline();announce(before===after?`已切换到${b.textContent}`:`已切换到${b.textContent}，并将区间调整为${labelMap[after]||after}`)}));
+    range.addEventListener('click',e=>{const b=e.target.closest('button[data-range]');if(!b||b.disabled)return;if(mode==='kline'){e.preventDefault();e.stopImmediatePropagation();setRangeState(b.dataset.range);renderKline();announce(`K线区间已切换到${labelMap[b.dataset.range]||b.dataset.range}`)}else requestAnimationFrame(()=>updatePeriodMove(b.dataset.range))},true);
+    updatePeriodMove(activeRange());syncKlineConstraints();
   }
 
   initWatchSorting();initStockReferenceFeatures();

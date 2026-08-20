@@ -53,7 +53,7 @@ const coreVersions = new Map([
   ['topic-focus.js', '20260819-live-3'],
   ['homepage-refresh-guard.js', '20260819-bundle-supplements-2'],
   ['homepage-immigration-hub.js', '20260819-reuse-bundle-2'],
-  ['articles-home-live-fix.js', '20260819-compat-shim-1'],
+  ['articles-home-live-fix.js', '20260820-people-retired-1'],
   ['category-runtime-v3.js', '20260819-preserve-independent-nav-1']
 ]);
 for (const [asset, version] of coreVersions) {

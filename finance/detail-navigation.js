@@ -1,10 +1,10 @@
 (function(){
   function loadResilience(){
-    if(!document.querySelector('link[data-finance-resilience]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./resilience.css';l.dataset.financeResilience='1';document.head.appendChild(l)}
-    if(!document.querySelector('script[data-finance-resilience]')){const s=document.createElement('script');s.src='./resilience.js';s.async=false;s.dataset.financeResilience='1';document.head.appendChild(s)}
+    if(!document.querySelector('link[data-finance-resilience],link[href="./resilience.css"],link[href$="/resilience.css"]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./resilience.css';l.dataset.financeResilience='1';document.head.appendChild(l)}
+    if(!document.querySelector('script[data-finance-resilience],script[src="./resilience.js"],script[src$="/resilience.js"]')){const s=document.createElement('script');s.src='./resilience.js';s.async=false;s.dataset.financeResilience='1';document.head.appendChild(s)}
   }
   function loadNavigationMemory(){
-    if(document.querySelector('script[data-finance-nav-memory]'))return;const s=document.createElement('script');s.src='./navigation-memory.js';s.async=false;s.dataset.financeNavMemory='1';document.head.appendChild(s)
+    if(document.querySelector('script[data-finance-nav-memory],script[src="./navigation-memory.js"],script[src$="/navigation-memory.js"]'))return;const s=document.createElement('script');s.src='./navigation-memory.js';s.async=false;s.dataset.financeNavMemory='1';document.head.appendChild(s)
   }
   loadResilience();loadNavigationMemory();
   const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));

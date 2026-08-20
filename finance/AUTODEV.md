@@ -98,6 +98,12 @@
 - compare 结果显示本轮财经差异仍限定在 `finance/` 文件范围，没有触碰 `netlify.toml`、SEO、Sitemap 或生产部署 workflow。
 - 在真实 16-case 仍无法执行的前提下，没有发现足够确定、值得冒风险修改的产品缺陷；继续保持功能冻结，不新增产品代码，不虚报 PASS。
 
+### 第40轮：A版入口与静态封板复核
+- 重新读取当前权威 checkpoint，并确认 `finance-v1-preview/finance/preview.html` 只是 iframe 包装器，实际仍加载同目录 `index.html#market`，没有独立外部部署入口可绕开源码落盘问题。
+- 静态复核 `navigation-memory.js` 与 `app.js` 当前恢复链：page / marketPanel / watchFilter / fundFilter 均通过内部 setter 恢复，setter 自身包含非法值回退，不再发现新的确定性 synthetic-click 或非法筛选恢复缺陷。
+- 最新 compare：`main` 与 `finance-v1-robinhood` 仍 diverged，财经分支 ahead 194 / behind 122；差异文件仍全部位于 `finance/`，未触碰保护范围。
+- 本轮没有新增产品代码；真实 16-case 仍未执行，因此不标记 iPhone / Safari、桌面或 Lighthouse PASS。
+
 ## 当前结论
 状态：**V1 Candidate+ / 功能冻结**。
 

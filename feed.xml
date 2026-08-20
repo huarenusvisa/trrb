@@ -5,8 +5,10 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Aug 2026 17:44:37 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 17:48:02 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>弗吉尼亚温彻斯特ICE特工追捕疑似非法移民</title>
       <link>https://trrb.net/ice/ice-9f56702f371db9a15de710cc71c4ed595e6c0ee5</link>
@@ -18,7 +20,15 @@
     </item>
     
     
-    
+    <item>
+      <title>美ICE加强遣返危险非法犯罪分子</title>
+      <link>https://trrb.net/ice/ice-8412caa5a8e3c5fb667ebdd4c794537aaececfc1</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-8412caa5a8e3c5fb667ebdd4c794537aaececfc1</guid>
+      <pubDate>Thu, 20 Aug 2026 17:42:43 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国ICE加紧行动，遣返被认定危险的非法入境犯罪分子，维护社区安全。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/4f77eef0-b406-4c3a-892e-debbf4c13462-e8f9a51c-833a-4a24-9c5b-6b38259c7b36.webp" type="image/webp" />
+    </item>
     
     
     
@@ -715,6 +725,7 @@
       <pubDate>Thu, 20 Aug 2026 01:59:53 GMT</pubDate>
       <category>移民美国</category>
       <description>美国曝大规模遣返，DHS未向监督机构提供数据，被起诉索取信息。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/6ce6c872-fc9b-4e66-85a3-e6077650e89e-b450067a-e753-4deb-b50c-901102f56d0c.webp" type="image/webp" />
     </item>
     <item>
       <title>ICE遣返一名多次非法入境的重犯，该人遣返前曾通过GoFundMe筹资</title>
@@ -723,10 +734,27 @@
       <pubDate>Thu, 20 Aug 2026 01:59:02 GMT</pubDate>
       <category>移民美国</category>
       <description>2026年8月16日，ICE遣返一名多次非法入境的重犯，该人遣返前曾通过GoFundMe筹资。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/26f909bf-979d-4d28-840a-fdb0a3e2b6fb-9f8745f6-3830-456b-89d8-d0b4a61181f1.webp" type="image/webp" />
     </item>
     
-    
-    
+    <item>
+      <title>ICE调查中国公民涉嫌美国选举欺诈案</title>
+      <link>https://trrb.net/ice/ice-be7c78201bcc0477d8e932a1ca95bd77c59d8a50</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-be7c78201bcc0477d8e932a1ca95bd77c59d8a50</guid>
+      <pubDate>Thu, 20 Aug 2026 01:40:53 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国ICE调查一中国公民选举欺诈，若罪名成立将面临监禁罚款及遣返。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/31b62187-4e88-447c-8c2e-08a71b5f8f22-c58e056d-43fc-4947-bee1-893ea9b721fc.webp" type="image/webp" />
+    </item>
+    <item>
+      <title>弗吉尼亚费尔法克斯县考虑重新响应ICE拘留请求</title>
+      <link>https://trrb.net/ice/ice-2ff5711030fd8260b3fc12733629f5e2aac5a3a6</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-2ff5711030fd8260b3fc12733629f5e2aac5a3a6</guid>
+      <pubDate>Thu, 20 Aug 2026 01:40:53 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>弗吉尼亚费尔法克斯县有意重新执行ICE提出的拘留请求，此前该县未采取行动。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/42fad06f-142f-46cd-93af-2cb251145291-4976da52-9f4a-4189-b164-e843637b163c.webp" type="image/webp" />
+    </item>
     <item>
       <title>加州奥克斯纳德移民焚烧美国国旗抗议ICE驱逐</title>
       <link>https://trrb.net/ice/ice-6199ba79dcf2bd9ca857f1263dd3355b8dc9cfe7</link>
@@ -798,24 +826,6 @@
       <category>移民美国</category>
       <description>2024年总统选举期间，一名中国男子因冒用他人身份投票及虚假移民注册面临指控。</description>
       <enclosure url="https://pbs.twimg.com/media/HQG4lkJXwAALC8u.png" type="image/png" />
-    </item>
-    <item>
-      <title>伊利诺伊州一周遣返约27000名非法移民</title>
-      <link>https://trrb.net/ice/ice-5f06352f31955ac3f5c714d42ee3408ccd417dfe</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-5f06352f31955ac3f5c714d42ee3408ccd417dfe</guid>
-      <pubDate>Thu, 20 Aug 2026 00:51:12 GMT</pubDate>
-      <category>移民美国</category>
-      <description>2026年8月12日至19日，伊利诺伊州平均每日遣返约3600名非法移民，多地民主党辖区协助执法。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2090201702666301440/img/jOPPcw_FDmlTX5Ah.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>迈阿密戴德县女子因纵火虐童被ICE拘留</title>
-      <link>https://trrb.net/ice/ice-3d1123eb964fddf00cd8e68503f72bdd993c3344</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-3d1123eb964fddf00cd8e68503f72bdd993c3344</guid>
-      <pubDate>Thu, 20 Aug 2026 00:50:57 GMT</pubDate>
-      <category>移民美国</category>
-      <description>迈阿密戴德县女子Meliza Campos-Sanchez因涉嫌纵火和虐待儿童被捕后被ICE拘留。</description>
-      <enclosure url="https://pbs.twimg.com/media/HQHq8lpXMAAG3aO.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

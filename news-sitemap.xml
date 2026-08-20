@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  
   <url>
       <loc>https://trrb.net/ice/ice-9f56702f371db9a15de710cc71c4ed595e6c0ee5</loc>
       <news:news>
@@ -10,7 +12,14 @@
     </url>
   
   
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-8412caa5a8e3c5fb667ebdd4c794537aaececfc1</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:42:43.728Z</news:publication_date>
+        <news:title>美ICE加强遣返危险非法犯罪分子</news:title>
+      </news:news>
+    </url>
   
   
   
@@ -633,8 +642,22 @@
       </news:news>
     </url>
   
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-be7c78201bcc0477d8e932a1ca95bd77c59d8a50</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:40:53.879Z</news:publication_date>
+        <news:title>ICE调查中国公民涉嫌美国选举欺诈案</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-2ff5711030fd8260b3fc12733629f5e2aac5a3a6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:40:53.192Z</news:publication_date>
+        <news:title>弗吉尼亚费尔法克斯县考虑重新响应ICE拘留请求</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-6199ba79dcf2bd9ca857f1263dd3355b8dc9cfe7</loc>
       <news:news>

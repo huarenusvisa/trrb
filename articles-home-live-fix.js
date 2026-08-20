@@ -2,6 +2,9 @@
   "use strict";
 
   const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
+  const FOCUS_CACHE_MS = 45 * 1000;
+  let lastFocusAt = 0;
+  let focusPromise = null;
 
   function articleTime(item) {
     const raw = item?.published_at || item?.created_at || "";
@@ -25,15 +28,16 @@
       topic_key: row.topic_key || "",
       excerpt: row.summary || String(row.content || "").replace(/\s+/g, " ").slice(0, 120),
       image: row.cover_image || "",
+      cover_image: row.cover_image || "",
       author: row.author || "Tang Ren Daily",
       published_at: row.published_at || "",
       created_at: row.created_at || "",
+      homepage_focus_score: Number(row.homepage_focus_score || 0),
       isLive: true
     };
   }
 
   async function emergencyRefresh() {
-    // Normal operation is owned exclusively by homepage-refresh-guard.js.
     if (typeof window.TRRB_refreshHomeLive === "function") {
       return window.TRRB_refreshHomeLive();
     }
@@ -78,24 +82,98 @@
     });
   }
 
-  function installRetiredPeopleGuard() {
+  function removeImportantNewsNavigation(root = document) {
+    if (!root?.querySelectorAll) return;
+    root.querySelectorAll('a[href="/important-news"],a[href="/important-news/"]').forEach((node) => node.remove());
+  }
+
+  function markHeroAsDailyFocus(root = document) {
+    root.querySelectorAll?.('#hero .hero-overlay .tag').forEach((tag) => {
+      tag.textContent = "今日要闻";
+      tag.setAttribute("aria-label", "今日要闻");
+    });
+  }
+
+  async function fetchHomepageFocus(force = false) {
+    if (!force && Date.now() - lastFocusAt < FOCUS_CACHE_MS) return false;
+    if (focusPromise) return focusPromise;
+
+    focusPromise = (async () => {
+      try {
+        const response = await fetch(`/.netlify/functions/public-home-focus?_=${Date.now()}`, {
+          cache: "no-store",
+          headers: { Accept: "application/json" }
+        });
+        if (!response.ok) throw new Error(`今日要闻接口 ${response.status}`);
+        const payload = await response.json();
+        const focus = (Array.isArray(payload?.articles) ? payload.articles : []).map(normalize).filter((item) => item.id && item.title && item.image);
+        if (!focus.length || typeof window.renderHeroCarousel !== "function") return false;
+        window.renderHeroCarousel(focus.slice(0, 5));
+        markHeroAsDailyFocus(document);
+        const hero = document.getElementById("hero");
+        if (hero) {
+          hero.dataset.recommendationMode = "automatic";
+          hero.dataset.recommendationCount = String(focus.length);
+        }
+        lastFocusAt = Date.now();
+        return true;
+      } catch (error) {
+        console.error("今日要闻自动推荐失败：", error);
+        markHeroAsDailyFocus(document);
+        return false;
+      } finally {
+        focusPromise = null;
+      }
+    })();
+
+    return focusPromise;
+  }
+
+  function installHomepageFocusMode() {
+    removeImportantNewsNavigation(document);
+    markHeroAsDailyFocus(document);
+
+    if (typeof window.renderHome === "function" && !window.__TRRB_HOME_FOCUS_WRAPPED__) {
+      const originalRenderHome = window.renderHome;
+      window.renderHome = function renderHomeWithAutomaticFocus(articles) {
+        const result = originalRenderHome(articles);
+        window.setTimeout(() => fetchHomepageFocus(true), 0);
+        return result;
+      };
+      window.__TRRB_HOME_FOCUS_WRAPPED__ = true;
+    }
+
+    window.setTimeout(() => fetchHomepageFocus(true), 120);
+  }
+
+  function installDomGuards() {
     removeRetiredPeopleSurface(document);
-    if (window.__TRRB_RETIRED_PEOPLE_GUARD__) return;
-    window.__TRRB_RETIRED_PEOPLE_GUARD__ = true;
+    removeImportantNewsNavigation(document);
+    markHeroAsDailyFocus(document);
+    if (window.__TRRB_HOME_DOM_GUARD__) return;
+    window.__TRRB_HOME_DOM_GUARD__ = true;
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         for (const node of mutation.addedNodes) {
-          if (node.nodeType === Node.ELEMENT_NODE) removeRetiredPeopleSurface(node);
+          if (node.nodeType !== Node.ELEMENT_NODE) continue;
+          removeRetiredPeopleSurface(node);
+          removeImportantNewsNavigation(node);
+          markHeroAsDailyFocus(node.closest?.("#hero") || node);
         }
       }
     });
     observer.observe(document.documentElement, { childList: true, subtree: true });
   }
 
-  // Compatibility only: no startup request, no interval, no DOM race.
   window.TRRB_HOME_LIVE_COMPAT_SHIM = true;
   window.TRRB_refreshHomeLegacyCompat = emergencyRefresh;
+  window.TRRB_refreshHomepageFocus = fetchHomepageFocus;
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installRetiredPeopleGuard, { once: true });
-  else installRetiredPeopleGuard();
+  function boot() {
+    installHomepageFocusMode();
+    installDomGuards();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });
+  else boot();
 })();

@@ -13,6 +13,7 @@
   function key(win,el,keyName){checkAbort();el.dispatchEvent(new win.KeyboardEvent('keydown',{key:keyName,bubbles:true,cancelable:true}))}
   async function waitFor(fn,{timeout=900,interval=24}={}){const start=Date.now();let value;while(Date.now()-start<timeout){checkAbort();try{value=fn();if(value)return value}catch(e){}await sleep(interval)}checkAbort();try{return fn()||null}catch(e){return null}}
   async function clickAndWait(el,fn,opts){checkAbort();if(!el)return null;el.click();return waitFor(fn,opts)}
+  function isHidden(win,el){if(!el)return true;const s=win.getComputedStyle(el);return !!el.hidden||s.display==='none'||s.visibility==='hidden'||el.closest('[hidden],[aria-hidden="true"],[inert]')!=null}
   function addSurfaceAudit(win,items,label){
     checkAbort();const audit=win.FinanceAcceptance?.auditSurface?.();if(!audit){items.push(result(`交互：${label}页面审计`,false,'FinanceAcceptance.auditSurface 不可用','warn'));return}
     items.push(result(`交互：${label}无横向溢出`,audit.overflow<=3,`scrollWidth 差值 ${audit.overflow}px`));
@@ -69,14 +70,55 @@
     if(ytd&&chart){ytd.click();const redrawn=await waitFor(()=>ytd.classList.contains('on')&&!!$('#fundChart svg'));items.push(result('交互：ETF YTD 区间真实重绘',!!redrawn,`active=${ytd.classList.contains('on')}`));const fundA11y=await waitFor(()=>{const label=chart.getAttribute('aria-label')||'';return chart.getAttribute('role')==='group'&&label.includes('ETF')&&label.includes('YTD')&&label.includes('走势图')?label:null});items.push(result('交互：ETF 图表辅助语义同步',!!fundA11y,fundA11y||`role=${chart.getAttribute('role')} · label=${chart.getAttribute('aria-label')||''}`));chart.focus();key(win,chart,'ArrowLeft');const tip=await waitFor(()=>{const t=$('.chart-scrub-tip');return t?.style.opacity==='1'&&text(t).includes('演示读数')?t:null});items.push(result('交互：ETF 图表键盘读取价格',!!tip,tip?text(tip):'缺少 ETF 图表读数'));key(win,chart,'Escape');const hidden=await waitFor(()=>tip?.style.opacity!=='1');items.push(result('交互：ETF Escape 关闭图表读数',!!hidden,'读数已隐藏'));addSurfaceAudit(win,items,'ETF详情交互后')}
     else items.push(result('交互：ETF 图表控件可操作',false,'缺少 ETF 图表或 YTD 按钮'));
   }
+  async function missingStock(win,items){
+    const d=win.document,$=s=>d.querySelector(s),notFound=$('.not-found'),fixed=$('.fixed'),share=$('#shareBtn');
+    items.push(result('异常：未知股票进入明确未找到状态',!!notFound&&text(notFound).includes('没有找到这只股票')&&text(notFound).includes('ZZZZ'),notFound?text(notFound).slice(0,100):'缺少 not-found'));
+    items.push(result('异常：未知股票没有行情替代值',text($('#topPrice'))==='—'&&text($('#topSymbol')).includes('ZZZZ'),`symbol=${text($('#topSymbol'))} · price=${text($('#topPrice'))}`));
+    items.push(result('异常：未知股票隐藏固定操作与分享',isHidden(win,fixed)&&isHidden(win,share),`fixedHidden=${isHidden(win,fixed)} · shareHidden=${isHidden(win,share)}`));
+    items.push(result('异常：未知股票不生成图表/K线/详情导航',!$('#chart')&&!$('.chart-view-toggle')&&!$('.detail-nav'),'未发现残留增强层'));
+    addSurfaceAudit(win,items,'未知股票');
+  }
+  async function missingFund(win,items){
+    const d=win.document,$=s=>d.querySelector(s),notFound=$('.not-found'),fixed=$('.fixed');
+    items.push(result('异常：未知 ETF 进入明确未找到状态',!!notFound&&text(notFound).includes('没有找到这个 ETF / 基金')&&text(notFound).includes('FAKE'),notFound?text(notFound).slice(0,100):'缺少 not-found'));
+    items.push(result('异常：未知 ETF 不使用 SPY 替代',text(notFound).includes('不会用 SPY')&&!$('#fundChart'),notFound?text(notFound).slice(0,120):'缺少 not-found'));
+    items.push(result('异常：未知 ETF 隐藏固定操作栏',isHidden(win,fixed),`fixedHidden=${isHidden(win,fixed)}`));
+    items.push(result('异常：未知 ETF 不生成图表/详情导航',!$('#fundChart')&&!$('.detail-nav'),'未发现残留增强层'));
+    addSurfaceAudit(win,items,'未知ETF');
+  }
+  async function recoverySlow(win,items){
+    const health=()=>win.FinanceResilienceHealth?.snapshot?.()||null;
+    const appeared=await waitFor(()=>{const h=health();return h?.qaFault==='slow-ready'&&h.recoveryShows>=1?h:null},{timeout:1800});
+    items.push(result('异常：慢加载恢复条至少出现一次',!!appeared,appeared?`shows=${appeared.recoveryShows} · visible=${appeared.recoveryVisible}`:'未记录 slow-ready recovery'));
+    const recovered=await waitFor(()=>{const h=health();return h?.ready&&h.coreReady&&h.dataAvailable&&h.busy==='false'&&h.appReady&&!h.recoveryVisible&&h.recoveryRemovals>=1?h:null},{timeout:3500});
+    items.push(result('异常：慢加载随后自动恢复 ready',!!recovered,recovered?`removed=${recovered.recoveryRemovals} · reason=${recovered.lastReconcileReason}`:'未在 3.5 秒内恢复完成态'));
+    win.dispatchEvent(new win.CustomEvent('finance:resume',{detail:{reasons:['qa-recovery-check']}}));
+    const resumed=await waitFor(()=>{const h=health();return h?.lastReconcileReason==='finance:resume'&&h.ready&&h.busy==='false'&&!h.recoveryVisible?h:null},{timeout:1300});
+    items.push(result('异常：恢复后再次 resume 不回退',!!resumed,resumed?'ready 状态保持稳定':'finance:resume 后状态发生回退'));
+    addSurfaceAudit(win,items,'慢加载恢复后');
+  }
+  async function recoveryMissing(win,items){
+    const d=win.document,$=s=>d.querySelector(s),health=()=>win.FinanceResilienceHealth?.snapshot?.()||null;
+    const missing=await waitFor(()=>{const h=health();return h?.qaFault==='data-missing'&&!h.dataAvailable&&!h.ready&&h.busy==='true'&&!h.appReady&&h.recoveryVisible&&h.lastRecoveryReason==='data-missing'?h:null},{timeout:1800});
+    items.push(result('异常：数据源缺失保持 busy + recovery',!!missing,missing?`shows=${missing.recoveryShows} · reason=${missing.lastRecoveryReason}`:'数据缺失恢复态未建立'));
+    const titleBefore=text($('.finance-recovery b'));items.push(result('异常：数据缺失恢复文案正确',titleBefore.includes('行情模块暂时没有加载完成'),titleBefore||'缺少恢复标题'));
+    win.dispatchEvent(new win.CustomEvent('finance:resume',{detail:{reasons:['qa-data-missing-check']}}));
+    const stable=await waitFor(()=>{const h=health();return h?.lastReconcileReason==='finance:resume'&&!h.ready&&!h.dataAvailable&&h.busy==='true'&&h.recoveryVisible&&h.lastRecoveryReason==='data-missing'?h:null},{timeout:1300});
+    const titleAfter=text($('.finance-recovery b'));
+    items.push(result('异常：数据缺失 resume 后状态不漂移',!!stable,stable?`reason=${stable.lastRecoveryReason} · busy=${stable.busy}`:'resume 后未保持 data-missing'));
+    items.push(result('异常：数据缺失不会误显示网络已恢复',titleAfter.includes('行情模块暂时没有加载完成')&&!titleAfter.includes('网络已恢复'),titleAfter||'缺少恢复标题'));
+    addSurfaceAudit(win,items,'数据缺失恢复态');
+  }
   async function run(win,type,{signal=null}={}){
     const previousSignal=activeSignal;activeSignal=signal;
     const local=snapshot(win.localStorage),session=snapshot(win.sessionStorage),hash=win.location.hash,items=[],runtimeErrors=[];
     const onError=e=>runtimeErrors.push(e?.message||e?.error?.message||'window error');
     const onReject=e=>runtimeErrors.push(e?.reason?.message||String(e?.reason||'unhandledrejection'));
     win.addEventListener('error',onError);win.addEventListener('unhandledrejection',onReject);
-    try{checkAbort();if(type==='home')await home(win,items);else if(type==='stock')await stock(win,items);else if(type==='fund')await fund(win,items);else items.push(result('交互验收页面类型',false,`未知页面类型 ${type}`))}
-    catch(e){if(e?.name!=='AbortError')items.push(result('交互验收执行完成',false,e?.message||String(e)))}
+    try{
+      checkAbort();
+      if(type==='home')await home(win,items);else if(type==='stock')await stock(win,items);else if(type==='fund')await fund(win,items);else if(type==='stock-missing')await missingStock(win,items);else if(type==='fund-missing')await missingFund(win,items);else if(type==='recovery-slow')await recoverySlow(win,items);else if(type==='recovery-missing')await recoveryMissing(win,items);else items.push(result('交互验收页面类型',false,`未知页面类型 ${type}`))
+    }catch(e){if(e?.name!=='AbortError')items.push(result('交互验收执行完成',false,e?.message||String(e)))}
     finally{
       restore(win.localStorage,local);restore(win.sessionStorage,session);try{if(win.location.hash!==hash)win.history.replaceState(null,'',`${win.location.pathname}${win.location.search}${hash}`)}catch(e){}
       await delay(180);restore(win.localStorage,local);restore(win.sessionStorage,session);

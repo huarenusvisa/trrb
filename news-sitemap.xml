@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   
+  <url>
+      <loc>https://trrb.net/ice/ice-292ff554be6d362457328c61b340ad6a331e633c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T21:41:59.822Z</news:publication_date>
+        <news:title>美国国土安全部宣布无庇护地将逮捕遣返非法移民</news:title>
+      </news:news>
+    </url>
   
   <url>
       <loc>https://trrb.net/ice/ice-7cc3e11a5aaa940bffaca44d7ed104ccf15b11b0</loc>

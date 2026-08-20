@@ -5,9 +5,18 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Aug 2026 21:41:59 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 22:04:18 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+      <title>美国国土安全部宣布无庇护地将逮捕遣返非法移民</title>
+      <link>https://trrb.net/ice/ice-292ff554be6d362457328c61b340ad6a331e633c</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-292ff554be6d362457328c61b340ad6a331e633c</guid>
+      <pubDate>Thu, 20 Aug 2026 21:41:59 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国国土安全部表示，全美无非法移民庇护地，将追捕逮捕并遣返非法入境者。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/090b9b39-fa2d-4953-83a1-7ab2b73a22a6-123d6b6e-bbb6-4636-b01b-769fb8997fcc.webp" type="image/webp" />
+    </item>
     
     <item>
       <title>美国ICE持续逮捕遣返非法移民执行边境执法</title>
@@ -753,15 +762,6 @@
       <category>美国时政</category>
       <description>唐人日报8月20日讯：陷入政治危机的俄亥俄州共和党众议员马克斯·米勒表示，针对其虐待前妻和女儿的指控正在影响他的连任竞选，包括部分工会组织撤回支持。米勒在7月8日提交的一份宣誓书中表示，一名工会游说者通过短信通知他，由于相关指控，该工会决定取消对其竞选活动的支持。</description>
       <enclosure url="https://images.openai.com/static-rsc-4/5FBug2wZMCV3RV3C0EV3ScC5L_XVOfTLJPs7lSTerw2YsAR6WQ6fpQ4VqywbtqhOUM0pOkaQpR9_RNGHbFMvTOXXt2_1d8RZr6ryNHWU39uMZOLFyWWjdIBgRXGcN6Yti5sLU_dYSDVPljUr2IGmbUloorDLFTXnlrJgxOGcRto?purpose=inline" type="image/jpeg" />
-    </item>
-    <item>
-      <title>降息梦碎？美联储释放鹰派信号，通胀逼迫加息风险重新升温</title>
-      <link>https://trrb.net/us-politics/%E9%99%8D%E6%81%AF%E6%A2%A6%E7%A2%8E%E7%BE%8E%E8%81%94%E5%82%A8%E9%87%8A%E6%94%BE%E9%B9%B0%E6%B4%BE%E4%BF%A1%E5%8F%B7%E9%80%9A%E8%83%80%E9%80%BC%E8%BF%AB%E5%8A%A0%E6%81%AF%E9%A3%8E%E9%99%A9%E9%87%8D%E6%96%B0%E5%8D%87%E6%B8%A9-mt13mfct-5c85bf</link>
-      <guid isPermaLink="true">https://trrb.net/us-politics/%E9%99%8D%E6%81%AF%E6%A2%A6%E7%A2%8E%E7%BE%8E%E8%81%94%E5%82%A8%E9%87%8A%E6%94%BE%E9%B9%B0%E6%B4%BE%E4%BF%A1%E5%8F%B7%E9%80%9A%E8%83%80%E9%80%BC%E8%BF%AB%E5%8A%A0%E6%81%AF%E9%A3%8E%E9%99%A9%E9%87%8D%E6%96%B0%E5%8D%87%E6%B8%A9-mt13mfct-5c85bf</guid>
-      <pubDate>Thu, 20 Aug 2026 05:47:29 GMT</pubDate>
-      <category>美国时政</category>
-      <description>唐人日报8月20日讯：美国消费者原本期待更低的房贷、信用卡和其他贷款成本，但美联储最新会议纪要显示，持续高企的通胀可能迫使央行重新考虑加息，利率再次上调的可能性重新进入政策讨论范围。</description>
-      <enclosure url="https://images.openai.com/static-rsc-4/hQifeize8NebQUI6EFDX26-crrvvZFEWcKT9-DEmSyyv6uN9JvZl9J2yOvOuB_pLu3d4fqINri1ohU5jAmVylu9ghIUsjsJToyqhKlWYWV_xzrquf24sRKebQVg-3tdTSM8OLbUluh2sjOwYycbEWCzbs5osYpJkP1Cw2y1eTTIhwVZ9qtxweT41px71TbDS?purpose=inline" type="image/jpeg" />
     </item>
   </channel>
 </rss>

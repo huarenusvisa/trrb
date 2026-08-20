@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T23:01:05.278Z",
+  "generated_at": "2026-08-20T23:37:28.917Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -45,28 +45,33 @@
       "chain": [
         {
           "url": "https://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
-      "final_url": "https://www.trrb.net/"
+      "final_url": "https://trrb.net/"
     }
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
-      "status": 200,
-      "type": "application/xml; charset=UTF-8",
-      "bytes": 1636379,
-      "article_count": 4462,
+      "status": 0,
+      "bytes": 0,
+      "article_count": 0,
       "child_sitemaps": [],
-      "legacy_query_count": 0,
-      "version": "live-supabase-v6-public-only-static-authority-aligned"
+      "legacy_query_count": 0
     },
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 114607,
-      "article_count": 215,
+      "bytes": 112766,
+      "article_count": 212,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v6-public-only-ice-safe-dedupe"
@@ -280,7 +285,8 @@
     }
   },
   "failures": [
-    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
+    "sitemap https://trrb.net/sitemap.xml HTTP 0",
+    "main sitemap article count too small",
     {
       "page": "https://trrb.net/trump",
       "problem": "too few direct article links: 0/1"

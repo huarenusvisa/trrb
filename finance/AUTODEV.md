@@ -12,7 +12,7 @@
 - 新闻是行情/自选/基金/个股的解释层，不是一级频道。
 - V1 不开放开户、Trade/下单、KYC、基金购买/申购、券商账户连接。
 - 当前行情、历史区间、K线、评级等明确标识 demo/fallback；未知股票/ETF 不用 AAPL/SPY 冒充。
-- `feature-flags.js` 当前 `brokerage=false`、`liveMarketData=false`、`trading=false`。
+- `feature-flags.js`：`brokerage=false`、`liveMarketData=false`、`trading=false`。
 
 ## 已完成核心能力
 ### 首页 / 行情 / 自选
@@ -77,18 +77,19 @@
 - 第34轮：`FinanceAppState` setter 化，移除 navigation-memory 恢复路径 synthetic click。
 - 第35轮：增加 BFCache 四类状态回归和 synthetic click=0 断言；确认 GitHub 连接器可以枚举 A 版 `finance/` 目录。
 
-### 第36轮：本地 QA 传输通道实测与 A 版一致性复核
+### 第36–37轮：真实 QA 执行通道复测
 - A 版关键运行文件、QA 文件均可由 GitHub 连接器读取。
 - Chromium + Python Playwright 可用，但容器无法 DNS 解析 GitHub / RawGitHack，不能直接 HTTP 下载 A 版。
 - GitHub 连接器没有直接把目录/文件写入容器的动作，因此尚未完整重建 16-case 到本地执行环境。
-- A 版交易能力保持关闭；未虚报真实浏览器 / iPhone / Lighthouse PASS。
+- 第37轮再次确认 `/usr/bin/chromium` 与 Python Playwright 正常，DNS 仍返回 `Temporary failure in name resolution`。
+- 在无真实回归条件下保持功能冻结，没有继续修改核心状态机、图表或产品交互。
 
-### 第37轮：真实 QA 执行环境复测
-- 再次实测容器：`/usr/bin/chromium` 存在，Python Playwright 可导入；浏览器执行能力本身正常。
-- 再次实测 DNS：`github.com`、`raw.githubusercontent.com`、`raw.githack.com` 仍全部返回 `Temporary failure in name resolution`。
-- 因真实 16-case 仍无法取得 A 版源码，本轮严格保持功能冻结，没有修改 `app.js`、恢复状态机、图表或产品交互，避免在无回归条件下引入风险。
-- 当前阻塞仍是“GitHub 连接器内容无法直接落盘到本地容器”；这是执行通道问题，不是产品功能缺陷。
-- 未虚报 16-case、iPhone / Safari、桌面或 Lighthouse PASS。
+### 第38轮：现有 CI 复用审计
+- 重新读取本 checkpoint，并检查仓库现有 `.github/workflows`。
+- 未发现可直接复用的 finance / Playwright / `qa-suite.html` 浏览器验收 workflow。
+- 为遵守保护边界，本轮不新增、不修改任何生产 workflow，也不通过 CI 绕过既定隔离规则。
+- 真实 16-case 的唯一剩余执行阻塞仍是“GitHub 连接器源码无法直接落盘到本地 Chromium 可访问目录”；这是执行通道问题，不是已确认的产品缺陷。
+- 本轮没有新增产品代码，没有虚报 16-case、iPhone / Safari、桌面或 Lighthouse PASS。
 
 ## 当前结论
 状态：**V1 Candidate+ / 功能冻结**。

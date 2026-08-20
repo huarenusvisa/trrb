@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>个股｜唐人财经</title>
+  <meta name="theme-color" content="#ffffff" />
+  <link rel="stylesheet" href="./finance.css" />
+  <link rel="stylesheet" href="./v1-polish.css" />
+  <link rel="stylesheet" href="./detail-navigation.css" />
+  <link rel="stylesheet" href="./reference-features.css" />
+  <link rel="stylesheet" href="./resilience.css" />
+  <script src="./data-adapter.js" defer></script>
+  <script src="./stock.js" defer></script>
+  <script src="./detail-state-sync.js" defer></script>
+  <script src="./navigation-memory.js" data-finance-nav-memory="1" defer></script>
+  <script src="./reference-features.js" data-finance-reference="1" defer></script>
+  <script src="./resilience.js" data-finance-resilience="1" defer></script>
+  <script src="./detail-navigation.js" defer></script>
+</head>
+<body>
+<div class="stock-app">
+  <header class="stock-top"><div class="stock-topin"><a class="back" href="./#watch" aria-label="返回自选">‹</a><div class="stock-ticker"><b id="topPrice">—</b><span id="topSymbol">—</span></div><div class="stock-actions"><button id="shareBtn" class="icon-btn" aria-label="分享当前股票">↗</button></div></div></header>
+  <main class="stock-content">
+    <section class="stock-hero" aria-labelledby="name">
+      <div class="stock-symbol"><span id="symbol">—</span> · <span id="market">—</span></div><h1 id="name">—</h1><div id="price" class="stock-price">—</div><div id="move" class="move">—</div><div id="after" class="after">—</div>
+      <div id="chart" class="chart-wrap"></div>
+      <div class="range" role="group" aria-label="价格走势图时间范围"><button class="on" aria-pressed="true" data-range="1D">1D</button><button aria-pressed="false" data-range="1W">1W</button><button aria-pressed="false" data-range="1M">1M</button><button aria-pressed="false" data-range="3M">3M</button><button aria-pressed="false" data-range="YTD">YTD</button><button aria-pressed="false" data-range="1Y">1Y</button><button aria-pressed="false" data-range="5Y">5Y</button><button id="advancedChartBtn" class="advanced" type="button">高级图表</button></div>
+    </section>
+
+    <section class="stock-section"><h2>关键数据</h2><div id="metrics" class="metrics"></div></section>
+    <section class="stock-section"><h2>新闻</h2><div id="stockNews" class="news-list"></div></section>
+    <section class="stock-section"><h2>分析师评级</h2><div class="rating"><div class="rating-circle" aria-label="买入评级占比 63.9%">63.9%</div><div class="bars"><div class="barrow"><div class="track" aria-hidden="true"><div class="fill" style="width:63.9%"></div></div><span class="up">63.9% 买入</span></div><div class="barrow"><div class="track" aria-hidden="true"><div class="fill" style="width:25.5%"></div></div><span>25.5% 持有</span></div><div class="barrow"><div class="track" aria-hidden="true"><div class="fill" style="width:10.6%"></div></div><span>10.6% 卖出</span></div></div></div><p class="risk">分析师评级为界面演示数据，正式版需要授权数据源。</p></section>
+    <section class="stock-section"><h2>营收与利润</h2><div class="mini-card"><div class="financial-bars" aria-label="营收与净利润示意图"><div class="fcol"><div class="fbarwrap" aria-hidden="true"><div class="fbar" style="height:50%"></div><div class="fbar dark" style="height:24%"></div></div>Q3</div><div class="fcol"><div class="fbarwrap" aria-hidden="true"><div class="fbar" style="height:64%"></div><div class="fbar dark" style="height:29%"></div></div>Q4</div><div class="fcol"><div class="fbarwrap" aria-hidden="true"><div class="fbar" style="height:58%"></div><div class="fbar dark" style="height:27%"></div></div>Q1</div><div class="fcol"><div class="fbarwrap" aria-hidden="true"><div class="fbar" style="height:76%"></div><div class="fbar dark" style="height:35%"></div></div>Q2</div><div class="fcol"><div class="fbarwrap" aria-hidden="true"><div class="fbar" style="height:84%"></div><div class="fbar dark" style="height:39%"></div></div>Q3E</div></div><div class="legend"><span class="up">■ 营收</span><span>■ 净利润</span></div></div></section>
+    <section class="stock-section"><h2>EPS / Earnings</h2><div class="event-list"><div class="event"><div><b>下一次财报</b><small>演示日历</small></div><div class="right"><b>EPS 预期</b><small>$1.82</small></div></div><div class="event"><div><b>上一季度</b><small>实际 vs 预期</small></div><div class="right"><b class="up">+4.8%</b><small>超预期</small></div></div></div></section>
+    <section class="stock-section"><h2>公告 / SEC</h2><div class="event-list"><div class="event"><div><b>季度财务报告</b><small>10-Q / 10-K 接口预留</small></div><div class="right"><b>官方来源</b><small>待接入</small></div></div><div class="event"><div><b>重大事项与持股披露</b><small>8-K / 13F / Form 4</small></div><div class="right"><b>官方来源</b><small>待接入</small></div></div></div></section>
+    <section class="stock-section"><h2>做空与热度</h2><div class="indexgrid"><div class="indexcard"><b>Short interest</b><strong>1.21%</strong><small>演示</small></div><div class="indexcard"><b>关注热度</b><strong class="up">82</strong><small>较高</small></div><div class="indexcard"><b>机构趋势</b><strong>中性</strong><small>最近季度</small></div></div><p class="risk">这里展示研究和关注趋势，不代表唐人财经提供证券交易服务。</p></section>
+    <section class="stock-section"><h2>公司概览</h2><dl class="profile"><dt>股票代码</dt><dd id="profileSymbol">随页面参数</dd><dt>所属行业</dt><dd id="sector">—</dd><dt>公司简介</dt><dd id="description">—</dd><dt>数据模式</dt><dd>Demo / fallback</dd></dl></section>
+    <p class="risk">本页面不构成投资建议。V1 不提供真实交易、开户、KYC 或证券下单功能。</p>
+  </main>
+  <div class="fixed" aria-label="个股操作"><button id="alertBtn" class="ghost" aria-pressed="false">设置提醒</button><button id="watchBtn" class="primary" aria-pressed="false">+ 加入自选</button></div>
+</div>
+<script>document.addEventListener('DOMContentLoaded',()=>{const q=new URLSearchParams(location.search).get('symbol')||'AAPL';const x=document.getElementById('profileSymbol');if(x)x.textContent=q.toUpperCase()})</script>
+</body>
+</html>

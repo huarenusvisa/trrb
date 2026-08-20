@@ -1,10 +1,10 @@
 (function(){
   function loadResilience(){
-    if(!document.querySelector('link[data-finance-resilience]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./resilience.css';l.dataset.financeResilience='1';document.head.appendChild(l)}
-    if(!document.querySelector('script[data-finance-resilience]')){const s=document.createElement('script');s.src='./resilience.js';s.async=false;s.dataset.financeResilience='1';document.head.appendChild(s)}
+    if(!document.querySelector('link[data-finance-resilience],link[href="./resilience.css"],link[href$="/resilience.css"]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./resilience.css';l.dataset.financeResilience='1';document.head.appendChild(l)}
+    if(!document.querySelector('script[data-finance-resilience],script[src="./resilience.js"],script[src$="/resilience.js"]')){const s=document.createElement('script');s.src='./resilience.js';s.async=false;s.dataset.financeResilience='1';document.head.appendChild(s)}
   }
   function loadNavigationMemory(){
-    if(document.querySelector('script[data-finance-nav-memory]'))return;const s=document.createElement('script');s.src='./navigation-memory.js';s.async=false;s.dataset.financeNavMemory='1';document.head.appendChild(s)
+    if(document.querySelector('script[data-finance-nav-memory],script[src="./navigation-memory.js"],script[src$="/navigation-memory.js"]'))return;const s=document.createElement('script');s.src='./navigation-memory.js';s.async=false;s.dataset.financeNavMemory='1';document.head.appendChild(s)
   }
   loadResilience();loadNavigationMemory();
   const D=window.FinanceData;if(!D)return;
@@ -45,14 +45,24 @@
     box.innerHTML=`<div class="search-quick-head"><span>${data.label}</span><kbd>/</kbd></div>${data.items.map((x,i)=>`<a id="quick-search-${i}" role="option" class="search-hit quick-search-hit" href="${quickHref(x)}"><div><b>${x.name}</b><small>${x.symbol} · ${quickMeta(x)}</small></div><span class="quick-symbol">${x.symbol}</span></a>`).join('')}`;
     box.classList.add('open');input.setAttribute('aria-expanded','true');
   }
+  function syncSearchA11y(){
+    if(!input||!box)return;const hits=Array.from(box.querySelectorAll('.search-hit'));let active=null;
+    hits.forEach((a,i)=>{if(!a.id)a.id=`finance-search-option-${i}`;const on=a.classList.contains('active');a.setAttribute('aria-selected',String(on));if(on)active=a});
+    if(active)input.setAttribute('aria-activedescendant',active.id);else input.removeAttribute('aria-activedescendant');
+    input.setAttribute('aria-expanded',String(box.classList.contains('open')));
+  }
 
   if(input&&box){
-    input.addEventListener('focus',renderQuickSearch);
-    input.addEventListener('input',()=>{if(!input.value.trim())requestAnimationFrame(renderQuickSearch)});
+    input.addEventListener('focus',()=>{renderQuickSearch();requestAnimationFrame(syncSearchA11y)});
+    input.addEventListener('input',()=>{if(!input.value.trim())requestAnimationFrame(renderQuickSearch);requestAnimationFrame(syncSearchA11y)});
+    input.addEventListener('search',()=>requestAnimationFrame(()=>{if(!input.value.trim())renderQuickSearch();syncSearchA11y()}));
+    input.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp','Enter','Escape'].includes(e.key))requestAnimationFrame(syncSearchA11y)});
+    if('MutationObserver'in window)new MutationObserver(()=>requestAnimationFrame(syncSearchA11y)).observe(box,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+    const wrap=input.closest('.search-wrap');if(wrap)wrap.addEventListener('focusout',()=>setTimeout(()=>{if(!wrap.contains(document.activeElement)){box.classList.remove('open');input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');box.querySelectorAll('.search-hit.active').forEach(a=>{a.classList.remove('active');a.setAttribute('aria-selected','false')})}},0));
     document.addEventListener('keydown',e=>{
       const tag=(e.target&&e.target.tagName||'').toLowerCase();
       const typing=tag==='input'||tag==='textarea'||tag==='select'||(e.target&&e.target.isContentEditable);
-      if(e.key==='/'&&!typing&&!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();input.focus();input.select();renderQuickSearch()}
+      if(e.key==='/'&&!typing&&!e.metaKey&&!e.ctrlKey&&!e.altKey){e.preventDefault();input.focus();input.select();renderQuickSearch();requestAnimationFrame(syncSearchA11y)}
     });
   }
 

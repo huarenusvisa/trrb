@@ -35,9 +35,16 @@
   const links=$$('a',nav);
   links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const id=a.getAttribute('href').slice(1),target=document.getElementById(id);if(!target)return;target.scrollIntoView({behavior:document.documentElement.classList.contains('reduce-motion')?'auto':'smooth',block:'start'});history.replaceState(null,'',`${location.pathname}${location.search}#${id}`)}));
   const setActive=i=>{links.forEach((a,n)=>{const on=n===i;a.classList.toggle('on',on);a.setAttribute('aria-current',on?'location':'false')});const a=links[i];if(a)a.scrollIntoView({block:'nearest',inline:'center'})};
-  if('IntersectionObserver'in window){
-    const io=new IntersectionObserver(entries=>{const visible=entries.filter(x=>x.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(!visible.length)return;const i=sections.indexOf(visible[0].target);if(i>=0)setActive(i)},{rootMargin:'-118px 0px -68% 0px',threshold:[0,.01,.15]});sections.forEach(s=>io.observe(s));
+  let sectionObserver=null,lastObserverOffset=0;
+  const observerTopOffset=()=>Math.max(96,Math.round((top.getBoundingClientRect().height||64)+(nav.getBoundingClientRect().height||54)));
+  function setupSectionObserver(force=false){
+    if(!('IntersectionObserver'in window))return;const offset=observerTopOffset();if(!force&&sectionObserver&&Math.abs(offset-lastObserverOffset)<2)return;lastObserverOffset=offset;if(sectionObserver)sectionObserver.disconnect();
+    sectionObserver=new IntersectionObserver(entries=>{const visible=entries.filter(x=>x.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);if(!visible.length)return;const i=sections.indexOf(visible[0].target);if(i>=0)setActive(i)},{rootMargin:`-${offset}px 0px -68% 0px`,threshold:[0,.01,.15]});sections.forEach(s=>sectionObserver.observe(s));
   }
+  requestAnimationFrame(()=>requestAnimationFrame(()=>setupSectionObserver(true)));
+  window.addEventListener('finance:viewportchange',()=>requestAnimationFrame(()=>setupSectionObserver()),{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(()=>setupSectionObserver(true),260),{passive:true});
+
   let ticking=false;const syncScroll=()=>{top.classList.toggle('detail-scrolled',window.scrollY>Math.max(110,hero.offsetTop+90));ticking=false};
   window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(syncScroll)}},{passive:true});syncScroll();
 

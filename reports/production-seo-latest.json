@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T22:07:46.158Z",
+  "generated_at": "2026-08-20T22:21:32.340Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -61,11 +61,13 @@
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
-      "status": 0,
-      "bytes": 0,
-      "article_count": 0,
+      "status": 200,
+      "type": "application/xml; charset=UTF-8",
+      "bytes": 1636379,
+      "article_count": 4462,
       "child_sitemaps": [],
-      "legacy_query_count": 0
+      "legacy_query_count": 0,
+      "version": "live-supabase-v6-public-only-static-authority-aligned"
     },
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
@@ -285,8 +287,6 @@
     }
   },
   "failures": [
-    "sitemap https://trrb.net/sitemap.xml HTTP 0",
-    "main sitemap article count too small",
     {
       "page": "https://trrb.net/trump",
       "problem": "too few direct article links: 0/1"

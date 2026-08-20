@@ -12,6 +12,7 @@ on:
       - 'finance/**'
       - 'immigrate/center-link-canonical.js'
       - 'netlify/functions/**'
+      - 'netlify/edge-functions/**'
       - 'admin/ice-report-controls-v2.js'
       - 'admin/ice-report-integrated.js'
       - 'admin/ice-report-raw-lock.js'

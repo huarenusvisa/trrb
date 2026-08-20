@@ -7,14 +7,14 @@
   <meta name="description" content="唐人日报美国招聘求职：雇主极简发布岗位，仅限美国。" />
   <link rel="canonical" href="https://trrb.net/jobs/publish.html" />
   <style>
-    *{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#101828;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:860px;margin:0 auto;padding:32px 18px 72px}.back{color:#c00;text-decoration:none}.card{background:#fff;border:1px solid #e4e7ec;border-radius:18px;padding:22px;margin-top:18px;box-shadow:0 8px 28px rgba(16,24,40,.05)}h1{font-size:36px;margin:18px 0 8px}.muted{color:#667085;line-height:1.65}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}label{display:block;font-weight:700;margin:0 0 7px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:11px;padding:12px;background:#fff}textarea{min-height:150px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button{border:0;border-radius:11px;padding:12px 18px;cursor:pointer;background:#111827;color:#fff}button.secondary{background:#eef2f6;color:#101828}button:disabled{opacity:.55;cursor:not-allowed}.status{white-space:pre-wrap;margin-top:12px;color:#475467}.hidden{display:none}.preview{max-width:220px;max-height:160px;border-radius:12px;margin-top:10px;border:1px solid #e4e7ec}.login-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}@media(max-width:700px){.grid,.login-row{grid-template-columns:1fr}.full{grid-column:auto}h1{font-size:30px}}
+    *{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#101828;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:860px;margin:0 auto;padding:32px 18px 72px}.back{color:#c00;text-decoration:none}.card{background:#fff;border:1px solid #e4e7ec;border-radius:18px;padding:22px;margin-top:18px;box-shadow:0 8px 28px rgba(16,24,40,.05)}h1{font-size:36px;margin:18px 0 8px}.muted{color:#667085;line-height:1.65}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}label{display:block;font-weight:700;margin:0 0 7px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:11px;padding:12px;background:#fff}textarea{min-height:150px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button{border:0;border-radius:11px;padding:12px 18px;cursor:pointer;background:#111827;color:#fff}button.secondary{background:#eef2f6;color:#101828}button:disabled{opacity:.55;cursor:not-allowed}.status{white-space:pre-wrap;margin-top:12px;color:#475467}.hidden{display:none}.preview{max-width:220px;max-height:160px;border-radius:12px;margin-top:10px;border:1px solid #e4e7ec}.login-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.location-ok{margin-top:8px;padding:10px 12px;border-radius:10px;background:#f0fdf4;color:#166534}.location-warn{margin-top:8px;padding:10px 12px;border-radius:10px;background:#fff7ed;color:#9a3412}@media(max-width:700px){.grid,.login-row{grid-template-columns:1fr}.full{grid-column:auto}h1{font-size:30px}}
   </style>
 </head>
 <body>
 <main class="shell">
   <a class="back" href="/jobs/">← 返回招聘求职</a>
   <h1>发布招聘</h1>
-  <p class="muted">仅限美国。使用唐人日报统一账号发布；标题、地点、工作介绍、类型和主要联系方式为核心字段，薪资与工作环境图片可选。上传图片不代表平台认证。</p>
+  <p class="muted">只填一次地点，例如“纽约法拉盛”或“威斯康星麦迪逊”。系统会自动归类到州、城市和附近地图，不要求你理解 County、Borough 或 Neighborhood。</p>
 
   <section class="card" id="auth-card">
     <h2>账号登录</h2>
@@ -31,11 +31,7 @@
       <div class="full"><label for="title">职位名称 *</label><input id="title" maxlength="120" required placeholder="例如：法拉盛餐厅招聘服务员" /></div>
       <div><label for="category">行业 *</label><select id="category" required></select></div>
       <div><label for="employment">工作类型 *</label><select id="employment"><option value="full_time">全职</option><option value="part_time">兼职</option><option value="contract">合同</option><option value="temporary">临时</option><option value="internship">实习</option><option value="unspecified">未指定</option></select></div>
-      <div><label for="state">州缩写 *</label><input id="state" maxlength="3" required placeholder="NY" /></div>
-      <div><label for="city">城市 *</label><input id="city" maxlength="120" required placeholder="New York City" /></div>
-      <div><label for="county">County</label><input id="county" maxlength="120" /></div>
-      <div><label for="borough">Borough</label><input id="borough" maxlength="120" placeholder="Queens" /></div>
-      <div class="full"><label for="neighborhood">Neighborhood</label><input id="neighborhood" maxlength="120" placeholder="Flushing" /></div>
+      <div class="full"><label for="location-text">工作地点 *</label><input id="location-text" maxlength="180" required autocomplete="off" placeholder="例如：纽约法拉盛 / 威斯康星麦迪逊 / Los Angeles CA" /><div id="location-resolution" class="muted">填写后系统自动识别，不需要再选州、县或区。</div></div>
       <div><label for="salary-min">最低薪资（可选）</label><input id="salary-min" type="number" min="0" step="0.01" /></div>
       <div><label for="salary-max">最高薪资（可选）</label><input id="salary-max" type="number" min="0" step="0.01" /></div>
       <div><label for="salary-period">薪资周期</label><select id="salary-period"><option value="">不填写</option><option value="hour">每小时</option><option value="day">每天</option><option value="week">每周</option><option value="month">每月</option><option value="year">每年</option><option value="job">按项目</option></select></div>
@@ -50,6 +46,7 @@
   </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/jobs/publish.js?v=20260817-r1n5"></script>
+<script src="/jobs/location-normalizer-r3.js?v=20260820-r3n3"></script>
+<script src="/jobs/publish.js?v=20260820-r3n3"></script>
 </body>
 </html>

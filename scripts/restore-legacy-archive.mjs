@@ -9,6 +9,7 @@ const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const APPLY = process.argv.includes('--apply');
 const limitArg = process.argv.find((v) => v.startsWith('--limit='));
 const LIMIT = Math.max(1, Math.min(500, Number(limitArg?.split('=')[1] || 200)));
+const PRIORITY_IDS = new Set(String(process.env.LEGACY_PRIORITY_IDS || 'wp-117123').split(',').map((v)=>v.trim()).filter(Boolean));
 
 function clean(v='') { return String(v || '').replace(/\s+/g, ' ').trim(); }
 function normalizeTitle(v='') { return clean(v).normalize('NFKC').replace(/[\u200B-\u200D\uFEFF]/g,'').replace(/[\s\-—_·•:：,，。.!！?？“”‘’'"()（）【】\[\]《》<>\/\\|]+/g,'').toLowerCase(); }
@@ -118,6 +119,7 @@ for (const row of archiveRows) {
   });
   plannedLegacy.add(id); plannedLegacy.add(numeric); plannedTitles.add(titleKey);
 }
+candidates.sort((a,b)=>Number(PRIORITY_IDS.has(b.legacy_id))-Number(PRIORITY_IDS.has(a.legacy_id)));
 const selected=candidates.slice(0,LIMIT);
 let inserted=[];
 if(APPLY && selected.length){
@@ -129,6 +131,7 @@ if(APPLY && selected.length){
 const report={
   generated_at:new Date().toISOString(),mode:APPLY?'apply':'report',archive_files:files.length,archive_records:archiveRows.length,
   current_articles:existing.length,recoverable_missing:candidates.length,selected:selected.length,inserted:inserted.length,skipped,
+  priority_ids:[...PRIORITY_IDS],priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
   sample_missing:selected.slice(0,20).map((r)=>({legacy_id:r.legacy_id,title:r.title,category_name:r.category_name,canonical_url:r.canonical_url})),
   inserted_rows:inserted
 };

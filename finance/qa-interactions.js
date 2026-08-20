@@ -1,17 +1,22 @@
 (function(){
   if(window.FinanceQaInteractions)return;
-  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  let activeSignal=null;
+  const delay=ms=>new Promise(r=>setTimeout(r,ms));
+  function abortError(){const e=new Error('QA interaction aborted');e.name='AbortError';return e}
+  function checkAbort(){if(activeSignal?.aborted)throw abortError()}
+  async function sleep(ms){checkAbort();await delay(ms);checkAbort()}
   const result=(name,ok,detail='',status='fail')=>({name,status:ok?'pass':status,detail:detail||(ok?'通过':'未通过')});
   function snapshot(storage){const out={};try{for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&k.startsWith('trfinance.'))out[k]=storage.getItem(k)}}catch(e){}return out}
   function restore(storage,snap){try{const keys=[];for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&k.startsWith('trfinance.'))keys.push(k)}keys.forEach(k=>storage.removeItem(k));Object.entries(snap).forEach(([k,v])=>storage.setItem(k,v))}catch(e){}}
   function sameSnapshot(a,b){const ak=Object.keys(a).sort(),bk=Object.keys(b).sort();return ak.length===bk.length&&ak.every((k,i)=>k===bk[i]&&a[k]===b[k])}
   function text(el){return (el?.textContent||'').replace(/\s+/g,' ').trim()}
-  function key(win,el,keyName){el.dispatchEvent(new win.KeyboardEvent('keydown',{key:keyName,bubbles:true,cancelable:true}))}
-  async function waitFor(fn,{timeout=900,interval=24}={}){const start=Date.now();let value;while(Date.now()-start<timeout){try{value=fn();if(value)return value}catch(e){}await sleep(interval)}try{return fn()||null}catch(e){return null}}
-  async function clickAndWait(el,fn,opts){if(!el)return null;el.click();return waitFor(fn,opts)}
+  function key(win,el,keyName){checkAbort();el.dispatchEvent(new win.KeyboardEvent('keydown',{key:keyName,bubbles:true,cancelable:true}))}
+  async function waitFor(fn,{timeout=900,interval=24}={}){const start=Date.now();let value;while(Date.now()-start<timeout){checkAbort();try{value=fn();if(value)return value}catch(e){}await sleep(interval)}checkAbort();try{return fn()||null}catch(e){return null}}
+  async function clickAndWait(el,fn,opts){checkAbort();if(!el)return null;el.click();return waitFor(fn,opts)}
   function addSurfaceAudit(win,items,label){
-    const audit=win.FinanceAcceptance?.auditSurface?.();if(!audit){items.push(result(`交互：${label}页面审计`,false,'FinanceAcceptance.auditSurface 不可用','warn'));return}
+    checkAbort();const audit=win.FinanceAcceptance?.auditSurface?.();if(!audit){items.push(result(`交互：${label}页面审计`,false,'FinanceAcceptance.auditSurface 不可用','warn'));return}
     items.push(result(`交互：${label}无横向溢出`,audit.overflow<=3,`scrollWidth 差值 ${audit.overflow}px`));
+    items.push(result(`交互：${label}固定底栏正文预留`,audit.fixedClearance?.ok!==false,audit.fixedClearance?.detail||'无固定底栏'));
     items.push(result(`交互：${label}无交易/开户入口`,audit.forbidden.length===0,audit.forbidden.length?audit.forbidden.join('；'):'未发现禁区入口'));
     items.push(result(`交互：${label}控件名称完整`,audit.unnamed.length===0,audit.unnamed.length?`缺少名称：${audit.unnamed.join('；')}`:'可操作控件均有可访问名称'));
     items.push(result(`交互：${label}全长触控目标`,audit.targets.weak.length===0,audit.targets.weak.length?`小于${audit.targets.limit}px：${audit.targets.weak.join('；')}`:`未发现小于${audit.targets.limit}px的可操作目标`,'warn'))
@@ -62,19 +67,22 @@
     if(ytd&&chart){ytd.click();const redrawn=await waitFor(()=>ytd.classList.contains('on')&&!!$('#fundChart svg'));items.push(result('交互：ETF YTD 区间真实重绘',!!redrawn,`active=${ytd.classList.contains('on')}`));const fundA11y=await waitFor(()=>{const label=chart.getAttribute('aria-label')||'';return chart.getAttribute('role')==='group'&&label.includes('ETF')&&label.includes('YTD')&&label.includes('走势图')?label:null});items.push(result('交互：ETF 图表辅助语义同步',!!fundA11y,fundA11y||`role=${chart.getAttribute('role')} · label=${chart.getAttribute('aria-label')||''}`));chart.focus();key(win,chart,'ArrowLeft');const tip=await waitFor(()=>{const t=$('.chart-scrub-tip');return t?.style.opacity==='1'&&text(t).includes('演示读数')?t:null});items.push(result('交互：ETF 图表键盘读取价格',!!tip,tip?text(tip):'缺少 ETF 图表读数'));key(win,chart,'Escape');const hidden=await waitFor(()=>tip?.style.opacity!=='1');items.push(result('交互：ETF Escape 关闭图表读数',!!hidden,'读数已隐藏'))}
     else items.push(result('交互：ETF 图表控件可操作',false,'缺少 ETF 图表或 YTD 按钮'));
   }
-  async function run(win,type){
+  async function run(win,type,{signal=null}={}){
+    const previousSignal=activeSignal;activeSignal=signal;
     const local=snapshot(win.localStorage),session=snapshot(win.sessionStorage),hash=win.location.hash,items=[],runtimeErrors=[];
     const onError=e=>runtimeErrors.push(e?.message||e?.error?.message||'window error');
     const onReject=e=>runtimeErrors.push(e?.reason?.message||String(e?.reason||'unhandledrejection'));
     win.addEventListener('error',onError);win.addEventListener('unhandledrejection',onReject);
-    try{if(type==='home')await home(win,items);else if(type==='stock')await stock(win,items);else if(type==='fund')await fund(win,items);else items.push(result('交互验收页面类型',false,`未知页面类型 ${type}`))}
-    catch(e){items.push(result('交互验收执行完成',false,e?.message||String(e)))}
+    try{checkAbort();if(type==='home')await home(win,items);else if(type==='stock')await stock(win,items);else if(type==='fund')await fund(win,items);else items.push(result('交互验收页面类型',false,`未知页面类型 ${type}`))}
+    catch(e){if(e?.name!=='AbortError')items.push(result('交互验收执行完成',false,e?.message||String(e)))}
     finally{
       restore(win.localStorage,local);restore(win.sessionStorage,session);try{if(win.location.hash!==hash)win.history.replaceState(null,'',`${win.location.pathname}${win.location.search}${hash}`)}catch(e){}
-      await sleep(180);restore(win.localStorage,local);restore(win.sessionStorage,session);
+      await delay(180);restore(win.localStorage,local);restore(win.sessionStorage,session);
       const localOk=sameSnapshot(snapshot(win.localStorage),local),sessionOk=sameSnapshot(snapshot(win.sessionStorage),session);items.push(result('QA 隔离：本机与会话状态已恢复',localOk&&sessionOk,`local=${localOk?'一致':'不一致'} · session=${sessionOk?'一致':'不一致'}`));
+      if(signal?.aborted)items.push(result('QA 取消：超时后已停止后续交互',true,'AbortController 已中止等待链并完成清理'));
       win.removeEventListener('error',onError);win.removeEventListener('unhandledrejection',onReject);
       const unique=[...new Set(runtimeErrors.filter(Boolean))];items.push(result('交互期间无运行时异常',unique.length===0,unique.length?unique.slice(0,6).join('；'):'未捕获 error / unhandledrejection'));
+      activeSignal=previousSignal;
     }
     return items;
   }

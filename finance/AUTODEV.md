@@ -45,6 +45,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 股票 + ETF 统一自选
 - [x] 全部 / 美股 / 中概 / ETF / 港股 / 沪深筛选
 - [x] 列表 / 热力视图、管理、移除、撤销
+- [x] 自选删除使用删除前股票 + ETF 快照，撤销精确恢复，不再依赖二次 toggle
 - [x] 最新价 / 涨跌幅升降序与恢复原顺序
 - [x] 排序偏好本机保存；BFCache 返回后重新读取并应用
 
@@ -68,6 +69,8 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 详情 sticky 分区导航与当前阅读分区高亮
 - [x] 来源自适应返回，session 级筛选与滚动恢复
 - [x] Safari / BFCache 页面恢复与 visualViewport / iPhone 键盘处理
+- [x] BFCache / session 恢复使用临时恢复标记，合成点击不再触发“用户主动切换”live-region 播报
+- [x] `FinanceNavigationMemory.isRestoring()` 提供只读恢复状态，供 QA 验证恢复静默性
 - [x] 弱网 / 离线 / 加载失败恢复条与空状态操作入口
 - [x] readiness observer 完成后断开，多恢复事件合并，sessionStorage 滚动写入节流
 - [x] 个股 / ETF 顶部栏 iPhone safe-area-inset-top
@@ -93,7 +96,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 
 ## QA / 验收基础设施
 - [x] `acceptance-check.js`：仅 `qa=1` 时加载
-- [x] `qa-interactions.js`：真实操作搜索、导航、自选排序、ETF筛选、K线、YTD、键盘图表读取
+- [x] `qa-interactions.js`：真实操作搜索、导航、自选排序、精确撤销、ETF筛选、K线、YTD、键盘图表读取
 - [x] `qa-suite.html`：12 个常规多视口 case + 4 个异常路径 case，共 16 个 case
 - [x] 常规视口：首页 / AAPL / QQQ × 360 / 390 / 430 / 1280px
 - [x] 异常 case：未知股票 ZZZZ、未知 ETF FAKE、slow-ready、data-missing
@@ -101,7 +104,11 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 每个 case 从空 `trfinance.*` localStorage / sessionStorage 沙盒启动
 - [x] case 结束先卸载 iframe，再恢复用户原状态
 - [x] `qaEmbed=1` 子页面 pagehide 不持久化测试导航状态
-- [x] 14 秒交互上限使用 AbortController 真取消并等待清理
+- [x] 交互上限使用 AbortController 真取消并等待清理；首页 20 秒、个股 / ETF 14 秒、异常 case 8–10 秒
+- [x] 首页 QA 删除 AAPL 后故意写入并发 AMZN 状态，再执行撤销；只有股票 + ETF 两份列表精确恢复删除前快照才 PASS
+- [x] 首页 QA 捕获“自选筛选 → 股票详情”来源，不真正导航；改乱状态后通过 synthetic `pageshow.persisted` 验证页签、筛选和滚动恢复
+- [x] 首页 QA 同样验证“黄金 ETF 筛选 → ETF 详情”来源恢复
+- [x] 上下文恢复期间 live region 使用 sentinel；恢复产生任何用户操作播报或恢复标记残留都 FAIL
 - [x] 首屏 + 当前渲染页面全长触控扫描
 - [x] 四个一级页逐页审计横向溢出、固定底栏正文预留、禁区动作、可访问名称、触控目标
 - [x] QA 工具 DOM、`inert`、`aria-disabled`、hidden input 不参与产品扫描
@@ -143,7 +150,17 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - 修复恢复条原因串台：只有真实 offline→online 才显示“网络已恢复”；data-missing / slow 使用对应原因文案。
 - 未找到返回入口提升至 44px，恢复条按钮手机提升至 40px，异常页也维持与主产品一致的触控标准。
 - 开发分支与 `finance-v1-preview` 的 resilience / QA / error-state CSS 已同步同一内容 SHA。
-- 本轮为代码与静态逻辑复核，未把真实 iPhone / Safari、桌面浏览器或 Lighthouse 标记为通过。
+
+### 第三十轮：精确撤销与 BFCache 来源恢复确定性
+- 自选删除从 toggle 式撤销改为删除前股票 / ETF 双快照；撤销直接写回原快照，不受 Toast 存活期间其他状态变化影响。
+- `app.js` 的 live-region 播报识别 `__financeRestoringNavigation`，恢复期间的合成点击不再被念成用户主动操作。
+- `navigation-memory.js` 用计数式恢复静默区包裹筛选和一级页合成点击，并暴露只读 `isRestoring()` 供 QA 断言。
+- 首页深度 QA 新增精确撤销压力测试：删除 AAPL 后故意注入 AMZN，再撤销并要求两份自选列表与删除前完全一致。
+- 首页深度 QA 新增两条上下文恢复测试：自选 / us → AAPL、基金 / gold → GLD；通过阻止真实导航的 click 捕获来源，再触发 `pageshow.persisted` 验证页面、筛选和滚动位置恢复。
+- 上下文恢复 QA 使用 live-region sentinel 验证恢复过程静默；恢复标记未释放也会 FAIL。
+- 首页交互预算单独提高到 20 秒，其他常规 / 异常 case 保持更短预算，避免慢 Safari 因新增恢复链误报超时。
+- 开发分支与 A 版预览的 `app.js`、`navigation-memory.js`、`qa-interactions.js`、`qa-suite.html` 内容 SHA 已同步一致。
+- 本轮仍为代码与静态逻辑复核，未把真实 iPhone / Safari、桌面浏览器或 Lighthouse 标记为通过。
 
 ## 当前结论
 当前状态：**V1 Candidate+ / 功能冻结**。

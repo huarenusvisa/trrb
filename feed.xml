@@ -5,12 +5,22 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Aug 2026 18:07:51 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 18:55:46 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
     
     
     
     
+    
+    <item>
+      <title>休斯顿ICE通报2023年非法入境者获释后逃逸</title>
+      <link>https://trrb.net/ice/ice-3e0d71dc5cbe93fb997f48c556012f8cb1105d78</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-3e0d71dc5cbe93fb997f48c556012f8cb1105d78</guid>
+      <pubDate>Thu, 20 Aug 2026 18:07:49 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>休斯顿ICE公布一名2023年非法入境者获释后即逃逸，至今未捕获。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/aecd557a-af94-47c3-8f28-b22b482ffc6c-01341156-18d4-4e8e-8a18-4d4e730a69d8.webp" type="image/webp" />
+    </item>
     
     
     <item>
@@ -776,24 +786,6 @@
       <category>移民美国</category>
       <description>美国Greyhound支付220万美元和解金，涉及巴士上的移民突袭，承诺无搜查令禁止边境巡逻队上车。</description>
       <enclosure url="https://pbs.twimg.com/media/HQIG1ppW8AAKB9l.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>乔治亚Newnan市ICE因司机拒绝下车砸玻璃，工作许可和驾照不被视为公民身份证明</title>
-      <link>https://trrb.net/ice/ice-8207bda1c9e45194fda51d135165c9affc05b897</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-8207bda1c9e45194fda51d135165c9affc05b897</guid>
-      <pubDate>Thu, 20 Aug 2026 01:34:04 GMT</pubDate>
-      <category>移民美国</category>
-      <description>乔治亚Newnan市ICE执法时，因人员拒绝下车致车辆窗户被砸，工作许可和驾照不被视为公民身份证明。</description>
-      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2090224353279614976/img/Jh5v1ZDXJ2wEkti5.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>美网友爆料：ICE遣返非法移民的速度大幅度提升</title>
-      <link>https://trrb.net/ice/ice-de1e7806401405cb6580e29f921945b34569d61b</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-de1e7806401405cb6580e29f921945b34569d61b</guid>
-      <pubDate>Thu, 20 Aug 2026 00:56:26 GMT</pubDate>
-      <category>移民美国</category>
-      <description>美国一名个人账户称遣返行动加快，官方与独立渠道暂无确认，具体情况不明。</description>
-      <enclosure url="https://pbs.twimg.com/media/HQHsBm6X0AAOxVG.jpg" type="image/jpeg" />
     </item>
   </channel>
 </rss>

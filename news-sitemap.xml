@@ -5,6 +5,15 @@
   
   
   
+  <url>
+      <loc>https://trrb.net/ice/ice-3e0d71dc5cbe93fb997f48c556012f8cb1105d78</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T18:07:49.024Z</news:publication_date>
+        <news:title>休斯顿ICE通报2023年非法入境者获释后逃逸</news:title>
+      </news:news>
+    </url>
+  
   
   <url>
       <loc>https://trrb.net/ice/ice-9f56702f371db9a15de710cc71c4ed595e6c0ee5</loc>
@@ -1789,14 +1798,4 @@
         <news:title>德州埃尔帕索机场ICE拘留合法大联盟棒球工作人员</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-2d83e4024fdceab407e8f226f1ead4951f65cad8</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T18:54:39.433Z</news:publication_date>
-        <news:title>美国国土安全部确认ICE持续开展遣返非法移民行动</news:title>
-      </news:news>
-    </url>
-  
-  
 </urlset>

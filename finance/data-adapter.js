@@ -67,6 +67,7 @@
   function read(key,fallback=null){try{const v=localStorage.getItem(key);return v===null?fallback:v}catch(e){return fallback}}
   function write(key,value){try{localStorage.setItem(key,value);return true}catch(e){return false}}
   function remove(key){try{localStorage.removeItem(key);return true}catch(e){return false}}
+  function removeSession(key){try{sessionStorage.removeItem(key);return true}catch(e){return false}}
   function spark(symbol){
     const seed = Array.from(symbol).reduce((a,c)=>a+c.charCodeAt(0),0);
     return Array.from({length:18},(_,i)=>Math.round(20 + ((Math.sin((i+seed%7)/2.1)+1)*13) + ((seed*i)%11)/2));
@@ -114,7 +115,8 @@
   function clearHistory(){remove('trfinance.history')}
   function clearAlerts(){Object.keys(demo.stocks).forEach(symbol=>remove(`trfinance.alert.${symbol}`))}
   function clearLocalState(){
-    ['trfinance.watchlist','trfinance.fundWatchlist','trfinance.watchView','trfinance.history','trfinance.prefs'].forEach(remove);
+    ['trfinance.watchlist','trfinance.fundWatchlist','trfinance.watchView','trfinance.watchSort','trfinance.history','trfinance.prefs'].forEach(remove);
+    ['trfinance.navState','trfinance.navContext'].forEach(removeSession);
     clearAlerts();
     return true;
   }

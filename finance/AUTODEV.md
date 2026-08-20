@@ -24,12 +24,7 @@
 - 当前公开定位：财经新闻 · 自选行情 · ETF基金 · 投资研究。
 
 ## 合规边界
-V1 不开放：
-- 开户
-- Trade / 下单
-- KYC
-- 基金购买 / 申购
-- 券商账户连接
+V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账户连接。
 
 当前数据为明确标识的 demo / fallback：
 - 未知股票 / ETF 返回未找到，不用 AAPL / SPY 冒充。
@@ -39,96 +34,75 @@ V1 不开放：
 
 ## 当前完成状态
 ### 首页与行情
-- [x] 三大指数、微型走势、市场状态
-- [x] 热力图、Top Movers
+- [x] 三大指数、微型走势、市场状态、热力图、Top Movers
 - [x] Earnings / Upcoming / Macro / Crypto
 - [x] 市场新闻解释层
-- [x] 搜索股票 / ETF / 基金
-- [x] 最近浏览 / 热门搜索快捷入口
+- [x] 搜索股票 / ETF / 基金与最近浏览 / 热门搜索
 - [x] 搜索键盘上下、Enter、Escape、ARIA 状态
 - [x] Hash 路由与浏览器前进 / 后退
 
 ### 自选
 - [x] 股票 + ETF 统一自选
 - [x] 全部 / 美股 / 中概 / ETF / 港股 / 沪深筛选
-- [x] 列表 / 热力视图
-- [x] 管理模式、移除、撤销
-- [x] 最新价 / 涨跌幅升降序
-- [x] 恢复原自选顺序
-- [x] 排序偏好本机保存
-- [x] BFCache 返回后重新读取并应用本机自选状态
+- [x] 列表 / 热力视图、管理、移除、撤销
+- [x] 最新价 / 涨跌幅升降序与恢复原顺序
+- [x] 排序偏好本机保存；BFCache 返回后重新读取并应用
 
 ### ETF / 基金
-- [x] ETF 主题研究页
-- [x] 核心指数 / 科技 / 黄金 / 半导体真实筛选
-- [x] 参数化 ETF 详情
-- [x] 费率、规模、风险、持仓、资讯
+- [x] ETF 主题研究页与核心指数 / 科技 / 黄金 / 半导体真实筛选
+- [x] 参数化 ETF 详情：费率、规模、风险、持仓、资讯
 - [x] 走势图区间切换与键盘 / 触摸读数
 - [x] 不加载股票专属 K 线增强层
 
 ### 个股详情
-- [x] 参数化详情
 - [x] 当前价、涨跌、盘后、高低价、成交量
-- [x] 1D / 1W / 1M / 3M / YTD / 1Y / 5Y
-- [x] 所选周期收益联动
-- [x] 走势 / K线切换
-- [x] 日K / 周K / 月K
-- [x] OHLC + 成交量读数
+- [x] 1D / 1W / 1M / 3M / YTD / 1Y / 5Y 与所选周期收益联动
+- [x] 走势 / K线，日K / 周K / 月K，OHLC + 成交量
 - [x] K线语义约束：日K≥1M、周K≥3M、月K≥1Y
 - [x] 鼠标 / 触摸 / 键盘图表读取
-- [x] sticky 顶部迷你报价与当前周期一致
-- [x] K线收盘读数与顶部报价联动
+- [x] sticky 顶部迷你报价与当前周期 / 图表读数一致
 - [x] 关键数据、新闻、评级、财务、EPS、SEC接口位、热度、公司概览
 - [x] 加入自选、提醒、分享
 
 ### 导航 / 恢复 / 韧性
-- [x] 详情 sticky 分区导航
-- [x] 当前阅读分区自动高亮
-- [x] 从行情 / 自选 / 基金 / 我的进入详情时记住来源
-- [x] 返回来源自适应
-- [x] session 级筛选与滚动恢复
-- [x] Safari / BFCache 页面恢复
-- [x] visualViewport / iPhone 键盘状态处理
-- [x] 弱网 / 离线 / 加载失败恢复条
-- [x] 自选 / ETF / 浏览 / 提醒空状态操作入口
-- [x] 页面加载完成后 readiness observer 主动断开
-- [x] Safari 多恢复事件合并
-- [x] sessionStorage 滚动写入节流
+- [x] 详情 sticky 分区导航与当前阅读分区高亮
+- [x] 来源自适应返回，session 级筛选与滚动恢复
+- [x] Safari / BFCache 页面恢复与 visualViewport / iPhone 键盘处理
+- [x] 弱网 / 离线 / 加载失败恢复条与空状态操作入口
+- [x] readiness observer 完成后断开，多恢复事件合并，sessionStorage 滚动写入节流
 
 ### 视觉 / 响应式 / 无障碍
-- [x] A 版设计系统
-- [x] 360–430px 静态防溢出
+- [x] A 版设计系统与 360–430px 静态防溢出
 - [x] 900 / 1180 / 1440+ 桌面布局
-- [x] content-visibility 下屏性能优化
-- [x] focus-visible / reduced-motion / 高对比基础支持
-- [x] 行情数字使用 tabular numerals
-- [x] 详情分区导航桌面触控高度 ≥36px
-- [x] 详情分区导航手机触控高度 ≥40px
-- [x] 图表时间区间手机触控高度 ≥40px
-- [x] 自选排序与 K 线模式按钮手机触控高度 ≥40px
-- [x] 触控增高后手机锚点 scroll-margin 同步为 126px
+- [x] content-visibility、focus-visible、reduced-motion、高对比基础支持
+- [x] 行情数字 tabular numerals
+- [x] 详情分区 / 图表区间 / 自选排序 / K线模式手机触控高度 ≥40px
+- [x] 返回箭头 / 分享按钮命中区 ≥44×44px
+- [x] 自选管理、删除、Toast 撤销手机命中区 ≥40px
+- [x] 偏好 Toggle 使用 56×40 按钮命中区，视觉轨道保持 48×28
+- [x] 手机详情导航增高后 scroll-margin-top = 126px
+- [x] 股票 / ETF 图表使用 `role="group"`，aria-label 随走势 / K线 / 周期实时同步
 
 ## QA / 验收基础设施
 - [x] `acceptance-check.js`：仅 `qa=1` 时加载
-- [x] 单页 QA：重复 ID、横向溢出、交易入口、ARIA、触控目标、runtime 等
-- [x] `qa-suite.html`：12 个独立视口 case
-- [x] 首页 / AAPL / QQQ × 360 / 390 / 430 / 1280px
-- [x] iframe 同源 postMessage 汇总
-- [x] 每个 case 独立 cache-buster
-- [x] `qa-interactions.js` 深度真实交互测试
-- [x] 自动搜索、导航、自选排序、ETF筛选、K线、YTD、键盘图表读取
-- [x] 条件等待代替固定 25–70ms sleep
-- [x] 每个 case 前后快照并双重恢复所有 `trfinance.*` localStorage / sessionStorage
-- [x] QA 报告验证状态恢复一致性
-- [x] 触控扫描只检查当前视口内、非 disabled 的真实可操作元素
+- [x] `qa-suite.html`：首页 / AAPL / QQQ × 360 / 390 / 430 / 1280px，共 12 个独立 case
+- [x] iframe 同源 postMessage 汇总与独立 cache-buster
+- [x] `qa-interactions.js` 自动真实操作搜索、导航、自选排序、ETF筛选、K线、YTD、键盘图表读取
+- [x] 条件等待代替固定 sleep
+- [x] 每个 case 前后双重恢复所有 `trfinance.*` localStorage / sessionStorage，并验证恢复一致性
+- [x] 首屏触控扫描 + 当前渲染页面全长触控扫描
+- [x] 四个一级页逐页审计横向溢出、交易 / 开户禁区入口、可访问名称、触控目标
+- [x] 可操作控件名称审计覆盖 a / button / input / tabindex=0
+- [x] 深度交互捕获 `error` / `unhandledrejection` 并作为正式 PASS / FAIL
+- [x] 图表 QA 断言走势 / Kline / ETF 的 role 与 aria-label 跟随模式和周期
 - [x] 手机触控 WARN 阈值 36px，桌面 32px
-- [x] 深度交互超时 10 秒 / 整 case 18 秒，降低慢 Safari 误报
+- [x] 深度交互超时 14 秒 / 整 case 24 秒，降低慢 Safari 误报
 
 ## 尚未关闭的验收项
+- [ ] 在真实浏览器运行 A 版 `qa-suite.html`，清零实际 FAIL，并人工判断剩余 WARN
 - [ ] 360–430px 实际 iPhone / Safari 人工视觉验收
 - [ ] 桌面实际浏览器人工视觉验收
-- [ ] Lighthouse 性能 / Accessibility / Best Practices 最终检查
-- [ ] 根据真实 QA 报告清零 FAIL，并人工判断剩余 WARN
+- [ ] Lighthouse Performance / Accessibility / Best Practices 最终检查
 - [ ] V1 最终自测与 `V1 Complete` 标记
 
 ## 外部依赖
@@ -139,50 +113,34 @@ V1 不开放：
 
 ## 最近关键开发记录
 ### 第十九轮：Robinhood / 腾讯截图对照
-- 补自选最新价 / 涨跌幅排序。
-- 补所选周期收益联动。
-- 补走势 / K线、日K / 周K / 月K、OHLC 与成交量。
+- 补自选排序、所选周期收益、走势 / K线与 OHLC。
 - 明确不增加 Trade、开户、模拟交易与无授权研报。
 
-### 第二十轮：封板前确定性加载
-- reference 增强改为页面明确依赖。
-- ETF 不下载股票专属增强。
-- 行情数字统一等宽数字。
+### 第二十至二十四轮：封板与 QA 基础设施
+- reference 确定性加载、等宽数字、搜索 / BFCache / K线语义缺陷修复。
+- 建立单页 `qa=1`、12 视口 QA 与深度真实交互 QA。
+- 条件等待、双重状态恢复、触控尺寸收口。
 
-### 第二十一轮：封板缺陷扫描
-- 修复 Escape 搜索状态残留。
-- 清除本机数据覆盖排序与 session 导航状态。
-- sticky 报价与当前周期统一。
-- K线周期语义约束。
-- 建立单页 `qa=1` 运行时验收。
-
-### 第二十二轮：多视口 QA
-- 新增 12 case 自动验收套件。
-- 首页 / 个股 / ETF × 360 / 390 / 430 / 1280px。
-- 汇总 PASS / FAIL / WARN 与 JSON 报告。
-
-### 第二十三轮：真实交互 QA
-- 新增 `qa-interactions.js`。
-- 自动真实执行搜索、四栏切换、自选排序、ETF筛选、K线切换、周期约束、YTD同步和图表键盘读取。
-- 每个 case 快照 / 恢复 `trfinance.*` 状态，避免 QA 污染用户自选与提醒。
-
-### 第二十四轮：QA 自校验与触控收口
-- 固定毫秒 sleep 改为 `waitFor` 条件等待，降低 Safari / 低电量模式误报。
-- 状态恢复改为双重恢复，并增加恢复一致性 PASS / FAIL 检查。
-- QA 触控扫描改为仅扫描当前视口内、非 disabled 的真实交互元素。
-- 自选排序、走势 / K线、日K / 周K / 月K、详情分区导航、图表时间区间提高实际触控高度。
-- 手机详情导航变高后同步调整锚点 `scroll-margin-top`，避免点击分区后标题被 sticky 导航遮挡。
-- QA 交互超时提高至 10 秒、整 case 18 秒，避免慢设备误判。
+### 第二十五轮：QA FAIL / WARN 清零工程
+- 扩大真实触控命中区：Toggle、自选管理 / 删除 / 撤销、详情返回 / 分享。
+- QA 从首屏触控扫描扩展为首屏 + 当前渲染页面全长扫描。
+- 首页自动切换基金 / 自选 / 我的 / 行情，并分别检查横向溢出、禁区入口、可访问名称与触控尺寸。
+- 禁区扫描从“首屏可见”提升为“当前渲染页面全部可交互元素”。
+- 新增可访问名称审计，覆盖链接、按钮、输入框与 tabindex=0 控件。
+- 深度交互期间捕获 `window error` / `unhandledrejection`，出现异常直接 FAIL。
+- 修复股票 / ETF 图表辅助语义：`role="group"` 与 aria-label 随走势、K线、日K / 周K / 月K、区间同步。
+- 深度 QA 新增 K线 / 走势 / ETF 图表辅助语义断言。
+- 因验收链变长，将深度交互超时调整为 14 秒、整 case 24 秒。
 - 已同步到 `finance-v1-preview`。
 
 ## 当前结论
 当前状态：**V1 Candidate+ / 功能冻结**。
 
-不再扩大型模块。后续只做：
+后续只做：
 1. 运行 A 版 `qa-suite.html`，清理实际 FAIL / WARN；
 2. iPhone / Safari 与桌面人工视觉验收；
 3. Lighthouse 最终检查；
 4. 只修验收发现的具体问题；
 5. 全部关闭后再标记 `V1 Complete`。
 
-完整早期轮次历史仍保留在 Git 提交历史中，本文件从第24轮起作为当前权威 checkpoint 使用。
+完整早期轮次历史仍保留在 Git 提交历史中，本文件作为当前权威 checkpoint 使用。

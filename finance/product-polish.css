@@ -5,6 +5,12 @@
 .top.is-compact .logo{transform:scale(.9)}
 .top.is-compact .search{margin-top:8px}
 .logo{transition:transform .2s var(--ease)}
+.home-link{display:inline-flex;align-items:center;justify-content:center;min-height:36px;min-width:48px}
+.toggle{width:56px;min-width:56px;height:40px;background:transparent!important;border-radius:999px;overflow:visible}
+.toggle::before{content:'';position:absolute;left:4px;top:6px;width:48px;height:28px;border-radius:999px;background:#dfe4e5;box-shadow:inset 0 0 0 1px rgba(0,0,0,.03);transition:background .18s}
+.toggle::after{top:9px;left:7px}
+.toggle.on::before{background:var(--green)}
+.toggle.on::after{left:27px}
 .search-quick-head{display:flex;align-items:center;justify-content:space-between;padding:11px 15px 7px;color:var(--muted);font-size:11px;font-weight:850;letter-spacing:.04em;text-transform:uppercase}
 .search-quick-head kbd{display:inline-grid;place-items:center;min-width:23px;height:21px;padding:0 6px;border:1px solid #dfe4e1;border-bottom-width:2px;border-radius:6px;background:#f8faf9;color:#6f7773;font:700 11px/1 system-ui,-apple-system,sans-serif;text-transform:none}
 .quick-search-hit .quick-symbol{padding:6px 8px;border-radius:9px;background:#f1f5f2;color:#59615d;font-size:10px;font-weight:900;letter-spacing:.045em}
@@ -18,6 +24,7 @@
   .top.is-compact .logo{width:31px;height:31px}
   .top.is-compact .preview{transform:scale(.92);transform-origin:left center}
   .top.is-compact .search{height:40px;margin-top:7px}
+  .home-link{min-height:40px}
   .search-quick-head{padding-left:13px;padding-right:13px}
   .search-quick-head kbd{display:none}
 }
@@ -35,4 +42,4 @@
   .heat{min-height:292px}
   .news-list{column-gap:38px}
 }
-@media(prefers-reduced-motion:reduce){.top,.logo,.bottom{transition:none!important}}
+@media(prefers-reduced-motion:reduce){.top,.logo,.bottom,.toggle::before{transition:none!important}}

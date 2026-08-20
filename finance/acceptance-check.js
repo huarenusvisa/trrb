@@ -26,7 +26,7 @@
   function duplicateIds(){const seen=new Map(),dups=[];$$('[id]').filter(el=>!qaOwned(el)).forEach(el=>{const id=el.id;if(!id)return;if(seen.has(id))dups.push(id);else seen.set(id,el)});return [...new Set(dups)]}
   function forbiddenAction(el){
     if(!operable(el))return null;
-    const actionRe=/(?:\btrade\b|开户|下单|申购|购买|KYC)/i,hrefRe=/(?:trade|order|broker(?:age)?|kyc|open[-_/]?account|subscribe|(?:^|[?&/_-])buy(?:[?&/_-]|$))/i;
+    const actionRe=/(?:\btrade\b|交易|开户|下单|申购|购买|KYC)/i,hrefRe=/(?:trade|order|broker(?:age)?|kyc|open[-_/]?account|subscribe|(?:^|[?&/_-])buy(?:[?&/_-]|$))/i;
     const label=accessibleName(el),own=text(el),aria=((el.getAttribute('aria-label')||'')+' '+(el.getAttribute('title')||'')).trim(),href=(el.getAttribute('href')||'').trim();
     if(href&&hrefRe.test(href))return `${label||own||el.tagName} → ${href}`;
     if(aria&&actionRe.test(aria))return aria;
@@ -52,8 +52,8 @@
   function resilienceConsistency(){
     const main=$('main'),appReady=document.documentElement.classList.contains('finance-app-ready'),busy=main?.getAttribute('aria-busy'),recovery=$('.finance-recovery'),recoveryVisible=!!recovery&&rendered(recovery),health=window.FinanceResilienceHealth?.snapshot?.()||null;
     const domOk=appReady?busy==='false'&&!recoveryVisible:busy==='true';
-    const healthOk=!health||(health.ready===appReady&&health.recoveryVisible===recoveryVisible&&health.busy===busy);
-    return {ok:domOk&&healthOk,detail:`appReady=${appReady} · aria-busy=${busy||'none'} · recovery=${recoveryVisible?'visible':'none'}${health?` · health.ready=${health.ready}`:' · health unavailable'}`}
+    const healthOk=!!health&&health.ready===appReady&&health.recoveryVisible===recoveryVisible&&health.busy===busy&&health.appReady===appReady;
+    return {ok:domOk&&healthOk,detail:`appReady=${appReady} · aria-busy=${busy||'none'} · recovery=${recoveryVisible?'visible':'none'}${health?` · health.ready=${health.ready} · health.coreReady=${health.coreReady}`:' · health unavailable'}`}
   }
   function surfaceAudit(){const overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;return {overflow:Math.max(0,Math.round(overflow)),forbidden:badInteractive(false),targets:targetAudit(false),unnamed:unnamedInteractive(),fixedClearance:fixedClearance(),resilience:resilienceConsistency()}}
   function commonChecks(){
@@ -65,7 +65,7 @@
       result('当前视口无横向溢出',()=>({ok:surface.overflow<=3,detail:`scrollWidth 差值 ${surface.overflow}px`})),
       result('固定底栏不会覆盖正文结尾',()=>surface.fixedClearance),
       result('韧性层完成态与页面状态一致',()=>surface.resilience),
-      result('当前渲染页面无交易/开户动作入口',()=>({ok:surface.forbidden.length===0,detail:surface.forbidden.length?surface.forbidden.join('；'):'未发现 Trade/开户/下单/申购/购买/KYC 动作入口'})),
+      result('当前渲染页面无交易/开户动作入口',()=>({ok:surface.forbidden.length===0,detail:surface.forbidden.length?surface.forbidden.join('；'):'未发现 Trade/交易/开户/下单/申购/购买/KYC 动作入口'})),
       result('可操作控件均有可访问名称',()=>({ok:surface.unnamed.length===0,detail:surface.unnamed.length?`缺少名称：${surface.unnamed.join('；')}`:'当前渲染页面控件名称完整'})),
       result('运行时生命周期已加载',()=>({ok:!!window.FinanceRuntimeHealth,detail:window.FinanceRuntimeHealth?'FinanceRuntimeHealth 可用':'等待 runtime-lifecycle.js'}),'warn'),
       result('首屏触控目标尺寸扫描',()=>({ok:viewportTargets.weak.length===0,detail:viewportTargets.weak.length?`小于${viewportTargets.limit}px：${viewportTargets.weak.join('；')}`:`首屏未发现小于${viewportTargets.limit}px的可操作目标`}),'warn'),

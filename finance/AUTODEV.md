@@ -133,6 +133,9 @@
 - [x] 详情页返回来源自适应，不再固定返回自选
 - [x] 返回详情来源时恢复原页面并尽量恢复原滚动位置
 - [x] `resilience` / `navigation-memory` 在首页、个股、ETF 中显式确定加载
+- [x] `reference-features.css/js` 在首页与个股页显式确定加载
+- [x] 基金详情不再额外加载只服务自选/K线的 reference 增强层
+- [x] 行情价格、涨跌、关键指标使用等宽数字，减少列表与报价跳动
 - [x] 搜索结果 `aria-selected` / `aria-activedescendant` 与视觉高亮同步
 - [x] 搜索焦点离开、Escape、系统清除按钮后的状态统一收口
 - [x] `runtime-lifecycle.js` 浏览器生命周期与 BFCache 临时状态清理
@@ -324,5 +327,13 @@
 - 明确不增加 Robinhood 的 Trade 按钮，也不增加腾讯的开户、模拟交易等交易导向能力；研报类内容在没有合法授权数据源前不制作假数据。
 - 新增 `reference-features.css` / `reference-features.js` 独立增强层，并同步到 `finance-v1-preview`。本轮完成仓库静态核验；由于当前执行容器无法解析 github.com，未把 Node / 真机 / Lighthouse 检查伪称为通过。
 
+### 第二十轮：封板前确定性加载与数字稳定性
+- 首页与个股详情现在直接声明 `reference-features.css` / `reference-features.js`，浏览器在首次解析 HTML 时即可发现自选排序和 K 线依赖，不再等待 `resilience.js` 二次插入。
+- 加载顺序固定为主数据/主渲染 → 会话导航记忆 → reference 增强 → 韧性层，降低弱网和 Safari 下排序列头、K线控件晚出现或短暂闪动的风险。
+- `resilience.js` 不再全站加载 reference 增强，因此 ETF / 基金详情不会下载只服务首页自选排序和股票 K 线的额外 CSS/JS，减少无关页面负担。
+- 行情价格、涨跌、关键数据、顶部报价和 K 线读数统一启用 tabular numerals / 等宽数字，数字变化、排序和滚动时横向占位更稳定。
+- 430px 与 360px 继续维持自选列头和实际列表列宽一一对应；最窄屏下 K 线模式按钮进一步减小水平 padding，避免功能刚补上就制造横向溢出。
+- A 版预览已同步相同依赖和样式。本轮仍是代码级/静态封板收口，没有把 iPhone、PC 或 Lighthouse 最终验收伪称为通过。
+
 ## 当前结论
-当前仍定义为 **V1 Candidate+**。对 Robinhood 与腾讯截图重新逐项核对后，V1 当前没有必须再扩的大模块；竞品中真正适合唐人财经现阶段的“自选排序、所选周期收益、K线研究”已经补齐。下一阶段恢复正常封板路线，以实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复为主，完成后再标记 `V1 Complete`。
+当前仍定义为 **V1 Candidate+**。功能扩展已经基本冻结：自选、行情、ETF研究、个股研究、K线、所选周期收益、返回状态、弱网恢复和浏览器生命周期都已进入封板状态。下一步不再继续堆模块，优先做实际 iPhone 360/390/430、桌面浏览器和 Lighthouse 运行时验收；发现具体问题只做小范围修复，全部通过后再标记 `V1 Complete`。

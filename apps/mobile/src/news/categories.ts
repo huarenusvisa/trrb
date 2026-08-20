@@ -13,6 +13,7 @@ export const NEWS_CATEGORIES: NewsCategory[] = [
 export function resolveCategoryLabel(input?: string | null) {
   const value = String(input || '').trim();
   if (!value) return null;
+  // Retired top-level category: preserve legacy data compatibility without exposing it in navigation.
   if (value === '庇护百科') return '移民美国';
   return NEWS_CATEGORIES.find((item) => item.key === value || item.aliases.includes(value))?.label || value;
 }

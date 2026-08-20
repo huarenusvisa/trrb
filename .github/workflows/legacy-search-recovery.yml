@@ -1,0 +1,82 @@
+name: 历史文章搜索资产恢复
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 每批最多恢复多少篇
+        required: false
+        default: '200'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/restore-legacy-archive.mjs'
+      - '.github/workflows/legacy-search-recovery.yml'
+  schedule:
+    - cron: '17 */4 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-legacy-search-recovery
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      LEGACY_PRIORITY_IDS: wp-117123
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 检查恢复权限
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SUPABASE_SERVICE_ROLE_KEY:-}" || { echo 'SUPABASE_SERVICE_ROLE_KEY missing'; exit 2; }
+
+      - name: 批量恢复旧站可验证正文
+        shell: bash
+        env:
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+        run: |
+          set -euo pipefail
+          limit="${INPUT_LIMIT:-200}"
+          case "$limit" in
+            ''|*[!0-9]*) limit=200 ;;
+          esac
+          if [ "$limit" -lt 1 ]; then limit=1; fi
+          if [ "$limit" -gt 500 ]; then limit=500; fi
+          node scripts/restore-legacy-archive.mjs --apply --limit="$limit"
+
+      - name: 显示迁移结果
+        if: always()
+        shell: bash
+        run: |
+          test -f reports/legacy-migration-latest.json && cat reports/legacy-migration-latest.json || true
+
+      - name: 抽查旧搜索落地
+        if: always()
+        shell: bash
+        run: |
+          echo 'wp-117123:'
+          curl -sSI --max-time 20 -H 'Cache-Control: no-cache' 'https://trrb.net/article.html?id=wp-117123' | sed -n '1,12p' || true
+
+      - name: 保存迁移报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-search-recovery-report-${{ github.run_id }}
+          path: reports/legacy-migration-latest.json
+          if-no-files-found: warn
+          retention-days: 30

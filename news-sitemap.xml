@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  
+  
+  <url>
+      <loc>https://trrb.net/ice/ice-6199ba79dcf2bd9ca857f1263dd3355b8dc9cfe7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:35:01.658Z</news:publication_date>
+        <news:title>加州奥克斯纳德移民焚烧美国国旗抗议ICE驱逐</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-c6b34af62c70612bdc8083a759d4ff31f54b9a36</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:34:37.934Z</news:publication_date>
+        <news:title>Greyhound支付220万美元和解金 承诺无搜查令禁止边境巡逻队上车</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-8207bda1c9e45194fda51d135165c9affc05b897</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:34:04.234Z</news:publication_date>
+        <news:title>乔治亚Newnan市ICE因司机拒绝下车砸玻璃，工作许可和驾照不被视为公民身份证明</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-de1e7806401405cb6580e29f921945b34569d61b</loc>
       <news:news>

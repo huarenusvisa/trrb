@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   
+  
+  
+  <url>
+      <loc>https://trrb.net/ice/ice-ab75b2f4258ddaf0ba59660a7c1d1ec7fc46a658</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:24:20.127Z</news:publication_date>
+        <news:title>纽约州奥尔巴尼女子因策划议会大厦爆炸被捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-34656f061fe1fd1e3d91ed5b058dace544a4f98b</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:24:07.966Z</news:publication_date>
+        <news:title>佛州安吉·尼克松因未离开州长办公室被捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-e9bf25e0dd426c1d708d761ab4c0844aa4e4e13c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:23:44.392Z</news:publication_date>
+        <news:title>纽约港致命翻船涉无证非法船长被ICE拘留</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-95c5b951bfd822f6d4660f31766936768416b76b</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:23:30.882Z</news:publication_date>
+        <news:title>弗吉尼亚19岁男子涉杀害42岁女性被捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-628f6ff11a3eeb8d0138a5e178ba8add06f22e62</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:23:21.193Z</news:publication_date>
+        <news:title>路易斯安那亚历山大首架遣返海地移民航班启程</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-025780c1e595d0eac81eaf8029b823d55916b169</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:22:26.951Z</news:publication_date>
+        <news:title>美国移民家庭因执法压力对就医环境感忧虑</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-05de70e0965fc7f8abca60611a373c5e85bac9d0</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:21:59.601Z</news:publication_date>
+        <news:title>纽约州议会大厦爆炸案嫌疑人杰西卡·鲍伊被捕</news:title>
+      </news:news>
+    </url>
+  
   <url>
       <loc>https://trrb.net/ice/ice-0e710f49077d4f728e190eb5a1e2665b09338f43</loc>
       <news:news>
@@ -1746,47 +1805,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-18T21:02:08.986Z</news:publication_date>
         <news:title>伊利诺伊本森维尔ICE行动疑致数美国公民受袭</news:title>
-      </news:news>
-    </url>
-  
-  <url>
-      <loc>https://trrb.net/ice/ice-0a68e4af91fc05414344ff46f522178586d75d9b</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T20:34:58.980Z</news:publication_date>
-        <news:title>佐治亚隆普金斯斯图尔特拘留中心迎多位众议员参观</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-8d2857637c60b08ca0083ccb3694dcc2514fa548</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T20:19:57.927Z</news:publication_date>
-        <news:title>美国ICE拘留逾期居留者马丁·洪伯托·莫希</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-85c7cde51409292081965b8b5223eea64fc586b9</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T20:19:39.148Z</news:publication_date>
-        <news:title>俄克拉荷马城警方拘留合法居留男子涉嫌强奸</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-117ba7bfa68a1f0b8b19ed95a02afbd74a21c76f</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T20:19:18.654Z</news:publication_date>
-        <news:title>加州圣安娜约翰韦恩机场ICE执法带走一男子</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-e23910e855c1631de8657eccdfcb316961820b61</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T20:18:58.429Z</news:publication_date>
-        <news:title>华盛顿Toppenish市ICE执法遭司机冲撞 执法人员随后将司机制服</news:title>
       </news:news>
     </url>
 </urlset>

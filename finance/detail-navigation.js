@@ -41,17 +41,26 @@
   let ticking=false;const syncScroll=()=>{top.classList.toggle('detail-scrolled',window.scrollY>Math.max(110,hero.offsetTop+90));ticking=false};
   window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(syncScroll)}},{passive:true});syncScroll();
 
-  const stockPrice=$('#topPrice'),stockSymbol=$('#topSymbol'),fundSymbol=$('#fundSymbol');let basePrimary='',baseSecondary='';
+  const stockPrice=$('#topPrice'),stockSymbol=$('#topSymbol'),fundSymbol=$('#fundSymbol'),moveEl=$('#move');let basePrimary='',baseSecondary='';
   const ensureFundHeader=()=>{if(!isFund)return;const price=$('#fundPrice')?.textContent||'—',change=$('#fundChange')?.textContent||'';if(fundSymbol)fundSymbol.textContent=price;const span=$('span',ticker);if(span)span.innerHTML=`${$('#fundName')?.textContent||''} <em class="mini-change ${($('#fundChange')?.classList.contains('down'))?'down':'up'}">${change}</em>`};
-  const captureBase=()=>{if(isFund){ensureFundHeader();basePrimary=fundSymbol?.textContent||'';baseSecondary=$('span',ticker)?.innerHTML||''}else{basePrimary=stockPrice?.textContent||'';const change=$('#move')?.textContent||'',sign=$('#move')?.classList.contains('down')?'down':'up';if(stockSymbol){const sym=stockSymbol.textContent;stockSymbol.innerHTML=`${sym} <em class="mini-change ${sign}">${change.match(/\([^)]*\)/)?.[0]||''}</em>`}baseSecondary=stockSymbol?.innerHTML||''}};
+  const stockSecondaryHtml=()=>{const change=moveEl?.textContent||'',sign=moveEl?.classList.contains('down')?'down':'up',sym=$('#symbol')?.textContent||stockSymbol?.textContent?.split(/\s+/)[0]||'';return `${sym} <em class="mini-change ${sign}">${change.match(/\([^)]*\)/)?.[0]||''}</em>`};
+  const syncStockSecondary=()=>{if(isFund||!stockSymbol)return;baseSecondary=stockSecondaryHtml();if(!ticker.classList.contains('chart-reading'))stockSymbol.innerHTML=baseSecondary};
+  const captureBase=()=>{if(isFund){ensureFundHeader();basePrimary=fundSymbol?.textContent||'';baseSecondary=$('span',ticker)?.innerHTML||''}else{basePrimary=stockPrice?.textContent||'';syncStockSecondary()}};
   const restoreHeader=()=>{ticker.classList.remove('chart-reading');if(isFund){if(fundSymbol)fundSymbol.textContent=basePrimary;const span=$('span',ticker);if(span)span.innerHTML=baseSecondary}else{if(stockPrice)stockPrice.textContent=basePrimary;if(stockSymbol)stockSymbol.innerHTML=baseSecondary}};
   const showReading=(price,range)=>{ticker.classList.add('chart-reading');if(isFund){if(fundSymbol)fundSymbol.textContent=price||basePrimary;const span=$('span',ticker);if(span)span.textContent=`${range||''} · ${$('#fundName')?.textContent||''}`}else{if(stockPrice)stockPrice.textContent=price||basePrimary;if(stockSymbol)stockSymbol.textContent=`${range||''} · ${$('#symbol')?.textContent||''}`}};
   requestAnimationFrame(()=>requestAnimationFrame(captureBase));
+  if(!isFund&&moveEl&&'MutationObserver'in window){const moveObserver=new MutationObserver(()=>requestAnimationFrame(syncStockSecondary));moveObserver.observe(moveEl,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class']})}
 
   const chartHost=isFund?$('#fundChart'):$('#chart');
   if(chartHost&&'MutationObserver'in window){
     let lastVisible=false;
-    const syncTip=()=>{const tip=$('.chart-scrub-tip',chartHost);if(!tip)return;const visible=tip.style.opacity==='1';if(visible){const price=(tip.childNodes[0]?.textContent||tip.textContent||'').trim(),range=$('.range button.on')?.dataset.range||'';showReading(price,range)}else if(lastVisible)restoreHeader();lastVisible=visible};
+    const syncTip=()=>{
+      const lineTip=$('.chart-scrub-tip',chartHost),klineTip=$('.kline-tip',chartHost);const lineVisible=!!lineTip&&lineTip.style.opacity==='1',klineVisible=!!klineTip&&klineTip.style.opacity==='1';
+      if(lineVisible){const price=(lineTip.childNodes[0]?.textContent||lineTip.textContent||'').trim(),range=$('.range button.on')?.dataset.range||'';showReading(price,range)}
+      else if(klineVisible){const raw=(klineTip.textContent||'').replace(/\s+/g,' '),match=raw.match(/收\s*\$?([\d,.]+)/),price=match?`$${match[1]}`:basePrimary,range=$('.range button.on')?.dataset.range||'';showReading(price,`${range} · K线`)}
+      else if(lastVisible)restoreHeader();
+      lastVisible=lineVisible||klineVisible;
+    };
     const mo=new MutationObserver(()=>requestAnimationFrame(syncTip));mo.observe(chartHost,{subtree:true,childList:true,attributes:true,attributeFilter:['style']});syncTip();
   }
 })();

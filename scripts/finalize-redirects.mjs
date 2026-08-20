@@ -20,10 +20,12 @@ const required = [
   '/visa /immigration 301!',
   '/world /important-news 301!',
   '/immigration-us /immigration 301!',
-  '/asylum-guide /asylum 301!',
+  '/asylum-guide /immigrate/center?path=humanitarian 301!',
+  '/asylum /immigrate/center?path=humanitarian 301!',
+  '/asylum/ /immigrate/center?path=humanitarian 301!',
+  '/asylum/:slug /immigration/:slug 301!',
   '/important-news /listing.html?category=%E9%87%8D%E8%A6%81%E6%96%B0%E9%97%BB 200!',
   '/hot-headlines /listing.html?category=%E7%83%AD%E9%97%A8%E5%A4%B4%E6%9D%A1 200!',
-  '/asylum /listing.html?category=%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91 200!',
   '/immigration /listing.html?category=%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%9B%BD 200!',
   '/ice /topic/ice/live-v6.html 200!',
   '/ice/ /ice 301!',
@@ -38,7 +40,11 @@ const required = [
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
-const filtered = lines.filter((line) => !requiredPaths.has(line.split(/\s+/)[0]));
+const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide']);
+const filtered = lines.filter((line) => {
+  const route = line.split(/\s+/)[0];
+  return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);
+});
 const output = [...required, ...filtered].join('\n') + '\n';
 fs.writeFileSync(file, output);
 
@@ -53,6 +59,10 @@ for (const rule of required) {
   if (samePath.length !== 1) throw new Error(`conflicting redirect rules remain for ${route}: ${samePath.join(' || ')}`);
 }
 for (const [route, target] of [
+  ['/asylum-guide', '/immigrate/center?path=humanitarian'],
+  ['/asylum', '/immigrate/center?path=humanitarian'],
+  ['/asylum/', '/immigrate/center?path=humanitarian'],
+  ['/asylum/:slug', '/immigration/:slug'],
   ['/ice/', '/ice'],
   ['/ice/news/', '/ice/news'],
   ['/topic/ice', '/ice'],
@@ -63,6 +73,9 @@ for (const [route, target] of [
 ]) {
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);
+}
+if (outputLines.some((line) => /^\/asylum(?:\s|\/)/.test(line) && /listing\.html\?category=.*(?:%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91|庇护百科)/i.test(line))) {
+  throw new Error('retired asylum encyclopedia internal rewrite survived redirect finalization');
 }
 
 console.log(`[redirects] finalized and verified ${required.length} canonical/special rules + ${filtered.length} generated rules`);

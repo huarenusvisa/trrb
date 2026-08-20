@@ -47,19 +47,14 @@
       "releaseNo": "66",
       "publicationDate": "2026-06-30",
       "docket": "25-365",
-      "caseName": "Trump v. Barbara Revisions : 7/01/26",
+      "caseName": "Trump v. Barbara",
       "justice": "R",
       "officialCitation": "609/2",
       "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-365_new_5if6.pdf",
       "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/25-365_new_5if6.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": [
-        {
-          "date": "2026-07-01",
-          "url": "https://www.supremecourt.gov/opinions/25pdf/25-365_diff_ed9g.pdf"
-        }
-      ]
+      "revisions": []
     },
     {
       "source": "SCOTUS",

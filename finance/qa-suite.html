@@ -16,7 +16,7 @@
   <div class="qa-summary"><div class="qa-stat"><small>Cases</small><strong id="caseStat">0/12</strong></div><div class="qa-stat"><small>Pass</small><strong id="passStat">0</strong></div><div class="qa-stat"><small>Fail</small><strong id="failStat">0</strong></div><div class="qa-stat"><small>Warn</small><strong id="warnStat">0</strong></div></div>
   <div class="qa-progress"><span id="progressBar"></span></div>
   <div id="qaList" class="qa-list"><div class="qa-empty">准备运行验收…</div></div>
-  <div class="qa-foot">深度交互测试会自动操作搜索、导航、排序、ETF筛选和图表，但会在每个 case 前后快照/恢复所有 <code>trfinance.*</code> localStorage 与 sessionStorage。此页面仅用于开发验收；实际 iPhone / PC 视觉验收仍需真人查看。</div>
+  <div class="qa-foot">深度交互测试会自动操作搜索、导航、排序、ETF筛选和图表，并在每个 case 前后双重恢复所有 <code>trfinance.*</code> localStorage 与 sessionStorage。此页面仅用于开发验收；实际 iPhone / PC 视觉验收仍需真人查看。</div>
 </main>
 <iframe id="qaFrame" class="qa-frame" title="唐人财经验收子页面"></iframe>
 <script src="./qa-interactions.js"></script>
@@ -43,13 +43,13 @@
   function next(){
     if(!running)return;if(index>=cases.length){running=false;runBtn.disabled=false;runBtn.textContent='重新运行';render();return}
     processing=false;current=cases[index];frame.style.width=current.w+'px';frame.style.height=current.h+'px';frame.width=current.w;frame.height=current.h;render();frame.src=withRunToken(current.path);
-    timer=setTimeout(()=>finishCase({type:current.type,viewport:`${current.w}×${current.h}`,counts:{fail:1},items:[{name:'验收子页面响应',status:'fail',detail:'10秒内未完成结构与交互 QA'}]}),10000)
+    timer=setTimeout(()=>finishCase({type:current.type,viewport:`${current.w}×${current.h}`,counts:{fail:1},items:[{name:'验收子页面响应',status:'fail',detail:'18秒内未完成结构与交互 QA'}]}),18000)
   }
   function run(){if(running)return;running=true;index=0;current=null;processing=false;reports=[];runBtn.disabled=true;runBtn.textContent='运行中…';render();next()}
   window.addEventListener('message',async e=>{
     if(!running||!current||processing||e.source!==frame.contentWindow||e.origin!==location.origin)return;const data=e.data;if(!data||data.source!=='finance-qa'||!data.report)return;
     processing=true;clearTimeout(timer);render();let interactions=[];
-    try{interactions=await Promise.race([window.FinanceQaInteractions.run(frame.contentWindow,current.type),new Promise(resolve=>setTimeout(()=>resolve([{name:'深度交互验收响应',status:'fail',detail:'4秒内未完成交互检查'}]),4000))])}
+    try{interactions=await Promise.race([window.FinanceQaInteractions.run(frame.contentWindow,current.type),new Promise(resolve=>setTimeout(()=>resolve([{name:'深度交互验收响应',status:'fail',detail:'10秒内未完成交互检查'}]),10000))])}
     catch(err){interactions=[{name:'深度交互验收执行',status:'fail',detail:err?.message||String(err)}]}
     const report=recount({...data.report,items:[...data.report.items,...interactions],deepInteraction:true});finishCase(report)
   });

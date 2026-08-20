@@ -1,8 +1,6 @@
 (function(){
   if(window.__financeResilienceLoaded)return;window.__financeResilienceLoaded=true;
   if(!document.querySelector('script[data-finance-runtime],script[src="./runtime-lifecycle.js"],script[src$="/runtime-lifecycle.js"]')){const s=document.createElement('script');s.src='./runtime-lifecycle.js';s.defer=true;s.dataset.financeRuntime='1';document.head.appendChild(s)}
-  if(!document.querySelector('link[data-finance-reference],link[href="./reference-features.css"],link[href$="/reference-features.css"]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./reference-features.css';l.dataset.financeReference='1';document.head.appendChild(l)}
-  if(!document.querySelector('script[data-finance-reference],script[src="./reference-features.js"],script[src$="/reference-features.js"]')){const s=document.createElement('script');s.src='./reference-features.js';s.async=false;s.dataset.financeReference='1';document.head.appendChild(s)}
   const $=(s,r=document)=>r.querySelector(s);const main=$('main');if(!main)return;
   if(!main.id)main.id='financeMain';
   if(!$('.finance-skip-link')){const skip=document.createElement('a');skip.className='finance-skip-link';skip.href='#financeMain';skip.textContent='跳到主要内容';document.body.prepend(skip)}

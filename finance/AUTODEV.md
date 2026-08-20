@@ -133,6 +133,9 @@
 - [x] `runtime-lifecycle.js` 浏览器生命周期与 BFCache 临时状态清理
 - [x] Safari / BFCache `pageshow.persisted` 返回恢复路径
 - [x] 返回/切前台时搜索、键盘、Toast、图表读数和 sticky 状态重新同步
+- [x] readiness MutationObserver 在页面完成加载后主动断开
+- [x] Safari 多个恢复事件合并为单次 runtime resume
+- [x] 返回位置 `sessionStorage` 滚动写入改为节流保存
 - [x] 美股三大指数 / 热力图 / Top Movers
 - [x] Earnings / Upcoming / Macro / Crypto
 - [x] 自选本地状态
@@ -296,5 +299,13 @@
 - 运行时层提供只读 `FinanceRuntimeHealth.snapshot()`，后续真机验收可检查 BFCache 恢复次数、恢复时间、网络与视口状态，不影响用户界面。
 - 本轮不修改行情数据、自选、提醒或交易边界；A 版预览已同步。本轮仍属于静态逻辑复核，不标记 iPhone / PC 真机或 Lighthouse 最终 PASS。
 
+### 第十八轮：观察器、恢复事件与滚动持久化性能收口
+- `resilience.js` 的 readiness MutationObserver 只在首屏加载阶段工作；一旦核心内容完成加载，主动 `disconnect()` 并移除临时 error / unhandledrejection 监听，不再长期常驻。
+- 加载状态 live region 在完成提示后延时移除，避免无障碍节点永久留在 DOM 中。
+- `runtime-lifecycle.js` 将同一恢复周期里的 `pageshow`、`visibilitychange`、方向切换等事件合并到单次 requestAnimationFrame 处理中，减少 Safari 返回/切前台时的重复清理与布局同步。
+- 不再无条件派发额外 `resize` / `scroll` 事件；仅在视口高度真正变化时发出轻量自定义 `finance:viewportchange`，并保留 `finance:resume` 供后续模块按需监听。
+- `navigation-memory.js` 不再在快速滚动时近似每帧同步写入 `sessionStorage`，改为约 120ms 节流、12px 位移阈值，并在 `pagehide` 前强制保存最终滚动位置。
+- 返回位置、筛选状态和 BFCache 恢复逻辑保持不变；A 版预览已同步。本轮属于静态性能收口，仍未标记 Lighthouse / iPhone / PC 真机最终 PASS。
+
 ## 当前结论
-当前仍定义为 **V1 Candidate+**。四个一级页面、个股和 ETF 详情已经形成一致的高级视觉与交互语言，主要假交互、空状态、弱网失效路径、详情返回上下文、搜索辅助状态和浏览器生命周期残留已逐步收口。下一阶段仍以实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复为主，完成后再标记 `V1 Complete`。
+当前仍定义为 **V1 Candidate+**。四个一级页面、个股和 ETF 详情已经形成一致的高级视觉与交互语言，主要假交互、空状态、弱网失效路径、详情返回上下文、搜索辅助状态、浏览器生命周期残留和高频同步写入问题已逐步收口。下一阶段仍以实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复为主，完成后再标记 `V1 Complete`。

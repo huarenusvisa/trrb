@@ -42,15 +42,15 @@
   },true);
   let scrollTick=false;window.addEventListener('scroll',()=>{if(scrollTick)return;scrollTick=true;requestAnimationFrame(()=>{const page=currentPage(),ctx=read(CONTEXT_KEY,null);if(ctx&&page&&ctx.page===page&&!ctx.restore){ctx.scrollY=Math.max(0,Math.round(window.scrollY||0));ctx.ts=Date.now();write(CONTEXT_KEY,ctx)}scrollTick=false})},{passive:true});
   window.addEventListener('pagehide',saveSelections);
-  function restoreContext(){
+  function restoreContext(forceBack=false){
     const state=read(STATE_KEY,{});restoreSelections(state);
     const ctx=read(CONTEXT_KEY,null);if(!ctx)return;
-    const nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];const backForward=nav&&nav.type==='back_forward';
+    const nav=performance.getEntriesByType&&performance.getEntriesByType('navigation')[0];const backForward=forceBack||!!(nav&&nav.type==='back_forward');
     if(!(ctx.restore||backForward)||Date.now()-ctx.ts>30*60*1000)return;
     if(validPages.includes(ctx.page)&&currentPage()!==ctx.page){const btn=$(`.bottom button[data-target="${ctx.page}"]`);if(btn)btn.click()}
     requestAnimationFrame(()=>{restoreSelections(ctx);requestAnimationFrame(()=>window.scrollTo({top:Math.max(0,ctx.scrollY||0),behavior:'auto'}))});
     ctx.restore=false;ctx.ts=Date.now();write(CONTEXT_KEY,ctx);
   }
-  window.addEventListener('pageshow',()=>setTimeout(restoreContext,0));
-  setTimeout(()=>{restoreSelections(read(STATE_KEY,{}));const ctx=read(CONTEXT_KEY,null);if(ctx&&ctx.restore)restoreContext()},0);
+  window.addEventListener('pageshow',e=>setTimeout(()=>restoreContext(!!e.persisted),0));
+  setTimeout(()=>{restoreSelections(read(STATE_KEY,{}));const ctx=read(CONTEXT_KEY,null);if(ctx&&ctx.restore)restoreContext(false)},0);
 })();

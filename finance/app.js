@@ -91,5 +91,13 @@
   }
   function initProfileActions(){const clearHistory=$('#clearHistoryBtn'),clearAlerts=$('#clearAlertsBtn'),clearAll=$('#clearLocalDataBtn');if(clearHistory)clearHistory.addEventListener('click',()=>{D.clearHistory();renderProfileState();announce('浏览记录已清除')});if(clearAlerts)clearAlerts.addEventListener('click',()=>{D.clearAlerts();renderProfileState();announce('价格提醒已全部关闭')});if(clearAll)clearAll.addEventListener('click',()=>{if(!confirm('清除当前设备上的唐人财经自选、浏览记录、提醒和显示偏好？'))return;D.clearLocalState();D.setWatchlist([]);D.setFundWatchlist([]);watchView='list';watchFilter='all';watchManage=false;fundFilter='all';renderWatch();renderFunds();renderProfileState();document.documentElement.classList.remove('compact','reduce-motion');announce('唐人财经本机数据已清除')})}
 
+  const appRefreshHealth={watch:0,funds:0,profile:0,lastReason:''};
+  window.FinanceAppState={
+    refreshWatch:(reason='external')=>{appRefreshHealth.watch++;appRefreshHealth.lastReason=reason;renderWatch();return true},
+    refreshFunds:(reason='external')=>{appRefreshHealth.funds++;appRefreshHealth.lastReason=reason;renderFunds();return true},
+    refreshProfile:(reason='external')=>{appRefreshHealth.profile++;appRefreshHealth.lastReason=reason;renderProfileState();return true},
+    snapshot:()=>({page:$('.page.active')?.dataset.page||'market',watchView,watchFilter,watchManage,fundFilter,refreshes:{watch:appRefreshHealth.watch,funds:appRefreshHealth.funds,profile:appRefreshHealth.profile},lastRefreshReason:appRefreshHealth.lastReason})
+  };
+
   renderDataStatus();initConnectivity();renderIndices();renderHeat();renderMovers();renderEarnings();renderMacro();renderCrypto();renderNews();renderWatch();renderFunds();renderProfileState();initNav();initMarketTabs();initWatchTabs();initViews();initWatchManage();initFundFilters();initSearch();initPrefs();initProfileActions();
 })();

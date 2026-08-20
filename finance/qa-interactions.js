@@ -17,7 +17,8 @@
     checkAbort();const audit=win.FinanceAcceptance?.auditSurface?.();if(!audit){items.push(result(`交互：${label}页面审计`,false,'FinanceAcceptance.auditSurface 不可用','warn'));return}
     items.push(result(`交互：${label}无横向溢出`,audit.overflow<=3,`scrollWidth 差值 ${audit.overflow}px`));
     items.push(result(`交互：${label}固定底栏正文预留`,audit.fixedClearance?.ok!==false,audit.fixedClearance?.detail||'无固定底栏'));
-    items.push(result(`交互：${label}无交易/开户入口`,audit.forbidden.length===0,audit.forbidden.length?audit.forbidden.join('；'):'未发现禁区入口'));
+    items.push(result(`交互：${label}韧性状态一致`,audit.resilience?.ok===true,audit.resilience?.detail||'缺少韧性状态快照'));
+    items.push(result(`交互：${label}无交易/开户动作入口`,audit.forbidden.length===0,audit.forbidden.length?audit.forbidden.join('；'):'未发现禁区动作入口'));
     items.push(result(`交互：${label}控件名称完整`,audit.unnamed.length===0,audit.unnamed.length?`缺少名称：${audit.unnamed.join('；')}`:'可操作控件均有可访问名称'));
     items.push(result(`交互：${label}全长触控目标`,audit.targets.weak.length===0,audit.targets.weak.length?`小于${audit.targets.limit}px：${audit.targets.weak.join('；')}`:`未发现小于${audit.targets.limit}px的可操作目标`,'warn'))
   }
@@ -60,11 +61,12 @@
       const lineA11y=await waitFor(()=>{const label=chart.getAttribute('aria-label')||'';return chart.getAttribute('role')==='group'&&label.includes('走势图')&&!label.includes('K线')?label:null});items.push(result('交互：走势辅助语义恢复',!!lineA11y,lineA11y||`role=${chart.getAttribute('role')} · label=${chart.getAttribute('aria-label')||''}`));
       const ytdBtn=$('.range button[data-range="YTD"]');ytdBtn?.click();const ytdSync=await waitFor(()=>{const move=$('#move'),top=$('#topSymbol'),pct=text(move).match(/\([^)]*\)/)?.[0]||'';return pct&&text(move).includes('年初至今')&&text(top).includes(pct)?{move:text(move),top:text(top)}:null},{timeout:1200});items.push(result('交互：YTD 收益同步 sticky 顶部',!!ytdSync,ytdSync?`move=${ytdSync.move} · top=${ytdSync.top}`:`move=${text($('#move'))} · top=${text($('#topSymbol'))}`));
       chart.focus();key(win,chart,'ArrowLeft');const tip=await waitFor(()=>{const t=$('.chart-scrub-tip');return t?.style.opacity==='1'&&text(t).includes('演示读数')?t:null});items.push(result('交互：走势图键盘读取价格',!!tip,tip?text(tip):'缺少走势读数'));key(win,chart,'Escape');await waitFor(()=>$('.chart-scrub-tip')?.style.opacity!=='1');
+      addSurfaceAudit(win,items,'个股详情交互后');
     }else items.push(result('交互：个股图表模式控件可操作',false,'缺少走势/K线控件'));
   }
   async function fund(win,items){
     const d=win.document,$=s=>d.querySelector(s);const ytd=$('.range button[data-range="YTD"]'),chart=$('#fundChart');
-    if(ytd&&chart){ytd.click();const redrawn=await waitFor(()=>ytd.classList.contains('on')&&!!$('#fundChart svg'));items.push(result('交互：ETF YTD 区间真实重绘',!!redrawn,`active=${ytd.classList.contains('on')}`));const fundA11y=await waitFor(()=>{const label=chart.getAttribute('aria-label')||'';return chart.getAttribute('role')==='group'&&label.includes('ETF')&&label.includes('YTD')&&label.includes('走势图')?label:null});items.push(result('交互：ETF 图表辅助语义同步',!!fundA11y,fundA11y||`role=${chart.getAttribute('role')} · label=${chart.getAttribute('aria-label')||''}`));chart.focus();key(win,chart,'ArrowLeft');const tip=await waitFor(()=>{const t=$('.chart-scrub-tip');return t?.style.opacity==='1'&&text(t).includes('演示读数')?t:null});items.push(result('交互：ETF 图表键盘读取价格',!!tip,tip?text(tip):'缺少 ETF 图表读数'));key(win,chart,'Escape');const hidden=await waitFor(()=>tip?.style.opacity!=='1');items.push(result('交互：ETF Escape 关闭图表读数',!!hidden,'读数已隐藏'))}
+    if(ytd&&chart){ytd.click();const redrawn=await waitFor(()=>ytd.classList.contains('on')&&!!$('#fundChart svg'));items.push(result('交互：ETF YTD 区间真实重绘',!!redrawn,`active=${ytd.classList.contains('on')}`));const fundA11y=await waitFor(()=>{const label=chart.getAttribute('aria-label')||'';return chart.getAttribute('role')==='group'&&label.includes('ETF')&&label.includes('YTD')&&label.includes('走势图')?label:null});items.push(result('交互：ETF 图表辅助语义同步',!!fundA11y,fundA11y||`role=${chart.getAttribute('role')} · label=${chart.getAttribute('aria-label')||''}`));chart.focus();key(win,chart,'ArrowLeft');const tip=await waitFor(()=>{const t=$('.chart-scrub-tip');return t?.style.opacity==='1'&&text(t).includes('演示读数')?t:null});items.push(result('交互：ETF 图表键盘读取价格',!!tip,tip?text(tip):'缺少 ETF 图表读数'));key(win,chart,'Escape');const hidden=await waitFor(()=>tip?.style.opacity!=='1');items.push(result('交互：ETF Escape 关闭图表读数',!!hidden,'读数已隐藏'));addSurfaceAudit(win,items,'ETF详情交互后')}
     else items.push(result('交互：ETF 图表控件可操作',false,'缺少 ETF 图表或 YTD 按钮'));
   }
   async function run(win,type,{signal=null}={}){

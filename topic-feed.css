@@ -325,3 +325,112 @@
   font-weight: 800 !important;
   line-height: 1.35 !important;
 }
+
+/* ==================================================
+   2026-08-20 首页截图反馈修复
+================================================== */
+
+/* 前三个专题最新标题不再为隐藏缩略图保留空白列 */
+.topic-latest,
+.topic-latest.has-image,
+.topic-latest.no-image {
+  display: block !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0 !important;
+  column-gap: 0 !important;
+}
+
+.topic-latest .topic-news-thumb {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.topic-latest .topic-news-title {
+  display: block !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.topic-latest .topic-news-text {
+  display: none !important;
+}
+
+/* 唐人财经：首页专题卡只保留标题和说明，去掉“UI第一版”及功能导航 */
+.topic-finance .topic-status,
+.topic-finance .topic-latest {
+  display: none !important;
+}
+
+.topic-finance .topic-focus-copy > p {
+  margin-bottom: 0 !important;
+}
+
+.topic-finance {
+  min-height: 110px !important;
+}
+
+/* Logo 原图约 1420×681；按图片真实宽高比收紧容器，去掉右侧白色空块 */
+.brand {
+  flex: 0 0 169px !important;
+  width: 169px !important;
+  max-width: 169px !important;
+  height: 81px !important;
+  background: transparent !important;
+}
+
+.brand img {
+  width: 169px !important;
+  max-width: 169px !important;
+  height: 81px !important;
+  max-height: 81px !important;
+  object-fit: contain !important;
+  object-position: left center !important;
+  background: transparent !important;
+}
+
+@media (max-width: 900px) {
+  .brand {
+    flex-basis: 127px !important;
+    width: 127px !important;
+    max-width: 127px !important;
+    height: 61px !important;
+  }
+
+  .brand img {
+    width: 127px !important;
+    max-width: 127px !important;
+    height: 61px !important;
+    max-height: 61px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .topic-finance {
+    min-height: 122px !important;
+  }
+
+  .brand {
+    flex-basis: 102px !important;
+    width: 102px !important;
+    max-width: 102px !important;
+    height: 49px !important;
+  }
+
+  .brand img {
+    width: 102px !important;
+    max-width: 102px !important;
+    height: 49px !important;
+    max-height: 49px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .topic-finance {
+    min-height: 106px !important;
+  }
+}

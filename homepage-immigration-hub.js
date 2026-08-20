@@ -20,7 +20,6 @@
   const freshCategories = [
     ["美国时政", "politics", "us-politics"],
     ["美国警情", "crime", "us-crime"],
-    ["中国官场", "china", "china-officialdom"],
     ["庇护百科", "asylum", "asylum"]
   ];
 
@@ -75,6 +74,24 @@
         ${legalPaths.map(([name, href], index) => `<a class="${index === legalPaths.length - 1 ? "is-wide" : ""}" href="${href}"><strong>${name}</strong><span aria-hidden="true">›</span></a>`).join("")}
       </div>
       <a class="immigration-hub-all legal-hub-all" href="/legal/">查看全部判例与新规</a>`;
+  }
+
+  function judgeMarkup() {
+    return `
+      <header class="immigration-hub-head legal-hub-head">
+        <h2>移民法官通过率</h2>
+        <a href="/immigration-judge-approval-rate/">进入查询</a>
+      </header>
+      <a class="immigration-hub-feature legal-hub-feature" href="/immigration-judge-approval-rate/" aria-label="进入美国移民法官庇护通过率查询">
+        <strong>查法官 · 看法院 · 比较庇护裁决数据</strong>
+      </a>
+      <div class="immigration-hub-grid legal-hub-grid">
+        <a href="/immigration-judge-approval-rate/"><strong>查询移民法官</strong><span aria-hidden="true">›</span></a>
+        <a href="/immigration-judge-approval-rate/courts.html"><strong>全部移民法院</strong><span aria-hidden="true">›</span></a>
+        <a href="/immigration-judge-approval-rate/states.html"><strong>按州查看</strong><span aria-hidden="true">›</span></a>
+        <a href="/immigration-judge-approval-rate/china-dashboard.html"><strong>中国申请人</strong><span aria-hidden="true">›</span></a>
+      </div>
+      <a class="immigration-hub-all legal-hub-all" href="/immigration-judge-approval-rate/methodology.html">查看数据口径说明</a>`;
   }
 
   function formatSalary(job) {
@@ -162,6 +179,15 @@
     card.innerHTML = legalMarkup();
   }
 
+  function replaceJudgeCard(root) {
+    const card = root.querySelector("#china") || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "中国官场");
+    if (!card || card.dataset.judgeHub === "true") return;
+    card.dataset.judgeHub = "true";
+    card.id = "judge-home-hub";
+    card.classList.add("immigration-knowledge-card", "legal-knowledge-card", "judge-knowledge-card");
+    card.innerHTML = judgeMarkup();
+  }
+
   function replaceJobsCard(root) {
     const card = root.querySelector("#asylum") || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "庇护百科");
     if (!card) return;
@@ -182,6 +208,7 @@
     if (!root) return;
     replaceImmigrationCard(root);
     replaceExposureCard(root);
+    replaceJudgeCard(root);
     replaceJobsCard(root);
   }
 

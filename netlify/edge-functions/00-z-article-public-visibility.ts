@@ -14,7 +14,7 @@ const ARTICLE_SECTIONS = new Set([
 
 export const config = { path: ["/article.html", "/*/*"] };
 
-function config() {
+function getSupabaseConfig() {
   const base = (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, "");
   const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
   return { base, key };
@@ -29,7 +29,7 @@ function uuid(value = "") {
 }
 
 async function lookup(field: "id" | "slug", value: string) {
-  const { base, key } = config();
+  const { base, key } = getSupabaseConfig();
   if (!base || !key) throw new Error("Supabase visibility config missing");
   const url = new URL(`${base}/rest/v1/articles`);
   url.searchParams.set("select", "id,slug,status,visibility");

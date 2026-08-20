@@ -35,8 +35,15 @@
   }
   function syncRecoveryOnline(){
     if(markReady())return;if(!recovery)return;
-    const kind=recoveryKind();health.lastRecoveryReason=kind;recovery.dataset.recoveryKind=kind;
-    if(navigator.onLine){recovery.classList.add('is-online');const b=$('b',recovery),s=$('small',recovery);if(b)b.textContent='网络已恢复';if(s)s.textContent=dataAvailable()?'可以重新载入页面获取完整财经内容。':'行情模块仍在等待加载，可以重新载入页面。'}else{recovery.classList.remove('is-online');const [t,d]=recoveryText();const b=$('b',recovery),s=$('small',recovery);if(b)b.textContent=t;if(s)s.textContent=d}
+    const previous=health.lastRecoveryReason,kind=recoveryKind();health.lastRecoveryReason=kind;recovery.dataset.recoveryKind=kind;
+    const b=$('b',recovery),s=$('small',recovery);
+    if(navigator.onLine===false){recovery.classList.remove('is-online');const [t,d]=recoveryText();if(b)b.textContent=t;if(s)s.textContent=d;return}
+    if(previous==='offline'){
+      recovery.classList.add('is-online');if(b)b.textContent='网络已恢复';if(s)s.textContent=dataAvailable()?'可以重新载入页面获取完整财经内容。':'网络已恢复，但行情模块仍在等待加载。';return
+    }
+    recovery.classList.remove('is-online');
+    if(kind==='data-missing'){if(b)b.textContent='行情模块暂时没有加载完成';if(s)s.textContent='没有使用其他资产数据代替。你可以重新载入页面。'}
+    else{if(b)b.textContent='部分财经内容加载较慢';if(s)s.textContent='页面没有丢失你的本机自选或偏好，可以重新载入继续。'}
   }
   function reconcile(reason='manual'){
     health.lastReconciledAt=Date.now();health.lastReconcileReason=reason;

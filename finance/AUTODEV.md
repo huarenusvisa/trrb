@@ -70,6 +70,9 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] Safari / BFCache 页面恢复与 visualViewport / iPhone 键盘处理
 - [x] 弱网 / 离线 / 加载失败恢复条与空状态操作入口
 - [x] readiness observer 完成后断开，多恢复事件合并，sessionStorage 滚动写入节流
+- [x] 个股 / ETF 顶部栏显式使用 iPhone safe-area-inset-top
+- [x] 详情 sticky 分区 top 与锚点 scroll-margin 同步 safe-area
+- [x] IntersectionObserver 使用真实顶部栏 + 分区导航高度，不再写死 118px
 
 ### 视觉 / 响应式 / 无障碍
 - [x] A 版设计系统与 360–430px 静态防溢出
@@ -80,7 +83,9 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 返回箭头 / 分享按钮命中区 ≥44×44px
 - [x] 自选管理、删除、Toast 撤销手机命中区 ≥40px
 - [x] 偏好 Toggle 使用 56×40 按钮命中区，视觉轨道保持 48×28
-- [x] 手机详情导航增高后 scroll-margin-top = 126px
+- [x] “清除 / 关闭”等短文字按钮最小宽度 44px，提醒行链接最小高度 44px
+- [x] 顶部品牌入口保持最小 40px 命中高度
+- [x] 个股 / ETF 顶部左右操作槽统一 64px，迷你报价真正几何居中
 - [x] 股票 / ETF 图表使用 `role="group"`，aria-label 随走势 / K线 / 周期实时同步
 
 ## QA / 验收基础设施
@@ -95,6 +100,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 可操作控件名称审计覆盖 a / button / input / tabindex=0
 - [x] 深度交互捕获 `error` / `unhandledrejection` 并作为正式 PASS / FAIL
 - [x] 图表 QA 断言走势 / Kline / ETF 的 role 与 aria-label 跟随模式和周期
+- [x] 固定底栏 / 详情操作栏按真实高度 + bottom 距离校验正文底部预留，不足直接 FAIL
 - [x] 手机触控 WARN 阈值 36px，桌面 32px
 - [x] 深度交互超时 14 秒 / 整 case 24 秒，降低慢 Safari 误报
 
@@ -131,6 +137,16 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - 修复股票 / ETF 图表辅助语义：`role="group"` 与 aria-label 随走势、K线、日K / 周K / 月K、区间同步。
 - 深度 QA 新增 K线 / 走势 / ETF 图表辅助语义断言。
 - 因验收链变长，将深度交互超时调整为 14 秒、整 case 24 秒。
+- 已同步到 `finance-v1-preview`。
+
+### 第二十六轮：安全区、固定层与剩余触控收口
+- 补齐个股 / ETF sticky 顶栏 `safe-area-inset-top`，避免 `viewport-fit=cover` 下贴入 iPhone 状态栏 / 刘海区域。
+- 详情分区导航的 sticky top、各分区 scroll-margin 同步安全区；430px 紧凑顶栏同样使用 `calc(... + env(safe-area-inset-top))`。
+- 分区高亮 IntersectionObserver 不再写死 `118px`，运行时测量顶部栏与分区导航真实高度；方向切换 / viewport 变化时按需重建 observer。
+- 个股 / ETF 顶部左右槽统一 64px，迷你报价从视觉近似居中改为真正几何居中。
+- “清除 / 关闭”等短文字按钮补最小 44px 宽，提醒链接补 44px 高，紧凑品牌入口保持 40px 命中高度。
+- 核对底部安全区后保留 A 版既有 `bottom:9px + 内部 safe-area padding` 策略，没有为了不存在的“双算”问题改动成熟样式。
+- QA 新增固定底栏正文预留硬检查：比较实际固定层高度、bottom 距离和页面 padding-bottom，发生覆盖风险直接 FAIL。
 - 已同步到 `finance-v1-preview`。
 
 ## 当前结论

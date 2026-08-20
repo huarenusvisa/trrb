@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-9f56702f371db9a15de710cc71c4ed595e6c0ee5</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:44:37.260Z</news:publication_date>
+        <news:title>弗吉尼亚温彻斯特ICE特工追捕疑似非法移民</news:title>
+      </news:news>
+    </url>
   
   
   

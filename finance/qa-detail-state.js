@@ -5,6 +5,26 @@
   function aborted(signal){if(signal?.aborted){const e=new Error('QA detail state aborted');e.name='AbortError';throw e}}
   async function waitFor(fn,{signal=null,timeout=1000,interval=28}={}){const start=Date.now();while(Date.now()-start<timeout){aborted(signal);try{const v=fn();if(v)return v}catch(e){}await delay(interval)}aborted(signal);try{return fn()||null}catch(e){return null}}
   function storageEvent(win,key){try{win.dispatchEvent(new win.StorageEvent('storage',{key}))}catch(e){const ev=new win.Event('storage');try{Object.defineProperty(ev,'key',{value:key})}catch(err){}win.dispatchEvent(ev)}}
+  function pageShow(win,persisted=true){try{win.dispatchEvent(new win.PageTransitionEvent('pageshow',{persisted}))}catch(e){const ev=new win.Event('pageshow');try{Object.defineProperty(ev,'persisted',{value:persisted})}catch(err){}win.dispatchEvent(ev)}}
+  async function navigationRestoreChecks(win,signal){
+    const app=win.FinanceAppState,doc=win.document;if(!app)return [result('首页恢复 setter 已加载',false,'缺少 FinanceAppState')];
+    const stateKey='trfinance.navState',contextKey='trfinance.navContext',beforeState=win.sessionStorage.getItem(stateKey),beforeContext=win.sessionStorage.getItem(contextKey),before=app.snapshot(),items=[];let clicks=0;
+    const onClick=e=>{if(e.target?.closest?.('.market-tab,.watch-filter,.fund-cat,.bottom button'))clicks++};doc.addEventListener('click',onClick,true);
+    try{
+      app.setPage('market',{updateHash:false,scroll:false});app.setMarketPanel('now');app.setWatchFilter('all');app.setFundFilter('all');
+      const desired={marketPanel:'macro',watchFilter:'etf',fundFilter:'gold',page:'watch',ts:Date.now()};
+      win.sessionStorage.setItem(stateKey,JSON.stringify(desired));win.sessionStorage.setItem(contextKey,JSON.stringify({...desired,scrollY:0,href:'stock.html?symbol=AAPL',restore:true}));
+      pageShow(win,true);
+      const restored=await waitFor(()=>{const s=app.snapshot();return s.page==='watch'&&s.marketPanel==='macro'&&s.watchFilter==='etf'&&s.fundFilter==='gold'?s:null},{signal,timeout:1600});
+      items.push(result('首页：BFCache 恢复通过内部 setter 还原四类状态',!!restored,restored?`page=${restored.page} · market=${restored.marketPanel} · watch=${restored.watchFilter} · fund=${restored.fundFilter}`:'未完整恢复 page / market / watch / fund 状态'));
+      items.push(result('首页：BFCache 四类状态恢复不产生 synthetic click',clicks===0,`navigation control click=${clicks}`));
+    }finally{
+      if(beforeState===null)win.sessionStorage.removeItem(stateKey);else win.sessionStorage.setItem(stateKey,beforeState);
+      if(beforeContext===null)win.sessionStorage.removeItem(contextKey);else win.sessionStorage.setItem(contextKey,beforeContext);
+      app.setMarketPanel(before.marketPanel||'now');app.setWatchFilter(before.watchFilter||'all');app.setFundFilter(before.fundFilter||'all');app.setPage(before.page||'market',{updateHash:false,scroll:false});doc.removeEventListener('click',onClick,true)
+    }
+    return items
+  }
   async function homeChecks(win,signal){
     const D=win.FinanceData,app=win.FinanceAppState,list=win.document.querySelector('#watchlist');if(!D||!app||!list)return [result('首页内部刷新接口已加载',false,'缺少 FinanceAppState / FinanceData / watchlist')];
     const before=D.getWatchlist(),hadAapl=before.includes('AAPL'),mutated=hadAapl?before.filter(s=>s!=='AAPL'):['AAPL',...before],items=[];let filterClicks=0;
@@ -19,6 +39,7 @@
       items.push(result('首页：finance:resume 直接刷新自选 DOM',!!resumed,resumed?`refreshes=${resumed.refreshes.watch}`:'resume 后未通过 FinanceAppState 刷新'));
       items.push(result('首页：resume 刷新不模拟筛选点击',filterClicks===0,`watch-filter click=${filterClicks}`));
     }finally{D.setWatchlist(before);app.refreshWatch('qa-cleanup');win.document.removeEventListener('click',onClick,true)}
+    items.push(...await navigationRestoreChecks(win,signal));
     return items
   }
   async function stockChecks(win,signal){

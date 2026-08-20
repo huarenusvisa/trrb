@@ -91,6 +91,13 @@
 - 真实 16-case 的唯一剩余执行阻塞仍是“GitHub 连接器源码无法直接落盘到本地 Chromium 可访问目录”；这是执行通道问题，不是已确认的产品缺陷。
 - 本轮没有新增产品代码，没有虚报 16-case、iPhone / Safari、桌面或 Lighthouse PASS。
 
+### 第39轮：执行通道与保护边界复核
+- 再次确认 A 版 `qa-suite.html` 为 16-case 自动验收入口，且会自动运行首页 / 个股 / ETF 多视口、未知资产、slow-ready、data-missing 与深度交互检查。
+- 再次实测容器对 `github.com`、`raw.githubusercontent.com`、`api.github.com` 均返回 `Temporary failure in name resolution`；Chromium 本身不是当前阻塞点。
+- `main` 与 `finance-v1-robinhood` 当前为 diverged：财经分支 ahead 193 / behind 118；未执行 merge / rebase。
+- compare 结果显示本轮财经差异仍限定在 `finance/` 文件范围，没有触碰 `netlify.toml`、SEO、Sitemap 或生产部署 workflow。
+- 在真实 16-case 仍无法执行的前提下，没有发现足够确定、值得冒风险修改的产品缺陷；继续保持功能冻结，不新增产品代码，不虚报 PASS。
+
 ## 当前结论
 状态：**V1 Candidate+ / 功能冻结**。
 

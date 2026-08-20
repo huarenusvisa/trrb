@@ -16,7 +16,7 @@
   <div class="qa-summary"><div class="qa-stat"><small>Cases</small><strong id="caseStat">0/12</strong></div><div class="qa-stat"><small>Pass</small><strong id="passStat">0</strong></div><div class="qa-stat"><small>Fail</small><strong id="failStat">0</strong></div><div class="qa-stat"><small>Warn</small><strong id="warnStat">0</strong></div></div>
   <div class="qa-progress"><span id="progressBar"></span></div>
   <div id="qaList" class="qa-list"><div class="qa-empty">准备运行验收…</div></div>
-  <div class="qa-foot">深度交互测试会自动操作搜索、四栏导航、排序、ETF筛选和图表，并逐页检查横向溢出、禁区入口、可访问名称和触控目标；每个 case 前后双重恢复所有 <code>trfinance.*</code> localStorage 与 sessionStorage。此页面仅用于开发验收；实际 iPhone / PC 视觉验收仍需真人查看。</div>
+  <div class="qa-foot">深度交互测试会自动操作搜索、四栏导航、排序、ETF筛选和图表，并逐页检查横向溢出、固定底栏正文预留、禁区入口、可访问名称和触控目标。每个 case 加载前会暂存并清空 <code>trfinance.*</code> 形成确定性沙盒；case 结束后先卸载子页面，再原样恢复 localStorage 与 sessionStorage。此页面仅用于开发验收；实际 iPhone / PC 视觉验收仍需真人查看。</div>
 </main>
 <iframe id="qaFrame" class="qa-frame" title="唐人财经验收子页面"></iframe>
 <script src="./qa-interactions.js"></script>
@@ -26,35 +26,50 @@
   const widths=[{w:360,h:667,label:'360×667'},{w:390,h:844,label:'390×844'},{w:430,h:932,label:'430×932'},{w:1280,h:900,label:'1280×900'}];
   const pages=[{type:'home',label:'首页',path:'index.html?qa=1&qaEmbed=1#market'},{type:'stock',label:'个股',path:'stock.html?symbol=AAPL&qa=1&qaEmbed=1'},{type:'fund',label:'ETF',path:'fund.html?symbol=QQQ&qa=1&qaEmbed=1'}];
   const cases=[];pages.forEach(p=>widths.forEach(v=>cases.push({...p,...v,id:`${p.type}-${v.w}`})));
-  let running=false,index=0,current=null,timer=0,reports=[],processing=false;
+  let running=false,index=0,current=null,timer=0,reports=[],processing=false,finishing=false,sandboxActive=false,userState=null;
   function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function snapshotStorage(storage){const out={};try{for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&k.startsWith('trfinance.'))out[k]=storage.getItem(k)}}catch(e){}return out}
+  function clearFinanceStorage(storage){try{const keys=[];for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&k.startsWith('trfinance.'))keys.push(k)}keys.forEach(k=>storage.removeItem(k))}catch(e){}}
+  function restoreStorage(storage,snap){clearFinanceStorage(storage);try{Object.entries(snap||{}).forEach(([k,v])=>storage.setItem(k,v))}catch(e){}}
+  function captureUserState(){userState={local:snapshotStorage(localStorage),session:snapshotStorage(sessionStorage)}}
+  function restoreUserState(){if(!userState)return;restoreStorage(localStorage,userState.local);restoreStorage(sessionStorage,userState.session);sandboxActive=false}
+  function enterSandbox(){restoreUserState();clearFinanceStorage(localStorage);clearFinanceStorage(sessionStorage);sandboxActive=true;return {local:Object.keys(snapshotStorage(localStorage)).length,session:Object.keys(snapshotStorage(sessionStorage)).length}}
+  async function unloadFrame(){
+    if(!frame.contentWindow||frame.getAttribute('src')==='about:blank')return;
+    await new Promise(resolve=>{let done=false;const finish=()=>{if(done)return;done=true;frame.removeEventListener('load',finish);resolve()};frame.addEventListener('load',finish,{once:true});try{frame.src='about:blank'}catch(e){finish()}setTimeout(finish,300)})
+  }
+  async function leaveSandbox(){if(!sandboxActive)return;await unloadFrame();restoreUserState()}
   function recount(report){report.counts=report.items.reduce((a,x)=>(a[x.status]=(a[x.status]||0)+1,a),{});return report}
   function statusFor(report){if(!report)return 'wait';if((report.counts?.fail||0)>0)return 'fail';if((report.counts?.warn||0)>0)return 'warn';return 'pass'}
   function render(){
     const done=reports.length,total=cases.length,pass=reports.filter(x=>x.status==='pass').length,fail=reports.filter(x=>x.status==='fail').length,warn=reports.filter(x=>x.status==='warn').length;
     $('#caseStat').textContent=`${done}/${total}`;$('#passStat').textContent=pass;$('#failStat').textContent=fail;$('#warnStat').textContent=warn;$('#progressBar').style.width=`${Math.round(done/total*100)}%`;
-    list.innerHTML=cases.map(c=>{const r=reports.find(x=>x.caseId===c.id),active=running&&current?.id===c.id,status=r?.status||'wait',label=active&&!r?'RUN':status.toUpperCase();let detail='等待运行';if(active&&!r)detail=processing?'正在执行真实交互检查…':'正在加载并执行结构检查…';if(r){const bad=r.report.items.filter(x=>x.status!=='pass');detail=bad.length?bad.slice(0,3).map(x=>`${x.status==='fail'?'FAIL':'WARN'}：${x.name} — ${x.detail}`).join('；'):`${r.report.counts.pass||0} 项全部通过`}
+    list.innerHTML=cases.map(c=>{const r=reports.find(x=>x.caseId===c.id),active=running&&current?.id===c.id,status=r?.status||'wait',label=active&&!r?'RUN':status.toUpperCase();let detail='等待运行';if(active&&!r)detail=processing?'正在执行真实交互检查…':'正在加载确定性沙盒并执行结构检查…';if(r){const bad=r.report.items.filter(x=>x.status!=='pass');detail=bad.length?bad.slice(0,3).map(x=>`${x.status==='fail'?'FAIL':'WARN'}：${x.name} — ${x.detail}`).join('；'):`${r.report.counts.pass||0} 项全部通过`}
       return `<div class="qa-row"><b>${c.label}</b><span>${c.type==='home'?'market':c.type==='stock'?'AAPL':'QQQ'}</span><span>${c.w}px</span><div class="qa-detail"><span class="qa-badge ${status}">${label}</span> <small>${escapeHtml(detail)}</small></div></div>`}).join('');
   }
-  function finishCase(report){
-    if(!current)return;clearTimeout(timer);const status=statusFor(report);reports.push({caseId:current.id,page:current.type,label:current.label,viewport:`${current.w}×${current.h}`,status,report});index++;current=null;processing=false;render();setTimeout(next,90)
+  async function finishCase(report){
+    if(!current||finishing)return;finishing=true;clearTimeout(timer);const completed=current,status=statusFor(report);reports.push({caseId:completed.id,page:completed.type,label:completed.label,viewport:`${completed.w}×${completed.h}`,status,report});render();await leaveSandbox();index++;current=null;processing=false;finishing=false;render();setTimeout(next,90)
   }
   function withRunToken(path){const parts=path.split('#'),base=parts[0],hash=parts[1]||'',sep=base.includes('?')?'&':'?';return `${base}${sep}qaRun=${Date.now()}${hash?'#'+hash:''}`}
   function next(){
-    if(!running)return;if(index>=cases.length){running=false;runBtn.disabled=false;runBtn.textContent='重新运行';render();return}
-    processing=false;current=cases[index];frame.style.width=current.w+'px';frame.style.height=current.h+'px';frame.width=current.w;frame.height=current.h;render();frame.src=withRunToken(current.path);
+    if(!running||finishing)return;if(index>=cases.length){running=false;restoreUserState();runBtn.disabled=false;runBtn.textContent='重新运行';render();return}
+    processing=false;current=cases[index];const baseline=enterSandbox();current.sandboxClean=baseline.local===0&&baseline.session===0;current.sandboxDetail=`local=${baseline.local} · session=${baseline.session}`;frame.style.width=current.w+'px';frame.style.height=current.h+'px';frame.width=current.w;frame.height=current.h;render();frame.src=withRunToken(current.path);
     timer=setTimeout(()=>finishCase({type:current.type,viewport:`${current.w}×${current.h}`,counts:{fail:1},items:[{name:'验收子页面响应',status:'fail',detail:'24秒内未完成结构与交互 QA'}]}),24000)
   }
-  function run(){if(running)return;running=true;index=0;current=null;processing=false;reports=[];runBtn.disabled=true;runBtn.textContent='运行中…';render();next()}
+  async function run(){if(running)return;if(sandboxActive)await leaveSandbox();captureUserState();running=true;index=0;current=null;processing=false;finishing=false;reports=[];runBtn.disabled=true;runBtn.textContent='运行中…';render();next()}
   window.addEventListener('message',async e=>{
-    if(!running||!current||processing||e.source!==frame.contentWindow||e.origin!==location.origin)return;const data=e.data;if(!data||data.source!=='finance-qa'||!data.report)return;
-    processing=true;clearTimeout(timer);render();let interactions=[];
-    try{interactions=await Promise.race([window.FinanceQaInteractions.run(frame.contentWindow,current.type),new Promise(resolve=>setTimeout(()=>resolve([{name:'深度交互验收响应',status:'fail',detail:'14秒内未完成交互检查'}]),14000))])}
+    if(!running||!current||processing||finishing||e.source!==frame.contentWindow||e.origin!==location.origin)return;const data=e.data;if(!data||data.source!=='finance-qa'||!data.report)return;
+    processing=true;clearTimeout(timer);render();let interactions=[],timedOut=false;const controller=new AbortController();const abortTimer=setTimeout(()=>{timedOut=true;controller.abort()},14000);
+    try{interactions=await window.FinanceQaInteractions.run(frame.contentWindow,current.type,{signal:controller.signal})}
     catch(err){interactions=[{name:'深度交互验收执行',status:'fail',detail:err?.message||String(err)}]}
-    const report=recount({...data.report,items:[...data.report.items,...interactions],deepInteraction:true});finishCase(report)
+    finally{clearTimeout(abortTimer)}
+    interactions.unshift({name:'QA 沙盒：case 从空 trfinance.* 基线启动',status:current.sandboxClean?'pass':'fail',detail:current.sandboxDetail});
+    if(timedOut)interactions.push({name:'深度交互验收响应',status:'fail',detail:'14秒达到上限，已发送取消信号并等待清理完成'});
+    const report=recount({...data.report,items:[...data.report.items,...interactions],deepInteraction:true,qaSandbox:true});await finishCase(report)
   });
   runBtn.addEventListener('click',run);
-  copyBtn.addEventListener('click',async()=>{const payload=JSON.stringify({at:new Date().toISOString(),origin:location.origin,deepInteraction:true,cases:reports},null,2);try{await navigator.clipboard.writeText(payload);copyBtn.textContent='已复制';setTimeout(()=>copyBtn.textContent='复制报告',1300)}catch(e){console.info('[Finance QA Suite]',payload);copyBtn.textContent='见控制台'}});
+  copyBtn.addEventListener('click',async()=>{const payload=JSON.stringify({at:new Date().toISOString(),origin:location.origin,deepInteraction:true,qaSandbox:true,cases:reports},null,2);try{await navigator.clipboard.writeText(payload);copyBtn.textContent='已复制';setTimeout(()=>copyBtn.textContent='复制报告',1300)}catch(e){console.info('[Finance QA Suite]',payload);copyBtn.textContent='见控制台'}});
+  window.addEventListener('pagehide',()=>{try{restoreUserState()}catch(e){}});
   render();run();
 })();
 </script>

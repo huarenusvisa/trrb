@@ -12,11 +12,11 @@
 </head>
 <body>
 <main class="qa-shell">
-  <div class="qa-head"><div><h1>唐人财经多视口 + 异常路径验收</h1><p>12 个常规视口 case + 4 个未知资产 / 恢复链 case，执行结构检查、真实交互和确定性异常恢复检查。</p></div><div class="qa-actions"><button type="button" id="copyBtn">复制报告</button><button type="button" class="primary" id="runBtn">重新运行</button></div></div>
+  <div class="qa-head"><div><h1>唐人财经多视口 + 异常路径验收</h1><p>12 个常规视口 case + 4 个未知资产 / 恢复链 case；首页同时验证精确撤销与 BFCache 来源恢复。</p></div><div class="qa-actions"><button type="button" id="copyBtn">复制报告</button><button type="button" class="primary" id="runBtn">重新运行</button></div></div>
   <div class="qa-summary"><div class="qa-stat"><small>Cases</small><strong id="caseStat">0/16</strong></div><div class="qa-stat"><small>Pass</small><strong id="passStat">0</strong></div><div class="qa-stat"><small>Fail</small><strong id="failStat">0</strong></div><div class="qa-stat"><small>Warn</small><strong id="warnStat">0</strong></div></div>
   <div class="qa-progress"><span id="progressBar"></span></div>
   <div id="qaList" class="qa-list"><div class="qa-empty">准备运行验收…</div></div>
-  <div class="qa-foot">常规 case 自动操作搜索、四栏导航、排序、ETF筛选和图表；异常 case 验证未知资产不回退、恢复条出现/消失、数据源缺失、aria-busy / ready / recovery 对账。每个 case 都从空 <code>trfinance.*</code> 沙盒启动，结束后先卸载子页面，再原样恢复 localStorage 与 sessionStorage。故障注入只有 <code>qa=1&amp;qaEmbed=1</code> 时有效，正常用户不会触发。</div>
+  <div class="qa-foot">常规 case 自动操作搜索、四栏导航、自选精确撤销、来源上下文恢复、ETF筛选和图表；异常 case 验证未知资产不回退、恢复条出现/消失、数据源缺失以及 aria-busy / ready / recovery 对账。每个 case 都从空 <code>trfinance.*</code> 沙盒启动，结束后先卸载子页面，再原样恢复 localStorage 与 sessionStorage。</div>
 </main>
 <iframe id="qaFrame" class="qa-frame" title="唐人财经验收子页面"></iframe>
 <script src="./qa-interactions.js"></script>
@@ -40,6 +40,7 @@
   function captureUserState(){userState={local:snapshotStorage(localStorage),session:snapshotStorage(sessionStorage)}}
   function restoreUserState(){if(!userState)return;restoreStorage(localStorage,userState.local);restoreStorage(sessionStorage,userState.session);sandboxActive=false}
   function enterSandbox(){restoreUserState();clearFinanceStorage(localStorage);clearFinanceStorage(sessionStorage);sandboxActive=true;return {local:Object.keys(snapshotStorage(localStorage)).length,session:Object.keys(snapshotStorage(sessionStorage)).length}}
+  function interactionBudget(type){if(type==='home')return 20000;if(/^recovery-/.test(type))return 10000;if(/-missing$/.test(type))return 8000;return 14000}
   async function unloadFrame(){
     if(!frame.contentWindow||frame.getAttribute('src')==='about:blank')return;
     await new Promise(resolve=>{let done=false;const finish=()=>{if(done)return;done=true;frame.removeEventListener('load',finish);resolve()};frame.addEventListener('load',finish,{once:true});try{frame.src='about:blank'}catch(e){finish()}setTimeout(finish,300)})
@@ -50,7 +51,7 @@
   function render(){
     const done=reports.length,total=cases.length,pass=reports.filter(x=>x.status==='pass').length,fail=reports.filter(x=>x.status==='fail').length,warn=reports.filter(x=>x.status==='warn').length;
     $('#caseStat').textContent=`${done}/${total}`;$('#passStat').textContent=pass;$('#failStat').textContent=fail;$('#warnStat').textContent=warn;$('#progressBar').style.width=`${Math.round(done/total*100)}%`;
-    list.innerHTML=cases.map(c=>{const r=reports.find(x=>x.caseId===c.id),active=running&&current?.id===c.id,status=r?.status||'wait',badge=active&&!r?'RUN':status.toUpperCase();let detail='等待运行';if(active&&!r)detail=processing?'正在执行真实交互 / 异常恢复检查…':'正在加载确定性沙盒并执行结构检查…';if(r){const bad=r.report.items.filter(x=>x.status!=='pass');detail=bad.length?bad.slice(0,3).map(x=>`${x.status==='fail'?'FAIL':'WARN'}：${x.name} — ${x.detail}`).join('；'):`${r.report.counts.pass||0} 项全部通过`}
+    list.innerHTML=cases.map(c=>{const r=reports.find(x=>x.caseId===c.id),active=running&&current?.id===c.id,status=r?.status||'wait',badge=active&&!r?'RUN':status.toUpperCase();let detail='等待运行';if(active&&!r)detail=processing?'正在执行真实交互 / 上下文 / 异常恢复检查…':'正在加载确定性沙盒并执行结构检查…';if(r){const bad=r.report.items.filter(x=>x.status!=='pass');detail=bad.length?bad.slice(0,3).map(x=>`${x.status==='fail'?'FAIL':'WARN'}：${x.name} — ${x.detail}`).join('；'):`${r.report.counts.pass||0} 项全部通过`}
       return `<div class="qa-row"><b>${escapeHtml(c.label)}</b><span>${escapeHtml(c.asset)}</span><span>${c.w}px</span><div class="qa-detail"><span class="qa-badge ${status}">${badge}</span> <small>${escapeHtml(detail)}</small></div></div>`}).join('');
   }
   async function finishCase(report){
@@ -60,18 +61,18 @@
   function next(){
     if(!running||finishing)return;if(index>=cases.length){running=false;restoreUserState();runBtn.disabled=false;runBtn.textContent='重新运行';render();return}
     processing=false;current=cases[index];const baseline=enterSandbox();current.sandboxClean=baseline.local===0&&baseline.session===0;current.sandboxDetail=`local=${baseline.local} · session=${baseline.session}`;frame.style.width=current.w+'px';frame.style.height=current.h+'px';frame.width=current.w;frame.height=current.h;render();frame.src=withRunToken(current.path);
-    timer=setTimeout(()=>finishCase({type:current.type,viewport:`${current.w}×${current.h}`,counts:{fail:1},items:[{name:'验收子页面响应',status:'fail',detail:'24秒内未完成结构与交互 QA'}]}),24000)
+    timer=setTimeout(()=>finishCase({type:current.type,viewport:`${current.w}×${current.h}`,counts:{fail:1},items:[{name:'验收子页面响应',status:'fail',detail:'24秒内未完成初始结构 QA'}]}),24000)
   }
   async function run(){if(running)return;if(sandboxActive)await leaveSandbox();captureUserState();running=true;index=0;current=null;processing=false;finishing=false;reports=[];runBtn.disabled=true;runBtn.textContent='运行中…';render();next()}
   window.addEventListener('message',async e=>{
     if(!running||!current||processing||finishing||e.source!==frame.contentWindow||e.origin!==location.origin)return;const data=e.data;if(!data||data.source!=='finance-qa'||!data.report)return;
-    processing=true;clearTimeout(timer);render();let interactions=[],timedOut=false;const controller=new AbortController();const abortTimer=setTimeout(()=>{timedOut=true;controller.abort()},14000);
+    processing=true;clearTimeout(timer);render();let interactions=[],timedOut=false;const controller=new AbortController(),budget=interactionBudget(current.type);const abortTimer=setTimeout(()=>{timedOut=true;controller.abort()},budget);
     try{interactions=await window.FinanceQaInteractions.run(frame.contentWindow,current.type,{signal:controller.signal})}
     catch(err){interactions=[{name:'深度交互验收执行',status:'fail',detail:err?.message||String(err)}]}
     finally{clearTimeout(abortTimer)}
     interactions.unshift({name:'QA 沙盒：case 从空 trfinance.* 基线启动',status:current.sandboxClean?'pass':'fail',detail:current.sandboxDetail});
-    if(timedOut)interactions.push({name:'深度交互验收响应',status:'fail',detail:'14秒达到上限，已发送取消信号并等待清理完成'});
-    const report=recount({...data.report,items:[...data.report.items,...interactions],deepInteraction:true,qaSandbox:true,edgeCase:!/^(home|stock|fund)$/.test(current.type)});await finishCase(report)
+    if(timedOut)interactions.push({name:'深度交互验收响应',status:'fail',detail:`${Math.round(budget/1000)}秒达到本 case 上限，已发送取消信号并等待清理完成`});
+    const report=recount({...data.report,items:[...data.report.items,...interactions],deepInteraction:true,qaSandbox:true,interactionBudgetMs:budget,edgeCase:!/^(home|stock|fund)$/.test(current.type)});await finishCase(report)
   });
   runBtn.addEventListener('click',run);
   copyBtn.addEventListener('click',async()=>{const payload=JSON.stringify({at:new Date().toISOString(),origin:location.origin,deepInteraction:true,qaSandbox:true,totalCases:cases.length,cases:reports},null,2);try{await navigator.clipboard.writeText(payload);copyBtn.textContent='已复制';setTimeout(()=>copyBtn.textContent='复制报告',1300)}catch(e){console.info('[Finance QA Suite]',payload);copyBtn.textContent='见控制台'}});

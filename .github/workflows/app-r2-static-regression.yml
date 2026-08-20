@@ -6,6 +6,18 @@ on:
     paths:
       - 'apps/mobile/**'
       - 'scripts/audit-app-batch2-node*.mjs'
+      - 'scripts/audit-app-r2-asylum-retirement.mjs'
+      - 'config/channels.js'
+      - '_redirects'
+      - 'index.html'
+      - 'listing.html'
+      - 'article.html'
+      - 'immigrate/index.html'
+      - 'feed.xml'
+      - 'sitemap.xml'
+      - 'google-news-sitemap.xml'
+      - 'news-sitemap.xml'
+      - 'google-news.xml'
       - '.github/workflows/app-r2-static-regression.yml'
   workflow_dispatch:
 
@@ -41,3 +53,6 @@ jobs:
             echo "::endgroup::"
           done
           echo "APP-R2 N1-N9 STATIC REGRESSION: PASS"
+
+      - name: Retired asylum encyclopedia regression
+        run: node scripts/audit-app-r2-asylum-retirement.mjs

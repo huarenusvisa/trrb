@@ -1,5 +1,7 @@
 const { rest } = require("./_shared/supabase-admin");
 
+const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
+
 function json(statusCode, body) {
   return {
     statusCode,
@@ -14,6 +16,11 @@ function json(statusCode, body) {
   };
 }
 
+function articleTime(row) {
+  const time = Date.parse(row?.published_at || row?.created_at || "");
+  return Number.isFinite(time) ? time : 0;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return json(204, {});
   if (event.httpMethod !== "GET") return json(405, { error: "Method not allowed" });
@@ -22,10 +29,12 @@ exports.handler = async (event) => {
     const requested = Number(event.queryStringParameters?.limit || 120);
     const limit = Math.min(Math.max(Number.isFinite(requested) ? requested : 120, 1), 200);
     const category = String(event.queryStringParameters?.category || "").trim().slice(0, 80);
+    const cutoffMs = Date.now() - HOME_MAX_AGE_MS;
     const query = {
       select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at",
       status: "eq.published",
       visibility: "eq.public",
+      published_at: `gte.${new Date(cutoffMs).toISOString()}`,
       order: "published_at.desc.nullslast,created_at.desc",
       limit: String(limit)
     };
@@ -36,8 +45,9 @@ exports.handler = async (event) => {
     }
     const rows = await rest("articles", { query });
 
-    const articles = Array.isArray(rows) ? rows : [];
+    const articles = (Array.isArray(rows) ? rows : []).filter((row) => articleTime(row) >= cutoffMs);
     return json(200, {
+      freshness_hours: 96,
       generated_at: new Date().toISOString(),
       count: articles.length,
       articles

@@ -1,6 +1,7 @@
 const { rest } = require("./_shared/supabase-admin");
 
 const CORE_CATEGORIES = ["重要新闻", "热门头条", "美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
+const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
 function response(statusCode, body) {
   return {
@@ -19,17 +20,22 @@ function timeOf(row) {
   return Number.isFinite(time) ? time : 0;
 }
 
+function homeCutoffIso() {
+  return new Date(Date.now() - HOME_MAX_AGE_MS).toISOString();
+}
+
 async function fetchArticles(limit, category = "") {
   const query = {
     select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at",
     status: "eq.published",
     visibility: "eq.public",
+    published_at: `gte.${homeCutoffIso()}`,
     order: "published_at.desc.nullslast,created_at.desc",
     limit: String(limit)
   };
   if (category) query.category_name = `eq.${category}`;
   const rows = await rest("articles", { query });
-  return Array.isArray(rows) ? rows : [];
+  return (Array.isArray(rows) ? rows : []).filter((row) => timeOf(row) >= Date.now() - HOME_MAX_AGE_MS);
 }
 
 function categoryCounts(rows) {
@@ -50,9 +56,9 @@ exports.handler = async (event) => {
     const globalLimit = Math.min(Math.max(Number(event.queryStringParameters?.limit || 200), 20), 200);
     const perCategory = Math.min(Math.max(Number(event.queryStringParameters?.per_category || 12), 3), 20);
 
-    // Start with one global query. Only categories that are underrepresented in
-    // that result receive a supplemental query. Public endpoints must never
-    // expose rows whose workflow status is published but visibility is private.
+    // Homepage freshness is a server-side contract: restored archive rows remain
+    // searchable/canonical, but anything older than 96 hours is never eligible
+    // for homepage fill, even when a category is sparse.
     const globalRows = await fetchArticles(globalLimit);
     const counts = categoryCounts(globalRows);
     const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);
@@ -72,6 +78,7 @@ exports.handler = async (event) => {
 
     return response(200, {
       mode: "homepage",
+      freshness_hours: 96,
       generated_at: new Date().toISOString(),
       count: articles.length,
       database_queries: 1 + sparseCategories.length,

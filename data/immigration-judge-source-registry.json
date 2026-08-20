@@ -1,0 +1,11 @@
+{
+  "product": "TRRB Immigration Judge Asylum Database",
+  "official_agency": "Executive Office for Immigration Review (EOIR), U.S. Department of Justice",
+  "primary_source_family": "EOIR adjudication statistics and validated EOIR-derived extracts",
+  "outcome_categories": ["Grant", "Denial", "Abandonment", "Not Adjudicated", "Other", "Withdrawn"],
+  "default_rate": "grants / (grants + denials)",
+  "secondary_rate": "grants / total outcomes",
+  "judge_level_status": "awaiting validated source import",
+  "nationality_level_rule": "Only publish judge-by-nationality values when the source explicitly supports that cross-tabulation; never infer them from national totals.",
+  "last_reviewed": "2026-08-20"
+}

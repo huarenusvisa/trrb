@@ -60,13 +60,18 @@
     else items.push(result('交互：ETF 图表控件可操作',false,'缺少 ETF 图表或 YTD 按钮'));
   }
   async function run(win,type){
-    const local=snapshot(win.localStorage),session=snapshot(win.sessionStorage),hash=win.location.hash,items=[];
+    const local=snapshot(win.localStorage),session=snapshot(win.sessionStorage),hash=win.location.hash,items=[],runtimeErrors=[];
+    const onError=e=>runtimeErrors.push(e?.message||e?.error?.message||'window error');
+    const onReject=e=>runtimeErrors.push(e?.reason?.message||String(e?.reason||'unhandledrejection'));
+    win.addEventListener('error',onError);win.addEventListener('unhandledrejection',onReject);
     try{if(type==='home')await home(win,items);else if(type==='stock')await stock(win,items);else if(type==='fund')await fund(win,items);else items.push(result('交互验收页面类型',false,`未知页面类型 ${type}`))}
     catch(e){items.push(result('交互验收执行完成',false,e?.message||String(e)))}
     finally{
       restore(win.localStorage,local);restore(win.sessionStorage,session);try{if(win.location.hash!==hash)win.history.replaceState(null,'',`${win.location.pathname}${win.location.search}${hash}`)}catch(e){}
       await sleep(180);restore(win.localStorage,local);restore(win.sessionStorage,session);
       const localOk=sameSnapshot(snapshot(win.localStorage),local),sessionOk=sameSnapshot(snapshot(win.sessionStorage),session);items.push(result('QA 隔离：本机与会话状态已恢复',localOk&&sessionOk,`local=${localOk?'一致':'不一致'} · session=${sessionOk?'一致':'不一致'}`));
+      win.removeEventListener('error',onError);win.removeEventListener('unhandledrejection',onReject);
+      const unique=[...new Set(runtimeErrors.filter(Boolean))];items.push(result('交互期间无运行时异常',unique.length===0,unique.length?unique.slice(0,6).join('；'):'未捕获 error / unhandledrejection'));
     }
     return items;
   }

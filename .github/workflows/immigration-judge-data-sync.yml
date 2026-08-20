@@ -11,7 +11,7 @@ on:
     - cron: "25 10 3 * *"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: immigration-judge-eoir-data-sync
@@ -67,3 +67,44 @@ jobs:
           if judges < 800 or courts < 50 or decisions < 100000:
               raise SystemExit('public API verification failed')
           PY
+
+      - name: Publish observable sync report
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          set -u
+          mkdir -p reports
+          curl --silent --show-error \
+            "https://trrb.net/.netlify/functions/immigration-judges?mode=stats" \
+            -o /tmp/judge-public-stats.json || printf '{}' > /tmp/judge-public-stats.json
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          try:
+              stats=json.load(open('/tmp/judge-public-stats.json'))
+          except Exception:
+              stats={}
+          report={
+              'generated_at': datetime.now(timezone.utc).isoformat(),
+              'status': os.environ.get('JOB_STATUS','unknown'),
+              'source_snapshot_date': os.environ.get('EOIR_JUDGE_SOURCE_DATE'),
+              'source': os.environ.get('EOIR_JUDGE_SOURCE_URL'),
+              'public_stats': {
+                  'judges': stats.get('judges',0),
+                  'courts': stats.get('courts',0),
+                  'decisions': stats.get('decisions',0),
+              },
+          }
+          with open('reports/immigration-judge-data-sync-latest.json','w') as f:
+              json.dump(report,f,ensure_ascii=False,indent=2)
+              f.write('\n')
+          print(json.dumps(report,ensure_ascii=False,indent=2))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/immigration-judge-data-sync-latest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update immigration judge data sync report [skip ci]"
+            git push
+          fi

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   
+  <url>
+      <loc>https://trrb.net/ice/ice-7cc3e11a5aaa940bffaca44d7ed104ccf15b11b0</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:43:21.428Z</news:publication_date>
+        <news:title>美国ICE持续逮捕遣返非法移民执行边境执法</news:title>
+      </news:news>
+    </url>
   
   
   <url>
@@ -1790,21 +1798,4 @@
     </url>
   
   
-  <url>
-      <loc>https://trrb.net/ice/ice-33d2f54a1008368c57461c1cddb3b4beede5686d</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T21:02:34.789Z</news:publication_date>
-        <news:title>华盛顿雅基马及Toppenish地区ICE多点执法 多人被带走</news:title>
-      </news:news>
-    </url>
-  
-  <url>
-      <loc>https://trrb.net/ice/ice-cf76be970421c83f457e6abb3cc002e7a30d820b</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T21:02:08.986Z</news:publication_date>
-        <news:title>伊利诺伊本森维尔ICE行动疑致数美国公民受袭</news:title>
-      </news:news>
-    </url>
 </urlset>

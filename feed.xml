@@ -5,9 +5,18 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 20 Aug 2026 20:43:21 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 20 Aug 2026 21:07:34 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
     
+    <item>
+      <title>美国ICE持续逮捕遣返非法移民执行边境执法</title>
+      <link>https://trrb.net/ice/ice-7cc3e11a5aaa940bffaca44d7ed104ccf15b11b0</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-7cc3e11a5aaa940bffaca44d7ed104ccf15b11b0</guid>
+      <pubDate>Thu, 20 Aug 2026 20:43:21 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国ICE表示将继续寻找并逮捕非法移民及相关犯罪人员，贯彻边境执法政策。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/2461be1f-8d9c-4c36-8569-2eb1a4350169-cba3201f-4415-4ea8-9363-7d85eedb9f1c.webp" type="image/webp" />
+    </item>
     
     
     <item>
@@ -761,15 +770,6 @@
       <category>美国时政</category>
       <description>唐纳日报8月20日讯：佛罗里达州共和党众议员科里·米尔斯在第七国会选区共和党初选中败选后，特朗普总统迅速调整支持对象，从此前公开称赞米尔斯为“美国优先的爱国者”转而支持获胜者瑞安·伊利亚。</description>
       <enclosure url="https://images.openai.com/static-rsc-4/kJjCahIYHCS038iYheSzIaB8_jNeqnTHghgGqxZ-x4oGxrg-3faGK0iilGCAUL_4Af7OvtCAwlP6mYovhCP2VUXhTyiORdwQXa6AD4uBGMCE7FGfXRseEMUFrzT9afofA7j5T0OqGYnOuKXpaGiVlGFB6MSaRVgOcXlC66jawwM?purpose=inline" type="image/jpeg" />
-    </item>
-    <item>
-      <title>“8647”神秘数字引爆法律大战！司法部称可能威胁特朗普，科米强硬反击</title>
-      <link>https://trrb.net/trump/8647%E7%A5%9E%E7%A7%98%E6%95%B0%E5%AD%97%E5%BC%95%E7%88%86%E6%B3%95%E5%BE%8B%E5%A4%A7%E6%88%98%E5%8F%B8%E6%B3%95%E9%83%A8%E7%A7%B0%E5%8F%AF%E8%83%BD%E5%A8%81%E8%83%81%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%91%E7%B1%B3%E5%BC%BA%E7%A1%AC%E5%8F%8D%E5%87%BB-mt112jup-5cf6dc</link>
-      <guid isPermaLink="true">https://trrb.net/trump/8647%E7%A5%9E%E7%A7%98%E6%95%B0%E5%AD%97%E5%BC%95%E7%88%86%E6%B3%95%E5%BE%8B%E5%A4%A7%E6%88%98%E5%8F%B8%E6%B3%95%E9%83%A8%E7%A7%B0%E5%8F%AF%E8%83%BD%E5%A8%81%E8%83%81%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%91%E7%B1%B3%E5%BC%BA%E7%A1%AC%E5%8F%8D%E5%87%BB-mt112jup-5cf6dc</guid>
-      <pubDate>Thu, 20 Aug 2026 04:36:02 GMT</pubDate>
-      <category>美国时政</category>
-      <description>唐人日报8月20日讯：美国司法部与前联邦调查局局长詹姆斯·科米围绕一则神秘“86 47”社交媒体帖子展开新的法律交锋。司法部在提交法院文件时表示，该帖子可以被客观理解为针对总统唐纳德·特朗普的威胁，并称“没有重大争议”认为相关信息可能被解读为暴力暗示。</description>
-      <enclosure url="https://images.openai.com/static-rsc-4/OsE65mDz6LyKNXzTXt18CawpnaBFstpu2eZ96lUGFMkprPTL-C3WL_ahiOx3P2ff1P2zFWaTB_k376k2QIrOa0bEslfAQ0YZY5V3Q0cKoi7YF8jmRMcUeF_6U5DvfvaJSaAmgJN7ebhGbZzMdSYzUcOpWlFWni2D6vw6oQMMJXo?purpose=inline" type="image/jpeg" />
     </item>
   </channel>
 </rss>

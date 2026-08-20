@@ -5,7 +5,11 @@
 .top.is-compact .logo{transform:scale(.9)}
 .top.is-compact .search{margin-top:8px}
 .logo{transition:transform .2s var(--ease)}
+.brand{min-height:40px}
 .home-link{display:inline-flex;align-items:center;justify-content:center;min-height:36px;min-width:48px}
+.text-button{display:inline-flex;align-items:center;justify-content:center;min-width:44px}
+.alert-row a{display:flex;align-items:center;min-height:44px}
+.section-head>a{display:inline-flex;align-items:center;justify-content:flex-end;min-height:36px}
 .toggle{width:56px;min-width:56px;height:40px;background:transparent!important;border-radius:999px;overflow:visible}
 .toggle::before{content:'';position:absolute;left:4px;top:6px;width:48px;height:28px;border-radius:999px;background:#dfe4e5;box-shadow:inset 0 0 0 1px rgba(0,0,0,.03);transition:background .18s}
 .toggle::after{top:9px;left:7px}
@@ -24,7 +28,7 @@
   .top.is-compact .logo{width:31px;height:31px}
   .top.is-compact .preview{transform:scale(.92);transform-origin:left center}
   .top.is-compact .search{height:40px;margin-top:7px}
-  .home-link{min-height:40px}
+  .brand,.home-link,.text-button,.section-head>a{min-height:40px}
   .search-quick-head{padding-left:13px;padding-right:13px}
   .search-quick-head kbd{display:none}
 }

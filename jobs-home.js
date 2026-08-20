@@ -34,6 +34,28 @@
     return `<header class="immigration-hub-head legal-hub-head"><h2>招聘求职</h2><a href="/jobs/search.html">更多岗位</a></header><a class="immigration-hub-feature legal-hub-feature" href="/jobs/search.html" aria-label="进入招聘求职岗位大厅"><strong>先看工作 · 华人高频蓝领岗位优先</strong></a><div class="immigration-hub-grid legal-hub-grid">${links}</div><a class="immigration-hub-all legal-hub-all" href="/jobs/search.html">查看全部招聘岗位</a>`;
   };
 
+  let jobsCache = null;
+  let jobsPromise = null;
+  let rendering = false;
+
+  const loadJobs = () => {
+    if (jobsCache) return Promise.resolve(jobsCache);
+    if (jobsPromise) return jobsPromise;
+    jobsPromise = fetch("/.netlify/functions/public-jobs?limit=30", { headers: { Accept: "application/json" }, cache: "no-store" })
+      .then(async (response) => {
+        const payload = await response.json();
+        jobsCache = response.ok && Array.isArray(payload?.items) ? payload.items : [];
+        return jobsCache;
+      })
+      .catch((error) => {
+        console.error("首页招聘岗位加载失败", error);
+        jobsCache = [];
+        return jobsCache;
+      })
+      .finally(() => { jobsPromise = null; });
+    return jobsPromise;
+  };
+
   const pickCard = (root) => {
     return root.querySelector("#jobs-home-hub")
       || root.querySelector("#asylum")
@@ -42,36 +64,47 @@
       || Array.from(root.children).find((item) => !item.textContent.trim());
   };
 
-  const render = async () => {
+  const ensureCard = async () => {
+    if (rendering) return;
     const root = document.querySelector("#sections-grid");
-    if (!root) return false;
-    let card = pickCard(root);
-    if (!card) {
-      card = document.createElement("article");
-      card.className = "news-box";
-      root.appendChild(card);
-    }
-    card.id = "jobs-home-hub";
-    card.dataset.jobsHub = "true";
-    card.classList.remove("category-empty");
-    card.classList.add("immigration-knowledge-card", "legal-knowledge-card", "jobs-knowledge-card");
-    card.innerHTML = markup([]);
+    if (!root) return;
+    rendering = true;
     try {
-      const response = await fetch("/.netlify/functions/public-jobs?limit=30", { headers: { Accept: "application/json" }, cache: "no-store" });
-      const payload = await response.json();
-      if (response.ok) card.innerHTML = markup(Array.isArray(payload?.items) ? payload.items : []);
-    } catch (error) {
-      console.error("首页招聘岗位加载失败", error);
+      let card = pickCard(root);
+      if (!card) {
+        card = document.createElement("article");
+        card.className = "news-box";
+        root.appendChild(card);
+      }
+      card.id = "jobs-home-hub";
+      card.dataset.jobsHub = "true";
+      card.classList.remove("category-empty");
+      card.classList.add("immigration-knowledge-card", "legal-knowledge-card", "jobs-knowledge-card");
+      const items = jobsCache || [];
+      card.innerHTML = markup(items);
+      if (!jobsCache) {
+        const loaded = await loadJobs();
+        const current = document.querySelector("#jobs-home-hub");
+        if (current) current.innerHTML = markup(loaded);
+      }
+    } finally {
+      rendering = false;
     }
-    return true;
   };
 
   const boot = () => {
-    let attempts = 0;
-    const timer = setInterval(async () => {
-      attempts += 1;
-      if (await render() || attempts >= 20) clearInterval(timer);
-    }, 250);
+    ensureCard();
+    const root = document.querySelector("#sections-grid");
+    if (root) {
+      const observer = new MutationObserver(() => {
+        const current = document.querySelector("#jobs-home-hub");
+        if (!current || !current.querySelector("h2") || current.querySelector("h2")?.textContent.trim() !== "招聘求职") {
+          queueMicrotask(ensureCard);
+        }
+      });
+      observer.observe(root, { childList: true, subtree: true });
+    }
+    [500, 1200, 2500, 5000].forEach((delay) => setTimeout(ensureCard, delay));
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });

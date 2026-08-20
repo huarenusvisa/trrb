@@ -84,6 +84,34 @@ function supabaseConfig() {
   return { base, key };
 }
 
+async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
+  if (url.pathname !== "/article.html") return null;
+  const legacyId = String(url.searchParams.get("id") || "").trim();
+  if (!/^wp-\d+$/i.test(legacyId)) return null;
+
+  const { base, key } = supabaseConfig();
+  if (!base || !key) return temporaryUnavailable();
+
+  try {
+    const lookup = new URL(`${base}/rest/v1/articles`);
+    lookup.searchParams.set("select", "id");
+    lookup.searchParams.set("legacy_id", `eq.${legacyId}`);
+    lookup.searchParams.set("status", "eq.published");
+    lookup.searchParams.set("limit", "1");
+    const response = await fetch(lookup, {
+      headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }
+    });
+    if (!response.ok) throw new Error(`legacy id lookup failed ${response.status}`);
+    const rows = await response.json();
+    const articleId = Array.isArray(rows) ? String(rows[0]?.id || "") : "";
+    if (!articleId) return null;
+    return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(articleId)}`, "article-legacy-id-recovery");
+  } catch (error) {
+    console.error("legacy article id lookup failed", error);
+    return temporaryUnavailable();
+  }
+}
+
 async function isActiveCategorySlug(slug: string): Promise<boolean> {
   const { base, key } = supabaseConfig();
   if (!base || !key || !slug) return false;
@@ -240,6 +268,9 @@ export default async (request: Request, context: any) => {
   if (url.searchParams.get("mailpoet_page") === "subscriptions") {
     return gone("wordpress-mailpoet-page");
   }
+
+  const legacyWpArticle = await resolveLegacyWpArticle(url);
+  if (legacyWpArticle) return legacyWpArticle;
 
   const systemDestination = legacySystemRedirect(url.pathname);
   if (systemDestination === GONE) return gone("wordpress-system-page");

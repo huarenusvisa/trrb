@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-20T10:46:31.763Z",
+  "generatedAt": "2026-08-20T11:41:20.231Z",
   "scope": "Federal Register documents classified by the official API as Rule. FederalRegister.gov is used for discovery/metadata; official PDF links should be used for authoritative legal text.",
   "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE",
   "count": 50,
@@ -27,7 +27,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-17007/special-local-regulation-north-east-north-east-md",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-17007.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17007.pdf?1787143524",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -48,7 +48,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-17006/final-waiver-and-extension-of-the-project-period-with-funding-for-arts-in-education-national-program",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-17006.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17006.pdf?1787143524",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -74,7 +74,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-17003/magnuson-stevens-act-provisions-fisheries-off-west-coast-states-pacific-coast-groundfish-fishery",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-17003.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17003.pdf?1787143523",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -95,7 +95,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16990/air-plan-approval-sc-department-name-change",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16990.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16990.pdf?1787143522",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -116,7 +116,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16989/air-plan-approval-arizona-attainment-plan-for-the-hayden-so2-nonattainment-area-for-the-1971-and",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16989.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16989.pdf?1787143522",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -137,7 +137,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16988/deletion-from-the-national-priorities-list",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16988.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16988.pdf?1787143521",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -158,7 +158,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16986/air-plan-approval-wisconsin-moderate-attainment-plan-elements-for-wisconsins-2015-ozone-standard",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16986.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16986.pdf?1787143521",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -184,7 +184,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16982/wagner-peyser-act-employment-service-staffing",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16982.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16982.pdf?1787143520",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -215,7 +215,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16981/application-for-relief-from-disabilities-imposed-by-federal-laws-with-respect-to-the-acquisition",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16981.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16981.pdf?1787143520",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -236,7 +236,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16973/cypermethrin-pesticide-tolerances",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16973.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16973.pdf?1787143519",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -257,7 +257,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16967/revising-huds-noise-abatement-and-control-regulations-correcting-amendment",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16967.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16967.pdf?1787143518",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -283,7 +283,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/20/2026-16954/airworthiness-directives-international-aero-engines-ag-engines",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-20/pdf/2026-16954.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16954.pdf?1787143517",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },

@@ -11,6 +11,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/restore-legacy-archive.mjs'
+      - 'scripts/legacy-search-acceptance.mjs'
       - '.github/workflows/legacy-search-recovery.yml'
   schedule:
     - cron: '17 */4 * * *'
@@ -65,18 +66,18 @@ jobs:
         run: |
           test -f reports/legacy-migration-latest.json && cat reports/legacy-migration-latest.json || true
 
-      - name: 抽查旧搜索落地
+      - name: 验收旧搜索点击链
         if: always()
         shell: bash
-        run: |
-          echo 'wp-117123:'
-          curl -sSI --max-time 20 -H 'Cache-Control: no-cache' 'https://trrb.net/article.html?id=wp-117123' | sed -n '1,12p' || true
+        run: node scripts/legacy-search-acceptance.mjs
 
-      - name: 保存迁移报告
+      - name: 保存迁移与验收报告
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: legacy-search-recovery-report-${{ github.run_id }}
-          path: reports/legacy-migration-latest.json
+          path: |
+            reports/legacy-migration-latest.json
+            reports/legacy-search-acceptance-latest.json
           if-no-files-found: warn
           retention-days: 30

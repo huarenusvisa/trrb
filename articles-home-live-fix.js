@@ -61,7 +61,41 @@
     return true;
   }
 
+  function removeRetiredPeopleSurface(root = document) {
+    if (!root?.querySelectorAll) return;
+    const targets = new Set();
+    root.querySelectorAll('[data-topic="people"], a[href="/people"], a[href="/people/"], a[href^="/people/"], a[href*="people/detail"]')
+      .forEach((node) => targets.add(node));
+    root.querySelectorAll('h1,h2,h3,h4,strong').forEach((node) => {
+      const text = String(node.textContent || "").replace(/\s+/g, "").trim();
+      if (text.includes("美国华人人物志") || text === "华人人物" || text === "华人人物志") {
+        targets.add(node);
+      }
+    });
+    targets.forEach((node) => {
+      const card = node.closest('.topic-focus-card,.service-card,.feature-card,.news-box,article,a') || node;
+      if (card && card !== document.body && card !== document.documentElement) card.remove();
+    });
+  }
+
+  function installRetiredPeopleGuard() {
+    removeRetiredPeopleSurface(document);
+    if (window.__TRRB_RETIRED_PEOPLE_GUARD__) return;
+    window.__TRRB_RETIRED_PEOPLE_GUARD__ = true;
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) removeRetiredPeopleSurface(node);
+        }
+      }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  }
+
   // Compatibility only: no startup request, no interval, no DOM race.
   window.TRRB_HOME_LIVE_COMPAT_SHIM = true;
   window.TRRB_refreshHomeLegacyCompat = emergencyRefresh;
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installRetiredPeopleGuard, { once: true });
+  else installRetiredPeopleGuard();
 })();

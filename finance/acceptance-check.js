@@ -10,23 +10,24 @@
     try{const value=fn();if(value===true)return {name,status:'pass',detail:'通过'};if(value&&typeof value==='object'&&'ok'in value)return {name,status:value.ok?'pass':severity,detail:value.detail||String(value.ok)};return {name,status:value?'pass':severity,detail:value?'通过':'未通过'}}catch(e){return {name,status:severity,detail:e?.message||String(e)}}
   }
   function duplicateIds(){const seen=new Map(),dups=[];$$('[id]').forEach(el=>{const id=el.id;if(!id)return;if(seen.has(id))dups.push(id);else seen.set(id,el)});return [...new Set(dups)]}
-  function badInteractive(){const re=/(Trade|交易|开户|下单|申购|购买|KYC)/i;return $$('a,button').filter(el=>visible(el)&&!el.disabled&&re.test(text(el))).map(text)}
+  function badInteractive(viewportOnly=false){const re=/(Trade|交易|开户|下单|申购|购买|KYC)/i,scope=viewportOnly?visible:rendered;return $$('a,button').filter(el=>scope(el)&&!el.disabled&&re.test(text(el))).map(text)}
   function targetAudit(viewportOnly=false){
     const limit=window.innerWidth<=620?36:32,scope=viewportOnly?visible:rendered;
     const weak=$$('a,button,input').filter(el=>!el.disabled&&!el.classList.contains('finance-skip-link')&&scope(el)).filter(el=>{const r=el.getBoundingClientRect();return r.width<limit||r.height<limit}).slice(0,16).map(el=>`${el.tagName.toLowerCase()}:${text(el).slice(0,18)||el.getAttribute('aria-label')||el.id||'未命名'} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`);
     return {limit,weak};
   }
+  function surfaceAudit(){const overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;return {overflow:Math.max(0,Math.round(overflow)),forbidden:badInteractive(false),targets:targetAudit(false)}}
   function commonChecks(){
-    const dups=duplicateIds(),forbidden=badInteractive(),viewportTargets=targetAudit(true),pageTargets=targetAudit(false),overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;
+    const dups=duplicateIds(),surface=surfaceAudit(),viewportTargets=targetAudit(true);
     return [
       result('数据适配层已加载',()=>!!window.FinanceData),
       result('页面主内容存在',()=>!!$('main')),
       result('无重复 ID',()=>({ok:dups.length===0,detail:dups.length?`重复：${dups.join(', ')}`:'0 个重复 ID'})),
-      result('当前视口无横向溢出',()=>({ok:overflow<=3,detail:`scrollWidth 差值 ${Math.max(0,Math.round(overflow))}px`})),
-      result('无可见交易/开户交互入口',()=>({ok:forbidden.length===0,detail:forbidden.length?forbidden.join('；'):'未发现可见 Trade/交易/开户/下单入口'})),
+      result('当前视口无横向溢出',()=>({ok:surface.overflow<=3,detail:`scrollWidth 差值 ${surface.overflow}px`})),
+      result('当前渲染页面无交易/开户交互入口',()=>({ok:surface.forbidden.length===0,detail:surface.forbidden.length?surface.forbidden.join('；'):'未发现 Trade/交易/开户/下单/申购/购买/KYC 入口'})),
       result('运行时生命周期已加载',()=>({ok:!!window.FinanceRuntimeHealth,detail:window.FinanceRuntimeHealth?'FinanceRuntimeHealth 可用':'等待 runtime-lifecycle.js'}),'warn'),
       result('首屏触控目标尺寸扫描',()=>({ok:viewportTargets.weak.length===0,detail:viewportTargets.weak.length?`小于${viewportTargets.limit}px：${viewportTargets.weak.join('；')}`:`首屏未发现小于${viewportTargets.limit}px的可操作目标`}),'warn'),
-      result('当前页面全长触控目标扫描',()=>({ok:pageTargets.weak.length===0,detail:pageTargets.weak.length?`小于${pageTargets.limit}px：${pageTargets.weak.join('；')}`:`当前渲染页面未发现小于${pageTargets.limit}px的可操作目标`}),'warn')
+      result('当前页面全长触控目标扫描',()=>({ok:surface.targets.weak.length===0,detail:surface.targets.weak.length?`小于${surface.targets.limit}px：${surface.targets.weak.join('；')}`:`当前渲染页面未发现小于${surface.targets.limit}px的可操作目标`}),'warn')
     ]
   }
   function homeChecks(){
@@ -52,7 +53,7 @@
       result('旧高级图表假入口已隐藏',()=>({ok:!!advanced&&advanced.hidden,detail:advanced?`hidden=${advanced.hidden}`:'按钮不存在'})),
       result('详情分区导航已生成',()=>({ok:!!nav&&$$('a',nav).length>=8,detail:nav?`${$$('a',nav).length} 个分区`:'缺少 detail-nav'})),
       result('详情返回上下文层可用',()=>!!window.FinanceNavigationMemory),
-      result('个股固定操作仅研究功能',()=>({ok:$$('.fixed button').length===2&&!badInteractive().length,detail:$$('.fixed button').map(text).join(' / ')}))
+      result('个股固定操作仅研究功能',()=>({ok:$$('.fixed button').length===2&&surfaceAudit().forbidden.length===0,detail:$$('.fixed button').map(text).join(' / ')}))
     ]
   }
   function fundChecks(){
@@ -63,7 +64,7 @@
       result('ETF 图表区间完整',()=>({ok:ranges.length===6,detail:`${ranges.length} 个区间`})),
       result('ETF 详情分区导航已生成',()=>({ok:!!nav&&$$('a',nav).length===5,detail:nav?`${$$('a',nav).length} 个分区`:'缺少 detail-nav'})),
       result('ETF 返回上下文层可用',()=>!!window.FinanceNavigationMemory),
-      result('ETF 固定操作无购买/申购',()=>({ok:$$('.fixed button').length===2&&!badInteractive().length,detail:$$('.fixed button').map(text).join(' / ')})),
+      result('ETF 固定操作无购买/申购',()=>({ok:$$('.fixed button').length===2&&surfaceAudit().forbidden.length===0,detail:$$('.fixed button').map(text).join(' / ')})),
       result('ETF 未加载股票K线增强',()=>({ok:!$('script[src$="reference-features.js"]'),detail:$('script[src$="reference-features.js"]')?'发现不必要的股票增强脚本':'按需加载正常'}),'warn')
     ]
   }
@@ -73,7 +74,7 @@
   function render(report){if(embedded)return;ensureStyle();let panel=$('#financeQaPanel');if(!panel){panel=document.createElement('aside');panel.id='financeQaPanel';panel.className='finance-qa';panel.setAttribute('aria-label','唐人财经验收诊断');document.body.appendChild(panel)}const c=report.counts;panel.innerHTML=`<div class="finance-qa-head"><b>Finance QA</b><small>${report.type} · ${report.viewport}</small><button type="button" data-qa-run>重跑</button><button type="button" data-qa-copy>复制</button><button type="button" data-qa-close aria-label="关闭诊断">×</button></div><div class="finance-qa-summary">PASS ${c.pass||0}　FAIL ${c.fail||0}　WARN ${c.warn||0}</div>${report.items.map(x=>`<div class="finance-qa-row ${x.status}"><i>${x.status==='pass'?'✓':x.status==='warn'?'!':'×'}</i><div><b>${x.name}</b><small>${x.detail}</small></div></div>`).join('')}`;panel.querySelector('[data-qa-run]').onclick=run;panel.querySelector('[data-qa-close]').onclick=()=>panel.remove();panel.querySelector('[data-qa-copy]').onclick=async()=>{const payload=JSON.stringify(state.last,null,2);try{await navigator.clipboard.writeText(payload);panel.querySelector('[data-qa-copy]').textContent='已复制'}catch(e){console.info('[Finance QA]',payload);panel.querySelector('[data-qa-copy]').textContent='见控制台'}}}
   function publish(report){if(!embedded)return;try{window.parent.postMessage({source:'finance-qa',report},location.origin)}catch(e){}}
   function run(){state.runs++;state.last=buildReport();render(state.last);publish(state.last);console.info('[Finance QA]',state.last);return state.last}
-  window.FinanceAcceptance={run,snapshot:()=>state.last,runs:()=>state.runs,auditTargets:()=>targetAudit(false),auditViewportTargets:()=>targetAudit(true)};
+  window.FinanceAcceptance={run,snapshot:()=>state.last,runs:()=>state.runs,auditTargets:()=>targetAudit(false),auditViewportTargets:()=>targetAudit(true),auditSurface:surfaceAudit};
   const start=()=>setTimeout(run,650);if(document.readyState==='complete')start();else window.addEventListener('load',start,{once:true});
   window.addEventListener('finance:resume',()=>setTimeout(()=>{if(embedded||$('#financeQaPanel'))run()},180));
 })();

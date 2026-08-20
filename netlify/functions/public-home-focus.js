@@ -1,7 +1,7 @@
 const { rest } = require("./_shared/supabase-admin");
 
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
-const MIN_LONGFORM_CHARS = 1200;
+const MIN_LONGFORM_CHARS = 1500;
 const PREFERRED_LONGFORM_CHARS = 2200;
 const MANUAL_FORCE = "force";
 const MANUAL_EXCLUDE = "exclude";

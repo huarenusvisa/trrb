@@ -73,6 +73,8 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 个股 / ETF 顶部栏显式使用 iPhone safe-area-inset-top
 - [x] 详情 sticky 分区 top 与锚点 scroll-margin 同步 safe-area
 - [x] IntersectionObserver 使用真实顶部栏 + 分区导航高度，不再写死 118px
+- [x] `FinanceResilienceHealth.snapshot()` 暴露只读 ready / busy / recovery / online 健康状态
+- [x] `finance:resume` / 网络恢复时韧性层主动重新对账 DOM 与内部完成态
 
 ### 视觉 / 响应式 / 无障碍
 - [x] A 版设计系统与 360–430px 静态防溢出
@@ -102,6 +104,9 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 首屏触控扫描 + 当前渲染页面全长触控扫描
 - [x] 四个一级页逐页审计横向溢出、交易 / 开户禁区入口、可访问名称、触控目标
 - [x] 深度逐页审计同时检查固定底栏 / 详情操作栏正文预留
+- [x] QA 工具自身 DOM、`inert`、`aria-disabled` 与 hidden input 不参与产品触控 / 名称 / 合规扫描
+- [x] 合规扫描从关键词扫描升级为动作意图扫描：按钮 / 短 CTA / aria-label / href 严格检查，新闻研究内容里的“交易量”等正常词不误报
+- [x] 深度交互逐页检查 `FinanceResilienceHealth` 与 `finance-app-ready` / `aria-busy` / recovery DOM 一致性
 - [x] 可操作控件名称审计覆盖 a / button / input / tabindex=0
 - [x] 深度交互捕获 `error` / `unhandledrejection` 并作为正式 PASS / FAIL
 - [x] 图表 QA 断言走势 / Kline / ETF 的 role 与 aria-label 跟随模式和周期
@@ -163,6 +168,17 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - QA 报告新增“case 从空 trfinance.* 基线启动”断言，并在深度切换基金 / 自选 / 我的 / 行情时同步检查固定底栏正文预留。
 - 开发分支与 A 版预览已同步同一 QA / navigation-memory 实现。
 - 本轮为静态代码复核，未把真实 iPhone / Safari、桌面浏览器或 Lighthouse 标记为通过。
+
+### 第二十八轮：QA 误报清理、合规动作精度与韧性状态对账
+- 修复单页 `?qa=1` 重跑时 QA 面板自身按钮被触控扫描纳入产品 WARN 的自污染问题；QA DOM 不再参与产品审计。
+- `rendered / operable` 进一步识别 `inert`、`aria-disabled=true` 和 hidden input，降低隐藏/禁用状态误报。
+- 交易边界扫描由“链接文本包含关键词即失败”改为动作意图扫描：真实按钮、短 CTA、aria-label/title、trade/order/broker/KYC/buy 等动作 href 继续硬 FAIL；新闻/研究链接中的“交易量、盘前交易”等内容语义不再误报。
+- 新增 `FinanceResilienceHealth.snapshot()`，记录 ready、coreReady、aria-busy、recovery、online、恢复条出现/移除次数和最近 reconcile 原因。
+- 韧性层在 `finance:resume` 和网络恢复时重新对账完成态；ready 页面必须移除恢复条并保持 `aria-busy=false`。
+- `acceptance-check.js` 新增“韧性层完成态与页面状态一致”硬检查，并将 resilience 快照写入 QA 报告。
+- 深度 QA 在基金、自选、我的、行情以及个股/ETF图表交互结束后重复检查韧性状态、固定层、合规动作、名称和触控尺寸。
+- 开发分支与 `finance-v1-preview` 三个核心文件内容 SHA 已同步一致。
+- 本轮为静态代码复核，仍未把真实 iPhone / Safari、桌面浏览器或 Lighthouse 标记为通过。
 
 ## 当前结论
 当前状态：**V1 Candidate+ / 功能冻结**。

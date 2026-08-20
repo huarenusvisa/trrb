@@ -27,7 +27,7 @@
   const pages=[{type:'home',label:'首页',path:'index.html?qa=1&qaEmbed=1#market'},{type:'stock',label:'个股',path:'stock.html?symbol=AAPL&qa=1&qaEmbed=1'},{type:'fund',label:'ETF',path:'fund.html?symbol=QQQ&qa=1&qaEmbed=1'}];
   const cases=[];pages.forEach(p=>widths.forEach(v=>cases.push({...p,...v,id:`${p.type}-${v.w}`})));
   let running=false,index=0,current=null,timer=0,reports=[],processing=false;
-  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]))}
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
   function recount(report){report.counts=report.items.reduce((a,x)=>(a[x.status]=(a[x.status]||0)+1,a),{});return report}
   function statusFor(report){if(!report)return 'wait';if((report.counts?.fail||0)>0)return 'fail';if((report.counts?.warn||0)>0)return 'warn';return 'pass'}
   function render(){

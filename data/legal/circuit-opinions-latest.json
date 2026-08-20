@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-20T19:04:23.364Z",
+  "generatedAt": "2026-08-20T19:45:54.372Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -91,6 +91,14 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467E-01A.pdf",
           "title": "24-1467 US v. Johnson"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1931P-01A.pdf",
+          "title": "24-1931P.01A"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
+          "title": "24-1467P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
@@ -1499,6 +1507,14 @@
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
         {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510656.pdf",
+          "title": "Annette Kingsolver v. U.S. Attorney General, et al"
+        },
+        {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202513546.pdf",
+          "title": "Delta Air Lines, Inc., et al v. U.S. Department of Transportation"
+        },
+        {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410178.pdf",
           "title": "Chase Peden, et al v. Glenn Stephens, et al"
         },
@@ -1689,14 +1705,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202313430.pdf",
           "title": "USA v. Emory Austin Carter"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202412787.op2.pdf",
-          "title": "Keith Edwards v. Officer J. Grubbs, et al"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202412662.pdf",
-          "title": "Dennis Scott, et al v. City of Daytona Beach, Florida"
         }
       ],
       "notes": []

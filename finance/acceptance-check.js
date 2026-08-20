@@ -3,16 +3,21 @@
   const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const params=new URLSearchParams(location.search),embedded=params.get('qaEmbed')==='1'&&window.parent!==window;
   const state={runs:0,last:null};
-  function visible(el){if(!el)return false;const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<window.innerHeight&&r.left<window.innerWidth}
+  function rendered(el){if(!el)return false;const s=getComputedStyle(el),r=el.getBoundingClientRect(),hiddenAncestor=el.closest('[hidden],[aria-hidden="true"]');return !hiddenAncestor&&s.display!=='none'&&s.visibility!=='hidden'&&s.pointerEvents!=='none'&&r.width>0&&r.height>0}
+  function visible(el){if(!rendered(el))return false;const r=el.getBoundingClientRect();return r.bottom>0&&r.right>0&&r.top<window.innerHeight&&r.left<window.innerWidth}
   function text(el){return (el?.textContent||'').replace(/\s+/g,' ').trim()}
   function result(name,fn,severity='fail'){
     try{const value=fn();if(value===true)return {name,status:'pass',detail:'通过'};if(value&&typeof value==='object'&&'ok'in value)return {name,status:value.ok?'pass':severity,detail:value.detail||String(value.ok)};return {name,status:value?'pass':severity,detail:value?'通过':'未通过'}}catch(e){return {name,status:severity,detail:e?.message||String(e)}}
   }
   function duplicateIds(){const seen=new Map(),dups=[];$$('[id]').forEach(el=>{const id=el.id;if(!id)return;if(seen.has(id))dups.push(id);else seen.set(id,el)});return [...new Set(dups)]}
   function badInteractive(){const re=/(Trade|交易|开户|下单|申购|购买|KYC)/i;return $$('a,button').filter(el=>visible(el)&&!el.disabled&&re.test(text(el))).map(text)}
-  function weakTargets(){const limit=window.innerWidth<=620?36:32;return $$('a,button,input').filter(el=>visible(el)&&!el.disabled).filter(el=>{const r=el.getBoundingClientRect();return r.width<limit||r.height<limit}).slice(0,12).map(el=>`${el.tagName.toLowerCase()}:${text(el).slice(0,18)||el.getAttribute('aria-label')||el.id||'未命名'} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`)}
+  function targetAudit(viewportOnly=false){
+    const limit=window.innerWidth<=620?36:32,scope=viewportOnly?visible:rendered;
+    const weak=$$('a,button,input').filter(el=>!el.disabled&&!el.classList.contains('finance-skip-link')&&scope(el)).filter(el=>{const r=el.getBoundingClientRect();return r.width<limit||r.height<limit}).slice(0,16).map(el=>`${el.tagName.toLowerCase()}:${text(el).slice(0,18)||el.getAttribute('aria-label')||el.id||'未命名'} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`);
+    return {limit,weak};
+  }
   function commonChecks(){
-    const dups=duplicateIds(),forbidden=badInteractive(),weak=weakTargets(),overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth,touchLimit=window.innerWidth<=620?36:32;
+    const dups=duplicateIds(),forbidden=badInteractive(),viewportTargets=targetAudit(true),pageTargets=targetAudit(false),overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;
     return [
       result('数据适配层已加载',()=>!!window.FinanceData),
       result('页面主内容存在',()=>!!$('main')),
@@ -20,7 +25,8 @@
       result('当前视口无横向溢出',()=>({ok:overflow<=3,detail:`scrollWidth 差值 ${Math.max(0,Math.round(overflow))}px`})),
       result('无可见交易/开户交互入口',()=>({ok:forbidden.length===0,detail:forbidden.length?forbidden.join('；'):'未发现可见 Trade/交易/开户/下单入口'})),
       result('运行时生命周期已加载',()=>({ok:!!window.FinanceRuntimeHealth,detail:window.FinanceRuntimeHealth?'FinanceRuntimeHealth 可用':'等待 runtime-lifecycle.js'}),'warn'),
-      result('触控目标尺寸扫描',()=>({ok:weak.length===0,detail:weak.length?`当前视口内小于${touchLimit}px：${weak.join('；')}`:`当前视口未发现小于${touchLimit}px的可操作目标` }),'warn')
+      result('首屏触控目标尺寸扫描',()=>({ok:viewportTargets.weak.length===0,detail:viewportTargets.weak.length?`小于${viewportTargets.limit}px：${viewportTargets.weak.join('；')}`:`首屏未发现小于${viewportTargets.limit}px的可操作目标`}),'warn'),
+      result('当前页面全长触控目标扫描',()=>({ok:pageTargets.weak.length===0,detail:pageTargets.weak.length?`小于${pageTargets.limit}px：${pageTargets.weak.join('；')}`:`当前渲染页面未发现小于${pageTargets.limit}px的可操作目标`}),'warn')
     ]
   }
   function homeChecks(){
@@ -67,7 +73,7 @@
   function render(report){if(embedded)return;ensureStyle();let panel=$('#financeQaPanel');if(!panel){panel=document.createElement('aside');panel.id='financeQaPanel';panel.className='finance-qa';panel.setAttribute('aria-label','唐人财经验收诊断');document.body.appendChild(panel)}const c=report.counts;panel.innerHTML=`<div class="finance-qa-head"><b>Finance QA</b><small>${report.type} · ${report.viewport}</small><button type="button" data-qa-run>重跑</button><button type="button" data-qa-copy>复制</button><button type="button" data-qa-close aria-label="关闭诊断">×</button></div><div class="finance-qa-summary">PASS ${c.pass||0}　FAIL ${c.fail||0}　WARN ${c.warn||0}</div>${report.items.map(x=>`<div class="finance-qa-row ${x.status}"><i>${x.status==='pass'?'✓':x.status==='warn'?'!':'×'}</i><div><b>${x.name}</b><small>${x.detail}</small></div></div>`).join('')}`;panel.querySelector('[data-qa-run]').onclick=run;panel.querySelector('[data-qa-close]').onclick=()=>panel.remove();panel.querySelector('[data-qa-copy]').onclick=async()=>{const payload=JSON.stringify(state.last,null,2);try{await navigator.clipboard.writeText(payload);panel.querySelector('[data-qa-copy]').textContent='已复制'}catch(e){console.info('[Finance QA]',payload);panel.querySelector('[data-qa-copy]').textContent='见控制台'}}}
   function publish(report){if(!embedded)return;try{window.parent.postMessage({source:'finance-qa',report},location.origin)}catch(e){}}
   function run(){state.runs++;state.last=buildReport();render(state.last);publish(state.last);console.info('[Finance QA]',state.last);return state.last}
-  window.FinanceAcceptance={run,snapshot:()=>state.last,runs:()=>state.runs};
+  window.FinanceAcceptance={run,snapshot:()=>state.last,runs:()=>state.runs,auditTargets:()=>targetAudit(false),auditViewportTargets:()=>targetAudit(true)};
   const start=()=>setTimeout(run,650);if(document.readyState==='complete')start();else window.addEventListener('load',start,{once:true});
   window.addEventListener('finance:resume',()=>setTimeout(()=>{if(embedded||$('#financeQaPanel'))run()},180));
 })();

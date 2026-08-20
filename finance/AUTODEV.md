@@ -45,7 +45,7 @@
 - Chromium + Python Playwright 可用。
 - GitHub Connector 可以读取 `finance-v1-preview/finance/` 中全部 A 版源码与 QA 文件。
 - 当前执行容器仍无法通过 DNS 访问 GitHub、RawGitHack、API GitHub、Netlify 或 trrb.net，因此不能直接下载 A 版或访问远程预览。
-- 已确认用于 A 版视觉验收的 PR #23（`finance-v1-preview` → `main`）仍为 draft/open；其 Netlify `deploy-preview` 状态当前为 failure，尚无可用预览页可供 Chromium 直接跑 16-case。
+- 已确认用于 A 版视觉验收的 PR #23（`finance-v1-preview` → `main`）仍为 draft/open；其当前 head `36412727ae162e29bdd366a0e6f6060009906565` 的唯一可见状态检查 `netlify/trrb/deploy-preview` 仍为 `failure`，目标 deploy 为 Netlify deploy `6a87464373c0a40007711006`，尚无可用预览页可供 Chromium 直接跑 16-case。
 - Connector 目前没有直接把整套目录落盘到 Chromium 本地目录的动作，因此 16-case 尚未真实执行。
 - 以上属于 QA 执行/预览通道阻塞，不是已确认产品缺陷；在真实回归条件缺失时，不继续无依据修改核心产品代码。
 
@@ -54,6 +54,7 @@
 - 第36–40轮：反复确认 Chromium/Playwright 正常、外网 DNS 失败、现有 CI 无可直接复用 finance 浏览器验收 workflow、A版 `preview.html` 只是同目录 `index.html#market` 包装器；未发现新的确定性状态恢复缺陷。
 - 第41轮：重新读取权威 checkpoint；确认 `feature-flags.js` 三个交易/实时能力旗标仍全部为 false；重新比较 `main...finance-v1-robinhood`，状态 diverged，财经分支 ahead 195 / behind 125，当前 compare 返回的差异文件全部位于 `finance/`，未触碰保护范围。A版 `qa-suite.html` 仍为完整16-case入口。由于真实浏览器源码落盘通道仍未打通，本轮不新增产品代码、不虚报 iPhone/桌面/Lighthouse/16-case PASS。
 - 第42轮：发现并核验现有财经 A 版预览 PR #23，可作为绕过本地 GitHub 源码下载的真实 QA 入口；但其 Netlify `deploy-preview` 对当前 head 返回 failure。容器同时对 Netlify/trrb.net 继续 DNS 失败，因此尚不能真实运行 16-case。重新比较 `main...finance-v1-robinhood` 为 ahead 196 / behind 136，compare 返回差异仍全部位于 `finance/`。本轮未修改产品代码或受保护配置，仅更新 checkpoint。
+- 第43轮：重新读取权威 checkpoint并直接核验 PR #23 最新状态；PR 仍为 draft/open，head=`36412727ae162e29bdd366a0e6f6060009906565`，`netlify/trrb/deploy-preview` 仍为 failure，未出现新的产品 FAIL/WARN 证据。重新比较 `main...finance-v1-robinhood` 为 ahead 197 / behind 146，compare 返回差异文件仍全部位于 `finance/`。因此本轮不改产品代码，只更新阻塞事实与 checkpoint，不虚报 16-case、iPhone、桌面或 Lighthouse PASS。
 
 ## 当前结论
 状态：**V1 Candidate+ / 功能冻结**。

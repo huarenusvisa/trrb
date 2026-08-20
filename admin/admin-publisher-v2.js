@@ -51,7 +51,7 @@
   };
 
   function categoryName() {
-    return el("article-category").selectedOptions?.[0]?.textContent || "重要新闻";
+    return el("article-category").selectedOptions?.[0]?.textContent || "美国时政";
   }
 
   function isIceBriefCategory() {
@@ -197,10 +197,17 @@
     }
   };
 
+  function focusModeLabel(mode) {
+    if (mode === "force") return "首页置顶";
+    if (mode === "exclude") return "不推荐";
+    return "自动推荐";
+  }
+
   function renderArticleRowWithAiState(article) {
     const metadata = article.metadata && typeof article.metadata === "object" ? article.metadata : {};
     const processing = Boolean(metadata.ai_cover_processing);
     const failed = Boolean(metadata.ai_cover_error);
+    const focusMode = String(metadata.homepage_focus_override || "auto");
     const statusText = processing
       ? "AI封面生成中"
       : failed
@@ -210,13 +217,17 @@
     return `
       <tr>
         <td><b>${escapeHtml(article.title)}</b><br><small>${escapeHtml(article.id)}</small></td>
-        <td>${escapeHtml(article.category_name || "-")}</td>
+        <td>${escapeHtml(article.category_name || "-")}<br><small>${escapeHtml(focusModeLabel(focusMode))}</small></td>
         <td><span class="status-pill ${statusClass}">${escapeHtml(statusText)}</span>${failed ? `<br><small>${escapeHtml(metadata.ai_cover_error)}</small>` : ""}</td>
         <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>
         <td>
           <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','published')">发布</button>
           <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','draft')">草稿</button>
           <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','hidden')">隐藏</button>
+          <br>
+          <button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','force')">首页置顶</button>
+          <button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','auto')">自动推荐</button>
+          <button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','exclude')">不推荐</button>
         </td>
       </tr>
     `;
@@ -244,6 +255,31 @@
       await loadArticles();
     } catch (error) {
       alert(`更新失败：${error.message}`);
+    }
+  };
+
+  window.setHomepageFocusMode = async function setHomepageFocusMode(id, mode) {
+    try {
+      if (!new Set(["auto", "force", "exclude"]).has(mode)) throw new Error("无效的首页推荐模式");
+      const { data, error } = await supabaseClient
+        .from("articles")
+        .select("metadata,is_featured")
+        .eq("id", id)
+        .maybeSingle();
+      if (error) throw error;
+      if (!data) throw new Error("找不到文章");
+      const metadata = data.metadata && typeof data.metadata === "object" ? { ...data.metadata } : {};
+      if (mode === "auto") delete metadata.homepage_focus_override;
+      else metadata.homepage_focus_override = mode;
+      metadata.homepage_focus_updated_at = new Date().toISOString();
+      const update = await supabaseClient
+        .from("articles")
+        .update({ metadata, is_featured: mode === "force" })
+        .eq("id", id);
+      if (update.error) throw update.error;
+      await loadArticles();
+    } catch (error) {
+      alert(`首页推荐设置失败：${error.message}`);
     }
   };
 
@@ -293,7 +329,7 @@
         await startBackgroundPublication(result.background_article_id);
         el("article-message").textContent = "文章已保存。AI正在后台生成封面，完成后会自动发布到前台。";
       } else if (result.article?.status === "published") {
-        el("article-message").textContent = "发布成功。摘要和SEO已自动生成。";
+        el("article-message").textContent = "发布成功。系统将自动判断是否进入首页今日要闻。";
       } else {
         el("article-message").textContent = "草稿保存成功，摘要和SEO已自动生成。";
       }
@@ -323,6 +359,16 @@
     button.textContent = el("article-status")?.value === "published" ? "发布文章" : "保存草稿";
   }
 
+  function suppressRetiredImportantCategory() {
+    const select = el("article-category");
+    if (!select) return;
+    Array.from(select.options || []).forEach((option) => {
+      if (String(option.textContent || "").trim() === "重要新闻") option.remove();
+    });
+    const politics = Array.from(select.options || []).find((option) => String(option.textContent || "").trim() === "美国时政");
+    if (politics && !select.value) select.value = politics.value;
+  }
+
   function installPublisherUi() {
     renderTitleSuggestions([]);
     el("article-content")?.addEventListener("input", scheduleTitleSuggestions);
@@ -330,6 +376,11 @@
     el("article-category")?.addEventListener("change", () => requestTitleSuggestions(false));
     el("refresh-title-suggestions")?.addEventListener("click", () => requestTitleSuggestions(true));
     el("article-status")?.addEventListener("change", updateSubmitLabel);
+    const categorySelect = el("article-category");
+    if (categorySelect) {
+      suppressRetiredImportantCategory();
+      new MutationObserver(suppressRetiredImportantCategory).observe(categorySelect, { childList: true });
+    }
     updateSubmitLabel();
   }
 

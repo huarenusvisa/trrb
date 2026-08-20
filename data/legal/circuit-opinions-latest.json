@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-20T14:54:33.313Z",
+  "generatedAt": "2026-08-20T15:52:05.298Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -167,10 +167,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
           "title": "25-1862 Rana v. Blanche"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
-          "title": "25-1817 Recchia v. Campbell"
         }
       ],
       "notes": []
@@ -1225,36 +1221,76 @@
       "sourceFinalUrl": "https://ecf.ca8.uscourts.gov/cgi-bin/TodayOpn.pl",
       "documents": [
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/243444P.pdf",
-          "title": "243444P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/233129P.pdf",
+          "title": "233129P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251987P.pdf",
-          "title": "251987P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/242357P.pdf",
+          "title": "242357P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/253094U.pdf",
-          "title": "253094U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/243094P.pdf",
+          "title": "243094P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/261042U.pdf",
-          "title": "261042U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251607U.pdf",
+          "title": "251607U.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/243444P.pdf",
-          "title": "243444P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252005P.pdf",
+          "title": "252005P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251987P.pdf",
-          "title": "251987P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252119U.pdf",
+          "title": "252119U.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/253094U.pdf",
-          "title": "253094U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252470P.pdf",
+          "title": "252470P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/261042U.pdf",
-          "title": "261042U.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252563P.pdf",
+          "title": "252563P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/253240P.pdf",
+          "title": "253240P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/233129P.pdf",
+          "title": "233129P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/242357P.pdf",
+          "title": "242357P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/243094P.pdf",
+          "title": "243094P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251607U.pdf",
+          "title": "251607U.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252005P.pdf",
+          "title": "252005P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252119U.pdf",
+          "title": "252119U.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252470P.pdf",
+          "title": "252470P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252563P.pdf",
+          "title": "252563P.pdf"
+        },
+        {
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/253240P.pdf",
+          "title": "253240P.pdf"
         }
       ],
       "notes": []

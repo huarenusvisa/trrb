@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   
+  
   <url>
       <loc>https://trrb.net/ice/ice-292ff554be6d362457328c61b340ad6a331e633c</loc>
       <news:news>
@@ -1793,18 +1794,5 @@
         <news:title>美国DSA激进分子对ICE设施全天候监控</news:title>
       </news:news>
     </url>
-  
-  
-  
-  
-  <url>
-      <loc>https://trrb.net/ice/ice-5eece7a4dfe80fba3be9b0fbc6fdbe4a8f29bc43</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-18T22:35:47.554Z</news:publication_date>
-        <news:title>美国国土安全部称委内瑞拉非法移民逾期居留逾8年</news:title>
-      </news:news>
-    </url>
-  
   
 </urlset>

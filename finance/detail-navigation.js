@@ -1,4 +1,9 @@
 (function(){
+  function loadResilience(){
+    if(!document.querySelector('link[data-finance-resilience]')){const l=document.createElement('link');l.rel='stylesheet';l.href='./resilience.css';l.dataset.financeResilience='1';document.head.appendChild(l)}
+    if(!document.querySelector('script[data-finance-resilience]')){const s=document.createElement('script');s.src='./resilience.js';s.async=false;s.dataset.financeResilience='1';document.head.appendChild(s)}
+  }
+  loadResilience();
   const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const top=$('.stock-top'),content=$('.stock-content'),hero=$('.stock-hero'),ticker=$('.stock-ticker');if(!top||!content||!hero||!ticker)return;
   const isFund=!!$('#fundName');

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>唐人财经｜多视口验收</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f4f6f5;color:#172019;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.qa-shell{max-width:1120px;margin:0 auto;padding:24px 16px 56px}.qa-head{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;margin-bottom:18px}.qa-head h1{font-size:26px;line-height:1.1;margin:0 0 6px}.qa-head p{margin:0;color:#66706a}.qa-actions{display:flex;gap:8px;flex-wrap:wrap}.qa-actions button{border:0;border-radius:999px;min-height:38px;padding:7px 14px;background:#fff;font-weight:800;color:#172019;box-shadow:0 1px 5px rgba(0,0,0,.06)}.qa-actions button.primary{background:#00c805;color:#062b08}.qa-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}.qa-stat{background:#fff;border:1px solid #e3e8e5;border-radius:16px;padding:13px 14px}.qa-stat small{display:block;color:#77807a;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.qa-stat strong{display:block;font-size:24px;margin-top:3px}.qa-progress{height:8px;background:#e6ebe8;border-radius:999px;overflow:hidden;margin:14px 0 18px}.qa-progress span{display:block;height:100%;width:0;background:#00c805;transition:width .2s}.qa-list{display:grid;gap:9px}.qa-row{display:grid;grid-template-columns:98px 88px 82px 1fr;gap:10px;align-items:center;background:#fff;border:1px solid #e3e8e5;border-radius:14px;padding:11px 13px}.qa-row b{font-size:13px}.qa-row small{color:#747d77}.qa-badge{justify-self:start;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;background:#eef2ef}.qa-badge.pass{background:#e6f8e8;color:#087b0c}.qa-badge.fail{background:#ffebe7;color:#c1321c}.qa-badge.warn{background:#fff3d8;color:#8b6500}.qa-badge.wait{color:#66706a}.qa-detail{overflow-wrap:anywhere}.qa-detail em{font-style:normal;color:#c1321c;font-weight:750}.qa-foot{margin-top:16px;color:#758079;font-size:12px}.qa-frame{position:fixed;left:-20000px;top:-20000px;border:0;background:#fff}.qa-empty{padding:26px;text-align:center;color:#7b847e;background:#fff;border:1px dashed #d9dfdb;border-radius:14px}
+    @media(max-width:720px){.qa-head{display:block}.qa-actions{margin-top:14px}.qa-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.qa-row{grid-template-columns:72px 72px 68px 1fr;padding:10px}.qa-row small{font-size:11px}}
+  </style>
+</head>
+<body>
+<main class="qa-shell">
+  <div class="qa-head"><div><h1>唐人财经多视口验收</h1><p>顺序加载首页、个股、ETF，在 360 / 390 / 430 / 1280px 视口自动汇总运行时检查。</p></div><div class="qa-actions"><button type="button" id="copyBtn">复制报告</button><button type="button" class="primary" id="runBtn">重新运行</button></div></div>
+  <div class="qa-summary"><div class="qa-stat"><small>Cases</small><strong id="caseStat">0/12</strong></div><div class="qa-stat"><small>Pass</small><strong id="passStat">0</strong></div><div class="qa-stat"><small>Fail</small><strong id="failStat">0</strong></div><div class="qa-stat"><small>Warn</small><strong id="warnStat">0</strong></div></div>
+  <div class="qa-progress"><span id="progressBar"></span></div>
+  <div id="qaList" class="qa-list"><div class="qa-empty">准备运行验收…</div></div>
+  <div class="qa-foot">此页面仅用于开发验收，不属于唐人财经用户界面。FAIL 应先修复；WARN 需要人工判断。实际 iPhone / PC 视觉验收仍需真人查看页面。</div>
+</main>
+<iframe id="qaFrame" class="qa-frame" title="唐人财经验收子页面"></iframe>
+<script>
+(function(){
+  const $=s=>document.querySelector(s),frame=$('#qaFrame'),list=$('#qaList'),runBtn=$('#runBtn'),copyBtn=$('#copyBtn');
+  const widths=[{w:360,h:667,label:'360×667'},{w:390,h:844,label:'390×844'},{w:430,h:932,label:'430×932'},{w:1280,h:900,label:'1280×900'}];
+  const pages=[{type:'home',label:'首页',path:'index.html?qa=1&qaEmbed=1#market'},{type:'stock',label:'个股',path:'stock.html?symbol=AAPL&qa=1&qaEmbed=1'},{type:'fund',label:'ETF',path:'fund.html?symbol=QQQ&qa=1&qaEmbed=1'}];
+  const cases=[];pages.forEach(p=>widths.forEach(v=>cases.push({...p,...v,id:`${p.type}-${v.w}`})));
+  let running=false,index=0,current=null,timer=0,reports=[];
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function statusFor(report){if(!report)return 'wait';if((report.counts?.fail||0)>0)return 'fail';if((report.counts?.warn||0)>0)return 'warn';return 'pass'}
+  function render(){
+    const done=reports.length,total=cases.length,pass=reports.filter(x=>x.status==='pass').length,fail=reports.filter(x=>x.status==='fail').length,warn=reports.filter(x=>x.status==='warn').length;
+    $('#caseStat').textContent=`${done}/${total}`;$('#passStat').textContent=pass;$('#failStat').textContent=fail;$('#warnStat').textContent=warn;$('#progressBar').style.width=`${Math.round(done/total*100)}%`;
+    list.innerHTML=cases.map(c=>{const r=reports.find(x=>x.caseId===c.id),active=running&&current?.id===c.id,status=r?.status||(active?'wait':'wait'),label=active&&!r?'RUN':status.toUpperCase();let detail='等待运行';if(active&&!r)detail='正在加载并执行运行时检查…';if(r){const bad=r.report.items.filter(x=>x.status!=='pass');detail=bad.length?bad.slice(0,3).map(x=>`${x.status==='fail'?'FAIL':'WARN'}：${x.name} — ${x.detail}`).join('；'):`${r.report.counts.pass||0} 项全部通过`}
+      return `<div class="qa-row"><b>${c.label}</b><span>${c.label==='首页'?'market':c.type==='stock'?'AAPL':'QQQ'}</span><span>${c.label==='首页'?'':c.type==='stock'?'': ''}${c.w}px</span><div class="qa-detail"><span class="qa-badge ${status}">${label}</span> <small>${escapeHtml(detail)}</small></div></div>`}).join('');
+  }
+  function finishCase(report){
+    clearTimeout(timer);const status=statusFor(report);reports.push({caseId:current.id,page:current.type,label:current.label,viewport:current.label+' '+current.w+'×'+current.h,status,report});index++;current=null;render();setTimeout(next,90)
+  }
+  function next(){
+    if(!running)return;if(index>=cases.length){running=false;runBtn.disabled=false;runBtn.textContent='重新运行';render();return}
+    current=cases[index];frame.style.width=current.w+'px';frame.style.height=current.h+'px';frame.width=current.w;frame.height=current.h;render();
+    const sep=current.path.includes('?')?'&':'?';frame.src=`${current.path}${sep}qaRun=${Date.now()}`;
+    timer=setTimeout(()=>finishCase({type:current.type,viewport:`${current.w}×${current.h}`,counts:{fail:1},items:[{name:'验收子页面响应',status:'fail',detail:'8秒内未收到 QA 报告'}]}),8000)
+  }
+  function run(){if(running)return;running=true;index=0;current=null;reports=[];runBtn.disabled=true;runBtn.textContent='运行中…';render();next()}
+  window.addEventListener('message',e=>{if(!running||!current||e.source!==frame.contentWindow||e.origin!==location.origin)return;const data=e.data;if(!data||data.source!=='finance-qa'||!data.report)return;finishCase(data.report)});
+  runBtn.addEventListener('click',run);
+  copyBtn.addEventListener('click',async()=>{const payload=JSON.stringify({at:new Date().toISOString(),origin:location.origin,cases:reports},null,2);try{await navigator.clipboard.writeText(payload);copyBtn.textContent='已复制';setTimeout(()=>copyBtn.textContent='复制报告',1300)}catch(e){console.info('[Finance QA Suite]',payload);copyBtn.textContent='见控制台'}});
+  render();run();
+})();
+</script>
+</body>
+</html>

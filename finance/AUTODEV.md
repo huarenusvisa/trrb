@@ -53,6 +53,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] ETF 主题研究页与核心指数 / 科技 / 黄金 / 半导体真实筛选
 - [x] 参数化 ETF 详情：费率、规模、风险、持仓、资讯
 - [x] 走势图区间切换与键盘 / 触摸读数
+- [x] ETF 详情关注按钮在 storage / finance:resume / BFCache 后重新读取真实本机状态
 - [x] 不加载股票专属 K 线增强层
 
 ### 个股详情
@@ -64,6 +65,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] sticky 顶部迷你报价与当前周期 / 图表读数一致
 - [x] 关键数据、新闻、评级、财务、EPS、SEC接口位、热度、公司概览
 - [x] 加入自选、提醒、分享
+- [x] 自选 / 提醒按钮在 storage / finance:resume / BFCache 后重新读取真实本机状态
 
 ### 导航 / 恢复 / 韧性
 - [x] 详情 sticky 分区导航与当前阅读分区高亮
@@ -71,6 +73,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] Safari / BFCache 页面恢复与 visualViewport / iPhone 键盘处理
 - [x] BFCache / session 恢复使用临时恢复标记，合成点击不再触发“用户主动切换”live-region 播报
 - [x] `FinanceNavigationMemory.isRestoring()` 提供只读恢复状态，供 QA 验证恢复静默性
+- [x] `FinanceDetailStateSync.snapshot()` 提供详情按钮同步原因 / 次数只读状态，区分 init / storage / finance:resume / pageshow
 - [x] 弱网 / 离线 / 加载失败恢复条与空状态操作入口
 - [x] readiness observer 完成后断开，多恢复事件合并，sessionStorage 滚动写入节流
 - [x] 个股 / ETF 顶部栏 iPhone safe-area-inset-top
@@ -97,6 +100,7 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 ## QA / 验收基础设施
 - [x] `acceptance-check.js`：仅 `qa=1` 时加载
 - [x] `qa-interactions.js`：真实操作搜索、导航、自选排序、精确撤销、ETF筛选、K线、YTD、键盘图表读取
+- [x] `qa-detail-state.js`：仅 QA Suite 加载，包装个股 / ETF case 验证 storage 与 finance:resume 后按钮状态同步
 - [x] `qa-suite.html`：12 个常规多视口 case + 4 个异常路径 case，共 16 个 case
 - [x] 常规视口：首页 / AAPL / QQQ × 360 / 390 / 430 / 1280px
 - [x] 异常 case：未知股票 ZZZZ、未知 ETF FAKE、slow-ready、data-missing
@@ -109,6 +113,8 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] 首页 QA 捕获“自选筛选 → 股票详情”来源，不真正导航；改乱状态后通过 synthetic `pageshow.persisted` 验证页签、筛选和滚动恢复
 - [x] 首页 QA 同样验证“黄金 ETF 筛选 → ETF 详情”来源恢复
 - [x] 上下文恢复期间 live region 使用 sentinel；恢复产生任何用户操作播报或恢复标记残留都 FAIL
+- [x] 个股 QA 暂时移出当前股票自选 / 提醒后派发 storage，要求按钮同步；随后恢复数据并派发 finance:resume，要求按钮回到真实状态
+- [x] ETF QA 暂时移出基金自选后派发 storage，要求关注按钮同步；随后恢复数据并派发 finance:resume，要求按钮回到真实状态
 - [x] 首屏 + 当前渲染页面全长触控扫描
 - [x] 四个一级页逐页审计横向溢出、固定底栏正文预留、禁区动作、可访问名称、触控目标
 - [x] QA 工具 DOM、`inert`、`aria-disabled`、hidden input 不参与产品扫描
@@ -160,7 +166,14 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - 上下文恢复 QA 使用 live-region sentinel 验证恢复过程静默；恢复标记未释放也会 FAIL。
 - 首页交互预算单独提高到 20 秒，其他常规 / 异常 case 保持更短预算，避免慢 Safari 因新增恢复链误报超时。
 - 开发分支与 A 版预览的 `app.js`、`navigation-memory.js`、`qa-interactions.js`、`qa-suite.html` 内容 SHA 已同步一致。
-- 本轮仍为代码与静态逻辑复核，未把真实 iPhone / Safari、桌面浏览器或 Lighthouse 标记为通过。
+
+### 第三十一轮：详情控制状态恢复与跨标签一致性
+- 新增 `detail-state-sync.js`，个股详情在 storage / finance:resume / pageshow.persisted 时重新读取当前股票的自选与提醒状态；ETF 详情重新读取基金关注状态。
+- 同步层只更新按钮文本和 `aria-pressed`，不弹 Toast、不修改行情、图表或详情内容，不把恢复动作伪装成用户操作。
+- 暴露只读 `FinanceDetailStateSync.snapshot()`，记录 asset type / symbol / valid / runs / lastReason / 当前 pressed 状态，便于 QA 判断实际触发来源。
+- 新增仅 QA Suite 使用的 `qa-detail-state.js`，在现有个股 / ETF case 后附加 storage 与 finance:resume 状态同步测试；测试结束精确恢复本机列表 / 提醒。
+- `stock.html` / `fund.html` 显式加载 `detail-state-sync.js`；开发分支与 A 版预览新脚本、详情页和 QA Suite 已同步。
+- 本轮首先尝试从当前执行容器访问 RawGitHack，但 DNS 仍返回 temporary failure in name resolution，因此没有把真实浏览器 / iPhone / Lighthouse 标记为通过。
 
 ## 当前结论
 当前状态：**V1 Candidate+ / 功能冻结**。

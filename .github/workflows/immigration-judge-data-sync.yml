@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "scripts/import-eoir-judge-stats.py"
+      - "scripts/import-eoir-judge-stats-v2.py"
       - ".github/workflows/immigration-judge-data-sync.yml"
   schedule:
     - cron: "25 10 3 * *"
@@ -28,6 +28,8 @@ jobs:
       EOIR_JUDGE_SOURCE_NAME: EOIR FOIA case data processed by Deportation Data Project
       EOIR_JUDGE_SOURCE_URL: https://deportationdata.org/data/processed/eoir.html
       EOIR_JUDGE_SOURCE_DATE: "2026-07-01"
+      EOIR_JUDGE_SCOPE_START: "2020-01-01"
+      EOIR_JUDGE_SCOPE_END: "2026-07-01"
       ASYLUMTRACKER_MANIFEST_URL: https://asylumtracker.com/data/dataset-manifest.json
     steps:
       - uses: actions/checkout@v4
@@ -60,7 +62,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          python scripts/import-eoir-judge-stats.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
+          python scripts/import-eoir-judge-stats-v2.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
 
       - name: Verify public judge API
         shell: bash
@@ -77,7 +79,7 @@ jobs:
           courts=int(data.get('courts') or 0)
           decisions=int(data.get('decisions') or 0)
           print({'judges':judges,'courts':courts,'decisions':decisions})
-          if judges < 800 or courts < 50 or decisions < 100000:
+          if judges < 900 or courts < 50 or decisions < 100000:
               raise SystemExit('public API verification failed')
           PY
           } 2>&1 | tee -a /tmp/immigration-judge-sync.log
@@ -100,13 +102,15 @@ jobs:
           except Exception:
               stats={}
           try:
-              diagnostics=open('/tmp/immigration-judge-sync.log',errors='replace').read().splitlines()[-120:]
+              diagnostics=open('/tmp/immigration-judge-sync.log',errors='replace').read().splitlines()[-160:]
           except Exception:
               diagnostics=[]
           report={
               'generated_at': datetime.now(timezone.utc).isoformat(),
               'status': os.environ.get('JOB_STATUS','unknown'),
               'source_snapshot_date': os.environ.get('EOIR_JUDGE_SOURCE_DATE'),
+              'scope_start': os.environ.get('EOIR_JUDGE_SCOPE_START'),
+              'scope_end': os.environ.get('EOIR_JUDGE_SCOPE_END'),
               'source': os.environ.get('EOIR_JUDGE_SOURCE_URL'),
               'public_stats': {
                   'judges': stats.get('judges',0),

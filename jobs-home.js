@@ -1,5 +1,5 @@
 (() => {
-  const endpoint = '/.netlify/functions/public-jobs?limit=6&sort=latest';
+  const endpoint = '/.netlify/functions/public-jobs?limit=6&sort=blue_collar';
   const formatLocation = (job) => [job.neighborhood, job.borough, job.city, job.state_code].filter(Boolean).join(' · ');
   const formatSalary = (job) => {
     const min = Number(job.salary_min || 0);
@@ -41,10 +41,10 @@
     section.className = 'container jobs-home-r3';
     section.innerHTML = `
       <div class="jobs-home-r3-head">
-        <div><h2>招聘求职</h2><p>先看工作：优先展示正在招聘的岗位，进入后可按附近位置、中文地区或地图继续找。</p></div>
+        <div><h2>招聘求职</h2><p>先看工作：优先展示餐饮、装修、物流仓库、司机、零售、美业和家政护理等华人高频岗位。</p></div>
         <a href="/jobs/">更多工作 ›</a>
       </div>
-      <div class="jobs-home-r3-list" id="jobs-home-r3-list"><div class="jobs-home-r3-empty">正在读取最新招聘岗位…</div></div>
+      <div class="jobs-home-r3-list" id="jobs-home-r3-list"><div class="jobs-home-r3-empty">正在读取推荐招聘岗位…</div></div>
     `;
     if (anchor) main.insertBefore(section, anchor); else main.appendChild(section);
     return section.querySelector('#jobs-home-r3-list');

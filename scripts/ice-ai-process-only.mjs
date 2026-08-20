@@ -26,6 +26,13 @@ function patchSource(source) {
   }
   output = output.replace(modeNeedle, modeReplacement);
 
+  const fatalNeedle = `    console.error(\`处理\${post.x_post_id}失败：\`, error.message);\n    return null;`;
+  const fatalReplacement = `    console.error(\`处理\${post.x_post_id}失败：\`, error.message);\n    if (/no credits remaining|insufficient_quota|billing|quota/i.test(String(error.message || error))) {\n      throw error;\n    }\n    return null;`;
+  if (!output.includes(fatalNeedle)) {
+    throw new Error("无法定位ICE单帖错误处理代码");
+  }
+  output = output.replace(fatalNeedle, fatalReplacement);
+
   const collectNeedle = `  const seed = await loadSeedSources();\n  await syncSources(seed);\n  let sources = await enabledSources();\n  sources = await validateSources(sources);\n  if (sources.length < 50) throw new Error(\`启用ICE信源少于50个：\${sources.length}\`);\n\n  const allQueries = buildQueries(sources);\n  const queries = selectQueriesForRun(allQueries);\n  console.log(\n    \`启用信源\${sources.length}个，全部查询批次\${allQueries.length}个，本轮执行\${queries.length}个\`\n  );\n\n  let collected = 0;\n  for (const query of queries) collected += await collectQuery(query);`;
 
   const collectReplacement = `  let collected = 0;\n  if (MODE !== "process") {\n    const seed = await loadSeedSources();\n    await syncSources(seed);\n    let sources = await enabledSources();\n    sources = await validateSources(sources);\n    if (sources.length < 50) throw new Error(\`启用ICE信源少于50个：\${sources.length}\`);\n\n    const allQueries = buildQueries(sources);\n    const queries = selectQueriesForRun(allQueries);\n    console.log(\n      \`启用信源\${sources.length}个，全部查询批次\${allQueries.length}个，本轮执行\${queries.length}个\`\n    );\n    for (const query of queries) collected += await collectQuery(query);\n  } else {\n    console.log("ICE AI process-only：跳过X采集，仅处理数据库待办稿件");\n  }`;
@@ -33,7 +40,8 @@ function patchSource(source) {
   if (!output.includes(collectNeedle)) {
     throw new Error("无法定位ICE采集主流程代码");
   }
-  return output.replace(collectNeedle, collectReplacement);
+  output = output.replace(collectNeedle, collectReplacement);
+  return output;
 }
 
 async function run() {

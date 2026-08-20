@@ -6,6 +6,14 @@
   function rendered(el){if(!el)return false;const s=getComputedStyle(el),r=el.getBoundingClientRect(),hiddenAncestor=el.closest('[hidden],[aria-hidden="true"]');return !hiddenAncestor&&s.display!=='none'&&s.visibility!=='hidden'&&s.pointerEvents!=='none'&&r.width>0&&r.height>0}
   function visible(el){if(!rendered(el))return false;const r=el.getBoundingClientRect();return r.bottom>0&&r.right>0&&r.top<window.innerHeight&&r.left<window.innerWidth}
   function text(el){return (el?.textContent||'').replace(/\s+/g,' ').trim()}
+  function accessibleName(el){
+    const aria=(el.getAttribute('aria-label')||'').trim();if(aria)return aria;
+    const labelledby=(el.getAttribute('aria-labelledby')||'').trim();if(labelledby){const label=labelledby.split(/\s+/).map(id=>text(document.getElementById(id))).filter(Boolean).join(' ');if(label)return label}
+    const own=text(el);if(own)return own;
+    const title=(el.getAttribute('title')||'').trim();if(title)return title;
+    const placeholder=(el.getAttribute('placeholder')||'').trim();if(placeholder)return placeholder;
+    return '';
+  }
   function result(name,fn,severity='fail'){
     try{const value=fn();if(value===true)return {name,status:'pass',detail:'通过'};if(value&&typeof value==='object'&&'ok'in value)return {name,status:value.ok?'pass':severity,detail:value.detail||String(value.ok)};return {name,status:value?'pass':severity,detail:value?'通过':'未通过'}}catch(e){return {name,status:severity,detail:e?.message||String(e)}}
   }
@@ -16,7 +24,8 @@
     const weak=$$('a,button,input').filter(el=>!el.disabled&&!el.classList.contains('finance-skip-link')&&scope(el)).filter(el=>{const r=el.getBoundingClientRect();return r.width<limit||r.height<limit}).slice(0,16).map(el=>`${el.tagName.toLowerCase()}:${text(el).slice(0,18)||el.getAttribute('aria-label')||el.id||'未命名'} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`);
     return {limit,weak};
   }
-  function surfaceAudit(){const overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;return {overflow:Math.max(0,Math.round(overflow)),forbidden:badInteractive(false),targets:targetAudit(false)}}
+  function unnamedInteractive(){return $$('a,button,input,[tabindex="0"]').filter(el=>rendered(el)&&!el.disabled&&!el.classList.contains('finance-skip-link')).filter(el=>!accessibleName(el)).slice(0,16).map(el=>`${el.tagName.toLowerCase()}#${el.id||'-'}.${el.className&&typeof el.className==='string'?el.className.split(/\s+/).filter(Boolean).slice(0,2).join('.'):''}`)}
+  function surfaceAudit(){const overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;return {overflow:Math.max(0,Math.round(overflow)),forbidden:badInteractive(false),targets:targetAudit(false),unnamed:unnamedInteractive()}}
   function commonChecks(){
     const dups=duplicateIds(),surface=surfaceAudit(),viewportTargets=targetAudit(true);
     return [
@@ -25,6 +34,7 @@
       result('无重复 ID',()=>({ok:dups.length===0,detail:dups.length?`重复：${dups.join(', ')}`:'0 个重复 ID'})),
       result('当前视口无横向溢出',()=>({ok:surface.overflow<=3,detail:`scrollWidth 差值 ${surface.overflow}px`})),
       result('当前渲染页面无交易/开户交互入口',()=>({ok:surface.forbidden.length===0,detail:surface.forbidden.length?surface.forbidden.join('；'):'未发现 Trade/交易/开户/下单/申购/购买/KYC 入口'})),
+      result('可操作控件均有可访问名称',()=>({ok:surface.unnamed.length===0,detail:surface.unnamed.length?`缺少名称：${surface.unnamed.join('；')}`:'当前渲染页面控件名称完整'})),
       result('运行时生命周期已加载',()=>({ok:!!window.FinanceRuntimeHealth,detail:window.FinanceRuntimeHealth?'FinanceRuntimeHealth 可用':'等待 runtime-lifecycle.js'}),'warn'),
       result('首屏触控目标尺寸扫描',()=>({ok:viewportTargets.weak.length===0,detail:viewportTargets.weak.length?`小于${viewportTargets.limit}px：${viewportTargets.weak.join('；')}`:`首屏未发现小于${viewportTargets.limit}px的可操作目标`}),'warn'),
       result('当前页面全长触控目标扫描',()=>({ok:surface.targets.weak.length===0,detail:surface.targets.weak.length?`小于${surface.targets.limit}px：${surface.targets.weak.join('；')}`:`当前渲染页面未发现小于${surface.targets.limit}px的可操作目标`}),'warn')

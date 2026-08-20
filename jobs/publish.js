@@ -5,6 +5,8 @@
   const $ = (id) => document.getElementById(id);
   let currentUser = null;
   let preparedPhoto = null;
+  let discoveryAreas = [];
+  let resolvedLocation = null;
 
   function setStatus(message) { $('publish-status').textContent = message || ''; }
   function toggleSignedIn(user) {
@@ -17,6 +19,33 @@
     const {data,error} = await client.from('job_categories').select('slug,label_zh').eq('is_active',true).order('sort_order');
     if (error) { setStatus(`分类读取失败：${error.message}`); return; }
     $('category').innerHTML = (data || []).map((row) => `<option value="${row.slug}">${row.label_zh}</option>`).join('');
+  }
+
+  async function loadLocationCatalog() {
+    discoveryAreas = await window.JobsR3Location?.loadAreas(client) || [];
+  }
+
+  function renderLocationResolution() {
+    const input = $('location-text').value.trim();
+    resolvedLocation = window.JobsR3Location?.resolve(input, discoveryAreas) || null;
+    const box = $('location-resolution');
+    if (!input) {
+      box.className = 'muted';
+      box.textContent = '填写后系统自动识别，不需要再选州、县或区。';
+      return;
+    }
+    if (!resolvedLocation) {
+      box.className = 'location-warn';
+      box.textContent = '暂时没有识别这个地点。请写“城市 + 州”，例如“威斯康星麦迪逊”或“Madison WI”。';
+      return;
+    }
+    if (!resolvedLocation.city) {
+      box.className = 'location-warn';
+      box.textContent = `已识别 ${resolvedLocation.state_code}，但还需要一个城市或具体地区。`;
+      return;
+    }
+    box.className = 'location-ok';
+    box.textContent = `已自动定位：${resolvedLocation.label || `${resolvedLocation.city}, ${resolvedLocation.state_code}`}`;
   }
 
   async function login() {
@@ -62,6 +91,8 @@
     const contactValue = $('contact-value').value.trim() || null;
     if (contactMethod !== 'platform' && !contactValue) throw new Error('电话、短信或Email方式需要填写联系方式');
     if ($('salary-min').value && $('salary-max').value && Number($('salary-max').value) < Number($('salary-min').value)) throw new Error('最高薪资不能低于最低薪资');
+    renderLocationResolution();
+    if (!resolvedLocation?.state_code || !resolvedLocation?.city) throw new Error('请填写可以识别的美国城市或地区，例如“纽约法拉盛”或“威斯康星麦迪逊”');
     return {
       employer_user_id: currentUser.id,
       category_slug: $('category').value,
@@ -72,11 +103,13 @@
       salary_max: numberOrNull($('salary-max').value),
       salary_period: $('salary-period').value || null,
       country_code: 'US',
-      state_code: $('state').value.trim().toUpperCase(),
-      city: $('city').value.trim(),
-      county: $('county').value.trim() || null,
-      borough: $('borough').value.trim() || null,
-      neighborhood: $('neighborhood').value.trim() || null,
+      state_code: resolvedLocation.state_code,
+      city: resolvedLocation.city,
+      county: resolvedLocation.county || null,
+      borough: resolvedLocation.borough || null,
+      neighborhood: resolvedLocation.neighborhood || null,
+      latitude: Number.isFinite(resolvedLocation.latitude) ? resolvedLocation.latitude : null,
+      longitude: Number.isFinite(resolvedLocation.longitude) ? resolvedLocation.longitude : null,
       contact_method: contactMethod,
       contact_value: contactValue,
       contact_public: $('contact-public').checked && contactMethod !== 'platform',
@@ -106,7 +139,11 @@
       if (error) throw error;
       await uploadPhoto(data.id);
       setStatus(status === 'open' ? `发布成功。岗位ID：${data.id}` : `草稿已保存。岗位ID：${data.id}`);
-      if (status === 'open') $('publish-form').reset();
+      if (status === 'open') {
+        $('publish-form').reset();
+        resolvedLocation = null;
+        renderLocationResolution();
+      }
     } catch (error) {
       setStatus(`操作失败：${error.message}`);
     } finally { btn.disabled = false; }
@@ -117,11 +154,14 @@
   $('save-draft-btn').addEventListener('click', () => save('draft'));
   $('photo').addEventListener('change', () => handlePhoto().catch((error) => { preparedPhoto=null; setStatus(error.message); }));
   $('contact-method').addEventListener('change', () => { $('contact-value-row').classList.toggle('hidden', $('contact-method').value === 'platform'); });
+  $('location-text').addEventListener('input', renderLocationResolution);
+  $('location-text').addEventListener('blur', renderLocationResolution);
 
   document.addEventListener('DOMContentLoaded', async () => {
-    await loadCategories();
+    await Promise.all([loadCategories(),loadLocationCatalog()]);
     const {data} = await client.auth.getSession();
     toggleSignedIn(data.session?.user || null);
     $('contact-value-row').classList.add('hidden');
+    renderLocationResolution();
   });
 })();

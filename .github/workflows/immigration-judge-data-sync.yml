@@ -131,3 +131,5 @@ jobs:
             git commit -m "Update immigration judge data sync report [skip ci]"
             git push
           fi
+
+# Rerun marker: service_role grants repaired on 2026-08-20.

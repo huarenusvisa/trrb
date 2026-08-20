@@ -47,14 +47,19 @@
       "releaseNo": "66",
       "publicationDate": "2026-06-30",
       "docket": "25-365",
-      "caseName": "Trump v. Barbara",
+      "caseName": "Trump v. Barbara Revisions : 7/01/26",
       "justice": "R",
       "officialCitation": "609/2",
       "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-365_new_5if6.pdf",
       "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/25-365_new_5if6.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": []
+      "revisions": [
+        {
+          "date": "2026-07-01",
+          "url": "https://www.supremecourt.gov/opinions/25pdf/25-365_diff_ed9g.pdf"
+        }
+      ]
     },
     {
       "source": "SCOTUS",
@@ -98,14 +103,19 @@
       "releaseNo": "62",
       "publicationDate": "2026-06-29",
       "docket": "25-332",
-      "caseName": "Trump v. Slaughter",
+      "caseName": "Trump v. Slaughter Revisions : 7/07/26",
       "justice": "R",
       "officialCitation": "609/2",
       "officialUrl": "https://www.supremecourt.gov/opinions/25pdf/25-332_new_geil.pdf",
       "officialPdfUrl": "https://www.supremecourt.gov/opinions/25pdf/25-332_new_geil.pdf",
       "precedentialStatus": "opinion_of_the_court",
       "jurisdiction": "United States",
-      "revisions": []
+      "revisions": [
+        {
+          "date": "2026-07-07",
+          "url": "https://www.supremecourt.gov/opinions/25pdf/25-332_diff_bq7d.pdf"
+        }
+      ]
     },
     {
       "source": "SCOTUS",

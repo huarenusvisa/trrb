@@ -180,10 +180,13 @@
   }
 
   function replaceJudgeCard(root) {
-    const card = root.querySelector("#china") || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "中国官场");
-    if (!card || card.dataset.judgeHub === "true") return;
+    const card = root.querySelector("#judge-home-hub") || root.querySelector("#china") || Array.from(root.querySelectorAll(".news-box")).find((item) => ["中国官场", "移民法官通过率"].includes(item.querySelector("h2")?.textContent.trim()));
+    if (!card) return;
+    const alreadyRendered = card.dataset.judgeHub === "true" && Boolean(card.querySelector('.immigration-hub-grid'));
+    if (alreadyRendered) return;
     card.dataset.judgeHub = "true";
     card.id = "judge-home-hub";
+    card.classList.remove("category-empty");
     card.classList.add("immigration-knowledge-card", "legal-knowledge-card", "judge-knowledge-card");
     card.innerHTML = judgeMarkup();
   }

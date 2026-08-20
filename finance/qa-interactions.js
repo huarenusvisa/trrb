@@ -13,6 +13,7 @@
     const audit=win.FinanceAcceptance?.auditSurface?.();if(!audit){items.push(result(`交互：${label}页面审计`,false,'FinanceAcceptance.auditSurface 不可用','warn'));return}
     items.push(result(`交互：${label}无横向溢出`,audit.overflow<=3,`scrollWidth 差值 ${audit.overflow}px`));
     items.push(result(`交互：${label}无交易/开户入口`,audit.forbidden.length===0,audit.forbidden.length?audit.forbidden.join('；'):'未发现禁区入口'));
+    items.push(result(`交互：${label}控件名称完整`,audit.unnamed.length===0,audit.unnamed.length?`缺少名称：${audit.unnamed.join('；')}`:'可操作控件均有可访问名称'));
     items.push(result(`交互：${label}全长触控目标`,audit.targets.weak.length===0,audit.targets.weak.length?`小于${audit.targets.limit}px：${audit.targets.weak.join('；')}`:`未发现小于${audit.targets.limit}px的可操作目标`,'warn'))
   }
   async function home(win,items){

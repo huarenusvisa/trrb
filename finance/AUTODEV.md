@@ -78,11 +78,16 @@
 - 第35轮：增加 BFCache 四类状态回归和 synthetic click=0 断言；确认 GitHub 连接器可以枚举 A 版 `finance/` 目录。
 
 ### 第36轮：本地 QA 传输通道实测与 A 版一致性复核
-- 已重新读取权威 checkpoint 并枚举 `finance-v1-preview/finance/` 全目录；A 版关键运行文件、QA 文件均可由 GitHub 连接器读取。
-- 容器当前确有 Chromium + Python Playwright，但容器仍无法 DNS 解析 `github.com` / `raw.githubusercontent.com` / RawGitHack，因此不能直接通过 HTTP 下载 A 版。
-- GitHub 连接器当前没有“把目录/文件直接写入容器文件系统”的动作；连接器返回的是内容资源，无法被本地 Chromium 直接挂载。因此本轮未能完整重建 16-case 到本地执行环境。
-- 已核验 A 版 `feature-flags.js`：`brokerage=false`、`liveMarketData=false`、`trading=false`，未发生交易能力误开放。
-- 开发分支相对最新 `main` 当前为 `ahead 190 / behind 94`；未 merge/rebase，当前 compare 差异仍集中在 `finance/`。
+- A 版关键运行文件、QA 文件均可由 GitHub 连接器读取。
+- Chromium + Python Playwright 可用，但容器无法 DNS 解析 GitHub / RawGitHack，不能直接 HTTP 下载 A 版。
+- GitHub 连接器没有直接把目录/文件写入容器的动作，因此尚未完整重建 16-case 到本地执行环境。
+- A 版交易能力保持关闭；未虚报真实浏览器 / iPhone / Lighthouse PASS。
+
+### 第37轮：真实 QA 执行环境复测
+- 再次实测容器：`/usr/bin/chromium` 存在，Python Playwright 可导入；浏览器执行能力本身正常。
+- 再次实测 DNS：`github.com`、`raw.githubusercontent.com`、`raw.githack.com` 仍全部返回 `Temporary failure in name resolution`。
+- 因真实 16-case 仍无法取得 A 版源码，本轮严格保持功能冻结，没有修改 `app.js`、恢复状态机、图表或产品交互，避免在无回归条件下引入风险。
+- 当前阻塞仍是“GitHub 连接器内容无法直接落盘到本地容器”；这是执行通道问题，不是产品功能缺陷。
 - 未虚报 16-case、iPhone / Safari、桌面或 Lighthouse PASS。
 
 ## 当前结论

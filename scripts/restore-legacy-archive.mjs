@@ -86,18 +86,21 @@ const cats=new Map(categories.map((c)=>[clean(c.name),c]));
 const legacy=new Set();
 const titleKeys=new Set();
 for (const row of existing) {
-  const l=clean(row.legacy_id); if(l){ legacy.add(l); legacy.add(l.replace(/^wp-/i,'')); legacy.add(/^\d+$/.test(l)?`wp-${l}`:''); }
+  const l=clean(row.legacy_id);
+  if(l){ legacy.add(l); legacy.add(l.replace(/^wp-/i,'')); if(/^\d+$/.test(l)) legacy.add(`wp-${l}`); }
   const t=normalizeTitle(row.title); if(t) titleKeys.add(t);
 }
+const plannedLegacy=new Set(legacy);
+const plannedTitles=new Set(titleKeys);
 const skipped={existing_legacy:0,existing_title:0,no_body:0,bad_id:0,bad_date:0,unknown_category:0};
 const candidates=[];
 for (const row of archiveRows) {
   const id=clean(row.id);
   if(!/^wp-\d+$/i.test(id)){ skipped.bad_id++; continue; }
-  if(legacy.has(id)||legacy.has(id.replace(/^wp-/i,''))){ skipped.existing_legacy++; continue; }
+  const numeric=id.replace(/^wp-/i,'');
+  if(plannedLegacy.has(id)||plannedLegacy.has(numeric)){ skipped.existing_legacy++; continue; }
   const title=clean(row.title); const titleKey=normalizeTitle(title);
-  if(!titleKey){ skipped.existing_title++; continue; }
-  if(titleKeys.has(titleKey)){ skipped.existing_title++; continue; }
+  if(!titleKey || plannedTitles.has(titleKey)){ skipped.existing_title++; continue; }
   const body=Array.isArray(row.body)?row.body.map(clean).filter(Boolean):[];
   const content=body.join('\n\n');
   if(content.length<180){ skipped.no_body++; continue; }
@@ -113,6 +116,7 @@ for (const row of archiveRows) {
     canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`,
     metadata:{migration_source:'github-static-archive',archive_file:row.__file,archive_id:id,archive_date:clean(row.date),archive_time:clean(row.time),restored_at:new Date().toISOString()}
   });
+  plannedLegacy.add(id); plannedLegacy.add(numeric); plannedTitles.add(titleKey);
 }
 const selected=candidates.slice(0,LIMIT);
 let inserted=[];

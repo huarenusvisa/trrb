@@ -37,27 +37,40 @@ jobs:
           python-version: "3.12"
 
       - name: Install data pipeline dependencies
-        run: python -m pip install --disable-pip-version-check duckdb requests
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m pip install --disable-pip-version-check duckdb requests 2>&1 | tee -a /tmp/immigration-judge-sync.log
 
       - name: Download July 2026 processed EOIR case snapshot
+        shell: bash
         run: |
           set -euo pipefail
-          curl --fail --location --retry 5 --retry-delay 5 \
-            --output "$EOIR_PARQUET_PATH" \
-            "https://media.githubusercontent.com/media/deportationdata/eoir/main/data/cases.parquet"
-          test "$(stat -c%s "$EOIR_PARQUET_PATH")" -gt 50000000
-          sha256sum "$EOIR_PARQUET_PATH"
+          {
+            echo "Downloading processed EOIR snapshot..."
+            curl --fail --location --retry 5 --retry-delay 5 \
+              --output "$EOIR_PARQUET_PATH" \
+              "https://media.githubusercontent.com/media/deportationdata/eoir/main/data/cases.parquet"
+            stat -c 'downloaded_bytes=%s' "$EOIR_PARQUET_PATH"
+            test "$(stat -c%s "$EOIR_PARQUET_PATH")" -gt 50000000
+            sha256sum "$EOIR_PARQUET_PATH"
+          } 2>&1 | tee -a /tmp/immigration-judge-sync.log
 
       - name: Aggregate and import judge asylum statistics
-        run: python scripts/import-eoir-judge-stats.py
+        shell: bash
+        run: |
+          set -o pipefail
+          python scripts/import-eoir-judge-stats.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
 
       - name: Verify public judge API
+        shell: bash
         run: |
           set -euo pipefail
-          sleep 5
-          curl --fail --silent --show-error \
-            "https://trrb.net/.netlify/functions/immigration-judges?mode=stats" | tee /tmp/judge-stats.json
-          python - <<'PY'
+          {
+            sleep 5
+            curl --fail --silent --show-error \
+              "https://trrb.net/.netlify/functions/immigration-judges?mode=stats" | tee /tmp/judge-stats.json
+            python - <<'PY'
           import json
           data=json.load(open('/tmp/judge-stats.json'))
           judges=int(data.get('judges') or 0)
@@ -67,6 +80,7 @@ jobs:
           if judges < 800 or courts < 50 or decisions < 100000:
               raise SystemExit('public API verification failed')
           PY
+          } 2>&1 | tee -a /tmp/immigration-judge-sync.log
 
       - name: Publish observable sync report
         if: always()
@@ -85,6 +99,10 @@ jobs:
               stats=json.load(open('/tmp/judge-public-stats.json'))
           except Exception:
               stats={}
+          try:
+              diagnostics=open('/tmp/immigration-judge-sync.log',errors='replace').read().splitlines()[-120:]
+          except Exception:
+              diagnostics=[]
           report={
               'generated_at': datetime.now(timezone.utc).isoformat(),
               'status': os.environ.get('JOB_STATUS','unknown'),
@@ -95,6 +113,7 @@ jobs:
                   'courts': stats.get('courts',0),
                   'decisions': stats.get('decisions',0),
               },
+              'diagnostics_tail': diagnostics,
           }
           with open('reports/immigration-judge-data-sync-latest.json','w') as f:
               json.dump(report,f,ensure_ascii=False,indent=2)

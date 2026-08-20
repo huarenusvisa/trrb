@@ -13,30 +13,6 @@
 /finance/*
   X-Robots-Tag: noindex, follow, noarchive
 
-/jobs/
-  X-Robots-Tag: noindex, follow, noarchive
-
-/jobs/*
-  X-Robots-Tag: noindex, follow, noarchive
-
-/jobs/search.html
-  X-Robots-Tag: noindex, follow, noarchive
-
-/jobs/publish.html
-  X-Robots-Tag: noindex, follow, noarchive
-
-/jobs/seeker.html
-  X-Robots-Tag: noindex, follow, noarchive
-
-/jobs/manage.html
-  X-Robots-Tag: noindex, follow, noarchive
-
-/jobs/contact.html
-  X-Robots-Tag: noindex, follow, noarchive
-
-/jobs/review.html
-  X-Robots-Tag: noindex, follow, noarchive
-
 /expose
   X-Robots-Tag: noindex, follow, noarchive
 

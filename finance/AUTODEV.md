@@ -130,6 +130,9 @@
 - [x] `resilience` / `navigation-memory` 在首页、个股、ETF 中显式确定加载
 - [x] 搜索结果 `aria-selected` / `aria-activedescendant` 与视觉高亮同步
 - [x] 搜索焦点离开、Escape、系统清除按钮后的状态统一收口
+- [x] `runtime-lifecycle.js` 浏览器生命周期与 BFCache 临时状态清理
+- [x] Safari / BFCache `pageshow.persisted` 返回恢复路径
+- [x] 返回/切前台时搜索、键盘、Toast、图表读数和 sticky 状态重新同步
 - [x] 美股三大指数 / 热力图 / Top Movers
 - [x] Earnings / Upcoming / Macro / Crypto
 - [x] 自选本地状态
@@ -285,5 +288,13 @@
 - 搜索框失焦、Escape、系统清除按钮、上下键 / Enter 后统一清理或同步旧高亮状态，降低键盘与 iPhone 搜索交互状态冲突。
 - A 版预览已同步为相同依赖顺序和搜索逻辑；本轮仍只做静态代码复核，不宣称 Lighthouse 或真机最终 PASS。
 
+### 第十七轮：Safari / BFCache 运行时生命周期收口
+- 新增 `runtime-lifecycle.js`，专门处理页面离开、浏览器返回缓存、后台切前台、方向切换和窗口重新获得焦点时的临时 UI 状态。
+- `pagehide` 时关闭搜索浮层、清理 `aria-activedescendant`、移除残留 Toast、隐藏图表演示读数和键盘打开标记，避免这些短暂状态被 BFCache 原样带回。
+- `pageshow` / 前台恢复时重新计算 `visualViewport` 高度、顶部紧凑状态、详情 sticky 状态，并通过 resize / scroll 重新同步现有监听器。
+- `navigation-memory.js` 现在直接读取 `pageshow.persisted`，Safari 使用 BFCache 返回时不再只依赖 Performance Navigation 类型判断。
+- 运行时层提供只读 `FinanceRuntimeHealth.snapshot()`，后续真机验收可检查 BFCache 恢复次数、恢复时间、网络与视口状态，不影响用户界面。
+- 本轮不修改行情数据、自选、提醒或交易边界；A 版预览已同步。本轮仍属于静态逻辑复核，不标记 iPhone / PC 真机或 Lighthouse 最终 PASS。
+
 ## 当前结论
-当前仍定义为 **V1 Candidate+**。四个一级页面、个股和 ETF 详情已经形成一致的高级视觉与交互语言，主要假交互、空状态、弱网失效路径、详情返回上下文和搜索辅助状态已逐步收口。下一阶段仍以实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复为主，完成后再标记 `V1 Complete`。
+当前仍定义为 **V1 Candidate+**。四个一级页面、个股和 ETF 详情已经形成一致的高级视觉与交互语言，主要假交互、空状态、弱网失效路径、详情返回上下文、搜索辅助状态和浏览器生命周期残留已逐步收口。下一阶段仍以实际 iPhone / PC 一屏一屏验收、Lighthouse 运行时检查和极少量问题修复为主，完成后再标记 `V1 Complete`。

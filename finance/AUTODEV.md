@@ -150,6 +150,8 @@
 - [x] Safari 多个恢复事件合并为单次 runtime resume
 - [x] 返回位置 `sessionStorage` 滚动写入改为节流保存
 - [x] `qa=1` 可选运行时验收诊断层，不进入正常用户加载路径
+- [x] 多视口 QA 套件自动覆盖首页 / AAPL / QQQ 的 360 / 390 / 430 / 1280px
+- [x] 嵌入式 QA 报告通过同源 postMessage 汇总，不在子页面弹诊断面板
 - [x] 美股三大指数 / 热力图 / Top Movers
 - [x] Earnings / Upcoming / Macro / Crypto
 - [x] 自选本地状态
@@ -352,5 +354,14 @@
 - QA 面板支持重跑、复制 JSON 结果、BFCache / resume 后重新检查；正常用户不带 `qa=1` 时不会下载该脚本，不增加正常首屏负担。
 - A 版预览已同步本轮功能文件；开发/预览的 QA 规则已统一。本轮建立的是运行时验收工具和代码级修复，尚未把实际 iPhone / PC / Lighthouse 验收标记为通过。
 
+### 第二十二轮：多视口自动验收套件
+- 新增 `qa-suite.html`，作为完全独立、`noindex,nofollow` 的开发验收页，不进入唐人财经正常用户导航与加载路径。
+- 套件顺序运行 12 个独立 case：首页、AAPL 个股、QQQ ETF 分别在 360×667、390×844、430×932、1280×900 的 iframe 视口中重新加载并执行现有 `acceptance-check.js`。
+- `acceptance-check.js` 增加 `qaEmbed=1` 嵌入模式：子页面不显示浮动 QA 面板，而是将完整报告通过同源 `postMessage` 交给父级验收页；单独 `qa=1` 的人工诊断方式保持不变。
+- 每个 case 都加入 `qaRun` cache-buster，并保证参数插入在 hash 之前，避免连续测试同一页面不同宽度时只发生 hash 导航而复用上一视口 DOM。
+- 验收页汇总 Cases / Pass / Fail / Warn、逐 case 的失败/警告摘要、进度，并支持重新运行与复制完整 JSON 报告；单个子页面 8 秒未回报会明确记为 FAIL。
+- 本轮只建立批量运行基础设施，没有把自动套件存在本身当成真机视觉验收 PASS；iPhone/PC 最终画面仍需要真实设备人工确认，Lighthouse 仍是独立待验收项。
+- 已同步 `qa-suite.html` 与嵌入式 `acceptance-check.js` 到 `finance-v1-preview`。
+
 ## 当前结论
-当前仍定义为 **V1 Candidate+**。功能扩展保持冻结。第21轮已把封板前可静态发现的搜索、清除状态、K线周期语义、sticky 报价一致性问题继续收口，并建立 `qa=1` 可重复运行时诊断层。下一阶段应直接使用实际 iPhone 360/390/430 与桌面浏览器运行 QA，并补 Lighthouse / 运行时无障碍与性能验收；只修验收发现的具体问题，全部通过后再标记 `V1 Complete`。
+当前仍定义为 **V1 Candidate+**。功能扩展继续冻结。第22轮把原先逐页面的 `qa=1` 诊断升级为一次可跑 12 个关键视口的批量验收套件，后续可以更快定位只在某一尺寸或某一页面出现的横向溢出、触控目标、DOM/ARIA 与运行时问题。下一阶段应直接运行预览分支的 `qa-suite.html`，根据 FAIL/WARN 逐项修复，并同时完成人工 iPhone / PC 视觉检查与 Lighthouse；只有全部关闭后才标记 `V1 Complete`。

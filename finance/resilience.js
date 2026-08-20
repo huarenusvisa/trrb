@@ -1,6 +1,7 @@
 (function(){
   if(window.__financeResilienceLoaded)return;window.__financeResilienceLoaded=true;
   if(!document.querySelector('script[data-finance-runtime],script[src="./runtime-lifecycle.js"],script[src$="/runtime-lifecycle.js"]')){const s=document.createElement('script');s.src='./runtime-lifecycle.js';s.defer=true;s.dataset.financeRuntime='1';document.head.appendChild(s)}
+  try{if(new URLSearchParams(location.search).get('qa')==='1'&&!document.querySelector('script[data-finance-qa],script[src="./acceptance-check.js"],script[src$="/acceptance-check.js"]')){const s=document.createElement('script');s.src='./acceptance-check.js';s.defer=true;s.dataset.financeQa='1';document.head.appendChild(s)}}catch(e){}
   const $=(s,r=document)=>r.querySelector(s);const main=$('main');if(!main)return;
   if(!main.id)main.id='financeMain';
   if(!$('.finance-skip-link')){const skip=document.createElement('a');skip.className='finance-skip-link';skip.href='#financeMain';skip.textContent='跳到主要内容';document.body.prepend(skip)}

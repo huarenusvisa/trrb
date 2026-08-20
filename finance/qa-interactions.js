@@ -9,11 +9,14 @@
   function snapshot(storage){const out={};try{for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&k.startsWith('trfinance.'))out[k]=storage.getItem(k)}}catch(e){}return out}
   function restore(storage,snap){try{const keys=[];for(let i=0;i<storage.length;i++){const k=storage.key(i);if(k&&k.startsWith('trfinance.'))keys.push(k)}keys.forEach(k=>storage.removeItem(k));Object.entries(snap).forEach(([k,v])=>storage.setItem(k,v))}catch(e){}}
   function sameSnapshot(a,b){const ak=Object.keys(a).sort(),bk=Object.keys(b).sort();return ak.length===bk.length&&ak.every((k,i)=>k===bk[i]&&a[k]===b[k])}
+  const sameList=(a,b)=>Array.isArray(a)&&Array.isArray(b)&&a.length===b.length&&a.every((x,i)=>x===b[i]);
   function text(el){return (el?.textContent||'').replace(/\s+/g,' ').trim()}
   function key(win,el,keyName){checkAbort();el.dispatchEvent(new win.KeyboardEvent('keydown',{key:keyName,bubbles:true,cancelable:true}))}
   async function waitFor(fn,{timeout=900,interval=24}={}){const start=Date.now();let value;while(Date.now()-start<timeout){checkAbort();try{value=fn();if(value)return value}catch(e){}await sleep(interval)}checkAbort();try{return fn()||null}catch(e){return null}}
   async function clickAndWait(el,fn,opts){checkAbort();if(!el)return null;el.click();return waitFor(fn,opts)}
   function isHidden(win,el){if(!el)return true;const s=win.getComputedStyle(el);return !!el.hidden||s.display==='none'||s.visibility==='hidden'||el.closest('[hidden],[aria-hidden="true"],[inert]')!=null}
+  function preventNavigationOnce(link){if(!link)return;link.addEventListener('click',e=>e.preventDefault(),{once:true});link.click()}
+  function dispatchPersistedPageShow(win){const e=new win.Event('pageshow');try{Object.defineProperty(e,'persisted',{value:true})}catch(err){}win.dispatchEvent(e)}
   function addSurfaceAudit(win,items,label){
     checkAbort();const audit=win.FinanceAcceptance?.auditSurface?.();if(!audit){items.push(result(`交互：${label}页面审计`,false,'FinanceAcceptance.auditSurface 不可用','warn'));return}
     items.push(result(`交互：${label}无横向溢出`,audit.overflow<=3,`scrollWidth 差值 ${audit.overflow}px`));
@@ -22,6 +25,47 @@
     items.push(result(`交互：${label}无交易/开户动作入口`,audit.forbidden.length===0,audit.forbidden.length?audit.forbidden.join('；'):'未发现禁区动作入口'));
     items.push(result(`交互：${label}控件名称完整`,audit.unnamed.length===0,audit.unnamed.length?`缺少名称：${audit.unnamed.join('；')}`:'可操作控件均有可访问名称'));
     items.push(result(`交互：${label}全长触控目标`,audit.targets.weak.length===0,audit.targets.weak.length?`小于${audit.targets.limit}px：${audit.targets.weak.join('；')}`:`未发现小于${audit.targets.limit}px的可操作目标`,'warn'))
+  }
+  async function verifyExactUndo(win,items,$,$$){
+    const D=win.FinanceData,manage=$('#watchManageBtn');if(!D||!manage){items.push(result('交互：自选撤销精确恢复',false,'缺少 FinanceData 或管理入口'));return}
+    const beforeStocks=D.getWatchlist(),beforeFunds=D.getFundWatchlist();
+    if(manage.getAttribute('aria-pressed')!=='true')await clickAndWait(manage,()=>manage.getAttribute('aria-pressed')==='true');
+    const remove=$('.watch-remove[data-symbol="AAPL"][data-type="stock"]');if(!remove){items.push(result('交互：自选撤销精确恢复',false,'管理模式下缺少 AAPL 移除按钮'));if(manage.getAttribute('aria-pressed')==='true')manage.click();return}
+    remove.click();const removed=await waitFor(()=>!D.getWatchlist().includes('AAPL')&&$('#financeToast button'));if(!removed){items.push(result('交互：删除 AAPL 后出现撤销入口',false,'删除或撤销 Toast 未建立'));return}
+    const concurrent=D.getWatchlist().filter(s=>s!=='AMZN');concurrent.push('AMZN');D.setWatchlist(concurrent);
+    const undo=$('#financeToast button');undo?.click();const restored=await waitFor(()=>sameList(D.getWatchlist(),beforeStocks)&&sameList(D.getFundWatchlist(),beforeFunds),{timeout:1200});
+    items.push(result('交互：自选撤销恢复删除前精确快照',!!restored,restored?`stocks=${D.getWatchlist().join(',')} · funds=${D.getFundWatchlist().join(',')||'空'}`:`stocks=${D.getWatchlist().join(',')} · expected=${beforeStocks.join(',')}`));
+    if(manage.getAttribute('aria-pressed')==='true')await clickAndWait(manage,()=>manage.getAttribute('aria-pressed')==='false')
+  }
+  async function verifyContextRestore(win,items,$,$$,{kind}){
+    const nav=win.FinanceNavigationMemory;if(!nav){items.push(result(`交互：${kind}详情来源恢复`,false,'FinanceNavigationMemory 不可用'));return}
+    nav.clearContext();
+    const pageTarget=kind==='watch'?'watch':'funds',pageBtn=$(`.bottom button[data-target="${pageTarget}"]`),marketBtn=$('.bottom button[data-target="market"]');
+    if(!pageBtn||!marketBtn){items.push(result(`交互：${kind}详情来源恢复`,false,'缺少一级导航按钮'));return}
+    await clickAndWait(pageBtn,()=> $(`.page[data-page="${pageTarget}"].active`));
+    let filter,link;
+    if(kind==='watch'){
+      filter=$('.watch-filter[data-filter="us"]');if(filter)await clickAndWait(filter,()=>filter.getAttribute('aria-pressed')==='true');link=$('#watchlist a.watch[href*="AAPL"]')
+    }else{
+      filter=$('.fund-cat[data-fund-filter="gold"]');if(filter&&filter.getAttribute('aria-pressed')!=='true')await clickAndWait(filter,()=>filter.getAttribute('aria-pressed')==='true');link=$('#fundList a.fund[href*="GLD"]')
+    }
+    if(!filter||!link){items.push(result(`交互：${kind}详情来源捕获`,false,'缺少筛选按钮或详情链接'));return}
+    const maxY=Math.max(0,Math.min(180,win.document.documentElement.scrollHeight-win.innerHeight));win.scrollTo({top:maxY,behavior:'auto'});await sleep(40);
+    preventNavigationOnce(link);const captured=await waitFor(()=>{const c=nav.getContext?.();return c&&c.page===pageTarget&&c.href?.includes(kind==='watch'?'AAPL':'GLD')?c:null});
+    const filterOk=kind==='watch'?captured?.watchFilter==='us':captured?.fundFilter==='gold';items.push(result(`交互：${kind==='watch'?'自选':'基金'}详情来源与筛选被捕获`,!!captured&&filterOk,captured?JSON.stringify({page:captured.page,watchFilter:captured.watchFilter,fundFilter:captured.fundFilter,scrollY:captured.scrollY,href:captured.href}):'未写入 navContext'));
+    if(!captured)return;
+    nav.markReturn();
+    if(kind==='watch')$('.watch-filter[data-filter="all"]')?.click();else if(filter.getAttribute('aria-pressed')==='true')filter.click();
+    await clickAndWait(marketBtn,()=>$('.page[data-page="market"].active'));win.scrollTo({top:0,behavior:'auto'});await sleep(40);
+    let announcer=$('#financeAnnouncer');if(!announcer){announcer=win.document.createElement('div');announcer.id='financeAnnouncer';announcer.setAttribute('aria-live','polite');win.document.body.appendChild(announcer)}announcer.textContent='qa-restore-sentinel';
+    dispatchPersistedPageShow(win);
+    const restored=await waitFor(()=>{
+      const pageOn=!!$(`.page[data-page="${pageTarget}"].active`),filterOn=filter.getAttribute('aria-pressed')==='true',scrollOk=Math.abs((win.scrollY||0)-(captured.scrollY||0))<=24;return pageOn&&filterOn&&scrollOk?{pageOn,filterOn,scrollOk}:null
+    },{timeout:1600});
+    await sleep(80);const silent=announcer.textContent==='qa-restore-sentinel'&&!nav.isRestoring?.();
+    items.push(result(`交互：${kind==='watch'?'自选→股票':'基金→ETF'} BFCache 上下文恢复`,!!restored,restored?`page=${pageTarget} · filter=${kind==='watch'?'us':'gold'} · scroll=${Math.round(win.scrollY||0)}`:`page=${$('.page.active')?.dataset.page||'none'} · scroll=${Math.round(win.scrollY||0)}`));
+    items.push(result('交互：导航恢复不触发用户操作播报',silent,`liveRegion=${announcer.textContent||'空'} · restoring=${!!nav.isRestoring?.()}`));
+    nav.clearContext()
   }
   async function home(win,items){
     const d=win.document,$=s=>d.querySelector(s),$$=s=>Array.from(d.querySelectorAll(s));
@@ -41,9 +85,12 @@
       const priceSort=$('.watch-column-head button[data-sort-key="price"]');
       if(priceSort){priceSort.click();const saved=await waitFor(()=>{try{const v=JSON.parse(win.localStorage.getItem('trfinance.watchSort')||'null');return v?.key==='price'?v:null}catch(e){return null}});items.push(result('交互：最新价排序真实生效',priceSort.getAttribute('aria-pressed')==='true'&&!!saved,saved?JSON.stringify(saved):'未保存排序状态'));const custom=$('.watch-column-head button[data-sort-key="custom"]');if(custom){custom.click();await waitFor(()=>custom.getAttribute('aria-pressed')==='true')}}
       else items.push(result('交互：自选排序按钮可操作',false,'缺少最新价排序按钮'));
+      await verifyExactUndo(win,items,$,$$);
+      await verifyContextRestore(win,items,$,$$,{kind:'watch'});
       await clickAndWait(navFunds,()=>$('.page[data-page="funds"].active'));
-      const gold=$('.fund-cat[data-fund-filter="gold"]');if(gold){gold.click();const filtered=await waitFor(()=>{const links=$$('#fundList a.fund'),status=text($('#fundFilterStatus'));return gold.getAttribute('aria-pressed')==='true'&&links.length===1&&links[0].getAttribute('href')?.includes('GLD')&&status.includes('黄金')?{links,status}:null});items.push(result('交互：黄金主题真实筛选 ETF',!!filtered,filtered?`${filtered.status} · ${filtered.links.length} 条`:`${text($('#fundFilterStatus'))} · ${$$('#fundList a.fund').length} 条`));gold.click();await waitFor(()=>gold.getAttribute('aria-pressed')==='false')}
+      const gold=$('.fund-cat[data-fund-filter="gold"]');if(gold){if(gold.getAttribute('aria-pressed')!=='true')gold.click();const filtered=await waitFor(()=>{const links=$$('#fundList a.fund'),status=text($('#fundFilterStatus'));return gold.getAttribute('aria-pressed')==='true'&&links.length===1&&links[0].getAttribute('href')?.includes('GLD')&&status.includes('黄金')?{links,status}:null});items.push(result('交互：黄金主题真实筛选 ETF',!!filtered,filtered?`${filtered.status} · ${filtered.links.length} 条`:`${text($('#fundFilterStatus'))} · ${$$('#fundList a.fund').length} 条`));if(gold.getAttribute('aria-pressed')==='true'){gold.click();await waitFor(()=>gold.getAttribute('aria-pressed')==='false')}}
       else items.push(result('交互：ETF 主题筛选可操作',false,'缺少黄金主题按钮'));
+      await verifyContextRestore(win,items,$,$$,{kind:'fund'});
       const profileOn=await clickAndWait(navProfile,()=>$('.page[data-page="profile"].active')&&win.location.hash==='#profile');items.push(result('交互：一级导航切换到我的',!!profileOn,`hash=${win.location.hash}`));addSurfaceAudit(win,items,'我的页');
       const marketOn=await clickAndWait(navMarket,()=>$('.page[data-page="market"].active')&&win.location.hash==='#market');items.push(result('交互：一级导航返回行情',!!marketOn,`hash=${win.location.hash}`));addSurfaceAudit(win,items,'行情页');
     }else items.push(result('交互：四栏导航可操作',false,'缺少行情/自选/基金/我的导航按钮'));

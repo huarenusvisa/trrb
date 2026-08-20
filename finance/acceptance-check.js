@@ -25,7 +25,12 @@
     return {limit,weak};
   }
   function unnamedInteractive(){return $$('a,button,input,[tabindex="0"]').filter(el=>rendered(el)&&!el.disabled&&!el.classList.contains('finance-skip-link')).filter(el=>!accessibleName(el)).slice(0,16).map(el=>`${el.tagName.toLowerCase()}#${el.id||'-'}.${el.className&&typeof el.className==='string'?el.className.split(/\s+/).filter(Boolean).slice(0,2).join('.'):''}`)}
-  function surfaceAudit(){const overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;return {overflow:Math.max(0,Math.round(overflow)),forbidden:badInteractive(false),targets:targetAudit(false),unnamed:unnamedInteractive()}}
+  function fixedClearance(){
+    const panel=$('.bottom')||$('.fixed'),shell=$('.app')||$('.stock-app');if(!panel||!shell||!rendered(panel))return {ok:true,detail:'当前页面无可见固定底栏'};
+    const panelRect=panel.getBoundingClientRect(),shellStyle=getComputedStyle(shell),panelStyle=getComputedStyle(panel),paddingBottom=parseFloat(shellStyle.paddingBottom)||0,bottom=Math.max(0,parseFloat(panelStyle.bottom)||0),need=panelRect.height+bottom,reserve=paddingBottom-need;
+    return {ok:reserve>=0,detail:`正文底部预留 ${Math.round(paddingBottom)}px · 固定层+bottom ${Math.round(need)}px · 剩余 ${Math.round(reserve)}px`}
+  }
+  function surfaceAudit(){const overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;return {overflow:Math.max(0,Math.round(overflow)),forbidden:badInteractive(false),targets:targetAudit(false),unnamed:unnamedInteractive(),fixedClearance:fixedClearance()}}
   function commonChecks(){
     const dups=duplicateIds(),surface=surfaceAudit(),viewportTargets=targetAudit(true);
     return [
@@ -33,6 +38,7 @@
       result('页面主内容存在',()=>!!$('main')),
       result('无重复 ID',()=>({ok:dups.length===0,detail:dups.length?`重复：${dups.join(', ')}`:'0 个重复 ID'})),
       result('当前视口无横向溢出',()=>({ok:surface.overflow<=3,detail:`scrollWidth 差值 ${surface.overflow}px`})),
+      result('固定底栏不会覆盖正文结尾',()=>surface.fixedClearance),
       result('当前渲染页面无交易/开户交互入口',()=>({ok:surface.forbidden.length===0,detail:surface.forbidden.length?surface.forbidden.join('；'):'未发现 Trade/交易/开户/下单/申购/购买/KYC 入口'})),
       result('可操作控件均有可访问名称',()=>({ok:surface.unnamed.length===0,detail:surface.unnamed.length?`缺少名称：${surface.unnamed.join('；')}`:'当前渲染页面控件名称完整'})),
       result('运行时生命周期已加载',()=>({ok:!!window.FinanceRuntimeHealth,detail:window.FinanceRuntimeHealth?'FinanceRuntimeHealth 可用':'等待 runtime-lifecycle.js'}),'warn'),

@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-08-20T22:45:35.549365+00:00",
+  "status": "failure",
+  "source_snapshot_date": "2026-07-01",
+  "source": "https://deportationdata.org/data/processed/eoir.html",
+  "public_stats": {
+    "judges": 0,
+    "courts": 0,
+    "decisions": 0
+  }
+}

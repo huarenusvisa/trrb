@@ -8,7 +8,7 @@
     try{const value=fn();if(value===true)return {name,status:'pass',detail:'通过'};if(value&&typeof value==='object'&&'ok'in value)return {name,status:value.ok?'pass':severity,detail:value.detail||String(value.ok)};return {name,status:value?'pass':severity,detail:value?'通过':'未通过'}}catch(e){return {name,status:severity,detail:e?.message||String(e)}}
   }
   function duplicateIds(){const seen=new Map(),dups=[];$$('[id]').forEach(el=>{const id=el.id;if(!id)return;if(seen.has(id))dups.push(id);else seen.set(id,el)});return [...new Set(dups)]}
-  function badInteractive(){const re=/(^|\s)(Trade|交易|开户|下单|申购|购买|KYC)(\s|$)/i;return $$('a,button').filter(el=>visible(el)&&re.test(text(el))).map(text)}
+  function badInteractive(){const re=/(Trade|交易|开户|下单|申购|购买|KYC)/i;return $$('a,button').filter(el=>visible(el)&&re.test(text(el))).map(text)}
   function weakTargets(){return $$('a,button,input').filter(visible).filter(el=>{const r=el.getBoundingClientRect();return r.width<32||r.height<32}).slice(0,12).map(el=>`${el.tagName.toLowerCase()}:${text(el).slice(0,18)||el.getAttribute('aria-label')||el.id||'未命名'} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`)}
   function commonChecks(){
     const dups=duplicateIds(),forbidden=badInteractive(),weak=weakTargets(),overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;

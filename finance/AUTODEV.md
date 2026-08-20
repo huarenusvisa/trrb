@@ -80,6 +80,7 @@
 - [x] `acceptance-check.js`：仅 `qa=1` 时加载。
 - [x] `qa-interactions.js`：真实操作搜索、导航、自选排序、精确撤销、ETF筛选、K线、YTD、键盘图表读取。
 - [x] `qa-detail-state.js`：验证首页 / 个股 / ETF 的直接刷新、storage 与 finance:resume 状态同步。
+- [x] `qa-detail-state.js` 新增 BFCache 四类状态恢复回归：page / marketPanel / watchFilter / fundFilter 必须通过内部 setter 恢复，且 `.market-tab/.watch-filter/.fund-cat/.bottom button` synthetic click 次数必须为 0。
 - [x] `qa-suite.html`：12 个常规多视口 case + 4 个异常路径 case，共 16 个 case。
 - [x] 常规视口：首页 / AAPL / QQQ × 360 / 390 / 430 / 1280px。
 - [x] 异常 case：未知股票 ZZZZ、未知 ETF FAKE、slow-ready、data-missing。
@@ -124,13 +125,19 @@
 - 页面恢复仍使用 `__financeRestoringNavigation` 静默区，因此内部 setter 不产生用户主动操作播报。
 - 开发分支与 A 版预览已同步 `app.js` 与 `navigation-memory.js` 的对应逻辑。
 - 本轮仍未完成真实 16-case、iPhone / Safari、桌面或 Lighthouse 验收，不标记 PASS。
-- 保护边界核验：未 merge / rebase `main`，未触碰 SEO、Sitemap、`netlify.toml` 或生产部署 workflow；当前开发分支相对最新 `main` 为 ahead 187 / behind 85，差异文件仍全部位于 `finance/`。
+
+### 第三十五轮：恢复链回归保护与本地执行通道推进
+- GitHub 连接器已确认可以列出 `finance-v1-preview` 的 `finance/` 目录，因此“逐文件重建 A 版到本地临时目录”是可行路径；不再把“无法挂载整目录”视为绝对阻塞。
+- `qa-detail-state.js` 新增独立 BFCache 回归：临时写入 navState / navContext，触发 persisted pageshow，要求 page / marketPanel / watchFilter / fundFilter 四类状态完整恢复。
+- 同一回归监听四类导航控件，恢复期间任何 synthetic click 都直接 FAIL；测试结束恢复 sessionStorage 与原页面状态。
+- QA 文件已同步到 `finance-v1-robinhood` 与 `finance-v1-preview`，内容 SHA 一致。
+- 本轮仍未完成 16-case 真浏览器执行，因此不标记实际 PASS；下一步优先继续通过 GitHub 目录枚举逐文件重建 A 版，再用本地 HTTP + Chromium 运行现有 QA。
 
 ## 当前结论
 当前状态：**V1 Candidate+ / 功能冻结**。
 
 后续只做：
-1. 打通 A 版源码进入本地 Chromium 的执行通道并运行 16-case；
+1. 通过 GitHub 目录枚举将 A 版必要源码逐文件重建到本地并运行 16-case；
 2. 清理实际 FAIL / WARN；
 3. iPhone / Safari 与桌面人工视觉验收；
 4. Lighthouse 最终检查；

@@ -42,7 +42,7 @@
       {symbol:'VIK',name:'Viking Holdings',when:'今日盘前',status:'超预期',eps:'$1.31',change:7.38},
       {symbol:'ZTO',name:'ZTO Express',when:'今日盘后',status:'已发布',eps:'$0.56',change:-6.10},
       {symbol:'NVDA',name:'NVIDIA',when:'明日盘后',status:'即将公布',eps:'预期 $1.18',change:-0.74},
-      {symbol:'CRM',name:'Salesforce',market:'NYSE',when:'明日盘后',status:'即将公布',eps:'预期 $2.78',change:0.91}
+      {symbol:'CRM',name:'Salesforce',when:'明日盘后',status:'即将公布',eps:'预期 $2.78',change:0.91}
     ],
     macro:[
       {time:'周四 08:30',name:'美国初请失业金人数',importance:'高',consensus:'预期 228K'},

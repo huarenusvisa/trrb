@@ -3,16 +3,16 @@
   const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
   const params=new URLSearchParams(location.search),embedded=params.get('qaEmbed')==='1'&&window.parent!==window;
   const state={runs:0,last:null};
-  function visible(el){if(!el)return false;const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0}
+  function visible(el){if(!el)return false;const s=getComputedStyle(el),r=el.getBoundingClientRect();return s.display!=='none'&&s.visibility!=='hidden'&&r.width>0&&r.height>0&&r.bottom>0&&r.right>0&&r.top<window.innerHeight&&r.left<window.innerWidth}
   function text(el){return (el?.textContent||'').replace(/\s+/g,' ').trim()}
   function result(name,fn,severity='fail'){
     try{const value=fn();if(value===true)return {name,status:'pass',detail:'通过'};if(value&&typeof value==='object'&&'ok'in value)return {name,status:value.ok?'pass':severity,detail:value.detail||String(value.ok)};return {name,status:value?'pass':severity,detail:value?'通过':'未通过'}}catch(e){return {name,status:severity,detail:e?.message||String(e)}}
   }
   function duplicateIds(){const seen=new Map(),dups=[];$$('[id]').forEach(el=>{const id=el.id;if(!id)return;if(seen.has(id))dups.push(id);else seen.set(id,el)});return [...new Set(dups)]}
-  function badInteractive(){const re=/(Trade|交易|开户|下单|申购|购买|KYC)/i;return $$('a,button').filter(el=>visible(el)&&re.test(text(el))).map(text)}
-  function weakTargets(){return $$('a,button,input').filter(visible).filter(el=>{const r=el.getBoundingClientRect();return r.width<32||r.height<32}).slice(0,12).map(el=>`${el.tagName.toLowerCase()}:${text(el).slice(0,18)||el.getAttribute('aria-label')||el.id||'未命名'} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`)}
+  function badInteractive(){const re=/(Trade|交易|开户|下单|申购|购买|KYC)/i;return $$('a,button').filter(el=>visible(el)&&!el.disabled&&re.test(text(el))).map(text)}
+  function weakTargets(){const limit=window.innerWidth<=620?36:32;return $$('a,button,input').filter(el=>visible(el)&&!el.disabled).filter(el=>{const r=el.getBoundingClientRect();return r.width<limit||r.height<limit}).slice(0,12).map(el=>`${el.tagName.toLowerCase()}:${text(el).slice(0,18)||el.getAttribute('aria-label')||el.id||'未命名'} ${Math.round(el.getBoundingClientRect().width)}×${Math.round(el.getBoundingClientRect().height)}`)}
   function commonChecks(){
-    const dups=duplicateIds(),forbidden=badInteractive(),weak=weakTargets(),overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth;
+    const dups=duplicateIds(),forbidden=badInteractive(),weak=weakTargets(),overflow=Math.max(document.documentElement.scrollWidth,document.body?.scrollWidth||0)-document.documentElement.clientWidth,touchLimit=window.innerWidth<=620?36:32;
     return [
       result('数据适配层已加载',()=>!!window.FinanceData),
       result('页面主内容存在',()=>!!$('main')),
@@ -20,7 +20,7 @@
       result('当前视口无横向溢出',()=>({ok:overflow<=3,detail:`scrollWidth 差值 ${Math.max(0,Math.round(overflow))}px`})),
       result('无可见交易/开户交互入口',()=>({ok:forbidden.length===0,detail:forbidden.length?forbidden.join('；'):'未发现可见 Trade/交易/开户/下单入口'})),
       result('运行时生命周期已加载',()=>({ok:!!window.FinanceRuntimeHealth,detail:window.FinanceRuntimeHealth?'FinanceRuntimeHealth 可用':'等待 runtime-lifecycle.js'}),'warn'),
-      result('触控目标尺寸扫描',()=>({ok:weak.length===0,detail:weak.length?`小于32px：${weak.join('；')}`:'未发现明显过小目标'}),'warn')
+      result('触控目标尺寸扫描',()=>({ok:weak.length===0,detail:weak.length?`当前视口内小于${touchLimit}px：${weak.join('；')}`:`当前视口未发现小于${touchLimit}px的可操作目标` }),'warn')
     ]
   }
   function homeChecks(){

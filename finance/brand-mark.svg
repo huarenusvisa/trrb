@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="唐人财经">
+  <rect width="48" height="48" rx="13" fill="#0B6B4F"/>
+  <path d="M11 30.5h5.2l3.2-8.7 5.3 12.1 4.7-16.7 3.4 8.1H37" fill="none" stroke="#FFFDF8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="10" y="11" width="4" height="8" rx="2" fill="#FFFDF8" opacity=".94"/>
+  <rect x="20" y="9" width="4" height="7" rx="2" fill="#FFFDF8" opacity=".72"/>
+  <rect x="31" y="11" width="4" height="5" rx="2" fill="#FFFDF8" opacity=".54"/>
+  <circle cx="37" cy="11" r="3.2" fill="#C94F43"/>
+</svg>

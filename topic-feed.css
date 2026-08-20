@@ -427,6 +427,11 @@
     height: 49px !important;
     max-height: 49px !important;
   }
+
+  /* 首页手机端：英雄图下方的 1-5 条头条列表与热榜重复，直接隐藏 */
+  .lead-layout > #top-list {
+    display: none !important;
+  }
 }
 
 @media (max-width: 390px) {

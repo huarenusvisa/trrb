@@ -94,9 +94,14 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - [x] iframe 同源 postMessage 汇总与独立 cache-buster
 - [x] `qa-interactions.js` 自动真实操作搜索、导航、自选排序、ETF筛选、K线、YTD、键盘图表读取
 - [x] 条件等待代替固定 sleep
-- [x] 每个 case 前后双重恢复所有 `trfinance.*` localStorage / sessionStorage，并验证恢复一致性
+- [x] 每个 case 深度交互内部双重恢复所有 `trfinance.*` localStorage / sessionStorage，并验证恢复一致性
+- [x] QA Suite 在每个 case 加载前暂存用户状态并清空 `trfinance.*`，确保确定性空基线启动
+- [x] case 完成后先卸载 iframe，再恢复用户 localStorage / sessionStorage，避免旧页面 `pagehide` 反写
+- [x] `qaEmbed=1` 子页面的导航记忆层在 `pagehide` 禁止持久化测试状态
+- [x] 14 秒深度交互上限使用 AbortController 真取消；主流程等待取消清理完成后才恢复用户状态
 - [x] 首屏触控扫描 + 当前渲染页面全长触控扫描
 - [x] 四个一级页逐页审计横向溢出、交易 / 开户禁区入口、可访问名称、触控目标
+- [x] 深度逐页审计同时检查固定底栏 / 详情操作栏正文预留
 - [x] 可操作控件名称审计覆盖 a / button / input / tabindex=0
 - [x] 深度交互捕获 `error` / `unhandledrejection` 并作为正式 PASS / FAIL
 - [x] 图表 QA 断言走势 / Kline / ETF 的 role 与 aria-label 跟随模式和周期
@@ -148,6 +153,16 @@ V1 不开放：开户、Trade / 下单、KYC、基金购买 / 申购、券商账
 - 核对底部安全区后保留 A 版既有 `bottom:9px + 内部 safe-area padding` 策略，没有为了不存在的“双算”问题改动成熟样式。
 - QA 新增固定底栏正文预留硬检查：比较实际固定层高度、bottom 距离和页面 padding-bottom，发生覆盖风险直接 FAIL。
 - 已同步到 `finance-v1-preview`。
+
+### 第二十七轮：确定性 QA 沙盒与可取消超时
+- 修正旧 QA“加载后才快照”的缺陷：用户已有自选、排序、筛选、提醒不再参与 12 个 case 的初始化。
+- QA Suite 整轮开始先保存用户 `trfinance.*`；每个 case 加载前清空 localStorage / sessionStorage 中的财经命名空间，形成一致的演示默认起点。
+- case 结束先把 iframe 导航到 `about:blank` 并等待旧文档卸载，再恢复用户状态，避免旧页面生命周期在恢复后反写测试值。
+- `qaEmbed=1` 时 navigation-memory 的 `pagehide` 只清理待写 timer，不落盘；正常产品页面行为不变。
+- 深度交互超时从不可取消 `Promise.race` 改为 AbortController；14 秒达到上限后真正停止等待链，仍执行状态恢复和异常监听清理，再向 Suite 返回。
+- QA 报告新增“case 从空 trfinance.* 基线启动”断言，并在深度切换基金 / 自选 / 我的 / 行情时同步检查固定底栏正文预留。
+- 开发分支与 A 版预览已同步同一 QA / navigation-memory 实现。
+- 本轮为静态代码复核，未把真实 iPhone / Safari、桌面浏览器或 Lighthouse 标记为通过。
 
 ## 当前结论
 当前状态：**V1 Candidate+ / 功能冻结**。

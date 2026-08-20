@@ -39,16 +39,20 @@
   }
   function quickHref(x){return `${x.type==='fund'?'fund.html':'stock.html'}?symbol=${encodeURIComponent(x.symbol)}`}
   function quickMeta(x){return x.type==='fund'?`${x.category||'ETF'} · ETF`:`${x.market||'美股'} · 股票`}
+  function clearSearchSelection(){
+    if(!input||!box)return;box.querySelectorAll('.search-hit.active').forEach(a=>{a.classList.remove('active');a.setAttribute('aria-selected','false')});input.removeAttribute('aria-activedescendant')
+  }
   function renderQuickSearch(){
     if(!input||!box||input.value.trim())return;
     const data=quickAssets();if(!data.items.length)return;
+    clearSearchSelection();
     box.innerHTML=`<div class="search-quick-head"><span>${data.label}</span><kbd>/</kbd></div>${data.items.map((x,i)=>`<a id="quick-search-${i}" role="option" class="search-hit quick-search-hit" href="${quickHref(x)}"><div><b>${x.name}</b><small>${x.symbol} · ${quickMeta(x)}</small></div><span class="quick-symbol">${x.symbol}</span></a>`).join('')}`;
     box.classList.add('open');input.setAttribute('aria-expanded','true');
   }
   function syncSearchA11y(){
     if(!input||!box)return;const hits=Array.from(box.querySelectorAll('.search-hit'));let active=null;
     hits.forEach((a,i)=>{if(!a.id)a.id=`finance-search-option-${i}`;const on=a.classList.contains('active');a.setAttribute('aria-selected',String(on));if(on)active=a});
-    if(active)input.setAttribute('aria-activedescendant',active.id);else input.removeAttribute('aria-activedescendant');
+    if(active&&box.classList.contains('open'))input.setAttribute('aria-activedescendant',active.id);else input.removeAttribute('aria-activedescendant');
     input.setAttribute('aria-expanded',String(box.classList.contains('open')));
   }
 
@@ -56,9 +60,9 @@
     input.addEventListener('focus',()=>{renderQuickSearch();requestAnimationFrame(syncSearchA11y)});
     input.addEventListener('input',()=>{if(!input.value.trim())requestAnimationFrame(renderQuickSearch);requestAnimationFrame(syncSearchA11y)});
     input.addEventListener('search',()=>requestAnimationFrame(()=>{if(!input.value.trim())renderQuickSearch();syncSearchA11y()}));
-    input.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp','Enter','Escape'].includes(e.key))requestAnimationFrame(syncSearchA11y)});
+    input.addEventListener('keydown',e=>{if(e.key==='Escape')clearSearchSelection();if(['ArrowDown','ArrowUp','Enter','Escape'].includes(e.key))requestAnimationFrame(syncSearchA11y)});
     if('MutationObserver'in window)new MutationObserver(()=>requestAnimationFrame(syncSearchA11y)).observe(box,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-    const wrap=input.closest('.search-wrap');if(wrap)wrap.addEventListener('focusout',()=>setTimeout(()=>{if(!wrap.contains(document.activeElement)){box.classList.remove('open');input.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');box.querySelectorAll('.search-hit.active').forEach(a=>{a.classList.remove('active');a.setAttribute('aria-selected','false')})}},0));
+    const wrap=input.closest('.search-wrap');if(wrap)wrap.addEventListener('focusout',()=>setTimeout(()=>{if(!wrap.contains(document.activeElement)){box.classList.remove('open');input.setAttribute('aria-expanded','false');clearSearchSelection()}},0));
     document.addEventListener('keydown',e=>{
       const tag=(e.target&&e.target.tagName||'').toLowerCase();
       const typing=tag==='input'||tag==='textarea'||tag==='select'||(e.target&&e.target.isContentEditable);

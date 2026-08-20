@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-20T15:52:05.298Z",
+  "generatedAt": "2026-08-20T16:51:10.521Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -167,6 +167,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
           "title": "25-1862 Rana v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
+          "title": "25-1817 Recchia v. Campbell"
         }
       ],
       "notes": []
@@ -419,6 +423,14 @@
           "title": "Cheryl Hileman v. West Penn Allegheny Health System Inc"
         },
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/261741np.pdf",
+          "title": "Kaeun Kim v. Essex County Prosecutors Office"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/261118np.pdf",
+          "title": "Lucas Guggenheimer v. Wellpath LLC"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/261594np.pdf",
           "title": "Jason Morgan v. Eric Siegfried"
         },
@@ -529,14 +541,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251673np.pdf",
           "title": "Carlos Baires-Rivas v. Attorney General United States of America"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/242929np.pdf",
-          "title": "Scott Phillips v. Archdiocese Newark"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/253280np.pdf",
-          "title": "Lirong Xu v. Debra Todd"
         }
       ],
       "notes": []
@@ -1303,6 +1307,34 @@
       "sourceFinalUrl": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml",
       "documents": [
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/23-780.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/25-7450.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/23-632.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/23-658.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/23-793.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/25-3141.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/24-5734.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/19/25-4458.pdf",
           "title": null
         },
@@ -1373,34 +1405,6 @@
         {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2135.pdf",
           "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-3454.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2137.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/24-6341.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/24-3849.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/22-35085.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/22-35103.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/20-36024.pdf",
-          "title": null
         }
       ],
       "notes": []
@@ -1412,6 +1416,26 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://www.ca10.uscourts.gov/opinions/new/daily_decisions.rss",
       "documents": [
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111491851.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111491879.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111491871.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111491889.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111491875.pdf",
+          "title": null
+        },
         {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/01019202759.pdf",
           "title": "00-6235 - United States v. Anderson [1470367] 12/13/2001"

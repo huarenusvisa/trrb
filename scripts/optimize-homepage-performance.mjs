@@ -19,12 +19,8 @@ html = html.replace(/<script\s+src=["']\.\/articles-chunk-\d+\.js(?:\?[^"']*)?["
   return '';
 });
 
-// Jobs remains prelaunch/noindex. Older homepage shells exposed it in the main
-// navigation and loaded a DOM override that replaced the asylum card. Strip
-// both at build time; jobs-home.js itself is also a no-op compatibility shim.
-html = html
-  .replace(/<a\s+href=["']\/jobs\/?["'][^>]*>招聘求职<\/a>/gi, '')
-  .replace(/<script\s+src=["'](?:\.\/|\/)jobs-home\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi, '');
+// Recruitment is production-live. Preserve the /jobs/ primary-navigation entry
+// and the jobs-home loader so the homepage can render live recruitment data.
 
 // Keep the topic stylesheet in <head> when an old shell still discovers it at
 // the end of <body>. Accept any cache version instead of depending on Round11.
@@ -53,6 +49,7 @@ const coreVersions = new Map([
   ['topic-focus.js', '20260819-live-3'],
   ['homepage-refresh-guard.js', '20260819-bundle-supplements-2'],
   ['homepage-immigration-hub.js', '20260819-reuse-bundle-2'],
+  ['jobs-home.js', '20260820-production-live-1'],
   ['articles-home-live-fix.js', '20260820-people-retired-1'],
   ['category-runtime-v3.js', '20260819-preserve-independent-nav-1']
 ]);
@@ -114,4 +111,4 @@ if (html === before) {
 }
 
 fs.writeFileSync(file, html);
-console.log(`Homepage optimizer: removed ${removedChunks} redundant archive chunks; normalized canonical routes, homepage SEO, prelaunch jobs state and core cache versions`);
+console.log(`Homepage optimizer: removed ${removedChunks} redundant archive chunks; normalized canonical routes, homepage SEO, production-live jobs state and core cache versions`);

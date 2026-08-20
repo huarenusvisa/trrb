@@ -32,12 +32,13 @@
       const current=infos.map(x=>x.symbol).join('|'),next=sorted.map(x=>x.symbol).join('|');if(current===next)return;
       applying=true;sorted.forEach(x=>list.appendChild(x.node));requestAnimationFrame(()=>{applying=false;updateHead()});
     }
+    function refreshWatch(reason){window.FinanceAppState?.refreshWatch?.(reason);requestAnimationFrame(()=>requestAnimationFrame(applySort))}
     head.addEventListener('click',e=>{const b=e.target.closest('button[data-sort-key]');if(!b)return;const key=b.dataset.sortKey;if(key==='custom')state={key:'custom',dir:'desc'};else if(state.key===key)state.dir=state.dir==='desc'?'asc':'desc';else state={key,dir:'desc'};save();applySort();announce(state.key==='custom'?'自选已恢复原顺序':`${state.key==='price'?'最新价':'涨跌幅'}已按${state.dir==='asc'?'从低到高':'从高到低'}排序`)});
     if('MutationObserver'in window)new MutationObserver(()=>requestAnimationFrame(applySort)).observe(list,{childList:true});
     document.addEventListener('click',e=>{if(e.target.closest('.watch-filter,.view-switch button,#watchManageBtn'))requestAnimationFrame(()=>requestAnimationFrame(applySort))},true);
     const clear=$('#clearLocalDataBtn');if(clear)clear.addEventListener('click',()=>setTimeout(()=>{if((D.getWatchlist?.()||[]).length===0&&(D.getFundWatchlist?.()||[]).length===0){try{localStorage.removeItem('trfinance.watchSort')}catch(e){}state={key:'custom',dir:'desc'};updateHead()}},0));
-    window.addEventListener('finance:resume',()=>{const active=$('.watch-filter.on');if(active)active.click();requestAnimationFrame(()=>requestAnimationFrame(applySort))});
-    window.addEventListener('storage',e=>{if(e.key==='trfinance.watchlist'||e.key==='trfinance.fundWatchlist'){const active=$('.watch-filter.on');if(active)active.click()}});
+    window.addEventListener('finance:resume',()=>refreshWatch('finance:resume'));
+    window.addEventListener('storage',e=>{if(e.key===null||e.key==='trfinance.watchlist'||e.key==='trfinance.fundWatchlist')refreshWatch('storage')});
     applySort();
   }
 

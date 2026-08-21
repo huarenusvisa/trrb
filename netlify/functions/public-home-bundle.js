@@ -1,6 +1,6 @@
 const { rest } = require("./_shared/supabase-admin");
 
-const CORE_CATEGORIES = ["重要新闻", "热门头条", "美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
+const CORE_CATEGORIES = ["重要新闻", "热门头条", "美国时政", "美国警情", "中国官场", "移民美国"];
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
 function response(statusCode, body) {

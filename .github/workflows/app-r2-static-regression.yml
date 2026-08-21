@@ -8,6 +8,7 @@ on:
       - 'scripts/audit-app-batch2-node*.mjs'
       - 'scripts/audit-app-r2-asylum-retirement.mjs'
       - 'scripts/finalize-redirects.mjs'
+      - 'netlify/functions/public-home-bundle.js'
       - 'config/channels.js'
       - '_redirects'
       - 'index.html'

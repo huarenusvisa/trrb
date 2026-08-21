@@ -8,6 +8,7 @@ const channels = read('config/channels.js');
 const redirects = read('_redirects');
 const redirectFinalizer = read('scripts/finalize-redirects.mjs');
 const homepage = read('index.html');
+const homepageBundle = read('netlify/functions/public-home-bundle.js');
 const listing = read('listing.html');
 const article = read('article.html');
 const immigrationHub = read('immigrate/index.html');
@@ -19,6 +20,7 @@ const topLevelSources = [
   ['APP categories', appCategories],
   ['homepage channel config', channels],
   ['homepage navigation', homepage],
+  ['homepage production bundle', homepageBundle],
   ['listing navigation', listing],
   ['article navigation', article],
   ['immigration hub navigation', immigrationHub]
@@ -29,6 +31,10 @@ for (const [name, source] of topLevelSources) {
   if (/href=["']\/asylum(?:["'/?#])/.test(source) || /label:\s*["']庇护百科["']/.test(source) || /name:\s*["']庇护百科["']/.test(source)) {
     failures.push(`${name} still exposes retired asylum encyclopedia as a top-level entry`);
   }
+}
+
+if (/CORE_CATEGORIES\s*=\s*\[[\s\S]*?["']庇护百科["']/.test(homepageBundle)) {
+  failures.push('homepage production bundle still treats 庇护百科 as a core homepage category');
 }
 
 for (const [name, source] of [['committed redirects', redirects], ['redirect generator', redirectFinalizer]]) {
@@ -63,7 +69,7 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log('PASS: retired asylum encyclopedia is absent from top-level APP/web navigation');
+console.log('PASS: retired asylum encyclopedia is absent from top-level APP/web navigation and homepage production bundle');
 console.log('PASS: committed and generated legacy /asylum routes have permanent redirects');
 console.log('PASS: static RSS/Sitemap/Google News surfaces do not expose retired category routes');
 console.log('PASS: APP legacy category values resolve into 移民美国');

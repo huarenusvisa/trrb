@@ -72,20 +72,34 @@ jobs:
             grep -Eqi 'functions bundling|bundling functions|functions deployed' /tmp/netlify-exact-deploy.log && functions_stage=true || true
             grep -Eqi 'edge functions|edge-functions' /tmp/netlify-exact-deploy.log && edge_stage=true || true
           fi
-          cat > reports/netlify-direct-production-diagnostic.json <<EOF
-          {
-            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "target_sha": "${TARGET_SHA:-}",
-            "token_present": $token_present,
-            "site_lookup_http_status": $api_http,
-            "exact_deploy_exit_code": $deploy_exit,
-            "failure_kind": "$failure_kind",
-            "build_started": $build_started,
-            "functions_stage_seen": $functions_stage,
-            "edge_stage_seen": $edge_stage
-          }
-          EOF
-          cat reports/netlify-direct-production-diagnostic.json
+          export TARGET_SHA token_present api_http deploy_exit failure_kind build_started functions_stage edge_stage
+          node <<'NODE'
+          const fs = require('fs');
+          let raw = '';
+          try { raw = fs.readFileSync('/tmp/netlify-exact-deploy.log', 'utf8'); } catch {}
+          const token = process.env.NETLIFY_AUTH_TOKEN || '';
+          if (token) raw = raw.split(token).join('<redacted>');
+          raw = raw
+            .replace(/https?:\/\/\S+/g, '<url>')
+            .replace(/[A-Za-z0-9_+=\/-]{24,}/g, '<redacted>')
+            .replace(/[A-Fa-f0-9]{24,}/g, '<redacted>');
+          const lines = raw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+          const selected = lines.filter(s => /(error|fail|warn|auth|login|site|project|team|deploy|build|flag|option|argument)/i.test(s)).slice(0, 12);
+          const report = {
+            generated_at: new Date().toISOString(),
+            target_sha: process.env.TARGET_SHA || '',
+            token_present: process.env.token_present === 'true',
+            site_lookup_http_status: Number(process.env.api_http || 0),
+            exact_deploy_exit_code: Number(process.env.deploy_exit || 99),
+            failure_kind: process.env.failure_kind || '',
+            build_started: process.env.build_started === 'true',
+            functions_stage_seen: process.env.functions_stage === 'true',
+            edge_stage_seen: process.env.edge_stage === 'true',
+            sanitized_error_excerpt: selected.join(' | ').slice(0, 1200)
+          };
+          fs.writeFileSync('reports/netlify-direct-production-diagnostic.json', JSON.stringify(report, null, 2) + '\n');
+          console.log(JSON.stringify(report, null, 2));
+          NODE
       - name: Save diagnostic report
         if: always()
         shell: bash

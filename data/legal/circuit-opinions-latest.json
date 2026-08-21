@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T20:40:26.870Z",
+  "generatedAt": "2026-08-21T21:03:26.774Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -12,6 +12,22 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://www.ca1.uscourts.gov/opinions",
       "documents": [
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1582P-01A.pdf",
+          "title": "23-1582 US v. Bourget"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1863P-01A.pdf",
+          "title": "24-1863 Air-Con, Inc. v. Daikin Applied Latin America, LLC"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1282U-01A.pdf",
+          "title": "25-1282 Galakatos v. Marsh & McLennan Companies, Inc."
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1830P-01A.pdf",
+          "title": "25-1830 Hurley v. Curtis"
+        },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1931P2-01A.pdf",
           "title": "24-1931 Nicholls v. Veolia Water Contract Operations USA, Inc."
@@ -65,6 +81,10 @@
           "title": "25-2054 Urena v. Travelers Casualty and Surety Co. of America"
         },
         {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1931P-01A.pdf",
+          "title": "24-1931P.01A"
+        },
+        {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1351P-01A.pdf",
           "title": "25-1351 Guzman v. Blanche"
         },
@@ -91,14 +111,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467E-01A.pdf",
           "title": "24-1467 US v. Johnson"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1931P-01A.pdf",
-          "title": "24-1931P.01A"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
-          "title": "24-1467P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",

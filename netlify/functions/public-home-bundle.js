@@ -1,6 +1,7 @@
 const { rest } = require("./_shared/supabase-admin");
 
-const CORE_CATEGORIES = ["重要新闻", "热门头条", "美国时政", "美国警情", "中国官场", "移民美国"];
+const CORE_CATEGORIES = ["热门头条", "美国时政", "美国警情", "移民美国", "ICE执法动态"];
+const RETIRED_HOME_CATEGORIES = new Set(["重要新闻", "中国官场", "庇护百科"]);
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
 function response(statusCode, body) {
@@ -35,7 +36,9 @@ async function fetchArticles(limit, category = "") {
   };
   if (category) query.category_name = `eq.${category}`;
   const rows = await rest("articles", { query });
-  return (Array.isArray(rows) ? rows : []).filter((row) => timeOf(row) >= Date.now() - HOME_MAX_AGE_MS);
+  return (Array.isArray(rows) ? rows : [])
+    .filter((row) => timeOf(row) >= Date.now() - HOME_MAX_AGE_MS)
+    .filter((row) => !RETIRED_HOME_CATEGORIES.has(String(row?.category_name || "").trim()));
 }
 
 function categoryCounts(rows) {
@@ -56,9 +59,6 @@ exports.handler = async (event) => {
     const globalLimit = Math.min(Math.max(Number(event.queryStringParameters?.limit || 200), 20), 200);
     const perCategory = Math.min(Math.max(Number(event.queryStringParameters?.per_category || 12), 3), 20);
 
-    // Homepage freshness is a server-side contract: restored archive rows remain
-    // searchable/canonical, but anything older than 96 hours is never eligible
-    // for homepage fill, even when a category is sparse.
     const globalRows = await fetchArticles(globalLimit);
     const counts = categoryCounts(globalRows);
     const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);
@@ -83,6 +83,7 @@ exports.handler = async (event) => {
       count: articles.length,
       database_queries: 1 + sparseCategories.length,
       supplemented_categories: sparseCategories,
+      retired_home_categories: [...RETIRED_HOME_CATEGORIES],
       articles
     });
   } catch (error) {

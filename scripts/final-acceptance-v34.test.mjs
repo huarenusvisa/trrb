@@ -33,14 +33,14 @@ test("admin review clearly shows immutable original submission fields", async ()
   assert.match(loader, /用户投稿完全绕过AI/);
 });
 
-test("homepage hero accepts only important-news categories", async () => {
-  const focus = await read("homepage-focus-v34.js");
-  const installer = await read("topic-config.js");
-  assert.match(focus, /new Set\(\["重要新闻", "重点新闻"\]\)/);
-  assert.match(focus, /\.filter\(isHomepageFocusArticle\)/);
-  assert.match(focus, /普通新闻不会进入首页焦点大图/);
-  assert.doesNotMatch(focus, /visualArticles/);
-  assert.match(installer, /homepage-focus-v34\.js\?v=34\.0/);
+test("homepage hero has one live owner and never restores the legacy false-empty card", async () => {
+  const compat = await read("homepage-focus-v34.js");
+  const live = await read("articles-home-live-fix.js");
+  assert.match(compat, /TRRB_HOME_FOCUS_COMPAT_SHIM/);
+  assert.doesNotMatch(compat, /window\.renderHome\s*=/);
+  assert.match(live, /generalHeroFallback/);
+  assert.doesNotMatch(live, /当前暂无重点新闻/);
+  assert.match(live, /window\.TRRB_refreshHomepageFocus/);
 });
 
 test("public news images and mobile frames use a consistent 16:9 ratio", async () => {

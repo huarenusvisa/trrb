@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-7aa98b5afd97240f563d62e79aa52578362f7c9a</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T18:36:18.413Z</news:publication_date>
+        <news:title>新墨西哥圣菲ICE停车场拘捕一男子及儿童照护</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-a5d5b892c2e832c915f9aba515ec461cfe5e22e1</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T18:36:00.537Z</news:publication_date>
+        <news:title>波士顿ICE拘捕8名涉MS-13及谋杀强奸嫌疑人</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-2780417bc8b1bbe3e905493511fa981ca38126ae</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T18:35:49.625Z</news:publication_date>
+        <news:title>ICE指控明尼苏达州长Tim Walz赦免一名被定罪的非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-8b804f1d89256d7a12b27e651c7814f40e42e7c6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T18:35:29.584Z</news:publication_date>
+        <news:title>华盛顿Union Gap市ICE在Washington Fruit停车场拘留一名男子</news:title>
+      </news:news>
+    </url>
   
   <url>
       <loc>https://trrb.net/ice/ice-382938579c67d9ca0d9dc7ba296403c39d74e06f</loc>

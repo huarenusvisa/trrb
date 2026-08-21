@@ -25,9 +25,11 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       EOIR_PARQUET_PATH: /tmp/eoir-cases.parquet
-      EOIR_JUDGE_SOURCE_NAME: EOIR FOIA case data processed by Deportation Data Project
-      EOIR_JUDGE_SOURCE_URL: https://deportationdata.org/data/processed/eoir.html
+      EOIR_JUDGE_SOURCE_NAME: EOIR FOIA Case Data (July 2026; official authority, normalized derivative input)
+      EOIR_JUDGE_SOURCE_URL: https://fileshare.eoir.justice.gov/EOIR%20Case%20Data.zip
       EOIR_JUDGE_SOURCE_DATE: "2026-07-01"
+      EOIR_JUDGE_PROCESSOR_NAME: Deportation Data Project
+      EOIR_JUDGE_PROCESSOR_URL: https://deportationdata.org/data/processed/eoir.html
       EOIR_JUDGE_SCOPE_START: "2020-01-01"
       EOIR_JUDGE_SCOPE_END: "2026-07-01"
       ASYLUMTRACKER_MANIFEST_URL: https://asylumtracker.com/data/dataset-manifest.json
@@ -44,12 +46,25 @@ jobs:
           set -o pipefail
           python -m pip install --disable-pip-version-check duckdb requests 2>&1 | tee -a /tmp/immigration-judge-sync.log
 
-      - name: Download July 2026 processed EOIR case snapshot
+      - name: Record authoritative EOIR source availability
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            echo "Authoritative source: $EOIR_JUDGE_SOURCE_URL"
+            echo "Official snapshot period: $EOIR_JUDGE_SOURCE_DATE"
+            curl --fail --location --retry 3 --retry-delay 3 --range 0-0 \
+              --output /tmp/eoir-source-probe.bin \
+              "$EOIR_JUDGE_SOURCE_URL" || true
+            stat -c 'official_probe_bytes=%s' /tmp/eoir-source-probe.bin 2>/dev/null || true
+          } 2>&1 | tee -a /tmp/immigration-judge-sync.log
+
+      - name: Download normalized EOIR case snapshot
         shell: bash
         run: |
           set -euo pipefail
           {
-            echo "Downloading processed EOIR snapshot..."
+            echo "Downloading normalized derivative of the official EOIR FOIA snapshot..."
             curl --fail --location --retry 5 --retry-delay 5 \
               --output "$EOIR_PARQUET_PATH" \
               "https://media.githubusercontent.com/media/deportationdata/eoir/main/data/cases.parquet"
@@ -111,7 +126,8 @@ jobs:
               'source_snapshot_date': os.environ.get('EOIR_JUDGE_SOURCE_DATE'),
               'scope_start': os.environ.get('EOIR_JUDGE_SCOPE_START'),
               'scope_end': os.environ.get('EOIR_JUDGE_SCOPE_END'),
-              'source': os.environ.get('EOIR_JUDGE_SOURCE_URL'),
+              'authoritative_source': os.environ.get('EOIR_JUDGE_SOURCE_URL'),
+              'normalization_layer': os.environ.get('EOIR_JUDGE_PROCESSOR_URL'),
               'public_stats': {
                   'judges': stats.get('judges',0),
                   'courts': stats.get('courts',0),
@@ -131,5 +147,3 @@ jobs:
             git commit -m "Update immigration judge data sync report [skip ci]"
             git push
           fi
-
-# Rerun marker: service_role grants repaired on 2026-08-20.

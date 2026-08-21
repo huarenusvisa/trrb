@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-277150a56df7f6b312dde4a5830969e4d26ac993</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T01:24:52.347Z</news:publication_date>
+        <news:title>加州阿德兰托ICE拘留中心男子情绪崩溃引发恐慌发作</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -32,8 +40,22 @@
         <news:title>美限制合法移民未来十年经济损失超万亿美元</news:title>
       </news:news>
     </url>
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-552a8aa338f5fefc876d4648f5c4c45381915fd0</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T22:40:36.313Z</news:publication_date>
+        <news:title>佛州布劳沃德ICE逮捕涉嫌强奸危地马拉非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-da7c780218096de71cb9ec858c7ea3f8e2076c4f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T22:04:18.999Z</news:publication_date>
+        <news:title>新墨西哥圣菲拘押危地马拉三次遣返移民</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-292ff554be6d362457328c61b340ad6a331e633c</loc>
       <news:news>
@@ -42,7 +64,14 @@
         <news:title>美国国土安全部宣布无庇护地将逮捕遣返非法移民</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-31454bb3c9bd42b423d57e6143adb59f10e7bcbe</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T21:07:34.996Z</news:publication_date>
+        <news:title>西雅图ICE逮捕拥有26年犯罪记录的老挝非法移民</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-7cc3e11a5aaa940bffaca44d7ed104ccf15b11b0</loc>
       <news:news>
@@ -51,8 +80,22 @@
         <news:title>美国ICE持续逮捕遣返非法移民执行边境执法</news:title>
       </news:news>
     </url>
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-6e7628801f4ba837fa8483ae2d8c2aaa19c341bb</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:43:20.681Z</news:publication_date>
+        <news:title>墨西哥籍非法移民Carlos Zaded贩毒罪名成立</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-28fc7f55d4328132f14831d9ca29ca31994e53fc</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T20:43:19.890Z</news:publication_date>
+        <news:title>弗吉尼亚州建议将疑似掠夺者移交ICE监管</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-ab75b2f4258ddaf0ba59660a7c1d1ec7fc46a658</loc>
       <news:news>
@@ -109,7 +152,14 @@
         <news:title>纽约州议会大厦爆炸案嫌疑人杰西卡·鲍伊被捕</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-7f3656d4ea6d1a8ba80d866260559cb026d616b8</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T19:41:35.710Z</news:publication_date>
+        <news:title>费城ICE逮捕涉嫌多罪海地籍嫌疑人</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-0e710f49077d4f728e190eb5a1e2665b09338f43</loc>
       <news:news>
@@ -118,10 +168,38 @@
         <news:title>HSI圣胡安市分局逮捕涉嫌儿童剥削者Carlos Cabrera González</news:title>
       </news:news>
     </url>
-  
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-21d04053027c0d905de99e5f34261b653db07bd5</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T18:55:45.698Z</news:publication_date>
+        <news:title>ICE旧金山逮捕危害公共安全的危害人员</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-bbfb00a20dd51e678cb70be5cb165e9af31a8690</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T18:07:51.475Z</news:publication_date>
+        <news:title>ICE遣返MS-13成员Jose Reyes至萨尔</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-51a11814bfcbad45cdbe43cb5c468b8e086b7d6a</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T18:07:50.736Z</news:publication_date>
+        <news:title>德州Fort Hancock边境机动队加强非法越境</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-540cf93ed4c5281ffa05c5ebec0d3cad98f153b7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T18:07:49.885Z</news:publication_date>
+        <news:title>美国宣布边境关闭加强非法入境执法</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-3e0d71dc5cbe93fb997f48c556012f8cb1105d78</loc>
       <news:news>
@@ -130,8 +208,22 @@
         <news:title>休斯顿ICE通报2023年非法入境者获释后逃逸</news:title>
       </news:news>
     </url>
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-8649241bffdca3db15e72d659596714d86ae27ed</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:48:02.557Z</news:publication_date>
+        <news:title>纽泽西ICE遣返涉嫌未遂杀人通缉巴西逃犯</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-f94b0eee1d513cc98a0b1d7d7f16928f36f894b8</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:48:02.197Z</news:publication_date>
+        <news:title>纽约路易斯顿CBP逮捕一涉武重罪罗切斯特女性</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-9f56702f371db9a15de710cc71c4ed595e6c0ee5</loc>
       <news:news>
@@ -140,8 +232,22 @@
         <news:title>弗吉尼亚温彻斯特ICE特工追捕疑似非法移民</news:title>
       </news:news>
     </url>
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-7b9ac17fe4854ac13191b0710691f49a632cfbdb</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:43:44.141Z</news:publication_date>
+        <news:title>德州拉雷多联合行动逮捕两名人口走私者</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-1e23ce2e0f45155f355d5d141bfd43fc8846d643</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:42:44.369Z</news:publication_date>
+        <news:title>弗吉尼亚州拒配合ICE致非法犯罪者增加</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-8412caa5a8e3c5fb667ebdd4c794537aaececfc1</loc>
       <news:news>
@@ -150,11 +256,46 @@
         <news:title>美ICE加强遣返危险非法犯罪分子</news:title>
       </news:news>
     </url>
-  
-  
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-8f9caaaa51084796ed910fa48f1264b844cc8345</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:42:42.997Z</news:publication_date>
+        <news:title>新奥尔良ICE逮捕危地马拉涉未成年人重犯非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-c79de6e632f8d5b80268f0a5c74eff6f2a71d280</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:42:42.368Z</news:publication_date>
+        <news:title>麻州庇护政策致非法移民杀人犯三次获释</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-142cbccd9a7db3cfc6c7e95d8fc12d025f286dfc</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:42:41.648Z</news:publication_date>
+        <news:title>俄亥俄哥伦布男子因暗网儿童性虐待被ICE起诉</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-68901c022c1a57b9ae0b7f5b392492707efc6ac1</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:42:41.001Z</news:publication_date>
+        <news:title>曼纳萨斯ICE逮捕多重犯罪非法移民瓦尔特</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-79355469bed8353b6cb882fe9731b5a3fdb24ca0</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T17:42:40.198Z</news:publication_date>
+        <news:title>俄亥俄哥伦布男子因暗网儿童性虐材料被起诉</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/us-crime/%E5%AE%BE%E5%B7%9E%E6%9C%BA%E5%9C%BA%E9%99%84%E8%BF%91%E7%AA%81%E5%8F%91%E7%A9%BA%E4%B8%AD%E7%81%BE%E9%9A%BE%E4%B8%A4%E6%9E%B6%E9%A3%9E%E6%9C%BA%E7%9B%B8%E6%92%9E%E5%9D%A0%E6%AF%81faa%E7%B4%A7%E6%80%A5%E4%BB%8B%E5%85%A5-mt1sxll6-d1daf3</loc>
       <news:news>
@@ -763,7 +904,14 @@
         <news:title>ICE遣返一名多次非法入境的重犯，该人遣返前曾通过GoFundMe筹资</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-65cc6c475e7c10399f8ddd24b404291d4d057cea</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-20T01:51:53.949Z</news:publication_date>
+        <news:title>休斯顿前神父被控性侵儿童，ICE拟撤销国籍</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-be7c78201bcc0477d8e932a1ca95bd77c59d8a50</loc>
       <news:news>
@@ -884,13 +1032,62 @@
         <news:title>美国国土安全部宣布加强遣返数百万非法移民</news:title>
       </news:news>
     </url>
-  
-  
-  
-  
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-d13ca3ad3c672642665539ad1627b77e4c059079</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:35:35.406Z</news:publication_date>
+        <news:title>圣安东尼奥ICE逮捕持家庭暴力前科墨籍非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-debcc2ab969310b4019a590d05123d48809e4aa8</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:35:34.772Z</news:publication_date>
+        <news:title>得州圣安东尼奥ICE逮捕非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-9ac75b6832c3b7d7ef190b739a4cc47cc6f439b2</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:35:34.099Z</news:publication_date>
+        <news:title>纳什维尔HSI破获跨国性贩运案八委内瑞拉人被控</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-eb5f66613abb34792518c17cf097cf308f25e557</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:35:33.440Z</news:publication_date>
+        <news:title>德州戴尔里奥37岁女子涉嫌致死走私自首被拘</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-3e74e01bf72ba1e51991e85492e7f61acc8ead15</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:35:32.661Z</news:publication_date>
+        <news:title>德州圣安东尼奥ICE逮捕涉案墨籍非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-37c962de3054dcb5b064b59ccfaf56cfeb63fc6e</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T23:03:12.453Z</news:publication_date>
+        <news:title>美国起诉墨西哥裔入籍者拟剥夺公民权</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-e7b78cee639afa44b86b491fe8a7197275f037ca</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T22:36:42.465Z</news:publication_date>
+        <news:title>密歇根泰勒市逮捕洪都拉斯谋杀案通缉犯</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-9e60dec72a6a7db4d827133e5078e1abc8a07315</loc>
       <news:news>
@@ -915,10 +1112,38 @@
         <news:title>ICE特工在一移民前往医疗预约途中对其实施拘押和身体束缚</news:title>
       </news:news>
     </url>
-  
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-7923b3cfc9d53b1c662ad10f1bd7a7c2532631df</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T21:37:24.125Z</news:publication_date>
+        <news:title>纽约港超载船只倾覆两人溺亡嫌犯被ICE拘捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-f9b53c864b46b8ec60012c415a0523ce0cde84ab</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T21:04:55.474Z</news:publication_date>
+        <news:title>西雅图ICE逮捕多次犯罪危地马拉非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-7ca49c738e8d6e568140235b470b2a866b049731</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T20:44:05.615Z</news:publication_date>
+        <news:title>佛罗里达ICE针对持刀伤人非法移民提出扣押令</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-c18f2b098cf740135f4cfe9e8dbea6d9805f376c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T20:39:08.133Z</news:publication_date>
+        <news:title>弗吉尼亚州移交涉嫌非法入境者以便ICE遣返</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-95813169f8d723c59912f4bfa86fa71afb40b5d9</loc>
       <news:news>
@@ -967,10 +1192,38 @@
         <news:title>美国边境巡逻队巴士上身份检查遭乘客质疑</news:title>
       </news:news>
     </url>
-  
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-0eb8b25150903753fc0bd570db91105a7c0c6f5c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T19:39:44.094Z</news:publication_date>
+        <news:title>新墨西哥州梅西拉国土安全部副部长谈边境执法</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-91d6def2c48ef5c7f36a803d6fb3edfb7dd5e85b</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T19:17:19.360Z</news:publication_date>
+        <news:title>内布拉斯加奥马哈五名儿童掠食者被捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-09a80672f443ee60fbf438b8ce6d568d4bd2130d</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T19:17:18.536Z</news:publication_date>
+        <news:title>新奥尔良ICE逮捕墨西哥非法移民涉多罪</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-80cc3a1860b3045c6549896232317aab342ae5ce</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T18:01:07.175Z</news:publication_date>
+        <news:title>旧金山ICE拘捕持罪墨籍男子胡安·萨瓦拉</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-464cb29e652d67354c14d7b7d016c3b01a84404b</loc>
       <news:news>
@@ -1099,9 +1352,30 @@
         <news:title>“高标准农田”建成后长满杂草？稻田上坡项目现场曝光，引发质疑</news:title>
       </news:news>
     </url>
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-86593722e3f19d7df16d5b1870e062f7493f2e43</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T16:44:09.463Z</news:publication_date>
+        <news:title>佛州坦帕HSI查获哥伦比亚移民身份盗用案</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-249803138d33942e781916156a8be25cf4d384ea</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T16:44:08.787Z</news:publication_date>
+        <news:title>佛州执法局查获哥伦比亚非法移民长期身份造假</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-6343c8ee818f2e4902f459003c33948eed41837f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T16:44:08.098Z</news:publication_date>
+        <news:title>弗吉尼亚斯塔安顿拘留三名涉儿童性犯罪非法移民</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/ice/ice-458285451e99b0120ff8254d321ea8133aa5d7db</loc>
       <news:news>
@@ -1238,7 +1512,14 @@
         <news:title>杰克逊维尔ICE办事处提出拘留申请</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-f8eb2b2dba17fbc523d61e6d32cc92c7b3906966</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T14:45:06.397Z</news:publication_date>
+        <news:title>圣地亚哥ICE逮捕墨籍性侵前科非法入境者</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/hot-headlines/%E8%A1%97%E5%A4%B4%E9%9C%B2%E8%90%A5%E4%BA%BA%E5%91%98%E8%BF%8E%E6%9D%A5%E5%9B%9E%E5%AE%B6%E9%80%9A%E9%81%93%E4%B8%9C%E8%8E%9E%E6%8F%90%E4%BE%9B%E5%85%8D%E8%B4%B9%E6%95%91%E5%8A%A9%E4%B8%93%E8%BD%A6%E6%8A%A4%E9%80%81%E8%BF%94%E7%A8%8B-mt06rxks-c71a14</loc>
       <news:news>
@@ -1247,7 +1528,14 @@
         <news:title>街头露营人员迎来“回家通道”！东莞提供免费救助，专车护送返程</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-9a5512115c79e3bdc20a970bc35f5084bafb87ef</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T14:23:51.534Z</news:publication_date>
+        <news:title>波士顿ICE逮捕柬埔寨籍涉谋杀枪械嫌犯</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/hot-headlines/%E5%B9%BF%E8%A5%BF%E6%AD%A6%E5%AE%A3%E9%87%87%E7%9F%B3%E5%9C%BA%E8%A1%A5%E5%81%BF%E7%BA%A0%E7%BA%B7%E5%8D%87%E7%BA%A7%E5%8F%A4%E8%A1%8C%E6%9D%91%E6%9D%91%E6%B0%91%E5%B0%81%E9%94%81%E9%81%93%E8%B7%AF%E8%A6%81%E6%B1%82%E7%BB%B4%E6%8A%A4%E5%BC%80%E5%B1%B1%E6%9D%83%E7%9B%8A-mt06ibvu-e25a11</loc>
       <news:news>
@@ -1312,7 +1600,14 @@
         <news:title>“头衔满身”却被港中大否认！张龙自称客座教授，50多个身份引发质疑</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-8fa05ec1dbdf331f618e0f4411744bacca51a93b</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T13:52:55.453Z</news:publication_date>
+        <news:title>美国终止临时保护身份政策涉数万人面临驱逐</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/hot-headlines/%E7%94%B7%E5%AD%90%E9%A9%BE%E8%BD%A6%E5%88%AB%E5%81%9C%E6%89%A7%E5%8B%A4%E8%AD%A6%E8%BD%A6%E7%88%AC%E4%B8%8A%E8%BD%A6%E9%A1%B6%E6%B5%B7%E5%8D%97%E5%84%8B%E5%B7%9E%E7%8E%B0%E5%9C%BA%E4%BA%A4%E9%80%9A%E6%8B%A5%E5%A0%B5%E8%AD%A6%E6%96%B9%E9%80%9A%E6%8A%A5%E8%AF%A6%E6%83%85-mt05dknw-a98dff</loc>
       <news:news>
@@ -1337,7 +1632,14 @@
         <news:title>“没有可以求助的人”！ICE一线执法者压力爆表，移民强硬行动背后内部危机曝光</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-72e87d67b5aef268daa3b02d7c210398b3fd3ce5</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T12:59:05.070Z</news:publication_date>
+        <news:title>德州拉雷多查获卡车人体走私案含未成年</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/trump/19%E4%B8%AA%E7%99%BE%E5%88%86%E7%82%B9%E4%BC%98%E5%8A%BF%E5%8C%BA%E6%83%8A%E5%A4%A9%E9%80%86%E8%BD%AC%E7%89%B9%E6%9C%97%E6%99%AE%E6%A0%B8%E5%BF%83%E7%A5%A8%E4%BB%93%E7%88%86%E5%86%B7%E5%A4%B1%E5%AE%88%E6%B0%91%E4%B8%BB%E5%85%9A%E6%94%BB%E5%8D%A0%E5%AE%BE%E5%B7%9E%E7%BA%A2%E5%8C%BA-mt02tj5j-09bc1f</loc>
       <news:news>
@@ -1722,8 +2024,22 @@
         <news:title>特朗普4亿美元白宫宴会厅计划遭阻击！历史保护组织请求最高法院暂停项目</news:title>
       </news:news>
     </url>
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-6b127c1661c72702835cd64cecbc06cb70136d46</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T03:11:09.408Z</news:publication_date>
+        <news:title>阿拉巴马夫妻因利用儿童涉毒双双获七重无期</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-2c1b3538cabce1792016cf63e87b748b77047a75</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T03:11:08.667Z</news:publication_date>
+        <news:title>阿拉巴马夫妇利用儿童走私毒品获终身监禁</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/trump/%E4%BA%94%E8%A7%92%E5%A4%A7%E6%A5%BC%E5%90%91%E7%BE%8E%E5%9B%BD%E5%A4%A7%E5%AD%A6%E5%BC%80%E6%88%9830%E6%89%80%E9%AB%98%E6%A0%A1%E9%99%90%E6%9C%9F%E6%B8%85%E6%9F%A5%E5%A4%96%E5%9B%BD%E5%90%88%E4%BD%9C%E8%81%94%E9%82%A6%E8%B5%84%E9%87%91%E5%8D%B1%E6%9C%BA%E9%80%BC%E8%BF%91-mszie603-ca029a</loc>
       <news:news>
@@ -1748,8 +2064,12 @@
         <news:title>谁在改变美国真相？特朗普政府删改近400项联邦数据，引发透明度危机</news:title>
       </news:news>
     </url>
-  
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-6999ce7bfc780e4aff80eb8eb7575028e510edec</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-19T02:20:19.200Z</news:publication_date>
+        <news:title>德州梅赛德斯警方拘捕毒品走私者</news:title>
+      </news:news>
+    </url>
 </urlset>

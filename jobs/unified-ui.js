@@ -43,12 +43,20 @@
 
     const applyUrl = officialApplySource.test(String(row.source_key || '')) ? safeHttpUrl(row.application_url) : '';
     if (!parts.length && applyUrl) parts.push(`<a href="${esc(applyUrl)}" target="_blank" rel="noopener noreferrer">申请职位</a>`);
-    if (!parts.length) return '<span class="contact-error">暂无公开联系方式</span>';
-    return `<div class="contact-row">${parts.join('')}</div>`;
+    return parts.length ? `<div class="contact-row">${parts.join('')}</div>` : '';
+  }
+
+  function refreshVisibleCount() {
+    const count = document.querySelectorAll('#jobs-results .result-card[data-job-id]').length;
+    const status = document.getElementById('search-status');
+    if (status && count >= 0) status.textContent = `本页显示 ${count} 个可直接联系或申请的岗位`;
   }
 
   function decorate(card, row) {
-    if (!card || !row || card.dataset.unifiedReady === 'true') return;
+    if (!card || card.dataset.unifiedReady === 'true') return;
+    if (!row) { card.remove(); return; }
+    const actionMarkup = buildActions(row);
+    if (!actionMarkup) { card.remove(); return; }
     card.dataset.unifiedReady = 'true';
     const meta = card.querySelector('.meta');
     const summary = String(row.description || '').trim();
@@ -59,7 +67,7 @@
     if (time) actions.insertAdjacentHTML('beforeend', `<div class="job-age">${esc(time)}发布</div>`);
     const slot = document.createElement('div');
     slot.className = 'contact-slot';
-    slot.innerHTML = buildActions(row);
+    slot.innerHTML = actionMarkup;
     actions.appendChild(slot);
     card.appendChild(actions);
   }
@@ -68,7 +76,7 @@
     if (!db) return;
     const cards = Array.from(document.querySelectorAll('#jobs-results .result-card[data-job-id]')).filter((card) => card.dataset.unifiedReady !== 'true');
     const ids = cards.map((card) => card.dataset.jobId).filter(Boolean);
-    if (!ids.length) return;
+    if (!ids.length) { refreshVisibleCount(); return; }
     const { data, error } = await db.from('job_listings')
       .select('id,description,contact_method,contact_value,contact_public,application_url,source_key,published_at,created_at')
       .in('id', ids)
@@ -77,6 +85,7 @@
     if (error || !Array.isArray(data)) return;
     const byId = new Map(data.map((row) => [String(row.id), row]));
     cards.forEach((card) => decorate(card, byId.get(String(card.dataset.jobId))));
+    refreshVisibleCount();
   }
 
   function queueHydrate() {

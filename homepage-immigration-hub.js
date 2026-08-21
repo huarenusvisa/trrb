@@ -1,4 +1,6 @@
 (function () {
+  "use strict";
+
   const immigrationPaths = [
     ["赴美留学", "/immigrate/center?path=study"],
     ["赴美工作", "/immigrate/center?path=work"],
@@ -17,36 +19,19 @@
     ["联邦新规", "/legal/?source=FEDERAL_REGISTER"]
   ];
 
-  const freshCategories = [
-    ["美国时政", "politics", "us-politics"],
-    ["美国警情", "crime", "us-crime"]
-  ];
-
   const stateNames = {
     NY: "纽约州", CA: "加州", TX: "德州", FL: "佛州", NJ: "新泽西州", IL: "伊利诺伊州",
     MA: "麻州", WA: "华盛顿州", PA: "宾州", GA: "乔治亚州", VA: "弗吉尼亚州", MD: "马里兰州",
     AZ: "亚利桑那州", CO: "科罗拉多州", NV: "内华达州", OR: "俄勒冈州", CT: "康州", MN: "明州",
     MI: "密歇根州", NC: "北卡州", SC: "南卡州", OH: "俄亥俄州", TN: "田纳西州", UT: "犹他州",
     LA: "路易斯安那州", MO: "密苏里州", IN: "印第安纳州", WI: "威斯康星州", OK: "俄克拉荷马州",
-    KS: "堪萨斯州", NE: "内布拉斯加州", IA: "爱荷华州", NM: "新墨西哥州", HI: "夏威夷州",
-    AK: "阿拉斯加州", RI: "罗得岛州", NH: "新罕布什尔州", ME: "缅因州", VT: "佛蒙特州",
-    DE: "特拉华州", WV: "西弗吉尼亚州", KY: "肯塔基州", AL: "阿拉巴马州", MS: "密西西比州",
-    AR: "阿肯色州", ID: "爱达荷州", MT: "蒙大拿州", WY: "怀俄明州", ND: "北达科他州", SD: "南达科他州"
+    KS: "堪萨斯州", NE: "内布拉斯加州", IA: "爱荷华州", NM: "新墨西哥州", HI: "夏威夷州"
   };
   const coreStateCodes = ["NY", "CA", "TX", "FL", "NJ"];
 
   let stateStatsCache = null;
   let stateStatsLoading = null;
-  let repairQueued = false;
-
-  function escapeHtml(value) {
-    return String(value || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
+  let repairTimer = null;
 
   function immigrationMarkup() {
     return `
@@ -74,7 +59,7 @@
       <a class="immigration-hub-feature legal-hub-feature" href="/immigration-judge-approval-rate/"><strong>查法官 · 看法院 · 比较庇护裁决数据</strong></a>
       <div class="judge-state-dashboard" aria-live="polite">
         <div class="judge-state-leader"><span>各州通过率</span><b>数据读取中</b><strong>—</strong><small>正在汇总移民法庭裁决</small></div>
-        <div class="judge-state-panel"><div class="judge-state-head"><b>各州庇护裁决通过率</b><span>全体申请人</span></div><small class="judge-state-note">正在读取纽约州、加州、德州等州数据…</small></div>
+        <div class="judge-state-panel"><div class="judge-state-head"><b>核心州庇护裁决通过率</b><span>全体申请人</span></div><small class="judge-state-note">正在读取纽约州、加州、德州、佛州、新泽西州…</small></div>
       </div>
       <div class="immigration-hub-grid legal-hub-grid judge-action-grid">
         <a href="/immigration-judge-approval-rate/"><strong>查移民法官</strong><span aria-hidden="true">›</span></a>
@@ -116,7 +101,7 @@
   }
 
   function sampleOf(row) {
-    return Number(row?.adjudicated_decisions || 0) || (Number(row?.grants || 0) + Number(row?.denials || 0));
+    return Number(row?.adjudicated_decisions || 0) || Number(row?.grants || 0) + Number(row?.denials || 0);
   }
 
   function rateOf(row) {
@@ -130,36 +115,36 @@
     const clean = (Array.isArray(rows) ? rows : [])
       .filter((row) => row && row.state && String(row.state).toLowerCase() !== "unknown" && sampleOf(row) > 0)
       .map((row) => ({ ...row, state: String(row.state).trim().toUpperCase(), sample: sampleOf(row), rate: rateOf(row) }));
-
     let reliable = clean.filter((row) => row.sample >= 500);
     if (reliable.length < 6) reliable = clean.filter((row) => row.sample >= 100);
     if (reliable.length < 6) reliable = clean;
-
     const byState = new Map(reliable.map((row) => [row.state, row]));
-    const leader = reliable.slice().sort((a, b) => b.rate - a.rate || b.sample - a.sample)[0] || null;
     const fixed = coreStateCodes.map((code) => byState.get(code)).filter(Boolean);
-    const topExtra = reliable
-      .filter((row) => !coreStateCodes.includes(row.state))
-      .sort((a, b) => b.rate - a.rate || b.sample - a.sample)[0] || null;
-    const selected = [...fixed, topExtra].filter(Boolean).filter((row, index, list) => list.findIndex((item) => item.state === row.state) === index);
-    return { leader, selected: selected.slice(0, 6) };
+    const topExtra = reliable.filter((row) => !coreStateCodes.includes(row.state)).sort((a, b) => b.rate - a.rate || b.sample - a.sample)[0] || null;
+    const selected = [...fixed, topExtra].filter(Boolean).filter((row, index, list) => list.findIndex((item) => item.state === row.state) === index).slice(0, 6);
+    const leader = reliable.slice().sort((a, b) => b.rate - a.rate || b.sample - a.sample)[0] || null;
+    return { selected, leader };
   }
 
   function renderStateDashboard(rows) {
-    const card = document.querySelector("#judge-home-hub");
-    const dashboard = card?.querySelector(".judge-state-dashboard");
+    const dashboard = document.querySelector("#judge-home-hub .judge-state-dashboard");
     if (!dashboard) return;
     const { selected, leader } = stateView(rows);
+    const signature = selected.map((row) => `${row.state}:${row.rate.toFixed(2)}:${row.sample}`).join("|") + `|leader:${leader?.state || ""}:${leader?.rate?.toFixed?.(2) || ""}`;
+    if (dashboard.dataset.stateSignature === signature) return;
+    dashboard.dataset.stateSignature = signature;
+
     if (!leader || !selected.length) {
-      dashboard.innerHTML = `<div class="judge-state-leader"><span>各州通过率</span><b>暂无数据</b><strong>—</strong><small>等待有效裁决样本</small></div><div class="judge-state-panel"><div class="judge-state-head"><b>各州庇护裁决通过率</b><span>全体申请人</span></div><small class="judge-state-note">暂无足够州级数据</small></div>`;
+      dashboard.innerHTML = `<div class="judge-state-leader"><span>各州通过率</span><b>暂无数据</b><strong>—</strong><small>等待有效裁决样本</small></div><div class="judge-state-panel"><div class="judge-state-head"><b>核心州庇护裁决通过率</b><span>全体申请人</span></div><small class="judge-state-note">暂无足够州级数据</small></div>`;
       return;
     }
+
     dashboard.innerHTML = `
       <div class="judge-state-leader"><span>当前较高州</span><b>${stateName(leader.state)}</b><strong>${leader.rate.toFixed(1)}%</strong><small>${leader.sample.toLocaleString("zh-CN")} 件有效裁决</small></div>
       <div class="judge-state-panel">
         <div class="judge-state-head"><b>核心州庇护裁决通过率</b><span>全体申请人</span></div>
         <div class="judge-state-list">${selected.map((row) => `<div class="judge-state-row"><b>${stateName(row.state)}</b><span class="judge-state-bar"><i style="width:${Math.max(2, Math.min(100, row.rate)).toFixed(1)}%"></i></span><em>${row.rate.toFixed(1)}%</em></div>`).join("")}</div>
-        <small class="judge-state-note">固定展示纽约、加州、德州、佛州、新泽西，并补充1个当前较高州</small>
+        <small class="judge-state-note">纽约、加州、德州、佛州、新泽西 + 1个当前较高州</small>
       </div>`;
   }
 
@@ -173,13 +158,17 @@
         stateStatsCache = Array.isArray(payload?.states) ? payload.states : [];
         return stateStatsCache;
       })
-      .catch((error) => { console.error("首页各州移民法庭通过率加载失败", error); stateStatsCache = []; return stateStatsCache; })
+      .catch((error) => {
+        console.error("首页各州移民法庭通过率加载失败", error);
+        stateStatsCache = [];
+        return stateStatsCache;
+      })
       .finally(() => { stateStatsLoading = null; });
     return stateStatsLoading;
   }
 
   function replaceImmigrationCard(root) {
-    const card = root.querySelector("#immigration") || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "移民美国");
+    const card = root.querySelector("#immigration") || Array.from(root.children).find((item) => item.querySelector?.("h2")?.textContent.trim() === "移民美国");
     if (!card) return;
     if (card.dataset.knowledgeHub === "true" && card.querySelector(".immigration-hub-feature")) return;
     card.dataset.knowledgeHub = "true";
@@ -187,8 +176,8 @@
     card.innerHTML = immigrationMarkup();
   }
 
-  function replaceExposureCard(root) {
-    const card = root.querySelector("#legal-home-hub") || root.querySelector("#exposure-wall") || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "曝光墙");
+  function replaceLegalCard(root) {
+    const card = root.querySelector("#legal-home-hub") || root.querySelector("#exposure-wall") || Array.from(root.children).find((item) => item.querySelector?.("h2")?.textContent.trim() === "曝光墙");
     if (!card) return;
     if (card.dataset.legalHub === "true" && card.querySelector(".legal-hub-feature")) return;
     card.dataset.legalHub = "true";
@@ -199,16 +188,9 @@
   }
 
   function replaceJudgeCard(root) {
-    let card = root.querySelector("#judge-home-hub") || root.querySelector("#china") || Array.from(root.querySelectorAll(".news-box")).find((item) => ["中国官场", "移民法官通过率"].includes(item.querySelector("h2")?.textContent.trim()));
-    if (!card) {
-      card = document.createElement("article");
-      card.className = "news-box";
-      const immigrationCard = root.querySelector("#immigration");
-      if (immigrationCard) root.insertBefore(card, immigrationCard);
-      else root.appendChild(card);
-    }
-    const complete = card.dataset.judgeHub === "true" && Boolean(card.querySelector(".judge-state-dashboard"));
-    if (!complete) {
+    const card = root.querySelector("#judge-home-hub") || root.querySelector("#china") || Array.from(root.children).find((item) => ["中国官场", "移民法官通过率"].includes(item.querySelector?.("h2")?.textContent.trim()));
+    if (!card) return;
+    if (!(card.dataset.judgeHub === "true" && card.querySelector(".judge-state-dashboard"))) {
       card.dataset.judgeHub = "true";
       card.id = "judge-home-hub";
       card.classList.remove("category-empty");
@@ -219,75 +201,28 @@
     else loadStateStats().then(renderStateDashboard);
   }
 
-  function shortDate(value) {
-    if (!value) return "";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return String(value).slice(5, 10);
-    const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "2-digit", day: "2-digit" }).formatToParts(date);
-    const month = parts.find((part) => part.type === "month")?.value || "";
-    const day = parts.find((part) => part.type === "day")?.value || "";
-    return `${month}-${day}`;
-  }
-
-  function articleHref(row, section) {
-    const slug = String(row.slug || "").trim();
-    const id = String(row.id || "").trim();
-    if (slug) return `/${section}/${encodeURIComponent(slug)}`;
-    if (/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(id)) return `/${section}/${encodeURIComponent(id)}`;
-    return id ? `/article.html?id=${encodeURIComponent(id)}` : "/";
-  }
-
-  function imageUrl(row) {
-    const value = String(row.cover_image || row.image || "").trim().replaceAll("\\u0026", "&");
-    if (!value) return "/assets/category-placeholders/generic.svg";
-    if (value.startsWith("/assets/news-images/")) return value;
-    if (value.startsWith("assets/news-images/")) return `/${value}`;
-    return value.replace(/^https?:\/\/(?:www\.)?trrb\.net\/wp-content\/uploads\//, "/assets/news-images/");
-  }
-
-  function rowTime(row) {
-    const value = row?.published_at || row?.created_at || row?.time || row?.date || "";
-    const time = Date.parse(value);
-    return Number.isFinite(time) ? time : 0;
-  }
-
-  function refreshCategoryCards(root) {
-    const articles = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [];
-    if (!articles.length) return;
-    freshCategories.forEach(([category, id, section]) => {
-      const rows = articles.filter((row) => String(row?.category_name || row?.category || "").trim() === category).sort((a, b) => rowTime(b) - rowTime(a)).slice(0, 8);
-      const card = root.querySelector(`#${id}`);
-      if (!card || !rows.length) return;
-      const lead = rows.find((row) => String(row.cover_image || row.image || "").trim()) || rows[0];
-      const subItems = rows.filter((row) => String(row.id) !== String(lead.id)).slice(0, 6);
-      card.dataset.liveFreshness = "true";
-      card.innerHTML = `<header><h2>${escapeHtml(category)}</h2><a href="/${section}">更多</a></header><a class="section-lead" href="${articleHref(lead, section)}"><img src="${escapeHtml(imageUrl(lead))}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='/assets/category-placeholders/generic.svg'" alt="" /><h3>${escapeHtml(lead.title)}</h3></a><ul class="section-news-list">${subItems.map((row) => `<li><a href="${articleHref(row, section)}">${escapeHtml(row.title)}</a><time>${escapeHtml(shortDate(row.published_at || row.created_at || row.time || row.date))}</time></li>`).join("")}</ul>`;
-    });
-  }
-
   function repairCards() {
-    repairQueued = false;
     const root = document.querySelector("#sections-grid");
     if (!root) return;
     replaceImmigrationCard(root);
-    replaceExposureCard(root);
+    replaceLegalCard(root);
     replaceJudgeCard(root);
-    refreshCategoryCards(root);
   }
 
-  function queueRepair() {
-    if (repairQueued) return;
-    repairQueued = true;
-    queueMicrotask(repairCards);
+  function scheduleRepair() {
+    if (repairTimer) return;
+    repairTimer = window.setTimeout(() => {
+      repairTimer = null;
+      repairCards();
+    }, 16);
   }
 
   function start() {
     installStateStyles();
     repairCards();
     const root = document.querySelector("#sections-grid");
-    if (!root) return;
-    new MutationObserver(queueRepair).observe(root, { childList: true, subtree: true });
-    [250, 700, 1500, 3000, 6000].forEach((delay) => setTimeout(repairCards, delay));
+    if (root) new MutationObserver(scheduleRepair).observe(root, { childList: true, subtree: false });
+    [250, 800, 1800, 4000].forEach((delay) => window.setTimeout(repairCards, delay));
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });

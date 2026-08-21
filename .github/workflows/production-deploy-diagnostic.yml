@@ -17,7 +17,7 @@ concurrency:
 jobs:
   diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 10
     env:
       NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
     steps:
@@ -25,18 +25,59 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate, trigger, poll, and write diagnostic report
+      - name: Run current-product validator and publish preflight report
+        id: preflight
         shell: bash
         run: |
           set +e
-          export TARGET_SHA=$(git rev-parse HEAD)
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          SOURCE_SHA=$(git rev-parse HEAD)
           mkdir -p reports
-
           node scripts/validate-site.mjs >/tmp/validate.log 2>&1
-          export VALIDATE_EXIT=$?
+          VALIDATE_EXIT=$?
+          export SOURCE_SHA VALIDATE_EXIT
+          python - <<'PY'
+          import json, os, pathlib, datetime
+          def tail(path, n=12000):
+              p=pathlib.Path(path)
+              return p.read_text(errors='replace')[-n:] if p.exists() else ''
+          report={
+            'stage':'preflight',
+            'generated_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'source_sha':os.environ.get('SOURCE_SHA',''),
+            'validator_exit':int(os.environ.get('VALIDATE_EXIT','-1')),
+            'validator_tail':tail('/tmp/validate.log'),
+            'build_hook_configured':bool(os.environ.get('NETLIFY_BUILD_HOOK','')),
+            'build_hook_http':None,
+            'live_sha':'',
+            'live_sha_matched':False,
+            'polls':0
+          }
+          pathlib.Path('reports/production-deploy-diagnostic-latest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          PY
+          git add reports/production-deploy-diagnostic-latest.json
+          git commit -m 'Write production deploy preflight diagnostic [skip ci]' || true
+          PUSHED=false
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            TARGET_SHA=$(git rev-parse HEAD)
+            if git push origin HEAD:main; then PUSHED=true; break; fi
+            sleep $((attempt*2))
+          done
+          if [ "$PUSHED" != true ]; then echo 'could not publish diagnostic report'; exit 1; fi
+          echo "target_sha=$TARGET_SHA" >> "$GITHUB_OUTPUT"
+          echo "validator_exit=$VALIDATE_EXIT" >> "$GITHUB_OUTPUT"
 
-          export HOOK_CONFIGURED=false
-          export HOOK_HTTP=0
+      - name: Trigger clean Netlify build hook and poll exact SHA
+        shell: bash
+        env:
+          TARGET_SHA: ${{ steps.preflight.outputs.target_sha }}
+          VALIDATE_EXIT: ${{ steps.preflight.outputs.validator_exit }}
+        run: |
+          set +e
+          export HOOK_CONFIGURED=false HOOK_HTTP=0 LIVE_SHA='' MATCHED=false POLLS=0
           if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             export HOOK_CONFIGURED=true
             if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
@@ -49,51 +90,43 @@ jobs:
             printf '%s\n' 'NETLIFY_BUILD_HOOK is not configured' >/tmp/hook-response.txt
           fi
 
-          export LIVE_SHA=""
-          export MATCHED=false
-          export POLLS=0
-          for POLLS in $(seq 1 60); do
-            export POLLS
-            export LIVE_SHA=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?diagnostic=$(date +%s)" 2>/dev/null | tr -d '\r\n[:space:]')
-            if [ "$LIVE_SHA" = "$TARGET_SHA" ]; then
-              export MATCHED=true
-              break
-            fi
-            sleep 10
-          done
-
+          if [ "$HOOK_CONFIGURED" = true ]; then
+            for POLLS in $(seq 1 24); do
+              export POLLS
+              export LIVE_SHA=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?diagnostic=$(date +%s)" 2>/dev/null | tr -d '\r\n[:space:]')
+              if [ "$LIVE_SHA" = "$TARGET_SHA" ]; then export MATCHED=true; break; fi
+              sleep 10
+            done
+          fi
+          export TARGET_SHA VALIDATE_EXIT
           python - <<'PY'
           import json, os, pathlib, datetime
           def tail(path, n=12000):
               p=pathlib.Path(path)
-              if not p.exists(): return ''
-              text=p.read_text(errors='replace')
-              return text[-n:]
+              return p.read_text(errors='replace')[-n:] if p.exists() else ''
           report={
-            'generated_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            'target_sha': os.environ.get('TARGET_SHA',''),
-            'validator_exit': int(os.environ.get('VALIDATE_EXIT','-1')),
-            'validator_tail': tail('/tmp/validate.log'),
-            'build_hook_configured': os.environ.get('HOOK_CONFIGURED')=='true',
-            'build_hook_http': int(os.environ.get('HOOK_HTTP','0')),
-            'hook_response_tail': tail('/tmp/hook-response.txt',3000),
-            'live_sha': os.environ.get('LIVE_SHA',''),
-            'live_sha_matched': os.environ.get('MATCHED')=='true',
-            'polls': int(os.environ.get('POLLS','0')),
+            'stage':'complete',
+            'generated_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'target_sha':os.environ.get('TARGET_SHA',''),
+            'validator_exit':int(os.environ.get('VALIDATE_EXIT','-1')),
+            'validator_tail':tail('/tmp/validate.log'),
+            'build_hook_configured':os.environ.get('HOOK_CONFIGURED')=='true',
+            'build_hook_http':int(os.environ.get('HOOK_HTTP','0')),
+            'hook_response_tail':tail('/tmp/hook-response.txt',3000),
+            'live_sha':os.environ.get('LIVE_SHA',''),
+            'live_sha_matched':os.environ.get('MATCHED')=='true',
+            'polls':int(os.environ.get('POLLS','0'))
           }
           pathlib.Path('reports/production-deploy-diagnostic-latest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
           PY
 
-      - name: Commit diagnostic report even when deployment fails
-        shell: bash
-        run: |
-          set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add reports/production-deploy-diagnostic-latest.json
           git commit -m 'Update production deploy diagnostic [skip ci]' || exit 0
           for attempt in 1 2 3 4 5; do
-            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            git pull --rebase origin main || true
+            git push origin HEAD:main && exit 0
             sleep $((attempt*2))
           done
           exit 1

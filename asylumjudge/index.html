@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://asylumjudge.com/">
   <meta name="theme-color" content="#b80d16">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=4">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=5">
 </head>
 <body>
   <header class="site-header">
@@ -85,6 +85,20 @@
       </div>
     </section>
 
+    <section class="daily-knowledge" aria-labelledby="daily-knowledge-title">
+      <div class="shell knowledge-panel">
+        <div class="knowledge-intro">
+          <span>DAILY ASYLUM KNOWLEDGE</span>
+          <h2 id="daily-knowledge-title">每日庇护知识</h2>
+          <p>与唐人日报“移民美国 · 庇护知识”同步，每日更新。</p>
+          <a href="https://trrb.net/immigrate/center?path=humanitarian">进入庇护知识库 →</a>
+        </div>
+        <div id="daily-knowledge-items" class="knowledge-items" aria-live="polite">
+          <div class="knowledge-loading">正在读取今日庇护知识…</div>
+        </div>
+      </div>
+    </section>
+
     <section class="shell entry-grid" aria-label="查询入口">
       <a href="#judge-search"><span class="entry-icon">法官</span><div><b>查移民法官</b><small>姓名、法院或城市</small></div><i>→</i></a>
       <a href="/immigration-judge-approval-rate/courts.html"><span class="entry-icon">法院</span><div><b>全部移民法院</b><small>比较法院裁决数据</small></div><i>→</i></a>
@@ -135,6 +149,6 @@
   <footer>
     <div class="shell footer-inner"><div><b>移民法官通过率</b><span>AsylumJudge.com</span></div><p>与唐人日报共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/site.js?v=4" defer></script>
+  <script src="/asylumjudge/site.js?v=5" defer></script>
 </body>
 </html>

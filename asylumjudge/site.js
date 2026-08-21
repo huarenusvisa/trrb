@@ -4,6 +4,21 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const stateNames = { CA: '加州', NY: '纽约州', TX: '德州', FL: '佛州', NJ: '新泽西州', IL: '伊利诺伊州', WA: '华盛顿州', MA: '马萨诸塞州', PA: '宾州', GA: '乔治亚州', AZ: '亚利桑那州', VA: '弗吉尼亚州' };
 
+function useCleanDomainRoutes() {
+  if (!/^(www\.)?asylumjudge\.com$/i.test(location.hostname)) return;
+  const routes = new Map([
+    ['/immigration-judge-approval-rate/courts.html', '/courts'],
+    ['/immigration-judge-approval-rate/states.html', '/states'],
+    ['/immigration-judge-approval-rate/china-dashboard.html', '/china'],
+    ['/immigration-judge-approval-rate/methodology.html', '/methodology']
+  ]);
+  document.querySelectorAll('a[href]').forEach((link) => {
+    const url = new URL(link.getAttribute('href'), location.origin);
+    const replacement = routes.get(url.pathname);
+    if (url.origin === location.origin && replacement) link.href = `${replacement}${url.search}${url.hash}`;
+  });
+}
+
 async function json(url) {
   const response = await fetch(url);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -76,6 +91,7 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
   search(button.dataset.q);
 }));
 
+useCleanDomainRoutes();
 loadOverview();
 const initial = new URLSearchParams(location.search).get('q');
 if (initial) {

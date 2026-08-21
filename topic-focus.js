@@ -60,6 +60,10 @@
     return String(value || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
   }
 
+  function cleanupFinanceCard() {
+    document.querySelectorAll('.topic-finance .topic-status, .topic-finance .topic-latest').forEach((node) => node.remove());
+  }
+
   function articleUrl(article) {
     if (!article) return '/';
     if (typeof window.TRRB_articleUrl === 'function') {
@@ -126,6 +130,7 @@
       });
       renderLatest(el, match);
     });
+    cleanupFinanceCard();
   }
 
   window.TRRB_renderTopicFocus = function TRRB_renderTopicFocus(articles) {
@@ -133,8 +138,11 @@
   };
 
   function init() {
+    cleanupFinanceCard();
     const source = Array.isArray(window.TRRB_ARTICLE_INDEX) ? window.TRRB_ARTICLE_INDEX : (Array.isArray(window.TRRB_ARTICLES) ? window.TRRB_ARTICLES : []);
     if (source.length) renderFromSource(source);
+    window.setTimeout(cleanupFinanceCard, 300);
+    window.setTimeout(cleanupFinanceCard, 1200);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });

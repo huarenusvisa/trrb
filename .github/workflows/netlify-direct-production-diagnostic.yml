@@ -46,10 +46,16 @@ jobs:
               deploy_exit=$?
               set -e
               if [ "$deploy_exit" -ne 0 ]; then
-                if grep -Eqi 'unknown option|unknown argument|unexpected argument' /tmp/netlify-exact-deploy.log; then failure_kind='cli_argument';
-                elif grep -Eqi 'build command failed|failed during stage|build script returned non-zero|build failed' /tmp/netlify-exact-deploy.log; then failure_kind='build_command';
+                if grep -Eqi 'unknown option|unknown argument|unexpected argument|Usage:' /tmp/netlify-exact-deploy.log; then failure_kind='cli_argument';
+                elif grep -Eqi 'build command failed|failed during stage|build script returned non-zero|build failed|Command failed with exit code' /tmp/netlify-exact-deploy.log; then failure_kind='build_command';
                 elif grep -Eqi 'not authorized to access this site|invalid access token|authentication failed|could not authenticate' /tmp/netlify-exact-deploy.log; then failure_kind='netlify_authentication';
                 elif grep -Eqi 'deploy.*failed|failed to deploy|upload.*failed' /tmp/netlify-exact-deploy.log; then failure_kind='production_upload';
+                elif grep -Eqi 'Cannot find module|ERR_MODULE_NOT_FOUND|MODULE_NOT_FOUND' /tmp/netlify-exact-deploy.log; then failure_kind='missing_module';
+                elif grep -Eqi 'ENOENT|No such file or directory' /tmp/netlify-exact-deploy.log; then failure_kind='missing_file';
+                elif grep -Eqi 'secret scan|secrets scan|secret scanning' /tmp/netlify-exact-deploy.log; then failure_kind='secret_scan';
+                elif grep -Eqi 'SUPABASE|PostgREST|PGRST|database' /tmp/netlify-exact-deploy.log; then failure_kind='data_backend';
+                elif grep -Eqi 'ENOTFOUND|ECONNREFUSED|ETIMEDOUT|network' /tmp/netlify-exact-deploy.log; then failure_kind='network';
+                elif grep -Eqi 'validation failed|validator|SEO integrity|seo-integrity' /tmp/netlify-exact-deploy.log; then failure_kind='validation';
                 else failure_kind='unclassified_cli_failure'; fi
               fi
             else
@@ -58,6 +64,14 @@ jobs:
           else
             failure_kind='token_missing'
           fi
+          build_started=false
+          functions_stage=false
+          edge_stage=false
+          if [ -f /tmp/netlify-exact-deploy.log ]; then
+            grep -Eqi 'Netlify Build|build.command|Building site|build script' /tmp/netlify-exact-deploy.log && build_started=true || true
+            grep -Eqi 'functions bundling|bundling functions|functions deployed' /tmp/netlify-exact-deploy.log && functions_stage=true || true
+            grep -Eqi 'edge functions|edge-functions' /tmp/netlify-exact-deploy.log && edge_stage=true || true
+          fi
           cat > reports/netlify-direct-production-diagnostic.json <<EOF
           {
             "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
@@ -65,7 +79,10 @@ jobs:
             "token_present": $token_present,
             "site_lookup_http_status": $api_http,
             "exact_deploy_exit_code": $deploy_exit,
-            "failure_kind": "$failure_kind"
+            "failure_kind": "$failure_kind",
+            "build_started": $build_started,
+            "functions_stage_seen": $functions_stage,
+            "edge_stage_seen": $edge_stage
           }
           EOF
           cat reports/netlify-direct-production-diagnostic.json

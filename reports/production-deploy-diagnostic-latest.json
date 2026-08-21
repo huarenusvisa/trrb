@@ -1,0 +1,12 @@
+{
+  "stage": "preflight",
+  "generated_at": "2026-08-21T04:02:04.869613+00:00",
+  "source_sha": "8f0a09f2c3920a58c5f6e791730c43de336fcceb",
+  "validator_exit": 0,
+  "validator_tail": "[sitemap-index] 4817 URLs split into 2 files (73 static, 4744 articles); immigration knowledge 62/62 edge-aligned; forbidden static excluded 0\nSite validation passed: current product invariants are consistent.\n",
+  "build_hook_configured": true,
+  "build_hook_http": null,
+  "live_sha": "",
+  "live_sha_matched": false,
+  "polls": 0
+}

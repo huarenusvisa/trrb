@@ -1,7 +1,152 @@
 {
-  "generated_at": "2026-08-19T15:34:04.877Z",
+  "generated_at": "2026-08-21T07:09:10.555Z",
   "hook_http_status": 200,
-  "response_is_json": false,
-  "response_keys": [],
-  "safe_metadata": {}
+  "hook_response_preview": "",
+  "deploys_http_status": 200,
+  "recent_deploys": [
+    {
+      "id": "6a87f98419e73600082d974f",
+      "state": "building",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "9235b069b61488d64c76cf05d9a2b380094fefdb",
+      "title": "Diagnose recent Netlify deploys for homepage hard sweep",
+      "created_at": "2026-08-21T07:08:52.425Z",
+      "updated_at": "2026-08-21T07:08:57.862Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87f97075a03700085d9bac",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "6cc70504ca1e7f16678663d71ecafe801aab140c",
+      "title": "Round 13: sync published articles into SEO feeds",
+      "created_at": "2026-08-21T07:08:32.988Z",
+      "updated_at": "2026-08-21T07:08:56.239Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87f91d73c0a40008cd39e2",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "d54d99d0eb6fceeeb6de9a2dcf7f8f1d5f5684ef",
+      "title": "Round 16: sync five official legal sources",
+      "created_at": "2026-08-21T07:07:09.770Z",
+      "updated_at": "2026-08-21T07:07:35.735Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87f8b8e1c72e00083d7965",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "3fe578068ad9ec70148a2b48e5ef993f75f9084a",
+      "title": "Round 13: sync published articles into SEO feeds",
+      "created_at": "2026-08-21T07:05:28.428Z",
+      "updated_at": "2026-08-21T07:05:53.184Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87f852e00280000825a423",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "e6c99418493212ae80f530d8a580623b337280e7",
+      "title": "Round 13: sync published articles into SEO feeds",
+      "created_at": "2026-08-21T07:03:46.942Z",
+      "updated_at": "2026-08-21T07:04:16.410Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87ea391956a40008cb2550",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "65d6fb6e5087e1ff3acf598ce94260569737d215",
+      "title": "Round 13: sync published articles into SEO feeds",
+      "created_at": "2026-08-21T06:03:37.651Z",
+      "updated_at": "2026-08-21T06:03:59.175Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87e9e41a15470008469219",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "fbf6c6035714f9925ddfe36e0c8717c1d4925407",
+      "title": "Round 13: sync published articles into SEO feeds",
+      "created_at": "2026-08-21T06:02:12.027Z",
+      "updated_at": "2026-08-21T06:02:34.769Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87e71164efbe0008ce5e2d",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "b18f0250b791751ed23bcbf34b13907a28cb42c9",
+      "title": "Round 13: sync published articles into SEO feeds",
+      "created_at": "2026-08-21T05:50:09.796Z",
+      "updated_at": "2026-08-21T05:50:31.597Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87e4b2c0dabf00086a7d8f",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "72147434db170059b09bfbfa12b219b5929eae1c",
+      "title": "Round 13: sync published articles into SEO feeds",
+      "created_at": "2026-08-21T05:40:02.668Z",
+      "updated_at": "2026-08-21T05:40:24.232Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87dfce2c53c500082f6970",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "3b3bcdc31c5a8a521e853422aae81b21a934b7c1",
+      "title": "Deploy triggered by hook: GitHub Production Deploy",
+      "created_at": "2026-08-21T05:19:10.950Z",
+      "updated_at": "2026-08-21T05:19:35.192Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87dfaa2e24220009f4acf4",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "3b3bcdc31c5a8a521e853422aae81b21a934b7c1",
+      "title": "Expose production deploy trigger status\n\nPublish production trigger outcome on the target main SHA so Netlify deployment failures are observable during homepage release acceptance.",
+      "created_at": "2026-08-21T05:18:34.207Z",
+      "updated_at": "2026-08-21T05:19:10.644Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87dfa12df9c20007453b23",
+      "state": "error",
+      "branch": "fix/production-deploy-status-20260821",
+      "context": "deploy-preview",
+      "commit_ref": "1ae7d5eeda04ee86d743058379fead1837d9f198",
+      "title": "Expose production deploy trigger status",
+      "created_at": "2026-08-21T05:18:25.418Z",
+      "updated_at": "2026-08-21T05:18:48.633Z",
+      "published_at": null,
+      "deploy_time": null
+    }
+  ]
 }

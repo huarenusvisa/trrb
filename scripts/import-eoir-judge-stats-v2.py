@@ -211,8 +211,8 @@ def main():
             inserted = rest("immigration_judges", "POST", params={"on_conflict": "judge_name_normalized,court_name"}, payload=part, prefer="resolution=merge-duplicates,return=representation") or []
             for row in inserted:
                 judge_ids[row["judge_name_normalized"]] = row["id"]
-        if len(judge_ids) < int(judge_count * .98):
-            raise RuntimeError(f"judge IDs returned {len(judge_ids)}/{judge_count}")
+        if len(judge_ids) != judge_count:
+            raise RuntimeError(f"judge IDs returned {len(judge_ids)}/{judge_count}; refusing to prune prior snapshot")
 
         yearly_payload = []
         for name, fy, total, grants, denials in yearly:
@@ -233,6 +233,13 @@ def main():
             nat_payload.append({"judge_id": jid, "nationality": nationality, "nationality_code": code, "total_asylum_decisions": total, "grants": grants, "denials": denials, "other_decisions": 0, "approval_rate": rate(grants, denials), "data_start_date": str(first_date), "data_end_date": str(last_date), "import_batch_id": batch_id, "updated_at": now})
         for part in chunks(nat_payload, 400):
             rest("immigration_judge_asylum_nationality", "POST", params={"on_conflict": "judge_id,nationality"}, payload=part, prefer="resolution=merge-duplicates,return=minimal")
+
+        # A judge's current court can change between monthly snapshots. Because the
+        # natural key includes court_name, an upsert alone would leave the prior
+        # court row behind and double-count that judge in public totals. Only after
+        # a complete judge-ID write succeeds do we prune rows from older batches;
+        # child yearly/nationality rows cascade with those stale judge rows.
+        rest("immigration_judges", "DELETE", params={"import_batch_id": f"neq.{batch_id}"}, prefer="return=minimal")
 
         rest("immigration_judge_import_batches", "PATCH", params={"id": f"eq.{batch_id}"}, payload={"status": "imported", "accepted_rows": int(merits_count), "completed_at": now}, prefer="return=minimal")
     except Exception as exc:

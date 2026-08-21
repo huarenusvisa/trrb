@@ -1,0 +1,61 @@
+name: Netlify Hook Probe Live
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/netlify-hook-probe-live.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Trigger hook and persist response immediately
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          mkdir -p reports
+          if [ -z "${NETLIFY_BUILD_HOOK:-}" ]; then
+            HTTP=0
+            BODY='{"error":"NETLIFY_BUILD_HOOK missing"}'
+          else
+            if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then URL="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true"; else URL="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true"; fi
+            HTTP=$(curl -sS -o /tmp/netlify-hook-body.txt -w '%{http_code}' -X POST "$URL")
+            BODY=$(cat /tmp/netlify-hook-body.txt)
+          fi
+          export HTTP BODY SOURCE_SHA=$(git rev-parse HEAD)
+          python - <<'PY'
+          import json, os, pathlib, datetime
+          body=os.environ.get('BODY','')
+          try: parsed=json.loads(body) if body else None
+          except Exception: parsed={'raw':body[:5000]}
+          report={
+            'generated_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'source_sha':os.environ.get('SOURCE_SHA',''),
+            'hook_configured':bool(os.environ.get('NETLIFY_BUILD_HOOK','')),
+            'http_status':int(os.environ.get('HTTP','0')),
+            'response':parsed
+          }
+          pathlib.Path('reports/netlify-hook-live-latest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+          PY
+          git add reports/netlify-hook-live-latest.json
+          git commit -m 'Update Netlify hook live probe [skip ci]' || exit 0
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            git push origin HEAD:main && exit 0
+            sleep $((attempt*2))
+          done
+          exit 1

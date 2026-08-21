@@ -6,12 +6,17 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/netlify-build-stage-diagnostic.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/netlify-build-stage-diagnostic.yml'
+      - 'reports/netlify-build-stage-trigger.txt'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: trrb-netlify-build-stage-diagnostic
+  group: trrb-netlify-build-stage-diagnostic-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -76,27 +81,17 @@ jobs:
             .replace(/sb_(?:secret|publishable)_[A-Za-z0-9_-]+/g,'<redacted>')
             .replace(/[A-Za-z0-9_+=\/-]{40,}/g,'<redacted>');
           const lines=raw.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-          const excerpt=lines.slice(-30).join(' | ').slice(0,5000);
-          const report={
-            generated_at:new Date().toISOString(),
-            source_sha:process.env.SOURCE_SHA||'',
-            failed_stage:process.env.FAILED_STAGE||'',
-            failed_exit:Number(process.env.FAILED_EXIT||0),
-            status:process.env.FAILED_STAGE?'failed':'passed',
-            sanitized_log_tail:excerpt
-          };
+          const excerpt=lines.slice(-35).join(' | ').slice(0,6000);
+          const report={generated_at:new Date().toISOString(),source_sha:process.env.SOURCE_SHA||'',failed_stage:process.env.FAILED_STAGE||'',failed_exit:Number(process.env.FAILED_EXIT||0),status:process.env.FAILED_STAGE?'failed':'passed',sanitized_log_tail:excerpt};
           fs.writeFileSync('reports/netlify-build-stage-diagnostic.json',JSON.stringify(report,null,2)+'\n');
-          console.log(JSON.stringify(report,null,2));
+          console.log('TRRB_BUILD_DIAGNOSTIC='+JSON.stringify(report));
+          if (report.status === 'failed') process.exitCode = 1;
           NODE
-      - name: Commit diagnostic report
+      - name: Upload diagnostic artifact
         if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -f reports/netlify-build-stage-diagnostic.json || exit 0
-          git config user.name 'TRRB Netlify Build Diagnostic Bot'
-          git config user.email 'actions@users.noreply.github.com'
-          git add reports/netlify-build-stage-diagnostic.json
-          git commit -m 'Update Netlify build stage diagnostic [skip ci]' || exit 0
-          git pull --rebase origin main
-          git push origin HEAD:main
+        uses: actions/upload-artifact@v4
+        with:
+          name: netlify-build-stage-diagnostic
+          path: reports/netlify-build-stage-diagnostic.json
+          if-no-files-found: warn
+          retention-days: 3

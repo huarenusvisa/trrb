@@ -7,11 +7,10 @@ const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
 const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
 const ROUTE_PREFIXES = new Set([
   "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
-  "us-crime", "china-officialdom", "asylum", "immigration", "deport", "expose"
+  "us-crime", "china-officialdom", "asylum", "immigration", "deport", "expose", "jobs"
 ]);
 const FORBIDDEN_SITEMAP_ROUTES = [
   /https:\/\/trrb\.net\/finance(?:\/|[?<]|$)/i,
-  /https:\/\/trrb\.net\/jobs(?:\/|[?<]|$)/i,
   /https:\/\/trrb\.net\/people(?:\/|[?<]|$)/i,
   /https:\/\/trrb\.net\/expose(?:\/|\?|<|$)/i,
   /https:\/\/trrb\.net\/(?:thanks|delete-account)\.html(?:\?|<|$)/i,
@@ -108,8 +107,9 @@ for (const file of htmlFiles) {
   }
 }
 
-const required = ["robots.txt", "sitemap.xml", "news-sitemap.xml", "feed.xml", "404.html"];
-for (const item of required) if (!(await exists(item))) errors.push(`缺少 ${item}`);
+for (const item of ["robots.txt", "sitemap.xml", "news-sitemap.xml", "feed.xml", "404.html"]) {
+  if (!(await exists(item))) errors.push(`缺少 ${item}`);
+}
 
 try {
   const robots = await readFile(path.join(ROOT, "robots.txt"), "utf8");
@@ -134,6 +134,16 @@ for (const file of files.filter((item) => /(?:^|\/)sitemap[^/]*\.xml$/i.test(rel
   }
   if (/https:\/\/www\.trrb\.net\//i.test(xml)) errors.push(`${name}: 包含 www.trrb.net URL`);
   if (/\/article\.html\?id=/i.test(xml)) errors.push(`${name}: 包含旧 article.html?id= URL`);
+}
+
+// Recruitment is now a launched, indexable product. The live sitemap edge
+// must explicitly add /jobs/ even if a static snapshot predates its launch.
+try {
+  const liveSitemap = await readFile(path.join(ROOT, "netlify/edge-functions/sitemap-live.ts"), "utf8");
+  if (!/jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/.test(liveSitemap)) errors.push("live sitemap 未显式加入 /jobs/");
+  if (!/live-supabase-v7-jobs-indexable/.test(liveSitemap)) errors.push("live sitemap 未升级到 jobs-indexable v7");
+} catch (error) {
+  errors.push(`无法读取 live sitemap edge: ${error.message}`);
 }
 
 const report = {

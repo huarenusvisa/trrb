@@ -5,8 +5,17 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 21 Aug 2026 14:52:09 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2026 14:59:55 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>特朗普政府再挥制裁利剑！贝森特强硬喊话盟友：必须明确立场</title>
+      <link>https://trrb.net/trump/%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E5%86%8D%E6%8C%A5%E5%88%B6%E8%A3%81%E5%88%A9%E5%89%91%E8%B4%9D%E6%A3%AE%E7%89%B9%E5%BC%BA%E7%A1%AC%E5%96%8A%E8%AF%9D%E7%9B%9F%E5%8F%8B%E5%BF%85%E9%A1%BB%E6%98%8E%E7%A1%AE%E7%AB%8B%E5%9C%BA-mt32spk9-2a3702</link>
+      <guid isPermaLink="true">https://trrb.net/trump/%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E5%86%8D%E6%8C%A5%E5%88%B6%E8%A3%81%E5%88%A9%E5%89%91%E8%B4%9D%E6%A3%AE%E7%89%B9%E5%BC%BA%E7%A1%AC%E5%96%8A%E8%AF%9D%E7%9B%9F%E5%8F%8B%E5%BF%85%E9%A1%BB%E6%98%8E%E7%A1%AE%E7%AB%8B%E5%9C%BA-mt32spk9-2a3702</guid>
+      <pubDate>Fri, 21 Aug 2026 14:59:55 GMT</pubDate>
+      <category>美国时政</category>
+      <description>唐人日报 8 月 21日讯：美国财政部长斯科特·贝森特周四表示，特朗普政府准备宣布针对伊朗的新一轮严厉经济制裁，并要求美国盟友在伊朗问题上明确选择立场。</description>
+      <enclosure url="https://images.openai.com/static-rsc-4/0J3HAA-zPfBd3o4jmYgcUVugK6ErOShUX46ZIKQGR3qH0FvWi61FoI-xvscjYNptv4r_28DsgXqMkyfh4Verr6BqT_Qk9Pp-87F045aFZqDygwxQzYF2KHToRhb7kfyvqNvjtVy8F1NPxykPWlRYbCFteYLjMmf1Fydykrj-rUg?purpose=inline" type="image/jpeg" />
+    </item>
     
     <item>
       <title>山西官场再传反腐消息！投资促进局原党组书记杨春权被“双开”</title>
@@ -865,15 +874,6 @@
       <category>移民美国</category>
       <description>弗吉尼亚一19岁男子因涉嫌杀害42岁女性被捕，相关信息来自非官方渠道，官方尚未确认。</description>
       <enclosure url="https://pbs.twimg.com/media/HQLVf9TXYAAqN8r.jpg" type="image/jpeg" />
-    </item>
-    <item>
-      <title>路易斯安那亚历山大首架遣返海地移民航班启程</title>
-      <link>https://trrb.net/ice/ice-628f6ff11a3eeb8d0138a5e178ba8add06f22e62</link>
-      <guid isPermaLink="true">https://trrb.net/ice/ice-628f6ff11a3eeb8d0138a5e178ba8add06f22e62</guid>
-      <pubDate>Thu, 20 Aug 2026 20:23:21 GMT</pubDate>
-      <category>移民美国</category>
-      <description>美国终止约35万海地人临时保护身份，路易斯安那市启动首架遣返航班。</description>
-      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-20/8fdf3c41-c086-4238-861a-ef45015cf0e6-e850dc5e-1074-464b-8384-2ff3e3e7a914.webp" type="image/webp" />
     </item>
   </channel>
 </rss>

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/trump/%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E5%86%8D%E6%8C%A5%E5%88%B6%E8%A3%81%E5%88%A9%E5%89%91%E8%B4%9D%E6%A3%AE%E7%89%B9%E5%BC%BA%E7%A1%AC%E5%96%8A%E8%AF%9D%E7%9B%9F%E5%8F%8B%E5%BF%85%E9%A1%BB%E6%98%8E%E7%A1%AE%E7%AB%8B%E5%9C%BA-mt32spk9-2a3702</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T14:59:55.112Z</news:publication_date>
+        <news:title>特朗普政府再挥制裁利剑！贝森特强硬喊话盟友：必须明确立场</news:title>
+      </news:news>
+    </url>
   
   <url>
       <loc>https://trrb.net/hot-headlines/%E5%B1%B1%E8%A5%BF%E5%AE%98%E5%9C%BA%E5%86%8D%E4%BC%A0%E5%8F%8D%E8%85%90%E6%B6%88%E6%81%AF%E6%8A%95%E8%B5%84%E4%BF%83%E8%BF%9B%E5%B1%80%E5%8E%9F%E5%85%9A%E7%BB%84%E4%B9%A6%E8%AE%B0%E6%9D%A8%E6%98%A5%E6%9D%83%E8%A2%AB%E5%8F%8C%E5%BC%80-mt32iqha-114b22</loc>
@@ -2106,14 +2114,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-19T15:25:00.428Z</news:publication_date>
         <news:title>司法部逮捕数名涉嫌粮食券诈骗的商户，涉案金额数万美元，更多信息尚未披露</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/hot-headlines/%E5%94%90%E4%BB%A3%E7%9F%B3%E7%8B%AE%E8%A2%AB%E7%9B%9716%E5%B9%B4%E4%BB%8D%E6%97%A0%E8%B8%AA%E8%BF%B9%E9%99%95%E8%A5%BF%E8%AD%A6%E6%96%B9%E6%82%AC%E8%B5%8F100%E4%B8%87%E5%85%83%E5%BE%81%E9%9B%86%E7%A0%B4%E6%A1%88%E7%BA%BF%E7%B4%A2-mt081tlf-ab0632</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T15:03:39.795Z</news:publication_date>
-        <news:title>唐代石狮被盗16年仍无踪迹，陕西警方悬赏100万元征集破案线索</news:title>
       </news:news>
     </url>
 </urlset>

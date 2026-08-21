@@ -94,11 +94,30 @@ const liveSitemap = await text("netlify/edge-functions/sitemap-live.ts");
 requireMatch(liveSitemap, /jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/, "live sitemap does not add launched jobs hub");
 requireMatch(liveSitemap, /live-supabase-v7-jobs-indexable/, "live sitemap version is not jobs-indexable v7");
 
+const niulai = await text("niulai/index.html");
+const niulaiAdapter = await text("niulai/data-adapter.js");
+const financeGateway = await text("netlify/functions/finance-market-data.ts");
+const financeNews = await text("netlify/functions/finance-news.ts");
+const financeHealth = await text("netlify/functions/finance-admin-health.ts");
+const adminHtml = await text("admin/index.html");
+requireMatch(niulai, /搜索股票、ETF、基金/, "niulai search UI is missing");
+requireMatch(niulaiAdapter, /\/api\/finance\/search/, "niulai adapter is not connected to securities search gateway");
+requireMatch(niulaiAdapter, /getSecurityWatchlist/, "niulai adapter is missing multi-market watchlist storage");
+requireMatch(niulaiAdapter, /getAlertRules/, "niulai adapter is missing structured alert rules");
+requireMatch(financeGateway, /TWELVE_DATA_API_KEY/, "finance gateway is not ready for the provider key");
+requireMatch(financeGateway, /\/symbol_search/, "finance gateway is missing provider symbol search");
+requireMatch(financeGateway, /\/time_series/, "finance gateway is missing provider time series");
+requireMatch(financeNews, /public-articles/, "finance news endpoint is not synchronized with Tang Daily articles");
+requireMatch(financeHealth, /authenticate\(req\)/, "finance admin health endpoint is not staff protected");
+requireMatch(adminHtml, /data-page=["']finance-monitor["']/, "admin console is missing finance monitoring navigation");
+forbidMatch(niulaiAdapter, /TWELVE_DATA_API_KEY/, "Twelve Data API key name leaked into public client code");
+
 await Promise.all([
   "site-common.js", "site-search.js", "category-runtime-v3.js", "articles-home.js",
   "articles-home-live-fix.js", "homepage-focus-v34.js", "homepage-startup-stability.js",
   "homepage-immigration-hub.js", "jobs-home.js", "jobs/search.js", "jobs/unified-ui.js",
-  "topic/trump/trump.js", "article-route-runtime.js"
+  "topic/trump/trump.js", "article-route-runtime.js", "niulai/data-adapter.js", "niulai/app.js",
+  "niulai/stock.js", "niulai/fund.js", "niulai/detail-state-sync.js", "admin/finance-monitor.js"
 ].map(parseBrowserScript));
 
 const manifest = await text("site.webmanifest");

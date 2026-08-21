@@ -28,6 +28,7 @@
         <button class="nav-btn" data-page="categories">栏目管理</button>
         <button class="nav-btn" data-page="community">用户与社区</button>
         <button class="nav-btn" data-page="jobs-admin">招聘求职管理</button>
+        <button class="nav-btn" data-page="finance-monitor">牛来接口监控</button>
         <button class="nav-btn review-nav" data-page="ice-review">ICE审核中心 <span id="review-nav-count">0</span></button><button class="nav-btn" data-page="rankings">24小时热榜</button>
       </nav><button class="logout" id="logout-btn">退出登录</button></aside>
       <main class="main"><header class="top"><div><h2 id="page-title">控制台</h2><p id="admin-info">正在读取管理员身份...</p></div><a href="/" target="_blank" rel="noopener">打开前台</a></header>
@@ -40,6 +41,14 @@
           <div class="panel"><div class="category-form-head"><div><h3>招聘求职管理</h3><p>与 Web/APP 共用正式 job_listings、job_seeker_posts 与统一账号；可查看发布者ID、状态并执行阶段性治理。</p></div><button id="refresh-jobs-admin">刷新</button></div><div id="jobs-admin-message" class="message"></div></div>
           <div class="panel"><h3>招聘岗位</h3><div class="table-wrap"><table><thead><tr><th>岗位</th><th>发布者</th><th>地区</th><th>状态</th><th>治理</th></tr></thead><tbody id="jobs-listings-body"></tbody></table></div></div>
           <div class="panel"><h3>求职发布</h3><div class="table-wrap"><table><thead><tr><th>求职</th><th>发布者</th><th>地区</th><th>状态</th><th>治理</th></tr></thead><tbody id="jobs-seekers-body"></tbody></table></div></div>
+        </section>
+        <section class="page hidden" id="finance-monitor-page">
+          <div class="panel finance-monitor-head"><div><h3>牛来｜唐人财经数据接口</h3><p>监控全证券搜索、行情详情、唐人日报财经新闻同步及正式数据 Key 配置状态。</p></div><button id="refresh-finance-monitor" type="button">立即检测</button></div>
+          <div id="finance-monitor-message" class="message"></div>
+          <div class="cards finance-monitor-cards"><article><strong id="finance-monitor-mode">—</strong><span>数据模式</span></article><article><strong id="finance-monitor-provider">—</strong><span>行情供应商</span></article><article><strong id="finance-monitor-coverage">—</strong><span>测试证券目录</span></article><article><strong id="finance-monitor-health">—</strong><span>接口健康</span></article></div>
+          <div class="panel"><h3>配置检查</h3><div id="finance-config-list" class="finance-config-list"></div></div>
+          <div class="table-wrap"><table><thead><tr><th>接口</th><th>状态</th><th>HTTP</th><th>延迟</th></tr></thead><tbody id="finance-checks-body"><tr><td colspan="4">登录后读取。</td></tr></tbody></table></div>
+          <p class="finance-monitor-note">未购买正式商业套餐时保持“测试数据”属于正常状态。购买 Venture 并在 Netlify 配置 <code>TWELVE_DATA_API_KEY</code> 后，行情网关会自动切换；API Key 不进入浏览器和 GitHub。</p>
         </section>
         <section class="page hidden" id="ice-review-page"><div class="review-head panel"><div><h3>ICE人工审核中心</h3><p>官方高分且无风险内容可自动排期；非官方内容必须由管理员审核。</p></div><button id="refresh-review">刷新审核队列</button></div><div class="review-tabs" id="review-tabs"><button class="review-tab active" data-review-filter="pending_review">待人工审核 <b id="tab-count-pending_review">0</b></button><button class="review-tab" data-review-filter="pending_corroboration">等待交叉信源 <b id="tab-count-pending_corroboration">0</b></button><button class="review-tab" data-review-filter="approved">已通过待发布 <b id="tab-count-approved">0</b></button><button class="review-tab" data-review-filter="published">已发布 <b id="tab-count-published">0</b></button><button class="review-tab" data-review-filter="rejected">已拒绝 <b id="tab-count-rejected">0</b></button><button class="review-tab" data-review-filter="failed">处理失败 <b id="tab-count-failed">0</b></button></div><div id="review-message"></div><div id="review-list"></div></section>
         <section class="page hidden" id="rankings-page"><div class="panel"><h3>24小时热榜</h3><button id="refresh-rankings">刷新热榜</button></div><div class="table-wrap"><table><tbody id="rankings-tbody"></tbody></table></div></section>
@@ -59,5 +68,6 @@
   <script src="./ice-status-explainer.js?v=20260725-1"></script>
   <script src="./community-center.js?v=20260816-batch1-node8"></script>
   <script src="./jobs-manager.js?v=20260821-core-access"></script>
+  <script src="./finance-monitor.js?v=20260821-data-architecture"></script>
 </body>
 </html>

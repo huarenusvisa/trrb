@@ -58,6 +58,7 @@ function bindEvents() {
   el("article-form").addEventListener("submit", handleSaveArticle);
   el("refresh-articles").addEventListener("click", loadArticles);
   el("refresh-rankings").addEventListener("click", loadRankings);
+  if (el("refresh-finance-monitor")) el("refresh-finance-monitor").addEventListener("click", () => window.loadFinanceHealth?.());
   el("article-cover-file").addEventListener("change", handleCoverSelection);
   el("article-cover-remove").addEventListener("click", clearCoverSelection);
   el("article-cover-paste-zone").addEventListener("paste", handleCoverPaste);
@@ -138,7 +139,8 @@ async function enterAdmin(user) {
     loadCategories(),
     loadArticles(),
     loadRankings(),
-    loadReviewQueue()
+    loadReviewQueue(),
+    window.loadFinanceHealth?.()
   ]);
   showPage("dashboard");
 }
@@ -182,6 +184,7 @@ function showPage(page) {
     dashboard: "控制台",
     articles: "文章管理",
     "new-article": "发布文章",
+    "finance-monitor": "牛来接口监控",
     "ice-review": "ICE人工审核中心",
     rankings: "24小时热榜"
   };
@@ -194,7 +197,13 @@ function showPage(page) {
   el(`${page}-page`).classList.remove("hidden");
   el("page-title").textContent = titles[page] || "控制台";
   if (page === "ice-review") loadReviewQueue();
+  if (page === "finance-monitor") window.loadFinanceHealth?.();
 }
+
+window.getAdminAccessToken = async function () {
+  const { data } = await supabaseClient.auth.getSession();
+  return data.session?.access_token || "";
+};
 
 async function loadCategories() {
   const { data, error } = await supabaseClient

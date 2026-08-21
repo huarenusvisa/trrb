@@ -3,13 +3,10 @@
 
   const PLACEHOLDER_RE = /image-placeholder\.svg|category-placeholders|tang-ren-daily-placeholder|^data:image\/svg/i;
   const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
-  const REFRESH_INTERVAL = 2 * 60 * 1000;
   const FETCH_TIMEOUT_MS = 8000;
   let lastRenderSignature = "";
   let refreshPromise = null;
 
-  // Important: never hide the whole homepage while waiting for live data.
-  // Slow or embedded mobile browsers must always keep the page usable.
   document.documentElement.dataset.homeLoading = "true";
 
   function articleTime(item) {
@@ -66,7 +63,23 @@
   }
 
   function signatureFor(items) {
-    return items.slice(0, 100).map((item) => [keyOf(item), String(item?.published_at || ""), String(item?.title || ""), String(item?.image || ""), String(item?.category || "")].join("|")).join("\n");
+    return items.slice(0, 100).map((item) => [
+      keyOf(item),
+      String(item?.published_at || ""),
+      String(item?.title || ""),
+      String(item?.image || ""),
+      String(item?.category || "")
+    ].join("|")).join("\n");
+  }
+
+  function hasUsableRender() {
+    const hero = document.getElementById("hero");
+    const sections = document.getElementById("sections-grid");
+    const rank = document.getElementById("rank-list");
+    const heroReady = Boolean(hero?.querySelector(".hero-slide") || String(hero?.textContent || "").trim());
+    const sectionsReady = Boolean(sections?.children?.length);
+    const rankReady = Boolean(rank?.querySelector("li") || String(rank?.textContent || "").trim());
+    return heroReady && sectionsReady && rankReady;
   }
 
   async function fetchUnifiedLive() {
@@ -111,29 +124,35 @@
 
   function adoptExistingRender() {
     const items = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? uniqueSorted(window.TRRB_LAST_HOME_ARTICLES) : [];
-    if (!items.length || !items.some(isFresh)) return false;
+    if (!items.length || !items.some(isFresh) || !hasUsableRender()) return false;
     lastRenderSignature = signatureFor(items);
     document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
     finalizeHome("articles-home-initial");
     return true;
   }
 
-  async function refreshHome() {
+  async function refreshHome(options = {}) {
     if (refreshPromise) return refreshPromise;
+    const forceRender = options?.forceRender === true;
+
     refreshPromise = (async () => {
       try {
-        if (typeof window.renderHome !== "function") return false;
         const articles = await fetchUnifiedLive();
         if (!articles.length) throw new Error("首页统一实时接口没有返回已发布新闻");
         if (!articles.some(isFresh)) throw new Error("最近4天没有可展示的实时新闻");
+
         const signature = signatureFor(articles);
-        if (signature && signature !== lastRenderSignature) {
+        const shouldRender = typeof window.renderHome === "function" && (forceRender || !hasUsableRender());
+        if (shouldRender && signature && signature !== lastRenderSignature) {
           window.renderHome(articles);
           lastRenderSignature = signature;
+        } else if (!lastRenderSignature) {
+          lastRenderSignature = signature;
         }
+
         document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
         document.documentElement.dataset.liveNewsUpdatedAt = new Date().toISOString();
-        finalizeHome("public-home-bundle");
+        finalizeHome(shouldRender ? "public-home-bundle-recovery" : "public-home-bundle-verified");
         return true;
       } catch (error) {
         console.warn("Homepage unified live refresh unavailable", error);
@@ -143,6 +162,7 @@
         refreshPromise = null;
       }
     })();
+
     return refreshPromise;
   }
 
@@ -160,19 +180,30 @@
     observer.observe(document.documentElement, { childList: true, subtree: true });
     bindImageRecovery(document);
 
-    // Let the normal renderer win first. If it has not produced content quickly,
-    // make one guarded retry without ever blanking the page.
+    // Normal startup is owned by articles-home.js. Adopt that render instead of
+    // racing it with a second full render.
     window.setTimeout(() => {
-      if (!adoptExistingRender()) refreshHome();
-    }, 450);
+      if (adoptExistingRender()) return;
+      if (hasUsableRender()) finalizeHome("existing-render-visible");
+    }, 300);
+
+    // A full re-render is now emergency-only: it can happen once when the normal
+    // renderer has genuinely failed to produce a usable homepage.
+    window.setTimeout(() => {
+      if (adoptExistingRender()) return;
+      if (hasUsableRender()) {
+        finalizeHome("late-existing-render");
+        return;
+      }
+      refreshHome({ forceRender: true });
+    }, 1800);
 
     window.setTimeout(() => {
       if (document.documentElement.dataset.homeFinalized !== "true") finalizeHome("watchdog-visible");
-    }, 2500);
+    }, 3200);
 
-    window.setInterval(() => refreshHome(), REFRESH_INTERVAL);
-    window.addEventListener("pageshow", (event) => {
-      if (event.persisted) window.setTimeout(() => refreshHome(), 250);
+    window.addEventListener("pageshow", () => {
+      if (hasUsableRender()) finalizeHome("pageshow-existing");
     });
   }
 

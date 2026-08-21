@@ -2072,12 +2072,4 @@
         <news:title>纽约港超载船只倾覆两人溺亡嫌犯被ICE拘捕</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-f9b53c864b46b8ec60012c415a0523ce0cde84ab</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T21:04:55.474Z</news:publication_date>
-        <news:title>西雅图ICE逮捕多次犯罪危地马拉非法移民</news:title>
-      </news:news>
-    </url>
 </urlset>

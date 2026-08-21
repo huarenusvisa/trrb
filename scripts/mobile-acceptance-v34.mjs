@@ -45,22 +45,25 @@ async function testViewport(viewport) {
   await page.route(/^https?:\/\/(?!127\.0\.0\.1:4173).*/, (route) => route.abort());
   await page.goto(`${base}/index.html`, { waitUntil: "domcontentloaded" });
   await waitForMediaCss(page);
-  await page.waitForFunction(() => document.querySelector("#hero")?.dataset.focusOnly === "true");
+  await page.waitForFunction(() => {
+    const hero = document.querySelector("#hero");
+    return Boolean(hero && (hero.querySelector(".hero-slide") || hero.querySelector("a")));
+  });
 
   const heroState = await page.evaluate(() => ({
-    count: document.querySelector("#hero")?.dataset.focusCount || "",
-    categories: [...document.querySelectorAll("#hero .hero-slide .tag")].map((node) => node.textContent.trim()),
-    empty: Boolean(document.querySelector("#hero .hero-focus-empty"))
+    slides: document.querySelectorAll("#hero .hero-slide").length,
+    falseEmpty: Boolean(document.querySelector("#hero .hero-focus-empty")),
+    text: document.querySelector("#hero")?.textContent || ""
   }));
-  assert.ok(heroState.empty || heroState.categories.length > 0, `Hero did not render a focus state: ${JSON.stringify(heroState)}`);
-  assert.ok(heroState.categories.every((category) => category === "重要新闻" || category === "重点新闻"), `Ordinary news entered Hero: ${JSON.stringify(heroState)}`);
+  assert.equal(heroState.falseEmpty, false, `Legacy false-empty hero returned: ${JSON.stringify(heroState)}`);
+  assert.ok(!heroState.text.includes("当前暂无重点新闻"), `False empty copy returned: ${JSON.stringify(heroState)}`);
 
   await assertNoHorizontalOverflow(page, `homepage ${viewport.width}px`);
   await assertRatio(page, "#hero", `homepage hero ${viewport.width}px`, 0.04);
   await assertRatio(page, ".top-list img", `homepage top list ${viewport.width}px`, 0.08);
   await assertRatio(page, ".sections-grid .section-lead img", `homepage category images ${viewport.width}px`, 0.08);
 
-  const articleHref = await page.locator('a[href*="article.html?id="]').first().getAttribute("href");
+  const articleHref = await page.locator('a[href^="/ice/"],a[href^="/trump/"],a[href^="/us-"],a[href*="article.html?id="]').first().getAttribute("href");
   assert.ok(articleHref, "No article URL was available for mobile article testing");
   await page.goto(new URL(articleHref, `${base}/index.html`).href, { waitUntil: "domcontentloaded" });
   await waitForMediaCss(page);

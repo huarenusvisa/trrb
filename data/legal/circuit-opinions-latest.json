@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T23:02:40.179Z",
+  "generatedAt": "2026-08-21T23:37:06.781Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -155,6 +155,34 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862E-01A.pdf",
           "title": "25-1862 Rana v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1774O-01A.pdf",
+          "title": "26-1774 State of California v. Trump"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-1975P-01A.pdf",
+          "title": "23-1975 US v. Irizarry-Irizarry"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/23-2011P2-01A.pdf",
+          "title": "23-2011 Cruz v. UIA"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1555P-01A.pdf",
+          "title": "25-1555 Grant v. Trial Court of the Commonwealth of Massachusetts"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/26-1699O-01A.pdf",
+          "title": "26-1699 State of California v. Mullin"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
+          "title": "25-1862 Rana v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
+          "title": "25-1817 Recchia v. Campbell"
         }
       ],
       "notes": []
@@ -743,8 +771,28 @@
       "sourceFinalUrl": "https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions",
       "documents": [
         {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-10630-CV1.pdf",
+          "title": "25-10630 In Re: Media Matters for America Aug 21, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-30542-CV0.pdf",
+          "title": "25-30542 Norcave Properties v. IRS Aug 21, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20102-CR0.pdf",
+          "title": "25-20102 USA v. London Aug 21, 2026 Published Opinion PDF"
+        },
+        {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/23/23-50750-CV0.pdf",
           "title": "23-50750 Kipp Flores v. AMH Creekside Aug 21, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-20465.0.pdf",
+          "title": "25-20465 USA v. Sanchez Aug 21, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10540.0.pdf",
+          "title": "25-10540 Johnson v. Tarrant County Aug 21, 2026 Unpublished Opinion PDF"
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10953.0.pdf",
@@ -920,26 +968,6 @@
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50728.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30139.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-30063.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10642.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60640.0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20584-CV0.pdf",
           "title": null
         }
       ],

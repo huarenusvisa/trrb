@@ -1,10 +1,437 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-21T07:56:42.141Z",
+  "generatedAt": "2026-08-21T08:58:08.073Z",
   "scope": "Federal Register documents classified by the official API as Rule. FederalRegister.gov is used for discovery/metadata; official PDF links should be used for authoritative legal text.",
   "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE",
   "count": 50,
   "rules": [
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17154",
+      "title": "Income Taxes",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 254,
+          "name": "Internal Revenue Service",
+          "slug": "internal-revenue-service"
+        }
+      ],
+      "abstract": null,
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17154/income-taxes",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17154.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17148",
+      "title": "Fisheries of the Northeastern United States; Mackerel, Squid, and Butterfish; 2026 Illex Squid Quota Harvested",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 54,
+          "name": "Commerce Department",
+          "slug": "commerce-department"
+        },
+        {
+          "id": 361,
+          "name": "National Oceanic and Atmospheric Administration",
+          "slug": "national-oceanic-and-atmospheric-administration"
+        }
+      ],
+      "abstract": "NMFS is closing the directed Illex squid fishery in Federal waters based on a projection that 96 percent of the 2026 domestic annual harvest (DAH) will be harvested. This closure is effective 0001 hour (hr) local time on August 23, 2026, through 2400 hr local time on December 31, 2026. This action is necessary to comply with the regulations implementing the Mackerel, Squid, and Butterfish Fishery Management Plan (FMP), and is intended to prevent the 2026 Illex squid annual catch limit from being exceeded.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17148/fisheries-of-the-northeastern-united-states-mackerel-squid-and-butterfish-2026-illex-squid-quota",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17148.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17146",
+      "title": "Inflation Adjustment for EOIR OBBBA Fees; Fiscal Year 2027",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 268,
+          "name": "Justice Department",
+          "slug": "justice-department"
+        },
+        {
+          "id": 149,
+          "name": "Executive Office for Immigration Review",
+          "slug": "executive-office-for-immigration-review"
+        }
+      ],
+      "abstract": "The Department of Justice (\"Department\") is making inflationary adjustments to immigration-related fees for filings with the Executive Office for Immigration Review (\"EOIR\") as required by the One Big Beautiful Bill Act for Fiscal Year (\"FY\") 2027.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17146/inflation-adjustment-for-eoir-obbba-fees-fiscal-year-2027",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17146.pdf",
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17146.pdf?1787229921",
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17145",
+      "title": "Environmental Protection Regulations for Domestic Licensing and Related Regulatory Functions",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 383,
+          "name": "Nuclear Regulatory Commission",
+          "slug": "nuclear-regulatory-commission"
+        }
+      ],
+      "abstract": null,
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17145/environmental-protection-regulations-for-domestic-licensing-and-related-regulatory-functions",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17145.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17131",
+      "title": "Security Zone; Ohio River, Cincinnati, OH",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 227,
+          "name": "Homeland Security Department",
+          "slug": "homeland-security-department"
+        },
+        {
+          "id": 53,
+          "name": "Coast Guard",
+          "slug": "coast-guard"
+        }
+      ],
+      "abstract": "The Coast Guard is establishing a temporary security zone for all navigable waters of the Ohio River, extending the entire width of the river, between mile markers (MM) 461 to MM 473. This security zone is needed to provide waterside security and protection of persons under the protection of the United States Secret Service during a visit to Cincinnati, OH. During the enforcement period, entry into, transiting, or anchoring in the security zone is prohibited unless specifically authorized by the Captain of the Port, Ohio Valley (COTP) or a designated on-scene U.S. Coast Guard representative.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17131/security-zone-ohio-river-cincinnati-oh",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17131.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17129",
+      "title": "Fisheries of the Northeastern United States; Summer Flounder Fishery; Quota Transfer From North Carolina to Massachusetts",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 54,
+          "name": "Commerce Department",
+          "slug": "commerce-department"
+        },
+        {
+          "id": 361,
+          "name": "National Oceanic and Atmospheric Administration",
+          "slug": "national-oceanic-and-atmospheric-administration"
+        }
+      ],
+      "abstract": "NMFS announces that the State of North Carolina is transferring a portion of its 2026 commercial summer flounder quota to the Commonwealth of Massachusetts. This adjustment to the 2026 fishing year quota is necessary to comply with the Summer Flounder, Scup, and Black Sea Bass Fishery Management Plan (FMP) quota transfer provisions. This announcement informs the public of the revised 2026 commercial quotas for North Carolina and Massachusetts.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17129/fisheries-of-the-northeastern-united-states-summer-flounder-fishery-quota-transfer-from-north",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17129.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17120",
+      "title": "Fisheries of the South Atlantic; 2026 Commercial Closure of Red Snapper in the South Atlantic",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 54,
+          "name": "Commerce Department",
+          "slug": "commerce-department"
+        },
+        {
+          "id": 361,
+          "name": "National Oceanic and Atmospheric Administration",
+          "slug": "national-oceanic-and-atmospheric-administration"
+        }
+      ],
+      "abstract": "NMFS implements an accountability measure for red snapper in the exclusive economic zone (EEZ) of the South Atlantic. NMFS projects that commercial landings of red snapper will reach the commercial annual catch limit (ACL) for the 2026 fishing year. Therefore, NMFS is closing the commercial sector for red snapper in the South Atlantic EEZ. This closure is necessary to protect the red snapper resource.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17120/fisheries-of-the-south-atlantic-2026-commercial-closure-of-red-snapper-in-the-south-atlantic",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17120.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17116",
+      "title": "Modifications to the Regulations Implementing the Vietnam Era Veterans' Readjustment Assistance Act of 1974, as Amended",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 271,
+          "name": "Labor Department",
+          "slug": "labor-department"
+        },
+        {
+          "id": 162,
+          "name": "Federal Contract Compliance Programs Office",
+          "slug": "federal-contract-compliance-programs-office"
+        }
+      ],
+      "abstract": "The U.S. Department of Labor publishes this final rule to revise its implementing regulations for the Vietnam Era Veterans' Readjustment Assistance Act of 1974, as amended (VEVRAA). These revisions will align the regulations with Executive Order 14173 and remove the VEVRAA regulations' cross-references to the Executive Order 11246 authority. Executive Order 11246 was revoked by Executive Order 14173 on January 21, 2025. This final rule also makes technical revisions to update the VEVRAA regulations' jurisdictional thresholds, which were adjusted for inflation by the Federal Acquisition Regulation Council on October 1, 2025.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17116/modifications-to-the-regulations-implementing-the-vietnam-era-veterans-readjustment-assistance-act",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17116.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17115",
+      "title": "Modifications to the Regulations Implementing Section 503 of the Rehabilitation Act of 1973, as Amended",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 271,
+          "name": "Labor Department",
+          "slug": "labor-department"
+        },
+        {
+          "id": 162,
+          "name": "Federal Contract Compliance Programs Office",
+          "slug": "federal-contract-compliance-programs-office"
+        }
+      ],
+      "abstract": "The U.S. Department of Labor is revising its implementing regulations for Section 503 of the Rehabilitation Act of 1973, as amended (Section 503). The revisions align the regulations with applicable law and recent executive orders, including Executive Order 14173, \"Ending Illegal Discrimination and Restoring Merit-Based Opportunity,\" and Executive Order 14219, \"Ensuring Lawful Governance and Implementing the President's `Department of Government Efficiency' Deregulatory Initiative.\"",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17115/modifications-to-the-regulations-implementing-section-503-of-the-rehabilitation-act-of-1973-as",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17115.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17114",
+      "title": "Rescission of Executive Order 11246 Implementing Regulations",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 271,
+          "name": "Labor Department",
+          "slug": "labor-department"
+        },
+        {
+          "id": 162,
+          "name": "Federal Contract Compliance Programs Office",
+          "slug": "federal-contract-compliance-programs-office"
+        }
+      ],
+      "abstract": "On January 21, 2025, President Trump issued Executive Order 14173, \"Ending Illegal Discrimination and Restoring Merit-Based Opportunity,\" which revoked Executive Order 11246. Accordingly, the U.S. Department of Labor publishes this final rule to rescind the implementing regulations for Executive Order 11246.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17114/rescission-of-executive-order-11246-implementing-regulations",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17114.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17113",
+      "title": "Fisheries of the South Atlantic; Commercial Closure for Blueline Tilefish in the South Atlantic",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 54,
+          "name": "Commerce Department",
+          "slug": "commerce-department"
+        },
+        {
+          "id": 361,
+          "name": "National Oceanic and Atmospheric Administration",
+          "slug": "national-oceanic-and-atmospheric-administration"
+        }
+      ],
+      "abstract": "NMFS implements an accountability measure for the commercial harvest of blueline tilefish in the exclusive economic zone (EEZ) of the South Atlantic. NMFS estimates that commercial landings of blueline tilefish will reach the commercial annual catch limit (ACL) for the 2026 fishing year. Accordingly, NMFS closes the commercial sector of blueline tilefish in the South Atlantic EEZ to protect the blueline tilefish resource from overfishing.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17113/fisheries-of-the-south-atlantic-commercial-closure-for-blueline-tilefish-in-the-south-atlantic",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17113.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17109",
+      "title": "Fisheries of the Caribbean, Gulf of America, and South Atlantic; 2026 Commercial Closure for the Scamp and Yellowmouth Grouper Complex in the South Atlantic",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 54,
+          "name": "Commerce Department",
+          "slug": "commerce-department"
+        },
+        {
+          "id": 361,
+          "name": "National Oceanic and Atmospheric Administration",
+          "slug": "national-oceanic-and-atmospheric-administration"
+        }
+      ],
+      "abstract": "NMFS implements an accountability measure (AM) for the commercial harvest of the scamp and yellowmouth grouper complex in South Atlantic Federal waters. NMFS projects that commercial landings of the scamp and yellowmouth grouper complex will reach the commercial annual catch limit (ACL) for 2026. Therefore, NMFS closes the commercial sector of the scamp and yellowmouth grouper complex in South Atlantic Federal waters to protect the scamp and yellowmouth grouper resource from overfishing.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17109/fisheries-of-the-caribbean-gulf-of-america-and-south-atlantic-2026-commercial-closure-for-the-scamp",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17109.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17098",
+      "title": "Safety Zone: Piers Park, Boston Inner Harbor, East Boston MA",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 227,
+          "name": "Homeland Security Department",
+          "slug": "homeland-security-department"
+        },
+        {
+          "id": 53,
+          "name": "Coast Guard",
+          "slug": "coast-guard"
+        }
+      ],
+      "abstract": "The Coast Guard is establishing a temporary safety zone for a portion of the navigable waters of Boston Inner Harbor, in the vicinity of Piers Park, East Boston, Massachusetts. The temporary safety zone is needed to protect the maritime public and event participants from potential hazards created by a swim event taking place in a heavily trafficked portion of the harbor scheduled for September 13, 2026. Entry of vessels or persons into this zone is prohibited unless specifically authorized by the Captain of the Port Sector Boston, or a designated representative.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17098/safety-zone-piers-park-boston-inner-harbor-east-boston-ma",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17098.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17097",
+      "title": "Security Zone; Philippine Sea, Pacific Ocean, Apra Harbor, Guam",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 227,
+          "name": "Homeland Security Department",
+          "slug": "homeland-security-department"
+        },
+        {
+          "id": 53,
+          "name": "Coast Guard",
+          "slug": "coast-guard"
+        }
+      ],
+      "abstract": "The Coast Guard is establishing a temporary security zone for certain navigable waters of the Philippine Sea in the Pacific Ocean in Apra Harbor, Guam. The Coast Guard will only enforce this rule when the United States government officials or other persons under the protection of the Secret Service are present or expected to be present. This action is necessary to protect the official party, public, and surrounding waterways from terrorist acts, sabotage, or other subversive acts. Entry of vessels or persons into this zone is prohibited unless specifically authorized by the Captain of the Port, Forces Micronesia/Sector Guam.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17097/security-zone-philippine-sea-pacific-ocean-apra-harbor-guam",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17097.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17088",
+      "title": "Carboxin; Pesticide Tolerances",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 145,
+          "name": "Environmental Protection Agency",
+          "slug": "environmental-protection-agency"
+        }
+      ],
+      "abstract": "This regulation establishes tolerances for residues of carboxin in or on multiple crops that are discussed later in this document. Under the Federal Food, Drug, and Cosmetic Act (FFDCA), UPL Delaware Inc. submitted a petition to EPA requesting that EPA establish a maximum permissible level for residues of this pesticide in or on the identified commodities.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17088/carboxin-pesticide-tolerances",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17088.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17082",
+      "title": "Traffic and Conduct on the Grounds of Certain National Institute of Standards and Technology Sites",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 54,
+          "name": "Commerce Department",
+          "slug": "commerce-department"
+        },
+        {
+          "id": 352,
+          "name": "National Institute of Standards and Technology",
+          "slug": "national-institute-of-standards-and-technology"
+        }
+      ],
+      "abstract": "By this rule, NIST amends its regulations governing traffic and conduct at its sites in Gaithersburg, Maryland, and Boulder and Fort Collins, Colorado. This rule amends those regulations by removing excessive and redundant restrictions on personal conduct, updating or removing sections with outdated references or requirements, and broadening an exception regarding the use of service dogs. This action is necessary to ensure that NIST's regulations conform to the scope of the underlying statutory authorities and to reduce regulatory complexity, redundancy, and burden. This action is intended to promote statutory conformity, administrative efficiency, and accessibility for people with disabilities, without imposing any new obligations or costs on the public.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17082/traffic-and-conduct-on-the-grounds-of-certain-national-institute-of-standards-and-technology-sites",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17082.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
+    {
+      "authorityType": "Federal Register Final Rule",
+      "documentNumber": "2026-17055",
+      "title": "Montana Regulatory Program",
+      "publicationDate": "2026-08-21",
+      "agencies": [
+        {
+          "id": 253,
+          "name": "Interior Department",
+          "slug": "interior-department"
+        },
+        {
+          "id": 480,
+          "name": "Surface Mining Reclamation and Enforcement Office",
+          "slug": "surface-mining-reclamation-and-enforcement-office"
+        }
+      ],
+      "abstract": "The Office of Surface Mining Reclamation and Enforcement (OSM) is not approving, with one exception, an amendment to the Montana regulatory program under the Surface Mining Control and Reclamation Act of 1977 (SMCRA or the Act). The Montana legislature, specifically Montana House Bill 328, proposes to add a definition of affected drainage basin to the Montana Code Annotated (MCA). Additionally, House Bill 328 proposes changes to the Montana Code Annotated, pertaining to bond release application requirements.",
+      "action": null,
+      "effectiveOn": null,
+      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17055/montana-regulatory-program",
+      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17055.pdf",
+      "publicInspectionPdfUrl": null,
+      "citation": null,
+      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
+    },
     {
       "authorityType": "Federal Register Final Rule",
       "documentNumber": "2026-17007",
@@ -815,413 +1242,6 @@
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16645/safety-zone-west-passage-narragansett-bay-narragansett-ri",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16645.pdf",
       "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16645.pdf?1786625119",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16644",
-      "title": "Safety Zone; St. Clair River; Port Huron, MI",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 227,
-          "name": "Homeland Security Department",
-          "slug": "homeland-security-department"
-        },
-        {
-          "id": 53,
-          "name": "Coast Guard",
-          "slug": "coast-guard"
-        }
-      ],
-      "abstract": "The Coast Guard is establishing a temporary safety zone for navigable waters of the St. Clair River for 7.5 miles beginning in Port Huron, MI. Though this is an unsanctioned, non-permitted marine event, this zone is necessary to provide for the safety of life on these navigable waters during a float down event near Port Huron, MI. Entry into this zone of vessels or non-participants in the event is prohibited unless specifically authorized by the Captain of the Port Detroit (COTP) or their designated representative.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16644/safety-zone-st-clair-river-port-huron-mi",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16644.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16644.pdf?1786625119",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16643",
-      "title": "Safety Zone; Atlantic Ocean, Culebra, Puerto Rico",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 227,
-          "name": "Homeland Security Department",
-          "slug": "homeland-security-department"
-        },
-        {
-          "id": 53,
-          "name": "Coast Guard",
-          "slug": "coast-guard"
-        }
-      ],
-      "abstract": "The Coast Guard is establishing a temporary safety zone for navigable waters within 200 yards west of Carlos Rosario Beach, Culebra, Puerto Rico. The safety zone is needed to protect personnel, vessels, and the marine environment from potential hazards associated with unexploded ordnance and associated removal operations. Entry of vessels or persons into this zone is prohibited unless specifically authorized by the Captain of the Port, Sector San Juan, or their designated representative.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16643/safety-zone-atlantic-ocean-culebra-puerto-rico",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16643.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16643.pdf?1786625119",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16641",
-      "title": "Airworthiness Directives; Airbus Helicopters",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 492,
-          "name": "Transportation Department",
-          "slug": "transportation-department"
-        },
-        {
-          "id": 159,
-          "name": "Federal Aviation Administration",
-          "slug": "federal-aviation-administration"
-        }
-      ],
-      "abstract": "The FAA is superseding Airworthiness Directive (AD) 2023-25- 14, which applied to certain Airbus Helicopters Model EC130T2 helicopters. AD 2023-25-14 revised the procedures for inspecting the vibration level on the tail rotor drive shaft and, depending on these results, required replacing certain parts. Since the FAA issued AD 2023-25-14, the manufacturer developed a modification of the rear drive shaft, sliding flange, and equipped splined sleeve. This AD requires installing this modification and repetitively inspecting the vibration level of the tail rotor drive shaft. This AD also prohibits the installation of certain parts and prohibits the performance of a balance correction unless certain requirements are met. The FAA is issuing this AD to address the unsafe condition on these products.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16641/airworthiness-directives-airbus-helicopters",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16641.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16641.pdf?1786625119",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16636",
-      "title": "Airworthiness Directives; Rolls-Royce Deutschland Ltd & Co KG Engines",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 492,
-          "name": "Transportation Department",
-          "slug": "transportation-department"
-        },
-        {
-          "id": 159,
-          "name": "Federal Aviation Administration",
-          "slug": "federal-aviation-administration"
-        }
-      ],
-      "abstract": "The FAA is adopting a new airworthiness directive (AD) for all Rolls-Royce Deutschland Ltd & Co KG (RRD) Model Trent 1000-A2, Trent 1000-AE2, Trent 1000-C2, Trent 1000-CE2, Trent 1000-D2, Trent 1000-E2, Trent 1000-G2, Trent 1000-H2, Trent 1000-J2, Trent 1000-K2, and Trent 1000-L2 engines. This AD was prompted by reports of cracking of the intermediate pressure (IP) compressor variable inlet guide vanes (VIGVs) due to high-cycle fatigue propagation. This AD requires repetitive borescope inspections (BSIs) for cracks of the IP compressor VIGVs and, depending on the inspection results, reduced inspection intervals for the repetitive BSIs or removal of the engine from service and replacement of the IP compressor VIGVs. The FAA is issuing this AD to address the unsafe condition on these products.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16636/airworthiness-directives-rolls-royce-deutschland-ltd-and-co-kg-engines",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16636.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16636.pdf?1786625118",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16630",
-      "title": "Updates and Amendments to the Civil Service Rules",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 406,
-          "name": "Personnel Management Office",
-          "slug": "personnel-management-office"
-        }
-      ],
-      "abstract": "Pursuant to the President's direction in Executive Order 14410, Implementing Schedule Policy/Career in the Excepted Service, the Office of Personnel Management (OPM) is issuing a direct final rule to update and amend obsolete and outdated provisions of the Civil Service Rules that do not substantively affect agency operations.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16630/updates-and-amendments-to-the-civil-service-rules",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16630.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16630.pdf?1786625117",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16628",
-      "title": "Streamlining Export Controls for Drone Exports",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 54,
-          "name": "Commerce Department",
-          "slug": "commerce-department"
-        },
-        {
-          "id": 241,
-          "name": "Industry and Security Bureau",
-          "slug": "industry-and-security-bureau"
-        }
-      ],
-      "abstract": "The Bureau of Industry and Security (BIS) is easing export controls on certain Unmanned Aerial Vehicles (UAVs or drones) and related parts, components, accessories, attachments, technology, and software under the Export Administration Regulations (EAR). Specifically, this rule: eliminates wind gust tolerance as a parameter for determining UAV controls under the EAR; increases the threshold for national security controls on certain UAVs from an endurance of 30 minutes to an endurance of 3 hours; makes conforming changes to remove national security controls on software and technology associated with UAVs with an endurance less than 3 hours; maintains military end-use and end-user controls on those lower endurance drones and associated software and technology; clarifies Commerce Control List (CCL) controls for certain UAVs specially designed for military use; and removes national security controls on certain specially designed parts, components, accessories, and attachments for such UAVs as they do not provide any significant military or intelligence capabilities.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16628/streamlining-export-controls-for-drone-exports",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16628.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16628.pdf?1786625117",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16627",
-      "title": "Approval of Source-Specific Air Quality Implementation Plan; New York; Big Six Towers Inc.",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 145,
-          "name": "Environmental Protection Agency",
-          "slug": "environmental-protection-agency"
-        }
-      ],
-      "abstract": "The Environmental Protection Agency (EPA) is approving a revision to the State of New York's State Implementation Plan (SIP) for the ozone National Ambient Air Quality Standard (NAAQS) related to a source-specific SIP (SSSIP) revision for Big Six Towers Inc. (the Big Six), located at 59-55 47th Ave. Woodside, NY 11377 (the Facility). The EPA found that the control options in this SSSIP revision implement Reasonably Available Control Technology (RACT) with respect to oxides of nitrogen (NO<INF>X</INF>) emissions from the relevant Facility sources, which are identified as three oil-fired engines. This SSSIP revision implements NO<INF>X</INF> RACT for the relevant Facility sources in accordance with the requirements for implementation of the 2008 and 2015 ozone NAAQS. The EPA determined that this action will not interfere with ozone NAAQS requirements and meets all applicable requirements of the Clean Air Act (CAA).",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16627/approval-of-source-specific-air-quality-implementation-plan-new-york-big-six-towers-inc",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16627.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16627.pdf?1786625117",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16584",
-      "title": "General Services Administration Property Management Regulation (GSPMR): Nondiscrimination in Programs Receiving Federal Financial Assistance",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 210,
-          "name": "General Services Administration",
-          "slug": "general-services-administration"
-        }
-      ],
-      "abstract": "The General Services Administration (GSA) revises its regulations implementing Title VI of the Civil Rights Act of 1964 (Title VI) and moves those regulations from the Federal Property Management Regulations (FPMR) to the General Services Administration Property Management Regulations (GSPMR). Title VI prohibits discrimination on the basis of race, color, or national origin in programs or activities receiving Federal financial assistance. This final rule updates GSA's Title VI regulations to reflect current statutory interpretation, applicable executive orders, and government- wide regulatory structure. This final rule also improves clarity, consistency, and administrative efficiency. These revisions align with changes made by the U.S. Department of Justice (DOJ) to its Title VI Regulations.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16584/general-services-administration-property-management-regulation-gspmr-nondiscrimination-in-programs",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16584.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16584.pdf?1786625111",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16576",
-      "title": "Beneficial Ownership Information Reporting Requirement Revision",
-      "publicationDate": "2026-08-14",
-      "agencies": [
-        {
-          "id": 497,
-          "name": "Treasury Department",
-          "slug": "treasury-department"
-        },
-        {
-          "id": 194,
-          "name": "Financial Crimes Enforcement Network",
-          "slug": "financial-crimes-enforcement-network"
-        }
-      ],
-      "abstract": "FinCEN is issuing this final rule to adopt as final and with certain limited changes the interim final rule issued on March 26, 2025, which narrowed beneficial ownership information (BOI) reporting requirements under FinCEN's regulations implementing the Corporate Transparency Act (CTA). In particular, this final rule not only continues to exempt reporting companies from having to report the BOI of U.S. person beneficial owners and U.S. person beneficial owners from having to provide BOI to reporting companies; it also exempts reporting companies from having to submit information about their U.S. person company applicants to FinCEN and exempts U.S. person company applicants from any obligation to provide their information. In addition, the final rule exempts all U.S. persons from the requirement to update information already provided to FinCEN in connection with obtaining a FinCEN identifier (FinCEN ID).",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/14/2026-16576/beneficial-ownership-information-reporting-requirement-revision",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-14/pdf/2026-16576.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16576.pdf?1786625110",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16537",
-      "title": "Fisheries Off West Coast States; Modification of the West Coast Salmon Fisheries; Inseason Action #23-#24",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 54,
-          "name": "Commerce Department",
-          "slug": "commerce-department"
-        },
-        {
-          "id": 361,
-          "name": "National Oceanic and Atmospheric Administration",
-          "slug": "national-oceanic-and-atmospheric-administration"
-        }
-      ],
-      "abstract": "NMFS announces two inseason actions for the 2026 portion of the 2025-2026 ocean salmon fisheries. These inseason actions modified the commercial and recreational salmon fisheries in the area from Cape Falcon, Oregon to the United States/Mexico border.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16537/fisheries-off-west-coast-states-modification-of-the-west-coast-salmon-fisheries-inseason-action",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16537.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16537.pdf?1786538718",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16515",
-      "title": "Air Plan Approval; Missouri; Clean Data Determination for the 2015 8-Hour Ozone Standard for the Missouri Portion of the St. Louis Nonattainment Area",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 145,
-          "name": "Environmental Protection Agency",
-          "slug": "environmental-protection-agency"
-        }
-      ],
-      "abstract": "The Environmental Protection Agency (EPA) is determining under the Clean Air Act (CAA) that the Missouri portion of the St. Louis, MO- IL bi-state nonattainment area has achieved clean data for the 2015 8- hour ozone National Ambient Air Quality Standard (NAAQS or standard). This determination of clean data is based upon complete, quality- assured, and certified ambient air monitoring data for the 2023-2025 design value period showing that the Missouri portion of the area achieved attainment of the 2015 ozone NAAQS. The 2023-2025 design value relies upon EPA concurrence on a portion of the exceptional events request as submitted by the Missouri Department of Natural Resources (MoDNR) on November 3, 2025, and concurred on by the EPA on January 27, 2026. The EPA is also approving Missouri's November 3, 2025, clean data determination request. This final clean data determination suspends the obligations of the State of Missouri to submit certain nonattainment area planning requirements for as long as the Missouri portion of the St. Louis area continues to attain the 2015 ozone NAAQS. In a separate action, the EPA is finalizing a similar determination for the Illinois portion of the St. Louis area.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16515/air-plan-approval-missouri-clean-data-determination-for-the-2015-8-hour-ozone-standard-for-the",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16515.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16515.pdf?1786538715",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16514",
-      "title": "Air Plan Approval; Illinois; Clean Data Determination for the Illinois Portion of the St. Louis Area for the 2015 Ozone Standard",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 145,
-          "name": "Environmental Protection Agency",
-          "slug": "environmental-protection-agency"
-        }
-      ],
-      "abstract": "The Environmental Protection Agency (EPA) is determining under the Clean Air Act (CAA) that the Illinois portion of the St. Louis, MO- IL nonattainment area (hereafter also referred to as the \"St. Louis area\" or \"area\") has achieved clean data for the 2015 ozone National Ambient Air Quality Standards (NAAQS or standard). This determination is based upon complete, quality-assured, and certified ambient air monitoring data for the 2023-2025 design value period showing that the Illinois portion of the area achieved attainment of the 2015 ozone NAAQS. This determination also relies on the EPA's concurrence of an exceptional events request submitted by the Illinois Environmental Protection Agency (Illinois EPA) on December 18, 2025, and concurred on by the EPA on January 12, 2026. Therefore, the EPA is taking final agency action on Illinois' exceptional events request. In a separate action, the EPA is finalizing a similar determination for the Missouri portion of the St. Louis area. This final determination suspends the requirements for the area to submit attainment demonstrations and associated Reasonably Available Control Measures (RACM), Reasonable Further Progress (RFP) plans, contingency measures for failure to attain or make reasonable progress, and other planning State Implementation Plans (SIPs) related to attainment of the 2015 ozone NAAQS, for as long as the area continues to attain the 2015 ozone NAAQS.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16514/air-plan-approval-illinois-clean-data-determination-for-the-illinois-portion-of-the-st-louis-area",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16514.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16514.pdf?1786538715",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16512",
-      "title": "Airworthiness Directives; BRP-Rotax GmbH & Co KG (Formerly BRP-Powertrain GMBH & CO KG and Bombardier-Rotax GmbH) Engines and Various Aircraft",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 492,
-          "name": "Transportation Department",
-          "slug": "transportation-department"
-        },
-        {
-          "id": 159,
-          "name": "Federal Aviation Administration",
-          "slug": "federal-aviation-administration"
-        }
-      ],
-      "abstract": "The FAA is adopting a new airworthiness directive (AD) for all BRP-Rotax GmbH & Co KG (Rotax) Model 912 F2, 912 F3, 912 F4, 912 iSc2 Sport, 912 iSc3 Sport, 912 S2, 912 S3, 912 S4, 914 F2, 914 F3, and 914 F4 engines; and Model 912 A1, 912 A2, 912 A3, and 912 A4 engines included as part of the type-certificated aircraft type design for various aircraft. This AD was prompted by a report of an oil spray nozzle and certain screws that were not installed on the propeller gearbox. This AD requires a one-time visual inspection of the propeller gearbox to determine if the oil spray nozzle and certain screws are installed and, depending on the results, replacement of the propeller gearbox with a serviceable propeller gearbox. This AD also prohibits the installation of an affected propeller gearbox on any engine unless certain conditions are met. The FAA is issuing this AD to address the unsafe condition on these products.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16512/airworthiness-directives-brp-rotax-gmbh-and-co-kg-formerly-brp-powertrain-gmbh-and-co-kg-and",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16512.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16512.pdf?1786461307",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16511",
-      "title": "Determination of Attainment by the Attainment Date; 1997 Ozone Standards; California; Coachella Valley",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 145,
-          "name": "Environmental Protection Agency",
-          "slug": "environmental-protection-agency"
-        }
-      ],
-      "abstract": "The Environmental Protection Agency (EPA) is taking final action to determine that the Riverside County (Coachella Valley), CA 1997 ozone \"Extreme\" nonattainment area attained the revoked 1997 ozone national ambient air quality standards (NAAQS) by its June 15, 2025 attainment date. This determination is based on quality-assured and certified ambient air quality monitoring data from 2022 through 2024.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16511/determination-of-attainment-by-the-attainment-date-1997-ozone-standards-california-coachella-valley",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16511.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16511.pdf?1786538715",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16510",
-      "title": "Determination of Attainment by the Attainment Date and Clean Data Determination for the 2012 Annual Fine Particulate Standard; Plumas County, California",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 145,
-          "name": "Environmental Protection Agency",
-          "slug": "environmental-protection-agency"
-        }
-      ],
-      "abstract": "The Environmental Protection Agency (EPA) is finalizing our determination that the Portola nonattainment area in Plumas County, California, attained the 2012 annual fine particulate matter (\"PM<INF>2.5</INF>\") national ambient air quality standard (NAAQS or \"standard\") by the December 31, 2025 \"Serious\" area attainment date. This determination is based on ambient air quality monitoring data from 2023 through 2025. We are also finalizing a clean data determination (CDD) based on the 2023 through 2025 data and our evaluation of preliminary air quality monitoring data from 2026.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16510/determination-of-attainment-by-the-attainment-date-and-clean-data-determination-for-the-2012-annual",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16510.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16510.pdf?1786538715",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16508",
-      "title": "Medicaid Program; Prohibition on Federal Medicaid and Children's Health Insurance Program Funding for Sex-Rejecting Procedures Furnished to Children",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 221,
-          "name": "Health and Human Services Department",
-          "slug": "health-and-human-services-department"
-        },
-        {
-          "id": 45,
-          "name": "Centers for Medicare & Medicaid Services",
-          "slug": "centers-for-medicare-medicaid-services"
-        }
-      ],
-      "abstract": "This final rule requires that a State Medicaid plan must provide that the Medicaid agency will not make payment under the plan for sex-rejecting procedures for children under 18, and prohibits the use of Federal Medicaid dollars to fund sex-rejecting procedures for individuals under the age of 18. In addition, this final rule requires that a separate State Children's Health Insurance Program (CHIP) plan must provide that the CHIP agency will not make payment under the plan for sex-rejecting procedures for children under 19, and prohibits the use of Federal CHIP dollars to fund sex-rejecting procedures for individuals under the age of 19. For Medicaid and CHIP beneficiaries who are actively receiving cross-sex hormone therapy, State Medicaid and CHIP agencies may continue to claim Federal Financial Participation for those hormone therapy medications for a period of up to 6 months from the effective date of this final rule.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16508/medicaid-program-prohibition-on-federal-medicaid-and-childrens-health-insurance-program-funding-for",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16508.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16508.pdf?1786479307",
-      "citation": null,
-      "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
-    },
-    {
-      "authorityType": "Federal Register Final Rule",
-      "documentNumber": "2026-16507",
-      "title": "Airworthiness Directives; Airbus Helicopters",
-      "publicationDate": "2026-08-13",
-      "agencies": [
-        {
-          "id": 492,
-          "name": "Transportation Department",
-          "slug": "transportation-department"
-        },
-        {
-          "id": 159,
-          "name": "Federal Aviation Administration",
-          "slug": "federal-aviation-administration"
-        }
-      ],
-      "abstract": "The FAA is adopting a new airworthiness directive (AD) for certain Airbus Helicopters Model AS350B2 helicopters. This AD was prompted by a report of magnetization on the solenoid valves for the three main servo-controls, the regulator block, and the tail servo- control due to a diode not properly installed in the hydraulic circuit. This AD requires performing a cut-off test of the rear rotor actuator valve and, depending on the results of the test, performing corrective actions. The FAA is issuing this AD to address the unsafe condition on these products.",
-      "action": null,
-      "effectiveOn": null,
-      "htmlUrl": "https://www.federalregister.gov/documents/2026/08/13/2026-16507/airworthiness-directives-airbus-helicopters",
-      "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-13/pdf/2026-16507.pdf",
-      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-16507.pdf?1786538714",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     }

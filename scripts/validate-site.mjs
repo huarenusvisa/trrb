@@ -32,7 +32,7 @@ requireMatch(index, /^\s*<!doctype html>/i, "index.html is not HTML");
 requireMatch(index, /<link\s+rel=["']canonical["']\s+href=["']https:\/\/trrb\.net\/["']/i, "index.html missing canonical root");
 requireMatch(index, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "index.html missing index,follow");
 requireMatch(index, /href=["']\/jobs\/?["'][^>]*>招聘求职<\/a>/i, "index.html missing 招聘求职 navigation");
-requireMatch(index, /href=["']\/immigrate\/?["'][^>]*>移民美国<\/a>/i, "index.html missing 移民美国 navigation");
+requireMatch(index, /href=["']\/(?:immigration|immigrate\/?)["'][^>]*>移民美国<\/a>/i, "index.html missing 移民美国 navigation");
 requireMatch(index, /articles-home\.js/i, "index.html missing homepage renderer");
 requireMatch(index, /articles-home-live-fix\.js/i, "index.html missing live homepage guard");
 requireMatch(index, /homepage-startup-stability\.js/i, "index.html missing startup stability guard");

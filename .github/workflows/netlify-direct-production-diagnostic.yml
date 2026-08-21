@@ -10,10 +10,6 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: trrb-netlify-direct-production-diagnostic
-  cancel-in-progress: true
-
 jobs:
   diagnose-and-deploy:
     runs-on: ubuntu-24.04
@@ -32,55 +28,44 @@ jobs:
           git fetch origin main
           git reset --hard origin/main
           echo "TARGET_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
-      - name: Diagnose direct Netlify path
+      - name: Run exact production command
         shell: bash
         run: |
           set -u
           mkdir -p reports
           token_present=false
           api_http=0
-          status_exit=99
-          build_exit=99
           deploy_exit=99
+          failure_kind='none'
           [ -n "${NETLIFY_AUTH_TOKEN:-}" ] && token_present=true
-
           if [ "$token_present" = true ]; then
-            api_http=$(curl -sS -o /tmp/site.json -w '%{http_code}' \
-              -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-              "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID" || true)
-
-            set +e
-            npx --yes netlify-cli@latest status --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" >/tmp/netlify-status.log 2>&1
-            status_exit=$?
-
-            npx --yes netlify-cli@latest build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" >/tmp/netlify-build.log 2>&1
-            build_exit=$?
-
-            if [ "$build_exit" -eq 0 ]; then
-              npx --yes netlify-cli@latest deploy --prod --dir . --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" >/tmp/netlify-deploy.log 2>&1
+            api_http=$(curl -sS -o /tmp/site.json -w '%{http_code}' -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID" || true)
+            if [ "$api_http" = 200 ]; then
+              set +e
+              npx --yes netlify-cli@latest deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" >/tmp/netlify-exact-deploy.log 2>&1
               deploy_exit=$?
+              set -e
+              if [ "$deploy_exit" -ne 0 ]; then
+                if grep -Eqi 'unknown option|unknown argument|unexpected argument' /tmp/netlify-exact-deploy.log; then failure_kind='cli_argument';
+                elif grep -Eqi 'unauthorized|not authorized|invalid token|401|403' /tmp/netlify-exact-deploy.log; then failure_kind='authentication';
+                elif grep -Eqi 'build command failed|failed during stage|build script returned non-zero|build failed' /tmp/netlify-exact-deploy.log; then failure_kind='build_command';
+                elif grep -Eqi 'deploy.*failed|failed to deploy|upload.*failed' /tmp/netlify-exact-deploy.log; then failure_kind='production_upload';
+                else failure_kind='unclassified_cli_failure'; fi
+              fi
+            else
+              failure_kind='api_auth_or_site'
             fi
-            set -e
+          else
+            failure_kind='token_missing'
           fi
-
-          failure_stage='none'
-          if [ "$token_present" != true ]; then failure_stage='token_missing';
-          elif [ "$api_http" != 200 ]; then failure_stage='api_auth_or_site';
-          elif [ "$status_exit" -ne 0 ]; then failure_stage='cli_status';
-          elif [ "$build_exit" -ne 0 ]; then failure_stage='local_build';
-          elif [ "$deploy_exit" -ne 0 ]; then failure_stage='production_upload';
-          fi
-
           cat > reports/netlify-direct-production-diagnostic.json <<EOF
           {
             "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "target_sha": "${TARGET_SHA:-}",
             "token_present": $token_present,
             "site_lookup_http_status": $api_http,
-            "cli_status_exit_code": $status_exit,
-            "local_build_exit_code": $build_exit,
-            "production_upload_exit_code": $deploy_exit,
-            "failure_stage": "$failure_stage"
+            "exact_deploy_exit_code": $deploy_exit,
+            "failure_kind": "$failure_kind"
           }
           EOF
           cat reports/netlify-direct-production-diagnostic.json

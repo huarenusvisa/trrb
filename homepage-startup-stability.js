@@ -2,20 +2,29 @@
   "use strict";
 
   const html = document.documentElement;
-  let queued = false;
   let finalized = false;
-  let repairingHero = false;
+  let recoveryAttempted = false;
 
-  function enforceSectionOrder() {
-    const grid = document.querySelector("#sections-grid");
-    if (!grid) return;
-    const politics = grid.querySelector("#politics");
-    const ice = grid.querySelector("#ice");
-    if (politics && ice && politics.nextElementSibling !== ice) politics.insertAdjacentElement("afterend", ice);
+  function heroReady() {
+    const hero = document.querySelector("#hero");
+    if (!hero) return false;
+    if (hero.querySelector(".hero-slide")) return true;
+    return Boolean(String(hero.textContent || "").trim());
   }
 
-  function repairLegacyEmptyHero() {
-    if (repairingHero) return false;
+  function rankReady() {
+    const rank = document.querySelector("#rank-list");
+    if (!rank) return false;
+    return rank.querySelectorAll("li").length > 0 || Boolean(String(rank.textContent || "").trim());
+  }
+
+  function sectionsReady() {
+    const root = document.querySelector("#sections-grid");
+    return Boolean(root?.children?.length);
+  }
+
+  function repairLegacyEmptyHeroOnce() {
+    if (recoveryAttempted) return false;
     const hero = document.querySelector("#hero");
     if (!hero || !hero.querySelector(".hero-focus-empty")) return false;
 
@@ -29,81 +38,48 @@
     const candidates = (visual.length ? visual : source).slice(0, 5);
     if (!candidates.length) return false;
 
-    repairingHero = true;
-    try {
-      window.renderHeroCarousel(candidates);
-      hero.dataset.recommendationMode = "general-home-fallback";
-      hero.dataset.recommendationCount = String(candidates.length);
-      hero.dataset.focusOnly = "false";
-      hero.dataset.focusCount = "0";
-      return true;
-    } finally {
-      repairingHero = false;
-    }
-  }
-
-  function heroReady() {
-    repairLegacyEmptyHero();
-    const hero = document.querySelector("#hero");
-    if (!hero) return false;
-    if (hero.querySelector(".hero-slide.is-active,.hero-slide")) return true;
-    if (hero.querySelector(".hero-focus-empty")) return false;
-    if (hero.dataset.recommendationMode && hero.dataset.recommendationCount !== "0") return true;
-    return Boolean(String(hero.textContent || "").trim());
-  }
-
-  function rankReady() {
-    const rank = document.querySelector("#rank-list");
-    if (!rank) return false;
-    return rank.querySelectorAll("li").length > 0;
+    recoveryAttempted = true;
+    window.renderHeroCarousel(candidates);
+    hero.dataset.recommendationMode = "general-home-recovery";
+    hero.dataset.recommendationCount = String(candidates.length);
+    hero.dataset.focusOnly = "false";
+    hero.dataset.focusCount = "0";
+    return true;
   }
 
   function finalize(force = false) {
-    enforceSectionOrder();
-    repairLegacyEmptyHero();
     if (finalized) return;
-    if (!force && !(heroReady() && rankReady())) return;
+    if (!force && !(heroReady() && rankReady() && sectionsReady())) return;
     finalized = true;
     html.dataset.homeFinalUi = "true";
     html.dataset.homeFinalUiAt = new Date().toISOString();
   }
 
-  function queueCheck() {
-    if (queued) return;
-    queued = true;
-    queueMicrotask(() => {
-      queued = false;
-      enforceSectionOrder();
-      repairLegacyEmptyHero();
-      finalize(false);
-    });
+  function check() {
+    finalize(false);
+    return finalized;
   }
 
   function start() {
-    enforceSectionOrder();
-    repairLegacyEmptyHero();
-    const observer = new MutationObserver(queueCheck);
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    [80, 180, 350, 650, 1000, 1400, 2200, 3500].forEach((delay) => {
+    // This guard is intentionally passive. CSS owns section order; normal data
+    // rendering is owned by articles-home.js. Do not mutate the DOM in response
+    // to every mutation or run repeated repair loops.
+    [120, 320, 700, 1100].forEach((delay) => {
       window.setTimeout(() => {
-        enforceSectionOrder();
-        repairLegacyEmptyHero();
-        finalize(false);
+        if (!finalized) check();
       }, delay);
     });
 
-    // Never leave mobile or desktop masked behind a skeleton if one secondary feed is slow.
     window.setTimeout(() => {
-      repairLegacyEmptyHero();
-      finalize(true);
-    }, 1800);
+      if (!heroReady()) repairLegacyEmptyHeroOnce();
+      finalize(false);
+    }, 1350);
 
-    window.addEventListener("pageshow", () => {
-      enforceSectionOrder();
-      repairLegacyEmptyHero();
-      if (!finalized) finalize(heroReady() || rankReady());
-    });
+    // Never leave the page masked behind a skeleton just because one secondary
+    // feed is slow. Reveal once, without reordering or rebuilding modules.
+    window.setTimeout(() => finalize(true), 1700);
+
+    window.addEventListener("pageshow", () => finalize(true));
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });

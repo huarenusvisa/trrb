@@ -1,7 +1,11 @@
 {
-  "generated_at": "2026-08-21T04:35:34Z",
+  "generated_at": "2026-08-21T04:52:27Z",
   "token_present": true,
-  "site_lookup_http_status": 200,
+  "token_prefix": "Net",
+  "site_lookup_with_auth_http_status": 200,
+  "site_lookup_without_auth_http_status": 200,
+  "user_lookup_http_status": 401,
+  "accounts_lookup_http_status": 401,
   "site_id_match": true,
   "site_name": "trrb"
 }

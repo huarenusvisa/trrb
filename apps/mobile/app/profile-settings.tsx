@@ -11,6 +11,7 @@ function avatarNumber(key: string) {
   return match ? Math.min(120, Math.max(1, Number(match[1]))) : 1;
 }
 function avatarKey(n: number) { return `avatar_${String(((n - 1 + 120) % 120) + 1).padStart(3, '0')}`; }
+function initialAvatarKey(name: string) { return `initial:${Array.from(name.trim())[0]?.toUpperCase() || '用'}`; }
 
 export default function ProfileSettingsScreen() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -56,7 +57,7 @@ export default function ProfileSettingsScreen() {
 
   return <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
     <Text style={styles.h1}>账号设置</Text><Text style={styles.sub}>修改昵称、默认头像和公开简介</Text>
-    <View style={styles.avatarRow}><TrRbAvatar avatarKey={avatar} size={82} label="当前头像" /><View style={styles.avatarControls}><Text style={styles.label}>默认头像 {currentAvatar}/120</Text><View style={styles.row}><Pressable style={styles.smallButton} onPress={() => setAvatar(avatarKey(currentAvatar - 1))}><Text>上一个</Text></Pressable><Pressable style={styles.smallButton} onPress={() => setAvatar(avatarKey(currentAvatar + 1))}><Text>下一个</Text></Pressable></View></View></View>
+    <View style={styles.avatarRow}><TrRbAvatar avatarKey={avatar} size={82} label="当前头像" /><View style={styles.avatarControls}><Text style={styles.label}>{avatar.startsWith('initial:') ? '姓名首字头像' : `自选头像 ${currentAvatar}/120`}</Text><View style={styles.row}><Pressable style={styles.smallButton} onPress={() => setAvatar(initialAvatarKey(name))}><Text>首字头像</Text></Pressable><Pressable style={styles.smallButton} onPress={() => setAvatar(avatarKey(currentAvatar + 1))}><Text>换一个</Text></Pressable></View></View></View>
     <Text style={styles.label}>昵称</Text><TextInput value={name} onChangeText={setName} maxLength={32} style={styles.input} placeholder="2–32个字符" autoCapitalize="none" /><Text style={styles.counter}>{name.trim().length}/32</Text>
     <Text style={styles.label}>公开简介</Text><TextInput value={bio} onChangeText={setBio} maxLength={240} style={[styles.input, styles.bio]} placeholder="介绍一下自己" multiline textAlignVertical="top" /><Text style={styles.counter}>{bio.trim().length}/240</Text>
     <Pressable disabled={!dirty || saving} style={[styles.save, (!dirty || saving) && styles.disabled]} onPress={save}><Text style={styles.saveText}>{saving ? '保存中…' : '保存修改'}</Text></Pressable>

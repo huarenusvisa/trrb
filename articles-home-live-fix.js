@@ -99,13 +99,34 @@
     });
   }
 
-  function renderNoQualifiedFocus() {
+  function generalHeroFallback(reason = "general-home-fallback") {
     const hero = document.getElementById("hero");
-    if (!hero) return;
-    if (typeof hero._trrbStopCarousel === "function") hero._trrbStopCarousel();
-    hero.innerHTML = '<div class="hero-focus-empty"><span class="tag">今日要闻</span><h1>当前暂无符合条件的美国时政长篇要闻</h1><p>短新闻不会进入今日要闻。</p></div>';
-    hero.dataset.recommendationMode = "longform-politics-only";
+    if (!hero) return false;
+
+    const existingSlides = hero.querySelectorAll(".hero-slide");
+    if (existingSlides.length) {
+      markHeroAsDailyFocus(document);
+      hero.dataset.recommendationMode = reason;
+      hero.dataset.recommendationCount = String(existingSlides.length);
+      return true;
+    }
+
+    const candidates = (Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [])
+      .filter(fresh)
+      .filter((item) => String(item?.image || item?.cover_image || "").trim())
+      .slice(0, 5);
+    if (candidates.length && typeof window.renderHeroCarousel === "function") {
+      window.renderHeroCarousel(candidates);
+      markHeroAsDailyFocus(document);
+      hero.dataset.recommendationMode = reason;
+      hero.dataset.recommendationCount = String(candidates.length);
+      return true;
+    }
+
+    // Never replace an already-rendered homepage with a false "no news" state.
+    hero.dataset.recommendationMode = reason;
     hero.dataset.recommendationCount = "0";
+    return false;
   }
 
   async function fetchHomepageFocus(force = false) {
@@ -124,7 +145,7 @@
           .map(normalize)
           .filter((item) => item.id && item.title && item.image && item.category === "美国时政" && item.longform_chars >= 1200);
         if (!focus.length || typeof window.renderHeroCarousel !== "function") {
-          renderNoQualifiedFocus();
+          generalHeroFallback("focus-empty-general-fallback");
           lastFocusAt = Date.now();
           return false;
         }
@@ -139,10 +160,7 @@
         return true;
       } catch (error) {
         console.error("今日要闻自动推荐失败：", error);
-        const hero = document.getElementById("hero");
-        hero?.querySelectorAll?.('.hero-overlay .tag').forEach((tag) => {
-          if (tag.textContent === "今日要闻") tag.textContent = "新闻";
-        });
+        generalHeroFallback("focus-error-general-fallback");
         return false;
       } finally {
         focusPromise = null;
@@ -194,11 +212,11 @@
 
   function buildMixedRank(articles, cycle = 0) {
     const now = Date.now();
-    const recent = (Array.isArray(articles) ? articles : [])
-      .filter((item) => {
-        const t = articleTime(item);
-        return t > 0 && now - t <= RANK_MAX_AGE_MS && Boolean(rankBucket(item.category || item.category_name));
-      });
+    const source = Array.isArray(articles) ? articles : [];
+    const recent = source.filter((item) => {
+      const t = articleTime(item);
+      return t > 0 && now - t <= RANK_MAX_AGE_MS && Boolean(rankBucket(item.category || item.category_name));
+    });
 
     const salt = `${Math.floor(now / (15 * 60 * 1000))}:${cycle}`;
     const groups = new Map(RANK_CATEGORY_KEYS.map((key) => [key, []]));
@@ -212,19 +230,32 @@
     const seen = new Set();
     let guard = 0;
 
+    const addItem = (item, bucket = "最新") => {
+      const id = String(item?.id || item?.title || "").trim();
+      if (!id || seen.has(id) || picked.length >= 10) return;
+      seen.add(id);
+      picked.push({ ...item, rank_bucket: bucket });
+    };
+
     while (picked.length < 10 && guard < 60) {
       const key = categoryOrder[guard % categoryOrder.length];
       const group = groups.get(key) || [];
       const item = group.shift();
-      if (item) {
-        const id = String(item.id || item.title || "");
-        if (id && !seen.has(id)) {
-          seen.add(id);
-          picked.push({ ...item, rank_bucket: key });
-        }
-      }
+      if (item) addItem(item, key);
       guard += 1;
       if (categoryOrder.every((name) => (groups.get(name) || []).length === 0)) break;
+    }
+
+    // If the three preferred buckets are sparse, fill with other real fresh homepage news.
+    const all24h = shuffleBySalt(source.filter((item) => {
+      const t = articleTime(item);
+      return t > 0 && now - t <= RANK_MAX_AGE_MS;
+    }), `${salt}:all24h`);
+    all24h.forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
+
+    if (picked.length < 10) {
+      const allFresh = source.filter(fresh).sort((a, b) => articleTime(b) - articleTime(a));
+      allFresh.forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
     }
 
     return picked;
@@ -235,14 +266,17 @@
     const switchBtn = document.getElementById("rank-switch");
     if (!rankRoot || !switchBtn) return;
 
-    const pool = buildMixedRank(articles, cycle);
-    rankRoot.innerHTML = pool.length
-      ? pool.map((item, index) => `<li><b>${index + 1}</b><a href="${articleHref(item)}">${escapeRankHtml(item.title)}</a><span class="rank-heat">${escapeRankHtml(item.rank_bucket)}</span></li>`).join("")
-      : '<li class="rank-empty">最近24小时暂无可混排内容</li>';
+    const source = Array.isArray(articles) ? articles : [];
+    if (!source.length) return;
+    const pool = buildMixedRank(source, cycle);
+    if (!pool.length) return;
+
+    rankRoot.innerHTML = pool.map((item, index) => `<li><b>${index + 1}</b><a href="${articleHref(item)}">${escapeRankHtml(item.title)}</a><span class="rank-heat">${escapeRankHtml(item.rank_bucket)}</span></li>`).join("");
 
     if (!switchBtn.dataset.mixedRankBound) {
       switchBtn.dataset.mixedRankBound = "true";
-      switchBtn.addEventListener("click", () => {
+      switchBtn.addEventListener("click", (event) => {
+        event.preventDefault();
         rankCycle += 1;
         window.setTimeout(() => renderMixedRank(window.TRRB_LAST_HOME_ARTICLES || [], rankCycle), 0);
       });
@@ -268,7 +302,8 @@
 
     window.setTimeout(() => {
       fetchHomepageFocus(true);
-      renderMixedRank(window.TRRB_LAST_HOME_ARTICLES || [], rankCycle);
+      const current = window.TRRB_LAST_HOME_ARTICLES || [];
+      if (current.length) renderMixedRank(current, rankCycle);
     }, 120);
   }
 

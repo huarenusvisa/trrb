@@ -110,10 +110,20 @@
     return jobsPromise;
   };
 
-  const pickCard = (root) => root.querySelector("#jobs-home-hub")
-    || root.querySelector("#asylum")
-    || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "庇护百科")
-    || Array.from(root.querySelectorAll(".news-box")).find((item) => !item.textContent.trim());
+  const pickCard = (root) => {
+    const existing = root.querySelector("#jobs-home-hub");
+    if (existing) return existing;
+
+    // Recruitment owns a dedicated homepage card. It must never depend on an
+    // empty asylum/news slot or overwrite immigration and legal modules.
+    const card = document.createElement("article");
+    card.className = "news-box jobs-knowledge-card";
+    card.id = "jobs-home-hub";
+    const legal = root.querySelector("#legal-home-hub");
+    if (legal) root.insertBefore(card, legal);
+    else root.appendChild(card);
+    return card;
+  };
 
   const baseHomeReady = () => {
     const root = document.querySelector("#sections-grid");

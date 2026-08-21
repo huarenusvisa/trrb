@@ -22,6 +22,8 @@ on:
       - 'netlify/edge-functions/**'
       - 'scripts/generate-sitemaps.mjs'
       - 'scripts/split-sitemap-index.mjs'
+      - 'scripts/validate-site.mjs'
+      - 'scripts/seo-integrity-audit.mjs'
       - '.github/workflows/round16-node9-production-deploy-recovery.yml'
 
 permissions:
@@ -73,7 +75,7 @@ jobs:
             exit 2
           fi
 
-      - name: 验收最新 SHA、首页、招聘和核心 API
+      - name: 验收最新 SHA、首页、招聘、专题和 Sitemap
         shell: bash
         run: |
           set -euo pipefail
@@ -84,23 +86,32 @@ jobs:
             jobs=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/?v=$stamp" || true)
             jobs_api=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-jobs?limit=6&v=$stamp" || true)
             bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?v=$stamp" || true)
+            trump=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/trump?v=$stamp" || true)
+            sitemap=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?v=$stamp" || true)
             headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/?v=$stamp" | tr -d '\r' || true)
+            sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?v=$stamp" | tr -d '\r' || true)
 
             sha_ok=0; [ "$live_sha" = "$DEPLOY_SHA" ] && sha_ok=1
             home_jobs=$(printf '%s' "$home" | grep -c '招聘求职' || true)
             false_empty=$(printf '%s' "$home" | grep -c '当前暂无重点新闻' || true)
             jobs_index=$(printf '%s' "$jobs" | grep -ci 'name="robots" content="index,follow' || true)
             jobs_prelaunch=$(printf '%s' "$jobs" | grep -c '上线准备中' || true)
-            jobs_api_ok=$(printf '%s' "$jobs_api" | grep -Ec '"jobs"[[:space:]]*:[[:space:]]*\[[^]]*\{' || true)
+            jobs_api_ok=$(printf '%s' "$jobs_api" | grep -Ec '"items"[[:space:]]*:[[:space:]]*\[[^]]*\{' || true)
             bundle_ok=$(printf '%s' "$bundle" | grep -c '"mode":"homepage"' || true)
             geo_policy=$(printf '%s' "$headers" | grep -ci '^permissions-policy:.*geolocation=(self)' || true)
+            trump_marker=$(printf '%s' "$trump" | grep -c 'data-seo-static-snapshot="build"' || true)
+            trump_links=$(printf '%s' "$trump" | grep -Eo 'href="/trump/[^" ]+' | wc -l | tr -d ' ')
+            sitemap_jobs=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/jobs/</loc>' || true)
+            sitemap_v7=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v7-jobs-indexable' || true)
 
-            echo "attempt=$attempt sha=$sha_ok homeJobs=$home_jobs falseEmpty=$false_empty jobsIndex=$jobs_index jobsPrelaunch=$jobs_prelaunch jobsApi=$jobs_api_ok bundle=$bundle_ok geo=$geo_policy"
+            echo "attempt=$attempt sha=$sha_ok homeJobs=$home_jobs falseEmpty=$false_empty jobsIndex=$jobs_index jobsPrelaunch=$jobs_prelaunch jobsApi=$jobs_api_ok bundle=$bundle_ok geo=$geo_policy trump=$trump_marker/$trump_links sitemapJobs=$sitemap_jobs sitemapV7=$sitemap_v7"
             if [ "$sha_ok" -eq 1 ] \
               && [ "$home_jobs" -ge 1 ] && [ "$false_empty" -eq 0 ] \
               && [ "$jobs_index" -ge 1 ] && [ "$jobs_prelaunch" -eq 0 ] \
               && [ "$jobs_api_ok" -ge 1 ] && [ "$bundle_ok" -ge 1 ] \
-              && [ "$geo_policy" -ge 1 ]; then
+              && [ "$geo_policy" -ge 1 ] \
+              && [ "$trump_marker" -ge 1 ] && [ "$trump_links" -ge 1 ] \
+              && [ "$sitemap_jobs" -ge 1 ] && [ "$sitemap_v7" -ge 1 ]; then
               echo 'Production acceptance passed.'
               exit 0
             fi

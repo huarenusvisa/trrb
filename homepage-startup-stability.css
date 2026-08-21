@@ -50,7 +50,7 @@ html[data-home-final-ui="true"] #rank-list{
   to{opacity:1}
 }
 
-/* If 72h has no qualified long-form politics item, never show a black error-like card. */
+/* A true empty state remains readable, but secondary focus logic must not overwrite live news with it. */
 #hero .hero-focus-empty{
   min-height:inherit;
   height:100%;
@@ -84,8 +84,8 @@ html[data-home-final-ui="true"] #rank-list{
 }
 
 @media(max-width:767px){
-  #rank-list{min-height:500px!important}
-  #rank-list .rank-empty{min-height:500px}
+  #rank-list{min-height:260px!important}
+  #rank-list .rank-empty{min-height:260px}
   /* top-list is not a mobile surface; never let its loading state reserve a visible block. */
   #top-list{display:none!important;min-height:0!important}
 }

@@ -190,13 +190,9 @@ export default async (request: Request, context: any) => {
       if (match?.[1]) seenUrls.add(match[1].replaceAll("&amp;", "&"));
     }
 
-    // /jobs/ is a fully launched public product. Add it even when an older
-    // static sitemap snapshot has not caught up yet.
-    const jobsLoc = `${SITE}/jobs/`;
-    if (!seenUrls.has(jobsLoc)) {
-      blocks.push(urlBlock(jobsLoc, new Date().toISOString().slice(0, 10), "daily", "0.8"));
-      seenUrls.add(jobsLoc);
-    }
+    // Recruitment now has its own canonical host (huarengongzuo.com).
+    // trrb.net/jobs and /huarengongzuo are permanent entry redirects and
+    // therefore must not be emitted as indexable trrb.net sitemap URLs.
 
     const seenTitles = new Set<string>();
     const seenBodies = new Set<string>();
@@ -249,7 +245,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v7-jobs-indexable",
+      "x-trrb-sitemap": "live-supabase-v8-jobs-external-canonical",
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-static-blocks": String(staticBlocks.length),
       "x-trrb-sitemap-immigration-knowledge": String(immigrationKnowledgeCount),

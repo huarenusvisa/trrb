@@ -57,7 +57,7 @@
 
   const positionCards = (items) => sortJobs(items).slice(0, 6).map((job) => ({
     title: String(job?.title || "招聘岗位"),
-    href: `/jobs/?q=${encodeURIComponent(String(job?.title || ""))}`,
+    href: `/huarengongzuo?q=${encodeURIComponent(String(job?.title || ""))}`,
     meta: `${formatLocation(job)} · ${formatSalary(job)}`
   }));
 
@@ -65,10 +65,10 @@
     const cards = positionCards(items);
     const links = cards.length
       ? cards.map((card) => `<a class="job-position-card" href="${card.href}"><strong>${escapeHtml(card.title)}</strong><small>${escapeHtml(card.meta)}</small></a>`).join("")
-      : `<a class="jobs-home-empty" href="/jobs/">查看最新招聘岗位</a>`;
+      : `<a class="jobs-home-empty" href="/huarengongzuo">查看最新招聘岗位</a>`;
 
     return `
-      <header class="jobs-home-head"><h2><a href="/jobs/">招聘求职</a></h2><a class="jobs-home-more" href="/jobs/">更多职位</a></header>
+      <header class="jobs-home-head"><h2><a href="/huarengongzuo">招聘求职</a></h2><a class="jobs-home-more" href="/huarengongzuo">更多职位</a></header>
       <div class="jobs-position-intro"><b>${cards.length ? "推荐岗位" : "最新岗位"}</b><span>${cards.length ? `当前展示 ${cards.length} 条` : "实时更新"}</span></div>
       <div class="jobs-position-grid">${links}</div>`;
   };

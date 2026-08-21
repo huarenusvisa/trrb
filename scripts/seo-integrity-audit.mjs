@@ -136,12 +136,12 @@ for (const file of files.filter((item) => /(?:^|\/)sitemap[^/]*\.xml$/i.test(rel
   if (/\/article\.html\?id=/i.test(xml)) errors.push(`${name}: 包含旧 article.html?id= URL`);
 }
 
-// Recruitment is now a launched, indexable product. The live sitemap edge
-// must explicitly add /jobs/ even if a static snapshot predates its launch.
+// Recruitment now uses huarengongzuo.com as its canonical host. The trrb.net
+// sitemap must not manufacture an indexable /jobs/ URL for a permanent redirect.
 try {
   const liveSitemap = await readFile(path.join(ROOT, "netlify/edge-functions/sitemap-live.ts"), "utf8");
-  if (!/jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/.test(liveSitemap)) errors.push("live sitemap 未显式加入 /jobs/");
-  if (!/live-supabase-v7-jobs-indexable/.test(liveSitemap)) errors.push("live sitemap 未升级到 jobs-indexable v7");
+  if (/jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/.test(liveSitemap)) errors.push("live sitemap 仍在加入已跳转的 /jobs/");
+  if (!/live-supabase-v8-jobs-external-canonical/.test(liveSitemap)) errors.push("live sitemap 未升级到 jobs external canonical v8");
 } catch (error) {
   errors.push(`无法读取 live sitemap edge: ${error.message}`);
 }

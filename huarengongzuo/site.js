@@ -5,6 +5,21 @@
   let allJobs = [];
   let visible = 12;
 
+  function hydrateSearchFromUrl() {
+    const params = new URLSearchParams(location.search);
+    document.getElementById('job-q').value = params.get('q') || '';
+    document.getElementById('place-q').value = params.get('place') || '';
+  }
+
+  function syncSearchUrl() {
+    const params = new URLSearchParams();
+    const q = document.getElementById('job-q').value.trim();
+    const place = document.getElementById('place-q').value.trim();
+    if (q) params.set('q', q);
+    if (place) params.set('place', place);
+    history.replaceState(null, '', `${location.pathname}${params.size ? `?${params}` : ''}${location.hash}`);
+  }
+
   function salary(job) {
     const min = job.salary_min == null || job.salary_min === '' ? Number.NaN : Number(job.salary_min);
     const max = job.salary_max == null || job.salary_max === '' ? Number.NaN : Number(job.salary_max);
@@ -88,8 +103,9 @@
     }
   }
 
-  document.getElementById('job-search').addEventListener('submit', (event) => {event.preventDefault();visible = 12;render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});});
-  document.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', () => {document.getElementById('place-q').value = button.dataset.place;visible = 12;render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});}));
+  document.getElementById('job-search').addEventListener('submit', (event) => {event.preventDefault();visible = 12;syncSearchUrl();render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});});
+  document.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', () => {document.getElementById('place-q').value = button.dataset.place;visible = 12;syncSearchUrl();render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});}));
   document.getElementById('show-more').addEventListener('click', () => {visible += 12;render();});
+  hydrateSearchFromUrl();
   boot();
 })();

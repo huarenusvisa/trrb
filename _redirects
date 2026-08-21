@@ -36,6 +36,12 @@ https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology
 http://trrb.net/* https://trrb.net/:splat 301!
 http://www.trrb.net/* https://trrb.net/:splat 301!
 https://www.trrb.net/* https://trrb.net/:splat 301!
+https://trrb.net/huarengongzuo https://huarengongzuo.com/ 301!
+https://trrb.net/huarengongzuo/ https://huarengongzuo.com/ 301!
+https://trrb.net/huarengongzuo/* https://huarengongzuo.com/:splat 301!
+https://trrb.net/jobs https://huarengongzuo.com/ 301!
+https://trrb.net/jobs/ https://huarengongzuo.com/ 301!
+https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
 /index.html / 301!
 /important /important-news 301!
 /hot /hot-headlines 301!

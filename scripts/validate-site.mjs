@@ -31,7 +31,7 @@ const index = await text("index.html");
 requireMatch(index, /^\s*<!doctype html>/i, "index.html is not HTML");
 requireMatch(index, /<link\s+rel=["']canonical["']\s+href=["']https:\/\/trrb\.net\/["']/i, "index.html missing canonical root");
 requireMatch(index, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "index.html missing index,follow");
-requireMatch(index, /href=["']\/jobs\/?["'][^>]*>招聘求职<\/a>/i, "index.html missing 招聘求职 navigation");
+requireMatch(index, /href=["']\/huarengongzuo\/?["'][^>]*>招聘求职<\/a>/i, "index.html missing 华人工作网 navigation");
 requireMatch(index, /href=["']\/(?:immigration|immigrate\/?)["'][^>]*>移民美国<\/a>/i, "index.html missing 移民美国 navigation");
 requireMatch(index, /articles-home\.js/i, "index.html missing homepage renderer");
 requireMatch(index, /articles-home-live-fix\.js/i, "index.html missing live homepage guard");
@@ -91,8 +91,8 @@ requireMatch(articleMap, /https:\/\/trrb\.net\/[^/<]+\/[^<]+/, "sitemap-articles
 forbidMatch(articleMap, /\/article\.html\?id=/i, "sitemap article chunk contains legacy article URLs");
 
 const liveSitemap = await text("netlify/edge-functions/sitemap-live.ts");
-requireMatch(liveSitemap, /jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/, "live sitemap does not add launched jobs hub");
-requireMatch(liveSitemap, /live-supabase-v7-jobs-indexable/, "live sitemap version is not jobs-indexable v7");
+forbidMatch(liveSitemap, /jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/, "live sitemap still adds redirected trrb.net jobs hub");
+requireMatch(liveSitemap, /live-supabase-v8-jobs-external-canonical/, "live sitemap version is not jobs external canonical v8");
 
 const niulai = await text("niulai/index.html");
 const niulaiAdapter = await text("niulai/data-adapter.js");

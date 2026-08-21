@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T16:51:00.501Z",
+  "generatedAt": "2026-08-21T17:44:33.033Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -759,44 +759,60 @@
       "sourceFinalUrl": "https://www.ca5.uscourts.gov/electronic-case-filing/case-information/current-opinions",
       "documents": [
         {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60232-CV0.pdf",
-          "title": "25-60232 Hughey v. Tippah County Aug 20, 2026 Published Opinion PDF"
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/23/23-50750-CV0.pdf",
+          "title": "23-50750 Kipp Flores v. AMH Creekside Aug 21, 2026 Published Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10953.0.pdf",
+          "title": "25-10953 USA v. Risby Aug 21, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-51005.0.pdf",
+          "title": "25-51005 USA v. Castaneda-Castillo Aug 21, 2026 Unpublished Opinion PDF"
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-50109.0.pdf",
+          "title": "26-50109 Hernandez v. Paxton Aug 21, 2026 Unpublished Opinion PDF"
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-20546.0.pdf",
-          "title": "25-20546 Mahadevan v. Bikkina Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11313.0.pdf",
-          "title": "25-11313 USA v. Baltazar Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
+        },
+        {
+          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60232-CV0.pdf",
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10752.0.pdf",
-          "title": "25-10752 Yan v. State of Texas Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-20037.0.pdf",
-          "title": "26-20037 Soward v. Foulds Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-60605.0.pdf",
-          "title": "25-60605 Teeuwissen v. Hinds County, MS Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-10919.0.pdf",
-          "title": "25-10919 Point Bridge Capital v. Johnson Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-60014.0.pdf",
-          "title": "26-60014 Musa v. Blanche Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-50730.0.pdf",
-          "title": "25-50730 USA v. Gardner Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-40714.0.pdf",
-          "title": "25-40714 USA v. Sandoval Aug 20, 2026 Unpublished Opinion PDF"
+          "title": null
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/unpub/26/26-60162.0.pdf",
@@ -940,22 +956,6 @@
         },
         {
           "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-20584-CV0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-10555-CV0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-10372-CV0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/pub/25/25-60322-CV0.pdf",
-          "title": null
-        },
-        {
-          "url": "https://www.ca5.uscourts.gov/opinions/unpub/25/25-11037.0.pdf",
           "title": null
         }
       ],
@@ -1195,6 +1195,10 @@
       "sourceFinalUrl": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml",
       "documents": [
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/21/24-6774.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/21/25-4763.pdf",
           "title": null
         },
@@ -1288,10 +1292,6 @@
         },
         {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/25-557.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/24-7460.pdf",
           "title": null
         }
       ],

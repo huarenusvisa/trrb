@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>移民法官通过率｜美国移民法官与法院庇护数据查询</title>
+  <meta name="description" content="查询美国移民法官、移民法院及各州庇护裁决批准率、拒绝率、案件样本量和数据更新时间。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://asylumjudge.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="移民法官通过率｜AsylumJudge.com">
+  <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
+  <meta property="og:url" content="https://asylumjudge.com/">
+  <meta name="theme-color" content="#b80d16">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="移民法官通过率首页">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><strong>移民法官通过率</strong><small>AsylumJudge.com</small></span>
+      </a>
+      <nav aria-label="主要导航">
+        <a href="#judge-search">查法官</a>
+        <a href="/courts">查法院</a>
+        <a href="/states">各州数据</a>
+        <a href="/methodology">数据口径</a>
+      </nav>
+      <a class="trrb-link" href="https://trrb.net/immigration-judge-approval-rate/">唐人日报入口</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <div class="kicker">EOIR IMMIGRATION COURT DATA</div>
+          <h1>查法官 · 看法院<br><em>比较庇护裁决数据</em></h1>
+          <p>输入移民法官姓名、法院或城市，查看历史批准率、拒绝率和案件样本量。</p>
+          <form id="judge-search" class="search-box">
+            <label class="sr-only" for="judge-q">法官、法院或城市</label>
+            <input id="judge-q" autocomplete="off" placeholder="例如：法官姓名、New York、Houston">
+            <button type="submit">立即查询</button>
+          </form>
+          <div class="quick" aria-label="热门查询">
+            <button type="button" data-q="New York">纽约</button>
+            <button type="button" data-q="Los Angeles">洛杉矶</button>
+            <button type="button" data-q="Houston">休斯敦</button>
+            <button type="button" data-q="Miami">迈阿密</button>
+          </div>
+          <p class="legal-note">历史统计仅供信息参考，不构成法律意见，也不能预测个案结果。</p>
+        </div>
+
+        <aside class="snapshot" aria-labelledby="snapshot-title">
+          <div class="snapshot-head">
+            <div><span>全美数据库概览</span><h2 id="snapshot-title">庇护裁决数据</h2></div>
+            <span id="freshness-badge" class="live-badge">读取中</span>
+          </div>
+          <div class="national-rate">
+            <div>
+              <span>数据库裁决批准率</span>
+              <strong id="national-rate">—</strong>
+              <small id="national-sample">正在汇总州级样本</small>
+            </div>
+            <div class="database-counts">
+              <span><b id="court-count">—</b> 法院</span>
+              <span><b id="judge-count">—</b> 法官</span>
+              <span><b id="decision-count">—</b> 庇护裁决</span>
+            </div>
+          </div>
+          <div class="state-list-head"><b>主要州数据</b><span>裁决批准率</span></div>
+          <div id="state-list" class="state-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+          <a class="state-more" href="/states">查看全部州数据 <span>→</span></a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="shell entry-grid" aria-label="查询入口">
+      <a href="#judge-search"><span class="entry-icon">法官</span><div><b>查移民法官</b><small>姓名、法院或城市</small></div><i>→</i></a>
+      <a href="/courts"><span class="entry-icon">法院</span><div><b>全部移民法院</b><small>比较法院裁决数据</small></div><i>→</i></a>
+      <a href="/states"><span class="entry-icon">各州</span><div><b>按州查看</b><small>州级法院与法官汇总</small></div><i>→</i></a>
+      <a href="/china"><span class="entry-icon">中国</span><div><b>中国申请人</b><small>只显示可验证样本</small></div><i>→</i></a>
+    </section>
+
+    <section id="result-section" class="shell results-section" hidden>
+      <div class="section-title"><div><span>查询结果</span><h2 id="result-title">匹配的移民法官</h2></div><p id="result-note"></p></div>
+      <div id="results" class="results" aria-live="polite"></div>
+    </section>
+
+    <section class="method-strip">
+      <div class="shell method-grid">
+        <div><span>数据口径</span><h2>百分比必须和样本量一起看</h2></div>
+        <p>裁决批准率按“批准 ÷（批准 + 拒绝）”计算，撤回、未裁决等程序性结果不计入分母。小样本数据会被抑制或提示，避免只看一个百分比造成误解。</p>
+        <a href="/methodology">查看完整说明 →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner"><div><b>移民法官通过率</b><span>AsylumJudge.com</span></div><p>与唐人日报共用 EOIR 数据库 · 持续更新</p></div>
+  </footer>
+  <script src="/asylumjudge/site.js?v=1" defer></script>
+</body>
+</html>

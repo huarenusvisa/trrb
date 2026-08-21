@@ -8,10 +8,10 @@
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Cache-Control: no-cache, no-store, must-revalidate
 
-/finance/
+/niulai/
   X-Robots-Tag: noindex, follow, noarchive
 
-/finance/*
+/niulai/*
   X-Robots-Tag: noindex, follow, noarchive
 
 /expose

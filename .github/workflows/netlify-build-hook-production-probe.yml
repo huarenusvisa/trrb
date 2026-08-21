@@ -56,7 +56,7 @@ jobs:
           news_v5=false
           legacy_410=false
           [ "$marker" = 'trrb-seo-recovery-20260819-v1' ] && marker_ok=true
-          printf '%s' "$home" | grep -q 'href="/finance/"' && finance_ok=true || true
+          printf '%s' "$home" | grep -q 'href="/niulai/"' && finance_ok=true || true
           printf '%s' "$news_headers" | grep -qi '^x-trrb-news-sitemap: live-supabase-v5-latest1000-topic-safe-ice-safe-dedupe' && news_v5=true || true
           printf '%s' "$legacy_headers" | grep -q '^HTTP/.* 410' && legacy_410=true || true
 

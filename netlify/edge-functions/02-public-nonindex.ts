@@ -1,8 +1,8 @@
 export const config = {
   path: [
-    "/finance",
-    "/finance/",
-    "/finance/index.html",
+    "/niulai",
+    "/niulai/",
+    "/niulai/index.html",
     "/expose",
     "/expose.html",
     "/thanks.html",

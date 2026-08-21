@@ -49,7 +49,7 @@
     if (!nav) return;
 
     // Only remove links that this runtime created on a previous pass. Static
-    // independent products such as /jobs/, /finance/ or /legal/ must survive a
+    // independent products such as /jobs/, /niulai/ or /legal/ must survive a
     // category refresh even though they are not rows in the categories table.
     nav.querySelectorAll("a[data-dynamic-category]").forEach((node) => node.remove());
 

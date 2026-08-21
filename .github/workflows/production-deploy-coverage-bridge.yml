@@ -13,7 +13,7 @@ on:
       - 'netlify.toml'
       - 'jobs-home.js'
       - 'jobs/**'
-      - 'finance/**'
+      - 'niulai/**'
       - 'immigrate/center-link-canonical.js'
       - 'trump/**'
       - 'netlify/functions/**'

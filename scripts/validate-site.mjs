@@ -82,7 +82,7 @@ const staticMap = await text("sitemap-static.xml");
 requireMatch(staticMap, /<loc>https:\/\/trrb\.net\/<\/loc>/, "sitemap-static.xml missing root");
 requireMatch(staticMap, /<loc>https:\/\/trrb\.net\/immigrate\/<\/loc>/, "sitemap-static.xml missing immigration hub");
 requireMatch(staticMap, /<loc>https:\/\/trrb\.net\/legal\/<\/loc>/, "sitemap-static.xml missing legal hub");
-forbidMatch(staticMap, /<loc>https:\/\/trrb\.net\/finance\//, "sitemap-static.xml indexes finance prelaunch");
+forbidMatch(staticMap, /<loc>https:\/\/trrb\.net\/niulai\//, "sitemap-static.xml indexes niulai prelaunch");
 forbidMatch(staticMap, /<loc>https:\/\/trrb\.net\/people\//, "sitemap-static.xml indexes retired people product");
 
 const articleMap = await text("sitemap-articles-1.xml");

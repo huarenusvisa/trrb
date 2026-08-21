@@ -13,8 +13,10 @@ record(duplicateSlugs.length===0,'最近1000篇已发布 slug 无重复',duplica
 const future=published.filter(a=>{const ts=Date.parse(a.published_at||a.created_at||'');return Number.isFinite(ts)&&ts>Date.now()+5*60*1000;});
 record(future.length===0,'已发布文章无异常未来时间',`future=${future.length}`);
 const publishSource=fs.readFileSync('scripts/ice-publish-due.mjs','utf8');
+const reviewActionsSource=fs.readFileSync('netlify/functions/ice-review-actions-v4.js','utf8');
 record(/!String\(story\.title[^\n]+!String\(story\.content/.test(publishSource)&&/status:\s*"pending_review"/.test(publishSource),'发布器拦截缺标题或正文内容');
-record(/story\.conflict_detected/.test(publishSource)&&/story\.privacy_risk/.test(publishSource)&&/story\.fabrication_risk/.test(publishSource)&&/legalBlocked/.test(publishSource),'发布器拦截冲突/隐私/虚构/法律风险');
+record(/human_review_status:\s*"eq\.approved"/.test(publishSource)&&/reviewed_by:\s*"not\.is\.null"/.test(publishSource)&&/Boolean\(story\.reviewed_by\)/.test(publishSource),'发布器只接收后台真实管理员已批准内容');
+record(/conflict_detected:\s*Boolean\(story\.conflict_detected\)/.test(reviewActionsSource)&&/legal_risk:\s*Boolean\(story\.legal_risk\)/.test(reviewActionsSource)&&/privacy_risk:\s*Boolean\(story\.privacy_risk\)/.test(reviewActionsSource)&&/fabrication_risk:\s*Boolean\(story\.fabrication_risk\)/.test(reviewActionsSource),'人工批准保留冲突/法律/隐私/虚构风险审计记录');
 record(/existingArticle\(/.test(publishSource)&&/同一来源帖子或事件指纹已发布/.test(publishSource),'发布器自动阻止重复文章创建');
 record(/catch \(error\)[\s\S]{0,300}status:\s*"failed"/.test(publishSource),'发布失败自动标记 failed 而非伪装 published');
 const workflow=fs.readFileSync('.github/workflows/ice-publisher-continuous.yml','utf8');

@@ -28,25 +28,35 @@ test("成本控制、多信源和80分门槛存在", () => {
   assert.doesNotMatch(text, /git push/);
 });
 
-test("非官方内容必须进入人工审核", () => {
+test("所有ICE内容必须由后台真实管理员审核", () => {
   const collector = read("scripts/ice-multisource.mjs");
   const publisher = read("scripts/ice-publish-due.mjs");
+  const trusted = read("scripts/ice-trusted-source-promote.mjs");
+  const restore = read("scripts/ice-restore-human-approved.mjs");
   assert.match(collector, /非官方内容即使达到80分/);
   assert.match(collector, /human_review_status/);
   assert.match(collector, /humanReviewStatus = "required"/);
-  assert.match(publisher, /humanApproved/);
-  assert.match(publisher, /!officialEligible && !humanApproved/);
+  assert.match(publisher, /human_review_status: "eq\.approved"/);
+  assert.match(publisher, /reviewed_by: "not\.is\.null"/);
+  assert.match(publisher, /humanApproved = story\.human_review_status === "approved" && Boolean\(story\.reviewed_by\)/);
+  assert.match(publisher, /必须由后台真实管理员审核批准/);
+  assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
+  assert.match(trusted, /status: "pending_review"/);
+  assert.match(trusted, /human_review_status: "required"/);
+  assert.doesNotMatch(trusted, /status: "approved"/);
+  assert.match(restore, /reviewer_user_id/);
+  assert.match(restore, /reviewed_by: approval\.reviewer_user_id/);
 });
 
-test("ERO地区官方补抓严格限制为过去2小时并支持分页去重", () => {
+test("ERO地区官方补抓使用可配置时间窗并支持分页去重", () => {
   const ero = read("scripts/ice-ero-official-discovery.mjs");
   const launcher = read("scripts/ice-enable-first-backfill.mjs");
   syntaxCheck("scripts/ice-ero-official-discovery.mjs");
   syntaxCheck("scripts/ice-enable-first-backfill.mjs");
-  assert.match(ero, /const LOOKBACK_HOURS = 2/);
+  assert.match(ero, /const LOOKBACK_HOURS = Number\(process\.env\.ICE_ERO_LOOKBACK_HOURS \|\| 12\)/);
   assert.match(ero, /max_results", "100"/);
-  assert.match(ero, /start_time", twoHourStart\(\)/);
-  assert.match(ero, /since_id/);
+  assert.match(ero, /start_time", lookbackStart\(\)/);
+  assert.match(ero, /last_seen_id/);
   assert.match(ero, /next_token/);
   assert.match(ero, /MAX_PAGES_PER_QUERY/);
   assert.match(ero, /EROBaltimore/);
@@ -58,22 +68,23 @@ test("ERO地区官方补抓严格限制为过去2小时并支持分页去重", (
   assert.match(launcher, /!String\(row\.query_key \|\| ""\)\.startsWith\("ero-official-2h-"\)/);
 });
 
-test("DHS和ICE官方重大突发可绕过法律风险但不能绕过硬风险", () => {
+test("DHS和ICE官方重大突发也只能优先进入人工审核", () => {
   const promoter = read("scripts/ice-official-urgent-promote.mjs");
   const publisher = read("scripts/ice-publish-due.mjs");
   syntaxCheck("scripts/ice-official-urgent-promote.mjs");
   syntaxCheck("scripts/ice-publish-due.mjs");
   assert.match(promoter, /dhsgov\|icegov\|ero/);
   assert.match(promoter, /official_urgent: true/);
-  assert.match(promoter, /legal_risk_bypassed/);
+  assert.match(promoter, /official_urgent_requires_human_review: true/);
+  assert.match(promoter, /status: "pending_review"/);
+  assert.match(promoter, /human_review_status: "required"/);
   assert.match(promoter, /story\.conflict_detected \|\| story\.privacy_risk \|\| story\.fabrication_risk/);
-  assert.doesNotMatch(promoter, /story\.legal_risk\s*\|\|/);
-  assert.match(publisher, /runOfficialUrgentPromotion/);
-  assert.match(publisher, /legalBlocked = Boolean\(story\.legal_risk\) && !officialUrgent/);
-  assert.match(publisher, /scoreBlocked = Number\(story\.total_score \|\| 0\) < threshold && !officialUrgent/);
-  assert.match(publisher, /category_name: "驱逐快报"/);
+  assert.doesNotMatch(promoter, /human_review_status: "not_required"/);
+  assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
+  assert.match(publisher, /review_status: "human_approved"/);
+  assert.match(publisher, /category_name: "ICE执法动态"/);
   assert.match(publisher, /topic_key: "ice"/);
-  assert.match(publisher, /distribution_channels: \["驱逐快报", "ICE动态"\]/);
+  assert.match(publisher, /distribution_channels: \["ICE执法动态", "ICE实时追踪"\]/);
 });
 
 test("同一ICE信息按来源帖子和事件指纹双重去重", () => {
@@ -89,6 +100,7 @@ test("trrb.net/admin包含ICE审核中心", () => {
   const js = read("admin/admin.js");
   const css = read("admin/styles.css");
   assert.match(html, /ICE人工审核中心/);
+  assert.match(html, /所有采集内容（包括ICE\/DHS官方来源）必须由管理员确认后才能发布/);
   assert.match(html, /data-review-action="approve"/);
   assert.match(html, /data-review-action="publish_now"/);
   assert.match(js, /\/\.netlify\/functions\/ice-review/);
@@ -97,11 +109,19 @@ test("trrb.net/admin包含ICE审核中心", () => {
 });
 
 test("审核API仅在服务端使用service role并验证管理员", () => {
-  const fn = read("netlify/functions/ice-review.js");
-  assert.match(fn, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
-  assert.match(fn, /admin_users/);
-  assert.match(fn, /auth\/v1\/user/);
-  assert.match(fn, /approvalEligibility/);
+  const router = read("netlify/functions/ice-review.js");
+  const list = read("netlify/functions/ice-review-list-v3.js");
+  const publish = read("netlify/functions/ice-review-v2.js");
+  const actions = read("netlify/functions/ice-review-actions-v4.js");
+  const shared = read("netlify/functions/_shared/supabase-admin.js");
+  assert.match(router, /ice-review-list-v3/);
+  assert.match(router, /ice-review-actions-v4/);
+  assert.match(shared, /process\.env\.SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(shared, /admin_users/);
+  assert.match(shared, /auth\/v1\/user/);
+  assert.match(list, /authenticateAdmin/);
+  assert.match(publish, /authenticateStaff/);
+  assert.match(actions, /authenticateStaff/);
   assert.doesNotMatch(read("admin/admin.js"), /SUPABASE_SERVICE_ROLE_KEY/);
 });
 

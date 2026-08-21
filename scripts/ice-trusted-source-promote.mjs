@@ -20,7 +20,7 @@ function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || ""));
 async function main() {
   requireEnv();
   const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration)", order: "updated_at.desc", limit: "1000" } });
-  let approved = 0, manual = 0, incomplete = 0, stale = 0;
+  let queued = 0, manual = 0, incomplete = 0, stale = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
     if (!recentEnough(story)) { stale += 1; continue; }
     if (!String(story.title || "").trim() || !String(story.content || "").trim() || !hasChinese(story.title) || !hasChinese(story.content)) { incomplete += 1; continue; }
@@ -30,31 +30,27 @@ async function main() {
     const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
     const sources = [...new Set(officialEvidence.map((post) => post.source_username).filter(Boolean))];
     await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
-      status: "approved",
-      human_review_status: "approved",
-      reviewer_email: "ai-official-source@trrb.net",
-      reviewed_at: nowIso(),
-      scheduled_at: nowIso(),
+      status: "pending_review",
+      human_review_status: "required",
+      scheduled_at: null,
       total_score: Math.max(100, Number(story.total_score || 0)),
-      legal_risk: false,
-      conflict_detected: false,
-      privacy_risk: false,
-      fabrication_risk: false,
       ai_payload: {
         ...payload,
-        official_source_auto: true,
-        trusted_source_auto: true,
-        official_direct_publish: true,
+        official_source_auto: false,
+        trusted_source_auto: false,
+        official_direct_publish: false,
+        official_source_candidate: true,
+        trusted_source_candidate: true,
         official_source_types: [...new Set(officialEvidence.map((post) => post.source_type))],
         official_source_accounts: sources,
-        official_source_promoted_at: nowIso()
+        official_source_review_queued_at: nowIso()
       },
-      decision_reason: `${story.decision_reason || ""}；官方机构账号来源，中文编辑完成后直接发布`,
+      decision_reason: `${story.decision_reason || ""}；官方机构账号来源，已优先进入后台人工审核`,
       updated_at: nowIso()
     }, prefer: "return=minimal" });
-    approved += 1;
+    queued += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-official-source-promote-v3", checked: Array.isArray(rows) ? rows.length : 0, approved, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-official-source-review-queue-v4", checked: Array.isArray(rows) ? rows.length : 0, queued_for_human_review: queued, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 
-main().catch((error) => { console.error("ICE官方信源自动批准失败：", error); process.exitCode = 1; });
+main().catch((error) => { console.error("ICE官方信源进入人工审核队列失败：", error); process.exitCode = 1; });

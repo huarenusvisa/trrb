@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
+  <url>
+      <loc>https://trrb.net/hot-headlines/%E9%87%8D%E5%BA%86%E5%A4%A7%E8%B6%B3%E5%8C%BA%E5%8E%9F%E5%89%AF%E5%8C%BA%E9%95%BF%E9%92%B1%E8%99%8E%E8%A2%AB%E5%8F%8C%E5%BC%80-%E6%B6%89%E5%AB%8C%E5%8F%97%E8%B4%BF%E7%8A%AF%E7%BD%AA%E7%A7%BB%E9%80%81%E6%A3%80%E5%AF%9F%E6%9C%BA%E5%85%B3-mt35qgy2-1b0d81</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T16:22:09.482Z</news:publication_date>
+        <news:title>重庆大足区原副区长钱虎被双开 涉嫌受贿犯罪移送检察机关</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/hot-headlines/%E5%81%A5%E8%BA%AB%E6%88%BF%E7%91%9C%E4%BC%BD%E5%9E%AB%E6%9A%97%E8%97%8F%E9%A3%8E%E9%99%A9%E6%AD%A6%E6%B1%89%E5%A5%B3%E5%AD%90%E5%90%8E%E8%83%8C%E9%95%BF%E6%BB%A1%E7%96%99%E7%98%A9%E6%A3%80%E6%9F%A5%E5%8F%91%E7%8E%B0hpv%E6%84%9F%E6%9F%93-mt34vedr-7ed8f7</loc>
       <news:news>
@@ -2085,62 +2094,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-19T17:08:58.126Z</news:publication_date>
         <news:title>拜登政府送回犯罪非法入境者</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/hot-headlines/%E8%80%81%E4%BA%BA%E4%B8%83%E5%A4%95%E6%89%8E%E5%A0%86%E9%A2%86%E8%AF%81%E5%A9%9A%E5%A7%BB%E7%99%BB%E8%AE%B0%E5%A4%84%E7%8E%B0%E9%93%B6%E5%8F%91%E6%BD%AE%E5%86%8D%E5%A9%9A%E5%A5%96%E5%8A%B1%E4%BC%A0%E9%97%BB%E5%BC%95%E5%85%B3%E6%B3%A8-mt0bwqm7-2aecd1</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T16:51:41.119Z</news:publication_date>
-        <news:title>老人七夕扎堆领证！婚姻登记处现“银发潮”，再婚奖励传闻引关注</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/hot-headlines/%E9%AB%98%E6%A0%87%E5%87%86%E5%86%9C%E7%94%B0%E5%BB%BA%E6%88%90%E5%90%8E%E9%95%BF%E6%BB%A1%E6%9D%82%E8%8D%89%E7%A8%BB%E7%94%B0%E4%B8%8A%E5%9D%A1%E9%A1%B9%E7%9B%AE%E7%8E%B0%E5%9C%BA%E6%9B%9D%E5%85%89%E5%BC%95%E5%8F%91%E8%B4%A8%E7%96%91-mt0bsytn-eed7b3</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T16:48:45.131Z</news:publication_date>
-        <news:title>“高标准农田”建成后长满杂草？稻田上坡项目现场曝光，引发质疑</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-86593722e3f19d7df16d5b1870e062f7493f2e43</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T16:44:09.463Z</news:publication_date>
-        <news:title>佛州坦帕HSI查获哥伦比亚移民身份盗用案</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-249803138d33942e781916156a8be25cf4d384ea</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T16:44:08.787Z</news:publication_date>
-        <news:title>佛州执法局查获哥伦比亚非法移民长期身份造假</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-6343c8ee818f2e4902f459003c33948eed41837f</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T16:44:08.098Z</news:publication_date>
-        <news:title>弗吉尼亚斯塔安顿拘留三名涉儿童性犯罪非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-458285451e99b0120ff8254d321ea8133aa5d7db</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T16:44:07.326Z</news:publication_date>
-        <news:title>美拘押涉嫌导致集装箱死亡走私者Karina Gar</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/hot-headlines/%E5%9B%9B%E5%B7%9D%E9%95%BF%E5%AE%81%E5%8D%87%E5%AD%A6%E5%AE%B4%E6%83%A8%E5%89%A7%E5%90%8E%E7%BB%AD%E4%BC%A4%E8%80%85%E5%AE%B6%E5%B1%9E%E7%A7%B0%E4%BE%84%E5%AD%90%E5%8F%8C%E8%85%BF%E8%A2%AB%E5%8E%8B%E4%B8%80%E5%8F%AA%E8%84%9A%E5%B7%B2%E6%88%AA%E8%82%A2-mt0bmbcc-3a9653</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T16:43:34.763Z</news:publication_date>
-        <news:title>四川长宁升学宴惨剧后续：伤者家属称侄子双腿被压，一只脚已截肢</news:title>
       </news:news>
     </url>
 </urlset>

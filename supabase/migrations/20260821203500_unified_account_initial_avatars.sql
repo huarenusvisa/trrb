@@ -92,7 +92,10 @@ begin
   insert into public.profiles(id, display_name, avatar_key, is_custom_name, is_custom_avatar)
   values(new.id, account_name, public.trrb_initial_avatar_key(account_name), false, false)
   on conflict(id) do nothing;
-  insert into public.notification_preferences(user_id) values(new.id) on conflict(user_id) do nothing;
+  if to_regclass('public.notification_preferences') is not null then
+    execute 'insert into public.notification_preferences(user_id) values($1) on conflict(user_id) do nothing'
+      using new.id;
+  end if;
   return new;
 end;
 $$;

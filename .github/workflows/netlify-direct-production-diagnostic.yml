@@ -42,7 +42,7 @@ jobs:
             api_http=$(curl -sS -o /tmp/site.json -w '%{http_code}' -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID" || true)
             if [ "$api_http" = 200 ]; then
               set +e
-              npx --yes netlify-cli@latest deploy --build --prod --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" >/tmp/netlify-exact-deploy.log 2>&1
+              npx --yes netlify-cli@latest deploy --prod --context production --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" >/tmp/netlify-exact-deploy.log 2>&1
               deploy_exit=$?
               set -e
               if [ "$deploy_exit" -ne 0 ]; then

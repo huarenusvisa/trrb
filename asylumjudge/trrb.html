@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://trrb.net/asylumjudge">
   <meta name="theme-color" content="#b80d16">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=3">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=4">
 </head>
 <body>
   <header class="site-header">
@@ -92,6 +92,32 @@
       <a href="/asylumjudge/china"><span class="entry-icon">中国</span><div><b>中国申请人</b><small>只显示可验证样本</small></div><i>→</i></a>
     </section>
 
+    <section class="lookup-section">
+      <div class="shell">
+        <div class="content-heading">
+          <span>ASYLUMJUDGE TOOLS</span>
+          <h2>查询移民法官</h2>
+          <p>按姓名查找法官，并打开包含法院、国籍、年度趋势和案件样本量的资料页。</p>
+        </div>
+        <div class="lookup-grid">
+          <a href="/asylumjudge/courts"><i aria-hidden="true">⚖</i><b>法院批准率</b><p>查看各移民法院的法官人数、裁决量和历史批准率。</p><span>查看法院 →</span></a>
+          <a href="/asylumjudge/china"><i aria-hidden="true">◎</i><b>按国籍的批准率</b><p>查看中国申请人及法官资料页内可验证的国籍细分。</p><span>查看国籍数据 →</span></a>
+          <a href="#judge-search"><i aria-hidden="true">↗</i><b>年度趋势</b><p>先查询法官，再查看每年裁决量和批准率变化。</p><span>查询法官 →</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell featured-section" aria-labelledby="featured-title">
+      <div class="content-heading">
+        <span id="judge-source-badge">EOIR 裁决数据</span>
+        <h2 id="featured-title">案件量较高的法官资料</h2>
+        <p>按数据库中的历史庇护裁决样本量排序，并非按站内搜索量或法官质量排序。</p>
+      </div>
+      <div id="featured-judges" class="featured-grid" aria-live="polite">
+        <div class="featured-loading">正在读取法官资料…</div>
+      </div>
+    </section>
+
     <section id="result-section" class="shell results-section" hidden>
       <div class="section-title"><div><span>查询结果</span><h2 id="result-title">匹配的移民法官</h2></div><p id="result-note"></p></div>
       <div id="results" class="results" aria-live="polite"></div>
@@ -109,6 +135,6 @@
   <footer>
     <div class="shell footer-inner"><div><b>唐人日报 · 移民法官通过率</b><span>TRRB.net/asylumjudge</span></div><p>与 AsylumJudge.com 共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/site.js?v=3" defer></script>
+  <script src="/asylumjudge/site.js?v=4" defer></script>
 </body>
 </html>

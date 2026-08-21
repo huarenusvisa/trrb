@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T21:03:26.774Z",
+  "generatedAt": "2026-08-21T21:37:30.853Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -561,6 +561,10 @@
       "sourceFinalUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
       "documents": [
         {
+          "url": "https://www.ca4.uscourts.gov/opinions/244306R1.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244306R1.P.pdf"
+        },
+        {
           "url": "https://www.ca4.uscourts.gov/opinions/251495.P.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/251495.P.pdf"
         },
@@ -755,10 +759,6 @@
         {
           "url": "https://www.ca4.uscourts.gov/opinions/254214.U.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/254214.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf"
         }
       ],
       "notes": []

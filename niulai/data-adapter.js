@@ -97,6 +97,33 @@
     const funds=demo.funds.filter(x=>x.symbol.toLowerCase().includes(q)||x.name.toLowerCase().includes(q)).map(x=>({...x,type:'fund'}));
     return [...stocks,...funds].slice(0,8);
   }
+  const runtime={mode:'demo',source:'牛来测试数据',updatedAt:demo.updatedAt,realTime:false,providerConfigured:false};
+  function instrumentId(ref){return [ref?.symbol,ref?.mic_code||ref?.exchange||ref?.market,ref?.assetType||ref?.instrumentType||ref?.type].map(v=>String(v||'').trim().toUpperCase()).join('|')}
+  function instrumentRef(value){
+    if(typeof value==='string')return {symbol:value.toUpperCase()};
+    return {symbol:String(value?.symbol||'').toUpperCase(),name:value?.name||'',exchange:value?.exchange||value?.market||'',mic_code:value?.mic_code||'',assetType:value?.assetType||value?.instrumentType||value?.type||'',route:value?.route||(/ETF|Fund/i.test(value?.assetType||value?.instrumentType||value?.type||'')?'fund':'stock'),group:value?.group||''};
+  }
+  function detailHref(value){const ref=instrumentRef(value),page=ref.route==='fund'?'fund.html':'stock.html',p=new URLSearchParams({symbol:ref.symbol});if(ref.exchange)p.set('exchange',ref.exchange);if(ref.assetType)p.set('type',ref.assetType);return `${page}?${p.toString()}`}
+  function setSelectedInstrument(value){const ref=instrumentRef(value);try{sessionStorage.setItem('trfinance.selectedInstrument',JSON.stringify({...ref,id:instrumentId(ref),ts:Date.now()}))}catch(e){}return ref}
+  function getSelectedInstrument(symbol=''){try{const ref=JSON.parse(sessionStorage.getItem('trfinance.selectedInstrument')||'null');return ref&&(!symbol||ref.symbol===String(symbol).toUpperCase())?ref:null}catch(e){return null}}
+  function readQuoteCache(){try{const value=JSON.parse(read('trfinance.quoteCache','{}'));return value&&typeof value==='object'?value:{}}catch(e){return {}}}
+  function cacheQuote(value){if(!value?.symbol)return value;const data=readQuoteCache(),ref=instrumentRef(value),id=instrumentId(ref);data[id]={...value,_cachedAt:Date.now()};const entries=Object.entries(data).sort((a,b)=>(b[1]._cachedAt||0)-(a[1]._cachedAt||0)).slice(0,50);write('trfinance.quoteCache',JSON.stringify(Object.fromEntries(entries)));return value}
+  function getCachedQuote(value){const ref=instrumentRef(value),data=readQuoteCache(),exact=data[instrumentId(ref)];if(exact)return clone(exact);const match=Object.values(data).find(x=>x.symbol===ref.symbol&&(!ref.exchange||x.exchange===ref.exchange||x.market===ref.exchange));return match?clone(match):null}
+  async function api(path,params={}){const url=new URL(path,location.origin);Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=='')url.searchParams.set(k,String(v))});const response=await fetch(url,{headers:{Accept:'application/json'}});const body=await response.json().catch(()=>null);if(!response.ok)throw new Error(body?.error||`财经接口请求失败（${response.status}）`);return body}
+  async function refreshMeta(){try{const body=await api('/api/finance/status');runtime.mode=body.mode||'demo';runtime.source=body.provider||runtime.source;runtime.updatedAt=body.checkedAt||new Date().toISOString();runtime.realTime=body.mode==='provider';runtime.providerConfigured=!!body.providerConfigured;runtime.coverage=body.coverage||null;return clone(runtime)}catch(e){return clone(runtime)}}
+  async function searchAsync(q,{market='all',limit=24}={}){q=String(q||'').trim();if(!q)return [];try{const body=await api('/api/finance/search',{q,market,limit});runtime.mode=body.mode||runtime.mode;runtime.source=body.mode==='provider'?'Twelve Data':'牛来测试数据';runtime.realTime=body.mode==='provider';return (body.items||[]).map(item=>({...item,type:item.route||(/ETF|Fund/i.test(item.type||'')?'fund':'stock'),assetType:item.type,market:item.exchange,detailHref:detailHref(item)}))}catch(e){return search(q)}}
+  function hydrateQuote(value){if(!value)return null;const q={...value};q.symbol=String(q.symbol||'').toUpperCase();q.market=q.market||q.exchange||'—';q.exchange=q.exchange||q.market;q.assetType=q.assetType||q.type||'Common Stock';q.type=/ETF|Fund/i.test(q.assetType)?'fund':'stock';q.route=q.type;q.spark=Array.isArray(q.spark)&&q.spark.length?q.spark:spark(q.symbol);q.news=Array.isArray(q.news)&&q.news.length?q.news:stockNews(q.symbol);q.change=Number(q.change)||0;q.after=Number(q.after)||0;q.price=Number(q.price)||0;q.prev=Number(q.prev)||q.price;q.open=Number(q.open)||q.prev;q.high=Number(q.high)||q.price;q.low=Number(q.low)||q.price;q.volume=q.volume||'—';q.marketCap=q.marketCap||'—';q.pe=q.pe??'—';q.range52=q.range52||'—';q.sector=q.sector||q.assetType||'证券';q.description=q.description||`${q.name||q.symbol}（${q.symbol}）证券详情。`;q.id=q.id||instrumentId(q);return q}
+  async function getQuoteAsync(value){const selected=getSelectedInstrument(typeof value==='string'?value:value?.symbol)||{},explicit=instrumentRef(value),ref={...selected,...Object.fromEntries(Object.entries(explicit).filter(([,v])=>v!==''&&v!==null&&v!==undefined))},local=demo.stocks[ref.symbol];try{const body=await api('/api/finance/quote',{symbol:ref.symbol,exchange:ref.exchange,type:ref.assetType});runtime.mode=body.mode||runtime.mode;runtime.source=body.mode==='provider'?'Twelve Data':'牛来测试数据';runtime.updatedAt=body.asOf||new Date().toISOString();runtime.realTime=body.mode==='provider';const quote=hydrateQuote({...body.quote,series:body.series||body.quote?.series});cacheQuote(quote);return quote}catch(e){return getCachedQuote(ref)||hydrateQuote(local)} }
+  async function getFundAsync(value){const ref=instrumentRef(value),local=demo.funds.find(f=>f.symbol===ref.symbol);try{const q=await getQuoteAsync({...ref,assetType:ref.assetType||'ETF',route:'fund'});if(!q)return local?{...clone(local),assetType:'ETF',exchange:'US',route:'fund'}:null;return {...q,category:/Mutual Fund/i.test(q.assetType)?'共同基金':'ETF / 基金',expense:q.expense||'待正式数据',aum:q.aum||q.marketCap||'—',risk:q.risk||'待评估',holdings:Array.isArray(q.holdings)?q.holdings:[]}}catch(e){return local?{...clone(local),assetType:'ETF',exchange:'US',route:'fund'}:null}}
+  async function getFinanceNews(limit=12){try{const body=await api('/api/finance/news',{limit});return Array.isArray(body.articles)?body.articles:[]}catch(e){return []}}
+  function getSecurityWatchlist(){let list=[];try{list=JSON.parse(read('trfinance.securityWatchlist','[]'))}catch(e){}return Array.isArray(list)?list.map(instrumentRef).filter(x=>x.symbol):[]}
+  function setSecurityWatchlist(list){const normalized=Array.from(new Map((Array.isArray(list)?list:[]).map(value=>{const ref=instrumentRef(value);return [instrumentId(ref),ref]})).values());return write('trfinance.securityWatchlist',JSON.stringify(normalized))}
+  function isSecurityWatched(value){const id=instrumentId(instrumentRef(value));return getSecurityWatchlist().some(item=>instrumentId(item)===id)}
+  function toggleSecurityWatch(value){const ref=instrumentRef(value),id=instrumentId(ref),list=getSecurityWatchlist(),index=list.findIndex(item=>instrumentId(item)===id);if(index>=0)list.splice(index,1);else list.unshift(ref);setSecurityWatchlist(list);return index<0}
+  function getAlertRules(){let rules=[];try{rules=JSON.parse(read('trfinance.alertRules','[]'))}catch(e){}return Array.isArray(rules)?rules:[]}
+  function isInstrumentAlertOn(value){const id=instrumentId(instrumentRef(value));return getAlertRules().some(rule=>rule.id===id&&rule.enabled!==false)}
+  function setInstrumentAlert(value,on,rule={}){const ref=instrumentRef(value),id=instrumentId(ref),rules=getAlertRules().filter(item=>item.id!==id);if(on)rules.unshift({id,instrument:ref,enabled:true,condition:rule.condition||'move',threshold:Number(rule.threshold)||3,createdAt:new Date().toISOString()});return write('trfinance.alertRules',JSON.stringify(rules))}
+  function toggleInstrumentAlert(value,rule={}){const next=!isInstrumentAlertOn(value);setInstrumentAlert(value,next,rule);return next}
   function getMarketSession(date=new Date()){
     try{
       const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date).reduce((a,p)=>(a[p.type]=p.value,a),{});
@@ -113,14 +140,14 @@
   function toggleAlert(symbol){const next=!isAlertOn(symbol);setAlert(symbol,next);return next}
   function getAlerts(){return Object.keys(demo.stocks).filter(isAlertOn).map(symbol=>({symbol,name:demo.stocks[symbol].name}))}
   function clearHistory(){remove('trfinance.history')}
-  function clearAlerts(){Object.keys(demo.stocks).forEach(symbol=>remove(`trfinance.alert.${symbol}`))}
+  function clearAlerts(){Object.keys(demo.stocks).forEach(symbol=>remove(`trfinance.alert.${symbol}`));remove('trfinance.alertRules')}
   function clearLocalState(){
-    ['trfinance.watchlist','trfinance.fundWatchlist','trfinance.watchView','trfinance.watchSort','trfinance.history','trfinance.prefs'].forEach(remove);
+    ['trfinance.watchlist','trfinance.fundWatchlist','trfinance.securityWatchlist','trfinance.quoteCache','trfinance.alertRules','trfinance.watchView','trfinance.watchSort','trfinance.history','trfinance.prefs'].forEach(remove);
     ['trfinance.navState','trfinance.navContext'].forEach(removeSession);
     clearAlerts();
     return true;
   }
-  function getMeta(){return {mode:'demo',source:'唐人财经演示快照',updatedAt:demo.updatedAt,realTime:false,session:getMarketSession()}}
+  function getMeta(){return {...clone(runtime),session:getMarketSession()}}
   window.FinanceData={
     mode:'demo',
     getMeta,
@@ -130,6 +157,10 @@
     getWatchlist,setWatchlist,toggleWatch,
     getFundWatchlist,setFundWatchlist,toggleFundWatch,
     isAlertOn,setAlert,toggleAlert,getAlerts,clearAlerts,clearHistory,clearLocalState,
-    search,spark
+    search,searchAsync,getQuoteAsync,getFundAsync,getFinanceNews,refreshMeta,
+    instrumentId,instrumentRef,detailHref,setSelectedInstrument,getSelectedInstrument,getCachedQuote,
+    getSecurityWatchlist,setSecurityWatchlist,isSecurityWatched,toggleSecurityWatch,
+    getAlertRules,isInstrumentAlertOn,setInstrumentAlert,toggleInstrumentAlert,
+    spark
   };
 })();

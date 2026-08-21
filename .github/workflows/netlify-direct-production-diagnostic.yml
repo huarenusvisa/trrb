@@ -42,13 +42,13 @@ jobs:
             api_http=$(curl -sS -o /tmp/site.json -w '%{http_code}' -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID" || true)
             if [ "$api_http" = 200 ]; then
               set +e
-              npx --yes netlify-cli@latest deploy --prod --context production --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN" >/tmp/netlify-exact-deploy.log 2>&1
+              npx --yes netlify-cli@latest deploy --prod --context production >/tmp/netlify-exact-deploy.log 2>&1
               deploy_exit=$?
               set -e
               if [ "$deploy_exit" -ne 0 ]; then
                 if grep -Eqi 'unknown option|unknown argument|unexpected argument|Usage:' /tmp/netlify-exact-deploy.log; then failure_kind='cli_argument';
                 elif grep -Eqi 'build command failed|failed during stage|build script returned non-zero|build failed|Command failed with exit code' /tmp/netlify-exact-deploy.log; then failure_kind='build_command';
-                elif grep -Eqi 'not authorized to access this site|invalid access token|authentication failed|could not authenticate' /tmp/netlify-exact-deploy.log; then failure_kind='netlify_authentication';
+                elif grep -Eqi 'not authorized to access this site|invalid access token|authentication failed|could not authenticate|Unauthorized: could not retrieve project|Unauthorized: could not retrieve site' /tmp/netlify-exact-deploy.log; then failure_kind='netlify_authentication';
                 elif grep -Eqi 'deploy.*failed|failed to deploy|upload.*failed' /tmp/netlify-exact-deploy.log; then failure_kind='production_upload';
                 elif grep -Eqi 'Cannot find module|ERR_MODULE_NOT_FOUND|MODULE_NOT_FOUND' /tmp/netlify-exact-deploy.log; then failure_kind='missing_module';
                 elif grep -Eqi 'ENOENT|No such file or directory' /tmp/netlify-exact-deploy.log; then failure_kind='missing_file';

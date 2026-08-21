@@ -1,0 +1,32 @@
+import fs from 'node:fs';
+
+const read = (file) => fs.readFileSync(file, 'utf8');
+const page = read('huarengongzuo/index.html');
+const app = read('huarengongzuo/site.js');
+const brand = read('huarengongzuo/domain-brand.js');
+const redirects = read('_redirects');
+const trrbJobs = read('jobs/index.html');
+
+const checks = [
+  ['standalone page uses 华人工作网 brand', /<h1>找工作，<em>更直接<\/em><\/h1>/.test(page) && /华人工作网/.test(page)],
+  ['standalone canonical is correct', /https:\/\/huarengongzuo\.com\//.test(page)],
+  ['same production jobs endpoint is reused', /\/\.netlify\/functions\/public-jobs\?limit=100/.test(app)],
+  ['no shadow database or second Supabase project', !/createClient|supabase\.co|job_listings_r3|huarengongzuo_jobs/i.test(app + page)],
+  ['direct phone, SMS and email contact remain available', /tel:/.test(app) && /sms:/.test(app) && /mailto:/.test(app)],
+  ['employer and seeker publishing stay on canonical jobs routes', /\/jobs\/publish\.html/.test(page) && /\/jobs\/seeker\.html/.test(page)],
+  ['domain root, robots and sitemap rewrites exist', ['/', '/robots.txt', '/sitemap.xml'].every((path) => redirects.includes(`https://huarengongzuo.com${path}`))],
+  ['www and HTTP permanently canonicalize to HTTPS apex', /http:\/\/www\.huarengongzuo\.com\/\*/.test(redirects) && /https:\/\/www\.huarengongzuo\.com\/\*/.test(redirects)],
+  ['唐人日报 jobs name remains 求职招聘', />招聘求职<\/a>/.test(read('index.html')) && /美国招聘求职｜唐人日报/.test(trrbJobs)],
+  ['custom-domain brand layer does not run on trrb.net', /if \(!\/\^\(www\\\.\)\?huarengongzuo/.test(brand)]
+];
+
+let failed = 0;
+for (const [label, pass] of checks) {
+  console.log(`${pass ? 'PASS' : 'FAIL'}: ${label}`);
+  if (!pass) failed++;
+}
+if (failed) {
+  console.error(`HUARENGONGZUO DOMAIN FAIL: ${failed}/${checks.length} checks failed`);
+  process.exit(1);
+}
+console.log(`HUARENGONGZUO DOMAIN PASS: ${checks.length}/${checks.length}`);

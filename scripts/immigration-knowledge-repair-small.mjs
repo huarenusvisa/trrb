@@ -108,6 +108,15 @@ const titleSet = new Set((historical || []).map(v => String(v.title || '').trim(
 
 function prefix(topic) { return `移民美国·${categoryName}·${topic}·`; }
 function count(topic) { return (recent || []).filter(v => String(v.category_name || '').startsWith(prefix(topic))).length; }
+function articleSlug(title) {
+  const base = String(title || '').normalize('NFKC').toLowerCase()
+    .replace(/[\s/\\|]+/g, '-')
+    .replace(/[^\p{L}\p{N}-]+/gu, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 90);
+  return `${base || 'immigration-knowledge'}-${Date.now().toString(36)}-${crypto.randomBytes(3).toString('hex')}`;
+}
 
 let insertedTotal = 0;
 for (const topic of topics) {
@@ -118,19 +127,24 @@ for (const topic of topics) {
     const selectedAngles = Array.from({length:size}, (_,i)=>angles[(current+i)%angles.length]);
     const generated = await generateWithFallback(topic, selectedAngles, [...titleSet]);
     const now = new Date().toISOString();
-    const rows = generated.map((article,index)=>({
-      id: crypto.randomUUID(),
-      title: String(article.title || '').trim(),
-      summary: String(article.summary || '').trim(),
-      content: String(article.content || '').trim(),
-      category_name: `${prefix(topic)}${selectedAngles[index]}`,
-      status: 'published',
-      author: '唐人日报编辑部',
-      published_at: now,
-      created_at: now,
-      topic_key: 'immigration',
-      metadata: { immigration_category: categoryName, immigration_topic: topic, writing_angle: selectedAngles[index], generated_by: 'small-batch-repair' }
-    })).filter(v => v.title && v.summary && v.content.length >= 400 && !titleSet.has(v.title));
+    const rows = generated.map((article,index)=>{
+      const id = crypto.randomUUID();
+      const title = String(article.title || '').trim();
+      return {
+        id,
+        title,
+        slug: articleSlug(title),
+        summary: String(article.summary || '').trim(),
+        content: String(article.content || '').trim(),
+        category_name: `${prefix(topic)}${selectedAngles[index]}`,
+        status: 'published',
+        visibility: 'public',
+        author: '唐人日报编辑部',
+        published_at: now,
+        created_at: now,
+        metadata: { immigration_category: categoryName, immigration_topic: topic, writing_angle: selectedAngles[index], generated_by: 'small-batch-repair' }
+      };
+    }).filter(v => v.title && v.summary && v.content.length >= 400 && !titleSet.has(v.title));
     if (!rows.length) throw new Error(`${topic} generated no valid unique rows`);
     const saved = await sb('articles', { method:'POST', prefer:'return=representation', body:JSON.stringify(rows) });
     for (const row of saved || rows) {

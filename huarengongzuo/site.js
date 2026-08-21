@@ -6,8 +6,8 @@
   let visible = 12;
 
   function salary(job) {
-    const min = Number(job.salary_min);
-    const max = Number(job.salary_max);
+    const min = job.salary_min == null || job.salary_min === '' ? Number.NaN : Number(job.salary_min);
+    const max = job.salary_max == null || job.salary_max === '' ? Number.NaN : Number(job.salary_max);
     if (!Number.isFinite(min) && !Number.isFinite(max)) return '';
     const amount = Number.isFinite(min) && Number.isFinite(max) ? `$${min}–$${max}` : `$${Number.isFinite(min) ? min : max}`;
     const period = {hour:'小时',day:'天',week:'周',month:'月',year:'年'}[job.salary_period] || '';

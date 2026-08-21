@@ -28,6 +28,7 @@ on:
 
 permissions:
   contents: read
+  statuses: write
 
 concurrency:
   group: trrb-production-deploy-main
@@ -57,12 +58,28 @@ jobs:
           echo "DEPLOY_SHA=$DEPLOY_SHA" >> "$GITHUB_ENV"
           echo "deploying_main=$DEPLOY_SHA"
 
+      - name: 标记生产部署开始
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'Content-Type: application/json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
+            -d '{"state":"pending","context":"trrb/production-trigger","description":"Production deployment trigger started"}' >/dev/null
+
       - name: 发布 Netlify Production
+        id: deploy
+        continue-on-error: true
         shell: bash
         run: |
           set -euo pipefail
 
           token_valid=false
+          deploy_mode='none'
           if [ -n "${NETLIFY_AUTH_TOKEN:-}" ]; then
             token_http=$(curl -sS -o /tmp/netlify-user.json -w '%{http_code}' \
               -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
@@ -76,9 +93,11 @@ jobs:
           fi
 
           if [ "$token_valid" = "true" ]; then
+            deploy_mode='cli'
             echo 'Deploy mode: Netlify CLI direct production deploy via validated repository token'
             npx --yes netlify-cli@latest deploy --prod --context production
           elif [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
+            deploy_mode='build-hook'
             echo 'Deploy mode: Netlify build hook fallback'
             if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
               hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true"
@@ -90,6 +109,35 @@ jobs:
             echo 'No valid Netlify auth token and no build hook configured.'
             exit 2
           fi
+          echo "DEPLOY_MODE=$deploy_mode" >> "$GITHUB_ENV"
+
+      - name: 发布生产触发结果状态
+        if: always()
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          DEPLOY_OUTCOME: ${{ steps.deploy.outcome }}
+        run: |
+          set -euo pipefail
+          if [ "$DEPLOY_OUTCOME" = "success" ]; then
+            state='success'
+            description="Production trigger accepted via ${DEPLOY_MODE:-unknown}"
+          else
+            state='failure'
+            description='Production trigger failed before acceptance'
+          fi
+          payload=$(node -e 'process.stdout.write(JSON.stringify({state:process.argv[1],context:"trrb/production-trigger",description:process.argv[2]}))' "$state" "$description")
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'Content-Type: application/json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
+            -d "$payload" >/dev/null
+
+      - name: 停止失败的生产触发
+        if: steps.deploy.outcome != 'success'
+        shell: bash
+        run: exit 1
 
       - name: 验收最新 SHA、首页、招聘、专题和 Sitemap
         shell: bash

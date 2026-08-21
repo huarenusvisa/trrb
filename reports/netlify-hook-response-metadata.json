@@ -1,17 +1,53 @@
 {
-  "generated_at": "2026-08-21T07:27:24.589Z",
+  "generated_at": "2026-08-21T07:30:39.365Z",
   "hook_http_status": 200,
   "deploys_http_status": 200,
   "recent_deploys": [
     {
+      "id": "6a87fe858d0cee0008d2131c",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "7a1ba2b15ffadada9792229b9b5e0b12960f14fb",
+      "title": "Probe Netlify after deploy-version hardening",
+      "created_at": "2026-08-21T07:30:13.605Z",
+      "updated_at": "2026-08-21T07:30:38.978Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87fe55857f7d000879d05b",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "3d1a1e6b4abe0879a6c2d7d812f3ff32ed471024",
+      "title": "Round 15: sync Federal Register final rules",
+      "created_at": "2026-08-21T07:29:25.589Z",
+      "updated_at": "2026-08-21T07:29:58.893Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
+      "id": "6a87fe4599c9d80008687e1b",
+      "state": "error",
+      "branch": "main",
+      "context": "production",
+      "commit_ref": "f5581f2072e75aaaa49b0508a2a1a5f3ed779524",
+      "title": "Harden deploy-version resolution for Netlify build hooks",
+      "created_at": "2026-08-21T07:29:09.410Z",
+      "updated_at": "2026-08-21T07:29:34.621Z",
+      "published_at": null,
+      "deploy_time": null
+    },
+    {
       "id": "6a87fdd7ac766700082729b8",
-      "state": "building",
+      "state": "error",
       "branch": "main",
       "context": "production",
       "commit_ref": "ae7190609599647d5d1c6e94a0e16f723e9eded7",
       "title": "TRRB Homepage Hard Sweep Probe",
       "created_at": "2026-08-21T07:27:19.336Z",
-      "updated_at": "2026-08-21T07:27:22.417Z",
+      "updated_at": "2026-08-21T07:27:43.346Z",
       "published_at": null,
       "deploy_time": null
     },
@@ -144,42 +180,6 @@
       "title": "Deploy triggered by hook: GitHub Production Deploy",
       "created_at": "2026-08-21T07:19:49.215Z",
       "updated_at": "2026-08-21T07:20:14.006Z",
-      "published_at": null,
-      "deploy_time": null
-    },
-    {
-      "id": "6a87fbe7ac76670008271608",
-      "state": "error",
-      "branch": "main",
-      "context": "production",
-      "commit_ref": "72e2e2cc199a115028c9007d9cfcf50f594505e5",
-      "title": "Keep SEO audit strict in CI but non-blocking for homepage production deploy",
-      "created_at": "2026-08-21T07:19:03.928Z",
-      "updated_at": "2026-08-21T07:19:28.517Z",
-      "published_at": null,
-      "deploy_time": null
-    },
-    {
-      "id": "6a87fbc3ccb36b00089a8126",
-      "state": "error",
-      "branch": "main",
-      "context": "production",
-      "commit_ref": "b3c84bcff846dea006749f8dfbd69c2e066a248c",
-      "title": "Do not let unrelated full-site validation block homepage production deploy",
-      "created_at": "2026-08-21T07:18:27.787Z",
-      "updated_at": "2026-08-21T07:18:53.093Z",
-      "published_at": null,
-      "deploy_time": null
-    },
-    {
-      "id": "6a87fb0e58dcc60008175fad",
-      "state": "error",
-      "branch": "diag/netlify-build-stage-pr-20260821",
-      "context": "deploy-preview",
-      "commit_ref": "3a9cb16f79b6bf841d71783d6733a09609d41573",
-      "title": "Diagnostic: reproduce Netlify production build",
-      "created_at": "2026-08-21T07:15:26.319Z",
-      "updated_at": "2026-08-21T07:15:51.108Z",
       "published_at": null,
       "deploy_time": null
     }

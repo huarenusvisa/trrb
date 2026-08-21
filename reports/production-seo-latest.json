@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T00:12:20.562Z",
+  "generated_at": "2026-08-21T00:27:58.510Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -23,23 +23,11 @@
       "chain": [
         {
           "url": "http://www.trrb.net/",
-          "status": 301,
-          "location": "https://www.trrb.net/",
-          "error": ""
-        },
-        {
-          "url": "https://www.trrb.net/",
-          "status": 301,
-          "location": "https://trrb.net/",
-          "error": ""
-        },
-        {
-          "url": "https://trrb.net/",
           "status": 0,
           "error": "fetch failed"
         }
       ],
-      "final_url": "https://trrb.net/"
+      "final_url": "http://www.trrb.net/"
     },
     "https://www.trrb.net/": {
       "chain": [
@@ -51,9 +39,8 @@
         },
         {
           "url": "https://trrb.net/",
-          "status": 200,
-          "location": "",
-          "error": ""
+          "status": 0,
+          "error": "fetch failed"
         }
       ],
       "final_url": "https://trrb.net/"
@@ -287,6 +274,7 @@
     }
   },
   "failures": [
+    "bad host redirect chain http://www.trrb.net/ => [{\"url\":\"http://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
     {
       "page": "https://trrb.net/trump",
       "problem": "too few direct article links: 0/1"
@@ -298,7 +286,5 @@
     "legacy retired URL must be 410: 301",
     "legacy retired URL missing X-Robots-Tag noindex"
   ],
-  "warnings": [
-    "host redirect chain has 2 hops: http://www.trrb.net/"
-  ]
+  "warnings": []
 }

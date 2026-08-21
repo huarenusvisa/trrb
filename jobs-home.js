@@ -6,7 +6,9 @@
     ["保姆招聘", "/jobs/search.html?q=%E4%BF%9D%E5%A7%86"],
     ["月嫂招聘", "/jobs/search.html?q=%E6%9C%88%E5%AB%82"],
     ["导乐招聘", "/jobs/search.html?q=%E5%AF%BC%E4%B9%90"],
-    ["餐厅服务员", "/jobs/search.html?q=%E9%A4%90%E5%8E%85%E6%9C%8D%E5%8A%A1%E5%91%98"]
+    ["餐厅服务员", "/jobs/search.html?q=%E9%A4%90%E5%8E%85%E6%9C%8D%E5%8A%A1%E5%91%98"],
+    ["仓库理货员", "/jobs/search.html?q=%E4%BB%93%E5%BA%93"],
+    ["卡车司机", "/jobs/search.html?q=%E5%8F%B8%E6%9C%BA"]
   ];
 
   const escapeHtml = (value) => String(value || "")
@@ -38,21 +40,33 @@
     return Date.parse(b?.published_at || b?.updated_at || 0) - Date.parse(a?.published_at || a?.updated_at || 0);
   });
 
-  const markup = (items) => {
+  const positionCards = (items) => {
     const jobs = sortJobs(items).slice(0, 4);
-    const links = jobs.length
-      ? jobs.map((job, index) => {
-          const id = encodeURIComponent(job?.id || "");
-          const title = escapeHtml(job?.title || "招聘岗位");
-          const meta = escapeHtml(`${formatLocation(job)} · ${formatSalary(job)}`);
-          return `<a class="job-position-card ${index === jobs.length - 1 && jobs.length % 2 === 1 ? "is-wide" : ""}" href="/jobs/listing.html?id=${id}"><strong>${title}</strong><small>${meta}</small><span aria-hidden="true">›</span></a>`;
-        }).join("")
-      : fallbackPositions.map(([title, href], index) => `<a class="job-position-card ${index === fallbackPositions.length - 1 && fallbackPositions.length % 2 === 1 ? "is-wide" : ""}" href="${href}"><strong>${title}</strong><small>热门职位入口</small><span aria-hidden="true">›</span></a>`).join("");
+    const cards = jobs.map((job) => ({
+      kind: "real",
+      title: String(job?.title || "招聘岗位"),
+      href: `/jobs/listing.html?id=${encodeURIComponent(job?.id || "")}`,
+      meta: `${formatLocation(job)} · ${formatSalary(job)}`
+    }));
+
+    const usedTitles = new Set(cards.map((card) => card.title.trim()));
+    for (const [title, href] of fallbackPositions) {
+      if (cards.length >= 4) break;
+      if (usedTitles.has(title)) continue;
+      cards.push({ kind: "preview", title, href, meta: "热门职位入口" });
+      usedTitles.add(title);
+    }
+    return { cards: cards.slice(0, 4), realCount: jobs.length };
+  };
+
+  const markup = (items) => {
+    const { cards, realCount } = positionCards(items);
+    const links = cards.map((card) => `<a class="job-position-card" href="${card.href}"><strong>${escapeHtml(card.title)}</strong><small>${escapeHtml(card.meta)}</small><span aria-hidden="true">›</span></a>`).join("");
 
     return `
       <header class="immigration-hub-head legal-hub-head"><h2>招聘求职</h2><a href="/jobs/search.html">更多职位</a></header>
       <a class="immigration-hub-feature legal-hub-feature" href="/jobs/search.html"><strong>直接看职位 · 华人常用岗位优先</strong></a>
-      <div class="jobs-position-intro"><b>${jobs.length ? "最新职位" : "热门职位"}</b><span>${jobs.length ? "真实岗位自动更新" : "真实岗位接入后自动替换"}</span></div>
+      <div class="jobs-position-intro"><b>${realCount ? "最新职位" : "热门职位"}</b><span>${realCount >= 4 ? "真实岗位自动更新" : `已展示${realCount}条真实岗位 · 不足自动补位`}</span></div>
       <div class="immigration-hub-grid legal-hub-grid jobs-position-grid">${links}</div>
       <a class="immigration-hub-all legal-hub-all" href="/jobs/search.html">查看全部招聘岗位</a>`;
   };
@@ -99,7 +113,7 @@
       card.classList.remove("category-empty");
       card.classList.add("immigration-knowledge-card", "legal-knowledge-card", "jobs-knowledge-card");
 
-      if (!card.querySelector(".jobs-position-grid") || !card.querySelector(".job-position-card")) {
+      if (!card.querySelector(".jobs-position-grid") || card.querySelectorAll(".job-position-card").length < 4) {
         card.innerHTML = markup(jobsCache || []);
       }
 

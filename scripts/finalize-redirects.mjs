@@ -5,6 +5,12 @@ const file = path.join(process.cwd(), '_redirects');
 const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').trim() : '';
 
 const required = [
+  'http://huarengongzuo.com/* https://huarengongzuo.com/:splat 301!',
+  'http://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!',
+  'https://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!',
+  'https://huarengongzuo.com/ /huarengongzuo/index.html 200!',
+  'https://huarengongzuo.com/robots.txt /huarengongzuo/robots.txt 200!',
+  'https://huarengongzuo.com/sitemap.xml /huarengongzuo/sitemap.xml 200!',
   'http://asylumjudge.com/* https://asylumjudge.com/:splat 301!',
   'http://www.asylumjudge.com/* https://asylumjudge.com/:splat 301!',
   'https://www.asylumjudge.com/* https://asylumjudge.com/:splat 301!',

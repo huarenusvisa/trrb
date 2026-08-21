@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T17:49:08.028Z",
+  "generatedAt": "2026-08-21T18:55:59.560Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -167,6 +167,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
           "title": "25-1862 Rana v. Blanche"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
+          "title": "25-1817 Recchia v. Campbell"
         }
       ],
       "notes": []
@@ -423,6 +427,10 @@
           "title": "Jermaine Lewis v."
         },
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/253595np.pdf",
+          "title": "Chryssoula Arsenis v."
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/252473np.pdf",
           "title": "USA v. Jason Mika"
         },
@@ -529,10 +537,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/241439npa.pdf",
           "title": "William Webb, Jr. v. Kirk Neal"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/242184np.pdf",
-          "title": "Lipitor Antitrust Litigation v."
         }
       ],
       "notes": []
@@ -544,6 +548,26 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://www.ca4.uscourts.gov/opinions/recent-opinions",
       "documents": [
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251495.P.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251495.P.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/266396.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/266396.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/241671.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/241671.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/244503.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/244503.U.pdf"
+        },
+        {
+          "url": "https://www.ca4.uscourts.gov/opinions/251953.U.pdf",
+          "title": "https://www.ca4.uscourts.gov/opinions/251953.U.pdf"
+        },
         {
           "url": "https://www.ca4.uscourts.gov/opinions/241467.P.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/241467.P.pdf"
@@ -723,26 +747,6 @@
         {
           "url": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf",
           "title": "https://www.ca4.uscourts.gov/opinions/261451.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/231897.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/231897.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251975.P.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251975.P.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/251570.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/251570.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/244498.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/244498.U.pdf"
-        },
-        {
-          "url": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf",
-          "title": "https://www.ca4.uscourts.gov/opinions/254235.U.pdf"
         }
       ],
       "notes": []
@@ -1363,6 +1367,10 @@
           "title": "John Wilson, Jr. v. Secretary, Florida Department of Corrections, et al"
         },
         {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510093.pdf",
+          "title": "Rishi Ramdial v. U.S. Attorney General"
+        },
+        {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510210.pdf",
           "title": "Wakilii Brown v. Commissioner, Alabama Department of Corrections"
         },
@@ -1553,10 +1561,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202413513.pdf",
           "title": "Mitchell Marbury v. Warden III, et al"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410139.enb.pdf",
-          "title": "Bruce Henry v. Sheriff of Tuscaloosa County, Alabama, et al"
         }
       ],
       "notes": []

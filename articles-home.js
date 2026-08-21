@@ -55,6 +55,27 @@ async function fetchLivePublishedArticles(limit = 60, category = "") {
   } finally { clearTimeout(timer); }
 }
 
+async function fetchHomepageFocus() {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 7500);
+  try {
+    const response = await fetch(`/.netlify/functions/public-home-focus?_=${Date.now()}`, {
+      cache: "no-store",
+      headers: { Accept: "application/json" },
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`今日要闻接口 ${response.status}`);
+    const payload = await response.json();
+    return (Array.isArray(payload?.articles) ? payload.articles : [])
+      .map((row) => ({
+        ...mapLiveArticle(row),
+        longform_chars: Number(row.longform_chars || 0),
+        homepage_focus_source: row.homepage_focus_source || ""
+      }))
+      .filter((item) => item.id && item.title && hasRealImage(item));
+  } finally { clearTimeout(timer); }
+}
+
 async function fetchUnifiedHomeBundle() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 7500);
@@ -183,18 +204,22 @@ function articleUrl(article) {
   return id ? `/article.html?id=${encodeURIComponent(id)}` : "/";
 }
 
-function renderHome(articles) {
+function renderHome(articles, focusArticles = null) {
   if (!Array.isArray(articles) || articles.length === 0) return;
   const sorted = articles.slice().sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
   window.TRRB_LAST_HOME_ARTICLES = sorted;
   const hotArticles = sorted.filter((article) => article.category === "热门头条");
   renderTicker((hotArticles.length ? hotArticles : sorted).slice(0, 12));
   const visualArticles = sorted.filter(hasRealImage);
-  const provisionalFocus = visualArticles.filter((article) =>
-    article.category === "美国时政" &&
-    (Array.isArray(article.body) ? article.body.join("").replace(/\s+/g, "").length : 0) >= 1500
-  );
-  renderHeroCarousel(provisionalFocus.slice(0, 5));
+  if (Array.isArray(focusArticles)) {
+    if (focusArticles.length) {
+      renderHeroCarousel(focusArticles.slice(0, 5));
+    } else {
+      const hero = document.querySelector("#hero");
+      if (hero) hero.innerHTML = '<div class="hero-focus-empty" role="status">今日暂无符合条件的美国时政要闻</div>';
+    }
+    document.documentElement.dataset.homeFocusAtomic = "true";
+  }
   renderTopList((visualArticles.length >= 10 ? visualArticles : sorted).slice(0, 10));
   renderSections(sorted);
   renderRank(sorted);
@@ -203,9 +228,17 @@ function renderHome(articles) {
 
 async function loadHome() {
   try {
-    const live = await fetchUnifiedHomeBundle();
-    if (!live.length) throw new Error("首页统一实时接口没有返回已发布新闻");
-    renderHome(live);
+    const [live, focusResult] = await Promise.allSettled([
+      fetchUnifiedHomeBundle(),
+      fetchHomepageFocus()
+    ]);
+    if (live.status !== "fulfilled" || !live.value.length) {
+      throw live.status === "rejected" ? live.reason : new Error("首页统一实时接口没有返回已发布新闻");
+    }
+    const focus = focusResult.status === "fulfilled" ? focusResult.value : [];
+    if (focusResult.status === "rejected") console.warn("今日要闻接口暂不可用：", focusResult.reason);
+    renderHome(live.value, focus);
+    document.documentElement.dataset.homePrimaryRendered = "true";
   } catch (error) {
     console.error("首页实时新闻加载失败：", error);
     const root = document.querySelector("#sections-grid");

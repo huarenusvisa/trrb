@@ -98,3 +98,30 @@ html[data-home-final-ui="true"] #rank-list{
   html[data-home-final-ui="true"] #top-list,
   html[data-home-final-ui="true"] #rank-list{animation:none}
 }
+
+/* Atomic mobile reveal: keep the 24-hour ranking in its final three-column geometry. */
+#rank-list,
+#rank-list > li{
+  width:100%;
+  min-width:0;
+}
+#rank-list > li{
+  grid-template-columns:34px minmax(0,1fr) auto!important;
+  align-items:start;
+}
+#rank-list > li > a{
+  display:block;
+  width:100%;
+  min-width:0;
+  writing-mode:horizontal-tb!important;
+  word-break:normal;
+  overflow-wrap:anywhere;
+}
+#rank-list > li > .rank-heat{
+  white-space:nowrap;
+}
+@media(max-width:767px){
+  #hero{height:240px!important;min-height:240px!important}
+  #hero .hero-slide,#hero .hero-slide img{height:240px!important;min-height:240px!important}
+  #rank-list > li{grid-template-columns:30px minmax(0,1fr) auto!important}
+}

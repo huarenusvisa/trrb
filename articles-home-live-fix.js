@@ -274,13 +274,13 @@
   function enhanceOnce() {
     if (enhanced) return true;
     const current = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [];
-    if (!current.length || !heroHasSlides()) return false;
+    if (!current.length) return false;
     enhanced = true;
     removeRetiredPeopleSurface(document);
     removeImportantNewsNavigation(document);
     markHeroAsDailyFocus(document);
     renderMixedRank(current, rankCycle);
-    fetchHomepageFocus(true);
+    if (document.documentElement.dataset.homeFocusAtomic !== "true") fetchHomepageFocus(true);
     document.documentElement.dataset.homeEnhancementsStable = "true";
     return true;
   }
@@ -290,7 +290,10 @@
     const tick = () => {
       if (enhanceOnce()) return;
       if (Date.now() - started > 3600) {
-        emergencyRefresh().then(() => enhanceOnce());
+        emergencyRefresh().finally(() => {
+          enhanceOnce();
+          document.documentElement.dataset.homeEnhancementsStable = "true";
+        });
         return;
       }
       window.setTimeout(tick, 80);

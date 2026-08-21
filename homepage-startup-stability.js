@@ -55,7 +55,8 @@
 
   function finalize(force = false) {
     if (finalized) return;
-    if (!force && !(heroReady() && rankReady() && sectionsReady())) return;
+    if (!force && !(heroReady() && rankReady() && sectionsReady() &&
+      html.dataset.homeEnhancementsStable === "true")) return;
     finalized = true;
     html.dataset.homeFinalUi = "true";
     html.dataset.homeFinalUiAt = new Date().toISOString();
@@ -76,14 +77,12 @@
       }, delay);
     });
 
-    window.setTimeout(() => {
-      if (!heroReady()) repairLegacyEmptyHeroOnce();
-      finalize(false);
-    }, 1350);
+    // The primary renderer and enhancement pass must finish before reveal.
+    // Do not rebuild the hero on a timer: that caused visible mobile jumps.
+    window.setTimeout(() => finalize(false), 1800);
 
-    // Never leave the page masked behind a skeleton just because one secondary
-    // feed is slow. Reveal once, without reordering or rebuilding modules.
-    window.setTimeout(() => finalize(true), 1700);
+    // Safety watchdog only. It reveals the existing DOM without rebuilding it.
+    window.setTimeout(() => finalize(true), 4200);
 
     window.addEventListener("pageshow", () => finalize(true));
   }

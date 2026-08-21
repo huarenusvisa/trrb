@@ -1,18 +1,6 @@
 (() => {
-  const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
-  const db = window.supabase?.createClient ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-  const officialApplySource = /^(greenhouse_|jazzhr_|lever_|workday_|ashby_)/i;
   let hydrateTimer = null;
-
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
-
-  function safeHttpUrl(value) {
-    try {
-      const url = new URL(String(value || ''));
-      return /^https?:$/.test(url.protocol) ? url.href : '';
-    } catch { return ''; }
-  }
 
   function ageText(value) {
     const ts = Date.parse(value || '');
@@ -27,40 +15,36 @@
   }
 
   function buildActions(row) {
-    const parts = [];
-    if (row.contact_public && row.contact_value) {
-      const value = String(row.contact_value).trim();
-      if (row.contact_method === 'phone') {
-        const phone = value.replace(/[^+\d]/g, '');
-        if (phone) {
-          parts.push(`<a href="tel:${esc(phone)}">拨打电话</a>`);
-          parts.push(`<a href="sms:${esc(phone)}">发短信</a>`);
-        }
-      } else if (row.contact_method === 'email' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        parts.push(`<a href="mailto:${esc(value)}">发送邮件</a>`);
-      }
+    const contact = row?.contact;
+    if (!contact?.value) return '';
+    if (contact.type === 'phone') {
+      const phone = String(contact.value).replace(/[^+\d]/g, '');
+      return phone ? `<div class="contact-row"><a href="tel:${esc(phone)}">拨打电话</a><a href="sms:${esc(phone)}">发短信</a></div>` : '';
     }
-
-    const applyUrl = officialApplySource.test(String(row.source_key || '')) ? safeHttpUrl(row.application_url) : '';
-    if (!parts.length && applyUrl) parts.push(`<a href="${esc(applyUrl)}" target="_blank" rel="noopener noreferrer">申请职位</a>`);
-    return parts.length ? `<div class="contact-row">${parts.join('')}</div>` : '';
+    if (contact.type === 'email') {
+      const email = String(contact.value).trim();
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? `<div class="contact-row"><a href="mailto:${esc(email)}">发送邮件</a></div>` : '';
+    }
+    if (contact.type === 'official_apply') {
+      return `<div class="contact-row"><a href="${esc(contact.value)}" target="_blank" rel="noopener noreferrer">申请职位</a></div>`;
+    }
+    return '';
   }
 
   function refreshVisibleCount() {
     const count = document.querySelectorAll('#jobs-results .result-card[data-job-id]').length;
     const status = document.getElementById('search-status');
-    if (status && count >= 0) status.textContent = `本页显示 ${count} 个可直接联系或申请的岗位`;
+    if (status) status.textContent = `本页显示 ${count} 个可直接联系或申请的岗位`;
   }
 
   function decorate(card, row) {
     if (!card || card.dataset.unifiedReady === 'true') return;
-    if (!row) { card.remove(); return; }
     const actionMarkup = buildActions(row);
-    if (!actionMarkup) { card.remove(); return; }
+    if (!row || !actionMarkup) { card.remove(); return; }
     card.dataset.unifiedReady = 'true';
     const meta = card.querySelector('.meta');
     const summary = String(row.description || '').trim();
-    const time = ageText(row.published_at || row.created_at);
+    const time = ageText(row.published_at || row.updated_at);
     if (summary) meta?.insertAdjacentHTML('afterend', `<p class="job-summary">${esc(summary)}</p>`);
     const actions = document.createElement('div');
     actions.className = 'job-actions';
@@ -73,19 +57,19 @@
   }
 
   async function hydrate() {
-    if (!db) return;
     const cards = Array.from(document.querySelectorAll('#jobs-results .result-card[data-job-id]')).filter((card) => card.dataset.unifiedReady !== 'true');
     const ids = cards.map((card) => card.dataset.jobId).filter(Boolean);
     if (!ids.length) { refreshVisibleCount(); return; }
-    const { data, error } = await db.from('job_listings')
-      .select('id,description,contact_method,contact_value,contact_public,application_url,source_key,published_at,created_at')
-      .in('id', ids)
-      .eq('status', 'open')
-      .eq('moderation_hold', false);
-    if (error || !Array.isArray(data)) return;
-    const byId = new Map(data.map((row) => [String(row.id), row]));
-    cards.forEach((card) => decorate(card, byId.get(String(card.dataset.jobId))));
-    refreshVisibleCount();
+    try {
+      const response = await fetch(`/.netlify/functions/public-jobs?limit=${ids.length}&ids=${encodeURIComponent(ids.join(','))}`, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+      const payload = await response.json();
+      if (!response.ok || !Array.isArray(payload?.items)) return;
+      const byId = new Map(payload.items.map((row) => [String(row.id), row]));
+      cards.forEach((card) => decorate(card, byId.get(String(card.dataset.jobId))));
+      refreshVisibleCount();
+    } catch (error) {
+      console.error('招聘联系方式加载失败', error);
+    }
   }
 
   function queueHydrate() {
@@ -93,7 +77,16 @@
     hydrateTimer = setTimeout(hydrate, 40);
   }
 
+  function installThemeFixes() {
+    if (document.getElementById('jobs-unified-theme-fixes')) return;
+    const style = document.createElement('style');
+    style.id = 'jobs-unified-theme-fixes';
+    style.textContent = '.map-area-search{background:#1769d2!important;color:#fff!important}';
+    document.head.appendChild(style);
+  }
+
   function boot() {
+    installThemeFixes();
     const root = document.getElementById('jobs-results');
     if (!root) return;
     new MutationObserver(queueHydrate).observe(root, { childList: true, subtree: true });

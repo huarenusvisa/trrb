@@ -3,53 +3,47 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>发布招聘｜唐人日报</title>
-  <meta name="description" content="唐人日报美国招聘求职：雇主极简发布岗位，仅限美国。" />
-  <link rel="canonical" href="https://trrb.net/jobs/publish.html" />
+  <title>发布招聘｜华人工作网</title>
+  <meta name="description" content="华人工作网极简发布招聘：登录即注册，输入地区后自动匹配州、城市和社区。" />
   <style>
-    *{box-sizing:border-box}body{margin:0;background:#f8fafc;color:#101828;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:860px;margin:0 auto;padding:32px 18px 72px}.back{color:#c00;text-decoration:none}.card{background:#fff;border:1px solid #e4e7ec;border-radius:18px;padding:22px;margin-top:18px;box-shadow:0 8px 28px rgba(16,24,40,.05)}h1{font-size:36px;margin:18px 0 8px}.muted{color:#667085;line-height:1.65}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}label{display:block;font-weight:700;margin:0 0 7px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:11px;padding:12px;background:#fff}textarea{min-height:150px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button{border:0;border-radius:11px;padding:12px 18px;cursor:pointer;background:#111827;color:#fff}button.secondary{background:#eef2f6;color:#101828}button:disabled{opacity:.55;cursor:not-allowed}.status{white-space:pre-wrap;margin-top:12px;color:#475467}.hidden{display:none}.preview{max-width:220px;max-height:160px;border-radius:12px;margin-top:10px;border:1px solid #e4e7ec}.login-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}@media(max-width:700px){.grid,.login-row{grid-template-columns:1fr}.full{grid-column:auto}h1{font-size:30px}}
+    *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#101828;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:820px;margin:0 auto;padding:28px 18px 72px}.back{color:#1769d2;text-decoration:none;font-weight:750}.card{background:#fff;border:1px solid #dfe6ef;border-radius:20px;padding:24px;margin-top:18px;box-shadow:0 12px 35px rgba(16,24,40,.06)}h1{font-size:38px;margin:18px 0 8px;letter-spacing:-.04em}.muted{color:#667085;line-height:1.65}.login-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.field{margin-top:18px}label{display:block;font-weight:800;margin:0 0 7px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:13px 14px;background:#fff}input:focus,select:focus,textarea:focus{outline:3px solid rgba(23,105,210,.14);border-color:#1769d2}textarea{min-height:180px;resize:vertical}.primary{border:0;border-radius:12px;padding:13px 20px;cursor:pointer;background:#1769d2;color:#fff;font-weight:850}.primary:disabled{opacity:.55;cursor:not-allowed}.status{white-space:pre-wrap;margin-top:12px;color:#475467}.hidden{display:none!important}.account{display:flex;align-items:center;gap:11px;margin-top:12px}.avatar{width:42px;height:42px;border-radius:50%;background:#1769d2;color:#fff;display:grid;place-items:center;font-weight:900;font-size:20px}.account b{display:block}.account small{color:#667085}.location-state{font-size:14px;margin-top:7px;color:#1769d2;min-height:20px}.core-note{background:#eff6ff;color:#1d4f91;padding:11px 13px;border-radius:12px;margin-top:14px;font-size:14px}details{margin-top:20px;border-top:1px solid #e4e7ec;padding-top:16px}summary{cursor:pointer;font-weight:800;color:#475467}.optional-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.preview{max-width:220px;max-height:160px;border-radius:12px;margin-top:10px;border:1px solid #e4e7ec}.submit-row{display:flex;align-items:center;gap:14px;margin-top:22px}.submit-row .primary{font-size:17px;min-width:150px}.inline-status{color:#667085}.auth-copy{margin:0 0 15px}.required{color:#d92d20}@media(max-width:700px){.login-row,.optional-grid{grid-template-columns:1fr}.shell{padding-top:20px}.card{padding:19px}h1{font-size:32px}.primary{width:100%}.submit-row{display:block}.inline-status{display:block;margin-top:10px}}
   </style>
 </head>
 <body>
 <main class="shell">
-  <a class="back" href="/jobs/">← 返回招聘求职</a>
+  <a class="back" href="/">← 返回华人工作网</a>
   <h1>发布招聘</h1>
-  <p class="muted">仅限美国。使用唐人日报统一账号发布；标题、地点、工作介绍、类型和主要联系方式为核心字段，薪资与工作环境图片可选。上传图片不代表平台认证。</p>
-
+  <p class="muted">只填最重要的信息。地区、行业和工作类型由系统自动识别，发布后与唐人日报共用同一数据和审核后台。</p>
   <section class="card" id="auth-card">
-    <h2>账号登录</h2>
-    <div class="login-row">
-      <div><label for="login-email">邮箱</label><input id="login-email" type="email" autocomplete="email" /></div>
-      <div><label for="login-password">密码</label><input id="login-password" type="password" autocomplete="current-password" /></div>
-      <button id="login-btn" type="button">登录</button>
+    <h2>统一账号</h2>
+    <p class="muted auth-copy">首次输入邮箱或手机号和密码，会自动创建账号并直接登录，不需要另行注册。</p>
+    <div class="login-row" id="login-fields">
+      <div><label for="login-identifier">邮箱或手机号</label><input id="login-identifier" autocomplete="username" placeholder="邮箱或美国手机号" /></div>
+      <div><label for="login-password">密码</label><input id="login-password" type="password" minlength="8" autocomplete="current-password" placeholder="至少8位" /></div>
+      <button id="login-btn" class="primary" type="button">登录 / 注册</button>
     </div>
+    <div class="account hidden" id="account-summary"><span class="avatar" id="account-avatar">用</span><div><b id="account-name">统一账号</b><small id="account-label"></small></div></div>
     <div class="status" id="auth-status">正在检查登录状态…</div>
   </section>
-
   <form class="card hidden" id="publish-form">
-    <div class="grid">
-      <div class="full"><label for="title">职位名称 *</label><input id="title" maxlength="120" required placeholder="例如：法拉盛餐厅招聘服务员" /></div>
-      <div><label for="category">行业 *</label><select id="category" required></select></div>
-      <div><label for="employment">工作类型 *</label><select id="employment"><option value="full_time">全职</option><option value="part_time">兼职</option><option value="contract">合同</option><option value="temporary">临时</option><option value="internship">实习</option><option value="unspecified">未指定</option></select></div>
-      <div><label for="state">州缩写 *</label><input id="state" maxlength="3" required placeholder="NY" /></div>
-      <div><label for="city">城市 *</label><input id="city" maxlength="120" required placeholder="New York City" /></div>
-      <div><label for="county">County</label><input id="county" maxlength="120" /></div>
-      <div><label for="borough">Borough</label><input id="borough" maxlength="120" placeholder="Queens" /></div>
-      <div class="full"><label for="neighborhood">Neighborhood</label><input id="neighborhood" maxlength="120" placeholder="Flushing" /></div>
-      <div><label for="salary-min">最低薪资（可选）</label><input id="salary-min" type="number" min="0" step="0.01" /></div>
-      <div><label for="salary-max">最高薪资（可选）</label><input id="salary-max" type="number" min="0" step="0.01" /></div>
-      <div><label for="salary-period">薪资周期</label><select id="salary-period"><option value="">不填写</option><option value="hour">每小时</option><option value="day">每天</option><option value="week">每周</option><option value="month">每月</option><option value="year">每年</option><option value="job">按项目</option></select></div>
-      <div><label for="contact-method">主要联系方式 *</label><select id="contact-method"><option value="platform">站内联系</option><option value="phone">电话</option><option value="sms">短信</option><option value="email">Email</option></select></div>
-      <div class="full" id="contact-value-row"><label for="contact-value">联系方式</label><input id="contact-value" maxlength="320" placeholder="电话、短信号码或Email" /></div>
-      <div class="full"><label><input id="contact-public" type="checkbox" style="width:auto;margin-right:8px" />允许在公开岗位页展示上述直接联系方式</label></div>
-      <div class="full"><label for="description">工作介绍 *</label><textarea id="description" maxlength="12000" required placeholder="工作内容、时间、要求等"></textarea></div>
-      <div class="full"><label for="photo">工作环境图片（可选）</label><input id="photo" type="file" accept="image/jpeg,image/png,image/webp" /><img id="photo-preview" class="preview hidden" alt="工作环境图片预览" /><p class="muted">浏览器会先重新编码图片再上传，以移除原图中不必要的 EXIF 精确位置信息。</p></div>
-    </div>
-    <div class="actions"><button type="submit" id="publish-btn">发布岗位</button><button type="button" class="secondary" id="save-draft-btn">保存草稿</button></div>
-    <div class="status" id="publish-status"></div>
+    <div class="core-note">只需填写下面 4 项即可发布。<span class="required">*</span> 为必填。</div>
+    <div class="field"><label for="title">招聘什么职位 <span class="required">*</span></label><input id="title" maxlength="120" required placeholder="例如：法拉盛餐厅招聘服务员" /></div>
+    <div class="field"><label for="location">工作地区 <span class="required">*</span></label><input id="location" list="location-options" maxlength="160" required autocomplete="off" placeholder="例如：法拉盛、皇后区、Boston MA" /><datalist id="location-options"></datalist><div class="location-state" id="location-state">输入常用地区名称，系统会自动匹配。</div></div>
+    <div class="field"><label for="description">工作介绍 <span class="required">*</span></label><textarea id="description" maxlength="12000" required placeholder="工作内容、时间、要求、薪资福利等。可以直接粘贴现有招聘文字。"></textarea></div>
+    <div class="field"><label for="contact">联系电话或邮箱 <span class="required">*</span></label><input id="contact" maxlength="320" required placeholder="例如：347-873-8860" /><p class="muted">联系方式会公开显示，方便求职者直接联系。</p></div>
+    <details>
+      <summary>选填内容：薪资、工作类型和图片</summary>
+      <div class="optional-grid">
+        <div><label for="salary">薪资（选填）</label><input id="salary" maxlength="80" placeholder="例如：20-25/小时、面议" /></div>
+        <div><label for="employment">工作类型（可自动识别）</label><select id="employment"><option value="auto">自动识别</option><option value="full_time">全职</option><option value="part_time">兼职</option><option value="contract">合同</option><option value="temporary">临时</option><option value="internship">实习</option><option value="unspecified">未指定</option></select></div>
+        <div style="grid-column:1/-1"><label for="photo">工作环境图片（选填）</label><input id="photo" type="file" accept="image/jpeg,image/png,image/webp" /><img id="photo-preview" class="preview hidden" alt="工作环境图片预览" /></div>
+      </div>
+    </details>
+    <div class="submit-row"><button type="submit" id="publish-btn" class="primary">发布岗位</button><span class="inline-status" id="publish-status"></span></div>
   </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/jobs/publish.js?v=20260817-r1n5"></script>
+<script src="/jobs/unified-account.js?v=20260821-u1"></script>
+<script src="/jobs/publish.js?v=20260821-u1"></script>
 </body>
 </html>

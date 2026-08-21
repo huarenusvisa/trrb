@@ -11,7 +11,24 @@ function indexFromKey(key?: string | null) {
   return Math.min(119, Math.max(0, n - 1));
 }
 
+function initialFromKey(key?: string | null) {
+  const value = String(key || '');
+  if (!value.startsWith('initial:')) return '';
+  return Array.from(value.slice(8))[0]?.toUpperCase() || '';
+}
+
+function colorForInitial(initial: string) {
+  const code = Array.from(initial)[0]?.codePointAt(0) || 0;
+  return BACKGROUNDS[code % BACKGROUNDS.length];
+}
+
 export function TrRbAvatar({ avatarKey, size = 44, label }: Props) {
+  const initial = initialFromKey(avatarKey);
+  if (initial) return (
+    <View accessibilityLabel={label || `字母头像${initial}`} style={[styles.avatar, { width: size, height: size, borderRadius: size / 2, backgroundColor: colorForInitial(initial) }]}>
+      <Text style={[styles.symbol, { fontSize: Math.max(16, Math.round(size * 0.42)) }]}>{initial}</Text>
+    </View>
+  );
   const index = indexFromKey(avatarKey);
   const bg = BACKGROUNDS[Math.floor(index / SYMBOLS.length) % BACKGROUNDS.length];
   const symbol = SYMBOLS[index % SYMBOLS.length];

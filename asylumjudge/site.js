@@ -111,6 +111,29 @@ async function loadOverview() {
   }
 }
 
+function renderFeaturedJudges(rows) {
+  const container = $('#featured-judges');
+  if (!container) return;
+  container.innerHTML = rows.length ? rows.map((row) => {
+    const place = [row.court_city, row.court_state].filter(Boolean).join(', ');
+    const court = row.court_name || place || '法院信息待更新';
+    return `<a class="featured-judge" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><div class="featured-judge-main"><strong>${esc(row.judge_name || '未命名法官')}</strong><span>${esc(court)}</span>${place && court !== place ? `<small>${esc(place)}</small>` : ''}</div><div class="featured-metrics"><span><small>裁决样本</small><b>${fmt(row.total_asylum_decisions)} 件</b></span><span><small>裁决批准率</small><b class="featured-rate">${pct(row.adjudicated_approval_rate)}</b></span></div><i aria-hidden="true">→</i></a>`;
+  }).join('') : '<div class="empty">暂无可显示的法官资料</div>';
+}
+
+async function loadFeaturedJudges() {
+  const container = $('#featured-judges');
+  if (!container) return;
+  try {
+    const data = await json('/.netlify/functions/immigration-judges?mode=top&limit=12');
+    renderFeaturedJudges(data.results || []);
+    const badge = $('#judge-source-badge');
+    if (badge && data.production_grade) badge.textContent = 'EOIR 官方数据';
+  } catch (error) {
+    container.innerHTML = '<div class="empty">法官资料暂时无法读取，请稍后重试。</div>';
+  }
+}
+
 function renderResults(query, rows) {
   $('#result-section').hidden = false;
   $('#result-title').textContent = `“${query}”的查询结果`;
@@ -147,6 +170,7 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
 
 useCleanDomainRoutes();
 loadOverview();
+loadFeaturedJudges();
 const initial = new URLSearchParams(location.search).get('q');
 if (initial) {
   $('#judge-q').value = initial;

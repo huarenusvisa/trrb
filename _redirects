@@ -26,7 +26,7 @@ https://www.trrb.net/* https://trrb.net/:splat 301!
 /ice/news/ /ice/news 301!
 /topic/ice /ice 301!
 /topic/ice/ /ice 301!
-/trump/ /trump 301!
+/trump /trump/index.html 200!
 /topic/trump /trump 301!
 /topic/trump/ /trump 301!
 /us-politics /listing.html?category=%E7%BE%8E%E5%9B%BD%E6%97%B6%E6%94%BF 200

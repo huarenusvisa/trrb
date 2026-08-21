@@ -1,4 +1,4 @@
-name: Netlify Homepage Deploy Probe
+name: Netlify Homepage Deploy Probe 2
 
 on:
   workflow_dispatch:

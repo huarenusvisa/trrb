@@ -4,23 +4,112 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>美国招聘求职｜唐人日报</title>
-  <meta name="description" content="唐人日报美国招聘求职：搜索美国境内招聘岗位、发布招聘信息和求职信息。" />
+  <meta name="description" content="唐人日报美国招聘求职：直接查看美国华人常用招聘岗位，按工作、地区、薪资和距离筛选，并在岗位卡片中查看公开联系方式或官方申请入口。" />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://trrb.net/jobs/" />
   <link rel="stylesheet" href="/styles.css?v=29.9" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    body{background:#f8fafc;color:#101828}.jobs-shell{max-width:980px;margin:0 auto;padding:48px 20px 80px}.jobs-head{margin-bottom:28px}.jobs-head a{color:#d60000;text-decoration:none}.jobs-head h1{font-size:clamp(30px,5vw,48px);margin:18px 0 10px}.jobs-head p{color:#667085;line-height:1.7}.jobs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.jobs-entry{display:block;background:white;border:1px solid #e4e7ec;border-radius:18px;padding:30px;color:#667085;text-decoration:none;box-shadow:0 8px 30px rgba(16,24,40,.06);transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}.jobs-entry:hover,.jobs-entry:focus-visible{transform:translateY(-2px);border-color:#d60000;box-shadow:0 10px 30px rgba(16,24,40,.09);outline:none}.jobs-entry strong{display:block;font-size:26px;margin-bottom:10px;color:#344054}.jobs-entry span{color:#667085;line-height:1.6}.jobs-note{margin-top:22px;padding:18px;border-radius:14px;background:#fff;border:1px solid #eaecf0;color:#475467;line-height:1.7}@media(max-width:680px){.jobs-grid{grid-template-columns:1fr}.jobs-shell{padding-top:28px}}
+    :root{--jobs-blue:#1769d2;--jobs-blue-dark:#0f4fa7;--jobs-blue-soft:#eff6ff;--jobs-blue-border:#cfe2ff;--jobs-ink:#0f172a;--jobs-muted:#64748b;--jobs-line:#e2e8f0}
+    body{background:#f6f9fd;color:var(--jobs-ink)}
+    .shell{max-width:1180px;margin:0 auto;padding:24px 18px 80px}
+    .head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}
+    .head a{color:var(--jobs-blue);text-decoration:none;font-weight:700}
+    .head h1{margin:10px 0 5px;font-size:clamp(30px,4vw,44px);letter-spacing:-.02em}
+    .head p{margin:0;color:var(--jobs-muted);max-width:780px;line-height:1.65}
+    .jobs-kicker{display:inline-flex;align-items:center;gap:7px;background:var(--jobs-blue-soft);color:var(--jobs-blue-dark);border:1px solid var(--jobs-blue-border);border-radius:999px;padding:6px 10px;font-size:13px;font-weight:800;margin-top:13px}
+    .search-card,.result-card{background:#fff;border:1px solid var(--jobs-line);border-radius:16px;box-shadow:0 7px 24px rgba(15,23,42,.045)}
+    .search-card{padding:15px;margin:16px 0 20px;border-top:3px solid var(--jobs-blue)}
+    .quick-grid{display:grid;grid-template-columns:minmax(210px,.9fr) minmax(250px,1.05fr) minmax(220px,1.3fr) auto;gap:9px;align-items:end}
+    .quick-grid label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#475569;font-weight:750}
+    .quick-grid input,.quick-grid select,.location-trigger{height:44px;border:1px solid #cbd5e1;border-radius:10px;padding:0 11px;background:#fff;color:var(--jobs-ink);font:inherit;text-align:left}
+    .location-trigger{display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+    .primary,.secondary{border:0;border-radius:10px;padding:11px 16px;font-weight:800;cursor:pointer}
+    .primary{background:var(--jobs-blue);color:#fff;height:44px;box-shadow:0 4px 12px rgba(23,105,210,.2)}
+    .primary:hover,.primary:focus-visible{background:var(--jobs-blue-dark)}
+    .secondary{background:#eef3f8;color:#334155}
+    .secondary:hover,.secondary:focus-visible{background:#e5edf6}
+    .location-panel{margin-top:10px;padding:12px;border:1px solid var(--jobs-blue-border);border-radius:12px;background:#f8fbff}
+    .location-options{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.zip-row{display:flex;gap:7px;align-items:center}.zip-row input{height:40px;width:120px;border:1px solid #cbd5e1;border-radius:9px;padding:0 10px}.location-note{font-size:12px;color:var(--jobs-muted);margin:8px 0 0}
+    .human-area-picker{margin-top:10px;border-top:1px solid var(--jobs-line);padding-top:10px}.human-area-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:9px}.human-area-head span{font-size:12px;color:var(--jobs-muted)}.human-area-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.human-area-group{border:1px solid var(--jobs-line);border-radius:10px;background:#fff;padding:9px}.human-area-group>strong{font-size:13px}.human-area-buttons{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.human-area-buttons button{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:6px 9px;font-size:12px;cursor:pointer}.human-area-buttons button:hover{border-color:var(--jobs-blue);color:var(--jobs-blue-dark)}
+    .discovery{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.discovery-box{border:1px solid var(--jobs-blue-border);background:#fbfdff;border-radius:11px;padding:10px}.discovery-box strong{display:block;font-size:13px;margin-bottom:8px}.discovery-buttons{display:flex;flex-wrap:wrap;gap:6px}.discovery-buttons button{border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:6px 9px;font-size:12px;cursor:pointer}.discovery-buttons button:hover{border-color:var(--jobs-blue);color:var(--jobs-blue-dark)}.discovery-empty{font-size:12px;color:#94a3b8}
+    .advanced{margin-top:10px;border-top:1px solid var(--jobs-line);padding-top:9px}.advanced summary{cursor:pointer;color:#475569;font-size:13px;font-weight:800;user-select:none}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}.grid label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#475569}.grid input,.grid select{min-height:40px;border:1px solid #cbd5e1;border-radius:9px;padding:7px 9px;background:#fff}.wide{grid-column:span 2}.actions{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}.status{color:var(--jobs-muted);font-size:13px}
+    .jobs-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:24px 0 10px}.jobs-section-head h2{font-size:22px;margin:0}.jobs-section-head p{margin:3px 0 0;color:var(--jobs-muted);font-size:13px}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:12px 0}.view-switch{display:flex;gap:7px}.view-switch button.is-active{background:var(--jobs-blue);color:#fff}
+    .results{display:grid;gap:10px}.result-card{padding:16px 17px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center}.result-card:hover{border-color:var(--jobs-blue-border);box-shadow:0 9px 28px rgba(23,105,210,.08)}.result-card h2{font-size:19px;margin:0 0 7px;line-height:1.35}.job-summary{margin:9px 0 0;color:#536174;line-height:1.55;font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.meta{display:flex;flex-wrap:wrap;gap:7px;color:var(--jobs-muted);font-size:13px}.pill{background:#f1f5f9;border-radius:999px;padding:3px 8px}.salary{font-weight:850;color:var(--jobs-blue-dark);background:var(--jobs-blue-soft);border-radius:999px;padding:3px 8px}.job-age{font-size:12px;color:#94a3b8;margin-top:8px}.job-actions{min-width:138px;display:flex;flex-direction:column;align-items:stretch;gap:7px}.contact-button,.contact-action{display:inline-flex;justify-content:center;align-items:center;min-height:40px;border-radius:10px;border:1px solid var(--jobs-blue);background:var(--jobs-blue);color:#fff;text-decoration:none;font-weight:800;padding:8px 12px;cursor:pointer}.contact-button:hover,.contact-action:hover{background:var(--jobs-blue-dark);border-color:var(--jobs-blue-dark)}.contact-slot{font-size:12px;color:#475569;max-width:260px;word-break:break-word}.contact-slot a{color:var(--jobs-blue-dark);font-weight:800;text-decoration:none}.contact-slot .contact-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.contact-slot .contact-row a{background:var(--jobs-blue-soft);border:1px solid var(--jobs-blue-border);border-radius:8px;padding:6px 8px}.contact-error{color:#9a3412}.empty{padding:28px;text-align:center;color:var(--jobs-muted);display:block}.pagination{display:flex;justify-content:center;gap:10px;margin-top:18px}#jobs-map{height:560px;border-radius:15px;border:1px solid var(--jobs-line);background:#eef2f6}.hidden{display:none!important}
+    @media(max-width:860px){.quick-grid{grid-template-columns:1fr 1fr}.quick-grid .quick-search{grid-column:span 2}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.head{display:block}.result-card{grid-template-columns:1fr}.job-actions{min-width:0;align-items:flex-start}.contact-slot .contact-row{justify-content:flex-start}}
+    @media(max-width:560px){.shell{padding:16px 12px 72px}.quick-grid{grid-template-columns:1fr}.quick-grid .quick-search{grid-column:span 1}.grid{grid-template-columns:1fr}.wide{grid-column:span 1}.head p{font-size:14px}.location-options{display:grid;grid-template-columns:1fr 1fr}.zip-row{grid-column:1/-1}.zip-row input{flex:1;width:auto}.human-area-head{display:block}.human-area-head span{display:block;margin-top:3px}.human-area-groups{grid-template-columns:1fr}.discovery{grid-template-columns:1fr}#jobs-map{height:460px}.jobs-section-head{display:block}.toolbar{align-items:flex-start}.result-card{padding:15px}.job-actions{width:100%}.contact-button{width:100%}}
   </style>
 </head>
 <body>
-  <main class="jobs-shell">
-    <header class="jobs-head"><a href="/">← 返回唐人日报</a><h1>美国招聘求职</h1><p>面向美国华人的招聘与求职入口。可以直接找工作、发布招聘，也可以发布个人求职信息。</p></header>
-    <section class="jobs-grid" aria-label="招聘求职入口">
-      <a class="jobs-entry" href="/jobs/search.html"><strong>找工作</strong><span>搜索全美招聘岗位，支持州、城市、County/Borough、Neighborhood、行业、全兼职、薪资、附近范围与排序。</span></a>
-      <a class="jobs-entry" href="/jobs/publish.html"><strong>我要招聘</strong><span>发布职位、地点、工作介绍、类型和联系方式；薪资与工作环境图片可选。</span></a>
-      <a class="jobs-entry" href="/jobs/seeker.html"><strong>发布求职</strong><span>建立求职档案，填写经历与目标岗位，并自主决定联系方式是否公开。</span></a>
+  <main class="shell">
+    <header class="head">
+      <div>
+        <a href="/">← 返回唐人日报</a>
+        <h1>美国招聘求职</h1>
+        <p>直接看岗位，不再绕中间页面。职位、地区、薪资、工作类型和公开联系方式尽量在同一张岗位卡里看清楚。</p>
+        <span class="jobs-kicker">实时岗位 · 华人常用工作优先</span>
+      </div>
+    </header>
+
+    <section class="search-card" aria-label="招聘岗位搜索">
+      <form id="jobs-search-form">
+        <div class="quick-grid">
+          <label>找什么工作？
+            <select id="category"><option value="">全部工作</option></select>
+          </label>
+          <label>想在哪里？
+            <button class="location-trigger" id="location-trigger" type="button"><span id="location-summary">全美国</span><span>更换 ▾</span></button>
+          </label>
+          <label class="quick-search">搜索（可选）
+            <input id="q" name="q" placeholder="职位、公司或地区；不会打字可留空" />
+          </label>
+          <button class="primary" type="submit">查看工作</button>
+        </div>
+
+        <div id="location-panel" class="location-panel hidden">
+          <div class="location-options">
+            <button class="secondary" type="button" id="use-location">📍 使用当前位置</button>
+            <div class="zip-row"><input id="location-zip" inputmode="numeric" autocomplete="postal-code" maxlength="10" placeholder="ZIP Code" /><button class="secondary" type="button" id="use-zip">使用ZIP</button></div>
+            <button class="secondary" type="button" id="choose-region">🗺️ 选择地区</button>
+            <button class="secondary" type="button" id="all-us">🇺🇸 全美国</button>
+          </div>
+          <p class="location-note">精确设备位置只有在你主动授权后才使用。拒绝定位不影响ZIP、地区或全美找工作。</p>
+        </div>
+
+        <section class="discovery" aria-label="职位和地区双向推荐">
+          <div class="discovery-box"><strong id="region-hints-title">选一个工作，看看哪里机会多</strong><div id="region-hints" class="discovery-buttons"><span class="discovery-empty">选择工作类别后自动显示有岗位的州和数量。</span></div></div>
+          <div class="discovery-box"><strong id="category-hints-title">选一个地区，看看这里缺什么人</strong><div id="category-hints" class="discovery-buttons"><span class="discovery-empty">选择地区后自动显示当地工作类别和数量。</span></div></div>
+        </section>
+
+        <details class="advanced" id="advanced-filters">
+          <summary>更多筛选（地区、类型、薪资、距离、排序）</summary>
+          <div class="grid">
+            <label>类型<select id="employment"><option value="">全部类型</option><option value="full_time">全职</option><option value="part_time">兼职</option><option value="contract">合同</option><option value="temporary">临时</option><option value="internship">实习</option></select></label>
+            <label>州<input id="state" maxlength="3" placeholder="NY" /></label>
+            <label>城市<input id="city" placeholder="New York City" /></label>
+            <label>County<input id="county" placeholder="Queens County" /></label>
+            <label>Borough<input id="borough" placeholder="Queens" /></label>
+            <label>Neighborhood<input id="neighborhood" placeholder="Flushing" /></label>
+            <label>最低薪资<input id="salary" type="number" min="0" step="1" placeholder="例如 20" /></label>
+            <label>附近范围<select id="radius"><option value="">不限距离</option><option value="5">5 miles</option><option value="10">10 miles</option><option value="25">25 miles</option><option value="50">50 miles</option></select></label>
+            <label>排序<select id="sort"><option value="relevance">综合</option><option value="latest">最新</option><option value="salary">薪资</option><option value="distance">距离</option></select></label>
+          </div>
+        </details>
+        <div class="actions"><button class="secondary" type="button" id="clear-location">清除附近定位</button><span class="status" id="search-status">正在连接正式招聘数据源…</span></div>
+      </form>
     </section>
-    <p class="jobs-note">招聘与求职信息进入统一生产数据系统并接受平台治理。平台不会把上传图片或角色标签自动视为身份、企业或真实性认证。</p>
+
+    <div class="jobs-section-head"><div><h2>最新招聘岗位</h2><p>优先展示仍有效、可联系、信息完整的岗位。</p></div></div>
+    <div class="toolbar"><strong id="results-heading">招聘岗位</strong><div class="view-switch"><button class="secondary is-active" id="list-view" type="button">列表</button><button class="secondary" id="map-view" type="button">地图</button></div></div>
+    <section id="jobs-results" class="results" aria-live="polite"></section>
+    <section id="jobs-map" class="hidden" aria-label="附近招聘岗位地图"></section>
+    <nav class="pagination"><button class="secondary" id="prev-page" type="button">上一页</button><button class="secondary" id="next-page" type="button">下一页</button></nav>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./search.js?v=20260820-unified1"></script>
+  <script src="./search-r2-discovery.js?v=20260817-r2n4"></script>
+  <script src="./search-r2-geo.js?v=20260817-r2n4"></script>
 </body>
 </html>

@@ -10,15 +10,29 @@ function gitSha() {
   }
 }
 
-// Netlify linked-repo builds expose COMMIT_REF. Direct CLI deploys from GitHub
-// Actions use the checked-out repository SHA. Prefer the actual build checkout
-// rather than the workflow's original GITHUB_SHA because Node9 may reset to a
-// newer main commit after its debounce window.
-const sha = String(process.env.COMMIT_REF || gitSha() || process.env.GITHUB_SHA || '').trim();
-if (!/^[0-9a-f]{40}$/i.test(sha)) {
-  throw new Error(`Unable to resolve deploy git SHA: ${sha || 'empty'}`);
+function validSha(value) {
+  const sha = String(value || '').trim();
+  return /^[0-9a-f]{40}$/i.test(sha) ? sha : '';
 }
 
-const payload = `${sha}\n`;
-writeFileSync('deploy-version.txt', payload);
+// Some Netlify build-hook contexts can expose a non-SHA COMMIT_REF. Never let
+// that mask the valid checked-out git SHA. Choose the first actual 40-hex SHA.
+const sha = [
+  process.env.COMMIT_REF,
+  gitSha(),
+  process.env.GITHUB_SHA
+].map(validSha).find(Boolean) || '';
+
+if (!sha) {
+  if (process.env.NETLIFY === 'true') {
+    // Deployment must not be blocked solely because version metadata is absent.
+    // Production acceptance will still reject an unknown live SHA.
+    writeFileSync('deploy-version.txt', 'unknown\n');
+    console.warn('[deploy-version] no valid git SHA resolved in Netlify; wrote unknown without blocking deploy');
+    process.exit(0);
+  }
+  throw new Error('Unable to resolve deploy git SHA');
+}
+
+writeFileSync('deploy-version.txt', `${sha}\n`);
 console.log(`[deploy-version] ${sha}`);

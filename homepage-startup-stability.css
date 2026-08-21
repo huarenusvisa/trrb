@@ -1,0 +1,57 @@
+/* Homepage startup stability: avoid transient black/empty states and lock US politics before ICE. */
+#sections-grid > #politics{order:-20}
+#sections-grid > #ice{order:-19}
+
+html:not([data-home-final-ui="true"]) #hero,
+html:not([data-home-final-ui="true"]) #rank-list{
+  position:relative;
+  visibility:hidden!important;
+}
+
+html:not([data-home-final-ui="true"]) #hero{
+  background:#f3f4f6!important;
+}
+
+html:not([data-home-final-ui="true"]) #hero::after,
+html:not([data-home-final-ui="true"]) #rank-list::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  visibility:visible!important;
+  display:block;
+  border-radius:8px;
+  background:linear-gradient(100deg,#f3f4f6 20%,#e8ebef 38%,#f3f4f6 56%);
+  background-size:220% 100%;
+  animation:trrbHomeSkeleton 1.15s linear infinite;
+}
+
+@keyframes trrbHomeSkeleton{
+  from{background-position:120% 0}
+  to{background-position:-120% 0}
+}
+
+#rank-list .rank-empty{
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:260px;
+  padding:20px!important;
+  box-sizing:border-box;
+  writing-mode:horizontal-tb!important;
+  white-space:normal!important;
+  text-align:center;
+  line-height:1.5;
+  color:#7b8492;
+}
+
+@media(max-width:767px){
+  #rank-list{min-height:500px!important}
+  #rank-list .rank-empty{min-height:500px}
+  html:not([data-home-final-ui="true"]) #hero::after{border-radius:8px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html:not([data-home-final-ui="true"]) #hero::after,
+  html:not([data-home-final-ui="true"]) #rank-list::after{animation:none}
+}

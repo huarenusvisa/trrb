@@ -4,32 +4,13 @@
   const PLACEHOLDER_RE = /image-placeholder\.svg|category-placeholders|tang-ren-daily-placeholder|^data:image\/svg/i;
   const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
   const REFRESH_INTERVAL = 2 * 60 * 1000;
+  const FETCH_TIMEOUT_MS = 8000;
   let lastRenderSignature = "";
   let refreshPromise = null;
 
+  // Important: never hide the whole homepage while waiting for live data.
+  // Slow or embedded mobile browsers must always keep the page usable.
   document.documentElement.dataset.homeLoading = "true";
-  const loadingStyle = document.createElement("style");
-  loadingStyle.id = "trrb-home-loading-style";
-  loadingStyle.textContent = `
-    html[data-home-loading="true"] #ticker,
-    html[data-home-loading="true"] #hero,
-    html[data-home-loading="true"] #top-list,
-    html[data-home-loading="true"] #sections-grid,
-    html[data-home-loading="true"] #rank-list{visibility:hidden!important}
-    html[data-home-loading="true"] #hero,
-    html[data-home-loading="true"] #top-list,
-    html[data-home-loading="true"] #sections-grid,
-    html[data-home-loading="true"] #rank-list{position:relative}
-    html[data-home-loading="true"] #hero::after,
-    html[data-home-loading="true"] #top-list::after,
-    html[data-home-loading="true"] #sections-grid::after,
-    html[data-home-loading="true"] #rank-list::after{
-      content:"正在读取最新内容…";visibility:visible;position:absolute;inset:0;
-      display:flex;align-items:center;justify-content:center;color:#777;background:#f6f6f6;
-      font-size:14px;border-radius:8px
-    }
-  `;
-  document.head.appendChild(loadingStyle);
 
   function articleTime(item) {
     const raw = item?.published_at || item?.created_at || "";
@@ -75,8 +56,6 @@
     const seen = new Set();
     return (Array.isArray(items) ? items : [])
       .map(normalizeRow)
-      // Preserve category supplements that may be older than the global 4-day
-      // window. Individual homepage sections decide their own freshness policy.
       .filter((item) => {
         const key = keyOf(item);
         if (!key || seen.has(key)) return false;
@@ -91,15 +70,22 @@
   }
 
   async function fetchUnifiedLive() {
-    const params = new URLSearchParams({ limit: "200", per_category: "12", _: String(Date.now()) });
-    const response = await fetch(`/.netlify/functions/public-home-bundle?${params}`, {
-      cache: "no-store",
-      headers: { Accept: "application/json" }
-    });
-    if (!response.ok) throw new Error(`首页统一实时接口 ${response.status}`);
-    const payload = await response.json();
-    if (payload?.mode !== "homepage") throw new Error("首页统一实时接口返回格式异常");
-    return uniqueSorted(payload.articles);
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+      const params = new URLSearchParams({ limit: "200", per_category: "12", _: String(Date.now()) });
+      const response = await fetch(`/.netlify/functions/public-home-bundle?${params}`, {
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+        signal: controller.signal
+      });
+      if (!response.ok) throw new Error(`首页统一实时接口 ${response.status}`);
+      const payload = await response.json();
+      if (payload?.mode !== "homepage") throw new Error("首页统一实时接口返回格式异常");
+      return uniqueSorted(payload.articles);
+    } finally {
+      window.clearTimeout(timer);
+    }
   }
 
   function bindImageRecovery(root = document) {
@@ -116,10 +102,11 @@
     });
   }
 
-  function revealHome() {
+  function finalizeHome(source) {
     document.documentElement.dataset.homeLoading = "false";
     document.documentElement.dataset.homeFinalized = "true";
-    loadingStyle.remove();
+    if (source) document.documentElement.dataset.homeLiveSource = source;
+    bindImageRecovery(document);
   }
 
   function adoptExistingRender() {
@@ -127,13 +114,11 @@
     if (!items.length || !items.some(isFresh)) return false;
     lastRenderSignature = signatureFor(items);
     document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
-    document.documentElement.dataset.homeLiveSource = "articles-home-initial";
-    revealHome();
-    bindImageRecovery(document);
+    finalizeHome("articles-home-initial");
     return true;
   }
 
-  async function refreshHome({ revealOnFailure = false } = {}) {
+  async function refreshHome() {
     if (refreshPromise) return refreshPromise;
     refreshPromise = (async () => {
       try {
@@ -147,16 +132,12 @@
           lastRenderSignature = signature;
         }
         document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
-        document.documentElement.dataset.homeLiveSource = "public-home-bundle";
         document.documentElement.dataset.liveNewsUpdatedAt = new Date().toISOString();
-        revealHome();
-        bindImageRecovery(document);
+        finalizeHome("public-home-bundle");
         return true;
       } catch (error) {
         console.warn("Homepage unified live refresh unavailable", error);
-        // Never erase the server-delivered static snapshot on an API failure.
-        // If the initial renderer also failed, reveal the crawlable build snapshot.
-        if (revealOnFailure) revealHome();
+        finalizeHome("fallback-visible");
         return false;
       } finally {
         refreshPromise = null;
@@ -168,32 +149,31 @@
   window.TRRB_refreshHomeLive = refreshHome;
 
   const observer = new MutationObserver((mutations) => {
-    for (const mutation of mutations) mutation.addedNodes.forEach((node) => {
-      if (node.nodeType === Node.ELEMENT_NODE) bindImageRecovery(node);
-    });
-  });
-
-  function waitForInitialRenderer(attempt = 0) {
-    if (adoptExistingRender()) return;
-    if (attempt < 40) {
-      window.setTimeout(() => waitForInitialRenderer(attempt + 1), 125);
-      return;
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) bindImageRecovery(node);
+      });
     }
-    // Only if the normal renderer did not finish within five seconds do we make
-    // one fallback request. No parallel startup fetch storm.
-    refreshHome({ revealOnFailure: true });
-  }
+  });
 
   function start() {
     observer.observe(document.documentElement, { childList: true, subtree: true });
-    waitForInitialRenderer();
+    bindImageRecovery(document);
+
+    // Let the normal renderer win first. If it has not produced content quickly,
+    // make one guarded retry without ever blanking the page.
+    window.setTimeout(() => {
+      if (!adoptExistingRender()) refreshHome();
+    }, 450);
+
+    window.setTimeout(() => {
+      if (document.documentElement.dataset.homeFinalized !== "true") finalizeHome("watchdog-visible");
+    }, 2500);
+
     window.setInterval(() => refreshHome(), REFRESH_INTERVAL);
     window.addEventListener("pageshow", (event) => {
       if (event.persisted) window.setTimeout(() => refreshHome(), 250);
     });
-    window.setTimeout(() => {
-      if (document.documentElement.dataset.homeLoading === "true") revealHome();
-    }, 10000);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });

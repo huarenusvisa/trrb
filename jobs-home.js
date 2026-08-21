@@ -78,17 +78,39 @@
   let rendering = false;
   let repairQueued = false;
 
+  const requestJobs = async (endpoint) => {
+    const separator = endpoint.includes("?") ? "&" : "?";
+    const response = await fetch(`${endpoint}${separator}_=${Date.now()}`, {
+      headers: { Accept: "application/json" },
+      cache: "no-store"
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload?.error || `招聘接口 ${response.status}`);
+    return Array.isArray(payload?.items) ? payload.items : [];
+  };
+
   const loadJobs = () => {
-    if (jobsCache) return Promise.resolve(jobsCache);
+    if (jobsCache?.length) return Promise.resolve(jobsCache);
     if (jobsPromise) return jobsPromise;
-    jobsPromise = fetch("/.netlify/functions/public-jobs?limit=30", { headers: { Accept: "application/json" }, cache: "no-store" })
-      .then(async (response) => {
-        const payload = await response.json();
-        jobsCache = response.ok && Array.isArray(payload?.items) ? payload.items : [];
+
+    jobsPromise = requestJobs("/.netlify/functions/public-home-jobs?limit=60")
+      .then(async (items) => {
+        if (items.length) return items;
+        return await requestJobs("/.netlify/functions/public-jobs?limit=60");
+      })
+      .then((items) => {
+        jobsCache = Array.isArray(items) ? items : [];
+        window.TRRB_HOME_JOBS_COUNT = jobsCache.length;
         return jobsCache;
       })
-      .catch((error) => { console.error("首页招聘岗位加载失败", error); jobsCache = []; return jobsCache; })
+      .catch((error) => {
+        console.error("首页招聘岗位加载失败", error);
+        jobsCache = [];
+        window.TRRB_HOME_JOBS_COUNT = 0;
+        return jobsCache;
+      })
       .finally(() => { jobsPromise = null; });
+
     return jobsPromise;
   };
 
@@ -120,10 +142,14 @@
         card.innerHTML = markup(jobsCache || []);
       }
 
-      if (!jobsCache) {
-        const loaded = await loadJobs();
-        const current = document.querySelector("#jobs-home-hub");
-        if (current) current.innerHTML = markup(loaded);
+      const loaded = jobsCache?.length ? jobsCache : await loadJobs();
+      const current = document.querySelector("#jobs-home-hub");
+      if (current) {
+        const currentCount = current.querySelectorAll(".job-position-card").length;
+        const desiredCount = Math.min(6, loaded.length);
+        if (currentCount !== desiredCount || (desiredCount > 0 && current.querySelector(".jobs-home-empty"))) {
+          current.innerHTML = markup(loaded);
+        }
       }
     } finally {
       rendering = false;
@@ -140,7 +166,7 @@
     ensureCard();
     const root = document.querySelector("#sections-grid");
     if (root) new MutationObserver(queueRepair).observe(root, { childList: true, subtree: true });
-    [300, 800, 1600, 3200, 6000].forEach((delay) => setTimeout(ensureCard, delay));
+    [250, 700, 1400, 2600, 5000, 9000].forEach((delay) => setTimeout(ensureCard, delay));
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });

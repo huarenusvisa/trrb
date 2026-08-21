@@ -33,7 +33,7 @@ const required = [
   '/ice/news/ /ice/news 301!',
   '/topic/ice /ice 301!',
   '/topic/ice/ /ice 301!',
-  '/trump/ /trump 301!',
+  '/trump /trump/index.html 200!',
   '/topic/trump /trump 301!',
   '/topic/trump/ /trump 301!'
 ];
@@ -41,9 +41,12 @@ const required = [
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
 const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide']);
+// Netlify normalizes trailing slashes before redirect matching. Keeping the
+// former `/trump/ -> /trump` rule therefore made `/trump` redirect to itself.
+const retiredNormalizedRedirectPaths = new Set(['/trump/']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
-  return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);
+  return !requiredPaths.has(route) && !retiredAsylumPaths.has(route) && !retiredNormalizedRedirectPaths.has(route);
 });
 const output = [...required, ...filtered].join('\n') + '\n';
 fs.writeFileSync(file, output);
@@ -67,7 +70,6 @@ for (const [route, target] of [
   ['/ice/news/', '/ice/news'],
   ['/topic/ice', '/ice'],
   ['/topic/ice/', '/ice'],
-  ['/trump/', '/trump'],
   ['/topic/trump', '/trump'],
   ['/topic/trump/', '/trump']
 ]) {
@@ -76,6 +78,9 @@ for (const [route, target] of [
 }
 if (outputLines.some((line) => /^\/asylum(?:\s|\/)/.test(line) && /listing\.html\?category=.*(?:%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91|庇护百科)/i.test(line))) {
   throw new Error('retired asylum encyclopedia internal rewrite survived redirect finalization');
+}
+if (outputLines.some((line) => line.split(/\s+/)[0] === '/trump/')) {
+  throw new Error('Netlify-normalized /trump/ self-redirect survived redirect finalization');
 }
 
 console.log(`[redirects] finalized and verified ${required.length} canonical/special rules + ${filtered.length} generated rules`);

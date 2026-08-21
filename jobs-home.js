@@ -132,7 +132,9 @@
   };
 
   const renderOnce = (items) => {
-    if (rendered || !baseHomeReady()) return false;
+    if (rendered && document.querySelector("#jobs-home-hub")) return true;
+    if (!baseHomeReady()) return false;
+    rendered = false;
     const root = document.querySelector("#sections-grid");
     if (!root) return false;
 
@@ -170,6 +172,27 @@
     };
 
     tick();
+
+    // Other legacy homepage modules may rebuild #sections-grid after this
+    // script starts. Reinsert the dedicated jobs card if that happens.
+    const installGuard = () => {
+      const root = document.querySelector("#sections-grid");
+      if (!root || root.dataset.jobsGuardBound === "true") return false;
+      root.dataset.jobsGuardBound = "true";
+      new MutationObserver(() => {
+        if (document.querySelector("#jobs-home-hub") || !baseHomeReady()) return;
+        rendered = false;
+        loadJobs().then((items) => renderOnce(items));
+      }).observe(root, { childList: true });
+      return true;
+    };
+    if (!installGuard()) window.setTimeout(installGuard, 600);
+    window.setTimeout(() => {
+      if (!document.querySelector("#jobs-home-hub") && baseHomeReady()) {
+        rendered = false;
+        loadJobs().then((items) => renderOnce(items));
+      }
+    }, 2600);
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });

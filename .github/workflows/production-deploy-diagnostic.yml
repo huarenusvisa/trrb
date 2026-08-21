@@ -29,48 +29,48 @@ jobs:
         shell: bash
         run: |
           set +e
-          TARGET_SHA=$(git rev-parse HEAD)
-          STARTED_AT=$(date -u +%FT%TZ)
+          export TARGET_SHA=$(git rev-parse HEAD)
           mkdir -p reports
 
           node scripts/validate-site.mjs >/tmp/validate.log 2>&1
-          VALIDATE_EXIT=$?
+          export VALIDATE_EXIT=$?
 
-          HOOK_CONFIGURED=false
-          HOOK_HTTP=0
+          export HOOK_CONFIGURED=false
+          export HOOK_HTTP=0
           if [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
-            HOOK_CONFIGURED=true
+            export HOOK_CONFIGURED=true
             if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
               HOOK_URL="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true"
             else
               HOOK_URL="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true"
             fi
-            HOOK_HTTP=$(curl -sS -o /tmp/hook-response.txt -w '%{http_code}' -X POST "$HOOK_URL")
+            export HOOK_HTTP=$(curl -sS -o /tmp/hook-response.txt -w '%{http_code}' -X POST "$HOOK_URL")
           else
             printf '%s\n' 'NETLIFY_BUILD_HOOK is not configured' >/tmp/hook-response.txt
           fi
 
-          LIVE_SHA=""
-          MATCHED=false
-          POLLS=0
+          export LIVE_SHA=""
+          export MATCHED=false
+          export POLLS=0
           for POLLS in $(seq 1 60); do
-            LIVE_SHA=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?diagnostic=$(date +%s)" 2>/dev/null | tr -d '\r\n[:space:]')
+            export POLLS
+            export LIVE_SHA=$(curl -fsSL --max-time 15 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?diagnostic=$(date +%s)" 2>/dev/null | tr -d '\r\n[:space:]')
             if [ "$LIVE_SHA" = "$TARGET_SHA" ]; then
-              MATCHED=true
+              export MATCHED=true
               break
             fi
             sleep 10
           done
 
           python - <<'PY'
-          import json, os, pathlib
+          import json, os, pathlib, datetime
           def tail(path, n=12000):
               p=pathlib.Path(path)
               if not p.exists(): return ''
               text=p.read_text(errors='replace')
               return text[-n:]
           report={
-            'generated_at': os.popen('date -u +%FT%TZ').read().strip(),
+            'generated_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
             'target_sha': os.environ.get('TARGET_SHA',''),
             'validator_exit': int(os.environ.get('VALIDATE_EXIT','-1')),
             'validator_tail': tail('/tmp/validate.log'),
@@ -83,8 +83,6 @@ jobs:
           }
           pathlib.Path('reports/production-deploy-diagnostic-latest.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
           PY
-        env:
-          TARGET_SHA: ${{ github.sha }}
 
       - name: Commit diagnostic report even when deployment fails
         shell: bash

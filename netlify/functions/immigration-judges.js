@@ -123,7 +123,9 @@ exports.handler = async (event) => {
         query: {
           select: 'id,title,slug,summary,category_name,published_at',
           status: 'eq.published',
-          category_name: 'like.移民美国·人道主义庇护·*',
+          category_name: 'eq.移民美国',
+          topic_key: 'is.null',
+          or: '(title.ilike.*庇护*,summary.ilike.*庇护*,title.ilike.*I-589*,summary.ilike.*I-589*,title.ilike.*防止递解*,summary.ilike.*防止递解*,title.ilike.*禁止酷刑*,summary.ilike.*禁止酷刑*)',
           order: 'published_at.desc.nullslast',
           limit: String(limit)
         }

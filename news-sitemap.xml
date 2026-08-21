@@ -1,10 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-  
-  
-  
-  
-  
+  <url>
+      <loc>https://trrb.net/us-crime/%E5%88%BA%E6%AD%BB17%E5%B2%81%E5%B0%91%E5%B9%B4%E8%8E%B7%E5%88%9135%E5%B9%B4%E5%8D%A1%E6%A2%85%E6%B4%9B%E5%AE%89%E4%B8%9C%E5%B0%BC%E7%94%B3%E8%AF%B7%E9%87%8D%E5%AE%A1%E5%BE%B7%E5%B7%9E%E6%B3%95%E9%99%A2%E5%86%8D%E5%BC%80%E5%90%AC%E8%AF%81-mt2geet6-5b4975</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T04:32:56.442Z</news:publication_date>
+        <news:title>刺死17岁少年获刑35年！卡梅洛·安东尼申请重审，德州法院再开听证</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/us-crime/fbi%E9%80%AE%E6%8D%95%E7%BA%BD%E7%BA%A6%E5%A5%B3%E5%AD%90%E6%B6%89%E5%AB%8C%E6%95%88%E5%BF%A0isis%E5%B9%B6%E7%AD%96%E5%88%92%E8%A2%AD%E5%87%BB%E5%B7%9E%E8%AE%AE%E4%BC%9A%E5%A4%A7%E5%8E%A6-mt2g7488-5e71f9</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T04:27:16.136Z</news:publication_date>
+        <news:title>FBI逮捕纽约女子！涉嫌效忠ISIS并策划袭击州议会大厦</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-462c2933ff9a8f386f3a5d95bd62f09bfc74d076</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T04:25:05.144Z</news:publication_date>
+        <news:title>美国自8月13日起调整提前离境许可政策</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-a619223ce1ac488c8850655357f166936a47816d</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T04:25:04.071Z</news:publication_date>
+        <news:title>国土安全部称特朗普任内15个月无非法移民释放</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-0ff0aae408fde9bfb5d3e9049a9cd5acd1ed760e</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T04:25:03.346Z</news:publication_date>
+        <news:title>美国ICE宣布拒绝为非法移民提供激素治疗</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-3bd33139376b11414eb9cab1191a5cfd41f61d65</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T04:25:02.604Z</news:publication_date>
+        <news:title>亚利桑那图森男子因走私移民获刑57个月</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-7b633f1cd1103453f953d293fcd14427231191f4</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T04:25:01.791Z</news:publication_date>
+        <news:title>波多黎各哈蒂略58岁男子因涉儿童剥削被捕</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/us-crime/1800%E4%B8%87%E7%BE%8E%E5%85%83%E7%96%AB%E6%83%85%E6%95%91%E5%8A%A9%E9%87%91%E8%A2%AB%E9%AA%97%E5%8A%A0%E5%B7%9E%E5%AE%B6%E6%97%8F%E8%AF%88%E9%AA%97%E6%A1%88%E6%9B%9D%E5%85%89%E5%BC%95%E5%8F%91%E5%8F%82%E8%AE%AE%E9%99%A2%E7%AB%8B%E6%B3%95%E8%A1%8C%E5%8A%A8-mt2fzzzt-8d33b4</loc>
       <news:news>
@@ -61,7 +112,14 @@
         <news:title>强风暴逼近美国东北！3200万人面临洪水威胁，纽约、费城等城市受影响</news:title>
       </news:news>
     </url>
-  
+  <url>
+      <loc>https://trrb.net/ice/ice-7a1c2dbf20d6cfa0bba9e0984779698d415d4d77</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T02:55:08.228Z</news:publication_date>
+        <news:title>波士顿ICE逮捕巴西加重谋杀案逃犯</news:title>
+      </news:news>
+    </url>
   <url>
       <loc>https://trrb.net/us-crime/10%E4%B8%AA%E6%9C%88%E5%A5%B3%E5%A9%B4%E8%A2%AB%E9%81%97%E5%BF%98%E8%BD%A6%E5%86%858%E5%B0%8F%E6%97%B6%E6%AD%BB%E4%BA%A1%E8%82%AF%E5%A1%94%E5%9F%BA%E5%8C%BB%E7%94%9F%E7%A5%96%E6%AF%8D%E9%81%AD%E8%AD%A6%E6%96%B9%E8%B0%83%E6%9F%A5-mt2cjhh9-39964e</loc>
       <news:news>

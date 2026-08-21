@@ -117,7 +117,9 @@ async function fetchPublishedArticles() {
 }
 
 function isForbiddenStaticBlock(block: string): boolean {
-  return /<loc>https:\/\/trrb\.net\/(?:jobs(?:\/|\?|<)|finance(?:\/|\?|<)|people(?:\/|\?|<))/i.test(block);
+  // Recruitment is now launched and indexable. Finance is still prelaunch and
+  // People is retired, so only those remain forbidden in the live sitemap.
+  return /<loc>https:\/\/trrb\.net\/(?:finance(?:\/|\?|<)|people(?:\/|\?|<))/i.test(block);
 }
 
 async function fetchStaticBlocks(request: Request): Promise<string[]> {
@@ -188,6 +190,14 @@ export default async (request: Request, context: any) => {
       if (match?.[1]) seenUrls.add(match[1].replaceAll("&amp;", "&"));
     }
 
+    // /jobs/ is a fully launched public product. Add it even when an older
+    // static sitemap snapshot has not caught up yet.
+    const jobsLoc = `${SITE}/jobs/`;
+    if (!seenUrls.has(jobsLoc)) {
+      blocks.push(urlBlock(jobsLoc, new Date().toISOString().slice(0, 10), "daily", "0.8"));
+      seenUrls.add(jobsLoc);
+    }
+
     const seenTitles = new Set<string>();
     const seenBodies = new Set<string>();
     let excludedThin = 0;
@@ -239,7 +249,7 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v6-public-only-static-authority-aligned",
+      "x-trrb-sitemap": "live-supabase-v7-jobs-indexable",
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-static-blocks": String(staticBlocks.length),
       "x-trrb-sitemap-immigration-knowledge": String(immigrationKnowledgeCount),
@@ -247,7 +257,8 @@ export default async (request: Request, context: any) => {
       "x-trrb-sitemap-preserved-short-ice": String(preservedShortIce),
       "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),
       "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate),
-      "x-trrb-sitemap-dedupe-winner": "newest"
+      "x-trrb-sitemap-dedupe-winner": "newest",
+      "x-trrb-sitemap-jobs": "indexable"
     });
     return new Response(request.method === "HEAD" ? null : xml, { status: 200, headers });
   } catch (error) {

@@ -125,3 +125,25 @@ html[data-home-final-ui="true"] #rank-list{
   #hero .hero-slide,#hero .hero-slide img{height:240px!important;min-height:240px!important}
   #rank-list > li{grid-template-columns:30px minmax(0,1fr) auto!important}
 }
+
+
+/* Robust mobile ranking: flex keeps a title full-width even during partial hydration. */
+#rank-list > li{
+  display:flex!important;
+  width:100%!important;
+  min-width:0!important;
+  align-items:center!important;
+  gap:8px!important;
+}
+#rank-list > li > b{
+  flex:0 0 30px!important;
+  width:30px!important;
+}
+#rank-list > li > a{
+  flex:1 1 auto!important;
+  width:auto!important;
+  min-width:0!important;
+}
+#rank-list > li > .rank-heat{
+  flex:0 0 auto!important;
+}

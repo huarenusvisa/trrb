@@ -1,0 +1,20 @@
+name: JOBS R3 N4 Audit
+on:
+  push:
+    branches: [jobs-r3-blue-collar-market]
+    paths:
+      - 'jobs/publish.html'
+      - 'jobs/publish.js'
+      - 'scripts/audit-jobs-r3-n4-publish-flow.mjs'
+      - '.github/workflows/jobs-r3-n4-audit.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/audit-jobs-r3-n3-mobile-location.mjs
+      - run: node scripts/audit-jobs-r3-n4-publish-flow.mjs

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  
   <url>
       <loc>https://trrb.net/ice/ice-382938579c67d9ca0d9dc7ba296403c39d74e06f</loc>
       <news:news>
@@ -2046,14 +2047,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-19T19:17:18.536Z</news:publication_date>
         <news:title>新奥尔良ICE逮捕墨西哥非法移民涉多罪</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-80cc3a1860b3045c6549896232317aab342ae5ce</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T18:01:07.175Z</news:publication_date>
-        <news:title>旧金山ICE拘捕持罪墨籍男子胡安·萨瓦拉</news:title>
       </news:news>
     </url>
 </urlset>

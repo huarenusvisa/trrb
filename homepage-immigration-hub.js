@@ -31,7 +31,7 @@
 
   let stateStatsCache = null;
   let stateStatsLoading = null;
-  let repairTimer = null;
+  let rendered = false;
 
   function immigrationMarkup() {
     return `
@@ -159,7 +159,7 @@
         return stateStatsCache;
       })
       .catch((error) => {
-        console.error("首页各州移民法庭通过率加载失败", error);
+        console.warn("首页各州移民法庭通过率加载失败", error);
         stateStatsCache = [];
         return stateStatsCache;
       })
@@ -171,6 +171,8 @@
     const card = root.querySelector("#immigration") || Array.from(root.children).find((item) => item.querySelector?.("h2")?.textContent.trim() === "移民美国");
     if (!card) return;
     if (card.dataset.knowledgeHub === "true" && card.querySelector(".immigration-hub-feature")) return;
+    const measured = Math.ceil(card.getBoundingClientRect?.().height || 0);
+    if (measured > 0) card.style.minHeight = `${measured}px`;
     card.dataset.knowledgeHub = "true";
     card.classList.add("immigration-knowledge-card");
     card.innerHTML = immigrationMarkup();
@@ -180,6 +182,8 @@
     const card = root.querySelector("#legal-home-hub") || root.querySelector("#exposure-wall") || Array.from(root.children).find((item) => item.querySelector?.("h2")?.textContent.trim() === "曝光墙");
     if (!card) return;
     if (card.dataset.legalHub === "true" && card.querySelector(".legal-hub-feature")) return;
+    const measured = Math.ceil(card.getBoundingClientRect?.().height || 0);
+    if (measured > 0) card.style.minHeight = `${measured}px`;
     card.dataset.legalHub = "true";
     card.id = "legal-home-hub";
     card.classList.remove("expose-wall-box");
@@ -191,6 +195,8 @@
     const card = root.querySelector("#judge-home-hub") || root.querySelector("#china") || Array.from(root.children).find((item) => ["中国官场", "移民法官通过率"].includes(item.querySelector?.("h2")?.textContent.trim()));
     if (!card) return;
     if (!(card.dataset.judgeHub === "true" && card.querySelector(".judge-state-dashboard"))) {
+      const measured = Math.ceil(card.getBoundingClientRect?.().height || 0);
+      if (measured > 0) card.style.minHeight = `${measured}px`;
       card.dataset.judgeHub = "true";
       card.id = "judge-home-hub";
       card.classList.remove("category-empty");
@@ -198,31 +204,44 @@
       card.innerHTML = judgeMarkup();
     }
     if (stateStatsCache) renderStateDashboard(stateStatsCache);
-    else loadStateStats().then(renderStateDashboard);
   }
 
-  function repairCards() {
+  function baseHomeReady() {
     const root = document.querySelector("#sections-grid");
-    if (!root) return;
+    const articles = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [];
+    return Boolean(root?.children?.length && articles.length);
+  }
+
+  function repairCardsOnce() {
+    if (rendered || !baseHomeReady()) return false;
+    const root = document.querySelector("#sections-grid");
+    if (!root) return false;
     replaceImmigrationCard(root);
     replaceLegalCard(root);
     replaceJudgeCard(root);
-  }
-
-  function scheduleRepair() {
-    if (repairTimer) return;
-    repairTimer = window.setTimeout(() => {
-      repairTimer = null;
-      repairCards();
-    }, 16);
+    rendered = true;
+    document.documentElement.dataset.homeImmigrationStable = "true";
+    return true;
   }
 
   function start() {
     installStateStyles();
-    repairCards();
-    const root = document.querySelector("#sections-grid");
-    if (root) new MutationObserver(scheduleRepair).observe(root, { childList: true, subtree: false });
-    [250, 800, 1800, 4000].forEach((delay) => window.setTimeout(repairCards, delay));
+    const stateReady = loadStateStats();
+    const started = Date.now();
+
+    const tick = async () => {
+      if (rendered) return;
+      if (baseHomeReady()) {
+        await stateReady;
+        repairCardsOnce();
+        if (stateStatsCache) renderStateDashboard(stateStatsCache);
+        return;
+      }
+      if (Date.now() - started > 4800) return;
+      window.setTimeout(tick, 80);
+    };
+
+    tick();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });

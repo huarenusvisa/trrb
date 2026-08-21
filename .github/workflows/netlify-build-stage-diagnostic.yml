@@ -1,0 +1,102 @@
+name: Netlify Build Stage Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/netlify-build-stage-diagnostic.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-netlify-build-stage-diagnostic
+  cancel-in-progress: true
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run exact Netlify build stages
+        shell: bash
+        run: |
+          set +e
+          mkdir -p reports /tmp/trrb-build-stage
+          SOURCE_SHA=$(git rev-parse HEAD)
+          FAILED_STAGE=''
+          FAILED_EXIT=0
+          FAILED_LOG=''
+
+          run_stage() {
+            name="$1"; shift
+            log="/tmp/trrb-build-stage/${name}.log"
+            echo "=== $name ==="
+            "$@" >"$log" 2>&1
+            code=$?
+            if [ "$code" -ne 0 ]; then
+              FAILED_STAGE="$name"
+              FAILED_EXIT="$code"
+              FAILED_LOG="$log"
+              return "$code"
+            fi
+            return 0
+          }
+
+          run_stage prep bash -lc "find netlify/functions -type f \\( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \\) -delete && cp config/immigration-knowledge.js immigration-knowledge.js && cp immigrate/center.css immigrate-center.css && cp immigrate/study-knowledge-content.css immigrate-study-knowledge-content.css && cp immigrate/center-seo.js immigrate-center-seo.js && cp immigrate/center.js immigrate-center.js && cp immigrate/study-knowledge-content.js immigrate-study-knowledge-content.js && cp immigrate/work-knowledge-content.js immigrate-work-knowledge-content.js && cp immigrate/employment-knowledge-content.js immigrate-employment-knowledge-content.js && cp immigrate/family-knowledge-content.js immigrate-family-knowledge-content.js && cp immigrate/humanitarian-knowledge-content.js immigrate-humanitarian-knowledge-content.js && cp immigrate/change-status-module.js immigrate-change-status-module.js && cp immigrate/citizenship-module.js immigrate-citizenship-module.js && cp immigrate/knowledge-article-filter.js immigrate-knowledge-article-filter.js" || true
+          [ -n "$FAILED_STAGE" ] || run_stage write-deploy-version node scripts/write-deploy-version.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage generate-sitemaps node scripts/generate-sitemaps.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage generate-legal-sitemap node scripts/generate-legal-sitemap.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage clean-sitemap node scripts/clean-sitemap-against-database.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage ensure-sitemap-articles node scripts/ensure-sitemap-articles.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage finalize-redirects node scripts/finalize-redirects.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage generate-feed node scripts/generate-feed.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage upgrade-article-urls node scripts/upgrade-article-urls.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage validate-site node scripts/validate-site.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage seo-integrity-audit node scripts/seo-integrity-audit.mjs || true
+
+          export SOURCE_SHA FAILED_STAGE FAILED_EXIT FAILED_LOG
+          node <<'NODE'
+          const fs=require('fs');
+          let raw='';
+          try{ if(process.env.FAILED_LOG) raw=fs.readFileSync(process.env.FAILED_LOG,'utf8'); }catch{}
+          raw=raw
+            .replace(/https?:\/\/[^\s]+/g,'<url>')
+            .replace(/sb_(?:secret|publishable)_[A-Za-z0-9_-]+/g,'<redacted>')
+            .replace(/[A-Za-z0-9_+=\/-]{40,}/g,'<redacted>');
+          const lines=raw.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+          const excerpt=lines.slice(-30).join(' | ').slice(0,5000);
+          const report={
+            generated_at:new Date().toISOString(),
+            source_sha:process.env.SOURCE_SHA||'',
+            failed_stage:process.env.FAILED_STAGE||'',
+            failed_exit:Number(process.env.FAILED_EXIT||0),
+            status:process.env.FAILED_STAGE?'failed':'passed',
+            sanitized_log_tail:excerpt
+          };
+          fs.writeFileSync('reports/netlify-build-stage-diagnostic.json',JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify(report,null,2));
+          NODE
+      - name: Commit diagnostic report
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f reports/netlify-build-stage-diagnostic.json || exit 0
+          git config user.name 'TRRB Netlify Build Diagnostic Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add reports/netlify-build-stage-diagnostic.json
+          git commit -m 'Update Netlify build stage diagnostic [skip ci]' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main

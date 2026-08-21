@@ -5,6 +5,18 @@ const file = path.join(process.cwd(), '_redirects');
 const existing = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').trim() : '';
 
 const required = [
+  'http://asylumjudge.com/* https://asylumjudge.com/:splat 301!',
+  'http://www.asylumjudge.com/* https://asylumjudge.com/:splat 301!',
+  'https://www.asylumjudge.com/* https://asylumjudge.com/:splat 301!',
+  'https://asylumjudge.com/ /asylumjudge/index.html 200!',
+  'https://asylumjudge.com/robots.txt /asylumjudge/robots.txt 200!',
+  'https://asylumjudge.com/sitemap.xml /asylumjudge/sitemap.xml 200!',
+  'https://asylumjudge.com/judge /immigration-judge-approval-rate/detail.html 200!',
+  'https://asylumjudge.com/court /immigration-judge-approval-rate/court-detail.html 200!',
+  'https://asylumjudge.com/courts /immigration-judge-approval-rate/courts.html 200!',
+  'https://asylumjudge.com/states /immigration-judge-approval-rate/states.html 200!',
+  'https://asylumjudge.com/china /immigration-judge-approval-rate/china-dashboard.html 200!',
+  'https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology.html 200!',
   'http://trrb.net/* https://trrb.net/:splat 301!',
   'http://www.trrb.net/* https://trrb.net/:splat 301!',
   'https://www.trrb.net/* https://trrb.net/:splat 301!',

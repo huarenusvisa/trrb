@@ -114,13 +114,21 @@ exports.handler = async (event) => {
       });
       const ids = [...new Set((nat || []).map((x) => x.judge_id).filter(Boolean))];
       if (!ids.length) return out(200, { count: 0, results: [], ...(await provenance()) });
-      const judges = await rest('immigration_judges', {
-        query: {
-          select: 'id,judge_name,court_name,court_city,court_state,source,source_updated_at',
-          id: `in.(${ids.join(',')})`,
-          limit: '1000'
-        }
-      });
+      // Keep PostgREST URLs below proxy/CDN limits. A single China query can
+      // contain hundreds of judge UUIDs, and one giant `in.(...)` filter can
+      // exceed the upstream request-line limit even though the data is valid.
+      const judgeBatches = [];
+      for (let i = 0; i < ids.length; i += 100) {
+        const batch = ids.slice(i, i + 100);
+        judgeBatches.push(rest('immigration_judges', {
+          query: {
+            select: 'id,judge_name,court_name,court_city,court_state,source,source_updated_at',
+            id: `in.(${batch.join(',')})`,
+            limit: String(batch.length)
+          }
+        }));
+      }
+      const judges = (await Promise.all(judgeBatches)).flat();
       const jm = new Map((judges || []).map((j) => [j.id, j]));
       const results = (nat || []).map((x) => derived({ ...x, ...(jm.get(x.judge_id) || {}) })).filter((x) => x.judge_name);
       return out(200, { count: results.length, results, ...(await provenance()) });

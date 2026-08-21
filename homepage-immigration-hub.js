@@ -33,6 +33,7 @@
     DE: "特拉华州", WV: "西弗吉尼亚州", KY: "肯塔基州", AL: "阿拉巴马州", MS: "密西西比州",
     AR: "阿肯色州", ID: "爱达荷州", MT: "蒙大拿州", WY: "怀俄明州", ND: "北达科他州", SD: "南达科他州"
   };
+  const coreStateCodes = ["NY", "CA", "TX", "FL", "NJ"];
 
   let stateStatsCache = null;
   let stateStatsLoading = null;
@@ -98,12 +99,12 @@
       #judge-home-hub .judge-state-panel{min-width:0;display:flex;flex-direction:column;justify-content:center}
       #judge-home-hub .judge-state-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px;color:#667085;font-size:11px}
       #judge-home-hub .judge-state-head b{color:#171717;font-size:11px}#judge-home-hub .judge-state-head span{font-size:9px;white-space:nowrap}
-      #judge-home-hub .judge-state-list{display:grid;gap:4px}
+      #judge-home-hub .judge-state-list{display:grid;gap:3px}
       #judge-home-hub .judge-state-row{display:grid;grid-template-columns:64px minmax(0,1fr) 38px;align-items:center;gap:5px;font-size:10px;line-height:1.1}
       #judge-home-hub .judge-state-row b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
       #judge-home-hub .judge-state-row em{font-style:normal;text-align:right;color:#b60000;font-weight:800;font-variant-numeric:tabular-nums}
       #judge-home-hub .judge-state-bar{height:6px;border-radius:999px;background:#eceff3;overflow:hidden}#judge-home-hub .judge-state-bar i{display:block;height:100%;border-radius:999px;background:#cf0000}
-      #judge-home-hub .judge-state-note{display:block;margin-top:5px;color:#7a8390;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      #judge-home-hub .judge-state-note{display:block;margin-top:4px;color:#7a8390;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       @media(max-width:767px){#judge-home-hub .judge-state-dashboard{grid-template-columns:90px minmax(0,1fr);min-height:108px;padding:8px;gap:7px}#judge-home-hub .judge-state-leader{padding:7px}#judge-home-hub .judge-state-leader>b{font-size:14px}#judge-home-hub .judge-state-leader>strong{font-size:22px}#judge-home-hub .judge-state-row{grid-template-columns:58px minmax(0,1fr) 34px;gap:4px;font-size:9px}#judge-home-hub .judge-state-row b{font-size:9px}}
     `;
     document.head.appendChild(style);
@@ -125,32 +126,40 @@
     return sample ? Number(row?.grants || 0) / sample * 100 : 0;
   }
 
-  function selectStates(rows) {
+  function stateView(rows) {
     const clean = (Array.isArray(rows) ? rows : [])
       .filter((row) => row && row.state && String(row.state).toLowerCase() !== "unknown" && sampleOf(row) > 0)
-      .map((row) => ({ ...row, sample: sampleOf(row), rate: rateOf(row) }));
+      .map((row) => ({ ...row, state: String(row.state).trim().toUpperCase(), sample: sampleOf(row), rate: rateOf(row) }));
+
     let reliable = clean.filter((row) => row.sample >= 500);
-    if (reliable.length < 5) reliable = clean.filter((row) => row.sample >= 100);
-    if (reliable.length < 5) reliable = clean;
-    return reliable.sort((a, b) => b.sample - a.sample).slice(0, 12).sort((a, b) => b.rate - a.rate).slice(0, 5);
+    if (reliable.length < 6) reliable = clean.filter((row) => row.sample >= 100);
+    if (reliable.length < 6) reliable = clean;
+
+    const byState = new Map(reliable.map((row) => [row.state, row]));
+    const leader = reliable.slice().sort((a, b) => b.rate - a.rate || b.sample - a.sample)[0] || null;
+    const fixed = coreStateCodes.map((code) => byState.get(code)).filter(Boolean);
+    const topExtra = reliable
+      .filter((row) => !coreStateCodes.includes(row.state))
+      .sort((a, b) => b.rate - a.rate || b.sample - a.sample)[0] || null;
+    const selected = [...fixed, topExtra].filter(Boolean).filter((row, index, list) => list.findIndex((item) => item.state === row.state) === index);
+    return { leader, selected: selected.slice(0, 6) };
   }
 
   function renderStateDashboard(rows) {
     const card = document.querySelector("#judge-home-hub");
     const dashboard = card?.querySelector(".judge-state-dashboard");
     if (!dashboard) return;
-    const selected = selectStates(rows);
-    const leader = selected[0] || null;
-    if (!leader) {
+    const { selected, leader } = stateView(rows);
+    if (!leader || !selected.length) {
       dashboard.innerHTML = `<div class="judge-state-leader"><span>各州通过率</span><b>暂无数据</b><strong>—</strong><small>等待有效裁决样本</small></div><div class="judge-state-panel"><div class="judge-state-head"><b>各州庇护裁决通过率</b><span>全体申请人</span></div><small class="judge-state-note">暂无足够州级数据</small></div>`;
       return;
     }
     dashboard.innerHTML = `
-      <div class="judge-state-leader"><span>较高通过率州</span><b>${stateName(leader.state)}</b><strong>${leader.rate.toFixed(1)}%</strong><small>${leader.sample.toLocaleString("zh-CN")} 件有效裁决</small></div>
+      <div class="judge-state-leader"><span>当前较高州</span><b>${stateName(leader.state)}</b><strong>${leader.rate.toFixed(1)}%</strong><small>${leader.sample.toLocaleString("zh-CN")} 件有效裁决</small></div>
       <div class="judge-state-panel">
-        <div class="judge-state-head"><b>各州庇护裁决通过率</b><span>全体申请人</span></div>
+        <div class="judge-state-head"><b>核心州庇护裁决通过率</b><span>全体申请人</span></div>
         <div class="judge-state-list">${selected.map((row) => `<div class="judge-state-row"><b>${stateName(row.state)}</b><span class="judge-state-bar"><i style="width:${Math.max(2, Math.min(100, row.rate)).toFixed(1)}%"></i></span><em>${row.rate.toFixed(1)}%</em></div>`).join("")}</div>
-        <small class="judge-state-note">优先比较裁决样本量较大的州，避免小样本失真</small>
+        <small class="judge-state-note">固定展示纽约、加州、德州、佛州、新泽西，并补充1个当前较高州</small>
       </div>`;
   }
 
@@ -190,8 +199,14 @@
   }
 
   function replaceJudgeCard(root) {
-    const card = root.querySelector("#judge-home-hub") || root.querySelector("#china") || Array.from(root.querySelectorAll(".news-box")).find((item) => ["中国官场", "移民法官通过率"].includes(item.querySelector("h2")?.textContent.trim()));
-    if (!card) return;
+    let card = root.querySelector("#judge-home-hub") || root.querySelector("#china") || Array.from(root.querySelectorAll(".news-box")).find((item) => ["中国官场", "移民法官通过率"].includes(item.querySelector("h2")?.textContent.trim()));
+    if (!card) {
+      card = document.createElement("article");
+      card.className = "news-box";
+      const immigrationCard = root.querySelector("#immigration");
+      if (immigrationCard) root.insertBefore(card, immigrationCard);
+      else root.appendChild(card);
+    }
     const complete = card.dataset.judgeHub === "true" && Boolean(card.querySelector(".judge-state-dashboard"));
     if (!complete) {
       card.dataset.judgeHub = "true";

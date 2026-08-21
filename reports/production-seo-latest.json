@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T00:27:58.510Z",
+  "generated_at": "2026-08-21T00:38:46.873Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -23,11 +23,17 @@
       "chain": [
         {
           "url": "http://www.trrb.net/",
+          "status": 301,
+          "location": "https://www.trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://www.trrb.net/",
           "status": 0,
           "error": "fetch failed"
         }
       ],
-      "final_url": "http://www.trrb.net/"
+      "final_url": "https://www.trrb.net/"
     },
     "https://www.trrb.net/": {
       "chain": [
@@ -39,8 +45,9 @@
         },
         {
           "url": "https://trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
       "final_url": "https://trrb.net/"
@@ -274,7 +281,7 @@
     }
   },
   "failures": [
-    "bad host redirect chain http://www.trrb.net/ => [{\"url\":\"http://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
+    "bad host redirect chain http://www.trrb.net/ => [{\"url\":\"http://www.trrb.net/\",\"status\":301,\"location\":\"https://www.trrb.net/\",\"error\":\"\"},{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
     {
       "page": "https://trrb.net/trump",
       "problem": "too few direct article links: 0/1"

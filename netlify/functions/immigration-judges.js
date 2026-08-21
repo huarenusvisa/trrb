@@ -103,6 +103,19 @@ exports.handler = async (event) => {
       });
     }
 
+    if (mode === 'top') {
+      const requestedLimit = Number.parseInt(String(p.limit || '12'), 10);
+      const limit = Math.min(24, Math.max(6, Number.isFinite(requestedLimit) ? requestedLimit : 12));
+      const rows = await rest('immigration_judges', {
+        query: {
+          select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
+          order: 'total_asylum_decisions.desc',
+          limit: String(limit)
+        }
+      });
+      return out(200, { count: (rows || []).length, results: (rows || []).map(derived), ...(await provenance()) });
+    }
+
     if (mode === 'china') {
       const nat = await rest('immigration_judge_asylum_nationality', {
         query: {

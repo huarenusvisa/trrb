@@ -106,8 +106,8 @@ function isMajorUrgent(story, evidence) {
 }
 
 function hasHardBlock(story) {
-  // The user explicitly allows legal risk to be bypassed for major official breaking news.
-  // Conflict, privacy and fabrication risks still block automatic publication.
+  // Legal risk remains visible for the editor. Conflict, privacy and fabrication
+  // risks block even priority placement in the human-review queue.
   return Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk);
 }
 
@@ -127,17 +127,17 @@ async function promote(story, evidence) {
     method: "PATCH",
     query: { id: `eq.${story.id}` },
     body: {
-      status: "approved",
-      human_review_status: "not_required",
-      scheduled_at: time,
+      status: "pending_review",
+      human_review_status: "required",
+      scheduled_at: null,
       ai_payload: {
         ...payload,
         official_urgent: true,
+        official_urgent_requires_human_review: true,
         official_urgent_sources: urgentSources,
-        official_urgent_promoted_at: time,
-        legal_risk_bypassed: Boolean(story.legal_risk)
+        official_urgent_review_queued_at: time
       },
-      decision_reason: `${story.decision_reason || ""}；DHS/ICE官方重大突发事件立即发布${story.legal_risk ? "（仅绕过法律风险拦截）" : ""}`,
+      decision_reason: `${story.decision_reason || ""}；DHS/ICE官方重大突发事件，已优先进入后台人工审核`,
       updated_at: time
     },
     prefer: "return=minimal"
@@ -161,14 +161,14 @@ async function main() {
   }
 
   console.log(JSON.stringify({
-    promoter: "ice-official-urgent-v1",
+    promoter: "ice-official-urgent-review-queue-v2",
     candidates: stories.length,
-    promoted,
+    queued_for_human_review: promoted,
     hard_blocked_conflict_privacy_or_fabrication: hardBlocked
   }, null, 2));
 }
 
 main().catch((error) => {
-  console.error("DHS/ICE官方重大突发事件提升失败：", error);
+  console.error("DHS/ICE官方重大突发进入人工审核队列失败：", error);
   process.exitCode = 1;
 });

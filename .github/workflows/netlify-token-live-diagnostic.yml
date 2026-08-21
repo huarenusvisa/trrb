@@ -1,0 +1,66 @@
+name: Netlify Token Live Diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/netlify-token-live-diagnostic.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: b30280d2-b4f8-4a19-9135-862dd9c7171f
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify Netlify token without exposing it
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          token_present=false
+          site_http=0
+          site_match=false
+          site_name=''
+          if [ -n "${NETLIFY_AUTH_TOKEN:-}" ]; then
+            token_present=true
+            site_http=$(curl -sS -o /tmp/netlify-site.json -w '%{http_code}' \
+              -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+              -H 'Accept: application/json' \
+              "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID" || true)
+            if [ "$site_http" = "200" ]; then
+              export NETLIFY_SITE_ID
+              site_name=$(node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('/tmp/netlify-site.json','utf8'));process.stdout.write(String(j.name||''))")
+              returned_id=$(node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('/tmp/netlify-site.json','utf8'));process.stdout.write(String(j.id||j.site_id||''))")
+              [ "$returned_id" = "$NETLIFY_SITE_ID" ] && site_match=true
+            fi
+          fi
+          cat > reports/netlify-token-live-diagnostic.json <<EOF
+          {
+            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "token_present": $token_present,
+            "site_lookup_http_status": $site_http,
+            "site_id_match": $site_match,
+            "site_name": "$site_name"
+          }
+          EOF
+          cat reports/netlify-token-live-diagnostic.json
+      - name: Commit diagnostic report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'TRRB Netlify Diagnostic Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add reports/netlify-token-live-diagnostic.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update Netlify token live diagnostic [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main

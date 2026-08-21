@@ -23,6 +23,23 @@ const required = [
   'https://asylumjudge.com/states /immigration-judge-approval-rate/states.html 200!',
   'https://asylumjudge.com/china /immigration-judge-approval-rate/china-dashboard.html 200!',
   'https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology.html 200!',
+  '/asylumjudge /asylumjudge/trrb.html 200!',
+  '/asylumjudge/ /asylumjudge/trrb.html 200!',
+  '/asylumjudge/judge /immigration-judge-approval-rate/detail.html 200!',
+  '/asylumjudge/court /immigration-judge-approval-rate/court-detail.html 200!',
+  '/asylumjudge/courts /immigration-judge-approval-rate/courts.html 200!',
+  '/asylumjudge/states /immigration-judge-approval-rate/states.html 200!',
+  '/asylumjudge/china /immigration-judge-approval-rate/china-dashboard.html 200!',
+  '/asylumjudge/methodology /immigration-judge-approval-rate/methodology.html 200!',
+  '/immigration-judge-approval-rate /asylumjudge 301!',
+  '/immigration-judge-approval-rate/ /asylumjudge 301!',
+  '/immigration-judge-approval-rate/index.html /asylumjudge 301!',
+  '/immigration-judge-approval-rate/detail.html /asylumjudge/judge 301!',
+  '/immigration-judge-approval-rate/court-detail.html /asylumjudge/court 301!',
+  '/immigration-judge-approval-rate/courts.html /asylumjudge/courts 301!',
+  '/immigration-judge-approval-rate/states.html /asylumjudge/states 301!',
+  '/immigration-judge-approval-rate/china-dashboard.html /asylumjudge/china 301!',
+  '/immigration-judge-approval-rate/methodology.html /asylumjudge/methodology 301!',
   'http://trrb.net/* https://trrb.net/:splat 301!',
   'http://www.trrb.net/* https://trrb.net/:splat 301!',
   'https://www.trrb.net/* https://trrb.net/:splat 301!',
@@ -65,6 +82,18 @@ const filtered = lines.filter((line) => {
 });
 const output = [...required, ...filtered].join('\n') + '\n';
 fs.writeFileSync(file, output);
+
+const sitemapFile = path.join(process.cwd(), 'sitemap.xml');
+if (fs.existsSync(sitemapFile)) {
+  const sitemap = fs.readFileSync(sitemapFile, 'utf8');
+  fs.writeFileSync(
+    sitemapFile,
+    sitemap.replace(
+      /<loc>https:\/\/trrb\.net\/immigration-judge-approval-rate<\/loc>/g,
+      '<loc>https://trrb.net/asylumjudge</loc>'
+    )
+  );
+}
 
 // This script is the final authority for generated redirect metadata. Fail in
 // the same process if another generated line managed to retain a conflicting

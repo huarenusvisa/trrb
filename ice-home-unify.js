@@ -52,8 +52,7 @@
     window.renderSections = function unifiedSections(articles) {
       const source = Array.isArray(articles) ? articles : [];
 
-      // Preserve the complete homepage section set owned by articles-home.js
-      // (US politics, crime, China officialdom, immigration, asylum, exposure wall).
+      // Preserve the complete homepage section set owned by articles-home.js.
       baseRenderSections(source);
 
       const root = document.querySelector("#sections-grid");
@@ -62,7 +61,15 @@
       const iceHtml = window.renderCategorySection(ICE_CATEGORY, source);
       const existing = root.querySelector("#ice");
       if (existing) existing.outerHTML = iceHtml;
-      else root.insertAdjacentHTML("afterbegin", iceHtml);
+      else root.insertAdjacentHTML("beforeend", iceHtml);
+
+      // Homepage order is intentionally shared by desktop and mobile:
+      // 美国时政 first, ICE执法动态 second.
+      const politics = root.querySelector("#politics");
+      const ice = root.querySelector("#ice");
+      if (politics && ice && politics.nextElementSibling !== ice) {
+        politics.insertAdjacentElement("afterend", ice);
+      }
     };
 
     return true;

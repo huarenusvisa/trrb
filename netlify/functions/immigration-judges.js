@@ -1,6 +1,8 @@
 const { rest } = require('./_shared/supabase-admin');
 
 const MIN_RELIABLE_DECISIONS = 50;
+const REST_PAGE_SIZE = 1000;
+const REST_MAX_ROWS = 10000;
 const out = (status, body) => ({
   statusCode: status,
   headers: {
@@ -11,6 +13,23 @@ const out = (status, body) => ({
   body: JSON.stringify(body)
 });
 const num = (v) => Number(v || 0);
+
+async function restAll(table, { query = {}, pageSize = REST_PAGE_SIZE, maxRows = REST_MAX_ROWS } = {}) {
+  const rows = [];
+  for (let offset = 0; offset < maxRows; offset += pageSize) {
+    const page = await rest(table, {
+      query: {
+        ...query,
+        limit: String(pageSize),
+        offset: String(offset)
+      }
+    });
+    if (!Array.isArray(page)) throw new Error(`${table} pagination returned a non-array response`);
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+  }
+  throw new Error(`${table} pagination exceeded ${maxRows} rows`);
+}
 
 function derived(row) {
   const grants = num(row.grants);
@@ -93,7 +112,9 @@ exports.handler = async (event) => {
     }
 
     if (mode === 'stats') {
-      const rows = await rest('immigration_judges', { query: { select: 'court_name,total_asylum_decisions', limit: '5000' } });
+      const rows = await restAll('immigration_judges', {
+        query: { select: 'id,court_name,total_asylum_decisions', order: 'id.asc' }
+      });
       const courts = new Set((rows || []).map((x) => x.court_name).filter(Boolean));
       return out(200, {
         judges: (rows || []).length,
@@ -186,7 +207,9 @@ exports.handler = async (event) => {
 
     if (mode === 'courts') {
       const q = String(p.q || '').trim().toLowerCase();
-      const rows = await rest('immigration_judges', { query: { select: 'court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions', limit: '5000' } });
+      const rows = await restAll('immigration_judges', {
+        query: { select: 'id,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions', order: 'id.asc' }
+      });
       const map = new Map();
       for (const r of rows || []) {
         const key = [r.court_name, r.court_city, r.court_state].join('|');
@@ -221,7 +244,9 @@ exports.handler = async (event) => {
     }
 
     if (mode === 'states') {
-      const rows = await rest('immigration_judges', { query: { select: 'court_name,court_state,total_asylum_decisions,grants,denials,other_decisions', limit: '5000' } });
+      const rows = await restAll('immigration_judges', {
+        query: { select: 'id,court_name,court_state,total_asylum_decisions,grants,denials,other_decisions', order: 'id.asc' }
+      });
       const map = new Map();
       for (const r of rows || []) {
         const state = r.court_state || 'Unknown';

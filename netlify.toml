@@ -51,11 +51,11 @@
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+    Cache-Control = "no-cache, no-store, must-revalidate"
 [[headers]]
   for = "/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+    Cache-Control = "no-cache, no-store, must-revalidate"
 [[headers]]
   for = "/*.html"
   [headers.values]

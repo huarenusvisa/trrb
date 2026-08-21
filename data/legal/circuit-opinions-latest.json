@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T15:51:27.869Z",
+  "generatedAt": "2026-08-21T16:51:00.501Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -339,6 +339,14 @@
       "sourceFinalUrl": "https://www2.ca3.uscourts.gov/recentop/week/recprec.htm",
       "documents": [
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252380p.pdf",
+          "title": "USA v. Christopher Birry"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/242542p.pdf",
+          "title": "USA v. Philip Epps"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251435p.pdf",
           "title": "USA v. Kenneth Strickland"
         },
@@ -411,12 +419,20 @@
           "title": "John Doe v. Princeton University Trustees"
         },
         {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251693p.pdf",
-          "title": "Savannah Byers v. Finishing Systems Inc"
+          "url": "https://www2.ca3.uscourts.gov/opinarch/262872np.pdf",
+          "title": "Frank Monte, III v."
         },
         {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251459p.pdf",
-          "title": "Cheryl Hileman v. West Penn Allegheny Health System Inc"
+          "url": "https://www2.ca3.uscourts.gov/opinarch/262348np.pdf",
+          "title": "Jermaine Lewis v."
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252473np.pdf",
+          "title": "USA v. Jason Mika"
+        },
+        {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/251411np.pdf",
+          "title": "Joel Ruelas-Manzo v. Attorney General United States of America"
         },
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/261741np.pdf",
@@ -521,22 +537,6 @@
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/242184np.pdf",
           "title": "Lipitor Antitrust Litigation v."
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/241641np1.pdf",
-          "title": "USA v. William Manderville"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/262501np.pdf",
-          "title": "USA v. Frank Monte, III"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/253005np.pdf",
-          "title": "Wilson Brito-Hidalgo v. Attorney General United States of America"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/251673np.pdf",
-          "title": "Carlos Baires-Rivas v. Attorney General United States of America"
         }
       ],
       "notes": []
@@ -1195,6 +1195,14 @@
       "sourceFinalUrl": "https://www.ca9.uscourts.gov/decisions/opinions/index.xml",
       "documents": [
         {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/21/25-4763.pdf",
+          "title": null
+        },
+        {
+          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/21/24-2701.pdf",
+          "title": null
+        },
+        {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/20/23-780.pdf",
           "title": null
         },
@@ -1285,14 +1293,6 @@
         {
           "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/24-7460.pdf",
           "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/13/25-1372.pdf",
-          "title": null
-        },
-        {
-          "url": "https://cdn.ca9.uscourts.gov/datastore/opinions/2026/08/12/25-2135.pdf",
-          "title": null
         }
       ],
       "notes": []
@@ -1306,6 +1306,10 @@
       "documents": [
         {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111492628.pdf",
+          "title": null
+        },
+        {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111492665.pdf",
           "title": null
         },
         {
@@ -1569,6 +1573,38 @@
       "sourceFinalUrl": "https://media.cadc.uscourts.gov/opinions/",
       "documents": [
         {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/22-3063-2189313.pdf",
+          "title": "22-3063"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-1384-2189320.pdf",
+          "title": "24-1384"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/24-3151.pdf",
+          "title": "24-3151"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5033-2189303.pdf",
+          "title": "25-5033"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5148-2189332.pdf",
+          "title": "25-5148"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-5033.25-7011.pdf",
+          "title": "25-7011"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-7080-2189338.pdf",
+          "title": "25-7080"
+        },
+        {
+          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-7129-2189343.pdf",
+          "title": "25-7129"
+        },
+        {
           "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/08/25-1148-2189173.pdf",
           "title": "25-1148"
         },
@@ -1735,34 +1771,6 @@
         {
           "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-5103-2183128.pdf",
           "title": "23-5103"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-5277-2183134.pdf",
-          "title": "24-5277"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-5239-2183141.pdf",
-          "title": "25-5239"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/25-1050-2183025.pdf",
-          "title": "25-1050"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/23-7146.pdf",
-          "title": "23-7146"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-3013-2182045.pdf",
-          "title": "24-3013"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-7127-2182049.pdf",
-          "title": "24-7127"
-        },
-        {
-          "url": "https://media.cadc.uscourts.gov/opinions/docs/2026/07/24-7152-2182059.pdf",
-          "title": "24-7152"
         }
       ],
       "notes": []

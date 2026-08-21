@@ -1,3 +1,4 @@
+# rerun after validator decoupling
 name: Netlify Hook返回元数据诊断
 
 on:

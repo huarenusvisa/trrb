@@ -16,9 +16,11 @@ import requests
 SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
 PARQUET_PATH = Path(os.environ.get("EOIR_PARQUET_PATH", "/tmp/eoir-cases.parquet"))
-SOURCE_NAME = os.environ.get("EOIR_JUDGE_SOURCE_NAME", "EOIR FOIA case data processed by Deportation Data Project")
-SOURCE_URL = os.environ.get("EOIR_JUDGE_SOURCE_URL", "https://deportationdata.org/data/processed/eoir.html")
+SOURCE_NAME = os.environ.get("EOIR_JUDGE_SOURCE_NAME", "EOIR FOIA Case Data (official authority; normalized derivative input)")
+SOURCE_URL = os.environ.get("EOIR_JUDGE_SOURCE_URL", "https://fileshare.eoir.justice.gov/EOIR%20Case%20Data.zip")
 SOURCE_DATE = os.environ.get("EOIR_JUDGE_SOURCE_DATE", "2026-07-01")
+PROCESSOR_NAME = os.environ.get("EOIR_JUDGE_PROCESSOR_NAME", "Deportation Data Project")
+PROCESSOR_URL = os.environ.get("EOIR_JUDGE_PROCESSOR_URL", "https://deportationdata.org/data/processed/eoir.html")
 SCOPE_START = os.environ.get("EOIR_JUDGE_SCOPE_START", "2020-01-01")
 SCOPE_END = os.environ.get("EOIR_JUDGE_SCOPE_END", SOURCE_DATE)
 AT_MANIFEST_URL = os.environ.get("ASYLUMTRACKER_MANIFEST_URL", "https://asylumtracker.com/data/dataset-manifest.json")
@@ -190,7 +192,7 @@ def main():
       group by judge_name,nationality order by judge_name,nationality
     """).fetchall()
 
-    note = {"scope_start": SCOPE_START, "scope_end": SCOPE_END, "methodology": "Grant rate = grants/(grants+denials); procedural outcomes excluded", "processed_source": "Deportation Data Project CC0, derived from EOIR FOIA releases", "preflight": preflight, "asylumtracker_files": crosscheck.get("files", {})}
+    note = {"scope_start": SCOPE_START, "scope_end": SCOPE_END, "methodology": "Grant rate = grants/(grants+denials); procedural outcomes excluded", "authoritative_source": {"name": SOURCE_NAME, "url": SOURCE_URL, "snapshot_date": SOURCE_DATE}, "normalization_layer": {"name": PROCESSOR_NAME, "url": PROCESSOR_URL, "sha256": source_hash}, "preflight": preflight, "asylumtracker_crosscheck_files": crosscheck.get("files", {})}
     batch = rest("immigration_judge_import_batches", "POST", payload={"source_name": SOURCE_NAME, "source_url": SOURCE_URL, "source_date": SOURCE_DATE, "source_sha256": source_hash, "status": "validated", "input_rows": int(merits_count), "accepted_rows": 0, "rejected_rows": 0, "warning_rows": 0, "notes": json.dumps(note, ensure_ascii=False)}, prefer="return=representation")[0]
     batch_id = batch["id"]
     now = datetime.now(timezone.utc).isoformat()

@@ -1,5 +1,12 @@
 (() => {
   let hydrateTimer = null;
+  const categoryLabel = {
+    restaurant:'餐饮', 'beauty-nail':'美甲/美容', massage:'按摩', construction:'装修/建筑',
+    'logistics-warehouse':'物流/仓库', 'truck-driver':'卡车/司机', 'retail-grocery':'超市/零售',
+    'home-care':'家政/护理', legal:'律师/法律', 'accounting-finance':'会计/金融',
+    'real-estate':'地产', education:'教育', 'it-tech':'IT/科技', 'office-admin':'办公室/行政', sales:'销售', other:'其他'
+  };
+  const employmentLabel = {full_time:'全职',part_time:'兼职',contract:'合同',temporary:'临时',internship:'实习',unspecified:'类型未注明'};
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
 
   function ageText(value) {
@@ -37,15 +44,21 @@
     if (status) status.textContent = `本页显示 ${count} 个可直接联系或申请的岗位`;
   }
 
+  function localizeMeta(card, row) {
+    const pills = Array.from(card.querySelectorAll('.meta .pill'));
+    if (pills.length >= 2) {
+      pills[pills.length - 2].textContent = categoryLabel[row.category_slug] || row.category_slug || '其他';
+      pills[pills.length - 1].textContent = employmentLabel[row.employment_type] || row.employment_type || '类型未注明';
+    }
+  }
+
   function decorate(card, row) {
     if (!card || card.dataset.unifiedReady === 'true') return;
     const actionMarkup = buildActions(row);
     if (!row || !actionMarkup) { card.remove(); return; }
     card.dataset.unifiedReady = 'true';
-    const meta = card.querySelector('.meta');
-    const summary = String(row.description || '').trim();
+    localizeMeta(card, row);
     const time = ageText(row.published_at || row.updated_at);
-    if (summary) meta?.insertAdjacentHTML('afterend', `<p class="job-summary">${esc(summary)}</p>`);
     const actions = document.createElement('div');
     actions.className = 'job-actions';
     if (time) actions.insertAdjacentHTML('beforeend', `<div class="job-age">${esc(time)}发布</div>`);

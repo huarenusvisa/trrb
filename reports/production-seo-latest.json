@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T23:52:31.363Z",
+  "generated_at": "2026-08-21T00:12:20.562Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -72,8 +72,8 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 112766,
-      "article_count": 212,
+      "bytes": 112397,
+      "article_count": 211,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v6-public-only-ice-safe-dedupe"

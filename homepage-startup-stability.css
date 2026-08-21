@@ -1,34 +1,72 @@
-/* Homepage startup stability: avoid transient black/empty states and lock US politics before ICE. */
+/* Homepage startup stability: no transient black/broken states; US politics before ICE. */
 #sections-grid > #politics{order:-20}
 #sections-grid > #ice{order:-19}
 
-html:not([data-home-final-ui="true"]) #hero,
-html:not([data-home-final-ui="true"]) #rank-list{
-  position:relative;
+#hero,#top-list,#rank-list{position:relative}
+
+/* Hide only the transient children, not the containers, so stable skeletons remain visible. */
+html:not([data-home-final-ui="true"]) #hero > *,
+html:not([data-home-final-ui="true"]) #top-list > *,
+html:not([data-home-final-ui="true"]) #rank-list > *{
+  opacity:0!important;
   visibility:hidden!important;
 }
 
-html:not([data-home-final-ui="true"]) #hero{
+html:not([data-home-final-ui="true"]) #hero,
+html:not([data-home-final-ui="true"]) #top-list,
+html:not([data-home-final-ui="true"]) #rank-list{
+  overflow:hidden;
   background:#f3f4f6!important;
 }
 
 html:not([data-home-final-ui="true"]) #hero::after,
+html:not([data-home-final-ui="true"]) #top-list::after,
 html:not([data-home-final-ui="true"]) #rank-list::after{
   content:"";
   position:absolute;
   inset:0;
-  visibility:visible!important;
+  z-index:20;
   display:block;
   border-radius:8px;
   background:linear-gradient(100deg,#f3f4f6 20%,#e8ebef 38%,#f3f4f6 56%);
   background-size:220% 100%;
   animation:trrbHomeSkeleton 1.15s linear infinite;
+  pointer-events:none;
+}
+
+/* Final content fades in instead of appearing in one hard flash. */
+html[data-home-final-ui="true"] #hero,
+html[data-home-final-ui="true"] #top-list,
+html[data-home-final-ui="true"] #rank-list{
+  animation:trrbHomeReveal .16s ease-out both;
 }
 
 @keyframes trrbHomeSkeleton{
   from{background-position:120% 0}
   to{background-position:-120% 0}
 }
+@keyframes trrbHomeReveal{
+  from{opacity:.72}
+  to{opacity:1}
+}
+
+/* If 72h has no qualified long-form politics item, never show a black error-like card. */
+#hero .hero-focus-empty{
+  min-height:inherit;
+  height:100%;
+  box-sizing:border-box;
+  display:flex!important;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+  text-align:center;
+  background:#f3f4f6!important;
+  color:#111827!important;
+}
+#hero .hero-focus-empty h1{color:#111827!important}
+#hero .hero-focus-empty p{color:#667085!important}
+#hero .hero-focus-empty .tag{background:#d60000!important;color:#fff!important}
 
 #rank-list .rank-empty{
   display:flex!important;
@@ -48,10 +86,15 @@ html:not([data-home-final-ui="true"]) #rank-list::after{
 @media(max-width:767px){
   #rank-list{min-height:500px!important}
   #rank-list .rank-empty{min-height:500px}
-  html:not([data-home-final-ui="true"]) #hero::after{border-radius:8px}
+  /* top-list is not a mobile surface; never let its loading state reserve a visible block. */
+  #top-list{display:none!important;min-height:0!important}
 }
 
 @media(prefers-reduced-motion:reduce){
   html:not([data-home-final-ui="true"]) #hero::after,
-  html:not([data-home-final-ui="true"]) #rank-list::after{animation:none}
+  html:not([data-home-final-ui="true"]) #top-list::after,
+  html:not([data-home-final-ui="true"]) #rank-list::after,
+  html[data-home-final-ui="true"] #hero,
+  html[data-home-final-ui="true"] #top-list,
+  html[data-home-final-ui="true"] #rank-list{animation:none}
 }

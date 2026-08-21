@@ -116,6 +116,26 @@ exports.handler = async (event) => {
       return out(200, { count: (rows || []).length, results: (rows || []).map(derived), ...(await provenance()) });
     }
 
+    if (mode === 'knowledge') {
+      const requestedLimit = Number.parseInt(String(p.limit || '4'), 10);
+      const limit = Math.min(8, Math.max(3, Number.isFinite(requestedLimit) ? requestedLimit : 4));
+      const rows = await rest('articles', {
+        query: {
+          select: 'id,title,slug,summary,category_name,published_at',
+          status: 'eq.published',
+          category_name: 'like.移民美国·人道主义庇护·*',
+          order: 'published_at.desc.nullslast',
+          limit: String(limit)
+        }
+      });
+      return out(200, {
+        count: (rows || []).length,
+        source: '唐人日报·移民美国·人道主义庇护',
+        schedule: 'daily',
+        results: rows || []
+      });
+    }
+
     if (mode === 'china') {
       const nat = await rest('immigration_judge_asylum_nationality', {
         query: {

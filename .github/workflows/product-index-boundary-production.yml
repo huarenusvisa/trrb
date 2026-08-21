@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - '_headers'
-      - 'finance/**'
+      - 'niulai/**'
       - 'jobs/**'
       - 'scripts/generate-sitemaps.mjs'
       - 'netlify/edge-functions/sitemap-live.ts'
@@ -30,14 +30,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q '/finance/' _headers
-          grep -q '/finance/\*' _headers
+          grep -q '/niulai/' _headers
+          grep -q '/niulai/\*' _headers
           grep -q '/jobs/publish.html' _headers
           grep -q '/jobs/seeker.html' _headers
           grep -q 'X-Robots-Tag: noindex, follow, noarchive' _headers
           grep -q "https://trrb.net/immigrate/" scripts/generate-sitemaps.mjs
           grep -q "https://trrb.net/jobs/" scripts/generate-sitemaps.mjs
-          ! grep -q "https://trrb.net/finance/" scripts/generate-sitemaps.mjs
+          ! grep -q "https://trrb.net/niulai/" scripts/generate-sitemaps.mjs
           grep -q 'STATIC_HUBS' netlify/edge-functions/sitemap-live.ts
 
       - name: 等待生产并验收HTTP头与Live Sitemap
@@ -47,13 +47,13 @@ jobs:
           for attempt in $(seq 1 90); do
             stamp="${GITHUB_RUN_ID}-${attempt}"
             sitemap=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?product-index=$stamp" || true)
-            finance=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/finance/?product-index=$stamp" | tr -d '\r' || true)
+            finance=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/niulai/?product-index=$stamp" | tr -d '\r' || true)
             publish=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/publish.html?product-index=$stamp" | tr -d '\r' || true)
             seeker=$(curl -sSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/seeker.html?product-index=$stamp" | tr -d '\r' || true)
 
             sitemap_jobs=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/jobs/</loc>' || true)
             sitemap_immigrate=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/immigrate/</loc>' || true)
-            sitemap_finance=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/finance/</loc>' || true)
+            sitemap_finance=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/niulai/</loc>' || true)
             finance_noindex=$(printf '%s' "$finance" | grep -ci '^x-robots-tag:.*noindex' || true)
             publish_noindex=$(printf '%s' "$publish" | grep -ci '^x-robots-tag:.*noindex' || true)
             seeker_noindex=$(printf '%s' "$seeker" | grep -ci '^x-robots-tag:.*noindex' || true)

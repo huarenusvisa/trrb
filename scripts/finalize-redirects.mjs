@@ -70,12 +70,15 @@ const required = [
   '/topic/ice/ /ice 301!',
   '/trump/ /trump 301!',
   '/topic/trump /trump 301!',
-  '/topic/trump/ /trump 301!'
+  '/topic/trump/ /trump 301!',
+  '/finance /niulai/ 301!',
+  '/finance/ /niulai/ 301!',
+  '/finance/:splat /niulai/:splat 301!'
 ];
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
-const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide']);
+const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
   return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);
@@ -116,7 +119,10 @@ for (const [route, target] of [
   ['/topic/ice/', '/ice'],
   ['/trump/', '/trump'],
   ['/topic/trump', '/trump'],
-  ['/topic/trump/', '/trump']
+  ['/topic/trump/', '/trump'],
+  ['/finance', '/niulai/'],
+  ['/finance/', '/niulai/'],
+  ['/finance/:splat', '/niulai/:splat']
 ]) {
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);

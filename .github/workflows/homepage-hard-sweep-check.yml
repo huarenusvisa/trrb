@@ -32,5 +32,8 @@ jobs:
           ! grep -q 'new MutationObserver' jobs-home.js
           ! grep -q 'new MutationObserver' homepage-immigration-hub.js
           grep -q 'forceRender: true' homepage-refresh-guard.js
+          grep -q 'generalHeroFallback' articles-home-live-fix.js
           grep -q 'baseHomeReady' jobs-home.js
           grep -q 'baseHomeReady' homepage-immigration-hub.js
+      - name: Run site invariant validation
+        run: node scripts/validate-site.mjs

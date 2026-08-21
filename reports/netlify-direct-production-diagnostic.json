@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-08-21T04:39:33Z",
-  "target_sha": "1e7037191004c20d5754717aa865325df17aa9cf",
+  "generated_at": "2026-08-21T04:41:14Z",
+  "target_sha": "d7f0466a3080b479fc3c2fe0acd8b0d1ba404514",
   "token_present": true,
   "site_lookup_http_status": 200,
   "exact_deploy_exit_code": 1,
-  "failure_kind": "authentication"
+  "failure_kind": "unclassified_cli_failure"
 }

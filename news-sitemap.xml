@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/%E7%BE%8E%E5%9B%BD%E8%AE%B0%E8%80%85%E8%BF%94%E7%BE%8E%E7%AA%81%E9%81%AD-cbp-%E6%89%A3%E7%95%99-4-%E5%B0%8F%E6%97%B6%E6%8B%92%E9%87%8A%E7%BC%98%E7%94%B1%E9%9A%94%E7%BB%9D%E5%BE%8B%E5%B8%88%E8%BE%B9%E5%A2%83%E6%89%A7%E6%B3%95%E6%9D%83%E9%99%90%E9%81%AD%E6%8B%B7%E9%97%AE-mt2wibel-43edd7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T12:03:52.508Z</news:publication_date>
+        <news:title>美国记者返美突遭 CBP 扣留 4 小时！拒释缘由隔绝律师，边境执法权限遭拷问</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%BB%E6%B0%91%E6%88%98%E7%81%AB%E7%83%A7%E8%BF%9B%E5%8F%B8%E6%B3%95%E7%95%8Cdhs%E9%AB%98%E5%AE%98%E7%82%AE%E5%88%B6%E6%9C%80%E5%B7%AE%E6%B3%95%E5%AE%98%E5%90%8D%E5%8D%95%E7%99%BE%E4%BD%99%E5%90%8D%E5%89%8D%E6%B3%95%E5%AE%98%E6%8E%80%E8%B5%B7%E5%8F%8D%E5%87%BB%E9%A3%8E%E6%9A%B4-mt2vvnan-3f819e</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -2078,14 +2086,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-19T12:24:07.251Z</news:publication_date>
         <news:title>DHS移民执法内幕曝光！CBP内部短信揭“监控抓捕链”，种族争议引爆民权危机</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/%E9%A9%B1%E9%80%90%E4%BB%A4%E6%BF%80%E5%A2%9E%E8%83%8C%E5%90%8E%E7%89%B9%E6%9C%97%E6%99%AE%E9%87%8D%E5%A1%91%E7%A7%BB%E6%B0%91%E6%B3%95%E9%99%A2%E4%BD%93%E7%B3%BB%E6%B3%95%E5%AE%98%E8%A3%81%E9%87%8F%E6%9D%83%E9%81%AD%E5%BC%BA%E5%8A%9B%E6%8C%A4%E5%8E%8B-mt01mgne-84a089</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T12:03:45.481Z</news:publication_date>
-        <news:title>驱逐令激增背后：特朗普重塑移民法院体系，法官“裁量权”遭强力挤压</news:title>
       </news:news>
     </url>
 </urlset>

@@ -103,6 +103,41 @@ exports.handler = async (event) => {
       });
     }
 
+    if (mode === 'top') {
+      const requestedLimit = Number.parseInt(String(p.limit || '12'), 10);
+      const limit = Math.min(24, Math.max(6, Number.isFinite(requestedLimit) ? requestedLimit : 12));
+      const rows = await rest('immigration_judges', {
+        query: {
+          select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
+          order: 'total_asylum_decisions.desc',
+          limit: String(limit)
+        }
+      });
+      return out(200, { count: (rows || []).length, results: (rows || []).map(derived), ...(await provenance()) });
+    }
+
+    if (mode === 'knowledge') {
+      const requestedLimit = Number.parseInt(String(p.limit || '4'), 10);
+      const limit = Math.min(8, Math.max(3, Number.isFinite(requestedLimit) ? requestedLimit : 4));
+      const rows = await rest('articles', {
+        query: {
+          select: 'id,title,slug,summary,category_name,published_at',
+          status: 'eq.published',
+          category_name: 'eq.移民美国',
+          topic_key: 'is.null',
+          or: '(title.ilike.*庇护*,summary.ilike.*庇护*,title.ilike.*I-589*,summary.ilike.*I-589*,title.ilike.*防止递解*,summary.ilike.*防止递解*,title.ilike.*禁止酷刑*,summary.ilike.*禁止酷刑*)',
+          order: 'published_at.desc.nullslast',
+          limit: String(limit)
+        }
+      });
+      return out(200, {
+        count: (rows || []).length,
+        source: '唐人日报·移民美国·人道主义庇护',
+        schedule: 'daily',
+        results: rows || []
+      });
+    }
+
     if (mode === 'china') {
       const nat = await rest('immigration_judge_asylum_nationality', {
         query: {

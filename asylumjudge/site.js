@@ -111,6 +111,65 @@ async function loadOverview() {
   }
 }
 
+function renderFeaturedJudges(rows) {
+  const container = $('#featured-judges');
+  if (!container) return;
+  container.innerHTML = rows.length ? rows.map((row) => {
+    const place = [row.court_city, row.court_state].filter(Boolean).join(', ');
+    const court = row.court_name || place || '法院信息待更新';
+    return `<a class="featured-judge" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><div class="featured-judge-main"><strong>${esc(row.judge_name || '未命名法官')}</strong><span>${esc(court)}</span>${place && court !== place ? `<small>${esc(place)}</small>` : ''}</div><div class="featured-metrics"><span><small>裁决样本</small><b>${fmt(row.total_asylum_decisions)} 件</b></span><span><small>裁决批准率</small><b class="featured-rate">${pct(row.adjudicated_approval_rate)}</b></span></div><i aria-hidden="true">→</i></a>`;
+  }).join('') : '<div class="empty">暂无可显示的法官资料</div>';
+}
+
+function knowledgeTopic(categoryName) {
+  const parts = String(categoryName || '').split('·').map((part) => part.trim()).filter(Boolean);
+  return parts[2] || '庇护知识';
+}
+
+function knowledgeUrl(row) {
+  const slug = String(row.slug || '').trim();
+  const id = String(row.id || '').trim();
+  return slug
+    ? `https://trrb.net/news/${encodeURIComponent(slug)}`
+    : `https://trrb.net/article.html?id=${encodeURIComponent(id)}`;
+}
+
+function knowledgeDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '每日更新';
+  return new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric' }).format(date);
+}
+
+function renderDailyKnowledge(rows) {
+  const container = $('#daily-knowledge-items');
+  if (!container) return;
+  container.innerHTML = rows.length ? rows.slice(0, 4).map((row, index) => `<a class="knowledge-item${index === 0 ? ' featured' : ''}" href="${esc(knowledgeUrl(row))}"><span><b>${esc(knowledgeTopic(row.category_name))}</b><time datetime="${esc(row.published_at || '')}">${esc(knowledgeDate(row.published_at))}</time></span><strong>${esc(row.title || '庇护知识')}</strong>${index === 0 ? `<p>${esc(row.summary || '查看唐人日报最新庇护知识与办理要点。')}</p>` : ''}<i aria-hidden="true">→</i></a>`).join('') : '<div class="knowledge-empty">今日内容正在整理，请稍后查看。</div>';
+}
+
+async function loadDailyKnowledge() {
+  const container = $('#daily-knowledge-items');
+  if (!container) return;
+  try {
+    const data = await json('/.netlify/functions/immigration-judges?mode=knowledge&limit=4');
+    renderDailyKnowledge(data.results || []);
+  } catch (error) {
+    container.innerHTML = '<div class="knowledge-empty">最新庇护知识暂时无法读取，请稍后刷新。</div>';
+  }
+}
+
+async function loadFeaturedJudges() {
+  const container = $('#featured-judges');
+  if (!container) return;
+  try {
+    const data = await json('/.netlify/functions/immigration-judges?mode=top&limit=12');
+    renderFeaturedJudges(data.results || []);
+    const badge = $('#judge-source-badge');
+    if (badge && data.production_grade) badge.textContent = 'EOIR 官方数据';
+  } catch (error) {
+    container.innerHTML = '<div class="empty">法官资料暂时无法读取，请稍后重试。</div>';
+  }
+}
+
 function renderResults(query, rows) {
   $('#result-section').hidden = false;
   $('#result-title').textContent = `“${query}”的查询结果`;
@@ -147,6 +206,8 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
 
 useCleanDomainRoutes();
 loadOverview();
+loadDailyKnowledge();
+loadFeaturedJudges();
 const initial = new URLSearchParams(location.search).get('q');
 if (initial) {
   $('#judge-q').value = initial;

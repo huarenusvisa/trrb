@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://asylumjudge.com/">
   <meta name="theme-color" content="#b80d16">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=3">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=5">
 </head>
 <body>
   <header class="site-header">
@@ -85,11 +85,51 @@
       </div>
     </section>
 
+    <section class="daily-knowledge" aria-labelledby="daily-knowledge-title">
+      <div class="shell knowledge-panel">
+        <div class="knowledge-intro">
+          <span>DAILY ASYLUM KNOWLEDGE</span>
+          <h2 id="daily-knowledge-title">每日庇护知识</h2>
+          <p>与唐人日报“移民美国 · 庇护知识”同步，每日更新。</p>
+          <a href="https://trrb.net/immigrate/center?path=humanitarian">进入庇护知识库 →</a>
+        </div>
+        <div id="daily-knowledge-items" class="knowledge-items" aria-live="polite">
+          <div class="knowledge-loading">正在读取今日庇护知识…</div>
+        </div>
+      </div>
+    </section>
+
     <section class="shell entry-grid" aria-label="查询入口">
       <a href="#judge-search"><span class="entry-icon">法官</span><div><b>查移民法官</b><small>姓名、法院或城市</small></div><i>→</i></a>
       <a href="/immigration-judge-approval-rate/courts.html"><span class="entry-icon">法院</span><div><b>全部移民法院</b><small>比较法院裁决数据</small></div><i>→</i></a>
       <a href="/immigration-judge-approval-rate/states.html"><span class="entry-icon">各州</span><div><b>按州查看</b><small>州级法院与法官汇总</small></div><i>→</i></a>
       <a href="/immigration-judge-approval-rate/china-dashboard.html"><span class="entry-icon">中国</span><div><b>中国申请人</b><small>只显示可验证样本</small></div><i>→</i></a>
+    </section>
+
+    <section class="lookup-section">
+      <div class="shell">
+        <div class="content-heading">
+          <span>ASYLUMJUDGE TOOLS</span>
+          <h2>查询移民法官</h2>
+          <p>按姓名查找法官，并打开包含法院、国籍、年度趋势和案件样本量的资料页。</p>
+        </div>
+        <div class="lookup-grid">
+          <a href="/immigration-judge-approval-rate/courts.html"><i aria-hidden="true">⚖</i><b>法院批准率</b><p>查看各移民法院的法官人数、裁决量和历史批准率。</p><span>查看法院 →</span></a>
+          <a href="/immigration-judge-approval-rate/china-dashboard.html"><i aria-hidden="true">◎</i><b>按国籍的批准率</b><p>查看中国申请人及法官资料页内可验证的国籍细分。</p><span>查看国籍数据 →</span></a>
+          <a href="#judge-search"><i aria-hidden="true">↗</i><b>年度趋势</b><p>先查询法官，再查看每年裁决量和批准率变化。</p><span>查询法官 →</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell featured-section" aria-labelledby="featured-title">
+      <div class="content-heading">
+        <span id="judge-source-badge">EOIR 裁决数据</span>
+        <h2 id="featured-title">案件量较高的法官资料</h2>
+        <p>按数据库中的历史庇护裁决样本量排序，并非按站内搜索量或法官质量排序。</p>
+      </div>
+      <div id="featured-judges" class="featured-grid" aria-live="polite">
+        <div class="featured-loading">正在读取法官资料…</div>
+      </div>
     </section>
 
     <section id="result-section" class="shell results-section" hidden>
@@ -109,6 +149,6 @@
   <footer>
     <div class="shell footer-inner"><div><b>移民法官通过率</b><span>AsylumJudge.com</span></div><p>与唐人日报共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/site.js?v=3" defer></script>
+  <script src="/asylumjudge/site.js?v=5" defer></script>
 </body>
 </html>

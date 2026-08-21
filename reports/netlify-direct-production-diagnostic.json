@@ -1,10 +1,8 @@
 {
-  "generated_at": "2026-08-21T04:37:40Z",
-  "target_sha": "9b61958b4d3b64f241220513e70e926b24d2da5b",
+  "generated_at": "2026-08-21T04:39:33Z",
+  "target_sha": "1e7037191004c20d5754717aa865325df17aa9cf",
   "token_present": true,
   "site_lookup_http_status": 200,
-  "cli_status_exit_code": 2,
-  "local_build_exit_code": 2,
-  "production_upload_exit_code": 99,
-  "failure_stage": "cli_status"
+  "exact_deploy_exit_code": 1,
+  "failure_kind": "authentication"
 }

@@ -74,8 +74,37 @@
     return Boolean(document.querySelector("#hero .hero-slide"));
   }
 
+  function generalHeroFallback(reason = "general-home-fallback") {
+    const hero = document.getElementById("hero");
+    if (!hero) return false;
+
+    if (heroHasSlides()) {
+      markHeroAsDailyFocus(document);
+      hero.dataset.recommendationMode = reason;
+      hero.dataset.recommendationCount = String(hero.querySelectorAll(".hero-slide").length);
+      return true;
+    }
+
+    const candidates = (Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [])
+      .filter(fresh)
+      .filter((item) => String(item?.image || item?.cover_image || "").trim())
+      .slice(0, 5);
+
+    if (candidates.length && typeof window.renderHeroCarousel === "function") {
+      window.renderHeroCarousel(candidates);
+      markHeroAsDailyFocus(document);
+      hero.dataset.recommendationMode = reason;
+      hero.dataset.recommendationCount = String(candidates.length);
+      return true;
+    }
+
+    hero.dataset.recommendationMode = reason;
+    hero.dataset.recommendationCount = "0";
+    return false;
+  }
+
   async function emergencyRefresh() {
-    if (heroHasSlides()) return true;
+    if (generalHeroFallback("existing-or-local-recovery")) return true;
     if (typeof window.TRRB_refreshHomeLive === "function") {
       return window.TRRB_refreshHomeLive({ forceRender: true });
     }
@@ -122,10 +151,10 @@
         }
 
         lastFocusAt = Date.now();
-        return false;
+        return generalHeroFallback("focus-empty-general-recovery");
       } catch (error) {
         console.warn("今日要闻增强暂不可用：", error);
-        return false;
+        return generalHeroFallback("focus-error-general-recovery");
       } finally {
         focusPromise = null;
       }

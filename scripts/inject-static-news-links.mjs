@@ -130,6 +130,19 @@ function replaceExact(html, needle, replacement, file) {
   return html.replace(needle, replacement);
 }
 
+function replaceContainerBefore(html, id, nextElementNeedle, replacement, file) {
+  const startPattern = new RegExp(`<div\\b(?=[^>]*\\bid=["']${id}["'])[^>]*>`, "i");
+  const start = html.search(startPattern);
+  if (start < 0) throw new Error(`${file}: 找不到 #${id} 静态快照容器`);
+  const boundary = html.indexOf(nextElementNeedle, start);
+  if (boundary < 0) throw new Error(`${file}: 找不到 #${id} 后续边界 ${nextElementNeedle}`);
+  const segment = html.slice(start, boundary);
+  if (!segment.trimEnd().endsWith("</div>")) {
+    throw new Error(`${file}: #${id} 静态快照容器结构异常`);
+  }
+  return html.slice(0, start) + replacement + html.slice(boundary);
+}
+
 function shortDate(value) {
   const t = Date.parse(value || "");
   if (!Number.isFinite(t)) return "最新";
@@ -206,8 +219,13 @@ async function updateTrump(rows) {
   const fileName = "trump/index.html";
   const file = path.join(ROOT, fileName);
   let html = await readFile(file, "utf8");
-  const needle = '<div id="trump-feed" class="trump-feed"><div class="trump-loading">正在读取特朗普本人最新动态…</div></div>';
-  html = replaceExact(html, needle, trumpSnapshot(rows), fileName);
+  html = replaceContainerBefore(
+    html,
+    "trump-feed",
+    '<button id="trump-more"',
+    trumpSnapshot(rows),
+    fileName
+  );
   const count = [...html.matchAll(/<a\b[^>]*href=["'](\/trump\/[^"']+)["']/gi)].length;
   if (count < 1) throw new Error(`${fileName}: 构建后没有可抓取特朗普新闻链接`);
   await writeFile(file, html);

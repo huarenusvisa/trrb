@@ -31,4 +31,4 @@
 ## 当前执行状态
 - JOBS-R3-N1：PASS。`/jobs/` 已直接进入岗位大厅；唐人日报首页招聘模块直接读取岗位；APP 招聘入口直接展示岗位列表，不再用“我要招聘/我要求职”菜单挡在前面。
 - JOBS-R3-N2：PASS。公共岗位源已增加 `blue_collar` 排序，唐人日报首页与 APP 明确使用蓝领优先信息流；空关键词默认蓝领优先，同时保留 R2 的关键词相关性、距离、最新、薪资排序。餐饮、装修建筑、物流仓库、司机、超市零售、美甲美容、按摩、家政护理优先，白领保留但不抢首屏。N2 静态验收已覆盖首页/APP默认排序、蓝领优先级和 R2 排序回归；生产数据源尚未部署时不伪造生产 PASS，最终生产回归统一放入 N10。
-- JOBS-R3-N3：IN_PROGRESS。发布页已使用单一自然语言“工作地点”输入与统一地点归一化模块；Web 找工桥接代码已具备 `JobsR3Location` 解析与地区选择事件。APP 招聘页现已加入单一自然语言地点输入，支持“纽约法拉盛”“威斯康星麦迪逊”“Flushing NY”“Madison WI”等常用中文/英文输入，并将标准化后的州、城市、Borough、Neighborhood传给统一 `public-jobs`。公共岗位源已加入对应位置筛选且继续保持 `blue_collar` 默认排序，APP 岗位卡继续显示地点与薪资。新增 `scripts/audit-jobs-r3-n3-mobile-location.mjs` 对解析入口、APP参数、后端位置过滤和蓝领排序回归做静态验收。N3 尚未标记 PASS：下一步把 Web 找工页实际挂载自然语言输入/解析脚本并跑完整 N3 回归，随后进入 N4 极简发布流程收口。
+- JOBS-R3-N3：PASS（分支静态验收）。发布页、Web 找工页与 APP 招聘页均使用统一自然语言地点能力。Web 找工页已经实际挂载单一地点输入与 `JobsR3Location` 解析脚本，支持“纽约法拉盛”“威斯康星麦迪逊”“Flushing NY”等中文/英文输入，并通过现有 `jobs:r2-search-area-selected` 事件写入统一州、城市、County/Borough/Neighborhood 与地图中心筛选；APP 同样向统一 `public-jobs` 发送标准化位置参数。`scripts/audit-jobs-r3-n3-mobile-location.mjs` 已扩展为 Web + APP + 发布页 + 后端位置过滤联合静态回归。N3 不声明生产 PASS，生产回归仍统一放入 N10。下一步进入 N4：把发布流程收口为 3-4 步极简主流程，并把高级字段继续自动推断/折叠。

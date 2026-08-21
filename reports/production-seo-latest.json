@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T04:03:46.147Z",
+  "generated_at": "2026-08-21T04:33:38.746Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -45,34 +45,147 @@
       "chain": [
         {
           "url": "https://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
-      "final_url": "https://www.trrb.net/"
+      "final_url": "https://trrb.net/"
     }
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
-      "status": 200,
-      "type": "application/xml; charset=UTF-8",
-      "bytes": 1714104,
-      "article_count": 4747,
+      "status": 0,
+      "bytes": 0,
+      "article_count": 0,
       "child_sitemaps": [],
-      "legacy_query_count": 0,
-      "version": "live-supabase-v7-jobs-indexable"
+      "legacy_query_count": 0
     },
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 128071,
-      "article_count": 255,
+      "bytes": 131978,
+      "article_count": 264,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v6-public-only-ice-safe-dedupe"
     }
   },
   "articles": [
+    {
+      "url": "https://trrb.net/us-crime/%E5%88%BA%E6%AD%BB17%E5%B2%81%E5%B0%91%E5%B9%B4%E8%8E%B7%E5%88%9135%E5%B9%B4%E5%8D%A1%E6%A2%85%E6%B4%9B%E5%AE%89%E4%B8%9C%E5%B0%BC%E7%94%B3%E8%AF%B7%E9%87%8D%E5%AE%A1%E5%BE%B7%E5%B7%9E%E6%B3%95%E9%99%A2%E5%86%8D%E5%BC%80%E5%90%AC%E8%AF%81-mt2geet6-5b4975",
+      "status": 200,
+      "final_url": "https://trrb.net/us-crime/%E5%88%BA%E6%AD%BB17%E5%B2%81%E5%B0%91%E5%B9%B4%E8%8E%B7%E5%88%9135%E5%B9%B4%E5%8D%A1%E6%A2%85%E6%B4%9B%E5%AE%89%E4%B8%9C%E5%B0%BC%E7%94%B3%E8%AF%B7%E9%87%8D%E5%AE%A1%E5%BE%B7%E5%B7%9E%E6%B3%95%E9%99%A2%E5%86%8D%E5%BC%80%E5%90%AC%E8%AF%81-mt2geet6-5b4975",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 40,
+      "h1_length": 33,
+      "canonical": "https://trrb.net/us-crime/%E5%88%BA%E6%AD%BB17%E5%B2%81%E5%B0%91%E5%B9%B4%E8%8E%B7%E5%88%9135%E5%B9%B4%E5%8D%A1%E6%A2%85%E6%B4%9B%E5%AE%89%E4%B8%9C%E5%B0%BC%E7%94%B3%E8%AF%B7%E9%87%8D%E5%AE%A1%E5%BE%B7%E5%B7%9E%E6%B3%95%E9%99%A2%E5%86%8D%E5%BC%80%E5%90%AC%E8%AF%81-mt2geet6-5b4975",
+      "body_length": 1714,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-crime/fbi%E9%80%AE%E6%8D%95%E7%BA%BD%E7%BA%A6%E5%A5%B3%E5%AD%90%E6%B6%89%E5%AB%8C%E6%95%88%E5%BF%A0isis%E5%B9%B6%E7%AD%96%E5%88%92%E8%A2%AD%E5%87%BB%E5%B7%9E%E8%AE%AE%E4%BC%9A%E5%A4%A7%E5%8E%A6-mt2g7488-5e71f9",
+      "status": 200,
+      "final_url": "https://trrb.net/us-crime/fbi%E9%80%AE%E6%8D%95%E7%BA%BD%E7%BA%A6%E5%A5%B3%E5%AD%90%E6%B6%89%E5%AB%8C%E6%95%88%E5%BF%A0isis%E5%B9%B6%E7%AD%96%E5%88%92%E8%A2%AD%E5%87%BB%E5%B7%9E%E8%AE%AE%E4%BC%9A%E5%A4%A7%E5%8E%A6-mt2g7488-5e71f9",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 35,
+      "h1_length": 28,
+      "canonical": "https://trrb.net/us-crime/fbi%E9%80%AE%E6%8D%95%E7%BA%BD%E7%BA%A6%E5%A5%B3%E5%AD%90%E6%B6%89%E5%AB%8C%E6%95%88%E5%BF%A0isis%E5%B9%B6%E7%AD%96%E5%88%92%E8%A2%AD%E5%87%BB%E5%B7%9E%E8%AE%AE%E4%BC%9A%E5%A4%A7%E5%8E%A6-mt2g7488-5e71f9",
+      "body_length": 1395,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-462c2933ff9a8f386f3a5d95bd62f09bfc74d076",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-462c2933ff9a8f386f3a5d95bd62f09bfc74d076",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 26,
+      "h1_length": 19,
+      "canonical": "https://trrb.net/ice/ice-462c2933ff9a8f386f3a5d95bd62f09bfc74d076",
+      "body_length": 160,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-a619223ce1ac488c8850655357f166936a47816d",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-a619223ce1ac488c8850655357f166936a47816d",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 29,
+      "h1_length": 22,
+      "canonical": "https://trrb.net/ice/ice-a619223ce1ac488c8850655357f166936a47816d",
+      "body_length": 131,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-0ff0aae408fde9bfb5d3e9049a9cd5acd1ed760e",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-0ff0aae408fde9bfb5d3e9049a9cd5acd1ed760e",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 27,
+      "h1_length": 20,
+      "canonical": "https://trrb.net/ice/ice-0ff0aae408fde9bfb5d3e9049a9cd5acd1ed760e",
+      "body_length": 164,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-3bd33139376b11414eb9cab1191a5cfd41f61d65",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-3bd33139376b11414eb9cab1191a5cfd41f61d65",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 26,
+      "h1_length": 19,
+      "canonical": "https://trrb.net/ice/ice-3bd33139376b11414eb9cab1191a5cfd41f61d65",
+      "body_length": 134,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-7b633f1cd1103453f953d293fcd14427231191f4",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-7b633f1cd1103453f953d293fcd14427231191f4",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 27,
+      "h1_length": 20,
+      "canonical": "https://trrb.net/ice/ice-7b633f1cd1103453f953d293fcd14427231191f4",
+      "body_length": 152,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-crime/1800%E4%B8%87%E7%BE%8E%E5%85%83%E7%96%AB%E6%83%85%E6%95%91%E5%8A%A9%E9%87%91%E8%A2%AB%E9%AA%97%E5%8A%A0%E5%B7%9E%E5%AE%B6%E6%97%8F%E8%AF%88%E9%AA%97%E6%A1%88%E6%9B%9D%E5%85%89%E5%BC%95%E5%8F%91%E5%8F%82%E8%AE%AE%E9%99%A2%E7%AB%8B%E6%B3%95%E8%A1%8C%E5%8A%A8-mt2fzzzt-8d33b4",
+      "status": 200,
+      "final_url": "https://trrb.net/us-crime/1800%E4%B8%87%E7%BE%8E%E5%85%83%E7%96%AB%E6%83%85%E6%95%91%E5%8A%A9%E9%87%91%E8%A2%AB%E9%AA%97%E5%8A%A0%E5%B7%9E%E5%AE%B6%E6%97%8F%E8%AF%88%E9%AA%97%E6%A1%88%E6%9B%9D%E5%85%89%E5%BC%95%E5%8F%91%E5%8F%82%E8%AE%AE%E9%99%A2%E7%AB%8B%E6%B3%95%E8%A1%8C%E5%8A%A8-mt2fzzzt-8d33b4",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 41,
+      "h1_length": 34,
+      "canonical": "https://trrb.net/us-crime/1800%E4%B8%87%E7%BE%8E%E5%85%83%E7%96%AB%E6%83%85%E6%95%91%E5%8A%A9%E9%87%91%E8%A2%AB%E9%AA%97%E5%8A%A0%E5%B7%9E%E5%AE%B6%E6%97%8F%E8%AF%88%E9%AA%97%E6%A1%88%E6%9B%9D%E5%85%89%E5%BC%95%E5%8F%91%E5%8F%82%E8%AE%AE%E9%99%A2%E7%AB%8B%E6%B3%95%E8%A1%8C%E5%8A%A8-mt2fzzzt-8d33b4",
+      "body_length": 1750,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-crime/5%E6%89%80%E5%AD%A6%E6%A0%A1%E9%99%B7%E6%9E%AA%E5%87%BB%E6%81%90%E6%85%8C%E8%B7%AF%E6%98%93%E6%96%AF%E5%AE%89%E9%82%A3%E4%BB%A3%E8%AF%BE%E6%95%99%E5%B8%88%E6%B6%89%E5%AB%8C%E5%88%B6%E9%80%A0%E8%99%9A%E5%81%87%E8%AD%A6%E6%8A%A5%E8%A2%AB%E6%8D%95-mt2fvkye-840548",
+      "status": 200,
+      "final_url": "https://trrb.net/us-crime/5%E6%89%80%E5%AD%A6%E6%A0%A1%E9%99%B7%E6%9E%AA%E5%87%BB%E6%81%90%E6%85%8C%E8%B7%AF%E6%98%93%E6%96%AF%E5%AE%89%E9%82%A3%E4%BB%A3%E8%AF%BE%E6%95%99%E5%B8%88%E6%B6%89%E5%AB%8C%E5%88%B6%E9%80%A0%E8%99%9A%E5%81%87%E8%AD%A6%E6%8A%A5%E8%A2%AB%E6%8D%95-mt2fvkye-840548",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 36,
+      "h1_length": 29,
+      "canonical": "https://trrb.net/us-crime/5%E6%89%80%E5%AD%A6%E6%A0%A1%E9%99%B7%E6%9E%AA%E5%87%BB%E6%81%90%E6%85%8C%E8%B7%AF%E6%98%93%E6%96%AF%E5%AE%89%E9%82%A3%E4%BB%A3%E8%AF%BE%E6%95%99%E5%B8%88%E6%B6%89%E5%AB%8C%E5%88%B6%E9%80%A0%E8%99%9A%E5%81%87%E8%AD%A6%E6%8A%A5%E8%A2%AB%E6%8D%95-mt2fvkye-840548",
+      "body_length": 1296,
+      "schema": true,
+      "noindex": false
+    },
     {
       "url": "https://trrb.net/us-crime/%E6%B1%82%E7%88%B1%E9%81%AD%E6%8B%92%E5%BC%95%E5%8F%91%E8%87%B4%E5%91%BD%E6%8A%A5%E5%A4%8D%E7%BA%BD%E7%BA%A6%E5%85%AC%E5%9B%AD%E7%94%B7%E5%AD%90%E5%88%BA%E6%9D%8030%E5%B2%81%E6%AF%8D%E4%BA%B2-7%E5%B2%81%E5%84%BF%E5%AD%90%E7%9B%AE%E7%9D%B9%E6%83%A8%E5%89%A7-mt2f1qdx-0666ea",
       "status": 200,
@@ -106,114 +219,6 @@
       "h1_length": 30,
       "canonical": "https://trrb.net/us-crime/%E5%BC%97%E9%9B%B7%E6%96%AF%E8%AF%BA%E6%B3%95%E9%99%A2%E5%85%AC%E5%9B%AD%E7%88%86%E6%8C%81%E5%88%80%E8%A2%AD%E5%87%BB%E5%8E%BF%E6%94%BF%E5%BA%9C%E9%9B%87%E5%91%98%E9%81%AD%E5%88%BA50%E5%A4%9A%E5%B2%81%E7%94%B7%E5%AD%90%E8%A2%AB%E6%8B%98-mt2ek7qu-2c2ee8",
       "body_length": 1076,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-crime/%E6%B4%9B%E6%9D%89%E7%9F%B6%E5%8C%BB%E9%99%A2%E8%B5%A4%E8%BA%AB%E7%94%B7%E5%AD%90%E6%8C%81%E7%8E%BB%E7%92%83%E7%A2%8E%E7%89%87%E5%86%B2%E8%AD%A6%E8%AD%A6%E5%91%98%E5%BC%80%E6%9E%AA%E5%88%B6%E6%9C%8D-mt2eam7s-7f91e3",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/%E6%B4%9B%E6%9D%89%E7%9F%B6%E5%8C%BB%E9%99%A2%E8%B5%A4%E8%BA%AB%E7%94%B7%E5%AD%90%E6%8C%81%E7%8E%BB%E7%92%83%E7%A2%8E%E7%89%87%E5%86%B2%E8%AD%A6%E8%AD%A6%E5%91%98%E5%BC%80%E6%9E%AA%E5%88%B6%E6%9C%8D-mt2eam7s-7f91e3",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 35,
-      "h1_length": 28,
-      "canonical": "https://trrb.net/us-crime/%E6%B4%9B%E6%9D%89%E7%9F%B6%E5%8C%BB%E9%99%A2%E8%B5%A4%E8%BA%AB%E7%94%B7%E5%AD%90%E6%8C%81%E7%8E%BB%E7%92%83%E7%A2%8E%E7%89%87%E5%86%B2%E8%AD%A6%E8%AD%A6%E5%91%98%E5%BC%80%E6%9E%AA%E5%88%B6%E6%9C%8D-mt2eam7s-7f91e3",
-      "body_length": 1294,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-crime/%E7%BE%8E%E5%9B%BD%E4%B8%9C%E5%8C%97%E9%83%A8%E9%81%AD%E5%BC%BA%E9%A3%8E%E6%9A%B4%E8%A2%AD%E5%87%BB3200%E4%B8%87%E4%BA%BA%E9%9D%A2%E4%B8%B4%E6%B4%AA%E6%B0%B4%E5%A8%81%E8%83%81%E6%B0%94%E8%B1%A1%E9%83%A8%E9%97%A8%E7%B4%A7%E6%80%A5%E9%A2%84%E8%AD%A6-mt2dzmoq-45023e",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/%E7%BE%8E%E5%9B%BD%E4%B8%9C%E5%8C%97%E9%83%A8%E9%81%AD%E5%BC%BA%E9%A3%8E%E6%9A%B4%E8%A2%AD%E5%87%BB3200%E4%B8%87%E4%BA%BA%E9%9D%A2%E4%B8%B4%E6%B4%AA%E6%B0%B4%E5%A8%81%E8%83%81%E6%B0%94%E8%B1%A1%E9%83%A8%E9%97%A8%E7%B4%A7%E6%80%A5%E9%A2%84%E8%AD%A6-mt2dzmoq-45023e",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 41,
-      "h1_length": 34,
-      "canonical": "https://trrb.net/us-crime/%E7%BE%8E%E5%9B%BD%E4%B8%9C%E5%8C%97%E9%83%A8%E9%81%AD%E5%BC%BA%E9%A3%8E%E6%9A%B4%E8%A2%AD%E5%87%BB3200%E4%B8%87%E4%BA%BA%E9%9D%A2%E4%B8%B4%E6%B4%AA%E6%B0%B4%E5%A8%81%E8%83%81%E6%B0%94%E8%B1%A1%E9%83%A8%E9%97%A8%E7%B4%A7%E6%80%A5%E9%A2%84%E8%AD%A6-mt2dzmoq-45023e",
-      "body_length": 1525,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-crime/10%E4%B8%AA%E6%9C%88%E5%A5%B3%E5%A9%B4%E8%A2%AB%E9%81%97%E5%BF%98%E8%BD%A6%E5%86%858%E5%B0%8F%E6%97%B6%E6%AD%BB%E4%BA%A1%E8%82%AF%E5%A1%94%E5%9F%BA%E5%8C%BB%E7%94%9F%E7%A5%96%E6%AF%8D%E9%81%AD%E8%AD%A6%E6%96%B9%E8%B0%83%E6%9F%A5-mt2cjhh9-39964e",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/10%E4%B8%AA%E6%9C%88%E5%A5%B3%E5%A9%B4%E8%A2%AB%E9%81%97%E5%BF%98%E8%BD%A6%E5%86%858%E5%B0%8F%E6%97%B6%E6%AD%BB%E4%BA%A1%E8%82%AF%E5%A1%94%E5%9F%BA%E5%8C%BB%E7%94%9F%E7%A5%96%E6%AF%8D%E9%81%AD%E8%AD%A6%E6%96%B9%E8%B0%83%E6%9F%A5-mt2cjhh9-39964e",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 36,
-      "h1_length": 29,
-      "canonical": "https://trrb.net/us-crime/10%E4%B8%AA%E6%9C%88%E5%A5%B3%E5%A9%B4%E8%A2%AB%E9%81%97%E5%BF%98%E8%BD%A6%E5%86%858%E5%B0%8F%E6%97%B6%E6%AD%BB%E4%BA%A1%E8%82%AF%E5%A1%94%E5%9F%BA%E5%8C%BB%E7%94%9F%E7%A5%96%E6%AF%8D%E9%81%AD%E8%AD%A6%E6%96%B9%E8%B0%83%E6%9F%A5-mt2cjhh9-39964e",
-      "body_length": 1393,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/%E9%A9%AC%E9%87%8C%E5%85%B0%E6%9C%BA%E5%9C%BA%E6%9F%A5%E8%8E%B7847%E7%A3%85%E5%8D%A1%E7%89%B9%E8%8D%89%E4%B8%A4%E5%90%8D%E7%BA%BD%E7%BA%A6%E7%94%B7%E5%AD%90%E6%90%BA%E5%B7%A8%E9%87%8F%E6%AF%92%E5%93%81%E5%85%A5%E5%A2%83%E9%81%AD%E8%B0%83%E6%9F%A5-mt2cbvw5-af08ca",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/%E9%A9%AC%E9%87%8C%E5%85%B0%E6%9C%BA%E5%9C%BA%E6%9F%A5%E8%8E%B7847%E7%A3%85%E5%8D%A1%E7%89%B9%E8%8D%89%E4%B8%A4%E5%90%8D%E7%BA%BD%E7%BA%A6%E7%94%B7%E5%AD%90%E6%90%BA%E5%B7%A8%E9%87%8F%E6%AF%92%E5%93%81%E5%85%A5%E5%A2%83%E9%81%AD%E8%B0%83%E6%9F%A5-mt2cbvw5-af08ca",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 38,
-      "h1_length": 31,
-      "canonical": "https://trrb.net/ice/%E9%A9%AC%E9%87%8C%E5%85%B0%E6%9C%BA%E5%9C%BA%E6%9F%A5%E8%8E%B7847%E7%A3%85%E5%8D%A1%E7%89%B9%E8%8D%89%E4%B8%A4%E5%90%8D%E7%BA%BD%E7%BA%A6%E7%94%B7%E5%AD%90%E6%90%BA%E5%B7%A8%E9%87%8F%E6%AF%92%E5%93%81%E5%85%A5%E5%A2%83%E9%81%AD%E8%B0%83%E6%9F%A5-mt2cbvw5-af08ca",
-      "body_length": 1336,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-crime/%E5%8D%97%E5%8A%A0%E5%B7%9E%E7%96%91%E4%BC%BC%E9%85%92%E9%A9%BE%E4%BA%8B%E6%95%85%E8%87%B48%E5%B2%81%E5%A5%B3%E5%AD%A9%E6%AD%BB%E4%BA%A1-%E7%88%B6%E5%85%84%E9%87%8D%E4%BC%A4%E5%8F%B8%E6%9C%BA%E8%A2%AB%E6%8D%95-mt2c7rqr-807878",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/%E5%8D%97%E5%8A%A0%E5%B7%9E%E7%96%91%E4%BC%BC%E9%85%92%E9%A9%BE%E4%BA%8B%E6%95%85%E8%87%B48%E5%B2%81%E5%A5%B3%E5%AD%A9%E6%AD%BB%E4%BA%A1-%E7%88%B6%E5%85%84%E9%87%8D%E4%BC%A4%E5%8F%B8%E6%9C%BA%E8%A2%AB%E6%8D%95-mt2c7rqr-807878",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 32,
-      "h1_length": 25,
-      "canonical": "https://trrb.net/us-crime/%E5%8D%97%E5%8A%A0%E5%B7%9E%E7%96%91%E4%BC%BC%E9%85%92%E9%A9%BE%E4%BA%8B%E6%95%85%E8%87%B48%E5%B2%81%E5%A5%B3%E5%AD%A9%E6%AD%BB%E4%BA%A1-%E7%88%B6%E5%85%84%E9%87%8D%E4%BC%A4%E5%8F%B8%E6%9C%BA%E8%A2%AB%E6%8D%95-mt2c7rqr-807878",
-      "body_length": 1264,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-crime/21%E5%B2%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%88%B6%E9%80%A0%E5%81%87%E6%B0%91%E8%B0%83%E4%B8%80%E5%9C%BA%E7%A4%BE%E4%BC%9A%E5%AE%9E%E9%AA%8C%E5%87%BB%E7%A9%BF%E7%BE%8E%E5%9B%BD%E9%80%89%E4%B8%BE%E4%BF%A1%E6%81%AF%E9%98%B2%E7%BA%BF-mt2c6fxg-2bd530",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/21%E5%B2%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%88%B6%E9%80%A0%E5%81%87%E6%B0%91%E8%B0%83%E4%B8%80%E5%9C%BA%E7%A4%BE%E4%BC%9A%E5%AE%9E%E9%AA%8C%E5%87%BB%E7%A9%BF%E7%BE%8E%E5%9B%BD%E9%80%89%E4%B8%BE%E4%BF%A1%E6%81%AF%E9%98%B2%E7%BA%BF-mt2c6fxg-2bd530",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 37,
-      "h1_length": 30,
-      "canonical": "https://trrb.net/us-crime/21%E5%B2%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%88%B6%E9%80%A0%E5%81%87%E6%B0%91%E8%B0%83%E4%B8%80%E5%9C%BA%E7%A4%BE%E4%BC%9A%E5%AE%9E%E9%AA%8C%E5%87%BB%E7%A9%BF%E7%BE%8E%E5%9B%BD%E9%80%89%E4%B8%BE%E4%BF%A1%E6%81%AF%E9%98%B2%E7%BA%BF-mt2c6fxg-2bd530",
-      "body_length": 1842,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-277150a56df7f6b312dde4a5830969e4d26ac993",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-277150a56df7f6b312dde4a5830969e4d26ac993",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 32,
-      "h1_length": 25,
-      "canonical": "https://trrb.net/ice/ice-277150a56df7f6b312dde4a5830969e4d26ac993",
-      "body_length": 152,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 35,
-      "h1_length": 28,
-      "canonical": "https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b",
-      "body_length": 150,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-8f00b0389a117433b542273ea94ac251a5f0934c",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-8f00b0389a117433b542273ea94ac251a5f0934c",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 31,
-      "h1_length": 24,
-      "canonical": "https://trrb.net/ice/ice-8f00b0389a117433b542273ea94ac251a5f0934c",
-      "body_length": 246,
       "schema": true,
       "noindex": false
     }
@@ -285,7 +290,8 @@
     }
   },
   "failures": [
-    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
+    "sitemap https://trrb.net/sitemap.xml HTTP 0",
+    "main sitemap article count too small",
     {
       "page": "https://trrb.net/trump",
       "problem": "too few direct article links: 0/1"

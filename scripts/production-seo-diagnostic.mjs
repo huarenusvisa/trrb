@@ -56,8 +56,6 @@ for (const source of ['http://trrb.net/','http://www.trrb.net/','https://www.trr
   else if(chain.length>2) report.warnings.push(`host redirect chain has ${chain.length-1} hops: ${source}`);
 }
 
-// Always inspect both required root sitemap endpoints. Do not stop after the
-// main sitemap alone yields enough article samples.
 const roots=[`${SITE}/sitemap.xml`,`${SITE}/news-sitemap.xml`];
 const queue=[...roots];
 const seen=new Set();
@@ -125,9 +123,27 @@ for(const expected of pageExpectations){
 
 const legacyUrl=`${SITE}/article.html?id=wp-117123`;
 const legacy=await fetchOne(legacyUrl,{redirect:'manual',ua:UA,accept:'text/html'});
-report.legacy[legacyUrl]={status:legacy.status,location:legacy.location,xrobots:legacy.xrobots};
-if(legacy.status!==410)report.failures.push(`legacy retired URL must be 410: ${legacy.status}`);
-if(!/noindex/i.test(legacy.xrobots))report.failures.push(`legacy retired URL missing X-Robots-Tag noindex`);
+const legacyRow={status:legacy.status,location:legacy.location,xrobots:legacy.xrobots,final_status:0,final_url:'',canonical:'',body_length:0,noindex:false};
+report.legacy[legacyUrl]=legacyRow;
+if(![301,308].includes(legacy.status)||!legacy.location){
+  report.failures.push(`legacy recoverable URL must permanently redirect: ${legacy.status}`);
+}else{
+  let target='';
+  try{target=new URL(legacy.location,legacyUrl).href;}catch{}
+  if(!target.startsWith(`${SITE}/`)||/article\.html\?id=/i.test(target)){
+    report.failures.push(`legacy URL redirected to invalid/noncanonical target: ${target||legacy.location}`);
+  }else{
+    const final=await fetchOne(target,{redirect:'follow',ua:UA,accept:'text/html,application/xhtml+xml'});
+    const canonical=text(final.text,/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)/i)||text(final.text,/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i);
+    const body=text(final.text,/<div[^>]+class=["'][^"']*article-body[^"']*["'][^>]*>([\s\S]*?)<\/div>/i);
+    const noindex=/noindex/i.test(final.xrobots)||/name=["']robots["'][^>]+noindex/i.test(final.text);
+    Object.assign(legacyRow,{final_status:final.status,final_url:final.url,canonical,body_length:body.length,noindex});
+    if(final.status!==200) report.failures.push(`legacy canonical target must return 200: ${final.status}`);
+    if(canonical!==target) report.failures.push(`legacy canonical mismatch: expected ${target}, got ${canonical}`);
+    if(body.length<80) report.failures.push(`legacy restored article body too short: ${body.length}`);
+    if(noindex) report.failures.push('legacy restored canonical must remain indexable');
+  }
+}
 
 fs.mkdirSync('reports',{recursive:true});
 fs.writeFileSync('reports/production-seo-latest.json', JSON.stringify(report,null,2));

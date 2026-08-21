@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T01:57:14.824Z",
+  "generatedAt": "2026-08-21T02:01:12.716Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -97,6 +97,10 @@
           "title": "24-1931P.01A"
         },
         {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
+          "title": "24-1467P.01A"
+        },
+        {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
           "title": "24-1524 US v. Fulcar"
         },
@@ -163,10 +167,6 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1862P-01A.pdf",
           "title": "25-1862 Rana v. Blanche"
-        },
-        {
-          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/25-1817P-01A.pdf",
-          "title": "25-1817 Recchia v. Campbell"
         }
       ],
       "notes": []

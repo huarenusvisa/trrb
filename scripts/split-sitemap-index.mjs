@@ -103,7 +103,9 @@ function isArticleBlock(block) {
 }
 
 function isForbiddenStaticBlock(block) {
-  return /<loc>https:\/\/trrb\.net\/(?:jobs(?:\/|\?|<)|finance(?:\/|\?|<)|people(?:\/|\?|<)|expose(?:\/?(?:\?|<)))/i.test(block);
+  // Recruitment is a launched, indexable product and must stay sitemap-eligible.
+  // Finance remains prelaunch/noindex; People is retired; expose is utility-only.
+  return /<loc>https:\/\/trrb\.net\/(?:finance(?:\/|\?|<)|people(?:\/|\?|<)|expose(?:\/?(?:\?|<)))/i.test(block);
 }
 
 for (const block of blocks) {

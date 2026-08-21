@@ -2064,12 +2064,4 @@
         <news:title>西雅图ICE逮捕多次犯罪危地马拉非法移民</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7ca49c738e8d6e568140235b470b2a866b049731</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T20:44:05.615Z</news:publication_date>
-        <news:title>佛罗里达ICE针对持刀伤人非法移民提出扣押令</news:title>
-      </news:news>
-    </url>
 </urlset>

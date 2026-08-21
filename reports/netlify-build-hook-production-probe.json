@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-21T04:29:25Z",
+  "generated_at": "2026-08-21T20:31:25Z",
   "hook_http_status": 200,
   "forced_branch": "main",
   "clear_cache": true,
   "expected_generation": "trrb-seo-recovery-20260819-v1",
-  "live_generation": "trrb-seo-recovery-20260819-v1",
-  "generation_marker_live": true,
+  "live_generation": "trrb-seo-recovery-20260819-v1shared-integration-production-refresh-20260821-0025",
+  "generation_marker_live": false,
   "finance_card_live": true,
   "news_sitemap_v5_live": false,
   "missing_wp_117123_is_410": false

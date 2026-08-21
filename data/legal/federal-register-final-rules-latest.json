@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-21T10:46:47.739Z",
+  "generatedAt": "2026-08-21T11:41:11.088Z",
   "scope": "Federal Register documents classified by the official API as Rule. FederalRegister.gov is used for discovery/metadata; official PDF links should be used for authoritative legal text.",
   "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE",
   "count": 50,
@@ -22,7 +22,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17154/income-taxes",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17154.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17154.pdf?1787229922",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -48,7 +48,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17148/fisheries-of-the-northeastern-united-states-mackerel-squid-and-butterfish-2026-illex-squid-quota",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17148.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17148.pdf?1787229921",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -95,7 +95,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17145/environmental-protection-regulations-for-domestic-licensing-and-related-regulatory-functions",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17145.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17145.pdf?1787229920",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -121,7 +121,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17131/security-zone-ohio-river-cincinnati-oh",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17131.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17131.pdf?1787229918",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -147,7 +147,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17129/fisheries-of-the-northeastern-united-states-summer-flounder-fishery-quota-transfer-from-north",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17129.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17129.pdf?1787229918",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -173,7 +173,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17120/fisheries-of-the-south-atlantic-2026-commercial-closure-of-red-snapper-in-the-south-atlantic",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17120.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17120.pdf?1787170510",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -199,7 +199,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17116/modifications-to-the-regulations-implementing-the-vietnam-era-veterans-readjustment-assistance-act",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17116.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17116.pdf?1787229917",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -225,7 +225,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17115/modifications-to-the-regulations-implementing-section-503-of-the-rehabilitation-act-of-1973-as",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17115.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17115.pdf?1787229917",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -251,7 +251,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17114/rescission-of-executive-order-11246-implementing-regulations",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17114.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17114.pdf?1787229917",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -277,7 +277,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17113/fisheries-of-the-south-atlantic-commercial-closure-for-blueline-tilefish-in-the-south-atlantic",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17113.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17113.pdf?1787170510",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -303,7 +303,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17109/fisheries-of-the-caribbean-gulf-of-america-and-south-atlantic-2026-commercial-closure-for-the-scamp",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17109.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17109.pdf?1787170510",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -329,7 +329,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17098/safety-zone-piers-park-boston-inner-harbor-east-boston-ma",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17098.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17098.pdf?1787229914",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -355,7 +355,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17097/security-zone-philippine-sea-pacific-ocean-apra-harbor-guam",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17097.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17097.pdf?1787229914",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -376,7 +376,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17088/carboxin-pesticide-tolerances",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17088.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17088.pdf?1787229913",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -402,7 +402,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17082/traffic-and-conduct-on-the-grounds-of-certain-national-institute-of-standards-and-technology-sites",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17082.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17082.pdf?1787229913",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -428,7 +428,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/21/2026-17055/montana-regulatory-program",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-21/pdf/2026-17055.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17055.pdf?1787229909",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },

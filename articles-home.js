@@ -190,7 +190,11 @@ function renderHome(articles) {
   const hotArticles = sorted.filter((article) => article.category === "热门头条");
   renderTicker((hotArticles.length ? hotArticles : sorted).slice(0, 12));
   const visualArticles = sorted.filter(hasRealImage);
-  renderHeroCarousel((visualArticles.length >= 5 ? visualArticles : sorted).slice(0, 5));
+  const provisionalFocus = visualArticles.filter((article) =>
+    article.category === "美国时政" &&
+    (Array.isArray(article.body) ? article.body.join("").replace(/\s+/g, "").length : 0) >= 1500
+  );
+  renderHeroCarousel(provisionalFocus.slice(0, 5));
   renderTopList((visualArticles.length >= 10 ? visualArticles : sorted).slice(0, 10));
   renderSections(sorted);
   renderRank(sorted);

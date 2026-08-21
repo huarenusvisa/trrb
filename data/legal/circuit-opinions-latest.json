@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T03:18:51.015Z",
+  "generatedAt": "2026-08-21T04:23:04.868Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -95,6 +95,10 @@
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1931P-01A.pdf",
           "title": "24-1931P.01A"
+        },
+        {
+          "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1467P-01A.pdf",
+          "title": "24-1467P.01A"
         },
         {
           "url": "https://www.ca1.uscourts.gov/sites/ca1/files/opnfiles/24-1524E-01A.pdf",
@@ -956,10 +960,6 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://www.opn.ca6.uscourts.gov/opinions/opinions.php?todo=today/1000",
       "documents": [
-        {
-          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0226p-06.pdf",
-          "title": "26a0226p-06.pdf"
-        },
         {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0227p-06.pdf",
           "title": "26a0227p-06.pdf"

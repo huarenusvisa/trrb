@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T14:00:37.232Z",
+  "generatedAt": "2026-08-21T14:02:27.137Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -182,6 +182,14 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://ww3.ca2.uscourts.gov/nav/rss.html",
       "documents": [
+        {
+          "url": "https://ww3.ca2.uscourts.gov/decisions/OPN/26-156_complete_opn.pdf",
+          "title": "26-156"
+        },
+        {
+          "url": "https://ww3.ca2.uscourts.gov/decisions/OPN/24-3013_complete_opn.pdf",
+          "title": "24-3013"
+        },
         {
           "url": "https://ww3.ca2.uscourts.gov/decisions/OPN/25-2327_opn.pdf",
           "title": "25-2327"

@@ -47,8 +47,8 @@ jobs:
               set -e
               if [ "$deploy_exit" -ne 0 ]; then
                 if grep -Eqi 'unknown option|unknown argument|unexpected argument' /tmp/netlify-exact-deploy.log; then failure_kind='cli_argument';
-                elif grep -Eqi 'unauthorized|not authorized|invalid token|401|403' /tmp/netlify-exact-deploy.log; then failure_kind='authentication';
                 elif grep -Eqi 'build command failed|failed during stage|build script returned non-zero|build failed' /tmp/netlify-exact-deploy.log; then failure_kind='build_command';
+                elif grep -Eqi 'not authorized to access this site|invalid access token|authentication failed|could not authenticate' /tmp/netlify-exact-deploy.log; then failure_kind='netlify_authentication';
                 elif grep -Eqi 'deploy.*failed|failed to deploy|upload.*failed' /tmp/netlify-exact-deploy.log; then failure_kind='production_upload';
                 else failure_kind='unclassified_cli_failure'; fi
               fi

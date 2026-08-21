@@ -30,19 +30,20 @@ PC 端交互版生产上线与验收。`main` 已接入交互型 `finance/` 前�
 - 键盘与无障碍基础。
 
 ## 当前生产状态
-- `main` 最新提交：`a7abbc3776dabb1c67abc49599df376e7d5ab830`，为 SEO diagnostic bot 的 `[skip ci]` 报告更新；未改变财经交互基线。
+- `main` 最新提交：`7dafb5875c83005f36e378709c6388b4afdc32a5`（2026-08-20 20:15 ET 左右），为首页/APP-R2 退休庇护百科相关变更；未触及 `finance/`。
 - Netlify 项目：`trrb`，siteId=`b30280d2-b4f8-4a19-9135-862dd9c7171f`。
-- 当前生产 deploy=`6a877d1a88ea9600081f44b8`，state=`ready`，published_at=`2026-08-20T22:18:33.889Z`。
-- 该生产 deploy 的 commit_ref=`366d8e3f081ca767e0923c07ae5e7f5d6d6e1631`。
-- GitHub compare 已确认 `366d8e3f...` 相对 `ba83050a...` 为 ahead 2 / behind 0，因此当前生产 deploy 已包含交互版财经基线。
-- 生产 deploy commit 中 `finance/index.html`、`finance/stock.html`、`finance/fund.html` 均为交互版文件；个股与 ETF 详情页保留时间范围切换、自选、返回状态等交互入口。
+- 当前生产 deploy=`6a87970ed1a6d800089bae07`，state=`ready`，published_at=`2026-08-21T00:09:15.396Z`。
+- 该生产 deploy 的 commit_ref=`af09e7b72deef7536f27c06af48a2e2ec00d88de`。
+- GitHub compare 已确认 `af09e7b...` 相对交互基线 `ba83050a...` 为 ahead 68 / behind 0，且这 68 个提交的差异文件中没有任何 `finance/` 文件，因此当前生产 deploy 明确包含并保持交互版财经基线。
+- 当前 `main` 又比生产 deploy 前进 2 个提交；这 2 个提交的差异文件同样没有任何 `finance/` 文件，因此生产财经代码与当前 `main` 的财经代码一致。
 - 生产 deploy commit 中 `finance/feature-flags.js` 仍为 `brokerage=false`、`liveMarketData=false`、`trading=false`。
 
 ## 当前外部验收阻塞
-- Netlify 生产 deploy 本身为 READY，且已确认包含交互版源码。
-- 当前执行容器对 `trrb.net` 仍发生 DNS `Temporary failure in name resolution`，因此本轮无法从该容器真实打开 `/finance/`、`/finance/stock.html`、`/finance/fund.html` 做浏览器级点击验收。
+- Netlify production 本身为 READY，且已确认包含交互版源码；没有发现生产构建失败。
+- 当前执行容器直接请求 `https://trrb.net/finance/`、`https://trrb.net/finance/stock.html`、`https://trrb.net/finance/fund.html` 仍统一报 DNS `Temporary failure in name resolution`。
+- 公网搜索可以检索到 `trrb.net` 主站页面，但当前搜索索引未提供这三个新财经 URL 的可直接打开结果，因此本轮仍无法完成真实 PC 浏览器点击级验收。
 - 这属于外部 QA 执行通道阻塞，不是已确认的财经产品 FAIL。
-- 不虚报 PC 浏览器交互、iPhone/Safari 或 Lighthouse PASS。
+- 不虚报 PC 浏览器交互、16-case、iPhone/Safari 或 Lighthouse PASS。
 
 ## 当前 QA 基础设施
 - `acceptance-check.js`：仅 `qa=1` 加载。
@@ -59,15 +60,16 @@ PC 端交互版生产上线与验收。`main` 已接入交互型 `finance/` 前�
 - [ ] V1 最终自测并标记 `V1 Complete`。
 
 ## 本轮
-- 读取并遵守上一版 checkpoint 后，将最高优先级切换为“PC 端交互版生产上线与验收”。
-- 核验 `main` 最新提交与 Netlify 当前生产 deploy。
-- 确认生产 deploy READY，且 commit_ref 明确包含 `ba83050a...` 交互版财经基线。
-- 核验生产 commit 中首页、个股页、ETF页及 feature flags；未发现需要静态低风险修复的新缺陷。
-- 尝试真实访问 `https://trrb.net/finance/`、`stock.html`、`fund.html`，执行容器仍因 DNS 无法解析 `trrb.net` 而受阻。
-- 因没有真实产品 FAIL/WARN，本轮停止新增产品代码，不为制造进度改动核心交互。
+- 先读取并遵守上一版 checkpoint。
+- 核验 `main` 最新 head=`7dafb587...`。
+- 核验 Netlify 当前 production deploy=`6a87970ed1a6d800089bae07`，state=`ready`，commit_ref=`af09e7b...`。
+- 核验 production deploy 相对交互基线 ahead 68 / behind 0，且差异无 `finance/`；再核验 production deploy 到当前 `main` 的 2 个提交差异也无 `finance/`，确认财经交互版未回退且与当前 `main` 财经代码一致。
+- 核验生产 commit 的 feature flags 仍全部关闭真实交易能力。
+- 再次直接请求生产三页，执行容器仍因 DNS 无法解析 `trrb.net` 而受阻。
+- 本轮没有真实产品 FAIL/WARN，也没有安全且有证据支持的产品代码修改，因此停止新增代码，只更新权威 checkpoint。
 
 ## 当前结论
-状态：**生产交互版已部署 / V1 Candidate+ / 外部浏览器验收待完成**。
+状态：**生产交互版已部署并保持 / V1 Candidate+ / 真实 PC 浏览器验收仍受外部 DNS 通道阻塞**。
 
 下一步优先级：
 1. 一旦外部访问通道恢复，立即实测生产三页并跑 PC 交互验收。

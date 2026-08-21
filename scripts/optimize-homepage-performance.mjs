@@ -44,14 +44,15 @@ if (!html.includes('article-route-runtime.js')) {
 // renderer after the underlying file changed.
 const coreVersions = new Map([
   ['article-route-runtime.js', '20260819-seo-v5'],
-  ['articles-home.js', '20260819-single-bundle-2'],
+  ['articles-home.js', '20260821-atomic-1'],
   ['ice-home-unify.js', '20260819-preserve-sections-2'],
   ['topic-focus.js', '20260819-live-3'],
   ['homepage-refresh-guard.js', '20260819-bundle-supplements-2'],
   ['homepage-immigration-hub.js', '20260819-reuse-bundle-2'],
-  ['jobs-home.js', '20260820-production-live-2'],
-  ['articles-home-live-fix.js', '20260820-people-retired-1'],
-  ['category-runtime-v3.js', '20260819-preserve-independent-nav-1']
+  ['jobs-home.js', '20260821-dedicated-card-1'],
+  ['articles-home-live-fix.js', '20260821-atomic-1'],
+  ['category-runtime-v3.js', '20260819-preserve-independent-nav-1'],
+  ['homepage-startup-stability.js', '20260821-atomic-1']
 ]);
 for (const [asset, version] of coreVersions) {
   const escaped = asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

@@ -119,10 +119,21 @@ exports.handler = async (event) => {
     if (mode === 'knowledge') {
       const requestedLimit = Number.parseInt(String(p.limit || '4'), 10);
       const limit = Math.min(8, Math.max(3, Number.isFinite(requestedLimit) ? requestedLimit : 4));
-      const rows = await rest('articles', {
+      const dailyRows = await rest('articles', {
         query: {
           select: 'id,title,slug,summary,category_name,published_at',
           status: 'eq.published',
+          visibility: 'eq.public',
+          category_name: 'like.移民美国·人道主义庇护·*',
+          order: 'published_at.desc.nullslast',
+          limit: String(limit)
+        }
+      });
+      const legacyRows = (dailyRows || []).length >= limit ? [] : await rest('articles', {
+        query: {
+          select: 'id,title,slug,summary,category_name,published_at',
+          status: 'eq.published',
+          visibility: 'eq.public',
           category_name: 'eq.移民美国',
           topic_key: 'is.null',
           or: '(title.ilike.*庇护*,summary.ilike.*庇护*,title.ilike.*I-589*,summary.ilike.*I-589*,title.ilike.*防止递解*,summary.ilike.*防止递解*,title.ilike.*禁止酷刑*,summary.ilike.*禁止酷刑*)',
@@ -130,6 +141,10 @@ exports.handler = async (event) => {
           limit: String(limit)
         }
       });
+      const rows = [...(dailyRows || []), ...(legacyRows || [])]
+        .filter((row, index, all) => all.findIndex((item) => item.id === row.id) === index)
+        .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0))
+        .slice(0, limit);
       return out(200, {
         count: (rows || []).length,
         source: '唐人日报·移民美国·人道主义庇护',

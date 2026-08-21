@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import crypto from 'node:crypto';
 
 const categoryKey = process.argv[2];
 const targetPerTopic = Math.max(
@@ -161,6 +162,16 @@ function anglePool(slug, topicName) {
   return [...new Set([...labelsFor(slug), ...defaults.map(item => `${topicName}${item}`)])];
 }
 
+function articleSlug(title) {
+  const base = String(title || '').normalize('NFKC').toLowerCase()
+    .replace(/[\s/\\|]+/g, '-')
+    .replace(/[^\p{L}\p{N}-]+/gu, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 90);
+  return `${base || 'immigration-knowledge'}-${Date.now().toString(36)}-${crypto.randomBytes(3).toString('hex')}`;
+}
+
 async function sb(path, options = {}) {
   const response = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     ...options,
@@ -312,11 +323,16 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
       if (titleSet.has(title) || batchTitles.has(title)) return;
       batchTitles.add(title);
       rows.push({
+        id: crypto.randomUUID(),
         title,
+        slug: articleSlug(title),
         summary,
         content,
         category_name: `${topicPrefix(topicName)}${angles[index]}`,
         status: 'published',
+        visibility: 'public',
+        author: '唐人日报编辑部',
+        metadata: { immigration_category: category.name, immigration_topic: topicName, writing_angle: angles[index], generated_by: 'immigration-knowledge-daily' },
         published_at: new Date().toISOString()
       });
     });

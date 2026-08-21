@@ -1,8 +1,11 @@
 {
-  "generated_at": "2026-08-21T04:41:14Z",
-  "target_sha": "d7f0466a3080b479fc3c2fe0acd8b0d1ba404514",
+  "generated_at": "2026-08-21T04:43:02Z",
+  "target_sha": "c6a44aa48dc13189c0f1212beaed9bc1c3b021fb",
   "token_present": true,
   "site_lookup_http_status": 200,
   "exact_deploy_exit_code": 1,
-  "failure_kind": "unclassified_cli_failure"
+  "failure_kind": "unclassified_cli_failure",
+  "build_started": false,
+  "functions_stage_seen": false,
+  "edge_stage_seen": false
 }

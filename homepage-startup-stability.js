@@ -35,12 +35,18 @@
       if (typeof window.hasRealImage === "function") return window.hasRealImage(item);
       return Boolean(String(item?.image || item?.cover_image || "").trim());
     });
-    const candidates = (visual.length ? visual : source).slice(0, 5);
+    const candidates = (visual.length ? visual : source)
+      .filter((item) => String(item?.category || item?.category_name || "").trim() === "美国时政")
+      .filter((item) => {
+        const body = Array.isArray(item?.body) ? item.body.join("") : "";
+        return body.replace(/\s+/g, "").length >= 1500;
+      })
+      .slice(0, 5);
     if (!candidates.length) return false;
 
     recoveryAttempted = true;
     window.renderHeroCarousel(candidates);
-    hero.dataset.recommendationMode = "general-home-recovery";
+    hero.dataset.recommendationMode = "us-politics-longform-recovery";
     hero.dataset.recommendationCount = String(candidates.length);
     hero.dataset.focusOnly = "false";
     hero.dataset.focusCount = "0";

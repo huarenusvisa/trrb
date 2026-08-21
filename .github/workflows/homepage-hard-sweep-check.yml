@@ -1,0 +1,33 @@
+name: Homepage hard sweep check
+
+on:
+  push:
+    branches:
+      - fix/homepage-hard-sweep-20260821
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax check homepage scripts
+        run: |
+          node --check homepage-refresh-guard.js
+          node --check articles-home-live-fix.js
+          node --check homepage-startup-stability.js
+          node --check jobs-home.js
+          node --check homepage-immigration-hub.js
+      - name: Verify render-race invariants
+        run: |
+          ! grep -q 'window.renderHome = function' articles-home-live-fix.js
+          ! grep -q 'setInterval.*refreshHome' homepage-refresh-guard.js
+          ! grep -q 'new MutationObserver' homepage-startup-stability.js
+          ! grep -q 'new MutationObserver' jobs-home.js
+          ! grep -q 'new MutationObserver' homepage-immigration-hub.js
+          grep -q 'forceRender: true' homepage-refresh-guard.js
+          grep -q 'baseHomeReady' jobs-home.js
+          grep -q 'baseHomeReady' homepage-immigration-hub.js

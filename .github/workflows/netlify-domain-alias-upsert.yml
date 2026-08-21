@@ -1,0 +1,132 @@
+name: Netlify domain alias upsert
+
+on:
+  workflow_dispatch:
+    inputs:
+      hostname:
+        description: Domain alias to attach to the trrb production site
+        required: true
+        default: huarengongzuo.com
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/netlify-domain-alias-upsert.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: netlify-domain-alias-upsert
+  cancel-in-progress: false
+
+jobs:
+  upsert-domain-alias:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NETLIFY_SITE_ID: b30280d2-b4f8-4a19-9135-862dd9c7171f
+      DOMAIN_HOSTNAME: ${{ github.event.inputs.hostname || 'huarengongzuo.com' }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+    steps:
+      - name: Add aliases without changing the primary domain
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_AUTH_TOKEN:-}" || {
+            echo "NETLIFY_AUTH_TOKEN is not configured"
+            exit 2
+          }
+
+          node <<'NODE'
+          const fs = require('node:fs');
+
+          const siteId = process.env.NETLIFY_SITE_ID;
+          const token = process.env.NETLIFY_AUTH_TOKEN;
+          const hostname = String(process.env.DOMAIN_HOSTNAME || '').trim().toLowerCase();
+          const hostnamePattern = /^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/;
+
+          if (!hostnamePattern.test(hostname)) {
+            throw new Error(`Invalid domain hostname: ${hostname}`);
+          }
+
+          const endpoint = `https://api.netlify.com/api/v1/sites/${siteId}`;
+          const headers = {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          };
+
+          async function readJson(response, action) {
+            const body = await response.text();
+            if (!response.ok) {
+              throw new Error(`${action} failed (${response.status}): ${body.slice(0, 800)}`);
+            }
+            return JSON.parse(body);
+          }
+
+          async function main() {
+            const site = await readJson(
+              await fetch(endpoint, { headers }),
+              'Read Netlify site'
+            );
+
+            if (site.name !== 'trrb' || site.custom_domain !== 'trrb.net') {
+              throw new Error(
+                `Refusing to update unexpected site: name=${site.name}, primary=${site.custom_domain}`
+              );
+            }
+
+            const requested = [hostname];
+            if (hostname.split('.').length === 2) {
+              requested.push(`www.${hostname}`);
+            }
+
+            const aliases = [...new Set([
+              ...(Array.isArray(site.domain_aliases) ? site.domain_aliases : []),
+              ...requested,
+            ])];
+
+            const updated = await readJson(
+              await fetch(endpoint, {
+                method: 'PATCH',
+                headers,
+                body: JSON.stringify({ domain_aliases: aliases }),
+              }),
+              'Update Netlify domain aliases'
+            );
+
+            const applied = Array.isArray(updated.domain_aliases)
+              ? updated.domain_aliases
+              : [];
+
+            for (const alias of requested) {
+              if (!applied.includes(alias)) {
+                throw new Error(`Netlify did not return expected alias: ${alias}`);
+              }
+            }
+
+            const summary = [
+              '## Netlify domain alias upsert',
+              '',
+              `- Site: ${updated.name}`,
+              `- Primary domain: ${updated.custom_domain}`,
+              `- Added/confirmed: ${requested.join(', ')}`,
+              `- Current aliases: ${applied.join(', ')}`,
+              '',
+            ].join('\n');
+
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary);
+            console.log(JSON.stringify({
+              site: updated.name,
+              primary_domain: updated.custom_domain,
+              confirmed_aliases: requested,
+            }));
+          }
+
+          main().catch((error) => {
+            console.error(error.message);
+            process.exit(1);
+          });
+          NODE

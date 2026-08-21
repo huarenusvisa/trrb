@@ -1,5 +1,5 @@
 (() => {
-  const brandHost = /^(www\.)?asylumjudge\.com$/i.test(location.hostname);
+  const brandHost = /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname);
   const routes = new Map([
     ['/immigration-judge-approval-rate/', '/'],
     ['/immigration-judge-approval-rate/index.html', '/'],

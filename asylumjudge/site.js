@@ -5,7 +5,7 @@ const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const stateNames = { CA: '加州', NY: '纽约州', TX: '德州', FL: '佛州', NJ: '新泽西州', IL: '伊利诺伊州', WA: '华盛顿州', MA: '马萨诸塞州', PA: '宾州', GA: '乔治亚州', AZ: '亚利桑那州', VA: '弗吉尼亚州' };
 
 function useCleanDomainRoutes() {
-  if (!/^(www\.)?asylumjudge\.com$/i.test(location.hostname)) return;
+  if (!/^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)) return;
   const routes = new Map([
     ['/immigration-judge-approval-rate/courts.html', '/courts'],
     ['/immigration-judge-approval-rate/states.html', '/states'],

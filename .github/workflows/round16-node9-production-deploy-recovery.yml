@@ -61,8 +61,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+
+          token_valid=false
           if [ -n "${NETLIFY_AUTH_TOKEN:-}" ]; then
-            echo 'Deploy mode: Netlify CLI direct production deploy via repository secrets'
+            token_http=$(curl -sS -o /tmp/netlify-user.json -w '%{http_code}' \
+              -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+              -H 'Accept: application/json' \
+              'https://api.netlify.com/api/v1/user' || true)
+            if [ "$token_http" = "200" ]; then
+              token_valid=true
+            else
+              echo "Netlify token is present but account authentication returned HTTP $token_http; using build hook fallback."
+            fi
+          fi
+
+          if [ "$token_valid" = "true" ]; then
+            echo 'Deploy mode: Netlify CLI direct production deploy via validated repository token'
             npx --yes netlify-cli@latest deploy --prod --context production
           elif [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             echo 'Deploy mode: Netlify build hook fallback'
@@ -73,7 +87,7 @@ jobs:
             fi
             curl -fsS -X POST "$hook_url"
           else
-            echo 'No Netlify auth token/build hook configured.'
+            echo 'No valid Netlify auth token and no build hook configured.'
             exit 2
           fi
 

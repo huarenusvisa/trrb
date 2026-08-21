@@ -8,16 +8,24 @@ on:
       - 'index.html'
       - 'site.webmanifest'
       - '404.html'
+      - '_headers'
+      - '_redirects'
+      - 'netlify.toml'
       - 'jobs-home.js'
       - 'jobs/**'
       - 'finance/**'
       - 'immigrate/center-link-canonical.js'
+      - 'trump/**'
       - 'netlify/functions/**'
       - 'netlify/edge-functions/**'
       - 'admin/ice-report-controls-v2.js'
       - 'admin/ice-report-integrated.js'
       - 'admin/ice-report-raw-lock.js'
       - 'scripts/generate-legal-sitemap.mjs'
+      - 'scripts/generate-sitemaps.mjs'
+      - 'scripts/split-sitemap-index.mjs'
+      - 'scripts/validate-site.mjs'
+      - 'scripts/seo-integrity-audit.mjs'
       - 'sitemap-legal.xml'
       - '.github/workflows/production-deploy-coverage-bridge.yml'
 
@@ -34,13 +42,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      - name: Dispatch existing exact-SHA production deploy and crawlability gate
+      - name: Dispatch current exact-SHA production gate
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
         shell: bash
         run: |
           set -euo pipefail
+          sleep 5
           code=$(curl -sS -o /tmp/dispatch-response.txt -w '%{http_code}' \
             -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
@@ -50,4 +59,4 @@ jobs:
             -d '{"ref":"main"}')
           cat /tmp/dispatch-response.txt || true
           test "$code" = "204" || { echo "Production workflow dispatch failed: HTTP $code"; exit 1; }
-          echo 'Exact-SHA production workflow dispatched.'
+          echo 'Current production workflow dispatched.'

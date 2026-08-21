@@ -62,8 +62,8 @@ jobs:
         run: |
           set -euo pipefail
           if [ -n "${NETLIFY_AUTH_TOKEN:-}" ]; then
-            echo 'Deploy mode: Netlify CLI direct production deploy'
-            npx --yes netlify-cli@latest deploy --prod --context production --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+            echo 'Deploy mode: Netlify CLI direct production deploy via repository secrets'
+            npx --yes netlify-cli@latest deploy --prod --context production
           elif [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             echo 'Deploy mode: Netlify build hook fallback'
             if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then

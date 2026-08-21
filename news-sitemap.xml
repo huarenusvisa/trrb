@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T01:24:21.225Z</news:publication_date>
+        <news:title>美媒称两少年父母被ICE遣返并因偷窃被捕，少年由姑妈照料</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-8f00b0389a117433b542273ea94ac251a5f0934c</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T00:55:27.986Z</news:publication_date>
+        <news:title>圣地亚哥ICE街头拘留多名非法入境者警方疑似协助</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-b3f0866316c16cf39f74fc855a27c0530fe1ff20</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T00:55:18.381Z</news:publication_date>
+        <news:title>SpectrumNews调查显示ICE执法时 涉及性暴力和儿童侵害的案件数据失真</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-24bb25f8dd908062e9c4f6cd5f12adc333f8aced</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T00:54:38.454Z</news:publication_date>
+        <news:title>美限制合法移民未来十年经济损失超万亿美元</news:title>
+      </news:news>
+    </url>
   
   
   <url>
@@ -1720,21 +1752,4 @@
   
   
   
-  <url>
-      <loc>https://trrb.net/ice/ice-4ebeb63fc31042f63dfd8f11e9d6897b517ba18e</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T01:21:57.262Z</news:publication_date>
-        <news:title>明尼苏达Shakopee男子穿反特朗普T恤抗议ICE</news:title>
-      </news:news>
-    </url>
-  
-  <url>
-      <loc>https://trrb.net/ice/ice-fba7dd83e573cae753ac3a2fef96eb80ea0aa2d3</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T00:50:30.026Z</news:publication_date>
-        <news:title>德州达拉斯县移民嫌疑人袭警被捕</news:title>
-      </news:news>
-    </url>
 </urlset>

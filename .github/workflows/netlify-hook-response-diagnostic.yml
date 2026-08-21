@@ -16,11 +16,14 @@ concurrency:
 
 jobs:
   diagnose:
-    runs-on: ubuntu-latest
-    timeout-minutes: 8
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
     env:
       NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
       NETLIFY_SITE_ID: b30280d2-b4f8-4a19-9135-862dd9c7171f
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,55 +32,64 @@ jobs:
         with:
           node-version: '22'
 
-      - name: 触发Hook并记录HTTP结果
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK missing'; exit 2; }
-          sep='?'
-          case "$NETLIFY_BUILD_HOOK" in *\?*) sep='&' ;; esac
-          hook_url="${NETLIFY_BUILD_HOOK}${sep}trigger_branch=main&clear_cache=true&trigger_title=TRRB+Homepage+Hard+Sweep"
-          code=$(curl -sS -D /tmp/hook-headers.txt -o /tmp/hook-body.txt -w '%{http_code}' -X POST "$hook_url")
-          echo "HOOK_HTTP=$code" >> "$GITHUB_ENV"
-          sleep 8
-
-      - name: 公开读取站点最近Deploy
+      - name: 触发Hook并抓取最近Deploy
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p reports
-          code=$(curl -sS -o /tmp/site-deploys.json -w '%{http_code}' --max-time 25 "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys?per_page=12" || true)
-          export DEPLOYS_HTTP="$code"
+          test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK missing'; exit 2; }
+          sep='?'; case "$NETLIFY_BUILD_HOOK" in *\?*) sep='&' ;; esac
+          hook_url="${NETLIFY_BUILD_HOOK}${sep}trigger_branch=main&clear_cache=true&trigger_title=TRRB+Homepage+Hard+Sweep"
+          HOOK_HTTP=$(curl -sS -o /tmp/hook-body.txt -w '%{http_code}' -X POST "$hook_url")
+          sleep 8
+          DEPLOYS_HTTP=$(curl -sS -o /tmp/site-deploys.json -w '%{http_code}' --max-time 25 "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys?per_page=12" || true)
+          export HOOK_HTTP DEPLOYS_HTTP
           node <<'NODE'
-          const fs = require('fs');
-          let raw=''; try { raw=fs.readFileSync('/tmp/site-deploys.json','utf8'); } catch {}
-          let rows=[]; try { const j=JSON.parse(raw||'[]'); if(Array.isArray(j)) rows=j; } catch {}
-          const safeKeys=['id','state','branch','context','commit_ref','title','created_at','updated_at','published_at','error_message','deploy_time','manual_deploy','deploy_source'];
-          const recent=rows.slice(0,12).map(row=>{
-            const out={};
-            for(const key of safeKeys){ const v=row?.[key]; if(v===null||['string','number','boolean'].includes(typeof v)) out[key]=v; }
-            return out;
-          });
-          const hookBody=(()=>{ try{return fs.readFileSync('/tmp/hook-body.txt','utf8').trim().slice(0,500)}catch{return ''} })();
-          const report={
-            generated_at:new Date().toISOString(),
-            hook_http_status:Number(process.env.HOOK_HTTP||0),
-            hook_response_preview:hookBody,
-            deploys_http_status:Number(process.env.DEPLOYS_HTTP||0),
-            recent_deploys:recent
-          };
+          const fs=require('fs');
+          let rows=[]; try{const j=JSON.parse(fs.readFileSync('/tmp/site-deploys.json','utf8'));if(Array.isArray(j))rows=j}catch{}
+          const keys=['id','state','branch','context','commit_ref','title','created_at','updated_at','published_at','error_message','deploy_time','manual_deploy','deploy_source'];
+          const recent=rows.slice(0,12).map(r=>Object.fromEntries(keys.filter(k=>r?.[k]===null||['string','number','boolean'].includes(typeof r?.[k])).map(k=>[k,r[k]])));
+          const report={generated_at:new Date().toISOString(),hook_http_status:Number(process.env.HOOK_HTTP||0),deploys_http_status:Number(process.env.DEPLOYS_HTTP||0),recent_deploys:recent};
           fs.writeFileSync('reports/netlify-hook-response-metadata.json',JSON.stringify(report,null,2)+'\n');
-          console.log(JSON.stringify(report,null,2));
+          NODE
+
+      - name: 逐段重放Netlify生产Build
+        shell: bash
+        run: |
+          set +e
+          mkdir -p /tmp/trrb-build-stage reports
+          SOURCE_SHA=$(git rev-parse HEAD)
+          FAILED_STAGE=''; FAILED_EXIT=0; FAILED_LOG=''
+          run_stage(){ name="$1"; shift; log="/tmp/trrb-build-stage/${name}.log"; "$@" >"$log" 2>&1; code=$?; if [ "$code" -ne 0 ]; then FAILED_STAGE="$name"; FAILED_EXIT="$code"; FAILED_LOG="$log"; return "$code"; fi; return 0; }
+          run_stage prep bash -lc "find netlify/functions -type f \\( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \\) -delete && cp config/immigration-knowledge.js immigration-knowledge.js && cp immigrate/center.css immigrate-center.css && cp immigrate/study-knowledge-content.css immigrate-study-knowledge-content.css && cp immigrate/center-seo.js immigrate-center-seo.js && cp immigrate/center.js immigrate-center.js && cp immigrate/study-knowledge-content.js immigrate-study-knowledge-content.js && cp immigrate/work-knowledge-content.js immigrate-work-knowledge-content.js && cp immigrate/employment-knowledge-content.js immigrate-employment-knowledge-content.js && cp immigrate/family-knowledge-content.js immigrate-family-knowledge-content.js && cp immigrate/humanitarian-knowledge-content.js immigrate-humanitarian-knowledge-content.js && cp immigrate/change-status-module.js immigrate-change-status-module.js && cp immigrate/citizenship-module.js immigrate-citizenship-module.js && cp immigrate/knowledge-article-filter.js immigrate-knowledge-article-filter.js" || true
+          [ -n "$FAILED_STAGE" ] || run_stage write-deploy-version node scripts/write-deploy-version.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage generate-sitemaps node scripts/generate-sitemaps.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage generate-legal-sitemap node scripts/generate-legal-sitemap.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage clean-sitemap node scripts/clean-sitemap-against-database.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage ensure-sitemap-articles node scripts/ensure-sitemap-articles.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage finalize-redirects node scripts/finalize-redirects.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage generate-feed node scripts/generate-feed.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage upgrade-article-urls node scripts/upgrade-article-urls.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage validate-site node scripts/validate-site.mjs || true
+          [ -n "$FAILED_STAGE" ] || run_stage seo-integrity-audit node scripts/seo-integrity-audit.mjs || true
+          export SOURCE_SHA FAILED_STAGE FAILED_EXIT FAILED_LOG
+          node <<'NODE'
+          const fs=require('fs');let raw='';try{if(process.env.FAILED_LOG)raw=fs.readFileSync(process.env.FAILED_LOG,'utf8')}catch{}
+          raw=raw.replace(/https?:\/\/[^\s]+/g,'<url>').replace(/sb_(?:secret|publishable)_[A-Za-z0-9_-]+/g,'<redacted>').replace(/[A-Za-z0-9_+=\/-]{40,}/g,'<redacted>');
+          const excerpt=raw.split(/\r?\n/).map(s=>s.trim()).filter(Boolean).slice(-35).join(' | ').slice(0,6000);
+          const report={generated_at:new Date().toISOString(),source_sha:process.env.SOURCE_SHA||'',failed_stage:process.env.FAILED_STAGE||'',failed_exit:Number(process.env.FAILED_EXIT||0),status:process.env.FAILED_STAGE?'failed':'passed',sanitized_log_tail:excerpt};
+          fs.writeFileSync('reports/netlify-build-stage-diagnostic.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report,null,2));
           NODE
 
       - name: 保存安全诊断结果
+        if: always()
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'TRRB Netlify Metadata Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add reports/netlify-hook-response-metadata.json
+          git add reports/netlify-hook-response-metadata.json reports/netlify-build-stage-diagnostic.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Update Netlify hook response metadata [skip ci]'
+          git commit -m 'Update Netlify homepage build diagnostics [skip ci]'
           git pull --rebase origin main
           git push origin HEAD:main

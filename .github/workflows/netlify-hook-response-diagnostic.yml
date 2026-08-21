@@ -17,9 +17,10 @@ concurrency:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 8
     env:
       NETLIFY_BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+      NETLIFY_SITE_ID: b30280d2-b4f8-4a19-9135-862dd9c7171f
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,63 +29,45 @@ jobs:
         with:
           node-version: '22'
 
-      - name: 触发Hook并仅提取安全字段
+      - name: 触发Hook并记录HTTP结果
         shell: bash
         run: |
           set -euo pipefail
           test -n "${NETLIFY_BUILD_HOOK:-}" || { echo 'NETLIFY_BUILD_HOOK missing'; exit 2; }
           sep='?'
           case "$NETLIFY_BUILD_HOOK" in *\?*) sep='&' ;; esac
-          hook_url="${NETLIFY_BUILD_HOOK}${sep}trigger_branch=main&clear_cache=true&trigger_title=TRRB+Hook+Metadata+Diagnostic"
-          code=$(curl -sS -D /tmp/hook-headers.txt -o /tmp/hook-body.json -w '%{http_code}' -X POST "$hook_url")
-          export HOOK_HTTP="$code"
-          mkdir -p reports
-          node <<'NODE'
-          const fs = require('fs');
-          let raw = '';
-          try { raw = fs.readFileSync('/tmp/hook-body.json', 'utf8'); } catch {}
-          let body = {};
-          try { body = JSON.parse(raw || '{}'); } catch { body = {}; }
-          const safeKeys = ['id','deploy_id','site_id','state','status','url','ssl_url','deploy_url','deploy_ssl_url','branch','title','message','name','created_at','updated_at'];
-          const safe = {};
-          for (const key of safeKeys) {
-            const value = body?.[key];
-            if (value === null || ['string','number','boolean'].includes(typeof value)) safe[key] = value;
-          }
-          const report = {
-            generated_at: new Date().toISOString(),
-            hook_http_status: Number(process.env.HOOK_HTTP || 0),
-            response_is_json: raw.trim().startsWith('{') || raw.trim().startsWith('['),
-            response_keys: body && typeof body === 'object' && !Array.isArray(body) ? Object.keys(body).filter(k => !/token|hook|secret|auth|password/i.test(k)).slice(0,50) : [],
-            safe_metadata: safe
-          };
-          fs.writeFileSync('reports/netlify-hook-response-metadata.json', JSON.stringify(report, null, 2) + '\n');
-          console.log(JSON.stringify(report, null, 2));
-          NODE
+          hook_url="${NETLIFY_BUILD_HOOK}${sep}trigger_branch=main&clear_cache=true&trigger_title=TRRB+Homepage+Hard+Sweep"
+          code=$(curl -sS -D /tmp/hook-headers.txt -o /tmp/hook-body.txt -w '%{http_code}' -X POST "$hook_url")
+          echo "HOOK_HTTP=$code" >> "$GITHUB_ENV"
+          sleep 8
 
-      - name: 尝试公开读取返回的Deploy ID状态
+      - name: 公开读取站点最近Deploy
         shell: bash
         run: |
           set -euo pipefail
-          deploy_id=$(node -e "const r=require('./reports/netlify-hook-response-metadata.json'); console.log(r.safe_metadata.deploy_id||r.safe_metadata.id||'')")
-          if [ -z "$deploy_id" ]; then
-            echo 'No deploy id in hook response'
-            exit 0
-          fi
-          public_code=$(curl -sS -o /tmp/deploy-public.json -w '%{http_code}' --max-time 20 "https://api.netlify.com/api/v1/deploys/$deploy_id" || true)
-          node - "$public_code" <<'NODE'
-          const fs=require('fs');
-          const code=Number(process.argv[2]||0);
-          const file='reports/netlify-hook-response-metadata.json';
-          const report=JSON.parse(fs.readFileSync(file,'utf8'));
-          report.public_deploy_lookup_http_status=code;
-          if (code >= 200 && code < 300) {
-            let body={}; try { body=JSON.parse(fs.readFileSync('/tmp/deploy-public.json','utf8')); } catch {}
-            const keys=['id','site_id','state','url','ssl_url','deploy_url','deploy_ssl_url','branch','title','message','name','created_at','updated_at','error_message'];
-            report.public_deploy_metadata={};
-            for(const k of keys){const v=body?.[k];if(v===null||['string','number','boolean'].includes(typeof v))report.public_deploy_metadata[k]=v;}
-          }
-          fs.writeFileSync(file,JSON.stringify(report,null,2)+'\n');
+          mkdir -p reports
+          code=$(curl -sS -o /tmp/site-deploys.json -w '%{http_code}' --max-time 25 "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys?per_page=12" || true)
+          export DEPLOYS_HTTP="$code"
+          node <<'NODE'
+          const fs = require('fs');
+          let raw=''; try { raw=fs.readFileSync('/tmp/site-deploys.json','utf8'); } catch {}
+          let rows=[]; try { const j=JSON.parse(raw||'[]'); if(Array.isArray(j)) rows=j; } catch {}
+          const safeKeys=['id','state','branch','context','commit_ref','title','created_at','updated_at','published_at','error_message','deploy_time','manual_deploy','deploy_source'];
+          const recent=rows.slice(0,12).map(row=>{
+            const out={};
+            for(const key of safeKeys){ const v=row?.[key]; if(v===null||['string','number','boolean'].includes(typeof v)) out[key]=v; }
+            return out;
+          });
+          const hookBody=(()=>{ try{return fs.readFileSync('/tmp/hook-body.txt','utf8').trim().slice(0,500)}catch{return ''} })();
+          const report={
+            generated_at:new Date().toISOString(),
+            hook_http_status:Number(process.env.HOOK_HTTP||0),
+            hook_response_preview:hookBody,
+            deploys_http_status:Number(process.env.DEPLOYS_HTTP||0),
+            recent_deploys:recent
+          };
+          fs.writeFileSync('reports/netlify-hook-response-metadata.json',JSON.stringify(report,null,2)+'\n');
+          console.log(JSON.stringify(report,null,2));
           NODE
 
       - name: 保存安全诊断结果

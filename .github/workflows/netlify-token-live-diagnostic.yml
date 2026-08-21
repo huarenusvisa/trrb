@@ -27,19 +27,35 @@ jobs:
           set -euo pipefail
           mkdir -p reports
           token_present=false
-          site_http=0
+          token_prefix=''
+          site_auth_http=0
+          site_noauth_http=0
+          user_http=0
+          accounts_http=0
           site_match=false
           site_name=''
           if [ -n "${NETLIFY_AUTH_TOKEN:-}" ]; then
             token_present=true
-            site_http=$(curl -sS -o /tmp/netlify-site.json -w '%{http_code}' \
+            token_prefix="${NETLIFY_AUTH_TOKEN:0:3}"
+            site_auth_http=$(curl -sS -o /tmp/netlify-site-auth.json -w '%{http_code}' \
               -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
               -H 'Accept: application/json' \
               "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID" || true)
-            if [ "$site_http" = "200" ]; then
+            site_noauth_http=$(curl -sS -o /tmp/netlify-site-noauth.json -w '%{http_code}' \
+              -H 'Accept: application/json' \
+              "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID" || true)
+            user_http=$(curl -sS -o /tmp/netlify-user.json -w '%{http_code}' \
+              -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+              -H 'Accept: application/json' \
+              "https://api.netlify.com/api/v1/user" || true)
+            accounts_http=$(curl -sS -o /tmp/netlify-accounts.json -w '%{http_code}' \
+              -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+              -H 'Accept: application/json' \
+              "https://api.netlify.com/api/v1/accounts" || true)
+            if [ "$site_auth_http" = "200" ]; then
               export NETLIFY_SITE_ID
-              site_name=$(node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('/tmp/netlify-site.json','utf8'));process.stdout.write(String(j.name||''))")
-              returned_id=$(node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('/tmp/netlify-site.json','utf8'));process.stdout.write(String(j.id||j.site_id||''))")
+              site_name=$(node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('/tmp/netlify-site-auth.json','utf8'));process.stdout.write(String(j.name||''))")
+              returned_id=$(node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('/tmp/netlify-site-auth.json','utf8'));process.stdout.write(String(j.id||j.site_id||''))")
               [ "$returned_id" = "$NETLIFY_SITE_ID" ] && site_match=true
             fi
           fi
@@ -47,7 +63,11 @@ jobs:
           {
             "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
             "token_present": $token_present,
-            "site_lookup_http_status": $site_http,
+            "token_prefix": "$token_prefix",
+            "site_lookup_with_auth_http_status": $site_auth_http,
+            "site_lookup_without_auth_http_status": $site_noauth_http,
+            "user_lookup_http_status": $user_http,
+            "accounts_lookup_http_status": $accounts_http,
             "site_id_match": $site_match,
             "site_name": "$site_name"
           }

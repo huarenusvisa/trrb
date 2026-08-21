@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T14:53:16.407Z",
+  "generatedAt": "2026-08-21T15:48:06.328Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -1169,84 +1169,20 @@
       "sourceFinalUrl": "https://ecf.ca8.uscourts.gov/cgi-bin/TodayOpn.pl",
       "documents": [
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/233129P.pdf",
-          "title": "233129P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/242946P.pdf",
+          "title": "242946P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/242357P.pdf",
-          "title": "242357P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252405U.pdf",
+          "title": "252405U.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/243094P.pdf",
-          "title": "243094P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/242946P.pdf",
+          "title": "242946P.pdf"
         },
         {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/251607U.pdf",
-          "title": "251607U.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252005P.pdf",
-          "title": "252005P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252119U.pdf",
-          "title": "252119U.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252470P.pdf",
-          "title": "252470P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/252563P.pdf",
-          "title": "252563P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/253240P.pdf",
-          "title": "253240P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/opndir/26/08/262247P.pdf",
-          "title": "262247P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/233129P.pdf",
-          "title": "233129P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/242357P.pdf",
-          "title": "242357P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/243094P.pdf",
-          "title": "243094P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/251607U.pdf",
-          "title": "251607U.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252005P.pdf",
-          "title": "252005P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252119U.pdf",
-          "title": "252119U.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252470P.pdf",
-          "title": "252470P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252563P.pdf",
-          "title": "252563P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/253240P.pdf",
-          "title": "253240P.pdf"
-        },
-        {
-          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/262247P.pdf",
-          "title": "262247P.pdf"
+          "url": "https://ecf.ca8.uscourts.gov/cgi-bin/252405U.pdf",
+          "title": "252405U.pdf"
         }
       ],
       "notes": []
@@ -1369,6 +1305,10 @@
       "sourceFinalUrl": "https://www.ca10.uscourts.gov/opinions/new/daily_decisions.rss",
       "documents": [
         {
+          "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/010111492628.pdf",
+          "title": null
+        },
+        {
           "url": "https://www.ca10.uscourts.gov/sites/ca10/files/opinions/01019202759.pdf",
           "title": "00-6235 - United States v. Anderson [1470367] 12/13/2001"
         },
@@ -1418,6 +1358,10 @@
       "sourceStatus": 200,
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
+        {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510415.pdf",
+          "title": "John Wilson, Jr. v. Secretary, Florida Department of Corrections, et al"
+        },
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510210.pdf",
           "title": "Wakilii Brown v. Commissioner, Alabama Department of Corrections"
@@ -1613,10 +1557,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202410139.enb.pdf",
           "title": "Bruce Henry v. Sheriff of Tuscaloosa County, Alabama, et al"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202413814.pdf",
-          "title": "State of Florida v. Secretary, US Department of Education, et al"
         }
       ],
       "notes": []

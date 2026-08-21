@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T18:55:59.560Z",
+  "generatedAt": "2026-08-21T19:36:48.088Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -435,6 +435,10 @@
           "title": "USA v. Jason Mika"
         },
         {
+          "url": "https://www2.ca3.uscourts.gov/opinarch/252255np.pdf",
+          "title": "Cesar Plaza Rivera v. Attorney General United States of America"
+        },
+        {
           "url": "https://www2.ca3.uscourts.gov/opinarch/251411np.pdf",
           "title": "Joel Ruelas-Manzo v. Attorney General United States of America"
         },
@@ -532,10 +536,6 @@
         },
         {
           "url": "https://www2.ca3.uscourts.gov/opinarch/241439npo.pdf",
-          "title": "William Webb, Jr. v. Kirk Neal"
-        },
-        {
-          "url": "https://www2.ca3.uscourts.gov/opinarch/241439npa.pdf",
           "title": "William Webb, Jr. v. Kirk Neal"
         }
       ],
@@ -1013,6 +1013,18 @@
           "title": "26a0237p-06.pdf"
         },
         {
+          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0238p-06.pdf",
+          "title": "26a0238p-06.pdf"
+        },
+        {
+          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0239p-06.pdf",
+          "title": "26a0239p-06.pdf"
+        },
+        {
+          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0240p-06.pdf",
+          "title": "26a0240p-06.pdf"
+        },
+        {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0356n-06.pdf",
           "title": "26a0356n-06.pdf"
         },
@@ -1039,6 +1051,10 @@
         {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0362n-06.pdf",
           "title": "26a0362n-06.pdf"
+        },
+        {
+          "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/26a0363n-06.pdf",
+          "title": "26a0363n-06.pdf"
         },
         {
           "url": "https://www.opn.ca6.uscourts.gov/opinions.pdf/23a0180p-06.pdf",

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>华人工作网｜美国华人招聘与求职</title>
+  <meta name="description" content="华人工作网提供美国华人招聘、求职和附近工作查询。按职位、城市和地区找工作，并直接电话、短信或邮件联系招聘方。">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <link rel="canonical" href="https://huarengongzuo.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="华人工作网｜美国华人招聘与求职">
+  <meta property="og:description" content="岗位优先，按地区找工作，直接联系招聘方。">
+  <meta property="og:url" content="https://huarengongzuo.com/">
+  <meta name="theme-color" content="#0f5fc7">
+  <link rel="stylesheet" href="/huarengongzuo/site.css?v=1">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="华人工作网首页">
+        <span class="brand-mark" aria-hidden="true">工</span>
+        <span><strong>华人工作网</strong><small>HUAREN GONGZUO</small></span>
+      </a>
+      <nav aria-label="主要导航">
+        <a href="#latest-jobs">最新工作</a>
+        <a href="/jobs/">附近工作</a>
+        <a href="/jobs/publish.html">发布招聘</a>
+        <a href="/jobs/seeker.html">发布求职</a>
+      </nav>
+      <a class="trrb-link" href="https://trrb.net/jobs/">唐人日报入口</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <div class="kicker">美国华人招聘 · 岗位持续更新</div>
+          <h1>找工作，<em>更直接</em></h1>
+          <p>先看岗位，再联系招聘方。不会英语、不会复杂筛选，也能按城市和常用工作快速找到机会。</p>
+          <form id="job-search" class="search-box">
+            <label><span>找什么工作</span><input id="job-q" autocomplete="off" placeholder="例如：餐馆、司机、仓库、美甲"></label>
+            <label><span>想在哪里</span><input id="place-q" autocomplete="off" placeholder="城市、州或社区"></label>
+            <button type="submit">查看工作</button>
+          </form>
+          <div class="quick-cities" aria-label="热门找工地区">
+            <button type="button" data-place="New York">纽约</button>
+            <button type="button" data-place="Flushing">法拉盛</button>
+            <button type="button" data-place="Los Angeles">洛杉矶</button>
+            <button type="button" data-place="Boston">波士顿</button>
+            <button type="button" data-place="Houston">休斯敦</button>
+          </div>
+        </div>
+        <aside class="job-snapshot" aria-labelledby="snapshot-title">
+          <div class="snapshot-head"><div><span>正在招聘</span><h2 id="snapshot-title">推荐岗位</h2></div><b id="job-count">读取中</b></div>
+          <div id="featured-jobs" class="featured-jobs"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+          <a class="more" href="/jobs/">查看全部岗位 <span>→</span></a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="shell action-grid" aria-label="快速入口">
+      <a href="/jobs/"><span>找</span><div><b>我要找工作</b><small>按位置、距离和工作类别筛选</small></div><i>→</i></a>
+      <a href="/jobs/publish.html"><span>招</span><div><b>我要招聘</b><small>极简发布，进入人工审核</small></div><i>→</i></a>
+      <a href="/jobs/seeker.html"><span>求</span><div><b>发布求职</b><small>让合适的招聘方联系你</small></div><i>→</i></a>
+    </section>
+
+    <section id="latest-jobs" class="shell jobs-section">
+      <div class="section-head"><div><span>LATEST JOBS</span><h2>最新招聘岗位</h2><p>只展示仍有效并且至少有一种联系方式的岗位。</p></div><a href="/jobs/">地图与高级筛选 →</a></div>
+      <div id="filter-state" class="filter-state" hidden></div>
+      <div id="jobs-list" class="jobs-list" aria-live="polite"><div class="loading">正在读取最新岗位…</div></div>
+      <div class="load-actions"><button id="show-more" type="button" hidden>显示更多岗位</button></div>
+    </section>
+
+    <section class="safety-strip">
+      <div class="shell safety-inner"><div><span>求职安全</span><h2>先核实，再转账</h2></div><p>正规招聘不应要求求职者预付高额费用、提供银行卡密码或验证码。发现重复、虚假或可疑信息，可向平台举报并交由后台人工处理。</p><a href="/jobs/">查看平台规则 →</a></div>
+    </section>
+  </main>
+
+  <footer><div class="shell footer-inner"><div><b>华人工作网</b><span>Huarengongzuo.com</span></div><p>与唐人日报共用招聘数据与人工审核系统</p></div></footer>
+  <script src="/huarengongzuo/site.js?v=1" defer></script>
+</body>
+</html>

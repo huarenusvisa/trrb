@@ -2080,12 +2080,4 @@
         <news:title>美国边境巡逻队巴士上身份检查遭乘客质疑</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-0eb8b25150903753fc0bd570db91105a7c0c6f5c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-19T19:39:44.094Z</news:publication_date>
-        <news:title>新墨西哥州梅西拉国土安全部副部长谈边境执法</news:title>
-      </news:news>
-    </url>
 </urlset>

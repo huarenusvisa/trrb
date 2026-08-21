@@ -84,6 +84,13 @@ function supabaseConfig() {
   return { base, key };
 }
 
+function safeCanonical(value: unknown): string {
+  const canonical = String(value || "").trim();
+  if (!canonical.startsWith(`${SITE_ORIGIN}/`)) return "";
+  if (/\/article\.html\?id=/i.test(canonical)) return "";
+  return canonical;
+}
+
 async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
   if (url.pathname !== "/article.html") return null;
   const legacyId = String(url.searchParams.get("id") || "").trim();
@@ -94,7 +101,7 @@ async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
 
   try {
     const lookup = new URL(`${base}/rest/v1/articles`);
-    lookup.searchParams.set("select", "id");
+    lookup.searchParams.set("select", "id,canonical_url");
     lookup.searchParams.set("legacy_id", `eq.${legacyId}`);
     lookup.searchParams.set("status", "eq.published");
     lookup.searchParams.set("limit", "1");
@@ -103,9 +110,11 @@ async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
     });
     if (!response.ok) throw new Error(`legacy id lookup failed ${response.status}`);
     const rows = await response.json();
-    const articleId = Array.isArray(rows) ? String(rows[0]?.id || "") : "";
-    if (!articleId) return null;
-    return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(articleId)}`, "article-legacy-id-recovery");
+    const row = Array.isArray(rows) ? rows[0] : null;
+    if (!row?.id) return null;
+    const canonical = safeCanonical(row.canonical_url);
+    if (!canonical) throw new Error(`legacy id ${legacyId} has no valid canonical_url`);
+    return redirect(canonical, "article-legacy-id-recovery");
   } catch (error) {
     console.error("legacy article id lookup failed", error);
     return temporaryUnavailable();

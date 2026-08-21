@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-b9bb5a4ed6bb63b535bd9432ab404628ecc96634</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T19:57:11.419Z</news:publication_date>
+        <news:title>得州奥斯汀疑有5岁儿童被ICE拘留</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-6397f5afbf44b53e9459d1be376c7c2b88d1a650</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T19:56:57.078Z</news:publication_date>
+        <news:title>一男子因拍摄ICE执法拒答移民身份状态遭ICE拘留</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-756a003e8f8b731da0506531c20b1f6bd34ba413</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T19:56:02.723Z</news:publication_date>
+        <news:title>ICE VOICE办公室为受害者提供服务</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-df69a56c3b692dec6625f8aa3c561c0a1c44ffaa</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T19:55:50.014Z</news:publication_date>
+        <news:title>海地Cap-Haitien接收首批161名TPS遣返者</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-4bb9c01f2b3ae0f6a680bb8b81182cfa7a2c822e</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T19:55:40.561Z</news:publication_date>
+        <news:title>女子将热蜡浇在她自己的孩子身上，DHS确认其身份</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-26e99d55f1f4a65007bf208d4221058cf4760411</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-21T19:54:04.921Z</news:publication_date>
+        <news:title>ICE持续在美拘捕非法移民 强调不会放弃任何目标</news:title>
+      </news:news>
+    </url>
   
   
   

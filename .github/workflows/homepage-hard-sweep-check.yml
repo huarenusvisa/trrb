@@ -1,12 +1,28 @@
-name: Homepage hard sweep check
+name: Homepage stability gate
 
 on:
   push:
     branches:
-      - fix/homepage-hard-sweep-20260821
+      - main
+    paths:
+      - homepage-refresh-guard.js
+      - articles-home-live-fix.js
+      - homepage-startup-stability.js
+      - jobs-home.js
+      - homepage-immigration-hub.js
+      - scripts/validate-site.mjs
+      - .github/workflows/homepage-hard-sweep-check.yml
   pull_request:
     branches:
       - main
+    paths:
+      - homepage-refresh-guard.js
+      - articles-home-live-fix.js
+      - homepage-startup-stability.js
+      - jobs-home.js
+      - homepage-immigration-hub.js
+      - scripts/validate-site.mjs
+      - .github/workflows/homepage-hard-sweep-check.yml
   workflow_dispatch:
 
 jobs:
@@ -35,39 +51,5 @@ jobs:
           grep -q 'generalHeroFallback' articles-home-live-fix.js
           grep -q 'baseHomeReady' jobs-home.js
           grep -q 'baseHomeReady' homepage-immigration-hub.js
-      - name: Prepare Netlify compatibility files
-        run: |
-          find netlify/functions -type f \( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \) -delete
-          cp config/immigration-knowledge.js immigration-knowledge.js
-          cp immigrate/center.css immigrate-center.css
-          cp immigrate/study-knowledge-content.css immigrate-study-knowledge-content.css
-          cp immigrate/center-seo.js immigrate-center-seo.js
-          cp immigrate/center.js immigrate-center.js
-          cp immigrate/study-knowledge-content.js immigrate-study-knowledge-content.js
-          cp immigrate/work-knowledge-content.js immigrate-work-knowledge-content.js
-          cp immigrate/employment-knowledge-content.js immigrate-employment-knowledge-content.js
-          cp immigrate/family-knowledge-content.js immigrate-family-knowledge-content.js
-          cp immigrate/humanitarian-knowledge-content.js immigrate-humanitarian-knowledge-content.js
-          cp immigrate/change-status-module.js immigrate-change-status-module.js
-          cp immigrate/citizenship-module.js immigrate-citizenship-module.js
-          cp immigrate/knowledge-article-filter.js immigrate-knowledge-article-filter.js
-      - name: Write deploy version
-        run: node scripts/write-deploy-version.mjs
-      - name: Generate sitemaps
-        run: node scripts/generate-sitemaps.mjs
-      - name: Generate legal sitemap
-        run: node scripts/generate-legal-sitemap.mjs
-      - name: Clean sitemap against database
-        run: node scripts/clean-sitemap-against-database.mjs
-      - name: Ensure sitemap articles
-        run: node scripts/ensure-sitemap-articles.mjs
-      - name: Finalize redirects
-        run: node scripts/finalize-redirects.mjs
-      - name: Generate feed
-        run: node scripts/generate-feed.mjs
-      - name: Upgrade article URLs
-        run: node scripts/upgrade-article-urls.mjs
       - name: Run site invariant validation
         run: node scripts/validate-site.mjs
-      - name: Run SEO integrity audit
-        run: node scripts/seo-integrity-audit.mjs

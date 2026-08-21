@@ -121,6 +121,42 @@ function renderFeaturedJudges(rows) {
   }).join('') : '<div class="empty">暂无可显示的法官资料</div>';
 }
 
+function knowledgeTopic(categoryName) {
+  const parts = String(categoryName || '').split('·').map((part) => part.trim()).filter(Boolean);
+  return parts[2] || '庇护知识';
+}
+
+function knowledgeUrl(row) {
+  const slug = String(row.slug || '').trim();
+  const id = String(row.id || '').trim();
+  return slug
+    ? `https://trrb.net/news/${encodeURIComponent(slug)}`
+    : `https://trrb.net/article.html?id=${encodeURIComponent(id)}`;
+}
+
+function knowledgeDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '每日更新';
+  return new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric' }).format(date);
+}
+
+function renderDailyKnowledge(rows) {
+  const container = $('#daily-knowledge-items');
+  if (!container) return;
+  container.innerHTML = rows.length ? rows.slice(0, 4).map((row, index) => `<a class="knowledge-item${index === 0 ? ' featured' : ''}" href="${esc(knowledgeUrl(row))}"><span><b>${esc(knowledgeTopic(row.category_name))}</b><time datetime="${esc(row.published_at || '')}">${esc(knowledgeDate(row.published_at))}</time></span><strong>${esc(row.title || '庇护知识')}</strong>${index === 0 ? `<p>${esc(row.summary || '查看唐人日报最新庇护知识与办理要点。')}</p>` : ''}<i aria-hidden="true">→</i></a>`).join('') : '<div class="knowledge-empty">今日内容正在整理，请稍后查看。</div>';
+}
+
+async function loadDailyKnowledge() {
+  const container = $('#daily-knowledge-items');
+  if (!container) return;
+  try {
+    const data = await json('/.netlify/functions/immigration-judges?mode=knowledge&limit=4');
+    renderDailyKnowledge(data.results || []);
+  } catch (error) {
+    container.innerHTML = '<div class="knowledge-empty">最新庇护知识暂时无法读取，请稍后刷新。</div>';
+  }
+}
+
 async function loadFeaturedJudges() {
   const container = $('#featured-judges');
   if (!container) return;
@@ -170,6 +206,7 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
 
 useCleanDomainRoutes();
 loadOverview();
+loadDailyKnowledge();
 loadFeaturedJudges();
 const initial = new URLSearchParams(location.search).get('q');
 if (initial) {

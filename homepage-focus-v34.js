@@ -7,6 +7,12 @@
     return String(article?.category || article?.category_name || "").trim();
   }
 
+  function articleTime(article) {
+    const raw = article?.published_at || article?.created_at || article?.date || article?.time || "";
+    const time = Date.parse(raw);
+    return Number.isFinite(time) ? time : 0;
+  }
+
   function isHomepageFocusArticle(article) {
     return Boolean(article?.id && article?.title && FOCUS_CATEGORIES.has(categoryOf(article)));
   }
@@ -14,7 +20,20 @@
   function focusArticles(articles) {
     return (Array.isArray(articles) ? articles : [])
       .filter(isHomepageFocusArticle)
+      .sort((a, b) => articleTime(b) - articleTime(a))
       .sort((a, b) => Number(typeof window.hasRealImage === "function" && window.hasRealImage(b)) - Number(typeof window.hasRealImage === "function" && window.hasRealImage(a)))
+      .slice(0, 5);
+  }
+
+  function generalFallbackArticles(articles) {
+    const source = (Array.isArray(articles) ? articles : []).filter((item) => item?.id && item?.title);
+    const visual = source.filter((item) => {
+      if (typeof window.hasRealImage === "function") return window.hasRealImage(item);
+      return Boolean(String(item?.image || item?.cover_image || "").trim());
+    });
+    return (visual.length ? visual : source)
+      .slice()
+      .sort((a, b) => articleTime(b) - articleTime(a))
       .slice(0, 5);
   }
 
@@ -23,28 +42,27 @@
     if (!hero) return;
 
     const focus = focusArticles(articles);
-    if (focus.length && typeof window.renderHeroCarousel === "function") {
-      window.renderHeroCarousel(focus);
-      hero.dataset.focusOnly = "true";
+    const chosen = focus.length ? focus : generalFallbackArticles(articles);
+
+    if (chosen.length && typeof window.renderHeroCarousel === "function") {
+      window.renderHeroCarousel(chosen);
+      hero.dataset.focusOnly = focus.length ? "true" : "false";
       hero.dataset.focusCount = String(focus.length);
+      hero.dataset.recommendationMode = focus.length ? "focus-category" : "general-home-fallback";
+      hero.dataset.recommendationCount = String(chosen.length);
       return;
     }
 
-    if (typeof hero._trrbStopCarousel === "function") hero._trrbStopCarousel();
-    hero.dataset.focusOnly = "true";
+    // Never overwrite a live homepage with a false empty-state card.
+    // If data has not arrived yet, keep the existing hero untouched and let the
+    // normal homepage renderer/stability guard fill it as soon as articles load.
+    hero.dataset.focusOnly = "false";
     hero.dataset.focusCount = "0";
-    hero.innerHTML = `
-      <a class="hero-focus-empty" href="/important-news">
-        <span>重要新闻</span>
-        <strong>当前暂无重点新闻</strong>
-        <small>普通新闻不会进入首页焦点大图</small>
-      </a>
-    `;
   }
 
   const originalRenderHome = window.renderHome;
   if (typeof originalRenderHome === "function") {
-    window.renderHome = function renderHomeWithFocusOnly(articles) {
+    window.renderHome = function renderHomeWithFocusFallback(articles) {
       originalRenderHome(articles);
       window.TRRB_LAST_HOME_ARTICLES = Array.isArray(articles) ? articles : [];
       renderFocusHero(articles);

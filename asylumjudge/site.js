@@ -39,8 +39,55 @@ function renderStates(rows) {
 
   const grants = rows.reduce((sum, row) => sum + Number(row.grants || 0), 0);
   const denials = rows.reduce((sum, row) => sum + Number(row.denials || 0), 0);
-  $('#national-rate').textContent = grants + denials ? pct(grants / (grants + denials) * 100) : '—';
+  const nationalRate = grants + denials ? grants / (grants + denials) * 100 : null;
+  $('#national-rate').textContent = pct(nationalRate);
   $('#national-sample').textContent = `${fmt(grants + denials)} 件有效裁决样本`;
+  renderStateMarket(selected, nationalRate);
+}
+
+function renderStateMarket(rows, nationalRate) {
+  const chart = $('#state-market-chart');
+  if (!chart) return;
+  const points = rows
+    .filter((row) => Number.isFinite(Number(row.adjudicated_approval_rate)))
+    .slice(0, 6)
+    .map((row) => ({
+      code: String(row.state || '').toUpperCase(),
+      rate: Number(row.adjudicated_approval_rate)
+    }));
+  if (!points.length) {
+    chart.innerHTML = '<div class="state-market-loading">暂无可显示的州级数据</div>';
+    return;
+  }
+
+  const width = 620;
+  const height = 168;
+  const top = 22;
+  const bottom = 132;
+  const left = 36;
+  const right = 18;
+  const plotHeight = bottom - top;
+  const maxRate = Math.max(50, Math.ceil(Math.max(...points.map((point) => point.rate), Number(nationalRate || 0)) / 10) * 10);
+  const step = (width - left - right) / Math.max(points.length - 1, 1);
+  const x = (index) => left + index * step;
+  const y = (rate) => bottom - Math.min(rate, maxRate) / maxRate * plotHeight;
+  const path = points.map((point, index) => `${index ? 'L' : 'M'} ${x(index).toFixed(1)} ${y(point.rate).toFixed(1)}`).join(' ');
+  const averageY = nationalRate == null ? null : y(nationalRate);
+  const summary = points.map((point) => `${stateNames[point.code] || point.code}${point.rate.toFixed(1)}%`).join('，');
+
+  const grid = [0, 25, 50].filter((rate) => rate <= maxRate).map((rate) => {
+    const gridY = y(rate);
+    return `<line class="market-grid" x1="${left}" y1="${gridY}" x2="${width - right}" y2="${gridY}"></line><text class="market-axis" x="0" y="${gridY + 4}">${rate}%</text>`;
+  }).join('');
+  const average = averageY == null ? '' : `<line class="market-average" x1="${left}" y1="${averageY}" x2="${width - right}" y2="${averageY}"></line><text class="market-average-label" x="${width - right}" y="${averageY - 5}" text-anchor="end">全美 ${nationalRate.toFixed(1)}%</text>`;
+  const bars = points.map((point, index) => {
+    const pointX = x(index);
+    const pointY = y(point.rate);
+    const className = nationalRate != null && point.rate >= nationalRate ? 'above' : 'below';
+    return `<g class="market-point ${className}"><rect x="${pointX - 16}" y="${pointY}" width="32" height="${bottom - pointY}" rx="4"></rect><circle cx="${pointX}" cy="${pointY}" r="4"></circle><text class="market-rate" x="${pointX}" y="${Math.max(pointY - 8, 12)}" text-anchor="middle">${point.rate.toFixed(1)}%</text><text class="market-state" x="${pointX}" y="154" text-anchor="middle">${esc(point.code)}</text></g>`;
+  }).join('');
+
+  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州庇护裁决批准率：${esc(summary)}。州际连接线不表示时间趋势，查看全部州数据"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="market-line-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b80d16"></stop><stop offset="1" stop-color="#f04438"></stop></linearGradient></defs>${grid}${average}${bars}<path class="market-line" d="${path}"></path></svg><span class="state-market-note">州际比较线，不表示时间走势</span><span class="state-market-more">查看全部州 →</span></a>`;
 }
 
 async function loadOverview() {
@@ -59,6 +106,8 @@ async function loadOverview() {
   } catch (error) {
     $('#freshness-badge').textContent = '稍后重试';
     $('#state-list').innerHTML = '<div class="empty">数据库暂时无法读取</div>';
+    const chart = $('#state-market-chart');
+    if (chart) chart.innerHTML = '<div class="state-market-loading">州级数据暂时无法读取</div>';
   }
 }
 

@@ -52,10 +52,15 @@ function textLength(value) {
     .length;
 }
 
+function isManualFocus(row) {
+  return overrideOf(row) === MANUAL_FORCE;
+}
+
 function isEligibleLongform(row) {
+  if (!hasRealImage(row)) return false;
+  if (isManualFocus(row)) return true;
   return String(row?.category_name || "").trim() === "美国时政" &&
-    textLength(row?.content) >= MIN_LONGFORM_CHARS &&
-    hasRealImage(row);
+    textLength(row?.content) >= MIN_LONGFORM_CHARS;
 }
 
 function scoreRow(row, now = Date.now()) {
@@ -69,7 +74,7 @@ function scoreRow(row, now = Date.now()) {
   const length = textLength(row?.content);
   let score = Math.max(0, 72 - ageHours) * 1.25;
 
-  if (override === MANUAL_FORCE || row?.is_featured === true) score += 10000;
+  if (override === MANUAL_FORCE) score += 10000;
   if (row?.is_breaking === true) score += 180;
   score += Math.min(120, Math.max(0, Number(row?.rank_score || 0)) * 2);
   score += 55;
@@ -91,7 +96,7 @@ function publicArticle(row) {
   return {
     ...article,
     longform_chars: textLength(content),
-    homepage_focus_source: "美国时政"
+    homepage_focus_source: isManualFocus(row) ? "editor" : "美国时政"
   };
 }
 
@@ -106,7 +111,6 @@ exports.handler = async (event) => {
         select: "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_featured,is_breaking,rank_score,metadata",
         status: "eq.published",
         visibility: "eq.public",
-        category_name: "eq.美国时政",
         published_at: `gte.${cutoff}`,
         order: "published_at.desc.nullslast,created_at.desc",
         limit: "120"
@@ -126,7 +130,7 @@ exports.handler = async (event) => {
     return response(200, {
       mode: "homepage-focus",
       label: "今日要闻",
-      source_category: "美国时政",
+      source_category: "美国时政（编辑可手动加入重大新闻）",
       min_longform_chars: MIN_LONGFORM_CHARS,
       generated_at: new Date().toISOString(),
       count: articles.length,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T13:10:51.078Z",
+  "generatedAt": "2026-08-21T14:00:37.232Z",
   "scope": "13 federal appellate courts: Circuits 1-11, D.C. Circuit, Federal Circuit",
   "courts": 13,
   "covered": 13,
@@ -1411,6 +1411,10 @@
       "sourceFinalUrl": "https://media.ca11.uscourts.gov/opinions/pubnew/logname.php",
       "documents": [
         {
+          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510210.pdf",
+          "title": "Wakilii Brown v. Commissioner, Alabama Department of Corrections"
+        },
+        {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202510656.pdf",
           "title": "Annette Kingsolver v. U.S. Attorney General, et al"
         },
@@ -1605,10 +1609,6 @@
         {
           "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202413814.pdf",
           "title": "State of Florida v. Secretary, US Department of Education, et al"
-        },
-        {
-          "url": "https://media.ca11.uscourts.gov/opinions/pub/files/202313430.pdf",
-          "title": "USA v. Emory Austin Carter"
         }
       ],
       "notes": []
@@ -1829,6 +1829,10 @@
         {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/24-1790.OPINION.8-21-2026_2742581.pdf",
           "title": "MILLER v. COLLINS [OPINION]"
+        },
+        {
+          "url": "https://www.cafc.uscourts.gov/opinions-orders/24-2378.OPINION.8-21-2026_2742604.pdf",
+          "title": "US INVENTOR, INC. v. SQUIRES [OPINION]"
         },
         {
           "url": "https://www.cafc.uscourts.gov/opinions-orders/25-1461.OPINION.8-20-2026_2742006.pdf",

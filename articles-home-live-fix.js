@@ -8,6 +8,7 @@
   let lastFocusAt = 0;
   let focusPromise = null;
   let rankCycle = 0;
+  let enhanced = false;
 
   function articleTime(item) {
     const raw = item?.published_at || item?.created_at || "";
@@ -25,13 +26,13 @@
       id: row.id,
       title: row.title || "",
       slug: row.slug || "",
-      category: row.category_name || "新闻",
-      category_name: row.category_name || "新闻",
-      topicKey: row.topic_key || "",
-      topic_key: row.topic_key || "",
+      category: row.category_name || row.category || "新闻",
+      category_name: row.category_name || row.category || "新闻",
+      topicKey: row.topic_key || row.topicKey || "",
+      topic_key: row.topic_key || row.topicKey || "",
       excerpt: row.summary || String(row.content || "").replace(/\s+/g, " ").slice(0, 120),
-      image: row.cover_image || "",
-      cover_image: row.cover_image || "",
+      image: row.cover_image || row.image || "",
+      cover_image: row.cover_image || row.image || "",
       author: row.author || "Tang Ren Daily",
       published_at: row.published_at || "",
       created_at: row.created_at || "",
@@ -42,34 +43,6 @@
     };
   }
 
-  async function emergencyRefresh() {
-    if (typeof window.TRRB_refreshHomeLive === "function") {
-      return window.TRRB_refreshHomeLive();
-    }
-    if (typeof window.renderHome !== "function") return false;
-
-    const response = await fetch(`/.netlify/functions/public-home-articles?limit=200&_=${Date.now()}`, {
-      cache: "no-store",
-      headers: { Accept: "application/json" }
-    });
-    if (!response.ok) throw new Error(`首页应急实时接口 ${response.status}`);
-    const payload = await response.json();
-    const seen = new Set();
-    const articles = (Array.isArray(payload?.articles) ? payload.articles : [])
-      .map(normalize)
-      .filter(fresh)
-      .filter((item) => {
-        const key = String(item?.id || item?.title || "").trim();
-        if (!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      })
-      .sort((a, b) => articleTime(b) - articleTime(a));
-    if (!articles.length) return false;
-    window.renderHome(articles);
-    return true;
-  }
-
   function removeRetiredPeopleSurface(root = document) {
     if (!root?.querySelectorAll) return;
     const targets = new Set();
@@ -77,9 +50,7 @@
       .forEach((node) => targets.add(node));
     root.querySelectorAll('h1,h2,h3,h4,strong').forEach((node) => {
       const text = String(node.textContent || "").replace(/\s+/g, "").trim();
-      if (text.includes("美国华人人物志") || text === "华人人物" || text === "华人人物志") {
-        targets.add(node);
-      }
+      if (text.includes("美国华人人物志") || text === "华人人物" || text === "华人人物志") targets.add(node);
     });
     targets.forEach((node) => {
       const card = node.closest('.topic-focus-card,.service-card,.feature-card,.news-box,article,a') || node;
@@ -99,15 +70,18 @@
     });
   }
 
+  function heroHasSlides() {
+    return Boolean(document.querySelector("#hero .hero-slide"));
+  }
+
   function generalHeroFallback(reason = "general-home-fallback") {
     const hero = document.getElementById("hero");
     if (!hero) return false;
 
-    const existingSlides = hero.querySelectorAll(".hero-slide");
-    if (existingSlides.length) {
+    if (heroHasSlides()) {
       markHeroAsDailyFocus(document);
       hero.dataset.recommendationMode = reason;
-      hero.dataset.recommendationCount = String(existingSlides.length);
+      hero.dataset.recommendationCount = String(hero.querySelectorAll(".hero-slide").length);
       return true;
     }
 
@@ -115,6 +89,7 @@
       .filter(fresh)
       .filter((item) => String(item?.image || item?.cover_image || "").trim())
       .slice(0, 5);
+
     if (candidates.length && typeof window.renderHeroCarousel === "function") {
       window.renderHeroCarousel(candidates);
       markHeroAsDailyFocus(document);
@@ -123,9 +98,16 @@
       return true;
     }
 
-    // Never replace an already-rendered homepage with a false "no news" state.
     hero.dataset.recommendationMode = reason;
     hero.dataset.recommendationCount = "0";
+    return false;
+  }
+
+  async function emergencyRefresh() {
+    if (generalHeroFallback("existing-or-local-recovery")) return true;
+    if (typeof window.TRRB_refreshHomeLive === "function") {
+      return window.TRRB_refreshHomeLive({ forceRender: true });
+    }
     return false;
   }
 
@@ -144,24 +126,35 @@
         const focus = (Array.isArray(payload?.articles) ? payload.articles : [])
           .map(normalize)
           .filter((item) => item.id && item.title && item.image && item.category === "美国时政" && item.longform_chars >= 1200);
-        if (!focus.length || typeof window.renderHeroCarousel !== "function") {
-          generalHeroFallback("focus-empty-general-fallback");
-          lastFocusAt = Date.now();
-          return false;
-        }
-        window.renderHeroCarousel(focus.slice(0, 5));
-        markHeroAsDailyFocus(document);
+
         const hero = document.getElementById("hero");
-        if (hero) {
-          hero.dataset.recommendationMode = "longform-politics-only";
-          hero.dataset.recommendationCount = String(focus.length);
+        if (!hero) return false;
+
+        // Never replace an already-valid hero after it has become visible. That
+        // asynchronous replacement was one of the main causes of refresh-time jumping.
+        if (heroHasSlides()) {
+          markHeroAsDailyFocus(document);
+          hero.dataset.recommendationMode = focus.length ? "stable-existing-focus" : "stable-existing-general";
+          hero.dataset.recommendationCount = String(hero.querySelectorAll(".hero-slide").length);
+          lastFocusAt = Date.now();
+          return Boolean(focus.length);
         }
+
+        // Focus data is allowed to render only as an empty-hero recovery.
+        if (focus.length && typeof window.renderHeroCarousel === "function") {
+          window.renderHeroCarousel(focus.slice(0, 5));
+          markHeroAsDailyFocus(document);
+          hero.dataset.recommendationMode = "longform-politics-recovery";
+          hero.dataset.recommendationCount = String(focus.length);
+          lastFocusAt = Date.now();
+          return true;
+        }
+
         lastFocusAt = Date.now();
-        return true;
+        return generalHeroFallback("focus-empty-general-recovery");
       } catch (error) {
-        console.error("今日要闻自动推荐失败：", error);
-        generalHeroFallback("focus-error-general-fallback");
-        return false;
+        console.warn("今日要闻增强暂不可用：", error);
+        return generalHeroFallback("focus-error-general-recovery");
       } finally {
         focusPromise = null;
       }
@@ -221,9 +214,7 @@
     const salt = `${Math.floor(now / (15 * 60 * 1000))}:${cycle}`;
     const groups = new Map(RANK_CATEGORY_KEYS.map((key) => [key, []]));
     recent.forEach((item) => groups.get(rankBucket(item.category || item.category_name))?.push(item));
-    RANK_CATEGORY_KEYS.forEach((key) => {
-      groups.set(key, shuffleBySalt(groups.get(key) || [], `${salt}:${key}`));
-    });
+    RANK_CATEGORY_KEYS.forEach((key) => groups.set(key, shuffleBySalt(groups.get(key) || [], `${salt}:${key}`)));
 
     const categoryOrder = shuffleBySalt(RANK_CATEGORY_KEYS.map((key) => ({ id: key, key })), `${salt}:categories`).map((item) => item.key);
     const picked = [];
@@ -246,16 +237,14 @@
       if (categoryOrder.every((name) => (groups.get(name) || []).length === 0)) break;
     }
 
-    // If the three preferred buckets are sparse, fill with other real fresh homepage news.
-    const all24h = shuffleBySalt(source.filter((item) => {
+    shuffleBySalt(source.filter((item) => {
       const t = articleTime(item);
       return t > 0 && now - t <= RANK_MAX_AGE_MS;
-    }), `${salt}:all24h`);
-    all24h.forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
+    }), `${salt}:all24h`).forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
 
     if (picked.length < 10) {
-      const allFresh = source.filter(fresh).sort((a, b) => articleTime(b) - articleTime(a));
-      allFresh.forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
+      source.filter(fresh).sort((a, b) => articleTime(b) - articleTime(a))
+        .forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
     }
 
     return picked;
@@ -271,57 +260,44 @@
     const pool = buildMixedRank(source, cycle);
     if (!pool.length) return;
 
-    rankRoot.innerHTML = pool.map((item, index) => `<li><b>${index + 1}</b><a href="${articleHref(item)}">${escapeRankHtml(item.title)}</a><span class="rank-heat">${escapeRankHtml(item.rank_bucket)}</span></li>`).join("");
+    const nextHtml = pool.map((item, index) => `<li><b>${index + 1}</b><a href="${articleHref(item)}">${escapeRankHtml(item.title)}</a><span class="rank-heat">${escapeRankHtml(item.rank_bucket)}</span></li>`).join("");
+    if (rankRoot.innerHTML !== nextHtml) rankRoot.innerHTML = nextHtml;
 
     if (!switchBtn.dataset.mixedRankBound) {
       switchBtn.dataset.mixedRankBound = "true";
       switchBtn.addEventListener("click", (event) => {
         event.preventDefault();
         rankCycle += 1;
-        window.setTimeout(() => renderMixedRank(window.TRRB_LAST_HOME_ARTICLES || [], rankCycle), 0);
+        renderMixedRank(window.TRRB_LAST_HOME_ARTICLES || [], rankCycle);
       });
     }
   }
 
-  function installHomepageFocusMode() {
-    removeImportantNewsNavigation(document);
-
-    if (typeof window.renderHome === "function" && !window.__TRRB_HOME_FOCUS_WRAPPED__) {
-      const originalRenderHome = window.renderHome;
-      window.renderHome = function renderHomeWithAutomaticFocus(articles) {
-        const result = originalRenderHome(articles);
-        window.TRRB_LAST_HOME_ARTICLES = Array.isArray(articles) ? articles : [];
-        window.setTimeout(() => {
-          fetchHomepageFocus(true);
-          renderMixedRank(articles, rankCycle);
-        }, 0);
-        return result;
-      };
-      window.__TRRB_HOME_FOCUS_WRAPPED__ = true;
-    }
-
-    window.setTimeout(() => {
-      fetchHomepageFocus(true);
-      const current = window.TRRB_LAST_HOME_ARTICLES || [];
-      if (current.length) renderMixedRank(current, rankCycle);
-    }, 120);
-  }
-
-  function installDomGuards() {
+  function enhanceOnce() {
+    if (enhanced) return true;
+    const current = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [];
+    if (!current.length || !heroHasSlides()) return false;
+    enhanced = true;
     removeRetiredPeopleSurface(document);
     removeImportantNewsNavigation(document);
-    if (window.__TRRB_HOME_DOM_GUARD__) return;
-    window.__TRRB_HOME_DOM_GUARD__ = true;
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of mutation.addedNodes) {
-          if (node.nodeType !== Node.ELEMENT_NODE) continue;
-          removeRetiredPeopleSurface(node);
-          removeImportantNewsNavigation(node);
-        }
+    markHeroAsDailyFocus(document);
+    renderMixedRank(current, rankCycle);
+    fetchHomepageFocus(true);
+    document.documentElement.dataset.homeEnhancementsStable = "true";
+    return true;
+  }
+
+  function waitForInitialRender() {
+    const started = Date.now();
+    const tick = () => {
+      if (enhanceOnce()) return;
+      if (Date.now() - started > 3600) {
+        emergencyRefresh().then(() => enhanceOnce());
+        return;
       }
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
+      window.setTimeout(tick, 80);
+    };
+    tick();
   }
 
   window.TRRB_HOME_LIVE_COMPAT_SHIM = true;
@@ -330,8 +306,9 @@
   window.TRRB_renderMixed24hRank = renderMixedRank;
 
   function boot() {
-    installHomepageFocusMode();
-    installDomGuards();
+    removeRetiredPeopleSurface(document);
+    removeImportantNewsNavigation(document);
+    waitForInitialRender();
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });

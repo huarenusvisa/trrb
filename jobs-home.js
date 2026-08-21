@@ -37,7 +37,7 @@
     const style = document.createElement("style");
     style.id = "trrb-jobs-home-theme";
     style.textContent = `
-      #jobs-home-hub.jobs-knowledge-card{background:#fff!important;border:1px solid #dbe5f1!important;border-top:4px solid #1769d2!important;box-shadow:0 7px 24px rgba(15,23,42,.055)!important}
+      #jobs-home-hub.jobs-knowledge-card{background:#fff!important;border:1px solid #dbe5f1!important;border-top:4px solid #1769d2!important;box-shadow:0 7px 24px rgba(15,23,42,.055)!important;min-height:238px;box-sizing:border-box}
       #jobs-home-hub .jobs-home-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
       #jobs-home-hub .jobs-home-head h2{margin:0;font-size:20px;line-height:1.2}
       #jobs-home-hub .jobs-home-head h2 a{color:#0f172a;text-decoration:none}
@@ -50,7 +50,7 @@
       #jobs-home-hub .job-position-card strong{display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13.5px!important;line-height:1.35!important;color:#0f172a!important;margin:0 0 5px!important}
       #jobs-home-hub .job-position-card small{display:block!important;color:#64748b!important;font-size:10.5px!important;line-height:1.35!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
       #jobs-home-hub .jobs-home-empty{display:block;background:#f8fbff;border:1px dashed #bfdbfe;border-radius:10px;padding:16px;text-align:center;color:#1769d2;text-decoration:none;font-weight:800}
-      @media(max-width:420px){#jobs-home-hub .jobs-position-grid{grid-template-columns:1fr!important}}
+      @media(max-width:420px){#jobs-home-hub .jobs-position-grid{grid-template-columns:1fr!important}#jobs-home-hub.jobs-knowledge-card{min-height:230px}}
     `;
     document.head.appendChild(style);
   };
@@ -75,8 +75,7 @@
 
   let jobsCache = null;
   let jobsPromise = null;
-  let rendering = false;
-  let repairQueued = false;
+  let rendered = false;
 
   const requestJobs = async (endpoint) => {
     const separator = endpoint.includes("?") ? "&" : "?";
@@ -90,21 +89,18 @@
   };
 
   const loadJobs = () => {
-    if (jobsCache?.length) return Promise.resolve(jobsCache);
+    if (jobsCache) return Promise.resolve(jobsCache);
     if (jobsPromise) return jobsPromise;
 
     jobsPromise = requestJobs("/.netlify/functions/public-home-jobs?limit=60")
-      .then(async (items) => {
-        if (items.length) return items;
-        return await requestJobs("/.netlify/functions/public-jobs?limit=60");
-      })
+      .then(async (items) => items.length ? items : await requestJobs("/.netlify/functions/public-jobs?limit=60"))
       .then((items) => {
         jobsCache = Array.isArray(items) ? items : [];
         window.TRRB_HOME_JOBS_COUNT = jobsCache.length;
         return jobsCache;
       })
       .catch((error) => {
-        console.error("首页招聘岗位加载失败", error);
+        console.warn("首页招聘岗位加载失败", error);
         jobsCache = [];
         window.TRRB_HOME_JOBS_COUNT = 0;
         return jobsCache;
@@ -117,56 +113,53 @@
   const pickCard = (root) => root.querySelector("#jobs-home-hub")
     || root.querySelector("#asylum")
     || Array.from(root.querySelectorAll(".news-box")).find((item) => item.querySelector("h2")?.textContent.trim() === "庇护百科")
-    || Array.from(root.querySelectorAll(".news-box")).find((item) => !item.textContent.trim())
-    || Array.from(root.children).find((item) => !item.textContent.trim());
+    || Array.from(root.querySelectorAll(".news-box")).find((item) => !item.textContent.trim());
 
-  const ensureCard = async () => {
-    if (rendering) return;
+  const baseHomeReady = () => {
     const root = document.querySelector("#sections-grid");
-    if (!root) return;
-    rendering = true;
-    try {
-      installTheme();
-      let card = pickCard(root);
-      if (!card) {
-        card = document.createElement("article");
-        card.className = "news-box";
-        root.appendChild(card);
-      }
-      card.id = "jobs-home-hub";
-      card.dataset.jobsHub = "true";
-      card.classList.remove("category-empty");
-      card.classList.add("jobs-knowledge-card");
-
-      if (!card.querySelector(".jobs-position-grid") || card.querySelectorAll(".job-position-card").length < 1) {
-        card.innerHTML = markup(jobsCache || []);
-      }
-
-      const loaded = jobsCache?.length ? jobsCache : await loadJobs();
-      const current = document.querySelector("#jobs-home-hub");
-      if (current) {
-        const currentCount = current.querySelectorAll(".job-position-card").length;
-        const desiredCount = Math.min(6, loaded.length);
-        if (currentCount !== desiredCount || (desiredCount > 0 && current.querySelector(".jobs-home-empty"))) {
-          current.innerHTML = markup(loaded);
-        }
-      }
-    } finally {
-      rendering = false;
-    }
+    const articles = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [];
+    return Boolean(root?.children?.length && articles.length);
   };
 
-  const queueRepair = () => {
-    if (repairQueued) return;
-    repairQueued = true;
-    queueMicrotask(() => { repairQueued = false; ensureCard(); });
+  const renderOnce = (items) => {
+    if (rendered || !baseHomeReady()) return false;
+    const root = document.querySelector("#sections-grid");
+    if (!root) return false;
+
+    installTheme();
+    const card = pickCard(root);
+    if (!card) return false;
+
+    const measured = Math.ceil(card.getBoundingClientRect?.().height || 0);
+    if (measured > 0) card.style.minHeight = `${Math.max(238, measured)}px`;
+    card.id = "jobs-home-hub";
+    card.dataset.jobsHub = "true";
+    card.dataset.jobsStable = "true";
+    card.classList.remove("category-empty");
+    card.classList.add("jobs-knowledge-card");
+    card.innerHTML = markup(items);
+    rendered = true;
+    window.TRRB_HOME_JOBS_RENDERED = true;
+    return true;
   };
 
   const boot = () => {
-    ensureCard();
-    const root = document.querySelector("#sections-grid");
-    if (root) new MutationObserver(queueRepair).observe(root, { childList: true, subtree: true });
-    [250, 700, 1400, 2600, 5000, 9000].forEach((delay) => setTimeout(ensureCard, delay));
+    installTheme();
+    const jobsReady = loadJobs();
+    const started = Date.now();
+
+    const tick = async () => {
+      if (rendered) return;
+      if (baseHomeReady()) {
+        const items = await jobsReady;
+        renderOnce(items);
+        return;
+      }
+      if (Date.now() - started > 4800) return;
+      window.setTimeout(tick, 80);
+    };
+
+    tick();
   };
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });

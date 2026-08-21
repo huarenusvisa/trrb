@@ -1,0 +1,55 @@
+name: Homepage stability gate
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - homepage-refresh-guard.js
+      - articles-home-live-fix.js
+      - homepage-startup-stability.js
+      - jobs-home.js
+      - homepage-immigration-hub.js
+      - scripts/validate-site.mjs
+      - .github/workflows/homepage-hard-sweep-check.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - homepage-refresh-guard.js
+      - articles-home-live-fix.js
+      - homepage-startup-stability.js
+      - jobs-home.js
+      - homepage-immigration-hub.js
+      - scripts/validate-site.mjs
+      - .github/workflows/homepage-hard-sweep-check.yml
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax check homepage scripts
+        run: |
+          node --check homepage-refresh-guard.js
+          node --check articles-home-live-fix.js
+          node --check homepage-startup-stability.js
+          node --check jobs-home.js
+          node --check homepage-immigration-hub.js
+      - name: Verify render-race invariants
+        run: |
+          ! grep -q 'window.renderHome = function' articles-home-live-fix.js
+          ! grep -q 'setInterval.*refreshHome' homepage-refresh-guard.js
+          ! grep -q 'new MutationObserver' homepage-startup-stability.js
+          ! grep -q 'new MutationObserver' jobs-home.js
+          ! grep -q 'new MutationObserver' homepage-immigration-hub.js
+          grep -q 'forceRender: true' homepage-refresh-guard.js
+          grep -q 'generalHeroFallback' articles-home-live-fix.js
+          grep -q 'baseHomeReady' jobs-home.js
+          grep -q 'baseHomeReady' homepage-immigration-hub.js
+      - name: Run site invariant validation
+        run: node scripts/validate-site.mjs

@@ -1,4 +1,4 @@
-# rerun after validator decoupling
+# rerun after all Netlify audit decoupling
 name: Netlify Hook返回元数据诊断
 
 on:

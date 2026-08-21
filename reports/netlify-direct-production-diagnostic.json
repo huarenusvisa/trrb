@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-08-21T04:48:21.174Z",
-  "target_sha": "a25e0ba21fcc7d0a62897246d0194934564418ac",
+  "generated_at": "2026-08-21T04:50:56.732Z",
+  "target_sha": "57829dc1486785af37b4154d1789c7d8a66b9623",
   "token_present": true,
   "site_lookup_http_status": 200,
   "exact_deploy_exit_code": 1,
-  "failure_kind": "unclassified_cli_failure",
+  "failure_kind": "netlify_authentication",
   "build_started": false,
   "functions_stage_seen": false,
   "edge_stage_seen": false,
-  "sanitized_error_excerpt": "npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead | npm warn deprecated cron-parser@4.9.0: v4 is no longer maintained, upgrade to v5 | npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me | ›   Error: Unauthorized: could not retrieve project"
+  "sanitized_error_excerpt": "npm warn deprecated cron-parser@4.9.0: v4 is no longer maintained, upgrade to v5 | npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead | npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me | ›   Error: Unauthorized: could not retrieve project"
 }

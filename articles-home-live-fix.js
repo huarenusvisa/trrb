@@ -87,6 +87,8 @@
 
     const candidates = (Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [])
       .filter(fresh)
+      .filter((item) => String(item?.category || item?.category_name || "").trim() === "美国时政")
+      .filter((item) => Number(item?.longform_chars || 0) >= 1500)
       .filter((item) => String(item?.image || item?.cover_image || "").trim())
       .slice(0, 5);
 
@@ -125,36 +127,32 @@
         const payload = await response.json();
         const focus = (Array.isArray(payload?.articles) ? payload.articles : [])
           .map(normalize)
-          .filter((item) => item.id && item.title && item.image && item.category === "美国时政" && item.longform_chars >= 1200);
+          .filter((item) => item.id && item.title && item.image)
+          .filter((item) => item.homepage_focus_source === "editor" ||
+            (item.category === "美国时政" && item.longform_chars >= 1500));
 
         const hero = document.getElementById("hero");
         if (!hero) return false;
 
-        // Never replace an already-valid hero after it has become visible. That
-        // asynchronous replacement was one of the main causes of refresh-time jumping.
-        if (heroHasSlides()) {
-          markHeroAsDailyFocus(document);
-          hero.dataset.recommendationMode = focus.length ? "stable-existing-focus" : "stable-existing-general";
-          hero.dataset.recommendationCount = String(hero.querySelectorAll(".hero-slide").length);
-          lastFocusAt = Date.now();
-          return Boolean(focus.length);
-        }
-
-        // Focus data is allowed to render only as an empty-hero recovery.
+        // The dedicated focus feed is authoritative. Replace any provisional
+        // homepage hero so general or China-news fallbacks cannot leak into 今日要闻.
         if (focus.length && typeof window.renderHeroCarousel === "function") {
           window.renderHeroCarousel(focus.slice(0, 5));
           markHeroAsDailyFocus(document);
-          hero.dataset.recommendationMode = "longform-politics-recovery";
+          hero.dataset.recommendationMode = "us-politics-or-editor-focus";
           hero.dataset.recommendationCount = String(focus.length);
           lastFocusAt = Date.now();
           return true;
         }
 
         lastFocusAt = Date.now();
-        return generalHeroFallback("focus-empty-general-recovery");
+        hero.innerHTML = '<div class="hero-focus-empty" role="status">今日暂无符合条件的美国时政要闻</div>';
+        hero.dataset.recommendationMode = "focus-empty";
+        hero.dataset.recommendationCount = "0";
+        return false;
       } catch (error) {
         console.warn("今日要闻增强暂不可用：", error);
-        return generalHeroFallback("focus-error-general-recovery");
+        return generalHeroFallback("focus-error-us-politics-recovery");
       } finally {
         focusPromise = null;
       }

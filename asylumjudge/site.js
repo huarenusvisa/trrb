@@ -4,13 +4,18 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const stateNames = { CA: '加州', NY: '纽约州', TX: '德州', FL: '佛州', NJ: '新泽西州', IL: '伊利诺伊州', WA: '华盛顿州', MA: '马萨诸塞州', PA: '宾州', GA: '乔治亚州', AZ: '亚利桑那州', VA: '弗吉尼亚州' };
 
+const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylumjudge(?:\/|$)/i.test(location.pathname);
+const appPath = (page = '') => trrbColumn
+  ? `/asylumjudge${page ? `/${page}` : ''}`
+  : (page ? `/${page}` : '/');
+
 function useCleanDomainRoutes() {
-  if (!/^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)) return;
+  if (!trrbColumn && !/^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)) return;
   const routes = new Map([
-    ['/immigration-judge-approval-rate/courts.html', '/courts'],
-    ['/immigration-judge-approval-rate/states.html', '/states'],
-    ['/immigration-judge-approval-rate/china-dashboard.html', '/china'],
-    ['/immigration-judge-approval-rate/methodology.html', '/methodology']
+    ['/immigration-judge-approval-rate/courts.html', appPath('courts')],
+    ['/immigration-judge-approval-rate/states.html', appPath('states')],
+    ['/immigration-judge-approval-rate/china-dashboard.html', appPath('china')],
+    ['/immigration-judge-approval-rate/methodology.html', appPath('methodology')]
   ]);
   document.querySelectorAll('a[href]').forEach((link) => {
     const url = new URL(link.getAttribute('href'), location.origin);
@@ -30,7 +35,7 @@ function renderStates(rows) {
   const normalized = [...rows].sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   const selected = preferred.map((code) => normalized.find((row) => String(row.state || '').toUpperCase() === code)).filter(Boolean);
   for (const row of normalized) if (selected.length < 6 && !selected.includes(row)) selected.push(row);
-  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="/states?q=${encodeURIComponent(row.state || '')}"><span><b>${esc(stateNames[String(row.state || '').toUpperCase()] || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)}件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
+  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('states')}?q=${encodeURIComponent(row.state || '')}"><span><b>${esc(stateNames[String(row.state || '').toUpperCase()] || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)}件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
 
   const grants = rows.reduce((sum, row) => sum + Number(row.grants || 0), 0);
   const denials = rows.reduce((sum, row) => sum + Number(row.denials || 0), 0);
@@ -61,7 +66,7 @@ function renderResults(query, rows) {
   $('#result-section').hidden = false;
   $('#result-title').textContent = `“${query}”的查询结果`;
   $('#result-note').textContent = `找到 ${rows.length} 位法官`;
-  $('#results').innerHTML = rows.length ? rows.map((row) => `<a class="judge-result" href="/judge?id=${encodeURIComponent(row.id)}"><div><strong>${esc(row.judge_name)}</strong><small>${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></div><div><label>任职法院</label><strong>${esc(row.court_name || '—')}</strong></div><div><label>裁决批准率</label><span class="rate">${pct(row.adjudicated_approval_rate)}</span></div><div><label>庇护裁决</label><strong>${fmt(row.total_asylum_decisions)}</strong></div></a>`).join('') : '<div class="empty"><b>没有找到匹配法官</b><p>请尝试英文姓名、城市或法院名称。</p></div>';
+  $('#results').innerHTML = rows.length ? rows.map((row) => `<a class="judge-result" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><div><strong>${esc(row.judge_name)}</strong><small>${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></div><div><label>任职法院</label><strong>${esc(row.court_name || '—')}</strong></div><div><label>裁决批准率</label><span class="rate">${pct(row.adjudicated_approval_rate)}</span></div><div><label>庇护裁决</label><strong>${fmt(row.total_asylum_decisions)}</strong></div></a>`).join('') : '<div class="empty"><b>没有找到匹配法官</b><p>请尝试英文姓名、城市或法院名称。</p></div>';
   $('#result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -72,7 +77,7 @@ async function search(query) {
   $('#result-title').textContent = '正在查询…';
   $('#result-note').textContent = '';
   $('#results').innerHTML = '<div class="empty">正在读取 EOIR 数据库…</div>';
-  history.replaceState(null, '', `/?q=${encodeURIComponent(query)}`);
+  history.replaceState(null, '', `${appPath()}?q=${encodeURIComponent(query)}`);
   try {
     const data = await json(`/.netlify/functions/immigration-judges?q=${encodeURIComponent(query)}`);
     renderResults(query, data.results || []);

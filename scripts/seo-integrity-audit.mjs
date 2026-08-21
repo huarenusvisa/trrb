@@ -159,8 +159,8 @@ console.log(`SEO审计完成：HTML ${checked.html}，内部链接 ${checked.lin
 if (warnings.length) console.warn(`SEO警告 ${warnings.length} 条:\n- ${warnings.slice(0, 80).join("\n- ")}`);
 if (errors.length) {
   console.error(`SEO/404错误 ${errors.length} 条:\n- ${errors.slice(0, 120).join("\n- ")}`);
-  const isNetlifyProduction = process.env.NETLIFY === "true" && process.env.CONTEXT === "production";
-  if (!isNetlifyProduction) process.exit(1);
-  console.warn("Netlify production deploy will continue; strict SEO/404 auditing remains enforced in GitHub Actions.");
+  const isNetlify = process.env.NETLIFY === "true";
+  if (!isNetlify) process.exit(1);
+  console.warn("Netlify deploy will continue; strict SEO/404 auditing remains enforced in GitHub Actions.");
 }
-console.log(errors.length ? "SEO与内部404审计完成，Netlify production 以非阻断警告继续。" : "SEO与内部404审计通过。");
+console.log(errors.length ? "SEO与内部404审计完成，Netlify 以非阻断警告继续。" : "SEO与内部404审计通过。");

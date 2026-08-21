@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-21T01:10:18.793Z",
+  "generated_at": "2026-08-21T01:28:44.514Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -45,19 +45,26 @@
       "chain": [
         {
           "url": "https://www.trrb.net/",
-          "status": 0,
-          "error": "fetch failed"
+          "status": 301,
+          "location": "https://trrb.net/",
+          "error": ""
+        },
+        {
+          "url": "https://trrb.net/",
+          "status": 200,
+          "location": "",
+          "error": ""
         }
       ],
-      "final_url": "https://www.trrb.net/"
+      "final_url": "https://trrb.net/"
     }
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1606590,
-      "article_count": 4392,
+      "bytes": 1606984,
+      "article_count": 4394,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v6-public-only-static-authority-aligned"
@@ -65,14 +72,38 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 113162,
-      "article_count": 213,
+      "bytes": 113537,
+      "article_count": 214,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v6-public-only-ice-safe-dedupe"
     }
   },
   "articles": [
+    {
+      "url": "https://trrb.net/ice/ice-277150a56df7f6b312dde4a5830969e4d26ac993",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-277150a56df7f6b312dde4a5830969e4d26ac993",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 32,
+      "h1_length": 25,
+      "canonical": "https://trrb.net/ice/ice-277150a56df7f6b312dde4a5830969e4d26ac993",
+      "body_length": 152,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 35,
+      "h1_length": 28,
+      "canonical": "https://trrb.net/ice/ice-2c39d8662c6dce66ca8100ab7e0f85fb90d9eb3b",
+      "body_length": 150,
+      "schema": true,
+      "noindex": false
+    },
     {
       "url": "https://trrb.net/ice/ice-8f00b0389a117433b542273ea94ac251a5f0934c",
       "status": 200,
@@ -192,30 +223,6 @@
       "body_length": 108,
       "schema": true,
       "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-025780c1e595d0eac81eaf8029b823d55916b169",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-025780c1e595d0eac81eaf8029b823d55916b169",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 26,
-      "h1_length": 19,
-      "canonical": "https://trrb.net/ice/ice-025780c1e595d0eac81eaf8029b823d55916b169",
-      "body_length": 159,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-05de70e0965fc7f8abca60611a373c5e85bac9d0",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-05de70e0965fc7f8abca60611a373c5e85bac9d0",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 28,
-      "h1_length": 21,
-      "canonical": "https://trrb.net/ice/ice-05de70e0965fc7f8abca60611a373c5e85bac9d0",
-      "body_length": 131,
-      "schema": true,
-      "noindex": false
     }
   ],
   "pages": {
@@ -275,12 +282,16 @@
   "legacy": {
     "https://trrb.net/article.html?id=wp-117123": {
       "status": 301,
-      "location": "https://trrb.net/article.html?id=0f57391a-42e3-4e10-b7e0-d38df34dd56f",
-      "xrobots": ""
+      "location": "https://trrb.net/hot-headlines/%E6%88%B4%E7%9D%80%E6%89%8B%E9%93%90%E8%BF%98%E8%83%BD%E9%80%83-%E5%B1%B1%E8%A5%BF%E4%B8%B4%E5%8E%BF%E7%96%91%E4%BC%BC%E6%9D%80%E4%BA%BA%E5%AB%8C%E7%8A%AF%E6%B4%BE%E5%87%BA%E6%89%80%E8%84%B1%E9%80%83-%E8%AD%A6%E5%8A%9B%E5%85%A8%E5%9F%8E%E8%BF%BD%E6%9F%A5-wp117123",
+      "xrobots": "",
+      "final_status": 200,
+      "final_url": "https://trrb.net/hot-headlines/%E6%88%B4%E7%9D%80%E6%89%8B%E9%93%90%E8%BF%98%E8%83%BD%E9%80%83-%E5%B1%B1%E8%A5%BF%E4%B8%B4%E5%8E%BF%E7%96%91%E4%BC%BC%E6%9D%80%E4%BA%BA%E5%AB%8C%E7%8A%AF%E6%B4%BE%E5%87%BA%E6%89%80%E8%84%B1%E9%80%83-%E8%AD%A6%E5%8A%9B%E5%85%A8%E5%9F%8E%E8%BF%BD%E6%9F%A5-wp117123",
+      "canonical": "https://trrb.net/hot-headlines/%E6%88%B4%E7%9D%80%E6%89%8B%E9%93%90%E8%BF%98%E8%83%BD%E9%80%83-%E5%B1%B1%E8%A5%BF%E4%B8%B4%E5%8E%BF%E7%96%91%E4%BC%BC%E6%9D%80%E4%BA%BA%E5%AB%8C%E7%8A%AF%E6%B4%BE%E5%87%BA%E6%89%80%E8%84%B1%E9%80%83-%E8%AD%A6%E5%8A%9B%E5%85%A8%E5%9F%8E%E8%BF%BD%E6%9F%A5-wp117123",
+      "body_length": 745,
+      "noindex": false
     }
   },
   "failures": [
-    "bad host redirect chain https://www.trrb.net/ => [{\"url\":\"https://www.trrb.net/\",\"status\":0,\"error\":\"fetch failed\"}]",
     {
       "page": "https://trrb.net/trump",
       "problem": "too few direct article links: 0/1"
@@ -288,9 +299,7 @@
     {
       "page": "https://trrb.net/trump",
       "problem": "missing prerender marker data-seo-static-snapshot=\"build\""
-    },
-    "legacy retired URL must be 410: 301",
-    "legacy retired URL missing X-Robots-Tag noindex"
+    }
   ],
   "warnings": [
     "host redirect chain has 2 hops: http://www.trrb.net/"

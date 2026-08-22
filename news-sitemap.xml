@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/immigration/ice-a06f940c6b6d9635c2761a3190fc6535cde007d7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T05:45:49.883Z</news:publication_date>
+        <news:title>弗吉尼亚亚历山大市首航161人遣返海地航班</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/immigration/ice-80470f1d6970effd306e9a5bb24b3b1219cd4686</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T05:45:40.887Z</news:publication_date>
+        <news:title>科罗拉多奥罗拉ICE疑似餐厅前拘捕两人</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/immigration/ice-20c7fc6070d75b6969fec78fc01f8d010a4b63d6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T05:45:32.377Z</news:publication_date>
+        <news:title>佛州莱克沃斯ICE与公路巡逻队联手拘捕多名嫌疑人</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-20e11df61f6be4f2d1df07707b0d1ed4d660ff01</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1967,14 +1991,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-20T05:58:58.622Z</news:publication_date>
         <news:title>工会撤支持、选战承压！马克斯·米勒陷指控风波，连任之路迎最大挑战</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/us-politics/%E9%99%8D%E6%81%AF%E6%A2%A6%E7%A2%8E%E7%BE%8E%E8%81%94%E5%82%A8%E9%87%8A%E6%94%BE%E9%B9%B0%E6%B4%BE%E4%BF%A1%E5%8F%B7%E9%80%9A%E8%83%80%E9%80%BC%E8%BF%AB%E5%8A%A0%E6%81%AF%E9%A3%8E%E9%99%A9%E9%87%8D%E6%96%B0%E5%8D%87%E6%B8%A9-mt13mfct-5c85bf</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T05:47:29.213Z</news:publication_date>
-        <news:title>降息梦碎？美联储释放鹰派信号，通胀逼迫加息风险重新升温</news:title>
       </news:news>
     </url>
 </urlset>

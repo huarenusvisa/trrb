@@ -4,6 +4,34 @@
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
   let allJobs = [];
   let visible = 12;
+  const placeAliasGroups = [
+    ['flushing', '法拉盛'],
+    ['queens', '皇后区', '皇后'],
+    ['new york city', 'new york', 'nyc', '纽约市', '纽约'],
+    ['brooklyn', '布鲁克林'],
+    ['manhattan', '曼哈顿'],
+    ['bronx', '布朗克斯'],
+    ['staten island', '史泰登岛', '斯塔滕岛'],
+    ['los angeles', 'la', '洛杉矶'],
+    ['boston', '波士顿'],
+    ['houston', '休斯敦', '休斯顿']
+  ];
+
+  function normalizePlace(value) {
+    return String(value || '').normalize('NFKC').trim().toLowerCase().replace(/\\s+/g, ' ');
+  }
+
+  function placeSearchTerms(value) {
+    const query = normalizePlace(value);
+    if (!query) return [];
+    const terms = new Set([query]);
+    placeAliasGroups.forEach((group) => {
+      if (group.some((alias) => query === alias || query.includes(alias))) {
+        group.forEach((alias) => terms.add(alias));
+      }
+    });
+    return [...terms];
+  }
 
   function hydrateSearchFromUrl() {
     const params = new URLSearchParams(location.search);
@@ -54,11 +82,12 @@
 
   function filteredJobs() {
     const q = document.getElementById('job-q').value.trim().toLowerCase();
-    const place = document.getElementById('place-q').value.trim().toLowerCase();
+    const place = document.getElementById('place-q').value.trim();
+    const placeTerms = placeSearchTerms(place);
     return allJobs.filter((job) => {
       const work = [job.title, categoryNames[job.category_slug], job.category_slug].filter(Boolean).join(' ').toLowerCase();
-      const where = [job.neighborhood, job.borough, job.county, job.city, job.state_code].filter(Boolean).join(' ').toLowerCase();
-      return (!q || work.includes(q)) && (!place || where.includes(place));
+      const where = normalizePlace([job.neighborhood, job.borough, job.county, job.city, job.state_code].filter(Boolean).join(' '));
+      return (!q || work.includes(q)) && (!placeTerms.length || placeTerms.some((term) => where.includes(term)));
     });
   }
 

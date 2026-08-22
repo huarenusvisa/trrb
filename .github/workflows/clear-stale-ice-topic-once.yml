@@ -1,0 +1,32 @@
+name: 清理错误ICE主题标签（一次性）
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/clear-stale-ice-topic-once.mjs"
+      - ".github/workflows/clear-stale-ice-topic-once.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-clear-stale-ice-topic-once
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      APPLY_CHANGES: "true"
+      APPLY_CONFIRMATION: "CLEAR_STALE_ICE_TOPIC"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Clear stale ICE topic labels
+        run: node scripts/clear-stale-ice-topic-once.mjs

@@ -13,6 +13,7 @@ const {
   uploadManualCover,
   generateCover
 } = require("./_shared/article-ai");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
@@ -28,13 +29,6 @@ const IMMIGRATION_PROCESS_TERMS = [
   "婚姻绿卡", "婚绿", "f2a", "k-1", "cr-1", "ir-1", "i-130", "i-485", "i-864", "ds-260",
   "政治庇护", "庇护申请", "庇护面谈", "庇护时钟", "i-589", "vawa", "u签证", "t签证", "sijs", "tps",
   "n-400", "n400", "n-600", "n600", "工卡", "ead", "advance parole", "回美证"
-];
-
-const IMMIGRATION_ENFORCEMENT_TERMS = [
-  "ice", "移民与海关执法局", "移民执法", "执法突袭", "拘捕移民", "逮捕移民", "抓捕移民",
-  "移民拘留", "拘留中心", "移民监狱", "拘押移民", "遣返", "递解", "驱逐出境",
-  "无证移民", "非法移民", "偷渡", "越境", "边境死亡", "边境溺亡", "边境巡逻队",
-  "海关与边境保护局", "cbp", "detainer", "287(g)"
 ];
 
 const GENERAL_CRIME_TERMS = [
@@ -93,7 +87,7 @@ function enforceImmigrationCategory(title, content, categoryName) {
   }
 
   const text = normalizedArticleText(title, content);
-  if (containsAny(text, IMMIGRATION_ENFORCEMENT_TERMS)) {
+  if (isIceEnforcementText(title, String(content || "").slice(0, 1200))) {
     return { categoryName: "ICE执法动态", corrected: true, reason: "immigration-enforcement" };
   }
   if (containsAny(text, IMMIGRATION_PROCESS_TERMS)) {

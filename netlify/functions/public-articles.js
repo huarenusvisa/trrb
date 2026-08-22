@@ -1,4 +1,5 @@
 const { rest } = require("./_shared/supabase-admin");
+const { isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 
 function json(statusCode, body) {
   return {
@@ -31,7 +32,7 @@ exports.handler = async (event) => {
     const q = cleanSearch(event.queryStringParameters?.q || "");
 
     const query = {
-      select: "id,title,slug,summary,category_name,cover_image,author,status,visibility,published_at,created_at,source_url,source_name,source_account,source_platform",
+      select: "id,title,slug,summary,content,category_name,cover_image,author,status,visibility,published_at,created_at,source_url,source_name,source_account,source_platform",
       status: "eq.published",
       visibility: "eq.public",
       order: "published_at.desc.nullslast,created_at.desc",
@@ -42,14 +43,17 @@ exports.handler = async (event) => {
     if (q) query.or = `(title.ilike.*${q}*,summary.ilike.*${q}*)`;
 
     const rows = await rest("articles", { query });
-    const articles = Array.isArray(rows) ? rows : [];
+    const rawArticles = Array.isArray(rows) ? rows : [];
+    const articles = rawArticles
+      .filter((row) => !isChinaHotCategory(category) || isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`))
+      .map(({ content: _content, ...row }) => row);
     return json(200, {
       generated_at: new Date().toISOString(),
       count: articles.length,
       offset,
       limit,
-      next_offset: articles.length === limit ? offset + limit : null,
-      has_more: articles.length === limit,
+      next_offset: rawArticles.length === limit ? offset + limit : null,
+      has_more: rawArticles.length === limit,
       category: category || null,
       q: q || null,
       articles

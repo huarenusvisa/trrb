@@ -63,6 +63,10 @@ function articleDate(item: NewsArticle) {
   return shortDate(item.published_at || item.created_at);
 }
 
+function displayCategory(category?: string) {
+  return category === '热门头条' ? '中国热门头条' : (category || '最新');
+}
+
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const [articles, setArticles] = useState<NewsArticle[]>([]);
@@ -183,7 +187,7 @@ export default function HomeScreen() {
                 else openCategory(item);
               }}
             >
-              <Text style={styles.navText}>{item}</Text>
+              <Text style={styles.navText}>{displayCategory(item)}</Text>
             </Pressable>
           ))}
         </ScrollView>
@@ -215,7 +219,7 @@ export default function HomeScreen() {
             <Pressable key={String(item.id)} style={styles.leadRow} onPress={() => openArticle(item)}>
               {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.leadThumb} /> : <View style={styles.leadThumbPlaceholder} />}
               <View style={styles.leadBody}>
-                <Text style={styles.leadCategory}>{item.category_name || '最新'}</Text>
+                <Text style={styles.leadCategory}>{displayCategory(item.category_name)}</Text>
                 <Text style={styles.leadTitle} numberOfLines={2}>{item.title}</Text>
                 <Text style={styles.leadDate}>{articleDate(item)}</Text>
               </View>

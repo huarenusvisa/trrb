@@ -248,7 +248,7 @@ function retiredArticle(title: string, reason: string): Response {
 <body><main class="wrap"><div class="brand">唐人日报 Tang Ren Daily</div><section class="card">
 <h1>${safeTitle}</h1>
 <p>这是一篇来自唐人日报旧版网站的历史链接。目前原始文章尚未完成迁移，因此该旧地址已停止收录。</p>
-<div class="actions"><a class="btn primary" href="/">返回唐人日报首页</a><a class="btn secondary" href="/hot-headlines">查看热门头条</a><a class="btn secondary" href="/us-crime">查看美国警情</a></div>
+<div class="actions"><a class="btn primary" href="/">返回唐人日报首页</a><a class="btn secondary" href="/hot-headlines">查看中国热门头条</a><a class="btn secondary" href="/us-crime">查看美国警情</a></div>
 <div class="note">如果该文章已经恢复，旧网址会自动跳转到恢复后的新闻页面。</div>
 </section></main></body></html>`;
 

@@ -44,10 +44,11 @@
       tag.replaceWith(link);
     }
     link.classList.add("category-jump");
-    link.textContent = category;
+    const displayCategory = category === "热门头条" ? "中国热门头条" : category;
+    link.textContent = displayCategory;
     link.href = href;
-    link.setAttribute("aria-label", `查看${category}栏目`);
-    link.setAttribute("title", `查看${category}栏目`);
+    link.setAttribute("aria-label", `查看${displayCategory}栏目`);
+    link.setAttribute("title", `查看${displayCategory}栏目`);
     return link;
   }
 
@@ -104,7 +105,7 @@
     const fallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(category) : "/image-placeholder.svg";
     return `<a class="related-item${image ? "" : " has-no-image"}" href="${archiveHref(article)}" role="listitem">
       ${image ? `<img src="${escapeAttribute(image)}" width="500" height="281" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="if(!this.dataset.fallbackTried){this.dataset.fallbackTried='true';this.src='${escapeAttribute(fallback)}';}else{this.remove();}" alt="" />` : ""}
-      <span>${escapeHtml(category)}</span><strong>${escapeHtml(article.title || "")}</strong></a>`;
+      <span>${escapeHtml(category === "热门头条" ? "中国热门头条" : category)}</span><strong>${escapeHtml(article.title || "")}</strong></a>`;
   }
 
   function renderNeighbor(article, direction) {

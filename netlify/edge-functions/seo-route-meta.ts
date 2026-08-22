@@ -46,6 +46,10 @@ const CATEGORY_NAMES_BY_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(CATEGORY_SLUGS).map(([name, slug]) => [slug, name])
 );
 
+const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
+  "热门头条": "中国热门头条"
+};
+
 function esc(value: unknown): string {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -56,11 +60,12 @@ function esc(value: unknown): string {
 }
 
 function categorySeo(category: string, slug: string, page = 1): Seo {
+  const displayCategory = CATEGORY_DISPLAY_NAMES[category] || category;
   const baseCanonical = `${SITE}/${slug}`;
   const canonical = page > 1 ? `${baseCanonical}?page=${page}` : baseCanonical;
   return {
-    title: `${category}新闻${page > 1 ? ` 第${page}页` : ""} - 唐人日报`,
-    description: `唐人日报${category}栏目，持续更新相关新闻、政策变化、重要事件、背景信息与后续进展，为华人读者提供清晰及时的新闻汇总。`,
+    title: `${displayCategory}新闻${page > 1 ? ` 第${page}页` : ""} - 唐人日报`,
+    description: category === "热门头条" ? "唐人日报中国热门头条，只汇集中国大陆社会、民生、公共事件与网络热点。" : `唐人日报${displayCategory}栏目，持续更新相关新闻、政策变化、重要事件、背景信息与后续进展，为华人读者提供清晰及时的新闻汇总。`,
     canonical
   };
 }

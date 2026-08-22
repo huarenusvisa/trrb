@@ -1,6 +1,7 @@
 const { rest } = require("./_shared/supabase-admin");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { isUsImmigrationText } = require("./_shared/us-immigration-category");
+const { isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
@@ -51,6 +52,9 @@ exports.handler = async (event) => {
       if (articleTime(row) < cutoffMs) return false;
       if (category === "ICE执法动态") return isIceEnforcementText(row.title, row.summary);
       if (category === "移民美国") return isUsImmigrationText(row.title, `${row.summary || ""} ${row.content || ""}`);
+      if (isChinaHotCategory(category) || isChinaHotCategory(row.category_name)) {
+        return isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`);
+      }
       return true;
     });
     return json(200, {

@@ -6,7 +6,7 @@ let currentCategoryPath = "";
 
 const PUBLIC_CATEGORY_ROUTES = {
   "/important-news": { name: "重要新闻", slug: "important-news" },
-  "/hot-headlines": { name: "热门头条", slug: "hot-headlines" },
+  "/hot-headlines": { name: "热门头条", displayName: "中国热门头条", slug: "hot-headlines" },
   "/us-politics": { name: "美国时政", slug: "us-politics" },
   "/us-crime": { name: "美国警情", slug: "us-crime" },
   "/china-officialdom": { name: "中国官场", slug: "china-officialdom" },
@@ -269,10 +269,11 @@ function filterArticles(articles, category, query) {
 
 function renderHeader(category, query) {
   const title = document.querySelector("#listing-title");
+  const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   let heading = "2026文章归档";
-  if (category) heading = category;
+  if (category) heading = displayCategory;
   if (query) heading = `搜索：${query}`;
-  if (category && query) heading = `${category} · 搜索：${query}`;
+  if (category && query) heading = `${displayCategory} · 搜索：${query}`;
   if (!currentCategoryPath || query) document.title = `${heading} - 唐人日报`;
   title.textContent = heading;
 }
@@ -316,7 +317,8 @@ function articleUrl(article) {
 function renderCard(article) {
   const image = imageUrl(article.image || "", article.category || "");
   const fallback = typeof window.TRRB_categoryPlaceholder === 'function' ? window.TRRB_categoryPlaceholder(article.category || '') : './image-placeholder.svg';
-  return `<article class="archive-card"><a href="${escapeAttribute(articleUrl(article))}"><img src="${escapeAttribute(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" /><span>${escapeHtml(article.category || "新闻")}</span><h2>${escapeHtml(article.title || "")}</h2><p>${escapeHtml(article.excerpt || "")}</p><time>${escapeHtml(article.time || article.date || "")}</time></a></article>`;
+  const displayCategory = article.category === "热门头条" ? "中国热门头条" : (article.category || "新闻");
+  return `<article class="archive-card"><a href="${escapeAttribute(articleUrl(article))}"><img src="${escapeAttribute(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'" alt="" /><span>${escapeHtml(displayCategory)}</span><h2>${escapeHtml(article.title || "")}</h2><p>${escapeHtml(article.excerpt || "")}</p><time>${escapeHtml(article.time || article.date || "")}</time></a></article>`;
 }
 
 function imageUrl(value, category) {

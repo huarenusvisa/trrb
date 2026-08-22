@@ -8,7 +8,7 @@ on:
       - "scripts/asylum-official-knowledge-sync.mjs"
       - ".github/workflows/asylum-official-knowledge-sync.yml"
   schedule:
-    - cron: "47 */6 * * *"
+    - cron: "47 3 * * *"
 
 permissions:
   contents: read
@@ -28,13 +28,30 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ASYLUM_OFFICIAL_SYNC_LIMIT: "12"
     steps:
+      - name: 72小时执行门控
+        id: cadence
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "schedule" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif (( $(date -u +%s) / 86400 % 3 == 0 )); then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "距离下一次72小时采集周期尚未到，本次不检查。"
+          fi
       - uses: actions/checkout@v4
+        if: steps.cadence.outputs.run == 'true'
       - uses: actions/setup-node@v4
+        if: steps.cadence.outputs.run == 'true'
         with:
           node-version: "22"
       - name: 检查官方文档解析器
+        if: steps.cadence.outputs.run == 'true'
         run: command -v pdftotext || { sudo apt-get update && sudo apt-get install -y poppler-utils; }
       - name: 校验庇护内容边界
+        if: steps.cadence.outputs.run == 'true'
         run: node scripts/asylum-official-knowledge-sync.mjs --self-test
       - name: 同步USCIS知识和BIA先例判决
+        if: steps.cadence.outputs.run == 'true'
         run: node scripts/asylum-official-knowledge-sync.mjs

@@ -125,10 +125,15 @@ async function discoverBia(existingKeys = new Set()) {
 const existing = await supabase(`articles?select=id,title,summary,content,status,metadata&category_name=like.${encodeURIComponent('移民美国·人道主义庇护·政治庇护·*')}&limit=5000`);
 const byKey = new Map((existing || []).map(row => [row.metadata?.official_source_key, row]).filter(([key]) => key));
 for (const row of existing || []) {
-  if (row.metadata?.generated_by !== 'asylum-official-knowledge-sync' || row.status !== 'published') continue;
-  if (isAllowedAsylumText(`${row.title} ${row.summary} ${row.content}`)) continue;
-  await supabase(`articles?id=eq.${encodeURIComponent(row.id)}`, { method: 'PATCH', body: JSON.stringify({ status: 'hidden', visibility: 'private', metadata: { ...row.metadata, review_status: 'auto_withdrawn_out_of_scope', withdrawn_at: new Date().toISOString() } }) });
-  console.warn(`[scope] withdrew out-of-scope official article ${row.id}`);
+  if (row.metadata?.generated_by !== 'asylum-official-knowledge-sync') continue;
+  const allowed = isAllowedAsylumText(`${row.title} ${row.summary} ${row.content}`);
+  if (row.status === 'draft' && allowed) {
+    await supabase(`articles?id=eq.${encodeURIComponent(row.id)}`, { method: 'PATCH', body: JSON.stringify({ status: 'published', visibility: 'public', published_at: new Date().toISOString(), metadata: { ...row.metadata, review_status: 'auto_published', auto_published_at: new Date().toISOString() } }) });
+    console.log(`[publish] released previously queued official article ${row.id}`);
+  } else if (row.status === 'published' && !allowed) {
+    await supabase(`articles?id=eq.${encodeURIComponent(row.id)}`, { method: 'PATCH', body: JSON.stringify({ status: 'hidden', visibility: 'private', metadata: { ...row.metadata, review_status: 'auto_withdrawn_out_of_scope', withdrawn_at: new Date().toISOString() } }) });
+    console.warn(`[scope] withdrew out-of-scope official article ${row.id}`);
+  }
 }
 const sources = [...await discoverUscis(), ...await discoverBia(new Set(byKey.keys()))];
 let processed = 0, published = 0, updated = 0, skipped = 0;
@@ -144,7 +149,7 @@ for (const source of sources) {
   if (!item.relevant || !isAllowedAsylumText(`${item.title} ${item.summary} ${item.content}`)) { skipped += 1; continue; }
   const isBia = source.type === 'bia_precedent';
   const label = isBia ? 'BIA先例判决' : 'USCIS官方知识';
-  const needsReview = true;
+  const needsReview = false;
   const title = `[${isBia ? 'BIA先例' : 'USCIS官方'}] ${String(item.title).replace(/^\[[^\]]+\]\s*/, '')}`;
   const row = {
     title,

@@ -76,7 +76,7 @@ exports.handler = async (event) => {
 
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-    url.searchParams.set("select", "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at");
+    url.searchParams.set("select", "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at");
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("visibility", "eq.public");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
@@ -106,10 +106,11 @@ exports.handler = async (event) => {
     const contentFilter = definition.mode === "ice"
       ? (row) => isIceEnforcementText(row.title, row.summary)
       : definition.mode === "us-immigration"
-        ? (row) => isUsImmigrationText(row.title, row.summary)
+        ? (row) => isUsImmigrationText(row.title, `${row.summary || ""} ${row.content || ""}`)
         : null;
-    const articles = contentFilter ? rawArticles.filter(contentFilter) : rawArticles;
-    const filtered = Boolean(contentFilter) && articles.length !== rawArticles.length;
+    const eligibleArticles = contentFilter ? rawArticles.filter(contentFilter) : rawArticles;
+    const articles = eligibleArticles.map(({ content: _content, ...row }) => row);
+    const filtered = Boolean(contentFilter) && eligibleArticles.length !== rawArticles.length;
     const totalPages = Number.isFinite(total) ? Math.max(1, Math.ceil(total / pageSize)) : null;
 
     return json(200, {

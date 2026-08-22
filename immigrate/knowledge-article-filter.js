@@ -84,6 +84,17 @@
     citizenship:['n400','continuous-residence','physical-presence','tests','interview','oath','n600','derived-citizenship']
   };
 
+  const topicCategorySegments={
+    asylum:'政治庇护',
+    withholding:'防止递解',
+    cat:'禁止酷刑公约保护',
+    vawa:'VAWA家暴保护',
+    'u-visa':'U签证',
+    't-visa':'T签证',
+    sijs:'SIJS特殊青少年',
+    tps:'TPS临时保护身份'
+  };
+
   function normalize(value){return String(value||'').toLowerCase().replace(/[‐‑‒–—]/g,'-').replace(/\s+/g,' ').trim();}
   function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
   function articleUrl(row){
@@ -113,19 +124,90 @@
   }
 
   function isRelevant(row){
-    if(topic&&rules[topic])return score(row,rules[topic])>=4;
+    if(topic&&rules[topic])return score(row,rules[topic])>=8;
     const topics=categoryTopics[path]||[];
     return topics.some(slug=>score(row,rules[slug]||{terms:[]})>=6);
   }
 
+  function titleFingerprint(value){
+    return normalize(value)
+      .replace(/[\s，。！？、：；,.!?:;“”‘’'"（）()《》【】\[\]·/\\|_-]+/g,'')
+      .replace(/(?:全面)?(?:解析|详解|指南|介绍|说明)$/,'');
+  }
+
+  function titleBigrams(value){
+    const text=titleFingerprint(value);
+    const grams=new Set();
+    if(text.length<2){if(text)grams.add(text);return grams;}
+    for(let index=0;index<text.length-1;index+=1)grams.add(text.slice(index,index+2));
+    return grams;
+  }
+
+  function titleSimilarity(left,right){
+    const a=titleBigrams(left);
+    const b=titleBigrams(right);
+    if(!a.size||!b.size)return 0;
+    let overlap=0;
+    a.forEach(gram=>{if(b.has(gram))overlap+=1;});
+    return (2*overlap)/(a.size+b.size);
+  }
+
+  function dedupe(rows){
+    const unique=[];
+    const identities=new Set();
+    const fingerprints=new Set();
+    rows.forEach(row=>{
+      const identity=String(row.id||row.slug||'').trim().toLowerCase();
+      const fingerprint=titleFingerprint(row.title);
+      if((identity&&identities.has(identity))||(fingerprint&&fingerprints.has(fingerprint)))return;
+      if(unique.some(item=>titleSimilarity(item.title,row.title)>=0.88))return;
+      if(identity)identities.add(identity);
+      if(fingerprint)fingerprints.add(fingerprint);
+      unique.push(row);
+    });
+    return unique;
+  }
+
+  function articlesUrl(select,categoryPattern,limit){
+    const url=new URL(`${SUPABASE_URL}/rest/v1/articles`);
+    url.searchParams.set('select',select);
+    url.searchParams.set('status','eq.published');
+    if(categoryPattern)url.searchParams.set('category_name',`like.${categoryPattern}`);
+    url.searchParams.set('order','published_at.desc.nullslast');
+    url.searchParams.set('limit',String(limit));
+    return url.toString();
+  }
+
+  async function fetchRows(url){
+    const response=await fetch(url,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'});
+    if(!response.ok)throw new Error(response.status);
+    return response.json();
+  }
+
   async function applyStrictFilter(){
     const select=['id','title','slug','summary','content','category_name','topic_key','status','published_at'].join(',');
-    const url=`${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast&limit=500`;
     try{
-      const response=await fetch(url,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'});
-      if(!response.ok)throw new Error(response.status);
-      const rows=await response.json();
-      const items=rows.filter(isRelevant).slice(0,20);
+      const segment=path==='humanitarian'?topicCategorySegments[topic]:'';
+      const categoryPattern=segment
+        ?`移民美国·人道主义庇护·${segment}·*`
+        :path==='humanitarian'?'移民美国·人道主义庇护·*':'';
+      let items=[];
+
+      if(categoryPattern){
+        const scopedRows=await fetchRows(articlesUrl(select,categoryPattern,120));
+        items=dedupe(scopedRows);
+      }
+
+      // Older articles may not carry the modern hierarchical category. Use them
+      // only to fill a short list, and require a strong title-level match.
+      if(items.length<20){
+        const legacyRows=await fetchRows(articlesUrl(select,'',500));
+        const scopedIds=new Set(items.map(row=>String(row.id||row.slug||'')));
+        const fallback=legacyRows.filter(row=>!scopedIds.has(String(row.id||row.slug||''))&&isRelevant(row));
+        items=dedupe(items.concat(fallback));
+      }
+
+      items=items.slice(0,20);
       if(!items.length){
         root.innerHTML='<div class="empty-state">该专题暂时没有符合要求的知识文章。新闻类、军事类和其他无关内容不会在这里显示。</div>';
         return;

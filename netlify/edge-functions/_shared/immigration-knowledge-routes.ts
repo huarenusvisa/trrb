@@ -48,7 +48,7 @@ export const IMMIGRATION_KNOWLEDGE_ROUTES: ImmigrationKnowledgeCategory[] = [
     name: "人道主义庇护",
     description: "唐人日报人道主义保护知识中心，系统整理庇护、递解抗辩、CAT、U签证、T签证等程序、材料与常见风险。",
     topics: [
-      ["asylum", "政治庇护"], ["withholding", "防止递解"], ["cat", "禁止酷刑公约保护"], ["vawa", "VAWA家暴保护"],
+      ["asylum", "政治庇护"], ["c08-ead", "C08庇护工卡"], ["withholding", "防止递解"], ["cat", "禁止酷刑公约保护"], ["vawa", "VAWA家暴保护"],
       ["u-visa", "U签证"], ["t-visa", "T签证"], ["sijs", "SIJS特殊青少年"], ["tps", "TPS临时保护身份"]
     ].map(([slug, name]) => ({ slug, name }))
   },

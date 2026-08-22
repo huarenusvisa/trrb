@@ -44,7 +44,8 @@
     'cr1-ir1':['CR-1与IR-1是什么','CR-1与IR-1区别','结婚满两年的判断时间','I-130与I-130A','USCIS批准后转NVC','缴费与选择代理人','DS-260移民签证申请','I-864经济担保','民事文件与无犯罪证明','体检与领事面试','行政审查','移民签证入境','绿卡制作费','CR-1入境后I-751解除条件','常见问题'],
     'family-preference':['家庭优先类别是什么','F1公民未婚成年子女','F2A绿卡配偶及未成年子女','F2B绿卡未婚成年子女','F3公民已婚子女','F4公民兄弟姐妹','优先日期','签证公告表A与表B','排期倒退','类别转换与自动升级','申请人入籍的影响','结婚或离婚的影响','CSPA年龄计算','境内I-485条件','境外NVC程序','常见问题'],
 
-    asylum:['政治庇护是什么','五项受保护理由','过去迫害与未来迫害恐惧','迫害者与政府保护能力','一年申请期限','迟交例外','肯定式庇护与防御式庇护','I-589申请','个人陈述与时间线','证人证词与证明文件','国家状况证据','可信度与前后一致性','指纹与背景审查','庇护面谈','移民法庭程序','庇护时钟与C08工卡','家属随同与I-730','批准后申请绿卡','第三国安置与不准入问题','常见拒绝原因','常见问题'],
+    asylum:['政治庇护与迫害','种族','宗教','国籍','政治观点','特定社会群体','过去迫害与未来迫害恐惧','迫害者与政府保护能力','迫害与受保护理由之间的联系'],
+    'c08-ead':['C08工卡统一指南'],
     withholding:['防止递解是什么','与政治庇护的区别','更可能遭受迫害标准','五项受保护理由','仅禁止遣返到特定国家','没有一年申请期限','犯罪与安全障碍','移民法庭提出申请','I-589与证据','个人陈述与证人证词','国家状况证据','可信度判断','家属不能自动随同','身份与工作许可','重新开案与上诉','常见问题'],
     cat:['禁止酷刑公约保护是什么','酷刑的法律定义','更可能遭受酷刑标准','政府实施、同意或默许','不要求五项受保护理由','CAT withholding与deferral区别','犯罪记录申请人','递解程序中的申请','I-589与证据准备','医疗与心理证据','国家状况与政府行为证据','可信度与专家证人','保护范围与限制','保护终止与复审','常见问题'],
     vawa:['VAWA是什么','可以独立申请的亲属关系','施虐者必须是公民或绿卡持有者','婚姻或亲子关系要求','虐待或极端残忍行为','共同居住要求','良好道德品格','善意婚姻证据','I-360自我申请','保密保护','递延行动与工卡','I-485调整身份','离婚与施虐者死亡影响','子女与衍生受益人','VAWA取消递解','证据不足时的替代材料','常见问题'],
@@ -58,7 +59,7 @@
     h1b:['h-1b','专业职位','lca','抽签'],l1:['l-1','跨国公司','跨国派遣'],o1:['o-1','杰出人才','杰出能力'],h2a:['h-2a','农业工'],h2b:['h-2b','临时工'],tn:['tn签证','专业人士'],'e1-e2':['e-1','e-2','条约贸易','条约投资'],r1:['r-1','宗教工作者'],
     eb1a:['eb-1a','杰出人才绿卡','final merits','最终优势判断'],eb1b:['eb-1b','杰出教授','杰出研究员'],eb1c:['eb-1c','跨国高管','跨国经理'],niw:['eb-2 niw','国家利益豁免','dhanasar'],'eb2-perm':['eb-2 perm','劳工证','eta-9089','pwd'],eb3:['eb-3','技术工','非技术工','专业人士移民'],eb4:['eb-4','特殊移民','宗教移民'],eb5:['eb-5','投资移民','i-526e','i-829','区域中心','tea'],
     'citizen-spouse':['婚绿','婚姻绿卡','公民配偶','i-130a','同时递交'],f2a:['绿卡配偶','f-2a','表a','表b'],k1:['k-1','未婚妻签证','未婚夫签证','i-129f'],parents:['父母绿卡','公民申请父母','直系亲属'],children:['子女绿卡','公民申请子女','绿卡申请子女'],siblings:['兄弟姐妹绿卡','f4','公民申请兄弟姐妹'],'cr1-ir1':['cr-1','ir-1','配偶移民签证','ds-260','nvc'],'family-preference':['家庭优先','f1','f2b','f3','f4','签证公告','优先日期'],
-    asylum:['政治庇护','庇护申请','i-589','i589','庇护面谈','庇护时钟','c08'],'withholding':['防止递解','withholding of removal','禁止递解'],cat:['cat保护','禁止酷刑','convention against torture'],vawa:['家暴绿卡','家暴保护','i-360','自我申请'],'u-visa':['u签证','u visa','i-918','执法认证'],'t-visa':['t签证','t visa','i-914','人口贩运'],sijs:['特殊青少年','特殊移民青少年','少年法院','州法院裁定'],tps:['临时保护身份','temporary protected status','i-821']
+    asylum:['政治庇护','种族迫害','宗教迫害','国籍迫害','政治观点','特定社会群体','过去迫害','未来迫害','政府保护能力'],'c08-ead':['c08','c-8','庇护工卡','庇护时钟'],'withholding':['防止递解','withholding of removal','禁止递解'],cat:['cat保护','禁止酷刑','convention against torture'],vawa:['家暴绿卡','家暴保护','i-360','自我申请'],'u-visa':['u签证','u visa','i-918','执法认证'],'t-visa':['t签证','t visa','i-914','人口贩运'],sijs:['特殊青少年','特殊移民青少年','少年法院','州法院裁定'],tps:['临时保护身份','temporary protected status','i-821']
   };
   const defaultBlueprint=['项目介绍','适用人群','基本条件','申请流程','所需材料','费用与时间','身份维持','常见风险','常见问题'];
 
@@ -77,7 +78,11 @@
 
     const overview=document.querySelector('#topic-overview');
     if(topic){
-      overview.innerHTML=`<h2>${esc(topic.name)}</h2><p>${esc(topic.summary||`进入${topic.name}专题，按步骤查看完整知识。`)}</p><div class="topic-grid">${category.items.filter(x=>x.slug!==topic.slug).slice(0,4).map(item=>`<a class="topic-card" href="${itemUrl(item)}"><strong>${esc(item.name)}</strong><span>${esc(item.summary||'查看专题知识')}</span></a>`).join('')}</div>`;
+      const asylumGrounds=['种族','宗教','国籍','政治观点','特定社会群体'];
+      const related=topic.slug==='asylum'
+        ?asylumGrounds.map(name=>`<span class="topic-card asylum-ground"><strong>${name}</strong></span>`).join('')
+        :category.items.filter(x=>x.slug!==topic.slug).slice(0,4).map(item=>`<a class="topic-card" href="${itemUrl(item)}"><strong>${esc(item.name)}</strong><span>${esc(item.summary||'查看专题知识')}</span></a>`).join('');
+      overview.innerHTML=`<h2>${esc(topic.name)}</h2><p>${esc(topic.summary||`进入${topic.name}专题，按步骤查看完整知识。`)}</p><div class="topic-grid ${topic.slug==='asylum'?'asylum-grounds':''}">${related}</div>`;
     }else{
       overview.innerHTML=`<h2>${esc(category.nameZh)}知识导航</h2><p>${esc(category.description)}</p><div class="topic-grid">${category.items.map(item=>`<a class="topic-card" href="${itemUrl(item)}"><strong>${esc(item.name)}</strong><span>${esc(item.summary||'进入专题知识中心')}</span></a>`).join('')}</div>`;
     }
@@ -86,6 +91,7 @@
     document.querySelector('#structure-title').textContent=topic?`${topic.name}完整知识目录`:`${category.nameZh}使用方式`;
     document.querySelector('#knowledge-steps').innerHTML=steps.map((step,index)=>`<div class="knowledge-step"><strong>${String(index+1).padStart(2,'0')} · ${esc(step)}</strong><small>内容将按照统一知识模板持续补充</small></div>`).join('');
     document.querySelector('#articles-title').textContent=topic?`${topic.name}相关文章`:`${category.nameZh}相关文章`;
+    document.querySelector('.related-articles').hidden=topic?.slug==='c08-ead';
   }
 
   async function loadArticles(){

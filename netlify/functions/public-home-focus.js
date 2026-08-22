@@ -126,7 +126,7 @@ exports.handler = async (event) => {
       rest("articles", {
         query: {
           ...baseQuery,
-          "metadata->>homepage_focus_override": `eq.${MANUAL_FORCE}`,
+          metadata: `cs.{"homepage_focus_override":"${MANUAL_FORCE}"}`,
           limit: "50"
         }
       })

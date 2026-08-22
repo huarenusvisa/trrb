@@ -156,7 +156,7 @@ async function publishNow(story, actor, input) {
         slug: `ice-${story.event_fingerprint || story.id}`,
         summary,
         content,
-        category_name: "移民美国",
+        category_name: "ICE执法动态",
         cover_image: coverImage,
         seo_keywords: "ICE,移民执法,拘留,遣返,美国移民",
         author: "唐人日报编辑部",

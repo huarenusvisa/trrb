@@ -22,6 +22,7 @@ test("US immigration category rejects ICE enforcement and unrelated migration", 
   const rejected = [
     ["科罗拉多奥罗拉ICE疑似餐厅前拘捕两人", "ICE在餐厅前拘捕"],
     ["ICE执飞161人遣返海地航班", "从弗吉尼亚起飞"],
+    ["ICE宣布查获OPT项目诈骗案", "涉及一万名留学生"],
     ["加拿大技术移民评分调整", "加拿大公布快速通道新分数"],
     ["警方拘捕餐厅盗窃嫌疑人", "普通刑事案件"]
   ];
@@ -39,5 +40,6 @@ test("database firewall reroutes ICE and blocks unrelated published rows", () =>
   assert.match(source, /new\.category_name = '移民美国'/);
   assert.match(source, /new\.category_name = 'ICE执法动态'|new\.category_name := target\.name/);
   assert.match(source, /errcode = '23514'/);
+  assert.match(source, /immigration_text := article_text/);
   assert.match(source, /\[\^A-Za-z\]\)ICE/);
 });

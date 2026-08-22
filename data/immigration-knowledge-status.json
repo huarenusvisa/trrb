@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-21T21:28:51.153Z",
+  "generated_at": "2026-08-22T03:02:36.895Z",
   "window_hours": 30,
   "topic_count": 55,
   "target_per_topic": 10,
   "total_target": 550,
-  "total_published": 872,
-  "remaining": 30,
-  "completed_topics": 52,
-  "incomplete_topics": 3,
-  "complete": false,
+  "total_published": 912,
+  "remaining": 0,
+  "completed_topics": 55,
+  "incomplete_topics": 0,
+  "complete": true,
   "details": [
     {
       "category": "赴美留学",
@@ -253,10 +253,10 @@
     {
       "category": "家庭移民",
       "topic": "F1/F2B/F3/F4优先类别",
-      "count": 10,
+      "count": 20,
       "target": 10,
       "missing": 0,
-      "latest_published_at": "2026-08-21T21:28:37.8+00:00"
+      "latest_published_at": "2026-08-21T21:29:36.589+00:00"
     },
     {
       "category": "人道主义庇护",
@@ -309,18 +309,18 @@
     {
       "category": "人道主义庇护",
       "topic": "SIJS特殊青少年",
-      "count": 0,
+      "count": 10,
       "target": 10,
-      "missing": 10,
-      "latest_published_at": null
+      "missing": 0,
+      "latest_published_at": "2026-08-21T21:30:27.791+00:00"
     },
     {
       "category": "人道主义庇护",
       "topic": "TPS临时保护身份",
-      "count": 0,
+      "count": 10,
       "target": 10,
-      "missing": 10,
-      "latest_published_at": null
+      "missing": 0,
+      "latest_published_at": "2026-08-21T21:31:50.58+00:00"
     },
     {
       "category": "境内身份转换",
@@ -445,10 +445,10 @@
     {
       "category": "入籍美国公民",
       "topic": "衍生与取得公民",
-      "count": 0,
+      "count": 10,
       "target": 10,
-      "missing": 10,
-      "latest_published_at": null
+      "missing": 0,
+      "latest_published_at": "2026-08-21T21:31:13.158+00:00"
     }
   ]
 }

@@ -58,6 +58,31 @@ async function probe(url: URL) {
   }
 }
 
+async function latestOfficialFinanceArticle() {
+  const started = Date.now();
+  const supabaseUrl = env("SUPABASE_URL").replace(/\/+$/, "");
+  const serviceKey = env("SUPABASE_SERVICE_ROLE_KEY");
+  const url = new URL(`${supabaseUrl}/rest/v1/articles`);
+  url.searchParams.set("select", "id,title,published_at,source_name,source_account,source_url,review_status");
+  url.searchParams.set("automation_source", "eq.niulai-finance-official-v1");
+  url.searchParams.set("status", "eq.published");
+  url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
+  url.searchParams.set("limit", "1");
+  try {
+    const response = await fetch(url, { headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, Accept: "application/json" } });
+    const body = await readJson(response);
+    return {
+      ok: response.ok,
+      status: response.status,
+      latencyMs: Date.now() - started,
+      latest: Array.isArray(body) ? body[0] || null : null,
+      error: response.ok ? undefined : clean(body?.message || body?.raw || "读取采集记录失败", 240)
+    };
+  } catch (error: any) {
+    return { ok: false, status: 0, latencyMs: Date.now() - started, latest: null, error: clean(error?.message || error, 240) };
+  }
+}
+
 export default async (req: Request) => {
   if (req.method !== "GET") return json({ error: "Method not allowed" }, 405);
   try {
@@ -68,12 +93,13 @@ export default async (req: Request) => {
     searchUrl.searchParams.set("limit", "1");
     const newsUrl = new URL("/api/finance/news", req.url);
     newsUrl.searchParams.set("limit", "1");
-    const [market, search, news] = await Promise.all([probe(statusUrl), probe(searchUrl), probe(newsUrl)]);
+    const [market, search, news, ingestion] = await Promise.all([probe(statusUrl), probe(searchUrl), probe(newsUrl), latestOfficialFinanceArticle()]);
     const providerConfigured = Boolean(env("TWELVE_DATA_API_KEY"));
     const checks = [
       { name: "行情状态接口", key: "market-status", ...market, body: undefined },
       { name: "全证券搜索接口", key: "security-search", ...search, body: undefined },
-      { name: "唐人日报财经新闻同步", key: "finance-news", ...news, body: undefined }
+      { name: "牛来财经新闻同步", key: "finance-news", ...news, body: undefined },
+      { name: "官方财经采集记录", key: "official-finance-ingestion", ok: ingestion.ok, status: ingestion.status, latencyMs: ingestion.latencyMs, error: ingestion.error }
     ];
     const ok = checks.every((check) => check.ok);
     return json({
@@ -89,6 +115,7 @@ export default async (req: Request) => {
         twelveDataApiKey: providerConfigured
       },
       coverage: market.body?.coverage || null,
+      ingestion: { latest: ingestion.latest },
       checks,
       operator: { email: identity.user.email, role: identity.admin.role }
     }, ok ? 200 : 207);

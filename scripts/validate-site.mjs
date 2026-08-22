@@ -108,6 +108,9 @@ const niulaiAdapter = await text("niulai/data-adapter.js");
 const financeGateway = await text("netlify/functions/finance-market-data.ts");
 const financeNews = await text("netlify/functions/finance-news.ts");
 const financeHealth = await text("netlify/functions/finance-admin-health.ts");
+const financeIngest = await text("scripts/niulai-finance-ingest.mjs");
+const financeSources = await text("scripts/lib/niulai-finance-sources.mjs");
+const financeWorkflow = await text(".github/workflows/niulai-finance-ingest.yml");
 const adminHtml = await text("admin/index.html");
 requireMatch(niulai, /搜索股票、ETF、基金/, "niulai search UI is missing");
 requireMatch(niulaiAdapter, /\/api\/finance\/search/, "niulai adapter is not connected to securities search gateway");
@@ -117,7 +120,17 @@ requireMatch(financeGateway, /TWELVE_DATA_API_KEY/, "finance gateway is not read
 requireMatch(financeGateway, /\/symbol_search/, "finance gateway is missing provider symbol search");
 requireMatch(financeGateway, /\/time_series/, "finance gateway is missing provider time series");
 requireMatch(financeNews, /public-articles/, "finance news endpoint is not synchronized with Tang Daily articles");
+requireMatch(financeNews, /牛来财经/, "finance news endpoint is not prioritizing the Niulai finance category");
 requireMatch(financeHealth, /authenticate\(req\)/, "finance admin health endpoint is not staff protected");
+requireMatch(financeHealth, /niulai-finance-official-v1/, "finance admin health endpoint is not monitoring official ingestion");
+requireMatch(financeSources, /press_monetary\.xml/, "official finance collector is missing the Federal Reserve feed");
+requireMatch(financeSources, /sec\.gov\/news\/pressreleases\.rss/, "official finance collector is missing the SEC feed");
+requireMatch(financeSources, /bls\.gov\/feed\/cpi\.rss/, "official finance collector is missing the BLS CPI feed");
+requireMatch(financeIngest, /official_source_auto_published/, "official finance collector is not marking auto-published articles");
+requireMatch(financeIngest, /source_url:\s*item\.url/, "official finance collector is not preserving source attribution");
+requireMatch(financeIngest, /X_BEARER_TOKEN/, "official finance collector is not ready for the X API token");
+requireMatch(financeWorkflow, /cron:\s*["']\*\/15 \* \* \* \*["']/, "official finance collector is not scheduled every 15 minutes");
+requireMatch(financeWorkflow, /node scripts\/niulai-finance-ingest\.mjs/, "official finance workflow does not execute the collector");
 requireMatch(adminHtml, /data-page=["']finance-monitor["']/, "admin console is missing finance monitoring navigation");
 forbidMatch(niulaiAdapter, /TWELVE_DATA_API_KEY/, "Twelve Data API key name leaked into public client code");
 

@@ -73,6 +73,22 @@ async function fetchTerm(req: Request, term: string) {
   }
 }
 
+async function fetchCategory(req: Request, category: string) {
+  const url = new URL("/.netlify/functions/public-articles", req.url);
+  url.searchParams.set("limit", "30");
+  url.searchParams.set("category", category);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8_000);
+  try {
+    const response = await fetch(url, { signal: controller.signal, headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`public-articles ${response.status}`);
+    const body = await response.json();
+    return Array.isArray(body?.articles) ? body.articles : [];
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export default async (req: Request) => {
   if (req.method === "OPTIONS") return json({}, 204);
   if (req.method !== "GET") return json({ error: "Method not allowed" }, 405);
@@ -80,7 +96,10 @@ export default async (req: Request) => {
   const limit = Math.min(Math.max(Number(url.searchParams.get("limit") || 12), 1), 30);
   if (cached && cached.expires > Date.now()) return json({ ...cached.value, limit, articles: cached.value.articles.slice(0, limit), cached: true });
   try {
-    const batches = await Promise.all(["美股", "股票", "ETF", "美联储"].map((term) => fetchTerm(req, term)));
+    const batches = await Promise.all([
+      fetchCategory(req, "牛来财经"),
+      ...["美股", "股票", "ETF", "美联储"].map((term) => fetchTerm(req, term))
+    ]);
     const seen = new Set<string>();
     const articles = batches.flat()
       .filter(isFinanceArticle)
@@ -96,7 +115,11 @@ export default async (req: Request) => {
         title: clean(article.title, 260),
         summary: clean(article.summary, 500),
         category: clean(article.category_name, 80),
-        source: "唐人日报",
+        source: clean(article.author || article.source_name || "牛来｜唐人财经", 160),
+        originalSource: clean(article.source_name, 200),
+        originalUrl: clean(article.source_url, 1200),
+        sourceAccount: clean(article.source_account, 160),
+        sourcePlatform: clean(article.source_platform, 80),
         publishedAt: article.published_at || article.created_at || null,
         time: relativeTime(article.published_at || article.created_at),
         tag: tagFor(article),

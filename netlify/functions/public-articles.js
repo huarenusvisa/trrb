@@ -31,7 +31,7 @@ exports.handler = async (event) => {
     const q = cleanSearch(event.queryStringParameters?.q || "");
 
     const query = {
-      select: "id,title,slug,summary,category_name,cover_image,author,status,visibility,published_at,created_at",
+      select: "id,title,slug,summary,category_name,cover_image,author,status,visibility,published_at,created_at,source_url,source_name,source_account,source_platform",
       status: "eq.published",
       visibility: "eq.public",
       order: "published_at.desc.nullslast,created_at.desc",

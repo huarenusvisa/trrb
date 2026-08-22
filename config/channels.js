@@ -2,7 +2,7 @@
 // “重要新闻”不再作为独立频道；首页使用“今日要闻”自动推荐池。
 
 window.TRRB_CHANNELS = [
-  { name: "热门头条", slug: "hot", priority: 1, enabled: true },
+  { name: "热门头条", displayName: "中国热门头条", slug: "hot", priority: 1, enabled: true },
   { name: "美国时政", slug: "politics", priority: 2, enabled: true },
   { name: "美国警情", slug: "crime", priority: 3, enabled: true },
   { name: "移民法官通过率", slug: "immigration-judge-approval-rate", priority: 4, enabled: true },

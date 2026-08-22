@@ -30,7 +30,7 @@
 
     const prettyCategoryByPath = {
       '/important-news': '重要新闻',
-      '/hot-headlines': '热门头条',
+      '/hot-headlines': '中国热门头条',
       '/us-politics': '美国时政',
       '/us-crime': '美国警情',
       '/china-officialdom': '中国官场',
@@ -108,7 +108,7 @@
       // Running after DOM parsing lets us see that marker and prevents creating
       // a second canonical/robots/description set before the SSR tags exist.
       if (document.head.querySelector('script[data-trrb-category-schema]')) return;
-      applyCategorySeo(prettyCategory, slugMap[prettyCategory]);
+      applyCategorySeo(prettyCategory, prettyCategory === '中国热门头条' ? 'hot-headlines' : slugMap[prettyCategory]);
       return;
     }
 

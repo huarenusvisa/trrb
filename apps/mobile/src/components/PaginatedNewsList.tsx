@@ -77,7 +77,7 @@ export function PaginatedNewsList({ title, category, q, emptyText = '暂时没�
         <Pressable testID={`category-article-${index}`} accessibilityLabel={`打开新闻：${item.title}`} style={styles.card} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}>
           {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.thumb} /> : <View style={styles.placeholder} />}
           <View style={styles.body}>
-            <Text style={styles.category}>{item.category_name || '新闻'}</Text>
+            <Text style={styles.category}>{item.category_name === '热门头条' ? '中国热门头条' : (item.category_name || '新闻')}</Text>
             <Text style={styles.articleTitle} numberOfLines={3}>{item.title}</Text>
             <Text style={styles.meta}>{item.published_at ? new Date(item.published_at).toLocaleString('zh-CN') : ''}</Text>
           </View>

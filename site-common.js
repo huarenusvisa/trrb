@@ -3,6 +3,7 @@
   const CATEGORY_PLACEHOLDERS = {
     "重要新闻": "./assets/category-placeholders/important.svg",
     "热门头条": "./assets/category-placeholders/hot.svg",
+    "中国热门头条": "./assets/category-placeholders/hot.svg",
     "驱逐快报": "./assets/category-placeholders/deport.svg",
     "美国时政": "./assets/category-placeholders/politics.svg",
     "美国警情": "./assets/category-placeholders/crime.svg",

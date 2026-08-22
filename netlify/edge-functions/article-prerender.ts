@@ -194,6 +194,7 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
   const title = clean(article.title) || "唐人日报新闻";
   const summary = buildDescription(article);
   const category = clean(article.category_name) || "新闻";
+  const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   const author = clean(article.author) || "Tang Ren Daily";
   const published = isoDate(article.published_at || article.created_at);
   const image = clean(article.cover_image) || `${SITE}/trrb-logo-cropped.webp`;
@@ -246,7 +247,7 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
     <meta property="og:url" content="${esc(canonical)}" />
     <meta property="og:image" content="${esc(image)}" />
     <meta property="article:published_time" content="${published}" />
-    <meta property="article:section" content="${esc(category)}" />
+    <meta property="article:section" content="${esc(displayCategory)}" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${esc(title)}" />
     <meta name="twitter:description" content="${esc(summary)}" />
@@ -267,6 +268,7 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
 function injectBody(html: string, article: any, canonical: string) {
   const title = clean(article.title) || "唐人日报新闻";
   const category = clean(article.category_name) || "新闻";
+  const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   const author = clean(article.author) || "Tang Ren Daily";
   const published = isoDate(article.published_at || article.created_at).slice(0, 10);
   const content = String(article.content || "").trim();
@@ -274,7 +276,7 @@ function injectBody(html: string, article: any, canonical: string) {
   const image = clean(article.cover_image);
   const prerender = `<a class="back-link" href="/">返回首页</a>
       <header class="article-header">
-        <span class="tag">${esc(category)}</span>
+        <span class="tag">${esc(displayCategory)}</span>
         <h1>${esc(title)}</h1>
         <div class="story-meta">${esc(author)} · ${esc(published)}</div>
       </header>

@@ -1,10 +1,12 @@
 const { SUPABASE_URL, SERVICE_KEY } = require("./_shared/supabase-admin");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { isUsImmigrationText } = require("./_shared/us-immigration-category");
+const { isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 
 const CATEGORY_DEFINITIONS = new Map([
   ["重要新闻", { path: "/important-news" }],
-  ["热门头条", { path: "/hot-headlines" }],
+  ["热门头条", { path: "/hot-headlines", mode: "china-hot" }],
+  ["中国热门头条", { path: "/hot-headlines", mode: "china-hot" }],
   ["美国时政", { path: "/us-politics" }],
   ["美国警情", { path: "/us-crime" }],
   ["中国官场", { path: "/china-officialdom" }],
@@ -50,6 +52,10 @@ function asylumOrFilter() {
 }
 
 function applyCategoryFilter(url, name, definition) {
+  if (definition.mode === "china-hot") {
+    url.searchParams.set("or", "(category_name.eq.热门头条,category_name.eq.中国热门头条)");
+    return;
+  }
   if (definition.mode === "ice") {
     url.searchParams.set("or", "(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报)");
     return;
@@ -107,6 +113,8 @@ exports.handler = async (event) => {
       ? (row) => isIceEnforcementText(row.title, row.summary)
       : definition.mode === "us-immigration"
         ? (row) => isUsImmigrationText(row.title, `${row.summary || ""} ${row.content || ""}`)
+        : definition.mode === "china-hot"
+          ? (row) => isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`)
         : null;
     const eligibleArticles = contentFilter ? rawArticles.filter(contentFilter) : rawArticles;
     const articles = eligibleArticles.map(({ content: _content, ...row }) => row);

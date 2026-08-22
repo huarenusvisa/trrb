@@ -15,6 +15,7 @@ const {
 } = require("./_shared/article-ai");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { isUsImmigrationText } = require("./_shared/us-immigration-category");
+const { CHINA_HOT_CATEGORY, isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
@@ -102,6 +103,14 @@ function enforceImmigrationCategory(title, content, categoryName) {
   }
 
   const error = new Error("该稿不属于“移民美国”。该栏目只收录赴美签证、绿卡、入籍、庇护申请及美国移民办理政策；ICE抓捕、拘留、遣返和边境执法请发布到“ICE执法动态”。");
+  error.statusCode = 400;
+  throw error;
+}
+
+function enforceChinaHotCategory(title, content, categoryName) {
+  if (!isChinaHotCategory(categoryName)) return;
+  if (isChinaHotHeadline(title, content)) return;
+  const error = new Error("该稿不属于“中国热门头条”。该栏目只收录以中国大陆事件、地点、机构或社会议题为主体的新闻；美国新闻请发布到美国时政或美国警情。");
   error.statusCode = 400;
   throw error;
 }
@@ -196,6 +205,8 @@ async function saveArticle(input, actor) {
   const autoAiCover = Boolean(input.auto_ai_cover);
   const categoryPolicy = enforceImmigrationCategory(title, content, categoryName);
   categoryName = categoryPolicy.categoryName;
+  enforceChinaHotCategory(title, content, categoryName);
+  if (isChinaHotCategory(categoryName)) categoryName = CHINA_HOT_CATEGORY;
   if (categoryPolicy.corrected) categoryId = null;
   const isIceBrief = ICE_CATEGORIES.has(categoryName);
 

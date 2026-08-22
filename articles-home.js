@@ -327,6 +327,7 @@ function normalizeCategory(value) { return String(value || "").trim(); }
 function findLeadArticle(categoryArticles) { return categoryArticles.find(hasRealImage) || categoryArticles[0] || null; }
 
 function renderCategorySection(category, articles) {
+  const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   const categoryArticles = articles
     .filter((item) => normalizeCategory(item.category) === category)
     .filter(isFreshHomepageArticle)
@@ -335,11 +336,11 @@ function renderCategorySection(category, articles) {
   const more = categoryUrl(category);
 
   if (!article) {
-    return `<article class="news-box category-empty" id="${categoryIds[category] || ""}"><header><h2>${escapeHtml(category)}</h2><a href="${more}">更多</a></header><div class="category-empty-state"><strong>暂无该分类内容</strong><span>新内容发布后将在这里显示</span></div></article>`;
+    return `<article class="news-box category-empty" id="${categoryIds[category] || ""}"><header><h2>${escapeHtml(displayCategory)}</h2><a href="${more}">更多</a></header><div class="category-empty-state"><strong>暂无该分类内容</strong><span>新内容发布后将在这里显示</span></div></article>`;
   }
 
   const subItems = categoryArticles.filter((item) => String(item.id) !== String(article.id)).slice(0, 6);
-  return `<article class="news-box" id="${categoryIds[category] || ""}"><header><h2>${escapeHtml(category)}</h2><a href="${more}">更多</a></header><a class="section-lead" href="${articleUrl(article)}"><img ${imageAttrs(article, { width: 512, height: 288 })} alt="" /><h3>${escapeHtml(article.title)}</h3></a><ul class="section-news-list">${subItems.map((item) => `<li><a href="${articleUrl(item)}">${escapeHtml(item.title)}</a><time>${escapeHtml(shortDate(item.time || item.date || ""))}</time></li>`).join("")}</ul></article>`;
+  return `<article class="news-box" id="${categoryIds[category] || ""}"><header><h2>${escapeHtml(displayCategory)}</h2><a href="${more}">更多</a></header><a class="section-lead" href="${articleUrl(article)}"><img ${imageAttrs(article, { width: 512, height: 288 })} alt="" /><h3>${escapeHtml(article.title)}</h3></a><ul class="section-news-list">${subItems.map((item) => `<li><a href="${articleUrl(item)}">${escapeHtml(item.title)}</a><time>${escapeHtml(shortDate(item.time || item.date || ""))}</time></li>`).join("")}</ul></article>`;
 }
 function renderExposureWallCard() {
   return `<article class="news-box expose-wall-box" id="exposure-wall"><header><h2>曝光墙</h2><a href="/expose.html">我要曝光</a></header><a class="expose-wall-main" href="/expose.html" aria-label="提交曝光材料"><span class="expose-wall-symbol" aria-hidden="true">!</span><h3>匿名曝光 · 证据直达编辑部</h3><p>支持提交文字、图片和视频。公开展示可匿名，但必须留下电话或邮箱，方便编辑核实。</p><strong>提交曝光材料</strong></a><ul class="expose-wall-points"><li>身份信息不会在前台公开</li><li>材料审核后决定是否报道</li><li>严禁捏造、诽谤和非法内容</li></ul></article>`;

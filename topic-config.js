@@ -3,7 +3,7 @@ window.TRRB_TOPIC_CONFIG={trump:{title:'特朗普实时动态'},ice:{title:'ICE�
 (function installUnifiedHomepageChannels() {
   const fallbackChannels = [
     { name: "重要新闻", slug: "important", priority: 1, enabled: true },
-    { name: "热门头条", slug: "hot", priority: 2, enabled: true },
+    { name: "热门头条", displayName: "中国热门头条", slug: "hot", priority: 2, enabled: true },
     { name: "驱逐快报", slug: "deport", priority: 3, enabled: true },
     { name: "美国时政", slug: "politics", priority: 4, enabled: true },
     { name: "美国警情", slug: "crime", priority: 5, enabled: true },

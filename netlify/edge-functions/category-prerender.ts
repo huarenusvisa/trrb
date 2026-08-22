@@ -1,9 +1,9 @@
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 24;
 
-const ROUTES: Record<string, { name: string; description: string }> = {
+const ROUTES: Record<string, { name: string; displayName?: string; description: string }> = {
   "/important-news": { name: "重要新闻", description: "唐人日报重要新闻，聚焦美国、中国及全球重大事件与突发动态。" },
-  "/hot-headlines": { name: "热门头条", description: "唐人日报热门头条，汇集当前最受关注的新闻与热点事件。" },
+  "/hot-headlines": { name: "热门头条", displayName: "中国热门头条", description: "唐人日报中国热门头条，只汇集中国大陆社会、民生、公共事件与网络热点。" },
   "/us-politics": { name: "美国时政", description: "唐人日报美国时政，追踪白宫、国会、选举、政策与联邦政府最新动态。" },
   "/us-crime": { name: "美国警情", description: "唐人日报美国警情，关注美国治安、执法、法院与重大刑事案件。" },
   "/china-officialdom": { name: "中国官场", description: "唐人日报中国官场，追踪官员任免、反腐、调查与公共治理动态。" },
@@ -112,7 +112,8 @@ function cards(articles: any[], categoryName: string): string {
     if (!url) return "";
     const image = clean(article.cover_image);
     const summary = description(article);
-    return `<article class="archive-card" data-category-prerendered="true"><a href="${esc(url)}">${image ? `<img src="${esc(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="${esc(article.title)}" />` : ""}<span>${esc(article.category_name || categoryName)}</span><h2>${esc(article.title)}</h2>${summary ? `<p>${esc(summary)}</p>` : ""}<time>${esc(articleDate(article))}</time></a></article>`;
+    const articleCategory = clean(article.category_name) === "热门头条" ? "中国热门头条" : (article.category_name || categoryName);
+    return `<article class="archive-card" data-category-prerendered="true"><a href="${esc(url)}">${image ? `<img src="${esc(image)}" width="512" height="288" loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="${esc(article.title)}" />` : ""}<span>${esc(articleCategory)}</span><h2>${esc(article.title)}</h2>${summary ? `<p>${esc(summary)}</p>` : ""}<time>${esc(articleDate(article))}</time></a></article>`;
   }).join("");
 }
 function pageHref(path: string, page: number): string {
@@ -153,6 +154,7 @@ export default async (request: Request, context: any) => {
   const route = ROUTES[path];
   if (!route) return context.next();
   const page = pageNumber(url.searchParams.get("page"));
+  const displayName = route.displayName || route.name;
 
   try {
     const [category, pagePayload] = await Promise.all([
@@ -176,15 +178,15 @@ export default async (request: Request, context: any) => {
     let html = await upstream.text();
     const canonicalRoute = canonicalPath(path, page);
     const canonical = `${SITE}${canonicalRoute}`;
-    const title = clean(category?.seo_title) || `${route.name} - 唐人日报`;
+    const title = route.displayName ? `${displayName} - 唐人日报` : (clean(category?.seo_title) || `${displayName} - 唐人日报`);
     const titleWithPage = page > 1 ? `${title.replace(/\s*-\s*唐人日报\s*$/i, "")} 第${page}页 - 唐人日报` : title;
     const metaDescription = clean(category?.seo_description) || route.description;
-    const keywords = clean(category?.seo_keywords) || `${route.name},唐人日报,美国华人新闻`;
+    const keywords = route.displayName ? "中国热门头条,中国新闻,中国社会热点,唐人日报" : (clean(category?.seo_keywords) || `${displayName},唐人日报,美国华人新闻`);
     const itemList = {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "@id": canonical,
-      name: page > 1 ? `${route.name} 第${page}页` : route.name,
+      name: page > 1 ? `${displayName} 第${page}页` : displayName,
       url: canonical,
       description: metaDescription,
       mainEntity: {
@@ -234,8 +236,8 @@ export default async (request: Request, context: any) => {
       .replace(/<meta\s+property=["']og:[^"']+["'][^>]*>/gi, "")
       .replace(/<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi, "")
       .replace(/<\/head>/i, `${seo}\n  </head>`)
-      .replace(/<h1 id="listing-title">[\s\S]*?<\/h1>/i, `<h1 id="listing-title">${esc(route.name)}</h1>`)
-      .replace(/<div class="listing-grid" id="listing-grid">[\s\S]*?<\/div><nav class="pagination" id="pagination" aria-label="分页"><\/nav>/i, `<div class="listing-grid" id="listing-grid" data-seo-category-snapshot="edge" data-page="${page}">${cards(articles, route.name)}</div>${pagination(path, page, totalPages)}`);
+      .replace(/<h1 id="listing-title">[\s\S]*?<\/h1>/i, `<h1 id="listing-title">${esc(displayName)}</h1>`)
+      .replace(/<div class="listing-grid" id="listing-grid">[\s\S]*?<\/div><nav class="pagination" id="pagination" aria-label="分页"><\/nav>/i, `<div class="listing-grid" id="listing-grid" data-seo-category-snapshot="edge" data-page="${page}">${cards(articles, displayName)}</div>${pagination(path, page, totalPages)}`);
 
     const responseHeaders = new Headers(upstream.headers);
     responseHeaders.set("content-type", "text/html; charset=UTF-8");

@@ -1300,28 +1300,4 @@
         <news:title>西雅图ICE逮捕拥有26年犯罪记录的老挝非法移民</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7cc3e11a5aaa940bffaca44d7ed104ccf15b11b0</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T20:43:21.428Z</news:publication_date>
-        <news:title>美国ICE持续逮捕遣返非法移民执行边境执法</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/us-politics/ice-6e7628801f4ba837fa8483ae2d8c2aaa19c341bb</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T20:43:20.681Z</news:publication_date>
-        <news:title>墨西哥籍非法移民Carlos Zaded贩毒罪名成立</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-28fc7f55d4328132f14831d9ca29ca31994e53fc</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T20:43:19.890Z</news:publication_date>
-        <news:title>弗吉尼亚州建议将疑似掠夺者移交ICE监管</news:title>
-      </news:news>
-    </url>
 </urlset>

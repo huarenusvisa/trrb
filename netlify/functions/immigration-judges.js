@@ -152,7 +152,7 @@ exports.handler = async (event) => {
       return out(200, {
         count: (rows || []).length,
         source: '唐人日报·政治庇护·五项法定理由',
-        schedule: 'daily',
+        schedule: 'every_72_hours',
         results: rows || []
       });
     }

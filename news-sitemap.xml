@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
-      <loc>https://trrb.net/immigration/ice-a06f940c6b6d9635c2761a3190fc6535cde007d7</loc>
+      <loc>https://trrb.net/ice/ice-a06f940c6b6d9635c2761a3190fc6535cde007d7</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-22T05:45:49.883Z</news:publication_date>
@@ -9,7 +9,7 @@
       </news:news>
     </url>
   <url>
-      <loc>https://trrb.net/immigration/ice-80470f1d6970effd306e9a5bb24b3b1219cd4686</loc>
+      <loc>https://trrb.net/ice/ice-80470f1d6970effd306e9a5bb24b3b1219cd4686</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-22T05:45:40.887Z</news:publication_date>
@@ -17,7 +17,7 @@
       </news:news>
     </url>
   <url>
-      <loc>https://trrb.net/immigration/ice-20c7fc6070d75b6969fec78fc01f8d010a4b63d6</loc>
+      <loc>https://trrb.net/ice/ice-20c7fc6070d75b6969fec78fc01f8d010a4b63d6</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-22T05:45:32.377Z</news:publication_date>
@@ -1975,14 +1975,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-20T06:23:34.288Z</news:publication_date>
         <news:title>“叛国的卑鄙小人”！特朗普要求起诉温德曼，弹劾旧敌迎来追责风暴</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/%E9%A9%B1%E9%80%90%E8%A1%8C%E5%8A%A8%E5%8F%98%E9%80%89%E4%B8%BE%E7%82%B8%E5%BC%B951%E9%80%89%E6%B0%91%E8%AE%A4%E4%B8%BA%E8%BF%87%E4%BA%8E%E6%BF%80%E8%BF%9B%E7%89%B9%E6%9C%97%E6%99%AE%E7%A7%BB%E6%B0%91%E7%89%8C%E6%81%90%E9%81%AD%E5%8F%8D%E5%99%AC-mt14ljjs-97163e</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T06:14:47.608Z</news:publication_date>
-        <news:title>驱逐行动变选举炸弹？51%选民认为“过于激进”，特朗普移民牌恐遭反噬</news:title>
       </news:news>
     </url>
 </urlset>

@@ -4,7 +4,8 @@
 create or replace function public.assign_article_category_from_topic()
 returns trigger
 language plpgsql
-as $$
+set search_path = ''
+as $
 declare
   target record;
   article_text text;

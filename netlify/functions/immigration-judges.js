@@ -11,6 +11,22 @@ const out = (status, body) => ({
   body: JSON.stringify(body)
 });
 const num = (v) => Number(v || 0);
+const ASYLUM_KNOWLEDGE_TERMS = [
+  '种族迫害', '宗教迫害', '国籍迫害', '政治观点', '政治意见', '特定社会群体',
+  '五项受保护理由', '五项受保护原因', '过去迫害', '未来迫害', '迫害恐惧',
+  '政府保护能力', '政府无法保护', '政府不愿保护', '迫害者'
+];
+const ASYLUM_KNOWLEDGE_EXCLUDES = [
+  'advance parole', '旅行许可', '回美证', 'ead', '工卡', 'i-765', 'c08', 'c-8',
+  '费用', '成本', '家属', 'i-730', '绿卡', '一年申请期限', '迟交例外', 'i-589',
+  '材料清单', '办理流程', '时间节点', '申请资格', '适用人群'
+];
+
+function isFiveGroundsKnowledge(row) {
+  const text = `${row.title || ''} ${row.summary || ''}`.toLowerCase();
+  if (ASYLUM_KNOWLEDGE_EXCLUDES.some((term) => text.includes(term.toLowerCase()))) return false;
+  return ASYLUM_KNOWLEDGE_TERMS.some((term) => text.includes(term.toLowerCase()));
+}
 
 function derived(row) {
   const grants = num(row.grants);
@@ -119,35 +135,23 @@ exports.handler = async (event) => {
     if (mode === 'knowledge') {
       const requestedLimit = Number.parseInt(String(p.limit || '4'), 10);
       const limit = Math.min(8, Math.max(3, Number.isFinite(requestedLimit) ? requestedLimit : 4));
-      const dailyRows = await rest('articles', {
+      const candidates = await rest('articles', {
         query: {
           select: 'id,title,slug,summary,category_name,published_at',
           status: 'eq.published',
           visibility: 'eq.public',
-          category_name: 'like.移民美国·人道主义庇护·*',
+          category_name: 'like.移民美国·人道主义庇护·政治庇护·*',
           order: 'published_at.desc.nullslast',
-          limit: String(limit)
+          limit: '120'
         }
       });
-      const legacyRows = (dailyRows || []).length >= limit ? [] : await rest('articles', {
-        query: {
-          select: 'id,title,slug,summary,category_name,published_at',
-          status: 'eq.published',
-          visibility: 'eq.public',
-          category_name: 'eq.移民美国',
-          topic_key: 'is.null',
-          or: '(title.ilike.*庇护*,summary.ilike.*庇护*,title.ilike.*I-589*,summary.ilike.*I-589*,title.ilike.*防止递解*,summary.ilike.*防止递解*,title.ilike.*禁止酷刑*,summary.ilike.*禁止酷刑*)',
-          order: 'published_at.desc.nullslast',
-          limit: String(limit)
-        }
-      });
-      const rows = [...(dailyRows || []), ...(legacyRows || [])]
+      const rows = (candidates || [])
+        .filter(isFiveGroundsKnowledge)
         .filter((row, index, all) => all.findIndex((item) => item.id === row.id) === index)
-        .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0))
         .slice(0, limit);
       return out(200, {
         count: (rows || []).length,
-        source: '唐人日报·移民美国·人道主义庇护',
+        source: '唐人日报·政治庇护·五项法定理由',
         schedule: 'daily',
         results: rows || []
       });

@@ -1387,20 +1387,4 @@
         <news:title>费城ICE逮捕涉嫌多罪海地籍嫌疑人</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-0e710f49077d4f728e190eb5a1e2665b09338f43</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T18:55:46.934Z</news:publication_date>
-        <news:title>HSI圣胡安市分局逮捕涉嫌儿童剥削者Carlos Cabrera González</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-21d04053027c0d905de99e5f34261b653db07bd5</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T18:55:45.698Z</news:publication_date>
-        <news:title>ICE旧金山逮捕危害公共安全的危害人员</news:title>
-      </news:news>
-    </url>
 </urlset>

@@ -1,11 +1,12 @@
 name: ICE严格分类数据库迁移
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "supabase/migrations/20260822053200_strict_ice_enforcement_topic.sql"
-      - ".github/workflows/strict-ice-enforcement-topic-migrate.yml"
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: '输入 APPLY 才会重新执行正式库迁移'
+        required: true
+        default: 'DRY_RUN'
 
 permissions:
   contents: read
@@ -16,6 +17,7 @@ concurrency:
 
 jobs:
   migrate:
+    if: ${{ inputs.confirmation == 'APPLY' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:

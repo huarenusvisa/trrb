@@ -61,22 +61,24 @@ const hardRejectTerms = [
 function classify(row) {
   const title = normalize(row.title);
   const summary = normalize(row.summary);
-  const content = normalize(row.content).slice(0, 5000);
-  const text = `${title} ${summary} ${content}`;
+  const lead = normalize(row.content).slice(0, 1200);
+  const primary = `${title} ${summary}`;
+  const topical = `${primary} ${lead}`;
 
-  // ICE has priority because many ICE stories also contain police, court and policy terms.
-  if (hasAny(text, iceTerms)) return { action: 'move', category: 'ICE执法动态', reason: 'ICE enforcement/detention/removal' };
+  // The section is intentionally strict: a buried incidental word must never
+  // decide the category. ICE/enforcement and immigration-process signals must
+  // appear in the headline or summary.
+  if (hasAny(primary, iceTerms)) return { action: 'move', category: 'ICE执法动态', reason: 'ICE enforcement/detention/removal' };
 
-  // Genuine immigration knowledge or immigration-process reporting stays in the immigration hub.
-  if (hasAny(text, immigrationTerms)) return { action: 'keep', category: '移民美国', reason: 'genuine immigration topic' };
+  if (hasAny(primary, immigrationTerms)) return { action: 'keep', category: '移民美国', reason: 'genuine immigration-to-US topic' };
 
-  if (hasAny(text, politicsTerms)) return { action: 'move', category: '美国时政', reason: 'US politics/policy/court' };
-  if (hasAny(text, policeTerms)) return { action: 'move', category: '美国警情', reason: 'US crime/police/court' };
-  if (hasAny(text, importantTerms)) return { action: 'move', category: '热门头条', reason: 'major general news' };
+  if (hasAny(topical, politicsTerms)) return { action: 'move', category: '美国时政', reason: 'US politics/policy/court' };
+  if (hasAny(topical, policeTerms)) return { action: 'move', category: '美国警情', reason: 'US crime/police/court' };
+  if (hasAny(topical, importantTerms)) return { action: 'move', category: '热门头条', reason: 'major general news' };
 
   // Misclassification cleanup must preserve articles. Anything that cannot be
   // proven to be about immigrating to the United States leaves this section.
-  if (hasAny(text, hardRejectTerms)) return { action: 'move', category: '热门头条', reason: 'unrelated to US immigration' };
+  if (hasAny(topical, hardRejectTerms)) return { action: 'move', category: '热门头条', reason: 'unrelated to US immigration' };
   return { action: 'move', category: '热门头条', reason: 'not proven to be immigration-to-US content' };
 }
 

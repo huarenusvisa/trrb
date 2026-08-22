@@ -121,6 +121,7 @@ requireMatch(financeGateway, /\/symbol_search/, "finance gateway is missing prov
 requireMatch(financeGateway, /\/time_series/, "finance gateway is missing provider time series");
 requireMatch(financeNews, /public-articles/, "finance news endpoint is not synchronized with Tang Daily articles");
 requireMatch(financeNews, /牛来财经/, "finance news endpoint is not prioritizing the Niulai finance category");
+requireMatch(financeNews, /category_name[\s\S]{0,100}牛来财经/, "finance news endpoint can filter out official Niulai finance articles");
 requireMatch(financeHealth, /authenticate\(req\)/, "finance admin health endpoint is not staff protected");
 requireMatch(financeHealth, /niulai-finance-official-v1/, "finance admin health endpoint is not monitoring official ingestion");
 requireMatch(financeSources, /press_monetary\.xml/, "official finance collector is missing the Federal Reserve feed");

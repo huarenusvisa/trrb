@@ -43,8 +43,9 @@ function tagFor(article: any) {
 }
 
 function isFinanceArticle(article: any) {
+  if (clean(article.category_name, 80) === "牛来财经") return true;
   const text = `${article.title || ""} ${article.summary || ""}`;
-  return /(美股|股票|股市|证券|财经|ETF|基金|指数|道指|纳指|标普|港股|A股|沪深|上证|深证|华尔街|上市公司|美联储|利率|通胀|财报|投资者|债券|黄金|比特币|加密资产|市场抛售|市场反弹)/i.test(text);
+  return /(美股|股票|股市|证券|财经|ETF|基金|指数|道指|纳指|标普|港股|A股|沪深|上证|深证|华尔街|上市公司|美联储|利率|通胀|财报|投资者|债券|黄金|比特币|加密资产|GDP|RPP|市场抛售|市场反弹)/i.test(text);
 }
 
 function relativeTime(value: string) {

@@ -40,8 +40,11 @@ async function fetchIceTopics() {
 }
 
 async function clearChunk(ids) {
-  const filter = ids.map((id) => `"${String(id).replaceAll('"', '')}"`).join(',');
-  await request(`articles?id=in.(${encodeURIComponent(filter)})`, {
+  const cleanIds = ids.map((id) => String(id).trim());
+  if (cleanIds.some((id) => !/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(id))) {
+    throw new Error('Refusing to patch an invalid article UUID');
+  }
+  await request(`articles?id=in.(${cleanIds.join(',')})`, {
     method: 'PATCH',
     body: JSON.stringify({ topic_key: null })
   });
@@ -58,4 +61,14 @@ if (APPLY) {
     await clearChunk(stale.slice(index, index + 75).map((row) => row.id));
   }
 }
-console.log(JSON.stringify({ cleared: APPLY ? stale.length : 0 }));
+let verifiedCleared = 0;
+if (APPLY) {
+  const remaining = await fetchIceTopics();
+  const remainingIds = new Set(remaining.map((row) => String(row.id)));
+  const failed = stale.filter((row) => remainingIds.has(String(row.id)));
+  if (failed.length) {
+    throw new Error(`ICE topic cleanup verification failed: ${failed.length}/${stale.length} rows still carry topic_key=ice`);
+  }
+  verifiedCleared = stale.length;
+}
+console.log(JSON.stringify({ cleared: verifiedCleared, verified: APPLY }));

@@ -48,7 +48,8 @@
     siblings:{terms:['兄弟姐妹移民','f4移民','公民申请兄弟姐妹']},
     'cr1-ir1':{terms:['cr-1','ir-1','cr1','ir1','配偶移民签证']},
     'family-preference':{terms:['家庭优先','f2b','f3移民','f4移民','签证公告']},
-    asylum:{terms:['政治庇护','庇护申请','i-589','庇护面谈','庇护时钟']},
+    asylum:{terms:['种族迫害','宗教迫害','国籍迫害','政治观点','政治意见','特定社会群体','五项受保护理由','过去迫害','未来迫害','迫害恐惧','政府保护能力','政府无法保护','政府不愿保护','迫害者'],exclude:['advance parole','旅行许可','回美证','ead','工卡','i-765','c08','c-8','费用','成本','家属','i-730','绿卡','一年申请期限','迟交例外','i-589','材料清单','办理流程','时间节点','申请资格','适用人群']},
+    'c08-ead':{terms:['c08','c-8','庇护工卡','庇护时钟','i-765'],exclude:['opt','h-4','l-2']},
     withholding:{terms:['防止递解','withholding of removal']},
     cat:{terms:['cat保护','禁止酷刑公约','convention against torture']},
     vawa:{terms:['vawa','家暴绿卡','i-360自我申请']},
@@ -79,13 +80,14 @@
     work:['h1b','l1','o1','h2a','h2b','tn','e1-e2','r1'],
     employment:['eb1a','eb1b','eb1c','niw','eb2-perm','eb3','eb4','eb5'],
     family:['citizen-spouse','f2a','k1','parents','children','siblings','cr1-ir1','family-preference'],
-    humanitarian:['asylum','withholding','cat','vawa','u-visa','t-visa','sijs','tps'],
+    humanitarian:['asylum','c08-ead','withholding','cat','vawa','u-visa','t-visa','sijs','tps'],
     'change-status':['b2-to-f1','f1-to-h1b','j1-waiver','extension','reinstatement','i485','ead','advance-parole'],
     citizenship:['n400','continuous-residence','physical-presence','tests','interview','oath','n600','derived-citizenship']
   };
 
   const topicCategorySegments={
     asylum:'政治庇护',
+    'c08-ead':'C08庇护工卡',
     withholding:'防止递解',
     cat:'禁止酷刑公约保护',
     vawa:'VAWA家暴保护',
@@ -127,6 +129,10 @@
     if(topic&&rules[topic])return score(row,rules[topic])>=8;
     const topics=categoryTopics[path]||[];
     return topics.some(slug=>score(row,rules[slug]||{terms:[]})>=6);
+  }
+
+  function isAsylumGroundsArticle(row){
+    return score(row,rules.asylum)>=8;
   }
 
   function titleFingerprint(value){
@@ -195,12 +201,12 @@
 
       if(categoryPattern){
         const scopedRows=await fetchRows(articlesUrl(select,categoryPattern,120));
-        items=dedupe(scopedRows);
+        items=dedupe(topic==='asylum'?scopedRows.filter(isAsylumGroundsArticle):scopedRows);
       }
 
       // Older articles may not carry the modern hierarchical category. Use them
       // only to fill a short list, and require a strong title-level match.
-      if(items.length<20){
+      if(items.length<20&&topic!=='asylum'){
         const legacyRows=await fetchRows(articlesUrl(select,'',500));
         const scopedIds=new Set(items.map(row=>String(row.id||row.slug||'')));
         const fallback=legacyRows.filter(row=>!scopedIds.has(String(row.id||row.slug||''))&&isRelevant(row));
@@ -212,7 +218,8 @@
         root.innerHTML='<div class="empty-state">该专题暂时没有符合要求的知识文章。新闻类、军事类和其他无关内容不会在这里显示。</div>';
         return;
       }
-      root.innerHTML=items.map(item=>`<article class="article-item"><small>${escapeHtml(item.category_name||'移民美国')}</small><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.summary||'查看完整知识内容与办理要点。')}</p><a href="${escapeHtml(articleUrl(item))}">阅读全文 →</a></article>`).join('');
+      root.classList.toggle('is-compact',topic==='asylum');
+      root.innerHTML=items.map(item=>`<article class="article-item"><h3>${escapeHtml(item.title)}</h3>${topic==='asylum'?'':`<p>${escapeHtml(item.summary||'查看完整知识内容与办理要点。')}</p>`}<a href="${escapeHtml(articleUrl(item))}">阅读全文 →</a></article>`).join('');
     }catch(error){
       console.warn('Strict knowledge filter unavailable',error);
       root.innerHTML='<div class="empty-state">暂时无法读取最新内容，请稍后刷新。</div>';

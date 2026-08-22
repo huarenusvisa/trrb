@@ -35,7 +35,7 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
     {
       key:"humanitarian",slug:"humanitarian",nameZh:"人道主义庇护",nameEn:"Humanitarian Protection",description:"因迫害、严重犯罪、人口贩运、家庭暴力、未成年人受虐或国家危机寻求美国法律保护。",
       items:[
-        {name:"政治庇护",slug:"asylum",summary:"因种族、宗教、国籍、政治观点或特定社会群体遭受迫害"},{name:"防止递解",slug:"withholding",summary:"证明返回原籍国更可能遭受迫害的递解保护"},{name:"禁止酷刑公约保护",slug:"cat",summary:"面临政府实施或默许酷刑风险时申请保护"},{name:"VAWA家暴保护",slug:"vawa",summary:"受美国公民或绿卡亲属虐待者独立申请身份"},{name:"U签证",slug:"u-visa",summary:"严重犯罪受害者协助执法后申请保护"},{name:"T签证",slug:"t-visa",summary:"人口贩运受害者在美国寻求保护与身份"},{name:"SIJS特殊青少年",slug:"sijs",summary:"遭父母虐待、遗弃或忽视的未成年人申请保护"},{name:"TPS临时保护身份",slug:"tps",summary:"指定国家公民因战争或灾难暂时留美"}
+        {name:"政治庇护",slug:"asylum",summary:"因种族、宗教、国籍、政治观点或特定社会群体遭受迫害"},{name:"C08庇护工卡",slug:"c08-ead",summary:"集中查看庇护工卡资格、时钟、申请与续卡"},{name:"防止递解",slug:"withholding",summary:"证明返回原籍国更可能遭受迫害的递解保护"},{name:"禁止酷刑公约保护",slug:"cat",summary:"面临政府实施或默许酷刑风险时申请保护"},{name:"VAWA家暴保护",slug:"vawa",summary:"受美国公民或绿卡亲属虐待者独立申请身份"},{name:"U签证",slug:"u-visa",summary:"严重犯罪受害者协助执法后申请保护"},{name:"T签证",slug:"t-visa",summary:"人口贩运受害者在美国寻求保护与身份"},{name:"SIJS特殊青少年",slug:"sijs",summary:"遭父母虐待、遗弃或忽视的未成年人申请保护"},{name:"TPS临时保护身份",slug:"tps",summary:"指定国家公民因战争或灾难暂时留美"}
       ],
       keywords:["庇护","政治庇护","asylum","i-589","i589","一年期限","可信恐惧","合理恐惧","防止递解","withholding","cat保护","禁止酷刑","vawa","家暴绿卡","u签证","u visa","t签证","t visa","人口贩运","sijs","特殊移民青少年","特殊青少年","tps","临时保护身份","难民","人道保护","递解程序","移民法庭"]
     },

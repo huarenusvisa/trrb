@@ -1,4 +1,5 @@
 const { SUPABASE_URL, SERVICE_KEY } = require("./_shared/supabase-admin");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 
 const CATEGORY_DEFINITIONS = new Map([
   ["重要新闻", { path: "/important-news" }],
@@ -100,7 +101,10 @@ exports.handler = async (event) => {
     const contentRange = response.headers.get("content-range") || "";
     const totalMatch = contentRange.match(/\/(\d+|\*)$/);
     const total = totalMatch && totalMatch[1] !== "*" ? Number(totalMatch[1]) : null;
-    const articles = Array.isArray(rows) ? rows : [];
+    const rawArticles = Array.isArray(rows) ? rows : [];
+    const articles = definition.mode === "ice"
+      ? rawArticles.filter((row) => isIceEnforcementText(row.title, row.summary))
+      : rawArticles;
     const totalPages = Number.isFinite(total) ? Math.max(1, Math.ceil(total / pageSize)) : null;
 
     return json(200, {
@@ -110,10 +114,12 @@ exports.handler = async (event) => {
       page,
       page_size: pageSize,
       count: articles.length,
-      total,
-      total_pages: totalPages,
+      total: definition.mode === "ice" ? (articles.length === rawArticles.length ? total : null) : total,
+      total_pages: definition.mode === "ice" && articles.length !== rawArticles.length ? null : totalPages,
       has_previous: page > 1,
-      has_more: Number.isFinite(total) ? page * pageSize < total : articles.length === pageSize,
+      has_more: definition.mode === "ice" && articles.length !== rawArticles.length
+        ? rawArticles.length === pageSize
+        : (Number.isFinite(total) ? page * pageSize < total : articles.length === pageSize),
       articles
     });
   } catch (error) {

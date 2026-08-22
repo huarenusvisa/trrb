@@ -1,4 +1,5 @@
 const { rest } = require("./_shared/supabase-admin");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
@@ -45,7 +46,11 @@ exports.handler = async (event) => {
     }
     const rows = await rest("articles", { query });
 
-    const articles = (Array.isArray(rows) ? rows : []).filter((row) => articleTime(row) >= cutoffMs);
+    const articles = (Array.isArray(rows) ? rows : []).filter((row) => {
+      if (articleTime(row) < cutoffMs) return false;
+      if (category === "ICE执法动态") return isIceEnforcementText(row.title, row.summary);
+      return true;
+    });
     return json(200, {
       freshness_hours: 96,
       generated_at: new Date().toISOString(),

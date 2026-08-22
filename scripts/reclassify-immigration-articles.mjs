@@ -1,3 +1,7 @@
+import iceClassifier from '../netlify/functions/_shared/ice-enforcement.js';
+
+const { isIceEnforcementText } = iceClassifier;
+
 const SUPABASE_URL = String(process.env.SUPABASE_URL || '').replace(/\/$/, '');
 const SERVICE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || '');
 const APPLY = String(process.env.APPLY_CHANGES || 'true').toLowerCase() === 'true';
@@ -7,7 +11,8 @@ if (!SUPABASE_URL || !SERVICE_KEY) {
 }
 
 const SOURCE_CATEGORIES = new Set([
-  '移民美国', '赴美留学', '移民新闻', '美国移民', '移民资讯'
+  '移民美国', '赴美留学', '移民新闻', '美国移民', '移民资讯',
+  'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'
 ]);
 
 // Exact recovery list for legitimate immigration stories moved by an earlier,
@@ -35,14 +40,9 @@ const immigrationTerms = [
   'eb-1', 'eb1', 'eb-2', 'eb2', 'niw', 'perm', 'eb-3', 'eb3', 'eb-4', 'eb4', 'eb-5', 'eb5',
   '婚姻绿卡', '婚绿', 'f2a', 'k-1', 'cr-1', 'ir-1', 'i-130', 'i-485', 'i-864', 'ds-260', 'nvc',
   '政治庇护', '庇护申请', 'i-589', 'vawa', 'u签证', 't签证', 'sijs', 'tps',
-  'n-400', 'n400', 'n-600', 'n600', '工卡', 'ead', 'advance parole', '回美证'
-];
-
-const iceTerms = [
-  'ice', '移民与海关执法局', '移民执法', '执法突袭', '移民拘留', '拘留中心', '遣返',
-  '递解', '驱逐出境', '无证移民', '非法移民', '庇护城市', '287(g)', 'detainer',
-  '移民监狱', '拘押移民', '拘捕移民', '逮捕移民', '抓捕移民', '移民执法人员',
-  '偷渡', '越境', '边境死亡', '边境溺亡', '边境巡逻队', '海关与边境保护局', 'cbp'
+  'n-400', 'n400', 'n-600', 'n600', '工卡', 'ead', 'advance parole', '回美证',
+  'bia', '移民上诉委员会', '移民判例', '212(h)', 'employment authorization',
+  'work permit', 'travel document', 'adjustment of status'
 ];
 
 const policeTerms = [
@@ -75,10 +75,12 @@ function classify(row) {
   const primary = `${title} ${summary}`;
   const topical = `${primary} ${lead}`;
 
-  // The section is intentionally strict: a buried incidental word must never
-  // decide the category. ICE/enforcement and immigration-process signals must
-  // appear in the headline or summary.
-  if (hasAny(primary, iceTerms)) return { action: 'move', category: 'ICE执法动态', reason: 'ICE enforcement/detention/removal' };
+  // ICE requires two independent headline/summary signals: the ICE agency itself
+  // and a concrete enforcement action. A substring such as service/practice/notice
+  // must never be treated as the standalone acronym ICE.
+  if (isIceEnforcementText(title, summary)) {
+    return { action: 'move', category: 'ICE执法动态', reason: 'explicit ICE agency + enforcement action' };
+  }
 
   if (hasAny(primary, immigrationTerms)) return { action: 'keep', category: '移民美国', reason: 'genuine immigration-to-US topic' };
 

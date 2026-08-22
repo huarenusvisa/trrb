@@ -19,7 +19,7 @@ const normalize = (value) => String(value || '')
 const hasAny = (text, terms) => terms.some((term) => text.includes(normalize(term)));
 
 const immigrationTerms = [
-  '移民', '签证', '绿卡', '入籍', '公民申请', '身份转换', '调整身份',
+  '签证', '绿卡', '入籍', '公民申请', '移民申请', '美国移民政策', '合法移民', '移民配额', '身份转换', '调整身份',
   'f-1', 'f1学生', 'j-1', 'm-1', 'cpt', 'opt', 'stem opt', 'i-20', 'sevis',
   'h-1b', 'l-1', 'o-1', 'h-2a', 'h-2b', 'tn签证', 'e-1', 'e-2', 'r-1',
   'eb-1', 'eb1', 'eb-2', 'eb2', 'niw', 'perm', 'eb-3', 'eb3', 'eb-4', 'eb4', 'eb-5', 'eb5',
@@ -31,7 +31,8 @@ const immigrationTerms = [
 const iceTerms = [
   'ice', '移民与海关执法局', '移民执法', '执法突袭', '移民拘留', '拘留中心', '遣返',
   '递解', '驱逐出境', '无证移民', '非法移民', '庇护城市', '287(g)', 'detainer',
-  '移民监狱', '拘押移民', '移民执法人员'
+  '移民监狱', '拘押移民', '拘捕移民', '逮捕移民', '抓捕移民', '移民执法人员',
+  '偷渡', '越境', '边境死亡', '边境溺亡', '边境巡逻队', '海关与边境保护局', 'cbp'
 ];
 
 const policeTerms = [
@@ -71,10 +72,12 @@ function classify(row) {
 
   if (hasAny(text, politicsTerms)) return { action: 'move', category: '美国时政', reason: 'US politics/policy/court' };
   if (hasAny(text, policeTerms)) return { action: 'move', category: '美国警情', reason: 'US crime/police/court' };
-  if (hasAny(text, importantTerms)) return { action: 'move', category: '重要新闻', reason: 'major general news' };
+  if (hasAny(text, importantTerms)) return { action: 'move', category: '热门头条', reason: 'major general news' };
 
-  if (hasAny(text, hardRejectTerms)) return { action: 'delete', reason: 'clearly unrelated to US immigration sections' };
-  return { action: 'delete', reason: 'cannot be reliably classified' };
+  // Misclassification cleanup must preserve articles. Anything that cannot be
+  // proven to be about immigrating to the United States leaves this section.
+  if (hasAny(text, hardRejectTerms)) return { action: 'move', category: '热门头条', reason: 'unrelated to US immigration' };
+  return { action: 'move', category: '热门头条', reason: 'not proven to be immigration-to-US content' };
 }
 
 async function request(path, options = {}) {

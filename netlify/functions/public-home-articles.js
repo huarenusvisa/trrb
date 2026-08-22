@@ -1,5 +1,6 @@
 const { rest } = require("./_shared/supabase-admin");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
+const { isUsImmigrationText } = require("./_shared/us-immigration-category");
 
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
@@ -49,6 +50,7 @@ exports.handler = async (event) => {
     const articles = (Array.isArray(rows) ? rows : []).filter((row) => {
       if (articleTime(row) < cutoffMs) return false;
       if (category === "ICE执法动态") return isIceEnforcementText(row.title, row.summary);
+      if (category === "移民美国") return isUsImmigrationText(row.title, row.summary);
       return true;
     });
     return json(200, {

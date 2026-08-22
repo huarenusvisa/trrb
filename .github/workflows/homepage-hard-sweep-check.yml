@@ -46,7 +46,9 @@ jobs:
           ! grep -q 'setInterval.*refreshHome' homepage-refresh-guard.js
           ! grep -q 'new MutationObserver' homepage-startup-stability.js
           ! grep -q 'new MutationObserver' jobs-home.js
-          ! grep -q 'new MutationObserver' homepage-immigration-hub.js
+          grep -q 'new MutationObserver' homepage-immigration-hub.js
+          grep -q 'scheduleRepair' homepage-immigration-hub.js
+          grep -q 'root.querySelector("#judge-home-hub")' homepage-immigration-hub.js
           grep -q 'forceRender: true' homepage-refresh-guard.js
           grep -q 'generalHeroFallback' articles-home-live-fix.js
           grep -q 'baseHomeReady' jobs-home.js

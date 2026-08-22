@@ -152,7 +152,7 @@ function knowledgeDate(value) {
 function renderDailyKnowledge(rows) {
   const container = $('#daily-knowledge-items');
   if (!container) return;
-  container.innerHTML = rows.length ? rows.slice(0, 4).map((row, index) => `<a class="knowledge-item${index === 0 ? ' featured' : ''}" href="${esc(knowledgeUrl(row))}"><span><b>${esc(knowledgeTopic(row.category_name))}</b><time datetime="${esc(row.published_at || '')}">${esc(knowledgeDate(row.published_at))}</time></span><strong>${esc(row.title || '庇护知识')}</strong>${index === 0 ? `<p>${esc(row.summary || '查看唐人日报最新庇护知识与办理要点。')}</p>` : ''}<i aria-hidden="true">→</i></a>`).join('') : '<div class="knowledge-empty">今日内容正在整理，请稍后查看。</div>';
+  container.innerHTML = rows.length ? rows.slice(0, 4).map((row, index) => `<a class="knowledge-item${index === 0 ? ' featured' : ''}" href="${esc(knowledgeUrl(row))}"><span><b>${esc(knowledgeTopic(row.category_name))}</b><time datetime="${esc(row.published_at || '')}">${esc(knowledgeDate(row.published_at))}</time></span><strong>${esc(row.title || '庇护知识')}</strong><i aria-hidden="true">→</i></a>`).join('') : '<div class="knowledge-empty">今日内容正在整理，请稍后查看。</div>';
 }
 
 async function loadDailyKnowledge() {

@@ -13,6 +13,7 @@ const {
   uploadManualCover,
   generateCover
 } = require("./_shared/article-ai");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
@@ -93,7 +94,7 @@ function enforceImmigrationCategory(title, content, categoryName) {
   }
 
   const text = normalizedArticleText(title, content);
-  if (containsAny(text, IMMIGRATION_ENFORCEMENT_TERMS)) {
+  if (isIceEnforcementText(title, String(content || "").slice(0, 1200))) {
     return { categoryName: "ICE执法动态", corrected: true, reason: "immigration-enforcement" };
   }
   if (containsAny(text, IMMIGRATION_PROCESS_TERMS)) {

@@ -45,9 +45,10 @@
     }
 
     const patterns = [
-      /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|遣返|递解)(?:了|约|至少|超过|逾)?\s*(\d{1,3})\s*(?:名|人|位)/,
-      /(\d{1,3})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民)?[^。；;]{0,18}(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|落网|羁押)/,
-      /(?:arrested|detained|apprehended|deported)\s+(?:about\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|migrants|immigrants|individuals)/i
+      /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐出境|遣送|送返|移送|搭载|载有|运送)(?:了|了约|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)/,
+      /(?:约有|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民|旅客|乘客)?[^。；;，,]{0,20}?(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|被羁押|被扣押|被带走|被押送|被遣返|遭遣返|被递解|遭递解|被驱逐出境|被遣送|被送返|落网|遣返|递解|驱逐出境|遣送|送返|移送)/,
+      /\b(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported|carried)\s+(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)\b/i,
+      /\b(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)[^.!?]{0,30}\b(?:were\s+|was\s+)?(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported)\b/i
     ];
     for (const pattern of patterns) {
       const match = source.match(pattern);
@@ -56,8 +57,8 @@
       if (value <= 0 || value > MAX_SINGLE_EVENT) continue;
       return { value, kind: /约|about/i.test(match[0]) ? "estimated" : /至少|超过|逾|at least|more than|over/i.test(match[0]) ? "minimum" : "exact" };
     }
-    if (/(?:一名|一位|1名|1位|一人|一男子|一女子|one person|one man|one woman|a man|a woman)/i.test(source) && /(?:逮捕|抓捕|拘捕|拘留|羁押|被捕|带走|arrest|detain|custody|apprehend)/i.test(source)) return { value: 1, kind: "exact" };
-    if (/(?:两名|两位|两人|2名|2位|2人|two people|two men|two women)/i.test(source) && /(?:逮捕|抓捕|拘捕|拘留|羁押|被捕|带走|arrest|detain|custody|apprehend)/i.test(source)) return { value: 2, kind: "exact" };
+    if (/(?:一名|一位|1名|1位|一人|一男子|一女子|one person|one man|one woman|a man|a woman)/i.test(source) && /(?:逮捕|抓捕|拘捕|拘留|羁押|被捕|带走|押送|遣返|递解|驱逐|arrest|detain|custody|apprehend|deport|remove)/i.test(source)) return { value: 1, kind: "exact" };
+    if (/(?:两名|两位|两人|2名|2位|2人|two people|two men|two women)/i.test(source) && /(?:逮捕|抓捕|拘捕|拘留|羁押|被捕|带走|押送|遣返|递解|驱逐|arrest|detain|custody|apprehend|deport|remove)/i.test(source)) return { value: 2, kind: "exact" };
     if (/数百(?:名|人)|hundreds? of/i.test(source)) return { value: 200, kind: "estimated" };
     if (/上百(?:名|人)/.test(source)) return { value: 100, kind: "minimum" };
     if (/近百(?:名|人)/.test(source)) return { value: 90, kind: "estimated" };

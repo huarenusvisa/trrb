@@ -8,6 +8,10 @@ const required = [
   'http://huarengongzuo.com/* https://huarengongzuo.com/:splat 301!',
   'http://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!',
   'https://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!',
+  'https://huarengongzuo.com/ q=:q place=:place /huarengongzuo/index.html 200!',
+  'https://huarengongzuo.com/ q=:q /huarengongzuo/index.html 200!',
+  'https://huarengongzuo.com/ place=:place /huarengongzuo/index.html 200!',
+  'https://huarengongzuo.com/ sort=:sort /huarengongzuo/index.html 200!',
   'https://huarengongzuo.com/ /huarengongzuo/index.html 200!',
   'https://huarengongzuo.com/robots.txt /huarengongzuo/robots.txt 200!',
   'https://huarengongzuo.com/sitemap.xml /huarengongzuo/sitemap.xml 200!',
@@ -112,7 +116,10 @@ for (const rule of required) {
   if (!outputLines.includes(rule)) throw new Error(`required canonical redirect missing after finalize: ${rule}`);
   const route = rule.split(/\s+/)[0];
   const samePath = outputLines.filter((line) => line.split(/\s+/)[0] === route);
-  if (samePath.length !== 1) throw new Error(`conflicting redirect rules remain for ${route}: ${samePath.join(' || ')}`);
+  const allowsQueryVariants = route === 'https://huarengongzuo.com/';
+  if ((!allowsQueryVariants && samePath.length !== 1) || new Set(samePath).size !== samePath.length) {
+    throw new Error(`conflicting redirect rules remain for ${route}: ${samePath.join(' || ')}`);
+  }
 }
 for (const [route, target] of [
   ['/asylum-guide', '/immigrate/center?path=humanitarian'],

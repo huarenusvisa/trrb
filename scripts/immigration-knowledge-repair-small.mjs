@@ -32,6 +32,10 @@ const angles = [
   '身份维持与合规要求','家属安排与衍生身份','常见风险与补件应对','拒绝原因与补救路径','常见误区与实务提醒',
   '面试或审核准备','获批后的后续事项','特殊情况处理','证据薄弱时的准备重点','申请前自查清单'
 ];
+const asylumAngles = [
+  '五项受保护理由概览','种族迫害与证据联系','宗教迫害与信仰实践','国籍迫害与身份认定','政治观点与归因观点',
+  '特定社会群体的不可改变特征、特定性与社会区分','过去迫害与未来迫害恐惧','政府无法或不愿提供保护','迫害与受保护理由之间的因果联系','混合动机与一个核心理由'
+];
 
 function headers(prefer = '') {
   return {
@@ -63,7 +67,8 @@ function outputText(data) {
 }
 
 async function callModel(topic, selectedAngles, avoidTitles) {
-  const prompt = `你是唐人日报“移民美国”知识库编辑。为“${categoryName} / ${topic}”生成${selectedAngles.length}篇独立中文知识文章，按下列角度一一对应：\n${selectedAngles.map((v,i)=>`${i+1}. ${v}`).join('\n')}\n\n要求：每篇标题专业且不重复；摘要80至120字；正文800至1200个汉字，含清晰小标题；说明资格、材料、流程、风险和常见误区；不得编造会变化的费用、排期或处理时间；注明不构成法律意见；只返回JSON。近期标题不得重复：\n${avoidTitles.slice(-60).map(v=>`- ${v}`).join('\n')}`;
+  const asylumGuard = topic === '政治庇护' ? '政治庇护内容只能围绕种族、宗教、国籍、政治观点、特定社会群体及过去/未来迫害、政府无法或不愿保护、因果联系和混合动机。不得写I-589流程、C08/EAD、旅行许可、费用、家属、绿卡、拘留、CAT或防止递解。' : '';
+  const prompt = `你是唐人日报“移民美国”知识库编辑。为“${categoryName} / ${topic}”生成${selectedAngles.length}篇独立中文知识文章，按下列角度一一对应：\n${selectedAngles.map((v,i)=>`${i+1}. ${v}`).join('\n')}\n\n要求：每篇标题专业且不重复；摘要80至120字；正文800至1200个汉字，含清晰小标题；只解释对应法律概念、证据联系、判断因素、风险和常见误区；不得编造会变化的费用、排期或处理时间；注明不构成法律意见；只返回JSON。${asylumGuard}近期标题不得重复：\n${avoidTitles.slice(-60).map(v=>`- ${v}`).join('\n')}`;
   const schema = {
     type: 'object', additionalProperties: false, required: ['articles'],
     properties: { articles: { type: 'array', minItems: selectedAngles.length, maxItems: selectedAngles.length,
@@ -124,7 +129,8 @@ for (const topic of topics) {
   console.log(`[immigration] ${categoryName}/${topic}: ${current}/${TARGET}`);
   while (current < TARGET) {
     const size = Math.min(BATCH, TARGET - current);
-    const selectedAngles = Array.from({length:size}, (_,i)=>angles[(current+i)%angles.length]);
+    const pool = topic === '政治庇护' ? asylumAngles : angles;
+    const selectedAngles = Array.from({length:size}, (_,i)=>pool[(current+i)%pool.length]);
     const generated = await generateWithFallback(topic, selectedAngles, [...titleSet]);
     const now = new Date().toISOString();
     const rows = generated.map((article,index)=>{

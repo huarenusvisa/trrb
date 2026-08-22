@@ -132,7 +132,7 @@ function renderFeaturedJudges(rows) {
 
 function knowledgeTopic(categoryName) {
   const parts = String(categoryName || '').split('·').map((part) => part.trim()).filter(Boolean);
-  return parts[2] || '庇护知识';
+  return parts[3] || parts[2] || '庇护知识';
 }
 
 function knowledgeUrl(row) {

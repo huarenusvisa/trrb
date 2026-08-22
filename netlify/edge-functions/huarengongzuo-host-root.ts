@@ -8,7 +8,5 @@ export default function huarengongzuoHostRoot(request: Request) {
 }
 
 export const config = {
-  path: "/",
-  method: ["GET", "HEAD"],
-  onError: "bypass"
+  path: "/"
 };

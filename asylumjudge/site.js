@@ -67,7 +67,7 @@ function renderStateMarket(rows, nationalRate) {
   const left = 36;
   const right = 18;
   const plotHeight = bottom - top;
-  const maxRate = Math.max(50, Math.ceil(Math.max(...points.map((point) => point.rate), Number(nationalRate || 0)) / 10) * 10);
+  const maxRate = 100;
   const step = (width - left - right) / Math.max(points.length - 1, 1);
   const x = (index) => left + index * step;
   const y = (rate) => bottom - Math.min(rate, maxRate) / maxRate * plotHeight;
@@ -83,11 +83,10 @@ function renderStateMarket(rows, nationalRate) {
   const bars = points.map((point, index) => {
     const pointX = x(index);
     const pointY = y(point.rate);
-    const className = nationalRate != null && point.rate >= nationalRate ? 'above' : 'below';
-    return `<g class="market-point ${className}"><rect x="${pointX - 16}" y="${pointY}" width="32" height="${bottom - pointY}" rx="4"></rect><circle cx="${pointX}" cy="${pointY}" r="4"></circle><text class="market-rate" x="${pointX}" y="${Math.max(pointY - 8, 12)}" text-anchor="middle">${point.rate.toFixed(1)}%</text><text class="market-state" x="${pointX}" y="154" text-anchor="middle">${esc(point.code)}</text></g>`;
+    return `<g class="market-point"><rect class="denial" x="${pointX - 16}" y="${top}" width="32" height="${pointY - top}" rx="4"></rect><rect class="approval" x="${pointX - 16}" y="${pointY}" width="32" height="${bottom - pointY}" rx="4"></rect><circle cx="${pointX}" cy="${pointY}" r="4"></circle><text class="market-rate" x="${pointX}" y="${Math.max(pointY - 8, 12)}" text-anchor="middle">${point.rate.toFixed(1)}%</text><text class="market-state" x="${pointX}" y="154" text-anchor="middle">${esc(point.code)}</text></g>`;
   }).join('');
 
-  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州庇护裁决批准率：${esc(summary)}。州际连接线不表示时间趋势，查看全部州数据"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="market-line-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b80d16"></stop><stop offset="1" stop-color="#f04438"></stop></linearGradient></defs>${grid}${average}${bars}<path class="market-line" d="${path}"></path></svg><span class="state-market-note">州际比较线，不表示时间走势</span><span class="state-market-more">查看全部州 →</span></a>`;
+  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州庇护裁决批准率：${esc(summary)}。绿色表示批准，红色表示拒绝；州际连接线不表示时间趋势"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="market-line-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#14804a"></stop><stop offset="1" stop-color="#34a46f"></stop></linearGradient></defs>${grid}${average}${bars}<path class="market-line" d="${path}"></path></svg><span class="state-market-note">绿色批准 · 红色拒绝 · 连线为批准率比较</span><span class="state-market-more">查看全部州 →</span></a>`;
 }
 
 async function loadOverview() {

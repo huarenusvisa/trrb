@@ -1411,36 +1411,4 @@
         <news:title>ICE旧金山逮捕危害公共安全的危害人员</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-bbfb00a20dd51e678cb70be5cb165e9af31a8690</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T18:07:51.475Z</news:publication_date>
-        <news:title>ICE遣返MS-13成员Jose Reyes至萨尔</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-51a11814bfcbad45cdbe43cb5c468b8e086b7d6a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T18:07:50.736Z</news:publication_date>
-        <news:title>德州Fort Hancock边境机动队加强非法越境</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-540cf93ed4c5281ffa05c5ebec0d3cad98f153b7</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T18:07:49.885Z</news:publication_date>
-        <news:title>美国宣布边境关闭加强非法入境执法</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-3e0d71dc5cbe93fb997f48c556012f8cb1105d78</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T18:07:49.024Z</news:publication_date>
-        <news:title>休斯顿ICE通报2023年非法入境者获释后逃逸</news:title>
-      </news:news>
-    </url>
 </urlset>

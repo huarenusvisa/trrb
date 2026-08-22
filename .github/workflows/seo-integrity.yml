@@ -58,6 +58,7 @@ jobs:
         run: |
           node scripts/generate-sitemaps.mjs
           node scripts/clean-sitemap-against-database.mjs
+          node scripts/finalize-redirects.mjs --redirects-only
           node scripts/generate-feed.mjs
           node scripts/upgrade-article-urls.mjs
       - name: Run production integrity validation

@@ -3,6 +3,9 @@ import { spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js";
+
+const { buildPeopleCountMetadata } = peopleCountModule;
 
 function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   const value = Number(process.env[name] ?? fallback);
@@ -117,6 +120,19 @@ async function publish(story) {
 
   const post = await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
+  const eventType = story.event_type || post.event_type || "other";
+  const explicitPeopleMetadata = buildPeopleCountMetadata({
+    title: story.title,
+    summary: story.summary,
+    content: story.content,
+    event_type: eventType
+  });
+  const sourcePeopleCount = Number(post.people_count || 0);
+  const peopleMetadata = explicitPeopleMetadata.people_count
+    ? explicitPeopleMetadata
+    : (sourcePeopleCount > 0 && sourcePeopleCount <= 500
+      ? { people_count: sourcePeopleCount, people_count_type: "exact", people_count_source: "structured_source" }
+      : {});
   const duplicate = await existingArticle(post.x_post_id, story.event_fingerprint);
   if (duplicate) {
     await updateStory(story.id, { status: "published", article_id: String(duplicate.id), published_at: nowIso(), decision_reason: `${story.decision_reason || ""}；同一来源帖子或事件指纹已发布，未重复创建文章` });
@@ -138,8 +154,8 @@ async function publish(story) {
       ai_confidence: story.ai_confidence,
       review_status: officialUrgent ? "official_urgent_auto_published" : (officialAuto ? "official_direct_auto_published" : (officialEligible ? "official_auto_published" : "human_approved")),
       metadata: {
-        event_fingerprint: story.event_fingerprint, event_type: story.event_type || post.event_type || "other", city: post.city || "", state_code: post.state_code || "",
-        location_text: post.location_text || [post.city, post.state_code].filter(Boolean).join(", "), people_count: Number(post.people_count || 0), total_score: story.total_score,
+        event_fingerprint: story.event_fingerprint, event_type: eventType, city: post.city || "", state_code: post.state_code || "",
+        location_text: post.location_text || [post.city, post.state_code].filter(Boolean).join(", "), ...peopleMetadata, total_score: story.total_score,
         independent_source_count: story.independent_source_count, official_source_count: story.official_source_count, media_source_count: story.media_source_count,
         organization_source_count: story.organization_source_count, decision_reason: story.decision_reason, human_review_status: story.human_review_status,
         reviewed_by: story.reviewed_by || null, reviewed_at: story.reviewed_at || null, editor_notes: story.editor_notes || "", official_urgent: officialUrgent,

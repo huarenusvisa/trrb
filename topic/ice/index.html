@@ -128,17 +128,17 @@
         </label>
         <div class="snapshot-preview" id="snapshot-preview"></div>
         <label><span>联系方式</span><input id="snapshot-contact" name="contact_info" maxlength="300" autocomplete="email" placeholder="电话、邮箱或微信，可留空"><small class="snapshot-help">仅供核实，不会在前台公开。</small></label>
-        <label class="snapshot-consent"><input id="snapshot-consent" type="checkbox" required><span>我确认提交内容为本人真实所见或本人拍摄，并同意唐人日报自动提取机构、地点、人数和国籍，生成标题后发布。</span></label>
+        <label class="snapshot-consent"><input id="snapshot-consent" type="checkbox" required><span>我确认提交内容为本人真实所见或本人拍摄，并同意唐人日报提取机构、地点、人数和国籍，生成待审核稿件。</span></label>
         <input id="snapshot-website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" class="snapshot-honeypot">
         <div class="snapshot-progress hidden" id="snapshot-progress"><div><i id="snapshot-progress-bar"></i></div><span id="snapshot-progress-text">准备提交…</span></div>
         <div class="snapshot-message" id="snapshot-message" role="status" aria-live="polite"></div>
-        <button class="snapshot-submit" id="snapshot-submit" type="submit">提交并进入自动发布</button>
+        <button class="snapshot-submit" id="snapshot-submit" type="submit">提交并进入人工审核</button>
       </form>
 
       <div class="snapshot-success hidden" id="snapshot-success">
         <div class="snapshot-success-icon">✓</div>
         <h3>提交成功</h3>
-        <p>系统将自动提取执法机构、地点、人数和国籍，生成标题后发布到ICE动态。通常会在下一轮自动任务完成后显示。</p>
+        <p>系统将提取执法机构、地点、人数和国籍并生成待审核稿件；管理员核实并批准后才会发布到ICE动态。</p>
         <p class="snapshot-receipt">提交编号：<b id="snapshot-receipt"></b></p>
         <button id="snapshot-done" type="button">完成</button>
       </div>

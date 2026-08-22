@@ -232,8 +232,8 @@
     const tick = async () => {
       if (rendered) return;
       if (baseHomeReady()) {
-        await stateReady;
         repairCardsOnce();
+        await stateReady;
         if (stateStatsCache) renderStateDashboard(stateStatsCache);
         return;
       }

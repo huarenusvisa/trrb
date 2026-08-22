@@ -12,7 +12,7 @@ const STANDARD_DEFAULTS = {
   ice: {
     name: 'ICE', slug: 'ice', sort_order: 10, is_active: true,
     show_in_navigation: true, show_on_homepage: true,
-    auto_fetch: true, ai_rewrite: true, auto_publish: true,
+    auto_fetch: true, ai_rewrite: true, auto_publish: false,
     include_in_sitemap: true, include_in_google_news: true, include_in_rss: true,
     push_x: false, push_telegram: false,
     seo_title: 'ICE执法最新新闻｜唐人日报',

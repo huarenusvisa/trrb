@@ -2,11 +2,6 @@ name: Immigration Judge EOIR Data Sync
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/import-eoir-judge-stats-v2.py"
-      - ".github/workflows/immigration-judge-data-sync.yml"
   schedule:
     - cron: "25 10 3 * *"
 
@@ -93,9 +88,21 @@ jobs:
           judges=int(data.get('judges') or 0)
           courts=int(data.get('courts') or 0)
           decisions=int(data.get('decisions') or 0)
-          print({'judges':judges,'courts':courts,'decisions':decisions})
-          if judges < 900 or courts < 50 or decisions < 100000:
-              raise SystemExit('public API verification failed')
+          latest=data.get('latest_import') or {}
+          try:
+              notes=json.loads(latest.get('notes') or '{}')
+          except Exception as exc:
+              raise SystemExit(f'latest import notes are not valid JSON: {exc}')
+          preflight=notes.get('preflight') or {}
+          expected={
+              'judges': int(preflight.get('named_judges') or 0),
+              'courts': int(preflight.get('current_courts') or 0),
+              'decisions': int(preflight.get('merits_cases') or 0),
+          }
+          actual={'judges':judges,'courts':courts,'decisions':decisions}
+          print({'actual':actual,'expected':expected,'batch_status':latest.get('status')})
+          if latest.get('status') != 'imported' or min(expected.values()) <= 0 or actual != expected:
+              raise SystemExit('public API does not exactly match the imported batch preflight')
           PY
           } 2>&1 | tee -a /tmp/immigration-judge-sync.log
 

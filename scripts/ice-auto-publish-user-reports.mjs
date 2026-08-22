@@ -4,6 +4,9 @@ import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js"
 
 const { extractPeopleCount } = peopleCountModule;
 
+console.log("ICE用户现场线索自动发布已停用；请在后台人工审核后发布。");
+process.exit(0);
+
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const PRIVATE_BUCKET = process.env.ICE_REPORT_PRIVATE_BUCKET || "ice-report-private";

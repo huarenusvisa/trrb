@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import ranking from "../homepage-ranking.js";
 
 const ROOT = process.cwd();
 const SITE = "https://trrb.net";
@@ -96,7 +97,7 @@ async function latestDatabaseRows(limit = 120) {
   const [categories, articles] = await Promise.all([
     rest("categories", { select: "id,name,slug", is_active: "eq.true", limit: "500" }),
     rest("articles", {
-      select: "id,title,slug,category_id,category_name,topic_key,published_at,created_at,status,visibility",
+      select: "id,title,slug,category_id,category_name,topic_key,published_at,created_at,status,visibility,is_breaking,rank_score",
       status: "eq.published",
       visibility: "eq.public",
       order: "published_at.desc.nullslast,created_at.desc",
@@ -120,7 +121,13 @@ async function latestDatabaseRows(limit = 120) {
       loc: `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`,
       title: clean(article.title),
       date,
-      ts: Date.parse(date) || 0
+      ts: Date.parse(date) || 0,
+      published_at: date,
+      status: article.status,
+      visibility: article.visibility,
+      category_name: clean(article.category_name),
+      is_breaking: article.is_breaking === true,
+      rank_score: Number(article.rank_score || 0)
     };
   }).filter(Boolean));
 }
@@ -162,7 +169,8 @@ function homeTopSnapshot(rows) {
 }
 
 function homeRankSnapshot(rows) {
-  return `<ol id="rank-list" data-seo-static-snapshot="build">${rows.slice(0, 10).map((row) => `<li><a href="${attr(row.loc)}">${escapeHtml(row.title)}</a></li>`).join("")}</ol>`;
+  const rankRows = ranking.select24hRank(rows, { limit: 10 });
+  return `<ol id="rank-list" data-seo-static-snapshot="build">${rankRows.map((row) => `<li><a href="${attr(row.loc)}">${escapeHtml(row.title)}</a></li>`).join("")}</ol>`;
 }
 
 function homeTickerSnapshot(rows) {
@@ -193,12 +201,12 @@ function countArticleLinks(html) {
     .filter((href) => /^\/(?:ice|trump|important-news|hot-headlines|us-politics|us-crime|china-officialdom|immigration|asylum|deport|news)\//.test(href)).length;
 }
 
-async function updateHome(rows) {
+async function updateHome(rows, rankRows = rows) {
   const file = path.join(ROOT, "index.html");
   let html = await readFile(file, "utf8");
   html = replaceExact(html, '<div class="ticker" id="ticker"></div>', homeTickerSnapshot(rows), "index.html");
   html = replaceExact(html, '<aside class="top-list" id="top-list"></aside>', homeTopSnapshot(rows), "index.html");
-  html = replaceExact(html, '<ol id="rank-list"></ol>', homeRankSnapshot(rows), "index.html");
+  html = replaceExact(html, '<ol id="rank-list"></ol>', homeRankSnapshot(rankRows), "index.html");
   const count = countArticleLinks(html);
   if (count < 10) throw new Error(`index.html: 构建后可抓取新闻链接不足，只有 ${count}`);
   await writeFile(file, html);
@@ -244,7 +252,7 @@ const iceRows = rows.filter((row) => row.loc.startsWith("/ice/") && !row.loc.sta
 if (iceRows.length < 3) throw new Error(`可用于 ICE 静态快照的已发布新闻不足：${iceRows.length}`);
 const trumpRows = rows.filter((row) => row.loc.startsWith("/trump/"));
 
-const homeCount = await updateHome(rows);
+const homeCount = await updateHome(rows, databaseRows.length ? databaseRows : rows);
 const iceLiveCount = await updateIce("topic/ice/live-v6.html", iceRows);
 const iceLegacyCount = await updateIce("topic/ice/index.html", iceRows);
 let trumpCount = 0;

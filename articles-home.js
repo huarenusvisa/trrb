@@ -138,6 +138,10 @@ function mapLiveArticle(row) {
     image: row.cover_image || "",
     cover_image: row.cover_image || "",
     author: row.author || "Tang Ren Daily",
+    status: row.status || "published",
+    visibility: row.visibility || "public",
+    is_breaking: row.is_breaking === true,
+    rank_score: Number(row.rank_score || 0),
     published_at: row.published_at || "",
     created_at: row.created_at || "",
     date: formatLiveDate(published),
@@ -248,8 +252,12 @@ async function loadHome() {
 
 function shortDate(value) {
   const text = String(value || "");
-  const match = text.match(/(\d{2})-(\d{2})/);
-  return match ? match[0] : text;
+  const isoDate = text.match(/^\d{4}-(\d{2})-(\d{2})(?:T|\s|$)/);
+  if (isoDate) return `${isoDate[1]}-${isoDate[2]}`;
+  const compactDate = text.match(/(?:^|\D)(\d{1,2})[/-](\d{1,2})(?:\D|$)/);
+  return compactDate
+    ? `${String(compactDate[1]).padStart(2, "0")}-${String(compactDate[2]).padStart(2, "0")}`
+    : text;
 }
 function highQualityImageUrl(value, category) {
   if (typeof window.TRRB_getImageUrl === "function") return window.TRRB_getImageUrl(value, category);
@@ -353,39 +361,65 @@ function renderSections(articles) {
   if (root) root.innerHTML = sections.join("");
 }
 
-function buildRankPool(articles) {
-  return articles.slice(0, 40).map((article, index) => ({ ...article, heat: generateHeat(article, index) }));
+const RANK_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+function fallback24hRank(articles, limit = 40) {
+  const now = Date.now();
+  const seen = new Set();
+  return (Array.isArray(articles) ? articles : [])
+    .filter((item) => {
+      const time = articleTimestamp(item);
+      const age = now - time;
+      return time > 0 && age >= 0 && age <= RANK_MAX_AGE_MS;
+    })
+    .sort((a, b) => Number(b.rank_score || 0) - Number(a.rank_score || 0) || articleTimestamp(b) - articleTimestamp(a))
+    .filter((item) => {
+      const key = String(item.id || item.title || "").trim();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
 }
-function generateHeat(article, index) {
-  const digits = String(article.id || "").replace(/\D/g, "");
-  const seed = Number(digits.slice(-3) || index + 1);
-  const value = 16000 + ((seed * 37) % 9000) + (12 - index) * 430;
-  return `${(value / 10000).toFixed(1)}万`;
+function buildRankPool(articles) {
+  const selector = window.TRRB_HOME_RANKING?.select24hRank;
+  return typeof selector === "function"
+    ? selector(articles, { limit: 40 })
+    : fallback24hRank(articles, 40);
+}
+function rankLabel(article) {
+  return String(article.category || article.category_name || "最新").trim() || "最新";
 }
 function renderRank(articles) {
   const rankRoot = document.querySelector("#rank-list");
   const switchBtn = document.querySelector("#rank-switch");
   if (!rankRoot || !switchBtn) return;
   const pool = buildRankPool(articles);
-  let start = 0;
-  function draw() {
+  rankRoot._trrbRankPool = pool;
+  rankRoot._trrbRankStart = Number(rankRoot._trrbRankStart || 0) % Math.max(pool.length, 1);
+  rankRoot._trrbDrawRank = function draw() {
+    const currentPool = Array.isArray(rankRoot._trrbRankPool) ? rankRoot._trrbRankPool : [];
+    if (!currentPool.length) {
+      rankRoot.innerHTML = '<li class="rank-empty">最近24小时暂无公开内容</li>';
+      return;
+    }
     const items = [];
     for (let offset = 0; offset < 10; offset += 1) {
-      const current = pool[(start + offset) % Math.max(pool.length, 1)];
+      const current = currentPool[(rankRoot._trrbRankStart + offset) % currentPool.length];
       if (!current) continue;
-      items.push(`<li><b>${offset + 1}</b><a href="${articleUrl(current)}">${escapeHtml(current.title)}</a><span class="rank-heat">${current.heat}</span></li>`);
+      items.push(`<li><b>${offset + 1}</b><a href="${articleUrl(current)}">${escapeHtml(current.title)}</a><span class="rank-heat">${escapeHtml(rankLabel(current))}</span></li>`);
     }
     rankRoot.innerHTML = items.join("");
-  }
+  };
   if (!switchBtn.dataset.rankBound) {
     switchBtn.dataset.rankBound = "true";
     switchBtn.addEventListener("click", function (event) {
       event.preventDefault();
-      start = (start + 10) % Math.max(pool.length, 1);
-      draw();
+      const currentPool = Array.isArray(rankRoot._trrbRankPool) ? rankRoot._trrbRankPool : [];
+      rankRoot._trrbRankStart = currentPool.length ? (rankRoot._trrbRankStart + 10) % currentPool.length : 0;
+      rankRoot._trrbDrawRank?.();
     });
   }
-  draw();
+  rankRoot._trrbDrawRank();
 }
 
 function escapeHtml(value) {
@@ -399,6 +433,7 @@ window.renderHeroCarousel = renderHeroCarousel;
 window.renderCategorySection = renderCategorySection;
 window.renderSections = renderSections;
 window.hasRealImage = hasRealImage;
+window.TRRB_render24hRank = renderRank;
 window.TRRB_homeArticleUrl = articleUrl;
 window.TRRB_categoryUrl = categoryUrl;
 

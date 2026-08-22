@@ -1,0 +1,40 @@
+name: 庇护官方知识与BIA先例同步
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/asylum-official-knowledge-sync.mjs"
+      - ".github/workflows/asylum-official-knowledge-sync.yml"
+  schedule:
+    - cron: "47 */6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-asylum-official-knowledge
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ASYLUM_OFFICIAL_SYNC_LIMIT: "12"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 检查官方文档解析器
+        run: command -v pdftotext || { sudo apt-get update && sudo apt-get install -y poppler-utils; }
+      - name: 校验庇护内容边界
+        run: node scripts/asylum-official-knowledge-sync.mjs --self-test
+      - name: 同步USCIS知识和BIA先例判决
+        run: node scripts/asylum-official-knowledge-sync.mjs

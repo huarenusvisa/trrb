@@ -19,7 +19,9 @@ const normalize = (value) => String(value || '')
 const hasAny = (text, terms) => terms.some((term) => text.includes(normalize(term)));
 
 const immigrationTerms = [
-  '签证', '绿卡', '入籍', '公民申请', '移民申请', '美国移民政策', '合法移民', '移民配额', '身份转换', '调整身份',
+  '签证', '绿卡', '入籍', '公民申请', '移民申请', '美国移民政策', '合法移民', '移民配额', '移民签证',
+  'uscis', '美国公民及移民服务局', '移民局', '移民法庭', '移民法官', '赴美', '入境美国',
+  '庇护', '临时保护身份', '身份转换', '调整身份',
   'f-1', 'f1学生', 'j-1', 'm-1', 'cpt', 'opt', 'stem opt', 'i-20', 'sevis',
   'h-1b', 'l-1', 'o-1', 'h-2a', 'h-2b', 'tn签证', 'e-1', 'e-2', 'r-1',
   'eb-1', 'eb1', 'eb-2', 'eb2', 'niw', 'perm', 'eb-3', 'eb3', 'eb-4', 'eb4', 'eb-5', 'eb5',

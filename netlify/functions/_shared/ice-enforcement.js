@@ -19,7 +19,7 @@ const ICE_AGENCY_PHRASES = [
 
 const ICE_ACTION_PHRASES = [
   "抓捕", "抓获", "拘捕", "逮捕", "拘留", "拘押", "羁押", "遣返", "递解",
-  "驱逐出境", "强制离境", "突袭", "搜捕", "通缉", "扫荡", "执法行动",
+  "驱逐出境", "强制离境", "突袭", "搜捕", "通缉", "扫荡", "执法行动", "查获", "扩大执法",
   "移交ice", "ice羁押", "ice拘留", "ice逮捕", "ice拘捕", "ice遣返",
   "ice突袭", "ice搜查", "ice通缉", "arrest", "detain", "detention",
   "deport", "removal", "raid", "custody", "fugitive", "warrant", "enforcement operation"

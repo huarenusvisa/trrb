@@ -1,0 +1,38 @@
+name: ICE已发布人数补算
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "netlify/functions/_shared/ice-people-count.js"
+      - "scripts/ice-backfill-explicit-people-count.mjs"
+      - ".github/workflows/ice-people-count-backfill.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-people-count-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill-explicit-people-count:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      APPLY_CHANGES: "true"
+      ICE_PEOPLE_BACKFILL_MAX: "2000"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate explicit people-count parser
+        run: node scripts/ice-backfill-explicit-people-count.mjs --self-test
+
+      - name: Backfill missing published counts
+        run: node scripts/ice-backfill-explicit-people-count.mjs

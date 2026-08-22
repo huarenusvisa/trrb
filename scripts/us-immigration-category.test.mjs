@@ -47,5 +47,7 @@ test("database firewall reroutes ICE and blocks unrelated published rows", () =>
   assert.match(source, /immigration_text := article_text/);
   assert.match(source, /non_process_event/);
   assert.match(source, /set search_path = ''/);
+  assert.match(source, /as \$\$\s*\ndeclare/);
+  assert.doesNotMatch(source, /as \$\s*\ndeclare/);
   assert.match(source, /\[\^A-Za-z\]\)ICE/);
 });

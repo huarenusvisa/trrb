@@ -1,11 +1,12 @@
 name: 清理错误ICE主题标签（一次性）
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/clear-stale-ice-topic-once.mjs"
-      - ".github/workflows/clear-stale-ice-topic-once.yml"
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: '输入 CLEAR_STALE_ICE_TOPIC 才会修改正式库；其他值只审计'
+        required: false
+        default: 'DRY_RUN'
 
 permissions:
   contents: read
@@ -21,8 +22,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      APPLY_CHANGES: "true"
-      APPLY_CONFIRMATION: "CLEAR_STALE_ICE_TOPIC"
+      APPLY_CHANGES: ${{ inputs.confirmation == 'CLEAR_STALE_ICE_TOPIC' && 'true' || 'false' }}
+      APPLY_CONFIRMATION: ${{ inputs.confirmation }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

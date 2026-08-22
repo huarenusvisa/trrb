@@ -1,1 +1,16 @@
-const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));const fmt=n=>Number(n||0).toLocaleString('zh-CN');const pct=v=>v==null?'—':Number(v).toFixed(1)+'%';async function load(){try{const r=await fetch('/.netlify/functions/immigration-judges?mode=china');const d=await r.json();const rows=d.results||[];$('#china-results').innerHTML=rows.length?`<div class="crow chead"><span>法官 / 法院</span><span>裁决</span><span>批准</span><span>拒绝</span><span>其他</span><span>裁决批准率</span></div>${rows.map(x=>`<a class="crow" href="/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(x.id)}"><span><b>${esc(x.judge_name)}</b><small>${esc([x.court_name,x.court_city,x.court_state].filter(Boolean).join(' · '))}</small></span><span>${fmt(x.total_asylum_decisions)}</span><span>${fmt(x.grants)}</span><span>${fmt(x.denials)}</span><span>${fmt(x.other_decisions)}</span><span class="rate">${pct(x.adjudicated_approval_rate)}${x.sample_level!=='large'?`<small>${x.sample_level==='small'?'小样本':'中等样本'}</small>`:''}</span></a>`).join('')}`:'<div class="empty"><b>目前没有可验证的“法官 × 中国申请人”数据</b><p>数据库不会用全国或法院级数字推算单个法官。待真实来源导入后，本页会自动出现结果。</p></div>'}catch{$('#china-results').innerHTML='<div class="empty">中国申请人数据库暂时无法读取</div>'}}load();
+const $ = (selector) => document.querySelector(selector);
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
+const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
+
+async function load() {
+  try {
+    const response = await fetch('/.netlify/functions/immigration-judges?mode=china');
+    const data = await response.json();
+    const rows = data.results || [];
+    $('#china-results').innerHTML = rows.length ? `<div class="crow chead"><span>法官 / 法院</span><span>裁决总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>裁决批准率</span></div>${rows.map((row) => `<a class="crow" href="/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(row.id)}"><span><b>${esc(row.judge_name)}</b><small>${esc([row.court_name, row.court_city, row.court_state].filter(Boolean).join(' · '))}</small></span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${pct(row.adjudicated_approval_rate)}${row.sample_level !== 'large' ? `<small>${row.sample_level === 'small' ? '小样本' : '中等样本'}</small>` : ''}</span></a>`).join('')}` : '<div class="empty"><b>目前没有可验证的“法官 × 中国申请人”数据</b><p>数据库不会用全国或法院级数字推算单个法官。待真实来源导入后，本页会自动出现结果。</p></div>';
+  } catch {
+    $('#china-results').innerHTML = '<div class="empty">中国申请人数据库暂时无法读取</div>';
+  }
+}
+load();

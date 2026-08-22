@@ -8,3 +8,8 @@
 .country-tools button{background:var(--pass)}
 .sample-warning.small{background:var(--deny-soft);border-color:#f2c5c8;color:var(--deny-dark)}
 .method-note{border-left-color:var(--pass);background:linear-gradient(90deg,var(--pass-soft),#fff)}.method-note a{color:var(--pass-dark)}
+
+:root{--other:#2563a9;--other-soft:#eef5ff}
+.verdict-pass{color:var(--pass)!important;font-weight:900}.verdict-deny{color:var(--deny)!important;font-weight:900}.verdict-other{color:var(--other)!important;font-weight:900}
+.outcome-row{grid-template-columns:2fr repeat(5,1fr)}
+@media(max-width:800px){.outcome-row{grid-template-columns:1.5fr 1fr 1fr 1fr}.outcome-row>span:nth-child(2),.outcome-row>span:nth-child(5){display:none}.outcome-row>span:nth-child(3),.outcome-row>span:nth-child(4),.outcome-row>span:nth-child(6){display:block}}

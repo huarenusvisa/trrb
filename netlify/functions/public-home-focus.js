@@ -107,16 +107,38 @@ exports.handler = async (event) => {
 
   try {
     const cutoff = new Date(Date.now() - HOME_MAX_AGE_MS).toISOString();
-    const rows = await rest("articles", {
-      query: {
-        select: "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_featured,is_breaking,rank_score,metadata",
-        status: "eq.published",
-        visibility: "eq.public",
-        published_at: `gte.${cutoff}`,
-        order: "published_at.desc.nullslast,created_at.desc",
-        limit: "120"
-      }
-    });
+    const select = "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_featured,is_breaking,rank_score,metadata";
+    const baseQuery = {
+      select,
+      status: "eq.published",
+      visibility: "eq.public",
+      published_at: `gte.${cutoff}`,
+      order: "published_at.desc.nullslast,created_at.desc"
+    };
+    const [politicsRows, editorRows] = await Promise.all([
+      rest("articles", {
+        query: {
+          ...baseQuery,
+          category_name: "eq.美国时政",
+          limit: "200"
+        }
+      }),
+      rest("articles", {
+        query: {
+          ...baseQuery,
+          metadata: `cs.{"homepage_focus_override":"${MANUAL_FORCE}"}`,
+          limit: "50"
+        }
+      })
+    ]);
+    const rows = [];
+    const seen = new Set();
+    for (const row of [...(Array.isArray(politicsRows) ? politicsRows : []), ...(Array.isArray(editorRows) ? editorRows : [])]) {
+      const key = String(row?.id || "").trim();
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      rows.push(row);
+    }
 
     const now = Date.now();
     const articles = (Array.isArray(rows) ? rows : [])
@@ -137,6 +159,7 @@ exports.handler = async (event) => {
       sort: "published_at.desc,created_at.desc",
       generated_at: new Date().toISOString(),
       count: articles.length,
+      candidate_count: rows.length,
       articles
     });
   } catch (error) {

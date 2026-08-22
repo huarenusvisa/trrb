@@ -1,10 +1,36 @@
 const { handler: baseHandler } = require('./ice-review-v2');
+const { buildPeopleCountMetadata } = require('./_shared/ice-people-count');
 
 const SUPABASE_URL = String(process.env.SUPABASE_URL || 'https://fwiznbpsqkfgkvyznebz.supabase.co').replace(/\/+$/, '');
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 function safeText(value, max = 30000) {
   return String(value ?? '').trim().replace(/\u0000/g, '').slice(0, max);
+}
+
+function parseMetadata(value) {
+  if (value && typeof value === 'object') return value;
+  try { return typeof value === 'string' ? JSON.parse(value) : {}; } catch { return {}; }
+}
+
+async function getArticle(id) {
+  if (!SERVICE_KEY) throw new Error('Netlify尚未设置SUPABASE_SERVICE_ROLE_KEY');
+  const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
+  url.searchParams.set('id', `eq.${id}`);
+  url.searchParams.set('select', 'title,summary,content,metadata');
+  url.searchParams.set('limit', '1');
+  const response = await fetch(url, {
+    headers: {
+      apikey: SERVICE_KEY,
+      Authorization: `Bearer ${SERVICE_KEY}`,
+      Accept: 'application/json'
+    }
+  });
+  const text = await response.text();
+  let data = null;
+  try { data = text ? JSON.parse(text) : null; } catch { data = { raw: text }; }
+  if (!response.ok) throw new Error(data?.message || data?.details || data?.raw || `Supabase ${response.status}`);
+  return Array.isArray(data) ? data[0] || null : data;
 }
 
 async function patch(table, id, body) {
@@ -52,11 +78,23 @@ exports.handler = async (event, context) => {
   // That used to discard edits made in the review modal. V3 makes the submitted editor fields
   // authoritative and persists them to BOTH the public article and the review story.
   if (articleId) {
+    const existing = await getArticle(articleId);
+    const finalTitle = title || safeText(existing?.title, 220);
+    const finalSummary = summary || safeText(existing?.summary, 1200);
+    const finalContent = content || safeText(existing?.content, 30000);
+    const metadata = parseMetadata(existing?.metadata);
+    const peopleMetadata = buildPeopleCountMetadata({
+      title: finalTitle,
+      summary: finalSummary,
+      content: finalContent,
+      event_type: metadata.event_type || ''
+    });
     await patch('articles', articleId, {
       ...(title ? { title } : {}),
       ...(summary ? { summary } : {}),
       ...(content ? { content } : {}),
       cover_image: coverImage,
+      metadata: { ...metadata, ...peopleMetadata },
       status: 'published',
       updated_at: now
     });

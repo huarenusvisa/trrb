@@ -1,5 +1,6 @@
 const crypto = require("node:crypto");
 const { authenticateStaff, rest, safeText } = require("./_shared/supabase-admin");
+const { buildPeopleCountMetadata } = require("./_shared/ice-people-count");
 
 function json(statusCode, body) {
   return {
@@ -139,6 +140,8 @@ async function publishNow(story, actor, input) {
   if (story.article_id) return { article_id: story.article_id, already_published: true };
 
   const post = await leadPost(story);
+  const eventType = story.event_type || post?.event_type || "other";
+  const peopleMetadata = buildPeopleCountMetadata({ title, summary, content, event_type: eventType });
   const sourcePlatform = post ? "x" : "manual_ice_review";
   const sourceId = safeText(post?.x_post_id || story.id, 200);
   const duplicate = await existingArticle(sourcePlatform, sourceId);
@@ -173,10 +176,11 @@ async function publishNow(story, actor, input) {
         review_status: "human_published_override",
         metadata: {
           event_fingerprint: story.event_fingerprint,
-          event_type: story.event_type || post?.event_type || "other",
+          event_type: eventType,
           city: story.ai_payload?.city || post?.city || "",
           state_code: story.ai_payload?.state_code || post?.state_code || "",
           location_text: story.ai_payload?.location_text || post?.location_text || "",
+          ...peopleMetadata,
           source_language: story.ai_payload?.source_language || "unknown",
           manual_override: true,
           total_score: story.total_score,

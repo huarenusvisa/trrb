@@ -55,6 +55,10 @@ requireMatch(headers, /Permissions-Policy:\s*camera=\(\),\s*microphone=\(\),\s*g
 requireMatch(headers, /\/\*\.js[\s\S]*?Cache-Control:\s*no-cache, no-store, must-revalidate/i, "_headers does not prevent stale JS");
 requireMatch(headers, /\/\*\.css[\s\S]*?Cache-Control:\s*no-cache, no-store, must-revalidate/i, "_headers does not prevent stale CSS");
 
+const redirects = await text("_redirects");
+requireMatch(redirects, /https:\/\/huarengongzuo\.com\/\s+q=:q\s+\/huarengongzuo\/index\.html\s+200!/i, "huarengongzuo query search rewrite missing");
+requireMatch(redirects, /https:\/\/huarengongzuo\.com\/\s+sort=:sort\s+\/huarengongzuo\/index\.html\s+200!/i, "legacy jobs sort query rewrite missing");
+
 const netlify = await text("netlify.toml");
 requireMatch(netlify, /node scripts\/write-deploy-version\.mjs/, "netlify.toml does not write exact deploy SHA");
 requireMatch(netlify, /for = "\/\*\.js"[\s\S]*?no-cache, no-store, must-revalidate/, "netlify.toml reintroduces stale JS caching");

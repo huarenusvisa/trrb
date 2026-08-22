@@ -76,6 +76,7 @@
     ];
     for (const pattern of patterns) {
       const match = source.match(pattern);
+      if (match && /(?:反遣返|抗议|示威|游行|倡议|集会|protest|rally|demonstration)/i.test(match[0])) continue;
       const value = Number(match?.[1]);
       if (value > 0 && value <= 500) {
         const matched = match[0];

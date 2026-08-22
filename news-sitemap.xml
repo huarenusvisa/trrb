@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-ed8c91b6a9113a501ccf75de977f75f131afc039</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T21:14:46.554Z</news:publication_date>
+        <news:title>美国女性公开拍摄便衣ICE执法获法律支持</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-541ea0444b828a88b481263a8c2a5267d44e29cb</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T21:14:33.207Z</news:publication_date>
+        <news:title>肯塔基持移民拘留令男子因强奸被捕</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-1b115f87866589fb2101c19eb3eb94056ff2171f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T21:13:51.416Z</news:publication_date>
+        <news:title>伊利诺伊布罗德维尤ICE中心示威时 一示威者试图接住警方投掷的闪光弹</news:title>
+      </news:news>
+    </url>
   
   
   <url>
@@ -1290,14 +1314,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-20T21:41:59.822Z</news:publication_date>
         <news:title>美国国土安全部宣布无庇护地将逮捕遣返非法移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-31454bb3c9bd42b423d57e6143adb59f10e7bcbe</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T21:07:34.996Z</news:publication_date>
-        <news:title>西雅图ICE逮捕拥有26年犯罪记录的老挝非法移民</news:title>
       </news:news>
     </url>
 </urlset>

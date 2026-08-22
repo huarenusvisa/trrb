@@ -7,3 +7,13 @@
 .crow:not(.chead)>span:nth-child(4){color:var(--pass);font-weight:800}
 .crow:not(.chead)>span:nth-child(5){color:var(--deny);font-weight:800}
 .method-note{border-left-color:var(--pass);background:linear-gradient(90deg,var(--pass-soft),#fff)}.method-note a{color:var(--pass-dark)}
+
+/* Three-way outcome palette: approved, denied, and other dispositions. */
+:root{--other:#2563a9;--other-soft:#eef5ff}
+#state-results .state-crow{grid-template-columns:1.35fr .55fr .55fr .9fr .8fr .8fr .8fr 1fr}
+#court-results .court-crow{grid-template-columns:2.15fr .6fr .85fr .75fr .75fr .75fr 1fr}
+#state-results .crow>span:nth-child(4),#court-results .crow>span:nth-child(3){color:#344054;font-weight:400}
+#state-results .verdict-pass,#court-results .verdict-pass,.crow .verdict-pass{color:var(--pass);font-weight:900}
+#state-results .verdict-deny,#court-results .verdict-deny,.crow .verdict-deny{color:var(--deny);font-weight:900}
+#state-results .verdict-other,#court-results .verdict-other,.crow .verdict-other{color:var(--other);font-weight:900}
+@media(max-width:800px){#state-results .state-crow,#court-results .court-crow{grid-template-columns:1.5fr .7fr .7fr .7fr .9fr;min-width:520px}#state-results .state-crow>span:nth-child(2),#state-results .state-crow>span:nth-child(3),#state-results .state-crow>span:nth-child(4),#court-results .court-crow>span:nth-child(2),#court-results .court-crow>span:nth-child(3){display:none}#state-results .state-crow>span:nth-child(5),#state-results .state-crow>span:nth-child(6),#state-results .state-crow>span:nth-child(7),#state-results .state-crow>span:nth-child(8),#court-results .court-crow>span:nth-child(4),#court-results .court-crow>span:nth-child(5),#court-results .court-crow>span:nth-child(6),#court-results .court-crow>span:nth-child(7){display:block}.court-table{overflow-x:auto}}

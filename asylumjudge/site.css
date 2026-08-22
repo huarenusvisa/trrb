@@ -12,7 +12,7 @@
 @media(prefers-reduced-motion:reduce){.knowledge-loading{animation:none}}
 
 /* Semantic verdict palette: green = approval, red = denial. */
-:root{--pass:#14804a;--pass-dark:#0b6639;--pass-soft:#edf9f1;--deny:#c4161c;--deny-dark:#9d1117;--deny-soft:#fff1f2;--red:var(--deny);--red-dark:var(--deny-dark)}
+:root{--pass:#14804a;--pass-dark:#0b6639;--pass-soft:#edf9f1;--deny:#c4161c;--deny-dark:#9d1117;--deny-soft:#fff1f2;--other:#2563a9;--other-soft:#eef5ff;--red:var(--deny);--red-dark:var(--deny-dark)}
 .brand-mark{background:linear-gradient(180deg,var(--pass) 0 50%,var(--deny) 50% 100%)}
 .header-inner nav a:hover{background:var(--pass-soft);color:var(--pass-dark)}
 .hero{background:linear-gradient(135deg,var(--pass-soft) 0%,#fff 55%,var(--deny-soft) 100%)}
@@ -31,6 +31,8 @@
 .state-market-legend .below,.market-point.below rect,.market-point.below circle{background:var(--deny);fill:var(--deny)}
 .state-market-legend .above{background:var(--pass)}.state-market-legend .below{background:var(--deny)}
 .market-point .approval,.market-point circle{fill:var(--pass)}.market-point .denial{fill:var(--deny)}
+.state-market-legend .approval{background:var(--pass)}.state-market-legend .denial{background:var(--deny)}.state-market-legend .other{background:var(--other)}
+.market-point .other{fill:var(--other)}
 .market-line{filter:drop-shadow(0 2px 3px rgba(20,128,74,.22))}
 .lookup-section{background:linear-gradient(135deg,var(--pass-soft),#fff 72%)}
 .lookup-grid span{color:var(--pass-dark)}

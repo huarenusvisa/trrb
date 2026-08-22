@@ -54,10 +54,12 @@ function extractPeopleCount(input) {
     if (parsed) return parsed;
   }
 
-  const one = source.match(/(?:一名|一位|一人|一男子|一女子|one person|one man|one woman|a man|a woman|a detainee|an immigrant)[^。；;.!?]{0,24}(?:拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|deport|remove)/i);
+  const one = source.match(/(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐|遣送|送返|移送|搭载|载有|运送)[^。；;.!?]{0,12}(?:一名|一位|一人|一男子|一女子)/i)
+    || source.match(/(?:一名|一位|一人|一男子|一女子|one person|one man|one woman|a man|a woman|a detainee|an immigrant)[^。；;.!?]{0,24}(?:拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|deport|remove)/i);
   if (one && !NON_EVENT_CONTEXT.test(one[0])) return { value: 1, kind: "exact", matchedText: one[0].trim() };
 
-  const two = source.match(/(?:两名|两位|两人|two people|two men|two women)[^。；;.!?]{0,24}(?:拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|deport|remove)/i);
+  const two = source.match(/(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐|遣送|送返|移送|搭载|载有|运送)[^。；;.!?]{0,12}(?:两名|两位|两人)/i)
+    || source.match(/(?:两名|两位|两人|two people|two men|two women)[^。；;.!?]{0,24}(?:拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|deport|remove)/i);
   if (two && !NON_EVENT_CONTEXT.test(two[0])) return { value: 2, kind: "exact", matchedText: two[0].trim() };
 
   return { value: 0, kind: "unknown", matchedText: "" };

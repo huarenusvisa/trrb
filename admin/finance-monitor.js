@@ -11,7 +11,9 @@
     el('finance-monitor-health').textContent=data.ok?'正常':'需处理';
     renderConfig(data.environment);
     el('finance-checks-body').innerHTML=checks.length?checks.map(check=>`<tr><td><b>${esc(check.name)}</b><br><small>${esc(check.key)}</small></td><td>${statusPill(check.ok)}</td><td>${esc(check.status||'—')}</td><td>${esc(check.latencyMs)} ms</td></tr>`).join(''):'<tr><td colspan="4">没有返回接口检查结果。</td></tr>';
-    el('finance-monitor-message').textContent=`最近检测：${new Date(data.checkedAt).toLocaleString('zh-CN')} · ${data.providerConfigured?'正式 Key 已就绪':'尚未购买/配置正式 Key，继续使用测试数据'}`;
+    const latest=data.ingestion?.latest;
+    const ingestionText=latest?`最近官方采集：${latest.source_name||latest.source_account||'官方来源'} · ${new Date(latest.published_at).toLocaleString('zh-CN')} · ${latest.title}`:'官方采集已接通，尚无新发布记录';
+    el('finance-monitor-message').textContent=`最近检测：${new Date(data.checkedAt).toLocaleString('zh-CN')} · ${data.providerConfigured?'正式 Key 已就绪':'尚未购买/配置正式 Key，继续使用测试数据'} · ${ingestionText}`;
   }
   async function loadFinanceHealth(){
     const message=el('finance-monitor-message');if(!message)return;

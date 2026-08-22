@@ -10,3 +10,33 @@
 @media(max-width:900px){.knowledge-panel{grid-template-columns:1fr}.knowledge-intro a{margin-top:0}.knowledge-items{grid-template-columns:1.25fr 1fr 1fr}}
 @media(max-width:650px){.daily-knowledge{padding-top:16px}.knowledge-panel{gap:18px;padding:18px}.knowledge-intro h2{font-size:22px}.knowledge-items{grid-template-columns:1fr}.knowledge-item{min-height:0}.knowledge-item:nth-child(n+3){display:none}.knowledge-loading,.knowledge-empty{min-height:100px}}
 @media(prefers-reduced-motion:reduce){.knowledge-loading{animation:none}}
+
+/* Semantic verdict palette: green = approval, red = denial. */
+:root{--pass:#14804a;--pass-dark:#0b6639;--pass-soft:#edf9f1;--deny:#c4161c;--deny-dark:#9d1117;--deny-soft:#fff1f2;--red:var(--deny);--red-dark:var(--deny-dark)}
+.brand-mark{background:linear-gradient(180deg,var(--pass) 0 50%,var(--deny) 50% 100%)}
+.header-inner nav a:hover{background:var(--pass-soft);color:var(--pass-dark)}
+.hero{background:linear-gradient(135deg,var(--pass-soft) 0%,#fff 55%,var(--deny-soft) 100%)}
+.hero h1 em,.national-rate strong,.state-row b:last-child,.judge-result .rate,.featured-metrics .featured-rate{color:var(--pass)}
+.national-rate>div:first-child{background:var(--pass-soft);border:1px solid #ccebd8}
+.search-box:focus-within{border-color:var(--pass);box-shadow:0 0 0 4px rgba(20,128,74,.12)}
+.search-box button{background:var(--pass)}.search-box button:hover{background:var(--pass-dark)}
+.quick button:hover{border-color:var(--pass);color:var(--pass-dark)}
+.state-more,.state-market-more,.featured-judge>i,.entry-grid i{color:var(--pass)}
+.entry-grid>a:hover,.featured-judge:hover{border-color:#8bcbaa}
+.entry-icon{background:linear-gradient(135deg,var(--pass-soft) 0 50%,var(--deny-soft) 50% 100%);color:var(--pass-dark)}
+.section-title span,.content-heading>span{color:var(--pass-dark)}
+.judge-result:hover{background:var(--pass-soft)}
+.state-market-head span{color:var(--pass-dark)}
+.state-market-legend .above,.market-point.above rect,.market-point.above circle{background:var(--pass);fill:var(--pass)}
+.state-market-legend .below,.market-point.below rect,.market-point.below circle{background:var(--deny);fill:var(--deny)}
+.state-market-legend .above{background:var(--pass)}.state-market-legend .below{background:var(--deny)}
+.market-point .approval,.market-point circle{fill:var(--pass)}.market-point .denial{fill:var(--deny)}
+.market-line{filter:drop-shadow(0 2px 3px rgba(20,128,74,.22))}
+.lookup-section{background:linear-gradient(135deg,var(--pass-soft),#fff 72%)}
+.lookup-grid span{color:var(--pass-dark)}
+.knowledge-panel{border-top-color:var(--pass);border-bottom:3px solid var(--deny)}
+.knowledge-intro>span,.knowledge-intro a{color:var(--pass-dark)}
+.knowledge-item:nth-child(even)>span b{color:var(--deny);background:var(--deny-soft)}
+.knowledge-item:nth-child(odd)>span b{color:var(--pass-dark);background:var(--pass-soft)}
+.knowledge-item:hover{border-color:#8bcbaa;background:var(--pass-soft)}
+.knowledge-item>i{color:var(--pass)}

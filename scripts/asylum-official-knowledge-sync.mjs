@@ -25,6 +25,10 @@ export function isAllowedAsylumText(value) {
   return ALLOWED.test(text) && !EXCLUDED.test(text);
 }
 
+function containsAsylumGrounds(value) {
+  return ALLOWED.test(String(value || ''));
+}
+
 if (process.argv.includes('--self-test')) {
   const accepted = ['religious persecution and government unwilling to protect', '特定社会群体与未来迫害恐惧'];
   const rejected = ['C08 EAD filing fee', 'CAT and withholding of removal', 'Advance Parole family travel'];
@@ -86,7 +90,7 @@ async function discoverUscis() {
     try {
       const response = await fetchOk(url);
       const text = clean(await response.text());
-      if (isAllowedAsylumText(text)) sources.push({ type: 'uscis_guidance', url: response.url, text });
+      if (containsAsylumGrounds(text)) sources.push({ type: 'uscis_guidance', url: response.url, text });
     } catch (error) { console.warn(`[USCIS] skip ${url}: ${error.message}`); }
   }
   return sources;
@@ -112,7 +116,7 @@ async function discoverBia(existingKeys = new Set()) {
     if (sources.length >= LIMIT * 3) break;
     try {
       const text = await pdfText(item.officialPdfUrl);
-      if (isAllowedAsylumText(text)) sources.push({ type: 'bia_precedent', url: item.officialPdfUrl, text });
+      if (containsAsylumGrounds(text)) sources.push({ type: 'bia_precedent', url: item.officialPdfUrl, text });
     } catch (error) { console.warn(`[BIA] skip page ${item.reporterPage}: ${error.message}`); }
   }
   return sources;

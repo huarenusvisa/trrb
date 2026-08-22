@@ -23,7 +23,7 @@ on:
     types: [completed]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: trrb-round13-publish-seo-sync
@@ -76,17 +76,14 @@ jobs:
             esac
           done < <(git status --porcelain)
           test "$bad" -eq 0
-      - name: 仅在SEO文件变化时提交
+      - name: 只读报告SEO快照差异
         shell: bash
         run: |
           set -euo pipefail
-          git config user.name "TRRB Round13 Sync Bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add sitemap.xml news-sitemap.xml feed.xml _redirects
-          if git diff --cached --quiet; then
-            echo "SEO metadata already converged; no commit required."
+          git diff --check
+          if git diff --quiet -- sitemap.xml news-sitemap.xml feed.xml _redirects; then
+            echo "SEO metadata already converged."
             exit 0
           fi
-          git commit -m "Round 13: sync published articles into SEO feeds"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          echo "SEO metadata drift detected; the existing Netlify build and live Edge responders remain the only production output chain."
+          git diff --stat -- sitemap.xml news-sitemap.xml feed.xml _redirects

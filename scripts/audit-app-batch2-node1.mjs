@@ -8,9 +8,10 @@ const checks = [
   ['mobile article pages read public-articles', /public-articles/.test(mobile)],
   ['mobile detail reads public-article', /public-article\?/.test(mobile)],
   ['production API filters published rows', /status:\s*["']eq\.published["']/.test(homeApi)],
+  ['production API filters public rows', /visibility:\s*["']eq\.public["']/.test(homeApi)],
   ['production API orders by published_at first', /published_at\.desc/.test(homeApi)],
   ['production API falls back to created_at ordering second', /created_at\.desc/.test(homeApi)],
-  ['production API returns canonical article fields', /id,title,slug,summary,content,category_name,cover_image,author,status,published_at,created_at/.test(homeApi)],
+  ['production API returns canonical article fields', /id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at/.test(homeApi)],
   ['mobile newest-first helper prioritizes published_at', /item\.published_at\s*\|\|\s*item\.created_at/.test(mobile)],
   ['no alternate API base in mobile news client', (mobile.match(/https:\/\//g) || []).length === 1]
 ];

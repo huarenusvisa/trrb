@@ -18,7 +18,7 @@ const USCIS_SEEDS = [
   'https://www.uscis.gov/humanitarian/refugees-and-asylum/asylum/obtaining-asylum-in-the-united-states'
 ];
 const ALLOWED = /race|racial|religion|religious|nationality|political opinion|imputed political|particular social group|protected ground|past persecution|future persecution|well-founded fear|unable or unwilling|government protection|nexus|mixed motive|种族|宗教|国籍|政治观点|特定社会群体|过去迫害|未来迫害|政府.{0,8}(无法|不愿).{0,8}保护|因果联系/i;
-const EXCLUDED = /advance parole|employment authorization|EAD|C0?8|filing fee|green card|family petition|bond|detention|Convention Against Torture|\bCAT\b|withholding of removal|旅行许可|工卡|费用|绿卡|家属|保释|拘留|禁止酷刑|防止递解/i;
+const EXCLUDED = /advance parole|employment authorization|EAD|C0?8|filing fee|green card|family petition|bond|detention|Convention Against Torture|\bCAT\b|withholding of removal|application process|filing process|interview process|旅行许可|工卡|费用|绿卡|家属|保释|拘留|禁止酷刑|防止递解|申请流程|办理流程|庇护程序|面谈流程/i;
 
 export function isAllowedAsylumText(value) {
   const text = String(value || '');
@@ -122,8 +122,14 @@ async function discoverBia(existingKeys = new Set()) {
   return sources;
 }
 
-const existing = await supabase(`articles?select=id,title,metadata&category_name=like.${encodeURIComponent('移民美国·人道主义庇护·政治庇护·*')}&limit=5000`);
+const existing = await supabase(`articles?select=id,title,summary,content,status,metadata&category_name=like.${encodeURIComponent('移民美国·人道主义庇护·政治庇护·*')}&limit=5000`);
 const byKey = new Map((existing || []).map(row => [row.metadata?.official_source_key, row]).filter(([key]) => key));
+for (const row of existing || []) {
+  if (row.metadata?.generated_by !== 'asylum-official-knowledge-sync' || row.status !== 'published') continue;
+  if (isAllowedAsylumText(`${row.title} ${row.summary} ${row.content}`)) continue;
+  await supabase(`articles?id=eq.${encodeURIComponent(row.id)}`, { method: 'PATCH', body: JSON.stringify({ status: 'hidden', visibility: 'private', metadata: { ...row.metadata, review_status: 'auto_withdrawn_out_of_scope', withdrawn_at: new Date().toISOString() } }) });
+  console.warn(`[scope] withdrew out-of-scope official article ${row.id}`);
+}
 const sources = [...await discoverUscis(), ...await discoverBia(new Set(byKey.keys()))];
 let processed = 0, published = 0, updated = 0, skipped = 0;
 

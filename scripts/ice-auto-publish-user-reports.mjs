@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 import crypto from "node:crypto";
+import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js";
+
+const { extractPeopleCount } = peopleCountModule;
 
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
@@ -49,6 +52,7 @@ function extractFacts(report) {
   }
   if (count == null && /(?:一名|一位|1名|1位|一人|a man|a woman|one man|one woman|one person|a detainee)/i.test(text) && /(拘留|羁押|被捕|逮捕|带走|押送|detain|arrest|custody)/i.test(text)) count = 1;
   if (count == null && /(?:两名|两人|2名|2人|two people|two men|two women)/i.test(text)) count = 2;
+  if (count == null) count = extractPeopleCount(text).value || null;
   const countries = ["中国","哥伦比亚","墨西哥","委内瑞拉","危地马拉","洪都拉斯","厄瓜多尔","萨尔瓦多","古巴","海地","印度","巴西","秘鲁","多米尼加","尼加拉瓜","俄罗斯","乌克兰","越南","韩国","菲律宾"];
   const country = countries.find((name) => text.includes(name)) || "";
   const countText = count ? `${count}${country ? `名${country}籍人员` : "人"}` : (country ? `${country}籍人员` : "人员");

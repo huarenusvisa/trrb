@@ -71,7 +71,9 @@ function normalizeTitle(value) {
     .trim();
 }
 
-// Category must be established by the headline and opening lead, not by incidental\n// words buried later in the article.\nfunction normalizedArticleText(title, content) {
+// Category must be established by the headline and opening lead, not by incidental
+// words buried later in the article.
+function normalizedArticleText(title, content) {
   return `${String(title || "")} ${String(content || "").slice(0, 1200)}`
     .normalize("NFKC")
     .toLowerCase()

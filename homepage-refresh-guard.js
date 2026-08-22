@@ -88,6 +88,19 @@
     return heroReady && sectionsReady && rankReady;
   }
 
+  function repairChinaHotSection(articles) {
+    const sections = document.getElementById("sections-grid");
+    const current = sections?.querySelector("#hot");
+    if (!sections || (current && !current.classList.contains("category-empty") && current.querySelector(".section-lead"))) return true;
+    if (typeof window.TRRB_renderChinaHotSection !== "function") return false;
+    const html = window.TRRB_renderChinaHotSection(articles);
+    if (!html) return false;
+    if (current) current.outerHTML = html;
+    else sections.insertAdjacentHTML("afterbegin", html);
+    const repaired = sections.querySelector("#hot");
+    return Boolean(repaired && !repaired.classList.contains("category-empty") && repaired.querySelector(".section-lead"));
+  }
+
   async function fetchUnifiedLive() {
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
@@ -155,6 +168,7 @@
         } else if (!lastRenderSignature) {
           lastRenderSignature = signature;
         }
+        repairChinaHotSection(articles);
 
         document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
         document.documentElement.dataset.liveNewsUpdatedAt = new Date().toISOString();

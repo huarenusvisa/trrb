@@ -358,11 +358,20 @@ function renderCategorySection(category, articles) {
 function renderExposureWallCard() {
   return `<article class="news-box expose-wall-box" id="exposure-wall"><header><h2>曝光墙</h2><a href="/expose.html">我要曝光</a></header><a class="expose-wall-main" href="/expose.html" aria-label="提交曝光材料"><span class="expose-wall-symbol" aria-hidden="true">!</span><h3>匿名曝光 · 证据直达编辑部</h3><p>支持提交文字、图片和视频。公开展示可匿名，但必须留下电话或邮箱，方便编辑核实。</p><strong>提交曝光材料</strong></a><ul class="expose-wall-points"><li>身份信息不会在前台公开</li><li>材料审核后决定是否报道</li><li>严禁捏造、诽谤和非法内容</li></ul></article>`;
 }
+function renderChinaHotSection(articles) {
+  const projected = (Array.isArray(articles) ? articles : []).map((item) => {
+    const category = normalizeCategory(item?.category || item?.category_name);
+    return category === "热门头条"
+      ? { ...item, category: "热门头条", category_name: "热门头条" }
+      : item;
+  });
+  return renderCategorySection("热门头条", projected);
+}
 function renderSections(articles) {
   // 中国热门头条必须由主渲染器直接拥有，不能依赖后加载的兼容脚本
   // 临时插入；否则缓存或接口时序变化会留下空卡甚至整片空白。
-  const categories = ["热门头条", "美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
-  const sections = categories.map((category) => renderCategorySection(category, articles));
+  const categories = ["美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
+  const sections = [renderChinaHotSection(articles), ...categories.map((category) => renderCategorySection(category, articles))];
   sections.push(renderExposureWallCard());
   const root = document.querySelector("#sections-grid");
   if (root) root.innerHTML = sections.join("");
@@ -439,6 +448,7 @@ window.renderHome = renderHome;
 window.renderHeroCarousel = renderHeroCarousel;
 window.renderCategorySection = renderCategorySection;
 window.renderSections = renderSections;
+window.TRRB_renderChinaHotSection = renderChinaHotSection;
 window.hasRealImage = hasRealImage;
 window.TRRB_render24hRank = renderRank;
 window.TRRB_homeArticleUrl = articleUrl;

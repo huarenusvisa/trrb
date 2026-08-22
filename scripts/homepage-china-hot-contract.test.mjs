@@ -8,8 +8,11 @@ const optimizer = fs.readFileSync(new URL("./optimize-homepage-performance.mjs",
 
 assert.match(home, /"中国热门头条": "\/hot-headlines"/);
 assert.match(home, /category === "中国热门头条" \? "热门头条" : category/);
-assert.match(home, /const categories = \["热门头条", "美国时政"/);
+assert.match(home, /function renderChinaHotSection\(articles\)/);
+assert.match(home, /window\.TRRB_renderChinaHotSection = renderChinaHotSection/);
+assert.match(home, /const sections = \[renderChinaHotSection\(articles\)/);
 assert.match(refresh, /hot\.querySelector\("\.section-lead"\)/);
+assert.match(refresh, /function repairChinaHotSection\(articles\)/);
 assert.match(refresh, /forceRender \|\| signature !== lastRenderSignature/);
 assert.match(startup, /root\?\.querySelector\("#hot"\)/);
 assert.match(optimizer, /\['articles-home\.js', '20260822-hotfix-1'\]/);

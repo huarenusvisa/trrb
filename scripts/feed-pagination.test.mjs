@@ -10,6 +10,7 @@ const checks = [
   ["100 item contract", source.includes("const FEED_ITEM_LIMIT = 100")],
   ["bounded scan", source.includes("const MAX_ARTICLE_SCAN = 10000") && source.includes("feed scan safety limit reached")],
   ["pagination telemetry", source.includes('"x-trrb-feed-source-rows"') && source.includes('"x-trrb-feed-pages"')],
+  ["versioned paged response", source.includes('live-supabase-v6-paged-public-only')],
   ["single feed generator", source.includes('export const config = { path: "/feed.xml" }')],
 ];
 

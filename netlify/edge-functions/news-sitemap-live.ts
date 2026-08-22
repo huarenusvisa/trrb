@@ -1,5 +1,7 @@
 const SITE = "https://trrb.net";
 const MIN_INDEXABLE_BODY_LENGTH = 80;
+const ARTICLE_PAGE_SIZE = 1000;
+const MAX_RECENT_ARTICLES = 10000;
 export const config = { path: "/news-sitemap.xml" };
 
 const FALLBACK: Record<string,string> = {
@@ -30,6 +32,23 @@ function isIceArticle(a:any){const t=clean(a?.topic_key).toLowerCase();const c=c
 function isSpecialTopicArticle(a:any){const t=clean(a?.topic_key).toLowerCase();return t==="ice"||t==="trump";}
 function cfg(){const base=(Deno.env.get("SUPABASE_URL")||"").replace(/\/+$/,'');const key=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||Deno.env.get("SUPABASE_ANON_KEY")||"";return{base,key};}
 async function rows(path:string,params:Record<string,string>){const{base,key}=cfg();if(!base||!key)throw new Error("Supabase config missing");const u=new URL(`${base}/rest/v1/${path}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u,{cache:"no-store",headers:{apikey:key,Authorization:`Bearer ${key}`,Accept:"application/json"}});if(!r.ok)throw new Error(`${path} ${r.status}`);const j=await r.json();return Array.isArray(j)?j:[];}
+async function recentArticleRows(cutoffIso:string){
+  const out:any[]=[];
+  for(let offset=0;offset<MAX_RECENT_ARTICLES;offset+=ARTICLE_PAGE_SIZE){
+    const page=await rows("articles",{
+      select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",
+      status:"eq.published",
+      visibility:"eq.public",
+      published_at:`gte.${cutoffIso}`,
+      order:"published_at.desc.nullslast,created_at.desc,id.desc",
+      limit:String(ARTICLE_PAGE_SIZE),
+      offset:String(offset)
+    });
+    out.push(...page);
+    if(page.length<ARTICLE_PAGE_SIZE)return out;
+  }
+  throw new Error(`recent article query reached safety cap ${MAX_RECENT_ARTICLES}; refusing a truncated News Sitemap`);
+}
 function section(a:any,byId:Map<string,any>,byName:Map<string,any>){const t=clean(a.topic_key).toLowerCase();if(t==="trump")return"trump";if(t==="ice")return"ice";const byIdSlug=clean(byId.get(String(a.category_id||""))?.slug);if(byIdSlug)return canonicalSection(byIdSlug);const byNameSlug=clean(byName.get(clean(a.category_name))?.slug);if(byNameSlug)return canonicalSection(byNameSlug);return FALLBACK[clean(a.category_name)]||"news";}
 
 export default async(request:Request,context:any)=>{
@@ -37,9 +56,10 @@ export default async(request:Request,context:any)=>{
   try{
     const now=Date.now();
     const cutoff=now-48*60*60*1000;
+    const cutoffIso=new Date(cutoff).toISOString();
     const [cats,articles]=await Promise.all([
       rows("categories",{select:"id,name,slug,is_active,include_in_google_news",is_active:"eq.true",limit:"500"}),
-      rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",status:"eq.published",visibility:"eq.public",order:"published_at.desc.nullslast,created_at.desc",limit:"1000"})
+      recentArticleRows(cutoffIso)
     ]);
     const ids=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>String(x.id)));
     const names=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>clean(x.name)));
@@ -90,7 +110,7 @@ export default async(request:Request,context:any)=>{
     return new Response(request.method==="HEAD"?null:xml,{status:200,headers:{
       "content-type":"application/xml; charset=UTF-8",
       "cache-control":"public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-news-sitemap":"live-supabase-v6-public-only-ice-safe-dedupe",
+      "x-trrb-news-sitemap":"live-supabase-v7-paged-public-only-ice-safe-dedupe",
       "x-trrb-news-count":String(blocks.length),
       "x-trrb-news-source-rows":String(articles.length),
       "x-trrb-news-recent-candidates":String(recent.length),

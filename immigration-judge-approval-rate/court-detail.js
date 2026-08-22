@@ -1,1 +1,30 @@
-const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=n=>Number(n||0).toLocaleString('zh-CN');const pct=v=>v==null?'—':Number(v).toFixed(1)+'%';async function load(){const court=new URLSearchParams(location.search).get('court');if(!court){$('#loading').textContent='缺少法院名称';return}try{const r=await fetch('/.netlify/functions/immigration-judges?mode=court-detail&court='+encodeURIComponent(court));const d=await r.json();if(!r.ok||!d.court)throw new Error();const c=d.court;document.title=`${c.court_name} 庇护通过率｜唐人日报`;$('#court-name').textContent=c.court_name||'移民法院';$('#court-place').textContent=[c.court_city,c.court_state].filter(Boolean).join(', ');$('#rate').textContent=pct(c.adjudicated_approval_rate);$('#judges').textContent=fmt(c.judges);$('#decisions').textContent=fmt(c.total_asylum_decisions);$('#gd').textContent=`${fmt(c.grants)} / ${fmt(c.denials)}`;const rows=d.judges||[];$('#judge-list').innerHTML=rows.length?`<div class="trow thead"><span>法官</span><span>裁决</span><span>批准</span><span>拒绝</span><span>批准率</span></div>${rows.map(x=>`<a class="trow judge-link" href="/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(x.id)}"><span><b>${esc(x.judge_name)}</b></span><span>${fmt(x.total_asylum_decisions)}</span><span>${fmt(x.grants)}</span><span>${fmt(x.denials)}</span><span class="red">${pct(x.adjudicated_approval_rate)}</span></a>`).join('')}`:'<div class="empty">暂无法官数据</div>';$('#loading').hidden=true;$('#court-detail').hidden=false}catch{$('#loading').innerHTML='<b>暂时无法读取该法院资料</b><p>请返回法院查询页稍后重试。</p>'}}load();
+const $ = (selector) => document.querySelector(selector);
+const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
+const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
+
+async function load() {
+  const courtName = new URLSearchParams(location.search).get('court');
+  if (!courtName) { $('#loading').textContent = '缺少法院名称'; return; }
+  try {
+    const response = await fetch(`/.netlify/functions/immigration-judges?mode=court-detail&court=${encodeURIComponent(courtName)}`);
+    const data = await response.json();
+    if (!response.ok || !data.court) throw new Error();
+    const court = data.court;
+    document.title = `${court.court_name} 庇护通过率｜唐人日报`;
+    $('#court-name').textContent = court.court_name || '移民法院';
+    $('#court-place').textContent = [court.court_city, court.court_state].filter(Boolean).join(', ');
+    $('#rate').textContent = pct(court.adjudicated_approval_rate);
+    $('#judges').textContent = fmt(court.judges);
+    $('#decisions').textContent = fmt(court.total_asylum_decisions);
+    $('#gd').previousElementSibling.textContent = '批准 / 拒绝 / 其他';
+    $('#gd').innerHTML = `<span class="verdict-pass">${fmt(court.grants)}</span> / <span class="verdict-deny">${fmt(court.denials)}</span> / <span class="verdict-other">${fmt(court.other_decisions)}</span>`;
+    const rows = data.judges || [];
+    $('#judge-list').innerHTML = rows.length ? `<div class="trow thead outcome-row"><span>法官</span><span>裁决总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>批准率</span></div>${rows.map((row) => `<a class="trow judge-link outcome-row" href="/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(row.id)}"><span><b>${esc(row.judge_name)}</b></span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="red">${pct(row.adjudicated_approval_rate)}</span></a>`).join('')}` : '<div class="empty">暂无法官数据</div>';
+    $('#loading').hidden = true;
+    $('#court-detail').hidden = false;
+  } catch {
+    $('#loading').innerHTML = '<b>暂时无法读取该法院资料</b><p>请返回法院查询页稍后重试。</p>';
+  }
+}
+load();

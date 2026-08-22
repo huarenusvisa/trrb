@@ -1380,12 +1380,4 @@
         <news:title>纽约州议会大厦爆炸案嫌疑人杰西卡·鲍伊被捕</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7f3656d4ea6d1a8ba80d866260559cb026d616b8</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-20T19:41:35.710Z</news:publication_date>
-        <news:title>费城ICE逮捕涉嫌多罪海地籍嫌疑人</news:title>
-      </news:news>
-    </url>
 </urlset>

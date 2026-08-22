@@ -60,24 +60,38 @@
     return "other";
   }
   function textCount(text) {
-    const source = String(text || "");
+    const source = String(text || "")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\b20\d{2}[\/-]\d{1,2}[\/-]\d{1,2}\b/g, " ")
+      .replace(/20\d{2}年\d{1,2}月\d{1,2}日/g, " ")
+      .replace(/\b20\d{2}年/g, " ")
+      .replace(/\b\d{1,2}:\d{2}(?::\d{2})?\b/g, " ")
+      .replace(/\b\d{5}(?:-\d{4})?\b/g, " ")
+      .replace(/\bA#?\s*\d+/gi, " ");
     const patterns = [
-      /(?:逮捕|抓捕|拘留|羁押|扣押|带走|押送)[^。；;，,]{0,24}?(\d{1,3})\s*(?:名|人|位)/,
-      /(\d{1,3})\s*(?:名|人|位)[^。；;，,]{0,24}?(?:被捕|被拘留|遭拘留|被带走|被押送|落网)/,
-      /\b(?:arrested|detained|apprehended|took into custody|held)\s+(\d{1,3})\b/i,
-      /\b(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|detainees)[^.!?]{0,30}\b(?:arrested|detained|apprehended|held)\b/i
+      /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐出境|遣送|送返|移送|搭载|载有|运送)(?:了|了约|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)/,
+      /(?:约有|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民|旅客|乘客)?[^。；;，,]{0,20}?(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|被羁押|被扣押|被带走|被押送|被遣返|遭遣返|被递解|遭递解|被驱逐出境|被遣送|被送返|落网|遣返|递解|驱逐出境|遣送|送返|移送)/,
+      /\b(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported|carried)\s+(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)\b/i,
+      /\b(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)[^.!?]{0,30}\b(?:were\s+|was\s+)?(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported)\b/i
     ];
     for (const pattern of patterns) {
       const match = source.match(pattern);
+      if (match && /(?:反遣返|抗议|示威|游行|倡议|集会|protest|rally|demonstration)/i.test(match[0])) continue;
       const value = Number(match?.[1]);
-      if (value > 0 && value <= 500) return { value, estimated: false };
+      if (value > 0 && value <= 500) {
+        const matched = match[0];
+        const kind = /约|大约|近|approximately|about|nearly/i.test(matched)
+          ? "estimated"
+          : (/至少|超过|逾|不低于|at least|more than|over/i.test(matched) ? "minimum" : "exact");
+        return { value, estimated: kind === "estimated", kind };
+      }
     }
-    if (/(?:一名|一位|1名|1位|一人|一男子|一女子|a man|a woman|one man|one woman|one person|a detainee|an immigrant)/i.test(source) && /(拘留|羁押|被捕|逮捕|带走|押送|落网|detain|arrest|custody|apprehend|held)/i.test(source)) return { value: 1, estimated: false };
-    if (/(?:两名|两人|2名|2人|two people|two men|two women)/i.test(source) && /(拘留|羁押|被捕|逮捕|detain|arrest|custody|apprehend)/i.test(source)) return { value: 2, estimated: false };
-    if (/数十(?:名|人)|dozens/i.test(source)) return { value: 20, estimated: true };
-    if (/近百(?:名|人)|nearly one hundred/i.test(source)) return { value: 90, estimated: true };
-    if (/数百(?:名|人)|hundreds/i.test(source)) return { value: 200, estimated: true };
-    return { value: 0, estimated: false };
+    if (/(?:一名|一位|1名|1位|一人|一男子|一女子|a man|a woman|one man|one woman|one person|a detainee|an immigrant)/i.test(source) && /(拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|held|deport|remove)/i.test(source)) return { value: 1, estimated: false, kind: "exact" };
+    if (/(?:两名|两位|两人|2名|2位|2人|two people|two men|two women)/i.test(source) && /(拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|deport|remove)/i.test(source)) return { value: 2, estimated: false, kind: "exact" };
+    if (/数十(?:名|人)|dozens/i.test(source)) return { value: 20, estimated: true, kind: "estimated" };
+    if (/近百(?:名|人)|nearly one hundred/i.test(source)) return { value: 90, estimated: true, kind: "estimated" };
+    if (/数百(?:名|人)|hundreds/i.test(source)) return { value: 200, estimated: true, kind: "estimated" };
+    return { value: 0, estimated: false, kind: "unknown" };
   }
   function mapArticle(row) {
     const metadata = parseMetadata(row.metadata);
@@ -103,6 +117,7 @@
       state,
       people,
       estimated: Boolean(metadata.people_count_estimated || metadata.estimated_count || (!candidates.length && fallback.estimated)),
+      people_count_type: metadata.people_count_type || (!candidates.length ? fallback.kind : (metadata.people_count_estimated || metadata.estimated_count ? "estimated" : "exact")),
       lat: metadata.lat ?? metadata.latitude,
       lng: metadata.lng ?? metadata.longitude,
       event_type: metadata.event_type || ""

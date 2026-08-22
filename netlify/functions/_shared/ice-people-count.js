@@ -5,6 +5,7 @@ const APPROXIMATE = /(?:约|大约|近|approximately|about|nearly)/i;
 const MINIMUM = /(?:至少|超过|逾|不低于|at least|more than|over)/i;
 const REMOVAL = /(?:遣返|递解|驱逐出境|遣送|送返|deport|remov|repatriat)/i;
 const ARREST = /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|被捕|arrest|detain|apprehend|custody|held)/i;
+const NON_EVENT_CONTEXT = /(?:反遣返|抗议|示威|游行|倡议|集会|protest|rally|demonstration)/i;
 
 function normalizeSource(input) {
   const raw = typeof input === "string"
@@ -29,6 +30,7 @@ function countKind(text) {
 }
 
 function resultFromMatch(match) {
+  if (match && NON_EVENT_CONTEXT.test(match[0])) return null;
   const value = Number(match?.[1] || 0);
   if (!Number.isFinite(value) || value <= 0 || value > MAX_SINGLE_EVENT) return null;
   return {
@@ -53,10 +55,10 @@ function extractPeopleCount(input) {
   }
 
   const one = source.match(/(?:一名|一位|一人|一男子|一女子|one person|one man|one woman|a man|a woman|a detainee|an immigrant)[^。；;.!?]{0,24}(?:拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|deport|remove)/i);
-  if (one) return { value: 1, kind: "exact", matchedText: one[0].trim() };
+  if (one && !NON_EVENT_CONTEXT.test(one[0])) return { value: 1, kind: "exact", matchedText: one[0].trim() };
 
   const two = source.match(/(?:两名|两位|两人|two people|two men|two women)[^。；;.!?]{0,24}(?:拘留|羁押|被捕|逮捕|抓捕|拘捕|带走|押送|遣返|递解|驱逐|detain|arrest|custody|apprehend|deport|remove)/i);
-  if (two) return { value: 2, kind: "exact", matchedText: two[0].trim() };
+  if (two && !NON_EVENT_CONTEXT.test(two[0])) return { value: 2, kind: "exact", matchedText: two[0].trim() };
 
   return { value: 0, kind: "unknown", matchedText: "" };
 }

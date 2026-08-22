@@ -6,6 +6,7 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i;
 const CATEGORY_ROUTES = {
   "重要新闻": "/important-news",
   "热门头条": "/hot-headlines",
+  "中国热门头条": "/hot-headlines",
   "美国时政": "/us-politics",
   "美国警情": "/us-crime",
   "中国官场": "/china-officialdom",
@@ -167,6 +168,7 @@ function formatLiveDateTime(value) {
 const categoryIds = {
   重要新闻: "important",
   热门头条: "hot",
+  中国热门头条: "hot",
   驱逐快报: "deport",
   "ICE执法动态": "ice",
   美国时政: "politics",
@@ -212,7 +214,7 @@ function renderHome(articles, focusArticles = null) {
   if (!Array.isArray(articles) || articles.length === 0) return;
   const sorted = articles.slice().sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
   window.TRRB_LAST_HOME_ARTICLES = sorted;
-  const hotArticles = sorted.filter((article) => article.category === "热门头条");
+  const hotArticles = sorted.filter((article) => normalizeCategory(article.category) === "热门头条");
   renderTicker((hotArticles.length ? hotArticles : sorted).slice(0, 12));
   const visualArticles = sorted.filter(hasRealImage);
   if (Array.isArray(focusArticles)) {
@@ -331,7 +333,10 @@ function hasRealImage(item) {
   const image = String(item?.image || "").trim();
   return Boolean(image) && !image.includes("image-placeholder.svg") && !image.includes("/assets/category-placeholders/");
 }
-function normalizeCategory(value) { return String(value || "").trim(); }
+function normalizeCategory(value) {
+  const category = String(value || "").trim();
+  return category === "中国热门头条" ? "热门头条" : category;
+}
 function findLeadArticle(categoryArticles) { return categoryArticles.find(hasRealImage) || categoryArticles[0] || null; }
 
 function renderCategorySection(category, articles) {
@@ -354,7 +359,9 @@ function renderExposureWallCard() {
   return `<article class="news-box expose-wall-box" id="exposure-wall"><header><h2>曝光墙</h2><a href="/expose.html">我要曝光</a></header><a class="expose-wall-main" href="/expose.html" aria-label="提交曝光材料"><span class="expose-wall-symbol" aria-hidden="true">!</span><h3>匿名曝光 · 证据直达编辑部</h3><p>支持提交文字、图片和视频。公开展示可匿名，但必须留下电话或邮箱，方便编辑核实。</p><strong>提交曝光材料</strong></a><ul class="expose-wall-points"><li>身份信息不会在前台公开</li><li>材料审核后决定是否报道</li><li>严禁捏造、诽谤和非法内容</li></ul></article>`;
 }
 function renderSections(articles) {
-  const categories = ["美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
+  // 中国热门头条必须由主渲染器直接拥有，不能依赖后加载的兼容脚本
+  // 临时插入；否则缓存或接口时序变化会留下空卡甚至整片空白。
+  const categories = ["热门头条", "美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
   const sections = categories.map((category) => renderCategorySection(category, articles));
   sections.push(renderExposureWallCard());
   const root = document.querySelector("#sections-grid");

@@ -81,7 +81,9 @@
     const sections = document.getElementById("sections-grid");
     const rank = document.getElementById("rank-list");
     const heroReady = Boolean(hero?.querySelector(".hero-slide") || String(hero?.textContent || "").trim());
-    const sectionsReady = Boolean(sections?.children?.length);
+    const hot = sections?.querySelector("#hot");
+    const hotReady = Boolean(hot && !hot.classList.contains("category-empty") && hot.querySelector(".section-lead"));
+    const sectionsReady = Boolean(sections?.children?.length && hotReady);
     const rankReady = Boolean(rank?.querySelector("li") || String(rank?.textContent || "").trim());
     return heroReady && sectionsReady && rankReady;
   }
@@ -147,7 +149,7 @@
 
         const signature = signatureFor(articles);
         const shouldRender = typeof window.renderHome === "function" && (forceRender || !hasUsableRender());
-        if (shouldRender && signature && signature !== lastRenderSignature) {
+        if (shouldRender && signature && (forceRender || signature !== lastRenderSignature)) {
           window.renderHome(articles);
           lastRenderSignature = signature;
         } else if (!lastRenderSignature) {

@@ -2,13 +2,11 @@ name: 第十五轮节点3-BIA先例裁决自动采集
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node3-bia-precedent-collector.mjs"
-      - ".github/workflows/round15-node3-bia-precedent.yml"
-  schedule:
-    - cron: "23 */6 * * *"
+    inputs:
+      confirmation:
+        description: '旧采集器已由Round16统一链替代；输入 RUN 才执行'
+        required: true
+        default: 'STOP'
 
 permissions:
   contents: write
@@ -19,6 +17,7 @@ concurrency:
 
 jobs:
   collect:
+    if: ${{ inputs.confirmation == 'RUN' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     steps:

@@ -38,7 +38,7 @@
     ];
     for (const pattern of patterns) {
       const match = source.match(pattern);
-      if (!match) continue;
+      if (!match || /(?:反遣返|抗议|示威|游行|倡议|集会|protest|rally|demonstration)/i.test(match[0])) continue;
       const value = Number(match[1]);
       if (value <= 0 || value > MAX_SINGLE_EVENT) continue;
       return { value, kind: /约|about/i.test(match[0]) ? "estimated" : /至少|超过|逾|at least|more than|over/i.test(match[0]) ? "minimum" : "exact" };

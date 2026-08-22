@@ -16,6 +16,35 @@ const {
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
+const IMMIGRATION_CATEGORY = "移民美国";
+
+const IMMIGRATION_PROCESS_TERMS = [
+  "签证", "绿卡", "入籍", "公民申请", "移民申请", "身份转换", "调整身份", "排期", "签证公告",
+  "uscis", "美国公民及移民服务局", "nvc", "领事馆面签", "移民签证",
+  "f-1", "f1学生", "j-1", "m-1", "cpt", "opt", "stem opt", "i-20", "sevis",
+  "h-1b", "l-1", "o-1", "h-2a", "h-2b", "tn签证", "e-1", "e-2", "r-1",
+  "eb-1", "eb1", "eb-2", "eb2", "niw", "perm", "eb-3", "eb3", "eb-4", "eb4", "eb-5", "eb5",
+  "婚姻绿卡", "婚绿", "f2a", "k-1", "cr-1", "ir-1", "i-130", "i-485", "i-864", "ds-260",
+  "政治庇护", "庇护申请", "庇护面谈", "庇护时钟", "i-589", "vawa", "u签证", "t签证", "sijs", "tps",
+  "n-400", "n400", "n-600", "n600", "工卡", "ead", "advance parole", "回美证"
+];
+
+const IMMIGRATION_ENFORCEMENT_TERMS = [
+  "ice", "移民与海关执法局", "移民执法", "执法突袭", "拘捕移民", "逮捕移民", "抓捕移民",
+  "移民拘留", "拘留中心", "移民监狱", "拘押移民", "遣返", "递解", "驱逐出境",
+  "无证移民", "非法移民", "偷渡", "越境", "边境死亡", "边境溺亡", "边境巡逻队",
+  "海关与边境保护局", "cbp", "detainer", "287(g)"
+];
+
+const GENERAL_CRIME_TERMS = [
+  "警方", "警察", "警局", "枪击", "刺伤", "命案", "抢劫", "盗窃", "诈骗", "纵火",
+  "酒驾", "醉驾", "肇事", "刑事指控", "嫌疑人", "法院判刑"
+];
+
+const US_POLITICS_TERMS = [
+  "白宫", "国会", "参议院", "众议院", "总统", "州长", "行政命令", "最高法院",
+  "上诉法院", "联邦法院", "法案", "听证会", "政府政策"
+];
 
 function json(statusCode, body) {
   return {
@@ -40,6 +69,43 @@ function normalizeTitle(value) {
     .replace(/[\u200B-\u200D\uFEFF]/g, "")
     .replace(/[\p{P}\p{S}\s]+/gu, "")
     .trim();
+}
+
+function normalizedArticleText(title, content) {
+  return `${String(title || "")} ${String(content || "").slice(0, 8000)}`
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[‐‑‒–—]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function containsAny(text, terms) {
+  return terms.some((term) => text.includes(String(term).toLowerCase()));
+}
+
+function enforceImmigrationCategory(title, content, categoryName) {
+  if (categoryName !== IMMIGRATION_CATEGORY) {
+    return { categoryName, corrected: false, reason: "" };
+  }
+
+  const text = normalizedArticleText(title, content);
+  if (containsAny(text, IMMIGRATION_ENFORCEMENT_TERMS)) {
+    return { categoryName: "ICE执法动态", corrected: true, reason: "immigration-enforcement" };
+  }
+  if (containsAny(text, IMMIGRATION_PROCESS_TERMS)) {
+    return { categoryName: IMMIGRATION_CATEGORY, corrected: false, reason: "immigration-to-us" };
+  }
+  if (containsAny(text, GENERAL_CRIME_TERMS)) {
+    return { categoryName: "美国警情", corrected: true, reason: "general-crime" };
+  }
+  if (containsAny(text, US_POLITICS_TERMS)) {
+    return { categoryName: "美国时政", corrected: true, reason: "us-politics" };
+  }
+
+  const error = new Error("该稿不属于“移民美国”。该栏目只收录赴美签证、绿卡、入籍、庇护申请及美国移民办理政策；ICE抓捕、拘留、遣返和边境执法请发布到“ICE执法动态”。");
+  error.statusCode = 400;
+  throw error;
 }
 
 async function assertNoPublishedDuplicate(title, excludeId = "") {
@@ -125,11 +191,14 @@ function validateExternalCover(value) {
 async function saveArticle(input, actor) {
   const title = safeText(input.title, 220);
   const content = safeText(input.content, 50000);
-  const categoryId = safeText(input.category_id, 100) || null;
-  const categoryName = safeText(input.category_name, 80) || "重要新闻";
+  let categoryId = safeText(input.category_id, 100) || null;
+  let categoryName = safeText(input.category_name, 80) || "美国时政";
   const requestedStatus = safeText(input.status, 30) || "draft";
   const author = safeText(input.author, 120) || "Tang Ren Daily";
   const autoAiCover = Boolean(input.auto_ai_cover);
+  const categoryPolicy = enforceImmigrationCategory(title, content, categoryName);
+  categoryName = categoryPolicy.categoryName;
+  if (categoryPolicy.corrected) categoryId = null;
   const isIceBrief = ICE_CATEGORIES.has(categoryName);
 
   if (title.length < 5) {
@@ -183,7 +252,9 @@ async function saveArticle(input, actor) {
       ai_cover_processing: needsBackgroundCover,
       requested_status: requestedStatus,
       published_by: actor.user.email || actor.admin.email || "",
-      ice_length_policy: isIceBrief ? "news-value-not-character-count" : undefined
+      ice_length_policy: isIceBrief ? "news-value-not-character-count" : undefined,
+      category_policy: categoryPolicy.reason || undefined,
+      category_auto_corrected: categoryPolicy.corrected || undefined
     }
   };
 

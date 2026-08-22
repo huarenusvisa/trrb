@@ -27,7 +27,7 @@ function homeCutoffIso() {
 
 async function fetchArticles(limit, category = "") {
   const query = {
-    select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at",
+    select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_breaking,rank_score",
     status: "eq.published",
     visibility: "eq.public",
     published_at: `gte.${homeCutoffIso()}`,

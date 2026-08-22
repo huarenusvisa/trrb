@@ -2,12 +2,9 @@
   "use strict";
 
   const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
-  const RANK_MAX_AGE_MS = 24 * 60 * 60 * 1000;
   const FOCUS_CACHE_MS = 45 * 1000;
-  const RANK_CATEGORY_KEYS = ["美国时政", "热门头条", "ICE"];
   let lastFocusAt = 0;
   let focusPromise = null;
-  let rankCycle = 0;
   let enhanced = false;
 
   function articleTime(item) {
@@ -161,116 +158,6 @@
     return focusPromise;
   }
 
-  function rankBucket(category) {
-    const value = String(category || "").trim();
-    if (value === "美国时政") return "美国时政";
-    if (value === "热门头条") return "热门头条";
-    if (["ICE执法动态", "ICE执法", "驱逐快报"].includes(value)) return "ICE";
-    return "";
-  }
-
-  function hashString(value) {
-    let hash = 2166136261;
-    const text = String(value || "");
-    for (let i = 0; i < text.length; i += 1) {
-      hash ^= text.charCodeAt(i);
-      hash = Math.imul(hash, 16777619);
-    }
-    return hash >>> 0;
-  }
-
-  function shuffleBySalt(items, salt) {
-    return items.slice().sort((a, b) => {
-      const ah = hashString(`${salt}|${a.id || a.title || ""}`);
-      const bh = hashString(`${salt}|${b.id || b.title || ""}`);
-      return ah - bh;
-    });
-  }
-
-  function escapeRankHtml(value) {
-    return String(value || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  function articleHref(article) {
-    if (typeof window.TRRB_homeArticleUrl === "function") return window.TRRB_homeArticleUrl(article);
-    return article?.id ? `/article.html?id=${encodeURIComponent(article.id)}` : "/";
-  }
-
-  function buildMixedRank(articles, cycle = 0) {
-    const now = Date.now();
-    const source = Array.isArray(articles) ? articles : [];
-    const recent = source.filter((item) => {
-      const t = articleTime(item);
-      return t > 0 && now - t <= RANK_MAX_AGE_MS && Boolean(rankBucket(item.category || item.category_name));
-    });
-
-    const salt = `${Math.floor(now / (15 * 60 * 1000))}:${cycle}`;
-    const groups = new Map(RANK_CATEGORY_KEYS.map((key) => [key, []]));
-    recent.forEach((item) => groups.get(rankBucket(item.category || item.category_name))?.push(item));
-    RANK_CATEGORY_KEYS.forEach((key) => groups.set(key, shuffleBySalt(groups.get(key) || [], `${salt}:${key}`)));
-
-    const categoryOrder = shuffleBySalt(RANK_CATEGORY_KEYS.map((key) => ({ id: key, key })), `${salt}:categories`).map((item) => item.key);
-    const picked = [];
-    const seen = new Set();
-    let guard = 0;
-
-    const addItem = (item, bucket = "最新") => {
-      const id = String(item?.id || item?.title || "").trim();
-      if (!id || seen.has(id) || picked.length >= 10) return;
-      seen.add(id);
-      picked.push({ ...item, rank_bucket: bucket });
-    };
-
-    while (picked.length < 10 && guard < 60) {
-      const key = categoryOrder[guard % categoryOrder.length];
-      const group = groups.get(key) || [];
-      const item = group.shift();
-      if (item) addItem(item, key);
-      guard += 1;
-      if (categoryOrder.every((name) => (groups.get(name) || []).length === 0)) break;
-    }
-
-    shuffleBySalt(source.filter((item) => {
-      const t = articleTime(item);
-      return t > 0 && now - t <= RANK_MAX_AGE_MS;
-    }), `${salt}:all24h`).forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
-
-    if (picked.length < 10) {
-      source.filter(fresh).sort((a, b) => articleTime(b) - articleTime(a))
-        .forEach((item) => addItem(item, rankBucket(item.category || item.category_name) || "最新"));
-    }
-
-    return picked;
-  }
-
-  function renderMixedRank(articles, cycle = 0) {
-    const rankRoot = document.getElementById("rank-list");
-    const switchBtn = document.getElementById("rank-switch");
-    if (!rankRoot || !switchBtn) return;
-
-    const source = Array.isArray(articles) ? articles : [];
-    if (!source.length) return;
-    const pool = buildMixedRank(source, cycle);
-    if (!pool.length) return;
-
-    const nextHtml = pool.map((item, index) => `<li><b>${index + 1}</b><a href="${articleHref(item)}">${escapeRankHtml(item.title)}</a><span class="rank-heat">${escapeRankHtml(item.rank_bucket)}</span></li>`).join("");
-    if (rankRoot.innerHTML !== nextHtml) rankRoot.innerHTML = nextHtml;
-
-    if (!switchBtn.dataset.mixedRankBound) {
-      switchBtn.dataset.mixedRankBound = "true";
-      switchBtn.addEventListener("click", (event) => {
-        event.preventDefault();
-        rankCycle += 1;
-        renderMixedRank(window.TRRB_LAST_HOME_ARTICLES || [], rankCycle);
-      });
-    }
-  }
-
   function enhanceOnce() {
     if (enhanced) return true;
     const current = Array.isArray(window.TRRB_LAST_HOME_ARTICLES) ? window.TRRB_LAST_HOME_ARTICLES : [];
@@ -279,7 +166,6 @@
     removeRetiredPeopleSurface(document);
     removeImportantNewsNavigation(document);
     markHeroAsDailyFocus(document);
-    renderMixedRank(current, rankCycle);
     if (document.documentElement.dataset.homeFocusAtomic !== "true") fetchHomepageFocus(true);
     document.documentElement.dataset.homeEnhancementsStable = "true";
     return true;
@@ -304,7 +190,7 @@
   window.TRRB_HOME_LIVE_COMPAT_SHIM = true;
   window.TRRB_refreshHomeLegacyCompat = emergencyRefresh;
   window.TRRB_refreshHomepageFocus = fetchHomepageFocus;
-  window.TRRB_renderMixed24hRank = renderMixedRank;
+  window.TRRB_renderMixed24hRank = (articles) => window.TRRB_render24hRank?.(articles);
 
   function boot() {
     removeRetiredPeopleSurface(document);

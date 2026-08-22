@@ -53,7 +53,10 @@ function renderStateMarket(rows, nationalRate) {
     .slice(0, 6)
     .map((row) => ({
       code: String(row.state || '').toUpperCase(),
-      rate: Number(row.adjudicated_approval_rate)
+      rate: Number(row.adjudicated_approval_rate),
+      grants: Number(row.grants || 0),
+      denials: Number(row.denials || 0),
+      other: Number(row.other_decisions || 0)
     }));
   if (!points.length) {
     chart.innerHTML = '<div class="state-market-loading">暂无可显示的州级数据</div>';
@@ -75,7 +78,7 @@ function renderStateMarket(rows, nationalRate) {
   const averageY = nationalRate == null ? null : y(nationalRate);
   const summary = points.map((point) => `${stateNames[point.code] || point.code}${point.rate.toFixed(1)}%`).join('，');
 
-  const grid = [0, 25, 50].filter((rate) => rate <= maxRate).map((rate) => {
+  const grid = [0, 25, 50, 75, 100].map((rate) => {
     const gridY = y(rate);
     return `<line class="market-grid" x1="${left}" y1="${gridY}" x2="${width - right}" y2="${gridY}"></line><text class="market-axis" x="0" y="${gridY + 4}">${rate}%</text>`;
   }).join('');
@@ -83,10 +86,16 @@ function renderStateMarket(rows, nationalRate) {
   const bars = points.map((point, index) => {
     const pointX = x(index);
     const pointY = y(point.rate);
-    return `<g class="market-point"><rect class="denial" x="${pointX - 16}" y="${top}" width="32" height="${pointY - top}" rx="4"></rect><rect class="approval" x="${pointX - 16}" y="${pointY}" width="32" height="${bottom - pointY}" rx="4"></rect><circle cx="${pointX}" cy="${pointY}" r="4"></circle><text class="market-rate" x="${pointX}" y="${Math.max(pointY - 8, 12)}" text-anchor="middle">${point.rate.toFixed(1)}%</text><text class="market-state" x="${pointX}" y="154" text-anchor="middle">${esc(point.code)}</text></g>`;
+    const total = point.grants + point.denials + point.other || 1;
+    const grantHeight = point.grants / total * plotHeight;
+    const denialHeight = point.denials / total * plotHeight;
+    const otherHeight = Math.max(0, plotHeight - grantHeight - denialHeight);
+    const grantY = bottom - grantHeight;
+    const denialY = grantY - denialHeight;
+    return `<g class="market-point"><rect class="other" x="${pointX - 16}" y="${top}" width="32" height="${otherHeight}" rx="4"></rect><rect class="denial" x="${pointX - 16}" y="${denialY}" width="32" height="${denialHeight}"></rect><rect class="approval" x="${pointX - 16}" y="${grantY}" width="32" height="${grantHeight}" rx="4"></rect><circle cx="${pointX}" cy="${pointY}" r="4"></circle><text class="market-rate" x="${pointX}" y="${Math.max(pointY - 8, 12)}" text-anchor="middle">${point.rate.toFixed(1)}%</text><text class="market-state" x="${pointX}" y="154" text-anchor="middle">${esc(point.code)}</text></g>`;
   }).join('');
 
-  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州庇护裁决批准率：${esc(summary)}。绿色表示批准，红色表示拒绝；州际连接线不表示时间趋势"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="market-line-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#14804a"></stop><stop offset="1" stop-color="#34a46f"></stop></linearGradient></defs>${grid}${average}${bars}<path class="market-line" d="${path}"></path></svg><span class="state-market-note">绿色批准 · 红色拒绝 · 连线为批准率比较</span><span class="state-market-more">查看全部州 →</span></a>`;
+  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州庇护裁决批准率：${esc(summary)}。绿色表示批准，红色表示拒绝，蓝色表示其他裁决；州际连接线不表示时间趋势"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="market-line-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#14804a"></stop><stop offset="1" stop-color="#34a46f"></stop></linearGradient></defs>${grid}${average}${bars}<path class="market-line" d="${path}"></path></svg><span class="state-market-note">绿色批准 · 红色拒绝 · 蓝色其他 · 连线为批准率</span><span class="state-market-more">查看全部州 →</span></a>`;
 }
 
 async function loadOverview() {

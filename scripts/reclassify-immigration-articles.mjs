@@ -10,6 +10,14 @@ const SOURCE_CATEGORIES = new Set([
   '移民美国', '赴美留学', '移民新闻', '美国移民', '移民资讯'
 ]);
 
+// Exact recovery list for legitimate immigration stories moved by an earlier,
+// overly strict cleanup. Do not broaden the scan to all politics/crime articles.
+const RECOVERY_IDS = new Set([
+  'bc507842-cdd9-4231-b5e6-d64c3a831b34', // TPS termination ruling
+  '1e48770a-cd37-4008-9e88-7f40229337f3', // asylum interview interpreter
+  '99de2253-e577-4c52-9d3e-f8e643e2a656'  // religious asylum credibility
+]);
+
 const normalize = (value) => String(value || '')
   .toLowerCase()
   .replace(/[‐‑‒–—]/g, '-')
@@ -127,7 +135,7 @@ async function deleteArticle(id) {
 }
 
 const all = await fetchPublishedArticles();
-const targets = all.filter((row) => SOURCE_CATEGORIES.has(String(row.category_name || '').trim()));
+const targets = all.filter((row) => SOURCE_CATEGORIES.has(String(row.category_name || '').trim()) || RECOVERY_IDS.has(String(row.id || '')));
 const summary = { scanned: targets.length, kept: 0, moved: 0, deleted: 0, failed: 0 };
 
 console.log(`Found ${targets.length} published immigration-category articles. APPLY_CHANGES=${APPLY}`);

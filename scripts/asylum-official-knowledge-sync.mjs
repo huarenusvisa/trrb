@@ -60,9 +60,9 @@ function modelOutput(data) {
 }
 
 async function analyze(source) {
-  const prompt = `你是美国庇护法官方资料编辑。仅根据下列官方原文生成中文知识条目，不得补充原文没有的事实。\n\n纳入范围仅限：种族、宗教、国籍、政治观点、特定社会群体；过去/未来迫害；政府无法或不愿保护；迫害者；受保护理由与迫害的因果联系或混合动机。\n排除：仅涉及I-589程序、期限或费用、C08/EAD工卡、Advance Parole、家属、绿卡、拘留/保释、CAT或防止递解的资料。\nBIA资料只有在正文直接处理上述纳入范围时才 relevant=true；必须从判决正文提取准确 Matter of 案名、I&N Dec. 引证和裁判要点，不得信赖网页旁注。\nUSCIS资料不得写成个案裁决。\n正文用简洁小标题，700至1100字；说明这是一般信息而非法律意见，并列出官方原文链接。\n\n来源类型：${source.type}\n官方网址：${source.url}\n官方原文：\n${source.text.slice(0, 60000)}`;
-  const schema = { type: 'object', additionalProperties: false, required: ['relevant', 'topic', 'citation', 'title', 'summary', 'content'], properties: {
-    relevant: { type: 'boolean' }, topic: { type: 'string' }, citation: { type: 'string' }, title: { type: 'string' }, summary: { type: 'string' }, content: { type: 'string' }
+  const prompt = `你是美国庇护法官方资料编辑。仅根据下列官方原文生成中文知识条目，不得补充原文没有的事实。\n\n纳入范围仅限：种族、宗教、国籍、政治观点、特定社会群体；过去/未来迫害；政府无法或不愿保护；迫害者；受保护理由与迫害的因果联系或混合动机。\n排除：仅涉及I-589程序、期限或费用、C08/EAD工卡、Advance Parole、家属、绿卡、拘留/保释、CAT或防止递解的资料。\nBIA资料只有在正文直接处理上述纳入范围时才 relevant=true；必须从判决正文提取准确 Matter of 案名、I&N Dec. 引证和裁判要点，不得信赖网页旁注。\nUSCIS资料不得写成个案裁决。confidence表示无需人工判断即可准确发布的把握；原文含糊、适用范围不明、可能被后续裁决修改或无法确认当前效力时必须低于0.9，并在review_reason中说明。\n正文用简洁小标题，700至1100字；说明这是一般信息而非法律意见，并列出官方原文链接。\n\n来源类型：${source.type}\n官方网址：${source.url}\n官方原文：\n${source.text.slice(0, 60000)}`;
+  const schema = { type: 'object', additionalProperties: false, required: ['relevant', 'confidence', 'review_reason', 'topic', 'citation', 'title', 'summary', 'content'], properties: {
+    relevant: { type: 'boolean' }, confidence: { type: 'number', minimum: 0, maximum: 1 }, review_reason: { type: 'string' }, topic: { type: 'string' }, citation: { type: 'string' }, title: { type: 'string' }, summary: { type: 'string' }, content: { type: 'string' }
   } };
   const response = await fetch('https://api.openai.com/v1/responses', { method: 'POST', headers: { Authorization: `Bearer ${OPENAI_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: OPENAI_MODEL, input: prompt, max_output_tokens: 5000, text: { format: { type: 'json_schema', name: 'official_asylum_knowledge', strict: true, schema } } }), signal: AbortSignal.timeout(120000) });
   if (!response.ok) throw new Error(`OpenAI ${response.status}: ${await response.text()}`);
@@ -134,6 +134,7 @@ for (const source of sources) {
   if (!item.relevant || !isAllowedAsylumText(`${item.title} ${item.summary} ${item.content}`)) { skipped += 1; continue; }
   const isBia = source.type === 'bia_precedent';
   const label = isBia ? 'BIA先例判决' : 'USCIS官方知识';
+  const needsReview = isBia || Number(item.confidence) < 0.9;
   const title = `[${isBia ? 'BIA先例' : 'USCIS官方'}] ${String(item.title).replace(/^\[[^\]]+\]\s*/, '')}`;
   const row = {
     title,
@@ -141,8 +142,8 @@ for (const source of sources) {
     summary: item.summary,
     content: `${item.content}\n\n官方原文：${source.url}${item.citation ? `\n官方引证：${item.citation}` : ''}\n\n本文为一般信息，不构成针对个案的法律意见。`,
     category_name: `移民美国·人道主义庇护·政治庇护·${label}`,
-    status: 'published', visibility: 'public', author: '唐人日报编辑部', published_at: new Date().toISOString(),
-    metadata: { official_source_key: sourceKey, official_source_fingerprint: fingerprint, official_url: source.url, source_type: source.type, citation: item.citation, asylum_topic: item.topic, generated_by: 'asylum-official-knowledge-sync' }
+    status: needsReview ? 'draft' : 'published', visibility: needsReview ? 'private' : 'public', author: '唐人日报编辑部', published_at: needsReview ? null : new Date().toISOString(),
+    metadata: { official_source_key: sourceKey, official_source_fingerprint: fingerprint, official_url: source.url, source_type: source.type, citation: item.citation, asylum_topic: item.topic, confidence: item.confidence, review_reason: item.review_reason, review_status: needsReview ? 'pending_review' : 'auto_published', generated_by: 'asylum-official-knowledge-sync' }
   };
   if (prior) {
     await supabase(`articles?id=eq.${encodeURIComponent(prior.id)}`, { method: 'PATCH', body: JSON.stringify(row) }); updated += 1;

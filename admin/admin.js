@@ -186,6 +186,7 @@ function showPage(page) {
     "new-article": "发布文章",
     "finance-monitor": "牛来接口监控",
     "ice-review": "ICE人工审核中心",
+    "asylumjudge-review": "AsylumJudge内容中心",
     rankings: "24小时热榜"
   };
 
@@ -198,6 +199,7 @@ function showPage(page) {
   el("page-title").textContent = titles[page] || "控制台";
   if (page === "ice-review") loadReviewQueue();
   if (page === "finance-monitor") window.loadFinanceHealth?.();
+  if (page === "asylumjudge-review") window.loadAsylumJudgeReview?.();
 }
 
 window.getAdminAccessToken = async function () {

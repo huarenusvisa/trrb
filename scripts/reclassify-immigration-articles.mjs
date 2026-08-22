@@ -4,7 +4,8 @@ const { isIceEnforcementText } = iceClassifier;
 
 const SUPABASE_URL = String(process.env.SUPABASE_URL || '').replace(/\/$/, '');
 const SERVICE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || '');
-const APPLY = String(process.env.APPLY_CHANGES || 'true').toLowerCase() === 'true';
+const APPLY = String(process.env.APPLY_CHANGES || 'false').toLowerCase() === 'true'
+  && String(process.env.APPLY_CONFIRMATION || '') === 'APPLY';
 
 if (!SUPABASE_URL || !SERVICE_KEY) {
   throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');

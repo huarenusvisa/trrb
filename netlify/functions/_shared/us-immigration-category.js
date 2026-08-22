@@ -25,6 +25,13 @@ const GENERIC_IMMIGRATION_PROCESS_TERMS = [
   "亲属移民", "职业移民", "学生签证", "工作签证", "公民申请"
 ];
 
+const NON_PROCESS_EVENT_TERMS = [
+  "抓捕", "抓获", "拘捕", "逮捕", "被捕", "拘留", "拘押", "羁押", "查获",
+  "突袭", "搜捕", "破获", "刑事起诉", "被起诉", "诈骗案", "欺诈案", "性侵",
+  "杀害", "谋杀", "犯罪者", "犯罪飙升", "警方", "执法部门", "拒配合ice",
+  "举报移民欺诈", "追责提交虚假"
+];
+
 function normalizeText(title, lead) {
   return `${String(title || "")} ${String(lead || "").slice(0, 1200)}`
     .normalize("NFKC")
@@ -41,6 +48,7 @@ function containsAny(text, terms) {
 function isUsImmigrationText(title, lead) {
   if (isIceEnforcementText(title, lead)) return false;
   const text = normalizeText(title, lead);
+  if (containsAny(text, NON_PROCESS_EVENT_TERMS)) return false;
   if (containsAny(text, US_SPECIFIC_IMMIGRATION_TERMS)) return true;
   return containsAny(text, US_CONTEXT_TERMS)
     && containsAny(text, GENERIC_IMMIGRATION_PROCESS_TERMS);
@@ -50,5 +58,6 @@ module.exports = {
   isUsImmigrationText,
   US_CONTEXT_TERMS,
   US_SPECIFIC_IMMIGRATION_TERMS,
-  GENERIC_IMMIGRATION_PROCESS_TERMS
+  GENERIC_IMMIGRATION_PROCESS_TERMS,
+  NON_PROCESS_EVENT_TERMS
 };

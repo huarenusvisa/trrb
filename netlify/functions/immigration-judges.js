@@ -206,11 +206,10 @@ exports.handler = async (event) => {
     if (mode === 'court-detail') {
       const court = String(p.court || '').trim();
       if (!court) return out(400, { error: 'missing_court' });
-      const safe = court.replace(/[,%()]/g, ' ').trim();
       const rows = await rest('immigration_judges', {
         query: {
           select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
-          court_name: `ilike.*${safe}*`,
+          court_name: `eq.${court}`,
           order: 'total_asylum_decisions.desc',
           limit: '500'
         }

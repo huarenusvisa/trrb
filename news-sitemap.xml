@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-47aacbc5ba78cb46c649bbce7d965832d24b3ab8</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T22:50:03.469Z</news:publication_date>
+        <news:title>德州奥斯汀5岁儿童与父亲观看一场足球比赛后被拘留</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-77c3b5b2efbc2b8ba665164925499ffcf514ad7d</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T22:49:29.227Z</news:publication_date>
+        <news:title>有法官下令遣返一岁婴儿，具体细节未披露</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-064624160287d8ef5fccd1a663c817d48a4dedf6</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T22:48:36.600Z</news:publication_date>
+        <news:title>佛州湖沃斯ICE执法要求美公民出示身份证引宪法争议</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-ed8c91b6a9113a501ccf75de977f75f131afc039</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

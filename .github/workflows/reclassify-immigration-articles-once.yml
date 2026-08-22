@@ -2,11 +2,11 @@ name: 移民美国历史文章重新分类
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/reclassify-immigration-articles.mjs"
-      - ".github/workflows/reclassify-immigration-articles-once.yml"
+    inputs:
+      confirmation:
+        description: '输入 APPLY 才会修改正式库；其他值只生成审计报告'
+        required: false
+        default: 'DRY_RUN'
 
 permissions:
   contents: read
@@ -22,11 +22,12 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      APPLY_CHANGES: "true"
+      APPLY_CHANGES: ${{ inputs.confirmation == 'APPLY' && 'true' || 'false' }}
+      APPLY_CONFIRMATION: ${{ inputs.confirmation }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Reclassify and remove misplaced immigration articles
+      - name: Audit or reclassify immigration articles
         run: node scripts/reclassify-immigration-articles.mjs

@@ -9,10 +9,23 @@
     return ICE_ALIASES.has(name) ? ICE_CATEGORY : name;
   }
 
+  const ICE_AGENCY_TERMS = [
+    "移民与海关执法局", "移民和海关执法局", "美国移民海关执法局",
+    "ice执法人员", "ice探员", "ice特工", "ice官员", "ice.gov", "@icegov"
+  ];
+  const ICE_ACTION_TERMS = [
+    "抓捕", "抓获", "拘捕", "逮捕", "拘留", "拘押", "羁押", "遣返", "递解",
+    "驱逐出境", "突袭", "搜捕", "通缉", "扫荡", "执法行动", "arrest", "detain",
+    "detention", "deport", "removal", "raid", "custody", "fugitive", "warrant"
+  ];
+
   function isIceArticle(item) {
-    const topic = String(item?.topicKey || item?.topic_key || "").trim().toLowerCase();
-    const primary = String(item?.category || item?.category_name || "").trim();
-    return topic === "ice" || ICE_ALIASES.has(primary);
+    const text = [item?.title, item?.summary, item?.excerpt]
+      .filter(Boolean).join(" ").toLowerCase().replace(/\s+/g, " ").trim();
+    const hasAgency = /(^|[^a-z0-9])ice(?=$|[^a-z0-9])/i.test(text)
+      || ICE_AGENCY_TERMS.some((term) => text.includes(term));
+    const hasAction = ICE_ACTION_TERMS.some((term) => text.includes(term));
+    return hasAgency && hasAction;
   }
 
   function install() {

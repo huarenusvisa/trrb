@@ -5,8 +5,35 @@
     <link>https://trrb.net/</link>
     <description>立足美国，服务华人，提供美国时政、移民、ICE执法、中国官场及华人社区新闻。</description>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 22 Aug 2026 22:50:03 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 22 Aug 2026 23:08:18 GMT</lastBuildDate>
     <atom:link href="https://trrb.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>美国国土安全局成功抓获国内恐怖组织成员</title>
+      <link>https://trrb.net/ice/ice-f2f258ba4cc841abad288c75c53c25aeb75696c7</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-f2f258ba4cc841abad288c75c53c25aeb75696c7</guid>
+      <pubDate>Sat, 22 Aug 2026 23:08:18 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>美国国土安全调查局与法警局联合抓捕全部涉嫌公司爆炸的恐怖分子。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2091230711541825536/img/1O5TZML91dYUlVlc.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>西雅图Home Depot疑ICE执法砸车窗抓人</title>
+      <link>https://trrb.net/ice/ice-fe6454e0b7d592866f85d44abe20ff49c6289670</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-fe6454e0b7d592866f85d44abe20ff49c6289670</guid>
+      <pubDate>Sat, 22 Aug 2026 23:05:39 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>西雅图Home Depot现场有ICE人员疑似砸车窗执法，官方未证实。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2091295230213693440/img/sT0SFwT3i-Oml3f5.jpg" type="image/jpeg" />
+    </item>
+    <item>
+      <title>华盛顿塔科马会拆窗拘捕拒绝下车司机</title>
+      <link>https://trrb.net/ice/ice-b5107ab29b4f63d80f79aaef01bef5b6b9fb598d</link>
+      <guid isPermaLink="true">https://trrb.net/ice/ice-b5107ab29b4f63d80f79aaef01bef5b6b9fb598d</guid>
+      <pubDate>Sat, 22 Aug 2026 23:05:18 GMT</pubDate>
+      <category>ICE执法动态</category>
+      <description>华盛顿塔科马会因司机拒绝下车，强行拆毁其车辆窗户后实施拘捕。</description>
+      <enclosure url="https://pbs.twimg.com/amplify_video_thumb/2091277469416648704/img/ljeXM52AZdgyntW4.jpg" type="image/jpeg" />
+    </item>
     <item>
       <title>德州奥斯汀5岁儿童与父亲观看一场足球比赛后被拘留</title>
       <link>https://trrb.net/ice/ice-47aacbc5ba78cb46c649bbce7d965832d24b3ab8</link>
@@ -22,6 +49,7 @@
       <pubDate>Sat, 22 Aug 2026 22:49:29 GMT</pubDate>
       <category>ICE执法动态</category>
       <description>有消息称法院命令遣返一岁婴儿，官方及独立来源尚未确认该信息。</description>
+      <enclosure url="https://fwiznbpsqkfgkvyznebz.supabase.co/storage/v1/object/public/article-covers/2026-08-22/7047febf-9155-4266-a85f-6102adab8972-47d0803b-11eb-4d2a-b879-4db01cfb5667.webp" type="image/webp" />
     </item>
     <item>
       <title>佛州湖沃斯ICE执法要求美公民出示身份证引宪法争议</title>

@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-f2f258ba4cc841abad288c75c53c25aeb75696c7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T23:08:18.864Z</news:publication_date>
+        <news:title>美国国土安全局成功抓获国内恐怖组织成员</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-fe6454e0b7d592866f85d44abe20ff49c6289670</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T23:05:39.093Z</news:publication_date>
+        <news:title>西雅图Home Depot疑ICE执法砸车窗抓人</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-b5107ab29b4f63d80f79aaef01bef5b6b9fb598d</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T23:05:18.478Z</news:publication_date>
+        <news:title>华盛顿塔科马会拆窗拘捕拒绝下车司机</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-47aacbc5ba78cb46c649bbce7d965832d24b3ab8</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>

@@ -1,5 +1,6 @@
 const { SUPABASE_URL, SERVICE_KEY } = require("./_shared/supabase-admin");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
+const { isUsImmigrationText } = require("./_shared/us-immigration-category");
 
 const CATEGORY_DEFINITIONS = new Map([
   ["重要新闻", { path: "/important-news" }],
@@ -7,7 +8,7 @@ const CATEGORY_DEFINITIONS = new Map([
   ["美国时政", { path: "/us-politics" }],
   ["美国警情", { path: "/us-crime" }],
   ["中国官场", { path: "/china-officialdom" }],
-  ["移民美国", { path: "/immigration" }],
+  ["移民美国", { path: "/immigration", mode: "us-immigration" }],
   ["庇护百科", { path: "/asylum", mode: "asylum" }],
   ["ICE执法动态", { path: "/ice/news", mode: "ice" }]
 ]);
@@ -75,7 +76,7 @@ exports.handler = async (event) => {
 
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-    url.searchParams.set("select", "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at");
+    url.searchParams.set("select", "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at");
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("visibility", "eq.public");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
@@ -102,9 +103,14 @@ exports.handler = async (event) => {
     const totalMatch = contentRange.match(/\/(\d+|\*)$/);
     const total = totalMatch && totalMatch[1] !== "*" ? Number(totalMatch[1]) : null;
     const rawArticles = Array.isArray(rows) ? rows : [];
-    const articles = definition.mode === "ice"
-      ? rawArticles.filter((row) => isIceEnforcementText(row.title, row.summary))
-      : rawArticles;
+    const contentFilter = definition.mode === "ice"
+      ? (row) => isIceEnforcementText(row.title, row.summary)
+      : definition.mode === "us-immigration"
+        ? (row) => isUsImmigrationText(row.title, `${row.summary || ""} ${row.content || ""}`)
+        : null;
+    const eligibleArticles = contentFilter ? rawArticles.filter(contentFilter) : rawArticles;
+    const articles = eligibleArticles.map(({ content: _content, ...row }) => row);
+    const filtered = Boolean(contentFilter) && eligibleArticles.length !== rawArticles.length;
     const totalPages = Number.isFinite(total) ? Math.max(1, Math.ceil(total / pageSize)) : null;
 
     return json(200, {
@@ -114,10 +120,10 @@ exports.handler = async (event) => {
       page,
       page_size: pageSize,
       count: articles.length,
-      total: definition.mode === "ice" ? (articles.length === rawArticles.length ? total : null) : total,
-      total_pages: definition.mode === "ice" && articles.length !== rawArticles.length ? null : totalPages,
+      total: filtered ? null : total,
+      total_pages: filtered ? null : totalPages,
       has_previous: page > 1,
-      has_more: definition.mode === "ice" && articles.length !== rawArticles.length
+      has_more: filtered
         ? rawArticles.length === pageSize
         : (Number.isFinite(total) ? page * pageSize < total : articles.length === pageSize),
       articles

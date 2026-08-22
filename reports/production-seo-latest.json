@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-22T00:19:58.069Z",
+  "generated_at": "2026-08-22T02:34:24.939Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -61,18 +61,16 @@
   },
   "sitemaps": {
     "https://trrb.net/sitemap.xml": {
-      "status": 200,
-      "type": "application/xml; charset=UTF-8",
-      "bytes": 1873226,
-      "article_count": 5295,
+      "status": 0,
+      "bytes": 0,
+      "article_count": 0,
       "child_sitemaps": [],
-      "legacy_query_count": 0,
-      "version": "live-supabase-v8-jobs-external-canonical"
+      "legacy_query_count": 0
     },
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 49658,
+      "bytes": 48905,
       "article_count": 97,
       "child_sitemaps": [],
       "legacy_query_count": 0,
@@ -81,14 +79,50 @@
   },
   "articles": [
     {
-      "url": "https://trrb.net/ice/advance-parole%E6%97%85%E8%A1%8C%E8%AE%B8%E5%8F%AF%E5%AE%8C%E6%95%B4%E5%8A%9E%E7%90%86%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3-mt3go7pa-7bed2a",
+      "url": "https://trrb.net/ice/ice-26ab273a09f121977c033be396b10c3c594f312e",
       "status": 200,
-      "final_url": "https://trrb.net/ice/advance-parole%E6%97%85%E8%A1%8C%E8%AE%B8%E5%8F%AF%E5%AE%8C%E6%95%B4%E5%8A%9E%E7%90%86%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3-mt3go7pa-7bed2a",
+      "final_url": "https://trrb.net/ice/ice-26ab273a09f121977c033be396b10c3c594f312e",
       "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 33,
-      "h1_length": 26,
-      "canonical": "https://trrb.net/ice/advance-parole%E6%97%85%E8%A1%8C%E8%AE%B8%E5%8F%AF%E5%AE%8C%E6%95%B4%E5%8A%9E%E7%90%86%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3-mt3go7pa-7bed2a",
-      "body_length": 724,
+      "title_length": 35,
+      "h1_length": 28,
+      "canonical": "https://trrb.net/ice/ice-26ab273a09f121977c033be396b10c3c594f312e",
+      "body_length": 46,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-7a89357561af82197b82512ed4968852c4400c9b",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-7a89357561af82197b82512ed4968852c4400c9b",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 28,
+      "h1_length": 21,
+      "canonical": "https://trrb.net/ice/ice-7a89357561af82197b82512ed4968852c4400c9b",
+      "body_length": 103,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-9da5a926eaf78729b3bb051c708df6c520e7f029",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-9da5a926eaf78729b3bb051c708df6c520e7f029",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 23,
+      "h1_length": 16,
+      "canonical": "https://trrb.net/ice/ice-9da5a926eaf78729b3bb051c708df6c520e7f029",
+      "body_length": 133,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/ice-535c138baa1b59445683a01285b8f788e5a66815",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/ice-535c138baa1b59445683a01285b8f788e5a66815",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 34,
+      "h1_length": 27,
+      "canonical": "https://trrb.net/ice/ice-535c138baa1b59445683a01285b8f788e5a66815",
+      "body_length": 136,
       "schema": true,
       "noindex": false
     },
@@ -113,6 +147,18 @@
       "h1_length": 29,
       "canonical": "https://trrb.net/ice/advance-parole%E6%97%85%E8%A1%8C%E8%AE%B8%E5%8F%AF%E8%BA%AB%E4%BB%BD%E7%BB%B4%E6%8C%81%E4%B8%8E%E5%90%88%E8%A7%84%E8%A6%81%E6%B1%82%E8%AF%A6%E8%A7%A3-mt3go7pa-3dbbed",
       "body_length": 696,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/ice/advance-parole%E6%97%85%E8%A1%8C%E8%AE%B8%E5%8F%AF%E5%AE%8C%E6%95%B4%E5%8A%9E%E7%90%86%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3-mt3go7pa-7bed2a",
+      "status": 200,
+      "final_url": "https://trrb.net/ice/advance-parole%E6%97%85%E8%A1%8C%E8%AE%B8%E5%8F%AF%E5%AE%8C%E6%95%B4%E5%8A%9E%E7%90%86%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3-mt3go7pa-7bed2a",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 33,
+      "h1_length": 26,
+      "canonical": "https://trrb.net/ice/advance-parole%E6%97%85%E8%A1%8C%E8%AE%B8%E5%8F%AF%E5%AE%8C%E6%95%B4%E5%8A%9E%E7%90%86%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3-mt3go7pa-7bed2a",
+      "body_length": 724,
       "schema": true,
       "noindex": false
     },
@@ -175,54 +221,6 @@
       "body_length": 514,
       "schema": true,
       "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/f-1%E5%AD%A6%E7%94%9F%E7%AD%BE%E8%AF%81%E6%8C%81%E6%9C%89%E8%80%85%E5%85%A5%E5%A2%83%E7%BE%8E%E5%9B%BD%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90-mt3gclbd-7f4f4b",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/f-1%E5%AD%A6%E7%94%9F%E7%AD%BE%E8%AF%81%E6%8C%81%E6%9C%89%E8%80%85%E5%85%A5%E5%A2%83%E7%BE%8E%E5%9B%BD%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90-mt3gclbd-7f4f4b",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 25,
-      "h1_length": 18,
-      "canonical": "https://trrb.net/ice/f-1%E5%AD%A6%E7%94%9F%E7%AD%BE%E8%AF%81%E6%8C%81%E6%9C%89%E8%80%85%E5%85%A5%E5%A2%83%E7%BE%8E%E5%9B%BD%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90-mt3gclbd-7f4f4b",
-      "body_length": 507,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-252df4ae653099d35d7c13bd1573fc06a7b92459",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-252df4ae653099d35d7c13bd1573fc06a7b92459",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 25,
-      "h1_length": 18,
-      "canonical": "https://trrb.net/ice/ice-252df4ae653099d35d7c13bd1573fc06a7b92459",
-      "body_length": 105,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-9312f0964ab35975fc075bcca79cf9ddc6b89d0a",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-9312f0964ab35975fc075bcca79cf9ddc6b89d0a",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 30,
-      "h1_length": 23,
-      "canonical": "https://trrb.net/ice/ice-9312f0964ab35975fc075bcca79cf9ddc6b89d0a",
-      "body_length": 126,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-b9bb5a4ed6bb63b535bd9432ab404628ecc96634",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-b9bb5a4ed6bb63b535bd9432ab404628ecc96634",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 24,
-      "h1_length": 17,
-      "canonical": "https://trrb.net/ice/ice-b9bb5a4ed6bb63b535bd9432ab404628ecc96634",
-      "body_length": 143,
-      "schema": true,
-      "noindex": false
     }
   ],
   "pages": {
@@ -247,7 +245,7 @@
     "https://trrb.net/asylum": {
       "status": 200,
       "final_url": "https://trrb.net/asylum",
-      "asset_count": 40,
+      "asset_count": 41,
       "bad_assets": [],
       "direct_article_links": 24,
       "marker_present": true,
@@ -292,6 +290,8 @@
     }
   },
   "failures": [
+    "sitemap https://trrb.net/sitemap.xml HTTP 0",
+    "main sitemap article count too small",
     {
       "page": "https://trrb.net/trump",
       "problem": "too few direct article links: 0/1"

@@ -32,6 +32,7 @@
   let stateStatsCache = null;
   let stateStatsLoading = null;
   let rendered = false;
+  let repairScheduled = false;
 
   function immigrationMarkup() {
     return `
@@ -213,7 +214,7 @@
   }
 
   function repairCardsOnce() {
-    if (rendered || !baseHomeReady()) return false;
+    if (!baseHomeReady()) return false;
     const root = document.querySelector("#sections-grid");
     if (!root) return false;
     replaceImmigrationCard(root);
@@ -229,15 +230,35 @@
     const stateReady = loadStateStats();
     const started = Date.now();
 
-    const tick = async () => {
-      if (rendered) return;
+    const repair = async () => {
+      repairScheduled = false;
+      if (!baseHomeReady()) return false;
+      repairCardsOnce();
+      await stateReady;
+      if (stateStatsCache) renderStateDashboard(stateStatsCache);
+      return true;
+    };
+
+    const scheduleRepair = () => {
+      if (repairScheduled) return;
+      repairScheduled = true;
+      window.setTimeout(repair, 0);
+    };
+
+    const root = document.querySelector("#sections-grid");
+    if (root) {
+      new MutationObserver(() => {
+        if (!root.querySelector("#judge-home-hub") || !root.querySelector("#immigration .immigration-hub-feature") || !root.querySelector("#legal-home-hub")) {
+          scheduleRepair();
+        }
+      }).observe(root, { childList: true, subtree: true });
+    }
+
+    const tick = () => {
       if (baseHomeReady()) {
-        repairCardsOnce();
-        await stateReady;
-        if (stateStatsCache) renderStateDashboard(stateStatsCache);
-        return;
+        scheduleRepair();
       }
-      if (Date.now() - started > 4800) return;
+      if (Date.now() - started > 8000) return;
       window.setTimeout(tick, 80);
     };
 

@@ -13,7 +13,8 @@ declare
   ice_match boolean;
   has_primary_non_ice_category boolean;
 begin
-  article_text := coalesce(new.title, '') || ' ' || coalesce(new.summary, '') || ' ' || coalesce(new.content, '');
+  -- Category decisions use only the headline and summary; buried body text is never a topic signal.
+  article_text := coalesce(new.title, '') || ' ' || coalesce(new.summary, '');
 
   if article_text ~* '(特朗普|川普|Donald[[:space:]]+Trump|President[[:space:]]+Trump)' then
     new.topic_key := 'trump';
@@ -61,9 +62,9 @@ update public.articles
 set topic_key = null
 where lower(coalesce(topic_key, '')) = 'ice'
   and not (
-    (coalesce(title, '') || ' ' || coalesce(summary, '') || ' ' || coalesce(content, ''))
+    (coalesce(title, '') || ' ' || coalesce(summary, ''))
       ~* '(\mICE\M|U[.]S[.][[:space:]]+Immigration[[:space:]]+and[[:space:]]+Customs[[:space:]]+Enforcement|Immigration[[:space:]]+and[[:space:]]+Customs[[:space:]]+Enforcement|移民及海关执法局|移民与海关执法局|移民和海关执法局|美国移民海关执法局|美国移民与海关执法局)'
     and
-    (coalesce(title, '') || ' ' || coalesce(summary, '') || ' ' || coalesce(content, ''))
+    (coalesce(title, '') || ' ' || coalesce(summary, ''))
       ~* '(抓捕|抓获|拘捕|逮捕|拘留|拘押|羁押|遣返|递解|驱逐出境|强制离境|突袭|搜捕|通缉|扫荡|执法行动|拘留令|扣押令|\marrest(s|ed|ing)?\M|\mdetain(s|ed|ing)?\M|\mdetention\M|\mdeport(s|ed|ing|ation)?\M|\mremoval\M|\mraid(s|ed|ing)?\M|\mcustody\M|\mfugitive\M|\mwarrant\M)'
   );

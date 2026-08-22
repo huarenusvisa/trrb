@@ -1,6 +1,7 @@
 const { rest } = require("./_shared/supabase-admin");
 
-const HOME_MAX_AGE_MS = 72 * 60 * 60 * 1000;
+const HOME_MAX_AGE_HOURS = 96;
+const HOME_MAX_AGE_MS = HOME_MAX_AGE_HOURS * 60 * 60 * 1000;
 const MIN_LONGFORM_CHARS = 1500;
 const PREFERRED_LONGFORM_CHARS = 2200;
 const MANUAL_FORCE = "force";
@@ -70,9 +71,9 @@ function scoreRow(row, now = Date.now()) {
   if (override === MANUAL_EXCLUDE) return -100000;
 
   const published = timeOf(row);
-  const ageHours = published ? Math.max(0, (now - published) / 3600000) : 72;
+  const ageHours = published ? Math.max(0, (now - published) / 3600000) : HOME_MAX_AGE_HOURS;
   const length = textLength(row?.content);
-  let score = Math.max(0, 72 - ageHours) * 1.25;
+  let score = Math.max(0, HOME_MAX_AGE_HOURS - ageHours) * 1.25;
 
   if (override === MANUAL_FORCE) score += 10000;
   if (row?.is_breaking === true) score += 180;
@@ -123,7 +124,7 @@ exports.handler = async (event) => {
       .filter(isEligibleLongform)
       .map((row) => ({ ...row, homepage_focus_score: Math.round(scoreRow(row, now)) }))
       .filter((row) => row.homepage_focus_score > -1000)
-      .sort((a, b) => b.homepage_focus_score - a.homepage_focus_score || timeOf(b) - timeOf(a))
+      .sort((a, b) => timeOf(b) - timeOf(a) || b.homepage_focus_score - a.homepage_focus_score)
       .slice(0, 5)
       .map(publicArticle);
 
@@ -132,6 +133,8 @@ exports.handler = async (event) => {
       label: "今日要闻",
       source_category: "美国时政（编辑可手动加入重大新闻）",
       min_longform_chars: MIN_LONGFORM_CHARS,
+      max_age_hours: HOME_MAX_AGE_HOURS,
+      sort: "published_at.desc,created_at.desc",
       generated_at: new Date().toISOString(),
       count: articles.length,
       articles

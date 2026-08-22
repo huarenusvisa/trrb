@@ -1,5 +1,3 @@
-import type { Config } from "@netlify/edge-functions";
-
 export default function huarengongzuoHostRoot(request: Request) {
   const url = new URL(request.url);
   if (url.hostname.toLowerCase() !== "huarengongzuo.com") return;
@@ -9,7 +7,7 @@ export default function huarengongzuoHostRoot(request: Request) {
   return target;
 }
 
-export const config: Config = {
+export const config = {
   path: "/",
   method: ["GET", "HEAD"],
   onError: "bypass"

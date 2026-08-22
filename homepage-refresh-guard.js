@@ -81,9 +81,24 @@
     const sections = document.getElementById("sections-grid");
     const rank = document.getElementById("rank-list");
     const heroReady = Boolean(hero?.querySelector(".hero-slide") || String(hero?.textContent || "").trim());
-    const sectionsReady = Boolean(sections?.children?.length);
+    const hot = sections?.querySelector("#hot");
+    const hotReady = Boolean(hot && !hot.classList.contains("category-empty") && hot.querySelector(".section-lead"));
+    const sectionsReady = Boolean(sections?.children?.length && hotReady);
     const rankReady = Boolean(rank?.querySelector("li") || String(rank?.textContent || "").trim());
     return heroReady && sectionsReady && rankReady;
+  }
+
+  function repairChinaHotSection(articles) {
+    const sections = document.getElementById("sections-grid");
+    const current = sections?.querySelector("#hot");
+    if (!sections || (current && !current.classList.contains("category-empty") && current.querySelector(".section-lead"))) return true;
+    if (typeof window.TRRB_renderChinaHotSection !== "function") return false;
+    const html = window.TRRB_renderChinaHotSection(articles);
+    if (!html) return false;
+    if (current) current.outerHTML = html;
+    else sections.insertAdjacentHTML("afterbegin", html);
+    const repaired = sections.querySelector("#hot");
+    return Boolean(repaired && !repaired.classList.contains("category-empty") && repaired.querySelector(".section-lead"));
   }
 
   async function fetchUnifiedLive() {
@@ -147,12 +162,13 @@
 
         const signature = signatureFor(articles);
         const shouldRender = typeof window.renderHome === "function" && (forceRender || !hasUsableRender());
-        if (shouldRender && signature && signature !== lastRenderSignature) {
+        if (shouldRender && signature && (forceRender || signature !== lastRenderSignature)) {
           window.renderHome(articles);
           lastRenderSignature = signature;
         } else if (!lastRenderSignature) {
           lastRenderSignature = signature;
         }
+        repairChinaHotSection(articles);
 
         document.documentElement.dataset.homeFreshPolicy = "4d-core-plus-category-supplements";
         document.documentElement.dataset.liveNewsUpdatedAt = new Date().toISOString();

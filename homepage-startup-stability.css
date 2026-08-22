@@ -1,4 +1,5 @@
 /* Homepage startup stability: no transient black/broken states; US politics before ICE. */
+#sections-grid > #hot{order:-21}
 #sections-grid > #politics{order:-20}
 #sections-grid > #ice{order:-19}
 

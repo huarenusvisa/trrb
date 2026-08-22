@@ -20,7 +20,8 @@
 
   function sectionsReady() {
     const root = document.querySelector("#sections-grid");
-    return Boolean(root?.children?.length);
+    const hot = root?.querySelector("#hot");
+    return Boolean(root?.children?.length && hot && !hot.classList.contains("category-empty") && hot.querySelector(".section-lead"));
   }
 
   function repairLegacyEmptyHeroOnce() {

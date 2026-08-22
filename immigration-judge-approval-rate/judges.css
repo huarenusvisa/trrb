@@ -8,3 +8,6 @@
 .stats div{background:var(--pass-soft);border-color:#ccebd8}.stats strong,.judge-row .rate{color:var(--pass)}
 .judge-row:hover{background:var(--pass-soft)}
 .explain article{border-top-color:var(--pass)}.explain article:nth-child(even){border-top-color:var(--deny)}
+
+:root{--other:#2563a9;--other-soft:#eef5ff}
+.verdict-pass{color:var(--pass)!important;font-weight:900}.verdict-deny{color:var(--deny)!important;font-weight:900}.verdict-other{color:var(--other)!important;font-weight:900}

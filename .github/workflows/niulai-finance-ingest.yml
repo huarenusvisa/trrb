@@ -8,6 +8,12 @@ on:
         required: false
         default: false
         type: boolean
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/niulai-finance-ingest.yml"
+      - "scripts/niulai-finance-ingest.mjs"
+      - "scripts/lib/niulai-finance-sources.mjs"
   schedule:
     - cron: "*/15 * * * *"
 

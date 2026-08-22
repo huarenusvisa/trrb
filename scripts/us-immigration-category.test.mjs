@@ -46,5 +46,6 @@ test("database firewall reroutes ICE and blocks unrelated published rows", () =>
   assert.match(source, /errcode = '23514'/);
   assert.match(source, /immigration_text := article_text/);
   assert.match(source, /non_process_event/);
+  assert.match(source, /set search_path = ''/);
   assert.match(source, /\[\^A-Za-z\]\)ICE/);
 });

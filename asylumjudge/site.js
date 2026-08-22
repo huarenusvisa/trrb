@@ -45,19 +45,23 @@ function renderStates(rows) {
   renderStateMarket(selected, nationalRate);
 }
 
-function renderStateMarket(rows, nationalRate) {
+function renderStateMarket(rows) {
   const chart = $('#state-market-chart');
   if (!chart) return;
   const points = rows
-    .filter((row) => Number.isFinite(Number(row.adjudicated_approval_rate)))
     .slice(0, 6)
-    .map((row) => ({
-      code: String(row.state || '').toUpperCase(),
-      rate: Number(row.adjudicated_approval_rate),
-      grants: Number(row.grants || 0),
-      denials: Number(row.denials || 0),
-      other: Number(row.other_decisions || 0)
-    }));
+    .map((row) => {
+      const grants = Number(row.grants || 0);
+      const denials = Number(row.denials || 0);
+      const other = Number(row.other_decisions || 0);
+      const total = grants + denials + other || 1;
+      return {
+        code: String(row.state || '').toUpperCase(),
+        approval: grants / total * 100,
+        denial: denials / total * 100,
+        other: other / total * 100
+      };
+    });
   if (!points.length) {
     chart.innerHTML = '<div class="state-market-loading">暂无可显示的州级数据</div>';
     return;
@@ -74,28 +78,25 @@ function renderStateMarket(rows, nationalRate) {
   const step = (width - left - right) / Math.max(points.length - 1, 1);
   const x = (index) => left + index * step;
   const y = (rate) => bottom - Math.min(rate, maxRate) / maxRate * plotHeight;
-  const path = points.map((point, index) => `${index ? 'L' : 'M'} ${x(index).toFixed(1)} ${y(point.rate).toFixed(1)}`).join(' ');
-  const averageY = nationalRate == null ? null : y(nationalRate);
-  const summary = points.map((point) => `${stateNames[point.code] || point.code}${point.rate.toFixed(1)}%`).join('，');
+  const series = [
+    { key: 'approval', label: '批准', className: 'approval' },
+    { key: 'denial', label: '拒绝', className: 'denial' },
+    { key: 'other', label: '其他', className: 'other' }
+  ];
+  const summary = points.map((point) => `${stateNames[point.code] || point.code}：批准${point.approval.toFixed(1)}%，拒绝${point.denial.toFixed(1)}%，其他${point.other.toFixed(1)}%`).join('；');
 
   const grid = [0, 25, 50, 75, 100].map((rate) => {
     const gridY = y(rate);
     return `<line class="market-grid" x1="${left}" y1="${gridY}" x2="${width - right}" y2="${gridY}"></line><text class="market-axis" x="0" y="${gridY + 4}">${rate}%</text>`;
   }).join('');
-  const average = averageY == null ? '' : `<line class="market-average" x1="${left}" y1="${averageY}" x2="${width - right}" y2="${averageY}"></line><text class="market-average-label" x="${width - right}" y="${averageY - 5}" text-anchor="end">全美 ${nationalRate.toFixed(1)}%</text>`;
-  const bars = points.map((point, index) => {
-    const pointX = x(index);
-    const pointY = y(point.rate);
-    const total = point.grants + point.denials + point.other || 1;
-    const grantHeight = point.grants / total * plotHeight;
-    const denialHeight = point.denials / total * plotHeight;
-    const otherHeight = Math.max(0, plotHeight - grantHeight - denialHeight);
-    const grantY = bottom - grantHeight;
-    const denialY = grantY - denialHeight;
-    return `<g class="market-point"><rect class="other" x="${pointX - 16}" y="${top}" width="32" height="${otherHeight}" rx="4"></rect><rect class="denial" x="${pointX - 16}" y="${denialY}" width="32" height="${denialHeight}"></rect><rect class="approval" x="${pointX - 16}" y="${grantY}" width="32" height="${grantHeight}" rx="4"></rect><circle cx="${pointX}" cy="${pointY}" r="4"></circle><text class="market-rate" x="${pointX}" y="${Math.max(pointY - 8, 12)}" text-anchor="middle">${point.rate.toFixed(1)}%</text><text class="market-state" x="${pointX}" y="154" text-anchor="middle">${esc(point.code)}</text></g>`;
+  const lines = series.map((item) => {
+    const path = points.map((point, index) => `${index ? 'L' : 'M'} ${x(index).toFixed(1)} ${y(point[item.key]).toFixed(1)}`).join(' ');
+    const dots = points.map((point, index) => `<circle class="market-dot ${item.className}" cx="${x(index)}" cy="${y(point[item.key])}" r="4"><title>${esc(stateNames[point.code] || point.code)} ${item.label} ${point[item.key].toFixed(1)}%</title></circle>`).join('');
+    return `<path class="market-series ${item.className}" d="${path}"></path>${dots}`;
   }).join('');
+  const labels = points.map((point, index) => `<text class="market-state" x="${x(index)}" y="154" text-anchor="middle">${esc(point.code)}</text>`).join('');
 
-  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州庇护裁决批准率：${esc(summary)}。绿色表示批准，红色表示拒绝，蓝色表示其他裁决；州际连接线不表示时间趋势"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="market-line-gradient" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#14804a"></stop><stop offset="1" stop-color="#34a46f"></stop></linearGradient></defs>${grid}${average}${bars}<path class="market-line" d="${path}"></path></svg><span class="state-market-note">绿色批准 · 红色拒绝 · 蓝色其他 · 连线为批准率</span><span class="state-market-more">查看全部州 →</span></a>`;
+  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州裁决结果占比：${esc(summary)}"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">${grid}${lines}${labels}</svg><span class="state-market-note">每条线表示该类结果占全部裁决的比例</span><span class="state-market-more">查看全部州 →</span></a>`;
 }
 
 async function loadOverview() {

@@ -33,6 +33,10 @@
 .market-point .approval,.market-point circle{fill:var(--pass)}.market-point .denial{fill:var(--deny)}
 .state-market-legend .approval{background:var(--pass)}.state-market-legend .denial{background:var(--deny)}.state-market-legend .other{background:var(--other)}
 .market-point .other{fill:var(--other)}
+.market-series{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.market-series.approval{stroke:var(--pass)}.market-series.denial{stroke:var(--deny)}.market-series.other{stroke:var(--other)}
+.market-dot.approval{fill:var(--pass)}.market-dot.denial{fill:var(--deny)}.market-dot.other{fill:var(--other)}
+.market-state{fill:#475467;font-size:10px;font-weight:800}
+.hero-copy>.search-box{margin-top:18px}
 .market-line{filter:drop-shadow(0 2px 3px rgba(20,128,74,.22))}
 .lookup-section{background:linear-gradient(135deg,var(--pass-soft),#fff 72%)}
 .lookup-grid span{color:var(--pass-dark)}

@@ -18,7 +18,7 @@ const USCIS_SEEDS = [
   'https://www.uscis.gov/humanitarian/refugees-and-asylum/asylum/obtaining-asylum-in-the-united-states'
 ];
 const ALLOWED = /race|racial|religion|religious|nationality|political opinion|imputed political|particular social group|protected ground|past persecution|future persecution|well-founded fear|unable or unwilling|government protection|nexus|mixed motive|种族|宗教|国籍|政治观点|特定社会群体|过去迫害|未来迫害|政府.{0,8}(无法|不愿).{0,8}保护|因果联系/i;
-const EXCLUDED = /advance parole|employment authorization|EAD|C0?8|filing fee|green card|family petition|bond|detention|Convention Against Torture|\bCAT\b|withholding of removal|application process|filing process|interview process|旅行许可|工卡|费用|绿卡|家属|保释|拘留|禁止酷刑|防止递解|申请流程|办理流程|庇护程序|面谈流程/i;
+const EXCLUDED = /advance parole|employment authorization|EAD|C0?8|filing fee|green card|family petition|bond|detention|Convention Against Torture|\bCAT\b|withholding of removal|application process|filing process|interview process|application types?|decision types?|旅行许可|工卡|费用|绿卡|家属|保释|拘留|禁止酷刑|防止递解|申请流程|办理流程|庇护程序|面谈流程|申请.{0,4}类型|结果.{0,4}类型|申请结果分为/i;
 
 export function isAllowedAsylumText(value) {
   const text = String(value || '');
@@ -144,7 +144,7 @@ for (const source of sources) {
   if (!item.relevant || !isAllowedAsylumText(`${item.title} ${item.summary} ${item.content}`)) { skipped += 1; continue; }
   const isBia = source.type === 'bia_precedent';
   const label = isBia ? 'BIA先例判决' : 'USCIS官方知识';
-  const needsReview = isBia || Number(item.confidence) < 0.9;
+  const needsReview = true;
   const title = `[${isBia ? 'BIA先例' : 'USCIS官方'}] ${String(item.title).replace(/^\[[^\]]+\]\s*/, '')}`;
   const row = {
     title,

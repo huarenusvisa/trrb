@@ -150,9 +150,15 @@ def main():
     judge_count = con.execute("select count(distinct judge_name) from merits").fetchone()[0]
     judge_court_pairs = con.execute("select count(*) from (select distinct judge_name,court_name from merits)").fetchone()[0]
     court_count = con.execute("select count(distinct court_name) from merits").fetchone()[0]
+    current_court_count = con.execute("""
+      select count(distinct current_court) from (
+        select arg_max(court_name, decision_date) current_court
+        from merits group by judge_name
+      )
+    """).fetchone()[0]
     nationality_count = con.execute("select count(distinct nationality) from merits where nationality is not null").fetchone()[0]
     china_count = con.execute("select count(*) from merits where lower(nationality)='china'").fetchone()[0]
-    preflight = {"scope": [SCOPE_START, SCOPE_END], "merits_cases": merits_count, "named_judges": judge_count, "judge_court_pairs": judge_court_pairs, "courts": court_count, "nationalities": nationality_count, "china_merits_cases": china_count, "benchmark_snapshot": crosscheck.get("snapshot")}
+    preflight = {"scope": [SCOPE_START, SCOPE_END], "merits_cases": merits_count, "named_judges": judge_count, "judge_court_pairs": judge_court_pairs, "courts": court_count, "current_courts": current_court_count, "nationalities": nationality_count, "china_merits_cases": china_count, "benchmark_snapshot": crosscheck.get("snapshot")}
     print(json.dumps(preflight, indent=2, ensure_ascii=False))
 
     if merits_count < 100_000:

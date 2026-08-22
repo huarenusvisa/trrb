@@ -54,7 +54,7 @@ async function main() {
     if (story.article_id) continue;
     const logs = await sb("ice_review_logs", {
       query: {
-        select: "id,action,to_status,reviewer_email,created_at",
+        select: "id,action,to_status,reviewer_user_id,reviewer_email,created_at",
         story_id: `eq.${story.id}`,
         action: "in.(approve_schedule,publish_now,manual_publish_override)",
         order: "created_at.desc",
@@ -72,6 +72,7 @@ async function main() {
         status: "approved",
         human_review_status: "approved",
         scheduled_at: now,
+        reviewed_by: approval.reviewer_user_id,
         reviewer_email: approval.reviewer_email || story.reviewer_email,
         reviewed_at: approval.created_at || story.reviewed_at || now,
         decision_reason: String(story.decision_reason || "").replace(/；超过[^；]*自动移出审核队列/g, "").replace(/；与数据库已发布文章高度相似且无独立新增事实[^；]*/g, ""),

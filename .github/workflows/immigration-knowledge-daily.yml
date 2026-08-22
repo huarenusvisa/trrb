@@ -2,29 +2,22 @@ name: 移民知识库每日自动生成
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/immigration-knowledge-daily.yml"
-      - "scripts/immigration-knowledge-daily.mjs"
-      - "scripts/immigration-knowledge-health.mjs"
-      - "config/immigration-knowledge.js"
-      - "immigrate/*knowledge-content.js"
-      - "immigrate/change-status-module.js"
-      - "immigrate/citizenship-module.js"
-  schedule:
-    - cron: "0 13 * * *"
-    - cron: "0 14 * * *"
+    inputs:
+      confirm:
+        description: "输入 PUBLISH 才允许人工启动公开写入"
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: trrb-immigration-knowledge-daily
+  group: trrb-immigration-knowledge-publisher
   cancel-in-progress: false
 
 jobs:
   time-gate:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.confirm == 'PUBLISH' }}
     runs-on: ubuntu-latest
     outputs:
       allowed: ${{ steps.check.outputs.allowed }}

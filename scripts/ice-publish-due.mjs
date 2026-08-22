@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -24,12 +23,6 @@ function safeJson(value, fallback = null) {
 function isOfficialUrgent(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
   return Boolean(payload?.official_urgent);
-}
-function runOfficialUrgentPromotion() {
-  const script = fileURLToPath(new URL("./ice-official-urgent-promote.mjs", import.meta.url));
-  const result = spawnSync(process.execPath, [script], { stdio: "inherit", env: process.env });
-  if (result.error) throw result.error;
-  if (result.status !== 0) throw new Error(`DHS/ICE官方重大突发提升失败，退出码${result.status}`);
 }
 async function requestJson(url, options = {}) {
   const response = await fetch(url, options);
@@ -64,7 +57,14 @@ function bestVideo(post) {
   return null;
 }
 async function dueStories(limit) {
-  const query = { select: "*", status: "eq.approved", order: "scheduled_at.asc.nullslast,created_at.asc", limit: String(Math.max(100, limit * 3)) };
+  const query = {
+    select: "*",
+    status: "eq.approved",
+    human_review_status: "eq.approved",
+    reviewed_by: "not.is.null",
+    order: "scheduled_at.asc.nullslast,created_at.asc",
+    limit: String(Math.max(100, limit * 3))
+  };
   if (!boolEnv("ICE_FORCE_FIRST_PUBLISH", false)) query.scheduled_at = `lte.${nowIso()}`;
   const rows = await sb("ice_stories", { query });
   const stories = Array.isArray(rows) ? rows : [];
@@ -98,24 +98,22 @@ async function updateStory(id, patch) {
   await sb("ice_stories", { method: "PATCH", query: { id: `eq.${id}` }, body: patch, prefer: "return=minimal" });
 }
 async function publish(story) {
-  const threshold = intEnv("ICE_AUTO_PUBLISH_SCORE", 80, 0, 100);
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
-  const officialAuto = Boolean(payload?.official_source_auto || payload?.trusted_source_auto || payload?.official_direct_publish);
-  const officialEligible = Number(story.official_source_count || 0) >= 1 || officialAuto;
-  const humanApproved = story.human_review_status === "approved";
+  const humanApproved = story.human_review_status === "approved" && Boolean(story.reviewed_by);
   const officialUrgent = isOfficialUrgent(story);
 
+  if (!humanApproved) {
+    await updateStory(story.id, {
+      status: "pending_review",
+      human_review_status: "required",
+      scheduled_at: null,
+      decision_reason: `${story.decision_reason || ""}；发布器拦截：必须由后台真实管理员审核批准`
+    });
+    return null;
+  }
   if (!String(story.title || "").trim() || !String(story.content || "").trim()) {
     await updateStory(story.id, { status: "pending_review", decision_reason: `${story.decision_reason || ""}；中文标题或正文尚未完成` });
     return null;
-  }
-  if (!officialAuto) {
-    const scoreBlocked = Number(story.total_score || 0) < threshold && !officialUrgent;
-    const legalBlocked = Boolean(story.legal_risk) && !officialUrgent;
-    if (scoreBlocked || story.conflict_detected || legalBlocked || story.privacy_risk || story.fabrication_risk || (!officialEligible && !humanApproved)) {
-      await updateStory(story.id, { status: "pending_review", decision_reason: `${story.decision_reason || ""}；规律发布器二次拦截` });
-      return null;
-    }
   }
 
   const post = await leadPost(story);
@@ -152,14 +150,14 @@ async function publish(story) {
       author: "唐人日报编辑部", status: "published", published_at: time, created_at: time, topic_key: "ice", source_platform: "x",
       source_post_id: post.x_post_id, source_url: post.x_url, source_account: post.source_username, source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
-      review_status: officialUrgent ? "official_urgent_auto_published" : (officialAuto ? "official_direct_auto_published" : (officialEligible ? "official_auto_published" : "human_approved")),
+      review_status: "human_approved",
       metadata: {
         event_fingerprint: story.event_fingerprint, event_type: eventType, city: post.city || "", state_code: post.state_code || "",
         location_text: post.location_text || [post.city, post.state_code].filter(Boolean).join(", "), ...peopleMetadata, total_score: story.total_score,
         independent_source_count: story.independent_source_count, official_source_count: story.official_source_count, media_source_count: story.media_source_count,
         organization_source_count: story.organization_source_count, decision_reason: story.decision_reason, human_review_status: story.human_review_status,
         reviewed_by: story.reviewed_by || null, reviewed_at: story.reviewed_at || null, editor_notes: story.editor_notes || "", official_urgent: officialUrgent,
-        official_source_auto: officialAuto, official_direct_publish: officialAuto, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
+        official_source_auto: false, official_direct_publish: false, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
         video_url: video?.url || "", video_poster: video?.poster || "", video_featured: temporaryFeatured, video_featured_until: featuredUntil,
         confirmed_facts: payload?.confirmed_facts || [], unconfirmed_claims: payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({ post_id: item.x_post_id, url: item.x_url, source_type: item.source_type, independence_key: item.independence_key }))
@@ -174,7 +172,6 @@ async function publish(story) {
 }
 async function main() {
   requireEnvironment();
-  runOfficialUrgentPromotion();
   const max = intEnv("ICE_PUBLISH_MAX_PER_RUN", 10, 1, 50);
   const stories = await dueStories(max);
   if (!stories.length) { console.log("ICE规律发布器：没有到期内容"); return; }

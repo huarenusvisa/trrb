@@ -59,6 +59,11 @@ const redirects = await text("_redirects");
 requireMatch(redirects, /https:\/\/huarengongzuo\.com\/\s+q=:q\s+\/huarengongzuo\/index\.html\s+200!/i, "huarengongzuo query search rewrite missing");
 requireMatch(redirects, /https:\/\/huarengongzuo\.com\/\s+sort=:sort\s+\/huarengongzuo\/index\.html\s+200!/i, "legacy jobs sort query rewrite missing");
 
+const huarengongzuoRoot = await text("netlify/edge-functions/huarengongzuo-host-root.ts");
+requireMatch(huarengongzuoRoot, /hostname\.toLowerCase\(\)\s*!==\s*["']huarengongzuo\.com["']/, "huarengongzuo root router is not host-scoped");
+requireMatch(huarengongzuoRoot, /new URL\(["']\/huarengongzuo\/index\.html["']/, "huarengongzuo root router target missing");
+requireMatch(huarengongzuoRoot, /path:\s*["']\/["']/, "huarengongzuo root router is not limited to the root path");
+
 const netlify = await text("netlify.toml");
 requireMatch(netlify, /node scripts\/write-deploy-version\.mjs/, "netlify.toml does not write exact deploy SHA");
 requireMatch(netlify, /for = "\/\*\.js"[\s\S]*?no-cache, no-store, must-revalidate/, "netlify.toml reintroduces stale JS caching");

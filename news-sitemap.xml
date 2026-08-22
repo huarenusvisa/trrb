@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+      <loc>https://trrb.net/ice/ice-fbbade8270841f82372a7e244c0476321e78fbe3</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T16:56:01.315Z</news:publication_date>
+        <news:title>佛州ICE负责人：去年遣返非法移民涵盖180国</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-7b90c277b95a3d6b4489d704a787023ec343aaec</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T16:55:35.493Z</news:publication_date>
+        <news:title>医院内ICE官员深夜调查移民身份 直到午夜时分才出示徽章证实身份</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-abe950f2bdf61964174e26b6d90538d14d94cffd</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T16:55:01.856Z</news:publication_date>
+        <news:title>ICE多地突击 逮捕庇护城市内的犯罪非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-888a5b48faec6fd09f053a83db21e6f792935c5f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T16:54:35.902Z</news:publication_date>
+        <news:title>华盛顿雅基马ICE特工超市外拘留男子遭抗议</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-4f4b431f037b5f6d827fd4323d59b49ea347ff4a</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T16:54:07.586Z</news:publication_date>
+        <news:title>阿拉斯加原住民企业支持ICE特工驱逐非法移民</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-67bd03a9f79f9c768d0ba32ea6991bec5d56b152</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-22T16:53:30.802Z</news:publication_date>
+        <news:title>圣安东尼奥ICE年内拘捕近1500人逮捕900余</news:title>
+      </news:news>
+    </url>
   
   <url>
       <loc>https://trrb.net/ice/ice-88ca5f9ae0608b72ec73fcd93ae3b4493166b617</loc>

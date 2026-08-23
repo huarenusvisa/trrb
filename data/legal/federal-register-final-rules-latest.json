@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-22T23:57:24.307Z",
+  "generatedAt": "2026-08-23T01:59:39.080Z",
   "scope": "Federal Register documents classified by the official API as Rule. FederalRegister.gov is used for discovery/metadata; official PDF links should be used for authoritative legal text.",
   "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE",
   "count": 50,

@@ -331,20 +331,4 @@
         <news:title>美国ICE拘捕涉嫌直播性剥削未成年人非法移民</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-252df4ae653099d35d7c13bd1573fc06a7b92459</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T20:59:48.336Z</news:publication_date>
-        <news:title>美网友：提议遣返不文明行为者遣返出境</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/trump/ice-9312f0964ab35975fc075bcca79cf9ddc6b89d0a</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T20:59:19.841Z</news:publication_date>
-        <news:title>失女父亲乔·亚伯拉罕任特朗普ICE办公室负责人</news:title>
-      </news:news>
-    </url>
 </urlset>

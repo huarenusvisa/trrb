@@ -12,6 +12,18 @@ const nationalityPeriodShards = [
 ];
 const judgeBackgrounds = require('../../data/immigration-judge-backgrounds.json');
 const webexDirectory = require('../../data/eoir-webex-links.json');
+const statePeriods = require('../../data/immigration-judge-state-periods.json');
+const nationalityYearIndex = require('../../data/immigration-judge-nationality-yearly.json');
+const nationalityYearShards = [
+  require('../../data/immigration-judge-nationality-yearly-1.json'),
+  require('../../data/immigration-judge-nationality-yearly-2.json'),
+  require('../../data/immigration-judge-nationality-yearly-3.json'),
+  require('../../data/immigration-judge-nationality-yearly-4.json'),
+  require('../../data/immigration-judge-nationality-yearly-5.json'),
+  require('../../data/immigration-judge-nationality-yearly-6.json'),
+  require('../../data/immigration-judge-nationality-yearly-7.json'),
+  require('../../data/immigration-judge-nationality-yearly-8.json')
+];
 
 const MIN_RELIABLE_DECISIONS = 50;
 const REST_PAGE_SIZE = 1000;
@@ -58,6 +70,21 @@ const backgroundByName = new Map(
 const webexByName = new Map(
   (webexDirectory.profiles || []).map((profile) => [profile.name_key || judgeNameKey(profile.judge_name), profile])
 );
+const nationalityYearByName = new Map(
+  nationalityYearShards.flatMap((shard) => shard.profiles || []).map((profile) => [profile.name_key, profile.rows || []])
+);
+
+function backgroundSummary(judgeName) {
+  const background = backgroundByName.get(judgeNameKey(judgeName));
+  if (!background) return null;
+  const biography = String(background.biography || '').trim();
+  return {
+    appointment_date: background.appointment_date || null,
+    appointment_court: background.appointment_court || null,
+    appointment_type: background.appointment_type || null,
+    biography_excerpt: biography ? `${biography.slice(0, 190)}${biography.length > 190 ? '…' : ''}` : null
+  };
+}
 
 function findNationality(value) {
   const query = String(value || '').trim().toLowerCase();
@@ -165,6 +192,7 @@ function derived(row) {
     sample_status: rateReliable ? 'reportable' : 'insufficient_sample',
     minimum_reportable_decisions: MIN_RELIABLE_DECISIONS,
     rate_reliable: rateReliable,
+    background_summary: row.judge_name ? backgroundSummary(row.judge_name) : null,
     webex: webexProfile ? {
       links: webexProfile.links,
       source_url: webexDirectory.source_url,
@@ -346,24 +374,27 @@ exports.handler = async (event) => {
     if (mode === 'courts') {
       const q = String(p.q || '').trim().toLowerCase();
       const state = String(p.state || '').trim().toUpperCase();
-      const rows = await restAll('immigration_judges', {
-        query: { select: 'id,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions', order: 'id.asc' }
+      const availableYears = (statePeriods.years || []).map(Number).filter(Number.isFinite);
+      const requestedYear = Number.parseInt(String(p.fy || ''), 10);
+      const fiscalYear = availableYears.includes(requestedYear) ? requestedYear : Number(statePeriods.latest_fiscal_year || availableYears[0]);
+      const courts = (statePeriods.courts || [])
+        .filter((row) => !state || String(row.state || '').toUpperCase() === state)
+        .filter((row) => !q || `${row.court_name || ''} ${row.court_code || ''} ${row.state || ''}`.toLowerCase().includes(q))
+        .map((row) => {
+          const period = (row.yearly || []).find((item) => Number(item.fiscal_year) === fiscalYear);
+          const city = String(row.court_name || '').replace(/\s*\([^)]*\)\s*$/, '');
+          return period ? derived({ ...period, court_name: row.court_name, court_city: city, court_state: row.state, court_code: row.court_code }) : null;
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.total_asylum_decisions - a.total_asylum_decisions);
+      return out(200, {
+        count: courts.length,
+        fiscal_year: fiscalYear,
+        period_status: fiscalYear === Number(statePeriods.latest_fiscal_year) ? statePeriods.latest_period_status : 'complete',
+        period_end: fiscalYear === Number(statePeriods.latest_fiscal_year) ? statePeriods.scope_end : `${fiscalYear}-09-30`,
+        courts: courts.slice(0, 300),
+        ...(await provenance())
       });
-      const map = new Map();
-      for (const r of rows || []) {
-        if (state && String(r.court_state || '').trim().toUpperCase() !== state) continue;
-        const key = [r.court_name, r.court_city, r.court_state].join('|');
-        if (q && !`${r.court_name || ''} ${r.court_city || ''} ${r.court_state || ''}`.toLowerCase().includes(q)) continue;
-        const x = map.get(key) || { court_name: r.court_name, court_city: r.court_city, court_state: r.court_state, judges: 0, total_asylum_decisions: 0, grants: 0, denials: 0, other_decisions: 0 };
-        x.judges += 1;
-        x.total_asylum_decisions += num(r.total_asylum_decisions);
-        x.grants += num(r.grants);
-        x.denials += num(r.denials);
-        x.other_decisions += num(r.other_decisions);
-        map.set(key, x);
-      }
-      const courts = [...map.values()].map(derived).sort((a, b) => b.total_asylum_decisions - a.total_asylum_decisions);
-      return out(200, { count: courts.length, courts: courts.slice(0, 300), ...(await provenance()) });
     }
 
     if (mode === 'court-detail') {
@@ -386,24 +417,26 @@ exports.handler = async (event) => {
     }
 
     if (mode === 'states') {
-      const rows = await restAll('immigration_judges', {
-        query: { select: 'id,court_name,court_state,total_asylum_decisions,grants,denials,other_decisions', order: 'id.asc' }
+      const availableYears = (statePeriods.years || []).map(Number).filter(Number.isFinite);
+      const requestedYear = Number.parseInt(String(p.fy || ''), 10);
+      const fiscalYear = availableYears.includes(requestedYear) ? requestedYear : Number(statePeriods.latest_fiscal_year || availableYears[0]);
+      const states = (statePeriods.states || [])
+        .map((state) => ({ state: state.state, ...(state.yearly || []).find((row) => Number(row.fiscal_year) === fiscalYear) }))
+        .filter((row) => row.fiscal_year)
+        .map(derived)
+        .sort((a, b) => b.total_asylum_decisions - a.total_asylum_decisions);
+      const national = derived((statePeriods.national || []).find((row) => Number(row.fiscal_year) === fiscalYear) || {});
+      return out(200, {
+        fiscal_year: fiscalYear,
+        available_fiscal_years: availableYears,
+        period_status: fiscalYear === Number(statePeriods.latest_fiscal_year) ? statePeriods.latest_period_status : 'complete',
+        period_end: fiscalYear === Number(statePeriods.latest_fiscal_year) ? statePeriods.scope_end : `${fiscalYear}-09-30`,
+        source_snapshot_date: statePeriods.source_snapshot_date,
+        attribution: statePeriods.attribution,
+        states,
+        national,
+        ...(await provenance())
       });
-      const map = new Map();
-      for (const r of rows || []) {
-        const state = String(r.court_state || '').trim().toUpperCase();
-        if (!state) continue;
-        const x = map.get(state) || { state, courts: new Set(), judges: 0, total_asylum_decisions: 0, grants: 0, denials: 0, other_decisions: 0 };
-        if (r.court_name) x.courts.add(r.court_name);
-        x.judges += 1;
-        x.total_asylum_decisions += num(r.total_asylum_decisions);
-        x.grants += num(r.grants);
-        x.denials += num(r.denials);
-        x.other_decisions += num(r.other_decisions);
-        map.set(state, x);
-      }
-      const states = [...map.values()].map((x) => derived({ ...x, courts: x.courts.size })).sort((a, b) => b.total_asylum_decisions - a.total_asylum_decisions);
-      return out(200, { states, ...(await provenance()) });
     }
 
     if (mode === 'detail') {
@@ -420,6 +453,12 @@ exports.handler = async (event) => {
         judge: derived(judge),
         yearly: (yearly || []).map(derived),
         nationality: (nationality || []).map(derived),
+        nationality_yearly: nationalityYearByName.get(judgeNameKey(judge.judge_name)) || [],
+        nationality_yearly_source: {
+          source_snapshot_date: nationalityYearIndex.source_snapshot_date,
+          scope_start: nationalityYearIndex.scope_start,
+          scope_end: nationalityYearIndex.scope_end
+        },
         background: backgroundByName.get(judgeNameKey(judge.judge_name)) || null,
         background_policy: judgeBackgrounds.source_policy,
         ...(await provenance())

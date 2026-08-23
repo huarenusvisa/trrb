@@ -90,7 +90,7 @@ assert.match(client, /trend-line/);
 assert.doesNotMatch(page, /EOIR 尚未提供可核验的按月国籍裁决序列/);
 assert.match(detailPage, /法官背景与任命信息/);
 assert.match(detailPage, /未发现离任或被辞退记录，不等于确认仍在任/);
-assert.match(detailClient, /EOIR 网上上庭入口/);
+assert.match(detailClient, /EOIR Webex 网上上庭入口/);
 assert.match(detailClient, /\['2026', '2025', '2024'\]/, 'judge years must display in 2026, 2025, 2024 order');
 assert.match(detailClient, /横向年度裁决对比图/);
 assert.doesNotMatch(detailClient, /中等样本/);

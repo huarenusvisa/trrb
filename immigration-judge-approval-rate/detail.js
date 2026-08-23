@@ -3,6 +3,9 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 let nationality = [];
+let nationalityYearly = [];
+let nationalityFiscalYear = 2026;
+let nationalitySource = null;
 const sampleText = (level, count) => level === 'insufficient' || level === 'small'
   ? `仅 ${fmt(count)} 件有效裁决，少于 50 件，因此不展示通过率。`
   : Number(count) < 200
@@ -35,7 +38,7 @@ function renderWebex(webex) {
   if (!links.length) return;
   const container = $('#judge-webex');
   container.hidden = false;
-  container.innerHTML = `<b>EOIR 网上上庭入口</b>${links.map((item) => `<a href="${esc(item.webex_url)}" target="_blank" rel="noopener">${esc(item.court_name || 'Webex 网上上庭')} ↗</a><small>电话 ${esc(webex.telephonic_number || '1-415-527-5035')} · 接入码 ${esc(item.access_code || '见官方页面')}</small>`).join('')}<small>是否网上上庭以本人开庭通知为准；不确定时请联系移民法院。</small>`;
+  container.innerHTML = `<b><i class="webex-icon" aria-hidden="true">W</i> EOIR Webex 网上上庭入口</b>${links.map((item) => `<div class="webex-link-item"><a href="${esc(item.webex_url)}" target="_blank" rel="noopener">${esc(item.court_name || 'Webex 网上上庭')} ↗</a><code>${esc(item.webex_url)}</code><small>电话 ${esc(webex.telephonic_number || '1-415-527-5035')} · 接入码 ${esc(item.access_code || '见官方页面')}</small></div>`).join('')}<small>请先核对上方完整 Webex URL 与本人开庭通知是否一致。是否网上上庭以本人开庭通知为准；不确定时请联系移民法院。</small>`;
 }
 
 function outcomeHeader(firstLabel) {
@@ -87,8 +90,32 @@ function renderYearlyChart(rows) {
   chart.innerHTML = `<div class="year-chart-head"><b>2026、2025、2024 年裁决结果</b><span><i class="approval"></i>批准 <i class="denial"></i>拒绝 <i class="other"></i>其他</span></div><div class="year-chart-scroll"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="横向年度裁决对比图">${grid}${bars}</svg></div>`;
 }
 
-function renderCountries(rows) {
-  $('#nationality').innerHTML = rows.length ? `${outcomeHeader('国籍')}${rows.map((row) => outcomeRow(`<b>${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : '<div class="empty">暂无国籍细分数据</div>';
+function enrichNationalityRow(row) {
+  const grants = Number(row.grants || 0);
+  const denials = Number(row.denials || 0);
+  const adjudicated = grants + denials;
+  return {
+    ...row,
+    adjudicated_decisions: adjudicated,
+    adjudicated_approval_rate: adjudicated >= 50 ? grants / adjudicated * 100 : null
+  };
+}
+
+function nationalityPeriodLabel(year) {
+  const end = Number(year) === 2026 ? (nationalitySource?.scope_end || '2026-07-01') : `${year}-09-30`;
+  return `FY ${year}：${Number(year) - 1}-10-01 至 ${end} · 每行显示财年、国籍、案件数和真实裁决结果。`;
+}
+
+function renderCountries() {
+  const query = String($('#country-filter').value || '').trim().toLowerCase();
+  const rows = nationalityYearly
+    .filter((row) => Number(row.fiscal_year) === nationalityFiscalYear)
+    .filter((row) => !query || [row.nationality, row.nationality_code].filter(Boolean).some((value) => String(value).toLowerCase().includes(query)))
+    .map(enrichNationalityRow)
+    .sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
+  $('#nationality-period-label').textContent = nationalityPeriodLabel(nationalityFiscalYear);
+  document.querySelectorAll('[data-nationality-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.nationalityFy) === nationalityFiscalYear));
+  $('#nationality').innerHTML = rows.length ? `${outcomeHeader('财年 / 国籍')}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : '<div class="empty">该财年暂无匹配国籍数据</div>';
 }
 
 async function load() {
@@ -121,7 +148,9 @@ async function load() {
     renderYearlyChart(yearly);
     $('#yearly').innerHTML = yearly.length ? `${outcomeHeader('财政年度')}${yearly.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>`, row)).join('')}` : '<div class="empty">2024–2026 暂无年度趋势数据</div>';
     nationality = data.nationality || [];
-    renderCountries(nationality);
+    nationalityYearly = data.nationality_yearly || [];
+    nationalitySource = data.nationality_yearly_source || null;
+    renderCountries();
     $('#detail-loading').hidden = true;
     $('#detail').hidden = false;
   } catch {
@@ -130,7 +159,10 @@ async function load() {
 }
 
 $('#country-filter').addEventListener('input', (event) => {
-  const query = event.target.value.trim().toLowerCase();
-  renderCountries(nationality.filter((row) => String(row.nationality || '').toLowerCase().includes(query)));
+  renderCountries();
 });
+document.querySelectorAll('[data-nationality-fy]').forEach((button) => button.addEventListener('click', () => {
+  nationalityFiscalYear = Number(button.dataset.nationalityFy);
+  renderCountries();
+}));
 load();

@@ -33,18 +33,34 @@ async function json(url) {
   return response.json();
 }
 
-function renderStates(rows) {
+function periodLabel(data) {
+  const year = Number(data?.fiscal_year || 0);
+  if (!year) return '财政年度待确认';
+  return data.period_status === 'year_to_date'
+    ? `FY ${year}（截至 ${data.period_end || data.source_snapshot_date || '最新数据日'}）`
+    : `FY ${year}（完整财年）`;
+}
+
+function renderStates(rows, data = {}) {
   const preferred = ['CA', 'NY', 'TX', 'FL', 'NJ', 'IL'];
   const normalized = [...rows].sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   const selected = preferred.map((code) => normalized.find((row) => String(row.state || '').toUpperCase() === code)).filter(Boolean);
   for (const row of normalized) if (selected.length < 6 && !selected.includes(row)) selected.push(row);
-  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}"><span><b>${esc(stateNames[String(row.state || '').toUpperCase()] || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)}件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
+  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}&fy=${encodeURIComponent(data.fiscal_year || '')}"><span><b>${esc(stateNames[String(row.state || '').toUpperCase()] || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)}件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
 
-  const grants = rows.reduce((sum, row) => sum + Number(row.grants || 0), 0);
-  const denials = rows.reduce((sum, row) => sum + Number(row.denials || 0), 0);
-  const nationalRate = grants + denials ? grants / (grants + denials) * 100 : null;
+  const national = data.national || {};
+  const grants = Number(national.grants || 0);
+  const denials = Number(national.denials || 0);
+  const nationalRate = national.adjudicated_approval_rate ?? (grants + denials ? grants / (grants + denials) * 100 : null);
   $('#national-rate').textContent = pct(nationalRate);
   $('#national-sample').textContent = `${fmt(grants + denials)} 件有效裁决样本`;
+  $('#court-count').textContent = fmt(national.courts);
+  $('#judge-count').textContent = fmt(national.judges);
+  $('#decision-count').textContent = fmt(national.total_asylum_decisions);
+  const label = periodLabel(data);
+  $('#snapshot-period-label').textContent = label;
+  $('#state-market-period-label').textContent = label;
+  document.querySelectorAll('[data-state-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.stateFy) === Number(data.fiscal_year)));
   renderStateMarket(selected, nationalRate);
 }
 
@@ -102,10 +118,10 @@ function renderStateMarket(rows) {
   chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州裁决结果占比：${esc(summary)}"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">${grid}${lines}${labels}</svg><span class="state-market-note">每条线表示该类结果占全部裁决的比例</span><span class="state-market-more">查看全部州 →</span></a>`;
 }
 
-async function loadOverview() {
+async function loadOverview(fiscalYear = 2026) {
   try {
-    const stateData = await json('/.netlify/functions/immigration-judges?mode=states');
-    renderStates(stateData.states || []);
+    const stateData = await json(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`);
+    renderStates(stateData.states || [], stateData);
   } catch (error) {
     $('#state-list').innerHTML = '<div class="empty">数据库暂时无法读取</div>';
     const chart = $('#state-market-chart');
@@ -146,9 +162,24 @@ function renderJudgeDirectory(rows, query = '') {
       : `<b class="directory-rate">${pct(row.adjudicated_approval_rate)}</b>`;
     const links = row.webex?.links || [];
     const webex = links.find((item) => String(item.court_name || '').toLowerCase() === String(row.court_name || '').toLowerCase()) || links[0];
-    const webexAction = webex ? `<small class="judge-webex"><a href="${esc(webex.webex_url)}" target="_blank" rel="noopener">Webex 网上上庭 ↗</a><span>电话接入码 ${esc(webex.access_code || '见官方页')}</span></small>` : '';
-    return `<div class="judge-directory-row"><span class="judge-directory-identity"><a class="judge-profile-link" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><strong>${esc(row.judge_name || '未命名法官')}</strong></a><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small>${webexAction}</span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 件有效裁决</small><a class="directory-detail-link" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}">查看详情 →</a></span></div>`;
+    const webexAction = webex ? `<small class="judge-webex"><a href="${esc(webex.webex_url)}" target="_blank" rel="noopener"><i aria-hidden="true">W</i> Webex 网上上庭 ↗</a><code>${esc(webex.webex_url)}</code><span>电话接入码 ${esc(webex.access_code || '见官方页')}</span></small>` : '';
+    const background = row.background_summary;
+    const backgroundText = background
+      ? [background.appointment_date ? `${background.appointment_date}任命` : '', background.appointment_court || '', background.biography_excerpt || ''].filter(Boolean).join(' · ')
+      : '暂未匹配到 DOJ/EOIR 官方任命简介';
+    const detailUrl = `${appPath('judge')}?id=${encodeURIComponent(row.id)}`;
+    return `<div class="judge-directory-row" data-href="${esc(detailUrl)}" role="link" tabindex="0"><span class="judge-directory-identity"><a class="judge-profile-link" href="${esc(detailUrl)}"><strong>${esc(row.judge_name || '未命名法官')}</strong></a><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small><small class="judge-background-summary"><b>法官背景</b>${esc(backgroundText)}</small><a class="judge-background-link" href="${esc(detailUrl)}#judge-background">查看法官背景 →</a>${webexAction}</span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 件有效裁决</small><a class="directory-detail-link" href="${esc(detailUrl)}">查看详情 →</a></span></div>`;
   }).join('') : `<div class="empty"><b>没有找到匹配法官</b><p>请尝试英文姓名、法院、城市或州代码。</p></div>`;
+  container.querySelectorAll('.judge-directory-row[data-href]').forEach((card) => {
+    const open = (event) => {
+      if (event.target.closest('a,button')) return;
+      location.href = card.dataset.href;
+    };
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') open(event);
+    });
+  });
 }
 
 function applyJudgeFilter(query, { scroll = false, updateUrl = true } = {}) {
@@ -206,9 +237,6 @@ async function loadAllJudges() {
     const data = await json('/.netlify/functions/immigration-judges?mode=all');
     allJudges = data.results || [];
     applyJudgeFilter($('#judge-q').value, { updateUrl: false });
-    $('#court-count').textContent = fmt(new Set(allJudges.map((row) => row.court_name).filter(Boolean)).size);
-    $('#judge-count').textContent = fmt(allJudges.length);
-    $('#decision-count').textContent = fmt(allJudges.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0));
     const latest = data.latest_import;
     const stamp = String(latest?.source_date || latest?.completed_at || '').slice(0, 10);
     $('#freshness-badge').textContent = stamp ? `更新至 ${stamp}` : '持续更新';
@@ -235,6 +263,7 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
   $('#judge-q').value = button.dataset.q;
   if (allJudges.length) applyJudgeFilter(button.dataset.q, { scroll: true });
 }));
+document.querySelectorAll('[data-state-fy]').forEach((button) => button.addEventListener('click', () => loadOverview(Number(button.dataset.stateFy))));
 
 useCleanDomainRoutes();
 const initial = new URLSearchParams(location.search).get('q') || '';

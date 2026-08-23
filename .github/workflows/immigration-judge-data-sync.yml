@@ -72,6 +72,7 @@ jobs:
         run: |
           set -o pipefail
           python scripts/generate-eoir-nationality-periods.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
+          python scripts/generate-eoir-state-and-judge-periods.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
           python scripts/sync-eoir-judge-backgrounds.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
           python scripts/sync-eoir-webex-links.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
           python scripts/import-eoir-judge-stats-v2.py 2>&1 | tee -a /tmp/immigration-judge-sync.log
@@ -153,6 +154,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports/immigration-judge-data-sync-latest.json \
             data/immigration-judge-nationality-periods*.json \
+            data/immigration-judge-state-periods.json \
+            data/immigration-judge-nationality-yearly*.json \
             data/immigration-judge-backgrounds.json \
             data/eoir-webex-links.json
           if ! git diff --cached --quiet; then

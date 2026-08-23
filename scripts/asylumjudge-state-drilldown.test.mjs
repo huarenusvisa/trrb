@@ -39,13 +39,16 @@ const { handler } = require(apiPath);
 const statesResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'states' } });
 const statesBody = JSON.parse(statesResponse.body);
 assert.equal(statesResponse.statusCode, 200);
-assert.deepEqual(statesBody.states.map((row) => row.state).sort(), ['CA', 'NY']);
+assert.equal(statesBody.fiscal_year, 2026);
+assert.equal(statesBody.states.length, 32, 'published FY data must expose every mapped state and territory');
+assert.ok(statesBody.states.some((row) => row.state === 'CA'));
+assert.ok(statesBody.states.some((row) => row.state === 'NY'));
 assert.equal(statesBody.states.some((row) => row.state === 'Unknown'), false, 'missing court_state must not become a clickable state');
 
 const courtsResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'courts', state: 'CA' } });
 const courtsBody = JSON.parse(courtsResponse.body);
 assert.equal(courtsResponse.statusCode, 200);
-assert.equal(courtsBody.count, 3);
+assert.ok(courtsBody.count > 3);
 assert.equal(courtsBody.courts.every((row) => row.court_state === 'CA'), true, 'CA drill-down must contain only CA courts');
 assert.equal(courtsBody.courts.some((row) => /New York/i.test(row.court_name)), false);
 

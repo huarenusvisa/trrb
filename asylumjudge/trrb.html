@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://trrb.net/asylumjudge">
   <meta name="theme-color" content="#14804a">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=9">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=10">
 </head>
 <body>
   <header class="site-header">
@@ -37,8 +37,8 @@
         <div class="hero-copy">
           <figure class="state-market" aria-labelledby="state-market-title">
             <figcaption class="state-market-head">
-              <div><span>STATE MARKET</span><b id="state-market-title">主要州裁决结果占比</b></div>
-              <div class="state-market-legend"><i class="approval"></i>批准 <i class="denial"></i>拒绝 <i class="other"></i>其他</div>
+              <div><span>STATE MARKET</span><b id="state-market-title">主要州裁决结果占比</b><small id="state-market-period-label">FY 2026（读取中）</small></div>
+              <div><div class="state-fy-tabs" aria-label="选择财政年度"><button class="active" type="button" data-state-fy="2026">2026</button><button type="button" data-state-fy="2025">2025</button><button type="button" data-state-fy="2024">2024</button></div><div class="state-market-legend"><i class="approval"></i>批准 <i class="denial"></i>拒绝 <i class="other"></i>其他</div></div>
             </figcaption>
             <div id="state-market-chart" class="state-market-chart" aria-live="polite">
               <div class="state-market-loading">正在读取各州数据…</div>
@@ -60,12 +60,12 @@
 
         <aside class="snapshot" aria-labelledby="snapshot-title">
           <div class="snapshot-head">
-            <div><span>全美数据库概览</span><h2 id="snapshot-title">庇护裁决数据</h2></div>
+            <div><span>全美数据库概览</span><h2 id="snapshot-title">庇护裁决数据</h2><small id="snapshot-period-label">FY 2026（读取中）</small></div>
             <span id="freshness-badge" class="live-badge">读取中</span>
           </div>
           <div class="national-rate">
             <div>
-              <span>数据库裁决批准率</span>
+              <span>全美裁决批准率</span>
               <strong id="national-rate">—</strong>
               <small id="national-sample">正在汇总州级样本</small>
             </div>
@@ -78,6 +78,7 @@
           <div class="state-list-head"><b>主要州数据</b><span>裁决批准率</span></div>
           <div id="state-list" class="state-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
           <a class="state-more" href="/asylumjudge/states">查看全部州数据 <span>→</span></a>
+          <p class="snapshot-source">按裁决当时所在移民法院归州；批准率＝批准÷（批准＋拒绝）。</p>
         </aside>
       </div>
     </section>
@@ -145,6 +146,6 @@
   <footer>
     <div class="shell footer-inner"><div><b>唐人日报 · 移民法官通过率</b><span>TRRB.net/asylumjudge</span></div><p>与 AsylumJudge.com 共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/site.js?v=10" defer></script>
+  <script src="/asylumjudge/site.js?v=11" defer></script>
 </body>
 </html>

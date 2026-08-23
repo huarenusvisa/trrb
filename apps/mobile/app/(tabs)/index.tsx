@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 
 const categories = ['重要新闻', '美国时政', '美国警情', '中国官场', '庇护百科'];
+const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', '驱逐快报', 'ICE执法', 'ICE执法追踪', 'ICE新闻']);
 
 const topicCards = [
   {
@@ -129,7 +130,16 @@ export default function HomeScreen() {
   const importantNews = useMemo(() => homepageArticles.filter((item) => item.category_name === '重要新闻'), [homepageArticles]);
   const lead = useMemo(() => importantNews.find((item) => item.cover_image) || importantNews[0] || null, [importantNews]);
   const leadStack = useMemo(() => homepageArticles.filter((item) => String(item.id) !== String(lead?.id)).slice(0, 4), [homepageArticles, lead]);
-  const rankItems = useMemo(() => (hotHeadlines.length ? hotHeadlines : homepageArticles).slice(0, 8), [homepageArticles, hotHeadlines]);
+  const rankItems = useMemo(() => {
+    const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+    return articles
+      .filter((item) => rankCategories.has(String(item.category_name || '').trim()))
+      .filter((item) => {
+        const time = Date.parse(item.published_at || item.created_at || '');
+        return Number.isFinite(time) && time >= cutoff && time <= Date.now();
+      })
+      .slice(0, 8);
+  }, [articles]);
   const categoryGroups = useMemo(() => categories.map((category) => ({
     category,
     items: homepageArticles.filter((item) => item.category_name === category).slice(0, 6),

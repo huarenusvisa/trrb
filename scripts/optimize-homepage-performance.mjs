@@ -44,6 +44,7 @@ if (!html.includes('article-route-runtime.js')) {
 // renderer after the underlying file changed.
 const coreVersions = new Map([
   ['article-route-runtime.js', '20260819-seo-v5'],
+  ['homepage-ranking.js', '20260823-rank-whitelist-1'],
   ['articles-home.js', '20260822-hotfix-1'],
   ['ice-home-unify.js', '20260819-preserve-sections-2'],
   ['topic-focus.js', '20260819-live-3'],

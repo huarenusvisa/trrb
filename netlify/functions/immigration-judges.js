@@ -47,6 +47,23 @@ async function restAll(table, { query = {}, pageSize = REST_PAGE_SIZE, maxRows =
   throw new Error(`${table} pagination exceeded ${maxRows} rows`);
 }
 
+async function restAll(table, { query = {}, pageSize = REST_PAGE_SIZE, maxRows = REST_MAX_ROWS } = {}) {
+  const rows = [];
+  for (let offset = 0; offset < maxRows; offset += pageSize) {
+    const page = await rest(table, {
+      query: {
+        ...query,
+        limit: String(pageSize),
+        offset: String(offset)
+      }
+    });
+    if (!Array.isArray(page)) throw new Error(`${table} pagination returned a non-array response`);
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+  }
+  throw new Error(`${table} pagination exceeded ${maxRows} rows`);
+}
+
 function derived(row) {
   const grants = num(row.grants);
   const denials = num(row.denials);

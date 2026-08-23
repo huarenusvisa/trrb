@@ -18,7 +18,8 @@ https://asylumjudge.com/judge /immigration-judge-approval-rate/detail.html 200!
 https://asylumjudge.com/court /immigration-judge-approval-rate/court-detail.html 200!
 https://asylumjudge.com/courts /immigration-judge-approval-rate/courts.html 200!
 https://asylumjudge.com/states /immigration-judge-approval-rate/states.html 200!
-https://asylumjudge.com/china /immigration-judge-approval-rate/china-dashboard.html 200!
+https://asylumjudge.com/nationality /immigration-judge-approval-rate/china-dashboard.html 200!
+https://asylumjudge.com/china /nationality?country=China 301!
 https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology.html 200!
 /asylumjudge /asylumjudge/trrb.html 200!
 /asylumjudge/ /asylumjudge/trrb.html 200!
@@ -26,7 +27,8 @@ https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology
 /asylumjudge/court /immigration-judge-approval-rate/court-detail.html 200!
 /asylumjudge/courts /immigration-judge-approval-rate/courts.html 200!
 /asylumjudge/states /immigration-judge-approval-rate/states.html 200!
-/asylumjudge/china /immigration-judge-approval-rate/china-dashboard.html 200!
+/asylumjudge/nationality /immigration-judge-approval-rate/china-dashboard.html 200!
+/asylumjudge/china /asylumjudge/nationality?country=China 301!
 /asylumjudge/methodology /immigration-judge-approval-rate/methodology.html 200!
 /immigration-judge-approval-rate /asylumjudge 301!
 /immigration-judge-approval-rate/ /asylumjudge 301!
@@ -35,7 +37,7 @@ https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology
 /immigration-judge-approval-rate/court-detail.html /asylumjudge/court 301!
 /immigration-judge-approval-rate/courts.html /asylumjudge/courts 301!
 /immigration-judge-approval-rate/states.html /asylumjudge/states 301!
-/immigration-judge-approval-rate/china-dashboard.html /asylumjudge/china 301!
+/immigration-judge-approval-rate/china-dashboard.html /asylumjudge/nationality 301!
 /immigration-judge-approval-rate/methodology.html /asylumjudge/methodology 301!
 http://trrb.net/* https://trrb.net/:splat 301!
 http://www.trrb.net/* https://trrb.net/:splat 301!

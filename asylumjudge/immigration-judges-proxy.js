@@ -15,14 +15,15 @@ exports.handler = async (event) => {
       if (value !== undefined && value !== null) url.searchParams.set(key, String(value));
     }
     const response = await fetch(url, {
-      headers: { Accept: 'application/json' },
+      cache: 'no-store',
+      headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' },
       signal: AbortSignal.timeout(25000)
     });
     return {
       statusCode: response.status,
       headers: {
         'Content-Type': response.headers.get('content-type') || 'application/json; charset=utf-8',
-        'Cache-Control': response.headers.get('cache-control') || 'public, max-age=60, stale-while-revalidate=300',
+        'Cache-Control': event.queryStringParameters?.mode === 'detail' ? 'no-store' : (response.headers.get('cache-control') || 'public, max-age=60, stale-while-revalidate=300'),
         'Access-Control-Allow-Origin': '*'
       },
       body: await response.text()

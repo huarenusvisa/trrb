@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-23T07:00:42.477Z",
+  "generatedAt": "2026-08-23T07:21:00.870Z",
   "scope": "Federal Register documents classified by the official API as Rule. FederalRegister.gov is used for discovery/metadata; official PDF links should be used for authoritative legal text.",
   "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE",
   "count": 50,
@@ -27,7 +27,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/24/2026-17231/revisions-to-the-entity-list",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-24/pdf/2026-17231.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17231.pdf?1787316319",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -79,7 +79,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/24/2026-17228/coastal-migratory-pelagic-resources-of-the-gulf-and-atlantic-region-commercial-closure-for-atlantic",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-24/pdf/2026-17228.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17228.pdf?1787256908",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -105,7 +105,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/24/2026-17217/safety-zone-tv-denise-foss-on-1254223-honolulu-hi",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-24/pdf/2026-17217.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17217.pdf?1787316317",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },
@@ -131,7 +131,7 @@
       "effectiveOn": null,
       "htmlUrl": "https://www.federalregister.gov/documents/2026/08/24/2026-17198/gulf-islands-national-seashore-personal-watercraft",
       "officialPdfUrl": "https://www.govinfo.gov/content/pkg/FR-2026-08-24/pdf/2026-17198.pdf",
-      "publicInspectionPdfUrl": null,
+      "publicInspectionPdfUrl": "https://public-inspection.federalregister.gov/2026-17198.pdf?1787316315",
       "citation": null,
       "sourceApi": "https://www.federalregister.gov/api/v1/documents.json?per_page=50&order=newest&conditions%5Btype%5D%5B%5D=RULE"
     },

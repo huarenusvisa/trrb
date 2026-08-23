@@ -13,6 +13,9 @@ const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylu
 const appPath = (page = '') => trrbColumn
   ? `/asylumjudge${page ? `/${page}` : ''}`
   : (page ? `/${page}` : '/');
+const sharedApiOrigin = /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)
+  ? 'https://trrb.net'
+  : '';
 
 function useCleanDomainRoutes() {
   if (!trrbColumn && !/^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)) return;
@@ -31,7 +34,10 @@ function useCleanDomainRoutes() {
 }
 
 async function json(url) {
-  const response = await fetch(url);
+  const requestUrl = sharedApiOrigin && url.startsWith('/.netlify/functions/')
+    ? `${sharedApiOrigin}${url}`
+    : url;
+  const response = await fetch(requestUrl);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }

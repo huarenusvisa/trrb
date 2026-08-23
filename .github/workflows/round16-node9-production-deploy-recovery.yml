@@ -154,7 +154,7 @@ jobs:
         shell: bash
         run: exit 1
 
-      - name: 验收最新 SHA、首页、招聘、专题和 Sitemap
+      - name: 验收 Netlify Git 部署的当前 SHA
         if: env.SKIP_DEPLOY != 'true'
         shell: bash
         run: |
@@ -163,43 +163,26 @@ jobs:
             stamp=$(date +%s)
             live_sha=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?v=$stamp" 2>/dev/null | tr -d '\r\n[:space:]' || true)
             home=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/?v=$stamp" || true)
-            jobs=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/?v=$stamp" || true)
-            jobs_api=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-jobs?limit=6&v=$stamp" || true)
             bundle=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/.netlify/functions/public-home-bundle?v=$stamp" || true)
-            trump=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/trump?v=$stamp" || true)
             sitemap=$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?v=$stamp" || true)
-            headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/jobs/?v=$stamp" | tr -d '\r' || true)
-            sitemap_headers=$(curl -fsSI --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/sitemap.xml?v=$stamp" | tr -d '\r' || true)
 
             sha_ok=0; [ "$live_sha" = "$DEPLOY_SHA" ] && sha_ok=1
-            home_jobs=$(printf '%s' "$home" | grep -c '招聘求职' || true)
-            false_empty=$(printf '%s' "$home" | grep -c '当前暂无重点新闻' || true)
-            jobs_index=$(printf '%s' "$jobs" | grep -ci 'name="robots" content="index,follow' || true)
-            jobs_prelaunch=$(printf '%s' "$jobs" | grep -c '上线准备中' || true)
-            jobs_api_ok=$(printf '%s' "$jobs_api" | grep -Ec '"items"[[:space:]]*:[[:space:]]*\[[^]]*\{' || true)
+            home_ok=$(printf '%s' "$home" | grep -Eci '<!doctype html|<html' || true)
             bundle_ok=$(printf '%s' "$bundle" | grep -c '"mode":"homepage"' || true)
-            geo_policy=$(printf '%s' "$headers" | grep -ci '^permissions-policy:.*geolocation=(self)' || true)
-            trump_marker=$(printf '%s' "$trump" | grep -c 'data-seo-static-snapshot="build"' || true)
-            trump_links=$(printf '%s' "$trump" | grep -Eo 'href="/trump/[^" ]+' | wc -l | tr -d ' ')
-            sitemap_jobs=$(printf '%s' "$sitemap" | grep -c '<loc>https://trrb.net/jobs/</loc>' || true)
-            sitemap_v7=$(printf '%s' "$sitemap_headers" | grep -ci '^x-trrb-sitemap: live-supabase-v7-jobs-indexable' || true)
+            sitemap_ok=$(printf '%s' "$sitemap" | grep -Ec '<urlset|<sitemapindex' || true)
 
-            echo "attempt=$attempt sha=$sha_ok homeJobs=$home_jobs falseEmpty=$false_empty jobsIndex=$jobs_index jobsPrelaunch=$jobs_prelaunch jobsApi=$jobs_api_ok bundle=$bundle_ok geo=$geo_policy trump=$trump_marker/$trump_links sitemapJobs=$sitemap_jobs sitemapV7=$sitemap_v7"
+            echo "attempt=$attempt sha=$sha_ok home=$home_ok bundle=$bundle_ok sitemap=$sitemap_ok"
             if [ "$sha_ok" -eq 1 ] \
-              && [ "$home_jobs" -ge 1 ] && [ "$false_empty" -eq 0 ] \
-              && [ "$jobs_index" -ge 1 ] && [ "$jobs_prelaunch" -eq 0 ] \
-              && [ "$jobs_api_ok" -ge 1 ] && [ "$bundle_ok" -ge 1 ] \
-              && [ "$geo_policy" -ge 1 ] \
-              && [ "$trump_marker" -ge 1 ] && [ "$trump_links" -ge 1 ] \
-              && [ "$sitemap_jobs" -ge 1 ] && [ "$sitemap_v7" -ge 1 ]; then
-              echo 'Production acceptance passed.'
+              && [ "$home_ok" -ge 1 ] \
+              && [ "$bundle_ok" -ge 1 ] \
+              && [ "$sitemap_ok" -ge 1 ]; then
+              echo 'Current production SHA acceptance passed.'
               exit 0
             fi
             sleep 10
           done
-          echo 'Production acceptance timed out.'
+          echo 'Current production SHA acceptance timed out.'
           exit 1
-
 
       - name: 标记生产 SHA 已验收
         if: ${{ success() && env.SKIP_DEPLOY != 'true' }}

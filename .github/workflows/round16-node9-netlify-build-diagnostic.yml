@@ -2,14 +2,6 @@ name: 第十六轮节点9-Netlify生产构建诊断
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/round16-node9-netlify-build-diagnostic.yml'
-      - 'netlify.toml'
-      - 'legal/**'
-      - 'data/legal/**'
-      - 'scripts/generate-legal-sitemap.mjs'
 
 permissions:
   contents: read

@@ -2,17 +2,6 @@ name: Round 17 Node 3 - Related Authorities Production
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'legal/index.html'
-      - 'legal/legal-app.js'
-      - 'legal/detail.html'
-      - 'legal/detail.js'
-      - 'scripts/round17-node1-search-relevance-audit.mjs'
-      - 'scripts/round17-node2-multifilter-url-audit.mjs'
-      - 'scripts/round17-node3-related-authorities-audit.mjs'
-      - '.github/workflows/round17-node3-related-authorities.yml'
 
 permissions:
   contents: read

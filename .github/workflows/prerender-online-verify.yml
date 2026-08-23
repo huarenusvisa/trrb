@@ -2,20 +2,6 @@ name: 文章预渲染线上验证
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "netlify/edge-functions/article-prerender.ts"
-      - "article.html"
-      - "article-index-guard.js"
-      - "scripts/generate-sitemaps.mjs"
-      - "scripts/clean-sitemap-against-database.mjs"
-      - "scripts/ensure-sitemap-articles.mjs"
-      - "scripts/split-sitemap-index.mjs"
-      - "scripts/verify-prerender-online.mjs"
-      - "_redirects"
-      - "netlify.toml"
-      - ".github/workflows/prerender-online-verify.yml"
 
 permissions:
   contents: read

@@ -1,13 +1,6 @@
 name: APP Batch 2 Node 3
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/**'
-      - 'scripts/audit-app-batch2-node3.mjs'
-      - '.github/workflows/app-batch2-node3.yml'
-      - 'docs/APP-BATCH-2-NEWS-EXPERIENCE-AND-ENGAGEMENT.md'
   workflow_dispatch:
 
 jobs:

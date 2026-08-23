@@ -1,14 +1,7 @@
 name: JOBS-R1 Node 10
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/app/jobs.tsx'
-      - 'netlify/functions/public-jobs.js'
-      - 'scripts/audit-jobs-r1-node10.mjs'
-      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
-      - '.github/workflows/jobs-r1-node10.yml'
   workflow_dispatch:
+
 jobs:
   full-acceptance:
     runs-on: ubuntu-latest

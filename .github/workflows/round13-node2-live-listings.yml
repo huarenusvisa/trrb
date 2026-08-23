@@ -2,21 +2,6 @@ name: 第十三轮节点2-首页栏目专题实时同步
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "articles-home.js"
-      - "articles-home-live-fix.js"
-      - "homepage-refresh-guard.js"
-      - "listing.js"
-      - "listing.html"
-      - "listing-live-category-fix.js"
-      - "article-route-runtime.js"
-      - "topic/ice/**"
-      - "trump/**"
-      - "netlify/edge-functions/article-prerender.ts"
-      - "scripts/round13-node2-live-listings.mjs"
-      - ".github/workflows/round13-node2-live-listings.yml"
 
 permissions:
   contents: read

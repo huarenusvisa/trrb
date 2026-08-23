@@ -2,14 +2,6 @@ name: 栏目CMS与生产调度数据库迁移
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "supabase/migrations/20260724_category_cms_v3.sql"
-      - "supabase/migrations/20260725_retire_deport_and_refine_ice.sql"
-      - "supabase/migrations/20260725_trump_topic_and_media_cleanup.sql"
-      - "supabase/migrations/20260730_ice_supabase_cron_dispatch.sql"
-      - ".github/workflows/category-cms-migrate.yml"
 
 permissions:
   contents: read

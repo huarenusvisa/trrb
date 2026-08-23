@@ -2,19 +2,6 @@ name: 第十四轮节点7-Core-Web-Vitals深度性能优化
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round14-node7-core-web-vitals-audit.mjs"
-      - ".github/workflows/round14-node7-core-web-vitals.yml"
-      - "index.html"
-      - "listing.html"
-      - "styles.css"
-      - "site-common.js"
-      - "homepage*.js"
-      - "listing*.js"
-      - "article*.js"
-      - "netlify/edge-functions/**"
 
 permissions:
   contents: read

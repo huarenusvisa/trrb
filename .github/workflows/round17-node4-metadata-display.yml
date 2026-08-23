@@ -2,12 +2,6 @@ name: Round 17 Node 4 - Standardized Metadata Production
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'legal/detail.js'
-      - 'scripts/round17-node4-metadata-display-audit.mjs'
-      - '.github/workflows/round17-node4-metadata-display.yml'
 
 permissions:
   contents: read

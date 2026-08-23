@@ -2,16 +2,6 @@ name: 第十五轮节点6-判例与新规统一数据库、去重及版本控制
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node6-unified-legal-database.mjs"
-      - ".github/workflows/round15-node6-unified-legal-database.yml"
-      - "data/legal/supreme-court-latest.json"
-      - "data/legal/circuit-opinions-latest.json"
-      - "data/legal/bia-precedent-latest.json"
-      - "data/legal/whitehouse-executive-orders-latest.json"
-      - "data/legal/federal-register-final-rules-latest.json"
 
 permissions:
   contents: write

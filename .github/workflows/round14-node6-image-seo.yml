@@ -2,16 +2,6 @@ name: 第十四轮节点6-图片SEO-Alt-Lazy-load完整性
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round14-node6-image-seo-audit.mjs"
-      - ".github/workflows/round14-node6-image-seo.yml"
-      - "netlify/edge-functions/listing-image-seo.ts"
-      - "listing.js"
-      - "site-common.js"
-      - "image-cdn-optimizer.js"
-      - "index.html"
 
 permissions:
   contents: read

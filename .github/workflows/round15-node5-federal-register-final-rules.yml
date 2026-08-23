@@ -2,13 +2,6 @@ name: "第十五轮节点5-Federal Register新规 / Final Rule自动采集"
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node5-federal-register-final-rules.mjs"
-      - ".github/workflows/round15-node5-federal-register-final-rules.yml"
-  schedule:
-    - cron: "51 */6 * * *"
 
 permissions:
   contents: write

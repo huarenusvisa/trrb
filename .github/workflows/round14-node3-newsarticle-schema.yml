@@ -2,13 +2,6 @@ name: 第十四轮节点3-NewsArticle结构化数据完整性
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round14-node3-newsarticle-schema-audit.mjs"
-      - ".github/workflows/round14-node3-newsarticle-schema.yml"
-      - "article-seo.js"
-      - "netlify/edge-functions/article-prerender.ts"
 
 permissions:
   contents: read

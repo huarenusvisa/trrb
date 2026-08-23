@@ -1,15 +1,6 @@
 name: APP Batch 1 Node 5
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260816150000_trrb_comment_thread_integrity.sql'
-      - 'apps/mobile/src/api/comments.ts'
-      - 'apps/mobile/src/components/CommentThread.tsx'
-      - 'apps/mobile/app/article/[id].tsx'
-      - 'scripts/audit-app-batch1-node5.mjs'
-      - '.github/workflows/app-batch1-node5.yml'
   workflow_dispatch:
 
 concurrency:

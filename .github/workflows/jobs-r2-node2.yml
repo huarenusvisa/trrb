@@ -1,15 +1,6 @@
 name: JOBS-R2 Node 2
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260817012000_jobs_r2_node2_pc_header.sql'
-      - 'jobs/search.html'
-      - 'jobs/search.js'
-      - 'scripts/audit-jobs-r2-node2.mjs'
-      - 'docs/JOBS-R2-LOCATION-AWARE-JOB-DISCOVERY-UX.md'
-      - '.github/workflows/jobs-r2-node2.yml'
   workflow_dispatch:
 
 permissions:

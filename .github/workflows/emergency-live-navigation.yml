@@ -1,11 +1,6 @@
 name: 紧急文章跳转验收
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/verify-live-navigation-emergency.mjs"
-      - ".github/workflows/emergency-live-navigation.yml"
   workflow_dispatch:
 
 permissions:

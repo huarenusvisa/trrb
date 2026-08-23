@@ -2,13 +2,6 @@ name: 新闻AI封面自动补全
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/ai-cover-backfill.mjs"
-      - ".github/workflows/ai-cover-backfill.yml"
-  schedule:
-    - cron: "5,20,35,50 * * * *"
 
 permissions:
   contents: read

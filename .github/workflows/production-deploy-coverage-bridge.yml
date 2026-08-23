@@ -2,32 +2,6 @@ name: Production Deploy Coverage Bridge
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'index.html'
-      - 'site.webmanifest'
-      - '404.html'
-      - '_headers'
-      - '_redirects'
-      - 'netlify.toml'
-      - 'jobs-home.js'
-      - 'jobs/**'
-      - 'niulai/**'
-      - 'immigrate/center-link-canonical.js'
-      - 'trump/**'
-      - 'netlify/functions/**'
-      - 'netlify/edge-functions/**'
-      - 'admin/ice-report-controls-v2.js'
-      - 'admin/ice-report-integrated.js'
-      - 'admin/ice-report-raw-lock.js'
-      - 'scripts/generate-legal-sitemap.mjs'
-      - 'scripts/generate-sitemaps.mjs'
-      - 'scripts/split-sitemap-index.mjs'
-      - 'scripts/validate-site.mjs'
-      - 'scripts/seo-integrity-audit.mjs'
-      - 'sitemap-legal.xml'
-      - '.github/workflows/production-deploy-coverage-bridge.yml'
 
 permissions:
   contents: read

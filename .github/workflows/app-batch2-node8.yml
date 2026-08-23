@@ -1,19 +1,6 @@
 name: APP Batch 2 Node 8
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/app/search.tsx'
-      - 'apps/mobile/src/api/trrb.ts'
-      - 'apps/mobile/src/search/**'
-      - 'apps/mobile/src/storage/searchHistory.ts'
-      - 'apps/mobile/src/components/PaginatedNewsList.tsx'
-      - 'netlify/functions/public-articles.js'
-      - 'netlify/functions/public-app-trending-searches.js'
-      - 'scripts/audit-app-batch2-node8.mjs'
-      - '.github/workflows/app-batch2-node8.yml'
-      - 'docs/APP-BATCH-2-NEWS-EXPERIENCE-AND-ENGAGEMENT.md'
   workflow_dispatch:
 
 jobs:

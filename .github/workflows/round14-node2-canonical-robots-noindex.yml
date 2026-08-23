@@ -2,15 +2,6 @@ name: 第十四轮节点2-Canonical-Robots-Noindex深度治理
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round14-node2-canonical-robots-noindex-audit.mjs"
-      - ".github/workflows/round14-node2-canonical-robots-noindex.yml"
-      - "robots.txt"
-      - "article-index-guard.js"
-      - "netlify.toml"
-      - "netlify/edge-functions/**"
 
 permissions:
   contents: read

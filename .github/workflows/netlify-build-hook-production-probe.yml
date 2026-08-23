@@ -2,11 +2,6 @@ name: Netlify Build Hook生产探针
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/netlify-build-hook-production-probe.yml'
-      - 'deploy-generation.txt'
 
 permissions:
   contents: write

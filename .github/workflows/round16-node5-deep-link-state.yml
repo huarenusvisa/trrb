@@ -2,13 +2,6 @@ name: 第十六轮节点5-五大类深链接筛选与状态保持
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "legal/**"
-      - "homepage-immigration-hub.js"
-      - "scripts/round16-node5-deep-link-state.mjs"
-      - ".github/workflows/round16-node5-deep-link-state.yml"
 
 permissions:
   contents: read

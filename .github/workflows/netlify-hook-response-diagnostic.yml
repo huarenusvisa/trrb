@@ -2,10 +2,6 @@ name: Netlify Homepage Build Stage Probe
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/netlify-hook-response-diagnostic.yml'
 
 permissions:
   contents: write

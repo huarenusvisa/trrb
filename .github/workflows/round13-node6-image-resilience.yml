@@ -2,16 +2,6 @@ name: 第十三轮节点6-图片上传与封面自动容灾
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "admin/admin.js"
-      - "listing.js"
-      - "homepage-refresh-guard.js"
-      - "article.js"
-      - "image-placeholder.svg"
-      - "scripts/round13-node6-image-resilience-audit.mjs"
-      - ".github/workflows/round13-node6-image-resilience.yml"
 
 permissions:
   contents: read

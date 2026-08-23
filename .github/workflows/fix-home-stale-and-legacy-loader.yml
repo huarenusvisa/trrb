@@ -2,18 +2,6 @@ name: 首页实时源与历史文章兼容验收（只读）
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'article.html'
-      - 'articles-home.js'
-      - 'homepage-refresh-guard.js'
-      - 'articles-home-index.js'
-      - 'netlify/functions/public-home-bundle.js'
-      - 'netlify/edge-functions/00-legacy-article-query-guard.ts'
-      - 'netlify/edge-functions/article-prerender.ts'
-      - 'scripts/optimize-homepage-performance.mjs'
-      - '.github/workflows/fix-home-stale-and-legacy-loader.yml'
 
 permissions:
   contents: read

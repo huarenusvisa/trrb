@@ -2,10 +2,6 @@ name: Netlify Token Live Diagnostic
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/netlify-token-live-diagnostic.yml'
 
 permissions:
   contents: write

@@ -1,19 +1,6 @@
 name: APP Batch 1 Final Acceptance
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/**'
-      - 'admin/**'
-      - 'netlify/functions/community-admin.js'
-      - 'netlify/functions/delete-account.js'
-      - 'netlify/functions/_shared/supabase-admin.js'
-      - 'supabase/migrations/**'
-      - 'scripts/audit-app-batch1-*.mjs'
-      - 'scripts/audit-community-foundation.mjs'
-      - 'delete-account.html'
-      - '.github/workflows/app-batch1-final.yml'
   workflow_dispatch:
 
 jobs:

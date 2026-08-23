@@ -2,23 +2,6 @@ name: Category Pagination Production Audit
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'listing.html'
-      - 'listing.js'
-      - 'listing-seo.js'
-      - 'netlify/functions/public-category-page.js'
-      - 'netlify/edge-functions/category-prerender.ts'
-      - 'netlify/edge-functions/01-listing-category-canonical.ts'
-      - 'netlify/edge-functions/01-immigration-knowledge-canonical.ts'
-      - 'netlify/edge-functions/01-trump-route-canonical.ts'
-      - 'netlify/edge-functions/01-people-retired.ts'
-      - 'netlify/edge-functions/02-public-nonindex.ts'
-      - 'health.html'
-      - 'scripts/category-pagination-production-audit.mjs'
-      - 'scripts/article-category-consistency-audit.mjs'
-      - '.github/workflows/category-pagination-production-audit.yml'
 
 permissions:
   contents: read

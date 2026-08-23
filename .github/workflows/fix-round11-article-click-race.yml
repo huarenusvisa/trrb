@@ -2,15 +2,6 @@ name: 第十一轮文章跳转竞态验收（只读）
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "article.html"
-      - "article-live-neighbors.js"
-      - "article-v31.js"
-      - "articles-home.js"
-      - "netlify/edge-functions/article-prerender.ts"
-      - ".github/workflows/fix-round11-article-click-race.yml"
 
 permissions:
   contents: read

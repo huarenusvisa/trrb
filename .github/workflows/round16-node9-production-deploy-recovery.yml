@@ -49,6 +49,8 @@ jobs:
 
       - name: 锁定最新 main
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           sleep 20
@@ -58,7 +60,19 @@ jobs:
           echo "DEPLOY_SHA=$DEPLOY_SHA" >> "$GITHUB_ENV"
           echo "deploying_main=$DEPLOY_SHA"
 
+          statuses="$(curl -fsS             -H "Authorization: Bearer $GITHUB_TOKEN"             -H 'Accept: application/vnd.github+json'             "https://api.github.com/repos/$GITHUB_REPOSITORY/commits/$DEPLOY_SHA/status" || true)"
+          already_accepted="$(STATUS_JSON="$statuses" node -e '
+            const payload = JSON.parse(process.env.STATUS_JSON || "{}");
+            const hit = (payload.statuses || []).some((item) =>
+              item.context === "trrb/production-accepted" && item.state === "success"
+            );
+            process.stdout.write(hit ? "true" : "false");
+          ')"
+          echo "SKIP_DEPLOY=$already_accepted" >> "$GITHUB_ENV"
+          echo "already_accepted=$already_accepted"
+
       - name: 标记生产部署开始
+        if: env.SKIP_DEPLOY != 'true'
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -72,6 +86,7 @@ jobs:
             -d '{"state":"pending","context":"trrb/production-trigger","description":"Production deployment trigger started"}' >/dev/null
 
       - name: 发布 Netlify Production
+        if: env.SKIP_DEPLOY != 'true'
         id: deploy
         continue-on-error: true
         shell: bash
@@ -112,7 +127,7 @@ jobs:
           echo "DEPLOY_MODE=$deploy_mode" >> "$GITHUB_ENV"
 
       - name: 发布生产触发结果状态
-        if: always()
+        if: ${{ always() && env.SKIP_DEPLOY != 'true' }}
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -135,11 +150,12 @@ jobs:
             -d "$payload" >/dev/null
 
       - name: 停止失败的生产触发
-        if: steps.deploy.outcome != 'success'
+        if: ${{ env.SKIP_DEPLOY != 'true' && steps.deploy.outcome != 'success' }}
         shell: bash
         run: exit 1
 
       - name: 验收最新 SHA、首页、招聘、专题和 Sitemap
+        if: env.SKIP_DEPLOY != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -183,3 +199,22 @@ jobs:
           done
           echo 'Production acceptance timed out.'
           exit 1
+
+
+      - name: 标记生产 SHA 已验收
+        if: ${{ success() && env.SKIP_DEPLOY != 'true' }}
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'Content-Type: application/json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
+            -d '{"state":"success","context":"trrb/production-accepted","description":"Production SHA deployed and accepted"}' >/dev/null
+
+      - name: 同一 SHA 已部署时跳过
+        if: env.SKIP_DEPLOY == 'true'
+        run: echo "Production SHA $DEPLOY_SHA was already deployed and accepted; duplicate run skipped."

@@ -13,14 +13,7 @@ on:
       - "scripts/upgrade-article-urls.mjs"
       - "scripts/finalize-redirects.mjs"
   schedule:
-    - cron: "*/5 * * * *"
-  workflow_run:
-    workflows:
-      - "ICE持续处理发布线"
-      - "ICE直接救援生产线"
-      - "ICE唯一生产流水线"
-      - "ICE旧版手动应急流程"
-    types: [completed]
+    - cron: "*/30 * * * *"
 
 permissions:
   contents: write
@@ -31,7 +24,6 @@ concurrency:
 
 jobs:
   sync:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -83,6 +75,10 @@ jobs:
           git config user.name "TRRB Round13 Sync Bot"
           git config user.email "actions@users.noreply.github.com"
           git add sitemap.xml news-sitemap.xml feed.xml _redirects
+          if git diff --cached --quiet -I '<lastBuildDate>' -I '<atom:updated>'; then
+            echo "Only generated feed timestamps changed; no commit required."
+            exit 0
+          fi
           if git diff --cached --quiet; then
             echo "SEO metadata already converged; no commit required."
             exit 0

@@ -2,16 +2,6 @@ name: Round 17 Node 7 - Mobile A11y Stability
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'legal/index.html'
-      - 'legal/detail.html'
-      - 'legal/legal.css'
-      - 'legal/legal-app.js'
-      - 'legal/detail.js'
-      - 'scripts/round17-node7-mobile-a11y-stability-audit.mjs'
-      - '.github/workflows/round17-node7-mobile-a11y-stability.yml'
 
 permissions:
   contents: read

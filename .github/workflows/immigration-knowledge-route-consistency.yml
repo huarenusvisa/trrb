@@ -2,15 +2,6 @@ name: Immigration Knowledge Route Consistency
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'config/immigration-knowledge.js'
-      - 'netlify/edge-functions/_shared/immigration-knowledge-routes.ts'
-      - 'netlify/edge-functions/00-immigration-center-canonical.ts'
-      - 'netlify/edge-functions/seo-route-meta.ts'
-      - 'scripts/validate-immigration-knowledge-routes.mjs'
-      - '.github/workflows/immigration-knowledge-route-consistency.yml'
 
 permissions:
   contents: read

@@ -2,10 +2,6 @@ name: 故障文章生产快速验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/article-route-production-verify.yml"
 
 permissions:
   contents: read

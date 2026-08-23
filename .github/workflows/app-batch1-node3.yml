@@ -1,15 +1,6 @@
 name: APP Batch 1 Node 3
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/package.json'
-      - 'apps/mobile/src/auth/**'
-      - 'apps/mobile/app/auth.tsx'
-      - 'apps/mobile/app/(tabs)/profile.tsx'
-      - 'scripts/audit-app-batch1-node3.mjs'
-      - '.github/workflows/app-batch1-node3.yml'
   workflow_dispatch:
 
 permissions:

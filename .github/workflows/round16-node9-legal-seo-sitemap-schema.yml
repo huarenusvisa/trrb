@@ -2,16 +2,6 @@ name: 第十六轮节点9-法律栏目SEO、Sitemap与结构化数据完整性
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'legal/**'
-      - 'data/legal/**'
-      - 'sitemap-legal.xml'
-      - 'scripts/generate-legal-sitemap.mjs'
-      - 'scripts/round16-node9-legal-seo-sitemap-schema.mjs'
-      - 'netlify.toml'
-      - '.github/workflows/round16-node9-legal-seo-sitemap-schema.yml'
 
 permissions:
   contents: write

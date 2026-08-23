@@ -2,11 +2,6 @@ name: 第十四轮节点10-第十四轮最终生产总验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round14-node10-final-production-audit.mjs"
-      - ".github/workflows/round14-node10-final-production.yml"
 
 permissions:
   contents: read

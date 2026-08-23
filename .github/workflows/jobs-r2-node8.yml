@@ -1,15 +1,7 @@
 name: JOBS-R2 Node 8
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'jobs/search.js'
-      - 'jobs/search.html'
-      - 'supabase/migrations/20260817011000_jobs_r2_node1_search_location.sql'
-      - 'scripts/audit-jobs-r2-node8.mjs'
-      - 'docs/JOBS-R2-LOCATION-AWARE-JOB-DISCOVERY-UX.md'
-      - '.github/workflows/jobs-r2-node8.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

@@ -2,15 +2,6 @@ name: 第十五轮节点9-重大裁决自动识别并进入唐人日报新闻生
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node9-major-legal-news-pipeline.mjs"
-      - ".github/workflows/round15-node9-major-legal-news-pipeline.yml"
-      - "data/legal/unified-legal-authorities-latest.json"
-      - "data/legal/legal-ai-analysis-latest.json"
-  schedule:
-    - cron: "52 */6 * * *"
 
 permissions:
   contents: write

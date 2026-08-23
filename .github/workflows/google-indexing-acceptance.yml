@@ -2,20 +2,6 @@ name: Google收录技术验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "_redirects"
-      - "listing.html"
-      - "netlify.toml"
-      - "netlify/edge-functions/article-prerender.ts"
-      - "scripts/generate-sitemaps.mjs"
-      - "scripts/clean-sitemap-against-database.mjs"
-      - "scripts/ensure-sitemap-articles.mjs"
-      - "scripts/finalize-redirects.mjs"
-      - "scripts/split-sitemap-index.mjs"
-      - "scripts/google-indexing-acceptance.mjs"
-      - ".github/workflows/google-indexing-acceptance.yml"
 
 permissions:
   contents: read

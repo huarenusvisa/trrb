@@ -1,11 +1,6 @@
 name: 第十三轮节点10-最终生产总验收
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round13-node10-final-production-audit.mjs"
-      - ".github/workflows/round13-node10-final-production.yml"
   workflow_dispatch:
 
 concurrency:

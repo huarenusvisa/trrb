@@ -17,21 +17,6 @@ on:
       - "scripts/upgrade-article-urls.mjs"
       - "scripts/verify-pr-preview.mjs"
       - ".github/workflows/seo-integrity.yml"
-  push:
-    branches: [main]
-    paths:
-      - "**/*.html"
-      - "**/*.js"
-      - "**/*.css"
-      - "robots.txt"
-      - "sitemap*.xml"
-      - "news-sitemap.xml"
-      - "feed.xml"
-      - "netlify.toml"
-      - "scripts/seo-integrity-audit.mjs"
-      - "scripts/upgrade-article-urls.mjs"
-      - "scripts/verify-pr-preview.mjs"
-      - ".github/workflows/seo-integrity.yml"
   schedule:
     - cron: "20 8 * * *"
 

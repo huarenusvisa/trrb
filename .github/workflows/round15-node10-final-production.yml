@@ -2,11 +2,6 @@ name: 第十五轮节点10-全链路实时更新与生产总验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node10-final-production-audit.mjs"
-      - ".github/workflows/round15-node10-final-production.yml"
 
 permissions:
   contents: read

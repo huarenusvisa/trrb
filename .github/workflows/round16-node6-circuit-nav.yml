@@ -2,16 +2,6 @@ name: 第十六轮节点6-13个联邦巡回法院二级导航与独立筛选
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "legal/index.html"
-      - "legal/legal-app.js"
-      - "legal/legal.css"
-      - "data/legal/circuit-source-registry.json"
-      - "data/legal/unified-legal-authorities-latest.json"
-      - "scripts/round16-node6-circuit-nav.mjs"
-      - ".github/workflows/round16-node6-circuit-nav.yml"
 
 permissions:
   contents: read

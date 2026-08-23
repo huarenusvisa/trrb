@@ -2,13 +2,6 @@ name: 第十六轮节点8-重大裁决/新规新闻路由去重与编辑隔离
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "data/news-pipeline/legal-high-impact-queue.json"
-      - "scripts/round15-node9-major-legal-news-pipeline.mjs"
-      - "scripts/round16-node8-editorial-isolation.mjs"
-      - ".github/workflows/round16-node8-editorial-isolation.yml"
 
 permissions:
   contents: read

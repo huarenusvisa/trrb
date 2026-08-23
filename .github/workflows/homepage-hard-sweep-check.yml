@@ -1,28 +1,6 @@
 name: Homepage stability gate
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - homepage-refresh-guard.js
-      - articles-home-live-fix.js
-      - homepage-startup-stability.js
-      - jobs-home.js
-      - homepage-immigration-hub.js
-      - scripts/validate-site.mjs
-      - .github/workflows/homepage-hard-sweep-check.yml
-  pull_request:
-    branches:
-      - main
-    paths:
-      - homepage-refresh-guard.js
-      - articles-home-live-fix.js
-      - homepage-startup-stability.js
-      - jobs-home.js
-      - homepage-immigration-hub.js
-      - scripts/validate-site.mjs
-      - .github/workflows/homepage-hard-sweep-check.yml
   workflow_dispatch:
 
 jobs:

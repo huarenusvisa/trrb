@@ -3,12 +3,14 @@ name: 历史文章搜索资产恢复
 on:
   workflow_dispatch:
     inputs:
+      confirm_apply:
+        description: 输入 APPLY 才允许写入正式库
+        required: true
+        type: string
       limit:
         description: 每批最多恢复多少篇
         required: false
         default: '200'
-  schedule:
-    - cron: '17 */6 * * *'
 
 permissions:
   contents: read
@@ -19,6 +21,7 @@ concurrency:
 
 jobs:
   restore:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.confirm_apply == 'APPLY' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:

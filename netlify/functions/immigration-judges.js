@@ -140,6 +140,17 @@ exports.handler = async (event) => {
       });
     }
 
+    if (mode === 'all') {
+      const rows = await restAll('immigration_judges', {
+        query: {
+          select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
+          order: 'judge_name.asc,id.asc'
+        }
+      });
+      const results = (rows || []).filter((row) => row.judge_name).map(derived);
+      return out(200, { count: results.length, results, ...(await provenance()) });
+    }
+
     if (mode === 'top') {
       const requestedLimit = Number.parseInt(String(p.limit || '12'), 10);
       const limit = Math.min(24, Math.max(6, Number.isFinite(requestedLimit) ? requestedLimit : 12));

@@ -3,6 +3,8 @@ const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const stateNames = { CA: '加州', NY: '纽约州', TX: '德州', FL: '佛州', NJ: '新泽西州', IL: '伊利诺伊州', WA: '华盛顿州', MA: '马萨诸塞州', PA: '宾州', GA: '乔治亚州', AZ: '亚利桑那州', VA: '弗吉尼亚州' };
+let allJudges = [];
+let searchTimer = null;
 
 const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylumjudge(?:\/|$)/i.test(location.pathname);
 const appPath = (page = '') => trrbColumn
@@ -101,33 +103,60 @@ function renderStateMarket(rows) {
 
 async function loadOverview() {
   try {
-    const [stats, stateData] = await Promise.all([
-      json('/.netlify/functions/immigration-judges?mode=stats'),
-      json('/.netlify/functions/immigration-judges?mode=states')
-    ]);
-    $('#court-count').textContent = fmt(stats.courts);
-    $('#judge-count').textContent = fmt(stats.judges);
-    $('#decision-count').textContent = fmt(stats.decisions);
+    const stateData = await json('/.netlify/functions/immigration-judges?mode=states');
     renderStates(stateData.states || []);
-    const latest = stats.latest_import;
-    const stamp = String(latest?.source_date || latest?.completed_at || '').slice(0, 10);
-    $('#freshness-badge').textContent = stamp ? `更新至 ${stamp}` : '持续更新';
   } catch (error) {
-    $('#freshness-badge').textContent = '稍后重试';
     $('#state-list').innerHTML = '<div class="empty">数据库暂时无法读取</div>';
     const chart = $('#state-market-chart');
     if (chart) chart.innerHTML = '<div class="state-market-loading">州级数据暂时无法读取</div>';
   }
 }
 
-function renderFeaturedJudges(rows) {
-  const container = $('#featured-judges');
+function judgePeriod(row) {
+  const start = String(row.data_start_date || '').slice(0, 10);
+  const end = String(row.data_end_date || '').slice(0, 10);
+  if (start && end) return `数据期 ${start} 至 ${end}`;
+  if (start || end) return `数据期 ${start || end}`;
+  return '数据期以详情页为准';
+}
+
+function filterJudges(query) {
+  const terms = String(query || '').trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  if (!terms.length) return allJudges;
+  return allJudges.filter((row) => {
+    const searchable = [row.judge_name, row.court_name, row.court_city, row.court_state].filter(Boolean).join(' ').toLocaleLowerCase();
+    return terms.every((term) => searchable.includes(term));
+  });
+}
+
+function renderJudgeDirectory(rows, query = '') {
+  const container = $('#judge-directory-list');
   if (!container) return;
+  const count = $('#judge-directory-count');
+  if (count) count.textContent = query
+    ? `匹配 ${fmt(rows.length)} 位／全部 ${fmt(allJudges.length)} 位`
+    : `共 ${fmt(allJudges.length)} 位法官`;
   container.innerHTML = rows.length ? rows.map((row) => {
     const place = [row.court_city, row.court_state].filter(Boolean).join(', ');
     const court = row.court_name || place || '法院信息待更新';
-    return `<a class="featured-judge" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><div class="featured-judge-main"><strong>${esc(row.judge_name || '未命名法官')}</strong><span>${esc(court)}</span>${place && court !== place ? `<small>${esc(place)}</small>` : ''}</div><div class="featured-metrics"><span><small>裁决样本</small><b>${fmt(row.total_asylum_decisions)} 件</b></span><span><small>裁决批准率</small><b class="featured-rate">${pct(row.adjudicated_approval_rate)}</b></span></div><i aria-hidden="true">→</i></a>`;
-  }).join('') : '<div class="empty">暂无可显示的法官资料</div>';
+    const adjudicated = Number(row.grants || 0) + Number(row.denials || 0);
+    const rate = row.adjudicated_approval_rate == null
+      ? '<b class="directory-rate unavailable">样本不足</b>'
+      : `<b class="directory-rate">${pct(row.adjudicated_approval_rate)}</b>`;
+    return `<a class="judge-directory-row" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><span class="judge-directory-identity"><strong>${esc(row.judge_name || '未命名法官')}</strong><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small></span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 有效样本</small></span></a>`;
+  }).join('') : `<div class="empty"><b>没有找到匹配法官</b><p>请尝试英文姓名、法院、城市或州代码。</p></div>`;
+}
+
+function applyJudgeFilter(query, { scroll = false, updateUrl = true } = {}) {
+  query = String(query || '').trim();
+  renderJudgeDirectory(filterJudges(query), query);
+  if (updateUrl) {
+    const url = new URL(location.href);
+    if (query) url.searchParams.set('q', query);
+    else url.searchParams.delete('q');
+    history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+  }
+  if (scroll) $('#all-judges')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function knowledgeTopic(categoryName) {
@@ -166,59 +195,46 @@ async function loadDailyKnowledge() {
   }
 }
 
-async function loadFeaturedJudges() {
-  const container = $('#featured-judges');
+async function loadAllJudges() {
+  const container = $('#judge-directory-list');
   if (!container) return;
   try {
-    const data = await json('/.netlify/functions/immigration-judges?mode=top&limit=12');
-    renderFeaturedJudges(data.results || []);
+    const data = await json('/.netlify/functions/immigration-judges?mode=all');
+    allJudges = data.results || [];
+    applyJudgeFilter($('#judge-q').value, { updateUrl: false });
+    $('#court-count').textContent = fmt(new Set(allJudges.map((row) => row.court_name).filter(Boolean)).size);
+    $('#judge-count').textContent = fmt(allJudges.length);
+    $('#decision-count').textContent = fmt(allJudges.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0));
+    const latest = data.latest_import;
+    const stamp = String(latest?.source_date || latest?.completed_at || '').slice(0, 10);
+    $('#freshness-badge').textContent = stamp ? `更新至 ${stamp}` : '持续更新';
     const badge = $('#judge-source-badge');
     if (badge && data.production_grade) badge.textContent = 'EOIR 官方数据';
   } catch (error) {
-    container.innerHTML = '<div class="empty">法官资料暂时无法读取，请稍后重试。</div>';
-  }
-}
-
-function renderResults(query, rows) {
-  $('#result-section').hidden = false;
-  $('#result-title').textContent = `“${query}”的查询结果`;
-  $('#result-note').textContent = `找到 ${rows.length} 位法官`;
-  $('#results').innerHTML = rows.length ? rows.map((row) => `<a class="judge-result" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><div><strong>${esc(row.judge_name)}</strong><small>${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></div><div><label>任职法院</label><strong>${esc(row.court_name || '—')}</strong></div><div><label>裁决批准率</label><span class="rate">${pct(row.adjudicated_approval_rate)}</span></div><div><label>庇护裁决</label><strong>${fmt(row.total_asylum_decisions)}</strong></div></a>`).join('') : '<div class="empty"><b>没有找到匹配法官</b><p>请尝试英文姓名、城市或法院名称。</p></div>';
-  $('#result-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-async function search(query) {
-  query = String(query || '').trim();
-  if (!query) return;
-  $('#result-section').hidden = false;
-  $('#result-title').textContent = '正在查询…';
-  $('#result-note').textContent = '';
-  $('#results').innerHTML = '<div class="empty">正在读取 EOIR 数据库…</div>';
-  history.replaceState(null, '', `${appPath()}?q=${encodeURIComponent(query)}`);
-  try {
-    const data = await json(`/.netlify/functions/immigration-judges?q=${encodeURIComponent(query)}`);
-    renderResults(query, data.results || []);
-  } catch (error) {
-    $('#result-title').textContent = '查询暂不可用';
-    $('#results').innerHTML = '<div class="empty">数据库暂时无法读取，请稍后重试。</div>';
+    $('#freshness-badge').textContent = '稍后重试';
+    $('#judge-directory-count').textContent = '读取失败';
+    container.innerHTML = '<div class="empty">全部法官资料暂时无法读取，请稍后刷新。</div>';
   }
 }
 
 $('#judge-search').addEventListener('submit', (event) => {
   event.preventDefault();
-  search($('#judge-q').value);
+  if (allJudges.length) applyJudgeFilter($('#judge-q').value, { scroll: true });
+});
+$('#judge-q').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    if (allJudges.length) applyJudgeFilter($('#judge-q').value);
+  }, 120);
 });
 document.querySelectorAll('.quick button').forEach((button) => button.addEventListener('click', () => {
   $('#judge-q').value = button.dataset.q;
-  search(button.dataset.q);
+  if (allJudges.length) applyJudgeFilter(button.dataset.q, { scroll: true });
 }));
 
 useCleanDomainRoutes();
+const initial = new URLSearchParams(location.search).get('q') || '';
+if (initial) $('#judge-q').value = initial;
 loadOverview();
 loadDailyKnowledge();
-loadFeaturedJudges();
-const initial = new URLSearchParams(location.search).get('q');
-if (initial) {
-  $('#judge-q').value = initial;
-  search(initial);
-}
+loadAllJudges();

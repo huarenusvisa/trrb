@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://trrb.net/asylumjudge">
   <meta name="theme-color" content="#14804a">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=8">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=9">
 </head>
 <body>
   <header class="site-header">
@@ -47,7 +47,7 @@
           <form id="judge-search" class="search-box">
             <label class="sr-only" for="judge-q">法官、法院或城市</label>
             <input id="judge-q" autocomplete="off" placeholder="例如：法官姓名、New York、Houston">
-            <button type="submit">立即查询</button>
+            <button type="submit">筛选法官</button>
           </form>
           <div class="quick" aria-label="热门查询">
             <button type="button" data-q="New York">纽约</button>
@@ -79,6 +79,21 @@
           <div id="state-list" class="state-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
           <a class="state-more" href="/asylumjudge/states">查看全部州数据 <span>→</span></a>
         </aside>
+      </div>
+    </section>
+
+    <section id="all-judges" class="shell judge-directory" aria-labelledby="all-judges-title">
+      <div class="directory-heading">
+        <div>
+          <span id="judge-source-badge">EOIR 裁决数据</span>
+          <h2 id="all-judges-title">全部移民法官</h2>
+          <p>展示截至数据库最新批次的全部法官。可在上方按姓名、法院、城市或州筛选，点击法官查看完整通过率资料。</p>
+        </div>
+        <p id="judge-directory-count">正在读取全部法官…</p>
+      </div>
+      <div class="judge-directory-head" aria-hidden="true"><span>法官与法院</span><span>裁决</span><span>批准</span><span>拒绝</span><span>其他</span><span>批准率</span></div>
+      <div id="judge-directory-list" class="judge-directory-list" aria-live="polite">
+        <div class="directory-loading">正在读取全部移民法官资料…</div>
       </div>
     </section>
 
@@ -118,22 +133,6 @@
       </div>
     </section>
 
-    <section class="shell featured-section" aria-labelledby="featured-title">
-      <div class="content-heading">
-        <span id="judge-source-badge">EOIR 裁决数据</span>
-        <h2 id="featured-title">案件量较高的法官资料</h2>
-        <p>按数据库中的历史庇护裁决样本量排序，并非按站内搜索量或法官质量排序。</p>
-      </div>
-      <div id="featured-judges" class="featured-grid" aria-live="polite">
-        <div class="featured-loading">正在读取法官资料…</div>
-      </div>
-    </section>
-
-    <section id="result-section" class="shell results-section" hidden>
-      <div class="section-title"><div><span>查询结果</span><h2 id="result-title">匹配的移民法官</h2></div><p id="result-note"></p></div>
-      <div id="results" class="results" aria-live="polite"></div>
-    </section>
-
     <section class="method-strip">
       <div class="shell method-grid">
         <div><span>数据口径</span><h2>百分比必须和样本量一起看</h2></div>
@@ -146,6 +145,6 @@
   <footer>
     <div class="shell footer-inner"><div><b>唐人日报 · 移民法官通过率</b><span>TRRB.net/asylumjudge</span></div><p>与 AsylumJudge.com 共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/site.js?v=9" defer></script>
+  <script src="/asylumjudge/site.js?v=10" defer></script>
 </body>
 </html>

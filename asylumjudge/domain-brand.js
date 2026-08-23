@@ -38,7 +38,7 @@
   };
   const storedLocale = (() => { try { return localStorage.getItem('asylumjudge-language'); } catch { return ''; } })();
   let locale = normalizeLocale(new URLSearchParams(location.search).get('lang') || storedLocale || 'zh-Hans');
-  const routeHref = (key) => ({ judges: root || '/', courts: `${root}/courts`, states: `${root}/states`, nationality: `${root}/nationality` }[key]);
+  const routeHref = (key) => ({ judges: (location.pathname === '/' ? '#judge-search' : (root || '/')), courts: `${root}/courts`, states: `${root}/states`, nationality: `${root}/nationality` }[key]);
   const activeKey = () => /\/nationality|china-dashboard/.test(location.pathname) ? 'nationality' : /\/states/.test(location.pathname) ? 'states' : /\/courts|court-detail/.test(location.pathname) ? 'courts' : 'judges';
   const navigationMarkup = () => ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('');
   const languageMarkup = (id = 'language-select') => `<label for="${id}" data-language-label>${labels[locale].language}</label><select id="${id}" aria-label="${labels[locale].language}">${options}</select>`;
@@ -126,8 +126,9 @@
       control = document.createElement('div');
       control.className = 'language-control';
       control.innerHTML = languageMarkup();
-      brand.appendChild(control);
     }
+    brand.appendChild(primaryNav);
+    brand.appendChild(control);
     const back = brand.querySelector('.back');
     if (back) back.hidden = true;
   }

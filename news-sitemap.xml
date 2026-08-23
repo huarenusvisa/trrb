@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-58155c694401bd48bb3cd3d0bf9e5c4729b4548f</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-23T00:44:01.883Z</news:publication_date>
+        <news:title>加州万奈斯80岁男子洗车场试图击CBP特工被制服</news:title>
+      </news:news>
+    </url>
+  <url>
+      <loc>https://trrb.net/ice/ice-230aad38eda97eaa368c3cac7910470495b1c9f7</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-23T00:43:44.156Z</news:publication_date>
+        <news:title>加州圣地亚哥两海地司机撞击ICE车辆被拘留</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-b2c1b05b5fd1f208f439a09aefeb7716b56865aa</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1370,30 +1386,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-21T01:24:21.225Z</news:publication_date>
         <news:title>美媒称两少年父母被ICE遣返并因偷窃被捕，少年由姑妈照料</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-8f00b0389a117433b542273ea94ac251a5f0934c</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T00:55:27.986Z</news:publication_date>
-        <news:title>圣地亚哥ICE街头拘留多名非法入境者警方疑似协助</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/us-politics/ice-b3f0866316c16cf39f74fc855a27c0530fe1ff20</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T00:55:18.381Z</news:publication_date>
-        <news:title>SpectrumNews调查显示ICE执法时 涉及性暴力和儿童侵害的案件数据失真</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/immigration/ice-24bb25f8dd908062e9c4f6cd5f12adc333f8aced</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T00:54:38.454Z</news:publication_date>
-        <news:title>美限制合法移民未来十年经济损失超万亿美元</news:title>
       </news:news>
     </url>
 </urlset>

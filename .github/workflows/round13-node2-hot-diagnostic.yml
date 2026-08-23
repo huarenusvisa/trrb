@@ -1,11 +1,7 @@
 name: Round13 Node2 Hot Headlines Diagnostic
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round13-node2-hot-diagnostic.mjs"
-      - ".github/workflows/round13-node2-hot-diagnostic.yml"
+
 permissions:
   contents: read
 jobs:

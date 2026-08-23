@@ -1,14 +1,7 @@
 name: JOBS-R2 Node 6
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'jobs/search.js'
-      - 'jobs/search-r2-geo.js'
-      - 'scripts/audit-jobs-r2-node6.mjs'
-      - 'docs/JOBS-R2-LOCATION-AWARE-JOB-DISCOVERY-UX.md'
-      - '.github/workflows/jobs-r2-node6.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

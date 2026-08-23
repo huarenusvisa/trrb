@@ -2,22 +2,6 @@ name: 第十二轮最终生产总验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round12-production-audit.mjs"
-      - "scripts/round12-mobile-visual.mjs"
-      - "scripts/round12-final-closeout.mjs"
-      - "scripts/upgrade-article-urls.mjs"
-      - "topic/ice/ice.css"
-      - "topic/ice/live-v6.html"
-      - "trump/index.html"
-      - "topic/trump/trump.css"
-      - "listing.html"
-      - "listing.js"
-      - "site-search.js"
-      - "article-route-runtime.js"
-      - ".github/workflows/round12-final-closeout.yml"
 
 permissions:
   contents: read

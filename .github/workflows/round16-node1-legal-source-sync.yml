@@ -3,7 +3,7 @@ name: 第十六轮节点1-五大官方法律源自动采集触发链闭环
 on:
   workflow_dispatch:
   schedule:
-    - cron: "11,41 * * * *"
+    - cron: "11 */6 * * *"
   push:
     branches: [main]
     paths:
@@ -58,6 +58,10 @@ jobs:
             data/legal/bia-precedent-latest.json \
             data/legal/whitehouse-executive-orders-latest.json \
             data/legal/federal-register-final-rules-latest.json
+          if git diff --cached --quiet -I '"generatedAt"'; then
+            echo "Only generatedAt timestamps changed; no commit required."
+            exit 0
+          fi
           if git diff --cached --quiet; then
             echo "Five-source legal datasets already converged; no commit required."
           else

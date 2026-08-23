@@ -2,14 +2,6 @@ name: 第十三轮节点9-全站404-5xx-资源错误持续审计
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round13-node9-error-audit.mjs"
-      - ".github/workflows/round13-node9-error-audit.yml"
-      - "netlify.toml"
-      - "_redirects"
-      - "netlify/edge-functions/**"
 
 permissions:
   contents: read

@@ -2,14 +2,6 @@ name: 第十五轮节点7-AI中文裁判要旨、法律问题与影响范围解�
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node7-ai-legal-analysis.mjs"
-      - ".github/workflows/round15-node7-ai-legal-analysis.yml"
-      - "data/legal/unified-legal-authorities-latest.json"
-  schedule:
-    - cron: "7,27,47 * * * *"
 
 permissions:
   contents: write

@@ -2,12 +2,6 @@ name: ICE已发布人数补算
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "netlify/functions/_shared/ice-people-count.js"
-      - "scripts/ice-backfill-explicit-people-count.mjs"
-      - ".github/workflows/ice-people-count-backfill.yml"
 
 permissions:
   contents: read

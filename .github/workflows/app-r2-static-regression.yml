@@ -1,26 +1,6 @@
 name: APP-R2 Static Regression
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/**'
-      - 'scripts/audit-app-batch2-node*.mjs'
-      - 'scripts/audit-app-r2-asylum-retirement.mjs'
-      - 'scripts/finalize-redirects.mjs'
-      - 'netlify/functions/public-home-bundle.js'
-      - 'config/channels.js'
-      - '_redirects'
-      - 'index.html'
-      - 'listing.html'
-      - 'article.html'
-      - 'immigrate/index.html'
-      - 'feed.xml'
-      - 'sitemap.xml'
-      - 'google-news-sitemap.xml'
-      - 'news-sitemap.xml'
-      - 'google-news.xml'
-      - '.github/workflows/app-r2-static-regression.yml'
   workflow_dispatch:
 
 jobs:

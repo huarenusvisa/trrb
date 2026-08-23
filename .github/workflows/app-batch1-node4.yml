@@ -1,15 +1,6 @@
 name: APP Batch 1 Node 4
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/app/profile-settings.tsx'
-      - 'apps/mobile/app/(tabs)/profile.tsx'
-      - 'apps/mobile/src/components/TrRbAvatar.tsx'
-      - 'supabase/migrations/20260816135000_trrb_profile_settings_constraints.sql'
-      - 'scripts/audit-app-batch1-node4.mjs'
-      - '.github/workflows/app-batch1-node4.yml'
   workflow_dispatch:
 
 jobs:

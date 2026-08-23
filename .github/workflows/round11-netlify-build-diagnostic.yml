@@ -1,12 +1,7 @@
 name: 第十一轮Netlify构建诊断
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "immigrate/center.html"
-      - "scripts/seo-integrity-audit.mjs"
-      - ".github/workflows/round11-netlify-build-diagnostic.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read

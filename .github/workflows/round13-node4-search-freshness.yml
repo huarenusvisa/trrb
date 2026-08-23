@@ -2,14 +2,6 @@ name: 第十三轮节点4-站内搜索新文章即时可搜
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "listing.js"
-      - "listing.html"
-      - "article-route-runtime.js"
-      - "scripts/round13-node4-search-freshness-audit.mjs"
-      - ".github/workflows/round13-node4-search-freshness.yml"
 
 permissions:
   contents: read

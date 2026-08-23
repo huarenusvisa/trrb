@@ -1,13 +1,6 @@
 name: APP Batch 1 Node 7
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/mobile/src/storage/library.ts'
-      - 'scripts/audit-app-batch1-node7.mjs'
-      - 'supabase/migrations/20260816114500_trrb_identity_and_community_foundation.sql'
-      - '.github/workflows/app-batch1-node7.yml'
   workflow_dispatch:
 
 jobs:

@@ -2,12 +2,6 @@ name: Round 17 Node 5 - Legal Diff and Dedup Governance
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'scripts/round17-node5-legal-diff-dedup-audit.mjs'
-      - '.github/workflows/round17-node5-legal-diff-dedup.yml'
 
 permissions:
   contents: read

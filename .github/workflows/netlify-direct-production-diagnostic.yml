@@ -2,10 +2,6 @@ name: Netlify Direct Production Diagnostic
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/netlify-direct-production-diagnostic.yml'
 
 permissions:
   contents: write

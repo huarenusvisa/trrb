@@ -2,15 +2,6 @@ name: LEGAL-R1 N2 - Official Source Extraction
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/legal-r1-node2-extract-official-source.mjs'
-      - '.github/workflows/legal-r1-node2-source-extraction.yml'
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'docs/LEGAL-R1-FULL-TEXT-CHINESE-TRANSLATION-AND-DETAIL-UX.md'
 
 permissions:
   contents: read

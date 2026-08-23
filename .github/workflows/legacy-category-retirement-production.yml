@@ -2,14 +2,6 @@ name: 旧WordPress系统归档退役生产验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'netlify/edge-functions/legacy-url-redirect.ts'
-      - 'netlify/edge-functions/00-wordpress-query-rescue.ts'
-      - 'netlify/edge-functions/01-wordpress-archive-retire.ts'
-      - 'retired-indexnow-urls.txt'
-      - '.github/workflows/legacy-category-retirement-production.yml'
 
 permissions:
   contents: read

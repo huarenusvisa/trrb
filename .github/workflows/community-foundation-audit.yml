@@ -1,13 +1,6 @@
 name: Community Foundation Audit
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/**'
-      - 'docs/TRRB-UNIFIED-IDENTITY-AND-COMMUNITY-V1.md'
-      - 'scripts/audit-community-foundation.mjs'
-      - '.github/workflows/community-foundation-audit.yml'
   workflow_dispatch:
 
 permissions:

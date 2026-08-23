@@ -2,13 +2,6 @@ name: Round 17 Node 8 - Production Resilience Loop
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'legal/legal-app.js'
-      - 'legal/detail.js'
-      - 'scripts/round17-node8-production-resilience-audit.mjs'
-      - '.github/workflows/round17-node8-production-resilience.yml'
 
 permissions:
   contents: read

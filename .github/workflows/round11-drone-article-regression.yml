@@ -2,19 +2,6 @@ name: 第十一轮特朗普无人机文章回归
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "articles-home.js"
-      - "article.html"
-      - "article-index-guard.js"
-      - "netlify/edge-functions/article-prerender.ts"
-      - "immigrate/center.html"
-      - "scripts/seo-integrity-audit.mjs"
-      - "_headers"
-      - "_redirects"
-      - "netlify.toml"
-      - ".github/workflows/round11-drone-article-regression.yml"
 
 permissions:
   contents: read

@@ -2,17 +2,6 @@ name: Round 17 Node 9 - SEO Sitemap Internal Links
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'robots.txt'
-      - 'sitemap-legal.xml'
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'legal/index.html'
-      - 'legal/legal-app.js'
-      - 'legal/detail.js'
-      - 'scripts/round17-node9-seo-index-internal-links-audit.mjs'
-      - '.github/workflows/round17-node9-seo-index-internal-links.yml'
 
 permissions:
   contents: read

@@ -2,15 +2,6 @@ name: Runtime Security Production Bridge
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'netlify/functions/**'
-      - 'admin/**'
-      - 'scripts/admin-auth-regression-audit.mjs'
-      - 'scripts/round14-node9-security-audit.mjs'
-      - '.github/workflows/admin-auth-regression-audit.yml'
-      - '.github/workflows/runtime-security-production-bridge.yml'
 
 permissions:
   contents: read

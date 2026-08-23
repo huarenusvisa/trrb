@@ -2,11 +2,6 @@ name: Round 17 Node 6 - Safe Analysis Version Audit
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/round17-node6-sync-analysis-version.mjs'
-      - '.github/workflows/round17-node6-version-sync.yml'
 
 permissions:
   contents: read

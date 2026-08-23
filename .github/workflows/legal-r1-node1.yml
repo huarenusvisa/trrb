@@ -1,12 +1,7 @@
 name: LEGAL-R1 Node 1
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'scripts/legal-r1-node1-audit.mjs'
-      - '.github/workflows/legal-r1-node1.yml'
+
 jobs:
   audit:
     runs-on: ubuntu-latest

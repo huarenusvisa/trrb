@@ -1,9 +1,7 @@
 name: 第十六轮节点10-节点9通过闸门
 
 on:
-  workflow_run:
-    workflows: ['第十六轮节点9-法律栏目SEO、Sitemap与结构化数据完整性']
-    types: [completed]
+  workflow_dispatch:
 
 permissions:
   contents: read

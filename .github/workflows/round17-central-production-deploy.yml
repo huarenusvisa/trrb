@@ -2,28 +2,6 @@ name: Round 17 - Central Production Deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'legal/**'
-      - 'data/legal/**'
-      - 'sitemap-legal.xml'
-      - 'robots.txt'
-      - 'scripts/round17-node*.mjs'
-      - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
-      - 'config/immigration-knowledge.js'
-      - 'immigrate/center.html'
-      - 'immigrate/center.js'
-      - 'immigrate/center-seo.js'
-      - 'immigrate/center.css'
-      - 'immigrate/study-knowledge-content.css'
-      - 'immigrate/*-knowledge-content.js'
-      - 'immigrate/change-status-module.js'
-      - 'immigrate/citizenship-module.js'
-      - 'netlify/functions/public-category-page.js'
-      - 'scripts/split-sitemap-index.mjs'
-      - '.github/workflows/round17-node*.yml'
-      - '.github/workflows/round17-central-production-deploy.yml'
 
 permissions:
   contents: read

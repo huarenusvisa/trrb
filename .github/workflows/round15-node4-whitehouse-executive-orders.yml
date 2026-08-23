@@ -2,13 +2,6 @@ name: 第十五轮节点4-白宫行政命令自动采集
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node4-whitehouse-executive-orders.mjs"
-      - ".github/workflows/round15-node4-whitehouse-executive-orders.yml"
-  schedule:
-    - cron: "37 */6 * * *"
 
 permissions:
   contents: write

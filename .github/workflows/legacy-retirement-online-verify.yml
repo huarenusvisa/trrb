@@ -2,15 +2,6 @@ name: 旧WordPress URL线上退休验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "netlify/edge-functions/legacy-url-redirect.ts"
-      - "scripts/generate-sitemaps.mjs"
-      - "scripts/clean-sitemap-against-database.mjs"
-      - "scripts/verify-legacy-retirement-online.mjs"
-      - "netlify.toml"
-      - ".github/workflows/legacy-retirement-online-verify.yml"
 
 permissions:
   contents: read

@@ -2,14 +2,6 @@ name: 第十五轮节点1-美国最高法院判决自动采集
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "17,47 * * * *"
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round15-node1-supreme-court-collector.mjs"
-      - ".github/workflows/round15-node1-supreme-court.yml"
-      - "docs/ROUND15-US-JUDICIARY-REGULATORY-RULES.md"
 
 permissions:
   contents: write

@@ -2,14 +2,6 @@ name: 历史文章路由兼容验收（只读）
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "netlify/edge-functions/00-legacy-article-query-guard.ts"
-      - "netlify/edge-functions/article-prerender.ts"
-      - "article.html"
-      - "articles-home-index.js"
-      - ".github/workflows/fix-archived-article-route-compat.yml"
 
 permissions:
   contents: read

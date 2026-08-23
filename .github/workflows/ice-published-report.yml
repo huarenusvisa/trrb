@@ -2,11 +2,6 @@ name: ICE发布数量即时审计
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ice-published-report.yml"
-      - "scripts/ice-published-report.mjs"
 
 permissions:
   contents: write

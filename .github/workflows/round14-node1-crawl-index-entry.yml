@@ -2,14 +2,6 @@ name: 第十四轮节点1-搜索引擎抓取与索引入口一致性验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round14-node1-crawl-index-entry-audit.mjs"
-      - ".github/workflows/round14-node1-crawl-index-entry.yml"
-      - "robots.txt"
-      - "netlify.toml"
-      - "netlify/edge-functions/**"
 
 permissions:
   contents: read

@@ -1,19 +1,7 @@
 name: JOBS-R2 Node 9
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'jobs/search.js'
-      - 'jobs/search-r2-mobile.js'
-      - 'jobs/search-r2-discovery.js'
-      - 'admin/jobs-manager.js'
-      - 'admin/jobs-location-governance.js'
-      - 'supabase/migrations/20260817017000_jobs_r2_node7_mobile_saves.sql'
-      - 'supabase/migrations/20260817019000_jobs_r2_node9_admin_location_governance.sql'
-      - 'scripts/audit-jobs-r2-node9.mjs'
-      - 'docs/JOBS-R2-LOCATION-AWARE-JOB-DISCOVERY-UX.md'
-      - '.github/workflows/jobs-r2-node9.yml'
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:

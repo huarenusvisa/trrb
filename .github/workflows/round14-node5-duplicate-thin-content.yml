@@ -2,13 +2,6 @@ name: 第十四轮节点5-重复内容与薄内容持续清理
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/round14-node5-duplicate-thin-content-audit.mjs"
-      - ".github/workflows/round14-node5-duplicate-thin-content.yml"
-      - "netlify/edge-functions/article-prerender.ts"
-      - "netlify/edge-functions/sitemap-live.ts"
 
 permissions:
   contents: read

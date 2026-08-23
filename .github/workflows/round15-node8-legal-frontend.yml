@@ -2,14 +2,6 @@ name: 第十五轮节点8-“美国判例与新规”前台栏目及检索筛选
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "legal/**"
-      - "scripts/round15-node8-legal-frontend-audit.mjs"
-      - ".github/workflows/round15-node8-legal-frontend.yml"
-      - "data/legal/unified-legal-authorities-latest.json"
-      - "data/legal/legal-ai-analysis-latest.json"
 
 permissions:
   contents: read

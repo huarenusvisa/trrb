@@ -2,20 +2,6 @@ name: Module Single Source Validation
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'index.html'
-      - 'articles-home.js'
-      - 'homepage-refresh-guard.js'
-      - 'homepage-immigration-hub.js'
-      - 'articles-home-live-fix.js'
-      - 'listing.html'
-      - 'listing.js'
-      - 'listing-seo.js'
-      - 'netlify/functions/public-home-bundle.js'
-      - 'scripts/optimize-homepage-performance.mjs'
-      - '.github/workflows/fix-module-single-source-final.yml'
 
 permissions:
   contents: read

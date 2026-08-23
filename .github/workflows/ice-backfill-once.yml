@@ -2,10 +2,6 @@ name: ICE遗漏内容一次性补抓
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ice-backfill-once.yml"
 
 permissions:
   contents: read

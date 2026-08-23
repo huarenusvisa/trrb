@@ -2,16 +2,6 @@ name: 第十六轮节点7-单条判例/新规详情页与官方原文双层展�
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "legal/detail.html"
-      - "legal/detail.js"
-      - "legal/legal-app.js"
-      - "legal/legal.css"
-      - "legal/index.html"
-      - "scripts/round16-node7-legal-detail.mjs"
-      - ".github/workflows/round16-node7-legal-detail.yml"
 
 permissions:
   contents: read

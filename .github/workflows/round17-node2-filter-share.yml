@@ -2,15 +2,6 @@ name: Round 17 Node 2 - Legal Filters and Share URL
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'legal/legal-app.js'
-      - 'legal/index.html'
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'scripts/round17-node2-filter-share-audit.mjs'
-      - 'docs/ROUND17-LEGAL-KNOWLEDGE-SEARCH-AND-RELIABILITY.md'
-      - '.github/workflows/round17-node2-filter-share.yml'
 
 permissions:
   contents: read

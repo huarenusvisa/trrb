@@ -1,16 +1,6 @@
 name: JOBS-R1 Public Admin Closure
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'index.html'
-      - 'jobs/**'
-      - 'jobs*.html'
-      - 'jobs*.js'
-      - 'admin/**'
-      - 'scripts/audit-jobs-r1-public-admin-closure.mjs'
-      - '.github/workflows/jobs-r1-public-admin-closure.yml'
   workflow_dispatch:
 
 jobs:

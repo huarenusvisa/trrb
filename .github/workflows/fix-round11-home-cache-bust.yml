@@ -2,15 +2,6 @@ name: 第十一轮首页文章路由缓存验收（只读）
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "articles-home.js"
-      - "index.html"
-      - "homepage-refresh-guard.js"
-      - "article-route-runtime.js"
-      - "scripts/optimize-homepage-performance.mjs"
-      - ".github/workflows/fix-round11-home-cache-bust.yml"
 
 permissions:
   contents: read

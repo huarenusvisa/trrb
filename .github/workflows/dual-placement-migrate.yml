@@ -2,11 +2,6 @@ name: 重要新闻与ICE双重展示数据库迁移
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "supabase/migrations/20260817152500_dual_placement_manual_category_ice_topic.sql"
-      - ".github/workflows/dual-placement-migrate.yml"
 
 permissions:
   contents: read

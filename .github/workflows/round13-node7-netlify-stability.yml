@@ -2,12 +2,6 @@ name: 第十三轮节点7-Netlify构建与部署稳定性
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "netlify.toml"
-      - "scripts/round13-node7-netlify-stability-audit.mjs"
-      - ".github/workflows/round13-node7-netlify-stability.yml"
 
 permissions:
   contents: read

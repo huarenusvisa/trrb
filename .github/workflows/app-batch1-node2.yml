@@ -1,14 +1,6 @@
 name: APP Batch 1 Node 2
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/**'
-      - 'apps/mobile/src/components/TrRbAvatar.tsx'
-      - 'apps/mobile/app/article/[id].tsx'
-      - 'scripts/audit-app-batch1-node2.mjs'
-      - '.github/workflows/app-batch1-node2.yml'
   workflow_dispatch:
 
 permissions:

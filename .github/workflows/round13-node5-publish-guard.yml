@@ -2,13 +2,6 @@ name: 第十三轮节点5-发布失败与异常文章自动拦截
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/ice-publish-due.mjs"
-      - ".github/workflows/ice-publisher-continuous.yml"
-      - "scripts/round13-node5-publish-guard-audit.mjs"
-      - ".github/workflows/round13-node5-publish-guard.yml"
 
 permissions:
   contents: read

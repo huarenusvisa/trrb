@@ -4,18 +4,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "20 9 * * *"
-  push:
-    branches: [main]
-    paths:
-      - "**/*.html"
-      - "**/*.js"
-      - "**/*.mjs"
-      - "**/*.css"
-      - "_redirects"
-      - "robots.txt"
-      - "netlify.toml"
-      - "netlify/edge-functions/**"
-      - ".github/workflows/live-seo-crawl.yml"
 
 permissions:
   contents: read

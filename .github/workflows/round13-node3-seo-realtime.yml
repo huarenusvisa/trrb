@@ -2,14 +2,6 @@ name: 第十三轮节点3-Sitemap-RSS自动更新零延迟治理
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "netlify/edge-functions/sitemap-live.ts"
-      - "netlify/edge-functions/news-sitemap-live.ts"
-      - "netlify/edge-functions/feed-live.ts"
-      - "scripts/round13-node3-seo-realtime-audit.mjs"
-      - ".github/workflows/round13-node3-seo-realtime.yml"
 
 permissions:
   contents: read

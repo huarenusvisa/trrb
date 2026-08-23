@@ -2,13 +2,6 @@ name: Homepage Freshness 4 Days Validation
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'articles-home.js'
-      - 'homepage-refresh-guard.js'
-      - 'netlify/functions/public-home-bundle.js'
-      - '.github/workflows/fix-home-freshness-4days.yml'
 
 permissions:
   contents: read

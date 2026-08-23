@@ -4,15 +4,6 @@ name: LEGAL-R1 N1 - Official Source Full Text Inventory
 # do not recursively trigger downstream push workflows when using GITHUB_TOKEN.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '23 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'scripts/legal-r1-node1-source-fulltext-inventory-audit.mjs'
-      - 'docs/LEGAL-R1-FULL-TEXT-CHINESE-TRANSLATION-AND-DETAIL-UX.md'
-      - '.github/workflows/legal-r1-node1-source-fulltext-inventory.yml'
 
 permissions:
   contents: read

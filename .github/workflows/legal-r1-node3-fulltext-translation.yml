@@ -2,15 +2,6 @@ name: LEGAL-R1 N3 - Full Text Chinese Translation
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '43 * * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/legal-r1-node3-fulltext-translate.mjs'
-      - '.github/workflows/legal-r1-node3-fulltext-translation.yml'
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'docs/LEGAL-R1-FULL-TEXT-CHINESE-TRANSLATION-AND-DETAIL-UX.md'
 
 permissions:
   contents: write

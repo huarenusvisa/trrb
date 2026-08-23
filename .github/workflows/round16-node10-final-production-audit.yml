@@ -2,13 +2,6 @@ name: 第十六轮节点10-最终生产总验收
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/round16-node10-final-production-audit.yml'
-  workflow_run:
-    workflows: ['第十六轮节点2-统一法律数据库自动重建与版本同步']
-    types: [completed]
 
 permissions:
   contents: read

@@ -2,17 +2,6 @@ name: Category Live Order and Asylum Validation
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'listing.js'
-      - 'listing-seo.js'
-      - 'articles-home.js'
-      - 'homepage-refresh-guard.js'
-      - 'netlify/functions/public-home-articles.js'
-      - 'netlify/functions/public-home-bundle.js'
-      - 'netlify/edge-functions/category-prerender.ts'
-      - '.github/workflows/fix-category-live-order-and-asylum.yml'
 
 permissions:
   contents: read

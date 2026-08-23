@@ -2,15 +2,6 @@ name: Legal Synchronized Production Bridge
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'data/legal/unified-legal-authorities-latest.json'
-      - 'data/legal/legal-ai-analysis-latest.json'
-      - 'scripts/generate-legal-sitemap.mjs'
-      - 'scripts/round17-node6-ai-coverage-grounding-audit.mjs'
-      - 'scripts/round15-node7-ai-legal-analysis.mjs'
-      - '.github/workflows/legal-synchronized-production-bridge.yml'
 
 permissions:
   contents: read

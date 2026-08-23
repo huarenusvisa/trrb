@@ -1,16 +1,7 @@
 name: JOBS-R1 Node 7
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'supabase/migrations/20260817007000_jobs_r1_node7_contact_loop.sql'
-      - 'jobs/contact.html'
-      - 'jobs/contact.js'
-      - 'admin/jobs-manager.js'
-      - 'scripts/audit-jobs-r1-node7.mjs'
-      - '.github/workflows/jobs-r1-node7.yml'
-      - 'docs/JOBS-01-US-RECRUITING-AND-JOB-SEEKING.md'
   workflow_dispatch:
+
 jobs:
   audit:
     runs-on: ubuntu-latest

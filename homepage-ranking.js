@@ -2,6 +2,29 @@
   "use strict";
 
   const RANK_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+  const RANK_ALLOWED_CATEGORIES = Object.freeze([
+    "热门头条",
+    "美国时政",
+    "美国警情",
+    "ICE执法动态"
+  ]);
+  const RANK_ALLOWED_CATEGORY_SET = new Set(RANK_ALLOWED_CATEGORIES);
+  const RANK_CATEGORY_ALIASES = new Map([
+    ["中国热门头条", "热门头条"],
+    ["驱逐快报", "ICE执法动态"],
+    ["ICE执法", "ICE执法动态"],
+    ["ICE执法追踪", "ICE执法动态"],
+    ["ICE新闻", "ICE执法动态"]
+  ]);
+
+  function canonicalRankCategory(item) {
+    const category = String(item?.category_name || item?.category || "").trim();
+    return RANK_CATEGORY_ALIASES.get(category) || category;
+  }
+
+  function isAllowedRankCategory(item) {
+    return RANK_ALLOWED_CATEGORY_SET.has(canonicalRankCategory(item));
+  }
 
   function articleTime(item) {
     const raw = item?.published_at || item?.created_at || item?.date || item?.time || "";
@@ -44,6 +67,7 @@
 
     return (Array.isArray(items) ? items : [])
       .filter((item) => item?.title && isPublicPublished(item))
+      .filter(isAllowedRankCategory)
       .filter((item) => {
         const time = articleTime(item);
         const age = now - time;
@@ -66,7 +90,16 @@
       .slice(0, limit);
   }
 
-  const api = { RANK_MAX_AGE_MS, articleTime, eventKey, rankScore, select24hRank };
+  const api = {
+    RANK_MAX_AGE_MS,
+    RANK_ALLOWED_CATEGORIES,
+    articleTime,
+    eventKey,
+    rankScore,
+    canonicalRankCategory,
+    isAllowedRankCategory,
+    select24hRank
+  };
   if (typeof window !== "undefined") window.TRRB_HOME_RANKING = api;
   if (typeof module === "object" && module.exports) module.exports = api;
 })();

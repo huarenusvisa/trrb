@@ -381,7 +381,19 @@ const RANK_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 function fallback24hRank(articles, limit = 40) {
   const now = Date.now();
   const seen = new Set();
+  const allowedCategories = new Set(["热门头条", "美国时政", "美国警情", "ICE执法动态"]);
+  const categoryAliases = new Map([
+    ["中国热门头条", "热门头条"],
+    ["驱逐快报", "ICE执法动态"],
+    ["ICE执法", "ICE执法动态"],
+    ["ICE执法追踪", "ICE执法动态"],
+    ["ICE新闻", "ICE执法动态"]
+  ]);
   return (Array.isArray(articles) ? articles : [])
+    .filter((item) => {
+      const category = String(item?.category_name || item?.category || "").trim();
+      return allowedCategories.has(categoryAliases.get(category) || category);
+    })
     .filter((item) => {
       const time = articleTimestamp(item);
       const age = now - time;
@@ -403,7 +415,10 @@ function buildRankPool(articles) {
     : fallback24hRank(articles, 40);
 }
 function rankLabel(article) {
-  return String(article.category || article.category_name || "最新").trim() || "最新";
+  const raw = String(article.category_name || article.category || "最新").trim() || "最新";
+  if (raw === "热门头条" || raw === "中国热门头条") return "中国热门头条";
+  if (["驱逐快报", "ICE执法", "ICE执法追踪", "ICE新闻"].includes(raw)) return "ICE执法动态";
+  return raw;
 }
 function renderRank(articles) {
   const rankRoot = document.querySelector("#rank-list");

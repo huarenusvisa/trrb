@@ -20,9 +20,14 @@ const article = (id, title, category, hoursAgo, score, extra = {}) => ({
 
 const selected = ranking.select24hRank([
   article("crime", "美国警情样本", "美国警情", 2, 80),
-  article("immigration", "移民美国样本", "移民美国", 3, 70),
+  article("bia", "[BIA先例] 庇护案件证据标准", "移民美国·人道主义庇护·政治庇护·BIA先例判决", 1, 999),
+  article("immigration", "移民美国样本", "移民美国", 3, 998),
+  article("asylum", "庇护百科样本", "庇护百科", 2, 997),
+  article("important", "重要新闻样本", "重要新闻", 2, 996),
   article("china", "中国热门头条样本", "热门头条", 4, 60),
+  article("china-display", "中国热门头条显示名样本", "中国热门头条", 4.5, 55),
   article("ice", "ICE样本", "ICE执法动态", 5, 50),
+  article("ice-legacy", "ICE旧分类样本", "驱逐快报", 5.5, 45),
   article("politics", "美国时政样本", "美国时政", 6, 40),
   article("duplicate-low", "美国警情样本", "美国警情", 1, 1),
   article("old", "超过24小时", "美国时政", 25, 999),
@@ -31,8 +36,10 @@ const selected = ranking.select24hRank([
   article("future", "未来时间", "热门头条", -1, 999)
 ], { now, limit: 20 });
 
-assert.deepEqual(selected.map((item) => item.id), ["crime", "immigration", "china", "ice", "politics"]);
-assert.equal(new Set(selected.map((item) => item.category)).size, 5, "all public categories can enter the aggregate rank");
+assert.deepEqual(selected.map((item) => item.id), ["crime", "china", "china-display", "ice", "ice-legacy", "politics"]);
+assert.deepEqual(ranking.RANK_ALLOWED_CATEGORIES, ["热门头条", "美国时政", "美国警情", "ICE执法动态"]);
+assert.ok(selected.every(ranking.isAllowedRankCategory), "only the four approved homepage categories may enter the rank");
+assert.ok(!selected.some((item) => ["bia", "immigration", "asylum", "important"].includes(item.id)), "BIA and all non-whitelisted categories must be excluded");
 assert.ok(selected.every((item) => now - Date.parse(item.published_at) <= ranking.RANK_MAX_AGE_MS));
 
 const home = fs.readFileSync(new URL("../articles-home.js", import.meta.url), "utf8");
@@ -42,6 +49,7 @@ const index = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8")
 const snapshot = fs.readFileSync(new URL("./inject-static-news-links.mjs", import.meta.url), "utf8");
 
 assert.match(home, /TRRB_HOME_RANKING\?\.select24hRank/);
+assert.match(home, /allowedCategories = new Set\(\["热门头条", "美国时政", "美国警情", "ICE执法动态"\]\)/, "fallback rank must enforce the same whitelist");
 assert.match(home, /window\.TRRB_render24hRank = renderRank/);
 assert.doesNotMatch(home, /generateHeat\(/, "rank must not display invented traffic counts");
 assert.doesNotMatch(compat, /function buildMixedRank|RANK_CATEGORY_KEYS/, "compatibility shim must not own a second rank algorithm");

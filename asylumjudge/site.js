@@ -21,10 +21,15 @@ function useCleanDomainRoutes() {
   if (!trrbColumn && !/^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)) return;
   const routes = new Map([
     ['/immigration-judge-approval-rate/courts.html', appPath('courts')],
+    ['/immigration-judge-approval-rate/courts', appPath('courts')],
     ['/immigration-judge-approval-rate/states.html', appPath('states')],
+    ['/immigration-judge-approval-rate/states', appPath('states')],
     ['/immigration-judge-approval-rate/china-dashboard.html', appPath('nationality')],
+    ['/immigration-judge-approval-rate/china-dashboard', appPath('nationality')],
     ['/immigration-judge-approval-rate/nationality.html', appPath('nationality')],
-    ['/immigration-judge-approval-rate/methodology.html', appPath('methodology')]
+    ['/immigration-judge-approval-rate/nationality', appPath('nationality')],
+    ['/immigration-judge-approval-rate/methodology.html', appPath('methodology')],
+    ['/immigration-judge-approval-rate/methodology', appPath('methodology')]
   ]);
   document.querySelectorAll('a[href]').forEach((link) => {
     const url = new URL(link.getAttribute('href'), location.origin);

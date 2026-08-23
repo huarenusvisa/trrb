@@ -6,13 +6,21 @@
   const routes = new Map([
     ['/immigration-judge-approval-rate/', root || '/'],
     ['/immigration-judge-approval-rate/index.html', root || '/'],
+    ['/immigration-judge-approval-rate/index', root || '/'],
     ['/immigration-judge-approval-rate/courts.html', `${root}/courts`],
+    ['/immigration-judge-approval-rate/courts', `${root}/courts`],
     ['/immigration-judge-approval-rate/states.html', `${root}/states`],
+    ['/immigration-judge-approval-rate/states', `${root}/states`],
     ['/immigration-judge-approval-rate/china-dashboard.html', `${root}/nationality`],
+    ['/immigration-judge-approval-rate/china-dashboard', `${root}/nationality`],
     ['/immigration-judge-approval-rate/nationality.html', `${root}/nationality`],
+    ['/immigration-judge-approval-rate/nationality', `${root}/nationality`],
     ['/immigration-judge-approval-rate/methodology.html', `${root}/methodology`],
+    ['/immigration-judge-approval-rate/methodology', `${root}/methodology`],
     ['/immigration-judge-approval-rate/detail.html', `${root}/judge`],
-    ['/immigration-judge-approval-rate/court-detail.html', `${root}/court`]
+    ['/immigration-judge-approval-rate/detail', `${root}/judge`],
+    ['/immigration-judge-approval-rate/court-detail.html', `${root}/court`],
+    ['/immigration-judge-approval-rate/court-detail', `${root}/court`]
   ]);
   const supported = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
   const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };

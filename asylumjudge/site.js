@@ -72,13 +72,11 @@ function renderStateMarket(rows) {
     .map((row) => {
       const grants = Number(row.grants || 0);
       const denials = Number(row.denials || 0);
-      const other = Number(row.other_decisions || 0);
-      const total = grants + denials + other || 1;
+      const total = grants + denials || 1;
       return {
         code: String(row.state || '').toUpperCase(),
         approval: grants / total * 100,
-        denial: denials / total * 100,
-        other: other / total * 100
+        denial: denials / total * 100
       };
     });
   if (!points.length) {
@@ -99,10 +97,9 @@ function renderStateMarket(rows) {
   const y = (rate) => bottom - Math.min(rate, maxRate) / maxRate * plotHeight;
   const series = [
     { key: 'approval', label: '批准', className: 'approval' },
-    { key: 'denial', label: '拒绝', className: 'denial' },
-    { key: 'other', label: '其他', className: 'other' }
+    { key: 'denial', label: '拒绝', className: 'denial' }
   ];
-  const summary = points.map((point) => `${stateNames[point.code] || point.code}：批准${point.approval.toFixed(1)}%，拒绝${point.denial.toFixed(1)}%，其他${point.other.toFixed(1)}%`).join('；');
+  const summary = points.map((point) => `${stateNames[point.code] || point.code}：批准${point.approval.toFixed(1)}%，拒绝${point.denial.toFixed(1)}%`).join('；');
 
   const grid = [0, 25, 50, 75, 100].map((rate) => {
     const gridY = y(rate);

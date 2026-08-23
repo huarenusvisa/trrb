@@ -2,18 +2,7 @@ name: 第十三轮发布后SEO实时同步
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/round13-publish-seo-sync.yml"
-      - "scripts/generate-sitemaps.mjs"
-      - "scripts/clean-sitemap-against-database.mjs"
-      - "scripts/ensure-sitemap-articles.mjs"
-      - "scripts/generate-feed.mjs"
-      - "scripts/upgrade-article-urls.mjs"
-      - "scripts/finalize-redirects.mjs"
-  schedule:
-    - cron: "*/30 * * * *"
+  workflow_call:
 
 permissions:
   contents: write

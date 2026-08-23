@@ -130,7 +130,7 @@ requireMatch(financeSources, /bls\.gov\/feed\/cpi\.rss/, "official finance colle
 requireMatch(financeIngest, /official_source_auto_published/, "official finance collector is not marking auto-published articles");
 requireMatch(financeIngest, /source_url:\s*item\.url/, "official finance collector is not preserving source attribution");
 requireMatch(financeIngest, /X_BEARER_TOKEN/, "official finance collector is not ready for the X API token");
-requireMatch(financeWorkflow, /cron:\s*["']\*\/15 \* \* \* \*["']/, "official finance collector is not scheduled every 15 minutes");
+requireMatch(financeWorkflow, /cron:\s*["']8,38 \* \* \* \*["']/, "official finance collector is not scheduled every 30 minutes");
 requireMatch(financeWorkflow, /node scripts\/niulai-finance-ingest\.mjs/, "official finance workflow does not execute the collector");
 requireMatch(adminHtml, /data-page=["']finance-monitor["']/, "admin console is missing finance monitoring navigation");
 forbidMatch(niulaiAdapter, /TWELVE_DATA_API_KEY/, "Twelve Data API key name leaked into public client code");

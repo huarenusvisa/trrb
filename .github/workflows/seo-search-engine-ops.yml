@@ -9,8 +9,12 @@ on:
         default: 'false'
         type: choice
         options: ['false','true']
-  schedule:
-    - cron: '17 10 * * *'
+  workflow_call:
+    inputs:
+      write_mode:
+        required: false
+        type: string
+        default: 'false'
 
 permissions:
   contents: read

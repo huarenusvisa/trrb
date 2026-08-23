@@ -2,13 +2,6 @@ name: ICE持续处理发布线
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ice-publisher-continuous.yml"
-      - "scripts/ice-*.mjs"
-  schedule:
-    - cron: "17,47 * * * *"
 
 permissions:
   contents: read

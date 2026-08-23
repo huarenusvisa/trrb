@@ -2,8 +2,7 @@ name: 线上SEO与404真实抓取
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "20 9 * * *"
+  workflow_call:
 
 permissions:
   contents: read

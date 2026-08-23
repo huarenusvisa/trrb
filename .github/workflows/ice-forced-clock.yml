@@ -2,15 +2,6 @@ name: ICE独立强制生产时钟
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ice-forced-clock.yml"
-      - "scripts/ice-*.mjs"
-      - "scripts/category-pipeline-gate.mjs"
-  schedule:
-    # 每20分钟启动一轮；单轮最长18分钟，避免下一轮提前取消尚未完成的采集。
-    - cron: "3,23,43 * * * *"
 
 permissions:
   contents: read

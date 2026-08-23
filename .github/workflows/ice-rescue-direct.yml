@@ -2,12 +2,6 @@ name: ICE直接救援生产线
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ice-rescue-direct.yml"
-  schedule:
-    - cron: "5,35 * * * *"
 
 permissions:
   contents: read

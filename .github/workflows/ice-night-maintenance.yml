@@ -2,8 +2,7 @@ name: ICE夜间维护与自修复
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "7 * * * *"
+  workflow_call:
 
 permissions:
   contents: read

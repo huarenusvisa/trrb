@@ -104,7 +104,11 @@ assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
+assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
+assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');
+assert.match(standalone, /href="\/nationality"/, 'standalone homepage must link directly to the clean nationality route');
 assert.match(brandClient, /class="asylumjudge-lockup"[^>]+logo\.svg/, 'all judge data pages must receive the same logo');
+assert.match(brandClient, /\['\/immigration-judge-approval-rate\/states', `\$\{root\}\/states`\]/, 'pretty-URL legacy state links must normalize to the clean route');
 assert.equal(manifest.name, 'AsylumJudge.com');
 assert.ok(manifest.icons.some((icon) => icon.sizes === '512x512'));
 for (const asset of ['favicon.ico', 'favicon-48.png', 'apple-touch-icon.png', 'site.webmanifest']) assert.match(bundleBuilder, new RegExp(asset.replace('.', '\\.')));

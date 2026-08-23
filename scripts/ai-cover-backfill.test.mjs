@@ -17,7 +17,8 @@ assert.match(script, /Do not depict an identifiable real person/, "prompt must p
 assert.match(script, /do not imply the image is evidence/, "prompt must identify the image as conceptual rather than documentary evidence");
 assert.match(script, /Prefer: "return=representation"/, "save must verify the conditional article update");
 assert.match(workflow, /workflow_call:/, "cover workflow must be called by the control plane");
-assert.match(workflow, /AI_COVER_MAX_PER_RUN: "5"/, "scheduled daily batch must process 50 covers");
+assert.match(workflow, /timeout-minutes: 150/, "workflow must allow enough time for 50 sequential generations");
+assert.match(workflow, /AI_COVER_MAX_PER_RUN: "50"/, "scheduled daily batch must process 50 covers");
 assert.match(workflow, /ARTICLE_IMAGE_BUCKET: "article-images"/, "workflow must reuse the canonical image bucket");
 assert.doesNotMatch(workflow, /schedule:/, "cover workflow must not create an independent scheduler");
 assert.match(control, /daily-ai-cover-backfill:/, "control plane must own the scheduled cover queue");

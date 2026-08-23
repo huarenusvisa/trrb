@@ -1,4 +1,17 @@
 const { rest } = require('./_shared/supabase-admin');
+const nationalityPeriodIndex = require('../../data/immigration-judge-nationality-periods.json');
+const nationalityPeriodShards = [
+  require('../../data/immigration-judge-nationality-periods-1.json'),
+  require('../../data/immigration-judge-nationality-periods-2.json'),
+  require('../../data/immigration-judge-nationality-periods-3.json'),
+  require('../../data/immigration-judge-nationality-periods-4.json'),
+  require('../../data/immigration-judge-nationality-periods-5.json'),
+  require('../../data/immigration-judge-nationality-periods-6.json'),
+  require('../../data/immigration-judge-nationality-periods-7.json'),
+  require('../../data/immigration-judge-nationality-periods-8.json')
+];
+const judgeBackgrounds = require('../../data/immigration-judge-backgrounds.json');
+const webexDirectory = require('../../data/eoir-webex-links.json');
 
 const MIN_RELIABLE_DECISIONS = 50;
 const REST_PAGE_SIZE = 1000;
@@ -13,6 +26,91 @@ const out = (status, body) => ({
   body: JSON.stringify(body)
 });
 const num = (v) => Number(v || 0);
+const nationalityCatalog = nationalityPeriodShards.flatMap((shard) => Array.isArray(shard.countries) ? shard.countries : []);
+const nationalityPeriods = { ...nationalityPeriodIndex, countries: nationalityCatalog };
+
+function normalizedName(value) {
+  return String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\b(?:jr|sr|ii|iii|iv)\.?\b/gi, '')
+    .replace(/[^a-zA-Z,' -]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function judgeNameKey(value) {
+  const name = normalizedName(value);
+  if (!name) return '';
+  if (name.includes(',')) {
+    const [last, rest] = name.split(',', 2);
+    const first = String(rest || '').trim().split(/\s+/)[0];
+    return first && last ? `${last.trim()}|${first}` : '';
+  }
+  const parts = name.split(/\s+/).filter(Boolean);
+  return parts.length > 1 ? `${parts.at(-1)}|${parts[0]}` : parts[0];
+}
+
+const backgroundByName = new Map(
+  (judgeBackgrounds.profiles || []).map((profile) => [profile.name_key || judgeNameKey(profile.judge_name), profile])
+);
+const webexByName = new Map(
+  (webexDirectory.profiles || []).map((profile) => [profile.name_key || judgeNameKey(profile.judge_name), profile])
+);
+
+function findNationality(value) {
+  const query = String(value || '').trim().toLowerCase();
+  if (!query) return null;
+  return nationalityCatalog.find((row) => [row.nationality, row.nationality_zh, row.nationality_code]
+    .filter(Boolean)
+    .some((candidate) => String(candidate).trim().toLowerCase() === query))
+    || nationalityCatalog.find((row) => [row.nationality, row.nationality_zh, row.nationality_code]
+      .filter(Boolean)
+      .some((candidate) => String(candidate).trim().toLowerCase().includes(query)));
+}
+
+function nationalitySummary(row) {
+  if (!row) return null;
+  const { monthly, quarterly, yearly, ...summary } = row;
+  return summary;
+}
+
+async function nationalityJudges(country) {
+  if (!country) return [];
+  const code = String(country.nationality_code || '').trim();
+  const query = {
+    select: 'judge_id,nationality,nationality_code,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date',
+    order: 'total_asylum_decisions.desc',
+    limit: '1500'
+  };
+  if (/^[A-Za-z]{2,3}$/.test(code)) query.nationality_code = `eq.${code}`;
+  else query.nationality = `eq.${country.nationality}`;
+  let nat = await rest('immigration_judge_asylum_nationality', { query });
+  if (!(nat || []).length && country.nationality) {
+    nat = await rest('immigration_judge_asylum_nationality', {
+      query: { ...query, nationality_code: undefined, nationality: `eq.${country.nationality}` }
+    });
+  }
+  const ids = [...new Set((nat || []).map((row) => row.judge_id).filter(Boolean))];
+  const batches = [];
+  for (let index = 0; index < ids.length; index += 100) {
+    const batch = ids.slice(index, index + 100);
+    batches.push(rest('immigration_judges', {
+      query: {
+        select: 'id,judge_name,court_name,court_city,court_state,source,source_updated_at',
+        id: `in.(${batch.join(',')})`,
+        limit: String(batch.length)
+      }
+    }));
+  }
+  const judges = (await Promise.all(batches)).flat();
+  const judgeMap = new Map((judges || []).map((judge) => [judge.id, judge]));
+  return (nat || [])
+    .map((row) => derived({ ...row, ...(judgeMap.get(row.judge_id) || {}) }))
+    .filter((row) => row.judge_name)
+    .sort((a, b) => Number(b.adjudicated_decisions || 0) - Number(a.adjudicated_decisions || 0));
+}
 const ASYLUM_KNOWLEDGE_TERMS = [
   '种族迫害', '宗教迫害', '国籍迫害', '政治观点', '政治意见', '特定社会群体',
   '五项受保护理由', '五项受保护原因', '过去迫害', '未来迫害', '迫害恐惧',
@@ -54,6 +152,7 @@ function derived(row) {
   const adjudicated = grants + denials;
   const calculatedRate = adjudicated ? grants / adjudicated * 100 : null;
   const rateReliable = adjudicated >= MIN_RELIABLE_DECISIONS;
+  const webexProfile = webexByName.get(judgeNameKey(row.judge_name));
   return {
     ...row,
     decision_count: adjudicated,
@@ -65,7 +164,14 @@ function derived(row) {
     sample_level: adjudicated < MIN_RELIABLE_DECISIONS ? 'insufficient' : adjudicated < 200 ? 'medium' : 'large',
     sample_status: rateReliable ? 'reportable' : 'insufficient_sample',
     minimum_reportable_decisions: MIN_RELIABLE_DECISIONS,
-    rate_reliable: rateReliable
+    rate_reliable: rateReliable,
+    webex: webexProfile ? {
+      links: webexProfile.links,
+      source_url: webexDirectory.source_url,
+      source_updated_at: webexDirectory.source_updated_at,
+      telephonic_number: webexDirectory.telephonic_number,
+      notice: webexDirectory.notice
+    } : null
   };
 }
 
@@ -189,35 +295,52 @@ exports.handler = async (event) => {
       });
     }
 
-    if (mode === 'china') {
-      const nat = await rest('immigration_judge_asylum_nationality', {
-        query: {
-          select: 'judge_id,nationality,nationality_code,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date',
-          or: '(nationality.ilike.*China*,nationality.ilike.*中国*,nationality_code.eq.CHN)',
-          order: 'total_asylum_decisions.desc',
-          limit: '1000'
-        }
+    if (mode === 'nationalities') {
+      const query = String(p.q || '').trim().toLowerCase();
+      const countries = nationalityCatalog
+        .filter((row) => !query || [row.nationality, row.nationality_zh, row.nationality_code]
+          .filter(Boolean)
+          .some((candidate) => String(candidate).toLowerCase().includes(query)))
+        .map(nationalitySummary);
+      return out(200, {
+        count: countries.length,
+        total_countries: nationalityCatalog.length,
+        countries,
+        source_snapshot_date: nationalityPeriods.source_snapshot_date,
+        scope_start: nationalityPeriods.scope_start,
+        scope_end: nationalityPeriods.scope_end,
+        minimum_reportable_decisions: nationalityPeriods.minimum_reportable_decisions,
+        ...(await provenance())
       });
-      const ids = [...new Set((nat || []).map((x) => x.judge_id).filter(Boolean))];
-      if (!ids.length) return out(200, { count: 0, results: [], ...(await provenance()) });
-      // Keep PostgREST URLs below proxy/CDN limits. A single China query can
-      // contain hundreds of judge UUIDs, and one giant `in.(...)` filter can
-      // exceed the upstream request-line limit even though the data is valid.
-      const judgeBatches = [];
-      for (let i = 0; i < ids.length; i += 100) {
-        const batch = ids.slice(i, i + 100);
-        judgeBatches.push(rest('immigration_judges', {
-          query: {
-            select: 'id,judge_name,court_name,court_city,court_state,source,source_updated_at',
-            id: `in.(${batch.join(',')})`,
-            limit: String(batch.length)
-          }
-        }));
-      }
-      const judges = (await Promise.all(judgeBatches)).flat();
-      const jm = new Map((judges || []).map((j) => [j.id, j]));
-      const results = (nat || []).map((x) => derived({ ...x, ...(jm.get(x.judge_id) || {}) })).filter((x) => x.judge_name);
-      return out(200, { count: results.length, results, ...(await provenance()) });
+    }
+
+    if (mode === 'nationality-detail') {
+      const country = findNationality(p.country || p.q);
+      if (!country) return out(404, { error: 'nationality_not_found' });
+      const judges = await nationalityJudges(country);
+      return out(200, {
+        country: nationalitySummary(country),
+        periods: { monthly: country.monthly || [], quarterly: country.quarterly || [], yearly: country.yearly || [] },
+        judges,
+        source_snapshot_date: nationalityPeriods.source_snapshot_date,
+        scope_start: nationalityPeriods.scope_start,
+        scope_end: nationalityPeriods.scope_end,
+        minimum_reportable_decisions: nationalityPeriods.minimum_reportable_decisions,
+        ...(await provenance())
+      });
+    }
+
+    if (mode === 'china') {
+      const country = findNationality('China');
+      const results = await nationalityJudges(country);
+      return out(200, {
+        count: results.length,
+        results,
+        country: nationalitySummary(country),
+        periods: { monthly: country?.monthly || [], quarterly: country?.quarterly || [], yearly: country?.yearly || [] },
+        source_snapshot_date: nationalityPeriods.source_snapshot_date,
+        ...(await provenance())
+      });
     }
 
     if (mode === 'courts') {
@@ -293,7 +416,14 @@ exports.handler = async (event) => {
         rest('immigration_judge_asylum_yearly', { query: { select: 'fiscal_year,total_asylum_decisions,grants,denials,other_decisions,approval_rate,denial_rate', judge_id: `eq.${id}`, order: 'fiscal_year.asc', limit: '100' } }),
         rest('immigration_judge_asylum_nationality', { query: { select: 'nationality,nationality_code,total_asylum_decisions,grants,denials,other_decisions,approval_rate,data_start_date,data_end_date', judge_id: `eq.${id}`, order: 'total_asylum_decisions.desc', limit: '250' } })
       ]);
-      return out(200, { judge: derived(judge), yearly: (yearly || []).map(derived), nationality: (nationality || []).map(derived), ...(await provenance()) });
+      return out(200, {
+        judge: derived(judge),
+        yearly: (yearly || []).map(derived),
+        nationality: (nationality || []).map(derived),
+        background: backgroundByName.get(judgeNameKey(judge.judge_name)) || null,
+        background_policy: judgeBackgrounds.source_policy,
+        ...(await provenance())
+      });
     }
 
     const q = String(p.q || '').trim().slice(0, 100);

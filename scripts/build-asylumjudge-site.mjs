@@ -25,7 +25,8 @@ await writeFile(join(output, '_redirects'), `
 /court /immigration-judge-approval-rate/court-detail.html 200
 /courts /immigration-judge-approval-rate/courts.html 200
 /states /immigration-judge-approval-rate/states.html 200
-/china /immigration-judge-approval-rate/china-dashboard.html 200
+/nationality /immigration-judge-approval-rate/china-dashboard.html 200
+/china /nationality?country=China 301
 /methodology /immigration-judge-approval-rate/methodology.html 200
 /immigration-judge-approval-rate /index.html 301
 /immigration-judge-approval-rate/ /index.html 301

@@ -16,7 +16,8 @@ function useCleanDomainRoutes() {
   const routes = new Map([
     ['/immigration-judge-approval-rate/courts.html', appPath('courts')],
     ['/immigration-judge-approval-rate/states.html', appPath('states')],
-    ['/immigration-judge-approval-rate/china-dashboard.html', appPath('china')],
+    ['/immigration-judge-approval-rate/china-dashboard.html', appPath('nationality')],
+    ['/immigration-judge-approval-rate/nationality.html', appPath('nationality')],
     ['/immigration-judge-approval-rate/methodology.html', appPath('methodology')]
   ]);
   document.querySelectorAll('a[href]').forEach((link) => {
@@ -141,9 +142,12 @@ function renderJudgeDirectory(rows, query = '') {
     const court = row.court_name || place || '法院信息待更新';
     const adjudicated = Number(row.grants || 0) + Number(row.denials || 0);
     const rate = row.adjudicated_approval_rate == null
-      ? '<b class="directory-rate unavailable">样本不足</b>'
+      ? '<b class="directory-rate unavailable">少于 50 件，不显示</b>'
       : `<b class="directory-rate">${pct(row.adjudicated_approval_rate)}</b>`;
-    return `<a class="judge-directory-row" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><span class="judge-directory-identity"><strong>${esc(row.judge_name || '未命名法官')}</strong><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small></span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 有效样本</small></span></a>`;
+    const links = row.webex?.links || [];
+    const webex = links.find((item) => String(item.court_name || '').toLowerCase() === String(row.court_name || '').toLowerCase()) || links[0];
+    const webexAction = webex ? `<small class="judge-webex"><a href="${esc(webex.webex_url)}" target="_blank" rel="noopener">Webex 网上上庭 ↗</a><span>电话接入码 ${esc(webex.access_code || '见官方页')}</span></small>` : '';
+    return `<div class="judge-directory-row"><span class="judge-directory-identity"><a class="judge-profile-link" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}"><strong>${esc(row.judge_name || '未命名法官')}</strong></a><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small>${webexAction}</span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 件有效裁决</small><a class="directory-detail-link" href="${appPath('judge')}?id=${encodeURIComponent(row.id)}">查看详情 →</a></span></div>`;
   }).join('') : `<div class="empty"><b>没有找到匹配法官</b><p>请尝试英文姓名、法院、城市或州代码。</p></div>`;
 }
 

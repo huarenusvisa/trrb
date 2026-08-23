@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+      <loc>https://trrb.net/ice/ice-bf373cc1e66b790375e8846c193a72f72a32cf24</loc>
+      <news:news>
+        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
+        <news:publication_date>2026-08-23T02:22:13.279Z</news:publication_date>
+        <news:title>西雅图ICE逮捕涉银行诈骗尼日利亚男子面临遣返</news:title>
+      </news:news>
+    </url>
+  <url>
       <loc>https://trrb.net/ice/ice-58155c694401bd48bb3cd3d0bf9e5c4729b4548f</loc>
       <news:news>
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
@@ -1354,22 +1362,6 @@
         <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
         <news:publication_date>2026-08-21T02:39:00.149Z</news:publication_date>
         <news:title>马里兰机场惊现847磅卡特草！两名纽约男子携巨量毒品入境遭调查</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/us-crime/%E5%8D%97%E5%8A%A0%E5%B7%9E%E7%96%91%E4%BC%BC%E9%85%92%E9%A9%BE%E4%BA%8B%E6%95%85%E8%87%B48%E5%B2%81%E5%A5%B3%E5%AD%A9%E6%AD%BB%E4%BA%A1-%E7%88%B6%E5%85%84%E9%87%8D%E4%BC%A4%E5%8F%B8%E6%9C%BA%E8%A2%AB%E6%8D%95-mt2c7rqr-807878</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T02:35:48.146Z</news:publication_date>
-        <news:title>南加州疑似酒驾事故致8岁女孩死亡 父兄重伤司机被捕</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/us-crime/21%E5%B2%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%88%B6%E9%80%A0%E5%81%87%E6%B0%91%E8%B0%83%E4%B8%80%E5%9C%BA%E7%A4%BE%E4%BC%9A%E5%AE%9E%E9%AA%8C%E5%87%BB%E7%A9%BF%E7%BE%8E%E5%9B%BD%E9%80%89%E4%B8%BE%E4%BF%A1%E6%81%AF%E9%98%B2%E7%BA%BF-mt2c6fxg-2bd530</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T02:34:46.180Z</news:publication_date>
-        <news:title>21岁大学生制造“假民调”：一场社会实验击穿美国选举信息防线</news:title>
       </news:news>
     </url>
 </urlset>

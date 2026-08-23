@@ -36,6 +36,18 @@
     ar: { judges: 'بحث القضاة', courts: 'بحث المحاكم', states: 'بيانات الولايات', nationality: 'نسب الموافقة حسب الجنسية', language: 'اللغة' },
     tr: { judges: 'Hâkim ara', courts: 'Mahkeme ara', states: 'Eyalet verileri', nationality: 'Uyruğa göre onay oranı', language: 'Dil' }
   };
+  const brandLabels = {
+    en: { descriptor: 'U.S. immigration judge and court data', nav: 'Immigration judge data navigation', footer: 'Shared EOIR database · continuously updated' },
+    es: { descriptor: 'Datos de jueces y tribunales de inmigración de EE. UU.', nav: 'Navegación de datos de jueces', footer: 'Base EOIR compartida · actualización continua' },
+    fr: { descriptor: 'Données des juges et tribunaux de l’immigration aux États-Unis', nav: 'Navigation des données des juges', footer: 'Base EOIR partagée · mise à jour continue' },
+    'pt-BR': { descriptor: 'Dados de juízes e tribunais de imigração dos EUA', nav: 'Navegação de dados de juízes', footer: 'Base EOIR compartilhada · atualização contínua' },
+    hi: { descriptor: 'अमेरिकी इमिग्रेशन जज और अदालत डेटा', nav: 'इमिग्रेशन जज डेटा नेविगेशन', footer: 'साझा EOIR डेटाबेस · लगातार अपडेट' },
+    'zh-Hans': { descriptor: '美国移民法官与法院数据', nav: '移民法官数据导航', footer: '共用 EOIR 数据库 · 持续更新' },
+    'zh-Hant': { descriptor: '美國移民法官與法院資料', nav: '移民法官資料導覽', footer: '共用 EOIR 資料庫 · 持續更新' },
+    ru: { descriptor: 'Данные иммиграционных судей и судов США', nav: 'Навигация по данным судей', footer: 'Общая база EOIR · постоянно обновляется' },
+    ar: { descriptor: 'بيانات قضاة ومحاكم الهجرة الأمريكية', nav: 'التنقل في بيانات القضاة', footer: 'قاعدة EOIR مشتركة · تحديث مستمر' },
+    tr: { descriptor: 'ABD göçmenlik hâkimi ve mahkeme verileri', nav: 'Hâkim verisi gezinmesi', footer: 'Ortak EOIR veri tabanı · sürekli güncellenir' }
+  };
   const options = '<option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="pt-BR">PT-BR</option><option value="hi">HI</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option><option value="ru">RU</option><option value="ar">AR</option><option value="tr">TR</option>';
   const normalizeLocale = (value) => {
     const raw = String(value || '');
@@ -52,6 +64,7 @@
   const languageMarkup = (id = 'language-select') => `<label for="${id}" data-language-label>${labels[locale].language}</label><select id="${id}" aria-label="${labels[locale].language}">${options}</select>`;
   const applyNavigationLabels = () => {
     const set = labels[locale] || labels['zh-Hans'];
+    const brandSet = brandLabels[locale] || brandLabels['zh-Hans'];
     document.querySelectorAll('[data-nav-key]').forEach((node) => { node.textContent = set[node.dataset.navKey] || node.textContent; });
     document.querySelectorAll('[data-language-label]').forEach((node) => {
       if (node.matches('label')) {
@@ -65,6 +78,12 @@
       select.value = locale;
       select.setAttribute('aria-label', set.language);
     });
+    const descriptor = document.querySelector('.judge-brand > div:not(.language-control)');
+    if (descriptor) descriptor.innerHTML = `<b>${brandSet.descriptor}</b><span>EOIR Immigration Court Data</span>`;
+    const primaryNav = document.querySelector('.asylumjudge-primary-nav');
+    if (primaryNav) primaryNav.setAttribute('aria-label', brandSet.nav);
+    const footer = document.querySelector('.judge-footer .judge-shell');
+    if (footer) footer.innerHTML = `<b>${standaloneHost ? 'AsylumJudge.com' : 'Tang Ren Daily · AsylumJudge'}</b><span>${brandSet.footer}</span>`;
     if (!window.AsylumI18n) {
       document.documentElement.lang = locale;
       document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
@@ -120,12 +139,12 @@
       logo.innerHTML = '<img class="asylumjudge-lockup" src="/asylumjudge/logo.svg" alt="AsylumJudge.com">';
     }
     const descriptor = brand.querySelector(':scope > div:not(.language-control)');
-    if (descriptor) descriptor.innerHTML = '<b>美国移民法官与法院数据</b><span>EOIR Immigration Court Data</span>';
+    if (descriptor) descriptor.innerHTML = `<b>${brandLabels[locale].descriptor}</b><span>EOIR Immigration Court Data</span>`;
     let primaryNav = brand.querySelector('.asylumjudge-primary-nav');
     if (!primaryNav) {
       primaryNav = document.createElement('nav');
       primaryNav.className = 'asylumjudge-primary-nav';
-      primaryNav.setAttribute('aria-label', '移民法官数据导航');
+      primaryNav.setAttribute('aria-label', brandLabels[locale].nav);
       brand.appendChild(primaryNav);
     }
     primaryNav.innerHTML = navigationMarkup();
@@ -158,5 +177,5 @@
   const nav = document.querySelector('.judge-nav .judge-shell');
   if (nav) nav.innerHTML = '';
   const footer = document.querySelector('.judge-footer .judge-shell');
-  if (footer) footer.innerHTML = `<b>${standaloneHost ? '移民法官通过率 · AsylumJudge.com' : '唐人日报 · 移民法官通过率'}</b><span>共用 EOIR 数据库 · 持续更新</span>`;
+  if (footer) footer.innerHTML = `<b>${standaloneHost ? 'AsylumJudge.com' : 'Tang Ren Daily · AsylumJudge'}</b><span>${brandLabels[locale].footer}</span>`;
 })();

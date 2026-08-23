@@ -2,6 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
+const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname) ? `https://trrb.net${path}` : path;
 let nationality = [];
 let nationalityYearly = [];
 let nationalityFiscalYear = 2026;
@@ -20,8 +21,18 @@ const sampleDescription = (row) => {
 const dateRange = (row) => row.data_start_date || row.data_end_date ? `记录日期 ${row.data_start_date || '—'} 至 ${row.data_end_date || '—'}` : '';
 
 function renderBackground(background) {
-  if (!background) return;
   $('#judge-background').hidden = false;
+  if (!background) {
+    $('#background-date').textContent = '暂未匹配到官方资料';
+    $('#background-court').textContent = '暂未匹配到官方资料';
+    $('#background-type').textContent = 'Immigration Judge';
+    $('#background-copy-title').textContent = '官方履历核验状态';
+    $('#background-bio').textContent = '当前数据库尚未匹配到该法官可核验的 DOJ/EOIR 官方任命履历。裁决统计仍可正常查看；背景资料补齐后会在这里同步显示。';
+    $('#background-source-wrap').hidden = true;
+    return;
+  }
+  $('#background-copy-title').textContent = '官方履历原文';
+  $('#background-source-wrap').hidden = false;
   $('#background-date').textContent = background.appointment_date || '官方资料未注明';
   $('#background-court').textContent = background.appointment_court || '官方资料未注明';
   $('#background-type').textContent = background.appointment_type || 'Immigration Judge';
@@ -122,7 +133,8 @@ async function load() {
   const id = new URLSearchParams(location.search).get('id');
   if (!id) { $('#detail-loading').textContent = '缺少法官编号'; return; }
   try {
-    const response = await fetch(`/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(id)}`);
+    const localUrl = `/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(id)}`;
+    const response = await fetch(apiUrl(localUrl), { cache: 'no-store' });
     const data = await response.json();
     if (!response.ok || !data.judge) throw new Error();
     const judge = data.judge;

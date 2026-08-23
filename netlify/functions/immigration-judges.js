@@ -211,11 +211,13 @@ exports.handler = async (event) => {
 
     if (mode === 'courts') {
       const q = String(p.q || '').trim().toLowerCase();
+      const state = String(p.state || '').trim().toUpperCase();
       const rows = await restAll('immigration_judges', {
         query: { select: 'id,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions', order: 'id.asc' }
       });
       const map = new Map();
       for (const r of rows || []) {
+        if (state && String(r.court_state || '').trim().toUpperCase() !== state) continue;
         const key = [r.court_name, r.court_city, r.court_state].join('|');
         if (q && !`${r.court_name || ''} ${r.court_city || ''} ${r.court_state || ''}`.toLowerCase().includes(q)) continue;
         const x = map.get(key) || { court_name: r.court_name, court_city: r.court_city, court_state: r.court_state, judges: 0, total_asylum_decisions: 0, grants: 0, denials: 0, other_decisions: 0 };
@@ -232,14 +234,17 @@ exports.handler = async (event) => {
 
     if (mode === 'court-detail') {
       const court = String(p.court || '').trim();
+      const state = String(p.state || '').trim().toUpperCase();
       if (!court) return out(400, { error: 'missing_court' });
+      const courtQuery = {
+        select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
+        court_name: `eq.${court}`,
+        order: 'total_asylum_decisions.desc',
+        limit: '500'
+      };
+      if (state) courtQuery.court_state = `eq.${state}`;
       const rows = await rest('immigration_judges', {
-        query: {
-          select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
-          court_name: `eq.${court}`,
-          order: 'total_asylum_decisions.desc',
-          limit: '500'
-        }
+        query: courtQuery
       });
       if (!(rows || []).length) return out(404, { error: 'not_found' });
       const judges = (rows || []).map(derived);
@@ -252,7 +257,8 @@ exports.handler = async (event) => {
       });
       const map = new Map();
       for (const r of rows || []) {
-        const state = r.court_state || 'Unknown';
+        const state = String(r.court_state || '').trim().toUpperCase();
+        if (!state) continue;
         const x = map.get(state) || { state, courts: new Set(), judges: 0, total_asylum_decisions: 0, grants: 0, denials: 0, other_decisions: 0 };
         if (r.court_name) x.courts.add(r.court_name);
         x.judges += 1;

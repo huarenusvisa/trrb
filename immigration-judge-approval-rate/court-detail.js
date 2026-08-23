@@ -4,10 +4,14 @@ const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 
 async function load() {
-  const courtName = new URLSearchParams(location.search).get('court');
+  const query = new URLSearchParams(location.search);
+  const courtName = query.get('court');
+  const state = (query.get('state') || '').trim().toUpperCase();
   if (!courtName) { $('#loading').textContent = '缺少法院名称'; return; }
   try {
-    const response = await fetch(`/.netlify/functions/immigration-judges?mode=court-detail&court=${encodeURIComponent(courtName)}`);
+    const params = new URLSearchParams({ mode: 'court-detail', court: courtName });
+    if (state) params.set('state', state);
+    const response = await fetch(`/.netlify/functions/immigration-judges?${params}`);
     const data = await response.json();
     if (!response.ok || !data.court) throw new Error();
     const court = data.court;

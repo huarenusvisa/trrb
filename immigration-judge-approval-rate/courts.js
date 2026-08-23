@@ -3,17 +3,21 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 let rows = [];
+let selectedState = '';
 
 function render(list) {
   $('#court-results').innerHTML = list.length ? `
     <div class="crow chead court-crow"><span>法院</span><span>法官</span><span>裁决总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other" title="包括撤案、A10、十年绿卡、暂缓递解、自愿递解等其他裁决">其他</span><span>裁决批准率</span></div>
-    ${list.map((row) => `<a class="crow court-crow" href="/immigration-judge-approval-rate/court-detail.html?court=${encodeURIComponent(row.court_name || '')}"><span><b>${esc(row.court_name || '未命名法院')}</b><small>${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></span><span>${fmt(row.judges)}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${pct(row.adjudicated_approval_rate)}${row.sample_level !== 'large' ? `<small>${row.sample_level === 'small' ? '小样本' : '中等样本'}</small>` : ''}</span></a>`).join('')}
+    ${list.map((row) => `<a class="crow court-crow" href="/immigration-judge-approval-rate/court-detail.html?court=${encodeURIComponent(row.court_name || '')}&state=${encodeURIComponent(row.court_state || selectedState)}"><span><b>${esc(row.court_name || '未命名法院')}</b><small>${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></span><span>${fmt(row.judges)}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${pct(row.adjudicated_approval_rate)}${row.sample_level !== 'large' ? `<small>${row.sample_level === 'small' ? '小样本' : '中等样本'}</small>` : ''}</span></a>`).join('')}
   ` : '<div class="empty">没有找到匹配法院</div>';
 }
 
-async function load(query = '') {
+async function load(query = '', state = selectedState) {
   try {
-    const response = await fetch(`/.netlify/functions/immigration-judges?mode=courts${query ? `&q=${encodeURIComponent(query)}` : ''}`);
+    const params = new URLSearchParams({ mode: 'courts' });
+    if (query) params.set('q', query);
+    if (state) params.set('state', state);
+    const response = await fetch(`/.netlify/functions/immigration-judges?${params}`);
     const data = await response.json();
     rows = data.courts || [];
     render(rows);
@@ -27,6 +31,13 @@ async function load(query = '') {
 
 $('#court-search').addEventListener('submit', (event) => {
   event.preventDefault();
-  load($('#court-q').value.trim());
+  load($('#court-q').value.trim(), selectedState);
 });
-load();
+
+selectedState = (new URLSearchParams(location.search).get('state') || '').trim().toUpperCase();
+if (selectedState) {
+  $('#court-q').placeholder = `在 ${selectedState} 州内搜索法院或城市`;
+  const heading = document.querySelector('.court-section .section-head h2');
+  if (heading) heading.textContent = `${selectedState} 州移民法院`;
+}
+load('', selectedState);

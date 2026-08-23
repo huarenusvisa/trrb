@@ -49,6 +49,22 @@ def parse_pdf(source, content):
             end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
             biography = clean(text[match.end():end])
             biography = re.split(r"\b(?:Temporary Immigration Judges|For more information|EOIR is an office)", biography, maxsplit=1)[0].strip()
+            # Some PDF pages break the next judge heading across glyph runs, so
+            # the heading regex can miss it and merge multiple biographies.
+            # The prose itself reliably repeats "<name> was appointed". Keep
+            # exactly the first appointment biography and discard any later
+            # appointment block before publishing a profile.
+            appointment_blocks = list(re.finditer(
+                r"(?:[A-ZÀ-ÖØ-Þ][A-Za-zÀ-ÖØ-öø-ÿ'.-]*\s+){1,8}was appointed\b",
+                biography,
+            ))
+            if len(appointment_blocks) > 1:
+                biography = biography[:appointment_blocks[1].start()].strip()
+            biography = re.sub(
+                r"\s+[A-ZÀ-ÖØ-Þ][A-Za-zÀ-ÖØ-öø-ÿ'. -]{2,100},\s+(?:Temporary\s+)?Immigration Judge,.*$",
+                "",
+                biography,
+            ).strip()
             if not biography or "appointed" not in biography.lower():
                 continue
             appointment = re.search(
@@ -57,7 +73,8 @@ def parse_pdf(source, content):
                 flags=re.I,
             )
             education = next((sentence for sentence in re.split(r"(?<=[.!?])\s+", biography) if re.search(r"\b(?:earned|received)\b", sentence, re.I)), None)
-            bar = next((sentence for sentence in re.split(r"(?<=[.!?])\s+", biography) if re.search(r"\bmember of\b.*\bBar\b", sentence, re.I)), None)
+            bar_start = re.search(r"\bJudge\s+[^.]{1,100}\s+is\s+(?:a\s+)?member\s+of\b", biography, re.I)
+            bar = biography[bar_start.start():].strip() if bar_start else None
             name = clean(match.group(1))
             biography_name = re.match(r"^(?:Immigration Court\s+)?([A-ZÀ-ÖØ-Þ].{2,90}?)\s+was appointed\b", biography, flags=re.I)
             if biography_name and len(clean(biography_name.group(1)).split()) <= 8:

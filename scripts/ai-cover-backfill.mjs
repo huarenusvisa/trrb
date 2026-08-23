@@ -6,7 +6,7 @@ const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-1";
 const BUCKET = process.env.ARTICLE_IMAGE_BUCKET || "article-images";
-const LIMIT = Math.max(1, Math.min(10, Number(process.env.AI_COVER_MAX_PER_RUN || 5)));
+const LIMIT = Math.max(1, Math.min(50, Number(process.env.AI_COVER_MAX_PER_RUN || 50)));
 const PAGE_SIZE = 500;
 
 function requireEnv() {

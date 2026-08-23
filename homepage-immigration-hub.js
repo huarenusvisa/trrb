@@ -56,19 +56,19 @@
 
   function judgeMarkup() {
     return `
-      <header class="immigration-hub-head legal-hub-head"><h2>移民法官通过率</h2><a href="/asylumjudge">进入查询</a></header>
-      <a class="immigration-hub-feature legal-hub-feature" href="/asylumjudge"><strong>查法官 · 看法院 · 比较庇护裁决数据</strong></a>
+      <header class="immigration-hub-head legal-hub-head"><h2>移民法官通过率</h2><a href="https://asylumjudge.com/">进入查询</a></header>
+      <a class="immigration-hub-feature legal-hub-feature" href="https://asylumjudge.com/"><strong>查法官 · 看法院 · 比较庇护裁决数据</strong></a>
       <div class="judge-state-dashboard" aria-live="polite">
         <div class="judge-state-leader"><span>各州通过率</span><b>数据读取中</b><strong>—</strong><small>正在汇总移民法庭裁决</small></div>
         <div class="judge-state-panel"><div class="judge-state-head"><b>核心州庇护裁决通过率</b><span>全体申请人</span></div><small class="judge-state-note">正在读取纽约州、加州、德州、佛州、新泽西州…</small></div>
       </div>
       <div class="immigration-hub-grid legal-hub-grid judge-action-grid">
-        <a href="/asylumjudge"><strong>查移民法官</strong><span aria-hidden="true">›</span></a>
-        <a href="/asylumjudge/courts"><strong>全部移民法院</strong><span aria-hidden="true">›</span></a>
-        <a href="/asylumjudge/states"><strong>按州查看</strong><span aria-hidden="true">›</span></a>
-        <a href="/asylumjudge/states"><strong>各州通过率</strong><span aria-hidden="true">›</span></a>
+        <a href="https://asylumjudge.com/"><strong>查移民法官</strong><span aria-hidden="true">›</span></a>
+        <a href="https://asylumjudge.com/courts"><strong>全部移民法院</strong><span aria-hidden="true">›</span></a>
+        <a href="https://asylumjudge.com/states"><strong>按州查看</strong><span aria-hidden="true">›</span></a>
+        <a href="https://asylumjudge.com/nationality"><strong>各国国籍批准率</strong><span aria-hidden="true">›</span></a>
       </div>
-      <a class="immigration-hub-all legal-hub-all" href="/asylumjudge/methodology">查看数据口径说明</a>`;
+      <a class="immigration-hub-all legal-hub-all" href="https://asylumjudge.com/methodology">查看数据口径说明</a>`;
   }
 
   function installStateStyles() {

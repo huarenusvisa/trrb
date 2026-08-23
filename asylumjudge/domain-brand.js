@@ -14,6 +14,63 @@
     ['/immigration-judge-approval-rate/detail.html', `${root}/judge`],
     ['/immigration-judge-approval-rate/court-detail.html', `${root}/court`]
   ]);
+  const supported = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
+  const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };
+  const labels = {
+    en: { judges: 'Find judges', courts: 'Find courts', states: 'State data', nationality: 'Nationality approval rates', language: 'Language' },
+    es: { judges: 'Buscar jueces', courts: 'Buscar tribunales', states: 'Datos estatales', nationality: 'Tasas por nacionalidad', language: 'Idioma' },
+    fr: { judges: 'Trouver un juge', courts: 'Trouver un tribunal', states: 'Données par État', nationality: 'Taux par nationalité', language: 'Langue' },
+    'pt-BR': { judges: 'Buscar juízes', courts: 'Buscar tribunais', states: 'Dados estaduais', nationality: 'Taxas por nacionalidade', language: 'Idioma' },
+    hi: { judges: 'न्यायाधीश खोजें', courts: 'अदालत खोजें', states: 'राज्य डेटा', nationality: 'राष्ट्रीयता अनुमोदन दर', language: 'भाषा' },
+    'zh-Hans': { judges: '查法官', courts: '查法院', states: '各州数据', nationality: '各国国籍批准率', language: '语言' },
+    'zh-Hant': { judges: '查法官', courts: '查法院', states: '各州數據', nationality: '各國國籍批准率', language: '語言' },
+    ru: { judges: 'Найти судью', courts: 'Найти суд', states: 'Данные штатов', nationality: 'Одобрение по гражданству', language: 'Язык' },
+    ar: { judges: 'بحث القضاة', courts: 'بحث المحاكم', states: 'بيانات الولايات', nationality: 'نسب الموافقة حسب الجنسية', language: 'اللغة' },
+    tr: { judges: 'Hâkim ara', courts: 'Mahkeme ara', states: 'Eyalet verileri', nationality: 'Uyruğa göre onay oranı', language: 'Dil' }
+  };
+  const options = '<option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="pt-BR">PT-BR</option><option value="hi">HI</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option><option value="ru">RU</option><option value="ar">AR</option><option value="tr">TR</option>';
+  const normalizeLocale = (value) => {
+    const raw = String(value || '');
+    if (supported.includes(raw)) return raw;
+    if (aliases[raw]) return aliases[raw];
+    const base = raw.split('-')[0].toLowerCase();
+    return supported.find((item) => item.toLowerCase() === base) || (base === 'pt' ? 'pt-BR' : base === 'zh' ? 'zh-Hans' : 'zh-Hans');
+  };
+  const storedLocale = (() => { try { return localStorage.getItem('asylumjudge-language'); } catch { return ''; } })();
+  let locale = normalizeLocale(new URLSearchParams(location.search).get('lang') || storedLocale || 'zh-Hans');
+  const routeHref = (key) => ({ judges: (location.pathname === '/' ? '#judge-search' : (root || '/')), courts: `${root}/courts`, states: `${root}/states`, nationality: `${root}/nationality` }[key]);
+  const activeKey = () => /\/nationality|china-dashboard/.test(location.pathname) ? 'nationality' : /\/states/.test(location.pathname) ? 'states' : /\/courts|court-detail/.test(location.pathname) ? 'courts' : 'judges';
+  const navigationMarkup = () => ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('');
+  const languageMarkup = (id = 'language-select') => `<label for="${id}" data-language-label>${labels[locale].language}</label><select id="${id}" aria-label="${labels[locale].language}">${options}</select>`;
+  const applyNavigationLabels = () => {
+    const set = labels[locale] || labels['zh-Hans'];
+    document.querySelectorAll('[data-nav-key]').forEach((node) => { node.textContent = set[node.dataset.navKey] || node.textContent; });
+    document.querySelectorAll('[data-language-label]').forEach((node) => {
+      if (node.matches('label')) {
+        const textNode = Array.from(node.childNodes).find((child) => child.nodeType === Node.TEXT_NODE && child.textContent.trim());
+        if (textNode) textNode.textContent = set.language;
+      } else {
+        node.textContent = set.language;
+      }
+    });
+    document.querySelectorAll('#language-select,#site-language-select').forEach((select) => {
+      select.value = locale;
+      select.setAttribute('aria-label', set.language);
+    });
+    if (!window.AsylumI18n) {
+      document.documentElement.lang = locale;
+      document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+    }
+  };
+  const handleLanguageChange = (event) => {
+    locale = normalizeLocale(event.target.value);
+    try { localStorage.setItem('asylumjudge-language', locale); } catch {}
+    const url = new URL(location.href);
+    url.searchParams.set('lang', locale);
+    history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    applyNavigationLabels();
+    if (window.AsylumI18n && window.AsylumI18n.locale !== locale) window.AsylumI18n.setLocale(locale);
+  };
   window.judgePagePath = (file) => brandHost ? (routes.get(`/immigration-judge-approval-rate/${file}`) || `/immigration-judge-approval-rate/${file}`) : `/immigration-judge-approval-rate/${file}`;
   if (!brandHost) return;
   document.documentElement.classList.add('asylumjudge-domain');
@@ -35,7 +92,7 @@
   normalizeTitle();
   new MutationObserver(normalizeTitle).observe(document.querySelector('title'), { childList: true });
 
-  const rewriteLinks = (root = document) => root.querySelectorAll('a[href]').forEach((link) => {
+  const rewriteLinks = (scope = document) => scope.querySelectorAll('a[href]').forEach((link) => {
     const url = new URL(link.getAttribute('href'), location.origin);
     if (url.origin !== location.origin) return;
     const replacement = routes.get(url.pathname);
@@ -54,20 +111,44 @@
       logo.href = root || '/';
       logo.innerHTML = `<i aria-hidden="true"></i><span><b>移民法官通过率</b><small>${standaloneHost ? 'AsylumJudge.com' : '唐人日报 · 数据栏目'}</small></span>`;
     }
-    const descriptor = brand.querySelector(':scope > div');
-    if (descriptor) {
-      descriptor.innerHTML = '<b>美国移民法官与法院数据</b><span>EOIR Immigration Court Data</span>';
+    const descriptor = brand.querySelector(':scope > div:not(.language-control)');
+    if (descriptor) descriptor.innerHTML = '<b>美国移民法官与法院数据</b><span>EOIR Immigration Court Data</span>';
+    let primaryNav = brand.querySelector('.asylumjudge-primary-nav');
+    if (!primaryNav) {
+      primaryNav = document.createElement('nav');
+      primaryNav.className = 'asylumjudge-primary-nav';
+      primaryNav.setAttribute('aria-label', '移民法官数据导航');
+      brand.appendChild(primaryNav);
     }
+    primaryNav.innerHTML = navigationMarkup();
+    let control = brand.querySelector('.language-control');
+    if (!control) {
+      control = document.createElement('div');
+      control.className = 'language-control';
+      control.innerHTML = languageMarkup();
+    }
+    brand.appendChild(primaryNav);
+    brand.appendChild(control);
     const back = brand.querySelector('.back');
-    if (back && (back.getAttribute('href') === '/' || /新闻首页/.test(back.textContent))) {
-      back.href = root || '/';
-      back.textContent = '返回查询首页';
-    }
+    if (back) back.hidden = true;
   }
 
-  const nav = document.querySelector('.judge-nav .judge-shell');
-  if (nav) nav.innerHTML = `<a href="${root || '/'}">查移民法官</a><a href="${root}/courts">全部法院</a><a href="${root}/states">各州通过率</a><a href="${root}/nationality">国际批准率</a><a href="${root}/methodology">数据口径</a><a class="trrb-return" href="${standaloneHost ? 'https://trrb.net/asylumjudge' : '/'}">${standaloneHost ? '唐人日报入口' : '返回唐人日报'}</a>`;
+  const homeNav = document.querySelector('.home-nav');
+  if (homeNav) {
+    homeNav.innerHTML = navigationMarkup();
+    const homeSelect = document.querySelector('#site-language-select');
+    if (homeSelect) homeSelect.innerHTML = options;
+  }
 
+  document.querySelectorAll('#language-select,#site-language-select').forEach((select) => select.addEventListener('change', handleLanguageChange));
+  window.addEventListener('asylumjudge:localechange', (event) => {
+    locale = normalizeLocale(event.detail?.locale);
+    applyNavigationLabels();
+  });
+  applyNavigationLabels();
+
+  const nav = document.querySelector('.judge-nav .judge-shell');
+  if (nav) nav.innerHTML = '';
   const footer = document.querySelector('.judge-footer .judge-shell');
   if (footer) footer.innerHTML = `<b>${standaloneHost ? '移民法官通过率 · AsylumJudge.com' : '唐人日报 · 移民法官通过率'}</b><span>共用 EOIR 数据库 · 持续更新</span>`;
 })();

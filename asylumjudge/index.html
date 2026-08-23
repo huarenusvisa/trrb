@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://asylumjudge.com/">
   <meta name="theme-color" content="#14804a">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=11">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=12">
 </head>
 <body>
   <header class="site-header">
@@ -21,13 +21,13 @@
         <span class="brand-mark" aria-hidden="true"></span>
         <span><strong>移民法官通过率</strong><small>AsylumJudge.com</small></span>
       </a>
-      <nav aria-label="主要导航">
-        <a href="#judge-search">查法官</a>
-        <a href="/immigration-judge-approval-rate/courts.html">查法院</a>
-        <a href="/immigration-judge-approval-rate/states.html">各州数据</a>
-        <a href="/immigration-judge-approval-rate/methodology.html">数据口径</a>
+      <nav class="home-nav" aria-label="主要导航">
+        <a data-nav-key="judges" href="#judge-search">查法官</a>
+        <a data-nav-key="courts" href="/immigration-judge-approval-rate/courts.html">查法院</a>
+        <a data-nav-key="states" href="/immigration-judge-approval-rate/states.html">各州数据</a>
+        <a data-nav-key="nationality" href="/immigration-judge-approval-rate/china-dashboard.html">各国国籍批准率</a>
       </nav>
-      <a class="trrb-link" href="https://trrb.net/asylumjudge">唐人日报入口</a>
+      <label class="home-language-control" for="site-language-select"><span data-language-label>语言</span><select id="site-language-select" aria-label="语言"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="pt-BR">PT-BR</option><option value="hi">HI</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option><option value="ru">RU</option><option value="ar">AR</option><option value="tr">TR</option></select></label>
     </div>
   </header>
 
@@ -149,6 +149,7 @@
   <footer>
     <div class="shell footer-inner"><div><b>移民法官通过率</b><span>AsylumJudge.com</span></div><p>与唐人日报共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
+  <script src="/asylumjudge/domain-brand.js?v=5"></script>
   <script src="/asylumjudge/site.js?v=16" defer></script>
 </body>
 </html>

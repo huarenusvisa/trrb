@@ -1,0 +1,285 @@
+(() => {
+  const locales = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
+  const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };
+  const normalize = (value) => {
+    const raw = String(value || '');
+    if (locales.includes(raw)) return raw;
+    if (aliases[raw]) return aliases[raw];
+    const base = raw.split('-')[0].toLowerCase();
+    return locales.find((item) => item.toLowerCase() === base) || (base === 'pt' ? 'pt-BR' : base === 'zh' ? 'zh-Hans' : 'zh-Hans');
+  };
+  let locale = normalize(new URLSearchParams(location.search).get('lang') || (() => { try { return localStorage.getItem('asylumjudge-language'); } catch { return ''; } })() || 'zh-Hans');
+
+  // Source, EN, ES, FR, PT-BR, HI, ZH-HANT, RU, AR, TR.
+  const rows = [
+    ['最近 24 个月（读取中）','Last 24 months (loading)','Últimos 24 meses (cargando)','24 derniers mois (chargement)','Últimos 24 meses (carregando)','पिछले 24 महीने (लोड हो रहा है)','最近 24 個月（讀取中）','Последние 24 месяца (загрузка)','آخر 24 شهرًا (جارٍ التحميل)','Son 24 ay (yükleniyor)'],
+    ['最近 24 个月','Last 24 months','Últimos 24 meses','24 derniers mois','Últimos 24 meses','पिछले 24 महीने','最近 24 個月','Последние 24 месяца','آخر 24 شهرًا','Son 24 ay'],
+    ['选择趋势周期','Select trend interval','Elegir intervalo','Choisir la période','Selecionar período','रुझान अवधि चुनें','選擇趨勢週期','Выберите период','اختر فترة الاتجاه','Eğilim dönemini seçin'],
+    ['按月','Monthly','Mensual','Mensuel','Mensal','मासिक','按月','По месяцам','شهري','Aylık'],
+    ['按财年','By fiscal year','Por año fiscal','Par exercice','Por ano fiscal','वित्त वर्ष के अनुसार','按財年','По финансовым годам','حسب السنة المالية','Mali yıla göre'],
+    ['批准率','Approval rate','Tasa de aprobación','Taux d’approbation','Taxa de aprovação','अनुमोदन दर','批准率','Доля одобрений','نسبة الموافقة','Onay oranı'],
+    ['拒绝率','Denial rate','Tasa de denegación','Taux de refus','Taxa de negativa','अस्वीकृति दर','拒絕率','Доля отказов','نسبة الرفض','Ret oranı'],
+    ['其他占比','Other outcomes','Otros resultados','Autres résultats','Outros resultados','अन्य परिणाम','其他占比','Другие исходы','نتائج أخرى','Diğer sonuçlar'],
+    ['结案量','Decisions','Decisiones','Décisions','Decisões','निर्णय','結案量','Решения','القرارات','Kararlar'],
+    ['正在读取州趋势数据…','Loading state trend data…','Cargando tendencias estatales…','Chargement des tendances par État…','Carregando tendências estaduais…','राज्य रुझान डेटा लोड हो रहा है…','正在讀取州趨勢資料…','Загрузка тренда штата…','جارٍ تحميل اتجاه الولاية…','Eyalet eğilimi yükleniyor…'],
+    ['按州查看','View by state','Ver por estado','Voir par État','Ver por estado','राज्य के अनुसार देखें','按州查看','По штату','عرض حسب الولاية','Eyalete göre görüntüle'],
+    ['按城市／法院查看','View by city / court','Ver por ciudad / tribunal','Voir par ville / tribunal','Ver por cidade / tribunal','शहर / अदालत के अनुसार','按城市／法院查看','По городу / суду','حسب المدينة / المحكمة','Şehir / mahkemeye göre'],
+    ['选择州','Select a state','Seleccione un estado','Sélectionner un État','Selecione um estado','राज्य चुनें','選擇州','Выберите штат','اختر ولاية','Eyalet seçin'],
+    ['选择城市或移民法院','Select a city or immigration court','Seleccione una ciudad o tribunal','Sélectionner une ville ou un tribunal','Selecione uma cidade ou tribunal','शहर या इमिग्रेशन कोर्ट चुनें','選擇城市或移民法院','Выберите город или иммиграционный суд','اختر مدينة أو محكمة هجرة','Şehir veya göçmenlik mahkemesi seçin'],
+    ['请选择城市／移民法院','Choose a city / immigration court','Elija una ciudad / tribunal','Choisissez une ville / tribunal','Escolha uma cidade / tribunal','शहर / इमिग्रेशन कोर्ट चुनें','請選擇城市／移民法院','Выберите город / суд','اختر مدينة / محكمة هجرة','Şehir / göçmenlik mahkemesi seçin'],
+    ['华人聚集城市快捷入口','Popular city shortcuts','Accesos a ciudades populares','Raccourcis vers les villes populaires','Atalhos de cidades populares','लोकप्रिय शहर शॉर्टकट','華人聚集城市快捷入口','Популярные города','اختصارات المدن الشائعة','Popüler şehir kısayolları'],
+    ['常用城市','Popular cities','Ciudades populares','Villes populaires','Cidades populares','लोकप्रिय शहर','常用城市','Популярные города','مدن شائعة','Popüler şehirler'],
+    ['点按或移动到图中数据点，查看该期案件数量。','Tap or move across a point to see decisions for that period.','Toque o mueva sobre un punto para ver las decisiones del período.','Touchez ou parcourez un point pour voir les décisions de la période.','Toque ou deslize sobre um ponto para ver as decisões do período.','उस अवधि के निर्णय देखने के लिए बिंदु पर टैप या खिसकाएँ।','點按或移動到圖中資料點，查看該期案件數量。','Коснитесь точки или проведите по ней, чтобы увидеть решения за период.','المس نقطة أو حرّك عليها لعرض قرارات الفترة.','Dönemin kararlarını görmek için noktaya dokunun veya üzerinde hareket edin.'],
+    ['法官、法院或城市','Judge, court, or city','Juez, tribunal o ciudad','Juge, tribunal ou ville','Juiz, tribunal ou cidade','न्यायाधीश, अदालत या शहर','法官、法院或城市','Судья, суд или город','القاضي أو المحكمة أو المدينة','Hâkim, mahkeme veya şehir'],
+    ['例如：法官姓名、New York、Houston','For example: judge name, New York, Houston','Ej.: nombre del juez, New York, Houston','Ex. : nom du juge, New York, Houston','Ex.: nome do juiz, New York, Houston','उदाहरण: न्यायाधीश का नाम, New York, Houston','例如：法官姓名、New York、Houston','Например: имя судьи, New York, Houston','مثال: اسم القاضي أو New York أو Houston','Örn. hâkim adı, New York, Houston'],
+    ['筛选法官','Filter judges','Filtrar jueces','Filtrer les juges','Filtrar juízes','न्यायाधीश फ़िल्टर करें','篩選法官','Фильтр судей','تصفية القضاة','Hâkimleri filtrele'],
+    ['热门查询','Popular searches','Búsquedas populares','Recherches populaires','Pesquisas populares','लोकप्रिय खोजें','熱門查詢','Популярные запросы','عمليات بحث شائعة','Popüler aramalar'],
+    ['历史统计仅供信息参考，不构成法律意见，也不能预测个案结果。','Historical statistics are informational only, not legal advice, and cannot predict an individual case.','Las estadísticas históricas son solo informativas, no constituyen asesoría legal ni predicen un caso individual.','Les statistiques historiques sont informatives, ne constituent pas un avis juridique et ne prédisent aucun dossier.','As estatísticas históricas são apenas informativas, não constituem aconselhamento jurídico nem preveem um caso individual.','ऐतिहासिक आँकड़े केवल जानकारी के लिए हैं, कानूनी सलाह नहीं हैं और किसी मामले के परिणाम की भविष्यवाणी नहीं करते।','歷史統計僅供資訊參考，不構成法律意見，也不能預測個案結果。','Историческая статистика носит справочный характер, не является юридической консультацией и не предсказывает исход дела.','الإحصاءات التاريخية للمعلومات فقط وليست نصيحة قانونية ولا تتنبأ بنتيجة قضية فردية.','Tarihsel istatistikler yalnızca bilgi amaçlıdır; hukuki tavsiye değildir ve tek bir davayı öngöremez.'],
+    ['全美数据库概览','National database overview','Resumen de la base nacional','Aperçu de la base nationale','Visão geral da base nacional','राष्ट्रीय डेटाबेस अवलोकन','全美資料庫概覽','Обзор национальной базы','نظرة عامة على قاعدة البيانات الوطنية','Ulusal veri tabanı özeti'],
+    ['庇护裁决数据','Asylum decision data','Datos de decisiones de asilo','Données des décisions d’asile','Dados de decisões de asilo','शरण निर्णय डेटा','庇護裁決資料','Данные решений об убежище','بيانات قرارات اللجوء','Sığınma kararı verileri'],
+    ['选择财政年度','Select fiscal year','Seleccione el año fiscal','Sélectionner l’exercice','Selecione o ano fiscal','वित्त वर्ष चुनें','選擇財政年度','Выберите финансовый год','اختر السنة المالية','Mali yılı seçin'],
+    ['读取中','Loading','Cargando','Chargement','Carregando','लोड हो रहा है','讀取中','Загрузка','جارٍ التحميل','Yükleniyor'],
+    ['全美裁决批准率','National decision approval rate','Tasa nacional de aprobación','Taux national d’approbation','Taxa nacional de aprovação','राष्ट्रीय निर्णय अनुमोदन दर','全美裁決批准率','Национальная доля одобрений','نسبة الموافقة الوطنية','Ulusal karar onay oranı'],
+    ['正在汇总州级样本','Aggregating state samples','Agregando muestras estatales','Agrégation des échantillons par État','Agregando amostras estaduais','राज्य नमूनों का सार बनाया जा रहा है','正在彙總州級樣本','Свод данных по штатам','جارٍ تجميع عينات الولايات','Eyalet örnekleri toplanıyor'],
+    ['法院','Courts','Tribunales','Tribunaux','Tribunais','अदालतें','法院','Суды','المحاكم','Mahkemeler'],
+    ['法官','Judges','Jueces','Juges','Juízes','न्यायाधीश','法官','Судьи','القضاة','Hâkimler'],
+    ['庇护裁决','Asylum decisions','Decisiones de asilo','Décisions d’asile','Decisões de asilo','शरण निर्णय','庇護裁決','Решения об убежище','قرارات اللجوء','Sığınma kararları'],
+    ['主要州数据','Major state data','Datos de los principales estados','Données des principaux États','Dados dos principais estados','प्रमुख राज्य डेटा','主要州資料','Данные основных штатов','بيانات الولايات الرئيسية','Başlıca eyalet verileri'],
+    ['裁决批准率','Decision approval rate','Tasa de aprobación de decisiones','Taux d’approbation des décisions','Taxa de aprovação das decisões','निर्णय अनुमोदन दर','裁決批准率','Доля одобренных решений','نسبة الموافقة على القرارات','Karar onay oranı'],
+    ['查看全部州数据','View all state data','Ver todos los estados','Voir toutes les données par État','Ver todos os estados','सभी राज्य डेटा देखें','查看全部州資料','Все данные штатов','عرض جميع بيانات الولايات','Tüm eyalet verilerini görüntüle'],
+    ['全部移民法官','All immigration judges','Todos los jueces de inmigración','Tous les juges de l’immigration','Todos os juízes de imigração','सभी इमिग्रेशन जज','全部移民法官','Все иммиграционные судьи','جميع قضاة الهجرة','Tüm göçmenlik hâkimleri'],
+    ['展示截至数据库最新批次的全部法官。可在上方按姓名、法院、城市或州筛选，点击法官查看完整通过率资料。','Shows every judge in the latest database release. Filter above by name, court, city, or state, then open a judge profile for complete rate data.','Muestra todos los jueces de la última versión. Filtre por nombre, tribunal, ciudad o estado y abra el perfil completo.','Affiche tous les juges de la dernière version. Filtrez par nom, tribunal, ville ou État, puis ouvrez le profil complet.','Mostra todos os juízes da versão mais recente. Filtre por nome, tribunal, cidade ou estado e abra o perfil completo.','नवीनतम डेटाबेस के सभी न्यायाधीश दिखाता है। नाम, अदालत, शहर या राज्य से फ़िल्टर कर पूरी प्रोफ़ाइल खोलें।','展示截至資料庫最新批次的全部法官。可在上方按姓名、法院、城市或州篩選，點擊法官查看完整批准率資料。','Показаны все судьи из последней версии базы. Фильтруйте по имени, суду, городу или штату и откройте профиль.','يعرض جميع القضاة في أحدث إصدار من قاعدة البيانات. صفِّ حسب الاسم أو المحكمة أو المدينة أو الولاية ثم افتح الملف الكامل.','En son veri tabanındaki tüm hâkimleri gösterir. Ad, mahkeme, şehir veya eyalete göre filtreleyip profili açın.'],
+    ['正在读取全部法官…','Loading all judges…','Cargando todos los jueces…','Chargement de tous les juges…','Carregando todos os juízes…','सभी न्यायाधीश लोड हो रहे हैं…','正在讀取全部法官…','Загрузка всех судей…','جارٍ تحميل جميع القضاة…','Tüm hâkimler yükleniyor…'],
+    ['法官与法院','Judge and court','Juez y tribunal','Juge et tribunal','Juiz e tribunal','न्यायाधीश और अदालत','法官與法院','Судья и суд','القاضي والمحكمة','Hâkim ve mahkeme'],
+    ['裁决','Decisions','Decisiones','Décisions','Decisões','निर्णय','裁決','Решения','القرارات','Kararlar'],
+    ['批准','Approved','Aprobadas','Approuvées','Aprovados','अनुमोदित','批准','Одобрено','موافق عليها','Onay'],
+    ['拒绝','Denied','Denegadas','Refusées','Negados','अस्वीकृत','拒絕','Отказано','مرفوضة','Ret'],
+    ['其他','Other','Otros','Autres','Outros','अन्य','其他','Другое','أخرى','Diğer'],
+    ['每日庇护知识','Daily asylum knowledge','Conocimiento diario sobre asilo','Connaissances quotidiennes sur l’asile','Conhecimento diário sobre asilo','दैनिक शरण जानकारी','每日庇護知識','Ежедневно об убежище','معلومات يومية عن اللجوء','Günlük sığınma bilgisi'],
+    ['与唐人日报“移民美国 · 庇护知识”同步，每日更新。','Synced daily with Tang Ren Daily’s U.S. immigration and asylum knowledge center.','Sincronizado a diario con el centro de inmigración y asilo de Tang Ren Daily.','Synchronisé chaque jour avec le centre immigration et asile de Tang Ren Daily.','Sincronizado diariamente com o centro de imigração e asilo do Tang Ren Daily.','Tang Ren Daily के अमेरिकी इमिग्रेशन और शरण केंद्र से रोज़ सिंक।','與唐人日報「移民美國 · 庇護知識」同步，每日更新。','Ежедневная синхронизация с центром знаний Tang Ren Daily.','مزامنة يومية مع مركز الهجرة واللجوء في صحيفة تانغ رن.','Tang Ren Daily göç ve sığınma merkeziyle günlük eşitlenir.'],
+    ['进入庇护知识库','Open asylum knowledge center','Abrir el centro de asilo','Ouvrir le centre d’asile','Abrir o centro de asilo','शरण जानकारी केंद्र खोलें','進入庇護知識庫','Открыть центр знаний','فتح مركز معلومات اللجوء','Sığınma bilgi merkezini aç'],
+    ['正在读取今日庇护知识…','Loading today’s asylum knowledge…','Cargando información de hoy…','Chargement des informations du jour…','Carregando informações de hoje…','आज की शरण जानकारी लोड हो रही है…','正在讀取今日庇護知識…','Загрузка материалов дня…','جارٍ تحميل معلومات اليوم…','Bugünün sığınma bilgileri yükleniyor…'],
+    ['查询入口','Search tools','Herramientas de búsqueda','Outils de recherche','Ferramentas de busca','खोज उपकरण','查詢入口','Инструменты поиска','أدوات البحث','Arama araçları'],
+    ['查移民法官','Find an immigration judge','Buscar un juez de inmigración','Trouver un juge de l’immigration','Buscar juiz de imigração','इमिग्रेशन जज खोजें','查移民法官','Найти иммиграционного судью','البحث عن قاضي هجرة','Göçmenlik hâkimi ara'],
+    ['姓名、法院或城市','Name, court, or city','Nombre, tribunal o ciudad','Nom, tribunal ou ville','Nome, tribunal ou cidade','नाम, अदालत या शहर','姓名、法院或城市','Имя, суд или город','الاسم أو المحكمة أو المدينة','Ad, mahkeme veya şehir'],
+    ['全部移民法院','All immigration courts','Todos los tribunales de inmigración','Tous les tribunaux de l’immigration','Todos os tribunais de imigração','सभी इमिग्रेशन कोर्ट','全部移民法院','Все иммиграционные суды','جميع محاكم الهجرة','Tüm göçmenlik mahkemeleri'],
+    ['比较法院裁决数据','Compare court decision data','Comparar datos de tribunales','Comparer les données des tribunaux','Comparar dados dos tribunais','अदालत निर्णय डेटा की तुलना','比較法院裁決資料','Сравнить данные судов','مقارنة بيانات المحاكم','Mahkeme karar verilerini karşılaştır'],
+    ['各州','States','Estados','États','Estados','राज्य','各州','Штаты','الولايات','Eyaletler'],
+    ['州级法院与法官汇总','State-level court and judge summary','Resumen estatal de tribunales y jueces','Résumé des tribunaux et juges par État','Resumo estadual de tribunais e juízes','राज्य स्तर पर अदालत और न्यायाधीश सारांश','州級法院與法官彙總','Сводка судов и судей по штатам','ملخص المحاكم والقضاة حسب الولاية','Eyalet düzeyinde mahkeme ve hâkim özeti'],
+    ['国际','Global','Global','Mondial','Global','वैश्विक','國際','Мир','عالمي','Küresel'],
+    ['国际批准率','Nationality approval rates','Tasas por nacionalidad','Taux par nationalité','Taxas por nacionalidade','राष्ट्रीयता अनुमोदन दर','國際批准率','Одобрение по гражданству','نسب الموافقة حسب الجنسية','Uyruğa göre onay oranları'],
+    ['搜索中国、古巴、韩国等国籍','Search China, Cuba, Korea, and more','Buscar China, Cuba, Corea y más','Rechercher Chine, Cuba, Corée et plus','Buscar China, Cuba, Coreia e mais','चीन, क्यूबा, कोरिया आदि खोजें','搜尋中國、古巴、韓國等國籍','Поиск Китая, Кубы, Кореи и других','ابحث عن الصين وكوبا وكوريا وغيرها','Çin, Küba, Kore ve daha fazlasını ara'],
+    ['查询移民法官','Search immigration judges','Buscar jueces de inmigración','Rechercher des juges de l’immigration','Buscar juízes de imigração','इमिग्रेशन जज खोजें','查詢移民法官','Поиск иммиграционных судей','البحث عن قضاة الهجرة','Göçmenlik hâkimlerini ara'],
+    ['按姓名查找法官，并打开包含法院、国籍、年度趋势和案件样本量的资料页。','Find a judge by name and open a profile with court, nationality, yearly trends, and sample size.','Busque por nombre y abra un perfil con tribunal, nacionalidad, tendencias y muestra.','Recherchez un juge par nom et ouvrez son profil avec tribunal, nationalité, tendances et échantillon.','Busque por nome e abra o perfil com tribunal, nacionalidade, tendências e amostra.','नाम से न्यायाधीश खोजें और अदालत, राष्ट्रीयता, वार्षिक रुझान व नमूना आकार वाली प्रोफ़ाइल खोलें।','按姓名查找法官，並開啟包含法院、國籍、年度趨勢和案件樣本量的資料頁。','Найдите судью по имени и откройте профиль с судом, гражданством, трендами и выборкой.','ابحث عن القاضي بالاسم وافتح ملفًا يتضمن المحكمة والجنسية والاتجاهات وحجم العينة.','Hâkimi adına göre bulun; mahkeme, uyruk, yıllık eğilim ve örneklem bilgilerini açın.'],
+    ['法院批准率','Court approval rates','Tasas de aprobación por tribunal','Taux d’approbation des tribunaux','Taxas de aprovação dos tribunais','अदालत अनुमोदन दर','法院批准率','Одобрение по судам','نسب الموافقة حسب المحكمة','Mahkeme onay oranları'],
+    ['查看各移民法院的法官人数、裁决量和历史批准率。','View judge counts, decision volume, and historical approval rates for every court.','Vea jueces, volumen de decisiones y tasas históricas de cada tribunal.','Consultez le nombre de juges, le volume et les taux historiques de chaque tribunal.','Veja juízes, volume de decisões e taxas históricas de cada tribunal.','हर अदालत के न्यायाधीश, निर्णय संख्या और ऐतिहासिक अनुमोदन दर देखें।','查看各移民法院的法官人數、裁決量和歷史批准率。','Смотрите число судей, объём решений и исторические доли по каждому суду.','اعرض عدد القضاة وحجم القرارات والنسب التاريخية لكل محكمة.','Her mahkemenin hâkim sayısını, karar hacmini ve tarihsel oranlarını görün.'],
+    ['查看法院','View courts','Ver tribunales','Voir les tribunaux','Ver tribunais','अदालतें देखें','查看法院','Смотреть суды','عرض المحاكم','Mahkemeleri görüntüle'],
+    ['年度趋势','Yearly trends','Tendencias anuales','Tendances annuelles','Tendências anuais','वार्षिक रुझान','年度趨勢','Годовые тренды','الاتجاهات السنوية','Yıllık eğilimler'],
+    ['百分比必须和样本量一起看','Always read percentages with sample size','Lea los porcentajes junto con la muestra','Toujours lire le pourcentage avec l’échantillon','Leia percentuais junto com a amostra','प्रतिशत को नमूना आकार के साथ देखें','百分比必須和樣本量一起看','Процент нужно оценивать вместе с выборкой','يجب قراءة النسبة مع حجم العينة','Yüzdeyi örneklem büyüklüğüyle birlikte okuyun'],
+    ['查看完整说明','View full methodology','Ver metodología completa','Voir la méthodologie complète','Ver metodologia completa','पूरी कार्यप्रणाली देखें','查看完整說明','Полная методика','عرض المنهجية الكاملة','Tam yöntemi görüntüle'],
+    ['美国各州移民法院庇护数据','U.S. asylum data by state','Datos de asilo por estado','Données d’asile par État','Dados de asilo por estado','राज्य के अनुसार अमेरिकी शरण डेटा','美國各州移民法院庇護資料','Данные об убежище по штатам','بيانات اللجوء حسب الولاية','Eyalete göre ABD sığınma verileri'],
+    ['数据按案件裁决当时的移民法院归州，并按财政年度分别统计。','Cases are assigned to the state of the deciding court and reported separately by fiscal year.','Los casos se asignan al estado del tribunal que decidió y se informan por año fiscal.','Les dossiers sont attribués à l’État du tribunal décisionnaire et ventilés par exercice.','Os casos são atribuídos ao estado do tribunal decisor e separados por ano fiscal.','मामले निर्णय देने वाली अदालत के राज्य और वित्त वर्ष के अनुसार गिने जाते हैं।','資料按案件裁決當時的移民法院歸州，並按財政年度分別統計。','Дела относятся к штату решающего суда и учитываются по финансовым годам.','تُنسب القضايا إلى ولاية المحكمة التي أصدرت القرار وتُعرض حسب السنة المالية.','Davalar karar veren mahkemenin eyaletine ve mali yıla göre raporlanır.'],
+    ['正在读取财政年度范围…','Loading fiscal-year range…','Cargando rango del año fiscal…','Chargement de la période fiscale…','Carregando período fiscal…','वित्त वर्ष अवधि लोड हो रही है…','正在讀取財政年度範圍…','Загрузка периода финансового года…','جارٍ تحميل نطاق السنة المالية…','Mali yıl aralığı yükleniyor…'],
+    ['筛选州，例如 NY、CA、TX','Filter states, e.g. NY, CA, TX','Filtrar estados, p. ej. NY, CA, TX','Filtrer les États, ex. NY, CA, TX','Filtrar estados, ex.: NY, CA, TX','राज्य फ़िल्टर करें, जैसे NY, CA, TX','篩選州，例如 NY、CA、TX','Фильтр штатов, например NY, CA, TX','تصفية الولايات، مثل NY وCA وTX','Eyaletleri filtrele, örn. NY, CA, TX'],
+    ['筛选','Filter','Filtrar','Filtrer','Filtrar','फ़िल्टर','篩選','Фильтр','تصفية','Filtrele'],
+    ['州级汇总','State summary','Resumen estatal','Résumé par État','Resumo estadual','राज्य सारांश','州級彙總','Сводка по штатам','ملخص الولاية','Eyalet özeti'],
+    ['按庇护裁决量排序','Sorted by asylum decision volume','Ordenado por volumen de decisiones','Trié par volume de décisions','Ordenado por volume de decisões','शरण निर्णय संख्या के अनुसार','按庇護裁決量排序','По объёму решений','مرتّب حسب حجم القرارات','Karar hacmine göre sıralı'],
+    ['点击州可继续查看该州法院','Select a state to view its courts','Seleccione un estado para ver sus tribunales','Sélectionnez un État pour voir ses tribunaux','Selecione um estado para ver seus tribunais','अदालतें देखने के लिए राज्य चुनें','點擊州可繼續查看該州法院','Выберите штат, чтобы увидеть его суды','اختر ولاية لعرض محاكمها','Mahkemelerini görmek için eyalet seçin'],
+    ['正在读取州级数据…','Loading state data…','Cargando datos estatales…','Chargement des données par État…','Carregando dados estaduais…','राज्य डेटा लोड हो रहा है…','正在讀取州級資料…','Загрузка данных штатов…','جارٍ تحميل بيانات الولايات…','Eyalet verileri yükleniyor…'],
+    ['美国移民法院庇护通过率','U.S. immigration court asylum approval rates','Tasas de aprobación de asilo por tribunal','Taux d’approbation de l’asile par tribunal','Taxas de aprovação de asilo por tribunal','अमेरिकी इमिग्रेशन कोर्ट शरण अनुमोदन दर','美國移民法院庇護通過率','Одобрение убежища в иммиграционных судах США','نسب الموافقة على اللجوء في محاكم الهجرة','ABD göçmenlik mahkemesi sığınma onay oranları'],
+    ['搜索法院、城市或州，例如 New York','Search court, city, or state, e.g. New York','Buscar tribunal, ciudad o estado, p. ej. New York','Rechercher tribunal, ville ou État, ex. New York','Buscar tribunal, cidade ou estado, ex.: New York','अदालत, शहर या राज्य खोजें, जैसे New York','搜尋法院、城市或州，例如 New York','Искать суд, город или штат, например New York','ابحث عن محكمة أو مدينة أو ولاية، مثل New York','Mahkeme, şehir veya eyalet ara, örn. New York'],
+    ['搜索','Search','Buscar','Rechercher','Buscar','खोजें','搜尋','Поиск','بحث','Ara'],
+    ['法院汇总','Court summary','Resumen de tribunales','Résumé des tribunaux','Resumo dos tribunais','अदालत सारांश','法院彙總','Сводка судов','ملخص المحاكم','Mahkeme özeti'],
+    ['正在读取法院数据…','Loading court data…','Cargando datos judiciales…','Chargement des tribunaux…','Carregando dados dos tribunais…','अदालत डेटा लोड हो रहा है…','正在讀取法院資料…','Загрузка данных судов…','جارٍ تحميل بيانات المحاكم…','Mahkeme verileri yükleniyor…'],
+    ['正在读取 EOIR 法官数据…','Loading EOIR judge data…','Cargando datos EOIR del juez…','Chargement des données EOIR du juge…','Carregando dados EOIR do juiz…','EOIR न्यायाधीश डेटा लोड हो रहा है…','正在讀取 EOIR 法官資料…','Загрузка данных судьи EOIR…','جارٍ تحميل بيانات قاضي EOIR…','EOIR hâkim verileri yükleniyor…'],
+    ['数据来源：EOIR','Source: EOIR','Fuente: EOIR','Source : EOIR','Fonte: EOIR','स्रोत: EOIR','資料來源：EOIR','Источник: EOIR','المصدر: EOIR','Kaynak: EOIR'],
+    ['全部结案中批准占比','Approved share of all outcomes','Porcentaje aprobado de todos los resultados','Part approuvée de tous les résultats','Parcela aprovada de todos os resultados','सभी परिणामों में अनुमोदित हिस्सा','全部結案中批准占比','Доля одобрений среди всех исходов','حصة الموافقات من جميع النتائج','Tüm sonuçlarda onay payı'],
+    ['批准 ÷ 全部结案结果','Approved ÷ all outcomes','Aprobadas ÷ todos los resultados','Approuvées ÷ tous les résultats','Aprovados ÷ todos os resultados','अनुमोदित ÷ सभी परिणाम','批准 ÷ 全部結案結果','Одобрено ÷ все исходы','الموافق عليها ÷ جميع النتائج','Onay ÷ tüm sonuçlar'],
+    ['批准 / 拒绝','Approved / denied','Aprobadas / denegadas','Approuvées / refusées','Aprovados / negados','अनुमोदित / अस्वीकृत','批准 / 拒絕','Одобрено / отказано','موافق عليها / مرفوضة','Onay / ret'],
+    ['仅显示数据库记录','Database records only','Solo registros de la base','Données de la base uniquement','Somente registros da base','केवल डेटाबेस रिकॉर्ड','僅顯示資料庫記錄','Только записи базы','سجلات قاعدة البيانات فقط','Yalnızca veri tabanı kayıtları'],
+    ['年度变化','Yearly changes','Cambios anuales','Évolution annuelle','Mudanças anuais','वार्षिक परिवर्तन','年度變化','Изменения по годам','التغيرات السنوية','Yıllık değişimler'],
+    ['庇护裁决年度趋势','Yearly asylum decision trend','Tendencia anual de decisiones','Tendance annuelle des décisions','Tendência anual de decisões','वार्षिक शरण निर्णय रुझान','庇護裁決年度趨勢','Годовой тренд решений','الاتجاه السنوي للقرارات','Yıllık sığınma kararı eğilimi'],
+    ['申请人来源','Applicant origin','Origen del solicitante','Origine du demandeur','Origem do requerente','आवेदक का मूल देश','申請人來源','Происхождение заявителя','بلد مقدم الطلب','Başvuru sahibinin kökeni'],
+    ['按财年和国籍查看庇护裁决','Asylum decisions by fiscal year and nationality','Decisiones por año fiscal y nacionalidad','Décisions par exercice et nationalité','Decisões por ano fiscal e nacionalidade','वित्त वर्ष और राष्ट्रीयता के अनुसार निर्णय','按財年和國籍查看庇護裁決','Решения по финансовому году и гражданству','القرارات حسب السنة المالية والجنسية','Mali yıl ve uyruğa göre kararlar'],
+    ['输入中文或英文国籍，例如：古巴、Cuba、中国、China','Enter a nationality, e.g. Cuba, China, India','Ingrese una nacionalidad, p. ej. Cuba, China, India','Saisissez une nationalité, ex. Cuba, Chine, Inde','Digite uma nacionalidade, ex.: Cuba, China, Índia','राष्ट्रीयता लिखें, जैसे Cuba, China, India','輸入中文或英文國籍，例如：古巴、Cuba、中國、China','Введите гражданство, например Cuba, China, India','أدخل الجنسية، مثل Cuba أو China أو India','Uyruk girin, örn. Cuba, China, India'],
+    ['每行明确显示财政年度、国籍、有效裁决数和批准率。','Each row shows fiscal year, nationality, valid decisions, and approval rate.','Cada fila muestra año fiscal, nacionalidad, decisiones válidas y tasa de aprobación.','Chaque ligne indique l’exercice, la nationalité, les décisions valides et le taux.','Cada linha mostra ano fiscal, nacionalidade, decisões válidas e taxa.','हर पंक्ति में वित्त वर्ष, राष्ट्रीयता, वैध निर्णय और अनुमोदन दर है।','每行明確顯示財政年度、國籍、有效裁決數和批准率。','В каждой строке указан год, гражданство, решения и доля одобрений.','يعرض كل صف السنة المالية والجنسية والقرارات الصالحة ونسبة الموافقة.','Her satır mali yıl, uyruk, geçerli karar ve onay oranını gösterir.'],
+    ['官方任命资料','Official appointment record','Registro oficial de nombramiento','Dossier officiel de nomination','Registro oficial de nomeação','आधिकारिक नियुक्ति रिकॉर्ड','官方任命資料','Официальные сведения о назначении','سجل التعيين الرسمي','Resmî atama kaydı'],
+    ['法官背景与任命信息','Judge background and appointment','Antecedentes y nombramiento del juez','Parcours et nomination du juge','Histórico e nomeação do juiz','न्यायाधीश पृष्ठभूमि और नियुक्ति','法官背景與任命資訊','Биография и назначение судьи','خلفية القاضي وتعيينه','Hâkim geçmişi ve ataması'],
+    ['任命时间','Appointment date','Fecha de nombramiento','Date de nomination','Data da nomeação','नियुक्ति तिथि','任命時間','Дата назначения','تاريخ التعيين','Atama tarihi'],
+    ['任命法院','Appointed court','Tribunal de nombramiento','Tribunal de nomination','Tribunal da nomeação','नियुक्त अदालत','任命法院','Суд назначения','محكمة التعيين','Atandığı mahkeme'],
+    ['任命类型','Appointment type','Tipo de nombramiento','Type de nomination','Tipo de nomeação','नियुक्ति प्रकार','任命類型','Тип назначения','نوع التعيين','Atama türü'],
+    ['官方履历原文','Official biography','Biografía oficial','Biographie officielle','Biografia oficial','आधिकारिक जीवनी','官方履歷原文','Официальная биография','السيرة الرسمية','Resmî biyografi'],
+    ['查看 DOJ/EOIR 官方来源','View official DOJ/EOIR source','Ver fuente oficial DOJ/EOIR','Voir la source officielle DOJ/EOIR','Ver fonte oficial DOJ/EOIR','आधिकारिक DOJ/EOIR स्रोत देखें','查看 DOJ/EOIR 官方來源','Официальный источник DOJ/EOIR','عرض المصدر الرسمي DOJ/EOIR','Resmî DOJ/EOIR kaynağını görüntüle'],
+    ['如何理解通过率','How to read approval rates','Cómo interpretar las tasas','Comment lire les taux','Como interpretar as taxas','अनुमोदन दर को कैसे समझें','如何理解通過率','Как понимать долю одобрений','كيفية فهم نسب الموافقة','Onay oranları nasıl okunur'],
+    ['查看数据口径与来源说明','View methodology and sources','Ver metodología y fuentes','Voir la méthodologie et les sources','Ver metodologia e fontes','कार्यप्रणाली और स्रोत देखें','查看資料口徑與來源說明','Методика и источники','عرض المنهجية والمصادر','Yöntem ve kaynakları görüntüle'],
+    ['唐人日报仅整理公开数据，不提供针对具体案件的法律结论。','Tang Ren Daily organizes public data only and provides no legal conclusion for any individual case.','Tang Ren Daily solo organiza datos públicos y no ofrece conclusiones legales sobre casos individuales.','Tang Ren Daily organise uniquement des données publiques et ne fournit aucune conclusion juridique individuelle.','Tang Ren Daily apenas organiza dados públicos e não fornece conclusão jurídica individual.','Tang Ren Daily केवल सार्वजनिक डेटा व्यवस्थित करता है और किसी मामले पर कानूनी निष्कर्ष नहीं देता।','唐人日報僅整理公開資料，不提供針對具體案件的法律結論。','Tang Ren Daily систематизирует открытые данные и не даёт правовых выводов по отдельным делам.','تنظم صحيفة تانغ رن البيانات العامة فقط ولا تقدم رأيًا قانونيًا لقضية فردية.','Tang Ren Daily yalnızca kamu verilerini düzenler ve tek bir dava için hukuki sonuç sunmaz.'],
+    ['语言','Language','Idioma','Langue','Idioma','भाषा','語言','Язык','اللغة','Dil'],
+    ['查法官','Find judges','Buscar jueces','Trouver des juges','Buscar juízes','न्यायाधीश खोजें','查法官','Найти судей','البحث عن القضاة','Hâkimleri bul'],
+    ['查法院','Find courts','Buscar tribunales','Trouver des tribunaux','Buscar tribunais','अदालतें खोजें','查法院','Найти суды','البحث عن المحاكم','Mahkemeleri bul'],
+    ['各州数据','State data','Datos estatales','Données par État','Dados estaduais','राज्य डेटा','各州資料','Данные штатов','بيانات الولايات','Eyalet verileri'],
+    ['各国国籍批准率','Nationality approval rates','Tasas por nacionalidad','Taux par nationalité','Taxas por nacionalidade','राष्ट्रीयता अनुमोदन दर','各國國籍批准率','Одобрения по гражданству','نسب الموافقة حسب الجنسية','Uyruğa göre onay oranları'],
+    ['纽约','New York','Nueva York','New York','Nova York','न्यूयॉर्क','紐約','Нью-Йорк','نيويورك','New York'],
+    ['洛杉矶','Los Angeles','Los Ángeles','Los Angeles','Los Angeles','लॉस एंजेलिस','洛杉磯','Лос-Анджелес','لوس أنجلوس','Los Angeles'],
+    ['休斯敦','Houston','Houston','Houston','Houston','ह्यूस्टन','休士頓','Хьюстон','هيوستن','Houston'],
+    ['迈阿密','Miami','Miami','Miami','Miami','मियामी','邁阿密','Майами','ميامي','Miami'],
+    ['正在读取全部移民法官资料…','Loading all immigration judge profiles…','Cargando perfiles de jueces…','Chargement des profils des juges…','Carregando perfis dos juízes…','सभी न्यायाधीश प्रोफ़ाइल लोड हो रही हैं…','正在讀取全部移民法官資料…','Загрузка профилей судей…','جارٍ تحميل ملفات القضاة…','Hâkim profilleri yükleniyor…'],
+    ['数据口径','Methodology','Metodología','Méthodologie','Metodologia','कार्यप्रणाली','資料口徑','Методика','المنهجية','Yöntem'],
+    ['搜索全部 227 个已记录国籍，并查看月度、季度与年度真实趋势。','Search all 227 recorded nationalities and view real monthly, quarterly, and yearly trends.','Busque las 227 nacionalidades registradas y vea tendencias mensuales, trimestrales y anuales.','Recherchez les 227 nationalités et consultez les tendances mensuelles, trimestrielles et annuelles.','Pesquise as 227 nacionalidades e veja tendências mensais, trimestrais e anuais.','सभी 227 दर्ज राष्ट्रीयताएँ खोजें और मासिक, तिमाही व वार्षिक रुझान देखें।','搜尋全部 227 個已記錄國籍，並查看月度、季度與年度真實走勢。','Ищите по 227 гражданствам и смотрите месячные, квартальные и годовые тренды.','ابحث في 227 جنسية مسجلة واعرض الاتجاهات الشهرية والفصلية والسنوية.','Kayıtlı 227 uyruğu arayın; aylık, üç aylık ve yıllık eğilimleri görün.'],
+    ['查看全球国籍数据','View global nationality data','Ver datos mundiales de nacionalidad','Voir les données mondiales par nationalité','Ver dados globais de nacionalidade','वैश्विक राष्ट्रीयता डेटा देखें','查看全球國籍資料','Мировые данные по гражданству','عرض بيانات الجنسيات العالمية','Küresel uyruk verilerini görüntüle'],
+    ['先查询法官，再查看每年裁决量和批准率变化。','Find a judge first, then review yearly decision volume and approval-rate changes.','Busque un juez y revise los cambios anuales de decisiones y aprobación.','Trouvez un juge puis consultez l’évolution annuelle des décisions et du taux.','Encontre um juiz e veja as mudanças anuais de decisões e aprovação.','पहले न्यायाधीश खोजें, फिर वार्षिक निर्णय और अनुमोदन दर में बदलाव देखें।','先查詢法官，再查看每年裁決量和批准率變化。','Сначала найдите судью, затем изучите годовые решения и долю одобрений.','ابحث عن القاضي أولًا ثم راجع تغير القرارات ونسبة الموافقة سنويًا.','Önce hâkimi bulun, sonra yıllık karar ve onay oranı değişimini inceleyin.'],
+    ['查询法官','Find a judge','Buscar un juez','Trouver un juge','Buscar um juiz','न्यायाधीश खोजें','查詢法官','Найти судью','البحث عن قاضٍ','Hâkim ara'],
+    ['裁决批准率按“批准 ÷（批准 + 拒绝）”计算，撤回、未裁决等程序性结果不计入分母。小样本数据会被抑制或提示，避免只看一个百分比造成误解。','Decision approval rate is approved ÷ (approved + denied). Withdrawn, unadjudicated, and other procedural outcomes are excluded. Small samples are suppressed or flagged.','La tasa es aprobadas ÷ (aprobadas + denegadas). Se excluyen retiros y resultados procesales; las muestras pequeñas se ocultan o advierten.','Le taux est approuvées ÷ (approuvées + refusées). Les retraits et résultats procéduraux sont exclus ; les petits échantillons sont signalés.','A taxa é aprovados ÷ (aprovados + negados). Retiradas e resultados processuais são excluídos; amostras pequenas são sinalizadas.','दर अनुमोदित ÷ (अनुमोदित + अस्वीकृत) है। वापस लिए गए और प्रक्रियात्मक परिणाम बाहर रहते हैं; छोटे नमूने छिपाए या चिह्नित किए जाते हैं।','裁決批准率按「批准 ÷（批准 + 拒絕）」計算，撤回、未裁決等程序結果不計入分母；小樣本會被抑制或提示。','Доля одобрений: одобрено ÷ (одобрено + отказано). Процедурные исходы исключены; малые выборки скрываются или помечаются.','نسبة الموافقة = الموافق عليها ÷ (الموافق عليها + المرفوضة). تُستبعد النتائج الإجرائية وتُخفى العينات الصغيرة أو يُنبه إليها.','Onay oranı = onay ÷ (onay + ret). Usule ilişkin sonuçlar hariç tutulur; küçük örnekler gizlenir veya uyarılır.'],
+    ['与唐人日报共用 EOIR 数据库 · 持续更新','Shared EOIR database with Tang Ren Daily · continuously updated','Base EOIR compartida con Tang Ren Daily · actualización continua','Base EOIR partagée avec Tang Ren Daily · mise à jour continue','Base EOIR compartilhada com Tang Ren Daily · atualização contínua','Tang Ren Daily के साथ साझा EOIR डेटाबेस · लगातार अपडेट','與唐人日報共用 EOIR 資料庫 · 持續更新','Общая база EOIR с Tang Ren Daily · постоянно обновляется','قاعدة EOIR مشتركة مع صحيفة تانغ رن · تحديث مستمر','Tang Ren Daily ile ortak EOIR veri tabanı · sürekli güncellenir'],
+    ['立足美国 · 服务华人','Based in America · serving Chinese communities','En EE. UU. · al servicio de la comunidad china','Aux États-Unis · au service de la communauté chinoise','Nos EUA · servindo a comunidade chinesa','अमेरिका में · चीनी समुदाय की सेवा','立足美國 · 服務華人','В США · для китайской общины','في أمريكا · لخدمة الجالية الصينية','ABD’de · Çin toplumuna hizmet'],
+    ['返回法官查询','Back to judge search','Volver a jueces','Retour à la recherche de juges','Voltar à busca de juízes','न्यायाधीश खोज पर लौटें','返回法官查詢','Назад к поиску судей','العودة إلى بحث القضاة','Hâkim aramasına dön'],
+    ['返回法院查询','Back to court search','Volver a tribunales','Retour à la recherche de tribunaux','Voltar à busca de tribunais','अदालत खोज पर लौटें','返回法院查詢','Назад к поиску судов','العودة إلى بحث المحاكم','Mahkeme aramasına dön'],
+    ['按案件作出裁决时所在法院归属州；可切换财政年度核对案件量。','Cases are assigned to the state of the court at decision time; switch fiscal years to compare volume.','Los casos se asignan al estado del tribunal al decidirse; cambie de año fiscal para comparar volumen.','Les dossiers sont rattachés à l’État du tribunal au moment de la décision ; changez d’exercice pour comparer.','Os casos são atribuídos ao estado do tribunal na decisão; altere o ano fiscal para comparar o volume.','मामले निर्णय के समय अदालत के राज्य से जुड़े हैं; संख्या तुलना के लिए वित्त वर्ष बदलें।','案件按裁決時所在法院歸州；可切換財年核對案件量。','Дела отнесены к штату суда на момент решения; переключайте годы для сравнения.','تُنسب القضايا إلى ولاية المحكمة وقت القرار؛ بدّل السنة المالية للمقارنة.','Davalar karar anındaki mahkemenin eyaletine atanır; hacmi karşılaştırmak için mali yılı değiştirin.'],
+    ['裁决批准率＝批准 ÷（批准 + 拒绝）','Decision approval rate = approved ÷ (approved + denied)','Tasa = aprobadas ÷ (aprobadas + denegadas)','Taux = approuvées ÷ (approuvées + refusées)','Taxa = aprovados ÷ (aprovados + negados)','दर = अनुमोदित ÷ (अनुमोदित + अस्वीकृत)','裁決批准率＝批准 ÷（批准 + 拒絕）','Доля = одобрено ÷ (одобрено + отказано)','النسبة = الموافق عليها ÷ (الموافق عليها + المرفوضة)','Oran = onay ÷ (onay + ret)'],
+    ['法院法官','Court judges','Jueces del tribunal','Juges du tribunal','Juízes do tribunal','अदालत के न्यायाधीश','法院法官','Судьи суда','قضاة المحكمة','Mahkeme hâkimleri'],
+    ['该法院移民法官','Immigration judges at this court','Jueces de inmigración de este tribunal','Juges de l’immigration de ce tribunal','Juízes de imigração deste tribunal','इस अदालत के इमिग्रेशन जज','該法院移民法官','Иммиграционные судьи этого суда','قضاة الهجرة في هذه المحكمة','Bu mahkemedeki göçmenlik hâkimleri'],
+    ['点击法官查看年度与国籍数据','Select a judge to view yearly and nationality data','Seleccione un juez para ver datos anuales y por nacionalidad','Sélectionnez un juge pour les données annuelles et par nationalité','Selecione um juiz para ver dados anuais e por nacionalidade','वार्षिक और राष्ट्रीयता डेटा के लिए न्यायाधीश चुनें','點擊法官查看年度與國籍資料','Выберите судью для данных по годам и гражданству','اختر قاضيًا لعرض البيانات السنوية وحسب الجنسية','Yıllık ve uyruk verileri için hâkimi seçin'],
+    ['选择国籍数据财政年度','Select nationality fiscal year','Elegir año fiscal de nacionalidad','Choisir l’exercice des nationalités','Selecionar ano fiscal de nacionalidade','राष्ट्रीयता डेटा का वित्त वर्ष चुनें','選擇國籍資料財政年度','Выберите год данных по гражданству','اختر السنة المالية لبيانات الجنسية','Uyruk verisi mali yılını seçin'],
+    ['页面只展示可核验的官方任命与履历资料。未发现离任或被辞退记录，不等于确认仍在任；只有获得可靠来源时才会标注相关人事变动。','This page shows only verifiable official appointment and biography records. No departure record does not confirm current service; personnel changes are labeled only with reliable sources.','La página solo muestra nombramientos y biografías oficiales verificables. La ausencia de una salida no confirma servicio actual; los cambios se indican con fuentes fiables.','La page n’affiche que des nominations et biographies officielles vérifiables. L’absence de départ ne confirme pas le maintien en poste ; les changements exigent une source fiable.','A página mostra apenas nomeações e biografias oficiais verificáveis. A ausência de saída não confirma atuação atual; mudanças exigem fonte confiável.','यह पृष्ठ केवल सत्यापन योग्य आधिकारिक नियुक्ति और जीवनी दिखाता है। प्रस्थान रिकॉर्ड न होना वर्तमान सेवा की पुष्टि नहीं करता; बदलाव विश्वसनीय स्रोत पर ही दिखते हैं।','頁面只展示可核驗的官方任命與履歷。未發現離任記錄不等於確認仍在任；人事變動僅在有可靠來源時標註。','Показаны только проверяемые официальные назначения и биографии. Отсутствие записи об уходе не подтверждает текущую службу; изменения отмечаются лишь по надёжным источникам.','تعرض الصفحة سجلات التعيين والسيرة الرسمية القابلة للتحقق فقط. عدم وجود سجل مغادرة لا يؤكد استمرار الخدمة؛ ولا تُذكر التغييرات إلا بمصدر موثوق.','Yalnızca doğrulanabilir resmî atama ve özgeçmiş kayıtları gösterilir. Ayrılış kaydının olmaması görevde olduğunu kanıtlamaz; değişiklikler güvenilir kaynakla belirtilir.'],
+    ['美国移民法官与法院数据','U.S. immigration judge and court data','Datos de jueces y tribunales de inmigración de EE. UU.','Données des juges et tribunaux de l’immigration aux États-Unis','Dados de juízes e tribunais de imigração dos EUA','अमेरिकी इमिग्रेशन जज और अदालत डेटा','美國移民法官與法院資料','Данные иммиграционных судей и судов США','بيانات قضاة ومحاكم الهجرة الأمريكية','ABD göçmenlik hâkimi ve mahkeme verileri'],
+    ['移民法官数据导航','Immigration judge data navigation','Navegación de datos de jueces','Navigation des données des juges','Navegação de dados de juízes','इमिग्रेशन जज डेटा नेविगेशन','移民法官資料導覽','Навигация по данным судей','التنقل في بيانات القضاة','Hâkim verisi gezinmesi'],
+    ['共用 EOIR 数据库 · 持续更新','Shared EOIR database · continuously updated','Base EOIR compartida · actualización continua','Base EOIR partagée · mise à jour continue','Base EOIR compartilhada · atualização contínua','साझा EOIR डेटाबेस · लगातार अपडेट','共用 EOIR 資料庫 · 持續更新','Общая база EOIR · постоянно обновляется','قاعدة EOIR مشتركة · تحديث مستمر','Ortak EOIR veri tabanı · sürekli güncellenir'],
+    ['移民法官通过率 · AsylumJudge.com','Immigration Judge Approval Rates · AsylumJudge.com','Tasas de aprobación de jueces · AsylumJudge.com','Taux d’approbation des juges · AsylumJudge.com','Taxas de aprovação de juízes · AsylumJudge.com','इमिग्रेशन जज अनुमोदन दर · AsylumJudge.com','移民法官批准率 · AsylumJudge.com','Одобрения иммиграционных судей · AsylumJudge.com','نسب موافقة قضاة الهجرة · AsylumJudge.com','Göçmenlik hâkimi onay oranları · AsylumJudge.com'],
+    ['结案总数','Total outcomes','Resultados totales','Total des résultats','Total de resultados','कुल परिणाम','結案總數','Всего исходов','إجمالي النتائج','Toplam sonuç'],
+    ['州','State','Estado','État','Estado','राज्य','州','Штат','الولاية','Eyalet'],
+    ['纽约市','New York City','Nueva York','New York','Nova York','न्यूयॉर्क सिटी','紐約市','Нью-Йорк','مدينة نيويورك','New York'],
+    ['芝加哥','Chicago','Chicago','Chicago','Chicago','शिकागो','芝加哥','Чикаго','شيكاغو','Chicago'],
+    ['旧金山','San Francisco','San Francisco','San Francisco','São Francisco','सैन फ्रांसिस्को','舊金山','Сан-Франциско','سان فرانسيسكو','San Francisco'],
+    ['波士顿','Boston','Boston','Boston','Boston','बोस्टन','波士頓','Бостон','بوسطن','Boston'],
+    ['持续更新','Continuously updated','Actualización continua','Mise à jour continue','Atualização contínua','लगातार अपडेट','持續更新','Постоянно обновляется','تحديث مستمر','Sürekli güncellenir'],
+    ['查看详情','View details','Ver detalles','Voir le détail','Ver detalhes','विवरण देखें','查看詳情','Подробнее','عرض التفاصيل','Ayrıntıları görüntüle'],
+    ['法官背景','Judge background','Antecedentes del juez','Parcours du juge','Histórico do juiz','न्यायाधीश पृष्ठभूमि','法官背景','Биография судьи','خلفية القاضي','Hâkim geçmişi'],
+    ['查看法官背景','View judge background','Ver antecedentes del juez','Voir le parcours du juge','Ver histórico do juiz','न्यायाधीश पृष्ठभूमि देखें','查看法官背景','Биография судьи','عرض خلفية القاضي','Hâkim geçmişini görüntüle'],
+    ['Webex 网上上庭','Webex online hearing','Audiencia en línea por Webex','Audience en ligne Webex','Audiência on-line por Webex','Webex ऑनलाइन सुनवाई','Webex 線上開庭','Онлайн-заседание Webex','جلسة عبر Webex','Webex çevrimiçi duruşma'],
+    ['电话接入码','Phone access code','Código de acceso telefónico','Code d’accès téléphonique','Código de acesso por telefone','फ़ोन एक्सेस कोड','電話接入碼','Телефонный код доступа','رمز الدخول الهاتفي','Telefon erişim kodu'],
+    ['暂无可显示的州趋势数据','No state trend data to display','No hay tendencias estatales para mostrar','Aucune tendance d’État à afficher','Sem tendências estaduais para exibir','दिखाने के लिए राज्य रुझान डेटा नहीं','暫無可顯示的州趨勢資料','Нет данных тренда штата','لا توجد بيانات اتجاه للولاية','Görüntülenecek eyalet eğilimi yok'],
+    ['州趋势数据暂时无法读取','State trend data is temporarily unavailable','Las tendencias estatales no están disponibles','Les tendances d’État sont temporairement indisponibles','Tendências estaduais temporariamente indisponíveis','राज्य रुझान डेटा अभी उपलब्ध नहीं','州趨勢資料暫時無法讀取','Тренд штата временно недоступен','بيانات اتجاه الولاية غير متاحة مؤقتًا','Eyalet eğilimi geçici olarak kullanılamıyor'],
+    ['数据库暂时无法读取','Database temporarily unavailable','Base de datos temporalmente no disponible','Base temporairement indisponible','Banco de dados temporariamente indisponível','डेटाबेस अभी उपलब्ध नहीं','資料庫暫時無法讀取','База временно недоступна','قاعدة البيانات غير متاحة مؤقتًا','Veri tabanı geçici olarak kullanılamıyor']
+  ];
+
+  const indexes = { en: 1, es: 2, fr: 3, 'pt-BR': 4, hi: 5, 'zh-Hant': 6, ru: 7, ar: 8, tr: 9 };
+  const maps = Object.fromEntries(Object.entries(indexes).map(([code, index]) => [code, new Map(rows.map((row) => [row[0], row[index]]))]));
+  const stateEnglish = { AZ:'Arizona',CA:'California',CO:'Colorado',CT:'Connecticut',FL:'Florida',GA:'Georgia',GU:'Guam',HI:'Hawaii',IL:'Illinois',IN:'Indiana',LA:'Louisiana',MA:'Massachusetts',MD:'Maryland',MI:'Michigan',MN:'Minnesota',MO:'Missouri',MP:'Northern Mariana Islands',NC:'North Carolina',NE:'Nebraska',NJ:'New Jersey',NM:'New Mexico',NV:'Nevada',NY:'New York',OH:'Ohio',OR:'Oregon',PA:'Pennsylvania',PR:'Puerto Rico',TN:'Tennessee',TX:'Texas',UT:'Utah',VA:'Virginia',WA:'Washington' };
+  const stateSimplified = { AZ:'亚利桑那州',CA:'加州',CO:'科罗拉多州',CT:'康涅狄格州',FL:'佛州',GA:'乔治亚州',GU:'关岛',HI:'夏威夷州',IL:'伊利诺伊州',IN:'印第安纳州',LA:'路易斯安那州',MA:'马萨诸塞州',MD:'马里兰州',MI:'密歇根州',MN:'明尼苏达州',MO:'密苏里州',MP:'北马里亚纳群岛',NC:'北卡罗来纳州',NE:'内布拉斯加州',NJ:'新泽西州',NM:'新墨西哥州',NV:'内华达州',NY:'纽约州',OH:'俄亥俄州',OR:'俄勒冈州',PA:'宾州',PR:'波多黎各',TN:'田纳西州',TX:'德州',UT:'犹他州',VA:'弗吉尼亚州',WA:'华盛顿州' };
+  const stateTraditional = { AZ:'亞利桑那州',CA:'加州',CO:'科羅拉多州',CT:'康乃狄克州',FL:'佛州',GA:'喬治亞州',GU:'關島',HI:'夏威夷州',IL:'伊利諾州',IN:'印第安納州',LA:'路易斯安那州',MA:'麻薩諸塞州',MD:'馬里蘭州',MI:'密西根州',MN:'明尼蘇達州',MO:'密蘇里州',MP:'北馬里亞納群島',NC:'北卡羅來納州',NE:'內布拉斯加州',NJ:'新澤西州',NM:'新墨西哥州',NV:'內華達州',NY:'紐約州',OH:'俄亥俄州',OR:'俄勒岡州',PA:'賓州',PR:'波多黎各',TN:'田納西州',TX:'德州',UT:'猶他州',VA:'維吉尼亞州',WA:'華盛頓州' };
+  const stateCodeByChinese = Object.fromEntries(Object.entries(stateSimplified).map(([code, name]) => [name, code]));
+  const templates = {
+    en: { trend:'{name} decision approval-rate trend', period:'FY {year} (through {date})', complete:'FY {year} (complete fiscal year)', updated:'Updated {date}', valid:'{count} valid decisions', sample:'{count} valid-decision sample', all:'{count} judges', match:'{shown} of {total} judges', range:'Data period {start} to {end}', hidden:'Fewer than 50; rate hidden', sorted:'FY {year} · sorted by asylum decision volume', stateSearch:'Search courts or cities in {state}', found:'“{query}” found {count} judges', courtLink:'{state} · view courts →' },
+    es: { trend:'Tendencia de aprobación — {name}', period:'FY {year} (hasta {date})', complete:'FY {year} (año completo)', updated:'Actualizado {date}', valid:'{count} decisiones válidas', sample:'Muestra de {count} decisiones válidas', all:'{count} jueces', match:'{shown} de {total} jueces', range:'Período {start} a {end}', hidden:'Menos de 50; tasa oculta', sorted:'FY {year} · ordenado por decisiones', stateSearch:'Buscar tribunales o ciudades en {state}', found:'“{query}”: {count} jueces', courtLink:'{state} · ver tribunales →' },
+    fr: { trend:'Tendance d’approbation — {name}', period:'FY {year} (au {date})', complete:'FY {year} (exercice complet)', updated:'Mis à jour {date}', valid:'{count} décisions valides', sample:'Échantillon de {count} décisions valides', all:'{count} juges', match:'{shown} sur {total} juges', range:'Période du {start} au {end}', hidden:'Moins de 50 ; taux masqué', sorted:'FY {year} · trié par décisions', stateSearch:'Rechercher tribunaux ou villes en {state}', found:'« {query} » : {count} juges', courtLink:'{state} · voir les tribunaux →' },
+    'pt-BR': { trend:'Tendência de aprovação — {name}', period:'FY {year} (até {date})', complete:'FY {year} (ano completo)', updated:'Atualizado em {date}', valid:'{count} decisões válidas', sample:'Amostra de {count} decisões válidas', all:'{count} juízes', match:'{shown} de {total} juízes', range:'Período de {start} a {end}', hidden:'Menos de 50; taxa oculta', sorted:'FY {year} · por volume de decisões', stateSearch:'Buscar tribunais ou cidades em {state}', found:'“{query}”: {count} juízes', courtLink:'{state} · ver tribunais →' },
+    hi: { trend:'{name} अनुमोदन दर रुझान', period:'FY {year} ({date} तक)', complete:'FY {year} (पूर्ण वित्त वर्ष)', updated:'अपडेट {date}', valid:'{count} वैध निर्णय', sample:'{count} वैध निर्णयों का नमूना', all:'{count} न्यायाधीश', match:'{total} में से {shown} न्यायाधीश', range:'डेटा अवधि {start} से {end}', hidden:'50 से कम; दर छिपी', sorted:'FY {year} · निर्णय संख्या के अनुसार', stateSearch:'{state} में अदालत या शहर खोजें', found:'“{query}” से {count} न्यायाधीश मिले', courtLink:'{state} · अदालतें देखें →' },
+    'zh-Hant': { trend:'{name}裁決批准率走勢', period:'FY {year}（截至 {date}）', complete:'FY {year}（完整財年）', updated:'更新至 {date}', valid:'{count} 件有效裁決', sample:'{count} 件有效裁決樣本', all:'共 {count} 位法官', match:'匹配 {shown} 位／全部 {total} 位', range:'資料期 {start} 至 {end}', hidden:'少於 50 件，不顯示', sorted:'FY {year} · 按庇護裁決量排序', stateSearch:'在 {state} 州內搜尋法院或城市', found:'「{query}」找到 {count} 位法官', courtLink:'{state} · 查看該州法院 →' },
+    ru: { trend:'Тренд одобрений — {name}', period:'FY {year} (по {date})', complete:'FY {year} (полный год)', updated:'Обновлено {date}', valid:'{count} действительных решений', sample:'Выборка: {count} решений', all:'{count} судей', match:'{shown} из {total} судей', range:'Период {start}–{end}', hidden:'Менее 50; доля скрыта', sorted:'FY {year} · по объёму решений', stateSearch:'Искать суды или города в {state}', found:'«{query}»: найдено {count} судей', courtLink:'{state} · суды →' },
+    ar: { trend:'اتجاه الموافقة — {name}', period:'FY {year} (حتى {date})', complete:'FY {year} (سنة كاملة)', updated:'محدّث {date}', valid:'{count} قرار صالح', sample:'عينة من {count} قرار صالح', all:'{count} قاضيًا', match:'{shown} من {total} قاضيًا', range:'الفترة من {start} إلى {end}', hidden:'أقل من 50؛ النسبة مخفية', sorted:'FY {year} · حسب حجم القرارات', stateSearch:'ابحث عن محكمة أو مدينة في {state}', found:'“{query}”: تم العثور على {count} قاضيًا', courtLink:'{state} · عرض المحاكم ←' },
+    tr: { trend:'{name} onay oranı eğilimi', period:'FY {year} ({date} itibarıyla)', complete:'FY {year} (tam mali yıl)', updated:'Güncelleme {date}', valid:'{count} geçerli karar', sample:'{count} geçerli karar örneklemi', all:'{count} hâkim', match:'{total} hâkimden {shown}', range:'Veri dönemi {start}–{end}', hidden:'50’den az; oran gizli', sorted:'FY {year} · karar hacmine göre', stateSearch:'{state} içinde mahkeme veya şehir ara', found:'“{query}”: {count} hâkim bulundu', courtLink:'{state} · mahkemeleri görüntüle →' }
+  };
+  const interpolate = (value, vars) => String(value).replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
+  const translateDynamic = (source) => {
+    if (locale === 'zh-Hans') return source;
+    const tpl = templates[locale] || templates.en;
+    let match;
+    if ((match = source.match(/^(.+)裁决批准率走势$/))) {
+      const code = stateCodeByChinese[match[1]];
+      const name = code ? (locale === 'zh-Hant' ? stateTraditional[code] : stateEnglish[code]) : match[1];
+      return interpolate(tpl.trend, { name });
+    }
+    if ((match = source.match(/^FY (\d+)（截至 (.+)）$/))) return interpolate(tpl.period, { year: match[1], date: match[2] });
+    if ((match = source.match(/^FY (\d+)（完整财年）$/))) return interpolate(tpl.complete, { year: match[1] });
+    if ((match = source.match(/^更新至 (.+)$/))) return interpolate(tpl.updated, { date: match[1] });
+    if ((match = source.match(/^([\d,]+) 件有效裁决样本$/))) return interpolate(tpl.sample, { count: match[1] });
+    if ((match = source.match(/^([\d,]+) 件有效裁决$/))) return interpolate(tpl.valid, { count: match[1] });
+    if ((match = source.match(/^共 ([\d,]+) 位法官$/))) return interpolate(tpl.all, { count: match[1] });
+    if ((match = source.match(/^匹配 ([\d,]+) 位／全部 ([\d,]+) 位$/))) return interpolate(tpl.match, { shown: match[1], total: match[2] });
+    if ((match = source.match(/^数据期 (.+) 至 (.+)$/))) return interpolate(tpl.range, { start: match[1], end: match[2] });
+    if (/^少于 50 件，不显示$/.test(source)) return tpl.hidden;
+    if ((match = source.match(/^FY (\d+) · 按庇护裁决量排序$/))) return interpolate(tpl.sorted, { year: match[1] });
+    if ((match = source.match(/^在 ([A-Z]{2}) 州内搜索法院或城市$/))) return interpolate(tpl.stateSearch, { state: stateEnglish[match[1]] || match[1] });
+    if ((match = source.match(/^“(.+)” 找到 ([\d,]+) 位法官$/))) return interpolate(tpl.found, { query: match[1], count: match[2] });
+    if ((match = source.match(/^([A-Z]{2}) · 查看该州法院 →$/))) return interpolate(tpl.courtLink, { state: stateEnglish[match[1]] || match[1] });
+    if ((match = source.match(/^(.+)（([A-Z]{2})）$/)) && stateEnglish[match[2]]) return `${stateEnglish[match[2]]} (${match[2]})`;
+    let translated = source;
+    const tokenMap = maps[locale] || maps.en;
+    [...tokenMap.entries()].sort((a, b) => b[0].length - a[0].length).forEach(([from, to]) => {
+      if (from.length <= 18 && translated.includes(from)) translated = translated.split(from).join(to);
+    });
+    return translated;
+  };
+  const translate = (source) => {
+    const clean = String(source || '').trim();
+    if (!clean || locale === 'zh-Hans') return clean;
+    const direct = maps[locale]?.get(clean) || maps.en.get(clean);
+    if (direct) return direct;
+    const arrow = clean.match(/^(.*?)(\s*[→←↗])$/);
+    if (arrow) {
+      const translatedBase = maps[locale]?.get(arrow[1]) || maps.en.get(arrow[1]) || translateDynamic(arrow[1]);
+      if (translatedBase !== arrow[1]) return `${translatedBase}${arrow[2]}`;
+    }
+    return translateDynamic(clean);
+  };
+  const translateTextNode = (node) => {
+    const raw = node.nodeValue || '';
+    const clean = raw.trim();
+    if (!clean) return;
+    const next = translate(clean);
+    if (next !== clean) node.nodeValue = `${raw.match(/^\s*/)?.[0] || ''}${next}${raw.match(/\s*$/)?.[0] || ''}`;
+  };
+  const translateElement = (element) => {
+    if (!element || element.nodeType !== 1 || element.closest?.('script,style')) return;
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach(translateTextNode);
+    element.querySelectorAll?.('[placeholder],[aria-label],[title]').forEach((node) => {
+      for (const attr of ['placeholder', 'aria-label', 'title']) {
+        const value = node.getAttribute(attr);
+        if (!value) continue;
+        const next = translate(value);
+        if (next !== value.trim()) node.setAttribute(attr, next);
+      }
+    });
+  };
+  const apply = () => {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
+    const translatedTitle = translate(document.title);
+    if (translatedTitle !== document.title) document.title = translatedTitle;
+    translateElement(document.body);
+    document.querySelectorAll('#language-select,#site-language-select').forEach((select) => { select.value = locale; });
+  };
+  const setLocale = (next, options = {}) => {
+    const normalized = normalize(next);
+    try { localStorage.setItem('asylumjudge-language', normalized); } catch {}
+    const url = new URL(location.href);
+    url.searchParams.set('lang', normalized);
+    if (options.updateUrl === false) {
+      locale = normalized;
+      apply();
+      return;
+    }
+    location.href = `${url.pathname}${url.search}${url.hash}`;
+  };
+  const formatNumber = (value) => Number(value || 0).toLocaleString(locale);
+  const stateName = (code, fallback = '') => {
+    const normalized = String(code || '').toUpperCase();
+    if (locale === 'zh-Hans') return stateSimplified[normalized] || fallback || code;
+    if (locale === 'zh-Hant') return stateTraditional[normalized] || fallback || code;
+    return stateEnglish[normalized] || fallback || code;
+  };
+  window.AsylumI18n = { get locale() { return locale; }, supported: locales, t: (key, vars) => interpolate(translate(key), vars), translate, setLocale, formatNumber, stateName, dictionarySize: rows.length };
+  const observer = new MutationObserver((records) => records.forEach((record) => record.addedNodes.forEach((node) => {
+    if (node.nodeType === 3) translateTextNode(node);
+    else if (node.nodeType === 1) translateElement(node);
+  })));
+  apply();
+  observer.observe(document.body, { childList: true, subtree: true });
+  const title = document.querySelector('title');
+  if (title) new MutationObserver(() => {
+    const next = translate(document.title);
+    if (next !== document.title) document.title = next;
+  }).observe(title, { childList: true });
+})();

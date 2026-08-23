@@ -1,8 +1,9 @@
 const $ = (selector) => document.querySelector(selector);
-const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
+const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const stateNames = { AZ: '亚利桑那州', CA: '加州', CO: '科罗拉多州', CT: '康涅狄格州', FL: '佛州', GA: '乔治亚州', GU: '关岛', HI: '夏威夷州', IL: '伊利诺伊州', IN: '印第安纳州', LA: '路易斯安那州', MA: '马萨诸塞州', MD: '马里兰州', MI: '密歇根州', MN: '明尼苏达州', MO: '密苏里州', MP: '北马里亚纳群岛', NC: '北卡罗来纳州', NE: '内布拉斯加州', NJ: '新泽西州', NM: '新墨西哥州', NV: '内华达州', NY: '纽约州', OH: '俄亥俄州', OR: '俄勒冈州', PA: '宾州', PR: '波多黎各', TN: '田纳西州', TX: '德州', UT: '犹他州', VA: '弗吉尼亚州', WA: '华盛顿州' };
+const stateName = (code) => window.AsylumI18n?.stateName?.(code, stateNames[String(code || '').toUpperCase()]) || stateNames[String(code || '').toUpperCase()] || code;
 let allJudges = [];
 let searchTimer = null;
 let selectedTrendState = 'NY';
@@ -60,7 +61,7 @@ function renderStates(rows, data = {}) {
   const normalized = [...rows].sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   const selected = preferred.map((code) => normalized.find((row) => String(row.state || '').toUpperCase() === code)).filter(Boolean);
   for (const row of normalized) if (selected.length < 6 && !selected.includes(row)) selected.push(row);
-  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}&fy=${encodeURIComponent(data.fiscal_year || '')}"><span><b>${esc(stateNames[String(row.state || '').toUpperCase()] || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)}件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
+  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}&fy=${encodeURIComponent(data.fiscal_year || '')}"><span><b>${esc(stateName(row.state) || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)} 件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
 
   const national = data.national || {};
   const grants = Number(national.grants || 0);
@@ -198,12 +199,12 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
   const stateSelect = $('#trend-state-select');
   if (courtSelect) courtSelect.value = court;
   if (stateSelect && !court) stateSelect.value = state;
-  const initialLabel = court ? (courtSelect?.selectedOptions?.[0]?.textContent || court) : (stateNames[state] || state);
+  const initialLabel = court ? (courtSelect?.selectedOptions?.[0]?.textContent || court) : stateName(state);
   $('#state-market-title').textContent = `${initialLabel}裁决批准率走势`;
   $('#state-market-period-label').textContent = interval === 'month' ? '最近 24 个月' : 'FY 2020–FY 2026';
   try {
     const data = await json(`/.netlify/functions/immigration-judges?mode=state-trend&state=${encodeURIComponent(state)}&court=${encodeURIComponent(court)}&interval=${encodeURIComponent(interval)}`);
-    const label = data.court_name || stateNames[data.state] || data.state;
+    const label = data.court_name || stateName(data.state);
     $('#state-market-title').textContent = `${label}裁决批准率走势`;
     renderStateMarket(data.periods || [], label, interval);
   } catch (error) {
@@ -218,8 +219,8 @@ async function loadTrendLocations() {
     const data = await json('/.netlify/functions/immigration-judges?mode=trend-locations');
     const locations = data.locations || [];
     const states = [...new Set(locations.map((item) => item.state))].sort();
-    stateSelect.innerHTML = states.map((state) => `<option value="${esc(state)}">${esc(stateNames[state] || state)}（${esc(state)}）</option>`).join('');
-    courtSelect.innerHTML = '<option value="">请选择城市／移民法院</option>' + locations.map((item) => `<option value="${esc(item.court_code)}" data-state="${esc(item.state)}">${esc(item.court_name)} · ${esc(stateNames[item.state] || item.state)}</option>`).join('');
+    stateSelect.innerHTML = states.map((state) => `<option value="${esc(state)}">${esc(stateName(state))} (${esc(state)})</option>`).join('');
+    courtSelect.innerHTML = '<option value="">请选择城市／移民法院</option>' + locations.map((item) => `<option value="${esc(item.court_code)}" data-state="${esc(item.state)}">${esc(item.court_name)} · ${esc(stateName(item.state))}</option>`).join('');
     stateSelect.value = selectedTrendState;
     courtSelect.value = selectedTrendCourt;
   } catch (error) {
@@ -320,7 +321,7 @@ function knowledgeUrl(row) {
 function knowledgeDate(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '每日更新';
-  return new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat(window.AsylumI18n?.locale || 'zh-CN', { month: 'numeric', day: 'numeric' }).format(date);
 }
 
 function renderDailyKnowledge(rows) {

@@ -38,7 +38,7 @@
           <figure class="state-market" aria-labelledby="state-market-title">
             <figcaption class="state-market-head">
               <div><span>STATE MARKET</span><b id="state-market-title">主要州裁决结果占比</b><small id="state-market-period-label">FY 2026（读取中）</small></div>
-              <div><div class="state-fy-tabs" aria-label="选择财政年度"><button class="active" type="button" data-state-fy="2026">2026</button><button type="button" data-state-fy="2025">2025</button><button type="button" data-state-fy="2024">2024</button></div><div class="state-market-legend"><i class="approval"></i>批准 <i class="denial"></i>拒绝 <i class="other"></i>其他</div></div>
+              <div><div class="state-fy-tabs" aria-label="选择财政年度"><button class="active" type="button" data-state-fy="2026">2026</button><button type="button" data-state-fy="2025">2025</button><button type="button" data-state-fy="2024">2024</button></div><div class="state-market-legend"><i class="approval"></i>批准 <i class="denial"></i>拒绝</div></div>
             </figcaption>
             <div id="state-market-chart" class="state-market-chart" aria-live="polite">
               <div class="state-market-loading">正在读取各州数据…</div>
@@ -78,7 +78,7 @@
           <div class="state-list-head"><b>主要州数据</b><span>裁决批准率</span></div>
           <div id="state-list" class="state-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
           <a class="state-more" href="/immigration-judge-approval-rate/states.html">查看全部州数据 <span>→</span></a>
-          <p class="snapshot-source">按裁决当时所在移民法院归州；批准率＝批准÷（批准＋拒绝）。</p>
+          <p class="snapshot-source">按裁决当时所在移民法院归州；本序列只统计庇护申请的批准与拒绝，不把撤回、未裁决等程序性结果伪装为“其他”。</p>
         </aside>
       </div>
     </section>
@@ -146,6 +146,6 @@
   <footer>
     <div class="shell footer-inner"><div><b>移民法官通过率</b><span>AsylumJudge.com</span></div><p>与唐人日报共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/site.js?v=11" defer></script>
+  <script src="/asylumjudge/site.js?v=12" defer></script>
 </body>
 </html>

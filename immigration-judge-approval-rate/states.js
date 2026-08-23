@@ -1,6 +1,6 @@
 const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
+const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 let rows = [];
 let fiscalYear = Number(new URLSearchParams(location.search).get('fy')) || 2026;

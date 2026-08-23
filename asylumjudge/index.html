@@ -34,9 +34,9 @@
       </a>
       <nav class="home-nav" aria-label="主要导航">
         <a data-nav-key="judges" href="#judge-search">查法官</a>
-        <a data-nav-key="courts" href="/immigration-judge-approval-rate/courts.html">查法院</a>
-        <a data-nav-key="states" href="/immigration-judge-approval-rate/states.html">各州数据</a>
-        <a data-nav-key="nationality" href="/immigration-judge-approval-rate/china-dashboard.html">各国国籍批准率</a>
+        <a data-nav-key="courts" href="/courts">查法院</a>
+        <a data-nav-key="states" href="/states">各州数据</a>
+        <a data-nav-key="nationality" href="/nationality">各国国籍批准率</a>
       </nav>
       <label class="home-language-control" for="site-language-select"><span data-language-label>语言</span><select id="site-language-select" aria-label="语言"><option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="pt-BR">PT-BR</option><option value="hi">HI</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option><option value="ru">RU</option><option value="ar">AR</option><option value="tr">TR</option></select></label>
     </div>
@@ -91,7 +91,7 @@
           </div>
           <div class="state-list-head"><b>主要州数据</b><span>裁决批准率</span></div>
           <div id="state-list" class="state-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
-          <a class="state-more" href="/immigration-judge-approval-rate/states.html">查看全部州数据 <span>→</span></a>
+          <a class="state-more" href="/states">查看全部州数据 <span>→</span></a>
           <p class="snapshot-source">按裁决当时所在移民法院归州；蓝色“其他”包括可识别的暂缓/CAT保护、取消递解或调整身份、自愿离境、撤回/终止/驳回及行政结案。没有可核验最终结果的待裁案件不计入。</p>
         </aside>
       </div>
@@ -128,9 +128,9 @@
 
     <section class="shell entry-grid" aria-label="查询入口">
       <a href="#judge-search"><span class="entry-icon">法官</span><div><b>查移民法官</b><small>姓名、法院或城市</small></div><i>→</i></a>
-      <a href="/immigration-judge-approval-rate/courts.html"><span class="entry-icon">法院</span><div><b>全部移民法院</b><small>比较法院裁决数据</small></div><i>→</i></a>
-      <a href="/immigration-judge-approval-rate/states.html"><span class="entry-icon">各州</span><div><b>按州查看</b><small>州级法院与法官汇总</small></div><i>→</i></a>
-      <a href="/immigration-judge-approval-rate/china-dashboard.html"><span class="entry-icon">国际</span><div><b>国际批准率</b><small>搜索中国、古巴、韩国等国籍</small></div><i>→</i></a>
+      <a href="/courts"><span class="entry-icon">法院</span><div><b>全部移民法院</b><small>比较法院裁决数据</small></div><i>→</i></a>
+      <a href="/states"><span class="entry-icon">各州</span><div><b>按州查看</b><small>州级法院与法官汇总</small></div><i>→</i></a>
+      <a href="/nationality"><span class="entry-icon">国际</span><div><b>国际批准率</b><small>搜索中国、古巴、韩国等国籍</small></div><i>→</i></a>
     </section>
 
     <section class="lookup-section">
@@ -141,8 +141,8 @@
           <p>按姓名查找法官，并打开包含法院、国籍、年度趋势和案件样本量的资料页。</p>
         </div>
         <div class="lookup-grid">
-          <a href="/immigration-judge-approval-rate/courts.html"><i aria-hidden="true">⚖</i><b>法院批准率</b><p>查看各移民法院的法官人数、裁决量和历史批准率。</p><span>查看法院 →</span></a>
-          <a href="/immigration-judge-approval-rate/china-dashboard.html"><i aria-hidden="true">◎</i><b>国际批准率</b><p>搜索全部 227 个已记录国籍，并查看月度、季度与年度真实趋势。</p><span>查看全球国籍数据 →</span></a>
+          <a href="/courts"><i aria-hidden="true">⚖</i><b>法院批准率</b><p>查看各移民法院的法官人数、裁决量和历史批准率。</p><span>查看法院 →</span></a>
+          <a href="/nationality"><i aria-hidden="true">◎</i><b>国际批准率</b><p>搜索全部 227 个已记录国籍，并查看月度、季度与年度真实趋势。</p><span>查看全球国籍数据 →</span></a>
           <a href="#judge-search"><i aria-hidden="true">↗</i><b>年度趋势</b><p>先查询法官，再查看每年裁决量和批准率变化。</p><span>查询法官 →</span></a>
         </div>
       </div>
@@ -152,7 +152,7 @@
       <div class="shell method-grid">
         <div><span>数据口径</span><h2>百分比必须和样本量一起看</h2></div>
         <p>裁决批准率按“批准 ÷（批准 + 拒绝）”计算，撤回、未裁决等程序性结果不计入分母。小样本数据会被抑制或提示，避免只看一个百分比造成误解。</p>
-        <a href="/immigration-judge-approval-rate/methodology.html">查看完整说明 →</a>
+        <a href="/methodology">查看完整说明 →</a>
       </div>
     </section>
   </main>
@@ -160,7 +160,7 @@
   <footer>
     <div class="shell footer-inner"><div><b>移民法官通过率</b><span>AsylumJudge.com</span></div><p>与唐人日报共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/domain-brand.js?v=6"></script>
-  <script src="/asylumjudge/site.js?v=16" defer></script>
+  <script src="/asylumjudge/domain-brand.js?v=7"></script>
+  <script src="/asylumjudge/site.js?v=17" defer></script>
 </body>
 </html>

@@ -8,7 +8,8 @@
     ['/immigration-judge-approval-rate/index.html', root || '/'],
     ['/immigration-judge-approval-rate/courts.html', `${root}/courts`],
     ['/immigration-judge-approval-rate/states.html', `${root}/states`],
-    ['/immigration-judge-approval-rate/china-dashboard.html', `${root}/china`],
+    ['/immigration-judge-approval-rate/china-dashboard.html', `${root}/nationality`],
+    ['/immigration-judge-approval-rate/nationality.html', `${root}/nationality`],
     ['/immigration-judge-approval-rate/methodology.html', `${root}/methodology`],
     ['/immigration-judge-approval-rate/detail.html', `${root}/judge`],
     ['/immigration-judge-approval-rate/court-detail.html', `${root}/court`]
@@ -65,7 +66,7 @@
   }
 
   const nav = document.querySelector('.judge-nav .judge-shell');
-  if (nav) nav.innerHTML = `<a href="${root || '/'}">查移民法官</a><a href="${root}/courts">全部法院</a><a href="${root}/states">各州通过率</a><a href="${root}/china">中国申请人</a><a href="${root}/methodology">数据口径</a><a class="trrb-return" href="${standaloneHost ? 'https://trrb.net/asylumjudge' : '/'}">${standaloneHost ? '唐人日报入口' : '返回唐人日报'}</a>`;
+  if (nav) nav.innerHTML = `<a href="${root || '/'}">查移民法官</a><a href="${root}/courts">全部法院</a><a href="${root}/states">各州通过率</a><a href="${root}/nationality">国际批准率</a><a href="${root}/methodology">数据口径</a><a class="trrb-return" href="${standaloneHost ? 'https://trrb.net/asylumjudge' : '/'}">${standaloneHost ? '唐人日报入口' : '返回唐人日报'}</a>`;
 
   const footer = document.querySelector('.judge-footer .judge-shell');
   if (footer) footer.innerHTML = `<b>${standaloneHost ? '移民法官通过率 · AsylumJudge.com' : '唐人日报 · 移民法官通过率'}</b><span>共用 EOIR 数据库 · 持续更新</span>`;

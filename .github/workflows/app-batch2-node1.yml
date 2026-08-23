@@ -1,6 +1,15 @@
 name: APP Batch 2 Node 1
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/mobile/**'
+      - 'netlify/functions/public-home-articles.js'
+      - 'netlify/functions/public-articles.js'
+      - 'netlify/functions/public-article.js'
+      - 'scripts/audit-app-batch2-node1.mjs'
+      - '.github/workflows/app-batch2-node1.yml'
   push:
     branches: [main]
     paths:

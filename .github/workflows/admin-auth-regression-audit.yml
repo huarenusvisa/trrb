@@ -10,6 +10,10 @@ on:
       - 'scripts/admin-auth-regression-audit.mjs'
       - '.github/workflows/admin-auth-regression-audit.yml'
 
+concurrency:
+  group: trrb-admin-auth-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

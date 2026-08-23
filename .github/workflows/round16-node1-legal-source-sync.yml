@@ -2,14 +2,7 @@ name: 第十六轮节点1-五大官方法律源自动采集触发链闭环
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "11 */6 * * *"
-  push:
-    branches: [main]
-    paths:
-      - "docs/ROUND16-LEGAL-SYNC-AND-KNOWLEDGE-UX.md"
-      - "scripts/round16-node1-legal-source-sync-audit.mjs"
-      - ".github/workflows/round16-node1-legal-source-sync.yml"
+  workflow_call:
 
 permissions:
   contents: write

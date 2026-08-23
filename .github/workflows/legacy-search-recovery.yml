@@ -7,14 +7,8 @@ on:
         description: 每批最多恢复多少篇
         required: false
         default: '200'
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/restore-legacy-archive.mjs'
-      - 'scripts/legacy-search-acceptance.mjs'
-      - '.github/workflows/legacy-search-recovery.yml'
   schedule:
-    - cron: '17 */4 * * *'
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: read

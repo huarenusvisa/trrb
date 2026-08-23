@@ -2,13 +2,7 @@ name: 庇护官方知识与BIA先例同步
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/asylum-official-knowledge-sync.mjs"
-      - ".github/workflows/asylum-official-knowledge-sync.yml"
-  schedule:
-    - cron: "47 3 * * *"
+  workflow_call:
 
 permissions:
   contents: read

@@ -1,0 +1,109 @@
+name: TRRB Operations Control Plane
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: "选择需要运行的模块"
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - ice
+          - seo
+          - official
+          - monitor
+          - maintenance
+          - judge
+  schedule:
+    - cron: "3,33 * * * *"
+    - cron: "17 * * * *"
+    - cron: "47 3 * * *"
+    - cron: "7 7 * * *"
+    - cron: "23 8 * * 1"
+    - cron: "25 10 3 * *"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: trrb-operations-control-${{ github.event.schedule || inputs.module || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  official-cadence:
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'official') || github.event.schedule == '47 3 * * *' }}
+    runs-on: ubuntu-24.04
+    outputs:
+      due: ${{ steps.cadence.outputs.due }}
+    steps:
+      - id: cadence
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "due=true" >> "$GITHUB_OUTPUT"
+          elif (( $(date -u +%s) / 86400 % 3 == 0 )); then
+            echo "due=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "due=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  ice:
+    if: ${{ github.event.schedule == '3,33 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice') }}
+    uses: ./.github/workflows/ice-unified-pipeline.yml
+    secrets: inherit
+
+  seo-metadata:
+    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
+    uses: ./.github/workflows/round13-publish-seo-sync.yml
+    secrets: inherit
+
+  seo-indexnow:
+    needs: seo-metadata
+    if: ${{ !cancelled() && (github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
+    uses: ./.github/workflows/indexnow.yml
+    secrets: inherit
+
+  official-asylum:
+    needs: official-cadence
+    if: ${{ needs.official-cadence.outputs.due == 'true' }}
+    uses: ./.github/workflows/asylum-official-knowledge-sync.yml
+    secrets: inherit
+
+  official-legal:
+    needs: official-cadence
+    if: ${{ needs.official-cadence.outputs.due == 'true' }}
+    uses: ./.github/workflows/round16-node1-legal-source-sync.yml
+    secrets: inherit
+
+  daily-live-monitor:
+    if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
+    uses: ./.github/workflows/live-seo-crawl.yml
+    secrets: inherit
+
+  daily-seo-integrity:
+    if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
+    uses: ./.github/workflows/seo-integrity.yml
+    secrets: inherit
+
+  daily-search-console:
+    if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
+    uses: ./.github/workflows/seo-search-engine-ops.yml
+    secrets: inherit
+
+  ice-night-maintenance:
+    if: ${{ github.event.schedule == '7 7 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance') }}
+    uses: ./.github/workflows/ice-night-maintenance.yml
+    secrets: inherit
+
+  ice-orphan-cleanup:
+    if: ${{ github.event.schedule == '23 8 * * 1' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance') }}
+    uses: ./.github/workflows/ice-orphan-media-cleanup.yml
+    secrets: inherit
+
+  immigration-judge-monthly:
+    if: ${{ github.event.schedule == '25 10 3 * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'judge') }}
+    uses: ./.github/workflows/immigration-judge-data-sync.yml
+    secrets: inherit

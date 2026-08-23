@@ -2,6 +2,7 @@ name: 全站SEO与404完整性检查
 
 on:
   workflow_dispatch:
+  workflow_call:
   pull_request:
     branches: [main]
     paths:
@@ -17,8 +18,6 @@ on:
       - "scripts/upgrade-article-urls.mjs"
       - "scripts/verify-pr-preview.mjs"
       - ".github/workflows/seo-integrity.yml"
-  schedule:
-    - cron: "20 8 * * *"
 
 permissions:
   contents: read

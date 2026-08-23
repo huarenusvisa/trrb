@@ -2,8 +2,7 @@ name: Immigration Judge EOIR Data Sync
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "25 10 3 * *"
+  workflow_call:
 
 permissions:
   contents: write

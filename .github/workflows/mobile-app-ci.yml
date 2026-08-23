@@ -10,6 +10,10 @@ on:
       - '.github/workflows/mobile-app-ci.yml'
   workflow_dispatch:
 
+concurrency:
+  group: trrb-mobile-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

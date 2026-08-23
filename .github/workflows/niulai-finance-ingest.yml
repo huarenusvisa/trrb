@@ -15,14 +15,14 @@ on:
       - "scripts/niulai-finance-ingest.mjs"
       - "scripts/lib/niulai-finance-sources.mjs"
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "8,38 * * * *"
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-niulai-finance-ingest
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   collect-translate-publish:

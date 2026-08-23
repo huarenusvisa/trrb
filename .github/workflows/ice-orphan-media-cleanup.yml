@@ -2,13 +2,7 @@ name: ICE孤儿素材安全清理
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/cleanup-ice-orphan-media.mjs'
-      - '.github/workflows/ice-orphan-media-cleanup.yml'
-  schedule:
-    - cron: '23 8 * * 1'
+  workflow_call:
 
 permissions:
   contents: read

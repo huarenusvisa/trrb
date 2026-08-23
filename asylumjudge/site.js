@@ -35,7 +35,7 @@ function renderStates(rows) {
   const normalized = [...rows].sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   const selected = preferred.map((code) => normalized.find((row) => String(row.state || '').toUpperCase() === code)).filter(Boolean);
   for (const row of normalized) if (selected.length < 6 && !selected.includes(row)) selected.push(row);
-  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('states')}?q=${encodeURIComponent(row.state || '')}"><span><b>${esc(stateNames[String(row.state || '').toUpperCase()] || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)}件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
+  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}"><span><b>${esc(stateNames[String(row.state || '').toUpperCase()] || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)}件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
 
   const grants = rows.reduce((sum, row) => sum + Number(row.grants || 0), 0);
   const denials = rows.reduce((sum, row) => sum + Number(row.denials || 0), 0);

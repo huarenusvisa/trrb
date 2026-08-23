@@ -14,14 +14,14 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 150
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_IMAGE_MODEL: ${{ secrets.OPENAI_IMAGE_MODEL || 'gpt-image-1' }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ARTICLE_IMAGE_BUCKET: "article-images"
-      AI_COVER_MAX_PER_RUN: "5"
+      AI_COVER_MAX_PER_RUN: "50"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

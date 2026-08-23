@@ -323,12 +323,4 @@
         <news:title>内华达边境巡逻逮捕洪都拉斯重罪犯</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-c8ddd53a8da1c388807caf5a05f151b7ce77cf07</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-21T22:34:10.428Z</news:publication_date>
-        <news:title>美国ICE拘捕涉嫌直播性剥削未成年人非法移民</news:title>
-      </news:news>
-    </url>
 </urlset>

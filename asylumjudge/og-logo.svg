@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">AsylumJudge.com</title>
+  <desc id="desc">United States immigration judge, court, state and nationality outcome data.</desc>
+  <rect width="1200" height="630" fill="#F3F7F5"/>
+  <rect x="90" y="100" width="1020" height="430" rx="42" fill="#fff" stroke="#DCE5E0" stroke-width="3"/>
+  <g transform="translate(150 180) scale(.52734375)">
+    <rect x="10" y="10" width="492" height="492" rx="112" fill="#fff" stroke="#D0D5DD" stroke-width="20"/>
+    <rect x="116" y="150" width="80" height="214" rx="24" fill="#14804A"/>
+    <rect x="216" y="207" width="80" height="157" rx="24" fill="#C4161C"/>
+    <rect x="316" y="257" width="80" height="107" rx="24" fill="#2563A9"/>
+  </g>
+  <text x="465" y="310" fill="#101828" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="800" letter-spacing="-3">Asylum</text>
+  <text x="723" y="310" fill="#14804A" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="800" letter-spacing="-3">Judge</text>
+  <text x="946" y="310" fill="#667085" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700">.com</text>
+  <text x="468" y="365" fill="#475467" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="2">U.S. IMMIGRATION COURT DATA</text>
+  <g transform="translate(468 410)">
+    <circle cx="8" cy="8" r="8" fill="#14804A"/><text x="27" y="15" fill="#667085" font-family="Arial" font-size="18" font-weight="700">APPROVED</text>
+    <circle cx="158" cy="8" r="8" fill="#C4161C"/><text x="177" y="15" fill="#667085" font-family="Arial" font-size="18" font-weight="700">DENIED</text>
+    <circle cx="284" cy="8" r="8" fill="#2563A9"/><text x="303" y="15" fill="#667085" font-family="Arial" font-size="18" font-weight="700">OTHER</text>
+  </g>
+</svg>

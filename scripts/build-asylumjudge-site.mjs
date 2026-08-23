@@ -15,6 +15,11 @@ await cp(join(root, 'asylumjudge'), join(output, 'asylumjudge'), { recursive: tr
 await cp(join(root, 'asylumjudge', 'index.html'), join(output, 'index.html'));
 await cp(join(root, 'asylumjudge', 'robots.txt'), join(output, 'robots.txt'));
 await cp(join(root, 'asylumjudge', 'sitemap.xml'), join(output, 'sitemap.xml'));
+await cp(join(root, 'asylumjudge', 'favicon.ico'), join(output, 'favicon.ico'));
+await cp(join(root, 'asylumjudge', 'logo-mark.svg'), join(output, 'favicon.svg'));
+await cp(join(root, 'asylumjudge', 'favicon-48.png'), join(output, 'favicon-48.png'));
+await cp(join(root, 'asylumjudge', 'apple-touch-icon.png'), join(output, 'apple-touch-icon.png'));
+await cp(join(root, 'asylumjudge', 'site.webmanifest'), join(output, 'site.webmanifest'));
 await cp(join(root, 'immigration-judge-approval-rate'), join(output, 'immigration-judge-approval-rate'), { recursive: true });
 await cp(join(root, 'styles.css'), join(output, 'styles.css'));
 await cp(join(root, 'trrb-logo-cropped.webp'), join(output, 'trrb-logo-cropped.webp'));

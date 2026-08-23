@@ -66,6 +66,9 @@ const standalone = readFileSync('asylumjudge/index.html', 'utf8');
 const trrb = readFileSync('asylumjudge/trrb.html', 'utf8');
 const client = readFileSync('asylumjudge/site.js', 'utf8');
 const styles = readFileSync('asylumjudge/site.css', 'utf8');
+const brandClient = readFileSync('asylumjudge/domain-brand.js', 'utf8');
+const manifest = JSON.parse(readFileSync('asylumjudge/site.webmanifest', 'utf8'));
+const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8');
 
 for (const html of [standalone, trrb]) {
   assert.match(html, /id="all-judges"/, 'both homepage variants must expose the full judge directory');
@@ -78,6 +81,7 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /id="trend-court-select"/, 'homepage must let users choose any city or immigration court');
   assert.match(html, /拒绝率/, 'trend legend must expose the red denial series');
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
+  assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
 assert.match(client, /mode=all/, 'homepage must request the complete judge dataset');
 assert.match(client, /filterJudges\(query\)/, 'homepage search must filter the complete in-memory directory');
@@ -96,5 +100,13 @@ assert.doesNotMatch(client, /state-market-link/, 'trend chart must not be wrappe
 assert.match(styles, /\.directory-metric\.verdict-pass b[^}]*var\(--pass\)/);
 assert.match(styles, /\.directory-metric\.verdict-deny b[^}]*var\(--deny\)/);
 assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
+assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
+assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
+assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
+assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
+assert.match(brandClient, /class="asylumjudge-lockup"[^>]+logo\.svg/, 'all judge data pages must receive the same logo');
+assert.equal(manifest.name, 'AsylumJudge.com');
+assert.ok(manifest.icons.some((icon) => icon.sizes === '512x512'));
+for (const asset of ['favicon.ico', 'favicon-48.png', 'apple-touch-icon.png', 'site.webmanifest']) assert.match(bundleBuilder, new RegExp(asset.replace('.', '\\.')));
 
 console.log('AsylumJudge all-judge homepage contract: PASS');

@@ -109,7 +109,7 @@
     if (logo) {
       logo.className = 'asylumjudge-logo';
       logo.href = root || '/';
-      logo.innerHTML = `<i aria-hidden="true"></i><span><b>移民法官通过率</b><small>${standaloneHost ? 'AsylumJudge.com' : '唐人日报 · 数据栏目'}</small></span>`;
+      logo.innerHTML = '<img class="asylumjudge-lockup" src="/asylumjudge/logo.svg" alt="AsylumJudge.com">';
     }
     const descriptor = brand.querySelector(':scope > div:not(.language-control)');
     if (descriptor) descriptor.innerHTML = '<b>美国移民法官与法院数据</b><span>EOIR Immigration Court Data</span>';

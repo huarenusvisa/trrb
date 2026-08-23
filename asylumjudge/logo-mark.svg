@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">AsylumJudge logo</title>
+  <desc id="desc">Green, red and blue bars represent approved, denied and other immigration court outcomes.</desc>
+  <rect x="10" y="10" width="492" height="492" rx="112" fill="#fff" stroke="#D0D5DD" stroke-width="20"/>
+  <rect x="116" y="150" width="80" height="214" rx="24" fill="#14804A"/>
+  <rect x="216" y="207" width="80" height="157" rx="24" fill="#C4161C"/>
+  <rect x="316" y="257" width="80" height="107" rx="24" fill="#2563A9"/>
+</svg>

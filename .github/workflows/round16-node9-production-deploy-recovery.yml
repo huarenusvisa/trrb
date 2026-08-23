@@ -71,7 +71,7 @@ jobs:
           echo "SKIP_DEPLOY=$already_accepted" >> "$GITHUB_ENV"
           echo "already_accepted=$already_accepted"
 
-      - name: 标记生产部署开始
+      - name: 标记生产验收开始
         if: env.SKIP_DEPLOY != 'true'
         shell: bash
         env:
@@ -83,10 +83,10 @@ jobs:
             -H 'Accept: application/vnd.github+json' \
             -H 'Content-Type: application/json' \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
-            -d '{"state":"pending","context":"trrb/production-trigger","description":"Production deployment trigger started"}' >/dev/null
+            -d '{"state":"pending","context":"trrb/production-accepted","description":"Waiting for Netlify Git deployment and production acceptance"}' >/dev/null
 
-      - name: 发布 Netlify Production
-        if: env.SKIP_DEPLOY != 'true'
+      - name: 手动运行时发布 Netlify Production
+        if: ${{ github.event_name == 'workflow_dispatch' && env.SKIP_DEPLOY != 'true' }}
         id: deploy
         continue-on-error: true
         shell: bash
@@ -127,7 +127,7 @@ jobs:
           echo "DEPLOY_MODE=$deploy_mode" >> "$GITHUB_ENV"
 
       - name: 发布生产触发结果状态
-        if: ${{ always() && env.SKIP_DEPLOY != 'true' }}
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && env.SKIP_DEPLOY != 'true' }}
         shell: bash
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -150,7 +150,7 @@ jobs:
             -d "$payload" >/dev/null
 
       - name: 停止失败的生产触发
-        if: ${{ env.SKIP_DEPLOY != 'true' && steps.deploy.outcome != 'success' }}
+        if: ${{ github.event_name == 'workflow_dispatch' && env.SKIP_DEPLOY != 'true' && steps.deploy.outcome != 'success' }}
         shell: bash
         run: exit 1
 

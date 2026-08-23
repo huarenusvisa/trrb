@@ -9,6 +9,8 @@ assert.deepEqual(stateData.years.slice(0, 3), [2026, 2025, 2024], 'latest fiscal
 assert.equal(stateData.states.length, 32, 'all mapped states and territories in this snapshot must be present');
 assert.equal(stateData.courts.length, 77, 'all source court codes must be mapped');
 assert.ok(!stateData.states.some((row) => !row.state || /unknown/i.test(row.state)), 'no state may be unknown');
+assert.equal(stateData.state_monthly.length, stateData.states.length, 'every state must have a monthly trend series');
+assert.equal(stateData.court_monthly.length, stateData.courts.length, 'every immigration court must have a monthly trend series');
 
 for (const national of stateData.national) {
   const year = Number(national.fiscal_year);
@@ -19,6 +21,20 @@ for (const national of stateData.national) {
     assert.equal(courtRows.reduce((sum, row) => sum + Number(row[field] || 0), 0), Number(national[field] || 0), `FY ${year} court ${field} must equal national`);
   }
   assert.equal(Number(national.total_asylum_decisions), Number(national.grants) + Number(national.denials) + Number(national.other_decisions), `FY ${year} outcomes must reconcile`);
+  assert.equal(Number(national.other_decisions), ['other_protection', 'other_cancellation', 'other_adjustment', 'other_voluntary_departure', 'other_withdrawn_or_terminated', 'other_administrative_closure'].reduce((sum, field) => sum + Number(national[field] || 0), 0), `FY ${year} other-outcome categories must reconcile`);
+}
+
+for (const court of stateData.court_monthly) {
+  assert.ok(court.court_code && court.court_name && court.state, 'court trend needs code, name, and state');
+  for (const period of court.monthly) assert.equal(Number(period.total_asylum_decisions), Number(period.grants) + Number(period.denials) + Number(period.other_decisions), `${court.court_code} ${period.period} outcomes must reconcile`);
+}
+
+for (const state of stateData.state_monthly) {
+  assert.ok(state.monthly.length > 0, `${state.state} must expose monthly points when it has classified decisions`);
+  for (const period of state.monthly) {
+    assert.match(period.period, /^20\d\d-(0[1-9]|1[0-2])$/);
+    assert.equal(Number(period.total_asylum_decisions), Number(period.grants) + Number(period.denials) + Number(period.other_decisions), `${state.state} ${period.period} outcomes must reconcile`);
+  }
 }
 
 for (const state of stateData.states) {
@@ -34,11 +50,14 @@ for (const state of stateData.states) {
 }
 
 const nationalTotal = stateData.national.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0);
-assert.equal(nationalTotal, 510063, 'published 2020-01-01 through 2026-07-01 scope must reconcile to source preflight');
+assert.equal(nationalTotal, 1366867, 'published 2020-01-01 through 2026-07-01 closed-outcome scope must reconcile to source preflight');
 const newYork = stateData.states.find((row) => row.state === 'NY');
 assert.ok(newYork, 'New York must be present');
-assert.equal(newYork.yearly.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0), 83628, 'New York all-scope total must include every NY court code');
-assert.equal(newYork.yearly.find((row) => row.fiscal_year === 2026)?.total_asylum_decisions, 16802, 'New York FY 2026 YTD total must be stable');
+assert.equal(newYork.yearly.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0), 182942, 'New York all-scope total must include every NY court code and classified other outcomes');
+assert.equal(newYork.yearly.find((row) => row.fiscal_year === 2026)?.total_asylum_decisions, 32911, 'New York FY 2026 YTD total must be stable');
+const newYorkMonthly = stateData.state_monthly.find((row) => row.state === 'NY');
+assert.ok(newYorkMonthly.monthly.length > 12, 'New York must expose more than one year of monthly points');
+assert.equal(newYorkMonthly.monthly.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0), 182942, 'New York monthly total must equal the all-scope state total');
 
 assert.equal(yearShards.length, yearIndex.profile_count, 'judge nationality-year shard profile count must match index');
 const nationalityRows = yearShards.flatMap((profile) => profile.rows || []);

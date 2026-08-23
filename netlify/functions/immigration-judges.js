@@ -13,6 +13,13 @@ const nationalityPeriodShards = [
 const judgeBackgrounds = require('../../data/immigration-judge-backgrounds.json');
 const webexDirectory = require('../../data/eoir-webex-links.json');
 const statePeriods = require('../../data/immigration-judge-state-periods.json');
+const trendIndex = require('../../data/immigration-judge-trends.json');
+const trendShards = [
+  require('../../data/immigration-judge-trends-1.json'),
+  require('../../data/immigration-judge-trends-2.json'),
+  require('../../data/immigration-judge-trends-3.json'),
+  require('../../data/immigration-judge-trends-4.json')
+];
 const nationalityYearIndex = require('../../data/immigration-judge-nationality-yearly.json');
 const nationalityYearShards = [
   require('../../data/immigration-judge-nationality-yearly-1.json'),
@@ -73,6 +80,28 @@ const webexByName = new Map(
 const nationalityYearByName = new Map(
   nationalityYearShards.flatMap((shard) => shard.profiles || []).map((profile) => [profile.name_key, profile.rows || []])
 );
+const judgeOutcomeByName = new Map(
+  (statePeriods.judges || []).map((profile) => [profile.name_key, profile.yearly || []])
+);
+const stateMonthlyTrends = trendShards.flatMap((shard) => shard.states || []);
+const courtMonthlyTrends = trendShards.flatMap((shard) => shard.courts || []);
+
+function sumOutcomeRows(rows) {
+  const fields = ['total_asylum_decisions', 'grants', 'denials', 'other_decisions', 'other_protection',
+    'other_cancellation', 'other_adjustment', 'other_voluntary_departure',
+    'other_withdrawn_or_terminated', 'other_administrative_closure'];
+  const result = {};
+  for (const field of fields) result[field] = (rows || []).reduce((sum, row) => sum + num(row[field]), 0);
+  result.data_start_date = (rows || []).map((row) => row.data_start_date).filter(Boolean).sort()[0] || null;
+  result.data_end_date = (rows || []).map((row) => row.data_end_date).filter(Boolean).sort().at(-1) || null;
+  return result;
+}
+
+function withOfficialOutcomes(row, fiscalYear = null) {
+  const periods = judgeOutcomeByName.get(judgeNameKey(row?.judge_name)) || [];
+  const selected = fiscalYear == null ? periods : periods.filter((period) => Number(period.fiscal_year) === Number(fiscalYear));
+  return selected.length ? { ...row, ...(fiscalYear == null ? sumOutcomeRows(selected) : selected[0]) } : row;
+}
 
 function backgroundSummary(judgeName) {
   const background = backgroundByName.get(judgeNameKey(judgeName));
@@ -281,7 +310,7 @@ exports.handler = async (event) => {
           order: 'judge_name.asc,id.asc'
         }
       });
-      const results = (rows || []).filter((row) => row.judge_name).map(derived);
+      const results = (rows || []).filter((row) => row.judge_name).map((row) => derived(withOfficialOutcomes(row)));
       return out(200, { count: results.length, results, ...(await provenance()) });
     }
 
@@ -295,7 +324,7 @@ exports.handler = async (event) => {
           limit: String(limit)
         }
       });
-      return out(200, { count: (rows || []).length, results: (rows || []).map(derived), ...(await provenance()) });
+      return out(200, { count: (rows || []).length, results: (rows || []).map((row) => derived(withOfficialOutcomes(row))), ...(await provenance()) });
     }
 
     if (mode === 'knowledge') {
@@ -412,8 +441,15 @@ exports.handler = async (event) => {
         query: courtQuery
       });
       if (!(rows || []).length) return out(404, { error: 'not_found' });
-      const judges = (rows || []).map(derived);
-      return out(200, { court: { court_name: rows[0].court_name, court_city: rows[0].court_city, court_state: rows[0].court_state, ...aggregate(rows) }, judges, ...(await provenance()) });
+      const requestedYear = Number.parseInt(String(p.fy || ''), 10);
+      const fiscalYear = (statePeriods.years || []).map(Number).includes(requestedYear) ? requestedYear : Number(statePeriods.latest_fiscal_year);
+      const staticRows = (statePeriods.court_judges || []).filter((item) => item.court_name === court && (!state || item.state === state) && Number(item.fiscal_year) === fiscalYear);
+      const dbByName = new Map((rows || []).map((row) => [judgeNameKey(row.judge_name), row]));
+      const judges = staticRows.length
+        ? staticRows.map((item) => derived({ ...(dbByName.get(item.name_key) || {}), ...item }))
+        : (rows || []).map((row) => derived(withOfficialOutcomes(row, fiscalYear)));
+      const courtPeriod = (statePeriods.courts || []).find((item) => item.court_name === court && (!state || item.state === state))?.yearly?.find((item) => Number(item.fiscal_year) === fiscalYear);
+      return out(200, { fiscal_year: fiscalYear, court: { court_name: rows[0].court_name, court_city: rows[0].court_city, court_state: rows[0].court_state, ...derived(courtPeriod || aggregate(judges)) }, judges, ...(await provenance()) });
     }
 
     if (mode === 'states') {
@@ -439,6 +475,41 @@ exports.handler = async (event) => {
       });
     }
 
+    if (mode === 'state-trend') {
+      const state = String(p.state || 'NY').trim().toUpperCase();
+      const court = String(p.court || '').trim().toUpperCase();
+      const interval = String(p.interval || 'month').toLowerCase() === 'year' ? 'year' : 'month';
+      const stateYear = (statePeriods.states || []).find((item) => item.state === state);
+      const stateMonth = stateMonthlyTrends.find((item) => item.state === state);
+      const courtYear = court ? (statePeriods.courts || []).find((item) => item.court_code === court) : null;
+      const courtMonth = court ? courtMonthlyTrends.find((item) => item.court_code === court) : null;
+      if (court && !courtYear && !courtMonth) return out(404, { error: 'court_not_found' });
+      if (!court && !stateYear && !stateMonth) return out(404, { error: 'state_not_found' });
+      const yearly = court ? courtYear?.yearly : stateYear?.yearly;
+      const monthly = court ? courtMonth?.monthly : stateMonth?.monthly;
+      const periods = interval === 'year'
+        ? (yearly || []).slice().sort((a, b) => Number(a.fiscal_year) - Number(b.fiscal_year)).map((row) => derived({ ...row, period: `FY ${row.fiscal_year}` }))
+        : (monthly || []).slice(-24).map((row) => derived(row));
+      return out(200, {
+        state: court ? courtYear?.state || courtMonth?.state : state,
+        court_code: court || null,
+        court_name: court ? courtYear?.court_name || courtMonth?.court_name : null,
+        interval,
+        periods,
+        source_snapshot_date: trendIndex.source_snapshot_date || statePeriods.source_snapshot_date,
+        scope_start: trendIndex.scope_start || statePeriods.scope_start,
+        scope_end: trendIndex.scope_end || statePeriods.scope_end,
+        methodology: statePeriods.methodology,
+        ...(await provenance())
+      });
+    }
+
+    if (mode === 'trend-locations') {
+      const locations = (statePeriods.courts || []).map((item) => ({ state: item.state, court_code: item.court_code, court_name: item.court_name }))
+        .sort((a, b) => a.court_name.localeCompare(b.court_name));
+      return out(200, { locations, source_snapshot_date: statePeriods.source_snapshot_date });
+    }
+
     if (mode === 'detail') {
       const id = String(p.id || '').trim();
       if (!id) return out(400, { error: 'missing_id' });
@@ -450,8 +521,8 @@ exports.handler = async (event) => {
         rest('immigration_judge_asylum_nationality', { query: { select: 'nationality,nationality_code,total_asylum_decisions,grants,denials,other_decisions,approval_rate,data_start_date,data_end_date', judge_id: `eq.${id}`, order: 'total_asylum_decisions.desc', limit: '250' } })
       ]);
       return out(200, {
-        judge: derived(judge),
-        yearly: (yearly || []).map(derived),
+        judge: derived(withOfficialOutcomes(judge)),
+        yearly: (judgeOutcomeByName.get(judgeNameKey(judge.judge_name)) || yearly || []).map(derived),
         nationality: (nationality || []).map(derived),
         nationality_yearly: nationalityYearByName.get(judgeNameKey(judge.judge_name)) || [],
         nationality_yearly_source: {
@@ -476,7 +547,7 @@ exports.handler = async (event) => {
         limit: '50'
       }
     });
-    return out(200, { query: q, count: (rows || []).length, results: (rows || []).map(derived), ...(await provenance()) });
+    return out(200, { query: q, count: (rows || []).length, results: (rows || []).map((row) => derived(withOfficialOutcomes(row))), ...(await provenance()) });
   } catch (e) {
     console.error('immigration judges api', e);
     return out(500, { error: 'database_unavailable' });

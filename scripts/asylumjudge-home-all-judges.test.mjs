@@ -48,6 +48,20 @@ assert.equal(body.results.length, 1150);
 assert.deepEqual(offsets, [0, 1000], 'all-judge endpoint must cross the Supabase 1,000-row response cap');
 assert.equal(body.results[0].adjudicated_approval_rate, 40 / 90 * 100);
 
+const trendResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'state-trend', state: 'NY', interval: 'month' } });
+const trendBody = JSON.parse(trendResponse.body);
+assert.equal(trendResponse.statusCode, 200);
+assert.equal(trendBody.state, 'NY');
+assert.equal(trendBody.interval, 'month');
+assert.equal(trendBody.periods.length, 24, 'homepage trend should return the latest 24 monthly points');
+for (const point of trendBody.periods) assert.equal(Number(point.total_asylum_decisions), Number(point.grants) + Number(point.denials) + Number(point.other_decisions));
+const cityTrendResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'state-trend', court: 'NYC', interval: 'year' } });
+const cityTrendBody = JSON.parse(cityTrendResponse.body);
+assert.equal(cityTrendResponse.statusCode, 200);
+assert.equal(cityTrendBody.court_code, 'NYC');
+assert.match(cityTrendBody.court_name, /New York/);
+assert.ok(cityTrendBody.periods.length >= 3, 'every city/court trend must expose fiscal-year data');
+
 const standalone = readFileSync('asylumjudge/index.html', 'utf8');
 const trrb = readFileSync('asylumjudge/trrb.html', 'utf8');
 const client = readFileSync('asylumjudge/site.js', 'utf8');
@@ -57,6 +71,13 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /id="all-judges"/, 'both homepage variants must expose the full judge directory');
   assert.match(html, /id="judge-directory-list"/);
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');
+  assert.match(html, /data-state-interval="month"/, 'homepage must offer a monthly trend');
+  assert.match(html, /data-state-interval="year"/, 'homepage must offer a fiscal-year trend');
+  assert.match(html, /id="state-trend-detail"/, 'homepage must expose touch-friendly point details');
+  assert.match(html, /id="trend-state-select"/, 'homepage must let users choose a state');
+  assert.match(html, /id="trend-court-select"/, 'homepage must let users choose any city or immigration court');
+  assert.match(html, /拒绝率/, 'trend legend must expose the red denial series');
+  assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
 }
 assert.match(client, /mode=all/, 'homepage must request the complete judge dataset');
 assert.match(client, /filterJudges\(query\)/, 'homepage search must filter the complete in-memory directory');
@@ -64,6 +85,14 @@ assert.match(client, /addEventListener\('input'/, 'judge search must update dire
 assert.match(client, /verdict-pass/);
 assert.match(client, /verdict-deny/);
 assert.match(client, /verdict-other/);
+assert.match(client, /mode=state-trend/, 'homepage must request the selected state time series');
+assert.match(client, /pointerdown/, 'trend points must respond to touch without navigation');
+assert.match(client, /setPointerCapture/, 'touch dragging must continue while a finger moves across the chart');
+assert.match(client, /market-crosshair/, 'trend chart must expose a moving stock-style crosshair');
+assert.match(client, /market-floating-tooltip/, 'trend chart must show live values inside the chart');
+assert.match(client, /linePath\('denial'\)/, 'trend chart must draw the denial line');
+assert.match(client, /linePath\('otherShare'\)/, 'trend chart must draw the other-outcome line');
+assert.doesNotMatch(client, /state-market-link/, 'trend chart must not be wrapped in a navigation link');
 assert.match(styles, /\.directory-metric\.verdict-pass b[^}]*var\(--pass\)/);
 assert.match(styles, /\.directory-metric\.verdict-deny b[^}]*var\(--deny\)/);
 assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);

@@ -2,9 +2,12 @@ const $ = (selector) => document.querySelector(selector);
 const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
-const stateNames = { CA: '加州', NY: '纽约州', TX: '德州', FL: '佛州', NJ: '新泽西州', IL: '伊利诺伊州', WA: '华盛顿州', MA: '马萨诸塞州', PA: '宾州', GA: '乔治亚州', AZ: '亚利桑那州', VA: '弗吉尼亚州' };
+const stateNames = { AZ: '亚利桑那州', CA: '加州', CO: '科罗拉多州', CT: '康涅狄格州', FL: '佛州', GA: '乔治亚州', GU: '关岛', HI: '夏威夷州', IL: '伊利诺伊州', IN: '印第安纳州', LA: '路易斯安那州', MA: '马萨诸塞州', MD: '马里兰州', MI: '密歇根州', MN: '明尼苏达州', MO: '密苏里州', MP: '北马里亚纳群岛', NC: '北卡罗来纳州', NE: '内布拉斯加州', NJ: '新泽西州', NM: '新墨西哥州', NV: '内华达州', NY: '纽约州', OH: '俄亥俄州', OR: '俄勒冈州', PA: '宾州', PR: '波多黎各', TN: '田纳西州', TX: '德州', UT: '犹他州', VA: '弗吉尼亚州', WA: '华盛顿州' };
 let allJudges = [];
 let searchTimer = null;
+let selectedTrendState = 'NY';
+let selectedTrendCourt = '';
+let selectedTrendInterval = 'month';
 
 const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylumjudge(?:\/|$)/i.test(location.pathname);
 const appPath = (page = '') => trrbColumn
@@ -59,60 +62,159 @@ function renderStates(rows, data = {}) {
   $('#decision-count').textContent = fmt(national.total_asylum_decisions);
   const label = periodLabel(data);
   $('#snapshot-period-label').textContent = label;
-  $('#state-market-period-label').textContent = label;
   document.querySelectorAll('[data-state-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.stateFy) === Number(data.fiscal_year)));
-  renderStateMarket(selected, nationalRate);
 }
 
-function renderStateMarket(rows) {
+function trendPointDetail(point, label) {
+  const detail = $('#state-trend-detail');
+  if (!detail || !point) return;
+  detail.innerHTML = `<strong>${esc(label)} · ${esc(point.period || '')}</strong><span>结案总数 <b>${fmt(point.total_asylum_decisions)}</b></span><span class="pass">批准 <b>${fmt(point.grants)}</b></span><span class="deny">拒绝 <b>${fmt(point.denials)}</b></span><span class="other">其他 <b>${fmt(point.other_decisions)}</b></span><span>裁决批准率 <b>${pct(point.adjudicated_approval_rate)}</b></span>`;
+}
+
+function renderStateMarket(periods, label, interval) {
   const chart = $('#state-market-chart');
   if (!chart) return;
-  const points = rows
-    .slice(0, 6)
-    .map((row) => {
-      const grants = Number(row.grants || 0);
-      const denials = Number(row.denials || 0);
-      const total = grants + denials || 1;
-      return {
-        code: String(row.state || '').toUpperCase(),
-        approval: grants / total * 100,
-        denial: denials / total * 100
-      };
-    });
+  const points = (periods || []).map((row) => {
+    const grants = Number(row.grants || 0);
+    const denials = Number(row.denials || 0);
+    const merits = grants + denials;
+    const total = Number(row.total_asylum_decisions || 0);
+    return {
+      ...row,
+      period: String(row.period || (row.fiscal_year ? `FY ${row.fiscal_year}` : '')),
+      approval: merits ? grants / merits * 100 : 0,
+      denial: merits ? denials / merits * 100 : 0,
+      otherShare: total ? Number(row.other_decisions || 0) / total * 100 : 0,
+      total
+    };
+  });
   if (!points.length) {
-    chart.innerHTML = '<div class="state-market-loading">暂无可显示的州级数据</div>';
+    chart.innerHTML = '<div class="state-market-loading">暂无可显示的州趋势数据</div>';
     return;
   }
 
   const width = 620;
-  const height = 168;
-  const top = 22;
-  const bottom = 132;
-  const left = 36;
+  const height = 190;
+  const top = 28;
+  const bottom = 148;
+  const left = 44;
   const right = 18;
   const plotHeight = bottom - top;
+  const minRate = 0;
   const maxRate = 100;
+  const range = 100;
+  const maxVolume = Math.max(...points.map((point) => point.total), 1);
   const step = (width - left - right) / Math.max(points.length - 1, 1);
   const x = (index) => left + index * step;
-  const y = (rate) => bottom - Math.min(rate, maxRate) / maxRate * plotHeight;
-  const series = [
-    { key: 'approval', label: '批准', className: 'approval' },
-    { key: 'denial', label: '拒绝', className: 'denial' }
-  ];
-  const summary = points.map((point) => `${stateNames[point.code] || point.code}：批准${point.approval.toFixed(1)}%，拒绝${point.denial.toFixed(1)}%`).join('；');
-
-  const grid = [0, 25, 50, 75, 100].map((rate) => {
+  const y = (rate) => bottom - (Math.max(minRate, Math.min(rate, maxRate)) - minRate) / range * plotHeight;
+  const ticks = Array.from({ length: 5 }, (_, index) => minRate + range * index / 4);
+  const grid = ticks.map((rate) => {
     const gridY = y(rate);
-    return `<line class="market-grid" x1="${left}" y1="${gridY}" x2="${width - right}" y2="${gridY}"></line><text class="market-axis" x="0" y="${gridY + 4}">${rate}%</text>`;
+    return `<line class="market-grid" x1="${left}" y1="${gridY}" x2="${width - right}" y2="${gridY}"></line><text class="market-axis" x="0" y="${gridY + 4}">${rate.toFixed(rate % 1 ? 1 : 0)}%</text>`;
   }).join('');
-  const lines = series.map((item) => {
-    const path = points.map((point, index) => `${index ? 'L' : 'M'} ${x(index).toFixed(1)} ${y(point[item.key]).toFixed(1)}`).join(' ');
-    const dots = points.map((point, index) => `<circle class="market-dot ${item.className}" cx="${x(index)}" cy="${y(point[item.key])}" r="4"><title>${esc(stateNames[point.code] || point.code)} ${item.label} ${point[item.key].toFixed(1)}%</title></circle>`).join('');
-    return `<path class="market-series ${item.className}" d="${path}"></path>${dots}`;
+  const linePath = (key) => points.map((point, index) => `${index ? 'L' : 'M'} ${x(index).toFixed(1)} ${y(point[key]).toFixed(1)}`).join(' ');
+  const bars = points.map((point, index) => {
+    const barHeight = Math.max(3, point.total / maxVolume * plotHeight * .42);
+    const barWidth = Math.max(4, Math.min(interval === 'month' ? 12 : 28, step * .52));
+    return `<rect class="market-volume-bar" x="${(x(index) - barWidth / 2).toFixed(1)}" y="${(bottom - barHeight).toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barHeight.toFixed(1)}" rx="2"></rect>`;
   }).join('');
-  const labels = points.map((point, index) => `<text class="market-state" x="${x(index)}" y="154" text-anchor="middle">${esc(point.code)}</text>`).join('');
+  const hitWidth = Math.max(14, Math.min(34, step * .9));
+  const dots = points.map((point, index) => `<g class="market-hit" data-trend-index="${index}" role="button" tabindex="0" aria-label="${esc(point.period)}，批准率${pct(point.approval)}，拒绝率${pct(point.denial)}，其他占比${pct(point.otherShare)}，结案${fmt(point.total)}件"><rect class="market-hit-area" x="${(x(index) - hitWidth / 2).toFixed(1)}" y="${top}" width="${hitWidth.toFixed(1)}" height="${plotHeight}"></rect><circle class="market-dot approval" cx="${x(index)}" cy="${y(point.approval)}" r="3.5"></circle><circle class="market-dot denial" cx="${x(index)}" cy="${y(point.denial)}" r="3.5"></circle><circle class="market-dot other" cx="${x(index)}" cy="${y(point.otherShare)}" r="3.5"></circle></g>`).join('');
+  const labelEvery = interval === 'month' ? 4 : 1;
+  const labels = points.map((point, index) => index % labelEvery === 0 || index === points.length - 1 ? `<text class="market-state" x="${x(index)}" y="170" text-anchor="middle">${esc(interval === 'month' ? point.period.slice(2) : point.period)}</text>` : '').join('');
+  chart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(label)}批准、拒绝及其他裁决${interval === 'month' ? '按月' : '按财年'}走势；在图上左右滑动可追踪每期数据" preserveAspectRatio="xMidYMid meet">${grid}${bars}<path class="market-series approval" d="${linePath('approval')}"></path><path class="market-series denial" d="${linePath('denial')}"></path><path class="market-series other" d="${linePath('otherShare')}"></path>${dots}${labels}<line class="market-crosshair" x1="${x(points.length - 1)}" y1="${top}" x2="${x(points.length - 1)}" y2="${bottom}"></line><rect class="market-touch-overlay" x="${left}" y="${top}" width="${width - left - right}" height="${plotHeight}" rx="4"></rect></svg><div class="market-floating-tooltip" role="status"></div><p class="market-touch-hint">按住图表左右滑动，实时追踪每个月的数据</p>`;
+  const selectPoint = (index) => {
+    chart.querySelectorAll('.market-hit').forEach((node) => node.classList.toggle('active', Number(node.dataset.trendIndex) === index));
+    const crosshair = chart.querySelector('.market-crosshair');
+    if (crosshair) {
+      crosshair.setAttribute('x1', x(index));
+      crosshair.setAttribute('x2', x(index));
+    }
+    const tooltip = chart.querySelector('.market-floating-tooltip');
+    if (tooltip) {
+      const point = points[index];
+      tooltip.style.left = `${Math.max(13, Math.min(87, x(index) / width * 100))}%`;
+      tooltip.classList.add('visible');
+      tooltip.innerHTML = `<b>${esc(point.period)}</b><span class="pass">批 ${pct(point.approval)}</span><span class="deny">拒 ${pct(point.denial)}</span><span class="other">其他 ${pct(point.otherShare)}</span><span>${fmt(point.total)} 件</span>`;
+    }
+    trendPointDetail(points[index], label);
+  };
+  chart.querySelectorAll('.market-hit').forEach((node) => {
+    const activate = () => selectPoint(Number(node.dataset.trendIndex));
+    node.addEventListener('pointerenter', activate);
+    node.addEventListener('pointerdown', activate);
+    node.addEventListener('click', activate);
+    node.addEventListener('focus', activate);
+    node.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activate(); } });
+  });
+  const overlay = chart.querySelector('.market-touch-overlay');
+  let tracking = false;
+  const track = (event) => {
+    if (event.pointerType !== 'mouse' && !tracking) return;
+    const bounds = overlay.getBoundingClientRect();
+    const relative = Math.max(0, Math.min(1, (event.clientX - bounds.left) / Math.max(bounds.width, 1)));
+    const index = Math.max(0, Math.min(points.length - 1, Math.round(relative * (points.length - 1))));
+    selectPoint(index);
+  };
+  overlay.addEventListener('pointerdown', (event) => {
+    tracking = true;
+    overlay.setPointerCapture?.(event.pointerId);
+    event.preventDefault();
+    track(event);
+  });
+  overlay.addEventListener('pointermove', (event) => {
+    if (event.pointerType === 'mouse' || tracking) track(event);
+  });
+  const stopTracking = (event) => {
+    if (tracking) track(event);
+    tracking = false;
+    if (overlay.hasPointerCapture?.(event.pointerId)) overlay.releasePointerCapture(event.pointerId);
+  };
+  overlay.addEventListener('pointerup', stopTracking);
+  overlay.addEventListener('pointercancel', () => { tracking = false; });
+  selectPoint(points.length - 1);
+}
 
-  chart.innerHTML = `<a class="state-market-link" href="${appPath('states')}" aria-label="主要州裁决结果占比：${esc(summary)}"><svg viewBox="0 0 ${width} ${height}" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">${grid}${lines}${labels}</svg><span class="state-market-note">每条线表示该类结果占全部裁决的比例</span><span class="state-market-more">查看全部州 →</span></a>`;
+async function loadStateTrend(state = selectedTrendState, interval = selectedTrendInterval, court = selectedTrendCourt) {
+  selectedTrendState = state;
+  selectedTrendInterval = interval;
+  selectedTrendCourt = court;
+  const chart = $('#state-market-chart');
+  chart.innerHTML = '<div class="state-market-loading">正在读取州趋势数据…</div>';
+  document.querySelectorAll('[data-state-interval]').forEach((button) => button.classList.toggle('active', button.dataset.stateInterval === interval));
+  document.querySelectorAll('[data-trend-court]').forEach((button) => button.classList.toggle('active', button.dataset.trendCourt === court));
+  const courtSelect = $('#trend-court-select');
+  const stateSelect = $('#trend-state-select');
+  if (courtSelect) courtSelect.value = court;
+  if (stateSelect && !court) stateSelect.value = state;
+  const initialLabel = court ? (courtSelect?.selectedOptions?.[0]?.textContent || court) : (stateNames[state] || state);
+  $('#state-market-title').textContent = `${initialLabel}裁决批准率走势`;
+  $('#state-market-period-label').textContent = interval === 'month' ? '最近 24 个月' : 'FY 2020–FY 2026';
+  try {
+    const data = await json(`/.netlify/functions/immigration-judges?mode=state-trend&state=${encodeURIComponent(state)}&court=${encodeURIComponent(court)}&interval=${encodeURIComponent(interval)}`);
+    const label = data.court_name || stateNames[data.state] || data.state;
+    $('#state-market-title').textContent = `${label}裁决批准率走势`;
+    renderStateMarket(data.periods || [], label, interval);
+  } catch (error) {
+    chart.innerHTML = '<div class="state-market-loading">州趋势数据暂时无法读取</div>';
+  }
+}
+
+async function loadTrendLocations() {
+  const stateSelect = $('#trend-state-select');
+  const courtSelect = $('#trend-court-select');
+  try {
+    const data = await json('/.netlify/functions/immigration-judges?mode=trend-locations');
+    const locations = data.locations || [];
+    const states = [...new Set(locations.map((item) => item.state))].sort();
+    stateSelect.innerHTML = states.map((state) => `<option value="${esc(state)}">${esc(stateNames[state] || state)}（${esc(state)}）</option>`).join('');
+    courtSelect.innerHTML = '<option value="">请选择城市／移民法院</option>' + locations.map((item) => `<option value="${esc(item.court_code)}" data-state="${esc(item.state)}">${esc(item.court_name)} · ${esc(stateNames[item.state] || item.state)}</option>`).join('');
+    stateSelect.value = selectedTrendState;
+    courtSelect.value = selectedTrendCourt;
+  } catch (error) {
+    stateSelect.innerHTML = '<option value="NY">纽约州（NY）</option>';
+    courtSelect.innerHTML = '<option value="">城市列表暂时无法读取</option>';
+  }
 }
 
 async function loadOverview(fiscalYear = 2026) {
@@ -261,10 +363,20 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
   if (allJudges.length) applyJudgeFilter(button.dataset.q, { scroll: true });
 }));
 document.querySelectorAll('[data-state-fy]').forEach((button) => button.addEventListener('click', () => loadOverview(Number(button.dataset.stateFy))));
+const trendCities = [{ code: 'NYC', state: 'NY', label: '纽约市' }, { code: 'NLA', state: 'CA', label: '洛杉矶' }, { code: 'CHI', state: 'IL', label: '芝加哥' }, { code: 'SFR', state: 'CA', label: '旧金山' }, { code: 'BOS', state: 'MA', label: '波士顿' }];
+$('#state-trend-states').innerHTML = '<span>常用城市</span>' + trendCities.map((item) => `<button type="button" data-trend-court="${item.code}" data-trend-state="${item.state}">${item.label}</button>`).join('');
+document.querySelectorAll('[data-trend-court]').forEach((button) => button.addEventListener('click', () => loadStateTrend(button.dataset.trendState, selectedTrendInterval, button.dataset.trendCourt)));
+document.querySelectorAll('[data-state-interval]').forEach((button) => button.addEventListener('click', () => loadStateTrend(selectedTrendState, button.dataset.stateInterval, selectedTrendCourt)));
+$('#trend-state-select').addEventListener('change', (event) => loadStateTrend(event.target.value, selectedTrendInterval, ''));
+$('#trend-court-select').addEventListener('change', (event) => {
+  const option = event.target.selectedOptions[0];
+  if (event.target.value) loadStateTrend(option.dataset.state || selectedTrendState, selectedTrendInterval, event.target.value);
+});
 
 useCleanDomainRoutes();
 const initial = new URLSearchParams(location.search).get('q') || '';
 if (initial) $('#judge-q').value = initial;
 loadOverview();
+loadTrendLocations().then(() => loadStateTrend());
 loadDailyKnowledge();
 loadAllJudges();

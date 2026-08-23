@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://trrb.net/asylumjudge">
   <meta name="theme-color" content="#14804a">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=10">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=11">
 </head>
 <body>
   <header class="site-header">
@@ -37,12 +37,15 @@
         <div class="hero-copy">
           <figure class="state-market" aria-labelledby="state-market-title">
             <figcaption class="state-market-head">
-              <div><span>STATE MARKET</span><b id="state-market-title">主要州裁决结果占比</b><small id="state-market-period-label">FY 2026（读取中）</small></div>
-              <div><div class="state-fy-tabs" aria-label="选择财政年度"><button class="active" type="button" data-state-fy="2026">2026</button><button type="button" data-state-fy="2025">2025</button><button type="button" data-state-fy="2024">2024</button></div><div class="state-market-legend"><i class="approval"></i>批准 <i class="denial"></i>拒绝</div></div>
+              <div><span>STATE TREND</span><b id="state-market-title">纽约州裁决批准率走势</b><small id="state-market-period-label">最近 24 个月（读取中）</small></div>
+              <div><div class="trend-interval-tabs" aria-label="选择趋势周期"><button class="active" type="button" data-state-interval="month">按月</button><button type="button" data-state-interval="year">按财年</button></div><div class="state-market-legend"><i class="approval"></i>批准率 <i class="denial"></i>拒绝率 <i class="other"></i>其他占比 <i class="volume"></i>结案量</div></div>
             </figcaption>
             <div id="state-market-chart" class="state-market-chart" aria-live="polite">
-              <div class="state-market-loading">正在读取各州数据…</div>
+              <div class="state-market-loading">正在读取州趋势数据…</div>
             </div>
+            <div class="trend-scope-controls"><label>按州查看<select id="trend-state-select" aria-label="选择州"></select></label><label>按城市／法院查看<select id="trend-court-select" aria-label="选择城市或移民法院"></select></label></div>
+            <div id="state-trend-states" class="state-trend-states" aria-label="华人聚集城市快捷入口"></div>
+            <div id="state-trend-detail" class="state-trend-detail" aria-live="polite">点按或移动到图中数据点，查看该期案件数量。</div>
           </figure>
           <form id="judge-search" class="search-box">
             <label class="sr-only" for="judge-q">法官、法院或城市</label>
@@ -61,7 +64,7 @@
         <aside class="snapshot" aria-labelledby="snapshot-title">
           <div class="snapshot-head">
             <div><span>全美数据库概览</span><h2 id="snapshot-title">庇护裁决数据</h2><small id="snapshot-period-label">FY 2026（读取中）</small></div>
-            <span id="freshness-badge" class="live-badge">读取中</span>
+            <div class="snapshot-controls"><div class="state-fy-tabs" aria-label="选择财政年度"><button class="active" type="button" data-state-fy="2026">2026</button><button type="button" data-state-fy="2025">2025</button><button type="button" data-state-fy="2024">2024</button></div><span id="freshness-badge" class="live-badge">读取中</span></div>
           </div>
           <div class="national-rate">
             <div>
@@ -78,7 +81,7 @@
           <div class="state-list-head"><b>主要州数据</b><span>裁决批准率</span></div>
           <div id="state-list" class="state-list"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
           <a class="state-more" href="/asylumjudge/states">查看全部州数据 <span>→</span></a>
-          <p class="snapshot-source">按裁决当时所在移民法院归州；本序列只统计庇护申请的批准与拒绝，不把撤回、未裁决等程序性结果伪装为“其他”。</p>
+          <p class="snapshot-source">按裁决当时所在移民法院归州；蓝色“其他”包括可识别的暂缓/CAT保护、取消递解或调整身份、自愿离境、撤回/终止/驳回及行政结案。没有可核验最终结果的待裁案件不计入。</p>
         </aside>
       </div>
     </section>
@@ -128,7 +131,7 @@
         </div>
         <div class="lookup-grid">
           <a href="/asylumjudge/courts"><i aria-hidden="true">⚖</i><b>法院批准率</b><p>查看各移民法院的法官人数、裁决量和历史批准率。</p><span>查看法院 →</span></a>
-          <a href="/asylumjudge/nationality"><i aria-hidden="true">◎</i><b>国际批准率</b><p>搜索全部 209 个国籍，并查看月度、季度与年度真实趋势。</p><span>查看全球国籍数据 →</span></a>
+          <a href="/asylumjudge/nationality"><i aria-hidden="true">◎</i><b>国际批准率</b><p>搜索全部 227 个已记录国籍，并查看月度、季度与年度真实趋势。</p><span>查看全球国籍数据 →</span></a>
           <a href="#judge-search"><i aria-hidden="true">↗</i><b>年度趋势</b><p>先查询法官，再查看每年裁决量和批准率变化。</p><span>查询法官 →</span></a>
         </div>
       </div>
@@ -146,6 +149,6 @@
   <footer>
     <div class="shell footer-inner"><div><b>唐人日报 · 移民法官通过率</b><span>TRRB.net/asylumjudge</span></div><p>与 AsylumJudge.com 共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/site.js?v=12" defer></script>
+  <script src="/asylumjudge/site.js?v=15" defer></script>
 </body>
 </html>

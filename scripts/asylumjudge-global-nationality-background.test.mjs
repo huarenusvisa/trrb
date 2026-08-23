@@ -16,11 +16,11 @@ const webexData = JSON.parse(readFileSync('data/eoir-webex-links.json', 'utf8'))
 const cuba = nationalityData.countries.find((row) => row.nationality === 'Cuba');
 const korea = nationalityData.countries.find((row) => row.nationality === 'South Korea');
 const china = nationalityData.countries.find((row) => row.nationality === 'China');
-assert.equal(nationalityData.countries.length, 209, 'the generated catalog must expose all 209 observed nationalities');
+assert.equal(nationalityData.countries.length, 227, 'the generated catalog must expose every observed nationality with a classified final outcome');
 for (const country of [cuba, korea, china]) assert.ok(country, 'China, Cuba, and South Korea must all be searchable');
 for (const year of ['2024', '2025', '2026']) assert.ok(cuba.yearly.some((row) => row.label === year), `Cuba must include real ${year} data`);
 assert.ok(cuba.monthly.length > 2 && cuba.quarterly.length > 2 && cuba.yearly.length > 2, 'country trends must support month, quarter, and year views');
-assert.equal(cuba.yearly.find((row) => row.label === '2025').approval_rate, 21.8388, 'trend data must be generated from the EOIR snapshot, not a placeholder');
+assert.equal(cuba.yearly.find((row) => row.label === '2025').approval_rate, 22.6253, 'trend data must be generated from the EOIR snapshot, not a placeholder');
 assert.equal(backgroundData.profiles.length, 82, 'all 77 judges and 5 temporary judges in the official release must be parsed');
 for (const profile of backgroundData.profiles) {
   assert.equal((profile.biography.match(/was appointed/gi) || []).length, 1, `${profile.judge_name} must contain exactly one judge biography`);
@@ -58,7 +58,7 @@ const { handler } = require(apiPath);
 const directoryResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'nationalities' } });
 const directory = JSON.parse(directoryResponse.body);
 assert.equal(directoryResponse.statusCode, 200);
-assert.equal(directory.total_countries, 209);
+assert.equal(directory.total_countries, 227);
 
 const countryResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'nationality-detail', country: '古巴' } });
 const countryDetail = JSON.parse(countryResponse.body);

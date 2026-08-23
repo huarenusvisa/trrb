@@ -55,16 +55,16 @@ def rate(grants, denials):
     return round(int(grants) * 100.0 / sample, 4) if sample else None
 
 
-def point(label, grants, denials):
-    grants, denials = int(grants), int(denials)
+def point(label, grants, denials, other=0):
+    grants, denials, other = int(grants), int(denials), int(other)
     sample = grants + denials
     calculated = rate(grants, denials)
     return {
         "label": label,
-        "total_asylum_decisions": sample,
+        "total_asylum_decisions": sample + other,
         "grants": grants,
         "denials": denials,
-        "other_decisions": 0,
+        "other_decisions": other,
         "calculated_approval_rate": calculated,
         "approval_rate": calculated if sample >= MIN_REPORTABLE else None,
         "rate_reliable": sample >= MIN_REPORTABLE,
@@ -77,25 +77,36 @@ def main():
 
     con = duckdb.connect()
     grants_sql = ",".join("'" + value.replace("'", "''") + "'" for value in sorted(GRANTS))
-    merits_sql = ",".join("'" + value.replace("'", "''") + "'" for value in sorted(MERITS))
     path_sql = str(PARQUET_PATH).replace("'", "''")
     rows = con.execute(f"""
-      select trim(nationality) nationality,
+      with source as (select trim(nationality) nationality,
              coalesce(nullif(trim(nationality_code),''), lower(trim(nationality))) nationality_code,
              strftime(cast(ij_completion_date_last as date), '%Y-%m') month_label,
-             sum(case when upper(trim(asylum_decision_last)) in ({grants_sql}) then 1 else 0 end)::bigint grants,
-             sum(case when upper(trim(asylum_decision_last))='DENY' then 1 else 0 end)::bigint denials
+             upper(trim(asylum_decision_last)) a, upper(trim(withholding_decision_last)) w,
+             upper(trim(cat_decision_last)) cat, upper(trim(adjustment_decision_last)) adj,
+             upper(trim(non_lpr_cancellation_decision_last)) nlpr, upper(trim(lpr_cancellation_decision_last)) lpr,
+             upper(trim(case_outcome)) co
       from read_parquet('{path_sql}')
       where nationality is not null and trim(nationality)<>''
         and ij_completion_date_last is not null
         and cast(ij_completion_date_last as date) between date '{SCOPE_START}' and date '{SCOPE_END}'
-        and upper(trim(asylum_decision_last)) in ({merits_sql})
-      group by nationality,nationality_code,month_label
+        and upper(trim(asylum_decision_last)) not in ('','NO APPLICATION')
+      ), classified as (select *, case
+        when a in ({grants_sql}) then 'grant'
+        when w in ({grants_sql}) or cat in ({grants_sql},'GRANT WCAT') or co in ('REMOVE-INA WITHHOLDING GRANTED','REMOVE-CAT WITHHOLDING GRANTED','REMOVE-CAT DEFERRAL GRANTED','GRANT-CAT WITHHOLDING','GRANT-CAT DEFERRAL') then 'other'
+        when nlpr in ({grants_sql}) or lpr in ({grants_sql}) or adj in ({grants_sql}) then 'other'
+        when co in ('VOLUNTARY DEPARTURE','TERMINATED','DISMISSED BY IJ','WITHDRAW','WITHDRAWN','ADMINISTRATIVE CLOSING - OTHER','ADMINISTRATIVE CLOSURE','PROSECUTORIAL DISCRETION - ADMIN CLOSE','IN COURT PROSECUTORIAL DISCRETION - ADMIN CLOSURE','RELIEF GRANTED') or a in ('WITHDRAWN','ABANDONMENT','ADMIN CLOSURE','OTHER') then 'other'
+        when a='DENY' then 'deny' else null end outcome from source)
+      select nationality,nationality_code,month_label,
+             sum((outcome='grant')::integer)::bigint grants,
+             sum((outcome='deny')::integer)::bigint denials,
+             sum((outcome='other')::integer)::bigint other
+      from classified where outcome is not null group by nationality,nationality_code,month_label
       order by nationality,month_label
     """).fetchall()
 
     countries = {}
-    for nationality, code, month_label, grants, denials in rows:
+    for nationality, code, month_label, grants, denials, other in rows:
         key = str(code or nationality).upper()
         item = countries.setdefault(key, {
             "nationality": nationality,
@@ -103,24 +114,27 @@ def main():
             "nationality_code": code,
             "monthly": [],
         })
-        item["monthly"].append(point(month_label, grants, denials))
+        item["monthly"].append(point(month_label, grants, denials, other))
 
     for item in countries.values():
-        quarterly = defaultdict(lambda: [0, 0])
-        yearly = defaultdict(lambda: [0, 0])
-        total_grants = total_denials = 0
+        quarterly = defaultdict(lambda: [0, 0, 0])
+        yearly = defaultdict(lambda: [0, 0, 0])
+        total_grants = total_denials = total_other = 0
         for month in item["monthly"]:
             year, month_number = month["label"].split("-")
             quarter = (int(month_number) - 1) // 3 + 1
             quarterly[f"{year} Q{quarter}"][0] += month["grants"]
             quarterly[f"{year} Q{quarter}"][1] += month["denials"]
+            quarterly[f"{year} Q{quarter}"][2] += month["other_decisions"]
             yearly[year][0] += month["grants"]
             yearly[year][1] += month["denials"]
+            yearly[year][2] += month["other_decisions"]
             total_grants += month["grants"]
             total_denials += month["denials"]
-        item["quarterly"] = [point(label, values[0], values[1]) for label, values in sorted(quarterly.items())]
-        item["yearly"] = [point(label, values[0], values[1]) for label, values in sorted(yearly.items())]
-        item.update(point("all", total_grants, total_denials))
+            total_other += month["other_decisions"]
+        item["quarterly"] = [point(label, values[0], values[1], values[2]) for label, values in sorted(quarterly.items())]
+        item["yearly"] = [point(label, values[0], values[1], values[2]) for label, values in sorted(yearly.items())]
+        item.update(point("all", total_grants, total_denials, total_other))
 
     sorted_countries = sorted(countries.values(), key=lambda item: item["total_asylum_decisions"], reverse=True)
     shard_size = max(1, math.ceil(len(sorted_countries) / SHARD_COUNT))
@@ -142,7 +156,7 @@ def main():
         "scope_start": SCOPE_START,
         "scope_end": SCOPE_END,
         "minimum_reportable_decisions": MIN_REPORTABLE,
-        "methodology": "grant_count / (grant_count + deny_count); procedural and other outcomes excluded",
+        "methodology": "three mutually exclusive outcomes; approval rate = grant_count / (grant_count + deny_count); other outcomes displayed but excluded from rate",
         "country_count": len(sorted_countries),
         "shards": shard_files,
     }

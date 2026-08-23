@@ -22,6 +22,9 @@ for (const year of ['2024', '2025', '2026']) assert.ok(cuba.yearly.some((row) =>
 assert.ok(cuba.monthly.length > 2 && cuba.quarterly.length > 2 && cuba.yearly.length > 2, 'country trends must support month, quarter, and year views');
 assert.equal(cuba.yearly.find((row) => row.label === '2025').approval_rate, 21.8388, 'trend data must be generated from the EOIR snapshot, not a placeholder');
 assert.equal(backgroundData.profiles.length, 82, 'all 77 judges and 5 temporary judges in the official release must be parsed');
+for (const profile of backgroundData.profiles) {
+  assert.equal((profile.biography.match(/was appointed/gi) || []).length, 1, `${profile.judge_name} must contain exactly one judge biography`);
+}
 assert.ok(webexData.profiles.length > 700, 'official EOIR hearing directory must be parsed into judge profiles');
 assert.ok(webexData.profiles.find((row) => row.name_key === 'reingold|jonathan')?.links[0]?.webex_url.includes('eoir.webex.com'), 'known official Webex links must be retained');
 

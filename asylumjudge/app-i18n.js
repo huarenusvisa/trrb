@@ -252,7 +252,8 @@
     const textNodes = [];
     while (walker.nextNode()) textNodes.push(walker.currentNode);
     textNodes.forEach(translateTextNode);
-    element.querySelectorAll?.('[placeholder],[aria-label],[title]').forEach((node) => {
+    const attributeNodes = [element, ...(element.querySelectorAll?.('[placeholder],[aria-label],[title]') || [])];
+    attributeNodes.forEach((node) => {
       for (const attr of ['placeholder', 'aria-label', 'title']) {
         const value = node.getAttribute(attr);
         if (!value) continue;

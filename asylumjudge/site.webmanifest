@@ -1,0 +1,14 @@
+{
+  "name": "AsylumJudge.com",
+  "short_name": "AsylumJudge",
+  "description": "U.S. immigration judge, court, state and nationality outcome data.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#14804a",
+  "icons": [
+    { "src": "/asylumjudge/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/asylumjudge/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,54 +1,101 @@
 const $ = (selector) => document.querySelector(selector);
-const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
-const pct = (value) => value == null ? '少于50件，不显示' : `${Number(value).toFixed(1)}%`;
+const i18n = window.AsylumI18n;
+const t = (key, vars) => i18n?.t(key, vars) || key;
+const fmt = (value) => i18n?.formatNumber(value) || Number(value || 0).toLocaleString();
+const pct = (value) => value == null ? t('fewer50') : `${Number(value).toFixed(1)}%`;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 let countries = [];
 let selected = null;
 let selectedDetail = null;
 let period = 'yearly';
+const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname) ? `https://trrb.net${path}` : path;
 
 const judgePath = (id) => `${window.judgePagePath ? window.judgePagePath('detail.html') : '/immigration-judge-approval-rate/detail.html'}?id=${encodeURIComponent(id)}`;
-const countryLabel = (row) => row?.nationality_zh ? `${row.nationality_zh} · ${row.nationality}` : (row?.nationality || '未标注国籍');
+const countryLabel = (row) => i18n?.countryLabel(row) || row?.nationality_zh || row?.nationality || '';
 
 async function getJson(url) {
-  const response = await fetch(url, { cache: 'no-store' });
+  const response = await fetch(apiUrl(url), { cache: 'no-store' });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
 
 function renderDirectory(rows = countries) {
-  $('#country-count').textContent = `共 ${fmt(countries.length)} 个国籍 · 当前显示 ${fmt(rows.length)} 个`;
-  $('#country-directory').innerHTML = rows.length ? rows.map((row) => `<button class="country-card${selected?.nationality_code === row.nationality_code ? ' active' : ''}" data-country="${esc(row.nationality)}"><strong>${esc(countryLabel(row))}</strong><small>${esc(row.nationality_code || '')} · ${fmt(row.total_asylum_decisions)} 件有效裁决${row.rate_reliable ? '' : ' · 少于 50 件时不显示通过率'}</small><b>${pct(row.approval_rate)}</b></button>`).join('') : '<div class="empty">没有找到该国籍，请尝试中文或英文名称。</div>';
+  $('#country-count').textContent = t('directoryCount', { total: fmt(countries.length), shown: fmt(rows.length) });
+  $('#country-directory').innerHTML = rows.length ? rows.map((row) => `<button class="country-card${selected?.nationality_code === row.nationality_code ? ' active' : ''}" data-country="${esc(row.nationality)}"><strong>${esc(countryLabel(row))}</strong><small>${esc(row.nationality_code || '')} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`).join('') : `<div class="empty">${t('noCountry')}</div>`;
   $('#country-directory').querySelectorAll('[data-country]').forEach((button) => button.addEventListener('click', () => selectCountry(button.dataset.country, true)));
+}
+
+function outcomeShare(row, field) {
+  const total = Number(row.grants || 0) + Number(row.denials || 0) + Number(row.other_decisions || 0);
+  return total ? Number(row[field] || 0) / total * 100 : 0;
+}
+
+function showComparisonTooltip(row) {
+  const tooltip = $('#comparison-tooltip');
+  const label = countryLabel(row);
+  const total = Number(row.grants || 0) + Number(row.denials || 0) + Number(row.other_decisions || 0);
+  const cells = [
+    ['approved', t('approved'), row.grants, outcomeShare(row, 'grants')],
+    ['denied', t('denied'), row.denials, outcomeShare(row, 'denials')],
+    ['other', t('other'), row.other_decisions, outcomeShare(row, 'other_decisions')],
+    ['', t('total'), total, 100]
+  ];
+  tooltip.hidden = false;
+  tooltip.setAttribute('aria-label', t('detailsFor', { country: label }));
+  tooltip.innerHTML = `<h3>${esc(t('tooltipTitle', { country: label }))}</h3><div class="tooltip-grid">${cells.map(([className, name, count, share]) => `<div class="${className}"><span>${esc(name)}</span><b>${fmt(count)}</b><small>${t('share')} ${Number(share).toFixed(1)}%</small></div>`).join('')}</div><button id="comparison-tooltip-open" class="tooltip-action" type="button">${t('viewTrend')}</button>`;
+  $('#comparison-tooltip-open').addEventListener('click', () => selectCountry(row.nationality, true, true));
 }
 
 function drawCountryComparison(rows) {
   const svg = $('#country-comparison-chart');
-  const shown = rows.filter((row) => row.approval_rate != null).slice(0, 14);
+  const shown = rows.filter((row) => Number(row.grants || 0) + Number(row.denials || 0) + Number(row.other_decisions || 0) > 0).slice(0, 14);
   if (shown.length < 2) { svg.innerHTML = ''; return; }
-  const width = 1100, height = 350, left = 55, right = 30, top = 35, bottom = 280;
+  const width = 1100, left = 55, right = 30, top = 35, bottom = 280;
   const x = (index) => left + index * (width - left - right) / Math.max(1, shown.length - 1);
   const y = (value) => bottom - Number(value) / 100 * (bottom - top);
-  const coords = shown.map((row, index) => [x(index), y(row.approval_rate)]);
-  const line = coords.map((point, index) => `${index ? 'L' : 'M'}${point[0].toFixed(1)},${point[1].toFixed(1)}`).join(' ');
-  const area = `${line} L${coords.at(-1)[0]},${bottom} L${coords[0][0]},${bottom} Z`;
+  const series = [
+    { key: 'grants', className: 'approved' },
+    { key: 'denials', className: 'denied' },
+    { key: 'other_decisions', className: 'other' }
+  ];
   const grid = [0, 25, 50, 75, 100].map((value) => `<line class="comparison-grid" x1="${left}" y1="${y(value)}" x2="${width - right}" y2="${y(value)}"></line><text class="comparison-axis" x="5" y="${y(value) + 4}">${value}%</text>`).join('');
-  const points = shown.map((row, index) => {
-    const label = row.nationality_zh || row.nationality;
-    return `<g class="country-point-wrap" data-country="${esc(row.nationality)}" tabindex="0" role="button" aria-label="查看${esc(label)}详细数据"><title>${esc(countryLabel(row))}：${pct(row.approval_rate)}，${fmt(row.total_asylum_decisions)} 件有效裁决</title><circle class="country-point" cx="${x(index)}" cy="${y(row.approval_rate)}" r="6"></circle><text class="country-point-rate" x="${x(index)}" y="${y(row.approval_rate) - 14}" text-anchor="middle">${pct(row.approval_rate)}</text><text class="country-point-label" x="${x(index)}" y="315" text-anchor="middle">${esc(label)}</text></g>`;
+  const lines = series.map((item) => {
+    const line = shown.map((row, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(outcomeShare(row, item.key)).toFixed(1)}`).join(' ');
+    return `<path class="outcome-line ${item.className}" d="${line}"></path>`;
   }).join('');
-  svg.innerHTML = `<defs><linearGradient id="country-wave-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14804a" stop-opacity=".22"></stop><stop offset="1" stop-color="#14804a" stop-opacity=".02"></stop></linearGradient></defs>${grid}<path class="country-wave-area" d="${area}"></path><path class="country-wave" d="${line}"></path>${points}`;
+  const groups = shown.map((row, index) => {
+    const label = i18n?.countryName(row) || row.nationality_zh || row.nationality;
+    const dots = series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(row, item.key))}" r="6"></circle>`).join('');
+    return `<g class="country-point-wrap" data-country="${esc(row.nationality)}" tabindex="0" role="button" aria-label="${esc(t('detailsFor', { country: label }))}"><rect class="country-hit" x="${x(index) - 34}" y="${top - 15}" width="68" height="${bottom - top + 64}"></rect><rect class="country-focus" x="${x(index) - 30}" y="${top - 10}" width="60" height="${bottom - top + 52}" rx="8"></rect>${dots}<text class="country-point-label" x="${x(index)}" y="315" text-anchor="middle">${esc(label)}</text></g>`;
+  }).join('');
+  svg.innerHTML = `${grid}${lines}${groups}`;
   svg.querySelectorAll('[data-country]').forEach((node) => {
-    const open = () => selectCountry(node.dataset.country, true, true);
-    node.addEventListener('click', open);
-    node.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') open(); });
+    const row = shown.find((item) => item.nationality === node.dataset.country);
+    const reveal = (event) => { if (event?.cancelable) event.preventDefault(); showComparisonTooltip(row); };
+    node.addEventListener('pointerup', reveal);
+    node.addEventListener('mouseenter', () => showComparisonTooltip(row));
+    node.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') reveal(event); });
   });
+  showComparisonTooltip(shown[0]);
 }
 
 function filterCountries(query) {
   const value = String(query || '').trim().toLowerCase();
   if (!value) return countries;
-  return countries.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code].filter(Boolean).some((item) => String(item).toLowerCase().includes(value)));
+  return countries.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code, i18n?.countryName(row)].filter(Boolean).some((item) => String(item).toLowerCase().includes(value)));
+}
+
+function showTrendTooltip(point) {
+  const tooltip = $('#trend-tooltip');
+  const total = Number(point.grants || 0) + Number(point.denials || 0) + Number(point.other_decisions || 0);
+  const cells = [
+    ['approved', t('approved'), point.grants, outcomeShare(point, 'grants')],
+    ['denied', t('denied'), point.denials, outcomeShare(point, 'denials')],
+    ['other', t('other'), point.other_decisions, outcomeShare(point, 'other_decisions')],
+    ['', t('total'), total, 100]
+  ];
+  tooltip.hidden = false;
+  tooltip.innerHTML = `<b>${esc(point.label)} · ${t('approvalRate')} ${pct(point.approval_rate)}</b><div class="tooltip-grid">${cells.map(([className, name, count, share]) => `<div class="${className}"><span>${esc(name)}</span><b>${fmt(count)}</b><small>${t('share')} ${Number(share).toFixed(1)}%</small></div>`).join('')}</div>`;
 }
 
 function drawTrend(points) {
@@ -56,57 +103,72 @@ function drawTrend(points) {
   const reliable = (points || []).filter((point) => point.approval_rate != null);
   if (reliable.length < 2) {
     svg.innerHTML = '';
-    $('#chart-note').textContent = '这个时间粒度没有至少两个达到 50 件样本的真实数据点，请切换到季度或年度。';
+    $('#trend-tooltip').hidden = true;
+    $('#chart-note').textContent = t('trendInsufficient');
     return;
   }
   const shown = reliable.length > 36 && period === 'monthly' ? reliable.slice(-36) : reliable;
-  const width = 860, height = 300, left = 48, right = 20, top = 24, bottom = 248;
-  const values = shown.map((point) => Number(point.approval_rate));
-  const min = Math.max(0, Math.floor((Math.min(...values) - 8) / 10) * 10);
-  const max = Math.min(100, Math.ceil((Math.max(...values) + 8) / 10) * 10);
+  const width = 860, left = 48, right = 20, top = 24, bottom = 248;
   const x = (index) => left + index * (width - left - right) / Math.max(1, shown.length - 1);
-  const y = (value) => bottom - (Number(value) - min) * (bottom - top) / Math.max(1, max - min);
-  const coords = shown.map((point, index) => [x(index), y(point.approval_rate)]);
-  const grid = [0, .25, .5, .75, 1].map((part) => {
-    const value = min + (max - min) * part;
+  const y = (value) => bottom - Number(value) / 100 * (bottom - top);
+  const grid = [0, 25, 50, 75, 100].map((value) => {
     const py = y(value);
     return `<line class="trend-grid" x1="${left}" y1="${py}" x2="${width - right}" y2="${py}"></line><text class="trend-axis" x="2" y="${py + 4}">${Math.round(value)}%</text>`;
   }).join('');
-  const line = coords.map((point, index) => `${index ? 'L' : 'M'}${point[0].toFixed(1)},${point[1].toFixed(1)}`).join(' ');
-  const area = `${line} L${coords.at(-1)[0]},${bottom} L${coords[0][0]},${bottom} Z`;
+  const series = [
+    { key: 'grants', className: 'approved' },
+    { key: 'denials', className: 'denied' },
+    { key: 'other_decisions', className: 'other' }
+  ];
+  const lines = series.map((item) => `<path class="trend-line ${item.className}" d="${shown.map((point, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(outcomeShare(point, item.key)).toFixed(1)}`).join(' ')}"></path>`).join('');
   const labelStep = Math.max(1, Math.ceil(shown.length / 6));
   const labels = shown.map((point, index) => index % labelStep === 0 || index === shown.length - 1 ? `<text class="trend-axis" x="${x(index)}" y="278" text-anchor="middle">${esc(point.label)}</text>` : '').join('');
-  const dots = shown.map((point, index) => `<circle class="trend-dot" cx="${x(index)}" cy="${y(point.approval_rate)}" r="4"><title>${esc(point.label)}：${pct(point.approval_rate)}，${fmt(point.total_asylum_decisions)} 件</title></circle>`).join('');
-  svg.innerHTML = `<defs><linearGradient id="trend-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14804a" stop-opacity=".28"></stop><stop offset="1" stop-color="#14804a" stop-opacity=".02"></stop></linearGradient></defs>${grid}<path class="trend-area" d="${area}"></path><path class="trend-line" d="${line}"></path>${dots}${labels}`;
-  $('#chart-note').textContent = `${shown[0].label} 至 ${shown.at(-1).label} · 显示 ${shown.length} 个达到最小样本标准的真实数据点`;
+  const dots = shown.map((point, index) => `<g class="trend-point" data-index="${index}" tabindex="0" role="button" aria-label="${esc(point.label)}">${series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(point, item.key))}" r="4"></circle>`).join('')}<rect class="trend-hit" x="${x(index) - 18}" y="${top}" width="36" height="${bottom - top}"></rect></g>`).join('');
+  svg.innerHTML = `${grid}${lines}${dots}${labels}`;
+  svg.querySelectorAll('.trend-point').forEach((node) => {
+    const point = shown[Number(node.dataset.index)];
+    const reveal = (event) => { if (event?.cancelable) event.preventDefault(); showTrendTooltip(point); };
+    node.addEventListener('pointerup', reveal);
+    node.addEventListener('mouseenter', () => showTrendTooltip(point));
+    node.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') reveal(event); });
+  });
+  showTrendTooltip(shown.at(-1));
+  $('#chart-note').textContent = t('trendRange', { start: shown[0].label, end: shown.at(-1).label, count: shown.length });
 }
 
 function renderPeriodSummary(points) {
   const latest = [...(points || [])].sort((a, b) => String(b.label).localeCompare(String(a.label))).slice(0, 3);
-  $('#period-summary').innerHTML = latest.map((point) => `<article class="period-card${point.approval_rate == null ? ' unreliable' : ''}"><b>${esc(point.label)}</b><strong>${pct(point.approval_rate)}</strong><small>${fmt(point.total_asylum_decisions)} 件有效裁决${point.approval_rate == null ? '，少于 50 件不显示通过率' : ''}</small></article>`).join('');
+  $('#period-summary').innerHTML = latest.map((point) => `<article class="period-card${point.approval_rate == null ? ' unreliable' : ''}"><b>${esc(point.label)}</b><strong>${pct(point.approval_rate)}</strong><small>${t('validDecisionCount', { count: fmt(point.total_asylum_decisions) })}<br><span class="verdict-pass">${t('approved')} ${fmt(point.grants)} (${outcomeShare(point, 'grants').toFixed(1)}%)</span> · <span class="verdict-deny">${t('denied')} ${fmt(point.denials)} (${outcomeShare(point, 'denials').toFixed(1)}%)</span> · <span class="verdict-other">${t('other')} ${fmt(point.other_decisions)} (${outcomeShare(point, 'other_decisions').toFixed(1)}%)</span></small></article>`).join('');
 }
 
 function renderJudges(rows) {
-  $('#judges').innerHTML = rows.length ? rows.slice(0, 30).map((row) => `<a class="rank" href="${judgePath(row.id)}"><span><b>${esc(row.judge_name)}</b><small>${esc(row.court_name || '')}</small></span><span>${fmt(row.adjudicated_decisions)} 件</span><span class="rate">${pct(row.adjudicated_approval_rate)}</span></a>`).join('') : '<div class="empty">暂无该国籍的法官细分记录。</div>';
+  $('#judges').innerHTML = rows.length ? rows.slice(0, 30).map((row) => `<a class="rank" href="${judgePath(row.id)}"><span><b>${esc(row.judge_name)}</b><small>${esc(row.court_name || '')}</small></span><span>${t('validDecisionCount', { count: fmt(row.adjudicated_decisions) })}</span><span class="rate">${pct(row.adjudicated_approval_rate)}</span></a>`).join('') : `<div class="empty">${t('noJudges')}</div>`;
+}
+
+function renderQuickCountries() {
+  document.querySelectorAll('.quick-countries button').forEach((button) => {
+    button.textContent = i18n?.countryName({ nationality: button.dataset.country, nationality_code: button.dataset.code }) || button.dataset.country;
+  });
 }
 
 function renderSelected(data) {
   selectedDetail = data;
   selected = data.country;
   const country = data.country;
-  $('#selected-country').textContent = countryLabel(country);
+  const label = countryLabel(country);
+  $('#selected-country').textContent = label;
   $('#selected-code').textContent = country.nationality_code || '';
   $('#current-rate').textContent = pct(country.approval_rate);
-  $('#sample-status').textContent = country.rate_reliable ? `${fmt(country.total_asylum_decisions)} 件有效裁决` : `仅 ${fmt(country.total_asylum_decisions)} 件有效裁决，少于 50 件，不显示通过率`;
+  $('#sample-status').textContent = country.rate_reliable ? t('statusReliable', { count: fmt(country.total_asylum_decisions) }) : t('statusUnreliable', { count: fmt(country.total_asylum_decisions) });
   const dated = data.periods?.monthly || [];
   const firstMonth = dated[0]?.label;
   const lastMonth = dated.at(-1)?.label;
-  $('#sample').textContent = `该国籍记录日期 ${firstMonth || data.scope_start || '—'} 至 ${lastMonth || data.scope_end || '—'}；公开页展示汇总数据，不公开可识别的个人案件。`;
+  $('#sample').textContent = t('sampleDate', { start: firstMonth || data.scope_start || '—', end: lastMonth || data.scope_end || '—' });
   $('#grant-count').textContent = fmt(country.grants);
   $('#deny-count').textContent = fmt(country.denials);
   $('#other-count').textContent = fmt(country.other_decisions);
-  $('#trend-title').textContent = `${countryLabel(country)}批准率走势`;
-  $('#judge-ranking-title').textContent = `${countryLabel(country)} · 法官数据`;
+  $('#trend-title').textContent = t('countryTrend', { country: label });
+  $('#judge-ranking-title').textContent = t('countryJudges', { country: label });
   renderDirectory(filterCountries($('#country-search').value));
   const points = data.periods?.[period] || [];
   drawTrend(points);
@@ -115,7 +177,7 @@ function renderSelected(data) {
 }
 
 async function selectCountry(country, updateUrl = false, scrollToDetail = false) {
-  $('#selected-country').textContent = '正在读取真实数据…';
+  $('#selected-country').textContent = t('loadingReal');
   try {
     const data = await getJson(`/.netlify/functions/immigration-judges?mode=nationality-detail&country=${encodeURIComponent(country)}`);
     renderSelected(data);
@@ -126,8 +188,8 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
     }
     if (scrollToDetail) $('#country-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch {
-    $('#selected-country').textContent = '该国籍数据暂时无法读取';
-    $('#chart-note').textContent = '请稍后重试；页面不会用估算值代替真实数据。';
+    $('#selected-country').textContent = t('countryUnavailable');
+    $('#chart-note').textContent = t('retry');
   }
 }
 
@@ -135,6 +197,7 @@ async function load() {
   try {
     const data = await getJson('/.netlify/functions/immigration-judges?mode=nationalities');
     countries = data.countries || [];
+    renderQuickCountries();
     renderDirectory();
     drawCountryComparison(countries);
     const requested = new URLSearchParams(location.search).get('country');
@@ -142,8 +205,8 @@ async function load() {
     $('#country-search').value = requested || '';
     await selectCountry(initial);
   } catch {
-    $('#country-directory').innerHTML = '<div class="empty">国籍数据库暂时无法读取，请稍后刷新。</div>';
-    $('#selected-country').textContent = '读取失败';
+    $('#country-directory').innerHTML = `<div class="empty">${t('databaseUnavailable')}</div>`;
+    $('#selected-country').textContent = t('readFailed');
   }
 }
 
@@ -155,7 +218,7 @@ $('#country-search-form').addEventListener('submit', (event) => {
 });
 $('#country-search').addEventListener('input', (event) => renderDirectory(filterCountries(event.target.value)));
 document.querySelectorAll('.quick-countries button').forEach((button) => button.addEventListener('click', () => {
-  $('#country-search').value = button.textContent;
+  $('#country-search').value = button.dataset.country;
   selectCountry(button.dataset.country, true);
 }));
 document.querySelectorAll('.tabs button').forEach((button) => button.addEventListener('click', () => {
@@ -166,4 +229,12 @@ document.querySelectorAll('.tabs button').forEach((button) => button.addEventLis
   drawTrend(points);
   renderPeriodSummary(points);
 }));
+window.addEventListener('asylumjudge:localechange', () => {
+  renderQuickCountries();
+  if (countries.length) {
+    renderDirectory(filterCountries($('#country-search').value));
+    drawCountryComparison(countries);
+  }
+  if (selectedDetail) renderSelected(selectedDetail);
+});
 load();

@@ -60,9 +60,6 @@ const required = [
   'https://trrb.net/jobs https://huarengongzuo.com/ 301!',
   'https://trrb.net/jobs/ https://huarengongzuo.com/ 301!',
   'https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!',
-  'https://trrb.net/niulai https://niulai.us/ 301!',
-  'https://trrb.net/niulai/ https://niulai.us/ 301!',
-  'https://trrb.net/niulai/* https://niulai.us/:splat 301!',
   '/index.html / 301!',
   '/important /important-news 301!',
   '/hot /hot-headlines 301!',
@@ -91,14 +88,14 @@ const required = [
   '/trump/ /trump 301!',
   '/topic/trump /trump 301!',
   '/topic/trump/ /trump 301!',
-  '/finance https://niulai.us/ 301!',
-  '/finance/ https://niulai.us/ 301!',
-  '/finance/:splat https://niulai.us/:splat 301!'
+  '/finance /niulai/ 301!',
+  '/finance/ /niulai/ 301!',
+  '/finance/:splat /niulai/:splat 301!'
 ];
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
-const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide']);
+const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
   return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);
@@ -143,9 +140,9 @@ for (const [route, target] of [
   ['/trump/', '/trump'],
   ['/topic/trump', '/trump'],
   ['/topic/trump/', '/trump'],
-  ['/finance', 'https://niulai.us/'],
-  ['/finance/', 'https://niulai.us/'],
-  ['/finance/:splat', 'https://niulai.us/:splat']
+  ['/finance', '/niulai/'],
+  ['/finance/', '/niulai/'],
+  ['/finance/:splat', '/niulai/:splat']
 ]) {
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);

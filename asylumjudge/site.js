@@ -105,12 +105,18 @@ function renderStateMarket(periods, label, interval) {
     return;
   }
 
-  const width = 620;
-  const height = 190;
-  const top = 28;
-  const bottom = 148;
-  const left = 44;
-  const right = 18;
+  // Use a real mobile coordinate system instead of shrinking the 620px desktop
+  // chart into a narrow viewport. This keeps labels and touch targets readable
+  // and removes the large letterboxed gap produced by preserveAspectRatio.
+  const compact = window.matchMedia('(max-width: 560px)').matches;
+  const width = compact
+    ? Math.max(300, Math.min(420, Math.round(chart.clientWidth || 340)))
+    : 620;
+  const height = compact ? 204 : 190;
+  const top = compact ? 44 : 28;
+  const bottom = compact ? 158 : 148;
+  const left = compact ? 36 : 44;
+  const right = compact ? 8 : 18;
   const plotHeight = bottom - top;
   const minRate = 0;
   const maxRate = 100;
@@ -132,8 +138,9 @@ function renderStateMarket(periods, label, interval) {
   }).join('');
   const hitWidth = Math.max(14, Math.min(34, step * .9));
   const dots = points.map((point, index) => `<g class="market-hit" data-trend-index="${index}" role="button" tabindex="0" aria-label="${esc(point.period)}，批准率${pct(point.approval)}，拒绝率${pct(point.denial)}，其他占比${pct(point.otherShare)}，结案${fmt(point.total)}件"><rect class="market-hit-area" x="${(x(index) - hitWidth / 2).toFixed(1)}" y="${top}" width="${hitWidth.toFixed(1)}" height="${plotHeight}"></rect><circle class="market-dot approval" cx="${x(index)}" cy="${y(point.approval)}" r="3.5"></circle><circle class="market-dot denial" cx="${x(index)}" cy="${y(point.denial)}" r="3.5"></circle><circle class="market-dot other" cx="${x(index)}" cy="${y(point.otherShare)}" r="3.5"></circle></g>`).join('');
-  const labelEvery = interval === 'month' ? 4 : 1;
-  const labels = points.map((point, index) => index % labelEvery === 0 || index === points.length - 1 ? `<text class="market-state" x="${x(index)}" y="170" text-anchor="middle">${esc(interval === 'month' ? point.period.slice(2) : point.period)}</text>` : '').join('');
+  const labelEvery = interval === 'month' ? (compact ? 6 : 4) : 1;
+  const labelY = compact ? 184 : 170;
+  const labels = points.map((point, index) => index % labelEvery === 0 || index === points.length - 1 ? `<text class="market-state" x="${x(index)}" y="${labelY}" text-anchor="middle">${esc(interval === 'month' ? point.period.slice(2) : point.period)}</text>` : '').join('');
   chart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(label)}批准、拒绝及其他裁决${interval === 'month' ? '按月' : '按财年'}走势；在图上左右滑动可追踪每期数据" preserveAspectRatio="xMidYMid meet">${grid}${bars}<path class="market-series approval" d="${linePath('approval')}"></path><path class="market-series denial" d="${linePath('denial')}"></path><path class="market-series other" d="${linePath('otherShare')}"></path>${dots}${labels}<line class="market-crosshair" x1="${x(points.length - 1)}" y1="${top}" x2="${x(points.length - 1)}" y2="${bottom}"></line><rect class="market-touch-overlay" x="${left}" y="${top}" width="${width - left - right}" height="${plotHeight}" rx="4"></rect></svg><div class="market-floating-tooltip" role="status"></div><p class="market-touch-hint">按住图表左右滑动，实时追踪每个月的数据</p>`;
   const selectPoint = (index) => {
     chart.querySelectorAll('.market-hit').forEach((node) => node.classList.toggle('active', Number(node.dataset.trendIndex) === index));
@@ -145,7 +152,7 @@ function renderStateMarket(periods, label, interval) {
     const tooltip = chart.querySelector('.market-floating-tooltip');
     if (tooltip) {
       const point = points[index];
-      tooltip.style.left = `${Math.max(13, Math.min(87, x(index) / width * 100))}%`;
+      tooltip.style.left = compact ? '0' : `${Math.max(13, Math.min(87, x(index) / width * 100))}%`;
       tooltip.classList.add('visible');
       tooltip.innerHTML = `<b>${esc(point.period)}</b><span class="pass">批 ${pct(point.approval)}</span><span class="deny">拒 ${pct(point.denial)}</span><span class="other">其他 ${pct(point.otherShare)}</span><span>${fmt(point.total)} 件</span>`;
     }

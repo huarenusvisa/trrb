@@ -138,7 +138,7 @@ forbidMatch(niulaiAdapter, /TWELVE_DATA_API_KEY/, "Twelve Data API key name leak
 
 const niulaiBuilder = await text("scripts/build-niulai-site.mjs");
 requireMatch(niulaiBuilder, /https:\/\/trrb\.net\/api\/finance\/:splat/, "niulai independent build is not proxying the single TRRB finance source");
-requireMatch(redirects, /https:\/\/trrb\.net\/niulai\/\s+https:\/\/niulai\.us\/\s+301!/, "TRRB niulai route is not canonicalized to the independent site");
+forbidMatch(redirects, /https:\/\/trrb\.net\/niulai\/?\s+https:\/\/niulai\.us\//, "temporary Niulai fallback would create a redirect loop before independent deployment");
 requireMatch(redirects, /https:\/\/huarengongzuo\.com\/favicon\.svg\s+\/huarengongzuo\/logo-mark\.svg\s+200!/, "huarengongzuo favicon host rewrite is missing");
 
 await Promise.all([

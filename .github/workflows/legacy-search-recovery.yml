@@ -1,6 +1,18 @@
 name: 历史文章搜索资产恢复
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/restore-legacy-archive.mjs'
+      - 'scripts/submit-indexnow.mjs'
+      - '.github/workflows/legacy-search-recovery.yml'
+  workflow_call:
+    inputs:
+      limit:
+        required: false
+        type: number
+        default: 1000
   workflow_dispatch:
     inputs:
       confirm_apply:
@@ -10,7 +22,7 @@ on:
       limit:
         description: 每批最多恢复多少篇
         required: false
-        default: '200'
+        default: '1000'
 
 permissions:
   contents: read
@@ -21,13 +33,14 @@ concurrency:
 
 jobs:
   restore:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.confirm_apply == 'APPLY' }}
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.confirm_apply == 'APPLY' }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       LEGACY_PRIORITY_IDS: wp-117123
+      LEGACY_RESTORE_CONCURRENCY: '4'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,18 +57,32 @@ jobs:
           test -n "${SUPABASE_SERVICE_ROLE_KEY:-}" || { echo 'SUPABASE_SERVICE_ROLE_KEY missing'; exit 2; }
 
       - name: 批量恢复旧站可验证正文
+        id: restore
         shell: bash
         env:
-          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_LIMIT: ${{ inputs.limit || github.event.inputs.limit || '1000' }}
         run: |
           set -euo pipefail
-          limit="${INPUT_LIMIT:-200}"
+          limit="${INPUT_LIMIT:-1000}"
           case "$limit" in
-            ''|*[!0-9]*) limit=200 ;;
+            ''|*[!0-9]*) limit=1000 ;;
           esac
           if [ "$limit" -lt 1 ]; then limit=1; fi
-          if [ "$limit" -gt 500 ]; then limit=500; fi
-          node scripts/restore-legacy-archive.mjs --apply --limit="$limit"
+          if [ "$limit" -gt 2000 ]; then limit=2000; fi
+          node scripts/restore-legacy-archive.mjs --apply --limit="$limit" --concurrency="${LEGACY_RESTORE_CONCURRENCY}"
+
+      - name: 将本批新增和旧URL变更推送到IndexNow
+        if: ${{ steps.restore.outputs.restored_count != '0' }}
+        env:
+          INDEXNOW_CHANGED_URLS_FILE: reports/legacy-indexnow-urls.txt
+          INDEXNOW_INCLUDE_RETIRED: 'false'
+          INDEXNOW_FULL_SYNC: 'false'
+        run: |
+          node scripts/generate-sitemaps.mjs
+          node scripts/clean-sitemap-against-database.mjs
+          node scripts/filter-public-visibility-seo-feeds.mjs
+          node scripts/split-sitemap-index.mjs
+          node scripts/submit-indexnow.mjs
 
       - name: 显示迁移结果
         if: always()
@@ -75,6 +102,7 @@ jobs:
           name: legacy-search-recovery-report-${{ github.run_id }}
           path: |
             reports/legacy-migration-latest.json
+            reports/legacy-indexnow-urls.txt
             reports/legacy-search-acceptance-latest.json
           if-no-files-found: warn
           retention-days: 30

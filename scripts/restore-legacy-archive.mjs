@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
+import { appendFile, readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const ROOT = process.cwd();
@@ -8,7 +8,11 @@ const SUPABASE_URL = String(process.env.SUPABASE_URL || 'https://fwiznbpsqkfgkvy
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const APPLY = process.argv.includes('--apply');
 const limitArg = process.argv.find((v) => v.startsWith('--limit='));
-const LIMIT = Math.max(1, Math.min(500, Number(limitArg?.split('=')[1] || 200)));
+const concurrencyArg = process.argv.find((v) => v.startsWith('--concurrency='));
+const LIMIT = Math.max(1, Math.min(2000, Number(limitArg?.split('=')[1] || 1000)));
+const CONCURRENCY = Math.max(1, Math.min(8, Number(
+  concurrencyArg?.split('=')[1] || process.env.LEGACY_RESTORE_CONCURRENCY || 4
+)));
 const PRIORITY_IDS = new Set(String(process.env.LEGACY_PRIORITY_IDS || 'wp-117123').split(',').map((v)=>v.trim()).filter(Boolean));
 
 function clean(v='') { return String(v || '').replace(/\s+/g, ' ').trim(); }
@@ -77,6 +81,33 @@ async function loadArchive() {
   return {files,rows};
 }
 function batch(items,size=25){ const out=[]; for(let i=0;i<items.length;i+=size) out.push(items.slice(i,i+size)); return out; }
+async function mapLimit(items, concurrency, worker) {
+  const results = new Array(items.length);
+  let cursor = 0;
+  async function runner() {
+    for (;;) {
+      const index = cursor++;
+      if (index >= items.length) return;
+      results[index] = await worker(items[index], index);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, () => runner()));
+  return results;
+}
+function legacyChangedUrls(row) {
+  const legacyId = clean(row.legacy_id);
+  const numericId = legacyId.replace(/^wp-/i, '');
+  const urls = [row.canonical_url];
+  if (/^\d+$/.test(numericId)) {
+    urls.push(
+      `${SITE}/article.html?id=${encodeURIComponent(legacyId)}`,
+      `${SITE}/article.html?id=${encodeURIComponent(numericId)}`,
+      `${SITE}/?p=${encodeURIComponent(numericId)}`
+    );
+  }
+  if (clean(row.title)) urls.push(`${SITE}/${encodeURIComponent(clean(row.title))}/`);
+  return urls.filter(Boolean);
+}
 
 const {files,rows:archiveRows}=await loadArchive();
 const [existing,categories]=await Promise.all([
@@ -119,22 +150,33 @@ for (const row of archiveRows) {
   });
   plannedLegacy.add(id); plannedLegacy.add(numeric); plannedTitles.add(titleKey);
 }
-candidates.sort((a,b)=>Number(PRIORITY_IDS.has(b.legacy_id))-Number(PRIORITY_IDS.has(a.legacy_id)));
+candidates.sort((a,b)=>{
+  const priority = Number(PRIORITY_IDS.has(b.legacy_id))-Number(PRIORITY_IDS.has(a.legacy_id));
+  if (priority) return priority;
+  const date = String(b.published_at || '').localeCompare(String(a.published_at || ''));
+  if (date) return date;
+  return Number(String(b.legacy_id).replace(/\D/g,'')) - Number(String(a.legacy_id).replace(/\D/g,''));
+});
 const selected=candidates.slice(0,LIMIT);
 let inserted=[];
 if(APPLY && selected.length){
-  for(const part of batch(selected,25)) {
+  const insertedBatches = await mapLimit(batch(selected,25), CONCURRENCY, async (part) => {
     const rows=await rest('articles',{}, {method:'POST',headers:{Prefer:'return=representation'},body:part});
-    inserted.push(...rows.map((r)=>({id:r.id,legacy_id:r.legacy_id,title:r.title,slug:r.slug,canonical_url:r.canonical_url})));
-  }
+    return rows.map((r)=>({id:r.id,legacy_id:r.legacy_id,title:r.title,slug:r.slug,canonical_url:r.canonical_url}));
+  });
+  inserted = insertedBatches.flat();
 }
 const report={
   generated_at:new Date().toISOString(),mode:APPLY?'apply':'report',archive_files:files.length,archive_records:archiveRows.length,
-  current_articles:existing.length,recoverable_missing:candidates.length,selected:selected.length,inserted:inserted.length,skipped,
+  current_articles:existing.length,recoverable_missing:candidates.length,selected:selected.length,inserted:inserted.length,
+  limit:LIMIT,concurrency:CONCURRENCY,batches:Math.ceil(selected.length/25),skipped,
   priority_ids:[...PRIORITY_IDS],priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
   sample_missing:selected.slice(0,20).map((r)=>({legacy_id:r.legacy_id,title:r.title,category_name:r.category_name,canonical_url:r.canonical_url})),
   inserted_rows:inserted
 };
 await mkdir(path.join(ROOT,'reports'),{recursive:true});
 await writeFile(path.join(ROOT,'reports','legacy-migration-latest.json'),JSON.stringify(report,null,2)+'\n');
+const indexNowUrls=[...new Set(inserted.flatMap(legacyChangedUrls))];
+await writeFile(path.join(ROOT,'reports','legacy-indexnow-urls.txt'),indexNowUrls.join('\n')+(indexNowUrls.length?'\n':''));
+if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `restored_count=${inserted.length}\n`);
 console.log(JSON.stringify(report,null,2));

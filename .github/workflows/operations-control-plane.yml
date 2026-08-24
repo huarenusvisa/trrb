@@ -12,6 +12,7 @@ on:
           - all
           - ice
           - seo
+          - ico
           - official
           - monitor
           - maintenance
@@ -20,6 +21,7 @@ on:
           - jobs
   schedule:
     - cron: "27 */3 * * *"
+    - cron: "43 */6 * * *"
     - cron: "17 * * * *"
     - cron: "47 3 * * *"
     - cron: "7 7 * * *"
@@ -85,6 +87,13 @@ jobs:
     needs: seo-metadata
     if: ${{ !cancelled() && (github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
     uses: ./.github/workflows/indexnow.yml
+    secrets: inherit
+
+  ico-accelerated-recovery:
+    if: ${{ github.event.schedule == '43 */6 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ico') }}
+    uses: ./.github/workflows/legacy-search-recovery.yml
+    with:
+      limit: 1000
     secrets: inherit
 
   jobs-daily-ingest:

@@ -137,13 +137,15 @@ async function isActiveCategorySlug(slug: string): Promise<boolean> {
   return Array.isArray(rows) && rows.length > 0;
 }
 
-async function fetchCandidates(title: string): Promise<Array<{ id: string; title: string }>> {
+type ArticleCandidate = { id: string; title: string; canonical_url?: string };
+
+async function fetchCandidates(title: string): Promise<ArticleCandidate[]> {
   const { base, key } = supabaseConfig();
   if (!base || !key) throw new Error("Supabase config missing");
 
   const headers = { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
   const exact = new URL(`${base}/rest/v1/articles`);
-  exact.searchParams.set("select", "id,title");
+  exact.searchParams.set("select", "id,title,canonical_url");
   exact.searchParams.set("status", "eq.published");
   exact.searchParams.set("title", `eq.${title}`);
   exact.searchParams.set("limit", "2");
@@ -158,13 +160,13 @@ async function fetchCandidates(title: string): Promise<Array<{ id: string; title
     title.split(/[：:，,。!！?？—-]/)[0]?.trim().slice(0, 20) || ""
   ].filter((item) => item.length >= 6)));
 
-  const collected = new Map<string, { id: string; title: string }>();
+  const collected = new Map<string, ArticleCandidate>();
   let successfulProbe = false;
   for (const probeRaw of probes) {
     const probe = probeRaw.replace(/[\u0000-\u001f%*_(),]/g, " ").trim();
     if (probe.length < 6) continue;
     const fuzzy = new URL(`${base}/rest/v1/articles`);
-    fuzzy.searchParams.set("select", "id,title");
+    fuzzy.searchParams.set("select", "id,title,canonical_url");
     fuzzy.searchParams.set("status", "eq.published");
     fuzzy.searchParams.set("title", `ilike.*${probe}*`);
     fuzzy.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
@@ -326,7 +328,11 @@ export default async (request: Request, context: any) => {
       return retiredArticle(legacyTitle, "wordpress-title-ambiguous-retired");
     }
 
-    return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(match.id)}`, `article-match-${match.score}`);
+    const directCanonical = safeCanonical(match.canonical_url);
+    return redirect(
+      directCanonical || `${SITE_ORIGIN}/article.html?id=${encodeURIComponent(match.id)}`,
+      directCanonical ? `article-direct-match-${match.score}` : `article-match-${match.score}`
+    );
   } catch (error) {
     console.error("legacy redirect lookup failed", error);
     if (isCcHost) return redirect(canonicalSamePath(url), "cc-domain-migration-fallback");

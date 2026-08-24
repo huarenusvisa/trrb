@@ -24,6 +24,7 @@ jobs:
       LEGACY_PRIORITY_ONLY: 'true'
       LEGACY_CATEGORY_OVERRIDES: '中国官场=热门头条'
       LEGACY_RESTORE_CONCURRENCY: '2'
+      GSC_RECOVERY_REVISION: '3'
     steps:
       - uses: actions/checkout@v4
         with:

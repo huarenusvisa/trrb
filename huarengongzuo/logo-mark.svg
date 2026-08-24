@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">华人工作网</title>
+  <desc id="desc">蓝色圆角方形中的白色工字</desc>
+  <defs>
+    <linearGradient id="blue" x1="18" y1="12" x2="142" y2="148" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f63e9"/>
+      <stop offset="1" stop-color="#2188eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="38" fill="url(#blue)"/>
+  <path d="M43 42h74v17H89v42h33v18H38v-18h32V59H43z" fill="#fff"/>
+</svg>

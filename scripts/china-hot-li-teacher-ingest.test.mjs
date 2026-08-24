@@ -33,6 +33,8 @@ test("识别并阻止提醒、呼吁和宣传式凑字", () => {
   assert.equal(containsBoilerplate("关键词：重庆 现场 新闻"), true);
   assert.equal(containsBoilerplate("seo_keywords: 湖北, 高三, 补课"), true);
   assert.equal(containsBoilerplate("该企业是知名大型央企。"), true);
+  assert.equal(containsBoilerplate("视频中的声音昭示爆炸过程可能涉及多次燃爆。"), true);
+  assert.equal(containsBoilerplate("现场整体氛围紧张，环境整洁、设施完善。"), true);
 });
 
 test("发布稿自动公开且不在前台暴露抓取来源", () => {

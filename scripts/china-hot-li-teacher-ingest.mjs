@@ -12,7 +12,7 @@ const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
-const EXPANSION_VERSION = "grounded-image-v5";
+const EXPANSION_VERSION = "grounded-image-v6";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const MAX_PUBLISH = intEnv("LI_TEACHER_MAX_PUBLISH", RECOVER_ARCHIVED ? 150 : 20, 1, 150);
@@ -207,6 +207,9 @@ const BOILERPLATE_PATTERNS = [
   /(?:属于|是).{0,16}(?:重要|知名|大型)(?:交通通道|企业|机构|项目)/u,
   /知名大型(?:央企|国企|民企|公司|集团)/u,
   /显著的视觉信息更新/u, /呈现了.{0,20}具体情况/u,
+  /(?:昭示|表明|说明|反映了).{0,30}(?:趋势|状态|实质|过程|问题|情况)/u,
+  /整体氛围/u, /实则构成/u, /可能涉及/u,
+  /环境(?:干净|整洁)/u, /设施(?:完善|完备)/u,
 ];
 
 export function containsBoilerplate(value) {
@@ -222,6 +225,13 @@ function visualInputs(tweet) {
     seen.add(value);
     return [{ type: "input_image", image_url: value, detail: "high" }];
   }).slice(0, 4);
+}
+
+function visualContext(tweet) {
+  const items = Array.isArray(tweet?.media) ? tweet.media : [];
+  const photos = items.filter((item) => item?.type === "photo").length;
+  const videoPreviews = items.filter((item) => item?.type === "video").length;
+  return `随附静态素材说明：照片${photos}张，视频缩略图${videoPreviews}张。视频缩略图不是视频本身，不能据此描述声音、持续时间、动作先后或画面外过程。`;
 }
 
 async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
@@ -244,6 +254,8 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
         "只允许补充确定的基础行政地理关系，例如城市所属省份、区县与城市的关系，以及画面直接显示的场所类型。不要补充企业性质、人物履历、统计数字、历史细节、行业评价或其他模型记忆中的背景。",
         "不得根据长相推断人物性格、职业、身份、族群、健康状况、犯罪倾向或动机；只描述画面中直接可见的表情、姿态、衣着和行为。",
         "不得从书架、服装、表情、建筑、车辆或环境推断知识水平、专业性、经济状况、工作状态、生活状态、性格或可信度。不要使用“显示其”“反映出其”“说明其”等推断句。",
+        "随附的视频素材仅为静态缩略图。除非原文明确写出，否则不得写爆炸声、对话、连续动作、持续时间、多次发生或拍摄前后的过程。",
+        "场景描述使用可核对的名词、颜色、数量、位置和可见动作，不写“环境整洁”“设施完善”“氛围紧张”等评价性形容。",
         "标题必须保留原文中的中国地点、机构或政治人物等主体，使文章明确属于中国新闻。",
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
         "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
@@ -253,8 +265,8 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
       ].join("\n"),
       input: [{ role: "user", content: [
         { type: "input_text", text: previous
-          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n上一版未通过质量检查（长度${previous.content.length}，或含套话）。请重新阅读原文和图片，完整重写；只能补充有依据的具体信息：\n${previous.content}`
-          : `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n请结合随附原帖图片中的可见信息整理文章。` },
+          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n上一版未通过质量检查（长度${previous.content.length}，或含套话）。请重新阅读原文和图片，完整重写；只能补充有依据的具体信息：\n${previous.content}`
+          : `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n请结合随附原帖图片中的可见信息整理文章。` },
         ...visualInputs(tweet),
       ] }],
       text: { format: { type: "json_schema", name: "china_hot_article", strict: true, schema } },

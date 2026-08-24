@@ -10,7 +10,7 @@ let selectedDetail = null;
 let period = 'yearly';
 const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname) ? `https://trrb.net${path}` : path;
 
-const judgePath = (id) => `${window.judgePagePath ? window.judgePagePath('detail.html') : '/immigration-judge-approval-rate/detail.html'}?id=${encodeURIComponent(id)}`;
+const judgePath = (row) => window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `${window.judgePagePath ? window.judgePagePath('detail.html') : '/immigration-judge-approval-rate/detail.html'}?id=${encodeURIComponent(row?.id || row)}`;
 const countryLabel = (row) => i18n?.countryLabel(row) || row?.nationality_zh || row?.nationality || '';
 
 async function getJson(url) {
@@ -142,7 +142,7 @@ function renderPeriodSummary(points) {
 }
 
 function renderJudges(rows) {
-  $('#judges').innerHTML = rows.length ? rows.slice(0, 30).map((row) => `<a class="rank" href="${judgePath(row.id)}"><span><b>${esc(row.judge_name)}</b><small>${esc(row.court_name || '')}</small></span><span>${t('validDecisionCount', { count: fmt(row.adjudicated_decisions) })}</span><span class="rate">${pct(row.adjudicated_approval_rate)}</span></a>`).join('') : `<div class="empty">${t('noJudges')}</div>`;
+  $('#judges').innerHTML = rows.length ? rows.slice(0, 30).map((row) => `<a class="rank" href="${judgePath(row)}"><span><b>${esc(row.judge_name)}</b><small>${esc(row.court_name || '')}</small></span><span>${t('validDecisionCount', { count: fmt(row.adjudicated_decisions) })}</span><span class="rate">${pct(row.adjudicated_approval_rate)}</span></a>`).join('') : `<div class="empty">${t('noJudges')}</div>`;
 }
 
 function renderQuickCountries() {
@@ -200,7 +200,7 @@ async function load() {
     renderQuickCountries();
     renderDirectory();
     drawCountryComparison(countries);
-    const requested = new URLSearchParams(location.search).get('country');
+    const requested = document.body.dataset.country || new URLSearchParams(location.search).get('country');
     const initial = requested || countries[0]?.nationality || 'China';
     $('#country-search').value = requested || '';
     await selectCountry(initial);

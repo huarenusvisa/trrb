@@ -24,6 +24,8 @@
   ]);
   const supported = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
   const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };
+  const localePaths = { en: 'en', es: 'es', fr: 'fr', 'pt-BR': 'pt-br', hi: 'hi', 'zh-Hans': '', 'zh-Hant': 'zh-hant', ru: 'ru', ar: 'ar', tr: 'tr' };
+  const pathLocales = new Map(Object.entries(localePaths).filter(([, path]) => path).map(([key, path]) => [path, key]));
   const labels = {
     en: { judges: 'Find judges', courts: 'Find courts', states: 'State data', nationality: 'Nationality approval rates', language: 'Language' },
     es: { judges: 'Buscar jueces', courts: 'Buscar tribunales', states: 'Datos estatales', nationality: 'Tasas por nacionalidad', language: 'Idioma' },
@@ -57,8 +59,11 @@
     return supported.find((item) => item.toLowerCase() === base) || (base === 'pt' ? 'pt-BR' : base === 'zh' ? 'zh-Hans' : 'zh-Hans');
   };
   const storedLocale = (() => { try { return localStorage.getItem('asylumjudge-language'); } catch { return ''; } })();
-  let locale = normalizeLocale(new URLSearchParams(location.search).get('lang') || storedLocale || 'zh-Hans');
-  const routeHref = (key) => ({ judges: (location.pathname === '/' ? '#judge-search' : (root || '/')), courts: `${root}/courts`, states: `${root}/states`, nationality: `${root}/nationality` }[key]);
+  const firstPathSegment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase() || '';
+  let locale = normalizeLocale(pathLocales.get(firstPathSegment) || new URLSearchParams(location.search).get('lang') || storedLocale || 'zh-Hans');
+  const standaloneLocaleRoot = standaloneHost && localePaths[locale] ? `/${localePaths[locale]}` : '';
+  const localizedRoot = trrbColumn ? root : standaloneLocaleRoot;
+  const routeHref = (key) => ({ judges: (location.pathname === '/' || location.pathname === `${localizedRoot}/` ? '#judge-search' : (localizedRoot || '/')), courts: `${localizedRoot}/courts`, states: `${localizedRoot}/states`, nationality: `${localizedRoot}/nationality` }[key]);
   const activeKey = () => /\/nationality|china-dashboard/.test(location.pathname) ? 'nationality' : /\/states/.test(location.pathname) ? 'states' : /\/courts|court-detail/.test(location.pathname) ? 'courts' : 'judges';
   const navigationMarkup = () => ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('');
   const languageMarkup = (id = 'language-select') => `<label for="${id}" data-language-label>${labels[locale].language}</label><select id="${id}" aria-label="${labels[locale].language}">${options}</select>`;
@@ -92,11 +97,34 @@
   const handleLanguageChange = (event) => {
     locale = normalizeLocale(event.target.value);
     try { localStorage.setItem('asylumjudge-language', locale); } catch {}
+    if (window.AsylumI18n && window.AsylumI18n.locale !== locale) {
+      window.AsylumI18n.setLocale(locale);
+      return;
+    }
     const url = new URL(location.href);
     url.searchParams.set('lang', locale);
-    history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
-    applyNavigationLabels();
-    if (window.AsylumI18n && window.AsylumI18n.locale !== locale) window.AsylumI18n.setLocale(locale);
+    location.href = `${url.pathname}${url.search}${url.hash}`;
+  };
+  const slugify = (value) => {
+    const raw = String(value || '').trim();
+    const reordered = raw.includes(',') ? `${raw.split(',').slice(1).join(' ').trim()} ${raw.split(',')[0].trim()}` : raw;
+    return reordered.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'profile';
+  };
+  const shortId = (value) => String(value || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12).toLowerCase();
+  window.asylumJudgeProfileUrl = (rowOrId, name = '') => {
+    const row = typeof rowOrId === 'object' && rowOrId ? rowOrId : { id: rowOrId, judge_name: name };
+    if (trrbColumn) return `${root}/judge?id=${encodeURIComponent(row.id || '')}`;
+    return `${standaloneLocaleRoot}/judges/${slugify(row.judge_name || name)}--${shortId(row.id)}/`;
+  };
+  window.asylumCourtProfileUrl = (row = {}) => {
+    if (trrbColumn) return `${root}/court?court=${encodeURIComponent(row.court_name || '')}&state=${encodeURIComponent(row.court_state || row.state || '')}`;
+    const code = String(row.court_code || '').toLowerCase() || slugify(`${row.court_name}-${row.court_state || row.state || ''}`);
+    return `${standaloneLocaleRoot}/courts/${slugify(row.court_name)}--${code}/`;
+  };
+  window.asylumNationalityProfileUrl = (row = {}) => {
+    if (trrbColumn) return `${root}/nationality?country=${encodeURIComponent(row.nationality || '')}`;
+    const code = String(row.nationality_code || '').toLowerCase();
+    return `${standaloneLocaleRoot}/nationalities/${slugify(row.nationality || row.nationality_zh)}${code ? `--${code}` : ''}/`;
   };
   window.judgePagePath = (file) => brandHost ? (routes.get(`/immigration-judge-approval-rate/${file}`) || `/immigration-judge-approval-rate/${file}`) : `/immigration-judge-approval-rate/${file}`;
   if (!brandHost) return;

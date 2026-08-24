@@ -31,7 +31,7 @@ const index = await text("index.html");
 requireMatch(index, /^\s*<!doctype html>/i, "index.html is not HTML");
 requireMatch(index, /<link\s+rel=["']canonical["']\s+href=["']https:\/\/trrb\.net\/["']/i, "index.html missing canonical root");
 requireMatch(index, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "index.html missing index,follow");
-requireMatch(index, /href=["']\/huarengongzuo\/?["'][^>]*>招聘求职<\/a>/i, "index.html missing 华人工作网 navigation");
+requireMatch(index, /href=["']https:\/\/huarengongzuo\.com\/["'][^>]*>招聘求职<\/a>/i, "index.html missing direct 华人工作网 navigation");
 requireMatch(index, /href=["']\/(?:immigration|immigrate\/?)["'][^>]*>移民美国<\/a>/i, "index.html missing 移民美国 navigation");
 requireMatch(index, /articles-home\.js/i, "index.html missing homepage renderer");
 requireMatch(index, /articles-home-live-fix\.js/i, "index.html missing live homepage guard");
@@ -113,6 +113,7 @@ const financeSources = await text("scripts/lib/niulai-finance-sources.mjs");
 const financeWorkflow = await text(".github/workflows/niulai-finance-ingest.yml");
 const adminHtml = await text("admin/index.html");
 requireMatch(niulai, /搜索股票、ETF、基金/, "niulai search UI is missing");
+requireMatch(niulai, /https:\/\/niulai\.us\//, "niulai canonical is not on its independent domain");
 requireMatch(niulaiAdapter, /\/api\/finance\/search/, "niulai adapter is not connected to securities search gateway");
 requireMatch(niulaiAdapter, /getSecurityWatchlist/, "niulai adapter is missing multi-market watchlist storage");
 requireMatch(niulaiAdapter, /getAlertRules/, "niulai adapter is missing structured alert rules");
@@ -134,6 +135,11 @@ requireMatch(financeWorkflow, /cron:\s*["']8,38 \* \* \* \*["']/, "official fina
 requireMatch(financeWorkflow, /node scripts\/niulai-finance-ingest\.mjs/, "official finance workflow does not execute the collector");
 requireMatch(adminHtml, /data-page=["']finance-monitor["']/, "admin console is missing finance monitoring navigation");
 forbidMatch(niulaiAdapter, /TWELVE_DATA_API_KEY/, "Twelve Data API key name leaked into public client code");
+
+const niulaiBuilder = await text("scripts/build-niulai-site.mjs");
+requireMatch(niulaiBuilder, /https:\/\/trrb\.net\/api\/finance\/:splat/, "niulai independent build is not proxying the single TRRB finance source");
+requireMatch(redirects, /https:\/\/trrb\.net\/niulai\/\s+https:\/\/niulai\.us\/\s+301!/, "TRRB niulai route is not canonicalized to the independent site");
+requireMatch(redirects, /https:\/\/huarengongzuo\.com\/favicon\.svg\s+\/huarengongzuo\/logo-mark\.svg\s+200!/, "huarengongzuo favicon host rewrite is missing");
 
 await Promise.all([
   "site-common.js", "site-search.js", "category-runtime-v3.js", "articles-home.js",

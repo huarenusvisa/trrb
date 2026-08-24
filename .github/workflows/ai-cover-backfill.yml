@@ -10,19 +10,13 @@ on:
         type: string
   schedule:
     - cron: "23 9 * * *"
-  push:
-    branches: [main]
-    paths:
-      - scripts/ai-cover-backfill.mjs
-      - scripts/ai-cover-backfill.test.mjs
-      - .github/workflows/ai-cover-backfill.yml
 
 permissions:
   contents: read
 
 concurrency:
   group: trrb-ai-cover-backfill
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   generate:

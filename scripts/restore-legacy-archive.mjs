@@ -81,6 +81,9 @@ async function loadArchive() {
   return {files,rows};
 }
 function batch(items,size=25){ const out=[]; for(let i=0;i<items.length;i+=size) out.push(items.slice(i,i+size)); return out; }
+function isDuplicatePublishedTitle(error) {
+  return /articles 409:.*duplicate published article title/i.test(String(error?.message || error));
+}
 async function mapLimit(items, concurrency, worker) {
   const results = new Array(items.length);
   let cursor = 0;
@@ -159,18 +162,36 @@ candidates.sort((a,b)=>{
 });
 const selected=candidates.slice(0,LIMIT);
 let inserted=[];
+const insertTitleConflicts=[];
 if(APPLY && selected.length){
   const insertedBatches = await mapLimit(batch(selected,25), CONCURRENCY, async (part) => {
-    const rows=await rest('articles',{}, {method:'POST',headers:{Prefer:'return=representation'},body:part});
-    return rows.map((r)=>({id:r.id,legacy_id:r.legacy_id,title:r.title,slug:r.slug,canonical_url:r.canonical_url}));
+    try {
+      const rows=await rest('articles',{}, {method:'POST',headers:{Prefer:'return=representation'},body:part});
+      return rows.map((r)=>({id:r.id,legacy_id:r.legacy_id,title:r.title,slug:r.slug,canonical_url:r.canonical_url}));
+    } catch (error) {
+      if (!isDuplicatePublishedTitle(error)) throw error;
+      const recovered=[];
+      for (const item of part) {
+        try {
+          const rows=await rest('articles',{}, {method:'POST',headers:{Prefer:'return=representation'},body:[item]});
+          recovered.push(...rows.map((r)=>({id:r.id,legacy_id:r.legacy_id,title:r.title,slug:r.slug,canonical_url:r.canonical_url})));
+        } catch (itemError) {
+          if (!isDuplicatePublishedTitle(itemError)) throw itemError;
+          insertTitleConflicts.push({legacy_id:item.legacy_id,title:item.title});
+        }
+      }
+      return recovered;
+    }
   });
   inserted = insertedBatches.flat();
 }
+skipped.insert_conflict_title=insertTitleConflicts.length;
 const report={
   generated_at:new Date().toISOString(),mode:APPLY?'apply':'report',archive_files:files.length,archive_records:archiveRows.length,
   current_articles:existing.length,recoverable_missing:candidates.length,selected:selected.length,inserted:inserted.length,
   limit:LIMIT,concurrency:CONCURRENCY,batches:Math.ceil(selected.length/25),skipped,
   priority_ids:[...PRIORITY_IDS],priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
+  insert_title_conflicts:insertTitleConflicts.slice(0,50),
   sample_missing:selected.slice(0,20).map((r)=>({legacy_id:r.legacy_id,title:r.title,category_name:r.category_name,canonical_url:r.canonical_url})),
   inserted_rows:inserted
 };

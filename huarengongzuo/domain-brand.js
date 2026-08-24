@@ -8,6 +8,16 @@
   const ogUrl = document.querySelector('meta[property="og:url"]');
   if (ogUrl) ogUrl.content = canonical.href;
 
+  const headLink = (rel, href, type = '') => {
+    let node = document.head.querySelector(`link[rel="${rel}"]`);
+    if (!node) { node = document.createElement('link'); node.rel = rel; document.head.appendChild(node); }
+    node.href = href;
+    if (type) node.type = type;
+  };
+  headLink('icon', '/favicon.svg', 'image/svg+xml');
+  headLink('shortcut icon', '/favicon.ico');
+  headLink('manifest', '/site.webmanifest');
+
   const normalize = (text) => String(text || '')
     .replace(/唐人日报招聘求职/g, '华人工作网')
     .replace(/唐人日报招聘/g, '华人工作网')
@@ -20,7 +30,7 @@
   document.head.appendChild(style);
   const bar = document.createElement('div');
   bar.className = 'hw-domain-bar';
-  bar.innerHTML = '<div class="hw-domain-inner"><a class="hw-domain-logo" href="/"><i>工</i>华人工作网</a><a href="/jobs/">找工作</a><a href="/jobs/publish.html">发布招聘</a><a href="https://trrb.net/jobs/">唐人日报入口</a></div>';
+  bar.innerHTML = '<div class="hw-domain-inner"><a class="hw-domain-logo" href="/"><i>工</i>华人工作网</a><a href="/jobs/">找工作</a><a href="/jobs/publish.html">发布招聘</a><a href="https://trrb.net/">唐人日报入口</a></div>';
   document.body.prepend(bar);
 
   function rewrite(root = document) {

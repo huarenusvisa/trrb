@@ -1,4 +1,4 @@
-name: GSC priority recovery (one time)
+name: GSC safe archive recovery (one time)
 
 on:
   push:
@@ -20,11 +20,10 @@ jobs:
     env:
       SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      LEGACY_PRIORITY_IDS: wp-99575,wp-101867
-      LEGACY_PRIORITY_ONLY: 'true'
-      LEGACY_CATEGORY_OVERRIDES: '中国官场=中国热门头条'
-      LEGACY_RESTORE_CONCURRENCY: '2'
-      GSC_RECOVERY_REVISION: '5'
+      LEGACY_PRIORITY_ONLY: 'false'
+      LEGACY_CATEGORY_OVERRIDES: '热门头条=中国热门头条'
+      LEGACY_RESTORE_CONCURRENCY: '4'
+      GSC_RECOVERY_REVISION: '6'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,7 +33,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Restore the two verified GSC examples
+      - name: Restore safe missing archive articles
         id: restore
         shell: bash
         run: |
@@ -51,15 +50,15 @@ jobs:
           const rows = await response.json();
           console.log(`Active categories: ${rows.map((row) => `${row.name}=${row.slug}`).join(', ')}`);
           NODE
-          node scripts/restore-legacy-archive.mjs --apply --limit=2 --concurrency=2
+          node scripts/restore-legacy-archive.mjs --apply --limit=1000 --concurrency=4
           node - <<'NODE'
           const fs = require('fs');
           const report = JSON.parse(fs.readFileSync('reports/legacy-migration-latest.json', 'utf8'));
-          const wanted = new Set(['wp-99575', 'wp-101867']);
-          const restored = new Set((report.inserted_rows || []).map((row) => String(row.legacy_id || '')));
-          const missing = [...wanted].filter((id) => !restored.has(id));
-          if (missing.length) {
-            console.error(`Verified GSC recovery failed: ${missing.join(', ')}`);
+          const processed = Number(report.inserted || 0)
+            + Number(report.skipped?.insert_conflict_title || 0)
+            + Number(report.skipped?.insert_conflict_content || 0);
+          if (Number(report.selected || 0) !== processed) {
+            console.error(`Archive recovery accounting mismatch: selected=${report.selected}, processed=${processed}`);
             console.error(JSON.stringify(report, null, 2));
             process.exit(1);
           }

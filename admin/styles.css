@@ -483,6 +483,18 @@ th { background: #f1f5f9; }
   font-weight: 800;
 }
 
+.content-center-tabs { display:flex; gap:10px; margin-top:18px; border-top:1px solid var(--border); padding-top:16px; }
+.content-center-tab { background:#eef2f7; color:#334155; }
+.content-center-tab.active { background:var(--green, #12864b); color:#fff; }
+.china-hot-pool-list { display:grid; gap:12px; }
+.china-hot-pool-item { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; padding:18px; background:#fff; border:1px solid var(--border); border-radius:14px; }
+.china-hot-pool-item h4 { margin:8px 0; font-size:18px; }
+.china-hot-pool-item p { margin:0; color:var(--muted); }
+.china-hot-pool-item time { margin-left:10px; color:var(--muted); font-size:12px; }
+.china-hot-pool-actions { display:flex; flex-wrap:wrap; align-content:center; gap:8px; }
+.china-hot-pool-actions a { display:inline-flex; align-items:center; padding:10px 14px; border-radius:8px; background:#eef2f7; color:#16304d; text-decoration:none; font-weight:800; }
+.china-hot-pool-actions .danger { background:#b42318; }
+
 @media (max-width: 1180px) {
   .cards-five { grid-template-columns: repeat(3, 1fr); }
   .review-score-grid { grid-template-columns: repeat(3, 1fr); }
@@ -512,4 +524,5 @@ th { background: #f1f5f9; }
   .review-modal-actions { justify-content: stretch; }
   .review-modal-actions button { flex: 1 1 45%; }
   .review-log-item { grid-template-columns: 1fr; }
+  .china-hot-pool-item { grid-template-columns:1fr; }
 }

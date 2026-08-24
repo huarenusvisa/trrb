@@ -5,9 +5,9 @@ on:
   workflow_dispatch:
     inputs:
       lookback_hours:
-        description: "抓取最近多少小时（最多168小时）"
+        description: "抓取最近多少小时（默认覆盖两个三小时周期）"
         required: false
-        default: "72"
+        default: "6"
         type: string
   push:
     branches:
@@ -31,9 +31,11 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
-      LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '72' }}
-      LI_TEACHER_MAX_FETCH: "200"
-      LI_TEACHER_MAX_INSERT: "40"
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '6' }}
+      LI_TEACHER_MAX_FETCH: "100"
+      LI_TEACHER_MAX_PUBLISH: "20"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -45,7 +47,8 @@ jobs:
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_SERVICE_ROLE_KEY"
           test -n "$X_BEARER_TOKEN"
+          test -n "$OPENAI_API_KEY"
       - name: Run collector tests
         run: node --test scripts/china-hot-li-teacher-ingest.test.mjs
-      - name: Collect qualified posts into content center drafts
+      - name: Collect China headlines and publish automatically
         run: node scripts/china-hot-li-teacher-ingest.mjs

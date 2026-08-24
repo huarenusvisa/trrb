@@ -108,7 +108,7 @@ function dbHeaders(key: string) {
   return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
 }
 
-const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,seo_keywords,author,status,published_at,created_at";
+const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,seo_keywords,author,status,published_at,created_at,metadata";
 
 async function getArticleById(id: string) {
   const { base, key } = supabaseConfig();
@@ -274,6 +274,9 @@ function injectBody(html: string, article: any, canonical: string) {
   const content = String(article.content || "").trim();
   const paragraphs = content.split(/\n{2,}|\r?\n/).map((p) => clean(p)).filter(Boolean);
   const image = clean(article.cover_image);
+  const warning = article?.metadata?.unverified_public_claim
+    ? clean(article?.metadata?.content_warning) || "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。"
+    : "";
   const prerender = `<a class="back-link" href="/">返回首页</a>
       <header class="article-header">
         <span class="tag">${esc(displayCategory)}</span>
@@ -281,6 +284,7 @@ function injectBody(html: string, article: any, canonical: string) {
         <div class="story-meta">${esc(author)} · ${esc(published)}</div>
       </header>
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
+      ${warning ? `<aside class="article-content-warning">${esc(warning)}</aside>` : ""}
       <div class="article-body">${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
       <nav class="article-neighbors" aria-label="上一篇和下一篇"></nav>
       <section class="related-news" hidden><h2>延伸阅读</h2><div class="related-carousel" aria-label="延伸阅读文章"><div class="related-track"></div></div></section>`;

@@ -9,7 +9,7 @@ on:
       - ".github/workflows/ice-unified-pipeline.yml"
       - "scripts/ice-run-due.mjs"
   schedule:
-    - cron: "22 * * * *"
+    - cron: "40 */3 * * *"
 
 permissions:
   contents: read
@@ -22,7 +22,7 @@ concurrency:
 env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-  ICE_RUN_DUE_MINUTES: "40"
+  ICE_RUN_DUE_MINUTES: "185"
 
 jobs:
   recover:
@@ -61,7 +61,7 @@ jobs:
             echo "人工或代码变更触发，立即恢复生产流水线。"
           elif ! node scripts/ice-run-due.mjs; then
             echo "due=true" >> "$GITHUB_OUTPUT"
-            echo "最近成功超过40分钟，启动应急恢复。"
+            echo "最近成功超过185分钟，启动应急恢复。"
           else
             echo "due=false" >> "$GITHUB_OUTPUT"
             echo "主流水线心跳正常。"
@@ -89,7 +89,7 @@ jobs:
 
       - name: Report no-op
         if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
-        run: echo "主流水线最近成功不足40分钟，无需补跑。"
+        run: echo "主流水线最近成功不足185分钟，无需补跑。"
 
       - name: Report off-hours
         if: steps.window.outputs.allowed != 'true'

@@ -274,7 +274,7 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
   }, 60_000));
   const article = JSON.parse(responseText(response));
   article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000);
-  if ((article.content.length < target.min || containsBoilerplate(article.content)) && attempt < 2) return generateArticle(qualified, tweet, attempt + 1, article);
+  if ((article.content.length < target.min || containsBoilerplate(article.content)) && attempt < 5) return generateArticle(qualified, tweet, attempt + 1, article);
   if (article.content.length < target.min || article.content.length > target.max) throw new Error(`生成正文长度${article.content.length}，未达到${target.min}-${target.max}字`);
   if (containsBoilerplate(article.content)) throw new Error("生成正文含提醒、呼吁或宣传式套话，禁止自动发布");
   if (!isChinaHotHeadline(article.title, article.content)) throw new Error("生成稿未明确中国新闻主体");

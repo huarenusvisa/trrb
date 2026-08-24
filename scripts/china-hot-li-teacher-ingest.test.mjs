@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildPublishedArticle, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildPublishedArticle, ensureTargetLength, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -23,6 +23,9 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
 test("不足300字补到300至600字，达到300字扩写到800至1500字", () => {
   assert.deepEqual(targetLength("短文"), { min: 300, max: 600, band: "short" });
   assert.deepEqual(targetLength("中".repeat(300)), { min: 800, max: 1500, band: "long" });
+  const padded = ensureTargetLength("已知事实简述。", { min: 300, max: 600 });
+  assert.ok(padded.length >= 300 && padded.length <= 600);
+  assert.doesNotMatch(padded, /媒体|账号|平台|链接/);
 });
 
 test("发布稿自动公开且不在前台暴露抓取来源", () => {

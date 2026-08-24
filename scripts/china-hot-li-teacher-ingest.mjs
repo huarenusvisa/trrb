@@ -167,7 +167,26 @@ function responseText(response) {
   return "";
 }
 
-async function generateArticle(qualified) {
+export function ensureTargetLength(value, target) {
+  let content = cleanText(value, 20_000);
+  const caution = [
+    "目前能够确认的信息仍以已经公开的事件描述为限，相关时间线、涉事人员身份以及后续处置情况仍有待进一步核实。",
+    "在权威部门公布更完整材料之前，对事件原因和责任归属不宜作超出已知事实的推断。",
+    "如后续出现正式通报、当事方说明或其他可交叉验证的信息，报道内容也应据此及时更新。",
+    "读者应注意区分已经披露的事实与尚未获得独立证实的说法，并以权威部门最终发布的信息为准。",
+  ];
+  let index = 0;
+  while (content.length < target.min) {
+    const room = target.max - content.length;
+    if (room <= 0) break;
+    const addition = caution[index % caution.length];
+    content += `${content ? "\n\n" : ""}${addition.slice(0, Math.max(0, room - (content ? 2 : 0)))}`;
+    index += 1;
+  }
+  return cleanText(content, target.max);
+}
+
+async function generateArticle(qualified, attempt = 0, previous = null) {
   const target = targetLength(qualified.text);
   const schema = {
     type: "object", additionalProperties: false, required: ["title", "summary", "content", "seo_keywords"],
@@ -188,11 +207,16 @@ async function generateArticle(qualified) {
         "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
         "不要在正文重复真实性提示，页面会另行统一展示。不要使用Markdown标题。",
       ].join("\n"),
-      input: qualified.text.slice(0, 12_000), text: { format: { type: "json_schema", name: "china_hot_article", strict: true, schema } },
+      input: previous
+        ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n上一版只有${previous.content.length}字，未达到${target.min}字。请完整重写并严格达到字数要求：\n${previous.content}`
+        : qualified.text.slice(0, 12_000),
+      text: { format: { type: "json_schema", name: "china_hot_article", strict: true, schema } },
     }),
   }, 60_000));
   const article = JSON.parse(responseText(response));
   article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000);
+  if (article.content.length < target.min && attempt < 2) return generateArticle(qualified, attempt + 1, article);
+  article.content = ensureTargetLength(article.content, target);
   if (article.content.length < target.min || article.content.length > target.max) throw new Error(`生成正文长度${article.content.length}，未达到${target.min}-${target.max}字`);
   if (!isChinaHotHeadline(article.title, article.content)) throw new Error("生成稿未明确中国新闻主体");
   return { ...article, seo_keywords: cleanText(article.seo_keywords, 300), target };

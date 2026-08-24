@@ -9,6 +9,7 @@ const IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-1";
 const BUCKET = process.env.ARTICLE_COVER_BUCKET || "article-covers";
 const LIMIT = Math.max(1, Math.min(50, Number(process.env.AI_COVER_MAX_PER_RUN || 20)));
 const HOT_CATEGORIES = new Set(["热门头条", "中国热门头条"]);
+const START_AT = process.env.AI_COVER_START_AT || "2026-08-24T00:00:00Z";
 
 function requireEnv() {
   if (!SUPABASE_URL || !SERVICE_KEY || !OPENAI_API_KEY) throw new Error("缺少 SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY 或 OPENAI_API_KEY");
@@ -47,7 +48,8 @@ async function readCandidates() {
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("visibility", "eq.public");
     url.searchParams.set("category_name", "in.(热门头条,中国热门头条)");
-    url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
+    url.searchParams.set("published_at", `gte.${START_AT}`);
+    url.searchParams.set("order", "published_at.asc.nullslast,created_at.asc");
     url.searchParams.set("limit", String(pageSize));
     url.searchParams.set("offset", String(offset));
     const rows = await parseResponse(await fetch(url, { headers: headers({ Accept: "application/json" }) }));

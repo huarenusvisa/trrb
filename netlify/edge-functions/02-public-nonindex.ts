@@ -27,8 +27,12 @@ export default async (request: Request, context: any) => {
   // The /niulai path on trrb.net is a non-canonical product copy. The same
   // files are also the canonical niulai.us site, where they must stay
   // indexable and must not inherit the TRRB duplicate-route header.
-  const hostname = new URL(request.url).hostname.toLowerCase();
-  if (hostname === "niulai.us" || hostname === "www.niulai.us") {
+  const forwardedHost = request.headers.get("x-forwarded-host") || "";
+  const requestHost = request.headers.get("host") || "";
+  const hostnames = [forwardedHost, requestHost, new URL(request.url).hostname]
+    .flatMap((value) => value.toLowerCase().split(","))
+    .map((value) => value.trim().replace(/:\d+$/, ""));
+  if (hostnames.includes("niulai.us") || hostnames.includes("www.niulai.us")) {
     const upstream = await context.next();
     const headers = new Headers(upstream.headers);
     headers.delete("x-robots-tag");

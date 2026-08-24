@@ -9,6 +9,8 @@ const KEY_LOCATION = `${ORIGIN}/${KEY}.txt`;
 const MAX = 10000;
 const ROOT = process.cwd();
 const INCLUDE_RETIRED = /^(?:1|true|yes)$/i.test(String(process.env.INDEXNOW_INCLUDE_RETIRED || ''));
+const FULL_SYNC = /^(?:1|true|yes)$/i.test(String(process.env.INDEXNOW_FULL_SYNC || ''));
+const CHANGED_URLS_FILE = String(process.env.INDEXNOW_CHANGED_URLS_FILE || '').trim();
 const RETIRED_FILE = 'retired-indexnow-urls.txt';
 
 function decodeXml(value) {
@@ -71,6 +73,16 @@ function retiredUrls() {
     .filter(Boolean);
 }
 
+function changedUrls() {
+  if (!CHANGED_URLS_FILE || !fs.existsSync(CHANGED_URLS_FILE)) return [];
+  return fs.readFileSync(CHANGED_URLS_FILE, 'utf8')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'))
+    .map(canonicalizeRetired)
+    .filter(Boolean);
+}
+
 function localSitemapPath(value) {
   try {
     const url = new URL(value);
@@ -116,12 +128,18 @@ freshNewsUrls.forEach((url) => candidates.add(url));
 const retired = retiredUrls();
 retired.forEach((url) => candidates.add(url));
 
+// Migration and publishing workflows can provide an exact change queue. This
+// keeps IndexNow focused on real additions, redirects and removals instead of
+// spending crawl quota on the complete unchanged archive every hour.
+const changed = changedUrls();
+changed.forEach((url) => candidates.add(url));
+
 candidates.add(`${ORIGIN}/`);
 
 // split-sitemap-index.mjs may convert sitemap.xml into a sitemapindex before
 // this script runs. Follow local child sitemaps recursively so IndexNow still
 // receives article canonicals rather than only sitemap-articles-N.xml URLs.
-if (fs.existsSync('sitemap.xml')) {
+if (FULL_SYNC && fs.existsSync('sitemap.xml')) {
   collectSitemapUrls('sitemap.xml').forEach((url) => candidates.add(url));
 }
 
@@ -146,5 +164,5 @@ const response = await fetch('https://api.indexnow.org/indexnow', {
 });
 
 const text = await response.text();
-console.log(`IndexNow提交 ${urls.length} 个URL（最新新闻 ${freshNewsUrls.length}；本次退役通知 ${retired.length}）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
+console.log(`IndexNow提交 ${urls.length} 个URL（最新新闻 ${freshNewsUrls.length}；变更队列 ${changed.length}；本次退役通知 ${retired.length}；全站同步 ${FULL_SYNC ? '是' : '否'}）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
 if (![200, 202].includes(response.status)) process.exit(1);

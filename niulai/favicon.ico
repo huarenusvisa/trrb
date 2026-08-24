@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <rect width="160" height="160" rx="32" fill="#0f63e9"/>
+  <rect x="23" y="26" width="114" height="108" rx="22" fill="#fff"/>
+  <path d="M37 106 L57 87 L72 94 L91 64 L108 74 L126 47" fill="none" stroke="#e52b32" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M112 47h14v14" fill="none" stroke="#e52b32" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="80" y="128" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="21" font-weight="800" fill="#0f2748">TR FIN</text>
+</svg>

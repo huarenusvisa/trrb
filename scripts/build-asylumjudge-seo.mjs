@@ -323,7 +323,7 @@ function renderNationality(template, country, locale, modified) {
   const canonical = localizedUrl(locale, relative);
   let html = template
     .replace('<body>', `<body data-country="${escapeHtml(country.nationality)}" data-seo-prerendered="true">`)
-    .replace('<h1 data-i18n="heroTitle">全球申请人庇护裁决结果</h1>', `<h1 data-i18n="heroTitle">${escapeHtml(title.replace(/\s*[|｜].*$/, ''))}</h1>`)
+    .replace('<h1 data-i18n="heroTitle">全球申请人庇护裁决结果</h1>', `<h1>${escapeHtml(title.replace(/\s*[|｜].*$/, ''))}</h1>`)
     .replace('<h2 id="selected-country">正在读取国籍数据…</h2>', `<h2 id="selected-country">${escapeHtml(localizedCountry)}</h2>`)
     .replace('<span id="selected-code"></span>', `<span id="selected-code">${escapeHtml(country.nationality_code || '')}</span>`)
     .replace('<strong id="current-rate" class="big-rate">—</strong>', `<strong id="current-rate" class="big-rate">${country.approval_rate == null ? '—' : `${Number(country.approval_rate).toFixed(1)}%`}</strong>`)

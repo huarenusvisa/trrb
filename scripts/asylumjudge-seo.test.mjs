@@ -65,6 +65,9 @@ assert.match(englishHome, /hreflang="pt-BR" href="https:\/\/asylumjudge\.com\/pt
 
 const arabicNationality = await read(`${new URL(nationalityUrl).pathname.replace(/^\//, '').replace(/\/$/, '')}/index.html`);
 assert.match(arabicNationality, /<html lang="ar" dir="rtl">/);
+assert.match(arabicNationality, /<body data-country="[^"]+" data-seo-prerendered="true">/);
+assert.match(arabicNationality, /<h1>[^<]+<\/h1>/, 'entity H1 must remain country-specific after client translations load');
+assert.doesNotMatch(arabicNationality, /<h1 data-i18n="heroTitle">/, 'entity H1 must not be replaced by the generic nationality title');
 
 const headers = await read('_headers');
 assert.match(headers, /\/judge\s+X-Robots-Tag: noindex, follow/);

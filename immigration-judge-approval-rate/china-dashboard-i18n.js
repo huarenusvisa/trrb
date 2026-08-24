@@ -86,9 +86,12 @@
   const applyStatic = () => {
     document.documentElement.lang = locale;
     document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr';
-    document.title = locale === 'zh-Hans' ? '全球庇护裁决结果与国籍趋势｜移民法官通过率' : locale === 'zh-Hant' ? '全球庇護裁決結果與國籍趨勢｜移民法官通過率' : t('pageTitle');
-    const description = document.querySelector('meta[name="description"]');
-    if (description) description.content = locale === 'zh-Hans' ? '按国籍查询美国移民法庭庇护裁决的批准、拒绝和其他结果，并查看月度、季度、年度真实趋势。' : locale === 'zh-Hant' ? '按國籍查詢美國移民法庭庇護裁決的批准、拒絕和其他結果，並查看月度、季度、年度真實趨勢。' : t('metaDescription');
+    const prerenderedEntity = document.body?.dataset.seoPrerendered === 'true' && document.body?.dataset.country;
+    if (!prerenderedEntity) {
+      document.title = locale === 'zh-Hans' ? '全球庇护裁决结果与国籍趋势｜移民法官通过率' : locale === 'zh-Hant' ? '全球庇護裁決結果與國籍趨勢｜移民法官通過率' : t('pageTitle');
+      const description = document.querySelector('meta[name="description"]');
+      if (description) description.content = locale === 'zh-Hans' ? '按国籍查询美国移民法庭庇护裁决的批准、拒绝和其他结果，并查看月度、季度、年度真实趋势。' : locale === 'zh-Hant' ? '按國籍查詢美國移民法庭庇護裁決的批准、拒絕和其他結果，並查看月度、季度、年度真實趨勢。' : t('metaDescription');
+    }
     document.querySelectorAll('[data-i18n]').forEach((node) => { node.textContent = t(node.dataset.i18n); });
     document.querySelectorAll('[data-i18n-placeholder]').forEach((node) => { node.placeholder = t(node.dataset.i18nPlaceholder); });
     document.querySelectorAll('[data-i18n-aria-label]').forEach((node) => { node.setAttribute('aria-label', t(node.dataset.i18nAriaLabel)); });

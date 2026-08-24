@@ -130,7 +130,7 @@ function renderCountries() {
 }
 
 async function load() {
-  const id = new URLSearchParams(location.search).get('id');
+  const id = document.body.dataset.judgeId || new URLSearchParams(location.search).get('id');
   if (!id) { $('#detail-loading').textContent = '缺少法官编号'; return; }
   try {
     const localUrl = `/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(id)}`;

@@ -1,6 +1,7 @@
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildAsylumJudgeSeo } from './build-asylumjudge-seo.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const bundle = join(root, '.netlify', 'asylumjudge-bundle');
@@ -25,6 +26,14 @@ await cp(join(root, 'styles.css'), join(output, 'styles.css'));
 await cp(join(root, 'trrb-logo-cropped.webp'), join(output, 'trrb-logo-cropped.webp'));
 await cp(join(root, 'asylumjudge', 'immigration-judges-proxy.js'), join(functions, 'immigration-judges.js'));
 
+await buildAsylumJudgeSeo({ root, output });
+
+const localePrefixes = ['en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
+const localizedRewrites = localePrefixes.flatMap((locale) => [
+  `/${locale}/judge /immigration-judge-approval-rate/detail.html 200`,
+  `/${locale}/court /immigration-judge-approval-rate/court-detail.html 200`
+]).join('\n');
+
 await writeFile(join(output, '_redirects'), `
 /judge /immigration-judge-approval-rate/detail.html 200
 /court /immigration-judge-approval-rate/court-detail.html 200
@@ -35,6 +44,7 @@ await writeFile(join(output, '_redirects'), `
 /methodology /immigration-judge-approval-rate/methodology.html 200
 /immigration-judge-approval-rate /index.html 301
 /immigration-judge-approval-rate/ /index.html 301
+${localizedRewrites}
 `.trimStart());
 
 await writeFile(join(output, '_headers'), `
@@ -54,6 +64,23 @@ await writeFile(join(output, '_headers'), `
 
 /sitemap.xml
   Content-Type: application/xml; charset=UTF-8
+  Cache-Control: public, max-age=3600
+
+/sitemap-*.xml
+  Content-Type: application/xml; charset=UTF-8
+  Cache-Control: public, max-age=3600
+
+/judge
+  X-Robots-Tag: noindex, follow
+
+/court
+  X-Robots-Tag: noindex, follow
+
+/*/judge
+  X-Robots-Tag: noindex, follow
+
+/*/court
+  X-Robots-Tag: noindex, follow
 `.trimStart());
 
 await writeFile(join(bundle, 'netlify.toml'), `

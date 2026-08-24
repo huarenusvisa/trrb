@@ -47,6 +47,8 @@
 
   const supported = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
   const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };
+  const localePaths = { en: 'en', es: 'es', fr: 'fr', 'pt-BR': 'pt-br', hi: 'hi', 'zh-Hans': '', 'zh-Hant': 'zh-hant', ru: 'ru', ar: 'ar', tr: 'tr' };
+  const pathLocales = new Map(Object.entries(localePaths).filter(([, path]) => path).map(([key, path]) => [path, key]));
   const normalize = (value) => {
     const raw = String(value || '');
     if (supported.includes(raw)) return raw;
@@ -54,7 +56,15 @@
     const base = raw.split('-')[0].toLowerCase();
     return supported.find((item) => item.toLowerCase() === base) || (base === 'pt' ? 'pt-BR' : base === 'zh' ? 'zh-Hans' : 'zh-Hans');
   };
-  let locale = normalize(new URLSearchParams(location.search).get('lang') || (() => { try { return localStorage.getItem('asylumjudge-language'); } catch { return ''; } })() || 'zh-Hans');
+  const firstPathSegment = location.pathname.split('/').filter(Boolean)[0]?.toLowerCase() || '';
+  let locale = normalize(pathLocales.get(firstPathSegment) || new URLSearchParams(location.search).get('lang') || (() => { try { return localStorage.getItem('asylumjudge-language'); } catch { return ''; } })() || 'zh-Hans');
+  const pathForLocale = (pathname, nextLocale) => {
+    const parts = String(pathname || '/').split('/').filter(Boolean);
+    if (parts.length && pathLocales.has(parts[0].toLowerCase())) parts.shift();
+    const base = `/${parts.join('/')}${String(pathname || '').endsWith('/') && parts.length ? '/' : ''}` || '/';
+    const prefix = localePaths[nextLocale] || '';
+    return prefix ? `/${prefix}${base === '/' ? '/' : base}` : base;
+  };
   const interpolate = (value, vars = {}) => String(value).replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
   const t = (key, vars) => interpolate(translations[locale]?.[key] ?? en[key] ?? key, vars);
   const formatNumber = (value) => Number(value || 0).toLocaleString(locale);
@@ -90,6 +100,12 @@
     try { localStorage.setItem('asylumjudge-language', locale); } catch {}
     if (options.updateUrl !== false) {
       const url = new URL(location.href);
+      const standalone = /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname);
+      if (standalone) {
+        url.searchParams.delete('lang');
+        location.href = `${pathForLocale(url.pathname, locale)}${url.search}${url.hash}`;
+        return;
+      }
       url.searchParams.set('lang', locale);
       history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
     }

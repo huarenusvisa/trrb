@@ -185,7 +185,7 @@ function showPage(page) {
     articles: "文章管理",
     "new-article": "发布文章",
     "finance-monitor": "牛来接口监控",
-    "ice-review": "ICE人工审核中心",
+    "content-center": "采集内容中心",
     "asylumjudge-review": "AsylumJudge内容中心",
     rankings: "24小时热榜"
   };
@@ -197,7 +197,7 @@ function showPage(page) {
 
   el(`${page}-page`).classList.remove("hidden");
   el("page-title").textContent = titles[page] || "控制台";
-  if (page === "ice-review") loadReviewQueue();
+  if (page === "content-center") window.loadUnifiedContentCenter?.();
   if (page === "finance-monitor") window.loadFinanceHealth?.();
   if (page === "asylumjudge-review") window.loadAsylumJudgeReview?.();
 }

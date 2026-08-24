@@ -28,7 +28,7 @@ async function fetchLivePublishedArticles(limit = 60) {
   const cacheKey = `trrb-live-v3-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at","metadata"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -43,7 +43,7 @@ async function fetchLiveArticleById(id) {
   const cacheKey = `trrb-live-article-v3-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at","metadata"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -61,7 +61,7 @@ function mapLiveArticle(row) {
     id: row.id, title: row.title || "", category: row.category_name || "新闻",
     excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
     seoKeywords: row.seo_keywords || "", author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
-    body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], isLive: true
+    body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], metadata: row.metadata || {}, isLive: true
   };
 }
 function formatLiveDate(value) { if (!value) return ""; const d = new Date(value); if (Number.isNaN(d.getTime())) return String(value); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
@@ -175,6 +175,7 @@ function renderArticle(root, article, articles) {
         alt="${escapeAttribute(article.title || "")}"
       />
     ` : ""}
+    ${article.metadata?.unverified_public_claim ? `<aside class="article-content-warning">${escapeHtml(article.metadata.content_warning || "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。")}</aside>` : ""}
     <div class="article-body">
       ${(article.body || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
     </div>

@@ -1,5 +1,17 @@
 /* TRRB V31.4: article navigation, random related reading and engagement CTA */
 
+.article-content-warning {
+  width: min(100%, 820px);
+  margin: 22px auto;
+  padding: 14px 16px;
+  border: 1px solid #f3c46f;
+  border-radius: 10px;
+  background: #fff8e7;
+  color: #73510d;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
 .article-page .article-header .tag.category-jump {
   display: inline-flex;
   align-items: center;

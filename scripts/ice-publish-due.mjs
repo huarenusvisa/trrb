@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js";
 
 const { buildPeopleCountMetadata } = peopleCountModule;
+const OFFICIAL_TYPES = /^(official|government|agency)$/i;
+const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 
 function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   const value = Number(process.env[name] ?? fallback);
@@ -60,14 +62,17 @@ async function dueStories(limit) {
   const query = {
     select: "*",
     status: "eq.approved",
-    human_review_status: "eq.approved",
-    reviewed_by: "not.is.null",
     order: "scheduled_at.asc.nullslast,created_at.asc",
     limit: String(Math.max(100, limit * 3))
   };
   if (!boolEnv("ICE_FORCE_FIRST_PUBLISH", false)) query.scheduled_at = `lte.${nowIso()}`;
   const rows = await sb("ice_stories", { query });
-  const stories = Array.isArray(rows) ? rows : [];
+  const stories = (Array.isArray(rows) ? rows : []).filter((story) => {
+    const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
+    const humanApproved = story.human_review_status === "approved" && Boolean(story.reviewed_by);
+    const officialApproved = story.human_review_status === "not_required_official" && payload?.official_direct_publish === true;
+    return humanApproved || officialApproved;
+  });
   const urgentCap = intEnv("ICE_URGENT_MAX_PER_RUN", 20, 1, 50);
   const urgent = stories.filter(isOfficialUrgent).slice(0, urgentCap);
   const urgentIds = new Set(urgent.map((story) => story.id));
@@ -77,6 +82,18 @@ async function dueStories(limit) {
 async function storyEvidence(storyId) {
   const rows = await sb("ice_story_evidence", { query: { select: "*", story_id: `eq.${storyId}`, order: "created_at.asc", limit: "100" } });
   return Array.isArray(rows) ? rows : [];
+}
+function officialPost(post) {
+  const type = String(post?.source_type || "");
+  const username = String(post?.source_username || "").replace(/^@/, "");
+  return OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username);
+}
+async function officialEvidence(storyId) {
+  const links = await storyEvidence(storyId);
+  const ids = links.map((row) => row.post_id).filter(Boolean);
+  if (!ids.length) return [];
+  const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username", id: `in.(${ids.join(",")})`, limit: "100" } });
+  return (Array.isArray(rows) ? rows : []).filter(officialPost);
 }
 async function leadPost(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
@@ -100,9 +117,10 @@ async function updateStory(id, patch) {
 async function publish(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
   const humanApproved = story.human_review_status === "approved" && Boolean(story.reviewed_by);
+  const officialApproved = story.human_review_status === "not_required_official" && payload?.official_direct_publish === true;
   const officialUrgent = isOfficialUrgent(story);
 
-  if (!humanApproved) {
+  if (!humanApproved && !officialApproved) {
     await updateStory(story.id, {
       status: "pending_review",
       human_review_status: "required",
@@ -110,6 +128,16 @@ async function publish(story) {
       decision_reason: `${story.decision_reason || ""}；发布器拦截：必须由后台真实管理员审核批准`
     });
     return null;
+  }
+  if (officialApproved) {
+    const verified = await officialEvidence(story.id);
+    if (!verified.length || story.conflict_detected || story.privacy_risk || story.fabrication_risk) {
+      await updateStory(story.id, {
+        status: "pending_review", human_review_status: "required", scheduled_at: null,
+        decision_reason: `${story.decision_reason || ""}；发布边界复核未通过，已转人工审核`
+      });
+      return null;
+    }
   }
   if (!String(story.title || "").trim() || !String(story.content || "").trim()) {
     await updateStory(story.id, { status: "pending_review", decision_reason: `${story.decision_reason || ""}；中文标题或正文尚未完成` });
@@ -150,14 +178,14 @@ async function publish(story) {
       author: "唐人日报编辑部", status: "published", published_at: time, created_at: time, topic_key: "ice", source_platform: "x",
       source_post_id: post.x_post_id, source_url: post.x_url, source_account: post.source_username, source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
-      review_status: "human_approved",
+      review_status: officialApproved ? "official_source_auto_published" : "human_approved",
       metadata: {
         event_fingerprint: story.event_fingerprint, event_type: eventType, city: post.city || "", state_code: post.state_code || "",
         location_text: post.location_text || [post.city, post.state_code].filter(Boolean).join(", "), ...peopleMetadata, total_score: story.total_score,
         independent_source_count: story.independent_source_count, official_source_count: story.official_source_count, media_source_count: story.media_source_count,
         organization_source_count: story.organization_source_count, decision_reason: story.decision_reason, human_review_status: story.human_review_status,
         reviewed_by: story.reviewed_by || null, reviewed_at: story.reviewed_at || null, editor_notes: story.editor_notes || "", official_urgent: officialUrgent,
-        official_source_auto: false, official_direct_publish: false, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
+        official_source_auto: officialApproved, official_direct_publish: officialApproved, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
         video_url: video?.url || "", video_poster: video?.poster || "", video_featured: temporaryFeatured, video_featured_until: featuredUntil,
         confirmed_facts: payload?.confirmed_facts || [], unconfirmed_claims: payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({ post_id: item.x_post_id, url: item.x_url, source_type: item.source_type, independence_key: item.independence_key }))

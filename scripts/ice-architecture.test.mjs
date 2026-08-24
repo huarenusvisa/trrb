@@ -28,7 +28,7 @@ test("成本控制、多信源和80分门槛存在", () => {
   assert.doesNotMatch(text, /git push/);
 });
 
-test("所有ICE内容必须由后台真实管理员审核", () => {
+test("ICE官方来源直发，非官方来源仍由后台真实管理员审核", () => {
   const collector = read("scripts/ice-multisource.mjs");
   const publisher = read("scripts/ice-publish-due.mjs");
   const trusted = read("scripts/ice-trusted-source-promote.mjs");
@@ -36,14 +36,14 @@ test("所有ICE内容必须由后台真实管理员审核", () => {
   assert.match(collector, /非官方内容即使达到80分/);
   assert.match(collector, /human_review_status/);
   assert.match(collector, /humanReviewStatus = "required"/);
-  assert.match(publisher, /human_review_status: "eq\.approved"/);
-  assert.match(publisher, /reviewed_by: "not\.is\.null"/);
   assert.match(publisher, /humanApproved = story\.human_review_status === "approved" && Boolean\(story\.reviewed_by\)/);
+  assert.match(publisher, /officialApproved = story\.human_review_status === "not_required_official"/);
+  assert.match(publisher, /officialEvidence\(story\.id\)/);
   assert.match(publisher, /必须由后台真实管理员审核批准/);
   assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
-  assert.match(trusted, /status: "pending_review"/);
-  assert.match(trusted, /human_review_status: "required"/);
-  assert.doesNotMatch(trusted, /status: "approved"/);
+  assert.match(trusted, /status: blockedByRisk \? "pending_review" : "approved"/);
+  assert.match(trusted, /human_review_status: blockedByRisk \? "required" : "not_required_official"/);
+  assert.match(trusted, /official_direct_publish: !blockedByRisk/);
   assert.match(restore, /reviewer_user_id/);
   assert.match(restore, /reviewed_by: approval\.reviewer_user_id/);
 });
@@ -68,20 +68,17 @@ test("ERO地区官方补抓使用可配置时间窗并支持分页去重", () =>
   assert.match(launcher, /!String\(row\.query_key \|\| ""\)\.startsWith\("ero-official-2h-"\)/);
 });
 
-test("DHS和ICE官方重大突发也只能优先进入人工审核", () => {
+test("ICE发布器在发布边界复核官方来源和风险标记", () => {
   const promoter = read("scripts/ice-official-urgent-promote.mjs");
   const publisher = read("scripts/ice-publish-due.mjs");
   syntaxCheck("scripts/ice-official-urgent-promote.mjs");
   syntaxCheck("scripts/ice-publish-due.mjs");
   assert.match(promoter, /dhsgov\|icegov\|ero/);
   assert.match(promoter, /official_urgent: true/);
-  assert.match(promoter, /official_urgent_requires_human_review: true/);
-  assert.match(promoter, /status: "pending_review"/);
-  assert.match(promoter, /human_review_status: "required"/);
   assert.match(promoter, /story\.conflict_detected \|\| story\.privacy_risk \|\| story\.fabrication_risk/);
-  assert.doesNotMatch(promoter, /human_review_status: "not_required"/);
   assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
-  assert.match(publisher, /review_status: "human_approved"/);
+  assert.match(publisher, /review_status: officialApproved \? "official_source_auto_published" : "human_approved"/);
+  assert.match(publisher, /发布边界复核未通过，已转人工审核/);
   assert.match(publisher, /category_name: "ICE执法动态"/);
   assert.match(publisher, /topic_key: "ice"/);
   assert.match(publisher, /distribution_channels: \["ICE执法动态", "ICE实时追踪"\]/);
@@ -95,12 +92,13 @@ test("同一ICE信息按来源帖子和事件指纹双重去重", () => {
   assert.match(publisher, /同一来源帖子或事件指纹已发布/);
 });
 
-test("trrb.net/admin包含ICE审核中心", () => {
+test("trrb.net/admin包含统一采集内容中心", () => {
   const html = read("admin/index.html");
   const js = read("admin/admin.js");
   const css = read("admin/styles.css");
-  assert.match(html, /ICE人工审核中心/);
-  assert.match(html, /所有采集内容（包括ICE\/DHS官方来源）必须由管理员确认后才能发布/);
+  assert.match(html, /采集内容中心/);
+  assert.match(html, /中国热门头条/);
+  assert.match(html, /ICE内容/);
   assert.match(html, /data-review-action="approve"/);
   assert.match(html, /data-review-action="publish_now"/);
   assert.match(js, /\/\.netlify\/functions\/ice-review/);

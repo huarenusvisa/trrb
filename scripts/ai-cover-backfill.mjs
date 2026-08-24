@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 import crypto from "node:crypto";
+import { pathToFileURL } from "node:url";
 
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-1";
 const BUCKET = process.env.ARTICLE_COVER_BUCKET || "article-covers";
-const LIMIT = Math.max(1, Math.min(10, Number(process.env.AI_COVER_MAX_PER_RUN || 4)));
+const LIMIT = Math.max(1, Math.min(50, Number(process.env.AI_COVER_MAX_PER_RUN || 20)));
 
 function requireEnv() {
   if (!SUPABASE_URL || !SERVICE_KEY || !OPENAI_API_KEY) throw new Error("缺少 SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY 或 OPENAI_API_KEY");
@@ -17,7 +18,7 @@ async function parseResponse(response) {
   if (!response.ok) throw new Error(text || `HTTP ${response.status}`);
   return text ? JSON.parse(text) : null;
 }
-function usable(value) {
+export function usable(value) {
   const text = String(value || "").trim();
   return Boolean(text) && !/(category-placeholders|image-placeholder|tang-ren-daily-placeholder)/i.test(text);
 }
@@ -35,17 +36,26 @@ async function ensureBucket() {
 }
 
 async function readCandidates() {
-  const select = "id,title,summary,content,category_name,topic_key,cover_image,status,published_at,created_at";
-  const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-  url.searchParams.set("select", select);
-  url.searchParams.set("status", "eq.published");
-  url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
-  url.searchParams.set("limit", "120");
-  const rows = await parseResponse(await fetch(url, { headers: headers({ Accept: "application/json" }) }));
-  return (Array.isArray(rows) ? rows : []).filter((row) => !usable(row.cover_image)).slice(0, LIMIT);
+  const select = "id,title,summary,content,category_name,topic_key,cover_image,image_alt,metadata,status,visibility,published_at,created_at";
+  const candidates = [];
+  const pageSize = 500;
+  for (let offset = 0; offset < 10_000 && candidates.length < LIMIT; offset += pageSize) {
+    const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
+    url.searchParams.set("select", select);
+    url.searchParams.set("status", "eq.published");
+    url.searchParams.set("visibility", "eq.public");
+    url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
+    url.searchParams.set("limit", String(pageSize));
+    url.searchParams.set("offset", String(offset));
+    const rows = await parseResponse(await fetch(url, { headers: headers({ Accept: "application/json" }) }));
+    const page = Array.isArray(rows) ? rows : [];
+    candidates.push(...page.filter((row) => !usable(row.cover_image)).slice(0, LIMIT - candidates.length));
+    if (page.length < pageSize) break;
+  }
+  return candidates;
 }
 
-function promptFor(row) {
+export function promptFor(row) {
   const material = `${row.title || ""} ${row.summary || ""}`;
   const topic = row.topic_key === "trump" || /特朗普|川普|Donald Trump/i.test(material)
     ? "Donald Trump related U.S. political news"
@@ -96,7 +106,16 @@ async function save(row, cover) {
   const response = await fetch(url, {
     method: "PATCH",
     headers: headers({ "Content-Type": "application/json", Prefer: "return=minimal" }),
-    body: JSON.stringify({ cover_image: cover })
+    body: JSON.stringify({
+      cover_image: cover,
+      image_alt: clean(row.image_alt || row.title, 220),
+      metadata: {
+        ...(row.metadata && typeof row.metadata === "object" ? row.metadata : {}),
+        ai_cover_generated: true,
+        ai_cover_model: IMAGE_MODEL,
+        ai_cover_generated_at: new Date().toISOString(),
+      },
+    })
   });
   if (!response.ok) throw new Error(`保存AI封面失败：${await response.text()}`);
 }
@@ -122,4 +141,6 @@ async function main() {
   if (candidates.length > 0 && completed === 0) process.exitCode = 1;
 }
 
-main().catch((error) => { console.error(error); process.exitCode = 1; });
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => { console.error(error); process.exitCode = 1; });
+}

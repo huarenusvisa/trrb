@@ -25,7 +25,7 @@ on:
         default: '1000'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: trrb-legacy-search-recovery
@@ -106,3 +106,9 @@ jobs:
             reports/legacy-search-acceptance-latest.json
           if-no-files-found: warn
           retention-days: 30
+
+  refresh-seo-feeds:
+    needs: restore
+    if: ${{ needs.restore.result == 'success' }}
+    uses: ./.github/workflows/round13-publish-seo-sync.yml
+    secrets: inherit

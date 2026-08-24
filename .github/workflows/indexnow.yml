@@ -15,6 +15,10 @@ on:
         default: 'false'
         type: choice
         options: ['false','true']
+      fresh_hours:
+        description: 仅推送最近多少小时发布的新闻
+        required: false
+        default: '3'
   workflow_call:
     inputs:
       full_sync:
@@ -25,6 +29,10 @@ on:
         required: false
         type: string
         default: 'false'
+      fresh_hours:
+        required: false
+        type: string
+        default: '3'
 
 permissions:
   contents: read
@@ -38,10 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      # Regular runs submit only fresh news. Full-site and retired URL pushes are
-      # explicit so unchanged archives do not consume Bing crawl quota hourly.
+      INDEXNOW_USE_LIVE_NEWS: 'true'
+      INDEXNOW_FRESH_HOURS: ${{ inputs.fresh_hours || '3' }}
+      INDEXNOW_INCLUDE_HOME: 'false'
       INDEXNOW_FULL_SYNC: ${{ inputs.full_sync || 'false' }}
       INDEXNOW_INCLUDE_RETIRED: ${{ inputs.include_retired || 'false' }}
     steps:
@@ -49,7 +56,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 生成最新站点地图并过滤非公开文章
+      - name: 全站同步时才生成本地站点地图
+        if: ${{ inputs.full_sync == 'true' }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           node scripts/generate-sitemaps.mjs
           node scripts/clean-sitemap-against-database.mjs

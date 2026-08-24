@@ -21,7 +21,6 @@ on:
           - jobs
   schedule:
     - cron: "27 */3 * * *"
-    - cron: "43 */6 * * *"
     - cron: "17 * * * *"
     - cron: "47 3 * * *"
     - cron: "7 7 * * *"
@@ -79,18 +78,17 @@ jobs:
     secrets: inherit
 
   seo-metadata:
-    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
     uses: ./.github/workflows/round13-publish-seo-sync.yml
     secrets: inherit
 
   seo-indexnow:
-    needs: seo-metadata
-    if: ${{ !cancelled() && (github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
+    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
     uses: ./.github/workflows/indexnow.yml
     secrets: inherit
 
   ico-accelerated-recovery:
-    if: ${{ github.event.schedule == '43 */6 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ico') }}
+    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ico') }}
     uses: ./.github/workflows/legacy-search-recovery.yml
     with:
       limit: 1000
@@ -126,11 +124,6 @@ jobs:
   daily-seo-integrity:
     if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
     uses: ./.github/workflows/seo-integrity.yml
-    secrets: inherit
-
-  daily-search-console:
-    if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
-    uses: ./.github/workflows/seo-search-engine-ops.yml
     secrets: inherit
 
   ice-night-maintenance:

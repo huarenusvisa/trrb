@@ -10,6 +10,9 @@ const MAX = 10000;
 const ROOT = process.cwd();
 const INCLUDE_RETIRED = /^(?:1|true|yes)$/i.test(String(process.env.INDEXNOW_INCLUDE_RETIRED || ''));
 const FULL_SYNC = /^(?:1|true|yes)$/i.test(String(process.env.INDEXNOW_FULL_SYNC || ''));
+const USE_LIVE_NEWS = !/^(?:0|false|no)$/i.test(String(process.env.INDEXNOW_USE_LIVE_NEWS || 'true'));
+const INCLUDE_HOME = /^(?:1|true|yes)$/i.test(String(process.env.INDEXNOW_INCLUDE_HOME || ''));
+const FRESH_HOURS = Math.max(1, Math.min(48, Number(process.env.INDEXNOW_FRESH_HOURS || 3)));
 const CHANGED_URLS_FILE = String(process.env.INDEXNOW_CHANGED_URLS_FILE || '').trim();
 const RETIRED_FILE = 'retired-indexnow-urls.txt';
 
@@ -61,6 +64,39 @@ function canonicalizeRetired(value) {
 
 function extractLocs(xml) {
   return rawLocs(xml).map(canonicalize).filter(Boolean);
+}
+
+function extractFreshNewsUrls(xml) {
+  const cutoff = Date.now() - FRESH_HOURS * 60 * 60 * 1000;
+  const blocks = String(xml || '').match(/<url>[\s\S]*?<\/url>/gi) || [];
+  const urls = [];
+  for (const block of blocks) {
+    const published = block.match(/<news:publication_date>([^<]+)<\/news:publication_date>/i)?.[1]?.trim();
+    const timestamp = Date.parse(published || '');
+    if (!Number.isFinite(timestamp) || timestamp < cutoff || timestamp > Date.now() + 300000) continue;
+    const loc = rawLocs(block).map(canonicalize).find(Boolean);
+    if (loc) urls.push(loc);
+  }
+  return urls;
+}
+
+async function loadFreshNewsUrls() {
+  if (USE_LIVE_NEWS) {
+    try {
+      const response = await fetch(`${ORIGIN}/news-sitemap.xml?indexnow=${Date.now()}`, {
+        cache: 'no-store',
+        headers: { accept: 'application/xml,text/xml;q=0.9,*/*;q=0.1', 'cache-control': 'no-cache' }
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const urls = extractFreshNewsUrls(await response.text());
+      console.log(`IndexNow实时新闻窗口：最近 ${FRESH_HOURS} 小时，共 ${urls.length} 个URL`);
+      return urls;
+    } catch (error) {
+      console.warn(`实时News Sitemap读取失败，回退本地文件：${error.message}`);
+    }
+  }
+  if (!fs.existsSync('news-sitemap.xml')) return [];
+  return extractFreshNewsUrls(fs.readFileSync('news-sitemap.xml', 'utf8'));
 }
 
 function retiredUrls() {
@@ -119,7 +155,7 @@ function collectSitemapUrls(filename, seen = new Set()) {
 const candidates = new Set();
 
 // Fresh news always wins the crawl budget.
-const freshNewsUrls = fs.existsSync('news-sitemap.xml') ? collectSitemapUrls('news-sitemap.xml') : [];
+const freshNewsUrls = await loadFreshNewsUrls();
 freshNewsUrls.forEach((url) => candidates.add(url));
 
 // Deleted/redirected URLs are inserted before the historical sitemap only on
@@ -134,7 +170,7 @@ retired.forEach((url) => candidates.add(url));
 const changed = changedUrls();
 changed.forEach((url) => candidates.add(url));
 
-candidates.add(`${ORIGIN}/`);
+if (INCLUDE_HOME) candidates.add(`${ORIGIN}/`);
 
 // split-sitemap-index.mjs may convert sitemap.xml into a sitemapindex before
 // this script runs. Follow local child sitemaps recursively so IndexNow still
@@ -164,5 +200,5 @@ const response = await fetch('https://api.indexnow.org/indexnow', {
 });
 
 const text = await response.text();
-console.log(`IndexNow提交 ${urls.length} 个URL（最新新闻 ${freshNewsUrls.length}；变更队列 ${changed.length}；本次退役通知 ${retired.length}；全站同步 ${FULL_SYNC ? '是' : '否'}）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
+console.log(`IndexNow提交 ${urls.length} 个URL（最近${FRESH_HOURS}小时新闻 ${freshNewsUrls.length}；变更队列 ${changed.length}；本次退役通知 ${retired.length}；全站同步 ${FULL_SYNC ? '是' : '否'}）：HTTP ${response.status}${text ? ` ${text.slice(0, 300)}` : ''}`);
 if (![200, 202].includes(response.status)) process.exit(1);

@@ -12,6 +12,12 @@ test("AI cover backfill is restricted to China Hot Headlines", () => {
   assert.equal(isHotCategory("重要新闻"), false);
 });
 
+test("workflow starts the cover queue on August 24, 2026 and ignores older archives", async () => {
+  const fs = await import("node:fs");
+  const workflow = fs.readFileSync(new URL("../.github/workflows/ai-cover-backfill.yml", import.meta.url), "utf8");
+  assert.match(workflow, /AI_COVER_START_AT:\s*"2026-08-24T00:00:00Z"/);
+});
+
 test("only truly missing or placeholder covers enter the AI queue", () => {
   assert.equal(usable(""), false);
   assert.equal(usable("./image-placeholder.svg"), false);

@@ -1,18 +1,15 @@
 import crypto from "node:crypto";
+import { pathToFileURL } from "node:url";
 
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
-const TARGET_CANDIDATES = Math.max(50, Math.min(500, Number(process.env.JOBS_TARGET_CANDIDATES || 400)));
+const TARGET_CANDIDATES = Math.max(50, Math.min(500, Number(process.env.JOBS_TARGET_CANDIDATES || 200)));
 const SOURCE_KEY = "500work";
 const SOURCE_ORIGIN = "https://500work.com";
 const USER_AGENT = "TangDailyJobsBot/1.0 (+https://huarengongzuo.com/)";
 const NOW = new Date();
 const NOW_ISO = NOW.toISOString();
 const EXPIRES_ISO = new Date(NOW.getTime() + 30 * 86400000).toISOString();
-
-if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
-}
 
 const blockedPhones = new Set(["9295715245", "7183587333"]);
 const suspicious = /酒店工|外送小姐|陪聊|陪酒|情色|色情|代孕|刷单|投资返利|博彩|赌场|跑分|洗钱|加密货币.*招聘/i;
@@ -24,13 +21,13 @@ const locationRules = [
   [/曼哈顿|Manhattan/i, ["NY", "Manhattan"]],
   [/长岛|Long Island/i, ["NY", "Long Island"]],
   [/纽约|New York/i, ["NY", "New York"]],
-  [/新泽西|New Jersey/i, ["NJ", "New Jersey"]],
+  [/新泽西|New Jersey|\bNJ\b/i, ["NJ", "New Jersey"]],
   [/康州|康涅狄格|Connecticut/i, ["CT", "Connecticut"]],
   [/波士顿|麻州|马萨诸塞|Boston|Massachusetts/i, ["MA", "Boston"]],
   [/费城|宾州|Philadelphia|Pennsylvania/i, ["PA", "Philadelphia"]],
   [/洛杉矶|加州|California|Los Angeles/i, ["CA", "Los Angeles"]],
   [/休斯敦|休斯顿|德州|Texas|Houston/i, ["TX", "Houston"]],
-  [/芝加哥|伊利诺伊|Chicago|Illinois/i, ["IL", "Chicago"]],
+  [/芝加哥|伊州|伊利诺伊|Chicago|Illinois/i, ["IL", "Chicago"]],
   [/亚特兰大|乔治亚|Atlanta|Georgia/i, ["GA", "Atlanta"]],
   [/迈阿密|佛州|Florida|Miami/i, ["FL", "Miami"]],
   [/西雅图|华盛顿州|Seattle|Washington State/i, ["WA", "Seattle"]],
@@ -60,7 +57,7 @@ const locationRules = [
 const categories = [
   [/餐厅|餐馆|厨师|炒锅|油锅|寿司|企台|服务员|后厨|打包|奶茶|咖啡|restaurant|cook|server/i, "restaurant"],
   [/美甲|美容|理发|nail|beauty/i, "beauty-nail"],
-  [/按摩|spa|massage/i, "massage"],
+  [/按摩|\bspa\b|massage/i, "massage"],
   [/装修|建筑|木工|电工|水电|冷气|玻璃|安装|construction/i, "construction"],
   [/仓库|物流|货仓|理货|叉车|warehouse|logistics/i, "logistics-warehouse"],
   [/司机|送货|配送|卡车|TLC|driver/i, "truck-driver"],
@@ -69,7 +66,7 @@ const categories = [
   [/律师|法律|legal/i, "legal"],
   [/会计|bookkeeper|accountant|finance/i, "accounting-finance"],
   [/地产|房产|real estate/i, "real-estate"],
-  [/学校|老师|教育|培训|teacher|school/i, "education"],
+  [/学校|老师|幼师|教育|培训|teacher|school/i, "education"],
   [/程序|软件|IT|电脑|developer|engineer/i, "it-tech"],
   [/办公室|文员|前台|助理|客服|行政|coordinator|assistant/i, "office-admin"],
   [/市场|销售|marketing|sales/i, "sales"],
@@ -92,11 +89,27 @@ function decodeHtml(value = "") {
 }
 
 function cleanTitle(html, text) {
+  const contentTitle = html.match(/<[^>]+id=["']contenttitle["'][^>]*>([\s\S]*?)<\/[^>]+>/i)?.[1];
   const h1 = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1];
   const title = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1];
-  return decodeHtml(h1 || title || text.slice(0, 120))
-    .replace(/[-_|，,]\s*(纽约工作网|美国工作网|美国求职).*$/i, "")
+  return decodeHtml(contentTitle || h1 || title || text.slice(0, 120))
+    .replace(/[，,]\s*[^，,]{0,16}工作网[\s\S]*$/i, "")
+    .replace(/[-_|]\s*(?:美国|纽约)?(?:华人)?(?:找工|工作|求职)网?.*$/i, "")
     .trim().slice(0, 120);
+}
+
+function extractJobFields(html, title) {
+  const descriptionHtml = html.match(/<div\b[^>]*class=["'][^"']*\bdesc\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i)?.[1] || "";
+  const description = decodeHtml(descriptionHtml).replace(/\s+/g, " ").trim();
+  const location = decodeHtml(html.match(/位置[:：]\s*([\s\S]*?)<\/div>/i)?.[1] || "");
+  const published = decodeHtml(html.match(/发布日期[:：]\s*([\s\S]*?)<\/div>/i)?.[1] || "");
+  const phone = decodeHtml(html.match(/电话[:：]\s*([\s\S]*?)<\/div>/i)?.[1] || "");
+  const email = decodeHtml(html.match(/邮箱[:：]\s*([\s\S]*?)<\/div>/i)?.[1] || "");
+  const position = decodeHtml(html.match(/职位[:：]\s*([\s\S]*?)<\/div>/i)?.[1] || "");
+  const salary = decodeHtml(html.match(/薪资[:：]\s*([\s\S]*?)<\/div>/i)?.[1] || "");
+  const contactText = `${phone} ${email}`.trim();
+  const coreText = `${title} ${description} ${position} ${salary} ${location}`.replace(/\s+/g, " ").trim();
+  return { description, location, published, contactText, coreText };
 }
 
 function pickContact(text) {
@@ -114,8 +127,10 @@ function pickLocation(text) {
   return null;
 }
 
-function pickCategory(text) {
-  for (const [pattern, slug] of categories) if (pattern.test(text)) return slug;
+function pickCategory(primaryText, supplementalText = "") {
+  for (const text of [primaryText, supplementalText]) {
+    for (const [pattern, slug] of categories) if (pattern.test(text)) return slug;
+  }
   return "other";
 }
 
@@ -139,16 +154,23 @@ function extractDescription(text, title) {
   return value.slice(0, 4000) || title;
 }
 
-async function fetchText(url) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20000);
-  try {
-    const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "text/html,application/xhtml+xml" }, signal: controller.signal, redirect: "follow" });
-    if (!response.ok) throw new Error(`${url} HTTP ${response.status}`);
-    return await response.text();
-  } finally {
-    clearTimeout(timeout);
+async function fetchText(url, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
+    try {
+      const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "text/html,application/xhtml+xml" }, signal: controller.signal, redirect: "follow" });
+      if (!response.ok) throw new Error(`${url} HTTP ${response.status}`);
+      return await response.text();
+    } catch (error) {
+      lastError = error;
+      if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 700 * attempt + Math.floor(Math.random() * 400)));
+    } finally {
+      clearTimeout(timeout);
+    }
   }
+  throw lastError;
 }
 
 async function rest(table, query = "", { method = "GET", body, prefer = "return=representation" } = {}) {
@@ -200,9 +222,10 @@ async function discoverUrls() {
 function normalizeCandidate(url, html) {
   const text = decodeHtml(html);
   const title = cleanTitle(html, text);
-  const contact = pickContact(text);
-  const location = pickLocation(`${title} ${text.slice(0, 3500)}`);
-  const published = pickPublishedAt(text);
+  const fields = extractJobFields(html, title);
+  const contact = pickContact(fields.contactText);
+  const location = pickLocation(title) || pickLocation(fields.location);
+  const published = pickPublishedAt(fields.published);
   const ageDays = published ? (NOW.getTime() - published.getTime()) / 86400000 : null;
   const errors = [];
   if (title.length < 2) errors.push("missing_title");
@@ -210,13 +233,13 @@ function normalizeCandidate(url, html) {
   if (!location) errors.push("no_verifiable_us_location");
   if (!published) errors.push("missing_source_date");
   else if (ageDays < -1 || ageDays > 30) errors.push("stale_or_invalid_source_date");
-  if (suspicious.test(`${title} ${text}`)) errors.push("high_risk_or_prohibited_content");
+  if (suspicious.test(fields.coreText)) errors.push("high_risk_or_prohibited_content");
   const externalId = url.match(/\/page\/(\d+)/)?.[1] || crypto.randomUUID();
-  const description = extractDescription(text, title);
+  const description = fields.description || extractDescription(fields.coreText, title);
   const payload = {
     title,
     description,
-    category_slug: pickCategory(`${title} ${description}`),
+    category_slug: pickCategory(title, `${fields.description} ${fields.position}`),
     country_code: "US",
     state_code: location?.state_code || null,
     city: location?.city || null,
@@ -256,14 +279,32 @@ async function storeCandidate(candidate) {
 
   if (candidate.errors.length) return "rejected";
 
-  const existingListing = await rest("job_listings", `${sourceFilter}&select=id,status,moderation_hold&limit=1`);
+  const existingListing = await rest("job_listings", `${sourceFilter}&select=id,status,status_reason,moderation_hold&limit=1`);
   if (existingListing?.[0]) {
-    await rest("job_listings", `id=eq.${existingListing[0].id}`, { method: "PATCH", body: {
+    const repairHeldListing = existingListing[0].status === "unlisted" && existingListing[0].status_reason === "auto_ingest_parser_quality_hold";
+    const body = {
       source_checked_at: NOW_ISO,
       source_payload_hash: candidate.payloadHash,
-    } });
+    };
+    if (repairHeldListing) Object.assign(body, {
+      category_slug: candidate.payload.category_slug,
+      title: candidate.payload.title,
+      description: candidate.payload.description,
+      state_code: candidate.payload.state_code,
+      city: candidate.payload.city,
+      status: "open",
+      status_reason: null,
+      published_at: NOW_ISO,
+      updated_at: NOW_ISO,
+      contact_method: candidate.payload.contact_method,
+      contact_value: candidate.payload.contact_value,
+      contact_public: candidate.payload.contact_public,
+      expires_at: EXPIRES_ISO,
+      source_published_at: candidate.payload.source_published_at,
+    });
+    await rest("job_listings", `id=eq.${existingListing[0].id}`, { method: "PATCH", body });
     if (rawId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: "published", normalized_job_listing_id: existingListing[0].id, validation_errors: [] } });
-    return "existing";
+    return repairHeldListing ? "repaired" : "existing";
   }
 
   const listing = await rest("job_listings", "", { method: "POST", body: {
@@ -301,16 +342,18 @@ async function storeCandidate(candidate) {
 }
 
 async function main() {
-  const summary = { started_at: NOW_ISO, target: TARGET_CANDIDATES, discovered: 0, fetched: 0, published: 0, existing: 0, rejected: 0, fetch_errors: 0, write_errors: 0 };
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
+  const summary = { started_at: NOW_ISO, target: TARGET_CANDIDATES, discovered: 0, fetched: 0, published: 0, repaired: 0, existing: 0, rejected: 0, fetch_errors: 0, write_errors: 0 };
   try {
     const urls = await discoverUrls();
     summary.discovered = urls.length;
     if (urls.length < 50) throw new Error(`Source discovery returned only ${urls.length} candidate URLs`);
 
-    const fetched = await mapLimit(urls, 8, async (url) => normalizeCandidate(url, await fetchText(url)));
+    const fetched = await mapLimit(urls, 3, async (url) => normalizeCandidate(url, await fetchText(url)));
     const candidates = fetched.filter((item) => !item?.error);
     summary.fetched = candidates.length;
     summary.fetch_errors = fetched.length - candidates.length;
+    for (const failed of fetched.filter((item) => item?.error).slice(0, 10)) console.error("FETCH_ERROR", failed.url, failed.error);
 
     const stored = await mapLimit(candidates, 4, async (candidate) => {
       try { return await storeCandidate(candidate); }
@@ -318,6 +361,7 @@ async function main() {
     });
     for (const status of stored) {
       if (status === "published") summary.published += 1;
+      else if (status === "repaired") summary.repaired += 1;
       else if (status === "existing") summary.existing += 1;
       else if (status === "rejected") summary.rejected += 1;
       else summary.write_errors += 1;
@@ -338,4 +382,6 @@ async function main() {
   }
 }
 
-await main();
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();
+
+export { normalizeCandidate };

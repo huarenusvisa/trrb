@@ -39,8 +39,8 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '6' }}
-      LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
-      LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}
+      LI_TEACHER_MAX_FETCH: ${{ (github.event_name == 'push' || inputs.recover_archived) && '200' || '100' }}
+      LI_TEACHER_MAX_PUBLISH: ${{ (github.event_name == 'push' || inputs.recover_archived) && '150' || '20' }}
       LI_TEACHER_PUBLISH_CONCURRENCY: "4"
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
         run: |
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_SERVICE_ROLE_KEY"
-          if [[ "${{ inputs.recover_archived }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
+          if [[ "${{ github.event_name }}" != "push" && "${{ inputs.recover_archived }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
         run: node --test scripts/china-hot-li-teacher-ingest.test.mjs
@@ -60,5 +60,5 @@ jobs:
         shell: bash
         run: |
           args=()
-          if [[ "${{ inputs.recover_archived }}" == "true" ]]; then args+=(--recover-archived); fi
+          if [[ "${{ github.event_name }}" == "push" || "${{ inputs.recover_archived }}" == "true" ]]; then args+=(--recover-archived); fi
           node scripts/china-hot-li-teacher-ingest.mjs "${args[@]}"

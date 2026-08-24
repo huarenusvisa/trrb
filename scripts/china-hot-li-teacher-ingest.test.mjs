@@ -29,6 +29,8 @@ test("识别并阻止提醒、呼吁和宣传式凑字", () => {
   assert.equal(containsBoilerplate("画面显示路口停有两辆救护车，店铺招牌位于道路北侧。"), false);
   assert.equal(containsBoilerplate("警方提醒公众提高警惕，增强自我保护意识。"), true);
   assert.equal(containsBoilerplate("该事件凸显了加强公共安全的必要性。"), true);
+  assert.equal(containsBoilerplate("书架显示视频制作者知识储备丰富，增强了说服力。"), true);
+  assert.equal(containsBoilerplate("关键词：重庆 现场 新闻"), true);
 });
 
 test("发布稿自动公开且不在前台暴露抓取来源", () => {

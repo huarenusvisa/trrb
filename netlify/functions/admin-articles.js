@@ -142,7 +142,10 @@ async function listArticles() {
     query: {
       select: "id,title,category_name,status,published_at,created_at,cover_image,summary,metadata",
       order: "created_at.desc",
-      limit: "100"
+      // Automated source intake can add more than 100 review drafts in one
+      // collection window. Keep them visible in the content center instead of
+      // silently dropping older pending items from the administrator list.
+      limit: "500"
     }
   });
   return Array.isArray(rows) ? rows : [];

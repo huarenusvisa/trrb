@@ -14,6 +14,13 @@ const CONCURRENCY = Math.max(1, Math.min(8, Number(
   concurrencyArg?.split('=')[1] || process.env.LEGACY_RESTORE_CONCURRENCY || 4
 )));
 const PRIORITY_IDS = new Set(String(process.env.LEGACY_PRIORITY_IDS || 'wp-117123').split(',').map((v)=>v.trim()).filter(Boolean));
+const PRIORITY_ONLY = String(process.env.LEGACY_PRIORITY_ONLY || '').toLowerCase() === 'true';
+const CATEGORY_OVERRIDES = new Map(
+  String(process.env.LEGACY_CATEGORY_OVERRIDES || '')
+    .split(',')
+    .map((entry) => entry.split('=').map((value) => value.trim()))
+    .filter(([from, to]) => from && to)
+);
 
 function clean(v='') { return String(v || '').replace(/\s+/g, ' ').trim(); }
 function normalizeTitle(v='') { return clean(v).normalize('NFKC').replace(/[\u200B-\u200D\uFEFF]/g,'').replace(/[\s\-—_·•:：,，。.!！?？“”‘’'"()（）【】\[\]《》<>\/\\|]+/g,'').toLowerCase(); }
@@ -135,6 +142,7 @@ const candidates=[];
 for (const row of archiveRows) {
   const id=clean(row.id);
   if(!/^wp-\d+$/i.test(id)){ skipped.bad_id++; continue; }
+  if(PRIORITY_ONLY && !PRIORITY_IDS.has(id)) continue;
   const numeric=id.replace(/^wp-/i,'');
   if(plannedLegacy.has(id)||plannedLegacy.has(numeric)){ skipped.existing_legacy++; continue; }
   const title=clean(row.title); const titleKey=normalizeTitle(title);
@@ -143,7 +151,9 @@ for (const row of archiveRows) {
   const content=body.join('\n\n');
   if(content.length<180){ skipped.no_body++; continue; }
   const published=publishedAt(row); if(!published){ skipped.bad_date++; continue; }
-  const cat=cats.get(clean(row.category)); if(!cat){ skipped.unknown_category++; continue; }
+  const archiveCategory=clean(row.category);
+  const categoryName=CATEGORY_OVERRIDES.get(archiveCategory) || archiveCategory;
+  const cat=cats.get(categoryName); if(!cat){ skipped.unknown_category++; continue; }
   const slug=slugify(title,id);
   candidates.push({
     legacy_id:id,title,slug,summary:clean(row.excerpt)||content.slice(0,180),content,
@@ -198,7 +208,8 @@ const report={
   generated_at:new Date().toISOString(),mode:APPLY?'apply':'report',archive_files:files.length,archive_records:archiveRows.length,
   current_articles:existing.length,recoverable_missing:candidates.length,selected:selected.length,inserted:inserted.length,
   limit:LIMIT,concurrency:CONCURRENCY,batches:Math.ceil(selected.length/25),skipped,
-  priority_ids:[...PRIORITY_IDS],priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
+  priority_ids:[...PRIORITY_IDS],priority_only:PRIORITY_ONLY,category_overrides:Object.fromEntries(CATEGORY_OVERRIDES),
+  priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
   insert_title_conflicts:insertTitleConflicts.slice(0,50),
   insert_content_conflicts:insertContentConflicts.slice(0,50),
   sample_missing:selected.slice(0,20).map((r)=>({legacy_id:r.legacy_id,title:r.title,category_name:r.category_name,canonical_url:r.canonical_url})),

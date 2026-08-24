@@ -21,6 +21,8 @@ jobs:
       SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       LEGACY_PRIORITY_IDS: wp-99575,wp-101867
+      LEGACY_PRIORITY_ONLY: 'true'
+      LEGACY_CATEGORY_OVERRIDES: '中国官场=热门头条'
       LEGACY_RESTORE_CONCURRENCY: '2'
     steps:
       - uses: actions/checkout@v4

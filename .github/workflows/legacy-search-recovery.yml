@@ -1,12 +1,6 @@
 name: 历史文章搜索资产恢复
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/restore-legacy-archive.mjs'
-      - 'scripts/submit-indexnow.mjs'
-      - '.github/workflows/legacy-search-recovery.yml'
   workflow_call:
     inputs:
       limit:

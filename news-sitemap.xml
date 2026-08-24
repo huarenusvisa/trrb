@@ -283,36 +283,4 @@
         <news:title>洛杉矶ICE拘留54岁中国籍贩毒嫌犯敖旭丰</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-bb82c6e0c635573ac9edf48502c87e3a86c5e021</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-22T01:03:30.189Z</news:publication_date>
-        <news:title>西雅图ICE拘押缅甸非法移民尼敏奈等待遣返</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-7a89357561af82197b82512ed4968852c4400c9b</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-22T00:50:38.708Z</news:publication_date>
-        <news:title>ICE在俄亥俄斯普林菲尔德逮捕数百海地移民</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-9da5a926eaf78729b3bb051c708df6c520e7f029</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-22T00:50:20.451Z</news:publication_date>
-        <news:title>ICE拘押墨西哥籍非法移民并遣返</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-535c138baa1b59445683a01285b8f788e5a66815</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-22T00:50:07.942Z</news:publication_date>
-        <news:title>前情报卧底Skoro在新泽西办理移民手续时被ICE逮捕</news:title>
-      </news:news>
-    </url>
 </urlset>

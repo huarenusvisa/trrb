@@ -323,28 +323,4 @@
         <news:title>印第安纳参议员Jim Banks推动七项移民法案</news:title>
       </news:news>
     </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-a06f940c6b6d9635c2761a3190fc6535cde007d7</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-22T05:45:49.883Z</news:publication_date>
-        <news:title>弗吉尼亚亚历山大市首航161人遣返海地航班</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-80470f1d6970effd306e9a5bb24b3b1219cd4686</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-22T05:45:40.887Z</news:publication_date>
-        <news:title>科罗拉多奥罗拉ICE疑似餐厅前拘捕两人</news:title>
-      </news:news>
-    </url>
-  <url>
-      <loc>https://trrb.net/ice/ice-20c7fc6070d75b6969fec78fc01f8d010a4b63d6</loc>
-      <news:news>
-        <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>
-        <news:publication_date>2026-08-22T05:45:32.377Z</news:publication_date>
-        <news:title>佛州莱克沃斯ICE与公路巡逻队联手拘捕多名嫌疑人</news:title>
-      </news:news>
-    </url>
 </urlset>

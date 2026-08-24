@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildPublishedArticle, ensureTargetLength, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildPublishedArticle, buildReviewDraft, ensureTargetLength, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -39,6 +39,16 @@ test("发布稿自动公开且不在前台暴露抓取来源", () => {
   assert.doesNotMatch(article.content, /李老师|X平台|x\.com/);
 });
 
+test("未自动发布的内容仍是可编辑、可人工发布的后台草稿", () => {
+  const draft = buildReviewDraft(chinaTweet, "需要编辑核对", "2026-08-23T09:00:00.000Z");
+  assert.equal(draft.status, "draft");
+  assert.equal(draft.visibility, "private");
+  assert.equal(draft.review_status, "manual_review");
+  assert.equal(draft.metadata.editable, true);
+  assert.equal(draft.metadata.manual_publish_allowed, true);
+  assert.match(draft.metadata.review_reason, /需要编辑核对/);
+});
+
 test("拒绝美国主导、回复、转帖和低信息片段", () => {
   assert.equal(qualifyTweet({ id: "us", text: "8月23日，美国佛罗里达州警方宣布将与ICE开展联合执法行动，并公布新的移民拘留安排。" }).accepted, false);
   assert.equal(qualifyTweet({ id: "reply", text: chinaTweet.text, referenced_tweets: [{ type: "replied_to" }] }).accepted, false);
@@ -50,6 +60,7 @@ test("中国热门头条与ICE统一为三小时控制平面", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   assert.match(workflow, /OPENAI_API_KEY/);
+  assert.match(workflow, /recover_archived/);
   assert.match(workflow, /LI_TEACHER_LOOKBACK_HOURS:.*6/);
   assert.match(control, /cron: "27 \*\/3 \* \* \*"/);
   assert.match(control, /china-hot-li-teacher:/);

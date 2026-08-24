@@ -23,7 +23,7 @@ jobs:
       LEGACY_PRIORITY_ONLY: 'false'
       LEGACY_CATEGORY_OVERRIDES: '热门头条=中国热门头条'
       LEGACY_RESTORE_CONCURRENCY: '4'
-      GSC_RECOVERY_REVISION: '6'
+      GSC_RECOVERY_REVISION: '7'
     steps:
       - uses: actions/checkout@v4
         with:

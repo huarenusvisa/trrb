@@ -8,6 +8,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-1";
 const BUCKET = process.env.ARTICLE_COVER_BUCKET || "article-covers";
 const LIMIT = Math.max(1, Math.min(50, Number(process.env.AI_COVER_MAX_PER_RUN || 20)));
+const HOT_CATEGORIES = new Set(["热门头条", "中国热门头条"]);
 
 function requireEnv() {
   if (!SUPABASE_URL || !SERVICE_KEY || !OPENAI_API_KEY) throw new Error("缺少 SUPABASE_URL、SUPABASE_SERVICE_ROLE_KEY 或 OPENAI_API_KEY");
@@ -22,6 +23,7 @@ export function usable(value) {
   const text = String(value || "").trim();
   return Boolean(text) && !/(category-placeholders|image-placeholder|tang-ren-daily-placeholder)/i.test(text);
 }
+export function isHotCategory(value) { return HOT_CATEGORIES.has(String(value || "").trim()); }
 function clean(value, max = 1000) { return String(value || "").replace(/\s+/g, " ").trim().slice(0, max); }
 
 async function ensureBucket() {
@@ -44,12 +46,13 @@ async function readCandidates() {
     url.searchParams.set("select", select);
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("visibility", "eq.public");
+    url.searchParams.set("category_name", "in.(热门头条,中国热门头条)");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
     url.searchParams.set("limit", String(pageSize));
     url.searchParams.set("offset", String(offset));
     const rows = await parseResponse(await fetch(url, { headers: headers({ Accept: "application/json" }) }));
     const page = Array.isArray(rows) ? rows : [];
-    candidates.push(...page.filter((row) => !usable(row.cover_image)).slice(0, LIMIT - candidates.length));
+    candidates.push(...page.filter((row) => isHotCategory(row.category_name) && !usable(row.cover_image)).slice(0, LIMIT - candidates.length));
     if (page.length < pageSize) break;
   }
   return candidates;
@@ -64,6 +67,7 @@ export function promptFor(row) {
       : `${row.category_name || "breaking news"}`;
   return [
     "Create a realistic editorial news photograph for a Chinese-language U.S. news website.",
+    "This image is exclusively for the China Hot Headlines section.",
     `News topic: ${topic}.`,
     `Headline context: ${clean(row.title, 220)}.`,
     `Story context: ${clean(row.summary || row.content, 600)}.`,

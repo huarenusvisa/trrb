@@ -2,6 +2,20 @@ name: 新闻AI封面自动补全
 
 on:
   workflow_dispatch:
+    inputs:
+      max_images:
+        description: "本次最多补多少张（1-50）"
+        required: false
+        default: "20"
+        type: string
+  schedule:
+    - cron: "23 9 * * *"
+  push:
+    branches: [main]
+    paths:
+      - scripts/ai-cover-backfill.mjs
+      - scripts/ai-cover-backfill.test.mjs
+      - .github/workflows/ai-cover-backfill.yml
 
 permissions:
   contents: read
@@ -13,20 +27,20 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 60
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_IMAGE_MODEL: ${{ secrets.OPENAI_IMAGE_MODEL || 'gpt-image-1' }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       ARTICLE_COVER_BUCKET: "article-covers"
-      AI_COVER_MAX_PER_RUN: "10"
+      AI_COVER_MAX_PER_RUN: ${{ inputs.max_images || '20' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Verify missing-cover selection and image prompt
+        run: node --test scripts/ai-cover-backfill.test.mjs
       - name: Generate and persist missing article covers
         run: node scripts/ai-cover-backfill.mjs
-
-# 2026-08-05 全站图片修复后立即触发一轮缺图补齐。

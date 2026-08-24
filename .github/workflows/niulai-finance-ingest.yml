@@ -1,4 +1,4 @@
-name: 牛来官方财经采集
+name: 牛来官方财经采集与草稿生成
 
 on:
   workflow_dispatch:
@@ -25,7 +25,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  collect-translate-publish:
+  collect-translate-draft:
     runs-on: ubuntu-latest
     timeout-minutes: 14
     env:
@@ -47,7 +47,7 @@ jobs:
           test -n "$SUPABASE_URL" || { echo "缺少 SUPABASE_URL"; exit 1; }
           test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少 SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
           if [[ -z "$X_BEARER_TOKEN" ]]; then echo "未配置 X API，本轮仍采集美联储、SEC、BLS 官方订阅源。"; fi
-      - name: 采集、生成中文快讯并发布
+      - name: 采集并生成后台待审中文草稿
         shell: bash
         run: |
           args=()

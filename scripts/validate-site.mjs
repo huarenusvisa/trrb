@@ -128,7 +128,9 @@ requireMatch(financeHealth, /niulai-finance-official-v1/, "finance admin health 
 requireMatch(financeSources, /press_monetary\.xml/, "official finance collector is missing the Federal Reserve feed");
 requireMatch(financeSources, /sec\.gov\/news\/pressreleases\.rss/, "official finance collector is missing the SEC feed");
 requireMatch(financeSources, /bls\.gov\/feed\/cpi\.rss/, "official finance collector is missing the BLS CPI feed");
-requireMatch(financeIngest, /official_source_auto_published/, "official finance collector is not marking auto-published articles");
+requireMatch(financeIngest, /review_status:\s*["']pending_review["']/, "official finance collector is not routing drafts to review");
+requireMatch(financeIngest, /status:\s*["']draft["']/, "official finance collector is bypassing the draft gate");
+requireMatch(financeIngest, /visibility:\s*["']private["']/, "official finance collector drafts are publicly visible");
 requireMatch(financeIngest, /source_url:\s*item\.url/, "official finance collector is not preserving source attribution");
 requireMatch(financeIngest, /X_BEARER_TOKEN/, "official finance collector is not ready for the X API token");
 requireMatch(financeWorkflow, /cron:\s*["']8,38 \* \* \* \*["']/, "official finance collector is not scheduled every 30 minutes");

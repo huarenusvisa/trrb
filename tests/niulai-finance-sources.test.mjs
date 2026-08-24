@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import {
   buildXQuery,
   dedupeItems,
@@ -68,4 +69,16 @@ test("recency gate rejects future and stale entries", () => {
   assert.equal(isRecent({ publishedAt: "2026-08-21T19:00:00Z" }, now, 72), true);
   assert.equal(isRecent({ publishedAt: "2026-08-10T19:00:00Z" }, now, 72), false);
   assert.equal(isRecent({ publishedAt: "2026-08-21T21:00:00Z" }, now, 72), false);
+});
+
+test("official finance ingestion stops at the existing human-review draft gate", () => {
+  const ingest = fs.readFileSync(new URL("../scripts/niulai-finance-ingest.mjs", import.meta.url), "utf8");
+  const workflow = fs.readFileSync(new URL("../.github/workflows/niulai-finance-ingest.yml", import.meta.url), "utf8");
+  assert.match(ingest, /status:\s*["']draft["']/);
+  assert.match(ingest, /visibility:\s*["']private["']/);
+  assert.match(ingest, /review_status:\s*["']pending_review["']/);
+  assert.match(ingest, /automatic_publish:\s*false/);
+  assert.doesNotMatch(ingest, /official_source_auto_published/);
+  assert.match(workflow, /collect-translate-draft:/);
+  assert.match(workflow, /后台待审中文草稿/);
 });

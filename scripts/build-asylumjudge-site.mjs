@@ -7,10 +7,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const bundle = join(root, '.netlify', 'asylumjudge-bundle');
 const output = join(bundle, 'public');
 const functions = join(bundle, 'netlify', 'functions');
+const edgeFunctions = join(bundle, 'netlify', 'edge-functions');
 
 await rm(bundle, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await mkdir(join(functions, '_shared'), { recursive: true });
+await mkdir(edgeFunctions, { recursive: true });
 
 await cp(join(root, 'asylumjudge'), join(output, 'asylumjudge'), { recursive: true });
 await cp(join(root, 'asylumjudge', 'index.html'), join(output, 'index.html'));

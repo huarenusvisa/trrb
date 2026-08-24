@@ -1,6 +1,7 @@
 [build]
   command = "node scripts/build-asylumjudge-site.mjs"
   publish = ".netlify/asylumjudge-bundle/public"
+  edge_functions = ".netlify/asylumjudge-bundle/netlify/edge-functions"
 
 [functions]
   directory = ".netlify/asylumjudge-bundle/netlify/functions"

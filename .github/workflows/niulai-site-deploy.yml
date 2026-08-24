@@ -29,7 +29,8 @@ jobs:
       - name: 构建独立站单一来源包
         run: node scripts/build-niulai-site.mjs
       - name: 发布到 niulai.us
-        run: npx --yes netlify-cli@latest deploy --prod --dir .netlify/niulai-bundle/public --site "$NETLIFY_SITE_ID" --message "Niulai share metadata $GITHUB_SHA"
+        working-directory: .netlify/niulai-bundle
+        run: npx --yes netlify-cli@latest deploy --prod --dir public --site "$NETLIFY_SITE_ID" --message "Niulai share metadata $GITHUB_SHA"
       - name: 验证分享图与抓取状态
         shell: bash
         run: |

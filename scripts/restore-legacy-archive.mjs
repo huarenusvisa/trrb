@@ -147,7 +147,9 @@ for (const row of archiveRows) {
   if(plannedLegacy.has(id)||plannedLegacy.has(numeric)){ skipped.existing_legacy++; continue; }
   const title=clean(row.title); const titleKey=normalizeTitle(title);
   if(!titleKey || plannedTitles.has(titleKey)){ skipped.existing_title++; continue; }
-  const body=Array.isArray(row.body)?row.body.map(clean).filter(Boolean):[];
+  const body=Array.isArray(row.body)
+    ? row.body.map(clean).filter(Boolean)
+    : (clean(row.body) ? [clean(row.body)] : []);
   const content=body.join('\n\n');
   if(content.length<180){ skipped.no_body++; continue; }
   const published=publishedAt(row); if(!published){ skipped.bad_date++; continue; }

@@ -1,0 +1,13 @@
+{
+  "name": "牛来｜唐人财经",
+  "short_name": "牛来财经",
+  "description": "财经新闻、自选行情、ETF与基金研究",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f63e9",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

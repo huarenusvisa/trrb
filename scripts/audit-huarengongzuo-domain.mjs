@@ -16,7 +16,8 @@ const checks = [
   ['employer and seeker publishing stay on canonical jobs routes', /\/jobs\/publish\.html/.test(page) && /\/jobs\/seeker\.html/.test(page)],
   ['domain root, robots and sitemap rewrites exist', ['/', '/robots.txt', '/sitemap.xml'].every((path) => redirects.includes(`https://huarengongzuo.com${path}`))],
   ['www and HTTP permanently canonicalize to HTTPS apex', /http:\/\/www\.huarengongzuo\.com\/\*/.test(redirects) && /https:\/\/www\.huarengongzuo\.com\/\*/.test(redirects)],
-  ['唐人日报 jobs name remains 求职招聘', />招聘求职<\/a>/.test(read('index.html')) && /美国招聘求职｜唐人日报/.test(trrbJobs)],
+  ['唐人日报 jobs entry links directly to independent site', /href="https:\/\/huarengongzuo\.com\/">招聘求职<\/a>/.test(read('index.html')) && /美国招聘求职｜唐人日报/.test(trrbJobs)],
+  ['independent site owns its browser and search icon', /\/favicon\.svg/.test(page) && /huarengongzuo\/logo-mark\.svg/.test(redirects)],
   ['custom-domain brand layer does not run on trrb.net', /if \(!\/\^\(www\\\.\)\?huarengongzuo/.test(brand)]
 ];
 

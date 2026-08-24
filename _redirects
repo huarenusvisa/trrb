@@ -1,6 +1,9 @@
 http://huarengongzuo.com/* https://huarengongzuo.com/:splat 301!
 http://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!
 https://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!
+https://huarengongzuo.com/favicon.ico /huarengongzuo/logo-mark.svg 200!
+https://huarengongzuo.com/favicon.svg /huarengongzuo/logo-mark.svg 200!
+https://huarengongzuo.com/site.webmanifest /huarengongzuo/site.webmanifest 200!
 https://huarengongzuo.com/ q=:q place=:place /huarengongzuo/index.html 200!
 https://huarengongzuo.com/ q=:q /huarengongzuo/index.html 200!
 https://huarengongzuo.com/ place=:place /huarengongzuo/index.html 200!
@@ -50,6 +53,9 @@ https://trrb.net/huarengongzuo/* https://huarengongzuo.com/:splat 301!
 https://trrb.net/jobs https://huarengongzuo.com/ 301!
 https://trrb.net/jobs/ https://huarengongzuo.com/ 301!
 https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
+https://trrb.net/niulai https://niulai.us/ 301!
+https://trrb.net/niulai/ https://niulai.us/ 301!
+https://trrb.net/niulai/* https://niulai.us/:splat 301!
 /index.html / 301!
 /important /important-news 301!
 /hot /hot-headlines 301!
@@ -78,8 +84,8 @@ https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
 /trump/ /trump 301!
 /topic/trump /trump 301!
 /topic/trump/ /trump 301!
-/finance /niulai/ 301!
-/finance/ /niulai/ 301!
-/finance/:splat /niulai/:splat 301!
+/finance https://niulai.us/ 301!
+/finance/ https://niulai.us/ 301!
+/finance/:splat https://niulai.us/:splat 301!
 /us-politics /listing.html?category=%E7%BE%8E%E5%9B%BD%E6%97%B6%E6%94%BF 200
 /us-crime /listing.html?category=%E7%BE%8E%E5%9B%BD%E8%AD%A6%E6%83%85 200

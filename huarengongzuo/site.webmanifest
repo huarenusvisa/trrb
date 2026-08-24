@@ -1,0 +1,13 @@
+{
+  "name": "华人工作网",
+  "short_name": "华人工作",
+  "description": "美国华人招聘与求职",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1769d2",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -31,7 +31,7 @@ permissions:
 
 concurrency:
   group: china-hot-li-teacher-content-intake
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   collect-to-content-center:
@@ -46,7 +46,7 @@ jobs:
       LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '6' }}
       LI_TEACHER_MAX_FETCH: ${{ (github.event_name == 'push' || inputs.recover_archived) && '200' || '100' }}
       LI_TEACHER_MAX_PUBLISH: ${{ (github.event_name == 'push' || inputs.recover_archived) && '150' || '20' }}
-      LI_TEACHER_PUBLISH_CONCURRENCY: "4"
+      LI_TEACHER_PUBLISH_CONCURRENCY: "8"
       CHINA_HOT_REPAIR_SINCE: "2026-08-24T00:00:00Z"
     steps:
       - uses: actions/checkout@v4

@@ -12,7 +12,7 @@ const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
-const EXPANSION_VERSION = "grounded-image-v4";
+const EXPANSION_VERSION = "grounded-image-v5";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const MAX_PUBLISH = intEnv("LI_TEACHER_MAX_PUBLISH", RECOVER_ARCHIVED ? 150 : 20, 1, 150);
@@ -203,7 +203,10 @@ const BOILERPLATE_PATTERNS = [
   /如后续出现正式通报/u, /读者应注意区分/u,
   /知识储备/u, /专业性/u, /说服力/u, /提供了.{0,16}(?:视角|启示)/u,
   /反映出.{0,20}(?:工作状态|生活状态|性格|能力|素质)/u,
-  /关键词\s*[:：]/u,
+  /关键词\s*[:：]/u, /seo[_\s-]*keywords?\s*[:：]/iu,
+  /(?:属于|是).{0,16}(?:重要|知名|大型)(?:交通通道|企业|机构|项目)/u,
+  /知名大型(?:央企|国企|民企|公司|集团)/u,
+  /显著的视觉信息更新/u, /呈现了.{0,20}具体情况/u,
 ];
 
 export function containsBoilerplate(value) {
@@ -245,7 +248,7 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
         "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
         "禁止写任何提醒、呼吁、警惕、号召、建议、启示、意义、必要性、重要性、重视、决心、严厉打击等套话。不要评论，不要像广告或宣传稿。",
-        "content字段只能是正文，不得在正文末尾添加关键词、标签、SEO词、来源栏或说明栏。",
+        "content字段只能是正文，不得在正文末尾添加关键词、标签、SEO词、来源栏或说明栏；seo_keywords只能放在单独的seo_keywords字段。",
         "不要在正文重复真实性提示，页面会另行统一展示。不要使用Markdown标题。信息确实不足以达到字数时不要编造。",
       ].join("\n"),
       input: [{ role: "user", content: [

@@ -1,0 +1,70 @@
+name: GSC priority recovery (one time)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/gsc-priority-recovery-once.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-gsc-priority-recovery-once
+  cancel-in-progress: false
+
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      LEGACY_PRIORITY_IDS: wp-99575,wp-101867
+      LEGACY_RESTORE_CONCURRENCY: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore the two verified GSC examples
+        id: restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SUPABASE_SERVICE_ROLE_KEY:-}" || { echo 'SUPABASE_SERVICE_ROLE_KEY missing'; exit 2; }
+          node scripts/restore-legacy-archive.mjs --apply --limit=2 --concurrency=2
+          node - <<'NODE'
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('reports/legacy-migration-latest.json', 'utf8'));
+          const wanted = new Set(['wp-99575', 'wp-101867']);
+          const restored = new Set((report.inserted_rows || []).map((row) => String(row.legacy_id || '')));
+          const missing = [...wanted].filter((id) => !restored.has(id));
+          if (missing.length) {
+            console.error(`Verified GSC recovery failed: ${missing.join(', ')}`);
+            console.error(JSON.stringify(report, null, 2));
+            process.exit(1);
+          }
+          NODE
+
+      - name: Submit exact changed URLs to IndexNow
+        env:
+          INDEXNOW_CHANGED_URLS_FILE: reports/legacy-indexnow-urls.txt
+          INDEXNOW_INCLUDE_RETIRED: 'false'
+          INDEXNOW_FULL_SYNC: 'false'
+        run: node scripts/submit-indexnow.mjs
+
+      - name: Upload recovery evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gsc-priority-recovery-${{ github.run_id }}
+          path: |
+            reports/legacy-migration-latest.json
+            reports/legacy-indexnow-urls.txt
+          if-no-files-found: warn
+          retention-days: 30

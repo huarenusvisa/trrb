@@ -10,6 +10,9 @@ const PIPELINE = "china-hot-li-teacher-v2";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
+const REPAIR_TODAY = process.argv.includes("--repair-today");
+const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
+const EXPANSION_VERSION = "grounded-image-v3";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const MAX_PUBLISH = intEnv("LI_TEACHER_MAX_PUBLISH", RECOVER_ARCHIVED ? 150 : 20, 1, 150);
@@ -35,7 +38,7 @@ function requiredEnvironment() {
   if (!cleanText(process.env.SUPABASE_URL, 2_000)) missing.push("SUPABASE_URL");
   if (!cleanText(process.env.SUPABASE_SERVICE_ROLE_KEY, 20_000)) missing.push("SUPABASE_SERVICE_ROLE_KEY");
   if (!cleanText(process.env.OPENAI_API_KEY, 20_000)) missing.push("OPENAI_API_KEY");
-  if (!RECOVER_ARCHIVED && !bearerToken()) missing.push("X_BEARER_TOKEN");
+  if (!RECOVER_ARCHIVED && !REPAIR_TODAY && !bearerToken()) missing.push("X_BEARER_TOKEN");
   if (missing.length) throw new Error(`缺少GitHub Secret：${missing.join(", ")}`);
 }
 
@@ -94,7 +97,9 @@ export function qualifyTweet(tweet) {
 }
 
 export function targetLength(rawText) {
-  return cleanText(rawText, 20_000).length < 300 ? { min: 300, max: 600, band: "short" } : { min: 800, max: 1500, band: "long" };
+  const length = cleanText(rawText, 20_000).length;
+  if (length < 300) return { min: 300, max: 650, band: "short" };
+  return { min: Math.min(length, 1200), max: Math.min(1500, Math.max(650, length + 250)), band: "source-led" };
 }
 
 function mediaFor(tweet, mediaMap) {
@@ -189,26 +194,31 @@ function responseText(response) {
   return "";
 }
 
-export function ensureTargetLength(value, target) {
-  let content = cleanText(value, 20_000);
-  const caution = [
-    "目前能够确认的信息仍以已经公开的事件描述为限，相关时间线、涉事人员身份以及后续处置情况仍有待进一步核实。",
-    "在权威部门公布更完整材料之前，对事件原因和责任归属不宜作超出已知事实的推断。",
-    "如后续出现正式通报、当事方说明或其他可交叉验证的信息，报道内容也应据此及时更新。",
-    "读者应注意区分已经披露的事实与尚未获得独立证实的说法，并以权威部门最终发布的信息为准。",
-  ];
-  let index = 0;
-  while (content.length < target.min) {
-    const room = target.max - content.length;
-    if (room <= 0) break;
-    const addition = caution[index % caution.length];
-    content += `${content ? "\n\n" : ""}${addition.slice(0, Math.max(0, room - (content ? 2 : 0)))}`;
-    index += 1;
-  }
-  return cleanText(content, target.max);
+const BOILERPLATE_PATTERNS = [
+  /警方提醒/u, /公众(?:也|仍|应|需)?.{0,12}(?:提高警惕|增强.*意识|及时报警)/u,
+  /维护社会治安.{0,8}决心/u, /严厉打击类似/u, /共同营造.{0,16}环境/u,
+  /该事件(?:再次)?(?:体现|凸显).{0,30}(?:必要性|重要性|力度)/u,
+  /请关注后续官方通报/u, /欢迎社会各界共同关注/u,
+  /目前能够确认的信息仍以/u, /在权威部门公布更完整材料之前/u,
+  /如后续出现正式通报/u, /读者应注意区分/u,
+];
+
+export function containsBoilerplate(value) {
+  const text = cleanText(value, 20_000);
+  return BOILERPLATE_PATTERNS.some((pattern) => pattern.test(text));
 }
 
-async function generateArticle(qualified, attempt = 0, previous = null) {
+function visualInputs(tweet) {
+  const seen = new Set();
+  return (Array.isArray(tweet?.media) ? tweet.media : []).flatMap((item) => {
+    const value = cleanText(item?.url || item?.preview_image_url, 2_000);
+    if (!/^https:\/\//i.test(value) || seen.has(value)) return [];
+    seen.add(value);
+    return [{ type: "input_image", image_url: value, detail: "high" }];
+  }).slice(0, 4);
+}
+
+async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
   const target = targetLength(qualified.text);
   const schema = {
     type: "object", additionalProperties: false, required: ["title", "summary", "content", "seo_keywords"],
@@ -220,26 +230,33 @@ async function generateArticle(qualified, attempt = 0, previous = null) {
   const response = await readJson(await request("https://api.openai.com/v1/responses", {
     method: "POST", headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: OPENAI_MODEL, store: false, max_output_tokens: target.band === "long" ? 2600 : 1300,
+      model: OPENAI_MODEL, store: false, max_output_tokens: target.max > 900 ? 2600 : 1600,
       instructions: [
-        "你是唐人日报中国热门头条编辑。只依据输入原文整理中文新闻，严禁补造人物、数字、地点、引语、原因或结果。",
-        `正文必须为${target.min}至${target.max}个中文字符，采用新闻稿结构；信息不足时只能增加中性背景、核实状态和事件脉络，不能发明事实。`,
+        "你是唐人日报中国热门头条编辑。只依据输入原文和随附原帖图片整理中文新闻，严禁补造人物、数字、地点、引语、原因或结果。",
+        `正文必须为${target.min}至${target.max}个中文字符，采用自然的新闻稿结构。字数必须来自有效信息，禁止用提醒、呼吁、空泛评价或重复句凑字。`,
+        "优先从图片中读取可辨认的文字、通知、评论、时间、地点、物件、服装、动作、场景、构图和色彩。图片信息必须用“截图文字显示”“画面可见”等方式明确归因；看不清就不写。",
+        "允许补充与原文直接相关且确定的基础地理背景，例如城市所属省份、区县与城市的行政关系、画面所示场所类型；不要补充无法从原文或图片确认的统计数字、历史细节或争议判断。",
+        "不得根据长相推断人物性格、职业、身份、族群、健康状况、犯罪倾向或动机；只描述画面中直接可见的表情、姿态、衣着和行为。",
         "标题必须保留原文中的中国地点、机构或政治人物等主体，使文章明确属于中国新闻。",
-        "对未核实说法使用‘公开信息显示’‘相关说法尚待核实’等审慎表达。",
+        "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
         "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
-        "不要在正文重复真实性提示，页面会另行统一展示。不要使用Markdown标题。",
+        "禁止写“警方提醒”“公众应提高警惕”“及时报警”“共同营造”“体现了重视或决心”“严厉打击类似行为”等套话。不要评论或号召，不要像广告或宣传稿。",
+        "不要在正文重复真实性提示，页面会另行统一展示。不要使用Markdown标题。信息确实不足以达到字数时不要编造。",
       ].join("\n"),
-      input: previous
-        ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n上一版只有${previous.content.length}字，未达到${target.min}字。请完整重写并严格达到字数要求：\n${previous.content}`
-        : qualified.text.slice(0, 12_000),
+      input: [{ role: "user", content: [
+        { type: "input_text", text: previous
+          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n上一版未通过质量检查（长度${previous.content.length}，或含套话）。请重新阅读原文和图片，完整重写；只能补充有依据的具体信息：\n${previous.content}`
+          : `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n请结合随附原帖图片中的可见信息整理文章。` },
+        ...visualInputs(tweet),
+      ] }],
       text: { format: { type: "json_schema", name: "china_hot_article", strict: true, schema } },
     }),
   }, 60_000));
   const article = JSON.parse(responseText(response));
   article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000);
-  if (article.content.length < target.min && attempt < 2) return generateArticle(qualified, attempt + 1, article);
-  article.content = ensureTargetLength(article.content, target);
+  if ((article.content.length < target.min || containsBoilerplate(article.content)) && attempt < 2) return generateArticle(qualified, tweet, attempt + 1, article);
   if (article.content.length < target.min || article.content.length > target.max) throw new Error(`生成正文长度${article.content.length}，未达到${target.min}-${target.max}字`);
+  if (containsBoilerplate(article.content)) throw new Error("生成正文含提醒、呼吁或宣传式套话，禁止自动发布");
   if (!isChinaHotHeadline(article.title, article.content)) throw new Error("生成稿未明确中国新闻主体");
   return { ...article, seo_keywords: cleanText(article.seo_keywords, 300), target };
 }
@@ -265,6 +282,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       category_display_name: "中国热门头条", unverified_public_claim: true, content_warning: WARNING,
       public_source_attribution: false, source_text_original: qualified.text, source_media: attachments,
       source_public_metrics: tweet.public_metrics || {}, openai_model: OPENAI_MODEL, generated_target: article.target,
+      editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
     },
   };
 }
@@ -349,7 +367,7 @@ async function recoverArchivedBatch() {
           results.push({ tweetId: tweet.id, status: "deferred" });
           continue;
         }
-        const generated = await generateArticle(qualified);
+        const generated = await generateArticle(qualified, tweet);
         const saved = await publishArticle(buildPublishedArticle(tweet, qualified, generated));
         await patchCandidate(row.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
         counters.published += 1;
@@ -374,8 +392,79 @@ async function recoverArchivedBatch() {
   return report;
 }
 
+async function repairablePublishedArticles() {
+  const rows = await supabase("articles", { query: {
+    select: "id,title,summary,content,seo_keywords,source_post_id,source_created_at,created_at,metadata",
+    automation_source: `eq.${PIPELINE}`, category_name: `eq.${CHINA_HOT_CATEGORY}`,
+    status: "eq.published", visibility: "eq.public", created_at: `gte.${REPAIR_SINCE}`,
+    order: "created_at.asc", limit: "200",
+  } });
+  return (Array.isArray(rows) ? rows : []).filter((row) => (
+    row?.metadata?.automatic_publish === true
+    && row?.metadata?.editorial_expansion_version !== EXPANSION_VERSION
+  ));
+}
+
+function tweetFromArticle(row) {
+  return {
+    id: cleanText(row.source_post_id, 100),
+    text: cleanText(row?.metadata?.source_text_original || row.content, 20_000),
+    created_at: row.source_created_at || row.created_at,
+    public_metrics: row?.metadata?.source_public_metrics || {},
+    media: Array.isArray(row?.metadata?.source_media) ? row.metadata.source_media : [],
+  };
+}
+
+async function repairTodayBatch() {
+  const rows = await repairablePublishedArticles();
+  const results = [];
+  const counters = { fetched: rows.length, repaired: 0, skipped: 0, failed: 0 };
+  let cursor = 0;
+  async function worker() {
+    while (cursor < rows.length) {
+      const row = rows[cursor++];
+      try {
+        const tweet = tweetFromArticle(row);
+        const rawText = textWithoutLinks(tweet.text);
+        const qualified = { accepted: true, reason: "repair", text: rawText, title: deriveTitle(rawText) };
+        if (!tweet.id || rawText.length < 35) {
+          counters.skipped += 1;
+          results.push({ id: row.id, status: "skipped", reason: "missing-source-material" });
+          continue;
+        }
+        const article = await generateArticle(qualified, tweet);
+        const metadata = {
+          ...(row.metadata || {}), editorial_expansion_version: EXPANSION_VERSION,
+          image_grounding_used: visualInputs(tweet).length > 0,
+          repaired_at: new Date().toISOString(), openai_model: OPENAI_MODEL,
+          generated_target: article.target,
+        };
+        if (!DRY_RUN) await supabase("articles", {
+          method: "PATCH", query: { id: `eq.${row.id}` }, prefer: "return=minimal",
+          body: {
+            title: article.title, summary: article.summary, content: article.content,
+            seo_title: article.title, seo_description: article.summary,
+            seo_keywords: article.seo_keywords, metadata, updated_at: new Date().toISOString(),
+          },
+        });
+        counters.repaired += 1;
+        results.push({ id: row.id, status: DRY_RUN ? "dry-run" : "repaired", title: article.title, chars: article.content.length });
+      } catch (error) {
+        counters.failed += 1;
+        results.push({ id: row.id, status: "failed", error: cleanText(error?.message || error, 800) });
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(PUBLISH_CONCURRENCY, rows.length || 1) }, () => worker()));
+  const report = { pipeline: PIPELINE, mode: "repair-today", expansionVersion: EXPANSION_VERSION, since: REPAIR_SINCE, checkedAt: new Date().toISOString(), ...counters, results };
+  console.log(JSON.stringify(report, null, 2));
+  if (counters.failed) throw new Error(`有${counters.failed}篇今日自动稿未完成重写，可再次运行修复任务`);
+  return report;
+}
+
 export async function run() {
   requiredEnvironment();
+  if (REPAIR_TODAY) return repairTodayBatch();
   if (RECOVER_ARCHIVED) return recoverArchivedBatch();
   const tweets = await collectXPosts();
   const results = [];
@@ -399,7 +488,7 @@ export async function run() {
     if (counters.published >= MAX_PUBLISH) { results.push({ tweetId: tweet.id, status: "deferred" }); continue; }
     const candidate = priorCandidate || await createCandidate(tweet, qualified);
     try {
-      const generated = await generateArticle(qualified);
+      const generated = await generateArticle(qualified, tweet);
       const articleBody = buildPublishedArticle(tweet, qualified, generated);
       const saved = await publishArticle(articleBody);
       await patchCandidate(candidate?.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });

@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildPublishedArticle, buildReviewDraft, ensureTargetLength, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -20,12 +20,15 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
 });
 
-test("不足300字补到300至600字，达到300字扩写到800至1500字", () => {
-  assert.deepEqual(targetLength("短文"), { min: 300, max: 600, band: "short" });
-  assert.deepEqual(targetLength("中".repeat(300)), { min: 800, max: 1500, band: "long" });
-  const padded = ensureTargetLength("已知事实简述。", { min: 300, max: 600 });
-  assert.ok(padded.length >= 300 && padded.length <= 600);
-  assert.doesNotMatch(padded, /媒体|账号|平台|链接/);
+test("不足300字扩写到300字以上，原文已足300字则不强迫扩成800字", () => {
+  assert.deepEqual(targetLength("短文"), { min: 300, max: 650, band: "short" });
+  assert.deepEqual(targetLength("中".repeat(300)), { min: 300, max: 650, band: "source-led" });
+});
+
+test("识别并阻止提醒、呼吁和宣传式凑字", () => {
+  assert.equal(containsBoilerplate("画面显示路口停有两辆救护车，店铺招牌位于道路北侧。"), false);
+  assert.equal(containsBoilerplate("警方提醒公众提高警惕，增强自我保护意识。"), true);
+  assert.equal(containsBoilerplate("该事件凸显了加强公共安全的必要性。"), true);
 });
 
 test("发布稿自动公开且不在前台暴露抓取来源", () => {
@@ -61,6 +64,8 @@ test("中国热门头条与ICE统一为三小时控制平面", () => {
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   assert.match(workflow, /OPENAI_API_KEY/);
   assert.match(workflow, /recover_archived/);
+  assert.match(workflow, /repair_today/);
+  assert.match(workflow, /--repair-today/);
   assert.match(workflow, /LI_TEACHER_LOOKBACK_HOURS:.*6/);
   assert.match(control, /cron: "27 \*\/3 \* \* \*"/);
   assert.match(control, /china-hot-li-teacher:/);

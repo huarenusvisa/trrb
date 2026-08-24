@@ -85,6 +85,15 @@ const categories = [
   [/市场|销售|marketing|sales/i, "sales"],
 ];
 
+const stateNames = {
+  AZ: "Arizona", CA: "California", CO: "Colorado", CT: "Connecticut", FL: "Florida", GA: "Georgia",
+  HI: "Hawaii", IL: "Illinois", IN: "Indiana", KS: "Kansas", LA: "Louisiana", MA: "Massachusetts",
+  MD: "Maryland", MI: "Michigan", MN: "Minnesota", MO: "Missouri", NC: "North Carolina",
+  NH: "New Hampshire", NJ: "New Jersey", NV: "Nevada", NY: "New York", OH: "Ohio", OR: "Oregon",
+  PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", TN: "Tennessee", TX: "Texas",
+  VA: "Virginia", WA: "Washington", WI: "Wisconsin", DC: "Washington",
+};
+
 function decodeHtml(value = "") {
   return String(value)
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
@@ -136,7 +145,9 @@ function pickContact(text) {
 }
 
 function pickLocation(text) {
-  for (const [pattern, result] of locationRules) if (pattern.test(text)) return { state_code: result[0], city: result[1] };
+  for (const [pattern, result] of locationRules) {
+    if (pattern.test(text)) return { state_code: result[0], city: result[1] || stateNames[result[0]] };
+  }
   return null;
 }
 

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Niulai Tang Finance share card</title>
+  <desc id="desc">Niulai finance logo and website name on a clean market-themed background</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef5ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#0f3b80" flood-opacity=".18"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <path d="M0 520 C220 440 330 565 520 470 C720 370 850 455 1200 260 V630 H0Z" fill="#e1eeff" opacity=".9"/>
+  <path d="M0 575 C210 500 330 595 520 515 C735 425 930 500 1200 380" fill="none" stroke="#bed7fb" stroke-width="4"/>
+  <g transform="translate(110 185)" filter="url(#shadow)">
+    <rect width="260" height="260" rx="52" fill="#0f63e9"/>
+    <rect x="37" y="42" width="186" height="176" rx="36" fill="#fff"/>
+    <path d="M60 171 L92 140 L116 151 L148 102 L176 118 L205 74" fill="none" stroke="#e52b32" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M183 74h22v23" fill="none" stroke="#e52b32" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="130" y="208" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800" fill="#0f2748">TR FIN</text>
+  </g>
+  <text x="440" y="260" fill="#081a33" font-family="Arial,Helvetica,sans-serif" font-size="82" font-weight="800">NIULAI</text>
+  <text x="444" y="335" fill="#0f63e9" font-family="Arial,Helvetica,sans-serif" font-size="36" font-weight="700" letter-spacing="5">TANG FINANCE</text>
+  <rect x="442" y="382" width="455" height="2" fill="#c3d2e6"/>
+  <text x="444" y="438" fill="#52657c" font-family="Arial,Helvetica,sans-serif" font-size="29" letter-spacing="1">MARKETS  •  ETF  •  FUNDS</text>
+  <text x="444" y="484" fill="#6f8095" font-family="Arial,Helvetica,sans-serif" font-size="27">niulai.us</text>
+</svg>

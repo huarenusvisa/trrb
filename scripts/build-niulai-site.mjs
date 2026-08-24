@@ -14,7 +14,6 @@ await mkdir(join(output, 'assets', 'topic-focus'), { recursive: true });
 // domain receives a generated deployment bundle, not a second maintained copy.
 await cp(join(root, 'niulai'), output, { recursive: true });
 await cp(join(root, 'assets', 'topic-focus', 'finance-market.svg'), join(output, 'favicon.svg'));
-await cp(join(root, 'assets', 'topic-focus', 'finance-market.svg'), join(output, 'favicon.ico'));
 await cp(join(root, 'assets', 'topic-focus', 'finance-market.svg'), join(output, 'assets', 'topic-focus', 'finance-market.svg'));
 
 await writeFile(join(output, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: https://niulai.us/sitemap.xml\n`);
@@ -36,6 +35,9 @@ https://www.niulai.us/* https://niulai.us/:splat 301!
 `.trimStart());
 
 await writeFile(join(output, '_headers'), `
+/*
+  X-Robots-Tag: index, follow
+
 /*.html
   Cache-Control: no-cache, no-store, must-revalidate
   Content-Security-Policy: upgrade-insecure-requests; block-all-mixed-content
@@ -49,6 +51,14 @@ await writeFile(join(output, '_headers'), `
 
 /favicon.svg
   Cache-Control: public, max-age=86400
+
+/favicon.ico
+  Content-Type: image/x-icon
+  Cache-Control: public, max-age=86400
+
+/*.png
+  Content-Type: image/png
+  Cache-Control: public, max-age=31536000, immutable
 
 /site.webmanifest
   Content-Type: application/manifest+json; charset=UTF-8

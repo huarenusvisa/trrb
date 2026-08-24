@@ -1,8 +1,13 @@
 http://huarengongzuo.com/* https://huarengongzuo.com/:splat 301!
 http://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!
 https://www.huarengongzuo.com/* https://huarengongzuo.com/:splat 301!
-https://huarengongzuo.com/favicon.ico /huarengongzuo/logo-mark.svg 200!
+https://huarengongzuo.com/favicon.ico /huarengongzuo/favicon.ico 200!
 https://huarengongzuo.com/favicon.svg /huarengongzuo/logo-mark.svg 200!
+https://huarengongzuo.com/favicon-32x32.png /huarengongzuo/favicon-32x32.png 200!
+https://huarengongzuo.com/apple-touch-icon.png /huarengongzuo/apple-touch-icon.png 200!
+https://huarengongzuo.com/icon-192.png /huarengongzuo/icon-192.png 200!
+https://huarengongzuo.com/icon-512.png /huarengongzuo/icon-512.png 200!
+https://huarengongzuo.com/og-share.png /huarengongzuo/og-share.png 200!
 https://huarengongzuo.com/site.webmanifest /huarengongzuo/site.webmanifest 200!
 https://huarengongzuo.com/ q=:q place=:place /huarengongzuo/index.html 200!
 https://huarengongzuo.com/ q=:q /huarengongzuo/index.html 200!

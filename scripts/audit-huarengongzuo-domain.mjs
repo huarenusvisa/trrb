@@ -18,6 +18,8 @@ const checks = [
   ['www and HTTP permanently canonicalize to HTTPS apex', /http:\/\/www\.huarengongzuo\.com\/\*/.test(redirects) && /https:\/\/www\.huarengongzuo\.com\/\*/.test(redirects)],
   ['唐人日报 jobs entry links directly to independent site', /href="https:\/\/huarengongzuo\.com\/">招聘求职<\/a>/.test(read('index.html')) && /美国招聘求职｜唐人日报/.test(trrbJobs)],
   ['independent site owns its browser and search icon', /\/favicon\.svg/.test(page) && /huarengongzuo\/logo-mark\.svg/.test(redirects)],
+  ['share metadata uses a public PNG card', /property="og:image" content="https:\/\/huarengongzuo\.com\/og-share\.png/.test(page) && /rel="apple-touch-icon"/.test(page)],
+  ['share and Apple icon host rewrites exist', /huarengongzuo\.com\/og-share\.png \/huarengongzuo\/og-share\.png/.test(redirects) && /huarengongzuo\.com\/apple-touch-icon\.png \/huarengongzuo\/apple-touch-icon\.png/.test(redirects)],
   ['custom-domain brand layer does not run on trrb.net', /if \(!\/\^\(www\\\.\)\?huarengongzuo/.test(brand)]
 ];
 

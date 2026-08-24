@@ -9,6 +9,11 @@ on:
         required: false
         default: "6"
         type: string
+      recover_archived:
+        description: "补发时间范围内误归档的中国热门头条"
+        required: false
+        default: false
+        type: boolean
   push:
     branches:
       - main
@@ -26,7 +31,7 @@ concurrency:
 jobs:
   collect-to-content-center:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 60
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -34,8 +39,9 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '6' }}
-      LI_TEACHER_MAX_FETCH: "100"
-      LI_TEACHER_MAX_PUBLISH: "20"
+      LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
+      LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}
+      LI_TEACHER_PUBLISH_CONCURRENCY: "4"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -46,9 +52,13 @@ jobs:
         run: |
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_SERVICE_ROLE_KEY"
-          test -n "$X_BEARER_TOKEN"
+          if [[ "${{ inputs.recover_archived }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
         run: node --test scripts/china-hot-li-teacher-ingest.test.mjs
       - name: Collect China headlines and publish automatically
-        run: node scripts/china-hot-li-teacher-ingest.mjs
+        shell: bash
+        run: |
+          args=()
+          if [[ "${{ inputs.recover_archived }}" == "true" ]]; then args+=(--recover-archived); fi
+          node scripts/china-hot-li-teacher-ingest.mjs "${args[@]}"

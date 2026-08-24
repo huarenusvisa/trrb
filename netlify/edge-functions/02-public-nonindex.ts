@@ -2,7 +2,9 @@ export const config = {
   path: [
     "/niulai",
     "/niulai/",
-    "/niulai/*",
+    "/niulai/index.html",
+    "/niulai/stock.html",
+    "/niulai/fund.html",
     "/expose",
     "/expose.html",
     "/thanks.html",

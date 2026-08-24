@@ -16,6 +16,7 @@ on:
           - monitor
           - maintenance
           - judge
+          - china-hot
   schedule:
     - cron: "3,33 * * * *"
     - cron: "17 * * * *"
@@ -23,6 +24,7 @@ on:
     - cron: "7 7 * * *"
     - cron: "23 8 * * 1"
     - cron: "25 10 * * *"
+    - cron: "27 * * * *"
 
 permissions:
   contents: write
@@ -81,6 +83,11 @@ jobs:
     needs: seo-metadata
     if: ${{ !cancelled() && (github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
     uses: ./.github/workflows/indexnow.yml
+    secrets: inherit
+
+  china-hot-li-teacher:
+    if: ${{ github.event.schedule == '27 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot') }}
+    uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 
   official-asylum:

@@ -2,7 +2,29 @@ name: Bing IndexNow自动推送
 
 on:
   workflow_dispatch:
+    inputs:
+      full_sync:
+        description: 是否执行一次全站URL同步
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false','true']
+      include_retired:
+        description: 是否同时通知明确退役的URL
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false','true']
   workflow_call:
+    inputs:
+      full_sync:
+        required: false
+        type: string
+        default: 'false'
+      include_retired:
+        required: false
+        type: string
+        default: 'false'
 
 permissions:
   contents: read
@@ -18,9 +40,10 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      # Retired URLs are event-driven changes, not recurring freshness signals.
-      # Scheduled 15-minute runs keep the queue disabled to avoid crawl-quota waste.
-      INDEXNOW_INCLUDE_RETIRED: ${{ github.event_name != 'schedule' }}
+      # Regular runs submit only fresh news. Full-site and retired URL pushes are
+      # explicit so unchanged archives do not consume Bing crawl quota hourly.
+      INDEXNOW_FULL_SYNC: ${{ inputs.full_sync || 'false' }}
+      INDEXNOW_INCLUDE_RETIRED: ${{ inputs.include_retired || 'false' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

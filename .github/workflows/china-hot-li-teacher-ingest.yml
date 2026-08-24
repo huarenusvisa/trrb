@@ -1,0 +1,51 @@
+name: China Hot · Li Teacher Content Intake
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      lookback_hours:
+        description: "抓取最近多少小时（最多168小时）"
+        required: false
+        default: "72"
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/china-hot-li-teacher-ingest.mjs
+      - .github/workflows/china-hot-li-teacher-ingest.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: china-hot-li-teacher-content-intake
+  cancel-in-progress: false
+
+jobs:
+  collect-to-content-center:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '72' }}
+      LI_TEACHER_MAX_FETCH: "200"
+      LI_TEACHER_MAX_INSERT: "40"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate secrets
+        shell: bash
+        run: |
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_SERVICE_ROLE_KEY"
+          test -n "$X_BEARER_TOKEN"
+      - name: Run collector tests
+        run: node --test scripts/china-hot-li-teacher-ingest.test.mjs
+      - name: Collect qualified posts into content center drafts
+        run: node scripts/china-hot-li-teacher-ingest.mjs

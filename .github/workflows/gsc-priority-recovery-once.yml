@@ -22,9 +22,9 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       LEGACY_PRIORITY_IDS: wp-99575,wp-101867
       LEGACY_PRIORITY_ONLY: 'true'
-      LEGACY_CATEGORY_OVERRIDES: '中国官场=热门头条'
+      LEGACY_CATEGORY_OVERRIDES: '中国官场=重要新闻'
       LEGACY_RESTORE_CONCURRENCY: '2'
-      GSC_RECOVERY_REVISION: '3'
+      GSC_RECOVERY_REVISION: '4'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -40,6 +40,17 @@ jobs:
         run: |
           set -euo pipefail
           test -n "${SUPABASE_SERVICE_ROLE_KEY:-}" || { echo 'SUPABASE_SERVICE_ROLE_KEY missing'; exit 2; }
+          node --input-type=module - <<'NODE'
+          const url = new URL(`${process.env.SUPABASE_URL}/rest/v1/categories`);
+          url.searchParams.set('select', 'name,slug');
+          url.searchParams.set('is_active', 'eq.true');
+          url.searchParams.set('order', 'sort_order.asc');
+          const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+          const response = await fetch(url, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+          if (!response.ok) throw new Error(`active category lookup failed ${response.status}`);
+          const rows = await response.json();
+          console.log(`Active categories: ${rows.map((row) => `${row.name}=${row.slug}`).join(', ')}`);
+          NODE
           node scripts/restore-legacy-archive.mjs --apply --limit=2 --concurrency=2
           node - <<'NODE'
           const fs = require('fs');

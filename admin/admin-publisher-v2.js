@@ -45,8 +45,8 @@
     }
   }
 
-  showPage = function showPageWithPublisherMode(page) {
-    originalShowPage(page);
+  showPage = function showPageWithPublisherMode(page, sourceButton) {
+    originalShowPage(page, sourceButton);
     document.body.classList.toggle("publisher-mode", page === "new-article");
   };
 

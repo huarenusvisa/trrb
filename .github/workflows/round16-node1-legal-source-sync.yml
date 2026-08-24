@@ -1,8 +1,8 @@
-name: 第十六轮节点1-五大官方法律源自动采集触发链闭环
+name: 美国官方判例与法律源同步（仅人工备用）
 
 on:
   workflow_dispatch:
-  workflow_call:
+  # 自动调度与 workflow_call 已停用；仅管理员手动运行。
 
 permissions:
   contents: write

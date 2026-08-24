@@ -1,8 +1,8 @@
-name: Immigration Judge EOIR Data Sync
+name: Immigration Judge EOIR Data Sync (Manual Backup Only)
 
 on:
   workflow_dispatch:
-  workflow_call:
+  # 自动调度与 workflow_call 已停用；仅管理员手动运行。
 
 permissions:
   contents: write

@@ -24,7 +24,7 @@
     </section>
     <section class="admin-shell hidden" id="admin-view">
       <aside class="sidebar"><div class="logo"><b>唐人日报</b><span>Admin Console</span></div><nav>
-        <button class="nav-btn active" data-page="dashboard">控制台</button><button class="nav-btn" data-page="articles">文章管理</button><button class="nav-btn" data-page="new-article">发布文章</button>
+        <button class="nav-btn active" data-page="dashboard">控制台</button><button class="nav-btn" data-page="articles">文章管理</button><button class="nav-btn" data-page="new-article">发布文章</button><button class="nav-btn" data-page="new-article" data-publisher-preset="niulai">牛来人工发稿</button>
         <button class="nav-btn" data-page="categories">栏目管理</button>
         <button class="nav-btn" data-page="asylumjudge-review">AsylumJudge内容中心 <span id="asylum-review-count">0</span></button>
         <button class="nav-btn" data-page="community">用户与社区</button>
@@ -45,12 +45,12 @@
           <div class="panel"><h3>求职发布</h3><div class="table-wrap"><table><thead><tr><th>求职</th><th>发布者</th><th>地区</th><th>状态</th><th>治理</th></tr></thead><tbody id="jobs-seekers-body"></tbody></table></div></div>
         </section>
         <section class="page hidden" id="finance-monitor-page">
-          <div class="panel finance-monitor-head"><div><h3>牛来｜唐人财经数据接口</h3><p>监控全证券搜索、行情详情、官方财经信息采集、站内新闻同步及正式数据 Key 配置状态。</p></div><button id="refresh-finance-monitor" type="button">立即检测</button></div>
+          <div class="panel finance-monitor-head"><div><h3>牛来｜唐人财经数据接口</h3><p>自动财经采集已停用；当前通过人工发稿维护内容。此处继续监控行情接口、站内新闻同步和正式数据 Key 配置状态。</p></div><div class="toolbar"><button type="button" data-open-niulai-publisher>人工发布财经文章</button><button id="refresh-finance-monitor" type="button">立即检测</button></div></div>
           <div id="finance-monitor-message" class="message"></div>
           <div class="cards finance-monitor-cards"><article><strong id="finance-monitor-mode">—</strong><span>数据模式</span></article><article><strong id="finance-monitor-provider">—</strong><span>行情供应商</span></article><article><strong id="finance-monitor-coverage">—</strong><span>测试证券目录</span></article><article><strong id="finance-monitor-health">—</strong><span>接口健康</span></article></div>
           <div class="panel"><h3>配置检查</h3><div id="finance-config-list" class="finance-config-list"></div></div>
           <div class="table-wrap"><table><thead><tr><th>接口</th><th>状态</th><th>HTTP</th><th>延迟</th></tr></thead><tbody id="finance-checks-body"><tr><td colspan="4">登录后读取。</td></tr></tbody></table></div>
-          <p class="finance-monitor-note">未购买正式商业套餐时保持“测试数据”属于正常状态。购买 Venture 并在 Netlify 配置 <code>TWELVE_DATA_API_KEY</code> 后，行情网关会自动切换；API Key 不进入浏览器和 GitHub。</p>
+          <p class="finance-monitor-note">自动采集已停用，财经文章请使用“牛来人工发稿”。当前没有配置 <code>TWELVE_DATA_API_KEY</code>，所以行情显示测试数据；配置正式商业 Key 后，行情网关才会切换为真实数据。API Key 不进入浏览器和 GitHub。</p>
         </section>
         <section class="page hidden" id="content-center-page"><div class="panel"><div class="category-form-head"><div><h3>采集内容中心</h3><p>中国热门头条与ICE共用三小时采集节奏；中国新闻自动发布，ICE仅官方来源自动发布，非官方内容进入人工审核。</p></div></div><div class="content-center-tabs"><button class="content-center-tab active" data-content-center-tab="china">中国热门头条 <b id="china-hot-pool-count">0</b></button><button class="content-center-tab" data-content-center-tab="ice">ICE内容</button></div></div><div id="china-hot-pool-panel"><div class="panel category-form-head"><div><h3>中国热门头条内容池</h3><p>自动发布后可在此下载、下架、恢复或删除；来源信息仅后台留存，前台不展示。</p></div><button id="refresh-china-hot-pool">刷新内容池</button></div><div id="china-hot-pool-message" class="message">正在读取内容池…</div><div id="china-hot-pool-list" class="china-hot-pool-list"></div></div><div id="ice-review-page" class="hidden"><div class="review-head panel"><div><h3>ICE内容</h3><p>ICE/DHS等官方信息核验后自动发布；非官方来源必须由管理员审核。</p></div><button id="refresh-review">刷新审核队列</button></div><div class="review-tabs" id="review-tabs"><button class="review-tab active" data-review-filter="pending_review">待人工审核 <b id="tab-count-pending_review">0</b></button><button class="review-tab" data-review-filter="pending_corroboration">等待交叉信源 <b id="tab-count-pending_corroboration">0</b></button><button class="review-tab" data-review-filter="approved">已通过待发布 <b id="tab-count-approved">0</b></button><button class="review-tab" data-review-filter="published">已发布 <b id="tab-count-published">0</b></button><button class="review-tab" data-review-filter="rejected">已拒绝 <b id="tab-count-rejected">0</b></button><button class="review-tab" data-review-filter="failed">处理失败 <b id="tab-count-failed">0</b></button></div><div id="review-message"></div><div id="review-list"></div></div></section>
         <section class="page hidden" id="rankings-page"><div class="panel"><h3>24小时热榜</h3><button id="refresh-rankings">刷新热榜</button></div><div class="table-wrap"><table><tbody id="rankings-tbody"></tbody></table></div></section>
@@ -59,10 +59,10 @@
   </div>
   <div class="review-modal hidden" id="review-modal"><div class="review-modal-backdrop" id="review-modal-backdrop"></div><section class="review-modal-panel"><header class="review-modal-header"><div><span class="eyebrow">ICE CANDIDATE REVIEW</span><h2 id="review-modal-title">审核候选新闻</h2></div><button class="icon-btn" id="review-modal-close">×</button></header><div class="review-modal-body"><div id="review-score-grid"></div><div id="review-risk-panel"></div><label>最终标题</label><input id="review-title" /><label>最终摘要</label><textarea id="review-summary"></textarea><label>最终正文</label><textarea id="review-content"></textarea><label>封面</label><input id="review-cover" /><img id="review-cover-preview" class="hidden" /><input id="review-schedule" type="datetime-local" /><input id="review-current-status" readonly /><textarea id="review-notes"></textarea><p id="review-decision-reason"></p><span id="review-evidence-count"></span><div id="review-evidence-list"></div><div id="review-log-list"></div></div><footer class="review-modal-actions"><button data-review-action="save">保存编辑</button><button data-review-action="wait">等待更多信源</button><button data-review-action="rewrite">重新审核</button><button data-review-action="reject">拒绝发布</button><button data-review-action="approve">批准并排期</button><button data-review-action="publish_now">立即发布</button></footer><div id="review-action-message"></div></section></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./admin.js?v=20260807-article-editor"></script>
+  <script src="./admin.js?v=20260824-niulai-manual"></script>
   <script src="./article-edit-manager.js?v=20260807-2"></script>
   <script src="./password-input-audit.js?v=20260729-1"></script>
-  <script src="./admin-publisher-v2.js?v=20260713-v1"></script>
+  <script src="./admin-publisher-v2.js?v=20260824-niulai-manual"></script>
   <script src="./ice-review-v2.js?v=20260714-report-controls-v2"></script>
   <script src="./content-center.js?v=20260823-unified-v1"></script>
   <script src="./ice-report-controls-v2.js?v=20260714-v2"></script>
@@ -71,7 +71,7 @@
   <script src="./ice-status-explainer.js?v=20260725-1"></script>
   <script src="./community-center.js?v=20260816-batch1-node8"></script>
   <script src="./jobs-manager.js?v=20260821-core-access"></script>
-  <script src="./finance-monitor.js?v=20260821-data-architecture"></script>
+  <script src="./finance-monitor.js?v=20260824-manual-only"></script>
   <script src="./asylumjudge-review.js?v=20260821-official-review"></script>
 </body>
 </html>

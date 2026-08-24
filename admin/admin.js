@@ -52,13 +52,19 @@ function bindEvents() {
   el("logout-btn").addEventListener("click", handleLogout);
 
   document.querySelectorAll(".nav-btn").forEach((button) => {
-    button.addEventListener("click", () => showPage(button.dataset.page));
+    button.addEventListener("click", () => showPage(button.dataset.page, button));
   });
 
   el("article-form").addEventListener("submit", handleSaveArticle);
   el("refresh-articles").addEventListener("click", loadArticles);
   el("refresh-rankings").addEventListener("click", loadRankings);
   if (el("refresh-finance-monitor")) el("refresh-finance-monitor").addEventListener("click", () => window.loadFinanceHealth?.());
+  document.querySelectorAll("[data-open-niulai-publisher]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const navButton = document.querySelector('.nav-btn[data-publisher-preset="niulai"]');
+      showPage("new-article", navButton);
+    });
+  });
   el("article-cover-file").addEventListener("change", handleCoverSelection);
   el("article-cover-remove").addEventListener("click", clearCoverSelection);
   el("article-cover-paste-zone").addEventListener("paste", handleCoverPaste);
@@ -179,11 +185,39 @@ async function handleLogout() {
   location.reload();
 }
 
-function showPage(page) {
+function configurePublisherPreset(preset = "") {
+  const category = el("article-category");
+  const author = el("article-author");
+  if (!category || !author) return;
+
+  category.querySelectorAll("option[data-virtual-category]").forEach((option) => option.remove());
+  el("article-form").dataset.publisherPreset = preset;
+
+  if (preset === "niulai") {
+    let option = Array.from(category.options).find((item) => item.textContent.trim() === "牛来财经");
+    if (!option) {
+      option = document.createElement("option");
+      option.value = "";
+      option.textContent = "牛来财经";
+      option.dataset.virtualCategory = "niulai";
+      category.append(option);
+    }
+    category.value = option.value;
+    option.selected = true;
+    author.value = "牛来｜唐人财经";
+    el("article-message").textContent = "人工财经发稿：发布后进入牛来财经栏目，并同步使用现有文章库。";
+  } else {
+    if (author.value === "牛来｜唐人财经") author.value = "Tang Ren Daily";
+    el("article-message").textContent = "";
+  }
+}
+
+function showPage(page, sourceButton = null) {
+  const preset = sourceButton?.dataset.publisherPreset || "";
   const titles = {
     dashboard: "控制台",
     articles: "文章管理",
-    "new-article": "发布文章",
+    "new-article": preset === "niulai" ? "牛来人工发稿" : "发布文章",
     "finance-monitor": "牛来接口监控",
     "content-center": "采集内容中心",
     "asylumjudge-review": "AsylumJudge内容中心",
@@ -192,11 +226,12 @@ function showPage(page) {
 
   document.querySelectorAll(".page").forEach((item) => item.classList.add("hidden"));
   document.querySelectorAll(".nav-btn").forEach((button) => {
-    button.classList.toggle("active", button.dataset.page === page);
+    button.classList.toggle("active", sourceButton ? button === sourceButton : button.dataset.page === page && !button.dataset.publisherPreset);
   });
 
   el(`${page}-page`).classList.remove("hidden");
   el("page-title").textContent = titles[page] || "控制台";
+  if (page === "new-article") configurePublisherPreset(preset);
   if (page === "content-center") window.loadUnifiedContentCenter?.();
   if (page === "finance-monitor") window.loadFinanceHealth?.();
   if (page === "asylumjudge-review") window.loadAsylumJudgeReview?.();

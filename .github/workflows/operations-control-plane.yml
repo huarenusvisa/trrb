@@ -13,10 +13,8 @@ on:
           - ice
           - seo
           - ico
-          - official
           - monitor
           - maintenance
-          - judge
           - china-hot
           - jobs
   schedule:
@@ -25,7 +23,6 @@ on:
     - cron: "47 3 * * *"
     - cron: "7 7 * * *"
     - cron: "23 8 * * 1"
-    - cron: "25 10 * * *"
     - cron: "12 13 * * *"
     - cron: "12 23 * * *"
 
@@ -38,39 +35,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  official-cadence:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'official') || github.event.schedule == '47 3 * * *' }}
-    runs-on: ubuntu-24.04
-    outputs:
-      due: ${{ steps.cadence.outputs.due }}
-    steps:
-      - id: cadence
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "due=true" >> "$GITHUB_OUTPUT"
-          elif (( $(date -u +%s) / 86400 % 3 == 0 )); then
-            echo "due=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "due=false" >> "$GITHUB_OUTPUT"
-          fi
 
-  judge-cadence:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'judge') || github.event.schedule == '25 10 * * *' }}
-    runs-on: ubuntu-24.04
-    outputs:
-      due: ${{ steps.cadence.outputs.due }}
-    steps:
-      - id: cadence
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "due=true" >> "$GITHUB_OUTPUT"
-          elif (( $(date -u +%s) / 86400 % 3 == 0 )); then
-            echo "due=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "due=false" >> "$GITHUB_OUTPUT"
-          fi
 
   ice:
     if: ${{ github.event.schedule == '27 */3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice') }}
@@ -104,17 +69,6 @@ jobs:
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 
-  official-asylum:
-    needs: official-cadence
-    if: ${{ needs.official-cadence.outputs.due == 'true' }}
-    uses: ./.github/workflows/asylum-official-knowledge-sync.yml
-    secrets: inherit
-
-  official-legal:
-    needs: official-cadence
-    if: ${{ needs.official-cadence.outputs.due == 'true' }}
-    uses: ./.github/workflows/round16-node1-legal-source-sync.yml
-    secrets: inherit
 
   daily-live-monitor:
     if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
@@ -136,8 +90,3 @@ jobs:
     uses: ./.github/workflows/ice-orphan-media-cleanup.yml
     secrets: inherit
 
-  immigration-judge-every-72-hours:
-    needs: judge-cadence
-    if: ${{ needs.judge-cadence.outputs.due == 'true' }}
-    uses: ./.github/workflows/immigration-judge-data-sync.yml
-    secrets: inherit

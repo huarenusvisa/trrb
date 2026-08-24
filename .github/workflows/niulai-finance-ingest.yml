@@ -1,4 +1,4 @@
-name: 牛来官方财经采集
+name: 牛来财经人工备用采集（自动采集已停用）
 
 on:
   workflow_dispatch:
@@ -8,14 +8,7 @@ on:
         required: false
         default: false
         type: boolean
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/niulai-finance-ingest.yml"
-      - "scripts/niulai-finance-ingest.mjs"
-      - "scripts/lib/niulai-finance-sources.mjs"
-  schedule:
-    - cron: "8,38 * * * *"
+  # 自动定时与代码推送触发已停用；仅管理员可在 Actions 中手动运行。
 
 permissions:
   contents: read

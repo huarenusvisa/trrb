@@ -1,8 +1,8 @@
-name: 庇护官方知识与BIA先例同步
+name: 庇护官方知识与BIA先例同步（仅人工备用）
 
 on:
   workflow_dispatch:
-  workflow_call:
+  # 自动调度与 workflow_call 已停用；仅管理员手动运行。
 
 permissions:
   contents: read

@@ -48,10 +48,9 @@ assert.deepEqual(offsets, [0, 1000], 'the API must request each stable page exac
 const workflow = require('node:fs').readFileSync('.github/workflows/immigration-judge-data-sync.yml', 'utf8');
 const operations = require('node:fs').readFileSync('.github/workflows/operations-control-plane.yml', 'utf8');
 assert.doesNotMatch(workflow, /^  push:/m, 'changing pipeline code must not immediately publish a new batch');
-assert.match(workflow, /^  workflow_call:/m, 'EOIR sync must remain reusable from the operations control plane');
-assert.match(operations, /cron:\s*["']25 10 \* \* \*["']/, 'the control plane must evaluate EOIR sync cadence daily');
-assert.match(operations, /\/ 86400 % 3 == 0/, 'the control plane must gate EOIR sync to every 72 hours');
-assert.match(operations, /immigration-judge-every-72-hours:/, 'the 72-hour EOIR job must remain enabled');
+assert.doesNotMatch(workflow, /^  workflow_call:/m, 'EOIR sync must not be callable by automatic workflows');
+assert.doesNotMatch(operations, /cron:\s*["']25 10 \* \* \*["']/, 'the EOIR cadence schedule must remain disabled');
+assert.doesNotMatch(operations, /immigration-judge-every-72-hours:/, 'the 72-hour EOIR job must remain disabled');
 assert.match(workflow, /actual != expected/, 'public verification must exactly match the batch preflight');
 assert.match(workflow, /preflight\.get\('current_courts'\)/, 'court verification must use the imported current-court projection');
 

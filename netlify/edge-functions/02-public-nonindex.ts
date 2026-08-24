@@ -2,7 +2,7 @@ export const config = {
   path: [
     "/niulai",
     "/niulai/",
-    "/niulai/index.html",
+    "/niulai/*",
     "/expose",
     "/expose.html",
     "/thanks.html",
@@ -23,6 +23,22 @@ function forceNoindexMeta(html: string): string {
 
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
+
+  // The /niulai path on trrb.net is a non-canonical product copy. The same
+  // files are also the canonical niulai.us site, where they must stay
+  // indexable and must not inherit the TRRB duplicate-route header.
+  const hostname = new URL(request.url).hostname.toLowerCase();
+  if (hostname === "niulai.us" || hostname === "www.niulai.us") {
+    const upstream = await context.next();
+    const headers = new Headers(upstream.headers);
+    headers.delete("x-robots-tag");
+    return new Response(request.method === "HEAD" ? null : upstream.body, {
+      status: upstream.status,
+      statusText: upstream.statusText,
+      headers
+    });
+  }
+
   const upstream = await context.next();
   const headers = new Headers(upstream.headers);
   headers.set("x-robots-tag", ROBOTS.replaceAll(",", ", "));

@@ -29,6 +29,7 @@ on:
 permissions:
   contents: write
   actions: write
+  id-token: write
 
 concurrency:
   group: trrb-operations-control-${{ github.event.schedule || inputs.module || github.ref }}
@@ -89,4 +90,3 @@ jobs:
     if: ${{ github.event.schedule == '23 8 * * 1' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance') }}
     uses: ./.github/workflows/ice-orphan-media-cleanup.yml
     secrets: inherit
-

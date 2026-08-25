@@ -1,12 +1,3 @@
- 中国热门头条与ICE统一为三小时控制平面 (0.510602ms)
-ℹ tests 8
-ℹ suites 0
-ℹ pass 8
-ℹ fail 0
-ℹ cancelled 0
-ℹ skipped 0
-ℹ todo 0
-ℹ duration_ms 94.51933
 #!/usr/bin/env node
 import process from "node:process";
 import { pathToFileURL } from "node:url";

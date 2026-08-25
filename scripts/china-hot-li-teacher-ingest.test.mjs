@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -48,6 +48,17 @@ test("发布稿自动公开且不在前台暴露抓取来源", () => {
   assert.doesNotMatch(article.content, /李老师|X平台|x\.com/);
 });
 
+test("已发布的X中国热门头条生成CHRT原生入站记录", () => {
+  const qualified = qualifyTweet(chinaTweet);
+  const article = buildPublishedArticle(chinaTweet, qualified, { title: "重庆维权人士被拘留，相关地点仍待核实", summary: "重庆一名维权人士被拘留，公开材料暂未提供更多细节。", content: "正文".repeat(160), seo_keywords: "重庆,维权,拘留", target: targetLength(qualified.text) }, "2026-08-23T09:00:00.000Z");
+  const record = buildChrtRecord(article);
+  assert.equal(record.sourcePlatform, "x");
+  assert.equal(record.sourcePostId, "123");
+  assert.equal(record.section, "中国热门头条");
+  assert.equal(record.title, "重庆维权人士被拘留,相关地点仍待核实");
+  assert.equal(record.originalText, qualified.text);
+});
+
 test("未自动发布的内容仍是可编辑、可人工发布的后台草稿", () => {
   const draft = buildReviewDraft(chinaTweet, "需要编辑核对", "2026-08-23T09:00:00.000Z");
   assert.equal(draft.status, "draft");
@@ -69,6 +80,8 @@ test("中国热门头条与ICE统一为三小时控制平面", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   assert.match(workflow, /OPENAI_API_KEY/);
+  assert.match(workflow, /id-token:\s*write/);
+  assert.match(workflow, /CHRT_INGEST_URL/);
   assert.match(workflow, /recover_archived/);
   assert.match(workflow, /repair_today/);
   assert.match(workflow, /--repair-today/);

@@ -28,6 +28,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: china-hot-li-teacher-content-intake
@@ -48,6 +49,8 @@ jobs:
       LI_TEACHER_MAX_PUBLISH: ${{ (github.event_name == 'push' || inputs.recover_archived) && '150' || '20' }}
       LI_TEACHER_PUBLISH_CONCURRENCY: "8"
       CHINA_HOT_REPAIR_SINCE: "2026-08-24T00:00:00Z"
+      CHRT_INGEST_URL: "https://chinahumanrightstracker.org/api/ingest/trrb"
+      CHRT_SYNC_LOOKBACK_HOURS: "72"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

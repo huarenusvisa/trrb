@@ -18,6 +18,9 @@ const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const MAX_PUBLISH = intEnv("LI_TEACHER_MAX_PUBLISH", RECOVER_ARCHIVED ? 150 : 20, 1, 150);
 const PUBLISH_CONCURRENCY = intEnv("LI_TEACHER_PUBLISH_CONCURRENCY", 4, 1, 8);
 const OPENAI_MODEL = cleanText(process.env.OPENAI_MODEL || "gpt-5-mini", 100);
+const CHRT_ENDPOINT = cleanText(process.env.CHRT_INGEST_URL || "https://chinahumanrightstracker.org/api/ingest/trrb", 2_000);
+const CHRT_AUDIENCE = "https://chinahumanrightstracker.org";
+const CHRT_SYNC_LOOKBACK_HOURS = intEnv("CHRT_SYNC_LOOKBACK_HOURS", 72, 6, 168);
 
 function intEnv(name, fallback, min, max) {
   const value = Number(process.env[name] ?? fallback);
@@ -71,6 +74,20 @@ async function supabase(table, { method = "GET", query = {}, body, prefer = "" }
   const url = new URL(`${base}/rest/v1/${table}`);
   for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
   return readJson(await request(url, { method, headers: supabaseHeaders(prefer), body: body === undefined ? undefined : JSON.stringify(body) }));
+}
+
+async function githubOidcToken() {
+  const requestUrl = cleanText(process.env.ACTIONS_ID_TOKEN_REQUEST_URL, 4_000);
+  const requestToken = cleanText(process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN, 20_000);
+  if (!requestUrl || !requestToken) throw new Error("GitHub OIDC 身份令牌不可用");
+  const url = new URL(requestUrl);
+  url.searchParams.set("audience", CHRT_AUDIENCE);
+  const payload = await readJson(await request(url, {
+    headers: { Authorization: `Bearer ${requestToken}`, Accept: "application/json" },
+  }));
+  const value = cleanText(payload?.value, 20_000);
+  if (!value) throw new Error("GitHub OIDC 身份令牌为空");
+  return value;
 }
 
 function textWithoutLinks(value) { return cleanText(value, 20_000).replace(/https?:\/\/\S+/gi, "").trim(); }
@@ -436,6 +453,53 @@ function tweetFromArticle(row) {
   };
 }
 
+export function buildChrtRecord(row) {
+  return {
+    sourcePlatform: cleanText(row?.source_platform, 30),
+    sourcePostId: cleanText(row?.source_post_id, 100),
+    sourceCreatedAt: row?.source_created_at || row?.created_at || null,
+    sourceUrl: cleanText(row?.source_url, 2_000),
+    sourceHandle: cleanText(row?.source_account, 200),
+    section: cleanText(row?.primary_section || row?.category_name, 100),
+    title: cleanText(row?.title, 240),
+    summary: cleanText(row?.summary, 1_000),
+    content: cleanText(row?.content, 20_000),
+    originalText: cleanText(row?.metadata?.source_text_original, 20_000),
+  };
+}
+
+async function recentPublishedArticlesForChrt() {
+  const since = new Date(Date.now() - CHRT_SYNC_LOOKBACK_HOURS * 3_600_000).toISOString();
+  const rows = await supabase("articles", { query: {
+    select: "id,title,summary,content,category_name,source_url,source_account,source_platform,source_post_id,source_created_at,created_at,primary_section,metadata",
+    automation_source: `eq.${PIPELINE}`, source_platform: "eq.x",
+    status: "eq.published", visibility: "eq.public", created_at: `gte.${since}`,
+    order: "created_at.asc", limit: "500",
+  } });
+  return Array.isArray(rows) ? rows : [];
+}
+
+async function syncPublishedArticlesToChrt() {
+  if (DRY_RUN) return { received: 0, inserted: 0, duplicates: 0, rejected: 0, dryRun: true };
+  const rows = await recentPublishedArticlesForChrt();
+  if (!rows.length) return { received: 0, inserted: 0, duplicates: 0, rejected: 0 };
+  const token = await githubOidcToken();
+  const totals = { received: 0, inserted: 0, duplicates: 0, rejected: 0 };
+  for (let index = 0; index < rows.length; index += 50) {
+    const records = rows.slice(index, index + 50).map(buildChrtRecord);
+    const payload = await readJson(await request(CHRT_ENDPOINT, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ records }),
+    }, 45_000));
+    totals.received += Number(payload?.received) || 0;
+    totals.inserted += Number(payload?.inserted) || 0;
+    totals.duplicates += Number(payload?.duplicates) || 0;
+    totals.rejected += Number(payload?.rejected) || 0;
+  }
+  return totals;
+}
+
 async function repairTodayBatch() {
   const rows = await repairablePublishedArticles();
   const results = [];
@@ -485,8 +549,16 @@ async function repairTodayBatch() {
 
 export async function run() {
   requiredEnvironment();
-  if (REPAIR_TODAY) return repairTodayBatch();
-  if (RECOVER_ARCHIVED) return recoverArchivedBatch();
+  if (REPAIR_TODAY) {
+    const report = await repairTodayBatch();
+    report.chrt = await syncPublishedArticlesToChrt();
+    return report;
+  }
+  if (RECOVER_ARCHIVED) {
+    const report = await recoverArchivedBatch();
+    report.chrt = await syncPublishedArticlesToChrt();
+    return report;
+  }
   const tweets = await collectXPosts();
   const results = [];
   const counters = { fetched: tweets.length, qualified: 0, published: 0, duplicate: 0, filtered: 0, failed: 0 };
@@ -520,7 +592,8 @@ export async function run() {
       results.push({ tweetId: tweet.id, status: "review-required", articleId: draft?.id || null, error: cleanText(error?.message || error, 800) });
     }
   }
-  const report = { pipeline: PIPELINE, mode: DRY_RUN ? "dry-run" : "auto-publish", checkedAt: new Date().toISOString(), lookbackHours: LOOKBACK_HOURS, ...counters, results };
+  const chrt = await syncPublishedArticlesToChrt();
+  const report = { pipeline: PIPELINE, mode: DRY_RUN ? "dry-run" : "auto-publish", checkedAt: new Date().toISOString(), lookbackHours: LOOKBACK_HOURS, ...counters, chrt, results };
   console.log(JSON.stringify(report, null, 2));
   if (counters.failed) throw new Error("本轮仍有中国热门头条未能发布或保留为可编辑草稿");
   return report;

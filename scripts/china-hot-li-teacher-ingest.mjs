@@ -480,23 +480,24 @@ async function recentPublishedArticlesForChrt() {
 }
 
 async function syncPublishedArticlesToChrt() {
-  if (DRY_RUN) return { received: 0, inserted: 0, duplicates: 0, rejected: 0, dryRun: true };
+  if (DRY_RUN) return { received: 0, inserted: 0, duplicates: 0, rejected: 0, removed: 0, dryRun: true };
   const rows = await recentPublishedArticlesForChrt();
-  if (!rows.length) return { received: 0, inserted: 0, duplicates: 0, rejected: 0 };
+  if (!rows.length) return { received: 0, inserted: 0, duplicates: 0, rejected: 0, removed: 0 };
   const token = await githubOidcToken();
-  const totals = { received: 0, inserted: 0, duplicates: 0, rejected: 0 };
-  for (let index = 0; index < rows.length; index += 50) {
-    const records = rows.slice(index, index + 50).map(buildChrtRecord);
-    const payload = await readJson(await request(CHRT_ENDPOINT, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ records }),
-    }, 45_000));
-    totals.received += Number(payload?.received) || 0;
-    totals.inserted += Number(payload?.inserted) || 0;
-    totals.duplicates += Number(payload?.duplicates) || 0;
-    totals.rejected += Number(payload?.rejected) || 0;
-  }
+  const records = rows.slice(0, 500).map(buildChrtRecord);
+  const payload = await readJson(await request(CHRT_ENDPOINT, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ records, replaceWindowHours: CHRT_SYNC_LOOKBACK_HOURS }),
+  }, 45_000));
+  const totals = {
+    received: Number(payload?.received) || 0,
+    inserted: Number(payload?.inserted) || 0,
+    duplicates: Number(payload?.duplicates) || 0,
+    rejected: Number(payload?.rejected) || 0,
+    removed: Number(payload?.removed) || 0,
+  };
+  console.log(JSON.stringify({ chrt: totals }, null, 2));
   return totals;
 }
 

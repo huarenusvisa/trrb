@@ -247,12 +247,25 @@ function courtSchema(locale, canonical, court, title, description) {
   };
 }
 
+function nationalityDatasetDescription(country) {
+  const nationality = cleanName(country.nationality) || 'the selected nationality';
+  const total = Number(country.total_asylum_decisions || 0);
+  const grants = Number(country.grants || 0);
+  const denials = Number(country.denials || 0);
+  const other = Number(country.other_decisions || 0);
+  const description = `AsylumJudge dataset summarizing ${total} U.S. immigration court asylum outcomes for applicants from ${nationality}: ${grants} approvals, ${denials} denials, and ${other} other outcomes, with approval-rate calculations and historical trends derived from public EOIR records.`;
+  if (description.length < 50 || description.length > 5000) {
+    throw new Error(`Invalid Dataset description length for ${nationality}: ${description.length}`);
+  }
+  return description;
+}
+
 function nationalitySchema(locale, canonical, country, title, description, modified) {
   return {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: locale.code, dateModified: modified, mainEntity: { '@id': `${canonical}#dataset` }, isPartOf: { '@id': `${ORIGIN}/#website` } },
-      { '@type': 'Dataset', '@id': `${canonical}#dataset`, name: title, description, creator: { '@type': 'Organization', name: 'AsylumJudge.com' }, isBasedOn: 'U.S. Department of Justice EOIR public data', temporalCoverage: '2020/2026', variableMeasured: ['Asylum approvals', 'Asylum denials', 'Other immigration court outcomes'], about: { '@type': 'Country', name: country.nationality, identifier: country.nationality_code } },
+      { '@type': 'Dataset', '@id': `${canonical}#dataset`, name: title, description: nationalityDatasetDescription(country), url: canonical, dateModified: modified, license: 'https://creativecommons.org/licenses/by/4.0/', creator: { '@type': 'Organization', name: 'AsylumJudge.com', url: `${ORIGIN}/` }, isBasedOn: 'U.S. Department of Justice EOIR public data', temporalCoverage: '2020-01-01/..', variableMeasured: ['Asylum approvals', 'Asylum denials', 'Other immigration court outcomes'], about: { '@type': 'Country', name: country.nationality, identifier: country.nationality_code } },
       { '@type': 'WebSite', '@id': `${ORIGIN}/#website`, name: 'AsylumJudge.com', url: `${ORIGIN}/` }
     ]
   };

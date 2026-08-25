@@ -58,19 +58,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 28
     steps:
-      - name: Check New York collection window
+      - name: Enable 24-hour ICE collection
         id: window
         shell: bash
         run: |
-          NY_HOUR=$(TZ=America/New_York date +%H)
           NY_TIME=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
-          if [[ "${{ github.event_name }}" == "schedule" ]] && (( 10#$NY_HOUR >= 2 && 10#$NY_HOUR < 8 )); then
-            echo "allowed=false" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，处于02:00-08:00停采时段。"
-          else
-            echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $NY_TIME，允许检查或执行。"
-          fi
+          echo "allowed=true" >> "$GITHUB_OUTPUT"
+          echo "纽约时间 $NY_TIME，ICE全天候采集已启用。"
 
       - uses: actions/checkout@v4
         if: steps.window.outputs.allowed == 'true'
@@ -201,6 +195,3 @@ jobs:
         if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
         run: echo "距最近成功不足32分钟，本轮只做健康检查。"
 
-      - name: Report off-hours
-        if: steps.window.outputs.allowed != 'true'
-        run: echo "ICE生产流水线处于纽约02:00-08:00停采窗口。"

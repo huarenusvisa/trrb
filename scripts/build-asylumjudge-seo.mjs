@@ -4,6 +4,10 @@ import { join } from 'node:path';
 const ORIGIN = 'https://asylumjudge.com';
 const DEFAULT_API = 'https://trrb.net/.netlify/functions/immigration-judges';
 const TODAY = new Date().toISOString().slice(0, 10);
+const DATASET_LICENSE_URL = `${ORIGIN}/methodology/#data-license`;
+const DATASET_DESCRIPTION_MIN = 50;
+const DATASET_DESCRIPTION_MAX = 5000;
+const DATASET_LICENSE_SECTION = '<section id="data-license" class="note"><h2>数据使用与署名许可</h2><p>AsylumJudge整理生成的统计汇总与数据说明，可在注明“AsylumJudge.com”、保留原页面链接、统计期间、样本量和计算口径的前提下，用于信息查询、新闻报道和研究。基础数据仍受美国司法部EOIR原始来源条款约束；使用者不得删改关键口径、暗示EOIR或AsylumJudge为其结论背书，也不得把历史统计描述为个案预测。本数据库按现状提供，不保证适用于特定法律目的。</p></section>';
 
 export const SEO_LOCALES = [
   { code: 'en', path: 'en', hreflang: 'en' },
@@ -247,25 +251,28 @@ function courtSchema(locale, canonical, court, title, description) {
   };
 }
 
-function nationalityDatasetDescription(country) {
-  const nationality = cleanName(country.nationality) || 'the selected nationality';
-  const total = Number(country.total_asylum_decisions || 0);
-  const grants = Number(country.grants || 0);
-  const denials = Number(country.denials || 0);
-  const other = Number(country.other_decisions || 0);
-  const description = `AsylumJudge dataset summarizing ${total} U.S. immigration court asylum outcomes for applicants from ${nationality}: ${grants} approvals, ${denials} denials, and ${other} other outcomes, with approval-rate calculations and historical trends derived from public EOIR records.`;
-  if (description.length < 50 || description.length > 5000) {
-    throw new Error(`Invalid Dataset description length for ${nationality}: ${description.length}`);
-  }
-  return description;
-}
-
 function nationalitySchema(locale, canonical, country, title, description, modified) {
+  const descriptionAddenda = {
+    en: 'The dataset reports grants, denials, other outcomes, sample size, and the available EOIR reporting period.',
+    es: 'El conjunto de datos informa aprobaciones, denegaciones, otros resultados, tamaño de muestra y período EOIR disponible.',
+    fr: 'Le jeu de données indique les approbations, les refus, les autres résultats, la taille de l’échantillon et la période EOIR disponible.',
+    'pt-BR': 'O conjunto de dados informa aprovações, negativas, outros resultados, tamanho da amostra e período EOIR disponível.',
+    hi: 'डेटासेट में स्वीकृतियां, अस्वीकृतियां, अन्य परिणाम, नमूना आकार और उपलब्ध EOIR रिपोर्टिंग अवधि शामिल है।',
+    'zh-Hans': '该数据集同时列明批准、拒绝、其他结案结果、有效样本量以及可核验的EOIR数据统计期间。',
+    'zh-Hant': '該資料集同時列明批准、拒絕、其他結案結果、有效樣本量以及可核驗的EOIR資料統計期間。',
+    ru: 'Набор данных содержит одобрения, отказы, другие исходы, размер выборки и доступный период отчётности EOIR.',
+    ar: 'تتضمن مجموعة البيانات الموافقات والرفض والنتائج الأخرى وحجم العينة وفترة تقارير EOIR المتاحة.',
+    tr: 'Veri kümesi onayları, retleri, diğer sonuçları, örneklem büyüklüğünü ve mevcut EOIR raporlama dönemini içerir.'
+  };
+  const datasetDescription = `${description} ${descriptionAddenda[locale.code] || descriptionAddenda.en}`.trim().slice(0, DATASET_DESCRIPTION_MAX);
+  if (datasetDescription.length < DATASET_DESCRIPTION_MIN) {
+    throw new Error(`Dataset description is shorter than ${DATASET_DESCRIPTION_MIN} characters for ${locale.code}: ${country.nationality}`);
+  }
   return {
     '@context': 'https://schema.org',
     '@graph': [
       { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: locale.code, dateModified: modified, mainEntity: { '@id': `${canonical}#dataset` }, isPartOf: { '@id': `${ORIGIN}/#website` } },
-      { '@type': 'Dataset', '@id': `${canonical}#dataset`, name: title, description: nationalityDatasetDescription(country), url: canonical, dateModified: modified, license: 'https://creativecommons.org/licenses/by/4.0/', creator: { '@type': 'Organization', name: 'AsylumJudge.com', url: `${ORIGIN}/` }, isBasedOn: 'U.S. Department of Justice EOIR public data', temporalCoverage: '2020-01-01/..', variableMeasured: ['Asylum approvals', 'Asylum denials', 'Other immigration court outcomes'], about: { '@type': 'Country', name: country.nationality, identifier: country.nationality_code } },
+      { '@type': 'Dataset', '@id': `${canonical}#dataset`, name: title, description: datasetDescription, url: canonical, creator: { '@type': 'Organization', name: 'AsylumJudge.com', url: `${ORIGIN}/` }, license: { '@type': 'CreativeWork', name: 'AsylumJudge Data Use and Attribution Terms', url: DATASET_LICENSE_URL }, isAccessibleForFree: true, isBasedOn: 'U.S. Department of Justice EOIR public data', dateModified: modified, temporalCoverage: '2020/2026', variableMeasured: ['Asylum approvals', 'Asylum denials', 'Other immigration court outcomes'], about: { '@type': 'Country', name: country.nationality, identifier: country.nationality_code } },
       { '@type': 'WebSite', '@id': `${ORIGIN}/#website`, name: 'AsylumJudge.com', url: `${ORIGIN}/` }
     ]
   };
@@ -398,7 +405,10 @@ export async function buildAsylumJudgeSeo({ root, output }) {
     await Promise.all(SEO_LOCALES.map(async (locale) => {
       const [title, description] = copy[locale.code][key];
       const canonical = localizedUrl(locale, relative);
-      const html = injectSeoHead(template.replace('<body>', `<body data-asylum-locale="${locale.code}">`), {
+      const pageTemplate = key === 'methodology' && !template.includes('id="data-license"')
+        ? template.replace('</main>', `${DATASET_LICENSE_SECTION}</main>`)
+        : template;
+      const html = injectSeoHead(pageTemplate.replace('<body>', `<body data-asylum-locale="${locale.code}">`), {
         locale,
         relative,
         title,

@@ -29,19 +29,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Check New York window
+      - name: Enable 24-hour watchdog
         id: window
         shell: bash
         run: |
-          hour=$(TZ=America/New_York date +%H)
           now=$(TZ=America/New_York date '+%Y-%m-%d %H:%M:%S %Z')
-          if (( 10#$hour >= 2 && 10#$hour < 8 )); then
-            echo "allowed=false" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $now，处于02:00-08:00停采窗口。"
-          else
-            echo "allowed=true" >> "$GITHUB_OUTPUT"
-            echo "纽约时间 $now，执行ICE应急心跳检查。"
-          fi
+          echo "allowed=true" >> "$GITHUB_OUTPUT"
+          echo "纽约时间 $now，执行ICE全天候应急心跳检查。"
 
       - uses: actions/checkout@v4
         if: steps.window.outputs.allowed == 'true'
@@ -91,8 +85,5 @@ jobs:
         if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
         run: echo "主流水线最近成功不足185分钟，无需补跑。"
 
-      - name: Report off-hours
-        if: steps.window.outputs.allowed != 'true'
-        run: echo "ICE应急看门狗处于纽约02:00-08:00停采窗口。"
 
 # recovery-touch: 2026-07-31 morning

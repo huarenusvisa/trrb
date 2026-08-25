@@ -58,6 +58,20 @@ for (const url of [judgeUrl, courtUrl, nationalityUrl]) {
   assert.doesNotThrow(() => JSON.parse(json), 'JSON-LD must be valid JSON');
 }
 
+const nationalityUrls = allUrls.filter((url) => /\/nationalities\//.test(new URL(url).pathname));
+assert.ok(nationalityUrls.length >= 2000, 'localized nationality dataset pages must be generated');
+for (const url of nationalityUrls) {
+  const pathname = new URL(url).pathname;
+  const html = await read(`${pathname.replace(/^\//, '').replace(/\/$/, '')}/index.html`);
+  const json = html.match(/<script type="application\/ld\+json" data-seo-generated>([\s\S]*?)<\/script>/)?.[1];
+  const graph = JSON.parse(json || '{}')['@graph'] || [];
+  const dataset = graph.find((item) => item['@type'] === 'Dataset');
+  assert.ok(dataset, `${url} must contain a Dataset entity`);
+  assert.ok(dataset.description.length >= 50 && dataset.description.length <= 5000, `${url} Dataset description must contain 50–5000 characters`);
+  assert.equal(dataset.license?.url, 'https://asylumjudge.com/methodology/#data-license', `${url} must identify the data license`);
+  assert.equal(dataset.isAccessibleForFree, true, `${url} must identify free access`);
+}
+
 const englishHome = await read('en/index.html');
 assert.match(englishHome, /<html lang="en">/);
 assert.match(englishHome, /<title>U\.S\. Immigration Judge Approval Rates/);
@@ -68,6 +82,9 @@ assert.match(arabicNationality, /<html lang="ar" dir="rtl">/);
 assert.match(arabicNationality, /<body data-country="[^"]+" data-seo-prerendered="true">/);
 assert.match(arabicNationality, /<h1>[^<]+<\/h1>/, 'entity H1 must remain country-specific after client translations load');
 assert.doesNotMatch(arabicNationality, /<h1 data-i18n="heroTitle">/, 'entity H1 must not be replaced by the generic nationality title');
+
+const methodology = await read('methodology/index.html');
+assert.match(methodology, /id="data-license"/, 'methodology must expose the Dataset license target');
 
 const headers = await read('_headers');
 assert.match(headers, /\/judge\s+X-Robots-Tag: noindex, follow/);

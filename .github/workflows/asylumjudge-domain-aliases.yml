@@ -1,0 +1,66 @@
+name: AsylumJudge Domain Aliases
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/asylumjudge-domain-aliases.yml
+      - scripts/build-asylumjudge-site.mjs
+
+permissions:
+  contents: read
+
+jobs:
+  connect-domains:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: 7beb8b62-f7e3-49fc-b954-46699c9956b7
+    steps:
+      - name: Preserve aliases and connect immigrationjudge domains
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_AUTH_TOKEN:-}"
+          node <<'NODE'
+          const siteId = process.env.NETLIFY_SITE_ID;
+          const token = process.env.NETLIFY_AUTH_TOKEN;
+          const endpoint = `https://api.netlify.com/api/v1/sites/${siteId}`;
+          const required = [
+            'immigrationjudge.net',
+            'www.immigrationjudge.net',
+            'immigrationjudge.us',
+            'www.immigrationjudge.us'
+          ];
+          const headers = {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          };
+          const currentResponse = await fetch(endpoint, { headers });
+          if (!currentResponse.ok) {
+            throw new Error(`Netlify site lookup failed: HTTP ${currentResponse.status}`);
+          }
+          const current = await currentResponse.json();
+          if (current.custom_domain !== 'asylumjudge.com') {
+            throw new Error(`Refusing to change unexpected primary domain: ${current.custom_domain || '(none)'}`);
+          }
+          const aliases = [...new Set([...(current.domain_aliases || []), ...required])];
+          const updateResponse = await fetch(endpoint, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify({ domain_aliases: aliases })
+          });
+          if (!updateResponse.ok) {
+            throw new Error(`Netlify alias update failed: HTTP ${updateResponse.status}`);
+          }
+          const updated = await updateResponse.json();
+          const missing = required.filter((domain) => !(updated.domain_aliases || []).includes(domain));
+          if (updated.custom_domain !== 'asylumjudge.com' || missing.length) {
+            throw new Error(`Netlify alias verification failed; missing: ${missing.join(', ') || 'none'}`);
+          }
+          console.log(`Primary domain preserved: ${updated.custom_domain}`);
+          console.log(`Required aliases connected: ${required.join(', ')}`);
+          NODE

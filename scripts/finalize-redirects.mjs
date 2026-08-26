@@ -95,7 +95,13 @@ const required = [
   '/topic/trump/ /trump 301!',
   '/finance /niulai/ 301!',
   '/finance/ /niulai/ 301!',
-  '/finance/:splat /niulai/:splat 301!'
+  '/finance/:splat /niulai/:splat 301!',
+  '/secondhand /ershou/ 301!',
+  '/secondhand/ /ershou/ 301!',
+  '/marketplace /ershou/ 301!',
+  '/marketplace/ /ershou/ 301!',
+  '/classifieds /ershou/ 301!',
+  '/classifieds/ /ershou/ 301!'
 ];
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
@@ -147,7 +153,13 @@ for (const [route, target] of [
   ['/topic/trump/', '/trump'],
   ['/finance', '/niulai/'],
   ['/finance/', '/niulai/'],
-  ['/finance/:splat', '/niulai/:splat']
+  ['/finance/:splat', '/niulai/:splat'],
+  ['/secondhand', '/ershou/'],
+  ['/secondhand/', '/ershou/'],
+  ['/marketplace', '/ershou/'],
+  ['/marketplace/', '/ershou/'],
+  ['/classifieds', '/ershou/'],
+  ['/classifieds/', '/ershou/']
 ]) {
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);

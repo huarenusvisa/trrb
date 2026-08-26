@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">华人二手交易</title>
+  <desc id="desc">蓝色购物袋、橙色循环箭头和白色商品盒组成的二手交易图标</desc>
+  <defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#287eea"/><stop offset="1" stop-color="#0b4fba"/></linearGradient></defs>
+  <rect width="160" height="160" rx="34" fill="url(#b)"/>
+  <path d="M43 57h74l-6 66H49z" fill="#fff"/>
+  <path d="M59 58V48c0-13 9-22 21-22s21 9 21 22v10" fill="none" stroke="#dcecff" stroke-width="9" stroke-linecap="round"/>
+  <path d="M60 88c9-12 27-15 40-6" fill="none" stroke="#ff8a28" stroke-width="8" stroke-linecap="round"/>
+  <path d="m99 73 4 14-14 2" fill="#ff8a28"/>
+  <path d="M100 103c-9 12-27 15-40 6" fill="none" stroke="#ff8a28" stroke-width="8" stroke-linecap="round"/>
+  <path d="m61 118-4-14 14-2" fill="#ff8a28"/>
+</svg>

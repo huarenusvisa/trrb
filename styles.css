@@ -2545,15 +2545,18 @@ svg {
 .topic-trump{background:linear-gradient(135deg,#fff7f7,#ffe9ec)!important;border-color:#ffd4d8!important}
 .topic-ice{background:linear-gradient(135deg,#f5faff,#e8f3ff)!important;border-color:#cde4ff!important}
 .topic-election{background:linear-gradient(135deg,#f5fffb,#e7f8f2)!important;border-color:#c5eadf!important}
+.topic-finance{background:linear-gradient(135deg,#f4f8ff,#e8f1ff)!important;border-color:#c9dcff!important}
+.topic-market{background:linear-gradient(135deg,#fffaf0,#fff0d4)!important;border-color:#f4d49a!important}
 .topic-focus-icon{position:relative;z-index:1;width:82px;height:104px;object-fit:cover;border-radius:16px;box-shadow:0 8px 18px rgba(15,23,42,.13)}
 .topic-ice .topic-focus-icon,.topic-election .topic-focus-icon{height:90px}
 .topic-focus-copy{position:relative;z-index:1;min-width:0}
 .topic-focus-copy h3{margin:0 0 4px;font-size:21px;line-height:1.22;color:inherit}
-.topic-trump h3{color:#c5161d}.topic-ice h3{color:#064a8b}.topic-election h3{color:#04745d}
+.topic-trump h3{color:#c5161d}.topic-ice h3{color:#064a8b}.topic-election h3{color:#04745d}.topic-finance h3{color:#175cbd}.topic-market h3{color:#9a4d00}
 .topic-focus-copy>p{margin:0 0 10px;color:#526071;font-size:14px;font-weight:600}
 .topic-status{display:inline-flex!important;align-items:center;gap:6px;width:auto!important;padding:5px 9px!important;border:1px solid rgba(148,163,184,.25);border-radius:999px;background:rgba(255,255,255,.55);font-size:12px!important;font-weight:700!important;color:#475569!important}
 .topic-status i{width:8px;height:8px;border-radius:50%;background:#dc2626;box-shadow:0 0 0 4px rgba(220,38,38,.11)}
 .topic-election .topic-status i{background:#059669;box-shadow:0 0 0 4px rgba(5,150,105,.11)}
+.topic-market .topic-status i{background:#f59e0b;box-shadow:0 0 0 4px rgba(245,158,11,.13)}
 .topic-latest{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid rgba(100,116,139,.15);font-size:12px;color:#334155;line-height:1.4;cursor:pointer}
 .topic-news-thumb{flex:0 0 42px;width:42px;height:30px;border-radius:6px;overflow:hidden;background:#e2e8f0}
 .topic-news-thumb img{width:100%;height:100%;object-fit:cover}

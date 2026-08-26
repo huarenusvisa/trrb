@@ -143,6 +143,9 @@ async function fetchStaticBlocks(request: Request): Promise<string[]> {
   if (!safe.some((block) => block.includes(`<loc>${SITE}/legal/</loc>`))) {
     throw new Error("sitemap-static.xml is missing legal hub");
   }
+  if (!safe.some((block) => block.includes(`<loc>${SITE}/ershou/</loc>`))) {
+    throw new Error("sitemap-static.xml is missing secondhand marketplace hub");
+  }
   return safe;
 }
 

@@ -8,7 +8,7 @@ const NOW = new Date();
 const NOW_ISO = NOW.toISOString();
 const MAX_AGE_DAYS = 14;
 const EXPIRES_ISO = new Date(NOW.getTime() + 30 * 86400000).toISOString();
-const USER_AGENT = "TangDailySecondhandBot/1.0 (+https://huarengongzuo.com/ershou/)";
+const USER_AGENT = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36";
 
 const sources = [
   { key: "nychinaren", name: "纽约华人资讯网", origin: "https://www.nychinaren.com", forum: "https://m.nychinaren.com/page_forum/task_vforum/f_3.html" },
@@ -191,7 +191,7 @@ async function fetchResponse(url, attempts = 3) {
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 25000);
     try {
-      const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "text/html,application/xhtml+xml,image/avif,image/webp,image/*" }, redirect: "follow", signal: controller.signal });
+      const response = await fetch(url, { headers: { "user-agent": USER_AGENT, "accept-language": "zh-CN,zh;q=0.9,en;q=0.7", referer: "https://www.google.com/", accept: "text/html,application/xhtml+xml,image/avif,image/webp,image/*" }, redirect: "follow", signal: controller.signal });
       if (!response.ok) throw new Error(`${url} HTTP ${response.status}`);
       return response;
     } catch (error) { last = error; if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 500 * attempt)); }

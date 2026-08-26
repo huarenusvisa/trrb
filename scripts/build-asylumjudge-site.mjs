@@ -29,6 +29,10 @@ await cp(join(root, 'immigration-judge-approval-rate'), join(output, 'immigratio
 await cp(join(root, 'styles.css'), join(output, 'styles.css'));
 await cp(join(root, 'trrb-logo-cropped.webp'), join(output, 'trrb-logo-cropped.webp'));
 await cp(join(root, 'asylumjudge', 'immigration-judges-proxy.js'), join(functions, 'immigration-judges.js'));
+await cp(join(root, 'asylumjudge-community.html'), join(output, 'asylumjudge-community.html'));
+await cp(join(root, 'community'), join(output, 'community'), { recursive: true });
+await mkdir(join(output, 'assets'), { recursive: true });
+await cp(join(root, 'assets', 'supabase-client.js'), join(output, 'assets', 'supabase-client.js'));
 
 await buildAsylumJudgeSeo({ root, output });
 
@@ -63,6 +67,8 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /judge-backgrounds /judge-backgrounds/index.html 200
 /china /nationality?country=China 301
 /methodology /immigration-judge-approval-rate/methodology.html 200
+/community /community/ 301!
+/community/ /asylumjudge-community.html 200!
 /immigration-judge-approval-rate /index.html 301
 /immigration-judge-approval-rate/ /index.html 301
 ${localizedRewrites}

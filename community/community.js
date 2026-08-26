@@ -1,5 +1,7 @@
 (() => {
-  const apiUrl = '/.netlify/functions/community-api';
+  const sharedOrigin = /^(?:www\.)?asylumjudge\.com$/i.test(window.location.hostname) ? 'https://trrb.net' : '';
+  const apiUrl = `${sharedOrigin}/.netlify/functions/community-api`;
+  const accountUrl = `${sharedOrigin}/.netlify/functions/unified-account-login`;
   const categoryNames = {
     hot_discussion: '热门讨论', immigration_help: '移民互助', court_experience: '上庭交流',
     uscis_interview: 'USCIS 面谈', ice_experience: 'ICE 经历', lawyer_review: '律师点评', tipoff: '投稿爆料'
@@ -136,7 +138,7 @@
     button.disabled = true;
     $('auth-message').textContent = '正在验证账号…';
     try {
-      const response = await fetch('/.netlify/functions/unified-account-login', {
+      const response = await fetch(accountUrl, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ identifier:$('auth-identifier').value, password:$('auth-password').value })
       });

@@ -57,7 +57,7 @@ requireMatch(community, /data-category=["']lawyer_review["']/, "community lawyer
 requireMatch(community, /律师点评/, "community lawyer review label was not renamed");
 forbidMatch(community, /吐槽律师/, "community still exposes the retired lawyer complaint label");
 
-const asylumCommunity = await text("asylumjudge/community/index.html");
+const asylumCommunity = await text("asylumjudge-community.html");
 requireMatch(asylumCommunity, /^\s*<!doctype html>/i, "asylumjudge community page is not HTML");
 requireMatch(asylumCommunity, /https:\/\/asylumjudge\.com\/community\//i, "asylumjudge community canonical missing");
 requireMatch(asylumCommunity, /\/community\/community\.js/i, "asylumjudge community does not share the production community client");
@@ -65,6 +65,13 @@ requireMatch(asylumCommunity, /律师点评/, "asylumjudge community lawyer revi
 
 const unifiedLogin = await text("netlify/functions/unified-account-login.js");
 requireMatch(unifiedLogin, /asylumjudge\\\.com/, "unified account origin allowlist is missing asylumjudge.com");
+
+const communityApi = await text("netlify/functions/community-api.js");
+requireMatch(communityApi, /access-control-allow-origin["']?\s*:\s*["']\*["']/, "community API is not available to the AsylumJudge origin");
+
+const asylumBuilder = await text("scripts/build-asylumjudge-site.mjs");
+requireMatch(asylumBuilder, /asylumjudge-community\.html/, "AsylumJudge production bundle is missing the community page");
+requireMatch(asylumBuilder, /\/community\/\s+\/asylumjudge-community\.html\s+200!/, "AsylumJudge production bundle is missing the community route");
 
 const jobsHome = await text("jobs-home.js");
 requireMatch(jobsHome, /TRRB_JOBS_HOME_PRELAUNCH\s*=\s*false/, "jobs-home.js is not production-live");

@@ -23,7 +23,7 @@ http://asylumjudge.com/* https://asylumjudge.com/:splat 301!
 http://www.asylumjudge.com/* https://asylumjudge.com/:splat 301!
 https://www.asylumjudge.com/* https://asylumjudge.com/:splat 301!
 https://asylumjudge.com/community https://asylumjudge.com/community/ 301!
-https://asylumjudge.com/community/ /asylumjudge/community/index.html 200!
+https://asylumjudge.com/community/ /asylumjudge-community.html 200!
 http://immigrationjudge.net/ https://asylumjudge.com/en/ 301!
 http://immigrationjudge.net/* https://asylumjudge.com/en/:splat 301!
 http://www.immigrationjudge.net/ https://asylumjudge.com/en/ 301!
@@ -59,8 +59,6 @@ https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology
 /asylumjudge/nationality https://asylumjudge.com/nationality 301!
 /asylumjudge/china https://asylumjudge.com/nationality?country=China 301!
 /asylumjudge/methodology https://asylumjudge.com/methodology 301!
-/asylumjudge/community https://asylumjudge.com/community/ 301!
-/asylumjudge/community/ https://asylumjudge.com/community/ 301!
 /asylumjudge/* https://asylumjudge.com/:splat 301!
 /immigration-judge-approval-rate https://asylumjudge.com/ 301!
 /immigration-judge-approval-rate/ https://asylumjudge.com/ 301!
@@ -121,5 +119,7 @@ https://trrb.net/marketplace https://huarengongzuo.com/ershou/ 301!
 https://trrb.net/marketplace/ https://huarengongzuo.com/ershou/ 301!
 https://trrb.net/classifieds https://huarengongzuo.com/ershou/ 301!
 https://trrb.net/classifieds/ https://huarengongzuo.com/ershou/ 301!
+/asylumjudge/community https://asylumjudge.com/community/ 301!
+/asylumjudge/community/ https://asylumjudge.com/community/ 301!
 /us-politics /listing.html?category=%E7%BE%8E%E5%9B%BD%E6%97%B6%E6%94%BF 200
 /us-crime /listing.html?category=%E7%BE%8E%E5%9B%BD%E8%AD%A6%E6%83%85 200

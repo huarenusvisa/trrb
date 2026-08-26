@@ -484,6 +484,7 @@ export async function buildAsylumJudgeSeo({ root, output }) {
       staticRows.push({ loc: canonical, lastmod: TODAY });
     }));
   }
+  staticRows.push({ loc: `${ORIGIN}/community/`, lastmod: TODAY });
 
   let judgeData = { results: [] };
   let courtData = { courts: [] };

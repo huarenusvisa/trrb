@@ -27,16 +27,16 @@
   const localePaths = { en: 'en', es: 'es', fr: 'fr', 'pt-BR': 'pt-br', hi: 'hi', 'zh-Hans': '', 'zh-Hant': 'zh-hant', ru: 'ru', ar: 'ar', tr: 'tr' };
   const pathLocales = new Map(Object.entries(localePaths).filter(([, path]) => path).map(([key, path]) => [path, key]));
   const labels = {
-    en: { judges: 'Find judges', courts: 'Find courts', states: 'State data', nationality: 'Nationality approval rates', language: 'Language' },
-    es: { judges: 'Buscar jueces', courts: 'Buscar tribunales', states: 'Datos estatales', nationality: 'Tasas por nacionalidad', language: 'Idioma' },
-    fr: { judges: 'Trouver un juge', courts: 'Trouver un tribunal', states: 'Données par État', nationality: 'Taux par nationalité', language: 'Langue' },
-    'pt-BR': { judges: 'Buscar juízes', courts: 'Buscar tribunais', states: 'Dados estaduais', nationality: 'Taxas por nacionalidade', language: 'Idioma' },
-    hi: { judges: 'न्यायाधीश खोजें', courts: 'अदालत खोजें', states: 'राज्य डेटा', nationality: 'राष्ट्रीयता अनुमोदन दर', language: 'भाषा' },
-    'zh-Hans': { judges: '查法官', courts: '查法院', states: '各州数据', nationality: '各国国籍批准率', language: '语言' },
-    'zh-Hant': { judges: '查法官', courts: '查法院', states: '各州數據', nationality: '各國國籍批准率', language: '語言' },
-    ru: { judges: 'Найти судью', courts: 'Найти суд', states: 'Данные штатов', nationality: 'Одобрение по гражданству', language: 'Язык' },
-    ar: { judges: 'بحث القضاة', courts: 'بحث المحاكم', states: 'بيانات الولايات', nationality: 'نسب الموافقة حسب الجنسية', language: 'اللغة' },
-    tr: { judges: 'Hâkim ara', courts: 'Mahkeme ara', states: 'Eyalet verileri', nationality: 'Uyruğa göre onay oranı', language: 'Dil' }
+    en: { judges: 'Find judges', courts: 'Find courts', states: 'State data', nationality: 'Nationality approval rates', community: 'Community', language: 'Language' },
+    es: { judges: 'Buscar jueces', courts: 'Buscar tribunales', states: 'Datos estatales', nationality: 'Tasas por nacionalidad', community: 'Comunidad', language: 'Idioma' },
+    fr: { judges: 'Trouver un juge', courts: 'Trouver un tribunal', states: 'Données par État', nationality: 'Taux par nationalité', community: 'Communauté', language: 'Langue' },
+    'pt-BR': { judges: 'Buscar juízes', courts: 'Buscar tribunais', states: 'Dados estaduais', nationality: 'Taxas por nacionalidade', community: 'Comunidade', language: 'Idioma' },
+    hi: { judges: 'न्यायाधीश खोजें', courts: 'अदालत खोजें', states: 'राज्य डेटा', nationality: 'राष्ट्रीयता अनुमोदन दर', community: 'समुदाय', language: 'भाषा' },
+    'zh-Hans': { judges: '查法官', courts: '查法院', states: '各州数据', nationality: '各国国籍批准率', community: '移民社区', language: '语言' },
+    'zh-Hant': { judges: '查法官', courts: '查法院', states: '各州數據', nationality: '各國國籍批准率', community: '移民社區', language: '語言' },
+    ru: { judges: 'Найти судью', courts: 'Найти суд', states: 'Данные штатов', nationality: 'Одобрение по гражданству', community: 'Сообщество', language: 'Язык' },
+    ar: { judges: 'بحث القضاة', courts: 'بحث المحاكم', states: 'بيانات الولايات', nationality: 'نسب الموافقة حسب الجنسية', community: 'المجتمع', language: 'اللغة' },
+    tr: { judges: 'Hâkim ara', courts: 'Mahkeme ara', states: 'Eyalet verileri', nationality: 'Uyruğa göre onay oranı', community: 'Topluluk', language: 'Dil' }
   };
   const brandLabels = {
     en: { descriptor: 'U.S. immigration judge and court data', nav: 'Immigration judge data navigation', footer: 'Shared EOIR database · continuously updated' },
@@ -63,9 +63,9 @@
   let locale = normalizeLocale(pathLocales.get(firstPathSegment) || new URLSearchParams(location.search).get('lang') || storedLocale || 'zh-Hans');
   const standaloneLocaleRoot = standaloneHost && localePaths[locale] ? `/${localePaths[locale]}` : '';
   const localizedRoot = trrbColumn ? root : standaloneLocaleRoot;
-  const routeHref = (key) => ({ judges: (location.pathname === '/' || location.pathname === `${localizedRoot}/` ? '#judge-search' : (localizedRoot || '/')), courts: `${localizedRoot}/courts`, states: `${localizedRoot}/states`, nationality: `${localizedRoot}/nationality` }[key]);
+  const routeHref = (key) => ({ judges: (location.pathname === '/' || location.pathname === `${localizedRoot}/` ? '#judge-search' : (localizedRoot || '/')), courts: `${localizedRoot}/courts`, states: `${localizedRoot}/states`, nationality: `${localizedRoot}/nationality`, community: '/community/' }[key]);
   const activeKey = () => /\/nationality|china-dashboard/.test(location.pathname) ? 'nationality' : /\/states/.test(location.pathname) ? 'states' : /\/courts|court-detail/.test(location.pathname) ? 'courts' : 'judges';
-  const navigationMarkup = () => ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('');
+  const navigationMarkup = () => ['judges', 'courts', 'states', 'nationality', 'community'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('');
   const languageMarkup = (id = 'language-select') => `<label for="${id}" data-language-label>${labels[locale].language}</label><select id="${id}" aria-label="${labels[locale].language}">${options}</select>`;
   const applyNavigationLabels = () => {
     const set = labels[locale] || labels['zh-Hans'];

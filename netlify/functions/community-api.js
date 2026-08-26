@@ -28,7 +28,10 @@ const json = (statusCode, body) => ({
   headers: {
     'content-type': 'application/json; charset=utf-8',
     'cache-control': 'no-store',
-    'x-content-type-options': 'nosniff'
+    'x-content-type-options': 'nosniff',
+    'access-control-allow-origin': '*',
+    'access-control-allow-headers': 'authorization, content-type',
+    'access-control-allow-methods': 'GET, POST, OPTIONS'
   },
   body: JSON.stringify(body)
 });
@@ -246,6 +249,7 @@ async function unpublishPost(user, body) {
 
 exports.handler = async (event) => {
   try {
+    if (event.httpMethod === 'OPTIONS') return json(204, {});
     if (!SUPABASE_URL || !SERVICE_KEY) return json(503, { error: '社区数据服务暂不可用' });
     if (event.httpMethod === 'GET') return feed(event);
     if (event.httpMethod !== 'POST') return json(405, { error: 'method_not_allowed' });

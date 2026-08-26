@@ -192,7 +192,6 @@ function normalizeCandidate(source, url, html) {
   if (!contact) errors.push("missing_public_contact");
   if (!location) errors.push("missing_us_location");
   if (!category) errors.push("unsupported_category");
-  if (!images.length) errors.push("missing_product_image");
   if (description.length < 3) errors.push("missing_description");
   if (prohibited.test(`${title} ${description}`)) errors.push("prohibited_or_out_of_scope");
   if (commercial.test(`${title} ${description}`)) errors.push("commercial_advertisement");
@@ -278,7 +277,6 @@ async function publish(candidate) {
   const duplicate = await rest("secondhand_listings", `dedupe_key=eq.${candidate.dedupeKey}&select=id&limit=1`);
   if (duplicate?.[0]) return "duplicate";
   const images = await downloadImages(candidate);
-  if (!images.length) return "rejected_image";
   const priceNote = candidate.priceExplicit ? "" : "原帖没有标明价格，显示为面议，请联系发布者协商。\n";
   const sourceNote = `${priceNote}信息来自公开发布页面，发布于${candidate.published.toISOString().slice(0, 10)}。\n来源：${candidate.source.name}\n原始链接：${candidate.url}`;
   const inserted = await rest("secondhand_listings", "", { method: "POST", body: {

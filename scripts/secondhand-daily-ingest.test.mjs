@@ -11,8 +11,8 @@ assert.deepEqual(pickPrice("价格请联系卖家协商"), { price: 0, explicit:
 
 const source = { key: "fixture", name: "测试来源", origin: "https://example.com" };
 const html = `<!doctype html><title>九成新双人沙发 - 华人论坛</title><h1>九成新双人沙发</h1>
-  <div>发布于: 2026/08/25</div><div>所在地区: 法拉盛</div><div>详细描述 搬家出售九成新双人沙发，$80，自取。电话917-555-1212 联系时请一定说明</div>
-  <img src="https://example.com/upload/sofa.jpg">`;
+  <div>发布于: 2026/08/25</div><div>所在地区: 法拉盛</div><div>详细描述 搬家出售九成新双人沙发，$80，自取。电话917-555-1212
+  <img src="https://example.com/upload/sofa.jpg"> 联系时请一定说明</div>`;
 const candidate = normalizeCandidate(source, "https://example.com/f/page_viewtopic/t_123.html", html);
 assert.equal(candidate.payload.category_slug, "moving");
 assert.equal(candidate.payload.price, 80);

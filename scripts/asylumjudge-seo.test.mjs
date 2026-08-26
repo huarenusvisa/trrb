@@ -77,6 +77,19 @@ assert.match(englishHome, /<html lang="en">/);
 assert.match(englishHome, /<title>U\.S\. Immigration Judge Approval Rates/);
 assert.match(englishHome, /hreflang="pt-BR" href="https:\/\/asylumjudge\.com\/pt-br\/"/);
 
+const redirects = await read('_redirects');
+const redirectLines = new Set(redirects.trim().split(/\r?\n/));
+for (const scheme of ['http', 'https']) {
+  for (const host of ['immigrationjudge.net', 'www.immigrationjudge.net']) {
+    assert.ok(redirectLines.has(`${scheme}://${host}/ https://asylumjudge.com/en/ 301!`));
+    assert.ok(redirectLines.has(`${scheme}://${host}/* https://asylumjudge.com/en/:splat 301!`));
+  }
+  for (const host of ['immigrationjudge.us', 'www.immigrationjudge.us']) {
+    assert.ok(redirectLines.has(`${scheme}://${host}/ https://asylumjudge.com/ 301!`));
+    assert.ok(redirectLines.has(`${scheme}://${host}/* https://asylumjudge.com/:splat 301!`));
+  }
+}
+
 const arabicNationality = await read(`${new URL(nationalityUrl).pathname.replace(/^\//, '').replace(/\/$/, '')}/index.html`);
 assert.match(arabicNationality, /<html lang="ar" dir="rtl">/);
 assert.match(arabicNationality, /<body data-country="[^"]+" data-seo-prerendered="true">/);

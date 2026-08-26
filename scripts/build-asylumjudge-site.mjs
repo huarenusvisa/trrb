@@ -39,13 +39,21 @@ const localizedRewrites = localePrefixes.flatMap((locale) => [
 ]).join('\n');
 
 await writeFile(join(output, '_redirects'), `
-http://immigrationjudge.net/* https://asylumjudge.com/:splat 301!
-http://www.immigrationjudge.net/* https://asylumjudge.com/:splat 301!
-https://immigrationjudge.net/* https://asylumjudge.com/:splat 301!
-https://www.immigrationjudge.net/* https://asylumjudge.com/:splat 301!
+http://immigrationjudge.net/ https://asylumjudge.com/en/ 301!
+http://immigrationjudge.net/* https://asylumjudge.com/en/:splat 301!
+http://www.immigrationjudge.net/ https://asylumjudge.com/en/ 301!
+http://www.immigrationjudge.net/* https://asylumjudge.com/en/:splat 301!
+https://immigrationjudge.net/ https://asylumjudge.com/en/ 301!
+https://immigrationjudge.net/* https://asylumjudge.com/en/:splat 301!
+https://www.immigrationjudge.net/ https://asylumjudge.com/en/ 301!
+https://www.immigrationjudge.net/* https://asylumjudge.com/en/:splat 301!
+http://immigrationjudge.us/ https://asylumjudge.com/ 301!
 http://immigrationjudge.us/* https://asylumjudge.com/:splat 301!
+http://www.immigrationjudge.us/ https://asylumjudge.com/ 301!
 http://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
+https://immigrationjudge.us/ https://asylumjudge.com/ 301!
 https://immigrationjudge.us/* https://asylumjudge.com/:splat 301!
+https://www.immigrationjudge.us/ https://asylumjudge.com/ 301!
 https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /judge /immigration-judge-approval-rate/detail.html 200
 /court /immigration-judge-approval-rate/court-detail.html 200

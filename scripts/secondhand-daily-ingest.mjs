@@ -96,7 +96,7 @@ function pickPrice(text) {
     const match = text.match(pattern); const price = Number(match?.[1]);
     if (Number.isFinite(price) && price >= 0 && price <= 100000) return { price, explicit: true };
   }
-  return { price: null, explicit: false };
+  return { price: 0, explicit: false };
 }
 
 function pickCondition(text) {
@@ -175,7 +175,6 @@ function normalizeCandidate(source, url, html) {
   if (!contact) errors.push("missing_public_contact");
   if (!location) errors.push("missing_us_location");
   if (!category) errors.push("unsupported_category");
-  if (!price.explicit) errors.push("missing_price_or_free_marker");
   if (!images.length) errors.push("missing_product_image");
   if (description.length < 3) errors.push("missing_description");
   if (prohibited.test(`${title} ${description}`)) errors.push("prohibited_or_out_of_scope");
@@ -184,7 +183,7 @@ function normalizeCandidate(source, url, html) {
   const phoneKey = contact ? cleanPhone(contact) || contact.toLowerCase() : "";
   const dedupeKey = sha256(`${phoneKey}|${title.toLowerCase().replace(/\W/g, "").slice(0, 30)}`);
   const payload = { title, description, category_slug: category, price: price.price, item_condition: pickCondition(`${title} ${description}`), contact_value: contact, ...location };
-  return { source, url, externalId, published, images, errors: [...new Set(errors)], dedupeKey, payload, payloadHash: sha256(JSON.stringify(payload)) };
+  return { source, url, externalId, published, images, errors: [...new Set(errors)], dedupeKey, payload, priceExplicit: price.explicit, payloadHash: sha256(JSON.stringify(payload)) };
 }
 
 async function fetchResponse(url, attempts = 3) {
@@ -218,7 +217,7 @@ async function discover(source) {
   for (let page = 1; page <= 3; page += 1) {
     const separator = source.forum.includes("?") ? "&" : "?";
     const html = await fetchText(`${source.origin}${source.forum}${separator}page=${page}`);
-    for (const match of html.matchAll(/(?:href=["'])(?:https?:\/\/[^/]+)?(?:\/f\/page_viewtopic|\/page_forum\/task_vtopic)\/t_(\d+)\.html[^"']*["']/gi)) {
+    for (const match of html.matchAll(/href=["'][^"']*t_(\d+)\.html[^"']*["']/gi)) {
       urls.add(`${source.origin}/f/page_viewtopic/t_${match[1]}.html`);
     }
   }
@@ -261,7 +260,8 @@ async function publish(candidate) {
   if (duplicate?.[0]) return "duplicate";
   const images = await downloadImages(candidate);
   if (!images.length) return "rejected_image";
-  const sourceNote = `信息来自公开发布页面，发布于${candidate.published.toISOString().slice(0, 10)}。\n来源：${candidate.source.name}\n原始链接：${candidate.url}`;
+  const priceNote = candidate.priceExplicit ? "" : "原帖没有标明价格，显示为面议，请联系发布者协商。\n";
+  const sourceNote = `${priceNote}信息来自公开发布页面，发布于${candidate.published.toISOString().slice(0, 10)}。\n来源：${candidate.source.name}\n原始链接：${candidate.url}`;
   const inserted = await rest("secondhand_listings", "", { method: "POST", body: {
     seller_user_id: null, listing_origin: "external", source_key: candidate.source.key, source_external_id: candidate.externalId,
     source_url: candidate.url, source_published_at: candidate.published.toISOString(), source_checked_at: NOW_ISO,
@@ -270,7 +270,7 @@ async function publish(candidate) {
     description: `${candidate.payload.description}\n\n${sourceNote}`.slice(0, 4000), price: candidate.payload.price,
     item_condition: candidate.payload.item_condition, country_code: "US", state_code: candidate.payload.state_code,
     city: candidate.payload.city, location_label: candidate.payload.location_label, contact_value: candidate.payload.contact_value,
-    contact_public: true, ai_suggestion: { source_name: candidate.source.name, source_url: candidate.url, imported: true },
+    contact_public: true, ai_suggestion: { source_name: candidate.source.name, source_url: candidate.url, imported: true, price_negotiable: !candidate.priceExplicit },
     status: "published", moderation_hold: false, status_reason: "external_pilot_rules_passed", published_at: NOW_ISO,
   } });
   const listingId = inserted?.[0]?.id;

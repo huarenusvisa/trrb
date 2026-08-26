@@ -7,6 +7,7 @@ assert.equal(pickContact("短信 917 555 1212"), "917-555-1212");
 assert.equal(pickLocation("法拉盛自取").state_code, "NY");
 assert.equal(pickPrice("价格 $80 可议").price, 80);
 assert.deepEqual(pickPrice("免费自取"), { price: 0, explicit: true });
+assert.deepEqual(pickPrice("价格请联系卖家协商"), { price: 0, explicit: false });
 
 const source = { key: "fixture", name: "测试来源", origin: "https://example.com" };
 const html = `<!doctype html><title>九成新双人沙发 - 华人论坛</title><h1>九成新双人沙发</h1>
@@ -19,4 +20,3 @@ assert.equal(candidate.payload.location_label, "法拉盛 · NY");
 assert.equal(candidate.errors.length, 0);
 
 console.log("secondhand daily ingest tests: PASS");
-

@@ -2,12 +2,6 @@ name: SECONDHAND Daily Ingest
 
 on:
   workflow_call:
-  push:
-    branches: [main]
-    paths:
-      - scripts/secondhand-daily-ingest.mjs
-      - scripts/secondhand-daily-ingest.test.mjs
-      - .github/workflows/secondhand-daily-ingest.yml
   workflow_dispatch:
     inputs:
       target:

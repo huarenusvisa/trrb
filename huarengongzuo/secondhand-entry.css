@@ -1,0 +1,19 @@
+@media (min-width: 901px) {
+  .action-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.action-grid > a.secondhand-action {
+  border-color: #f3c98b;
+  background: linear-gradient(135deg, #fff, #fff7e8);
+}
+
+.action-grid > a.secondhand-action > span {
+  background: #fff0d2;
+  color: #a65300;
+}
+
+.action-grid > a.secondhand-action i {
+  color: #dc7200;
+}

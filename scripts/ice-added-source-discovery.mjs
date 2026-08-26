@@ -7,7 +7,6 @@ const LOOKBACK_HOURS = Number(process.env.ICE_ADDED_SOURCE_LOOKBACK_HOURS || 12)
 const MAX_PAGES = Math.max(1, Math.min(3, Number(process.env.ICE_ADDED_SOURCE_MAX_PAGES || 2)));
 
 const SOURCES = [
-  { username: "kigfddbh", name: "MORUI" },
   { username: "TheJFreakinC", name: "Jesus Freakin Congress" },
   { username: "Timcast", name: "Tim Pool" }
 ];

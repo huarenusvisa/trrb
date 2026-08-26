@@ -1,0 +1,92 @@
+.market-tools {
+  padding: 26px 0 18px;
+  background: linear-gradient(180deg, #f4f8ff, #f7faff);
+  border-bottom: 1px solid var(--line);
+}
+
+.market-tools .search-box {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.market-tools .city-chips {
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+.category-section {
+  padding-top: 34px;
+}
+
+.section-head h1 {
+  margin: 5px 0 0;
+  font-size: 34px;
+}
+
+.submission-result {
+  min-height: 75vh;
+  padding: 70px 0;
+  background: #f5f9ff;
+}
+
+.result-card {
+  max-width: 680px;
+  margin: auto;
+  padding: 36px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+.result-icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: auto;
+  border-radius: 17px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.result-card h1 {
+  margin: 16px 0 7px;
+}
+
+.result-card p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.result-card .publish-button {
+  display: inline-block;
+  margin-top: 12px;
+  text-decoration: none;
+}
+
+@media (max-width: 600px) {
+  .market-tools {
+    padding: 14px 0 12px;
+  }
+
+  .market-tools .city-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 3px;
+  }
+
+  .market-tools .city-chips button {
+    flex: 0 0 auto;
+  }
+
+  .category-section {
+    padding-top: 28px;
+  }
+
+  .section-head h1 {
+    font-size: 32px;
+  }
+}

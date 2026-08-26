@@ -1,12 +1,14 @@
 @media (min-width: 901px) {
   .action-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr);
   }
 }
 
 .action-grid > a.secondhand-action {
   border-color: #f3c98b;
   background: linear-gradient(135deg, #fff, #fff7e8);
+  min-height: 92px;
+  padding-block: 21px;
 }
 
 .action-grid > a.secondhand-action > span {
@@ -16,4 +18,58 @@
 
 .action-grid > a.secondhand-action i {
   color: #dc7200;
+}
+
+@media (max-width: 900px) {
+  .action-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .action-grid > a:nth-child(1),
+  .action-grid > a:nth-child(2) {
+    grid-column: 1 / -1;
+  }
+
+  .action-grid > a:nth-child(3) {
+    grid-column: span 2;
+  }
+
+  .action-grid > a.secondhand-action {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 600px) {
+  .action-grid > a:nth-child(3),
+  .action-grid > a.secondhand-action {
+    min-height: 116px;
+    padding: 15px 12px;
+  }
+
+  .action-grid > a:nth-child(3) {
+    grid-template-columns: auto 1fr;
+  }
+
+  .action-grid > a:nth-child(3) small,
+  .action-grid > a:nth-child(3) i {
+    display: none;
+  }
+
+  .action-grid > a.secondhand-action {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .action-grid > a.secondhand-action > span {
+    width: 50px;
+    height: 50px;
+    font-size: 21px;
+  }
+
+  .action-grid > a.secondhand-action b {
+    font-size: 18px;
+  }
+
+  .action-grid > a.secondhand-action small {
+    line-height: 1.35;
+  }
 }

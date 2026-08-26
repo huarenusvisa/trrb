@@ -15,6 +15,11 @@ const sources = [
   { key: "chineseinla", name: "洛杉矶华人资讯网", origin: "https://www.chineseinla.com", forum: "https://m.chineseinla.cn/page_forum/task_vforum/f_3/items_45B.html" },
 ];
 
+const fallbackTopicIds = {
+  nychinaren: [687850, 528012, 574964, 687624, 684428, 279434, 687491, 687486, 687402, 687385],
+  chineseinla: [2049018],
+};
+
 const blockedPhones = new Set(["9295715245", "7183587333"]);
 const prohibited = /二手车|卖车|买车|VIN|里程|宠物|猫狗|香烟|电子烟|烟弹|槟榔|酒类|药品|减肥药|处方药|保健品|手机靓号|账号|游戏币|代购|换汇|博彩|赌场|色情|成人用品|枪支|弹药|刀具|厂家直销|批发|招商|加盟|全美发货|商家推广|专业安装|售后服务/i;
 const commercial = /公司|厂家|工厂|批发|库存充足|长期供应|代理|客服|门店|店内|承接|服务商|促销活动|roadshow/i;
@@ -216,7 +221,16 @@ async function fetchResponse(url, attempts = 3) {
   throw last;
 }
 
-async function fetchText(url) { return await (await fetchResponse(url)).text(); }
+async function fetchText(url) {
+  for (let attempt = 1; attempt <= 4; attempt += 1) {
+    const separator = url.includes("?") ? "&" : "?";
+    const response = await fetchResponse(`${url}${separator}_trrb=${Date.now()}-${attempt}`, 2);
+    const text = await response.text();
+    if (text.trim().length >= 500) return text;
+    if (attempt < 4) await new Promise((resolve) => setTimeout(resolve, 350 * attempt));
+  }
+  throw new Error(`${url} returned an empty page after retries`);
+}
 
 async function rest(table, query = "", { method = "GET", body, prefer = "return=representation" } = {}) {
   const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query ? `?${query}` : ""}`, {
@@ -232,12 +246,18 @@ async function discover(source) {
   const urls = new Set();
   for (let page = 1; page <= 3; page += 1) {
     const separator = source.forum.includes("?") ? "&" : "?";
-    const html = await fetchText(`${source.forum}${separator}page=${page}`);
+    let html;
+    try { html = await fetchText(`${source.forum}${separator}page=${page}`); }
+    catch (error) { console.error("DISCOVERY_PAGE_ERROR", source.key, page, error?.message || error); continue; }
     const before = urls.size;
     for (const match of html.matchAll(/href=["'][^"']*t_(\d+)\.html[^"']*["']/gi)) {
       urls.add(`${source.origin}/f/page_viewtopic/t_${match[1]}.html`);
     }
     console.log("DISCOVERY_PAGE", source.key, page, `bytes=${html.length}`, `new_links=${urls.size - before}`);
+  }
+  if (!urls.size) {
+    for (const id of fallbackTopicIds[source.key] || []) urls.add(`${source.origin}/f/page_viewtopic/t_${id}.html`);
+    console.log("DISCOVERY_FALLBACK", source.key, `links=${urls.size}`);
   }
   return [...urls].slice(0, 40);
 }

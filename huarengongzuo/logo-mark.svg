@@ -1,12 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
   <title id="title">华人工作网</title>
-  <desc id="desc">蓝色圆角方形中的白色工字</desc>
+  <desc id="desc">珊瑚红圆形中的白色 H 与向上箭头</desc>
   <defs>
-    <linearGradient id="blue" x1="18" y1="12" x2="142" y2="148" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0f63e9"/>
-      <stop offset="1" stop-color="#2188eb"/>
+    <linearGradient id="coral" x1="28" y1="18" x2="132" y2="142" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff6a45"/>
+      <stop offset="1" stop-color="#e63d28"/>
     </linearGradient>
   </defs>
-  <rect width="160" height="160" rx="38" fill="url(#blue)"/>
-  <path d="M43 42h74v17H89v42h33v18H38v-18h32V59H43z" fill="#fff"/>
+  <circle cx="80" cy="80" r="76" fill="url(#coral)"/>
+  <path d="M43 38h22v31h30V38h22v84H95V91H65v31H43z" fill="#fff"/>
+  <path d="M80 62 65 80h9v18h12V80h9z" fill="url(#coral)"/>
 </svg>

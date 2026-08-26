@@ -1,29 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">Huarengongzuo share card</title>
-  <desc id="desc">Huarengongzuo coral circular logo and website name on a warm light background</desc>
+  <desc id="desc">Huarengongzuo blue circular briefcase logo and website name on a light blue background</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#fffaf7"/>
-      <stop offset="1" stop-color="#ffe9df"/>
+      <stop stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#e3efff"/>
     </linearGradient>
-    <linearGradient id="coral" x1="0" y1="0" x2="260" y2="260" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#ff6a45"/>
-      <stop offset="1" stop-color="#e63d28"/>
+    <linearGradient id="blue" x1="0" y1="0" x2="260" y2="260" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#287eea"/>
+      <stop offset="1" stop-color="#0b4fba"/>
     </linearGradient>
     <filter id="shadow" x="-35%" y="-35%" width="170%" height="170%">
-      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#9b2b1b" flood-opacity=".2"/>
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#0b4f9f" flood-opacity=".2"/>
     </filter>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
   <circle cx="1110" cy="70" r="225" fill="#fff" opacity=".56"/>
-  <circle cx="1115" cy="640" r="285" fill="#ffc8b6" opacity=".35"/>
+  <circle cx="1115" cy="640" r="285" fill="#b9d7ff" opacity=".35"/>
   <g transform="translate(110 185)" filter="url(#shadow)">
-    <circle cx="130" cy="130" r="126" fill="url(#coral)"/>
-    <path d="M70 62h35v50h49V62h36v136h-36v-50h-49v50H70z" fill="#fff"/>
-    <path d="m130 102-24 29h14v27h20v-27h14z" fill="url(#coral)"/>
+    <circle cx="130" cy="130" r="126" fill="url(#blue)"/>
+    <path d="M91 95v-10c0-17 14-31 31-31h16c17 0 31 14 31 31v10h-19V85c0-7-5-12-12-12h-16c-7 0-12 5-12 12v10z" fill="#fff"/>
+    <rect x="44" y="90" width="172" height="120" rx="23" fill="#fff"/>
+    <path d="M44 127h172v22c-25 11-54 16-86 16s-61-5-86-16z" fill="#dcecff"/>
+    <rect x="117" y="137" width="26" height="20" rx="6" fill="#1768d5"/>
+    <circle cx="184" cy="187" r="36" fill="#ff8a28"/>
+    <path d="m168 187 12 12 23-28" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
   <text x="440" y="260" fill="#1f2937" font-family="Arial,Helvetica,sans-serif" font-size="70" font-weight="800" letter-spacing="1">HUAREN GONGZUO</text>
-  <text x="444" y="335" fill="#e0472f" font-family="Arial,Helvetica,sans-serif" font-size="32" font-weight="700" letter-spacing="4">JOBS FOR CHINESE COMMUNITIES</text>
-  <rect x="442" y="382" width="570" height="2" fill="#efc2b4"/>
-  <text x="444" y="438" fill="#6b5d59" font-family="Arial,Helvetica,sans-serif" font-size="29" letter-spacing="1">huarengongzuo.com</text>
+  <text x="444" y="335" fill="#1768d5" font-family="Arial,Helvetica,sans-serif" font-size="32" font-weight="700" letter-spacing="4">JOBS FOR CHINESE COMMUNITIES</text>
+  <rect x="442" y="382" width="570" height="2" fill="#b8cfee"/>
+  <text x="444" y="438" fill="#52657c" font-family="Arial,Helvetica,sans-serif" font-size="29" letter-spacing="1">huarengongzuo.com</text>
 </svg>

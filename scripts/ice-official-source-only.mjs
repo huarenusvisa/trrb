@@ -5,7 +5,7 @@ const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const MAX_ROWS = Number(process.env.ICE_OFFICIAL_FILTER_MAX || 3000);
 const OFFICIAL_HANDLE = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|thejusticedept|usmarshalshq|fbi|fema|secretservice|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*|hsi[a-z0-9_]*)$/i;
 const OFFICIAL_TYPE = /^(official|government|agency)$/i;
-const MONITORED_HANDLE = /^(kimkatieusa|immigrantcrimes|longtimehistory|cartelwatch|storm1news|wallstreetapes|ericleeatty|bluelivesmtr|breannamorello|walshfreedom|foxnews|dittiepe|ericldaugh|drcharlieward|gunthereagleman|kigfddbh|thejfreakinc|timcast)$/i;
+const MONITORED_HANDLE = /^(kimkatieusa|immigrantcrimes|longtimehistory|cartelwatch|storm1news|wallstreetapes|ericleeatty|bluelivesmtr|breannamorello|walshfreedom|foxnews|dittiepe|ericldaugh|drcharlieward|gunthereagleman|thejfreakinc|timcast)$/i;
 const MONITORED_TYPE = /^(monitored_individual)$/i;
 
 function requireEnv() {

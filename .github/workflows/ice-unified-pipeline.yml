@@ -19,7 +19,6 @@ env:
   SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
   SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
   RUN_MODE: "process"
-  ICE_RUN_DUE_MINUTES: "172"
   ICE_PRIORITY_LOOKBACK_MINUTES: "720"
   ICE_EXTRA_LOOKBACK_MINUTES: "720"
   ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
@@ -83,21 +82,13 @@ jobs:
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
 
-      - name: Check whether collection is due
+      - name: Run every shared three-hour trigger
         id: due
         if: steps.window.outputs.allowed == 'true'
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event_name }}" == "workflow_call" || "${{ github.event_name }}" == "push" ]]; then
-            echo "due=true" >> "$GITHUB_OUTPUT"
-            echo "人工或代码变更触发，立即执行。"
-          elif ! node scripts/ice-run-due.mjs; then
-            echo "due=true" >> "$GITHUB_OUTPUT"
-            echo "距离最近成功已超过32分钟，执行完整采集。"
-          else
-            echo "due=false" >> "$GITHUB_OUTPUT"
-            echo "最近成功心跳仍新鲜，本轮退出。"
-          fi
+          echo "due=true" >> "$GITHUB_OUTPUT"
+          echo "与中国热门头条共用每3小时调度，本轮执行完整ICE采集。"
 
       - name: Read ICE category switches with safe fallback
         id: category
@@ -190,8 +181,4 @@ jobs:
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
-
-      - name: Report healthy no-op
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'
-        run: echo "距最近成功不足32分钟，本轮只做健康检查。"
 

@@ -1,6 +1,6 @@
 @media (min-width: 901px) {
   .action-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.35fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 1.35fr);
   }
 }
 
@@ -30,30 +30,18 @@
     grid-column: 1 / -1;
   }
 
-  .action-grid > a:nth-child(3) {
-    grid-column: span 2;
-  }
 
   .action-grid > a.secondhand-action {
-    grid-column: span 3;
+    grid-column: 1 / -1;
   }
 }
 
 @media (max-width: 600px) {
-  .action-grid > a:nth-child(3),
   .action-grid > a.secondhand-action {
     min-height: 116px;
     padding: 15px 12px;
   }
 
-  .action-grid > a:nth-child(3) {
-    grid-template-columns: auto 1fr;
-  }
-
-  .action-grid > a:nth-child(3) small,
-  .action-grid > a:nth-child(3) i {
-    display: none;
-  }
 
   .action-grid > a.secondhand-action {
     grid-template-columns: auto 1fr auto;

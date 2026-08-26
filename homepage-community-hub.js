@@ -48,6 +48,12 @@
     return Boolean(root?.children?.length && articles.length);
   }
 
+  function placeAfterJobs(root, card) {
+    const jobs = root.querySelector("#jobs-home-hub");
+    if (jobs && jobs.nextElementSibling !== card) jobs.insertAdjacentElement("afterend", card);
+    else if (!jobs && card.parentElement !== root) root.appendChild(card);
+  }
+
   function renderOnce() {
     if (!baseHomeReady()) return false;
     const root = document.querySelector("#sections-grid");
@@ -59,6 +65,7 @@
       card.className = "news-box community-knowledge-card";
       root.appendChild(card);
     }
+    placeAfterJobs(root, card);
     card.dataset.communityHub = "true";
     card.classList.remove("category-empty");
     card.classList.add("community-knowledge-card");
@@ -83,9 +90,14 @@
       if (!root || root.dataset.communityGuardBound === "true") return false;
       root.dataset.communityGuardBound = "true";
       new MutationObserver(() => {
-        if (root.querySelector("#community-home-hub") || !baseHomeReady()) return;
-        rendered = false;
-        renderOnce();
+        if (!baseHomeReady()) return;
+        const card = root.querySelector("#community-home-hub");
+        if (!card) {
+          rendered = false;
+          renderOnce();
+          return;
+        }
+        placeAfterJobs(root, card);
       }).observe(root, { childList: true });
       return true;
     };

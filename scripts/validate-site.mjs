@@ -81,6 +81,7 @@ requireMatch(jobsHome, /public-home-jobs/, "jobs-home.js is not using dedicated 
 const communityHome = await text("homepage-community-hub.js");
 requireMatch(communityHome, /id\s*=\s*["']community-home-hub["']/, "homepage community card id missing");
 requireMatch(communityHome, /root\.appendChild\(card\)/, "homepage community card is not placed in the open grid slot");
+requireMatch(communityHome, /jobs\.insertAdjacentElement\(["']afterend["'],\s*card\)/, "homepage community card does not stay to the right of jobs");
 requireMatch(communityHome, /lawyer_review/, "homepage community card lawyer review shortcut missing");
 
 const immigrationHome = await text("homepage-immigration-hub.js");

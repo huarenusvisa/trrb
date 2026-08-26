@@ -12,7 +12,7 @@ const AUTH_API_KEY = process.env.SUPABASE_ANON_KEY || SERVICE_KEY;
 function allowedOrigin(event) {
   const origin = safeText(event?.headers?.origin || event?.headers?.Origin, 300);
   if (!origin) return '*';
-  if (/^https:\/\/(?:www\.)?(?:trrb\.net|huarengongzuo\.com)$/i.test(origin)) return origin;
+  if (/^https:\/\/(?:www\.)?(?:trrb\.net|huarengongzuo\.com|asylumjudge\.com)$/i.test(origin)) return origin;
   if (/^https:\/\/[a-z0-9-]+(?:--trrb)?\.netlify\.app$/i.test(origin)) return origin;
   return '';
 }

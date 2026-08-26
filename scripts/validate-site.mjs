@@ -37,6 +37,7 @@ requireMatch(index, /articles-home\.js/i, "index.html missing homepage renderer"
 requireMatch(index, /articles-home-live-fix\.js/i, "index.html missing live homepage guard");
 requireMatch(index, /homepage-startup-stability\.js/i, "index.html missing startup stability guard");
 requireMatch(index, /jobs-home\.js/i, "index.html missing jobs homepage loader");
+requireMatch(index, /homepage-community-hub\.js/i, "index.html missing community homepage card");
 forbidMatch(index, /当前暂无重点新闻/, "index.html contains retired false-empty hero copy");
 
 const jobs = await text("jobs/index.html");
@@ -53,10 +54,30 @@ requireMatch(community, /https:\/\/trrb\.net\/community\//i, "community canonica
 requireMatch(community, /USCIS 面谈/, "community USCIS interview board missing");
 requireMatch(community, /data-category=["']court_experience["']/, "community court board missing");
 requireMatch(community, /data-category=["']lawyer_review["']/, "community lawyer review board missing");
+requireMatch(community, /律师点评/, "community lawyer review label was not renamed");
+forbidMatch(community, /吐槽律师/, "community still exposes the retired lawyer complaint label");
+
+const asylumCommunity = await text("asylumjudge/community/index.html");
+requireMatch(asylumCommunity, /^\s*<!doctype html>/i, "asylumjudge community page is not HTML");
+requireMatch(asylumCommunity, /https:\/\/asylumjudge\.com\/community\//i, "asylumjudge community canonical missing");
+requireMatch(asylumCommunity, /\/community\/community\.js/i, "asylumjudge community does not share the production community client");
+requireMatch(asylumCommunity, /律师点评/, "asylumjudge community lawyer review label missing");
+
+const unifiedLogin = await text("netlify/functions/unified-account-login.js");
+requireMatch(unifiedLogin, /asylumjudge\\\.com/, "unified account origin allowlist is missing asylumjudge.com");
 
 const jobsHome = await text("jobs-home.js");
 requireMatch(jobsHome, /TRRB_JOBS_HOME_PRELAUNCH\s*=\s*false/, "jobs-home.js is not production-live");
 requireMatch(jobsHome, /public-home-jobs/, "jobs-home.js is not using dedicated live homepage jobs API");
+
+const communityHome = await text("homepage-community-hub.js");
+requireMatch(communityHome, /id\s*=\s*["']community-home-hub["']/, "homepage community card id missing");
+requireMatch(communityHome, /root\.appendChild\(card\)/, "homepage community card is not placed in the open grid slot");
+requireMatch(communityHome, /lawyer_review/, "homepage community card lawyer review shortcut missing");
+
+const immigrationHome = await text("homepage-immigration-hub.js");
+requireMatch(immigrationHome, /rootNavigationBound/, "judge homepage card whole-module navigation missing");
+requireMatch(immigrationHome, /window\.location\.assign\(["']https:\/\/asylumjudge\.com\/["']\)/, "judge homepage card does not navigate to AsylumJudge root");
 
 const secondhand = await text("huarengongzuo/ershou/index.html");
 requireMatch(secondhand, /^\s*<!doctype html>/i, "huarengongzuo/ershou/index.html is not HTML");
@@ -174,7 +195,7 @@ requireMatch(redirects, /https:\/\/huarengongzuo\.com\/favicon\.svg\s+\/huarengo
 await Promise.all([
   "site-common.js", "site-search.js", "category-runtime-v3.js", "articles-home.js",
   "articles-home-live-fix.js", "homepage-focus-v34.js", "homepage-startup-stability.js",
-  "homepage-immigration-hub.js", "jobs-home.js", "jobs/search.js", "jobs/unified-ui.js",
+  "homepage-immigration-hub.js", "homepage-community-hub.js", "jobs-home.js", "jobs/search.js", "jobs/unified-ui.js",
   "topic/trump/trump.js", "article-route-runtime.js", "community/community.js", "niulai/data-adapter.js", "niulai/app.js",
   "niulai/stock.js", "niulai/fund.js", "niulai/detail-state-sync.js", "admin/finance-monitor.js"
 ].map(parseBrowserScript));

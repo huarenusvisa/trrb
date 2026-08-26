@@ -19,7 +19,7 @@
 [[edge_functions]]
   function = "legacy-url-redirect"
   path = "/*"
-  excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.json", "/*.xml", "/*.txt", "/*.webmanifest", "/*.webp", "/*.png", "/*.jpg", "/*.jpeg", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/assets/*", "/config/*", "/data/*"]
+  excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.json", "/*.xml", "/*.txt", "/*.webmanifest", "/*.webp", "/*.png", "/*.jpg", "/*.jpeg", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/assets/*", "/config/*", "/data/*", "/community", "/community/*"]
 
 [images]
   remote_images = ["https:\\/\\/images\\.openai\\.com\\/.*", "https:\\/\\/i\\.abcnewsfe\\.com\\/.*", "https:\\/\\/pbs\\.twimg\\.com\\/.*", "https:\\/\\/media\\.cnn\\.com\\/.*", "https:\\/\\/a57\\.foxnews\\.com\\/.*", "https:\\/\\/static01\\.nyt\\.com\\/.*", "https:\\/\\/dims\\.apnews\\.com\\/.*", "https:\\/\\/media-cldnry\\.s-nbcnews\\.com\\/.*", "https:\\/\\/www\\.ice\\.gov\\/.*", "https:\\/\\/www\\.dhs\\.gov\\/.*"]

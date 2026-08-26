@@ -204,6 +204,13 @@
       card.classList.add("immigration-knowledge-card", "legal-knowledge-card", "judge-knowledge-card");
       card.innerHTML = judgeMarkup();
     }
+    if (card.dataset.rootNavigationBound !== "true") {
+      card.dataset.rootNavigationBound = "true";
+      card.addEventListener("click", (event) => {
+        if (event.target.closest("a,button,input,select,textarea")) return;
+        window.location.assign("https://asylumjudge.com/");
+      });
+    }
     if (stateStatsCache) renderStateDashboard(stateStatsCache);
   }
 

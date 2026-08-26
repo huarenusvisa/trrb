@@ -2,7 +2,7 @@
   const apiUrl = '/.netlify/functions/community-api';
   const categoryNames = {
     hot_discussion: '热门讨论', immigration_help: '移民互助', court_experience: '上庭交流',
-    uscis_interview: 'USCIS 面谈', ice_experience: 'ICE 经历', lawyer_review: '律师评价与避坑', tipoff: '投稿爆料'
+    uscis_interview: 'USCIS 面谈', ice_experience: 'ICE 经历', lawyer_review: '律师点评', tipoff: '投稿爆料'
   };
   const labelNames = { official_policy: '官方政策', personal_experience: '个人经历', community_summary: '社区整理', question: '问题求助' };
   const state = { session: null, profile: null, category: '', posts: [] };
@@ -214,6 +214,12 @@
   }
 
   async function init() {
+    const requestedCategory = new URLSearchParams(window.location.search).get('category');
+    if (requestedCategory && categoryNames[requestedCategory]) {
+      state.category = requestedCategory;
+      $('feed-title').textContent = categoryNames[requestedCategory];
+      document.querySelector(`[data-category="${requestedCategory}"]`)?.classList.add('active');
+    }
     renderStructuredFields(); bind(); await token(); syncAccountUi(); await loadFeed();
     window.supabaseClient.auth.onAuthStateChange((_event, session) => { state.session=session; syncAccountUi(); });
   }

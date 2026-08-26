@@ -99,20 +99,20 @@ const required = [
   '/finance /niulai/ 301!',
   '/finance/ /niulai/ 301!',
   '/finance/:splat /niulai/:splat 301!',
-  '/ershou https://huarengongzuo.com/ershou/ 301!',
-  '/ershou/ https://huarengongzuo.com/ershou/ 301!',
-  '/ershou/:splat https://huarengongzuo.com/ershou/:splat 301!',
-  '/secondhand https://huarengongzuo.com/ershou/ 301!',
-  '/secondhand/ https://huarengongzuo.com/ershou/ 301!',
-  '/marketplace https://huarengongzuo.com/ershou/ 301!',
-  '/marketplace/ https://huarengongzuo.com/ershou/ 301!',
-  '/classifieds https://huarengongzuo.com/ershou/ 301!',
-  '/classifieds/ https://huarengongzuo.com/ershou/ 301!'
+  'https://trrb.net/ershou https://huarengongzuo.com/ershou/ 301!',
+  'https://trrb.net/ershou/ https://huarengongzuo.com/ershou/ 301!',
+  'https://trrb.net/ershou/:splat https://huarengongzuo.com/ershou/:splat 301!',
+  'https://trrb.net/secondhand https://huarengongzuo.com/ershou/ 301!',
+  'https://trrb.net/secondhand/ https://huarengongzuo.com/ershou/ 301!',
+  'https://trrb.net/marketplace https://huarengongzuo.com/ershou/ 301!',
+  'https://trrb.net/marketplace/ https://huarengongzuo.com/ershou/ 301!',
+  'https://trrb.net/classifieds https://huarengongzuo.com/ershou/ 301!',
+  'https://trrb.net/classifieds/ https://huarengongzuo.com/ershou/ 301!'
 ];
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
-const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*']);
+const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*', '/ershou', '/ershou/', '/ershou/:splat', '/secondhand', '/secondhand/', '/marketplace', '/marketplace/', '/classifieds', '/classifieds/']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
   return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);
@@ -160,15 +160,15 @@ for (const [route, target] of [
   ['/finance', '/niulai/'],
   ['/finance/', '/niulai/'],
   ['/finance/:splat', '/niulai/:splat'],
-  ['/ershou', 'https://huarengongzuo.com/ershou/'],
-  ['/ershou/', 'https://huarengongzuo.com/ershou/'],
-  ['/ershou/:splat', 'https://huarengongzuo.com/ershou/:splat'],
-  ['/secondhand', 'https://huarengongzuo.com/ershou/'],
-  ['/secondhand/', 'https://huarengongzuo.com/ershou/'],
-  ['/marketplace', 'https://huarengongzuo.com/ershou/'],
-  ['/marketplace/', 'https://huarengongzuo.com/ershou/'],
-  ['/classifieds', 'https://huarengongzuo.com/ershou/'],
-  ['/classifieds/', 'https://huarengongzuo.com/ershou/']
+  ['https://trrb.net/ershou', 'https://huarengongzuo.com/ershou/'],
+  ['https://trrb.net/ershou/', 'https://huarengongzuo.com/ershou/'],
+  ['https://trrb.net/ershou/:splat', 'https://huarengongzuo.com/ershou/:splat'],
+  ['https://trrb.net/secondhand', 'https://huarengongzuo.com/ershou/'],
+  ['https://trrb.net/secondhand/', 'https://huarengongzuo.com/ershou/'],
+  ['https://trrb.net/marketplace', 'https://huarengongzuo.com/ershou/'],
+  ['https://trrb.net/marketplace/', 'https://huarengongzuo.com/ershou/'],
+  ['https://trrb.net/classifieds', 'https://huarengongzuo.com/ershou/'],
+  ['https://trrb.net/classifieds/', 'https://huarengongzuo.com/ershou/']
 ]) {
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);

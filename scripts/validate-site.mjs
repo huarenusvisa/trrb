@@ -50,6 +50,14 @@ const jobsHome = await text("jobs-home.js");
 requireMatch(jobsHome, /TRRB_JOBS_HOME_PRELAUNCH\s*=\s*false/, "jobs-home.js is not production-live");
 requireMatch(jobsHome, /public-home-jobs/, "jobs-home.js is not using dedicated live homepage jobs API");
 
+const secondhand = await text("ershou/index.html");
+requireMatch(secondhand, /^\s*<!doctype html>/i, "ershou/index.html is not HTML");
+requireMatch(secondhand, /<link\s+rel=["']canonical["']\s+href=["']https:\/\/trrb\.net\/ershou\/["']/i, "ershou/index.html canonical missing");
+requireMatch(secondhand, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "ershou/index.html must be index,follow");
+requireMatch(secondhand, /application\/ld\+json/i, "ershou/index.html JSON-LD missing");
+requireMatch(secondhand, /name=["']secondhand-listing["']/i, "ershou/index.html publish form missing");
+requireMatch(secondhand, /当前不经手货款/, "ershou/index.html must disclose that payments are not handled");
+
 const headers = await text("_headers");
 requireMatch(headers, /Permissions-Policy:\s*camera=\(\),\s*microphone=\(\),\s*geolocation=\(self\)/i, "_headers blocks same-origin jobs geolocation");
 requireMatch(headers, /\/\*\.js[\s\S]*?Cache-Control:\s*no-cache, no-store, must-revalidate/i, "_headers does not prevent stale JS");
@@ -91,6 +99,7 @@ const staticMap = await text("sitemap-static.xml");
 requireMatch(staticMap, /<loc>https:\/\/trrb\.net\/<\/loc>/, "sitemap-static.xml missing root");
 requireMatch(staticMap, /<loc>https:\/\/trrb\.net\/immigrate\/<\/loc>/, "sitemap-static.xml missing immigration hub");
 requireMatch(staticMap, /<loc>https:\/\/trrb\.net\/legal\/<\/loc>/, "sitemap-static.xml missing legal hub");
+requireMatch(staticMap, /<loc>https:\/\/trrb\.net\/ershou\/<\/loc>/, "sitemap-static.xml missing secondhand marketplace hub");
 forbidMatch(staticMap, /<loc>https:\/\/trrb\.net\/niulai\//, "sitemap-static.xml indexes niulai prelaunch");
 forbidMatch(staticMap, /<loc>https:\/\/trrb\.net\/people\//, "sitemap-static.xml indexes retired people product");
 

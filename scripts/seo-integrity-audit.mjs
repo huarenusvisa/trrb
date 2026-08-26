@@ -7,7 +7,7 @@ const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
 const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
 const ROUTE_PREFIXES = new Set([
   "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
-  "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "jobs", "niulai", "news"
+  "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "jobs", "niulai", "ershou", "news"
 ]);
 const FORBIDDEN_SITEMAP_ROUTES = [
   /https:\/\/trrb\.net\/niulai(?:\/|[?<]|$)/i,

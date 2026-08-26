@@ -17,7 +17,7 @@ const sources = [
 ];
 
 const blockedPhones = new Set(["9295715245", "7183587333"]);
-const prohibited = /二手车|卖车|买车|VIN|里程|宠物|猫狗|香烟|电子烟|烟弹|槟榔|酒类|药品|减肥药|处方药|保健品|手机靓号|账号|游戏币|代购|换汇|博彩|赌场|色情|成人用品|枪支|弹药|刀具|厂家直销|批发|招商|加盟|全美发货|商家推广|专业安装|售后服务/i;
+const prohibited = /二手车|卖车|买车|VIN|里程|宠物|猫狗|活体|家禽|母鸡|公鸡|香烟|电子烟|烟弹|槟榔|酒类|药品|减肥药|处方药|保健品|手机靓号|账号|游戏币|代购|换汇|博彩|赌场|色情|成人用品|枪支|弹药|刀具|厂家直销|批发|招商|加盟|全美发货|商家推广|专业安装|售后服务/i;
 const commercial = /公司|厂家|工厂|批发|库存充足|长期供应|代理|客服|门店|店内|承接|服务商|促销活动|roadshow/i;
 
 const locationRules = [
@@ -102,7 +102,7 @@ function pickExplicitCategory(text) {
 
 function pickPrice(text) {
   if (/免费|赠送|免费自取/i.test(text)) return { price: 0, explicit: true };
-  const patterns = [/\$\s*([0-9]{1,6}(?:\.[0-9]{1,2})?)/, /([0-9]{1,6}(?:\.[0-9]{1,2})?)\s*(?:美元|美金|刀)(?!\s*(?:起|小时))/];
+  const patterns = [/\$\s*([0-9]{1,6}(?:\.[0-9]{1,2})?)/, /([0-9]{1,6}(?:\.[0-9]{1,2})?)\s*\$/, /([0-9]{1,6}(?:\.[0-9]{1,2})?)\s*(?:美元|美金|刀)(?!\s*(?:起|小时))/];
   for (const pattern of patterns) {
     const match = text.match(pattern); const price = Number(match?.[1]);
     if (Number.isFinite(price) && price >= 0 && price <= 100000) return { price, explicit: true };
@@ -183,7 +183,7 @@ function normalizeCandidate(source, url, html) {
   const section = extractListingSection(text, title);
   const description = extractDescription(section);
   const contact = pickContact(section);
-  const location = pickLocation(`${extractLocationHint(text)} ${title} ${description.slice(0, 800)}`);
+  const location = pickLocation(extractLocationHint(text)) || pickLocation(description.slice(0, 800)) || pickLocation(title);
   const category = pickCategory(`${title} ${description.slice(0, 240)}`) || pickExplicitCategory(text);
   const price = pickPrice(`${title} ${description.slice(0, 600)}`);
   const images = extractImages(extractListingHtml(html), source);

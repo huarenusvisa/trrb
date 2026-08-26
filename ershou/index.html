@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>美国华人二手交易网｜纽约二手买卖与闲置物品发布｜唐人日报</title>
-  <meta name="description" content="唐人日报华人二手交易网提供纽约、法拉盛及全美华人本地二手买卖和闲置物品发布，覆盖家具家电、手机数码、汽车用品、母婴用品、服饰和搬家清仓。">
+  <meta name="description" content="唐人日报华人二手交易网提供纽约、法拉盛及全美华人本地二手买卖和闲置物品发布，覆盖手机数码、母婴用品、服饰鞋包、搬家清仓、收藏兴趣、免费赠送和家具家电。">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://trrb.net/ershou/">
   <meta property="og:type" content="website">
@@ -33,7 +33,7 @@
       {"@type":"CollectionPage","@id":"https://trrb.net/ershou/#page","url":"https://trrb.net/ershou/","name":"美国华人二手交易网","description":"纽约、法拉盛及全美华人本地二手买卖和闲置物品发布平台。","inLanguage":"zh-Hans","isPartOf":{"@id":"https://trrb.net/#website"}},
       {"@type":"WebSite","@id":"https://trrb.net/#website","url":"https://trrb.net/","name":"唐人日报","alternateName":"Tang Ren Daily"},
       {"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"唐人日报","item":"https://trrb.net/"},{"@type":"ListItem","position":2,"name":"华人二手交易","item":"https://trrb.net/ershou/"}]},
-      {"@type":"ItemList","name":"二手商品分类","itemListElement":[{"@type":"ListItem","position":1,"name":"家具家电"},{"@type":"ListItem","position":2,"name":"手机数码"},{"@type":"ListItem","position":3,"name":"汽车用品"},{"@type":"ListItem","position":4,"name":"母婴用品"},{"@type":"ListItem","position":5,"name":"服饰鞋包"},{"@type":"ListItem","position":6,"name":"搬家清仓"}]}
+      {"@type":"ItemList","name":"二手商品分类","itemListElement":[{"@type":"ListItem","position":1,"name":"手机数码"},{"@type":"ListItem","position":2,"name":"母婴用品"},{"@type":"ListItem","position":3,"name":"服饰鞋包"},{"@type":"ListItem","position":4,"name":"搬家清仓"},{"@type":"ListItem","position":5,"name":"收藏兴趣"},{"@type":"ListItem","position":6,"name":"免费赠送"},{"@type":"ListItem","position":7,"name":"家具家电"}]}
     ]
   }
   </script>
@@ -73,12 +73,13 @@
     <section class="shell category-section" id="categories">
       <header class="section-head"><div><span>CATEGORIES</span><h2>按分类找闲置</h2></div><button type="button" data-open-publish>免费发布物品</button></header>
       <div class="category-grid">
-        <a href="?category=furniture" data-category="家具家电"><i>🛋️</i><b>家具家电</b><small>桌椅、床垫、厨具、电器</small></a>
         <a href="?category=digital" data-category="手机数码"><i>📱</i><b>手机数码</b><small>手机、电脑、相机、影音</small></a>
-        <a href="?category=auto" data-category="汽车用品"><i>🚙</i><b>汽车用品</b><small>配件、轮胎、车载用品</small></a>
         <a href="?category=baby" data-category="母婴用品"><i>🧸</i><b>母婴用品</b><small>婴儿车、玩具、儿童用品</small></a>
         <a href="?category=fashion" data-category="服饰鞋包"><i>🧥</i><b>服饰鞋包</b><small>衣物、鞋履、箱包、配饰</small></a>
         <a href="?category=moving" data-category="搬家清仓"><i>📦</i><b>搬家清仓</b><small>整屋处理、低价转让、赠送</small></a>
+        <a href="?category=collectibles" data-category="收藏兴趣"><i>🎸</i><b>收藏兴趣</b><small>乐器、摄影、模型、钱币收藏</small></a>
+        <a href="?category=free" data-category="免费赠送"><i>🎁</i><b>免费赠送</b><small>闲置送人、本地自取、物尽其用</small></a>
+        <a href="?category=furniture" data-category="家具家电"><i>🛋️</i><b>家具家电</b><small>桌椅、床垫、厨具、电器</small></a>
       </div>
     </section>
 
@@ -98,7 +99,7 @@
       <form name="secondhand-listing" method="POST" action="/ershou/thanks.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="secondhand-listing"><p class="honeypot"><label>请勿填写<input name="bot-field"></label></p>
         <label><span>物品标题 *</span><input name="title" required maxlength="80" placeholder="例如：九成新双人沙发"></label>
-        <div class="two-cols"><label><span>分类 *</span><select name="category" required><option value="">请选择</option><option>家具家电</option><option>手机数码</option><option>汽车用品</option><option>母婴用品</option><option>服饰鞋包</option><option>搬家清仓</option><option>其他闲置</option></select></label><label><span>价格（美元）*</span><input name="price" type="number" min="0" step="0.01" required placeholder="0 表示免费赠送"></label></div>
+        <div class="two-cols"><label><span>分类 *</span><select name="category" required><option value="">请选择</option><option>手机数码</option><option>母婴用品</option><option>服饰鞋包</option><option>搬家清仓</option><option>收藏兴趣</option><option>免费赠送</option><option>家具家电</option></select></label><label><span>价格（美元）*</span><input name="price" type="number" min="0" step="0.01" required placeholder="0 表示免费赠送"></label></div>
         <div class="two-cols"><label><span>地区 *</span><input name="location" required placeholder="城市、州或社区"></label><label><span>成色 *</span><select name="condition" required><option value="">请选择</option><option>全新未使用</option><option>几乎全新</option><option>正常使用</option><option>明显使用痕迹</option><option>需要维修</option></select></label></div>
         <label><span>联系方式 *</span><input name="contact" required placeholder="电话、短信、微信或邮箱"></label>
         <label><span>物品说明 *</span><textarea name="description" required minlength="20" maxlength="1200" rows="5" placeholder="请说明尺寸、购买时间、使用情况、取货方式等"></textarea></label>

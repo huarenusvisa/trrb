@@ -52,7 +52,7 @@ async function mark(post, articleId) { const payload = json(post.extraction_payl
 async function main() {
   requireEnv();
   const [posts, articles] = await Promise.all([
-    sb("ice_posts", { query: { select: "id,x_post_id,source_text,source_created_at,created_at,event_fingerprint,event_type,city,state_code,location_text,extraction_payload,processing_status,relevant", processing_status: "in.(collected,processing,extracted,failed)", relevant: "neq.false", order: "source_created_at.desc.nullslast,created_at.desc", limit: String(MAX_POSTS) } }),
+    sb("ice_posts", { query: { select: "id,x_post_id,source_text,source_created_at,created_at,event_fingerprint,event_type,city,state_code,location_text,extraction_payload,processing_status,relevant", processing_status: "in.(collected,processing,extracted,failed)", or: "(relevant.is.null,relevant.eq.true)", order: "source_created_at.desc.nullslast,created_at.desc", limit: String(MAX_POSTS) } }),
     sb("articles", { query: { select: "id,title,summary,content,city,state,event_date,arrest_count,metadata,source_post_id,published_at", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoffDays(LOOKBACK_DAYS)}`, order: "published_at.desc", limit: "2500" } })
   ]);
   const articleRows = Array.isArray(articles) ? articles : [];

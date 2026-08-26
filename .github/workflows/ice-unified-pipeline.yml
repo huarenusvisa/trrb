@@ -3,6 +3,11 @@ name: ICE唯一生产流水线
 on:
   workflow_dispatch:
   workflow_call:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-unified-pipeline.yml"
+      - "scripts/ice-*.mjs"
 
 permissions:
   contents: read

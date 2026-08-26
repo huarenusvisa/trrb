@@ -11,8 +11,8 @@ const EXPIRES_ISO = new Date(NOW.getTime() + 30 * 86400000).toISOString();
 const USER_AGENT = "TangDailySecondhandBot/1.0 (+https://huarengongzuo.com/ershou/)";
 
 const sources = [
-  { key: "nychinaren", name: "纽约华人资讯网", origin: "https://www.nychinaren.com", forum: "/f/page_viewforum/f_3.html" },
-  { key: "chineseinla", name: "洛杉矶华人资讯网", origin: "https://www.chineseinla.com", forum: "/f/page_viewforum/f_3.html" },
+  { key: "nychinaren", name: "纽约华人资讯网", origin: "https://www.nychinaren.com", forum: "https://m.nychinaren.com/page_forum/task_vforum/f_3.html" },
+  { key: "chineseinla", name: "洛杉矶华人资讯网", origin: "https://www.chineseinla.com", forum: "https://m.chineseinla.cn/page_forum/task_vforum/f_3/items_45B.html" },
 ];
 
 const blockedPhones = new Set(["9295715245", "7183587333"]);
@@ -216,10 +216,12 @@ async function discover(source) {
   const urls = new Set();
   for (let page = 1; page <= 3; page += 1) {
     const separator = source.forum.includes("?") ? "&" : "?";
-    const html = await fetchText(`${source.origin}${source.forum}${separator}page=${page}`);
+    const html = await fetchText(`${source.forum}${separator}page=${page}`);
+    const before = urls.size;
     for (const match of html.matchAll(/href=["'][^"']*t_(\d+)\.html[^"']*["']/gi)) {
       urls.add(`${source.origin}/f/page_viewtopic/t_${match[1]}.html`);
     }
+    console.log("DISCOVERY_PAGE", source.key, page, `bytes=${html.length}`, `new_links=${urls.size - before}`);
   }
   return [...urls].slice(0, 40);
 }

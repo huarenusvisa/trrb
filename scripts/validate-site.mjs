@@ -71,6 +71,7 @@ requireMatch(communityApi, /access-control-allow-origin["']?\s*:\s*["']\*["']/, 
 
 const asylumBuilder = await text("scripts/build-asylumjudge-site.mjs");
 requireMatch(asylumBuilder, /asylumjudge-community\.html/, "AsylumJudge production bundle is missing the community page");
+requireMatch(asylumBuilder, /\/community\s+\/asylumjudge-community\.html\s+200!/, "AsylumJudge slashless community route is missing");
 requireMatch(asylumBuilder, /\/community\/\s+\/asylumjudge-community\.html\s+200!/, "AsylumJudge production bundle is missing the community route");
 
 const jobsHome = await text("jobs-home.js");

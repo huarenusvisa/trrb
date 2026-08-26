@@ -67,7 +67,7 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /judge-backgrounds /judge-backgrounds/index.html 200
 /china /nationality?country=China 301
 /methodology /immigration-judge-approval-rate/methodology.html 200
-/community /community/ 301!
+/community /asylumjudge-community.html 200!
 /community/ /asylumjudge-community.html 200!
 /immigration-judge-approval-rate /index.html 301
 /immigration-judge-approval-rate/ /index.html 301

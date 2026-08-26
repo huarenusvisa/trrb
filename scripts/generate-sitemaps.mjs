@@ -17,8 +17,7 @@ if (!base || !key) {
 
 const STATIC_HUBS = [
   { loc: `${SITE}/immigrate/`, priority: '0.8', changefreq: 'weekly' },
-  { loc: `${SITE}/legal/`, priority: '0.8', changefreq: 'daily' },
-  { loc: `${SITE}/ershou/`, priority: '0.8', changefreq: 'daily' }
+  { loc: `${SITE}/legal/`, priority: '0.8', changefreq: 'daily' }
 ];
 
 function loadImmigrationKnowledgeEntries() {

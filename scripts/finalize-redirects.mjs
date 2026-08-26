@@ -16,6 +16,9 @@ const required = [
   'https://huarengongzuo.com/icon-512.png /huarengongzuo/icon-512.png 200!',
   'https://huarengongzuo.com/og-share.png /huarengongzuo/og-share.png 200!',
   'https://huarengongzuo.com/site.webmanifest /huarengongzuo/site.webmanifest 200!',
+  'https://huarengongzuo.com/ershou https://huarengongzuo.com/ershou/ 301!',
+  'https://huarengongzuo.com/ershou/ /huarengongzuo/ershou/index.html 200!',
+  'https://huarengongzuo.com/ershou/* /huarengongzuo/ershou/:splat 200!',
   'https://huarengongzuo.com/ q=:q place=:place /huarengongzuo/index.html 200!',
   'https://huarengongzuo.com/ q=:q /huarengongzuo/index.html 200!',
   'https://huarengongzuo.com/ place=:place /huarengongzuo/index.html 200!',
@@ -96,12 +99,15 @@ const required = [
   '/finance /niulai/ 301!',
   '/finance/ /niulai/ 301!',
   '/finance/:splat /niulai/:splat 301!',
-  '/secondhand /ershou/ 301!',
-  '/secondhand/ /ershou/ 301!',
-  '/marketplace /ershou/ 301!',
-  '/marketplace/ /ershou/ 301!',
-  '/classifieds /ershou/ 301!',
-  '/classifieds/ /ershou/ 301!'
+  '/ershou https://huarengongzuo.com/ershou/ 301!',
+  '/ershou/ https://huarengongzuo.com/ershou/ 301!',
+  '/ershou/:splat https://huarengongzuo.com/ershou/:splat 301!',
+  '/secondhand https://huarengongzuo.com/ershou/ 301!',
+  '/secondhand/ https://huarengongzuo.com/ershou/ 301!',
+  '/marketplace https://huarengongzuo.com/ershou/ 301!',
+  '/marketplace/ https://huarengongzuo.com/ershou/ 301!',
+  '/classifieds https://huarengongzuo.com/ershou/ 301!',
+  '/classifieds/ https://huarengongzuo.com/ershou/ 301!'
 ];
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
@@ -154,12 +160,15 @@ for (const [route, target] of [
   ['/finance', '/niulai/'],
   ['/finance/', '/niulai/'],
   ['/finance/:splat', '/niulai/:splat'],
-  ['/secondhand', '/ershou/'],
-  ['/secondhand/', '/ershou/'],
-  ['/marketplace', '/ershou/'],
-  ['/marketplace/', '/ershou/'],
-  ['/classifieds', '/ershou/'],
-  ['/classifieds/', '/ershou/']
+  ['/ershou', 'https://huarengongzuo.com/ershou/'],
+  ['/ershou/', 'https://huarengongzuo.com/ershou/'],
+  ['/ershou/:splat', 'https://huarengongzuo.com/ershou/:splat'],
+  ['/secondhand', 'https://huarengongzuo.com/ershou/'],
+  ['/secondhand/', 'https://huarengongzuo.com/ershou/'],
+  ['/marketplace', 'https://huarengongzuo.com/ershou/'],
+  ['/marketplace/', 'https://huarengongzuo.com/ershou/'],
+  ['/classifieds', 'https://huarengongzuo.com/ershou/'],
+  ['/classifieds/', 'https://huarengongzuo.com/ershou/']
 ]) {
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);

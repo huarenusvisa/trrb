@@ -169,6 +169,7 @@ function urlBlock(loc: string, modified: string, changefreq = "weekly", priority
 
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
+  if (new URL(request.url).hostname.toLowerCase() !== "trrb.net") return context.next();
 
   try {
     const [staticBlocks, categories, articles] = await Promise.all([

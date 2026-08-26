@@ -55,7 +55,8 @@ requireMatch(secondhand, /^\s*<!doctype html>/i, "huarengongzuo/ershou/index.htm
 requireMatch(secondhand, /<link\s+rel=["']canonical["']\s+href=["']https:\/\/huarengongzuo\.com\/ershou\/["']/i, "huarengongzuo/ershou/index.html canonical missing");
 requireMatch(secondhand, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "huarengongzuo/ershou/index.html must be index,follow");
 requireMatch(secondhand, /application\/ld\+json/i, "huarengongzuo/ershou/index.html JSON-LD missing");
-requireMatch(secondhand, /name=["']secondhand-listing["']/i, "huarengongzuo/ershou/index.html publish form missing");
+requireMatch(secondhand, /id=["']smart-publish-form["']/i, "huarengongzuo/ershou/index.html smart publish form missing");
+requireMatch(secondhand, /id=["']listing-photos["'][^>]*multiple/i, "huarengongzuo/ershou/index.html eight-photo uploader missing");
 requireMatch(secondhand, /当前不经手货款/, "huarengongzuo/ershou/index.html must disclose that payments are not handled");
 
 const headers = await text("_headers");

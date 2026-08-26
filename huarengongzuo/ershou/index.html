@@ -24,9 +24,10 @@
   <meta name="twitter:image" content="https://huarengongzuo.com/ershou/share.png?v=20260826-1">
   <meta name="twitter:image:alt" content="华人二手交易：纽约及全美华人本地买卖">
   <meta name="theme-color" content="#1768d5">
-  <link rel="icon" href="/ershou/secondhand-market.svg?v=20260826-1" type="image/svg+xml">
-  <link rel="stylesheet" href="/ershou/market.css?v=20260826-2">
-  <link rel="stylesheet" href="/ershou/product-first.css?v=20260826-1">
+  <link rel="icon" href="./secondhand-market.svg?v=20260826-1" type="image/svg+xml">
+  <link rel="stylesheet" href="./market.css?v=20260826-2">
+  <link rel="stylesheet" href="./product-first.css?v=20260826-1">
+  <link rel="stylesheet" href="./smart-publish.css?v=20260826-1">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -42,8 +43,8 @@
 <body>
   <header class="market-header">
     <div class="shell header-inner">
-      <a class="brand" href="/" aria-label="返回华人工作网首页"><img src="/ershou/secondhand-market.svg?v=20260826-1" alt="" width="46" height="46"><span><strong>华人二手交易</strong><small>华人工作网分类信息</small></span></a>
-      <nav aria-label="主要导航"><a href="#categories">分类</a><a href="#latest">最新闲置</a><a href="#safety">交易安全</a></nav>
+      <a class="brand" href="/" aria-label="返回华人工作网首页"><img src="./secondhand-market.svg?v=20260826-1" alt="" width="46" height="46"><span><strong>华人二手交易</strong><small>华人工作网分类信息</small></span></a>
+      <nav aria-label="主要导航"><a href="#categories">分类</a><a href="#latest">最新闲置</a><a href="/ershou/my.html">我的发布</a><a href="#safety">交易安全</a></nav>
       <button class="publish-button" type="button" data-open-publish>发布闲置</button>
     </div>
   </header>
@@ -75,7 +76,8 @@
 
     <section class="shell latest-section" id="latest">
       <header class="section-head"><div><span>NEW LISTINGS</span><h2>最新闲置</h2><p id="filter-copy">查看本地最新发布的二手物品。</p></div></header>
-      <div class="empty-listing"><div>＋</div><h3>暂时没有符合条件的商品</h3><p>换一个分类或地区继续查看，也可以直接发布你的闲置物品。</p><button type="button" data-open-publish>发布闲置</button></div>
+      <div class="listing-grid" id="listing-grid" aria-live="polite"></div>
+      <div class="empty-listing" id="listing-empty"><div>＋</div><h3>暂时没有符合条件的商品</h3><p>换一个分类或地区继续查看，也可以直接发布你的闲置物品。</p><button type="button" data-open-publish>发布闲置</button></div>
     </section>
 
     <section class="safety" id="safety"><div class="shell safety-grid"><div><span>SAFE TRADING</span><h2>见到实物，再付款</h2></div><div><p>当前不经手货款。优先选择公共场所当面交易，贵重商品应现场核验序列号和功能。不要提前支付订金，不要提供银行卡密码或短信验证码。</p><p>禁止发布武器、毒品、处方药、假证件、盗版或来源不明商品。可疑信息将不予展示。</p></div></div></section>
@@ -85,22 +87,40 @@
 
   <section class="publish-panel" id="publish-panel" hidden aria-labelledby="publish-title">
     <button class="panel-backdrop" type="button" data-close-publish aria-label="关闭发布窗口"></button>
-    <div class="panel-card" role="dialog" aria-modal="true"><header><div><span>SELL AN ITEM</span><h2 id="publish-title">发布闲置</h2></div><button type="button" data-close-publish aria-label="关闭">×</button></header>
-      <form name="secondhand-listing" method="POST" action="/ershou/thanks.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="secondhand-listing"><p class="honeypot"><label>请勿填写<input name="bot-field"></label></p>
-        <label><span>物品标题 *</span><input name="title" required maxlength="80" placeholder="例如：九成新双人沙发"></label>
-        <div class="two-cols"><label><span>分类 *</span><select name="category" required><option value="">请选择</option><option>手机数码</option><option>母婴用品</option><option>服饰鞋包</option><option>搬家清仓</option><option>收藏兴趣</option><option>免费赠送</option><option>家具家电</option></select></label><label><span>价格（美元）*</span><input name="price" type="number" min="0" step="0.01" required placeholder="0 表示免费赠送"></label></div>
-        <div class="two-cols"><label><span>地区 *</span><input name="location" required placeholder="城市、州或社区"></label><label><span>成色 *</span><select name="condition" required><option value="">请选择</option><option>全新未使用</option><option>几乎全新</option><option>正常使用</option><option>明显使用痕迹</option><option>需要维修</option></select></label></div>
-        <label><span>联系方式 *</span><input name="contact" required placeholder="电话、短信、微信或邮箱"></label>
-        <label><span>物品说明 *</span><textarea name="description" required minlength="20" maxlength="1200" rows="5" placeholder="请说明尺寸、购买时间、使用情况、取货方式等"></textarea></label>
-        <label><span>上传主图</span><input name="photo" type="file" accept="image/jpeg,image/png,image/webp"><small>建议上传清晰实拍图，单个文件不超过 8MB。</small></label>
-        <label class="agreement"><input type="checkbox" name="rules-agreed" required><span>我确认信息真实，并同意禁售品和交易安全规则。</span></label>
-        <button class="submit-listing" type="submit">提交审核</button>
+    <div class="panel-card smart-panel" role="dialog" aria-modal="true"><header><div><span>SELL AN ITEM</span><h2 id="publish-title">发布闲置</h2></div><button type="button" data-close-publish aria-label="关闭">×</button></header>
+      <section class="publish-login" id="publish-login">
+        <h3>登录后发布</h3><p>邮箱或手机号加密码即可登录；第一次使用会自动创建账号。</p>
+        <div class="login-grid"><input id="login-identifier" autocomplete="username" placeholder="邮箱或美国手机号"><input id="login-password" type="password" minlength="8" autocomplete="current-password" placeholder="密码至少8位"><button id="login-button" type="button">登录 / 注册</button></div>
+        <div class="form-status" id="auth-status"></div>
+      </section>
+      <form id="smart-publish-form" class="smart-form" hidden>
+        <div class="account-line"><div><b id="account-name">统一账号</b><small id="account-label"></small></div><a href="/ershou/my.html">我的发布</a></div>
+        <section class="photo-first">
+          <div class="field-title"><b>1. 上传商品图片</b><span id="photo-count">0/8</span></div>
+          <label class="photo-picker" for="listing-photos"><strong>＋ 选择图片</strong><small>最多8张，第一张作为封面</small></label>
+          <input id="listing-photos" class="visually-hidden" type="file" accept="image/*" multiple>
+          <div class="photo-strip" id="photo-strip"></div>
+          <button class="ai-button" id="ai-analyze" type="button" disabled>✨ 自动识别并生成介绍</button>
+          <div class="form-status" id="ai-status">上传图片后，系统会建议标题、正文、分类和成色；识别不对可以直接改。</div>
+        </section>
+        <label class="full-field"><span>2. 商品介绍 *</span><textarea id="listing-text" required maxlength="4060" rows="7" placeholder="第一行是商品标题（最多30字）&#10;&#10;从第二行开始写商品说明。上传图片后也可以让系统自动生成。"></textarea><small>第一行自动作为标题；第二行开始作为正文。没有换行时，系统会自动提取前30个字作为标题。</small></label>
+        <div class="two-cols">
+          <label><span>分类 *</span><select id="listing-category" required><option value="">自动识别或请选择</option><option value="digital">手机数码</option><option value="baby">母婴用品</option><option value="fashion">服饰鞋包</option><option value="moving">搬家清仓</option><option value="hobby">收藏兴趣</option><option value="free">免费赠送</option><option value="home">家具家电</option></select></label>
+          <label><span>成色</span><select id="listing-condition"><option value="new">全新未使用</option><option value="like_new">几乎全新</option><option value="used_good" selected>正常使用</option><option value="used_fair">明显使用痕迹</option><option value="needs_repair">需要维修</option></select></label>
+        </div>
+        <div class="price-row"><label><span>价格（美元）*</span><input id="listing-price" type="number" min="0" step="0.01" required placeholder="例如 80"></label><label class="free-toggle"><input id="listing-free" type="checkbox"><span>免费赠送</span></label></div>
+        <label class="full-field"><span>所在区域 *</span><div class="location-row"><input id="listing-location" required maxlength="160" placeholder="例如：法拉盛、Flushing NY"><button id="use-location" type="button">📍 使用当前位置</button></div><small id="location-status">只公开城市或社区，不显示家庭门牌号。</small></label>
+        <label class="full-field"><span>联系方式 *</span><input id="listing-contact" required maxlength="320" placeholder="电话、短信、微信或邮箱"></label>
+        <label class="agreement"><input id="listing-agreement" type="checkbox" required><span>我确认信息真实，并同意禁售品和交易安全规则。</span></label>
+        <button class="submit-listing" id="publish-submit" type="submit">提交审核</button>
+        <div class="form-status" id="publish-status"></div>
       </form>
     </div>
   </section>
 
   <footer><div class="shell footer-inner"><div><b>华人二手交易</b><span>华人工作网分类信息专题</span></div><div><a href="/">返回华人工作网</a><a href="#safety">交易安全</a><a href="mailto:tangrenribao@gmail.com?subject=二手交易问题">联系我们</a></div></div></footer>
-  <script src="/ershou/market.js?v=20260826-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/jobs/unified-account.js?v=20260821-u1"></script>
+  <script src="./market.js?v=20260826-3" defer></script>
 </body>
 </html>

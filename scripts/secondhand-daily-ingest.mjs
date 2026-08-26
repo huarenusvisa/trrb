@@ -8,17 +8,13 @@ const NOW = new Date();
 const NOW_ISO = NOW.toISOString();
 const MAX_AGE_DAYS = 14;
 const EXPIRES_ISO = new Date(NOW.getTime() + 30 * 86400000).toISOString();
-const USER_AGENT = "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36";
+const USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
 
 const sources = [
-  { key: "nychinaren", name: "纽约华人资讯网", origin: "https://www.nychinaren.com", forum: "https://m.nychinaren.com/page_forum/task_vforum/f_3.html" },
-  { key: "chineseinla", name: "洛杉矶华人资讯网", origin: "https://www.chineseinla.com", forum: "https://m.chineseinla.cn/page_forum/task_vforum/f_3/items_45B.html" },
+  { key: "nychinaren", name: "纽约华人资讯网", origin: "https://www.nychinaren.com", forum: "https://www.nychinaren.com/f/page_viewforum/f_3.html" },
+  { key: "chineseinla", name: "洛杉矶华人资讯网", origin: "https://www.chineseinla.com", forum: "https://www.chineseinla.com/f/page_viewforum/f_3.html" },
+  { key: "chineseinsfbay", name: "旧金山湾区华人资讯网", origin: "https://www.chineseinsfbay.com", forum: "https://www.chineseinsfbay.com/f/page_viewforum/f_3.html" },
 ];
-
-const fallbackTopicIds = {
-  nychinaren: [687850, 528012, 574964, 687624, 684428, 279434, 687491, 687486, 687402, 687385],
-  chineseinla: [2049018],
-};
 
 const blockedPhones = new Set(["9295715245", "7183587333"]);
 const prohibited = /二手车|卖车|买车|VIN|里程|宠物|猫狗|香烟|电子烟|烟弹|槟榔|酒类|药品|减肥药|处方药|保健品|手机靓号|账号|游戏币|代购|换汇|博彩|赌场|色情|成人用品|枪支|弹药|刀具|厂家直销|批发|招商|加盟|全美发货|商家推广|专业安装|售后服务/i;
@@ -224,7 +220,8 @@ async function fetchResponse(url, attempts = 3) {
 async function fetchText(url) {
   for (let attempt = 1; attempt <= 4; attempt += 1) {
     const separator = url.includes("?") ? "&" : "?";
-    const response = await fetchResponse(`${url}${separator}_trrb=${Date.now()}-${attempt}`, 2);
+    const requestUrl = attempt === 1 ? url : `${url}${separator}_trrb=${Date.now()}-${attempt}`;
+    const response = await fetchResponse(requestUrl, 2);
     const text = await response.text();
     if (text.trim().length >= 500) return text;
     if (attempt < 4) await new Promise((resolve) => setTimeout(resolve, 350 * attempt));
@@ -255,10 +252,7 @@ async function discover(source) {
     }
     console.log("DISCOVERY_PAGE", source.key, page, `bytes=${html.length}`, `new_links=${urls.size - before}`);
   }
-  if (!urls.size) {
-    for (const id of fallbackTopicIds[source.key] || []) urls.add(`${source.origin}/f/page_viewtopic/t_${id}.html`);
-    console.log("DISCOVERY_FALLBACK", source.key, `links=${urls.size}`);
-  }
+  if (!urls.size) console.warn("DISCOVERY_EMPTY", source.key);
   return [...urls].slice(0, 40);
 }
 
@@ -335,18 +329,19 @@ async function expireOldListings() {
 
 async function main() {
   if (!SUPABASE_URL || !SERVICE_KEY) throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
-  const summary = { started_at: NOW_ISO, target: TARGET, discovered: 0, fetched: 0, eligible: 0, published: 0, existing: 0, duplicate: 0, rejected: 0, errors: 0 };
+  const summary = { started_at: NOW_ISO, target: TARGET, discovered: 0, fetched: 0, eligible: 0, published: 0, existing: 0, duplicate: 0, rejected: 0, source_errors: 0, publish_errors: 0 };
   await expireOldListings();
   const discovered = [];
   for (const source of sources) {
     try { for (const url of await discover(source)) discovered.push({ source, url }); }
-    catch (error) { console.error("DISCOVERY_ERROR", source.key, error?.message || error); summary.errors += 1; }
+    catch (error) { console.error("DISCOVERY_ERROR", source.key, error?.message || error); summary.source_errors += 1; }
   }
   summary.discovered = discovered.length;
   const fetched = await mapLimit(discovered, 3, async ({ source, url }) => normalizeCandidate(source, url, await fetchText(url)));
+  for (const failed of fetched.filter((x) => x?.error)) console.error("LISTING_FETCH_ERROR", failed.item?.url, failed.error?.message || failed.error);
   const candidates = fetched.filter((x) => x && !x.error);
   summary.fetched = candidates.length;
-  summary.errors += fetched.length - candidates.length;
+  summary.source_errors += fetched.length - candidates.length;
   const eligible = candidates.filter((x) => !x.errors.length).sort((a, b) => b.published - a.published).slice(0, TARGET);
   summary.eligible = eligible.length;
   for (const rejected of candidates.filter((x) => x.errors.length).slice(0, 20)) console.log("REJECTED", rejected.source.key, rejected.externalId, rejected.errors.join(","));
@@ -357,10 +352,11 @@ async function main() {
       else if (result === "existing") summary.existing += 1;
       else if (result === "duplicate") summary.duplicate += 1;
       else summary.rejected += 1;
-    } catch (error) { summary.errors += 1; console.error("PUBLISH_ERROR", candidate.url, error?.message || error); }
+    } catch (error) { summary.publish_errors += 1; console.error("PUBLISH_ERROR", candidate.url, error?.message || error); }
   }
   console.log(`SECONDHAND_INGEST_SUMMARY ${JSON.stringify(summary)}`);
-  if (!summary.discovered || summary.errors > Math.max(5, summary.fetched * 0.25)) process.exitCode = 1;
+  if (!summary.discovered || !summary.fetched) console.warn("SECONDHAND_SOURCE_UNAVAILABLE", "No source listings were available; the scheduled run will retry later.");
+  if (summary.publish_errors > 0) process.exitCode = 1;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();

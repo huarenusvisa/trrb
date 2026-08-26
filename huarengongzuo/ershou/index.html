@@ -25,7 +25,8 @@
   <meta name="twitter:image:alt" content="华人二手交易：纽约及全美华人本地买卖">
   <meta name="theme-color" content="#1768d5">
   <link rel="icon" href="/ershou/secondhand-market.svg?v=20260826-1" type="image/svg+xml">
-  <link rel="stylesheet" href="/ershou/market.css?v=20260826-1">
+  <link rel="stylesheet" href="/ershou/market.css?v=20260826-2">
+  <link rel="stylesheet" href="/ershou/product-first.css?v=20260826-1">
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -48,30 +49,19 @@
   </header>
 
   <main>
-    <section class="hero">
-      <div class="shell hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow">美国华人本地二手市场</span>
-          <h1>闲置有去处，<br><em>买卖更直接</em></h1>
-          <p>面向纽约、法拉盛及全美华人社区。按物品和地区查找，直接联系卖家；当前不经手货款。</p>
-          <form class="search-box" id="market-search" role="search">
-            <label><span>想找什么</span><input id="search-keyword" type="search" placeholder="例如：沙发、iPhone、婴儿车" autocomplete="off"></label>
-            <label><span>所在地区</span><input id="search-place" type="search" placeholder="城市、州或社区" autocomplete="off"></label>
-            <button type="submit">搜索闲置</button>
-          </form>
-          <div class="city-chips" aria-label="热门地区"><button type="button" data-place="Flushing">法拉盛</button><button type="button" data-place="New York">纽约</button><button type="button" data-place="Brooklyn">布鲁克林</button><button type="button" data-place="Los Angeles">洛杉矶</button><button type="button" data-place="Boston">波士顿</button></div>
-        </div>
-        <aside class="launch-card" aria-label="平台开放状态">
-          <div class="launch-icon">↻</div>
-          <h2>首版已经开放</h2>
-          <p>先提供分类浏览、地区搜索和闲置发布；付款、担保交易、配送与退款机制将在验证需求后接入。</p>
-          <ul><li><b>已开放</b><span>商品分类与搜索</span></li><li><b>已开放</b><span>提交发布与人工审核</span></li><li class="later"><b>后续研究</b><span>线上支付与交易保障</span></li></ul>
-        </aside>
+    <section class="market-tools" aria-label="搜索二手物品">
+      <div class="shell">
+        <form class="search-box" id="market-search" role="search">
+          <label><span>想找什么</span><input id="search-keyword" type="search" placeholder="例如：沙发、iPhone、婴儿车" autocomplete="off"></label>
+          <label><span>所在地区</span><input id="search-place" type="search" placeholder="城市、州或社区" autocomplete="off"></label>
+          <button type="submit">搜索闲置</button>
+        </form>
+        <div class="city-chips" aria-label="热门地区"><button type="button" data-place="Flushing">法拉盛</button><button type="button" data-place="New York">纽约</button><button type="button" data-place="Brooklyn">布鲁克林</button><button type="button" data-place="Los Angeles">洛杉矶</button><button type="button" data-place="Boston">波士顿</button></div>
       </div>
     </section>
 
     <section class="shell category-section" id="categories">
-      <header class="section-head"><div><span>CATEGORIES</span><h2>按分类找闲置</h2></div><button type="button" data-open-publish>免费发布物品</button></header>
+      <header class="section-head"><div><span>CATEGORIES</span><h1>按分类找闲置</h1></div><button type="button" data-open-publish>免费发布物品</button></header>
       <div class="category-grid">
         <a href="?category=digital" data-category="手机数码"><i>📱</i><b>手机数码</b><small>手机、电脑、相机、影音</small></a>
         <a href="?category=baby" data-category="母婴用品"><i>🧸</i><b>母婴用品</b><small>婴儿车、玩具、儿童用品</small></a>
@@ -84,11 +74,11 @@
     </section>
 
     <section class="shell latest-section" id="latest">
-      <header class="section-head"><div><span>NEW LISTINGS</span><h2>最新闲置</h2><p id="filter-copy">首批商品正在整理，审核通过后会在这里展示。</p></div></header>
-      <div class="empty-listing"><div>＋</div><h3>发布第一件闲置物品</h3><p>填写标题、价格、地区和联系方式即可提交。平台审核后展示，现阶段买卖双方线下自行完成交易。</p><button type="button" data-open-publish>发布闲置</button></div>
+      <header class="section-head"><div><span>NEW LISTINGS</span><h2>最新闲置</h2><p id="filter-copy">查看本地最新发布的二手物品。</p></div></header>
+      <div class="empty-listing"><div>＋</div><h3>暂时没有符合条件的商品</h3><p>换一个分类或地区继续查看，也可以直接发布你的闲置物品。</p><button type="button" data-open-publish>发布闲置</button></div>
     </section>
 
-    <section class="safety" id="safety"><div class="shell safety-grid"><div><span>SAFE TRADING</span><h2>见到实物，再付款</h2></div><div><p>优先选择公共场所当面交易，贵重商品应现场核验序列号和功能。不要提前支付订金，不要提供银行卡密码或短信验证码。</p><p>禁止发布武器、毒品、处方药、假证件、盗版或来源不明商品。可疑信息将不予展示。</p></div></div></section>
+    <section class="safety" id="safety"><div class="shell safety-grid"><div><span>SAFE TRADING</span><h2>见到实物，再付款</h2></div><div><p>当前不经手货款。优先选择公共场所当面交易，贵重商品应现场核验序列号和功能。不要提前支付订金，不要提供银行卡密码或短信验证码。</p><p>禁止发布武器、毒品、处方药、假证件、盗版或来源不明商品。可疑信息将不予展示。</p></div></div></section>
 
     <section class="shell faq"><h2>常见问题</h2><details><summary>现在可以直接在线付款吗？</summary><p>暂不支持。当前版本只负责信息发布、查找和联系，平台不代收货款。线上支付、担保和退款机制将另行研究。</p></details><details><summary>发布信息后会立刻展示吗？</summary><p>不会。提交后先进入审核，联系方式、商品描述和禁售品检查通过后才会公开展示。</p></details><details><summary>哪些地区可以发布？</summary><p>美国各州均可发布；首阶段重点服务纽约、法拉盛及华人较集中的城市和社区。</p></details></section>
   </main>

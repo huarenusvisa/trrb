@@ -193,7 +193,7 @@ async function pendingPosts() {
     query: {
       select: "*",
       processing_status: "in.(collected,processing,extracted,failed)",
-      relevant: "neq.false",
+      or: "(relevant.is.null,relevant.eq.true)",
       order: "source_created_at.desc.nullslast,created_at.desc",
       limit: String(MAX_PER_RUN)
     }

@@ -17,6 +17,7 @@ on:
           - maintenance
           - china-hot
           - jobs
+          - secondhand
   schedule:
     - cron: "27 */3 * * *"
     - cron: "17 * * * *"
@@ -63,6 +64,11 @@ jobs:
   jobs-daily-ingest:
     if: ${{ github.event.schedule == '12 13 * * *' || github.event.schedule == '12 23 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'jobs') }}
     uses: ./.github/workflows/jobs-daily-ingest.yml
+    secrets: inherit
+
+  secondhand-daily-ingest:
+    if: ${{ github.event.schedule == '12 13 * * *' || github.event.schedule == '12 23 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'secondhand') }}
+    uses: ./.github/workflows/secondhand-daily-ingest.yml
     secrets: inherit
 
   china-hot-li-teacher:

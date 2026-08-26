@@ -1,0 +1,54 @@
+name: SECONDHAND Daily Ingest
+
+on:
+  workflow_call:
+  push:
+    branches: [main]
+    paths:
+      - scripts/secondhand-daily-ingest.mjs
+      - scripts/secondhand-daily-ingest.test.mjs
+      - .github/workflows/secondhand-daily-ingest.yml
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "本次最多发布数量（2-10）"
+        required: false
+        default: "10"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: secondhand-daily-ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SECONDHAND_TARGET_CANDIDATES: ${{ inputs.target || '10' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13.0"
+      - name: Verify and test secondhand ingestion
+        run: |
+          node --check scripts/secondhand-daily-ingest.mjs
+          node scripts/secondhand-daily-ingest.test.mjs
+      - name: Collect, validate and publish eligible secondhand listings
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/secondhand-daily-ingest.mjs 2>&1 | tee secondhand-daily-ingest-report.txt
+      - name: Upload ingestion report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: secondhand-daily-ingest-report-${{ github.run_id }}
+          path: secondhand-daily-ingest-report.txt
+          if-no-files-found: warn
+

@@ -9,12 +9,12 @@
 [[edge_functions]]
   function = "article-prerender"
   path = "/*/*"
-  excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.json", "/*.xml", "/*.webp", "/*.png", "/*.jpg", "/*.jpeg", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/assets/*", "/config/*", "/data/*", "/asylumjudge", "/asylumjudge/*"]
+  excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.json", "/*.xml", "/*.webp", "/*.png", "/*.jpg", "/*.jpeg", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/assets/*", "/config/*", "/data/*", "/asylumjudge", "/asylumjudge/*", "/community", "/community/*"]
 
 [[edge_functions]]
   function = "article-stale-route-rescue"
   path = "/*/*"
-  excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.json", "/*.xml", "/*.webp", "/*.png", "/*.jpg", "/*.jpeg", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/assets/*", "/config/*", "/data/*", "/asylumjudge", "/asylumjudge/*"]
+  excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.json", "/*.xml", "/*.webp", "/*.png", "/*.jpg", "/*.jpeg", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/assets/*", "/config/*", "/data/*", "/asylumjudge", "/asylumjudge/*", "/community", "/community/*"]
 
 [[edge_functions]]
   function = "legacy-url-redirect"

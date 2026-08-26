@@ -16,6 +16,7 @@ if (!base || !key) {
 }
 
 const STATIC_HUBS = [
+  { loc: `${SITE}/community/`, priority: '0.9', changefreq: 'daily' },
   { loc: `${SITE}/immigrate/`, priority: '0.8', changefreq: 'weekly' },
   { loc: `${SITE}/legal/`, priority: '0.8', changefreq: 'daily' }
 ];

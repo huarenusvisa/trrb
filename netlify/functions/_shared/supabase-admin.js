@@ -85,6 +85,25 @@ async function authenticateStaff(event, allowedRoles = ["owner", "editor"]) {
   return { user, admin: { ...admin, role } };
 }
 
+async function authenticateUser(event) {
+  requireSupabase();
+  const token = safeText(event.headers.authorization || event.headers.Authorization, 4000).replace(/^Bearer\s+/i, "");
+  if (!token) {
+    const error = new Error("请先登录唐人日报账号");
+    error.statusCode = 401;
+    throw error;
+  }
+  const user = await requestJson(`${SUPABASE_URL}/auth/v1/user`, {
+    headers: { apikey: AUTH_API_KEY, Authorization: `Bearer ${token}` }
+  });
+  if (!user?.id) {
+    const error = new Error("登录状态已失效，请重新登录");
+    error.statusCode = 401;
+    throw error;
+  }
+  return { user, token };
+}
+
 async function authenticateAdmin(event) {
   return authenticateStaff(event, ["owner", "editor"]);
 }
@@ -95,6 +114,7 @@ module.exports = {
   safeText,
   requestJson,
   rest,
+  authenticateUser,
   authenticateStaff,
   authenticateAdmin
 };

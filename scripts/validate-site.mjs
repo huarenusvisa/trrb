@@ -46,6 +46,14 @@ forbidMatch(jobs, /上线准备中/, "jobs/index.html still contains prelaunch d
 requireMatch(jobs, /招聘与求职信息进入统一生产数据系统/, "jobs/index.html missing live-data disclosure");
 requireMatch(jobs, /id=["']use-location["']/, "jobs/index.html missing current-location control");
 
+const community = await text("community/index.html");
+requireMatch(community, /^\s*<!doctype html>/i, "community/index.html is not HTML");
+requireMatch(community, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "community landing must be index,follow");
+requireMatch(community, /https:\/\/trrb\.net\/community\//i, "community canonical missing");
+requireMatch(community, /USCIS 面谈/, "community USCIS interview board missing");
+requireMatch(community, /data-category=["']court_experience["']/, "community court board missing");
+requireMatch(community, /data-category=["']lawyer_review["']/, "community lawyer review board missing");
+
 const jobsHome = await text("jobs-home.js");
 requireMatch(jobsHome, /TRRB_JOBS_HOME_PRELAUNCH\s*=\s*false/, "jobs-home.js is not production-live");
 requireMatch(jobsHome, /public-home-jobs/, "jobs-home.js is not using dedicated live homepage jobs API");
@@ -167,7 +175,7 @@ await Promise.all([
   "site-common.js", "site-search.js", "category-runtime-v3.js", "articles-home.js",
   "articles-home-live-fix.js", "homepage-focus-v34.js", "homepage-startup-stability.js",
   "homepage-immigration-hub.js", "jobs-home.js", "jobs/search.js", "jobs/unified-ui.js",
-  "topic/trump/trump.js", "article-route-runtime.js", "niulai/data-adapter.js", "niulai/app.js",
+  "topic/trump/trump.js", "article-route-runtime.js", "community/community.js", "niulai/data-adapter.js", "niulai/app.js",
   "niulai/stock.js", "niulai/fund.js", "niulai/detail-state-sync.js", "admin/finance-monitor.js"
 ].map(parseBrowserScript));
 

@@ -2,12 +2,6 @@ name: JOBS Daily Ingest
 
 on:
   workflow_call:
-  push:
-    branches:
-      - main
-    paths:
-      - scripts/jobs-daily-ingest.mjs
-      - .github/workflows/jobs-daily-ingest.yml
   workflow_dispatch:
     inputs:
       target:
@@ -37,7 +31,7 @@ jobs:
           node-version: "22.13.0"
       - name: Verify jobs ingestion syntax
         run: node --check scripts/jobs-daily-ingest.mjs
-      - name: Collect, validate and publish eligible jobs
+      - name: Collect, validate and queue eligible jobs for human review
         shell: bash
         run: |
           set -o pipefail

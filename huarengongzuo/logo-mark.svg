@@ -1,13 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
   <title id="title">华人工作网</title>
-  <desc id="desc">珊瑚红圆形中的白色 H 与向上箭头</desc>
+  <desc id="desc">蓝色圆形中的白色公文包与橙色确认标记</desc>
   <defs>
-    <linearGradient id="coral" x1="28" y1="18" x2="132" y2="142" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#ff6a45"/>
-      <stop offset="1" stop-color="#e63d28"/>
+    <linearGradient id="blue" x1="24" y1="18" x2="136" y2="144" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#287eea"/>
+      <stop offset="1" stop-color="#0b4fba"/>
     </linearGradient>
   </defs>
-  <circle cx="80" cy="80" r="76" fill="url(#coral)"/>
-  <path d="M43 38h22v31h30V38h22v84H95V91H65v31H43z" fill="#fff"/>
-  <path d="M80 62 65 80h9v18h12V80h9z" fill="url(#coral)"/>
+  <circle cx="80" cy="80" r="76" fill="url(#blue)"/>
+  <path d="M56 58v-6c0-10 8-18 18-18h12c10 0 18 8 18 18v6H93v-6c0-4-3-7-7-7H74c-4 0-7 3-7 7v6z" fill="#fff"/>
+  <rect x="28" y="55" width="104" height="72" rx="14" fill="#fff"/>
+  <path d="M28 77h104v13c-15 7-32 10-52 10S43 97 28 90z" fill="#dcecff"/>
+  <rect x="72" y="83" width="16" height="12" rx="4" fill="#1768d5"/>
+  <circle cx="112" cy="113" r="22" fill="#ff8a28"/>
+  <path d="m102 113 7 7 14-17" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

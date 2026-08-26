@@ -112,7 +112,7 @@ const required = [
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
-const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*']);
+const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*', '/ershou', '/ershou/', '/ershou/:splat', '/secondhand', '/secondhand/', '/marketplace', '/marketplace/', '/classifieds', '/classifieds/']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
   return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);

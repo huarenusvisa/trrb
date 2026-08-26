@@ -21,9 +21,11 @@ for (const country of [cuba, korea, china]) assert.ok(country, 'China, Cuba, and
 for (const year of ['2024', '2025', '2026']) assert.ok(cuba.yearly.some((row) => row.label === year), `Cuba must include real ${year} data`);
 assert.ok(cuba.monthly.length > 2 && cuba.quarterly.length > 2 && cuba.yearly.length > 2, 'country trends must support month, quarter, and year views');
 assert.equal(cuba.yearly.find((row) => row.label === '2025').approval_rate, 22.6253, 'trend data must be generated from the EOIR snapshot, not a placeholder');
-assert.equal(backgroundData.profiles.length, 82, 'all 77 judges and 5 temporary judges in the official release must be parsed');
+assert.ok(backgroundData.profiles.length >= 560, 'historical DOJ/EOIR appointment biographies must be parsed across all configured releases');
+assert.equal(backgroundData.diagnostics.find((row) => row.url.includes('/1441406/'))?.profiles, 82, 'all 77 judges and 5 temporary judges in the May 2026 release must be parsed');
 for (const profile of backgroundData.profiles) {
-  assert.equal((profile.biography.match(/was appointed/gi) || []).length, 1, `${profile.judge_name} must contain exactly one judge biography`);
+  assert.match(profile.biography, /appointed/i, `${profile.judge_name} must contain an appointment biography`);
+  assert.match(profile.source_url, /^https:\/\/www\.justice\.gov\//, `${profile.judge_name} must cite a first-party DOJ source`);
 }
 assert.ok(webexData.profiles.length > 700, 'official EOIR hearing directory must be parsed into judge profiles');
 assert.ok(webexData.profiles.find((row) => row.name_key === 'reingold|jonathan')?.links[0]?.webex_url.includes('eoir.webex.com'), 'known official Webex links must be retained');
@@ -101,7 +103,7 @@ assert.match(page, /id="language-select"/);
 assert.match(page, /data-i18n="comparisonTitle"/);
 assert.match(standaloneProxy, /cache: 'no-store'/);
 assert.match(detailClient, /const apiUrl/);
-assert.match(detailClient, /https:\/\/trrb\.net/);
+assert.doesNotMatch(detailClient, /https:\/\/trrb\.net/, 'AsylumJudge detail pages must use the same-origin data proxy');
 assert.doesNotMatch(page, /EOIR 尚未提供可核验的按月国籍裁决序列/);
 assert.match(detailPage, /法官背景与任命信息/);
 assert.match(detailPage, /未发现离任或被辞退记录，不等于确认仍在任/);

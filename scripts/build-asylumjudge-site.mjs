@@ -24,6 +24,7 @@ await cp(join(root, 'asylumjudge', 'favicon-48.png'), join(output, 'favicon-48.p
 await cp(join(root, 'asylumjudge', 'apple-touch-icon.png'), join(output, 'apple-touch-icon.png'));
 await cp(join(root, 'asylumjudge', 'site.webmanifest'), join(output, 'site.webmanifest'));
 await cp(join(root, 'asylumjudge', 'google0894cf097fd7415e.html'), join(output, 'google0894cf097fd7415e.html'));
+await cp(join(root, 'asylumjudge', '8d42a4dac6059bb279cede8301423e6d.txt'), join(output, '8d42a4dac6059bb279cede8301423e6d.txt'));
 await cp(join(root, 'immigration-judge-approval-rate'), join(output, 'immigration-judge-approval-rate'), { recursive: true });
 await cp(join(root, 'styles.css'), join(output, 'styles.css'));
 await cp(join(root, 'trrb-logo-cropped.webp'), join(output, 'trrb-logo-cropped.webp'));
@@ -51,6 +52,7 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /courts /immigration-judge-approval-rate/courts.html 200
 /states /immigration-judge-approval-rate/states.html 200
 /nationality /immigration-judge-approval-rate/china-dashboard.html 200
+/judge-backgrounds /judge-backgrounds/index.html 200
 /china /nationality?country=China 301
 /methodology /immigration-judge-approval-rate/methodology.html 200
 /immigration-judge-approval-rate /index.html 301

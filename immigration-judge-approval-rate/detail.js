@@ -2,7 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
-const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname) ? `https://trrb.net${path}` : path;
+const apiUrl = (path) => path;
 let nationality = [];
 let nationalityYearly = [];
 let nationalityFiscalYear = 2026;
@@ -138,7 +138,7 @@ async function load() {
     const data = await response.json();
     if (!response.ok || !data.judge) throw new Error();
     const judge = data.judge;
-    renderBackground(data.background);
+    if (data.background || document.body.dataset.seoPrerendered !== 'true') renderBackground(data.background);
     renderWebex(judge.webex);
     document.title = `${judge.judge_name} 庇护通过率｜唐人日报`;
     $('#judge-name').textContent = judge.judge_name || '移民法官';

@@ -1,10 +1,77 @@
 {
+  "discover_doj_press_releases": true,
   "sources": [
+    {
+      "title": "EOIR Announces 17 New Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1389641/dl?inline=",
+      "source_date": "2021-05-06",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 32 New Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1255436/dl?inline=",
+      "source_date": "2022-10-26",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 39 New Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1325221/dl?inline=",
+      "source_date": "2023-11-07",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 18 New Immigration Judges and 2 New Appellate Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1351546/dl?inline=",
+      "source_date": "2024-05-10",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 18 New Immigration Judges and 6 New Appellate Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1376266/dl",
+      "source_date": "2024-11-06",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 11 Immigration Judges and 25 Temporary Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1415981/dl?inline=",
+      "source_date": "2025-10-24",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 6 Immigration Judges and 27 Temporary Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1426676/dl?inline=",
+      "source_date": "2026-02-05",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 42 Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1430876/dl?inline=",
+      "source_date": "2026-03-11",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 15 Immigration Judges and 17 Temporary Immigration Judges",
+      "url": "https://www.justice.gov/eoir/media/1435381/dl?inline=",
+      "source_date": "2026-04-08",
+      "format": "pdf"
+    },
     {
       "title": "EOIR Announces 77 Immigration Judges and 5 Temporary Immigration Judges — Biographical Information",
       "url": "https://www.justice.gov/eoir/media/1441406/dl?inline=",
       "source_date": "2026-05-21",
       "appointed_by": "Acting Attorney General",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces 39 Immigration Judges and 6 Temporary Immigration Judges — Biographical Information",
+      "url": "https://www.justice.gov/eoir/media/1446596/dl?inline=",
+      "source_date": "2026-06-17",
+      "format": "pdf"
+    },
+    {
+      "title": "EOIR Announces Regional Deputy Chief Immigration Judge, Administrative Law Judge, 37 Immigration Judges and 4 Temporary Immigration Judges — Biographical Information",
+      "url": "https://www.justice.gov/eoir/media/1454626/dl?inline=",
+      "source_date": "2026-07-29",
       "format": "pdf"
     }
   ]

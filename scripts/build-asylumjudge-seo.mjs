@@ -165,6 +165,19 @@ const copy = {
   }
 };
 
+const backgroundDirectoryCopy = {
+  en: ['Official U.S. Immigration Judge Backgrounds | AsylumJudge', 'Browse verified DOJ and EOIR appointment biographies, education, bar admissions, court assignments, and official sources for U.S. immigration judges.', 'Official DOJ/EOIR profile'],
+  es: ['Antecedentes oficiales de jueces de inmigración | AsylumJudge', 'Consulte biografías oficiales verificadas de DOJ y EOIR, educación, colegios de abogados, tribunales y fuentes.', 'Perfil oficial DOJ/EOIR'],
+  fr: ['Parcours officiels des juges de l’immigration | AsylumJudge', 'Consultez les biographies de nomination DOJ et EOIR vérifiées, la formation, les barreaux, les tribunaux et les sources.', 'Profil officiel DOJ/EOIR'],
+  'pt-BR': ['Históricos oficiais de juízes de imigração | AsylumJudge', 'Consulte biografias verificadas do DOJ e EOIR, formação, registros profissionais, tribunais e fontes oficiais.', 'Perfil oficial DOJ/EOIR'],
+  hi: ['अमेरिकी इमिग्रेशन जज की आधिकारिक पृष्ठभूमि | AsylumJudge', 'DOJ और EOIR की सत्यापित नियुक्ति जीवनी, शिक्षा, बार सदस्यता, अदालत और आधिकारिक स्रोत देखें।', 'आधिकारिक DOJ/EOIR प्रोफ़ाइल'],
+  'zh-Hans': ['美国移民法官官方背景与任命资料｜AsylumJudge', '查询经核验的 DOJ/EOIR 官方任命履历、教育经历、执业资格、任命法院和原始来源。', 'DOJ/EOIR 官方履历'],
+  'zh-Hant': ['美國移民法官官方背景與任命資料｜AsylumJudge', '查詢經核驗的 DOJ/EOIR 官方任命履歷、教育經歷、執業資格、任命法院和原始來源。', 'DOJ/EOIR 官方履歷'],
+  ru: ['Официальные биографии иммиграционных судей США | AsylumJudge', 'Проверенные сведения DOJ и EOIR о назначении, образовании, адвокатском статусе, судах и официальных источниках.', 'Официальный профиль DOJ/EOIR'],
+  ar: ['الخلفيات الرسمية لقضاة الهجرة الأمريكية | AsylumJudge', 'تصفح سير التعيين الموثقة من DOJ وEOIR والتعليم والعضوية المهنية والمحاكم والمصادر الرسمية.', 'ملف DOJ/EOIR الرسمي'],
+  tr: ['ABD göçmenlik hâkimlerinin resmî geçmişleri | AsylumJudge', 'Doğrulanmış DOJ ve EOIR atama özgeçmişlerini, eğitimi, baro üyeliğini, mahkemeleri ve resmî kaynakları inceleyin.', 'Resmî DOJ/EOIR profili']
+};
+
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const escapeXml = escapeHtml;
 const cleanName = (value) => {
@@ -179,6 +192,24 @@ const n = (value) => Number(value || 0);
 const localeNumber = (value, locale) => n(value).toLocaleString(locale);
 const rate = (row) => row?.adjudicated_approval_rate == null ? '—' : `${Number(row.adjudicated_approval_rate).toFixed(1)}%`;
 const lastmod = (value) => /^\d{4}-\d{2}-\d{2}/.test(String(value || '')) ? String(value).slice(0, 10) : TODAY;
+const nameKey = (value) => {
+  const name = String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\b(?:jr|sr|ii|iii|iv)\.?\b/gi, '')
+    .replace(/[^a-zA-Z,' -]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+  if (!name) return '';
+  if (name.includes(',')) {
+    const [last, rest] = name.split(',', 2);
+    const first = String(rest || '').trim().split(/\s+/)[0];
+    return first && last ? `${last.trim()}|${first}` : '';
+  }
+  const parts = name.split(/\s+/).filter(Boolean);
+  return parts.length > 1 ? `${parts.at(-1)}|${parts[0]}` : parts[0];
+};
 
 const localizedPath = (locale, relative = '') => {
   const clean = String(relative || '').replace(/^\/+|\/+$/g, '');
@@ -230,11 +261,12 @@ function siteSchema(locale, canonical, pageName, description) {
 
 function judgeSchema(locale, canonical, judge, title, description) {
   const name = cleanName(judge.judge_name);
+  const background = judge.background || judge.background_summary;
   return {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: locale.code, dateModified: lastmod(judge.source_updated_at), mainEntity: { '@id': `${canonical}#judge` }, isPartOf: { '@id': `${ORIGIN}/#website` } },
-      { '@type': 'Person', '@id': `${canonical}#judge`, name, jobTitle: 'U.S. Immigration Judge', identifier: judge.id, worksFor: judge.court_name ? { '@type': 'GovernmentOrganization', name: judge.court_name } : undefined },
+      { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: locale.code, dateModified: lastmod(background?.source_date || judge.source_updated_at), mainEntity: { '@id': `${canonical}#judge` }, isPartOf: { '@id': `${ORIGIN}/#website` } },
+      { '@type': 'Person', '@id': `${canonical}#judge`, name, jobTitle: background?.appointment_type || 'U.S. Immigration Judge', description: background?.biography || undefined, identifier: judge.id, worksFor: judge.court_name ? { '@type': 'GovernmentOrganization', name: judge.court_name } : undefined, sameAs: background?.source_url ? [background.source_url] : undefined },
       { '@type': 'WebSite', '@id': `${ORIGIN}/#website`, name: 'AsylumJudge.com', url: `${ORIGIN}/` }
     ]
   };
@@ -289,6 +321,7 @@ function renderJudge(template, judge, locale) {
   const title = strings.judgeTitle(name);
   const description = strings.judgeDescription(name, judge.court_name, total);
   const canonical = localizedUrl(locale, relative);
+  const background = judge.background || judge.background_summary;
   let html = template
     .replace('<body>', `<body data-judge-id="${escapeHtml(judge.id)}" data-seo-prerendered="true">`)
     .replace('<div id="detail-loading" class="empty">正在读取 EOIR 法官数据…</div>', '<div id="detail-loading" class="empty" hidden></div>')
@@ -302,13 +335,19 @@ function renderJudge(template, judge, locale) {
     .replace('<small id="m-adjudicated">—</small>', `<small id="m-adjudicated">${escapeHtml(`${grants} / ${denials} / ${other}`)}</small>`)
     .replace('<strong id="m-grant-deny">—</strong>', `<strong id="m-grant-deny">${escapeHtml(`${grants} / ${denials} / ${other}`)}</strong>`)
     .replace('<p id="background-source-wrap" class="background-source">', '<p id="background-source-wrap" class="background-source" hidden>');
-  if (judge.background_summary?.biography_excerpt) {
+  if (background?.biography || background?.biography_excerpt) {
+    const biography = background.biography || background.biography_excerpt;
+    const sourceLabel = `${background.source_title || 'DOJ/EOIR official source'}${background.source_date ? ` (${background.source_date})` : ''} →`;
     html = html
       .replace('<section id="judge-background" class="detail-section judge-background" hidden>', '<section id="judge-background" class="detail-section judge-background">')
-      .replace('<strong id="background-date">—</strong>', `<strong id="background-date">${escapeHtml(judge.background_summary.appointment_date || '—')}</strong>`)
-      .replace('<strong id="background-court">—</strong>', `<strong id="background-court">${escapeHtml(judge.background_summary.appointment_court || judge.court_name || '—')}</strong>`)
-      .replace('<strong id="background-type">—</strong>', `<strong id="background-type">${escapeHtml(judge.background_summary.appointment_type || 'Immigration Judge')}</strong>`)
-      .replace('<p id="background-bio">—</p>', `<p id="background-bio">${escapeHtml(judge.background_summary.biography_excerpt)}</p>`);
+      .replace('<strong id="background-date">—</strong>', `<strong id="background-date">${escapeHtml(background.appointment_date || '—')}</strong>`)
+      .replace('<strong id="background-court">—</strong>', `<strong id="background-court">${escapeHtml(background.appointment_court || judge.court_name || '—')}</strong>`)
+      .replace('<strong id="background-type">—</strong>', `<strong id="background-type">${escapeHtml(background.appointment_type || 'Immigration Judge')}</strong>`)
+      .replace('<p id="background-bio">—</p>', `<p id="background-bio">${escapeHtml(biography)}</p>`)
+      .replace('<p id="background-education"></p>', `<p id="background-education">${background.education ? escapeHtml(`Education: ${background.education}`) : ''}</p>`)
+      .replace('<p id="background-bar"></p>', `<p id="background-bar">${background.bar_membership ? escapeHtml(`Bar admission: ${background.bar_membership}`) : ''}</p>`)
+      .replace('<p id="background-source-wrap" class="background-source" hidden>', `<p id="background-source-wrap" class="background-source"${background.source_url ? '' : ' hidden'}>`)
+      .replace('<a id="background-source" href="#" target="_blank" rel="noopener">查看 DOJ/EOIR 官方来源 →</a>', `<a id="background-source" href="${escapeHtml(background.source_url || '#')}" target="_blank" rel="noopener">${escapeHtml(sourceLabel)}</a>`);
   }
   return injectSeoHead(html, { locale, relative, title, description, schema: judgeSchema(locale, canonical, judge, title, description) });
 }
@@ -354,6 +393,28 @@ function renderNationality(template, country, locale, modified) {
   return injectSeoHead(html, { locale, relative, title, description, schema: nationalitySchema(locale, canonical, country, title, description, modified) });
 }
 
+function renderBackgroundDirectory(template, judges, locale) {
+  const [title, description, sourceLabel] = backgroundDirectoryCopy[locale.code] || backgroundDirectoryCopy.en;
+  const relative = 'judge-backgrounds';
+  const canonical = localizedUrl(locale, relative);
+  const cards = judges
+    .filter((judge) => judge.background?.biography)
+    .sort((a, b) => cleanName(a.judge_name).localeCompare(cleanName(b.judge_name), locale.code))
+    .map((judge) => {
+      const name = cleanName(judge.judge_name);
+      const profile = `judges/${slugify(judge.judge_name)}--${shortId(judge.id)}`;
+      const excerpt = String(judge.background.biography || '').slice(0, 330);
+      return `<a class="background-directory-card" href="${localizedPath(locale, profile)}"><strong>${escapeHtml(name)}</strong><span>${escapeHtml(judge.background.appointment_court || judge.court_name || 'U.S. Immigration Court')}</span><p>${escapeHtml(excerpt)}${judge.background.biography.length > excerpt.length ? '…' : ''}</p><small>${escapeHtml(sourceLabel)}${judge.background.source_date ? ` · ${escapeHtml(judge.background.source_date)}` : ''} →</small></a>`;
+    })
+    .join('');
+  const html = template
+    .replace('<h1 id="background-directory-title">移民法官官方背景资料</h1>', `<h1 id="background-directory-title">${escapeHtml(title.replace(/\s*[|｜].*$/, ''))}</h1>`)
+    .replace('<p id="background-directory-description">仅收录可追溯至美国司法部或 EOIR 的官方任命公告与履历。点击法官姓名查看完整背景、裁决统计和来源。</p>', `<p id="background-directory-description">${escapeHtml(description)}</p>`)
+    .replace('<div id="background-directory-grid" class="background-directory-grid"></div>', `<div id="background-directory-grid" class="background-directory-grid">${cards}</div>`)
+    .replace('<body>', `<body data-asylum-locale="${locale.code}">`);
+  return injectSeoHead(html, { locale, relative, title, description, schema: siteSchema(locale, canonical, title, description) });
+}
+
 async function fetchJson(api, params) {
   const url = `${api}?${new URLSearchParams(params)}`;
   const response = await fetch(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(45000) });
@@ -383,15 +444,19 @@ const sitemapXml = (rows) => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xm
 
 export async function buildAsylumJudgeSeo({ root, output }) {
   const api = process.env.ASYLUMJUDGE_SEO_API || DEFAULT_API;
-  const [homeTemplate, judgeTemplate, courtTemplate, nationalityTemplate, courtsTemplate, statesTemplate, methodologyTemplate] = await Promise.all([
+  const [homeTemplate, judgeTemplate, courtTemplate, nationalityTemplate, courtsTemplate, statesTemplate, methodologyTemplate, backgroundTemplate, backgroundText] = await Promise.all([
     readFile(join(root, 'asylumjudge', 'index.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'detail.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'court-detail.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'china-dashboard.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'courts.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'states.html'), 'utf8'),
-    readFile(join(root, 'immigration-judge-approval-rate', 'methodology.html'), 'utf8')
+    readFile(join(root, 'immigration-judge-approval-rate', 'methodology.html'), 'utf8'),
+    readFile(join(root, 'asylumjudge', 'judge-backgrounds.html'), 'utf8'),
+    readFile(join(root, 'data', 'immigration-judge-backgrounds.json'), 'utf8')
   ]);
+  const backgroundData = JSON.parse(backgroundText);
+  const backgroundByName = new Map((backgroundData.profiles || []).map((profile) => [profile.name_key || nameKey(profile.judge_name), profile]));
 
   const staticDefinitions = [
     ['', homeTemplate, 'home'],
@@ -434,6 +499,15 @@ export async function buildAsylumJudgeSeo({ root, output }) {
   entityResponses.filter((result) => result.status === 'rejected').forEach((result) => {
     console.warn(`AsylumJudge SEO entity generation continued with partial data: ${result.reason?.message || result.reason}`);
   });
+  judgeData.results = (judgeData.results || []).map((judge) => ({
+    ...judge,
+    background: backgroundByName.get(nameKey(judge.judge_name)) || judge.background || null
+  }));
+
+  await Promise.all(SEO_LOCALES.map(async (locale) => {
+    await writePage(output, locale, 'judge-backgrounds', renderBackgroundDirectory(backgroundTemplate, judgeData.results, locale));
+    staticRows.push({ loc: localizedUrl(locale, 'judge-backgrounds'), lastmod: backgroundData.generated_at || TODAY });
+  }));
 
   const judgeRows = [];
   await writeEntities(

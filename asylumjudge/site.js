@@ -14,9 +14,7 @@ const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylu
 const appPath = (page = '') => trrbColumn
   ? `/asylumjudge${page ? `/${page}` : ''}`
   : (page ? `/${page}` : '/');
-const sharedApiOrigin = /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)
-  ? 'https://trrb.net'
-  : '';
+const sharedApiOrigin = '';
 
 function useCleanDomainRoutes() {
   if (!trrbColumn && !/^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname)) return;

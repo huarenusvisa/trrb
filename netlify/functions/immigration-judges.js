@@ -310,7 +310,10 @@ exports.handler = async (event) => {
           order: 'judge_name.asc,id.asc'
         }
       });
-      const results = (rows || []).filter((row) => row.judge_name).map((row) => derived(withOfficialOutcomes(row)));
+      const results = (rows || []).filter((row) => row.judge_name).map((row) => {
+        const result = derived(withOfficialOutcomes(row));
+        return { ...result, background: backgroundByName.get(judgeNameKey(row.judge_name)) || null };
+      });
       return out(200, { count: results.length, results, ...(await provenance()) });
     }
 

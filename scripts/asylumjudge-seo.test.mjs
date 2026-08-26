@@ -86,6 +86,29 @@ assert.doesNotMatch(arabicNationality, /<h1 data-i18n="heroTitle">/, 'entity H1 
 const methodology = await read('methodology/index.html');
 assert.match(methodology, /id="data-license"/, 'methodology must expose the Dataset license target');
 
+const backgroundDirectory = await read('judge-backgrounds/index.html');
+assert.match(backgroundDirectory, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/judge-backgrounds\/">/);
+assert.ok((backgroundDirectory.match(/class="background-directory-card"/g) || []).length >= 400, 'background directory must expose at least 400 verified judge profiles');
+assert.match(backgroundDirectory, /href="\/judges\/.+--[a-z0-9]+\/"/, 'background directory cards must link to canonical judge pages');
+
+const englishJudgeFiles = allUrls.filter((url) => /\/en\/judges\//.test(url));
+let verifiedBackgroundPage = null;
+for (const url of englishJudgeFiles) {
+  const pathname = new URL(url).pathname;
+  const html = await read(`${pathname.replace(/^\//, '').replace(/\/$/, '')}/index.html`);
+  if (html.includes('id="judge-background" class="detail-section judge-background">')) {
+    verifiedBackgroundPage = { url, html };
+    break;
+  }
+}
+assert.ok(verifiedBackgroundPage, 'at least one generated judge page must expose an official background');
+assert.match(verifiedBackgroundPage.html, /<p id="background-bio">[^<]{120,}<\/p>/, 'official biography must be present in static HTML');
+assert.match(verifiedBackgroundPage.html, /<a id="background-source" href="https:\/\/www\.justice\.gov\//, 'static biography must link to its DOJ source');
+const verifiedJson = verifiedBackgroundPage.html.match(/<script type="application\/ld\+json" data-seo-generated>([\s\S]*?)<\/script>/)?.[1];
+const verifiedPerson = (JSON.parse(verifiedJson || '{}')['@graph'] || []).find((item) => item['@type'] === 'Person');
+assert.ok(verifiedPerson?.description?.includes('appointed'), 'Person schema must contain the verified appointment biography');
+assert.ok(verifiedPerson?.sameAs?.[0]?.startsWith('https://www.justice.gov/'), 'Person schema must cite its official DOJ source');
+
 const headers = await read('_headers');
 assert.match(headers, /\/judge\s+X-Robots-Tag: noindex, follow/);
 assert.match(headers, /\/\*\/judge\s+X-Robots-Tag: noindex, follow/);

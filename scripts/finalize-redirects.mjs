@@ -16,7 +16,7 @@ const required = [
   'https://huarengongzuo.com/icon-512.png /huarengongzuo/icon-512.png 200!',
   'https://huarengongzuo.com/og-share.png /huarengongzuo/og-share.png 200!',
   'https://huarengongzuo.com/site.webmanifest /huarengongzuo/site.webmanifest 200!',
-  'https://huarengongzuo.com/ershou https://huarengongzuo.com/ershou/ 301!',
+  'https://huarengongzuo.com/ershou /huarengongzuo/ershou/index.html 200!',
   'https://huarengongzuo.com/ershou/ /huarengongzuo/ershou/index.html 200!',
   'https://huarengongzuo.com/ershou/* /huarengongzuo/ershou/:splat 200!',
   'https://huarengongzuo.com/ q=:q place=:place /huarengongzuo/index.html 200!',

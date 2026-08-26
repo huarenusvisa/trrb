@@ -48,11 +48,11 @@ const locationRules = [
 const categoryRules = [
   [/手机|电脑|平板|iPhone|iPad|MacBook|相机|镜头|显示器|耳机|音响|投影|数码/i, "digital"],
   [/婴儿|宝宝|儿童|玩具|安全座椅|婴儿车|母婴|童车/i, "baby"],
-  [/衣服|服装|鞋|靴|箱包|皮包|手袋|配饰|首饰/i, "fashion"],
+  [/衣服|服装|鞋|靴|箱包|皮包|手袋|配饰|首饰|香水|美妆/i, "fashion"],
   [/搬家|清仓|甩卖|全屋|moving sale/i, "moving"],
-  [/收藏|邮票|钱币|乐器|台球|摄影|手工|模型|球拍|运动/i, "hobby"],
+  [/收藏|邮票|钱币|乐器|台球|摄影|手工|模型|球拍|运动|自行车/i, "hobby"],
   [/免费|赠送|自取|送人/i, "free"],
-  [/家具|家电|沙发|床垫|床架|餐桌|椅子|冰箱|洗衣机|烘干机|微波炉|电饭锅|书桌|柜子|灯/i, "home"],
+  [/家具|家电|沙发|按摩床|床垫|床架|餐桌|椅子|冰箱|洗衣机|烘干机|微波炉|电饭锅|书桌|柜子|灯/i, "home"],
 ];
 
 function decodeHtml(value = "") {
@@ -86,6 +86,16 @@ function pickLocation(text) {
 
 function pickCategory(text) {
   for (const [pattern, slug] of categoryRules) if (pattern.test(text)) return slug;
+  return null;
+}
+
+function pickExplicitCategory(text) {
+  const value = text.match(/(?:二手商品|商品)\s*[:：]\s*(Moving Sale|家具|家用电器|手机数码|手机电脑|衣服饰品|服装服饰|母婴用品|婴儿用品|其他)/i)?.[1] || "";
+  if (/Moving Sale/i.test(value)) return "moving";
+  if (/家具|家用电器/.test(value)) return "home";
+  if (/手机/.test(value)) return "digital";
+  if (/衣服|服装/.test(value)) return "fashion";
+  if (/母婴|婴儿/.test(value)) return "baby";
   return null;
 }
 
@@ -137,9 +147,17 @@ function extractImages(html, source) {
   return found.slice(0, 8);
 }
 
+function extractListingHtml(html) {
+  const marker = html.lastIndexOf("详细描述");
+  if (marker < 0) return "";
+  const section = html.slice(marker);
+  const end = section.search(/联系时请|返回页首|举报|相关标签/i);
+  return end >= 0 ? section.slice(0, end) : section.slice(0, 12000);
+}
+
 function extractListingSection(text, title) {
   let value = text;
-  const marker = value.indexOf("详细描述");
+  const marker = value.lastIndexOf("详细描述");
   if (marker >= 0) value = value.slice(marker + 4);
   const end = value.search(/联系时请|返回页首|举报|相关标签|最后进行编辑/i);
   if (end >= 0) value = value.slice(0, end);
@@ -163,12 +181,11 @@ function normalizeCandidate(source, url, html) {
   const ageDays = published ? (NOW.getTime() - published.getTime()) / 86400000 : null;
   const section = extractListingSection(text, title);
   const description = extractDescription(section);
-  const coreText = `${title} ${section}`;
   const contact = pickContact(section);
-  const location = pickLocation(`${extractLocationHint(text)} ${coreText}`);
-  const category = pickCategory(coreText);
-  const price = pickPrice(coreText);
-  const images = extractImages(html, source);
+  const location = pickLocation(`${extractLocationHint(text)} ${title} ${description.slice(0, 800)}`);
+  const category = pickCategory(`${title} ${description.slice(0, 240)}`) || pickExplicitCategory(text);
+  const price = pickPrice(`${title} ${description.slice(0, 600)}`);
+  const images = extractImages(extractListingHtml(html), source);
   const errors = [];
   if (title.length < 3) errors.push("missing_title");
   if (!published || ageDays < -1 || ageDays > MAX_AGE_DAYS) errors.push("stale_or_missing_date");

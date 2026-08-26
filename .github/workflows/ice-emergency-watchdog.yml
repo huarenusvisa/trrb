@@ -1,16 +1,10 @@
 name: ICE应急看门狗
 
 # 正常采集由 operations-control-plane 与中国热门头条共用同一条每3小时调度。
-# 本工作流仅用于人工触发或相关代码变更后的即时恢复，避免重复定时采集。
+# 本工作流仅用于人工触发的即时恢复；代码变更由ICE生产流水线自身补跑。
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ice-emergency-watchdog.yml"
-      - ".github/workflows/ice-unified-pipeline.yml"
-      - "scripts/ice-run-due.mjs"
 
 permissions:
   contents: read

@@ -61,7 +61,12 @@ test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-
   assert.doesNotMatch(translator, /story\.reviewed_at \|\|/);
   assert.match(translator, /attempt < 5/);
   assert.match(manualPublish, /assertEditorialReady/);
+  assert.match(manualPublish, /payload\.old_news_checked !== true/);
+  assert.match(manualPublish, /payload\.image_grounding_used !== true/);
+  assert.match(manualPublish, /patchPublishedArticle\(articleId/);
   assert.match(manualApprove, /assertEditorialReady/);
+  assert.match(manualApprove, /payload\.old_news_checked !== true/);
+  assert.match(manualApprove, /payload\.image_grounding_used !== true/);
 });
 
 test("ICE后台审核只保留一个前端请求入口和一个发布接口", () => {

@@ -22,7 +22,9 @@ function assertEditorialReady(story, fields) {
   const count = bodyLength(fields.content);
   if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }
   if (count < min || count > max) { const error = new Error(`正文当前${count}字，必须达到${min}-${max}字后才能批准发布`); error.statusCode = 400; throw error; }
+  if (payload.old_news_checked !== true) { const error = new Error('尚未完成旧闻核验，不能批准发布'); error.statusCode = 400; throw error; }
   if (payload.appears_old_news === true) { const error = new Error('系统识别为旧闻，不能批准发布'); error.statusCode = 400; throw error; }
+  if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true) { const error = new Error('原帖含图片但尚未完成读图核验，不能批准发布'); error.statusCode = 400; throw error; }
 }
 
 async function getStory(id) {

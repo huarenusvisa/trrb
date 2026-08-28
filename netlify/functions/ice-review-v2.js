@@ -136,7 +136,9 @@ function assertEditorialReady(story, title, content) {
   const count = bodyLength(content);
   if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });
   if (count < min || count > max) throw Object.assign(new Error(`正文当前${count}字，必须达到${min}-${max}字后才能发布`), { statusCode: 400 });
+  if (payload.old_news_checked !== true) throw Object.assign(new Error("尚未完成旧闻核验，不能发布"), { statusCode: 400 });
   if (payload.appears_old_news === true) throw Object.assign(new Error("系统识别为旧闻，不能发布"), { statusCode: 400 });
+  if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true) throw Object.assign(new Error("原帖含图片但尚未完成读图核验，不能发布"), { statusCode: 400 });
 }
 async function recentSimilarArticle(title, summary, content) {
   const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
@@ -145,11 +147,10 @@ async function recentSimilarArticle(title, summary, content) {
   return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null;
 }
 
-async function updatePublishedArticle(story, actor, fields) {
-  const time = nowIso();
+async function patchPublishedArticle(articleId, fields) {
   await rest("articles", {
     method: "PATCH",
-    query: { id: `eq.${story.article_id}` },
+    query: { id: `eq.${articleId}` },
     body: {
       title: fields.title,
       summary: fields.summary,
@@ -158,10 +159,15 @@ async function updatePublishedArticle(story, actor, fields) {
       seo_title: fields.title,
       seo_description: fields.summary || fields.content.slice(0, 160),
       status: "published",
-      updated_at: time
+      updated_at: nowIso()
     },
     prefer: "return=minimal"
   });
+}
+
+async function updatePublishedArticle(story, actor, fields) {
+  const time = nowIso();
+  await patchPublishedArticle(story.article_id, fields);
   const updated = await patchStory(story.id, {
     title: fields.title,
     summary: fields.summary,
@@ -264,6 +270,8 @@ async function publishNow(story, actor, input) {
     });
     const article = Array.isArray(rows) ? rows[0] : rows;
     articleId = String(article?.id || articleId);
+  } else {
+    await patchPublishedArticle(articleId, { title, summary, content, coverImage });
   }
 
   const updated = await patchStory(story.id, {

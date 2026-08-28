@@ -39,7 +39,9 @@
     el("trump-x-pool-count").textContent = String(state.trumpItems.length);
     el("trump-x-pool-list").innerHTML = state.trumpItems.length ? state.trumpItems.map((item) => {
       const author = item.source_account || item.source_name || "X来源";
-      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(item.decision || "待处理")}</span><time>${esc(timeOf(item))}</time><h4>${esc(titleOf(item))}</h4><p>${esc(String(item.raw_text || "").slice(0, 260))}</p><small>${esc(author)}</small></div><div class="china-hot-pool-actions"><a href="${esc(item.source_url || "https://x.com")}" target="_blank" rel="noopener noreferrer">查看原帖</a><button data-trump-download="${esc(item.id)}">下载</button><button class="danger" data-trump-action="delete" data-trump-id="${esc(item.id)}">删除</button></div></article>`;
+      const body = item.ai_payload?.summary || item.ai_payload?.content || (item.decision === "processing" ? "正在自动翻译、读图和查重…" : "中文编辑未完成，禁止直接发布英文原文。");
+      const title = item.ai_payload?.title || (item.decision === "processing" ? "正在生成中文标题…" : "中文标题待人工编辑");
+      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(item.decision || "待处理")}</span><time>${esc(timeOf(item))}</time><h4>${esc(title)}</h4><p>${esc(String(body).slice(0, 300))}</p><small>${esc(author)}</small></div><div class="china-hot-pool-actions">${item.article_id ? `<a href="/article.html?id=${encodeURIComponent(item.article_id)}" target="_blank" rel="noopener">查看文章</a>` : ""}<a href="${esc(item.source_url || "https://x.com")}" target="_blank" rel="noopener noreferrer">查看原帖</a><button data-trump-download="${esc(item.id)}">下载</button><button class="danger" data-trump-action="delete" data-trump-id="${esc(item.id)}">删除</button></div></article>`;
     }).join("") : "<div class=\"panel\">特朗普X资讯内容池暂时为空。</div>";
   }
 

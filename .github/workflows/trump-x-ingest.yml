@@ -20,13 +20,17 @@ concurrency:
 jobs:
   collect-to-content-center:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 60
     env:
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       TRUMP_X_LOOKBACK_HOURS: "6"
       TRUMP_X_MAX_FETCH: "100"
+      TRUMP_X_MAX_PROCESS: ${{ github.event_name == 'push' && '250' || '50' }}
+      TRUMP_X_PROCESS_CONCURRENCY: "6"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,9 +40,10 @@ jobs:
         shell: bash
         run: |
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
+          test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
           test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
           test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
       - name: Validate Trump X collector
         run: node --test scripts/trump-x-ingest.test.mjs
-      - name: Collect Trump X news into content center
+      - name: Collect, translate, read images and deduplicate Trump X news
         run: node scripts/trump-x-ingest.mjs

@@ -5,6 +5,7 @@ const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
+const EDITORIAL_VERSION = "zh-title-body-v4-300-800-image";
 
 function nowIso() { return new Date().toISOString(); }
 function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[name]); if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`); }
@@ -12,10 +13,13 @@ function headers(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_RO
 async function readJson(response) { const text = await response.text(); if (!text) return null; try { return JSON.parse(text); } catch { return { raw: text }; } }
 async function request(url, options = {}) { const response = await fetch(url, options); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error || body?.raw || `请求失败（${response.status}）`); return body; }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) { const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/${table}`); for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) }); }
-async function evidenceFor(storyId) { const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${storyId}`, limit: "100" } }); const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean); if (!ids.length) return []; const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_display_name,trust_tier,source_created_at", id: `in.(${ids.join(",")})`, limit: "100" } }); return Array.isArray(rows) ? rows : []; }
+async function evidenceFor(storyId) { const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${storyId}`, limit: "100" } }); const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean); if (!ids.length) return []; const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_display_name,trust_tier,source_created_at,media", id: `in.(${ids.join(",")})`, limit: "100" } }); return Array.isArray(rows) ? rows : []; }
 function official(post) { const type = String(post?.source_type || ""); const username = String(post?.source_username || "").replace(/^@/, ""); return OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username); }
 function recentEnough(story) { const time = new Date(story.last_seen_at || story.first_seen_at || story.created_at || 0).getTime(); return Number.isFinite(time) && Date.now() - time <= MAX_AGE_MINUTES * 60000; }
 function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
+function length(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
+function mediaCount(evidence) { return evidence.reduce((count, post) => { const media = Array.isArray(post.media) ? post.media : []; return count + media.filter((item) => item?.url || item?.preview_image_url).length; }, 0); }
+function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const min = Number(payload.target_min_chars || 300); const max = Number(payload.target_max_chars || 800); const bodyLength = length(story.content); return payload.translation_version === EDITORIAL_VERSION && payload.translated_to_chinese === true && payload.old_news_checked === true && payload.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && bodyLength >= min && bodyLength <= max && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
 
 async function main() {
   requireEnv();
@@ -23,13 +27,13 @@ async function main() {
   let autoApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
     if (!recentEnough(story)) { stale += 1; continue; }
-    if (!String(story.title || "").trim() || !String(story.content || "").trim() || !hasChinese(story.title) || !hasChinese(story.content)) { incomplete += 1; continue; }
     const evidence = await evidenceFor(story.id);
+    if (!editorialReady(story, evidence)) { incomplete += 1; continue; }
     const officialEvidence = evidence.filter(official);
     if (!officialEvidence.length) { manual += 1; continue; }
     const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
     const sources = [...new Set(officialEvidence.map((post) => post.source_username).filter(Boolean))];
-    const blockedByRisk = Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk);
+    const blockedByRisk = Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk || payload.appears_old_news);
     await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
       status: blockedByRisk ? "pending_review" : "approved",
       human_review_status: blockedByRisk ? "required" : "not_required_official",

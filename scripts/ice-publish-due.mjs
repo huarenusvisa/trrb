@@ -7,6 +7,7 @@ import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js"
 const { buildPeopleCountMetadata } = peopleCountModule;
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
+const EDITORIAL_VERSION = "zh-title-body-v4-300-800-image";
 
 function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   const value = Number(process.env[name] ?? fallback);
@@ -22,6 +23,13 @@ function safeJson(value, fallback = null) {
   try { return typeof value === "string" ? JSON.parse(value) : value; }
   catch { return fallback; }
 }
+function hasChinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
+function chineseRatio(value) { const text = String(value || "").replace(/\s+/g, ""); return text ? (text.match(/[\u3400-\u9fff]/gu) || []).length / Array.from(text).length : 0; }
+function bodyLength(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
+function hasVisualMedia(post) { const media = safeJson(post?.media, post?.media || []); return (Array.isArray(media) ? media : []).some((item) => item?.url || item?.preview_image_url); }
+function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); const min = Number(payload?.target_min_chars || 300); const max = Number(payload?.target_max_chars || 800); const length = bodyLength(story.content); return payload?.translation_version === EDITORIAL_VERSION && payload?.translated_to_chinese === true && payload?.old_news_checked === true && payload?.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && length >= min && length <= max && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
+function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const out = new Set(); for (let i = 0; i < text.length - 1; i += 1) out.add(text.slice(i, i + 2)); return out; }
+function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function isOfficialUrgent(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
   return Boolean(payload?.official_urgent);
@@ -111,6 +119,7 @@ async function existingArticle(postId, eventFingerprint) {
   const byEvent = await sb("articles", { query: { select: "id", slug: `eq.ice-${eventFingerprint}`, limit: "1" } });
   return Array.isArray(byEvent) ? byEvent[0] || null : null;
 }
+async function recentSimilarArticle(story) { const cutoff = new Date(Date.now() - 30 * 86400_000).toISOString(); const rows = await sb("articles", { query: { select: "id,title,summary,content", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "1000" } }); const source = `${story.title || ""}${story.summary || ""}${story.content || ""}`; return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null; }
 async function updateStory(id, patch) {
   await sb("ice_stories", { method: "PATCH", query: { id: `eq.${id}` }, body: patch, prefer: "return=minimal" });
 }
@@ -139,13 +148,12 @@ async function publish(story) {
       return null;
     }
   }
-  if (!String(story.title || "").trim() || !String(story.content || "").trim()) {
-    await updateStory(story.id, { status: "pending_review", decision_reason: `${story.decision_reason || ""}；中文标题或正文尚未完成` });
-    return null;
-  }
-
   const post = await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
+  if (!editorialReady(story, post)) {
+    await updateStory(story.id, { status: "pending_review", human_review_status: officialApproved ? "required" : story.human_review_status, scheduled_at: null, decision_reason: `${story.decision_reason || ""}；发布器拦截：中文翻译、300/500-800字、读图或旧闻检查未通过` });
+    return null;
+  }
   const eventType = story.event_type || post.event_type || "other";
   const explicitPeopleMetadata = buildPeopleCountMetadata({
     title: story.title,
@@ -163,6 +171,11 @@ async function publish(story) {
   if (duplicate) {
     await updateStory(story.id, { status: "published", article_id: String(duplicate.id), published_at: nowIso(), decision_reason: `${story.decision_reason || ""}；同一来源帖子或事件指纹已发布，未重复创建文章` });
     return duplicate.id;
+  }
+  const similar = await recentSimilarArticle(story);
+  if (similar) {
+    await updateStory(story.id, { status: "published", article_id: String(similar.id), published_at: nowIso(), decision_reason: `${story.decision_reason || ""}；与近30天已发布ICE文章高度重复，未重复创建文章` });
+    return similar.id;
   }
   const evidence = await storyEvidence(story.id);
   const id = crypto.randomUUID();
@@ -185,7 +198,10 @@ async function publish(story) {
         independent_source_count: story.independent_source_count, official_source_count: story.official_source_count, media_source_count: story.media_source_count,
         organization_source_count: story.organization_source_count, decision_reason: story.decision_reason, human_review_status: story.human_review_status,
         reviewed_by: story.reviewed_by || null, reviewed_at: story.reviewed_at || null, editor_notes: story.editor_notes || "", official_urgent: officialUrgent,
-        official_source_auto: officialApproved, official_direct_publish: officialApproved, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
+        official_source_auto: officialApproved, official_direct_publish: officialApproved, translated_to_chinese: true,
+        source_character_count: payload?.source_character_count, target_min_chars: payload?.target_min_chars, target_max_chars: payload?.target_max_chars,
+        image_grounding_used: payload?.image_grounding_used === true, image_count: payload?.image_count || 0, image_observations: payload?.image_observations || "",
+        duplicate_check_days: 30, old_news_checked: true, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
         video_url: video?.url || "", video_poster: video?.poster || "", video_featured: temporaryFeatured, video_featured_until: featuredUntil,
         confirmed_facts: payload?.confirmed_facts || [], unconfirmed_claims: payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({ post_id: item.x_post_id, url: item.x_url, source_type: item.source_type, independence_key: item.independence_key }))

@@ -11,8 +11,8 @@ exports.handler = async (event) => {
     const action = safeText(input.action || "list", 40);
     if (action === "list") {
       const rows = await rest("news_candidates", { query: {
-        select: "id,external_id,pipeline,source_url,source_account,source_name,raw_text,raw_payload,ai_payload,decision,decision_reason,collected_at,created_at,updated_at",
-        pipeline: "like.trump-x-v%", decision: "neq.deleted", order: "collected_at.desc", limit: "500"
+        select: "id,external_id,pipeline,source_url,source_account,source_name,raw_text,raw_payload,ai_payload,decision,decision_reason,article_id,collected_at,created_at,updated_at",
+        pipeline: "like.trump-x-v%", decision: "in.(processing,pending_review,ready_for_review,review_required,published,failed)", order: "collected_at.desc", limit: "500"
       } });
       return json(200, { ok: true, items: Array.isArray(rows) ? rows : [] });
     }

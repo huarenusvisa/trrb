@@ -22,6 +22,8 @@ let selectedCoverObjectUrl = "";
 let reviewStories = [];
 let reviewFilter = "pending_review";
 let activeReview = null;
+let reviewPipeline = {};
+let reviewDedupe = {};
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -96,6 +98,7 @@ function bindEvents() {
   el("review-modal-close").addEventListener("click", closeReviewModal);
   el("review-modal-backdrop").addEventListener("click", closeReviewModal);
   el("review-cover").addEventListener("input", updateReviewCoverPreview);
+  el("review-content").addEventListener("input", () => updateIceEditorialCount());
   document.querySelectorAll("[data-review-action]").forEach((button) => {
     button.addEventListener("click", () => handleReviewAction(button.dataset.reviewAction));
   });
@@ -235,6 +238,7 @@ function showPage(page, sourceButton = null) {
   if (page === "content-center") window.loadUnifiedContentCenter?.();
   if (page === "finance-monitor") window.loadFinanceHealth?.();
   if (page === "asylumjudge-review") window.loadAsylumJudgeReview?.();
+  document.dispatchEvent(new CustomEvent("trrb:admin-page-shown", { detail: { page, preset } }));
 }
 
 window.getAdminAccessToken = async function () {
@@ -572,14 +576,51 @@ async function loadReviewQueue() {
   try {
     const result = await reviewApi("list");
     reviewStories = result.stories || [];
+    reviewPipeline = result.pipeline || {};
+    reviewDedupe = result.dedupe || {};
     updateReviewCounts();
     renderReviewList();
+    renderReviewPipeline();
     el("review-message").textContent = `已读取 ${reviewStories.length} 条候选记录。`;
   } catch (error) {
     console.error(error);
     el("review-message").textContent = `审核队列读取失败：${error.message}`;
     el("review-list").innerHTML = `<div class="empty-state">请确认已运行最终版SQL，并且Netlify已经设置服务端Supabase密钥。</div>`;
   }
+}
+
+function reviewTime(value) {
+  const date = value ? new Date(value) : null;
+  return date && !Number.isNaN(date.getTime()) ? date.toLocaleString("zh-CN", { hour12: false }) : "尚无记录";
+}
+
+function updateIceEditorialCount(story = activeReview?.story || {}) {
+  const content = el("review-content")?.value || "";
+  const count = Array.from(content.replace(/\s+/g, "")).length;
+  const payload = story?.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+  const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
+  const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
+  const counter = el("ice-editorial-count");
+  const target = el("ice-editorial-target");
+  if (counter) { counter.textContent = `${count}字`; counter.style.color = count >= min && count <= max ? "#166534" : "#b42318"; }
+  if (target) target.textContent = `本稿发布标准：${min}-${max}字。未达到标准时可以保存，但批准和发布会被拦截。`;
+}
+
+function renderReviewPipeline() {
+  const head = document.querySelector("#ice-review-page .review-head");
+  if (!head) return;
+  let panel = el("ice-pipeline-panel");
+  if (!panel) {
+    panel = document.createElement("section");
+    panel.id = "ice-pipeline-panel";
+    panel.className = "panel";
+    panel.style.margin = "12px 0";
+    head.insertAdjacentElement("afterend", panel);
+  }
+  const counts = reviewPipeline.post_counts || {};
+  const pending = Number(counts.collected || 0) + Number(counts.processing || 0);
+  const errors = Array.isArray(reviewPipeline.recent_errors) ? reviewPipeline.recent_errors.slice(0, 3) : [];
+  panel.innerHTML = `<h3>ICE采集状态</h3><p>最近运行：${escapeHtml(reviewTime(reviewPipeline.last_run_at))}　最近成功：${escapeHtml(reviewTime(reviewPipeline.last_success_at))}</p><p>待处理 ${pending}　已提取 ${Number(counts.extracted || 0)}　已归并 ${Number(counts.clustered || 0)}　失败 ${Number(counts.failed || 0)}　后台可见 ${Number(reviewDedupe.visible || 0)}</p>${errors.length ? `<p style="color:#b91c1c;margin-top:10px">当前错误：${errors.map((item) => escapeHtml(String(item.error || "").slice(0, 180))).join("；")}</p>` : ""}`;
 }
 
 function updateReviewCounts() {
@@ -628,31 +669,30 @@ function renderReviewCard(story) {
     ? `<span class="risk-chip danger">${riskItems.map(escapeHtml).join(" · ")}</span>`
     : `<span class="risk-chip safe">无硬风险</span>`;
 
-  const image = story.cover_image
-    ? `<img src="${escapeAttr(story.cover_image)}" alt="" loading="lazy" />`
-    : `<div class="review-card-placeholder">ICE</div>`;
+  const image = story.cover_image ? `<div class="review-item-media"><img src="${escapeAttr(story.cover_image)}" alt="" loading="lazy" /></div>` : "";
+  const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+  const body = String(story.final_content || story.content || story.summary || story.decision_reason || "暂无正文").trim();
+  const count = Array.from(body.replace(/\s+/g, "")).length;
+  const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
+  const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
+  const countHtml = `<span class="risk-chip ${count >= min && count <= max ? "safe" : "danger"}">${count}字 / ${min}-${max}字</span>`;
 
   return `
-    <article class="review-item">
-      <div class="review-item-media">${image}</div>
+    <article class="review-item review-item-v2" data-story-id="${escapeAttr(story.id)}" style="grid-template-columns:${image ? "164px minmax(0,1fr) auto" : "minmax(0,1fr) auto"}">
+      ${image}
       <div class="review-item-main">
         <div class="review-item-topline">
           <span class="status-pill review-status-${escapeHtml(story.status)}">${reviewStatusLabel(story.status)}</span>
           ${riskHtml}
-          <time>${escapeHtml(formatDate(story.updated_at || story.last_seen_at))}</time>
+          ${countHtml}
         </div>
-        <h3>${escapeHtml(story.title || "等待AI生成标题")}</h3>
-        <p>${escapeHtml(story.summary || story.decision_reason || "暂无摘要")}</p>
-        <div class="score-row">
-          <span><b>${Number(story.total_score || 0)}</b>/100 综合分</span>
-          <span><b>${Number(story.ai_confidence || 0)}</b>/100 AI可信度</span>
-          <span>独立信源 <b>${Number(story.independent_source_count || 0)}</b></span>
-          <span>官方 <b>${Number(story.official_source_count || 0)}</b></span>
-          <span>媒体 <b>${Number(story.media_source_count || 0)}</b></span>
-        </div>
+        <h3>${escapeHtml(story.title || "ICE候选新闻待审核")}</h3>
+        <p>${escapeHtml(body)}</p>
       </div>
       <div class="review-item-action">
-        <button onclick="openIceReview('${escapeAttr(story.id)}')">查看并审核</button>
+        <time>${escapeHtml(formatDate(story.source_created_at || story.updated_at || story.last_seen_at))}</time>
+        <button onclick="openIceReview('${escapeAttr(story.id)}')">编辑标题和正文</button>
+        <button class="secondary-btn ice-delete-story" data-story-id="${escapeAttr(story.id)}" type="button">删除</button>
       </div>
     </article>
   `;
@@ -688,6 +728,7 @@ function populateReviewModal(detail) {
   el("review-decision-reason").textContent = story.decision_reason || "暂无AI审核说明。";
   el("review-schedule").value = toDateTimeLocal(story.scheduled_at || nextHalfHourIso());
   updateReviewCoverPreview();
+  updateIceEditorialCount(story);
 
   const metrics = [
     ["综合评分", `${Number(story.total_score || 0)}/100`],

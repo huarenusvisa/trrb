@@ -3,7 +3,6 @@
 
   const API = "/.netlify/functions/admin-articles";
   const BACKGROUND_API = "/.netlify/functions/admin-article-ai-publish-background";
-  const originalShowPage = showPage;
   const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
   let titleTimer = null;
   let titleRequestPending = false;
@@ -45,10 +44,9 @@
     }
   }
 
-  showPage = function showPageWithPublisherMode(page, sourceButton) {
-    originalShowPage(page, sourceButton);
-    document.body.classList.toggle("publisher-mode", page === "new-article");
-  };
+  document.addEventListener("trrb:admin-page-shown", (event) => {
+    document.body.classList.toggle("publisher-mode", event.detail?.page === "new-article");
+  });
 
   function categoryName() {
     return el("article-category").selectedOptions?.[0]?.textContent || "美国时政";

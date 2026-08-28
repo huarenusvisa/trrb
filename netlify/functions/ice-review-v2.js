@@ -145,6 +145,43 @@ async function recentSimilarArticle(title, summary, content) {
   return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null;
 }
 
+async function updatePublishedArticle(story, actor, fields) {
+  const time = nowIso();
+  await rest("articles", {
+    method: "PATCH",
+    query: { id: `eq.${story.article_id}` },
+    body: {
+      title: fields.title,
+      summary: fields.summary,
+      content: fields.content,
+      cover_image: fields.coverImage,
+      seo_title: fields.title,
+      seo_description: fields.summary || fields.content.slice(0, 160),
+      status: "published",
+      updated_at: time
+    },
+    prefer: "return=minimal"
+  });
+  const updated = await patchStory(story.id, {
+    title: fields.title,
+    summary: fields.summary,
+    content: fields.content,
+    cover_image: fields.coverImage,
+    final_title: fields.title,
+    final_summary: fields.summary,
+    final_content: fields.content,
+    final_cover_image: fields.coverImage,
+    status: "published",
+    human_review_status: "approved",
+    editor_notes: fields.notes,
+    reviewed_by: actor.user.id,
+    reviewer_email: actor.user.email || actor.admin.email || "",
+    reviewed_at: time
+  });
+  await logReview(story, actor, fields.notes, story.article_id);
+  return { story: updated, article_id: story.article_id, already_published: true, editorial_persisted: true };
+}
+
 async function publishNow(story, actor, input) {
   const title = safeText(input.title || story.final_title || story.title, 220);
   const summary = safeText(input.summary || story.final_summary || story.summary, 1200);
@@ -158,7 +195,7 @@ async function publishNow(story, actor, input) {
   }
   assertEditorialReady(story, title, content);
 
-  if (story.article_id) return { article_id: story.article_id, already_published: true };
+  if (story.article_id) return updatePublishedArticle(story, actor, { title, summary, content, coverImage, notes });
 
   const post = await leadPost(story);
   const eventType = story.event_type || post?.event_type || "other";
@@ -250,7 +287,7 @@ async function publishNow(story, actor, input) {
   });
 
   await logReview(story, actor, notes, articleId);
-  return { story: updated, article_id: articleId, already_published: Boolean(duplicate) };
+  return { story: updated, article_id: articleId, already_published: Boolean(duplicate), editorial_persisted: true };
 }
 
 exports.handler = async (event) => {

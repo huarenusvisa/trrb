@@ -28,8 +28,8 @@ test("publisher removes manual SEO work and generates summary plus keywords on t
   assert.match(api, /seo_automatic: true/);
   assert.match(api, /summary_automatic: true/);
   assert.match(html, /SEO全自动/);
-  assert.match(html, /摘要、Meta描述和SEO关键词会在发布时自动生成/);
-  assert.match(html, /publisher-compatibility hidden/);
+  assert.match(html, /系统自动生成摘要和关键词/);
+  assert.match(html, /<div class="hidden">/);
   assert.match(seo, /function generateSeoKeywords/);
 });
 
@@ -57,7 +57,8 @@ test("checked AI cover queues a background task and publishes only after image g
 });
 
 test("desktop one-screen mode is scoped only to the publish page", () => {
-  assert.match(client, /document\.body\.classList\.toggle\("publisher-mode", page === "new-article"\)/);
+  assert.match(client, /trrb:admin-page-shown/);
+  assert.match(client, /event\.detail\?\.page === "new-article"/);
   assert.match(css, /body\.publisher-mode \.admin-shell/);
   assert.match(css, /body\.publisher-mode \.main/);
   assert.match(css, /body\.publisher-mode \.publisher-page/);
@@ -66,9 +67,11 @@ test("desktop one-screen mode is scoped only to the publish page", () => {
   assert.match(html, /class="publisher-workspace"/);
 });
 
-test("new scripts load after the base admin script and before ICE overlays", () => {
+test("admin loads one base controller before independent feature modules", () => {
   const base = html.indexOf("./admin.js?");
   const publisher = html.indexOf("./admin-publisher-v2.js?");
-  const ice = html.indexOf("./ice-review-v2.js?");
-  assert.ok(base >= 0 && publisher > base && ice > publisher);
+  const contentCenter = html.indexOf("./content-center.js?");
+  const reports = html.indexOf("./ice-report-integrated.js?");
+  assert.ok(base >= 0 && publisher > base && contentCenter > publisher && reports > contentCenter);
+  assert.doesNotMatch(html, /ice-review-v2\.js/);
 });

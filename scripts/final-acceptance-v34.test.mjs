@@ -22,15 +22,13 @@ test("legacy ICE report endpoint cannot bypass the original-text lock", async ()
   assert.match(legacy, /require\("\.\/ice-report-integrated"\)\.handler/);
 });
 
-test("admin review clearly shows immutable original submission fields", async () => {
-  const lock = await read("admin/ice-report-raw-lock.js");
-  const loader = await read("admin/ice-review-v2.js");
-  assert.match(lock, /field\.readOnly = true/);
-  assert.match(lock, /原文锁定已开启/);
-  assert.match(lock, /用户原始现场描述（原样发布，只读）/);
-  assert.match(lock, /原文立即发布/);
-  assert.match(loader, /ice-report-raw-lock\.js\?v=20260713-v2/);
-  assert.match(loader, /用户投稿完全绕过AI/);
+test("admin review loads the integrated report editor without a legacy loader", async () => {
+  const html = await read("admin/index.html");
+  const controls = await read("admin/ice-report-controls-v2.js");
+  assert.match(html, /ice-report-integrated\.js/);
+  assert.doesNotMatch(html, /ice-review-v2\.js/);
+  assert.match(controls, /trrb:ice-report-detail/);
+  assert.doesNotMatch(controls, /window\.fetch\s*=/);
 });
 
 test("homepage hero has one live owner and never restores the legacy false-empty card", async () => {

@@ -8,7 +8,6 @@
   let currentStatus = "draft";
   let activeDetail = null;
   let initialized = false;
-  const originalShowPage = showPage;
 
   function esc(value) {
     return String(value ?? "")
@@ -143,8 +142,8 @@
     });
   }
 
-  showPage = function showPageWithReports(page) {
-    originalShowPage(page);
+  document.addEventListener("trrb:admin-page-shown", (event) => {
+    const page = event.detail?.page || "";
     if (page === PAGE) {
       document.getElementById("page-title").textContent = "ICE用户投稿审核";
       history.replaceState(null, "", "#ice-reports");
@@ -152,7 +151,7 @@
     } else if (location.hash === "#ice-reports") {
       history.replaceState(null, "", location.pathname + location.search);
     }
-  };
+  });
 
   async function loadReports() {
     const statusNode = document.getElementById("report-status");
@@ -220,7 +219,9 @@
     document.getElementById("report-action-message").textContent = "正在读取投稿详情…";
     try {
       activeDetail = await callApi("detail", { report_id: id });
+      window.__TRRB_ACTIVE_REPORT__ = activeDetail?.report || null;
       populateModal(activeDetail);
+      document.dispatchEvent(new CustomEvent("trrb:ice-report-detail", { detail: activeDetail }));
     } catch (error) {
       document.getElementById("report-action-message").textContent = error.message;
     }
@@ -268,6 +269,7 @@
     document.getElementById("report-modal")?.classList.add("hidden");
     document.body.classList.remove("modal-open");
     activeDetail = null;
+    window.__TRRB_ACTIVE_REPORT__ = null;
   }
 
   async function handleAction(action) {

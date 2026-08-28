@@ -109,21 +109,10 @@
     });
   }
 
-  const originalFetch = window.fetch.bind(window);
-  window.fetch = async function captureReport(input, init = {}) {
-    const response = await originalFetch(input, init);
-    const url = typeof input === "string" ? input : input?.url || "";
-    if (!url.includes("ice-report-integrated") || String(init.method || "GET").toUpperCase() !== "POST") return response;
-    let request = {};
-    try { request = JSON.parse(init.body || "{}"); } catch {}
-    if (request.action !== "detail" || !response.ok) return response;
-    try {
-      const data = await response.clone().json();
-      window.__TRRB_ACTIVE_REPORT__ = data.report || null;
-      setTimeout(() => { setEditable(); ensureFacts(); installButtons(); }, 30);
-    } catch {}
-    return response;
-  };
+  document.addEventListener("trrb:ice-report-detail", (event) => {
+    window.__TRRB_ACTIVE_REPORT__ = event.detail?.report || null;
+    setTimeout(() => { setEditable(); ensureFacts(); installButtons(); }, 30);
+  });
 
   const observer = new MutationObserver(() => {
     setEditable();

@@ -63,3 +63,22 @@ test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-
   assert.match(manualPublish, /assertEditorialReady/);
   assert.match(manualApprove, /assertEditorialReady/);
 });
+
+test("ICE后台审核只保留一个前端请求入口和一个发布接口", () => {
+  const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
+  const admin = fs.readFileSync(new URL("../admin/admin.js", import.meta.url), "utf8");
+  const featureModules = [
+    "admin-stability-v3.js",
+    "admin-publisher-v2.js",
+    "ice-report-integrated.js",
+    "ice-report-controls-v2.js"
+  ].map((name) => fs.readFileSync(new URL(`../admin/${name}`, import.meta.url), "utf8")).join("\n");
+  const router = fs.readFileSync(new URL("../netlify/functions/ice-review.js", import.meta.url), "utf8");
+  assert.doesNotMatch(html, /ice-review-v2\.js/);
+  assert.match(admin, /fetch\("\/\.netlify\/functions\/ice-review"/);
+  assert.equal((admin.match(/async function reviewApi\s*\(/g) || []).length, 1);
+  assert.doesNotMatch(featureModules, /reviewApi\s*=/);
+  assert.doesNotMatch(featureModules, /window\.fetch\s*=/);
+  assert.doesNotMatch(featureModules, /(?:window\.)?showPage\s*=(?!=)/);
+  assert.match(router, /action === 'publish_now'/);
+});

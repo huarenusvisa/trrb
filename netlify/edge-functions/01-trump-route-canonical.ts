@@ -3,7 +3,6 @@ const CANONICAL = "https://trrb.net/trump";
 export const config = {
   path: [
     "/trump/",
-    "/trump/index.html",
     "/topic/trump",
     "/topic/trump/"
   ]

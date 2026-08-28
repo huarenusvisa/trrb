@@ -111,7 +111,6 @@ const required = [
   '/ice/news/ /ice/news 301!',
   '/topic/ice /ice 301!',
   '/topic/ice/ /ice 301!',
-  '/trump/ /trump 301!',
   '/topic/trump /trump 301!',
   '/topic/trump/ /trump 301!',
   '/finance /niulai/ 301!',
@@ -130,7 +129,7 @@ const required = [
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
-const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*', '/ershou', '/ershou/', '/ershou/:splat', '/secondhand', '/secondhand/', '/marketplace', '/marketplace/', '/classifieds', '/classifieds/']);
+const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/trump/', '/niulai', '/niulai/*', '/ershou', '/ershou/', '/ershou/:splat', '/secondhand', '/secondhand/', '/marketplace', '/marketplace/', '/classifieds', '/classifieds/']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
   return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);
@@ -172,7 +171,6 @@ for (const [route, target] of [
   ['/ice/news/', '/ice/news'],
   ['/topic/ice', '/ice'],
   ['/topic/ice/', '/ice'],
-  ['/trump/', '/trump'],
   ['/topic/trump', '/trump'],
   ['/topic/trump/', '/trump'],
   ['/finance', '/niulai/'],

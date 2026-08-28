@@ -103,6 +103,9 @@ requireMatch(headers, /\/\*\.js[\s\S]*?Cache-Control:\s*no-cache, no-store, must
 requireMatch(headers, /\/\*\.css[\s\S]*?Cache-Control:\s*no-cache, no-store, must-revalidate/i, "_headers does not prevent stale CSS");
 
 const redirects = await text("_redirects");
+const trumpCanonicalEdge = await text("netlify/edge-functions/01-trump-route-canonical.ts");
+forbidMatch(redirects, /^\/trump\/\s+\/trump\s+301!/m, "trump directory redirect can self-loop after Netlify pretty-URL normalization");
+forbidMatch(trumpCanonicalEdge, /["']\/trump\/index\.html["']/, "trump canonical edge function intercepts the internal /trump/index.html rewrite and redirects back to /trump");
 requireMatch(redirects, /https:\/\/huarengongzuo\.com\/\s+q=:q\s+\/huarengongzuo\/index\.html\s+200!/i, "huarengongzuo query search rewrite missing");
 requireMatch(redirects, /https:\/\/huarengongzuo\.com\/\s+sort=:sort\s+\/huarengongzuo\/index\.html\s+200!/i, "legacy jobs sort query rewrite missing");
 

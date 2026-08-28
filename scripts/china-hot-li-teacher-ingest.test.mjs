@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -35,6 +35,15 @@ test("识别并阻止提醒、呼吁和宣传式凑字", () => {
   assert.equal(containsBoilerplate("该企业是知名大型央企。"), true);
   assert.equal(containsBoilerplate("视频中的声音昭示爆炸过程可能涉及多次燃爆。"), true);
   assert.equal(containsBoilerplate("现场整体氛围紧张，环境整洁、设施完善。"), true);
+});
+
+test("中国热门头条按内容查重并执行旧闻门禁", () => {
+  assert.ok(similarity("西藏吉隆县泥石流救援行动持续推进", "西藏吉隆泥石流灾区救援持续推进") > 0.4);
+  const script = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
+  assert.match(script, /appears_old_news/);
+  assert.match(script, /old_news_checked: true/);
+  assert.match(script, /duplicate_check_days: 30/);
+  assert.match(script, /与近30天已发布中国热门头条重复/);
 });
 
 test("发布稿自动公开且不在前台暴露抓取来源", () => {
@@ -89,4 +98,5 @@ test("中国热门头条与ICE统一为三小时控制平面", () => {
   assert.match(control, /cron: "27 \*\/3 \* \* \*"/);
   assert.match(control, /china-hot-li-teacher:/);
   assert.match(control, /ice:/);
+  assert.doesNotMatch(workflow, /\n\s*push:/);
 });

@@ -3,12 +3,6 @@ name: Trump X资讯采集
 on:
   workflow_call:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/trump-x-ingest.mjs"
-      - "scripts/trump-x-ingest.test.mjs"
-      - ".github/workflows/trump-x-ingest.yml"
 
 permissions:
   contents: read
@@ -29,7 +23,7 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       TRUMP_X_LOOKBACK_HOURS: "6"
       TRUMP_X_MAX_FETCH: "100"
-      TRUMP_X_MAX_PROCESS: ${{ github.event_name == 'push' && '250' || '50' }}
+      TRUMP_X_MAX_PROCESS: "50"
       TRUMP_X_PROCESS_CONCURRENCY: "6"
     steps:
       - uses: actions/checkout@v4

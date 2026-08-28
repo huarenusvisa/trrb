@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import process from "node:process";
+import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
 
+const { isIceEnforcementText } = iceClassifier;
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
-const EDITORIAL_VERSION = "zh-title-body-v4-300-800-image";
+const EDITORIAL_VERSION = "zh-title-body-v5-300-800-image";
 
 function nowIso() { return new Date().toISOString(); }
 function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[name]); if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`); }
@@ -24,9 +26,18 @@ function editorialReady(story, evidence) { const payload = story.ai_payload && t
 async function main() {
   requireEnv();
   const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration)", order: "updated_at.desc", limit: "1000" } });
-  let autoApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0;
+  let autoApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0, rejectedNonIce = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
     if (!recentEnough(story)) { stale += 1; continue; }
+    if (!isIceEnforcementText(story.title, story.summary, story.content)) {
+      await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
+        status: "rejected", human_review_status: "rejected", scheduled_at: null,
+        decision_reason: `${story.decision_reason || ""}；ICE分类防火墙：正文不是明确的ICE执法内容，禁止进入ICE发布链`,
+        updated_at: nowIso()
+      }, prefer: "return=minimal" });
+      rejectedNonIce += 1;
+      continue;
+    }
     const evidence = await evidenceFor(story.id);
     if (!editorialReady(story, evidence)) { incomplete += 1; continue; }
     const officialEvidence = evidence.filter(official);
@@ -56,7 +67,7 @@ async function main() {
     }, prefer: "return=minimal" });
     if (blockedByRisk) riskBlocked += 1; else autoApproved += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-official-auto-publish-v5", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, official_risk_blocked: riskBlocked, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-official-auto-publish-v6", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, official_risk_blocked: riskBlocked, rejected_non_ice: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 
 main().catch((error) => { console.error("ICE官方信源自动发布分流失败：", error); process.exitCode = 1; });

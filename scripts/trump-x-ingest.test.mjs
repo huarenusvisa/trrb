@@ -28,10 +28,14 @@ test("近似稿件查重可识别重复内容", () => {
 
 test("特朗普X、中国热门头条和ICE共用三小时控制平面", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
+  const iceWorkflow = fs.readFileSync(new URL("../.github/workflows/ice-unified-pipeline.yml", import.meta.url), "utf8");
+  const trumpWorkflow = fs.readFileSync(new URL("../.github/workflows/trump-x-ingest.yml", import.meta.url), "utf8");
   assert.match(workflow, /cron: "27 \*\/3 \* \* \*"/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/trump-x-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/china-hot-li-teacher-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/ice-unified-pipeline\.yml/);
+  assert.doesNotMatch(iceWorkflow, /\n\s*push:/);
+  assert.doesNotMatch(trumpWorkflow, /\n\s*push:/);
 });
 
 test("ICE官方发布不再被旧栏目开关跳过", () => {

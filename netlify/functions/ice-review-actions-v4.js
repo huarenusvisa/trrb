@@ -1,4 +1,5 @@
 const { safeText, rest, authenticateStaff } = require('./_shared/supabase-admin');
+const { isIceEnforcementText } = require('./_shared/ice-enforcement');
 
 function json(statusCode, body) {
   return {
@@ -20,6 +21,7 @@ function assertEditorialReady(story, fields) {
   const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
   const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
   const count = bodyLength(fields.content);
+  if (!isIceEnforcementText(fields.title, fields.summary, fields.content)) { const error = new Error('该内容不是明确的ICE执法新闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }
   if (count < min || count > max) { const error = new Error(`正文当前${count}字，必须达到${min}-${max}字后才能批准发布`); error.statusCode = 400; throw error; }
   if (payload.old_news_checked !== true) { const error = new Error('尚未完成旧闻核验，不能批准发布'); error.statusCode = 400; throw error; }

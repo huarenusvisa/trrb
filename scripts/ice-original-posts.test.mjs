@@ -52,6 +52,7 @@ test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-
   const translator = fs.readFileSync(new URL("./ice-translate-title-body.mjs", import.meta.url), "utf8");
   const manualPublish = fs.readFileSync(new URL("../netlify/functions/ice-review-v2.js", import.meta.url), "utf8");
   const manualApprove = fs.readFileSync(new URL("../netlify/functions/ice-review-actions-v4.js", import.meta.url), "utf8");
+  const promoter = fs.readFileSync(new URL("./ice-trusted-source-promote.mjs", import.meta.url), "utf8");
   assert.match(source, /zh-title-body-v5-300-800-image/);
   assert.match(source, /image_grounding_used/);
   assert.match(source, /old_news_checked/);
@@ -67,6 +68,11 @@ test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-
   assert.match(manualApprove, /assertEditorialReady/);
   assert.match(manualApprove, /payload\.old_news_checked !== true/);
   assert.match(manualApprove, /payload\.image_grounding_used !== true/);
+  assert.match(promoter, /zh-title-body-v5-300-800-image/);
+  assert.match(promoter, /isIceEnforcementText/);
+  assert.match(source, /isIceEnforcementText/);
+  assert.match(manualPublish, /isIceEnforcementText/);
+  assert.match(manualApprove, /isIceEnforcementText/);
 });
 
 test("ICE后台审核只保留一个前端请求入口和一个发布接口", () => {

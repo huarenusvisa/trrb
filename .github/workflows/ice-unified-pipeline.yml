@@ -3,11 +3,6 @@ name: ICE唯一生产流水线
 on:
   workflow_dispatch:
   workflow_call:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/ice-unified-pipeline.yml"
-      - "scripts/ice-*.mjs"
 
 permissions:
   contents: read
@@ -173,6 +168,13 @@ jobs:
           node scripts/ice-clean-existing-review-duplicates.mjs || true
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs
+
+      - name: Enforce published category boundaries
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
+        env:
+          APPLY_CHANGES: "true"
+          APPLY_CONFIRMATION: "APPLY"
+        run: node scripts/reclassify-immigration-articles.mjs
 
       - name: Write success heartbeat
         if: success() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'

@@ -1,6 +1,7 @@
 const crypto = require("node:crypto");
 const { authenticateStaff, rest, safeText } = require("./_shared/supabase-admin");
 const { buildPeopleCountMetadata } = require("./_shared/ice-people-count");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 
 function json(statusCode, body) {
   return {
@@ -134,6 +135,7 @@ function assertEditorialReady(story, title, content) {
   const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
   const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
   const count = bodyLength(content);
+  if (!isIceEnforcementText(title, story.summary, content)) throw Object.assign(new Error("该内容不是明确的ICE执法新闻，不能发布到ICE栏目"), { statusCode: 400 });
   if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });
   if (count < min || count > max) throw Object.assign(new Error(`正文当前${count}字，必须达到${min}-${max}字后才能发布`), { statusCode: 400 });
   if (payload.old_news_checked !== true) throw Object.assign(new Error("尚未完成旧闻核验，不能发布"), { statusCode: 400 });

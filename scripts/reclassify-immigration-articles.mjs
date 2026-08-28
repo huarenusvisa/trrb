@@ -129,7 +129,7 @@ async function fetchPublishedArticles() {
 async function patchCategory(id, category) {
   await request(`articles?id=eq.${encodeURIComponent(id)}`, {
     method: 'PATCH',
-    body: JSON.stringify({ category_name: category })
+    body: JSON.stringify({ category_name: category, topic_key: category === 'ICE执法动态' ? 'ice' : null })
   });
 }
 

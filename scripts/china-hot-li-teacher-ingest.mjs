@@ -159,6 +159,36 @@ async function existingArticle(tweetId) {
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
+function shingles(value) {
+  const text = cleanText(value, 30_000).toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, "");
+  const out = new Set();
+  for (let index = 0; index < text.length - 1; index += 1) out.add(text.slice(index, index + 2));
+  return out;
+}
+
+export function similarity(leftValue, rightValue) {
+  const left = shingles(leftValue); const right = shingles(rightValue);
+  if (!left.size || !right.size) return 0;
+  let common = 0;
+  for (const token of left) if (right.has(token)) common += 1;
+  return common / (left.size + right.size - common);
+}
+
+async function recentChinaArticles() {
+  const cutoff = new Date(Date.now() - 30 * 86400_000).toISOString();
+  const rows = await supabase("articles", { query: {
+    select: "id,title,summary,content", category_name: `eq.${CHINA_HOT_CATEGORY}`,
+    status: "eq.published", visibility: "eq.public", published_at: `gte.${cutoff}`,
+    order: "published_at.desc", limit: "1000",
+  } });
+  return Array.isArray(rows) ? rows : [];
+}
+
+function duplicateArticle(article, rows) {
+  const source = `${article.title || ""}${article.summary || ""}${article.content || ""}`;
+  return rows.find((row) => similarity(source, `${row.title || ""}${row.summary || ""}${row.content || ""}`) >= 0.72) || null;
+}
+
 async function archivedCandidates() {
   const since = new Date(Date.now() - LOOKBACK_HOURS * 3_600_000).toISOString();
   const rows = await supabase("news_candidates", { query: {
@@ -255,10 +285,11 @@ function visualContext(tweet) {
 async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
   const target = targetLength(qualified.text);
   const schema = {
-    type: "object", additionalProperties: false, required: ["title", "summary", "content", "seo_keywords"],
+    type: "object", additionalProperties: false, required: ["title", "summary", "content", "seo_keywords", "appears_old_news", "old_news_reason"],
     properties: {
       title: { type: "string", minLength: 8, maxLength: 100 }, summary: { type: "string", minLength: 50, maxLength: 240 },
       content: { type: "string", minLength: target.min, maxLength: target.max }, seo_keywords: { type: "string", minLength: 5, maxLength: 180 },
+      appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" },
     },
   };
   const response = await readJson(await request("https://api.openai.com/v1/responses", {
@@ -276,6 +307,7 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
         "场景描述使用可核对的名词、颜色、数量、位置和可见动作，不写“环境整洁”“设施完善”“氛围紧张”等评价性形容。",
         "标题必须保留原文中的中国地点、机构或政治人物等主体，使文章明确属于中国新闻。",
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
+        "必须检查是否为旧闻。只有原文或图片明确显示过去日期、周年、回顾、旧视频、旧照片或旧事件重新传播时，appears_old_news才为true，并在old_news_reason写明证据；不得凭模型记忆判断。",
         "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
         "禁止写任何提醒、呼吁、警惕、号召、建议、启示、意义、必要性、重要性、重视、决心、严厉打击等套话。不要评论，不要像广告或宣传稿。",
         "content字段只能是正文，不得在正文末尾添加关键词、标签、SEO词、来源栏或说明栏；seo_keywords只能放在单独的seo_keywords字段。",
@@ -291,7 +323,7 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
     }),
   }, 60_000));
   const article = JSON.parse(responseText(response));
-  article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000);
+  article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000); article.old_news_reason = cleanText(article.old_news_reason, 800);
   if ((article.content.length < target.min || containsBoilerplate(article.content)) && attempt < 5) return generateArticle(qualified, tweet, attempt + 1, article);
   if (article.content.length < target.min || article.content.length > target.max) throw new Error(`生成正文长度${article.content.length}，未达到${target.min}-${target.max}字`);
   if (containsBoilerplate(article.content)) throw new Error("生成正文含提醒、呼吁或宣传式套话，禁止自动发布");
@@ -321,6 +353,8 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       public_source_attribution: false, source_text_original: qualified.text, source_media: attachments,
       source_public_metrics: tweet.public_metrics || {}, openai_model: OPENAI_MODEL, generated_target: article.target,
       editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
+      image_count: visualInputs(tweet).length, old_news_checked: true, appears_old_news: false,
+      duplicate_check_days: 30,
     },
   };
 }
@@ -406,6 +440,7 @@ async function recoverArchivedBatch() {
           continue;
         }
         const generated = await generateArticle(qualified, tweet);
+        if (generated.appears_old_news) throw new Error(`旧闻检查未通过：${generated.old_news_reason || "原帖明确在回顾旧事件"}`);
         const saved = await publishArticle(buildPublishedArticle(tweet, qualified, generated));
         await patchCandidate(row.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
         counters.published += 1;
@@ -561,6 +596,7 @@ export async function run() {
     return report;
   }
   const tweets = await collectXPosts();
+  const recentArticles = await recentChinaArticles();
   const results = [];
   const counters = { fetched: tweets.length, qualified: 0, published: 0, duplicate: 0, filtered: 0, failed: 0 };
   for (const tweet of tweets.sort((a, b) => Date.parse(b.created_at || 0) - Date.parse(a.created_at || 0))) {
@@ -583,8 +619,22 @@ export async function run() {
     const candidate = priorCandidate || await createCandidate(tweet, qualified);
     try {
       const generated = await generateArticle(qualified, tweet);
+      if (generated.appears_old_news) {
+        counters.filtered += 1;
+        await patchCandidate(candidate?.id, { decision: "rejected", decision_reason: `旧闻检查未通过：${generated.old_news_reason || "原帖明确在回顾旧事件"}`, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "filtered_old_news", automatic_publish_blocked: true } });
+        results.push({ tweetId: tweet.id, status: "old-news", reason: generated.old_news_reason || "原帖明确在回顾旧事件" });
+        continue;
+      }
+      const similar = duplicateArticle(generated, recentArticles);
+      if (similar) {
+        counters.duplicate += 1;
+        await patchCandidate(candidate?.id, { decision: "duplicate", decision_reason: `与近30天已发布中国热门头条重复：${similar.id}`, article_id: similar.id, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "duplicate", duplicate_article_id: similar.id } });
+        results.push({ tweetId: tweet.id, status: "duplicate-content", articleId: similar.id });
+        continue;
+      }
       const articleBody = buildPublishedArticle(tweet, qualified, generated);
       const saved = await publishArticle(articleBody);
+      recentArticles.unshift({ id: saved?.id, title: generated.title, summary: generated.summary, content: generated.content });
       await patchCandidate(candidate?.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
       counters.published += 1; results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
     } catch (error) {

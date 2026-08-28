@@ -3,8 +3,10 @@ import crypto from "node:crypto";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js";
+import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
 
 const { buildPeopleCountMetadata } = peopleCountModule;
+const { isIceEnforcementText } = iceClassifier;
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 const EDITORIAL_VERSION = "zh-title-body-v5-300-800-image";
@@ -135,6 +137,13 @@ async function publish(story) {
       human_review_status: "required",
       scheduled_at: null,
       decision_reason: `${story.decision_reason || ""}；发布器拦截：必须由后台真实管理员审核批准`
+    });
+    return null;
+  }
+  if (!isIceEnforcementText(story.title, story.summary, story.content)) {
+    await updateStory(story.id, {
+      status: "rejected", human_review_status: "rejected", scheduled_at: null,
+      decision_reason: `${story.decision_reason || ""}；ICE分类防火墙：不是明确的ICE执法内容，禁止发布`
     });
     return null;
   }

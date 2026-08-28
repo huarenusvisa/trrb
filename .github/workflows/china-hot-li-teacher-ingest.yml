@@ -19,12 +19,6 @@ on:
         required: false
         default: false
         type: boolean
-  push:
-    branches:
-      - main
-    paths:
-      - scripts/china-hot-li-teacher-ingest.mjs
-      - .github/workflows/china-hot-li-teacher-ingest.yml
 
 permissions:
   contents: read
@@ -45,8 +39,8 @@ jobs:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '6' }}
-      LI_TEACHER_MAX_FETCH: ${{ (github.event_name == 'push' || inputs.recover_archived) && '200' || '100' }}
-      LI_TEACHER_MAX_PUBLISH: ${{ (github.event_name == 'push' || inputs.recover_archived) && '150' || '20' }}
+      LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
+      LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}
       LI_TEACHER_PUBLISH_CONCURRENCY: "8"
       CHINA_HOT_REPAIR_SINCE: "2026-08-24T00:00:00Z"
       CHRT_INGEST_URL: "https://chinahumanrightstracker.org/api/ingest/trrb"
@@ -69,7 +63,7 @@ jobs:
         shell: bash
         run: |
           args=()
-          if [[ "${{ github.event_name }}" == "push" || "${{ inputs.repair_today }}" == "true" ]]; then
+          if [[ "${{ inputs.repair_today }}" == "true" ]]; then
             args+=(--repair-today)
           elif [[ "${{ inputs.recover_archived }}" == "true" ]]; then
             args+=(--recover-archived)

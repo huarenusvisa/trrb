@@ -60,7 +60,7 @@ env:
 jobs:
   production:
     runs-on: ubuntu-latest
-    timeout-minutes: 28
+    timeout-minutes: 60
     steps:
       - name: Enable 24-hour ICE collection
         id: window

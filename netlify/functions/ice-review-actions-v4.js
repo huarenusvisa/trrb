@@ -13,6 +13,17 @@ function json(statusCode, body) {
 }
 
 function nowIso() { return new Date().toISOString(); }
+function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || '')); }
+function bodyLength(value) { return Array.from(String(value || '').replace(/\s+/g, '')).length; }
+function assertEditorialReady(story, fields) {
+  const payload = story.ai_payload && typeof story.ai_payload === 'object' ? story.ai_payload : {};
+  const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
+  const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
+  const count = bodyLength(fields.content);
+  if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }
+  if (count < min || count > max) { const error = new Error(`正文当前${count}字，必须达到${min}-${max}字后才能批准发布`); error.statusCode = 400; throw error; }
+  if (payload.appears_old_news === true) { const error = new Error('系统识别为旧闻，不能批准发布'); error.statusCode = 400; throw error; }
+}
 
 async function getStory(id) {
   const rows = await rest('ice_stories', { query: { select: '*', id: `eq.${safeText(id, 80)}`, limit: '1' } });
@@ -124,6 +135,7 @@ async function defaultSchedule() {
 async function approveStory(story, actor, input) {
   const fields = editedFields(input, story);
   if (!fields.title || !fields.content) throw new Error('标题和正文不能为空');
+  assertEditorialReady(story, fields);
 
   let scheduledAt = safeText(input.scheduled_at, 80);
   if (scheduledAt) {

@@ -100,6 +100,18 @@
       .slice(0, 3);
   }
 
+  function updateIceEditorialCount(story = activeReview?.story || {}) {
+    const content = document.getElementById("review-content")?.value || "";
+    const count = Array.from(content.replace(/\s+/g, "")).length;
+    const payload = story?.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+    const min = Number(payload.target_min_chars || 300);
+    const max = Number(payload.target_max_chars || (Number(payload.source_character_count || 0) >= 300 ? 800 : 360));
+    const counter = document.getElementById("ice-editorial-count");
+    const target = document.getElementById("ice-editorial-target");
+    if (counter) { counter.textContent = `${count}字`; counter.style.color = count >= min && count <= max ? "#166534" : "#b42318"; }
+    if (target) target.textContent = `本稿发布标准：${min}-${max}字。未达到标准时，保存可以继续编辑，但批准和立即发布会被拦截。`;
+  }
+
   function renderPipeline() {
     const head = document.querySelector("#ice-review-page .review-head");
     if (!head || !pipeline) return;
@@ -134,10 +146,13 @@
 
   populateReviewModal = function populateReviewModalV3(detail) {
     oldPopulateReviewModal(detail);
+    updateIceEditorialCount(detail.story);
     const reason = el("review-decision-reason");
     document.querySelectorAll(".staff-decision-note").forEach((node) => node.remove());
     if (reason) reason.insertAdjacentHTML("afterend", "<p class=\"manual-publish-note staff-decision-note\">系统只负责采集、关键词去重和风险提示；法律风险及是否发布由工作人员最终判断。没有图片也可以直接发布标题和正文。</p>");
   };
+
+  document.getElementById("review-content")?.addEventListener("input", () => updateIceEditorialCount());
 
   function loadUserReports() {
     if (!document.querySelector('link[data-ice-report-integrated="1"]')) {

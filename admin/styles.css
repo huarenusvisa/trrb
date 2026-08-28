@@ -494,6 +494,19 @@ th { background: #f1f5f9; }
 .china-hot-pool-actions { display:flex; flex-wrap:wrap; align-content:center; gap:8px; }
 .china-hot-pool-actions a { display:inline-flex; align-items:center; padding:10px 14px; border-radius:8px; background:#eef2f7; color:#16304d; text-decoration:none; font-weight:800; }
 .china-hot-pool-actions .danger { background:#b42318; }
+.trump-editor-panel { width:min(980px, 100%); }
+.trump-editor-body label { display:block; margin:14px 0 7px; font-weight:900; }
+.trump-editor-body input:not([type="checkbox"]), .trump-editor-body textarea { width:100%; padding:12px; border:1px solid var(--border); border-radius:10px; font:inherit; }
+.trump-editor-label { display:flex; justify-content:space-between; align-items:end; }
+.trump-editor-label label { margin-bottom:7px; }
+#trump-editor-count { color:var(--red); }
+#trump-editor-target { margin:7px 0; color:var(--muted); }
+.trump-editor-media { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin-top:12px; }
+.trump-editor-media img { width:100%; height:150px; object-fit:cover; border-radius:10px; border:1px solid var(--border); }
+.trump-editor-original { margin-top:16px; padding:12px; background:#f8fafc; border-radius:10px; }
+.trump-editor-original p { white-space:pre-wrap; color:#475569; }
+.trump-editor-check { display:flex !important; align-items:center; gap:8px; }
+.trump-editor-check input { width:18px; height:18px; }
 
 @media (max-width: 1180px) {
   .cards-five { grid-template-columns: repeat(3, 1fr); }

@@ -29,7 +29,7 @@ function fitTitle(value) {
 }
 function needsTranslation(story, sourceLength = 0, mediaCount = 0) { const payload = safeJson(story.ai_payload, {}); const content = safeText(story.content || story.summary, 30000); const target = targetLength(sourceLength || payload.source_character_count || 0); return payload.translation_version !== VERSION || !hasChinese(story.title) || titleLength(story.title) < 12 || titleLength(story.title) > 25 || !hasChinese(content) || chineseRatio(content) < 0.45 || bodyLength(content) < target.min || bodyLength(content) > target.max || (mediaCount > 0 && payload.image_grounding_used !== true); }
 
-const SCHEMA = { type: "object", additionalProperties: false, required: ["title", "summary", "content", "source_language", "image_observations", "appears_old_news", "old_news_reason"], properties: { title: { type: "string" }, summary: { type: "string" }, content: { type: "string" }, source_language: { type: "string", enum: ["en", "zh", "mixed", "unknown"] }, image_observations: { type: "string" }, appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" } } };
+function schemaFor(target) { return { type: "object", additionalProperties: false, required: ["title", "summary", "content", "source_language", "image_observations", "appears_old_news", "old_news_reason"], properties: { title: { type: "string", minLength: 12, maxLength: 40 }, summary: { type: "string", minLength: 45, maxLength: 120 }, content: { type: "string", minLength: target.min, maxLength: target.max }, source_language: { type: "string", enum: ["en", "zh", "mixed", "unknown"] }, image_observations: { type: "string" }, appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" } } }; }
 
 function mediaUrls(posts) { const seen = new Set(); return posts.flatMap((post) => { const media = safeJson(post.media, post.media || []); return (Array.isArray(media) ? media : []).flatMap((item) => { const url = safeText(item?.url || item?.preview_image_url, 2000); if (!/^https:\/\//i.test(url) || seen.has(url)) return []; seen.add(url); return [url]; }); }).slice(0, 4); }
 function sourceLengthFromPosts(posts) { return Math.max(0, ...posts.map((post) => sourceText(post.source_text).length)); }
@@ -62,7 +62,7 @@ async function translate(story, posts, attempt = 0, previous = null) {
       ].filter(Boolean).join("\n"),
       input: [{ role: "user", content: [{ type: "input_text", text: JSON.stringify({ current_story: { title: story.title || "", summary: story.summary || "", content: story.content || "", event_type: story.event_type || "other" }, source_character_count: sourceLength, target, sources: posts.slice(0, 20).map((post) => ({ username: post.source_username || "", display_name: post.source_display_name || "", source_type: post.source_type || "", created_at: post.source_created_at || "", text: post.source_text || "", location_text: post.location_text || "", city: post.city || "", state_code: post.state_code || "" })) }) }, ...images.map((image_url) => ({ type: "input_image", image_url, detail: "high" }))] }],
       max_output_tokens: 2200,
-      text: { format: { type: "json_schema", name: "ice_chinese_title_body", strict: true, schema: SCHEMA } }
+      text: { format: { type: "json_schema", name: "ice_chinese_title_body", strict: true, schema: schemaFor(target) } }
     })
   });
   const parsed = safeJson(responseText(response), null);

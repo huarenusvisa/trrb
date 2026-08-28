@@ -125,6 +125,26 @@ async function existingArticle(platform, sourceId) {
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
+function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
+function bodyLength(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
+function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const set = new Set(); for (let index = 0; index < text.length - 1; index += 1) set.add(text.slice(index, index + 2)); return set; }
+function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
+function assertEditorialReady(story, title, content) {
+  const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+  const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
+  const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
+  const count = bodyLength(content);
+  if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });
+  if (count < min || count > max) throw Object.assign(new Error(`正文当前${count}字，必须达到${min}-${max}字后才能发布`), { statusCode: 400 });
+  if (payload.appears_old_news === true) throw Object.assign(new Error("系统识别为旧闻，不能发布"), { statusCode: 400 });
+}
+async function recentSimilarArticle(title, summary, content) {
+  const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
+  const rows = await rest("articles", { query: { select: "id,title,summary,content", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "1000" } });
+  const source = `${title}${summary}${content}`;
+  return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null;
+}
+
 async function publishNow(story, actor, input) {
   const title = safeText(input.title || story.final_title || story.title, 220);
   const summary = safeText(input.summary || story.final_summary || story.summary, 1200);
@@ -136,6 +156,7 @@ async function publishNow(story, actor, input) {
     error.statusCode = 400;
     throw error;
   }
+  assertEditorialReady(story, title, content);
 
   if (story.article_id) return { article_id: story.article_id, already_published: true };
 
@@ -145,6 +166,8 @@ async function publishNow(story, actor, input) {
   const sourcePlatform = post ? "x" : "manual_ice_review";
   const sourceId = safeText(post?.x_post_id || story.id, 200);
   const duplicate = await existingArticle(sourcePlatform, sourceId);
+  const similar = duplicate ? null : await recentSimilarArticle(title, summary, content);
+  if (similar) throw Object.assign(new Error(`与近30天已发布ICE文章重复，已阻止发布（${similar.id}）`), { statusCode: 409 });
   const evidence = await evidenceFor(story.id);
   const time = nowIso();
   let articleId = duplicate?.id || null;

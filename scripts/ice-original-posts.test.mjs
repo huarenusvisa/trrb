@@ -49,8 +49,15 @@ test("ICE source length maps to mandatory Chinese article length", () => {
 
 test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-news checks", () => {
   const source = fs.readFileSync(new URL("./ice-publish-due.mjs", import.meta.url), "utf8");
+  const translator = fs.readFileSync(new URL("./ice-translate-title-body.mjs", import.meta.url), "utf8");
+  const manualPublish = fs.readFileSync(new URL("../netlify/functions/ice-review-v2.js", import.meta.url), "utf8");
+  const manualApprove = fs.readFileSync(new URL("../netlify/functions/ice-review-actions-v4.js", import.meta.url), "utf8");
   assert.match(source, /zh-title-body-v4-300-800-image/);
   assert.match(source, /image_grounding_used/);
   assert.match(source, /old_news_checked/);
   assert.match(source, /recentSimilarArticle/);
+  assert.match(translator, /minLength: target\.min/);
+  assert.match(translator, /maxLength: target\.max/);
+  assert.match(manualPublish, /assertEditorialReady/);
+  assert.match(manualApprove, /assertEditorialReady/);
 });

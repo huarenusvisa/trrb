@@ -49,4 +49,17 @@ test("特朗普流水线必须配置自动翻译和读图", () => {
   assert.match(script, /-is:reply/);
   assert.match(script, /translated_to_chinese/);
   assert.match(script, /duplicate_check_days: 30/);
+  assert.match(script, /minLength: target\.min/);
+});
+
+test("特朗普内容池提供中文标题正文编辑和人工发布窗口", () => {
+  const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
+  const ui = fs.readFileSync(new URL("../admin/content-center.js", import.meta.url), "utf8");
+  const api = fs.readFileSync(new URL("../netlify/functions/trump-x-pool-admin.js", import.meta.url), "utf8");
+  assert.match(html, /trump-editor-title/);
+  assert.match(html, /trump-editor-content/);
+  assert.match(ui, /data-trump-edit/);
+  assert.match(api, /action === "save"/);
+  assert.match(api, /action === "publish"/);
+  assert.match(api, /必须达到\$\{target\.min\}-\$\{target\.max\}字/);
 });

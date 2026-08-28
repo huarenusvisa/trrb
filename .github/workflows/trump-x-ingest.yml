@@ -3,12 +3,6 @@ name: Trump X资讯采集
 on:
   workflow_call:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "scripts/trump-x-ingest.mjs"
-      - "scripts/trump-x-ingest.test.mjs"
-      - ".github/workflows/trump-x-ingest.yml"
 
 permissions:
   contents: read

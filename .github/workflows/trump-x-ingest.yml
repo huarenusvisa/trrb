@@ -1,0 +1,44 @@
+name: Trump X资讯采集
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/trump-x-ingest.mjs"
+      - "scripts/trump-x-ingest.test.mjs"
+      - ".github/workflows/trump-x-ingest.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-trump-x-content-intake
+  cancel-in-progress: false
+
+jobs:
+  collect-to-content-center:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      TRUMP_X_LOOKBACK_HOURS: "6"
+      TRUMP_X_MAX_FETCH: "100"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate secrets
+        shell: bash
+        run: |
+          test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
+          test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
+          test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
+      - name: Validate Trump X collector
+        run: node --test scripts/trump-x-ingest.test.mjs
+      - name: Collect Trump X news into content center
+        run: node scripts/trump-x-ingest.mjs

@@ -5,7 +5,8 @@ const {
 } = require("./_shared/supabase-admin");
 const { prepareStories } = require("./_shared/ice-review-list");
 
-const REVIEW_MAX_AGE_HOURS = 5;
+// 采集中心是工作台，不应只显示最近5小时。保留最近72小时，覆盖三小时采集节奏和人工审核周转。
+const REVIEW_MAX_AGE_HOURS = 72;
 
 function json(statusCode, body) {
   return {

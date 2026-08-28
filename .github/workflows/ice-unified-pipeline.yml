@@ -158,7 +158,9 @@ jobs:
           node scripts/ice-translate-title-body.mjs
 
       - name: Publish
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish == 'true'
+        # 发布器自身会再次核验：仅官方来源或真实管理员已批准的内容可以发布。
+        # 不再让栏目级旧开关误伤官方来源自动发布。
+        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "12"
@@ -186,4 +188,3 @@ jobs:
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
-

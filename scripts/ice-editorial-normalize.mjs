@@ -301,7 +301,7 @@ async function main() {
 
   for (const story of stories) {
     if (looksNormalized(story)) continue;
-    if (story.reviewed_at || ["editing", "approved", "rejected"].includes(story.human_review_status)) continue;
+    if (["editing", "approved", "rejected"].includes(story.human_review_status)) continue;
 
     const posts = await postsFor(story);
     if (!posts.length) continue;

@@ -798,6 +798,16 @@ async function handleReviewAction(action) {
   }
 
   if (["approve", "publish_now"].includes(action)) {
+    const story = activeReview.story || {};
+    const metadata = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+    const min = Number(metadata.target_min_chars || (Number(metadata.source_character_count || 0) >= 300 ? 500 : 300));
+    const max = Number(metadata.target_max_chars || (min === 500 ? 800 : 360));
+    const count = Array.from(el("review-content").value.replace(/\s+/g, "")).length;
+    if (count < min || count > max) {
+      el("review-action-message").textContent = `当前正文${count}字，必须编辑到${min}-${max}字后才能发布。可以先点击“保存编辑”。`;
+      el("review-content").focus();
+      return;
+    }
     const confirmed = window.confirm(
       action === "publish_now"
         ? "确认立即发布到 trrb.net 前台？"

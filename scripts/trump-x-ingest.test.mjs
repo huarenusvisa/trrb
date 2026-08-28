@@ -17,7 +17,8 @@ test("字数规则和官方账号发布边界固定", () => {
   assert.deepEqual(targetLength(`Trump ${"policy ".repeat(60)}`), { min: 500, max: 800, band: "500-800字" });
   assert.equal(isOfficialTrumpAccount("@realDonaldTrump"), true);
   assert.equal(isOfficialTrumpAccount("@random_commenter"), false);
-  assert.equal(isInformational("@Luke Trump shill"), false);
+  assert.equal(isInformational("@Luke Trump shill", "@random_commenter"), false);
+  assert.equal(isInformational("I am announcing a new policy update today for the country.", "@realDonaldTrump"), true);
 });
 
 test("近似稿件查重可识别重复内容", () => {
@@ -47,9 +48,11 @@ test("特朗普流水线必须配置自动翻译和读图", () => {
   assert.match(workflow, /OPENAI_API_KEY/);
   assert.match(script, /input_image/);
   assert.match(script, /-is:reply/);
+  assert.match(script, /from:\$\{OFFICIAL_HANDLE\}/);
+  assert.match(script, /archived_non_official/);
   assert.match(script, /translated_to_chinese/);
   assert.match(script, /duplicate_check_days: 30/);
-  assert.match(script, /minLength: target\.min/);
+  assert.match(script, /minLength: schemaMin/);
 });
 
 test("特朗普内容池提供中文标题正文编辑和人工发布窗口", () => {

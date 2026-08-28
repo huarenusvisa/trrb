@@ -56,7 +56,7 @@ test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-
   assert.match(source, /image_grounding_used/);
   assert.match(source, /old_news_checked/);
   assert.match(source, /recentSimilarArticle/);
-  assert.match(translator, /minLength: target\.min/);
+  assert.match(translator, /minLength: schemaMin/);
   assert.match(translator, /maxLength: target\.max/);
   assert.match(manualPublish, /assertEditorialReady/);
   assert.match(manualApprove, /assertEditorialReady/);

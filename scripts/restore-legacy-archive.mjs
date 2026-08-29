@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { resolveLegacyDisposition } from './legacy-category-policy.mjs';
 import { appendFile, readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -137,7 +138,17 @@ for (const row of existing) {
 }
 const plannedLegacy=new Set(legacy);
 const plannedTitles=new Set(titleKeys);
-const skipped={existing_legacy:0,existing_title:0,no_body:0,bad_id:0,bad_date:0,unknown_category:0};
+const skipped={
+  existing_legacy:0,existing_title:0,no_body:0,bad_id:0,bad_date:0,
+  unknown_category:0,manual_review_category:0,retired_non_article:0
+};
+const skippedByCategory={unknown:{},manual_review:{},retired:{}};
+const manualReviewRows=[];
+const retiredRows=[];
+function bumpCategory(bucket, category) {
+  const key=clean(category)||"(empty)";
+  bucket[key]=(bucket[key]||0)+1;
+}
 const candidates=[];
 for (const row of archiveRows) {
   const id=clean(row.id);
@@ -154,8 +165,41 @@ for (const row of archiveRows) {
   if(content.length<180){ skipped.no_body++; continue; }
   const published=publishedAt(row); if(!published){ skipped.bad_date++; continue; }
   const archiveCategory=clean(row.category);
-  const categoryName=CATEGORY_OVERRIDES.get(archiveCategory) || archiveCategory;
-  const cat=cats.get(categoryName); if(!cat){ skipped.unknown_category++; continue; }
+  const disposition=resolveLegacyDisposition({
+    category:archiveCategory,title,content,overrides:CATEGORY_OVERRIDES
+  });
+  if(disposition.action==="manual_review"){
+    skipped.manual_review_category++;
+    bumpCategory(skippedByCategory.manual_review,archiveCategory);
+    manualReviewRows.push({
+      legacy_id:id,title,archive_category:archiveCategory,
+      recommended_category:disposition.targetCategory,reason:disposition.reason,
+      summary:clean(row.excerpt)||content.slice(0,180),content,published_at:published,
+      source_url:clean(row.sourceUrl),cover_image:clean(row.image)
+    });
+    continue;
+  }
+  if(disposition.action==="retire"){
+    skipped.retired_non_article++;
+    bumpCategory(skippedByCategory.retired,archiveCategory);
+    retiredRows.push({
+      legacy_id:id,title,archive_category:archiveCategory,reason:disposition.reason,
+      source_url:clean(row.sourceUrl)
+    });
+    continue;
+  }
+  if(disposition.action!=="publish"){
+    skipped.unknown_category++;
+    bumpCategory(skippedByCategory.unknown,archiveCategory);
+    continue;
+  }
+  const categoryName=disposition.targetCategory;
+  const cat=cats.get(categoryName);
+  if(!cat){
+    skipped.unknown_category++;
+    bumpCategory(skippedByCategory.unknown,`${archiveCategory} -> ${categoryName}`);
+    continue;
+  }
   const slug=slugify(title,id);
   candidates.push({
     legacy_id:id,title,slug,summary:clean(row.excerpt)||content.slice(0,180),content,
@@ -209,7 +253,8 @@ skipped.insert_conflict_content=insertContentConflicts.length;
 const report={
   generated_at:new Date().toISOString(),mode:APPLY?'apply':'report',archive_files:files.length,archive_records:archiveRows.length,
   current_articles:existing.length,recoverable_missing:candidates.length,selected:selected.length,inserted:inserted.length,
-  limit:LIMIT,concurrency:CONCURRENCY,batches:Math.ceil(selected.length/25),skipped,
+  limit:LIMIT,concurrency:CONCURRENCY,batches:Math.ceil(selected.length/25),skipped,skipped_by_category:skippedByCategory,
+  manual_review_count:manualReviewRows.length,retired_non_article_count:retiredRows.length,
   priority_ids:[...PRIORITY_IDS],priority_only:PRIORITY_ONLY,category_overrides:Object.fromEntries(CATEGORY_OVERRIDES),
   priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
   insert_title_conflicts:insertTitleConflicts.slice(0,50),
@@ -219,6 +264,12 @@ const report={
 };
 await mkdir(path.join(ROOT,'reports'),{recursive:true});
 await writeFile(path.join(ROOT,'reports','legacy-migration-latest.json'),JSON.stringify(report,null,2)+'\n');
+await writeFile(path.join(ROOT,'reports','legacy-manual-review-latest.json'),JSON.stringify({
+  generated_at:report.generated_at,count:manualReviewRows.length,rows:manualReviewRows
+},null,2)+'\n');
+await writeFile(path.join(ROOT,'reports','legacy-retired-non-article-latest.json'),JSON.stringify({
+  generated_at:report.generated_at,count:retiredRows.length,rows:retiredRows
+},null,2)+'\n');
 const indexNowUrls=[...new Set(inserted.flatMap(legacyChangedUrls))];
 await writeFile(path.join(ROOT,'reports','legacy-indexnow-urls.txt'),indexNowUrls.join('\n')+(indexNowUrls.length?'\n':''));
 if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `restored_count=${inserted.length}\n`);

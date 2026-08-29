@@ -31,7 +31,9 @@ jobs:
           node-version: "22"
 
       - name: 验证分类边界策略
-        run: node scripts/legacy-category-policy.test.mjs
+        run: |
+          node scripts/legacy-category-policy.test.mjs
+          node scripts/legacy-text-sanitize.test.mjs
 
       - name: 检查正式库权限
         shell: bash

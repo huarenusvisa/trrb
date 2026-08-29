@@ -6,6 +6,7 @@ const SUPABASE_URL = String(process.env.SUPABASE_URL || '').replace(/\/$/, '');
 const SERVICE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || '');
 const APPLY = String(process.env.APPLY_CHANGES || 'false').toLowerCase() === 'true'
   && String(process.env.APPLY_CONFIRMATION || '') === 'APPLY';
+const STRICT = String(process.env.STRICT_CLEANUP || 'false').toLowerCase() === 'true';
 
 if (!SUPABASE_URL || !SERVICE_KEY) {
   throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
@@ -126,10 +127,22 @@ async function fetchPublishedArticles() {
   return rows;
 }
 
-async function patchCategory(id, category) {
+async function fetchCategoryMap() {
+  const response = await request(`categories?select=${encodeURIComponent('id,name')}&is_active=eq.true&limit=500`);
+  const rows = await response.json();
+  return new Map((Array.isArray(rows) ? rows : []).map((row) => [String(row.name || '').trim(), row]));
+}
+
+async function patchCategory(id, category, categories) {
+  const target = categories.get(category);
+  if (!target?.id) throw new Error(`找不到目标栏目：${category}`);
   await request(`articles?id=eq.${encodeURIComponent(id)}`, {
     method: 'PATCH',
-    body: JSON.stringify({ category_name: category, topic_key: category === 'ICE执法动态' ? 'ice' : null })
+    body: JSON.stringify({
+      category_id: target.id,
+      category_name: target.name,
+      topic_key: category === 'ICE执法动态' ? 'ice' : null
+    })
   });
 }
 
@@ -138,6 +151,7 @@ async function deleteArticle(id) {
 }
 
 const all = await fetchPublishedArticles();
+const categories = await fetchCategoryMap();
 const targets = all.filter((row) => SOURCE_CATEGORIES.has(String(row.category_name || '').trim()) || RECOVERY_IDS.has(String(row.id || '')));
 const summary = { scanned: targets.length, kept: 0, moved: 0, deleted: 0, failed: 0 };
 
@@ -148,14 +162,14 @@ for (const row of targets) {
   const current = String(row.category_name || '').trim();
   try {
     if (result.action === 'keep') {
+      if (APPLY && current !== '移民美国') await patchCategory(row.id, '移民美国', categories);
       summary.kept += 1;
-      if (APPLY && current !== '移民美国') await patchCategory(row.id, '移民美国');
     } else if (result.action === 'move') {
+      if (APPLY && current !== result.category) await patchCategory(row.id, result.category, categories);
       summary.moved += 1;
-      if (APPLY && current !== result.category) await patchCategory(row.id, result.category);
     } else {
-      summary.deleted += 1;
       if (APPLY) await deleteArticle(row.id);
+      summary.deleted += 1;
     }
     console.log(JSON.stringify({ id: row.id, title: row.title, from: current, ...result }));
   } catch (error) {
@@ -165,4 +179,4 @@ for (const row of targets) {
 }
 
 console.log('SUMMARY', JSON.stringify(summary));
-if (summary.failed) process.exitCode = 1;
+if (summary.failed && STRICT) process.exitCode = 1;

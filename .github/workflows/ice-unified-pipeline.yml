@@ -175,13 +175,6 @@ jobs:
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs
 
-      - name: Enforce published category boundaries
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
-        env:
-          APPLY_CHANGES: "true"
-          APPLY_CONFIRMATION: "APPLY"
-        run: node scripts/reclassify-immigration-articles.mjs
-
       - name: Write success heartbeat
         if: success() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
         env:

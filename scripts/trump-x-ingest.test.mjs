@@ -51,6 +51,16 @@ test("ICE官方发布不再被旧栏目开关跳过", () => {
   assert.match(publishSection, /ice-publish-due\.mjs/);
 });
 
+test("ICE采集发布与全站历史栏目清理分离", () => {
+  const production = fs.readFileSync(new URL("../.github/workflows/ice-unified-pipeline.yml", import.meta.url), "utf8");
+  const maintenance = fs.readFileSync(new URL("../.github/workflows/ice-night-maintenance.yml", import.meta.url), "utf8");
+  const cleanup = fs.readFileSync(new URL("./reclassify-immigration-articles.mjs", import.meta.url), "utf8");
+  assert.doesNotMatch(production, /reclassify-immigration-articles/);
+  assert.match(maintenance, /Reconcile historical article categories/);
+  assert.match(cleanup, /category_id: target\.id/);
+  assert.match(cleanup, /summary\.failed && STRICT/);
+});
+
 test("特朗普流水线必须配置自动翻译和读图", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/trump-x-ingest.yml", import.meta.url), "utf8");
   const script = fs.readFileSync(new URL("./trump-x-ingest.mjs", import.meta.url), "utf8");

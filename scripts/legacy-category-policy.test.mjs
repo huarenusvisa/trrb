@@ -6,6 +6,7 @@ assert.deepEqual(resolveLegacyDisposition({ category: "中国官场", title: "�
 });
 assert.equal(resolveLegacyDisposition({ category: "热门头条", title: "中国社会新闻" }).targetCategory, "中国热门头条");
 assert.equal(resolveLegacyDisposition({ category: "庇护百科", title: "庇护申请说明" }).targetCategory, "移民美国");
+assert.equal(resolveLegacyDisposition({ category: "重要新闻", title: "国际重大事件" }).action, "manual_review");
 assert.equal(resolveLegacyDisposition({ category: "驱逐快报", title: "ICE抓捕行动" }).action, "manual_review");
 assert.equal(resolveLegacyDisposition({ category: "移民美国", title: "ICE特工拘留移民" }).action, "manual_review");
 assert.equal(resolveLegacyDisposition({ category: "移民美国", title: "亲属移民绿卡申请流程" }).action, "publish");

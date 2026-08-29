@@ -93,6 +93,8 @@ const required = [
   '/favicon-48.png /assets/icons/icon-192.png 301!',
   '/apple-touch-icon.png /assets/icons/icon-192.png 301!',
   '/logo-mark.svg /favicon.svg 301!',
+  '/listing category=中国官场 /china-officialdom 301!',
+  '/listing.html category=中国官场 /china-officialdom 301!',
   '/listing /listing.html 200!',
   '/trump /trump/index.html 200!',
   '/important /important-news 301!',
@@ -168,7 +170,7 @@ for (const rule of required) {
   if (!outputLines.includes(rule)) throw new Error(`required canonical redirect missing after finalize: ${rule}`);
   const route = rule.split(/\s+/)[0];
   const samePath = outputLines.filter((line) => line.split(/\s+/)[0] === route);
-  const allowsQueryVariants = route === 'https://huarengongzuo.com/';
+  const allowsQueryVariants = route === 'https://huarengongzuo.com/' || route === '/listing' || route === '/listing.html';
   if ((!allowsQueryVariants && samePath.length !== 1) || new Set(samePath).size !== samePath.length) {
     throw new Error(`conflicting redirect rules remain for ${route}: ${samePath.join(' || ')}`);
   }

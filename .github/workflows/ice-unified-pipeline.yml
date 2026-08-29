@@ -1,8 +1,6 @@
 name: ICE唯一生产流水线
 
 on:
-  schedule:
-    - cron: "27 */3 * * *"
   push:
     branches: [main]
     paths:
@@ -88,13 +86,15 @@ jobs:
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
 
-      - name: Run every shared three-hour trigger
+      - name: Claim shared three-hour collection cadence
         id: due
         if: steps.window.outputs.allowed == 'true'
-        shell: bash
-        run: |
-          echo "due=true" >> "$GITHUB_OUTPUT"
-          echo "与中国热门头条共用每3小时调度，本轮执行完整ICE采集。"
+        env:
+          COLLECTION_PIPELINE: "ice"
+          COLLECTION_CADENCE_ACTION: "claim"
+          COLLECTION_CADENCE_MINUTES: "180"
+          COLLECTION_FORCE: ${{ github.event_name != 'schedule' }}
+        run: node scripts/collection-cadence-gate.mjs
 
       - name: Read ICE category switches with safe fallback
         id: category
@@ -180,7 +180,9 @@ jobs:
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "success"
-        run: node scripts/ice-pipeline-heartbeat.mjs || true
+        run: |
+          node scripts/ice-pipeline-heartbeat.mjs || true
+          COLLECTION_PIPELINE=ice COLLECTION_CADENCE_ACTION=success node scripts/collection-cadence-gate.mjs
 
       - name: Write failure heartbeat
         if: failure() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
@@ -188,4 +190,6 @@ jobs:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
-        run: node scripts/ice-pipeline-heartbeat.mjs || true
+        run: |
+          node scripts/ice-pipeline-heartbeat.mjs || true
+          COLLECTION_PIPELINE=ice COLLECTION_CADENCE_ACTION=failure COLLECTION_CADENCE_ERROR="ICE唯一生产流水线失败" node scripts/collection-cadence-gate.mjs || true

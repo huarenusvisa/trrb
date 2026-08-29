@@ -26,7 +26,7 @@ test("近似稿件查重可识别重复内容", () => {
   assert.ok(similarity("特朗普宣布一项新的行政政策", "纽约天气晴朗，游客进入中央公园") < 0.2);
 });
 
-test("特朗普X、中国热门头条和ICE各自直接执行三小时采集，控制平面只负责手动统筹", () => {
+test("特朗普X、中国热门头条和ICE共用可靠小时心跳及三小时状态锁", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   const iceWorkflow = fs.readFileSync(new URL("../.github/workflows/ice-unified-pipeline.yml", import.meta.url), "utf8");
   const trumpWorkflow = fs.readFileSync(new URL("../.github/workflows/trump-x-ingest.yml", import.meta.url), "utf8");
@@ -34,8 +34,18 @@ test("特朗普X、中国热门头条和ICE各自直接执行三小时采集，�
   assert.match(workflow, /uses: \.\/\.github\/workflows\/trump-x-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/china-hot-li-teacher-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/ice-unified-pipeline\.yml/);
-  assert.doesNotMatch(workflow, /cron: "27 \*\/3 \* \* \*"/);
-  for (const source of [iceWorkflow, trumpWorkflow, chinaWorkflow]) assert.match(source, /cron: "27 \*\/3 \* \* \*"/);
+  assert.match(workflow, /cron: "17 \* \* \* \*"/);
+  assert.match(workflow, /github\.event\.schedule == '17 \* \* \* \*'[\s\S]*inputs\.module == 'ice'/);
+  assert.match(workflow, /github\.event\.schedule == '17 \* \* \* \*'[\s\S]*inputs\.module == 'china-hot'/);
+  assert.match(workflow, /github\.event\.schedule == '17 \* \* \* \*'[\s\S]*inputs\.module == 'trump-x'/);
+  for (const source of [iceWorkflow, trumpWorkflow, chinaWorkflow]) {
+    assert.doesNotMatch(source, /schedule:/);
+    assert.match(source, /COLLECTION_CADENCE_MINUTES: "180"/);
+    assert.match(source, /collection-cadence-gate\.mjs/);
+  }
+  const cadence = fs.readFileSync(new URL("./collection-cadence-gate.mjs", import.meta.url), "utf8");
+  assert.match(cadence, /last_success_at/);
+  assert.match(cadence, /pipeline:collection-cadence:/);
   assert.match(iceWorkflow, /push:[\s\S]*paths:[\s\S]*ice-unified-pipeline\.yml/);
   assert.match(trumpWorkflow, /push:[\s\S]*paths:[\s\S]*trump-x-ingest\.yml/);
   assert.doesNotMatch(iceWorkflow, /-\s+["']?scripts\/\*\*/);

@@ -1,8 +1,6 @@
 name: Trump X资讯采集
 
 on:
-  schedule:
-    - cron: "27 */3 * * *"
   push:
     branches: [main]
     paths:
@@ -37,7 +35,16 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Claim shared three-hour collection cadence
+        id: due
+        env:
+          COLLECTION_PIPELINE: "trump-x"
+          COLLECTION_CADENCE_ACTION: "claim"
+          COLLECTION_CADENCE_MINUTES: "180"
+          COLLECTION_FORCE: ${{ github.event_name != 'schedule' }}
+        run: node scripts/collection-cadence-gate.mjs
       - name: Validate secrets
+        if: steps.due.outputs.due == 'true'
         shell: bash
         run: |
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
@@ -45,6 +52,21 @@ jobs:
           test -n "$SUPABASE_URL" || { echo "缺少SUPABASE_URL"; exit 1; }
           test -n "$SUPABASE_SERVICE_ROLE_KEY" || { echo "缺少SUPABASE_SERVICE_ROLE_KEY"; exit 1; }
       - name: Validate Trump X collector
+        if: steps.due.outputs.due == 'true'
         run: node --test scripts/trump-x-ingest.test.mjs
       - name: Collect, translate, read images and deduplicate Trump X news
+        if: steps.due.outputs.due == 'true'
         run: node scripts/trump-x-ingest.mjs
+      - name: Complete cadence heartbeat
+        if: success() && steps.due.outputs.due == 'true'
+        env:
+          COLLECTION_PIPELINE: "trump-x"
+          COLLECTION_CADENCE_ACTION: "success"
+        run: node scripts/collection-cadence-gate.mjs
+      - name: Record cadence failure
+        if: failure() && steps.due.outputs.due == 'true'
+        env:
+          COLLECTION_PIPELINE: "trump-x"
+          COLLECTION_CADENCE_ACTION: "failure"
+          COLLECTION_CADENCE_ERROR: "Trump X资讯采集失败"
+        run: node scripts/collection-cadence-gate.mjs || true

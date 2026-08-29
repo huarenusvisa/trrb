@@ -40,7 +40,7 @@ jobs:
 
 
   ice:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice') }}
+    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice') }}
     uses: ./.github/workflows/ice-unified-pipeline.yml
     secrets: inherit
 
@@ -72,12 +72,12 @@ jobs:
     secrets: inherit
 
   china-hot-li-teacher:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot') }}
+    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot') }}
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 
   trump-x:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x') }}
+    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x') }}
     uses: ./.github/workflows/trump-x-ingest.yml
     secrets: inherit
 

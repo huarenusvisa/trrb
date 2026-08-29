@@ -13,7 +13,7 @@ test("特朗普X候选先进入中文编辑流水线", () => {
 });
 
 test("字数规则和官方账号发布边界固定", () => {
-  assert.deepEqual(targetLength("Trump announced an update."), { min: 300, max: 360, band: "300字" });
+  assert.deepEqual(targetLength("Trump announced an update."), { min: 300, max: 600, band: "300-600字" });
   assert.deepEqual(targetLength(`Trump ${"policy ".repeat(60)}`), { min: 500, max: 800, band: "500-800字" });
   assert.equal(isOfficialTrumpAccount("@realDonaldTrump"), true);
   assert.equal(isOfficialTrumpAccount("@random_commenter"), false);
@@ -40,7 +40,7 @@ test("特朗普X、中国热门头条和ICE各自直接执行三小时采集，�
   assert.match(trumpWorkflow, /push:[\s\S]*paths:[\s\S]*trump-x-ingest\.yml/);
   assert.doesNotMatch(iceWorkflow, /-\s+["']?scripts\/\*\*/);
   assert.doesNotMatch(trumpWorkflow, /-\s+["']?scripts\/\*\*/);
-  assert.match(trumpWorkflow, /TRUMP_X_LOOKBACK_HOURS: "24"/);
+  assert.match(trumpWorkflow, /TRUMP_X_LOOKBACK_HOURS: "168"/);
 });
 
 test("ICE官方发布不再被旧栏目开关跳过", () => {
@@ -68,6 +68,8 @@ test("特朗普流水线必须配置自动翻译和读图", () => {
   assert.match(script, /input_image/);
   assert.match(script, /-is:reply/);
   assert.match(script, /from:\$\{OFFICIAL_HANDLE\}/);
+  assert.match(script, /official_user_timeline/);
+  assert.match(script, /recent_search_fallback/);
   assert.match(script, /archived_non_official/);
   assert.match(script, /translated_to_chinese/);
   assert.match(script, /duplicate_check_days: 30/);
@@ -96,8 +98,11 @@ test("ICE人工发布明确确认读图和旧闻，并在手机端直接显示�
   assert.match(ui, /image_reviewed: el\("review-image-reviewed"\)\.checked/);
   assert.match(ui, /not_old_news_confirmed: el\("review-not-old"\)\.checked/);
   assert.match(ui, /window\.alert\(message\)/);
+  assert.match(ui, /Promise\.allSettled\(\[loadReviewQueue\(\), loadArticles\(\)\]\)/);
   assert.match(publish, /input\.not_old_news_confirmed/);
   assert.match(publish, /input\.image_reviewed/);
+  assert.match(publish, /Promise\.all\(\[\s*existingArticle/);
+  assert.match(publish, /Promise\.all\(\[\s*patchStory\(story\.id, storyPatch\)/);
   assert.match(list, /hidden_non_ice/);
   assert.match(list, /isIceEnforcementText/);
 });

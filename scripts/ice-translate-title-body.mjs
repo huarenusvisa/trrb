@@ -2,7 +2,7 @@
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-const VERSION = "zh-title-body-v5-300-800-image";
+const VERSION = "zh-title-body-v6-300-600-800-image";
 const REQUIRED = ["OPENAI_API_KEY", "OPENAI_MODEL", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 
 function safeText(value, max = 30000) { return String(value ?? "").replace(/\u0000/g, "").trim().slice(0, max); }
@@ -29,7 +29,7 @@ function chineseRatio(value) { const text = String(value || "").replace(/\s+/g, 
 function titleLength(value) { return Array.from(String(value || "").replace(/[\s，。！？、：；“”‘’【】《》]/g, "")).length; }
 function bodyLength(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
 function sourceText(value) { return safeText(value, 30000).replace(/https?:\/\/\S+/gi, " ").replace(/\s+/g, " ").trim(); }
-export function targetLength(sourceLength) { return Number(sourceLength || 0) < 300 ? { min: 300, max: 360, band: "300字" } : { min: 500, max: 800, band: "500-800字" }; }
+export function targetLength(sourceLength) { return Number(sourceLength || 0) < 300 ? { min: 300, max: 600, band: "300-600字" } : { min: 500, max: 800, band: "500-800字" }; }
 function fitTitle(value) {
   let title = safeText(value, 100).replace(/[。！？!?]+$/g, "").trim();
   if (titleLength(title) > 25) title = Array.from(title).slice(0, 25).join("").replace(/[，、：；]$/g, "");
@@ -38,7 +38,7 @@ function fitTitle(value) {
 }
 function needsTranslation(story, sourceLength = 0, mediaCount = 0) { const payload = safeJson(story.ai_payload, {}); const content = safeText(story.content || story.summary, 30000); const target = targetLength(sourceLength || payload.source_character_count || 0); return payload.translation_version !== VERSION || !hasChinese(story.title) || titleLength(story.title) < 12 || titleLength(story.title) > 25 || !hasChinese(content) || chineseRatio(content) < 0.45 || bodyLength(content) < target.min || bodyLength(content) > target.max || (mediaCount > 0 && payload.image_grounding_used !== true); }
 
-function schemaFor(target) { const schemaMin = target.min === 300 ? 350 : 600; return { type: "object", additionalProperties: false, required: ["title", "summary", "content", "source_language", "image_observations", "appears_old_news", "old_news_reason"], properties: { title: { type: "string", minLength: 12, maxLength: 40 }, summary: { type: "string", minLength: 45, maxLength: 120 }, content: { type: "string", minLength: schemaMin, maxLength: target.max }, source_language: { type: "string", enum: ["en", "zh", "mixed", "unknown"] }, image_observations: { type: "string" }, appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" } } }; }
+function schemaFor(target) { const schemaMin = target.min === 300 ? 380 : 600; return { type: "object", additionalProperties: false, required: ["title", "summary", "content", "source_language", "image_observations", "appears_old_news", "old_news_reason"], properties: { title: { type: "string", minLength: 12, maxLength: 40 }, summary: { type: "string", minLength: 45, maxLength: 120 }, content: { type: "string", minLength: schemaMin, maxLength: target.max }, source_language: { type: "string", enum: ["en", "zh", "mixed", "unknown"] }, image_observations: { type: "string" }, appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" } } }; }
 
 function mediaUrls(posts) { const seen = new Set(); return posts.flatMap((post) => { const media = safeJson(post.media, post.media || []); return (Array.isArray(media) ? media : []).flatMap((item) => { const url = safeText(item?.url || item?.preview_image_url, 2000); if (!/^https:\/\//i.test(url) || seen.has(url)) return []; seen.add(url); return [url]; }); }).slice(0, 4); }
 function sourceLengthFromPosts(posts) { return Math.max(0, ...posts.map((post) => sourceText(post.source_text).length)); }
@@ -61,7 +61,7 @@ async function translate(story, posts, attempt = 0, previous = null) {
         "title必须为12至25个中文字符，准确包含最重要的地点、人物或机构、人数及核心动作；不得使用震惊、炸裂、横扫、铁腕等煽动词。",
         "summary为45至90个中文字符。",
         `content为可直接发布的中文新闻正文，必须为${target.min}至${target.max}个中文字符；优先写明时间、地点、人物、机构、事件经过、人数及来源归因。`,
-        target.min === 300 ? "为避免中英文空格造成计数偏差，正文请写到350至360个非空白字符。" : "为避免中英文空格造成计数偏差，正文请写到600至750个非空白字符。",
+        target.min === 300 ? "正文优先写到420至560个非空白字符；可按来源前后语境补全事件顺序、信源归因、人物关系、地点、数字和画面中可核对的细节，但不得编造材料外事实。" : "为避免中英文空格造成计数偏差，正文请写到600至750个非空白字符。",
         "字数只能来自来源文字和图片中可核对的事实，禁止用提醒、呼吁、空泛评价、重复句、免责声明或模型记忆中的背景凑字。",
         "如有图片，必须逐张读取可辨认的文字、人物、地点、标志、物件、数量、颜色和动作，并以‘画面可见’或‘图片文字显示’明确归因；看不清不写。视频仅按静态缩略图处理。",
         "不得根据外貌推断身份、职业、族群、健康、犯罪倾向或动机。",

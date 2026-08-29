@@ -16,10 +16,14 @@ function json(statusCode, body) {
 function nowIso() { return new Date().toISOString(); }
 function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || '')); }
 function bodyLength(value) { return Array.from(String(value || '').replace(/\s+/g, '')).length; }
+function editorialTarget(payload = {}) {
+  return Number(payload.source_character_count || 0) >= 300
+    ? { min: 500, max: 800 }
+    : { min: 300, max: 600 };
+}
 function assertEditorialReady(story, fields, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === 'object' ? story.ai_payload : {};
-  const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
-  const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
+  const { min, max } = editorialTarget(payload);
   const count = bodyLength(fields.content);
   if (!isIceEnforcementText(fields.title, fields.summary, fields.content)) { const error = new Error('该内容不是明确的ICE执法新闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }

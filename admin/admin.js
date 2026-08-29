@@ -599,7 +599,7 @@ function updateIceEditorialCount(story = activeReview?.story || {}) {
   const count = Array.from(content.replace(/\s+/g, "")).length;
   const payload = story?.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
   const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
-  const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
+  const max = Number(payload.source_character_count || 0) >= 300 ? 800 : 600;
   const counter = el("ice-editorial-count");
   const target = el("ice-editorial-target");
   if (counter) { counter.textContent = `${count}字`; counter.style.color = count >= min && count <= max ? "#166534" : "#b42318"; }
@@ -674,7 +674,7 @@ function renderReviewCard(story) {
   const body = String(story.final_content || story.content || story.summary || story.decision_reason || "暂无正文").trim();
   const count = Array.from(body.replace(/\s+/g, "")).length;
   const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
-  const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
+  const max = Number(payload.source_character_count || 0) >= 300 ? 800 : 600;
   const countHtml = `<span class="risk-chip ${count >= min && count <= max ? "safe" : "danger"}">${count}字 / ${min}-${max}字</span>`;
 
   return `
@@ -851,7 +851,7 @@ async function handleReviewAction(action) {
     const story = activeReview.story || {};
     const metadata = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
     const min = Number(metadata.target_min_chars || (Number(metadata.source_character_count || 0) >= 300 ? 500 : 300));
-    const max = Number(metadata.target_max_chars || (min === 500 ? 800 : 360));
+    const max = Number(metadata.source_character_count || 0) >= 300 ? 800 : 600;
     const count = Array.from(el("review-content").value.replace(/\s+/g, "")).length;
     if (count < min || count > max) {
       el("review-action-message").textContent = `当前正文${count}字，必须编辑到${min}-${max}字后才能发布。可以先点击“保存编辑”。`;
@@ -900,6 +900,9 @@ async function handleReviewAction(action) {
 
     if (action === "publish_now" && result.article_id) {
       el("review-action-message").textContent = `发布成功，文章ID：${result.article_id}`;
+      setTimeout(closeReviewModal, 300);
+      Promise.allSettled([loadReviewQueue(), loadArticles()]);
+      return;
     }
 
     await Promise.all([loadReviewQueue(), loadArticles()]);

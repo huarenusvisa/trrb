@@ -58,7 +58,7 @@
 
   const sourceText = (value) => String(value || "").replace(/https?:\/\/\S+/gi, " ").replace(/(?:^|\s)@[A-Za-z0-9_]+/g, " ").replace(/\s+/g, " ").trim();
   const bodyLength = (value) => Array.from(String(value || "").replace(/\s+/g, "")).length;
-  function targetFor(item) { return sourceText(item?.raw_text).length < 300 ? { min: 300, max: 360 } : { min: 500, max: 800 }; }
+  function targetFor(item) { return sourceText(item?.raw_text).length < 300 ? { min: 300, max: 600 } : { min: 500, max: 800 }; }
   function trumpMedia(item) { return Array.isArray(item?.raw_payload?.media) ? item.raw_payload.media : []; }
   function updateTrumpCount() {
     const target = targetFor(state.activeTrump); const count = bodyLength(el("trump-editor-content")?.value);

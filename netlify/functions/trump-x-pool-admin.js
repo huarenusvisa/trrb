@@ -5,7 +5,7 @@ const json = (statusCode, body) => ({ statusCode, headers: { "Content-Type": "ap
 const chinese = (value) => /[\u3400-\u9fff]/u.test(String(value || ""));
 const length = (value) => Array.from(String(value || "").replace(/\s+/g, "")).length;
 const sourceText = (value) => safeText(value, 30000).replace(/https?:\/\/\S+/gi, " ").replace(/(?:^|\s)@[A-Za-z0-9_]+/g, " ").replace(/\s+/g, " ").trim();
-const targetFor = (row) => sourceText(row.raw_text).length < 300 ? { min: 300, max: 360 } : { min: 500, max: 800 };
+const targetFor = (row) => sourceText(row.raw_text).length < 300 ? { min: 300, max: 600 } : { min: 500, max: 800 };
 const mediaOf = (row) => Array.isArray(row?.raw_payload?.media) ? row.raw_payload.media : [];
 const imageOf = (row) => mediaOf(row).find((item) => item?.type === "photo" && item?.url)?.url || mediaOf(row).find((item) => item?.preview_image_url)?.preview_image_url || "";
 const parsePayload = (value) => value && typeof value === "object" ? value : {};

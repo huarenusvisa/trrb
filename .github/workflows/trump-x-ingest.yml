@@ -27,8 +27,8 @@ jobs:
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      # 定时任务可能延迟；回看24小时并依靠原帖ID和近30天语义查重补漏。
-      TRUMP_X_LOOKBACK_HOURS: "24"
+      # 每三小时运行；官方账号时间线优先并回看7天，依靠原帖ID和近30天语义查重补漏。
+      TRUMP_X_LOOKBACK_HOURS: "168"
       TRUMP_X_MAX_FETCH: "100"
       TRUMP_X_MAX_PROCESS: "50"
       TRUMP_X_PROCESS_CONCURRENCY: "6"

@@ -9,7 +9,7 @@ const { buildPeopleCountMetadata } = peopleCountModule;
 const { isIceEnforcementText } = iceClassifier;
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
-const EDITORIAL_VERSION = "zh-title-body-v5-300-800-image";
+const EDITORIAL_VERSION = "zh-title-body-v6-300-600-800-image";
 
 function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   const value = Number(process.env[name] ?? fallback);

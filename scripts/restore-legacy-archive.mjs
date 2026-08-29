@@ -24,6 +24,20 @@ const CATEGORY_OVERRIDES = new Map(
     .filter(([from, to]) => from && to)
 );
 
+async function loadFinalClosureConfig() {
+  try {
+    return JSON.parse(await readFile(path.join(ROOT, 'config', 'legacy-archive-final-closure-20260829.json'), 'utf8'));
+  } catch (error) {
+    throw new Error(`unable to read final closure config: ${error?.message || error}`);
+  }
+}
+const FINAL_CLOSURE_CONFIG = await loadFinalClosureConfig();
+const FORCED_MANUAL_REVIEW_IDS = new Set(
+  Array.isArray(FINAL_CLOSURE_CONFIG.manual_review_legacy_ids)
+    ? FINAL_CLOSURE_CONFIG.manual_review_legacy_ids.map((value) => String(value || '').trim()).filter(Boolean)
+    : []
+);
+
 function clean(v='') { return sanitizeLegacyText(v); }
 function normalizeTitle(v='') { return clean(v).normalize('NFKC').replace(/[\u200B-\u200D\uFEFF]/g,'').replace(/[\s\-—_·•:：,，。.!！?？“”‘’'"()（）【】\[\]《》<>\/\\|]+/g,'').toLowerCase(); }
 function parseChunk(source, file) {
@@ -167,9 +181,11 @@ for (const row of archiveRows) {
   if(content.length<180){ skipped.no_body++; continue; }
   const published=publishedAt(row); if(!published){ skipped.bad_date++; continue; }
   const archiveCategory=clean(row.category);
-  const disposition=resolveLegacyDisposition({
-    category:archiveCategory,title,content,overrides:CATEGORY_OVERRIDES
-  });
+  const disposition=FORCED_MANUAL_REVIEW_IDS.has(id)
+    ? { action:"manual_review", targetCategory:"", reason:"current-immigration-publication-boundary" }
+    : resolveLegacyDisposition({
+        category:archiveCategory,title,content,overrides:CATEGORY_OVERRIDES
+      });
   if(disposition.action==="manual_review"){
     skipped.manual_review_category++;
     bumpCategory(skippedByCategory.manual_review,archiveCategory);
@@ -258,6 +274,7 @@ const report={
   limit:LIMIT,concurrency:CONCURRENCY,batches:Math.ceil(selected.length/25),skipped,skipped_by_category:skippedByCategory,
   manual_review_count:manualReviewRows.length,retired_non_article_count:retiredRows.length,
   priority_ids:[...PRIORITY_IDS],priority_only:PRIORITY_ONLY,category_overrides:Object.fromEntries(CATEGORY_OVERRIDES),
+  forced_manual_review_ids:[...FORCED_MANUAL_REVIEW_IDS],
   priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
   insert_title_conflicts:insertTitleConflicts.slice(0,50),
   insert_content_conflicts:insertContentConflicts.slice(0,50),

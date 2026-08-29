@@ -93,8 +93,6 @@ const required = [
   '/favicon-48.png /assets/icons/icon-192.png 301!',
   '/apple-touch-icon.png /assets/icons/icon-192.png 301!',
   '/logo-mark.svg /favicon.svg 301!',
-  '/listing category=%E4%B8%AD%E5%9B%BD%E5%AE%98%E5%9C%BA /hot-headlines 301!',
-  '/listing.html category=%E4%B8%AD%E5%9B%BD%E5%AE%98%E5%9C%BA /hot-headlines 301!',
   '/listing /listing.html 200!',
   '/trump /trump/index.html 200!',
   '/important /important-news 301!',
@@ -145,7 +143,8 @@ const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/as
 const retiredNormalizedRedirectPaths = new Set(['/trump/']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
-  return !requiredPaths.has(route) && !retiredAsylumPaths.has(route) && !retiredNormalizedRedirectPaths.has(route);
+  const retiredChinaCategoryQuery = /^\/listing(?:\.html)?\s+category=(?:中国官场|%E4%B8%AD%E5%9B%BD%E5%AE%98%E5%9C%BA)\s+/i.test(line);
+  return !requiredPaths.has(route) && !retiredAsylumPaths.has(route) && !retiredNormalizedRedirectPaths.has(route) && !retiredChinaCategoryQuery;
 });
 const output = [...required, ...filtered].join('\n') + '\n';
 fs.writeFileSync(file, output);

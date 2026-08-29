@@ -1,9 +1,10 @@
-const EXACT_PUBLISH = new Set(["美国时政", "美国警情", "重要新闻", "中国热门头条"]);
+const EXACT_PUBLISH = new Set(["美国时政", "美国警情", "中国热门头条"]);
 
 const CATEGORY_POLICY = new Map([
   ["中国官场", { action: "publish", targetCategory: "中国热门头条", reason: "retired-china-category" }],
   ["热门头条", { action: "publish", targetCategory: "中国热门头条", reason: "renamed-china-headlines" }],
   ["庇护百科", { action: "publish", targetCategory: "移民美国", reason: "asylum-knowledge" }],
+  ["重要新闻", { action: "manual_review", targetCategory: "", reason: "retired-important-category-needs-current-section" }],
   ["驱逐快报", { action: "manual_review", targetCategory: "ICE执法动态", reason: "ice-official-source-review-required" }],
   ["纽约华人律师事务所", { action: "retire", targetCategory: "", reason: "directory-not-news" }],
   ["纽约华人会计师事务所", { action: "retire", targetCategory: "", reason: "directory-not-news" }]

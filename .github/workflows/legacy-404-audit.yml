@@ -1,0 +1,89 @@
+name: TRRB旧站404只读盘点
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "_redirects"
+      - "netlify.toml"
+      - "privacy.html"
+      - "terms.html"
+      - "articles-chunk-*.js"
+      - "scripts/finalize-redirects.mjs"
+      - "scripts/restore-legacy-archive.mjs"
+      - "netlify/edge-functions/legacy-url-redirect.ts"
+      - ".github/workflows/legacy-404-audit.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-legacy-404-readonly-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: 对比旧归档与正式库
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      LEGACY_RESTORE_CONCURRENCY: "4"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 检查只读盘点权限
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SUPABASE_SERVICE_ROLE_KEY:-}" || { echo "SUPABASE_SERVICE_ROLE_KEY missing"; exit 2; }
+
+      - name: 生成旧站404剩余清单（不写库）
+        shell: bash
+        run: node scripts/restore-legacy-archive.mjs --limit=2000 --concurrency="${LEGACY_RESTORE_CONCURRENCY}"
+
+      - name: 写入运行摘要
+        if: always()
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const file = "reports/legacy-migration-latest.json";
+          if (!fs.existsSync(file)) process.exit(0);
+          const r = JSON.parse(fs.readFileSync(file, "utf8"));
+          const s = r.skipped || {};
+          const lines = [
+            "## 旧站404只读盘点",
+            "",
+            "| 指标 | 数量 |",
+            "|---|---:|",
+            `| 旧归档记录 | ${r.archive_records || 0} |`,
+            `| 正式库现有文章 | ${r.current_articles || 0} |`,
+            `| 可恢复且尚未迁移 | ${r.recoverable_missing || 0} |`,
+            `| 已有相同旧ID | ${s.existing_legacy || 0} |`,
+            `| 已有相同标题 | ${s.existing_title || 0} |`,
+            `| 正文不足 | ${s.no_body || 0} |`,
+            `| 日期无效 | ${s.bad_date || 0} |`,
+            `| 分类无法映射 | ${s.unknown_category || 0} |`,
+            "",
+            "本任务为 report 模式，不写数据库、不发布文章。"
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n") + "\n");
+          NODE
+
+      - name: 保存盘点报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-404-readonly-audit-${{ github.run_id }}
+          path:
+            reports/legacy-migration-latest.json
+          if-no-files-found: error
+          retention-days: 30

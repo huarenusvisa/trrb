@@ -67,8 +67,120 @@ function isCleanRouteTarget(target) {
   return ROUTE_PREFIXES.has(first);
 }
 
+function escapeRegex(value) {
+  return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\const files = await walk();
+const htmlFiles = files.filter((f) => f.endsWith(".html"));");
+}
+function redirectRoutePattern(route) {
+  const parts = route.split("/");
+  const body = parts.map((part) => {
+    if (part === "*" || /^:[A-Za-z][\w-]*$/.test(part)) return "[^?]*";
+    return escapeRegex(part);
+  }).join("/");
+  return new RegExp(`^${body}/?#!/usr/bin/env node
+import { readdir, readFile, stat, writeFile } from "node:fs/promises";
+import path from "node:path";
+
+const ROOT = process.cwd();
+const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
+const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
+const ROUTE_PREFIXES = new Set([
+  "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
+  "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
+]);
+const FORBIDDEN_SITEMAP_ROUTES = [
+  /https:\/\/trrb\.net\/niulai(?:\/|[?<]|$)/i,
+  /https:\/\/trrb\.net\/people(?:\/|[?<]|$)/i,
+  /https:\/\/trrb\.net\/expose(?:\/|\?|<|$)/i,
+  /https:\/\/trrb\.net\/(?:thanks|delete-account)\.html(?:\?|<|$)/i,
+  /https:\/\/trrb\.net\/(?:uscis|dhs|cbp|visa|world)(?:\/|\?|<|$)/i
+];
+const errors = [];
+const warnings = [];
+const checked = { html: 0, links: 0, images: 0, scripts: 0, styles: 0 };
+
+async function walk(dir = ROOT) {
+  const out = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (SKIP_DIRS.has(entry.name)) continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...await walk(full));
+    else out.push(full);
+  }
+  return out;
+}
+
+function rel(file) { return path.relative(ROOT, file).replaceAll(path.sep, "/"); }
+function cleanUrl(value) {
+  return String(value || "").trim().replace(/&amp;/g, "&").split("#")[0].split("?")[0];
+}
+function isExternal(value) {
+  return /^(?:https?:|mailto:|tel:|data:|javascript:|blob:|\/\/)/i.test(value);
+}
+function localTarget(fromFile, raw) {
+  const clean = cleanUrl(raw);
+  if (!clean || isExternal(clean)) return null;
+  if (clean === "/") return "index.html";
+  let target = clean.startsWith("/") ? clean.slice(1) : path.posix.normalize(path.posix.join(path.posix.dirname(rel(fromFile)), clean));
+  if (target.endsWith("/")) target += "index.html";
+  return target.replace(/^\.\//, "");
+}
+async function exists(target) {
+  try { return (await stat(path.join(ROOT, target))).isFile(); }
+  catch { return false; }
+}
+function tagValues(html, tag, attr) {
+  const values = [];
+  const tagRe = new RegExp(`<${tag}\\b[^>]*>`, "gi");
+  for (const match of html.matchAll(tagRe)) {
+    const attrRe = new RegExp(`\\b${attr}\\s*=\\s*["']([^"']+)["']`, "i");
+    const found = match[0].match(attrRe);
+    if (found) values.push(found[1]);
+  }
+  return values;
+}
+function has(html, re) { return re.test(html); }
+function isCleanRouteTarget(target) {
+  if (!target || path.posix.extname(target)) return false;
+  const first = target.split("/").filter(Boolean)[0] || "";
+  return ROUTE_PREFIXES.has(first);
+}
+
+);
+}
+async function loadInternalRedirectMatchers() {
+  try {
+    const source = await readFile(path.join(ROOT, "_redirects"), "utf8");
+    const routes = [];
+    for (const rawLine of source.split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#")) continue;
+      const tokens = line.split(/\s+/);
+      if (tokens.length < 3) continue;
+      const status = tokens[tokens.length - 1];
+      const target = tokens[tokens.length - 2];
+      if (!/^(?:200|301)!?$/.test(status) || !target.startsWith("/")) continue;
+      let sourceRoute = tokens[0];
+      if (/^https?:\/\//i.test(sourceRoute)) {
+        try { sourceRoute = new URL(sourceRoute).pathname; } catch { continue; }
+      }
+      sourceRoute = cleanUrl(sourceRoute);
+      if (!sourceRoute.startsWith("/")) continue;
+      routes.push(redirectRoutePattern(sourceRoute));
+    }
+    return routes;
+  } catch {
+    return [];
+  }
+}
+function isRedirectBacked(raw, matchers) {
+  const route = cleanUrl(raw);
+  return route.startsWith("/") && matchers.some((pattern) => pattern.test(route));
+}
+
 const files = await walk();
-const htmlFiles = files.filter((f) => f.endsWith(".html"));
+const internalRedirectMatchers = await loadInternalRedirectMatchers();
+const htmlFiles = files.filter((f) => f.endsWith(".html") && !/(?:^|\/)google[a-z0-9]+\.html$/i.test(rel(f)));
 
 for (const file of htmlFiles) {
   const name = rel(file);
@@ -100,7 +212,7 @@ for (const file of htmlFiles) {
       if (!target) continue;
       checked[bucket]++;
       if (raw.includes(":")) continue;
-      if (!(await exists(target)) && !isCleanRouteTarget(target)) {
+      if (!(await exists(target)) && !isCleanRouteTarget(target) && !isRedirectBacked(raw, internalRedirectMatchers)) {
         errors.push(`${name}: ${tag}[${attr}] 指向不存在文件 ${raw} -> ${target}`);
       }
     }

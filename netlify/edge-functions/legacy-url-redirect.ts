@@ -280,6 +280,10 @@ export default async (request: Request, context: any) => {
     return gone("wordpress-mailpoet-page");
   }
 
+  if ((url.pathname === "/listing" || url.pathname === "/listing.html") && url.searchParams.get("category") === "中国官场") {
+    return redirect(`${SITE_ORIGIN}/hot-headlines`, "retired-china-category");
+  }
+
   const legacyWpArticle = await resolveLegacyWpArticle(url);
   if (legacyWpArticle) return legacyWpArticle;
 

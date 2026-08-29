@@ -20,6 +20,8 @@ on:
       - "scripts/upgrade-article-urls.mjs"
       - "scripts/verify-pr-preview.mjs"
       - ".github/workflows/seo-integrity.yml"
+      - ".github/workflows/legacy-archive-final-closure.yml"
+      - "config/legacy-archive-final-closure-20260829.json"
 
 permissions:
   contents: read
@@ -47,6 +49,8 @@ jobs:
           node scripts/finalize-redirects.mjs --redirects-only
           node scripts/generate-feed.mjs
           node scripts/upgrade-article-urls.mjs
+      - name: Validate legacy archive category policy
+        run: node scripts/legacy-category-policy.test.mjs
       - name: Run production integrity validation
         run: node scripts/validate-site.mjs
       - name: Run SEO and internal 404 audit

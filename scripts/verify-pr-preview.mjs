@@ -95,6 +95,20 @@ function sectionFor(article, categoriesById, categoriesByName) {
 
 await waitForPreview();
 
+const retiredChinaQuery = `/listing?category=${encodeURIComponent('中国官场')}`;
+const retiredChinaResponse = await fetchWithRetry(`${PREVIEW_BASE}${retiredChinaQuery}`, { redirect: 'manual' });
+if (![301, 308].includes(retiredChinaResponse.status)) {
+  throw new Error(`Retired China category expected permanent redirect, got ${retiredChinaResponse.status}`);
+}
+const retiredChinaLocation = retiredChinaResponse.headers.get('location') || '';
+const retiredChinaTarget = new URL(retiredChinaLocation, PREVIEW_BASE);
+if (retiredChinaTarget.pathname !== '/hot-headlines') {
+  throw new Error(`Retired China category redirect target mismatch: ${retiredChinaLocation}`);
+}
+const activeChinaHub = await fetchWithRetry(`${PREVIEW_BASE}/hot-headlines`, { redirect: 'follow' });
+if (!activeChinaHub.ok) throw new Error(`Active China hub expected 200, got ${activeChinaHub.status}`);
+console.log(`[preview] retired China category 301 OK: ${retiredChinaQuery} -> /hot-headlines`);
+
 const categories = await rest('categories', {
   select: 'id,name,slug',
   is_active: 'eq.true',

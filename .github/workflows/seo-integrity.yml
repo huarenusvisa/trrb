@@ -14,6 +14,8 @@ on:
       - "news-sitemap.xml"
       - "feed.xml"
       - "netlify.toml"
+      - "_redirects"
+      - "scripts/finalize-redirects.mjs"
       - "scripts/seo-integrity-audit.mjs"
       - "scripts/upgrade-article-urls.mjs"
       - "scripts/verify-pr-preview.mjs"

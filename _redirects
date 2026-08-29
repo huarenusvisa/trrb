@@ -86,8 +86,8 @@ https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
 /favicon-48.png /assets/icons/icon-192.png 301!
 /apple-touch-icon.png /assets/icons/icon-192.png 301!
 /logo-mark.svg /favicon.svg 301!
-/listing category=中国官场 /china-officialdom 301!
-/listing.html category=中国官场 /china-officialdom 301!
+/listing category=中国官场 /hot-headlines 301!
+/listing.html category=中国官场 /hot-headlines 301!
 /listing /listing.html 200!
 /trump /trump/index.html 200!
 /important /important-news 301!

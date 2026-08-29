@@ -22,8 +22,8 @@
       "纽约华人会计师事务所"
     ]
   },
-  "revision": 5,
-  "trigger_reason": "reconcile rows rejected by current immigration publication boundary into manual review",
+  "revision": 6,
+  "trigger_reason": "verify final closure with stable unique article pagination",
   "manual_review_legacy_ids": [
     "wp-111351",
     "wp-107227",

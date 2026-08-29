@@ -22,5 +22,6 @@
       "纽约华人会计师事务所"
     ]
   },
-  "revision": 2
+  "revision": 3,
+  "trigger_reason": "explicit production retry after merged pull request push produced no workflow run"
 }

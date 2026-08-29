@@ -7,7 +7,7 @@ const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
-const EDITORIAL_VERSION = "zh-title-body-v6-300-600-800-image";
+const EDITORIAL_VERSION = "zh-title-body-v7-300-600-800-context-image";
 
 function nowIso() { return new Date().toISOString(); }
 function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[name]); if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`); }

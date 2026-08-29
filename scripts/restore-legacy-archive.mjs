@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { resolveLegacyDisposition } from './legacy-category-policy.mjs';
+import { sanitizeLegacyText } from './legacy-text-sanitize.mjs';
 import { appendFile, readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -23,7 +24,7 @@ const CATEGORY_OVERRIDES = new Map(
     .filter(([from, to]) => from && to)
 );
 
-function clean(v='') { return String(v || '').replace(/\s+/g, ' ').trim(); }
+function clean(v='') { return sanitizeLegacyText(v); }
 function normalizeTitle(v='') { return clean(v).normalize('NFKC').replace(/[\u200B-\u200D\uFEFF]/g,'').replace(/[\s\-—_·•:：,，。.!！?？“”‘’'"()（）【】\[\]《》<>\/\\|]+/g,'').toLowerCase(); }
 function parseChunk(source, file) {
   const marker = 'window.TRRB_ARTICLE_CHUNK=';
@@ -92,7 +93,8 @@ function batch(items,size=25){ const out=[]; for(let i=0;i<items.length;i+=size)
 function skippableInsertConflict(error) {
   const message=String(error?.message || error);
   if (/articles 409:.*duplicate published article title/i.test(message)) return 'duplicate_title';
-  if (/articles 400:.*\"code\":\"23514\"/i.test(message)) return 'content_constraint';
+  if (/articles 400:.*"code":"23514"/i.test(message)) return 'content_constraint';
+  if (/articles 400:.*"code":"22P05"/i.test(message)) return 'invalid_text';
   return '';
 }
 async function mapLimit(items, concurrency, worker) {

@@ -718,6 +718,12 @@ window.openIceReview = async function (storyId) {
 
 function populateReviewModal(detail) {
   const story = detail.story;
+  const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+  const mediaCount = (detail.posts || []).reduce((count, post) => {
+    const media = Array.isArray(post?.media) ? post.media : [];
+    return count + media.filter((item) => item?.url || item?.preview_image_url).length;
+  }, 0);
+  const imageRequired = mediaCount > 0 || Number(payload.image_count || 0) > 0 || Boolean(story.cover_image);
   el("review-modal-title").textContent = story.title || "审核候选新闻";
   el("review-title").value = story.final_title || story.title || "";
   el("review-summary").value = story.final_summary || story.summary || "";
@@ -727,6 +733,9 @@ function populateReviewModal(detail) {
   el("review-notes").value = story.editor_notes || "";
   el("review-decision-reason").textContent = story.decision_reason || "暂无AI审核说明。";
   el("review-schedule").value = toDateTimeLocal(story.scheduled_at || nextHalfHourIso());
+  el("review-image-reviewed").checked = !imageRequired || payload.image_grounding_used === true;
+  el("review-image-reviewed").disabled = !imageRequired;
+  el("review-not-old").checked = payload.old_news_checked === true && payload.appears_old_news !== true;
   updateReviewCoverPreview();
   updateIceEditorialCount(story);
 
@@ -849,6 +858,16 @@ async function handleReviewAction(action) {
       el("review-content").focus();
       return;
     }
+    if (!el("review-not-old").checked) {
+      el("review-action-message").textContent = "请先查重并确认不是旧闻。";
+      el("review-not-old").focus();
+      return;
+    }
+    if (!el("review-image-reviewed").disabled && !el("review-image-reviewed").checked) {
+      el("review-action-message").textContent = "原帖含图片，请先查看并核对图片。";
+      el("review-image-reviewed").focus();
+      return;
+    }
     const confirmed = window.confirm(
       action === "publish_now"
         ? "确认立即发布到 trrb.net 前台？"
@@ -871,7 +890,9 @@ async function handleReviewAction(action) {
       scheduled_at: el("review-schedule").value
         ? new Date(el("review-schedule").value).toISOString()
         : "",
-      notes: el("review-notes").value.trim()
+      notes: el("review-notes").value.trim(),
+      image_reviewed: el("review-image-reviewed").checked,
+      not_old_news_confirmed: el("review-not-old").checked
     };
 
     const result = await reviewApi(action, payload);
@@ -885,7 +906,10 @@ async function handleReviewAction(action) {
     setTimeout(closeReviewModal, 650);
   } catch (error) {
     console.error(error);
-    el("review-action-message").textContent = `${labels[action]}失败：${error.message}`;
+    const message = `${labels[action]}失败：${error.message}`;
+    el("review-action-message").textContent = message;
+    el("review-action-message").scrollIntoView({ behavior: "smooth", block: "center" });
+    window.alert(message);
   } finally {
     buttons.forEach((button) => { button.disabled = false; });
   }

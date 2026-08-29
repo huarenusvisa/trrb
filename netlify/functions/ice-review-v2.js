@@ -130,7 +130,7 @@ function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
 function bodyLength(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
 function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const set = new Set(); for (let index = 0; index < text.length - 1; index += 1) set.add(text.slice(index, index + 2)); return set; }
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
-function assertEditorialReady(story, title, content) {
+function assertEditorialReady(story, title, content, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
   const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
   const max = Number(payload.target_max_chars || (min === 500 ? 800 : 360));
@@ -138,9 +138,9 @@ function assertEditorialReady(story, title, content) {
   if (!isIceEnforcementText(title, story.summary, content)) throw Object.assign(new Error("该内容不是明确的ICE执法新闻，不能发布到ICE栏目"), { statusCode: 400 });
   if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });
   if (count < min || count > max) throw Object.assign(new Error(`正文当前${count}字，必须达到${min}-${max}字后才能发布`), { statusCode: 400 });
-  if (payload.old_news_checked !== true) throw Object.assign(new Error("尚未完成旧闻核验，不能发布"), { statusCode: 400 });
+  if (payload.old_news_checked !== true && input.not_old_news_confirmed !== true) throw Object.assign(new Error("尚未完成旧闻核验，不能发布"), { statusCode: 400 });
   if (payload.appears_old_news === true) throw Object.assign(new Error("系统识别为旧闻，不能发布"), { statusCode: 400 });
-  if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true) throw Object.assign(new Error("原帖含图片但尚未完成读图核验，不能发布"), { statusCode: 400 });
+  if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true && input.image_reviewed !== true) throw Object.assign(new Error("原帖含图片但尚未完成读图核验，不能发布"), { statusCode: 400 });
 }
 async function recentSimilarArticle(title, summary, content) {
   const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
@@ -167,8 +167,9 @@ async function patchPublishedArticle(articleId, fields) {
   });
 }
 
-async function updatePublishedArticle(story, actor, fields) {
+async function updatePublishedArticle(story, actor, fields, input = {}) {
   const time = nowIso();
+  const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
   await patchPublishedArticle(story.article_id, fields);
   const updated = await patchStory(story.id, {
     title: fields.title,
@@ -184,7 +185,14 @@ async function updatePublishedArticle(story, actor, fields) {
     editor_notes: fields.notes,
     reviewed_by: actor.user.id,
     reviewer_email: actor.user.email || actor.admin.email || "",
-    reviewed_at: time
+    reviewed_at: time,
+    ai_payload: {
+      ...payload,
+      old_news_checked: payload.old_news_checked === true || input.not_old_news_confirmed === true,
+      manual_old_news_confirmation: input.not_old_news_confirmed === true,
+      image_grounding_used: payload.image_grounding_used === true || input.image_reviewed === true,
+      manual_image_confirmation: input.image_reviewed === true
+    }
   });
   await logReview(story, actor, fields.notes, story.article_id);
   return { story: updated, article_id: story.article_id, already_published: true, editorial_persisted: true };
@@ -201,9 +209,9 @@ async function publishNow(story, actor, input) {
     error.statusCode = 400;
     throw error;
   }
-  assertEditorialReady(story, title, content);
+  assertEditorialReady(story, title, content, input);
 
-  if (story.article_id) return updatePublishedArticle(story, actor, { title, summary, content, coverImage, notes });
+  if (story.article_id) return updatePublishedArticle(story, actor, { title, summary, content, coverImage, notes }, input);
 
   const post = await leadPost(story);
   const eventType = story.event_type || post?.event_type || "other";
@@ -293,7 +301,14 @@ async function publishNow(story, actor, input) {
     editor_notes: notes,
     reviewed_by: actor.user.id,
     reviewer_email: actor.user.email || actor.admin.email || "",
-    reviewed_at: time
+    reviewed_at: time,
+    ai_payload: {
+      ...(story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}),
+      old_news_checked: story.ai_payload?.old_news_checked === true || input.not_old_news_confirmed === true,
+      manual_old_news_confirmation: input.not_old_news_confirmed === true,
+      image_grounding_used: story.ai_payload?.image_grounding_used === true || input.image_reviewed === true,
+      manual_image_confirmation: input.image_reviewed === true
+    }
   });
 
   await logReview(story, actor, notes, articleId);

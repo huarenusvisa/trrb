@@ -1,13 +1,19 @@
 name: China Hot · Li Teacher Content Intake
 
 on:
+  schedule:
+    - cron: "27 */3 * * *"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/china-hot-li-teacher-ingest.yml"
   workflow_call:
   workflow_dispatch:
     inputs:
       lookback_hours:
-        description: "抓取最近多少小时（默认覆盖两个三小时周期）"
+        description: "抓取最近多少小时（默认24小时，用于补偿定时任务延迟）"
         required: false
-        default: "6"
+        default: "24"
         type: string
       recover_archived:
         description: "补发时间范围内误归档的中国热门头条"
@@ -38,7 +44,8 @@ jobs:
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-      LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '6' }}
+      # 定时任务可能延迟；回看24小时并依靠原帖ID、旧闻检查和近30天语义查重补漏。
+      LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '24' }}
       LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
       LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}
       LI_TEACHER_PUBLISH_CONCURRENCY: "8"
@@ -55,7 +62,7 @@ jobs:
         run: |
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_SERVICE_ROLE_KEY"
-          if [[ "${{ github.event_name }}" != "push" && "${{ inputs.recover_archived }}" != "true" && "${{ inputs.repair_today }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
+          if [[ "${{ inputs.recover_archived }}" != "true" && "${{ inputs.repair_today }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
         run: node --test scripts/china-hot-li-teacher-ingest.test.mjs

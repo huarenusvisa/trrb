@@ -85,7 +85,7 @@ test("拒绝美国主导、回复、转帖和低信息片段", () => {
   assert.equal(qualifyTweet({ id: "thin", text: "北京突发，稍后更新。" }).accepted, false);
 });
 
-test("中国热门头条与ICE统一为三小时控制平面", () => {
+test("中国热门头条按独立三小时计划运行并保留24小时补漏窗口", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   assert.match(workflow, /OPENAI_API_KEY/);
@@ -94,9 +94,11 @@ test("中国热门头条与ICE统一为三小时控制平面", () => {
   assert.match(workflow, /recover_archived/);
   assert.match(workflow, /repair_today/);
   assert.match(workflow, /--repair-today/);
-  assert.match(workflow, /LI_TEACHER_LOOKBACK_HOURS:.*6/);
-  assert.match(control, /cron: "27 \*\/3 \* \* \*"/);
+  assert.match(workflow, /LI_TEACHER_LOOKBACK_HOURS:.*24/);
+  assert.match(workflow, /cron: "27 \*\/3 \* \* \*"/);
+  assert.doesNotMatch(control, /cron: "27 \*\/3 \* \* \*"/);
   assert.match(control, /china-hot-li-teacher:/);
   assert.match(control, /ice:/);
-  assert.doesNotMatch(workflow, /\n\s*push:/);
+  assert.match(workflow, /push:[\s\S]*paths:[\s\S]*china-hot-li-teacher-ingest\.yml/);
+  assert.doesNotMatch(workflow, /-\s+["']?scripts\/\*\*/);
 });

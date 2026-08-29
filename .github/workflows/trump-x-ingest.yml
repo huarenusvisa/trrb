@@ -1,6 +1,12 @@
 name: Trump X资讯采集
 
 on:
+  schedule:
+    - cron: "27 */3 * * *"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/trump-x-ingest.yml"
   workflow_call:
   workflow_dispatch:
 
@@ -21,7 +27,8 @@ jobs:
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      TRUMP_X_LOOKBACK_HOURS: "6"
+      # 定时任务可能延迟；回看24小时并依靠原帖ID和近30天语义查重补漏。
+      TRUMP_X_LOOKBACK_HOURS: "24"
       TRUMP_X_MAX_FETCH: "100"
       TRUMP_X_MAX_PROCESS: "50"
       TRUMP_X_PROCESS_CONCURRENCY: "6"

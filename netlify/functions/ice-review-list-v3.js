@@ -4,6 +4,7 @@ const {
   authenticateAdmin
 } = require("./_shared/supabase-admin");
 const { prepareStories } = require("./_shared/ice-review-list");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 
 // 采集中心是工作台，不应只显示最近5小时。保留最近72小时，覆盖三小时采集节奏和人工审核周转。
 const REVIEW_MAX_AGE_HOURS = 72;
@@ -156,8 +157,9 @@ exports.handler = async (event) => {
     const prepared = prepareStories(stories, postsByFingerprint)
       .filter((story) => timeValue(story.source_created_at || story.last_seen_at || story.updated_at) >= Date.now() - REVIEW_MAX_AGE_HOURS * 3600000)
       .sort((a, b) => timeValue(b.source_created_at || b.last_seen_at || b.updated_at) - timeValue(a.source_created_at || a.last_seen_at || a.updated_at));
-    const visible = prepared.filter(chineseReady);
-    const pendingTranslation = prepared.length - visible.length;
+    const chinese = prepared.filter(chineseReady);
+    const visible = chinese.filter((story) => isIceEnforcementText(story.title, story.summary, story.content));
+    const pendingTranslation = prepared.length - chinese.length;
     return json(200, {
       stories: visible,
       pipeline: { ...(await pipelineStatus(stories)), pending_translation: pendingTranslation },
@@ -165,7 +167,8 @@ exports.handler = async (event) => {
         scanned: stories.length,
         visible: visible.length,
         hidden_duplicates: Math.max(0, stories.length - prepared.length),
-        hidden_pending_translation: pendingTranslation
+        hidden_pending_translation: prepared.length - chinese.length,
+        hidden_non_ice: chinese.length - visible.length
       }
     });
   } catch (error) {

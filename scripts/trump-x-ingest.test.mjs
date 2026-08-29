@@ -26,16 +26,21 @@ test("近似稿件查重可识别重复内容", () => {
   assert.ok(similarity("特朗普宣布一项新的行政政策", "纽约天气晴朗，游客进入中央公园") < 0.2);
 });
 
-test("特朗普X、中国热门头条和ICE共用三小时控制平面", () => {
+test("特朗普X、中国热门头条和ICE各自直接执行三小时采集，控制平面只负责手动统筹", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   const iceWorkflow = fs.readFileSync(new URL("../.github/workflows/ice-unified-pipeline.yml", import.meta.url), "utf8");
   const trumpWorkflow = fs.readFileSync(new URL("../.github/workflows/trump-x-ingest.yml", import.meta.url), "utf8");
-  assert.match(workflow, /cron: "27 \*\/3 \* \* \*"/);
+  const chinaWorkflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   assert.match(workflow, /uses: \.\/\.github\/workflows\/trump-x-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/china-hot-li-teacher-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/ice-unified-pipeline\.yml/);
-  assert.doesNotMatch(iceWorkflow, /\n\s*push:/);
-  assert.doesNotMatch(trumpWorkflow, /\n\s*push:/);
+  assert.doesNotMatch(workflow, /cron: "27 \*\/3 \* \* \*"/);
+  for (const source of [iceWorkflow, trumpWorkflow, chinaWorkflow]) assert.match(source, /cron: "27 \*\/3 \* \* \*"/);
+  assert.match(iceWorkflow, /push:[\s\S]*paths:[\s\S]*ice-unified-pipeline\.yml/);
+  assert.match(trumpWorkflow, /push:[\s\S]*paths:[\s\S]*trump-x-ingest\.yml/);
+  assert.doesNotMatch(iceWorkflow, /-\s+["']?scripts\/\*\*/);
+  assert.doesNotMatch(trumpWorkflow, /-\s+["']?scripts\/\*\*/);
+  assert.match(trumpWorkflow, /TRUMP_X_LOOKBACK_HOURS: "24"/);
 });
 
 test("ICE官方发布不再被旧栏目开关跳过", () => {
@@ -69,4 +74,20 @@ test("特朗普内容池提供中文标题正文编辑和人工发布窗口", ()
   assert.match(api, /action === "save"/);
   assert.match(api, /action === "publish"/);
   assert.match(api, /必须达到\$\{target\.min\}-\$\{target\.max\}字/);
+});
+
+test("ICE人工发布明确确认读图和旧闻，并在手机端直接显示服务端失败原因", () => {
+  const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
+  const ui = fs.readFileSync(new URL("../admin/admin.js", import.meta.url), "utf8");
+  const publish = fs.readFileSync(new URL("../netlify/functions/ice-review-v2.js", import.meta.url), "utf8");
+  const list = fs.readFileSync(new URL("../netlify/functions/ice-review-list-v3.js", import.meta.url), "utf8");
+  assert.match(html, /review-image-reviewed/);
+  assert.match(html, /review-not-old/);
+  assert.match(ui, /image_reviewed: el\("review-image-reviewed"\)\.checked/);
+  assert.match(ui, /not_old_news_confirmed: el\("review-not-old"\)\.checked/);
+  assert.match(ui, /window\.alert\(message\)/);
+  assert.match(publish, /input\.not_old_news_confirmed/);
+  assert.match(publish, /input\.image_reviewed/);
+  assert.match(list, /hidden_non_ice/);
+  assert.match(list, /isIceEnforcementText/);
 });

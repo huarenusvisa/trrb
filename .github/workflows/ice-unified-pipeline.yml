@@ -1,6 +1,12 @@
 name: ICE唯一生产流水线
 
 on:
+  schedule:
+    - cron: "27 */3 * * *"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-unified-pipeline.yml"
   workflow_dispatch:
   workflow_call:
 

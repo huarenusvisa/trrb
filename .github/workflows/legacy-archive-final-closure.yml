@@ -1,0 +1,148 @@
+name: 旧归档最终闭环恢复
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "config/legacy-archive-final-closure-20260829.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trrb-legacy-archive-final-closure
+  cancel-in-progress: false
+
+jobs:
+  restore-safe-content:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      LEGACY_RESTORE_CONCURRENCY: "4"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 验证分类边界策略
+        run: node scripts/legacy-category-policy.test.mjs
+
+      - name: 检查正式库权限
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SUPABASE_SERVICE_ROLE_KEY:-}" || { echo "SUPABASE_SERVICE_ROLE_KEY missing"; exit 2; }
+
+      - name: 写入前只读盘点
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/restore-legacy-archive.mjs --limit=2000 --concurrency="${LEGACY_RESTORE_CONCURRENCY}"
+          cp reports/legacy-migration-latest.json reports/legacy-preflight.json
+          cp reports/legacy-manual-review-latest.json reports/legacy-manual-review-preflight.json
+          cp reports/legacy-retired-non-article-latest.json reports/legacy-retired-preflight.json
+
+      - name: 阻止越界或不完整恢复
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const config = JSON.parse(fs.readFileSync("config/legacy-archive-final-closure-20260829.json", "utf8"));
+          const report = JSON.parse(fs.readFileSync("reports/legacy-preflight.json", "utf8"));
+          if (config.operation_id !== "legacy-archive-final-closure-20260829" || config.apply !== true) {
+            throw new Error("final closure config is not explicitly enabled");
+          }
+          if (report.skipped?.unknown_category !== 0) {
+            throw new Error(`unclassified legacy categories remain: ${JSON.stringify(report.skipped_by_category?.unknown || {})}`);
+          }
+          if (report.recoverable_missing < 1) throw new Error("no safe legacy rows remain; refusing a duplicate apply");
+          if (report.recoverable_missing > Number(config.maximum_public_restores || 0)) {
+            throw new Error(`safe restore count ${report.recoverable_missing} exceeds approved maximum`);
+          }
+          if (report.selected !== report.recoverable_missing) throw new Error("preflight limit would truncate the safe restore set");
+          console.log(JSON.stringify({
+            safe_restore: report.recoverable_missing,
+            manual_review: report.manual_review_count,
+            retired_non_article: report.retired_non_article_count,
+            skipped: report.skipped
+          }, null, 2));
+          NODE
+
+      - name: 恢复安全旧稿并建立旧ID关联
+        id: restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/restore-legacy-archive.mjs --apply --limit=2000 --concurrency="${LEGACY_RESTORE_CONCURRENCY}"
+          cp reports/legacy-migration-latest.json reports/legacy-apply.json
+
+      - name: 写入后重新全量对账
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/restore-legacy-archive.mjs --limit=2000 --concurrency="${LEGACY_RESTORE_CONCURRENCY}"
+          cp reports/legacy-migration-latest.json reports/legacy-postflight.json
+          cp reports/legacy-manual-review-latest.json reports/legacy-manual-review-postflight.json
+          cp reports/legacy-retired-non-article-latest.json reports/legacy-retired-postflight.json
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const applied = JSON.parse(fs.readFileSync("reports/legacy-apply.json", "utf8"));
+          const final = JSON.parse(fs.readFileSync("reports/legacy-postflight.json", "utf8"));
+          if (applied.inserted < 1) throw new Error("apply inserted no legacy rows");
+          if (final.recoverable_missing !== 0) throw new Error(`safe legacy rows still missing after apply: ${final.recoverable_missing}`);
+          if (final.skipped?.unknown_category !== 0) throw new Error("unknown legacy categories remain after apply");
+          console.log(JSON.stringify({
+            inserted: applied.inserted,
+            remaining_safe_restore: final.recoverable_missing,
+            manual_review: final.manual_review_count,
+            retired_non_article: final.retired_non_article_count,
+            skipped: final.skipped
+          }, null, 2));
+          NODE
+
+      - name: 推送新增Canonical与旧URL变化
+        if: ${{ steps.restore.outputs.restored_count != '0' }}
+        env:
+          INDEXNOW_CHANGED_URLS_FILE: reports/legacy-indexnow-urls.txt
+          INDEXNOW_INCLUDE_RETIRED: "false"
+          INDEXNOW_FULL_SYNC: "false"
+        run: |
+          node scripts/generate-sitemaps.mjs
+          node scripts/clean-sitemap-against-database.mjs
+          node scripts/filter-public-visibility-seo-feeds.mjs
+          node scripts/split-sitemap-index.mjs
+          node scripts/submit-indexnow.mjs
+
+      - name: 验收旧链接搜索点击链
+        run: node scripts/legacy-search-acceptance.mjs
+
+      - name: 保存完整闭环证据
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-archive-final-closure-${{ github.run_id }}
+          path: |
+            reports/legacy-preflight.json
+            reports/legacy-apply.json
+            reports/legacy-postflight.json
+            reports/legacy-manual-review-preflight.json
+            reports/legacy-manual-review-postflight.json
+            reports/legacy-retired-preflight.json
+            reports/legacy-retired-postflight.json
+            reports/legacy-indexnow-urls.txt
+            reports/legacy-search-acceptance-latest.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  refresh-seo-feeds:
+    needs: restore-safe-content
+    if: ${{ needs.restore-safe-content.result == 'success' }}
+    uses: ./.github/workflows/round13-publish-seo-sync.yml
+    secrets: inherit

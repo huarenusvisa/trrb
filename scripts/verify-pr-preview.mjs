@@ -13,16 +13,29 @@ const headers = {
 };
 
 const FALLBACK_CATEGORY_SLUGS = new Map([
-  ['重要新闻', 'important'],
-  ['热门头条', 'hot'],
-  ['美国时政', 'politics'],
-  ['美国警情', 'crime'],
-  ['中国官场', 'china'],
+  ['重要新闻', 'important-news'],
+  ['热门头条', 'hot-headlines'],
+  ['中国热门头条', 'hot-headlines'],
+  ['美国时政', 'us-politics'],
+  ['美国警情', 'us-crime'],
+  ['中国官场', 'china-officialdom'],
   ['移民美国', 'immigration'],
   ['庇护百科', 'asylum'],
   ['ICE执法动态', 'ice'],
   ['ICE执法', 'ice']
 ]);
+const CANONICAL_SECTION_ALIASES = new Map([
+  ['important', 'important-news'],
+  ['hot', 'hot-headlines'],
+  ['politics', 'us-politics'],
+  ['crime', 'us-crime'],
+  ['china', 'china-officialdom']
+]);
+
+function canonicalSection(value) {
+  const section = String(value || '').trim();
+  return CANONICAL_SECTION_ALIASES.get(section) || section;
+}
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -74,10 +87,10 @@ function sectionFor(article, categoriesById, categoriesByName) {
   if (topic === 'trump') return 'trump';
   if (topic === 'ice') return 'ice';
   const byId = categoriesById.get(String(article.category_id || ''));
-  if (byId?.slug) return String(byId.slug).trim();
+  if (byId?.slug) return canonicalSection(byId.slug);
   const byName = categoriesByName.get(String(article.category_name || '').trim());
-  if (byName?.slug) return String(byName.slug).trim();
-  return FALLBACK_CATEGORY_SLUGS.get(String(article.category_name || '').trim()) || 'news';
+  if (byName?.slug) return canonicalSection(byName.slug);
+  return canonicalSection(FALLBACK_CATEGORY_SLUGS.get(String(article.category_name || '').trim()) || 'news');
 }
 
 await waitForPreview();

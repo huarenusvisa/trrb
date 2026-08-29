@@ -34,6 +34,7 @@ jobs:
         run: |
           node scripts/legacy-category-policy.test.mjs
           node scripts/legacy-text-sanitize.test.mjs
+          node scripts/legacy-final-closure-config.test.mjs
 
       - name: 检查正式库权限
         shell: bash
@@ -64,7 +65,6 @@ jobs:
           if (report.skipped?.unknown_category !== 0) {
             throw new Error(`unclassified legacy categories remain: ${JSON.stringify(report.skipped_by_category?.unknown || {})}`);
           }
-          if (report.recoverable_missing < 1) throw new Error("no safe legacy rows remain; refusing a duplicate apply");
           if (report.recoverable_missing > Number(config.maximum_public_restores || 0)) {
             throw new Error(`safe restore count ${report.recoverable_missing} exceeds approved maximum`);
           }
@@ -97,7 +97,7 @@ jobs:
           const fs = require("node:fs");
           const applied = JSON.parse(fs.readFileSync("reports/legacy-apply.json", "utf8"));
           const final = JSON.parse(fs.readFileSync("reports/legacy-postflight.json", "utf8"));
-          if (applied.inserted < 1) throw new Error("apply inserted no legacy rows");
+          if (applied.recoverable_missing > 0 && applied.inserted < 1) throw new Error("apply inserted no legacy rows despite recoverable input");
           if (final.recoverable_missing !== 0) throw new Error(`safe legacy rows still missing after apply: ${final.recoverable_missing}`);
           if (final.skipped?.unknown_category !== 0) throw new Error("unknown legacy categories remain after apply");
           console.log(JSON.stringify({

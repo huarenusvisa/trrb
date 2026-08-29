@@ -68,8 +68,7 @@ function isCleanRouteTarget(target) {
 }
 
 function escapeRegex(value) {
-  return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\const files = await walk();
-const htmlFiles = files.filter((f) => f.endsWith(".html"));");
+  return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 function redirectRoutePattern(route) {
   const parts = route.split("/");
@@ -77,76 +76,7 @@ function redirectRoutePattern(route) {
     if (part === "*" || /^:[A-Za-z][\w-]*$/.test(part)) return "[^?]*";
     return escapeRegex(part);
   }).join("/");
-  return new RegExp(`^${body}/?#!/usr/bin/env node
-import { readdir, readFile, stat, writeFile } from "node:fs/promises";
-import path from "node:path";
-
-const ROOT = process.cwd();
-const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
-const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
-const ROUTE_PREFIXES = new Set([
-  "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
-  "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
-]);
-const FORBIDDEN_SITEMAP_ROUTES = [
-  /https:\/\/trrb\.net\/niulai(?:\/|[?<]|$)/i,
-  /https:\/\/trrb\.net\/people(?:\/|[?<]|$)/i,
-  /https:\/\/trrb\.net\/expose(?:\/|\?|<|$)/i,
-  /https:\/\/trrb\.net\/(?:thanks|delete-account)\.html(?:\?|<|$)/i,
-  /https:\/\/trrb\.net\/(?:uscis|dhs|cbp|visa|world)(?:\/|\?|<|$)/i
-];
-const errors = [];
-const warnings = [];
-const checked = { html: 0, links: 0, images: 0, scripts: 0, styles: 0 };
-
-async function walk(dir = ROOT) {
-  const out = [];
-  for (const entry of await readdir(dir, { withFileTypes: true })) {
-    if (SKIP_DIRS.has(entry.name)) continue;
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...await walk(full));
-    else out.push(full);
-  }
-  return out;
-}
-
-function rel(file) { return path.relative(ROOT, file).replaceAll(path.sep, "/"); }
-function cleanUrl(value) {
-  return String(value || "").trim().replace(/&amp;/g, "&").split("#")[0].split("?")[0];
-}
-function isExternal(value) {
-  return /^(?:https?:|mailto:|tel:|data:|javascript:|blob:|\/\/)/i.test(value);
-}
-function localTarget(fromFile, raw) {
-  const clean = cleanUrl(raw);
-  if (!clean || isExternal(clean)) return null;
-  if (clean === "/") return "index.html";
-  let target = clean.startsWith("/") ? clean.slice(1) : path.posix.normalize(path.posix.join(path.posix.dirname(rel(fromFile)), clean));
-  if (target.endsWith("/")) target += "index.html";
-  return target.replace(/^\.\//, "");
-}
-async function exists(target) {
-  try { return (await stat(path.join(ROOT, target))).isFile(); }
-  catch { return false; }
-}
-function tagValues(html, tag, attr) {
-  const values = [];
-  const tagRe = new RegExp(`<${tag}\\b[^>]*>`, "gi");
-  for (const match of html.matchAll(tagRe)) {
-    const attrRe = new RegExp(`\\b${attr}\\s*=\\s*["']([^"']+)["']`, "i");
-    const found = match[0].match(attrRe);
-    if (found) values.push(found[1]);
-  }
-  return values;
-}
-function has(html, re) { return re.test(html); }
-function isCleanRouteTarget(target) {
-  if (!target || path.posix.extname(target)) return false;
-  const first = target.split("/").filter(Boolean)[0] || "";
-  return ROUTE_PREFIXES.has(first);
-}
-
-);
+  return new RegExp(`^${body}/?$`);
 }
 async function loadInternalRedirectMatchers() {
   try {

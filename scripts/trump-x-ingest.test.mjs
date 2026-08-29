@@ -80,6 +80,8 @@ test("特朗普流水线必须配置自动翻译和读图", () => {
   assert.match(script, /from:\$\{OFFICIAL_HANDLE\}/);
   assert.match(script, /official_user_timeline/);
   assert.match(script, /recent_search_fallback/);
+  assert.match(script, /timeline_empty_fallback/);
+  assert.match(script, /时间线返回0条/);
   assert.match(script, /archived_non_official/);
   assert.match(script, /translated_to_chinese/);
   assert.match(script, /duplicate_check_days: 30/);

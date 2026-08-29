@@ -70,7 +70,18 @@ async function collectFromSearch() {
   return { ...payload, collection_mode: "recent_search_fallback" };
 }
 async function collect() {
-  try { return await collectFromTimeline(); }
+  try {
+    const timeline = await collectFromTimeline();
+    if (Array.isArray(timeline?.data) && timeline.data.length > 0) return timeline;
+    console.warn("特朗普X官方账号时间线返回0条，改用官方账号搜索接口补抓。");
+    try {
+      const fallback = await collectFromSearch();
+      return { ...fallback, timeline_error: "official timeline returned 0 posts", timeline_empty_fallback: true };
+    } catch (searchError) {
+      console.warn(`特朗普X搜索补抓失败，保留时间线空结果：${clean(searchError?.message || searchError, 600)}`);
+      return { ...timeline, timeline_empty_fallback: true, search_error: clean(searchError?.message || searchError, 600) };
+    }
+  }
   catch (timelineError) {
     console.warn(`特朗普X官方账号时间线接口失败，改用搜索接口：${clean(timelineError?.message || timelineError, 600)}`);
     const fallback = await collectFromSearch();
@@ -122,7 +133,7 @@ async function processCandidate(candidate, articles) {
 
 export async function run() {
   requireEnvironment(); const archived_non_official = await archiveNonOfficialCandidates(); const payload = await collect(); const authors = new Map((payload?.includes?.users || []).map((user) => [String(user.id), user])); const tweets = payload?.data || []; const existing = await existingExternalIds(tweets.map((tweet) => clean(tweet.id, 100))); const collectedAt = new Date().toISOString(); const rows = tweets.filter((tweet) => !existing.has(`x:trump:${tweet.id}`)).map((tweet) => buildCandidate(tweet, authors.get(String(tweet.author_id)) || payload?.includes?.users?.[0] || {}, mediaFrom(tweet, payload?.includes), collectedAt)).filter((row) => isOfficialTrumpAccount(row.source_account)); if (rows.length) await supabase("news_candidates", { method: "POST", body: rows, prefer: "return=minimal" });
-  const [queue, articles] = await Promise.all([pendingCandidates(), recentTrumpArticles()]); const counts = { published: 0, ready_for_review: 0, review_required: 0, rejected: 0, duplicate: 0, old_news: 0 }; let cursor = 0; async function worker() { while (cursor < queue.length) { const candidate = queue[cursor++]; const status = await processCandidate(candidate, articles); counts[status] += 1; } } await Promise.all(Array.from({ length: Math.min(PROCESS_CONCURRENCY, queue.length || 1) }, () => worker())); const report = { pipeline: PIPELINE, source_account: `@${OFFICIAL_HANDLE}`, collection_mode: payload?.collection_mode || "unknown", timeline_error: payload?.timeline_error || "", lookback_hours: LOOKBACK_HOURS, returned: payload?.data?.length || 0, relevant: tweets.length, archived_non_official, duplicate_collected: existing.size, inserted: rows.length, processed: queue.length, ...counts }; console.log(JSON.stringify(report, null, 2)); return report;
+  const [queue, articles] = await Promise.all([pendingCandidates(), recentTrumpArticles()]); const counts = { published: 0, ready_for_review: 0, review_required: 0, rejected: 0, duplicate: 0, old_news: 0 }; let cursor = 0; async function worker() { while (cursor < queue.length) { const candidate = queue[cursor++]; const status = await processCandidate(candidate, articles); counts[status] += 1; } } await Promise.all(Array.from({ length: Math.min(PROCESS_CONCURRENCY, queue.length || 1) }, () => worker())); const report = { pipeline: PIPELINE, source_account: `@${OFFICIAL_HANDLE}`, collection_mode: payload?.collection_mode || "unknown", timeline_error: payload?.timeline_error || "", timeline_empty_fallback: Boolean(payload?.timeline_empty_fallback), search_error: payload?.search_error || "", lookback_hours: LOOKBACK_HOURS, returned: payload?.data?.length || 0, relevant: tweets.length, archived_non_official, duplicate_collected: existing.size, inserted: rows.length, processed: queue.length, ...counts }; console.log(JSON.stringify(report, null, 2)); return report;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) run().catch((error) => { console.error("特朗普X资讯采集编辑失败：", error); process.exitCode = 1; });

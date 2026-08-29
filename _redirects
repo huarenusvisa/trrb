@@ -44,6 +44,7 @@ https://asylumjudge.com/ /asylumjudge/index.html 200!
 https://asylumjudge.com/robots.txt /asylumjudge/robots.txt 200!
 https://asylumjudge.com/sitemap.xml /asylumjudge/sitemap.xml 200!
 https://asylumjudge.com/judge /immigration-judge-approval-rate/detail.html 200!
+https://asylumjudge.com/judge-backgrounds /asylumjudge/judge-backgrounds.html 200!
 https://asylumjudge.com/court /immigration-judge-approval-rate/court-detail.html 200!
 https://asylumjudge.com/courts /immigration-judge-approval-rate/courts.html 200!
 https://asylumjudge.com/states /immigration-judge-approval-rate/states.html 200!
@@ -80,6 +81,13 @@ https://trrb.net/jobs https://huarengongzuo.com/ 301!
 https://trrb.net/jobs/ https://huarengongzuo.com/ 301!
 https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
 /index.html / 301!
+/favicon.ico /favicon.svg 301!
+/favicon-32x32.png /assets/icons/icon-192.png 301!
+/favicon-48.png /assets/icons/icon-192.png 301!
+/apple-touch-icon.png /assets/icons/icon-192.png 301!
+/logo-mark.svg /favicon.svg 301!
+/listing /listing.html 200!
+/trump /trump/index.html 200!
 /important /important-news 301!
 /hot /hot-headlines 301!
 /politics /us-politics 301!
@@ -122,3 +130,4 @@ https://trrb.net/classifieds/ https://huarengongzuo.com/ershou/ 301!
 /asylumjudge/community/ https://asylumjudge.com/community/ 301!
 /us-politics /listing.html?category=%E7%BE%8E%E5%9B%BD%E6%97%B6%E6%94%BF 200
 /us-crime /listing.html?category=%E7%BE%8E%E5%9B%BD%E8%AD%A6%E6%83%85 200
+

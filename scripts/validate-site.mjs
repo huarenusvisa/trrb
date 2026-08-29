@@ -103,7 +103,13 @@ requireMatch(headers, /\/\*\.js[\s\S]*?Cache-Control:\s*no-cache, no-store, must
 requireMatch(headers, /\/\*\.css[\s\S]*?Cache-Control:\s*no-cache, no-store, must-revalidate/i, "_headers does not prevent stale CSS");
 
 const redirects = await text("_redirects");
+const netlifyConfig = await text("netlify.toml");
 const trumpCanonicalEdge = await text("netlify/edge-functions/01-trump-route-canonical.ts");
+requireMatch(redirects, /^\/trump\s+\/trump\/index\.html\s+200!$/m, "trump canonical 200 rewrite missing");
+forbidMatch(netlifyConfig, /from\s*=\s*["']\/(?:trump|topic\/trump)\/?["']/, "duplicate Trump rewrite remains in netlify.toml");
+requireMatch(redirects, /^\/listing\s+\/listing\.html\s+200!$/m, "extensionless listing compatibility rewrite missing");
+requireMatch(redirects, /^\/favicon\.ico\s+\/favicon\.svg\s+301!$/m, "root favicon compatibility redirect missing");
+requireMatch(redirects, /^\/apple-touch-icon\.png\s+\/assets\/icons\/icon-192\.png\s+301!$/m, "root Apple touch icon redirect missing");
 forbidMatch(redirects, /^\/trump\/\s+\/trump\s+301!/m, "trump directory redirect can self-loop after Netlify pretty-URL normalization");
 forbidMatch(trumpCanonicalEdge, /["']\/trump\/index\.html["']/, "trump canonical edge function intercepts the internal /trump/index.html rewrite and redirects back to /trump");
 requireMatch(redirects, /https:\/\/huarengongzuo\.com\/\s+q=:q\s+\/huarengongzuo\/index\.html\s+200!/i, "huarengongzuo query search rewrite missing");
@@ -127,6 +133,11 @@ const liveFix = await text("articles-home-live-fix.js");
 requireMatch(liveFix, /generalHeroFallback/, "articles-home-live-fix.js missing general hero fallback");
 requireMatch(liveFix, /TRRB_refreshHomepageFocus/, "articles-home-live-fix.js missing live focus refresh export");
 forbidMatch(liveFix, /当前暂无重点新闻/, "articles-home-live-fix.js can restore false-empty hero copy");
+
+const privacy = await text("privacy.html");
+const terms = await text("terms.html");
+requireMatch(privacy, /rel=["']canonical["']\s+href=["']https:\/\/trrb\.net\/privacy\.html["']/, "privacy.html canonical missing");
+requireMatch(terms, /rel=["']canonical["']\s+href=["']https:\/\/trrb\.net\/terms\.html["']/, "terms.html canonical missing");
 
 const trump = await text("trump/index.html");
 requireMatch(trump, /data-seo-static-snapshot=["']build["']/, "trump/index.html missing crawlable static snapshot marker");

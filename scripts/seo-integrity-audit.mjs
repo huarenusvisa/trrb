@@ -67,8 +67,50 @@ function isCleanRouteTarget(target) {
   return ROUTE_PREFIXES.has(first);
 }
 
+function escapeRegex(value) {
+  return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function redirectRoutePattern(route) {
+  const parts = route.split("/");
+  const body = parts.map((part) => {
+    if (part === "*" || /^:[A-Za-z][\w-]*$/.test(part)) return "[^?]*";
+    return escapeRegex(part);
+  }).join("/");
+  return new RegExp(`^${body}/?$`);
+}
+async function loadInternalRedirectMatchers() {
+  try {
+    const source = await readFile(path.join(ROOT, "_redirects"), "utf8");
+    const routes = [];
+    for (const rawLine of source.split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#")) continue;
+      const tokens = line.split(/\s+/);
+      if (tokens.length < 3) continue;
+      const status = tokens[tokens.length - 1];
+      const target = tokens[tokens.length - 2];
+      if (!/^(?:200|301)!?$/.test(status) || !target.startsWith("/")) continue;
+      let sourceRoute = tokens[0];
+      if (/^https?:\/\//i.test(sourceRoute)) {
+        try { sourceRoute = new URL(sourceRoute).pathname; } catch { continue; }
+      }
+      sourceRoute = cleanUrl(sourceRoute);
+      if (!sourceRoute.startsWith("/")) continue;
+      routes.push(redirectRoutePattern(sourceRoute));
+    }
+    return routes;
+  } catch {
+    return [];
+  }
+}
+function isRedirectBacked(raw, matchers) {
+  const route = cleanUrl(raw);
+  return route.startsWith("/") && matchers.some((pattern) => pattern.test(route));
+}
+
 const files = await walk();
-const htmlFiles = files.filter((f) => f.endsWith(".html"));
+const internalRedirectMatchers = await loadInternalRedirectMatchers();
+const htmlFiles = files.filter((f) => f.endsWith(".html") && !/(?:^|\/)google[a-z0-9]+\.html$/i.test(rel(f)));
 
 for (const file of htmlFiles) {
   const name = rel(file);
@@ -100,7 +142,7 @@ for (const file of htmlFiles) {
       if (!target) continue;
       checked[bucket]++;
       if (raw.includes(":")) continue;
-      if (!(await exists(target)) && !isCleanRouteTarget(target)) {
+      if (!(await exists(target)) && !isCleanRouteTarget(target) && !isRedirectBacked(raw, internalRedirectMatchers)) {
         errors.push(`${name}: ${tag}[${attr}] 指向不存在文件 ${raw} -> ${target}`);
       }
     }

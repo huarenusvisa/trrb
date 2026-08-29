@@ -51,6 +51,7 @@ const required = [
   'https://asylumjudge.com/robots.txt /asylumjudge/robots.txt 200!',
   'https://asylumjudge.com/sitemap.xml /asylumjudge/sitemap.xml 200!',
   'https://asylumjudge.com/judge /immigration-judge-approval-rate/detail.html 200!',
+  'https://asylumjudge.com/judge-backgrounds /asylumjudge/judge-backgrounds.html 200!',
   'https://asylumjudge.com/court /immigration-judge-approval-rate/court-detail.html 200!',
   'https://asylumjudge.com/courts /immigration-judge-approval-rate/courts.html 200!',
   'https://asylumjudge.com/states /immigration-judge-approval-rate/states.html 200!',
@@ -87,6 +88,13 @@ const required = [
   'https://trrb.net/jobs/ https://huarengongzuo.com/ 301!',
   'https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!',
   '/index.html / 301!',
+  '/favicon.ico /favicon.svg 301!',
+  '/favicon-32x32.png /assets/icons/icon-192.png 301!',
+  '/favicon-48.png /assets/icons/icon-192.png 301!',
+  '/apple-touch-icon.png /assets/icons/icon-192.png 301!',
+  '/logo-mark.svg /favicon.svg 301!',
+  '/listing /listing.html 200!',
+  '/trump /trump/index.html 200!',
   '/important /important-news 301!',
   '/hot /hot-headlines 301!',
   '/politics /us-politics 301!',
@@ -129,10 +137,13 @@ const required = [
 
 const lines = existing ? existing.split(/\r?\n/).filter(Boolean) : [];
 const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
-const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/trump/', '/niulai', '/niulai/*', '/ershou', '/ershou/', '/ershou/:splat', '/secondhand', '/secondhand/', '/marketplace', '/marketplace/', '/classifieds', '/classifieds/']);
+const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*', '/ershou', '/ershou/', '/ershou/:splat', '/secondhand', '/secondhand/', '/marketplace', '/marketplace/', '/classifieds', '/classifieds/']);
+// Netlify normalizes trailing slashes before matching redirect rules. A
+// `/trump/ -> /trump` rule can therefore become a self-redirect for `/trump`.
+const retiredNormalizedRedirectPaths = new Set(['/trump/']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
-  return !requiredPaths.has(route) && !retiredAsylumPaths.has(route);
+  return !requiredPaths.has(route) && !retiredAsylumPaths.has(route) && !retiredNormalizedRedirectPaths.has(route);
 });
 const output = [...required, ...filtered].join('\n') + '\n';
 fs.writeFileSync(file, output);
@@ -188,6 +199,9 @@ for (const [route, target] of [
 ]) {
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);
+}
+if (outputLines.some((line) => line.split(/\s+/)[0] === '/trump/')) {
+  throw new Error('Netlify-normalized /trump/ self-redirect survived redirect finalization');
 }
 if (outputLines.some((line) => /^\/asylum(?:\s|\/)/.test(line) && /listing\.html\?category=.*(?:%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91|庇护百科)/i.test(line))) {
   throw new Error('retired asylum encyclopedia internal rewrite survived redirect finalization');

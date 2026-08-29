@@ -238,26 +238,6 @@
   to = "/assets/icons/:file"
   status = 301
 
-[[redirects]]
-  from = "/trump"
-  to = "/trump/index.html"
-  status = 200
-  force = true
-[[redirects]]
-  from = "/trump/"
-  to = "/trump/index.html"
-  status = 200
-  force = true
-[[redirects]]
-  from = "/topic/trump"
-  to = "/trump/index.html"
-  status = 200
-  force = true
-[[redirects]]
-  from = "/topic/trump/"
-  to = "/trump/index.html"
-  status = 200
-  force = true
 
 [[redirects]]
   from = "/uscis"

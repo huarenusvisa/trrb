@@ -16,6 +16,8 @@ test("workflow starts the cover queue on August 24, 2026 and ignores older archi
   const fs = await import("node:fs");
   const workflow = fs.readFileSync(new URL("../.github/workflows/ai-cover-backfill.yml", import.meta.url), "utf8");
   assert.match(workflow, /AI_COVER_START_AT:\s*"2026-08-24T00:00:00Z"/);
+  assert.match(workflow, /^  workflow_dispatch:/m);
+  assert.doesNotMatch(workflow, /^  schedule:/m);
 });
 
 test("only truly missing or placeholder covers enter the AI queue", () => {

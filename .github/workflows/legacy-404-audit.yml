@@ -2,6 +2,9 @@ name: TRRB旧站404只读盘点
 
 on:
   workflow_dispatch:
+  # 独立迁移收口机器人：每6小时只读盘点一次，不自动恢复或发布。
+  schedule:
+    - cron: "11 */6 * * *"
   push:
     branches:
       - main
@@ -47,6 +50,7 @@ jobs:
 
       - name: 生成旧站404剩余清单（不写库）
         shell: bash
+        # 禁止添加 --apply；定时机器人只能生成 report 和人工核对清单。
         run: node scripts/restore-legacy-archive.mjs --limit=2000 --concurrency="${LEGACY_RESTORE_CONCURRENCY}"
 
       - name: 写入运行摘要

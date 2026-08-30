@@ -7,6 +7,7 @@ const GSC_SITE_URL=process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL||'sc-domain:trrb.n
 const GSC_JSON=process.env.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON||'';
 const BING_KEY=process.env.BING_WEBMASTER_API_KEY||'';
 const WRITE_MODE=/^(1|true|yes)$/i.test(process.env.SEO_WRITE_MODE||'false');
+const REQUIRE_GOOGLE=/^(1|true|yes)$/i.test(process.env.SEO_REQUIRE_GOOGLE||'false');
 const report={generatedAt:new Date().toISOString(),site:SITE_ORIGIN,writeMode:WRITE_MODE,google:{configured:false},bing:{configured:false},local:{},warnings:[],failures:[]};
 
 async function fetchText(url){const r=await fetch(url,{headers:{'user-agent':'TRRB-SEO-Ops/1.0','cache-control':'no-cache'}});return{status:r.status,text:await r.text(),headers:Object.fromEntries(r.headers.entries())};}
@@ -58,7 +59,10 @@ async function bingOps(){
 }
 
 await localAudit();await googleOps();await bingOps();
-if(!report.google.configured)report.warnings.push('Google Search Console account API not authorized yet');
+if(!report.google.configured){
+  const message='Google Search Console account API not authorized yet';
+  (REQUIRE_GOOGLE?report.failures:report.warnings).push(message);
+}
 if(!report.bing.configured)report.warnings.push('Bing Webmaster account API not authorized yet; IndexNow remains separate');
 await fs.writeFile('seo-search-engine-ops-report.json',JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({site:report.site,writeMode:report.writeMode,googleConfigured:report.google.configured,bingConfigured:report.bing.configured,warnings:report.warnings,failures:report.failures},null,2));

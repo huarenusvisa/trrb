@@ -6,7 +6,9 @@ const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
 const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1';
 const TIMEOUT = 15000;
-const MIN_INDEXABLE_BODY_LENGTH = 80;
+const MIN_INDEXABLE_BODY_LENGTH = 300;
+const MIN_INDEXABLE_TITLE_LENGTH = 8;
+const MAX_SITEMAP_ARTICLES = 5000;
 const ARTICLE_SECTIONS = new Set(['ice','trump','important-news','hot-headlines','us-politics','us-crime','china-officialdom','immigration','asylum','deport','news','expose']);
 const FALLBACK = new Map([
   ['重要新闻','important-news'],['热门头条','hot-headlines'],['美国时政','us-politics'],['美国警情','us-crime'],
@@ -128,12 +130,17 @@ const byName = new Map(categories.map(x => [String(x.name || '').trim(), x]));
 const canonicalMap = new Map(articles.map(a => [String(a.id), canonicalFor(a, byId, byName)]));
 const allowedCategoryIds = new Set(categories.filter(x => x.include_in_sitemap !== false).map(x => String(x.id)));
 const allowedCategoryNames = new Set(categories.filter(x => x.include_in_sitemap !== false).map(x => String(x.name || '').trim()));
+const allowedCategorySlugs = new Set(categories.filter(x => x.include_in_sitemap !== false).map(x => String(x.slug || '').trim()));
 
 function allowedInSitemap(a) {
   if (isSpecialTopic(a)) return true;
   if (!categories.length) return true;
   if (a?.category_id) return allowedCategoryIds.has(String(a.category_id));
-  if (a?.category_name) return allowedCategoryNames.has(String(a.category_name).trim());
+  if (a?.category_name) {
+    const name=String(a.category_name).trim();
+    const fallbackSlug=FALLBACK.get(name)||'';
+    return allowedCategoryNames.has(name)||Boolean(fallbackSlug&&allowedCategorySlugs.has(fallbackSlug));
+  }
   return true;
 }
 function expectedIndexArticles() {
@@ -143,9 +150,8 @@ function expectedIndexArticles() {
   for(const a of [...articles].sort((x,y)=>timeOf(x)-timeOf(y))){
     if(!allowedInSitemap(a))continue;
     const body=visibleText(a.content||a.summary||'');
-    const ice=isIceArticle(a);
-    if(ice&&!body)continue;
-    if(!ice&&body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
+    const title=visibleText(a.title||'');
+    if(title.length<MIN_INDEXABLE_TITLE_LENGTH||body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
     const titleKey=normalizedTitle(a.title);
     const bodyKey=body.length>=120?body:'';
     if((titleKey.length>=8&&seenTitles.has(titleKey))||(bodyKey&&seenBodies.has(bodyKey)))continue;
@@ -153,7 +159,7 @@ function expectedIndexArticles() {
     if(bodyKey)seenBodies.add(bodyKey);
     selected.push(a);
   }
-  return selected;
+  return selected.sort((x,y)=>timeOf(y)-timeOf(x)).slice(0,MAX_SITEMAP_ARTICLES);
 }
 
 // 1. 文章发布链路一致性治理：数据库层先保证每篇文章只有一个稳定 canonical。
@@ -271,7 +277,7 @@ for (const path of ['/','/important-news','/us-crime','/trump','/ice','/listing.
 }
 record(8, false, '真实浏览器移动端视觉验收尚未执行', '等待 Playwright/iPhone viewport 工作流', 'warning');
 
-// 9. 全量索引：只比较当前应索引文章集合。重复稿与非ICE薄内容不应被旧验收强行塞回 Sitemap；短ICE必须保留。
+// 9. 质量预算索引：只比较去重、正文不少于300字且位于最新5000篇预算内的文章。
 try {
   const root = await req(`${ORIGIN}/sitemap.xml`, {headers:{'cache-control':'no-cache'}});
   const rootXml = await root.text();
@@ -292,12 +298,11 @@ try {
   const siteSet = new Set(sitemapUrls);
   const missingFromSitemap = [...dbSet].filter(x => !siteSet.has(x));
   const staleInSitemap = [...siteSet].filter(x => !dbSet.has(x));
-  const shortIceExpected = expectedArticles.filter(a => isIceArticle(a) && visibleText(a.content||a.summary||'').length < MIN_INDEXABLE_BODY_LENGTH).length;
   record(9, siteSet.size === dbSet.size, '文章Sitemap数量与当前应索引文章集合一致', `sitemap=${siteSet.size}; expected=${dbSet.size}`);
   record(9, missingFromSitemap.length === 0, '所有应索引 canonical 均在 Sitemap', `missing=${missingFromSitemap.length}`);
   record(9, staleInSitemap.length === 0, 'Sitemap 无下线/薄稿/重复稿多余URL', `stale=${staleInSitemap.length}`);
   record(9, !sitemapUrls.some(x => /article\.html\?id=|www\.trrb\.net/i.test(x)), 'Sitemap 无旧参数URL或www');
-  record(9, shortIceExpected === 0 || expectedArticles.filter(a => isIceArticle(a) && visibleText(a.content||a.summary||'').length < MIN_INDEXABLE_BODY_LENGTH).every(a => siteSet.has(canonicalMap.get(String(a.id)))), '短ICE不会仅因篇幅短被Sitemap排除', `shortIceExpected=${shortIceExpected}`);
+  record(9, expectedArticles.every(a => visibleText(a.content||a.summary||'').length >= MIN_INDEXABLE_BODY_LENGTH), 'Sitemap不再接纳不足300字的短稿', `expected=${expectedArticles.length}`);
 } catch (e) { record(9, false, '全量Sitemap索引检查', e.message || String(e)); }
 
 for (let i = 1; i <= 9; i++) {

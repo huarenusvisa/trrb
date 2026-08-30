@@ -1,5 +1,6 @@
 const SITE = "https://trrb.net";
-const MIN_INDEXABLE_BODY_LENGTH = 80;
+const MIN_INDEXABLE_BODY_LENGTH = 300;
+const MIN_INDEXABLE_TITLE_LENGTH = 8;
 export const config = { path: "/news-sitemap.xml" };
 
 const FALLBACK: Record<string,string> = {
@@ -43,6 +44,7 @@ export default async(request:Request,context:any)=>{
     ]);
     const ids=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>String(x.id)));
     const names=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>clean(x.name)));
+    const slugs=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>canonicalSection(x.slug)));
     const byId=new Map(cats.map((x:any)=>[String(x.id||""),x]));
     const byName=new Map(cats.map((x:any)=>[clean(x.name),x]));
     const recent=articles
@@ -54,23 +56,20 @@ export default async(request:Request,context:any)=>{
     const seenBodies=new Set<string>();
     let excludedDuplicate=0;
     let excludedThin=0;
-    let preservedShortIce=0;
     let preservedSpecialTopic=0;
     const selected:{a:any;ts:number;loc:string}[]=[];
 
     for(const {a,ts} of recent){
       if(cats.length&&!isSpecialTopicArticle(a)){
         if(a.category_id&&!ids.has(String(a.category_id)))continue;
-        if(!a.category_id&&a.category_name&&!names.has(clean(a.category_name)))continue;
+        if(!a.category_id&&a.category_name){const name=clean(a.category_name);const fallbackSlug=canonicalSection(FALLBACK[name]||"");if(!names.has(name)&&!(fallbackSlug&&slugs.has(fallbackSlug)))continue;}
       }else if(isSpecialTopicArticle(a)){
         preservedSpecialTopic++;
       }
 
       const body=visible(a.content||a.summary||"");
-      const ice=isIceArticle(a);
-      if(!ice&&body.length<MIN_INDEXABLE_BODY_LENGTH){excludedThin++;continue;}
-      if(ice&&!body)continue;
-      if(ice&&body.length<MIN_INDEXABLE_BODY_LENGTH)preservedShortIce++;
+      const title=visible(a.title||"");
+      if(title.length<MIN_INDEXABLE_TITLE_LENGTH||body.length<MIN_INDEXABLE_BODY_LENGTH){excludedThin++;continue;}
 
       const titleKey=normalizedTitle(a.title);
       const bodyKey=body.length>=120?body:"";
@@ -90,12 +89,12 @@ export default async(request:Request,context:any)=>{
     return new Response(request.method==="HEAD"?null:xml,{status:200,headers:{
       "content-type":"application/xml; charset=UTF-8",
       "cache-control":"public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-news-sitemap":"live-supabase-v6-public-only-ice-safe-dedupe",
+      "x-trrb-news-sitemap":"live-supabase-v7-quality-dedupe",
       "x-trrb-news-count":String(blocks.length),
       "x-trrb-news-source-rows":String(articles.length),
       "x-trrb-news-recent-candidates":String(recent.length),
       "x-trrb-news-excluded-thin":String(excludedThin),
-      "x-trrb-news-preserved-short-ice":String(preservedShortIce),
+      "x-trrb-news-min-body":String(MIN_INDEXABLE_BODY_LENGTH),
       "x-trrb-news-preserved-special-topic":String(preservedSpecialTopic),
       "x-trrb-news-excluded-duplicate":String(excludedDuplicate),
       "x-trrb-news-dedupe-winner":"newest"

@@ -4,7 +4,8 @@ const ORIGIN = String(process.env.SITE_ORIGIN || 'https://trrb.net').replace(/\/
 const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
 const DB_HEADERS = { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, Accept: 'application/json' };
-const MIN_INDEXABLE_BODY_LENGTH = 80;
+const MIN_INDEXABLE_BODY_LENGTH = 300;
+const MIN_INDEXABLE_TITLE_LENGTH = 8;
 const FALLBACK = new Map([
   ['重要新闻','important-news'],['热门头条','hot-headlines'],['美国时政','us-politics'],['美国警情','us-crime'],
   ['中国官场','china-officialdom'],['移民美国','immigration'],['庇护百科','asylum'],['驱逐快报','deport'],
@@ -81,13 +82,13 @@ const articles = await dbAll('articles', { select: 'id,title,slug,summary,conten
 if (!Array.isArray(articles) || articles.length < 10) { fail(`published sample too small: ${Array.isArray(articles) ? articles.length : 0}`); process.exit(); }
 const byId = new Map(categories.map(x => [String(x.id || ''), x]));
 const byName = new Map(categories.map(x => [clean(x.name), x]));
-function allowed(article, flag){if(isSpecial(article))return true;if(!categories.length)return true;const c=article.category_id?byId.get(String(article.category_id)):byName.get(clean(article.category_name));return c?c[flag]!==false:true;}
+function allowed(article, flag){if(isSpecial(article))return true;if(!categories.length)return true;const c=article.category_id?byId.get(String(article.category_id)):byName.get(clean(article.category_name));if(c)return c[flag]!==false;const fallbackSlug=FALLBACK.get(clean(article.category_name))||'';return Boolean(fallbackSlug&&categories.some(x=>clean(x.slug)===fallbackSlug&&x[flag]!==false));}
 
 const indexEligible=[];const seenTitles=new Set();const seenBodies=new Set();
 for(const article of articles){
   if(!article?.id||!clean(article.title)||!clean(article.slug)||!allowed(article,'include_in_sitemap'))continue;
   const body=visible(article.content||article.summary||'');
-  if(isIce(article)?!body:body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
+  if(visible(article.title).length<MIN_INDEXABLE_TITLE_LENGTH||body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
   const titleKey=normTitle(article.title);const bodyKey=body.length>=120?body:'';
   if((titleKey.length>=8&&seenTitles.has(titleKey))||(bodyKey&&seenBodies.has(bodyKey)))continue;
   if(titleKey.length>=8)seenTitles.add(titleKey);if(bodyKey)seenBodies.add(bodyKey);

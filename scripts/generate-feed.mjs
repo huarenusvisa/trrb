@@ -39,9 +39,16 @@ async function loadPublishedArticles(){
 const [categories,rawArticles]=await Promise.all([loadCategories(),loadPublishedArticles()]);
 const allowedIds=new Set(categories.filter(x=>x.include_in_rss!==false).map(x=>String(x.id)));
 const allowedNames=new Set(categories.filter(x=>x.include_in_rss!==false).map(x=>String(x.name)));
+const allowedSlugs=new Set(categories.filter(x=>x.include_in_rss!==false).map(x=>canonicalSection(x.slug)));
 const byId=new Map(categories.map(x=>[String(x.id||''),x]));
 const byName=new Map(categories.map(x=>[clean(x.name),x]));
-const articles=(categories.length?rawArticles.filter(x=>isSpecialTopic(x)||(x.category_id?allowedIds.has(String(x.category_id)):(!x.category_name||allowedNames.has(String(x.category_name))))):rawArticles).slice(0,100);
+const articles=(categories.length?rawArticles.filter(x=>{
+  if(isSpecialTopic(x))return true;
+  if(x.category_id)return allowedIds.has(String(x.category_id));
+  if(!x.category_name)return true;
+  const name=clean(x.category_name);const fallbackSlug=canonicalSection(FALLBACK[name]||'');
+  return allowedNames.has(name)||Boolean(fallbackSlug&&allowedSlugs.has(fallbackSlug));
+}):rawArticles).slice(0,100);
 
 function articleSection(article){
   const topic=clean(article?.topic_key).toLowerCase();

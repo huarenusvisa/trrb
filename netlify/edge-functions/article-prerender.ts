@@ -1,5 +1,6 @@
 const SITE = "https://trrb.net";
-const MIN_INDEXABLE_BODY_LENGTH = 80;
+const MIN_INDEXABLE_BODY_LENGTH = 300;
+const MIN_INDEXABLE_TITLE_LENGTH = 8;
 
 export const config = { path: ["/article.html", "/*/*"] };
 
@@ -74,9 +75,9 @@ function isIceArticle(article: any): boolean {
 }
 
 function isIndexableArticle(article: any): boolean {
+  const title = visibleText(article?.title || "");
   const body = visibleText(article?.content || article?.summary || "");
-  if (isIceArticle(article)) return Boolean(clean(article?.title)) && Boolean(body);
-  return body.length >= MIN_INDEXABLE_BODY_LENGTH;
+  return title.length >= MIN_INDEXABLE_TITLE_LENGTH && body.length >= MIN_INDEXABLE_BODY_LENGTH;
 }
 
 function isoDate(value: unknown): string {

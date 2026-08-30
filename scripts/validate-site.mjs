@@ -163,7 +163,7 @@ forbidMatch(articleMap, /\/article\.html\?id=/i, "sitemap article chunk contains
 
 const liveSitemap = await text("netlify/edge-functions/sitemap-live.ts");
 forbidMatch(liveSitemap, /jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/, "live sitemap still adds redirected trrb.net jobs hub");
-requireMatch(liveSitemap, /live-supabase-v8-jobs-external-canonical/, "live sitemap version is not jobs external canonical v8");
+requireMatch(liveSitemap, /live-supabase-v9-quality-budget-canonical/, "live sitemap version is not quality budget canonical v9");
 
 const niulai = await text("niulai/index.html");
 const niulaiAdapter = await text("niulai/data-adapter.js");

@@ -61,7 +61,7 @@ const sitemapVersion=sitemap.headers.get('x-trrb-sitemap')||'';
 const newsVersion=news.headers.get('x-trrb-news-sitemap')||'';
 const feedVersion=feed.headers.get('x-trrb-feed')||'';
 record(/topic-safe/i.test(sitemapVersion)&&/ice-safe/i.test(sitemapVersion),'主 Sitemap 启用专题与短ICE保护实时Edge',sitemapVersion||'missing');
-record(/latest1000/i.test(newsVersion)&&/topic-safe/i.test(newsVersion)&&/ice-safe/i.test(newsVersion)&&/dedupe/i.test(newsVersion),'News Sitemap 启用最新1000/专题/短ICE/去重实时Edge',newsVersion||'missing');
+record(/paged/i.test(newsVersion)&&/public-only/i.test(newsVersion)&&/ice-safe/i.test(newsVersion)&&/dedupe/i.test(newsVersion),'News Sitemap 启用分页/公开性/短ICE/去重实时Edge',newsVersion||'missing');
 record(/topic-safe/i.test(feedVersion),'RSS 启用专题canonical实时Edge',feedVersion||'missing');
 for(const [label,obj] of [['主 Sitemap',sitemap],['News Sitemap',news],['RSS',feed]]){const cc=obj.headers.get('cache-control')||'';const age=Number(cc.match(/max-age=(\d+)/i)?.[1]||999999);record(age<=30,`${label} 缓存上限<=30秒`,cc);record(!/\/article\.html\?id=/i.test(obj.text),`${label} 无 legacy article?id 链接`);record(!/https:\/\/www\.trrb\.net/i.test(obj.text),`${label} 无 www 重复主域`);}
 if(latestSitemap)record(sitemap.text.includes(canonical(latestSitemap)), '最新 Sitemap 合格文章首请求即出现',canonical(latestSitemap));

@@ -20,7 +20,11 @@ on:
           - jobs
           - secondhand
   schedule:
-    - cron: "17 * * * *"
+    # GitHub scheduled workflows can be delayed during periods of high load.
+    # Wake the control plane four times per hour; the database cadence gate in
+    # each collector remains the authority that permits one successful run per
+    # 180 minutes. This is a retry heartbeat, not a 15-minute collection cycle.
+    - cron: "7,22,37,52 * * * *"
     - cron: "47 3 * * *"
     - cron: "7 7 * * *"
     - cron: "23 8 * * 1"
@@ -40,7 +44,7 @@ jobs:
 
 
   ice:
-    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice') }}
+    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice') }}
     uses: ./.github/workflows/ice-unified-pipeline.yml
     secrets: inherit
 
@@ -50,7 +54,7 @@ jobs:
     secrets: inherit
 
   seo-indexnow:
-    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
+    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
     uses: ./.github/workflows/indexnow.yml
     secrets: inherit
 
@@ -72,12 +76,12 @@ jobs:
     secrets: inherit
 
   china-hot-li-teacher:
-    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot') }}
+    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot') }}
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 
   trump-x:
-    if: ${{ github.event.schedule == '17 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x') }}
+    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x') }}
     uses: ./.github/workflows/trump-x-ingest.yml
     secrets: inherit
 

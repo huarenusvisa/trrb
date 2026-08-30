@@ -26,7 +26,7 @@ test("近似稿件查重可识别重复内容", () => {
   assert.ok(similarity("特朗普宣布一项新的行政政策", "纽约天气晴朗，游客进入中央公园") < 0.2);
 });
 
-test("特朗普X、中国热门头条和ICE共用可靠小时心跳及三小时状态锁", () => {
+test("特朗普X、中国热门头条和ICE共用可靠15分钟唤醒及三小时状态锁", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   const iceWorkflow = fs.readFileSync(new URL("../.github/workflows/ice-unified-pipeline.yml", import.meta.url), "utf8");
   const trumpWorkflow = fs.readFileSync(new URL("../.github/workflows/trump-x-ingest.yml", import.meta.url), "utf8");
@@ -34,10 +34,11 @@ test("特朗普X、中国热门头条和ICE共用可靠小时心跳及三小时�
   assert.match(workflow, /uses: \.\/\.github\/workflows\/trump-x-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/china-hot-li-teacher-ingest\.yml/);
   assert.match(workflow, /uses: \.\/\.github\/workflows\/ice-unified-pipeline\.yml/);
-  assert.match(workflow, /cron: "17 \* \* \* \*"/);
-  assert.match(workflow, /github\.event\.schedule == '17 \* \* \* \*'[\s\S]*inputs\.module == 'ice'/);
-  assert.match(workflow, /github\.event\.schedule == '17 \* \* \* \*'[\s\S]*inputs\.module == 'china-hot'/);
-  assert.match(workflow, /github\.event\.schedule == '17 \* \* \* \*'[\s\S]*inputs\.module == 'trump-x'/);
+  assert.match(workflow, /cron: "7,22,37,52 \* \* \* \*"/);
+  assert.match(workflow, /database cadence gate[\s\S]*180 minutes/);
+  assert.match(workflow, /github\.event\.schedule == '7,22,37,52 \* \* \* \*'[\s\S]*inputs\.module == 'ice'/);
+  assert.match(workflow, /github\.event\.schedule == '7,22,37,52 \* \* \* \*'[\s\S]*inputs\.module == 'china-hot'/);
+  assert.match(workflow, /github\.event\.schedule == '7,22,37,52 \* \* \* \*'[\s\S]*inputs\.module == 'trump-x'/);
   for (const source of [iceWorkflow, trumpWorkflow, chinaWorkflow]) {
     assert.doesNotMatch(source, /schedule:/);
     assert.match(source, /COLLECTION_CADENCE_MINUTES: "180"/);

@@ -8,8 +8,8 @@ on:
         required: false
         default: "20"
         type: string
-  schedule:
-    - cron: "23 9 * * *"
+
+# 已停止自动运行。仅在管理员明确手动触发时补封面。
 
 permissions:
   contents: read

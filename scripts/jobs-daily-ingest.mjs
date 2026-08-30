@@ -305,13 +305,15 @@ async function storeCandidate(candidate) {
 
   const existingListing = await rest("job_listings", `${sourceFilter}&select=id,status,status_reason,moderation_hold&limit=1`);
   if (existingListing?.[0]) {
-    const repairHeldListing = existingListing[0].status === "unlisted" && existingListing[0].status_reason === "auto_ingest_parser_quality_hold";
-    const refreshOpenListing = existingListing[0].status === "open" && !existingListing[0].moderation_hold;
+    const row = existingListing[0];
+    const refreshDraft = row.status === "draft";
+    const repairParserHold = row.status === "unlisted" && row.status_reason === "auto_ingest_parser_quality_hold";
+    const queueForReview = refreshDraft || repairParserHold;
     const body = {
       source_checked_at: NOW_ISO,
       source_payload_hash: candidate.payloadHash,
     };
-    if (repairHeldListing || refreshOpenListing) Object.assign(body, {
+    if (queueForReview) Object.assign(body, {
       category_slug: candidate.payload.category_slug,
       title: candidate.payload.title,
       description: candidate.payload.description,
@@ -323,11 +325,16 @@ async function storeCandidate(candidate) {
       contact_public: candidate.payload.contact_public,
       expires_at: EXPIRES_ISO,
       source_published_at: candidate.payload.source_published_at,
+      status: "draft",
+      status_reason: "awaiting_human_review",
+      moderation_hold: true,
+      published_at: null,
     });
-    if (repairHeldListing) Object.assign(body, { status: "open", status_reason: null, published_at: NOW_ISO });
-    await rest("job_listings", `id=eq.${existingListing[0].id}`, { method: "PATCH", body });
-    if (rawId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: "published", normalized_job_listing_id: existingListing[0].id, validation_errors: [] } });
-    return repairHeldListing ? "repaired" : "existing";
+    await rest("job_listings", `id=eq.${row.id}`, { method: "PATCH", body });
+    const rawStage = row.status === "open" ? "published" : "validated";
+    if (rawId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: rawStage, normalized_job_listing_id: row.id, validation_errors: [] } });
+    if (row.status === "open") return "existing_open";
+    return queueForReview ? "drafted" : "held";
   }
 
   const listing = await rest("job_listings", "", { method: "POST", body: {
@@ -338,15 +345,16 @@ async function storeCandidate(candidate) {
     country_code: "US",
     state_code: candidate.payload.state_code,
     city: candidate.payload.city,
-    status: "open",
-    published_at: NOW_ISO,
+    status: "draft",
+    published_at: null,
     created_at: NOW_ISO,
     updated_at: NOW_ISO,
     contact_method: candidate.payload.contact_method,
     contact_value: candidate.payload.contact_value,
     contact_public: true,
     expires_at: EXPIRES_ISO,
-    moderation_hold: false,
+    moderation_hold: true,
+    status_reason: "awaiting_human_review",
     listing_origin: "external",
     company_name: candidate.payload.company_name,
     source_key: SOURCE_KEY,
@@ -360,13 +368,13 @@ async function storeCandidate(candidate) {
     language_requirements: ["Chinese"],
   } });
   const listingId = listing?.[0]?.id;
-  if (rawId && listingId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: "published", normalized_job_listing_id: listingId, validation_errors: [] } });
-  return "published";
+  if (rawId && listingId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: "validated", normalized_job_listing_id: listingId, validation_errors: [] } });
+  return "drafted";
 }
 
 async function main() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
-  const summary = { started_at: NOW_ISO, target: TARGET_CANDIDATES, discovered: 0, fetched: 0, published: 0, repaired: 0, existing: 0, rejected: 0, fetch_errors: 0, write_errors: 0 };
+  const summary = { started_at: NOW_ISO, target: TARGET_CANDIDATES, discovered: 0, fetched: 0, drafted: 0, existing_open: 0, held: 0, rejected: 0, fetch_errors: 0, write_errors: 0 };
   try {
     const urls = await discoverUrls();
     summary.discovered = urls.length;
@@ -383,9 +391,9 @@ async function main() {
       catch (error) { console.error("WRITE_ERROR", candidate.url, error?.message || error); return "write_error"; }
     });
     for (const status of stored) {
-      if (status === "published") summary.published += 1;
-      else if (status === "repaired") summary.repaired += 1;
-      else if (status === "existing") summary.existing += 1;
+      if (status === "drafted") summary.drafted += 1;
+      else if (status === "existing_open") summary.existing_open += 1;
+      else if (status === "held") summary.held += 1;
       else if (status === "rejected") summary.rejected += 1;
       else summary.write_errors += 1;
     }

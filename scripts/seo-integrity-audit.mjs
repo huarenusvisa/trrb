@@ -5,6 +5,12 @@ import path from "node:path";
 const ROOT = process.cwd();
 const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
 const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
+const EXTERNAL_PRODUCT_PREFIXES = ["asylumjudge/", "immigration-judge-approval-rate/", "jobs/", "huarengongzuo/"];
+const INTENTIONAL_NOINDEX_HTML = new Set([
+  "404.html", "delete-account.html", "expose.html", "health.html", "thanks.html"
+]);
+const DYNAMIC_SEO_HTML = new Set(["article.html", "listing.html", "legal/detail.html"]);
+const STRICT_INDEXABLE_SEO_GATE = "STRICT_INDEXABLE_SEO_GATE_V2";
 const ROUTE_PREFIXES = new Set([
   "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
   "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
@@ -122,15 +128,21 @@ for (const file of htmlFiles) {
   if (publicPage) {
     if (!has(html, /<html\b[^>]*\blang=["'][^"']+["']/i)) errors.push(`${name}: 缺少 html lang`);
     if (!has(html, /<title>[^<]{3,}<\/title>/i)) errors.push(`${name}: 缺少有效 title`);
-    if (!has(html, /<meta\b[^>]*name=["']description["'][^>]*content=["'][^"']{20,}["']/i) && !has(html, /<meta\b[^>]*content=["'][^"']{20,}["'][^>]*name=["']description["']/i)) warnings.push(`${name}: 缺少或过短 meta description`);
+    const dynamicSeo = DYNAMIC_SEO_HTML.has(name) || /article-seo\.js|listing-seo\.js/.test(html);
+    const externalProduct = EXTERNAL_PRODUCT_PREFIXES.some((prefix) => name.startsWith(prefix));
+    const intentionallyNoindex = is404 || INTENTIONAL_NOINDEX_HTML.has(name);
+    const indexableStaticPage = !dynamicSeo && !externalProduct && !intentionallyNoindex;
+
     if (is404) {
       if (!/noindex/i.test(html)) errors.push(`${name}: 404页面必须 noindex`);
-    } else if (/name=["']robots["'][^>]*noindex/i.test(html)) {
-      warnings.push(`${name}: 公共页面被设置为 noindex`);
+    } else if (indexableStaticPage && /name=["']robots["'][^>]*noindex/i.test(html)) {
+      errors.push(`${name}: 应索引公共页面被设置为 noindex`);
     }
-    const dynamicSeo = ["article.html", "listing.html"].includes(name) || /article-seo\.js|listing-seo\.js/.test(html);
-    if (!dynamicSeo && !has(html, /<link\b[^>]*rel=["']canonical["']/i)) warnings.push(`${name}: 缺少 canonical`);
-    if (!has(html, /property=["']og:title["']/i) && !dynamicSeo) warnings.push(`${name}: 缺少 Open Graph title`);
+    if (indexableStaticPage && !has(html, /<meta\b[^>]*name=["']description["'][^>]*content=["'][^"']{20,}["']/i) && !has(html, /<meta\b[^>]*content=["'][^"']{20,}["'][^>]*name=["']description["']/i)) {
+      errors.push(`${name}: 缺少或过短 meta description`);
+    }
+    if (indexableStaticPage && !has(html, /<link\b[^>]*rel=["']canonical["']/i)) errors.push(`${name}: 缺少 canonical`);
+    if (indexableStaticPage && !has(html, /property=["']og:title["']/i)) errors.push(`${name}: 缺少 Open Graph title`);
   }
 
   const checks = [
@@ -157,9 +169,9 @@ try {
   const robots = await readFile(path.join(ROOT, "robots.txt"), "utf8");
   if (!/User-agent:\s*\*/i.test(robots)) errors.push("robots.txt 缺少 User-agent: *");
   if (!/Sitemap:\s*https:\/\/trrb\.net\/sitemap\.xml/i.test(robots)) errors.push("robots.txt 缺少主 sitemap 声明");
-  if (!/Sitemap:\s*https:\/\/trrb\.net\/news-sitemap\.xml/i.test(robots)) warnings.push("robots.txt 缺少 news sitemap 声明");
+  if (!/Sitemap:\s*https:\/\/trrb\.net\/news-sitemap\.xml/i.test(robots)) errors.push("robots.txt 缺少 news sitemap 声明");
   if (/Sitemap:\s*https:\/\/www\.trrb\.net\//i.test(robots)) errors.push("robots.txt 仍包含 www.trrb.net sitemap 声明");
-  if (!/Disallow:\s*\/admin\//i.test(robots)) warnings.push("robots.txt 未屏蔽后台目录");
+  if (!/Disallow:\s*\/admin\//i.test(robots)) errors.push("robots.txt 未屏蔽后台目录");
 } catch {}
 
 try {
@@ -183,13 +195,14 @@ for (const file of files.filter((item) => /(?:^|\/)sitemap[^/]*\.xml$/i.test(rel
 try {
   const liveSitemap = await readFile(path.join(ROOT, "netlify/edge-functions/sitemap-live.ts"), "utf8");
   if (/jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/.test(liveSitemap)) errors.push("live sitemap 仍在加入已跳转的 /jobs/");
-  if (!/live-supabase-v8-jobs-external-canonical/.test(liveSitemap)) errors.push("live sitemap 未升级到 jobs external canonical v8");
+  if (!/live-supabase-v9-quality-budget-canonical/.test(liveSitemap)) errors.push("live sitemap 未升级到 quality budget canonical v9");
 } catch (error) {
   errors.push(`无法读取 live sitemap edge: ${error.message}`);
 }
 
 const report = {
   generatedAt: new Date().toISOString(),
+  gate: STRICT_INDEXABLE_SEO_GATE,
   checked,
   errors,
   warnings,

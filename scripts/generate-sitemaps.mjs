@@ -7,7 +7,9 @@ const SITE = 'https://trrb.net';
 const NOW = new Date();
 const TODAY = NOW.toISOString().slice(0, 10);
 const NEWS_CUTOFF = NOW.getTime() - 48 * 60 * 60 * 1000;
-const MIN_INDEXABLE_BODY_LENGTH = 80;
+const MIN_INDEXABLE_BODY_LENGTH = 300;
+const MIN_INDEXABLE_TITLE_LENGTH = 8;
+const MAX_SITEMAP_ARTICLES = 5000;
 const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
@@ -102,9 +104,9 @@ const isSpecialTopicArticle = (article) => {
   return topic === 'ice' || topic === 'trump';
 };
 const isIndexableArticle = (article) => {
+  const title = visibleText(article?.title || '');
   const body = visibleText(article?.content || article?.summary || '');
-  if (isIceArticle(article)) return Boolean(cleanText(article?.title || '')) && Boolean(body);
-  return body.length >= MIN_INDEXABLE_BODY_LENGTH;
+  return title.length >= MIN_INDEXABLE_TITLE_LENGTH && body.length >= MIN_INDEXABLE_BODY_LENGTH;
 };
 const escapeXml = (value = '') => cleanText(value)
   .replaceAll('&', '&amp;')
@@ -217,8 +219,10 @@ if (categories.length) {
 
 const sitemapCategoryIds = new Set(categories.filter((item) => item.include_in_sitemap !== false).map((item) => String(item.id)));
 const sitemapCategoryNames = new Set(categories.filter((item) => item.include_in_sitemap !== false).map((item) => String(item.name)));
+const sitemapCategorySlugs = new Set(categories.filter((item) => item.include_in_sitemap !== false).map((item) => canonicalSection(item.slug)));
 const newsCategoryIds = new Set(categories.filter((item) => item.include_in_google_news !== false).map((item) => String(item.id)));
 const newsCategoryNames = new Set(categories.filter((item) => item.include_in_google_news !== false).map((item) => String(item.name)));
+const newsCategorySlugs = new Set(categories.filter((item) => item.include_in_google_news !== false).map((item) => canonicalSection(item.slug)));
 
 const databaseArticles = await fetchAllPublishedArticles();
 console.log(`[sitemap] loaded ${databaseArticles.length} live published articles from Supabase`);
@@ -249,11 +253,15 @@ if (categories.length) {
   staticEntries.push({ loc: `${SITE}/trump`, lastmod: TODAY, priority: '0.8', changefreq: 'hourly' });
 }
 
-const isAllowed = (article, idSet, nameSet) => {
+const isAllowed = (article, idSet, nameSet, slugSet) => {
   if (isSpecialTopicArticle(article)) return true;
   if (!categories.length) return true;
   if (article?.category_id) return idSet.has(String(article.category_id));
-  if (article?.category_name) return nameSet.has(String(article.category_name));
+  if (article?.category_name) {
+    const name = cleanText(article.category_name);
+    const fallbackSlug = canonicalSection(FALLBACK_CATEGORY_SLUGS.get(name) || '');
+    return nameSet.has(name) || Boolean(fallbackSlug && slugSet.has(fallbackSlug));
+  }
   return true;
 };
 
@@ -261,12 +269,12 @@ const byUrl = new Map(staticEntries.map((entry) => [entry.loc, entry]));
 const seenTitles = new Set();
 const seenBodies = new Set();
 let thinExcluded = 0;
-let shortIcePreserved = 0;
 let specialTopicPreserved = 0;
 let duplicateExcluded = 0;
+const articleEntries = [];
 for (const article of databaseArticles) {
   if (!article?.id || !cleanText(article?.title)) continue;
-  if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames)) continue;
+  if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames, sitemapCategorySlugs)) continue;
   if (isSpecialTopicArticle(article)) specialTopicPreserved += 1;
 
   const body = visibleText(article?.content || article?.summary || '');
@@ -274,8 +282,6 @@ for (const article of databaseArticles) {
     thinExcluded += 1;
     continue;
   }
-  if (isIceArticle(article) && body.length < MIN_INDEXABLE_BODY_LENGTH) shortIcePreserved += 1;
-
   const titleKey = normalizedTitle(article?.title || '');
   const bodyKey = body.length >= 120 ? body : '';
   if ((titleKey.length >= 8 && seenTitles.has(titleKey)) || (bodyKey && seenBodies.has(bodyKey))) {
@@ -289,8 +295,13 @@ for (const article of databaseArticles) {
   if (!loc) continue;
   const published = parsePublicationDate(article);
   const date = published?.dateOnly || TODAY;
-  byUrl.set(loc, { loc, lastmod: date, priority: '0.6', changefreq: 'weekly', article, published });
+  articleEntries.push({ loc, lastmod: date, priority: '0.6', changefreq: 'weekly', article, published });
 }
+
+articleEntries
+  .sort((a, b) => (b.published?.timestamp || 0) - (a.published?.timestamp || 0))
+  .slice(0, MAX_SITEMAP_ARTICLES)
+  .forEach((entry) => byUrl.set(entry.loc, entry));
 
 const entries = [...byUrl.values()].sort((a, b) => b.lastmod.localeCompare(a.lastmod));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map(({ loc, lastmod, changefreq, priority }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`).join('\n')}\n</urlset>\n`;
@@ -298,7 +309,7 @@ fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
 
 const recentNews = entries
   .filter((entry) => entry.article && entry.published)
-  .filter((entry) => isAllowed(entry.article, newsCategoryIds, newsCategoryNames))
+  .filter((entry) => isAllowed(entry.article, newsCategoryIds, newsCategoryNames, newsCategorySlugs))
   .filter((entry) => entry.published.timestamp >= NEWS_CUTOFF && entry.published.timestamp <= NOW.getTime() + 5 * 60 * 1000)
   .filter((entry) => cleanText(entry.article?.title || '').length > 0)
   .sort((a, b) => b.published.timestamp - a.published.timestamp)
@@ -310,4 +321,4 @@ if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} canonical URLs; static hubs ${STATIC_HUBS.length}; immigration knowledge ${IMMIGRATION_KNOWLEDGE_ENTRIES.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin ${thinExcluded}; preserved short ICE ${shortIcePreserved}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);
+console.log(`[sitemap] generated ${entries.length} canonical URLs; article cap ${MAX_SITEMAP_ARTICLES}; eligible articles ${articleEntries.length}; static hubs ${STATIC_HUBS.length}; immigration knowledge ${IMMIGRATION_KNOWLEDGE_ENTRIES.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin/short-title ${thinExcluded}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);

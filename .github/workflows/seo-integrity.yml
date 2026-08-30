@@ -17,6 +17,11 @@ on:
       - "_redirects"
       - "scripts/finalize-redirects.mjs"
       - "scripts/seo-integrity-audit.mjs"
+      - "scripts/seo-quality-contract.test.mjs"
+      - "scripts/seo-search-engine-ops.mjs"
+      - "scripts/generate-feed.mjs"
+      - "netlify/edge-functions/feed-live.ts"
+      - ".github/workflows/seo-search-engine-ops.yml"
       - "scripts/upgrade-article-urls.mjs"
       - "scripts/verify-pr-preview.mjs"
       - ".github/workflows/seo-integrity.yml"
@@ -54,7 +59,9 @@ jobs:
       - name: Run production integrity validation
         run: node scripts/validate-site.mjs
       - name: Run SEO and internal 404 audit
-        run: node scripts/seo-integrity-audit.mjs
+        run: |
+          node scripts/seo-quality-contract.test.mjs
+          node scripts/seo-integrity-audit.mjs
       - name: Verify Netlify deploy preview article routes
         if: github.event_name == 'pull_request'
         env:

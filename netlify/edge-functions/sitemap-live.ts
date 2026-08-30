@@ -1,5 +1,7 @@
 const SITE = "https://trrb.net";
-const MIN_INDEXABLE_BODY_LENGTH = 80;
+const MIN_INDEXABLE_BODY_LENGTH = 300;
+const MIN_INDEXABLE_TITLE_LENGTH = 8;
+const MAX_SITEMAP_ARTICLES = 5000;
 
 export const config = { path: "/sitemap.xml" };
 
@@ -181,6 +183,7 @@ export default async (request: Request, context: any) => {
 
     const allowedIds = new Set(categories.filter((x: any) => x.include_in_sitemap !== false).map((x: any) => String(x.id)));
     const allowedNames = new Set(categories.filter((x: any) => x.include_in_sitemap !== false).map((x: any) => clean(x.name)));
+    const allowedSlugs = new Set(categories.filter((x: any) => x.include_in_sitemap !== false).map((x: any) => canonicalSection(x.slug)));
     const byId = new Map(categories.map((x: any) => [String(x.id || ""), x]));
     const byName = new Map(categories.map((x: any) => [clean(x.name), x]));
     const blocks: string[] = [...staticBlocks];
@@ -198,7 +201,6 @@ export default async (request: Request, context: any) => {
     const seenTitles = new Set<string>();
     const seenBodies = new Set<string>();
     let excludedThin = 0;
-    let preservedShortIce = 0;
     let excludedDuplicate = 0;
     let preservedSpecialTopic = 0;
 
@@ -206,22 +208,21 @@ export default async (request: Request, context: any) => {
       if (!article?.id || !clean(article?.title)) continue;
       if (categories.length && !isSpecialTopicArticle(article)) {
         if (article?.category_id && !allowedIds.has(String(article.category_id))) continue;
-        if (!article?.category_id && article?.category_name && !allowedNames.has(clean(article.category_name))) continue;
+        if (!article?.category_id && article?.category_name) {
+          const name = clean(article.category_name);
+          const fallbackSlug = canonicalSection(FALLBACK_CATEGORY_SLUGS[name] || "");
+          if (!allowedNames.has(name) && !(fallbackSlug && allowedSlugs.has(fallbackSlug))) continue;
+        }
       } else if (isSpecialTopicArticle(article)) {
         preservedSpecialTopic++;
       }
 
       const body = visibleText(article?.content || article?.summary || "");
-      const ice = isIceArticle(article);
-      if (ice && !body) {
+      const title = visibleText(article?.title || "");
+      if (title.length < MIN_INDEXABLE_TITLE_LENGTH || body.length < MIN_INDEXABLE_BODY_LENGTH) {
         excludedThin++;
         continue;
       }
-      if (!ice && body.length < MIN_INDEXABLE_BODY_LENGTH) {
-        excludedThin++;
-        continue;
-      }
-      if (ice && body.length < MIN_INDEXABLE_BODY_LENGTH) preservedShortIce++;
 
       const titleKey = normalizedTitle(article?.title);
       const bodyKey = body.length >= 120 ? body : "";
@@ -239,6 +240,7 @@ export default async (request: Request, context: any) => {
       if (seenUrls.has(loc)) continue;
       seenUrls.add(loc);
       blocks.push(urlBlock(loc, lastmod(article)));
+      if (blocks.length - staticBlocks.length >= MAX_SITEMAP_ARTICLES) break;
     }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${blocks.join("\n")}\n</urlset>\n`;
@@ -246,12 +248,13 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v8-jobs-external-canonical",
+      "x-trrb-sitemap": "live-supabase-v9-quality-budget-canonical",
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-static-blocks": String(staticBlocks.length),
       "x-trrb-sitemap-immigration-knowledge": String(immigrationKnowledgeCount),
       "x-trrb-sitemap-excluded-thin": String(excludedThin),
-      "x-trrb-sitemap-preserved-short-ice": String(preservedShortIce),
+      "x-trrb-sitemap-min-body": String(MIN_INDEXABLE_BODY_LENGTH),
+      "x-trrb-sitemap-article-cap": String(MAX_SITEMAP_ARTICLES),
       "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),
       "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate),
       "x-trrb-sitemap-dedupe-winner": "newest",

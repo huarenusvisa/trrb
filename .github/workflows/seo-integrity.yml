@@ -19,6 +19,11 @@ on:
       - "scripts/seo-quality-contract.test.mjs"
       - "scripts/jobs-user-workflows.test.mjs"
       - "scripts/huarengongzuo-i18n.test.mjs"
+      - "scripts/automation-control-contract.test.mjs"
+      - "admin/automation-control.js"
+      - "netlify/functions/automation-control.js"
+      - ".github/workflows/operations-control-plane.yml"
+      - ".github/workflows/ice-*.yml"
       - "huarengongzuo/i18n.js"
       - "supabase/migrations/*.sql"
       - "scripts/seo-search-engine-ops.mjs"
@@ -67,6 +72,7 @@ jobs:
           node scripts/jobs-google-seo.test.mjs
           node scripts/jobs-user-workflows.test.mjs
           node scripts/huarengongzuo-i18n.test.mjs
+          node scripts/automation-control-contract.test.mjs
           node scripts/seo-integrity-audit.mjs
       - name: Verify Netlify deploy preview article routes
         if: github.event_name == 'pull_request'

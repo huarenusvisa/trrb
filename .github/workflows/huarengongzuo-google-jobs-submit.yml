@@ -42,7 +42,7 @@ jobs:
       - name: Submit sitemap and eligible jobs
         env:
           GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON }}
-          HG_GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.HG_GOOGLE_SEARCH_CONSOLE_SITE_URL || 'sc-domain:huarengongzuo.com' }}
+          HG_GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.HG_GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://huarengongzuo.com/' }}
           BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

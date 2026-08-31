@@ -3,7 +3,7 @@ import { google } from "googleapis";
 
 const ORIGIN = "https://huarengongzuo.com";
 const SITEMAP = `${ORIGIN}/sitemap.xml`;
-const GSC_SITE = process.env.HG_GOOGLE_SEARCH_CONSOLE_SITE_URL || "sc-domain:huarengongzuo.com";
+const GSC_SITE = process.env.HG_GOOGLE_SEARCH_CONSOLE_SITE_URL || "https://huarengongzuo.com/";
 const GSC_JSON = process.env.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON || "";
 const BING_KEY = process.env.BING_WEBMASTER_API_KEY || "";
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");

@@ -57,6 +57,28 @@ test("发布稿自动公开且不在前台暴露抓取来源", () => {
   assert.doesNotMatch(article.content, /李老师|X平台|x\.com/);
 });
 
+test("视频原帖使用预览缩略图作为发布封面", () => {
+  const videoTweet = {
+    ...chinaTweet,
+    id: "video-123",
+    media: [{
+      type: "video",
+      url: "https://pbs.twimg.com/amplify_video_thumb/video.jpg",
+      preview_image_url: "https://pbs.twimg.com/amplify_video_thumb/video.jpg",
+    }],
+  };
+  const qualified = qualifyTweet(videoTweet);
+  const article = buildPublishedArticle(videoTweet, qualified, {
+    title: "重庆一处现场视频引发关注",
+    summary: "现场视频记录了相关情况。",
+    content: "正文".repeat(160),
+    seo_keywords: "重庆,现场",
+    target: targetLength(qualified.text),
+  }, "2026-08-23T09:00:00.000Z");
+  assert.equal(article.cover_image, videoTweet.media[0].preview_image_url);
+  assert.equal(article.image_alt, article.title);
+});
+
 test("已发布的X中国热门头条生成CHRT原生入站记录", () => {
   const qualified = qualifyTweet(chinaTweet);
   const article = buildPublishedArticle(chinaTweet, qualified, { title: "重庆维权人士被拘留，相关地点仍待核实", summary: "重庆一名维权人士被拘留，公开材料暂未提供更多细节。", content: "正文".repeat(160), seo_keywords: "重庆,维权,拘留", target: targetLength(qualified.text) }, "2026-08-23T09:00:00.000Z");

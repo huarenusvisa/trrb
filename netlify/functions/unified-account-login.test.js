@@ -23,10 +23,11 @@ test('uses the email local part as the default display name', () => {
   assert.equal(value.displayName, 'zhangsan');
 });
 
-test('new registration never uses the admin auto-confirm endpoint', () => {
+test('new email and phone registrations are confirmed server-side for immediate login', () => {
   const source = fs.readFileSync(require.resolve('./unified-account-login'), 'utf8');
-  assert.doesNotMatch(source, /email_confirm\s*:\s*true/);
-  assert.doesNotMatch(source, /createConfirmedUser/);
-  assert.match(source, /auth\/v1\/signup/);
-  assert.match(source, /verification_required/);
+  assert.match(source, /email_confirm\s*:\s*true/);
+  assert.match(source, /createConfirmedUser/);
+  assert.match(source, /auth\/v1\/admin\/users/);
+  assert.doesNotMatch(source, /auth\/v1\/signup/);
+  assert.doesNotMatch(source, /verification_required/);
 });

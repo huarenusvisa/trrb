@@ -36,15 +36,11 @@
 
   async function login() {
     const button = $('login-btn'); button.disabled = true;
-    $('auth-status').textContent = '正在登录；新邮箱账号需要完成验证…';
+    $('auth-status').textContent = '正在登录；新账号会自动创建…';
     try {
       const result = await window.TRUnifiedAccount.loginOrRegister(client, $('login-identifier').value, $('login-password').value);
-      if (result.verificationRequired) {
-        $('auth-status').textContent = '验证邮件已发送。请点击邮件中的链接完成验证，然后回到这里登录。';
-        return;
-      }
       await toggleSignedIn(result.user);
-      $('auth-status').textContent = '登录成功。';
+      $('auth-status').textContent = result.created ? '账号已自动创建并登录。' : '登录成功。';
     } catch (error) { $('auth-status').textContent = error.message; }
     finally { button.disabled = false; }
   }

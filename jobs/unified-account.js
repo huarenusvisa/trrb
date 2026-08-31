@@ -9,16 +9,11 @@
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(payload.error || '登录失败，请稍后重试');
-    if (payload.verification_required) {
-      const error = new Error('验证邮件已发送。请点击邮件中的链接完成验证，然后回到这里登录。');
-      error.verificationRequired = true;
-      throw error;
-    }
     const session = payload.session;
     if (!session?.access_token || !session?.refresh_token) throw new Error('登录状态无效，请重新登录');
     const { data, error } = await client.auth.setSession({ access_token: session.access_token, refresh_token: session.refresh_token });
     if (error) throw error;
-    return { user: data.user, created: Boolean(payload.created), verificationRequired: false, account: payload.account || null };
+    return { user: data.user, created: Boolean(payload.created), account: payload.account || null };
   }
 
   function accountLabel(user) {

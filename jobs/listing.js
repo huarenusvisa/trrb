@@ -23,7 +23,7 @@
     const ended=row.status!=='open';
     const contact=ended?'':`<p><a class="contact-employer" href="/jobs/contact.html?id=${encodeURIComponent(row.id)}">联系招聘方</a></p>`;
     applySeo(row);
-    root.innerHTML=`<h1>${esc(row.title)}</h1><p><strong>${esc(labels[row.status]||row.status)}</strong> · ${esc(row.state_code)} ${esc(row.city)} ${esc(row.borough||row.county||'')} ${esc(row.neighborhood||'')}</p>${ended?'<aside style="padding:12px;border:1px solid #bbb"><b>此招聘已结束。</b> 页面保留用于历史记录与长期稳定链接，不会混入当前招聘搜索。</aside>':''}<p>${esc(row.description||'')}</p>${contact}<p>永久记录ID：<code>${esc(row.id)}</code></p><p>最近更新：${esc(row.updated_at||'')}</p>`;
+    root.innerHTML=`<h1 data-i18n-skip>${esc(row.title)}</h1><p><strong>${esc(labels[row.status]||row.status)}</strong> · ${esc(row.state_code)} ${esc(row.city)} ${esc(row.borough||row.county||'')} ${esc(row.neighborhood||'')}</p>${ended?'<aside style="padding:12px;border:1px solid #bbb"><b>此招聘已结束。</b> 页面保留用于历史记录与长期稳定链接，不会混入当前招聘搜索。</aside>':''}<p data-i18n-skip>${esc(row.description||'')}</p>${contact}<p>永久记录ID：<code>${esc(row.id)}</code></p><p>最近更新：${esc(row.updated_at||'')}</p>`;
   }
   document.addEventListener('DOMContentLoaded',load);
 })();

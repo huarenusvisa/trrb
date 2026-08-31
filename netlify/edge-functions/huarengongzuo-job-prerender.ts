@@ -156,12 +156,12 @@ ${schema}
 </head><body>
 <header class="bar"><div><a href="/">华人工作网</a> · <a href="/#latest-jobs">返回最新招聘</a></div></header>
 <main class="wrap"><article class="card">
-<div class="company">${esc(company || "招聘方未公开名称")}</div><h1>${esc(title)}</h1>
+<div class="company" data-i18n-skip>${esc(company || "招聘方未公开名称")}</div><h1 data-i18n-skip>${esc(title)}</h1>
 <div class="meta">${esc(place || "美国")} · 发布于 ${esc(iso(job.source_published_at || job.published_at).slice(0,10))}</div>
-<div class="description">${esc(description)}</div>
+<div class="description" data-i18n-skip>${esc(description)}</div>
 ${action ? `<a class="apply" href="${esc(action.href)}" rel="nofollow noopener">${esc(action.label)}</a>` : ""}
 ${expired ? '<div class="note">该职位已过有效期，不再接受申请。</div>' : '<div class="note">联系前请核实雇主身份、工作地点、薪资和用工条件；不要向陌生人提供银行卡密码或验证码。</div>'}
-</article></main></body></html>`;
+</article></main><script src="/huarengongzuo/i18n.js?v=20260831-i18n-v1"></script></body></html>`;
 }
 
 export default async (request: Request, context: any) => {

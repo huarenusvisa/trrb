@@ -101,7 +101,7 @@
   function renderList(rows) {
     $('jobs-results').innerHTML = rows.length ? rows.map((row) => `
       <article class="result-card" data-job-id="${esc(row.id)}">
-        <h2>${esc(row.title)}</h2>
+        <h2 data-i18n-skip>${esc(row.title)}</h2>
         <div class="meta"><span class="salary">${esc(formatSalary(row))}</span><span class="pill">${esc(locationText(row))}</span>${row.distance_miles == null ? '' : `<span class="pill">距找工地点 ${esc(row.distance_miles)} miles</span>`}<span class="pill">${esc(row.category_slug)}</span><span class="pill">${esc(row.employment_type)}</span></div>
       </article>`).join('') : '<div class="empty result-card">没有找到符合条件的岗位。可减少筛选条件后重试。</div>';
   }

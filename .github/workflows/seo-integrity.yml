@@ -61,6 +61,7 @@ jobs:
       - name: Run SEO and internal 404 audit
         run: |
           node scripts/seo-quality-contract.test.mjs
+          node scripts/jobs-google-seo.test.mjs
           node scripts/seo-integrity-audit.mjs
       - name: Verify Netlify deploy preview article routes
         if: github.event_name == 'pull_request'

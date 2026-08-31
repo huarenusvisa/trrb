@@ -6,7 +6,7 @@ import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js"
 import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
 
 const { buildPeopleCountMetadata } = peopleCountModule;
-const { isIceEnforcementText } = iceClassifier;
+const { isIceEnforcementText, isIceEnforcementEvidence } = iceClassifier;
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 const EDITORIAL_VERSION = "zh-title-body-v7-300-600-800-context-image";
@@ -102,8 +102,8 @@ async function officialEvidence(storyId) {
   const links = await storyEvidence(storyId);
   const ids = links.map((row) => row.post_id).filter(Boolean);
   if (!ids.length) return [];
-  const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username", id: `in.(${ids.join(",")})`, limit: "100" } });
-  return (Array.isArray(rows) ? rows : []).filter(officialPost);
+  const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_text", id: `in.(${ids.join(",")})`, limit: "100" } });
+  return (Array.isArray(rows) ? rows : []).filter((post) => officialPost(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
 }
 async function leadPost(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});

@@ -46,7 +46,7 @@
           <div class="panel"><h3>求职发布</h3><div class="table-wrap"><table><thead><tr><th>求职</th><th>发布者</th><th>地区</th><th>状态</th><th>治理</th></tr></thead><tbody id="jobs-seekers-body"></tbody></table></div></div>
         </section>
         <section class="page hidden" id="automation-control-page">
-          <div class="panel automation-head"><div><h3>机器人与任务流管理</h3><p>总开关和对应流程必须同时开启，GitHub Actions 才会执行。任何配置缺失或数据库读取失败都会自动暂停。</p></div><strong id="automation-global-state" class="automation-state paused">全部暂停</strong></div>
+          <div class="panel automation-head"><div><h3>机器人与任务流管理</h3><p>每项任务都可人工单独开启或关闭；单独开启时只启动所选任务，点击“全部关闭”会停止所有任务。任何配置缺失或数据库读取失败都会自动暂停。</p></div><strong id="automation-global-state" class="automation-state paused">全部暂停</strong></div>
           <div id="automation-control-message" class="message">登录后读取正式状态。</div>
           <div id="automation-control-list" class="automation-control-list"></div>
         </section>
@@ -78,7 +78,7 @@
   <script src="./community-center.js?v=20260825-community-v1"></script>
   <script src="./jobs-manager.js?v=20260821-core-access"></script>
   <script src="./jobs-google-quality.js?v=20260831-quality-v1"></script>
-  <script src="./automation-control.js?v=20260831-hard-gate-v1"></script>
+  <script src="./automation-control.js?v=20260831-explicit-controls-v2"></script>
   <script src="./finance-monitor.js?v=20260824-manual-only"></script>
   <script src="./asylumjudge-review.js?v=20260821-official-review"></script>
   <script src="./ice-report-integrated.js?v=20260714-v4"></script>

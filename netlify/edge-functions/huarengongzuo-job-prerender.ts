@@ -82,8 +82,8 @@ function employmentType(value: unknown): string | undefined {
   } as Record<string, string>)[clean(value)];
 }
 function salarySchema(job: any) {
-  const min = Number(job.salary_min);
-  const max = Number(job.salary_max);
+  const min = job.salary_min == null || job.salary_min === "" ? Number.NaN : Number(job.salary_min);
+  const max = job.salary_max == null || job.salary_max === "" ? Number.NaN : Number(job.salary_max);
   if (!Number.isFinite(min) && !Number.isFinite(max)) return undefined;
   const unit = ({ hour: "HOUR", day: "DAY", week: "WEEK", month: "MONTH", year: "YEAR" } as Record<string,string>)[clean(job.salary_period)];
   if (!unit) return undefined;

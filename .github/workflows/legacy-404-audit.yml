@@ -27,7 +27,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  automation-gate:
+    runs-on: ubuntu-24.04
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: controls
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/automation-gate.mjs
+      - id: gate
+        run: echo "allowed=${{ steps.controls.outputs.global == 'true' && steps.controls.outputs.legacy_404 == 'true' }}" >> "$GITHUB_OUTPUT"
   audit:
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.allowed == 'true' }}
     name: 对比旧归档与正式库
     runs-on: ubuntu-24.04
     timeout-minutes: 25

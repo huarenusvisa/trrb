@@ -26,7 +26,22 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  automation-gate:
+    runs-on: ubuntu-latest
+    outputs:
+      allowed: ${{ steps.gate.outputs.allowed }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: controls
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/automation-gate.mjs
+      - id: gate
+        run: echo "allowed=${{ steps.controls.outputs.global == 'true' && steps.controls.outputs.seo_search_engine == 'true' }}" >> "$GITHUB_OUTPUT"
   monitor:
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.allowed == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

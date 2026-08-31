@@ -1,7 +1,6 @@
 name: 线上SEO与404真实抓取
 
 on:
-  workflow_dispatch:
   workflow_call:
 
 permissions:

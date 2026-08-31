@@ -1,7 +1,6 @@
 name: ICE孤儿素材安全清理
 
 on:
-  workflow_dispatch:
   workflow_call:
 
 permissions:

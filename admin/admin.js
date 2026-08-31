@@ -222,6 +222,7 @@ function showPage(page, sourceButton = null) {
     articles: "文章管理",
     "new-article": preset === "niulai" ? "牛来人工发稿" : "发布文章",
     "finance-monitor": "牛来接口监控",
+    "automation-control": "机器人管理",
     "content-center": "采集内容中心",
     "asylumjudge-review": "AsylumJudge内容中心",
     rankings: "24小时热榜"
@@ -237,6 +238,7 @@ function showPage(page, sourceButton = null) {
   if (page === "new-article") configurePublisherPreset(preset);
   if (page === "content-center") window.loadUnifiedContentCenter?.();
   if (page === "finance-monitor") window.loadFinanceHealth?.();
+  if (page === "automation-control") window.loadAutomationControls?.();
   if (page === "asylumjudge-review") window.loadAsylumJudgeReview?.();
   document.dispatchEvent(new CustomEvent("trrb:admin-page-shown", { detail: { page, preset } }));
 }

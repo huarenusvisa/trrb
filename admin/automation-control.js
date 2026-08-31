@@ -11,15 +11,45 @@
       body: options.body ? JSON.stringify(options.body) : undefined
     });
     const payload = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(payload.error || `请求失败（${response.status}）`);
+    if (!response.ok) {
+      const error = new Error(payload.error || `请求失败（${response.status}）`);
+      error.payload = payload;
+      throw error;
+    }
     return payload;
+  }
+
+  function renderNotifications(notifications = [], dispatchReady = true) {
+    const panel = $('automation-notification-panel');
+    const list = $('automation-notification-list');
+    if (!panel || !list) return;
+    const items = [...notifications];
+    if (!dispatchReady) {
+      items.unshift({
+        id: 'missing-token',
+        severity: 'error',
+        title: '机器人即时执行尚未接通',
+        message: 'Netlify 缺少 GITHUB_AUTOMATION_TOKEN。开关可以保存，但点击“启用”无法立即启动工作流，点击“关闭”也无法取消已在运行的任务。',
+        created_at: new Date().toISOString()
+      });
+    }
+    panel.classList.toggle('hidden', items.length === 0);
+    list.innerHTML = items.length ? items.map((item) => `
+      <article class="automation-notification ${escapeHtml(item.severity || 'error')}">
+        <div>
+          <strong>${escapeHtml(item.title || '机器人运行通知')}</strong>
+          <p>${escapeHtml(item.message || '')}</p>
+        </div>
+        <time>${escapeHtml(item.created_at ? new Date(item.created_at).toLocaleString('zh-CN', { hour12: false }) : '')}</time>
+      </article>
+    `).join('') : '';
   }
 
   function render(controls) {
     const root = $('automation-control-list');
     const global = controls.find((item) => item.control_key === 'global');
     const globalEnabled = global?.enabled === true;
-    $('automation-global-state').textContent = globalEnabled ? '运行中' : '全部暂停';
+    $('automation-global-state').textContent = globalEnabled ? '已启用' : '全部关闭';
     $('automation-global-state').className = globalEnabled ? 'automation-state running' : 'automation-state paused';
     root.innerHTML = controls.map((item) => {
       const configuredEnabled = item.enabled === true;
@@ -27,9 +57,9 @@
         ? configuredEnabled
         : globalEnabled && configuredEnabled;
       const effectiveLabel = effectiveEnabled
-        ? '运行中'
+        ? '已启用'
         : configuredEnabled
-          ? '待命（总开关已关闭）'
+          ? '待启用（总开关已关闭）'
           : '已关闭';
       const effectiveClass = effectiveEnabled
         ? 'running'
@@ -53,7 +83,7 @@
               data-automation-key="${escapeHtml(item.control_key)}"
               data-automation-enabled="true"
               aria-pressed="${configuredEnabled}"
-            >${item.control_key === 'global' ? '全部开启' : '开启'}</button>
+            >${item.control_key === 'global' ? '全部启用' : '启用'}</button>
             <button
               type="button"
               class="automation-toggle-button disable ${configuredEnabled ? '' : 'active'}"
@@ -65,46 +95,52 @@
         </article>`;
     }).join('');
     root.querySelectorAll('[data-automation-key]').forEach((button) => {
-      button.addEventListener('click', () => update(button, globalEnabled));
+      button.addEventListener('click', () => update(button));
     });
   }
 
-  async function update(button, globalEnabled) {
+  async function update(button) {
     const enabled = button.dataset.automationEnabled === 'true';
     const key = button.dataset.automationKey;
-    if (button.getAttribute('aria-pressed') === 'true') {
-      $('automation-control-message').textContent = `${key === 'global' ? '总开关' : '该流程'}当前已经${enabled ? '开启' : '关闭'}。`;
+    if (!enabled && button.getAttribute('aria-pressed') === 'true') {
+      $('automation-control-message').textContent = `${key === 'global' ? '总开关' : '该流程'}当前已经关闭。`;
       return;
     }
 
     const groupButtons = [...button.closest('.automation-actions').querySelectorAll('button')];
     groupButtons.forEach((item) => { item.disabled = true; });
-    $('automation-control-message').textContent = `正在${enabled ? '开启' : '关闭'}${key === 'global' ? '总开关' : '流程'}…`;
+    $('automation-control-message').textContent = enabled
+      ? `正在启用并立即执行${key === 'global' ? '全部机器人' : '该流程'}…`
+      : `正在关闭并停止${key === 'global' ? '全部机器人' : '该流程'}…`;
     try {
       const result = await request({ method: 'PATCH', body: { control_key: key, enabled } });
-      if (result.mode === 'single') {
-        $('automation-control-message').textContent = '已单独开启该任务；总控已自动恢复，其他任务保持关闭。';
-      } else if (key === 'global') {
-        $('automation-control-message').textContent = enabled
-          ? '全部任务已开启。GitHub Actions 下一次启动时会读取最新状态。'
-          : '总控和所有单项任务均已关闭。';
+      await load({ quiet: true });
+      if (enabled) {
+        $('automation-control-message').textContent = result.mode === 'single'
+          ? '已单独启用并立即派发该任务；总控已自动恢复，其他任务保持关闭。'
+          : `已启用并立即派发执行（${(result.workflows || []).join('、') || '工作流'}）。`;
       } else {
-        $('automation-control-message').textContent = `该任务已${enabled ? '开启' : '关闭'}。GitHub Actions 下一次启动时会读取最新状态。`;
+        $('automation-control-message').textContent = `已关闭；新的执行入口已被拦截，并取消 ${result.cancelled_runs || 0} 个排队或运行中的任务。`;
       }
-      await load();
     } catch (error) {
-      $('automation-control-message').textContent = `保存失败：${error.message}`;
+      if (error.payload?.saved) await load({ quiet: true });
+      $('automation-control-message').textContent = `操作失败：${error.message}${error.payload?.saved ? '（开关状态已保存，错误已发送到本页通知）' : ''}`;
     } finally {
       groupButtons.forEach((item) => { item.disabled = false; });
     }
   }
 
-  async function load() {
-    $('automation-control-message').textContent = '正在读取机器人状态…';
+  async function load(options = {}) {
+    if (!options.quiet) $('automation-control-message').textContent = '正在读取机器人状态…';
     try {
       const payload = await request();
       render(payload.controls || []);
-      $('automation-control-message').textContent = '开关状态来自正式数据库；数据库不可读时，工作流会自动按暂停处理。';
+      renderNotifications(payload.notifications || [], payload.dispatch_ready !== false);
+      if (!options.quiet) {
+        $('automation-control-message').textContent = payload.dispatch_ready
+          ? '开关状态来自正式数据库。点击“启用”会立即执行；点击“关闭”会阻止并停止执行。'
+          : '开关状态已读取，但即时执行密钥尚未配置，请先处理上方红色通知。';
+      }
     } catch (error) {
       $('automation-control-message').textContent = `读取失败：${error.message}`;
     }

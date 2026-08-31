@@ -53,14 +53,14 @@
               data-automation-key="${escapeHtml(item.control_key)}"
               data-automation-enabled="true"
               aria-pressed="${configuredEnabled}"
-            >开启</button>
+            >${item.control_key === 'global' ? '全部开启' : '开启'}</button>
             <button
               type="button"
               class="automation-toggle-button disable ${configuredEnabled ? '' : 'active'}"
               data-automation-key="${escapeHtml(item.control_key)}"
               data-automation-enabled="false"
               aria-pressed="${!configuredEnabled}"
-            >关闭</button>
+            >${item.control_key === 'global' ? '全部关闭' : '关闭'}</button>
           </div>
         </article>`;
     }).join('');
@@ -81,11 +81,15 @@
     groupButtons.forEach((item) => { item.disabled = true; });
     $('automation-control-message').textContent = `正在${enabled ? '开启' : '关闭'}${key === 'global' ? '总开关' : '流程'}…`;
     try {
-      await request({ method: 'PATCH', body: { control_key: key, enabled } });
-      if (key !== 'global' && enabled && !globalEnabled) {
-        $('automation-control-message').textContent = '该流程已设为开启，但总开关仍关闭，因此当前处于待命状态。';
+      const result = await request({ method: 'PATCH', body: { control_key: key, enabled } });
+      if (result.mode === 'single') {
+        $('automation-control-message').textContent = '已单独开启该任务；总控已自动恢复，其他任务保持关闭。';
+      } else if (key === 'global') {
+        $('automation-control-message').textContent = enabled
+          ? '全部任务已开启。GitHub Actions 下一次启动时会读取最新状态。'
+          : '总控和所有单项任务均已关闭。';
       } else {
-        $('automation-control-message').textContent = `${key === 'global' ? '总开关' : '流程'}已${enabled ? '开启' : '关闭'}。GitHub Actions 下一次启动时会先读取此状态。`;
+        $('automation-control-message').textContent = `该任务已${enabled ? '开启' : '关闭'}。GitHub Actions 下一次启动时会读取最新状态。`;
       }
       await load();
     } catch (error) {

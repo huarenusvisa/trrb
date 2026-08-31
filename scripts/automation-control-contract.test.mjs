@@ -14,6 +14,11 @@ assert.match(control, /in\.\(seo_metadata,legacy_recovery\)/);
 assert.match(control, /CONTROL_PLANE_KEYS\.has\(key\).*CONTROL_PLANE_WORKFLOW/s);
 assert.match(control, /ice-auto-publish\.yml/);
 assert.match(control, /ice-emergency-watchdog\.yml/);
+assert.match(control, /title: `\$\{existing\.display_name\}已打开`/);
+assert.match(control, /title: fullyStopped \? `\$\{existing\.display_name\}已停止`/);
+assert.match(control, /STOP_POLL_ATTEMPTS = 8/);
+assert.match(control, /closeGlobalIfNoEnabledChildren/);
+assert.match(control, /enabled: 'eq\.true'/);
 
 const legacyRecovery = read('.github/workflows/legacy-search-recovery.yml');
 assert.doesNotMatch(legacyRecovery, /confirm_apply/);

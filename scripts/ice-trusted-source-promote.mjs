@@ -25,7 +25,7 @@ function editorialReady(story, evidence) { const payload = story.ai_payload && t
 
 async function main() {
   requireEnv();
-  const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration)", order: "updated_at.desc", limit: "1000" } });
+  const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "updated_at.desc", limit: "1000" } });
   let autoApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0, rejectedNonIce = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
     if (!recentEnough(story)) { stale += 1; continue; }

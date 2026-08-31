@@ -2,6 +2,9 @@ const { authenticateStaff, rest, safeText } = require('./_shared/supabase-admin'
 
 const REPOSITORY = 'huarenusvisa/trrb';
 const CONTROL_PLANE_WORKFLOW = 'operations-control-plane.yml';
+const ACTIVE_RUN_STATES = new Set(['queued', 'in_progress', 'waiting', 'requested', 'pending']);
+const STOP_POLL_ATTEMPTS = 8;
+const STOP_POLL_DELAY_MS = 600;
 const MANUAL_ONLY_KEYS = new Set(['seo_metadata', 'legacy_recovery']);
 const CONTROL_PLANE_KEYS = new Set(['ice', 'china_hot', 'trump_x', 'jobs', 'secondhand', 'seo_indexnow', 'monitor', 'maintenance', 'seo_metadata', 'legacy_recovery']);
 const DISPATCHES = {
@@ -138,12 +141,30 @@ async function dispatchControl(key) {
   return dispatches.map((item) => item.workflow);
 }
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function cancelWorkflow(workflow) {
   const query = new URLSearchParams({ branch: 'main', per_page: '30' });
   const payload = await github(`/actions/workflows/${encodeURIComponent(workflow)}/runs?${query}`);
-  const activeRuns = (payload?.workflow_runs || []).filter((run) => ['queued', 'in_progress', 'waiting', 'requested', 'pending'].includes(run.status));
+  const activeRuns = (payload?.workflow_runs || []).filter((run) => ACTIVE_RUN_STATES.has(run.status));
   await Promise.all(activeRuns.map((run) => github(`/actions/runs/${run.id}/cancel`, { method: 'POST' })));
-  return activeRuns.length;
+
+  let pendingIds = activeRuns.map((run) => run.id);
+  for (let attempt = 0; pendingIds.length && attempt < STOP_POLL_ATTEMPTS; attempt += 1) {
+    await sleep(STOP_POLL_DELAY_MS);
+    const checks = await Promise.allSettled(pendingIds.map((runId) => github(`/actions/runs/${runId}`)));
+    pendingIds = pendingIds.filter((runId, index) => {
+      const check = checks[index];
+      if (check.status !== 'fulfilled') return true;
+      return ACTIVE_RUN_STATES.has(check.value?.status);
+    });
+  }
+
+  return {
+    requested: activeRuns.length,
+    confirmed: activeRuns.length - pendingIds.length,
+    pending: pendingIds.length
+  };
 }
 
 async function cancelControl(key) {
@@ -155,13 +176,17 @@ async function cancelControl(key) {
       ])];
   const results = await Promise.allSettled(workflows.map(async (workflow) => ({
     workflow,
-    cancelled: await cancelWorkflow(workflow)
+    stop: await cancelWorkflow(workflow)
   })));
   const failures = results.filter((result) => result.status === 'rejected');
   if (failures.length) {
     throw new Error(failures.map((result) => result.reason.message).join('；'));
   }
-  return results.reduce((sum, result) => sum + result.value.cancelled, 0);
+  return results.reduce((summary, result) => ({
+    requested: summary.requested + result.value.stop.requested,
+    confirmed: summary.confirmed + result.value.stop.confirmed,
+    pending: summary.pending + result.value.stop.pending
+  }), { requested: 0, confirmed: 0, pending: 0 });
 }
 
 async function patchControls(query, enabled, userId, prefer = 'return=minimal') {
@@ -186,6 +211,20 @@ async function readControl(key) {
     }
   });
   return Array.isArray(controls) ? controls[0] : null;
+}
+
+async function closeGlobalIfNoEnabledChildren(userId) {
+  const activeChildren = await rest('automation_controls', {
+    query: {
+      select: 'control_key',
+      control_key: 'neq.global',
+      enabled: 'eq.true',
+      limit: 1
+    }
+  });
+  if (Array.isArray(activeChildren) && activeChildren.length) return false;
+  await patchControls({ control_key: 'eq.global' }, false, userId);
+  return true;
 }
 
 exports.handler = async (event) => {
@@ -219,6 +258,7 @@ exports.handler = async (event) => {
     if (!existing) return json(404, { error: '机器人流程不存在' });
 
     let mode = 'individual';
+    let globalAutoClosed = false;
     if (key === 'global') {
       mode = body.enabled ? 'all_on' : 'all_off';
       if (body.enabled) {
@@ -243,6 +283,7 @@ exports.handler = async (event) => {
       }
     } else {
       await patchControls({ control_key: `eq.${key}` }, false, user.id);
+      globalAutoClosed = await closeGlobalIfNoEnabledChildren(user.id);
     }
 
     const control = await readControl(key);
@@ -251,10 +292,47 @@ exports.handler = async (event) => {
     try {
       if (body.enabled) {
         const dispatched = await dispatchControl(key);
-        return json(200, { control, mode, action: 'dispatched', workflows: dispatched });
+        await createNotification({
+          controlKey: key,
+          severity: 'success',
+          title: `${existing.display_name}已打开`,
+          message: '开关已启用，并已立即发送到 GitHub Actions 开始执行。',
+          details: { mode, workflows: dispatched },
+          userId: user.id
+        });
+        return json(200, {
+          control,
+          mode,
+          action: 'dispatched',
+          workflows: dispatched,
+          notification_created: true
+        });
       }
-      const cancelled_runs = await cancelControl(key);
-      return json(200, { control, mode, action: 'stopped', cancelled_runs });
+
+      const stop = await cancelControl(key);
+      const fullyStopped = stop.pending === 0;
+      await createNotification({
+        controlKey: key,
+        severity: fullyStopped ? 'info' : 'warning',
+        title: fullyStopped ? `${existing.display_name}已停止` : `${existing.display_name}正在停止`,
+        message: stop.requested === 0
+          ? '关闭开关已生效；没有发现正在运行或排队的实例。'
+          : fullyStopped
+            ? `关闭开关已生效；${stop.confirmed} 个运行实例已确认停止。`
+            : `关闭开关已生效；已发送 ${stop.requested} 个停止请求，${stop.confirmed} 个已确认停止，${stop.pending} 个仍在结束中。`,
+        details: { mode, ...stop, global_auto_closed: globalAutoClosed },
+        userId: user.id
+      });
+      return json(200, {
+        control,
+        mode,
+        action: fullyStopped ? 'stopped' : 'stopping',
+        cancelled_runs: stop.requested,
+        confirmed_stopped_runs: stop.confirmed,
+        pending_stop_runs: stop.pending,
+        global_auto_closed: globalAutoClosed,
+        notification_created: true
+      });
     } catch (actionError) {
       await createNotification({
         controlKey: key,

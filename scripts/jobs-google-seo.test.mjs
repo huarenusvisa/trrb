@@ -50,6 +50,7 @@ assert.match(netlify, /function\s*=\s*"huarengongzuo-robots"[\s\S]*path\s*=\s*"\
 assert.match(listing, /noindex,follow,noarchive/, "base job template must stay noindex until a real open job passes the edge gate");
 assert.match(robots, /Sitemap: https:\/\/huarengongzuo\.com\/sitemap\.xml/, "host robots does not advertise jobs sitemap");
 assert.match(submitter, /urlNotifications\.publish/, "Google Indexing API publisher missing");
+assert.match(submitter, /serviceAccountEmail/, "Google service-account authorization diagnostics missing");
 assert.match(submitter, /URL_UPDATED/, "Google updated-job notification missing");
 assert.match(submitter, /URL_DELETED/, "Google expired-job notification missing");
 assert.match(submitter, /sitemaps\.submit/, "Google Search Console sitemap submission missing");

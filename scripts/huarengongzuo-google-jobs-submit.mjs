@@ -71,7 +71,7 @@ async function recentlyRemovedJobUrls(currentUrls) {
   return ids.map((id) => `${ORIGIN}/jobs/listing.html?id=${encodeURIComponent(id)}`).filter((url) => !current.has(url));
 }
 async function googleOps(updatedUrls, deletedUrls) {
-  if (!GSC_JSON) { report.warnings.push("Google service account secret is missing"); return; }
+  if (!GSC_JSON) throw new Error("Google service account secret is missing");
   let credentials;
   try { credentials = JSON.parse(GSC_JSON); } catch { throw new Error("Google service account JSON is invalid"); }
   const auth = new google.auth.GoogleAuth({
@@ -81,6 +81,7 @@ async function googleOps(updatedUrls, deletedUrls) {
   const webmasters = google.webmasters({ version: "v3", auth });
   const indexing = google.indexing({ version: "v3", auth });
   report.google.configured = true;
+  report.google.serviceAccountEmail = credentials.client_email || null;
   report.google.siteUrl = GSC_SITE;
   const site = await webmasters.sites.get({ siteUrl: GSC_SITE });
   report.google.permissionLevel = site.data.permissionLevel || null;

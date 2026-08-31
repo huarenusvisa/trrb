@@ -197,7 +197,7 @@ async function publish(story) {
     body: {
       id, title: story.title, slug: `ice-${story.event_fingerprint}`, summary: story.summary, content: story.content,
       category_name: "ICE执法动态", cover_image: story.cover_image || video?.poster || "", seo_keywords: "ICE,移民执法,拘留,遣返,ERO,HSI,CBP,DHS,美国移民",
-      author: "唐人日报编辑部", status: "published", published_at: time, created_at: time, topic_key: "ice", source_platform: "x",
+      author: "唐人日报编辑部", status: "published", visibility: "public", published_at: time, created_at: time, topic_key: "ice", source_platform: "x",
       source_post_id: post.x_post_id, source_url: post.x_url, source_account: post.source_username, source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
       review_status: officialApproved ? "official_source_auto_published" : "human_approved",

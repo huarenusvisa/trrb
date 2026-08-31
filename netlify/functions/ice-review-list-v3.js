@@ -111,7 +111,10 @@ async function pipelineStatus(stories) {
     })
   ]);
   const postRows = Array.isArray(posts) ? posts : [];
-  const stateRows = Array.isArray(states) ? states : [];
+  const stateRows = (Array.isArray(states) ? states : []).filter((row) => {
+    const key = String(row?.query_key || "");
+    return !/^pipeline:collection-cadence:(china-hot|trump-x)$/.test(key);
+  });
   const successful = stateRows.map((row) => row.last_success_at).filter(Boolean).sort().at(-1) || null;
   const latestRun = stateRows.map((row) => row.last_run_at).filter(Boolean).sort().at(-1) || null;
 

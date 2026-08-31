@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>发布招聘｜华人工作网</title>
-  <meta name="description" content="华人工作网发布招聘：邮箱验证后登录，输入地区自动匹配州、城市和社区。" />
+  <meta name="description" content="华人工作网极简发布招聘：登录即注册，输入地区后自动匹配州、城市和社区。" />
   <style>
     *{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#101828;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.shell{max-width:820px;margin:0 auto;padding:28px 18px 72px}.back{color:#1769d2;text-decoration:none;font-weight:750}.card{background:#fff;border:1px solid #dfe6ef;border-radius:20px;padding:24px;margin-top:18px;box-shadow:0 12px 35px rgba(16,24,40,.06)}h1{font-size:38px;margin:18px 0 8px;letter-spacing:-.04em}.muted{color:#667085;line-height:1.65}.login-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.field{margin-top:18px}label{display:block;font-weight:800;margin:0 0 7px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:13px 14px;background:#fff}input:focus,select:focus,textarea:focus{outline:3px solid rgba(23,105,210,.14);border-color:#1769d2}textarea{min-height:180px;resize:vertical}.primary{border:0;border-radius:12px;padding:13px 20px;cursor:pointer;background:#1769d2;color:#fff;font-weight:850}.primary:disabled{opacity:.55;cursor:not-allowed}.status{white-space:pre-wrap;margin-top:12px;color:#475467}.hidden{display:none!important}.account{display:flex;align-items:center;gap:11px;margin-top:12px}.avatar{width:42px;height:42px;border-radius:50%;background:#1769d2;color:#fff;display:grid;place-items:center;font-weight:900;font-size:20px}.account b{display:block}.account small{color:#667085}.location-state{font-size:14px;margin-top:7px;color:#1769d2;min-height:20px}.core-note{background:#eff6ff;color:#1d4f91;padding:11px 13px;border-radius:12px;margin-top:14px;font-size:14px}details{margin-top:20px;border-top:1px solid #e4e7ec;padding-top:16px}summary{cursor:pointer;font-weight:800;color:#475467}.optional-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.preview{max-width:220px;max-height:160px;border-radius:12px;margin-top:10px;border:1px solid #e4e7ec}.submit-row{display:flex;align-items:center;gap:14px;margin-top:22px}.submit-row .primary{font-size:17px;min-width:150px}.inline-status{color:#667085}.auth-copy{margin:0 0 15px}.required{color:#d92d20}@media(max-width:700px){.login-row,.optional-grid{grid-template-columns:1fr}.shell{padding-top:20px}.card{padding:19px}h1{font-size:32px}.primary{width:100%}.submit-row{display:block}.inline-status{display:block;margin-top:10px}}
   </style>
@@ -16,7 +16,7 @@
   <p class="muted">只填最重要的信息。地区、行业和工作类型由系统自动识别，发布后与唐人日报共用同一数据和审核后台。</p>
   <section class="card" id="auth-card">
     <h2>统一账号</h2>
-    <p class="muted auth-copy">已有账号直接登录；新用户使用邮箱注册，并需点击验证邮件后才能发布。已有手机号账号仍可登录。</p>
+    <p class="muted auth-copy">首次输入邮箱或手机号和密码，会自动创建账号并直接登录，不需要另行注册。</p>
     <div class="login-row" id="login-fields">
       <div><label for="login-identifier">邮箱或手机号</label><input id="login-identifier" autocomplete="username" placeholder="邮箱或美国手机号" /></div>
       <div><label for="login-password">密码</label><input id="login-password" type="password" minlength="8" autocomplete="current-password" placeholder="至少8位" /></div>
@@ -43,7 +43,7 @@
   </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/jobs/unified-account.js?v=20260831-email-verify-v1"></script>
-<script src="/jobs/publish.js?v=20260831-email-verify-v1"></script>
+<script src="/jobs/unified-account.js?v=20260831-auto-register-v1"></script>
+<script src="/jobs/publish.js?v=20260831-auto-register-v1"></script>
 </body>
 </html>

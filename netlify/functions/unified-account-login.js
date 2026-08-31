@@ -90,35 +90,24 @@ async function recordAttempt(identifierHash, ipHash, wasCreated) {
   });
 }
 
-async function requestEmailVerification(account, password, event) {
-  const origin = allowedOrigin(event);
-  const redirectOrigin = origin && origin !== '*' ? origin : 'https://huarengongzuo.com';
-  const url = new URL(`${SUPABASE_URL}/auth/v1/signup`);
-  url.searchParams.set('redirect_to', `${redirectOrigin}/jobs/publish.html`);
-  return requestJson(url, {
+async function createConfirmedUser(account, password) {
+  return requestJson(`${SUPABASE_URL}/auth/v1/admin/users`, {
     method: 'POST',
     headers: {
-      apikey: AUTH_API_KEY,
+      apikey: SERVICE_KEY,
+      Authorization: `Bearer ${SERVICE_KEY}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
       email: account.authEmail,
       password,
-      data: {
+      email_confirm: true,
+      user_metadata: {
         display_name: account.displayName,
         login_type: account.type,
         login_label: account.label
       }
     })
-  });
-}
-
-async function removeUnsafeAutoconfirmedSignup(signup) {
-  const userId = safeText(signup?.user?.id, 80);
-  if (!userId) return;
-  await requestJson(`${SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(userId)}`, {
-    method: 'DELETE',
-    headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` }
   });
 }
 
@@ -146,29 +135,15 @@ exports.handler = async (event) => {
       ]);
       if (identifierCount >= 5 || ipCount >= 5) return json(429, { error: '尝试次数过多，请一小时后再试' }, event);
 
-      if (account.type === 'phone') {
-        await recordAttempt(identifierHash, ipHash, false);
-        return json(401, { error: '手机号账号或密码错误。新账号请先使用邮箱注册并完成验证；已有手机号账号仍可正常登录。' }, event);
-      }
-
       try {
-        const signup = await requestEmailVerification(account, password, event);
-        if (signup?.access_token || signup?.session || signup?.user?.email_confirmed_at || signup?.user?.confirmed_at) {
-          await removeUnsafeAutoconfirmedSignup(signup);
-          throw Object.assign(new Error('邮箱验证服务配置异常，已安全停止注册，请联系管理员。'), { statusCode: 503 });
-        }
+        await createConfirmedUser(account, password);
         await recordAttempt(identifierHash, ipHash, true);
-        return json(202, {
-          created: true,
-          verification_required: true,
-          account: { type: account.type, label: account.label },
-          user: signup?.user ? { id: signup.user.id, email: signup.user.email } : null
-        }, event);
       } catch (createError) {
         await recordAttempt(identifierHash, ipHash, false);
-        if (createError.statusCode === 503) return json(503, { error: createError.message }, event);
         return json(401, { error: '账号或密码错误' }, event);
       }
+      const session = await passwordSignIn(account.authEmail, password);
+      return json(200, { created: true, account: { type: account.type, label: account.label }, session }, event);
     }
   } catch (error) {
     console.error('Unified account login error:', error);

@@ -106,3 +106,13 @@ jobs:
             reports/legacy-migration-latest.json
           if-no-files-found: error
           retention-days: 30
+
+
+      - name: 写入旧站404机器人站内通知
+        if: failure()
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTOMATION_CONTROL_KEY: legacy_404
+          AUTOMATION_NOTIFICATION_TITLE: 旧站404只读盘点机器人执行失败
+        run: node scripts/automation-notify.mjs

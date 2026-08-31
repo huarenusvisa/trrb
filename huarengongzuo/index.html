@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>华人工作网｜美国华人招聘与求职</title>
-  <meta name="description" content="华人工作网提供美国华人招聘、求职和附近工作查询。按职位、城市和地区找工作，并直接电话、短信或邮件联系招聘方。">
+  <title>华人工作网｜美国华人找工作、招聘与求职</title>
+  <meta name="description" content="华人工作网提供全美华人找工作、招聘与求职信息。按纽约、法拉盛、洛杉矶等城市和餐馆、司机、仓库、美甲、家政等职位查询，直接联系招聘方。">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
   <link rel="canonical" href="https://huarengongzuo.com/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="华人工作网">
   <meta property="og:locale" content="zh_CN">
-  <meta property="og:title" content="华人工作网｜美国华人招聘与求职">
+  <meta property="og:title" content="华人工作网｜美国华人找工作、招聘与求职">
   <meta property="og:description" content="岗位优先，按地区找工作，直接联系招聘方。">
   <meta property="og:url" content="https://huarengongzuo.com/">
   <meta property="og:image" content="https://huarengongzuo.com/og-share.png?v=20260826">
@@ -25,11 +25,48 @@
   <meta name="twitter:image" content="https://huarengongzuo.com/og-share.png?v=20260826">
   <meta name="theme-color" content="#1768d5">
   <link rel="icon" href="/favicon.svg?v=20260826" type="image/svg+xml">
+  <link rel="icon" href="/icon-192.png?v=20260831" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32x32.png?v=20260826" type="image/png" sizes="32x32">
   <link rel="shortcut icon" href="/favicon.ico?v=20260826" type="image/x-icon">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=20260826" sizes="180x180">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/huarengongzuo/site.css?v=1">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://huarengongzuo.com/#organization",
+        "name": "华人工作网",
+        "alternateName": "Huaren Gongzuo",
+        "url": "https://huarengongzuo.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://huarengongzuo.com/icon-512.png",
+          "width": 512,
+          "height": 512
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://huarengongzuo.com/#website",
+        "url": "https://huarengongzuo.com/",
+        "name": "华人工作网",
+        "inLanguage": "zh-Hans",
+        "publisher": {"@id": "https://huarengongzuo.com/#organization"},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://huarengongzuo.com/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="/huarengongzuo/site.css?v=20260831">
   <link rel="stylesheet" href="/huarengongzuo/secondhand-entry.css?v=20260826-2">
 </head>
 <body>
@@ -89,6 +126,15 @@
       <div id="filter-state" class="filter-state" hidden></div>
       <div id="jobs-list" class="jobs-list" aria-live="polite"><div class="loading">正在读取最新岗位…</div></div>
       <div class="load-actions"><button id="show-more" type="button" hidden>显示更多岗位</button></div>
+    </section>
+
+    <section class="shell seo-guide" aria-labelledby="seo-guide-title">
+      <div class="section-head"><div><span>HUAREN JOBS IN THE USA</span><h2 id="seo-guide-title">美国华人找工作与招聘</h2><p>按常用职位和华人聚居城市快速查找仍在招聘的岗位。</p></div></div>
+      <div class="seo-guide-grid">
+        <article><h3>热门工作</h3><p><a href="/?q=餐馆#latest-jobs">餐馆工作</a>、<a href="/?q=司机#latest-jobs">司机工作</a>、<a href="/?q=仓库#latest-jobs">仓库工作</a>、<a href="/?q=美甲#latest-jobs">美甲工作</a>、<a href="/?q=家政#latest-jobs">家政护理</a>、<a href="/?q=会计#latest-jobs">会计工作</a>和<a href="/?q=IT#latest-jobs">IT工作</a>。</p></article>
+        <article><h3>热门地区</h3><p><a href="/?place=New%20York#latest-jobs">纽约工作</a>、<a href="/?place=Flushing#latest-jobs">法拉盛工作</a>、<a href="/?place=Los%20Angeles#latest-jobs">洛杉矶工作</a>、<a href="/?place=Boston#latest-jobs">波士顿工作</a>、<a href="/?place=Houston#latest-jobs">休斯敦工作</a>。</p></article>
+        <article><h3>直接联系，人工审核</h3><p>公开页面只展示仍有效且有公开联系方式或雇主官方申请入口的岗位。招聘信息进入人工审核；求职者联系前仍应核实雇主身份和工作条件。</p></article>
+      </div>
     </section>
 
     <section class="safety-strip">

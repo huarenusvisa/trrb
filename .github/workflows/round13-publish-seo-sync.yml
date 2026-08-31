@@ -1,7 +1,6 @@
 name: 第十三轮发布后SEO实时同步
 
 on:
-  workflow_dispatch:
   workflow_call:
 
 permissions:

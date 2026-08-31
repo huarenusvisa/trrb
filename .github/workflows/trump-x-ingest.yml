@@ -1,12 +1,7 @@
 name: Trump X资讯采集
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/trump-x-ingest.yml"
   workflow_call:
-  workflow_dispatch:
 
 permissions:
   contents: read

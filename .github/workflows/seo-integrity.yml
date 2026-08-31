@@ -1,7 +1,6 @@
 name: 全站SEO与404完整性检查
 
 on:
-  workflow_dispatch:
   workflow_call:
   pull_request:
     branches: [main]

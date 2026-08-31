@@ -7,16 +7,6 @@ on:
         required: false
         type: number
         default: 1000
-  workflow_dispatch:
-    inputs:
-      confirm_apply:
-        description: 输入 APPLY 才允许写入正式库
-        required: true
-        type: string
-      limit:
-        description: 每批最多恢复多少篇
-        required: false
-        default: '1000'
 
 permissions:
   contents: write

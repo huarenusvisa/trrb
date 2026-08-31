@@ -2,18 +2,6 @@ name: SECONDHAND Daily Ingest
 
 on:
   workflow_call:
-  push:
-    branches: [main]
-    paths:
-      - scripts/secondhand-daily-ingest.mjs
-      - scripts/secondhand-daily-ingest.test.mjs
-      - .github/workflows/secondhand-daily-ingest.yml
-  workflow_dispatch:
-    inputs:
-      target:
-        description: "本次最多发布数量（2-10）"
-        required: false
-        default: "10"
 
 permissions:
   contents: read
@@ -51,4 +39,3 @@ jobs:
           name: secondhand-daily-ingest-report-${{ github.run_id }}
           path: secondhand-daily-ingest-report.txt
           if-no-files-found: warn
-

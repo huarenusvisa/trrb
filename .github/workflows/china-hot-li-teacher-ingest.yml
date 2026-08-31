@@ -1,28 +1,7 @@
 name: China Hot · Li Teacher Content Intake
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/china-hot-li-teacher-ingest.yml"
   workflow_call:
-  workflow_dispatch:
-    inputs:
-      lookback_hours:
-        description: "抓取最近多少小时（默认24小时，用于补偿定时任务延迟）"
-        required: false
-        default: "24"
-        type: string
-      recover_archived:
-        description: "补发时间范围内误归档的中国热门头条"
-        required: false
-        default: false
-        type: boolean
-      repair_today:
-        description: "重写今天已发布的热门头条，使用原帖图片补充具体信息并清除套话"
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: read

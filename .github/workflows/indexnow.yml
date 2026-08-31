@@ -1,24 +1,6 @@
 name: Bing IndexNow自动推送
 
 on:
-  workflow_dispatch:
-    inputs:
-      full_sync:
-        description: 是否执行一次全站URL同步
-        required: false
-        default: 'false'
-        type: choice
-        options: ['false','true']
-      include_retired:
-        description: 是否同时通知明确退役的URL
-        required: false
-        default: 'false'
-        type: choice
-        options: ['false','true']
-      fresh_hours:
-        description: 仅推送最近多少小时发布的新闻
-        required: false
-        default: '3'
   workflow_call:
     inputs:
       full_sync:

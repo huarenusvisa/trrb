@@ -41,67 +41,102 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  automation-gate:
+    name: 读取机器人硬开关
+    runs-on: ubuntu-24.04
+    outputs:
+      global: ${{ steps.gate.outputs.global }}
+      ice: ${{ steps.gate.outputs.ice }}
+      china_hot: ${{ steps.gate.outputs.china_hot }}
+      trump_x: ${{ steps.gate.outputs.trump_x }}
+      jobs: ${{ steps.gate.outputs.jobs }}
+      secondhand: ${{ steps.gate.outputs.secondhand }}
+      seo_indexnow: ${{ steps.gate.outputs.seo_indexnow }}
+      monitor: ${{ steps.gate.outputs.monitor }}
+      maintenance: ${{ steps.gate.outputs.maintenance }}
+      seo_metadata: ${{ steps.gate.outputs.seo_metadata }}
+      legacy_recovery: ${{ steps.gate.outputs.legacy_recovery }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        name: 从正式数据库读取开关（失败即暂停）
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/automation-gate.mjs
 
 
   ice:
-    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.ice == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice')) }}
     uses: ./.github/workflows/ice-unified-pipeline.yml
     secrets: inherit
 
   seo-metadata:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_metadata == 'true' && github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
     uses: ./.github/workflows/round13-publish-seo-sync.yml
     secrets: inherit
 
   seo-indexnow:
-    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_indexnow == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
     uses: ./.github/workflows/indexnow.yml
     secrets: inherit
 
   ico-accelerated-recovery:
-    if: ${{ github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ico') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.legacy_recovery == 'true' && github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ico') }}
     uses: ./.github/workflows/legacy-search-recovery.yml
     with:
       limit: 1000
     secrets: inherit
 
   jobs-daily-ingest:
-    if: ${{ github.event.schedule == '12 13 * * *' || github.event.schedule == '12 23 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'jobs') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.jobs == 'true' && (github.event.schedule == '12 13 * * *' || github.event.schedule == '12 23 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'jobs')) }}
     uses: ./.github/workflows/jobs-daily-ingest.yml
     secrets: inherit
 
   secondhand-daily-ingest:
-    if: ${{ github.event.schedule == '12 13 * * *' || github.event.schedule == '12 23 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'secondhand') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.secondhand == 'true' && (github.event.schedule == '12 13 * * *' || github.event.schedule == '12 23 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'secondhand')) }}
     uses: ./.github/workflows/secondhand-daily-ingest.yml
     secrets: inherit
 
   china-hot-li-teacher:
-    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 
   trump-x:
-    if: ${{ github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.trump_x == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x')) }}
     uses: ./.github/workflows/trump-x-ingest.yml
     secrets: inherit
 
 
   daily-live-monitor:
-    if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
     uses: ./.github/workflows/live-seo-crawl.yml
     secrets: inherit
 
   daily-seo-integrity:
-    if: ${{ github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
     uses: ./.github/workflows/seo-integrity.yml
     secrets: inherit
 
   ice-night-maintenance:
-    if: ${{ github.event.schedule == '7 7 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.maintenance == 'true' && (github.event.schedule == '7 7 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance')) }}
     uses: ./.github/workflows/ice-night-maintenance.yml
     secrets: inherit
 
   ice-orphan-cleanup:
-    if: ${{ github.event.schedule == '23 8 * * 1' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance') }}
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.maintenance == 'true' && (github.event.schedule == '23 8 * * 1' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance')) }}
     uses: ./.github/workflows/ice-orphan-media-cleanup.yml
     secrets: inherit

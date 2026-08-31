@@ -1,7 +1,6 @@
 name: ICE夜间维护与自修复
 
 on:
-  workflow_dispatch:
   workflow_call:
 
 permissions:

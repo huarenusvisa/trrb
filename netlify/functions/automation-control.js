@@ -1,6 +1,9 @@
 const { authenticateStaff, rest, safeText } = require('./_shared/supabase-admin');
 
 const REPOSITORY = 'huarenusvisa/trrb';
+const CONTROL_PLANE_WORKFLOW = 'operations-control-plane.yml';
+const MANUAL_ONLY_KEYS = new Set(['seo_metadata', 'legacy_recovery']);
+const CONTROL_PLANE_KEYS = new Set(['ice', 'china_hot', 'trump_x', 'jobs', 'secondhand', 'seo_indexnow', 'monitor', 'maintenance', 'seo_metadata', 'legacy_recovery']);
 const DISPATCHES = {
   global: [
     { workflow: 'operations-control-plane.yml', inputs: { module: 'all' } },
@@ -22,7 +25,11 @@ const DISPATCHES = {
 };
 
 const CANCEL_WORKFLOWS = {
-  ice: ['ice-unified-pipeline.yml', 'ice-forced-clock.yml'],
+  ice: [
+    'ice-unified-pipeline.yml', 'ice-forced-clock.yml', 'ice-auto-publish.yml',
+    'ice-collector-continuous.yml', 'ice-publisher-continuous.yml', 'ice-watchdog.yml',
+    'ice-emergency-watchdog.yml', 'ice-rescue-direct.yml'
+  ],
   china_hot: ['china-hot-li-teacher-ingest.yml'],
   trump_x: ['trump-x-ingest.yml'],
   jobs: ['jobs-daily-ingest.yml'],
@@ -141,8 +148,11 @@ async function cancelWorkflow(workflow) {
 
 async function cancelControl(key) {
   const workflows = key === 'global'
-    ? [...new Set(Object.values(CANCEL_WORKFLOWS).flat())]
-    : (CANCEL_WORKFLOWS[key] || []);
+    ? [...new Set([CONTROL_PLANE_WORKFLOW, ...Object.values(CANCEL_WORKFLOWS).flat()])]
+    : [...new Set([
+        ...(CANCEL_WORKFLOWS[key] || []),
+        ...(CONTROL_PLANE_KEYS.has(key) ? [CONTROL_PLANE_WORKFLOW] : [])
+      ])];
   const results = await Promise.allSettled(workflows.map(async (workflow) => ({
     workflow,
     cancelled: await cancelWorkflow(workflow)
@@ -212,7 +222,9 @@ exports.handler = async (event) => {
     if (key === 'global') {
       mode = body.enabled ? 'all_on' : 'all_off';
       if (body.enabled) {
-        await patchControls({ control_key: 'neq.global' }, true, user.id);
+        // "全部启用"只启用自动机器人。人工恢复/元数据任务必须逐项人工启动。
+        await patchControls({ control_key: 'not.in.(global,seo_metadata,legacy_recovery)' }, true, user.id);
+        await patchControls({ control_key: 'in.(seo_metadata,legacy_recovery)' }, false, user.id);
         await patchControls({ control_key: 'eq.global' }, true, user.id);
       } else {
         await patchControls({ control_key: 'eq.global' }, false, user.id);

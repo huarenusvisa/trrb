@@ -103,7 +103,7 @@
     if (!shown.length) {
       list.innerHTML = '<div class="empty">暂时没有匹配岗位。可缩短关键词，或进入“附近工作”选择更多地区。</div>';
     } else {
-      list.innerHTML = shown.map((job) => `<article class="job-card"><div><h3><a href="/jobs/listing.html?id=${encodeURIComponent(job.id)}" style="color:inherit;text-decoration:none">${esc(job.title)}</a></h3><div class="job-meta">${salary(job) ? `<span class="salary">${esc(salary(job))}</span>` : ''}<span>${esc(locationText(job) || '美国')}</span><span>${esc(categoryNames[job.category_slug] || '其他')}</span><span>${esc(employmentNames[job.employment_type] || '类型未注明')}</span></div></div>${contactMarkup(job)}</article>`).join('');
+      list.innerHTML = shown.map((job) => `<article class="job-card"><div><h3 data-i18n-skip><a href="/jobs/listing.html?id=${encodeURIComponent(job.id)}" style="color:inherit;text-decoration:none">${esc(job.title)}</a></h3><div class="job-meta">${salary(job) ? `<span class="salary">${esc(salary(job))}</span>` : ''}<span>${esc(locationText(job) || '美国')}</span><span>${esc(categoryNames[job.category_slug] || '其他')}</span><span>${esc(employmentNames[job.employment_type] || '类型未注明')}</span></div></div>${contactMarkup(job)}</article>`).join('');
     }
     const more = document.getElementById('show-more');
     more.hidden = shown.length >= jobs.length;
@@ -112,7 +112,7 @@
   function renderFeatured() {
     const featured = document.getElementById('featured-jobs');
     const jobs = allJobs.slice(0, 6);
-    featured.innerHTML = jobs.map((job) => `<a class="featured-card" href="/jobs/listing.html?id=${encodeURIComponent(job.id)}"><strong>${esc(job.title)}</strong><small>${esc(locationText(job) || '美国')} · ${esc(categoryNames[job.category_slug] || '其他')}</small></a>`).join('');
+    featured.innerHTML = jobs.map((job) => `<a class="featured-card" href="/jobs/listing.html?id=${encodeURIComponent(job.id)}"><strong data-i18n-skip>${esc(job.title)}</strong><small>${esc(locationText(job) || '美国')} · ${esc(categoryNames[job.category_slug] || '其他')}</small></a>`).join('');
     document.getElementById('job-count').textContent = `展示 ${jobs.length} 条`;
   }
 

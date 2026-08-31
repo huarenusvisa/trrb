@@ -35,7 +35,7 @@ async function readControl(key) {
 exports.handler = async (event) => {
   if (!['GET', 'PATCH'].includes(event.httpMethod)) return json(405, { error: 'Method not allowed' });
   try {
-    const { user } = await authenticateStaff(event, ['owner', 'admin']);
+    const { user } = await authenticateStaff(event, ['owner', 'editor']);
     if (event.httpMethod === 'GET') {
       const controls = await rest('automation_controls', {
         query: { select: 'control_key,display_name,enabled,description,sort_order,updated_at,updated_by', order: 'sort_order.asc' }

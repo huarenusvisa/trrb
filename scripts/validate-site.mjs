@@ -47,6 +47,13 @@ forbidMatch(jobs, /上线准备中/, "jobs/index.html still contains prelaunch d
 requireMatch(jobs, /招聘与求职信息进入统一生产数据系统/, "jobs/index.html missing live-data disclosure");
 requireMatch(jobs, /id=["']use-location["']/, "jobs/index.html missing current-location control");
 
+const huarenJobs = await text("huarengongzuo/index.html");
+requireMatch(huarenJobs, /sizes=["']192x192["'][^>]*icon-192\.png|icon-192\.png[^>]*sizes=["']192x192["']/i, "huarengongzuo search favicon must expose a 48px-multiple PNG");
+requireMatch(huarenJobs, /"@type":\s*"Organization"/, "huarengongzuo Organization schema missing");
+requireMatch(huarenJobs, /"@type":\s*"WebSite"/, "huarengongzuo WebSite schema missing");
+requireMatch(huarenJobs, /美国华人找工作与招聘/, "huarengongzuo competitor keyword guide missing");
+requireMatch(huarenJobs, /纽约工作[\s\S]*法拉盛工作[\s\S]*洛杉矶工作/, "huarengongzuo city intent links missing");
+
 const community = await text("community/index.html");
 requireMatch(community, /^\s*<!doctype html>/i, "community/index.html is not HTML");
 requireMatch(community, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "community landing must be index,follow");

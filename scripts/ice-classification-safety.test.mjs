@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import classifier from "../netlify/functions/_shared/ice-enforcement.js";
 
-const { hasStandaloneIce, isIceEnforcementText } = classifier;
+const { hasStandaloneIce, isIceEnforcementText, isIceEnforcementEvidence } = classifier;
 
 assert.equal(hasStandaloneIce("ICE arrests 12 people"), true);
 assert.equal(hasStandaloneIce("immigration services"), false);
@@ -17,4 +17,11 @@ assert.equal(isIceEnforcementText("K-1未婚夫签证是什么"), false);
 assert.equal(isIceEnforcementText("ICE发布新的信息页面"), false);
 assert.equal(isIceEnforcementText("移民拘留政策调整"), false);
 
-console.log("ICE classification requires an explicit ICE agency signal plus an enforcement action");
+assert.equal(isIceEnforcementEvidence("ICE San Francisco arrested a criminal alien in Vacaville.", "EROSanFrancisco"), true);
+assert.equal(isIceEnforcementEvidence("Arrested a fugitive with a final order of removal.", "ERONewOrleans"), true);
+assert.equal(isIceEnforcementEvidence("The DNC voted to abolish ICE and wind down detention.", "GuntherEagleman"), false);
+assert.equal(isIceEnforcementEvidence("https://t.co/example", "CBP"), false);
+assert.equal(isIceEnforcementEvidence("FBI arrested a suspect for threatening the NAACP.", "FBI"), false);
+assert.equal(isIceEnforcementEvidence("HSI disrupted a fraudulent trucking school.", "HSI_HQ"), false);
+
+console.log("ICE classification requires original-source evidence of an actual ICE enforcement event");

@@ -18,29 +18,81 @@
   function render(controls) {
     const root = $('automation-control-list');
     const global = controls.find((item) => item.control_key === 'global');
-    $('automation-global-state').textContent = global?.enabled ? '运行中' : '全部暂停';
-    $('automation-global-state').className = global?.enabled ? 'automation-state running' : 'automation-state paused';
-    root.innerHTML = controls.map((item) => `
-      <article class="automation-row ${item.control_key === 'global' ? 'automation-global' : ''}">
-        <div><strong>${escapeHtml(item.display_name)}</strong><p>${escapeHtml(item.description)}</p><small>最后更新：${escapeHtml(item.updated_at || '—')}</small></div>
-        <label class="automation-switch"><input type="checkbox" data-automation-key="${escapeHtml(item.control_key)}" ${item.enabled ? 'checked' : ''}><span>${item.enabled ? '开启' : '关闭'}</span></label>
-      </article>`).join('');
-    root.querySelectorAll('[data-automation-key]').forEach((input) => input.addEventListener('change', () => update(input)));
+    const globalEnabled = global?.enabled === true;
+    $('automation-global-state').textContent = globalEnabled ? '运行中' : '全部暂停';
+    $('automation-global-state').className = globalEnabled ? 'automation-state running' : 'automation-state paused';
+    root.innerHTML = controls.map((item) => {
+      const configuredEnabled = item.enabled === true;
+      const effectiveEnabled = item.control_key === 'global'
+        ? configuredEnabled
+        : globalEnabled && configuredEnabled;
+      const effectiveLabel = effectiveEnabled
+        ? '运行中'
+        : configuredEnabled
+          ? '待命（总开关已关闭）'
+          : '已关闭';
+      const effectiveClass = effectiveEnabled
+        ? 'running'
+        : configuredEnabled
+          ? 'standby'
+          : 'paused';
+      return `
+        <article class="automation-row ${item.control_key === 'global' ? 'automation-global' : ''}">
+          <div class="automation-row-copy">
+            <div class="automation-row-title">
+              <strong>${escapeHtml(item.display_name)}</strong>
+              <span class="automation-effective-state ${effectiveClass}">${effectiveLabel}</span>
+            </div>
+            <p>${escapeHtml(item.description)}</p>
+            <small>最后更新：${escapeHtml(item.updated_at || '—')}</small>
+          </div>
+          <div class="automation-actions" role="group" aria-label="${escapeHtml(item.display_name)}开关">
+            <button
+              type="button"
+              class="automation-toggle-button enable ${configuredEnabled ? 'active' : ''}"
+              data-automation-key="${escapeHtml(item.control_key)}"
+              data-automation-enabled="true"
+              aria-pressed="${configuredEnabled}"
+            >开启</button>
+            <button
+              type="button"
+              class="automation-toggle-button disable ${configuredEnabled ? '' : 'active'}"
+              data-automation-key="${escapeHtml(item.control_key)}"
+              data-automation-enabled="false"
+              aria-pressed="${!configuredEnabled}"
+            >关闭</button>
+          </div>
+        </article>`;
+    }).join('');
+    root.querySelectorAll('[data-automation-key]').forEach((button) => {
+      button.addEventListener('click', () => update(button, globalEnabled));
+    });
   }
 
-  async function update(input) {
-    const enabled = input.checked;
-    const key = input.dataset.automationKey;
-    input.disabled = true;
-    $('automation-control-message').textContent = '正在保存开关…';
+  async function update(button, globalEnabled) {
+    const enabled = button.dataset.automationEnabled === 'true';
+    const key = button.dataset.automationKey;
+    if (button.getAttribute('aria-pressed') === 'true') {
+      $('automation-control-message').textContent = `${key === 'global' ? '总开关' : '该流程'}当前已经${enabled ? '开启' : '关闭'}。`;
+      return;
+    }
+
+    const groupButtons = [...button.closest('.automation-actions').querySelectorAll('button')];
+    groupButtons.forEach((item) => { item.disabled = true; });
+    $('automation-control-message').textContent = `正在${enabled ? '开启' : '关闭'}${key === 'global' ? '总开关' : '流程'}…`;
     try {
       await request({ method: 'PATCH', body: { control_key: key, enabled } });
-      $('automation-control-message').textContent = `${key === 'global' ? '总开关' : '流程'}已${enabled ? '开启' : '暂停'}。GitHub Actions 下一次启动时会先读取此状态。`;
+      if (key !== 'global' && enabled && !globalEnabled) {
+        $('automation-control-message').textContent = '该流程已设为开启，但总开关仍关闭，因此当前处于待命状态。';
+      } else {
+        $('automation-control-message').textContent = `${key === 'global' ? '总开关' : '流程'}已${enabled ? '开启' : '关闭'}。GitHub Actions 下一次启动时会先读取此状态。`;
+      }
       await load();
     } catch (error) {
-      input.checked = !enabled;
       $('automation-control-message').textContent = `保存失败：${error.message}`;
-    } finally { input.disabled = false; }
+    } finally {
+      groupButtons.forEach((item) => { item.disabled = false; });
+    }
   }
 
   async function load() {

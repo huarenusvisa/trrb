@@ -6,6 +6,8 @@ const SITEMAP = `${ORIGIN}/sitemap.xml`;
 const GSC_SITE = process.env.HG_GOOGLE_SEARCH_CONSOLE_SITE_URL || "https://huarengongzuo.com/";
 const GSC_JSON = process.env.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON || "";
 const BING_KEY = process.env.BING_WEBMASTER_API_KEY || "";
+const INDEXNOW_KEY = "55d15283c33385e09b4f3fae7562a9cc";
+const INDEXNOW_KEY_LOCATION = `${ORIGIN}/${INDEXNOW_KEY}.txt`;
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const WRITE_MODE = /^(?:1|true|yes)$/i.test(process.env.SEO_WRITE_MODE || "false");
@@ -116,12 +118,30 @@ async function bingCall(method, body) {
   const text = await response.text();
   if (!response.ok) throw new Error(`${method} HTTP ${response.status}: ${text.slice(0, 180)}`);
 }
-async function bingOps() {
-  if (!BING_KEY) { report.warnings.push("Bing Webmaster API key is missing"); return; }
+async function bingOps(updatedUrls, deletedUrls) {
   report.bing.configured = true;
+  report.bing.mode = BING_KEY ? "webmaster-api+indexnow" : "indexnow";
   if (!WRITE_MODE) return;
-  await bingCall("SubmitFeed", { siteUrl: ORIGIN, feedUrl: SITEMAP });
-  report.bing.sitemapSubmitted = true;
+  if (BING_KEY) {
+    await bingCall("SubmitFeed", { siteUrl: ORIGIN, feedUrl: SITEMAP });
+    report.bing.sitemapSubmitted = true;
+  } else {
+    report.warnings.push("Bing Webmaster API key is missing; sitemap remains discoverable through robots.txt and IndexNow is used for URL notifications");
+  }
+  const keyResponse = await fetch(INDEXNOW_KEY_LOCATION, { cache: "no-store" });
+  const keyBody = keyResponse.ok ? (await keyResponse.text()).trim() : "";
+  if (!keyResponse.ok || keyBody !== INDEXNOW_KEY) {
+    throw new Error(`IndexNow key verification failed: HTTP ${keyResponse.status}`);
+  }
+  const urls = [...new Set([...updatedUrls, ...deletedUrls])].slice(0, 10000);
+  const response = await fetch("https://api.indexnow.org/indexnow", {
+    method: "POST",
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify({ host: new URL(ORIGIN).hostname, key: INDEXNOW_KEY, keyLocation: INDEXNOW_KEY_LOCATION, urlList: urls })
+  });
+  const responseText = await response.text();
+  if (![200, 202].includes(response.status)) throw new Error(`IndexNow HTTP ${response.status}: ${responseText.slice(0, 180)}`);
+  report.bing.indexNow = { submitted: urls.length, status: response.status };
 }
 
 let updatedUrls = [];
@@ -134,7 +154,7 @@ if (updatedUrls.length) {
   report.sitemapAudit.recentlyRemovedUrls = deletedUrls.length;
   try { await googleOps(updatedUrls, deletedUrls); }
   catch (error) { report.failures.push(`Google Search Console/Indexing API: ${String(error?.message || error)}`); }
-  try { await bingOps(); }
+  try { await bingOps(updatedUrls, deletedUrls); }
   catch (error) { report.failures.push(`Bing Webmaster: ${String(error?.message || error)}`); }
 }
 await fs.writeFile("huarengongzuo-google-jobs-submit-report.json", `${JSON.stringify(report, null, 2)}\n`);

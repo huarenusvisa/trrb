@@ -68,7 +68,7 @@ jobs:
 
   ice:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.ice == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.ice == 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice')) }}
     uses: ./.github/workflows/ice-unified-pipeline.yml
     secrets: inherit
 
@@ -80,7 +80,7 @@ jobs:
 
   seo-indexnow:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_indexnow == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_indexnow == 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
     uses: ./.github/workflows/indexnow.yml
     secrets: inherit
 
@@ -106,13 +106,13 @@ jobs:
 
   china-hot-li-teacher:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 
   trump-x:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.trump_x == 'true' && (github.event.schedule == '7,22,37,52 * * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.trump_x == 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'trump-x')) }}
     uses: ./.github/workflows/trump-x-ingest.yml
     secrets: inherit
 

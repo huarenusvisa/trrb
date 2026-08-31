@@ -120,7 +120,7 @@
           ? '已单独启用并立即派发该任务；总控已自动恢复，其他任务保持关闭。'
           : `已启用并立即派发执行（${(result.workflows || []).join('、') || '工作流'}）。`;
       } else {
-        $('automation-control-message').textContent = `已关闭；新的执行入口已被拦截，并取消 ${result.cancelled_runs || 0} 个排队或运行中的任务。`;
+        $('automation-control-message').textContent = `已关闭；新的执行入口已被拦截，并取消 ${result.cancelled_runs || 0} 个排队或运行中的任务。共享控制面如被中断，其他仍启用机器人会在下一次心跳恢复。`;
       }
     } catch (error) {
       if (error.payload?.saved) await load({ quiet: true });

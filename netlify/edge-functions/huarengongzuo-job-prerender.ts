@@ -1,6 +1,7 @@
 const SITE = "https://huarengongzuo.com";
 const MIN_DESCRIPTION = 100;
 const OFFICIAL_APPLY_SOURCE = /^(greenhouse_|jazzhr_|lever_|workday_|ashby_)/i;
+const UNKNOWN_COMPANY = /^(?:未公开雇主|招聘方未公开名称|未公开|不详|未知|unknown|confidential)$/i;
 
 export const config = { path: "/jobs/listing.html" };
 
@@ -64,10 +65,14 @@ function publicAction(job: any) {
   }
   return null;
 }
+function validCompany(value: unknown): boolean {
+  const company = clean(value);
+  return Boolean(company && !UNKNOWN_COMPANY.test(company));
+}
 function eligible(job: any): boolean {
   const expires = new Date(String(job.expires_at || "")).getTime();
   return Boolean(
-    clean(job.company_name) &&
+    validCompany(job.company_name) &&
     clean(job.description).length >= MIN_DESCRIPTION &&
     iso(job.published_at || job.source_published_at) &&
     Number.isFinite(expires) && expires > Date.now() &&

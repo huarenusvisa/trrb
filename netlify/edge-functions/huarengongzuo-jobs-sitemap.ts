@@ -2,6 +2,7 @@ const SITE = "https://huarengongzuo.com";
 const MIN_DESCRIPTION = 100;
 const MAX_JOBS = 1000;
 const OFFICIAL_APPLY_SOURCE = /^(greenhouse_|jazzhr_|lever_|workday_|ashby_)/i;
+const UNKNOWN_COMPANY = /^(?:未公开雇主|招聘方未公开名称|未公开|不详|未知|unknown|confidential)$/i;
 
 export const config = { path: "/sitemap.xml" };
 
@@ -13,10 +14,14 @@ function publicAction(job: any): boolean {
   if (job.contact_public && ["phone","email"].includes(clean(job.contact_method)) && clean(job.contact_value)) return true;
   return OFFICIAL_APPLY_SOURCE.test(clean(job.source_key)) && /^https?:\/\//i.test(clean(job.application_url));
 }
+function validCompany(value: unknown): boolean {
+  const company = clean(value);
+  return Boolean(company && !UNKNOWN_COMPANY.test(company));
+}
 function eligible(job: any): boolean {
   const expires = new Date(String(job.expires_at || "")).getTime();
   return Boolean(
-    clean(job.company_name) && clean(job.description).length >= MIN_DESCRIPTION &&
+    validCompany(job.company_name) && clean(job.description).length >= MIN_DESCRIPTION &&
     clean(job.title) && clean(job.city) && clean(job.state_code) &&
     job.published_at && Number.isFinite(expires) && expires > Date.now() && publicAction(job)
   );

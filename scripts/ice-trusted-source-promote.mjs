@@ -28,7 +28,17 @@ async function main() {
   const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "updated_at.desc", limit: "1000" } });
   let autoApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0, rejectedNonIce = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
-    if (!recentEnough(story)) { stale += 1; continue; }
+    if (!recentEnough(story)) {
+      if (story.status === "approved" && story.human_review_status !== "approved") {
+        await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
+          status: "rejected", human_review_status: "rejected", scheduled_at: null,
+          decision_reason: `${story.decision_reason || ""}；超过官方自动发布新鲜度窗口，禁止作为新内容发布`,
+          updated_at: nowIso()
+        }, prefer: "return=minimal" });
+      }
+      stale += 1;
+      continue;
+    }
     if (!isIceEnforcementText(story.title, story.summary, story.content)) {
       await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
         status: "rejected", human_review_status: "rejected", scheduled_at: null,

@@ -18,7 +18,7 @@
   ];
 
   function normalizePlace(value) {
-    return String(value || '').normalize('NFKC').trim().toLowerCase().replace(/\\s+/g, ' ');
+    return String(value || '').normalize('NFKC').trim().toLowerCase().replace(/\s+/g, ' ');
   }
 
   function placeSearchTerms(value) {
@@ -33,6 +33,15 @@
     return [...terms];
   }
 
+  function placeTermMatches(where, term) {
+    // Short English aliases such as LA/NY/NJ must match a complete token.
+    // Substring matching would incorrectly treat Long Island's "land" as LA.
+    if (/^[a-z0-9]{1,3}$/.test(term)) {
+      const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return new RegExp(`(^|[^a-z0-9])${escaped}(?=$|[^a-z0-9])`, 'i').test(where);
+    }
+    return where.includes(term);
+  }
   function hydrateSearchFromUrl() {
     const params = new URLSearchParams(location.search);
     document.getElementById('job-q').value = params.get('q') || '';
@@ -87,7 +96,7 @@
     return allJobs.filter((job) => {
       const work = [job.title, categoryNames[job.category_slug], job.category_slug].filter(Boolean).join(' ').toLowerCase();
       const where = normalizePlace([job.neighborhood, job.borough, job.county, job.city, job.state_code].filter(Boolean).join(' '));
-      return (!q || work.includes(q)) && (!placeTerms.length || placeTerms.some((term) => where.includes(term)));
+      return (!q || work.includes(q)) && (!placeTerms.length || placeTerms.some((term) => placeTermMatches(where, term)));
     });
   }
 

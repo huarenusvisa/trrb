@@ -140,3 +140,33 @@ jobs:
     if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.maintenance == 'true' && (github.event.schedule == '23 8 * * 1' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance')) }}
     uses: ./.github/workflows/ice-orphan-media-cleanup.yml
     secrets: inherit
+
+
+  notify-failure:
+    name: 发送机器人站内错误通知
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    needs:
+      - automation-gate
+      - ice
+      - seo-metadata
+      - seo-indexnow
+      - ico-accelerated-recovery
+      - jobs-daily-ingest
+      - secondhand-daily-ingest
+      - china-hot-li-teacher
+      - trump-x
+      - daily-live-monitor
+      - daily-seo-integrity
+      - ice-night-maintenance
+      - ice-orphan-cleanup
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: 写入机器人管理站内通知
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTOMATION_CONTROL_KEY: global
+          AUTOMATION_NOTIFICATION_TITLE: 机器人任务流执行失败
+          AUTOMATION_NOTIFICATION_MESSAGE: "控制面任务失败；触发模块：${{ inputs.module || 'scheduled' }}。请查看 GitHub Actions 运行日志。"
+        run: node scripts/automation-notify.mjs

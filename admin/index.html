@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>唐人日报后台</title>
-  <link rel="stylesheet" href="./styles.css?v=20260828-trump-editor-v2" />
+  <link rel="stylesheet" href="./styles.css?v=20260831-automation-v3" />
   <link rel="stylesheet" href="./ice-review-v2.css?v=20260713-v2" />
   <link rel="stylesheet" href="./admin-publisher-v2.css?v=20260713-v1" />
   <link rel="stylesheet" href="./category-manager.css?v=20260724-v3" />
@@ -46,9 +46,13 @@
           <div class="panel"><h3>求职发布</h3><div class="table-wrap"><table><thead><tr><th>求职</th><th>发布者</th><th>地区</th><th>状态</th><th>治理</th></tr></thead><tbody id="jobs-seekers-body"></tbody></table></div></div>
         </section>
         <section class="page hidden" id="automation-control-page">
-          <div class="panel automation-head"><div><h3>机器人与任务流管理</h3><p>每项任务都可人工单独开启或关闭；单独开启时只启动所选任务，点击“全部关闭”会停止所有任务。任何配置缺失或数据库读取失败都会自动暂停。</p></div><strong id="automation-global-state" class="automation-state paused">全部暂停</strong></div>
+          <div class="panel automation-head"><div><h3>机器人与任务流管理</h3><p>执行逻辑以开关为准：点击“启用”立即执行，点击“关闭”立即停止并拦截后续执行。任何配置缺失、数据库读取失败或工作流报错都会在本页发送站内通知。</p></div><strong id="automation-global-state" class="automation-state paused">全部暂停</strong></div>
           <div id="automation-control-message" class="message">登录后读取正式状态。</div>
           <div id="automation-control-list" class="automation-control-list"></div>
+          <div id="automation-notification-panel" class="panel automation-notification-panel hidden">
+            <h3>机器人运行通知</h3>
+            <div id="automation-notification-list" class="automation-notification-list"></div>
+          </div>
         </section>
         <section class="page hidden" id="finance-monitor-page">
           <div class="panel finance-monitor-head"><div><h3>牛来｜唐人财经数据接口</h3><p>自动财经采集已停用；当前通过人工发稿维护内容。此处继续监控行情接口、站内新闻同步和正式数据 Key 配置状态。</p></div><div class="toolbar"><button type="button" data-open-niulai-publisher>人工发布财经文章</button><button id="refresh-finance-monitor" type="button">立即检测</button></div></div>
@@ -78,7 +82,7 @@
   <script src="./community-center.js?v=20260825-community-v1"></script>
   <script src="./jobs-manager.js?v=20260821-core-access"></script>
   <script src="./jobs-google-quality.js?v=20260831-quality-v1"></script>
-  <script src="./automation-control.js?v=20260831-explicit-controls-v2"></script>
+  <script src="./automation-control.js?v=20260831-execute-notify-v3"></script>
   <script src="./finance-monitor.js?v=20260824-manual-only"></script>
   <script src="./asylumjudge-review.js?v=20260821-official-review"></script>
   <script src="./ice-report-integrated.js?v=20260714-v4"></script>

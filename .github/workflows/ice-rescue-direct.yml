@@ -51,7 +51,23 @@ env:
   ICE_DEDUPE_HOURS: "720"
 
 jobs:
+  automation-gate:
+    name: 读取ICE机器人硬开关
+    runs-on: ubuntu-24.04
+    outputs:
+      global: ${{ steps.gate.outputs.global }}
+      ice: ${{ steps.gate.outputs.ice }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/automation-gate.mjs
+
   rescue:
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.ice == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 27
     steps:

@@ -20,7 +20,23 @@ env:
   ICE_RUN_DUE_MINUTES: "185"
 
 jobs:
+  automation-gate:
+    name: 读取ICE机器人硬开关
+    runs-on: ubuntu-24.04
+    outputs:
+      global: ${{ steps.gate.outputs.global }}
+      ice: ${{ steps.gate.outputs.ice }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: gate
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/automation-gate.mjs
+
   recover:
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.ice == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -67,14 +83,14 @@ jobs:
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/ice-unified-pipeline.yml/dispatches" \
-            -d '{"ref":"main"}')
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/operations-control-plane.yml/dispatches" \
+            -d '{"ref":"main","inputs":{"module":"ice"}}')
           cat /tmp/dispatch.json || true
           if [[ "$status" != "204" ]]; then
             echo "应急启动失败，HTTP $status" >&2
             exit 1
           fi
-          echo "已启动ICE唯一生产流水线。"
+          echo "已通过统一控制面启动ICE生产流水线。"
 
       - name: Report no-op
         if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due != 'true'

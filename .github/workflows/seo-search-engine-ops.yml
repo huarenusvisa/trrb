@@ -92,3 +92,13 @@ jobs:
           name: seo-search-engine-ops-report
           path: seo-search-engine-ops-report.json
           retention-days: 30
+
+
+      - name: 写入 Google/Bing SEO 机器人站内通知
+        if: failure()
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTOMATION_CONTROL_KEY: seo_search_engine
+          AUTOMATION_NOTIFICATION_TITLE: Google/Bing SEO机器人执行失败
+        run: node scripts/automation-notify.mjs

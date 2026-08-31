@@ -49,6 +49,10 @@
           <div class="panel automation-head"><div><h3>机器人与任务流管理</h3><p>执行逻辑以开关为准：点击“启用”立即执行，点击“关闭”立即停止并拦截后续执行。任何配置缺失、数据库读取失败或工作流报错都会在本页发送站内通知。</p></div><strong id="automation-global-state" class="automation-state paused">全部暂停</strong></div>
           <div id="automation-control-message" class="message">登录后读取正式状态。</div>
           <div id="automation-control-list" class="automation-control-list"></div>
+          <div id="automation-notification-panel" class="panel automation-notification-panel hidden">
+            <h3>机器人运行通知</h3>
+            <div id="automation-notification-list" class="automation-notification-list"></div>
+          </div>
         </section>
         <section class="page hidden" id="finance-monitor-page">
           <div class="panel finance-monitor-head"><div><h3>牛来｜唐人财经数据接口</h3><p>自动财经采集已停用；当前通过人工发稿维护内容。此处继续监控行情接口、站内新闻同步和正式数据 Key 配置状态。</p></div><div class="toolbar"><button type="button" data-open-niulai-publisher>人工发布财经文章</button><button id="refresh-finance-monitor" type="button">立即检测</button></div></div>

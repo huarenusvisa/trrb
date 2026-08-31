@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>站内信｜华人工作网</title>
+  <style>
+    :root{--blue:#1769d2;--ink:#101828;--muted:#667085;--line:#dfe5ee;--soft:#f5f8fc}
+    *{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.shell{max-width:1100px;margin:auto;padding:24px 16px 70px}.top{display:flex;justify-content:space-between;align-items:center;gap:14px}.top a{color:var(--blue);text-decoration:none;font-weight:800}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 28px rgba(16,24,40,.05)}.auth{max-width:620px;margin:28px auto}.grid{display:grid;grid-template-columns:340px 1fr;gap:14px;margin-top:18px}.list{max-height:680px;overflow:auto}.conversation{display:block;width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;padding:14px;text-align:left;cursor:pointer}.conversation:hover,.conversation.active{background:#eef6ff}.conversation b,.conversation small{display:block}.conversation small{color:var(--muted);margin-top:4px}.unread{float:right;background:#d92d20;color:#fff;border-radius:999px;min-width:22px;text-align:center;padding:2px 6px}.messages{height:500px;overflow:auto;padding:8px;background:#f8fafc;border-radius:12px}.bubble{max-width:78%;padding:10px 12px;border-radius:13px;background:#fff;border:1px solid var(--line);margin:9px 0;white-space:pre-wrap;word-break:break-word}.bubble.mine{margin-left:auto;background:#eaf3ff;border-color:#c7ddfa}.bubble small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.send{display:flex;gap:8px;margin-top:10px}.send textarea{flex:1;min-height:72px}.hidden{display:none!important}input,textarea,button{font:inherit}input,textarea{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:11px}button.primary{border:0;border-radius:10px;background:var(--blue);color:#fff;padding:11px 17px;font-weight:800;cursor:pointer}.muted{color:var(--muted);line-height:1.6}.auth-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}.thread-head{display:flex;justify-content:space-between;gap:12px;align-items:start;margin-bottom:10px}.thread-head h2{margin:0;font-size:20px}@media(max-width:760px){.grid{grid-template-columns:1fr}.list{max-height:300px}.messages{height:430px}.auth-grid{grid-template-columns:1fr}.top{align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top"><div><a href="/jobs/">← 返回招聘求职</a><h1>站内信</h1></div><div><a href="/jobs/manage.html">我的招聘</a> · <button id="logout" type="button" class="hidden">退出</button></div></header>
+    <section id="auth-card" class="card auth">
+      <h2>登录后查看消息</h2><p class="muted">首次输入邮箱或手机号和密码，会自动创建账号并直接登录。</p>
+      <div class="auth-grid"><label>邮箱或手机号<input id="identifier" autocomplete="username" /></label><label>密码<input id="password" type="password" minlength="8" autocomplete="current-password" /></label><button class="primary" id="login" type="button">登录 / 注册</button></div><p id="auth-status" class="muted"></p>
+    </section>
+    <section id="inbox" class="grid hidden">
+      <aside class="card"><h2>对话</h2><p id="inbox-status" class="muted">正在读取…</p><div id="conversation-list" class="list"></div></aside>
+      <section class="card"><div class="thread-head"><div><h2 id="thread-title">选择一条对话</h2><p id="thread-party" class="muted"></p></div><button id="close-conversation" type="button" class="hidden">关闭对话</button></div><div id="message-list" class="messages"><p class="muted">从左侧选择对话。</p></div><form id="send-form" class="send hidden"><textarea id="message-body" maxlength="5000" required placeholder="输入站内信内容"></textarea><button class="primary" type="submit">发送</button></form><p id="send-status" class="muted"></p></section>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/supabase-client.js"></script>
+  <script src="/jobs/unified-account.js?v=20260831-auto-register-v1"></script>
+  <script src="/jobs/messages.js?v=20260831-messages-v1"></script>
+</body>
+</html>

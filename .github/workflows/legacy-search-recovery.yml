@@ -17,7 +17,8 @@ concurrency:
 
 jobs:
   restore:
-    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.confirm_apply == 'APPLY' }}
+    # 该流程已仅保留 workflow_call；调用权限由 operations-control-plane 的
+    # global + legacy_recovery 双硬开关负责，不再读取已不存在的 workflow_dispatch 参数。
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:

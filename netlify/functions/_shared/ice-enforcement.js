@@ -41,6 +41,9 @@ function hasAny(text, terms) {
   return terms.some((term) => text.includes(normalize(term)));
 }
 
+const ICE_NATIVE_SOURCE = /^(icegov|ero[a-z0-9_]*|ice[a-z0-9_]*)$/i;
+const ICE_POLICY_ONLY = /\b(abolish|defund|dismantle|eliminate|replace|vote(?:d|s|ing)?|proposal|campaign|protest(?:ed|s|ing)?)\b.{0,40}\bice\b|\bice\b.{0,40}\b(abolish|defund|dismantle|eliminate|replace|proposal|campaign|protest(?:ed|s|ing)?)\b/i;
+
 function isIceEnforcementText(...values) {
   const text = normalize(values.filter(Boolean).join(" "));
   if (!text) return false;
@@ -49,9 +52,18 @@ function isIceEnforcementText(...values) {
   return agency && action;
 }
 
+function isIceEnforcementEvidence(value, sourceUsername = "") {
+  const text = normalize(value);
+  if (!text || ICE_POLICY_ONLY.test(text)) return false;
+  if (isIceEnforcementText(text)) return true;
+  const username = String(sourceUsername || "").replace(/^@/, "");
+  return ICE_NATIVE_SOURCE.test(username) && isIceEnforcementText("ICE", text);
+}
+
 module.exports = {
   ICE_AGENCY_PHRASES,
   ICE_ACTION_PHRASES,
   hasStandaloneIce,
-  isIceEnforcementText
+  isIceEnforcementText,
+  isIceEnforcementEvidence
 };

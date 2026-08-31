@@ -103,6 +103,6 @@ test("中国热门头条由可靠唤醒器按三小时状态锁运行并保留24
   assert.match(control, /github\.event\.schedule == '7,22,37,52 \* \* \* \*'[\s\S]*inputs\.module == 'china-hot'/);
   assert.match(control, /china-hot-li-teacher:/);
   assert.match(control, /ice:/);
-  assert.match(workflow, /push:[\s\S]*paths:[\s\S]*china-hot-li-teacher-ingest\.yml/);
+  assert.match(control, /uses: \.\/\.github\/workflows\/china-hot-li-teacher-ingest\.yml/);
   assert.doesNotMatch(workflow, /-\s+["']?scripts\/\*\*/);
 });

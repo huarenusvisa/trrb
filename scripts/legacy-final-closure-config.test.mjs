@@ -14,7 +14,7 @@ assert.ok(Array.isArray(ids));
 assert.equal(ids.length, 46);
 assert.equal(new Set(ids).size, ids.length);
 assert.ok(ids.every((id) => /^wp-\d+$/.test(id)));
-assert.equal(config.revision, 7);
+assert.equal(config.revision, 8);
 assert.equal(Object.keys(approved).length, 1193);
 assert.equal(new Set(Object.keys(approved)).size, 1193);
 assert.ok(Object.keys(approved).every((id) => /^wp-\d+$/.test(id)));

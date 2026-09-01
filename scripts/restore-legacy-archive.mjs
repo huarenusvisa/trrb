@@ -92,7 +92,7 @@ async function allExisting() {
   const out=[];
   for (let offset=0;;offset+=1000) {
     // A unique order is required for offset pagination; created_at ties can otherwise skip rows between pages.
-    const rows = await rest('articles',{select:'id,legacy_id,title,slug,canonical_url,published_at,status,visibility,category_name',order:'id.asc',limit:'1000',offset:String(offset)});
+    const rows = await rest('articles',{select:'id,legacy_id,title,slug,canonical_url,published_at,status,visibility,category_id,category_name,primary_section,metadata',order:'id.asc',limit:'1000',offset:String(offset)});
     out.push(...rows);
     if (rows.length < 1000) break;
   }
@@ -160,6 +160,14 @@ for (const row of existing) {
 }
 const plannedLegacy=new Set(legacy);
 const plannedTitles=new Set(titleKeys);
+const existingByTitle=new Map();
+for (const row of existing) {
+  const titleKey=normalizeTitle(row.title);
+  if(!titleKey) continue;
+  const current=existingByTitle.get(titleKey);
+  const rank=(item)=>Number(item?.status==='published')*4+Number(item?.visibility==='public')*2+Number(Boolean(clean(item?.canonical_url)));
+  if(!current || rank(row)>rank(current)) existingByTitle.set(titleKey,row);
+}
 const skipped={
   existing_legacy:0,existing_title:0,no_body:0,bad_id:0,bad_date:0,
   unknown_category:0,manual_review_category:0,retired_non_article:0
@@ -167,6 +175,7 @@ const skipped={
 const skippedByCategory={unknown:{},manual_review:{},retired:{}};
 const manualReviewRows=[];
 const retiredRows=[];
+const approvedAliasPlans=[];
 function bumpCategory(bucket, category) {
   const key=clean(category)||"(empty)";
   bucket[key]=(bucket[key]||0)+1;
@@ -179,7 +188,26 @@ for (const row of archiveRows) {
   const numeric=id.replace(/^wp-/i,'');
   if(plannedLegacy.has(id)||plannedLegacy.has(numeric)){ skipped.existing_legacy++; continue; }
   const title=clean(row.title); const titleKey=normalizeTitle(title);
-  if(!titleKey || plannedTitles.has(titleKey)){ skipped.existing_title++; continue; }
+  const approvedCategory=APPROVED_MANUAL_REVIEW_CATEGORIES.get(id);
+  if(!titleKey){ skipped.existing_title++; continue; }
+  if(plannedTitles.has(titleKey)){
+    const existingTitleRow=existingByTitle.get(titleKey);
+    const cat=approvedCategory?cats.get(approvedCategory):null;
+    if(approvedCategory && existingTitleRow?.id && cat){
+      const slug=clean(existingTitleRow.slug)||slugify(title,id);
+      const metadata=existingTitleRow.metadata&&typeof existingTitleRow.metadata==='object'&&!Array.isArray(existingTitleRow.metadata)
+        ? existingTitleRow.metadata:{};
+      const aliases=[...new Set([...(Array.isArray(metadata.legacy_alias_ids)?metadata.legacy_alias_ids:[]),id])];
+      approvedAliasPlans.push({
+        legacy_id:id,article_id:existingTitleRow.id,title,target_category:cat.name,
+        category_id:cat.id,slug,canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`,
+        metadata:{...metadata,legacy_alias_ids:aliases,legacy_alias_updated_at:new Date().toISOString()}
+      });
+      plannedLegacy.add(id); plannedLegacy.add(numeric);
+      continue;
+    }
+    skipped.existing_title++; continue;
+  }
   const body=Array.isArray(row.body)
     ? row.body.map(clean).filter(Boolean)
     : (clean(row.body) ? [clean(row.body)] : []);
@@ -187,7 +215,6 @@ for (const row of archiveRows) {
   if(content.length<180){ skipped.no_body++; continue; }
   const published=publishedAt(row); if(!published){ skipped.bad_date++; continue; }
   const archiveCategory=clean(row.category);
-  const approvedCategory=APPROVED_MANUAL_REVIEW_CATEGORIES.get(id);
   const disposition=approvedCategory
     ? { action:"publish", targetCategory:approvedCategory, reason:"human-reviewed-and-approved-20260901" }
     : FORCED_MANUAL_REVIEW_IDS.has(id)
@@ -248,12 +275,18 @@ candidates.sort((a,b)=>{
 });
 const selected=candidates.slice(0,LIMIT);
 const candidateIds=new Set(candidates.map((row)=>clean(row.legacy_id)));
+const plannedAliasIds=new Set(approvedAliasPlans.map((row)=>clean(row.legacy_id)));
 const existingByApprovedId=new Map();
 for (const row of existing) {
   const raw=clean(row.legacy_id);
   if(!raw) continue;
   const normalized=/^\d+$/.test(raw)?`wp-${raw}`:raw.toLowerCase();
   if(APPROVED_MANUAL_REVIEW_CATEGORIES.has(normalized)) existingByApprovedId.set(normalized,row);
+  const aliases=Array.isArray(row.metadata?.legacy_alias_ids)?row.metadata.legacy_alias_ids:[];
+  for(const alias of aliases){
+    const normalizedAlias=clean(alias).toLowerCase();
+    if(APPROVED_MANUAL_REVIEW_CATEGORIES.has(normalizedAlias)) existingByApprovedId.set(normalizedAlias,row);
+  }
 }
 const approvedManualReviewUnresolved=[];
 const approvedExistingWrongCategory=[];
@@ -262,9 +295,10 @@ for (const [legacyId,expectedCategory] of APPROVED_MANUAL_REVIEW_CATEGORIES) {
   if(current && clean(current.category_name)!==expectedCategory) {
     approvedExistingWrongCategory.push({legacy_id:legacyId,expected_category:expectedCategory,current_category:clean(current.category_name)});
   }
-  if(!current && !candidateIds.has(legacyId)) approvedManualReviewUnresolved.push(legacyId);
+  if(!current && !candidateIds.has(legacyId) && !plannedAliasIds.has(legacyId)) approvedManualReviewUnresolved.push(legacyId);
 }
 let inserted=[];
+let aliasUpdated=[];
 const insertTitleConflicts=[];
 const insertContentConflicts=[];
 if(APPLY && selected.length){
@@ -292,6 +326,19 @@ if(APPLY && selected.length){
   });
   inserted = insertedBatches.flat();
 }
+if(APPLY && approvedAliasPlans.length){
+  aliasUpdated=await mapLimit(approvedAliasPlans,CONCURRENCY,async(item)=>{
+    const rows=await rest('articles',{id:`eq.${item.article_id}`},{
+      method:'PATCH',headers:{Prefer:'return=representation'},body:{
+        category_id:item.category_id,category_name:item.target_category,
+        primary_section:cats.get(item.target_category)?.slug||'',slug:item.slug,
+        canonical_url:item.canonical_url,status:'published',visibility:'public',metadata:item.metadata
+      }
+    });
+    if(!Array.isArray(rows)||rows.length!==1) throw new Error(`unable to update approved alias ${item.legacy_id}`);
+    return {legacy_id:item.legacy_id,article_id:item.article_id,canonical_url:item.canonical_url};
+  });
+}
 skipped.insert_conflict_title=insertTitleConflicts.length;
 skipped.insert_conflict_content=insertContentConflicts.length;
 const report={
@@ -303,6 +350,8 @@ const report={
   approved_manual_review_count:APPROVED_MANUAL_REVIEW_CATEGORIES.size,
   approved_manual_review_existing:existingByApprovedId.size,
   approved_manual_review_candidates:candidates.filter((row)=>APPROVED_MANUAL_REVIEW_CATEGORIES.has(clean(row.legacy_id))).length,
+  approved_manual_review_alias_plans:approvedAliasPlans.length,
+  approved_manual_review_alias_updated:aliasUpdated.length,
   approved_manual_review_unresolved:approvedManualReviewUnresolved,
   approved_existing_wrong_category:approvedExistingWrongCategory,
   forced_manual_review_ids:[...FORCED_MANUAL_REVIEW_IDS],
@@ -370,7 +419,11 @@ await writeFile(path.join(ROOT,'reports','legacy-manual-review-latest.json'),JSO
 await writeFile(path.join(ROOT,'reports','legacy-retired-non-article-latest.json'),JSON.stringify({
   generated_at:report.generated_at,count:retiredRows.length,rows:retiredRows
 },null,2)+'\n');
-const indexNowUrls=[...new Set(inserted.flatMap(legacyChangedUrls))];
+const aliasChangedUrls=aliasUpdated.flatMap((row)=>[
+  row.canonical_url,
+  ...oldUrlsForLegacyId(row.legacy_id)
+]);
+const indexNowUrls=[...new Set([...inserted.flatMap(legacyChangedUrls),...aliasChangedUrls].filter(Boolean))];
 await writeFile(path.join(ROOT,'reports','legacy-indexnow-urls.txt'),indexNowUrls.join('\n')+(indexNowUrls.length?'\n':''));
 if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `restored_count=${inserted.length}\n`);
 console.log(JSON.stringify(report,null,2));

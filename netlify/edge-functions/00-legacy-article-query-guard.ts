@@ -64,6 +64,16 @@ async function fetchLegacyArticle(id: string) {
     const rows = await response.json();
     if (Array.isArray(rows) && rows[0]) return { available: true, article: rows[0] };
   }
+  const aliasId = /^\d+$/.test(id) ? `wp-${id}` : id.toLowerCase();
+  const aliasUrl = new URL(`${base}/rest/v1/articles`);
+  aliasUrl.searchParams.set("select", "id,legacy_id,title,slug,category_id,category_name,topic_key,status,canonical_url");
+  aliasUrl.searchParams.set("metadata->legacy_alias_ids", `cs.["${aliasId}"]`);
+  aliasUrl.searchParams.set("status", "eq.published");
+  aliasUrl.searchParams.set("limit", "1");
+  const aliasResponse = await fetch(aliasUrl, { cache: "no-store", headers: dbHeaders(key) });
+  if (!aliasResponse.ok) return { available: false, article: null };
+  const aliasRows = await aliasResponse.json();
+  if (Array.isArray(aliasRows) && aliasRows[0]) return { available: true, article: aliasRows[0] };
   return { available: true, article: null };
 }
 

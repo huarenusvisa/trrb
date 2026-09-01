@@ -111,7 +111,23 @@ async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
     if (!response.ok) throw new Error(`legacy id lookup failed ${response.status}`);
     const rows = await response.json();
     const row = Array.isArray(rows) ? rows[0] : null;
-    if (!row?.id) return null;
+    if (!row?.id) {
+      const aliasLookup = new URL(`${base}/rest/v1/articles`);
+      aliasLookup.searchParams.set("select", "id,canonical_url");
+      aliasLookup.searchParams.set("metadata->legacy_alias_ids", `cs.["${legacyId.toLowerCase()}"]`);
+      aliasLookup.searchParams.set("status", "eq.published");
+      aliasLookup.searchParams.set("limit", "1");
+      const aliasResponse = await fetch(aliasLookup, {
+        headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }
+      });
+      if (!aliasResponse.ok) throw new Error(`legacy alias lookup failed ${aliasResponse.status}`);
+      const aliasRows = await aliasResponse.json();
+      const aliasRow = Array.isArray(aliasRows) ? aliasRows[0] : null;
+      if (!aliasRow?.id) return null;
+      const aliasCanonical = safeCanonical(aliasRow.canonical_url);
+      if (!aliasCanonical) throw new Error(`legacy alias ${legacyId} has no valid canonical_url`);
+      return redirect(aliasCanonical, "article-legacy-alias-recovery");
+    }
     const canonical = safeCanonical(row.canonical_url);
     if (!canonical) throw new Error(`legacy id ${legacyId} has no valid canonical_url`);
     return redirect(canonical, "article-legacy-id-recovery");

@@ -76,15 +76,6 @@ jobs:
           # discovery healthy and report the missing account authorization.
           SEO_REQUIRE_GOOGLE: 'false'
         run: node scripts/seo-search-engine-ops.mjs
-      - name: Submit fresh URLs through IndexNow
-        if: always()
-        env:
-          INDEXNOW_USE_LIVE_NEWS: 'true'
-          INDEXNOW_FRESH_HOURS: '48'
-          INDEXNOW_INCLUDE_HOME: 'true'
-          INDEXNOW_FULL_SYNC: 'false'
-          INDEXNOW_INCLUDE_RETIRED: 'false'
-        run: node scripts/submit-indexnow.mjs
       - name: Save SEO robot report
         if: always()
         uses: actions/upload-artifact@v4

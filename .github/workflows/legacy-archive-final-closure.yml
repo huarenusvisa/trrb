@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - "config/legacy-archive-final-closure-20260829.json"
+      - "supabase/migrations/20260901124500_legacy_important_news_to_china_hot.sql"
+      - "scripts/legacy-important-news-to-china-hot.test.mjs"
 
 permissions:
   contents: write
@@ -37,6 +39,7 @@ jobs:
           node scripts/legacy-category-policy.test.mjs
           node scripts/legacy-text-sanitize.test.mjs
           node scripts/legacy-final-closure-config.test.mjs
+          node scripts/legacy-important-news-to-china-hot.test.mjs
 
       - name: 检查正式库权限
         shell: bash
@@ -53,6 +56,22 @@ jobs:
           test -n "$database_url" || { echo "SUPABASE_POOLER_URL or SUPABASE_DB_URL missing"; exit 2; }
           psql "$database_url" -v ON_ERROR_STOP=1 -f supabase/migrations/20260901115000_human_approved_legacy_category_override.sql
           psql "$database_url" -v ON_ERROR_STOP=1 -Atc "select pg_get_functiondef('public.apply_human_approved_article_category()'::regprocedure);" | grep -q "human_category_override"
+
+      - name: 将完整旧重要新闻归入中国热门头条
+        shell: bash
+        run: |
+          set -euo pipefail
+          database_url="${SUPABASE_POOLER_URL:-}"
+          if [[ -z "$database_url" ]]; then database_url="${SUPABASE_DB_URL:-}"; fi
+          test -n "$database_url" || { echo "SUPABASE_POOLER_URL or SUPABASE_DB_URL missing"; exit 2; }
+          psql "$database_url" -v ON_ERROR_STOP=1 -f supabase/migrations/20260901124500_legacy_important_news_to_china_hot.sql
+          remaining="$(psql "$database_url" -Atc "select count(*) from public.articles where legacy_id is not null and category_name = '重要新闻';")"
+          migrated="$(psql "$database_url" -Atc "select count(*) from public.articles where metadata->>'legacy_category_cleanup_batch' = '20260901-important-news-to-china-hot';")"
+          invalid="$(psql "$database_url" -Atc "select count(*) from public.articles where metadata->>'legacy_category_cleanup_batch' = '20260901-important-news-to-china-hot' and (primary_section <> 'hot-headlines' or canonical_url !~ '^https://trrb\\.net/hot-headlines/');")"
+          echo "remaining_legacy_important_news=$remaining migrated=$migrated invalid=$invalid"
+          test "$remaining" = "0"
+          test "$migrated" = "400"
+          test "$invalid" = "0"
 
       - name: 写入前只读盘点
         shell: bash
@@ -138,6 +157,28 @@ jobs:
             skipped: final.skipped
           }, null, 2));
           NODE
+
+      - name: 提交栏目迁移网址给搜索引擎
+        env:
+          INDEXNOW_CHANGED_URLS_FILE: reports/legacy-indexnow-urls.txt
+          INDEXNOW_INCLUDE_RETIRED: "false"
+          INDEXNOW_FULL_SYNC: "false"
+        shell: bash
+        run: |
+          set -euo pipefail
+          database_url="${SUPABASE_POOLER_URL:-}"
+          if [[ -z "$database_url" ]]; then database_url="${SUPABASE_DB_URL:-}"; fi
+          mkdir -p reports
+          psql "$database_url" -Atc "
+            select metadata->>'legacy_previous_canonical_url'
+            from public.articles
+            where metadata->>'legacy_category_cleanup_batch' = '20260901-important-news-to-china-hot'
+            union
+            select canonical_url
+            from public.articles
+            where metadata->>'legacy_category_cleanup_batch' = '20260901-important-news-to-china-hot'
+          " | sed '/^$/d' | sort -u > reports/legacy-indexnow-urls.txt
+          node scripts/submit-indexnow.mjs
 
       - name: 推送新增Canonical与旧URL变化
         if: ${{ steps.restore.outputs.restored_count != '0' }}

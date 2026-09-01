@@ -10,10 +10,62 @@ function redirect(location: string, reason: string): Response {
     status: 301,
     headers: {
       Location: location,
-      "Cache-Control": "no-store",
+      "Cache-Control": "public, max-age=300",
       "X-TRRB-Redirect": reason
     }
   });
+}
+
+function supabaseConfig() {
+  const base = (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, "");
+  const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "";
+  return { base, key };
+}
+
+function dbHeaders(key: string) {
+  return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
+}
+
+function safeCanonical(value: unknown): string {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  try {
+    const target = new URL(raw, SITE_ORIGIN);
+    if (target.origin !== SITE_ORIGIN) return "";
+    if (target.pathname === "/article.html") return "";
+    return target.toString();
+  } catch {
+    return "";
+  }
+}
+
+async function fetchCanonicalByLegacyId(numericId: string): Promise<string> {
+  const { base, key } = supabaseConfig();
+  if (!base || !key) return "";
+
+  for (const legacyId of [`wp-${numericId}`, numericId]) {
+    const endpoint = new URL(`${base}/rest/v1/articles`);
+    endpoint.searchParams.set("select", "canonical_url");
+    endpoint.searchParams.set("legacy_id", `eq.${legacyId}`);
+    endpoint.searchParams.set("status", "eq.published");
+    endpoint.searchParams.set("limit", "1");
+
+    try {
+      const response = await fetch(endpoint, {
+        cache: "no-store",
+        headers: dbHeaders(key)
+      });
+      if (!response.ok) return "";
+      const rows = await response.json();
+      const canonical = safeCanonical(Array.isArray(rows) ? rows[0]?.canonical_url : "");
+      if (canonical) return canonical;
+    } catch (error) {
+      console.warn("wordpress root legacy lookup unavailable", error);
+      return "";
+    }
+  }
+
+  return "";
 }
 
 export default async (request: Request, context: any) => {
@@ -22,7 +74,12 @@ export default async (request: Request, context: any) => {
 
   const postId = String(url.searchParams.get("p") || url.searchParams.get("page_id") || "").trim();
   if (/^\d+$/.test(postId)) {
-    return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(postId)}`, "wordpress-root-post-id");
+    // High-confidence migrated records go straight to their published canonical
+    // URL. Missing canonical data or a database outage falls back to the guarded
+    // article route, which preserves archives and returns real 404/410 responses.
+    const canonical = await fetchCanonicalByLegacyId(postId);
+    if (canonical) return redirect(canonical, "wordpress-root-post-id-to-canonical");
+    return redirect(`${SITE_ORIGIN}/article.html?id=${encodeURIComponent(postId)}`, "wordpress-root-post-id-fallback");
   }
 
   const search = String(url.searchParams.get("s") || "").trim();

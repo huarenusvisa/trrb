@@ -264,6 +264,11 @@ async function saveArticle(input, actor) {
       ai_cover_processing: false,
       requested_status: requestedStatus,
       published_by: actor.user.email || actor.admin.email || "",
+      // A category selected in the manual publisher is an explicit editorial
+      // decision. Persist it so the database applies the same category after
+      // all automatic topic triggers have run.
+      human_category_override: categoryName,
+      human_category_override_updated_at: time,
       ice_length_policy: isIceBrief ? "news-value-not-character-count" : undefined,
       category_policy: categoryPolicy.reason || undefined,
       category_auto_corrected: categoryPolicy.corrected || undefined

@@ -55,6 +55,11 @@ test("missing cover never blocks publication", () => {
   assert.doesNotMatch(html, /auto-ai-cover" type="checkbox" checked/);
 });
 
+test("manual category selection is persisted as an explicit editorial override", () => {
+  assert.match(api, /human_category_override: categoryName/);
+  assert.match(api, /human_category_override_updated_at: time/);
+});
+
 test("desktop one-screen mode is scoped only to the publish page", () => {
   assert.match(client, /trrb:admin-page-shown/);
   assert.match(client, /event\.detail\?\.page === "new-article"/);

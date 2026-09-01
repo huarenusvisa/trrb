@@ -39,7 +39,10 @@ declare
 begin
   approved_category := nullif(trim(coalesce(new.metadata->>'human_category_override', '')), '');
 
-  if approved_category not in (
+  -- SQL `NULL NOT IN (...)` evaluates to NULL, not TRUE. Without this
+  -- explicit guard, ordinary articles with no human override fell through to
+  -- the lookup below and failed every insert with an override of <NULL>.
+  if approved_category is null or approved_category not in (
     'ICE执法动态', '美国时政', '美国警情', '移民美国', '中国热门头条'
   ) then
     return new;

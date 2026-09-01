@@ -55,7 +55,7 @@
     if (published > 0 && totalWaiting === 0) {
       banner.style.borderColor = '#12b76a';
       banner.style.background = '#ecfdf3';
-      banner.innerHTML = `✅ 本轮不是没有数据：系统已成功采集并自动发布 <b>${published}</b> 条。待处理为0，表示队列已经处理完毕。`;
+      banner.innerHTML = `✅ 当前数据库累计已发布 <b>${published}</b> 条；待处理为0表示审核队列已处理完毕。这里是累计数量，不代表最近一轮新增数量。`;
       const active = document.querySelector('.review-tab.active')?.dataset.reviewFilter;
       if (active === 'pending_review') activate('published');
       return;

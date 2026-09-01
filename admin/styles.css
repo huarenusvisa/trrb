@@ -596,3 +596,8 @@ th { background: #f1f5f9; }
 .automation-report-download p{margin:4px 0 0!important;color:#475569!important;font-size:12px}
 .automation-report-download .automation-toggle-button{min-width:190px}
 @media(max-width:720px){.automation-report-download{align-items:stretch;flex-direction:column}.automation-report-download .automation-toggle-button{width:100%}}
+
+.automation-report-status{display:block;margin-top:5px;color:#64748b;font-size:12px}
+.automation-report-status.loading{color:#1d4ed8}
+.automation-report-status.success{color:#15803d;font-weight:700}
+.automation-report-status.error{color:#b42318;font-weight:700}

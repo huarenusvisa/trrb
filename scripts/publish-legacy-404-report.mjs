@@ -44,7 +44,7 @@ const uploaded = await fetch(`${SUPABASE_URL}/storage/v1/object/${BUCKET}/${OBJE
   method: 'POST',
   headers: {
     ...headers,
-    'Content-Type': 'text/plain; charset=utf-8',
+    'Content-Type': 'text/plain',
     'x-upsert': 'true',
     'Cache-Control': 'no-store'
   },

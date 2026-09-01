@@ -22,8 +22,8 @@
       "纽约华人会计师事务所"
     ]
   },
-  "revision": 11,
-  "trigger_reason": "enforce all 1193 human-reviewed categories, repair partial writes, bind duplicate aliases, and complete production redirects",
+  "revision": 12,
+  "trigger_reason": "allow explicitly human-approved immigration records through the existing automatic firewall and finish the idempotent production retry",
   "manual_review_legacy_ids": [
     "wp-111351",
     "wp-107227",

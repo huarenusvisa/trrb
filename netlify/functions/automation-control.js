@@ -100,7 +100,11 @@ async function downloadLegacy404Report() {
     error.statusCode = 502;
     throw error;
   }
-  const rawUrl = signedPath.startsWith('http') ? signedPath : `${SUPABASE_URL}${signedPath}`;
+  const rawUrl = signedPath.startsWith('http')
+    ? signedPath
+    : signedPath.startsWith('/storage/v1/')
+      ? `${SUPABASE_URL}${signedPath}`
+      : `${SUPABASE_URL}/storage/v1${signedPath.startsWith('/') ? '' : '/'}${signedPath}`;
   const downloadUrl = new URL(rawUrl);
   downloadUrl.searchParams.set('download', 'trrb-legacy-404-report.txt');
   return {

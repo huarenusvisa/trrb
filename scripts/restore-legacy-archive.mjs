@@ -32,6 +32,11 @@ async function loadFinalClosureConfig() {
   }
 }
 const FINAL_CLOSURE_CONFIG = await loadFinalClosureConfig();
+const APPROVED_MANUAL_REVIEW_CATEGORIES = new Map(
+  Object.entries(FINAL_CLOSURE_CONFIG.approved_manual_review_categories || {})
+    .map(([legacyId, category]) => [clean(legacyId), clean(category)])
+    .filter(([legacyId, category]) => legacyId && category)
+);
 const FORCED_MANUAL_REVIEW_IDS = new Set(
   Array.isArray(FINAL_CLOSURE_CONFIG.manual_review_legacy_ids)
     ? FINAL_CLOSURE_CONFIG.manual_review_legacy_ids.map((value) => String(value || '').trim()).filter(Boolean)
@@ -87,7 +92,7 @@ async function allExisting() {
   const out=[];
   for (let offset=0;;offset+=1000) {
     // A unique order is required for offset pagination; created_at ties can otherwise skip rows between pages.
-    const rows = await rest('articles',{select:'id,legacy_id,title,slug,canonical_url,published_at,status,visibility',order:'id.asc',limit:'1000',offset:String(offset)});
+    const rows = await rest('articles',{select:'id,legacy_id,title,slug,canonical_url,published_at,status,visibility,category_name',order:'id.asc',limit:'1000',offset:String(offset)});
     out.push(...rows);
     if (rows.length < 1000) break;
   }
@@ -182,9 +187,12 @@ for (const row of archiveRows) {
   if(content.length<180){ skipped.no_body++; continue; }
   const published=publishedAt(row); if(!published){ skipped.bad_date++; continue; }
   const archiveCategory=clean(row.category);
-  const disposition=FORCED_MANUAL_REVIEW_IDS.has(id)
-    ? { action:"manual_review", targetCategory:"", reason:"current-immigration-publication-boundary" }
-    : resolveLegacyDisposition({
+  const approvedCategory=APPROVED_MANUAL_REVIEW_CATEGORIES.get(id);
+  const disposition=approvedCategory
+    ? { action:"publish", targetCategory:approvedCategory, reason:"human-reviewed-and-approved-20260901" }
+    : FORCED_MANUAL_REVIEW_IDS.has(id)
+      ? { action:"manual_review", targetCategory:"", reason:"current-immigration-publication-boundary" }
+      : resolveLegacyDisposition({
         category:archiveCategory,title,content,overrides:CATEGORY_OVERRIDES
       });
   if(disposition.action==="manual_review"){
@@ -239,6 +247,23 @@ candidates.sort((a,b)=>{
   return Number(String(b.legacy_id).replace(/\D/g,'')) - Number(String(a.legacy_id).replace(/\D/g,''));
 });
 const selected=candidates.slice(0,LIMIT);
+const candidateIds=new Set(candidates.map((row)=>clean(row.legacy_id)));
+const existingByApprovedId=new Map();
+for (const row of existing) {
+  const raw=clean(row.legacy_id);
+  if(!raw) continue;
+  const normalized=/^\d+$/.test(raw)?`wp-${raw}`:raw.toLowerCase();
+  if(APPROVED_MANUAL_REVIEW_CATEGORIES.has(normalized)) existingByApprovedId.set(normalized,row);
+}
+const approvedManualReviewUnresolved=[];
+const approvedExistingWrongCategory=[];
+for (const [legacyId,expectedCategory] of APPROVED_MANUAL_REVIEW_CATEGORIES) {
+  const current=existingByApprovedId.get(legacyId);
+  if(current && clean(current.category_name)!==expectedCategory) {
+    approvedExistingWrongCategory.push({legacy_id:legacyId,expected_category:expectedCategory,current_category:clean(current.category_name)});
+  }
+  if(!current && !candidateIds.has(legacyId)) approvedManualReviewUnresolved.push(legacyId);
+}
 let inserted=[];
 const insertTitleConflicts=[];
 const insertContentConflicts=[];
@@ -275,6 +300,11 @@ const report={
   limit:LIMIT,concurrency:CONCURRENCY,batches:Math.ceil(selected.length/25),skipped,skipped_by_category:skippedByCategory,
   manual_review_count:manualReviewRows.length,retired_non_article_count:retiredRows.length,
   priority_ids:[...PRIORITY_IDS],priority_only:PRIORITY_ONLY,category_overrides:Object.fromEntries(CATEGORY_OVERRIDES),
+  approved_manual_review_count:APPROVED_MANUAL_REVIEW_CATEGORIES.size,
+  approved_manual_review_existing:existingByApprovedId.size,
+  approved_manual_review_candidates:candidates.filter((row)=>APPROVED_MANUAL_REVIEW_CATEGORIES.has(clean(row.legacy_id))).length,
+  approved_manual_review_unresolved:approvedManualReviewUnresolved,
+  approved_existing_wrong_category:approvedExistingWrongCategory,
   forced_manual_review_ids:[...FORCED_MANUAL_REVIEW_IDS],
   priority_selected:selected.filter((r)=>PRIORITY_IDS.has(r.legacy_id)).map((r)=>r.legacy_id),
   insert_title_conflicts:insertTitleConflicts.slice(0,50),

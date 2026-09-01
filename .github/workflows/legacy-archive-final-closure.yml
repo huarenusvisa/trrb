@@ -68,6 +68,18 @@ jobs:
           if (report.recoverable_missing > Number(config.maximum_public_restores || 0)) {
             throw new Error(`safe restore count ${report.recoverable_missing} exceeds approved maximum`);
           }
+          if (report.approved_manual_review_count !== 1193) {
+            throw new Error(`approved manual review count mismatch: ${report.approved_manual_review_count}`);
+          }
+          if (report.manual_review_count !== 0) {
+            throw new Error(`approved articles still blocked for manual review: ${report.manual_review_count}`);
+          }
+          if (report.approved_manual_review_unresolved?.length) {
+            throw new Error(`approved articles are neither published nor restorable: ${JSON.stringify(report.approved_manual_review_unresolved.slice(0, 20))}`);
+          }
+          if (report.approved_existing_wrong_category?.length) {
+            throw new Error(`approved articles already exist in the wrong category: ${JSON.stringify(report.approved_existing_wrong_category.slice(0, 20))}`);
+          }
           if (report.selected !== report.recoverable_missing) throw new Error("preflight limit would truncate the safe restore set");
           console.log(JSON.stringify({
             safe_restore: report.recoverable_missing,
@@ -100,6 +112,12 @@ jobs:
           if (applied.recoverable_missing > 0 && applied.inserted < 1) throw new Error("apply inserted no legacy rows despite recoverable input");
           if (final.recoverable_missing !== 0) throw new Error(`safe legacy rows still missing after apply: ${final.recoverable_missing}`);
           if (final.skipped?.unknown_category !== 0) throw new Error("unknown legacy categories remain after apply");
+          if (final.approved_manual_review_existing !== 1193) {
+            throw new Error(`not all approved articles are present: ${final.approved_manual_review_existing}/1193`);
+          }
+          if (final.approved_manual_review_unresolved?.length || final.approved_existing_wrong_category?.length) {
+            throw new Error("approved article postflight validation failed");
+          }
           console.log(JSON.stringify({
             inserted: applied.inserted,
             remaining_safe_restore: final.recoverable_missing,

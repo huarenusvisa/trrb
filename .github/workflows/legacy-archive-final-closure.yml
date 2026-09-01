@@ -20,6 +20,8 @@ jobs:
     env:
       SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_POOLER_URL: ${{ secrets.SUPABASE_POOLER_URL }}
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL || secrets.SUPABASE_DATABASE_URL || secrets.DATABASE_URL }}
       LEGACY_RESTORE_CONCURRENCY: "4"
     steps:
       - uses: actions/checkout@v4
@@ -41,6 +43,16 @@ jobs:
         run: |
           set -euo pipefail
           test -n "${SUPABASE_SERVICE_ROLE_KEY:-}" || { echo "SUPABASE_SERVICE_ROLE_KEY missing"; exit 2; }
+
+      - name: 应用人工审核栏目优先级
+        shell: bash
+        run: |
+          set -euo pipefail
+          database_url="${SUPABASE_POOLER_URL:-}"
+          if [[ -z "$database_url" ]]; then database_url="${SUPABASE_DB_URL:-}"; fi
+          test -n "$database_url" || { echo "SUPABASE_POOLER_URL or SUPABASE_DB_URL missing"; exit 2; }
+          psql "$database_url" -v ON_ERROR_STOP=1 -f supabase/migrations/20260901115000_human_approved_legacy_category_override.sql
+          psql "$database_url" -v ON_ERROR_STOP=1 -Atc "select pg_get_functiondef('public.apply_human_approved_article_category()'::regprocedure);" | grep -q "human_category_override"
 
       - name: 写入前只读盘点
         shell: bash
@@ -76,9 +88,6 @@ jobs:
           }
           if (report.approved_manual_review_unresolved?.length) {
             throw new Error(`approved articles are neither published nor restorable: ${JSON.stringify(report.approved_manual_review_unresolved.slice(0, 20))}`);
-          }
-          if (report.approved_existing_wrong_category?.length) {
-            throw new Error(`approved articles already exist in the wrong category: ${JSON.stringify(report.approved_existing_wrong_category.slice(0, 20))}`);
           }
           if (report.approved_manual_review_existing + report.approved_manual_review_candidates + report.approved_manual_review_alias_plans !== 1193) {
             throw new Error("approved article coverage does not total 1193");

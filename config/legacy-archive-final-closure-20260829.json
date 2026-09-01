@@ -22,8 +22,8 @@
       "纽约华人会计师事务所"
     ]
   },
-  "revision": 10,
-  "trigger_reason": "resume partial restore and use wp-111718 as the canonical record for its duplicate-title group",
+  "revision": 11,
+  "trigger_reason": "enforce all 1193 human-reviewed categories, repair partial writes, bind duplicate aliases, and complete production redirects",
   "manual_review_legacy_ids": [
     "wp-111351",
     "wp-107227",

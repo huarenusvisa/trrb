@@ -16,6 +16,7 @@ on:
       - "articles-chunk-*.js"
       - "scripts/finalize-redirects.mjs"
       - "scripts/restore-legacy-archive.mjs"
+      - "scripts/publish-legacy-404-report.mjs"
       - "netlify/edge-functions/legacy-url-redirect.ts"
       - ".github/workflows/legacy-404-audit.yml"
 

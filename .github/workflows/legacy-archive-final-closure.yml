@@ -7,6 +7,8 @@ on:
       - "config/legacy-archive-final-closure-20260829.json"
       - "supabase/migrations/20260901124500_legacy_important_news_to_china_hot.sql"
       - "scripts/legacy-important-news-to-china-hot.test.mjs"
+      - "supabase/migrations/20260901133000_remaining_legacy_to_china_hot.sql"
+      - "scripts/remaining-legacy-to-china-hot.test.mjs"
 
 permissions:
   contents: write
@@ -40,6 +42,7 @@ jobs:
           node scripts/legacy-text-sanitize.test.mjs
           node scripts/legacy-final-closure-config.test.mjs
           node scripts/legacy-important-news-to-china-hot.test.mjs
+          node scripts/remaining-legacy-to-china-hot.test.mjs
 
       - name: 检查正式库权限
         shell: bash
@@ -71,6 +74,20 @@ jobs:
           echo "remaining_legacy_important_news=$remaining migrated=$migrated invalid=$invalid"
           test "$remaining" = "0"
           test "$migrated" = "400"
+          test "$invalid" = "0"
+
+      - name: 将剩余分类冲突和未绑定旧ID归入中国热门头条
+        shell: bash
+        run: |
+          set -euo pipefail
+          database_url="${SUPABASE_POOLER_URL:-}"
+          if [[ -z "$database_url" ]]; then database_url="${SUPABASE_DB_URL:-}"; fi
+          test -n "$database_url" || { echo "SUPABASE_POOLER_URL or SUPABASE_DB_URL missing"; exit 2; }
+          psql "$database_url" -v ON_ERROR_STOP=1 -f supabase/migrations/20260901133000_remaining_legacy_to_china_hot.sql
+          migrated="$(psql "$database_url" -Atc "select count(*) from public.articles where metadata->>'legacy_category_cleanup_batch' = '20260901-remaining-legacy-to-china-hot';")"
+          invalid="$(psql "$database_url" -Atc "select count(*) from public.articles where metadata->>'legacy_category_cleanup_batch' = '20260901-remaining-legacy-to-china-hot' and (primary_section <> 'hot-headlines' or canonical_url !~ '^https://trrb\\.net/hot-headlines/');")"
+          echo "remaining_legacy_migrated=$migrated invalid=$invalid"
+          test "$migrated" = "74"
           test "$invalid" = "0"
 
       - name: 写入前只读盘点
@@ -158,7 +175,7 @@ jobs:
           }, null, 2));
           NODE
 
-      - name: 提交栏目迁移网址给搜索引擎
+      - name: 提交全部栏目迁移网址给搜索引擎
         env:
           INDEXNOW_CHANGED_URLS_FILE: reports/legacy-indexnow-urls.txt
           INDEXNOW_INCLUDE_RETIRED: "false"
@@ -172,11 +189,17 @@ jobs:
           psql "$database_url" -Atc "
             select metadata->>'legacy_previous_canonical_url'
             from public.articles
-            where metadata->>'legacy_category_cleanup_batch' = '20260901-important-news-to-china-hot'
+            where metadata->>'legacy_category_cleanup_batch' in (
+              '20260901-important-news-to-china-hot',
+              '20260901-remaining-legacy-to-china-hot'
+            )
             union
             select canonical_url
             from public.articles
-            where metadata->>'legacy_category_cleanup_batch' = '20260901-important-news-to-china-hot'
+            where metadata->>'legacy_category_cleanup_batch' in (
+              '20260901-important-news-to-china-hot',
+              '20260901-remaining-legacy-to-china-hot'
+            )
           " | sed '/^$/d' | sort -u > reports/legacy-indexnow-urls.txt
           node scripts/submit-indexnow.mjs
 

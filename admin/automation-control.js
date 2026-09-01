@@ -35,19 +35,18 @@
       const response = await fetch('/.netlify/functions/automation-control?action=download_legacy_404_report', {
         headers: { Authorization: `Bearer ${token}` }
       });
+      const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
-        const payload = await response.json().catch(() => ({}));
         throw new Error(payload.error || `下载失败（${response.status}）`);
       }
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+      if (!payload.download_url) throw new Error('下载地址生成失败');
       const link = document.createElement('a');
-      link.href = url;
-      link.download = 'trrb-旧站404与301处理报告.txt';
+      link.href = payload.download_url;
+      link.download = payload.filename || 'trrb-旧站404与301处理报告.txt';
+      link.rel = 'noopener';
       document.body.appendChild(link);
       link.click();
       link.remove();
-      URL.revokeObjectURL(url);
       $('automation-control-message').textContent = 'TXT报告已下载。请优先处理“建议301”，其余记录逐条人工核对。';
       if (status) {
         status.textContent = '下载已开始；请查看浏览器下载记录。';

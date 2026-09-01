@@ -97,7 +97,7 @@ async function allExisting() {
   const out=[];
   for (let offset=0;;offset+=1000) {
     // A unique order is required for offset pagination; created_at ties can otherwise skip rows between pages.
-    const rows = await rest('articles',{select:'id,legacy_id,title,slug,canonical_url,published_at,status,visibility,category_id,category_name,primary_section,metadata',order:'id.asc',limit:'1000',offset:String(offset)});
+    const rows = await rest('articles',{select:'id,legacy_id,title,slug,canonical_url,published_at,status,visibility,category_id,category_name,primary_section,topic_key,metadata',order:'id.asc',limit:'1000',offset:String(offset)});
     out.push(...rows);
     if (rows.length < 1000) break;
   }
@@ -156,11 +156,26 @@ const [existing,categories]=await Promise.all([
   rest('categories',{select:'id,name,slug',is_active:'eq.true',limit:'500'})
 ]);
 const cats=new Map(categories.map((c)=>[clean(c.name),c]));
+function categoryRecord(name='') {
+  const normalized=clean(name);
+  return cats.get(normalized) || (normalized==='中国热门头条' ? cats.get('热门头条') : null);
+}
+function approvedCategoryName(name='') {
+  const normalized=clean(name);
+  return normalized==='热门头条' ? '中国热门头条' : normalized;
+}
 const legacy=new Set();
 const titleKeys=new Set();
 for (const row of existing) {
   const l=clean(row.legacy_id);
   if(l){ legacy.add(l); legacy.add(l.replace(/^wp-/i,'')); if(/^\d+$/.test(l)) legacy.add(`wp-${l}`); }
+  const aliases=Array.isArray(row.metadata?.legacy_alias_ids)?row.metadata.legacy_alias_ids:[];
+  for(const value of aliases){
+    const alias=clean(value);
+    if(!alias) continue;
+    legacy.add(alias); legacy.add(alias.replace(/^wp-/i,''));
+    if(/^\d+$/.test(alias)) legacy.add(`wp-${alias}`);
+  }
   const t=normalizeTitle(row.title); if(t) titleKeys.add(t);
 }
 const plannedLegacy=new Set(legacy);
@@ -198,11 +213,11 @@ for (const row of archiveRows) {
   if(!titleKey){ skipped.existing_title++; continue; }
   const explicitAliasTarget=APPROVED_DUPLICATE_ALIAS_TARGETS.get(id.toLowerCase());
   if(explicitAliasTarget){
-    const cat=approvedCategory?cats.get(approvedCategory):null;
+    const cat=approvedCategory?categoryRecord(approvedCategory):null;
     if(!cat) throw new Error(`approved duplicate alias ${id} has no active target category`);
     const slug=slugify(title,explicitAliasTarget);
     approvedAliasPlans.push({
-      legacy_id:id,article_id:'',target_legacy_id:explicitAliasTarget,title,target_category:cat.name,
+      legacy_id:id,article_id:'',target_legacy_id:explicitAliasTarget,title,target_category:approvedCategory,
       category_id:cat.id,slug,canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`
     });
     plannedLegacy.add(id); plannedLegacy.add(numeric);
@@ -211,12 +226,12 @@ for (const row of archiveRows) {
   if(plannedTitles.has(titleKey)){
     const existingTitleRow=existingByTitle.get(titleKey);
     const plannedTitleRow=plannedCandidateByTitle.get(titleKey);
-    const cat=approvedCategory?cats.get(approvedCategory):null;
+    const cat=approvedCategory?categoryRecord(approvedCategory):null;
     if(approvedCategory && (existingTitleRow?.id||plannedTitleRow?.legacy_id) && cat){
       const targetRow=existingTitleRow||plannedTitleRow;
       const slug=clean(targetRow.slug)||slugify(title,id);
       approvedAliasPlans.push({
-        legacy_id:id,article_id:clean(existingTitleRow?.id),target_legacy_id:clean(plannedTitleRow?.legacy_id),title,target_category:cat.name,
+        legacy_id:id,article_id:clean(existingTitleRow?.id),target_legacy_id:clean(plannedTitleRow?.legacy_id),title,target_category:approvedCategory,
         category_id:cat.id,slug,canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`,
       });
       plannedLegacy.add(id); plannedLegacy.add(numeric);
@@ -264,7 +279,7 @@ for (const row of archiveRows) {
     continue;
   }
   const categoryName=disposition.targetCategory;
-  const cat=cats.get(categoryName);
+  const cat=categoryRecord(categoryName);
   if(!cat){
     skipped.unknown_category++;
     bumpCategory(skippedByCategory.unknown,`${archiveCategory} -> ${categoryName}`);
@@ -278,7 +293,11 @@ for (const row of archiveRows) {
     author:clean(row.author)||'Tang Ren Daily',status:'published',visibility:'public',published_at:published,
     source_url:clean(row.sourceUrl),source_name:'唐人日报历史归档',primary_section:cat.slug,
     canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`,
-    metadata:{migration_source:'github-static-archive',archive_file:row.__file,archive_id:id,archive_date:clean(row.date),archive_time:clean(row.time),restored_at:new Date().toISOString()}
+    metadata:{
+      migration_source:'github-static-archive',archive_file:row.__file,archive_id:id,
+      archive_date:clean(row.date),archive_time:clean(row.time),restored_at:new Date().toISOString(),
+      ...(approvedCategory?{human_category_override:approvedCategory}:{})
+    }
   };
   candidates.push(candidate);
   plannedCandidateByTitle.set(titleKey,candidate);
@@ -297,9 +316,10 @@ const plannedAliasIds=new Set(approvedAliasPlans.map((row)=>clean(row.legacy_id)
 const existingByApprovedId=new Map();
 for (const row of existing) {
   const raw=clean(row.legacy_id);
-  if(!raw) continue;
-  const normalized=/^\d+$/.test(raw)?`wp-${raw}`:raw.toLowerCase();
-  if(APPROVED_MANUAL_REVIEW_CATEGORIES.has(normalized)) existingByApprovedId.set(normalized,row);
+  if(raw){
+    const normalized=/^\d+$/.test(raw)?`wp-${raw}`:raw.toLowerCase();
+    if(APPROVED_MANUAL_REVIEW_CATEGORIES.has(normalized)) existingByApprovedId.set(normalized,row);
+  }
   const aliases=Array.isArray(row.metadata?.legacy_alias_ids)?row.metadata.legacy_alias_ids:[];
   for(const alias of aliases){
     const normalizedAlias=clean(alias).toLowerCase();
@@ -308,15 +328,24 @@ for (const row of existing) {
 }
 const approvedManualReviewUnresolved=[];
 const approvedExistingWrongCategory=[];
+const approvedExistingRepairPlans=new Map();
 for (const [legacyId,expectedCategory] of APPROVED_MANUAL_REVIEW_CATEGORIES) {
   const current=existingByApprovedId.get(legacyId);
-  if(current && clean(current.category_name)!==expectedCategory) {
+  if(current && approvedCategoryName(current.category_name)!==expectedCategory) {
     approvedExistingWrongCategory.push({legacy_id:legacyId,expected_category:expectedCategory,current_category:clean(current.category_name)});
+  }
+  if(current){
+    const prior=approvedExistingRepairPlans.get(current.id);
+    if(prior && prior.expected_category!==expectedCategory) {
+      throw new Error(`approved aliases disagree on category for article ${current.id}`);
+    }
+    approvedExistingRepairPlans.set(current.id,{article:current,expected_category:expectedCategory});
   }
   if(!current && !candidateIds.has(legacyId) && !plannedAliasIds.has(legacyId)) approvedManualReviewUnresolved.push(legacyId);
 }
 let inserted=[];
 let aliasUpdated=[];
+let approvedExistingRepaired=[];
 const insertTitleConflicts=[];
 const insertContentConflicts=[];
 if(APPLY && selected.length){
@@ -344,6 +373,27 @@ if(APPLY && selected.length){
   });
   inserted = insertedBatches.flat();
 }
+if(APPLY && approvedExistingRepairPlans.size){
+  approvedExistingRepaired=await mapLimit([...approvedExistingRepairPlans.values()],CONCURRENCY,async(plan)=>{
+    const current=plan.article;
+    const cat=categoryRecord(plan.expected_category);
+    if(!cat) throw new Error(`active category not found for approved repair ${plan.expected_category}`);
+    const slug=clean(current.slug)||slugify(current.title,current.legacy_id);
+    const currentMetadata=current.metadata&&typeof current.metadata==='object'&&!Array.isArray(current.metadata)
+      ? current.metadata:{};
+    const canonicalUrl=`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`;
+    const rows=await rest('articles',{id:`eq.${current.id}`},{
+      method:'PATCH',headers:{Prefer:'return=representation'},body:{
+        category_id:cat.id,category_name:cat.name,primary_section:cat.slug,
+        topic_key:plan.expected_category==='ICE执法动态'?'ice':null,
+        slug,canonical_url:canonicalUrl,status:'published',visibility:'public',
+        metadata:{...currentMetadata,human_category_override:plan.expected_category,human_category_override_updated_at:new Date().toISOString()}
+      }
+    });
+    if(!Array.isArray(rows)||rows.length!==1) throw new Error(`unable to repair approved article ${current.legacy_id}`);
+    return {legacy_id:clean(current.legacy_id),article_id:current.id,category_name:rows[0].category_name,canonical_url:rows[0].canonical_url};
+  });
+}
 if(APPLY && approvedAliasPlans.length){
   aliasUpdated=await mapLimit(approvedAliasPlans,CONCURRENCY,async(item)=>{
     let articleId=clean(item.article_id);
@@ -363,9 +413,10 @@ if(APPLY && approvedAliasPlans.length){
     const rows=await rest('articles',{id:`eq.${articleId}`},{
       method:'PATCH',headers:{Prefer:'return=representation'},body:{
         category_id:item.category_id,category_name:item.target_category,
-        primary_section:cats.get(item.target_category)?.slug||'',slug:item.slug,
+        primary_section:categoryRecord(item.target_category)?.slug||'',
+        topic_key:item.target_category==='ICE执法动态'?'ice':null,slug:item.slug,
         canonical_url:item.canonical_url,status:'published',visibility:'public',
-        metadata:{...currentMetadata,legacy_alias_ids:aliases,legacy_alias_updated_at:new Date().toISOString()}
+        metadata:{...currentMetadata,legacy_alias_ids:aliases,legacy_alias_updated_at:new Date().toISOString(),human_category_override:item.target_category,human_category_override_updated_at:new Date().toISOString()}
       }
     });
     if(!Array.isArray(rows)||rows.length!==1) throw new Error(`unable to update approved alias ${item.legacy_id}`);
@@ -385,6 +436,8 @@ const report={
   approved_manual_review_candidates:candidates.filter((row)=>APPROVED_MANUAL_REVIEW_CATEGORIES.has(clean(row.legacy_id))).length,
   approved_manual_review_alias_plans:approvedAliasPlans.length,
   approved_manual_review_alias_updated:aliasUpdated.length,
+  approved_existing_category_repair_plans:approvedExistingRepairPlans.size,
+  approved_existing_category_repaired:approvedExistingRepaired.length,
   approved_duplicate_alias_targets:Object.fromEntries(APPROVED_DUPLICATE_ALIAS_TARGETS),
   approved_manual_review_unresolved:approvedManualReviewUnresolved,
   approved_existing_wrong_category:approvedExistingWrongCategory,
@@ -457,7 +510,11 @@ const aliasChangedUrls=aliasUpdated.flatMap((row)=>[
   row.canonical_url,
   ...oldUrlsForLegacyId(row.legacy_id)
 ]);
-const indexNowUrls=[...new Set([...inserted.flatMap(legacyChangedUrls),...aliasChangedUrls].filter(Boolean))];
+const repairedChangedUrls=approvedExistingRepaired.flatMap(legacyChangedUrls);
+const indexNowUrls=[...new Set([...inserted.flatMap(legacyChangedUrls),...aliasChangedUrls,...repairedChangedUrls].filter(Boolean))];
 await writeFile(path.join(ROOT,'reports','legacy-indexnow-urls.txt'),indexNowUrls.join('\n')+(indexNowUrls.length?'\n':''));
-if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `restored_count=${inserted.length}\n`);
+if (process.env.GITHUB_OUTPUT) await appendFile(
+  process.env.GITHUB_OUTPUT,
+  `restored_count=${inserted.length+aliasUpdated.length+approvedExistingRepaired.length}\n`
+);
 console.log(JSON.stringify(report,null,2));

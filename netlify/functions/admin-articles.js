@@ -238,8 +238,8 @@ async function saveArticle(input, actor) {
   const summary = generateSummary(content, title);
   const seoKeywords = generateSeoKeywords(title, categoryName, content);
   const coverImage = validateExternalCover(input.cover_image);
-  const needsBackgroundCover = requestedStatus === "published" && !coverImage && autoAiCover;
-  const storedStatus = needsBackgroundCover ? "draft" : requestedStatus;
+  // A cover is optional. Publishing must never wait for image generation.
+  const storedStatus = requestedStatus;
   const time = nowIso();
 
   const payload = {
@@ -261,7 +261,7 @@ async function saveArticle(input, actor) {
       summary_automatic: true,
       ai_cover_requested: autoAiCover,
       ai_cover_generated: false,
-      ai_cover_processing: needsBackgroundCover,
+      ai_cover_processing: false,
       requested_status: requestedStatus,
       published_by: actor.user.email || actor.admin.email || "",
       ice_length_policy: isIceBrief ? "news-value-not-character-count" : undefined,
@@ -284,8 +284,8 @@ async function saveArticle(input, actor) {
     summary,
     cover_image: coverImage,
     ai_cover_generated: false,
-    background_required: needsBackgroundCover,
-    background_article_id: needsBackgroundCover ? String(article.id) : null
+    background_required: false,
+    background_article_id: null
   };
 }
 

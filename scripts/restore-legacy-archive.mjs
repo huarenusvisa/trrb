@@ -87,7 +87,7 @@ async function allExisting() {
   const out=[];
   for (let offset=0;;offset+=1000) {
     // A unique order is required for offset pagination; created_at ties can otherwise skip rows between pages.
-    const rows = await rest('articles',{select:'id,legacy_id,title,slug,published_at,status,visibility',order:'id.asc',limit:'1000',offset:String(offset)});
+    const rows = await rest('articles',{select:'id,legacy_id,title,slug,canonical_url,published_at,status,visibility',order:'id.asc',limit:'1000',offset:String(offset)});
     out.push(...rows);
     if (rows.length < 1000) break;
   }

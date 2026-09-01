@@ -2,6 +2,32 @@
 -- this trigger last so automated topic classifiers cannot silently undo that
 -- decision during insert, repair, or a later article edit.
 
+-- The ordinary immigration firewall raises before later triggers can run.
+-- Exempt only records carrying the explicit human-reviewed immigration marker;
+-- all normal publishing paths retain the existing protection unchanged.
+do $migration$
+declare
+  function_def text;
+  original_condition constant text := $condition$if new.category_name = '移民美国'
+     and lower(coalesce(new.status, '')) = 'published'$condition$;
+  approved_condition constant text := $condition$if new.category_name = '移民美国'
+     and coalesce(new.metadata->>'human_category_override', '') <> '移民美国'
+     and lower(coalesce(new.status, '')) = 'published'$condition$;
+begin
+  select pg_get_functiondef('public.assign_article_category_from_topic()'::regprocedure)
+    into function_def;
+
+  if position(approved_condition in function_def) > 0 then
+    return;
+  end if;
+  if position(original_condition in function_def) = 0 then
+    raise exception 'Expected immigration firewall condition was not found';
+  end if;
+
+  execute replace(function_def, original_condition, approved_condition);
+end;
+$migration$;
+
 create or replace function public.apply_human_approved_article_category()
 returns trigger
 language plpgsql
@@ -52,4 +78,3 @@ drop trigger if exists zzz_articles_human_category_override on public.articles;
 create trigger zzz_articles_human_category_override
 before insert or update on public.articles
 for each row execute function public.apply_human_approved_article_category();
-

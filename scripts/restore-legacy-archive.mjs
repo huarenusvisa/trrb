@@ -346,6 +346,7 @@ for (const [legacyId,expectedCategory] of APPROVED_MANUAL_REVIEW_CATEGORIES) {
 let inserted=[];
 let aliasUpdated=[];
 let approvedExistingRepaired=[];
+let freshExistingForAliasResolution=null;
 const insertTitleConflicts=[];
 const insertContentConflicts=[];
 if(APPLY && selected.length){
@@ -404,6 +405,11 @@ if(APPLY && approvedAliasPlans.length){
         const targetRows=await rest('articles',{select:'id',legacy_id:`eq.${item.target_legacy_id}`,limit:'1'});
         articleId=clean(targetRows?.[0]?.id);
       }
+    }
+    if(!articleId){
+      freshExistingForAliasResolution ||= await allExisting();
+      const titleKey=normalizeTitle(item.title);
+      articleId=clean(freshExistingForAliasResolution.find((row)=>normalizeTitle(row.title)===titleKey)?.id);
     }
     if(!articleId) throw new Error(`unable to resolve alias target for ${item.legacy_id}`);
     const currentRows=await rest('articles',{select:'metadata',id:`eq.${articleId}`,limit:'1'});

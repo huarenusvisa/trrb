@@ -301,9 +301,7 @@
     submitButton.textContent = status === "published" ? "正在发布…" : "正在保存…";
     el("article-message").textContent = selectedCoverFile
       ? "正在上传封面…"
-      : (status === "published" && autoAiCover && !el("article-cover").value.trim()
-        ? "正在保存文章并启动AI后台封面任务…"
-        : "正在自动生成摘要、SEO并保存…");
+      : "正在自动生成摘要、SEO并保存…";
 
     try {
       let coverImage = el("article-cover").value.trim();
@@ -323,11 +321,13 @@
         status
       });
 
-      if (result.background_required && result.background_article_id) {
-        await startBackgroundPublication(result.background_article_id);
-        el("article-message").textContent = "文章已保存。AI正在后台生成封面，完成后会自动发布到前台。";
-      } else if (result.article?.status === "published") {
-        el("article-message").textContent = "发布成功。系统将自动判断是否进入首页今日要闻。";
+      if (result.article?.status === "published") {
+        if (autoAiCover && !coverImage && result.article?.id) {
+          startBackgroundPublication(result.article.id).catch((error) => {
+            console.warn("可选AI封面生成失败，不影响文章发布", error);
+          });
+        }
+        el("article-message").textContent = "发布成功。图片为可选项，无图文章也会正常显示。";
       } else {
         el("article-message").textContent = "草稿保存成功，摘要和SEO已自动生成。";
       }
@@ -335,7 +335,7 @@
       el("article-form").reset();
       el("article-author").value = "Tang Ren Daily";
       el("article-status").value = "published";
-      el("auto-ai-cover").checked = true;
+      el("auto-ai-cover").checked = false;
       clearCoverSelection();
       renderTitleSuggestions([]);
       lastTitleSignature = "";

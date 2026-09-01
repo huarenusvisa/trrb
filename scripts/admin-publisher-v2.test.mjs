@@ -44,16 +44,15 @@ test("AI title assistant always requests exactly three separately named titles",
   assert.match(client, /button\.dataset\.titleSuggestion/);
 });
 
-test("checked AI cover queues a background task and publishes only after image generation", () => {
-  assert.match(api, /needsBackgroundCover/);
-  assert.match(api, /storedStatus = needsBackgroundCover \? "draft" : requestedStatus/);
-  assert.match(api, /background_required: needsBackgroundCover/);
-  assert.match(client, /admin-article-ai-publish-background/);
-  assert.match(client, /startBackgroundPublication\(result\.background_article_id\)/);
-  assert.match(background, /const coverImage = await generateCover/);
-  assert.match(background, /cover_image: coverImage/);
-  assert.match(background, /status: "published"/);
-  assert.match(background, /ai_cover_processing: false/);
+test("missing cover never blocks publication", () => {
+  assert.match(api, /A cover is optional/);
+  assert.match(api, /storedStatus = requestedStatus/);
+  assert.match(api, /background_required: false/);
+  assert.doesNotMatch(api, /storedStatus = needsBackgroundCover/);
+  assert.match(client, /图片为可选项，无图文章也会正常显示/);
+  assert.match(client, /可选AI封面生成失败，不影响文章发布/);
+  assert.match(html, /auto-ai-cover" type="checkbox" \/> 无图时尝试生成AI封面（可选，不影响发布）/);
+  assert.doesNotMatch(html, /auto-ai-cover" type="checkbox" checked/);
 });
 
 test("desktop one-screen mode is scoped only to the publish page", () => {

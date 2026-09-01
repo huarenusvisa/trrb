@@ -176,6 +176,7 @@ const skippedByCategory={unknown:{},manual_review:{},retired:{}};
 const manualReviewRows=[];
 const retiredRows=[];
 const approvedAliasPlans=[];
+const plannedCandidateByTitle=new Map();
 function bumpCategory(bucket, category) {
   const key=clean(category)||"(empty)";
   bucket[key]=(bucket[key]||0)+1;
@@ -192,16 +193,14 @@ for (const row of archiveRows) {
   if(!titleKey){ skipped.existing_title++; continue; }
   if(plannedTitles.has(titleKey)){
     const existingTitleRow=existingByTitle.get(titleKey);
+    const plannedTitleRow=plannedCandidateByTitle.get(titleKey);
     const cat=approvedCategory?cats.get(approvedCategory):null;
-    if(approvedCategory && existingTitleRow?.id && cat){
-      const slug=clean(existingTitleRow.slug)||slugify(title,id);
-      const metadata=existingTitleRow.metadata&&typeof existingTitleRow.metadata==='object'&&!Array.isArray(existingTitleRow.metadata)
-        ? existingTitleRow.metadata:{};
-      const aliases=[...new Set([...(Array.isArray(metadata.legacy_alias_ids)?metadata.legacy_alias_ids:[]),id])];
+    if(approvedCategory && (existingTitleRow?.id||plannedTitleRow?.legacy_id) && cat){
+      const targetRow=existingTitleRow||plannedTitleRow;
+      const slug=clean(targetRow.slug)||slugify(title,id);
       approvedAliasPlans.push({
-        legacy_id:id,article_id:existingTitleRow.id,title,target_category:cat.name,
+        legacy_id:id,article_id:clean(existingTitleRow?.id),target_legacy_id:clean(plannedTitleRow?.legacy_id),title,target_category:cat.name,
         category_id:cat.id,slug,canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`,
-        metadata:{...metadata,legacy_alias_ids:aliases,legacy_alias_updated_at:new Date().toISOString()}
       });
       plannedLegacy.add(id); plannedLegacy.add(numeric);
       continue;
@@ -255,7 +254,7 @@ for (const row of archiveRows) {
     continue;
   }
   const slug=slugify(title,id);
-  candidates.push({
+  const candidate={
     legacy_id:id,title,slug,summary:clean(row.excerpt)||content.slice(0,180),content,
     category_id:cat.id,category_name:cat.name,
     cover_image: clean(row.image) && !String(row.image).includes('image-placeholder.svg') ? clean(row.image) : '',
@@ -263,7 +262,9 @@ for (const row of archiveRows) {
     source_url:clean(row.sourceUrl),source_name:'唐人日报历史归档',primary_section:cat.slug,
     canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`,
     metadata:{migration_source:'github-static-archive',archive_file:row.__file,archive_id:id,archive_date:clean(row.date),archive_time:clean(row.time),restored_at:new Date().toISOString()}
-  });
+  };
+  candidates.push(candidate);
+  plannedCandidateByTitle.set(titleKey,candidate);
   plannedLegacy.add(id); plannedLegacy.add(numeric); plannedTitles.add(titleKey);
 }
 candidates.sort((a,b)=>{
@@ -328,15 +329,30 @@ if(APPLY && selected.length){
 }
 if(APPLY && approvedAliasPlans.length){
   aliasUpdated=await mapLimit(approvedAliasPlans,CONCURRENCY,async(item)=>{
-    const rows=await rest('articles',{id:`eq.${item.article_id}`},{
+    let articleId=clean(item.article_id);
+    if(!articleId && item.target_legacy_id){
+      const insertedTarget=inserted.find((row)=>clean(row.legacy_id)===item.target_legacy_id);
+      articleId=clean(insertedTarget?.id);
+      if(!articleId){
+        const targetRows=await rest('articles',{select:'id',legacy_id:`eq.${item.target_legacy_id}`,limit:'1'});
+        articleId=clean(targetRows?.[0]?.id);
+      }
+    }
+    if(!articleId) throw new Error(`unable to resolve alias target for ${item.legacy_id}`);
+    const currentRows=await rest('articles',{select:'metadata',id:`eq.${articleId}`,limit:'1'});
+    const currentMetadata=currentRows?.[0]?.metadata&&typeof currentRows[0].metadata==='object'&&!Array.isArray(currentRows[0].metadata)
+      ? currentRows[0].metadata:{};
+    const aliases=[...new Set([...(Array.isArray(currentMetadata.legacy_alias_ids)?currentMetadata.legacy_alias_ids:[]),item.legacy_id])];
+    const rows=await rest('articles',{id:`eq.${articleId}`},{
       method:'PATCH',headers:{Prefer:'return=representation'},body:{
         category_id:item.category_id,category_name:item.target_category,
         primary_section:cats.get(item.target_category)?.slug||'',slug:item.slug,
-        canonical_url:item.canonical_url,status:'published',visibility:'public',metadata:item.metadata
+        canonical_url:item.canonical_url,status:'published',visibility:'public',
+        metadata:{...currentMetadata,legacy_alias_ids:aliases,legacy_alias_updated_at:new Date().toISOString()}
       }
     });
     if(!Array.isArray(rows)||rows.length!==1) throw new Error(`unable to update approved alias ${item.legacy_id}`);
-    return {legacy_id:item.legacy_id,article_id:item.article_id,canonical_url:item.canonical_url};
+    return {legacy_id:item.legacy_id,article_id:articleId,canonical_url:item.canonical_url};
   });
 }
 skipped.insert_conflict_title=insertTitleConflicts.length;

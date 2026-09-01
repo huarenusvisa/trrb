@@ -22,8 +22,8 @@
       "纽约华人会计师事务所"
     ]
   },
-  "revision": 8,
-  "trigger_reason": "publish 1188 reviewed articles and bind 5 duplicate-title legacy aliases",
+  "revision": 9,
+  "trigger_reason": "publish 1188 unique reviewed articles and bind 5 duplicate archive IDs",
   "manual_review_legacy_ids": [
     "wp-111351",
     "wp-107227",

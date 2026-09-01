@@ -1,3 +1,5 @@
+import { finalHotCanonicalForLegacyId } from "./legacy-final-hot-redirects.js";
+
 const SITE_ORIGIN = "https://trrb.net";
 const FALLBACK_SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const FALLBACK_SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
@@ -95,6 +97,9 @@ async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
   if (url.pathname !== "/article.html") return null;
   const legacyId = String(url.searchParams.get("id") || "").trim();
   if (!/^wp-\d+$/i.test(legacyId)) return null;
+
+  const pinnedCanonical = finalHotCanonicalForLegacyId(legacyId);
+  if (pinnedCanonical) return redirect(pinnedCanonical, "article-final-hot-legacy-recovery");
 
   const { base, key } = supabaseConfig();
   if (!base || !key) return temporaryUnavailable();

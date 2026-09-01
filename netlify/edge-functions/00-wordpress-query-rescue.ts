@@ -1,3 +1,5 @@
+import { finalHotCanonicalForLegacyId } from "./legacy-final-hot-redirects.js";
+
 const SITE_ORIGIN = "https://trrb.net";
 
 // Runs after 00-host-canonical / 00-legacy-article-query-guard and before the
@@ -89,6 +91,9 @@ export default async (request: Request, context: any) => {
 
   const postId = String(url.searchParams.get("p") || url.searchParams.get("page_id") || "").trim();
   if (/^\d+$/.test(postId)) {
+    const pinnedCanonical = finalHotCanonicalForLegacyId(postId);
+    if (pinnedCanonical) return redirect(pinnedCanonical, "wordpress-root-final-hot-canonical");
+
     // High-confidence migrated records go straight to their published canonical
     // URL. Missing canonical data or a database outage falls back to the guarded
     // article route, which preserves archives and returns real 404/410 responses.

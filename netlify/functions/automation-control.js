@@ -6,8 +6,19 @@ const ACTIVE_RUN_STATES = new Set(['queued', 'in_progress', 'waiting', 'requeste
 const STOP_POLL_ATTEMPTS = 8;
 const STOP_POLL_DELAY_MS = 600;
 const MANUAL_ONLY_KEYS = new Set(['seo_metadata', 'legacy_recovery']);
+const CONTROL_GROUPS = {
+  seo_suite: {
+    display_name: 'SEO收录与监控',
+    keys: ['seo_indexnow', 'seo_search_engine', 'monitor']
+  }
+};
 const CONTROL_PLANE_KEYS = new Set(['ice', 'china_hot', 'trump_x', 'jobs', 'secondhand', 'seo_indexnow', 'monitor', 'maintenance', 'seo_metadata', 'legacy_recovery']);
 const DISPATCHES = {
+  seo_suite: [
+    { workflow: 'operations-control-plane.yml', inputs: { module: 'seo' } },
+    { workflow: 'seo-search-engine-ops.yml' },
+    { workflow: 'operations-control-plane.yml', inputs: { module: 'monitor' } }
+  ],
   global: [
     { workflow: 'operations-control-plane.yml', inputs: { module: 'all' } },
     { workflow: 'seo-search-engine-ops.yml' },
@@ -28,6 +39,7 @@ const DISPATCHES = {
 };
 
 const CANCEL_WORKFLOWS = {
+  seo_suite: ['indexnow.yml', 'seo-search-engine-ops.yml', 'live-seo-crawl.yml', 'seo-integrity.yml'],
   ice: [
     'ice-unified-pipeline.yml', 'ice-forced-clock.yml', 'ice-auto-publish.yml',
     'ice-collector-continuous.yml', 'ice-publisher-continuous.yml', 'ice-watchdog.yml',
@@ -168,11 +180,13 @@ async function cancelWorkflow(workflow) {
 }
 
 async function cancelControl(key) {
+  const groupKeys = CONTROL_GROUPS[key]?.keys || [];
   const workflows = key === 'global'
     ? [...new Set([CONTROL_PLANE_WORKFLOW, ...Object.values(CANCEL_WORKFLOWS).flat()])]
     : [...new Set([
         ...(CANCEL_WORKFLOWS[key] || []),
-        ...(CONTROL_PLANE_KEYS.has(key) ? [CONTROL_PLANE_WORKFLOW] : [])
+        ...groupKeys.flatMap((member) => CANCEL_WORKFLOWS[member] || []),
+        ...(CONTROL_PLANE_KEYS.has(key) || groupKeys.some((member) => CONTROL_PLANE_KEYS.has(member)) ? [CONTROL_PLANE_WORKFLOW] : [])
       ])];
   const results = await Promise.allSettled(workflows.map(async (workflow) => ({
     workflow,
@@ -211,6 +225,30 @@ async function readControl(key) {
     }
   });
   return Array.isArray(controls) ? controls[0] : null;
+}
+
+async function readControlGroup(key) {
+  const group = CONTROL_GROUPS[key];
+  if (!group) return null;
+  const controls = await rest('automation_controls', {
+    query: {
+      select: 'control_key,display_name,enabled,description,sort_order,updated_at,updated_by',
+      control_key: `in.(${group.keys.join(',')})`,
+      order: 'sort_order.asc'
+    }
+  });
+  const rows = Array.isArray(controls) ? controls : [];
+  if (rows.length !== group.keys.length) return null;
+  return {
+    control_key: key,
+    display_name: group.display_name,
+    enabled: rows.every((item) => item.enabled === true),
+    members: rows
+  };
+}
+
+function controlKeyFilter(keys) {
+  return keys.length === 1 ? `eq.${keys[0]}` : `in.(${keys.join(',')})`;
 }
 
 async function closeGlobalIfNoEnabledChildren(userId) {
@@ -254,7 +292,9 @@ exports.handler = async (event) => {
       return json(400, { error: '开关参数无效' });
     }
 
-    const existing = await readControl(key);
+    const group = CONTROL_GROUPS[key] || null;
+    const targetKeys = group?.keys || [key];
+    const existing = group ? await readControlGroup(key) : await readControl(key);
     if (!existing) return json(404, { error: '机器人流程不存在' });
 
     let mode = 'individual';
@@ -276,17 +316,17 @@ exports.handler = async (event) => {
       if (!globalControl.enabled) {
         mode = 'single';
         await patchControls({ control_key: 'neq.global' }, false, user.id);
-        await patchControls({ control_key: `eq.${key}` }, true, user.id);
+        await patchControls({ control_key: controlKeyFilter(targetKeys) }, true, user.id);
         await patchControls({ control_key: 'eq.global' }, true, user.id);
       } else {
-        await patchControls({ control_key: `eq.${key}` }, true, user.id);
+        await patchControls({ control_key: controlKeyFilter(targetKeys) }, true, user.id);
       }
     } else {
-      await patchControls({ control_key: `eq.${key}` }, false, user.id);
+      await patchControls({ control_key: controlKeyFilter(targetKeys) }, false, user.id);
       globalAutoClosed = await closeGlobalIfNoEnabledChildren(user.id);
     }
 
-    const control = await readControl(key);
+    const control = group ? await readControlGroup(key) : await readControl(key);
     if (!control) return json(500, { error: '保存后无法读取机器人状态' });
 
     try {

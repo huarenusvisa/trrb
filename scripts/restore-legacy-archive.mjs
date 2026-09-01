@@ -282,7 +282,57 @@ const report={
   sample_missing:selected.slice(0,20).map((r)=>({legacy_id:r.legacy_id,title:r.title,category_name:r.category_name,canonical_url:r.canonical_url})),
   inserted_rows:inserted
 };
+function tsv(value='') {
+  return String(value ?? '').replace(/[\t\r\n]+/g, ' ').trim();
+}
+function oldUrlsForLegacyId(value='') {
+  const legacyId=clean(value);
+  const numeric=legacyId.replace(/^wp-/i,'');
+  if(!/^\d+$/.test(numeric)) return [];
+  return [
+    `${SITE}/article.html?id=${encodeURIComponent(legacyId)}`,
+    `${SITE}/article.html?id=${encodeURIComponent(numeric)}`,
+    `${SITE}/?p=${encodeURIComponent(numeric)}`
+  ];
+}
+const reportLines=[
+  '旧站链接盘点与301处理建议',
+  `生成时间\t${report.generated_at}`,
+  '说明\t本报告用于人工核对。只有“建议301”且目标地址正确的记录才应建立跳转；不要把所有404跳转到首页。',
+  '',
+  '处理建议\t旧网址\t建议目标网址\t文章标题\t备注'
+];
+const seenReportRows=new Set();
+function addReportRow(action, oldUrl, targetUrl, title, note) {
+  const key=`${oldUrl}\t${targetUrl}`;
+  if(!oldUrl || seenReportRows.has(key)) return;
+  seenReportRows.add(key);
+  reportLines.push([action,oldUrl,targetUrl,title,note].map(tsv).join('\t'));
+}
+for (const row of existing) {
+  const target=clean(row.canonical_url);
+  if(!target) continue;
+  for (const oldUrl of oldUrlsForLegacyId(row.legacy_id)) {
+    addReportRow('建议301',oldUrl,target,row.title,'正式库已有对应文章，请核对标题和目标地址后执行');
+  }
+}
+for (const row of candidates) {
+  for (const oldUrl of oldUrlsForLegacyId(row.legacy_id)) {
+    addReportRow('待人工处理',oldUrl,'',row.title,'正式库尚无对应文章，不能直接301；请决定恢复、匹配其他文章或保留404/410');
+  }
+}
+for (const row of manualReviewRows) {
+  for (const oldUrl of oldUrlsForLegacyId(row.legacy_id)) {
+    addReportRow('待人工审核',oldUrl,'',row.title,`分类需人工判断：${row.reason || '未说明'}`);
+  }
+}
+for (const row of retiredRows) {
+  for (const oldUrl of oldUrlsForLegacyId(row.legacy_id)) {
+    addReportRow('建议保留404/410',oldUrl,'',row.title,`非文章或已退役内容：${row.reason || '未说明'}`);
+  }
+}
 await mkdir(path.join(ROOT,'reports'),{recursive:true});
+await writeFile(path.join(ROOT,'reports','legacy-404-latest.txt'),'\uFEFF'+reportLines.join('\n')+'\n');
 await writeFile(path.join(ROOT,'reports','legacy-migration-latest.json'),JSON.stringify(report,null,2)+'\n');
 await writeFile(path.join(ROOT,'reports','legacy-manual-review-latest.json'),JSON.stringify({
   generated_at:report.generated_at,count:manualReviewRows.length,rows:manualReviewRows

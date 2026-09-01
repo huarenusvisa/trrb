@@ -1,4 +1,4 @@
-const { authenticateStaff, rest, safeText } = require('./_shared/supabase-admin');
+const { authenticateStaff, rest, safeText, SUPABASE_URL, SERVICE_KEY } = require('./_shared/supabase-admin');
 
 const REPOSITORY = 'huarenusvisa/trrb';
 const CONTROL_PLANE_WORKFLOW = 'operations-control-plane.yml';
@@ -72,6 +72,34 @@ function getEnv(name) {
 
 function githubToken() {
   return getEnv('GITHUB_AUTOMATION_TOKEN') || getEnv('GH_AUTOMATION_TOKEN');
+}
+
+async function downloadLegacy404Report() {
+  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/automation-reports/legacy-404-latest.txt`, {
+    headers: {
+      apikey: SERVICE_KEY,
+      Authorization: `Bearer ${SERVICE_KEY}`
+    }
+  });
+  if (response.status === 404) {
+    const error = new Error('404报告尚未生成。请先开启自动检查，任务完成后再下载。');
+    error.statusCode = 404;
+    throw error;
+  }
+  if (!response.ok) {
+    const error = new Error(`读取404报告失败（${response.status}）`);
+    error.statusCode = response.status;
+    throw error;
+  }
+  return {
+    statusCode: 200,
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Content-Disposition': 'attachment; filename="trrb-legacy-404-report.txt"',
+      'Cache-Control': 'no-store'
+    },
+    body: await response.text()
+  };
 }
 
 async function github(path, options = {}) {
@@ -271,6 +299,9 @@ exports.handler = async (event) => {
   let requestedKey = null;
   try {
     ({ user } = await authenticateStaff(event, ['owner', 'editor']));
+    if (event.httpMethod === 'GET' && event.queryStringParameters?.action === 'download_legacy_404_report') {
+      return downloadLegacy404Report();
+    }
     if (event.httpMethod === 'GET') {
       const [controls, notifications] = await Promise.all([
         rest('automation_controls', {

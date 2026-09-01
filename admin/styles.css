@@ -590,3 +590,9 @@ th { background: #f1f5f9; }
 .automation-notification.success{border-color:#bbf7d0;background:#f0fdf4}
 .automation-notification.success strong,.automation-notification.success p{color:#166534}
 @media(max-width:700px){.automation-notification{flex-direction:column}.automation-notification time{flex:auto}}
+
+.automation-report-download{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:14px;padding:13px;border:1px solid #b7e4c7;border-radius:10px;background:#f0fdf4}
+.automation-report-download strong{display:block;color:#166534;font-size:13px}
+.automation-report-download p{margin:4px 0 0!important;color:#475569!important;font-size:12px}
+.automation-report-download .automation-toggle-button{min-width:190px}
+@media(max-width:720px){.automation-report-download{align-items:stretch;flex-direction:column}.automation-report-download .automation-toggle-button{width:100%}}

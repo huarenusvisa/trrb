@@ -20,6 +20,36 @@
     return payload;
   }
 
+  async function downloadLegacy404Report(button) {
+    const token = await window.getAdminAccessToken?.();
+    if (!token) throw new Error('后台登录已失效，请重新登录');
+    const original = button.textContent;
+    button.disabled = true;
+    button.textContent = '正在准备TXT…';
+    try {
+      const response = await fetch('/.netlify/functions/automation-control?action=download_legacy_404_report', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({}));
+        throw new Error(payload.error || `下载失败（${response.status}）`);
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'trrb-旧站404与301处理报告.txt';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      $('automation-control-message').textContent = 'TXT报告已下载。请优先处理“建议301”，其余记录逐条人工核对。';
+    } finally {
+      button.disabled = false;
+      button.textContent = original;
+    }
+  }
+
   function renderNotifications(notifications = [], dispatchReady = true) {
     const panel = $('automation-notification-panel');
     const list = $('automation-notification-list');
@@ -173,18 +203,33 @@
       description: '打开后，系统每6小时检查旧链接和404问题；只生成报告，不修改文章。',
       controls: [legacyAudit],
       sort: 100,
-      manualHtml: byKey.get('legacy_recovery') ? manualTool(
+      manualHtml: `
+        <div class="automation-report-download">
+          <div>
+            <strong>最新检查报告</strong>
+            <p>下载TXT后，可按“建议301、待人工处理、保留404/410”逐条修复。</p>
+          </div>
+          <button type="button" class="automation-toggle-button enable" data-download-legacy-report>下载404报告（TXT）</button>
+        </div>
+      ` + (byKey.get('legacy_recovery') ? manualTool(
         byKey.get('legacy_recovery'),
         '高级操作：恢复旧文章',
         '开始恢复旧文章',
         '停止恢复',
         '这会向数据库写入文章；只有确定需要恢复旧内容时才执行。'
-      ) : '',
+      ) : ''),
       note: '正常情况下只使用上方自动检查开关。'
     }, globalEnabled));
 
     root.innerHTML = cards.sort((a, b) => a.sort - b.sort).map((card) => card.html).join('');
     root.querySelectorAll('[data-automation-key]').forEach((button) => button.addEventListener('click', () => update(button)));
+    root.querySelectorAll('[data-download-legacy-report]').forEach((button) => button.addEventListener('click', async () => {
+      try {
+        await downloadLegacy404Report(button);
+      } catch (error) {
+        $('automation-control-message').textContent = `报告下载失败：${error.message}`;
+      }
+    }));
   }
 
   async function update(button) {

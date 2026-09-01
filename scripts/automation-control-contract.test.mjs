@@ -23,6 +23,7 @@ assert.match(controlUi, /download_legacy_404_report/);
 assert.match(controlUi, /payload\.download_url/);
 assert.match(control, /downloadLegacy404Report/);
 assert.match(control, /expires_in: 60/);
+assert.match(control, /SUPABASE_URL}\\/storage\\/v1/);
 assert.match(controlUi, /automation-advanced/);
 assert.match(controlUi, /开启自动任务/);
 assert.match(controlUi, /固定安全规则/);

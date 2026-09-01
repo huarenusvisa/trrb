@@ -33,6 +33,8 @@ for (const [file, minimum] of sitemapFiles) {
   allUrls.push(...urls);
 }
 assert.equal(new Set(allUrls).size, allUrls.length, 'sitemaps may not contain duplicate canonical URLs');
+assert.ok(allUrls.includes('https://asylumjudge.com/compare/'), 'sitemap must contain the judge comparison page');
+assert.ok(allUrls.includes('https://asylumjudge.com/en/compare/'), 'sitemap must contain the localized comparison page');
 
 for (const url of allUrls) {
   const pathname = new URL(url).pathname;
@@ -76,6 +78,11 @@ const englishHome = await read('en/index.html');
 assert.match(englishHome, /<html lang="en">/);
 assert.match(englishHome, /<title>U\.S\. Immigration Judge Approval Rates/);
 assert.match(englishHome, /hreflang="pt-BR" href="https:\/\/asylumjudge\.com\/pt-br\/"/);
+
+const comparison = await read('compare/index.html');
+assert.match(comparison, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/compare\/">/);
+assert.match(comparison, /id="compare-search"/);
+assert.match(comparison, /immigration-judges\?mode=all|compare\.js/);
 
 const redirects = await read('_redirects');
 const redirectLines = new Set(redirects.trim().split(/\r?\n/));

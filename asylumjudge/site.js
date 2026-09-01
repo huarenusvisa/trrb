@@ -27,6 +27,8 @@ function useCleanDomainRoutes() {
     ['/immigration-judge-approval-rate/china-dashboard', appPath('nationality')],
     ['/immigration-judge-approval-rate/nationality.html', appPath('nationality')],
     ['/immigration-judge-approval-rate/nationality', appPath('nationality')],
+    ['/immigration-judge-approval-rate/compare.html', appPath('compare')],
+    ['/immigration-judge-approval-rate/compare', appPath('compare')],
     ['/immigration-judge-approval-rate/methodology.html', appPath('methodology')],
     ['/immigration-judge-approval-rate/methodology', appPath('methodology')]
   ]);

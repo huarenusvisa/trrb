@@ -39,7 +39,8 @@ await buildAsylumJudgeSeo({ root, output });
 const localePrefixes = ['en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
 const localizedRewrites = localePrefixes.flatMap((locale) => [
   `/${locale}/judge /immigration-judge-approval-rate/detail.html 200`,
-  `/${locale}/court /immigration-judge-approval-rate/court-detail.html 200`
+  `/${locale}/court /immigration-judge-approval-rate/court-detail.html 200`,
+  `/${locale}/compare /immigration-judge-approval-rate/compare.html 200`
 ]).join('\n');
 
 await writeFile(join(output, '_redirects'), `
@@ -64,6 +65,7 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /courts /immigration-judge-approval-rate/courts.html 200
 /states /immigration-judge-approval-rate/states.html 200
 /nationality /immigration-judge-approval-rate/china-dashboard.html 200
+/compare /immigration-judge-approval-rate/compare.html 200
 /judge-backgrounds /judge-backgrounds/index.html 200
 /china /nationality?country=China 301
 /methodology /immigration-judge-approval-rate/methodology.html 200

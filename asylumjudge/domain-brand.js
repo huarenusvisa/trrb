@@ -15,6 +15,8 @@
     ['/immigration-judge-approval-rate/china-dashboard', `${root}/nationality`],
     ['/immigration-judge-approval-rate/nationality.html', `${root}/nationality`],
     ['/immigration-judge-approval-rate/nationality', `${root}/nationality`],
+    ['/immigration-judge-approval-rate/compare.html', `${root}/compare`],
+    ['/immigration-judge-approval-rate/compare', `${root}/compare`],
     ['/immigration-judge-approval-rate/methodology.html', `${root}/methodology`],
     ['/immigration-judge-approval-rate/methodology', `${root}/methodology`],
     ['/immigration-judge-approval-rate/detail.html', `${root}/judge`],

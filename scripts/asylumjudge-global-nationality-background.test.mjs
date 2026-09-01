@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { runInNewContext } from 'node:vm';
 
 const require = createRequire(import.meta.url);
 const sharedPath = require.resolve('../netlify/functions/_shared/supabase-admin.js');
@@ -18,6 +19,19 @@ const korea = nationalityData.countries.find((row) => row.nationality === 'South
 const china = nationalityData.countries.find((row) => row.nationality === 'China');
 assert.equal(nationalityData.countries.length, 227, 'the generated catalog must expose every observed nationality with a classified final outcome');
 for (const country of [cuba, korea, china]) assert.ok(country, 'China, Cuba, and South Korea must all be searchable');
+assert.deepEqual(
+  {
+    total: china.total_asylum_decisions,
+    grants: china.grants,
+    denials: china.denials,
+    other: china.other_decisions,
+    approvalRate: china.approval_rate,
+    code: china.nationality_code,
+    chineseName: china.nationality_zh
+  },
+  { total: 38607, grants: 16222, denials: 7063, other: 15322, approvalRate: 69.6672, code: 'CH', chineseName: '中国' },
+  'the published China aggregate must remain tied to the verified July 2026 EOIR snapshot'
+);
 for (const year of ['2024', '2025', '2026']) assert.ok(cuba.yearly.some((row) => row.label === year), `Cuba must include real ${year} data`);
 assert.ok(cuba.monthly.length > 2 && cuba.quarterly.length > 2 && cuba.yearly.length > 2, 'country trends must support month, quarter, and year views');
 assert.equal(cuba.yearly.find((row) => row.label === '2025').approval_rate, 22.6253, 'trend data must be generated from the EOIR snapshot, not a placeholder');
@@ -83,6 +97,29 @@ assert.match(judgeDetail.judge.webex.links[0].webex_url, /^https:\/\/eoir\.webex
 const page = readFileSync('immigration-judge-approval-rate/china-dashboard.html', 'utf8');
 const client = readFileSync('immigration-judge-approval-rate/china-dashboard.js', 'utf8');
 const i18nClient = readFileSync('immigration-judge-approval-rate/china-dashboard-i18n.js', 'utf8');
+const i18nSandbox = {
+  window: {},
+  location: { pathname: '/nationality/', search: '', href: 'https://asylumjudge.com/nationality/' },
+  localStorage: { getItem: () => null, setItem: () => {} },
+  document: {
+    body: { dataset: {} },
+    documentElement: {},
+    querySelector: () => null,
+    querySelectorAll: () => []
+  },
+  Intl,
+  URL,
+  URLSearchParams,
+  CustomEvent: class CustomEvent {}
+};
+runInNewContext(i18nClient, i18nSandbox);
+const chinaWithEoirCode = { nationality: 'China', nationality_zh: '中国', nationality_code: 'CH' };
+i18nSandbox.window.AsylumI18n.setLocale('zh-Hans', { updateUrl: false, dispatch: false });
+assert.equal(i18nSandbox.window.AsylumI18n.countryName(chinaWithEoirCode), '中国', 'EOIR CH must render as China, never Switzerland');
+i18nSandbox.window.AsylumI18n.setLocale('en', { updateUrl: false, dispatch: false });
+assert.equal(i18nSandbox.window.AsylumI18n.countryName(chinaWithEoirCode), 'China', 'EOIR nationality codes must not be treated as ISO region codes');
+i18nSandbox.window.AsylumI18n.setLocale('zh-Hans', { updateUrl: false, dispatch: false });
+assert.equal(i18nSandbox.window.AsylumI18n.countryName({ nationality: 'El Salvador', nationality_zh: '萨尔瓦多', nationality_code: 'ES' }), '萨尔瓦多', 'EOIR ES must not render as Spain');
 const standaloneProxy = readFileSync('asylumjudge/immigration-judges-proxy.js', 'utf8');
 const detailPage = readFileSync('immigration-judge-approval-rate/detail.html', 'utf8');
 const detailClient = readFileSync('immigration-judge-approval-rate/detail.js', 'utf8');

@@ -68,12 +68,53 @@
   const interpolate = (value, vars = {}) => String(value).replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
   const t = (key, vars) => interpolate(translations[locale]?.[key] ?? en[key] ?? key, vars);
   const formatNumber = (value) => Number(value || 0).toLocaleString(locale);
-  const countryName = (row) => {
-    const code = String(row?.nationality_code || '').toUpperCase();
-    if (/^[A-Z]{2}$/.test(code)) {
+  const nationalityRegionAliases = new Map(Object.entries({
+    'turkey': 'TR', 'kirghizia kyrgyzstan': 'KG', 'democratic republic of congo': 'CD',
+    'people s republic of the congo': 'CG', 'tajikistan tadzhik': 'TJ', 'moldavia moldova': 'MD',
+    'ivory coast cote d ivoire': 'CI', 'burma myanmar': 'MM', 'palestinian': 'PS',
+    'bosnia herzegovina': 'BA', 'macedonia': 'MK', 'federated states of micronesia': 'FM',
+    'slovak republic': 'SK', 'czech republic': 'CZ', 'hong kong': 'HK',
+    'byelorussia belarus': 'BY', 'holland': 'NL', 'st vincent and the grenadines': 'VC',
+    'east timor': 'TL', 'macau': 'MO', 'republic of the marshall islands': 'MH',
+    'kampuchea': 'KH', 'st kiitts west indies': 'KN', 'western samoa': 'WS',
+    'swaziland': 'SZ', 'cocos island': 'CC', 'faeroe island': 'FO',
+    'the republic of palau': 'PW', 'people s republic of benin': 'BJ',
+    'upper volta': 'BF', 'christmas islands': 'CX'
+  }));
+  const normalizeCountryName = (value) => String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  let isoRegionByEnglishName;
+  const regionCodeForNationality = (row) => {
+    const key = normalizeCountryName(row?.nationality);
+    if (!key) return null;
+    if (nationalityRegionAliases.has(key)) return nationalityRegionAliases.get(key);
+    if (!isoRegionByEnglishName) {
+      isoRegionByEnglishName = new Map();
       try {
-        const name = new Intl.DisplayNames([locale], { type: 'region' }).of(code);
-        if (name && name !== code) return name;
+        const englishRegions = new Intl.DisplayNames(['en'], { type: 'region' });
+        for (let first = 65; first <= 90; first += 1) {
+          for (let second = 65; second <= 90; second += 1) {
+            const code = String.fromCharCode(first, second);
+            const name = englishRegions.of(code);
+            if (name && name !== code) isoRegionByEnglishName.set(normalizeCountryName(name), code);
+          }
+        }
+      } catch {}
+    }
+    return isoRegionByEnglishName.get(key) || null;
+  };
+  const countryName = (row) => {
+    if (locale.startsWith('zh') && row?.nationality_zh) return row.nationality_zh;
+    const regionCode = regionCodeForNationality(row);
+    if (regionCode) {
+      try {
+        const name = new Intl.DisplayNames([locale], { type: 'region' }).of(regionCode);
+        if (name && name !== regionCode) return name;
       } catch {}
     }
     return locale.startsWith('zh') ? (row?.nationality_zh || row?.nationality || '') : (row?.nationality || row?.nationality_zh || '');

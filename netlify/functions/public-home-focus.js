@@ -35,16 +35,6 @@ function overrideOf(row) {
   return String(metadata.homepage_focus_override || "auto").trim().toLowerCase();
 }
 
-function hasRealImage(row) {
-  const image = String(row?.cover_image || "").trim();
-  return Boolean(
-    image &&
-    /^https?:\/\//i.test(image) &&
-    !image.includes("image-placeholder") &&
-    !image.includes("category-placeholders")
-  );
-}
-
 function textLength(value) {
   return String(value || "")
     .replace(/<[^>]*>/g, "")
@@ -58,7 +48,6 @@ function isManualFocus(row) {
 }
 
 function isEligibleLongform(row) {
-  if (!hasRealImage(row)) return false;
   if (isManualFocus(row)) return true;
   return String(row?.category_name || "").trim() === "美国时政" &&
     textLength(row?.content) >= MIN_LONGFORM_CHARS;

@@ -22,8 +22,8 @@
       "纽约华人会计师事务所"
     ]
   },
-  "revision": 9,
-  "trigger_reason": "publish 1188 unique reviewed articles and bind 5 duplicate archive IDs",
+  "revision": 10,
+  "trigger_reason": "resume partial restore and use wp-111718 as the canonical record for its duplicate-title group",
   "manual_review_legacy_ids": [
     "wp-111351",
     "wp-107227",
@@ -72,6 +72,9 @@
     "wp-107444",
     "wp-99200"
   ],
+  "approved_duplicate_alias_targets": {
+    "wp-111973": "wp-111718"
+  },
   "approved_manual_review_categories": {
     "wp-117264": "美国警情",
     "wp-117210": "移民美国",

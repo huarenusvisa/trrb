@@ -14,11 +14,13 @@ assert.ok(Array.isArray(ids));
 assert.equal(ids.length, 46);
 assert.equal(new Set(ids).size, ids.length);
 assert.ok(ids.every((id) => /^wp-\d+$/.test(id)));
-assert.equal(config.revision, 9);
+assert.equal(config.revision, 10);
 assert.equal(Object.keys(approved).length, 1193);
 assert.equal(new Set(Object.keys(approved)).size, 1193);
 assert.ok(Object.keys(approved).every((id) => /^wp-\d+$/.test(id)));
 assert.ok(Object.values(approved).every((category) => allowedCategories.has(category)));
 assert.ok(ids.every((id) => approved[id]), 'every previously forced manual-review ID must now have an approved category');
+assert.deepEqual(config.approved_duplicate_alias_targets, { 'wp-111973': 'wp-111718' });
+assert.equal(approved['wp-111973'], approved['wp-111718']);
 
 console.log('legacy final closure config passed');

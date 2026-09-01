@@ -37,6 +37,11 @@ const APPROVED_MANUAL_REVIEW_CATEGORIES = new Map(
     .map(([legacyId, category]) => [clean(legacyId), clean(category)])
     .filter(([legacyId, category]) => legacyId && category)
 );
+const APPROVED_DUPLICATE_ALIAS_TARGETS = new Map(
+  Object.entries(FINAL_CLOSURE_CONFIG.approved_duplicate_alias_targets || {})
+    .map(([legacyId, targetLegacyId]) => [clean(legacyId).toLowerCase(), clean(targetLegacyId).toLowerCase()])
+    .filter(([legacyId, targetLegacyId]) => legacyId && targetLegacyId)
+);
 const FORCED_MANUAL_REVIEW_IDS = new Set(
   Array.isArray(FINAL_CLOSURE_CONFIG.manual_review_legacy_ids)
     ? FINAL_CLOSURE_CONFIG.manual_review_legacy_ids.map((value) => String(value || '').trim()).filter(Boolean)
@@ -191,6 +196,18 @@ for (const row of archiveRows) {
   const title=clean(row.title); const titleKey=normalizeTitle(title);
   const approvedCategory=APPROVED_MANUAL_REVIEW_CATEGORIES.get(id);
   if(!titleKey){ skipped.existing_title++; continue; }
+  const explicitAliasTarget=APPROVED_DUPLICATE_ALIAS_TARGETS.get(id.toLowerCase());
+  if(explicitAliasTarget){
+    const cat=approvedCategory?cats.get(approvedCategory):null;
+    if(!cat) throw new Error(`approved duplicate alias ${id} has no active target category`);
+    const slug=slugify(title,explicitAliasTarget);
+    approvedAliasPlans.push({
+      legacy_id:id,article_id:'',target_legacy_id:explicitAliasTarget,title,target_category:cat.name,
+      category_id:cat.id,slug,canonical_url:`${SITE}/${encodeURIComponent(cat.slug)}/${encodeURIComponent(slug)}`
+    });
+    plannedLegacy.add(id); plannedLegacy.add(numeric);
+    continue;
+  }
   if(plannedTitles.has(titleKey)){
     const existingTitleRow=existingByTitle.get(titleKey);
     const plannedTitleRow=plannedCandidateByTitle.get(titleKey);
@@ -368,6 +385,7 @@ const report={
   approved_manual_review_candidates:candidates.filter((row)=>APPROVED_MANUAL_REVIEW_CATEGORIES.has(clean(row.legacy_id))).length,
   approved_manual_review_alias_plans:approvedAliasPlans.length,
   approved_manual_review_alias_updated:aliasUpdated.length,
+  approved_duplicate_alias_targets:Object.fromEntries(APPROVED_DUPLICATE_ALIAS_TARGETS),
   approved_manual_review_unresolved:approvedManualReviewUnresolved,
   approved_existing_wrong_category:approvedExistingWrongCategory,
   forced_manual_review_ids:[...FORCED_MANUAL_REVIEW_IDS],

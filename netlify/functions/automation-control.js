@@ -75,30 +75,38 @@ function githubToken() {
 }
 
 async function downloadLegacy404Report() {
-  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/automation-reports/legacy-404-latest.txt`, {
+  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/sign/automation-reports/legacy-404-latest.txt`, {
+    method: 'POST',
     headers: {
       apikey: SERVICE_KEY,
-      Authorization: `Bearer ${SERVICE_KEY}`
-    }
+      Authorization: `Bearer ${SERVICE_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ expiresIn: 60 })
   });
-  if (response.status === 404) {
-    const error = new Error('404报告尚未生成。请先开启自动检查，任务完成后再下载。');
-    error.statusCode = 404;
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const missing = response.status === 404
+      || /NoSuchKey|Object not found|not found/i.test(String(payload.message || payload.error || ''));
+    const error = new Error(missing
+      ? '404报告尚未生成。请先开启自动检查，任务完成后再下载。'
+      : `读取404报告失败（${response.status}）`);
+    error.statusCode = missing ? 404 : response.status;
     throw error;
   }
-  if (!response.ok) {
-    const error = new Error(`读取404报告失败（${response.status}）`);
-    error.statusCode = response.status;
+  const signedPath = payload.signedURL || payload.signedUrl || '';
+  if (!signedPath) {
+    const error = new Error('无法生成404报告临时下载地址');
+    error.statusCode = 502;
     throw error;
   }
   return {
-    statusCode: 200,
+    statusCode: 302,
     headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Content-Disposition': 'attachment; filename="trrb-legacy-404-report.txt"',
+      Location: signedPath.startsWith('http') ? signedPath : `${SUPABASE_URL}${signedPath}`,
       'Cache-Control': 'no-store'
     },
-    body: await response.text()
+    body: ''
   };
 }
 

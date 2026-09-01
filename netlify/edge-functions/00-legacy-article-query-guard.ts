@@ -1,3 +1,5 @@
+import { finalHotCanonicalForLegacyId } from "../shared/legacy-final-hot-redirects.js";
+
 const SITE = "https://trrb.net";
 
 // Runs before article-prerender. It retires truly missing WordPress/numeric
@@ -195,6 +197,11 @@ export default async (request: Request, context: any) => {
 
   if (/^(?:wp-)?\d+$/i.test(id)) {
     const numericId = id.replace(/^wp-/i, "");
+
+    // The final reviewed legacy batch is pinned locally. This is deliberately
+    // checked before Supabase so a slow lookup cannot misclassify it as 410.
+    const pinnedCanonical = finalHotCanonicalForLegacyId(id);
+    if (pinnedCanonical) return redirect(pinnedCanonical, "final-hot-legacy-id-to-canonical");
 
     // A migrated legacy record gets the strongest response: permanent redirect
     // to its current canonical article URL.

@@ -73,7 +73,7 @@ async function fetchHomepageFocus() {
         longform_chars: Number(row.longform_chars || 0),
         homepage_focus_source: row.homepage_focus_source || ""
       }))
-      .filter((item) => item.id && item.title && hasRealImage(item));
+      .filter((item) => item.id && item.title);
   } finally { clearTimeout(timer); }
 }
 

@@ -100,13 +100,20 @@ async function downloadLegacy404Report() {
     error.statusCode = 502;
     throw error;
   }
+  const rawUrl = signedPath.startsWith('http') ? signedPath : `${SUPABASE_URL}${signedPath}`;
+  const downloadUrl = new URL(rawUrl);
+  downloadUrl.searchParams.set('download', 'trrb-legacy-404-report.txt');
   return {
-    statusCode: 302,
+    statusCode: 200,
     headers: {
-      Location: signedPath.startsWith('http') ? signedPath : `${SUPABASE_URL}${signedPath}`,
+      'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store'
     },
-    body: ''
+    body: JSON.stringify({
+      download_url: downloadUrl.toString(),
+      filename: 'trrb-legacy-404-report.txt',
+      expires_in: 60
+    })
   };
 }
 

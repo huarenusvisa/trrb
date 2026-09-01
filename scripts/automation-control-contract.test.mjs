@@ -8,7 +8,17 @@ assert.match(adminHtml, /id="automation-notification-panel"/);
 assert.match(adminHtml, /id="automation-notification-list"/);
 
 const control = read('netlify/functions/automation-control.js');
+const controlUi = read('admin/automation-control.js');
+const seoWorkflow = read('.github/workflows/seo-search-engine-ops.yml');
 assert.match(control, /CONTROL_PLANE_WORKFLOW = 'operations-control-plane\.yml'/);
+assert.match(control, /seo_suite[\s\S]*seo_indexnow[\s\S]*seo_search_engine[\s\S]*monitor/);
+assert.match(control, /controlKeyFilter\(targetKeys\)/);
+assert.match(controlUi, /SEO收录与监控/);
+assert.match(controlUi, /ICE维护清理/);
+assert.match(controlUi, /旧站迁移工具/);
+assert.match(controlUi, /立即同步元数据/);
+assert.match(controlUi, /立即执行恢复/);
+assert.doesNotMatch(seoWorkflow, /Submit fresh URLs through IndexNow/);
 assert.match(control, /not\.in\.\(global,seo_metadata,legacy_recovery\)/);
 assert.match(control, /in\.\(seo_metadata,legacy_recovery\)/);
 assert.match(control, /CONTROL_PLANE_KEYS\.has\(key\).*CONTROL_PLANE_WORKFLOW/s);
@@ -46,4 +56,4 @@ const plane = read('.github/workflows/operations-control-plane.yml');
 assert.match(plane, /发送机器人站内错误通知/);
 assert.match(plane, /node scripts\/automation-notify\.mjs/);
 
-console.log('Automation control contract passed: UI notifications, hard gates, parent cancellation, manual-task isolation and ICE emergency routing are enforced.');
+console.log('Automation control contract passed: grouped controls, deduplicated SEO dispatch, UI notifications, hard gates, manual-task isolation and ICE emergency routing are enforced.');

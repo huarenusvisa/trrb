@@ -99,4 +99,3 @@ export function finalHotCanonicalForLegacyId(value) {
 }
 
 export const FINAL_HOT_LEGACY_REDIRECT_COUNT = FINAL_HOT_LEGACY_REDIRECTS.size;
-

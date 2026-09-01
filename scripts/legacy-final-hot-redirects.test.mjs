@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import {
   FINAL_HOT_LEGACY_REDIRECT_COUNT,
   finalHotCanonicalForLegacyId,
-} from '../netlify/edge-functions/legacy-final-hot-redirects.js';
+} from '../netlify/shared/legacy-final-hot-redirects.js';
 
 const migration = await readFile(
   new URL('../supabase/migrations/20260901133000_remaining_legacy_to_china_hot.sql', import.meta.url),

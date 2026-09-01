@@ -1,4 +1,4 @@
-import { finalHotCanonicalForLegacyId } from "./legacy-final-hot-redirects.js";
+import { finalHotCanonicalForLegacyId } from "../shared/legacy-final-hot-redirects.js";
 
 const SITE_ORIGIN = "https://trrb.net";
 

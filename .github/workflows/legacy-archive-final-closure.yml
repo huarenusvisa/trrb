@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - "config/legacy-archive-final-closure-20260829.json"
+      - "supabase/migrations/20260901115000_human_approved_legacy_category_override.sql"
+      - "scripts/human-approved-category-override.test.mjs"
+      - "netlify/functions/admin-articles.js"
+      - "scripts/admin-publisher-v2.test.mjs"
       - "supabase/migrations/20260901124500_legacy_important_news_to_china_hot.sql"
       - "scripts/legacy-important-news-to-china-hot.test.mjs"
       - "supabase/migrations/20260901133000_remaining_legacy_to_china_hot.sql"
@@ -41,6 +45,8 @@ jobs:
           node scripts/legacy-category-policy.test.mjs
           node scripts/legacy-text-sanitize.test.mjs
           node scripts/legacy-final-closure-config.test.mjs
+          node scripts/human-approved-category-override.test.mjs
+          node --test scripts/admin-publisher-v2.test.mjs
           node scripts/legacy-important-news-to-china-hot.test.mjs
           node scripts/remaining-legacy-to-china-hot.test.mjs
 
@@ -58,7 +64,9 @@ jobs:
           if [[ -z "$database_url" ]]; then database_url="${SUPABASE_DB_URL:-}"; fi
           test -n "$database_url" || { echo "SUPABASE_POOLER_URL or SUPABASE_DB_URL missing"; exit 2; }
           psql "$database_url" -v ON_ERROR_STOP=1 -f supabase/migrations/20260901115000_human_approved_legacy_category_override.sql
-          psql "$database_url" -v ON_ERROR_STOP=1 -Atc "select pg_get_functiondef('public.apply_human_approved_article_category()'::regprocedure);" | grep -q "human_category_override"
+          function_def="$(psql "$database_url" -v ON_ERROR_STOP=1 -Atc "select pg_get_functiondef('public.apply_human_approved_article_category()'::regprocedure);")"
+          grep -qi "human_category_override" <<<"$function_def"
+          grep -Eqi "approved_category[[:space:]]+IS[[:space:]]+NULL" <<<"$function_def"
 
       - name: 将完整旧重要新闻归入中国热门头条
         shell: bash

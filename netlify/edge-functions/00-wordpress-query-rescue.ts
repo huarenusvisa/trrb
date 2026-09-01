@@ -65,6 +65,21 @@ async function fetchCanonicalByLegacyId(numericId: string): Promise<string> {
     }
   }
 
+  const aliasEndpoint = new URL(`${base}/rest/v1/articles`);
+  aliasEndpoint.searchParams.set("select", "canonical_url");
+  aliasEndpoint.searchParams.set("metadata->legacy_alias_ids", `cs.["wp-${numericId}"]`);
+  aliasEndpoint.searchParams.set("status", "eq.published");
+  aliasEndpoint.searchParams.set("limit", "1");
+  try {
+    const response = await fetch(aliasEndpoint, { cache: "no-store", headers: dbHeaders(key) });
+    if (!response.ok) return "";
+    const rows = await response.json();
+    return safeCanonical(Array.isArray(rows) ? rows[0]?.canonical_url : "");
+  } catch (error) {
+    console.warn("wordpress root legacy alias lookup unavailable", error);
+    return "";
+  }
+
   return "";
 }
 

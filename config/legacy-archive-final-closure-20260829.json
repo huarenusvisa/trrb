@@ -22,8 +22,8 @@
       "纽约华人会计师事务所"
     ]
   },
-  "revision": 7,
-  "trigger_reason": "publish all 1193 human-reviewed legacy articles and activate canonical 301 recovery",
+  "revision": 8,
+  "trigger_reason": "publish 1188 reviewed articles and bind 5 duplicate-title legacy aliases",
   "manual_review_legacy_ids": [
     "wp-111351",
     "wp-107227",

@@ -80,6 +80,9 @@ jobs:
           if (report.approved_existing_wrong_category?.length) {
             throw new Error(`approved articles already exist in the wrong category: ${JSON.stringify(report.approved_existing_wrong_category.slice(0, 20))}`);
           }
+          if (report.approved_manual_review_existing + report.approved_manual_review_candidates + report.approved_manual_review_alias_plans !== 1193) {
+            throw new Error("approved article coverage does not total 1193");
+          }
           if (report.selected !== report.recoverable_missing) throw new Error("preflight limit would truncate the safe restore set");
           console.log(JSON.stringify({
             safe_restore: report.recoverable_missing,

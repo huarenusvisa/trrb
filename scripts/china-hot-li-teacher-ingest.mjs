@@ -336,7 +336,9 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
   const sourceUrl = `https://x.com/${SOURCE_HANDLE}/status/${tweetId}`;
   const sourceCreatedAt = new Date(tweet.created_at || publishedAt).toISOString();
   const attachments = Array.isArray(tweet.media) ? tweet.media : [];
-  const coverImage = attachments.find((item) => item.type === "photo" && item.url)?.url\n    || attachments.find((item) => item.preview_image_url)?.preview_image_url\n    || attachments.find((item) => item.url)?.url || "";
+  const coverImage = attachments.find((item) => item.type === "photo" && item.url)?.url
+    || attachments.find((item) => item.preview_image_url)?.preview_image_url
+    || attachments.find((item) => item.url)?.url || "";
   return {
     title: article.title, slug: `li-teacher-x-${tweetId}`, summary: article.summary, content: article.content,
     category_name: CHINA_HOT_CATEGORY, cover_image: coverImage, image_alt: coverImage ? article.title : "", author: "唐人日报编辑部",

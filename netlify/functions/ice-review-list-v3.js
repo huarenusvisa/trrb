@@ -161,7 +161,15 @@ exports.handler = async (event) => {
       .filter((story) => timeValue(story.source_created_at || story.last_seen_at || story.updated_at) >= Date.now() - REVIEW_MAX_AGE_HOURS * 3600000)
       .sort((a, b) => timeValue(b.source_created_at || b.last_seen_at || b.updated_at) - timeValue(a.source_created_at || a.last_seen_at || a.updated_at));
     const chinese = prepared.filter(chineseReady);
-    const visible = chinese.filter((story) => isIceEnforcementText(story.title, story.summary, story.content));
+    const visible = chinese.filter((story) =>
+      isIceEnforcementText(story.title, story.summary, story.content)
+      || (
+        story.status === "published"
+        && story.human_review_status === "not_required_official"
+        && Boolean(story.article_id)
+        && Number(story.official_source_count || 0) > 0
+      )
+    );
     const pendingTranslation = prepared.length - chinese.length;
     return json(200, {
       stories: visible,

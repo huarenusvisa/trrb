@@ -64,24 +64,35 @@
     return String(heading?.textContent || "").trim();
   }
 
-  function applyImageFallback(img) {
-    if (!(img instanceof HTMLImageElement)) return;
-    if (img.dataset.trrbFallbackApplied === "1") return;
-    img.dataset.trrbFallbackApplied = "1";
+  function hideUnavailableImage(img) {
+    if (!(img instanceof HTMLImageElement)) return false;
+    if (img.dataset.trrbUnavailableHidden === "1") return true;
+    img.dataset.trrbUnavailableHidden = "1";
     img.removeAttribute("srcset");
     img.removeAttribute("sizes");
-    img.loading = "eager";
-    img.src = categoryPlaceholder(categoryFromImage(img));
+    img.hidden = true;
+    img.style.setProperty("display", "none", "important");
+
+    const card = img.closest(".article-page,.archive-card,.listing-card,.news-box,.section-lead,.hero-slide,.top-list,.related-item,.trump-item,.topic-news-thumb,.article-card,article");
+    if (card) card.classList.add("has-no-image", "no-image");
+
+    const media = img.closest("picture,.article-image-wrap,.article-cover,.news-thumb,.card-image,.image-wrap,.topic-news-thumb");
+    if (media && media !== card && media.children.length <= 1) media.hidden = true;
+    return true;
   }
 
   function installGlobalImageFallback() {
     if (window.__TRRB_IMAGE_FALLBACK_INSTALLED__) return;
     window.__TRRB_IMAGE_FALLBACK_INSTALLED__ = true;
     document.addEventListener("error", (event) => {
-      if (event.target instanceof HTMLImageElement) applyImageFallback(event.target);
+      if (!(event.target instanceof HTMLImageElement)) return;
+      if (hideUnavailableImage(event.target)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
     }, true);
     document.querySelectorAll("img").forEach((img) => {
-      if (img.complete && img.naturalWidth === 0) applyImageFallback(img);
+      if (img.complete && img.naturalWidth === 0) hideUnavailableImage(img);
     });
   }
 

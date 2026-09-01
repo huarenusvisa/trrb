@@ -46,24 +46,38 @@
     return value;
   }
 
+  function hideUnavailableImage(img) {
+    if (img.dataset.trrbUnavailableHidden === "1") return;
+    img.dataset.trrbUnavailableHidden = "1";
+    img.removeAttribute("srcset");
+    img.removeAttribute("sizes");
+    img.hidden = true;
+    img.style.setProperty("display", "none", "important");
+
+    const card = img.closest(".article-page,.archive-card,.listing-card,.news-box,.section-lead,.hero-slide,.top-list,.related-item,.trump-item,.topic-news-thumb,.article-card,article");
+    if (card) card.classList.add("has-no-image", "no-image");
+
+    const media = img.closest("picture,.article-image-wrap,.article-cover,.news-thumb,.card-image,.image-wrap,.topic-news-thumb");
+    if (media && media !== card && media.children.length <= 1) media.hidden = true;
+  }
+
   function classifyLoadedImage(img) {
     if (!img.naturalWidth || !img.naturalHeight) return;
+    if (PLACEHOLDER_MARKERS.test(String(img.currentSrc || img.src))) {
+      hideUnavailableImage(img);
+      return;
+    }
     const ratio = img.naturalWidth / img.naturalHeight;
     img.dataset.imageRatio = ratio.toFixed(3);
     img.classList.toggle("trrb-image-portrait", ratio < 0.82);
     img.classList.toggle("trrb-image-square", ratio >= 0.82 && ratio <= 1.18);
     img.classList.toggle("trrb-image-landscape", ratio > 1.18);
-    img.classList.toggle("trrb-image-placeholder", PLACEHOLDER_MARKERS.test(String(img.currentSrc || img.src)));
   }
 
   function useFallback(img) {
     if (img.dataset.trrbFallbackDone === "1") return;
     img.dataset.trrbFallbackDone = "1";
-    img.removeAttribute("srcset");
-    img.removeAttribute("sizes");
-    img.hidden = false;
-    img.src = fallbackFor(img);
-    img.classList.add("trrb-image-placeholder");
+    hideUnavailableImage(img);
   }
 
   function bindImage(img) {
@@ -74,7 +88,12 @@
     if (normalized && normalized !== img.getAttribute("src")) img.src = normalized;
 
     img.addEventListener("load", () => {
+      if (PLACEHOLDER_MARKERS.test(String(img.currentSrc || img.src))) {
+        hideUnavailableImage(img);
+        return;
+      }
       img.hidden = false;
+      img.style.removeProperty("display");
       classifyLoadedImage(img);
     });
     img.addEventListener("error", () => useFallback(img));

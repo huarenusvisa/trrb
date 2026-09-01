@@ -68,6 +68,12 @@ jobs:
         # 禁止添加 --apply；定时机器人只能生成 report 和人工核对清单。
         run: node scripts/restore-legacy-archive.mjs --limit=2000 --concurrency="${LEGACY_RESTORE_CONCURRENCY}"
 
+      - name: 保存最新TXT报告供后台下载
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/publish-legacy-404-report.mjs
+
       - name: 写入运行摘要
         if: always()
         shell: bash
@@ -104,6 +110,7 @@ jobs:
           name: legacy-404-readonly-audit-${{ github.run_id }}
           path:
             reports/legacy-migration-latest.json
+            reports/legacy-404-latest.txt
           if-no-files-found: error
           retention-days: 30
 

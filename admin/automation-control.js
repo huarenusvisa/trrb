@@ -21,12 +21,17 @@
   }
 
   async function downloadLegacy404Report(button) {
-    const token = await window.getAdminAccessToken?.();
-    if (!token) throw new Error('后台登录已失效，请重新登录');
+    const status = button.closest('.automation-report-download')?.querySelector('[data-legacy-report-status]');
     const original = button.textContent;
     button.disabled = true;
     button.textContent = '正在准备TXT…';
+    if (status) {
+      status.textContent = '正在读取最新报告，请稍候…';
+      status.className = 'automation-report-status loading';
+    }
     try {
+      const token = await window.getAdminAccessToken?.();
+      if (!token) throw new Error('后台登录已失效，请重新登录');
       const response = await fetch('/.netlify/functions/automation-control?action=download_legacy_404_report', {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -44,6 +49,16 @@
       link.remove();
       URL.revokeObjectURL(url);
       $('automation-control-message').textContent = 'TXT报告已下载。请优先处理“建议301”，其余记录逐条人工核对。';
+      if (status) {
+        status.textContent = '下载已开始；请查看浏览器下载记录。';
+        status.className = 'automation-report-status success';
+      }
+    } catch (error) {
+      if (status) {
+        status.textContent = `下载失败：${error.message}`;
+        status.className = 'automation-report-status error';
+      }
+      throw error;
     } finally {
       button.disabled = false;
       button.textContent = original;
@@ -208,6 +223,7 @@
           <div>
             <strong>最新检查报告</strong>
             <p>下载TXT后，可按“建议301、待人工处理、保留404/410”逐条修复。</p>
+            <small class="automation-report-status" data-legacy-report-status>点击按钮后，下载状态会显示在这里。</small>
           </div>
           <button type="button" class="automation-toggle-button enable" data-download-legacy-report>下载404报告（TXT）</button>
         </div>

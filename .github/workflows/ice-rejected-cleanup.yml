@@ -1,0 +1,33 @@
+name: ICE拒绝稿自动清理
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-rejected-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_REJECTED_RETENTION_HOURS: "1"
+      ICE_REJECTED_DELETE_BATCH_SIZE: "100"
+      ICE_REJECTED_DELETE_MAX_BATCHES: "50"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate cleanup script
+        run: node --check scripts/ice-delete-rejected.mjs
+      - name: Delete rejected and failed candidates older than one hour
+        run: node scripts/ice-delete-rejected.mjs

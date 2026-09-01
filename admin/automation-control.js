@@ -62,28 +62,33 @@
     };
   }
 
-  function toggleButtons(key, configuredEnabled, label = '') {
+  function toggleButtons(key, configuredEnabled, label = '', enableLabel = '开启自动任务', disableLabel = '关闭自动任务') {
     return `
       <div class="automation-actions" role="group" aria-label="${escapeHtml(label)}开关">
         <button type="button" class="automation-toggle-button enable ${configuredEnabled ? 'active' : ''}"
-          data-automation-key="${escapeHtml(key)}" data-automation-enabled="true" aria-pressed="${configuredEnabled}">启用</button>
+          data-automation-key="${escapeHtml(key)}" data-automation-enabled="true" aria-pressed="${configuredEnabled}">${escapeHtml(enableLabel)}</button>
         <button type="button" class="automation-toggle-button disable ${configuredEnabled ? '' : 'active'}"
-          data-automation-key="${escapeHtml(key)}" data-automation-enabled="false" aria-pressed="${!configuredEnabled}">关闭</button>
+          data-automation-key="${escapeHtml(key)}" data-automation-enabled="false" aria-pressed="${!configuredEnabled}">${escapeHtml(disableLabel)}</button>
       </div>`;
   }
 
-  function manualButtons(item, startLabel, stopLabel) {
+  function manualTool(item, summary, startLabel, stopLabel, warning = '') {
     const active = item?.enabled === true;
+    const actionLabel = active ? stopLabel : startLabel;
     return `
-      <div class="automation-manual-action">
-        <span>${escapeHtml(active ? '任务已开启' : '按需人工执行')}</span>
-        <div class="automation-actions compact" role="group">
-          <button type="button" class="automation-toggle-button enable ${active ? 'active' : ''}"
-            data-automation-key="${escapeHtml(item.control_key)}" data-automation-enabled="true" aria-pressed="${active}">${escapeHtml(startLabel)}</button>
-          <button type="button" class="automation-toggle-button disable ${active ? '' : 'active'}"
-            data-automation-key="${escapeHtml(item.control_key)}" data-automation-enabled="false" aria-pressed="${!active}">${escapeHtml(stopLabel)}</button>
+      <details class="automation-advanced">
+        <summary>${escapeHtml(summary)}</summary>
+        <div class="automation-manual-action">
+          <div>
+            <strong>${escapeHtml(active ? '该手动任务已启动' : '该操作不会随主开关自动执行')}</strong>
+            ${warning ? `<p>${escapeHtml(warning)}</p>` : ''}
+          </div>
+          <div class="automation-actions compact" role="group">
+            <button type="button" class="automation-toggle-button ${active ? 'disable active' : 'enable'}"
+              data-automation-key="${escapeHtml(item.control_key)}" data-automation-enabled="${!active}" aria-pressed="false">${escapeHtml(actionLabel)}</button>
+          </div>
         </div>
-      </div>`;
+      </details>`;
   }
 
   function renderRegular(item, globalEnabled) {
@@ -101,7 +106,7 @@
             <small>最后更新：${escapeHtml(item.updated_at || '—')}</small>
           </div>
           ${item.control_key === 'global'
-            ? toggleButtons('global', state.configuredEnabled, item.display_name).replace('>启用</button>', '>全部启用</button>').replace('>关闭</button>', '>全部关闭</button>')
+            ? toggleButtons('global', state.configuredEnabled, item.display_name, '全部启用', '全部关闭')
             : toggleButtons(item.control_key, state.configuredEnabled, item.display_name)}
         </article>`
     };
@@ -143,33 +148,39 @@
     const seoControls = ['seo_indexnow','seo_search_engine','monitor'].map((key) => byKey.get(key)).filter(Boolean);
     cards.push(renderMergedCard({
       key: 'seo_suite',
-      name: 'SEO收录与监控',
-      description: '统一管理IndexNow、Google/Bing提交和线上SEO健康检查。',
+      name: 'SEO自动收录',
+      description: '打开后，系统自动向IndexNow、Google和Bing提交新内容，并检查网站SEO是否正常。',
       controls: seoControls,
       sort: 60,
-      manualHtml: byKey.get('seo_metadata') ? manualButtons(byKey.get('seo_metadata'), '立即同步元数据', '停止同步') : '',
-      note: '自动任务使用一个组合开关；SEO元数据仍按需人工执行。'
+      manualHtml: byKey.get('seo_metadata') ? manualTool(byKey.get('seo_metadata'), '手动工具：同步SEO元数据', '立即同步一次', '停止同步') : '',
+      note: '平时只需要选择“开启自动任务”或“关闭自动任务”。'
     }, globalEnabled));
 
     const maintenance = byKey.get('maintenance');
     if (maintenance) cards.push(renderMergedCard({
       key: 'maintenance',
-      name: 'ICE维护清理',
-      description: 'ICE夜间维护、孤立媒体整理及候选数据清理。',
+      name: 'ICE自动维护',
+      description: '打开后，系统在夜间自动修复、去重并清理孤立媒体。',
       controls: [maintenance],
       sort: 90,
-      note: '已拒绝或处理失败且未关联文章的候选稿，满1小时后由独立安全清理任务删除。'
+      note: '拒绝稿满1小时自动删除是固定安全规则，不需要打开本开关。'
     }, globalEnabled));
 
     const legacyAudit = byKey.get('legacy_404');
     if (legacyAudit) cards.push(renderMergedCard({
       key: 'legacy_404',
-      name: '旧站迁移工具',
-      description: '统一管理旧站404只读盘点和人工恢复。',
+      name: '旧站404自动检查',
+      description: '打开后，系统每6小时检查旧链接和404问题；只生成报告，不修改文章。',
       controls: [legacyAudit],
       sort: 100,
-      manualHtml: byKey.get('legacy_recovery') ? manualButtons(byKey.get('legacy_recovery'), '立即执行恢复', '停止恢复') : '',
-      note: '主开关只控制只读盘点；写入恢复必须点击人工按钮。'
+      manualHtml: byKey.get('legacy_recovery') ? manualTool(
+        byKey.get('legacy_recovery'),
+        '高级操作：恢复旧文章',
+        '开始恢复旧文章',
+        '停止恢复',
+        '这会向数据库写入文章；只有确定需要恢复旧内容时才执行。'
+      ) : '',
+      note: '正常情况下只使用上方自动检查开关。'
     }, globalEnabled));
 
     root.innerHTML = cards.sort((a, b) => a.sort - b.sort).map((card) => card.html).join('');

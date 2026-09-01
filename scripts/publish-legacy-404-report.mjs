@@ -18,7 +18,10 @@ const headers = {
 async function ensureBucket() {
   const check = await fetch(`${SUPABASE_URL}/storage/v1/bucket/${BUCKET}`, { headers });
   if (check.ok) return;
-  if (check.status !== 404) throw new Error(`bucket check failed: ${check.status} ${await check.text()}`);
+  const checkText = await check.text();
+  const bucketMissing = check.status === 404
+    || (check.status === 400 && /NoSuchBucket|Bucket not found/i.test(checkText));
+  if (!bucketMissing) throw new Error(`bucket check failed: ${check.status} ${checkText}`);
   const created = await fetch(`${SUPABASE_URL}/storage/v1/bucket`, {
     method: 'POST',
     headers: { ...headers, 'Content-Type': 'application/json' },

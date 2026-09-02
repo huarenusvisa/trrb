@@ -8,6 +8,7 @@ let countries = [];
 let selected = null;
 let selectedDetail = null;
 let period = 'yearly';
+let countryRequestId = 0;
 const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname) ? `https://trrb.net${path}` : path;
 
 const judgePath = (row) => window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `${window.judgePagePath ? window.judgePagePath('detail.html') : '/immigration-judge-approval-rate/detail.html'}?id=${encodeURIComponent(row?.id || row)}`;
@@ -193,9 +194,12 @@ function renderSelected(data) {
 }
 
 async function selectCountry(country, updateUrl = false, scrollToDetail = false) {
+  const requestId = ++countryRequestId;
+  $('#country-detail').setAttribute('aria-busy', 'true');
   $('#selected-country').textContent = t('loadingReal');
   try {
     const data = await getJson(`/.netlify/functions/immigration-judges?mode=nationality-detail&country=${encodeURIComponent(country)}`);
+    if (requestId !== countryRequestId) return;
     renderSelected(data);
     if (updateUrl) {
       const url = new URL(location.href);
@@ -204,9 +208,12 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
     }
     if (scrollToDetail) $('#country-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch {
+    if (requestId !== countryRequestId) return;
     $('#selected-country').textContent = t('countryUnavailable');
     $('#chart-note').setAttribute('role', 'alert');
     $('#chart-note').innerHTML = `${esc(t('retry'))} ${retryButton('country', country, updateUrl)}`;
+  } finally {
+    if (requestId === countryRequestId) $('#country-detail').setAttribute('aria-busy', 'false');
   }
 }
 

@@ -91,12 +91,17 @@ function timeValue(value) {
   return Number.isFinite(time) ? time : 0;
 }
 
+function withinRun(value, startMs, endMs) {
+  const time = timeValue(value);
+  return Boolean(startMs && time >= startMs && time <= endMs);
+}
+
 async function pipelineStatus(stories) {
   const cutoff = cutoffIso();
   const [posts, states] = await Promise.all([
     rest("ice_posts", {
       query: {
-        select: "processing_status,created_at,source_created_at,last_error",
+        select: "processing_status,relevant,created_at,source_created_at,last_error",
         source_created_at: `gte.${cutoff}`,
         order: "source_created_at.desc",
         limit: "1000"
@@ -117,6 +122,23 @@ async function pipelineStatus(stories) {
   });
   const successful = stateRows.map((row) => row.last_success_at).filter(Boolean).sort().at(-1) || null;
   const latestRun = stateRows.map((row) => row.last_run_at).filter(Boolean).sort().at(-1) || null;
+  const collectionState = stateRows.find((row) => row.query_key === "pipeline:parallel-collection-start");
+  const completionState = stateRows.find((row) => row.query_key === "pipeline:parallel-pipeline");
+  const runStartedAt = collectionState?.last_run_at || null;
+  const runStartMs = timeValue(runStartedAt);
+  const completionMs = timeValue(completionState?.last_success_at);
+  const runFinishedAt = completionMs >= runStartMs ? completionState.last_success_at : null;
+  const runEndMs = runFinishedAt ? completionMs : Date.now();
+  const recentPosts = runStartMs
+    ? postRows.filter((row) => withinRun(row.created_at, runStartMs, runEndMs))
+    : [];
+  const recentStories = runStartMs
+    ? stories.filter((row) => withinRun(row.first_seen_at, runStartMs, runEndMs))
+    : [];
+  const keptPosts = recentPosts.filter((row) => row.processing_status !== "irrelevant" && row.relevant !== false);
+  const publishedStories = runStartMs
+    ? stories.filter((row) => withinRun(row.published_at, runStartMs, runEndMs))
+    : [];
 
   const latestRunMs = timeValue(latestRun);
   const activeWindowStart = latestRunMs ? latestRunMs - 6 * 60 * 60 * 1000 : 0;
@@ -140,6 +162,16 @@ async function pipelineStatus(stories) {
     last_run_at: latestRun,
     last_success_at: successful,
     freshness_hours: REVIEW_MAX_AGE_HOURS,
+    run_summary: {
+      started_at: runStartedAt,
+      finished_at: runFinishedAt,
+      running: Boolean(runStartMs && !runFinishedAt),
+      collected: recentPosts.length,
+      kept: keptPosts.length,
+      filtered: Math.max(0, recentPosts.length - keptPosts.length),
+      candidates: recentStories.length,
+      published: publishedStories.length
+    },
     post_counts: countBy(postRows, "processing_status"),
     story_counts: countBy(stories, "status"),
     recent_errors: errors,

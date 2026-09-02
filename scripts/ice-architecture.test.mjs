@@ -106,6 +106,22 @@ test("trrb.net/admin包含统一采集内容中心", () => {
   assert.match(css, /\.review-modal/);
 });
 
+test("ICE采集中心区分最近一轮结果与72小时存量", () => {
+  const api = read("netlify/functions/ice-review-list-v3.js");
+  const ui = read("admin/admin.js");
+  const explainer = read("admin/ice-status-explainer.js");
+  assert.match(api, /run_summary/);
+  assert.match(api, /pipeline:parallel-collection-start/);
+  assert.match(api, /pipeline:parallel-pipeline/);
+  assert.match(api, /published: publishedStories\.length/);
+  assert.match(ui, /最近一轮：原始抓取/);
+  assert.match(ui, /筛选保留/);
+  assert.match(ui, /成功发布/);
+  assert.match(ui, /近\$\{Number\(reviewPipeline\.freshness_hours \|\| 72\)\}小时存量/);
+  assert.doesNotMatch(ui, /待处理 \$\{pending\}　已提取/);
+  assert.match(explainer, /最近一轮新增与发布数量/);
+});
+
 test("审核API仅在服务端使用service role并验证管理员", () => {
   const router = read("netlify/functions/ice-review.js");
   const list = read("netlify/functions/ice-review-list-v3.js");

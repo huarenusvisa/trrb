@@ -70,7 +70,7 @@
 
     banner.style.borderColor = '#d0d5dd';
     banner.style.background = '#f9fafb';
-    banner.innerHTML = '本轮暂未发现符合条件的新ICE内容；系统仍会按计划继续采集。';
+    banner.innerHTML = '当前72小时审核队列没有待处理内容；最近一轮新增与发布数量请查看上方“ICE采集状态”。';
   }
 
   const observer = new MutationObserver(() => window.setTimeout(update, 0));

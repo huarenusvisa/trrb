@@ -64,6 +64,12 @@ requireMatch(community, /data-category=["']lawyer_review["']/, "community lawyer
 requireMatch(community, /律师点评/, "community lawyer review label was not renamed");
 forbidMatch(community, /吐槽律师/, "community still exposes the retired lawyer complaint label");
 
+const communityClient = await text("community/community.js");
+requireMatch(communityClient, /event\.submitter\s*\|\|\s*event\.currentTarget\.querySelector/, "community forms must support Enter-key submission");
+requireMatch(communityClient, /notice success/, "community publishing must render inline success feedback");
+forbidMatch(communityClient, /alert\(data\.message\)/, "community publishing must not block on a native success alert");
+requireMatch(community, /community\.js\?v=20260902-pc-publish-1/, "community PC flow cache token is stale");
+
 const asylumCommunity = await text("asylumjudge-community.html");
 requireMatch(asylumCommunity, /^\s*<!doctype html>/i, "asylumjudge community page is not HTML");
 requireMatch(asylumCommunity, /https:\/\/asylumjudge\.com\/community\//i, "asylumjudge community canonical missing");

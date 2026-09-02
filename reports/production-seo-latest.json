@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02T21:24:54.031Z",
+  "generated_at": "2026-09-02T21:31:40.732Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -64,7 +64,7 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1933671,
+      "bytes": 1932158,
       "article_count": 5000,
       "child_sitemaps": [],
       "legacy_query_count": 0,
@@ -73,14 +73,110 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 107883,
-      "article_count": 224,
+      "bytes": 109749,
+      "article_count": 229,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v7-quality-dedupe"
     }
   },
   "articles": [
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2094968554613547031",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2094968554613547031",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 36,
+      "h1_length": 29,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2094968554613547031",
+      "body_length": 317,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2094976103891001713",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2094976103891001713",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 34,
+      "h1_length": 27,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2094976103891001713",
+      "body_length": 315,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095154780414898183",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095154780414898183",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 30,
+      "h1_length": 23,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095154780414898183",
+      "body_length": 353,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095164850326704388",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095164850326704388",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 32,
+      "h1_length": 25,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095164850326704388",
+      "body_length": 347,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095174913535455314",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095174913535455314",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 39,
+      "h1_length": 32,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095174913535455314",
+      "body_length": 311,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095179951154815181",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095179951154815181",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 35,
+      "h1_length": 28,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095179951154815181",
+      "body_length": 318,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095184978820624515",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095184978820624515",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 32,
+      "h1_length": 25,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095184978820624515",
+      "body_length": 315,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095190012044165525",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095190012044165525",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 29,
+      "h1_length": 22,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095190012044165525",
+      "body_length": 312,
+      "schema": true,
+      "noindex": false
+    },
     {
       "url": "https://trrb.net/hot-headlines/li-teacher-x-2095195045708128634",
       "status": 200,
@@ -126,102 +222,6 @@
       "h1_length": 25,
       "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095225249717780814",
       "body_length": 354,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095232793655591138",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095232793655591138",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 32,
-      "h1_length": 25,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095232793655591138",
-      "body_length": 306,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095247894009745842",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095247894009745842",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 34,
-      "h1_length": 27,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095247894009745842",
-      "body_length": 303,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095255447674470656",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095255447674470656",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 33,
-      "h1_length": 26,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095255447674470656",
-      "body_length": 308,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-evt-29c131d416694000d56ecd5f58064274a450a0fe",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-evt-29c131d416694000d56ecd5f58064274a450a0fe",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 31,
-      "h1_length": 24,
-      "canonical": "https://trrb.net/ice/ice-evt-29c131d416694000d56ecd5f58064274a450a0fe",
-      "body_length": 384,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-evt-c0a6463c4df7d4fec7c1f4ff17561a47c951baa5",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-evt-c0a6463c4df7d4fec7c1f4ff17561a47c951baa5",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 26,
-      "h1_length": 19,
-      "canonical": "https://trrb.net/ice/ice-evt-c0a6463c4df7d4fec7c1f4ff17561a47c951baa5",
-      "body_length": 426,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-politics/%E7%89%B9%E6%9C%97%E6%99%AE%E6%8F%90%E5%89%8D%E5%A4%87%E6%88%98%E5%9B%BD%E4%BC%9A%E8%B0%83%E6%9F%A5%E7%99%BD%E5%AE%AB%E5%BC%BA%E5%8C%96%E6%B3%95%E5%BE%8B%E9%98%B2%E7%BA%BF%E8%A1%8C%E6%94%BF%E7%89%B9%E6%9D%83%E5%86%8D%E5%8D%87%E7%BA%A7-mtk8j54k-969ae7",
-      "status": 200,
-      "final_url": "https://trrb.net/us-politics/%E7%89%B9%E6%9C%97%E6%99%AE%E6%8F%90%E5%89%8D%E5%A4%87%E6%88%98%E5%9B%BD%E4%BC%9A%E8%B0%83%E6%9F%A5%E7%99%BD%E5%AE%AB%E5%BC%BA%E5%8C%96%E6%B3%95%E5%BE%8B%E9%98%B2%E7%BA%BF%E8%A1%8C%E6%94%BF%E7%89%B9%E6%9D%83%E5%86%8D%E5%8D%87%E7%BA%A7-mtk8j54k-969ae7",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 35,
-      "h1_length": 28,
-      "canonical": "https://trrb.net/us-politics/%E7%89%B9%E6%9C%97%E6%99%AE%E6%8F%90%E5%89%8D%E5%A4%87%E6%88%98%E5%9B%BD%E4%BC%9A%E8%B0%83%E6%9F%A5%E7%99%BD%E5%AE%AB%E5%BC%BA%E5%8C%96%E6%B3%95%E5%BE%8B%E9%98%B2%E7%BA%BF%E8%A1%8C%E6%94%BF%E7%89%B9%E6%9D%83%E5%86%8D%E5%8D%87%E7%BA%A7-mtk8j54k-969ae7",
-      "body_length": 1627,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-politics/g20%E5%85%AC%E6%8A%A5%E9%9A%BE%E4%BA%A7%E4%B8%AD%E5%9B%BD%E7%A1%AC%E5%88%9A%E7%BE%8E%E5%9B%BD%E8%B4%B8%E6%98%93%E6%8C%87%E8%B4%A3%E4%B8%AD%E7%BE%8E%E8%B4%B8%E6%98%93%E8%A3%82%E7%97%95%E5%85%A8%E9%9D%A2%E5%8D%87%E7%BA%A7-mtk87wbq-38164a",
-      "status": 200,
-      "final_url": "https://trrb.net/us-politics/g20%E5%85%AC%E6%8A%A5%E9%9A%BE%E4%BA%A7%E4%B8%AD%E5%9B%BD%E7%A1%AC%E5%88%9A%E7%BE%8E%E5%9B%BD%E8%B4%B8%E6%98%93%E6%8C%87%E8%B4%A3%E4%B8%AD%E7%BE%8E%E8%B4%B8%E6%98%93%E8%A3%82%E7%97%95%E5%85%A8%E9%9D%A2%E5%8D%87%E7%BA%A7-mtk87wbq-38164a",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 36,
-      "h1_length": 29,
-      "canonical": "https://trrb.net/us-politics/g20%E5%85%AC%E6%8A%A5%E9%9A%BE%E4%BA%A7%E4%B8%AD%E5%9B%BD%E7%A1%AC%E5%88%9A%E7%BE%8E%E5%9B%BD%E8%B4%B8%E6%98%93%E6%8C%87%E8%B4%A3%E4%B8%AD%E7%BE%8E%E8%B4%B8%E6%98%93%E8%A3%82%E7%97%95%E5%85%A8%E9%9D%A2%E5%8D%87%E7%BA%A7-mtk87wbq-38164a",
-      "body_length": 1739,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-crime/%E7%BE%8E%E5%9B%BD%E8%AE%B0%E8%80%85%E4%BF%9D%E8%82%AF%E6%B6%89%E4%B8%AD%E5%9B%BD%E4%BB%A3%E7%90%86%E6%A1%88%E5%AE%A3%E5%88%A4%E6%89%BF%E8%AE%A4%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF%E5%B9%B6%E8%8E%B7%E5%88%91%E4%B8%A4%E5%B9%B4-mtk7u4h2-2ab509",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/%E7%BE%8E%E5%9B%BD%E8%AE%B0%E8%80%85%E4%BF%9D%E8%82%AF%E6%B6%89%E4%B8%AD%E5%9B%BD%E4%BB%A3%E7%90%86%E6%A1%88%E5%AE%A3%E5%88%A4%E6%89%BF%E8%AE%A4%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF%E5%B9%B6%E8%8E%B7%E5%88%91%E4%B8%A4%E5%B9%B4-mtk7u4h2-2ab509",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 33,
-      "h1_length": 26,
-      "canonical": "https://trrb.net/us-crime/%E7%BE%8E%E5%9B%BD%E8%AE%B0%E8%80%85%E4%BF%9D%E8%82%AF%E6%B6%89%E4%B8%AD%E5%9B%BD%E4%BB%A3%E7%90%86%E6%A1%88%E5%AE%A3%E5%88%A4%E6%89%BF%E8%AE%A4%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF%E5%B9%B6%E8%8E%B7%E5%88%91%E4%B8%A4%E5%B9%B4-mtk7u4h2-2ab509",
-      "body_length": 1478,
       "schema": true,
       "noindex": false
     }

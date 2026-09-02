@@ -148,3 +148,8 @@ if(![301,308].includes(legacy.status)||!legacy.location){
 fs.mkdirSync('reports',{recursive:true});
 fs.writeFileSync('reports/production-seo-latest.json', JSON.stringify(report,null,2));
 console.log(JSON.stringify({failures:report.failures.length,warnings:report.warnings.length,sitemaps:report.sitemaps,legacy:report.legacy,pages:report.pages},null,2));
+
+if (report.failures.length > 0) {
+  console.error(`Production SEO diagnostic failed with ${report.failures.length} issue(s).`);
+  process.exitCode = 1;
+}

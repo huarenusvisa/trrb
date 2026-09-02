@@ -1,6 +1,22 @@
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 const BASE_URL = 'https://trrb.net/immigrate';
+const ASYLUM_JUDGE_APP_URL = 'asylumjudge://';
+const ASYLUM_JUDGE_WEB_URL = 'https://asylumjudge.com/';
+
+async function openAsylumJudge() {
+  try {
+    if (await Linking.canOpenURL(ASYLUM_JUDGE_APP_URL)) {
+      await Linking.openURL(ASYLUM_JUDGE_APP_URL);
+      return;
+    }
+  } catch {
+    // Some Android devices reject custom-scheme checks. The public site remains
+    // the stable fallback and does not require the native app to be installed.
+  }
+
+  await Linking.openURL(ASYLUM_JUDGE_WEB_URL);
+}
 
 const pathways = [
   {
@@ -119,6 +135,24 @@ export default function ImmigrationScreen() {
         <Text style={styles.statsText}>与 trrb.net 移民美国目录一致</Text>
       </View>
 
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="打开 AsylumJudge 移民法官查询"
+        testID="asylumjudge-entry"
+        style={styles.judgeCard}
+        onPress={() => void openAsylumJudge()}
+      >
+        <View style={styles.judgeCardTop}>
+          <View style={styles.judgeBadge}>
+            <Text style={styles.judgeBadgeText}>专业工具</Text>
+          </View>
+          <Text style={styles.judgeArrow}>打开 ›</Text>
+        </View>
+        <Text style={styles.judgeTitle}>AsylumJudge 移民法官查询</Text>
+        <Text style={styles.judgeDescription}>查询法官、法院及国籍历史数据；已安装独立 App 时直接打开，否则进入网页版。</Text>
+        <Text style={styles.judgeDisclaimer}>历史数据仅供信息参考，不构成结果预测或法律意见。</Text>
+      </Pressable>
+
       {pathways.map((pathway, index) => (
         <Pressable key={pathway.key} style={styles.card} onPress={() => Linking.openURL(centerUrl(pathway.key))}>
           <View style={styles.cardTop}>
@@ -162,6 +196,14 @@ const styles = StyleSheet.create({
   statsRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
   statsStrong: { color: '#c8211e', fontSize: 13, fontWeight: '800' },
   statsText: { color: '#98a2b3', fontSize: 12 },
+  judgeCard: { backgroundColor: '#101828', borderRadius: 14, padding: 16, marginBottom: 12 },
+  judgeCardTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 },
+  judgeBadge: { backgroundColor: '#fff', borderRadius: 999, paddingHorizontal: 9, paddingVertical: 5 },
+  judgeBadgeText: { color: '#c8211e', fontSize: 11, fontWeight: '800' },
+  judgeArrow: { color: '#fff', fontSize: 13, fontWeight: '800' },
+  judgeTitle: { color: '#fff', fontSize: 18, lineHeight: 24, fontWeight: '800' },
+  judgeDescription: { color: '#d0d5dd', fontSize: 13, lineHeight: 20, marginTop: 7 },
+  judgeDisclaimer: { color: '#98a2b3', fontSize: 11, lineHeight: 17, marginTop: 10 },
   card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10 },
   cardTop: { flexDirection: 'row', alignItems: 'center' },
   number: { width: 28, color: '#c8211e', fontSize: 12, fontWeight: '800' },

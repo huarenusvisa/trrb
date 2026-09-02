@@ -20,6 +20,8 @@ appId: net.trrb.mobile
     visible:
       id: "screen-immigration"
     timeout: 20000
+- assertVisible:
+    id: "asylumjudge-entry"
 - tapOn:
     id: "tab-legal"
     retryTapIfNoChange: true

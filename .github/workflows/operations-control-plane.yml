@@ -123,15 +123,16 @@ jobs:
     secrets: inherit
 
 
+  # Corrective changes to this control plane immediately run both SEO monitors.
   daily-live-monitor:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event_name == 'push' || github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
     uses: ./.github/workflows/live-seo-crawl.yml
     secrets: inherit
 
   daily-seo-integrity:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event_name == 'push' || github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
     uses: ./.github/workflows/seo-integrity.yml
     secrets: inherit
 

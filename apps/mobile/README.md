@@ -41,3 +41,15 @@ npm run android
 5. 搜索。
 6. 法律详情页中文解析。
 7. App Store / Google Play 构建配置与商店素材。
+
+## 正式构建预检
+
+正式构建使用 EAS 的 `production` profile，并在构建时自动递增 iOS build number / Android version code。提交构建前运行：
+
+```bash
+npm run typecheck
+npm run config:check
+npm run export:web
+```
+
+`config:check` 会验证 App 标识、版本号、EAS 项目、更新通道、商店图标尺寸和正式构建自动递增设置，不读取或输出任何签名凭据。

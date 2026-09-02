@@ -118,12 +118,14 @@ function backgroundSummary(judgeName) {
 function findNationality(value) {
   const query = String(value || '').trim().toLowerCase();
   if (!query) return null;
-  return nationalityCatalog.find((row) => [row.nationality, row.nationality_zh, row.nationality_code]
+  const exact = nationalityCatalog.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code]
     .filter(Boolean)
-    .some((candidate) => String(candidate).trim().toLowerCase() === query))
-    || nationalityCatalog.find((row) => [row.nationality, row.nationality_zh, row.nationality_code]
-      .filter(Boolean)
-      .some((candidate) => String(candidate).trim().toLowerCase().includes(query)));
+    .some((candidate) => String(candidate).trim().toLowerCase() === query));
+  if (exact.length) return exact[0];
+  const partial = nationalityCatalog.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code]
+    .filter(Boolean)
+    .some((candidate) => String(candidate).trim().toLowerCase().includes(query)));
+  return partial.length === 1 ? partial[0] : null;
 }
 
 function nationalitySummary(row) {
@@ -141,7 +143,7 @@ async function nationalityJudges(country) {
     limit: '1500'
   };
   if (/^[A-Za-z]{2,3}$/.test(code)) query.nationality_code = `eq.${code}`;
-  else query.nationality = `eq.${country.nationality}`;
+  if (country.nationality) query.nationality = `eq.${country.nationality}`;
   let nat = await rest('immigration_judge_asylum_nationality', { query });
   if (!(nat || []).length && country.nationality) {
     nat = await rest('immigration_judge_asylum_nationality', {

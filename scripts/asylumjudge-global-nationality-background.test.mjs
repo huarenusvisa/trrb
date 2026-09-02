@@ -18,6 +18,21 @@ const cuba = nationalityData.countries.find((row) => row.nationality === 'Cuba')
 const korea = nationalityData.countries.find((row) => row.nationality === 'South Korea');
 const china = nationalityData.countries.find((row) => row.nationality === 'China');
 assert.equal(nationalityData.countries.length, 227, 'the generated catalog must expose every observed nationality with a classified final outcome');
+for (const field of ['nationality', 'nationality_code']) {
+  const values = nationalityData.countries.map((row) => String(row[field] || '').trim().toLowerCase());
+  assert.equal(new Set(values).size, values.length, `every catalog ${field} must uniquely identify one nationality`);
+}
+for (const country of nationalityData.countries) {
+  assert.equal(Number(country.total_asylum_decisions), Number(country.grants) + Number(country.denials) + Number(country.other_decisions), `${country.nationality} aggregate outcomes must reconcile`);
+  const monthlyTotals = (country.monthly || []).reduce((totals, row) => {
+    for (const field of ['total_asylum_decisions', 'grants', 'denials', 'other_decisions']) totals[field] += Number(row[field] || 0);
+    return totals;
+  }, { total_asylum_decisions: 0, grants: 0, denials: 0, other_decisions: 0 });
+  for (const field of Object.keys(monthlyTotals)) assert.equal(monthlyTotals[field], Number(country[field]), `${country.nationality} monthly ${field} must match its aggregate`);
+  for (const period of ['monthly', 'quarterly', 'yearly']) {
+    for (const row of country[period] || []) assert.equal(Number(row.total_asylum_decisions), Number(row.grants) + Number(row.denials) + Number(row.other_decisions), `${country.nationality} ${period} outcomes must reconcile`);
+  }
+}
 for (const country of [cuba, korea, china]) assert.ok(country, 'China, Cuba, and South Korea must all be searchable');
 assert.deepEqual(
   {
@@ -56,10 +71,12 @@ const judge = {
   other_decisions: 5
 };
 
+let nationalityQuery;
 async function fakeRest(table, { query = {} } = {}) {
   if (table === 'immigration_judge_source_releases' || table === 'immigration_judge_import_batches') return [];
   if (table === 'immigration_judge_asylum_nationality') {
     if (query.judge_id) return [];
+    nationalityQuery = query;
     return [{ judge_id: judge.id, nationality: 'Cuba', nationality_code: 'CU', total_asylum_decisions: 80, grants: 30, denials: 45, other_decisions: 5 }];
   }
   if (table === 'immigration_judge_asylum_yearly') return [];
@@ -84,6 +101,16 @@ assert.ok(countryDetail.periods.monthly.length > 2);
 assert.ok(countryDetail.periods.quarterly.length > 2);
 assert.ok(countryDetail.periods.yearly.some((row) => row.label === '2026'));
 assert.equal(countryDetail.judges[0].judge_name, judge.judge_name);
+assert.equal(nationalityQuery.nationality_code, 'eq.CU', 'judge-level nationality data must match the exact EOIR code');
+assert.equal(nationalityQuery.nationality, 'eq.Cuba', 'judge-level nationality data must also match the exact country name');
+
+for (const ambiguous of ['congo', 'korea', 'guin']) {
+  const response = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'nationality-detail', country: ambiguous } });
+  assert.equal(response.statusCode, 404, `ambiguous partial nationality query ${ambiguous} must not silently select a country`);
+}
+const uniquePartialResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'nationality-detail', country: 'south kor' } });
+assert.equal(uniquePartialResponse.statusCode, 200, 'an unambiguous partial nationality query may resolve safely');
+assert.equal(JSON.parse(uniquePartialResponse.body).country.nationality, 'South Korea');
 
 const judgeResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'detail', id: judge.id } });
 const judgeDetail = JSON.parse(judgeResponse.body);

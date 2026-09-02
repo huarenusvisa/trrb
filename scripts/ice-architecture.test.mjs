@@ -113,6 +113,8 @@ test("ICE采集中心区分最近一轮结果与72小时存量", () => {
   assert.match(api, /run_summary/);
   assert.match(api, /pipeline:parallel-collection-start/);
   assert.match(api, /pipeline:parallel-pipeline/);
+  assert.match(api, /"cover_image","created_at"/);
+  assert.match(api, /withinRun\(row\.created_at \|\| row\.first_seen_at/);
   assert.match(api, /published: publishedStories\.length/);
   assert.match(ui, /最近一轮：原始抓取/);
   assert.match(ui, /筛选保留/);

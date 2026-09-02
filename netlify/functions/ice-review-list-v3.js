@@ -39,7 +39,7 @@ async function loadStories() {
   const rows = await rest("ice_stories", {
     query: {
       select: [
-        "id","event_fingerprint","event_type","title","summary","content","cover_image",
+        "id","event_fingerprint","event_type","title","summary","content","cover_image","created_at",
         "first_seen_at","last_seen_at","independent_source_count","official_source_count","media_source_count",
         "organization_source_count","individual_source_count","total_score","ai_confidence",
         "conflict_detected","legal_risk","privacy_risk","fabrication_risk","decision_reason",
@@ -133,7 +133,7 @@ async function pipelineStatus(stories) {
     ? postRows.filter((row) => withinRun(row.created_at, runStartMs, runEndMs))
     : [];
   const recentStories = runStartMs
-    ? stories.filter((row) => withinRun(row.first_seen_at, runStartMs, runEndMs))
+    ? stories.filter((row) => withinRun(row.created_at || row.first_seen_at, runStartMs, runEndMs))
     : [];
   const keptPosts = recentPosts.filter((row) => row.processing_status !== "irrelevant" && row.relevant !== false);
   const publishedStories = runStartMs

@@ -99,6 +99,15 @@ function filterCountries(query) {
   return countries.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code, i18n?.countryName(row)].filter(Boolean).some((item) => String(item).toLowerCase().includes(value)));
 }
 
+function resolveCountrySearch(query, matches) {
+  const value = String(query || '').trim().toLowerCase();
+  const exact = matches.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code, i18n?.countryName(row)]
+    .filter(Boolean)
+    .some((item) => String(item).trim().toLowerCase() === value));
+  if (exact.length === 1) return exact[0];
+  return matches.length === 1 ? matches[0] : null;
+}
+
 function showTrendTooltip(point) {
   const tooltip = $('#trend-tooltip');
   const total = Number(point.grants || 0) + Number(point.denials || 0) + Number(point.other_decisions || 0);
@@ -267,9 +276,11 @@ document.addEventListener('click', async (event) => {
 
 $('#country-search-form').addEventListener('submit', (event) => {
   event.preventDefault();
-  const matches = filterCountries($('#country-search').value);
+  const query = $('#country-search').value;
+  const matches = filterCountries(query);
   renderDirectory(matches);
-  if (matches.length) selectCountry(matches[0].nationality, true);
+  const match = resolveCountrySearch(query, matches);
+  if (match) selectCountry(match.nationality, true);
 });
 $('#country-search').addEventListener('input', (event) => renderDirectory(filterCountries(event.target.value)));
 document.querySelectorAll('.quick-countries button').forEach((button) => button.addEventListener('click', () => {

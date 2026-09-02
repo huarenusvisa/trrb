@@ -22,7 +22,7 @@ assert.match(html, /id="compare-trend"/);
 assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
-assert.match(html, /compare\.js\?v=4/);
+assert.match(html, /compare\.js\?v=5/);
 assert.match(html, /compare\.css\?v=4/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{[^}]*retry:`), `retry action must support ${locale}`);
@@ -45,6 +45,12 @@ assert.match(js, /event\.key === 'Escape'/, 'combobox must close with Escape');
 assert.match(js, /event\.key === 'Enter'/, 'combobox must select with Enter');
 assert.match(js, /class="compare-error" role="alert"/, 'load errors must be announced to assistive technology');
 assert.match(js, /data-retry="\$\{scope\}"/, 'load errors must provide a retry action');
+assert.match(html, /id="compare-status"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'copy and selection feedback must be announced to screen readers');
+assert.match(js, /navigator\.clipboard\?\.writeText[\s\S]*document\.execCommand\('copy'\)/, 'copying a comparison link must fall back when the Clipboard API is unavailable');
+assert.match(js, /copyFailure\[locale\(\)\] \|\| copyFailure\.en/, 'copy failures must expose localized user feedback');
+for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
+  assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*['"]`), `copy failure feedback must support ${locale}`);
+}
 assert.match(js, /retry\.dataset\.retry === 'details'\) loadDetails\(\)[\s\S]*else load\(\)/, 'retry must reload the failed dataset without a page refresh');
 assert.doesNotMatch(js, />No matching judge</, 'empty search results must use localized copy');
 assert.doesNotMatch(js, />View full profile/, 'judge profile links must use localized copy');

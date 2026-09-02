@@ -29,6 +29,18 @@ const sharedCopy = {
   ar: { remove:'إزالة', noMatch:'لم يتم العثور على قاضٍ مطابق', merits:'قراراً موضوعياً', total:'إجمالي النتائج', granted:'موافقات', denied:'رفض', other:'أخرى', profile:'عرض الملف الكامل', noNationality:'لا يتوفر تفصيل حسب الجنسية.', appointment:'التعيين', officialCourt:'المحكمة الرسمية', source:'مصدر DOJ/EOIR', noBiography:'لا توجد حتى الآن سيرة تعيين رسمية مطابقة.' },
   tr: { remove:'Kaldır', noMatch:'Eşleşen hâkim bulunamadı', merits:'esasa ilişkin karar', total:'Toplam sonuç', granted:'Onaylanan', denied:'Reddedilen', other:'Diğer', profile:'Tam profili görüntüle', noNationality:'Uyruk dağılımı mevcut değil.', appointment:'Atama', officialCourt:'Resmî mahkeme', source:'DOJ/EOIR kaynağı', noBiography:'Henüz eşleşen resmî DOJ/EOIR atama biyografisi yok.' }
 };
+const copyFailure = {
+  en: 'The comparison link could not be copied. Please copy it from the address bar.',
+  es: 'No se pudo copiar el enlace. Cópielo desde la barra de direcciones.',
+  fr: 'Impossible de copier le lien. Copiez-le depuis la barre d’adresse.',
+  'pt-BR': 'Não foi possível copiar o link. Copie-o da barra de endereço.',
+  hi: 'तुलना लिंक कॉपी नहीं हो सका। कृपया पता बार से कॉपी करें।',
+  'zh-Hans': '无法复制对比链接，请从浏览器地址栏复制。',
+  'zh-Hant': '無法複製比較連結，請從瀏覽器網址列複製。',
+  ru: 'Не удалось скопировать ссылку. Скопируйте её из адресной строки.',
+  ar: 'تعذر نسخ رابط المقارنة. يرجى نسخه من شريط العنوان.',
+  tr: 'Karşılaştırma bağlantısı kopyalanamadı. Lütfen adres çubuğundan kopyalayın.'
+};
 let judges = [];
 let selected = [];
 let details = [];
@@ -46,6 +58,24 @@ const judgeName = (row) => {
 const profileUrl = (row) => window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `/judge?id=${encodeURIComponent(row.id)}`;
 const merits = (row) => Number(row?.grants || 0) + Number(row?.denials || 0);
 const approval = (row) => row?.adjudicated_approval_rate ?? row?.approval_rate ?? (merits(row) ? Number(row.grants || 0) / merits(row) * 100 : null);
+
+async function copyText(value) {
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+    await navigator.clipboard.writeText(value);
+    return;
+  } catch {}
+  const textarea = document.createElement('textarea');
+  textarea.value = value;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.append(textarea);
+  textarea.select();
+  let copied = false;
+  try { copied = document.execCommand('copy'); } finally { textarea.remove(); }
+  if (!copied) throw new Error('Clipboard fallback failed');
+}
 
 function applyCopy() {
   const text = words();
@@ -246,7 +276,14 @@ $('#compare-search').addEventListener('keydown', (event) => {
   }
 });
 $('#clear-comparison').addEventListener('click', () => { selected = []; details = []; updateUrl(); renderSelected(); renderComparison(); });
-$('#copy-compare-link').addEventListener('click', async () => { try { await navigator.clipboard.writeText(location.href); $('#compare-status').textContent = words().copied; } catch {} });
+$('#copy-compare-link').addEventListener('click', async () => {
+  try {
+    await copyText(location.href);
+    $('#compare-status').textContent = words().copied;
+  } catch {
+    $('#compare-status').textContent = copyFailure[locale()] || copyFailure.en;
+  }
+});
 $('#compare-empty').addEventListener('click', (event) => {
   const retry = event.target.closest('[data-retry]');
   if (!retry) return;

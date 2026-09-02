@@ -156,7 +156,7 @@
     };
   }
 
-  function renderMergedCard({ key, name, description, controls, sort, manualHtml = '', note = '' }, globalEnabled) {
+  function renderMergedCard({ key, name, description, controls, sort, manualHtml = '', note = '', enableLabel = '开启自动任务', disableLabel = '关闭自动任务' }, globalEnabled) {
     const state = stateFor(controls, globalEnabled);
     return {
       sort,
@@ -172,7 +172,7 @@
             <small>最后更新：${escapeHtml(newestUpdate(controls))}</small>
             ${manualHtml}
           </div>
-          ${toggleButtons(key, state.configuredEnabled, name)}
+          ${toggleButtons(key, state.configuredEnabled, name, enableLabel, disableLabel)}
         </article>`
     };
   }
@@ -192,8 +192,8 @@
     const seoControls = ['seo_indexnow','seo_search_engine','monitor'].map((key) => byKey.get(key)).filter(Boolean);
     cards.push(renderMergedCard({
       key: 'seo_suite',
-      name: 'SEO自动收录',
-      description: '打开后，系统自动向IndexNow、Google和Bing提交新内容，并检查网站SEO是否正常。',
+      name: '搜索引擎提交与SEO监控',
+      description: '打开后，系统自动向IndexNow、Google和Bing提交新内容，并检查网站SEO；是否最终收录由搜索引擎决定。',
       controls: seoControls,
       sort: 60,
       manualHtml: byKey.get('seo_metadata') ? manualTool(byKey.get('seo_metadata'), '手动工具：同步SEO元数据', '立即同步一次', '停止同步') : '',
@@ -203,8 +203,8 @@
     const maintenance = byKey.get('maintenance');
     if (maintenance) cards.push(renderMergedCard({
       key: 'maintenance',
-      name: 'ICE自动维护',
-      description: '打开后，系统在夜间自动修复、去重并清理孤立媒体。',
+      name: 'ICE夜间安全维护',
+      description: '打开后，系统只在夜间恢复卡死任务、清理过期候选、过滤回复、合并重复事件和清理孤立媒体；不会重分类普通文章。',
       controls: [maintenance],
       sort: 90,
       note: '拒绝稿满1小时自动删除是固定安全规则，不需要打开本开关。'
@@ -213,8 +213,8 @@
     const legacyAudit = byKey.get('legacy_404');
     if (legacyAudit) cards.push(renderMergedCard({
       key: 'legacy_404',
-      name: '旧站404自动检查',
-      description: '打开后，系统每6小时检查旧链接和404问题；只生成报告，不修改文章。',
+      name: '旧站404手动盘点',
+      description: '需要时手动运行一次旧链接和404盘点；只生成报告，不修改文章。',
       controls: [legacyAudit],
       sort: 100,
       manualHtml: `
@@ -233,7 +233,9 @@
         '停止恢复',
         '这会向数据库写入文章；只有确定需要恢复旧内容时才执行。'
       ) : ''),
-      note: '正常情况下只使用上方自动检查开关。'
+      note: '这是一次性人工检查，不再每6小时自动运行。',
+      enableLabel: '立即检查一次',
+      disableLabel: '停止检查'
     }, globalEnabled));
 
     root.innerHTML = cards.sort((a, b) => a.sort - b.sort).map((card) => card.html).join('');

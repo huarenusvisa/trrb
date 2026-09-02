@@ -26,7 +26,7 @@ function renderDirectory(rows = countries) {
     const active = selected?.nationality_code === row.nationality_code;
     return `<button class="country-card${active ? ' active' : ''}" data-country="${esc(row.nationality)}" aria-pressed="${active}"><strong>${esc(countryLabel(row))}</strong><small>${esc(row.nationality_code || '')} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`;
   }).join('') : `<div class="empty">${t('noCountry')}</div>`;
-  $('#country-directory').querySelectorAll('[data-country]').forEach((button) => button.addEventListener('click', () => selectCountry(button.dataset.country, true)));
+  $('#country-directory').querySelectorAll('[data-country]').forEach((button) => button.addEventListener('click', () => selectCountry(button.dataset.country, true, true)));
 }
 
 function outcomeShare(row, field) {
@@ -193,6 +193,11 @@ function renderSelected(data) {
   renderJudges(data.judges || []);
 }
 
+function scrollToCountryDetail() {
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  $('#country-detail').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+}
+
 async function selectCountry(country, updateUrl = false, scrollToDetail = false) {
   const requestId = ++countryRequestId;
   $('#country-detail').setAttribute('aria-busy', 'true');
@@ -206,7 +211,7 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
       url.searchParams.set('country', data.country.nationality);
       history.replaceState(null, '', `${url.pathname}${url.search}`);
     }
-    if (scrollToDetail) $('#country-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (scrollToDetail) scrollToCountryDetail();
   } catch {
     if (requestId !== countryRequestId) return;
     $('#selected-country').textContent = t('countryUnavailable');

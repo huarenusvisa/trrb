@@ -2,23 +2,6 @@ name: TRRB旧站404只读盘点
 
 on:
   workflow_dispatch:
-  # 独立迁移收口机器人：每6小时只读盘点一次，不自动恢复或发布。
-  schedule:
-    - cron: "11 */6 * * *"
-  push:
-    branches:
-      - main
-    paths:
-      - "_redirects"
-      - "netlify.toml"
-      - "privacy.html"
-      - "terms.html"
-      - "articles-chunk-*.js"
-      - "scripts/finalize-redirects.mjs"
-      - "scripts/restore-legacy-archive.mjs"
-      - "scripts/publish-legacy-404-report.mjs"
-      - "netlify/edge-functions/legacy-url-redirect.ts"
-      - ".github/workflows/legacy-404-audit.yml"
 
 permissions:
   contents: read
@@ -28,22 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  automation-gate:
-    runs-on: ubuntu-24.04
-    outputs:
-      allowed: ${{ steps.gate.outputs.allowed }}
-    steps:
-      - uses: actions/checkout@v4
-      - id: controls
-        env:
-          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-        run: node scripts/automation-gate.mjs
-      - id: gate
-        run: echo "allowed=${{ steps.controls.outputs.global == 'true' && steps.controls.outputs.legacy_404 == 'true' }}" >> "$GITHUB_OUTPUT"
   audit:
-    needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.allowed == 'true' }}
     name: 对比旧归档与正式库
     runs-on: ubuntu-24.04
     timeout-minutes: 25
@@ -115,6 +83,30 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+
+      - name: 将一次性人工开关恢复为关闭
+        if: always()
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const url = process.env.SUPABASE_URL + '/rest/v1/automation_controls?control_key=eq.legacy_404';
+          const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+          const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+              apikey: key,
+              Authorization: `Bearer ${key}`,
+              'Content-Type': 'application/json',
+              Prefer: 'return=minimal'
+            },
+            body: JSON.stringify({ enabled: false })
+          });
+          if (!response.ok) throw new Error(`reset legacy_404 failed: ${response.status} ${await response.text()}`);
+          console.log('legacy_404 one-shot control reset to false');
+          NODE
 
       - name: 写入旧站404机器人站内通知
         if: failure()

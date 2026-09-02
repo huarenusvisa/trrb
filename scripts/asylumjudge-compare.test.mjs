@@ -22,8 +22,11 @@ assert.match(html, /id="compare-trend"/);
 assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
-assert.match(html, /compare\.js\?v=3/);
-assert.match(html, /compare\.css\?v=3/);
+assert.match(html, /compare\.js\?v=4/);
+assert.match(html, /compare\.css\?v=4/);
+for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
+  assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{[^}]*retry:`), `retry action must support ${locale}`);
+}
 for (const locale of ['es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{\\s*title:`), `comparison copy must support ${locale}`);
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{\\s*remove:`), `dynamic comparison labels must support ${locale}`);
@@ -40,6 +43,9 @@ assert.match(js, /aria-activedescendant/, 'combobox must announce the active sea
 assert.match(js, /\['ArrowDown', 'ArrowUp', 'Home', 'End'\]\.includes\(event\.key\)/, 'combobox must support directional and boundary navigation');
 assert.match(js, /event\.key === 'Escape'/, 'combobox must close with Escape');
 assert.match(js, /event\.key === 'Enter'/, 'combobox must select with Enter');
+assert.match(js, /class="compare-error" role="alert"/, 'load errors must be announced to assistive technology');
+assert.match(js, /data-retry="\$\{scope\}"/, 'load errors must provide a retry action');
+assert.match(js, /retry\.dataset\.retry === 'details'\) loadDetails\(\)[\s\S]*else load\(\)/, 'retry must reload the failed dataset without a page refresh');
 assert.doesNotMatch(js, />No matching judge</, 'empty search results must use localized copy');
 assert.doesNotMatch(js, />View full profile/, 'judge profile links must use localized copy');
 assert.match(routes, /\/compare \/immigration-judge-approval-rate\/compare\.html 200/);
@@ -49,6 +55,7 @@ assert.match(css, /grid-template-columns:repeat\(var\(--judge-count/);
 assert.match(css, /text-align:start/, 'search results must follow the active writing direction');
 assert.match(css, /\.compare-search-result\.is-active/, 'keyboard-active options must have a visible highlight');
 assert.match(css, /border-inline-start:4px/, 'comparison notices must place emphasis on the logical leading edge');
+assert.match(css, /\.compare-error button:focus-visible/, 'retry button must expose a visible keyboard focus state');
 assert.doesNotMatch(css, /\.compare-search-result\{[^}]*text-align:left/, 'Arabic search results must not be forced left');
 assert.match(built, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/compare\/">/);
 assert.match(built, /<meta name="robots" content="index,follow,/);

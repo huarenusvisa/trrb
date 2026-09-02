@@ -35,6 +35,10 @@ function outcomeAriaLabel(row, label) {
   return `${label}. ${t('approved')} ${outcomeShare(row, 'grants').toFixed(1)}%. ${t('denied')} ${outcomeShare(row, 'denials').toFixed(1)}%. ${t('other')} ${outcomeShare(row, 'other_decisions').toFixed(1)}%. ${t('total')} ${fmt(total)}.`;
 }
 
+function retryButton(scope, country = '', updateUrl = false) {
+  return `<button class="data-retry" type="button" data-retry="${scope}" data-country="${esc(country)}" data-update-url="${updateUrl}" data-i18n="retryAction">${esc(t('retryAction'))}</button>`;
+}
+
 function showComparisonTooltip(row) {
   const tooltip = $('#comparison-tooltip');
   const label = countryLabel(row);
@@ -175,6 +179,7 @@ function renderSelected(data) {
   $('#trend-title').textContent = t('countryTrend', { country: label });
   $('#trend-chart').setAttribute('aria-label', t('countryTrend', { country: label }));
   $('#judge-ranking-title').textContent = t('countryJudges', { country: label });
+  $('#chart-note').removeAttribute('role');
   renderDirectory(filterCountries($('#country-search').value));
   const points = data.periods?.[period] || [];
   drawTrend(points);
@@ -195,11 +200,14 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
     if (scrollToDetail) $('#country-detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch {
     $('#selected-country').textContent = t('countryUnavailable');
-    $('#chart-note').textContent = t('retry');
+    $('#chart-note').setAttribute('role', 'alert');
+    $('#chart-note').innerHTML = `${esc(t('retry'))} ${retryButton('country', country, updateUrl)}`;
   }
 }
 
 async function load() {
+  $('#country-directory').innerHTML = `<div class="empty">${esc(t('loading'))}</div>`;
+  $('#selected-country').textContent = t('loadingReal');
   try {
     const data = await getJson('/.netlify/functions/immigration-judges?mode=nationalities');
     countries = data.countries || [];
@@ -211,10 +219,18 @@ async function load() {
     $('#country-search').value = requested || '';
     await selectCountry(initial);
   } catch {
-    $('#country-directory').innerHTML = `<div class="empty">${t('databaseUnavailable')}</div>`;
+    $('#country-directory').innerHTML = `<div class="empty" role="alert"><p>${esc(t('databaseUnavailable'))}</p>${retryButton('directory')}</div>`;
     $('#selected-country').textContent = t('readFailed');
   }
 }
+
+document.addEventListener('click', async (event) => {
+  const button = event.target.closest('[data-retry]');
+  if (!button) return;
+  button.disabled = true;
+  if (button.dataset.retry === 'directory') await load();
+  else await selectCountry(button.dataset.country, button.dataset.updateUrl === 'true');
+});
 
 $('#country-search-form').addEventListener('submit', (event) => {
   event.preventDefault();

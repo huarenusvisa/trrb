@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02T21:14:04.750Z",
+  "generated_at": "2026-09-02T21:24:54.031Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -64,7 +64,7 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1935042,
+      "bytes": 1933671,
       "article_count": 5000,
       "child_sitemaps": [],
       "legacy_query_count": 0,
@@ -73,14 +73,98 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 104169,
-      "article_count": 214,
+      "bytes": 107883,
+      "article_count": 224,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v7-quality-dedupe"
     }
   },
   "articles": [
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095195045708128634",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095195045708128634",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 34,
+      "h1_length": 27,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095195045708128634",
+      "body_length": 301,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095205111366631866",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095205111366631866",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 33,
+      "h1_length": 26,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095205111366631866",
+      "body_length": 308,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095217695906206037",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095217695906206037",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 30,
+      "h1_length": 23,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095217695906206037",
+      "body_length": 301,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095225249717780814",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095225249717780814",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 32,
+      "h1_length": 25,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095225249717780814",
+      "body_length": 354,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095232793655591138",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095232793655591138",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 32,
+      "h1_length": 25,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095232793655591138",
+      "body_length": 306,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095247894009745842",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095247894009745842",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 34,
+      "h1_length": 27,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095247894009745842",
+      "body_length": 303,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095255447674470656",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095255447674470656",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 33,
+      "h1_length": 26,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095255447674470656",
+      "body_length": 308,
+      "schema": true,
+      "noindex": false
+    },
     {
       "url": "https://trrb.net/ice/ice-evt-29c131d416694000d56ecd5f58064274a450a0fe",
       "status": 200,
@@ -138,90 +222,6 @@
       "h1_length": 26,
       "canonical": "https://trrb.net/us-crime/%E7%BE%8E%E5%9B%BD%E8%AE%B0%E8%80%85%E4%BF%9D%E8%82%AF%E6%B6%89%E4%B8%AD%E5%9B%BD%E4%BB%A3%E7%90%86%E6%A1%88%E5%AE%A3%E5%88%A4%E6%89%BF%E8%AE%A4%E6%94%B6%E9%9B%86%E4%BF%A1%E6%81%AF%E5%B9%B6%E8%8E%B7%E5%88%91%E4%B8%A4%E5%B9%B4-mtk7u4h2-2ab509",
       "body_length": 1478,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/us-crime/%E8%B7%A8%E5%A2%83%E6%B4%97%E9%92%B1%E9%BB%91%E9%93%BE%E6%9B%9D%E5%85%89740%E4%B8%87%E7%BE%8E%E5%85%83%E8%B5%83%E6%AC%BE%E6%B5%81%E5%85%A5%E5%A4%A7%E9%99%86%E9%A6%99%E6%B8%AF%E4%BA%94%E5%90%8D%E5%8D%8E%E7%94%B7%E9%81%AD%E8%81%94%E9%82%A6%E8%B5%B7%E8%AF%89-mtk7nu00-db95b7",
-      "status": 200,
-      "final_url": "https://trrb.net/us-crime/%E8%B7%A8%E5%A2%83%E6%B4%97%E9%92%B1%E9%BB%91%E9%93%BE%E6%9B%9D%E5%85%89740%E4%B8%87%E7%BE%8E%E5%85%83%E8%B5%83%E6%AC%BE%E6%B5%81%E5%85%A5%E5%A4%A7%E9%99%86%E9%A6%99%E6%B8%AF%E4%BA%94%E5%90%8D%E5%8D%8E%E7%94%B7%E9%81%AD%E8%81%94%E9%82%A6%E8%B5%B7%E8%AF%89-mtk7nu00-db95b7",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 40,
-      "h1_length": 33,
-      "canonical": "https://trrb.net/us-crime/%E8%B7%A8%E5%A2%83%E6%B4%97%E9%92%B1%E9%BB%91%E9%93%BE%E6%9B%9D%E5%85%89740%E4%B8%87%E7%BE%8E%E5%85%83%E8%B5%83%E6%AC%BE%E6%B5%81%E5%85%A5%E5%A4%A7%E9%99%86%E9%A6%99%E6%B8%AF%E4%BA%94%E5%90%8D%E5%8D%8E%E7%94%B7%E9%81%AD%E8%81%94%E9%82%A6%E8%B5%B7%E8%AF%89-mtk7nu00-db95b7",
-      "body_length": 1667,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/%E5%A9%9A%E5%A7%BB%E7%BB%BF%E5%8D%A1%E9%9D%A2%E8%B0%88%E4%B8%8D%E5%86%8D%E5%AE%89%E5%85%A8%E6%B4%9B%E6%9D%89%E7%9F%B6%E5%A5%B3%E5%AD%90uscis%E7%AA%81%E9%81%ADice%E6%8B%98%E7%95%99%E9%80%BE%E6%9C%9F%E8%BA%AB%E4%BB%BD%E9%A3%8E%E9%99%A9%E6%9B%9D%E5%85%89-mtk781uu-041d33",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/%E5%A9%9A%E5%A7%BB%E7%BB%BF%E5%8D%A1%E9%9D%A2%E8%B0%88%E4%B8%8D%E5%86%8D%E5%AE%89%E5%85%A8%E6%B4%9B%E6%9D%89%E7%9F%B6%E5%A5%B3%E5%AD%90uscis%E7%AA%81%E9%81%ADice%E6%8B%98%E7%95%99%E9%80%BE%E6%9C%9F%E8%BA%AB%E4%BB%BD%E9%A3%8E%E9%99%A9%E6%9B%9D%E5%85%89-mtk781uu-041d33",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 44,
-      "h1_length": 37,
-      "canonical": "https://trrb.net/ice/%E5%A9%9A%E5%A7%BB%E7%BB%BF%E5%8D%A1%E9%9D%A2%E8%B0%88%E4%B8%8D%E5%86%8D%E5%AE%89%E5%85%A8%E6%B4%9B%E6%9D%89%E7%9F%B6%E5%A5%B3%E5%AD%90uscis%E7%AA%81%E9%81%ADice%E6%8B%98%E7%95%99%E9%80%BE%E6%9C%9F%E8%BA%AB%E4%BB%BD%E9%A3%8E%E9%99%A9%E6%9B%9D%E5%85%89-mtk781uu-041d33",
-      "body_length": 2225,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-evt-33d5f65bc09e2846bf0237b2368bae5e028dd12c",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-evt-33d5f65bc09e2846bf0237b2368bae5e028dd12c",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 37,
-      "h1_length": 30,
-      "canonical": "https://trrb.net/ice/ice-evt-33d5f65bc09e2846bf0237b2368bae5e028dd12c",
-      "body_length": 428,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-evt-5c8cf6ba01bca726a4d338b694cac06c5cf131b3",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-evt-5c8cf6ba01bca726a4d338b694cac06c5cf131b3",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 26,
-      "h1_length": 19,
-      "canonical": "https://trrb.net/ice/ice-evt-5c8cf6ba01bca726a4d338b694cac06c5cf131b3",
-      "body_length": 392,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2094983666149560493",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2094983666149560493",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 33,
-      "h1_length": 26,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2094983666149560493",
-      "body_length": 317,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2094991204937286043",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2094991204937286043",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 33,
-      "h1_length": 26,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2094991204937286043",
-      "body_length": 307,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2094998753446920427",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2094998753446920427",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 27,
-      "h1_length": 20,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2094998753446920427",
-      "body_length": 303,
       "schema": true,
       "noindex": false
     }

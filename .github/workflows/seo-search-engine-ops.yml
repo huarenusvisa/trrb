@@ -16,6 +16,7 @@ on:
       - 'scripts/seo-search-engine-ops.mjs'
       - 'netlify/edge-functions/sitemap-live.ts'
       - 'netlify/edge-functions/news-sitemap-live.ts'
+      - 'netlify/edge-functions/category-prerender.ts'
       - '.github/workflows/seo-search-engine-ops.yml'
 
 permissions:

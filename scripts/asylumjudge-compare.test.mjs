@@ -4,13 +4,14 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const read = (relative) => readFile(join(root, relative), 'utf8');
-const [html, js, css, home, routes, built] = await Promise.all([
+const [html, js, css, home, routes, built, seoAudit] = await Promise.all([
   read('immigration-judge-approval-rate/compare.html'),
   read('immigration-judge-approval-rate/compare.js'),
   read('immigration-judge-approval-rate/compare.css'),
   read('asylumjudge/index.html'),
   read('scripts/build-asylumjudge-site.mjs'),
-  read('.netlify/asylumjudge-bundle/public/compare/index.html')
+  read('.netlify/asylumjudge-bundle/public/compare/index.html'),
+  read('scripts/seo-integrity-audit.mjs')
 ]);
 
 assert.match(home, /href="\/compare"/, 'homepage must link to judge comparison');
@@ -26,6 +27,7 @@ assert.match(js, /merits\(row\) >= 50/, 'yearly trend must enforce the sample th
 assert.match(js, /searchParams\.set\('judges'/, 'selection must be shareable through the URL');
 assert.match(routes, /\/compare \/immigration-judge-approval-rate\/compare\.html 200/);
 assert.match(routes, /`\/\$\{locale\}\/compare/);
+assert.match(seoAudit, /ROUTE_PREFIXES[\s\S]*["']compare["']/, 'SEO audit must recognize the clean comparison route');
 assert.match(css, /grid-template-columns:repeat\(var\(--judge-count/);
 assert.match(built, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/compare\/">/);
 assert.match(built, /<meta name="robots" content="index,follow,/);

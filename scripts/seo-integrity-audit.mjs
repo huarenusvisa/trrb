@@ -12,7 +12,7 @@ const INTENTIONAL_NOINDEX_HTML = new Set([
 const DYNAMIC_SEO_HTML = new Set(["article.html", "listing.html", "legal/detail.html"]);
 const STRICT_INDEXABLE_SEO_GATE = "STRICT_INDEXABLE_SEO_GATE_V2";
 const ROUTE_PREFIXES = new Set([
-  "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics",
+  "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics", "compare",
   "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
 ]);
 const FORBIDDEN_SITEMAP_ROUTES = [

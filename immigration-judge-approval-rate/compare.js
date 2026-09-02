@@ -45,6 +45,8 @@ let judges = [];
 let selected = [];
 let details = [];
 let activeSearchResult = -1;
+let detailRequestId = 0;
+let detailRequestController = null;
 
 const locale = () => window.AsylumI18n?.locale || document.body.dataset.asylumLocale || 'zh-Hans';
 const words = () => copy[locale()] || copy.en;
@@ -101,12 +103,21 @@ function updateUrl() {
   history.replaceState(null, '', `${url.pathname}${url.search}`);
 }
 
+function cancelDetailRequest() {
+  detailRequestId += 1;
+  detailRequestController?.abort();
+  detailRequestController = null;
+}
+
 function renderSelected() {
   $('#selected-judges').innerHTML = selected.map((row) => `<span class="selected-judge">${esc(judgeName(row))}<button type="button" data-remove="${esc(row.id)}" aria-label="${esc(labels().remove)} ${esc(judgeName(row))}">×</button></span>`).join('');
   $('#selected-judges').querySelectorAll('[data-remove]').forEach((button) => button.addEventListener('click', () => {
+    cancelDetailRequest();
     selected = selected.filter((row) => row.id !== button.dataset.remove);
     details = details.filter((item) => item.judge.id !== button.dataset.remove);
-    updateUrl(); renderSelected(); renderComparison();
+    updateUrl(); renderSelected();
+    if (selected.length >= 2 && details.length !== selected.length) loadDetails();
+    else renderComparison();
   }));
   $('#compare-status').textContent = selected.length === 1 ? words().addMore : words().hint;
 }
@@ -223,16 +234,26 @@ function renderComparison() {
 }
 
 async function loadDetails() {
+  cancelDetailRequest();
   if (selected.length < 2) { renderComparison(); return; }
+  const requestId = detailRequestId;
+  const controller = new AbortController();
+  detailRequestController = controller;
+  const requestedJudges = [...selected];
   $('#compare-empty').hidden = false;
   $('#compare-content').hidden = true;
   $('#compare-empty').innerHTML = `<div class="compare-loading">${esc(words().loading)}</div>`;
   try {
-    details = await Promise.all(selected.map((row) => fetch(`/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(row.id)}`).then((response) => { if (!response.ok) throw new Error(response.status); return response.json(); })));
+    const nextDetails = await Promise.all(requestedJudges.map((row) => fetch(`/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(row.id)}`, { signal: controller.signal }).then((response) => { if (!response.ok) throw new Error(response.status); return response.json(); })));
+    if (requestId !== detailRequestId) return;
+    details = nextDetails;
     renderComparison();
-  } catch {
+  } catch (error) {
+    if (requestId !== detailRequestId || error?.name === 'AbortError') return;
     details = [];
     renderLoadError('details');
+  } finally {
+    if (detailRequestController === controller) detailRequestController = null;
   }
 }
 
@@ -275,7 +296,7 @@ $('#compare-search').addEventListener('keydown', (event) => {
     if (active) addJudge(active.dataset.add);
   }
 });
-$('#clear-comparison').addEventListener('click', () => { selected = []; details = []; updateUrl(); renderSelected(); renderComparison(); });
+$('#clear-comparison').addEventListener('click', () => { cancelDetailRequest(); selected = []; details = []; updateUrl(); renderSelected(); renderComparison(); });
 $('#copy-compare-link').addEventListener('click', async () => {
   try {
     await copyText(location.href);

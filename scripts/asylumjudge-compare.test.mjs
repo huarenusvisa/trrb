@@ -22,7 +22,7 @@ assert.match(html, /id="compare-trend"/);
 assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
-assert.match(html, /compare\.js\?v=5/);
+assert.match(html, /compare\.js\?v=6/);
 assert.match(html, /compare\.css\?v=4/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{[^}]*retry:`), `retry action must support ${locale}`);
@@ -35,6 +35,11 @@ assert.match(js, /selected\.length >= 4/, 'comparison must cap selection at four
 assert.match(js, /selected\.length < 2/, 'comparison must require at least two judges');
 assert.match(js, /immigration-judges\?mode=all/, 'picker must use the complete judge dataset');
 assert.match(js, /immigration-judges\?mode=detail/, 'comparison must load each judge detail dataset');
+assert.match(js, /detailRequestController\?\.abort\(\)/, 'superseded detail requests must be cancelled');
+assert.match(js, /signal: controller\.signal/, 'judge detail requests must use the active abort signal');
+assert.match(js, /requestId !== detailRequestId/, 'stale detail responses must not update the comparison');
+assert.match(js, /error\?\.name === 'AbortError'/, 'cancelled detail requests must not show a load error');
+assert.match(js, /cancelDetailRequest\(\); selected = \[\]; details = \[\]/, 'clearing the comparison must cancel in-flight detail requests');
 assert.match(js, /merits\(row\) >= 50/, 'yearly trend must enforce the sample threshold');
 assert.match(js, /searchParams\.set\('judges'/, 'selection must be shareable through the URL');
 assert.match(js, /asylumjudge:localechange[\s\S]*renderSelected\(\)[\s\S]*renderComparison\(\)/, 'changing language must rerender dynamic comparison results');

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02T21:43:41.361Z",
+  "generated_at": "2026-09-02T21:52:09.670Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -64,7 +64,7 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1932158,
+      "bytes": 1932187,
       "article_count": 5000,
       "child_sitemaps": [],
       "legacy_query_count": 0,

@@ -19,8 +19,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 等待Netlify部署
-        run: sleep 240
+      - name: 等待当前提交或其后代部署到生产
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="${GITHUB_SHA}"
+          for attempt in $(seq 1 90); do
+            live="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?run=${GITHUB_RUN_ID}&attempt=${attempt}" 2>/dev/null | tr -d '\r\n[:space:]' || true)"
+            if [ "$live" = "$target" ]; then
+              echo "Production is running exact target $target"
+              exit 0
+            fi
+            if [[ "$live" =~ ^[0-9a-f]{40}$ ]]; then
+              git fetch --no-tags --depth=100 origin "$live" >/dev/null 2>&1 || true
+              if git merge-base --is-ancestor "$target" "$live" 2>/dev/null; then
+                echo "Production is running descendant $live containing target $target"
+                exit 0
+              fi
+            fi
+            echo "Waiting for production: expected target-or-descendant=$target live=${live:-unavailable} attempt=$attempt/90"
+            sleep 10
+          done
+          echo "Production did not reach target $target or a descendant within 15 minutes." >&2
+          exit 1
       - name: 抓取线上页面并检查404、SEO和静态资源类型
         env:
           SITE_ORIGIN: https://trrb.net

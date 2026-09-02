@@ -8,7 +8,7 @@ const STOP_POLL_DELAY_MS = 600;
 const MANUAL_ONLY_KEYS = new Set(['seo_metadata', 'legacy_recovery']);
 const CONTROL_GROUPS = {
   seo_suite: {
-    display_name: 'SEO收录与监控',
+    display_name: '搜索引擎提交与SEO监控',
     keys: ['seo_indexnow', 'seo_search_engine', 'monitor']
   }
 };

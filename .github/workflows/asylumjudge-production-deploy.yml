@@ -1,0 +1,89 @@
+name: AsylumJudge Production Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'asylumjudge/**'
+      - 'immigration-judge-approval-rate/**'
+      - 'scripts/build-asylumjudge-site.mjs'
+      - 'scripts/build-asylumjudge-seo.mjs'
+      - 'scripts/asylumjudge-*.mjs'
+      - 'netlify/functions/immigration-judges.js'
+      - 'netlify/functions/_shared/supabase-admin.js'
+      - '.github/workflows/asylumjudge-production-deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: asylumjudge-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  test-build-deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: 7beb8b62-f7e3-49fc-b954-46699c9956b7
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate deployment credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_AUTH_TOKEN:-}"
+          test -n "${NETLIFY_SITE_ID:-}"
+
+      - name: Test and build AsylumJudge
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check immigration-judge-approval-rate/compare.js
+          node scripts/build-asylumjudge-site.mjs
+          node scripts/asylumjudge-compare.test.mjs
+          node scripts/asylumjudge-ten-language-ui.test.mjs
+          node scripts/asylumjudge-seo.test.mjs
+
+      - name: Deploy AsylumJudge to production
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd .netlify/asylumjudge-bundle
+          npx --yes netlify-cli@latest deploy \
+            --prod \
+            --site "$NETLIFY_SITE_ID" \
+            --auth "$NETLIFY_AUTH_TOKEN" \
+            --context production \
+            --message "AsylumJudge production ${GITHUB_SHA}"
+
+      - name: Verify production comparison experience
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp="${GITHUB_SHA}-$(date +%s)"
+          curl -fsSL --retry 5 --retry-all-errors --max-time 30 \
+            -H 'Cache-Control: no-cache' \
+            "https://asylumjudge.com/compare/?deploy=${stamp}" \
+            -o /tmp/asylumjudge-compare.html
+          grep -Fq 'compare.css?v=2' /tmp/asylumjudge-compare.html
+          grep -Fq 'compare.js?v=2' /tmp/asylumjudge-compare.html
+
+          curl -fsSL --retry 5 --retry-all-errors --max-time 30 \
+            -H 'Cache-Control: no-cache' \
+            "https://asylumjudge.com/immigration-judge-approval-rate/compare.js?v=2&deploy=${stamp}" \
+            -o /tmp/asylumjudge-compare.js
+          grep -Fq "'pt-BR': { title:'Comparar" /tmp/asylumjudge-compare.js
+          grep -Fq 'asylumjudge:localechange' /tmp/asylumjudge-compare.js
+
+          test "$(curl -sS -o /dev/null -w '%{http_code}' --retry 5 --retry-all-errors --max-time 30 \
+            -H 'Cache-Control: no-cache' \
+            "https://asylumjudge.com/nationality/?country=China&deploy=${stamp}")" = '200'

@@ -168,7 +168,7 @@ async function fetchAllPublishedArticles() {
     const rows = await rest('articles', {
       select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at,source_url,cover_image',
       status: 'eq.published',
-      order: 'published_at.asc.nullslast,created_at.asc',
+      order: 'published_at.asc.nullslast,created_at.asc,id.asc',
       limit: String(pageSize),
       offset: String(page * pageSize)
     });

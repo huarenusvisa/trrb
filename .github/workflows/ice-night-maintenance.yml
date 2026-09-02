@@ -76,7 +76,6 @@ jobs:
           node --check scripts/ice-translate-title-body.mjs
           node --check scripts/ice-trusted-source-promote.mjs
           node --check scripts/ice-publish-due.mjs
-          node --check scripts/reclassify-immigration-articles.mjs
 
       - name: Run architecture regression tests
         run: |
@@ -98,13 +97,6 @@ jobs:
       - name: Consolidate duplicate events
         run: node scripts/ice-dedupe-v3.mjs
 
-      - name: Reconcile historical article categories
-        env:
-          APPLY_CHANGES: "true"
-          APPLY_CONFIRMATION: "APPLY"
-          STRICT_CLEANUP: "true"
-        run: node scripts/reclassify-immigration-articles.mjs
-
       - name: Final 08:00 readiness check
         if: needs.new-york-maintenance-gate.outputs.final_check == 'true'
         run: |
@@ -117,4 +109,4 @@ jobs:
         run: |
           echo "纽约时间：${{ needs.new-york-maintenance-gate.outputs.ny_time }}"
           echo "本轮未调用X接口、未调用OpenAI、未自动发布新闻。"
-          echo "已执行：代码检查、回归测试、卡死任务恢复、失败任务重试、12小时过期清理、回复过滤、事件去重、历史栏目整理。"
+          echo "已执行：代码检查、回归测试、卡死任务恢复、失败任务重试、12小时过期清理、回复过滤和事件去重；未修改普通文章栏目。"

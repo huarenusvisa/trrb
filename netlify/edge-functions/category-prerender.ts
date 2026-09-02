@@ -3,13 +3,13 @@ const PAGE_SIZE = 24;
 
 const ROUTES: Record<string, { name: string; displayName?: string; description: string }> = {
   "/important-news": { name: "重要新闻", description: "唐人日报重要新闻，聚焦美国、中国及全球重大事件与突发动态。" },
-  "/hot-headlines": { name: "热门头条", displayName: "中国热门头条", description: "唐人日报中国热门头条，只汇集中国大陆社会、民生、公共事件与网络热点。" },
-  "/us-politics": { name: "美国时政", description: "唐人日报美国时政，追踪白宫、国会、选举、政策与联邦政府最新动态。" },
-  "/us-crime": { name: "美国警情", description: "唐人日报美国警情，关注美国治安、执法、法院与重大刑事案件。" },
+  "/hot-headlines": { name: "热门头条", displayName: "中国热门头条", description: "唐人日报中国热门头条，持续汇集中国大陆社会、民生、公共事件与网络热点，提供事实背景、可靠来源与重要后续进展。" },
+  "/us-politics": { name: "美国时政", description: "唐人日报美国时政，持续追踪白宫、国会、选举、公共政策与联邦政府最新动态，梳理事件背景、权威来源及后续影响。" },
+  "/us-crime": { name: "美国警情", description: "唐人日报美国警情，持续关注美国治安、警方执法、联邦调查、法院审判与重大刑事案件，提供可靠来源和后续进展。" },
   "/china-officialdom": { name: "中国官场", description: "唐人日报中国官场，追踪官员任免、反腐、调查与公共治理动态。" },
-  "/immigration": { name: "移民美国", description: "唐人日报移民美国，关注美国移民政策、签证、绿卡、执法与移民社区动态。" },
+  "/immigration": { name: "移民美国", description: "唐人日报移民美国，持续关注美国移民政策、签证、绿卡、庇护、入籍、边境执法与移民社区动态，提供实用信息和权威来源。" },
   "/asylum": { name: "庇护百科", description: "唐人日报庇护百科，聚合美国庇护、递解抗辩、人道主义保护、移民法庭及相关实务信息。" },
-  "/ice/news": { name: "ICE执法动态", description: "唐人日报ICE执法动态，追踪ICE、DHS、HSI、CBP抓捕、拘留、遣返及相关执法新闻。" }
+  "/ice/news": { name: "ICE执法动态", description: "唐人日报ICE执法动态，持续追踪ICE、DHS、HSI与CBP的抓捕、拘留、遣返及相关执法新闻，说明事件背景、法律程序和后续进展。" }
 };
 
 export const config = { path: Object.keys(ROUTES) };

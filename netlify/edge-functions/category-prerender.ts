@@ -180,7 +180,8 @@ export default async (request: Request, context: any) => {
     const canonical = `${SITE}${canonicalRoute}`;
     const title = route.displayName ? `${displayName} - 唐人日报` : (clean(category?.seo_title) || `${displayName} - 唐人日报`);
     const titleWithPage = page > 1 ? `${title.replace(/\s*-\s*唐人日报\s*$/i, "")} 第${page}页 - 唐人日报` : title;
-    const metaDescription = clean(category?.seo_description) || route.description;
+    const storedDescription = clean(category?.seo_description);
+    const metaDescription = storedDescription.length >= 40 ? storedDescription : route.description;
     const keywords = route.displayName ? "中国热门头条,中国新闻,中国社会热点,唐人日报" : (clean(category?.seo_keywords) || `${displayName},唐人日报,美国华人新闻`);
     const itemList = {
       "@context": "https://schema.org",

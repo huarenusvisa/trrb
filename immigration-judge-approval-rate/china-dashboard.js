@@ -230,7 +230,10 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
     if (updateUrl) {
       const url = new URL(location.href);
       url.searchParams.set('country', data.country.nationality);
-      history.replaceState(null, '', `${url.pathname}${url.search}`);
+      const nextUrl = `${url.pathname}${url.search}`;
+      if (`${location.pathname}${location.search}` !== nextUrl) {
+        history.pushState({ country: data.country.nationality }, '', nextUrl);
+      }
     }
     if (scrollToDetail) scrollToCountryDetail();
   } catch {
@@ -306,5 +309,12 @@ window.addEventListener('asylumjudge:localechange', () => {
     drawCountryComparison(countries);
   }
   if (selectedDetail) renderSelected(selectedDetail);
+});
+window.addEventListener('popstate', () => {
+  if (!countries.length) return;
+  const requested = new URLSearchParams(location.search).get('country');
+  const country = requested || document.body.dataset.country || countries[0]?.nationality || 'China';
+  $('#country-search').value = requested || '';
+  selectCountry(country);
 });
 load();

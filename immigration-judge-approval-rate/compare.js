@@ -32,6 +32,7 @@ const sharedCopy = {
 let judges = [];
 let selected = [];
 let details = [];
+let activeSearchResult = -1;
 
 const locale = () => window.AsylumI18n?.locale || document.body.dataset.asylumLocale || 'zh-Hans';
 const words = () => copy[locale()] || copy.en;
@@ -83,11 +84,41 @@ function searchJudges(value) {
   }).sort((a, b) => merits(b) - merits(a)).slice(0, 12);
 }
 
+function closeSearchResults() {
+  const input = $('#compare-search');
+  const container = $('#compare-search-results');
+  container.hidden = true;
+  input.setAttribute('aria-expanded', 'false');
+  input.removeAttribute('aria-activedescendant');
+  activeSearchResult = -1;
+}
+
+function setActiveSearchResult(index) {
+  const input = $('#compare-search');
+  const options = [...document.querySelectorAll('#compare-search-results [role="option"]')];
+  if (!options.length) { closeSearchResults(); return null; }
+  activeSearchResult = (index + options.length) % options.length;
+  options.forEach((option, optionIndex) => {
+    const active = optionIndex === activeSearchResult;
+    option.classList.toggle('is-active', active);
+    option.setAttribute('aria-selected', String(active));
+  });
+  const active = options[activeSearchResult];
+  input.setAttribute('aria-activedescendant', active.id);
+  active.scrollIntoView({ block: 'nearest' });
+  return active;
+}
+
 function showSearchResults(value) {
   const rows = searchJudges(value);
   const container = $('#compare-search-results');
-  container.hidden = !String(value || '').trim();
-  container.innerHTML = rows.length ? rows.map((row) => `<button class="compare-search-result" type="button" data-add="${esc(row.id)}"><span><b>${esc(judgeName(row))}</b><small>${esc(row.court_name || [row.court_city,row.court_state].filter(Boolean).join(', '))}</small></span><span>${pct(approval(row))}</span></button>`).join('') : `<div class="compare-status">${esc(labels().noMatch)}</div>`;
+  const input = $('#compare-search');
+  const hasQuery = Boolean(String(value || '').trim());
+  activeSearchResult = -1;
+  input.removeAttribute('aria-activedescendant');
+  container.hidden = !hasQuery;
+  input.setAttribute('aria-expanded', String(hasQuery));
+  container.innerHTML = rows.length ? rows.map((row, index) => `<button id="compare-search-option-${index}" class="compare-search-result" type="button" role="option" aria-selected="false" tabindex="-1" data-add="${esc(row.id)}"><span><b>${esc(judgeName(row))}</b><small>${esc(row.court_name || [row.court_city,row.court_state].filter(Boolean).join(', '))}</small></span><span>${pct(approval(row))}</span></button>`).join('') : `<div class="compare-status" role="status">${esc(labels().noMatch)}</div>`;
   container.querySelectorAll('[data-add]').forEach((button) => button.addEventListener('click', () => addJudge(button.dataset.add)));
 }
 
@@ -97,7 +128,7 @@ async function addJudge(id) {
   if (!row || selected.some((item) => item.id === id)) return;
   selected.push(row);
   $('#compare-search').value = '';
-  $('#compare-search-results').hidden = true;
+  closeSearchResults();
   updateUrl(); renderSelected(); await loadDetails();
 }
 
@@ -188,12 +219,30 @@ async function load() {
 
 $('#compare-search').addEventListener('input', (event) => showSearchResults(event.target.value));
 $('#compare-search').addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') $('#compare-search-results').hidden = true;
-  if (event.key === 'Enter') { event.preventDefault(); const first = $('#compare-search-results [data-add]'); if (first) addJudge(first.dataset.add); }
+  let options = [...document.querySelectorAll('#compare-search-results [role="option"]')];
+  if (event.key === 'Escape') { closeSearchResults(); return; }
+  if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+    event.preventDefault();
+    if ($('#compare-search-results').hidden) {
+      showSearchResults(event.currentTarget.value);
+      options = [...document.querySelectorAll('#compare-search-results [role="option"]')];
+    }
+    const target = event.key === 'Home' ? 0
+      : event.key === 'End' ? options.length - 1
+        : event.key === 'ArrowDown' ? (activeSearchResult < 0 ? 0 : activeSearchResult + 1)
+          : (activeSearchResult < 0 ? options.length - 1 : activeSearchResult - 1);
+    setActiveSearchResult(target);
+    return;
+  }
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    const active = options[activeSearchResult] || options[0];
+    if (active) addJudge(active.dataset.add);
+  }
 });
 $('#clear-comparison').addEventListener('click', () => { selected = []; details = []; updateUrl(); renderSelected(); renderComparison(); });
 $('#copy-compare-link').addEventListener('click', async () => { try { await navigator.clipboard.writeText(location.href); $('#compare-status').textContent = words().copied; } catch {} });
-document.addEventListener('click', (event) => { if (!event.target.closest('.compare-picker')) $('#compare-search-results').hidden = true; });
+document.addEventListener('click', (event) => { if (!event.target.closest('.compare-picker')) closeSearchResults(); });
 window.addEventListener('asylumjudge:localechange', () => {
   applyCopy();
   renderSelected();

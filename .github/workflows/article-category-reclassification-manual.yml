@@ -1,0 +1,66 @@
+name: 文章栏目重分类人工检查
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "运行方式：report 只生成报告；apply 才修改栏目"
+        required: true
+        default: report
+        type: choice
+        options:
+          - report
+          - apply
+      confirmation:
+        description: "仅在 apply 模式输入 APPLY；report 模式留空"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-article-category-reclassification-manual
+  cancel-in-progress: false
+
+jobs:
+  review:
+    name: 人工审核文章栏目分类
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      APPLY_CHANGES: ${{ inputs.mode == 'apply' }}
+      APPLY_CONFIRMATION: ${{ inputs.confirmation }}
+      STRICT_CLEANUP: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 校验执行方式
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.mode }}" = "apply" ] && [ "${{ inputs.confirmation }}" != "APPLY" ]; then
+            echo "写入模式必须明确输入 APPLY。" >&2
+            exit 2
+          fi
+          echo "本次模式：${{ inputs.mode }}"
+
+      - name: 扫描并生成分类报告
+        shell: bash
+        run: node scripts/reclassify-immigration-articles.mjs 2>&1 | tee article-category-reclassification-report.txt
+
+      - name: 保存人工审核报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: article-category-reclassification-${{ github.run_id }}
+          path: article-category-reclassification-report.txt
+          if-no-files-found: warn
+          retention-days: 30

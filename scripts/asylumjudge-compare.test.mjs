@@ -21,6 +21,7 @@ assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
 assert.match(html, /compare\.js\?v=2/);
+assert.match(html, /compare\.css\?v=2/);
 for (const locale of ['es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{\\s*title:`), `comparison copy must support ${locale}`);
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{\\s*remove:`), `dynamic comparison labels must support ${locale}`);
@@ -38,6 +39,9 @@ assert.match(routes, /\/compare \/immigration-judge-approval-rate\/compare\.html
 assert.match(routes, /`\/\$\{locale\}\/compare/);
 assert.match(seoAudit, /ROUTE_PREFIXES[\s\S]*["']compare["']/, 'SEO audit must recognize the clean comparison route');
 assert.match(css, /grid-template-columns:repeat\(var\(--judge-count/);
+assert.match(css, /text-align:start/, 'search results must follow the active writing direction');
+assert.match(css, /border-inline-start:4px/, 'comparison notices must place emphasis on the logical leading edge');
+assert.doesNotMatch(css, /\.compare-search-result\{[^}]*text-align:left/, 'Arabic search results must not be forced left');
 assert.match(built, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/compare\/">/);
 assert.match(built, /<meta name="robots" content="index,follow,/);
 

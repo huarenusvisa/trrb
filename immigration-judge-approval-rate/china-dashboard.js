@@ -196,6 +196,7 @@ function renderSelected(data) {
 function scrollToCountryDetail() {
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   $('#country-detail').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  $('#selected-country').focus({ preventScroll: true });
 }
 
 async function selectCountry(country, updateUrl = false, scrollToDetail = false) {

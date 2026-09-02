@@ -132,7 +132,7 @@ assert.match(page, /id="country-search"[^>]*data-i18n-aria-label="searchButton"[
 assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="trendLabel"/, 'trend period controls must expose a localized group label');
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
-assert.match(page, /china-dashboard\.js\?v=5/, 'nationality dashboard must load the accessible-controls asset version');
+assert.match(page, /china-dashboard\.js\?v=6/, 'nationality dashboard must load the accessible-chart-labels asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -140,6 +140,9 @@ assert.match(client, /outcome-line/);
 assert.match(client, /pointerup/);
 assert.match(client, /trend-chart'\)\.setAttribute\('aria-label', t\('countryTrend'/, 'selected country must update the trend chart accessible name');
 assert.match(client, /item\.setAttribute\('aria-pressed', 'false'\)[\s\S]*button\.setAttribute\('aria-pressed', 'true'\)/, 'trend period selection must keep aria-pressed in sync');
+assert.match(client, /function outcomeAriaLabel\(row, label\)[\s\S]*t\('approved'\)[\s\S]*t\('denied'\)[\s\S]*t\('other'\)[\s\S]*t\('total'\)/, 'chart data labels must announce every outcome share and the total');
+assert.match(client, /country-point-wrap[^\n]*aria-label="\$\{esc\(outcomeAriaLabel\(row, label\)\)\}"/, 'country comparison points must expose their values to screen readers');
+assert.match(client, /trend-point[^\n]*aria-label="\$\{esc\(outcomeAriaLabel\(point, point\.label\)\)\}"/, 'trend points must expose their values to screen readers');
 assert.match(client, /comparison-tooltip/);
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) assert.match(i18nClient, new RegExp(`['"]${locale}['"]`));
 assert.match(i18nClient, /locale === 'ar' \? 'rtl' : 'ltr'/);

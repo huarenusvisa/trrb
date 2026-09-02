@@ -1,12 +1,20 @@
 name: Mobile App CI
 
 on:
+  pull_request:
+    paths:
+      - 'apps/mobile/**'
+      - 'assets/brand/tangren-avatar-512.png'
+      - 'scripts/validate-mobile-store-config.mjs'
+      - '.github/workflows/mobile-app-ci.yml'
   push:
     branches: [main]
     paths:
       - 'apps/mobile/**'
       - 'netlify/functions/public-article.js'
       - 'netlify/functions/public-articles.js'
+      - 'assets/brand/tangren-avatar-512.png'
+      - 'scripts/validate-mobile-store-config.mjs'
       - '.github/workflows/mobile-app-ci.yml'
   workflow_dispatch:
 
@@ -32,7 +40,13 @@ jobs:
           node --check netlify/functions/public-articles.js
       - name: Install mobile dependencies
         working-directory: apps/mobile
-        run: npm install
+        run: npm ci
       - name: Typecheck mobile app
         working-directory: apps/mobile
         run: npm run typecheck
+      - name: Validate store build configuration
+        working-directory: apps/mobile
+        run: npm run config:check
+      - name: Export Expo web bundle
+        working-directory: apps/mobile
+        run: npm run export:web

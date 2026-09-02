@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 19.1.0"
+    "version": ">= 19.1.0",
+    "appVersionSource": "local"
   },
   "build": {
     "preview": {
@@ -26,7 +27,14 @@
       }
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "autoIncrement": true,
+      "android": {
+        "image": "latest"
+      },
+      "ios": {
+        "image": "latest"
+      }
     }
   }
 }

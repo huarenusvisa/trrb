@@ -4,6 +4,7 @@
     "slug": "trrb",
     "scheme": "trrb",
     "version": "0.1.0",
+    "icon": "../../assets/brand/tangren-avatar-512.png",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "plugins": ["expo-router", "expo-notifications"],
@@ -16,10 +17,19 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "net.trrb.mobile"
+      "bundleIdentifier": "net.trrb.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "net.trrb.mobile",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "../../assets/brand/tangren-avatar-512.png",
+        "backgroundColor": "#ffffff"
+      },
       "predictiveBackGestureEnabled": true
     },
     "extra": {

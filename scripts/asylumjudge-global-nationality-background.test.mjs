@@ -135,7 +135,7 @@ assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="tren
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
 assert.match(page, /china-dashboard-i18n\.js\?v=4/, 'nationality dashboard must load the retry-translation asset version');
-assert.match(page, /china-dashboard\.js\?v=8/, 'nationality dashboard must load the selected-nationality-state asset version');
+assert.match(page, /china-dashboard\.js\?v=9/, 'nationality dashboard must load the latest-request and busy-state asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -154,6 +154,8 @@ assert.match(page, /class="quick-countries"[^>]*role="group"[^>]*data-i18n-aria-
 assert.match(page, /data-country="China"[^>]*aria-pressed="false"/, 'popular nationality buttons must expose their initial selection state');
 assert.match(client, /country-card\$\{active \? ' active' : ''\}[^\n]*aria-pressed="\$\{active\}"/, 'directory buttons must expose the selected nationality');
 assert.match(client, /button\.setAttribute\('aria-pressed', String\(selected\?\.nationality === button\.dataset\.country\)\)/, 'popular nationality selection state must stay synchronized');
+assert.match(page, /id="country-detail"[^>]*aria-live="polite"[^>]*aria-busy="false"/, 'nationality details must expose their initial loading state');
+assert.match(client, /const requestId = \+\+countryRequestId;[\s\S]*if \(requestId !== countryRequestId\) return;[\s\S]*if \(requestId === countryRequestId\).*aria-busy/, 'stale nationality responses must not replace the latest selection');
 assert.match(client, /comparison-tooltip/);
 const retryLabels = new Map(Object.entries({ en: 'Try again', es: 'Intentar de nuevo', fr: 'Réessayer', 'pt-BR': 'Tentar novamente', hi: 'फिर प्रयास करें', 'zh-Hans': '重新尝试', 'zh-Hant': '重新嘗試', ru: 'Повторить', ar: 'إعادة المحاولة', tr: 'Tekrar dene' }));
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {

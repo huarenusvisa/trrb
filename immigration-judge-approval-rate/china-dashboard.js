@@ -30,6 +30,11 @@ function outcomeShare(row, field) {
   return total ? Number(row[field] || 0) / total * 100 : 0;
 }
 
+function outcomeAriaLabel(row, label) {
+  const total = Number(row.grants || 0) + Number(row.denials || 0) + Number(row.other_decisions || 0);
+  return `${label}. ${t('approved')} ${outcomeShare(row, 'grants').toFixed(1)}%. ${t('denied')} ${outcomeShare(row, 'denials').toFixed(1)}%. ${t('other')} ${outcomeShare(row, 'other_decisions').toFixed(1)}%. ${t('total')} ${fmt(total)}.`;
+}
+
 function showComparisonTooltip(row) {
   const tooltip = $('#comparison-tooltip');
   const label = countryLabel(row);
@@ -66,7 +71,7 @@ function drawCountryComparison(rows) {
   const groups = shown.map((row, index) => {
     const label = i18n?.countryName(row) || row.nationality_zh || row.nationality;
     const dots = series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(row, item.key))}" r="6"></circle>`).join('');
-    return `<g class="country-point-wrap" data-country="${esc(row.nationality)}" tabindex="0" role="button" aria-label="${esc(t('detailsFor', { country: label }))}"><rect class="country-hit" x="${x(index) - 34}" y="${top - 15}" width="68" height="${bottom - top + 64}"></rect><rect class="country-focus" x="${x(index) - 30}" y="${top - 10}" width="60" height="${bottom - top + 52}" rx="8"></rect>${dots}<text class="country-point-label" x="${x(index)}" y="315" text-anchor="middle">${esc(label)}</text></g>`;
+    return `<g class="country-point-wrap" data-country="${esc(row.nationality)}" tabindex="0" role="button" aria-label="${esc(outcomeAriaLabel(row, label))}"><rect class="country-hit" x="${x(index) - 34}" y="${top - 15}" width="68" height="${bottom - top + 64}"></rect><rect class="country-focus" x="${x(index) - 30}" y="${top - 10}" width="60" height="${bottom - top + 52}" rx="8"></rect>${dots}<text class="country-point-label" x="${x(index)}" y="315" text-anchor="middle">${esc(label)}</text></g>`;
   }).join('');
   svg.innerHTML = `${grid}${lines}${groups}`;
   svg.querySelectorAll('[data-country]').forEach((node) => {
@@ -123,7 +128,7 @@ function drawTrend(points) {
   const lines = series.map((item) => `<path class="trend-line ${item.className}" d="${shown.map((point, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(outcomeShare(point, item.key)).toFixed(1)}`).join(' ')}"></path>`).join('');
   const labelStep = Math.max(1, Math.ceil(shown.length / 6));
   const labels = shown.map((point, index) => index % labelStep === 0 || index === shown.length - 1 ? `<text class="trend-axis" x="${x(index)}" y="278" text-anchor="middle">${esc(point.label)}</text>` : '').join('');
-  const dots = shown.map((point, index) => `<g class="trend-point" data-index="${index}" tabindex="0" role="button" aria-label="${esc(point.label)}">${series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(point, item.key))}" r="4"></circle>`).join('')}<rect class="trend-hit" x="${x(index) - 18}" y="${top}" width="36" height="${bottom - top}"></rect></g>`).join('');
+  const dots = shown.map((point, index) => `<g class="trend-point" data-index="${index}" tabindex="0" role="button" aria-label="${esc(outcomeAriaLabel(point, point.label))}">${series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(point, item.key))}" r="4"></circle>`).join('')}<rect class="trend-hit" x="${x(index) - 18}" y="${top}" width="36" height="${bottom - top}"></rect></g>`).join('');
   svg.innerHTML = `${grid}${lines}${dots}${labels}`;
   svg.querySelectorAll('.trend-point').forEach((node) => {
     const point = shown[Number(node.dataset.index)];

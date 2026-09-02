@@ -40,7 +40,7 @@ export default async(request:Request,context:any)=>{
     const cutoff=now-48*60*60*1000;
     const [cats,articles]=await Promise.all([
       rows("categories",{select:"id,name,slug,is_active,include_in_google_news",is_active:"eq.true",limit:"500"}),
-      rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",status:"eq.published",visibility:"eq.public",order:"published_at.desc.nullslast,created_at.desc",limit:"1000"})
+      rows("articles",{select:"id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",status:"eq.published",visibility:"eq.public",order:"published_at.desc.nullslast,created_at.desc,id.desc",limit:"1000"})
     ]);
     const ids=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>String(x.id)));
     const names=new Set(cats.filter((x:any)=>x.include_in_google_news!==false).map((x:any)=>clean(x.name)));

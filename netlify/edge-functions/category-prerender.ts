@@ -153,6 +153,9 @@ export default async (request: Request, context: any) => {
   const path = url.pathname.replace(/\/$/, "") || "/";
   const route = ROUTES[path];
   if (!route) return context.next();
+  // 中国官场 no longer exists as a public category and has no published articles.
+  // Consolidate the obsolete URL instead of serving a soft-404 category shell.
+  if (path === "/china-officialdom") return Response.redirect(`${SITE}/hot-headlines`, 301);
   const page = pageNumber(url.searchParams.get("page"));
   const displayName = route.displayName || route.name;
 

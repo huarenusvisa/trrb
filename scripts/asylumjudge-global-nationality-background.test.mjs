@@ -135,7 +135,7 @@ assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="tren
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
 assert.match(page, /china-dashboard-i18n\.js\?v=4/, 'nationality dashboard must load the retry-translation asset version');
-assert.match(page, /china-dashboard\.js\?v=10/, 'nationality dashboard must load the mobile directory navigation asset version');
+assert.match(page, /china-dashboard\.js\?v=11/, 'nationality dashboard must load the detail-focus asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -158,6 +158,9 @@ assert.match(page, /id="country-detail"[^>]*aria-live="polite"[^>]*aria-busy="fa
 assert.match(client, /const requestId = \+\+countryRequestId;[\s\S]*if \(requestId !== countryRequestId\) return;[\s\S]*if \(requestId === countryRequestId\).*aria-busy/, 'stale nationality responses must not replace the latest selection');
 assert.match(client, /country-directory'\)\.querySelectorAll\('\[data-country\]'\)[^\n]*selectCountry\(button\.dataset\.country, true, true\)/, 'directory selections must reveal the updated detail panel');
 assert.match(client, /prefers-reduced-motion: reduce[\s\S]*behavior: reduceMotion \? 'auto' : 'smooth'/, 'detail scrolling must respect reduced-motion preferences');
+assert.match(page, /id="selected-country"[^>]*tabindex="-1"/, 'the updated nationality heading must accept programmatic focus');
+assert.match(client, /selected-country'\)\.focus\(\{ preventScroll: true \}\)/, 'directory navigation must move keyboard focus to the updated heading');
+assert.match(page, /\.country-name h2:focus-visible\{outline:3px solid var\(--pass\)/, 'the focused nationality heading must retain a visible focus indicator');
 assert.match(client, /comparison-tooltip/);
 const retryLabels = new Map(Object.entries({ en: 'Try again', es: 'Intentar de nuevo', fr: 'Réessayer', 'pt-BR': 'Tentar novamente', hi: 'फिर प्रयास करें', 'zh-Hans': '重新尝试', 'zh-Hant': '重新嘗試', ru: 'Повторить', ar: 'إعادة المحاولة', tr: 'Tekrar dene' }));
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {

@@ -25,8 +25,8 @@ jobs:
         env:
           SITE_ORIGIN: https://trrb.net
           CRAWL_LIMIT: "500"
-          CRAWL_CONCURRENCY: "10"
-          CRAWL_TIMEOUT_MS: "15000"
+          CRAWL_CONCURRENCY: "6"
+          CRAWL_TIMEOUT_MS: "25000"
         run: node scripts/live-seo-crawl.mjs
       - name: 验证Trump文章手机端CSS回归问题
         run: node scripts/verify-round10-mobile-article.mjs

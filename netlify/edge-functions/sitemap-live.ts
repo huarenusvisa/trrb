@@ -108,7 +108,7 @@ async function fetchPublishedArticles() {
       select: "id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",
       status: "eq.published",
       visibility: "eq.public",
-      order: "published_at.desc.nullslast,created_at.desc",
+      order: "published_at.desc.nullslast,created_at.desc,id.desc",
       limit: String(pageSize),
       offset: String(offset)
     });

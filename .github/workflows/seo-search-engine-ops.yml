@@ -64,6 +64,13 @@ jobs:
           done
           echo 'Timed out waiting for the production sitemap quality gate.' >&2
           exit 1
+      - name: Push current URLs to Bing and Yandex through IndexNow
+        env:
+          INDEXNOW_FULL_SYNC: 'true'
+          INDEXNOW_INCLUDE_RETIRED: 'true'
+          INDEXNOW_FRESH_HOURS: '48'
+          INDEXNOW_USE_LIVE_NEWS: 'true'
+        run: node scripts/submit-indexnow.mjs
       - name: Run SEO search-engine operations
         env:
           SITE_ORIGIN: https://trrb.net
@@ -74,6 +81,9 @@ jobs:
           # Missing Search Console authorization is a blocking robot failure.
           # Never report the SEO workflow green when Google submission did not run.
           SEO_REQUIRE_GOOGLE: 'true'
+          # Bing credentials and submissions are also mandatory.
+          SEO_REQUIRE_BING: 'true'
+          SEO_LIVE_AUDIT_LIMIT: '120'
         run: node scripts/seo-search-engine-ops.mjs
       - name: Save SEO robot report
         if: always()

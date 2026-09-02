@@ -9,6 +9,8 @@ const browserScripts=[
   'articles-home.js',
   'homepage-refresh-guard.js',
   'articles-home-live-fix.js',
+  'homepage-secondary-hubs.bundle.js',
+  'homepage-topic-runtime.bundle.js',
   'category-runtime-v3.js',
   'homepage-immigration-hub.js',
   'topic-focus.js',
@@ -34,7 +36,7 @@ async function requireInHtml(file,needles){
   for(const needle of needles){if(!html.includes(needle))failures.push(`${file}: missing runtime ${needle}`);}
 }
 
-await requireInHtml('index.html',['articles-home.js','homepage-refresh-guard.js','homepage-immigration-hub.js','category-runtime-v3.js','topic-focus.js','ice-home-unify.js','article-route-runtime.js']);
+await requireInHtml('index.html',['articles-home.js','homepage-refresh-guard.js','homepage-secondary-hubs.bundle.js','homepage-topic-runtime.bundle.js','topic-focus.js','article-route-runtime.js']);
 await requireInHtml('article.html',['article-v31.js','article-live-neighbors.js','image-cdn-optimizer.js']);
 await requireInHtml('listing.html',['listing-seo.js','immigration-entry.js','category-runtime-v3.js','listing.js','article-route-runtime.js','image-cdn-optimizer.js']);
 

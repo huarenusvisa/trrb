@@ -124,7 +124,7 @@ function uniqueBy(items, keyFn) {
 }
 
 const categories = await dbAll('categories', 'id,name,slug,is_active,include_in_sitemap', {is_active:'eq.true'});
-const articles = await dbAll('articles', 'id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,status,published_at,created_at', {status:'eq.published', order:'published_at.desc.nullslast,created_at.desc'});
+const articles = await dbAll('articles', 'id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,status,published_at,created_at', {status:'eq.published', order:'published_at.desc.nullslast,created_at.desc,id.desc'});
 const byId = new Map(categories.map(x => [String(x.id || ''), x]));
 const byName = new Map(categories.map(x => [String(x.name || '').trim(), x]));
 const canonicalMap = new Map(articles.map(a => [String(a.id), canonicalFor(a, byId, byName)]));
@@ -209,7 +209,7 @@ for (const a of rescueSamples) {
 try {
   const js = await (await req(`${ORIGIN}/listing.js?v=20260819-r12`, {headers:{'cache-control':'no-cache'}})).text();
   record(4, /fetchLiveSearchArticles/.test(js) && /content\.ilike/.test(js), '搜索脚本启用全库正文检索');
-  record(4, /https:\/\/trrb\.net\//.test(js), '栏目 canonical 使用非www主域');
+  record(4, /https:\/\/trrb\.net(?:\/|\$\{)/.test(js), '栏目 canonical 使用非www主域');
   const u = new URL(`${SUPABASE_URL}/rest/v1/articles`);
   u.searchParams.set('select','id,title,slug,topic_key,category_name');
   u.searchParams.set('status','eq.published');

@@ -1,6 +1,11 @@
 name: TRRB Operations Control Plane
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/operations-control-plane.yml'
   workflow_dispatch:
     inputs:
       module:
@@ -75,7 +80,7 @@ jobs:
 
   seo-metadata:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_metadata == 'true' && (github.event.schedule == '12 13 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_metadata == 'true' && (github.event_name == 'push' || github.event.schedule == '12 13 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
     uses: ./.github/workflows/round13-publish-seo-sync.yml
     secrets: inherit
 
@@ -87,7 +92,7 @@ jobs:
 
   ico-accelerated-recovery:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.legacy_recovery == 'true' && (github.event.schedule == '37 4 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ico')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.legacy_recovery == 'true' && (github.event_name == 'push' || github.event.schedule == '37 4 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ico')) }}
     uses: ./.github/workflows/legacy-search-recovery.yml
     with:
       limit: 1000

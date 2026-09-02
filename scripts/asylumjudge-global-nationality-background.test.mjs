@@ -150,6 +150,7 @@ assert.match(client, /function retryButton\(scope, country = '', updateUrl = fal
 assert.match(client, /data-retry="\$\{scope\}"[^>]*data-country="\$\{esc\(country\)\}"[^>]*data-update-url="\$\{updateUrl\}"[^>]*data-i18n="retryAction"/, 'detail retries must preserve the failed nationality, URL behavior, and live translation');
 assert.match(client, /button\.dataset\.retry === 'directory'\) await load\(\)[\s\S]*else await selectCountry\(button\.dataset\.country, button\.dataset\.updateUrl === 'true'\)/, 'retry actions must reload only the failed data scope');
 assert.match(page, /\.data-retry:focus-visible/, 'retry actions must expose a visible keyboard focus state');
+assert.match(page, /\.country-search input:focus-visible,\.country-search button:focus-visible,\.quick-countries button:focus-visible,\.tabs button:focus-visible,\.tooltip-action:focus-visible,\.country-card:focus-visible\{outline:3px solid #101828;outline-offset:3px\}/, 'all primary nationality controls must expose a consistent visible keyboard focus state');
 assert.match(page, /class="quick-countries"[^>]*role="group"[^>]*data-i18n-aria-label="popularNationalities"/, 'popular nationality controls must expose a localized group label');
 assert.match(page, /data-country="China"[^>]*aria-pressed="false"/, 'popular nationality buttons must expose their initial selection state');
 assert.match(client, /country-card\$\{active \? ' active' : ''\}[^\n]*aria-pressed="\$\{active\}"/, 'directory buttons must expose the selected nationality');

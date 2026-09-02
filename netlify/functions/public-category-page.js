@@ -15,12 +15,10 @@ const CATEGORY_DEFINITIONS = new Map([
   ["ICE执法动态", { path: "/ice/news", mode: "ice" }]
 ]);
 
-const ASYLUM_TERMS = [
-  "庇护", "政治庇护", "asylum", "i-589", "i589", "可信恐惧", "合理恐惧",
-  "防止递解", "withholding", "禁止酷刑", "vawa", "家暴绿卡", "u签证",
-  "t签证", "人口贩运", "sijs", "特殊青少年", "tps", "临时保护身份",
-  "难民", "人道保护", "移民法庭"
-];
+// Keep this query intentionally compact. Structured humanitarian knowledge is
+// selected by category prefix; a small headline/summary set adds current news.
+// The former 34 ILIKE clauses repeatedly timed out on paginated edge requests.
+const ASYLUM_TERMS = ["庇护", "asylum", "i-589", "移民法庭"];
 
 function json(statusCode, body) {
   return {
@@ -42,7 +40,7 @@ function clampInt(value, fallback, min, max) {
 }
 
 function asylumOrFilter() {
-  const clauses = [];
+  const clauses = ["category_name.like.移民美国·人道主义庇护·*"];
   for (const raw of ASYLUM_TERMS) {
     const term = String(raw).replace(/[*,()]/g, " ").trim();
     if (!term) continue;
@@ -82,7 +80,10 @@ exports.handler = async (event) => {
 
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-    url.searchParams.set("select", "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at");
+    const includeContent = ["ice", "us-immigration", "china-hot"].includes(definition.mode);
+    const select = "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at"
+      + (includeContent ? ",content" : "");
+    url.searchParams.set("select", select);
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("visibility", "eq.public");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");

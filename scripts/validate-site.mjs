@@ -35,8 +35,8 @@ requireMatch(index, /href=["']https:\/\/huarengongzuo\.com\/["'][^>]*>招聘求�
 requireMatch(index, /href=["']\/(?:immigration|immigrate\/?)["'][^>]*>移民美国<\/a>/i, "index.html missing 移民美国 navigation");
 requireMatch(index, /articles-home\.js/i, "index.html missing homepage renderer");
 requireMatch(index, /articles-home-live-fix\.js/i, "index.html missing live homepage guard");
-requireMatch(index, /homepage-startup-stability\.js/i, "index.html missing startup stability guard");
-requireMatch(index, /jobs-home\.js/i, "index.html missing jobs homepage loader");
+requireMatch(index, /homepage-topic-runtime\.bundle\.js/i, "index.html missing bundled startup stability guard");
+requireMatch(index, /homepage-secondary-hubs\.bundle\.js/i, "index.html missing bundled jobs homepage loader");
 requireMatch(index, /homepage-community-hub\.js/i, "index.html missing community homepage card");
 forbidMatch(index, /当前暂无重点新闻/, "index.html contains retired false-empty hero copy");
 

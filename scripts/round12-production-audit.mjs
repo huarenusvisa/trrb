@@ -147,7 +147,7 @@ function expectedIndexArticles() {
   const seenTitles=new Set();
   const seenBodies=new Set();
   const selected=[];
-  for(const a of [...articles].sort((x,y)=>timeOf(x)-timeOf(y))){
+  for(const a of [...articles].sort((x,y)=>timeOf(y)-timeOf(x))){
     if(!allowedInSitemap(a))continue;
     const body=visibleText(a.content||a.summary||'');
     const title=visibleText(a.title||'');

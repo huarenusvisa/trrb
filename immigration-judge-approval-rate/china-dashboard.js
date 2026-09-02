@@ -168,6 +168,7 @@ function renderSelected(data) {
   $('#deny-count').textContent = fmt(country.denials);
   $('#other-count').textContent = fmt(country.other_decisions);
   $('#trend-title').textContent = t('countryTrend', { country: label });
+  $('#trend-chart').setAttribute('aria-label', t('countryTrend', { country: label }));
   $('#judge-ranking-title').textContent = t('countryJudges', { country: label });
   renderDirectory(filterCountries($('#country-search').value));
   const points = data.periods?.[period] || [];
@@ -222,8 +223,12 @@ document.querySelectorAll('.quick-countries button').forEach((button) => button.
   selectCountry(button.dataset.country, true);
 }));
 document.querySelectorAll('.tabs button').forEach((button) => button.addEventListener('click', () => {
-  document.querySelectorAll('.tabs button').forEach((item) => item.classList.remove('active'));
+  document.querySelectorAll('.tabs button').forEach((item) => {
+    item.classList.remove('active');
+    item.setAttribute('aria-pressed', 'false');
+  });
   button.classList.add('active');
+  button.setAttribute('aria-pressed', 'true');
   period = button.dataset.period;
   const points = selectedDetail?.periods?.[period] || [];
   drawTrend(points);

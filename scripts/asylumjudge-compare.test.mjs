@@ -4,10 +4,11 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const read = (relative) => readFile(join(root, relative), 'utf8');
-const [html, js, css, home, routes, built, seoAudit] = await Promise.all([
+const [html, js, css, focusCss, home, routes, built, seoAudit] = await Promise.all([
   read('immigration-judge-approval-rate/compare.html'),
   read('immigration-judge-approval-rate/compare.js'),
   read('immigration-judge-approval-rate/compare.css'),
+  read('immigration-judge-approval-rate/compare-focus.css'),
   read('asylumjudge/index.html'),
   read('scripts/build-asylumjudge-site.mjs'),
   read('.netlify/asylumjudge-bundle/public/compare/index.html'),
@@ -24,6 +25,7 @@ assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
 assert.match(html, /compare\.js\?v=6/);
 assert.match(html, /compare\.css\?v=4/);
+assert.match(html, /compare-focus\.css\?v=1/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{[^}]*retry:`), `retry action must support ${locale}`);
 }
@@ -67,6 +69,9 @@ assert.match(css, /text-align:start/, 'search results must follow the active wri
 assert.match(css, /\.compare-search-result\.is-active/, 'keyboard-active options must have a visible highlight');
 assert.match(css, /border-inline-start:4px/, 'comparison notices must place emphasis on the logical leading edge');
 assert.match(css, /\.compare-error button:focus-visible/, 'retry button must expose a visible keyboard focus state');
+for (const selector of ['.compare-search-wrap button', '.compare-section-head > button', '.selected-judge button', '.compare-profile']) {
+  assert.match(focusCss, new RegExp(selector.replace(/[.>]/g, '\\$&') + '[^}]*:focus-visible|:focus-visible[^}]*' + selector.replace(/[.>]/g, '\\$&')), `${selector} must expose a visible keyboard focus state`);
+}
 assert.doesNotMatch(css, /\.compare-search-result\{[^}]*text-align:left/, 'Arabic search results must not be forced left');
 assert.match(built, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/compare\/">/);
 assert.match(built, /<meta name="robots" content="index,follow,/);

@@ -1,0 +1,7 @@
+.compare-search-wrap button:focus-visible,
+.compare-section-head > button:focus-visible,
+.selected-judge button:focus-visible,
+.compare-profile:focus-visible {
+  outline: 3px solid rgba(20, 128, 74, 0.32);
+  outline-offset: 3px;
+}

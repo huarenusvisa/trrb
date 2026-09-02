@@ -132,7 +132,8 @@ assert.match(page, /id="country-search"[^>]*data-i18n-aria-label="searchButton"[
 assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="trendLabel"/, 'trend period controls must expose a localized group label');
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
-assert.match(page, /china-dashboard\.js\?v=6/, 'nationality dashboard must load the accessible-chart-labels asset version');
+assert.match(page, /china-dashboard-i18n\.js\?v=4/, 'nationality dashboard must load the retry-translation asset version');
+assert.match(page, /china-dashboard\.js\?v=7/, 'nationality dashboard must load the retry-enabled asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -143,8 +144,17 @@ assert.match(client, /item\.setAttribute\('aria-pressed', 'false'\)[\s\S]*button
 assert.match(client, /function outcomeAriaLabel\(row, label\)[\s\S]*t\('approved'\)[\s\S]*t\('denied'\)[\s\S]*t\('other'\)[\s\S]*t\('total'\)/, 'chart data labels must announce every outcome share and the total');
 assert.match(client, /country-point-wrap[^\n]*aria-label="\$\{esc\(outcomeAriaLabel\(row, label\)\)\}"/, 'country comparison points must expose their values to screen readers');
 assert.match(client, /trend-point[^\n]*aria-label="\$\{esc\(outcomeAriaLabel\(point, point\.label\)\)\}"/, 'trend points must expose their values to screen readers');
+assert.match(client, /function retryButton\(scope, country = '', updateUrl = false\)/, 'nationality failures must render an in-page retry action');
+assert.match(client, /data-retry="\$\{scope\}"[^>]*data-country="\$\{esc\(country\)\}"[^>]*data-update-url="\$\{updateUrl\}"[^>]*data-i18n="retryAction"/, 'detail retries must preserve the failed nationality, URL behavior, and live translation');
+assert.match(client, /button\.dataset\.retry === 'directory'\) await load\(\)[\s\S]*else await selectCountry\(button\.dataset\.country, button\.dataset\.updateUrl === 'true'\)/, 'retry actions must reload only the failed data scope');
+assert.match(page, /\.data-retry:focus-visible/, 'retry actions must expose a visible keyboard focus state');
 assert.match(client, /comparison-tooltip/);
-for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) assert.match(i18nClient, new RegExp(`['"]${locale}['"]`));
+const retryLabels = new Map(Object.entries({ en: 'Try again', es: 'Intentar de nuevo', fr: 'Réessayer', 'pt-BR': 'Tentar novamente', hi: 'फिर प्रयास करें', 'zh-Hans': '重新尝试', 'zh-Hant': '重新嘗試', ru: 'Повторить', ar: 'إعادة المحاولة', tr: 'Tekrar dene' }));
+for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
+  assert.match(i18nClient, new RegExp(`['"]${locale}['"]`));
+  i18nSandbox.window.AsylumI18n.setLocale(locale, { updateUrl: false, dispatch: false });
+  assert.equal(i18nSandbox.window.AsylumI18n.t('retryAction'), retryLabels.get(locale), `retry action must be translated for ${locale}`);
+}
 assert.match(i18nClient, /locale === 'ar' \? 'rtl' : 'ltr'/);
 assert.match(page, /id="language-select"/);
 assert.match(page, /data-i18n="comparisonTitle"/);

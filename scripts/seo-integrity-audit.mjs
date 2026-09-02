@@ -141,6 +141,11 @@ for (const file of htmlFiles) {
     if (indexableStaticPage && !has(html, /<meta\b[^>]*name=["']description["'][^>]*content=["'][^"']{20,}["']/i) && !has(html, /<meta\b[^>]*content=["'][^"']{20,}["'][^>]*name=["']description["']/i)) {
       errors.push(`${name}: 缺少或过短 meta description`);
     }
+    if (indexableStaticPage && !has(html, /<h1\b[^>]*>[\s\S]*?<\/h1>/i)) errors.push(`${name}: 缺少 H1`);
+    const imageTags = html.match(/<img\b[^>]*>/gi) || [];
+    for (const imageTag of imageTags) {
+      if (!/(?:^|\s)alt\s*=\s*["'][^"']*["']/i.test(imageTag)) errors.push(`${name}: img 缺少 alt 属性`);
+    }
     if (indexableStaticPage && !has(html, /<link\b[^>]*rel=["']canonical["']/i)) errors.push(`${name}: 缺少 canonical`);
     if (indexableStaticPage && !has(html, /property=["']og:title["']/i)) errors.push(`${name}: 缺少 Open Graph title`);
   }

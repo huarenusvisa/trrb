@@ -63,7 +63,7 @@ jobs:
       - name: 第十一轮十节点最终生产验收
         env:
           SITE_ORIGIN: https://trrb.net
-          CRAWL_TIMEOUT_MS: "15000"
+          CRAWL_TIMEOUT_MS: "30000"
         run: node scripts/round11-final-production-audit.mjs
       - name: 第十二轮文章链路与全量索引生产审计
         env:

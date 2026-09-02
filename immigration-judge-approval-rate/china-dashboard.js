@@ -9,13 +9,14 @@ let selected = null;
 let selectedDetail = null;
 let period = 'yearly';
 let countryRequestId = 0;
+let countryRequestController = null;
 const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname) ? `https://trrb.net${path}` : path;
 
 const judgePath = (row) => window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `${window.judgePagePath ? window.judgePagePath('detail.html') : '/immigration-judge-approval-rate/detail.html'}?id=${encodeURIComponent(row?.id || row)}`;
 const countryLabel = (row) => i18n?.countryLabel(row) || row?.nationality_zh || row?.nationality || '';
 
-async function getJson(url) {
-  const response = await fetch(apiUrl(url), { cache: 'no-store' });
+async function getJson(url, options = {}) {
+  const response = await fetch(apiUrl(url), { cache: 'no-store', ...options });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
@@ -207,11 +208,14 @@ function setPeriodControlsDisabled(disabled) {
 
 async function selectCountry(country, updateUrl = false, scrollToDetail = false) {
   const requestId = ++countryRequestId;
+  countryRequestController?.abort();
+  const controller = new AbortController();
+  countryRequestController = controller;
   $('#country-detail').setAttribute('aria-busy', 'true');
   $('#selected-country').textContent = t('loadingReal');
   setPeriodControlsDisabled(true);
   try {
-    const data = await getJson(`/.netlify/functions/immigration-judges?mode=nationality-detail&country=${encodeURIComponent(country)}`);
+    const data = await getJson(`/.netlify/functions/immigration-judges?mode=nationality-detail&country=${encodeURIComponent(country)}`, { signal: controller.signal });
     if (requestId !== countryRequestId) return;
     renderSelected(data);
     if (updateUrl) {
@@ -227,6 +231,7 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
     $('#chart-note').innerHTML = `${esc(t('retry'))} ${retryButton('country', country, updateUrl)}`;
   } finally {
     if (requestId === countryRequestId) {
+      countryRequestController = null;
       $('#country-detail').setAttribute('aria-busy', 'false');
       setPeriodControlsDisabled(false);
     }

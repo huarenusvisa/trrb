@@ -284,6 +284,7 @@ $('#country-search-form').addEventListener('submit', (event) => {
   renderDirectory(matches);
   const match = resolveCountrySearch(query, matches);
   if (match) selectCountry(match.nationality, true);
+  else if (matches.length > 1) $('#country-count').textContent = t('searchChooseOne', { count: fmt(matches.length) });
 });
 $('#country-search').addEventListener('input', (event) => renderDirectory(filterCountries(event.target.value)));
 document.querySelectorAll('.quick-countries button').forEach((button) => button.addEventListener('click', () => {

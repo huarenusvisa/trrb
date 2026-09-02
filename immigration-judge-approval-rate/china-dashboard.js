@@ -199,10 +199,17 @@ function scrollToCountryDetail() {
   $('#selected-country').focus({ preventScroll: true });
 }
 
+function setPeriodControlsDisabled(disabled) {
+  document.querySelectorAll('.tabs button').forEach((button) => {
+    button.disabled = disabled;
+  });
+}
+
 async function selectCountry(country, updateUrl = false, scrollToDetail = false) {
   const requestId = ++countryRequestId;
   $('#country-detail').setAttribute('aria-busy', 'true');
   $('#selected-country').textContent = t('loadingReal');
+  setPeriodControlsDisabled(true);
   try {
     const data = await getJson(`/.netlify/functions/immigration-judges?mode=nationality-detail&country=${encodeURIComponent(country)}`);
     if (requestId !== countryRequestId) return;
@@ -219,7 +226,10 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
     $('#chart-note').setAttribute('role', 'alert');
     $('#chart-note').innerHTML = `${esc(t('retry'))} ${retryButton('country', country, updateUrl)}`;
   } finally {
-    if (requestId === countryRequestId) $('#country-detail').setAttribute('aria-busy', 'false');
+    if (requestId === countryRequestId) {
+      $('#country-detail').setAttribute('aria-busy', 'false');
+      setPeriodControlsDisabled(false);
+    }
   }
 }
 

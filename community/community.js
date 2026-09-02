@@ -134,7 +134,8 @@
 
   async function handleAuth(event) {
     event.preventDefault();
-    const button = event.submitter;
+    const button = event.submitter || event.currentTarget.querySelector('button[type="submit"]');
+    if (!button) return;
     button.disabled = true;
     $('auth-message').textContent = '正在验证账号…';
     try {
@@ -159,7 +160,8 @@
 
   async function handleCompose(event) {
     event.preventDefault();
-    const button = event.submitter;
+    const button = event.submitter || event.currentTarget.querySelector('button[type="submit"]');
+    if (!button) return;
     button.disabled = true;
     $('composer-message').textContent = '正在检查并提交…';
     try {
@@ -172,11 +174,15 @@
       });
       state.profile = data.profile || state.profile;
       syncAccountUi();
-      alert(data.message);
       $('composer-dialog').close();
       $('composer-form').reset();
       renderStructuredFields();
       await loadFeed();
+      $('feed-message').className = 'notice success';
+      $('feed-message').textContent = data.message === '发布成功' ? '发布成功，帖子已经显示在下方。' : data.message;
+      const createdCard = data.post?.id ? document.querySelector(`[data-post-id="${CSS.escape(String(data.post.id))}"]`) : null;
+      createdCard?.classList.add('just-published');
+      createdCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (error) { $('composer-message').textContent = error.message; }
     finally { button.disabled = false; }
   }

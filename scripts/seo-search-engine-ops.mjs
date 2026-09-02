@@ -53,7 +53,7 @@ async function localAudit(){
 
 async function googleOps(){
   if(!GSC_JSON){report.google.reason='missing GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON';return;}
-  let creds;try{creds=JSON.parse(GSC_JSON)}catch{report.failures.push('Google service account JSON is invalid');return;}
+  let creds;try{creds=JSON.parse(GSC_JSON);report.google.serviceAccountEmail=creds.client_email||null;}catch{report.failures.push('Google service account JSON is invalid');return;}
   const auth=new google.auth.GoogleAuth({credentials:creds,scopes:[WRITE_MODE?'https://www.googleapis.com/auth/webmasters':'https://www.googleapis.com/auth/webmasters.readonly']});
   const webmasters=google.webmasters({version:'v3',auth});
   const searchconsole=google.searchconsole({version:'v1',auth});

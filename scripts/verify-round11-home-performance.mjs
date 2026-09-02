@@ -39,7 +39,7 @@ const chunkScripts = scripts.filter((url) => /\/articles-chunk-\d+\.js$/i.test(u
 const failures = [];
 
 if (chunkScripts.length) failures.push(`homepage still loads ${chunkScripts.length} redundant article chunk scripts`);
-if (!/href=["']\.\/topic-feed\.css\?v=36["']/i.test(head) && !/href=["']\/topic-feed\.css\?v=36["']/i.test(head)) {
+if (!/href=["'](?:\.\/|\/)topic-feed\.css(?:\?[^"']+)?["']/i.test(head)) {
   failures.push('topic-feed.css is not promoted into <head>');
 }
 if (!/rel=["']preload["'][^>]+trrb-logo-cropped\.webp/i.test(head) && !/trrb-logo-cropped\.webp[^>]+rel=["']preload["']/i.test(head)) {

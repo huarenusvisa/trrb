@@ -21,7 +21,10 @@ async function getJson(url) {
 
 function renderDirectory(rows = countries) {
   $('#country-count').textContent = t('directoryCount', { total: fmt(countries.length), shown: fmt(rows.length) });
-  $('#country-directory').innerHTML = rows.length ? rows.map((row) => `<button class="country-card${selected?.nationality_code === row.nationality_code ? ' active' : ''}" data-country="${esc(row.nationality)}"><strong>${esc(countryLabel(row))}</strong><small>${esc(row.nationality_code || '')} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`).join('') : `<div class="empty">${t('noCountry')}</div>`;
+  $('#country-directory').innerHTML = rows.length ? rows.map((row) => {
+    const active = selected?.nationality_code === row.nationality_code;
+    return `<button class="country-card${active ? ' active' : ''}" data-country="${esc(row.nationality)}" aria-pressed="${active}"><strong>${esc(countryLabel(row))}</strong><small>${esc(row.nationality_code || '')} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`;
+  }).join('') : `<div class="empty">${t('noCountry')}</div>`;
   $('#country-directory').querySelectorAll('[data-country]').forEach((button) => button.addEventListener('click', () => selectCountry(button.dataset.country, true)));
 }
 
@@ -157,6 +160,7 @@ function renderJudges(rows) {
 function renderQuickCountries() {
   document.querySelectorAll('.quick-countries button').forEach((button) => {
     button.textContent = i18n?.countryName({ nationality: button.dataset.country, nationality_code: button.dataset.code }) || button.dataset.country;
+    button.setAttribute('aria-pressed', String(selected?.nationality === button.dataset.country));
   });
 }
 
@@ -180,6 +184,7 @@ function renderSelected(data) {
   $('#trend-chart').setAttribute('aria-label', t('countryTrend', { country: label }));
   $('#judge-ranking-title').textContent = t('countryJudges', { country: label });
   $('#chart-note').removeAttribute('role');
+  renderQuickCountries();
   renderDirectory(filterCountries($('#country-search').value));
   const points = data.periods?.[period] || [];
   drawTrend(points);

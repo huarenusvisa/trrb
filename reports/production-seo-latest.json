@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-02T22:20:29.186Z",
+  "generated_at": "2026-09-02T22:33:32.712Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -230,7 +230,7 @@
     "https://trrb.net/": {
       "status": 200,
       "final_url": "https://trrb.net/",
-      "asset_count": 43,
+      "asset_count": 35,
       "bad_assets": [],
       "direct_article_links": 26,
       "marker_present": true,

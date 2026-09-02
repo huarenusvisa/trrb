@@ -13,9 +13,9 @@ const seoWorkflow = read('.github/workflows/seo-search-engine-ops.yml');
 assert.match(control, /CONTROL_PLANE_WORKFLOW = 'operations-control-plane\.yml'/);
 assert.match(control, /seo_suite[\s\S]*seo_indexnow[\s\S]*seo_search_engine[\s\S]*monitor/);
 assert.match(control, /controlKeyFilter\(targetKeys\)/);
-assert.match(controlUi, /SEO自动收录/);
-assert.match(controlUi, /ICE自动维护/);
-assert.match(controlUi, /旧站404自动检查/);
+assert.match(controlUi, /搜索引擎提交与SEO监控/);
+assert.match(controlUi, /ICE夜间安全维护/);
+assert.match(controlUi, /旧站404手动盘点/);
 assert.match(controlUi, /立即同步一次/);
 assert.match(controlUi, /开始恢复旧文章/);
 assert.match(controlUi, /下载404报告（TXT）/);
@@ -41,6 +41,21 @@ assert.match(control, /enabled: 'eq\.true'/);
 
 const legacyRecovery = read('.github/workflows/legacy-search-recovery.yml');
 assert.doesNotMatch(legacyRecovery, /confirm_apply/);
+
+const legacyAudit = read('.github/workflows/legacy-404-audit.yml');
+assert.match(legacyAudit, /^  workflow_dispatch:/m);
+assert.doesNotMatch(legacyAudit, /^  schedule:/m);
+assert.doesNotMatch(legacyAudit, /^  push:/m);
+assert.match(legacyAudit, /legacy_404 one-shot control reset to false/);
+
+const iceMaintenance = read('.github/workflows/ice-night-maintenance.yml');
+assert.doesNotMatch(iceMaintenance, /reclassify-immigration-articles\.mjs/);
+
+const manualReclassification = read('.github/workflows/article-category-reclassification-manual.yml');
+assert.match(manualReclassification, /^  workflow_dispatch:/m);
+assert.doesNotMatch(manualReclassification, /^  schedule:/m);
+assert.match(manualReclassification, /inputs\.mode == 'apply'/);
+assert.match(manualReclassification, /inputs\.confirmation/);
 
 const iceEntries = [
   '.github/workflows/ice-auto-publish.yml',

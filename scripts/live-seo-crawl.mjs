@@ -32,7 +32,7 @@ function normalize(raw) {
 function sleep(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
 async function request(url, method = 'GET') {
   let lastError;
-  for (let attempt = 1; attempt <= 3; attempt += 1) {
+  for (let attempt = 1; attempt <= 4; attempt += 1) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), TIMEOUT);
     try {
@@ -42,16 +42,17 @@ async function request(url, method = 'GET') {
         signal: controller.signal,
         headers: BROWSER_HEADERS
       });
-      if (response.status === 403 && attempt < 3) {
+      const retryable = new Set([403, 408, 425, 429, 500, 502, 503, 504]);
+      if (retryable.has(response.status) && attempt < 4) {
         await response.body?.cancel().catch(() => {});
-        await sleep(600 * attempt);
+        await sleep(800 * attempt);
         continue;
       }
       return response;
     } catch (error) {
       lastError = error;
-      if (attempt < 3) {
-        await sleep(600 * attempt);
+      if (attempt < 4) {
+        await sleep(800 * attempt);
         continue;
       }
       throw error;
@@ -89,7 +90,9 @@ function verifyAssetContentType(url, response, type) {
 }
 async function inspect(url) {
   let response;
-  try { response = await request(url); }
+  const pathname = new URL(url).pathname;
+  const method = /\/(?:sitemap(?:-[^/]+)?\.xml|news-sitemap\.xml|robots\.txt)$/.test(pathname) ? 'HEAD' : 'GET';
+  try { response = await request(url, method); }
   catch (error) { failures.push({ url, issue: `请求失败: ${error.name || error.message}` }); return; }
   const type = response.headers.get('content-type') || '';
   const status = response.status;

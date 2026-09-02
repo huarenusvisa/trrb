@@ -22,9 +22,12 @@ async function livePageAudit(){
   const sitemap=await fetchText(`${SITE_ORIGIN}/sitemap.xml?seoops=live-audit-${Date.now()}`);
   if(sitemap.status!==200)throw new Error(`live sitemap HTTP ${sitemap.status}`);
   const urls=[...new Set(locs(sitemap.text).filter(u=>u.startsWith(`${SITE_ORIGIN}/`)))].slice(0,LIVE_AUDIT_LIMIT);
-  const pages=await mapLimit(urls,8,async url=>{
+  const pages=await mapLimit(urls,3,async url=>{
     try{
-      const r=await fetchText(url);const title=tagText(r.text,'title');const description=metaDescription(r.text);const h1=tagText(r.text,'h1');
+      let r=await fetchText(url);
+      if(r.status===403||r.status===429){await new Promise(resolve=>setTimeout(resolve,1200));r=await fetchText(url);}
+      await new Promise(resolve=>setTimeout(resolve,180));
+      const title=tagText(r.text,'title');const description=metaDescription(r.text);const h1=tagText(r.text,'h1');
       const images=r.text.match(/<img\b[^>]*>/gi)||[];const missingAlt=images.filter(tag=>!/(?:^|\s)alt\s*=\s*["'][^"']*["']/i.test(tag)).length;
       const issues=[];if(r.status!==200)issues.push(`HTTP ${r.status}`);if(title.length<8)issues.push('title missing/short');if(description.length<40)issues.push('description missing/short');if(!h1)issues.push('H1 missing');if(missingAlt)issues.push(`${missingAlt} image(s) missing alt`);
       return{url,status:r.status,title,description,h1,missingAlt,issues};
@@ -32,8 +35,8 @@ async function livePageAudit(){
   });
   const seenTitles=new Map(),seenDescriptions=new Map();
   for(const page of pages){
-    if(page.title){const prev=seenTitles.get(page.title);if(prev){page.issues.push('duplicate title');prev.issues.push('duplicate title');}else seenTitles.set(page.title,page);}
-    if(page.description){const prev=seenDescriptions.get(page.description);if(prev){page.issues.push('duplicate description');prev.issues.push('duplicate description');}else seenDescriptions.set(page.description,page);}
+    if(page.status===200&&page.title){const prev=seenTitles.get(page.title);if(prev){page.issues.push('duplicate title');prev.issues.push('duplicate title');}else seenTitles.set(page.title,page);}
+    if(page.status===200&&page.description){const prev=seenDescriptions.get(page.description);if(prev){page.issues.push('duplicate description');prev.issues.push('duplicate description');}else seenDescriptions.set(page.description,page);}
   }
   const bad=pages.filter(page=>page.issues.length);
   report.local.livePages={sampled:pages.length,passed:pages.length-bad.length,failed:bad.length,issues:bad.slice(0,100).map(({url,status,issues})=>({url,status,issues}))};

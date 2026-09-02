@@ -135,7 +135,7 @@ assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="tren
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
 assert.match(page, /china-dashboard-i18n\.js\?v=4/, 'nationality dashboard must load the retry-translation asset version');
-assert.match(page, /china-dashboard\.js\?v=11/, 'nationality dashboard must load the detail-focus asset version');
+assert.match(page, /china-dashboard\.js\?v=12/, 'nationality dashboard must load the period-control loading asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -155,7 +155,9 @@ assert.match(page, /data-country="China"[^>]*aria-pressed="false"/, 'popular nat
 assert.match(client, /country-card\$\{active \? ' active' : ''\}[^\n]*aria-pressed="\$\{active\}"/, 'directory buttons must expose the selected nationality');
 assert.match(client, /button\.setAttribute\('aria-pressed', String\(selected\?\.nationality === button\.dataset\.country\)\)/, 'popular nationality selection state must stay synchronized');
 assert.match(page, /id="country-detail"[^>]*aria-live="polite"[^>]*aria-busy="false"/, 'nationality details must expose their initial loading state');
-assert.match(client, /const requestId = \+\+countryRequestId;[\s\S]*if \(requestId !== countryRequestId\) return;[\s\S]*if \(requestId === countryRequestId\).*aria-busy/, 'stale nationality responses must not replace the latest selection');
+assert.match(client, /const requestId = \+\+countryRequestId;[\s\S]*if \(requestId !== countryRequestId\) return;[\s\S]*if \(requestId === countryRequestId\)[\s\S]*aria-busy/, 'stale nationality responses must not replace the latest selection');
+assert.match(client, /setPeriodControlsDisabled\(true\)[\s\S]*if \(requestId === countryRequestId\)[\s\S]*setPeriodControlsDisabled\(false\)/, 'trend period controls must stay disabled until the latest nationality request settles');
+assert.match(page, /\.tabs button:disabled\{cursor:wait;opacity:\.6\}/, 'disabled trend controls must expose a clear loading state');
 assert.match(client, /country-directory'\)\.querySelectorAll\('\[data-country\]'\)[^\n]*selectCountry\(button\.dataset\.country, true, true\)/, 'directory selections must reveal the updated detail panel');
 assert.match(client, /prefers-reduced-motion: reduce[\s\S]*behavior: reduceMotion \? 'auto' : 'smooth'/, 'detail scrolling must respect reduced-motion preferences');
 assert.match(page, /id="selected-country"[^>]*tabindex="-1"/, 'the updated nationality heading must accept programmatic focus');

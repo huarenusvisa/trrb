@@ -2,6 +2,13 @@ name: 生产SEO自动诊断留档
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'reports/**'
+  schedule:
+    - cron: '17 */6 * * *'
 
 permissions:
   contents: write
@@ -13,7 +20,7 @@ concurrency:
 jobs:
   diagnose:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,19 +28,56 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 等待Netlify生产部署
-        run: sleep 240
-      - name: 执行生产SEO诊断
-        run: node scripts/production-seo-diagnostic.mjs
-      - name: 提交最新诊断报告到仓库
+
+      - name: 等待当前main提交部署到生产
+        shell: bash
         run: |
+          set -euo pipefail
+          target="${GITHUB_SHA}"
+          for attempt in $(seq 1 90); do
+            live="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?run=${GITHUB_RUN_ID}&attempt=${attempt}" 2>/dev/null | tr -d '\r\n[:space:]' || true)"
+            if [ "$live" = "$target" ]; then
+              echo "Production is running $target"
+              exit 0
+            fi
+            echo "Waiting for production: expected=$target live=${live:-unavailable} attempt=$attempt/90"
+            sleep 10
+          done
+          echo "Production did not reach $target within 15 minutes." >&2
+          exit 1
+
+      - id: diagnostic
+        name: 执行生产SEO诊断
+        continue-on-error: true
+        run: node scripts/production-seo-diagnostic.mjs
+
+      - name: 保存本次生产诊断报告
+        if: ${{ always() && steps.diagnostic.outcome != 'skipped' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-seo-diagnostic-${{ github.run_id }}
+          path: reports/production-seo-latest.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: 提交最新诊断报告到仓库
+        if: ${{ always() && steps.diagnostic.outcome != 'skipped' }}
+        shell: bash
+        run: |
+          set -euo pipefail
           git config user.name "TRRB SEO Diagnostic Bot"
           git config user.email "actions@users.noreply.github.com"
           git add reports/production-seo-latest.json
           if git diff --cached --quiet; then
             echo "No report changes"
-            exit 0
+          else
+            git commit -m "Update production SEO diagnostic report [skip ci]"
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
-          git commit -m "Update production SEO diagnostic report [skip ci]"
-          git pull --rebase origin main
-          git push origin HEAD:main
+
+      - name: 阻止SEO故障被标记为成功
+        if: ${{ steps.diagnostic.outcome == 'failure' }}
+        run: |
+          echo "Production SEO diagnostic found blocking failures." >&2
+          exit 1

@@ -129,6 +129,8 @@ for (const label of ['全球申请人庇护裁决结果', '月度', '季度', '�
 assert.match(page, /主要国籍裁决结果对比图/);
 assert.match(page, /id="country-comparison-chart"/);
 assert.match(page, /id="country-search"[^>]*data-i18n-aria-label="searchButton"[^>]*aria-label="搜索国籍"/, 'nationality search must have a localized accessible name');
+assert.match(page, /id="country-search"[^>]*aria-controls="country-directory"[^>]*aria-describedby="country-count"/, 'nationality search must identify its result list and status');
+assert.match(page, /id="country-count"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced to screen readers');
 assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="trendLabel"/, 'trend period controls must expose a localized group label');
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');

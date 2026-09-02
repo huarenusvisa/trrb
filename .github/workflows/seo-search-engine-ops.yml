@@ -38,7 +38,8 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/automation-gate.mjs
       - id: gate
-        run: echo "allowed=${{ steps.controls.outputs.global == 'true' && steps.controls.outputs.seo_search_engine == 'true' }}" >> "$GITHUB_OUTPUT"
+        # Push/manual runs are corrective and must never be silently skipped. Only scheduled runs respect the control-plane switches.
+        run: echo "allowed=${{ github.event_name != 'schedule' || (steps.controls.outputs.global == 'true' && steps.controls.outputs.seo_search_engine == 'true') }}" >> "$GITHUB_OUTPUT"
   monitor:
     needs: automation-gate
     if: ${{ needs.automation-gate.outputs.allowed == 'true' }}

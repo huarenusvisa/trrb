@@ -73,7 +73,7 @@ jobs:
         run: |
           curl --fail --silent --show-error --head https://trrb.net/sitemap.xml \
             | tr -d '\r' \
-            | grep -qi '^x-trrb-sitemap: live-supabase-v9-quality-budget-canonical
+            | grep -qi '^x-trrb-sitemap: live-supabase-v9-quality-budget-canonical$'
       - name: Push current URLs to Bing and Yandex through IndexNow
         env:
           INDEXNOW_FULL_SYNC: 'true'
@@ -113,41 +113,3 @@ jobs:
           AUTOMATION_NOTIFICATION_TITLE: Google/Bing SEO机器人执行失败
         run: node scripts/automation-notify.mjs
 
-      - name: Push current URLs to Bing and Yandex through IndexNow
-        env:
-          INDEXNOW_FULL_SYNC: 'true'
-          INDEXNOW_INCLUDE_RETIRED: 'true'
-          INDEXNOW_FRESH_HOURS: '48'
-          INDEXNOW_USE_LIVE_NEWS: 'true'
-        run: node scripts/submit-indexnow.mjs
-      - name: Run SEO search-engine operations
-        env:
-          SITE_ORIGIN: https://trrb.net
-          GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'sc-domain:trrb.net' }}
-          GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON }}
-          BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
-          SEO_WRITE_MODE: 'true'
-          # Missing Search Console authorization is a blocking robot failure.
-          # Never report the SEO workflow green when Google submission did not run.
-          SEO_REQUIRE_GOOGLE: 'true'
-          # Bing credentials and submissions are also mandatory.
-          SEO_REQUIRE_BING: 'true'
-          SEO_LIVE_AUDIT_LIMIT: '120'
-        run: node scripts/seo-search-engine-ops.mjs
-      - name: Save SEO robot report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: seo-search-engine-ops-report
-          path: seo-search-engine-ops-report.json
-          retention-days: 30
-
-
-      - name: 写入 Google/Bing SEO 机器人站内通知
-        if: failure()
-        env:
-          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          AUTOMATION_CONTROL_KEY: seo_search_engine
-          AUTOMATION_NOTIFICATION_TITLE: Google/Bing SEO机器人执行失败
-        run: node scripts/automation-notify.mjs

@@ -65,10 +65,17 @@ jobs:
           for attempt in $(seq 1 90); do
             live="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?run=${GITHUB_RUN_ID}&attempt=${attempt}" 2>/dev/null | tr -d '\r\n[:space:]' || true)"
             if [ "$live" = "$target" ]; then
-              echo "Production is running $target"
+              echo "Production is running exact target $target"
               exit 0
             fi
-            echo "Waiting for production: expected=$target live=${live:-unavailable} attempt=$attempt/90"
+            if [[ "$live" =~ ^[0-9a-f]{40}$ ]]; then
+              git fetch --no-tags --depth=100 origin "$live" >/dev/null 2>&1 || true
+              if git merge-base --is-ancestor "$target" "$live" 2>/dev/null; then
+                echo "Production is running descendant $live containing target $target"
+                exit 0
+              fi
+            fi
+            echo "Waiting for production: expected target-or-descendant=$target live=${live:-unavailable} attempt=$attempt/90"
             sleep 10
           done
           echo "Production did not reach $target within 15 minutes." >&2

@@ -112,6 +112,7 @@ const zhCN = {
   'profile.fontStandard': '标准',
   'profile.fontLarge': '大',
   'profile.fontExtraLarge': '特大',
+  'profile.fontPreview': '唐人日报正文预览 Aa',
   'profile.pushSettings': '推送设置',
   'profile.pushSettingsMeta': '重大新闻 · ICE · 移民 · 判例新规 · 社区互动',
   'profile.pushSettingsGuestMeta': '登录后选择通知类型',
@@ -147,7 +148,7 @@ const zhTW: Record<MessageKey, string> = {
   'profile.comments': '我的評論', 'profile.commentsMeta': '查看評論狀態並返回對應新聞', 'profile.favorites': '收藏', 'profile.favoritesMeta': '本機與帳戶雲端收藏自動安全合併', 'profile.localFavorites': '本機收藏', 'profile.localFavoritesMeta': '登入前繼續保存在目前裝置',
   'profile.history': '閱讀紀錄', 'profile.historyMeta': '本機與帳戶雲端紀錄自動合併，最多100則', 'profile.localHistory': '本機閱讀紀錄', 'profile.localHistoryMeta': '登入前繼續保存在目前裝置', 'profile.accountSettings': '帳戶設定', 'profile.accountSettingsMeta': '修改暱稱、預設頭像與公開簡介',
   'profile.signOut': '登出', 'profile.signOutFailed': '登出失敗', 'profile.pushDisableFailed': '無法停用本裝置通知', 'profile.pushDisableFailedMeta': '網路異常時登出後仍可能收到通知。可以先在系統設定關閉通知，或仍然登出。', 'profile.cancel': '取消', 'profile.signOutAnyway': '仍然登出',
-  'profile.fontSize': '閱讀字級', 'profile.fontSizeMeta': '統一設定新聞內文字級，之後所有新聞詳情頁會自動使用此字級', 'profile.fontSmall': '小', 'profile.fontStandard': '標準', 'profile.fontLarge': '大', 'profile.fontExtraLarge': '特大',
+  'profile.fontSize': '閱讀字級', 'profile.fontSizeMeta': '統一設定新聞內文字級，之後所有新聞詳情頁會自動使用此字級', 'profile.fontSmall': '小', 'profile.fontStandard': '標準', 'profile.fontLarge': '大', 'profile.fontExtraLarge': '特大', 'profile.fontPreview': '唐人日報正文預覽 Aa',
   'profile.pushSettings': '推播設定', 'profile.pushSettingsMeta': '重大新聞 · ICE · 移民 · 判例新規 · 社區互動', 'profile.pushSettingsGuestMeta': '登入後選擇通知類型', 'profile.language': '語言', 'profile.languageMeta': '目前：{language}', 'profile.openWebsite': '開啟 trrb.net', 'profile.openWebsiteMeta': '造訪唐人日報網站',
   'language.heading': '語言設定', 'language.description': '介面語言會保存在本裝置。選擇「跟隨系統」時，App 會自動使用支援的系統語言。', 'language.system': '跟隨系統', 'language.systemMeta': '自動識別簡體中文、繁體中文或英文', 'language.zhCN': '简体中文', 'language.zhCNMeta': 'Simplified Chinese', 'language.zhTW': '繁體中文', 'language.zhTWMeta': 'Traditional Chinese', 'language.en': 'English', 'language.enMeta': '英文', 'language.selected': '已選擇',
 };
@@ -165,7 +166,7 @@ const en: Record<MessageKey, string> = {
   'profile.comments': 'My comments', 'profile.commentsMeta': 'Review comment status and return to the story', 'profile.favorites': 'Saved stories', 'profile.favoritesMeta': 'Safely merge on-device and cloud favorites', 'profile.localFavorites': 'On-device favorites', 'profile.localFavoritesMeta': 'Kept on this device until you sign in',
   'profile.history': 'Reading history', 'profile.historyMeta': 'Merge device and cloud history, up to 100 stories', 'profile.localHistory': 'On-device history', 'profile.localHistoryMeta': 'Kept on this device until you sign in', 'profile.accountSettings': 'Account settings', 'profile.accountSettingsMeta': 'Edit display name, avatar and public bio',
   'profile.signOut': 'Sign out', 'profile.signOutFailed': 'Could not sign out', 'profile.pushDisableFailed': 'Could not disable notifications', 'profile.pushDisableFailedMeta': 'You may still receive notifications after signing out while offline. Disable them in system settings first, or continue signing out.', 'profile.cancel': 'Cancel', 'profile.signOutAnyway': 'Sign out anyway',
-  'profile.fontSize': 'Article text size', 'profile.fontSizeMeta': 'Use this text size on every news article', 'profile.fontSmall': 'Small', 'profile.fontStandard': 'Standard', 'profile.fontLarge': 'Large', 'profile.fontExtraLarge': 'Extra large',
+  'profile.fontSize': 'Article text size', 'profile.fontSizeMeta': 'Use this text size on every news article', 'profile.fontSmall': 'Small', 'profile.fontStandard': 'Standard', 'profile.fontLarge': 'Large', 'profile.fontExtraLarge': 'Extra large', 'profile.fontPreview': 'Article text preview Aa',
   'profile.pushSettings': 'Push notifications', 'profile.pushSettingsMeta': 'Breaking news · ICE · Immigration · Legal · Community', 'profile.pushSettingsGuestMeta': 'Sign in to choose notification types', 'profile.language': 'Language', 'profile.languageMeta': 'Current: {language}', 'profile.openWebsite': 'Open trrb.net', 'profile.openWebsiteMeta': 'Visit the Tangren Daily website',
   'language.heading': 'Language', 'language.description': 'Your interface language is saved on this device. Follow system automatically selects a supported system language.', 'language.system': 'Follow system', 'language.systemMeta': 'Automatically use Simplified Chinese, Traditional Chinese or English', 'language.zhCN': '简体中文', 'language.zhCNMeta': 'Simplified Chinese', 'language.zhTW': '繁體中文', 'language.zhTWMeta': 'Traditional Chinese', 'language.en': 'English', 'language.enMeta': 'English', 'language.selected': 'Selected',
 };

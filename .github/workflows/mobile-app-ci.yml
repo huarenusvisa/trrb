@@ -86,6 +86,9 @@ jobs:
       - name: Test mobile library cloud merge
         working-directory: apps/mobile
         run: npm run test:library
+      - name: Test profile, notifications and reading settings
+        working-directory: apps/mobile
+        run: npm run test:data-settings
       - name: Test mobile push routing and permission lifecycle
         working-directory: apps/mobile
         run: npm run test:push

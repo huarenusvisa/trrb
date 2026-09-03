@@ -15,6 +15,7 @@
     "test:data-settings": "node --test scripts/validate-data-settings-integration.test.mjs scripts/validate-library-comments-data.test.mjs",
     "test:push": "node --experimental-strip-types --test src/push/push-core.test.ts",
     "test:i18n": "node --experimental-strip-types --test src/i18n/i18n-core.test.ts scripts/validate-i18n-integration.test.mjs",
+    "test:news-parity": "node --experimental-strip-types --test src/api/trrb-navigation.test.ts scripts/validate-home-news-parity.test.mjs",
     "typecheck": "tsc --noEmit",
     "config:check": "node ../../scripts/validate-mobile-store-config.mjs",
     "export:web": "expo export --platform web --output-dir .expo-export --clear"

@@ -209,6 +209,14 @@ function scrollToCountryDetail() {
   $('#selected-country').focus({ preventScroll: true });
 }
 
+function focusCountryResults() {
+  const firstResult = $('#country-directory').querySelector('.country-card');
+  if (!firstResult) return;
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  firstResult.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  firstResult.focus({ preventScroll: true });
+}
+
 function setPeriodControlsDisabled(disabled) {
   document.querySelectorAll('.tabs button').forEach((button) => {
     button.disabled = disabled;
@@ -284,7 +292,10 @@ $('#country-search-form').addEventListener('submit', (event) => {
   renderDirectory(matches);
   const match = resolveCountrySearch(query, matches);
   if (match) selectCountry(match.nationality, true);
-  else if (matches.length > 1) $('#country-count').textContent = t('searchChooseOne', { count: fmt(matches.length) });
+  else if (matches.length > 1) {
+    $('#country-count').textContent = t('searchChooseOne', { count: fmt(matches.length) });
+    focusCountryResults();
+  }
 });
 $('#country-search').addEventListener('input', (event) => renderDirectory(filterCountries(event.target.value)));
 document.querySelectorAll('.quick-countries button').forEach((button) => button.addEventListener('click', () => {

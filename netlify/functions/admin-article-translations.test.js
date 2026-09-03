@@ -27,6 +27,7 @@ test('publication records the authenticated human reviewer', () => {
   assert.match(source, /action === 'publish'/);
   assert.match(source, /reviewed_by: actor\.user\.id/);
   assert.match(source, /reviewed_at: new Date\(\)\.toISOString\(\)/);
+  assert.match(source, /body\.review_confirmed !== true/);
 });
 
 test('published translations cannot be overwritten by a generated draft', () => {

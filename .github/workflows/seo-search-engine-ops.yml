@@ -21,6 +21,9 @@ on:
       - 'netlify/edge-functions/news-sitemap-live.ts'
       - 'netlify/edge-functions/category-prerender.ts'
       - 'netlify/functions/public-category-page.js'
+      - 'community/index.html'
+      - 'immigrate/index.html'
+      - 'legal/index.html'
       - '.github/workflows/seo-search-engine-ops.yml'
 
 permissions:

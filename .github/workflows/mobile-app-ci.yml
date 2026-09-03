@@ -38,12 +38,16 @@ jobs:
         run: |
           node --check netlify/functions/public-article.js
           node --check netlify/functions/public-articles.js
+          node --test netlify/functions/unified-account-login.test.js
       - name: Install mobile dependencies
         working-directory: apps/mobile
         run: npm ci
       - name: Typecheck mobile app
         working-directory: apps/mobile
         run: npm run typecheck
+      - name: Test unified mobile account client
+        working-directory: apps/mobile
+        run: npm run test:auth
       - name: Validate store build configuration
         working-directory: apps/mobile
         run: npm run config:check

@@ -3,6 +3,7 @@ import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, T
 import { router } from 'expo-router';
 import type { Session } from '@supabase/supabase-js';
 import { isAuthConfigured, supabase } from '../../src/auth/supabase';
+import { accountLabel } from '../../src/auth/unified-account';
 import { unreadNotificationCount } from '../../src/community/notifications';
 import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '../../src/storage/reading-preferences';
 
@@ -54,7 +55,7 @@ export default function ProfileScreen() {
     <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
       <Text style={styles.h1}>我的</Text>
       {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
-        <Text style={styles.sub}>已登录 · {session.user.email || 'TRRB用户'}</Text>
+        <Text style={styles.sub}>已登录 · {accountLabel(session.user)}</Text>
         <Pressable testID="open-community" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>移民社区</Text><Text style={styles.meta}>浏览帖子、分享经历和发布问题</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>消息中心{unread ? ` · ${unread}条未读` : ''}</Text><Text style={styles.meta}>回复、点赞、关注与系统通知</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>我的评论</Text><Text style={styles.meta}>查看评论状态并返回对应新闻</Text></Pressable>

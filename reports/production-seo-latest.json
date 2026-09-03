@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-03T15:24:39.505Z",
+  "generated_at": "2026-09-03T16:02:41.831Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -64,7 +64,7 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1929283,
+      "bytes": 1928427,
       "article_count": 5000,
       "child_sitemaps": [],
       "legacy_query_count": 0,
@@ -73,14 +73,86 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 109961,
-      "article_count": 229,
+      "bytes": 101286,
+      "article_count": 208,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v7-quality-dedupe"
     }
   },
   "articles": [
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095270551757480210",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095270551757480210",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 41,
+      "h1_length": 34,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095270551757480210",
+      "body_length": 314,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095278094177259854",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095278094177259854",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 38,
+      "h1_length": 31,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095278094177259854",
+      "body_length": 351,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095285650043891827",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095285650043891827",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 31,
+      "h1_length": 24,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095285650043891827",
+      "body_length": 306,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095295708257722881",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095295708257722881",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 31,
+      "h1_length": 24,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095295708257722881",
+      "body_length": 302,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095527237730849052",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095527237730849052",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 34,
+      "h1_length": 27,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095527237730849052",
+      "body_length": 357,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095537300608299093",
+      "status": 200,
+      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095537300608299093",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 33,
+      "h1_length": 26,
+      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095537300608299093",
+      "body_length": 324,
+      "schema": true,
+      "noindex": false
+    },
     {
       "url": "https://trrb.net/ice/ice-evt-2aaab95a3b1390eff71604bd139f6feff4f92438",
       "status": 200,
@@ -150,78 +222,6 @@
       "h1_length": 36,
       "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095346050890367086",
       "body_length": 508,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095361142122053697",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095361142122053697",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 36,
-      "h1_length": 29,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095361142122053697",
-      "body_length": 334,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095376244309111287",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095376244309111287",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 35,
-      "h1_length": 28,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095376244309111287",
-      "body_length": 307,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095391339248509082",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095391339248509082",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 36,
-      "h1_length": 29,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095391339248509082",
-      "body_length": 300,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095406443239477283",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095406443239477283",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 34,
-      "h1_length": 27,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095406443239477283",
-      "body_length": 315,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095421542939369477",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095421542939369477",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 38,
-      "h1_length": 31,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095421542939369477",
-      "body_length": 312,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095431603702890599",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095431603702890599",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 35,
-      "h1_length": 28,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095431603702890599",
-      "body_length": 323,
       "schema": true,
       "noindex": false
     }

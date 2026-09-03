@@ -68,3 +68,15 @@ test('localizes unified account chrome and keeps Maestro language-neutral', () =
   assert.match(authFlow, /Registration successful/);
   assert.match(authFlow, /Continue/);
 });
+
+test('localizes article chrome while preserving published story text', () => {
+  const article = read('app/article/[id].tsx');
+  assert.match(article, /useI18n\(\)/);
+  for (const key of ['article.unavailableTitle', 'article.offline', 'article.continueReading', 'article.previous', 'article.next', 'article.save', 'article.share', 'article.copyLink', 'article.openWebsite', 'article.related']) {
+    assert.ok(article.includes(`t('${key}')`), `article detail must translate ${key}`);
+  }
+  assert.match(article, /article\.title/);
+  assert.match(article, /article\.content \|\| t\('article\.contentUnavailable'\)/);
+  assert.match(article, /testID="article-original-language-note"/);
+  assert.doesNotMatch(article, /toLocaleString\('zh-CN'\)/);
+});

@@ -435,16 +435,23 @@ exports.handler = async (event) => {
       const court = String(p.court || '').trim();
       const state = String(p.state || '').trim().toUpperCase();
       if (!court) return out(400, { error: 'missing_court' });
+      const officialCourt = (statePeriods.courts || []).find((item) => item.court_name === court && (!state || item.state === state));
       const courtQuery = {
         select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
         court_name: `eq.${court}`,
         order: 'total_asylum_decisions.desc',
         limit: '500'
       };
-      if (state) courtQuery.court_state = `eq.${state}`;
-      const rows = await rest('immigration_judges', {
+      const unscopedRows = await rest('immigration_judges', {
         query: courtQuery
       });
+      const stateRows = state
+        ? (unscopedRows || []).filter((row) => String(row.court_state || '').trim().toUpperCase() === state)
+        : (unscopedRows || []);
+      // Some legacy judge profiles have a verified EOIR court name but no court_state.
+      // The published court catalog has unique names, so it can safely authorize those
+      // exact-name rows without weakening state scoping for unknown or ambiguous courts.
+      const rows = stateRows.length || !officialCourt ? stateRows : (unscopedRows || []);
       if (!(rows || []).length) return out(404, { error: 'not_found' });
       const requestedYear = Number.parseInt(String(p.fy || ''), 10);
       const fiscalYear = (statePeriods.years || []).map(Number).includes(requestedYear) ? requestedYear : Number(statePeriods.latest_fiscal_year);
@@ -453,8 +460,8 @@ exports.handler = async (event) => {
       const judges = staticRows.length
         ? staticRows.map((item) => derived({ ...(dbByName.get(item.name_key) || {}), ...item }))
         : (rows || []).map((row) => derived(withOfficialOutcomes(row, fiscalYear)));
-      const courtPeriod = (statePeriods.courts || []).find((item) => item.court_name === court && (!state || item.state === state))?.yearly?.find((item) => Number(item.fiscal_year) === fiscalYear);
-      return out(200, { fiscal_year: fiscalYear, court: { court_name: rows[0].court_name, court_city: rows[0].court_city, court_state: rows[0].court_state, ...derived(courtPeriod || aggregate(judges)) }, judges, ...(await provenance()) });
+      const courtPeriod = officialCourt?.yearly?.find((item) => Number(item.fiscal_year) === fiscalYear);
+      return out(200, { fiscal_year: fiscalYear, court: { court_name: officialCourt?.court_name || rows[0].court_name, court_city: rows[0].court_city || String(court).replace(/\s*\([^)]*\)\s*$/, ''), court_state: officialCourt?.state || rows[0].court_state, ...derived(courtPeriod || aggregate(judges)) }, judges, ...(await provenance()) });
     }
 
     if (mode === 'states') {

@@ -12,6 +12,7 @@ const judgeRows = [
   { id: 'ca-shared', judge_name: 'CA Shared', court_name: 'Shared Court', court_city: 'Oakland', court_state: 'CA', total_asylum_decisions: 20, grants: 10, denials: 8, other_decisions: 2 },
   { id: 'ny-1', judge_name: 'NY Judge', court_name: 'New York (NYC)', court_city: 'New York', court_state: 'NY', total_asylum_decisions: 120, grants: 55, denials: 60, other_decisions: 5 },
   { id: 'ny-shared', judge_name: 'NY Shared', court_name: 'Shared Court', court_city: 'New York', court_state: 'NY', total_asylum_decisions: 40, grants: 15, denials: 20, other_decisions: 5 },
+  { id: 'nyc-blank-state', judge_name: 'NYC Legacy Judge', court_name: 'New York (NYC)', court_city: 'New York', court_state: '', total_asylum_decisions: 30, grants: 12, denials: 15, other_decisions: 3 },
   { id: 'unknown-1', judge_name: 'Unknown Judge', court_name: 'Unknown Court', court_city: '', court_state: '', total_asylum_decisions: 10, grants: 5, denials: 5, other_decisions: 0 }
 ];
 
@@ -62,6 +63,12 @@ const historicalDetailResponse = await handler({ httpMethod: 'GET', queryStringP
 const historicalDetailBody = JSON.parse(historicalDetailResponse.body);
 assert.equal(historicalDetailResponse.statusCode, 200);
 assert.equal(historicalDetailBody.fiscal_year, 2025, 'court detail must honor the requested fiscal year');
+
+const catalogScopedDetailResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'court-detail', court: 'New York (NYC)', state: 'NY', fy: '2025' } });
+const catalogScopedDetailBody = JSON.parse(catalogScopedDetailResponse.body);
+assert.equal(catalogScopedDetailResponse.statusCode, 200, 'published courts must tolerate legacy judge rows with a missing court_state');
+assert.equal(catalogScopedDetailBody.court.court_state, 'NY', 'published court catalog must restore the verified state');
+assert.equal(catalogScopedDetailBody.fiscal_year, 2025);
 
 const statesClient = readFileSync('immigration-judge-approval-rate/states.js', 'utf8');
 const courtsClient = readFileSync('immigration-judge-approval-rate/courts.js', 'utf8');

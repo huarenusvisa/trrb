@@ -50,6 +50,12 @@
     ar: 'رمز EOIR: {code}', tr: 'EOIR kodu: {code}'
   };
   Object.entries(eoirCodeLabels).forEach(([code, label]) => { translations[code].eoirCode = label; });
+  const isoCodeLabels = {
+    en: 'ISO code: {code}', es: 'Código ISO: {code}', fr: 'Code ISO : {code}', 'pt-BR': 'Código ISO: {code}',
+    hi: 'ISO कोड: {code}', 'zh-Hans': 'ISO代码：{code}', 'zh-Hant': 'ISO代碼：{code}', ru: 'Код ISO: {code}',
+    ar: 'رمز ISO: {code}', tr: 'ISO kodu: {code}'
+  };
+  Object.entries(isoCodeLabels).forEach(([code, label]) => { translations[code].isoCode = label; });
 
   const supported = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
   const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };

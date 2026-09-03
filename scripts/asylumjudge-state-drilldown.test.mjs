@@ -58,6 +58,11 @@ assert.equal(detailResponse.statusCode, 200);
 assert.equal(detailBody.court.court_state, 'CA');
 assert.deepEqual(detailBody.judges.map((row) => row.id), ['ca-shared'], 'same-name court detail must stay inside the selected state');
 
+const historicalDetailResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'court-detail', court: 'Shared Court', state: 'CA', fy: '2025' } });
+const historicalDetailBody = JSON.parse(historicalDetailResponse.body);
+assert.equal(historicalDetailResponse.statusCode, 200);
+assert.equal(historicalDetailBody.fiscal_year, 2025, 'court detail must honor the requested fiscal year');
+
 const statesClient = readFileSync('immigration-judge-approval-rate/states.js', 'utf8');
 const courtsClient = readFileSync('immigration-judge-approval-rate/courts.js', 'utf8');
 const statesHtml = readFileSync('immigration-judge-approval-rate/states.html', 'utf8');
@@ -74,6 +79,7 @@ assert.match(courtsClient, /document\.querySelectorAll\('\[data-fy\]'\).*addEven
 assert.match(courtsClient, /load\(\$\('#court-q'\)\.value\.trim\(\), selectedState, Number\(button\.dataset\.fy\)\)/, 'year switching must preserve the current court search and state');
 assert.match(courtsClient, /params\.set\('fy', fiscalYear\)/, 'court listing must send the selected fiscal year to the API');
 assert.match(courtsClient, /url\.searchParams\.set\('fy', fiscalYear\)/, 'court listing must keep the selected fiscal year in the URL');
+assert.match(courtsClient, /url\.searchParams\.set\('fy', fiscalYear\)[\s\S]*return `\$\{url\.pathname\}\$\{url\.search\}/, 'court profile links must preserve the selected fiscal year');
 assert.match(courtsClient, /url\.searchParams\.set\('q', query\)/, 'court listing must preserve a search query in the URL');
 assert.match(courtsClient, /button\.setAttribute\('aria-pressed', String\(active\)\)/, 'court year controls must expose their selected state');
 assert.match(statesClient, /if \(!response\.ok\) throw/, 'state listing must treat non-2xx responses as failures');
@@ -85,12 +91,16 @@ assert.match(courtsClient, /role="alert"/, 'court load failures must be announce
 assert.match(statesHtml, /id="state-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'state results must expose live loading state');
 assert.match(courtsHtml, /id="court-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court results must expose live loading state');
 assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="2025"[^>]*aria-pressed="false"/, 'court year controls must have initial accessible selection state');
-assert.match(courtsHtml, /courts\.js\?v=7/, 'court page must load the fiscal-year-enabled client');
+assert.match(courtsHtml, /courts\.js\?v=8/, 'court page must load the fiscal-year-link client');
 assert.match(statesHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=6/, 'state page must load the retry-enabled assets');
-assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=7/, 'court page must load the retry and fiscal-year-enabled assets');
+assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=8/, 'court page must load the retry and fiscal-year-link assets');
 assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');
 assert.match(appI18n, /\['重新尝试','Try again'.*'إعادة المحاولة','Tekrar dene'\]/, 'retry action must be translated in all supported languages');
 assert.match(detailClient, /params\.set\('state', state\)/, 'court detail must preserve state scope');
+assert.match(detailClient, /params\.set\('fy', requestedYear\)/, 'court detail must request the fiscal year selected in the directory');
+assert.match(detailClient, /data\.fiscal_year[\s\S]*#court-source/, 'court detail must visibly identify the returned fiscal year');
+assert.match(detailClient, /backParams[\s\S]*fy:[\s\S]*#court-back/, 'court detail back link must preserve fiscal year and state context');
+assert.match(readFileSync('immigration-judge-approval-rate/court-detail.html', 'utf8'), /id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=3/, 'court detail must load the fiscal-year-aware client and expose its context targets');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 
 console.log('AsylumJudge state drill-down contract: PASS');

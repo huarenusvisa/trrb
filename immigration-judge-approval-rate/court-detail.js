@@ -7,17 +7,24 @@ async function load() {
   const query = new URLSearchParams(location.search);
   const courtName = document.body.dataset.courtName || query.get('court');
   const state = (document.body.dataset.courtState || query.get('state') || '').trim().toUpperCase();
+  const requestedYear = Number.parseInt(query.get('fy') || '', 10);
   if (!courtName) { $('#loading').textContent = '缺少法院名称'; return; }
   try {
     const params = new URLSearchParams({ mode: 'court-detail', court: courtName });
     if (state) params.set('state', state);
+    if (Number.isFinite(requestedYear)) params.set('fy', requestedYear);
     const response = await fetch(`/.netlify/functions/immigration-judges?${params}`);
     const data = await response.json();
     if (!response.ok || !data.court) throw new Error();
     const court = data.court;
-    document.title = `${court.court_name} 庇护通过率｜唐人日报`;
+    const fiscalYear = Number(data.fiscal_year || requestedYear || 2026);
+    document.title = `${court.court_name} FY ${fiscalYear} 庇护通过率｜唐人日报`;
     $('#court-name').textContent = court.court_name || '移民法院';
     $('#court-place').textContent = [court.court_city, court.court_state].filter(Boolean).join(', ');
+    $('#court-source').textContent = `FY ${fiscalYear} · 法院指标由数据库中归属于该法院的法官庇护裁决记录汇总。`;
+    const backParams = new URLSearchParams({ fy: String(fiscalYear) });
+    if (court.court_state || state) backParams.set('state', court.court_state || state);
+    $('#court-back').href = `${window.judgePagePath ? window.judgePagePath('courts.html') : '/immigration-judge-approval-rate/courts.html'}?${backParams}`;
     $('#rate').textContent = pct(court.adjudicated_approval_rate);
     $('#judges').textContent = fmt(court.judges);
     $('#decisions').textContent = fmt(court.total_asylum_decisions);

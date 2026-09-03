@@ -14,6 +14,12 @@ const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.ne
 
 const judgePath = (row) => window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `${window.judgePagePath ? window.judgePagePath('detail.html') : '/immigration-judge-approval-rate/detail.html'}?id=${encodeURIComponent(row?.id || row)}`;
 const countryLabel = (row) => i18n?.countryLabel(row) || row?.nationality_zh || row?.nationality || '';
+const countryCodeLabels = (row) => {
+  const labels = [t('eoirCode', { code: row?.nationality_code || '—' })];
+  const isoCode = i18n?.regionCodeForNationality(row);
+  if (isoCode) labels.push(t('isoCode', { code: isoCode }));
+  return labels.join(' · ');
+};
 
 async function getJson(url, options = {}) {
   const response = await fetch(apiUrl(url), { cache: 'no-store', ...options });
@@ -25,7 +31,7 @@ function renderDirectory(rows = countries) {
   $('#country-count').textContent = t('directoryCount', { total: fmt(countries.length), shown: fmt(rows.length) });
   $('#country-directory').innerHTML = rows.length ? rows.map((row) => {
     const active = selected?.nationality_code === row.nationality_code;
-    return `<button class="country-card${active ? ' active' : ''}" data-country="${esc(row.nationality)}" aria-pressed="${active}"><strong>${esc(countryLabel(row))}</strong><small>${esc(t('eoirCode', { code: row.nationality_code || '—' }))} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`;
+    return `<button class="country-card${active ? ' active' : ''}" data-country="${esc(row.nationality)}" aria-pressed="${active}"><strong>${esc(countryLabel(row))}</strong><small>${esc(countryCodeLabels(row))} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`;
   }).join('') : `<div class="empty">${t('noCountry')}</div>`;
   $('#country-directory').querySelectorAll('[data-country]').forEach((button) => button.addEventListener('click', () => selectCountry(button.dataset.country, true, true)));
 }
@@ -191,7 +197,7 @@ function renderSelected(data) {
   const country = data.country;
   const label = countryLabel(country);
   $('#selected-country').textContent = label;
-  $('#selected-code').textContent = t('eoirCode', { code: country.nationality_code || '—' });
+  $('#selected-code').textContent = countryCodeLabels(country);
   $('#current-rate').textContent = pct(country.approval_rate);
   $('#sample-status').textContent = country.rate_reliable ? t('statusReliable', { count: fmt(country.total_asylum_decisions) }) : t('statusUnreliable', { count: fmt(country.total_asylum_decisions) });
   const dated = data.periods?.monthly || [];

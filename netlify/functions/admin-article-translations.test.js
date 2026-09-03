@@ -20,6 +20,7 @@ test('generation is staff-only and always saved as draft', () => {
   assert.match(source, /authenticateStaff\(event, ROLES\)/);
   assert.match(source, /status: 'draft'/);
   assert.match(source, /openai_review_required/);
+  assert.match(source, /body\.cost_confirmed !== true/);
   assert.doesNotMatch(source, /action === 'generate'[\s\S]{0,900}status: 'published'/);
 });
 

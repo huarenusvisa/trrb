@@ -7,6 +7,8 @@ const mobileRoot = path.join(root, 'apps/mobile');
 const app = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'app.json'), 'utf8')).expo;
 const eas = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'eas.json'), 'utf8'));
 const store = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store.config.json'), 'utf8'));
+const googlePlayRoot = path.join(mobileRoot, 'store/google-play');
+const googlePlay = JSON.parse(fs.readFileSync(path.join(googlePlayRoot, 'listing.json'), 'utf8'));
 const failures = [];
 
 function expect(condition, message) {
@@ -32,6 +34,12 @@ function pngDimensions(filePath) {
     colorType: data[25],
     hasTransparencyChunk: data.includes(Buffer.from('tRNS'))
   };
+}
+
+function readListingText(relativePath) {
+  const filePath = path.join(googlePlayRoot, relativePath);
+  expect(fs.existsSync(filePath), `Google Play listing file does not exist: ${relativePath}`);
+  return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8').trim() : '';
 }
 
 expect(app.name === '唐人日报', 'expo.name must remain 唐人日报');
@@ -78,6 +86,34 @@ for (const field of ['marketingUrl', 'supportUrl', 'privacyPolicyUrl', 'privacyC
 }
 expect(listing?.privacyPolicyUrl === 'https://trrb.net/privacy.html', 'Store privacy policy must use the published TRRB policy');
 expect(listing?.privacyChoicesUrl === 'https://trrb.net/delete-account.html', 'Store privacy choices must point to account deletion instructions');
+
+const googleTitle = readListingText('zh-CN/title.txt');
+const googleShortDescription = readListingText('zh-CN/short-description.txt');
+const googleFullDescription = readListingText('zh-CN/full-description.txt');
+expect(googlePlay.packageName === app.android?.package, 'Google Play package name must match the installed Android package');
+expect(googlePlay.defaultLanguage === 'zh-CN', 'Google Play default language must be zh-CN');
+expect(googlePlay.category === 'NEWS_AND_MAGAZINES', 'Google Play category must be NEWS_AND_MAGAZINES');
+expect(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(googlePlay.contactEmail ?? ''), 'Google Play contact email is invalid');
+for (const field of ['website', 'privacyPolicyUrl', 'accountDeletionUrl']) {
+  expect(/^https:\/\//.test(googlePlay[field] ?? ''), `Google Play ${field} must be an HTTPS URL`);
+}
+expect(googlePlay.privacyPolicyUrl === listing?.privacyPolicyUrl, 'Google Play and App Store must use the same privacy policy');
+expect(googlePlay.accountDeletionUrl === listing?.privacyChoicesUrl, 'Google Play and App Store must use the same account deletion instructions');
+expect(googleTitle === app.name, 'Google Play title must match the installed app name');
+expect(googleTitle.length >= 2 && googleTitle.length <= 30, 'Google Play title must contain 2-30 characters');
+expect(googleShortDescription.length >= 10 && googleShortDescription.length <= 80, 'Google Play short description must contain 10-80 characters');
+expect(googleFullDescription.length >= 80 && googleFullDescription.length <= 4000, 'Google Play full description must contain 80-4000 characters');
+
+const screenshotNames = googlePlay.phoneScreenshots;
+expect(Array.isArray(screenshotNames) && screenshotNames.length >= 2 && screenshotNames.length <= 8, 'Google Play must define 2-8 phone screenshots');
+expect(new Set(screenshotNames ?? []).size === (screenshotNames ?? []).length, 'Google Play screenshot names must be unique');
+const screenshotFlowPath = path.join(mobileRoot, '.maestro/store-screenshots.yml');
+expect(fs.existsSync(screenshotFlowPath), 'Google Play Maestro screenshot flow is missing');
+const screenshotFlow = fs.existsSync(screenshotFlowPath) ? fs.readFileSync(screenshotFlowPath, 'utf8') : '';
+for (const screenshotName of screenshotNames ?? []) {
+  expect(screenshotFlow.includes(`store/google-play/screenshots/phone/${screenshotName}`), `Maestro flow must capture Google Play screenshot: ${screenshotName}`);
+}
+expect((screenshotFlow.match(/takeScreenshot:/g) ?? []).length === (screenshotNames ?? []).length, 'Maestro screenshot count must match the Google Play manifest');
 
 for (const [relativePath, label, exactSize] of [
   [app.icon, 'App icon', 1024],

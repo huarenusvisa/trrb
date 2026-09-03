@@ -1,0 +1,16 @@
+{
+  "packageName": "net.trrb.mobile",
+  "defaultLanguage": "zh-CN",
+  "category": "NEWS_AND_MAGAZINES",
+  "contactEmail": "tangrenribao@gmail.com",
+  "website": "https://trrb.net/",
+  "privacyPolicyUrl": "https://trrb.net/privacy.html",
+  "accountDeletionUrl": "https://trrb.net/delete-account.html",
+  "phoneScreenshots": [
+    "01-home",
+    "02-america",
+    "03-immigration",
+    "04-legal",
+    "05-community"
+  ]
+}

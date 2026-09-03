@@ -162,7 +162,7 @@
     applyStatic();
     if (options.dispatch !== false) window.dispatchEvent(new CustomEvent('asylumjudge:localechange', { detail: { locale } }));
   };
-  window.AsylumI18n = { get locale() { return locale; }, t, setLocale, formatNumber, countryName, countryLabel, supported };
+  window.AsylumI18n = { get locale() { return locale; }, t, setLocale, formatNumber, countryName, countryLabel, regionCodeForNationality, supported };
   document.querySelector('#language-select')?.addEventListener('change', (event) => setLocale(event.target.value));
   applyStatic();
 })();

@@ -3,6 +3,28 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 let searchController = null;
 let searchSequence = 0;
+const initialResultNote = $('#result-note').textContent;
+const initialResults = $('#results').innerHTML;
+
+function updateSearchHistory(query, mode) {
+  if (mode === 'none') return;
+  const url = new URL(location.href);
+  url.searchParams.set('q', query);
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  const currentUrl = `${location.pathname}${location.search}${location.hash}`;
+  if (nextUrl === currentUrl) return;
+  history[mode === 'replace' ? 'replaceState' : 'pushState']({ query }, '', nextUrl);
+}
+
+function resetSearch() {
+  searchSequence += 1;
+  searchController?.abort();
+  searchController = null;
+  $('#judge-q').value = '';
+  $('#result-note').textContent = initialResultNote;
+  $('#results').setAttribute('aria-busy', 'false');
+  $('#results').innerHTML = initialResults;
+}
 
 async function loadStats() {
   try {
@@ -18,14 +40,14 @@ async function loadStats() {
   } catch {}
 }
 
-async function search(query) {
+async function search(query, { historyMode = 'push' } = {}) {
   query = String(query || '').trim();
   if (!query) return;
   const requestId = ++searchSequence;
   searchController?.abort();
   const controller = new AbortController();
   searchController = controller;
-  history.replaceState(null, '', `?q=${encodeURIComponent(query)}`);
+  updateSearchHistory(query, historyMode);
   $('#result-note').textContent = '正在查询…';
   $('#results').setAttribute('aria-busy', 'true');
   $('#results').innerHTML = '<div class="empty">正在读取 EOIR 数据库…</div>';
@@ -45,7 +67,7 @@ async function search(query) {
     if (error.name === 'AbortError' || requestId !== searchSequence) return;
     $('#result-note').textContent = '查询暂不可用';
     $('#results').innerHTML = '<div class="empty" role="alert"><b>数据库接口暂时无法读取</b><p>请稍后重试。</p><div class="quick"><button id="judge-retry" type="button">重新尝试</button></div></div>';
-    $('#judge-retry').addEventListener('click', () => search(query));
+    $('#judge-retry').addEventListener('click', () => search(query, { historyMode: 'none' }));
   } finally {
     if (requestId === searchSequence) $('#results').setAttribute('aria-busy', 'false');
   }
@@ -55,4 +77,14 @@ $('#judge-search').addEventListener('submit', (event) => { event.preventDefault(
 document.querySelectorAll('.quick button').forEach((button) => { button.onclick = () => { $('#judge-q').value = button.dataset.q; search(button.dataset.q); }; });
 loadStats();
 const initial = new URLSearchParams(location.search).get('q');
-if (initial) { $('#judge-q').value = initial; search(initial); }
+history.replaceState({ query: initial || '' }, '', location.href);
+if (initial) { $('#judge-q').value = initial; search(initial, { historyMode: 'none' }); }
+window.addEventListener('popstate', () => {
+  const query = new URLSearchParams(location.search).get('q') || '';
+  if (!query) {
+    resetSearch();
+    return;
+  }
+  $('#judge-q').value = query;
+  search(query, { historyMode: 'none' });
+});

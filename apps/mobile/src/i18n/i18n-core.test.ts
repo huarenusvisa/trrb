@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { languageName, localeDateTag, newsCategoryName, normalizeLocale, normalizeLocalePreference, resolveLocale, translate } from './i18n-core.ts';
+import { authClientErrorMessage, authValidationMessage, languageName, localeDateTag, newsCategoryName, normalizeLocale, normalizeLocalePreference, resolveLocale, translate } from './i18n-core.ts';
 
 test('maps supported system locale variants without confusing Traditional and Simplified Chinese', () => {
   assert.equal(normalizeLocale('zh-Hant-HK'), 'zh-TW');
@@ -41,4 +41,12 @@ test('localizes news browsing chrome while preserving unknown source categories'
   assert.equal(newsCategoryName('en', ''), 'News');
   assert.equal(localeDateTag('en'), 'en-US');
   assert.equal(localeDateTag('zh-TW'), 'zh-TW');
+});
+
+test('localizes account validation and known client failures without hiding server details', () => {
+  assert.equal(authValidationMessage('en', 'identifier'), 'Enter a valid email address or phone number.');
+  assert.equal(authValidationMessage('zh-TW', 'password'), '密碼需要 8–128 位。');
+  assert.equal(authClientErrorMessage('en', new Error('连接账号服务超时，请检查网络后重试。')), 'The account service timed out. Check your connection and try again.');
+  assert.equal(authClientErrorMessage('en', new Error('登录失败（503）')), 'Sign-in failed (503)');
+  assert.equal(authClientErrorMessage('en', new Error('账号或密码错误')), '账号或密码错误');
 });

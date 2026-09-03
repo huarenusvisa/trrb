@@ -29,9 +29,9 @@ name: Unified account login (marked test account)
 - tapOn:
     id: "auth-submit"
 - extendedWaitUntil:
-    visible: "注册成功|登录成功"
+    visible: "注册成功|登录成功|註冊成功|登入成功|Registration successful|Sign-in successful"
     timeout: 30000
-- tapOn: "继续"
+- tapOn: "继续|繼續|Continue"
 - extendedWaitUntil:
     visible:
       id: "account-status"

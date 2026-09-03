@@ -3,11 +3,11 @@ appId: net.trrb.mobile
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: "搜索"
+    visible:
+      id: "home-search-button"
     timeout: 30000
 - tapOn:
-    text: "搜索"
-    index: 0
+    id: "home-search-button"
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -27,8 +27,7 @@ appId: net.trrb.mobile
     visible:
       id: "search-results"
     timeout: 20000
-- extendedWaitUntil:
-    visible: "搜索：特朗普"
-    timeout: 20000
+- assertVisible:
+    id: "category-screen-title"
 - assertVisible:
     id: "category-news-list"

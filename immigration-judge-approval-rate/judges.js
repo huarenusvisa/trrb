@@ -75,7 +75,12 @@ async function search(query, { historyMode = 'push', reveal = true } = {}) {
       if (reveal) revealSearchResults();
       return;
     }
-    $('#results').innerHTML = rows.map((row) => `<a class="judge-row" href="${esc(window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(row.id)}`)}"><div><div class="name">${esc(row.judge_name)}</div><small>${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></div><div><label>任职法院</label>${esc(row.court_name || '—')}</div><div><label>裁决批准率</label><span class="rate">${row.adjudicated_approval_rate == null ? '—' : `${Number(row.adjudicated_approval_rate).toFixed(1)}%`}</span></div><div><label>拒绝</label><span class="verdict-deny">${fmt(row.denials)}</span></div><div><label>其他</label><span class="verdict-other">${fmt(row.other_decisions)}</span></div></a>`).join('');
+    $('#results').innerHTML = rows.map((row) => {
+      const sampleSize = row.adjudicated_decisions ?? row.decision_count ?? row.total_asylum_decisions;
+      const sampleText = sampleSize == null ? '—' : fmt(sampleSize);
+      const locationText = esc([row.court_city, row.court_state].filter(Boolean).join(', '));
+      return `<a class="judge-row" href="${esc(window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(row.id)}`)}"><div><div class="name">${esc(row.judge_name)}</div><small>${locationText}<span class="mobile-sample"> · 裁决样本 ${sampleText}</span></small></div><div><label>任职法院</label>${esc(row.court_name || '—')}</div><div><label>裁决批准率</label><span class="rate">${row.adjudicated_approval_rate == null ? '—' : `${Number(row.adjudicated_approval_rate).toFixed(1)}%`}</span></div><div><label>拒绝</label><span class="verdict-deny">${fmt(row.denials)}</span></div><div><label>裁决样本</label><span class="verdict-sample">${sampleText}</span></div></a>`;
+    }).join('');
     if (reveal) revealSearchResults();
   } catch (error) {
     if (error.name === 'AbortError' || requestId !== searchSequence) return;

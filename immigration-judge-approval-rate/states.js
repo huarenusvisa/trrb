@@ -6,6 +6,8 @@ const initialParams = new URLSearchParams(location.search);
 let rows = [];
 let fiscalYear = Number(initialParams.get('fy')) || 2026;
 const initialQuery = (initialParams.get('q') || initialParams.get('state') || '').trim();
+let loadController = null;
+let loadSequence = 0;
 
 if (initialQuery) $('#state-q').value = initialQuery;
 
@@ -29,14 +31,25 @@ function updateYearControls() {
   });
 }
 
-function syncUrl() {
+function syncUrl(historyMode = 'replace') {
   const query = $('#state-q').value.trim();
   const url = new URL(location.href);
   url.searchParams.set('fy', fiscalYear);
   if (query) url.searchParams.set('q', query);
   else url.searchParams.delete('q');
   url.searchParams.delete('state');
-  history.replaceState(null, '', `${url.pathname}${url.search}`);
+  const nextUrl = `${url.pathname}${url.search}`;
+  const currentUrl = `${location.pathname}${location.search}`;
+  if (historyMode !== 'none' && nextUrl !== currentUrl) {
+    history[historyMode === 'push' ? 'pushState' : 'replaceState'](null, '', nextUrl);
+  }
+}
+
+function applyLocationState() {
+  const params = new URLSearchParams(location.search);
+  const query = (params.get('q') || params.get('state') || '').trim();
+  $('#state-q').value = query;
+  return Number(params.get('fy')) || 2026;
 }
 
 function setLoading(loading) {
@@ -51,33 +64,44 @@ function renderError() {
   $('#state-retry').addEventListener('click', () => load(fiscalYear));
 }
 
-async function load(year = fiscalYear) {
+async function load(year = fiscalYear, historyMode = 'replace') {
+  const requestId = ++loadSequence;
+  loadController?.abort();
+  const controller = new AbortController();
+  loadController = controller;
   fiscalYear = Number(year) || fiscalYear;
   updateYearControls();
   setLoading(true);
   try {
-    const response = await fetch(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`);
+    const response = await fetch(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`, { signal: controller.signal });
     if (!response.ok) throw new Error(`State request failed: ${response.status}`);
     const data = await response.json();
+    if (requestId !== loadSequence) return;
     fiscalYear = Number(data.fiscal_year || fiscalYear);
     rows = (data.states || []).filter((row) => row.state && row.state !== 'Unknown');
     updateYearControls();
     const partial = data.period_status === 'year_to_date';
     $('#state-period-note').textContent = partial ? `FY ${fiscalYear} 财年至今（截至 ${data.period_end}）` : `FY ${fiscalYear} 完整财政年度（${fiscalYear - 1}-10-01 至 ${fiscalYear}-09-30）`;
     $('#state-table-title').textContent = `FY ${fiscalYear} · 按庇护裁决量排序`;
-    syncUrl();
+    syncUrl(historyMode);
     filterRows();
-  } catch {
+  } catch (error) {
+    if (error.name === 'AbortError' || requestId !== loadSequence) return;
     renderError();
   } finally {
-    setLoading(false);
+    if (requestId === loadSequence) setLoading(false);
   }
 }
 
 $('#state-search').addEventListener('submit', (event) => {
   event.preventDefault();
   filterRows();
-  syncUrl();
+  syncUrl('push');
 });
-document.querySelectorAll('[data-state-year]').forEach((button) => button.addEventListener('click', () => load(Number(button.dataset.stateYear))));
-load();
+document.querySelectorAll('[data-state-year]').forEach((button) => button.addEventListener('click', () => load(Number(button.dataset.stateYear), 'push')));
+
+window.addEventListener('popstate', () => {
+  load(applyLocationState(), 'none');
+});
+
+load(applyLocationState());

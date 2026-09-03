@@ -4,7 +4,7 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
 import { fetchArticle, fetchRelatedArticles, NewsArticle } from '../../src/api/trrb';
 import { addHistory, isFavorite, toggleFavorite } from '../../src/storage/library';
-import { getReadingPreferences, ReadingPreferences } from '../../src/storage/reading-preferences';
+import { getReadingPreferences, ReadingPreferences, subscribeReadingPreferences } from '../../src/storage/reading-preferences';
 import { cacheArticle, readCachedArticle, removeCachedArticle } from '../../src/storage/articleCache';
 import { CommentThread } from '../../src/components/CommentThread';
 
@@ -18,7 +18,10 @@ export default function ArticleDetailScreen() {
   const [favorite, setFavorite] = useState(false);
   const [fontScale, setFontScale] = useState<ReadingPreferences['fontScale']>(1);
 
-  useEffect(() => { void getReadingPreferences().then((p) => setFontScale(p.fontScale)); }, []);
+  useEffect(() => {
+    void getReadingPreferences().then((p) => setFontScale(p.fontScale));
+    return subscribeReadingPreferences((p) => setFontScale(p.fontScale));
+  }, []);
 
   async function load() {
     if (!id) return;

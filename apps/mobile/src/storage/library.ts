@@ -1,13 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../auth/supabase';
+import { syncFavoriteLibrary } from './favorites-sync-core';
+import type { SavedArticle } from './favorites-sync-core';
 
-export type SavedArticle = {
-  id: string | number;
-  title: string;
-  category_name?: string;
-  published_at?: string;
-  cover_image?: string;
-};
+export type { SavedArticle } from './favorites-sync-core';
 
 const FAVORITES_KEY = '@trrb/favorites/v1';
 const HISTORY_KEY = '@trrb/history/v1';
@@ -97,6 +93,31 @@ export async function getCloudFavoriteIds() {
   const { data, error } = await supabase.from('favorites').select('article_id').eq('user_id', userId).order('created_at', { ascending: false });
   if (error) throw error;
   return (data || []).map((x) => String(x.article_id));
+}
+
+export async function syncFavoritesWithCloud(resolveArticle: (id: string) => Promise<SavedArticle | null>) {
+  return syncFavoriteLibrary({
+    getCurrentUserId: currentUserIdOrNull,
+    readLocalFavorites: getFavorites,
+    writeLocalFavorites: (items) => writeList(FAVORITES_KEY, items),
+    listCloudFavoriteIds: async (userId) => {
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('article_id')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      return (data || []).map((item) => String(item.article_id));
+    },
+    uploadFavoriteIds: async (userId, articleIds) => {
+      const { error } = await supabase.from('favorites').upsert(
+        articleIds.map((articleId) => ({ user_id: userId, article_id: articleId })),
+        { onConflict: 'user_id,article_id', ignoreDuplicates: true },
+      );
+      if (error) throw error;
+    },
+    resolveArticle,
+  });
 }
 
 export async function getCloudHistoryIds() {

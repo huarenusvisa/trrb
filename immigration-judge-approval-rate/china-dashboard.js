@@ -210,11 +210,14 @@ function scrollToCountryDetail() {
 }
 
 function focusCountryResults() {
-  const firstResult = $('#country-directory').querySelector('.country-card');
-  if (!firstResult) return;
+  const directory = $('#country-directory');
+  const firstResult = directory.querySelector('.country-card');
+  const target = firstResult || directory.querySelector('.empty');
+  if (!target) return;
+  if (!firstResult) target.setAttribute('tabindex', '-1');
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  firstResult.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
-  firstResult.focus({ preventScroll: true });
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.focus({ preventScroll: true });
 }
 
 function setPeriodControlsDisabled(disabled) {
@@ -296,6 +299,7 @@ $('#country-search-form').addEventListener('submit', (event) => {
     $('#country-count').textContent = t('searchChooseOne', { count: fmt(matches.length) });
     focusCountryResults();
   }
+  else focusCountryResults();
 });
 $('#country-search').addEventListener('input', (event) => renderDirectory(filterCountries(event.target.value)));
 document.querySelectorAll('.quick-countries button').forEach((button) => button.addEventListener('click', () => {

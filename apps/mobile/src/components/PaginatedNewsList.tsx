@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { fetchArticlePage, NewsArticle } from '../api/trrb';
+import { useI18n } from '../i18n/I18nProvider';
+import { localeDateTag, newsCategoryName } from '../i18n/i18n-core';
 
 type Props = {
   title: string;
@@ -10,7 +12,8 @@ type Props = {
   emptyText?: string;
 };
 
-export function PaginatedNewsList({ title, category, q, emptyText = '暂时没有符合条件的新闻。' }: Props) {
+export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
+  const { locale, t } = useI18n();
   const [items, setItems] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -37,7 +40,7 @@ export function PaginatedNewsList({ title, category, q, emptyText = '暂时没�
       });
       setNextOffset(page.has_more ? page.next_offset : null);
     } catch (e) {
-      setError(e instanceof Error ? e.message : '新闻加载失败');
+      setError(e instanceof Error ? e.message : t('news.loadFailed'));
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -54,11 +57,11 @@ export function PaginatedNewsList({ title, category, q, emptyText = '暂时没�
         setItems(page.articles);
         setNextOffset(page.has_more ? page.next_offset : null);
       })
-      .catch((e) => setError(e instanceof Error ? e.message : '新闻加载失败'))
+      .catch((e) => setError(e instanceof Error ? e.message : t('news.loadFailed')))
       .finally(() => setLoading(false));
   }, [category, q]);
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>正在读取最新内容…</Text></View>;
+  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>{t('news.loading')}</Text></View>;
 
   return (
     <FlatList
@@ -71,15 +74,15 @@ export function PaginatedNewsList({ title, category, q, emptyText = '暂时没�
       onEndReachedThreshold={0.45}
       onEndReached={() => { if (!loadingMore && nextOffset != null) load(false); }}
       ListHeaderComponent={<View style={styles.header}><Text testID="category-screen-title" style={styles.title}>{title}</Text>{error ? <Text style={styles.error}>{error}</Text> : null}</View>}
-      ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText}</Text></View>}
-      ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color="#c8211e" /> : nextOffset == null && items.length ? <Text style={styles.end}>已经到底了</Text> : null}
+      ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText || t('news.empty')}</Text></View>}
+      ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color="#c8211e" /> : nextOffset == null && items.length ? <Text style={styles.end}>{t('news.end')}</Text> : null}
       renderItem={({ item, index }) => (
-        <Pressable testID={`category-article-${index}`} accessibilityLabel={`打开新闻：${item.title}`} style={styles.card} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}>
+        <Pressable testID={`category-article-${index}`} accessibilityLabel={t('news.openArticle', { title: item.title })} style={styles.card} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}>
           {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.thumb} /> : <View style={styles.placeholder} />}
           <View style={styles.body}>
-            <Text style={styles.category}>{item.category_name === '热门头条' ? '中国热门头条' : (item.category_name || '新闻')}</Text>
+            <Text style={styles.category}>{newsCategoryName(locale, item.category_name)}</Text>
             <Text style={styles.articleTitle} numberOfLines={3}>{item.title}</Text>
-            <Text style={styles.meta}>{item.published_at ? new Date(item.published_at).toLocaleString('zh-CN') : ''}</Text>
+            <Text style={styles.meta}>{item.published_at ? new Date(item.published_at).toLocaleString(localeDateTag(locale)) : ''}</Text>
           </View>
         </Pressable>
       )}

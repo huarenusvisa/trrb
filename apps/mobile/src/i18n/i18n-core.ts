@@ -16,6 +16,43 @@ const zhCN = {
   'tab.profile': '我的',
   'tab.profileIcon': '我',
   'common.back': '返回',
+  'news.loading': '正在读取最新内容…',
+  'news.loadFailed': '新闻加载失败',
+  'news.empty': '暂时没有符合条件的新闻。',
+  'news.end': '已经到底了',
+  'news.openArticle': '打开新闻：{title}',
+  'news.categoryPage': '新闻栏目',
+  'news.categoryFallback': '新闻',
+  'news.categoryHot': '中国热门头条',
+  'news.categoryUsPolitics': '美国时政',
+  'news.categoryUsPublicSafety': '美国警情',
+  'news.categoryImmigration': '移民美国',
+  'news.categoryIce': 'ICE执法动态',
+  'america.heading': '美国',
+  'america.subtitle': '美国时政 · 美国警情',
+  'america.loadFailed': '美国频道加载失败',
+  'america.empty': '暂无最新内容',
+  'legal.heading': '美国判例与新规',
+  'legal.subtitle': '官方法律资料数据库 · App 原生详情',
+  'legal.databaseError': '法律数据库 {status}',
+  'legal.loadFailed': '法律数据库加载失败',
+  'legal.searchPlaceholder': '搜索案名、案号、引证或机构',
+  'legal.count': '共 {count} 条',
+  'legal.officialSource': '官方法律资料',
+  'legal.untitled': '未命名法律资料',
+  'search.placeholder': '搜索新闻标题或摘要',
+  'search.submit': '搜索',
+  'search.filter': '栏目：{category} ×',
+  'search.backHome': '返回搜索首页',
+  'search.queryTitle': '搜索：{query}',
+  'search.categoryTitle': '栏目：{category}',
+  'search.empty': '没有找到相关已发布新闻。',
+  'search.trending': '热搜',
+  'search.trendingSource': '来自正式已发布新闻数据',
+  'search.noTrending': '暂时没有可用热搜数据。',
+  'search.history': '搜索历史',
+  'search.clear': '清除',
+  'search.noHistory': '暂无搜索历史。',
   'profile.heading': '我的',
   'profile.loggedIn': '已登录 · {account}',
   'profile.guest': '游客模式 · 无需注册即可阅读全部公开内容',
@@ -75,7 +112,12 @@ export type MessageKey = keyof typeof zhCN;
 
 const zhTW: Record<MessageKey, string> = {
   'tab.home': '首頁', 'tab.homeIcon': '首', 'tab.america': '美國', 'tab.americaIcon': '美', 'tab.immigration': '移民', 'tab.immigrationIcon': '移', 'tab.legal': '判例新規', 'tab.legalIcon': '法', 'tab.profile': '我的', 'tab.profileIcon': '我',
-  'common.back': '返回', 'profile.heading': '我的', 'profile.loggedIn': '已登入 · {account}', 'profile.guest': '訪客模式 · 無需註冊即可閱讀全部公開內容', 'profile.authWarning': '目前版本尚未設定正式身分服務環境變數。', 'profile.login': '登入 / 建立帳戶',
+  'common.back': '返回',
+  'news.loading': '正在讀取最新內容…', 'news.loadFailed': '新聞載入失敗', 'news.empty': '目前沒有符合條件的新聞。', 'news.end': '已經到底了', 'news.openArticle': '開啟新聞：{title}', 'news.categoryPage': '新聞欄目', 'news.categoryFallback': '新聞', 'news.categoryHot': '中國熱門頭條', 'news.categoryUsPolitics': '美國時政', 'news.categoryUsPublicSafety': '美國警情', 'news.categoryImmigration': '移民美國', 'news.categoryIce': 'ICE 執法動態',
+  'america.heading': '美國', 'america.subtitle': '美國時政 · 美國警情', 'america.loadFailed': '美國頻道載入失敗', 'america.empty': '暫無最新內容',
+  'legal.heading': '美國判例與新規', 'legal.subtitle': '官方法律資料庫 · App 原生詳情', 'legal.databaseError': '法律資料庫 {status}', 'legal.loadFailed': '法律資料庫載入失敗', 'legal.searchPlaceholder': '搜尋案名、案號、引證或機構', 'legal.count': '共 {count} 筆', 'legal.officialSource': '官方法律資料', 'legal.untitled': '未命名法律資料',
+  'search.placeholder': '搜尋新聞標題或摘要', 'search.submit': '搜尋', 'search.filter': '欄目：{category} ×', 'search.backHome': '返回搜尋首頁', 'search.queryTitle': '搜尋：{query}', 'search.categoryTitle': '欄目：{category}', 'search.empty': '沒有找到相關已發布新聞。', 'search.trending': '熱搜', 'search.trendingSource': '來自正式已發布新聞資料', 'search.noTrending': '目前沒有可用熱搜資料。', 'search.history': '搜尋紀錄', 'search.clear': '清除', 'search.noHistory': '暫無搜尋紀錄。',
+  'profile.heading': '我的', 'profile.loggedIn': '已登入 · {account}', 'profile.guest': '訪客模式 · 無需註冊即可閱讀全部公開內容', 'profile.authWarning': '目前版本尚未設定正式身分服務環境變數。', 'profile.login': '登入 / 建立帳戶',
   'profile.community': '移民社區', 'profile.communityMemberMeta': '瀏覽貼文、分享經歷和提出問題', 'profile.communityGuestMeta': '瀏覽無需登入；發文時再登入或註冊', 'profile.notifications': '訊息中心', 'profile.unread': ' · {count}則未讀', 'profile.notificationsMeta': '回覆、按讚、追蹤與系統通知',
   'profile.comments': '我的評論', 'profile.commentsMeta': '查看評論狀態並返回對應新聞', 'profile.favorites': '收藏', 'profile.favoritesMeta': '本機與帳戶雲端收藏自動安全合併', 'profile.localFavorites': '本機收藏', 'profile.localFavoritesMeta': '登入前繼續保存在目前裝置',
   'profile.history': '閱讀紀錄', 'profile.historyMeta': '本機與帳戶雲端紀錄自動合併，最多100則', 'profile.localHistory': '本機閱讀紀錄', 'profile.localHistoryMeta': '登入前繼續保存在目前裝置', 'profile.accountSettings': '帳戶設定', 'profile.accountSettingsMeta': '修改暱稱、預設頭像與公開簡介',
@@ -87,7 +129,12 @@ const zhTW: Record<MessageKey, string> = {
 
 const en: Record<MessageKey, string> = {
   'tab.home': 'Home', 'tab.homeIcon': 'H', 'tab.america': 'U.S.', 'tab.americaIcon': 'U', 'tab.immigration': 'Immigration', 'tab.immigrationIcon': 'I', 'tab.legal': 'Legal', 'tab.legalIcon': 'L', 'tab.profile': 'Me', 'tab.profileIcon': 'M',
-  'common.back': 'Back', 'profile.heading': 'Me', 'profile.loggedIn': 'Signed in · {account}', 'profile.guest': 'Guest mode · Read all public stories without an account', 'profile.authWarning': 'Production identity service is not configured in this build.', 'profile.login': 'Sign in / Create account',
+  'common.back': 'Back',
+  'news.loading': 'Loading the latest stories…', 'news.loadFailed': 'Could not load stories', 'news.empty': 'No matching published stories yet.', 'news.end': 'You have reached the end', 'news.openArticle': 'Open story: {title}', 'news.categoryPage': 'News category', 'news.categoryFallback': 'News', 'news.categoryHot': 'China Top Stories', 'news.categoryUsPolitics': 'U.S. Politics', 'news.categoryUsPublicSafety': 'U.S. Public Safety', 'news.categoryImmigration': 'U.S. Immigration', 'news.categoryIce': 'ICE Enforcement',
+  'america.heading': 'United States', 'america.subtitle': 'U.S. politics · Public safety', 'america.loadFailed': 'Could not load the U.S. channel', 'america.empty': 'No new stories yet',
+  'legal.heading': 'U.S. Cases & Rules', 'legal.subtitle': 'Official legal sources · Native app details', 'legal.databaseError': 'Legal database {status}', 'legal.loadFailed': 'Could not load the legal database', 'legal.searchPlaceholder': 'Search title, docket, citation or agency', 'legal.count': '{count} records', 'legal.officialSource': 'Official legal source', 'legal.untitled': 'Untitled legal record',
+  'search.placeholder': 'Search story titles or summaries', 'search.submit': 'Search', 'search.filter': 'Category: {category} ×', 'search.backHome': 'Back to search', 'search.queryTitle': 'Search: {query}', 'search.categoryTitle': 'Category: {category}', 'search.empty': 'No matching published stories found.', 'search.trending': 'Trending', 'search.trendingSource': 'From published news data', 'search.noTrending': 'Trending data is not available yet.', 'search.history': 'Search history', 'search.clear': 'Clear', 'search.noHistory': 'No search history yet.',
+  'profile.heading': 'Me', 'profile.loggedIn': 'Signed in · {account}', 'profile.guest': 'Guest mode · Read all public stories without an account', 'profile.authWarning': 'Production identity service is not configured in this build.', 'profile.login': 'Sign in / Create account',
   'profile.community': 'Immigration Community', 'profile.communityMemberMeta': 'Browse posts, share experiences and ask questions', 'profile.communityGuestMeta': 'Browse without signing in; sign in when you post', 'profile.notifications': 'Notifications', 'profile.unread': ' · {count} unread', 'profile.notificationsMeta': 'Replies, likes, follows and system notices',
   'profile.comments': 'My comments', 'profile.commentsMeta': 'Review comment status and return to the story', 'profile.favorites': 'Saved stories', 'profile.favoritesMeta': 'Safely merge on-device and cloud favorites', 'profile.localFavorites': 'On-device favorites', 'profile.localFavoritesMeta': 'Kept on this device until you sign in',
   'profile.history': 'Reading history', 'profile.historyMeta': 'Merge device and cloud history, up to 100 stories', 'profile.localHistory': 'On-device history', 'profile.localHistoryMeta': 'Kept on this device until you sign in', 'profile.accountSettings': 'Account settings', 'profile.accountSettingsMeta': 'Edit display name, avatar and public bio',
@@ -123,4 +170,22 @@ export function translate(locale: SupportedLocale, key: MessageKey, params: Reco
 
 export function languageName(locale: SupportedLocale): string {
   return translate(locale, locale === 'zh-CN' ? 'language.zhCN' : locale === 'zh-TW' ? 'language.zhTW' : 'language.en');
+}
+
+export function localeDateTag(locale: SupportedLocale): string {
+  return locale === 'en' ? 'en-US' : locale;
+}
+
+const CATEGORY_KEYS: Record<string, MessageKey> = {
+  '热门头条': 'news.categoryHot',
+  '美国时政': 'news.categoryUsPolitics',
+  '美国警情': 'news.categoryUsPublicSafety',
+  '移民美国': 'news.categoryImmigration',
+  'ICE执法动态': 'news.categoryIce',
+};
+
+export function newsCategoryName(locale: SupportedLocale, category: unknown): string {
+  const value = String(category || '').trim();
+  const key = CATEGORY_KEYS[value];
+  return key ? translate(locale, key) : value || translate(locale, 'news.categoryFallback');
 }

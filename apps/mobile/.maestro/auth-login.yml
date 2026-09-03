@@ -1,0 +1,45 @@
+appId: net.trrb.mobile
+name: Unified account login (marked test account)
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "tab-profile"
+    timeout: 30000
+- tapOn:
+    id: "tab-profile"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "profile-login"
+    timeout: 20000
+- tapOn:
+    id: "profile-login"
+- extendedWaitUntil:
+    visible:
+      id: "auth-identifier"
+    timeout: 15000
+- tapOn:
+    id: "auth-identifier"
+- inputText: ${MAESTRO_TEST_ACCOUNT_IDENTIFIER}
+- tapOn:
+    id: "auth-password"
+- inputText: ${MAESTRO_TEST_ACCOUNT_PASSWORD}
+- tapOn:
+    id: "auth-submit"
+- extendedWaitUntil:
+    visible: "注册成功|登录成功"
+    timeout: 30000
+- tapOn: "继续"
+- extendedWaitUntil:
+    visible:
+      id: "account-status"
+    timeout: 20000
+- assertVisible: ${MAESTRO_TEST_ACCOUNT_IDENTIFIER}
+- tapOn:
+    id: "profile-sign-out"
+- extendedWaitUntil:
+    visible:
+      id: "profile-login"
+    timeout: 20000

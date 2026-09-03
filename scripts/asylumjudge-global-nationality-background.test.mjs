@@ -128,19 +128,30 @@ const searchHelpers = client.match(/function filterCountries\(query\)[\s\S]*?(?=
 assert.ok(searchHelpers, 'nationality search helpers must remain testable');
 const searchSandbox = {
   countries: nationalityData.countries,
-  i18n: { countryName: (row) => row.nationality }
+  i18n: {
+    countryName: (row) => row.nationality,
+    regionCodeForNationality: (row) => ({ China: 'CN', Switzerland: 'CH', 'South Korea': 'KR', 'North Korea': 'KP', Swaziland: 'SZ' })[row.nationality] || null
+  }
 };
 runInNewContext(`${searchHelpers};
   const congo = filterCountries('congo');
   const korea = filterCountries('korea');
   const exactSouthKorea = filterCountries('South Korea');
+  const chinaIso = filterCountries('CN');
+  const chinaEoir = filterCountries('CH');
+  const switzerlandEoir = filterCountries('SZ');
+  const southKoreaIso = filterCountries('KR');
   searchResults = {
     congoCount: congo.length,
     congoResolved: resolveCountrySearch('congo', congo)?.nationality || null,
     koreaCount: korea.length,
     koreaResolved: resolveCountrySearch('korea', korea)?.nationality || null,
     exactResolved: resolveCountrySearch('South Korea', exactSouthKorea)?.nationality || null,
-    uniqueResolved: resolveCountrySearch('south kor', filterCountries('south kor'))?.nationality || null
+    uniqueResolved: resolveCountrySearch('south kor', filterCountries('south kor'))?.nationality || null,
+    chinaIsoResolved: resolveCountrySearch('CN', chinaIso)?.nationality || null,
+    chinaEoirResolved: resolveCountrySearch('CH', chinaEoir)?.nationality || null,
+    switzerlandEoirResolved: resolveCountrySearch('SZ', switzerlandEoir)?.nationality || null,
+    southKoreaIsoResolved: resolveCountrySearch('KR', southKoreaIso)?.nationality || null
   };`, searchSandbox);
 assert.ok(searchSandbox.searchResults.congoCount > 1, 'Congo must exercise an ambiguous client-side search');
 assert.equal(searchSandbox.searchResults.congoResolved, null, 'ambiguous Congo search must not pick the first country');
@@ -148,6 +159,10 @@ assert.ok(searchSandbox.searchResults.koreaCount > 1, 'Korea must exercise an am
 assert.equal(searchSandbox.searchResults.koreaResolved, null, 'ambiguous Korea search must not pick the first country');
 assert.equal(searchSandbox.searchResults.exactResolved, 'South Korea', 'an exact country name must resolve even when it contains a shared search term');
 assert.equal(searchSandbox.searchResults.uniqueResolved, 'South Korea', 'a unique partial search must still resolve');
+assert.equal(searchSandbox.searchResults.chinaIsoResolved, null, 'CN must require confirmation because it means China in ISO and Comoros in EOIR');
+assert.equal(searchSandbox.searchResults.chinaEoirResolved, null, 'CH must require confirmation because it means China in EOIR and Switzerland in ISO');
+assert.equal(searchSandbox.searchResults.switzerlandEoirResolved, null, 'SZ must require confirmation because it means Switzerland in EOIR and Swaziland in ISO');
+assert.equal(searchSandbox.searchResults.southKoreaIsoResolved, null, 'KR must require confirmation because it means South Korea in ISO and Kiribati in EOIR');
 const i18nSandbox = {
   window: {},
   location: { pathname: '/nationality/', search: '', href: 'https://asylumjudge.com/nationality/' },
@@ -171,6 +186,8 @@ i18nSandbox.window.AsylumI18n.setLocale('en', { updateUrl: false, dispatch: fals
 assert.equal(i18nSandbox.window.AsylumI18n.countryName(chinaWithEoirCode), 'China', 'EOIR nationality codes must not be treated as ISO region codes');
 i18nSandbox.window.AsylumI18n.setLocale('zh-Hans', { updateUrl: false, dispatch: false });
 assert.equal(i18nSandbox.window.AsylumI18n.countryName({ nationality: 'El Salvador', nationality_zh: '萨尔瓦多', nationality_code: 'ES' }), '萨尔瓦多', 'EOIR ES must not render as Spain');
+assert.equal(i18nSandbox.window.AsylumI18n.regionCodeForNationality(chinaWithEoirCode), 'CN', 'China must expose ISO CN as a search alias without replacing EOIR CH');
+assert.equal(i18nSandbox.window.AsylumI18n.regionCodeForNationality({ nationality: 'Switzerland', nationality_code: 'SZ' }), 'CH', 'Switzerland must expose ISO CH as a search alias without replacing EOIR SZ');
 const standaloneProxy = readFileSync('asylumjudge/immigration-judges-proxy.js', 'utf8');
 const detailPage = readFileSync('immigration-judge-approval-rate/detail.html', 'utf8');
 const detailClient = readFileSync('immigration-judge-approval-rate/detail.js', 'utf8');
@@ -185,8 +202,8 @@ assert.match(page, /id="country-count"[^>]*role="status"[^>]*aria-live="polite"[
 assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="trendLabel"/, 'trend period controls must expose a localized group label');
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
-assert.match(page, /china-dashboard-i18n\.js\?v=6/, 'nationality dashboard must load the EOIR-code translation asset version');
-assert.match(page, /china-dashboard\.js\?v=21/, 'nationality dashboard must load the EOIR-code label asset version');
+assert.match(page, /china-dashboard-i18n\.js\?v=7/, 'nationality dashboard must load the ISO search-alias asset version');
+assert.match(page, /china-dashboard\.js\?v=22/, 'nationality dashboard must load the safe country-code search asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -222,7 +239,8 @@ assert.match(page, /id="selected-country"[^>]*tabindex="-1"/, 'the updated natio
 assert.match(client, /selected-country'\)\.focus\(\{ preventScroll: true \}\)/, 'directory navigation must move keyboard focus to the updated heading');
 assert.match(page, /\.country-name h2:focus-visible\{outline:3px solid var\(--pass\)/, 'the focused nationality heading must retain a visible focus indicator');
 assert.match(client, /comparison-tooltip/);
-assert.match(client, /function resolveCountrySearch\(query, matches\)[\s\S]*if \(exact\.length === 1\) return exact\[0\];[\s\S]*matches\.length === 1 \? matches\[0\] : null/, 'nationality search must resolve only an exact or unique result');
+assert.match(client, /function resolveCountrySearch\(query, matches\)[\s\S]*exactEoir\.length === 1 && exactIso\.length === 1 && exactEoir\[0\] !== exactIso\[0\]\) return null;[\s\S]*if \(exactEoir\.length === 1\) return exactEoir\[0\];[\s\S]*if \(exactIso\.length === 1\) return exactIso\[0\];[\s\S]*matches\.length === 1 \? matches\[0\] : null/, 'nationality search must require confirmation for EOIR and ISO code collisions before resolving safe exact or unique results');
+assert.match(client, /filterCountries\(query\)[\s\S]*i18n\?\.regionCodeForNationality\(row\)/, 'nationality search must include ISO region-code aliases');
 assert.match(client, /const match = resolveCountrySearch\(query, matches\);[\s\S]*if \(match\) selectCountry\(match\.nationality, true, true\)/, 'successful nationality searches must reveal and focus the selected country details');
 assert.match(client, /else if \(matches\.length > 1\)[\s\S]*\$\('#country-count'\)\.textContent = t\('searchChooseOne', \{ count: fmt\(matches\.length\) \}\);[\s\S]*focusCountryResults\(\)/, 'ambiguous nationality searches must announce that the user should choose a result and move to the candidates');
 assert.match(client, /querySelectorAll\('\.quick-countries button'\)[\s\S]*selectCountry\(button\.dataset\.country, true, true\)/, 'quick nationality buttons must reveal and focus the selected country details');

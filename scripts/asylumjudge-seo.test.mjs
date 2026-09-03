@@ -72,6 +72,36 @@ for (const url of nationalityUrls) {
   assert.ok(dataset.description.length >= 50 && dataset.description.length <= 5000, `${url} Dataset description must contain 50–5000 characters`);
   assert.equal(dataset.license?.url, 'https://asylumjudge.com/methodology/#data-license', `${url} must identify the data license`);
   assert.equal(dataset.isAccessibleForFree, true, `${url} must identify free access`);
+  assert.ok(Array.isArray(dataset.about?.identifier), `${url} must use labeled nationality identifiers`);
+  assert.equal(dataset.about.identifier[0]?.propertyID, 'EOIR nationality code', `${url} must label the EOIR identifier`);
+  assert.match(dataset.about.identifier[0]?.value || '', /^[A-Z]{2}$/, `${url} must expose a two-letter EOIR code`);
+  const isoIdentifier = dataset.about.identifier.find((item) => item.propertyID === 'ISO 3166-1 alpha-2');
+  if (dataset.about['@type'] === 'Country') {
+    assert.match(isoIdentifier?.value || '', /^[A-Z]{2}$/, `${url} current country entities must expose a labeled ISO code`);
+  } else {
+    assert.equal(dataset.about['@type'], 'Thing', `${url} non-country categories must not claim to be current countries`);
+    assert.equal(isoIdentifier, undefined, `${url} non-country categories must not invent an ISO code`);
+  }
+}
+
+const structuredNationalityCases = [
+  ['nationalities/china--ch/index.html', 'Country', 'CH', 'CN'],
+  ['en/nationalities/switzerland--sz/index.html', 'Country', 'SZ', 'CH'],
+  ['nationalities/soviet-union--ur/index.html', 'Thing', 'UR', null]
+];
+for (const [relative, expectedType, expectedEoir, expectedIso] of structuredNationalityCases) {
+  const html = await read(relative);
+  const json = html.match(/<script type="application\/ld\+json" data-seo-generated>([\s\S]*?)<\/script>/)?.[1];
+  const dataset = (JSON.parse(json || '{}')['@graph'] || []).find((item) => item['@type'] === 'Dataset');
+  assert.equal(dataset?.about?.['@type'], expectedType, `${relative} must use the correct nationality entity type`);
+  assert.deepEqual(
+    dataset?.about?.identifier,
+    [
+      { '@type': 'PropertyValue', propertyID: 'EOIR nationality code', value: expectedEoir },
+      ...(expectedIso ? [{ '@type': 'PropertyValue', propertyID: 'ISO 3166-1 alpha-2', value: expectedIso }] : [])
+    ],
+    `${relative} must distinguish EOIR and ISO identifiers`
+  );
 }
 
 const englishHome = await read('en/index.html');

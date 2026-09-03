@@ -41,6 +41,8 @@ test('localizes news browsing chrome while preserving unknown source categories'
   assert.equal(newsCategoryName('en', ''), 'News');
   assert.equal(localeDateTag('en'), 'en-US');
   assert.equal(localeDateTag('zh-TW'), 'zh-TW');
+  assert.equal(translate('en', 'article.previousA11y', { title: 'Sample' }), 'Previous story: Sample');
+  assert.equal(translate('zh-TW', 'article.saved'), '已收藏');
 });
 
 test('localizes account validation and known client failures without hiding server details', () => {

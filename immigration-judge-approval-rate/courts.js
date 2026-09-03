@@ -13,13 +13,25 @@ function render(list) {
   ` : '<div class="empty">没有找到匹配法院</div>';
 }
 
+function setLoading(loading) {
+  $('#court-results').setAttribute('aria-busy', String(loading));
+  $('#court-search').querySelector('button').disabled = loading;
+}
+
+function renderError() {
+  $('#court-results').innerHTML = '<div class="empty" role="alert"><b>法院数据库暂时无法读取</b><p>请稍后重试。</p><button id="court-retry" class="empty-retry" type="button">重新尝试</button></div>';
+  $('#court-retry').addEventListener('click', () => load($('#court-q').value.trim(), selectedState));
+}
+
 async function load(query = '', state = selectedState) {
+  setLoading(true);
   try {
     const params = new URLSearchParams({ mode: 'courts' });
     if (query) params.set('q', query);
     if (state) params.set('state', state);
     params.set('fy', fiscalYear);
     const response = await fetch(`/.netlify/functions/immigration-judges?${params}`);
+    if (!response.ok) throw new Error(`Court request failed: ${response.status}`);
     const data = await response.json();
     fiscalYear = Number(data.fiscal_year || fiscalYear);
     rows = data.courts || [];
@@ -28,7 +40,9 @@ async function load(query = '', state = selectedState) {
     $('#court-judges').textContent = fmt(rows.reduce((sum, row) => sum + Number(row.judges || 0), 0));
     $('#court-decisions').textContent = fmt(rows.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0));
   } catch {
-    $('#court-results').innerHTML = '<div class="empty"><b>法院数据库暂时无法读取</b><p>请稍后重试。</p></div>';
+    renderError();
+  } finally {
+    setLoading(false);
   }
 }
 

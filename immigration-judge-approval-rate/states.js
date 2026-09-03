@@ -17,9 +17,23 @@ function filterRows() {
   render(query ? rows.filter((row) => String(row.state || '').toLowerCase().includes(query)) : rows);
 }
 
+function setLoading(loading) {
+  $('#state-results').setAttribute('aria-busy', String(loading));
+  document.querySelectorAll('[data-state-year]').forEach((button) => {
+    button.disabled = loading;
+  });
+}
+
+function renderError() {
+  $('#state-results').innerHTML = '<div class="empty" role="alert"><b>州级数据库暂时无法读取</b><p>请稍后重试。</p><button id="state-retry" class="empty-retry" type="button">重新尝试</button></div>';
+  $('#state-retry').addEventListener('click', () => load(fiscalYear));
+}
+
 async function load(year = fiscalYear) {
+  setLoading(true);
   try {
     const response = await fetch(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(year)}`);
+    if (!response.ok) throw new Error(`State request failed: ${response.status}`);
     const data = await response.json();
     fiscalYear = Number(data.fiscal_year || year);
     rows = (data.states || []).filter((row) => row.state && row.state !== 'Unknown');
@@ -34,7 +48,9 @@ async function load(year = fiscalYear) {
     history.replaceState(null, '', `${url.pathname}${url.search}`);
     filterRows();
   } catch {
-    $('#state-results').innerHTML = '<div class="empty">州级数据库暂时无法读取</div>';
+    renderError();
+  } finally {
+    setLoading(false);
   }
 }
 

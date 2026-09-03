@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - 'apps/mobile/**'
+      - 'netlify/functions/community-api.js'
+      - 'netlify/functions/community-api.test.js'
       - 'assets/brand/tangren-avatar-512.png'
       - 'scripts/validate-mobile-store-config.mjs'
       - '.github/workflows/mobile-app-ci.yml'
@@ -11,6 +13,8 @@ on:
     branches: [main]
     paths:
       - 'apps/mobile/**'
+      - 'netlify/functions/community-api.js'
+      - 'netlify/functions/community-api.test.js'
       - 'netlify/functions/public-article.js'
       - 'netlify/functions/public-articles.js'
       - 'assets/brand/tangren-avatar-512.png'
@@ -39,6 +43,7 @@ jobs:
           node --check netlify/functions/public-article.js
           node --check netlify/functions/public-articles.js
           node --test netlify/functions/unified-account-login.test.js
+          node --test netlify/functions/community-api.test.js
       - name: Install mobile dependencies
         working-directory: apps/mobile
         run: npm ci
@@ -48,6 +53,9 @@ jobs:
       - name: Test unified mobile account client
         working-directory: apps/mobile
         run: npm run test:auth
+      - name: Test mobile community API client
+        working-directory: apps/mobile
+        run: npm run test:community
       - name: Validate store build configuration
         working-directory: apps/mobile
         run: npm run config:check

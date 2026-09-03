@@ -73,3 +73,9 @@ maestro test .maestro/store-screenshots.yml
 `.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，依次验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”。流程不发布帖子、评论或其他生产内容。
 
 运行前须在 EAS `preview` 环境配置 `MAESTRO_TEST_ACCOUNT_IDENTIFIER`、`MAESTRO_TEST_ACCOUNT_PASSWORD`、`EXPO_PUBLIC_SUPABASE_URL` 和 `EXPO_PUBLIC_SUPABASE_ANON_KEY`。测试邮箱必须以 `trrb-e2e-` 开头，凭据不得写入仓库；预检失败时也不会输出其值。配置完成后，从 EAS Workflows 手动运行 `Unified account E2E`，首次运行会创建这个明确标记的固定测试账户，后续运行复用同一账户并在每轮结束时退出登录。
+
+## 社区帖子闭环
+
+社区列表中的帖子可进入 App 原生详情页。详情页继续复用网站现有 `community-api`，支持读取评论、发表评论、点赞或取消点赞、举报，以及作者下架自己的帖子。所有写操作携带当前 Supabase 会话的短期 access token；App 不包含 service-role 或其他服务端密钥。
+
+运行 `npm run test:community` 可验证帖子详情读取、会话头、评论、点赞、举报、作者下架以及输入校验的客户端契约。

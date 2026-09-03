@@ -9,6 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test:auth": "node --experimental-strip-types --test src/auth/unified-account.test.ts scripts/validate-auth-e2e-env.test.mjs",
+    "test:community": "node --experimental-strip-types --test src/api/community-core.test.ts",
     "typecheck": "tsc --noEmit",
     "config:check": "node ../../scripts/validate-mobile-store-config.mjs",
     "export:web": "expo export --platform web --output-dir .expo-export --clear"

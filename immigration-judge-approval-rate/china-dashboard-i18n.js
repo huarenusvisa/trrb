@@ -44,6 +44,12 @@
     tr: { pageTitle:'Uyruğa göre küresel sığınma sonuçları | AsylumJudge', metaDescription:'ABD göçmenlik mahkemesi sığınma sonuçlarını uyruğa göre arayın; aylık, üç aylık ve yıllık eğilimleri inceleyin.', dataLabel:'ABD Göçmenlik Verileri', loadingSamples:'Doğrulanmış örneklem yükleniyor', searchChooseOne:'{count} eşleşme bulundu. Sonuçlardan bir uyruk seçin.', trendNote:'Her nokta EOIR karar tarihleri ve uyruk alanlarından gelir; yeşil, kırmızı ve mavi onay, ret ve diğer sonuçları gösterir.', loading:'Yükleniyor…', trendInsufficient:'Bu aralıkta 50 karar eşiğine ulaşan en az iki gerçek veri noktası yok. Üç aylık veya yıllık görünümü deneyin.', trendRange:'{start}–{end} · asgari örneklem eşiğine ulaşan {count} gerçek veri noktası', sampleDate:'{start}–{end} kayıtları; bu sayfa yalnızca toplu verileri gösterir, kimliği belirlenebilir bireysel davaları göstermez.', retry:'Lütfen daha sonra tekrar deneyin; doğrulanmış veriler yerine tahmin kullanılmaz.', retryAction:'Tekrar dene', databaseUnavailable:'Uyruk veri tabanı geçici olarak kullanılamıyor. Daha sonra yenileyin.' }
   };
   Object.entries(supplements).forEach(([code, copy]) => Object.assign(translations[code], copy));
+  const eoirCodeLabels = {
+    en: 'EOIR code: {code}', es: 'Código EOIR: {code}', fr: 'Code EOIR : {code}', 'pt-BR': 'Código EOIR: {code}',
+    hi: 'EOIR कोड: {code}', 'zh-Hans': 'EOIR代码：{code}', 'zh-Hant': 'EOIR代碼：{code}', ru: 'Код EOIR: {code}',
+    ar: 'رمز EOIR: {code}', tr: 'EOIR kodu: {code}'
+  };
+  Object.entries(eoirCodeLabels).forEach(([code, label]) => { translations[code].eoirCode = label; });
 
   const supported = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
   const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };

@@ -32,6 +32,14 @@ const topicCards = [
     image: 'https://trrb.net/assets/topic-focus/election-ballot.jpg?v=30',
     url: 'https://trrb.net/listing.html?q=%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE',
   },
+  {
+    key: 'finance',
+    title: '牛来｜唐人财经',
+    subtitle: '财经新闻 · 自选行情 · ETF基金 · 投资服务',
+    status: '与PC端同步',
+    image: 'https://trrb.net/.netlify/images?url=%2Fassets%2Ftopic-focus%2Ffinance-market.svg&fm=png&w=420',
+    url: 'https://trrb.net/niulai/',
+  },
 ] as const;
 
 type WeatherState = { temperature: number | null; code: number | null; isDay: boolean };
@@ -148,6 +156,7 @@ export default function HomeScreen() {
     trump: articles.find((item) => item.title.includes('特朗普')),
     ice: articles.find((item) => item.category_name === 'ICE执法动态' || item.title.toUpperCase().includes('ICE')),
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
+    finance: articles.find((item) => /财经|股市|美股|基金|ETF/i.test(item.title)),
   }), [articles]);
   const weatherInfo = weatherLabel(weather.code, weather.isDay);
   const dateLabel = useMemo(() => new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'America/New_York' }).format(new Date()), []);

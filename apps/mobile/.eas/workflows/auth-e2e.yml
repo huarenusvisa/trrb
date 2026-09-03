@@ -1,4 +1,4 @@
-name: Unified account E2E
+name: Unified account and community E2E
 
 on:
   workflow_dispatch: {}
@@ -42,9 +42,20 @@ jobs:
       retries: 1
       retry_failed_only: true
 
+  test_android_community:
+    name: Android community lifecycle
+    needs: [get_android, test_android_auth]
+    environment: preview
+    type: maestro
+    params:
+      build_id: ${{ needs.get_android.outputs.build_id }}
+      flow_path: '.maestro/community-lifecycle.yml'
+      retries: 1
+      retry_failed_only: true
+
   test_ios_auth:
     name: iOS unified account regression
-    needs: [get_ios, test_android_auth]
+    needs: [get_ios, test_android_community]
     environment: preview
     type: maestro
     params:
@@ -52,3 +63,23 @@ jobs:
       flow_path: '.maestro/auth-login.yml'
       retries: 1
       retry_failed_only: true
+
+  test_ios_community:
+    name: iOS community lifecycle
+    needs: [get_ios, test_ios_auth]
+    environment: preview
+    type: maestro
+    params:
+      build_id: ${{ needs.get_ios.outputs.build_id }}
+      flow_path: '.maestro/community-lifecycle.yml'
+      retries: 1
+      retry_failed_only: true
+
+  cleanup_community:
+    name: Unpublish marked community test posts
+    after: [test_android_community, test_ios_community]
+    environment: preview
+    steps:
+      - uses: eas/checkout
+      - name: Clean up marked posts with the test user session
+        run: node scripts/cleanup-community-e2e.mjs

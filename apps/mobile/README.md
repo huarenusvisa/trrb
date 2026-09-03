@@ -70,9 +70,11 @@ maestro test .maestro/store-screenshots.yml
 
 ## 统一账号真机回归
 
-`.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，依次验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”。流程不发布帖子、评论或其他生产内容。
+`.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，先验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”，再在两个平台分别完成社区发帖、点赞、评论、举报和作者下架。
 
-运行前须在 EAS `preview` 环境配置 `MAESTRO_TEST_ACCOUNT_IDENTIFIER`、`MAESTRO_TEST_ACCOUNT_PASSWORD`、`EXPO_PUBLIC_SUPABASE_URL` 和 `EXPO_PUBLIC_SUPABASE_ANON_KEY`。测试邮箱必须以 `trrb-e2e-` 开头，凭据不得写入仓库；预检失败时也不会输出其值。配置完成后，从 EAS Workflows 手动运行 `Unified account E2E`，首次运行会创建这个明确标记的固定测试账户，后续运行复用同一账户并在每轮结束时退出登录。
+运行前须在 EAS `preview` 环境配置 `MAESTRO_TEST_ACCOUNT_IDENTIFIER`、`MAESTRO_TEST_ACCOUNT_PASSWORD`、`MAESTRO_TEST_CONTENT_SUFFIX`、`EXPO_PUBLIC_SUPABASE_URL` 和 `EXPO_PUBLIC_SUPABASE_ANON_KEY`。测试邮箱必须以 `trrb-e2e-` 开头；内容后缀必须是 6–32 位小写字母、数字或连字符，用来区分每次运行。凭据不得写入仓库，预检失败时也不会输出其值。配置完成后，从 EAS Workflows 手动运行 `Unified account and community E2E`。
+
+社区流程只创建标题以 `【TRRB-E2E-` 开头且正文含固定自动化标记的测试帖。正常路径由作者立即下架；无论 Maestro 成功还是失败，独立清理任务都会使用同一测试用户的短期会话再次查找双重标记内容并调用现有 `community-api` 下架。清理脚本不含 service-role，也不能下架其他用户或仅命中单一标记的内容。
 
 ## 社区帖子闭环
 

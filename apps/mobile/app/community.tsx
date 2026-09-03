@@ -37,7 +37,7 @@ export default function CommunityScreen() {
 
   useFocusEffect(useCallback(() => { void load(); }, [load]));
 
-  return <View style={styles.page}>
+  return <View testID="community-screen" style={styles.page}>
     <Stack.Screen options={{ headerShown: true, title: '移民社区', headerBackTitle: '返回' }} />
     <View style={styles.header}>
       <View style={styles.headerCopy}><Text style={styles.eyebrow}>TANG REN COMMUNITY</Text><Text style={styles.title}>真实经历，彼此互助</Text></View>

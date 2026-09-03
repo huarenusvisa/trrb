@@ -18,7 +18,7 @@
       <div><div class="eyebrow">TRRB · EOIR COURT DATABASE</div><h1 id="court-page-title">美国移民法院庇护通过率</h1><p id="court-period-note">按案件作出裁决时所在法院归属州；可切换财政年度核对案件量。</p></div>
       <form id="court-search"><input id="court-q" placeholder="搜索法院、城市或州，例如 New York"><button>搜索</button></form>
     </section>
-    <div class="state-year-tabs" aria-label="选择财政年度"><button data-fy="2026" class="active">FY 2026 至今</button><button data-fy="2025">FY 2025</button><button data-fy="2024">FY 2024</button></div>
+    <div class="state-year-tabs" aria-label="选择财政年度"><button type="button" data-fy="2026" class="active" aria-pressed="true">FY 2026 至今</button><button type="button" data-fy="2025" aria-pressed="false">FY 2025</button><button type="button" data-fy="2024" aria-pressed="false">FY 2024</button></div>
     <section class="court-summary"><article><span>法院</span><strong id="court-count">—</strong></article><article><span>法官</span><strong id="court-judges">—</strong></article><article><span>庇护裁决</span><strong id="court-decisions">—</strong></article></section>
     <section class="court-section"><div class="section-head"><div><span>法院汇总</span><h2>按庇护裁决量排序</h2></div><p>裁决批准率＝批准 ÷（批准 + 拒绝）</p></div><div id="court-results" class="court-table" aria-live="polite" aria-busy="true"><div class="empty">正在读取法院数据…</div></div></section>
     <section class="method-note"><p>绿色为庇护批准，红色为庇护拒绝，蓝色为可识别的其他结案结果；没有可核验最终结果的待裁案件不计入。数据按个案裁决记录中的法院代码归州，不把法官全部历史案件归到其最新任职法院。</p><p><a href="/immigration-judge-approval-rate/methodology.html">查看统计口径与来源说明 →</a></p></section>
@@ -26,6 +26,6 @@
   <footer class="judge-footer"><div class="judge-shell"><b>唐人日报 Tang Ren Daily</b><span>EOIR 公开数据 · 持续更新</span></div></footer>
   <script src="/asylumjudge/app-i18n.js?v=8"></script>
   <script src="/asylumjudge/domain-brand.js?v=9"></script>
-  <script src="/immigration-judge-approval-rate/courts.js?v=6"></script>
+  <script src="/immigration-judge-approval-rate/courts.js?v=7"></script>
 </body>
 </html>

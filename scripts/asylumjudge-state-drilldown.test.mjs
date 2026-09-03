@@ -70,6 +70,12 @@ assert.match(statesClient, /courts\.html\?state=/, 'state rows must navigate wit
 assert.doesNotMatch(statesClient, /courts\.html\?q=/, 'state rows must not use fuzzy text search');
 assert.match(courtsClient, /get\('state'\)/, 'court listing must read the selected state from the URL');
 assert.match(courtsClient, /params\.set\('state', state\)/, 'court listing must pass the exact state to the API');
+assert.match(courtsClient, /document\.querySelectorAll\('\[data-fy\]'\).*addEventListener\('click'/, 'court fiscal-year controls must load the selected year');
+assert.match(courtsClient, /load\(\$\('#court-q'\)\.value\.trim\(\), selectedState, Number\(button\.dataset\.fy\)\)/, 'year switching must preserve the current court search and state');
+assert.match(courtsClient, /params\.set\('fy', fiscalYear\)/, 'court listing must send the selected fiscal year to the API');
+assert.match(courtsClient, /url\.searchParams\.set\('fy', fiscalYear\)/, 'court listing must keep the selected fiscal year in the URL');
+assert.match(courtsClient, /url\.searchParams\.set\('q', query\)/, 'court listing must preserve a search query in the URL');
+assert.match(courtsClient, /button\.setAttribute\('aria-pressed', String\(active\)\)/, 'court year controls must expose their selected state');
 assert.match(statesClient, /if \(!response\.ok\) throw/, 'state listing must treat non-2xx responses as failures');
 assert.match(courtsClient, /if \(!response\.ok\) throw/, 'court listing must treat non-2xx responses as failures');
 assert.match(statesClient, /id="state-retry"[\s\S]*load\(fiscalYear\)/, 'state retry must preserve the selected fiscal year');
@@ -78,8 +84,10 @@ assert.match(statesClient, /role="alert"/, 'state load failures must be announce
 assert.match(courtsClient, /role="alert"/, 'court load failures must be announced');
 assert.match(statesHtml, /id="state-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'state results must expose live loading state');
 assert.match(courtsHtml, /id="court-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court results must expose live loading state');
+assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="2025"[^>]*aria-pressed="false"/, 'court year controls must have initial accessible selection state');
+assert.match(courtsHtml, /courts\.js\?v=7/, 'court page must load the fiscal-year-enabled client');
 assert.match(statesHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=6/, 'state page must load the retry-enabled assets');
-assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=6/, 'court page must load the retry-enabled assets');
+assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=7/, 'court page must load the retry and fiscal-year-enabled assets');
 assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');
 assert.match(appI18n, /\['重新尝试','Try again'.*'إعادة المحاولة','Tekrar dene'\]/, 'retry action must be translated in all supported languages');
 assert.match(detailClient, /params\.set\('state', state\)/, 'court detail must preserve state scope');

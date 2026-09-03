@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-03T16:23:37.439Z",
+  "generated_at": "2026-09-03T21:43:48.867Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -64,7 +64,7 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1928377,
+      "bytes": 1928624,
       "article_count": 5000,
       "child_sitemaps": [],
       "legacy_query_count": 0,
@@ -73,14 +73,86 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 101829,
-      "article_count": 209,
+      "bytes": 96604,
+      "article_count": 192,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v7-quality-dedupe"
     }
   },
   "articles": [
+    {
+      "url": "https://trrb.net/us-politics/%E5%93%88%E9%A9%AC%E6%96%AF%E6%95%B0%E5%AD%97%E8%9E%8D%E8%B5%84%E6%B8%A0%E9%81%93%E9%81%AD%E5%9B%B4%E5%89%BF%E7%BE%8E%E5%9B%BD%E5%8F%B8%E6%B3%95%E9%83%A8%E6%9F%A5%E6%89%A356%E4%B8%87%E7%BE%8E%E5%85%83%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81-mtls7137-a19d23",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/%E5%93%88%E9%A9%AC%E6%96%AF%E6%95%B0%E5%AD%97%E8%9E%8D%E8%B5%84%E6%B8%A0%E9%81%93%E9%81%AD%E5%9B%B4%E5%89%BF%E7%BE%8E%E5%9B%BD%E5%8F%B8%E6%B3%95%E9%83%A8%E6%9F%A5%E6%89%A356%E4%B8%87%E7%BE%8E%E5%85%83%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81-mtls7137-a19d23",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 36,
+      "h1_length": 29,
+      "canonical": "https://trrb.net/us-politics/%E5%93%88%E9%A9%AC%E6%96%AF%E6%95%B0%E5%AD%97%E8%9E%8D%E8%B5%84%E6%B8%A0%E9%81%93%E9%81%AD%E5%9B%B4%E5%89%BF%E7%BE%8E%E5%9B%BD%E5%8F%B8%E6%B3%95%E9%83%A8%E6%9F%A5%E6%89%A356%E4%B8%87%E7%BE%8E%E5%85%83%E5%8A%A0%E5%AF%86%E8%B4%A7%E5%B8%81-mtls7137-a19d23",
+      "body_length": 1687,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-crime/x%E5%B9%B3%E5%8F%B0%E7%88%86%E5%8F%91%E8%B4%A6%E6%88%B7%E5%8D%B1%E6%9C%BA%E6%95%B0%E5%8D%81%E4%B8%87%E7%94%A8%E6%88%B7%E9%81%AD%E9%BB%91%E5%AE%A2%E5%A4%BA%E6%9D%83%E6%94%BB%E5%87%BB%E5%8F%B8%E6%B3%95%E9%83%A8%E7%B4%A7%E6%80%A5%E8%BF%BD%E6%9F%A5-mtlrzxt0-065173",
+      "status": 200,
+      "final_url": "https://trrb.net/us-crime/x%E5%B9%B3%E5%8F%B0%E7%88%86%E5%8F%91%E8%B4%A6%E6%88%B7%E5%8D%B1%E6%9C%BA%E6%95%B0%E5%8D%81%E4%B8%87%E7%94%A8%E6%88%B7%E9%81%AD%E9%BB%91%E5%AE%A2%E5%A4%BA%E6%9D%83%E6%94%BB%E5%87%BB%E5%8F%B8%E6%B3%95%E9%83%A8%E7%B4%A7%E6%80%A5%E8%BF%BD%E6%9F%A5-mtlrzxt0-065173",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 37,
+      "h1_length": 30,
+      "canonical": "https://trrb.net/us-crime/x%E5%B9%B3%E5%8F%B0%E7%88%86%E5%8F%91%E8%B4%A6%E6%88%B7%E5%8D%B1%E6%9C%BA%E6%95%B0%E5%8D%81%E4%B8%87%E7%94%A8%E6%88%B7%E9%81%AD%E9%BB%91%E5%AE%A2%E5%A4%BA%E6%9D%83%E6%94%BB%E5%87%BB%E5%8F%B8%E6%B3%95%E9%83%A8%E7%B4%A7%E6%80%A5%E8%BF%BD%E6%9F%A5-mtlrzxt0-065173",
+      "body_length": 1635,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-politics/%E9%A9%AC%E6%96%AF%E5%85%8B%E6%94%BF%E6%B2%BB%E6%9C%BA%E5%99%A8%E9%87%8D%E5%90%AF80%E4%B8%87%E7%BE%8E%E5%85%83%E6%9D%80%E5%85%A5%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE%E6%8A%BC%E6%B3%A8%E5%85%B1%E5%92%8C%E5%85%9A%E5%85%B3%E9%94%AE%E5%B8%AD%E4%BD%8D-mtlrj032-154361",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/%E9%A9%AC%E6%96%AF%E5%85%8B%E6%94%BF%E6%B2%BB%E6%9C%BA%E5%99%A8%E9%87%8D%E5%90%AF80%E4%B8%87%E7%BE%8E%E5%85%83%E6%9D%80%E5%85%A5%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE%E6%8A%BC%E6%B3%A8%E5%85%B1%E5%92%8C%E5%85%9A%E5%85%B3%E9%94%AE%E5%B8%AD%E4%BD%8D-mtlrj032-154361",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 38,
+      "h1_length": 31,
+      "canonical": "https://trrb.net/us-politics/%E9%A9%AC%E6%96%AF%E5%85%8B%E6%94%BF%E6%B2%BB%E6%9C%BA%E5%99%A8%E9%87%8D%E5%90%AF80%E4%B8%87%E7%BE%8E%E5%85%83%E6%9D%80%E5%85%A5%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE%E6%8A%BC%E6%B3%A8%E5%85%B1%E5%92%8C%E5%85%9A%E5%85%B3%E9%94%AE%E5%B8%AD%E4%BD%8D-mtlrj032-154361",
+      "body_length": 1831,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-politics/886%E4%BA%BF%E7%BE%8E%E5%85%83%E8%B4%B8%E6%98%93%E7%BC%BA%E5%8F%A3%E7%BE%8E%E5%9B%BD7%E6%9C%88%E9%80%86%E5%B7%AE%E6%9A%B4%E5%A2%9E%E5%88%9B%E4%B8%80%E5%B9%B4%E5%A4%9A%E6%96%B0%E9%AB%98-mtlrbx6n-980bd5",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/886%E4%BA%BF%E7%BE%8E%E5%85%83%E8%B4%B8%E6%98%93%E7%BC%BA%E5%8F%A3%E7%BE%8E%E5%9B%BD7%E6%9C%88%E9%80%86%E5%B7%AE%E6%9A%B4%E5%A2%9E%E5%88%9B%E4%B8%80%E5%B9%B4%E5%A4%9A%E6%96%B0%E9%AB%98-mtlrbx6n-980bd5",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 33,
+      "h1_length": 26,
+      "canonical": "https://trrb.net/us-politics/886%E4%BA%BF%E7%BE%8E%E5%85%83%E8%B4%B8%E6%98%93%E7%BC%BA%E5%8F%A3%E7%BE%8E%E5%9B%BD7%E6%9C%88%E9%80%86%E5%B7%AE%E6%9A%B4%E5%A2%9E%E5%88%9B%E4%B8%80%E5%B9%B4%E5%A4%9A%E6%96%B0%E9%AB%98-mtlrbx6n-980bd5",
+      "body_length": 1657,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-politics/%E4%B8%87%E6%96%AF%E6%8E%A5%E7%AE%A1%E7%99%BD%E5%AE%AB%E8%AE%B2%E5%8F%B042%E5%A4%A9%E6%B2%89%E9%BB%98%E7%BB%88%E7%BB%93%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E9%87%8D%E6%96%B0%E8%BF%8E%E6%88%98%E5%AA%92%E4%BD%93-mtlr1jrl-bd0d9e",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/%E4%B8%87%E6%96%AF%E6%8E%A5%E7%AE%A1%E7%99%BD%E5%AE%AB%E8%AE%B2%E5%8F%B042%E5%A4%A9%E6%B2%89%E9%BB%98%E7%BB%88%E7%BB%93%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E9%87%8D%E6%96%B0%E8%BF%8E%E6%88%98%E5%AA%92%E4%BD%93-mtlr1jrl-bd0d9e",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 35,
+      "h1_length": 28,
+      "canonical": "https://trrb.net/us-politics/%E4%B8%87%E6%96%AF%E6%8E%A5%E7%AE%A1%E7%99%BD%E5%AE%AB%E8%AE%B2%E5%8F%B042%E5%A4%A9%E6%B2%89%E9%BB%98%E7%BB%88%E7%BB%93%E7%89%B9%E6%9C%97%E6%99%AE%E6%94%BF%E5%BA%9C%E9%87%8D%E6%96%B0%E8%BF%8E%E6%88%98%E5%AA%92%E4%BD%93-mtlr1jrl-bd0d9e",
+      "body_length": 1549,
+      "schema": true,
+      "noindex": false
+    },
+    {
+      "url": "https://trrb.net/us-politics/%E7%89%B9%E6%9C%97%E6%99%AE%E5%87%BA%E7%94%9F%E5%85%AC%E6%B0%91%E6%9D%83%E6%96%B0%E4%BB%A4%E5%86%8D%E9%81%AD%E9%87%8D%E5%87%BB%E8%81%94%E9%82%A6%E6%B3%95%E9%99%A2%E5%8F%AB%E5%81%9C%E8%A1%8C%E6%94%BF%E4%BB%A4%E7%A7%B0%E5%87%A0%E4%B9%8E%E8%82%AF%E5%AE%9A%E8%BF%9D%E5%AE%AA-mtlquymc-a00a2b",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/%E7%89%B9%E6%9C%97%E6%99%AE%E5%87%BA%E7%94%9F%E5%85%AC%E6%B0%91%E6%9D%83%E6%96%B0%E4%BB%A4%E5%86%8D%E9%81%AD%E9%87%8D%E5%87%BB%E8%81%94%E9%82%A6%E6%B3%95%E9%99%A2%E5%8F%AB%E5%81%9C%E8%A1%8C%E6%94%BF%E4%BB%A4%E7%A7%B0%E5%87%A0%E4%B9%8E%E8%82%AF%E5%AE%9A%E8%BF%9D%E5%AE%AA-mtlquymc-a00a2b",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 41,
+      "h1_length": 34,
+      "canonical": "https://trrb.net/us-politics/%E7%89%B9%E6%9C%97%E6%99%AE%E5%87%BA%E7%94%9F%E5%85%AC%E6%B0%91%E6%9D%83%E6%96%B0%E4%BB%A4%E5%86%8D%E9%81%AD%E9%87%8D%E5%87%BB%E8%81%94%E9%82%A6%E6%B3%95%E9%99%A2%E5%8F%AB%E5%81%9C%E8%A1%8C%E6%94%BF%E4%BB%A4%E7%A7%B0%E5%87%A0%E4%B9%8E%E8%82%AF%E5%AE%9A%E8%BF%9D%E5%AE%AA-mtlquymc-a00a2b",
+      "body_length": 1986,
+      "schema": true,
+      "noindex": false
+    },
     {
       "url": "https://trrb.net/us-politics/%E8%8B%B1%E4%BC%9F%E8%BE%BE%E8%B1%AA%E6%8E%B7129%E4%BA%BF%E7%BE%8E%E5%85%83%E6%94%B6%E8%B4%ADhugging-face%E5%BC%80%E6%BA%90ai%E7%94%9F%E6%80%81%E8%BF%8E%E6%9D%A5%E5%B7%A8%E5%8F%98-mtlq8z1f-283059",
       "status": 200,
@@ -150,78 +222,6 @@
       "h1_length": 27,
       "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095527237730849052",
       "body_length": 357,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095537300608299093",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095537300608299093",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 33,
-      "h1_length": 26,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095537300608299093",
-      "body_length": 324,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-evt-2aaab95a3b1390eff71604bd139f6feff4f92438",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-evt-2aaab95a3b1390eff71604bd139f6feff4f92438",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 39,
-      "h1_length": 32,
-      "canonical": "https://trrb.net/ice/ice-evt-2aaab95a3b1390eff71604bd139f6feff4f92438",
-      "body_length": 411,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095300748653269111",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095300748653269111",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 27,
-      "h1_length": 20,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095300748653269111",
-      "body_length": 326,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/ice/ice-evt-a0ed13a96f1f0f46598a216bc8a5a84f1f00b6df",
-      "status": 200,
-      "final_url": "https://trrb.net/ice/ice-evt-a0ed13a96f1f0f46598a216bc8a5a84f1f00b6df",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 29,
-      "h1_length": 22,
-      "canonical": "https://trrb.net/ice/ice-evt-a0ed13a96f1f0f46598a216bc8a5a84f1f00b6df",
-      "body_length": 394,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095323392597528813",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095323392597528813",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 36,
-      "h1_length": 29,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095323392597528813",
-      "body_length": 331,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095330944727334985",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095330944727334985",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 32,
-      "h1_length": 25,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095330944727334985",
-      "body_length": 313,
       "schema": true,
       "noindex": false
     }

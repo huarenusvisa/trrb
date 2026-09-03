@@ -52,12 +52,14 @@ function renderError() {
 }
 
 async function load(year = fiscalYear) {
+  fiscalYear = Number(year) || fiscalYear;
+  updateYearControls();
   setLoading(true);
   try {
-    const response = await fetch(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(year)}`);
+    const response = await fetch(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`);
     if (!response.ok) throw new Error(`State request failed: ${response.status}`);
     const data = await response.json();
-    fiscalYear = Number(data.fiscal_year || year);
+    fiscalYear = Number(data.fiscal_year || fiscalYear);
     rows = (data.states || []).filter((row) => row.state && row.state !== 'Unknown');
     updateYearControls();
     const partial = data.period_status === 'year_to_date';

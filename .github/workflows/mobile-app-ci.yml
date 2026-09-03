@@ -8,6 +8,13 @@ on:
       - 'netlify/functions/community-api.test.js'
       - 'netlify/functions/public-article-translation.js'
       - 'netlify/functions/public-article-translation.test.js'
+      - 'netlify/functions/admin-article-translations.js'
+      - 'netlify/functions/admin-article-translations.test.js'
+      - 'netlify/functions/_shared/article-ai.js'
+      - 'admin/article-translations.*'
+      - 'admin/index.html'
+      - 'admin/admin.js'
+      - 'scripts/validate-admin-article-translations.test.mjs'
       - 'netlify/functions/admin-push.js'
       - 'netlify/functions/push-receipts.mjs'
       - 'netlify/functions/push-receipts-core.js'
@@ -33,6 +40,13 @@ on:
       - 'netlify/functions/public-articles.js'
       - 'netlify/functions/public-article-translation.js'
       - 'netlify/functions/public-article-translation.test.js'
+      - 'netlify/functions/admin-article-translations.js'
+      - 'netlify/functions/admin-article-translations.test.js'
+      - 'netlify/functions/_shared/article-ai.js'
+      - 'admin/article-translations.*'
+      - 'admin/index.html'
+      - 'admin/admin.js'
+      - 'scripts/validate-admin-article-translations.test.mjs'
       - 'netlify/functions/admin-push.js'
       - 'netlify/functions/push-receipts.mjs'
       - 'netlify/functions/push-receipts-core.js'
@@ -74,6 +88,8 @@ jobs:
           node --check netlify/functions/public-article.js
           node --check netlify/functions/public-articles.js
           node --test netlify/functions/public-article-translation.test.js
+          node --test netlify/functions/admin-article-translations.test.js
+          node --test scripts/validate-admin-article-translations.test.mjs
           node --check netlify/functions/admin-push.js
           node --check netlify/functions/push-receipts.mjs
           node --test netlify/functions/push-receipts-core.test.js

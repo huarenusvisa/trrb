@@ -4,6 +4,7 @@ export type SavedArticle = {
   category_name?: string;
   published_at?: string;
   cover_image?: string;
+  last_read_at?: string;
 };
 
 export type FavoriteSyncAdapter = {

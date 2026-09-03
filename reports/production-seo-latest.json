@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-03T16:12:28.669Z",
+  "generated_at": "2026-09-03T16:23:37.439Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -64,7 +64,7 @@
     "https://trrb.net/sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 1928427,
+      "bytes": 1928377,
       "article_count": 5000,
       "child_sitemaps": [],
       "legacy_query_count": 0,
@@ -73,14 +73,26 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 101286,
-      "article_count": 208,
+      "bytes": 101829,
+      "article_count": 209,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v7-quality-dedupe"
     }
   },
   "articles": [
+    {
+      "url": "https://trrb.net/us-politics/%E8%8B%B1%E4%BC%9F%E8%BE%BE%E8%B1%AA%E6%8E%B7129%E4%BA%BF%E7%BE%8E%E5%85%83%E6%94%B6%E8%B4%ADhugging-face%E5%BC%80%E6%BA%90ai%E7%94%9F%E6%80%81%E8%BF%8E%E6%9D%A5%E5%B7%A8%E5%8F%98-mtlq8z1f-283059",
+      "status": 200,
+      "final_url": "https://trrb.net/us-politics/%E8%8B%B1%E4%BC%9F%E8%BE%BE%E8%B1%AA%E6%8E%B7129%E4%BA%BF%E7%BE%8E%E5%85%83%E6%94%B6%E8%B4%ADhugging-face%E5%BC%80%E6%BA%90ai%E7%94%9F%E6%80%81%E8%BF%8E%E6%9D%A5%E5%B7%A8%E5%8F%98-mtlq8z1f-283059",
+      "prerender": "article-edge-v4-archive-410-ice-safe",
+      "title_length": 43,
+      "h1_length": 36,
+      "canonical": "https://trrb.net/us-politics/%E8%8B%B1%E4%BC%9F%E8%BE%BE%E8%B1%AA%E6%8E%B7129%E4%BA%BF%E7%BE%8E%E5%85%83%E6%94%B6%E8%B4%ADhugging-face%E5%BC%80%E6%BA%90ai%E7%94%9F%E6%80%81%E8%BF%8E%E6%9D%A5%E5%B7%A8%E5%8F%98-mtlq8z1f-283059",
+      "body_length": 1465,
+      "schema": true,
+      "noindex": false
+    },
     {
       "url": "https://trrb.net/hot-headlines/li-teacher-x-2095270551757480210",
       "status": 200,
@@ -210,18 +222,6 @@
       "h1_length": 25,
       "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095330944727334985",
       "body_length": 313,
-      "schema": true,
-      "noindex": false
-    },
-    {
-      "url": "https://trrb.net/hot-headlines/li-teacher-x-2095346050890367086",
-      "status": 200,
-      "final_url": "https://trrb.net/hot-headlines/li-teacher-x-2095346050890367086",
-      "prerender": "article-edge-v4-archive-410-ice-safe",
-      "title_length": 43,
-      "h1_length": 36,
-      "canonical": "https://trrb.net/hot-headlines/li-teacher-x-2095346050890367086",
-      "body_length": 508,
       "schema": true,
       "noindex": false
     }

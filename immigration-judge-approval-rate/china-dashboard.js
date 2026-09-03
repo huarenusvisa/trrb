@@ -25,7 +25,7 @@ function renderDirectory(rows = countries) {
   $('#country-count').textContent = t('directoryCount', { total: fmt(countries.length), shown: fmt(rows.length) });
   $('#country-directory').innerHTML = rows.length ? rows.map((row) => {
     const active = selected?.nationality_code === row.nationality_code;
-    return `<button class="country-card${active ? ' active' : ''}" data-country="${esc(row.nationality)}" aria-pressed="${active}"><strong>${esc(countryLabel(row))}</strong><small>${esc(row.nationality_code || '')} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`;
+    return `<button class="country-card${active ? ' active' : ''}" data-country="${esc(row.nationality)}" aria-pressed="${active}"><strong>${esc(countryLabel(row))}</strong><small>${esc(t('eoirCode', { code: row.nationality_code || '—' }))} · ${t('validDecisionCount', { count: fmt(row.total_asylum_decisions) })}${row.rate_reliable ? '' : ` · ${t('smallNote')}`}</small><b>${pct(row.approval_rate)}</b></button>`;
   }).join('') : `<div class="empty">${t('noCountry')}</div>`;
   $('#country-directory').querySelectorAll('[data-country]').forEach((button) => button.addEventListener('click', () => selectCountry(button.dataset.country, true, true)));
 }
@@ -188,7 +188,7 @@ function renderSelected(data) {
   const country = data.country;
   const label = countryLabel(country);
   $('#selected-country').textContent = label;
-  $('#selected-code').textContent = country.nationality_code || '';
+  $('#selected-code').textContent = t('eoirCode', { code: country.nationality_code || '—' });
   $('#current-rate').textContent = pct(country.approval_rate);
   $('#sample-status').textContent = country.rate_reliable ? t('statusReliable', { count: fmt(country.total_asylum_decisions) }) : t('statusUnreliable', { count: fmt(country.total_asylum_decisions) });
   const dated = data.periods?.monthly || [];

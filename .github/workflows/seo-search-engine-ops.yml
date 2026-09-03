@@ -6,25 +6,9 @@ name: Google/Bing SEO每日提交与诊断
 on:
   workflow_dispatch:
   schedule:
+    # Search-engine submission is a daily batch. Urgent corrective runs remain
+    # available manually without paying the cost on every main-branch change.
     - cron: '23 7 * * *'
-  push:
-    branches:
-      - main
-    paths:
-      - 'robots.txt'
-      - 'sitemap.xml'
-      - 'sitemap-*.xml'
-      - 'news-sitemap.xml'
-      - 'scripts/generate-sitemaps.mjs'
-      - 'scripts/seo-search-engine-ops.mjs'
-      - 'netlify/edge-functions/sitemap-live.ts'
-      - 'netlify/edge-functions/news-sitemap-live.ts'
-      - 'netlify/edge-functions/category-prerender.ts'
-      - 'netlify/functions/public-category-page.js'
-      - 'community/index.html'
-      - 'immigrate/index.html'
-      - 'legal/index.html'
-      - '.github/workflows/seo-search-engine-ops.yml'
 
 permissions:
   contents: read
@@ -46,7 +30,8 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/automation-gate.mjs
       - id: gate
-        # Push/manual runs are corrective and must never be silently skipped. Only scheduled runs respect the control-plane switches.
+        # Manual runs are corrective and must never be silently skipped. Only
+        # scheduled runs respect the control-plane switches.
         run: echo "allowed=${{ github.event_name != 'schedule' || (steps.controls.outputs.global == 'true' && steps.controls.outputs.seo_search_engine == 'true') }}" >> "$GITHUB_OUTPUT"
   monitor:
     needs: automation-gate

@@ -26,11 +26,10 @@ on:
           - jobs
           - secondhand
   schedule:
-    # GitHub scheduled workflows can be delayed during periods of high load.
-    # Wake the control plane four times per hour; the database cadence gate in
-    # each collector remains the authority that permits one successful run per
-    # 180 minutes. This is a retry heartbeat, not a 15-minute collection cycle.
-    - cron: "7,22,37,52 * * * *"
+    # One hourly heartbeat is enough because each collector still enforces its
+    # own database cadence gate. Manual switch-on remains available through
+    # workflow_dispatch, so reducing this heartbeat does not delay user-started runs.
+    - cron: "7 * * * *"
     - cron: "47 3 * * *"
     - cron: "37 4 * * *"
     - cron: "7 7 * * *"

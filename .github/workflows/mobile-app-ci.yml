@@ -51,6 +51,9 @@ permissions:
 
 jobs:
   typecheck:
+    # Draft PRs can receive many automated commits; defer the expensive mobile
+    # suite until the PR is ready for review. Main pushes and manual runs still run.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

@@ -24,3 +24,29 @@ test('wires persisted language selection through root, tabs and profile', () => 
   assert.match(provider, /AsyncStorage\.setItem\(STORAGE_KEY, safePreference\)/);
   assert.match(provider, /AppState\.addEventListener\('change'/);
 });
+
+test('uses the shared language context across news discovery surfaces', () => {
+  const files = [
+    'app/(tabs)/america.tsx',
+    'app/(tabs)/legal.tsx',
+    'app/category/[name].tsx',
+    'app/search.tsx',
+    'src/components/PaginatedNewsList.tsx',
+  ];
+
+  for (const path of files) {
+    const source = read(path);
+    assert.match(source, /useI18n\(\)/, `${path} must use the shared language context`);
+  }
+
+  const america = read('app/(tabs)/america.tsx');
+  const legal = read('app/(tabs)/legal.tsx');
+  const search = read('app/search.tsx');
+  const list = read('src/components/PaginatedNewsList.tsx');
+  assert.ok(america.includes("t('america.heading')"));
+  assert.ok(legal.includes("t('legal.searchPlaceholder')"));
+  assert.ok(search.includes("t('search.placeholder')"));
+  assert.ok(list.includes("t('news.loading')"));
+  assert.doesNotMatch(america, /toLocaleString\('zh-CN'\)/);
+  assert.doesNotMatch(list, /toLocaleString\('zh-CN'\)/);
+});

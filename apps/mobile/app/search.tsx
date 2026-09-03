@@ -3,8 +3,11 @@ import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-
 import { PaginatedNewsList } from '../src/components/PaginatedNewsList';
 import { fetchTrendingSearches, TrendingSearch } from '../src/api/trrb';
 import { addSearchHistory, clearSearchHistory, getSearchHistory } from '../src/storage/searchHistory';
+import { useI18n } from '../src/i18n/I18nProvider';
+import { newsCategoryName } from '../src/i18n/i18n-core';
 
 export default function SearchScreen() {
+  const { locale, t } = useI18n();
   const [input, setInput] = useState('');
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
@@ -41,30 +44,30 @@ export default function SearchScreen() {
           value={input}
           onChangeText={setInput}
           onSubmitEditing={() => submit()}
-          placeholder="搜索新闻标题或摘要"
+          placeholder={t('search.placeholder')}
           placeholderTextColor="#98a2b3"
           returnKeyType="search"
           style={styles.input}
         />
-        <Pressable testID="search-submit" style={styles.button} onPress={() => submit()}><Text style={styles.buttonText}>搜索</Text></Pressable>
+        <Pressable testID="search-submit" style={styles.button} onPress={() => submit()}><Text style={styles.buttonText}>{t('search.submit')}</Text></Pressable>
       </View>
 
       {active ? (
         <View style={styles.results} testID="search-results">
           <View style={styles.filterRow}>
-            {category ? <Pressable style={styles.filterChip} onPress={() => setCategory('')}><Text style={styles.filterText}>栏目：{category} ×</Text></Pressable> : null}
-            <Pressable onPress={() => { setQuery(''); setCategory(''); setInput(''); }}><Text style={styles.cancel}>返回搜索首页</Text></Pressable>
+            {category ? <Pressable style={styles.filterChip} onPress={() => setCategory('')}><Text style={styles.filterText}>{t('search.filter', { category: newsCategoryName(locale, category) })}</Text></Pressable> : null}
+            <Pressable onPress={() => { setQuery(''); setCategory(''); setInput(''); }}><Text style={styles.cancel}>{t('search.backHome')}</Text></Pressable>
           </View>
           <PaginatedNewsList
-            title={query ? `搜索：${query}` : `栏目：${category}`}
+            title={query ? t('search.queryTitle', { query }) : t('search.categoryTitle', { category: newsCategoryName(locale, category) })}
             q={query || undefined}
             category={category || undefined}
-            emptyText="没有找到相关已发布新闻。"
+            emptyText={t('search.empty')}
           />
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.discovery} testID="search-discovery">
-          <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>热搜</Text><Text style={styles.audit}>来自正式已发布新闻数据</Text></View>
+          <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>{t('search.trending')}</Text><Text style={styles.audit}>{t('search.trendingSource')}</Text></View>
           <View style={styles.chips}>
             {trending.map((item) => (
               <Pressable key={item.term} style={styles.hotChip} onPress={() => { setInput(''); submit('', item.category || item.term); }}>
@@ -72,12 +75,12 @@ export default function SearchScreen() {
                 <Text style={styles.score}>{item.score}</Text>
               </Pressable>
             ))}
-            {!trending.length ? <Text style={styles.hint}>暂时没有可用热搜数据。</Text> : null}
+            {!trending.length ? <Text style={styles.hint}>{t('search.noTrending')}</Text> : null}
           </View>
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>搜索历史</Text>
-            {history.length ? <Pressable onPress={clearHistory}><Text style={styles.clear}>清除</Text></Pressable> : null}
+            <Text style={styles.sectionTitle}>{t('search.history')}</Text>
+            {history.length ? <Pressable onPress={clearHistory}><Text style={styles.clear}>{t('search.clear')}</Text></Pressable> : null}
           </View>
           <View style={styles.chips}>
             {history.map((term) => (
@@ -85,7 +88,7 @@ export default function SearchScreen() {
                 <Text style={styles.historyText}>{term}</Text>
               </Pressable>
             ))}
-            {!history.length ? <Text style={styles.hint}>暂无搜索历史。</Text> : null}
+            {!history.length ? <Text style={styles.hint}>{t('search.noHistory')}</Text> : null}
           </View>
         </ScrollView>
       )}

@@ -2,13 +2,11 @@ name: 生产SEO自动诊断留档
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'reports/**'
   schedule:
-    - cron: '17 */6 * * *'
+    # Full production SEO diagnostics are intentionally batched twice daily.
+    # Ordinary main pushes rely on deployment acceptance and do not need to
+    # launch another full-site crawl.
+    - cron: '17 7,19 * * *'
 
 permissions:
   contents: write

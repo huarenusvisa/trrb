@@ -55,18 +55,18 @@ export default function ProfileScreen() {
     <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
       <Text style={styles.h1}>我的</Text>
       {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
-        <Text style={styles.sub}>已登录 · {accountLabel(session.user)}</Text>
+        <Text testID="account-status" style={styles.sub}>已登录 · {accountLabel(session.user)}</Text>
         <Pressable testID="open-community" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>移民社区</Text><Text style={styles.meta}>浏览帖子、分享经历和发布问题</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>消息中心{unread ? ` · ${unread}条未读` : ''}</Text><Text style={styles.meta}>回复、点赞、关注与系统通知</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>我的评论</Text><Text style={styles.meta}>查看评论状态并返回对应新闻</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>查看新闻收藏；云端同步将在本批后续节点接入</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>最近阅读的新闻，最多保存100条</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>修改昵称、默认头像与公开简介</Text></Pressable>
-        <Pressable style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>退出登录</Text></Pressable>
+        <Pressable testID="profile-sign-out" style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>退出登录</Text></Pressable>
       </> : <>
         <Text style={styles.sub}>游客模式 · 无需注册即可阅读全部公开内容</Text>
         {!isAuthConfigured ? <Text style={styles.warning}>当前构建尚未配置生产身份服务环境变量。</Text> : null}
-        <Pressable style={styles.login} onPress={()=>router.push('/auth')}><Text style={styles.loginText}>登录 / 创建账户</Text></Pressable>
+        <Pressable testID="profile-login" style={styles.login} onPress={()=>router.push('/auth')}><Text style={styles.loginText}>登录 / 创建账户</Text></Pressable>
         <Pressable testID="open-community-guest" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>移民社区</Text><Text style={styles.meta}>浏览无需登录；发帖时再登录或注册</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>本机收藏</Text><Text style={styles.meta}>登录前继续保存在当前设备</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>本机阅读历史</Text><Text style={styles.meta}>登录前继续保存在当前设备</Text></Pressable>

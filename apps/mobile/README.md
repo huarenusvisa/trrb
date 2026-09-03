@@ -67,3 +67,9 @@ maestro test .maestro/store-screenshots.yml
 ```
 
 流程依次截取首页、美国、移民、判例新规和移民社区，并写入 `store/google-play/screenshots/phone/`。截图文件属于上架产物，不提交到 Git；提交前由发布人员在目标机型上确认尺寸、状态栏、实时内容与隐私信息。
+
+## 统一账号真机回归
+
+`.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，依次验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”。流程不发布帖子、评论或其他生产内容。
+
+运行前须在 EAS `preview` 环境配置 `MAESTRO_TEST_ACCOUNT_IDENTIFIER`、`MAESTRO_TEST_ACCOUNT_PASSWORD`、`EXPO_PUBLIC_SUPABASE_URL` 和 `EXPO_PUBLIC_SUPABASE_ANON_KEY`。测试邮箱必须以 `trrb-e2e-` 开头，凭据不得写入仓库；预检失败时也不会输出其值。配置完成后，从 EAS Workflows 手动运行 `Unified account E2E`，首次运行会创建这个明确标记的固定测试账户，后续运行复用同一账户并在每轮结束时退出登录。

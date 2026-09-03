@@ -1,0 +1,54 @@
+name: Unified account E2E
+
+on:
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    name: Validate marked test account
+    environment: preview
+    steps:
+      - uses: eas/checkout
+      - name: Validate auth test environment
+        run: node scripts/validate-auth-e2e-env.mjs
+
+  get_android:
+    name: Get latest Android E2E build
+    needs: [preflight]
+    type: get-build
+    params:
+      platform: android
+      profile: e2e-test
+      wait_for_in_progress: true
+
+  get_ios:
+    name: Get latest iOS E2E build
+    needs: [preflight]
+    type: get-build
+    params:
+      platform: ios
+      profile: e2e-test
+      simulator: true
+      wait_for_in_progress: true
+
+  test_android_auth:
+    name: Android unified account regression
+    needs: [get_android]
+    environment: preview
+    type: maestro
+    params:
+      build_id: ${{ needs.get_android.outputs.build_id }}
+      flow_path: '.maestro/auth-login.yml'
+      retries: 1
+      retry_failed_only: true
+
+  test_ios_auth:
+    name: iOS unified account regression
+    needs: [get_ios, test_android_auth]
+    environment: preview
+    type: maestro
+    params:
+      build_id: ${{ needs.get_ios.outputs.build_id }}
+      flow_path: '.maestro/auth-login.yml'
+      retries: 1
+      retry_failed_only: true

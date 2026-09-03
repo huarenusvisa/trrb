@@ -202,8 +202,8 @@ assert.match(page, /id="country-count"[^>]*role="status"[^>]*aria-live="polite"[
 assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="trendLabel"/, 'trend period controls must expose a localized group label');
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
-assert.match(page, /china-dashboard-i18n\.js\?v=7/, 'nationality dashboard must load the ISO search-alias asset version');
-assert.match(page, /china-dashboard\.js\?v=22/, 'nationality dashboard must load the safe country-code search asset version');
+assert.match(page, /china-dashboard-i18n\.js\?v=8/, 'nationality dashboard must load the dual-code label asset version');
+assert.match(page, /china-dashboard\.js\?v=23/, 'nationality dashboard must load the dual-code display asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -224,8 +224,9 @@ assert.match(page, /\.country-search input:focus-visible,\.country-search button
 assert.match(page, /class="quick-countries"[^>]*role="group"[^>]*data-i18n-aria-label="popularNationalities"/, 'popular nationality controls must expose a localized group label');
 assert.match(page, /data-country="China"[^>]*aria-pressed="false"/, 'popular nationality buttons must expose their initial selection state');
 assert.match(client, /country-card\$\{active \? ' active' : ''\}[^\n]*aria-pressed="\$\{active\}"/, 'directory buttons must expose the selected nationality');
-assert.match(client, /country-card[^\n]*t\('eoirCode', \{ code: row\.nationality_code \|\| '—' \}\)/, 'nationality directory codes must be identified as EOIR codes');
-assert.match(client, /selected-code'\)\.textContent = t\('eoirCode', \{ code: country\.nationality_code \|\| '—' \}\)/, 'selected nationality codes must be identified as EOIR codes');
+assert.match(client, /const countryCodeLabels = \(row\) => \{[\s\S]*t\('eoirCode',[\s\S]*regionCodeForNationality\(row\)[\s\S]*t\('isoCode',[\s\S]*labels\.join/, 'country code labels must distinguish EOIR and ISO codes');
+assert.match(client, /country-card[^\n]*countryCodeLabels\(row\)/, 'nationality directory entries must show both available code systems');
+assert.match(client, /selected-code'\)\.textContent = countryCodeLabels\(country\)/, 'selected nationality details must show both available code systems');
 assert.match(client, /button\.setAttribute\('aria-pressed', String\(selected\?\.nationality === button\.dataset\.country\)\)/, 'popular nationality selection state must stay synchronized');
 assert.match(page, /id="country-detail"[^>]*aria-live="polite"[^>]*aria-busy="false"/, 'nationality details must expose their initial loading state');
 assert.match(client, /const requestId = \+\+countryRequestId;[\s\S]*if \(requestId !== countryRequestId\) return;[\s\S]*if \(requestId === countryRequestId\)[\s\S]*aria-busy/, 'stale nationality responses must not replace the latest selection');
@@ -252,11 +253,13 @@ assert.match(client, /if \(`\$\{location\.pathname\}\$\{location\.search\}` !== 
 assert.match(client, /window\.addEventListener\('popstate',[\s\S]*new URLSearchParams\(location\.search\)\.get\('country'\)[\s\S]*selectCountry\(country\)/, 'browser back and forward navigation must restore the nationality from the URL');
 const retryLabels = new Map(Object.entries({ en: 'Try again', es: 'Intentar de nuevo', fr: 'Réessayer', 'pt-BR': 'Tentar novamente', hi: 'फिर प्रयास करें', 'zh-Hans': '重新尝试', 'zh-Hant': '重新嘗試', ru: 'Повторить', ar: 'إعادة المحاولة', tr: 'Tekrar dene' }));
 const eoirCodeLabels = new Map(Object.entries({ en: 'EOIR code: SZ', es: 'Código EOIR: SZ', fr: 'Code EOIR : SZ', 'pt-BR': 'Código EOIR: SZ', hi: 'EOIR कोड: SZ', 'zh-Hans': 'EOIR代码：SZ', 'zh-Hant': 'EOIR代碼：SZ', ru: 'Код EOIR: SZ', ar: 'رمز EOIR: SZ', tr: 'EOIR kodu: SZ' }));
+const isoCodeLabels = new Map(Object.entries({ en: 'ISO code: CH', es: 'Código ISO: CH', fr: 'Code ISO : CH', 'pt-BR': 'Código ISO: CH', hi: 'ISO कोड: CH', 'zh-Hans': 'ISO代码：CH', 'zh-Hant': 'ISO代碼：CH', ru: 'Код ISO: CH', ar: 'رمز ISO: CH', tr: 'ISO kodu: CH' }));
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(i18nClient, new RegExp(`['"]${locale}['"]`));
   i18nSandbox.window.AsylumI18n.setLocale(locale, { updateUrl: false, dispatch: false });
   assert.equal(i18nSandbox.window.AsylumI18n.t('retryAction'), retryLabels.get(locale), `retry action must be translated for ${locale}`);
   assert.equal(i18nSandbox.window.AsylumI18n.t('eoirCode', { code: 'SZ' }), eoirCodeLabels.get(locale), `EOIR code label must be translated for ${locale}`);
+  assert.equal(i18nSandbox.window.AsylumI18n.t('isoCode', { code: 'CH' }), isoCodeLabels.get(locale), `ISO code label must be translated for ${locale}`);
 }
 assert.match(i18nClient, /locale === 'ar' \? 'rtl' : 'ltr'/);
 assert.match(page, /id="language-select"/);

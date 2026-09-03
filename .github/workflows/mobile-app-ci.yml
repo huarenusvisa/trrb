@@ -6,6 +6,8 @@ on:
       - 'apps/mobile/**'
       - 'netlify/functions/community-api.js'
       - 'netlify/functions/community-api.test.js'
+      - 'netlify/functions/public-article-translation.js'
+      - 'netlify/functions/public-article-translation.test.js'
       - 'netlify/functions/admin-push.js'
       - 'netlify/functions/push-receipts.mjs'
       - 'netlify/functions/push-receipts-core.js'
@@ -18,6 +20,8 @@ on:
       - 'supabase/migrations/20260816220100_app_batch2_push_tokens.sql'
       - 'supabase/migrations/20260817031500_app_batch2_push_governance.sql'
       - 'supabase/migrations/20260903110000_push_receipt_lifecycle.sql'
+      - 'supabase/migrations/20260903202000_article_translation_cache.sql'
+      - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - '.github/workflows/mobile-app-ci.yml'
   push:
     branches: [main]
@@ -27,6 +31,8 @@ on:
       - 'netlify/functions/community-api.test.js'
       - 'netlify/functions/public-article.js'
       - 'netlify/functions/public-articles.js'
+      - 'netlify/functions/public-article-translation.js'
+      - 'netlify/functions/public-article-translation.test.js'
       - 'netlify/functions/admin-push.js'
       - 'netlify/functions/push-receipts.mjs'
       - 'netlify/functions/push-receipts-core.js'
@@ -39,6 +45,8 @@ on:
       - 'supabase/migrations/20260816220100_app_batch2_push_tokens.sql'
       - 'supabase/migrations/20260817031500_app_batch2_push_governance.sql'
       - 'supabase/migrations/20260903110000_push_receipt_lifecycle.sql'
+      - 'supabase/migrations/20260903202000_article_translation_cache.sql'
+      - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - '.github/workflows/mobile-app-ci.yml'
   workflow_dispatch:
 
@@ -65,6 +73,7 @@ jobs:
         run: |
           node --check netlify/functions/public-article.js
           node --check netlify/functions/public-articles.js
+          node --test netlify/functions/public-article-translation.test.js
           node --check netlify/functions/admin-push.js
           node --check netlify/functions/push-receipts.mjs
           node --test netlify/functions/push-receipts-core.test.js

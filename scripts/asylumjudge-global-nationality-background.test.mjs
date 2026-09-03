@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { runInNewContext } from 'node:vm';
+import { localizedNationalityCodes, nationalityIsoCode } from './build-asylumjudge-seo.mjs';
 
 const require = createRequire(import.meta.url);
 const sharedPath = require.resolve('../netlify/functions/_shared/supabase-admin.js');
@@ -17,6 +18,8 @@ const webexData = JSON.parse(readFileSync('data/eoir-webex-links.json', 'utf8'))
 const cuba = nationalityData.countries.find((row) => row.nationality === 'Cuba');
 const korea = nationalityData.countries.find((row) => row.nationality === 'South Korea');
 const china = nationalityData.countries.find((row) => row.nationality === 'China');
+const switzerland = nationalityData.countries.find((row) => row.nationality === 'Switzerland');
+const comoros = nationalityData.countries.find((row) => row.nationality === 'Comoros');
 assert.equal(nationalityData.countries.length, 227, 'the generated catalog must expose every observed nationality with a classified final outcome');
 for (const field of ['nationality', 'nationality_code']) {
   const values = nationalityData.countries.map((row) => String(row[field] || '').trim().toLowerCase());
@@ -34,6 +37,11 @@ for (const country of nationalityData.countries) {
   }
 }
 for (const country of [cuba, korea, china]) assert.ok(country, 'China, Cuba, and South Korea must all be searchable');
+assert.equal(nationalityIsoCode(china), 'CN', 'static China pages must identify ISO CN separately from EOIR CH');
+assert.equal(nationalityIsoCode(switzerland), 'CH', 'static Switzerland pages must identify ISO CH separately from EOIR SZ');
+assert.equal(nationalityIsoCode(comoros), 'KM', 'static Comoros pages must identify ISO KM separately from EOIR CN');
+assert.equal(localizedNationalityCodes(china, 'zh-Hans'), 'EOIR代码：CH · ISO代码：CN', 'Chinese static pages must label both nationality code systems');
+assert.equal(localizedNationalityCodes(switzerland, 'en'), 'EOIR code: SZ · ISO code: CH', 'English static pages must label both nationality code systems');
 assert.deepEqual(
   {
     total: china.total_asylum_decisions,
@@ -192,6 +200,7 @@ const standaloneProxy = readFileSync('asylumjudge/immigration-judges-proxy.js', 
 const detailPage = readFileSync('immigration-judge-approval-rate/detail.html', 'utf8');
 const detailClient = readFileSync('immigration-judge-approval-rate/detail.js', 'utf8');
 const routes = readFileSync('scripts/finalize-redirects.mjs', 'utf8');
+const seoBuilder = readFileSync('scripts/build-asylumjudge-seo.mjs', 'utf8');
 const homepageClient = readFileSync('asylumjudge/site.js', 'utf8');
 for (const label of ['全球申请人庇护裁决结果', '月度', '季度', '年度', '全部国籍']) assert.match(page, new RegExp(label));
 assert.match(page, /主要国籍裁决结果对比图/);
@@ -227,6 +236,8 @@ assert.match(client, /country-card\$\{active \? ' active' : ''\}[^\n]*aria-press
 assert.match(client, /const countryCodeLabels = \(row\) => \{[\s\S]*t\('eoirCode',[\s\S]*regionCodeForNationality\(row\)[\s\S]*t\('isoCode',[\s\S]*labels\.join/, 'country code labels must distinguish EOIR and ISO codes');
 assert.match(client, /country-card[^\n]*countryCodeLabels\(row\)/, 'nationality directory entries must show both available code systems');
 assert.match(client, /selected-code'\)\.textContent = countryCodeLabels\(country\)/, 'selected nationality details must show both available code systems');
+assert.match(seoBuilder, /replace\('<h2 id="selected-country" tabindex="-1">正在读取国籍数据…<\/h2>',[\s\S]*localizedCountry/, 'static nationality pages must replace the loading heading while retaining its focus target');
+assert.match(seoBuilder, /replace\('<span id="selected-code"><\/span>',[\s\S]*localizedNationalityCodes\(country, locale\.code\)/, 'static nationality pages must prerender both labeled code systems');
 assert.match(client, /button\.setAttribute\('aria-pressed', String\(selected\?\.nationality === button\.dataset\.country\)\)/, 'popular nationality selection state must stay synchronized');
 assert.match(page, /id="country-detail"[^>]*aria-live="polite"[^>]*aria-busy="false"/, 'nationality details must expose their initial loading state');
 assert.match(client, /const requestId = \+\+countryRequestId;[\s\S]*if \(requestId !== countryRequestId\) return;[\s\S]*if \(requestId === countryRequestId\)[\s\S]*aria-busy/, 'stale nationality responses must not replace the latest selection');

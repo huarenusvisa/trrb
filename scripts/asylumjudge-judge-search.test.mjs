@@ -8,6 +8,7 @@ const page = readFileSync(new URL('../immigration-judge-approval-rate/index.html
 // Navigation assertions prevent regressions in back/forward restoration.
 // Form assertions also preserve the screen-reader name and mobile search keyboard intent.
 // Result-focus assertions distinguish user actions from history restoration.
+// Clear-state assertions preserve native mobile controls and shareable URLs.
 assert.match(client, /searchController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'a new judge search must cancel the previous request');
 assert.match(client, /if \(!response\.ok\) throw new Error/, 'judge search must treat non-2xx responses as failures');
 assert.match(client, /if \(requestId !== searchSequence\) return;/, 'stale judge results must not replace the latest search');
@@ -17,6 +18,9 @@ assert.match(client, /setAttribute\('aria-busy', 'true'\)[\s\S]*setAttribute\('a
 assert.match(client, /nextUrl === currentUrl[\s\S]*history\[mode === 'replace' \? 'replaceState' : 'pushState'\]/, 'new judge searches must create history without duplicating the current query');
 assert.match(client, /addEventListener\('popstate'[\s\S]*search\(query, \{ historyMode: 'none', reveal: false \}\)/, 'browser navigation must restore the prior judge search without adding history or overriding scroll restoration');
 assert.match(client, /if \(!query\)[\s\S]*resetSearch\(\)/, 'browser navigation must restore the initial empty search state');
+assert.match(client, /if \(query\) url\.searchParams\.set\('q', query\);[\s\S]*else url\.searchParams\.delete\('q'\)/, 'clearing judge search must remove the query from the URL');
+assert.match(client, /if \(!query\) \{[\s\S]*resetSearch\(\{ historyMode \}\)[\s\S]*return;/, 'submitting an empty judge query must restore the initial search state');
+assert.match(client, /\$\('#judge-q'\)\.addEventListener\('search'[\s\S]*resetSearch\(\{ historyMode: 'push' \}\)/, 'using the native search clear control must restore the initial state and history');
 assert.match(client, /judge-retry'[\s\S]*search\(query, \{ historyMode: 'none' \}\)/, 'retrying a failed query must not add a duplicate history entry');
 assert.match(client, /function revealSearchResults\(\)[\s\S]*focus\(\{ preventScroll: true \}\)[\s\S]*prefers-reduced-motion: reduce[\s\S]*scrollIntoView\(\{ behavior: reduceMotion \? 'auto' : 'smooth', block: 'start' \}\)/, 'completed judge searches must focus and reveal their status while respecting reduced motion');
 assert.match(client, /if \(!rows\.length\)[\s\S]*if \(reveal\) revealSearchResults\(\)[\s\S]*return;[\s\S]*rows\.map[\s\S]*if \(reveal\) revealSearchResults\(\)/, 'both empty and populated judge results must be revealed');
@@ -27,6 +31,6 @@ assert.match(page, /id="results" class="results" aria-live="polite" aria-busy="f
 assert.match(page, /<form id="judge-search" role="search">[\s\S]*<label class="sr-only" for="judge-q">[^<]+<\/label>[\s\S]*<input id="judge-q" name="q" type="search"/, 'judge search must expose a persistent accessible name and search landmark');
 assert.match(page, /id="judge-q"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*aria-describedby="judge-search-help"/, 'judge search must expose mobile search keyboard intent and its visible help text');
 assert.match(page, /<button type="submit">查询<\/button>/, 'judge search submit control must declare its button type');
-assert.match(page, /app-i18n\.js\?v=8[\s\S]*judges\.js\?v=5/, 'judge search page must load retry translations and the result-revealing client');
+assert.match(page, /app-i18n\.js\?v=8[\s\S]*judges\.js\?v=6/, 'judge search page must load retry translations and the clearable search client');
 
 console.log('AsylumJudge judge search recovery contract: PASS');

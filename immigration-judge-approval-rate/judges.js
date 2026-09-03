@@ -16,17 +16,19 @@ function revealSearchResults() {
 function updateSearchHistory(query, mode) {
   if (mode === 'none') return;
   const url = new URL(location.href);
-  url.searchParams.set('q', query);
+  if (query) url.searchParams.set('q', query);
+  else url.searchParams.delete('q');
   const nextUrl = `${url.pathname}${url.search}${url.hash}`;
   const currentUrl = `${location.pathname}${location.search}${location.hash}`;
   if (nextUrl === currentUrl) return;
   history[mode === 'replace' ? 'replaceState' : 'pushState']({ query }, '', nextUrl);
 }
 
-function resetSearch() {
+function resetSearch({ historyMode = 'none' } = {}) {
   searchSequence += 1;
   searchController?.abort();
   searchController = null;
+  updateSearchHistory('', historyMode);
   $('#judge-q').value = '';
   $('#result-note').textContent = initialResultNote;
   $('#results').setAttribute('aria-busy', 'false');
@@ -49,7 +51,10 @@ async function loadStats() {
 
 async function search(query, { historyMode = 'push', reveal = true } = {}) {
   query = String(query || '').trim();
-  if (!query) return;
+  if (!query) {
+    resetSearch({ historyMode });
+    return;
+  }
   const requestId = ++searchSequence;
   searchController?.abort();
   const controller = new AbortController();
@@ -84,6 +89,9 @@ async function search(query, { historyMode = 'push', reveal = true } = {}) {
 }
 
 $('#judge-search').addEventListener('submit', (event) => { event.preventDefault(); search($('#judge-q').value); });
+$('#judge-q').addEventListener('search', () => {
+  if (!$('#judge-q').value.trim()) resetSearch({ historyMode: 'push' });
+});
 document.querySelectorAll('.quick button').forEach((button) => { button.onclick = () => { $('#judge-q').value = button.dataset.q; search(button.dataset.q); }; });
 loadStats();
 const initial = new URLSearchParams(location.search).get('q');

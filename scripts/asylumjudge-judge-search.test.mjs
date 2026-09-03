@@ -5,6 +5,7 @@ const client = readFileSync(new URL('../immigration-judge-approval-rate/judges.j
 const page = readFileSync(new URL('../immigration-judge-approval-rate/index.html', import.meta.url), 'utf8');
 
 // Keep the recovery behavior and its page-level accessibility contract together.
+// Navigation assertions prevent regressions in back/forward restoration.
 assert.match(client, /searchController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'a new judge search must cancel the previous request');
 assert.match(client, /if \(!response\.ok\) throw new Error/, 'judge search must treat non-2xx responses as failures');
 assert.match(client, /if \(requestId !== searchSequence\) return;/, 'stale judge results must not replace the latest search');

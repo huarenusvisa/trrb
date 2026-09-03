@@ -294,7 +294,7 @@ $('#country-search-form').addEventListener('submit', (event) => {
   const matches = filterCountries(query);
   renderDirectory(matches);
   const match = resolveCountrySearch(query, matches);
-  if (match) selectCountry(match.nationality, true);
+  if (match) selectCountry(match.nationality, true, true);
   else if (matches.length > 1) {
     $('#country-count').textContent = t('searchChooseOne', { count: fmt(matches.length) });
     focusCountryResults();
@@ -304,7 +304,7 @@ $('#country-search-form').addEventListener('submit', (event) => {
 $('#country-search').addEventListener('input', (event) => renderDirectory(filterCountries(event.target.value)));
 document.querySelectorAll('.quick-countries button').forEach((button) => button.addEventListener('click', () => {
   $('#country-search').value = button.dataset.country;
-  selectCountry(button.dataset.country, true);
+  selectCountry(button.dataset.country, true, true);
 }));
 document.querySelectorAll('.tabs button').forEach((button) => button.addEventListener('click', () => {
   document.querySelectorAll('.tabs button').forEach((item) => {

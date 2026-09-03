@@ -16,3 +16,7 @@ export function buildCommentThreads(rows: CommentRow[]): CommentNode[] {
 export function commentDisplayName(row: CommentRow) {
   return row.profiles?.display_name?.trim() || '唐人读者';
 }
+
+export function isOwnComment(row: CommentRow, userId: string | null) {
+  return Boolean(userId && row.user_id === userId);
+}

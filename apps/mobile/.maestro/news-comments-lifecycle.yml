@@ -1,0 +1,105 @@
+appId: net.trrb.mobile
+name: News comments lifecycle with marked cleanup
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "tab-profile"
+    timeout: 30000
+- tapOn:
+    id: "tab-profile"
+- extendedWaitUntil:
+    visible:
+      id: "profile-login"
+    timeout: 20000
+- tapOn:
+    id: "profile-login"
+- extendedWaitUntil:
+    visible:
+      id: "auth-identifier"
+    timeout: 15000
+- tapOn:
+    id: "auth-identifier"
+- inputText: ${MAESTRO_TEST_ACCOUNT_IDENTIFIER}
+- tapOn:
+    id: "auth-password"
+- inputText: ${MAESTRO_TEST_ACCOUNT_PASSWORD}
+- tapOn:
+    id: "auth-submit"
+- extendedWaitUntil:
+    visible: "注册成功|登录成功"
+    timeout: 30000
+- tapOn: "继续"
+- extendedWaitUntil:
+    visible:
+      id: "tab-home"
+    timeout: 15000
+- tapOn:
+    id: "tab-home"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible: "重要新闻"
+    timeout: 30000
+- tapOn:
+    text: "重要新闻"
+    index: 0
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "category-article-0"
+    timeout: 25000
+- tapOn:
+    id: "category-article-0"
+    retryTapIfNoChange: true
+- scrollUntilVisible:
+    element:
+      id: "news-comment-input"
+    direction: DOWN
+    timeout: 30000
+- tapOn:
+    id: "news-comment-input"
+- inputText: "TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX} 新闻评论闭环测试"
+- tapOn:
+    id: "news-comment-submit"
+- extendedWaitUntil:
+    visible: "评论发布成功。"
+    timeout: 20000
+- tapOn:
+    id: "news-comment-like-0"
+- extendedWaitUntil:
+    visible: "点赞成功。"
+    timeout: 15000
+- tapOn:
+    id: "news-comment-reply-0"
+- tapOn:
+    id: "news-comment-input"
+- inputText: "TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX} 新闻评论回复测试"
+- tapOn:
+    id: "news-comment-submit"
+- extendedWaitUntil:
+    visible: "回复发布成功。"
+    timeout: 20000
+- tapOn:
+    id: "news-comment-report-0"
+- tapOn:
+    id: "news-comment-report-reason"
+- inputText: "TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX} 自动化举报测试"
+- tapOn:
+    id: "news-comment-report-submit"
+- extendedWaitUntil:
+    visible: "举报已提交，我们会在后台审核。"
+    timeout: 15000
+- tapOn:
+    id: "news-comment-delete-0"
+- tapOn: "确定删除"
+- extendedWaitUntil:
+    visible: "评论已删除。"
+    timeout: 15000
+- tapOn:
+    id: "news-comment-delete-0"
+- tapOn: "确定删除"
+- extendedWaitUntil:
+    visible: "评论已删除。"
+    timeout: 15000
+- assertNotVisible: "TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX} 新闻评论闭环测试"

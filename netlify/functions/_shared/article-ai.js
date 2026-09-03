@@ -136,4 +136,52 @@ async function generateCover(input) {
   return uploadImageBytes(Buffer.from(base64, "base64"), "image/png", "ai");
 }
 
-module.exports = { suggestTitles, uploadManualCover, generateCover };
+async function translateArticle(input) {
+  if (!OPENAI_KEY) throw new Error("Netlify 尚未设置 OPENAI_API_KEY");
+  const locale = input.locale === "en" ? "en" : input.locale === "zh-TW" ? "zh-TW" : "";
+  const title = safeText(input.title, 500);
+  const summary = safeText(input.summary, 5000);
+  const content = safeText(input.content, 120000);
+  if (!locale || !title || content.length < 20) {
+    const error = new Error("缺少有效的目标语言、标题或正文");
+    error.statusCode = 400;
+    throw error;
+  }
+  const target = locale === "en" ? "American English" : "Traditional Chinese used in Taiwan and Hong Kong";
+  const schema = {
+    type: "object",
+    additionalProperties: false,
+    required: ["title", "summary", "content"],
+    properties: {
+      title: { type: "string" },
+      summary: { type: "string" },
+      content: { type: "string" }
+    }
+  };
+  const response = await requestJson("https://api.openai.com/v1/responses", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${OPENAI_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: OPENAI_MODEL,
+      instructions: [
+        `Translate this published news article into ${target}.`,
+        "Preserve every fact, name, date, number, quotation, paragraph break, URL and uncertainty in the source.",
+        "Do not add analysis, background, labels or facts. Do not omit material. Return plain text only in each JSON field.",
+        "This is an editorial draft that must be reviewed by a human before publication."
+      ].join("\n"),
+      input: JSON.stringify({ title, summary, content }),
+      max_output_tokens: 16000,
+      text: { format: { type: "json_schema", name: "article_translation_draft", strict: true, schema } }
+    })
+  });
+  const parsed = JSON.parse(responseText(response));
+  const translation = {
+    title: safeText(parsed?.title, 500),
+    summary: safeText(parsed?.summary, 5000),
+    content: safeText(parsed?.content, 200000)
+  };
+  if (!translation.title || !translation.content) throw new Error("AI没有返回完整翻译草稿，请重试");
+  return { ...translation, model: OPENAI_MODEL };
+}
+
+module.exports = { suggestTitles, uploadManualCover, generateCover, translateArticle };

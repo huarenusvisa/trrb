@@ -96,15 +96,18 @@ function drawCountryComparison(rows) {
 function filterCountries(query) {
   const value = String(query || '').trim().toLowerCase();
   if (!value) return countries;
-  return countries.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code, i18n?.countryName(row)].filter(Boolean).some((item) => String(item).toLowerCase().includes(value)));
+  return countries.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code, i18n?.regionCodeForNationality(row), i18n?.countryName(row)].filter(Boolean).some((item) => String(item).toLowerCase().includes(value)));
 }
 
 function resolveCountrySearch(query, matches) {
   const value = String(query || '').trim().toLowerCase();
-  const exact = matches.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code, i18n?.countryName(row)]
+  const exactEoir = matches.filter((row) => [row.nationality, row.nationality_zh, row.nationality_code, i18n?.countryName(row)]
     .filter(Boolean)
     .some((item) => String(item).trim().toLowerCase() === value));
-  if (exact.length === 1) return exact[0];
+  const exactIso = matches.filter((row) => String(i18n?.regionCodeForNationality(row) || '').toLowerCase() === value);
+  if (exactEoir.length === 1 && exactIso.length === 1 && exactEoir[0] !== exactIso[0]) return null;
+  if (exactEoir.length === 1) return exactEoir[0];
+  if (exactIso.length === 1) return exactIso[0];
   return matches.length === 1 ? matches[0] : null;
 }
 

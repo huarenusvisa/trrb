@@ -65,10 +65,10 @@ async function rest(table, params) {
 
 async function waitForPreview() {
   let lastError = null;
-  for (let attempt = 1; attempt <= 18; attempt += 1) {
+  for (let attempt = 1; attempt <= 36; attempt += 1) {
     try {
       const response = await fetchWithRetry(`${PREVIEW_BASE}/`, { redirect: 'manual' }, 2);
-      if (response.status >= 200 && response.status < 500) {
+      if (response.status >= 200 && response.status < 400) {
         console.log(`[preview] ready on attempt ${attempt}: ${response.status}`);
         return;
       }
@@ -76,7 +76,7 @@ async function waitForPreview() {
     } catch (error) {
       lastError = error;
     }
-    console.log(`[preview] waiting for deploy preview (${attempt}/18)`);
+    console.log(`[preview] waiting for deploy preview (${attempt}/36); last status: ${lastError?.message || 'unreachable'}`);
     await sleep(5000);
   }
   throw new Error(`Deploy preview did not become reachable: ${lastError?.message || 'unknown error'}`);

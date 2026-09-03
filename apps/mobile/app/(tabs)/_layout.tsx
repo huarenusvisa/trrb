@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router';
 import { Text } from 'react-native';
+import { useI18n } from '../../src/i18n/I18nProvider';
 
 const TabIcon = ({ label }: { label: string }) => <Text style={{ fontSize: 15, fontWeight: '700' }}>{label}</Text>;
 
 export default function TabLayout() {
+  const { t } = useI18n();
   return (
     <Tabs
       screenOptions={{
@@ -13,11 +15,11 @@ export default function TabLayout() {
         tabBarStyle: { height: 66, paddingBottom: 8, paddingTop: 6 }
       }}
     >
-      <Tabs.Screen name="index" options={{ title: '首页', tabBarButtonTestID: 'tab-home', tabBarIcon: () => <TabIcon label="首" /> }} />
-      <Tabs.Screen name="america" options={{ title: '美国', tabBarButtonTestID: 'tab-america', tabBarIcon: () => <TabIcon label="美" /> }} />
-      <Tabs.Screen name="immigration" options={{ title: '移民', tabBarButtonTestID: 'tab-immigration', tabBarIcon: () => <TabIcon label="移" /> }} />
-      <Tabs.Screen name="legal" options={{ title: '判例新规', tabBarButtonTestID: 'tab-legal', tabBarIcon: () => <TabIcon label="法" /> }} />
-      <Tabs.Screen name="profile" options={{ title: '我的', tabBarButtonTestID: 'tab-profile', tabBarIcon: () => <TabIcon label="我" /> }} />
+      <Tabs.Screen name="index" options={{ title: t('tab.home'), tabBarButtonTestID: 'tab-home', tabBarIcon: () => <TabIcon label={t('tab.homeIcon')} /> }} />
+      <Tabs.Screen name="america" options={{ title: t('tab.america'), tabBarButtonTestID: 'tab-america', tabBarIcon: () => <TabIcon label={t('tab.americaIcon')} /> }} />
+      <Tabs.Screen name="immigration" options={{ title: t('tab.immigration'), tabBarButtonTestID: 'tab-immigration', tabBarIcon: () => <TabIcon label={t('tab.immigrationIcon')} /> }} />
+      <Tabs.Screen name="legal" options={{ title: t('tab.legal'), tabBarButtonTestID: 'tab-legal', tabBarIcon: () => <TabIcon label={t('tab.legalIcon')} /> }} />
+      <Tabs.Screen name="profile" options={{ title: t('tab.profile'), tabBarButtonTestID: 'tab-profile', tabBarIcon: () => <TabIcon label={t('tab.profileIcon')} /> }} />
     </Tabs>
   );
 }

@@ -9,15 +9,18 @@ import { unreadNotificationCount } from '../../src/community/notifications';
 import { syncFavoritesWithCloud, syncHistoryWithCloud } from '../../src/storage/library';
 import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '../../src/storage/reading-preferences';
 import { disableCurrentDevicePushToken } from '../../src/push/registration';
+import { useI18n } from '../../src/i18n/I18nProvider';
+import { languageName, MessageKey } from '../../src/i18n/i18n-core';
 
-const FONT_OPTIONS: { label: string; scale: ReadingPreferences['fontScale'] }[] = [
-  { label: '小', scale: 0.9 },
-  { label: '标准', scale: 1 },
-  { label: '大', scale: 1.15 },
-  { label: '特大', scale: 1.3 },
+const FONT_OPTIONS: { label: MessageKey; scale: ReadingPreferences['fontScale'] }[] = [
+  { label: 'profile.fontSmall', scale: 0.9 },
+  { label: 'profile.fontStandard', scale: 1 },
+  { label: 'profile.fontLarge', scale: 1.15 },
+  { label: 'profile.fontExtraLarge', scale: 1.3 },
 ];
 
 export default function ProfileScreen() {
+  const { locale, t } = useI18n();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [unread, setUnread] = useState(0);
@@ -59,15 +62,15 @@ export default function ProfileScreen() {
   const signOut = async () => {
     const finishSignOut = async () => {
       const { error } = await supabase.auth.signOut();
-      if (error) Alert.alert('退出失败', error.message);
+      if (error) Alert.alert(t('profile.signOutFailed'), error.message);
     };
     try {
       await disableCurrentDevicePushToken();
       await finishSignOut();
     } catch {
-      Alert.alert('无法停用本设备通知', '网络异常时退出后仍可能收到通知。可以先在系统设置关闭通知，或仍然退出。', [
-        { text: '取消', style: 'cancel' },
-        { text: '仍然退出', style: 'destructive', onPress: () => void finishSignOut() }
+      Alert.alert(t('profile.pushDisableFailed'), t('profile.pushDisableFailedMeta'), [
+        { text: t('profile.cancel'), style: 'cancel' },
+        { text: t('profile.signOutAnyway'), style: 'destructive', onPress: () => void finishSignOut() }
       ]);
     }
   };
@@ -79,37 +82,38 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
-      <Text style={styles.h1}>我的</Text>
+      <Text style={styles.h1}>{t('profile.heading')}</Text>
       {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
-        <Text testID="account-status" style={styles.sub}>已登录 · {accountLabel(session.user)}</Text>
-        <Pressable testID="open-community" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>移民社区</Text><Text style={styles.meta}>浏览帖子、分享经历和发布问题</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>消息中心{unread ? ` · ${unread}条未读` : ''}</Text><Text style={styles.meta}>回复、点赞、关注与系统通知</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>我的评论</Text><Text style={styles.meta}>查看评论状态并返回对应新闻</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>本机与账号云端收藏自动安全合并</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>本机与账号云端历史自动合并，最多100条</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>修改昵称、默认头像与公开简介</Text></Pressable>
-        <Pressable testID="profile-sign-out" style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>退出登录</Text></Pressable>
+        <Text testID="account-status" style={styles.sub}>{t('profile.loggedIn', { account: accountLabel(session.user) })}</Text>
+        <Pressable testID="open-community" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>{t('profile.community')}</Text><Text style={styles.meta}>{t('profile.communityMemberMeta')}</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>{t('profile.notifications')}{unread ? t('profile.unread', { count: unread }) : ''}</Text><Text style={styles.meta}>{t('profile.notificationsMeta')}</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>{t('profile.comments')}</Text><Text style={styles.meta}>{t('profile.commentsMeta')}</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>{t('profile.favorites')}</Text><Text style={styles.meta}>{t('profile.favoritesMeta')}</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>{t('profile.history')}</Text><Text style={styles.meta}>{t('profile.historyMeta')}</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>{t('profile.accountSettings')}</Text><Text style={styles.meta}>{t('profile.accountSettingsMeta')}</Text></Pressable>
+        <Pressable testID="profile-sign-out" style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>{t('profile.signOut')}</Text></Pressable>
       </> : <>
-        <Text style={styles.sub}>游客模式 · 无需注册即可阅读全部公开内容</Text>
-        {!isAuthConfigured ? <Text style={styles.warning}>当前构建尚未配置生产身份服务环境变量。</Text> : null}
-        <Pressable testID="profile-login" style={styles.login} onPress={()=>router.push('/auth')}><Text style={styles.loginText}>登录 / 创建账户</Text></Pressable>
-        <Pressable testID="open-community-guest" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>移民社区</Text><Text style={styles.meta}>浏览无需登录；发帖时再登录或注册</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>本机收藏</Text><Text style={styles.meta}>登录前继续保存在当前设备</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>本机阅读历史</Text><Text style={styles.meta}>登录前继续保存在当前设备</Text></Pressable>
+        <Text style={styles.sub}>{t('profile.guest')}</Text>
+        {!isAuthConfigured ? <Text style={styles.warning}>{t('profile.authWarning')}</Text> : null}
+        <Pressable testID="profile-login" style={styles.login} onPress={()=>router.push('/auth')}><Text style={styles.loginText}>{t('profile.login')}</Text></Pressable>
+        <Pressable testID="open-community-guest" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>{t('profile.community')}</Text><Text style={styles.meta}>{t('profile.communityGuestMeta')}</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>{t('profile.localFavorites')}</Text><Text style={styles.meta}>{t('profile.localFavoritesMeta')}</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>{t('profile.localHistory')}</Text><Text style={styles.meta}>{t('profile.localHistoryMeta')}</Text></Pressable>
       </>}
+      <Pressable testID="open-language-settings" style={styles.item} onPress={() => router.push('/language-settings')}><Text style={styles.title}>{t('profile.language')}</Text><Text style={styles.meta}>{t('profile.languageMeta', { language: languageName(locale) })}</Text></Pressable>
       <View style={styles.item}>
-        <Text style={styles.title}>阅读字号</Text>
-        <Text style={styles.meta}>统一设置新闻正文大小，之后所有新闻详情页自动使用此字号</Text>
+        <Text style={styles.title}>{t('profile.fontSize')}</Text>
+        <Text style={styles.meta}>{t('profile.fontSizeMeta')}</Text>
         <View style={styles.fontRow}>
           {FONT_OPTIONS.map((option) => (
             <Pressable key={option.scale} onPress={() => void updateFontScale(option.scale)} style={[styles.fontOption, fontScale === option.scale && styles.fontOptionActive]}>
-              <Text style={[styles.fontOptionText, fontScale === option.scale && styles.fontOptionTextActive]}>{option.label}</Text>
+              <Text style={[styles.fontOptionText, fontScale === option.scale && styles.fontOptionTextActive]}>{t(option.label)}</Text>
             </Pressable>
           ))}
         </View>
       </View>
-      <Pressable testID="open-push-settings" style={styles.item} onPress={() => session ? router.push('/push-settings') : router.push('/auth')}><Text style={styles.title}>推送设置</Text><Text style={styles.meta}>{session ? '重大新闻 · ICE · 移民 · 判例新规 · 社区互动' : '登录后选择通知类型'}</Text></Pressable>
-      <Pressable style={styles.item} onPress={() => Linking.openURL('https://trrb.net')}><Text style={styles.title}>打开 trrb.net</Text><Text style={styles.meta}>访问唐人日报网站</Text></Pressable>
+      <Pressable testID="open-push-settings" style={styles.item} onPress={() => session ? router.push('/push-settings') : router.push('/auth')}><Text style={styles.title}>{t('profile.pushSettings')}</Text><Text style={styles.meta}>{session ? t('profile.pushSettingsMeta') : t('profile.pushSettingsGuestMeta')}</Text></Pressable>
+      <Pressable style={styles.item} onPress={() => Linking.openURL('https://trrb.net')}><Text style={styles.title}>{t('profile.openWebsite')}</Text><Text style={styles.meta}>{t('profile.openWebsiteMeta')}</Text></Pressable>
     </ScrollView>
   );
 }

@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import { installPushRegistrationLifecycle, installPushRuntimeHandlers } from '../src/push/registration';
+import { I18nProvider } from '../src/i18n/I18nProvider';
 
 export default function RootLayout() {
   useEffect(() => {
@@ -36,9 +37,9 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <>
+    <I18nProvider>
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }} />
-    </>
+    </I18nProvider>
   );
 }

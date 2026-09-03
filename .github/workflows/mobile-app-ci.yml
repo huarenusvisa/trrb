@@ -86,6 +86,9 @@ jobs:
       - name: Test mobile push routing and permission lifecycle
         working-directory: apps/mobile
         run: npm run test:push
+      - name: Test mobile interface languages
+        working-directory: apps/mobile
+        run: npm run test:i18n
       - name: Audit push security and lifecycle contract
         run: node scripts/audit-app-batch2-node7.mjs
       - name: Validate store build configuration

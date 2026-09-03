@@ -186,7 +186,7 @@ assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="tren
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
 assert.match(page, /china-dashboard-i18n\.js\?v=5/, 'nationality dashboard must load the ambiguous-search translation asset version');
-assert.match(page, /china-dashboard\.js\?v=17/, 'nationality dashboard must load the focused ambiguous-search results asset version');
+assert.match(page, /china-dashboard\.js\?v=18/, 'nationality dashboard must load the focused empty-search state asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -221,7 +221,8 @@ assert.match(client, /comparison-tooltip/);
 assert.match(client, /function resolveCountrySearch\(query, matches\)[\s\S]*if \(exact\.length === 1\) return exact\[0\];[\s\S]*matches\.length === 1 \? matches\[0\] : null/, 'nationality search must resolve only an exact or unique result');
 assert.match(client, /const match = resolveCountrySearch\(query, matches\);[\s\S]*if \(match\) selectCountry\(match\.nationality, true\)/, 'ambiguous nationality searches must show candidates without silently selecting the first result');
 assert.match(client, /else if \(matches\.length > 1\)[\s\S]*\$\('#country-count'\)\.textContent = t\('searchChooseOne', \{ count: fmt\(matches\.length\) \}\);[\s\S]*focusCountryResults\(\)/, 'ambiguous nationality searches must announce that the user should choose a result and move to the candidates');
-assert.match(client, /function focusCountryResults\(\)[\s\S]*querySelector\('\.country-card'\)[\s\S]*prefers-reduced-motion: reduce[\s\S]*scrollIntoView[\s\S]*focus\(\{ preventScroll: true \}\)/, 'ambiguous results must focus the first candidate while respecting reduced-motion preferences');
+assert.match(client, /function focusCountryResults\(\)[\s\S]*querySelector\('\.country-card'\)[\s\S]*querySelector\('\.empty'\)[\s\S]*setAttribute\('tabindex', '-1'\)[\s\S]*prefers-reduced-motion: reduce[\s\S]*scrollIntoView[\s\S]*focus\(\{ preventScroll: true \}\)/, 'search results must focus either the first candidate or the empty state while respecting reduced-motion preferences');
+assert.match(client, /else focusCountryResults\(\);[\s\S]*\$\('#country-search'\)\.addEventListener/, 'a submitted search with no matches must move users to the empty result state');
 assert.equal((i18nClient.match(/searchChooseOne\s*:/g) || []).length, 10, 'ambiguous search guidance must be translated for all ten supported languages');
 assert.match(client, /history\.pushState\(\{ country: data\.country\.nationality \}, '', nextUrl\)/, 'user-selected nationalities must create browser history entries');
 assert.match(client, /if \(`\$\{location\.pathname\}\$\{location\.search\}` !== nextUrl\)[\s\S]*history\.pushState/, 'selecting the current nationality must not create duplicate history entries');

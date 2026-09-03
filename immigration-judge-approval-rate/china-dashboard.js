@@ -175,6 +175,13 @@ function renderQuickCountries() {
   });
 }
 
+function updatePageMetadata(country) {
+  const label = countryLabel(country);
+  document.title = `${t('countryTrend', { country: label })} | AsylumJudge`;
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.content = `${label}. ${t('heroIntro')}`;
+}
+
 function renderSelected(data) {
   selectedDetail = data;
   selected = data.country;
@@ -194,6 +201,7 @@ function renderSelected(data) {
   $('#trend-title').textContent = t('countryTrend', { country: label });
   $('#trend-chart').setAttribute('aria-label', t('countryTrend', { country: label }));
   $('#judge-ranking-title').textContent = t('countryJudges', { country: label });
+  updatePageMetadata(country);
   $('#chart-note').removeAttribute('role');
   renderQuickCountries();
   renderDirectory(filterCountries($('#country-search').value));

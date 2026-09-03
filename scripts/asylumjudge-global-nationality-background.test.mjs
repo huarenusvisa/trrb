@@ -186,13 +186,15 @@ assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="tren
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
 assert.match(page, /china-dashboard-i18n\.js\?v=5/, 'nationality dashboard must load the ambiguous-search translation asset version');
-assert.match(page, /china-dashboard\.js\?v=19/, 'nationality dashboard must load the selected-country reveal asset version');
+assert.match(page, /china-dashboard\.js\?v=20/, 'nationality dashboard must load the selected-country metadata asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
 assert.match(client, /outcome-line/);
 assert.match(client, /pointerup/);
 assert.match(client, /trend-chart'\)\.setAttribute\('aria-label', t\('countryTrend'/, 'selected country must update the trend chart accessible name');
+assert.match(client, /function updatePageMetadata\(country\)[\s\S]*document\.title = `\$\{t\('countryTrend', \{ country: label \}\)\} \| AsylumJudge`;[\s\S]*meta\[name="description"\][\s\S]*description\.content = `\$\{label\}\. \$\{t\('heroIntro'\)\}`/, 'selected country and locale must update the browser title and description');
+assert.match(client, /\$\('#judge-ranking-title'\)\.textContent = t\('countryJudges',[\s\S]*updatePageMetadata\(country\)/, 'country metadata must refresh whenever selected data renders');
 assert.match(client, /item\.setAttribute\('aria-pressed', 'false'\)[\s\S]*button\.setAttribute\('aria-pressed', 'true'\)/, 'trend period selection must keep aria-pressed in sync');
 assert.match(client, /function outcomeAriaLabel\(row, label\)[\s\S]*t\('approved'\)[\s\S]*t\('denied'\)[\s\S]*t\('other'\)[\s\S]*t\('total'\)/, 'chart data labels must announce every outcome share and the total');
 assert.match(client, /country-point-wrap[^\n]*aria-label="\$\{esc\(outcomeAriaLabel\(row, label\)\)\}"/, 'country comparison points must expose their values to screen readers');

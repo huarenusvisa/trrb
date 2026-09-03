@@ -1,4 +1,4 @@
-name: Unified account and community E2E
+name: Unified account, community and comments E2E
 
 on:
   workflow_dispatch: {}
@@ -53,9 +53,20 @@ jobs:
       retries: 1
       retry_failed_only: true
 
+  test_android_news_comments:
+    name: Android news comments lifecycle
+    needs: [get_android, test_android_community]
+    environment: preview
+    type: maestro
+    params:
+      build_id: ${{ needs.get_android.outputs.build_id }}
+      flow_path: '.maestro/news-comments-lifecycle.yml'
+      retries: 1
+      retry_failed_only: true
+
   test_ios_auth:
     name: iOS unified account regression
-    needs: [get_ios, test_android_community]
+    needs: [get_ios, test_android_news_comments]
     environment: preview
     type: maestro
     params:
@@ -75,11 +86,22 @@ jobs:
       retries: 1
       retry_failed_only: true
 
-  cleanup_community:
-    name: Unpublish marked community test posts
-    after: [test_android_community, test_ios_community]
+  test_ios_news_comments:
+    name: iOS news comments lifecycle
+    needs: [get_ios, test_ios_community]
+    environment: preview
+    type: maestro
+    params:
+      build_id: ${{ needs.get_ios.outputs.build_id }}
+      flow_path: '.maestro/news-comments-lifecycle.yml'
+      retries: 1
+      retry_failed_only: true
+
+  cleanup_marked_content:
+    name: Remove marked community and comment content
+    after: [test_android_news_comments, test_ios_news_comments]
     environment: preview
     steps:
       - uses: eas/checkout
-      - name: Clean up marked posts with the test user session
-        run: node scripts/cleanup-community-e2e.mjs
+      - name: Clean up all marked test content
+        run: node scripts/cleanup-marked-e2e.mjs

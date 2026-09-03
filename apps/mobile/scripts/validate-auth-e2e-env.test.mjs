@@ -34,7 +34,10 @@ test('keeps credentials out of the flows and wires both platforms to marked-cont
   const mobileRoot = path.resolve(import.meta.dirname, '..');
   const authFlow = fs.readFileSync(path.join(mobileRoot, '.maestro/auth-login.yml'), 'utf8');
   const communityFlow = fs.readFileSync(path.join(mobileRoot, '.maestro/community-lifecycle.yml'), 'utf8');
+  const commentsFlow = fs.readFileSync(path.join(mobileRoot, '.maestro/news-comments-lifecycle.yml'), 'utf8');
   const cleanup = fs.readFileSync(path.join(mobileRoot, 'scripts/cleanup-community-e2e.mjs'), 'utf8');
+  const commentsCleanup = fs.readFileSync(path.join(mobileRoot, 'scripts/cleanup-news-comments-e2e.mjs'), 'utf8');
+  const combinedCleanup = fs.readFileSync(path.join(mobileRoot, 'scripts/cleanup-marked-e2e.mjs'), 'utf8');
   const workflow = fs.readFileSync(path.join(mobileRoot, '.eas/workflows/auth-e2e.yml'), 'utf8');
 
   assert.match(authFlow, /\$\{MAESTRO_TEST_ACCOUNT_IDENTIFIER\}/);
@@ -49,11 +52,22 @@ test('keeps credentials out of the flows and wires both platforms to marked-cont
   assert.match(cleanup, /unified-account-login/);
   assert.match(cleanup, /unpublish_post/);
   assert.doesNotMatch(cleanup, /SERVICE_ROLE|service_role/);
+  assert.match(commentsFlow, /\$\{MAESTRO_TEST_CONTENT_SUFFIX\}/);
+  assert.match(commentsFlow, /news-comment-delete-0/);
+  assert.match(commentsFlow, /assertNotVisible/);
+  assert.match(commentsCleanup, /delete_own_comment/);
+  assert.match(commentsCleanup, /TRRB-E2E-/);
+  assert.match(commentsCleanup, /row\?\.user_id === userId/);
+  assert.doesNotMatch(commentsCleanup, /SERVICE_ROLE|service_role/);
   assert.match(workflow, /environment:\s*preview/);
   assert.match(workflow, /platform:\s*android/);
   assert.match(workflow, /platform:\s*ios/);
   assert.equal((workflow.match(/flow_path:\s*'\.maestro\/auth-login\.yml'/g) || []).length, 2);
   assert.equal((workflow.match(/flow_path:\s*'\.maestro\/community-lifecycle\.yml'/g) || []).length, 2);
-  assert.match(workflow, /after:\s*\[test_android_community, test_ios_community\]/);
-  assert.match(workflow, /node scripts\/cleanup-community-e2e\.mjs/);
+  assert.equal((workflow.match(/flow_path:\s*'\.maestro\/news-comments-lifecycle\.yml'/g) || []).length, 2);
+  assert.match(workflow, /after:\s*\[test_android_news_comments, test_ios_news_comments\]/);
+  assert.match(combinedCleanup, /Promise\.allSettled/);
+  assert.match(combinedCleanup, /cleanupCommunityE2e/);
+  assert.match(combinedCleanup, /cleanupNewsCommentsE2e/);
+  assert.match(workflow, /node scripts\/cleanup-marked-e2e\.mjs/);
 });

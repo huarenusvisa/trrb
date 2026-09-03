@@ -70,14 +70,18 @@ maestro test .maestro/store-screenshots.yml
 
 ## 统一账号真机回归
 
-`.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，先验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”，再在两个平台分别完成社区发帖、点赞、评论、举报和作者下架。
+`.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，先验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”，再在两个平台分别完成社区发帖闭环和新闻评论闭环。
 
-运行前须在 EAS `preview` 环境配置 `MAESTRO_TEST_ACCOUNT_IDENTIFIER`、`MAESTRO_TEST_ACCOUNT_PASSWORD`、`MAESTRO_TEST_CONTENT_SUFFIX`、`EXPO_PUBLIC_SUPABASE_URL` 和 `EXPO_PUBLIC_SUPABASE_ANON_KEY`。测试邮箱必须以 `trrb-e2e-` 开头；内容后缀必须是 6–32 位小写字母、数字或连字符，用来区分每次运行。凭据不得写入仓库，预检失败时也不会输出其值。配置完成后，从 EAS Workflows 手动运行 `Unified account and community E2E`。
+运行前须在 EAS `preview` 环境配置 `MAESTRO_TEST_ACCOUNT_IDENTIFIER`、`MAESTRO_TEST_ACCOUNT_PASSWORD`、`MAESTRO_TEST_CONTENT_SUFFIX`、`EXPO_PUBLIC_SUPABASE_URL` 和 `EXPO_PUBLIC_SUPABASE_ANON_KEY`。测试邮箱必须以 `trrb-e2e-` 开头；内容后缀必须是 6–32 位小写字母、数字或连字符，用来区分每次运行。凭据不得写入仓库，预检失败时也不会输出其值。配置完成后，从 EAS Workflows 手动运行 `Unified account, community and comments E2E`。
 
 社区流程只创建标题以 `【TRRB-E2E-` 开头且正文含固定自动化标记的测试帖。正常路径由作者立即下架；无论 Maestro 成功还是失败，独立清理任务都会使用同一测试用户的短期会话再次查找双重标记内容并调用现有 `community-api` 下架。清理脚本不含 service-role，也不能下架其他用户或仅命中单一标记的内容。
+
+新闻评论流程会在一篇公开新闻下发布带本轮后缀的评论与回复，并验证点赞、举报和作者删除。正常路径会软删除两条测试内容；失败兜底只查询当前测试账号、当前后缀且仍为公开或待审的评论，再调用现有 `delete_own_comment` RPC。客户端与清理任务都不能删除其他用户评论。
 
 ## 社区帖子闭环
 
 社区列表中的帖子可进入 App 原生详情页。详情页继续复用网站现有 `community-api`，支持读取评论、发表评论、点赞或取消点赞、举报，以及作者下架自己的帖子。所有写操作携带当前 Supabase 会话的短期 access token；App 不包含 service-role 或其他服务端密钥。
 
 运行 `npm run test:community` 可验证帖子详情读取、会话头、评论、点赞、举报、作者下架以及输入校验的客户端契约。
+
+运行 `npm run test:comments` 可验证新闻评论作者权限、回复结构以及失败兜底清理的双重所有权和运行标记约束。

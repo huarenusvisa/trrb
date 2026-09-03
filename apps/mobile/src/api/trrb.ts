@@ -33,6 +33,17 @@ export type ArticleNavigation = {
   next: NewsArticle | null;
 };
 
+export type ArticleTranslation = {
+  article_id: string;
+  locale: 'en' | 'zh-TW';
+  title: string;
+  summary?: string | null;
+  content: string;
+  translation_source: 'reviewed_server_cache' | string;
+  reviewed_at: string;
+  source_article_updated_at: string;
+};
+
 const API_BASE = 'https://trrb.net/.netlify/functions';
 const REQUEST_TIMEOUT_MS = 12000;
 const MAX_RETRIES = 2;
@@ -127,6 +138,13 @@ export async function fetchArticle(id: string | number) {
   const params = new URLSearchParams({ id: String(id) });
   const payload = await requestJson(`${API_BASE}/public-article?${params.toString()}`);
   return (payload?.article || null) as NewsArticle | null;
+}
+
+export async function fetchArticleTranslation(id: string | number, locale: string) {
+  if (locale !== 'en' && locale !== 'zh-TW') return null;
+  const params = new URLSearchParams({ id: String(id), locale });
+  const payload = await requestJson(`${API_BASE}/public-article-translation?${params.toString()}`);
+  return (payload?.translation || null) as ArticleTranslation | null;
 }
 
 export async function fetchRelatedArticles(article: NewsArticle, limit = 4) {

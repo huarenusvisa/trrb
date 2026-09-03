@@ -1,0 +1,24 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "copyright": "2026 Tang Ren Daily",
+    "categories": ["NEWS", "MAGAZINES_AND_NEWSPAPERS"],
+    "info": {
+      "zh-Hans": {
+        "title": "唐人日报",
+        "subtitle": "中美新闻与华人社区",
+        "description": "唐人日报面向在美华人提供中美新闻、移民资讯和社区交流服务。\n\n你可以浏览中国热门头条、美国时政、美国警情、移民美国和判例新规等栏目，搜索新闻，收藏文章并保存阅读历史。注册统一账号后，可在移民社区发布求助和经验信息，也可参与新闻评论、回复、点赞与举报。\n\n唐人日报重视用户隐私。社区发布前会提示移除个人号码、电话、详细住址和未成年人信息；用户可以在 App 内申请永久删除账户及关联个人数据。\n\n新闻和社区内容仅供一般信息参考，不构成法律意见。涉及个人移民案件或其他法律问题时，请咨询具有相应执业资格的专业人士。",
+        "keywords": ["唐人日报", "美国新闻", "华人新闻", "移民资讯", "移民社区", "美国时政", "新闻评论"],
+        "promoText": "面向在美华人的中美新闻、移民资讯与社区交流平台。",
+        "marketingUrl": "https://trrb.net/",
+        "supportUrl": "https://trrb.net/",
+        "privacyPolicyUrl": "https://trrb.net/privacy.html",
+        "privacyChoicesUrl": "https://trrb.net/delete-account.html"
+      }
+    },
+    "release": {
+      "automaticRelease": false,
+      "phasedRelease": false
+    }
+  }
+}

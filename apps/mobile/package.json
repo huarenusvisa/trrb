@@ -11,7 +11,7 @@
     "test:auth": "node --experimental-strip-types --test src/auth/unified-account.test.ts scripts/validate-auth-e2e-env.test.mjs scripts/cleanup-community-e2e.test.mjs",
     "test:community": "node --experimental-strip-types --test src/api/community-core.test.ts",
     "test:comments": "node --experimental-strip-types --test src/community/comment-presentation.test.ts scripts/cleanup-news-comments-e2e.test.mjs",
-    "test:library": "node --experimental-strip-types --test src/storage/favorites-sync-core.test.ts",
+    "test:library": "node --experimental-strip-types --test src/storage/favorites-sync-core.test.ts src/storage/history-sync-core.test.ts",
     "typecheck": "tsc --noEmit",
     "config:check": "node ../../scripts/validate-mobile-store-config.mjs",
     "export:web": "expo export --platform web --output-dir .expo-export --clear"

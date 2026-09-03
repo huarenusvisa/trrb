@@ -6,7 +6,7 @@ import { isAuthConfigured, supabase } from '../../src/auth/supabase';
 import { fetchArticle } from '../../src/api/trrb';
 import { accountLabel } from '../../src/auth/unified-account';
 import { unreadNotificationCount } from '../../src/community/notifications';
-import { syncFavoritesWithCloud } from '../../src/storage/library';
+import { syncFavoritesWithCloud, syncHistoryWithCloud } from '../../src/storage/library';
 import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '../../src/storage/reading-preferences';
 
 const FONT_OPTIONS: { label: string; scale: ReadingPreferences['fontScale'] }[] = [
@@ -26,12 +26,12 @@ export default function ProfileScreen() {
     void getReadingPreferences().then((prefs) => setFontScale(prefs.fontScale));
     let mounted = true;
     let syncedUserId: string | null = null;
-    const syncFavorites = (nextSession: Session | null) => {
+    const syncLibrary = (nextSession: Session | null) => {
       const userId = nextSession?.user.id || null;
       if (!userId || syncedUserId === userId) return;
       syncedUserId = userId;
-      void syncFavoritesWithCloud(fetchArticle).catch(() => {
-        // Keep local data and allow the Favorites screen to retry when connectivity returns.
+      void Promise.all([syncFavoritesWithCloud(fetchArticle), syncHistoryWithCloud(fetchArticle)]).catch(() => {
+        // Keep local data and allow each library screen to retry when connectivity returns.
         syncedUserId = null;
       });
     };
@@ -39,14 +39,14 @@ export default function ProfileScreen() {
       if (mounted) {
         setSession(data.session);
         setLoading(false);
-        syncFavorites(data.session);
+        syncLibrary(data.session);
         if (data.session) setUnread(await unreadNotificationCount().catch(() => 0));
       }
     });
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
       setSession(nextSession);
       setLoading(false);
-      syncFavorites(nextSession);
+      syncLibrary(nextSession);
       setUnread(nextSession ? await unreadNotificationCount().catch(() => 0) : 0);
     });
     return () => {
@@ -74,7 +74,7 @@ export default function ProfileScreen() {
         <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>消息中心{unread ? ` · ${unread}条未读` : ''}</Text><Text style={styles.meta}>回复、点赞、关注与系统通知</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>我的评论</Text><Text style={styles.meta}>查看评论状态并返回对应新闻</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>本机与账号云端收藏自动安全合并</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>最近阅读的新闻，最多保存100条</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>本机与账号云端历史自动合并，最多100条</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>修改昵称、默认头像与公开简介</Text></Pressable>
         <Pressable testID="profile-sign-out" style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>退出登录</Text></Pressable>
       </> : <>

@@ -1,4 +1,5 @@
 const { authenticateStaff, rest, safeText } = require('./_shared/supabase-admin');
+const { expoJsonRequest } = require('./_shared/expo-push-client');
 const { correlatePushTickets, numericInFilter } = require('./push-receipts-core');
 
 const json = (statusCode, body) => ({ statusCode, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }, body: JSON.stringify(body) });
@@ -12,17 +13,16 @@ const CATEGORY_FIELD = {
 };
 
 async function expoSend(messages) {
-  if (!messages.length) return [];
+  if (!messages.length) return { tickets: [], attempts: 0 };
   const headers = { 'content-type': 'application/json', accept: 'application/json' };
   if (process.env.EXPO_ACCESS_TOKEN) headers.authorization = `Bearer ${process.env.EXPO_ACCESS_TOKEN}`;
-  const response = await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
+  const { payload, attempts } = await expoJsonRequest({
+    url: 'https://exp.host/--/api/v2/push/send',
     headers,
-    body: JSON.stringify(messages)
+    body: messages,
+    operation: 'expo_push'
   });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(`expo_push_failed:${response.status}`);
-  return Array.isArray(payload.data) ? payload.data : [];
+  return { tickets: Array.isArray(payload.data) ? payload.data : [], attempts };
 }
 
 exports.handler = async (event) => {
@@ -63,11 +63,13 @@ exports.handler = async (event) => {
 
     let accepted = 0;
     let rejected = 0;
+    let retryCount = 0;
     const receiptRows = [];
     const invalidTokenIds = [];
     for (let i = 0; i < messages.length; i += 100) {
-      const ticketBatch = await expoSend(messages.slice(i, i + 100));
-      const correlated = correlatePushTickets(targets.slice(i, i + 100), ticketBatch);
+      const sent = await expoSend(messages.slice(i, i + 100));
+      retryCount += Math.max(0, sent.attempts - 1);
+      const correlated = correlatePushTickets(targets.slice(i, i + 100), sent.tickets);
       accepted += correlated.accepted;
       rejected += correlated.rejected;
       receiptRows.push(...correlated.receiptRows);
@@ -106,7 +108,7 @@ exports.handler = async (event) => {
       }
     }
 
-    return json(200, { ok: true, article_id: article.id, target_count: targets.length, accepted_count: accepted, rejected_count: rejected, receipt_tracking_count: receiptTrackingCount, disabled_token_count: new Set(invalidTokenIds).size });
+    return json(200, { ok: true, article_id: article.id, target_count: targets.length, accepted_count: accepted, rejected_count: rejected, retry_count: retryCount, receipt_tracking_count: receiptTrackingCount, disabled_token_count: new Set(invalidTokenIds).size });
   } catch (error) {
     return json(error.statusCode || 500, { error: error.message || 'server_error' });
   }

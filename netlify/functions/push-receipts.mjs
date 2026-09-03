@@ -1,7 +1,9 @@
 import supabaseAdmin from './_shared/supabase-admin.js';
+import expoPushClient from './_shared/expo-push-client.js';
 import receiptCore from './push-receipts-core.js';
 
 const { rest } = supabaseAdmin;
+const { expoJsonRequest } = expoPushClient;
 const { groupReceiptOutcomes, numericInFilter, isMissingReceiptQueueError } = receiptCore;
 const FIFTEEN_MINUTES = 15 * 60 * 1000;
 const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
@@ -20,14 +22,14 @@ function expoHeaders() {
 }
 
 async function expoGetReceipts(ids) {
-  const response = await fetch('https://exp.host/--/api/v2/push/getReceipts', {
-    method: 'POST',
+  const { payload, attempts } = await expoJsonRequest({
+    url: 'https://exp.host/--/api/v2/push/getReceipts',
     headers: expoHeaders(),
-    body: JSON.stringify({ ids })
+    body: { ids },
+    operation: 'expo_receipts',
+    idempotent: true
   });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(`expo_receipts_failed:${response.status}`);
-  return payload?.data && typeof payload.data === 'object' ? payload.data : {};
+  return { data: payload?.data && typeof payload.data === 'object' ? payload.data : {}, attempts };
 }
 
 async function patchByIds(table, ids, body) {
@@ -61,8 +63,8 @@ export default async () => {
       return new Response(null, { status: 200 });
     }
 
-    const receiptData = await expoGetReceipts(rows.map((row) => row.ticket_id));
-    const outcomes = groupReceiptOutcomes(rows, receiptData);
+    const receiptResponse = await expoGetReceipts(rows.map((row) => row.ticket_id));
+    const outcomes = groupReceiptOutcomes(rows, receiptResponse.data);
     for (const group of outcomes.groups) {
       await patchByIds('push_ticket_receipts', group.receiptRowIds, {
         status: group.status,
@@ -76,6 +78,7 @@ export default async () => {
       requested: rows.length,
       processed: rows.length - outcomes.missing,
       pending: outcomes.missing,
+      retries: Math.max(0, receiptResponse.attempts - 1),
       disabled_tokens: outcomes.invalidTokenIds.length
     }));
     return new Response(null, { status: 200 });

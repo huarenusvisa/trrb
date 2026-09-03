@@ -15,6 +15,7 @@ const tokensMigration = read('supabase/migrations/20260816220100_app_batch2_push
 const governance = read('supabase/migrations/20260817031500_app_batch2_push_governance.sql');
 const adminPush = read('netlify/functions/admin-push.js');
 const receiptProcessor = read('netlify/functions/push-receipts.mjs');
+const expoPushClient = read('netlify/functions/_shared/expo-push-client.js');
 const receiptMigration = read('supabase/migrations/20260903110000_push_receipt_lifecycle.sql');
 
 check('expo-notifications dependency matches SDK 57', pkg.dependencies?.['expo-notifications'] === '~57.0.6');
@@ -39,6 +40,9 @@ check('receipt worker disables only invalid device tokens', receiptProcessor.inc
 check('receipt queue is server-only with pending index', receiptMigration.includes('enable row level security') && receiptMigration.includes('No client policies') && receiptMigration.includes("where status = 'pending'"));
 check('receipt worker runs hourly and waits at least 15 minutes', receiptProcessor.includes("schedule: '@hourly'") && receiptProcessor.includes('FIFTEEN_MINUTES'));
 check('receipt worker safely waits for migration deployment', receiptProcessor.includes('isMissingReceiptQueueError') && receiptProcessor.includes('status: 200'));
+check('Expo requests retry only transient failures with bounded backoff', expoPushClient.includes("status === 429 || (status >= 500 && status <= 599)") && expoPushClient.includes('maxAttempts = 3') && expoPushClient.includes('maxDelayMs = 4000'));
+check('permanent 4xx and ambiguous push sends are not retried', expoPushClient.includes('!error.retryable') && expoPushClient.includes('deliveryUnknown') && adminPush.includes("operation: 'expo_push'"));
+check('receipt lookup uses idempotent transient-network retries', receiptProcessor.includes('idempotent: true') && receiptProcessor.includes('receiptResponse.attempts'));
 
 // A real Expo project link is required before a physical-device token can be obtained.
 const repositoryProjectId = app.extra?.eas?.projectId;

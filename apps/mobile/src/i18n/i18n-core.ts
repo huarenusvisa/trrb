@@ -53,6 +53,30 @@ const zhCN = {
   'search.history': '搜索历史',
   'search.clear': '清除',
   'search.noHistory': '暂无搜索历史。',
+  'auth.screenTitle': '登录 / 注册',
+  'auth.heading': '唐人日报账户',
+  'auth.description': '输入邮箱或手机号和密码。账号不存在时会自动创建并直接登录，不需要额外验证。',
+  'auth.notConfiguredTitle': '登录暂未配置',
+  'auth.notConfiguredBody': '当前版本尚未连接生产身份服务。',
+  'auth.registerSuccess': '注册成功',
+  'auth.signInSuccess': '登录成功',
+  'auth.registerSuccessBody': '账户已创建并登录，无需额外验证。',
+  'auth.welcomeBack': '欢迎回来。',
+  'auth.continue': '继续',
+  'auth.identifierPlaceholder': '邮箱或手机号',
+  'auth.passwordPlaceholder': '密码（8–128位）',
+  'auth.busy': '正在登录…',
+  'auth.submit': '登录 / 注册',
+  'auth.guest': '继续以游客身份阅读',
+  'auth.retry': '请稍后重试',
+  'auth.validationRequired': '请输入邮箱或手机号和密码。',
+  'auth.validationIdentifier': '请输入有效的邮箱或手机号。',
+  'auth.validationPassword': '密码需要 8–128 位。',
+  'auth.serviceInvalid': '账号服务返回异常，请稍后重试。',
+  'auth.sessionInvalid': '登录状态无效，请重新登录。',
+  'auth.timeout': '连接账号服务超时，请检查网络后重试。',
+  'auth.network': '无法连接账号服务，请检查网络后重试。',
+  'auth.httpFailed': '登录失败（{status}）',
   'profile.heading': '我的',
   'profile.loggedIn': '已登录 · {account}',
   'profile.guest': '游客模式 · 无需注册即可阅读全部公开内容',
@@ -117,6 +141,7 @@ const zhTW: Record<MessageKey, string> = {
   'america.heading': '美國', 'america.subtitle': '美國時政 · 美國警情', 'america.loadFailed': '美國頻道載入失敗', 'america.empty': '暫無最新內容',
   'legal.heading': '美國判例與新規', 'legal.subtitle': '官方法律資料庫 · App 原生詳情', 'legal.databaseError': '法律資料庫 {status}', 'legal.loadFailed': '法律資料庫載入失敗', 'legal.searchPlaceholder': '搜尋案名、案號、引證或機構', 'legal.count': '共 {count} 筆', 'legal.officialSource': '官方法律資料', 'legal.untitled': '未命名法律資料',
   'search.placeholder': '搜尋新聞標題或摘要', 'search.submit': '搜尋', 'search.filter': '欄目：{category} ×', 'search.backHome': '返回搜尋首頁', 'search.queryTitle': '搜尋：{query}', 'search.categoryTitle': '欄目：{category}', 'search.empty': '沒有找到相關已發布新聞。', 'search.trending': '熱搜', 'search.trendingSource': '來自正式已發布新聞資料', 'search.noTrending': '目前沒有可用熱搜資料。', 'search.history': '搜尋紀錄', 'search.clear': '清除', 'search.noHistory': '暫無搜尋紀錄。',
+  'auth.screenTitle': '登入 / 註冊', 'auth.heading': '唐人日報帳戶', 'auth.description': '輸入電子郵件或手機號碼和密碼。帳戶不存在時會自動建立並直接登入，不需要額外驗證。', 'auth.notConfiguredTitle': '登入尚未設定', 'auth.notConfiguredBody': '目前版本尚未連接正式身分服務。', 'auth.registerSuccess': '註冊成功', 'auth.signInSuccess': '登入成功', 'auth.registerSuccessBody': '帳戶已建立並登入，無需額外驗證。', 'auth.welcomeBack': '歡迎回來。', 'auth.continue': '繼續', 'auth.identifierPlaceholder': '電子郵件或手機號碼', 'auth.passwordPlaceholder': '密碼（8–128位）', 'auth.busy': '正在登入…', 'auth.submit': '登入 / 註冊', 'auth.guest': '繼續以訪客身分閱讀', 'auth.retry': '請稍後再試', 'auth.validationRequired': '請輸入電子郵件或手機號碼和密碼。', 'auth.validationIdentifier': '請輸入有效的電子郵件或手機號碼。', 'auth.validationPassword': '密碼需要 8–128 位。', 'auth.serviceInvalid': '帳戶服務回應異常，請稍後再試。', 'auth.sessionInvalid': '登入狀態無效，請重新登入。', 'auth.timeout': '連接帳戶服務逾時，請檢查網路後重試。', 'auth.network': '無法連接帳戶服務，請檢查網路後重試。', 'auth.httpFailed': '登入失敗（{status}）',
   'profile.heading': '我的', 'profile.loggedIn': '已登入 · {account}', 'profile.guest': '訪客模式 · 無需註冊即可閱讀全部公開內容', 'profile.authWarning': '目前版本尚未設定正式身分服務環境變數。', 'profile.login': '登入 / 建立帳戶',
   'profile.community': '移民社區', 'profile.communityMemberMeta': '瀏覽貼文、分享經歷和提出問題', 'profile.communityGuestMeta': '瀏覽無需登入；發文時再登入或註冊', 'profile.notifications': '訊息中心', 'profile.unread': ' · {count}則未讀', 'profile.notificationsMeta': '回覆、按讚、追蹤與系統通知',
   'profile.comments': '我的評論', 'profile.commentsMeta': '查看評論狀態並返回對應新聞', 'profile.favorites': '收藏', 'profile.favoritesMeta': '本機與帳戶雲端收藏自動安全合併', 'profile.localFavorites': '本機收藏', 'profile.localFavoritesMeta': '登入前繼續保存在目前裝置',
@@ -134,6 +159,7 @@ const en: Record<MessageKey, string> = {
   'america.heading': 'United States', 'america.subtitle': 'U.S. politics · Public safety', 'america.loadFailed': 'Could not load the U.S. channel', 'america.empty': 'No new stories yet',
   'legal.heading': 'U.S. Cases & Rules', 'legal.subtitle': 'Official legal sources · Native app details', 'legal.databaseError': 'Legal database {status}', 'legal.loadFailed': 'Could not load the legal database', 'legal.searchPlaceholder': 'Search title, docket, citation or agency', 'legal.count': '{count} records', 'legal.officialSource': 'Official legal source', 'legal.untitled': 'Untitled legal record',
   'search.placeholder': 'Search story titles or summaries', 'search.submit': 'Search', 'search.filter': 'Category: {category} ×', 'search.backHome': 'Back to search', 'search.queryTitle': 'Search: {query}', 'search.categoryTitle': 'Category: {category}', 'search.empty': 'No matching published stories found.', 'search.trending': 'Trending', 'search.trendingSource': 'From published news data', 'search.noTrending': 'Trending data is not available yet.', 'search.history': 'Search history', 'search.clear': 'Clear', 'search.noHistory': 'No search history yet.',
+  'auth.screenTitle': 'Sign in / Register', 'auth.heading': 'Tangren Daily account', 'auth.description': 'Enter your email address or phone number and password. If the account does not exist, it will be created and signed in immediately without another verification step.', 'auth.notConfiguredTitle': 'Sign-in is not configured', 'auth.notConfiguredBody': 'This build is not connected to the production identity service.', 'auth.registerSuccess': 'Registration successful', 'auth.signInSuccess': 'Sign-in successful', 'auth.registerSuccessBody': 'Your account was created and signed in. No additional verification is required.', 'auth.welcomeBack': 'Welcome back.', 'auth.continue': 'Continue', 'auth.identifierPlaceholder': 'Email address or phone number', 'auth.passwordPlaceholder': 'Password (8–128 characters)', 'auth.busy': 'Signing in…', 'auth.submit': 'Sign in / Register', 'auth.guest': 'Continue reading as a guest', 'auth.retry': 'Please try again later', 'auth.validationRequired': 'Enter your email address or phone number and password.', 'auth.validationIdentifier': 'Enter a valid email address or phone number.', 'auth.validationPassword': 'Password must be 8–128 characters.', 'auth.serviceInvalid': 'The account service returned an invalid response. Try again later.', 'auth.sessionInvalid': 'Your sign-in session is invalid. Sign in again.', 'auth.timeout': 'The account service timed out. Check your connection and try again.', 'auth.network': 'Could not reach the account service. Check your connection and try again.', 'auth.httpFailed': 'Sign-in failed ({status})',
   'profile.heading': 'Me', 'profile.loggedIn': 'Signed in · {account}', 'profile.guest': 'Guest mode · Read all public stories without an account', 'profile.authWarning': 'Production identity service is not configured in this build.', 'profile.login': 'Sign in / Create account',
   'profile.community': 'Immigration Community', 'profile.communityMemberMeta': 'Browse posts, share experiences and ask questions', 'profile.communityGuestMeta': 'Browse without signing in; sign in when you post', 'profile.notifications': 'Notifications', 'profile.unread': ' · {count} unread', 'profile.notificationsMeta': 'Replies, likes, follows and system notices',
   'profile.comments': 'My comments', 'profile.commentsMeta': 'Review comment status and return to the story', 'profile.favorites': 'Saved stories', 'profile.favoritesMeta': 'Safely merge on-device and cloud favorites', 'profile.localFavorites': 'On-device favorites', 'profile.localFavoritesMeta': 'Kept on this device until you sign in',
@@ -170,6 +196,29 @@ export function translate(locale: SupportedLocale, key: MessageKey, params: Reco
 
 export function languageName(locale: SupportedLocale): string {
   return translate(locale, locale === 'zh-CN' ? 'language.zhCN' : locale === 'zh-TW' ? 'language.zhTW' : 'language.en');
+}
+
+export function authValidationMessage(locale: SupportedLocale, code: 'required' | 'identifier' | 'password'): string {
+  const keys = {
+    required: 'auth.validationRequired',
+    identifier: 'auth.validationIdentifier',
+    password: 'auth.validationPassword',
+  } as const;
+  return translate(locale, keys[code]);
+}
+
+export function authClientErrorMessage(locale: SupportedLocale, error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error || '');
+  const keys: Record<string, MessageKey> = {
+    '账号服务返回异常，请稍后重试。': 'auth.serviceInvalid',
+    '登录状态无效，请重新登录。': 'auth.sessionInvalid',
+    '连接账号服务超时，请检查网络后重试。': 'auth.timeout',
+    '无法连接账号服务，请检查网络后重试。': 'auth.network',
+  };
+  if (keys[message]) return translate(locale, keys[message]);
+  const status = message.match(/^登录失败（(\d+)）$/)?.[1];
+  if (status) return translate(locale, 'auth.httpFailed', { status });
+  return message || translate(locale, 'auth.retry');
 }
 
 export function localeDateTag(locale: SupportedLocale): string {

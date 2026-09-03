@@ -50,3 +50,21 @@ test('uses the shared language context across news discovery surfaces', () => {
   assert.doesNotMatch(america, /toLocaleString\('zh-CN'\)/);
   assert.doesNotMatch(list, /toLocaleString\('zh-CN'\)/);
 });
+
+test('localizes unified account chrome and keeps Maestro language-neutral', () => {
+  const auth = read('app/auth.tsx');
+  const home = read('app/(tabs)/index.tsx');
+  const searchFlow = read('.maestro/search.yml');
+  const authFlow = read('.maestro/auth-login.yml');
+
+  assert.match(auth, /useI18n\(\)/);
+  for (const key of ['auth.heading', 'auth.description', 'auth.identifierPlaceholder', 'auth.passwordPlaceholder', 'auth.submit', 'auth.guest']) {
+    assert.ok(auth.includes(`t('${key}')`), `auth screen must translate ${key}`);
+  }
+  assert.match(home, /testID="home-search-button"/);
+  assert.match(searchFlow, /id: "home-search-button"/);
+  assert.match(searchFlow, /id: "category-screen-title"/);
+  assert.doesNotMatch(searchFlow, /visible: "搜索：特朗普"/);
+  assert.match(authFlow, /Registration successful/);
+  assert.match(authFlow, /Continue/);
+});

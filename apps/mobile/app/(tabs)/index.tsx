@@ -181,7 +181,7 @@ export default function HomeScreen() {
             <Text style={styles.brand}>唐人日报</Text>
             <Text style={styles.brandEn}>TANG REN DAILY</Text>
           </View>
-          <Pressable accessibilityLabel="搜索" style={styles.searchButton} onPress={() => router.push('/search')}>
+          <Pressable testID="home-search-button" accessibilityLabel="搜索" style={styles.searchButton} onPress={() => router.push('/search')}>
             <Text style={styles.searchIcon}>⌕</Text>
           </Pressable>
         </View>
@@ -317,7 +317,7 @@ export default function HomeScreen() {
       {showStickyBrand ? (
         <View style={[styles.stickyHeader, { paddingTop: insets.top, height: insets.top + 46 }]}> 
           <Text style={styles.stickyBrand}>唐人日报</Text>
-          <Pressable accessibilityLabel="搜索" onPress={() => router.push('/search')} style={styles.stickySearch}><Text style={styles.stickySearchText}>搜索</Text></Pressable>
+          <Pressable testID="home-search-sticky" accessibilityLabel="搜索" onPress={() => router.push('/search')} style={styles.stickySearch}><Text style={styles.stickySearchText}>搜索</Text></Pressable>
         </View>
       ) : null}
     </View>

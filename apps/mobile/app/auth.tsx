@@ -2,22 +2,25 @@ import { useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { isAuthConfigured, supabase } from '../src/auth/supabase';
-import { loginOrRegister, validateCredentials } from '../src/auth/unified-account';
+import { loginOrRegister, validateCredentialCode } from '../src/auth/unified-account';
+import { useI18n } from '../src/i18n/I18nProvider';
+import { authClientErrorMessage, authValidationMessage } from '../src/i18n/i18n-core';
 
 export default function AuthScreen() {
+  const { locale, t } = useI18n();
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
 
   const validate = () => {
-    const validationError = validateCredentials(identifier, password);
-    if (validationError) {
-      setMessage(validationError);
+    const validationCode = validateCredentialCode(identifier, password);
+    if (validationCode) {
+      setMessage(authValidationMessage(locale, validationCode));
       return false;
     }
     if (!isAuthConfigured) {
-      Alert.alert('登录暂未配置', '当前版本尚未连接生产身份服务。');
+      Alert.alert(t('auth.notConfiguredTitle'), t('auth.notConfiguredBody'));
       return false;
     }
     return true;
@@ -31,24 +34,24 @@ export default function AuthScreen() {
       const result = await loginOrRegister(identifier, password);
       const { error } = await supabase.auth.setSession(result.session);
       if (error) throw error;
-      Alert.alert(result.created ? '注册成功' : '登录成功', result.created ? '账户已创建并登录，无需额外验证。' : '欢迎回来。', [
-        { text: '继续', onPress: () => router.back() },
+      Alert.alert(result.created ? t('auth.registerSuccess') : t('auth.signInSuccess'), result.created ? t('auth.registerSuccessBody') : t('auth.welcomeBack'), [
+        { text: t('auth.continue'), onPress: () => router.back() },
       ]);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : '请稍后重试');
+      setMessage(authClientErrorMessage(locale, error));
     } finally { setBusy(false); }
   };
 
   return <View style={styles.page}>
-    <Stack.Screen options={{ title: '登录 / 注册', headerBackTitle: '返回' }} />
-    <Text style={styles.h1}>唐人日报账户</Text>
-    <Text style={styles.sub}>输入邮箱或手机号和密码。账号不存在时会自动创建并直接登录，不需要额外验证。</Text>
-    <TextInput testID="auth-identifier" value={identifier} onChangeText={setIdentifier} autoCapitalize="none" autoCorrect={false} autoComplete="username" placeholder="邮箱或手机号" style={styles.input} editable={!busy} />
-    <TextInput testID="auth-password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="password" placeholder="密码（8–128位）" style={styles.input} editable={!busy} onSubmitEditing={() => void signIn()} />
+    <Stack.Screen options={{ title: t('auth.screenTitle'), headerBackTitle: t('common.back') }} />
+    <Text style={styles.h1}>{t('auth.heading')}</Text>
+    <Text style={styles.sub}>{t('auth.description')}</Text>
+    <TextInput testID="auth-identifier" value={identifier} onChangeText={setIdentifier} autoCapitalize="none" autoCorrect={false} autoComplete="username" placeholder={t('auth.identifierPlaceholder')} style={styles.input} editable={!busy} />
+    <TextInput testID="auth-password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="password" placeholder={t('auth.passwordPlaceholder')} style={styles.input} editable={!busy} onSubmitEditing={() => void signIn()} />
     {message ? <Text testID="auth-message" accessibilityRole="alert" style={styles.error}>{message}</Text> : null}
     {busy ? <ActivityIndicator style={{ marginVertical: 10 }} /> : null}
-    <Pressable testID="auth-submit" accessibilityRole="button" style={[styles.primary, busy && styles.disabled]} onPress={signIn} disabled={busy}><Text style={styles.primaryText}>{busy ? '正在登录…' : '登录 / 注册'}</Text></Pressable>
-    <Pressable style={styles.guest} onPress={() => router.back()} disabled={busy}><Text style={styles.guestText}>继续以游客身份阅读</Text></Pressable>
+    <Pressable testID="auth-submit" accessibilityRole="button" style={[styles.primary, busy && styles.disabled]} onPress={signIn} disabled={busy}><Text style={styles.primaryText}>{busy ? t('auth.busy') : t('auth.submit')}</Text></Pressable>
+    <Pressable testID="auth-guest" style={styles.guest} onPress={() => router.back()} disabled={busy}><Text style={styles.guestText}>{t('auth.guest')}</Text></Pressable>
   </View>;
 }
 

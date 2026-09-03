@@ -7,19 +7,28 @@ export type UnifiedAccountResult = {
 };
 
 type FetchLike = (input: string, init: RequestInit) => Promise<Response>;
+export type CredentialValidationCode = 'required' | 'identifier' | 'password' | null;
 
 export function normalizeIdentifierInput(value: string) {
   const identifier = value.trim();
   return identifier.includes('@') ? identifier.toLowerCase() : identifier;
 }
 
-export function validateCredentials(identifierValue: string, password: string) {
+export function validateCredentialCode(identifierValue: string, password: string): CredentialValidationCode {
   const identifier = normalizeIdentifierInput(identifierValue);
-  if (!identifier || !password) return '请输入邮箱或手机号和密码。';
+  if (!identifier || !password) return 'required';
   const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
   const phoneDigits = identifier.replace(/\D/g, '');
-  if (!isEmail && (phoneDigits.length < 10 || phoneDigits.length > 15)) return '请输入有效的邮箱或手机号。';
-  if (password.length < 8 || password.length > 128) return '密码需要 8–128 位。';
+  if (!isEmail && (phoneDigits.length < 10 || phoneDigits.length > 15)) return 'identifier';
+  if (password.length < 8 || password.length > 128) return 'password';
+  return null;
+}
+
+export function validateCredentials(identifierValue: string, password: string) {
+  const code = validateCredentialCode(identifierValue, password);
+  if (code === 'required') return '请输入邮箱或手机号和密码。';
+  if (code === 'identifier') return '请输入有效的邮箱或手机号。';
+  if (code === 'password') return '密码需要 8–128 位。';
   return '';
 }
 

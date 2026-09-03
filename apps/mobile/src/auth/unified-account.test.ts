@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { accountLabel, loginOrRegister, normalizeIdentifierInput, validateCredentials } from './unified-account.ts';
+import { accountLabel, loginOrRegister, normalizeIdentifierInput, validateCredentialCode, validateCredentials } from './unified-account.ts';
 
 test('normalizes email casing while preserving phone punctuation', () => {
   assert.equal(normalizeIdentifierInput(' ZhangSan@Example.COM '), 'zhangsan@example.com');
@@ -8,6 +8,10 @@ test('normalizes email casing while preserving phone punctuation', () => {
 });
 
 test('validates the same identifier and password limits as the server', () => {
+  assert.equal(validateCredentialCode('', ''), 'required');
+  assert.equal(validateCredentialCode('not-an-account', 'password'), 'identifier');
+  assert.equal(validateCredentialCode('user@example.com', 'short'), 'password');
+  assert.equal(validateCredentialCode('+1 347 873 8860', 'password123'), null);
   assert.match(validateCredentials('not-an-account', 'password'), /有效/);
   assert.match(validateCredentials('user@example.com', 'short'), /8–128/);
   assert.equal(validateCredentials('+1 347 873 8860', 'password123'), '');

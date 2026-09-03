@@ -66,6 +66,7 @@ exports.handler = async (event) => {
       return json(200, { article, translation });
     }
     if (action === 'publish') {
+      if (body.review_confirmed !== true) return json(400, { error: '发布前必须确认已逐段完成人工核对' });
       const translation = await upsert({ article_id: article.id, locale, ...reviewedFields(body), source_article_updated_at: article.updated_at, status: 'published', translation_source: existing?.translation_source || 'human_editor', model: existing?.model || null, reviewed_by: actor.user.id, reviewed_at: new Date().toISOString(), updated_at: new Date().toISOString() });
       return json(200, { article, translation });
     }

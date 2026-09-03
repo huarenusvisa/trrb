@@ -136,52 +136,86 @@ async function generateCover(input) {
   return uploadImageBytes(Buffer.from(base64, "base64"), "image/png", "ai");
 }
 
-async function translateArticle(input) {
-  if (!OPENAI_KEY) throw new Error("Netlify 尚未设置 OPENAI_API_KEY");
-  const locale = input.locale === "en" ? "en" : input.locale === "zh-TW" ? "zh-TW" : "";
-  const title = safeText(input.title, 500);
-  const summary = safeText(input.summary, 5000);
-  const content = safeText(input.content, 120000);
-  if (!locale || !title || content.length < 20) {
-    const error = new Error("缺少有效的目标语言、标题或正文");
-    error.statusCode = 400;
-    throw error;
-  }
-  const target = locale === "en" ? "American English" : "Traditional Chinese used in Taiwan and Hong Kong";
-  const schema = {
-    type: "object",
-    additionalProperties: false,
-    required: ["title", "summary", "content"],
-    properties: {
-      title: { type: "string" },
-      summary: { type: "string" },
-      content: { type: "string" }
+const TRANSLATION_CHUNK_SIZE = 10000;
+const MAX_TRANSLATION_CHUNKS = 10;
+
+function splitTranslationContent(value, chunkSize = TRANSLATION_CHUNK_SIZE) {
+  const text = String(value ?? "").replace(/\u0000/g, "").trim();
+  if (!text) return [];
+  if (text.length > chunkSize * MAX_TRANSLATION_CHUNKS) throw new RangeError("正文超过安全分段上限");
+  const chunks = [];
+  let remaining = text;
+  while (remaining.length > chunkSize) {
+    const window = remaining.slice(0, chunkSize + 1);
+    const minimum = Math.floor(chunkSize * 0.6);
+    let cut = -1;
+    for (let index = window.length - 1; index >= minimum; index -= 1) {
+      if (/[\n。！？.!?；;]/.test(window[index])) { cut = index + 1; break; }
     }
-  };
+    if (cut < 0) cut = chunkSize;
+    chunks.push(remaining.slice(0, cut).trim());
+    remaining = remaining.slice(cut).trim();
+  }
+  if (remaining) chunks.push(remaining);
+  return chunks;
+}
+
+async function requestTranslationChunk({ locale, title, summary, content, index, total }) {
+  const target = locale === "en" ? "American English" : "Traditional Chinese used in Taiwan and Hong Kong";
+  const first = index === 0;
+  const properties = first
+    ? { title: { type: "string" }, summary: { type: "string" }, content: { type: "string" } }
+    : { content: { type: "string" } };
   const response = await requestJson("https://api.openai.com/v1/responses", {
     method: "POST",
     headers: { Authorization: `Bearer ${OPENAI_KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       model: OPENAI_MODEL,
       instructions: [
-        `Translate this published news article into ${target}.`,
-        "Preserve every fact, name, date, number, quotation, paragraph break, URL and uncertainty in the source.",
-        "Do not add analysis, background, labels or facts. Do not omit material. Return plain text only in each JSON field.",
+        `Translate segment ${index + 1} of ${total} of this published news article into ${target}.`,
+        "Preserve every fact, name, date, number, quotation, URL, paragraph break and uncertainty in this segment.",
+        "Do not add analysis, background, labels or facts. Do not omit material. Return plain text only.",
+        first ? "Also translate the full article title and summary supplied with the first segment." : "Return only the translated content for this segment.",
         "This is an editorial draft that must be reviewed by a human before publication."
       ].join("\n"),
-      input: JSON.stringify({ title, summary, content }),
-      max_output_tokens: 16000,
-      text: { format: { type: "json_schema", name: "article_translation_draft", strict: true, schema } }
+      input: JSON.stringify({ ...(first ? { title, summary } : {}), content }),
+      max_output_tokens: 12000,
+      text: { format: { type: "json_schema", name: first ? "article_translation_first_segment" : "article_translation_segment", strict: true, schema: { type: "object", additionalProperties: false, required: Object.keys(properties), properties } } }
     })
   });
-  const parsed = JSON.parse(responseText(response));
+  return JSON.parse(responseText(response));
+}
+
+async function translateArticle(input) {
+  if (!OPENAI_KEY) throw new Error("Netlify 尚未设置 OPENAI_API_KEY");
+  const locale = input.locale === "en" ? "en" : input.locale === "zh-TW" ? "zh-TW" : "";
+  const title = safeText(input.title, 500);
+  const summary = safeText(input.summary, 5000);
+  const content = String(input.content ?? "").replace(/\u0000/g, "").trim();
+  if (!locale || !title || content.length < 20) {
+    const error = new Error("缺少有效的目标语言、标题或正文");
+    error.statusCode = 400;
+    throw error;
+  }
+  let chunks;
+  try { chunks = splitTranslationContent(content); }
+  catch (error) { error.statusCode = 400; throw error; }
+  const translated = [];
+  let metadata = null;
+  for (let index = 0; index < chunks.length; index += 1) {
+    const part = await requestTranslationChunk({ locale, title, summary, content: chunks[index], index, total: chunks.length });
+    if (index === 0) metadata = part;
+    const translatedContent = safeText(part?.content, 30000);
+    if (!translatedContent) throw new Error(`AI没有返回第 ${index + 1} 段翻译，请重试`);
+    translated.push(translatedContent);
+  }
   const translation = {
-    title: safeText(parsed?.title, 500),
-    summary: safeText(parsed?.summary, 5000),
-    content: safeText(parsed?.content, 200000)
+    title: safeText(metadata?.title, 500),
+    summary: safeText(metadata?.summary, 5000),
+    content: safeText(translated.join("\n\n"), 200000)
   };
   if (!translation.title || !translation.content) throw new Error("AI没有返回完整翻译草稿，请重试");
   return { ...translation, model: OPENAI_MODEL };
 }
 
-module.exports = { suggestTitles, uploadManualCover, generateCover, translateArticle };
+module.exports = { suggestTitles, uploadManualCover, generateCover, translateArticle, splitTranslationContent, TRANSLATION_CHUNK_SIZE, MAX_TRANSLATION_CHUNKS };

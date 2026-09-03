@@ -202,6 +202,58 @@ const n = (value) => Number(value || 0);
 const localeNumber = (value, locale) => n(value).toLocaleString(locale);
 const rate = (row) => row?.adjudicated_approval_rate == null ? '—' : `${Number(row.adjudicated_approval_rate).toFixed(1)}%`;
 const lastmod = (value) => /^\d{4}-\d{2}-\d{2}/.test(String(value || '')) ? String(value).slice(0, 10) : TODAY;
+const nationalityRegionAliases = new Map(Object.entries({
+  'turkey': 'TR', 'kirghizia kyrgyzstan': 'KG', 'democratic republic of congo': 'CD',
+  'people s republic of the congo': 'CG', 'tajikistan tadzhik': 'TJ', 'moldavia moldova': 'MD',
+  'ivory coast cote d ivoire': 'CI', 'burma myanmar': 'MM', 'palestinian': 'PS',
+  'bosnia herzegovina': 'BA', 'macedonia': 'MK', 'federated states of micronesia': 'FM',
+  'slovak republic': 'SK', 'czech republic': 'CZ', 'hong kong': 'HK',
+  'byelorussia belarus': 'BY', 'holland': 'NL', 'st vincent and the grenadines': 'VC',
+  'east timor': 'TL', 'macau': 'MO', 'republic of the marshall islands': 'MH',
+  'kampuchea': 'KH', 'st kiitts west indies': 'KN', 'western samoa': 'WS',
+  'swaziland': 'SZ', 'cocos island': 'CC', 'faeroe island': 'FO',
+  'the republic of palau': 'PW', 'people s republic of benin': 'BJ',
+  'upper volta': 'BF', 'christmas islands': 'CX'
+}));
+const normalizeCountryName = (value) => String(value || '')
+  .normalize('NFKD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLowerCase()
+  .replace(/&/g, 'and')
+  .replace(/[^a-z0-9]+/g, ' ')
+  .trim();
+let isoRegionByEnglishName;
+export function nationalityIsoCode(row) {
+  const key = normalizeCountryName(row?.nationality);
+  if (!key) return null;
+  if (nationalityRegionAliases.has(key)) return nationalityRegionAliases.get(key);
+  if (!isoRegionByEnglishName) {
+    const englishRegions = new Intl.DisplayNames(['en'], { type: 'region' });
+    isoRegionByEnglishName = new Map();
+    for (let first = 65; first <= 90; first += 1) {
+      for (let second = 65; second <= 90; second += 1) {
+        const code = String.fromCharCode(first, second);
+        const name = englishRegions.of(code);
+        if (name && name !== code) isoRegionByEnglishName.set(normalizeCountryName(name), code);
+      }
+    }
+  }
+  return isoRegionByEnglishName.get(key) || null;
+}
+const nationalityCodeLabels = {
+  en: ['EOIR code: {code}', 'ISO code: {code}'], es: ['Código EOIR: {code}', 'Código ISO: {code}'],
+  fr: ['Code EOIR : {code}', 'Code ISO : {code}'], 'pt-BR': ['Código EOIR: {code}', 'Código ISO: {code}'],
+  hi: ['EOIR कोड: {code}', 'ISO कोड: {code}'], 'zh-Hans': ['EOIR代码：{code}', 'ISO代码：{code}'],
+  'zh-Hant': ['EOIR代碼：{code}', 'ISO代碼：{code}'], ru: ['Код EOIR: {code}', 'Код ISO: {code}'],
+  ar: ['رمز EOIR: {code}', 'رمز ISO: {code}'], tr: ['EOIR kodu: {code}', 'ISO kodu: {code}']
+};
+export function localizedNationalityCodes(row, localeCode) {
+  const [eoirLabel, isoLabel] = nationalityCodeLabels[localeCode] || nationalityCodeLabels.en;
+  const labels = [eoirLabel.replace('{code}', row?.nationality_code || '—')];
+  const isoCode = nationalityIsoCode(row);
+  if (isoCode) labels.push(isoLabel.replace('{code}', isoCode));
+  return labels.join(' · ');
+}
 const nameKey = (value) => {
   const name = String(value || '')
     .normalize('NFKD')
@@ -393,8 +445,8 @@ function renderNationality(template, country, locale, modified) {
   let html = template
     .replace('<body>', `<body data-country="${escapeHtml(country.nationality)}" data-seo-prerendered="true">`)
     .replace('<h1 data-i18n="heroTitle">全球申请人庇护裁决结果</h1>', `<h1>${escapeHtml(title.replace(/\s*[|｜].*$/, ''))}</h1>`)
-    .replace('<h2 id="selected-country">正在读取国籍数据…</h2>', `<h2 id="selected-country">${escapeHtml(localizedCountry)}</h2>`)
-    .replace('<span id="selected-code"></span>', `<span id="selected-code">${escapeHtml(country.nationality_code || '')}</span>`)
+    .replace('<h2 id="selected-country" tabindex="-1">正在读取国籍数据…</h2>', `<h2 id="selected-country" tabindex="-1">${escapeHtml(localizedCountry)}</h2>`)
+    .replace('<span id="selected-code"></span>', `<span id="selected-code">${escapeHtml(localizedNationalityCodes(country, locale.code))}</span>`)
     .replace('<strong id="current-rate" class="big-rate">—</strong>', `<strong id="current-rate" class="big-rate">${country.approval_rate == null ? '—' : `${Number(country.approval_rate).toFixed(1)}%`}</strong>`)
     .replace('<p id="sample" class="chart-note">—</p>', `<p id="sample" class="chart-note">${escapeHtml(description)}</p>`)
     .replace('<b id="grant-count">—</b>', `<b id="grant-count">${escapeHtml(localeNumber(country.grants, locale.code))}</b>`)

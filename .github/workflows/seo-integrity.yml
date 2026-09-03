@@ -45,6 +45,9 @@ concurrency:
 
 jobs:
   audit:
+    # Heavy full-site checks wait until a PR is out of draft. Reusable
+    # workflow_call executions are unaffected.
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

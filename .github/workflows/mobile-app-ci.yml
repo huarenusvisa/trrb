@@ -6,8 +6,12 @@ on:
       - 'apps/mobile/**'
       - 'netlify/functions/community-api.js'
       - 'netlify/functions/community-api.test.js'
+      - 'netlify/functions/admin-push.js'
       - 'assets/brand/tangren-avatar-512.png'
+      - 'scripts/audit-app-batch2-node7.mjs'
       - 'scripts/validate-mobile-store-config.mjs'
+      - 'supabase/migrations/20260816220100_app_batch2_push_tokens.sql'
+      - 'supabase/migrations/20260817031500_app_batch2_push_governance.sql'
       - '.github/workflows/mobile-app-ci.yml'
   push:
     branches: [main]
@@ -17,8 +21,12 @@ on:
       - 'netlify/functions/community-api.test.js'
       - 'netlify/functions/public-article.js'
       - 'netlify/functions/public-articles.js'
+      - 'netlify/functions/admin-push.js'
       - 'assets/brand/tangren-avatar-512.png'
+      - 'scripts/audit-app-batch2-node7.mjs'
       - 'scripts/validate-mobile-store-config.mjs'
+      - 'supabase/migrations/20260816220100_app_batch2_push_tokens.sql'
+      - 'supabase/migrations/20260817031500_app_batch2_push_governance.sql'
       - '.github/workflows/mobile-app-ci.yml'
   workflow_dispatch:
 
@@ -59,6 +67,11 @@ jobs:
       - name: Test mobile library cloud merge
         working-directory: apps/mobile
         run: npm run test:library
+      - name: Test mobile push routing and permission lifecycle
+        working-directory: apps/mobile
+        run: npm run test:push
+      - name: Audit push security and lifecycle contract
+        run: node scripts/audit-app-batch2-node7.mjs
       - name: Validate store build configuration
         working-directory: apps/mobile
         run: npm run config:check

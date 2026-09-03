@@ -8,6 +8,7 @@ import { accountLabel } from '../../src/auth/unified-account';
 import { unreadNotificationCount } from '../../src/community/notifications';
 import { syncFavoritesWithCloud, syncHistoryWithCloud } from '../../src/storage/library';
 import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '../../src/storage/reading-preferences';
+import { disableCurrentDevicePushToken } from '../../src/push/registration';
 
 const FONT_OPTIONS: { label: string; scale: ReadingPreferences['fontScale'] }[] = [
   { label: '小', scale: 0.9 },
@@ -56,8 +57,19 @@ export default function ProfileScreen() {
   }, []);
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) Alert.alert('退出失败', error.message);
+    const finishSignOut = async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) Alert.alert('退出失败', error.message);
+    };
+    try {
+      await disableCurrentDevicePushToken();
+      await finishSignOut();
+    } catch {
+      Alert.alert('无法停用本设备通知', '网络异常时退出后仍可能收到通知。可以先在系统设置关闭通知，或仍然退出。', [
+        { text: '取消', style: 'cancel' },
+        { text: '仍然退出', style: 'destructive', onPress: () => void finishSignOut() }
+      ]);
+    }
   };
 
   const updateFontScale = async (scale: ReadingPreferences['fontScale']) => {
@@ -96,7 +108,7 @@ export default function ProfileScreen() {
           ))}
         </View>
       </View>
-      <Pressable style={styles.item}><Text style={styles.title}>推送设置</Text><Text style={styles.meta}>重大新闻 · ICE · 移民 · 判例新规（下一阶段接入）</Text></Pressable>
+      <Pressable testID="open-push-settings" style={styles.item} onPress={() => session ? router.push('/push-settings') : router.push('/auth')}><Text style={styles.title}>推送设置</Text><Text style={styles.meta}>{session ? '重大新闻 · ICE · 移民 · 判例新规 · 社区互动' : '登录后选择通知类型'}</Text></Pressable>
       <Pressable style={styles.item} onPress={() => Linking.openURL('https://trrb.net')}><Text style={styles.title}>打开 trrb.net</Text><Text style={styles.meta}>访问唐人日报网站</Text></Pressable>
     </ScrollView>
   );

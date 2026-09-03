@@ -2,13 +2,16 @@ import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
-import { installPushRuntimeHandlers, registerPushToken } from '../src/push/registration';
+import { installPushRegistrationLifecycle, installPushRuntimeHandlers } from '../src/push/registration';
 
 export default function RootLayout() {
   useEffect(() => {
-    const dispose = installPushRuntimeHandlers();
-    void registerPushToken().catch((error) => console.warn('push registration failed', error));
-    return dispose;
+    const disposeRuntime = installPushRuntimeHandlers();
+    const disposeRegistration = installPushRegistrationLifecycle();
+    return () => {
+      disposeRuntime();
+      disposeRegistration();
+    };
   }, []);
 
   useEffect(() => {

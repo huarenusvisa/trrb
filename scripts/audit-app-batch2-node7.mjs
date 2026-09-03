@@ -9,6 +9,8 @@ const app = JSON.parse(read('apps/mobile/app.json')).expo;
 const layout = read('apps/mobile/app/_layout.tsx');
 const registration = read('apps/mobile/src/push/registration.ts');
 const preferences = read('apps/mobile/src/push/preferences.ts');
+const settings = read('apps/mobile/app/push-settings.tsx');
+const profile = read('apps/mobile/app/(tabs)/profile.tsx');
 const tokensMigration = read('supabase/migrations/20260816220100_app_batch2_push_tokens.sql');
 const governance = read('supabase/migrations/20260817031500_app_batch2_push_governance.sql');
 const adminPush = read('netlify/functions/admin-push.js');
@@ -19,12 +21,15 @@ check('iOS and Android package identities exist', Boolean(app.ios?.bundleIdentif
 check('device permission and Expo token registration implemented', registration.includes('requestPermissionsAsync') && registration.includes('getExpoPushTokenAsync'));
 check('EAS projectId resolution implemented', registration.includes('easConfig?.projectId') && registration.includes('expoConfig?.extra?.eas?.projectId'));
 check('token stored only in authenticated Supabase user scope', registration.includes("supabase.from('push_tokens').upsert") && registration.includes('auth.user.id'));
-check('push response opens article deep link', registration.includes('addNotificationResponseReceivedListener') && registration.includes('/article/'));
-check('runtime installs push handlers', layout.includes('installPushRuntimeHandlers') && layout.includes('registerPushToken'));
+check('push response handles cold and warm starts', registration.includes('getLastNotificationResponse()') && registration.includes('addNotificationResponseReceivedListener'));
+check('runtime installs handlers and silent authenticated token sync', layout.includes('installPushRuntimeHandlers') && layout.includes('installPushRegistrationLifecycle'));
+check('permission prompt requires an explicit settings action', registration.includes('options.requestPermission === true') && settings.includes('requestPermission: true') && !layout.includes('registerPushToken()'));
+check('settings expose device control and five preference types', settings.includes('push-device-toggle') && ['breaking_news', 'ice', 'immigration', 'legal', 'community'].every((key) => settings.includes(key)));
+check('sign-out attempts to disable current device token first', profile.includes('await disableCurrentDevicePushToken()') && profile.includes('await finishSignOut()'));
 check('push preferences are user-scoped', preferences.includes("notification_preferences") && preferences.includes('data.user.id'));
 check('push token table has RLS and own-user policies', tokensMigration.includes('enable row level security') && tokensMigration.includes('auth.uid() = user_id'));
 check('preference table and server-only delivery audit exist', governance.includes('notification_preferences') && governance.includes('push_delivery_log') && governance.includes('No client policies'));
-check('admin dispatch requires staff auth and published article', adminPush.includes("authenticateStaff(event, ['owner', 'admin'])") && adminPush.includes("status: 'eq.published'"));
+check('admin dispatch requires staff auth and published article', adminPush.includes("authenticateStaff(event, ['owner', 'editor'])") && adminPush.includes("status: 'eq.published'"));
 check('server dispatch keeps Expo credential off client', adminPush.includes('process.env.EXPO_ACCESS_TOKEN') && !registration.includes('EXPO_ACCESS_TOKEN'));
 check('admin dispatch respects preferences and records audit', adminPush.includes('notification_preferences') && adminPush.includes('push_delivery_log'));
 

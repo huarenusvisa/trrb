@@ -12,6 +12,7 @@
     "test:community": "node --experimental-strip-types --test src/api/community-core.test.ts",
     "test:comments": "node --experimental-strip-types --test src/community/comment-presentation.test.ts scripts/cleanup-news-comments-e2e.test.mjs",
     "test:library": "node --experimental-strip-types --test src/storage/favorites-sync-core.test.ts src/storage/history-sync-core.test.ts",
+    "test:push": "node --experimental-strip-types --test src/push/push-core.test.ts",
     "typecheck": "tsc --noEmit",
     "config:check": "node ../../scripts/validate-mobile-store-config.mjs",
     "export:web": "expo export --platform web --output-dir .expo-export --clear"

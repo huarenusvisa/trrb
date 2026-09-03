@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
+// Sample-size assertions keep approval rates tied to their decision denominator.
+
 const client = readFileSync(new URL('../immigration-judge-approval-rate/judges.js', import.meta.url), 'utf8');
 const page = readFileSync(new URL('../immigration-judge-approval-rate/index.html', import.meta.url), 'utf8');
 

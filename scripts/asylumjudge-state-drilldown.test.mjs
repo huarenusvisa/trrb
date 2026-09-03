@@ -60,12 +60,28 @@ assert.deepEqual(detailBody.judges.map((row) => row.id), ['ca-shared'], 'same-na
 
 const statesClient = readFileSync('immigration-judge-approval-rate/states.js', 'utf8');
 const courtsClient = readFileSync('immigration-judge-approval-rate/courts.js', 'utf8');
+const statesHtml = readFileSync('immigration-judge-approval-rate/states.html', 'utf8');
+const courtsHtml = readFileSync('immigration-judge-approval-rate/courts.html', 'utf8');
+const courtsCss = readFileSync('immigration-judge-approval-rate/courts.css', 'utf8');
+const appI18n = readFileSync('asylumjudge/app-i18n.js', 'utf8');
 const detailClient = readFileSync('immigration-judge-approval-rate/court-detail.js', 'utf8');
 const overviewClient = readFileSync('asylumjudge/site.js', 'utf8');
 assert.match(statesClient, /courts\.html\?state=/, 'state rows must navigate with a dedicated state parameter');
 assert.doesNotMatch(statesClient, /courts\.html\?q=/, 'state rows must not use fuzzy text search');
 assert.match(courtsClient, /get\('state'\)/, 'court listing must read the selected state from the URL');
 assert.match(courtsClient, /params\.set\('state', state\)/, 'court listing must pass the exact state to the API');
+assert.match(statesClient, /if \(!response\.ok\) throw/, 'state listing must treat non-2xx responses as failures');
+assert.match(courtsClient, /if \(!response\.ok\) throw/, 'court listing must treat non-2xx responses as failures');
+assert.match(statesClient, /id="state-retry"[\s\S]*load\(fiscalYear\)/, 'state retry must preserve the selected fiscal year');
+assert.match(courtsClient, /id="court-retry"[\s\S]*load\(\$\('#court-q'\)\.value\.trim\(\), selectedState\)/, 'court retry must preserve the search and state filters');
+assert.match(statesClient, /role="alert"/, 'state load failures must be announced');
+assert.match(courtsClient, /role="alert"/, 'court load failures must be announced');
+assert.match(statesHtml, /id="state-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'state results must expose live loading state');
+assert.match(courtsHtml, /id="court-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court results must expose live loading state');
+assert.match(statesHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=6/, 'state page must load the retry-enabled assets');
+assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=6/, 'court page must load the retry-enabled assets');
+assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');
+assert.match(appI18n, /\['重新尝试','Try again'.*'إعادة المحاولة','Tekrar dene'\]/, 'retry action must be translated in all supported languages');
 assert.match(detailClient, /params\.set\('state', state\)/, 'court detail must preserve state scope');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 

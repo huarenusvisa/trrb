@@ -8,6 +8,7 @@ const page = readFileSync(new URL('../immigration-judge-approval-rate/index.html
 // Navigation assertions prevent regressions in back/forward restoration.
 // Form assertions also preserve the screen-reader name and mobile search keyboard intent.
 // Result-focus assertions distinguish user actions from history restoration.
+// Clear-state assertions preserve native mobile controls and shareable URLs.
 assert.match(client, /searchController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'a new judge search must cancel the previous request');
 assert.match(client, /if \(!response\.ok\) throw new Error/, 'judge search must treat non-2xx responses as failures');
 assert.match(client, /if \(requestId !== searchSequence\) return;/, 'stale judge results must not replace the latest search');

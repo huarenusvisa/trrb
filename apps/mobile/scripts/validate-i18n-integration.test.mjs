@@ -72,11 +72,15 @@ test('localizes unified account chrome and keeps Maestro language-neutral', () =
 test('localizes article chrome while preserving published story text', () => {
   const article = read('app/article/[id].tsx');
   assert.match(article, /useI18n\(\)/);
-  for (const key of ['article.unavailableTitle', 'article.offline', 'article.continueReading', 'article.previous', 'article.next', 'article.save', 'article.share', 'article.copyLink', 'article.openWebsite', 'article.related']) {
+  for (const key of ['article.unavailableTitle', 'article.offline', 'article.continueReading', 'article.previous', 'article.next', 'article.save', 'article.share', 'article.copyLink', 'article.openWebsite', 'article.related', 'article.reviewedTranslation', 'article.showOriginal', 'article.showTranslation']) {
     assert.ok(article.includes(`t('${key}')`), `article detail must translate ${key}`);
   }
   assert.match(article, /article\.title/);
-  assert.match(article, /article\.content \|\| t\('article\.contentUnavailable'\)/);
+  assert.match(article, /displayedContent \|\| t\('article\.contentUnavailable'\)/);
+  assert.match(article, /: article\.content/);
   assert.match(article, /testID="article-original-language-note"/);
+  assert.match(article, /fetchArticleTranslation\(article\.id, locale\)/);
+  assert.match(article, /testID="article-translation-toggle"/);
+  assert.match(article, /testID="article-reviewed-translation-note"/);
   assert.doesNotMatch(article, /toLocaleString\('zh-CN'\)/);
 });

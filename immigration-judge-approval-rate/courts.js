@@ -2,6 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
+const defaultCourtPlaceholder = $('#court-q').placeholder;
 let rows = [];
 let selectedState = '';
 let fiscalYear = Number(new URLSearchParams(location.search).get('fy')) || 2026;
@@ -16,7 +17,7 @@ function updateYearControls() {
   });
 }
 
-function updatePageState(data, query) {
+function updatePageState(data, query, historyMode = 'replace') {
   const partial = data.period_status === 'year_to_date';
   $('#court-period-note').textContent = partial
     ? `FY ${fiscalYear} 财年至今（截至 ${data.period_end}）`
@@ -27,8 +28,21 @@ function updatePageState(data, query) {
   url.searchParams.set('fy', fiscalYear);
   if (query) url.searchParams.set('q', query);
   else url.searchParams.delete('q');
-  history.replaceState(null, '', `${url.pathname}${url.search}`);
+  const nextUrl = `${url.pathname}${url.search}`;
+  const currentUrl = `${location.pathname}${location.search}`;
+  if (historyMode !== 'none' && nextUrl !== currentUrl) {
+    history[historyMode === 'push' ? 'pushState' : 'replaceState'](null, '', nextUrl);
+  }
   updateYearControls();
+}
+
+function applyLocationState() {
+  const params = new URLSearchParams(location.search);
+  selectedState = (params.get('state') || '').trim().toUpperCase();
+  const query = (params.get('q') || '').trim();
+  $('#court-q').value = query;
+  $('#court-q').placeholder = selectedState ? `在 ${selectedState} 州内搜索法院或城市` : defaultCourtPlaceholder;
+  return { query, year: Number(params.get('fy')) || 2026 };
 }
 
 function courtProfileUrl(row) {
@@ -59,7 +73,7 @@ function renderError() {
   $('#court-retry').addEventListener('click', () => load($('#court-q').value.trim(), selectedState));
 }
 
-async function load(query = '', state = selectedState, year = fiscalYear) {
+async function load(query = '', state = selectedState, year = fiscalYear, historyMode = 'replace') {
   const requestId = ++loadSequence;
   loadController?.abort();
   const controller = new AbortController();
@@ -78,7 +92,7 @@ async function load(query = '', state = selectedState, year = fiscalYear) {
     if (requestId !== loadSequence) return;
     fiscalYear = Number(data.fiscal_year || fiscalYear);
     rows = data.courts || [];
-    updatePageState(data, query);
+    updatePageState(data, query, historyMode);
     render(rows);
     $('#court-count').textContent = fmt(rows.length);
     $('#court-judges').textContent = fmt(rows.reduce((sum, row) => sum + Number(row.judges || 0), 0));
@@ -96,19 +110,18 @@ async function load(query = '', state = selectedState, year = fiscalYear) {
 
 $('#court-search').addEventListener('submit', (event) => {
   event.preventDefault();
-  load($('#court-q').value.trim(), selectedState);
+  load($('#court-q').value.trim(), selectedState, fiscalYear, 'push');
 });
 
 document.querySelectorAll('[data-fy]').forEach((button) => button.addEventListener('click', () => {
-  load($('#court-q').value.trim(), selectedState, Number(button.dataset.fy));
+  load($('#court-q').value.trim(), selectedState, Number(button.dataset.fy), 'push');
 }));
 
-const initialParams = new URLSearchParams(location.search);
-selectedState = (initialParams.get('state') || '').trim().toUpperCase();
-const initialQuery = (initialParams.get('q') || '').trim();
-if (initialQuery) $('#court-q').value = initialQuery;
-if (selectedState) {
-  $('#court-q').placeholder = `在 ${selectedState} 州内搜索法院或城市`;
-}
+window.addEventListener('popstate', () => {
+  const { query, year } = applyLocationState();
+  load(query, selectedState, year, 'none');
+});
+
+const { query: initialQuery, year: initialYear } = applyLocationState();
 updateYearControls();
-load(initialQuery, selectedState);
+load(initialQuery, selectedState, initialYear);

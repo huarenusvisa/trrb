@@ -6,6 +6,13 @@ let searchSequence = 0;
 const initialResultNote = $('#result-note').textContent;
 const initialResults = $('#results').innerHTML;
 
+function revealSearchResults() {
+  const status = $('#result-note');
+  status.focus({ preventScroll: true });
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  status.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+}
+
 function updateSearchHistory(query, mode) {
   if (mode === 'none') return;
   const url = new URL(location.href);
@@ -40,7 +47,7 @@ async function loadStats() {
   } catch {}
 }
 
-async function search(query, { historyMode = 'push' } = {}) {
+async function search(query, { historyMode = 'push', reveal = true } = {}) {
   query = String(query || '').trim();
   if (!query) return;
   const requestId = ++searchSequence;
@@ -60,14 +67,17 @@ async function search(query, { historyMode = 'push' } = {}) {
     $('#result-note').textContent = `“${query}” 找到 ${rows.length} 位法官`;
     if (!rows.length) {
       $('#results').innerHTML = '<div class="empty"><b>暂未找到匹配法官</b><p>可以尝试英文姓名、城市或法院名称。</p></div>';
+      if (reveal) revealSearchResults();
       return;
     }
     $('#results').innerHTML = rows.map((row) => `<a class="judge-row" href="${esc(window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(row.id)}`)}"><div><div class="name">${esc(row.judge_name)}</div><small>${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></div><div><label>任职法院</label>${esc(row.court_name || '—')}</div><div><label>裁决批准率</label><span class="rate">${row.adjudicated_approval_rate == null ? '—' : `${Number(row.adjudicated_approval_rate).toFixed(1)}%`}</span></div><div><label>拒绝</label><span class="verdict-deny">${fmt(row.denials)}</span></div><div><label>其他</label><span class="verdict-other">${fmt(row.other_decisions)}</span></div></a>`).join('');
+    if (reveal) revealSearchResults();
   } catch (error) {
     if (error.name === 'AbortError' || requestId !== searchSequence) return;
     $('#result-note').textContent = '查询暂不可用';
     $('#results').innerHTML = '<div class="empty" role="alert"><b>数据库接口暂时无法读取</b><p>请稍后重试。</p><div class="quick"><button id="judge-retry" type="button">重新尝试</button></div></div>';
     $('#judge-retry').addEventListener('click', () => search(query, { historyMode: 'none' }));
+    if (reveal) revealSearchResults();
   } finally {
     if (requestId === searchSequence) $('#results').setAttribute('aria-busy', 'false');
   }
@@ -78,7 +88,7 @@ document.querySelectorAll('.quick button').forEach((button) => { button.onclick 
 loadStats();
 const initial = new URLSearchParams(location.search).get('q');
 history.replaceState({ query: initial || '' }, '', location.href);
-if (initial) { $('#judge-q').value = initial; search(initial, { historyMode: 'none' }); }
+if (initial) { $('#judge-q').value = initial; search(initial, { historyMode: 'none', reveal: false }); }
 window.addEventListener('popstate', () => {
   const query = new URLSearchParams(location.search).get('q') || '';
   if (!query) {
@@ -86,5 +96,5 @@ window.addEventListener('popstate', () => {
     return;
   }
   $('#judge-q').value = query;
-  search(query, { historyMode: 'none' });
+  search(query, { historyMode: 'none', reveal: false });
 });

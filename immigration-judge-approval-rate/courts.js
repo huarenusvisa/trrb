@@ -5,6 +5,8 @@ const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 let rows = [];
 let selectedState = '';
 let fiscalYear = Number(new URLSearchParams(location.search).get('fy')) || 2026;
+let loadSequence = 0;
+let loadController = null;
 
 function updateYearControls() {
   document.querySelectorAll('[data-fy]').forEach((button) => {
@@ -58,6 +60,10 @@ function renderError() {
 }
 
 async function load(query = '', state = selectedState, year = fiscalYear) {
+  const requestId = ++loadSequence;
+  loadController?.abort();
+  const controller = new AbortController();
+  loadController = controller;
   fiscalYear = Number(year) || fiscalYear;
   updateYearControls();
   setLoading(true);
@@ -66,9 +72,10 @@ async function load(query = '', state = selectedState, year = fiscalYear) {
     if (query) params.set('q', query);
     if (state) params.set('state', state);
     params.set('fy', fiscalYear);
-    const response = await fetch(`/.netlify/functions/immigration-judges?${params}`);
+    const response = await fetch(`/.netlify/functions/immigration-judges?${params}`, { signal: controller.signal });
     if (!response.ok) throw new Error(`Court request failed: ${response.status}`);
     const data = await response.json();
+    if (requestId !== loadSequence) return;
     fiscalYear = Number(data.fiscal_year || fiscalYear);
     rows = data.courts || [];
     updatePageState(data, query);
@@ -76,10 +83,14 @@ async function load(query = '', state = selectedState, year = fiscalYear) {
     $('#court-count').textContent = fmt(rows.length);
     $('#court-judges').textContent = fmt(rows.reduce((sum, row) => sum + Number(row.judges || 0), 0));
     $('#court-decisions').textContent = fmt(rows.reduce((sum, row) => sum + Number(row.total_asylum_decisions || 0), 0));
-  } catch {
+  } catch (error) {
+    if (error.name === 'AbortError' || requestId !== loadSequence) return;
     renderError();
   } finally {
-    setLoading(false);
+    if (requestId === loadSequence) {
+      loadController = null;
+      setLoading(false);
+    }
   }
 }
 

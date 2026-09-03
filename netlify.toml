@@ -15,6 +15,9 @@
   path = "/55d15283c33385e09b4f3fae7562a9cc.txt"
 
 [build]
+  # Skip Netlify builds when a commit only changes CI/report bookkeeping.
+  # Exit 0 from the ignore command means Netlify should not build.
+  ignore = 'git diff --quiet "$CACHED_COMMIT_REF" "$COMMIT_REF" -- . ":(exclude).github/**" ":(exclude)reports/**"'
   command = "find netlify/functions -type f \\( -name '*.test.js' -o -name '*.test.cjs' -o -name '*.test.mjs' -o -name '*.test.ts' -o -name '*.test.tsx' -o -name '*.test.jsx' \\) -delete && cp config/immigration-knowledge.js immigration-knowledge.js && cp immigrate/center.css immigrate-center.css && cp immigrate/study-knowledge-content.css immigrate-study-knowledge-content.css && cp immigrate/center-seo.js immigrate-center-seo.js && cp immigrate/center.js immigrate-center.js && cp immigrate/study-knowledge-content.js immigrate-study-knowledge-content.js && cp immigrate/work-knowledge-content.js immigrate-work-knowledge-content.js && cp immigrate/employment-knowledge-content.js immigrate-employment-knowledge-content.js && cp immigrate/family-knowledge-content.js immigrate-family-knowledge-content.js && cp immigrate/humanitarian-knowledge-content.js immigrate-humanitarian-knowledge-content.js && cp immigrate/change-status-module.js immigrate-change-status-module.js && cp immigrate/citizenship-module.js immigrate-citizenship-module.js && cp immigrate/knowledge-article-filter.js immigrate-knowledge-article-filter.js && node scripts/write-deploy-version.mjs && node scripts/generate-sitemaps.mjs && node scripts/generate-legal-sitemap.mjs && node scripts/clean-sitemap-against-database.mjs && node scripts/ensure-sitemap-articles.mjs && node scripts/finalize-redirects.mjs && node scripts/generate-feed.mjs && node scripts/upgrade-article-urls.mjs && node scripts/validate-site.mjs && node scripts/seo-integrity-audit.mjs"
   publish = "."
 

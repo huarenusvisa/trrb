@@ -11,12 +11,13 @@ const registration = read('apps/mobile/src/push/registration.ts');
 const preferences = read('apps/mobile/src/push/preferences.ts');
 const settings = read('apps/mobile/app/push-settings.tsx');
 const profile = read('apps/mobile/app/(tabs)/profile.tsx');
-const tokensMigration = read('supabase/migrations/20260816220100_app_batch2_push_tokens.sql');
-const governance = read('supabase/migrations/20260817031500_app_batch2_push_governance.sql');
+const tokensMigration = read('supabase/migrations/20260903154958_app_batch2_push_tokens.sql');
+const governance = read('supabase/migrations/20260903155007_app_batch2_push_governance.sql');
 const adminPush = read('netlify/functions/admin-push.js');
 const receiptProcessor = read('netlify/functions/push-receipts.mjs');
 const expoPushClient = read('netlify/functions/_shared/expo-push-client.js');
-const receiptMigration = read('supabase/migrations/20260903110000_push_receipt_lifecycle.sql');
+const receiptMigration = read('supabase/migrations/20260903155015_push_receipt_lifecycle.sql');
+const permissionsMigration = read('supabase/migrations/20260903155224_push_data_permissions.sql');
 
 check('expo-notifications dependency matches SDK 57', pkg.dependencies?.['expo-notifications'] === '~57.0.6');
 check('native notification config plugin enabled', app.plugins?.includes('expo-notifications'));
@@ -38,6 +39,7 @@ check('admin dispatch respects preferences and records audit', adminPush.include
 check('accepted push tickets are queued for receipt checks', adminPush.includes('push_ticket_receipts') && adminPush.includes('receipt_tracking_count'));
 check('receipt worker disables only invalid device tokens', receiptProcessor.includes('groupReceiptOutcomes') && receiptProcessor.includes("patchByIds('push_tokens', outcomes.invalidTokenIds"));
 check('receipt queue is server-only with pending index', receiptMigration.includes('enable row level security') && receiptMigration.includes('No client policies') && receiptMigration.includes("where status = 'pending'"));
+check('push tables use least-privilege grants', permissionsMigration.includes('revoke all on table public.push_tokens from anon, authenticated') && permissionsMigration.includes('grant select, insert, update, delete on table public.push_tokens to authenticated') && permissionsMigration.includes('revoke all on table public.push_ticket_receipts from anon, authenticated'));
 check('receipt worker runs hourly and waits at least 15 minutes', receiptProcessor.includes("schedule: '@hourly'") && receiptProcessor.includes('FIFTEEN_MINUTES'));
 check('receipt worker safely waits for migration deployment', receiptProcessor.includes('isMissingReceiptQueueError') && receiptProcessor.includes('status: 200'));
 check('Expo requests retry only transient failures with bounded backoff', expoPushClient.includes("status === 429 || (status >= 500 && status <= 599)") && expoPushClient.includes('maxAttempts = 3') && expoPushClient.includes('maxDelayMs = 4000'));

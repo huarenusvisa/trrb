@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, Image, Linking, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
-import { ArticleNavigation, fetchArticle, fetchArticleNavigation, fetchRelatedArticles, NewsArticle } from '../../src/api/trrb';
+import { ArticleNavigation, ArticleTranslation, fetchArticle, fetchArticleNavigation, fetchArticleTranslation, fetchRelatedArticles, NewsArticle } from '../../src/api/trrb';
 import { addHistory, isFavorite, toggleFavorite } from '../../src/storage/library';
 import { getReadingPreferences, ReadingPreferences, subscribeReadingPreferences } from '../../src/storage/reading-preferences';
 import { cacheArticle, readCachedArticle, removeCachedArticle } from '../../src/storage/articleCache';
@@ -21,6 +21,9 @@ export default function ArticleDetailScreen() {
   const [offline, setOffline] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [fontScale, setFontScale] = useState<ReadingPreferences['fontScale']>(1);
+  const [translation, setTranslation] = useState<ArticleTranslation | null>(null);
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [translationLoading, setTranslationLoading] = useState(false);
 
   useEffect(() => {
     void getReadingPreferences().then((p) => setFontScale(p.fontScale));
@@ -64,6 +67,29 @@ export default function ArticleDetailScreen() {
 
   useEffect(() => { void load(); }, [id]);
 
+  useEffect(() => {
+    let active = true;
+    setTranslation(null);
+    setShowTranslation(false);
+    setTranslationLoading(false);
+    if (!article || offline || (locale !== 'en' && locale !== 'zh-TW')) return () => { active = false; };
+
+    setTranslationLoading(true);
+    void fetchArticleTranslation(article.id, locale)
+      .then((row) => {
+        if (!active) return;
+        setTranslation(row);
+        setShowTranslation(Boolean(row));
+      })
+      .catch(() => {
+        if (active) setTranslation(null);
+      })
+      .finally(() => {
+        if (active) setTranslationLoading(false);
+      });
+    return () => { active = false; };
+  }, [article?.id, locale, offline]);
+
   const webUrl = useMemo(() => {
     if (!article) return 'https://trrb.net';
     if (article.slug && article.category_name) {
@@ -94,18 +120,26 @@ export default function ArticleDetailScreen() {
   if (!article) return <View style={styles.center}><Text style={styles.errorTitle}>{t('article.unavailableTitle')}</Text><Text style={styles.muted}>{error}</Text><Pressable style={styles.primaryButton} onPress={() => void load()}><Text style={styles.primaryButtonText}>{t('article.retry')}</Text></Pressable></View>;
 
   const categoryName = newsCategoryName(locale, article.category_name);
+  const displayedTitle = showTranslation && translation ? translation.title : article.title;
+  const displayedSummary = showTranslation && translation ? translation.summary : article.summary;
+  const displayedContent = showTranslation && translation ? translation.content : article.content;
   return <><Stack.Screen options={{ title: '', headerShown: true, headerBackTitle: t('common.back'), headerShadowVisible: false, gestureEnabled: true }} /><ScrollView style={styles.page} contentContainerStyle={styles.content} contentInsetAdjustmentBehavior="automatic">
     {offline ? <View style={styles.offline}><Text style={styles.offlineText}>{error}</Text><Pressable onPress={() => void load()}><Text style={styles.retry}>{t('article.reconnect')}</Text></Pressable></View> : null}
     <Pressable testID="article-category-button" style={styles.categoryButton} onPress={openArticleSection} accessibilityRole="button" accessibilityLabel={t('article.openCategory', { category: categoryName })}>
       <Text style={styles.category}>{categoryName}</Text>
       <Text style={styles.categoryArrow}>›</Text>
     </Pressable>
-    <Text style={styles.title}>{article.title}</Text>
+    <Text style={styles.title}>{displayedTitle}</Text>
     <Text style={styles.meta}>{article.author || t('article.authorFallback')} · {article.published_at ? new Date(article.published_at).toLocaleString(localeDateTag(locale)) : ''}</Text>
     {article.cover_image ? <Image source={{ uri: article.cover_image, cache: 'force-cache' }} style={styles.image} resizeMode="cover" /> : null}
-    {article.summary ? <Text style={[styles.summary,{fontSize:18*fontScale,lineHeight:29*fontScale}]}>{article.summary}</Text> : null}
-    <Text style={[styles.body,{fontSize:18*fontScale,lineHeight:32*fontScale}]}>{article.content || t('article.contentUnavailable')}</Text>
-    {locale !== 'zh-CN' ? <Text testID="article-original-language-note" style={styles.languageNote}>{t('article.originalLanguage')}</Text> : null}
+    {displayedSummary ? <Text style={[styles.summary,{fontSize:18*fontScale,lineHeight:29*fontScale}]}>{displayedSummary}</Text> : null}
+    <Text style={[styles.body,{fontSize:18*fontScale,lineHeight:32*fontScale}]}>{displayedContent || t('article.contentUnavailable')}</Text>
+    {translation ? <View style={styles.translationControls}>
+      <Text testID="article-reviewed-translation-note" style={styles.translationNote}>{t('article.reviewedTranslation')}</Text>
+      <Pressable testID="article-translation-toggle" accessibilityRole="button" style={styles.translationButton} onPress={() => setShowTranslation((value) => !value)}>
+        <Text style={styles.translationButtonText}>{showTranslation ? t('article.showOriginal') : t('article.showTranslation')}</Text>
+      </Pressable>
+    </View> : locale !== 'zh-CN' ? <Text testID="article-original-language-note" style={styles.languageNote}>{translationLoading ? t('article.checkingTranslation') : t('article.originalLanguage')}</Text> : null}
     {!offline && (navigation.previous || navigation.next) ? <View style={styles.navigation}>
       <Text style={styles.navigationTitle}>{t('article.continueReading')}</Text>
       <View style={styles.navigationRow}>
@@ -124,4 +158,4 @@ export default function ArticleDetailScreen() {
   </ScrollView></>;
 }
 
-const styles=StyleSheet.create({page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingTop:20,paddingBottom:60},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28,gap:12},muted:{color:'#667085',textAlign:'center'},errorTitle:{fontSize:20,fontWeight:'900',color:'#101828'},categoryButton:{alignSelf:'flex-start',flexDirection:'row',alignItems:'center',gap:5,backgroundColor:'#fff1f0',borderRadius:999,paddingHorizontal:11,paddingVertical:7},category:{color:'#c8211e',fontWeight:'900',fontSize:14},categoryArrow:{color:'#c8211e',fontWeight:'900',fontSize:18,lineHeight:18},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},meta:{color:'#98a2b3',marginTop:12,marginBottom:20},image:{width:'100%',height:230,borderRadius:16,backgroundColor:'#eaecf0',marginBottom:22},summary:{fontWeight:'700',color:'#344054',marginBottom:20},body:{color:'#1d2939'},languageNote:{color:'#667085',fontSize:13,lineHeight:19,marginTop:18},navigation:{marginTop:30,paddingTop:22,borderTopWidth:1,borderTopColor:'#eaecf0'},navigationTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginBottom:12},navigationRow:{flexDirection:'row',gap:10},navigationItem:{flex:1,minHeight:126,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:13,backgroundColor:'#f9fafb'},navigationSpacer:{flex:1},navigationLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginBottom:8},navigationLabelNext:{textAlign:'right'},navigationItemTitle:{color:'#1d2939',fontWeight:'800',fontSize:15,lineHeight:21},actions:{gap:12,marginTop:30},primaryButton:{backgroundColor:'#c8211e',borderRadius:12,paddingVertical:14,paddingHorizontal:18,alignItems:'center'},savedButton:{backgroundColor:'#344054',borderRadius:12,paddingVertical:14,alignItems:'center'},primaryButtonText:{color:'#fff',fontWeight:'800',fontSize:16},outlineButton:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,paddingVertical:13,paddingHorizontal:18,alignItems:'center'},outlineButtonText:{color:'#344054',fontWeight:'800',fontSize:16},related:{marginTop:36,paddingTop:24,borderTopWidth:1,borderTopColor:'#eaecf0'},relatedTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:10},relatedItem:{paddingVertical:14,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},relatedItemTitle:{fontSize:17,lineHeight:24,fontWeight:'800',color:'#1d2939'},relatedMeta:{fontSize:12,color:'#98a2b3',marginTop:5},offline:{backgroundColor:'#fffaeb',borderWidth:1,borderColor:'#fedf89',borderRadius:12,padding:12,marginBottom:18},offlineText:{color:'#93370d'},retry:{color:'#b54708',fontWeight:'900',marginTop:8},skeleton:{flex:1,padding:20,paddingTop:70,backgroundColor:'#fff'},sk1:{height:14,width:70,backgroundColor:'#eaecf0',borderRadius:7,marginBottom:18},sk2:{height:34,width:'92%',backgroundColor:'#eaecf0',borderRadius:8,marginBottom:12},sk3:{height:14,width:'48%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:24},sk4:{height:220,width:'100%',backgroundColor:'#eaecf0',borderRadius:16,marginBottom:24},sk5:{height:18,width:'100%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:12}});
+const styles=StyleSheet.create({page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingTop:20,paddingBottom:60},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28,gap:12},muted:{color:'#667085',textAlign:'center'},errorTitle:{fontSize:20,fontWeight:'900',color:'#101828'},categoryButton:{alignSelf:'flex-start',flexDirection:'row',alignItems:'center',gap:5,backgroundColor:'#fff1f0',borderRadius:999,paddingHorizontal:11,paddingVertical:7},category:{color:'#c8211e',fontWeight:'900',fontSize:14},categoryArrow:{color:'#c8211e',fontWeight:'900',fontSize:18,lineHeight:18},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},meta:{color:'#98a2b3',marginTop:12,marginBottom:20},image:{width:'100%',height:230,borderRadius:16,backgroundColor:'#eaecf0',marginBottom:22},summary:{fontWeight:'700',color:'#344054',marginBottom:20},body:{color:'#1d2939'},languageNote:{color:'#667085',fontSize:13,lineHeight:19,marginTop:18},translationControls:{marginTop:18,gap:10,alignItems:'flex-start'},translationNote:{color:'#027a48',fontSize:13,lineHeight:19,fontWeight:'700'},translationButton:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:999,paddingHorizontal:14,paddingVertical:8},translationButtonText:{color:'#344054',fontSize:13,fontWeight:'800'},navigation:{marginTop:30,paddingTop:22,borderTopWidth:1,borderTopColor:'#eaecf0'},navigationTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginBottom:12},navigationRow:{flexDirection:'row',gap:10},navigationItem:{flex:1,minHeight:126,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:13,backgroundColor:'#f9fafb'},navigationSpacer:{flex:1},navigationLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginBottom:8},navigationLabelNext:{textAlign:'right'},navigationItemTitle:{color:'#1d2939',fontWeight:'800',fontSize:15,lineHeight:21},actions:{gap:12,marginTop:30},primaryButton:{backgroundColor:'#c8211e',borderRadius:12,paddingVertical:14,paddingHorizontal:18,alignItems:'center'},savedButton:{backgroundColor:'#344054',borderRadius:12,paddingVertical:14,alignItems:'center'},primaryButtonText:{color:'#fff',fontWeight:'800',fontSize:16},outlineButton:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,paddingVertical:13,paddingHorizontal:18,alignItems:'center'},outlineButtonText:{color:'#344054',fontWeight:'800',fontSize:16},related:{marginTop:36,paddingTop:24,borderTopWidth:1,borderTopColor:'#eaecf0'},relatedTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:10},relatedItem:{paddingVertical:14,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},relatedItemTitle:{fontSize:17,lineHeight:24,fontWeight:'800',color:'#1d2939'},relatedMeta:{fontSize:12,color:'#98a2b3',marginTop:5},offline:{backgroundColor:'#fffaeb',borderWidth:1,borderColor:'#fedf89',borderRadius:12,padding:12,marginBottom:18},offlineText:{color:'#93370d'},retry:{color:'#b54708',fontWeight:'900',marginTop:8},skeleton:{flex:1,padding:20,paddingTop:70,backgroundColor:'#fff'},sk1:{height:14,width:70,backgroundColor:'#eaecf0',borderRadius:7,marginBottom:18},sk2:{height:34,width:'92%',backgroundColor:'#eaecf0',borderRadius:8,marginBottom:12},sk3:{height:14,width:'48%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:24},sk4:{height:220,width:'100%',backgroundColor:'#eaecf0',borderRadius:16,marginBottom:24},sk5:{height:18,width:'100%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:12}});

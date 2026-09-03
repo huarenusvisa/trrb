@@ -18,6 +18,9 @@ assert.match(client, /if \(!query\)[\s\S]*resetSearch\(\)/, 'browser navigation 
 assert.match(client, /judge-retry'[\s\S]*search\(query, \{ historyMode: 'none' \}\)/, 'retrying a failed query must not add a duplicate history entry');
 assert.match(page, /id="result-note" role="status"/, 'judge search status must be announced');
 assert.match(page, /id="results" class="results" aria-live="polite" aria-busy="false"/, 'judge results must be a polite live region');
+assert.match(page, /<form id="judge-search" role="search">[\s\S]*<label class="sr-only" for="judge-q">[^<]+<\/label>[\s\S]*<input id="judge-q" name="q" type="search"/, 'judge search must expose a persistent accessible name and search landmark');
+assert.match(page, /id="judge-q"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*aria-describedby="judge-search-help"/, 'judge search must expose mobile search keyboard intent and its visible help text');
+assert.match(page, /<button type="submit">查询<\/button>/, 'judge search submit control must declare its button type');
 assert.match(page, /app-i18n\.js\?v=8[\s\S]*judges\.js\?v=4/, 'judge search page must load retry translations and the history-aware client');
 
 console.log('AsylumJudge judge search recovery contract: PASS');

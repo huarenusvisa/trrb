@@ -90,6 +90,10 @@ assert.match(courtsClient, /url\.searchParams\.set\('fy', fiscalYear\)[\s\S]*ret
 assert.match(courtsClient, /url\.searchParams\.set\('q', query\)/, 'court listing must preserve a search query in the URL');
 assert.match(courtsClient, /button\.setAttribute\('aria-pressed', String\(active\)\)/, 'court year controls must expose their selected state');
 assert.match(statesClient, /if \(!response\.ok\) throw/, 'state listing must treat non-2xx responses as failures');
+assert.match(statesClient, /initialParams\.get\('q'\) \|\| initialParams\.get\('state'\)/, 'state listing must prefer the canonical query parameter while accepting legacy state links');
+assert.match(statesClient, /url\.searchParams\.set\('q', query\)/, 'state listing must preserve its search query in the URL');
+assert.match(statesClient, /url\.searchParams\.delete\('state'\)/, 'state listing must remove the legacy state alias after canonicalizing the URL');
+assert.match(statesClient, /button\.setAttribute\('aria-pressed', String\(active\)\)/, 'state year controls must expose their selected state');
 assert.match(courtsClient, /if \(!response\.ok\) throw/, 'court listing must treat non-2xx responses as failures');
 assert.match(statesClient, /id="state-retry"[\s\S]*load\(fiscalYear\)/, 'state retry must preserve the selected fiscal year');
 assert.match(courtsClient, /id="court-retry"[\s\S]*load\(\$\('#court-q'\)\.value\.trim\(\), selectedState\)/, 'court retry must preserve the search and state filters');
@@ -98,8 +102,9 @@ assert.match(courtsClient, /role="alert"/, 'court load failures must be announce
 assert.match(statesHtml, /id="state-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'state results must expose live loading state');
 assert.match(courtsHtml, /id="court-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court results must expose live loading state');
 assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="2025"[^>]*aria-pressed="false"/, 'court year controls must have initial accessible selection state');
+assert.match(statesHtml, /data-state-year="2026"[^>]*aria-pressed="true"[\s\S]*data-state-year="2025"[^>]*aria-pressed="false"/, 'state year controls must have initial accessible selection state');
 assert.match(courtsHtml, /courts\.js\?v=8/, 'court page must load the fiscal-year-link client');
-assert.match(statesHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=6/, 'state page must load the retry-enabled assets');
+assert.match(statesHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=7/, 'state page must load the filter-context client');
 assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=8/, 'court page must load the retry and fiscal-year-link assets');
 assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');
 assert.match(appI18n, /\['重新尝试','Try again'.*'إعادة المحاولة','Tekrar dene'\]/, 'retry action must be translated in all supported languages');

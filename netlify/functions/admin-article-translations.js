@@ -44,7 +44,11 @@ exports.handler = async (event) => {
     const body = JSON.parse(event.body || '{}');
     const action = safeText(body.action, 30);
     if (action === 'list') {
-      const articles = await rest('articles', { query: { select: 'id,title,category_name,published_at,updated_at', status: 'eq.published', visibility: 'eq.public', order: 'published_at.desc.nullslast', limit: '50' } });
+      const articleRows = await rest('articles', { query: { select: 'id,title,category_name,published_at,updated_at,content', status: 'eq.published', visibility: 'eq.public', order: 'published_at.desc.nullslast', limit: '50' } });
+      const articles = (articleRows || []).map(({ content, ...article }) => {
+        const contentCharacters = String(content || '').length;
+        return { ...article, content_characters: contentCharacters, estimated_requests: Math.max(1, Math.ceil(contentCharacters / 6000)), generation_eligible: contentCharacters >= 20 && contentCharacters <= 100000 };
+      });
       const translations = await rest('article_translations', { query: { select: 'article_id,locale,status,reviewed_at,source_article_updated_at,updated_at', order: 'updated_at.desc', limit: '200' } });
       return json(200, { articles, translations });
     }
@@ -55,6 +59,7 @@ exports.handler = async (event) => {
     const existing = await currentTranslation(article.id, locale);
     if (action === 'get') return json(200, { article, translation: existing });
     if (action === 'generate') {
+      if (body.cost_confirmed !== true) return json(400, { error: '生成翻译会使用模型额度，请先明确确认' });
       if (existing?.status === 'published') return json(409, { error: '已发布翻译不能被 AI 草稿覆盖；请人工编辑后直接重新发布' });
       const draft = await translateArticle({ ...article, locale });
       const translation = await upsert({ article_id: article.id, locale, ...draft, source_article_updated_at: article.updated_at, status: 'draft', translation_source: 'openai_review_required', reviewed_by: null, reviewed_at: null, updated_at: new Date().toISOString() });

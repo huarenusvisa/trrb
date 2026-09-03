@@ -14,6 +14,7 @@ on:
       - 'netlify/functions/_shared/article-ai-translation.test.js'
       - 'admin/article-translations.*'
       - 'admin/translation-review-audit.*'
+      - 'admin/translation-batch-plan.*'
       - 'admin/index.html'
       - 'admin/admin.js'
       - 'scripts/validate-admin-article-translations.test.mjs'
@@ -48,6 +49,7 @@ on:
       - 'netlify/functions/_shared/article-ai-translation.test.js'
       - 'admin/article-translations.*'
       - 'admin/translation-review-audit.*'
+      - 'admin/translation-batch-plan.*'
       - 'admin/index.html'
       - 'admin/admin.js'
       - 'scripts/validate-admin-article-translations.test.mjs'
@@ -95,6 +97,7 @@ jobs:
           node --test netlify/functions/admin-article-translations.test.js
           node --test netlify/functions/_shared/article-ai-translation.test.js
           node --test admin/translation-review-audit.test.js
+          node --test admin/translation-batch-plan.test.js
           node --test scripts/validate-admin-article-translations.test.mjs
           node --check netlify/functions/admin-push.js
           node --check netlify/functions/push-receipts.mjs

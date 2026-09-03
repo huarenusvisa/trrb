@@ -54,14 +54,14 @@ export default function CommunityComposeScreen() {
       </Pressable>
     )}</View>
     <Text style={styles.label}>标题</Text>
-    <TextInput value={title} onChangeText={setTitle} maxLength={120} placeholder="一句话说明你想分享什么" style={styles.input} editable={!busy} />
+    <TextInput testID="community-title-input" value={title} onChangeText={setTitle} maxLength={120} placeholder="一句话说明你想分享什么" style={styles.input} editable={!busy} />
     <Text style={styles.label}>正文</Text>
-    <TextInput value={content} onChangeText={setContent} maxLength={12000} multiline placeholder="尽量写清时间、地区、流程、问题、材料和结果" style={[styles.input, styles.textarea]} editable={!busy} />
+    <TextInput testID="community-content-input" value={content} onChangeText={setContent} maxLength={12000} multiline placeholder="尽量写清时间、地区、流程、问题、材料和结果" style={[styles.input, styles.textarea]} editable={!busy} />
     <Pressable testID="community-privacy-confirm" onPress={() => setPrivacyConfirmed((value) => !value)} style={styles.confirm}>
       <View style={[styles.checkbox, privacyConfirmed && styles.checkboxChecked]}><Text style={styles.checkmark}>{privacyConfirmed ? '✓' : ''}</Text></View>
       <Text style={styles.confirmText}>我已移除个人号码、电话、详细住址和未成年人隐私。</Text>
     </Pressable>
-    {message ? <Text style={[styles.message, message.startsWith('发布成功') && styles.success]}>{message}</Text> : null}
+    {message ? <Text testID="community-compose-message" style={[styles.message, message.startsWith('发布成功') && styles.success]}>{message}</Text> : null}
     <Pressable testID="community-submit" onPress={() => void submit()} disabled={busy} style={[styles.submit, busy && styles.disabled]}>
       {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitText}>提交帖子</Text>}
     </Pressable>

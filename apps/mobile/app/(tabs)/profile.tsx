@@ -3,8 +3,10 @@ import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, T
 import { router } from 'expo-router';
 import type { Session } from '@supabase/supabase-js';
 import { isAuthConfigured, supabase } from '../../src/auth/supabase';
+import { fetchArticle } from '../../src/api/trrb';
 import { accountLabel } from '../../src/auth/unified-account';
 import { unreadNotificationCount } from '../../src/community/notifications';
+import { syncFavoritesWithCloud } from '../../src/storage/library';
 import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '../../src/storage/reading-preferences';
 
 const FONT_OPTIONS: { label: string; scale: ReadingPreferences['fontScale'] }[] = [
@@ -23,16 +25,28 @@ export default function ProfileScreen() {
   useEffect(() => {
     void getReadingPreferences().then((prefs) => setFontScale(prefs.fontScale));
     let mounted = true;
+    let syncedUserId: string | null = null;
+    const syncFavorites = (nextSession: Session | null) => {
+      const userId = nextSession?.user.id || null;
+      if (!userId || syncedUserId === userId) return;
+      syncedUserId = userId;
+      void syncFavoritesWithCloud(fetchArticle).catch(() => {
+        // Keep local data and allow the Favorites screen to retry when connectivity returns.
+        syncedUserId = null;
+      });
+    };
     supabase.auth.getSession().then(async ({ data }) => {
       if (mounted) {
         setSession(data.session);
         setLoading(false);
+        syncFavorites(data.session);
         if (data.session) setUnread(await unreadNotificationCount().catch(() => 0));
       }
     });
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
       setSession(nextSession);
       setLoading(false);
+      syncFavorites(nextSession);
       setUnread(nextSession ? await unreadNotificationCount().catch(() => 0) : 0);
     });
     return () => {
@@ -59,7 +73,7 @@ export default function ProfileScreen() {
         <Pressable testID="open-community" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>移民社区</Text><Text style={styles.meta}>浏览帖子、分享经历和发布问题</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>消息中心{unread ? ` · ${unread}条未读` : ''}</Text><Text style={styles.meta}>回复、点赞、关注与系统通知</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>我的评论</Text><Text style={styles.meta}>查看评论状态并返回对应新闻</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>查看新闻收藏；云端同步将在本批后续节点接入</Text></Pressable>
+        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>收藏</Text><Text style={styles.meta}>本机与账号云端收藏自动安全合并</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>阅读历史</Text><Text style={styles.meta}>最近阅读的新闻，最多保存100条</Text></Pressable>
         <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>账号设置</Text><Text style={styles.meta}>修改昵称、默认头像与公开简介</Text></Pressable>
         <Pressable testID="profile-sign-out" style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>退出登录</Text></Pressable>

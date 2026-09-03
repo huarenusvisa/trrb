@@ -56,6 +56,9 @@ jobs:
       - name: Test mobile community API client
         working-directory: apps/mobile
         run: npm run test:community
+      - name: Test mobile library cloud merge
+        working-directory: apps/mobile
+        run: npm run test:library
       - name: Validate store build configuration
         working-directory: apps/mobile
         run: npm run config:check

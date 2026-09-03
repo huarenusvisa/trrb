@@ -1,4 +1,5 @@
 const { authenticateStaff, rest, safeText } = require('./_shared/supabase-admin');
+const { correlatePushTickets, numericInFilter } = require('./push-receipts-core');
 
 const json = (statusCode, body) => ({ statusCode, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' }, body: JSON.stringify(body) });
 
@@ -40,7 +41,7 @@ exports.handler = async (event) => {
     if (!article) return json(404, { error: 'published_article_not_found' });
 
     const [tokens, preferences] = await Promise.all([
-      rest('push_tokens', { query: { select: 'user_id,expo_push_token,platform,enabled', enabled: 'eq.true', limit: '5000' } }),
+      rest('push_tokens', { query: { select: 'id,user_id,expo_push_token,platform,enabled', enabled: 'eq.true', limit: '5000' } }),
       rest('notification_preferences', { query: { select: `user_id,${CATEGORY_FIELD[category]}`, limit: '5000' } })
     ]);
 
@@ -62,18 +63,50 @@ exports.handler = async (event) => {
 
     let accepted = 0;
     let rejected = 0;
+    const receiptRows = [];
+    const invalidTokenIds = [];
     for (let i = 0; i < messages.length; i += 100) {
       const ticketBatch = await expoSend(messages.slice(i, i + 100));
-      ticketBatch.forEach((ticket) => ticket?.status === 'ok' ? accepted++ : rejected++);
+      const correlated = correlatePushTickets(targets.slice(i, i + 100), ticketBatch);
+      accepted += correlated.accepted;
+      rejected += correlated.rejected;
+      receiptRows.push(...correlated.receiptRows);
+      invalidTokenIds.push(...correlated.invalidTokenIds);
     }
 
-    await rest('push_delivery_log', {
+    const deliveryRows = await rest('push_delivery_log', {
       method: 'POST',
       body: { article_id: article.id, category, target_count: targets.length, accepted_count: accepted, rejected_count: rejected, actor_user_id: user.id },
-      prefer: 'return=minimal'
+      prefer: 'return=representation'
     });
 
-    return json(200, { ok: true, article_id: article.id, target_count: targets.length, accepted_count: accepted, rejected_count: rejected });
+    const invalidFilter = numericInFilter(invalidTokenIds);
+    if (invalidFilter) {
+      await rest('push_tokens', {
+        method: 'PATCH',
+        query: { id: invalidFilter },
+        body: { enabled: false, updated_at: new Date().toISOString() },
+        prefer: 'return=minimal'
+      });
+    }
+
+    let receiptTrackingCount = 0;
+    if (receiptRows.length) {
+      try {
+        await rest('push_ticket_receipts', {
+          method: 'POST',
+          body: receiptRows.map((row) => ({ ...row, delivery_log_id: deliveryRows?.[0]?.id ?? null })),
+          prefer: 'return=minimal,resolution=ignore-duplicates'
+        });
+        receiptTrackingCount = receiptRows.length;
+      } catch (error) {
+        // Sending already happened. Do not return a retryable 500 that could duplicate notifications
+        // during the short deployment window before the receipt migration is applied.
+        console.error('push receipt queue unavailable', error?.message || error);
+      }
+    }
+
+    return json(200, { ok: true, article_id: article.id, target_count: targets.length, accepted_count: accepted, rejected_count: rejected, receipt_tracking_count: receiptTrackingCount, disabled_token_count: new Set(invalidTokenIds).size });
   } catch (error) {
     return json(error.statusCode || 500, { error: error.message || 'server_error' });
   }

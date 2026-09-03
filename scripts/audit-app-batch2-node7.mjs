@@ -14,6 +14,8 @@ const profile = read('apps/mobile/app/(tabs)/profile.tsx');
 const tokensMigration = read('supabase/migrations/20260816220100_app_batch2_push_tokens.sql');
 const governance = read('supabase/migrations/20260817031500_app_batch2_push_governance.sql');
 const adminPush = read('netlify/functions/admin-push.js');
+const receiptProcessor = read('netlify/functions/push-receipts.mjs');
+const receiptMigration = read('supabase/migrations/20260903110000_push_receipt_lifecycle.sql');
 
 check('expo-notifications dependency matches SDK 57', pkg.dependencies?.['expo-notifications'] === '~57.0.6');
 check('native notification config plugin enabled', app.plugins?.includes('expo-notifications'));
@@ -32,6 +34,11 @@ check('preference table and server-only delivery audit exist', governance.includ
 check('admin dispatch requires staff auth and published article', adminPush.includes("authenticateStaff(event, ['owner', 'editor'])") && adminPush.includes("status: 'eq.published'"));
 check('server dispatch keeps Expo credential off client', adminPush.includes('process.env.EXPO_ACCESS_TOKEN') && !registration.includes('EXPO_ACCESS_TOKEN'));
 check('admin dispatch respects preferences and records audit', adminPush.includes('notification_preferences') && adminPush.includes('push_delivery_log'));
+check('accepted push tickets are queued for receipt checks', adminPush.includes('push_ticket_receipts') && adminPush.includes('receipt_tracking_count'));
+check('receipt worker disables only invalid device tokens', receiptProcessor.includes('groupReceiptOutcomes') && receiptProcessor.includes("patchByIds('push_tokens', outcomes.invalidTokenIds"));
+check('receipt queue is server-only with pending index', receiptMigration.includes('enable row level security') && receiptMigration.includes('No client policies') && receiptMigration.includes("where status = 'pending'"));
+check('receipt worker runs hourly and waits at least 15 minutes', receiptProcessor.includes("schedule: '@hourly'") && receiptProcessor.includes('FIFTEEN_MINUTES'));
+check('receipt worker safely waits for migration deployment', receiptProcessor.includes('isMissingReceiptQueueError') && receiptProcessor.includes('status: 200'));
 
 // A real Expo project link is required before a physical-device token can be obtained.
 const repositoryProjectId = app.extra?.eas?.projectId;

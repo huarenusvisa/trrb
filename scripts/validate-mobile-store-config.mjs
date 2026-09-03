@@ -26,7 +26,12 @@ function pngDimensions(filePath) {
   const signature = '89504e470d0a1a0a';
   expect(data.subarray(0, 8).toString('hex') === signature, `${path.relative(root, filePath)} is not a PNG`);
   if (data.length < 24) return null;
-  return { width: data.readUInt32BE(16), height: data.readUInt32BE(20) };
+  return {
+    width: data.readUInt32BE(16),
+    height: data.readUInt32BE(20),
+    colorType: data[25],
+    hasTransparencyChunk: data.includes(Buffer.from('tRNS'))
+  };
 }
 
 expect(app.name === '唐人日报', 'expo.name must remain 唐人日报');
@@ -74,16 +79,17 @@ for (const field of ['marketingUrl', 'supportUrl', 'privacyPolicyUrl', 'privacyC
 expect(listing?.privacyPolicyUrl === 'https://trrb.net/privacy.html', 'Store privacy policy must use the published TRRB policy');
 expect(listing?.privacyChoicesUrl === 'https://trrb.net/delete-account.html', 'Store privacy choices must point to account deletion instructions');
 
-for (const [relativePath, label] of [
-  [app.icon, 'App icon'],
-  [app.android?.adaptiveIcon?.foregroundImage, 'Android adaptive icon']
+for (const [relativePath, label, exactSize] of [
+  [app.icon, 'App icon', 1024],
+  [app.android?.adaptiveIcon?.foregroundImage, 'Android adaptive icon', 1024]
 ]) {
   const filePath = resolveAsset(relativePath, label);
   if (!filePath) continue;
   const dimensions = pngDimensions(filePath);
   if (!dimensions) continue;
   expect(dimensions.width === dimensions.height, `${label} must be square`);
-  expect(dimensions.width >= 512, `${label} must be at least 512x512`);
+  expect(dimensions.width === exactSize, `${label} must be exactly ${exactSize}x${exactSize}`);
+  expect(![4, 6].includes(dimensions.colorType) && !dimensions.hasTransparencyChunk, `${label} must not contain an alpha channel or transparency chunk`);
 }
 
 if (failures.length) {

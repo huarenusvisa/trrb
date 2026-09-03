@@ -1,2 +1,25 @@
-/bin/bash: -c: line 1: syntax error near unexpected token `('
-/bin/bash: -c: line 1: `git show HEAD:apps/mobile/app/(tabs)/_layout.tsx'
+import { Tabs } from 'expo-router';
+import { Text } from 'react-native';
+import { useI18n } from '../../src/i18n/I18nProvider';
+
+const TabIcon = ({ label }: { label: string }) => <Text style={{ fontSize: 15, fontWeight: '700' }}>{label}</Text>;
+
+export default function TabLayout() {
+  const { t } = useI18n();
+  return (
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: '#c8211e',
+        tabBarInactiveTintColor: '#667085',
+        tabBarStyle: { height: 66, paddingBottom: 8, paddingTop: 6 }
+      }}
+    >
+      <Tabs.Screen name="index" options={{ title: t('tab.home'), tabBarButtonTestID: 'tab-home', tabBarIcon: () => <TabIcon label={t('tab.homeIcon')} /> }} />
+      <Tabs.Screen name="america" options={{ title: t('tab.america'), tabBarButtonTestID: 'tab-america', tabBarIcon: () => <TabIcon label={t('tab.americaIcon')} /> }} />
+      <Tabs.Screen name="immigration" options={{ title: t('tab.immigration'), tabBarButtonTestID: 'tab-immigration', tabBarIcon: () => <TabIcon label={t('tab.immigrationIcon')} /> }} />
+      <Tabs.Screen name="legal" options={{ title: t('tab.legal'), tabBarButtonTestID: 'tab-legal', tabBarIcon: () => <TabIcon label={t('tab.legalIcon')} /> }} />
+      <Tabs.Screen name="profile" options={{ title: t('tab.profile'), tabBarButtonTestID: 'tab-profile', tabBarIcon: () => <TabIcon label={t('tab.profileIcon')} /> }} />
+    </Tabs>
+  );
+}

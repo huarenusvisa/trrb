@@ -37,12 +37,19 @@ test('defers below-the-fold service modules until the first interaction settles'
 
 test('paints the canonical feed before loading supplements and prefetches only a small image queue', () => {
   const firstPaint = home.indexOf('setArticles(global)');
-  const supplements = home.indexOf('await Promise.all(SUPPLEMENT_CATEGORIES');
+  const supplements = home.indexOf('const supplementCategories = homepageSupplementGaps(global)');
   assert.ok(firstPaint >= 0 && supplements > firstPaint);
   assert.match(home, /sequence !== loadSequence\.current/);
   assert.match(home, /prefetchNewsImages\(imagePrefetchQueue, 6\)/);
   assert.match(image, /ExpoImage\.prefetch\(unique, 'memory-disk'\)/);
   assert.match(image, /\.slice\(0, limit\)/);
+});
+
+test('explains slow initial and refresh requests without clearing visible news', () => {
+  assert.match(home, /setTimeout[\s\S]*setSlowLoading\(true\)[\s\S]*4000/);
+  assert.match(home, /当前网络较慢，仍在尝试读取最新新闻/);
+  assert.match(home, /当前网络较慢，已保留现有新闻，仍在尝试更新/);
+  assert.match(home, /clearTimeout\(slowTimer\)/);
 });
 
 test('bounds long-list rendering work and exposes every story as a button', () => {

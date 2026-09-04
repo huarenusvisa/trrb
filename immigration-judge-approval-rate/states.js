@@ -2,6 +2,9 @@ const $ = (selector) => document.querySelector(selector);
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
+const reportableRate = (row) => Number(row.grants || 0) + Number(row.denials || 0) < 50
+  ? '—<small>少于50件，不显示</small>'
+  : pct(row.adjudicated_approval_rate);
 const initialParams = new URLSearchParams(location.search);
 let rows = [];
 let fiscalYear = Number(initialParams.get('fy')) || 2026;
@@ -14,7 +17,7 @@ if (initialQuery) $('#state-q').value = initialQuery;
 function render(list) {
   $('#state-results').innerHTML = list.length ? `
     <div class="crow chead state-crow outcome-row"><span>州</span><span>法院</span><span>法官</span><span>结案总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>裁决批准率</span></div>
-    ${list.map((row) => `<a class="crow state-crow outcome-row" href="/immigration-judge-approval-rate/courts.html?state=${encodeURIComponent(row.state)}&fy=${encodeURIComponent(fiscalYear)}"><span><b>${esc(row.state)}</b><small>FY ${esc(fiscalYear)} · 查看该州法院 →</small></span><span>${fmt(row.courts)}</span><span>${fmt(row.judges)}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${pct(row.adjudicated_approval_rate)}${Number(row.grants || 0) + Number(row.denials || 0) < 50 ? '<small>少于50件，不显示</small>' : ''}</span></a>`).join('')}
+    ${list.map((row) => `<a class="crow state-crow outcome-row" href="/immigration-judge-approval-rate/courts.html?state=${encodeURIComponent(row.state)}&fy=${encodeURIComponent(fiscalYear)}"><span><b>${esc(row.state)}</b><small>FY ${esc(fiscalYear)} · 查看该州法院 →</small></span><span>${fmt(row.courts)}</span><span>${fmt(row.judges)}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${reportableRate(row)}</span></a>`).join('')}
   ` : '<div class="empty">没有找到匹配州</div>';
 }
 

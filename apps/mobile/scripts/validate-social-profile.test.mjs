@@ -147,3 +147,23 @@ test('community composer restores drafts and keeps failed submissions retryable'
   assert.match(drafts, /AsyncStorage\.setItem/);
   assert.match(drafts, /AsyncStorage\.removeItem/);
 });
+
+test('news and community comments preserve scoped drafts and failed submissions', () => {
+  const news = read('src/components/CommentThread.tsx');
+  const community = read('app/community/[id].tsx');
+  const drafts = read('src/storage/commentDraft.ts');
+
+  for (const screen of [news, community]) {
+    assert.match(screen, /loadCommentDraft/);
+    assert.match(screen, /saveCommentDraft/);
+    assert.match(screen, /clearCommentDraft/);
+    assert.match(screen, /draft-restored/);
+    assert.match(screen, /草稿自动保存 7 天/);
+  }
+  assert.match(news, /news-comment-error/);
+  assert.match(news, /重试发布/);
+  assert.match(news, /parentId: target\?\.id/);
+  assert.match(community, /评论提交失败/);
+  assert.match(drafts, /scope: CommentDraftScope/);
+  assert.match(drafts, /AsyncStorage\.setItem/);
+});

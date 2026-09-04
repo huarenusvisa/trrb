@@ -129,8 +129,13 @@ assert.match(detailClient, /loading\.setAttribute\('aria-busy', 'true'\)[\s\S]*f
 assert.match(detailClient, /judge_list_scope === 'fiscal_year'/, 'court detail must distinguish fiscal-year judge rows from all-time profiles');
 assert.match(detailClient, /FY \$\{fiscalYear\} 法官[\s\S]*法院法官档案（全数据范围）[\s\S]*当前列表不限定 FY \$\{fiscalYear\}/, 'court detail must clearly separate fiscal-year counts from all-time profile rows');
 const courtDetailPage = readFileSync('immigration-judge-approval-rate/court-detail.html', 'utf8');
+assert.match(courtDetailPage, /id="judge-list-title"/, 'court judge list must have a persistent accessible heading');
+assert.match(courtDetailPage, /id="judge-list"[^>]*role="region"[^>]*aria-labelledby="judge-list-title"/, 'court judge list must expose a labelled navigation region');
+assert.match(detailClient, /class="trow thead outcome-row" aria-hidden="true"/, 'visual column headings must not be read separately from the complete row summary');
+assert.match(detailClient, /const accessibleSummary = `\$\{row\.judge_name\}；\$\{decisionHeading\}[\s\S]*aria-label="\$\{esc\(accessibleSummary\)\}"/, 'each judge profile link must announce every visible metric with its label');
+assert.match(courtDetailPage, /court-detail\.js\?v=6/, 'court detail must load the accessible row-summary client');
 assert.match(courtDetailPage, /id="loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court detail loading and failure updates must be announced');
-assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=5/, 'court detail must load the scope-aware client and expose its context targets');
+assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=6/, 'court detail must load the scope-aware client and expose its context targets');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 
 // Court profile recovery and period-scope disclosure are part of the state-to-court drill-down contract.

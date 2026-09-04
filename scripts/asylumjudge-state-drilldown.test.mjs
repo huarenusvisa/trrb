@@ -130,4 +130,5 @@ assert.match(courtDetailPage, /id="loading"[^>]*role="status"[^>]*aria-live="pol
 assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=4/, 'court detail must load the retry assets and expose its context targets');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 
+// Court profile recovery is part of the state-to-court drill-down contract.
 console.log('AsylumJudge state drill-down contract: PASS');

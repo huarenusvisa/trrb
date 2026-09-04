@@ -92,6 +92,7 @@ assert.deepEqual(
 for (const html of [standalone, trrb]) {
   assert.match(html, /id="all-judges"/, 'both homepage variants must expose the full judge directory');
   assert.match(html, /id="judge-directory-list"/);
+  assert.match(html, /id="judge-directory-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'judge directory must expose its initial loading state');
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');
   assert.match(html, /data-state-interval="month"/, 'homepage must offer a monthly trend');
   assert.match(html, /data-state-interval="year"/, 'homepage must offer a fiscal-year trend');
@@ -118,6 +119,8 @@ assert.match(client, /linePath\('otherShare'\)/, 'trend chart must draw the othe
 assert.match(client, /if \(point\[key\] == null \|\| !Number\.isFinite/, 'trend lines must break across suppressed low-sample points');
 assert.match(client, /point\.approval == null \? '' : `<circle/, 'suppressed approval rates must not render misleading zero-value dots');
 assert.match(client, /point\.denial == null \? '' : `<circle/, 'suppressed denial rates must not render misleading zero-value dots');
+assert.match(client, /container\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*container\.setAttribute\('aria-busy', 'false'\)/, 'judge directory must announce loading and completion');
+assert.match(client, /id="judge-directory-retry"[\s\S]*addEventListener\('click', loadAllJudges\)/, 'judge directory failures must offer an in-place retry');
 assert.doesNotMatch(client, /state-market-link/, 'trend chart must not be wrapped in a navigation link');
 assert.match(styles, /\.directory-metric\.verdict-pass b[^}]*var\(--pass\)/);
 assert.match(styles, /\.directory-metric\.verdict-deny b[^}]*var\(--deny\)/);
@@ -125,13 +128,14 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /site\.js\?v=20/, 'standalone homepage must load the threshold-aware client asset');
-assert.match(trrb, /site\.js\?v=19/, 'embedded homepage must load the threshold-aware client asset');
+assert.match(standalone, /site\.css\?v=16[\s\S]*site\.js\?v=21/, 'standalone homepage must load the directory-recovery assets');
+assert.match(trrb, /site\.css\?v=15[\s\S]*site\.js\?v=20/, 'embedded homepage must load the directory-recovery assets');
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
 assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
 assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');
 assert.match(standalone, /href="\/nationality"/, 'standalone homepage must link directly to the clean nationality route');
 assert.match(brandClient, /class="asylumjudge-lockup"[^>]+logo\.svg/, 'all judge data pages must receive the same logo');
+assert.match(styles, /\.directory-retry\{[^}]*min-height:44px[^}]*cursor:pointer[^}]*\}[\s\S]*\.directory-retry:focus-visible\{[^}]*outline:/, 'directory retry must be touch-sized and keyboard-visible');
 assert.match(brandClient, /\['\/immigration-judge-approval-rate\/states', `\$\{root\}\/states`\]/, 'pretty-URL legacy state links must normalize to the clean route');
 assert.equal(manifest.name, 'AsylumJudge.com');
 assert.ok(manifest.icons.some((icon) => icon.sizes === '512x512'));

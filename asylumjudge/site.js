@@ -372,6 +372,9 @@ async function loadDailyKnowledge() {
 async function loadAllJudges() {
   const container = $('#judge-directory-list');
   if (!container) return;
+  container.setAttribute('aria-busy', 'true');
+  $('#judge-directory-count').textContent = '正在读取全部法官…';
+  container.innerHTML = '<div class="directory-loading">正在读取全部法官资料…</div>';
   try {
     const data = await json('/.netlify/functions/immigration-judges?mode=all');
     allJudges = data.results || [];
@@ -384,7 +387,10 @@ async function loadAllJudges() {
   } catch (error) {
     $('#freshness-badge').textContent = '稍后重试';
     $('#judge-directory-count').textContent = '读取失败';
-    container.innerHTML = '<div class="empty">全部法官资料暂时无法读取，请稍后刷新。</div>';
+    container.innerHTML = '<div class="empty"><b>全部法官资料暂时无法读取</b><p>无需刷新页面，可以直接重新尝试。</p><button id="judge-directory-retry" class="directory-retry" type="button">重新尝试</button></div>';
+    $('#judge-directory-retry').addEventListener('click', loadAllJudges);
+  } finally {
+    container.setAttribute('aria-busy', 'false');
   }
 }
 

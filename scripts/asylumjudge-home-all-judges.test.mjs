@@ -96,7 +96,9 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /id="judge-search-label"[^>]+for="judge-q"/, 'homepage search must keep a persistent accessible label');
   assert.match(html, /id="judge-q"[^>]+type="search"[^>]+enterkeyhint="search"[^>]+aria-controls="judge-directory-list"[^>]+aria-describedby="judge-search-note"/, 'homepage search must expose mobile search input semantics and its result relationship');
   assert.match(html, /id="judge-search-note"[^>]+class="legal-note"/, 'homepage search must associate the visible data-use note');
-  assert.match(html, /id="judge-directory-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'judge directory must expose its initial loading state');
+  assert.match(html, /id="judge-directory-count"[^>]+role="status"[^>]+aria-live="polite"[^>]+aria-atomic="true"/, 'judge directory must announce concise result-count changes');
+  assert.match(html, /id="judge-directory-list"[^>]+aria-busy="true"/, 'judge directory must expose its initial loading state');
+  assert.doesNotMatch(html, /id="judge-directory-list"[^>]+aria-live=/, 'judge cards must not be announced as one oversized live region');
   assert.match(html, /id="daily-knowledge-items"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'daily knowledge must expose its initial loading state');
   assert.match(html, /id="state-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'state overview must expose its initial loading state');
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');

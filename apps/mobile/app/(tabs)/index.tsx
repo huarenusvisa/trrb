@@ -136,7 +136,7 @@ export default function HomeScreen() {
 
   const homepageArticles = useMemo(() => articles.filter((item) => item.category_name !== '移民美国'), [articles]);
   const importantNews = useMemo(() => homepageArticles.filter((item) => item.category_name === '重要新闻'), [homepageArticles]);
-  const lead = useMemo(() => importantNews.find((item) => item.cover_image) || importantNews[0] || null, [importantNews]);
+  const lead = useMemo(() => importantNews.find((item) => item.cover_image) || importantNews[0] || homepageArticles.find((item) => item.cover_image) || homepageArticles[0] || null, [importantNews, homepageArticles]);
   const leadStack = useMemo(() => homepageArticles.filter((item) => String(item.id) !== String(lead?.id)).slice(0, 4), [homepageArticles, lead]);
   const rankItems = useMemo(() => {
     const cutoff = Date.now() - 24 * 60 * 60 * 1000;
@@ -223,7 +223,7 @@ export default function HomeScreen() {
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         {lead ? (
-          <Pressable style={styles.heroCard} onPress={() => openArticle(lead)}>
+          <Pressable testID="home-important-news" style={styles.heroCard} onPress={() => openArticle(lead)}>
             {lead.cover_image ? <Image source={{ uri: lead.cover_image }} style={styles.heroImage} /> : <View style={styles.heroImagePlaceholder} />}
             <View style={styles.heroOverlay} />
             <View style={styles.heroCopy}>

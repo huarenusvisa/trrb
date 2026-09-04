@@ -3,7 +3,7 @@ import { ActivityIndicator, FlatList, Image, Pressable, RefreshControl, StyleShe
 import { router } from 'expo-router';
 import { fetchArticlePage, NewsArticle } from '../api/trrb';
 import { useI18n } from '../i18n/I18nProvider';
-import { localeDateTag, newsCategoryName } from '../i18n/i18n-core';
+import { localeDateTag } from '../i18n/i18n-core';
 
 type Props = {
   title: string;
@@ -80,7 +80,6 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
         <Pressable testID={`category-article-${index}`} accessibilityLabel={t('news.openArticle', { title: item.title })} style={styles.card} onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}>
           {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.thumb} /> : <View style={styles.placeholder} />}
           <View style={styles.body}>
-            <Text style={styles.category}>{newsCategoryName(locale, item.category_name)}</Text>
             <Text style={styles.articleTitle} numberOfLines={3}>{item.title}</Text>
             <Text style={styles.meta}>{item.published_at ? new Date(item.published_at).toLocaleString(localeDateTag(locale)) : ''}</Text>
           </View>
@@ -91,5 +90,5 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085'},header:{marginBottom:18},title:{fontSize:30,fontWeight:'900',color:'#101828'},error:{marginTop:10,color:'#b42318'},empty:{paddingVertical:80,alignItems:'center'},card:{flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12,minHeight:118},thumb:{width:126,minHeight:118,backgroundColor:'#e4e7ec'},placeholder:{width:126,backgroundColor:'#eaecf0'},body:{flex:1,padding:12},category:{fontSize:13,fontWeight:'800',color:'#c8211e'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828',marginTop:5},meta:{fontSize:12,color:'#98a2b3',marginTop:7},footer:{marginVertical:20},end:{textAlign:'center',color:'#98a2b3',marginVertical:20}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085'},header:{marginBottom:18},title:{fontSize:30,fontWeight:'900',color:'#101828'},error:{marginTop:10,color:'#b42318'},empty:{paddingVertical:80,alignItems:'center'},card:{flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12,minHeight:118},thumb:{width:126,minHeight:118,backgroundColor:'#e4e7ec'},placeholder:{width:126,backgroundColor:'#eaecf0'},body:{flex:1,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,color:'#98a2b3',marginTop:7},footer:{marginVertical:20},end:{textAlign:'center',color:'#98a2b3',marginVertical:20}
 });

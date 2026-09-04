@@ -105,6 +105,10 @@ assert.match(statesClient, /if \(requestId !== loadSequence\) return;/, 'state n
 assert.match(statesClient, /url\.searchParams\.delete\('state'\)/, 'state listing must remove the legacy state alias after canonicalizing the URL');
 assert.match(statesClient, /button\.setAttribute\('aria-pressed', String\(active\)\)/, 'state year controls must expose their selected state');
 assert.match(courtsClient, /if \(!response\.ok\) throw/, 'court listing must treat non-2xx responses as failures');
+assert.match(statesClient, /const reportableRate = \(row\) => Number\(row\.grants \|\| 0\) \+ Number\(row\.denials \|\| 0\) < 50[\s\S]*\? '—<small>少于50件，不显示<\/small>'[\s\S]*: pct\(row\.adjudicated_approval_rate\)/, 'state listing must suppress approval rates based on fewer than 50 merits decisions');
+assert.match(statesClient, /<span class="rate">\$\{reportableRate\(row\)\}<\/span>/, 'state rows must render the sample-size-aware approval rate');
+assert.match(courtsClient, /const reportableRate = \(row\) => Number\(row\.grants \|\| 0\) \+ Number\(row\.denials \|\| 0\) < 50[\s\S]*\? '—<small>少于50件，不显示<\/small>'[\s\S]*: pct\(row\.adjudicated_approval_rate\)/, 'court listing must suppress approval rates based on fewer than 50 merits decisions');
+assert.match(courtsClient, /<span class="rate">\$\{reportableRate\(row\)\}<\/span>/, 'court rows must render the sample-size-aware approval rate');
 assert.match(statesClient, /id="state-retry"[\s\S]*load\(fiscalYear\)/, 'state retry must preserve the selected fiscal year');
 assert.match(statesClient, /async function load\(year = fiscalYear, historyMode = 'replace'\)[\s\S]*fiscalYear = Number\(year\) \|\| fiscalYear;\s*updateYearControls\(\);/, 'state year selection must be retained before a request can fail');
 assert.match(courtsClient, /id="court-retry"[\s\S]*load\(\$\('#court-q'\)\.value\.trim\(\), selectedState\)/, 'court retry must preserve the search and state filters');
@@ -114,9 +118,9 @@ assert.match(statesHtml, /id="state-results"[^>]*aria-live="polite"[^>]*aria-bus
 assert.match(courtsHtml, /id="court-results"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court results must expose live loading state');
 assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="2025"[^>]*aria-pressed="false"/, 'court year controls must have initial accessible selection state');
 assert.match(statesHtml, /data-state-year="2026"[^>]*aria-pressed="true"[\s\S]*data-state-year="2025"[^>]*aria-pressed="false"/, 'state year controls must have initial accessible selection state');
-assert.match(courtsHtml, /courts\.js\?v=10/, 'court page must load the history-navigation client');
-assert.match(statesHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=9/, 'state page must load the history-navigation client');
-assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=10/, 'court page must load the retry and history-navigation assets');
+assert.match(courtsHtml, /courts\.js\?v=11/, 'court page must load the sample-size-aware client');
+assert.match(statesHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=10/, 'state page must load the sample-size-aware client');
+assert.match(courtsHtml, /courts\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=11/, 'court page must load the retry, history-navigation, and sample-size-aware assets');
 assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');
 assert.match(appI18n, /\['重新尝试','Try again'.*'إعادة المحاولة','Tekrar dene'\]/, 'retry action must be translated in all supported languages');
 assert.match(detailClient, /params\.set\('state', state\)/, 'court detail must preserve state scope');

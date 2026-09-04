@@ -181,3 +181,22 @@ test('news comment lists distinguish empty, failed and pagination states', () =>
   assert.match(news, /重试加载更多/);
   assert.doesNotMatch(news, /if \(!append\) setItems\(\[\]\)/);
 });
+
+test('news comment actions keep failures retryable without losing report input', () => {
+  const news = read('src/components/CommentThread.tsx');
+
+  assert.match(news, /news-comment-like-error/);
+  assert.match(news, /news-comment-report-error/);
+  assert.match(news, /news-comment-delete-error/);
+  assert.match(news, /重试点赞/);
+  assert.match(news, /重试提交举报/);
+  assert.match(news, /重试删除/);
+  assert.match(news, /举报理由仍保留在本页/);
+  assert.match(news, /withUiTimeout\(likeComment/);
+  assert.match(news, /withUiTimeout\(reportComment/);
+  assert.match(news, /withUiTimeout\(deleteOwnComment/);
+  assert.match(news, /current\.filter\(\(item\) => item\.id !== comment\.id\)/);
+  assert.doesNotMatch(news, /Alert\.alert\('点赞失败'/);
+  assert.doesNotMatch(news, /Alert\.alert\('举报失败'/);
+  assert.doesNotMatch(news, /Alert\.alert\('删除失败'/);
+});

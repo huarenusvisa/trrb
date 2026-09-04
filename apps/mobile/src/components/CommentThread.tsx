@@ -10,6 +10,9 @@ import { useForegroundRetry } from '../hooks/useForegroundRetry';
 import { withUiTimeout } from '../utils/async-state-core';
 
 type ReplyTarget = { id: string; label: string };
+type CommentActionKind = 'like' | 'report' | 'delete';
+type CommentActionFailure = { kind: CommentActionKind; commentId: string; detail: string };
+type BusyCommentAction = { kind: CommentActionKind; commentId: string };
 
 export function CommentThread({ articleId }: { articleId: string }) {
   const [items, setItems] = useState<CommentRow[]>([]);
@@ -21,12 +24,13 @@ export function CommentThread({ articleId }: { articleId: string }) {
   const [text, setText] = useState('');
   const [replyTo, setReplyTo] = useState<ReplyTarget | null>(null);
   const [sending, setSending] = useState(false);
-  const [busyCommentId, setBusyCommentId] = useState<string | null>(null);
+  const [busyAction, setBusyAction] = useState<BusyCommentAction | null>(null);
   const [reportTarget, setReportTarget] = useState<CommentRow | null>(null);
   const [reportReason, setReportReason] = useState('');
   const [viewerUserId, setViewerUserId] = useState<string | null>(null);
   const [message, setMessage] = useState('');
   const [failure, setFailure] = useState('');
+  const [actionFailure, setActionFailure] = useState<CommentActionFailure | null>(null);
   const [draftReady, setDraftReady] = useState(false);
   const [draftRestored, setDraftRestored] = useState(false);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -54,7 +58,7 @@ export function CommentThread({ articleId }: { articleId: string }) {
 
   useEffect(() => {
     loadVersion.current += 1;
-    setItems([]); setCursor(null); setLoadError(''); setLoadMoreError('');
+    setItems([]); setCursor(null); setLoadError(''); setLoadMoreError(''); setActionFailure(null);
     void load(false);
   }, [articleId]);
   useForegroundRetry(Boolean(loadError), () => void load(false));
@@ -132,49 +136,57 @@ export function CommentThread({ articleId }: { articleId: string }) {
 
   const onLike = async (comment: CommentRow) => {
     if (!(await requireSession())) return;
-    setBusyCommentId(comment.id);
-    setMessage('');
+    setBusyAction({ kind: 'like', commentId: comment.id });
+    setMessage(''); setActionFailure(null);
     try {
-      await likeComment(comment.id);
+      await withUiTimeout(likeComment(comment.id), '点赞操作超时，请检查网络后重试。');
       setMessage('点赞成功。');
     } catch (error) {
-      Alert.alert('点赞失败', error instanceof Error ? error.message : '请稍后重试。');
-    } finally { setBusyCommentId(null); }
+      setActionFailure({ kind: 'like', commentId: comment.id, detail: error instanceof Error ? error.message : '点赞失败，请稍后重试。' });
+    } finally { setBusyAction(null); }
   };
 
   const beginReport = async (comment: CommentRow) => {
     if (!(await requireSession())) return;
     setReportTarget(comment);
     setReportReason('');
+    setActionFailure(null);
   };
 
   const submitReport = async () => {
     if (!reportTarget || !reportReason.trim()) return;
-    setBusyCommentId(reportTarget.id);
-    setMessage('');
+    setBusyAction({ kind: 'report', commentId: reportTarget.id });
+    setMessage(''); setActionFailure(null);
     try {
-      await reportComment(reportTarget.id, reportReason);
+      await withUiTimeout(reportComment(reportTarget.id, reportReason), '举报提交超时，请检查网络后重试。');
       setReportTarget(null); setReportReason('');
       setMessage('举报已提交，我们会在后台审核。');
     } catch (error) {
-      Alert.alert('举报失败', error instanceof Error ? error.message : '请稍后重试。');
-    } finally { setBusyCommentId(null); }
+      setActionFailure({ kind: 'report', commentId: reportTarget.id, detail: error instanceof Error ? error.message : '举报失败，请稍后重试。' });
+    } finally { setBusyAction(null); }
+  };
+
+  const updateReportReason = (value: string) => {
+    setReportReason(value);
+    if (actionFailure?.kind === 'report') setActionFailure(null);
+  };
+
+  const deleteComment = async (comment: CommentRow) => {
+    setBusyAction({ kind: 'delete', commentId: comment.id }); setMessage(''); setActionFailure(null);
+    try {
+      await withUiTimeout(deleteOwnComment(comment.id), '删除操作超时，请检查网络后重试。');
+      if (replyTo?.id === comment.id) updateReply(null);
+      setItems((current) => current.filter((item) => item.id !== comment.id));
+      setMessage('评论已删除。');
+    } catch (error) {
+      setActionFailure({ kind: 'delete', commentId: comment.id, detail: error instanceof Error ? error.message : '删除失败，请稍后重试。' });
+    } finally { setBusyAction(null); }
   };
 
   const removeComment = (comment: CommentRow) => {
     Alert.alert('删除评论', '删除后评论将不再公开显示，确定继续吗？', [
       { text: '取消', style: 'cancel' },
-      { text: '确定删除', style: 'destructive', onPress: async () => {
-        setBusyCommentId(comment.id); setMessage('');
-        try {
-          await deleteOwnComment(comment.id);
-          if (replyTo?.id === comment.id) updateReply(null);
-          await load(false);
-          setMessage('评论已删除。');
-        } catch (error) {
-          Alert.alert('删除失败', error instanceof Error ? error.message : '请稍后重试。');
-        } finally { setBusyCommentId(null); }
-      } }
+      { text: '确定删除', style: 'destructive', onPress: () => void deleteComment(comment) }
     ]);
   };
 
@@ -190,9 +202,10 @@ export function CommentThread({ articleId }: { articleId: string }) {
     {message ? <Text testID="news-comment-message" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.message}>{message}</Text> : null}
 
     {reportTarget ? <View style={styles.reportBox}>
-      <View style={styles.replyBanner}><Text style={styles.replyText}>举报 {reportTarget.profiles?.display_name || '该用户'} 的评论</Text><Pressable onPress={() => { setReportTarget(null); setReportReason(''); }}><Text style={styles.cancel}>取消</Text></Pressable></View>
-      <TextInput testID="news-comment-report-reason" value={reportReason} onChangeText={setReportReason} placeholder="请说明举报理由（1–500字）" multiline maxLength={500} style={styles.reportInput} />
-      <Pressable testID="news-comment-report-submit" style={styles.reportSubmit} onPress={submitReport} disabled={!reportReason.trim() || busyCommentId === reportTarget.id}><Text style={styles.submitText}>{busyCommentId === reportTarget.id ? '提交中…' : '提交举报'}</Text></Pressable>
+      <View style={styles.replyBanner}><Text style={styles.replyText}>举报 {reportTarget.profiles?.display_name || '该用户'} 的评论</Text><Pressable accessibilityRole="button" accessibilityLabel="取消举报" onPress={() => { setReportTarget(null); setReportReason(''); setActionFailure(null); }}><Text style={styles.cancel}>取消</Text></Pressable></View>
+      <TextInput testID="news-comment-report-reason" accessibilityLabel="举报理由" value={reportReason} onChangeText={updateReportReason} placeholder="请说明举报理由（1–500字）" multiline maxLength={500} style={styles.reportInput} />
+      <Pressable testID="news-comment-report-submit" accessibilityRole="button" accessibilityLabel="提交举报" accessibilityState={{ disabled: !reportReason.trim() || Boolean(busyAction), busy: busyAction?.kind === 'report' }} style={styles.reportSubmit} onPress={submitReport} disabled={!reportReason.trim() || Boolean(busyAction)}><Text style={styles.submitText}>{busyAction?.kind === 'report' ? '提交中…' : '提交举报'}</Text></Pressable>
+      {actionFailure?.kind === 'report' && actionFailure.commentId === reportTarget.id ? <AsyncStatePanel testID="news-comment-report-error" title="举报尚未提交" message={`${actionFailure.detail} 举报理由仍保留在本页。`} tone="error" actionLabel="重试提交举报" onAction={() => void submitReport()} busy={busyAction?.kind === 'report'} /> : null}
     </View> : null}
 
     {loading && !items.length ? <View testID="news-comments-loading" accessibilityLiveRegion="polite"><ActivityIndicator style={{ marginTop: 24 }} /><Text style={styles.loadingText}>正在读取评论…</Text></View> : null}
@@ -203,11 +216,12 @@ export function CommentThread({ articleId }: { articleId: string }) {
       {item.parent_id ? <Text style={styles.parentTag}>回复</Text> : null}
       <Text style={styles.body}>{item.content}</Text>
       <View style={styles.actions}>
-        <Pressable testID={`news-comment-reply-${index}`} accessibilityRole="button" accessibilityLabel={`回复${item.profiles?.display_name || '用户'}`} onPress={() => updateReply({ id: item.id, label: item.profiles?.display_name || '用户' })} disabled={busyCommentId === item.id}><Text style={styles.action}>回复</Text></Pressable>
-        <Pressable testID={`news-comment-like-${index}`} onPress={() => onLike(item)} disabled={busyCommentId === item.id}><Text style={styles.action}>{busyCommentId === item.id ? '处理中…' : '点赞'}</Text></Pressable>
-        <Pressable testID={`news-comment-report-${index}`} onPress={() => beginReport(item)} disabled={busyCommentId === item.id}><Text style={styles.reportAction}>举报</Text></Pressable>
-        {isOwnComment(item, viewerUserId) ? <Pressable testID={`news-comment-delete-${index}`} onPress={() => removeComment(item)} disabled={busyCommentId === item.id}><Text style={styles.deleteAction}>删除</Text></Pressable> : null}
+        <Pressable testID={`news-comment-reply-${index}`} accessibilityRole="button" accessibilityLabel={`回复${item.profiles?.display_name || '用户'}`} accessibilityState={{ disabled: Boolean(busyAction) }} onPress={() => updateReply({ id: item.id, label: item.profiles?.display_name || '用户' })} disabled={Boolean(busyAction)}><Text style={styles.action}>回复</Text></Pressable>
+        <Pressable testID={`news-comment-like-${index}`} accessibilityRole="button" accessibilityLabel="点赞评论" accessibilityState={{ disabled: Boolean(busyAction), busy: busyAction?.kind === 'like' && busyAction.commentId === item.id }} onPress={() => onLike(item)} disabled={Boolean(busyAction)}><Text style={styles.action}>{busyAction?.kind === 'like' && busyAction.commentId === item.id ? '处理中…' : '点赞'}</Text></Pressable>
+        <Pressable testID={`news-comment-report-${index}`} accessibilityRole="button" accessibilityLabel="举报评论" accessibilityState={{ disabled: Boolean(busyAction) }} onPress={() => beginReport(item)} disabled={Boolean(busyAction)}><Text style={styles.reportAction}>举报</Text></Pressable>
+        {isOwnComment(item, viewerUserId) ? <Pressable testID={`news-comment-delete-${index}`} accessibilityRole="button" accessibilityLabel="删除评论" accessibilityState={{ disabled: Boolean(busyAction), busy: busyAction?.kind === 'delete' && busyAction.commentId === item.id }} onPress={() => removeComment(item)} disabled={Boolean(busyAction)}><Text style={styles.deleteAction}>{busyAction?.kind === 'delete' && busyAction.commentId === item.id ? '删除中…' : '删除'}</Text></Pressable> : null}
       </View>
+      {actionFailure?.commentId === item.id && actionFailure.kind !== 'report' ? <AsyncStatePanel testID={actionFailure.kind === 'like' ? 'news-comment-like-error' : 'news-comment-delete-error'} title={actionFailure.kind === 'like' ? '点赞尚未完成' : '评论尚未删除'} message={actionFailure.detail} tone="error" actionLabel={actionFailure.kind === 'like' ? '重试点赞' : '重试删除'} onAction={actionFailure.kind === 'like' ? () => void onLike(item) : () => void deleteComment(item)} busy={busyAction?.commentId === item.id} /> : null}
     </View>)}
 
     {loadMoreError ? <AsyncStatePanel testID="news-comments-more-error" title="更多评论加载失败" message={loadMoreError} tone="error" actionLabel="重试加载更多" onAction={() => void load(true)} busy={loadingMore} /> : null}

@@ -263,6 +263,24 @@ async function patchControls(query, enabled, userId, prefer = 'return=minimal') 
   });
 }
 
+async function enableIceCategoryAutomation() {
+  const rows = await rest('categories', {
+    method: 'PATCH',
+    query: { slug: 'ilike.ice' },
+    body: {
+      is_active: true,
+      auto_fetch: true,
+      ai_rewrite: true,
+      auto_publish: true,
+      updated_at: new Date().toISOString()
+    },
+    prefer: 'return=representation'
+  });
+  if (!Array.isArray(rows) || rows.length === 0) {
+    throw new Error('ICE栏目不存在，无法同步自动采集与自动发布开关');
+  }
+}
+
 async function readControl(key) {
   const controls = await rest('automation_controls', {
     query: {
@@ -374,6 +392,10 @@ exports.handler = async (event) => {
     } else {
       await patchControls({ control_key: controlKeyFilter(targetKeys) }, false, user.id);
       globalAutoClosed = await closeGlobalIfNoEnabledChildren(user.id);
+    }
+
+    if (body.enabled && (key === 'ice' || key === 'global')) {
+      await enableIceCategoryAutomation();
     }
 
     const control = group ? await readControlGroup(key) : await readControl(key);

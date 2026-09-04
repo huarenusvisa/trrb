@@ -35,8 +35,9 @@ assert.match(client, /function revealSearchResults\(\)[\s\S]*focus\(\{ preventSc
 assert.match(client, /if \(!rows\.length\)[\s\S]*if \(reveal\) revealSearchResults\(\)[\s\S]*return;[\s\S]*rows\.map[\s\S]*if \(reveal\) revealSearchResults\(\)/, 'both empty and populated judge results must be revealed');
 assert.match(client, /查询暂不可用[\s\S]*if \(reveal\) revealSearchResults\(\)/, 'judge search errors must also be revealed');
 assert.match(client, /if \(initial\)[\s\S]*reveal: false[\s\S]*addEventListener\('popstate'[\s\S]*reveal: false/, 'initial deep links and browser history restoration must preserve the current scroll position');
-assert.match(page, /id="result-note" role="status" tabindex="-1"/, 'judge search status must be announced and programmatically focusable');
-assert.match(page, /id="results" class="results" aria-live="polite" aria-busy="false"/, 'judge results must be a polite live region');
+assert.match(page, /id="result-note" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"/, 'judge search must announce an atomic summary that remains programmatically focusable');
+assert.match(page, /id="results" class="results" aria-busy="false"/, 'judge results must expose loading state');
+assert.doesNotMatch(page, /id="results"[^>]*aria-live=/, 'the full judge result list must not be announced as one oversized live region');
 assert.match(page, /<form id="judge-search" role="search">[\s\S]*<label class="sr-only" for="judge-q">[^<]+<\/label>[\s\S]*<input id="judge-q" name="q" type="search"/, 'judge search must expose a persistent accessible name and search landmark');
 assert.match(page, /id="judge-q"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*aria-describedby="judge-search-help"/, 'judge search must expose mobile search keyboard intent and its visible help text');
 assert.match(page, /<button type="submit">查询<\/button>/, 'judge search submit control must declare its button type');

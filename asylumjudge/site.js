@@ -19,6 +19,7 @@ let searchTimer = null;
 let selectedTrendState = 'NY';
 let selectedTrendCourt = '';
 let selectedTrendInterval = 'month';
+let overviewController = null;
 
 const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylumjudge(?:\/|$)/i.test(location.pathname);
 const appPath = (page = '') => trrbColumn
@@ -49,11 +50,11 @@ function useCleanDomainRoutes() {
   });
 }
 
-async function json(url) {
+async function json(url, options = {}) {
   const requestUrl = sharedApiOrigin && url.startsWith('/.netlify/functions/')
     ? `${sharedApiOrigin}${url}`
     : url;
-  const response = await fetch(requestUrl);
+  const response = await fetch(requestUrl, options);
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
@@ -262,6 +263,9 @@ async function loadTrendLocations() {
 }
 
 async function loadOverview(fiscalYear = 2026) {
+  overviewController?.abort();
+  const controller = new AbortController();
+  overviewController = controller;
   const container = $('#state-list');
   container.setAttribute('aria-busy', 'true');
   container.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
@@ -273,15 +277,20 @@ async function loadOverview(fiscalYear = 2026) {
   $('#decision-count').textContent = '—';
   document.querySelectorAll('[data-state-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.stateFy) === Number(fiscalYear)));
   try {
-    const stateData = await json(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`);
+    const stateData = await json(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`, { signal: controller.signal });
+    if (overviewController !== controller) return;
     renderStates(stateData.states || [], stateData);
   } catch (error) {
+    if (error.name === 'AbortError' || overviewController !== controller) return;
     $('#snapshot-period-label').textContent = `FY ${fiscalYear}`;
     $('#national-sample').textContent = '数据库暂时无法读取';
     container.innerHTML = '<div class="empty"><b>数据库暂时无法读取</b><p>无需刷新页面，可以直接重新尝试。</p><button id="overview-retry" class="directory-retry" type="button">重新尝试</button></div>';
     $('#overview-retry').addEventListener('click', () => loadOverview(fiscalYear));
   } finally {
-    container.setAttribute('aria-busy', 'false');
+    if (overviewController === controller) {
+      overviewController = null;
+      container.setAttribute('aria-busy', 'false');
+    }
   }
 }
 

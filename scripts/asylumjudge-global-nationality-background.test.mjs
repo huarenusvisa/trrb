@@ -199,9 +199,17 @@ assert.equal(i18nSandbox.window.AsylumI18n.regionCodeForNationality({ nationalit
 const standaloneProxy = readFileSync('asylumjudge/immigration-judges-proxy.js', 'utf8');
 const detailPage = readFileSync('immigration-judge-approval-rate/detail.html', 'utf8');
 const detailClient = readFileSync('immigration-judge-approval-rate/detail.js', 'utf8');
+const detailStyles = readFileSync('immigration-judge-approval-rate/detail.css', 'utf8');
+// Detail recovery assertions keep transient API failures from becoming dead ends.
 const routes = readFileSync('scripts/finalize-redirects.mjs', 'utf8');
 const seoBuilder = readFileSync('scripts/build-asylumjudge-seo.mjs', 'utf8');
 const homepageClient = readFileSync('asylumjudge/site.js', 'utf8');
+assert.match(detailPage, /id="detail-loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'judge detail loading and failure updates must be announced');
+assert.match(detailPage, /detail\.css\?v=5[\s\S]*detail\.js\?v=8/, 'judge detail page must load the retry asset versions');
+assert.match(detailClient, /if \(!response\.ok\) throw new Error\(`Judge detail failed: \$\{response\.status\}`\)[\s\S]*const data = await response\.json\(\)/, 'judge details must reject non-success responses before parsing');
+assert.match(detailClient, /id="judge-detail-retry"[\s\S]*addEventListener\('click', load\)/, 'judge detail failures must offer an in-place retry');
+assert.match(detailClient, /detailLoading\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*detailLoading\.setAttribute\('aria-busy', 'false'\)/, 'judge detail must expose its loading state');
+assert.match(detailStyles, /\.detail-retry:focus-visible/, 'judge detail retry must expose a visible keyboard focus state');
 for (const label of ['全球申请人庇护裁决结果', '月度', '季度', '年度', '全部国籍']) assert.match(page, new RegExp(label));
 assert.match(page, /主要国籍裁决结果对比图/);
 assert.match(page, /id="country-comparison-chart"/);

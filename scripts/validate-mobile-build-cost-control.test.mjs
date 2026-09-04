@@ -16,6 +16,7 @@ test('native E2E builds only run for native-impacting changes or manual dispatch
   assert.match(nativeWorkflow, /apps\/mobile\/package-lock\.json/);
   assert.match(nativeWorkflow, /apps\/mobile\/assets\/app-icon-1024\.png/);
   assert.match(nativeWorkflow, /concurrency:[\s\S]*cancel_in_progress:\s*true/);
+  assert.match(nativeWorkflow, /group:\s*\$\{\{ workflow\.filename \}\}-\$\{\{ github\.ref \}\}/);
 
   for (const broadPath of [
     'apps/mobile/app/**',
@@ -34,6 +35,7 @@ test('ordinary app code publishes OTA while test-only and icon-only changes do n
   assert.match(otaWorkflow, /!apps\/mobile\/src\/\*\*\/\*\.test\.ts/);
   assert.match(otaWorkflow, /!apps\/mobile\/assets\/app-icon-1024\.png/);
   assert.match(otaWorkflow, /concurrency:[\s\S]*cancel_in_progress:\s*true/);
+  assert.match(otaWorkflow, /group:\s*\$\{\{ workflow\.filename \}\}-\$\{\{ github\.ref \}\}/);
 });
 
 test('Netlify preserves previews and skips production for mobile-only commits', () => {

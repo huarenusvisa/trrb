@@ -23,7 +23,7 @@ assert.match(html, /id="compare-trend"/);
 assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
-assert.match(html, /compare\.js\?v=6/);
+assert.match(html, /compare\.js\?v=7/);
 assert.match(html, /compare\.css\?v=4/);
 assert.match(html, /compare-focus\.css\?v=1/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
@@ -43,6 +43,13 @@ assert.match(js, /requestId !== detailRequestId/, 'stale detail responses must n
 assert.match(js, /error\?\.name === 'AbortError'/, 'cancelled detail requests must not show a load error');
 assert.match(js, /cancelDetailRequest\(\); selected = \[\]; details = \[\]/, 'clearing the comparison must cancel in-flight detail requests');
 assert.match(js, /merits\(row\) >= 50/, 'yearly trend must enforce the sample threshold');
+assert.match(js, /const approval = \(row\) => merits\(row\) < 50\s*\? null/, 'every comparison rate must enforce the sample threshold before using a fallback');
+const rateHelpers = js.match(/const merits = .*?;\nconst approval = .*?;\n/s)?.[0];
+assert.ok(rateHelpers, 'comparison rate helpers must remain testable');
+const { approval } = Function(`${rateHelpers}; return { approval };`)();
+assert.equal(approval({ grants: 4, denials: 15, adjudicated_approval_rate: null }), null, 'a low-sample null API rate must not be reconstructed from raw counts');
+assert.equal(approval({ grants: 20, denials: 30, adjudicated_approval_rate: null }), 40, 'the fallback may calculate a rate once the 50-decision threshold is met');
+assert.equal(approval({ grants: 60, denials: 40, adjudicated_approval_rate: 61.5 }), 61.5, 'a reportable API rate must remain authoritative');
 assert.match(js, /searchParams\.set\('judges'/, 'selection must be shareable through the URL');
 assert.match(js, /asylumjudge:localechange[\s\S]*renderSelected\(\)[\s\S]*renderComparison\(\)/, 'changing language must rerender dynamic comparison results');
 assert.match(js, /role="option"[^>]*aria-selected="false"[^>]*tabindex="-1"/, 'search results must expose non-tabbable ARIA options');

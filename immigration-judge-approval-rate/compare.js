@@ -59,7 +59,9 @@ const judgeName = (row) => {
 };
 const profileUrl = (row) => window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `/judge?id=${encodeURIComponent(row.id)}`;
 const merits = (row) => Number(row?.grants || 0) + Number(row?.denials || 0);
-const approval = (row) => row?.adjudicated_approval_rate ?? row?.approval_rate ?? (merits(row) ? Number(row.grants || 0) / merits(row) * 100 : null);
+const approval = (row) => merits(row) < 50
+  ? null
+  : row?.adjudicated_approval_rate ?? row?.approval_rate ?? Number(row.grants || 0) / merits(row) * 100;
 
 async function copyText(value) {
   try {

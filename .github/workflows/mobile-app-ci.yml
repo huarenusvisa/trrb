@@ -32,6 +32,7 @@ on:
       - 'supabase/migrations/20260903110000_push_receipt_lifecycle.sql'
       - 'supabase/migrations/20260903202000_article_translation_cache.sql'
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
+      - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
       - '.github/workflows/mobile-app-ci.yml'
   push:
     branches: [main]
@@ -67,6 +68,7 @@ on:
       - 'supabase/migrations/20260903110000_push_receipt_lifecycle.sql'
       - 'supabase/migrations/20260903202000_article_translation_cache.sql'
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
+      - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
       - '.github/workflows/mobile-app-ci.yml'
   workflow_dispatch:
 
@@ -132,6 +134,9 @@ jobs:
       - name: Test mobile and PC news structure parity
         working-directory: apps/mobile
         run: npm run test:news-parity
+      - name: Test social profile privacy and messaging gates
+        working-directory: apps/mobile
+        run: npm run test:social
       - name: Audit push security and lifecycle contract
         run: node scripts/audit-app-batch2-node7.mjs
       - name: Validate store build configuration

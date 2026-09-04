@@ -3,11 +3,22 @@
     "name": "唐人日报",
     "slug": "trrb",
     "scheme": "trrb",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "icon": "./assets/app-icon-1024.png",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "plugins": ["expo-router", "expo-notifications"],
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "允许唐人日报访问照片和视频，用于设置头像、主页背景和发布个人动态。",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
+    ],
     "experiments": { "typedRoutes": true, "reactCompiler": true },
     "updates": {
       "url": "https://u.expo.dev/cc29573d-d20c-4c3b-a7d6-1bc74838127a"
@@ -18,7 +29,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "net.trrb.mobile",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "privacyManifests": {
         "NSPrivacyTracking": false,
         "NSPrivacyTrackingDomains": [],
@@ -47,7 +58,7 @@
     },
     "android": {
       "package": "net.trrb.mobile",
-      "versionCode": 1,
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon-1024.png",
         "backgroundColor": "#ffffff"

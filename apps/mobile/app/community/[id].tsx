@@ -96,7 +96,7 @@ export default function CommunityPostScreen() {
     <Stack.Screen options={{ headerShown: true, title: '社区帖子', headerBackTitle: '返回' }} />
     <View style={styles.metaRow}><Text style={styles.category}>{categoryNames[post.category] || post.category}</Text>{post.status !== 'published' ? <Text style={styles.pending}>审核中</Text> : null}</View>
     <Text style={styles.title}>{post.title}</Text>
-    <Text style={styles.author}>{post.profiles?.display_name || '唐人用户'} · {new Date(post.created_at).toLocaleString('zh-CN')}</Text>
+    <Pressable onPress={() => router.push(`/user/${post.user_id}`)}><Text style={styles.author}>{post.profiles?.display_name || '唐人用户'} · {new Date(post.created_at).toLocaleString('zh-CN')}</Text></Pressable>
     <Text style={styles.body}>{post.content}</Text>
     <View style={styles.actions}>
       <Pressable testID="community-like" disabled={Boolean(busyAction)} style={styles.action} onPress={() => void like()}><Text style={styles.actionText}>赞 {post.like_count || 0}</Text></Pressable>
@@ -108,7 +108,7 @@ export default function CommunityPostScreen() {
     <View style={styles.comments}>
       <Text style={styles.commentsTitle}>评论 {post.comment_count || 0}</Text>
       {comments.length ? comments.map((item) => <View key={item.id} style={styles.commentCard}>
-        <View style={styles.commentHead}><Text style={styles.commentAuthor}>{item.profiles?.display_name || '唐人用户'}</Text><Text style={styles.commentTime}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
+        <View style={styles.commentHead}><Pressable onPress={() => router.push(`/user/${item.user_id}`)}><Text style={styles.commentAuthor}>{item.profiles?.display_name || '唐人用户'}</Text></Pressable><Text style={styles.commentTime}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
         <Text style={styles.commentBody}>{item.content}</Text>
         {item.status !== 'published' ? <Text style={styles.reviewing}>审核中，仅自己可见</Text> : null}
       </View>) : <Text style={styles.empty}>暂时还没有评论。</Text>}

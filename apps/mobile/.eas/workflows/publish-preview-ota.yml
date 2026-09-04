@@ -7,6 +7,15 @@ on:
       - 'apps/mobile/app/**'
       - 'apps/mobile/src/**'
       - 'apps/mobile/assets/**'
+      - '!apps/mobile/src/**/*.test.js'
+      - '!apps/mobile/src/**/*.test.mjs'
+      - '!apps/mobile/src/**/*.test.ts'
+      - '!apps/mobile/src/**/*.test.tsx'
+      - '!apps/mobile/assets/app-icon-1024.png'
+
+concurrency:
+  cancel_in_progress: true
+  group: ${{ workflow.filename }}-${{ github.ref }}
 
 jobs:
   publish_preview_update:

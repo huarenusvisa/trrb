@@ -1,18 +1,21 @@
-name: APP-R2 Automated E2E Regression
+name: APP-R2 Native E2E Regression
 
 on:
+  workflow_dispatch: {}
   push:
     branches: ['main']
+    # Full simulator builds are reserved for changes that can alter the native
+    # runtime. App screens and TypeScript are covered by Mobile App CI and OTA.
     paths:
-      - 'apps/mobile/app/**'
-      - 'apps/mobile/src/**'
-      - 'apps/mobile/assets/**'
       - 'apps/mobile/eas.json'
       - 'apps/mobile/app.json'
       - 'apps/mobile/package.json'
       - 'apps/mobile/package-lock.json'
-      - 'apps/mobile/.maestro/**'
-      - 'apps/mobile/.eas/workflows/auto-e2e-regression.yml'
+      - 'apps/mobile/assets/app-icon-1024.png'
+
+concurrency:
+  cancel_in_progress: true
+  group: ${{ workflow.filename }}-${{ github.ref }}
 
 jobs:
   static_regression:

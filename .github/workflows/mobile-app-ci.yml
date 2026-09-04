@@ -33,6 +33,9 @@ on:
       - 'supabase/migrations/20260903202000_article_translation_cache.sql'
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
+      - 'netlify.toml'
+      - 'scripts/netlify-ignore-build.sh'
+      - 'scripts/validate-mobile-build-cost-control.test.mjs'
       - '.github/workflows/mobile-app-ci.yml'
   push:
     branches: [main]
@@ -69,6 +72,9 @@ on:
       - 'supabase/migrations/20260903202000_article_translation_cache.sql'
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
+      - 'netlify.toml'
+      - 'scripts/netlify-ignore-build.sh'
+      - 'scripts/validate-mobile-build-cost-control.test.mjs'
       - '.github/workflows/mobile-app-ci.yml'
   workflow_dispatch:
 
@@ -91,6 +97,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.13.0'
+      - name: Validate mobile build cost controls
+        run: node --test scripts/validate-mobile-build-cost-control.test.mjs
       - name: Check mobile API syntax
         run: |
           node --check netlify/functions/public-article.js

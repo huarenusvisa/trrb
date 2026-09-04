@@ -31,6 +31,15 @@ export function appendCreatedCommunityComment(detail: CommunityPostDetail, comme
   };
 }
 
+export function removeUnpublishedCommunityComment(detail: CommunityPostDetail, commentId: string, commentCount: number) {
+  if (!detail.comments.some((item) => item.id === commentId)) return detail;
+  return {
+    ...detail,
+    post: { ...detail.post, comment_count: Math.max(0, commentCount) },
+    comments: detail.comments.filter((item) => item.id !== commentId),
+  };
+}
+
 export function paginateCommunityCommentThreads(comments: CommunityComment[], visibleThreadCount: number): CommunityCommentPage {
   const byId = new Map(comments.map((comment) => [comment.id, comment]));
   const children = new Map<string, CommunityComment[]>();

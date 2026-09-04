@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { CommunityComment } from '../api/community-core';
-import { appendCreatedCommunityComment, communityCommentDisplayName, paginateCommunityCommentThreads } from './community-comment-presentation.ts';
+import { appendCreatedCommunityComment, communityCommentDisplayName, paginateCommunityCommentThreads, removeUnpublishedCommunityComment } from './community-comment-presentation.ts';
 
 const comment = (overrides: Partial<CommunityComment> = {}): CommunityComment => ({
   id: 'root', post_id: 'post-1', user_id: 'user-1', parent_id: null,
@@ -67,4 +67,18 @@ test('shows a pending comment to its author without inflating the public count',
 
   assert.equal(inserted.post.comment_count, 2);
   assert.equal(inserted.comments[0].status, 'pending');
+});
+
+test('removes an unpublished comment and adopts the server count without hiding replies', () => {
+  const detail = {
+    post: { id: 'post-1', comment_count: 3 },
+    comments: [comment(), comment({ id: 'reply', parent_id: 'root' })],
+    viewerUserId: 'user-1',
+  } as Parameters<typeof removeUnpublishedCommunityComment>[0];
+  const next = removeUnpublishedCommunityComment(detail, 'root', 2);
+
+  assert.equal(next.post.comment_count, 2);
+  assert.deepEqual(next.comments.map((item) => item.id), ['reply']);
+  assert.equal(paginateCommunityCommentThreads(next.comments, 10).rows[0].replyToLabel, '原评论作者');
+  assert.equal(removeUnpublishedCommunityComment(next, 'missing', 1), next);
 });

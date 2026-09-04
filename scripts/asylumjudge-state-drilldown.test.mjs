@@ -58,6 +58,7 @@ const detailBody = JSON.parse(detailResponse.body);
 assert.equal(detailResponse.statusCode, 200);
 assert.equal(detailBody.court.court_state, 'CA');
 assert.deepEqual(detailBody.judges.map((row) => row.id), ['ca-shared'], 'same-name court detail must stay inside the selected state');
+assert.equal(detailBody.judge_list_scope, 'all_time_profiles', 'missing fiscal-year judge index must be disclosed instead of presenting all-time profiles as fiscal-year rows');
 
 const historicalDetailResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'court-detail', court: 'Shared Court', state: 'CA', fy: '2025' } });
 const historicalDetailBody = JSON.parse(historicalDetailResponse.body);
@@ -125,9 +126,11 @@ assert.match(detailClient, /backParams[\s\S]*fy:[\s\S]*#court-back/, 'court deta
 assert.match(detailClient, /if \(!response\.ok\) throw new Error\(`Court detail failed: \$\{response\.status\}`\)[\s\S]*const data = await response\.json\(\)/, 'court detail must reject non-success responses before parsing');
 assert.match(detailClient, /id="court-detail-retry"[\s\S]*addEventListener\('click', load\)/, 'court detail failures must offer an in-place retry');
 assert.match(detailClient, /loading\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*loading\.setAttribute\('aria-busy', 'false'\)/, 'court detail must expose its loading state');
+assert.match(detailClient, /judge_list_scope === 'fiscal_year'/, 'court detail must distinguish fiscal-year judge rows from all-time profiles');
+assert.match(detailClient, /FY \$\{fiscalYear\} 法官[\s\S]*法院法官档案（全数据范围）[\s\S]*当前列表不限定 FY \$\{fiscalYear\}/, 'court detail must clearly separate fiscal-year counts from all-time profile rows');
 const courtDetailPage = readFileSync('immigration-judge-approval-rate/court-detail.html', 'utf8');
 assert.match(courtDetailPage, /id="loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court detail loading and failure updates must be announced');
-assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=4/, 'court detail must load the retry assets and expose its context targets');
+assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=5/, 'court detail must load the scope-aware client and expose its context targets');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 
 // Court profile recovery is part of the state-to-court drill-down contract.

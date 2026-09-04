@@ -5,6 +5,8 @@ let searchController = null;
 let searchSequence = 0;
 const initialResultNote = $('#result-note').textContent;
 const initialResults = $('#results').innerHTML;
+const freshnessElement = $('#data-freshness');
+const initialFreshnessText = freshnessElement?.textContent || '';
 
 function revealSearchResults() {
   const status = $('#result-note');
@@ -36,17 +38,26 @@ function resetSearch({ historyMode = 'none' } = {}) {
 }
 
 async function loadStats() {
+  freshnessElement?.setAttribute('aria-busy', 'true');
+  if (freshnessElement) freshnessElement.textContent = initialFreshnessText;
   try {
     const [statsResponse, freshnessResponse] = await Promise.all([fetch('/.netlify/functions/immigration-judges?mode=stats'), fetch('/.netlify/functions/immigration-judges?mode=freshness')]);
+    if (!statsResponse.ok || !freshnessResponse.ok) throw new Error(`Judge stats failed: ${statsResponse.status}/${freshnessResponse.status}`);
     const stats = await statsResponse.json();
     const freshness = await freshnessResponse.json();
     $('#stat-courts').textContent = fmt(stats.courts);
     $('#stat-judges').textContent = fmt(stats.judges);
     $('#stat-decisions').textContent = fmt(stats.decisions);
-    const element = $('#data-freshness');
     const latest = freshness.latest_import;
-    if (element) element.textContent = latest ? `最近数据导入：${latest.source_name || '可验证来源'} · ${String(latest.source_date || latest.completed_at || '').slice(0, 10)} · ${fmt(latest.accepted_rows)} 条记录` : '数据库框架已上线，等待首批通过校验的真实法官裁决数据';
-  } catch {}
+    if (freshnessElement) freshnessElement.textContent = latest ? `最近数据导入：${latest.source_name || '可验证来源'} · ${String(latest.source_date || latest.completed_at || '').slice(0, 10)} · ${fmt(latest.accepted_rows)} 条记录` : '数据库框架已上线，等待首批通过校验的真实法官裁决数据';
+  } catch {
+    if (freshnessElement) {
+      freshnessElement.innerHTML = '<span>数据库接口暂时无法读取</span> · <button class="freshness-retry" type="button">重新尝试</button>';
+      freshnessElement.querySelector('.freshness-retry').addEventListener('click', loadStats);
+    }
+  } finally {
+    freshnessElement?.setAttribute('aria-busy', 'false');
+  }
 }
 
 async function search(query, { historyMode = 'push', reveal = true } = {}) {

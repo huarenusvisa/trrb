@@ -70,9 +70,9 @@ export default function ProfileScreen() {
   useFocusEffect(useCallback(() => { if (session) void loadProfile(session); }, [loadProfile, session]));
 
   const signOut = async () => {
-    const finish = async () => { const { error } = await supabase.auth.signOut(); if (error) Alert.alert(t('profile.signOutFailed'), error.message); };
-    try { await disableCurrentDevicePushToken(); await finish(); }
-    catch { Alert.alert(t('profile.pushDisableFailed'), t('profile.pushDisableFailedMeta'), [{ text: t('profile.cancel'), style: 'cancel' }, { text: t('profile.signOutAnyway'), style: 'destructive', onPress: () => void finish() }]); }
+    const finishSignOut = async () => { const { error } = await supabase.auth.signOut(); if (error) Alert.alert(t('profile.signOutFailed'), error.message); };
+    try { await disableCurrentDevicePushToken(); await finishSignOut(); }
+    catch { Alert.alert(t('profile.pushDisableFailed'), t('profile.pushDisableFailedMeta'), [{ text: t('profile.cancel'), style: 'cancel' }, { text: t('profile.signOutAnyway'), style: 'destructive', onPress: () => void finishSignOut() }]); }
   };
 
   const updateFontScale = async (scale: ReadingPreferences['fontScale']) => {

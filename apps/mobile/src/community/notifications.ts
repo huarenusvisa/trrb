@@ -1,6 +1,6 @@
 import { supabase } from '../auth/supabase';
 
-export type NotificationType = 'comment_reply' | 'comment_like' | 'follow' | 'system';
+export type NotificationType = 'comment_reply' | 'comment_like' | 'follow' | 'follow_request' | 'follow_accept' | 'message_request' | 'message' | 'system';
 
 export type UserNotification = {
   id: string;
@@ -54,6 +54,8 @@ export async function unreadNotificationCount() {
 }
 
 export function notificationTarget(item: UserNotification) {
+  if (item.type === 'message' || item.type === 'message_request') return '/messages';
+  if (item.type === 'follow_request') return '/follow-requests';
   if (item.article_id) return `/article/${encodeURIComponent(item.article_id)}`;
   if (item.actor_user_id) return `/user/${encodeURIComponent(item.actor_user_id)}`;
   return null;
@@ -64,6 +66,10 @@ export function notificationLabel(type: NotificationType) {
     case 'comment_reply': return '有人回复了你';
     case 'comment_like': return '有人赞了你的评论';
     case 'follow': return '你有新的关注者';
+    case 'follow_request': return '你有新的关注申请';
+    case 'follow_accept': return '你的关注申请已通过';
+    case 'message_request': return '你收到一条聊天申请';
+    case 'message': return '你收到一条新私信';
     default: return '系统通知';
   }
 }

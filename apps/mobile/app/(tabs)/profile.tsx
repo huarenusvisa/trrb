@@ -1,11 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import type { Session } from '@supabase/supabase-js';
 import { isAuthConfigured, supabase } from '../../src/auth/supabase';
 import { fetchArticle } from '../../src/api/trrb';
 import { accountLabel } from '../../src/auth/unified-account';
 import { unreadNotificationCount } from '../../src/community/notifications';
+import { getFollowCounts, listFollowRequests } from '../../src/community/follows';
+import { ProfileHero } from '../../src/components/ProfileHero';
+import { ProfilePostList } from '../../src/components/ProfilePostList';
+import { deleteProfilePost, listProfilePosts } from '../../src/social/posts';
+import { unreadDirectMessageCount } from '../../src/social/messages';
+import { loadSocialProfile } from '../../src/social/profiles';
+import type { ProfilePost, SocialProfile } from '../../src/social/types';
 import { syncFavoritesWithCloud, syncHistoryWithCloud } from '../../src/storage/library';
 import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '../../src/storage/reading-preferences';
 import { disableCurrentDevicePushToken } from '../../src/push/registration';
@@ -13,114 +20,112 @@ import { useI18n } from '../../src/i18n/I18nProvider';
 import { languageName, MessageKey } from '../../src/i18n/i18n-core';
 
 const FONT_OPTIONS: { label: MessageKey; scale: ReadingPreferences['fontScale'] }[] = [
-  { label: 'profile.fontSmall', scale: 0.9 },
-  { label: 'profile.fontStandard', scale: 1 },
-  { label: 'profile.fontLarge', scale: 1.15 },
-  { label: 'profile.fontExtraLarge', scale: 1.3 },
+  { label: 'profile.fontSmall', scale: 0.9 }, { label: 'profile.fontStandard', scale: 1 },
+  { label: 'profile.fontLarge', scale: 1.15 }, { label: 'profile.fontExtraLarge', scale: 1.3 },
 ];
 
 export default function ProfileScreen() {
   const { locale, t } = useI18n();
   const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<SocialProfile | null>(null);
+  const [posts, setPosts] = useState<ProfilePost[]>([]);
+  const [counts, setCounts] = useState({ followers: 0, following: 0 });
   const [unread, setUnread] = useState(0);
+  const [directUnread, setDirectUnread] = useState(0);
+  const [followRequests, setFollowRequests] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [fontScale, setFontScale] = useState<ReadingPreferences['fontScale']>(1);
+
+  const loadProfile = useCallback(async (activeSession: Session | null = session) => {
+    const userId = activeSession?.user.id;
+    if (!userId) { setProfile(null); setPosts([]); return; }
+    try {
+      const [nextProfile, nextPosts, nextCounts, nextUnread, nextDirect, requests] = await Promise.all([
+        loadSocialProfile(userId), listProfilePosts(userId), getFollowCounts(userId),
+        unreadNotificationCount().catch(() => 0), unreadDirectMessageCount().catch(() => 0), listFollowRequests().catch(() => []),
+      ]);
+      setProfile(nextProfile); setPosts(nextPosts); setCounts(nextCounts); setUnread(nextUnread); setDirectUnread(nextDirect); setFollowRequests(requests.length);
+    } catch (error) { Alert.alert('个人主页加载失败', error instanceof Error ? error.message : '请稍后重试。'); }
+  }, [session]);
 
   useEffect(() => {
     void getReadingPreferences().then((prefs) => setFontScale(prefs.fontScale));
     let mounted = true;
     let syncedUserId: string | null = null;
-    const syncLibrary = (nextSession: Session | null) => {
-      const userId = nextSession?.user.id || null;
-      if (!userId || syncedUserId === userId) return;
-      syncedUserId = userId;
-      void Promise.all([syncFavoritesWithCloud(fetchArticle), syncHistoryWithCloud(fetchArticle)]).catch(() => {
-        // Keep local data and allow each library screen to retry when connectivity returns.
-        syncedUserId = null;
-      });
-    };
-    supabase.auth.getSession().then(async ({ data }) => {
-      if (mounted) {
-        setSession(data.session);
-        setLoading(false);
-        syncLibrary(data.session);
-        if (data.session) setUnread(await unreadNotificationCount().catch(() => 0));
+    const acceptSession = async (next: Session | null) => {
+      if (!mounted) return;
+      setSession(next); setLoading(false);
+      const userId = next?.user.id || null;
+      if (userId && syncedUserId !== userId) {
+        syncedUserId = userId;
+        void Promise.all([syncFavoritesWithCloud(fetchArticle), syncHistoryWithCloud(fetchArticle)]).catch(() => { syncedUserId = null; });
       }
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
-      setSession(nextSession);
-      setLoading(false);
-      syncLibrary(nextSession);
-      setUnread(nextSession ? await unreadNotificationCount().catch(() => 0) : 0);
-    });
-    return () => {
-      mounted = false;
-      listener.subscription.unsubscribe();
+      await loadProfile(next);
     };
+    supabase.auth.getSession().then(({ data }) => void acceptSession(data.session));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => { setTimeout(() => void acceptSession(next), 0); });
+    return () => { mounted = false; listener.subscription.unsubscribe(); };
   }, []);
 
+  useFocusEffect(useCallback(() => { if (session) void loadProfile(session); }, [loadProfile, session]));
+
   const signOut = async () => {
-    const finishSignOut = async () => {
-      const { error } = await supabase.auth.signOut();
-      if (error) Alert.alert(t('profile.signOutFailed'), error.message);
-    };
-    try {
-      await disableCurrentDevicePushToken();
-      await finishSignOut();
-    } catch {
-      Alert.alert(t('profile.pushDisableFailed'), t('profile.pushDisableFailedMeta'), [
-        { text: t('profile.cancel'), style: 'cancel' },
-        { text: t('profile.signOutAnyway'), style: 'destructive', onPress: () => void finishSignOut() }
-      ]);
-    }
+    const finishSignOut = async () => { const { error } = await supabase.auth.signOut(); if (error) Alert.alert(t('profile.signOutFailed'), error.message); };
+    try { await disableCurrentDevicePushToken(); await finishSignOut(); }
+    catch { Alert.alert(t('profile.pushDisableFailed'), t('profile.pushDisableFailedMeta'), [{ text: t('profile.cancel'), style: 'cancel' }, { text: t('profile.signOutAnyway'), style: 'destructive', onPress: () => void finishSignOut() }]); }
   };
 
   const updateFontScale = async (scale: ReadingPreferences['fontScale']) => {
-    try {
-      await setReadingFontScale(scale);
-      setFontScale(scale);
-    } catch (error) {
-      Alert.alert('字号保存失败', error instanceof Error ? error.message : '请稍后重试。');
-    }
+    try { await setReadingFontScale(scale); setFontScale(scale); }
+    catch (error) { Alert.alert('字号保存失败', error instanceof Error ? error.message : '请稍后重试。'); }
   };
 
-  return (
-    <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
-      <Text style={styles.h1}>{t('profile.heading')}</Text>
-      {loading ? <ActivityIndicator style={styles.loader} /> : session ? <>
-        <Text testID="account-status" style={styles.sub}>{t('profile.loggedIn', { account: accountLabel(session.user) })}</Text>
-        <Pressable testID="open-community" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>{t('profile.community')}</Text><Text style={styles.meta}>{t('profile.communityMemberMeta')}</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/notifications')}><Text style={styles.title}>{t('profile.notifications')}{unread ? t('profile.unread', { count: unread }) : ''}</Text><Text style={styles.meta}>{t('profile.notificationsMeta')}</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/my-comments')}><Text style={styles.title}>{t('profile.comments')}</Text><Text style={styles.meta}>{t('profile.commentsMeta')}</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>{t('profile.favorites')}</Text><Text style={styles.meta}>{t('profile.favoritesMeta')}</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>{t('profile.history')}</Text><Text style={styles.meta}>{t('profile.historyMeta')}</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/profile-settings')}><Text style={styles.title}>{t('profile.accountSettings')}</Text><Text style={styles.meta}>{t('profile.accountSettingsMeta')}</Text></Pressable>
-        <Pressable testID="profile-sign-out" style={styles.signOut} onPress={signOut}><Text style={styles.signOutText}>{t('profile.signOut')}</Text></Pressable>
-      </> : <>
-        <Text style={styles.sub}>{t('profile.guest')}</Text>
-        {!isAuthConfigured ? <Text style={styles.warning}>{t('profile.authWarning')}</Text> : null}
-        <Pressable testID="profile-login" style={styles.login} onPress={()=>router.push('/auth')}><Text style={styles.loginText}>{t('profile.login')}</Text></Pressable>
-        <Pressable testID="open-community-guest" style={styles.item} onPress={()=>router.push('/community')}><Text style={styles.title}>{t('profile.community')}</Text><Text style={styles.meta}>{t('profile.communityGuestMeta')}</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/favorites')}><Text style={styles.title}>{t('profile.localFavorites')}</Text><Text style={styles.meta}>{t('profile.localFavoritesMeta')}</Text></Pressable>
-        <Pressable style={styles.item} onPress={()=>router.push('/history')}><Text style={styles.title}>{t('profile.localHistory')}</Text><Text style={styles.meta}>{t('profile.localHistoryMeta')}</Text></Pressable>
-      </>}
-      <Pressable testID="open-language-settings" style={styles.item} onPress={() => router.push('/language-settings')}><Text style={styles.title}>{t('profile.language')}</Text><Text style={styles.meta}>{t('profile.languageMeta', { language: languageName(locale) })}</Text></Pressable>
-      <View style={styles.item}>
-        <Text style={styles.title}>{t('profile.fontSize')}</Text>
-        <Text style={styles.meta}>{t('profile.fontSizeMeta')}</Text>
-        <View style={styles.fontRow}>
-          {FONT_OPTIONS.map((option) => (
-            <Pressable key={option.scale} testID={`font-scale-${option.scale}`} accessibilityRole="button" accessibilityState={{ selected: fontScale === option.scale }} onPress={() => void updateFontScale(option.scale)} style={[styles.fontOption, fontScale === option.scale && styles.fontOptionActive]}>
-              <Text style={[styles.fontOptionText, fontScale === option.scale && styles.fontOptionTextActive]}>{t(option.label)}</Text>
-            </Pressable>
-          ))}
-        </View>
-        <Text testID="font-scale-preview" style={[styles.fontPreview, { fontSize: 17 * fontScale, lineHeight: 26 * fontScale }]}>{t('profile.fontPreview')}</Text>
+  const removePost = async (post: ProfilePost) => {
+    try { await deleteProfilePost(post); setPosts((rows) => rows.filter((row) => row.id !== post.id)); }
+    catch (error) { Alert.alert('删除失败', error instanceof Error ? error.message : '请稍后重试。'); }
+  };
+
+  return <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
+    {loading ? <ActivityIndicator style={styles.loader} color="#c8211e" /> : session && profile ? <>
+      <ProfileHero profile={profile} followers={counts.followers} following={counts.following} own onEdit={() => router.push('/profile-settings')} onFollowers={() => router.push({ pathname: '/connections/followers', params: { userId: profile.id } })} onFollowing={() => router.push({ pathname: '/connections/following', params: { userId: profile.id } })} />
+      <Text style={styles.account}>{accountLabel(session.user)}</Text>
+      <View style={styles.primaryActions}>
+        <Pressable style={styles.publish} onPress={() => router.push('/profile-compose')}><Text style={styles.publishIcon}>＋</Text><Text style={styles.publishText}>发主页动态</Text></Pressable>
+        <Pressable style={styles.action} onPress={() => router.push('/messages')}><Text style={styles.actionTitle}>私信{directUnread ? ` · ${directUnread}` : ''}</Text><Text style={styles.actionMeta}>聊天与申请</Text></Pressable>
+        <Pressable style={styles.action} onPress={() => router.push('/follow-requests')}><Text style={styles.actionTitle}>关注申请{followRequests ? ` · ${followRequests}` : ''}</Text><Text style={styles.actionMeta}>确认新粉丝</Text></Pressable>
       </View>
-      <Pressable testID="open-push-settings" style={styles.item} onPress={() => session ? router.push('/push-settings') : router.push('/auth')}><Text style={styles.title}>{t('profile.pushSettings')}</Text><Text style={styles.meta}>{session ? t('profile.pushSettingsMeta') : t('profile.pushSettingsGuestMeta')}</Text></Pressable>
-      <Pressable style={styles.item} onPress={() => Linking.openURL('https://trrb.net')}><Text style={styles.title}>{t('profile.openWebsite')}</Text><Text style={styles.meta}>{t('profile.openWebsiteMeta')}</Text></Pressable>
-    </ScrollView>
-  );
+      <View style={styles.sectionHead}><Text style={styles.sectionTitle}>我的主页动态</Text><Text style={styles.sectionMeta}>{posts.length} 条</Text></View>
+      <ProfilePostList posts={posts} own onDelete={removePost} />
+      <Text style={styles.groupTitle}>内容与互动</Text>
+      <View style={styles.menuGroup}>
+        <Menu title="移民社区" meta="浏览帖子、分享经历和发布问题" onPress={() => router.push('/community')} />
+        <Menu title={`消息中心${unread ? ` · ${unread}` : ''}`} meta="回复、点赞、关注与系统通知" onPress={() => router.push('/notifications')} />
+        <Menu title="我的评论" meta="查看评论状态并返回对应新闻" onPress={() => router.push('/my-comments')} />
+        <Menu title="收藏" meta="本机与账号云端收藏自动安全合并" onPress={() => router.push('/favorites')} />
+        <Menu title="阅读历史" meta="本机与账号云端历史自动合并，最多100条" onPress={() => router.push('/history')} last />
+      </View>
+      <Text style={styles.groupTitle}>设置</Text>
+      <View style={styles.menuGroup}>
+        <Menu title="账号与隐私" meta="头像、背景、昵称、隐私账号和私信权限" onPress={() => router.push('/profile-settings')} />
+        <Menu testID="open-language-settings" title={t('profile.language')} meta={t('profile.languageMeta', { language: languageName(locale) })} onPress={() => router.push('/language-settings')} />
+        <Menu title={t('profile.pushSettings')} meta={t('profile.pushSettingsMeta')} onPress={() => router.push('/push-settings')} last />
+      </View>
+      <View style={styles.fontCard}><Text style={styles.cardTitle}>{t('profile.fontSize')}</Text><Text style={styles.cardMeta}>{t('profile.fontSizeMeta')}</Text><View style={styles.fontRow}>{FONT_OPTIONS.map((option) => <Pressable key={option.scale} testID={`font-scale-${option.scale}`} onPress={() => void updateFontScale(option.scale)} style={[styles.fontOption, fontScale === option.scale && styles.fontOptionActive]}><Text style={[styles.fontOptionText, fontScale === option.scale && styles.fontOptionTextActive]}>{t(option.label)}</Text></Pressable>)}</View><Text testID="font-scale-preview" style={[styles.fontPreview, { fontSize: 17 * fontScale, lineHeight: 26 * fontScale }]}>{t('profile.fontPreview')}</Text></View>
+      <Pressable testID="profile-sign-out" style={styles.signOut} onPress={() => void signOut()}><Text style={styles.signOutText}>{t('profile.signOut')}</Text></Pressable>
+    </> : <>
+      <Text style={styles.h1}>{t('profile.heading')}</Text><Text style={styles.sub}>{t('profile.guest')}</Text>
+      {!isAuthConfigured ? <Text style={styles.warning}>{t('profile.authWarning')}</Text> : null}
+      <Pressable testID="profile-login" style={styles.login} onPress={() => router.push('/auth')}><Text style={styles.loginText}>{t('profile.login')}</Text></Pressable>
+      <View style={styles.menuGroup}><Menu title={t('profile.community')} meta={t('profile.communityGuestMeta')} onPress={() => router.push('/community')} /><Menu title={t('profile.localFavorites')} meta={t('profile.localFavoritesMeta')} onPress={() => router.push('/favorites')} /><Menu title={t('profile.localHistory')} meta={t('profile.localHistoryMeta')} onPress={() => router.push('/history')} last /></View>
+    </>}
+    <Pressable style={styles.website} onPress={() => Linking.openURL('https://trrb.net')}><Text style={styles.websiteText}>{t('profile.openWebsite')}</Text></Pressable>
+  </ScrollView>;
 }
 
-const styles = StyleSheet.create({page:{flex:1,backgroundColor:'#f5f6f8'},pageContent:{padding:16,paddingTop:58,paddingBottom:40},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},loader:{marginVertical:20},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},item:{backgroundColor:'#fff',padding:18,borderRadius:14,marginBottom:12},title:{fontSize:18,fontWeight:'800',color:'#101828'},meta:{color:'#98a2b3',marginTop:6},fontRow:{flexDirection:'row',gap:8,marginTop:14},fontOption:{flex:1,borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:10,alignItems:'center',backgroundColor:'#fff'},fontOptionActive:{backgroundColor:'#c8211e',borderColor:'#c8211e'},fontOptionText:{fontWeight:'800',color:'#475467'},fontOptionTextActive:{color:'#fff'},fontPreview:{color:'#344054',marginTop:14},login:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',marginBottom:12},signOutText:{color:'#475467',fontWeight:'800'}});
+function Menu({ title, meta, onPress, last, testID }: { title: string; meta: string; onPress: () => void; last?: boolean; testID?: string }) {
+  return <Pressable testID={testID} onPress={onPress} style={[styles.menu, last && styles.menuLast]}><View style={styles.menuCopy}><Text style={styles.menuTitle}>{title}</Text><Text style={styles.menuMeta}>{meta}</Text></View><Text style={styles.chevron}>›</Text></Pressable>;
+}
+
+const styles = StyleSheet.create({
+  page:{flex:1,backgroundColor:'#f5f6f8'},pageContent:{padding:14,paddingTop:54,paddingBottom:42},loader:{marginVertical:40},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},account:{color:'#667085',fontSize:12,marginTop:8,marginLeft:4},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},primaryActions:{flexDirection:'row',gap:8,marginTop:14},publish:{flex:1.08,backgroundColor:'#c8211e',borderRadius:14,padding:13,alignItems:'center',justifyContent:'center'},publishIcon:{color:'#fff',fontSize:22,fontWeight:'500',lineHeight:22},publishText:{color:'#fff',fontWeight:'900',marginTop:3},action:{flex:1,backgroundColor:'#fff',borderRadius:14,padding:13,borderWidth:1,borderColor:'#eaecf0',justifyContent:'center'},actionTitle:{fontWeight:'900',color:'#101828'},actionMeta:{fontSize:12,color:'#98a2b3',marginTop:4},sectionHead:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:24,marginBottom:10,paddingHorizontal:3},sectionTitle:{fontSize:20,fontWeight:'900',color:'#101828'},sectionMeta:{color:'#98a2b3'},groupTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginTop:26,marginBottom:10,paddingHorizontal:3},menuGroup:{backgroundColor:'#fff',borderRadius:16,borderWidth:1,borderColor:'#eaecf0',overflow:'hidden'},menu:{padding:16,flexDirection:'row',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#f2f4f7'},menuLast:{borderBottomWidth:0},menuCopy:{flex:1},menuTitle:{fontSize:17,fontWeight:'900',color:'#101828'},menuMeta:{color:'#98a2b3',fontSize:13,marginTop:5},chevron:{fontSize:28,color:'#98a2b3'},fontCard:{backgroundColor:'#fff',borderRadius:16,padding:16,marginTop:12,borderWidth:1,borderColor:'#eaecf0'},cardTitle:{fontSize:17,fontWeight:'900',color:'#101828'},cardMeta:{color:'#98a2b3',fontSize:13,marginTop:5},fontRow:{flexDirection:'row',gap:6,marginTop:14},fontOption:{flex:1,borderWidth:1,borderColor:'#d0d5dd',borderRadius:9,paddingVertical:9,alignItems:'center'},fontOptionActive:{backgroundColor:'#c8211e',borderColor:'#c8211e'},fontOptionText:{fontWeight:'800',fontSize:12,color:'#475467'},fontOptionTextActive:{color:'#fff'},fontPreview:{color:'#344054',marginTop:14},login:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',marginTop:18},signOutText:{color:'#475467',fontWeight:'800'},website:{alignItems:'center',padding:16,marginTop:6},websiteText:{color:'#667085',fontWeight:'800'}
+});

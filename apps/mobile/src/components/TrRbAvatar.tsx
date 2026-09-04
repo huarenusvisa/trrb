@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { publicProfileMediaUrl } from '../social/media';
 
-type Props = { avatarKey?: string | null; size?: number; label?: string };
+type Props = { avatarKey?: string | null; avatarPath?: string | null; size?: number; label?: string };
 
 const BACKGROUNDS = ['#7F1D1D','#9A3412','#854D0E','#3F6212','#166534','#115E59','#155E75','#1E40AF','#3730A3','#5B21B6','#86198F','#9D174D'];
 const SYMBOLS = ['山','海','云','星','月','风','松','竹','舟','鹿'];
@@ -22,7 +24,17 @@ function colorForInitial(initial: string) {
   return BACKGROUNDS[code % BACKGROUNDS.length];
 }
 
-export function TrRbAvatar({ avatarKey, size = 44, label }: Props) {
+export function TrRbAvatar({ avatarKey, avatarPath, size = 44, label }: Props) {
+  const uploaded = publicProfileMediaUrl(avatarPath);
+  if (uploaded) return (
+    <Image
+      accessibilityLabel={label || '用户头像'}
+      source={{ uri: uploaded }}
+      contentFit="cover"
+      transition={150}
+      style={{ width: size, height: size, borderRadius: size / 2, backgroundColor: '#eaecf0' }}
+    />
+  );
   const initial = initialFromKey(avatarKey);
   if (initial) return (
     <View accessibilityLabel={label || `字母头像${initial}`} style={[styles.avatar, { width: size, height: size, borderRadius: size / 2, backgroundColor: colorForInitial(initial) }]}>

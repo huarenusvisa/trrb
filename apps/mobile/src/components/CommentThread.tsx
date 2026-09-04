@@ -131,7 +131,7 @@ export function CommentThread({ articleId }: { articleId: string }) {
     </View> : null}
 
     {loading ? <ActivityIndicator style={{ marginTop: 24 }} /> : items.length === 0 ? <Text style={styles.empty}>暂时还没有评论。</Text> : items.map((item, index) => <View key={item.id} testID={`news-comment-${index}`} style={styles.comment}>
-      <View style={styles.commentHead}><Text style={styles.name}>{item.profiles?.display_name || '唐人读者'}</Text><Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
+      <View style={styles.commentHead}><Pressable onPress={() => router.push(`/user/${item.user_id}`)}><Text style={styles.name}>{item.profiles?.display_name || '唐人读者'}</Text></Pressable><Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
       {item.parent_id ? <Text style={styles.parentTag}>回复</Text> : null}
       <Text style={styles.body}>{item.content}</Text>
       <View style={styles.actions}>

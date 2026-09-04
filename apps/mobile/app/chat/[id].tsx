@@ -1,0 +1,89 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Stack, useLocalSearchParams } from 'expo-router';
+import { TrRbAvatar } from '../../src/components/TrRbAvatar';
+import { answerMessageRequest, createMessageRequest, findConversationWith, getConversation, listMessages, markConversationRead, sendMessage, subscribeToConversation } from '../../src/social/messages';
+import { currentUserId, loadSocialProfile } from '../../src/social/profiles';
+import type { DirectConversation, DirectMessage, SocialProfile } from '../../src/social/types';
+
+export default function ChatScreen() {
+  const params = useLocalSearchParams<{ id: string; userId?: string }>();
+  const routeId = String(params.id || '');
+  const targetUserId = String(params.userId || '');
+  const [me, setMe] = useState('');
+  const [conversation, setConversation] = useState<DirectConversation | null>(null);
+  const [partner, setPartner] = useState<SocialProfile | null>(null);
+  const [messages, setMessages] = useState<DirectMessage[]>([]);
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const scroll = useRef<ScrollView>(null);
+
+  const load = useCallback(async () => {
+    try {
+      const userId = await currentUserId(); setMe(userId);
+      let convo: DirectConversation | null = null; let nextPartner: SocialProfile;
+      if (routeId === 'new') {
+        nextPartner = await loadSocialProfile(targetUserId);
+        convo = await findConversationWith(targetUserId);
+      } else {
+        const result = await getConversation(routeId); convo = result.conversation; nextPartner = result.partner;
+      }
+      setConversation(convo); setPartner(nextPartner);
+      if (convo) { setMessages(await listMessages(convo.id)); await markConversationRead(convo.id).catch(() => undefined); }
+      else setMessages([]);
+    } catch (error) { Alert.alert('聊天加载失败', error instanceof Error ? error.message : '请稍后重试'); }
+    finally { setLoading(false); }
+  }, [routeId, targetUserId]);
+
+  useEffect(() => { void load(); }, [load]);
+  useEffect(() => {
+    if (!conversation) return;
+    const channel = subscribeToConversation(conversation.id, () => void load());
+    return () => { void channel.unsubscribe(); };
+  }, [conversation?.id, load]);
+
+  const submit = async () => {
+    const body = text.trim(); if (!body) return;
+    setBusy(true);
+    try {
+      if (!conversation) {
+        const created = await createMessageRequest(targetUserId, body); setConversation(created);
+      } else await sendMessage(conversation.id, body);
+      setText(''); await load();
+      setTimeout(() => scroll.current?.scrollToEnd({ animated: true }), 80);
+    } catch (error) { Alert.alert('发送失败', error instanceof Error ? error.message : '请稍后重试'); }
+    finally { setBusy(false); }
+  };
+
+  const answer = async (accept: boolean) => {
+    if (!conversation) return;
+    setBusy(true);
+    try { await answerMessageRequest(conversation.id, accept); await load(); }
+    catch (error) { Alert.alert('操作失败', error instanceof Error ? error.message : '请稍后重试'); }
+    finally { setBusy(false); }
+  };
+
+  if (loading) return <View style={styles.center}><ActivityIndicator color="#c8211e" /></View>;
+  const incomingRequest = conversation?.status === 'pending' && conversation.recipient_user_id === me;
+  const outgoingWaiting = conversation?.status === 'pending' && conversation.requester_user_id === me && messages.length > 0;
+  const canCompose = !conversation || conversation.status === 'accepted' || (conversation.status === 'pending' && conversation.requester_user_id === me && messages.length === 0);
+
+  return <KeyboardAvoidingView style={styles.page} behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={90}>
+    <Stack.Screen options={{ headerShown: true, title: partner?.display_name || '私信', headerBackTitle: '返回' }} />
+    <View style={styles.partner}><TrRbAvatar avatarKey={partner?.avatar_key} avatarPath={partner?.avatar_path} size={40} /><View><Text style={styles.partnerName}>{partner?.display_name || '唐人读者'}</Text><Text style={styles.partnerState}>{conversation?.status === 'accepted' ? '已确认聊天' : '陌生人消息保护'}</Text></View></View>
+    {incomingRequest ? <View style={styles.request}><Text style={styles.requestTitle}>对方向你发来第一条消息</Text><Text style={styles.requestText}>不处理时，对方不能再发第二条。确认聊天以后，双方才能继续回复。</Text><View style={styles.requestActions}><Pressable disabled={busy} style={styles.accept} onPress={() => void answer(true)}><Text style={styles.acceptText}>确认聊天</Text></Pressable><Pressable disabled={busy} style={styles.decline} onPress={() => void answer(false)}><Text style={styles.declineText}>忽略</Text></Pressable></View></View> : null}
+    <ScrollView ref={scroll} style={styles.messages} contentContainerStyle={styles.messagesContent} onContentSizeChange={() => scroll.current?.scrollToEnd({ animated: false })}>
+      {!messages.length ? <View style={styles.safety}><Text style={styles.safetyTitle}>先打个招呼</Text><Text style={styles.safetyText}>你可以先发一条消息。对方确认前，不能继续发送第二条。</Text></View> : null}
+      {messages.map((message) => { const mine = message.sender_user_id === me; return <View key={message.id} style={[styles.bubbleWrap, mine ? styles.mineWrap : styles.theirWrap]}><View style={[styles.bubble, mine ? styles.mine : styles.their]}><Text style={mine ? styles.mineText : styles.theirText}>{message.body}</Text></View><Text style={styles.time}>{new Date(message.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}</Text></View>; })}
+    </ScrollView>
+    {outgoingWaiting ? <View style={styles.waiting}><Text style={styles.waitingText}>已发送第一条消息，等待对方确认聊天。确认前不能再发送。</Text></View> : null}
+    {conversation?.status === 'declined' ? <View style={styles.waiting}><Text style={styles.waitingText}>聊天申请未被接受，无法继续发送。</Text></View> : null}
+    {conversation?.status === 'blocked' ? <View style={styles.waiting}><Text style={styles.waitingText}>这段聊天已经结束。</Text></View> : null}
+    {canCompose ? <View style={styles.composer}><TextInput value={text} onChangeText={setText} maxLength={2000} multiline placeholder={conversation ? '输入消息' : '发送第一条聊天申请'} style={styles.input} /><Pressable disabled={busy || !text.trim()} style={[styles.send, (busy || !text.trim()) && styles.disabled]} onPress={() => void submit()}>{busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.sendText}>发送</Text>}</Pressable></View> : null}
+  </KeyboardAvoidingView>;
+}
+
+const styles = StyleSheet.create({
+  page:{flex:1,backgroundColor:'#f5f6f8'},center:{flex:1,alignItems:'center',justifyContent:'center'},partner:{backgroundColor:'#fff',paddingHorizontal:14,paddingVertical:10,flexDirection:'row',alignItems:'center',gap:10,borderBottomWidth:1,borderBottomColor:'#eaecf0'},partnerName:{fontWeight:'900',color:'#101828'},partnerState:{fontSize:11,color:'#98a2b3',marginTop:2},request:{backgroundColor:'#fffaeb',padding:14,borderBottomWidth:1,borderBottomColor:'#fedf89'},requestTitle:{fontWeight:'900',color:'#7a2e0e'},requestText:{color:'#93370d',fontSize:13,lineHeight:19,marginTop:4},requestActions:{flexDirection:'row',gap:9,marginTop:11},accept:{backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,borderRadius:9},acceptText:{color:'#fff',fontWeight:'900'},decline:{borderWidth:1,borderColor:'#d0d5dd',paddingHorizontal:16,paddingVertical:10,borderRadius:9,backgroundColor:'#fff'},declineText:{color:'#475467',fontWeight:'900'},messages:{flex:1},messagesContent:{padding:14,paddingBottom:24},safety:{backgroundColor:'#fff',borderRadius:14,padding:18,alignItems:'center',marginVertical:16},safetyTitle:{fontWeight:'900',color:'#344054'},safetyText:{color:'#98a2b3',fontSize:13,lineHeight:19,textAlign:'center',marginTop:5},bubbleWrap:{marginBottom:12,maxWidth:'82%'},mineWrap:{alignSelf:'flex-end',alignItems:'flex-end'},theirWrap:{alignSelf:'flex-start',alignItems:'flex-start'},bubble:{borderRadius:16,paddingHorizontal:14,paddingVertical:10},mine:{backgroundColor:'#c8211e',borderBottomRightRadius:4},their:{backgroundColor:'#fff',borderBottomLeftRadius:4,borderWidth:1,borderColor:'#eaecf0'},mineText:{color:'#fff',fontSize:16,lineHeight:22},theirText:{color:'#101828',fontSize:16,lineHeight:22},time:{fontSize:10,color:'#98a2b3',marginTop:3},waiting:{backgroundColor:'#f2f4f7',padding:11},waitingText:{color:'#667085',fontSize:12,textAlign:'center'},composer:{backgroundColor:'#fff',padding:10,flexDirection:'row',alignItems:'flex-end',gap:8,borderTopWidth:1,borderTopColor:'#eaecf0'},input:{flex:1,maxHeight:110,minHeight:42,borderWidth:1,borderColor:'#d0d5dd',borderRadius:14,paddingHorizontal:12,paddingVertical:10,fontSize:16},send:{height:42,minWidth:64,borderRadius:12,backgroundColor:'#c8211e',alignItems:'center',justifyContent:'center',paddingHorizontal:14},disabled:{opacity:.45},sendText:{color:'#fff',fontWeight:'900'}
+});

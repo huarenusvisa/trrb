@@ -53,7 +53,7 @@ export default function CommunityScreen() {
           <View style={styles.metaRow}><Text style={styles.category}>{categoryNames[post.category] || post.category}</Text><Text style={styles.time}>{new Date(post.created_at).toLocaleString('zh-CN')}</Text></View>
           <View style={styles.titleRow}><Text style={styles.postTitle}>{post.title}</Text>{post.status !== 'published' ? <Text style={styles.pending}>审核中</Text> : null}</View>
           <Text numberOfLines={5} style={styles.body}>{post.content}</Text>
-          <View style={styles.footer}><Text style={styles.author}>{post.profiles?.display_name || '唐人用户'}</Text><Text style={styles.counts}>赞 {post.like_count || 0} · 评论 {post.comment_count || 0}</Text></View>
+          <View style={styles.footer}><Pressable onPress={(event) => { event.stopPropagation(); router.push(`/user/${post.user_id}`); }}><Text style={styles.author}>{post.profiles?.display_name || '唐人用户'}</Text></Pressable><Text style={styles.counts}>赞 {post.like_count || 0} · 评论 {post.comment_count || 0}</Text></View>
         </Pressable>)}
       </ScrollView>}
   </View>;

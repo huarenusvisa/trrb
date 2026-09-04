@@ -113,3 +113,21 @@ test('user profiles and community post actions expose timeout recovery', () => {
   assert.match(communityPost, /评论提交超时/);
   assert.match(communityPost, /帖子下架失败/);
 });
+
+test('profile post composer restores text drafts and keeps failed uploads retryable', () => {
+  const compose = read('app/profile-compose.tsx');
+  const drafts = read('src/storage/profilePostDraft.ts');
+  const posts = read('src/social/posts.ts');
+
+  assert.match(compose, /loadProfilePostDraft/);
+  assert.match(compose, /saveProfilePostDraft/);
+  assert.match(compose, /profile-compose-draft-restored/);
+  assert.match(compose, /profile-compose-error/);
+  assert.match(compose, /重试发布/);
+  assert.match(compose, /已选媒体和文字仍保留在本页/);
+  assert.match(compose, /accessibilityLiveRegion="polite"/);
+  assert.match(drafts, /AsyncStorage\.setItem/);
+  assert.match(drafts, /AsyncStorage\.removeItem/);
+  assert.match(posts, /onProgress\?/);
+  assert.match(posts, /completed: index \+ 1/);
+});

@@ -4,6 +4,11 @@ import { currentUserId } from './profiles';
 import { mediaStoragePath, mimeFor, PROFILE_POST_MEDIA_BUCKET, signedPostMediaUrl, uploadPickedAsset } from './media';
 import type { ProfilePost, ProfilePostMedia } from './types';
 
+export type ProfilePostUploadProgress = {
+  completed: number;
+  total: number;
+};
+
 const POST_SELECT = 'id,user_id,caption,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)';
 
 async function withSignedUrls(rows: unknown[]) {
@@ -19,7 +24,7 @@ export async function listProfilePosts(userId: string) {
   return withSignedUrls(data || []);
 }
 
-export async function createProfilePost(caption: string, assets: ImagePickerAsset[]) {
+export async function createProfilePost(caption: string, assets: ImagePickerAsset[], onProgress?: (progress: ProfilePostUploadProgress) => void) {
   const userId = await currentUserId();
   if (!assets.length) throw new Error('请至少选择一张图片或一个视频。');
   if (assets.length > 4) throw new Error('每条动态最多选择 4 张图片。');
@@ -33,6 +38,7 @@ export async function createProfilePost(caption: string, assets: ImagePickerAsse
   if (postError) throw postError;
   const uploaded: string[] = [];
   try {
+    onProgress?.({ completed: 0, total: assets.length });
     for (let index = 0; index < assets.length; index += 1) {
       const asset = assets[index];
       const path = mediaStoragePath(userId, post.id, asset, index);
@@ -44,6 +50,7 @@ export async function createProfilePost(caption: string, assets: ImagePickerAsse
       };
       const { error } = await supabase.from('profile_post_media').insert(row);
       if (error) throw error;
+      onProgress?.({ completed: index + 1, total: assets.length });
     }
   } catch (error) {
     if (uploaded.length) await supabase.storage.from(PROFILE_POST_MEDIA_BUCKET).remove(uploaded).catch(() => undefined);

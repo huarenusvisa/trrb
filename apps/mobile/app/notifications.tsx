@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, Stack } from 'expo-router';
+import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationLabel, notificationTarget, UserNotification } from '../src/community/notifications';
+import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
+import { withUiTimeout } from '../src/utils/async-state-core';
 
 export default function NotificationsScreen() {
   const [items, setItems] = useState<UserNotification[]>([]);
@@ -11,13 +14,16 @@ export default function NotificationsScreen() {
 
   const load = useCallback(async (refresh = false) => {
     refresh ? setRefreshing(true) : setLoading(true);
-    setError('');
-    try { setItems(await listNotifications()); }
+    try {
+      setItems(await withUiTimeout(listNotifications(), '消息读取超时，请检查网络后重试。'));
+      setError('');
+    }
     catch (e) { setError(e instanceof Error ? e.message : '消息加载失败'); }
     finally { refresh ? setRefreshing(false) : setLoading(false); }
   }, []);
 
   useEffect(() => { void load(false); }, [load]);
+  useForegroundRetry(Boolean(error), () => void load(true));
 
   const openItem = async (item: UserNotification) => {
     try {
@@ -43,8 +49,8 @@ export default function NotificationsScreen() {
 
   return <><Stack.Screen options={{ title: '消息中心', headerBackTitle: '返回' }} />
     <ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true)} />}>
-      <View style={styles.header}><Text style={styles.h1}>消息中心</Text><Pressable onPress={() => void markAll()}><Text style={styles.markAll}>全部已读</Text></Pressable></View>
-      {loading ? <ActivityIndicator style={styles.loader} /> : error ? <Text style={styles.error}>{error}</Text> : items.length === 0 ? <Text style={styles.empty}>暂时没有新消息。</Text> : items.map(item => <Pressable key={item.id} style={[styles.card, !item.is_read && styles.unread]} onPress={() => void openItem(item)}>
+      <View style={styles.header}><Text style={styles.h1}>消息中心</Text>{items.some(item => !item.is_read) ? <Pressable accessibilityRole="button" accessibilityLabel="将全部消息标为已读" onPress={() => void markAll()}><Text style={styles.markAll}>全部已读</Text></Pressable> : null}</View>
+      {loading ? <AsyncStatePanel testID="notifications-loading" title="正在读取消息" message="正在同步回复、关注和系统通知。" busy /> : error ? <AsyncStatePanel testID="notifications-error" tone="error" title="消息暂时无法读取" message={error} actionLabel="重新读取" onAction={() => void load(true)} busy={refreshing} /> : items.length === 0 ? <AsyncStatePanel testID="notifications-empty" title="暂时没有新消息" message="收到回复、关注、聊天申请或系统通知后，会显示在这里。" /> : items.map(item => <Pressable accessibilityRole="button" accessibilityLabel={`打开消息：${item.title || notificationLabel(item.type)}`} key={item.id} style={[styles.card, !item.is_read && styles.unread]} onPress={() => void openItem(item)}>
         <View style={styles.row}><Text style={styles.title}>{item.title || notificationLabel(item.type)}</Text>{!item.is_read ? <View style={styles.dot} /> : null}</View>
         {item.body ? <Text style={styles.body}>{item.body}</Text> : null}
         <Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text>
@@ -52,4 +58,4 @@ export default function NotificationsScreen() {
     </ScrollView></>;
 }
 
-const styles = StyleSheet.create({page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingBottom:48},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:8,marginBottom:14},h1:{fontSize:28,fontWeight:'900',color:'#101828'},markAll:{color:'#c8211e',fontWeight:'800'},loader:{marginTop:36},error:{color:'#b42318',padding:18,textAlign:'center'},empty:{color:'#667085',padding:28,textAlign:'center'},card:{backgroundColor:'#fff',borderRadius:14,padding:16,marginBottom:10,borderWidth:1,borderColor:'#eaecf0'},unread:{borderColor:'#f04438',backgroundColor:'#fff8f7'},row:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:10},title:{fontSize:17,fontWeight:'800',color:'#101828',flex:1},dot:{width:9,height:9,borderRadius:9,backgroundColor:'#c8211e'},body:{color:'#475467',marginTop:6,lineHeight:21},time:{color:'#98a2b3',fontSize:12,marginTop:10}});
+const styles = StyleSheet.create({page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingBottom:48},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:8,marginBottom:14},h1:{fontSize:28,fontWeight:'900',color:'#101828'},markAll:{color:'#c8211e',fontWeight:'800'},card:{backgroundColor:'#fff',borderRadius:14,padding:16,marginBottom:10,borderWidth:1,borderColor:'#eaecf0'},unread:{borderColor:'#f04438',backgroundColor:'#fff8f7'},row:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:10},title:{fontSize:17,fontWeight:'800',color:'#101828',flex:1},dot:{width:9,height:9,borderRadius:9,backgroundColor:'#c8211e'},body:{color:'#475467',marginTop:6,lineHeight:21},time:{color:'#98a2b3',fontSize:12,marginTop:10}});

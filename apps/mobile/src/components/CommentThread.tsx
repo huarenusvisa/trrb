@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { router } from 'expo-router';
-import { CommentCursor, CommentRow, createComment, deleteOwnComment, likeComment, listComments, reportComment } from '../api/comments';
+import { CommentCursor, CommentRow, createComment, deleteOwnComment, likeComment, listComments, reportComment, unlikeComment } from '../api/comments';
+import { updateCommentLikeState } from '../api/comment-like-state';
 import { supabase } from '../auth/supabase';
 import { isOwnComment } from '../community/comment-presentation';
 import { AsyncStatePanel } from './AsyncStatePanel';
@@ -136,11 +137,13 @@ export function CommentThread({ articleId }: { articleId: string }) {
 
   const onLike = async (comment: CommentRow) => {
     if (!(await requireSession())) return;
+    const nextLiked = !comment.viewer_has_liked;
     setBusyAction({ kind: 'like', commentId: comment.id });
     setMessage(''); setActionFailure(null);
     try {
-      await withUiTimeout(likeComment(comment.id), '点赞操作超时，请检查网络后重试。');
-      setMessage('点赞成功。');
+      await withUiTimeout(nextLiked ? likeComment(comment.id) : unlikeComment(comment.id), nextLiked ? '点赞操作超时，请检查网络后重试。' : '取消点赞超时，请检查网络后重试。');
+      setItems((current) => updateCommentLikeState(current, comment.id, nextLiked));
+      setMessage(nextLiked ? '点赞成功。' : '已取消点赞。');
     } catch (error) {
       setActionFailure({ kind: 'like', commentId: comment.id, detail: error instanceof Error ? error.message : '点赞失败，请稍后重试。' });
     } finally { setBusyAction(null); }
@@ -217,7 +220,7 @@ export function CommentThread({ articleId }: { articleId: string }) {
       <Text style={styles.body}>{item.content}</Text>
       <View style={styles.actions}>
         <Pressable testID={`news-comment-reply-${index}`} accessibilityRole="button" accessibilityLabel={`回复${item.profiles?.display_name || '用户'}`} accessibilityState={{ disabled: Boolean(busyAction) }} onPress={() => updateReply({ id: item.id, label: item.profiles?.display_name || '用户' })} disabled={Boolean(busyAction)}><Text style={styles.action}>回复</Text></Pressable>
-        <Pressable testID={`news-comment-like-${index}`} accessibilityRole="button" accessibilityLabel="点赞评论" accessibilityState={{ disabled: Boolean(busyAction), busy: busyAction?.kind === 'like' && busyAction.commentId === item.id }} onPress={() => onLike(item)} disabled={Boolean(busyAction)}><Text style={styles.action}>{busyAction?.kind === 'like' && busyAction.commentId === item.id ? '处理中…' : '点赞'}</Text></Pressable>
+        <Pressable testID={`news-comment-like-${index}`} accessibilityRole="button" accessibilityLabel={`${item.viewer_has_liked ? '取消点赞' : '点赞'}，当前${item.like_count}个赞`} accessibilityState={{ disabled: Boolean(busyAction), busy: busyAction?.kind === 'like' && busyAction.commentId === item.id, selected: item.viewer_has_liked }} onPress={() => onLike(item)} disabled={Boolean(busyAction)}><Text style={[styles.action, item.viewer_has_liked && styles.likedAction]}>{busyAction?.kind === 'like' && busyAction.commentId === item.id ? '处理中…' : `${item.viewer_has_liked ? '已赞' : '赞'} ${item.like_count}`}</Text></Pressable>
         <Pressable testID={`news-comment-report-${index}`} accessibilityRole="button" accessibilityLabel="举报评论" accessibilityState={{ disabled: Boolean(busyAction) }} onPress={() => beginReport(item)} disabled={Boolean(busyAction)}><Text style={styles.reportAction}>举报</Text></Pressable>
         {isOwnComment(item, viewerUserId) ? <Pressable testID={`news-comment-delete-${index}`} accessibilityRole="button" accessibilityLabel="删除评论" accessibilityState={{ disabled: Boolean(busyAction), busy: busyAction?.kind === 'delete' && busyAction.commentId === item.id }} onPress={() => removeComment(item)} disabled={Boolean(busyAction)}><Text style={styles.deleteAction}>{busyAction?.kind === 'delete' && busyAction.commentId === item.id ? '删除中…' : '删除'}</Text></Pressable> : null}
       </View>
@@ -230,5 +233,5 @@ export function CommentThread({ articleId }: { articleId: string }) {
 }
 
 const styles = StyleSheet.create({
-  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},heading:{fontSize:24,fontWeight:'900',color:'#101828'},hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10,marginBottom:9},replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3',marginTop:5},submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},message:{marginTop:12,color:'#067647',fontWeight:'700'},reportBox:{marginTop:16,padding:12,backgroundColor:'#fff7ed',borderRadius:12},reportInput:{minHeight:74,borderWidth:1,borderColor:'#d0d5dd',backgroundColor:'#fff',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{backgroundColor:'#b42318',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:8},loadingText:{color:'#667085',textAlign:'center',marginTop:8},empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},actions:{flexDirection:'row',flexWrap:'wrap',gap:18,marginTop:10},action:{color:'#c8211e',fontWeight:'800'},reportAction:{color:'#667085',fontWeight:'800'},deleteAction:{color:'#b42318',fontWeight:'800'},more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
+  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},heading:{fontSize:24,fontWeight:'900',color:'#101828'},hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10,marginBottom:9},replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3',marginTop:5},submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},message:{marginTop:12,color:'#067647',fontWeight:'700'},reportBox:{marginTop:16,padding:12,backgroundColor:'#fff7ed',borderRadius:12},reportInput:{minHeight:74,borderWidth:1,borderColor:'#d0d5dd',backgroundColor:'#fff',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{backgroundColor:'#b42318',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:8},loadingText:{color:'#667085',textAlign:'center',marginTop:8},empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},actions:{flexDirection:'row',flexWrap:'wrap',gap:18,marginTop:10},action:{color:'#c8211e',fontWeight:'800'},likedAction:{color:'#7f1d1d'},reportAction:{color:'#667085',fontWeight:'800'},deleteAction:{color:'#b42318',fontWeight:'800'},more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
 });

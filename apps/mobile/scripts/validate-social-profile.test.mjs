@@ -192,11 +192,24 @@ test('news comment actions keep failures retryable without losing report input',
   assert.match(news, /重试提交举报/);
   assert.match(news, /重试删除/);
   assert.match(news, /举报理由仍保留在本页/);
-  assert.match(news, /withUiTimeout\(likeComment/);
+  assert.match(news, /withUiTimeout\(nextLiked \? likeComment/);
   assert.match(news, /withUiTimeout\(reportComment/);
   assert.match(news, /withUiTimeout\(deleteOwnComment/);
   assert.match(news, /current\.filter\(\(item\) => item\.id !== comment\.id\)/);
   assert.doesNotMatch(news, /Alert\.alert\('点赞失败'/);
   assert.doesNotMatch(news, /Alert\.alert\('举报失败'/);
   assert.doesNotMatch(news, /Alert\.alert\('删除失败'/);
+});
+
+test('news comments show counts and toggle the signed-in viewer like state', () => {
+  const news = read('src/components/CommentThread.tsx');
+  const api = read('src/api/comments.ts');
+
+  assert.match(api, /comment_likes\(count\)/);
+  assert.match(api, /select\('comment_id'\)\.eq\('user_id'/);
+  assert.match(news, /unlikeComment/);
+  assert.match(news, /updateCommentLikeState/);
+  assert.match(news, /viewer_has_liked \? '取消点赞' : '点赞'/);
+  assert.match(news, /selected: item\.viewer_has_liked/);
+  assert.match(news, /已取消点赞/);
 });

@@ -422,11 +422,16 @@ function renderDailyKnowledge(rows) {
 async function loadDailyKnowledge() {
   const container = $('#daily-knowledge-items');
   if (!container) return;
+  container.setAttribute('aria-busy', 'true');
+  container.innerHTML = '<div class="knowledge-loading">正在读取今日庇护知识…</div>';
   try {
     const data = await json('/.netlify/functions/immigration-judges?mode=knowledge&limit=4');
     renderDailyKnowledge(data.results || []);
   } catch (error) {
-    container.innerHTML = '<div class="knowledge-empty">最新庇护知识暂时无法读取，请稍后刷新。</div>';
+    container.innerHTML = '<div class="knowledge-empty"><span><b>最新庇护知识暂时无法读取</b><button id="knowledge-retry" class="directory-retry" type="button">重新尝试</button></span></div>';
+    $('#knowledge-retry').addEventListener('click', loadDailyKnowledge);
+  } finally {
+    container.setAttribute('aria-busy', 'false');
   }
 }
 

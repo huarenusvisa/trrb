@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
+import { NewsImage } from '../../src/components/NewsImage';
+import { cacheHomeFeed, readCachedHomeFeed } from '../../src/storage/newsFeedCache';
 
 const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
 const SUPPLEMENT_CATEGORIES = ['重要新闻', '热门头条', '美国时政', '美国警情', 'ICE执法动态'] as const;
@@ -152,12 +154,24 @@ export default function HomeScreen() {
   const [showStickyBrand, setShowStickyBrand] = useState(false);
   const [weather, setWeather] = useState<WeatherState>({ temperature: null, code: null, isDay: true });
 
-  async function load() {
+  async function load(restoreCache = false) {
+    let restored = false;
+    let cachedFocus = focusArticles;
+    if (restoreCache) {
+      const cached = await readCachedHomeFeed().catch(() => null);
+      if (cached) {
+        restored = true;
+        cachedFocus = cached.focusArticles || [];
+        setArticles(cached.articles);
+        setFocusArticles(cachedFocus);
+        setLoading(false);
+      }
+    }
     try {
       setError('');
-      const [global, focus] = await Promise.all([
+      const [global, focusResult] = await Promise.all([
         fetchArticles({ limit: 120 }),
-        fetchHomepageFocus().catch(() => []),
+        fetchHomepageFocus().catch(() => null),
       ]);
       const supplements = await Promise.all(SUPPLEMENT_CATEGORIES.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
       const seen = new Set<string>();
@@ -167,10 +181,12 @@ export default function HomeScreen() {
         seen.add(key);
         return true;
       });
+      const focus = focusResult ?? cachedFocus;
       setArticles(merged);
       setFocusArticles(focus);
+      void cacheHomeFeed(merged, focus).catch(() => undefined);
     } catch (e) {
-      setError(e instanceof Error ? e.message : '新闻加载失败');
+      setError(restored || articles.length > 0 ? '网络不可用，正在显示上次读取的新闻。下拉即可重试。' : (e instanceof Error ? e.message : '新闻加载失败'));
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -192,7 +208,7 @@ export default function HomeScreen() {
     }
   }
 
-  useEffect(() => { void load(); void loadWeather(); }, []);
+  useEffect(() => { void load(true); void loadWeather(); }, []);
 
   const hotHeadlines = useMemo(() => articles.filter((item) => ['热门头条', '中国热门头条'].includes(String(item.category_name || ''))).slice(0, 12), [articles]);
   const activeHot = hotHeadlines.length ? hotHeadlines[hotIndex % hotHeadlines.length] : null;
@@ -333,7 +349,7 @@ export default function HomeScreen() {
                   style={[styles.heroCard, { width: carouselWidth }]}
                   onPress={() => openArticle(item)}
                 >
-                  {item.cover_image ? <Image source={{ uri: item.cover_image }} style={styles.heroImage} /> : <View style={styles.heroImagePlaceholder} />}
+                  <NewsImage uri={item.cover_image} style={styles.heroImage} testID={`home-important-image-${index}`} />
                   <View style={styles.heroOverlay} />
                   <View style={styles.heroCopy}>
                     <Text style={styles.heroCategory}>重要新闻</Text>
@@ -370,7 +386,7 @@ export default function HomeScreen() {
             const latest = topicLatest[topic.key];
             return (
               <Pressable key={topic.key} style={styles.focusCard} onPress={() => openTopic(topic.url)}>
-                <Image source={{ uri: topic.image }} style={styles.focusImage} />
+                <NewsImage uri={topic.image} style={styles.focusImage} testID={`home-topic-image-${topic.key}`} />
                 <View style={styles.focusBody}>
                   <Text style={styles.focusTitle}>{topic.title}</Text>
                   <Text style={styles.focusSub}>{topic.subtitle}</Text>
@@ -394,7 +410,7 @@ export default function HomeScreen() {
                 <Pressable onPress={() => openCategory(category)}><Text style={styles.more}>更多 ›</Text></Pressable>
               </View>
               <Pressable style={styles.categoryLead} onPress={() => openArticle(first)}>
-                {first.cover_image ? <Image source={{ uri: first.cover_image }} style={styles.categoryLeadImage} /> : <View style={styles.categoryLeadPlaceholder} />}
+                <NewsImage uri={first.cover_image} style={styles.categoryLeadImage} testID={`home-category-image-${key}`} />
                 <Text style={styles.categoryLeadTitle} numberOfLines={3}>{first.title}</Text>
               </Pressable>
               {rest.map((item) => (
@@ -482,7 +498,6 @@ const styles = StyleSheet.create({
   carouselWrap: { marginBottom: 12 },
   heroCard: { height: 238, borderRadius: 10, overflow: 'hidden', backgroundColor: '#101828', position: 'relative' },
   heroImage: { width: '100%', height: '100%', backgroundColor: '#e4e7ec' },
-  heroImagePlaceholder: { width: '100%', height: '100%', backgroundColor: '#344054' },
   heroOverlay: { position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.38)' },
   heroCopy: { position: 'absolute', left: 15, right: 15, bottom: 16 },
   heroCategory: { alignSelf: 'flex-start', color: '#fff', backgroundColor: '#c8211e', paddingHorizontal: 7, paddingVertical: 4, borderRadius: 4, fontSize: 11, fontWeight: '900', marginBottom: 8 },
@@ -510,7 +525,6 @@ const styles = StyleSheet.create({
   focusArrow: { color: '#98a2b3', fontSize: 23 },
   categoryLead: { marginBottom: 7 },
   categoryLeadImage: { width: '100%', height: 154, borderRadius: 7, backgroundColor: '#e4e7ec' },
-  categoryLeadPlaceholder: { width: '100%', height: 154, borderRadius: 7, backgroundColor: '#eaecf0' },
   categoryLeadTitle: { color: '#101828', fontSize: 16, lineHeight: 22, fontWeight: '900', marginTop: 8 },
   textNewsRow: { minHeight: 44, flexDirection: 'row', alignItems: 'center', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: '#eaecf0' },
   newsDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: '#c8211e', marginRight: 7 },

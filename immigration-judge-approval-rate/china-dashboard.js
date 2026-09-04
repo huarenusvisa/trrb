@@ -210,6 +210,7 @@ function renderSelected(data) {
   $('#trend-title').textContent = t('countryTrend', { country: label });
   $('#trend-chart').setAttribute('aria-label', t('countryTrend', { country: label }));
   $('#judge-ranking-title').textContent = t('countryJudges', { country: label });
+  $('#country-detail-status').textContent = `${t('detailsFor', { country: label })}. ${t('approvalRate')} ${pct(country.approval_rate)}. ${country.rate_reliable ? t('statusReliable', { count: fmt(country.total_asylum_decisions) }) : t('statusUnreliable', { count: fmt(country.total_asylum_decisions) })}`;
   updatePageMetadata(country);
   $('#chart-note').removeAttribute('role');
   renderQuickCountries();
@@ -250,6 +251,7 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
   countryRequestController = controller;
   $('#country-detail').setAttribute('aria-busy', 'true');
   $('#selected-country').textContent = t('loadingReal');
+  $('#country-detail-status').textContent = t('loadingReal');
   setPeriodControlsDisabled(true);
   try {
     const data = await getJson(`/.netlify/functions/immigration-judges?mode=nationality-detail&country=${encodeURIComponent(country)}`, { signal: controller.signal });
@@ -267,6 +269,7 @@ async function selectCountry(country, updateUrl = false, scrollToDetail = false)
   } catch {
     if (requestId !== countryRequestId) return;
     $('#selected-country').textContent = t('countryUnavailable');
+    $('#country-detail-status').textContent = t('countryUnavailable');
     $('#chart-note').setAttribute('role', 'alert');
     $('#chart-note').innerHTML = `${esc(t('retry'))} ${retryButton('country', country, updateUrl)}`;
   } finally {
@@ -294,6 +297,7 @@ async function load() {
   } catch {
     $('#country-directory').innerHTML = `<div class="empty" role="alert"><p>${esc(t('databaseUnavailable'))}</p>${retryButton('directory')}</div>`;
     $('#selected-country').textContent = t('readFailed');
+    $('#country-detail-status').textContent = t('databaseUnavailable');
   }
 }
 

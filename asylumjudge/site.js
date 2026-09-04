@@ -2,6 +2,16 @@ const $ = (selector) => document.querySelector(selector);
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
+const reportableTrendRates = (row) => {
+  const grants = Number(row?.grants || 0);
+  const denials = Number(row?.denials || 0);
+  const merits = grants + denials;
+  if (merits < 50 || row?.adjudicated_approval_rate == null) return { approval: null, denial: null };
+  return {
+    approval: Number(row.adjudicated_approval_rate),
+    denial: denials / merits * 100
+  };
+};
 const stateNames = { AZ: '亚利桑那州', CA: '加州', CO: '科罗拉多州', CT: '康涅狄格州', FL: '佛州', GA: '乔治亚州', GU: '关岛', HI: '夏威夷州', IL: '伊利诺伊州', IN: '印第安纳州', LA: '路易斯安那州', MA: '马萨诸塞州', MD: '马里兰州', MI: '密歇根州', MN: '明尼苏达州', MO: '密苏里州', MP: '北马里亚纳群岛', NC: '北卡罗来纳州', NE: '内布拉斯加州', NJ: '新泽西州', NM: '新墨西哥州', NV: '内华达州', NY: '纽约州', OH: '俄亥俄州', OR: '俄勒冈州', PA: '宾州', PR: '波多黎各', TN: '田纳西州', TX: '德州', UT: '犹他州', VA: '弗吉尼亚州', WA: '华盛顿州' };
 const stateName = (code) => window.AsylumI18n?.stateName?.(code, stateNames[String(code || '').toUpperCase()]) || stateNames[String(code || '').toUpperCase()] || code;
 let allJudges = [];
@@ -89,13 +99,13 @@ function renderStateMarket(periods, label, interval) {
   const points = (periods || []).map((row) => {
     const grants = Number(row.grants || 0);
     const denials = Number(row.denials || 0);
-    const merits = grants + denials;
+    const { approval, denial } = reportableTrendRates(row);
     const total = Number(row.total_asylum_decisions || 0);
     return {
       ...row,
       period: String(row.period || (row.fiscal_year ? `FY ${row.fiscal_year}` : '')),
-      approval: merits ? grants / merits * 100 : 0,
-      denial: merits ? denials / merits * 100 : 0,
+      approval,
+      denial,
       otherShare: total ? Number(row.other_decisions || 0) / total * 100 : 0,
       total
     };
@@ -130,14 +140,25 @@ function renderStateMarket(periods, label, interval) {
     const gridY = y(rate);
     return `<line class="market-grid" x1="${left}" y1="${gridY}" x2="${width - right}" y2="${gridY}"></line><text class="market-axis" x="0" y="${gridY + 4}">${rate.toFixed(rate % 1 ? 1 : 0)}%</text>`;
   }).join('');
-  const linePath = (key) => points.map((point, index) => `${index ? 'L' : 'M'} ${x(index).toFixed(1)} ${y(point[key]).toFixed(1)}`).join(' ');
+  const linePath = (key) => {
+    let continuing = false;
+    return points.map((point, index) => {
+      if (point[key] == null || !Number.isFinite(Number(point[key]))) {
+        continuing = false;
+        return '';
+      }
+      const command = continuing ? 'L' : 'M';
+      continuing = true;
+      return `${command} ${x(index).toFixed(1)} ${y(point[key]).toFixed(1)}`;
+    }).filter(Boolean).join(' ');
+  };
   const bars = points.map((point, index) => {
     const barHeight = Math.max(3, point.total / maxVolume * plotHeight * .42);
     const barWidth = Math.max(4, Math.min(interval === 'month' ? 12 : 28, step * .52));
     return `<rect class="market-volume-bar" x="${(x(index) - barWidth / 2).toFixed(1)}" y="${(bottom - barHeight).toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barHeight.toFixed(1)}" rx="2"></rect>`;
   }).join('');
   const hitWidth = Math.max(14, Math.min(34, step * .9));
-  const dots = points.map((point, index) => `<g class="market-hit" data-trend-index="${index}" role="button" tabindex="0" aria-label="${esc(point.period)}，批准率${pct(point.approval)}，拒绝率${pct(point.denial)}，其他占比${pct(point.otherShare)}，结案${fmt(point.total)}件"><rect class="market-hit-area" x="${(x(index) - hitWidth / 2).toFixed(1)}" y="${top}" width="${hitWidth.toFixed(1)}" height="${plotHeight}"></rect><circle class="market-dot approval" cx="${x(index)}" cy="${y(point.approval)}" r="3.5"></circle><circle class="market-dot denial" cx="${x(index)}" cy="${y(point.denial)}" r="3.5"></circle><circle class="market-dot other" cx="${x(index)}" cy="${y(point.otherShare)}" r="3.5"></circle></g>`).join('');
+  const dots = points.map((point, index) => `<g class="market-hit" data-trend-index="${index}" role="button" tabindex="0" aria-label="${esc(point.period)}，批准率${pct(point.approval)}，拒绝率${pct(point.denial)}，其他占比${pct(point.otherShare)}，结案${fmt(point.total)}件"><rect class="market-hit-area" x="${(x(index) - hitWidth / 2).toFixed(1)}" y="${top}" width="${hitWidth.toFixed(1)}" height="${plotHeight}"></rect>${point.approval == null ? '' : `<circle class="market-dot approval" cx="${x(index)}" cy="${y(point.approval)}" r="3.5"></circle>`}${point.denial == null ? '' : `<circle class="market-dot denial" cx="${x(index)}" cy="${y(point.denial)}" r="3.5"></circle>`}<circle class="market-dot other" cx="${x(index)}" cy="${y(point.otherShare)}" r="3.5"></circle></g>`).join('');
   const labelEvery = interval === 'month' ? (compact ? 6 : 4) : 1;
   const labelY = compact ? 184 : 170;
   const labels = points.map((point, index) => index % labelEvery === 0 || index === points.length - 1 ? `<text class="market-state" x="${x(index)}" y="${labelY}" text-anchor="middle">${esc(interval === 'month' ? point.period.slice(2) : point.period)}</text>` : '').join('');

@@ -70,6 +70,25 @@ const brandClient = readFileSync('asylumjudge/domain-brand.js', 'utf8');
 const manifest = JSON.parse(readFileSync('asylumjudge/site.webmanifest', 'utf8'));
 const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8');
 
+const trendRateHelperSource = client.match(/const reportableTrendRates = \(row\) => \{.*?\n\};/s)?.[0];
+assert.ok(trendRateHelperSource, 'homepage client must expose the trend sample-threshold helper');
+const reportableTrendRates = Function(`${trendRateHelperSource}; return reportableTrendRates;`)();
+assert.deepEqual(
+  reportableTrendRates({ grants: 4, denials: 0, adjudicated_approval_rate: null }),
+  { approval: null, denial: null },
+  'a four-case month must not be presented as a 100% approval rate'
+);
+assert.deepEqual(
+  reportableTrendRates({ grants: 49, denials: 0, adjudicated_approval_rate: 100 }),
+  { approval: null, denial: null },
+  'the client must enforce the 50-merits threshold even if an upstream rate is present'
+);
+assert.deepEqual(
+  reportableTrendRates({ grants: 30, denials: 20, adjudicated_approval_rate: 60 }),
+  { approval: 60, denial: 40 },
+  'reportable trend points must preserve the API rate and its complementary denial rate'
+);
+
 for (const html of [standalone, trrb]) {
   assert.match(html, /id="all-judges"/, 'both homepage variants must expose the full judge directory');
   assert.match(html, /id="judge-directory-list"/);
@@ -96,6 +115,9 @@ assert.match(client, /market-crosshair/, 'trend chart must expose a moving stock
 assert.match(client, /market-floating-tooltip/, 'trend chart must show live values inside the chart');
 assert.match(client, /linePath\('denial'\)/, 'trend chart must draw the denial line');
 assert.match(client, /linePath\('otherShare'\)/, 'trend chart must draw the other-outcome line');
+assert.match(client, /if \(point\[key\] == null \|\| !Number\.isFinite/, 'trend lines must break across suppressed low-sample points');
+assert.match(client, /point\.approval == null \? '' : `<circle/, 'suppressed approval rates must not render misleading zero-value dots');
+assert.match(client, /point\.denial == null \? '' : `<circle/, 'suppressed denial rates must not render misleading zero-value dots');
 assert.doesNotMatch(client, /state-market-link/, 'trend chart must not be wrapped in a navigation link');
 assert.match(styles, /\.directory-metric\.verdict-pass b[^}]*var\(--pass\)/);
 assert.match(styles, /\.directory-metric\.verdict-deny b[^}]*var\(--deny\)/);
@@ -103,6 +125,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
+assert.match(standalone, /site\.js\?v=20/, 'standalone homepage must load the threshold-aware client asset');
+assert.match(trrb, /site\.js\?v=19/, 'embedded homepage must load the threshold-aware client asset');
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
 assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
 assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');

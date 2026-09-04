@@ -108,6 +108,8 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /id="state-trend-detail"/, 'homepage must expose touch-friendly point details');
   assert.match(html, /id="trend-state-select"/, 'homepage must let users choose a state');
   assert.match(html, /id="trend-court-select"/, 'homepage must let users choose any city or immigration court');
+  assert.match(html, /class="trend-scope-controls" aria-busy="true"/, 'trend location controls must expose their initial loading state');
+  assert.match(html, /id="trend-location-status"[^>]+aria-live="polite"[^>]+hidden/, 'trend location failures must have a dedicated live status region');
   assert.match(html, /id="state-market-chart"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'trend chart must expose its initial loading state');
   assert.match(html, /拒绝率/, 'trend legend must expose the red denial series');
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
@@ -133,6 +135,7 @@ assert.match(client, /container\.setAttribute\('aria-busy', 'true'\)[\s\S]*final
 assert.match(client, /id="judge-directory-retry"[\s\S]*addEventListener\('click', loadAllJudges\)/, 'judge directory failures must offer an in-place retry');
 assert.match(client, /chart\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*chart\.setAttribute\('aria-busy', 'false'\)/, 'trend chart must announce loading and completion');
 assert.match(client, /id="state-trend-retry"[\s\S]*addEventListener\('click', \(\) => loadStateTrend\(state, interval, court\)\)/, 'trend failures must retry the same state, interval, and court');
+assert.match(client, /controls\.setAttribute\('aria-busy', 'true'\)[\s\S]*id="trend-location-retry"[\s\S]*addEventListener\('click', loadTrendLocations\)[\s\S]*finally[\s\S]*controls\.setAttribute\('aria-busy', 'false'\)/, 'trend location failures must offer an in-place retry and announce loading completion');
 assert.match(client, /trendController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'a new trend request must cancel the previous state, court, or interval request');
 assert.match(client, /if \(trendController !== controller\) return;[\s\S]*error\.name === 'AbortError' \|\| trendController !== controller/, 'late or cancelled trend responses must not overwrite the latest selection');
 assert.match(client, /if \(trendController === controller\) \{[\s\S]*trendController = null;[\s\S]*aria-busy/, 'only the current trend request may end the loading state');
@@ -152,8 +155,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /site\.css\?v=17[\s\S]*site\.js\?v=26/, 'standalone homepage must load the accessible toggle-state assets');
-assert.match(trrb, /site\.css\?v=16[\s\S]*site\.js\?v=25/, 'embedded homepage must load the accessible toggle-state assets');
+assert.match(standalone, /site\.css\?v=18[\s\S]*site\.js\?v=27/, 'standalone homepage must load the trend-location recovery assets');
+assert.match(trrb, /site\.css\?v=17[\s\S]*site\.js\?v=26/, 'embedded homepage must load the trend-location recovery assets');
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
 assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
 assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');
@@ -161,6 +164,7 @@ assert.match(standalone, /href="\/nationality"/, 'standalone homepage must link 
 assert.match(brandClient, /class="asylumjudge-lockup"[^>]+logo\.svg/, 'all judge data pages must receive the same logo');
 assert.match(styles, /\.directory-retry\{[^}]*min-height:44px[^}]*cursor:pointer[^}]*\}[\s\S]*\.directory-retry:focus-visible\{[^}]*outline:/, 'directory retry must be touch-sized and keyboard-visible');
 assert.match(styles, /\.trend-retry\{[^}]*min-height:44px[^}]*cursor:pointer[^}]*\}[\s\S]*\.trend-retry:focus-visible\{[^}]*outline:/, 'trend retry must be touch-sized and keyboard-visible');
+assert.match(styles, /\.trend-location-status\{[^}]*display:flex[^}]*color:#b42318[^}]*\}[\s\S]*\.trend-location-status\[hidden\]\{display:none\}/, 'trend location errors must remain visible and hide cleanly after recovery');
 assert.match(brandClient, /\['\/immigration-judge-approval-rate\/states', `\$\{root\}\/states`\]/, 'pretty-URL legacy state links must normalize to the clean route');
 assert.equal(manifest.name, 'AsylumJudge.com');
 assert.ok(manifest.icons.some((icon) => icon.sizes === '512x512'));

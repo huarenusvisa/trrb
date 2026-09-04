@@ -269,6 +269,11 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
 async function loadTrendLocations() {
   const stateSelect = $('#trend-state-select');
   const courtSelect = $('#trend-court-select');
+  const controls = document.querySelector('.trend-scope-controls');
+  const status = $('#trend-location-status');
+  controls.setAttribute('aria-busy', 'true');
+  status.hidden = true;
+  status.textContent = '';
   try {
     const data = await json('/.netlify/functions/immigration-judges?mode=trend-locations');
     const locations = data.locations || [];
@@ -280,6 +285,11 @@ async function loadTrendLocations() {
   } catch (error) {
     stateSelect.innerHTML = '<option value="NY">纽约州（NY）</option>';
     courtSelect.innerHTML = '<option value="">城市列表暂时无法读取</option>';
+    status.hidden = false;
+    status.innerHTML = '<span>州和法院列表暂时无法读取。</span><button id="trend-location-retry" class="trend-retry" type="button">重新尝试</button>';
+    $('#trend-location-retry').addEventListener('click', loadTrendLocations);
+  } finally {
+    controls.setAttribute('aria-busy', 'false');
   }
 }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Image, ImageStyle, StyleProp, StyleSheet, Text, View } from 'react-native';
+import { Image as ExpoImage } from 'expo-image';
+import { ImageStyle, StyleProp, StyleSheet, Text, View } from 'react-native';
 
 type Props = {
   uri?: string;
@@ -33,7 +34,20 @@ export function NewsImage({ uri, style, testID }: Props) {
     );
   }
 
-  return <Image key={`${uri}:${retryCount}`} testID={testID} source={{ uri }} style={style} resizeMode="cover" accessible={false} onError={() => setFailed(true)} />;
+  return (
+    <ExpoImage
+      key={`${uri}:${retryCount}`}
+      testID={testID}
+      source={{ uri }}
+      style={style}
+      contentFit="cover"
+      cachePolicy="memory-disk"
+      recyclingKey={`${uri}:${retryCount}`}
+      transition={120}
+      accessible={false}
+      onError={() => setFailed(true)}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

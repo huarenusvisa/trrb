@@ -23,6 +23,16 @@ test('uses the shared image fallback across homepage and category cards', () => 
   assert.match(image, /onError=\{\(\) => setFailed\(true\)\}/);
   assert.match(image, /retryCount >= 1/);
   assert.match(image, /setTimeout[\s\S]*setRetryCount[\s\S]*900/);
+  assert.match(image, /cachePolicy="memory-disk"/);
+  assert.match(image, /recyclingKey=\{`\$\{uri\}:\$\{retryCount\}`\}/);
+  assert.match(image, /contentFit="cover"/);
+  assert.match(image, /transition=\{120\}/);
+});
+
+test('defers below-the-fold service modules until the first interaction settles', () => {
+  assert.match(home, /InteractionManager\.runAfterInteractions/);
+  assert.match(home, /showDeferredServices \? \(/);
+  assert.match(home, /showDeferredServices[\s\S]*portalSections\.map/);
 });
 
 test('bounds long-list rendering work and exposes every story as a button', () => {

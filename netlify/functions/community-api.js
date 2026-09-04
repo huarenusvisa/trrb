@@ -121,7 +121,7 @@ async function feed(event) {
         limit: '300'
       }
     });
-    comments = (commentRows || []).filter((row) => row.status === 'published' || (user && row.user_id === user.id));
+    comments = (commentRows || []).filter((row) => row.status === 'published' || (user && row.user_id === user.id && row.status !== 'deleted'));
   }
   return json(200, { ok: true, posts, comments, viewer_user_id: user?.id || null });
 }
@@ -208,6 +208,39 @@ async function createComment(user, body) {
   return json(201, { ok: true, comment: Array.isArray(rows) ? rows[0] : null, pending: needsReview });
 }
 
+function commentCountAfterUnpublish(comment, currentCount) {
+  return comment?.status === 'published' ? Math.max(0, Number(currentCount || 0) - 1) : Math.max(0, Number(currentCount || 0));
+}
+
+async function unpublishComment(user, body) {
+  const commentId = clean(body.comment_id, 80);
+  if (!commentId) return json(400, { error: '评论编号无效' });
+  const rows = await rest('community_post_comments', {
+    query: { select: 'id,post_id,user_id,status', id: `eq.${commentId}`, limit: '1' }
+  });
+  const comment = Array.isArray(rows) ? rows[0] : null;
+  if (!comment || comment.user_id !== user.id) return json(404, { error: '评论不存在或无权操作' });
+  const posts = await rest('community_posts', {
+    query: { select: 'id,comment_count', id: `eq.${comment.post_id}`, limit: '1' }
+  });
+  const post = Array.isArray(posts) ? posts[0] : null;
+  if (!post) return json(404, { error: '评论所属帖子不存在' });
+  const nextCount = commentCountAfterUnpublish(comment, post.comment_count);
+  if (comment.status !== 'deleted') {
+    await rest('community_post_comments', {
+      method: 'PATCH', query: { id: `eq.${commentId}`, user_id: `eq.${user.id}` },
+      body: { status: 'deleted', updated_at: new Date().toISOString() }, prefer: 'return=minimal'
+    });
+    if (nextCount !== Number(post.comment_count || 0)) {
+      await rest('community_posts', {
+        method: 'PATCH', query: { id: `eq.${comment.post_id}` },
+        body: { comment_count: nextCount, updated_at: new Date().toISOString() }, prefer: 'return=minimal'
+      });
+    }
+  }
+  return json(200, { ok: true, comment_id: commentId, comment_count: nextCount });
+}
+
 async function toggleLike(user, body) {
   const postId = clean(body.post_id, 80);
   const posts = await rest('community_posts', { query: { select: 'id,status,like_count', id: `eq.${postId}`, limit: '1' } });
@@ -259,6 +292,7 @@ exports.handler = async (event) => {
     const action = clean(body.action, 60);
     if (action === 'create_post') return createPost(event, user, profile, body);
     if (action === 'create_comment') return createComment(user, body);
+    if (action === 'unpublish_comment') return unpublishComment(user, body);
     if (action === 'toggle_like') return toggleLike(user, body);
     if (action === 'report_post') return reportPost(user, body);
     if (action === 'unpublish_post') return unpublishPost(user, body);
@@ -269,4 +303,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { moderation, clean };
+exports._test = { moderation, clean, commentCountAfterUnpublish };

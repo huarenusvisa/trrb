@@ -243,3 +243,20 @@ test('community comments refresh without clearing visible content', () => {
   assert.match(presentation, /comment_count: pending \? detail\.post\.comment_count/);
   assert.match(presentation, /detail\.comments\.some/);
 });
+
+test('community comment authors can soft-unpublish with retry and immediate count sync', () => {
+  const screen = read('app/community/[id].tsx');
+  const api = read('src/api/community-core.ts');
+  const presentation = read('src/community/community-comment-presentation.ts');
+  const server = read('../../netlify/functions/community-api.js');
+
+  assert.match(screen, /community-comment-unpublish-/);
+  assert.match(screen, /viewerUserId === item\.user_id/);
+  assert.match(screen, /评论下架失败/);
+  assert.match(screen, /removeUnpublishedCommunityComment/);
+  assert.match(api, /action: 'unpublish_comment'/);
+  assert.match(presentation, /comment_count: Math\.max\(0, commentCount\)/);
+  assert.match(server, /comment\.user_id !== user\.id/);
+  assert.match(server, /body: \{ status: 'deleted'/);
+  assert.match(server, /row\.status !== 'deleted'/);
+});

@@ -57,6 +57,15 @@ test('creates a reply through the existing parent comment contract', async () =>
   });
 });
 
+test('soft-unpublishes an owned comment through the existing community API', async () => {
+  const { api, calls } = mockApi([{ ok: true, comment_id: 'comment-1', comment_count: 4 }]);
+  const result = await api.unpublishComment(' comment-1 ');
+  assert.equal(result.comment_count, 4);
+  assert.deepEqual(JSON.parse(String(calls[0].init?.body)), {
+    action: 'unpublish_comment', comment_id: 'comment-1',
+  });
+});
+
 test('uses the existing API actions for like, report and owner unpublish', async () => {
   const { api, calls } = mockApi([{ liked: true, like_count: 3 }, { ok: true }, { ok: true }]);
   await api.toggleLike('post-1');
@@ -70,6 +79,7 @@ test('uses the existing API actions for like, report and owner unpublish', async
 test('validates comments and reports before any network write', async () => {
   const { api, calls } = mockApi([]);
   await assert.rejects(() => api.createComment('post-1', ' '), /1–3000/);
+  await assert.rejects(() => api.unpublishComment(' '), /编号无效/);
   await assert.rejects(() => api.reportPost('post-1', 'x'), /2–500/);
   assert.equal(calls.length, 0);
 });

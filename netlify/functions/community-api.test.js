@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { moderation, clean } = require('./community-api')._test;
+const { moderation, clean, commentCountAfterUnpublish } = require('./community-api')._test;
 
 test('ordinary USCIS experience passes basic rules', () => {
   const result = moderation('uscis_interview', '纽约庇护面谈经历', '我在纽约办公室完成面谈，分享当天材料准备和流程。');
@@ -25,4 +25,10 @@ test('blocked illegal content is rejected', () => {
 
 test('clean strips markup delimiters', () => {
   assert.equal(clean(' <script>alert(1)</script> ', 100), 'scriptalert(1)/script');
+});
+
+test('owner unpublish only decrements the public count for a published comment', () => {
+  assert.equal(commentCountAfterUnpublish({ status: 'published' }, 3), 2);
+  assert.equal(commentCountAfterUnpublish({ status: 'pending' }, 3), 3);
+  assert.equal(commentCountAfterUnpublish({ status: 'deleted' }, 0), 0);
 });

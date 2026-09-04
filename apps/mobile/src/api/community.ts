@@ -25,6 +25,7 @@ export async function createCommunityPost(input: {
 
 export const getCommunityPost = api.getPost;
 export const createCommunityComment = api.createComment;
+export const unpublishCommunityComment = api.unpublishComment;
 export const toggleCommunityPostLike = api.toggleLike;
 export const reportCommunityPost = api.reportPost;
 export const unpublishCommunityPost = api.unpublishPost;

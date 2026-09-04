@@ -114,6 +114,14 @@ export function createCommunityApi({
     });
   }
 
+  async function unpublishComment(commentId: string) {
+    const id = commentId.trim();
+    if (!id) throw new Error('评论编号无效。');
+    return request<{ ok: true; comment_id: string; comment_count: number }>('POST', {
+      action: 'unpublish_comment', comment_id: id,
+    });
+  }
+
   async function toggleLike(postId: string) {
     return request<{ liked: boolean; like_count: number }>('POST', { action: 'toggle_like', post_id: postId });
   }
@@ -128,5 +136,5 @@ export function createCommunityApi({
     return request<{ ok: true }>('POST', { action: 'unpublish_post', post_id: postId });
   }
 
-  return { listPosts, getPost, createPost, createComment, toggleLike, reportPost, unpublishPost };
+  return { listPosts, getPost, createPost, createComment, unpublishComment, toggleLike, reportPost, unpublishPost };
 }

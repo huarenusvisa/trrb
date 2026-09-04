@@ -43,13 +43,18 @@ test('keeps category labels at the page level and rotates important news on the 
   assert.match(home, /HOME_NAV_ITEMS = \['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职'\]/);
 });
 
-test('permanently removes the retired officialdom and ICE news blocks from the homepage', () => {
+test('keeps ICE in its two sections and the 24-hour ranking, never in nav or carousel', () => {
   const home = read('app/(tabs)/index.tsx');
   assert.doesNotMatch(home, /中国官场/);
-  assert.doesNotMatch(home, /key: 'ice'/);
-  assert.doesNotMatch(home, /title: 'ICE执法动态'/);
-  assert.doesNotMatch(home, /rankCategories[^;]*ICE/s);
+  assert.match(home, /key: 'ice',[\s\S]*?title: 'ICE执法动态'/);
+  assert.match(home, /key: 'ice-news', title: 'ICE执法动态'/);
+  assert.equal((home.match(/title: 'ICE执法动态'/g) || []).length, 2);
+  assert.match(home, /rankCategories[^;]*'ICE执法动态'/s);
+  assert.match(home, /const rankItems = useMemo[\s\S]*?return articles[\s\S]*?rankCategories\.has/);
   assert.doesNotMatch(home, /HOME_NAV_ITEMS[^;]*ICE/s);
+  assert.match(home, /const homepageArticles = useMemo\(\(\) => articles\.filter\(\(item\) => !isHiddenHomepageCategory/);
+  assert.match(home, /value\.startsWith\('中国官'\)[^;]*\/ICE\/i\.test\(value\)/);
+  assert.match(home, /section\.key === 'ice-news' \? articles : homepageArticles/);
 });
 
 test('renders continuous previous and next official-news navigation', () => {

@@ -1,13 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { supabase } from '../src/auth/supabase';
+import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { TrRbAvatar } from '../src/components/TrRbAvatar';
+import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
 import { mediaStoragePath, PROFILE_MEDIA_BUCKET, publicProfileMediaUrl, uploadPickedAsset } from '../src/social/media';
 import { PROFILE_SELECT } from '../src/social/profiles';
 import type { SocialProfile } from '../src/social/types';
+import { withUiTimeout } from '../src/utils/async-state-core';
 
 function avatarNumber(key: string) {
   const match = key.match(/^avatar_(\d{3})$/);
@@ -29,20 +32,45 @@ export default function ProfileSettingsScreen() {
   const [allowMessages, setAllowMessages] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [requiresSignIn, setRequiresSignIn] = useState(false);
 
-  useEffect(() => { (async () => {
-    const { data: sessionData } = await supabase.auth.getSession();
-    const user = sessionData.session?.user;
-    if (!user) { setLoading(false); router.replace('/auth'); return; }
-    const { data, error } = await supabase.from('profiles').select(PROFILE_SELECT).eq('id', user.id).single();
-    if (error) Alert.alert('读取资料失败', error.message);
-    else if (data) {
+  const loadProfile = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { data: sessionData } = await withUiTimeout(
+        supabase.auth.getSession(),
+        '账户登录状态读取超时，请检查网络后重试。',
+      );
+      const user = sessionData.session?.user;
+      if (!user) {
+        setRequiresSignIn(true);
+        setProfile(null);
+        setLoadError('需要登录后才能修改账户资料。');
+        router.replace('/auth');
+        return;
+      }
+      setRequiresSignIn(false);
+      const { data, error } = await withUiTimeout(
+        supabase.from('profiles').select(PROFILE_SELECT).eq('id', user.id).single(),
+        '账户资料读取超时，请检查网络后重试。',
+      );
+      if (error) throw error;
+      if (!data) throw new Error('没有找到可用的账户资料。');
       const next = data as SocialProfile;
       setProfile(next); setName(next.display_name || ''); setBio(next.bio || ''); setAvatar(next.avatar_key || 'avatar_001');
       setAvatarPath(next.avatar_path); setCoverPath(next.cover_path); setIsPrivate(next.is_private); setAllowMessages(next.allow_message_requests);
+      setLoadError('');
+    } catch (error) {
+      setProfile(null);
+      setLoadError(error instanceof Error ? error.message : '无法读取账户资料。');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  })(); }, []);
+  }, []);
+
+  useEffect(() => { void loadProfile(); }, [loadProfile]);
+  useForegroundRetry(Boolean(loadError && !requiresSignIn), () => void loadProfile());
 
   const dirty = useMemo(() => Boolean(profile && (
     name.trim() !== (profile.display_name || '') || bio.trim() !== (profile.bio || '') || avatar !== profile.avatar_key
@@ -107,8 +135,15 @@ export default function ProfileSettingsScreen() {
     } finally { setSaving(false); }
   };
 
-  if (loading) return <View style={styles.center}><ActivityIndicator /></View>;
-  if (!profile) return <View style={styles.center}><Text>无法读取账户资料。</Text></View>;
+  if (loading) return <View style={styles.statePage}><AsyncStatePanel testID="profile-settings-loading" title="正在读取账户资料" message="正在同步昵称、头像、简介和隐私设置。" busy /></View>;
+  if (!profile) return <View style={styles.statePage}><AsyncStatePanel
+    testID="profile-settings-error"
+    tone="error"
+    title={requiresSignIn ? '需要登录' : '无法读取账户资料'}
+    message={loadError || '请检查网络后重新读取。'}
+    actionLabel={requiresSignIn ? '前往登录' : '重新读取'}
+    onAction={requiresSignIn ? () => router.replace('/auth') : () => void loadProfile()}
+  /></View>;
   const currentAvatar = avatarNumber(avatar);
   const coverUri = coverAsset?.uri || publicProfileMediaUrl(coverPath);
 
@@ -138,6 +173,6 @@ export default function ProfileSettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  center:{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#f5f6f8'},page:{backgroundColor:'#f5f6f8',padding:18,paddingTop:58,paddingBottom:40,minHeight:'100%'},
+  statePage:{flex:1,justifyContent:'center',backgroundColor:'#f5f6f8',padding:18},page:{backgroundColor:'#f5f6f8',padding:18,paddingTop:58,paddingBottom:40,minHeight:'100%'},
   h1:{fontSize:30,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:20},visualCard:{backgroundColor:'#fff',borderRadius:18,overflow:'hidden',marginBottom:22,borderWidth:1,borderColor:'#eaecf0'},cover:{height:132,backgroundColor:'#dbeafe'},coverFallback:{flex:1,backgroundColor:'#0f4c81'},avatarFloat:{width:98,height:98,borderRadius:49,padding:5,backgroundColor:'#fff',marginTop:-49,marginLeft:18},avatarImage:{width:88,height:88,borderRadius:44},visualActions:{position:'absolute',right:14,top:146,flexDirection:'row',gap:8},smallButton:{backgroundColor:'#c8211e',borderRadius:9,paddingHorizontal:12,paddingVertical:9},smallButtonText:{color:'#fff',fontWeight:'900'},row:{flexDirection:'row',flexWrap:'wrap',gap:6,padding:16,paddingTop:12},textButton:{paddingHorizontal:9,paddingVertical:7},textButtonText:{color:'#475467',fontWeight:'800'},removeText:{color:'#b42318',fontWeight:'800'},label:{fontWeight:'800',color:'#344054',marginBottom:8},input:{backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,paddingHorizontal:14,paddingVertical:13,fontSize:16,color:'#101828'},bio:{height:112},counter:{textAlign:'right',color:'#98a2b3',marginTop:5,marginBottom:18},settingCard:{backgroundColor:'#fff',borderRadius:14,padding:16,marginBottom:12,flexDirection:'row',alignItems:'center',gap:12},settingCopy:{flex:1},settingTitle:{fontSize:16,fontWeight:'900',color:'#101828'},settingMeta:{fontSize:13,color:'#667085',lineHeight:19,marginTop:4},save:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginTop:8},disabled:{opacity:.45},saveText:{color:'#fff',fontWeight:'900',fontSize:16},danger:{marginTop:28,paddingTop:22,borderTopWidth:1,borderTopColor:'#d0d5dd'},dangerTitle:{fontWeight:'900',fontSize:18,color:'#101828'},dangerText:{color:'#667085',marginTop:5},deleteEntry:{marginTop:12,borderWidth:1,borderColor:'#b42318',borderRadius:12,padding:13,alignItems:'center'},deleteEntryText:{color:'#b42318',fontWeight:'900'},back:{padding:14,alignItems:'center',marginTop:8},backText:{color:'#475467',fontWeight:'800'}
 });

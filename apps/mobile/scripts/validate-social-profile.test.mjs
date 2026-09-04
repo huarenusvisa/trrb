@@ -44,3 +44,27 @@ test('mobile screens expose refined profile, custom media and protected messagin
   assert.match(chat, /不能(?:继续|再)发送第二条/);
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
 });
+
+test('account, message and community states remain actionable on weak networks', () => {
+  const panel = read('src/components/AsyncStatePanel.tsx');
+  const timeout = read('src/utils/async-state-core.ts');
+  const settings = read('app/profile-settings.tsx');
+  const notifications = read('app/notifications.tsx');
+  const community = read('app/community.tsx');
+
+  assert.match(panel, /accessibilityLiveRegion="polite"/);
+  assert.match(panel, /accessibilityRole="button"/);
+  assert.match(panel, /minHeight:44/);
+  assert.match(timeout, /Promise\.race/);
+  assert.match(timeout, /timeoutMs = 12_000/);
+
+  assert.match(settings, /profile-settings-error/);
+  assert.match(settings, /useForegroundRetry/);
+  assert.match(settings, /重新读取/);
+  assert.match(notifications, /notifications-empty/);
+  assert.match(notifications, /notifications-error/);
+  assert.match(notifications, /useForegroundRetry/);
+  assert.match(community, /community-empty/);
+  assert.match(community, /community-error/);
+  assert.match(community, /发布第一篇/);
+});

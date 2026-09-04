@@ -2,9 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { fetchArticles, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
+import { fetchArticles, fetchHomepageFocus, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 
-const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职'] as const;
+const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
 const SUPPLEMENT_CATEGORIES = ['重要新闻', '热门头条', '美国时政', '美国警情', 'ICE执法动态'] as const;
 const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
 
@@ -143,6 +143,7 @@ export default function HomeScreen() {
   const { width } = useWindowDimensions();
   const carouselRef = useRef<ScrollView>(null);
   const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [focusArticles, setFocusArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
@@ -154,7 +155,10 @@ export default function HomeScreen() {
   async function load() {
     try {
       setError('');
-      const global = await fetchArticles({ limit: 120 });
+      const [global, focus] = await Promise.all([
+        fetchArticles({ limit: 120 }),
+        fetchHomepageFocus().catch(() => []),
+      ]);
       const supplements = await Promise.all(SUPPLEMENT_CATEGORIES.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
       const seen = new Set<string>();
       const merged = sortNewestFirst([...global, ...supplements.flat()]).filter((item) => {
@@ -164,6 +168,7 @@ export default function HomeScreen() {
         return true;
       });
       setArticles(merged);
+      setFocusArticles(focus);
     } catch (e) {
       setError(e instanceof Error ? e.message : '新闻加载失败');
     } finally {
@@ -200,16 +205,14 @@ export default function HomeScreen() {
 
   const homepageArticles = useMemo(() => articles.filter((item) => !isHiddenHomepageCategory(item.category_name)), [articles]);
   const importantCarousel = useMemo(() => {
-    const explicit = homepageArticles.filter((item) => item.category_name === '重要新闻');
-    const candidates = [...explicit, ...homepageArticles.filter((item) => item.category_name !== '重要新闻')];
     const seen = new Set<string>();
-    return candidates.filter((item) => {
+    return focusArticles.filter((item) => {
       const key = String(item.id);
       if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
     }).slice(0, 5);
-  }, [homepageArticles]);
+  }, [focusArticles]);
   const carouselWidth = Math.max(280, width - 28);
 
   useEffect(() => {

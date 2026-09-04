@@ -167,3 +167,17 @@ test('news and community comments preserve scoped drafts and failed submissions'
   assert.match(drafts, /scope: CommentDraftScope/);
   assert.match(drafts, /AsyncStorage\.setItem/);
 });
+
+test('news comment lists distinguish empty, failed and pagination states', () => {
+  const news = read('src/components/CommentThread.tsx');
+
+  assert.match(news, /news-comments-load-error/);
+  assert.match(news, /news-comments-more-error/);
+  assert.match(news, /news-comments-empty/);
+  assert.match(news, /withUiTimeout\(listComments/);
+  assert.match(news, /useForegroundRetry\(Boolean\(loadError\)/);
+  assert.match(news, /已加载的评论仍保留在本页/);
+  assert.match(news, /重新读取评论/);
+  assert.match(news, /重试加载更多/);
+  assert.doesNotMatch(news, /if \(!append\) setItems\(\[\]\)/);
+});

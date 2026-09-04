@@ -6,6 +6,8 @@ import { supabase } from '../auth/supabase';
 import { isOwnComment } from '../community/comment-presentation';
 import { AsyncStatePanel } from './AsyncStatePanel';
 import { clearCommentDraft, loadCommentDraft, saveCommentDraft } from '../storage/commentDraft';
+import { useForegroundRetry } from '../hooks/useForegroundRetry';
+import { withUiTimeout } from '../utils/async-state-core';
 
 type ReplyTarget = { id: string; label: string };
 
@@ -14,6 +16,8 @@ export function CommentThread({ articleId }: { articleId: string }) {
   const [cursor, setCursor] = useState<CommentCursor>(null);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [loadMoreError, setLoadMoreError] = useState('');
   const [text, setText] = useState('');
   const [replyTo, setReplyTo] = useState<ReplyTarget | null>(null);
   const [sending, setSending] = useState(false);
@@ -26,23 +30,34 @@ export function CommentThread({ articleId }: { articleId: string }) {
   const [draftReady, setDraftReady] = useState(false);
   const [draftRestored, setDraftRestored] = useState(false);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const loadVersion = useRef(0);
   const latestDraft = useRef<{ text: string; parentId: string | null; replyLabel: string | null }>({ text: '', parentId: null, replyLabel: null });
 
   const load = useCallback(async (append = false) => {
+    const version = ++loadVersion.current;
     append ? setLoadingMore(true) : setLoading(true);
+    append ? setLoadMoreError('') : setLoadError('');
     try {
-      const page = await listComments(articleId, append ? cursor : null);
+      const page = await withUiTimeout(listComments(articleId, append ? cursor : null), append ? '更多评论加载超时，请重试。' : '评论加载超时，请检查网络后重试。');
+      if (version !== loadVersion.current) return;
       setItems((old) => append ? [...old, ...page.items] : page.items);
       setCursor(page.nextCursor);
     } catch (error) {
-      if (!append) setItems([]);
-      console.warn('comment list failed', error);
+      if (version !== loadVersion.current) return;
+      const detail = error instanceof Error ? error.message : '评论暂时无法加载。';
+      append ? setLoadMoreError(detail) : setLoadError(detail);
     } finally {
+      if (version !== loadVersion.current) return;
       append ? setLoadingMore(false) : setLoading(false);
     }
   }, [articleId, cursor]);
 
-  useEffect(() => { void load(false); }, [articleId]);
+  useEffect(() => {
+    loadVersion.current += 1;
+    setItems([]); setCursor(null); setLoadError(''); setLoadMoreError('');
+    void load(false);
+  }, [articleId]);
+  useForegroundRetry(Boolean(loadError), () => void load(false));
   useEffect(() => {
     let active = true;
     let loaded = false;
@@ -180,7 +195,10 @@ export function CommentThread({ articleId }: { articleId: string }) {
       <Pressable testID="news-comment-report-submit" style={styles.reportSubmit} onPress={submitReport} disabled={!reportReason.trim() || busyCommentId === reportTarget.id}><Text style={styles.submitText}>{busyCommentId === reportTarget.id ? '提交中…' : '提交举报'}</Text></Pressable>
     </View> : null}
 
-    {loading ? <ActivityIndicator style={{ marginTop: 24 }} /> : items.length === 0 ? <Text style={styles.empty}>暂时还没有评论。</Text> : items.map((item, index) => <View key={item.id} testID={`news-comment-${index}`} style={styles.comment}>
+    {loading && !items.length ? <View testID="news-comments-loading" accessibilityLiveRegion="polite"><ActivityIndicator style={{ marginTop: 24 }} /><Text style={styles.loadingText}>正在读取评论…</Text></View> : null}
+    {loading && items.length ? <Text testID="news-comments-refreshing" accessibilityLiveRegion="polite" style={styles.loadingText}>正在刷新评论，已加载内容继续保留。</Text> : null}
+    {loadError ? <AsyncStatePanel testID="news-comments-load-error" title={items.length ? '评论刷新失败' : '暂时无法读取评论'} message={items.length ? `${loadError} 已加载的评论仍保留在本页。` : loadError} tone="error" actionLabel="重新读取评论" onAction={() => void load(false)} busy={loading} /> : null}
+    {!loading && !loadError && items.length === 0 ? <Text testID="news-comments-empty" style={styles.empty}>暂时还没有评论。</Text> : items.map((item, index) => <View key={item.id} testID={`news-comment-${index}`} style={styles.comment}>
       <View style={styles.commentHead}><Pressable onPress={() => router.push(`/user/${item.user_id}`)}><Text style={styles.name}>{item.profiles?.display_name || '唐人读者'}</Text></Pressable><Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
       {item.parent_id ? <Text style={styles.parentTag}>回复</Text> : null}
       <Text style={styles.body}>{item.content}</Text>
@@ -192,10 +210,11 @@ export function CommentThread({ articleId }: { articleId: string }) {
       </View>
     </View>)}
 
-    {cursor ? <Pressable style={styles.more} onPress={() => load(true)} disabled={loadingMore}><Text style={styles.moreText}>{loadingMore ? '加载中…' : '加载更多评论'}</Text></Pressable> : null}
+    {loadMoreError ? <AsyncStatePanel testID="news-comments-more-error" title="更多评论加载失败" message={loadMoreError} tone="error" actionLabel="重试加载更多" onAction={() => void load(true)} busy={loadingMore} /> : null}
+    {cursor && !loadMoreError ? <Pressable accessibilityRole="button" accessibilityLabel="加载更多评论" accessibilityState={{ disabled: loadingMore, busy: loadingMore }} style={styles.more} onPress={() => load(true)} disabled={loadingMore}><Text style={styles.moreText}>{loadingMore ? '加载中…' : '加载更多评论'}</Text></Pressable> : null}
   </View>;
 }
 
 const styles = StyleSheet.create({
-  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},heading:{fontSize:24,fontWeight:'900',color:'#101828'},hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10,marginBottom:9},replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3',marginTop:5},submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},message:{marginTop:12,color:'#067647',fontWeight:'700'},reportBox:{marginTop:16,padding:12,backgroundColor:'#fff7ed',borderRadius:12},reportInput:{minHeight:74,borderWidth:1,borderColor:'#d0d5dd',backgroundColor:'#fff',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{backgroundColor:'#b42318',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:8},empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},actions:{flexDirection:'row',flexWrap:'wrap',gap:18,marginTop:10},action:{color:'#c8211e',fontWeight:'800'},reportAction:{color:'#667085',fontWeight:'800'},deleteAction:{color:'#b42318',fontWeight:'800'},more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
+  wrap:{marginTop:38,paddingTop:26,borderTopWidth:1,borderTopColor:'#eaecf0'},heading:{fontSize:24,fontWeight:'900',color:'#101828'},hint:{color:'#667085',marginTop:6,marginBottom:14,lineHeight:20},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10,marginBottom:9},replyBanner:{flexDirection:'row',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderRadius:10,padding:10,marginBottom:8},replyText:{fontWeight:'700',color:'#344054'},cancel:{color:'#c8211e',fontWeight:'800'},input:{minHeight:88,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3',marginTop:5},submit:{backgroundColor:'#c8211e',borderRadius:10,paddingVertical:12,alignItems:'center',marginTop:10},submitText:{color:'#fff',fontWeight:'800'},message:{marginTop:12,color:'#067647',fontWeight:'700'},reportBox:{marginTop:16,padding:12,backgroundColor:'#fff7ed',borderRadius:12},reportInput:{minHeight:74,borderWidth:1,borderColor:'#d0d5dd',backgroundColor:'#fff',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{backgroundColor:'#b42318',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:8},loadingText:{color:'#667085',textAlign:'center',marginTop:8},empty:{color:'#98a2b3',paddingVertical:26,textAlign:'center'},comment:{paddingVertical:18,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},name:{fontWeight:'800',color:'#101828'},time:{fontSize:12,color:'#98a2b3'},parentTag:{fontSize:12,color:'#667085',marginTop:5},body:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},actions:{flexDirection:'row',flexWrap:'wrap',gap:18,marginTop:10},action:{color:'#c8211e',fontWeight:'800'},reportAction:{color:'#667085',fontWeight:'800'},deleteAction:{color:'#b42318',fontWeight:'800'},more:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingVertical:11,alignItems:'center',marginTop:14},moreText:{color:'#344054',fontWeight:'800'}
 });

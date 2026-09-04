@@ -67,6 +67,11 @@ test("ERO地区官方补抓使用可配置时间窗并支持分页去重", () =>
   assert.match(ero, /last_seen_id/);
   assert.match(ero, /next_token/);
   assert.match(ero, /MAX_PAGES_PER_QUERY/);
+  assert.match(ero, /DIRECT_BATCH_SIZE/);
+  assert.match(ero, /const selectedDirect = direct;/);
+  assert.match(ero, /join\(" OR "\)/);
+  assert.doesNotMatch(ero, /selectedDirect = direct\.filter/);
+  assert.match(ero, /60 \* 60 \* 1000/);
   assert.match(ero, /EROBaltimore/);
   assert.match(ero, /source_type: "official"/);
   assert.match(ero, /resolution=ignore-duplicates/);

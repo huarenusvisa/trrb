@@ -40,18 +40,31 @@ test('keeps category labels at the page level and rotates important news on the 
   assert.match(home, /pagingEnabled/);
   assert.match(home, /importantCarousel\.map/);
   assert.match(home, /setInterval[\s\S]*carouselRef\.current\?\.scrollTo/);
-  assert.match(home, /HOME_NAV_ITEMS = \['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职'\]/);
+  assert.match(home, /HOME_NAV_ITEMS = \['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'\]/);
 });
 
-test('keeps ICE in its two sections and the 24-hour ranking, never in nav or carousel', () => {
+test('keeps ICE in its designated sections, ranking, nav and qualified focus carousel', () => {
   const home = read('app/(tabs)/index.tsx');
+  const api = read('src/api/trrb.ts');
+  const focus = fs.readFileSync(new URL('../../../netlify/functions/public-home-focus.js', import.meta.url), 'utf8');
+  const publicArticles = fs.readFileSync(new URL('../../../netlify/functions/public-articles.js', import.meta.url), 'utf8');
   assert.doesNotMatch(home, /中国官场/);
   assert.match(home, /key: 'ice',[\s\S]*?title: 'ICE执法动态'/);
   assert.match(home, /key: 'ice-news', title: 'ICE执法动态'/);
   assert.equal((home.match(/title: 'ICE执法动态'/g) || []).length, 2);
   assert.match(home, /rankCategories[^;]*'ICE执法动态'/s);
   assert.match(home, /const rankItems = useMemo[\s\S]*?return articles[\s\S]*?rankCategories\.has/);
-  assert.doesNotMatch(home, /HOME_NAV_ITEMS[^;]*ICE/s);
+  assert.match(home, /HOME_NAV_ITEMS[^;]*'ICE执法动态'/s);
+  assert.match(api, /export async function fetchHomepageFocus/);
+  assert.match(home, /fetchHomepageFocus\(\)\.catch/);
+  assert.match(home, /const importantCarousel = useMemo[\s\S]*?return focusArticles\.filter/);
+  assert.match(focus, /MIN_LONGFORM_CHARS = 1500/);
+  assert.match(focus, /isIceEnforcementText/);
+  assert.match(focus, /textLength\(row\?\.content\) < MIN_LONGFORM_CHARS/);
+  assert.match(focus, /b\.homepage_focus_score - a\.homepage_focus_score/);
+  assert.match(publicArticles, /category === "ICE执法动态"/);
+  assert.match(publicArticles, /topic_key\.eq\.ice/);
+  assert.match(publicArticles, /isIceEnforcementText/);
   assert.match(home, /const homepageArticles = useMemo\(\(\) => articles\.filter\(\(item\) => !isHiddenHomepageCategory/);
   assert.match(home, /value\.startsWith\('中国官'\)[^;]*\/ICE\/i\.test\(value\)/);
   assert.match(home, /section\.key === 'ice-news' \? articles : homepageArticles/);

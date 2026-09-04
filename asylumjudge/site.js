@@ -19,6 +19,7 @@ let searchTimer = null;
 let selectedTrendState = 'NY';
 let selectedTrendCourt = '';
 let selectedTrendInterval = 'month';
+let trendController = null;
 let overviewController = null;
 
 const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylumjudge(?:\/|$)/i.test(location.pathname);
@@ -217,6 +218,9 @@ function renderStateMarket(periods, label, interval) {
 }
 
 async function loadStateTrend(state = selectedTrendState, interval = selectedTrendInterval, court = selectedTrendCourt) {
+  trendController?.abort();
+  const controller = new AbortController();
+  trendController = controller;
   selectedTrendState = state;
   selectedTrendInterval = interval;
   selectedTrendCourt = court;
@@ -233,15 +237,20 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
   $('#state-market-title').textContent = `${initialLabel}裁决批准率走势`;
   $('#state-market-period-label').textContent = interval === 'month' ? '最近 24 个月' : 'FY 2020–FY 2026';
   try {
-    const data = await json(`/.netlify/functions/immigration-judges?mode=state-trend&state=${encodeURIComponent(state)}&court=${encodeURIComponent(court)}&interval=${encodeURIComponent(interval)}`);
+    const data = await json(`/.netlify/functions/immigration-judges?mode=state-trend&state=${encodeURIComponent(state)}&court=${encodeURIComponent(court)}&interval=${encodeURIComponent(interval)}`, { signal: controller.signal });
+    if (trendController !== controller) return;
     const label = data.court_name || stateName(data.state);
     $('#state-market-title').textContent = `${label}裁决批准率走势`;
     renderStateMarket(data.periods || [], label, interval);
   } catch (error) {
+    if (error.name === 'AbortError' || trendController !== controller) return;
     chart.innerHTML = '<div class="state-market-loading"><span><b>州趋势数据暂时无法读取</b><button id="state-trend-retry" class="trend-retry" type="button">重新尝试</button></span></div>';
     $('#state-trend-retry').addEventListener('click', () => loadStateTrend(state, interval, court));
   } finally {
-    chart.setAttribute('aria-busy', 'false');
+    if (trendController === controller) {
+      trendController = null;
+      chart.setAttribute('aria-busy', 'false');
+    }
   }
 }
 

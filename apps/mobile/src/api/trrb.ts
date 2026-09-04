@@ -65,34 +65,41 @@ function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function requestJson(url: string, attempt = 0): Promise<any> {
-  const existing = inflight.get(url);
-  if (existing) return existing;
-
-  const task = (async () => {
+async function executeJsonRequest(url: string): Promise<any> {
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
     try {
-      const response = await fetch(url, {
+      response = await fetch(url, {
         headers: { Accept: 'application/json' },
-        signal: controller.signal
+        signal: controller.signal,
       });
-      if (response.status >= 500 && attempt < MAX_RETRIES) {
-        await wait(350 * (attempt + 1));
-        return requestJson(url, attempt + 1);
-      }
-      return await readJson(response);
     } catch (error) {
       if (attempt < MAX_RETRIES) {
         await wait(350 * (attempt + 1));
-        return requestJson(url, attempt + 1);
+        continue;
       }
       if (error instanceof Error && error.name === 'AbortError') throw new Error('请求超时，请检查网络后重试');
       throw error;
     } finally {
       clearTimeout(timer);
     }
-  })();
+
+    if (response.status >= 500 && attempt < MAX_RETRIES) {
+      await wait(350 * (attempt + 1));
+      continue;
+    }
+    return readJson(response);
+  }
+  throw new Error('请求失败，请稍后重试');
+}
+
+async function requestJson(url: string): Promise<any> {
+  const existing = inflight.get(url);
+  if (existing) return existing;
+
+  const task = executeJsonRequest(url);
 
   inflight.set(url, task);
   try {

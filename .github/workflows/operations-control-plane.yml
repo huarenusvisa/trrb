@@ -28,6 +28,7 @@ on:
   schedule:
     # Enabled collectors run on every hourly heartbeat. Manual switch-on dispatches
     # immediately and must never be blocked by an internal cadence lock.
+    # Changes here also wake enabled collectors so production coverage fixes are verified immediately.
     - cron: "7 * * * *"
     - cron: "47 3 * * *"
     - cron: "37 4 * * *"

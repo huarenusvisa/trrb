@@ -41,13 +41,17 @@ function hasAny(text, terms) {
   return terms.some((term) => text.includes(normalize(term)));
 }
 
+function hasEroHandleMention(text) {
+  return /(^|[^a-z0-9])@?ero[a-z0-9_]*(?=$|[^a-z0-9])/i.test(String(text || ""));
+}
+
 const ICE_NATIVE_SOURCE = /^(icegov|ero[a-z0-9_]*|ice[a-z0-9_]*)$/i;
 const ICE_POLICY_ONLY = /\b(abolish|defund|dismantle|eliminate|replace|vote(?:d|s|ing)?|proposal|campaign|protest(?:ed|s|ing)?)\b.{0,40}\bice\b|\bice\b.{0,40}\b(abolish|defund|dismantle|eliminate|replace|proposal|campaign|protest(?:ed|s|ing)?)\b/i;
 
 function isIceEnforcementText(...values) {
   const text = normalize(values.filter(Boolean).join(" "));
   if (!text) return false;
-  const agency = hasStandaloneIce(text) || hasAny(text, ICE_AGENCY_PHRASES);
+  const agency = hasStandaloneIce(text) || hasAny(text, ICE_AGENCY_PHRASES) || hasEroHandleMention(text);
   const action = hasAny(text, ICE_ACTION_PHRASES);
   return agency && action;
 }
@@ -64,6 +68,7 @@ module.exports = {
   ICE_AGENCY_PHRASES,
   ICE_ACTION_PHRASES,
   hasStandaloneIce,
+  hasEroHandleMention,
   isIceEnforcementText,
   isIceEnforcementEvidence
 };

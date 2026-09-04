@@ -6,6 +6,7 @@ const X_API = "https://api.x.com/2";
 const LOOKBACK_HOURS = Number(process.env.ICE_ERO_LOOKBACK_HOURS || 12);
 const MAX_PAGES_PER_QUERY = 3;
 const ROTATION_GROUPS = Math.max(1, Number(process.env.ICE_ERO_ROTATION_GROUPS || 3));
+const DIRECT_BATCH_SIZE = Math.max(1, Number(process.env.ICE_ERO_DIRECT_BATCH_SIZE || 10));
 
 const HANDLES = [
   "ICEgov","DHSgov","HSI_HQ","CBP","USBPChief","USCIS","DOJ_EOIR",
@@ -57,7 +58,15 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
 }
 function buildQueries(handles) {
   const unique = [...new Set(handles.map((x) => String(x).replace(/^@/, "").trim()).filter(Boolean))];
-  const direct = unique.map((handle) => ({ handle, query: `from:${handle} -is:retweet -is:reply` }));
+  const direct = [];
+  for (let offset = 0; offset < unique.length; offset += DIRECT_BATCH_SIZE) {
+    const batch = unique.slice(offset, offset + DIRECT_BATCH_SIZE);
+    direct.push({
+      handle: `official-batch-${Math.floor(offset / DIRECT_BATCH_SIZE) + 1}`,
+      handles: batch,
+      query: `(${batch.map((handle) => `from:${handle}`).join(" OR ")}) -is:retweet -is:reply`
+    });
+  }
   const discovery = [
     { handle: "discovery-ero", query: '("ICE ERO" OR "Enforcement and Removal Operations" OR "ERO officers") (arrested OR detained OR deported OR removed OR raid OR operation) -is:retweet -is:reply lang:en' },
     { handle: "discovery-hsi", query: '("HSI" OR "Homeland Security Investigations") (arrested OR operation OR raid OR trafficking OR smuggling OR seized OR rescued) -is:retweet -is:reply lang:en' },
@@ -66,7 +75,7 @@ function buildQueries(handles) {
   ];
   return { direct, discovery };
 }
-function rotationSlot() { return Math.floor(Date.now() / (15 * 60 * 1000)) % ROTATION_GROUPS; }
+function rotationSlot() { return Math.floor(Date.now() / (60 * 60 * 1000)) % ROTATION_GROUPS; }
 async function queryState(key) {
   const rows = await sb("ice_query_state", { query: { select: "*", query_key: `eq.${key}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
@@ -120,7 +129,9 @@ async function main() {
 
   const { direct, discovery } = buildQueries([...HANDLES, ...registryHandles]);
   const slot = rotationSlot();
-  const selectedDirect = direct.filter((_, index) => index % ROTATION_GROUPS === slot);
+  // All official ERO accounts are queried on every run in compact OR batches.
+  // Only broad discovery searches rotate; direct official coverage must never have blind groups.
+  const selectedDirect = direct;
   const selectedDiscovery = discovery.length ? [discovery[slot % discovery.length]] : [];
   const queryItems = [...selectedDirect, ...selectedDiscovery];
 
@@ -172,7 +183,8 @@ async function main() {
     lookback_hours: LOOKBACK_HOURS,
     rotation_groups: ROTATION_GROUPS,
     rotation_slot: slot,
-    configured_account_queries: direct.length,
+    configured_official_accounts: new Set([...HANDLES, ...registryHandles].map((x) => String(x).replace(/^@/, "").toLowerCase())).size,
+    configured_account_batches: direct.length,
     selected_account_queries: selectedDirect.length,
     selected_discovery_queries: selectedDiscovery.map((x) => x.handle),
     requests,

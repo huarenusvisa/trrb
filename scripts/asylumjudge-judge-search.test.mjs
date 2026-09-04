@@ -26,6 +26,9 @@ assert.match(client, /\$\('#judge-q'\)\.addEventListener\('search'[\s\S]*resetSe
 assert.match(client, /row\.adjudicated_decisions \?\? row\.decision_count \?\? row\.total_asylum_decisions/, 'judge results must use the adjudicated decision sample with compatible fallbacks');
 assert.match(client, /sampleSize == null \? '—' : fmt\(sampleSize\)/, 'missing sample sizes must not be displayed as zero');
 assert.match(client, /mobile-sample[\s\S]*裁决样本 \$\{sampleText\}[\s\S]*<label>裁决样本<\/label><span class="verdict-sample">\$\{sampleText\}/, 'sample size must be visible in desktop and mobile judge results');
+assert.match(client, /if \(!statsResponse\.ok \|\| !freshnessResponse\.ok\) throw new Error/, 'judge overview requests must reject non-success responses');
+assert.match(client, /freshnessElement\.innerHTML = '[^']*数据库接口暂时无法读取[^']*freshness-retry[^']*重新尝试[^']*'[\s\S]*freshnessElement\.querySelector\('\.freshness-retry'\)\.addEventListener\('click', loadStats\)/, 'judge overview failures must offer an in-place retry');
+assert.match(client, /freshnessElement\?\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*freshnessElement\?\.setAttribute\('aria-busy', 'false'\)/, 'judge overview must expose its loading state');
 assert.match(client, /judge-retry'[\s\S]*search\(query, \{ historyMode: 'none' \}\)/, 'retrying a failed query must not add a duplicate history entry');
 assert.match(client, /function revealSearchResults\(\)[\s\S]*focus\(\{ preventScroll: true \}\)[\s\S]*prefers-reduced-motion: reduce[\s\S]*scrollIntoView\(\{ behavior: reduceMotion \? 'auto' : 'smooth', block: 'start' \}\)/, 'completed judge searches must focus and reveal their status while respecting reduced motion');
 assert.match(client, /if \(!rows\.length\)[\s\S]*if \(reveal\) revealSearchResults\(\)[\s\S]*return;[\s\S]*rows\.map[\s\S]*if \(reveal\) revealSearchResults\(\)/, 'both empty and populated judge results must be revealed');
@@ -36,7 +39,9 @@ assert.match(page, /id="results" class="results" aria-live="polite" aria-busy="f
 assert.match(page, /<form id="judge-search" role="search">[\s\S]*<label class="sr-only" for="judge-q">[^<]+<\/label>[\s\S]*<input id="judge-q" name="q" type="search"/, 'judge search must expose a persistent accessible name and search landmark');
 assert.match(page, /id="judge-q"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*aria-describedby="judge-search-help"/, 'judge search must expose mobile search keyboard intent and its visible help text');
 assert.match(page, /<button type="submit">查询<\/button>/, 'judge search submit control must declare its button type');
-assert.match(page, /judges\.css\?v=3[\s\S]*app-i18n\.js\?v=8[\s\S]*judges\.js\?v=7/, 'judge search page must load sample-size styles and the updated client');
+assert.match(page, /id="data-freshness" role="status" aria-live="polite" aria-busy="true"/, 'judge overview freshness must expose an accessible status');
+assert.match(page, /judges\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*judges\.js\?v=8/, 'judge search page must load overview-retry styles and the updated client');
 assert.match(readFileSync(new URL('../immigration-judge-approval-rate/judges.css', import.meta.url), 'utf8'), /mobile-sample\{display:none\}[\s\S]*@media\(max-width:800px\)\{\.mobile-sample\{display:inline\}\}/, 'mobile judge results must reveal the inline sample size');
+assert.match(readFileSync(new URL('../immigration-judge-approval-rate/judges.css', import.meta.url), 'utf8'), /\.freshness-retry\{[^}]*text-decoration:underline[^}]*cursor:pointer/, 'judge overview retry must look interactive');
 
 console.log('AsylumJudge judge search recovery contract: PASS');

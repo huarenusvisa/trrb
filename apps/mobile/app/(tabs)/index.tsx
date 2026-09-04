@@ -3,7 +3,7 @@ import { ActivityIndicator, InteractionManager, Linking, Pressable, RefreshContr
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
-import { NewsImage } from '../../src/components/NewsImage';
+import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { cacheHomeFeed, readCachedHomeFeed } from '../../src/storage/newsFeedCache';
 
 const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
@@ -144,6 +144,7 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const carouselRef = useRef<ScrollView>(null);
+  const loadSequence = useRef(0);
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [focusArticles, setFocusArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
@@ -156,6 +157,8 @@ export default function HomeScreen() {
   const [weather, setWeather] = useState<WeatherState>({ temperature: null, code: null, isDay: true });
 
   async function load(restoreCache = false) {
+    const sequence = loadSequence.current + 1;
+    loadSequence.current = sequence;
     let restored = false;
     let cachedFocus = focusArticles;
     if (restoreCache) {
@@ -174,7 +177,19 @@ export default function HomeScreen() {
         fetchArticles({ limit: 120 }),
         fetchHomepageFocus().catch(() => null),
       ]);
+      if (sequence !== loadSequence.current) return;
+
+      const focus = focusResult ?? cachedFocus;
+      setArticles(global);
+      setFocusArticles(focus);
+      setLoading(false);
+      setRefreshing(false);
+      void cacheHomeFeed(global, focus).catch(() => undefined);
+
+      // The canonical PC feed paints first. Category supplements fill gaps only
+      // after the first usable homepage is already visible.
       const supplements = await Promise.all(SUPPLEMENT_CATEGORIES.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
+      if (sequence !== loadSequence.current) return;
       const seen = new Set<string>();
       const merged = sortNewestFirst([...global, ...supplements.flat()]).filter((item) => {
         const key = String(item.id);
@@ -182,15 +197,16 @@ export default function HomeScreen() {
         seen.add(key);
         return true;
       });
-      const focus = focusResult ?? cachedFocus;
       setArticles(merged);
-      setFocusArticles(focus);
       void cacheHomeFeed(merged, focus).catch(() => undefined);
     } catch (e) {
+      if (sequence !== loadSequence.current) return;
       setError(restored || articles.length > 0 ? '网络不可用，正在显示上次读取的新闻。下拉即可重试。' : (e instanceof Error ? e.message : '新闻加载失败'));
     } finally {
-      setLoading(false);
-      setRefreshing(false);
+      if (sequence === loadSequence.current) {
+        setLoading(false);
+        setRefreshing(false);
+      }
     }
   }
 
@@ -265,6 +281,19 @@ export default function HomeScreen() {
       .filter((item) => section.aliases.some((alias) => alias === String(item.category_name || '')))
       .slice(0, 6),
   })), [articles, homepageArticles]);
+  const imagePrefetchQueue = useMemo(() => [
+    ...importantCarousel.slice(1, 3).map((item) => item.cover_image),
+    ...categoryGroups.map((section) => section.items[0]?.cover_image),
+  ], [categoryGroups, importantCarousel]);
+
+  useEffect(() => {
+    if (!imagePrefetchQueue.some(Boolean)) return;
+    const task = InteractionManager.runAfterInteractions(() => {
+      void prefetchNewsImages(imagePrefetchQueue, 6);
+    });
+    return () => task.cancel();
+  }, [imagePrefetchQueue]);
+
   const topicLatest = useMemo(() => ({
     trump: articles.find((item) => item.title.includes('特朗普')),
     ice: articles.find((item) => /ICE|移民执法|驱逐/i.test(`${item.category_name || ''} ${item.title}`)),

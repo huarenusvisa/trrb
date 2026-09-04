@@ -27,17 +27,22 @@ async function load() {
     document.title = `${court.court_name} FY ${fiscalYear} 庇护通过率｜唐人日报`;
     $('#court-name').textContent = court.court_name || '移民法院';
     $('#court-place').textContent = [court.court_city, court.court_state].filter(Boolean).join(', ');
-    $('#court-source').textContent = `FY ${fiscalYear} · 法院指标由数据库中归属于该法院的法官庇护裁决记录汇总。`;
+    const fiscalYearJudgeList = data.judge_list_scope === 'fiscal_year';
+    $('#court-source').textContent = `FY ${fiscalYear} · 法院指标由数据库中归属于该法院的法官庇护裁决记录汇总。${fiscalYearJudgeList ? '' : ' 下方法官档案使用全数据范围，不等于本财年活跃法官人数。'}`;
     const backParams = new URLSearchParams({ fy: String(fiscalYear) });
     if (court.court_state || state) backParams.set('state', court.court_state || state);
     $('#court-back').href = `${window.judgePagePath ? window.judgePagePath('courts.html') : '/immigration-judge-approval-rate/courts.html'}?${backParams}`;
     $('#rate').textContent = pct(court.adjudicated_approval_rate);
+    $('#judges').previousElementSibling.textContent = `FY ${fiscalYear} 法官`;
     $('#judges').textContent = fmt(court.judges);
     $('#decisions').textContent = fmt(court.total_asylum_decisions);
     $('#gd').previousElementSibling.textContent = '批准 / 拒绝 / 其他';
     $('#gd').innerHTML = `<span class="verdict-pass">${fmt(court.grants)}</span> / <span class="verdict-deny">${fmt(court.denials)}</span> / <span class="verdict-other">${fmt(court.other_decisions)}</span>`;
     const rows = data.judges || [];
-    $('#judge-list').innerHTML = rows.length ? `<div class="trow thead outcome-row"><span>法官</span><span>裁决总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>批准率</span></div>${rows.map((row) => `<a class="trow judge-link outcome-row" href="${esc(window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(row.id)}`)}"><span><b>${esc(row.judge_name)}</b></span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="red">${pct(row.adjudicated_approval_rate)}</span></a>`).join('')}` : '<div class="empty">暂无法官数据</div>';
+    $('.detail-section .section-head h2').textContent = fiscalYearJudgeList ? `FY ${fiscalYear} 法院法官` : '法院法官档案（全数据范围）';
+    $('.detail-section .section-head p').textContent = fiscalYearJudgeList ? '点击法官查看年度与国籍数据' : `当前列表不限定 FY ${fiscalYear}；点击法官查看各年度数据`;
+    const decisionHeading = fiscalYearJudgeList ? '裁决总数' : '全范围裁决';
+    $('#judge-list').innerHTML = rows.length ? `<div class="trow thead outcome-row"><span>法官</span><span>${decisionHeading}</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>批准率</span></div>${rows.map((row) => `<a class="trow judge-link outcome-row" href="${esc(window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `/immigration-judge-approval-rate/detail.html?id=${encodeURIComponent(row.id)}`)}"><span><b>${esc(row.judge_name)}</b></span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="red">${pct(row.adjudicated_approval_rate)}</span></a>`).join('')}` : '<div class="empty">暂无法官数据</div>';
     loading.hidden = true;
     $('#court-detail').hidden = false;
   } catch {

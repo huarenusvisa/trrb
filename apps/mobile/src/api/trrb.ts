@@ -50,6 +50,13 @@ export type ArticleTranslation = {
   source_article_updated_at: string;
 };
 
+const HOMEPAGE_SUPPLEMENT_RULES = [
+  { category: '热门头条', minimum: 8, aliases: ['热门头条', '中国热门头条'] },
+  { category: '美国时政', minimum: 6, aliases: ['美国时政'] },
+  { category: '美国警情', minimum: 6, aliases: ['美国警情'] },
+  { category: 'ICE执法动态', minimum: 6, aliases: ['ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
+] as const;
+
 const API_BASE = 'https://trrb.net/.netlify/functions';
 const REQUEST_TIMEOUT_MS = 12000;
 const MAX_RETRIES = 2;
@@ -117,6 +124,15 @@ export async function fetchArticles(options: { category?: string; limit?: number
   const payload = await requestJson(`${API_BASE}/public-home-articles?${params.toString()}`);
   const articles = Array.isArray(payload?.articles) ? payload.articles : [];
   return articles as NewsArticle[];
+}
+
+export function homepageSupplementGaps(items: NewsArticle[]) {
+  return HOMEPAGE_SUPPLEMENT_RULES
+    .filter((rule) => items.filter((item) => {
+      if (rule.category === 'ICE执法动态' && item.topic_key === 'ice') return true;
+      return (rule.aliases as readonly string[]).includes(String(item.category_name || '').trim());
+    }).length < rule.minimum)
+    .map((rule) => rule.category);
 }
 
 export async function fetchHomepageFocus(): Promise<HomepageFocusArticle[]> {

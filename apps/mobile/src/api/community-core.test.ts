@@ -49,6 +49,14 @@ test('creates a trimmed community comment through the existing action contract',
   });
 });
 
+test('creates a reply through the existing parent comment contract', async () => {
+  const { api, calls } = mockApi([{ comment: { id: 'reply-1' }, pending: false }], true, 201);
+  await api.createComment('post-1', ' 回复内容 ', 'comment-1');
+  assert.deepEqual(JSON.parse(String(calls[0].init?.body)), {
+    action: 'create_comment', post_id: 'post-1', content: '回复内容', parent_id: 'comment-1',
+  });
+});
+
 test('uses the existing API actions for like, report and owner unpublish', async () => {
   const { api, calls } = mockApi([{ liked: true, like_count: 3 }, { ok: true }, { ok: true }]);
   await api.toggleLike('post-1');

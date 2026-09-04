@@ -35,6 +35,16 @@ test('defers below-the-fold service modules until the first interaction settles'
   assert.match(home, /showDeferredServices[\s\S]*portalSections\.map/);
 });
 
+test('paints the canonical feed before loading supplements and prefetches only a small image queue', () => {
+  const firstPaint = home.indexOf('setArticles(global)');
+  const supplements = home.indexOf('await Promise.all(SUPPLEMENT_CATEGORIES');
+  assert.ok(firstPaint >= 0 && supplements > firstPaint);
+  assert.match(home, /sequence !== loadSequence\.current/);
+  assert.match(home, /prefetchNewsImages\(imagePrefetchQueue, 6\)/);
+  assert.match(image, /ExpoImage\.prefetch\(unique, 'memory-disk'\)/);
+  assert.match(image, /\.slice\(0, limit\)/);
+});
+
 test('bounds long-list rendering work and exposes every story as a button', () => {
   assert.match(list, /initialNumToRender=\{8\}/);
   assert.match(list, /maxToRenderPerBatch=\{8\}/);

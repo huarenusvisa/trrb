@@ -8,6 +8,12 @@ type Props = {
   testID?: string;
 };
 
+export async function prefetchNewsImages(uris: Array<string | undefined>, limit = 6) {
+  const unique = [...new Set(uris.filter((uri): uri is string => Boolean(uri)))].slice(0, limit);
+  if (!unique.length) return false;
+  return ExpoImage.prefetch(unique, 'memory-disk').catch(() => false);
+}
+
 export function NewsImage({ uri, style, testID }: Props) {
   const [failed, setFailed] = useState(false);
   const [retryCount, setRetryCount] = useState(0);

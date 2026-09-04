@@ -98,6 +98,11 @@ function moderation(category, title, content) {
   };
 }
 
+function withViewerLikeState(posts, likeRows = []) {
+  const likedPostIds = new Set((likeRows || []).map((row) => row.post_id));
+  return (posts || []).map((post) => ({ ...post, viewer_has_liked: likedPostIds.has(post.id) }));
+}
+
 async function feed(event) {
   const user = await optionalUser(event);
   const category = clean(event.queryStringParameters?.category, 50);
@@ -110,7 +115,19 @@ async function feed(event) {
   if (postId) query.id = `eq.${postId}`;
   else if (category && CATEGORIES.has(category)) query.category = `eq.${category}`;
   const rows = await rest('community_posts', { query });
-  const posts = (rows || []).filter((row) => row.status === 'published' || (user && row.user_id === user.id && row.status !== 'deleted'));
+  let posts = (rows || []).filter((row) => row.status === 'published' || (user && row.user_id === user.id && row.status !== 'deleted'));
+  let viewerLikes = [];
+  if (user && posts.length) {
+    viewerLikes = await rest('community_post_likes', {
+      query: {
+        select: 'post_id',
+        user_id: `eq.${user.id}`,
+        post_id: `in.(${posts.map((post) => post.id).join(',')})`,
+        limit: String(posts.length)
+      }
+    });
+  }
+  posts = withViewerLikeState(posts, viewerLikes);
   let comments = [];
   if (postId && posts.length) {
     const commentRows = await rest('community_post_comments', {
@@ -303,4 +320,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { moderation, clean, commentCountAfterUnpublish };
+exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState };

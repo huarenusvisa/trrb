@@ -24,7 +24,7 @@ function mockApi(payloads: unknown[], ok = true, status = 200) {
 const post = {
   id: 'post/one', user_id: 'user-1', category: 'immigration_help', title: '测试帖子',
   content: '这是一段用于客户端契约测试的社区帖子正文。', content_label: 'question', status: 'published',
-  like_count: 2, comment_count: 1, created_at: '2026-09-03T00:00:00Z',
+  like_count: 2, viewer_has_liked: true, comment_count: 1, created_at: '2026-09-03T00:00:00Z',
 } as const;
 
 test('loads an encoded post detail with the current Supabase access token', async () => {
@@ -32,6 +32,7 @@ test('loads an encoded post detail with the current Supabase access token', asyn
   const detail = await api.getPost('post/one');
   assert.equal(detail.post.id, 'post/one');
   assert.equal(detail.viewerUserId, 'user-1');
+  assert.equal(detail.post.viewer_has_liked, true);
   assert.equal(calls[0].url, 'https://example.test/community-api?post_id=post%2Fone');
   assert.equal(new Headers(calls[0].init?.headers).get('authorization'), 'Bearer test-access-token');
 });

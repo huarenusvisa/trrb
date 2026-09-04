@@ -25,6 +25,16 @@ test('shows the U.S. section once instead of repeating it on every card', () => 
   assert.doesNotMatch(america, /style=\{styles\.cat\}/);
 });
 
+test('shows each category once and keeps important news on the homepage', () => {
+  const home = read('app/(tabs)/index.tsx');
+  const categoryList = read('src/components/PaginatedNewsList.tsx');
+
+  assert.match(home, /\['重要新闻', '热门头条', '美国时政', '美国警情', '中国官场', '招聘求职', 'ICE执法动态'\]/);
+  assert.match(categoryList, /testID="category-screen-title"/);
+  assert.doesNotMatch(categoryList, /newsCategoryName/);
+  assert.doesNotMatch(categoryList, /styles\.category/);
+});
+
 test('renders continuous previous and next official-news navigation', () => {
   const detail = read('app/article/[id].tsx');
   const api = read('src/api/trrb.ts');

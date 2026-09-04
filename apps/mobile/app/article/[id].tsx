@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Alert, Image, Linking, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, AppState, Image, Linking, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
 import { ArticleNavigation, ArticleTranslation, fetchArticle, fetchArticleNavigation, fetchArticleTranslation, fetchRelatedArticles, NewsArticle } from '../../src/api/trrb';
@@ -24,17 +24,35 @@ export default function ArticleDetailScreen() {
   const [translation, setTranslation] = useState<ArticleTranslation | null>(null);
   const [showTranslation, setShowTranslation] = useState(false);
   const [translationLoading, setTranslationLoading] = useState(false);
+  const requestVersion = useRef(0);
+  const offlineRef = useRef(false);
+  const articleRef = useRef<NewsArticle | null>(null);
 
   useEffect(() => {
     void getReadingPreferences().then((p) => setFontScale(p.fontScale));
     return subscribeReadingPreferences((p) => setFontScale(p.fontScale));
   }, []);
 
-  async function load() {
+  const load = useCallback(async (preferCache = true) => {
     if (!id) return;
-    setLoading(true); setError(''); setRelated([]); setNavigation({ previous: null, next: null }); setOffline(false);
+    const version = ++requestVersion.current;
+    setError('');
+    setRelated([]);
+    setNavigation({ previous: null, next: null });
+
+    const cached = preferCache ? await readCachedArticle(id, true) : null;
+    if (version !== requestVersion.current) return;
+    if (cached) {
+      setArticle(cached);
+      setLoading(false);
+      setFavorite(await isFavorite(cached.id));
+    } else {
+      setLoading(!articleRef.current);
+    }
+
     try {
       const row = await fetchArticle(id);
+      if (version !== requestVersion.current) return;
       if (!row) {
         await removeCachedArticle(id);
         setArticle(null);
@@ -42,30 +60,53 @@ export default function ArticleDetailScreen() {
         return;
       }
       setArticle(row);
-      await cacheArticle(row);
-      await addHistory(row);
+      setOffline(false);
+      setError('');
+      await cacheArticle(row).catch(() => {});
+      await addHistory(row).catch(() => {});
       setFavorite(await isFavorite(row.id));
       const [relatedRows, adjacent] = await Promise.all([
         fetchRelatedArticles(row, 4).catch(() => []),
         fetchArticleNavigation(row.id).catch(() => ({ previous: null, next: null })),
       ]);
+      if (version !== requestVersion.current) return;
       setRelated(relatedRows);
       setNavigation(adjacent);
     } catch {
-      const cached = await readCachedArticle(id, true);
-      if (cached) {
-        setArticle(cached);
+      if (version !== requestVersion.current) return;
+      const fallback = cached || await readCachedArticle(id, true);
+      if (fallback) {
+        setArticle(fallback);
         setOffline(true);
-        setFavorite(await isFavorite(cached.id));
+        setFavorite(await isFavorite(fallback.id));
         setError(t('article.offline'));
       } else {
         setArticle(null);
         setError(t('article.loadFailed'));
       }
-    } finally { setLoading(false); }
-  }
+    } finally {
+      if (version === requestVersion.current) setLoading(false);
+    }
+  }, [id, t]);
 
-  useEffect(() => { void load(); }, [id]);
+  useEffect(() => {
+    articleRef.current = null;
+    setArticle(null);
+    setOffline(false);
+    void load(true);
+    return () => { requestVersion.current += 1; };
+  }, [id, load]);
+
+  useEffect(() => { offlineRef.current = offline; }, [offline]);
+
+  useEffect(() => { articleRef.current = article; }, [article]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active' && offlineRef.current) void load(false);
+    });
+    return () => subscription.remove();
+  }, [load]);
 
   useEffect(() => {
     let active = true;
@@ -117,14 +158,14 @@ export default function ArticleDetailScreen() {
   };
 
   if (loading) return <View style={styles.skeleton}><View style={styles.sk1}/><View style={styles.sk2}/><View style={styles.sk3}/><View style={styles.sk4}/><View style={styles.sk5}/><View style={styles.sk5}/></View>;
-  if (!article) return <View style={styles.center}><Text style={styles.errorTitle}>{t('article.unavailableTitle')}</Text><Text style={styles.muted}>{error}</Text><Pressable style={styles.primaryButton} onPress={() => void load()}><Text style={styles.primaryButtonText}>{t('article.retry')}</Text></Pressable></View>;
+  if (!article) return <View style={styles.center}><Text style={styles.errorTitle}>{t('article.unavailableTitle')}</Text><Text style={styles.muted}>{error}</Text><Pressable style={styles.primaryButton} onPress={() => void load(false)}><Text style={styles.primaryButtonText}>{t('article.retry')}</Text></Pressable></View>;
 
   const categoryName = newsCategoryName(locale, article.category_name);
   const displayedTitle = showTranslation && translation ? translation.title : article.title;
   const displayedSummary = showTranslation && translation ? translation.summary : article.summary;
   const displayedContent = showTranslation && translation ? translation.content : article.content;
   return <><Stack.Screen options={{ title: '', headerShown: true, headerBackTitle: t('common.back'), headerShadowVisible: false, gestureEnabled: true }} /><ScrollView style={styles.page} contentContainerStyle={styles.content} contentInsetAdjustmentBehavior="automatic">
-    {offline ? <View style={styles.offline}><Text style={styles.offlineText}>{error}</Text><Pressable onPress={() => void load()}><Text style={styles.retry}>{t('article.reconnect')}</Text></Pressable></View> : null}
+    {offline ? <View testID="article-offline-banner" accessibilityRole="alert" style={styles.offline}><Text style={styles.offlineText}>{error}</Text><Pressable testID="article-offline-retry" accessibilityRole="button" onPress={() => void load(false)}><Text style={styles.retry}>{t('article.reconnect')}</Text></Pressable></View> : null}
     <Pressable testID="article-category-button" style={styles.categoryButton} onPress={openArticleSection} accessibilityRole="button" accessibilityLabel={t('article.openCategory', { category: categoryName })}>
       <Text style={styles.category}>{categoryName}</Text>
       <Text style={styles.categoryArrow}>›</Text>

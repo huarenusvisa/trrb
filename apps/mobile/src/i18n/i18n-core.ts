@@ -18,6 +18,7 @@ const zhCN = {
   'common.back': '返回',
   'news.loading': '正在读取最新内容…',
   'news.loadFailed': '新闻加载失败',
+  'news.offline': '网络不可用，正在显示上次读取的新闻。下拉即可重试。',
   'news.empty': '暂时没有符合条件的新闻。',
   'news.end': '已经到底了',
   'news.openArticle': '打开新闻：{title}',
@@ -165,7 +166,7 @@ export type MessageKey = keyof typeof zhCN;
 const zhTW: Record<MessageKey, string> = {
   'tab.home': '首頁', 'tab.homeIcon': '首', 'tab.america': '美國', 'tab.americaIcon': '美', 'tab.immigration': '移民', 'tab.immigrationIcon': '移', 'tab.legal': '判例新規', 'tab.legalIcon': '法', 'tab.profile': '我的', 'tab.profileIcon': '我',
   'common.back': '返回',
-  'news.loading': '正在讀取最新內容…', 'news.loadFailed': '新聞載入失敗', 'news.empty': '目前沒有符合條件的新聞。', 'news.end': '已經到底了', 'news.openArticle': '開啟新聞：{title}', 'news.categoryPage': '新聞欄目', 'news.categoryFallback': '新聞', 'news.categoryHot': '中國熱門頭條', 'news.categoryUsPolitics': '美國時政', 'news.categoryUsPublicSafety': '美國警情', 'news.categoryImmigration': '移民美國', 'news.categoryIce': 'ICE 執法動態',
+  'news.loading': '正在讀取最新內容…', 'news.loadFailed': '新聞載入失敗', 'news.offline': '網路無法使用，正在顯示上次讀取的新聞。下拉即可重試。', 'news.empty': '目前沒有符合條件的新聞。', 'news.end': '已經到底了', 'news.openArticle': '開啟新聞：{title}', 'news.categoryPage': '新聞欄目', 'news.categoryFallback': '新聞', 'news.categoryHot': '中國熱門頭條', 'news.categoryUsPolitics': '美國時政', 'news.categoryUsPublicSafety': '美國警情', 'news.categoryImmigration': '移民美國', 'news.categoryIce': 'ICE 執法動態',
   'america.heading': '美國時政', 'america.subtitle': '美國時政 · 美國警情', 'america.loadFailed': '美國頻道載入失敗', 'america.empty': '暫無最新內容',
   'legal.heading': '美國判例與新規', 'legal.subtitle': '官方法律資料庫 · App 原生詳情', 'legal.databaseError': '法律資料庫 {status}', 'legal.loadFailed': '法律資料庫載入失敗', 'legal.searchPlaceholder': '搜尋案名、案號、引證或機構', 'legal.count': '共 {count} 筆', 'legal.officialSource': '官方法律資料', 'legal.untitled': '未命名法律資料',
   'search.placeholder': '搜尋新聞標題或摘要', 'search.submit': '搜尋', 'search.filter': '欄目：{category} ×', 'search.backHome': '返回搜尋首頁', 'search.queryTitle': '搜尋：{query}', 'search.categoryTitle': '欄目：{category}', 'search.empty': '沒有找到相關已發布新聞。', 'search.trending': '熱搜', 'search.trendingSource': '來自正式已發布新聞資料', 'search.noTrending': '目前沒有可用熱搜資料。', 'search.history': '搜尋紀錄', 'search.clear': '清除', 'search.noHistory': '暫無搜尋紀錄。',
@@ -184,7 +185,7 @@ const zhTW: Record<MessageKey, string> = {
 const en: Record<MessageKey, string> = {
   'tab.home': 'Home', 'tab.homeIcon': 'H', 'tab.america': 'U.S.', 'tab.americaIcon': 'U', 'tab.immigration': 'Immigration', 'tab.immigrationIcon': 'I', 'tab.legal': 'Legal', 'tab.legalIcon': 'L', 'tab.profile': 'Me', 'tab.profileIcon': 'M',
   'common.back': 'Back',
-  'news.loading': 'Loading the latest stories…', 'news.loadFailed': 'Could not load stories', 'news.empty': 'No matching published stories yet.', 'news.end': 'You have reached the end', 'news.openArticle': 'Open story: {title}', 'news.categoryPage': 'News category', 'news.categoryFallback': 'News', 'news.categoryHot': 'China Top Stories', 'news.categoryUsPolitics': 'U.S. Politics', 'news.categoryUsPublicSafety': 'U.S. Public Safety', 'news.categoryImmigration': 'U.S. Immigration', 'news.categoryIce': 'ICE Enforcement',
+  'news.loading': 'Loading the latest stories…', 'news.loadFailed': 'Could not load stories', 'news.offline': 'You are offline. Previously loaded stories are shown. Pull down to retry.', 'news.empty': 'No matching published stories yet.', 'news.end': 'You have reached the end', 'news.openArticle': 'Open story: {title}', 'news.categoryPage': 'News category', 'news.categoryFallback': 'News', 'news.categoryHot': 'China Top Stories', 'news.categoryUsPolitics': 'U.S. Politics', 'news.categoryUsPublicSafety': 'U.S. Public Safety', 'news.categoryImmigration': 'U.S. Immigration', 'news.categoryIce': 'ICE Enforcement',
   'america.heading': 'U.S. politics', 'america.subtitle': 'U.S. politics · Public safety', 'america.loadFailed': 'Could not load the U.S. channel', 'america.empty': 'No new stories yet',
   'legal.heading': 'U.S. Cases & Rules', 'legal.subtitle': 'Official legal sources · Native app details', 'legal.databaseError': 'Legal database {status}', 'legal.loadFailed': 'Could not load the legal database', 'legal.searchPlaceholder': 'Search title, docket, citation or agency', 'legal.count': '{count} records', 'legal.officialSource': 'Official legal source', 'legal.untitled': 'Untitled legal record',
   'search.placeholder': 'Search story titles or summaries', 'search.submit': 'Search', 'search.filter': 'Category: {category} ×', 'search.backHome': 'Back to search', 'search.queryTitle': 'Search: {query}', 'search.categoryTitle': 'Category: {category}', 'search.empty': 'No matching published stories found.', 'search.trending': 'Trending', 'search.trendingSource': 'From published news data', 'search.noTrending': 'Trending data is not available yet.', 'search.history': 'Search history', 'search.clear': 'Clear', 'search.noHistory': 'No search history yet.',

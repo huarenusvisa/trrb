@@ -220,7 +220,7 @@ assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="tren
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
 assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
 assert.match(page, /china-dashboard-i18n\.js\?v=8/, 'nationality dashboard must load the dual-code label asset version');
-assert.match(page, /china-dashboard\.js\?v=23/, 'nationality dashboard must load the dual-code display asset version');
+assert.match(page, /china-dashboard\.js\?v=24/, 'nationality dashboard must load the concise detail status asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -247,7 +247,10 @@ assert.match(client, /selected-code'\)\.textContent = countryCodeLabels\(country
 assert.match(seoBuilder, /replace\('<h2 id="selected-country" tabindex="-1">正在读取国籍数据…<\/h2>',[\s\S]*localizedCountry/, 'static nationality pages must replace the loading heading while retaining its focus target');
 assert.match(seoBuilder, /replace\('<span id="selected-code"><\/span>',[\s\S]*localizedNationalityCodes\(country, locale\.code\)/, 'static nationality pages must prerender both labeled code systems');
 assert.match(client, /button\.setAttribute\('aria-pressed', String\(selected\?\.nationality === button\.dataset\.country\)\)/, 'popular nationality selection state must stay synchronized');
-assert.match(page, /id="country-detail"[^>]*aria-live="polite"[^>]*aria-busy="false"/, 'nationality details must expose their initial loading state');
+assert.match(page, /id="country-detail-status"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"[^>]*data-i18n="loadingReal"/, 'nationality details must expose a concise localized loading status');
+assert.match(page, /id="country-detail"[^>]*aria-busy="false"/, 'nationality details must expose their initial loading state');
+assert.doesNotMatch(page, /id="country-detail"[^>]*aria-live=/, 'the full nationality detail must not be exposed as one oversized live region');
+assert.match(client, /country-detail-status'\)\.textContent = `\$\{t\('detailsFor',[\s\S]*t\('approvalRate'\)[\s\S]*statusReliable[\s\S]*statusUnreliable/, 'completed nationality requests must announce a concise localized result summary');
 assert.match(client, /const requestId = \+\+countryRequestId;[\s\S]*if \(requestId !== countryRequestId\) return;[\s\S]*if \(requestId === countryRequestId\)[\s\S]*aria-busy/, 'stale nationality responses must not replace the latest selection');
 assert.match(client, /setPeriodControlsDisabled\(true\)[\s\S]*if \(requestId === countryRequestId\)[\s\S]*setPeriodControlsDisabled\(false\)/, 'trend period controls must stay disabled until the latest nationality request settles');
 assert.match(client, /countryRequestController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'superseded nationality requests must be actively cancelled');

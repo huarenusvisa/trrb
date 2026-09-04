@@ -262,13 +262,26 @@ async function loadTrendLocations() {
 }
 
 async function loadOverview(fiscalYear = 2026) {
+  const container = $('#state-list');
+  container.setAttribute('aria-busy', 'true');
+  container.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+  $('#snapshot-period-label').textContent = `FY ${fiscalYear}（读取中）`;
+  $('#national-rate').textContent = '—';
+  $('#national-sample').textContent = '正在读取';
+  $('#court-count').textContent = '—';
+  $('#judge-count').textContent = '—';
+  $('#decision-count').textContent = '—';
+  document.querySelectorAll('[data-state-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.stateFy) === Number(fiscalYear)));
   try {
     const stateData = await json(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`);
     renderStates(stateData.states || [], stateData);
   } catch (error) {
-    $('#state-list').innerHTML = '<div class="empty">数据库暂时无法读取</div>';
-    const chart = $('#state-market-chart');
-    if (chart) chart.innerHTML = '<div class="state-market-loading">州级数据暂时无法读取</div>';
+    $('#snapshot-period-label').textContent = `FY ${fiscalYear}`;
+    $('#national-sample').textContent = '数据库暂时无法读取';
+    container.innerHTML = '<div class="empty"><b>数据库暂时无法读取</b><p>无需刷新页面，可以直接重新尝试。</p><button id="overview-retry" class="directory-retry" type="button">重新尝试</button></div>';
+    $('#overview-retry').addEventListener('click', () => loadOverview(fiscalYear));
+  } finally {
+    container.setAttribute('aria-busy', 'false');
   }
 }
 

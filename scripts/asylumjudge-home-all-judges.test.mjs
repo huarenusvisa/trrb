@@ -93,6 +93,7 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /id="all-judges"/, 'both homepage variants must expose the full judge directory');
   assert.match(html, /id="judge-directory-list"/);
   assert.match(html, /id="judge-directory-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'judge directory must expose its initial loading state');
+  assert.match(html, /id="state-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'state overview must expose its initial loading state');
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');
   assert.match(html, /data-state-interval="month"/, 'homepage must offer a monthly trend');
   assert.match(html, /data-state-interval="year"/, 'homepage must offer a fiscal-year trend');
@@ -124,6 +125,8 @@ assert.match(client, /container\.setAttribute\('aria-busy', 'true'\)[\s\S]*final
 assert.match(client, /id="judge-directory-retry"[\s\S]*addEventListener\('click', loadAllJudges\)/, 'judge directory failures must offer an in-place retry');
 assert.match(client, /chart\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*chart\.setAttribute\('aria-busy', 'false'\)/, 'trend chart must announce loading and completion');
 assert.match(client, /id="state-trend-retry"[\s\S]*addEventListener\('click', \(\) => loadStateTrend\(state, interval, court\)\)/, 'trend failures must retry the same state, interval, and court');
+assert.match(client, /container\.setAttribute\('aria-busy', 'true'\)[\s\S]*id="overview-retry"[\s\S]*loadOverview\(fiscalYear\)[\s\S]*finally[\s\S]*container\.setAttribute\('aria-busy', 'false'\)/, 'state overview failures must retry the selected fiscal year and announce completion');
+assert.doesNotMatch(client, /catch \(error\) \{[\s\S]{0,500}state-market-chart[\s\S]{0,500}州级数据暂时无法读取/, 'state overview failures must not overwrite the independently loaded trend chart');
 assert.doesNotMatch(client, /state-market-link/, 'trend chart must not be wrapped in a navigation link');
 assert.match(styles, /\.directory-metric\.verdict-pass b[^}]*var\(--pass\)/);
 assert.match(styles, /\.directory-metric\.verdict-deny b[^}]*var\(--deny\)/);
@@ -131,8 +134,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /site\.css\?v=17[\s\S]*site\.js\?v=22/, 'standalone homepage must load the trend-recovery assets');
-assert.match(trrb, /site\.css\?v=16[\s\S]*site\.js\?v=21/, 'embedded homepage must load the trend-recovery assets');
+assert.match(standalone, /site\.css\?v=17[\s\S]*site\.js\?v=23/, 'standalone homepage must load the overview-recovery assets');
+assert.match(trrb, /site\.css\?v=16[\s\S]*site\.js\?v=22/, 'embedded homepage must load the overview-recovery assets');
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
 assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
 assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');

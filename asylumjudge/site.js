@@ -379,14 +379,16 @@ function renderJudgeDirectory(rows, query = '') {
   });
 }
 
-function applyJudgeFilter(query, { scroll = false, updateUrl = true } = {}) {
+function applyJudgeFilter(query, { scroll = false, updateUrl = true, pushHistory = false } = {}) {
   query = String(query || '').trim();
   renderJudgeDirectory(filterJudges(query), query);
   if (updateUrl) {
     const url = new URL(location.href);
     if (query) url.searchParams.set('q', query);
     else url.searchParams.delete('q');
-    history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+    const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+    const currentUrl = `${location.pathname}${location.search}${location.hash}`;
+    if (nextUrl !== currentUrl) history[pushHistory ? 'pushState' : 'replaceState'](null, '', nextUrl);
   }
   if (scroll) $('#all-judges')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -459,18 +461,23 @@ async function loadAllJudges() {
 
 $('#judge-search').addEventListener('submit', (event) => {
   event.preventDefault();
-  if (allJudges.length) applyJudgeFilter($('#judge-q').value, { scroll: true });
+  if (allJudges.length) applyJudgeFilter($('#judge-q').value, { scroll: true, pushHistory: true });
 });
 $('#judge-q').addEventListener('input', () => {
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
-    if (allJudges.length) applyJudgeFilter($('#judge-q').value);
+    if (allJudges.length) applyJudgeFilter($('#judge-q').value, { updateUrl: false });
   }, 120);
 });
 document.querySelectorAll('.quick button').forEach((button) => button.addEventListener('click', () => {
   $('#judge-q').value = button.dataset.q;
-  if (allJudges.length) applyJudgeFilter(button.dataset.q, { scroll: true });
+  if (allJudges.length) applyJudgeFilter(button.dataset.q, { scroll: true, pushHistory: true });
 }));
+window.addEventListener('popstate', () => {
+  const query = new URLSearchParams(location.search).get('q') || '';
+  $('#judge-q').value = query;
+  if (allJudges.length) applyJudgeFilter(query, { updateUrl: false });
+});
 document.querySelectorAll('[data-state-fy]').forEach((button) => button.addEventListener('click', () => loadOverview(Number(button.dataset.stateFy))));
 const trendCities = [{ code: 'NYC', state: 'NY', label: '纽约市' }, { code: 'NLA', state: 'CA', label: '洛杉矶' }, { code: 'CHI', state: 'IL', label: '芝加哥' }, { code: 'SFR', state: 'CA', label: '旧金山' }, { code: 'BOS', state: 'MA', label: '波士顿' }];
 $('#state-trend-states').innerHTML = '<span>常用城市</span>' + trendCities.map((item) => `<button type="button" data-trend-court="${item.code}" data-trend-state="${item.state}" aria-pressed="false">${item.label}</button>`).join('');

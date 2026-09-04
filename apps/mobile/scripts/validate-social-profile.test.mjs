@@ -229,3 +229,17 @@ test('news replies stay grouped with parents and identify the reply target', () 
   assert.match(news, /回复 \{replyToLabel\}/);
   assert.match(news, /styles\.replyComment/);
 });
+
+test('community comments refresh without clearing visible content', () => {
+  const screen = read('app/community/[id].tsx');
+  const presentation = read('src/community/community-comment-presentation.ts');
+
+  assert.match(screen, /RefreshControl/);
+  assert.match(screen, /community-refresh-error/);
+  assert.match(screen, /刷新失败，已保留当前内容/);
+  assert.match(screen, /appendCreatedCommunityComment/);
+  assert.match(screen, /void refresh\(\)/);
+  assert.doesNotMatch(screen, /await load\(\);/);
+  assert.match(presentation, /comment_count: pending \? detail\.post\.comment_count/);
+  assert.match(presentation, /detail\.comments\.some/);
+});

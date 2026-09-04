@@ -1,4 +1,4 @@
-import type { CommunityComment } from '../api/community-core';
+import type { CommunityComment, CommunityPostDetail } from '../api/community-core';
 
 export type CommunityCommentDisplayRow = {
   item: CommunityComment;
@@ -14,6 +14,21 @@ export type CommunityCommentPage = {
 
 export function communityCommentDisplayName(comment: CommunityComment) {
   return comment.profiles?.display_name?.trim() || '唐人用户';
+}
+
+export function appendCreatedCommunityComment(detail: CommunityPostDetail, comment: CommunityComment, pending: boolean) {
+  if (detail.comments.some((item) => item.id === comment.id)) return detail;
+  return {
+    ...detail,
+    post: {
+      ...detail.post,
+      comment_count: pending ? detail.post.comment_count : detail.post.comment_count + 1,
+    },
+    comments: [...detail.comments, {
+      ...comment,
+      profiles: comment.profiles || { display_name: '我' },
+    }],
+  };
 }
 
 export function paginateCommunityCommentThreads(comments: CommunityComment[], visibleThreadCount: number): CommunityCommentPage {

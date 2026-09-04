@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { CommunityComment } from '../api/community-core';
-import { communityCommentDisplayName, paginateCommunityCommentThreads } from './community-comment-presentation.ts';
+import { appendCreatedCommunityComment, communityCommentDisplayName, paginateCommunityCommentThreads } from './community-comment-presentation.ts';
 
 const comment = (overrides: Partial<CommunityComment> = {}): CommunityComment => ({
   id: 'root', post_id: 'post-1', user_id: 'user-1', parent_id: null,
@@ -44,4 +44,27 @@ test('keeps orphaned replies visible and provides safe author fallbacks', () => 
   assert.equal(page.rows[0].depth, 1);
   assert.equal(page.rows[0].replyToLabel, '原评论作者');
   assert.equal(communityCommentDisplayName(page.rows[0].item), '唐人用户');
+});
+
+test('inserts a published comment immediately and updates the visible count once', () => {
+  const detail = {
+    post: { id: 'post-1', comment_count: 2 }, comments: [comment()], viewerUserId: 'user-1',
+  } as Parameters<typeof appendCreatedCommunityComment>[0];
+  const created = comment({ id: 'created', profiles: null });
+  const inserted = appendCreatedCommunityComment(detail, created, false);
+  const duplicate = appendCreatedCommunityComment(inserted, created, false);
+
+  assert.equal(inserted.post.comment_count, 3);
+  assert.equal(inserted.comments.at(-1)?.profiles?.display_name, '我');
+  assert.equal(duplicate, inserted);
+});
+
+test('shows a pending comment to its author without inflating the public count', () => {
+  const detail = {
+    post: { id: 'post-1', comment_count: 2 }, comments: [], viewerUserId: 'user-1',
+  } as Parameters<typeof appendCreatedCommunityComment>[0];
+  const inserted = appendCreatedCommunityComment(detail, comment({ id: 'pending', status: 'pending' }), true);
+
+  assert.equal(inserted.post.comment_count, 2);
+  assert.equal(inserted.comments[0].status, 'pending');
 });

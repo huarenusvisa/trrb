@@ -3,6 +3,8 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const apiUrl = (path) => path;
+const detailLoading = $('#detail-loading');
+const initialDetailLoading = detailLoading.textContent;
 let nationality = [];
 let nationalityYearly = [];
 let nationalityFiscalYear = 2026;
@@ -131,12 +133,16 @@ function renderCountries() {
 
 async function load() {
   const id = document.body.dataset.judgeId || new URLSearchParams(location.search).get('id');
-  if (!id) { $('#detail-loading').textContent = '缺少法官编号'; return; }
+  if (!id) { detailLoading.textContent = '缺少法官编号'; detailLoading.setAttribute('aria-busy', 'false'); return; }
+  detailLoading.hidden = false;
+  detailLoading.textContent = initialDetailLoading;
+  detailLoading.setAttribute('aria-busy', 'true');
   try {
     const localUrl = `/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(id)}`;
     const response = await fetch(apiUrl(localUrl), { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Judge detail failed: ${response.status}`);
     const data = await response.json();
-    if (!response.ok || !data.judge) throw new Error();
+    if (!data.judge) throw new Error('Judge detail missing');
     const judge = data.judge;
     if (data.background || document.body.dataset.seoPrerendered !== 'true') renderBackground(data.background);
     renderWebex(judge.webex);
@@ -163,10 +169,13 @@ async function load() {
     nationalityYearly = data.nationality_yearly || [];
     nationalitySource = data.nationality_yearly_source || null;
     renderCountries();
-    $('#detail-loading').hidden = true;
+    detailLoading.hidden = true;
     $('#detail').hidden = false;
   } catch {
-    $('#detail-loading').innerHTML = '<b>暂时无法读取该法官资料</b><p>请返回查询页稍后重试。</p>';
+    detailLoading.innerHTML = '<b>暂时无法读取该法官资料</b><p>请稍后重试。</p><button id="judge-detail-retry" class="detail-retry" type="button">重新尝试</button>';
+    $('#judge-detail-retry').addEventListener('click', load);
+  } finally {
+    detailLoading.setAttribute('aria-busy', 'false');
   }
 }
 

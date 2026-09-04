@@ -86,7 +86,11 @@ function renderStates(rows, data = {}) {
   $('#decision-count').textContent = fmt(national.total_asylum_decisions);
   const label = periodLabel(data);
   $('#snapshot-period-label').textContent = label;
-  document.querySelectorAll('[data-state-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.stateFy) === Number(data.fiscal_year)));
+  document.querySelectorAll('[data-state-fy]').forEach((button) => {
+    const selected = Number(button.dataset.stateFy) === Number(data.fiscal_year);
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
 }
 
 function trendPointDetail(point, label) {
@@ -227,8 +231,16 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
   const chart = $('#state-market-chart');
   chart.setAttribute('aria-busy', 'true');
   chart.innerHTML = '<div class="state-market-loading">正在读取州趋势数据…</div>';
-  document.querySelectorAll('[data-state-interval]').forEach((button) => button.classList.toggle('active', button.dataset.stateInterval === interval));
-  document.querySelectorAll('[data-trend-court]').forEach((button) => button.classList.toggle('active', button.dataset.trendCourt === court));
+  document.querySelectorAll('[data-state-interval]').forEach((button) => {
+    const selected = button.dataset.stateInterval === interval;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+  document.querySelectorAll('[data-trend-court]').forEach((button) => {
+    const selected = button.dataset.trendCourt === court;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
   const courtSelect = $('#trend-court-select');
   const stateSelect = $('#trend-state-select');
   if (courtSelect) courtSelect.value = court;
@@ -284,7 +296,11 @@ async function loadOverview(fiscalYear = 2026) {
   $('#court-count').textContent = '—';
   $('#judge-count').textContent = '—';
   $('#decision-count').textContent = '—';
-  document.querySelectorAll('[data-state-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.stateFy) === Number(fiscalYear)));
+  document.querySelectorAll('[data-state-fy]').forEach((button) => {
+    const selected = Number(button.dataset.stateFy) === Number(fiscalYear);
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
   try {
     const stateData = await json(`/.netlify/functions/immigration-judges?mode=states&fy=${encodeURIComponent(fiscalYear)}`, { signal: controller.signal });
     if (overviewController !== controller) return;
@@ -445,7 +461,7 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
 }));
 document.querySelectorAll('[data-state-fy]').forEach((button) => button.addEventListener('click', () => loadOverview(Number(button.dataset.stateFy))));
 const trendCities = [{ code: 'NYC', state: 'NY', label: '纽约市' }, { code: 'NLA', state: 'CA', label: '洛杉矶' }, { code: 'CHI', state: 'IL', label: '芝加哥' }, { code: 'SFR', state: 'CA', label: '旧金山' }, { code: 'BOS', state: 'MA', label: '波士顿' }];
-$('#state-trend-states').innerHTML = '<span>常用城市</span>' + trendCities.map((item) => `<button type="button" data-trend-court="${item.code}" data-trend-state="${item.state}">${item.label}</button>`).join('');
+$('#state-trend-states').innerHTML = '<span>常用城市</span>' + trendCities.map((item) => `<button type="button" data-trend-court="${item.code}" data-trend-state="${item.state}" aria-pressed="false">${item.label}</button>`).join('');
 document.querySelectorAll('[data-trend-court]').forEach((button) => button.addEventListener('click', () => loadStateTrend(button.dataset.trendState, selectedTrendInterval, button.dataset.trendCourt)));
 document.querySelectorAll('[data-state-interval]').forEach((button) => button.addEventListener('click', () => loadStateTrend(selectedTrendState, button.dataset.stateInterval, selectedTrendCourt)));
 $('#trend-state-select').addEventListener('change', (event) => loadStateTrend(event.target.value, selectedTrendInterval, ''));

@@ -5,6 +5,7 @@ import test from 'node:test';
 const home = await readFile(new URL('../app/(tabs)/index.tsx', import.meta.url), 'utf8');
 const list = await readFile(new URL('../src/components/PaginatedNewsList.tsx', import.meta.url), 'utf8');
 const image = await readFile(new URL('../src/components/NewsImage.tsx', import.meta.url), 'utf8');
+const foregroundRetry = await readFile(new URL('../src/hooks/useForegroundRetry.ts', import.meta.url), 'utf8');
 
 test('restores homepage and list snapshots before refreshing official news', () => {
   assert.match(home, /readCachedHomeFeed/);
@@ -50,6 +51,19 @@ test('explains slow initial and refresh requests without clearing visible news',
   assert.match(home, /当前网络较慢，仍在尝试读取最新新闻/);
   assert.match(home, /当前网络较慢，已保留现有新闻，仍在尝试更新/);
   assert.match(home, /clearTimeout\(slowTimer\)/);
+});
+
+test('retries failed feeds after foreground recovery and exposes accessible retry controls', () => {
+  assert.match(foregroundRetry, /AppState\.addEventListener\('change'/);
+  assert.match(foregroundRetry, /state !== 'active'/);
+  assert.match(foregroundRetry, /DEFAULT_DELAY_MS = 750/);
+  assert.match(foregroundRetry, /DEFAULT_COOLDOWN_MS = 10_000/);
+  assert.match(home, /useForegroundRetry\(Boolean\(error\), retryHome\)/);
+  assert.match(list, /useForegroundRetry\(Boolean\(error\), retryList\)/);
+  assert.match(home, /testID="home-network-retry"[\s\S]*accessibilityRole="button"/);
+  assert.match(list, /testID="category-network-retry"[\s\S]*accessibilityRole="button"/);
+  assert.match(home, /accessibilityLiveRegion="polite"/);
+  assert.match(list, /accessibilityLiveRegion="polite"/);
 });
 
 test('bounds long-list rendering work and exposes every story as a button', () => {

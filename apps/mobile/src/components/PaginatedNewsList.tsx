@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { fetchArticlePage, NewsArticle } from '../api/trrb';
 import { useI18n } from '../i18n/I18nProvider';
 import { localeDateTag } from '../i18n/i18n-core';
+import { useForegroundRetry } from '../hooks/useForegroundRetry';
 import { cacheNewsPage, readCachedNewsPage } from '../storage/newsFeedCache';
 import { NewsImage } from './NewsImage';
 
@@ -83,6 +84,13 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
     return () => { active = false; };
   }, [category, q]);
 
+  const retryList = () => {
+    setRefreshing(true);
+    void load(true);
+  };
+
+  useForegroundRetry(Boolean(error), retryList);
+
   const renderArticle = useCallback(({ item, index }: ListRenderItemInfo<NewsArticle>) => (
     <Pressable
       testID={`category-article-${index}`}
@@ -99,7 +107,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
     </Pressable>
   ), [locale, t]);
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>{t('news.loading')}</Text></View>;
+  if (loading) return <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={t('news.loading')}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>{t('news.loading')}</Text></View>;
 
   return (
     <FlatList
@@ -115,10 +123,10 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       windowSize={7}
       removeClippedSubviews
       getItemLayout={(_, index) => ({ length: 130, offset: 130 * index, index })}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); load(true); }} />}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retryList} />}
       onEndReachedThreshold={0.45}
       onEndReached={() => { if (!loadingMore && nextOffset != null) load(false); }}
-      ListHeaderComponent={<View style={styles.header}><Text testID="category-screen-title" style={styles.title}>{title}</Text>{error ? <Text style={styles.error}>{error}</Text> : null}</View>}
+      ListHeaderComponent={<View style={styles.header}><Text testID="category-screen-title" style={styles.title}>{title}</Text>{error ? <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}><Text style={styles.error}>{error}</Text><Pressable testID="category-network-retry" accessibilityRole="button" accessibilityLabel={t('news.retry')} accessibilityState={{ disabled: refreshing }} disabled={refreshing} style={[styles.retryButton, refreshing && styles.retryButtonDisabled]} onPress={retryList}><Text style={styles.retryButtonText}>{refreshing ? t('news.retrying') : t('news.retry')}</Text></Pressable></View> : null}</View>}
       ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText || t('news.empty')}</Text></View>}
       ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color="#c8211e" /> : nextOffset == null && items.length ? <Text style={styles.end}>{t('news.end')}</Text> : null}
     />
@@ -126,5 +134,5 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085'},header:{marginBottom:18},title:{fontSize:30,fontWeight:'900',color:'#101828'},error:{marginTop:10,color:'#b42318'},empty:{paddingVertical:80,alignItems:'center'},card:{height:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},thumb:{width:126,height:118,backgroundColor:'#e4e7ec'},body:{flex:1,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,color:'#98a2b3',marginTop:7},footer:{marginVertical:20},end:{textAlign:'center',color:'#98a2b3',marginVertical:20}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085'},header:{marginBottom:18},title:{fontSize:30,fontWeight:'900',color:'#101828'},errorPanel:{marginTop:12,backgroundColor:'#fef3f2',borderRadius:10,padding:12,alignItems:'flex-start'},error:{color:'#b42318'},retryButton:{minHeight:40,borderRadius:8,backgroundColor:'#c8211e',paddingHorizontal:16,marginTop:10,alignItems:'center',justifyContent:'center'},retryButtonDisabled:{opacity:0.58},retryButtonText:{color:'#fff',fontSize:13,fontWeight:'800'},empty:{paddingVertical:80,alignItems:'center'},card:{height:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},thumb:{width:126,height:118,backgroundColor:'#e4e7ec'},body:{flex:1,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,color:'#98a2b3',marginTop:7},footer:{marginVertical:20},end:{textAlign:'center',color:'#98a2b3',marginVertical:20}
 });

@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
+import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { cacheHomeFeed, readCachedHomeFeed } from '../../src/storage/newsFeedCache';
 
 const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
@@ -320,7 +321,25 @@ export default function HomeScreen() {
     else router.push(section.route as '/immigration' | '/legal' | '/jobs' | '/community');
   };
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>{slowLoading ? '当前网络较慢，仍在尝试读取最新新闻…' : '正在读取唐人日报最新内容…'}</Text></View>;
+  const retryHome = () => {
+    if (articles.length > 0) setRefreshing(true);
+    void load();
+    void loadWeather();
+  };
+
+  useForegroundRetry(Boolean(error), retryHome);
+
+  if (loading) return (
+    <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={slowLoading ? '当前网络较慢，仍在尝试读取最新新闻' : '正在读取唐人日报最新内容'}>
+      <ActivityIndicator size="large" color="#c8211e" />
+      <Text style={styles.muted}>{slowLoading ? '当前网络较慢，仍在尝试读取最新新闻…' : '正在读取唐人日报最新内容…'}</Text>
+      {slowLoading ? (
+        <Pressable testID="home-initial-retry" accessibilityRole="button" accessibilityLabel="重新读取首页新闻" style={styles.retryButton} onPress={retryHome}>
+          <Text style={styles.retryButtonText}>重新尝试</Text>
+        </Pressable>
+      ) : null}
+    </View>
+  );
 
   return (
     <View style={styles.screen}>
@@ -375,8 +394,22 @@ export default function HomeScreen() {
           </Pressable>
         ) : null}
 
-        {slowLoading ? <Text style={styles.networkHint}>当前网络较慢，已保留现有新闻，仍在尝试更新…</Text> : null}
-        {error ? <Text style={styles.error}>{error}</Text> : null}
+        {slowLoading || error ? (
+          <View accessibilityRole={error ? 'alert' : undefined} accessibilityLiveRegion="polite" style={styles.networkStatus}>
+            <Text style={error ? styles.error : styles.networkHint}>{error || '当前网络较慢，已保留现有新闻，仍在尝试更新…'}</Text>
+            <Pressable
+              testID="home-network-retry"
+              accessibilityRole="button"
+              accessibilityLabel="重新读取首页新闻"
+              accessibilityState={{ disabled: refreshing }}
+              disabled={refreshing}
+              style={[styles.retryButton, refreshing && styles.retryButtonDisabled]}
+              onPress={retryHome}
+            >
+              <Text style={styles.retryButtonText}>{refreshing ? '正在重试…' : '重新尝试'}</Text>
+            </Pressable>
+          </View>
+        ) : null}
 
         {importantCarousel.length ? (
           <View testID="home-important-carousel" style={styles.carouselWrap}>
@@ -543,8 +576,12 @@ const styles = StyleSheet.create({
   breakingLabel: { color: '#c8211e', fontSize: 12, fontWeight: '900', marginRight: 8 },
   breakingTitle: { flex: 1, color: '#101828', fontSize: 13, fontWeight: '800' },
   chevron: { color: '#98a2b3', fontSize: 22, marginLeft: 5 },
-  error: { color: '#b42318', marginBottom: 10 },
-  networkHint: { color: '#875b00', backgroundColor: '#fff6d8', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 8, marginBottom: 10 },
+  networkStatus: { backgroundColor: '#fff6d8', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 9, marginBottom: 10, alignItems: 'flex-start' },
+  error: { color: '#b42318' },
+  networkHint: { color: '#875b00' },
+  retryButton: { minHeight: 40, borderRadius: 8, backgroundColor: '#c8211e', paddingHorizontal: 16, marginTop: 10, alignItems: 'center', justifyContent: 'center' },
+  retryButtonDisabled: { opacity: 0.58 },
+  retryButtonText: { color: '#fff', fontSize: 13, fontWeight: '800' },
   carouselWrap: { marginBottom: 12 },
   heroCard: { height: 238, borderRadius: 10, overflow: 'hidden', backgroundColor: '#101828', position: 'relative' },
   heroImage: { width: '100%', height: '100%', backgroundColor: '#e4e7ec' },

@@ -68,3 +68,26 @@ test('account, message and community states remain actionable on weak networks',
   assert.match(community, /community-error/);
   assert.match(community, /发布第一篇/);
 });
+
+test('comments, chats and connection lists recover without blank screens', () => {
+  const comments = read('app/my-comments.tsx');
+  const messages = read('app/messages.tsx');
+  const chat = read('app/chat/[id].tsx');
+  const connections = read('app/connections/[type].tsx');
+  const followRequests = read('app/follow-requests.tsx');
+
+  for (const screen of [comments, messages, chat, connections, followRequests]) {
+    assert.match(screen, /AsyncStatePanel/);
+    assert.match(screen, /withUiTimeout/);
+    assert.match(screen, /useForegroundRetry/);
+    assert.match(screen, /重新(?:读取|同步)/);
+  }
+  assert.match(comments, /my-comments-empty/);
+  assert.match(comments, /RefreshControl/);
+  assert.match(messages, /messages-error/);
+  assert.match(messages, /messages-empty/);
+  assert.match(chat, /chat-error/);
+  assert.match(chat, /accessibilityLabel="发送消息"/);
+  assert.match(connections, /connections-empty/);
+  assert.match(followRequests, /follow-requests-empty/);
+});

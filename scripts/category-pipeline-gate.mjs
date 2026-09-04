@@ -40,6 +40,26 @@ async function readCategory() {
   return (await response.json())?.[0] || null;
 }
 
+async function enforceActiveIceAutomation(row) {
+  if (slug !== 'ice' || !row?.is_active || (row.auto_fetch && row.ai_rewrite && row.auto_publish)) return row;
+  if (!serviceKey) throw new Error('ICE自动任务已启用，但缺少服务密钥，无法同步采集与发布开关');
+  const url = new URL(`${base}/rest/v1/categories`);
+  url.searchParams.set('slug', 'ilike.ice');
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: { ...headers, Prefer: 'return=representation' },
+    body: JSON.stringify({
+      auto_fetch: true,
+      ai_rewrite: true,
+      auto_publish: true,
+      updated_at: new Date().toISOString()
+    })
+  });
+  if (!response.ok) throw new Error(`Failed to synchronize active ICE category: ${response.status} ${(await response.text()).slice(0, 300)}`);
+  console.log('[category-gate] active /ice synchronized: auto_fetch=true, ai_rewrite=true, auto_publish=true');
+  return { ...row, auto_fetch: true, ai_rewrite: true, auto_publish: true };
+}
+
 async function createMissingStandardCategory() {
   const defaults = STANDARD_DEFAULTS[slug];
   if (!defaults) return null;
@@ -61,6 +81,7 @@ if (!row) {
   row = await readCategory();
 }
 if (!row) throw new Error(`Category /${slug} does not exist`);
+row = await enforceActiveIceAutomation(row);
 
 const values = {
   enabled: Boolean(row.is_active),

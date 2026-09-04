@@ -131,3 +131,19 @@ test('profile post composer restores text drafts and keeps failed uploads retrya
   assert.match(posts, /onProgress\?/);
   assert.match(posts, /completed: index \+ 1/);
 });
+
+test('community composer restores drafts and keeps failed submissions retryable', () => {
+  const compose = read('app/community-compose.tsx');
+  const drafts = read('src/storage/communityPostDraft.ts');
+
+  assert.match(compose, /loadCommunityPostDraft/);
+  assert.match(compose, /saveCommunityPostDraft/);
+  assert.match(compose, /community-compose-draft-restored/);
+  assert.match(compose, /community-compose-error/);
+  assert.match(compose, /重试发布/);
+  assert.match(compose, /标题、正文和板块仍保留在本页/);
+  assert.match(compose, /accessibilityRole="checkbox"/);
+  assert.match(compose, /accessibilityLiveRegion="polite"/);
+  assert.match(drafts, /AsyncStorage\.setItem/);
+  assert.match(drafts, /AsyncStorage\.removeItem/);
+});

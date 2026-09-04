@@ -19,6 +19,7 @@ function render(list) {
     <div class="crow chead state-crow outcome-row"><span>州</span><span>法院</span><span>法官</span><span>结案总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>裁决批准率</span></div>
     ${list.map((row) => `<a class="crow state-crow outcome-row" href="/immigration-judge-approval-rate/courts.html?state=${encodeURIComponent(row.state)}&fy=${encodeURIComponent(fiscalYear)}"><span><b>${esc(row.state)}</b><small>FY ${esc(fiscalYear)} · 查看该州法院 →</small></span><span>${fmt(row.courts)}</span><span>${fmt(row.judges)}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${reportableRate(row)}</span></a>`).join('')}
   ` : '<div class="empty">没有找到匹配州</div>';
+  $('#state-results-status').textContent = `${fmt(list.length)} ${window.AsylumI18n?.t?.('州') || '州'}`;
 }
 
 function filterRows() {
@@ -57,12 +58,14 @@ function applyLocationState() {
 
 function setLoading(loading) {
   $('#state-results').setAttribute('aria-busy', String(loading));
+  if (loading) $('#state-results-status').textContent = window.AsylumI18n?.t?.('正在读取州级数据…') || '正在读取州级数据…';
   document.querySelectorAll('[data-state-year]').forEach((button) => {
     button.disabled = loading;
   });
 }
 
 function renderError() {
+  $('#state-results-status').textContent = '';
   $('#state-results').innerHTML = '<div class="empty" role="alert"><b>州级数据库暂时无法读取</b><p>请稍后重试。</p><button id="state-retry" class="empty-retry" type="button">重新尝试</button></div>';
   $('#state-retry').addEventListener('click', () => load(fiscalYear));
 }

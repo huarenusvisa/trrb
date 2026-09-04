@@ -91,3 +91,25 @@ test('comments, chats and connection lists recover without blank screens', () =>
   assert.match(connections, /connections-empty/);
   assert.match(followRequests, /follow-requests-empty/);
 });
+
+test('user profiles and community post actions expose timeout recovery', () => {
+  const userProfile = read('app/user/[id].tsx');
+  const communityPost = read('app/community/[id].tsx');
+
+  for (const screen of [userProfile, communityPost]) {
+    assert.match(screen, /AsyncStatePanel/);
+    assert.match(screen, /withUiTimeout/);
+    assert.match(screen, /useForegroundRetry/);
+    assert.match(screen, /重试操作/);
+    assert.match(screen, /accessibilityRole="button"/);
+  }
+
+  assert.match(userProfile, /user-profile-error/);
+  assert.match(userProfile, /user-action-feedback/);
+  assert.match(userProfile, /关注操作超时/);
+  assert.match(userProfile, /解除拉黑失败/);
+  assert.match(communityPost, /community-post-error/);
+  assert.match(communityPost, /community-action-feedback/);
+  assert.match(communityPost, /评论提交超时/);
+  assert.match(communityPost, /帖子下架失败/);
+});

@@ -92,6 +92,10 @@ assert.deepEqual(
 for (const html of [standalone, trrb]) {
   assert.match(html, /id="all-judges"/, 'both homepage variants must expose the full judge directory');
   assert.match(html, /id="judge-directory-list"/);
+  assert.match(html, /id="judge-search"[^>]+role="search"[^>]+aria-labelledby="judge-search-label"/, 'homepage judge filtering must expose a named search landmark');
+  assert.match(html, /id="judge-search-label"[^>]+for="judge-q"/, 'homepage search must keep a persistent accessible label');
+  assert.match(html, /id="judge-q"[^>]+type="search"[^>]+enterkeyhint="search"[^>]+aria-controls="judge-directory-list"[^>]+aria-describedby="judge-search-note"/, 'homepage search must expose mobile search input semantics and its result relationship');
+  assert.match(html, /id="judge-search-note"[^>]+class="legal-note"/, 'homepage search must associate the visible data-use note');
   assert.match(html, /id="judge-directory-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'judge directory must expose its initial loading state');
   assert.match(html, /id="state-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'state overview must expose its initial loading state');
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');

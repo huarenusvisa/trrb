@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, InteractionManager, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
@@ -152,6 +152,7 @@ export default function HomeScreen() {
   const [hotIndex, setHotIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [showStickyBrand, setShowStickyBrand] = useState(false);
+  const [showDeferredServices, setShowDeferredServices] = useState(false);
   const [weather, setWeather] = useState<WeatherState>({ temperature: null, code: null, isDay: true });
 
   async function load(restoreCache = false) {
@@ -209,6 +210,11 @@ export default function HomeScreen() {
   }
 
   useEffect(() => { void load(true); void loadWeather(); }, []);
+
+  useEffect(() => {
+    const task = InteractionManager.runAfterInteractions(() => setShowDeferredServices(true));
+    return () => task.cancel();
+  }, []);
 
   const hotHeadlines = useMemo(() => articles.filter((item) => ['热门头条', '中国热门头条'].includes(String(item.category_name || ''))).slice(0, 12), [articles]);
   const activeHot = hotHeadlines.length ? hotHeadlines[hotIndex % hotHeadlines.length] : null;
@@ -424,38 +430,42 @@ export default function HomeScreen() {
           );
         })}
 
-        {portalSections.map((section) => (
-          <View key={section.key} testID={`home-portal-${section.key}`} style={styles.portalCard}>
-            <View style={styles.portalHead}>
-              <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text style={styles.portalTitle}>{section.title}</Text></View>
-              <Pressable onPress={() => openPortal(section)}><Text style={styles.portalAction}>{section.action}</Text></Pressable>
-            </View>
-            <Pressable style={styles.portalBanner} onPress={() => openPortal(section)}><Text style={styles.portalBannerText}>{section.banner}</Text></Pressable>
-            <View style={styles.portalGrid}>
-              {section.items.map((item, index) => (
-                <Pressable key={item} style={[styles.portalItem, section.items.length % 2 === 1 && index === section.items.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
-                  <Text style={styles.portalItemText}>{item}</Text><Text style={styles.portalArrow}>›</Text>
+        {showDeferredServices ? (
+          <>
+            {portalSections.map((section) => (
+              <View key={section.key} testID={`home-portal-${section.key}`} style={styles.portalCard}>
+                <View style={styles.portalHead}>
+                  <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text style={styles.portalTitle}>{section.title}</Text></View>
+                  <Pressable onPress={() => openPortal(section)}><Text style={styles.portalAction}>{section.action}</Text></Pressable>
+                </View>
+                <Pressable style={styles.portalBanner} onPress={() => openPortal(section)}><Text style={styles.portalBannerText}>{section.banner}</Text></Pressable>
+                <View style={styles.portalGrid}>
+                  {section.items.map((item, index) => (
+                    <Pressable key={item} style={[styles.portalItem, section.items.length % 2 === 1 && index === section.items.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
+                      <Text style={styles.portalItemText}>{item}</Text><Text style={styles.portalArrow}>›</Text>
+                    </Pressable>
+                  ))}
+                </View>
+                <Pressable style={styles.portalMore} onPress={() => openPortal(section)}><Text style={styles.portalMoreText}>{section.action}</Text></Pressable>
+              </View>
+            ))}
+
+            <View testID="home-reader-services" style={styles.readerServicesCard}>
+              {readerServices.map((service) => (
+                <Pressable key={service.key} style={styles.readerService} onPress={() => void Linking.openURL(service.url)}>
+                  <View style={styles.readerServiceCopy}><Text style={styles.readerServiceTitle}>{service.title}</Text><Text style={styles.readerServiceSub}>{service.subtitle}</Text></View>
+                  <Text style={styles.readerServiceAction}>{service.action}</Text>
                 </Pressable>
               ))}
             </View>
-            <Pressable style={styles.portalMore} onPress={() => openPortal(section)}><Text style={styles.portalMoreText}>{section.action}</Text></Pressable>
-          </View>
-        ))}
 
-        <View testID="home-reader-services" style={styles.readerServicesCard}>
-          {readerServices.map((service) => (
-            <Pressable key={service.key} style={styles.readerService} onPress={() => void Linking.openURL(service.url)}>
-              <View style={styles.readerServiceCopy}><Text style={styles.readerServiceTitle}>{service.title}</Text><Text style={styles.readerServiceSub}>{service.subtitle}</Text></View>
-              <Text style={styles.readerServiceAction}>{service.action}</Text>
-            </Pressable>
-          ))}
-        </View>
-
-        <View style={styles.footerBlock}>
-          <Text style={styles.footerBrand}>唐人日报 Tang Ren Daily</Text>
-          <Text style={styles.footerText}>立足美国 · 服务华人</Text>
-          <Text style={styles.footerText}>新闻、移民知识、判例新规与华人生活服务</Text>
-        </View>
+            <View style={styles.footerBlock}>
+              <Text style={styles.footerBrand}>唐人日报 Tang Ren Daily</Text>
+              <Text style={styles.footerText}>立足美国 · 服务华人</Text>
+              <Text style={styles.footerText}>新闻、移民知识、判例新规与华人生活服务</Text>
+            </View>
+          </>
+        ) : null}
       </ScrollView>
 
       {showStickyBrand ? (

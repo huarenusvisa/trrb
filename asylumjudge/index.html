@@ -61,9 +61,9 @@
             <div id="state-trend-states" class="state-trend-states" aria-label="华人聚集城市快捷入口"></div>
             <div id="state-trend-detail" class="state-trend-detail" aria-live="polite">点按或移动到图中数据点，查看该期案件数量。</div>
           </figure>
-          <form id="judge-search" class="search-box">
-            <label class="sr-only" for="judge-q">法官、法院或城市</label>
-            <input id="judge-q" autocomplete="off" placeholder="例如：法官姓名、New York、Houston">
+          <form id="judge-search" class="search-box" role="search" aria-labelledby="judge-search-label">
+            <label id="judge-search-label" class="sr-only" for="judge-q">法官、法院或城市</label>
+            <input id="judge-q" type="search" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-controls="judge-directory-list" aria-describedby="judge-search-note" placeholder="例如：法官姓名、New York、Houston">
             <button type="submit">筛选法官</button>
           </form>
           <div class="quick" aria-label="热门查询">
@@ -72,7 +72,7 @@
             <button type="button" data-q="Houston">休斯敦</button>
             <button type="button" data-q="Miami">迈阿密</button>
           </div>
-          <p class="legal-note">历史统计仅供信息参考，不构成法律意见，也不能预测个案结果。</p>
+          <p id="judge-search-note" class="legal-note">历史统计仅供信息参考，不构成法律意见，也不能预测个案结果。</p>
         </div>
 
         <aside class="snapshot" aria-labelledby="snapshot-title">

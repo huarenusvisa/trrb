@@ -129,6 +129,9 @@ jobs:
       - name: Test mobile interface languages
         working-directory: apps/mobile
         run: npm run test:i18n
+      - name: Test mobile and PC news structure parity
+        working-directory: apps/mobile
+        run: npm run test:news-parity
       - name: Audit push security and lifecycle contract
         run: node scripts/audit-app-batch2-node7.mjs
       - name: Validate store build configuration

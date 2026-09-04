@@ -213,3 +213,19 @@ test('news comments show counts and toggle the signed-in viewer like state', () 
   assert.match(news, /selected: item\.viewer_has_liked/);
   assert.match(news, /已取消点赞/);
 });
+
+test('news replies stay grouped with parents and identify the reply target', () => {
+  const news = read('src/components/CommentThread.tsx');
+  const api = read('src/api/comments.ts');
+  const presentation = read('src/community/comment-presentation.ts');
+
+  assert.match(api, /missingParentIds/);
+  assert.match(api, /profiles!comments_user_id_fkey\(display_name/);
+  assert.equal((api.match(/profiles!comments_user_id_fkey/g) || []).length, 2);
+  assert.match(api, /parent_author_name/);
+  assert.match(presentation, /buildCommentDisplayRows/);
+  assert.match(presentation, /for \(const child of children\.get\(row\.id\) \|\| \[\]\) append/);
+  assert.match(news, /displayItems\.map\(\(\{ item, depth, replyToLabel \}/);
+  assert.match(news, /回复 \{replyToLabel\}/);
+  assert.match(news, /styles\.replyComment/);
+});

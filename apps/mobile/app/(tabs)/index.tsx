@@ -5,12 +5,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 
 const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职'] as const;
-const SUPPLEMENT_CATEGORIES = ['重要新闻', '热门头条', '美国时政', '美国警情'] as const;
-const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情']);
+const SUPPLEMENT_CATEGORIES = ['重要新闻', '热门头条', '美国时政', '美国警情', 'ICE执法动态'] as const;
+const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
 
 const newsSections = [
   { key: 'china-hot', title: '中国热门头条', category: '热门头条', aliases: ['热门头条', '中国热门头条'] },
   { key: 'us-politics', title: '美国时政', category: '美国时政', aliases: ['美国时政'] },
+  { key: 'ice-news', title: 'ICE执法动态', category: 'ICE执法动态', aliases: ['ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
   { key: 'us-crime', title: '美国警情', category: '美国警情', aliases: ['美国警情'] },
 ] as const;
 
@@ -22,6 +23,14 @@ const topicCards = [
     status: '实时追踪',
     image: 'https://trrb.net/assets/topic-focus/trump-portrait.jpg?v=30',
     url: 'https://trrb.net/trump',
+  },
+  {
+    key: 'ice',
+    title: 'ICE执法动态',
+    subtitle: '执法行动、拘留、遣返与法律应对',
+    status: '自动更新',
+    image: 'https://trrb.net/assets/topic-focus/ice-badge.jpg?v=30',
+    url: 'https://trrb.net/ice',
   },
   {
     key: 'election',
@@ -217,20 +226,23 @@ export default function HomeScreen() {
 
   const rankItems = useMemo(() => {
     const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-    return homepageArticles
+    return articles
       .filter((item) => rankCategories.has(String(item.category_name || '').trim()))
       .filter((item) => {
         const time = Date.parse(item.published_at || item.created_at || '');
         return Number.isFinite(time) && time >= cutoff && time <= Date.now();
       })
       .slice(0, 8);
-  }, [homepageArticles]);
+  }, [articles]);
   const categoryGroups = useMemo(() => newsSections.map((section) => ({
     ...section,
-    items: homepageArticles.filter((item) => section.aliases.some((alias) => alias === String(item.category_name || ''))).slice(0, 6),
-  })), [homepageArticles]);
+    items: (section.key === 'ice-news' ? articles : homepageArticles)
+      .filter((item) => section.aliases.some((alias) => alias === String(item.category_name || '')))
+      .slice(0, 6),
+  })), [articles, homepageArticles]);
   const topicLatest = useMemo(() => ({
     trump: articles.find((item) => item.title.includes('特朗普')),
+    ice: articles.find((item) => /ICE|移民执法|驱逐/i.test(`${item.category_name || ''} ${item.title}`)),
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
     finance: articles.find((item) => /财经|股市|美股|基金|ETF/i.test(item.title)),
   }), [articles]);

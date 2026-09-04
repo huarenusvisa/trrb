@@ -61,10 +61,12 @@ function render(list) {
     <div class="crow chead court-crow outcome-row"><span>法院</span><span>法官</span><span>结案总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>裁决批准率</span></div>
     ${list.map((row) => `<a class="crow court-crow outcome-row" href="${esc(courtProfileUrl(row))}"><span><b>${esc(row.court_name || '未命名法院')}</b><small>FY ${esc(fiscalYear)} · ${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></span><span>${fmt(row.judges)}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${reportableRate(row)}</span></a>`).join('')}
   ` : '<div class="empty">没有找到匹配法院</div>';
+  $('#court-results-status').textContent = `${fmt(list.length)} ${window.AsylumI18n?.t?.('法院') || '法院'}`;
 }
 
 function setLoading(loading) {
   $('#court-results').setAttribute('aria-busy', String(loading));
+  if (loading) $('#court-results-status').textContent = window.AsylumI18n?.t?.('正在读取法院数据…') || '正在读取法院数据…';
   $('#court-search').querySelector('button').disabled = loading;
   document.querySelectorAll('[data-fy]').forEach((button) => {
     button.disabled = loading;
@@ -72,6 +74,7 @@ function setLoading(loading) {
 }
 
 function renderError() {
+  $('#court-results-status').textContent = '';
   $('#court-results').innerHTML = '<div class="empty" role="alert"><b>法院数据库暂时无法读取</b><p>请稍后重试。</p><button id="court-retry" class="empty-retry" type="button">重新尝试</button></div>';
   $('#court-retry').addEventListener('click', () => load($('#court-q').value.trim(), selectedState));
 }

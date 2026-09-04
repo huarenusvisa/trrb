@@ -2,15 +2,16 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { fetchArticles, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
+import { fetchArticles, fetchHomepageFocus, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 
-const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职'] as const;
-const SUPPLEMENT_CATEGORIES = ['重要新闻', '热门头条', '美国时政', '美国警情'] as const;
-const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情']);
+const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
+const SUPPLEMENT_CATEGORIES = ['重要新闻', '热门头条', '美国时政', '美国警情', 'ICE执法动态'] as const;
+const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
 
 const newsSections = [
   { key: 'china-hot', title: '中国热门头条', category: '热门头条', aliases: ['热门头条', '中国热门头条'] },
   { key: 'us-politics', title: '美国时政', category: '美国时政', aliases: ['美国时政'] },
+  { key: 'ice-news', title: 'ICE执法动态', category: 'ICE执法动态', aliases: ['ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
   { key: 'us-crime', title: '美国警情', category: '美国警情', aliases: ['美国警情'] },
 ] as const;
 
@@ -22,6 +23,14 @@ const topicCards = [
     status: '实时追踪',
     image: 'https://trrb.net/assets/topic-focus/trump-portrait.jpg?v=30',
     url: 'https://trrb.net/trump',
+  },
+  {
+    key: 'ice',
+    title: 'ICE执法动态',
+    subtitle: '执法行动、拘留、遣返与法律应对',
+    status: '自动更新',
+    image: 'https://trrb.net/assets/topic-focus/ice-badge.jpg?v=30',
+    url: 'https://trrb.net/ice',
   },
   {
     key: 'election',
@@ -134,6 +143,7 @@ export default function HomeScreen() {
   const { width } = useWindowDimensions();
   const carouselRef = useRef<ScrollView>(null);
   const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [focusArticles, setFocusArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
@@ -145,7 +155,10 @@ export default function HomeScreen() {
   async function load() {
     try {
       setError('');
-      const global = await fetchArticles({ limit: 120 });
+      const [global, focus] = await Promise.all([
+        fetchArticles({ limit: 120 }),
+        fetchHomepageFocus().catch(() => []),
+      ]);
       const supplements = await Promise.all(SUPPLEMENT_CATEGORIES.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
       const seen = new Set<string>();
       const merged = sortNewestFirst([...global, ...supplements.flat()]).filter((item) => {
@@ -155,6 +168,7 @@ export default function HomeScreen() {
         return true;
       });
       setArticles(merged);
+      setFocusArticles(focus);
     } catch (e) {
       setError(e instanceof Error ? e.message : '新闻加载失败');
     } finally {
@@ -191,16 +205,14 @@ export default function HomeScreen() {
 
   const homepageArticles = useMemo(() => articles.filter((item) => !isHiddenHomepageCategory(item.category_name)), [articles]);
   const importantCarousel = useMemo(() => {
-    const explicit = homepageArticles.filter((item) => item.category_name === '重要新闻');
-    const candidates = [...explicit, ...homepageArticles.filter((item) => item.category_name !== '重要新闻')];
     const seen = new Set<string>();
-    return candidates.filter((item) => {
+    return focusArticles.filter((item) => {
       const key = String(item.id);
       if (!key || seen.has(key)) return false;
       seen.add(key);
       return true;
     }).slice(0, 5);
-  }, [homepageArticles]);
+  }, [focusArticles]);
   const carouselWidth = Math.max(280, width - 28);
 
   useEffect(() => {
@@ -217,20 +229,23 @@ export default function HomeScreen() {
 
   const rankItems = useMemo(() => {
     const cutoff = Date.now() - 24 * 60 * 60 * 1000;
-    return homepageArticles
+    return articles
       .filter((item) => rankCategories.has(String(item.category_name || '').trim()))
       .filter((item) => {
         const time = Date.parse(item.published_at || item.created_at || '');
         return Number.isFinite(time) && time >= cutoff && time <= Date.now();
       })
       .slice(0, 8);
-  }, [homepageArticles]);
+  }, [articles]);
   const categoryGroups = useMemo(() => newsSections.map((section) => ({
     ...section,
-    items: homepageArticles.filter((item) => section.aliases.some((alias) => alias === String(item.category_name || ''))).slice(0, 6),
-  })), [homepageArticles]);
+    items: (section.key === 'ice-news' ? articles : homepageArticles)
+      .filter((item) => section.aliases.some((alias) => alias === String(item.category_name || '')))
+      .slice(0, 6),
+  })), [articles, homepageArticles]);
   const topicLatest = useMemo(() => ({
     trump: articles.find((item) => item.title.includes('特朗普')),
+    ice: articles.find((item) => /ICE|移民执法|驱逐/i.test(`${item.category_name || ''} ${item.title}`)),
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
     finance: articles.find((item) => /财经|股市|美股|基金|ETF/i.test(item.title)),
   }), [articles]);

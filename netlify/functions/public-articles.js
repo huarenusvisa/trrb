@@ -1,4 +1,5 @@
 const { rest } = require("./_shared/supabase-admin");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 
 function json(statusCode, body) {
@@ -29,6 +30,7 @@ exports.handler = async (event) => {
     const limit = Math.min(Math.max(Number.isFinite(requestedLimit) ? requestedLimit : 30, 1), 60);
     const offset = Math.max(Number.isFinite(requestedOffset) ? requestedOffset : 0, 0);
     const category = String(event.queryStringParameters?.category || "").trim().slice(0, 80);
+    const isIceCategory = category === "ICE执法动态";
     const q = cleanSearch(event.queryStringParameters?.q || "");
 
     const query = {
@@ -39,12 +41,15 @@ exports.handler = async (event) => {
       limit: String(limit),
       offset: String(offset)
     };
-    if (category) query.category_name = "eq." + category;
+    if (isIceCategory) {
+      query.or = "(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报)";
+    } else if (category) query.category_name = "eq." + category;
     if (q) query.or = `(title.ilike.*${q}*,summary.ilike.*${q}*)`;
 
     const rows = await rest("articles", { query });
     const rawArticles = Array.isArray(rows) ? rows : [];
     const articles = rawArticles
+      .filter((row) => !isIceCategory || isIceEnforcementText(row.title, row.summary))
       .filter((row) => !isChinaHotCategory(category) || isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`))
       .map(({ content: _content, ...row }) => row);
     return json(200, {

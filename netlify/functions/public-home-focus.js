@@ -1,4 +1,5 @@
 const { rest } = require("./_shared/supabase-admin");
+const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 
 const HOME_MAX_AGE_HOURS = 96;
 const HOME_MAX_AGE_MS = HOME_MAX_AGE_HOURS * 60 * 60 * 1000;
@@ -9,6 +10,7 @@ const MANUAL_EXCLUDE = "exclude";
 
 const HIGH_IMPACT_RULES = [
   [/特朗普|川普|白宫|总统|国会|参议院|众议院|最高法院|大法官|州长|行政令|弹劾|大选|中期选举|选举/, 40],
+  [/ICE|移民与海关执法局|移民及海关执法局|国土安全部|DHS|遣返|驱逐|移民执法/, 30],
   [/法案|预算|关税|外交|国家安全|联邦政府|内阁|国务卿|国防部长|司法部长|财政部长/, 26],
   [/突发|宣布|通过|否决|裁定|判决|重大|紧急|禁令|新规|政策/, 20]
 ];
@@ -47,10 +49,17 @@ function isManualFocus(row) {
   return overrideOf(row) === MANUAL_FORCE;
 }
 
+function isIceFocusCandidate(row) {
+  const category = String(row?.category_name || "").trim();
+  const topic = String(row?.topic_key || "").trim().toLowerCase();
+  if (topic !== "ice" && !["ICE执法动态", "ICE执法", "驱逐快报"].includes(category)) return false;
+  return isIceEnforcementText(row?.title, row?.summary);
+}
+
 function isEligibleLongform(row) {
+  if (textLength(row?.content) < MIN_LONGFORM_CHARS) return false;
   if (isManualFocus(row)) return true;
-  return String(row?.category_name || "").trim() === "美国时政" &&
-    textLength(row?.content) >= MIN_LONGFORM_CHARS;
+  return String(row?.category_name || "").trim() === "美国时政" || isIceFocusCandidate(row);
 }
 
 function scoreRow(row, now = Date.now()) {
@@ -86,7 +95,7 @@ function publicArticle(row) {
   return {
     ...article,
     longform_chars: textLength(content),
-    homepage_focus_source: isManualFocus(row) ? "editor" : "美国时政"
+    homepage_focus_source: isManualFocus(row) ? "editor" : isIceFocusCandidate(row) ? "ICE执法动态" : "美国时政"
   };
 }
 
@@ -104,11 +113,18 @@ exports.handler = async (event) => {
       published_at: `gte.${cutoff}`,
       order: "published_at.desc.nullslast,created_at.desc"
     };
-    const [politicsRows, editorRows] = await Promise.all([
+    const [politicsRows, iceRows, editorRows] = await Promise.all([
       rest("articles", {
         query: {
           ...baseQuery,
           category_name: "eq.美国时政",
+          limit: "200"
+        }
+      }),
+      rest("articles", {
+        query: {
+          ...baseQuery,
+          or: "(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报)",
           limit: "200"
         }
       }),
@@ -122,7 +138,7 @@ exports.handler = async (event) => {
     ]);
     const rows = [];
     const seen = new Set();
-    for (const row of [...(Array.isArray(politicsRows) ? politicsRows : []), ...(Array.isArray(editorRows) ? editorRows : [])]) {
+    for (const row of [...(Array.isArray(politicsRows) ? politicsRows : []), ...(Array.isArray(iceRows) ? iceRows : []), ...(Array.isArray(editorRows) ? editorRows : [])]) {
       const key = String(row?.id || "").trim();
       if (!key || seen.has(key)) continue;
       seen.add(key);
@@ -135,17 +151,17 @@ exports.handler = async (event) => {
       .filter(isEligibleLongform)
       .map((row) => ({ ...row, homepage_focus_score: Math.round(scoreRow(row, now)) }))
       .filter((row) => row.homepage_focus_score > -1000)
-      .sort((a, b) => timeOf(b) - timeOf(a) || b.homepage_focus_score - a.homepage_focus_score)
+      .sort((a, b) => b.homepage_focus_score - a.homepage_focus_score || timeOf(b) - timeOf(a))
       .slice(0, 5)
       .map(publicArticle);
 
     return response(200, {
       mode: "homepage-focus",
       label: "今日要闻",
-      source_category: "美国时政（编辑可手动加入重大新闻）",
+      source_category: "美国时政、ICE执法动态（编辑可手动加入重大新闻）",
       min_longform_chars: MIN_LONGFORM_CHARS,
       max_age_hours: HOME_MAX_AGE_HOURS,
-      sort: "published_at.desc,created_at.desc",
+      sort: "homepage_focus_score.desc,published_at.desc",
       generated_at: new Date().toISOString(),
       count: articles.length,
       candidate_count: rows.length,

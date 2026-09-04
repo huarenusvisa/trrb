@@ -461,7 +461,13 @@ exports.handler = async (event) => {
         ? staticRows.map((item) => derived({ ...(dbByName.get(item.name_key) || {}), ...item }))
         : (rows || []).map((row) => derived(withOfficialOutcomes(row, fiscalYear)));
       const courtPeriod = officialCourt?.yearly?.find((item) => Number(item.fiscal_year) === fiscalYear);
-      return out(200, { fiscal_year: fiscalYear, court: { court_name: officialCourt?.court_name || rows[0].court_name, court_city: rows[0].court_city || String(court).replace(/\s*\([^)]*\)\s*$/, ''), court_state: officialCourt?.state || rows[0].court_state, ...derived(courtPeriod || aggregate(judges)) }, judges, ...(await provenance()) });
+      return out(200, {
+        fiscal_year: fiscalYear,
+        judge_list_scope: staticRows.length ? 'fiscal_year' : 'all_time_profiles',
+        court: { court_name: officialCourt?.court_name || rows[0].court_name, court_city: rows[0].court_city || String(court).replace(/\s*\([^)]*\)\s*$/, ''), court_state: officialCourt?.state || rows[0].court_state, ...derived(courtPeriod || aggregate(judges)) },
+        judges,
+        ...(await provenance())
+      });
     }
 
     if (mode === 'states') {

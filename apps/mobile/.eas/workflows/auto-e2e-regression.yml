@@ -9,7 +9,8 @@ on:
     paths:
       - 'apps/mobile/eas.json'
       - 'apps/mobile/app.json'
-      - 'apps/mobile/package.json'
+      # Dependency installs are lockfile-driven. package.json alone also changes
+      # for harmless script/test commands and must not spend two native builds.
       - 'apps/mobile/package-lock.json'
       - 'apps/mobile/assets/app-icon-1024.png'
 

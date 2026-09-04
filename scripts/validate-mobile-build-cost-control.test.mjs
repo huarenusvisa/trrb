@@ -14,6 +14,7 @@ test('native E2E builds only run for native-impacting changes or manual dispatch
   assert.match(nativeWorkflow, /apps\/mobile\/app\.json/);
   assert.match(nativeWorkflow, /apps\/mobile\/eas\.json/);
   assert.match(nativeWorkflow, /apps\/mobile\/package-lock\.json/);
+  assert.doesNotMatch(nativeWorkflow, /^\s*- 'apps\/mobile\/package\.json'$/m, 'script-only package.json changes must not trigger native builds');
   assert.match(nativeWorkflow, /apps\/mobile\/assets\/app-icon-1024\.png/);
   assert.match(nativeWorkflow, /concurrency:[\s\S]*cancel_in_progress:\s*true/);
   assert.match(nativeWorkflow, /group:\s*\$\{\{ workflow\.filename \}\}-\$\{\{ github\.ref \}\}/);

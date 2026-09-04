@@ -122,7 +122,13 @@ assert.match(detailClient, /params\.set\('state', state\)/, 'court detail must p
 assert.match(detailClient, /params\.set\('fy', requestedYear\)/, 'court detail must request the fiscal year selected in the directory');
 assert.match(detailClient, /data\.fiscal_year[\s\S]*#court-source/, 'court detail must visibly identify the returned fiscal year');
 assert.match(detailClient, /backParams[\s\S]*fy:[\s\S]*#court-back/, 'court detail back link must preserve fiscal year and state context');
-assert.match(readFileSync('immigration-judge-approval-rate/court-detail.html', 'utf8'), /id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=3/, 'court detail must load the fiscal-year-aware client and expose its context targets');
+assert.match(detailClient, /if \(!response\.ok\) throw new Error\(`Court detail failed: \$\{response\.status\}`\)[\s\S]*const data = await response\.json\(\)/, 'court detail must reject non-success responses before parsing');
+assert.match(detailClient, /id="court-detail-retry"[\s\S]*addEventListener\('click', load\)/, 'court detail failures must offer an in-place retry');
+assert.match(detailClient, /loading\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*loading\.setAttribute\('aria-busy', 'false'\)/, 'court detail must expose its loading state');
+const courtDetailPage = readFileSync('immigration-judge-approval-rate/court-detail.html', 'utf8');
+assert.match(courtDetailPage, /id="loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court detail loading and failure updates must be announced');
+assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=4/, 'court detail must load the retry assets and expose its context targets');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 
+// Court profile recovery is part of the state-to-court drill-down contract.
 console.log('AsylumJudge state drill-down contract: PASS');

@@ -6,6 +6,7 @@ import { buildCommentThreads, commentDisplayName, isOwnComment } from './comment
 const row = (overrides: Partial<CommentRow> = {}): CommentRow => ({
   id: 'root', article_id: 'article-1', user_id: 'user-1', parent_id: null,
   content: '测试评论', status: 'published', is_pinned: false,
+  like_count: 0, viewer_has_liked: false,
   created_at: '2026-09-03T00:00:00Z', updated_at: '2026-09-03T00:00:00Z',
   profiles: { display_name: '测试用户' }, ...overrides,
 });

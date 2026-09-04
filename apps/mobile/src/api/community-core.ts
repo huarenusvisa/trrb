@@ -18,6 +18,7 @@ export type CommunityPost = {
   content_label: string;
   status: 'published' | 'pending' | 'hidden' | 'deleted';
   like_count: number;
+  viewer_has_liked: boolean;
   comment_count: number;
   created_at: string;
   profiles?: { display_name?: string; avatar_key?: string } | null;

@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { moderation, clean, commentCountAfterUnpublish } = require('./community-api')._test;
+const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState } = require('./community-api')._test;
 
 test('ordinary USCIS experience passes basic rules', () => {
   const result = moderation('uscis_interview', '纽约庇护面谈经历', '我在纽约办公室完成面谈，分享当天材料准备和流程。');
@@ -31,4 +31,15 @@ test('owner unpublish only decrements the public count for a published comment',
   assert.equal(commentCountAfterUnpublish({ status: 'published' }, 3), 2);
   assert.equal(commentCountAfterUnpublish({ status: 'pending' }, 3), 3);
   assert.equal(commentCountAfterUnpublish({ status: 'deleted' }, 0), 0);
+});
+
+test('hydrates viewer like state in one response without changing aggregate counts', () => {
+  const posts = withViewerLikeState([
+    { id: 'post-1', like_count: 4 },
+    { id: 'post-2', like_count: 2 },
+  ], [{ post_id: 'post-2' }]);
+
+  assert.deepEqual(posts.map((post) => post.viewer_has_liked), [false, true]);
+  assert.deepEqual(posts.map((post) => post.like_count), [4, 2]);
+  assert.equal(withViewerLikeState([{ id: 'post-1' }])[0].viewer_has_liked, false);
 });

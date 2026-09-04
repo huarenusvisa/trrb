@@ -260,3 +260,19 @@ test('community comment authors can soft-unpublish with retry and immediate coun
   assert.match(server, /body: \{ status: 'deleted'/);
   assert.match(server, /row\.status !== 'deleted'/);
 });
+
+test('community posts hydrate and preserve the signed-in viewer like state', () => {
+  const list = read('app/community.tsx');
+  const detail = read('app/community/[id].tsx');
+  const api = read('src/api/community-core.ts');
+  const server = read('../../netlify/functions/community-api.js');
+
+  assert.match(server, /community_post_likes/);
+  assert.match(server, /post_id: `in\.\(\$\{posts\.map/);
+  assert.match(server, /withViewerLikeState/);
+  assert.match(api, /viewer_has_liked: boolean/);
+  assert.match(list, /post\.viewer_has_liked \? '已赞' : '赞'/);
+  assert.match(detail, /viewer_has_liked: result\.liked/);
+  assert.match(detail, /selected: post\.viewer_has_liked/);
+  assert.match(detail, /post\.viewer_has_liked \? '取消点赞' : '点赞'/);
+});

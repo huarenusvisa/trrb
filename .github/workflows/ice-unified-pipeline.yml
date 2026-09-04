@@ -81,19 +81,9 @@ jobs:
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
 
-      - name: Claim shared three-hour collection cadence
-        id: due
-        if: steps.window.outputs.allowed == 'true'
-        env:
-          COLLECTION_PIPELINE: "ice"
-          COLLECTION_CADENCE_ACTION: "claim"
-          COLLECTION_CADENCE_MINUTES: "180"
-          COLLECTION_FORCE: ${{ github.event_name != 'schedule' }}
-        run: node scripts/collection-cadence-gate.mjs
-
       - name: Read ICE category switches with safe fallback
         id: category
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
+        if: steps.window.outputs.allowed == 'true'
         shell: bash
         run: |
           if ! node scripts/category-pipeline-gate.mjs ice; then
@@ -105,18 +95,18 @@ jobs:
           fi
 
       - name: Stop when ICE category is disabled
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled != 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled != 'true'
         run: echo "ICE栏目已在后台关闭，本轮不执行。"
 
       - name: Write start heartbeat
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-collection-start"
           ICE_HEARTBEAT_STATUS: "running"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
 
       - name: Collect all ICE sources
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set +e
@@ -132,7 +122,7 @@ jobs:
           [[ "$ok" -eq 1 ]]
 
       - name: Filter, dedupe and intake
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
@@ -145,7 +135,7 @@ jobs:
           node scripts/ice-dedupe-v3.mjs || true
 
       - name: AI edit and translate
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite == 'true'
         shell: bash
         run: |
           set -e
@@ -156,7 +146,7 @@ jobs:
       - name: Publish
         # 发布器自身会再次核验：仅官方来源或真实管理员已批准的内容可以发布。
         # 不再让栏目级旧开关误伤官方来源自动发布。
-        if: steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "12"
@@ -171,20 +161,18 @@ jobs:
           node scripts/ice-publish-due.mjs
 
       - name: Write success heartbeat
-        if: success() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true' && steps.category.outputs.enabled == 'true'
+        if: success() && steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "success"
         run: |
           node scripts/ice-pipeline-heartbeat.mjs || true
-          COLLECTION_PIPELINE=ice COLLECTION_CADENCE_ACTION=success node scripts/collection-cadence-gate.mjs
 
       - name: Write failure heartbeat
-        if: failure() && steps.window.outputs.allowed == 'true' && steps.due.outputs.due == 'true'
+        if: failure() && steps.window.outputs.allowed == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
         run: |
           node scripts/ice-pipeline-heartbeat.mjs || true
-          COLLECTION_PIPELINE=ice COLLECTION_CADENCE_ACTION=failure COLLECTION_CADENCE_ERROR="ICE唯一生产流水线失败" node scripts/collection-cadence-gate.mjs || true

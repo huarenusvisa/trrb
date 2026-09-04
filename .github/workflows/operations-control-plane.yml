@@ -26,9 +26,8 @@ on:
           - jobs
           - secondhand
   schedule:
-    # One hourly heartbeat is enough because each collector still enforces its
-    # own database cadence gate. Manual switch-on remains available through
-    # workflow_dispatch, so reducing this heartbeat does not delay user-started runs.
+    # Enabled collectors run on every hourly heartbeat. Manual switch-on dispatches
+    # immediately and must never be blocked by an internal cadence lock.
     - cron: "7 * * * *"
     - cron: "47 3 * * *"
     - cron: "37 4 * * *"
@@ -74,7 +73,7 @@ jobs:
 
   ice:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.ice == 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.ice == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'ice')) }}
     uses: ./.github/workflows/ice-unified-pipeline.yml
     secrets: inherit
 
@@ -112,7 +111,7 @@ jobs:
 
   china-hot-li-teacher:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 

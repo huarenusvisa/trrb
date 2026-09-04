@@ -28,6 +28,14 @@ test("成本控制、多信源和80分门槛存在", () => {
   assert.doesNotMatch(text, /git push/);
 });
 
+test("ICE开关派发后立即采集，不受三小时节奏锁阻挡", () => {
+  const workflow = read(".github/workflows/ice-unified-pipeline.yml");
+  assert.doesNotMatch(workflow, /collection-cadence-gate/);
+  assert.doesNotMatch(workflow, /COLLECTION_CADENCE_MINUTES/);
+  assert.doesNotMatch(workflow, /steps\\.due\\.outputs\\.due/);
+  assert.match(workflow, /Collect all ICE sources/);
+});
+
 test("ICE官方来源直发，非官方来源仍由后台真实管理员审核", () => {
   const collector = read("scripts/ice-multisource.mjs");
   const publisher = read("scripts/ice-publish-due.mjs");

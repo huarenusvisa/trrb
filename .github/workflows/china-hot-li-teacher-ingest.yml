@@ -34,16 +34,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Claim shared three-hour collection cadence
-        id: due
-        env:
-          COLLECTION_PIPELINE: "china-hot"
-          COLLECTION_CADENCE_ACTION: "claim"
-          COLLECTION_CADENCE_MINUTES: "180"
-          COLLECTION_FORCE: ${{ github.event_name != 'schedule' }}
-        run: node scripts/collection-cadence-gate.mjs
       - name: Validate secrets
-        if: steps.due.outputs.due == 'true'
         shell: bash
         run: |
           test -n "$SUPABASE_URL"
@@ -51,10 +42,8 @@ jobs:
           if [[ "${{ inputs.recover_archived }}" != "true" && "${{ inputs.repair_today }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
-        if: steps.due.outputs.due == 'true'
         run: node --test scripts/china-hot-li-teacher-ingest.test.mjs
       - name: Collect China headlines and publish automatically
-        if: steps.due.outputs.due == 'true'
         shell: bash
         run: |
           args=()
@@ -64,16 +53,3 @@ jobs:
             args+=(--recover-archived)
           fi
           node scripts/china-hot-li-teacher-ingest.mjs "${args[@]}"
-      - name: Complete cadence heartbeat
-        if: success() && steps.due.outputs.due == 'true'
-        env:
-          COLLECTION_PIPELINE: "china-hot"
-          COLLECTION_CADENCE_ACTION: "success"
-        run: node scripts/collection-cadence-gate.mjs
-      - name: Record cadence failure
-        if: failure() && steps.due.outputs.due == 'true'
-        env:
-          COLLECTION_PIPELINE: "china-hot"
-          COLLECTION_CADENCE_ACTION: "failure"
-          COLLECTION_CADENCE_ERROR: "中国热门头条采集失败"
-        run: node scripts/collection-cadence-gate.mjs || true

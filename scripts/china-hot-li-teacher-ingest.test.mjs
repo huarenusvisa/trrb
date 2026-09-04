@@ -107,7 +107,7 @@ test("拒绝美国主导、回复、转帖和低信息片段", () => {
   assert.equal(qualifyTweet({ id: "thin", text: "北京突发，稍后更新。" }).accepted, false);
 });
 
-test("中国热门头条由可靠唤醒器按三小时状态锁运行并保留24小时补漏窗口", () => {
+test("中国热门头条打开开关立即采集，并由每小时唤醒器补漏24小时内容", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   assert.match(workflow, /OPENAI_API_KEY/);
@@ -118,10 +118,10 @@ test("中国热门头条由可靠唤醒器按三小时状态锁运行并保留24
   assert.match(workflow, /--repair-today/);
   assert.match(workflow, /LI_TEACHER_LOOKBACK_HOURS:.*24/);
   assert.doesNotMatch(workflow, /schedule:/);
-  assert.match(workflow, /COLLECTION_PIPELINE: "china-hot"/);
-  assert.match(workflow, /COLLECTION_CADENCE_MINUTES: "180"/);
-  assert.match(control, /cron: "7,22,37,52 \* \* \* \*"/);
-  assert.match(control, /retry heartbeat, not a 15-minute collection cycle/);
+  assert.doesNotMatch(workflow, /collection-cadence-gate/);
+  assert.doesNotMatch(workflow, /COLLECTION_CADENCE_MINUTES/);
+  assert.match(control, /cron: "7 \* \* \* \*"/);
+  assert.match(control, /must never be blocked by an internal cadence lock/);
   assert.match(control, /github\.event_name == 'schedule'[\s\S]*inputs\.module == 'china-hot'/);
   assert.match(control, /china-hot-li-teacher:/);
   assert.match(control, /ice:/);

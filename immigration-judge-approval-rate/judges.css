@@ -12,3 +12,4 @@
 :root{--other:#2563a9;--other-soft:#eef5ff}
 .verdict-pass{color:var(--pass)!important;font-weight:900}.verdict-deny{color:var(--deny)!important;font-weight:900}.verdict-other{color:var(--other)!important;font-weight:900}
 .verdict-sample{font-weight:800}.mobile-sample{display:none}@media(max-width:800px){.mobile-sample{display:inline}}
+.freshness-retry{border:0;background:none;padding:0;color:var(--pass-dark);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer}

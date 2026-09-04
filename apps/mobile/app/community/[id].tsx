@@ -10,11 +10,15 @@ import {
   unpublishCommunityPost,
 } from '../../src/api/community';
 import { AsyncStatePanel } from '../../src/components/AsyncStatePanel';
+import { communityCommentDisplayName, paginateCommunityCommentThreads } from '../../src/community/community-comment-presentation';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { withUiTimeout } from '../../src/utils/async-state-core';
 import { clearCommentDraft, loadCommentDraft, saveCommentDraft } from '../../src/storage/commentDraft';
 
 type ActionFeedback = { title: string; message: string; tone: 'neutral' | 'error'; retry?: () => void };
+type ReplyTarget = { id: string; label: string };
+
+const COMMENT_THREAD_PAGE_SIZE = 15;
 
 const categoryNames: Record<string, string> = {
   hot_discussion: '热门讨论', immigration_help: '移民互助', court_experience: '上庭交流',
@@ -33,8 +37,12 @@ export default function CommunityPostScreen() {
   const [feedback, setFeedback] = useState<ActionFeedback | null>(null);
   const [draftReady, setDraftReady] = useState(false);
   const [draftRestored, setDraftRestored] = useState(false);
+  const [replyTarget, setReplyTarget] = useState<ReplyTarget | null>(null);
+  const [visibleThreadCount, setVisibleThreadCount] = useState(COMMENT_THREAD_PAGE_SIZE);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestComment = useRef('');
+  const latestReplyTarget = useRef<ReplyTarget | null>(null);
+  const commentInput = useRef<TextInput>(null);
 
   const load = useCallback(async () => {
     if (!id) return;
@@ -50,25 +58,36 @@ export default function CommunityPostScreen() {
     if (!id) return;
     let active = true;
     let loaded = false;
-    setDraftReady(false); setDraftRestored(false); setComment(''); latestComment.current = '';
+    setDraftReady(false); setDraftRestored(false); setComment(''); setReplyTarget(null); setVisibleThreadCount(COMMENT_THREAD_PAGE_SIZE);
+    latestComment.current = ''; latestReplyTarget.current = null;
     void loadCommentDraft('community', String(id)).then((draft) => {
       if (!active) return;
       loaded = true;
       if (!draft) return;
-      latestComment.current = draft.text; setComment(draft.text); setDraftRestored(true);
+      const restoredTarget = draft.parentId ? { id: draft.parentId, label: draft.replyLabel || '用户' } : null;
+      latestComment.current = draft.text; latestReplyTarget.current = restoredTarget;
+      setComment(draft.text); setReplyTarget(restoredTarget); setDraftRestored(true);
     }).catch(() => undefined).finally(() => { if (active) { loaded = true; setDraftReady(true); } });
     return () => {
       active = false;
       if (saveTimer.current) clearTimeout(saveTimer.current);
-      if (loaded) void saveCommentDraft('community', String(id), { text: latestComment.current }).catch(() => undefined);
+      if (loaded) void saveCommentDraft('community', String(id), {
+        text: latestComment.current,
+        parentId: latestReplyTarget.current?.id,
+        replyLabel: latestReplyTarget.current?.label,
+      }).catch(() => undefined);
     };
   }, [id]);
   useEffect(() => {
     if (!id || !draftReady) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => { void saveCommentDraft('community', String(id), { text: latestComment.current }).catch(() => undefined); }, 600);
+    saveTimer.current = setTimeout(() => { void saveCommentDraft('community', String(id), {
+      text: latestComment.current,
+      parentId: latestReplyTarget.current?.id,
+      replyLabel: latestReplyTarget.current?.label,
+    }).catch(() => undefined); }, 600);
     return () => { if (saveTimer.current) clearTimeout(saveTimer.current); };
-  }, [comment, draftReady, id]);
+  }, [comment, draftReady, id, replyTarget]);
 
   const requireLogin = () => {
     if (detail?.viewerUserId) return true;
@@ -80,10 +99,11 @@ export default function CommunityPostScreen() {
     if (!detail || !comment.trim() || busyAction === 'comment' || !requireLogin()) return;
     setBusyAction('comment'); setFeedback(null);
     try {
-      const result = await withUiTimeout(createCommunityComment(detail.post.id, comment), '评论提交超时，请重试。');
+      const result = await withUiTimeout(createCommunityComment(detail.post.id, comment, replyTarget?.id || null), '评论提交超时，请重试。');
       if (saveTimer.current) clearTimeout(saveTimer.current);
       await clearCommentDraft('community', String(id));
-      latestComment.current = ''; setComment(''); setDraftRestored(false);
+      latestComment.current = ''; latestReplyTarget.current = null;
+      setComment(''); setReplyTarget(null); setDraftRestored(false);
       setFeedback({ title: result.pending ? '评论已提交' : '评论发布成功', message: result.pending ? '评论正在等待审核。' : '你的评论已显示在帖子中。', tone: 'neutral' });
       await load();
     } catch (e) { setFeedback({ title: '评论提交失败', message: e instanceof Error ? e.message : '评论失败', tone: 'error', retry: () => void submitComment() }); }
@@ -92,6 +112,15 @@ export default function CommunityPostScreen() {
 
   const updateComment = (value: string) => {
     latestComment.current = value; setComment(value); setDraftRestored(false); setFeedback(null);
+  };
+
+  const startReply = (target: ReplyTarget) => {
+    latestReplyTarget.current = target; setReplyTarget(target); setDraftRestored(false); setFeedback(null);
+    requestAnimationFrame(() => commentInput.current?.focus());
+  };
+
+  const cancelReply = () => {
+    latestReplyTarget.current = null; setReplyTarget(null); setDraftRestored(false);
   };
 
   const like = async () => {
@@ -133,6 +162,7 @@ export default function CommunityPostScreen() {
 
   const { post, comments, viewerUserId } = detail;
   const ownPost = viewerUserId === post.user_id;
+  const commentPage = paginateCommunityCommentThreads(comments, visibleThreadCount);
   return <ScrollView testID="community-post-detail" style={styles.page} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
     <Stack.Screen options={{ headerShown: true, title: '社区帖子', headerBackTitle: '返回' }} />
     <View style={styles.metaRow}><Text style={styles.category}>{categoryNames[post.category] || post.category}</Text>{post.status !== 'published' ? <Text style={styles.pending}>审核中</Text> : null}</View>
@@ -148,16 +178,19 @@ export default function CommunityPostScreen() {
     {feedback ? <AsyncStatePanel testID="community-action-feedback" title={feedback.title} message={feedback.message} tone={feedback.tone} actionLabel={feedback.retry ? '重试操作' : undefined} onAction={feedback.retry} busy={Boolean(busyAction)} /> : null}
     <View style={styles.comments}>
       <Text style={styles.commentsTitle}>评论 {post.comment_count || 0}</Text>
-      {comments.length ? comments.map((item) => <View key={item.id} style={styles.commentCard}>
+      {commentPage.hiddenThreadCount ? <Pressable testID="community-comments-load-earlier" accessibilityRole="button" accessibilityLabel={`查看更早的${Math.min(COMMENT_THREAD_PAGE_SIZE, commentPage.hiddenThreadCount)}组评论`} style={styles.loadEarlier} onPress={() => setVisibleThreadCount((count) => count + COMMENT_THREAD_PAGE_SIZE)}><Text style={styles.loadEarlierText}>查看更早评论（还有 {commentPage.hiddenThreadCount} 组）</Text></Pressable> : null}
+      {commentPage.rows.length ? commentPage.rows.map(({ item, depth, replyToLabel }) => <View key={item.id} style={[styles.commentCard, depth > 0 && styles.replyCard, { marginLeft: Math.min(depth, 3) * 14 }]}>
         <View style={styles.commentHead}><Pressable accessibilityRole="button" accessibilityLabel={`查看${item.profiles?.display_name || '唐人用户'}的主页`} onPress={() => router.push(`/user/${item.user_id}`)}><Text style={styles.commentAuthor}>{item.profiles?.display_name || '唐人用户'}</Text></Pressable><Text style={styles.commentTime}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
+        {replyToLabel ? <Text style={styles.replyLabel}>回复 {replyToLabel}</Text> : null}
         <Text style={styles.commentBody}>{item.content}</Text>
         {item.status !== 'published' ? <Text style={styles.reviewing}>审核中，仅自己可见</Text> : null}
+        {viewerUserId && item.status === 'published' ? <Pressable testID={`community-comment-reply-${item.id}`} accessibilityRole="button" accessibilityLabel={`回复${communityCommentDisplayName(item)}`} style={styles.replyAction} onPress={() => startReply({ id: item.id, label: communityCommentDisplayName(item) })}><Text style={styles.replyActionText}>回复</Text></Pressable> : null}
       </View>) : <Text style={styles.empty}>暂时还没有评论。</Text>}
-      {viewerUserId ? <View style={styles.composer}>{draftRestored ? <Text testID="community-comment-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}>已恢复评论草稿。</Text> : null}<TextInput testID="community-comment-input" accessibilityLabel="评论内容" value={comment} onChangeText={updateComment} editable={busyAction !== 'comment'} maxLength={3000} multiline placeholder="写下你的回复" style={styles.commentInput} /><Text style={styles.counter}>{comment.length}/3000 · 草稿自动保存 7 天</Text><Pressable testID="community-comment-submit" accessibilityRole="button" accessibilityLabel="发表评论" accessibilityState={{ disabled: busyAction === 'comment' || !comment.trim(), busy: busyAction === 'comment' }} disabled={busyAction === 'comment' || !comment.trim()} style={[styles.primary, !comment.trim() && styles.disabled]} onPress={() => void submitComment()}>{busyAction === 'comment' ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>发表评论</Text>}</Pressable></View> : <Pressable testID="community-comment-login" accessibilityRole="button" accessibilityLabel="登录后发表评论" style={styles.primary} onPress={() => router.push('/auth')}><Text style={styles.primaryText}>登录后发表评论</Text></Pressable>}
+      {viewerUserId ? <View style={styles.composer}>{draftRestored ? <Text testID="community-comment-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}>已恢复评论草稿{replyTarget ? `，将回复 ${replyTarget.label}` : ''}。</Text> : null}{replyTarget ? <View testID="community-comment-reply-target" style={styles.replyTarget}><Text style={styles.replyTargetText}>正在回复 {replyTarget.label}</Text><Pressable accessibilityRole="button" accessibilityLabel="取消回复" onPress={cancelReply}><Text style={styles.cancelReply}>取消</Text></Pressable></View> : null}<TextInput ref={commentInput} testID="community-comment-input" accessibilityLabel={replyTarget ? `回复${replyTarget.label}` : '评论内容'} value={comment} onChangeText={updateComment} editable={busyAction !== 'comment'} maxLength={3000} multiline placeholder={replyTarget ? `回复 ${replyTarget.label}` : '写下你的评论'} style={styles.commentInput} /><Text style={styles.counter}>{comment.length}/3000 · 草稿自动保存 7 天</Text><Pressable testID="community-comment-submit" accessibilityRole="button" accessibilityLabel={replyTarget ? `回复${replyTarget.label}` : '发表评论'} accessibilityState={{ disabled: busyAction === 'comment' || !comment.trim(), busy: busyAction === 'comment' }} disabled={busyAction === 'comment' || !comment.trim()} style={[styles.primary, !comment.trim() && styles.disabled]} onPress={() => void submitComment()}>{busyAction === 'comment' ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>{replyTarget ? '发表回复' : '发表评论'}</Text>}</Pressable></View> : <Pressable testID="community-comment-login" accessibilityRole="button" accessibilityLabel="登录后发表评论" style={styles.primary} onPress={() => router.push('/auth')}><Text style={styles.primaryText}>登录后发表评论</Text></Pressable>}
     </View>
   </ScrollView>;
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingBottom:60,gap:12},center:{flex:1,justifyContent:'center',padding:28},muted:{color:'#667085',textAlign:'center'},metaRow:{flexDirection:'row',alignItems:'center',gap:9},category:{color:'#c8211e',fontWeight:'900'},pending:{fontSize:12,fontWeight:'800',color:'#b54708',backgroundColor:'#fffaeb',paddingHorizontal:8,paddingVertical:4,borderRadius:999},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},author:{color:'#667085',marginTop:12},body:{fontSize:17,lineHeight:29,color:'#1d2939',marginTop:24},actions:{flexDirection:'row',flexWrap:'wrap',gap:10,marginTop:26},action:{minHeight:44,backgroundColor:'#f2f4f7',borderRadius:10,paddingHorizontal:15,paddingVertical:11,justifyContent:'center'},actionText:{fontWeight:'800',color:'#344054'},dangerAction:{minHeight:44,borderWidth:1,borderColor:'#fda29b',borderRadius:10,paddingHorizontal:15,paddingVertical:10,justifyContent:'center'},dangerText:{fontWeight:'800',color:'#b42318'},reportBox:{marginTop:14,backgroundColor:'#fff7ed',borderRadius:12,padding:12},reportInput:{minHeight:78,backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{minHeight:44,backgroundColor:'#b42318',borderRadius:10,paddingVertical:12,alignItems:'center',justifyContent:'center',marginTop:9},comments:{marginTop:24,paddingTop:25,borderTopWidth:1,borderTopColor:'#eaecf0'},commentsTitle:{fontSize:23,fontWeight:'900',color:'#101828'},commentCard:{paddingVertical:16,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},commentAuthor:{fontWeight:'800',color:'#101828'},commentTime:{fontSize:12,color:'#98a2b3'},commentBody:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},reviewing:{fontSize:12,color:'#b54708',marginTop:7},empty:{color:'#98a2b3',paddingVertical:24,textAlign:'center'},composer:{gap:10,marginTop:18},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10},commentInput:{minHeight:100,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3'},primary:{minHeight:44,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:14,paddingHorizontal:18,alignItems:'center',justifyContent:'center',marginTop:12},disabled:{opacity:.45},primaryText:{color:'#fff',fontWeight:'800'},
+  page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingBottom:60,gap:12},center:{flex:1,justifyContent:'center',padding:28},muted:{color:'#667085',textAlign:'center'},metaRow:{flexDirection:'row',alignItems:'center',gap:9},category:{color:'#c8211e',fontWeight:'900'},pending:{fontSize:12,fontWeight:'800',color:'#b54708',backgroundColor:'#fffaeb',paddingHorizontal:8,paddingVertical:4,borderRadius:999},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},author:{color:'#667085',marginTop:12},body:{fontSize:17,lineHeight:29,color:'#1d2939',marginTop:24},actions:{flexDirection:'row',flexWrap:'wrap',gap:10,marginTop:26},action:{minHeight:44,backgroundColor:'#f2f4f7',borderRadius:10,paddingHorizontal:15,paddingVertical:11,justifyContent:'center'},actionText:{fontWeight:'800',color:'#344054'},dangerAction:{minHeight:44,borderWidth:1,borderColor:'#fda29b',borderRadius:10,paddingHorizontal:15,paddingVertical:10,justifyContent:'center'},dangerText:{fontWeight:'800',color:'#b42318'},reportBox:{marginTop:14,backgroundColor:'#fff7ed',borderRadius:12,padding:12},reportInput:{minHeight:78,backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{minHeight:44,backgroundColor:'#b42318',borderRadius:10,paddingVertical:12,alignItems:'center',justifyContent:'center',marginTop:9},comments:{marginTop:24,paddingTop:25,borderTopWidth:1,borderTopColor:'#eaecf0'},commentsTitle:{fontSize:23,fontWeight:'900',color:'#101828'},loadEarlier:{minHeight:44,alignItems:'center',justifyContent:'center',marginTop:10},loadEarlierText:{color:'#175cd3',fontWeight:'800'},commentCard:{paddingVertical:16,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},replyCard:{borderLeftWidth:2,borderLeftColor:'#d0d5dd',paddingLeft:12},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},commentAuthor:{fontWeight:'800',color:'#101828'},commentTime:{fontSize:12,color:'#98a2b3'},replyLabel:{fontSize:13,color:'#667085',marginTop:7},commentBody:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},reviewing:{fontSize:12,color:'#b54708',marginTop:7},replyAction:{alignSelf:'flex-start',minHeight:36,justifyContent:'center',paddingRight:18,marginTop:4},replyActionText:{color:'#175cd3',fontWeight:'800'},empty:{color:'#98a2b3',paddingVertical:24,textAlign:'center'},composer:{gap:10,marginTop:18},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10},replyTarget:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',backgroundColor:'#eff8ff',borderRadius:10,padding:10},replyTargetText:{color:'#175cd3',fontWeight:'800'},cancelReply:{color:'#b42318',fontWeight:'800',padding:4},commentInput:{minHeight:100,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3'},primary:{minHeight:44,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:14,paddingHorizontal:18,alignItems:'center',justifyContent:'center',marginTop:12},disabled:{opacity:.45},primaryText:{color:'#fff',fontWeight:'800'},
 });

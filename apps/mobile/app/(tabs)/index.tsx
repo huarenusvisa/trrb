@@ -2,12 +2,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, InteractionManager, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { fetchArticles, fetchHomepageFocus, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
+import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { cacheHomeFeed, readCachedHomeFeed } from '../../src/storage/newsFeedCache';
 
 const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
-const SUPPLEMENT_CATEGORIES = ['重要新闻', '热门头条', '美国时政', '美国警情', 'ICE执法动态'] as const;
 const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
 
 const newsSections = [
@@ -149,6 +148,7 @@ export default function HomeScreen() {
   const [focusArticles, setFocusArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [slowLoading, setSlowLoading] = useState(false);
   const [error, setError] = useState('');
   const [hotIndex, setHotIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -161,6 +161,10 @@ export default function HomeScreen() {
     loadSequence.current = sequence;
     let restored = false;
     let cachedFocus = focusArticles;
+    setSlowLoading(false);
+    const slowTimer = setTimeout(() => {
+      if (sequence === loadSequence.current) setSlowLoading(true);
+    }, 4000);
     if (restoreCache) {
       const cached = await readCachedHomeFeed().catch(() => null);
       if (cached) {
@@ -178,6 +182,8 @@ export default function HomeScreen() {
         fetchHomepageFocus().catch(() => null),
       ]);
       if (sequence !== loadSequence.current) return;
+      clearTimeout(slowTimer);
+      setSlowLoading(false);
 
       const focus = focusResult ?? cachedFocus;
       setArticles(global);
@@ -188,7 +194,8 @@ export default function HomeScreen() {
 
       // The canonical PC feed paints first. Category supplements fill gaps only
       // after the first usable homepage is already visible.
-      const supplements = await Promise.all(SUPPLEMENT_CATEGORIES.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
+      const supplementCategories = homepageSupplementGaps(global);
+      const supplements = await Promise.all(supplementCategories.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
       if (sequence !== loadSequence.current) return;
       const seen = new Set<string>();
       const merged = sortNewestFirst([...global, ...supplements.flat()]).filter((item) => {
@@ -203,9 +210,11 @@ export default function HomeScreen() {
       if (sequence !== loadSequence.current) return;
       setError(restored || articles.length > 0 ? '网络不可用，正在显示上次读取的新闻。下拉即可重试。' : (e instanceof Error ? e.message : '新闻加载失败'));
     } finally {
+      clearTimeout(slowTimer);
       if (sequence === loadSequence.current) {
         setLoading(false);
         setRefreshing(false);
+        setSlowLoading(false);
       }
     }
   }
@@ -311,7 +320,7 @@ export default function HomeScreen() {
     else router.push(section.route as '/immigration' | '/legal' | '/jobs' | '/community');
   };
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>正在读取唐人日报最新内容…</Text></View>;
+  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>{slowLoading ? '当前网络较慢，仍在尝试读取最新新闻…' : '正在读取唐人日报最新内容…'}</Text></View>;
 
   return (
     <View style={styles.screen}>
@@ -366,6 +375,7 @@ export default function HomeScreen() {
           </Pressable>
         ) : null}
 
+        {slowLoading ? <Text style={styles.networkHint}>当前网络较慢，已保留现有新闻，仍在尝试更新…</Text> : null}
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         {importantCarousel.length ? (
@@ -534,6 +544,7 @@ const styles = StyleSheet.create({
   breakingTitle: { flex: 1, color: '#101828', fontSize: 13, fontWeight: '800' },
   chevron: { color: '#98a2b3', fontSize: 22, marginLeft: 5 },
   error: { color: '#b42318', marginBottom: 10 },
+  networkHint: { color: '#875b00', backgroundColor: '#fff6d8', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 8, marginBottom: 10 },
   carouselWrap: { marginBottom: 12 },
   heroCard: { height: 238, borderRadius: 10, overflow: 'hidden', backgroundColor: '#101828', position: 'relative' },
   heroImage: { width: '100%', height: '100%', backgroundColor: '#e4e7ec' },

@@ -12,6 +12,12 @@ export type NewsArticle = {
   created_at?: string;
 };
 
+export type HomepageFocusArticle = NewsArticle & {
+  longform_chars: number;
+  homepage_focus_score?: number;
+  homepage_focus_source?: string;
+};
+
 export type ArticlePage = {
   articles: NewsArticle[];
   offset: number;
@@ -104,6 +110,11 @@ export async function fetchArticles(options: { category?: string; limit?: number
   const payload = await requestJson(`${API_BASE}/public-home-articles?${params.toString()}`);
   const articles = Array.isArray(payload?.articles) ? payload.articles : [];
   return articles as NewsArticle[];
+}
+
+export async function fetchHomepageFocus(): Promise<HomepageFocusArticle[]> {
+  const payload = await requestJson(`${API_BASE}/public-home-focus`);
+  return (Array.isArray(payload?.articles) ? payload.articles : []) as HomepageFocusArticle[];
 }
 
 export async function fetchArticlePage(options: { category?: string; q?: string; limit?: number; offset?: number } = {}): Promise<ArticlePage> {

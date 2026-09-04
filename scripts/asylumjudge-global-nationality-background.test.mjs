@@ -200,6 +200,7 @@ const standaloneProxy = readFileSync('asylumjudge/immigration-judges-proxy.js', 
 const detailPage = readFileSync('immigration-judge-approval-rate/detail.html', 'utf8');
 const detailClient = readFileSync('immigration-judge-approval-rate/detail.js', 'utf8');
 const detailStyles = readFileSync('immigration-judge-approval-rate/detail.css', 'utf8');
+// Detail recovery assertions keep transient API failures from becoming dead ends.
 const routes = readFileSync('scripts/finalize-redirects.mjs', 'utf8');
 const seoBuilder = readFileSync('scripts/build-asylumjudge-seo.mjs', 'utf8');
 const homepageClient = readFileSync('asylumjudge/site.js', 'utf8');

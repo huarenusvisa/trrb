@@ -109,6 +109,7 @@ function cancelDetailRequest() {
   detailRequestId += 1;
   detailRequestController?.abort();
   detailRequestController = null;
+  $('.compare-results').setAttribute('aria-busy', 'false');
 }
 
 function renderSelected() {
@@ -233,6 +234,7 @@ function renderComparison() {
   $('#compare-content').hidden = !ready;
   if (!ready) { renderEmptyState(); return; }
   renderCards(); drawTrend(); renderNationalities(); renderBackgrounds();
+  $('#compare-status').textContent = `${words().summary}: ${selected.map(judgeName).join(', ')}`;
 }
 
 async function loadDetails() {
@@ -245,6 +247,8 @@ async function loadDetails() {
   $('#compare-empty').hidden = false;
   $('#compare-content').hidden = true;
   $('#compare-empty').innerHTML = `<div class="compare-loading">${esc(words().loading)}</div>`;
+  $('.compare-results').setAttribute('aria-busy', 'true');
+  $('#compare-status').textContent = words().loading;
   try {
     const nextDetails = await Promise.all(requestedJudges.map((row) => fetch(`/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(row.id)}`, { signal: controller.signal }).then((response) => { if (!response.ok) throw new Error(response.status); return response.json(); })));
     if (requestId !== detailRequestId) return;
@@ -256,12 +260,15 @@ async function loadDetails() {
     renderLoadError('details');
   } finally {
     if (detailRequestController === controller) detailRequestController = null;
+    if (requestId === detailRequestId) $('.compare-results').setAttribute('aria-busy', 'false');
   }
 }
 
 async function load() {
   applyCopy();
   renderEmptyState();
+  $('.compare-results').setAttribute('aria-busy', 'true');
+  $('#compare-status').textContent = words().loading;
   try {
     const response = await fetch('/.netlify/functions/immigration-judges?mode=all');
     if (!response.ok) throw new Error(response.status);
@@ -272,6 +279,8 @@ async function load() {
     if (selected.length >= 2) await loadDetails();
   } catch {
     renderLoadError('all');
+  } finally {
+    $('.compare-results').setAttribute('aria-busy', 'false');
   }
 }
 

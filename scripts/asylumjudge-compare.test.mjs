@@ -23,7 +23,7 @@ assert.match(html, /id="compare-trend"/);
 assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
-assert.match(html, /compare\.js\?v=7/);
+assert.match(html, /compare\.js\?v=8/);
 assert.match(html, /compare\.css\?v=4/);
 assert.match(html, /compare-focus\.css\?v=1/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
@@ -60,6 +60,12 @@ assert.match(js, /event\.key === 'Enter'/, 'combobox must select with Enter');
 assert.match(js, /class="compare-error" role="alert"/, 'load errors must be announced to assistive technology');
 assert.match(js, /data-retry="\$\{scope\}"/, 'load errors must provide a retry action');
 assert.match(html, /id="compare-status"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'copy and selection feedback must be announced to screen readers');
+assert.match(html, /class="shell compare-results"[^>]*aria-busy="true"/, 'comparison results must expose their initial loading state');
+assert.doesNotMatch(html, /class="shell compare-results"[^>]*aria-live=/, 'the full comparison must not be exposed as one oversized live region');
+assert.match(js, /compare-results'\)\.setAttribute\('aria-busy', 'true'\)/, 'comparison requests must mark results as busy');
+assert.match(js, /requestId === detailRequestId[\s\S]*aria-busy', 'false'/, 'only the active detail request may end its loading state');
+assert.match(js, /cancelDetailRequest\(\)[\s\S]*aria-busy', 'false'/, 'cancelling a detail request must clear its loading state');
+assert.match(js, /words\(\)\.summary[\s\S]*selected\.map\(judgeName\)/, 'completed comparisons must announce a concise localized summary with judge names');
 assert.match(js, /navigator\.clipboard\?\.writeText[\s\S]*document\.execCommand\('copy'\)/, 'copying a comparison link must fall back when the Clipboard API is unavailable');
 assert.match(js, /copyFailure\[locale\(\)\] \|\| copyFailure\.en/, 'copy failures must expose localized user feedback');
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {

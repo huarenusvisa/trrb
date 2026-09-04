@@ -107,3 +107,6 @@
 .brand{gap:0}.brand-lockup{display:block;width:250px;height:auto}
 @media(max-width:1040px){.brand-lockup{width:220px}}
 @media(max-width:480px){.brand-lockup{width:192px}}
+
+/* In-place recovery when the trend location directory is unavailable. */
+.trend-location-status{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0 0;color:#b42318;font-size:10px;font-weight:800}.trend-location-status[hidden]{display:none}

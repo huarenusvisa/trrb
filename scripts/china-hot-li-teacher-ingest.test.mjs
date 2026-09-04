@@ -120,7 +120,7 @@ test("中国热门头条打开开关立即采集，并由每小时唤醒器补�
   assert.doesNotMatch(workflow, /schedule:/);
   assert.doesNotMatch(workflow, /collection-cadence-gate/);
   assert.doesNotMatch(workflow, /COLLECTION_CADENCE_MINUTES/);
-  assert.match(control, /cron: "7 \\* \\* \\* \\*"/);
+  assert.match(control, /cron: "7 \* \* \* \*"/);
   assert.match(control, /must never be blocked by an internal cadence lock/);
   assert.match(control, /github\.event_name == 'schedule'[\s\S]*inputs\.module == 'china-hot'/);
   assert.match(control, /china-hot-li-teacher:/);

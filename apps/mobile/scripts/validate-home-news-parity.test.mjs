@@ -25,14 +25,14 @@ test('shows the U.S. section once instead of repeating it on every card', () => 
   assert.doesNotMatch(america, /style=\{styles\.cat\}/);
 });
 
-test('shows each category once and keeps important news on the homepage', () => {
+test('keeps category labels at the page level and preserves the homepage important-news lead', () => {
   const home = read('app/(tabs)/index.tsx');
-  const categoryList = read('src/components/PaginatedNewsList.tsx');
-
-  assert.match(home, /\['重要新闻', '热门头条', '美国时政', '美国警情', '中国官场', '招聘求职', 'ICE执法动态'\]/);
-  assert.match(categoryList, /testID="category-screen-title"/);
-  assert.doesNotMatch(categoryList, /newsCategoryName/);
-  assert.doesNotMatch(categoryList, /styles\.category/);
+  const list = read('src/components/PaginatedNewsList.tsx');
+  assert.match(list, /testID="category-screen-title"/);
+  assert.doesNotMatch(list, /newsCategoryName|styles\.category/);
+  assert.match(home, /testID="home-important-news"/);
+  assert.match(home, /importantNews\.find[\s\S]*homepageArticles\.find/);
+  assert.ok(home.indexOf("['重要新闻', '热门头条'") >= 0, 'important news must remain the first homepage category');
 });
 
 test('renders continuous previous and next official-news navigation', () => {

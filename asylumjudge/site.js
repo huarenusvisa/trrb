@@ -220,6 +220,7 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
   selectedTrendInterval = interval;
   selectedTrendCourt = court;
   const chart = $('#state-market-chart');
+  chart.setAttribute('aria-busy', 'true');
   chart.innerHTML = '<div class="state-market-loading">正在读取州趋势数据…</div>';
   document.querySelectorAll('[data-state-interval]').forEach((button) => button.classList.toggle('active', button.dataset.stateInterval === interval));
   document.querySelectorAll('[data-trend-court]').forEach((button) => button.classList.toggle('active', button.dataset.trendCourt === court));
@@ -236,7 +237,10 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
     $('#state-market-title').textContent = `${label}裁决批准率走势`;
     renderStateMarket(data.periods || [], label, interval);
   } catch (error) {
-    chart.innerHTML = '<div class="state-market-loading">州趋势数据暂时无法读取</div>';
+    chart.innerHTML = '<div class="state-market-loading"><span><b>州趋势数据暂时无法读取</b><button id="state-trend-retry" class="trend-retry" type="button">重新尝试</button></span></div>';
+    $('#state-trend-retry').addEventListener('click', () => loadStateTrend(state, interval, court));
+  } finally {
+    chart.setAttribute('aria-busy', 'false');
   }
 }
 

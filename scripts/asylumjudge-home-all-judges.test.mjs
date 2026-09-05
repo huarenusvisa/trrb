@@ -73,8 +73,8 @@ const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8')
 
 assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
-assert.match(standalone, /site\.css\?v=25/, 'standalone homepage must load the trend touch-target stylesheet');
-assert.match(trrb, /site\.css\?v=24/, 'embedded homepage must load the trend touch-target stylesheet');
+assert.match(standalone, /site\.css\?v=26/, 'standalone homepage must load the directory-action touch-target stylesheet');
+assert.match(trrb, /site\.css\?v=25/, 'embedded homepage must load the directory-action touch-target stylesheet');
 assert.match(styles, /\.header-inner \.home-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile homepage navigation must provide responsive 44px touch targets');
 assert.match(styles, /\.home-language-control select\{[^}]*height:44px[^}]*touch-action:manipulation/, 'homepage language selector must provide a 44px touch target');
 assert.match(styles, /@media\(max-width:480px\)\{.*?\.home-language-control select\{[^}]*height:44px/, 'narrow screens must preserve the homepage language selector touch target');
@@ -83,6 +83,8 @@ assert.match(styles, /\.state-fy-tabs button\{[^}]*min-height:44px[^}]*touch-act
 assert.match(styles, /\.trend-interval-tabs button,\.state-trend-states button\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'homepage trend interval and city buttons must provide 44px touch targets');
 assert.match(styles, /\.trend-scope-controls select\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'homepage trend selectors must provide 44px touch targets');
 assert.match(styles, /@media\(max-width:560px\)\{[\s\S]*?\.state-trend-states button\{[^}]*min-height:44px/, 'narrow screens must preserve city shortcut touch targets');
+assert.match(styles, /\.judge-webex a\{[^}]*display:inline-flex[^}]*min-height:44px[^}]*touch-action:manipulation/, 'judge Webex actions must provide 44px touch targets');
+assert.match(styles, /\.directory-detail-link\{[^}]*display:inline-flex[^}]*min-height:44px[^}]*touch-action:manipulation/, 'judge detail actions must provide 44px touch targets');
 
 const trendRateHelperSource = client.match(/const reportableTrendRates = \(row\) => \{.*?\n\};/s)?.[0];
 assert.ok(trendRateHelperSource, 'homepage client must expose the trend sample-threshold helper');

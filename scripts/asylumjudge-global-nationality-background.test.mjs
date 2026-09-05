@@ -218,7 +218,10 @@ assert.match(page, /id="country-search"[^>]*aria-controls="country-directory"[^>
 assert.match(page, /id="country-count"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced to screen readers');
 assert.match(page, /class="tabs"[^>]*role="group"[^>]*data-i18n-aria-label="trendLabel"/, 'trend period controls must expose a localized group label');
 assert.match(page, /data-period="yearly"[^>]*aria-pressed="true"/, 'the active trend period must expose its selected state');
-assert.match(page, /id="trend-chart"[^>]*role="img"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must have a localized accessible name');
+assert.match(page, /id="country-comparison-chart"[^>]*role="group"[^>]*data-i18n-aria-label="comparisonAria"/, 'country comparison chart must expose its interactive points inside a localized named group');
+assert.match(page, /id="trend-chart"[^>]*role="group"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must expose its interactive points inside a localized named group');
+assert.doesNotMatch(page, /id="(?:country-comparison-chart|trend-chart)"[^>]*role="img"/, 'interactive nationality charts must not flatten their keyboard points into images');
+assert.doesNotMatch(page, /id="(?:comparison-tooltip|trend-tooltip)"[^>]*(?:role="status"|aria-live=)/, 'pointer and touch tooltips must not trigger repeated live announcements');
 assert.match(page, /china-dashboard-i18n\.js\?v=8/, 'nationality dashboard must load the dual-code label asset version');
 assert.match(page, /china-dashboard\.js\?v=24/, 'nationality dashboard must load the concise detail status asset version');
 assert.match(client, /mode=nationalities/);

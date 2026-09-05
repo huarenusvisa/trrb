@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { Alert, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { supabase } from '../src/auth/supabase';
+import { useI18n } from '../src/i18n/I18nProvider';
 
 export default function DeleteAccountScreen() {
+  const { t } = useI18n();
   const [confirm, setConfirm] = useState('');
   const [busy, setBusy] = useState(false);
 
   const remove = async () => {
     if (confirm.trim() !== 'DELETE') {
-      Alert.alert('需要确认', '请输入 DELETE 后才能永久删除账户。');
+      Alert.alert(t('deleteAccount.confirmRequired'), t('deleteAccount.confirmRequiredBody'));
       return;
     }
     const { data } = await supabase.auth.getSession();
@@ -23,28 +25,29 @@ export default function DeleteAccountScreen() {
         body: JSON.stringify({ confirm: 'DELETE', source: Platform.OS === 'ios' ? 'ios' : Platform.OS === 'android' ? 'android' : 'app' })
       });
       const body = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(body.error || '删除失败');
+      if (!response.ok) throw new Error(body.error || t('deleteAccount.requestFailed'));
       await supabase.auth.signOut();
-      Alert.alert('账户已删除', '账户与关联个人数据已永久删除。');
+      Alert.alert(t('deleteAccount.deleted'), t('deleteAccount.deletedBody'));
       router.replace('/');
     } catch (error) {
-      Alert.alert('删除失败', error instanceof Error ? error.message : '请稍后重试。');
+      Alert.alert(t('deleteAccount.requestFailed'), error instanceof Error ? error.message : t('deleteAccount.retryLater'));
     } finally {
       setBusy(false);
     }
   };
 
-  return <View style={styles.page}>
-    <Text style={styles.h1}>删除账户</Text>
-    <Text style={styles.body}>此操作会永久删除登录账户以及与该账户关联的个人资料、评论、收藏、阅读历史、通知偏好、屏蔽和举报等个人数据。为安全与合规，仅保留最小化的删除完成证明，不保留账户正文内容。</Text>
-    <Text style={styles.warning}>此操作不可撤销。</Text>
-    <Text style={styles.label}>输入 DELETE 确认</Text>
-    <TextInput value={confirm} onChangeText={setConfirm} autoCapitalize="characters" style={styles.input} editable={!busy} />
-    <Pressable style={[styles.delete, (busy || confirm.trim() !== 'DELETE') && styles.disabled]} disabled={busy || confirm.trim() !== 'DELETE'} onPress={remove}>
-      <Text style={styles.deleteText}>{busy ? '正在删除…' : '永久删除账户'}</Text>
+  const disabled = busy || confirm.trim() !== 'DELETE';
+  return <><Stack.Screen options={{ title: t('deleteAccount.screenTitle'), headerBackTitle: t('common.back') }} /><View style={styles.page}>
+    <Text style={styles.h1}>{t('deleteAccount.heading')}</Text>
+    <Text style={styles.body}>{t('deleteAccount.description')}</Text>
+    <Text style={styles.warning}>{t('deleteAccount.irreversible')}</Text>
+    <Text style={styles.label}>{t('deleteAccount.confirmLabel')}</Text>
+    <TextInput accessibilityLabel={t('deleteAccount.confirmInputA11y')} value={confirm} onChangeText={setConfirm} autoCapitalize="characters" autoCorrect={false} style={styles.input} editable={!busy} />
+    <Pressable accessibilityRole="button" accessibilityLabel={t('deleteAccount.deleteA11y')} accessibilityState={{ disabled, busy }} style={[styles.delete, disabled && styles.disabled]} disabled={disabled} onPress={remove}>
+      <Text style={styles.deleteText}>{busy ? t('deleteAccount.deleting') : t('deleteAccount.delete')}</Text>
     </Pressable>
-    <Pressable style={styles.cancel} onPress={() => router.back()} disabled={busy}><Text style={styles.cancelText}>取消</Text></Pressable>
-  </View>;
+    <Pressable accessibilityRole="button" accessibilityLabel={t('deleteAccount.cancelA11y')} accessibilityState={{ disabled: busy }} style={styles.cancel} onPress={() => router.back()} disabled={busy}><Text style={styles.cancelText}>{t('deleteAccount.cancel')}</Text></Pressable>
+  </View></>;
 }
 
 const styles = StyleSheet.create({

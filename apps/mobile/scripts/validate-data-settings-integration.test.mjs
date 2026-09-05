@@ -36,3 +36,16 @@ test('persists font size before updating the selection and notifies open article
   assert.match(profile, /testID="font-scale-preview"/);
   assert.match(article, /subscribeReadingPreferences/);
 });
+
+test('keeps localized profile controls and account deletion on the existing account service', () => {
+  const profile = read('app/(tabs)/profile.tsx');
+  const deletion = read('app/delete-account.tsx');
+
+  assert.match(profile, /t\('profile\.fontSize'\)/);
+  assert.match(profile, /t\('profile\.accountPrivacy'\)/);
+  assert.match(deletion, /useI18n\(\)/);
+  assert.match(deletion, /supabase\.auth\.getSession\(\)/);
+  assert.match(deletion, /fetch\('\/\.netlify\/functions\/delete-account'/);
+  assert.match(deletion, /supabase\.auth\.signOut\(\)/);
+  assert.doesNotMatch(deletion, /service_role|SUPABASE_SERVICE_ROLE_KEY/);
+});

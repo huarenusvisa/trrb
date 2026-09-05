@@ -43,8 +43,8 @@ export default function ProfileScreen() {
         listFollowRequests().catch(() => []),
       ]);
       setProfile(nextProfile); setPosts(nextPosts); setCounts(nextCounts); setFollowRequests(requests.length);
-    } catch (error) { Alert.alert('个人主页加载失败', error instanceof Error ? error.message : '请稍后重试。'); }
-  }, [session]);
+    } catch (error) { Alert.alert(t('profile.loadFailed'), error instanceof Error ? error.message : t('profile.retryLater')); }
+  }, [session, t]);
 
   useEffect(() => {
     void getReadingPreferences().then((prefs) => setFontScale(prefs.fontScale));
@@ -75,36 +75,36 @@ export default function ProfileScreen() {
 
   const updateFontScale = async (scale: ReadingPreferences['fontScale']) => {
     try { await setReadingFontScale(scale); setFontScale(scale); }
-    catch (error) { Alert.alert('字号保存失败', error instanceof Error ? error.message : '请稍后重试。'); }
+    catch (error) { Alert.alert(t('profile.fontSaveFailed'), error instanceof Error ? error.message : t('profile.retryLater')); }
   };
 
   const removePost = async (post: ProfilePost) => {
     try { await deleteProfilePost(post); setPosts((rows) => rows.filter((row) => row.id !== post.id)); }
-    catch (error) { Alert.alert('删除失败', error instanceof Error ? error.message : '请稍后重试。'); }
+    catch (error) { Alert.alert(t('profile.deletePostFailed'), error instanceof Error ? error.message : t('profile.retryLater')); }
   };
 
   return <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
     {loading ? <ActivityIndicator style={styles.loader} color="#c8211e" /> : session && profile ? <>
       <ProfileHero profile={profile} followers={counts.followers} following={counts.following} own onEdit={() => router.push('/profile-settings')} onFollowers={() => router.push({ pathname: '/connections/followers', params: { userId: profile.id } })} onFollowing={() => router.push({ pathname: '/connections/following', params: { userId: profile.id } })} />
-      <Text style={styles.account}>{accountLabel(session.user)}</Text>
+      <Text style={styles.account}>{t('profile.loggedIn', { account: accountLabel(session.user) })}</Text>
       <View style={styles.primaryActions}>
-        <Pressable style={styles.publish} onPress={() => router.push('/profile-compose')}><Text style={styles.publishIcon}>＋</Text><Text style={styles.publishText}>发主页动态</Text></Pressable>
-        <Pressable style={styles.action} onPress={() => router.push('/messages')}><Text style={styles.actionTitle}>私信{unread.messages ? ` · ${unread.messages}` : ''}</Text><Text style={styles.actionMeta}>聊天与申请</Text></Pressable>
-        <Pressable style={styles.action} onPress={() => router.push('/follow-requests')}><Text style={styles.actionTitle}>关注申请{followRequests ? ` · ${followRequests}` : ''}</Text><Text style={styles.actionMeta}>确认新粉丝</Text></Pressable>
+        <Pressable accessibilityRole="button" style={styles.publish} onPress={() => router.push('/profile-compose')}><Text style={styles.publishIcon}>＋</Text><Text style={styles.publishText}>{t('profile.publishPost')}</Text></Pressable>
+        <Pressable accessibilityRole="button" style={styles.action} onPress={() => router.push('/messages')}><Text style={styles.actionTitle}>{t('profile.messages')}{unread.messages ? t('profile.unread', { count: unread.messages }) : ''}</Text><Text style={styles.actionMeta}>{t('profile.messagesMeta')}</Text></Pressable>
+        <Pressable accessibilityRole="button" style={styles.action} onPress={() => router.push('/follow-requests')}><Text style={styles.actionTitle}>{t('profile.followRequests')}{followRequests ? t('profile.pendingCount', { count: followRequests }) : ''}</Text><Text style={styles.actionMeta}>{t('profile.followRequestsMeta')}</Text></Pressable>
       </View>
-      <View style={styles.sectionHead}><Text style={styles.sectionTitle}>我的主页动态</Text><Text style={styles.sectionMeta}>{posts.length} 条</Text></View>
+      <View style={styles.sectionHead}><Text style={styles.sectionTitle}>{t('profile.myPosts')}</Text><Text style={styles.sectionMeta}>{t('profile.postCount', { count: posts.length })}</Text></View>
       <ProfilePostList posts={posts} own onDelete={removePost} />
-      <Text style={styles.groupTitle}>内容与互动</Text>
+      <Text style={styles.groupTitle}>{t('profile.contentInteraction')}</Text>
       <View style={styles.menuGroup}>
-        <Menu title="移民社区" meta="浏览帖子、分享经历和发布问题" onPress={() => router.push('/community')} />
-        <Menu title={`消息中心${unread.notifications ? ` · ${unread.notifications}` : ''}`} meta="回复、点赞、关注与系统通知" onPress={() => router.push('/notifications')} />
-        <Menu title="我的评论" meta="查看评论状态并返回对应新闻" onPress={() => router.push('/my-comments')} />
-        <Menu title="收藏" meta="本机与账号云端收藏自动安全合并" onPress={() => router.push('/favorites')} />
-        <Menu title="阅读历史" meta="本机与账号云端历史自动合并，最多100条" onPress={() => router.push('/history')} last />
+        <Menu title={t('profile.community')} meta={t('profile.communityMemberMeta')} onPress={() => router.push('/community')} />
+        <Menu title={`${t('profile.notifications')}${unread.notifications ? t('profile.unread', { count: unread.notifications }) : ''}`} meta={t('profile.notificationsMeta')} onPress={() => router.push('/notifications')} />
+        <Menu title={t('profile.comments')} meta={t('profile.commentsMeta')} onPress={() => router.push('/my-comments')} />
+        <Menu title={t('profile.favorites')} meta={t('profile.favoritesMeta')} onPress={() => router.push('/favorites')} />
+        <Menu title={t('profile.history')} meta={t('profile.historyMeta')} onPress={() => router.push('/history')} last />
       </View>
-      <Text style={styles.groupTitle}>设置</Text>
+      <Text style={styles.groupTitle}>{t('profile.settings')}</Text>
       <View style={styles.menuGroup}>
-        <Menu title="账号与隐私" meta="头像、背景、昵称、隐私账号和私信权限" onPress={() => router.push('/profile-settings')} />
+        <Menu title={t('profile.accountPrivacy')} meta={t('profile.accountPrivacyMeta')} onPress={() => router.push('/profile-settings')} />
         <Menu testID="open-language-settings" title={t('profile.language')} meta={t('profile.languageMeta', { language: languageName(locale) })} onPress={() => router.push('/language-settings')} />
         <Menu title={t('profile.pushSettings')} meta={t('profile.pushSettingsMeta')} onPress={() => router.push('/push-settings')} last />
       </View>
@@ -121,7 +121,7 @@ export default function ProfileScreen() {
 }
 
 function Menu({ title, meta, onPress, last, testID }: { title: string; meta: string; onPress: () => void; last?: boolean; testID?: string }) {
-  return <Pressable testID={testID} onPress={onPress} style={[styles.menu, last && styles.menuLast]}><View style={styles.menuCopy}><Text style={styles.menuTitle}>{title}</Text><Text style={styles.menuMeta}>{meta}</Text></View><Text style={styles.chevron}>›</Text></Pressable>;
+  return <Pressable accessibilityRole="button" accessibilityLabel={`${title}. ${meta}`} testID={testID} onPress={onPress} style={[styles.menu, last && styles.menuLast]}><View style={styles.menuCopy}><Text style={styles.menuTitle}>{title}</Text><Text style={styles.menuMeta}>{meta}</Text></View><Text style={styles.chevron}>›</Text></Pressable>;
 }
 
 const styles = StyleSheet.create({

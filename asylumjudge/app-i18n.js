@@ -35,6 +35,7 @@
     ['其他占比','Other outcomes','Otros resultados','Autres résultats','Outros resultados','अन्य परिणाम','其他占比','Другие исходы','نتائج أخرى','Diğer sonuçlar'],
     ['结案量','Decisions','Decisiones','Décisions','Decisões','निर्णय','結案量','Решения','القرارات','Kararlar'],
     ['正在读取州趋势数据…','Loading state trend data…','Cargando tendencias estatales…','Chargement des tendances par État…','Carregando tendências estaduais…','राज्य रुझान डेटा लोड हो रहा है…','正在讀取州趨勢資料…','Загрузка тренда штата…','جارٍ تحميل اتجاه الولاية…','Eyalet eğilimi yükleniyor…'],
+    ['趋势图已更新，共 {count} 个数据点','Trend chart updated with {count} data points','Gráfico actualizado con {count} puntos de datos','Graphique mis à jour avec {count} points de données','Gráfico atualizado com {count} pontos de dados','रुझान चार्ट {count} डेटा बिंदुओं के साथ अपडेट हुआ','趨勢圖已更新，共 {count} 個資料點','График обновлён: {count} точек данных','تم تحديث مخطط الاتجاه ويضم {count} نقطة بيانات','Eğilim grafiği {count} veri noktasıyla güncellendi'],
     ['按州查看','View by state','Ver por estado','Voir par État','Ver por estado','राज्य के अनुसार देखें','按州查看','По штату','عرض حسب الولاية','Eyalete göre görüntüle'],
     ['按城市／法院查看','View by city / court','Ver por ciudad / tribunal','Voir par ville / tribunal','Ver por cidade / tribunal','शहर / अदालत के अनुसार','按城市／法院查看','По городу / суду','حسب المدينة / المحكمة','Şehir / mahkemeye göre'],
     ['选择州','Select a state','Seleccione un estado','Sélectionner un État','Selecione um estado','राज्य चुनें','選擇州','Выберите штат','اختر ولاية','Eyalet seçin'],

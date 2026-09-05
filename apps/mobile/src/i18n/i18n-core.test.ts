@@ -111,3 +111,10 @@ test('translates follow requests and profile settings while interpolating names'
   assert.equal(translate('en', 'profileSettings.privateAccount'), 'Private account');
   assert.equal(translate('zh-CN', 'profileSettings.savedBody'), '头像、背景和隐私设置已同步。');
 });
+
+test('translates comments, saved stories and reading history without changing titles', () => {
+  assert.equal(translate('en', 'myComments.openArticleA11y', { status: 'In review' }), 'Open the story for this comment, status: In review');
+  assert.equal(translate('zh-TW', 'favorites.synced'), '已與帳戶雲端收藏合併');
+  assert.equal(translate('en', 'history.clearTitle'), 'Clear reading history?');
+  assert.equal(translate('zh-CN', 'history.openArticleA11y', { title: '原始标题' }), '打开历史新闻：原始标题');
+});

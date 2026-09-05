@@ -4,11 +4,14 @@ import { Stack, router } from 'expo-router';
 import { CommentRow, listOwnComments } from '../src/api/comments';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
+import { useI18n } from '../src/i18n/I18nProvider';
+import { localeDateTag } from '../src/i18n/i18n-core';
 import { withUiTimeout } from '../src/utils/async-state-core';
 
-const statusLabel: Record<CommentRow['status'], string> = { published: '已发布', pending: '审核中', hidden: '已隐藏', deleted: '已删除' };
+const STATUS_KEYS = { published: 'myComments.statusPublished', pending: 'myComments.statusPending', hidden: 'myComments.statusHidden', deleted: 'myComments.statusDeleted' } as const;
 
 export default function MyCommentsScreen() {
+  const { locale, t } = useI18n();
   const [items, setItems] = useState<CommentRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -17,24 +20,26 @@ export default function MyCommentsScreen() {
   const load = useCallback(async (refresh = false) => {
     refresh ? setRefreshing(true) : setLoading(true);
     try {
-      setItems(await withUiTimeout(listOwnComments(), '评论读取超时，请检查网络后重试。'));
+      setItems(await withUiTimeout(listOwnComments(), t('myComments.timeout')));
       setError('');
     } catch (e) {
-      setError(e instanceof Error ? e.message : '评论加载失败');
+      setError(e instanceof Error ? e.message : t('myComments.loadFailed'));
     } finally {
       refresh ? setRefreshing(false) : setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { void load(); }, [load]);
   useForegroundRetry(Boolean(error), () => void load(true));
 
-  return <><Stack.Screen options={{ title: '我的评论', headerBackTitle: '返回' }} /><ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true)} />}>
-    {loading ? <AsyncStatePanel testID="my-comments-loading" title="正在读取评论" message="正在同步评论内容和审核状态。" busy /> : error ? <AsyncStatePanel testID="my-comments-error" tone="error" title="评论暂时无法读取" message={error} actionLabel="重新读取" onAction={() => void load(true)} busy={refreshing} /> : items.length === 0 ? <AsyncStatePanel testID="my-comments-empty" title="还没有评论" message="阅读新闻后可以在文章底部参与讨论，评论状态会显示在这里。" /> : items.map((item) => <Pressable accessibilityRole="button" accessibilityLabel={`打开评论对应新闻，状态：${statusLabel[item.status]}`} key={item.id} style={styles.card} onPress={() => router.push(`/article/${item.article_id}`)}>
-      <View style={styles.row}><Text style={styles.status}>{statusLabel[item.status]}</Text><Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
-      <Text style={[styles.body, item.status !== 'published' && styles.mutedBody]}>{item.status === 'deleted' ? '[已删除]' : item.content}</Text>
-      <Text style={styles.open}>打开对应新闻 ›</Text>
-    </Pressable>)}
+  return <><Stack.Screen options={{ title: t('myComments.screenTitle'), headerBackTitle: t('common.back') }} /><ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true)} />}>
+    {loading ? <AsyncStatePanel testID="my-comments-loading" title={t('myComments.loadingTitle')} message={t('myComments.loadingBody')} busy /> : error ? <AsyncStatePanel testID="my-comments-error" tone="error" title={t('myComments.unavailable')} message={error} actionLabel={t('myComments.reload')} onAction={() => void load(true)} busy={refreshing} /> : items.length === 0 ? <AsyncStatePanel testID="my-comments-empty" title={t('myComments.emptyTitle')} message={t('myComments.emptyBody')} /> : items.map((item) => {
+      const status = t(STATUS_KEYS[item.status]);
+      return <Pressable accessibilityRole="button" accessibilityLabel={t('myComments.openArticleA11y', { status })} key={item.id} style={styles.card} onPress={() => router.push(`/article/${item.article_id}`)}>
+      <View style={styles.row}><Text style={styles.status}>{status}</Text><Text style={styles.time}>{new Date(item.created_at).toLocaleString(localeDateTag(locale))}</Text></View>
+      <Text style={[styles.body, item.status !== 'published' && styles.mutedBody]}>{item.status === 'deleted' ? t('myComments.deletedContent') : item.content}</Text>
+      <Text style={styles.open}>{t('myComments.openArticle')}</Text>
+    </Pressable>; })}
   </ScrollView></>;
 }
 

@@ -218,3 +218,26 @@ test('localizes follow requests and profile settings while preserving profile co
   assert.match(settings, /avatar_path: nextAvatarPath/);
   assert.match(settings, /cover_path: nextCoverPath/);
 });
+
+test('localizes comments, favorites and history while preserving article and comment content', () => {
+  const comments = read('app/my-comments.tsx');
+  const favorites = read('app/favorites.tsx');
+  const history = read('app/history.tsx');
+  for (const source of [comments, favorites, history]) {
+    assert.match(source, /useI18n\(\)/);
+    assert.match(source, /localeDateTag\(locale\)/);
+    assert.doesNotMatch(source, /toLocaleString\('zh-CN'\)/);
+  }
+  for (const key of ['myComments.loadingTitle', 'myComments.emptyTitle', 'myComments.openArticleA11y', 'myComments.deletedContent']) {
+    assert.ok(comments.includes(`'${key}'`), `my comments must translate ${key}`);
+  }
+  for (const key of ['favorites.heading', 'favorites.synced', 'favorites.empty', 'favorites.openArticleA11y']) {
+    assert.ok(favorites.includes(`'${key}'`), `favorites must translate ${key}`);
+  }
+  for (const key of ['history.heading', 'history.synced', 'history.clearTitle', 'history.clearFailedBody', 'history.openArticleA11y']) {
+    assert.ok(history.includes(`'${key}'`), `history must translate ${key}`);
+  }
+  assert.match(comments, /item\.content/);
+  assert.match(favorites, /item\.title/);
+  assert.match(history, /item\.title/);
+});

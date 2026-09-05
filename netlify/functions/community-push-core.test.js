@@ -21,7 +21,7 @@ test('builds community deep-link messages and one target per active device', () 
   assert.deepEqual(plan.skipped, []);
 });
 
-test('honors community preferences and permanently skips users without devices', () => {
+test('honors granular interaction preferences and permanently skips users without devices', () => {
   const plan = buildDeliveryPlan([
     { id: 8, user_id: userA, type: 'community_post_like', community_post_id: 'post-1' },
     { id: 9, user_id: userB, type: 'community_report', community_post_id: 'post-2' }
@@ -30,7 +30,7 @@ test('honors community preferences and permanently skips users without devices',
   ]);
   assert.deepEqual(plan.targets, []);
   assert.deepEqual(plan.skipped, [
-    { id: 8, reason: 'community_preference_disabled' },
+    { id: 8, reason: 'likes_preference_disabled' },
     { id: 9, reason: 'no_active_push_token' }
   ]);
 });
@@ -86,6 +86,24 @@ test('private messages remain deliverable when interaction pushes are disabled',
   assert.deepEqual(plan.skipped, []);
 });
 
+test('each interaction category can be disabled without suppressing the others', () => {
+  const plan = buildDeliveryPlan([
+    { id: 31, user_id: userA, type: 'comment_reply', article_id: 'article-1' },
+    { id: 32, user_id: userA, type: 'community_post_like', community_post_id: 'post-1' },
+    { id: 33, user_id: userA, type: 'follow', actor_user_id: userB },
+    { id: 34, user_id: userA, type: 'message', conversation_id: 'conversation-1' },
+    { id: 35, user_id: userA, type: 'community_report', community_post_id: 'post-2' }
+  ], [{ id: 1, user_id: userA, expo_push_token: 'ExponentPushToken[a]', enabled: true }], [
+    { user_id: userA, community: true, comments: false, likes: true, follows: false, messages: false, moderation: true }
+  ]);
+  assert.deepEqual(plan.targets.map((target) => target.notification_id), [32, 35]);
+  assert.deepEqual(plan.skipped, [
+    { id: 31, reason: 'comments_preference_disabled' },
+    { id: 33, reason: 'follows_preference_disabled' },
+    { id: 34, reason: 'messages_preference_disabled' }
+  ]);
+});
+
 test('summarizes multi-device Expo ticket outcomes per notification', () => {
   const result = summarizeNotificationOutcomes([
     { notification_id: 10 }, { notification_id: 10 }, { notification_id: 11 }
@@ -130,10 +148,31 @@ test('unified migration keeps claims service-only and links direct-message conve
   assert.match(conversationIndex, /user_notifications_conversation_idx[\s\S]*conversation_id[\s\S]*is not null/);
 });
 
+test('granular preference migration preserves the legacy interaction choice', () => {
+  const migration = fs.readFileSync(path.join(
+    __dirname, '../../supabase/migrations/20260905081500_granular_interaction_push_preferences.sql'
+  ), 'utf8');
+  assert.match(migration, /add column if not exists comments boolean not null default true/);
+  assert.match(migration, /comments = community[\s\S]*likes = community[\s\S]*follows = community/);
+  assert.match(migration, /messages boolean not null default true/);
+  assert.match(migration, /moderation boolean not null default true/);
+  const worker = fs.readFileSync(path.join(__dirname, 'community-push.mjs'), 'utf8');
+  assert.match(worker, /select: 'user_id,community,comments,likes,follows,messages,moderation'/);
+  const policies = fs.readFileSync(path.join(
+    __dirname, '../../supabase/migrations/20260905083500_deduplicate_notification_preference_policies.sql'
+  ), 'utf8');
+  assert.match(policies, /drop policy if exists "users read own notification preferences"/);
+  assert.doesNotMatch(policies, /create policy/);
+});
+
 test('mobile registers interaction channels and reads conversation deep links', () => {
   const registration = fs.readFileSync(path.join(__dirname, '../../apps/mobile/src/push/registration.ts'), 'utf8');
   const notifications = fs.readFileSync(path.join(__dirname, '../../apps/mobile/src/community/notifications.ts'), 'utf8');
+  const settings = fs.readFileSync(path.join(__dirname, '../../apps/mobile/app/push-settings.tsx'), 'utf8');
   assert.match(registration, /\['community', '互动通知'\]/);
   assert.match(registration, /\['messages', '私信通知'\]/);
   assert.match(notifications, /community_comment_id,conversation_id,is_read/);
+  for (const key of ['comments', 'likes', 'follows', 'messages', 'moderation']) {
+    assert.match(settings, new RegExp(`key: '${key}'`));
+  }
 });

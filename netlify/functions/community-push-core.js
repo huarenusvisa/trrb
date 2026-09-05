@@ -12,10 +12,19 @@ const INTERACTION_TYPES = new Set([
   'message'
 ]);
 
-const PREFERENCE_CONTROLLED_TYPES = new Set([
-  'comment_reply', 'comment_like', 'community_reply', 'community_post_like',
-  'community_comment_like', 'community_report', 'follow', 'follow_request', 'follow_accept'
-]);
+const PREFERENCE_FIELD_BY_TYPE = {
+  comment_reply: 'comments',
+  community_reply: 'comments',
+  comment_like: 'likes',
+  community_post_like: 'likes',
+  community_comment_like: 'likes',
+  community_report: 'moderation',
+  follow: 'follows',
+  follow_request: 'follows',
+  follow_accept: 'follows',
+  message_request: 'messages',
+  message: 'messages'
+};
 
 const FALLBACK_TITLES = {
   comment_reply: '有人回复了你的新闻评论',
@@ -90,7 +99,7 @@ function uuidInFilter(values) {
 }
 
 function buildDeliveryPlan(notifications, tokens, preferences) {
-  const allowed = new Map((preferences || []).map((row) => [row.user_id, row.community !== false]));
+  const preferencesByUser = new Map((preferences || []).map((row) => [row.user_id, row]));
   const tokensByUser = new Map();
   for (const token of tokens || []) {
     if (!token?.enabled || !token?.expo_push_token) continue;
@@ -102,8 +111,13 @@ function buildDeliveryPlan(notifications, tokens, preferences) {
   const targets = [];
   const skipped = [...collapsed.skipped];
   for (const notification of collapsed.deliver) {
-    if (PREFERENCE_CONTROLLED_TYPES.has(notification.type) && allowed.get(notification.user_id) === false) {
-      skipped.push({ id: notification.id, reason: 'community_preference_disabled' });
+    const preferenceField = PREFERENCE_FIELD_BY_TYPE[notification.type];
+    const userPreferences = preferencesByUser.get(notification.user_id);
+    const explicitPreference = userPreferences?.[preferenceField];
+    const legacyCommunityEnabled = preferenceField === 'messages' || userPreferences?.community !== false;
+    const enabled = legacyCommunityEnabled && (explicitPreference ?? true);
+    if (preferenceField && enabled === false) {
+      skipped.push({ id: notification.id, reason: `${preferenceField}_preference_disabled` });
       continue;
     }
     const recipientTokens = tokensByUser.get(notification.user_id) || [];
@@ -151,4 +165,4 @@ function summarizeNotificationOutcomes(targets, tickets) {
   return [...summaries.values()];
 }
 
-module.exports = { INTERACTION_TYPES, buildDeliveryPlan, collapseNotifications, summarizeNotificationOutcomes, uuidInFilter };
+module.exports = { INTERACTION_TYPES, PREFERENCE_FIELD_BY_TYPE, buildDeliveryPlan, collapseNotifications, summarizeNotificationOutcomes, uuidInFilter };

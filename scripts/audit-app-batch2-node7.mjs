@@ -28,7 +28,9 @@ check('token stored only in authenticated Supabase user scope', registration.inc
 check('push response handles cold and warm starts', registration.includes('getLastNotificationResponse()') && registration.includes('addNotificationResponseReceivedListener'));
 check('runtime installs handlers and silent authenticated token sync', layout.includes('installPushRuntimeHandlers') && layout.includes('installPushRegistrationLifecycle'));
 check('permission prompt requires an explicit settings action', registration.includes('options.requestPermission === true') && settings.includes('requestPermission: true') && !layout.includes('registerPushToken()'));
-check('settings expose device control and five preference types', settings.includes('push-device-toggle') && ['breaking_news', 'ice', 'immigration', 'legal', 'community'].every((key) => settings.includes(key)));
+check('settings expose device control and granular preference types', settings.includes('push-device-toggle') && [
+  'breaking_news', 'ice', 'immigration', 'legal', 'comments', 'likes', 'follows', 'messages', 'moderation'
+].every((key) => settings.includes(key)));
 check('sign-out attempts to disable current device token first', profile.includes('await disableCurrentDevicePushToken()') && profile.includes('await finishSignOut()'));
 check('push preferences are user-scoped', preferences.includes("notification_preferences") && preferences.includes('data.user.id'));
 check('push token table has RLS and own-user policies', tokensMigration.includes('enable row level security') && tokensMigration.includes('auth.uid() = user_id'));

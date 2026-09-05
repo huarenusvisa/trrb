@@ -24,6 +24,16 @@ test('treats missing or malformed tickets as rejected without queuing receipts',
   assert.deepEqual(result.receiptRows, []);
 });
 
+test('preserves an interaction notification link on receipt rows', () => {
+  const result = correlatePushTickets(
+    [{ id: 31, notification_id: 91 }],
+    [{ status: 'ok', id: 'ticket-community' }]
+  );
+  assert.deepEqual(result.receiptRows, [{
+    ticket_id: 'ticket-community', push_token_id: 31, notification_id: 91
+  }]);
+});
+
 test('groups receipt updates and only disables DeviceNotRegistered tokens', () => {
   const result = groupReceiptOutcomes([
     { id: 1, ticket_id: 'a', push_token_id: 101 },

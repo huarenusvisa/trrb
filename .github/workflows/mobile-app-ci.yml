@@ -22,6 +22,9 @@ on:
       - 'netlify/functions/push-receipts.mjs'
       - 'netlify/functions/push-receipts-core.js'
       - 'netlify/functions/push-receipts-core.test.js'
+      - 'netlify/functions/community-push.mjs'
+      - 'netlify/functions/community-push-core.js'
+      - 'netlify/functions/community-push-core.test.js'
       - 'netlify/functions/_shared/expo-push-client.js'
       - 'netlify/functions/_shared/expo-push-client.test.js'
       - 'assets/brand/tangren-avatar-512.png'
@@ -61,6 +64,9 @@ on:
       - 'netlify/functions/push-receipts.mjs'
       - 'netlify/functions/push-receipts-core.js'
       - 'netlify/functions/push-receipts-core.test.js'
+      - 'netlify/functions/community-push.mjs'
+      - 'netlify/functions/community-push-core.js'
+      - 'netlify/functions/community-push-core.test.js'
       - 'netlify/functions/_shared/expo-push-client.js'
       - 'netlify/functions/_shared/expo-push-client.test.js'
       - 'assets/brand/tangren-avatar-512.png'
@@ -112,6 +118,8 @@ jobs:
           node --check netlify/functions/admin-push.js
           node --check netlify/functions/push-receipts.mjs
           node --test netlify/functions/push-receipts-core.test.js
+          node --check netlify/functions/community-push.mjs
+          node --test netlify/functions/community-push-core.test.js
           node --test netlify/functions/_shared/expo-push-client.test.js
           node --test netlify/functions/unified-account-login.test.js
           node --test netlify/functions/community-api.test.js

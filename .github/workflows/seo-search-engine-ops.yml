@@ -9,6 +9,12 @@ on:
     # Search-engine submission is a daily batch. Urgent corrective runs remain
     # available manually without paying the cost on every main-branch change.
     - cron: '23 7 * * *'
+  push:
+    # Validate this SEO control workflow immediately when its own logic changes.
+    # Ordinary product/code pushes still do not trigger a full search-engine run.
+    branches: [main]
+    paths:
+      - '.github/workflows/seo-search-engine-ops.yml'
 
 permissions:
   contents: read
@@ -30,7 +36,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/automation-gate.mjs
       - id: gate
-        # Manual runs are corrective and must never be silently skipped. Only
+        # Push/manual runs are corrective and must never be silently skipped. Only
         # scheduled runs respect the control-plane switches.
         run: echo "allowed=${{ github.event_name != 'schedule' || (steps.controls.outputs.global == 'true' && steps.controls.outputs.seo_search_engine == 'true') }}" >> "$GITHUB_OUTPUT"
   monitor:
@@ -45,28 +51,25 @@ jobs:
           node-version: '22'
       - name: Install Google API client
         run: npm install --no-save googleapis@144
-      - name: Wait for this exact commit to reach production
+      - name: Verify live production health
         shell: bash
         run: |
           set -euo pipefail
-          target="${GITHUB_SHA}"
-          for attempt in $(seq 1 90); do
+          # SEO must audit the site that search engines can actually crawl. The
+          # latest Git commit may intentionally be a reports/** or .github/**
+          # bookkeeping commit that Netlify correctly skips, so requiring the
+          # exact GITHUB_SHA here would block SEO for a non-production change.
+          for attempt in $(seq 1 12); do
             live="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?run=${GITHUB_RUN_ID}&attempt=${attempt}" 2>/dev/null | tr -d '\r\n[:space:]' || true)"
-            if [ "$live" = "$target" ]; then
-              echo "Production is running exact target $target"
+            if [[ "$live" =~ ^[0-9a-f]{40}$ ]]; then
+              curl --fail --silent --show-error --max-time 20 https://trrb.net/ >/dev/null
+              echo "Production is healthy at deployed commit $live"
               exit 0
             fi
-            if [[ "$live" =~ ^[0-9a-f]{40}$ ]]; then
-              git fetch --no-tags --depth=100 origin "$live" >/dev/null 2>&1 || true
-              if git merge-base --is-ancestor "$target" "$live" 2>/dev/null; then
-                echo "Production is running descendant $live containing target $target"
-                exit 0
-              fi
-            fi
-            echo "Waiting for production: expected target-or-descendant=$target live=${live:-unavailable} attempt=$attempt/90"
-            sleep 10
+            echo "Waiting for a healthy production marker: live=${live:-unavailable} attempt=$attempt/12"
+            sleep 5
           done
-          echo "Production did not reach $target within 15 minutes." >&2
+          echo "Production health check failed: deploy-version marker is unavailable or invalid." >&2
           exit 1
       - name: Verify the quality-gated sitemap
         shell: bash

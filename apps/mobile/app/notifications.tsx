@@ -3,15 +3,28 @@ import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } 
 import { router, Stack } from 'expo-router';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { supabase } from '../src/auth/supabase';
-import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationCategories, notificationCategoryLabel, notificationLabel, notificationTarget, type NotificationCategory, type UserNotification } from '../src/community/notifications';
+import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationCategories, notificationTarget, type NotificationCategory, type NotificationType, type UserNotification } from '../src/community/notifications';
+import { useI18n } from '../src/i18n/I18nProvider';
+import { localeDateTag, type MessageKey } from '../src/i18n/i18n-core';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
 import { cacheNotifications, readCachedNotifications } from '../src/storage/notificationCache';
 import { withUiTimeout } from '../src/utils/async-state-core';
 import { useUnreadCounts } from '../src/notifications/UnreadProvider';
 
 const PAGE_SIZE = 20;
+const CATEGORY_KEYS: Record<NotificationCategory, MessageKey> = {
+  all: 'inbox.category.all', replies: 'inbox.category.replies', likes: 'inbox.category.likes',
+  follows: 'inbox.category.follows', messages: 'inbox.category.messages', moderation: 'inbox.category.moderation',
+};
+const NOTICE_KEYS: Record<NotificationType, MessageKey> = {
+  comment_reply: 'inbox.notice.commentReply', comment_like: 'inbox.notice.commentLike', community_reply: 'inbox.notice.communityReply',
+  community_post_like: 'inbox.notice.communityPostLike', community_comment_like: 'inbox.notice.communityCommentLike', community_report: 'inbox.notice.communityReport',
+  follow: 'inbox.notice.follow', follow_request: 'inbox.notice.followRequest', follow_accept: 'inbox.notice.followAccept',
+  message_request: 'inbox.notice.messageRequest', message: 'inbox.notice.message', system: 'inbox.notice.system',
+};
 
 export default function NotificationsScreen() {
+  const { locale, t } = useI18n();
   const unread = useUnreadCounts();
   const [items, setItems] = useState<UserNotification[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +39,9 @@ export default function NotificationsScreen() {
   const [showingCached, setShowingCached] = useState(false);
   const requestId = useRef(0);
   const hydratedCaches = useRef(new Set<string>());
+  const errorMessage = useCallback((error: unknown, fallback: MessageKey) => error instanceof Error
+    ? error.message === '需要登录' ? t('inbox.signInRequired') : error.message
+    : t(fallback), [t]);
 
   const load = useCallback(async (refresh = false, knownViewerId = '') => {
     const currentRequest = ++requestId.current;
@@ -36,7 +52,7 @@ export default function NotificationsScreen() {
       setLoading(true);
     }
     try {
-      const page = await withUiTimeout(listNotifications(0, PAGE_SIZE, category), '消息读取超时，请检查网络后重试。');
+      const page = await withUiTimeout(listNotifications(0, PAGE_SIZE, category), t('inbox.timeout'));
       if (currentRequest === requestId.current) {
         setItems(page.notifications);
         setNextOffset(page.nextOffset);
@@ -46,11 +62,11 @@ export default function NotificationsScreen() {
         if (knownViewerId) void cacheNotifications(page.notifications, page.nextOffset, knownViewerId, category).catch(() => undefined);
       }
     }
-    catch (e) { if (currentRequest === requestId.current) setError(e instanceof Error ? e.message : '消息加载失败'); }
+    catch (e) { if (currentRequest === requestId.current) setError(errorMessage(e, 'inbox.loadFailed')); }
     finally {
       if (currentRequest === requestId.current) refresh ? setRefreshing(false) : setLoading(false);
     }
-  }, [category]);
+  }, [category, errorMessage, t]);
 
   useEffect(() => {
     let active = true;
@@ -110,7 +126,7 @@ export default function NotificationsScreen() {
     setLoadingMore(true);
     setPageError('');
     try {
-      const page = await withUiTimeout(listNotifications(nextOffset, PAGE_SIZE, category), '较早消息读取超时，请检查网络后重试。');
+      const page = await withUiTimeout(listNotifications(nextOffset, PAGE_SIZE, category), t('inbox.pageTimeout'));
       if (currentRequest !== requestId.current) return;
       setItems((current) => {
         const known = new Set(current.map((item) => item.id));
@@ -118,7 +134,7 @@ export default function NotificationsScreen() {
       });
       setNextOffset(page.nextOffset);
     } catch (e) {
-      if (currentRequest === requestId.current) setPageError(e instanceof Error ? e.message : '较早消息读取失败');
+      if (currentRequest === requestId.current) setPageError(errorMessage(e, 'inbox.pageFailed'));
     } finally {
       if (currentRequest === requestId.current) setLoadingMore(false);
     }
@@ -136,7 +152,7 @@ export default function NotificationsScreen() {
       const target = notificationTarget(item);
       if (target) router.push(target as never);
     } catch (e) {
-      Alert.alert('操作失败', e instanceof Error ? e.message : '请稍后重试。');
+      Alert.alert(t('inbox.actionFailed'), e instanceof Error ? e.message : t('inbox.retryLater'));
     }
   };
 
@@ -145,33 +161,36 @@ export default function NotificationsScreen() {
     const unreadCount = items.filter((item) => !item.is_read).length;
     setMarkingRead(true);
     try {
-      await withUiTimeout(markAllNotificationsRead(category), '标记已读超时，请检查网络后重试。');
+      await withUiTimeout(markAllNotificationsRead(category), t('inbox.markTimeout'));
       const nextItems = items.map(x => ({ ...x, is_read: true }));
       setItems(nextItems);
       cacheVisibleItems(nextItems);
       category === 'all' ? unread.markAllNotificationsReadLocally() : unread.markNotificationsReadLocally(unreadCount);
       void unread.refresh().catch((refreshError) => console.warn('unread count sync failed', refreshError));
     } catch (e) {
-      Alert.alert('操作失败', e instanceof Error ? e.message : '请稍后重试。');
+      Alert.alert(t('inbox.actionFailed'), e instanceof Error ? e.message : t('inbox.retryLater'));
     } finally { setMarkingRead(false); }
   };
 
-  return <><Stack.Screen options={{ title: '消息中心', headerBackTitle: '返回' }} />
+  const categoryLabel = t(CATEGORY_KEYS[category]);
+  const itemTitle = (item: UserNotification) => item.title || t(NOTICE_KEYS[item.type]);
+
+  return <><Stack.Screen options={{ title: t('inbox.screenTitle'), headerBackTitle: t('common.back') }} />
     <ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true, viewerId)} />}>
-      <View style={styles.header}><Text style={styles.h1}>消息中心</Text>{items.some(item => !item.is_read) ? <Pressable disabled={markingRead} accessibilityRole="button" accessibilityLabel={category === 'all' ? '将全部消息标为已读' : `将${notificationCategoryLabel(category)}消息标为已读`} onPress={() => void markAll()}><Text style={[styles.markAll, markingRead && styles.disabled]}>{markingRead ? '处理中…' : category === 'all' ? '全部已读' : '本类已读'}</Text></Pressable> : null}</View>
+      <View style={styles.header}><Text style={styles.h1}>{t('inbox.heading')}</Text>{items.some(item => !item.is_read) ? <Pressable disabled={markingRead} accessibilityRole="button" accessibilityLabel={category === 'all' ? t('inbox.markAllA11y') : t('inbox.markCategoryA11y', { category: categoryLabel })} onPress={() => void markAll()}><Text style={[styles.markAll, markingRead && styles.disabled]}>{markingRead ? t('inbox.processing') : category === 'all' ? t('inbox.markAll') : t('inbox.markCategory')}</Text></Pressable> : null}</View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters} accessibilityRole="tablist">
-        {notificationCategories.map((item) => <Pressable key={item.key} disabled={markingRead} testID={`notification-filter-${item.key}`} accessibilityRole="tab" accessibilityState={{ selected: category === item.key, disabled: markingRead }} accessibilityLabel={`筛选${item.label}通知`} style={[styles.filter, category === item.key && styles.filterSelected, markingRead && styles.disabled]} onPress={() => selectCategory(item.key)}><Text style={[styles.filterText, category === item.key && styles.filterTextSelected]}>{item.label}</Text></Pressable>)}
+        {notificationCategories.map((item) => <Pressable key={item.key} disabled={markingRead} testID={`notification-filter-${item.key}`} accessibilityRole="tab" accessibilityState={{ selected: category === item.key, disabled: markingRead }} accessibilityLabel={t('inbox.filterA11y', { category: t(CATEGORY_KEYS[item.key]) })} style={[styles.filter, category === item.key && styles.filterSelected, markingRead && styles.disabled]} onPress={() => selectCategory(item.key)}><Text style={[styles.filterText, category === item.key && styles.filterTextSelected]}>{t(CATEGORY_KEYS[item.key])}</Text></Pressable>)}
       </ScrollView>
-      {showingCached ? <View testID="notifications-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>正在显示此账号上次读取的消息，并尝试同步最新内容。</Text></View> : null}
-      {loading ? <AsyncStatePanel testID="notifications-loading" title="正在读取消息" message="正在同步回复、关注和系统通知。" busy /> : error && items.length === 0 ? <AsyncStatePanel testID="notifications-error" tone="error" title="消息暂时无法读取" message={error} actionLabel="重新读取" onAction={() => void load(true, viewerId)} busy={refreshing} /> : <>
-      {error ? <AsyncStatePanel testID="notifications-refresh-error" tone="error" title="最新消息同步失败" message={error} actionLabel="重新同步" onAction={() => void load(true, viewerId)} busy={refreshing} /> : null}
-      {!error && items.length === 0 ? <AsyncStatePanel testID="notifications-empty" title={category === 'all' ? '暂时没有新消息' : `暂无${notificationCategoryLabel(category)}消息`} message={category === 'all' ? '收到回复、关注、聊天申请或系统通知后，会显示在这里。' : '此分类收到新消息后，会显示在这里。'} /> : items.map(item => <Pressable accessibilityRole="button" accessibilityLabel={`打开消息：${item.title || notificationLabel(item.type)}`} key={item.id} style={[styles.card, !item.is_read && styles.unread]} onPress={() => void openItem(item)}>
-        <View style={styles.row}><Text style={styles.title}>{item.title || notificationLabel(item.type)}</Text>{!item.is_read ? <View style={styles.dot} /> : null}</View>
+      {showingCached ? <View testID="notifications-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>{t('inbox.cacheNotice')}</Text></View> : null}
+      {loading ? <AsyncStatePanel testID="notifications-loading" title={t('inbox.loadingTitle')} message={t('inbox.loadingBody')} busy /> : error && items.length === 0 ? <AsyncStatePanel testID="notifications-error" tone="error" title={t('inbox.loadErrorTitle')} message={error} actionLabel={t('inbox.reload')} onAction={() => void load(true, viewerId)} busy={refreshing} /> : <>
+      {error ? <AsyncStatePanel testID="notifications-refresh-error" tone="error" title={t('inbox.refreshErrorTitle')} message={error} actionLabel={t('inbox.resync')} onAction={() => void load(true, viewerId)} busy={refreshing} /> : null}
+      {!error && items.length === 0 ? <AsyncStatePanel testID="notifications-empty" title={category === 'all' ? t('inbox.emptyAllTitle') : t('inbox.emptyCategoryTitle', { category: categoryLabel })} message={category === 'all' ? t('inbox.emptyAllBody') : t('inbox.emptyCategoryBody')} /> : items.map(item => <Pressable accessibilityRole="button" accessibilityLabel={t('inbox.openA11y', { title: itemTitle(item) })} key={item.id} style={[styles.card, !item.is_read && styles.unread]} onPress={() => void openItem(item)}>
+        <View style={styles.row}><Text style={styles.title}>{itemTitle(item)}</Text>{!item.is_read ? <View style={styles.dot} /> : null}</View>
         {item.body ? <Text style={styles.body}>{item.body}</Text> : null}
-        <Text style={styles.time}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text>
+        <Text style={styles.time}>{new Date(item.created_at).toLocaleString(localeDateTag(locale))}</Text>
       </Pressable>)}
-      {pageError ? <AsyncStatePanel testID="notifications-page-error" tone="error" title="较早消息暂时无法读取" message={pageError} actionLabel="重试加载" onAction={() => void loadMore()} busy={loadingMore} /> : null}
-      {!pageError && nextOffset !== null ? <Pressable testID="notifications-load-more" accessibilityRole="button" accessibilityLabel={loadingMore ? '正在加载较早消息' : '加载更多消息'} accessibilityState={{ disabled: loadingMore || refreshing }} disabled={loadingMore || refreshing} style={[styles.loadMore, (loadingMore || refreshing) && styles.disabled]} onPress={() => void loadMore()}><Text style={styles.loadMoreText}>{loadingMore ? '正在加载…' : '加载更多消息'}</Text></Pressable> : null}
+      {pageError ? <AsyncStatePanel testID="notifications-page-error" tone="error" title={t('inbox.pageErrorTitle')} message={pageError} actionLabel={t('inbox.retryPage')} onAction={() => void loadMore()} busy={loadingMore} /> : null}
+      {!pageError && nextOffset !== null ? <Pressable testID="notifications-load-more" accessibilityRole="button" accessibilityLabel={loadingMore ? t('inbox.loadingMoreA11y') : t('inbox.loadMore')} accessibilityState={{ disabled: loadingMore || refreshing }} disabled={loadingMore || refreshing} style={[styles.loadMore, (loadingMore || refreshing) && styles.disabled]} onPress={() => void loadMore()}><Text style={styles.loadMoreText}>{loadingMore ? t('inbox.loadingMore') : t('inbox.loadMore')}</Text></Pressable> : null}
       </>}
     </ScrollView></>;
 }

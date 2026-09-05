@@ -21,6 +21,7 @@
 .search-box:focus-within{border-color:var(--pass);box-shadow:0 0 0 4px rgba(20,128,74,.12)}
 .search-box button{background:var(--pass)}.search-box button:hover{background:var(--pass-dark)}
 .quick button:hover{border-color:var(--pass);color:var(--pass-dark)}
+.quick button{min-height:44px;touch-action:manipulation}
 .state-more,.state-market-more,.featured-judge>i,.entry-grid i{color:var(--pass)}
 .entry-grid>a:hover,.featured-judge:hover{border-color:#8bcbaa}
 .entry-icon{background:linear-gradient(135deg,var(--pass-soft) 0 50%,var(--deny-soft) 50% 100%);color:var(--pass-dark)}

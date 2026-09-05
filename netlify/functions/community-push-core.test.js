@@ -65,6 +65,26 @@ test('coalesces same-type pushes while preserving every in-app notification', ()
   assert.deepEqual(result.skipped, [{ id: 20, reason: 'coalesced_into_newer_notification' }]);
 });
 
+test('coalesces a chat request and later messages into one conversation summary', () => {
+  const plan = buildDeliveryPlan([
+    { id: 40, user_id: userA, actor_user_id: userB, type: 'message_request', conversation_id: 'conversation-1', body: '你好' },
+    { id: 41, user_id: userA, actor_user_id: userB, type: 'message', conversation_id: 'conversation-1', body: '补充消息' },
+    { id: 42, user_id: userA, actor_user_id: userB, type: 'message', conversation_id: 'conversation-1', body: '最后一条' }
+  ], [{ id: 1, user_id: userA, expo_push_token: 'ExponentPushToken[a]', enabled: true }], []);
+
+  assert.equal(plan.targets.length, 1);
+  assert.equal(plan.targets[0].notification_id, 42);
+  assert.equal(plan.targets[0].message.title, '你收到 3 条新私信');
+  assert.equal(plan.targets[0].message.body, '最后一条');
+  assert.deepEqual(plan.targets[0].message.data, {
+    type: 'message', coalesced_count: 3, actor_user_id: userB, conversation_id: 'conversation-1'
+  });
+  assert.deepEqual(plan.skipped, [
+    { id: 40, reason: 'coalesced_into_newer_notification' },
+    { id: 41, reason: 'coalesced_into_newer_notification' }
+  ]);
+});
+
 test('coalesces multiple replies to the same article and keeps the latest deep link', () => {
   const result = collapseNotifications([
     { id: 23, user_id: userA, type: 'comment_reply', article_id: 'article-1', comment_id: 'reply-1' },
@@ -146,6 +166,23 @@ test('unified migration keeps claims service-only and links direct-message conve
   assert.match(migration, /conversation_id uuid[\s\S]*direct_conversations/);
   assert.match(migration, /insert into public\.user_notifications\([\s\S]*conversation_id/);
   assert.match(conversationIndex, /user_notifications_conversation_idx[\s\S]*conversation_id[\s\S]*is not null/);
+});
+
+test('message throttle migration holds a conversation during processing and cooldown', () => {
+  const migration = fs.readFileSync(path.join(
+    __dirname, '../../supabase/migrations/20260905094500_throttle_direct_message_pushes.sql'
+  ), 'utf8');
+  assert.match(migration, /interval '30 minutes'/);
+  assert.match(migration, /blocker\.conversation_id is not distinct from notification\.conversation_id/);
+  assert.match(migration, /blocker\.push_status = 'processing'/);
+  assert.match(migration, /blocker\.push_status = 'sent'/);
+  assert.match(migration, /pg_advisory_xact_lock/);
+  assert.match(migration, /push_error = 'read_before_push'/);
+  assert.match(migration, /notification\.is_read = false/);
+  assert.match(migration, /user_notifications_recent_message_push_idx/);
+  assert.match(migration, /user_notifications_processing_message_push_idx/);
+  assert.match(migration, /revoke all on function public\.claim_interaction_push_notifications[\s\S]*public, anon, authenticated/);
+  assert.match(migration, /grant execute on function public\.claim_interaction_push_notifications[\s\S]*service_role/);
 });
 
 test('granular preference migration preserves the legacy interaction choice', () => {

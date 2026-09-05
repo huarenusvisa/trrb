@@ -168,13 +168,18 @@ function renderStateMarket(periods, label, interval) {
     return `<rect class="market-volume-bar" x="${(x(index) - barWidth / 2).toFixed(1)}" y="${(bottom - barHeight).toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barHeight.toFixed(1)}" rx="2"></rect>`;
   }).join('');
   const hitWidth = Math.max(14, Math.min(34, step * .9));
-  const dots = points.map((point, index) => `<g class="market-hit" data-trend-index="${index}" role="button" tabindex="0" aria-label="${esc(point.period)}，批准率${pct(point.approval)}，拒绝率${pct(point.denial)}，其他占比${pct(point.otherShare)}，结案${fmt(point.total)}件"><rect class="market-hit-area" x="${(x(index) - hitWidth / 2).toFixed(1)}" y="${top}" width="${hitWidth.toFixed(1)}" height="${plotHeight}"></rect>${point.approval == null ? '' : `<circle class="market-dot approval" cx="${x(index)}" cy="${y(point.approval)}" r="3.5"></circle>`}${point.denial == null ? '' : `<circle class="market-dot denial" cx="${x(index)}" cy="${y(point.denial)}" r="3.5"></circle>`}<circle class="market-dot other" cx="${x(index)}" cy="${y(point.otherShare)}" r="3.5"></circle></g>`).join('');
+  const dots = points.map((point, index) => `<g class="market-hit" data-trend-index="${index}" role="button" tabindex="${index === points.length - 1 ? 0 : -1}" aria-label="${esc(point.period)}，批准率${pct(point.approval)}，拒绝率${pct(point.denial)}，其他占比${pct(point.otherShare)}，结案${fmt(point.total)}件"><rect class="market-hit-area" x="${(x(index) - hitWidth / 2).toFixed(1)}" y="${top}" width="${hitWidth.toFixed(1)}" height="${plotHeight}"></rect>${point.approval == null ? '' : `<circle class="market-dot approval" cx="${x(index)}" cy="${y(point.approval)}" r="3.5"></circle>`}${point.denial == null ? '' : `<circle class="market-dot denial" cx="${x(index)}" cy="${y(point.denial)}" r="3.5"></circle>`}<circle class="market-dot other" cx="${x(index)}" cy="${y(point.otherShare)}" r="3.5"></circle></g>`).join('');
   const labelEvery = interval === 'month' ? (compact ? 6 : 4) : 1;
   const labelY = compact ? 184 : 170;
   const labels = points.map((point, index) => index % labelEvery === 0 || index === points.length - 1 ? `<text class="market-state" x="${x(index)}" y="${labelY}" text-anchor="middle">${esc(interval === 'month' ? point.period.slice(2) : point.period)}</text>` : '').join('');
   chart.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="group" aria-label="${esc(label)}批准、拒绝及其他裁决${interval === 'month' ? '按月' : '按财年'}走势；在图上左右滑动可追踪每期数据" preserveAspectRatio="xMidYMid meet">${grid}${bars}<path class="market-series approval" d="${linePath('approval')}"></path><path class="market-series denial" d="${linePath('denial')}"></path><path class="market-series other" d="${linePath('otherShare')}"></path>${dots}${labels}<line class="market-crosshair" x1="${x(points.length - 1)}" y1="${top}" x2="${x(points.length - 1)}" y2="${bottom}"></line><rect class="market-touch-overlay" x="${left}" y="${top}" width="${width - left - right}" height="${plotHeight}" rx="4"></rect></svg><div class="market-floating-tooltip"></div><p class="market-touch-hint">按住图表左右滑动，实时追踪每个月的数据</p>`;
+  const hitNodes = [...chart.querySelectorAll('.market-hit')];
   const selectPoint = (index) => {
-    chart.querySelectorAll('.market-hit').forEach((node) => node.classList.toggle('active', Number(node.dataset.trendIndex) === index));
+    hitNodes.forEach((node) => {
+      const selected = Number(node.dataset.trendIndex) === index;
+      node.classList.toggle('active', selected);
+      node.setAttribute('tabindex', selected ? '0' : '-1');
+    });
     const crosshair = chart.querySelector('.market-crosshair');
     if (crosshair) {
       crosshair.setAttribute('x1', x(index));
@@ -189,13 +194,20 @@ function renderStateMarket(periods, label, interval) {
     }
     trendPointDetail(points[index], label);
   };
-  chart.querySelectorAll('.market-hit').forEach((node) => {
+  hitNodes.forEach((node) => {
     const activate = () => selectPoint(Number(node.dataset.trendIndex));
     node.addEventListener('pointerenter', activate);
     node.addEventListener('pointerdown', activate);
     node.addEventListener('click', activate);
     node.addEventListener('focus', activate);
-    node.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activate(); } });
+    node.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); activate(); return; }
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const current = Number(node.dataset.trendIndex);
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? hitNodes.length - 1 : Math.max(0, Math.min(hitNodes.length - 1, current + (event.key === 'ArrowRight' ? 1 : -1)));
+      hitNodes[next]?.focus();
+    });
   });
   const overlay = chart.querySelector('.market-touch-overlay');
   let tracking = false;

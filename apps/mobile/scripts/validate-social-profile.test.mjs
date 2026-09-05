@@ -303,7 +303,7 @@ test('community feed paginates and restores only public cached posts', () => {
 
   assert.match(list, /const PAGE_SIZE = 20/);
   assert.match(list, /readCachedCommunityFeed/);
-  assert.match(list, /cacheCommunityFeed\(page\.posts, page\.nextOffset\)/);
+  assert.match(list, /cacheCommunityFeed\(page\.posts, page\.nextOffset, category\)/);
   assert.match(list, /community-load-more/);
   assert.match(list, /community-page-error/);
   assert.match(list, /known = new Set/);
@@ -314,4 +314,22 @@ test('community feed paginates and restores only public cached posts', () => {
   assert.match(server, /page\.limit \+ 1/);
   assert.match(server, /order: 'created_at\.desc,id\.desc'/);
   assert.match(server, /next_offset: nextOffset/);
+});
+
+test('community category filters keep pagination and caches isolated', () => {
+  const list = read('app/community.tsx');
+  const api = read('src/api/community-core.ts');
+  const cache = read('src/storage/communityFeedCache.ts');
+  const cacheCore = read('src/storage/community-feed-cache-core.ts');
+
+  assert.match(list, /community-filter-/);
+  assert.match(list, /accessibilityRole="tab"/);
+  assert.match(list, /accessibilityState=\{\{ selected \}\}/);
+  assert.match(list, /listCommunityPosts\(0, PAGE_SIZE, category \|\| undefined\)/);
+  assert.match(list, /listCommunityPosts\(nextOffset, PAGE_SIZE, category \|\| undefined\)/);
+  assert.match(list, /readCachedCommunityFeed\(category\)/);
+  assert.match(list, /cacheCommunityFeed\(page\.posts, page\.nextOffset, category\)/);
+  assert.match(api, /category=\$\{encodeURIComponent\(category\)\}/);
+  assert.match(cache, /communityFeedCacheKey\(category\)/);
+  assert.match(cacheCore, /\.category\.\$\{encodeURIComponent\(scope\)\}/);
 });

@@ -87,11 +87,12 @@ export function createCommunityApi({
     }
   }
 
-  async function listPosts(offset = 0, limit = 20): Promise<CommunityPostPage> {
+  async function listPosts(offset = 0, limit = 20, category?: CommunityCategory): Promise<CommunityPostPage> {
     const safeOffset = Number.isFinite(offset) ? Math.max(0, Math.trunc(offset)) : 0;
     const safeLimit = Number.isFinite(limit) ? Math.min(30, Math.max(1, Math.trunc(limit))) : 20;
+    const categoryQuery = category ? `&category=${encodeURIComponent(category)}` : '';
     const data = await request<{ posts: CommunityPost[]; next_offset?: number | null }>(
-      'GET', undefined, `?offset=${safeOffset}&limit=${safeLimit}`,
+      'GET', undefined, `?offset=${safeOffset}&limit=${safeLimit}${categoryQuery}`,
     );
     return {
       posts: data.posts || [],

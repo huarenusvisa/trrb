@@ -35,6 +35,12 @@ test('loads bounded community pages and exposes the next offset', async () => {
   assert.equal(calls[0].url, 'https://example.test/community-api?offset=20&limit=20');
 });
 
+test('scopes a community page to an encoded category', async () => {
+  const { api, calls } = mockApi([{ posts: [], next_offset: null }]);
+  await api.listPosts(0, 20, 'ice_experience');
+  assert.equal(calls[0].url, 'https://example.test/community-api?offset=0&limit=20&category=ice_experience');
+});
+
 test('loads an encoded post detail with the current Supabase access token', async () => {
   const { api, calls } = mockApi([{ posts: [post], comments: [], viewer_user_id: 'user-1' }]);
   const detail = await api.getPost('post/one');

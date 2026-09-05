@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { COMMUNITY_FEED_CACHE_MAX_AGE_MS, parseCommunityFeedCache, publicCommunityFeedSnapshot } from './community-feed-cache-core.ts';
+import { COMMUNITY_FEED_CACHE_MAX_AGE_MS, communityFeedCacheKey, parseCommunityFeedCache, publicCommunityFeedSnapshot } from './community-feed-cache-core.ts';
 
 const post = {
   id: 'post-1', user_id: 'user-1', category: 'immigration_help', title: '公开帖子', content: '公开内容',
@@ -19,4 +19,10 @@ test('never persists pending or malformed community posts', () => {
   assert.deepEqual(publicCommunityFeedSnapshot([pending, post], 20).posts.map((item) => item.id), ['post-1']);
   assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: [pending], nextOffset: null } }), 200), null);
   assert.equal(parseCommunityFeedCache('{', 200), null);
+});
+
+test('isolates each community category cache from the all-posts cache', () => {
+  assert.equal(communityFeedCacheKey(), 'trrb.community.feed.v1');
+  assert.equal(communityFeedCacheKey('ice_experience'), 'trrb.community.feed.v1.category.ice_experience');
+  assert.notEqual(communityFeedCacheKey('tipoff'), communityFeedCacheKey('immigration_help'));
 });

@@ -163,9 +163,9 @@ test('user profiles and community post actions expose timeout recovery', () => {
 
   assert.match(userProfile, /user-profile-error/);
   assert.match(userProfile, /user-action-feedback/);
-  assert.match(userProfile, /关注操作超时/);
-  assert.match(userProfile, /解除拉黑失败/);
-  assert.match(userProfile, /重试操作/);
+  assert.match(userProfile, /t\('userProfile\.followTimeout'\)/);
+  assert.match(userProfile, /t\('userProfile\.unblockFailed'\)/);
+  assert.match(userProfile, /t\('userProfile\.retryAction'\)/);
   assert.match(communityPost, /community-post-error/);
   assert.match(communityPost, /community-action-feedback/);
   assert.match(communityPost, /t\('community\.retryAction'\)/);

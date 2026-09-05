@@ -2,6 +2,8 @@ import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { ProfilePost, ProfilePostMedia } from '../social/types';
+import { localeDateTag } from '../i18n/i18n-core';
+import { useI18n } from '../i18n/I18nProvider';
 
 function VideoMedia({ media }: { media: ProfilePostMedia }) {
   const player = useVideoPlayer(media.signed_url || null);
@@ -16,9 +18,10 @@ function Media({ media, multiple }: { media: ProfilePostMedia; multiple: boolean
 type Props = { posts: ProfilePost[]; own?: boolean; onDelete?: (post: ProfilePost) => Promise<void> };
 
 export function ProfilePostList({ posts, own, onDelete }: Props) {
-  if (!posts.length) return <View style={styles.empty}><Text style={styles.emptyIcon}>▧</Text><Text style={styles.emptyTitle}>还没有主页动态</Text><Text style={styles.emptyText}>{own ? '发布图片或视频，记录自己的生活。' : '这里暂时没有公开内容。'}</Text></View>;
+  const { locale, t } = useI18n();
+  if (!posts.length) return <View style={styles.empty}><Text style={styles.emptyIcon}>▧</Text><Text style={styles.emptyTitle}>{t('userProfile.noPosts')}</Text><Text style={styles.emptyText}>{own ? t('userProfile.noOwnPostsBody') : t('userProfile.noPublicPostsBody')}</Text></View>;
   return <View style={styles.list}>{posts.map((post) => <View key={post.id} style={styles.card}>
-    <View style={styles.cardHead}><Text style={styles.time}>{new Date(post.created_at).toLocaleString('zh-CN')}</Text>{own && onDelete ? <Pressable onPress={() => Alert.alert('删除这条动态？', '图片或视频也会一并删除。', [{ text: '取消', style: 'cancel' }, { text: '删除', style: 'destructive', onPress: () => void onDelete(post) }])}><Text style={styles.delete}>删除</Text></Pressable> : null}</View>
+    <View style={styles.cardHead}><Text style={styles.time}>{new Date(post.created_at).toLocaleString(localeDateTag(locale))}</Text>{own && onDelete ? <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.deletePostA11y')} onPress={() => Alert.alert(t('userProfile.deletePostTitle'), t('userProfile.deletePostBody'), [{ text: t('userProfile.cancel'), style: 'cancel' }, { text: t('userProfile.delete'), style: 'destructive', onPress: () => void onDelete(post) }])}><Text style={styles.delete}>{t('userProfile.delete')}</Text></Pressable> : null}</View>
     {post.caption ? <Text style={styles.caption}>{post.caption}</Text> : null}
     <View style={post.profile_post_media.length > 1 ? styles.mediaGrid : styles.mediaSingle}>{post.profile_post_media.map((media) => <Media key={media.id} media={media} multiple={post.profile_post_media.length > 1} />)}</View>
   </View>)}</View>;

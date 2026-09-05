@@ -82,3 +82,11 @@ test('translates profile composer media, progress and recovery states', () => {
   assert.equal(translate('en', 'profileCompose.videoDuration', { seconds: 75 }), 'Video · 75 seconds');
   assert.equal(translate('zh-CN', 'profileCompose.failurePreserved'), '已选媒体和文字仍保留在本页。');
 });
+
+test('translates user profile relationships, privacy and recovery states', () => {
+  assert.equal(translate('en', 'userProfile.requestSent'), 'Follow request sent.');
+  assert.equal(translate('zh-TW', 'userProfile.unblockFailed'), '解除封鎖失敗');
+  assert.equal(translate('en', 'userProfile.followersCountA11y', { count: 12 }), '12 followers');
+  assert.equal(translate('zh-CN', 'userProfile.postCount', { count: 3 }), '3 条');
+  assert.equal(translate('en', 'userProfile.noPublicPostsBody'), 'There is no public content here yet.');
+});

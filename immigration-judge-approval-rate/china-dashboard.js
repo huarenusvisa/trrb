@@ -96,7 +96,7 @@ function drawCountryComparison(rows) {
   const groups = shown.map((row, index) => {
     const label = i18n?.countryName(row) || row.nationality_zh || row.nationality;
     const dots = series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(row, item.key))}" r="6"></circle>`).join('');
-    return `<g class="country-point-wrap" data-country="${esc(row.nationality)}" tabindex="${index === 0 ? 0 : -1}" role="button" aria-label="${esc(outcomeAriaLabel(row, label))}"><rect class="country-hit" x="${x(index) - 34}" y="${top - 15}" width="68" height="${bottom - top + 64}"></rect><rect class="country-focus" x="${x(index) - 30}" y="${top - 10}" width="60" height="${bottom - top + 52}" rx="8"></rect>${dots}<text class="country-point-label" x="${x(index)}" y="315" text-anchor="middle">${esc(label)}</text></g>`;
+    return `<g class="country-point-wrap" data-country="${esc(row.nationality)}" tabindex="${index === 0 ? 0 : -1}" role="button" aria-keyshortcuts="ArrowLeft ArrowRight Home End" aria-label="${esc(outcomeAriaLabel(row, label))}"><rect class="country-hit" x="${x(index) - 34}" y="${top - 15}" width="68" height="${bottom - top + 64}"></rect><rect class="country-focus" x="${x(index) - 30}" y="${top - 10}" width="60" height="${bottom - top + 52}" rx="8"></rect>${dots}<text class="country-point-label" x="${x(index)}" y="315" text-anchor="middle">${esc(label)}</text></g>`;
   }).join('');
   svg.innerHTML = `${grid}${lines}${groups}`;
   const pointNodes = [...svg.querySelectorAll('[data-country]')];
@@ -174,7 +174,7 @@ function drawTrend(points) {
   const lines = series.map((item) => `<path class="trend-line ${item.className}" d="${shown.map((point, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(outcomeShare(point, item.key)).toFixed(1)}`).join(' ')}"></path>`).join('');
   const labelStep = Math.max(1, Math.ceil(shown.length / 6));
   const labels = shown.map((point, index) => index % labelStep === 0 || index === shown.length - 1 ? `<text class="trend-axis" x="${x(index)}" y="278" text-anchor="middle">${esc(point.label)}</text>` : '').join('');
-  const dots = shown.map((point, index) => `<g class="trend-point" data-index="${index}" tabindex="${index === shown.length - 1 ? 0 : -1}" role="button" aria-label="${esc(outcomeAriaLabel(point, point.label))}">${series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(point, item.key))}" r="4"></circle>`).join('')}<rect class="trend-hit" x="${x(index) - 18}" y="${top}" width="36" height="${bottom - top}"></rect></g>`).join('');
+  const dots = shown.map((point, index) => `<g class="trend-point" data-index="${index}" tabindex="${index === shown.length - 1 ? 0 : -1}" role="button" aria-keyshortcuts="ArrowLeft ArrowRight Home End" aria-label="${esc(outcomeAriaLabel(point, point.label))}">${series.map((item) => `<circle class="outcome-dot ${item.className}" cx="${x(index)}" cy="${y(outcomeShare(point, item.key))}" r="4"></circle>`).join('')}<rect class="trend-hit" x="${x(index) - 18}" y="${top}" width="36" height="${bottom - top}"></rect></g>`).join('');
   svg.innerHTML = `${grid}${lines}${dots}${labels}`;
   const pointNodes = [...svg.querySelectorAll('.trend-point')];
   pointNodes.forEach((node, index) => {

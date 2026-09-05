@@ -34,9 +34,10 @@
     <section class="panel comparison-panel">
       <div class="comparison-head"><div><span class="eyebrow">COUNTRY MARKET</span><h2 data-i18n="comparisonTitle">主要国籍裁决结果对比图</h2></div><p class="chart-note" data-i18n="comparisonSubtitle">按有效裁决样本量选取主要国籍</p></div>
       <div class="outcome-legend" data-i18n-aria-label="comparisonAria" aria-label="裁决结果图例"><span><i class="approved"></i><b data-i18n="approved">批准</b></span><span><i class="denied"></i><b data-i18n="denied">拒绝</b></span><span><i class="other"></i><b data-i18n="other">其他</b></span></div>
-      <div class="comparison-scroll"><svg id="country-comparison-chart" class="comparison-chart" viewBox="0 0 1100 350" role="group" data-i18n-aria-label="comparisonAria" aria-label="主要国籍批准、拒绝和其他裁决结果对比图"></svg></div>
+      <div class="comparison-scroll"><svg id="country-comparison-chart" class="comparison-chart" viewBox="0 0 1100 350" role="group" data-i18n-aria-label="comparisonAria" aria-label="主要国籍批准、拒绝和其他裁决结果对比图" aria-describedby="comparison-keyboard-note"></svg></div>
       <div id="comparison-tooltip" class="comparison-tooltip" hidden></div>
       <p class="comparison-note" data-i18n="comparisonNote">鼠标悬停或触摸国家，即可查看批准、拒绝、其他和总裁决数；点击“查看详细走势”打开该国的月度、季度和年度数据。</p>
+      <p id="comparison-keyboard-note" class="chart-note" data-i18n="chartKeyboardHint">键盘操作：Tab 进入图表后，使用左右方向键浏览，Home 和 End 跳到首尾数据点。</p>
     </section>
 
     <p id="country-detail-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-i18n="loadingReal">正在读取真实数据…</p>
@@ -49,7 +50,8 @@
       </article>
       <article class="panel">
         <div class="chart-head"><div><span class="eyebrow" data-i18n="trendLabel">裁决结果趋势</span><h2 id="trend-title" data-i18n="trendTitle">裁决结果走势</h2></div><div class="tabs" role="group" data-i18n-aria-label="trendLabel" aria-label="裁决结果趋势"><button type="button" data-period="monthly" data-i18n="monthly" aria-pressed="false">月度</button><button type="button" data-period="quarterly" data-i18n="quarterly" aria-pressed="false">季度</button><button type="button" class="active" data-period="yearly" data-i18n="yearly" aria-pressed="true">年度</button></div></div>
-        <svg id="trend-chart" class="trend-chart" viewBox="0 0 860 300" preserveAspectRatio="none" role="group" data-i18n-aria-label="trendTitle" aria-label="裁决结果走势"></svg><div id="trend-tooltip" class="trend-tooltip" hidden></div>
+        <svg id="trend-chart" class="trend-chart" viewBox="0 0 860 300" preserveAspectRatio="none" role="group" data-i18n-aria-label="trendTitle" aria-label="裁决结果走势" aria-describedby="trend-keyboard-note"></svg><div id="trend-tooltip" class="trend-tooltip" hidden></div>
+        <p id="trend-keyboard-note" class="chart-note" data-i18n="chartKeyboardHint">键盘操作：Tab 进入图表后，使用左右方向键浏览，Home 和 End 跳到首尾数据点。</p>
         <p id="chart-note" class="chart-note" data-i18n="trendNote">每个点均来自 EOIR 裁决日期和国籍字段；绿、红、蓝分别显示批准、拒绝和其他结果占比。</p>
         <div id="period-summary" class="period-summary"></div>
       </article>
@@ -68,7 +70,7 @@
     <section class="panel" style="margin-top:22px"><h2 data-i18n="methodology">数据口径</h2><p class="chart-note" data-i18n="methodologyBody">批准率 = 批准 ÷（批准 + 拒绝）。三色对比图以全部已记录结果为分母，因此批准、拒绝、其他三类合计为 100%；其他程序性结果不进入批准率分母。</p><a data-i18n="methodologyLink" href="/immigration-judge-approval-rate/methodology.html">查看完整数据口径 →</a></section>
   </main>
   <script src="/asylumjudge/domain-brand.js?v=9"></script>
-  <script src="/immigration-judge-approval-rate/china-dashboard-i18n.js?v=8"></script>
-  <script src="/immigration-judge-approval-rate/china-dashboard.js?v=25"></script>
+  <script src="/immigration-judge-approval-rate/china-dashboard-i18n.js?v=9"></script>
+  <script src="/immigration-judge-approval-rate/china-dashboard.js?v=26"></script>
 </body>
 </html>

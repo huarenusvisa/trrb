@@ -56,6 +56,10 @@ function destinationKey(notification) {
   return `notification:${notification.id}`;
 }
 
+function notificationFamily(type) {
+  return type === 'message' || type === 'message_request' ? 'direct_message' : type;
+}
+
 function coalescedTitle(type, count, fallback) {
   if (count < 2) return fallback;
   if (type === 'message') return `你收到 ${count} 条新私信`;
@@ -70,7 +74,7 @@ function collapseNotifications(notifications) {
   const groups = new Map();
   for (const notification of notifications || []) {
     if (!INTERACTION_TYPES.has(notification?.type)) continue;
-    const key = `${notification.user_id}:${notification.type}:${destinationKey(notification)}`;
+    const key = `${notification.user_id}:${notificationFamily(notification.type)}:${destinationKey(notification)}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push(notification);
   }
@@ -137,6 +141,7 @@ function buildDeliveryPlan(notifications, tokens, preferences) {
           body: notification.body || '打开唐人日报查看详情',
           data: {
             type: notification.type,
+            ...(notification.coalesced_count > 1 ? { coalesced_count: notification.coalesced_count } : {}),
             ...(notification.actor_user_id ? { actor_user_id: notification.actor_user_id } : {}),
             ...(notification.article_id ? { article_id: notification.article_id } : {}),
             ...(notification.comment_id ? { comment_id: notification.comment_id } : {}),
@@ -165,4 +170,4 @@ function summarizeNotificationOutcomes(targets, tickets) {
   return [...summaries.values()];
 }
 
-module.exports = { INTERACTION_TYPES, PREFERENCE_FIELD_BY_TYPE, buildDeliveryPlan, collapseNotifications, summarizeNotificationOutcomes, uuidInFilter };
+module.exports = { INTERACTION_TYPES, PREFERENCE_FIELD_BY_TYPE, buildDeliveryPlan, collapseNotifications, notificationFamily, summarizeNotificationOutcomes, uuidInFilter };

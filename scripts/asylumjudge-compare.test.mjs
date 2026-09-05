@@ -24,7 +24,7 @@ assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
 assert.match(html, /compare\.js\?v=8/);
-assert.match(html, /compare\.css\?v=4/);
+assert.match(html, /compare\.css\?v=5/);
 assert.match(html, /compare-focus\.css\?v=1/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
   assert.match(js, new RegExp(`['"]?${locale.replace('-', '\\-')}['"]?\\s*:\\s*\\{[^}]*retry:`), `retry action must support ${locale}`);
@@ -83,6 +83,10 @@ assert.match(css, /text-align:start/, 'search results must follow the active wri
 assert.match(css, /\.compare-search-result\.is-active/, 'keyboard-active options must have a visible highlight');
 assert.match(css, /border-inline-start:4px/, 'comparison notices must place emphasis on the logical leading edge');
 assert.match(css, /\.compare-error button:focus-visible/, 'retry button must expose a visible keyboard focus state');
+assert.match(css, /\.selected-judge button\{[^}]*width:44px[^}]*height:44px[^}]*touch-action:manipulation/, 'selected judge removal must provide a 44px touch target');
+assert.match(css, /\.compare-section-head>button\{height:44px\}/, 'copy action must provide a 44px touch target');
+assert.match(css, /\.compare-profile\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'profile links must provide a 44px touch target');
+assert.match(css, /\.compare-error button\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'retry action must provide a 44px touch target');
 for (const selector of ['.compare-search-wrap button', '.compare-section-head > button', '.selected-judge button', '.compare-profile']) {
   assert.match(focusCss, new RegExp(selector.replace(/[.>]/g, '\\$&') + '[^}]*:focus-visible|:focus-visible[^}]*' + selector.replace(/[.>]/g, '\\$&')), `${selector} must expose a visible keyboard focus state`);
 }

@@ -171,3 +171,15 @@ test('localizes user profile actions while preserving names, bios and posts', ()
   assert.ok(posts.includes("t('userProfile.deletePostTitle')"));
   assert.doesNotMatch(posts, /toLocaleString\('zh-CN'\)/);
 });
+
+test('localizes follower and following lists while preserving profile content', () => {
+  const connections = read('app/connections/[type].tsx');
+  assert.match(connections, /useI18n\(\)/);
+  for (const key of ['connections.loadingFollowers', 'connections.followersTimeout', 'connections.noFollowersBody', 'connections.openProfileA11y']) {
+    assert.ok(connections.includes(`'${key}'`), `connection list must translate ${key}`);
+  }
+  assert.match(connections, /profile\.display_name/);
+  assert.match(connections, /profile\.bio/);
+  assert.doesNotMatch(connections, />粉丝</);
+  assert.doesNotMatch(connections, />关注<\/Text>/);
+});

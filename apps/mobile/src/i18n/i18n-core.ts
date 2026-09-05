@@ -5,6 +5,7 @@ export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 export type LocalePreference = (typeof LOCALE_PREFERENCES)[number];
 
 const zhCN = {
+  'connections.followers': '粉丝', 'connections.following': '关注', 'connections.missingUser': '缺少用户资料，请返回后重新打开。', 'connections.followersTimeout': '粉丝读取超时，请检查网络后重试。', 'connections.followingTimeout': '关注读取超时，请检查网络后重试。', 'connections.loadFailed': '加载失败', 'connections.loadingFollowers': '正在读取粉丝', 'connections.loadingFollowing': '正在读取关注', 'connections.loadingBody': '正在同步最新账户关系。', 'connections.followersUnavailable': '粉丝暂时无法读取', 'connections.followingUnavailable': '关注暂时无法读取', 'connections.reload': '重新读取', 'connections.noFollowers': '暂无粉丝', 'connections.noFollowing': '暂无关注', 'connections.noFollowersBody': '新粉丝和已通过的关注申请会显示在这里。', 'connections.noFollowingBody': '打开其他用户主页即可关注对方。', 'connections.openProfileA11y': '打开{name}的个人主页',
   'userProfile.noPosts': '还没有主页动态', 'userProfile.noOwnPostsBody': '发布图片或视频，记录自己的生活。', 'userProfile.noPublicPostsBody': '这里暂时没有公开内容。', 'userProfile.deletePostTitle': '删除这条动态？', 'userProfile.deletePostBody': '图片或视频也会一并删除。', 'userProfile.deletePostA11y': '删除这条主页动态', 'userProfile.delete': '删除',
   'tab.home': '首页',
   'tab.homeIcon': '首',
@@ -188,6 +189,7 @@ const zhCN = {
 export type MessageKey = keyof typeof zhCN;
 
 const zhTW: Record<MessageKey, string> = {
+  'connections.followers': '追蹤者', 'connections.following': '追蹤中', 'connections.missingUser': '缺少用戶資料，請返回後重新開啟。', 'connections.followersTimeout': '追蹤者讀取逾時，請檢查網路後重試。', 'connections.followingTimeout': '追蹤中名單讀取逾時，請檢查網路後重試。', 'connections.loadFailed': '載入失敗', 'connections.loadingFollowers': '正在讀取追蹤者', 'connections.loadingFollowing': '正在讀取追蹤中名單', 'connections.loadingBody': '正在同步最新帳號關係。', 'connections.followersUnavailable': '追蹤者暫時無法讀取', 'connections.followingUnavailable': '追蹤中名單暫時無法讀取', 'connections.reload': '重新讀取', 'connections.noFollowers': '暫無追蹤者', 'connections.noFollowing': '尚未追蹤任何人', 'connections.noFollowersBody': '新追蹤者和已通過的追蹤申請會顯示在這裡。', 'connections.noFollowingBody': '開啟其他用戶的個人頁面即可追蹤對方。', 'connections.openProfileA11y': '開啟{name}的個人頁面',
   'userProfile.noPosts': '還沒有個人動態', 'userProfile.noOwnPostsBody': '發佈圖片或影片，記錄自己的生活。', 'userProfile.noPublicPostsBody': '這裡暫時沒有公開內容。', 'userProfile.deletePostTitle': '刪除這則動態？', 'userProfile.deletePostBody': '圖片或影片也會一併刪除。', 'userProfile.deletePostA11y': '刪除這則個人動態', 'userProfile.delete': '刪除',
   'tab.home': '首頁', 'tab.homeIcon': '首', 'tab.america': '美國', 'tab.americaIcon': '美', 'tab.immigration': '移民', 'tab.immigrationIcon': '移', 'tab.legal': '判例新規', 'tab.legalIcon': '法', 'tab.profile': '我的', 'tab.profileIcon': '我',
   'common.back': '返回',
@@ -229,6 +231,7 @@ const zhTW: Record<MessageKey, string> = {
 };
 
 const en: Record<MessageKey, string> = {
+  'connections.followers': 'Followers', 'connections.following': 'Following', 'connections.missingUser': 'User information is missing. Go back and open this page again.', 'connections.followersTimeout': 'Loading followers timed out. Check your connection and try again.', 'connections.followingTimeout': 'Loading following timed out. Check your connection and try again.', 'connections.loadFailed': 'Could not load connections', 'connections.loadingFollowers': 'Loading followers', 'connections.loadingFollowing': 'Loading following', 'connections.loadingBody': 'Syncing the latest account relationships.', 'connections.followersUnavailable': 'Followers are unavailable', 'connections.followingUnavailable': 'Following is unavailable', 'connections.reload': 'Reload', 'connections.noFollowers': 'No followers yet', 'connections.noFollowing': 'Not following anyone yet', 'connections.noFollowersBody': 'New followers and accepted follow requests will appear here.', 'connections.noFollowingBody': 'Open another user profile to follow them.', 'connections.openProfileA11y': 'Open {name}\'s profile',
   'userProfile.noPosts': 'No profile posts yet', 'userProfile.noOwnPostsBody': 'Share photos or videos from your life.', 'userProfile.noPublicPostsBody': 'There is no public content here yet.', 'userProfile.deletePostTitle': 'Delete this post?', 'userProfile.deletePostBody': 'Its photos or video will also be deleted.', 'userProfile.deletePostA11y': 'Delete this profile post', 'userProfile.delete': 'Delete',
   'tab.home': 'Home', 'tab.homeIcon': 'H', 'tab.america': 'U.S.', 'tab.americaIcon': 'U', 'tab.immigration': 'Immigration', 'tab.immigrationIcon': 'I', 'tab.legal': 'Legal', 'tab.legalIcon': 'L', 'tab.profile': 'Me', 'tab.profileIcon': 'M',
   'common.back': 'Back',

@@ -90,3 +90,9 @@ test('translates user profile relationships, privacy and recovery states', () =>
   assert.equal(translate('zh-CN', 'userProfile.postCount', { count: 3 }), '3 条');
   assert.equal(translate('en', 'userProfile.noPublicPostsBody'), 'There is no public content here yet.');
 });
+
+test('translates follower and following lists while interpolating profile names', () => {
+  assert.equal(translate('en', 'connections.followers'), 'Followers');
+  assert.equal(translate('zh-TW', 'connections.noFollowing'), '尚未追蹤任何人');
+  assert.equal(translate('en', 'connections.openProfileA11y', { name: 'Alex' }), "Open Alex's profile");
+});

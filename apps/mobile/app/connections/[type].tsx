@@ -7,8 +7,10 @@ import { TrRbAvatar } from '../../src/components/TrRbAvatar';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import type { SocialProfile } from '../../src/social/types';
 import { withUiTimeout } from '../../src/utils/async-state-core';
+import { useI18n } from '../../src/i18n/I18nProvider';
 
 export default function ConnectionsScreen() {
+  const { t } = useI18n();
   const { type, userId } = useLocalSearchParams<{ type: string; userId: string }>();
   const followers = type === 'followers';
   const [items, setItems] = useState<SocialProfile[]>([]);
@@ -18,18 +20,19 @@ export default function ConnectionsScreen() {
   const load = useCallback(async () => {
     try {
       const target = String(userId || '');
-      if (!target) throw new Error('缺少用户资料，请返回后重新打开。');
-      setItems(await withUiTimeout(followers ? listFollowers(target) : listFollowing(target), `${followers ? '粉丝' : '关注'}读取超时，请检查网络后重试。`));
+      if (!target) throw new Error(t('connections.missingUser'));
+      setItems(await withUiTimeout(followers ? listFollowers(target) : listFollowing(target), t(followers ? 'connections.followersTimeout' : 'connections.followingTimeout')));
       setError('');
-    } catch (e) { setError(e instanceof Error ? e.message : '加载失败'); }
+    } catch (e) { setError(e instanceof Error ? e.message : t('connections.loadFailed')); }
     finally { setLoading(false); setRefreshing(false); }
-  }, [followers, userId]);
+  }, [followers, t, userId]);
   useFocusEffect(useCallback(() => { void load(); }, [load]));
   useForegroundRetry(Boolean(error), () => { setRefreshing(true); void load(); });
   const retry = () => { setRefreshing(true); void load(); };
-  return <View style={styles.page}><Stack.Screen options={{ headerShown: true, title: followers ? '粉丝' : '关注', headerBackTitle: '返回' }} />{loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="connections-loading" title={`正在读取${followers ? '粉丝' : '关注'}`} message="正在同步最新账户关系。" busy /></View> : <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retry} />}>
-    {error ? <AsyncStatePanel testID="connections-error" tone="error" title={`${followers ? '粉丝' : '关注'}暂时无法读取`} message={error} actionLabel="重新读取" onAction={retry} busy={refreshing} /> : null}{!error && !items.length ? <AsyncStatePanel testID="connections-empty" title={`暂无${followers ? '粉丝' : '关注'}`} message={followers ? '新粉丝和已通过的关注申请会显示在这里。' : '打开其他用户主页即可关注对方。'} /> : null}
-    {items.map((profile) => <Pressable accessibilityRole="button" accessibilityLabel={`打开${profile.display_name || '唐人读者'}的个人主页`} key={profile.id} style={styles.row} onPress={() => router.push(`/user/${profile.id}`)}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={50} /><View style={styles.copy}><Text style={styles.name}>{profile.display_name || '唐人读者'}</Text><Text style={styles.bio} numberOfLines={1}>{profile.bio || (profile.is_private ? '隐私账号' : '公开账号')}</Text></View><Text style={styles.chevron}>›</Text></Pressable>)}
+  const listKey = followers ? 'connections.followers' : 'connections.following';
+  return <View style={styles.page}><Stack.Screen options={{ headerShown: true, title: t(listKey), headerBackTitle: t('common.back') }} />{loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="connections-loading" title={t(followers ? 'connections.loadingFollowers' : 'connections.loadingFollowing')} message={t('connections.loadingBody')} busy /></View> : <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retry} />}>
+    {error ? <AsyncStatePanel testID="connections-error" tone="error" title={t(followers ? 'connections.followersUnavailable' : 'connections.followingUnavailable')} message={error} actionLabel={t('connections.reload')} onAction={retry} busy={refreshing} /> : null}{!error && !items.length ? <AsyncStatePanel testID="connections-empty" title={t(followers ? 'connections.noFollowers' : 'connections.noFollowing')} message={t(followers ? 'connections.noFollowersBody' : 'connections.noFollowingBody')} /> : null}
+    {items.map((profile) => <Pressable accessibilityRole="button" accessibilityLabel={t('connections.openProfileA11y', { name: profile.display_name || t('userProfile.readerFallback') })} key={profile.id} style={styles.row} onPress={() => router.push(`/user/${profile.id}`)}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={50} /><View style={styles.copy}><Text style={styles.name}>{profile.display_name || t('userProfile.readerFallback')}</Text><Text style={styles.bio} numberOfLines={1}>{profile.bio || t(profile.is_private ? 'userProfile.privateAccount' : 'userProfile.publicAccount')}</Text></View><Text style={styles.chevron}>›</Text></Pressable>)}
   </ScrollView>}</View>;
 }
 

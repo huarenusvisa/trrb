@@ -100,7 +100,9 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /id="judge-directory-list"[^>]+aria-busy="true"/, 'judge directory must expose its initial loading state');
   assert.doesNotMatch(html, /id="judge-directory-list"[^>]+aria-live=/, 'judge cards must not be announced as one oversized live region');
   assert.match(html, /id="daily-knowledge-items"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'daily knowledge must expose its initial loading state');
-  assert.match(html, /id="state-list"[^>]+aria-live="polite"[^>]+aria-busy="true"/, 'state overview must expose its initial loading state');
+  assert.match(html, /id="state-list-status"[^>]+role="status"[^>]+aria-live="polite"[^>]+aria-atomic="true"/, 'state overview must announce a concise atomic status');
+  assert.match(html, /id="state-list"[^>]+aria-busy="true"/, 'state overview must expose its initial loading state');
+  assert.doesNotMatch(html, /id="state-list"[^>]+aria-live=/, 'state cards must not be announced as one oversized live region');
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');
   assert.match(html, /data-state-interval="month"/, 'homepage must offer a monthly trend');
   assert.match(html, /data-state-interval="year"/, 'homepage must offer a fiscal-year trend');
@@ -119,6 +121,9 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
 assert.match(client, /mode=all/, 'homepage must request the complete judge dataset');
+assert.match(client, /state-list-status[\s\S]{0,160}selected\.length/, 'state overview must announce only the rendered result count');
+assert.match(client, /state-list-status[\s\S]{0,500}正在汇总州级样本/, 'state overview must announce its loading state');
+assert.match(client, /status\.textContent = window\.AsylumI18n\?\.t\?\.\('数据库暂时无法读取'\)/, 'state overview failures must update the concise status');
 assert.match(client, /filterJudges\(query\)/, 'homepage search must filter the complete in-memory directory');
 assert.match(client, /addEventListener\('input'/, 'judge search must update directly while typing');
 assert.match(client, /addEventListener\('input'[\s\S]*applyJudgeFilter\(\$\('#judge-q'\)\.value, \{ updateUrl: false \}\)/, 'typing must preview results without overwriting browser history');
@@ -168,8 +173,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /site\.css\?v=20[\s\S]*site\.js\?v=30/, 'standalone homepage must load the search-history assets');
-assert.match(trrb, /site\.css\?v=19[\s\S]*site\.js\?v=29/, 'embedded homepage must load the search-history assets');
+assert.match(standalone, /site\.css\?v=20[\s\S]*site\.js\?v=31/, 'standalone homepage must load the concise-state-status assets');
+assert.match(trrb, /site\.css\?v=19[\s\S]*site\.js\?v=30/, 'embedded homepage must load the concise-state-status assets');
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
 assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
 assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');

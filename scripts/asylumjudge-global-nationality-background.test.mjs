@@ -223,7 +223,7 @@ assert.match(page, /id="trend-chart"[^>]*role="group"[^>]*data-i18n-aria-label="
 assert.doesNotMatch(page, /id="(?:country-comparison-chart|trend-chart)"[^>]*role="img"/, 'interactive nationality charts must not flatten their keyboard points into images');
 assert.doesNotMatch(page, /id="(?:comparison-tooltip|trend-tooltip)"[^>]*(?:role="status"|aria-live=)/, 'pointer and touch tooltips must not trigger repeated live announcements');
 assert.match(page, /china-dashboard-i18n\.js\?v=8/, 'nationality dashboard must load the dual-code label asset version');
-assert.match(page, /china-dashboard\.js\?v=24/, 'nationality dashboard must load the concise detail status asset version');
+assert.match(page, /china-dashboard\.js\?v=25/, 'nationality dashboard must load the chart keyboard navigation asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -236,6 +236,10 @@ assert.match(client, /item\.setAttribute\('aria-pressed', 'false'\)[\s\S]*button
 assert.match(client, /function outcomeAriaLabel\(row, label\)[\s\S]*t\('approved'\)[\s\S]*t\('denied'\)[\s\S]*t\('other'\)[\s\S]*t\('total'\)/, 'chart data labels must announce every outcome share and the total');
 assert.match(client, /country-point-wrap[^\n]*aria-label="\$\{esc\(outcomeAriaLabel\(row, label\)\)\}"/, 'country comparison points must expose their values to screen readers');
 assert.match(client, /trend-point[^\n]*aria-label="\$\{esc\(outcomeAriaLabel\(point, point\.label\)\)\}"/, 'trend points must expose their values to screen readers');
+assert.match(client, /country-point-wrap[^\n]*tabindex="\$\{index === 0 \? 0 : -1\}"/, 'country comparison must expose only one initial tab stop');
+assert.match(client, /trend-point[^\n]*tabindex="\$\{index === shown\.length - 1 \? 0 : -1\}"/, 'trend chart must expose only the latest point as its initial tab stop');
+assert.match(client, /function moveChartFocus\(nodes, currentIndex, key\)[\s\S]*ArrowLeft[\s\S]*ArrowRight[\s\S]*Home[\s\S]*End[\s\S]*nodes\[nextIndex\]\?\.focus\(\)/, 'chart points must support roving arrow, Home, and End navigation');
+assert.equal((client.match(/moveChartFocus\(pointNodes, index, event\.key\)/g) || []).length, 2, 'both nationality charts must use the shared keyboard navigation behavior');
 assert.match(client, /function retryButton\(scope, country = '', updateUrl = false\)/, 'nationality failures must render an in-page retry action');
 assert.match(client, /data-retry="\$\{scope\}"[^>]*data-country="\$\{esc\(country\)\}"[^>]*data-update-url="\$\{updateUrl\}"[^>]*data-i18n="retryAction"/, 'detail retries must preserve the failed nationality, URL behavior, and live translation');
 assert.match(client, /button\.dataset\.retry === 'directory'\) await load\(\)[\s\S]*else await selectCountry\(button\.dataset\.country, button\.dataset\.updateUrl === 'true'\)/, 'retry actions must reload only the failed data scope');

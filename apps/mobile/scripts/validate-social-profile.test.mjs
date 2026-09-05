@@ -199,8 +199,8 @@ test('community composer restores drafts and keeps failed submissions retryable'
   assert.match(compose, /saveCommunityPostDraft/);
   assert.match(compose, /community-compose-draft-restored/);
   assert.match(compose, /community-compose-error/);
-  assert.match(compose, /重试发布/);
-  assert.match(compose, /标题、正文和板块仍保留在本页/);
+  assert.match(compose, /t\('communityCompose\.retry'\)/);
+  assert.match(compose, /t\('communityCompose\.failurePreserved'\)/);
   assert.match(compose, /accessibilityRole="checkbox"/);
   assert.match(compose, /accessibilityLiveRegion="polite"/);
   assert.match(drafts, /AsyncStorage\.setItem/);

@@ -125,3 +125,15 @@ test('localizes community list, post detail and comment actions while preserving
   assert.match(detail, /<Text style=\{styles\.body\}>\{post\.content\}<\/Text>/);
   assert.match(detail, /<Text style=\{styles\.commentBody\}>\{item\.content\}<\/Text>/);
 });
+
+test('localizes community composer while preserving the entered draft', () => {
+  const compose = read('app/community-compose.tsx');
+  assert.match(compose, /useI18n\(\)/);
+  for (const key of ['communityCompose.heading', 'communityCompose.privacyHint', 'communityCompose.draftRestored', 'communityCompose.titlePlaceholder', 'communityCompose.contentPlaceholder', 'communityCompose.failurePreserved', 'communityCompose.submit']) {
+    assert.ok(compose.includes(`t('${key}')`), `community composer must translate ${key}`);
+  }
+  assert.match(compose, /title: title\.trim\(\)/);
+  assert.match(compose, /content: content\.trim\(\)/);
+  assert.match(compose, /t\(item\.label\)/);
+  assert.doesNotMatch(compose, /<Text style=\{styles\.title\}>分享经历或提出问题<\/Text>/);
+});

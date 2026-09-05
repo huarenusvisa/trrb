@@ -68,3 +68,10 @@ test('translates community categories and comment actions without changing user 
   assert.equal(translate('en', 'community.draftRestoredReply', { name: 'Alex' }), 'Comment draft restored; replying to Alex.');
   assert.equal(translate('zh-CN', 'community.commentCount', { count: 3 }), '评论 3');
 });
+
+test('translates community composer privacy, draft and submission states', () => {
+  assert.equal(translate('en', 'communityCompose.categoryA11y', { category: 'Immigration help' }), 'Choose the Immigration help category');
+  assert.equal(translate('zh-TW', 'communityCompose.draftRestored'), '已恢復社區貼文草稿');
+  assert.equal(translate('en', 'communityCompose.failurePreserved'), 'The title, text and category are still on this page.');
+  assert.equal(translate('zh-CN', 'communityCompose.draftCounter', { count: 21 }), '21/12000 · 草稿自动保存 7 天');
+});

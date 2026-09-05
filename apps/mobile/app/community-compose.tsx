@@ -3,19 +3,22 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, 
 import { router, Stack } from 'expo-router';
 import { CommunityCategory, createCommunityPost } from '../src/api/community';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
+import { useI18n } from '../src/i18n/I18nProvider';
+import type { MessageKey } from '../src/i18n/i18n-core';
 import { clearCommunityPostDraft, loadCommunityPostDraft, saveCommunityPostDraft } from '../src/storage/communityPostDraft';
 
-const categories: { value: CommunityCategory; label: string }[] = [
-  { value: 'uscis_interview', label: 'USCIS 面谈' },
-  { value: 'court_experience', label: '上庭交流' },
-  { value: 'immigration_help', label: '移民互助' },
-  { value: 'hot_discussion', label: '热门讨论' },
-  { value: 'ice_experience', label: 'ICE 经历' },
-  { value: 'lawyer_review', label: '律师点评' },
-  { value: 'tipoff', label: '投稿爆料' },
+const categories: { value: CommunityCategory; label: MessageKey }[] = [
+  { value: 'uscis_interview', label: 'community.category.uscisInterview' },
+  { value: 'court_experience', label: 'community.category.courtExperience' },
+  { value: 'immigration_help', label: 'community.category.immigrationHelp' },
+  { value: 'hot_discussion', label: 'community.category.hotDiscussion' },
+  { value: 'ice_experience', label: 'community.category.iceExperience' },
+  { value: 'lawyer_review', label: 'community.category.lawyerReview' },
+  { value: 'tipoff', label: 'community.category.tipoff' },
 ];
 
 export default function CommunityComposeScreen() {
+  const { t } = useI18n();
   const [category, setCategory] = useState<CommunityCategory>('uscis_interview');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -52,12 +55,12 @@ export default function CommunityComposeScreen() {
 
   const submit = async () => {
     if (busy) return;
-    if (title.trim().length < 4) return setMessage('标题至少需要 4 个字。');
-    if (content.trim().length < 20) return setMessage('正文至少需要 20 个字。');
-    if (!privacyConfirmed) return setMessage('请先确认已经移除个人隐私信息。');
+    if (title.trim().length < 4) return setMessage(t('communityCompose.titleTooShort'));
+    if (content.trim().length < 20) return setMessage(t('communityCompose.contentTooShort'));
+    if (!privacyConfirmed) return setMessage(t('communityCompose.privacyRequired'));
     setBusy(true);
     setFailure('');
-    setMessage('正在检查并提交…');
+    setMessage(t('communityCompose.submitting'));
     try {
       const result = await createCommunityPost({
         category,
@@ -68,10 +71,10 @@ export default function CommunityComposeScreen() {
       if (saveTimer.current) clearTimeout(saveTimer.current);
       await clearCommunityPostDraft();
       latestDraft.current = { category, title: '', content: '' };
-      setMessage(result.message === '发布成功' ? '发布成功，正在返回社区。' : result.message);
+      setMessage(result.message === '发布成功' ? t('communityCompose.published') : t('communityCompose.pending'));
       setTimeout(() => router.replace('/community'), 500);
     } catch (e) {
-      setFailure(e instanceof Error ? e.message : '发布失败，请稍后重试。');
+      setFailure(e instanceof Error ? e.message : t('communityCompose.failed'));
       setMessage('');
     } finally {
       setBusy(false);
@@ -98,30 +101,31 @@ export default function CommunityComposeScreen() {
   };
 
   return <ScrollView style={styles.page} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-    <Stack.Screen options={{ headerShown: true, title: '发布社区帖子', headerBackTitle: '返回' }} />
-    <Text style={styles.title}>分享经历或提出问题</Text>
-    <Text style={styles.hint}>请勿填写 A-Number、电话、详细住址或未成年人信息。</Text>
-    {draftRestored ? <View testID="community-compose-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}><Text style={styles.draftNoticeTitle}>已恢复社区帖子草稿</Text><Text style={styles.draftNoticeText}>标题、正文和板块会保存 7 天；隐私确认需要重新勾选。</Text></View> : null}
-    <Text style={styles.label}>选择板块</Text>
-    <View style={styles.categories}>{categories.map((item) =>
-      <Pressable accessibilityRole="button" accessibilityLabel={`选择${item.label}板块`} accessibilityState={{ selected: category === item.value, disabled: busy }} disabled={busy} key={item.value} onPress={() => updateDraft({ category: item.value })} style={[styles.category, category === item.value && styles.categoryActive]}>
-        <Text style={[styles.categoryText, category === item.value && styles.categoryTextActive]}>{item.label}</Text>
+    <Stack.Screen options={{ headerShown: true, title: t('communityCompose.screenTitle'), headerBackTitle: t('common.back') }} />
+    <Text style={styles.title}>{t('communityCompose.heading')}</Text>
+    <Text style={styles.hint}>{t('communityCompose.privacyHint')}</Text>
+    {draftRestored ? <View testID="community-compose-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}><Text style={styles.draftNoticeTitle}>{t('communityCompose.draftRestored')}</Text><Text style={styles.draftNoticeText}>{t('communityCompose.draftRestoredBody')}</Text></View> : null}
+    <Text style={styles.label}>{t('communityCompose.category')}</Text>
+    <View style={styles.categories}>{categories.map((item) => {
+      const label = t(item.label);
+      return <Pressable accessibilityRole="button" accessibilityLabel={t('communityCompose.categoryA11y', { category: label })} accessibilityState={{ selected: category === item.value, disabled: busy }} disabled={busy} key={item.value} onPress={() => updateDraft({ category: item.value })} style={[styles.category, category === item.value && styles.categoryActive]}>
+        <Text style={[styles.categoryText, category === item.value && styles.categoryTextActive]}>{label}</Text>
       </Pressable>
-    )}</View>
-    <View style={styles.labelRow}><Text style={styles.label}>标题</Text>{title || content ? <Pressable accessibilityRole="button" accessibilityLabel="清空社区帖子草稿" disabled={busy} onPress={() => void clearDraft()}><Text style={styles.clearDraft}>清空草稿</Text></Pressable> : null}</View>
-    <TextInput testID="community-title-input" accessibilityLabel="社区帖子标题" value={title} onChangeText={(value) => updateDraft({ title: value })} maxLength={120} placeholder="一句话说明你想分享什么" style={styles.input} editable={!busy} />
+    })}</View>
+    <View style={styles.labelRow}><Text style={styles.label}>{t('communityCompose.title')}</Text>{title || content ? <Pressable accessibilityRole="button" accessibilityLabel={t('communityCompose.clearDraftA11y')} disabled={busy} onPress={() => void clearDraft()}><Text style={styles.clearDraft}>{t('communityCompose.clearDraft')}</Text></Pressable> : null}</View>
+    <TextInput testID="community-title-input" accessibilityLabel={t('communityCompose.titleA11y')} value={title} onChangeText={(value) => updateDraft({ title: value })} maxLength={120} placeholder={t('communityCompose.titlePlaceholder')} style={styles.input} editable={!busy} />
     <Text style={styles.counter}>{title.length}/120</Text>
-    <Text style={styles.label}>正文</Text>
-    <TextInput testID="community-content-input" accessibilityLabel="社区帖子正文" value={content} onChangeText={(value) => updateDraft({ content: value })} maxLength={12000} multiline placeholder="尽量写清时间、地区、流程、问题、材料和结果" style={[styles.input, styles.textarea]} editable={!busy} />
-    <Text style={styles.counter}>{content.length}/12000 · 草稿自动保存 7 天</Text>
-    <Pressable testID="community-privacy-confirm" accessibilityRole="checkbox" accessibilityLabel="确认已移除个人隐私信息" accessibilityState={{ checked: privacyConfirmed, disabled: busy }} disabled={busy} onPress={() => { setPrivacyConfirmed((value) => !value); setFailure(''); setMessage(''); }} style={styles.confirm}>
+    <Text style={styles.label}>{t('communityCompose.content')}</Text>
+    <TextInput testID="community-content-input" accessibilityLabel={t('communityCompose.contentA11y')} value={content} onChangeText={(value) => updateDraft({ content: value })} maxLength={12000} multiline placeholder={t('communityCompose.contentPlaceholder')} style={[styles.input, styles.textarea]} editable={!busy} />
+    <Text style={styles.counter}>{t('communityCompose.draftCounter', { count: content.length })}</Text>
+    <Pressable testID="community-privacy-confirm" accessibilityRole="checkbox" accessibilityLabel={t('communityCompose.privacyA11y')} accessibilityState={{ checked: privacyConfirmed, disabled: busy }} disabled={busy} onPress={() => { setPrivacyConfirmed((value) => !value); setFailure(''); setMessage(''); }} style={styles.confirm}>
       <View style={[styles.checkbox, privacyConfirmed && styles.checkboxChecked]}><Text style={styles.checkmark}>{privacyConfirmed ? '✓' : ''}</Text></View>
-      <Text style={styles.confirmText}>我已移除个人号码、电话、详细住址和未成年人隐私。</Text>
+      <Text style={styles.confirmText}>{t('communityCompose.privacyConfirm')}</Text>
     </Pressable>
-    {failure ? <AsyncStatePanel testID="community-compose-error" title="帖子尚未发布" message={`${failure} 标题、正文和板块仍保留在本页。`} tone="error" actionLabel="重试发布" onAction={() => void submit()} busy={busy} /> : null}
-    {message ? <Text testID="community-compose-message" accessibilityRole="alert" accessibilityLiveRegion="polite" style={[styles.message, message.startsWith('发布成功') && styles.success]}>{message}</Text> : null}
-    <Pressable testID="community-submit" accessibilityRole="button" accessibilityLabel="提交社区帖子" accessibilityState={{ disabled: busy, busy }} onPress={() => void submit()} disabled={busy} style={[styles.submit, busy && styles.disabled]}>
-      {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitText}>提交帖子</Text>}
+    {failure ? <AsyncStatePanel testID="community-compose-error" title={t('communityCompose.notPublished')} message={`${failure} ${t('communityCompose.failurePreserved')}`} tone="error" actionLabel={t('communityCompose.retry')} onAction={() => void submit()} busy={busy} /> : null}
+    {message ? <Text testID="community-compose-message" accessibilityRole="alert" accessibilityLiveRegion="polite" style={[styles.message, message === t('communityCompose.published') && styles.success]}>{message}</Text> : null}
+    <Pressable testID="community-submit" accessibilityRole="button" accessibilityLabel={t('communityCompose.submitA11y')} accessibilityState={{ disabled: busy, busy }} onPress={() => void submit()} disabled={busy} style={[styles.submit, busy && styles.disabled]}>
+      {busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.submitText}>{t('communityCompose.submit')}</Text>}
     </Pressable>
   </ScrollView>;
 }

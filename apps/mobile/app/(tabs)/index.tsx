@@ -5,6 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
+import { useI18n } from '../../src/i18n/I18nProvider';
+import { localeDateTag, MessageKey } from '../../src/i18n/i18n-core';
 import { cacheHomeFeed, readCachedHomeFeed } from '../../src/storage/newsFeedCache';
 
 const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
@@ -20,37 +22,37 @@ const newsSections = [
 const topicCards = [
   {
     key: 'trump',
-    title: '特朗普实时动态',
-    subtitle: '相关新闻与公开发言自动汇总',
-    status: '实时追踪',
+    titleKey: 'home.topicTrumpTitle',
+    subtitleKey: 'home.topicTrumpSubtitle',
+    statusKey: 'home.topicLiveTracking',
     image: 'https://trrb.net/assets/topic-focus/trump-portrait.jpg?v=30',
     url: 'https://trrb.net/trump',
   },
   {
     key: 'ice',
-    title: 'ICE执法动态',
-    subtitle: '执法行动、拘留、遣返与法律应对',
-    status: '自动更新',
+    titleKey: 'home.topicIceTitle',
+    subtitleKey: 'home.topicIceSubtitle',
+    statusKey: 'home.topicAutoUpdate',
     image: 'https://trrb.net/assets/topic-focus/ice-badge.jpg?v=30',
     url: 'https://trrb.net/ice',
   },
   {
     key: 'election',
-    title: '2026中期选举实时动态',
-    subtitle: '选情变化与关键州追踪',
-    status: '实时更新',
+    titleKey: 'home.topicElectionTitle',
+    subtitleKey: 'home.topicElectionSubtitle',
+    statusKey: 'home.topicLiveUpdate',
     image: 'https://trrb.net/assets/topic-focus/election-ballot.jpg?v=30',
     url: 'https://trrb.net/listing.html?q=%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE',
   },
   {
     key: 'finance',
-    title: '牛来｜唐人财经',
-    subtitle: '财经新闻 · 自选行情 · ETF基金 · 投资服务',
-    status: '与PC端同步',
+    titleKey: 'home.topicFinanceTitle',
+    subtitleKey: 'home.topicFinanceSubtitle',
+    statusKey: 'home.syncedWithWeb',
     image: 'https://trrb.net/.netlify/images?url=%2Fassets%2Ftopic-focus%2Ffinance-market.svg&fm=png&w=420',
     url: 'https://trrb.net/niulai/',
   },
-] as const;
+] as const satisfies ReadonlyArray<{ key: 'trump' | 'ice' | 'election' | 'finance'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;
 
 const portalSections = [
   {
@@ -116,19 +118,19 @@ function weatherLabel(code: number | null, isDay: boolean) {
   return { icon: '☁️', text: '天气' };
 }
 
-function shortDate(value?: string) {
+function shortDate(value: string | undefined, locale: string) {
   if (!value) return '';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return '';
-  return new Intl.DateTimeFormat('zh-CN', {
+  return new Intl.DateTimeFormat(locale, {
     month: 'numeric',
     day: 'numeric',
     timeZone: 'America/New_York',
   }).format(date);
 }
 
-function articleDate(item: NewsArticle) {
-  return shortDate(item.published_at || item.created_at);
+function articleDate(item: NewsArticle, locale: string) {
+  return shortDate(item.published_at || item.created_at, locale);
 }
 
 function displayCategory(category?: string) {
@@ -141,6 +143,7 @@ function isHiddenHomepageCategory(category?: string) {
 }
 
 export default function HomeScreen() {
+  const { locale, t } = useI18n();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const carouselRef = useRef<ScrollView>(null);
@@ -311,7 +314,7 @@ export default function HomeScreen() {
     finance: articles.find((item) => /财经|股市|美股|基金|ETF/i.test(item.title)),
   }), [articles]);
   const weatherInfo = weatherLabel(weather.code, weather.isDay);
-  const dateLabel = useMemo(() => new Intl.DateTimeFormat('zh-CN', { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'America/New_York' }).format(new Date()), []);
+  const dateLabel = useMemo(() => new Intl.DateTimeFormat(localeDateTag(locale), { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'America/New_York' }).format(new Date()), [locale]);
 
   const openArticle = (item: NewsArticle) => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } });
   const openCategory = (category: string) => router.push({ pathname: '/category/[name]', params: { name: category } });
@@ -457,19 +460,19 @@ export default function HomeScreen() {
 
         <View testID="home-topics" style={styles.sectionCard}>
           <View style={styles.sectionHead}>
-            <Text style={styles.sectionTitle}>专题聚焦</Text>
-            <Text style={styles.more}>与PC端同步</Text>
+            <Text style={styles.sectionTitle}>{t('home.topicsHeading')}</Text>
+            <Text style={styles.more}>{t('home.syncedWithWeb')}</Text>
           </View>
           {topicCards.map((topic) => {
             const latest = topicLatest[topic.key];
             return (
-              <Pressable key={topic.key} style={styles.focusCard} onPress={() => openTopic(topic.url)}>
+              <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} style={styles.focusCard} onPress={() => openTopic(topic.url)}>
                 <NewsImage uri={topic.image} style={styles.focusImage} testID={`home-topic-image-${topic.key}`} />
                 <View style={styles.focusBody}>
-                  <Text style={styles.focusTitle}>{topic.title}</Text>
-                  <Text style={styles.focusSub}>{topic.subtitle}</Text>
-                  <View style={styles.focusStatusRow}><View style={styles.focusStatusDot} /><Text style={styles.focusStatus}>{topic.status}</Text></View>
-                  <Text style={styles.focusLatest} numberOfLines={1}>{latest?.title || '正在读取最新动态…'}</Text>
+                  <Text style={styles.focusTitle}>{t(topic.titleKey)}</Text>
+                  <Text style={styles.focusSub}>{t(topic.subtitleKey)}</Text>
+                  <View style={styles.focusStatusRow}><View style={styles.focusStatusDot} /><Text style={styles.focusStatus}>{t(topic.statusKey)}</Text></View>
+                  <Text style={styles.focusLatest} numberOfLines={1}>{latest?.title || t('home.topicLoading')}</Text>
                 </View>
                 <Text style={styles.focusArrow}>›</Text>
               </Pressable>
@@ -495,7 +498,7 @@ export default function HomeScreen() {
                 <Pressable key={String(item.id)} style={styles.textNewsRow} onPress={() => openArticle(item)}>
                   <View style={styles.newsDot} />
                   <Text style={styles.textNewsTitle} numberOfLines={2}>{item.title}</Text>
-                  <Text style={styles.textNewsDate}>{articleDate(item)}</Text>
+                  <Text style={styles.textNewsDate}>{articleDate(item, localeDateTag(locale))}</Text>
                 </Pressable>
               ))}
             </View>

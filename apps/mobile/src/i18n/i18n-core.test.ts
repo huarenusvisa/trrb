@@ -45,6 +45,13 @@ test('localizes news browsing chrome while preserving unknown source categories'
   assert.equal(translate('zh-TW', 'article.saved'), '已收藏');
 });
 
+test('translates homepage topics and legal detail chrome', () => {
+  assert.equal(translate('en', 'home.topicIceTitle'), 'ICE enforcement updates');
+  assert.equal(translate('zh-TW', 'home.openTopicA11y', { title: 'ICE 執法動態' }), '開啟專題：ICE 執法動態');
+  assert.equal(translate('en', 'legal.detailDocket', { value: '23-101' }), 'Docket: 23-101');
+  assert.equal(translate('zh-CN', 'legal.detailOpenOfficial'), '查看官方原文');
+});
+
 test('localizes account validation and known client failures without hiding server details', () => {
   assert.equal(authValidationMessage('en', 'identifier'), 'Enter a valid email address or phone number.');
   assert.equal(authValidationMessage('zh-TW', 'password'), '密碼需要 8–128 位。');

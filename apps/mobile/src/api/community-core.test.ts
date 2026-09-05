@@ -27,6 +27,14 @@ const post = {
   like_count: 2, viewer_has_liked: true, comment_count: 1, created_at: '2026-09-03T00:00:00Z',
 } as const;
 
+test('loads bounded community pages and exposes the next offset', async () => {
+  const { api, calls } = mockApi([{ posts: [post], next_offset: 40 }]);
+  const page = await api.listPosts(20, 20);
+  assert.equal(page.posts[0].id, 'post/one');
+  assert.equal(page.nextOffset, 40);
+  assert.equal(calls[0].url, 'https://example.test/community-api?offset=20&limit=20');
+});
+
 test('loads an encoded post detail with the current Supabase access token', async () => {
   const { api, calls } = mockApi([{ posts: [post], comments: [], viewer_user_id: 'user-1' }]);
   const detail = await api.getPost('post/one');

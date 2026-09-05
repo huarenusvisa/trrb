@@ -42,6 +42,11 @@ export type CommunityPostDetail = {
   viewerUserId: string | null;
 };
 
+export type CommunityPostPage = {
+  posts: CommunityPost[];
+  nextOffset: number | null;
+};
+
 type FetchLike = typeof fetch;
 type ApiDependencies = {
   fetchImpl?: FetchLike;
@@ -82,9 +87,16 @@ export function createCommunityApi({
     }
   }
 
-  async function listPosts() {
-    const data = await request<{ posts: CommunityPost[] }>('GET');
-    return data.posts || [];
+  async function listPosts(offset = 0, limit = 20): Promise<CommunityPostPage> {
+    const safeOffset = Number.isFinite(offset) ? Math.max(0, Math.trunc(offset)) : 0;
+    const safeLimit = Number.isFinite(limit) ? Math.min(30, Math.max(1, Math.trunc(limit))) : 20;
+    const data = await request<{ posts: CommunityPost[]; next_offset?: number | null }>(
+      'GET', undefined, `?offset=${safeOffset}&limit=${safeLimit}`,
+    );
+    return {
+      posts: data.posts || [],
+      nextOffset: Number.isFinite(data.next_offset) ? Number(data.next_offset) : null,
+    };
   }
 
   async function getPost(postId: string): Promise<CommunityPostDetail> {

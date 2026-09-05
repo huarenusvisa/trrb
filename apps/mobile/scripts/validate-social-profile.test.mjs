@@ -382,3 +382,24 @@ test('community comment reports preserve input and share the existing moderation
   assert.match(migration, /where comment_id is not null/);
   assert.match(migration, /grant select, insert, update, delete on public\.community_post_reports to service_role/);
 });
+
+test('community interactions create secure notifications with precise deep links', () => {
+  const migration = read('../../supabase/migrations/20260905054500_community_interaction_notifications.sql');
+  const notifications = read('src/community/notifications.ts');
+  const routing = read('src/community/notification-core.ts');
+  const detail = read('app/community/[id].tsx');
+  const admin = read('../../netlify/functions/community-admin.js');
+
+  assert.match(migration, /community_reply_notification/);
+  assert.match(migration, /community_post_like_notification/);
+  assert.match(migration, /community_comment_like_notification/);
+  assert.match(migration, /security definer[\s\S]*set search_path = ''/i);
+  assert.match(migration, /revoke all on function public\.notify_community_reply\(\) from public, anon, authenticated/);
+  assert.match(notifications, /community_post_id,community_comment_id/);
+  assert.match(routing, /\?commentId=/);
+  assert.match(detail, /visibleThreadCountForComment/);
+  assert.match(detail, /community-comment-target-status/);
+  assert.match(detail, /styles\.targetComment/);
+  assert.match(admin, /type: 'community_report'/);
+  assert.match(admin, /row\.status !== value/);
+});

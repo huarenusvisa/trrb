@@ -37,6 +37,7 @@ exports.handler = async (event) => {
     let commentId = null;
     let postId = null;
     let auditAction = action;
+    let reportNotification = null;
 
     if (action === 'set_user_status') {
       if (!['owner','editor'].includes(admin.role)) return json(403, { error: 'user_management_forbidden' });
@@ -74,13 +75,21 @@ exports.handler = async (event) => {
       auditAction = `community_comment_status:${value}`;
     } else if (action === 'set_post_report_status') {
       if (!['reviewed','dismissed','actioned'].includes(value)) return json(400, { error: 'invalid_status' });
-      const rows = await rest('community_post_reports', { query: { select: 'id,post_id,comment_id,reporter_user_id', id: `eq.${id}`, limit: '1' } });
+      const rows = await rest('community_post_reports', { query: { select: 'id,post_id,comment_id,reporter_user_id,status', id: `eq.${id}`, limit: '1' } });
       const row = Array.isArray(rows) ? rows[0] : null;
       if (!row) return json(404, { error: 'report_not_found' });
       await rest('community_post_reports', { method: 'PATCH', query: { id: `eq.${id}` }, body: { status: value, reviewed_at: new Date().toISOString() }, prefer: 'return=minimal' });
       targetUserId = row.reporter_user_id;
       postId = row.post_id;
       commentId = row.comment_id;
+      if (!postId && commentId) {
+        const comments = await rest('community_post_comments', { query: { select: 'post_id', id: `eq.${commentId}`, limit: '1' } });
+        postId = Array.isArray(comments) ? comments[0]?.post_id || null : null;
+      }
+      if (row.status !== value) reportNotification = {
+        title: value === 'dismissed' ? '你的社区举报已完成复核' : '你的社区举报已有处理结果',
+        body: value === 'dismissed' ? '管理员复核后未采取进一步措施。' : '管理员已处理你提交的举报。',
+      };
       auditAction = `${row.comment_id ? 'community_comment_report' : 'community_post_report'}:${value}`;
     } else if (action === 'set_comment_status') {
       if (!['published','pending','hidden','deleted'].includes(value)) return json(400, { error: 'invalid_status' });
@@ -112,6 +121,21 @@ exports.handler = async (event) => {
         : { actor_user_id: actorId, target_user_id: targetUserId, comment_id: commentId, action: auditAction, reason: 'community admin center' },
       prefer: 'return=minimal'
     });
+    if (reportNotification && targetUserId) {
+      await optionalRest('user_notifications', {
+        method: 'POST',
+        body: {
+          user_id: targetUserId,
+          actor_user_id: actorId,
+          type: 'community_report',
+          title: reportNotification.title,
+          body: reportNotification.body,
+          community_post_id: postId,
+          community_comment_id: commentId,
+        },
+        prefer: 'return=minimal'
+      });
+    }
     return json(200, { ok: true });
   } catch (error) {
     return json(error.statusCode || 500, { error: error.message || 'server_error' });

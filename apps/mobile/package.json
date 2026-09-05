@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test:auth": "node --experimental-strip-types --test src/auth/public-supabase-config.test.ts src/auth/unified-account.test.ts scripts/validate-auth-e2e-env.test.mjs scripts/cleanup-community-e2e.test.mjs",
-    "test:community": "node --experimental-strip-types --test src/api/community-core.test.ts src/community/community-comment-like-state.test.ts src/community/community-comment-presentation.test.ts src/community/community-post-like-state.test.ts src/storage/community-feed-cache-core.test.ts",
+    "test:community": "node --experimental-strip-types --test src/api/community-core.test.ts src/community/community-comment-like-state.test.ts src/community/community-comment-presentation.test.ts src/community/community-post-like-state.test.ts src/community/notification-core.test.ts src/storage/community-feed-cache-core.test.ts",
     "test:comments": "node --experimental-strip-types --test src/api/comment-like-state.test.ts src/community/comment-presentation.test.ts scripts/cleanup-news-comments-e2e.test.mjs",
     "test:library": "node --experimental-strip-types --test src/storage/article-cache-core.test.ts src/storage/news-feed-cache-core.test.ts src/storage/favorites-sync-core.test.ts src/storage/history-sync-core.test.ts src/storage/profile-post-draft-core.test.ts src/storage/community-post-draft-core.test.ts src/storage/comment-draft-core.test.ts",
     "test:data-settings": "node --test scripts/validate-data-settings-integration.test.mjs scripts/validate-library-comments-data.test.mjs",

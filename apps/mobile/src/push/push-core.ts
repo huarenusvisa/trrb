@@ -16,7 +16,11 @@ export function pushTargetPath(data: Record<string, unknown> | undefined) {
   if (articleId) return `/article/${encodeURIComponent(articleId)}`;
 
   const postId = notificationId(data, ['post_id', 'postId', 'community_post_id']);
-  if (postId) return `/community/${encodeURIComponent(postId)}`;
+  if (postId) {
+    const postPath = `/community/${encodeURIComponent(postId)}`;
+    const commentId = notificationId(data, ['comment_id', 'commentId', 'community_comment_id']);
+    return commentId ? `${postPath}?commentId=${encodeURIComponent(commentId)}` : postPath;
+  }
 
   const type = data?.type;
   if (typeof type === 'string' && ['comment_reply', 'comment_like', 'post_reply', 'system'].includes(type)) {

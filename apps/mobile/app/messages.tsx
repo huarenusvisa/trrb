@@ -8,8 +8,10 @@ import { listConversations } from '../src/social/messages';
 import { currentUserId } from '../src/social/profiles';
 import type { ConversationSummary } from '../src/social/types';
 import { withUiTimeout } from '../src/utils/async-state-core';
+import { useUnreadCounts } from '../src/notifications/UnreadProvider';
 
 export default function MessagesScreen() {
+  const unread = useUnreadCounts();
   const [items, setItems] = useState<ConversationSummary[]>([]);
   const [me, setMe] = useState('');
   const [loading, setLoading] = useState(true);
@@ -19,10 +21,11 @@ export default function MessagesScreen() {
     try {
       const [id, rows] = await withUiTimeout(Promise.all([currentUserId(), listConversations()]), '私信读取超时，请检查网络后重试。', 16_000);
       setMe(id); setItems(rows); setError('');
+      void unread.refresh().catch(() => undefined);
     }
     catch (e) { setError(e instanceof Error ? e.message : '私信加载失败'); }
     finally { setLoading(false); setRefreshing(false); }
-  }, []);
+  }, [unread.refresh]);
   useFocusEffect(useCallback(() => { void load(); }, [load]));
   useForegroundRetry(Boolean(error), () => { setRefreshing(true); void load(); });
 

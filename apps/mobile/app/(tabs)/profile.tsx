@@ -5,12 +5,10 @@ import type { Session } from '@supabase/supabase-js';
 import { isAuthConfigured, supabase } from '../../src/auth/supabase';
 import { fetchArticle } from '../../src/api/trrb';
 import { accountLabel } from '../../src/auth/unified-account';
-import { unreadNotificationCount } from '../../src/community/notifications';
 import { getFollowCounts, listFollowRequests } from '../../src/community/follows';
 import { ProfileHero } from '../../src/components/ProfileHero';
 import { ProfilePostList } from '../../src/components/ProfilePostList';
 import { deleteProfilePost, listProfilePosts } from '../../src/social/posts';
-import { unreadDirectMessageCount } from '../../src/social/messages';
 import { loadSocialProfile } from '../../src/social/profiles';
 import type { ProfilePost, SocialProfile } from '../../src/social/types';
 import { syncFavoritesWithCloud, syncHistoryWithCloud } from '../../src/storage/library';
@@ -18,6 +16,7 @@ import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '
 import { disableCurrentDevicePushToken } from '../../src/push/registration';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { languageName, MessageKey } from '../../src/i18n/i18n-core';
+import { useUnreadCounts } from '../../src/notifications/UnreadProvider';
 
 const FONT_OPTIONS: { label: MessageKey; scale: ReadingPreferences['fontScale'] }[] = [
   { label: 'profile.fontSmall', scale: 0.9 }, { label: 'profile.fontStandard', scale: 1 },
@@ -26,12 +25,11 @@ const FONT_OPTIONS: { label: MessageKey; scale: ReadingPreferences['fontScale'] 
 
 export default function ProfileScreen() {
   const { locale, t } = useI18n();
+  const unread = useUnreadCounts();
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<SocialProfile | null>(null);
   const [posts, setPosts] = useState<ProfilePost[]>([]);
   const [counts, setCounts] = useState({ followers: 0, following: 0 });
-  const [unread, setUnread] = useState(0);
-  const [directUnread, setDirectUnread] = useState(0);
   const [followRequests, setFollowRequests] = useState(0);
   const [loading, setLoading] = useState(true);
   const [fontScale, setFontScale] = useState<ReadingPreferences['fontScale']>(1);
@@ -40,11 +38,11 @@ export default function ProfileScreen() {
     const userId = activeSession?.user.id;
     if (!userId) { setProfile(null); setPosts([]); return; }
     try {
-      const [nextProfile, nextPosts, nextCounts, nextUnread, nextDirect, requests] = await Promise.all([
+      const [nextProfile, nextPosts, nextCounts, requests] = await Promise.all([
         loadSocialProfile(userId), listProfilePosts(userId), getFollowCounts(userId),
-        unreadNotificationCount().catch(() => 0), unreadDirectMessageCount().catch(() => 0), listFollowRequests().catch(() => []),
+        listFollowRequests().catch(() => []),
       ]);
-      setProfile(nextProfile); setPosts(nextPosts); setCounts(nextCounts); setUnread(nextUnread); setDirectUnread(nextDirect); setFollowRequests(requests.length);
+      setProfile(nextProfile); setPosts(nextPosts); setCounts(nextCounts); setFollowRequests(requests.length);
     } catch (error) { Alert.alert('个人主页加载失败', error instanceof Error ? error.message : '请稍后重试。'); }
   }, [session]);
 
@@ -67,7 +65,7 @@ export default function ProfileScreen() {
     return () => { mounted = false; listener.subscription.unsubscribe(); };
   }, []);
 
-  useFocusEffect(useCallback(() => { if (session) void loadProfile(session); }, [loadProfile, session]));
+  useFocusEffect(useCallback(() => { if (session) { void loadProfile(session); void unread.refresh().catch(() => undefined); } }, [loadProfile, session, unread.refresh]));
 
   const signOut = async () => {
     const finishSignOut = async () => { const { error } = await supabase.auth.signOut(); if (error) Alert.alert(t('profile.signOutFailed'), error.message); };
@@ -91,7 +89,7 @@ export default function ProfileScreen() {
       <Text style={styles.account}>{accountLabel(session.user)}</Text>
       <View style={styles.primaryActions}>
         <Pressable style={styles.publish} onPress={() => router.push('/profile-compose')}><Text style={styles.publishIcon}>＋</Text><Text style={styles.publishText}>发主页动态</Text></Pressable>
-        <Pressable style={styles.action} onPress={() => router.push('/messages')}><Text style={styles.actionTitle}>私信{directUnread ? ` · ${directUnread}` : ''}</Text><Text style={styles.actionMeta}>聊天与申请</Text></Pressable>
+        <Pressable style={styles.action} onPress={() => router.push('/messages')}><Text style={styles.actionTitle}>私信{unread.messages ? ` · ${unread.messages}` : ''}</Text><Text style={styles.actionMeta}>聊天与申请</Text></Pressable>
         <Pressable style={styles.action} onPress={() => router.push('/follow-requests')}><Text style={styles.actionTitle}>关注申请{followRequests ? ` · ${followRequests}` : ''}</Text><Text style={styles.actionMeta}>确认新粉丝</Text></Pressable>
       </View>
       <View style={styles.sectionHead}><Text style={styles.sectionTitle}>我的主页动态</Text><Text style={styles.sectionMeta}>{posts.length} 条</Text></View>
@@ -99,7 +97,7 @@ export default function ProfileScreen() {
       <Text style={styles.groupTitle}>内容与互动</Text>
       <View style={styles.menuGroup}>
         <Menu title="移民社区" meta="浏览帖子、分享经历和发布问题" onPress={() => router.push('/community')} />
-        <Menu title={`消息中心${unread ? ` · ${unread}` : ''}`} meta="回复、点赞、关注与系统通知" onPress={() => router.push('/notifications')} />
+        <Menu title={`消息中心${unread.notifications ? ` · ${unread.notifications}` : ''}`} meta="回复、点赞、关注与系统通知" onPress={() => router.push('/notifications')} />
         <Menu title="我的评论" meta="查看评论状态并返回对应新闻" onPress={() => router.push('/my-comments')} />
         <Menu title="收藏" meta="本机与账号云端收藏自动安全合并" onPress={() => router.push('/favorites')} />
         <Menu title="阅读历史" meta="本机与账号云端历史自动合并，最多100条" onPress={() => router.push('/history')} last />

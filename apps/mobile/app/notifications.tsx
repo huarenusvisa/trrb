@@ -5,8 +5,10 @@ import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationLabel, notificationTarget, UserNotification } from '../src/community/notifications';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
 import { withUiTimeout } from '../src/utils/async-state-core';
+import { useUnreadCounts } from '../src/notifications/UnreadProvider';
 
 export default function NotificationsScreen() {
+  const unread = useUnreadCounts();
   const [items, setItems] = useState<UserNotification[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -30,6 +32,7 @@ export default function NotificationsScreen() {
       if (!item.is_read) {
         await markNotificationRead(item.id);
         setItems(old => old.map(x => x.id === item.id ? { ...x, is_read: true } : x));
+        unread.markNotificationReadLocally();
       }
       const target = notificationTarget(item);
       if (target) router.push(target as never);
@@ -42,6 +45,7 @@ export default function NotificationsScreen() {
     try {
       await markAllNotificationsRead();
       setItems(old => old.map(x => ({ ...x, is_read: true })));
+      unread.markAllNotificationsReadLocally();
     } catch (e) {
       Alert.alert('操作失败', e instanceof Error ? e.message : '请稍后重试。');
     }

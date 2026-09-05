@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as Updates from 'expo-updates';
 import { installPushRegistrationLifecycle, installPushRuntimeHandlers } from '../src/push/registration';
 import { I18nProvider } from '../src/i18n/I18nProvider';
+import { UnreadProvider } from '../src/notifications/UnreadProvider';
 
 export default function RootLayout() {
   useEffect(() => {
@@ -38,8 +39,10 @@ export default function RootLayout() {
 
   return (
     <I18nProvider>
-      <StatusBar style="dark" />
-      <Stack screenOptions={{ headerShown: false }} />
+      <UnreadProvider>
+        <StatusBar style="dark" />
+        <Stack screenOptions={{ headerShown: false }} />
+      </UnreadProvider>
     </I18nProvider>
   );
 }

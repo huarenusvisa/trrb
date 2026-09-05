@@ -81,7 +81,7 @@ test('comments, chats and connection lists recover without blank screens', () =>
     assert.match(screen, /withUiTimeout/);
     assert.match(screen, /useForegroundRetry/);
   }
-  assert.match(comments, /重新(?:读取|同步)/);
+  assert.match(comments, /t\('myComments\.reload'\)/);
   assert.match(followRequests, /t\('followRequests\.reload'\)/);
   assert.match(comments, /my-comments-empty/);
   assert.match(comments, /RefreshControl/);

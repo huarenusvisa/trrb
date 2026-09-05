@@ -10,8 +10,8 @@ async function accessToken() {
 
 const api = createCommunityApi({ getAccessToken: accessToken });
 
-export async function listCommunityPosts(offset = 0, limit = 20) {
-  return api.listPosts(offset, limit);
+export async function listCommunityPosts(offset = 0, limit = 20, category?: CommunityCategory) {
+  return api.listPosts(offset, limit, category);
 }
 
 export async function createCommunityPost(input: {

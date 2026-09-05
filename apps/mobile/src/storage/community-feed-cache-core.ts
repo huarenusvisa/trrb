@@ -2,6 +2,7 @@ import type { CommunityPost } from '../api/community-core';
 
 export const COMMUNITY_FEED_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 export const COMMUNITY_FEED_CACHE_MAX_POSTS = 20;
+const COMMUNITY_FEED_CACHE_KEY = 'trrb.community.feed.v1';
 
 export type CommunityFeedSnapshot = {
   posts: CommunityPost[];
@@ -12,6 +13,11 @@ type CommunityFeedCacheEnvelope = {
   savedAt: number;
   snapshot: CommunityFeedSnapshot;
 };
+
+export function communityFeedCacheKey(category = '') {
+  const scope = category.trim();
+  return scope ? `${COMMUNITY_FEED_CACHE_KEY}.category.${encodeURIComponent(scope)}` : COMMUNITY_FEED_CACHE_KEY;
+}
 
 function validPublicPost(post: CommunityPost) {
   return Boolean(

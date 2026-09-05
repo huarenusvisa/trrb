@@ -183,3 +183,20 @@ test('localizes follower and following lists while preserving profile content', 
   assert.doesNotMatch(connections, />粉丝</);
   assert.doesNotMatch(connections, />关注<\/Text>/);
 });
+
+test('localizes protected messaging while preserving names and message bodies', () => {
+  const inbox = read('app/messages.tsx');
+  const chat = read('app/chat/[id].tsx');
+  for (const source of [inbox, chat]) assert.match(source, /useI18n\(\)/);
+  for (const key of ['messages.protectionTitle', 'messages.pendingIncoming', 'messages.openChatStateA11y', 'messages.emptyBody']) {
+    assert.ok(inbox.includes(`'${key}'`), `message inbox must translate ${key}`);
+  }
+  for (const key of ['chat.incomingBody', 'chat.waiting', 'chat.requestPlaceholder', 'chat.sendFailed']) {
+    assert.ok(chat.includes(`'${key}'`), `chat must translate ${key}`);
+  }
+  assert.match(inbox, /item\.partner\?\.display_name/);
+  assert.match(inbox, /item\.latest_message\?\.body/);
+  assert.match(chat, /message\.body/);
+  assert.match(chat, /localeDateTag\(locale\)/);
+  assert.doesNotMatch(chat, /toLocaleTimeString\('zh-CN'/);
+});

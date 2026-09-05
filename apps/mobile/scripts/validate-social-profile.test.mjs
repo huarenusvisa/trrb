@@ -124,7 +124,7 @@ test('notification center filters categories and marks only the active category 
   assert.match(screen, /listNotifications\(0, PAGE_SIZE, category\)/);
   assert.match(screen, /markAllNotificationsRead\(category\)/);
   assert.match(screen, /unread\.refresh\(\)/);
-  assert.match(screen, /本类已读/);
+  assert.match(screen, /t\('inbox\.markCategory'\)/);
   assert.match(screen, /requestId\.current/);
   assert.match(api, /notificationTypesForCategory\(category\)/);
   assert.match(api, /query\.in\('type', types\)/);

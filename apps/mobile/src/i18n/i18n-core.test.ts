@@ -52,3 +52,11 @@ test('localizes account validation and known client failures without hiding serv
   assert.equal(authClientErrorMessage('en', new Error('登录失败（503）')), 'Sign-in failed (503)');
   assert.equal(authClientErrorMessage('en', new Error('账号或密码错误')), '账号或密码错误');
 });
+
+test('translates notification categories, fallback labels and push preferences', () => {
+  assert.equal(translate('en', 'inbox.category.moderation'), 'Moderation & system');
+  assert.equal(translate('zh-TW', 'inbox.notice.messageRequest'), '你收到一則聊天申請');
+  assert.equal(translate('en', 'inbox.emptyCategoryTitle', { category: 'Likes' }), 'No Likes notifications');
+  assert.equal(translate('zh-TW', 'push.deviceTitle'), '允許本裝置接收通知');
+  assert.equal(translate('en', 'push.commentsMeta'), 'New replies to news and community comments');
+});

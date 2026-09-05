@@ -81,6 +81,16 @@ test('soft-unpublishes an owned comment through the existing community API', asy
   });
 });
 
+test('sets an explicit community comment like intent', async () => {
+  const { api, calls } = mockApi([{ liked: true, like_count: 4 }]);
+  const result = await api.toggleCommentLike(' comment-1 ', true);
+  assert.deepEqual(result, { liked: true, like_count: 4 });
+  assert.deepEqual(JSON.parse(String(calls[0].init?.body)), {
+    action: 'toggle_comment_like', comment_id: 'comment-1', liked: true,
+  });
+  await assert.rejects(() => api.toggleCommentLike(''), /评论编号无效/);
+});
+
 test('uses the existing API actions for like, report and owner unpublish', async () => {
   const { api, calls } = mockApi([{ liked: true, like_count: 3 }, { ok: true }, { ok: true }]);
   await api.toggleLike('post-1', true);
@@ -96,6 +106,7 @@ test('validates comments and reports before any network write', async () => {
   const { api, calls } = mockApi([]);
   await assert.rejects(() => api.createComment('post-1', ' '), /1–3000/);
   await assert.rejects(() => api.unpublishComment(' '), /编号无效/);
+  await assert.rejects(() => api.toggleCommentLike(' '), /编号无效/);
   await assert.rejects(() => api.reportPost('post-1', 'x'), /2–500/);
   assert.equal(calls.length, 0);
 });

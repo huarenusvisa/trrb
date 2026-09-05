@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation, feedPagination } = require('./community-api')._test;
+const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination } = require('./community-api')._test;
 
 test('ordinary USCIS experience passes basic rules', () => {
   const result = moderation('uscis_interview', '纽约庇护面谈经历', '我在纽约办公室完成面谈，分享当天材料准备和流程。');
@@ -42,6 +42,17 @@ test('hydrates viewer like state in one response without changing aggregate coun
   assert.deepEqual(posts.map((post) => post.viewer_has_liked), [false, true]);
   assert.deepEqual(posts.map((post) => post.like_count), [4, 2]);
   assert.equal(withViewerLikeState([{ id: 'post-1' }])[0].viewer_has_liked, false);
+});
+
+test('hydrates community comment likes without exposing liker rows', () => {
+  const comments = withViewerCommentLikeState([
+    { id: 'comment-1', like_count: 3 },
+    { id: 'comment-2', like_count: 1 },
+  ], [{ comment_id: 'comment-2' }]);
+
+  assert.deepEqual(comments.map((comment) => comment.viewer_has_liked), [false, true]);
+  assert.deepEqual(comments.map((comment) => comment.like_count), [3, 1]);
+  assert.equal('user_id' in comments[1], false);
 });
 
 test('replaying an explicit community like intent is idempotent', () => {

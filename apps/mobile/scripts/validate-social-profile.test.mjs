@@ -333,3 +333,26 @@ test('community category filters keep pagination and caches isolated', () => {
   assert.match(cache, /communityFeedCacheKey\(category\)/);
   assert.match(cacheCore, /\.category\.\$\{encodeURIComponent\(scope\)\}/);
 });
+
+test('community comments sync retry-safe viewer likes through the existing API', () => {
+  const detail = read('app/community/[id].tsx');
+  const api = read('src/api/community-core.ts');
+  const state = read('src/community/community-comment-like-state.ts');
+  const server = read('../../netlify/functions/community-api.js');
+  const migration = read('../../supabase/migrations/20260905031517_community_comment_likes.sql');
+
+  assert.match(api, /action: 'toggle_comment_like'/);
+  assert.match(server, /withViewerCommentLikeState/);
+  assert.match(server, /community_post_comment_likes/);
+  assert.match(server, /resolution=ignore-duplicates/);
+  assert.match(detail, /community-comment-like-/);
+  assert.match(detail, /optimisticCommunityCommentLike/);
+  assert.match(detail, /resolveCommunityCommentLike/);
+  assert.match(detail, /commentLikeError\.desiredLiked/);
+  assert.match(state, /comment\.viewer_has_liked === liked/);
+  assert.match(migration, /enable row level security/);
+  assert.match(migration, /revoke all on public\.community_post_comment_likes from anon, authenticated/);
+  assert.match(migration, /primary key \(comment_id, user_id\)/);
+  assert.match(migration, /after insert on public\.community_post_comment_likes/);
+  assert.match(migration, /after delete on public\.community_post_comment_likes/);
+});

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { CommunityComment } from '../api/community-core';
-import { appendCreatedCommunityComment, communityCommentDisplayName, paginateCommunityCommentThreads, removeUnpublishedCommunityComment } from './community-comment-presentation.ts';
+import { appendCreatedCommunityComment, communityCommentDisplayName, paginateCommunityCommentThreads, removeUnpublishedCommunityComment, visibleThreadCountForComment } from './community-comment-presentation.ts';
 
 const comment = (overrides: Partial<CommunityComment> = {}): CommunityComment => ({
   id: 'root', post_id: 'post-1', user_id: 'user-1', parent_id: null,
@@ -34,6 +34,20 @@ test('shows the newest complete threads first and reports earlier threads', () =
   assert.deepEqual(page.rows.map(({ item }) => item.id), ['new-root', 'new-reply']);
   assert.equal(page.hiddenThreadCount, 1);
   assert.equal(page.totalThreadCount, 2);
+});
+
+test('expands enough complete threads to reveal a notification target', () => {
+  const comments = [
+    comment({ id: 'old-root' }),
+    comment({ id: 'target-reply', parent_id: 'old-root' }),
+    comment({ id: 'middle-root' }),
+    comment({ id: 'new-root' }),
+  ];
+
+  const count = visibleThreadCountForComment(comments, 'target-reply', 1);
+  assert.equal(count, 3);
+  assert.ok(paginateCommunityCommentThreads(comments, count).rows.some(({ item }) => item.id === 'target-reply'));
+  assert.equal(visibleThreadCountForComment(comments, 'missing', 2), 2);
 });
 
 test('keeps orphaned replies visible and provides safe author fallbacks', () => {

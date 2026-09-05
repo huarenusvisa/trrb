@@ -40,6 +40,25 @@ export function removeUnpublishedCommunityComment(detail: CommunityPostDetail, c
   };
 }
 
+export function visibleThreadCountForComment(comments: CommunityComment[], commentId: string, minimumCount: number) {
+  const byId = new Map(comments.map((comment) => [comment.id, comment]));
+  let target = byId.get(commentId);
+  if (!target) return Math.max(1, Math.floor(minimumCount));
+
+  const visited = new Set<string>();
+  while (target.parent_id && target.parent_id !== target.id && !visited.has(target.id)) {
+    visited.add(target.id);
+    const parent = byId.get(target.parent_id);
+    if (!parent) break;
+    target = parent;
+  }
+
+  const roots = comments.filter((comment) => !comment.parent_id || comment.parent_id === comment.id || !byId.has(comment.parent_id));
+  const rootIndex = roots.findIndex((comment) => comment.id === target?.id);
+  if (rootIndex < 0) return Math.max(1, Math.floor(minimumCount));
+  return Math.max(1, Math.floor(minimumCount), roots.length - rootIndex);
+}
+
 export function paginateCommunityCommentThreads(comments: CommunityComment[], visibleThreadCount: number): CommunityCommentPage {
   const byId = new Map(comments.map((comment) => [comment.id, comment]));
   const children = new Map<string, CommunityComment[]>();

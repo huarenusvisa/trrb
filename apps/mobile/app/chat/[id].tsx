@@ -9,8 +9,11 @@ import { currentUserId, loadSocialProfile } from '../../src/social/profiles';
 import type { DirectConversation, DirectMessage, SocialProfile } from '../../src/social/types';
 import { withUiTimeout } from '../../src/utils/async-state-core';
 import { useUnreadCounts } from '../../src/notifications/UnreadProvider';
+import { useI18n } from '../../src/i18n/I18nProvider';
+import { localeDateTag } from '../../src/i18n/i18n-core';
 
 export default function ChatScreen() {
+  const { locale, t } = useI18n();
   const unread = useUnreadCounts();
   const params = useLocalSearchParams<{ id: string; userId?: string }>();
   const routeId = String(params.id || '');
@@ -38,15 +41,15 @@ export default function ChatScreen() {
         }
         const nextMessages = convo ? await listMessages(convo.id) : [];
         return { userId, convo, nextPartner, nextMessages };
-      })(), '聊天读取超时，请检查网络后重试。', 16_000);
+      })(), t('chat.timeout'), 16_000);
       setMe(result.userId); setConversation(result.convo); setPartner(result.nextPartner); setMessages(result.nextMessages); setLoadError('');
       if (result.convo) {
         await markConversationRead(result.convo.id).catch(() => undefined);
         void unread.refresh().catch(() => undefined);
       }
-    } catch (error) { setLoadError(error instanceof Error ? error.message : '聊天加载失败'); }
+    } catch (error) { setLoadError(error instanceof Error ? error.message : t('chat.loadFailed')); }
     finally { setLoading(false); }
-  }, [routeId, targetUserId, unread.refresh]);
+  }, [routeId, t, targetUserId, unread.refresh]);
 
   useEffect(() => { void load(); }, [load]);
   useEffect(() => {
@@ -67,7 +70,7 @@ export default function ChatScreen() {
       } else await sendMessage(conversation.id, body);
       setText(''); await load();
       setTimeout(() => scroll.current?.scrollToEnd({ animated: true }), 80);
-    } catch (error) { Alert.alert('发送失败', error instanceof Error ? error.message : '请稍后重试'); }
+    } catch (error) { Alert.alert(t('chat.sendFailed'), error instanceof Error ? error.message : t('chat.tryAgain')); }
     finally { setBusy(false); }
   };
 
@@ -75,29 +78,29 @@ export default function ChatScreen() {
     if (!conversation) return;
     setBusy(true);
     try { await answerMessageRequest(conversation.id, accept); await load(); }
-    catch (error) { Alert.alert('操作失败', error instanceof Error ? error.message : '请稍后重试'); }
+    catch (error) { Alert.alert(t('chat.actionFailed'), error instanceof Error ? error.message : t('chat.tryAgain')); }
     finally { setBusy(false); }
   };
 
-  if (loading) return <View style={styles.statePage}><Stack.Screen options={{ headerShown: true, title: partner?.display_name || '私信', headerBackTitle: '返回' }} /><AsyncStatePanel testID="chat-loading" title="正在读取聊天" message="正在同步聊天状态和最新消息。" busy /></View>;
-  if (loadError && !partner) return <View style={styles.statePage}><Stack.Screen options={{ headerShown: true, title: '私信', headerBackTitle: '返回' }} /><AsyncStatePanel testID="chat-error" tone="error" title="聊天暂时无法读取" message={loadError} actionLabel="重新读取" onAction={retryLoad} /></View>;
+  if (loading) return <View style={styles.statePage}><Stack.Screen options={{ headerShown: true, title: partner?.display_name || t('chat.screenTitle'), headerBackTitle: t('common.back') }} /><AsyncStatePanel testID="chat-loading" title={t('chat.loadingTitle')} message={t('chat.loadingBody')} busy /></View>;
+  if (loadError && !partner) return <View style={styles.statePage}><Stack.Screen options={{ headerShown: true, title: t('chat.screenTitle'), headerBackTitle: t('common.back') }} /><AsyncStatePanel testID="chat-error" tone="error" title={t('chat.unavailable')} message={loadError} actionLabel={t('chat.reload')} onAction={retryLoad} /></View>;
   const incomingRequest = conversation?.status === 'pending' && conversation.recipient_user_id === me;
   const outgoingWaiting = conversation?.status === 'pending' && conversation.requester_user_id === me && messages.length > 0;
   const canCompose = !conversation || conversation.status === 'accepted' || (conversation.status === 'pending' && conversation.requester_user_id === me && messages.length === 0);
 
   return <KeyboardAvoidingView style={styles.page} behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={90}>
-    <Stack.Screen options={{ headerShown: true, title: partner?.display_name || '私信', headerBackTitle: '返回' }} />
-    <View style={styles.partner}><TrRbAvatar avatarKey={partner?.avatar_key} avatarPath={partner?.avatar_path} size={40} /><View><Text style={styles.partnerName}>{partner?.display_name || '唐人读者'}</Text><Text style={styles.partnerState}>{conversation?.status === 'accepted' ? '已确认聊天' : '陌生人消息保护'}</Text></View></View>
-    {loadError ? <View style={styles.inlineError}><AsyncStatePanel testID="chat-refresh-error" tone="error" title="最新消息同步失败" message={loadError} actionLabel="重新同步" onAction={() => void load()} /></View> : null}
-    {incomingRequest ? <View style={styles.request}><Text style={styles.requestTitle}>对方向你发来第一条消息</Text><Text style={styles.requestText}>不处理时，对方不能再发第二条。确认聊天以后，双方才能继续回复。</Text><View style={styles.requestActions}><Pressable accessibilityRole="button" disabled={busy} style={styles.accept} onPress={() => void answer(true)}><Text style={styles.acceptText}>确认聊天</Text></Pressable><Pressable accessibilityRole="button" disabled={busy} style={styles.decline} onPress={() => void answer(false)}><Text style={styles.declineText}>忽略</Text></Pressable></View></View> : null}
+    <Stack.Screen options={{ headerShown: true, title: partner?.display_name || t('chat.screenTitle'), headerBackTitle: t('common.back') }} />
+    <View style={styles.partner}><TrRbAvatar avatarKey={partner?.avatar_key} avatarPath={partner?.avatar_path} size={40} /><View><Text style={styles.partnerName}>{partner?.display_name || t('userProfile.readerFallback')}</Text><Text style={styles.partnerState}>{t(conversation?.status === 'accepted' ? 'chat.confirmed' : 'chat.strangerProtection')}</Text></View></View>
+    {loadError ? <View style={styles.inlineError}><AsyncStatePanel testID="chat-refresh-error" tone="error" title={t('chat.refreshFailed')} message={loadError} actionLabel={t('chat.resync')} onAction={() => void load()} /></View> : null}
+    {incomingRequest ? <View style={styles.request}><Text style={styles.requestTitle}>{t('chat.incomingTitle')}</Text><Text style={styles.requestText}>{t('chat.incomingBody')}</Text><View style={styles.requestActions}><Pressable accessibilityRole="button" disabled={busy} style={styles.accept} onPress={() => void answer(true)}><Text style={styles.acceptText}>{t('chat.accept')}</Text></Pressable><Pressable accessibilityRole="button" disabled={busy} style={styles.decline} onPress={() => void answer(false)}><Text style={styles.declineText}>{t('chat.ignore')}</Text></Pressable></View></View> : null}
     <ScrollView ref={scroll} style={styles.messages} contentContainerStyle={styles.messagesContent} onContentSizeChange={() => scroll.current?.scrollToEnd({ animated: false })}>
-      {!messages.length ? <View style={styles.safety}><Text style={styles.safetyTitle}>先打个招呼</Text><Text style={styles.safetyText}>你可以先发一条消息。对方确认前，不能继续发送第二条。</Text></View> : null}
-      {messages.map((message) => { const mine = message.sender_user_id === me; return <View key={message.id} style={[styles.bubbleWrap, mine ? styles.mineWrap : styles.theirWrap]}><View style={[styles.bubble, mine ? styles.mine : styles.their]}><Text style={mine ? styles.mineText : styles.theirText}>{message.body}</Text></View><Text style={styles.time}>{new Date(message.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}</Text></View>; })}
+      {!messages.length ? <View style={styles.safety}><Text style={styles.safetyTitle}>{t('chat.safetyTitle')}</Text><Text style={styles.safetyText}>{t('chat.safetyBody')}</Text></View> : null}
+      {messages.map((message) => { const mine = message.sender_user_id === me; return <View key={message.id} style={[styles.bubbleWrap, mine ? styles.mineWrap : styles.theirWrap]}><View style={[styles.bubble, mine ? styles.mine : styles.their]}><Text style={mine ? styles.mineText : styles.theirText}>{message.body}</Text></View><Text style={styles.time}>{new Date(message.created_at).toLocaleTimeString(localeDateTag(locale), { hour: '2-digit', minute: '2-digit' })}</Text></View>; })}
     </ScrollView>
-    {outgoingWaiting ? <View style={styles.waiting}><Text style={styles.waitingText}>已发送第一条消息，等待对方确认聊天。确认前不能再发送。</Text></View> : null}
-    {conversation?.status === 'declined' ? <View style={styles.waiting}><Text style={styles.waitingText}>聊天申请未被接受，无法继续发送。</Text></View> : null}
-    {conversation?.status === 'blocked' ? <View style={styles.waiting}><Text style={styles.waitingText}>这段聊天已经结束。</Text></View> : null}
-    {canCompose ? <View style={styles.composer}><TextInput accessibilityLabel="聊天消息" value={text} onChangeText={setText} maxLength={2000} multiline placeholder={conversation ? '输入消息' : '发送第一条聊天申请'} style={styles.input} /><Pressable accessibilityRole="button" accessibilityLabel="发送消息" disabled={busy || !text.trim()} style={[styles.send, (busy || !text.trim()) && styles.disabled]} onPress={() => void submit()}>{busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.sendText}>发送</Text>}</Pressable></View> : null}
+    {outgoingWaiting ? <View style={styles.waiting}><Text style={styles.waitingText}>{t('chat.waiting')}</Text></View> : null}
+    {conversation?.status === 'declined' ? <View style={styles.waiting}><Text style={styles.waitingText}>{t('chat.declined')}</Text></View> : null}
+    {conversation?.status === 'blocked' ? <View style={styles.waiting}><Text style={styles.waitingText}>{t('chat.blocked')}</Text></View> : null}
+    {canCompose ? <View style={styles.composer}><TextInput accessibilityLabel={t('chat.messageA11y')} value={text} onChangeText={setText} maxLength={2000} multiline placeholder={t(conversation ? 'chat.inputPlaceholder' : 'chat.requestPlaceholder')} style={styles.input} /><Pressable accessibilityRole="button" accessibilityLabel={t('chat.sendA11y')} disabled={busy || !text.trim()} style={[styles.send, (busy || !text.trim()) && styles.disabled]} onPress={() => void submit()}>{busy ? <ActivityIndicator color="#fff" /> : <Text style={styles.sendText}>{t('chat.send')}</Text>}</Pressable></View> : null}
   </KeyboardAvoidingView>;
 }
 

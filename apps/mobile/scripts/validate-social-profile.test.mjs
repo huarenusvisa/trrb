@@ -40,8 +40,8 @@ test('mobile screens expose refined profile, custom media and protected messagin
   assert.match(settings, /DIY 头像/);
   assert.match(settings, /隐私账号/);
   assert.match(settings, /允许陌生人发起聊天/);
-  assert.match(chat, /确认聊天/);
-  assert.match(chat, /不能(?:继续|再)发送第二条/);
+  assert.match(chat, /t\('chat\.accept'\)/);
+  assert.match(chat, /t\('chat\.incomingBody'\)/);
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
 });
 
@@ -81,13 +81,15 @@ test('comments, chats and connection lists recover without blank screens', () =>
     assert.match(screen, /withUiTimeout/);
     assert.match(screen, /useForegroundRetry/);
   }
-  for (const screen of [comments, messages, chat, followRequests]) assert.match(screen, /重新(?:读取|同步)/);
+  for (const screen of [comments, followRequests]) assert.match(screen, /重新(?:读取|同步)/);
   assert.match(comments, /my-comments-empty/);
   assert.match(comments, /RefreshControl/);
   assert.match(messages, /messages-error/);
   assert.match(messages, /messages-empty/);
+  assert.match(messages, /t\('messages\.reload'\)/);
   assert.match(chat, /chat-error/);
-  assert.match(chat, /accessibilityLabel="发送消息"/);
+  assert.match(chat, /t\('chat\.reload'\)/);
+  assert.match(chat, /accessibilityLabel=\{t\('chat\.sendA11y'\)\}/);
   assert.match(connections, /connections-empty/);
   assert.match(connections, /t\('connections\.reload'\)/);
   assert.match(followRequests, /follow-requests-empty/);

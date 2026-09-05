@@ -96,3 +96,11 @@ test('translates follower and following lists while interpolating profile names'
   assert.equal(translate('zh-TW', 'connections.noFollowing'), '尚未追蹤任何人');
   assert.equal(translate('en', 'connections.openProfileA11y', { name: 'Alex' }), "Open Alex's profile");
 });
+
+test('translates protected message requests and chat states', () => {
+  assert.equal(translate('en', 'messages.protectionTitle'), 'Message request protection is on');
+  assert.equal(translate('zh-TW', 'messages.pendingIncoming'), '待你確認');
+  assert.equal(translate('en', 'messages.openChatStateA11y', { name: 'Alex', state: 'Declined' }), 'Open chat with Alex, Declined');
+  assert.equal(translate('zh-CN', 'chat.waiting'), '已发送第一条消息，等待对方确认聊天。确认前不能再发送。');
+  assert.equal(translate('en', 'chat.accept'), 'Accept chat');
+});

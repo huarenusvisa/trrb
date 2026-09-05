@@ -4,10 +4,12 @@ import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { router, Stack } from 'expo-router';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
+import { useI18n } from '../src/i18n/I18nProvider';
 import { createProfilePost } from '../src/social/posts';
 import { clearProfilePostDraft, loadProfilePostDraft, saveProfilePostDraft } from '../src/storage/profilePostDraft';
 
 export default function ProfileComposeScreen() {
+  const { t } = useI18n();
   const [assets, setAssets] = useState<ImagePicker.ImagePickerAsset[]>([]);
   const [caption, setCaption] = useState('');
   const [busy, setBusy] = useState(false);
@@ -46,26 +48,26 @@ export default function ProfileComposeScreen() {
       if (result.canceled) return;
       const selected = result.assets || [];
       const videos = selected.filter((asset) => asset.type === 'video');
-      if (videos.length && selected.length > 1) return Alert.alert('请选择一种形式', '一条视频需要单独发布；图片可以一次选择最多 4 张。');
+      if (videos.length && selected.length > 1) return Alert.alert(t('profileCompose.mediaConflictTitle'), t('profileCompose.mediaConflictBody'));
       setAssets(selected);
     } catch (error) {
-      setFailure(error instanceof Error ? error.message : '无法打开相册，请稍后重试。');
+      setFailure(error instanceof Error ? error.message : t('profileCompose.pickerFailed'));
     }
   };
 
   const submit = async () => {
     if (!assets.length || busy) return;
-    setBusy(true); setFailure(''); setProgress('正在准备上传…');
+    setBusy(true); setFailure(''); setProgress(t('profileCompose.preparing'));
     try {
       await createProfilePost(caption, assets, ({ completed, total }) => {
-        setProgress(completed >= total ? '正在完成发布…' : `正在上传第 ${completed + 1}/${total} 个文件…`);
+        setProgress(completed >= total ? t('profileCompose.finishing') : t('profileCompose.uploading', { current: completed + 1, total }));
       });
       await clearProfilePostDraft();
       latestCaption.current = '';
       setCaption(''); setAssets([]); setDraftRestored(false); setProgress('');
-      Alert.alert('发布成功', '动态已经显示在你的个人主页。', [{ text: '完成', onPress: () => router.back() }]);
+      Alert.alert(t('profileCompose.publishedTitle'), t('profileCompose.publishedBody'), [{ text: t('profileCompose.done'), onPress: () => router.back() }]);
     } catch (error) {
-      setFailure(error instanceof Error ? error.message : '请稍后重试。');
+      setFailure(error instanceof Error ? error.message : t('profileCompose.failed'));
       setProgress('');
     } finally { setBusy(false); }
   };
@@ -79,19 +81,19 @@ export default function ProfileComposeScreen() {
   };
 
   return <ScrollView style={styles.page} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-    <Stack.Screen options={{ headerShown: true, title: '发布主页动态', headerBackTitle: '返回' }} />
-    <Text style={styles.title}>分享图片或视频</Text><Text style={styles.hint}>图片最多 4 张；视频每条 1 个、最长 2 分钟、最大 80MB。</Text>
-    {draftRestored ? <View testID="profile-compose-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}><Text style={styles.draftNoticeTitle}>已恢复文字草稿</Text><Text style={styles.draftNoticeText}>为保护隐私，图片和视频不会跨会话保存，请重新选择媒体。</Text></View> : null}
-    <Pressable accessibilityRole="button" accessibilityLabel={assets.length ? '重新选择图片或视频' : '从相册选择图片或视频'} accessibilityState={{ disabled: busy }} disabled={busy} style={styles.picker} onPress={() => void pick()}><Text style={styles.pickerIcon}>＋</Text><Text style={styles.pickerText}>{assets.length ? '重新选择' : '从相册选择'}</Text></Pressable>
+    <Stack.Screen options={{ headerShown: true, title: t('profileCompose.screenTitle'), headerBackTitle: t('common.back') }} />
+    <Text style={styles.title}>{t('profileCompose.heading')}</Text><Text style={styles.hint}>{t('profileCompose.mediaLimits')}</Text>
+    {draftRestored ? <View testID="profile-compose-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}><Text style={styles.draftNoticeTitle}>{t('profileCompose.draftRestored')}</Text><Text style={styles.draftNoticeText}>{t('profileCompose.draftRestoredBody')}</Text></View> : null}
+    <Pressable accessibilityRole="button" accessibilityLabel={assets.length ? t('profileCompose.reselectA11y') : t('profileCompose.selectA11y')} accessibilityState={{ disabled: busy }} disabled={busy} style={styles.picker} onPress={() => void pick()}><Text style={styles.pickerIcon}>＋</Text><Text style={styles.pickerText}>{assets.length ? t('profileCompose.reselect') : t('profileCompose.select')}</Text></Pressable>
     {assets.length ? <View style={styles.previewGrid}>{assets.map((asset, index) => <View key={`${asset.assetId || asset.uri}-${index}`} style={styles.previewWrap}>
-      {asset.type === 'video' ? <View style={styles.videoPreview}><Text style={styles.videoIcon}>▶</Text><Text style={styles.videoText}>视频 · {Math.ceil((asset.duration || 0) / 1000)} 秒</Text></View> : <Image source={{ uri: asset.uri }} contentFit="cover" style={styles.preview} />}
-    </View>)}<Pressable accessibilityRole="button" accessibilityLabel="清除已选媒体" disabled={busy} style={styles.clearMedia} onPress={() => setAssets([])}><Text style={styles.clearMediaText}>清除已选媒体</Text></Pressable></View> : null}
-    <View style={styles.labelRow}><Text style={styles.label}>文字说明（可选）</Text>{caption || assets.length ? <Pressable accessibilityRole="button" accessibilityLabel="清空草稿" disabled={busy} onPress={() => void clearDraft()}><Text style={styles.clearDraft}>清空草稿</Text></Pressable> : null}</View>
-    <TextInput testID="profile-compose-caption" accessibilityLabel="主页动态文字说明" value={caption} onChangeText={(value) => { latestCaption.current = value; setCaption(value); setDraftRestored(false); }} editable={!busy} maxLength={2000} multiline textAlignVertical="top" placeholder="说点什么……" style={styles.input} /><Text style={styles.counter}>{caption.length}/2000 · 文字自动保存 7 天</Text>
-    <Text style={styles.notice}>请确认内容不包含他人的电话、证件、详细住址或未成年人隐私。</Text>
-    {failure ? <AsyncStatePanel testID="profile-compose-error" title="发布未完成" message={`${failure} 已选媒体和文字仍保留在本页。`} tone="error" actionLabel={assets.length ? '重试发布' : '重新选择媒体'} onAction={assets.length ? () => void submit() : () => void pick()} busy={busy} /> : null}
+      {asset.type === 'video' ? <View style={styles.videoPreview}><Text style={styles.videoIcon}>▶</Text><Text style={styles.videoText}>{t('profileCompose.videoDuration', { seconds: Math.ceil((asset.duration || 0) / 1000) })}</Text></View> : <Image source={{ uri: asset.uri }} contentFit="cover" style={styles.preview} />}
+    </View>)}<Pressable accessibilityRole="button" accessibilityLabel={t('profileCompose.clearMedia')} disabled={busy} style={styles.clearMedia} onPress={() => setAssets([])}><Text style={styles.clearMediaText}>{t('profileCompose.clearMedia')}</Text></Pressable></View> : null}
+    <View style={styles.labelRow}><Text style={styles.label}>{t('profileCompose.caption')}</Text>{caption || assets.length ? <Pressable accessibilityRole="button" accessibilityLabel={t('profileCompose.clearDraft')} disabled={busy} onPress={() => void clearDraft()}><Text style={styles.clearDraft}>{t('profileCompose.clearDraft')}</Text></Pressable> : null}</View>
+    <TextInput testID="profile-compose-caption" accessibilityLabel={t('profileCompose.captionA11y')} value={caption} onChangeText={(value) => { latestCaption.current = value; setCaption(value); setDraftRestored(false); }} editable={!busy} maxLength={2000} multiline textAlignVertical="top" placeholder={t('profileCompose.captionPlaceholder')} style={styles.input} /><Text style={styles.counter}>{t('profileCompose.draftCounter', { count: caption.length })}</Text>
+    <Text style={styles.notice}>{t('profileCompose.privacyNotice')}</Text>
+    {failure ? <AsyncStatePanel testID="profile-compose-error" title={t('profileCompose.incomplete')} message={`${failure} ${t('profileCompose.failurePreserved')}`} tone="error" actionLabel={assets.length ? t('profileCompose.retry') : t('profileCompose.reselectMedia')} onAction={assets.length ? () => void submit() : () => void pick()} busy={busy} /> : null}
     {progress ? <Text testID="profile-compose-progress" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.progress}>{progress}</Text> : null}
-    <Pressable testID="profile-compose-submit" accessibilityRole="button" accessibilityLabel="发布到我的主页" accessibilityState={{ disabled: busy || !assets.length, busy }} disabled={busy || !assets.length} onPress={() => void submit()} style={[styles.submit, (busy || !assets.length) && styles.disabled]}>{busy ? <><ActivityIndicator color="#fff" /><Text style={styles.busyText}>{progress || '正在发布…'}</Text></> : <Text style={styles.submitText}>发布到我的主页</Text>}</Pressable>
+    <Pressable testID="profile-compose-submit" accessibilityRole="button" accessibilityLabel={t('profileCompose.submit')} accessibilityState={{ disabled: busy || !assets.length, busy }} disabled={busy || !assets.length} onPress={() => void submit()} style={[styles.submit, (busy || !assets.length) && styles.disabled]}>{busy ? <><ActivityIndicator color="#fff" /><Text style={styles.busyText}>{progress || t('profileCompose.publishing')}</Text></> : <Text style={styles.submitText}>{t('profileCompose.submit')}</Text>}</Pressable>
   </ScrollView>;
 }
 

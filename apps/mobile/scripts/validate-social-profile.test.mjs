@@ -36,7 +36,7 @@ test('mobile screens expose refined profile, custom media and protected messagin
   const chat = read('app/chat/[id].tsx');
   const compose = read('app/profile-compose.tsx');
   assert.match(profile, /<ProfileHero/);
-  assert.match(profile, /发主页动态/);
+  assert.match(profile, /profile-compose/);
   assert.match(settings, /DIY 头像/);
   assert.match(settings, /隐私账号/);
   assert.match(settings, /允许陌生人发起聊天/);
@@ -182,8 +182,8 @@ test('profile post composer restores text drafts and keeps failed uploads retrya
   assert.match(compose, /saveProfilePostDraft/);
   assert.match(compose, /profile-compose-draft-restored/);
   assert.match(compose, /profile-compose-error/);
-  assert.match(compose, /重试发布/);
-  assert.match(compose, /已选媒体和文字仍保留在本页/);
+  assert.match(compose, /t\('profileCompose\.retry'\)/);
+  assert.match(compose, /t\('profileCompose\.failurePreserved'\)/);
   assert.match(compose, /accessibilityLiveRegion="polite"/);
   assert.match(drafts, /AsyncStorage\.setItem/);
   assert.match(drafts, /AsyncStorage\.removeItem/);

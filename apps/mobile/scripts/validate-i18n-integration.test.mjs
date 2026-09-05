@@ -137,3 +137,14 @@ test('localizes community composer while preserving the entered draft', () => {
   assert.match(compose, /t\(item\.label\)/);
   assert.doesNotMatch(compose, /<Text style=\{styles\.title\}>分享经历或提出问题<\/Text>/);
 });
+
+test('localizes profile composer while preserving captions and selected media', () => {
+  const compose = read('app/profile-compose.tsx');
+  assert.match(compose, /useI18n\(\)/);
+  for (const key of ['profileCompose.heading', 'profileCompose.mediaLimits', 'profileCompose.draftRestored', 'profileCompose.captionPlaceholder', 'profileCompose.privacyNotice', 'profileCompose.failurePreserved', 'profileCompose.submit']) {
+    assert.ok(compose.includes(`t('${key}')`), `profile composer must translate ${key}`);
+  }
+  assert.match(compose, /createProfilePost\(caption, assets/);
+  assert.match(compose, /source=\{\{ uri: asset\.uri \}\}/);
+  assert.doesNotMatch(compose, /<Text style=\{styles\.title\}>分享图片或视频<\/Text>/);
+});

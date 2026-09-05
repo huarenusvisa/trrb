@@ -75,3 +75,10 @@ test('translates community composer privacy, draft and submission states', () =>
   assert.equal(translate('en', 'communityCompose.failurePreserved'), 'The title, text and category are still on this page.');
   assert.equal(translate('zh-CN', 'communityCompose.draftCounter', { count: 21 }), '21/12000 · 草稿自动保存 7 天');
 });
+
+test('translates profile composer media, progress and recovery states', () => {
+  assert.equal(translate('en', 'profileCompose.uploading', { current: 2, total: 4 }), 'Uploading file 2/4…');
+  assert.equal(translate('zh-TW', 'profileCompose.draftRestored'), '已恢復文字草稿');
+  assert.equal(translate('en', 'profileCompose.videoDuration', { seconds: 75 }), 'Video · 75 seconds');
+  assert.equal(translate('zh-CN', 'profileCompose.failurePreserved'), '已选媒体和文字仍保留在本页。');
+});

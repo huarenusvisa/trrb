@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState } = require('./community-api')._test;
+const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation } = require('./community-api')._test;
 
 test('ordinary USCIS experience passes basic rules', () => {
   const result = moderation('uscis_interview', '纽约庇护面谈经历', '我在纽约办公室完成面谈，分享当天材料准备和流程。');
@@ -42,4 +42,10 @@ test('hydrates viewer like state in one response without changing aggregate coun
   assert.deepEqual(posts.map((post) => post.viewer_has_liked), [false, true]);
   assert.deepEqual(posts.map((post) => post.like_count), [4, 2]);
   assert.equal(withViewerLikeState([{ id: 'post-1' }])[0].viewer_has_liked, false);
+});
+
+test('replaying an explicit community like intent is idempotent', () => {
+  assert.deepEqual(resolveLikeMutation(false, 4, true), { liked: true, changed: true, like_count: 5 });
+  assert.deepEqual(resolveLikeMutation(true, 5, true), { liked: true, changed: false, like_count: 5 });
+  assert.deepEqual(resolveLikeMutation(true, 0, false), { liked: false, changed: true, like_count: 0 });
 });

@@ -123,8 +123,10 @@ export function createCommunityApi({
     });
   }
 
-  async function toggleLike(postId: string) {
-    return request<{ liked: boolean; like_count: number }>('POST', { action: 'toggle_like', post_id: postId });
+  async function toggleLike(postId: string, liked?: boolean) {
+    return request<{ liked: boolean; like_count: number }>('POST', {
+      action: 'toggle_like', post_id: postId, ...(typeof liked === 'boolean' ? { liked } : {}),
+    });
   }
 
   async function reportPost(postId: string, reason: string) {

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const i18n = readFileSync('asylumjudge/app-i18n.js', 'utf8');
+const domainStyles = readFileSync('asylumjudge/domain-brand.css', 'utf8');
 const rowsMatch = i18n.match(/const rows = (\[[\s\S]*?\n  \]);\n\n  const indexes/);
 assert.ok(rowsMatch, 'global translation rows must be readable');
 const rows = Function(`"use strict"; return ${rowsMatch[1]}`)();
@@ -67,6 +68,16 @@ for (const path of pages) {
   assert.ok(i18nIndex >= 0, `${path} must load global ten-language translations`);
   assert.ok(brandIndex > i18nIndex, `${path} must load translations before the language selector controller`);
 }
+
+for (const path of [
+  'immigration-judge-approval-rate/states.html',
+  'immigration-judge-approval-rate/courts.html',
+  'immigration-judge-approval-rate/detail.html',
+  'immigration-judge-approval-rate/china-dashboard.html'
+]) {
+  assert.match(readFileSync(path, 'utf8'), /domain-brand\.css\?v=5/, `${path} must load the touch-target brand stylesheet`);
+}
+assert.match(domainStyles, /\.asylumjudge-primary-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile inner-page navigation must provide responsive 44px touch targets');
 
 const nationality = readFileSync('immigration-judge-approval-rate/china-dashboard-i18n.js', 'utf8');
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {

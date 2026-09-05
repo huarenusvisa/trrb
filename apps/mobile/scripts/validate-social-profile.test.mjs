@@ -121,7 +121,7 @@ test('notification center filters categories and marks only the active category 
   assert.match(screen, /notificationCategories\.map/);
   assert.match(screen, /accessibilityRole="tab"/);
   assert.match(screen, /accessibilityState=\{\{ selected:/);
-  assert.match(screen, /listNotifications\(50, category\)/);
+  assert.match(screen, /listNotifications\(0, PAGE_SIZE, category\)/);
   assert.match(screen, /markAllNotificationsRead\(category\)/);
   assert.match(screen, /unread\.refresh\(\)/);
   assert.match(screen, /本类已读/);
@@ -129,6 +129,25 @@ test('notification center filters categories and marks only the active category 
   assert.match(api, /notificationTypesForCategory\(category\)/);
   assert.match(api, /query\.in\('type', types\)/);
   assert.match(provider, /markNotificationsReadLocally/);
+});
+
+test('notification center pages older messages and restores account-scoped offline cache', () => {
+  const screen = read('app/notifications.tsx');
+  const api = read('src/community/notifications.ts');
+  const cache = read('src/storage/notification-cache-core.ts');
+
+  assert.match(screen, /notifications-load-more/);
+  assert.match(screen, /notifications-page-error/);
+  assert.match(screen, /notifications-offline-cache/);
+  assert.match(screen, /readCachedNotifications\(userId, category\)/);
+  assert.match(screen, /listNotifications\(nextOffset, PAGE_SIZE, category\)/);
+  assert.match(screen, /new Set\(current\.map\(\(item\) => item\.id\)\)/);
+  assert.match(api, /\.range\(safeOffset, safeOffset \+ safeLimit\)/);
+  assert.match(api, /rows\.length > safeLimit/);
+  assert.match(cache, /payload\.userId !== userId/);
+  assert.match(cache, /payload\.category !== category/);
+  assert.match(cache, /NOTIFICATION_CACHE_MAX_AGE_MS/);
+  assert.match(cache, /NOTIFICATION_CACHE_MAX_ITEMS/);
 });
 
 test('user profiles and community post actions expose timeout recovery', () => {

@@ -6,12 +6,14 @@ import {
   createCommunityComment,
   getCommunityPost,
   reportCommunityPost,
+  toggleCommunityCommentLike,
   toggleCommunityPostLike,
   unpublishCommunityComment,
   unpublishCommunityPost,
 } from '../../src/api/community';
 import { AsyncStatePanel } from '../../src/components/AsyncStatePanel';
 import { appendCreatedCommunityComment, communityCommentDisplayName, paginateCommunityCommentThreads, removeUnpublishedCommunityComment } from '../../src/community/community-comment-presentation';
+import { optimisticCommunityCommentLike, resolveCommunityCommentLike } from '../../src/community/community-comment-like-state';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { withUiTimeout } from '../../src/utils/async-state-core';
 import { clearCommentDraft, loadCommentDraft, saveCommentDraft } from '../../src/storage/commentDraft';
@@ -38,6 +40,7 @@ export default function CommunityPostScreen() {
   const [showReport, setShowReport] = useState(false);
   const [busyAction, setBusyAction] = useState('');
   const [busyCommentId, setBusyCommentId] = useState('');
+  const [commentLikeError, setCommentLikeError] = useState<{ commentId: string; message: string; desiredLiked: boolean } | null>(null);
   const [feedback, setFeedback] = useState<ActionFeedback | null>(null);
   const [draftReady, setDraftReady] = useState(false);
   const [draftRestored, setDraftRestored] = useState(false);
@@ -57,7 +60,7 @@ export default function CommunityPostScreen() {
     try {
       const next = await withUiTimeout(getCommunityPost(String(id)), '帖子读取超时，请检查网络后重试。', 16_000);
       if (sequence !== requestSequence.current) return;
-      setDetail(next); setError(''); setRefreshError('');
+      setDetail(next); setError(''); setRefreshError(''); setCommentLikeError(null);
     } catch (e) {
       if (sequence !== requestSequence.current) return;
       const message = e instanceof Error ? e.message : '帖子加载失败';
@@ -187,6 +190,7 @@ export default function CommunityPostScreen() {
       try {
         const result = await withUiTimeout(unpublishCommunityComment(commentId), '评论下架超时，请重试。');
         setDetail((current) => current ? removeUnpublishedCommunityComment(current, result.comment_id, result.comment_count) : current);
+        setCommentLikeError((current) => current?.commentId === commentId ? null : current);
         if (latestReplyTarget.current?.id === commentId) cancelReply();
         setFeedback({ title: '评论已下架', message: '这条评论已从公开列表移除。', tone: 'neutral' });
       } catch (e) {
@@ -198,6 +202,37 @@ export default function CommunityPostScreen() {
       { text: '取消', style: 'cancel' },
       { text: '确定下架', style: 'destructive', onPress: () => void perform() },
     ]);
+  };
+
+  const likeComment = async (item: CommunityPostDetail['comments'][number], desiredLiked = !item.viewer_has_liked) => {
+    if (!requireLogin() || busyCommentId) return;
+    const original = item;
+    setBusyCommentId(item.id); setCommentLikeError(null);
+    setDetail((current) => current ? {
+      ...current,
+      comments: current.comments.map((entry) => entry.id === item.id ? optimisticCommunityCommentLike(entry, desiredLiked) : entry),
+    } : current);
+    try {
+      const result = await withUiTimeout(toggleCommunityCommentLike(item.id, desiredLiked), '评论点赞超时，请重试。');
+      setDetail((current) => current ? {
+        ...current,
+        comments: current.comments.map((entry) => entry.id === item.id ? resolveCommunityCommentLike(entry, result) : entry),
+      } : current);
+    } catch (e) {
+      setDetail((current) => current ? {
+        ...current,
+        comments: current.comments.map((entry) => entry.id === item.id ? {
+          ...entry,
+          like_count: original.like_count,
+          viewer_has_liked: original.viewer_has_liked,
+        } : entry),
+      } : current);
+      setCommentLikeError({
+        commentId: item.id,
+        message: e instanceof Error ? e.message : '评论点赞失败',
+        desiredLiked,
+      });
+    } finally { setBusyCommentId(''); }
   };
 
   if (loading) return <View style={styles.center}><AsyncStatePanel title="正在读取帖子" message="正在同步最新内容和评论…" busy /></View>;
@@ -230,9 +265,11 @@ export default function CommunityPostScreen() {
         <Text style={styles.commentBody}>{item.content}</Text>
         {item.status !== 'published' ? <Text style={styles.reviewing}>审核中，仅自己可见</Text> : null}
         <View style={styles.commentActions}>
+          {item.status === 'published' ? <Pressable testID={`community-comment-like-${item.id}`} accessibilityRole="button" accessibilityLabel={`${item.viewer_has_liked ? '取消点赞' : '点赞'}评论，当前${item.like_count || 0}个赞`} accessibilityState={{ disabled: Boolean(busyCommentId), selected: item.viewer_has_liked, busy: busyCommentId === item.id }} disabled={Boolean(busyCommentId)} style={[styles.commentLikeAction, item.viewer_has_liked && styles.commentLikedAction]} onPress={() => void likeComment(item)}><Text style={[styles.commentLikeText, item.viewer_has_liked && styles.commentLikedText]}>{busyCommentId === item.id ? '处理中…' : `${item.viewer_has_liked ? '已赞' : '赞'} ${item.like_count || 0}`}</Text></Pressable> : null}
           {viewerUserId && item.status === 'published' ? <Pressable testID={`community-comment-reply-${item.id}`} accessibilityRole="button" accessibilityLabel={`回复${communityCommentDisplayName(item)}`} accessibilityState={{ disabled: Boolean(busyCommentId) }} disabled={Boolean(busyCommentId)} style={styles.replyAction} onPress={() => startReply({ id: item.id, label: communityCommentDisplayName(item) })}><Text style={styles.replyActionText}>回复</Text></Pressable> : null}
           {viewerUserId === item.user_id ? <Pressable testID={`community-comment-unpublish-${item.id}`} accessibilityRole="button" accessibilityLabel="下架自己的评论" accessibilityState={{ disabled: Boolean(busyCommentId), busy: busyCommentId === item.id }} disabled={Boolean(busyCommentId)} style={styles.commentDeleteAction} onPress={() => removeOwnComment(item.id)}><Text style={styles.commentDeleteText}>{busyCommentId === item.id ? '下架中…' : '下架'}</Text></Pressable> : null}
         </View>
+        {commentLikeError?.commentId === item.id ? <View testID={`community-comment-like-error-${item.id}`} accessibilityRole="alert" style={styles.commentLikeError}><Text style={styles.commentLikeErrorText}>{commentLikeError.message}</Text><Pressable accessibilityRole="button" accessibilityLabel="重试评论点赞" onPress={() => void likeComment(item, commentLikeError.desiredLiked)}><Text style={styles.commentLikeRetry}>重试</Text></Pressable></View> : null}
       </View>) : <Text style={styles.empty}>暂时还没有评论。</Text>}
       {viewerUserId ? <View style={styles.composer}>{draftRestored ? <Text testID="community-comment-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}>已恢复评论草稿{replyTarget ? `，将回复 ${replyTarget.label}` : ''}。</Text> : null}{replyTarget ? <View testID="community-comment-reply-target" style={styles.replyTarget}><Text style={styles.replyTargetText}>正在回复 {replyTarget.label}</Text><Pressable accessibilityRole="button" accessibilityLabel="取消回复" onPress={cancelReply}><Text style={styles.cancelReply}>取消</Text></Pressable></View> : null}<TextInput ref={commentInput} testID="community-comment-input" accessibilityLabel={replyTarget ? `回复${replyTarget.label}` : '评论内容'} value={comment} onChangeText={updateComment} editable={busyAction !== 'comment'} maxLength={3000} multiline placeholder={replyTarget ? `回复 ${replyTarget.label}` : '写下你的评论'} style={styles.commentInput} /><Text style={styles.counter}>{comment.length}/3000 · 草稿自动保存 7 天</Text><Pressable testID="community-comment-submit" accessibilityRole="button" accessibilityLabel={replyTarget ? `回复${replyTarget.label}` : '发表评论'} accessibilityState={{ disabled: busyAction === 'comment' || !comment.trim(), busy: busyAction === 'comment' }} disabled={busyAction === 'comment' || !comment.trim()} style={[styles.primary, !comment.trim() && styles.disabled]} onPress={() => void submitComment()}>{busyAction === 'comment' ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>{replyTarget ? '发表回复' : '发表评论'}</Text>}</Pressable></View> : <Pressable testID="community-comment-login" accessibilityRole="button" accessibilityLabel="登录后发表评论" style={styles.primary} onPress={() => router.push('/auth')}><Text style={styles.primaryText}>登录后发表评论</Text></Pressable>}
     </View>
@@ -240,5 +277,5 @@ export default function CommunityPostScreen() {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingBottom:60,gap:12},center:{flex:1,justifyContent:'center',padding:28},muted:{color:'#667085',textAlign:'center'},metaRow:{flexDirection:'row',alignItems:'center',gap:9},category:{color:'#c8211e',fontWeight:'900'},pending:{fontSize:12,fontWeight:'800',color:'#b54708',backgroundColor:'#fffaeb',paddingHorizontal:8,paddingVertical:4,borderRadius:999},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},author:{color:'#667085',marginTop:12},body:{fontSize:17,lineHeight:29,color:'#1d2939',marginTop:24},actions:{flexDirection:'row',flexWrap:'wrap',gap:10,marginTop:26},action:{minHeight:44,backgroundColor:'#f2f4f7',borderRadius:10,paddingHorizontal:15,paddingVertical:11,justifyContent:'center'},actionText:{fontWeight:'800',color:'#344054'},likedAction:{backgroundColor:'#fef3f2'},likedActionText:{color:'#b42318'},dangerAction:{minHeight:44,borderWidth:1,borderColor:'#fda29b',borderRadius:10,paddingHorizontal:15,paddingVertical:10,justifyContent:'center'},dangerText:{fontWeight:'800',color:'#b42318'},reportBox:{marginTop:14,backgroundColor:'#fff7ed',borderRadius:12,padding:12},reportInput:{minHeight:78,backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{minHeight:44,backgroundColor:'#b42318',borderRadius:10,paddingVertical:12,alignItems:'center',justifyContent:'center',marginTop:9},syncStatus:{color:'#667085',textAlign:'center',fontWeight:'700'},comments:{marginTop:24,paddingTop:25,borderTopWidth:1,borderTopColor:'#eaecf0'},commentsTitle:{fontSize:23,fontWeight:'900',color:'#101828'},loadEarlier:{minHeight:44,alignItems:'center',justifyContent:'center',marginTop:10},loadEarlierText:{color:'#175cd3',fontWeight:'800'},commentCard:{paddingVertical:16,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},replyCard:{borderLeftWidth:2,borderLeftColor:'#d0d5dd',paddingLeft:12},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},commentAuthor:{fontWeight:'800',color:'#101828'},commentTime:{fontSize:12,color:'#98a2b3'},replyLabel:{fontSize:13,color:'#667085',marginTop:7},commentBody:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},reviewing:{fontSize:12,color:'#b54708',marginTop:7},commentActions:{flexDirection:'row',alignItems:'center',gap:14,marginTop:4},replyAction:{minHeight:36,justifyContent:'center',paddingRight:18},replyActionText:{color:'#175cd3',fontWeight:'800'},commentDeleteAction:{minHeight:36,justifyContent:'center',paddingHorizontal:4},commentDeleteText:{color:'#b42318',fontWeight:'800'},empty:{color:'#98a2b3',paddingVertical:24,textAlign:'center'},composer:{gap:10,marginTop:18},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10},replyTarget:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',backgroundColor:'#eff8ff',borderRadius:10,padding:10},replyTargetText:{color:'#175cd3',fontWeight:'800'},cancelReply:{color:'#b42318',fontWeight:'800',padding:4},commentInput:{minHeight:100,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3'},primary:{minHeight:44,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:14,paddingHorizontal:18,alignItems:'center',justifyContent:'center',marginTop:12},disabled:{opacity:.45},primaryText:{color:'#fff',fontWeight:'800'},
+  page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingBottom:60,gap:12},center:{flex:1,justifyContent:'center',padding:28},muted:{color:'#667085',textAlign:'center'},metaRow:{flexDirection:'row',alignItems:'center',gap:9},category:{color:'#c8211e',fontWeight:'900'},pending:{fontSize:12,fontWeight:'800',color:'#b54708',backgroundColor:'#fffaeb',paddingHorizontal:8,paddingVertical:4,borderRadius:999},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},author:{color:'#667085',marginTop:12},body:{fontSize:17,lineHeight:29,color:'#1d2939',marginTop:24},actions:{flexDirection:'row',flexWrap:'wrap',gap:10,marginTop:26},action:{minHeight:44,backgroundColor:'#f2f4f7',borderRadius:10,paddingHorizontal:15,paddingVertical:11,justifyContent:'center'},actionText:{fontWeight:'800',color:'#344054'},likedAction:{backgroundColor:'#fef3f2'},likedActionText:{color:'#b42318'},dangerAction:{minHeight:44,borderWidth:1,borderColor:'#fda29b',borderRadius:10,paddingHorizontal:15,paddingVertical:10,justifyContent:'center'},dangerText:{fontWeight:'800',color:'#b42318'},reportBox:{marginTop:14,backgroundColor:'#fff7ed',borderRadius:12,padding:12},reportInput:{minHeight:78,backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,padding:10,textAlignVertical:'top'},reportSubmit:{minHeight:44,backgroundColor:'#b42318',borderRadius:10,paddingVertical:12,alignItems:'center',justifyContent:'center',marginTop:9},syncStatus:{color:'#667085',textAlign:'center',fontWeight:'700'},comments:{marginTop:24,paddingTop:25,borderTopWidth:1,borderTopColor:'#eaecf0'},commentsTitle:{fontSize:23,fontWeight:'900',color:'#101828'},loadEarlier:{minHeight:44,alignItems:'center',justifyContent:'center',marginTop:10},loadEarlierText:{color:'#175cd3',fontWeight:'800'},commentCard:{paddingVertical:16,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},replyCard:{borderLeftWidth:2,borderLeftColor:'#d0d5dd',paddingLeft:12},commentHead:{flexDirection:'row',justifyContent:'space-between',gap:10},commentAuthor:{fontWeight:'800',color:'#101828'},commentTime:{fontSize:12,color:'#98a2b3'},replyLabel:{fontSize:13,color:'#667085',marginTop:7},commentBody:{fontSize:16,lineHeight:24,color:'#344054',marginTop:8},reviewing:{fontSize:12,color:'#b54708',marginTop:7},commentActions:{flexDirection:'row',alignItems:'center',gap:14,marginTop:4},commentLikeAction:{minHeight:36,justifyContent:'center',paddingHorizontal:8,borderRadius:8,backgroundColor:'#f2f4f7'},commentLikedAction:{backgroundColor:'#fef3f2'},commentLikeText:{color:'#475467',fontWeight:'800'},commentLikedText:{color:'#b42318'},commentLikeError:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8,backgroundColor:'#fef3f2',borderRadius:8,padding:8,marginTop:6},commentLikeErrorText:{flex:1,color:'#b42318',fontSize:13},commentLikeRetry:{color:'#b42318',fontWeight:'900',padding:4},replyAction:{minHeight:36,justifyContent:'center',paddingRight:18},replyActionText:{color:'#175cd3',fontWeight:'800'},commentDeleteAction:{minHeight:36,justifyContent:'center',paddingHorizontal:4},commentDeleteText:{color:'#b42318',fontWeight:'800'},empty:{color:'#98a2b3',paddingVertical:24,textAlign:'center'},composer:{gap:10,marginTop:18},draftNotice:{color:'#067647',fontWeight:'800',backgroundColor:'#ecfdf3',borderRadius:10,padding:10},replyTarget:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',backgroundColor:'#eff8ff',borderRadius:10,padding:10},replyTargetText:{color:'#175cd3',fontWeight:'800'},cancelReply:{color:'#b42318',fontWeight:'800',padding:4},commentInput:{minHeight:100,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:12,textAlignVertical:'top',fontSize:16},counter:{textAlign:'right',color:'#98a2b3'},primary:{minHeight:44,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:14,paddingHorizontal:18,alignItems:'center',justifyContent:'center',marginTop:12},disabled:{opacity:.45},primaryText:{color:'#fff',fontWeight:'800'},
 });

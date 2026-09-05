@@ -32,6 +32,8 @@ export type CommunityComment = {
   content: string;
   status: 'published' | 'pending' | 'hidden' | 'deleted';
   risk_level: string;
+  like_count: number;
+  viewer_has_liked: boolean;
   created_at: string;
   profiles?: { display_name?: string; avatar_key?: string } | null;
 };
@@ -136,6 +138,14 @@ export function createCommunityApi({
     });
   }
 
+  async function toggleCommentLike(commentId: string, liked?: boolean) {
+    const id = commentId.trim();
+    if (!id) throw new Error('评论编号无效。');
+    return request<{ liked: boolean; like_count: number }>('POST', {
+      action: 'toggle_comment_like', comment_id: id, ...(typeof liked === 'boolean' ? { liked } : {}),
+    });
+  }
+
   async function toggleLike(postId: string, liked?: boolean) {
     return request<{ liked: boolean; like_count: number }>('POST', {
       action: 'toggle_like', post_id: postId, ...(typeof liked === 'boolean' ? { liked } : {}),
@@ -152,5 +162,5 @@ export function createCommunityApi({
     return request<{ ok: true }>('POST', { action: 'unpublish_post', post_id: postId });
   }
 
-  return { listPosts, getPost, createPost, createComment, unpublishComment, toggleLike, reportPost, unpublishPost };
+  return { listPosts, getPost, createPost, createComment, unpublishComment, toggleCommentLike, toggleLike, reportPost, unpublishPost };
 }

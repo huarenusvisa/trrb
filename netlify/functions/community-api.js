@@ -103,6 +103,11 @@ function withViewerLikeState(posts, likeRows = []) {
   return (posts || []).map((post) => ({ ...post, viewer_has_liked: likedPostIds.has(post.id) }));
 }
 
+function withViewerCommentLikeState(comments, likeRows = []) {
+  const likedCommentIds = new Set((likeRows || []).map((row) => row.comment_id));
+  return (comments || []).map((comment) => ({ ...comment, viewer_has_liked: likedCommentIds.has(comment.id) }));
+}
+
 function resolveLikeMutation(currentLiked, currentCount, desiredLiked) {
   const liked = typeof desiredLiked === 'boolean' ? desiredLiked : !currentLiked;
   const changed = liked !== currentLiked;
@@ -158,13 +163,25 @@ async function feed(event) {
   if (postId && posts.length) {
     const commentRows = await rest('community_post_comments', {
       query: {
-        select: 'id,post_id,user_id,parent_id,content,status,risk_level,created_at,profiles!community_post_comments_user_id_fkey(display_name,avatar_key)',
+        select: 'id,post_id,user_id,parent_id,content,status,risk_level,like_count,created_at,profiles!community_post_comments_user_id_fkey(display_name,avatar_key)',
         post_id: `eq.${postId}`,
         order: 'created_at.asc',
         limit: '300'
       }
     });
     comments = (commentRows || []).filter((row) => row.status === 'published' || (user && row.user_id === user.id && row.status !== 'deleted'));
+    let viewerCommentLikes = [];
+    if (user && comments.length) {
+      viewerCommentLikes = await rest('community_post_comment_likes', {
+        query: {
+          select: 'comment_id',
+          user_id: `eq.${user.id}`,
+          comment_id: `in.(${comments.map((comment) => comment.id).join(',')})`,
+          limit: String(comments.length)
+        }
+      });
+    }
+    comments = withViewerCommentLikeState(comments, viewerCommentLikes);
   }
   return json(200, { ok: true, posts, comments, viewer_user_id: user?.id || null, next_offset: nextOffset });
 }
@@ -248,7 +265,10 @@ async function createComment(user, body) {
       prefer: 'return=minimal'
     });
   }
-  return json(201, { ok: true, comment: Array.isArray(rows) ? rows[0] : null, pending: needsReview });
+  const comment = Array.isArray(rows) && rows[0]
+    ? { ...rows[0], like_count: Math.max(0, Number(rows[0].like_count || 0)), viewer_has_liked: false }
+    : null;
+  return json(201, { ok: true, comment, pending: needsReview });
 }
 
 function commentCountAfterUnpublish(comment, currentCount) {
@@ -303,6 +323,42 @@ async function toggleLike(user, body) {
   return json(200, { ok: true, liked: mutation.liked, like_count: mutation.like_count });
 }
 
+async function toggleCommentLike(user, body) {
+  const commentId = clean(body.comment_id, 80);
+  const rows = await rest('community_post_comments', {
+    query: { select: 'id,status,like_count', id: `eq.${commentId}`, limit: '1' }
+  });
+  const comment = Array.isArray(rows) ? rows[0] : null;
+  if (!comment || comment.status !== 'published') return json(404, { error: '评论不存在' });
+
+  const found = await rest('community_post_comment_likes', {
+    query: { select: 'comment_id', comment_id: `eq.${commentId}`, user_id: `eq.${user.id}`, limit: '1' }
+  });
+  const currentLiked = (found || []).length > 0;
+  const desiredLiked = typeof body.liked === 'boolean' ? body.liked : !currentLiked;
+  if (currentLiked && !desiredLiked) {
+    await rest('community_post_comment_likes', {
+      method: 'DELETE', query: { comment_id: `eq.${commentId}`, user_id: `eq.${user.id}` }, prefer: 'return=minimal'
+    });
+  } else if (!currentLiked && desiredLiked) {
+    await rest('community_post_comment_likes', {
+      method: 'POST', body: { comment_id: commentId, user_id: user.id }, prefer: 'resolution=ignore-duplicates,return=minimal'
+    });
+  }
+
+  const [latestComment, latestLike] = await Promise.all([
+    rest('community_post_comments', { query: { select: 'like_count', id: `eq.${commentId}`, limit: '1' } }),
+    rest('community_post_comment_likes', {
+      query: { select: 'comment_id', comment_id: `eq.${commentId}`, user_id: `eq.${user.id}`, limit: '1' }
+    })
+  ]);
+  return json(200, {
+    ok: true,
+    liked: (latestLike || []).length > 0,
+    like_count: Math.max(0, Number(latestComment?.[0]?.like_count || 0))
+  });
+}
+
 async function reportPost(user, body) {
   const postId = clean(body.post_id, 80);
   const reason = clean(body.reason, 500);
@@ -339,6 +395,7 @@ exports.handler = async (event) => {
     if (action === 'create_comment') return createComment(user, body);
     if (action === 'unpublish_comment') return unpublishComment(user, body);
     if (action === 'toggle_like') return toggleLike(user, body);
+    if (action === 'toggle_comment_like') return toggleCommentLike(user, body);
     if (action === 'report_post') return reportPost(user, body);
     if (action === 'unpublish_post') return unpublishPost(user, body);
     return json(400, { error: 'unknown_action' });
@@ -348,4 +405,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation, feedPagination };
+exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination };

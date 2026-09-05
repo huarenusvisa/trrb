@@ -29,7 +29,7 @@ async function expoSend(messages) {
     url: 'https://exp.host/--/api/v2/push/send',
     headers: expoHeaders(),
     body: messages,
-    operation: 'community_push'
+    operation: 'interaction_push'
   });
   return { tickets: Array.isArray(payload?.data) ? payload.data : [], attempts };
 }
@@ -61,7 +61,7 @@ async function skipByReason(skipped, claimId) {
 function migrationMissing(error) {
   const message = String(error?.message || '');
   return Number(error?.statusCode) === 404
-    && (message.includes('claim_community_push_notifications') || message.includes('push_status'));
+    && (message.includes('claim_interaction_push_notifications') || message.includes('push_status'));
 }
 
 export default async () => {
@@ -82,12 +82,12 @@ export default async () => {
       prefer: 'return=minimal'
     });
 
-    const notifications = await rest('rpc/claim_community_push_notifications', {
+    const notifications = await rest('rpc/claim_interaction_push_notifications', {
       method: 'POST',
       body: { p_claim_id: claimId, p_limit: CLAIM_LIMIT }
     });
     if (!Array.isArray(notifications) || !notifications.length) {
-      console.log('community push: no pending notifications');
+      console.log('interaction push: no pending notifications');
       return new Response(null, { status: 200 });
     }
     claimedIds = notifications.map((row) => row.id);
@@ -129,7 +129,7 @@ export default async () => {
           if (error?.deliveryUnknown) unknownIds.add(id);
           else retryIds.add(id);
         }
-        console.error('community push batch failed', error?.message || error);
+        console.error('interaction push batch failed', error?.message || error);
       }
     }
 
@@ -149,7 +149,7 @@ export default async () => {
       } catch (error) {
         // Delivery already happened. Never return a retryable failure solely
         // because receipt persistence failed.
-        console.error('community push receipt queue unavailable', error?.message || error);
+        console.error('interaction push receipt queue unavailable', error?.message || error);
       }
     }
 
@@ -174,7 +174,7 @@ export default async () => {
     });
 
     console.log(JSON.stringify({
-      event: 'community_push_delivery',
+      event: 'interaction_push_delivery',
       claimed: notifications.length,
       sent: sentIds.length,
       skipped: plan.skipped.length,
@@ -187,7 +187,7 @@ export default async () => {
     return new Response(null, { status: 200 });
   } catch (error) {
     if (migrationMissing(error)) {
-      console.warn('community push migration has not been applied; skipping this scheduled run');
+      console.warn('interaction push migration has not been applied; skipping this scheduled run');
       return new Response(null, { status: 200 });
     }
     if (claimedIds.length && !deliveryStarted) {
@@ -196,10 +196,10 @@ export default async () => {
           push_status: 'pending', push_claim_id: null, push_error: 'pre_delivery_failure'
         });
       } catch (releaseError) {
-        console.error('community push claim release failed', releaseError?.message || releaseError);
+        console.error('interaction push claim release failed', releaseError?.message || releaseError);
       }
     }
-    console.error('community push processing failed', error?.message || error);
+    console.error('interaction push processing failed', error?.message || error);
     return new Response(null, { status: 500 });
   }
 };

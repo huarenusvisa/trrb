@@ -15,6 +15,7 @@ export type UserNotification = {
   comment_id?: string | null;
   community_post_id?: string | null;
   community_comment_id?: string | null;
+  conversation_id?: string | null;
   is_read: boolean;
   created_at: string;
 };
@@ -29,7 +30,7 @@ export async function listNotifications(limit = 50) {
   const userId = await currentUserId();
   const result = await supabase
     .from('user_notifications')
-    .select('id,user_id,actor_user_id,type,title,body,article_id,comment_id,community_post_id,community_comment_id,is_read,created_at')
+    .select('id,user_id,actor_user_id,type,title,body,article_id,comment_id,community_post_id,community_comment_id,conversation_id,is_read,created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(Math.min(Math.max(limit, 1), 100));

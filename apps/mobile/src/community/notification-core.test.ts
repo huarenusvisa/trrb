@@ -13,6 +13,8 @@ test('keeps existing notification destinations and safe fallbacks', () => {
   assert.equal(notificationTarget({ type: 'comment_reply', article_id: 'news/42' }), '/article/news%2F42');
   assert.equal(notificationTarget({ type: 'follow', actor_user_id: 'user/1' }), '/user/user%2F1');
   assert.equal(notificationTarget({ type: 'system' }), null);
+  assert.equal(notificationTarget({ type: 'message' }), '/messages');
+  assert.equal(notificationTarget({ type: 'message', conversation_id: 'chat/1' }), '/chat/chat%2F1');
 });
 
 test('labels every community interaction distinctly', () => {

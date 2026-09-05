@@ -103,6 +103,16 @@ function withViewerLikeState(posts, likeRows = []) {
   return (posts || []).map((post) => ({ ...post, viewer_has_liked: likedPostIds.has(post.id) }));
 }
 
+function resolveLikeMutation(currentLiked, currentCount, desiredLiked) {
+  const liked = typeof desiredLiked === 'boolean' ? desiredLiked : !currentLiked;
+  const changed = liked !== currentLiked;
+  return {
+    liked,
+    changed,
+    like_count: Math.max(0, Number(currentCount || 0) + (changed ? (liked ? 1 : -1) : 0))
+  };
+}
+
 async function feed(event) {
   const user = await optionalUser(event);
   const category = clean(event.queryStringParameters?.category, 50);
@@ -264,15 +274,17 @@ async function toggleLike(user, body) {
   const post = Array.isArray(posts) ? posts[0] : null;
   if (!post || post.status !== 'published') return json(404, { error: '帖子不存在' });
   const found = await rest('community_post_likes', { query: { select: 'post_id', post_id: `eq.${postId}`, user_id: `eq.${user.id}`, limit: '1' } });
-  const liked = (found || []).length > 0;
-  if (liked) {
+  const currentLiked = (found || []).length > 0;
+  const mutation = resolveLikeMutation(currentLiked, post.like_count, body.liked);
+  if (currentLiked && mutation.changed) {
     await rest('community_post_likes', { method: 'DELETE', query: { post_id: `eq.${postId}`, user_id: `eq.${user.id}` }, prefer: 'return=minimal' });
-  } else {
+  } else if (!currentLiked && mutation.changed) {
     await rest('community_post_likes', { method: 'POST', body: { post_id: postId, user_id: user.id }, prefer: 'return=minimal' });
   }
-  const next = Math.max(0, Number(post.like_count || 0) + (liked ? -1 : 1));
-  await rest('community_posts', { method: 'PATCH', query: { id: `eq.${postId}` }, body: { like_count: next }, prefer: 'return=minimal' });
-  return json(200, { ok: true, liked: !liked, like_count: next });
+  if (mutation.changed) {
+    await rest('community_posts', { method: 'PATCH', query: { id: `eq.${postId}` }, body: { like_count: mutation.like_count }, prefer: 'return=minimal' });
+  }
+  return json(200, { ok: true, liked: mutation.liked, like_count: mutation.like_count });
 }
 
 async function reportPost(user, body) {
@@ -320,4 +332,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState };
+exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation };

@@ -150,7 +150,7 @@ export default function CommunityPostScreen() {
     if (!detail || !requireLogin()) return;
     setBusyAction('like'); setFeedback(null);
     try {
-      const result = await withUiTimeout(toggleCommunityPostLike(detail.post.id), '点赞操作超时，请重试。');
+      const result = await withUiTimeout(toggleCommunityPostLike(detail.post.id, !detail.post.viewer_has_liked), '点赞操作超时，请重试。');
       setDetail((current) => current ? { ...current, post: { ...current.post, like_count: result.like_count, viewer_has_liked: result.liked } } : current);
       setFeedback({ title: result.liked ? '已点赞' : '已取消点赞', message: '帖子状态已更新。', tone: 'neutral' });
     } catch (e) { setFeedback({ title: '点赞操作失败', message: e instanceof Error ? e.message : '点赞失败', tone: 'error', retry: () => void like() }); }

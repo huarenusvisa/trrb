@@ -276,3 +276,20 @@ test('community posts hydrate and preserve the signed-in viewer like state', () 
   assert.match(detail, /selected: post\.viewer_has_liked/);
   assert.match(detail, /post\.viewer_has_liked \? '取消点赞' : '点赞'/);
 });
+
+test('community list likes optimistically update, roll back and remain retryable', () => {
+  const list = read('app/community.tsx');
+  const state = read('src/community/community-post-like-state.ts');
+
+  assert.match(list, /community-list-like-/);
+  assert.match(list, /optimisticCommunityPostLike/);
+  assert.match(list, /resolveCommunityPostLike/);
+  assert.match(list, /\.\.\.item, \.\.\.previous/);
+  assert.match(list, /community-list-like-error-/);
+  assert.match(list, /重试点赞操作/);
+  assert.match(list, /selected: post\.viewer_has_liked/);
+  assert.match(list, /toggleCommunityPostLike\(post\.id, !post\.viewer_has_liked\)/);
+  assert.match(list, /if \(!signedIn\) \{ router\.push\('\/auth'\)/);
+  assert.match(state, /Math\.max\(0/);
+  assert.match(read('../../netlify/functions/community-api.js'), /resolveLikeMutation/);
+});

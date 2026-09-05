@@ -69,12 +69,13 @@ test('soft-unpublishes an owned comment through the existing community API', asy
 
 test('uses the existing API actions for like, report and owner unpublish', async () => {
   const { api, calls } = mockApi([{ liked: true, like_count: 3 }, { ok: true }, { ok: true }]);
-  await api.toggleLike('post-1');
+  await api.toggleLike('post-1', true);
   await api.reportPost('post-1', '包含个人隐私');
   await api.unpublishPost('post-1');
   assert.deepEqual(calls.map((call) => JSON.parse(String(call.init?.body)).action), [
     'toggle_like', 'report_post', 'unpublish_post',
   ]);
+  assert.equal(JSON.parse(String(calls[0].init?.body)).liked, true);
 });
 
 test('validates comments and reports before any network write', async () => {

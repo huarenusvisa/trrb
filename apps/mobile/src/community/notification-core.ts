@@ -12,6 +12,33 @@ export type NotificationType =
   | 'message'
   | 'system';
 
+export type NotificationCategory = 'all' | 'replies' | 'likes' | 'follows' | 'messages' | 'moderation';
+
+export const notificationCategories: { key: NotificationCategory; label: string }[] = [
+  { key: 'all', label: '全部' },
+  { key: 'replies', label: '回复' },
+  { key: 'likes', label: '点赞' },
+  { key: 'follows', label: '关注' },
+  { key: 'messages', label: '私信' },
+  { key: 'moderation', label: '审核与系统' },
+];
+
+const CATEGORY_TYPES: Record<Exclude<NotificationCategory, 'all'>, NotificationType[]> = {
+  replies: ['comment_reply', 'community_reply'],
+  likes: ['comment_like', 'community_post_like', 'community_comment_like'],
+  follows: ['follow', 'follow_request', 'follow_accept'],
+  messages: ['message_request', 'message'],
+  moderation: ['community_report', 'system'],
+};
+
+export function notificationTypesForCategory(category: NotificationCategory) {
+  return category === 'all' ? null : CATEGORY_TYPES[category];
+}
+
+export function notificationCategoryLabel(category: NotificationCategory) {
+  return notificationCategories.find((item) => item.key === category)?.label || '全部';
+}
+
 export type NotificationTarget = {
   type: NotificationType;
   actor_user_id?: string | null;

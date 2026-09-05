@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { notificationLabel, notificationTarget } from './notification-core.ts';
+import { notificationCategoryLabel, notificationLabel, notificationTypesForCategory, notificationTarget } from './notification-core.ts';
 
 test('routes community notifications to an encoded post and optional comment', () => {
   assert.equal(notificationTarget({ type: 'community_post_like', community_post_id: 'post/1' }), '/community/post%2F1');
@@ -22,4 +22,14 @@ test('labels every community interaction distinctly', () => {
   assert.match(notificationLabel('community_post_like'), /帖子/);
   assert.match(notificationLabel('community_comment_like'), /评论/);
   assert.match(notificationLabel('community_report'), /举报/);
+});
+
+test('groups every notification type into a stable inbox category', () => {
+  assert.equal(notificationTypesForCategory('all'), null);
+  assert.deepEqual(notificationTypesForCategory('replies'), ['comment_reply', 'community_reply']);
+  assert.deepEqual(notificationTypesForCategory('likes'), ['comment_like', 'community_post_like', 'community_comment_like']);
+  assert.deepEqual(notificationTypesForCategory('follows'), ['follow', 'follow_request', 'follow_accept']);
+  assert.deepEqual(notificationTypesForCategory('messages'), ['message_request', 'message']);
+  assert.deepEqual(notificationTypesForCategory('moderation'), ['community_report', 'system']);
+  assert.equal(notificationCategoryLabel('moderation'), '审核与系统');
 });

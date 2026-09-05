@@ -118,3 +118,10 @@ test('translates comments, saved stories and reading history without changing ti
   assert.equal(translate('en', 'history.clearTitle'), 'Clear reading history?');
   assert.equal(translate('zh-CN', 'history.openArticleA11y', { title: '原始标题' }), '打开历史新闻：原始标题');
 });
+
+test('translates profile data controls and the permanent account deletion flow', () => {
+  assert.equal(translate('en', 'profile.pendingCount', { count: 2 }), ' · 2 pending');
+  assert.equal(translate('zh-TW', 'profile.accountPrivacy'), '帳戶與隱私');
+  assert.equal(translate('en', 'deleteAccount.confirmLabel'), 'Type DELETE to confirm');
+  assert.equal(translate('zh-CN', 'deleteAccount.deletedBody'), '账户与关联个人数据已永久删除。');
+});

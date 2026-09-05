@@ -241,3 +241,20 @@ test('localizes comments, favorites and history while preserving article and com
   assert.match(favorites, /item\.title/);
   assert.match(history, /item\.title/);
 });
+
+test('localizes signed-in profile data controls and account deletion safeguards', () => {
+  const profile = read('app/(tabs)/profile.tsx');
+  const deletion = read('app/delete-account.tsx');
+  for (const source of [profile, deletion]) assert.match(source, /useI18n\(\)/);
+  for (const key of ['profile.loggedIn', 'profile.publishPost', 'profile.messages', 'profile.followRequests', 'profile.contentInteraction', 'profile.accountPrivacy', 'profile.fontSaveFailed']) {
+    assert.ok(profile.includes(`t('${key}'`), `profile must translate ${key}`);
+  }
+  for (const key of ['deleteAccount.description', 'deleteAccount.confirmRequiredBody', 'deleteAccount.confirmInputA11y', 'deleteAccount.deleting', 'deleteAccount.cancelA11y']) {
+    assert.ok(deletion.includes(`t('${key}'`), `account deletion must translate ${key}`);
+  }
+  assert.match(profile, /accountLabel\(session\.user\)/);
+  assert.match(deletion, /confirm\.trim\(\) !== 'DELETE'/);
+  assert.match(deletion, /JSON\.stringify\(\{ confirm: 'DELETE'/);
+  assert.match(deletion, /body\.error \|\| t\('deleteAccount\.requestFailed'\)/);
+  assert.doesNotMatch(deletion, />删除账户</);
+});

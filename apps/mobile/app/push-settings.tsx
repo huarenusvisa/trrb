@@ -9,7 +9,11 @@ const OPTIONS: { key: keyof PushPreferences; title: string; description: string 
   { key: 'ice', title: 'ICE 动态', description: '执法、拘留与政策变化' },
   { key: 'immigration', title: '移民资讯', description: '签证、庇护与移民政策' },
   { key: 'legal', title: '判例新规', description: '法院判例与法规更新' },
-  { key: 'community', title: '互动通知', description: '评论、点赞与关注动态' }
+  { key: 'comments', title: '评论与回复', description: '新闻及社区评论的新回复' },
+  { key: 'likes', title: '点赞', description: '新闻评论、帖子及社区评论获赞' },
+  { key: 'follows', title: '关注动态', description: '新关注、关注申请及通过结果' },
+  { key: 'messages', title: '私信', description: '聊天申请及新消息' },
+  { key: 'moderation', title: '审核结果', description: '社区举报处理结果' }
 ];
 
 export default function PushSettingsScreen() {

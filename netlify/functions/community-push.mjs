@@ -98,7 +98,7 @@ export default async () => {
         query: { select: 'id,user_id,expo_push_token,enabled', user_id: userFilter, enabled: 'eq.true', limit: '5000' }
       }),
       rest('notification_preferences', {
-        query: { select: 'user_id,community', user_id: userFilter, limit: '5000' }
+        query: { select: 'user_id,community,comments,likes,follows,messages,moderation', user_id: userFilter, limit: '5000' }
       })
     ]);
     const plan = buildDeliveryPlan(notifications, tokens, preferences);

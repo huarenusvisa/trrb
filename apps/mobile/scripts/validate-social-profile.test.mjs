@@ -293,3 +293,25 @@ test('community list likes optimistically update, roll back and remain retryable
   assert.match(state, /Math\.max\(0/);
   assert.match(read('../../netlify/functions/community-api.js'), /resolveLikeMutation/);
 });
+
+test('community feed paginates and restores only public cached posts', () => {
+  const list = read('app/community.tsx');
+  const api = read('src/api/community-core.ts');
+  const cache = read('src/storage/communityFeedCache.ts');
+  const cacheCore = read('src/storage/community-feed-cache-core.ts');
+  const server = read('../../netlify/functions/community-api.js');
+
+  assert.match(list, /const PAGE_SIZE = 20/);
+  assert.match(list, /readCachedCommunityFeed/);
+  assert.match(list, /cacheCommunityFeed\(page\.posts, page\.nextOffset\)/);
+  assert.match(list, /community-load-more/);
+  assert.match(list, /community-page-error/);
+  assert.match(list, /known = new Set/);
+  assert.match(api, /\?offset=\$\{safeOffset\}&limit=\$\{safeLimit\}/);
+  assert.match(cache, /AsyncStorage\.setItem/);
+  assert.match(cacheCore, /post\.status === 'published'/);
+  assert.match(cacheCore, /COMMUNITY_FEED_CACHE_MAX_AGE_MS/);
+  assert.match(server, /page\.limit \+ 1/);
+  assert.match(server, /order: 'created_at\.desc,id\.desc'/);
+  assert.match(server, /next_offset: nextOffset/);
+});

@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation } = require('./community-api')._test;
+const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation, feedPagination } = require('./community-api')._test;
 
 test('ordinary USCIS experience passes basic rules', () => {
   const result = moderation('uscis_interview', '纽约庇护面谈经历', '我在纽约办公室完成面谈，分享当天材料准备和流程。');
@@ -48,4 +48,10 @@ test('replaying an explicit community like intent is idempotent', () => {
   assert.deepEqual(resolveLikeMutation(false, 4, true), { liked: true, changed: true, like_count: 5 });
   assert.deepEqual(resolveLikeMutation(true, 5, true), { liked: true, changed: false, like_count: 5 });
   assert.deepEqual(resolveLikeMutation(true, 0, false), { liked: false, changed: true, like_count: 0 });
+});
+
+test('bounds community feed pagination input', () => {
+  assert.deepEqual(feedPagination({ offset: '20', limit: '20' }), { offset: 20, limit: 20 });
+  assert.deepEqual(feedPagination({ offset: '-5', limit: '1000' }), { offset: 0, limit: 30 });
+  assert.deepEqual(feedPagination({ offset: 'bad', limit: 'bad' }), { offset: 0, limit: 20 });
 });

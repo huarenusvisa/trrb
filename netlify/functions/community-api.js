@@ -113,19 +113,35 @@ function resolveLikeMutation(currentLiked, currentCount, desiredLiked) {
   };
 }
 
+function feedPagination(params = {}) {
+  params = params || {};
+  const requestedOffset = Number.parseInt(String(params.offset || '0'), 10);
+  const requestedLimit = Number.parseInt(String(params.limit || '20'), 10);
+  return {
+    offset: Number.isFinite(requestedOffset) ? Math.max(0, requestedOffset) : 0,
+    limit: Number.isFinite(requestedLimit) ? Math.min(30, Math.max(1, requestedLimit)) : 20
+  };
+}
+
 async function feed(event) {
   const user = await optionalUser(event);
   const category = clean(event.queryStringParameters?.category, 50);
   const postId = clean(event.queryStringParameters?.post_id, 80);
+  const page = feedPagination(event.queryStringParameters);
   const query = {
     select: 'id,user_id,category,title,content,content_label,location_state,location_city,agency_office,case_type,event_date,outcome,judge_name,judge_slug,lawyer_or_firm,status,moderation_state,risk_level,is_indexable,like_count,comment_count,published_at,created_at,updated_at,profiles!community_posts_user_id_fkey(display_name,avatar_key)',
-    order: 'created_at.desc',
-    limit: postId ? '1' : '80'
+    order: 'created_at.desc,id.desc',
+    limit: postId ? '1' : String(page.limit + 1)
   };
   if (postId) query.id = `eq.${postId}`;
-  else if (category && CATEGORIES.has(category)) query.category = `eq.${category}`;
+  else {
+    query.offset = String(page.offset);
+    if (category && CATEGORIES.has(category)) query.category = `eq.${category}`;
+  }
   const rows = await rest('community_posts', { query });
-  let posts = (rows || []).filter((row) => row.status === 'published' || (user && row.user_id === user.id && row.status !== 'deleted'));
+  const pageRows = postId ? (rows || []) : (rows || []).slice(0, page.limit);
+  const nextOffset = !postId && (rows || []).length > page.limit ? page.offset + page.limit : null;
+  let posts = pageRows.filter((row) => row.status === 'published' || (user && row.user_id === user.id && row.status !== 'deleted'));
   let viewerLikes = [];
   if (user && posts.length) {
     viewerLikes = await rest('community_post_likes', {
@@ -150,7 +166,7 @@ async function feed(event) {
     });
     comments = (commentRows || []).filter((row) => row.status === 'published' || (user && row.user_id === user.id && row.status !== 'deleted'));
   }
-  return json(200, { ok: true, posts, comments, viewer_user_id: user?.id || null });
+  return json(200, { ok: true, posts, comments, viewer_user_id: user?.id || null, next_offset: nextOffset });
 }
 
 async function createPost(event, user, profile, body) {
@@ -332,4 +348,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation };
+exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, resolveLikeMutation, feedPagination };

@@ -91,15 +91,19 @@ test('sets an explicit community comment like intent', async () => {
   await assert.rejects(() => api.toggleCommentLike(''), /评论编号无效/);
 });
 
-test('uses the existing API actions for like, report and owner unpublish', async () => {
-  const { api, calls } = mockApi([{ liked: true, like_count: 3 }, { ok: true }, { ok: true }]);
+test('uses the existing API actions for like, reports and owner unpublish', async () => {
+  const { api, calls } = mockApi([{ liked: true, like_count: 3 }, { ok: true }, { ok: true }, { ok: true }]);
   await api.toggleLike('post-1', true);
   await api.reportPost('post-1', '包含个人隐私');
+  await api.reportComment('comment-1', '包含攻击内容');
   await api.unpublishPost('post-1');
   assert.deepEqual(calls.map((call) => JSON.parse(String(call.init?.body)).action), [
-    'toggle_like', 'report_post', 'unpublish_post',
+    'toggle_like', 'report_post', 'report_comment', 'unpublish_post',
   ]);
   assert.equal(JSON.parse(String(calls[0].init?.body)).liked, true);
+  assert.deepEqual(JSON.parse(String(calls[2].init?.body)), {
+    action: 'report_comment', comment_id: 'comment-1', reason: '包含攻击内容',
+  });
 });
 
 test('validates comments and reports before any network write', async () => {
@@ -108,6 +112,8 @@ test('validates comments and reports before any network write', async () => {
   await assert.rejects(() => api.unpublishComment(' '), /编号无效/);
   await assert.rejects(() => api.toggleCommentLike(' '), /编号无效/);
   await assert.rejects(() => api.reportPost('post-1', 'x'), /2–500/);
+  await assert.rejects(() => api.reportComment('comment-1', 'x'), /2–500/);
+  await assert.rejects(() => api.reportComment(' ', '有效理由'), /编号无效/);
   assert.equal(calls.length, 0);
 });
 

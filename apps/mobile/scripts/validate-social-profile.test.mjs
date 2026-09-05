@@ -356,3 +356,29 @@ test('community comments sync retry-safe viewer likes through the existing API',
   assert.match(migration, /after insert on public\.community_post_comment_likes/);
   assert.match(migration, /after delete on public\.community_post_comment_likes/);
 });
+
+test('community comment reports preserve input and share the existing moderation queue', () => {
+  const detail = read('app/community/[id].tsx');
+  const api = read('src/api/community-core.ts');
+  const server = read('../../netlify/functions/community-api.js');
+  const adminServer = read('../../netlify/functions/community-admin.js');
+  const adminUi = read('../../admin/community-center.js');
+  const migration = read('../../supabase/migrations/20260905042010_community_comment_reports.sql');
+
+  assert.match(detail, /community-comment-report-/);
+  assert.match(detail, /community-comment-report-form-/);
+  assert.match(detail, /commentReport\.reason/);
+  assert.match(detail, /重试举报/);
+  assert.match(detail, /withUiTimeout\(reportCommunityComment/);
+  assert.match(api, /action: 'report_comment'/);
+  assert.match(server, /comment\.user_id === user\.id/);
+  assert.match(server, /resolution=ignore-duplicates/);
+  assert.match(adminServer, /select: 'id,post_id,comment_id,reporter_user_id/);
+  assert.match(adminServer, /community_comment_report/);
+  assert.match(adminServer, /community_moderation_actions/);
+  assert.match(adminUi, /评论 \$\{esc\(r\.comment_id\)\}/);
+  assert.match(migration, /num_nonnulls\(post_id, comment_id\) = 1/);
+  assert.match(migration, /community_post_reports_comment_reporter_key/);
+  assert.match(migration, /where comment_id is not null/);
+  assert.match(migration, /grant select, insert, update, delete on public\.community_post_reports to service_role/);
+});

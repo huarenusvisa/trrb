@@ -369,6 +369,23 @@ async function reportPost(user, body) {
   return json(201, { ok: true });
 }
 
+async function reportComment(user, body) {
+  const commentId = clean(body.comment_id, 80);
+  const reason = clean(body.reason, 500);
+  if (!commentId || reason.length < 2) return json(400, { error: '请填写举报理由' });
+  const rows = await rest('community_post_comments', {
+    query: { select: 'id,user_id,status', id: `eq.${commentId}`, limit: '1' }
+  });
+  const comment = Array.isArray(rows) ? rows[0] : null;
+  if (!comment || comment.status !== 'published') return json(404, { error: '评论不存在' });
+  if (comment.user_id === user.id) return json(400, { error: '不能举报自己的评论' });
+  await rest('community_post_reports', {
+    method: 'POST', body: { comment_id: commentId, reporter_user_id: user.id, reason },
+    prefer: 'resolution=ignore-duplicates,return=minimal'
+  });
+  return json(201, { ok: true });
+}
+
 async function unpublishPost(user, body) {
   const postId = clean(body.post_id, 80);
   const rows = await rest('community_posts', { query: { select: 'id,user_id,status', id: `eq.${postId}`, limit: '1' } });
@@ -397,6 +414,7 @@ exports.handler = async (event) => {
     if (action === 'toggle_like') return toggleLike(user, body);
     if (action === 'toggle_comment_like') return toggleCommentLike(user, body);
     if (action === 'report_post') return reportPost(user, body);
+    if (action === 'report_comment') return reportComment(user, body);
     if (action === 'unpublish_post') return unpublishPost(user, body);
     return json(400, { error: 'unknown_action' });
   } catch (error) {

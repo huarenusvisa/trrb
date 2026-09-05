@@ -20,7 +20,7 @@ exports.handler = async (event) => {
         optionalRest('comment_reports', { query: { select: 'id,comment_id,reporter_user_id,reason,status,created_at,reviewed_at', order: 'created_at.desc', limit: '200' } }),
         optionalRest('community_posts', { query: { select: 'id,user_id,category,title,content,status,moderation_state,risk_level,is_indexable,created_at', order: 'created_at.desc', limit: '200' } }),
         optionalRest('community_post_comments', { query: { select: 'id,post_id,user_id,content,status,risk_level,created_at', order: 'created_at.desc', limit: '200' } }),
-        optionalRest('community_post_reports', { query: { select: 'id,post_id,reporter_user_id,reason,status,created_at,reviewed_at', order: 'created_at.desc', limit: '200' } })
+        optionalRest('community_post_reports', { query: { select: 'id,post_id,comment_id,reporter_user_id,reason,status,created_at,reviewed_at', order: 'created_at.desc', limit: '200' } })
       ]);
       return json(200, { ok: true, role: admin.role, users: users || [], comments: comments || [], reports: reports || [], posts: posts || [], postComments: postComments || [], postReports: postReports || [] });
     }
@@ -74,13 +74,14 @@ exports.handler = async (event) => {
       auditAction = `community_comment_status:${value}`;
     } else if (action === 'set_post_report_status') {
       if (!['reviewed','dismissed','actioned'].includes(value)) return json(400, { error: 'invalid_status' });
-      const rows = await rest('community_post_reports', { query: { select: 'id,post_id,reporter_user_id', id: `eq.${id}`, limit: '1' } });
+      const rows = await rest('community_post_reports', { query: { select: 'id,post_id,comment_id,reporter_user_id', id: `eq.${id}`, limit: '1' } });
       const row = Array.isArray(rows) ? rows[0] : null;
       if (!row) return json(404, { error: 'report_not_found' });
       await rest('community_post_reports', { method: 'PATCH', query: { id: `eq.${id}` }, body: { status: value, reviewed_at: new Date().toISOString() }, prefer: 'return=minimal' });
       targetUserId = row.reporter_user_id;
       postId = row.post_id;
-      auditAction = `community_post_report:${value}`;
+      commentId = row.comment_id;
+      auditAction = `${row.comment_id ? 'community_comment_report' : 'community_post_report'}:${value}`;
     } else if (action === 'set_comment_status') {
       if (!['published','pending','hidden','deleted'].includes(value)) return json(400, { error: 'invalid_status' });
       const rows = await rest('comments', { query: { select: 'id,user_id', id: `eq.${id}`, limit: '1' } });
@@ -103,10 +104,11 @@ exports.handler = async (event) => {
       return json(400, { error: 'unknown_action' });
     }
 
-    await optionalRest(postId || (commentId && action === 'set_community_comment_status') ? 'community_moderation_actions' : 'moderation_actions', {
+    const communityAudit = Boolean(postId || (commentId && ['set_community_comment_status', 'set_post_report_status'].includes(action)));
+    await optionalRest(communityAudit ? 'community_moderation_actions' : 'moderation_actions', {
       method: 'POST',
-      body: postId
-        ? { actor_user_id: actorId, post_id: postId, comment_id: action === 'set_community_comment_status' ? commentId : null, action: auditAction, reason: 'community admin center' }
+      body: communityAudit
+        ? { actor_user_id: actorId, post_id: postId, comment_id: commentId, action: auditAction, reason: 'community admin center' }
         : { actor_user_id: actorId, target_user_id: targetUserId, comment_id: commentId, action: auditAction, reason: 'community admin center' },
       prefer: 'return=minimal'
     });

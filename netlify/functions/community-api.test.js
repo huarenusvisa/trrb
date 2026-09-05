@@ -66,3 +66,12 @@ test('bounds community feed pagination input', () => {
   assert.deepEqual(feedPagination({ offset: '-5', limit: '1000' }), { offset: 0, limit: 30 });
   assert.deepEqual(feedPagination({ offset: 'bad', limit: 'bad' }), { offset: 0, limit: 20 });
 });
+
+test('community comment reports remain a distinct action contract', () => {
+  const source = require('node:fs').readFileSync(require.resolve('./community-api'), 'utf8');
+  assert.match(source, /action === 'report_comment'/);
+  assert.match(source, /body: \{ comment_id: commentId, reporter_user_id: user\.id, reason \}/);
+  assert.match(source, /comment\.status !== 'published'/);
+  assert.match(source, /comment\.user_id === user\.id/);
+  assert.match(source, /resolution=ignore-duplicates/);
+});

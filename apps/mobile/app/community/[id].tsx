@@ -16,6 +16,8 @@ import { AsyncStatePanel } from '../../src/components/AsyncStatePanel';
 import { appendCreatedCommunityComment, communityCommentDisplayName, paginateCommunityCommentThreads, removeUnpublishedCommunityComment, visibleThreadCountForComment } from '../../src/community/community-comment-presentation';
 import { optimisticCommunityCommentLike, resolveCommunityCommentLike } from '../../src/community/community-comment-like-state';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
+import { useI18n } from '../../src/i18n/I18nProvider';
+import { localeDateTag, type MessageKey } from '../../src/i18n/i18n-core';
 import { withUiTimeout } from '../../src/utils/async-state-core';
 import { clearCommentDraft, loadCommentDraft, saveCommentDraft } from '../../src/storage/commentDraft';
 
@@ -25,12 +27,13 @@ type CommentReportState = { commentId: string; reason: string; error: string };
 
 const COMMENT_THREAD_PAGE_SIZE = 15;
 
-const categoryNames: Record<string, string> = {
-  hot_discussion: '热门讨论', immigration_help: '移民互助', court_experience: '上庭交流',
-  uscis_interview: 'USCIS 面谈', ice_experience: 'ICE 经历', lawyer_review: '律师点评', tipoff: '投稿爆料',
+const categoryKeys: Record<CommunityPostDetail['post']['category'], MessageKey> = {
+  hot_discussion: 'community.category.hotDiscussion', immigration_help: 'community.category.immigrationHelp', court_experience: 'community.category.courtExperience',
+  uscis_interview: 'community.category.uscisInterview', ice_experience: 'community.category.iceExperience', lawyer_review: 'community.category.lawyerReview', tipoff: 'community.category.tipoff',
 };
 
 export default function CommunityPostScreen() {
+  const { locale, t } = useI18n();
   const { id, commentId } = useLocalSearchParams<{ id: string; commentId?: string }>();
   const targetCommentId = typeof commentId === 'string' ? commentId : '';
   const [detail, setDetail] = useState<CommunityPostDetail | null>(null);
@@ -66,12 +69,12 @@ export default function CommunityPostScreen() {
     if (mode === 'initial') { setLoading(true); setRefreshing(false); setError(''); setRefreshError(''); setDetail(null); }
     else { setRefreshing(true); setRefreshError(''); }
     try {
-      const next = await withUiTimeout(getCommunityPost(String(id)), '帖子读取超时，请检查网络后重试。', 16_000);
+      const next = await withUiTimeout(getCommunityPost(String(id)), t('community.detailTimeout'), 16_000);
       if (sequence !== requestSequence.current) return;
       setDetail(next); setError(''); setRefreshError(''); setCommentLikeError(null);
     } catch (e) {
       if (sequence !== requestSequence.current) return;
-      const message = e instanceof Error ? e.message : '帖子加载失败';
+      const message = e instanceof Error ? e.message : t('community.detailLoadFailed');
       if (mode === 'initial') setError(message);
       else setRefreshError(message);
     } finally {
@@ -80,7 +83,7 @@ export default function CommunityPostScreen() {
         else setRefreshing(false);
       }
     }
-  }, [id]);
+  }, [id, t]);
 
   const load = useCallback(() => fetchLatest('initial'), [fetchLatest]);
   const refresh = useCallback(() => fetchLatest('refresh'), [fetchLatest]);
@@ -105,7 +108,7 @@ export default function CommunityPostScreen() {
       if (!active) return;
       loaded = true;
       if (!draft) return;
-      const restoredTarget = draft.parentId ? { id: draft.parentId, label: draft.replyLabel || '用户' } : null;
+      const restoredTarget = draft.parentId ? { id: draft.parentId, label: draft.replyLabel || t('community.user') } : null;
       latestComment.current = draft.text; latestReplyTarget.current = restoredTarget;
       setComment(draft.text); setReplyTarget(restoredTarget); setDraftRestored(true);
     }).catch(() => undefined).finally(() => { if (active) { loaded = true; setDraftReady(true); } });
@@ -118,7 +121,7 @@ export default function CommunityPostScreen() {
         replyLabel: latestReplyTarget.current?.label,
       }).catch(() => undefined);
     };
-  }, [id]);
+  }, [id, t]);
   useEffect(() => {
     if (!id || !draftReady) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
@@ -140,15 +143,15 @@ export default function CommunityPostScreen() {
     if (!detail || !comment.trim() || busyAction === 'comment' || !requireLogin()) return;
     setBusyAction('comment'); setFeedback(null);
     try {
-      const result = await withUiTimeout(createCommunityComment(detail.post.id, comment, replyTarget?.id || null), '评论提交超时，请重试。');
+      const result = await withUiTimeout(createCommunityComment(detail.post.id, comment, replyTarget?.id || null), t('community.commentSubmitTimeout'));
       if (saveTimer.current) clearTimeout(saveTimer.current);
       await clearCommentDraft('community', String(id));
       setDetail((current) => current ? appendCreatedCommunityComment(current, result.comment, result.pending) : current);
       latestComment.current = ''; latestReplyTarget.current = null;
       setComment(''); setReplyTarget(null); setDraftRestored(false);
-      setFeedback({ title: result.pending ? '评论已提交' : '评论发布成功', message: result.pending ? '评论正在等待审核。' : '你的评论已显示在帖子中。', tone: 'neutral' });
+      setFeedback({ title: t(result.pending ? 'community.commentSubmitted' : 'community.commentPublished'), message: t(result.pending ? 'community.commentPendingBody' : 'community.commentPublishedBody'), tone: 'neutral' });
       void refresh();
-    } catch (e) { setFeedback({ title: '评论提交失败', message: e instanceof Error ? e.message : '评论失败', tone: 'error', retry: () => void submitComment() }); }
+    } catch (e) { setFeedback({ title: t('community.commentSubmitFailed'), message: e instanceof Error ? e.message : t('community.commentFailed'), tone: 'error', retry: () => void submitComment() }); }
     finally { setBusyAction(''); }
   };
 
@@ -169,10 +172,10 @@ export default function CommunityPostScreen() {
     if (!detail || !requireLogin()) return;
     setBusyAction('like'); setFeedback(null);
     try {
-      const result = await withUiTimeout(toggleCommunityPostLike(detail.post.id, !detail.post.viewer_has_liked), '点赞操作超时，请重试。');
+      const result = await withUiTimeout(toggleCommunityPostLike(detail.post.id, !detail.post.viewer_has_liked), t('community.likeTimeoutShort'));
       setDetail((current) => current ? { ...current, post: { ...current.post, like_count: result.like_count, viewer_has_liked: result.liked } } : current);
-      setFeedback({ title: result.liked ? '已点赞' : '已取消点赞', message: '帖子状态已更新。', tone: 'neutral' });
-    } catch (e) { setFeedback({ title: '点赞操作失败', message: e instanceof Error ? e.message : '点赞失败', tone: 'error', retry: () => void like() }); }
+      setFeedback({ title: t(result.liked ? 'community.liked' : 'community.unliked'), message: t('community.postUpdated'), tone: 'neutral' });
+    } catch (e) { setFeedback({ title: t('community.likeActionFailed'), message: e instanceof Error ? e.message : t('community.likeFailure'), tone: 'error', retry: () => void like() }); }
     finally { setBusyAction(''); }
   };
 
@@ -180,20 +183,20 @@ export default function CommunityPostScreen() {
     if (!detail || !requireLogin()) return;
     setBusyAction('report'); setFeedback(null);
     try {
-      await withUiTimeout(reportCommunityPost(detail.post.id, reportReason), '举报提交超时，请重试。');
-      setReportReason(''); setShowReport(false); setFeedback({ title: '举报已提交', message: '管理员会进行审核。', tone: 'neutral' });
-    } catch (e) { setFeedback({ title: '举报提交失败', message: e instanceof Error ? e.message : '举报失败', tone: 'error', retry: () => void submitReport() }); }
+      await withUiTimeout(reportCommunityPost(detail.post.id, reportReason), t('community.reportTimeout'));
+      setReportReason(''); setShowReport(false); setFeedback({ title: t('community.reportSubmitted'), message: t('community.reportReviewBody'), tone: 'neutral' });
+    } catch (e) { setFeedback({ title: t('community.reportFailed'), message: e instanceof Error ? e.message : t('community.reportFailure'), tone: 'error', retry: () => void submitReport() }); }
     finally { setBusyAction(''); }
   };
 
   const removeOwnPost = () => {
     if (!detail) return;
-    Alert.alert('下架帖子', '下架后帖子将不再公开显示，确定继续吗？', [
-      { text: '取消', style: 'cancel' },
-      { text: '确定下架', style: 'destructive', onPress: async () => {
+    Alert.alert(t('community.unpublishPost'), t('community.unpublishPostConfirm'), [
+      { text: t('community.cancel'), style: 'cancel' },
+      { text: t('community.confirmUnpublish'), style: 'destructive', onPress: async () => {
         setBusyAction('delete'); setFeedback(null);
-        try { await withUiTimeout(unpublishCommunityPost(detail.post.id), '帖子下架超时，请重试。'); router.replace('/community'); }
-        catch (e) { setFeedback({ title: '帖子下架失败', message: e instanceof Error ? e.message : '下架失败', tone: 'error', retry: removeOwnPost }); }
+        try { await withUiTimeout(unpublishCommunityPost(detail.post.id), t('community.unpublishPostTimeout')); router.replace('/community'); }
+        catch (e) { setFeedback({ title: t('community.unpublishPostFailed'), message: e instanceof Error ? e.message : t('community.unpublishFailed'), tone: 'error', retry: removeOwnPost }); }
         finally { setBusyAction(''); }
       } },
     ]);
@@ -204,20 +207,20 @@ export default function CommunityPostScreen() {
     const perform = async () => {
       setBusyCommentId(commentId); setFeedback(null);
       try {
-        const result = await withUiTimeout(unpublishCommunityComment(commentId), '评论下架超时，请重试。');
+        const result = await withUiTimeout(unpublishCommunityComment(commentId), t('community.unpublishCommentTimeout'));
         setDetail((current) => current ? removeUnpublishedCommunityComment(current, result.comment_id, result.comment_count) : current);
         setCommentLikeError((current) => current?.commentId === commentId ? null : current);
         setCommentReport((current) => current?.commentId === commentId ? null : current);
         if (latestReplyTarget.current?.id === commentId) cancelReply();
-        setFeedback({ title: '评论已下架', message: '这条评论已从公开列表移除。', tone: 'neutral' });
+        setFeedback({ title: t('community.commentUnpublished'), message: t('community.commentUnpublishedBody'), tone: 'neutral' });
       } catch (e) {
-        setFeedback({ title: '评论下架失败', message: e instanceof Error ? e.message : '下架失败', tone: 'error', retry: () => removeOwnComment(commentId, true) });
+        setFeedback({ title: t('community.unpublishCommentFailed'), message: e instanceof Error ? e.message : t('community.unpublishFailed'), tone: 'error', retry: () => removeOwnComment(commentId, true) });
       } finally { setBusyCommentId(''); }
     };
     if (confirmed) { void perform(); return; }
-    Alert.alert('下架评论', '下架后评论将不再公开显示，回复仍会保留。确定继续吗？', [
-      { text: '取消', style: 'cancel' },
-      { text: '确定下架', style: 'destructive', onPress: () => void perform() },
+    Alert.alert(t('community.unpublishComment'), t('community.unpublishCommentConfirm'), [
+      { text: t('community.cancel'), style: 'cancel' },
+      { text: t('community.confirmUnpublish'), style: 'destructive', onPress: () => void perform() },
     ]);
   };
 
@@ -230,7 +233,7 @@ export default function CommunityPostScreen() {
       comments: current.comments.map((entry) => entry.id === item.id ? optimisticCommunityCommentLike(entry, desiredLiked) : entry),
     } : current);
     try {
-      const result = await withUiTimeout(toggleCommunityCommentLike(item.id, desiredLiked), '评论点赞超时，请重试。');
+      const result = await withUiTimeout(toggleCommunityCommentLike(item.id, desiredLiked), t('community.commentLikeTimeout'));
       setDetail((current) => current ? {
         ...current,
         comments: current.comments.map((entry) => entry.id === item.id ? resolveCommunityCommentLike(entry, result) : entry),
@@ -246,7 +249,7 @@ export default function CommunityPostScreen() {
       } : current);
       setCommentLikeError({
         commentId: item.id,
-        message: e instanceof Error ? e.message : '评论点赞失败',
+        message: e instanceof Error ? e.message : t('community.commentLikeFailed'),
         desiredLiked,
       });
     } finally { setBusyCommentId(''); }
@@ -266,19 +269,19 @@ export default function CommunityPostScreen() {
     setBusyCommentId(commentId);
     setCommentReport({ ...current, error: '' });
     try {
-      await withUiTimeout(reportCommunityComment(commentId, current.reason), '评论举报超时，请重试。');
+      await withUiTimeout(reportCommunityComment(commentId, current.reason), t('community.commentReportTimeout'));
       setCommentReport(null);
-      setFeedback({ title: '举报已提交', message: '管理员会审核这条评论。', tone: 'neutral' });
+      setFeedback({ title: t('community.reportSubmitted'), message: t('community.commentReportReviewBody'), tone: 'neutral' });
     } catch (e) {
       setCommentReport((latest) => latest?.commentId === commentId ? {
         ...latest,
-        error: e instanceof Error ? e.message : '评论举报失败',
+        error: e instanceof Error ? e.message : t('community.commentReportFailed'),
       } : latest);
     } finally { setBusyCommentId(''); }
   };
 
-  if (loading) return <View style={styles.center}><AsyncStatePanel title="正在读取帖子" message="正在同步最新内容和评论…" busy /></View>;
-  if (!detail) return <View style={styles.center}><AsyncStatePanel testID="community-post-error" title="暂时无法读取帖子" message={error || '帖子可能已下架或暂时不可访问。'} tone="error" actionLabel="重新读取" onAction={() => void load()} /></View>;
+  if (loading) return <View style={styles.center}><AsyncStatePanel title={t('community.detailLoadingTitle')} message={t('community.detailLoadingBody')} busy /></View>;
+  if (!detail) return <View style={styles.center}><AsyncStatePanel testID="community-post-error" title={t('community.detailErrorTitle')} message={error || t('community.detailUnavailable')} tone="error" actionLabel={t('community.reload')} onAction={() => void load()} /></View>;
 
   const { post, comments, viewerUserId } = detail;
   const ownPost = viewerUserId === post.user_id;
@@ -289,39 +292,39 @@ export default function CommunityPostScreen() {
     scrollView.current?.scrollTo({ y: Math.max(0, commentsOffset.current + targetCommentOffset.current - 12), animated: true });
   };
   return <ScrollView ref={scrollView} testID="community-post-detail" style={styles.page} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void refresh()} tintColor="#c8211e" colors={['#c8211e']} />}>
-    <Stack.Screen options={{ headerShown: true, title: '社区帖子', headerBackTitle: '返回' }} />
-    <View style={styles.metaRow}><Text style={styles.category}>{categoryNames[post.category] || post.category}</Text>{post.status !== 'published' ? <Text style={styles.pending}>审核中</Text> : null}</View>
+    <Stack.Screen options={{ headerShown: true, title: t('community.detailScreenTitle'), headerBackTitle: t('common.back') }} />
+    <View style={styles.metaRow}><Text style={styles.category}>{t(categoryKeys[post.category])}</Text>{post.status !== 'published' ? <Text style={styles.pending}>{t('community.pending')}</Text> : null}</View>
     <Text style={styles.title}>{post.title}</Text>
-    <Pressable accessibilityRole="button" accessibilityLabel={`查看${post.profiles?.display_name || '唐人用户'}的主页`} onPress={() => router.push(`/user/${post.user_id}`)}><Text style={styles.author}>{post.profiles?.display_name || '唐人用户'} · {new Date(post.created_at).toLocaleString('zh-CN')}</Text></Pressable>
+    <Pressable accessibilityRole="button" accessibilityLabel={t('community.viewProfileA11y', { name: post.profiles?.display_name || t('community.userFallback') })} onPress={() => router.push(`/user/${post.user_id}`)}><Text style={styles.author}>{post.profiles?.display_name || t('community.userFallback')} · {new Date(post.created_at).toLocaleString(localeDateTag(locale))}</Text></Pressable>
     <Text style={styles.body}>{post.content}</Text>
     <View style={styles.actions}>
-      <Pressable testID="community-like" accessibilityRole="button" accessibilityLabel={`${post.viewer_has_liked ? '取消点赞' : '点赞'}，当前${post.like_count || 0}个赞`} accessibilityState={{ disabled: Boolean(busyAction), selected: post.viewer_has_liked }} disabled={Boolean(busyAction)} style={[styles.action, post.viewer_has_liked && styles.likedAction]} onPress={() => void like()}><Text style={[styles.actionText, post.viewer_has_liked && styles.likedActionText]}>{busyAction === 'like' ? '处理中…' : `${post.viewer_has_liked ? '已赞' : '赞'} ${post.like_count || 0}`}</Text></Pressable>
-      <Pressable testID="community-report" accessibilityRole="button" accessibilityLabel="举报帖子" accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.action} onPress={() => setShowReport((value) => !value)}><Text style={styles.actionText}>举报</Text></Pressable>
-      {ownPost ? <Pressable testID="community-unpublish" accessibilityRole="button" accessibilityLabel="下架帖子" accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.dangerAction} onPress={removeOwnPost}><Text style={styles.dangerText}>{busyAction === 'delete' ? '处理中…' : '下架帖子'}</Text></Pressable> : null}
+      <Pressable testID="community-like" accessibilityRole="button" accessibilityLabel={t(post.viewer_has_liked ? 'community.unlikeA11y' : 'community.likeA11y', { count: post.like_count || 0 })} accessibilityState={{ disabled: Boolean(busyAction), selected: post.viewer_has_liked }} disabled={Boolean(busyAction)} style={[styles.action, post.viewer_has_liked && styles.likedAction]} onPress={() => void like()}><Text style={[styles.actionText, post.viewer_has_liked && styles.likedActionText]}>{busyAction === 'like' ? t('community.processing') : t(post.viewer_has_liked ? 'community.likedCount' : 'community.likeCount', { count: post.like_count || 0 })}</Text></Pressable>
+      <Pressable testID="community-report" accessibilityRole="button" accessibilityLabel={t('community.reportPost')} accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.action} onPress={() => setShowReport((value) => !value)}><Text style={styles.actionText}>{t('community.report')}</Text></Pressable>
+      {ownPost ? <Pressable testID="community-unpublish" accessibilityRole="button" accessibilityLabel={t('community.unpublishPost')} accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.dangerAction} onPress={removeOwnPost}><Text style={styles.dangerText}>{busyAction === 'delete' ? t('community.processing') : t('community.unpublishPost')}</Text></Pressable> : null}
     </View>
-    {showReport ? <View style={styles.reportBox}><TextInput testID="community-report-reason" accessibilityLabel="举报理由" value={reportReason} onChangeText={setReportReason} maxLength={500} multiline placeholder="请简要说明举报理由" style={styles.reportInput} /><Pressable testID="community-report-submit" accessibilityRole="button" accessibilityLabel="提交举报" accessibilityState={{ disabled: busyAction === 'report' }} disabled={busyAction === 'report'} style={styles.reportSubmit} onPress={() => void submitReport()}>{busyAction === 'report' ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>提交举报</Text>}</Pressable></View> : null}
-    {feedback ? <AsyncStatePanel testID="community-action-feedback" title={feedback.title} message={feedback.message} tone={feedback.tone} actionLabel={feedback.retry ? '重试操作' : undefined} onAction={feedback.retry} busy={Boolean(busyAction)} /> : null}
-    {refreshing ? <Text testID="community-refreshing" accessibilityLiveRegion="polite" style={styles.syncStatus}>正在后台同步帖子和评论…</Text> : null}
-    {refreshError ? <AsyncStatePanel testID="community-refresh-error" title="刷新失败，已保留当前内容" message={refreshError} tone="error" actionLabel="重新刷新" onAction={() => void refresh()} /> : null}
+    {showReport ? <View style={styles.reportBox}><TextInput testID="community-report-reason" accessibilityLabel={t('community.reportReason')} value={reportReason} onChangeText={setReportReason} maxLength={500} multiline placeholder={t('community.reportPlaceholder')} style={styles.reportInput} /><Pressable testID="community-report-submit" accessibilityRole="button" accessibilityLabel={t('community.submitReport')} accessibilityState={{ disabled: busyAction === 'report' }} disabled={busyAction === 'report'} style={styles.reportSubmit} onPress={() => void submitReport()}>{busyAction === 'report' ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>{t('community.submitReport')}</Text>}</Pressable></View> : null}
+    {feedback ? <AsyncStatePanel testID="community-action-feedback" title={feedback.title} message={feedback.message} tone={feedback.tone} actionLabel={feedback.retry ? t('community.retryAction') : undefined} onAction={feedback.retry} busy={Boolean(busyAction)} /> : null}
+    {refreshing ? <Text testID="community-refreshing" accessibilityLiveRegion="polite" style={styles.syncStatus}>{t('community.syncing')}</Text> : null}
+    {refreshError ? <AsyncStatePanel testID="community-refresh-error" title={t('community.refreshFailedTitle')} message={refreshError} tone="error" actionLabel={t('community.refreshAgain')} onAction={() => void refresh()} /> : null}
     <View style={styles.comments} onLayout={(event) => { commentsOffset.current = event.nativeEvent.layout.y; setTimeout(scrollToTarget, 40); }}>
-      <Text style={styles.commentsTitle}>评论 {post.comment_count || 0}</Text>
-      {targetCommentId && comments.some((item) => item.id === targetCommentId) ? <Text testID="community-comment-target-status" accessibilityLiveRegion="polite" style={styles.targetStatus}>已定位到通知对应评论</Text> : null}
-      {commentPage.hiddenThreadCount ? <Pressable testID="community-comments-load-earlier" accessibilityRole="button" accessibilityLabel={`查看更早的${Math.min(COMMENT_THREAD_PAGE_SIZE, commentPage.hiddenThreadCount)}组评论`} style={styles.loadEarlier} onPress={() => setVisibleThreadCount((count) => count + COMMENT_THREAD_PAGE_SIZE)}><Text style={styles.loadEarlierText}>查看更早评论（还有 {commentPage.hiddenThreadCount} 组）</Text></Pressable> : null}
+      <Text style={styles.commentsTitle}>{t('community.commentCount', { count: post.comment_count || 0 })}</Text>
+      {targetCommentId && comments.some((item) => item.id === targetCommentId) ? <Text testID="community-comment-target-status" accessibilityLiveRegion="polite" style={styles.targetStatus}>{t('community.targetLocated')}</Text> : null}
+      {commentPage.hiddenThreadCount ? <Pressable testID="community-comments-load-earlier" accessibilityRole="button" accessibilityLabel={t('community.earlierThreadsA11y', { count: Math.min(COMMENT_THREAD_PAGE_SIZE, commentPage.hiddenThreadCount) })} style={styles.loadEarlier} onPress={() => setVisibleThreadCount((count) => count + COMMENT_THREAD_PAGE_SIZE)}><Text style={styles.loadEarlierText}>{t('community.earlierThreads', { count: commentPage.hiddenThreadCount })}</Text></Pressable> : null}
       {commentPage.rows.length ? commentPage.rows.map(({ item, depth, replyToLabel }) => <View key={item.id} testID={`community-comment-${item.id}`} onLayout={item.id === targetCommentId ? (event) => { targetCommentOffset.current = event.nativeEvent.layout.y; setTimeout(scrollToTarget, 40); } : undefined} style={[styles.commentCard, depth > 0 && styles.replyCard, item.id === targetCommentId && styles.targetComment, { marginLeft: Math.min(depth, 3) * 14 }]}>
-        <View style={styles.commentHead}><Pressable accessibilityRole="button" accessibilityLabel={`查看${item.profiles?.display_name || '唐人用户'}的主页`} onPress={() => router.push(`/user/${item.user_id}`)}><Text style={styles.commentAuthor}>{item.profiles?.display_name || '唐人用户'}</Text></Pressable><Text style={styles.commentTime}>{new Date(item.created_at).toLocaleString('zh-CN')}</Text></View>
-        {replyToLabel ? <Text style={styles.replyLabel}>回复 {replyToLabel}</Text> : null}
+        <View style={styles.commentHead}><Pressable accessibilityRole="button" accessibilityLabel={t('community.viewProfileA11y', { name: item.profiles?.display_name || t('community.userFallback') })} onPress={() => router.push(`/user/${item.user_id}`)}><Text style={styles.commentAuthor}>{item.profiles?.display_name || t('community.userFallback')}</Text></Pressable><Text style={styles.commentTime}>{new Date(item.created_at).toLocaleString(localeDateTag(locale))}</Text></View>
+        {replyToLabel ? <Text style={styles.replyLabel}>{t('community.replyTo', { name: replyToLabel })}</Text> : null}
         <Text style={styles.commentBody}>{item.content}</Text>
-        {item.status !== 'published' ? <Text style={styles.reviewing}>审核中，仅自己可见</Text> : null}
+        {item.status !== 'published' ? <Text style={styles.reviewing}>{t('community.commentReviewing')}</Text> : null}
         <View style={styles.commentActions}>
-          {item.status === 'published' ? <Pressable testID={`community-comment-like-${item.id}`} accessibilityRole="button" accessibilityLabel={`${item.viewer_has_liked ? '取消点赞' : '点赞'}评论，当前${item.like_count || 0}个赞`} accessibilityState={{ disabled: Boolean(busyCommentId), selected: item.viewer_has_liked, busy: busyCommentId === item.id }} disabled={Boolean(busyCommentId)} style={[styles.commentLikeAction, item.viewer_has_liked && styles.commentLikedAction]} onPress={() => void likeComment(item)}><Text style={[styles.commentLikeText, item.viewer_has_liked && styles.commentLikedText]}>{busyCommentId === item.id ? '处理中…' : `${item.viewer_has_liked ? '已赞' : '赞'} ${item.like_count || 0}`}</Text></Pressable> : null}
-          {viewerUserId && item.status === 'published' ? <Pressable testID={`community-comment-reply-${item.id}`} accessibilityRole="button" accessibilityLabel={`回复${communityCommentDisplayName(item)}`} accessibilityState={{ disabled: Boolean(busyCommentId) }} disabled={Boolean(busyCommentId)} style={styles.replyAction} onPress={() => startReply({ id: item.id, label: communityCommentDisplayName(item) })}><Text style={styles.replyActionText}>回复</Text></Pressable> : null}
-          {viewerUserId && viewerUserId !== item.user_id && item.status === 'published' ? <Pressable testID={`community-comment-report-${item.id}`} accessibilityRole="button" accessibilityLabel="举报这条评论" accessibilityState={{ disabled: Boolean(busyCommentId), expanded: commentReport?.commentId === item.id }} disabled={Boolean(busyCommentId)} style={styles.commentReportAction} onPress={() => openCommentReport(item.id)}><Text style={styles.commentReportText}>举报</Text></Pressable> : null}
-          {viewerUserId === item.user_id ? <Pressable testID={`community-comment-unpublish-${item.id}`} accessibilityRole="button" accessibilityLabel="下架自己的评论" accessibilityState={{ disabled: Boolean(busyCommentId), busy: busyCommentId === item.id }} disabled={Boolean(busyCommentId)} style={styles.commentDeleteAction} onPress={() => removeOwnComment(item.id)}><Text style={styles.commentDeleteText}>{busyCommentId === item.id ? '下架中…' : '下架'}</Text></Pressable> : null}
+          {item.status === 'published' ? <Pressable testID={`community-comment-like-${item.id}`} accessibilityRole="button" accessibilityLabel={t(item.viewer_has_liked ? 'community.unlikeCommentA11y' : 'community.likeCommentA11y', { count: item.like_count || 0 })} accessibilityState={{ disabled: Boolean(busyCommentId), selected: item.viewer_has_liked, busy: busyCommentId === item.id }} disabled={Boolean(busyCommentId)} style={[styles.commentLikeAction, item.viewer_has_liked && styles.commentLikedAction]} onPress={() => void likeComment(item)}><Text style={[styles.commentLikeText, item.viewer_has_liked && styles.commentLikedText]}>{busyCommentId === item.id ? t('community.processing') : t(item.viewer_has_liked ? 'community.likedCount' : 'community.likeCount', { count: item.like_count || 0 })}</Text></Pressable> : null}
+          {viewerUserId && item.status === 'published' ? <Pressable testID={`community-comment-reply-${item.id}`} accessibilityRole="button" accessibilityLabel={t('community.replyA11y', { name: communityCommentDisplayName(item) })} accessibilityState={{ disabled: Boolean(busyCommentId) }} disabled={Boolean(busyCommentId)} style={styles.replyAction} onPress={() => startReply({ id: item.id, label: communityCommentDisplayName(item) })}><Text style={styles.replyActionText}>{t('community.reply')}</Text></Pressable> : null}
+          {viewerUserId && viewerUserId !== item.user_id && item.status === 'published' ? <Pressable testID={`community-comment-report-${item.id}`} accessibilityRole="button" accessibilityLabel={t('community.reportComment')} accessibilityState={{ disabled: Boolean(busyCommentId), expanded: commentReport?.commentId === item.id }} disabled={Boolean(busyCommentId)} style={styles.commentReportAction} onPress={() => openCommentReport(item.id)}><Text style={styles.commentReportText}>{t('community.report')}</Text></Pressable> : null}
+          {viewerUserId === item.user_id ? <Pressable testID={`community-comment-unpublish-${item.id}`} accessibilityRole="button" accessibilityLabel={t('community.unpublishOwnComment')} accessibilityState={{ disabled: Boolean(busyCommentId), busy: busyCommentId === item.id }} disabled={Boolean(busyCommentId)} style={styles.commentDeleteAction} onPress={() => removeOwnComment(item.id)}><Text style={styles.commentDeleteText}>{busyCommentId === item.id ? t('community.unpublishing') : t('community.unpublish')}</Text></Pressable> : null}
         </View>
-        {commentLikeError?.commentId === item.id ? <View testID={`community-comment-like-error-${item.id}`} accessibilityRole="alert" style={styles.commentLikeError}><Text style={styles.commentLikeErrorText}>{commentLikeError.message}</Text><Pressable accessibilityRole="button" accessibilityLabel="重试评论点赞" onPress={() => void likeComment(item, commentLikeError.desiredLiked)}><Text style={styles.commentLikeRetry}>重试</Text></Pressable></View> : null}
-        {commentReport?.commentId === item.id ? <View testID={`community-comment-report-form-${item.id}`} style={styles.commentReportBox}><TextInput testID={`community-comment-report-reason-${item.id}`} accessibilityLabel="评论举报理由" value={commentReport.reason} onChangeText={(reason) => setCommentReport((current) => current?.commentId === item.id ? { ...current, reason, error: '' } : current)} maxLength={500} multiline placeholder="请简要说明举报理由" style={styles.commentReportInput} />{commentReport.error ? <Text accessibilityRole="alert" style={styles.commentReportError}>{commentReport.error}</Text> : null}<View style={styles.commentReportButtons}><Pressable accessibilityRole="button" accessibilityLabel="取消举报评论" disabled={busyCommentId === item.id} onPress={() => setCommentReport(null)}><Text style={styles.cancelReply}>取消</Text></Pressable><Pressable testID={`community-comment-report-submit-${item.id}`} accessibilityRole="button" accessibilityLabel={commentReport.error ? '重试提交评论举报' : '提交评论举报'} accessibilityState={{ disabled: busyCommentId === item.id || commentReport.reason.trim().length < 2, busy: busyCommentId === item.id }} disabled={busyCommentId === item.id || commentReport.reason.trim().length < 2} style={[styles.commentReportSubmit, commentReport.reason.trim().length < 2 && styles.disabled]} onPress={() => void submitCommentReport(item.id)}><Text style={styles.primaryText}>{busyCommentId === item.id ? '提交中…' : commentReport.error ? '重试举报' : '提交举报'}</Text></Pressable></View></View> : null}
-      </View>) : <Text style={styles.empty}>暂时还没有评论。</Text>}
-      {viewerUserId ? <View style={styles.composer}>{draftRestored ? <Text testID="community-comment-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}>已恢复评论草稿{replyTarget ? `，将回复 ${replyTarget.label}` : ''}。</Text> : null}{replyTarget ? <View testID="community-comment-reply-target" style={styles.replyTarget}><Text style={styles.replyTargetText}>正在回复 {replyTarget.label}</Text><Pressable accessibilityRole="button" accessibilityLabel="取消回复" onPress={cancelReply}><Text style={styles.cancelReply}>取消</Text></Pressable></View> : null}<TextInput ref={commentInput} testID="community-comment-input" accessibilityLabel={replyTarget ? `回复${replyTarget.label}` : '评论内容'} value={comment} onChangeText={updateComment} editable={busyAction !== 'comment'} maxLength={3000} multiline placeholder={replyTarget ? `回复 ${replyTarget.label}` : '写下你的评论'} style={styles.commentInput} /><Text style={styles.counter}>{comment.length}/3000 · 草稿自动保存 7 天</Text><Pressable testID="community-comment-submit" accessibilityRole="button" accessibilityLabel={replyTarget ? `回复${replyTarget.label}` : '发表评论'} accessibilityState={{ disabled: busyAction === 'comment' || !comment.trim(), busy: busyAction === 'comment' }} disabled={busyAction === 'comment' || !comment.trim()} style={[styles.primary, !comment.trim() && styles.disabled]} onPress={() => void submitComment()}>{busyAction === 'comment' ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>{replyTarget ? '发表回复' : '发表评论'}</Text>}</Pressable></View> : <Pressable testID="community-comment-login" accessibilityRole="button" accessibilityLabel="登录后发表评论" style={styles.primary} onPress={() => router.push('/auth')}><Text style={styles.primaryText}>登录后发表评论</Text></Pressable>}
+        {commentLikeError?.commentId === item.id ? <View testID={`community-comment-like-error-${item.id}`} accessibilityRole="alert" style={styles.commentLikeError}><Text style={styles.commentLikeErrorText}>{commentLikeError.message}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('community.retryCommentLike')} onPress={() => void likeComment(item, commentLikeError.desiredLiked)}><Text style={styles.commentLikeRetry}>{t('community.retry')}</Text></Pressable></View> : null}
+        {commentReport?.commentId === item.id ? <View testID={`community-comment-report-form-${item.id}`} style={styles.commentReportBox}><TextInput testID={`community-comment-report-reason-${item.id}`} accessibilityLabel={t('community.commentReportReason')} value={commentReport.reason} onChangeText={(reason) => setCommentReport((current) => current?.commentId === item.id ? { ...current, reason, error: '' } : current)} maxLength={500} multiline placeholder={t('community.reportPlaceholder')} style={styles.commentReportInput} />{commentReport.error ? <Text accessibilityRole="alert" style={styles.commentReportError}>{commentReport.error}</Text> : null}<View style={styles.commentReportButtons}><Pressable accessibilityRole="button" accessibilityLabel={t('community.cancelCommentReport')} disabled={busyCommentId === item.id} onPress={() => setCommentReport(null)}><Text style={styles.cancelReply}>{t('community.cancel')}</Text></Pressable><Pressable testID={`community-comment-report-submit-${item.id}`} accessibilityRole="button" accessibilityLabel={t(commentReport.error ? 'community.retrySubmitCommentReport' : 'community.submitCommentReport')} accessibilityState={{ disabled: busyCommentId === item.id || commentReport.reason.trim().length < 2, busy: busyCommentId === item.id }} disabled={busyCommentId === item.id || commentReport.reason.trim().length < 2} style={[styles.commentReportSubmit, commentReport.reason.trim().length < 2 && styles.disabled]} onPress={() => void submitCommentReport(item.id)}><Text style={styles.primaryText}>{busyCommentId === item.id ? t('community.submitting') : commentReport.error ? t('community.retryReport') : t('community.submitReport')}</Text></Pressable></View></View> : null}
+      </View>) : <Text style={styles.empty}>{t('community.noComments')}</Text>}
+      {viewerUserId ? <View style={styles.composer}>{draftRestored ? <Text testID="community-comment-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}>{replyTarget ? t('community.draftRestoredReply', { name: replyTarget.label }) : t('community.draftRestored')}</Text> : null}{replyTarget ? <View testID="community-comment-reply-target" style={styles.replyTarget}><Text style={styles.replyTargetText}>{t('community.replyingTo', { name: replyTarget.label })}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('community.cancelReply')} onPress={cancelReply}><Text style={styles.cancelReply}>{t('community.cancel')}</Text></Pressable></View> : null}<TextInput ref={commentInput} testID="community-comment-input" accessibilityLabel={replyTarget ? t('community.replyA11y', { name: replyTarget.label }) : t('community.commentContent')} value={comment} onChangeText={updateComment} editable={busyAction !== 'comment'} maxLength={3000} multiline placeholder={replyTarget ? t('community.replyPlaceholder', { name: replyTarget.label }) : t('community.commentPlaceholder')} style={styles.commentInput} /><Text style={styles.counter}>{t('community.draftCounter', { count: comment.length })}</Text><Pressable testID="community-comment-submit" accessibilityRole="button" accessibilityLabel={replyTarget ? t('community.replyA11y', { name: replyTarget.label }) : t('community.publishComment')} accessibilityState={{ disabled: busyAction === 'comment' || !comment.trim(), busy: busyAction === 'comment' }} disabled={busyAction === 'comment' || !comment.trim()} style={[styles.primary, !comment.trim() && styles.disabled]} onPress={() => void submitComment()}>{busyAction === 'comment' ? <ActivityIndicator color="#fff" /> : <Text style={styles.primaryText}>{replyTarget ? t('community.publishReply') : t('community.publishComment')}</Text>}</Pressable></View> : <Pressable testID="community-comment-login" accessibilityRole="button" accessibilityLabel={t('community.signInToComment')} style={styles.primary} onPress={() => router.push('/auth')}><Text style={styles.primaryText}>{t('community.signInToComment')}</Text></Pressable>}
     </View>
   </ScrollView>;
 }

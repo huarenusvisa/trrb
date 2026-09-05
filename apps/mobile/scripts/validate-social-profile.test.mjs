@@ -66,7 +66,7 @@ test('account, message and community states remain actionable on weak networks',
   assert.match(notifications, /useForegroundRetry/);
   assert.match(community, /community-empty/);
   assert.match(community, /community-error/);
-  assert.match(community, /发布第一篇/);
+  assert.match(community, /t\('community\.publishFirst'\)/);
 });
 
 test('comments, chats and connection lists recover without blank screens', () => {
@@ -158,7 +158,6 @@ test('user profiles and community post actions expose timeout recovery', () => {
     assert.match(screen, /AsyncStatePanel/);
     assert.match(screen, /withUiTimeout/);
     assert.match(screen, /useForegroundRetry/);
-    assert.match(screen, /重试操作/);
     assert.match(screen, /accessibilityRole="button"/);
   }
 
@@ -166,10 +165,12 @@ test('user profiles and community post actions expose timeout recovery', () => {
   assert.match(userProfile, /user-action-feedback/);
   assert.match(userProfile, /关注操作超时/);
   assert.match(userProfile, /解除拉黑失败/);
+  assert.match(userProfile, /重试操作/);
   assert.match(communityPost, /community-post-error/);
   assert.match(communityPost, /community-action-feedback/);
-  assert.match(communityPost, /评论提交超时/);
-  assert.match(communityPost, /帖子下架失败/);
+  assert.match(communityPost, /t\('community\.retryAction'\)/);
+  assert.match(communityPost, /t\('community\.commentSubmitTimeout'\)/);
+  assert.match(communityPost, /t\('community\.unpublishPostFailed'\)/);
 });
 
 test('profile post composer restores text drafts and keeps failed uploads retryable', () => {
@@ -216,12 +217,13 @@ test('news and community comments preserve scoped drafts and failed submissions'
     assert.match(screen, /saveCommentDraft/);
     assert.match(screen, /clearCommentDraft/);
     assert.match(screen, /draft-restored/);
-    assert.match(screen, /草稿自动保存 7 天/);
   }
+  assert.match(news, /草稿自动保存 7 天/);
+  assert.match(community, /t\('community\.draftCounter'/);
   assert.match(news, /news-comment-error/);
   assert.match(news, /重试发布/);
   assert.match(news, /parentId: target\?\.id/);
-  assert.match(community, /评论提交失败/);
+  assert.match(community, /t\('community\.commentSubmitFailed'\)/);
   assert.match(drafts, /scope: CommentDraftScope/);
   assert.match(drafts, /AsyncStorage\.setItem/);
 });
@@ -294,7 +296,7 @@ test('community comments refresh without clearing visible content', () => {
 
   assert.match(screen, /RefreshControl/);
   assert.match(screen, /community-refresh-error/);
-  assert.match(screen, /刷新失败，已保留当前内容/);
+  assert.match(screen, /t\('community\.refreshFailedTitle'\)/);
   assert.match(screen, /appendCreatedCommunityComment/);
   assert.match(screen, /void refresh\(\)/);
   assert.doesNotMatch(screen, /await load\(\);/);
@@ -310,7 +312,7 @@ test('community comment authors can soft-unpublish with retry and immediate coun
 
   assert.match(screen, /community-comment-unpublish-/);
   assert.match(screen, /viewerUserId === item\.user_id/);
-  assert.match(screen, /评论下架失败/);
+  assert.match(screen, /t\('community\.unpublishCommentFailed'\)/);
   assert.match(screen, /removeUnpublishedCommunityComment/);
   assert.match(api, /action: 'unpublish_comment'/);
   assert.match(presentation, /comment_count: Math\.max\(0, commentCount\)/);
@@ -329,10 +331,10 @@ test('community posts hydrate and preserve the signed-in viewer like state', () 
   assert.match(server, /post_id: `in\.\(\$\{posts\.map/);
   assert.match(server, /withViewerLikeState/);
   assert.match(api, /viewer_has_liked: boolean/);
-  assert.match(list, /post\.viewer_has_liked \? '已赞' : '赞'/);
+  assert.match(list, /post\.viewer_has_liked \? 'community\.likedCount' : 'community\.likeCount'/);
   assert.match(detail, /viewer_has_liked: result\.liked/);
   assert.match(detail, /selected: post\.viewer_has_liked/);
-  assert.match(detail, /post\.viewer_has_liked \? '取消点赞' : '点赞'/);
+  assert.match(detail, /post\.viewer_has_liked \? 'community\.unlikeA11y' : 'community\.likeA11y'/);
 });
 
 test('community list likes optimistically update, roll back and remain retryable', () => {
@@ -344,7 +346,7 @@ test('community list likes optimistically update, roll back and remain retryable
   assert.match(list, /resolveCommunityPostLike/);
   assert.match(list, /\.\.\.item, \.\.\.previous/);
   assert.match(list, /community-list-like-error-/);
-  assert.match(list, /重试点赞操作/);
+  assert.match(list, /t\('community\.retryLikeA11y'\)/);
   assert.match(list, /selected: post\.viewer_has_liked/);
   assert.match(list, /toggleCommunityPostLike\(post\.id, !post\.viewer_has_liked\)/);
   assert.match(list, /if \(!signedIn\) \{ router\.push\('\/auth'\)/);
@@ -426,7 +428,7 @@ test('community comment reports preserve input and share the existing moderation
   assert.match(detail, /community-comment-report-/);
   assert.match(detail, /community-comment-report-form-/);
   assert.match(detail, /commentReport\.reason/);
-  assert.match(detail, /重试举报/);
+  assert.match(detail, /t\('community\.retryReport'\)/);
   assert.match(detail, /withUiTimeout\(reportCommunityComment/);
   assert.match(api, /action: 'report_comment'/);
   assert.match(server, /comment\.user_id === user\.id/);

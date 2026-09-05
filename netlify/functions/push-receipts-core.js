@@ -14,7 +14,11 @@ function correlatePushTickets(targets, tickets) {
     const ticket = tickets[index];
     if (ticket?.status === 'ok' && typeof ticket.id === 'string' && ticket.id.trim()) {
       accepted += 1;
-      receiptRows.push({ ticket_id: ticket.id.trim(), push_token_id: target.id });
+      receiptRows.push({
+        ticket_id: ticket.id.trim(),
+        push_token_id: target.id,
+        ...(target.notification_id ? { notification_id: target.notification_id } : {})
+      });
       return;
     }
     rejected += 1;

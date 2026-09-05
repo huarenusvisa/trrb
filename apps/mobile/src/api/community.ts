@@ -29,4 +29,5 @@ export const unpublishCommunityComment = api.unpublishComment;
 export const toggleCommunityCommentLike = api.toggleCommentLike;
 export const toggleCommunityPostLike = api.toggleLike;
 export const reportCommunityPost = api.reportPost;
+export const reportCommunityComment = api.reportComment;
 export const unpublishCommunityPost = api.unpublishPost;

@@ -65,7 +65,7 @@
   function renderPostReports() {
     const body = document.getElementById('community-post-reports-body');
     if (!body) return;
-    body.innerHTML = state.postReports.map(r => `<tr><td>${esc(r.post_id)}</td><td>${esc(r.reason)}</td><td>${esc(r.status)}</td><td>${new Date(r.created_at).toLocaleString('zh-CN')}</td><td>${canModerate()?`<button class="small-btn" data-post-report-status="reviewed" data-post-report-id="${esc(r.id)}">已审</button> <button class="small-btn" data-post-report-status="dismissed" data-post-report-id="${esc(r.id)}">驳回</button> <button class="small-btn" data-post-report-status="actioned" data-post-report-id="${esc(r.id)}">已处置</button>`:'无权限'}</td></tr>`).join('') || '<tr><td colspan="5">暂无社区举报</td></tr>';
+    body.innerHTML = state.postReports.map(r => `<tr><td>${r.comment_id ? `评论 ${esc(r.comment_id)}` : `帖子 ${esc(r.post_id)}`}</td><td>${esc(r.reason)}</td><td>${esc(r.status)}</td><td>${new Date(r.created_at).toLocaleString('zh-CN')}</td><td>${canModerate()?`<button class="small-btn" data-post-report-status="reviewed" data-post-report-id="${esc(r.id)}">已审</button> <button class="small-btn" data-post-report-status="dismissed" data-post-report-id="${esc(r.id)}">驳回</button> <button class="small-btn" data-post-report-status="actioned" data-post-report-id="${esc(r.id)}">已处置</button>`:'无权限'}</td></tr>`).join('') || '<tr><td colspan="5">暂无社区举报</td></tr>';
   }
 
   function renderUsers() {

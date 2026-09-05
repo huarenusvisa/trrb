@@ -158,9 +158,17 @@ export function createCommunityApi({
     return request<{ ok: true }>('POST', { action: 'report_post', post_id: postId, reason: text });
   }
 
+  async function reportComment(commentId: string, reason: string) {
+    const id = commentId.trim();
+    const text = reason.trim();
+    if (!id) throw new Error('评论编号无效。');
+    if (text.length < 2 || text.length > 500) throw new Error('举报理由需要在 2–500 字之间。');
+    return request<{ ok: true }>('POST', { action: 'report_comment', comment_id: id, reason: text });
+  }
+
   async function unpublishPost(postId: string) {
     return request<{ ok: true }>('POST', { action: 'unpublish_post', post_id: postId });
   }
 
-  return { listPosts, getPost, createPost, createComment, unpublishComment, toggleCommentLike, toggleLike, reportPost, unpublishPost };
+  return { listPosts, getPost, createPost, createComment, unpublishComment, toggleCommentLike, toggleLike, reportPost, reportComment, unpublishPost };
 }

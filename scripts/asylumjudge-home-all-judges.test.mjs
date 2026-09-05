@@ -65,6 +65,7 @@ assert.ok(cityTrendBody.periods.length >= 3, 'every city/court trend must expose
 const standalone = readFileSync('asylumjudge/index.html', 'utf8');
 const trrb = readFileSync('asylumjudge/trrb.html', 'utf8');
 const client = readFileSync('asylumjudge/site.js', 'utf8');
+const i18n = readFileSync('asylumjudge/app-i18n.js', 'utf8');
 const styles = readFileSync('asylumjudge/site.css', 'utf8');
 const brandClient = readFileSync('asylumjudge/domain-brand.js', 'utf8');
 const manifest = JSON.parse(readFileSync('asylumjudge/site.webmanifest', 'utf8'));
@@ -172,6 +173,8 @@ assert.match(client, /point\.approval == null \? '' : `<circle/, 'suppressed app
 assert.match(client, /point\.denial == null \? '' : `<circle/, 'suppressed denial rates must not render misleading zero-value dots');
 assert.match(client, /container\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*container\.setAttribute\('aria-busy', 'false'\)/, 'judge directory must announce loading and completion');
 assert.match(client, /id="judge-directory-retry"[\s\S]*addEventListener\('click', loadAllJudges\)/, 'judge directory failures must offer an in-place retry');
+assert.match(client, /freshness-badge'\)\.textContent = t\('稍后重试'\)[\s\S]*judge-directory-count'\)\.textContent = t\('读取失败'\)/, 'judge directory failure badges must be localized immediately');
+assert.match(client, /t\('全部法官资料暂时无法读取'\)[\s\S]*t\('无需刷新页面，可以直接重新尝试。'\)[\s\S]*t\('重新尝试'\)/, 'judge directory recovery copy and action must be localized immediately');
 assert.match(client, /daily-knowledge-items[\s\S]*aria-busy', 'true'[\s\S]*id="knowledge-retry"[\s\S]*addEventListener\('click', loadDailyKnowledge\)[\s\S]*finally[\s\S]*aria-busy', 'false'/, 'daily knowledge failures must offer an in-place retry and announce completion');
 assert.match(client, /daily-knowledge-status[\s\S]{0,500}每日庇护知识已更新，共 \{count\} 篇/, 'daily knowledge success must announce only a concise localized result count');
 assert.match(client, /status\.textContent = window\.AsylumI18n\?\.t\?\.\('最新庇护知识暂时无法读取'\)/, 'daily knowledge failures must update the concise status');
@@ -197,8 +200,12 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=11[\s\S]*site\.js\?v=37/, 'standalone homepage must load the localized trend accessibility assets');
-assert.match(trrb, /app-i18n\.js\?v=10[\s\S]*site\.js\?v=36/, 'embedded homepage must load the localized trend accessibility assets');
+assert.match(standalone, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=38/, 'standalone homepage must load the localized judge-directory recovery assets');
+assert.match(trrb, /app-i18n\.js\?v=11[\s\S]*site\.js\?v=37/, 'embedded homepage must load the localized judge-directory recovery assets');
+for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
+  const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
+  assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);
+}
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
 assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
 assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');

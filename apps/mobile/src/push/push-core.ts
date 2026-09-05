@@ -12,6 +12,9 @@ function notificationId(data: Record<string, unknown> | undefined, keys: string[
 }
 
 export function pushTargetPath(data: Record<string, unknown> | undefined) {
+  const conversationId = notificationId(data, ['conversation_id', 'conversationId']);
+  if (conversationId) return `/chat/${encodeURIComponent(conversationId)}`;
+
   const articleId = notificationId(data, ['article_id', 'articleId']);
   if (articleId) return `/article/${encodeURIComponent(articleId)}`;
 
@@ -23,6 +26,7 @@ export function pushTargetPath(data: Record<string, unknown> | undefined) {
   }
 
   const type = data?.type;
+  if (type === 'message' || type === 'message_request') return '/messages';
   if (typeof type === 'string' && ['comment_reply', 'comment_like', 'post_reply', 'system'].includes(type)) {
     return '/notifications';
   }

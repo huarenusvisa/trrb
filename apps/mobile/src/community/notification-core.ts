@@ -19,10 +19,13 @@ export type NotificationTarget = {
   comment_id?: string | null;
   community_post_id?: string | null;
   community_comment_id?: string | null;
+  conversation_id?: string | null;
 };
 
 export function notificationTarget(item: NotificationTarget) {
-  if (item.type === 'message' || item.type === 'message_request') return '/messages';
+  if (item.type === 'message' || item.type === 'message_request') {
+    return item.conversation_id ? `/chat/${encodeURIComponent(item.conversation_id)}` : '/messages';
+  }
   if (item.type === 'follow_request') return '/follow-requests';
   if (item.community_post_id) {
     const postPath = `/community/${encodeURIComponent(item.community_post_id)}`;

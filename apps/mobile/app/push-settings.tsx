@@ -9,7 +9,7 @@ const OPTIONS: { key: keyof PushPreferences; title: string; description: string 
   { key: 'ice', title: 'ICE 动态', description: '执法、拘留与政策变化' },
   { key: 'immigration', title: '移民资讯', description: '签证、庇护与移民政策' },
   { key: 'legal', title: '判例新规', description: '法院判例与法规更新' },
-  { key: 'community', title: '社区互动', description: '回复、点赞与社区消息' }
+  { key: 'community', title: '互动通知', description: '评论、点赞与关注动态' }
 ];
 
 export default function PushSettingsScreen() {

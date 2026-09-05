@@ -11,6 +11,8 @@ test('routes community and inbox notifications', () => {
   assert.equal(pushTargetPath({ community_post_id: 'post-1' }), '/community/post-1');
   assert.equal(pushTargetPath({ community_post_id: 'post-1', community_comment_id: 'comment/2' }), '/community/post-1?commentId=comment%2F2');
   assert.equal(pushTargetPath({ type: 'comment_reply' }), '/notifications');
+  assert.equal(pushTargetPath({ type: 'message' }), '/messages');
+  assert.equal(pushTargetPath({ type: 'message', conversation_id: 'chat/7' }), '/chat/chat%2F7');
 });
 
 test('rejects arbitrary notification links', () => {

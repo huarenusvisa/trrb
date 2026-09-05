@@ -16,11 +16,15 @@ export function openPushTarget(data: Record<string, unknown> | undefined) {
 
 async function ensureAndroidChannel() {
   if (Platform.OS !== 'android') return;
-  await Notifications.setNotificationChannelAsync('news', {
-    name: '新闻推送',
+  await Promise.all([
+    ['news', '新闻推送'],
+    ['community', '互动通知'],
+    ['messages', '私信通知']
+  ].map(([id, name]) => Notifications.setNotificationChannelAsync(id, {
+    name,
     importance: Notifications.AndroidImportance.HIGH,
     vibrationPattern: [0, 250, 250, 250]
-  });
+  })));
 }
 
 export async function getPushPermissionStatus() {

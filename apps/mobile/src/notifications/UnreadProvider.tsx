@@ -4,12 +4,13 @@ import * as Notifications from 'expo-notifications';
 import { supabase } from '../auth/supabase';
 import { unreadNotificationCount } from '../community/notifications';
 import { unreadDirectMessageCount } from '../social/messages';
-import { decrementNotificationUnread, normalizeUnreadCounts, unreadTotal, type UnreadCounts } from './unread-core';
+import { decrementNotificationUnread, decrementNotificationUnreadBy, normalizeUnreadCounts, unreadTotal, type UnreadCounts } from './unread-core';
 
 type UnreadContextValue = UnreadCounts & {
   total: number;
   refresh: () => Promise<void>;
   markNotificationReadLocally: () => void;
+  markNotificationsReadLocally: (count: number) => void;
   markAllNotificationsReadLocally: () => void;
 };
 
@@ -76,6 +77,7 @@ export function UnreadProvider({ children }: { children: ReactNode }) {
     total,
     refresh,
     markNotificationReadLocally: () => setCounts((current) => decrementNotificationUnread(current)),
+    markNotificationsReadLocally: (count) => setCounts((current) => decrementNotificationUnreadBy(current, count)),
     markAllNotificationsReadLocally: () => setCounts((current) => ({ ...current, notifications: 0 })),
   }), [counts, refresh, total]);
 

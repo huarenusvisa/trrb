@@ -113,6 +113,24 @@ test('global unread counts synchronize the profile tab and native app badge', ()
   assert.match(chat, /unread\.refresh/);
 });
 
+test('notification center filters categories and marks only the active category read', () => {
+  const screen = read('app/notifications.tsx');
+  const api = read('src/community/notifications.ts');
+  const provider = read('src/notifications/UnreadProvider.tsx');
+
+  assert.match(screen, /notificationCategories\.map/);
+  assert.match(screen, /accessibilityRole="tab"/);
+  assert.match(screen, /accessibilityState=\{\{ selected:/);
+  assert.match(screen, /listNotifications\(50, category\)/);
+  assert.match(screen, /markAllNotificationsRead\(category\)/);
+  assert.match(screen, /unread\.refresh\(\)/);
+  assert.match(screen, /本类已读/);
+  assert.match(screen, /requestId\.current/);
+  assert.match(api, /notificationTypesForCategory\(category\)/);
+  assert.match(api, /query\.in\('type', types\)/);
+  assert.match(provider, /markNotificationsReadLocally/);
+});
+
 test('user profiles and community post actions expose timeout recovery', () => {
   const userProfile = read('app/user/[id].tsx');
   const communityPost = read('app/community/[id].tsx');

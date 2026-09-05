@@ -27,3 +27,9 @@ export function decrementNotificationUnread(counts: UnreadCounts): UnreadCounts 
   const normalized = normalizeUnreadCounts(counts);
   return { ...normalized, notifications: Math.max(0, normalized.notifications - 1) };
 }
+
+export function decrementNotificationUnreadBy(counts: UnreadCounts, amount: number): UnreadCounts {
+  const normalized = normalizeUnreadCounts(counts);
+  const safeAmount = Number.isFinite(amount) ? Math.max(0, Math.floor(amount)) : 0;
+  return { ...normalized, notifications: Math.max(0, normalized.notifications - safeAmount) };
+}

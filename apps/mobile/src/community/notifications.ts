@@ -1,8 +1,8 @@
 import { supabase } from '../auth/supabase';
-import type { NotificationType } from './notification-core';
+import { notificationTypesForCategory, type NotificationCategory, type NotificationType } from './notification-core';
 
-export { notificationLabel, notificationTarget } from './notification-core';
-export type { NotificationType } from './notification-core';
+export { notificationCategories, notificationCategoryLabel, notificationLabel, notificationTarget } from './notification-core';
+export type { NotificationCategory, NotificationType } from './notification-core';
 
 export type UserNotification = {
   id: string;
@@ -26,14 +26,16 @@ async function currentUserId() {
   return data.user.id;
 }
 
-export async function listNotifications(limit = 50) {
+export async function listNotifications(limit = 50, category: NotificationCategory = 'all') {
   const userId = await currentUserId();
-  const result = await supabase
+  const query = supabase
     .from('user_notifications')
     .select('id,user_id,actor_user_id,type,title,body,article_id,comment_id,community_post_id,community_comment_id,conversation_id,is_read,created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
     .limit(Math.min(Math.max(limit, 1), 100));
+  const types = notificationTypesForCategory(category);
+  const result = types ? await query.in('type', types) : await query;
   if (result.error) throw result.error;
   return (result.data || []) as UserNotification[];
 }
@@ -44,9 +46,11 @@ export async function markNotificationRead(id: string) {
   if (result.error) throw result.error;
 }
 
-export async function markAllNotificationsRead() {
+export async function markAllNotificationsRead(category: NotificationCategory = 'all') {
   const userId = await currentUserId();
-  const result = await supabase.from('user_notifications').update({ is_read: true }).eq('user_id', userId).eq('is_read', false);
+  const query = supabase.from('user_notifications').update({ is_read: true }).eq('user_id', userId).eq('is_read', false);
+  const types = notificationTypesForCategory(category);
+  const result = types ? await query.in('type', types) : await query;
   if (result.error) throw result.error;
 }
 

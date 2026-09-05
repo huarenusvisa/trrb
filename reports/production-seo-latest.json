@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T11:16:45.640Z",
+  "generated_at": "2026-09-05T21:16:02.208Z",
   "site": "https://trrb.net",
   "host": {
     "http://trrb.net/": {
@@ -73,8 +73,8 @@
     "https://trrb.net/news-sitemap.xml": {
       "status": 200,
       "type": "application/xml; charset=UTF-8",
-      "bytes": 71125,
-      "article_count": 150,
+      "bytes": 52943,
+      "article_count": 109,
       "child_sitemaps": [],
       "legacy_query_count": 0,
       "version": "live-supabase-v7-quality-dedupe"
@@ -232,7 +232,7 @@
       "final_url": "https://trrb.net/",
       "asset_count": 35,
       "bad_assets": [],
-      "direct_article_links": 26,
+      "direct_article_links": 16,
       "marker_present": true,
       "category_prerender": ""
     },

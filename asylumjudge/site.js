@@ -431,14 +431,21 @@ function renderDailyKnowledge(rows) {
 
 async function loadDailyKnowledge() {
   const container = $('#daily-knowledge-items');
+  const status = $('#daily-knowledge-status');
   if (!container) return;
   container.setAttribute('aria-busy', 'true');
+  if (status) status.textContent = window.AsylumI18n?.t?.('正在读取今日庇护知识…') || '正在读取今日庇护知识…';
   container.innerHTML = '<div class="knowledge-loading">正在读取今日庇护知识…</div>';
   try {
     const data = await json('/.netlify/functions/immigration-judges?mode=knowledge&limit=4');
-    renderDailyKnowledge(data.results || []);
+    const rows = data.results || [];
+    renderDailyKnowledge(rows);
+    if (status) status.textContent = rows.length
+      ? (window.AsylumI18n?.t?.('每日庇护知识已更新，共 {count} 篇', { count: fmt(Math.min(rows.length, 4)) }) || `每日庇护知识已更新，共 ${fmt(Math.min(rows.length, 4))} 篇`)
+      : (window.AsylumI18n?.t?.('今日暂无可显示的庇护知识') || '今日暂无可显示的庇护知识');
   } catch (error) {
     container.innerHTML = '<div class="knowledge-empty"><span><b>最新庇护知识暂时无法读取</b><button id="knowledge-retry" class="directory-retry" type="button">重新尝试</button></span></div>';
+    if (status) status.textContent = window.AsylumI18n?.t?.('最新庇护知识暂时无法读取') || '最新庇护知识暂时无法读取';
     $('#knowledge-retry').addEventListener('click', loadDailyKnowledge);
   } finally {
     container.setAttribute('aria-busy', 'false');

@@ -245,6 +245,11 @@ assert.match(page, /id="country-comparison-chart"[^>]*aria-describedby="comparis
 assert.match(page, /id="trend-chart"[^>]*aria-describedby="trend-keyboard-note"/, 'trend chart must reference its visible keyboard instructions');
 assert.equal((page.match(/data-i18n="chartKeyboardHint"/g) || []).length, 2, 'both nationality charts must show localized keyboard instructions');
 assert.match(i18nClient, /const chartKeyboardHints = \{[\s\S]*'zh-Hans':[\s\S]*'zh-Hant':[\s\S]*ar:[\s\S]*tr:[\s\S]*Object\.entries\(chartKeyboardHints\)/, 'chart keyboard instructions must be defined and applied across supported locales');
+assert.match(page, /\.language-control select\{height:44px/, 'the nationality language selector must meet the mobile touch target height');
+for (const selector of ['quick-countries button', 'tabs button', 'tooltip-action', 'data-retry']) {
+  const selectorPattern = selector.replaceAll('.', '\\.').replaceAll(' ', '\\s+');
+  assert.match(page, new RegExp(`\\.${selectorPattern}\\{[^}]*min-height:44px[^}]*touch-action:manipulation`), `${selector} must provide a 44px mobile touch target without delayed taps`);
+}
 assert.match(client, /function retryButton\(scope, country = '', updateUrl = false\)/, 'nationality failures must render an in-page retry action');
 assert.match(client, /data-retry="\$\{scope\}"[^>]*data-country="\$\{esc\(country\)\}"[^>]*data-update-url="\$\{updateUrl\}"[^>]*data-i18n="retryAction"/, 'detail retries must preserve the failed nationality, URL behavior, and live translation');
 assert.match(client, /button\.dataset\.retry === 'directory'\) await load\(\)[\s\S]*else await selectCountry\(button\.dataset\.country, button\.dataset\.updateUrl === 'true'\)/, 'retry actions must reload only the failed data scope');

@@ -118,6 +118,7 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /data-state-fy="2026" aria-pressed="true"/, 'the initial fiscal year must expose its selected state');
   assert.match(html, /data-state-fy="2025" aria-pressed="false"/, 'inactive fiscal years must expose their unselected state');
   assert.match(html, /id="state-trend-detail"/, 'homepage must expose touch-friendly point details');
+  assert.doesNotMatch(html, /id="state-trend-detail"[^>]*aria-live/, 'point details must not announce every hover or drag update');
   assert.match(html, /id="trend-state-select"/, 'homepage must let users choose a state');
   assert.match(html, /id="trend-court-select"/, 'homepage must let users choose any city or immigration court');
   assert.match(html, /class="trend-scope-controls" aria-busy="true"/, 'trend location controls must expose their initial loading state');
@@ -155,6 +156,7 @@ assert.match(client, /pointerdown/, 'trend points must respond to touch without 
 assert.match(client, /setPointerCapture/, 'touch dragging must continue while a finger moves across the chart');
 assert.match(client, /market-crosshair/, 'trend chart must expose a moving stock-style crosshair');
 assert.match(client, /market-floating-tooltip/, 'trend chart must show live values inside the chart');
+assert.doesNotMatch(client, /market-floating-tooltip[^>]*role="status"/, 'trend tooltip must not announce every pointer movement');
 assert.match(client, /linePath\('denial'\)/, 'trend chart must draw the denial line');
 assert.match(client, /linePath\('otherShare'\)/, 'trend chart must draw the other-outcome line');
 assert.match(client, /if \(point\[key\] == null \|\| !Number\.isFinite/, 'trend lines must break across suppressed low-sample points');
@@ -187,8 +189,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=10[\s\S]*site\.js\?v=33/, 'standalone homepage must load the concise-knowledge-status assets');
-assert.match(trrb, /app-i18n\.js\?v=9[\s\S]*site\.js\?v=32/, 'embedded homepage must load the concise-knowledge-status assets');
+assert.match(standalone, /app-i18n\.js\?v=10[\s\S]*site\.js\?v=34/, 'standalone homepage must load the non-live trend-detail assets');
+assert.match(trrb, /app-i18n\.js\?v=9[\s\S]*site\.js\?v=33/, 'embedded homepage must load the non-live trend-detail assets');
 assert.match(standalone, /og:image/, 'homepage must expose a branded share image');
 assert.doesNotMatch(standalone, /href="\/immigration-judge-approval-rate\//, 'standalone homepage must use clean public routes directly');
 assert.match(standalone, /href="\/states"/, 'standalone homepage must link directly to the clean states route');

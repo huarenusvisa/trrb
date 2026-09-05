@@ -13,10 +13,12 @@ import { listProfilePosts } from '../../src/social/posts';
 import { loadSocialProfile } from '../../src/social/profiles';
 import type { FollowStatus, ProfilePost, SocialProfile } from '../../src/social/types';
 import { withUiTimeout } from '../../src/utils/async-state-core';
+import { useI18n } from '../../src/i18n/I18nProvider';
 
 type ActionFeedback = { title: string; message: string; tone: 'neutral' | 'error'; retry?: () => void };
 
 export default function UserProfileScreen() {
+  const { t } = useI18n();
   const { id } = useLocalSearchParams<{ id: string }>();
   const userId = String(id || '');
   const [profile, setProfile] = useState<SocialProfile | null>(null);
@@ -45,7 +47,7 @@ export default function UserProfileScreen() {
           getFollowCounts(userId), listProfilePosts(userId), current ? followStatus(userId) : Promise.resolve<FollowStatus>('none'),
         ]);
         return { redirect: false, current, blockedByMe, nextProfile, nextCounts, nextPosts, nextRelation } as const;
-      })(), '用户主页读取超时，请检查网络后重试。', 16_000);
+      })(), t('userProfile.loadTimeout'), 16_000);
       if (result.redirect) { router.replace('/(tabs)/profile'); return; }
       setMe(result.current);
       setBlocked(result.blockedByMe);
@@ -54,9 +56,9 @@ export default function UserProfileScreen() {
         setCounts(result.nextCounts); setPosts(result.nextPosts); setRelation(result.nextRelation);
       }
     } catch (error) {
-      setLoadError(error instanceof Error ? error.message : '请稍后重试');
+      setLoadError(error instanceof Error ? error.message : t('userProfile.retryLater'));
     } finally { setLoading(false); }
-  }, [userId]);
+  }, [t, userId]);
 
   useEffect(() => { if (userId) void load(); }, [load, userId]);
   useForegroundRetry(Boolean(loadError), () => void load());
@@ -65,17 +67,17 @@ export default function UserProfileScreen() {
     if (!me) return router.push('/auth');
     setBusyAction('follow'); setFeedback(null);
     try {
-      const nextRelation = await withUiTimeout(relation === 'none' ? followUser(userId) : unfollowUser(userId).then(() => 'none' as FollowStatus), '关注操作超时，请重试。');
+      const nextRelation = await withUiTimeout(relation === 'none' ? followUser(userId) : unfollowUser(userId).then(() => 'none' as FollowStatus), t('userProfile.followTimeout'));
       setRelation(nextRelation);
       try {
-        setCounts(await withUiTimeout(getFollowCounts(userId), '关注数量同步超时，请稍后重试。'));
+        setCounts(await withUiTimeout(getFollowCounts(userId), t('userProfile.countsTimeout')));
       } catch (error) {
-        setFeedback({ title: '关注状态已更新', message: error instanceof Error ? error.message : '关注数量暂未同步', tone: 'error', retry: () => void load() });
+        setFeedback({ title: t('userProfile.followUpdated'), message: error instanceof Error ? error.message : t('userProfile.countsNotSynced'), tone: 'error', retry: () => void load() });
         return;
       }
-      setFeedback({ title: '关注状态已更新', message: nextRelation === 'none' ? '已取消关注。' : nextRelation === 'pending' ? '关注申请已发送。' : '已关注该用户。', tone: 'neutral' });
+      setFeedback({ title: t('userProfile.followUpdated'), message: nextRelation === 'none' ? t('userProfile.unfollowed') : nextRelation === 'pending' ? t('userProfile.requestSent') : t('userProfile.followingNow'), tone: 'neutral' });
     } catch (error) {
-      setFeedback({ title: '关注操作失败', message: error instanceof Error ? error.message : '请稍后重试', tone: 'error', retry: () => void toggleFollow() });
+      setFeedback({ title: t('userProfile.followFailed'), message: error instanceof Error ? error.message : t('userProfile.retryLater'), tone: 'error', retry: () => void toggleFollow() });
     } finally { setBusyAction(''); }
   };
 
@@ -83,49 +85,49 @@ export default function UserProfileScreen() {
     if (!me) return router.push('/auth');
     setBusyAction('chat'); setFeedback(null);
     try {
-      const existing = await withUiTimeout(findConversationWith(userId), '私信连接超时，请重试。');
+      const existing = await withUiTimeout(findConversationWith(userId), t('userProfile.chatTimeout'));
       if (existing) router.push(`/chat/${existing.id}`);
       else router.push({ pathname: '/chat/new', params: { userId } });
     } catch (error) {
-      setFeedback({ title: '无法打开私信', message: error instanceof Error ? error.message : '请稍后重试', tone: 'error', retry: () => void openChat() });
+      setFeedback({ title: t('userProfile.chatFailed'), message: error instanceof Error ? error.message : t('userProfile.retryLater'), tone: 'error', retry: () => void openChat() });
     } finally { setBusyAction(''); }
   };
 
   const unblock = async () => {
     setBusyAction('unblock'); setFeedback(null);
     try {
-      await withUiTimeout(unblockUser(userId), '解除拉黑超时，请重试。');
+      await withUiTimeout(unblockUser(userId), t('userProfile.unblockTimeout'));
       setBlocked(false); await load();
     } catch (error) {
-      setFeedback({ title: '解除拉黑失败', message: error instanceof Error ? error.message : '请稍后重试', tone: 'error', retry: () => void unblock() });
+      setFeedback({ title: t('userProfile.unblockFailed'), message: error instanceof Error ? error.message : t('userProfile.retryLater'), tone: 'error', retry: () => void unblock() });
     } finally { setBusyAction(''); }
   };
 
-  const confirmBlock = () => Alert.alert('拉黑这个用户？', '双方关注会解除，对方也不能再向你发送消息。', [
-    { text: '取消', style: 'cancel' },
-    { text: '确认拉黑', style: 'destructive', onPress: async () => {
+  const confirmBlock = () => Alert.alert(t('userProfile.blockConfirmTitle'), t('userProfile.blockConfirmBody'), [
+    { text: t('userProfile.cancel'), style: 'cancel' },
+    { text: t('userProfile.confirmBlock'), style: 'destructive', onPress: async () => {
       setBusyAction('block'); setFeedback(null);
-      try { await withUiTimeout(blockUser(userId), '拉黑操作超时，请重试。'); setBlocked(true); setProfile(null); setPosts([]); }
-      catch (error) { setFeedback({ title: '拉黑失败', message: error instanceof Error ? error.message : '请稍后重试', tone: 'error', retry: confirmBlock }); }
+      try { await withUiTimeout(blockUser(userId), t('userProfile.blockTimeout')); setBlocked(true); setProfile(null); setPosts([]); }
+      catch (error) { setFeedback({ title: t('userProfile.blockFailed'), message: error instanceof Error ? error.message : t('userProfile.retryLater'), tone: 'error', retry: confirmBlock }); }
       finally { setBusyAction(''); }
     } },
   ]);
 
-  if (loading) return <View style={styles.center}><AsyncStatePanel title="正在读取用户主页" message="正在同步最新资料和动态…" busy /></View>;
-  if (loadError) return <View style={styles.center}><AsyncStatePanel testID="user-profile-error" title="暂时无法读取用户主页" message={loadError} tone="error" actionLabel="重新读取" onAction={() => void load()} /></View>;
-  if (blocked) return <><Stack.Screen options={{ headerShown: true, title: '用户主页', headerBackTitle: '返回' }} /><View style={styles.center}><Text style={styles.blockTitle}>已拉黑该用户</Text><Text style={styles.muted}>对方无法关注你或向你发送私信。</Text>{feedback ? <AsyncStatePanel testID="user-action-feedback" title={feedback.title} message={feedback.message} tone={feedback.tone} actionLabel={feedback.retry ? '重试操作' : undefined} onAction={feedback.retry} busy={busyAction === 'unblock'} /> : null}<Pressable accessibilityRole="button" accessibilityLabel="解除拉黑" accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.outlineSolo} onPress={() => void unblock()}><Text style={styles.outlineText}>{busyAction === 'unblock' ? '处理中…' : '解除拉黑'}</Text></Pressable></View></>;
-  if (!profile) return <View style={styles.center}><AsyncStatePanel testID="user-profile-unavailable" title="该用户当前不可访问" message="账号可能已停用、隐藏或不存在。" actionLabel="重新读取" onAction={() => void load()} /></View>;
+  if (loading) return <View style={styles.center}><AsyncStatePanel title={t('userProfile.loadingTitle')} message={t('userProfile.loadingBody')} busy /></View>;
+  if (loadError) return <View style={styles.center}><AsyncStatePanel testID="user-profile-error" title={t('userProfile.loadErrorTitle')} message={loadError} tone="error" actionLabel={t('userProfile.reload')} onAction={() => void load()} /></View>;
+  if (blocked) return <><Stack.Screen options={{ headerShown: true, title: t('userProfile.screenTitle'), headerBackTitle: t('common.back') }} /><View style={styles.center}><Text style={styles.blockTitle}>{t('userProfile.blockedTitle')}</Text><Text style={styles.muted}>{t('userProfile.blockedBody')}</Text>{feedback ? <AsyncStatePanel testID="user-action-feedback" title={feedback.title} message={feedback.message} tone={feedback.tone} actionLabel={feedback.retry ? t('userProfile.retryAction') : undefined} onAction={feedback.retry} busy={busyAction === 'unblock'} /> : null}<Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.unblock')} accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.outlineSolo} onPress={() => void unblock()}><Text style={styles.outlineText}>{busyAction === 'unblock' ? t('userProfile.processing') : t('userProfile.unblock')}</Text></Pressable></View></>;
+  if (!profile) return <View style={styles.center}><AsyncStatePanel testID="user-profile-unavailable" title={t('userProfile.unavailableTitle')} message={t('userProfile.unavailableBody')} actionLabel={t('userProfile.reload')} onAction={() => void load()} /></View>;
   const locked = profile.is_private && relation !== 'accepted';
 
-  return <><Stack.Screen options={{ headerShown: true, title: profile.display_name || '用户主页', headerBackTitle: '返回' }} /><ScrollView style={styles.page} contentContainerStyle={styles.content}>
-    {feedback ? <AsyncStatePanel testID="user-action-feedback" title={feedback.title} message={feedback.message} tone={feedback.tone} actionLabel={feedback.retry ? '重试操作' : undefined} onAction={feedback.retry} busy={Boolean(busyAction)} /> : null}
+  return <><Stack.Screen options={{ headerShown: true, title: profile.display_name || t('userProfile.screenTitle'), headerBackTitle: t('common.back') }} /><ScrollView style={styles.page} contentContainerStyle={styles.content}>
+    {feedback ? <AsyncStatePanel testID="user-action-feedback" title={feedback.title} message={feedback.message} tone={feedback.tone} actionLabel={feedback.retry ? t('userProfile.retryAction') : undefined} onAction={feedback.retry} busy={Boolean(busyAction)} /> : null}
     <ProfileHero profile={profile} followers={counts.followers} following={counts.following} onFollowers={() => router.push({ pathname: '/connections/followers', params: { userId } })} onFollowing={() => router.push({ pathname: '/connections/following', params: { userId } })} actions={<>
-      <Pressable accessibilityRole="button" accessibilityLabel="切换关注状态" accessibilityState={{ disabled: Boolean(busyAction) }} style={[styles.primary, relation !== 'none' && styles.outline]} onPress={() => void toggleFollow()} disabled={Boolean(busyAction)}><Text style={relation === 'none' ? styles.primaryText : styles.outlineText}>{busyAction === 'follow' ? '处理中…' : relation === 'accepted' ? '已关注' : relation === 'pending' ? '已申请' : profile.is_private ? '申请关注' : '关注'}</Text></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel="发私信" accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.outline} onPress={() => void openChat()}><Text style={styles.outlineText}>{busyAction === 'chat' ? '连接中…' : '发私信'}</Text></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel="更多用户操作" accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.more} onPress={confirmBlock}><Text style={styles.moreText}>•••</Text></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.followA11y')} accessibilityState={{ disabled: Boolean(busyAction) }} style={[styles.primary, relation !== 'none' && styles.outline]} onPress={() => void toggleFollow()} disabled={Boolean(busyAction)}><Text style={relation === 'none' ? styles.primaryText : styles.outlineText}>{busyAction === 'follow' ? t('userProfile.processing') : relation === 'accepted' ? t('userProfile.following') : relation === 'pending' ? t('userProfile.requested') : profile.is_private ? t('userProfile.requestFollow') : t('userProfile.follow')}</Text></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.message')} accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.outline} onPress={() => void openChat()}><Text style={styles.outlineText}>{busyAction === 'chat' ? t('userProfile.connecting') : t('userProfile.message')}</Text></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.moreA11y')} accessibilityState={{ disabled: Boolean(busyAction) }} disabled={Boolean(busyAction)} style={styles.more} onPress={confirmBlock}><Text style={styles.moreText}>•••</Text></Pressable>
     </>} />
-    <View style={styles.sectionHead}><Text style={styles.sectionTitle}>主页动态</Text><Text style={styles.sectionMeta}>{posts.length} 条</Text></View>
-    {locked ? <View style={styles.locked}><Text style={styles.lockIcon}>🔒</Text><Text style={styles.lockTitle}>这是隐私账号</Text><Text style={styles.muted}>关注申请通过后，才能查看对方发布的图片和视频。</Text></View> : <ProfilePostList posts={posts} />}
+    <View style={styles.sectionHead}><Text style={styles.sectionTitle}>{t('userProfile.posts')}</Text><Text style={styles.sectionMeta}>{t('userProfile.postCount', { count: posts.length })}</Text></View>
+    {locked ? <View style={styles.locked}><Text style={styles.lockIcon}>🔒</Text><Text style={styles.lockTitle}>{t('userProfile.privateTitle')}</Text><Text style={styles.muted}>{t('userProfile.privateBody')}</Text></View> : <ProfilePostList posts={posts} />}
   </ScrollView></>;
 }
 

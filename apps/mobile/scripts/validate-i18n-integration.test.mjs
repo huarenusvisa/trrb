@@ -148,3 +148,26 @@ test('localizes profile composer while preserving captions and selected media', 
   assert.match(compose, /source=\{\{ uri: asset\.uri \}\}/);
   assert.doesNotMatch(compose, /<Text style=\{styles\.title\}>分享图片或视频<\/Text>/);
 });
+
+test('localizes user profile actions while preserving names, bios and posts', () => {
+  const profile = read('app/user/[id].tsx');
+  const hero = read('src/components/ProfileHero.tsx');
+  const posts = read('src/components/ProfilePostList.tsx');
+  for (const source of [profile, hero, posts]) assert.match(source, /useI18n\(\)/);
+  for (const key of ['userProfile.loadingTitle', 'userProfile.followTimeout', 'userProfile.unblockFailed', 'userProfile.blockConfirmTitle', 'userProfile.privateTitle']) {
+    assert.ok(profile.includes(`t('${key}'`), `user profile must translate ${key}`);
+  }
+  assert.match(profile, /t\('userProfile\.postCount', \{ count: posts\.length \}\)/);
+  for (const key of ['userProfile.avatarA11y', 'userProfile.privateAccount', 'userProfile.bioFallback', 'userProfile.followersLabel']) {
+    assert.ok(hero.includes(`t('${key}'`), `profile hero must translate ${key}`);
+  }
+  assert.match(profile, /title: profile\.display_name \|\| t\('userProfile\.screenTitle'\)/);
+  assert.match(hero, /profile\.display_name \|\| t\('userProfile\.readerFallback'\)/);
+  assert.match(hero, /profile\.bio\?\.trim\(\) \|\| t\('userProfile\.bioFallback'\)/);
+  assert.match(profile, /<ProfilePostList posts=\{posts\} \/>/);
+  assert.match(posts, /post\.caption/);
+  assert.match(posts, /localeDateTag\(locale\)/);
+  assert.ok(posts.includes("t('userProfile.noPublicPostsBody')"));
+  assert.ok(posts.includes("t('userProfile.deletePostTitle')"));
+  assert.doesNotMatch(posts, /toLocaleString\('zh-CN'\)/);
+});

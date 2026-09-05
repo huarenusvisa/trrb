@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { TrRbAvatar } from './TrRbAvatar';
 import { publicProfileMediaUrl } from '../social/media';
 import type { SocialProfile } from '../social/types';
+import { useI18n } from '../i18n/I18nProvider';
 
 type Props = {
   profile: SocialProfile;
@@ -16,21 +17,22 @@ type Props = {
 };
 
 export function ProfileHero({ profile, followers, following, own, onEdit, onFollowers, onFollowing, actions }: Props) {
+  const { t } = useI18n();
   const cover = publicProfileMediaUrl(profile.cover_path);
   return <View style={styles.card}>
     <View style={styles.cover}>
       {cover ? <Image source={{ uri: cover }} contentFit="cover" transition={160} style={StyleSheet.absoluteFill} /> : <View style={styles.coverFallback}><View style={styles.glowOne} /><View style={styles.glowTwo} /></View>}
     </View>
     <View style={styles.body}>
-      <View style={styles.avatarWrap}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={88} label={`${profile.display_name || '唐人读者'}的头像`} /></View>
+      <View style={styles.avatarWrap}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={88} label={t('userProfile.avatarA11y', { name: profile.display_name || t('userProfile.readerFallback') })} /></View>
       <View style={styles.nameRow}>
-        <View style={styles.nameCopy}><Text style={styles.name}>{profile.display_name || '唐人读者'}</Text><Text style={styles.privacy}>{profile.is_private ? '🔒 隐私账号' : '公开账号'}</Text></View>
-        {own && onEdit ? <Pressable style={styles.edit} onPress={onEdit}><Text style={styles.editText}>编辑主页</Text></Pressable> : null}
+        <View style={styles.nameCopy}><Text style={styles.name}>{profile.display_name || t('userProfile.readerFallback')}</Text><Text style={styles.privacy}>{profile.is_private ? t('userProfile.privateAccount') : t('userProfile.publicAccount')}</Text></View>
+        {own && onEdit ? <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.edit')} style={styles.edit} onPress={onEdit}><Text style={styles.editText}>{t('userProfile.edit')}</Text></Pressable> : null}
       </View>
-      <Text style={styles.bio}>{profile.bio?.trim() || '这个人很低调，还没有填写简介。'}</Text>
+      <Text style={styles.bio}>{profile.bio?.trim() || t('userProfile.bioFallback')}</Text>
       <View style={styles.stats}>
-        <Pressable style={styles.stat} onPress={onFollowing}><Text style={styles.statNumber}>{following}</Text><Text style={styles.statLabel}>关注</Text></Pressable>
-        <Pressable style={styles.stat} onPress={onFollowers}><Text style={styles.statNumber}>{followers}</Text><Text style={styles.statLabel}>粉丝</Text></Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.followingCountA11y', { count: following })} style={styles.stat} onPress={onFollowing}><Text style={styles.statNumber}>{following}</Text><Text style={styles.statLabel}>{t('userProfile.followingLabel')}</Text></Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.followersCountA11y', { count: followers })} style={styles.stat} onPress={onFollowers}><Text style={styles.statNumber}>{followers}</Text><Text style={styles.statLabel}>{t('userProfile.followersLabel')}</Text></Pressable>
       </View>
       {actions ? <View style={styles.actions}>{actions}</View> : null}
     </View>

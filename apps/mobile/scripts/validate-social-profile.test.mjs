@@ -80,8 +80,8 @@ test('comments, chats and connection lists recover without blank screens', () =>
     assert.match(screen, /AsyncStatePanel/);
     assert.match(screen, /withUiTimeout/);
     assert.match(screen, /useForegroundRetry/);
-    assert.match(screen, /重新(?:读取|同步)/);
   }
+  for (const screen of [comments, messages, chat, followRequests]) assert.match(screen, /重新(?:读取|同步)/);
   assert.match(comments, /my-comments-empty/);
   assert.match(comments, /RefreshControl/);
   assert.match(messages, /messages-error/);
@@ -89,6 +89,7 @@ test('comments, chats and connection lists recover without blank screens', () =>
   assert.match(chat, /chat-error/);
   assert.match(chat, /accessibilityLabel="发送消息"/);
   assert.match(connections, /connections-empty/);
+  assert.match(connections, /t\('connections\.reload'\)/);
   assert.match(followRequests, /follow-requests-empty/);
 });
 

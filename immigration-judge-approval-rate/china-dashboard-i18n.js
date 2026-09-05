@@ -44,6 +44,19 @@
     tr: { pageTitle:'Uyruğa göre küresel sığınma sonuçları | AsylumJudge', metaDescription:'ABD göçmenlik mahkemesi sığınma sonuçlarını uyruğa göre arayın; aylık, üç aylık ve yıllık eğilimleri inceleyin.', dataLabel:'ABD Göçmenlik Verileri', loadingSamples:'Doğrulanmış örneklem yükleniyor', searchChooseOne:'{count} eşleşme bulundu. Sonuçlardan bir uyruk seçin.', trendNote:'Her nokta EOIR karar tarihleri ve uyruk alanlarından gelir; yeşil, kırmızı ve mavi onay, ret ve diğer sonuçları gösterir.', loading:'Yükleniyor…', trendInsufficient:'Bu aralıkta 50 karar eşiğine ulaşan en az iki gerçek veri noktası yok. Üç aylık veya yıllık görünümü deneyin.', trendRange:'{start}–{end} · asgari örneklem eşiğine ulaşan {count} gerçek veri noktası', sampleDate:'{start}–{end} kayıtları; bu sayfa yalnızca toplu verileri gösterir, kimliği belirlenebilir bireysel davaları göstermez.', retry:'Lütfen daha sonra tekrar deneyin; doğrulanmış veriler yerine tahmin kullanılmaz.', retryAction:'Tekrar dene', databaseUnavailable:'Uyruk veri tabanı geçici olarak kullanılamıyor. Daha sonra yenileyin.' }
   };
   Object.entries(supplements).forEach(([code, copy]) => Object.assign(translations[code], copy));
+  const chartKeyboardHints = {
+    en: 'Keyboard: Tab into the chart, use Left and Right Arrow keys to browse, and Home or End to jump to the first or last point.',
+    es: 'Teclado: entre al gráfico con Tab, use las flechas izquierda y derecha, y pulse Inicio o Fin para ir al primer o último punto.',
+    fr: 'Clavier : accédez au graphique avec Tab, parcourez-le avec les flèches gauche et droite, puis utilisez Début ou Fin pour atteindre le premier ou le dernier point.',
+    'pt-BR': 'Teclado: entre no gráfico com Tab, navegue com as setas esquerda e direita e use Home ou End para ir ao primeiro ou último ponto.',
+    hi: 'कीबोर्ड: Tab से चार्ट में जाएँ, बाएँ और दाएँ तीर से डेटा देखें, और पहले या अंतिम बिंदु पर जाने के लिए Home या End दबाएँ।',
+    'zh-Hans': '键盘操作：Tab 进入图表后，使用左右方向键浏览，Home 和 End 跳到首尾数据点。',
+    'zh-Hant': '鍵盤操作：按 Tab 進入圖表後，使用左右方向鍵瀏覽，Home 和 End 跳到首尾資料點。',
+    ru: 'Клавиатура: перейдите к графику клавишей Tab, используйте стрелки влево и вправо, а Home и End — для перехода к первой или последней точке.',
+    ar: 'لوحة المفاتيح: انتقل إلى الرسم بمفتاح Tab، واستخدم السهمين الأيسر والأيمن للتصفح، وHome أو End للانتقال إلى أول نقطة أو آخرها.',
+    tr: 'Klavye: Tab ile grafiğe girin, Sol ve Sağ Ok tuşlarıyla gezinin; ilk veya son noktaya gitmek için Home ya da End tuşunu kullanın.'
+  };
+  Object.entries(chartKeyboardHints).forEach(([code, hint]) => { translations[code].chartKeyboardHint = hint; });
   const eoirCodeLabels = {
     en: 'EOIR code: {code}', es: 'Código EOIR: {code}', fr: 'Code EOIR : {code}', 'pt-BR': 'Código EOIR: {code}',
     hi: 'EOIR कोड: {code}', 'zh-Hans': 'EOIR代码：{code}', 'zh-Hant': 'EOIR代碼：{code}', ru: 'Код EOIR: {code}',

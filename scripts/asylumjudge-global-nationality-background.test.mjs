@@ -222,8 +222,8 @@ assert.match(page, /id="country-comparison-chart"[^>]*role="group"[^>]*data-i18n
 assert.match(page, /id="trend-chart"[^>]*role="group"[^>]*data-i18n-aria-label="trendTitle"/, 'trend chart must expose its interactive points inside a localized named group');
 assert.doesNotMatch(page, /id="(?:country-comparison-chart|trend-chart)"[^>]*role="img"/, 'interactive nationality charts must not flatten their keyboard points into images');
 assert.doesNotMatch(page, /id="(?:comparison-tooltip|trend-tooltip)"[^>]*(?:role="status"|aria-live=)/, 'pointer and touch tooltips must not trigger repeated live announcements');
-assert.match(page, /china-dashboard-i18n\.js\?v=8/, 'nationality dashboard must load the dual-code label asset version');
-assert.match(page, /china-dashboard\.js\?v=25/, 'nationality dashboard must load the chart keyboard navigation asset version');
+assert.match(page, /china-dashboard-i18n\.js\?v=9/, 'nationality dashboard must load the localized chart guidance asset version');
+assert.match(page, /china-dashboard\.js\?v=26/, 'nationality dashboard must load the chart shortcut semantics asset version');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);
@@ -240,6 +240,11 @@ assert.match(client, /country-point-wrap[^\n]*tabindex="\$\{index === 0 \? 0 : -
 assert.match(client, /trend-point[^\n]*tabindex="\$\{index === shown\.length - 1 \? 0 : -1\}"/, 'trend chart must expose only the latest point as its initial tab stop');
 assert.match(client, /function moveChartFocus\(nodes, currentIndex, key\)[\s\S]*ArrowLeft[\s\S]*ArrowRight[\s\S]*Home[\s\S]*End[\s\S]*nodes\[nextIndex\]\?\.focus\(\)/, 'chart points must support roving arrow, Home, and End navigation');
 assert.equal((client.match(/moveChartFocus\(pointNodes, index, event\.key\)/g) || []).length, 2, 'both nationality charts must use the shared keyboard navigation behavior');
+assert.equal((client.match(/aria-keyshortcuts="ArrowLeft ArrowRight Home End"/g) || []).length, 2, 'both nationality chart point templates must expose their keyboard shortcuts');
+assert.match(page, /id="country-comparison-chart"[^>]*aria-describedby="comparison-keyboard-note"/, 'country comparison must reference its visible keyboard instructions');
+assert.match(page, /id="trend-chart"[^>]*aria-describedby="trend-keyboard-note"/, 'trend chart must reference its visible keyboard instructions');
+assert.equal((page.match(/data-i18n="chartKeyboardHint"/g) || []).length, 2, 'both nationality charts must show localized keyboard instructions');
+assert.match(i18nClient, /const chartKeyboardHints = \{[\s\S]*'zh-Hans':[\s\S]*'zh-Hant':[\s\S]*ar:[\s\S]*tr:[\s\S]*Object\.entries\(chartKeyboardHints\)/, 'chart keyboard instructions must be defined and applied across supported locales');
 assert.match(client, /function retryButton\(scope, country = '', updateUrl = false\)/, 'nationality failures must render an in-page retry action');
 assert.match(client, /data-retry="\$\{scope\}"[^>]*data-country="\$\{esc\(country\)\}"[^>]*data-update-url="\$\{updateUrl\}"[^>]*data-i18n="retryAction"/, 'detail retries must preserve the failed nationality, URL behavior, and live translation');
 assert.match(client, /button\.dataset\.retry === 'directory'\) await load\(\)[\s\S]*else await selectCountry\(button\.dataset\.country, button\.dataset\.updateUrl === 'true'\)/, 'retry actions must reload only the failed data scope');

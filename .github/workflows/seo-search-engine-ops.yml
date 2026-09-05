@@ -6,8 +6,8 @@ name: Google/Bing SEO每日提交与诊断
 on:
   workflow_dispatch:
   schedule:
-    # Search-engine submission is a daily batch. Urgent corrective runs remain
-    # available manually without paying the cost on every main-branch change.
+    # Fully automatic daily search-engine maintenance. The manual trigger remains
+    # only as an emergency fallback; normal operation requires no human action.
     - cron: '23 7 * * *'
   push:
     # Validate this SEO control workflow immediately when its own logic changes.
@@ -36,9 +36,11 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/automation-gate.mjs
       - id: gate
-        # Push/manual runs are corrective and must never be silently skipped. Only
-        # scheduled runs respect the control-plane switches.
-        run: echo "allowed=${{ github.event_name != 'schedule' || (steps.controls.outputs.global == 'true' && steps.controls.outputs.seo_search_engine == 'true') }}" >> "$GITHUB_OUTPUT"
+        # SEO is now autonomous: scheduled runs no longer depend on the individual
+        # seo_search_engine switch. Keep only the global control as an emergency
+        # kill switch for the entire automation platform. Push/manual corrective
+        # runs are always allowed.
+        run: echo "allowed=${{ github.event_name != 'schedule' || steps.controls.outputs.global == 'true' }}" >> "$GITHUB_OUTPUT"
   monitor:
     needs: automation-gate
     if: ${{ needs.automation-gate.outputs.allowed == 'true' }}
@@ -106,7 +108,6 @@ jobs:
           path: seo-search-engine-ops-report.json
           retention-days: 30
 
-
       - name: 写入 Google/Bing SEO 机器人站内通知
         if: failure()
         env:
@@ -115,4 +116,3 @@ jobs:
           AUTOMATION_CONTROL_KEY: seo_search_engine
           AUTOMATION_NOTIFICATION_TITLE: Google/Bing SEO机器人执行失败
         run: node scripts/automation-notify.mjs
-

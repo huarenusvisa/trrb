@@ -75,9 +75,10 @@ for (const path of [
   'immigration-judge-approval-rate/detail.html',
   'immigration-judge-approval-rate/china-dashboard.html'
 ]) {
-  assert.match(readFileSync(path, 'utf8'), /domain-brand\.css\?v=5/, `${path} must load the touch-target brand stylesheet`);
+  assert.match(readFileSync(path, 'utf8'), /domain-brand\.css\?v=6/, `${path} must load the touch-target brand stylesheet`);
 }
 assert.match(domainStyles, /\.asylumjudge-primary-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile inner-page navigation must provide responsive 44px touch targets');
+assert.match(domainStyles, /\.language-control select\{[^}]*height:44px[^}]*touch-action:manipulation/, 'inner-page language selectors must provide responsive 44px touch targets');
 
 const nationality = readFileSync('immigration-judge-approval-rate/china-dashboard-i18n.js', 'utf8');
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {

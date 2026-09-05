@@ -258,3 +258,22 @@ test('localizes signed-in profile data controls and account deletion safeguards'
   assert.match(deletion, /body\.error \|\| t\('deleteAccount\.requestFailed'\)/);
   assert.doesNotMatch(deletion, />删除账户</);
 });
+
+test('localizes homepage topic entries and legal detail chrome while preserving source content', () => {
+  const home = read('app/(tabs)/index.tsx');
+  const legal = read('app/legal/[id].tsx');
+  for (const source of [home, legal]) assert.match(source, /useI18n\(\)/);
+  for (const key of ['home.topicsHeading', 'home.topicTrumpTitle', 'home.topicIceSubtitle', 'home.topicFinanceTitle', 'home.topicLoading', 'home.openTopicA11y']) {
+    assert.ok(home.includes(`'${key}'`), `homepage topics must translate ${key}`);
+  }
+  for (const key of ['legal.detailLoading', 'legal.detailDocket', 'legal.detailChineseAnalysis', 'legal.detailAnalysisUnavailable', 'legal.detailOpenOfficial', 'legal.detailShare']) {
+    assert.ok(legal.includes(`t('${key}'`), `legal detail must translate ${key}`);
+  }
+  assert.match(home, /latest\?\.title \|\| t\('home\.topicLoading'\)/);
+  assert.match(legal, /record\.title \|\| record\.citation/);
+  assert.match(legal, /analysis\.summary/);
+  assert.match(legal, /analysis\.disclaimer/);
+  assert.match(home, /localeDateTag\(locale\)/);
+  assert.match(legal, /localeDateTag\(locale\)/);
+  assert.doesNotMatch(legal, />中文解析</);
+});

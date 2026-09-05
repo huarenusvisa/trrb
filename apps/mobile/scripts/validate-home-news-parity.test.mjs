@@ -16,7 +16,7 @@ test('keeps the App homepage on the PC mobile content structure', () => {
     assert.ok(next > position, `${marker} must remain in canonical homepage order`);
     position = next;
   }
-  assert.match(home, /title: '牛来｜唐人财经'/);
+  assert.match(home, /titleKey: 'home\.topicFinanceTitle'/);
   assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', title: '中国热门头条'/);
   for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '订阅每日快报', '加入读者群', '投稿爆料']) {
     assert.ok(home.includes(section), `${section} must stay on the App homepage`);
@@ -49,9 +49,10 @@ test('keeps ICE in its designated sections, ranking, nav and qualified focus car
   const focus = fs.readFileSync(new URL('../../../netlify/functions/public-home-focus.js', import.meta.url), 'utf8');
   const publicArticles = fs.readFileSync(new URL('../../../netlify/functions/public-articles.js', import.meta.url), 'utf8');
   assert.doesNotMatch(home, /中国官场/);
-  assert.match(home, /key: 'ice',[\s\S]*?title: 'ICE执法动态'/);
+  assert.match(home, /key: 'ice',[\s\S]*?titleKey: 'home\.topicIceTitle'/);
   assert.match(home, /key: 'ice-news', title: 'ICE执法动态'/);
-  assert.equal((home.match(/title: 'ICE执法动态'/g) || []).length, 2);
+  assert.equal((home.match(/title: 'ICE执法动态'/g) || []).length, 1);
+  assert.equal((home.match(/titleKey: 'home\.topicIceTitle'/g) || []).length, 1);
   assert.match(home, /rankCategories[^;]*'ICE执法动态'/s);
   assert.match(home, /const rankItems = useMemo[\s\S]*?return articles[\s\S]*?rankCategories\.has/);
   assert.match(home, /HOME_NAV_ITEMS[^;]*'ICE执法动态'/s);

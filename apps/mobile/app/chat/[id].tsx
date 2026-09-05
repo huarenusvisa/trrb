@@ -8,8 +8,10 @@ import { answerMessageRequest, createMessageRequest, findConversationWith, getCo
 import { currentUserId, loadSocialProfile } from '../../src/social/profiles';
 import type { DirectConversation, DirectMessage, SocialProfile } from '../../src/social/types';
 import { withUiTimeout } from '../../src/utils/async-state-core';
+import { useUnreadCounts } from '../../src/notifications/UnreadProvider';
 
 export default function ChatScreen() {
+  const unread = useUnreadCounts();
   const params = useLocalSearchParams<{ id: string; userId?: string }>();
   const routeId = String(params.id || '');
   const targetUserId = String(params.userId || '');
@@ -38,10 +40,13 @@ export default function ChatScreen() {
         return { userId, convo, nextPartner, nextMessages };
       })(), '聊天读取超时，请检查网络后重试。', 16_000);
       setMe(result.userId); setConversation(result.convo); setPartner(result.nextPartner); setMessages(result.nextMessages); setLoadError('');
-      if (result.convo) await markConversationRead(result.convo.id).catch(() => undefined);
+      if (result.convo) {
+        await markConversationRead(result.convo.id).catch(() => undefined);
+        void unread.refresh().catch(() => undefined);
+      }
     } catch (error) { setLoadError(error instanceof Error ? error.message : '聊天加载失败'); }
     finally { setLoading(false); }
-  }, [routeId, targetUserId]);
+  }, [routeId, targetUserId, unread.refresh]);
 
   useEffect(() => { void load(); }, [load]);
   useEffect(() => {

@@ -92,6 +92,27 @@ test('comments, chats and connection lists recover without blank screens', () =>
   assert.match(followRequests, /follow-requests-empty/);
 });
 
+test('global unread counts synchronize the profile tab and native app badge', () => {
+  const root = read('app/_layout.tsx');
+  const tabs = read('app/(tabs)/_layout.tsx');
+  const provider = read('src/notifications/UnreadProvider.tsx');
+  const notifications = read('app/notifications.tsx');
+  const chat = read('app/chat/[id].tsx');
+
+  assert.match(root, /<UnreadProvider>/);
+  assert.match(tabs, /tabBarBadge: profileBadge/);
+  assert.match(provider, /unreadNotificationCount\(\)/);
+  assert.match(provider, /unreadDirectMessageCount\(\)/);
+  assert.match(provider, /setBadgeCountAsync\(total\)/);
+  assert.match(provider, /addNotificationReceivedListener/);
+  assert.match(provider, /state === 'active'/);
+  assert.match(provider, /event === 'SIGNED_OUT'/);
+  assert.match(notifications, /markNotificationReadLocally/);
+  assert.match(notifications, /markAllNotificationsReadLocally/);
+  assert.match(chat, /markConversationRead/);
+  assert.match(chat, /unread\.refresh/);
+});
+
 test('user profiles and community post actions expose timeout recovery', () => {
   const userProfile = read('app/user/[id].tsx');
   const communityPost = read('app/community/[id].tsx');

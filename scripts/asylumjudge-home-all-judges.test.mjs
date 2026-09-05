@@ -70,6 +70,11 @@ const brandClient = readFileSync('asylumjudge/domain-brand.js', 'utf8');
 const manifest = JSON.parse(readFileSync('asylumjudge/site.webmanifest', 'utf8'));
 const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8');
 
+assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
+assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
+assert.match(standalone, /site\.css\?v=21/, 'standalone homepage must load the deferred-rendering stylesheet');
+assert.match(trrb, /site\.css\?v=20/, 'embedded homepage must load the deferred-rendering stylesheet');
+
 const trendRateHelperSource = client.match(/const reportableTrendRates = \(row\) => \{.*?\n\};/s)?.[0];
 assert.ok(trendRateHelperSource, 'homepage client must expose the trend sample-threshold helper');
 const reportableTrendRates = Function(`${trendRateHelperSource}; return reportableTrendRates;`)();

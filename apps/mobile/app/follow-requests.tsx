@@ -5,31 +5,35 @@ import { answerFollowRequest, listFollowRequests } from '../src/community/follow
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { TrRbAvatar } from '../src/components/TrRbAvatar';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
+import { useI18n } from '../src/i18n/I18nProvider';
 import type { SocialProfile } from '../src/social/types';
 import { withUiTimeout } from '../src/utils/async-state-core';
 
 type Request = { profile: SocialProfile; created_at: string };
 
 export default function FollowRequestsScreen() {
+  const { t } = useI18n();
   const [items, setItems] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
   const load = useCallback(async () => {
-    try { setItems(await withUiTimeout(listFollowRequests(), '关注申请读取超时，请检查网络后重试。')); setError(''); }
-    catch (loadError) { setError(loadError instanceof Error ? loadError.message : '关注申请加载失败'); }
+    try { setItems(await withUiTimeout(listFollowRequests(), t('followRequests.timeout'))); setError(''); }
+    catch (loadError) { setError(loadError instanceof Error ? loadError.message : t('followRequests.loadFailed')); }
     finally { setLoading(false); setRefreshing(false); }
-  }, []);
+  }, [t]);
   useFocusEffect(useCallback(() => { void load(); }, [load]));
   useForegroundRetry(Boolean(error), () => { setRefreshing(true); void load(); });
   const retry = () => { setRefreshing(true); void load(); };
-  const answer = async (id: string, accept: boolean) => { try { await answerFollowRequest(id, accept); setItems((rows) => rows.filter((row) => row.profile.id !== id)); } catch (error) { Alert.alert('操作失败', error instanceof Error ? error.message : '请稍后重试'); } };
-  return <View style={styles.page}><Stack.Screen options={{ headerShown: true, title: '关注申请', headerBackTitle: '返回' }} />{loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="follow-requests-loading" title="正在读取关注申请" message="正在同步隐私账号的待处理申请。" busy /></View> : <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retry} />}>
-    {error ? <AsyncStatePanel testID="follow-requests-error" tone="error" title="关注申请暂时无法读取" message={error} actionLabel="重新读取" onAction={retry} busy={refreshing} /> : !items.length ? <AsyncStatePanel testID="follow-requests-empty" title="暂无待处理申请" message="隐私账号收到的新关注会显示在这里。" /> : items.map(({ profile }) => <View key={profile.id} style={styles.row}>
-      <Pressable accessibilityRole="button" accessibilityLabel={`打开${profile.display_name || '唐人读者'}的个人主页`} onPress={() => router.push(`/user/${profile.id}`)}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={52} /></Pressable>
-      <View style={styles.copy}><Text style={styles.name}>{profile.display_name || '唐人读者'}</Text><Text style={styles.bio} numberOfLines={1}>{profile.bio || '申请关注你'}</Text></View>
-      <Pressable accessibilityRole="button" accessibilityLabel={`同意${profile.display_name || '该用户'}的关注申请`} style={styles.accept} onPress={() => void answer(profile.id, true)}><Text style={styles.acceptText}>同意</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`忽略${profile.display_name || '该用户'}的关注申请`} style={styles.reject} onPress={() => void answer(profile.id, false)}><Text style={styles.rejectText}>忽略</Text></Pressable>
-    </View>)}
+  const answer = async (id: string, accept: boolean) => { try { await answerFollowRequest(id, accept); setItems((rows) => rows.filter((row) => row.profile.id !== id)); } catch (error) { Alert.alert(t('followRequests.actionFailed'), error instanceof Error ? error.message : t('followRequests.retryLater')); } };
+  return <View style={styles.page}><Stack.Screen options={{ headerShown: true, title: t('followRequests.screenTitle'), headerBackTitle: t('common.back') }} />{loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="follow-requests-loading" title={t('followRequests.loadingTitle')} message={t('followRequests.loadingBody')} busy /></View> : <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retry} />}>
+    {error ? <AsyncStatePanel testID="follow-requests-error" tone="error" title={t('followRequests.unavailable')} message={error} actionLabel={t('followRequests.reload')} onAction={retry} busy={refreshing} /> : !items.length ? <AsyncStatePanel testID="follow-requests-empty" title={t('followRequests.emptyTitle')} message={t('followRequests.emptyBody')} /> : items.map(({ profile }) => {
+      const displayName = profile.display_name || t('followRequests.readerFallback');
+      return <View key={profile.id} style={styles.row}>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('followRequests.openProfileA11y', { name: displayName })} onPress={() => router.push(`/user/${profile.id}`)}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={52} /></Pressable>
+      <View style={styles.copy}><Text style={styles.name}>{displayName}</Text><Text style={styles.bio} numberOfLines={1}>{profile.bio || t('followRequests.requested')}</Text></View>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('followRequests.acceptA11y', { name: displayName })} style={styles.accept} onPress={() => void answer(profile.id, true)}><Text style={styles.acceptText}>{t('followRequests.accept')}</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel={t('followRequests.ignoreA11y', { name: displayName })} style={styles.reject} onPress={() => void answer(profile.id, false)}><Text style={styles.rejectText}>{t('followRequests.ignore')}</Text></Pressable>
+    </View>; })}
   </ScrollView>}</View>;
 }
 

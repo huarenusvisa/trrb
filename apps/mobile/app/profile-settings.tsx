@@ -7,6 +7,7 @@ import { supabase } from '../src/auth/supabase';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { TrRbAvatar } from '../src/components/TrRbAvatar';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
+import { useI18n } from '../src/i18n/I18nProvider';
 import { mediaStoragePath, PROFILE_MEDIA_BUCKET, publicProfileMediaUrl, uploadPickedAsset } from '../src/social/media';
 import { PROFILE_SELECT } from '../src/social/profiles';
 import type { SocialProfile } from '../src/social/types';
@@ -20,6 +21,7 @@ function avatarKey(n: number) { return `avatar_${String(((n - 1 + 120) % 120) + 
 function initialAvatarKey(name: string) { return `initial:${Array.from(name.trim())[0]?.toUpperCase() || '用'}`; }
 
 export default function ProfileSettingsScreen() {
+  const { t } = useI18n();
   const [profile, setProfile] = useState<SocialProfile | null>(null);
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
@@ -40,34 +42,34 @@ export default function ProfileSettingsScreen() {
     try {
       const { data: sessionData } = await withUiTimeout(
         supabase.auth.getSession(),
-        '账户登录状态读取超时，请检查网络后重试。',
+        t('profileSettings.sessionTimeout'),
       );
       const user = sessionData.session?.user;
       if (!user) {
         setRequiresSignIn(true);
         setProfile(null);
-        setLoadError('需要登录后才能修改账户资料。');
+        setLoadError(t('profileSettings.signInRequiredBody'));
         router.replace('/auth');
         return;
       }
       setRequiresSignIn(false);
       const { data, error } = await withUiTimeout(
         supabase.from('profiles').select(PROFILE_SELECT).eq('id', user.id).single(),
-        '账户资料读取超时，请检查网络后重试。',
+        t('profileSettings.profileTimeout'),
       );
       if (error) throw error;
-      if (!data) throw new Error('没有找到可用的账户资料。');
+      if (!data) throw new Error(t('profileSettings.profileMissing'));
       const next = data as SocialProfile;
       setProfile(next); setName(next.display_name || ''); setBio(next.bio || ''); setAvatar(next.avatar_key || 'avatar_001');
       setAvatarPath(next.avatar_path); setCoverPath(next.cover_path); setIsPrivate(next.is_private); setAllowMessages(next.allow_message_requests);
       setLoadError('');
     } catch (error) {
       setProfile(null);
-      setLoadError(error instanceof Error ? error.message : '无法读取账户资料。');
+      setLoadError(error instanceof Error ? error.message : t('profileSettings.loadFailed'));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { void loadProfile(); }, [loadProfile]);
   useForegroundRetry(Boolean(loadError && !requiresSignIn), () => void loadProfile());
@@ -87,15 +89,15 @@ export default function ProfileSettingsScreen() {
     });
     if (result.canceled || !result.assets?.[0]) return;
     const asset = result.assets[0];
-    if (asset.fileSize && asset.fileSize > 12 * 1024 * 1024) return Alert.alert('图片过大', '请选择不超过 12MB 的图片。');
+    if (asset.fileSize && asset.fileSize > 12 * 1024 * 1024) return Alert.alert(t('profileSettings.imageTooLarge'), t('profileSettings.imageTooLargeBody'));
     if (kind === 'avatar') { setAvatarAsset(asset); setAvatarPath(null); }
     else { setCoverAsset(asset); setCoverPath(null); }
   };
 
   const save = async () => {
     const trimmedName = name.trim(); const trimmedBio = bio.trim();
-    if (trimmedName.length < 2 || trimmedName.length > 32) return Alert.alert('昵称不符合要求', '昵称长度需为 2–32 个字符。');
-    if (trimmedBio.length > 240) return Alert.alert('简介过长', '个人简介最多 240 个字符。');
+    if (trimmedName.length < 2 || trimmedName.length > 32) return Alert.alert(t('profileSettings.invalidName'), t('profileSettings.invalidNameBody'));
+    if (trimmedBio.length > 240) return Alert.alert(t('profileSettings.bioTooLong'), t('profileSettings.bioTooLongBody'));
     setSaving(true);
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData.session?.user.id;
@@ -127,48 +129,48 @@ export default function ProfileSettingsScreen() {
       const next = data as SocialProfile;
       setProfile(next); setName(next.display_name || ''); setBio(next.bio || ''); setAvatar(next.avatar_key || 'avatar_001');
       setAvatarPath(next.avatar_path); setCoverPath(next.cover_path); setAvatarAsset(null); setCoverAsset(null);
-      Alert.alert('已保存', '头像、背景和隐私设置已同步。');
+      Alert.alert(t('profileSettings.saved'), t('profileSettings.savedBody'));
     } catch (error) {
       if (uploaded.length) await supabase.storage.from(PROFILE_MEDIA_BUCKET).remove(uploaded).catch(() => undefined);
-      const message = error instanceof Error ? error.message : '请稍后重试。';
-      Alert.alert('保存失败', message.includes('display_name_reserved') ? '该昵称属于保留身份词，不能使用。' : message);
+      const message = error instanceof Error ? error.message : t('profileSettings.retryLater');
+      Alert.alert(t('profileSettings.saveFailed'), message.includes('display_name_reserved') ? t('profileSettings.reservedName') : message);
     } finally { setSaving(false); }
   };
 
-  if (loading) return <View style={styles.statePage}><AsyncStatePanel testID="profile-settings-loading" title="正在读取账户资料" message="正在同步昵称、头像、简介和隐私设置。" busy /></View>;
+  if (loading) return <View style={styles.statePage}><AsyncStatePanel testID="profile-settings-loading" title={t('profileSettings.loadingTitle')} message={t('profileSettings.loadingBody')} busy /></View>;
   if (!profile) return <View style={styles.statePage}><AsyncStatePanel
     testID="profile-settings-error"
     tone="error"
-    title={requiresSignIn ? '需要登录' : '无法读取账户资料'}
-    message={loadError || '请检查网络后重新读取。'}
-    actionLabel={requiresSignIn ? '前往登录' : '重新读取'}
+    title={requiresSignIn ? t('profileSettings.signInRequired') : t('profileSettings.unavailable')}
+    message={loadError || t('profileSettings.checkNetwork')}
+    actionLabel={requiresSignIn ? t('profileSettings.goToSignIn') : t('profileSettings.reload')}
     onAction={requiresSignIn ? () => router.replace('/auth') : () => void loadProfile()}
   /></View>;
   const currentAvatar = avatarNumber(avatar);
   const coverUri = coverAsset?.uri || publicProfileMediaUrl(coverPath);
 
   return <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
-    <Text style={styles.h1}>编辑个人主页</Text><Text style={styles.sub}>自定义头像、主页背景、昵称和隐私</Text>
+    <Text style={styles.h1}>{t('profileSettings.heading')}</Text><Text style={styles.sub}>{t('profileSettings.description')}</Text>
     <View style={styles.visualCard}>
       <View style={styles.cover}>{coverUri ? <Image source={{ uri: coverUri }} contentFit="cover" style={StyleSheet.absoluteFill} /> : <View style={styles.coverFallback} />}</View>
       <View style={styles.avatarFloat}>{avatarAsset ? <Image source={{ uri: avatarAsset.uri }} contentFit="cover" style={styles.avatarImage} /> : <TrRbAvatar avatarKey={avatar} avatarPath={avatarPath} size={88} />}</View>
       <View style={styles.visualActions}>
-        <Pressable style={styles.smallButton} onPress={() => void pickImage('avatar')}><Text style={styles.smallButtonText}>DIY 头像</Text></Pressable>
-        <Pressable style={styles.smallButton} onPress={() => void pickImage('cover')}><Text style={styles.smallButtonText}>更换背景</Text></Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('profileSettings.customAvatarA11y')} style={styles.smallButton} onPress={() => void pickImage('avatar')}><Text style={styles.smallButtonText}>{t('profileSettings.customAvatar')}</Text></Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('profileSettings.changeCoverA11y')} style={styles.smallButton} onPress={() => void pickImage('cover')}><Text style={styles.smallButtonText}>{t('profileSettings.changeCover')}</Text></Pressable>
       </View>
       <View style={styles.row}>
-        <Pressable style={styles.textButton} onPress={() => { setAvatarAsset(null); setAvatarPath(null); setAvatar(initialAvatarKey(name)); }}><Text style={styles.textButtonText}>首字头像</Text></Pressable>
-        <Pressable style={styles.textButton} onPress={() => { setAvatarAsset(null); setAvatarPath(null); setAvatar(avatarKey(currentAvatar + 1)); }}><Text style={styles.textButtonText}>换默认头像</Text></Pressable>
-        {coverUri ? <Pressable style={styles.textButton} onPress={() => { setCoverAsset(null); setCoverPath(null); }}><Text style={styles.removeText}>移除背景</Text></Pressable> : null}
+        <Pressable accessibilityRole="button" style={styles.textButton} onPress={() => { setAvatarAsset(null); setAvatarPath(null); setAvatar(initialAvatarKey(name)); }}><Text style={styles.textButtonText}>{t('profileSettings.initialAvatar')}</Text></Pressable>
+        <Pressable accessibilityRole="button" style={styles.textButton} onPress={() => { setAvatarAsset(null); setAvatarPath(null); setAvatar(avatarKey(currentAvatar + 1)); }}><Text style={styles.textButtonText}>{t('profileSettings.nextDefaultAvatar')}</Text></Pressable>
+        {coverUri ? <Pressable accessibilityRole="button" style={styles.textButton} onPress={() => { setCoverAsset(null); setCoverPath(null); }}><Text style={styles.removeText}>{t('profileSettings.removeCover')}</Text></Pressable> : null}
       </View>
     </View>
-    <Text style={styles.label}>昵称</Text><TextInput value={name} onChangeText={setName} maxLength={32} style={styles.input} placeholder="2–32个字符" autoCapitalize="none" /><Text style={styles.counter}>{name.trim().length}/32</Text>
-    <Text style={styles.label}>公开简介</Text><TextInput value={bio} onChangeText={setBio} maxLength={240} style={[styles.input, styles.bio]} placeholder="介绍一下自己" multiline textAlignVertical="top" /><Text style={styles.counter}>{bio.trim().length}/240</Text>
-    <View style={styles.settingCard}><View style={styles.settingCopy}><Text style={styles.settingTitle}>隐私账号</Text><Text style={styles.settingMeta}>开启后，只有你确认过的粉丝可以查看主页动态。</Text></View><Switch value={isPrivate} onValueChange={setIsPrivate} trackColor={{ true: '#c8211e' }} /></View>
-    <View style={styles.settingCard}><View style={styles.settingCopy}><Text style={styles.settingTitle}>允许陌生人发起聊天</Text><Text style={styles.settingMeta}>对方只能先发一条；你确认聊天后才能继续。</Text></View><Switch value={allowMessages} onValueChange={setAllowMessages} trackColor={{ true: '#c8211e' }} /></View>
-    <Pressable disabled={!dirty || saving} style={[styles.save, (!dirty || saving) && styles.disabled]} onPress={() => void save()}>{saving ? <ActivityIndicator color="#fff" /> : <Text style={styles.saveText}>保存修改</Text>}</Pressable>
-    <View style={styles.danger}><Text style={styles.dangerTitle}>账户安全</Text><Text style={styles.dangerText}>可以永久删除账户及关联个人数据。</Text><Pressable onPress={() => router.push('/delete-account')} style={styles.deleteEntry}><Text style={styles.deleteEntryText}>删除账户</Text></Pressable></View>
-    <Pressable style={styles.back} onPress={() => router.back()}><Text style={styles.backText}>返回</Text></Pressable>
+    <Text style={styles.label}>{t('profileSettings.name')}</Text><TextInput value={name} onChangeText={setName} maxLength={32} style={styles.input} placeholder={t('profileSettings.namePlaceholder')} autoCapitalize="none" /><Text style={styles.counter}>{name.trim().length}/32</Text>
+    <Text style={styles.label}>{t('profileSettings.bio')}</Text><TextInput value={bio} onChangeText={setBio} maxLength={240} style={[styles.input, styles.bio]} placeholder={t('profileSettings.bioPlaceholder')} multiline textAlignVertical="top" /><Text style={styles.counter}>{bio.trim().length}/240</Text>
+    <View style={styles.settingCard}><View style={styles.settingCopy}><Text style={styles.settingTitle}>{t('profileSettings.privateAccount')}</Text><Text style={styles.settingMeta}>{t('profileSettings.privateAccountBody')}</Text></View><Switch accessibilityLabel={t('profileSettings.privateAccount')} value={isPrivate} onValueChange={setIsPrivate} trackColor={{ true: '#c8211e' }} /></View>
+    <View style={styles.settingCard}><View style={styles.settingCopy}><Text style={styles.settingTitle}>{t('profileSettings.allowMessages')}</Text><Text style={styles.settingMeta}>{t('profileSettings.allowMessagesBody')}</Text></View><Switch accessibilityLabel={t('profileSettings.allowMessages')} value={allowMessages} onValueChange={setAllowMessages} trackColor={{ true: '#c8211e' }} /></View>
+    <Pressable accessibilityRole="button" accessibilityLabel={t('profileSettings.save')} disabled={!dirty || saving} style={[styles.save, (!dirty || saving) && styles.disabled]} onPress={() => void save()}>{saving ? <ActivityIndicator color="#fff" /> : <Text style={styles.saveText}>{t('profileSettings.save')}</Text>}</Pressable>
+    <View style={styles.danger}><Text style={styles.dangerTitle}>{t('profileSettings.accountSecurity')}</Text><Text style={styles.dangerText}>{t('profileSettings.accountSecurityBody')}</Text><Pressable accessibilityRole="button" onPress={() => router.push('/delete-account')} style={styles.deleteEntry}><Text style={styles.deleteEntryText}>{t('profileSettings.deleteAccount')}</Text></Pressable></View>
+    <Pressable accessibilityRole="button" style={styles.back} onPress={() => router.back()}><Text style={styles.backText}>{t('common.back')}</Text></Pressable>
   </ScrollView>;
 }
 

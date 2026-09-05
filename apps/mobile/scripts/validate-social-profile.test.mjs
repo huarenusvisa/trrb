@@ -37,9 +37,9 @@ test('mobile screens expose refined profile, custom media and protected messagin
   const compose = read('app/profile-compose.tsx');
   assert.match(profile, /<ProfileHero/);
   assert.match(profile, /profile-compose/);
-  assert.match(settings, /DIY 头像/);
-  assert.match(settings, /隐私账号/);
-  assert.match(settings, /允许陌生人发起聊天/);
+  assert.match(settings, /t\('profileSettings\.customAvatar'\)/);
+  assert.match(settings, /t\('profileSettings\.privateAccount'\)/);
+  assert.match(settings, /t\('profileSettings\.allowMessages'\)/);
   assert.match(chat, /t\('chat\.accept'\)/);
   assert.match(chat, /t\('chat\.incomingBody'\)/);
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
@@ -60,7 +60,7 @@ test('account, message and community states remain actionable on weak networks',
 
   assert.match(settings, /profile-settings-error/);
   assert.match(settings, /useForegroundRetry/);
-  assert.match(settings, /重新读取/);
+  assert.match(settings, /t\('profileSettings\.reload'\)/);
   assert.match(notifications, /notifications-empty/);
   assert.match(notifications, /notifications-error/);
   assert.match(notifications, /useForegroundRetry/);
@@ -81,7 +81,8 @@ test('comments, chats and connection lists recover without blank screens', () =>
     assert.match(screen, /withUiTimeout/);
     assert.match(screen, /useForegroundRetry/);
   }
-  for (const screen of [comments, followRequests]) assert.match(screen, /重新(?:读取|同步)/);
+  assert.match(comments, /重新(?:读取|同步)/);
+  assert.match(followRequests, /t\('followRequests\.reload'\)/);
   assert.match(comments, /my-comments-empty/);
   assert.match(comments, /RefreshControl/);
   assert.match(messages, /messages-error/);

@@ -104,3 +104,10 @@ test('translates protected message requests and chat states', () => {
   assert.equal(translate('zh-CN', 'chat.waiting'), '已发送第一条消息，等待对方确认聊天。确认前不能再发送。');
   assert.equal(translate('en', 'chat.accept'), 'Accept chat');
 });
+
+test('translates follow requests and profile settings while interpolating names', () => {
+  assert.equal(translate('en', 'followRequests.acceptA11y', { name: 'Alex' }), "Accept Alex's follow request");
+  assert.equal(translate('zh-TW', 'followRequests.emptyTitle'), '暫無待處理申請');
+  assert.equal(translate('en', 'profileSettings.privateAccount'), 'Private account');
+  assert.equal(translate('zh-CN', 'profileSettings.savedBody'), '头像、背景和隐私设置已同步。');
+});

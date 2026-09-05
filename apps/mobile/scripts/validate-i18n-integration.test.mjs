@@ -200,3 +200,21 @@ test('localizes protected messaging while preserving names and message bodies', 
   assert.match(chat, /localeDateTag\(locale\)/);
   assert.doesNotMatch(chat, /toLocaleTimeString\('zh-CN'/);
 });
+
+test('localizes follow requests and profile settings while preserving profile content', () => {
+  const requests = read('app/follow-requests.tsx');
+  const settings = read('app/profile-settings.tsx');
+  for (const source of [requests, settings]) assert.match(source, /useI18n\(\)/);
+  for (const key of ['followRequests.loadingTitle', 'followRequests.emptyTitle', 'followRequests.openProfileA11y', 'followRequests.acceptA11y']) {
+    assert.ok(requests.includes(`t('${key}'`), `follow requests must translate ${key}`);
+  }
+  for (const key of ['profileSettings.loadingTitle', 'profileSettings.heading', 'profileSettings.customAvatar', 'profileSettings.privateAccount', 'profileSettings.save', 'profileSettings.deleteAccount']) {
+    assert.ok(settings.includes(`t('${key}'`), `profile settings must translate ${key}`);
+  }
+  assert.match(requests, /profile\.display_name/);
+  assert.match(requests, /profile\.bio/);
+  assert.match(settings, /display_name: trimmedName/);
+  assert.match(settings, /bio: trimmedBio/);
+  assert.match(settings, /avatar_path: nextAvatarPath/);
+  assert.match(settings, /cover_path: nextCoverPath/);
+});

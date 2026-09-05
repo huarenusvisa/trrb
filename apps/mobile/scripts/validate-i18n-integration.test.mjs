@@ -102,3 +102,26 @@ test('localizes notification inbox and push settings without translating server 
   assert.doesNotMatch(inbox, /toLocaleString\('zh-CN'\)/);
   assert.match(push, /accessibilityLabel=\{t\(option\.title\)\}/);
 });
+
+test('localizes community list, post detail and comment actions while preserving user content', () => {
+  const list = read('app/community.tsx');
+  const detail = read('app/community/[id].tsx');
+
+  for (const source of [list, detail]) {
+    assert.match(source, /useI18n\(\)/);
+    assert.match(source, /localeDateTag\(locale\)/);
+    assert.doesNotMatch(source, /toLocaleString\('zh-CN'\)/);
+  }
+  for (const key of ['community.heading', 'community.cacheNotice', 'community.emptyAll', 'community.loadMore']) {
+    assert.ok(list.includes(`t('${key}')`), `community list must translate ${key}`);
+  }
+  assert.ok(list.includes("'community.likeA11y'"));
+  for (const key of ['community.detailLoadingTitle', 'community.reportPost', 'community.refreshFailedTitle', 'community.commentReviewing', 'community.signInToComment']) {
+    assert.ok(detail.includes(`t('${key}')`), `community detail must translate ${key}`);
+  }
+  assert.match(list, /post\.title/);
+  assert.match(list, /post\.content/);
+  assert.match(detail, /<Text style=\{styles\.title\}>\{post\.title\}<\/Text>/);
+  assert.match(detail, /<Text style=\{styles\.body\}>\{post\.content\}<\/Text>/);
+  assert.match(detail, /<Text style=\{styles\.commentBody\}>\{item\.content\}<\/Text>/);
+});

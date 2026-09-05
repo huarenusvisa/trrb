@@ -6,27 +6,27 @@ import { supabase } from '../src/auth/supabase';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { optimisticCommunityPostLike, resolveCommunityPostLike } from '../src/community/community-post-like-state';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
+import { useI18n } from '../src/i18n/I18nProvider';
+import { localeDateTag, type MessageKey } from '../src/i18n/i18n-core';
 import { cacheCommunityFeed, readCachedCommunityFeed } from '../src/storage/communityFeedCache';
 import { withUiTimeout } from '../src/utils/async-state-core';
 
 const PAGE_SIZE = 20;
 
-const categoryNames: Record<string, string> = {
-  hot_discussion: '热门讨论',
-  immigration_help: '移民互助',
-  court_experience: '上庭交流',
-  uscis_interview: 'USCIS 面谈',
-  ice_experience: 'ICE 经历',
-  lawyer_review: '律师点评',
-  tipoff: '投稿爆料',
+const categoryKeys: Record<CommunityCategory, MessageKey> = {
+  hot_discussion: 'community.category.hotDiscussion',
+  immigration_help: 'community.category.immigrationHelp',
+  court_experience: 'community.category.courtExperience',
+  uscis_interview: 'community.category.uscisInterview',
+  ice_experience: 'community.category.iceExperience',
+  lawyer_review: 'community.category.lawyerReview',
+  tipoff: 'community.category.tipoff',
 };
 
-const categoryFilters: Array<{ key: CommunityCategory | ''; label: string }> = [
-  { key: '', label: '全部' },
-  ...Object.entries(categoryNames).map(([key, label]) => ({ key: key as CommunityCategory, label })),
-];
+const categoryFilters: Array<CommunityCategory | ''> = ['', ...Object.keys(categoryKeys) as CommunityCategory[]];
 
 export default function CommunityScreen() {
+  const { locale, t } = useI18n();
   const [items, setItems] = useState<CommunityPost[]>([]);
   const [category, setCategory] = useState<CommunityCategory | ''>('');
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function CommunityScreen() {
   const load = useCallback(async () => {
     const sequence = ++loadSequence.current;
     try {
-      const [{ data }, page] = await withUiTimeout(Promise.all([supabase.auth.getSession(), listCommunityPosts(0, PAGE_SIZE, category || undefined)]), '社区读取超时，请检查网络后重试。', 16_000);
+      const [{ data }, page] = await withUiTimeout(Promise.all([supabase.auth.getSession(), listCommunityPosts(0, PAGE_SIZE, category || undefined)]), t('community.timeout'), 16_000);
       if (sequence !== loadSequence.current) return;
       setSignedIn(Boolean(data.session));
       setItems(page.posts);
@@ -56,14 +56,14 @@ export default function CommunityScreen() {
       void cacheCommunityFeed(page.posts, page.nextOffset, category).catch(() => undefined);
     } catch (e) {
       if (sequence !== loadSequence.current) return;
-      setError(e instanceof Error ? e.message : '社区加载失败');
+      setError(e instanceof Error ? e.message : t('community.loadFailed'));
     } finally {
       if (sequence === loadSequence.current) {
         setLoading(false);
         setRefreshing(false);
       }
     }
-  }, [category]);
+  }, [category, t]);
 
   useFocusEffect(useCallback(() => {
     let active = true;
@@ -95,7 +95,7 @@ export default function CommunityScreen() {
     setLoadingMore(true);
     setPageError('');
     try {
-      const page = await withUiTimeout(listCommunityPosts(nextOffset, PAGE_SIZE, category || undefined), '较早帖子读取超时，请检查网络后重试。', 16_000);
+      const page = await withUiTimeout(listCommunityPosts(nextOffset, PAGE_SIZE, category || undefined), t('community.pageTimeout'), 16_000);
       if (sequence !== loadSequence.current) return;
       setItems((current) => {
         const known = new Set(current.map((item) => item.id));
@@ -103,7 +103,7 @@ export default function CommunityScreen() {
       });
       setNextOffset(page.nextOffset);
     } catch (e) {
-      if (sequence === loadSequence.current) setPageError(e instanceof Error ? e.message : '较早帖子读取失败');
+      if (sequence === loadSequence.current) setPageError(e instanceof Error ? e.message : t('community.pageFailed'));
     } finally {
       setLoadingMore(false);
     }
@@ -129,58 +129,59 @@ export default function CommunityScreen() {
     setLikeError(null);
     setItems((current) => current.map((item) => item.id === post.id ? optimisticCommunityPostLike(item) : item));
     try {
-      const result = await withUiTimeout(toggleCommunityPostLike(post.id, !post.viewer_has_liked), '点赞操作超时，请检查网络后重试。');
+      const result = await withUiTimeout(toggleCommunityPostLike(post.id, !post.viewer_has_liked), t('community.likeTimeout'));
       setItems((current) => current.map((item) => item.id === post.id ? resolveCommunityPostLike(item, result) : item));
     } catch (e) {
       setItems((current) => current.map((item) => item.id === post.id ? { ...item, ...previous } : item));
-      setLikeError({ postId: post.id, message: e instanceof Error ? e.message : '点赞操作失败，请重试。' });
+      setLikeError({ postId: post.id, message: e instanceof Error ? e.message : t('community.likeFailed') });
     } finally {
       setBusyLikeId('');
     }
   };
 
   return <View testID="community-screen" style={styles.page}>
-    <Stack.Screen options={{ headerShown: true, title: '移民社区', headerBackTitle: '返回' }} />
+    <Stack.Screen options={{ headerShown: true, title: t('community.screenTitle'), headerBackTitle: t('common.back') }} />
     <View style={styles.header}>
-      <View style={styles.headerCopy}><Text style={styles.eyebrow}>TANG REN COMMUNITY</Text><Text style={styles.title}>真实经历，彼此互助</Text></View>
+      <View style={styles.headerCopy}><Text style={styles.eyebrow}>TANG REN COMMUNITY</Text><Text style={styles.title}>{t('community.heading')}</Text></View>
       <Pressable testID="community-compose" accessibilityRole="button" style={styles.publish} onPress={compose}>
-        <Text style={styles.publishText}>{signedIn ? '发布帖子' : '登录后发帖'}</Text>
+        <Text style={styles.publishText}>{signedIn ? t('community.publish') : t('community.signInToPost')}</Text>
       </Pressable>
     </View>
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters} accessibilityRole="tablist">
       {categoryFilters.map((filter) => {
-        const selected = filter.key === category;
-        return <Pressable key={filter.key || 'all'} testID={`community-filter-${filter.key || 'all'}`} accessibilityRole="tab" accessibilityLabel={`查看${filter.label}帖子`} accessibilityState={{ selected }} style={[styles.filter, selected && styles.filterSelected]} onPress={() => selectCategory(filter.key)}><Text style={[styles.filterText, selected && styles.filterTextSelected]}>{filter.label}</Text></Pressable>;
+        const selected = filter === category;
+        const label = filter ? t(categoryKeys[filter]) : t('community.category.all');
+        return <Pressable key={filter || 'all'} testID={`community-filter-${filter || 'all'}`} accessibilityRole="tab" accessibilityLabel={t('community.filterA11y', { category: label })} accessibilityState={{ selected }} style={[styles.filter, selected && styles.filterSelected]} onPress={() => selectCategory(filter)}><Text style={[styles.filterText, selected && styles.filterTextSelected]}>{label}</Text></Pressable>;
       })}
     </ScrollView>
-    {loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="community-loading" title="正在读取社区" message="正在同步最新公开帖子。" busy /></View> :
+    {loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="community-loading" title={t('community.loadingTitle')} message={t('community.loadingBody')} busy /></View> :
       <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void load(); }} />}>
-        {showingCached ? <View testID="community-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>正在显示上次读取的公开帖子，并尝试同步最新内容。</Text></View> : null}
-        {error ? <AsyncStatePanel testID="community-error" tone="error" title="社区暂时无法读取" message={error} actionLabel="重新读取" onAction={retryCommunity} busy={refreshing} /> : null}
-        {!error && items.length === 0 ? <AsyncStatePanel testID="community-empty" title={category ? `${categoryNames[category]}暂时没有公开帖子` : '暂时还没有公开帖子'} message="可以发布真实经历、提出问题，或分享移民与上庭经验。" actionLabel={signedIn ? '发布第一篇' : '登录后发帖'} onAction={compose} /> : null}
-        {items.map((post) => <Pressable testID={`community-post-${post.id}`} accessibilityRole="button" accessibilityLabel={`打开帖子：${post.title}`} key={post.id} style={styles.card} onPress={() => router.push(`/community/${post.id}`)}>
-          <View style={styles.metaRow}><Text style={styles.category}>{categoryNames[post.category] || post.category}</Text><Text style={styles.time}>{new Date(post.created_at).toLocaleString('zh-CN')}</Text></View>
-          <View style={styles.titleRow}><Text style={styles.postTitle}>{post.title}</Text>{post.status !== 'published' ? <Text style={styles.pending}>审核中</Text> : null}</View>
+        {showingCached ? <View testID="community-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>{t('community.cacheNotice')}</Text></View> : null}
+        {error ? <AsyncStatePanel testID="community-error" tone="error" title={t('community.errorTitle')} message={error} actionLabel={t('community.reload')} onAction={retryCommunity} busy={refreshing} /> : null}
+        {!error && items.length === 0 ? <AsyncStatePanel testID="community-empty" title={category ? t('community.emptyCategory', { category: t(categoryKeys[category]) }) : t('community.emptyAll')} message={t('community.emptyBody')} actionLabel={signedIn ? t('community.publishFirst') : t('community.signInToPost')} onAction={compose} /> : null}
+        {items.map((post) => <Pressable testID={`community-post-${post.id}`} accessibilityRole="button" accessibilityLabel={t('community.openPostA11y', { title: post.title })} key={post.id} style={styles.card} onPress={() => router.push(`/community/${post.id}`)}>
+          <View style={styles.metaRow}><Text style={styles.category}>{t(categoryKeys[post.category])}</Text><Text style={styles.time}>{new Date(post.created_at).toLocaleString(localeDateTag(locale))}</Text></View>
+          <View style={styles.titleRow}><Text style={styles.postTitle}>{post.title}</Text>{post.status !== 'published' ? <Text style={styles.pending}>{t('community.pending')}</Text> : null}</View>
           <Text numberOfLines={5} style={styles.body}>{post.content}</Text>
           <View style={styles.footer}>
-            <Pressable onPress={(event) => { event.stopPropagation(); router.push(`/user/${post.user_id}`); }}><Text style={styles.author}>{post.profiles?.display_name || '唐人用户'}</Text></Pressable>
+            <Pressable onPress={(event) => { event.stopPropagation(); router.push(`/user/${post.user_id}`); }}><Text style={styles.author}>{post.profiles?.display_name || t('community.userFallback')}</Text></Pressable>
             <View style={styles.engagement}>
               <Pressable
                 testID={`community-list-like-${post.id}`}
                 accessibilityRole="button"
-                accessibilityLabel={signedIn ? `${post.viewer_has_liked ? '取消点赞' : '点赞'}，当前${post.like_count || 0}个赞` : '登录后点赞'}
+                accessibilityLabel={signedIn ? t(post.viewer_has_liked ? 'community.unlikeA11y' : 'community.likeA11y', { count: post.like_count || 0 }) : t('community.signInToLike')}
                 accessibilityState={{ disabled: Boolean(busyLikeId), selected: post.viewer_has_liked }}
                 disabled={Boolean(busyLikeId)}
                 style={[styles.likeButton, post.viewer_has_liked && styles.likedButton, busyLikeId && styles.disabled]}
                 onPress={(event) => { event.stopPropagation(); void toggleLike(post); }}
-              ><Text style={[styles.counts, post.viewer_has_liked && styles.likedCount]}>{busyLikeId === post.id ? '处理中…' : `${post.viewer_has_liked ? '已赞' : '赞'} ${post.like_count || 0}`}</Text></Pressable>
-              <Text style={styles.counts}>评论 {post.comment_count || 0}</Text>
+              ><Text style={[styles.counts, post.viewer_has_liked && styles.likedCount]}>{busyLikeId === post.id ? t('community.processing') : t(post.viewer_has_liked ? 'community.likedCount' : 'community.likeCount', { count: post.like_count || 0 })}</Text></Pressable>
+              <Text style={styles.counts}>{t('community.commentCount', { count: post.comment_count || 0 })}</Text>
             </View>
           </View>
-          {likeError?.postId === post.id ? <View testID={`community-list-like-error-${post.id}`} accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.likeError}><Text style={styles.likeErrorText}>{likeError.message}</Text><Pressable accessibilityRole="button" accessibilityLabel="重试点赞操作" onPress={(event) => { event.stopPropagation(); void toggleLike(post); }}><Text style={styles.retryLike}>重试</Text></Pressable></View> : null}
+          {likeError?.postId === post.id ? <View testID={`community-list-like-error-${post.id}`} accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.likeError}><Text style={styles.likeErrorText}>{likeError.message}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('community.retryLikeA11y')} onPress={(event) => { event.stopPropagation(); void toggleLike(post); }}><Text style={styles.retryLike}>{t('community.retry')}</Text></Pressable></View> : null}
         </Pressable>)}
-        {pageError ? <AsyncStatePanel testID="community-page-error" tone="error" title="较早帖子暂时无法读取" message={pageError} actionLabel="重试加载" onAction={() => void loadMore()} busy={loadingMore} /> : null}
-        {!pageError && nextOffset !== null ? <Pressable testID="community-load-more" accessibilityRole="button" accessibilityLabel={loadingMore ? '正在加载较早帖子' : '加载更多社区帖子'} accessibilityState={{ disabled: loadingMore || refreshing }} disabled={loadingMore || refreshing} style={[styles.loadMore, (loadingMore || refreshing) && styles.disabled]} onPress={() => void loadMore()}><Text style={styles.loadMoreText}>{loadingMore ? '正在加载…' : '加载更多帖子'}</Text></Pressable> : null}
+        {pageError ? <AsyncStatePanel testID="community-page-error" tone="error" title={t('community.pageErrorTitle')} message={pageError} actionLabel={t('community.retryPage')} onAction={() => void loadMore()} busy={loadingMore} /> : null}
+        {!pageError && nextOffset !== null ? <Pressable testID="community-load-more" accessibilityRole="button" accessibilityLabel={loadingMore ? t('community.loadingMoreA11y') : t('community.loadMoreA11y')} accessibilityState={{ disabled: loadingMore || refreshing }} disabled={loadingMore || refreshing} style={[styles.loadMore, (loadingMore || refreshing) && styles.disabled]} onPress={() => void loadMore()}><Text style={styles.loadMoreText}>{loadingMore ? t('community.loadingMore') : t('community.loadMore')}</Text></Pressable> : null}
       </ScrollView>}
   </View>;
 }

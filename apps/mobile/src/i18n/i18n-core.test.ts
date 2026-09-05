@@ -60,3 +60,11 @@ test('translates notification categories, fallback labels and push preferences',
   assert.equal(translate('zh-TW', 'push.deviceTitle'), '允許本裝置接收通知');
   assert.equal(translate('en', 'push.commentsMeta'), 'New replies to news and community comments');
 });
+
+test('translates community categories and comment actions without changing user text', () => {
+  assert.equal(translate('en', 'community.screenTitle'), 'Immigration Community');
+  assert.equal(translate('zh-TW', 'community.category.courtExperience'), '出庭交流');
+  assert.equal(translate('en', 'community.emptyCategory', { category: 'ICE experiences' }), 'No public posts in ICE experiences');
+  assert.equal(translate('en', 'community.draftRestoredReply', { name: 'Alex' }), 'Comment draft restored; replying to Alex.');
+  assert.equal(translate('zh-CN', 'community.commentCount', { count: 3 }), '评论 3');
+});

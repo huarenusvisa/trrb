@@ -60,6 +60,7 @@ assert.match(js, /event\.key === 'Enter'/, 'combobox must select with Enter');
 assert.match(js, /class="compare-error" role="alert"/, 'load errors must be announced to assistive technology');
 assert.match(js, /data-retry="\$\{scope\}"/, 'load errors must provide a retry action');
 assert.match(html, /id="compare-status"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'copy and selection feedback must be announced to screen readers');
+assert.doesNotMatch(html, /id="selected-judges"[^>]*aria-live=/, 'selected judge chips must not duplicate the concise selection status announcement');
 assert.match(html, /class="shell compare-results"[^>]*aria-busy="true"/, 'comparison results must expose their initial loading state');
 assert.doesNotMatch(html, /class="shell compare-results"[^>]*aria-live=/, 'the full comparison must not be exposed as one oversized live region');
 assert.match(js, /compare-results'\)\.setAttribute\('aria-busy', 'true'\)/, 'comparison requests must mark results as busy');

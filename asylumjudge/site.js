@@ -103,6 +103,7 @@ function trendPointDetail(point, label) {
 
 function renderStateMarket(periods, label, interval) {
   const chart = $('#state-market-chart');
+  const status = $('#state-market-status');
   if (!chart) return;
   const points = (periods || []).map((row) => {
     const grants = Number(row.grants || 0);
@@ -120,6 +121,7 @@ function renderStateMarket(periods, label, interval) {
   });
   if (!points.length) {
     chart.innerHTML = '<div class="state-market-loading">暂无可显示的州趋势数据</div>';
+    if (status) status.textContent = window.AsylumI18n?.t?.('暂无可显示的州趋势数据') || '暂无可显示的州趋势数据';
     return;
   }
 
@@ -221,6 +223,7 @@ function renderStateMarket(periods, label, interval) {
   overlay.addEventListener('pointerup', stopTracking);
   overlay.addEventListener('pointercancel', () => { tracking = false; });
   selectPoint(points.length - 1);
+  if (status) status.textContent = window.AsylumI18n?.t?.('趋势图已更新，共 {count} 个数据点', { count: fmt(points.length) }) || `趋势图已更新，共 ${fmt(points.length)} 个数据点`;
 }
 
 async function loadStateTrend(state = selectedTrendState, interval = selectedTrendInterval, court = selectedTrendCourt) {
@@ -231,7 +234,9 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
   selectedTrendInterval = interval;
   selectedTrendCourt = court;
   const chart = $('#state-market-chart');
+  const status = $('#state-market-status');
   chart.setAttribute('aria-busy', 'true');
+  if (status) status.textContent = window.AsylumI18n?.t?.('正在读取州趋势数据…') || '正在读取州趋势数据…';
   chart.innerHTML = '<div class="state-market-loading">正在读取州趋势数据…</div>';
   document.querySelectorAll('[data-state-interval]').forEach((button) => {
     const selected = button.dataset.stateInterval === interval;
@@ -258,6 +263,7 @@ async function loadStateTrend(state = selectedTrendState, interval = selectedTre
     renderStateMarket(data.periods || [], label, interval);
   } catch (error) {
     if (error.name === 'AbortError' || trendController !== controller) return;
+    if (status) status.textContent = window.AsylumI18n?.t?.('州趋势数据暂时无法读取') || '州趋势数据暂时无法读取';
     chart.innerHTML = '<div class="state-market-loading"><span><b>州趋势数据暂时无法读取</b><button id="state-trend-retry" class="trend-retry" type="button">重新尝试</button></span></div>';
     $('#state-trend-retry').addEventListener('click', () => loadStateTrend(state, interval, court));
   } finally {

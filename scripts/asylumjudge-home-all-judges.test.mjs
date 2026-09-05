@@ -73,9 +73,11 @@ const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8')
 
 assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
-assert.match(standalone, /site\.css\?v=22/, 'standalone homepage must load the touch-target stylesheet');
-assert.match(trrb, /site\.css\?v=21/, 'embedded homepage must load the touch-target stylesheet');
+assert.match(standalone, /site\.css\?v=23/, 'standalone homepage must load the touch-target stylesheet');
+assert.match(trrb, /site\.css\?v=22/, 'embedded homepage must load the touch-target stylesheet');
 assert.match(styles, /\.header-inner \.home-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile homepage navigation must provide responsive 44px touch targets');
+assert.match(styles, /\.home-language-control select\{[^}]*height:44px[^}]*touch-action:manipulation/, 'homepage language selector must provide a 44px touch target');
+assert.match(styles, /@media\(max-width:480px\)\{.*?\.home-language-control select\{[^}]*height:44px/, 'narrow screens must preserve the homepage language selector touch target');
 
 const trendRateHelperSource = client.match(/const reportableTrendRates = \(row\) => \{.*?\n\};/s)?.[0];
 assert.ok(trendRateHelperSource, 'homepage client must expose the trend sample-threshold helper');

@@ -37,3 +37,18 @@ test('legal detail preserves content with pull retry and accessible actions', ()
   assert.match(detailSource, /minHeight:48/);
   assert.doesNotMatch(detailSource, /height:\s*\d+/);
 });
+
+
+test('legal detail guards official source and share actions with accessible inline retry', () => {
+  assert.match(detailSource, /actionInFlight\.current/);
+  assert.match(detailSource, /Linking\.canOpenURL\(url\)/);
+  assert.match(detailSource, /await Linking\.openURL\(url\)/);
+  assert.match(detailSource, /await Share\.share/);
+  assert.match(detailSource, /setFailedAction\('official'\)/);
+  assert.match(detailSource, /setFailedAction\('share'\)/);
+  assert.match(detailSource, /AccessibilityInfo\.announceForAccessibility/);
+  assert.match(detailSource, /testID="legal-action-error"/);
+  assert.match(detailSource, /testID="legal-action-retry"/);
+  assert.match(detailSource, /accessibilityState={{ disabled: activeAction !== null, busy:/);
+  assert.match(detailSource, /minHeight:44/);
+});

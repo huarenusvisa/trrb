@@ -22,7 +22,7 @@
         <div class="state-year-tabs" aria-label="选择财政年度"><button type="button" class="active" data-state-year="2026" aria-pressed="true">FY 2026</button><button type="button" data-state-year="2025" aria-pressed="false">FY 2025</button><button type="button" data-state-year="2024" aria-pressed="false">FY 2024</button></div>
         <p id="state-period-note" class="state-period-note">正在读取财政年度范围…</p>
       </div>
-      <form id="state-search"><input id="state-q" placeholder="筛选州，例如 NY、CA、TX"><button>筛选</button></form>
+      <form id="state-search" role="search"><label class="sr-only" for="state-q">筛选州，例如 NY、CA、TX</label><input id="state-q" name="q" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" aria-controls="state-results" aria-describedby="state-results-status" placeholder="筛选州，例如 NY、CA、TX"><button type="submit">筛选</button></form>
     </section>
     <section class="court-section">
       <div class="section-head"><div><span>州级汇总</span><h2 id="state-table-title">按庇护裁决量排序</h2></div><p>点击州可继续查看该州法院</p></div>

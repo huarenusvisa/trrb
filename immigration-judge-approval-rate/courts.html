@@ -16,7 +16,7 @@
   <main class="judge-shell court-wrap">
     <section class="court-head">
       <div><div class="eyebrow">TRRB · EOIR COURT DATABASE</div><h1 id="court-page-title">美国移民法院庇护通过率</h1><p id="court-period-note">按案件作出裁决时所在法院归属州；可切换财政年度核对案件量。</p></div>
-      <form id="court-search"><input id="court-q" placeholder="搜索法院、城市或州，例如 New York"><button>搜索</button></form>
+      <form id="court-search" role="search"><label class="sr-only" for="court-q">搜索法院、城市或州，例如 New York</label><input id="court-q" name="q" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" aria-controls="court-results" aria-describedby="court-results-status" placeholder="搜索法院、城市或州，例如 New York"><button type="submit">搜索</button></form>
     </section>
     <div class="state-year-tabs" aria-label="选择财政年度"><button type="button" data-fy="2026" class="active" aria-pressed="true">FY 2026 至今</button><button type="button" data-fy="2025" aria-pressed="false">FY 2025</button><button type="button" data-fy="2024" aria-pressed="false">FY 2024</button></div>
     <section class="court-summary"><article><span>法院</span><strong id="court-count">—</strong></article><article><span>法官</span><strong id="court-judges">—</strong></article><article><span>庇护裁决</span><strong id="court-decisions">—</strong></article></section>

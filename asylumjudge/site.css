@@ -123,3 +123,6 @@
 
 /* Keep homepage judge-search actions visible during keyboard navigation. */
 .search-box button:focus-visible,.quick button:focus-visible{outline:3px solid #101828;outline-offset:3px}
+
+/* Keep the homepage header controls visible during keyboard navigation. */
+.brand:focus-visible,.header-inner nav a:focus-visible,.trrb-link:focus-visible,.home-language-control select:focus-visible{outline:3px solid #101828;outline-offset:3px}

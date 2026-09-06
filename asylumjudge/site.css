@@ -117,3 +117,6 @@
 
 /* Keep every homepage trend filter visibly focused during keyboard navigation. */
 .state-fy-tabs button:focus-visible,.trend-interval-tabs button:focus-visible,.state-trend-states button:focus-visible,.trend-scope-controls select:focus-visible{outline:3px solid #101828;outline-offset:3px}
+
+/* Keep the homepage's primary destination cards visible during keyboard navigation. */
+.entry-grid>a:focus-visible,.lookup-grid>a:focus-visible,.knowledge-item:focus-visible{outline:3px solid #101828;outline-offset:3px}

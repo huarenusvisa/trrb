@@ -260,6 +260,15 @@ test('localizes job discovery and keeps long text usable on narrow screens', () 
     assert.ok(jobs.includes(`'${key}'`), `jobs screen must translate ${key}`);
   }
   assert.match(jobs, /useWindowDimensions\(\)/);
+  assert.match(jobs, /Linking\.canOpenURL\(url\)/);
+  assert.match(jobs, /await Linking\.openURL\(url\)/);
+  assert.match(jobs, /contactInFlight\.current/);
+  assert.match(jobs, /AccessibilityInfo\.announceForAccessibility/);
+  assert.match(jobs, /job-contact-error-/);
+  assert.match(jobs, /accessibilityState={{ disabled: activeContactId !== null, busy:/);
+  for (const key of ['jobs.contactOpening', 'jobs.contactFailed', 'jobs.retryContact', 'jobs.retryContactA11y']) {
+    assert.ok(jobs.includes(`'${key}'`), `jobs screen must translate ${key}`);
+  }
   assert.match(jobs, /width < 360/);
   assert.match(jobs, /flexWrap: 'wrap'/);
   assert.match(jobs, /minHeight: 48/);

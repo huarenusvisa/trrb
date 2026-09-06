@@ -90,3 +90,12 @@ test('bounds long-list rendering work and exposes every story as a button', () =
   assert.doesNotMatch(list, /getItemLayout=/);
   assert.match(list, /accessibilityRole="button"/);
 });
+
+test('prefetches only the next image window as list rows become visible', () => {
+  assert.match(list, /onViewableItemsChanged=\{onViewableItemsChanged\}/);
+  assert.match(list, /itemVisiblePercentThreshold: 50/);
+  assert.match(list, /minimumViewTime: 120/);
+  assert.match(list, /nextNewsImagePrefetchWindow/);
+  assert.match(list, /prefetchedThroughRef\.current = next\.prefetchedThrough/);
+  assert.match(list, /prefetchNewsImages\(next\.uris, 4\)/);
+});

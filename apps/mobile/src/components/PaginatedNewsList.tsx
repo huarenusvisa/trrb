@@ -1,13 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import type { ListRenderItemInfo } from 'react-native';
+import type { ListRenderItemInfo, ViewToken } from 'react-native';
 import { router } from 'expo-router';
 import { fetchArticlePage, NewsArticle } from '../api/trrb';
 import { useI18n } from '../i18n/I18nProvider';
 import { localeDateTag } from '../i18n/i18n-core';
 import { useForegroundRetry } from '../hooks/useForegroundRetry';
 import { cacheNewsPage, readCachedNewsPage } from '../storage/newsFeedCache';
-import { NewsImage } from './NewsImage';
+import { NewsImage, prefetchNewsImages } from './NewsImage';
+import { nextNewsImagePrefetchWindow } from './news-image-prefetch-core';
 
 type Props = {
   title: string;
@@ -27,6 +28,23 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   const [loadingMore, setLoadingMore] = useState(false);
   const [nextOffset, setNextOffset] = useState<number | null>(0);
   const [error, setError] = useState('');
+  const itemsRef = useRef<NewsArticle[]>([]);
+  const prefetchedThroughRef = useRef(-1);
+  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50, minimumViewTime: 120 }).current;
+
+  useEffect(() => { itemsRef.current = items; }, [items]);
+  useEffect(() => { prefetchedThroughRef.current = -1; }, [category, q]);
+
+  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken<NewsArticle>[] }) => {
+    const next = nextNewsImagePrefetchWindow(
+      itemsRef.current,
+      viewableItems.map((token) => token.index),
+      prefetchedThroughRef.current,
+    );
+    if (!next) return;
+    prefetchedThroughRef.current = next.prefetchedThrough;
+    void prefetchNewsImages(next.uris, 4);
+  }).current;
 
   const load = useCallback(async (reset = false) => {
     const offset = reset ? 0 : nextOffset;
@@ -120,6 +138,8 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       data={items}
       keyExtractor={(item) => String(item.id)}
       renderItem={renderArticle}
+      viewabilityConfig={viewabilityConfig}
+      onViewableItemsChanged={onViewableItemsChanged}
       initialNumToRender={8}
       maxToRenderPerBatch={8}
       updateCellsBatchingPeriod={40}

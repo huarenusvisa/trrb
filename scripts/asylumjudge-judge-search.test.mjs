@@ -13,9 +13,14 @@ const page = readFileSync(new URL('../immigration-judge-approval-rate/index.html
 // Result-focus assertions distinguish user actions from history restoration.
 // Clear-state assertions preserve native mobile controls and shareable URLs.
 assert.match(client, /searchController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'a new judge search must cancel the previous request');
+assert.match(client, /const REQUEST_TIMEOUT_MS = 15000/, 'judge directory requests must use a finite timeout');
+assert.match(client, /controller\.abort\(new DOMException\('Request timed out', 'TimeoutError'\)\)[\s\S]*REQUEST_TIMEOUT_MS/, 'stalled judge directory requests must abort with an explicit timeout');
+assert.match(client, /mode=stats', \{ signal: controller\.signal \}[\s\S]*mode=freshness', \{ signal: controller\.signal \}/, 'judge overview requests must share the timeout signal');
+assert.match(client, /async function loadStats\(\)[\s\S]*catch \{[\s\S]*controller\.abort\(\)[\s\S]*finally \{[\s\S]*clearTimeout\(timeoutId\)/, 'judge overview failures must cancel sibling work and release the timeout');
 assert.match(client, /if \(!response\.ok\) throw new Error/, 'judge search must treat non-2xx responses as failures');
 assert.match(client, /if \(requestId !== searchSequence\) return;/, 'stale judge results must not replace the latest search');
 assert.match(client, /error\.name === 'AbortError' \|\| requestId !== searchSequence/, 'cancelled judge searches must not show an error');
+assert.match(client, /async function search[\s\S]*setTimeout\([\s\S]*REQUEST_TIMEOUT_MS[\s\S]*fetch\(`\/\.netlify\/functions\/immigration-judges\?q=[\s\S]*finally \{[\s\S]*clearTimeout\(timeoutId\)[\s\S]*searchController = null/, 'judge searches must bound requests, release timers, and clear the active controller');
 assert.match(client, /id="judge-retry"[\s\S]*addEventListener\('click', \(\) => search\(query, \{ historyMode: 'none' \}\)\)/, 'judge search errors must offer a retry for the same query');
 assert.match(client, /setAttribute\('aria-busy', 'true'\)[\s\S]*setAttribute\('aria-busy', 'false'\)/, 'judge results must expose loading state');
 assert.match(client, /nextUrl === currentUrl[\s\S]*history\[mode === 'replace' \? 'replaceState' : 'pushState'\]/, 'new judge searches must create history without duplicating the current query');
@@ -42,7 +47,7 @@ assert.match(page, /<form id="judge-search" role="search">[\s\S]*<label class="s
 assert.match(page, /id="judge-q"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*aria-describedby="judge-search-help"/, 'judge search must expose mobile search keyboard intent and its visible help text');
 assert.match(page, /<button type="submit">查询<\/button>/, 'judge search submit control must declare its button type');
 assert.match(page, /id="data-freshness" role="status" aria-live="polite" aria-busy="true"/, 'judge overview freshness must expose an accessible status');
-assert.match(page, /judges\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*judges\.js\?v=8/, 'judge search page must load overview-retry styles and the updated client');
+assert.match(page, /judges\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*judges\.js\?v=9/, 'judge search page must load overview-retry styles and the request-timeout client');
 assert.match(readFileSync(new URL('../immigration-judge-approval-rate/judges.css', import.meta.url), 'utf8'), /mobile-sample\{display:none\}[\s\S]*@media\(max-width:800px\)\{\.mobile-sample\{display:inline\}\}/, 'mobile judge results must reveal the inline sample size');
 assert.match(readFileSync(new URL('../immigration-judge-approval-rate/judges.css', import.meta.url), 'utf8'), /\.freshness-retry\{[^}]*text-decoration:underline[^}]*cursor:pointer/, 'judge overview retry must look interactive');
 

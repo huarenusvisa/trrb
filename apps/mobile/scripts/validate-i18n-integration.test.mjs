@@ -293,3 +293,16 @@ test('localizes homepage portals, reader services and footer without changing de
   }
   assert.doesNotMatch(home, /styles\.footerText}>立足美国 · 服务华人/);
 });
+
+test('localizes homepage navigation, rankings, weather and network recovery', () => {
+  const home = read('app/(tabs)/index.tsx');
+  for (const key of ['home.brand', 'home.locationNewYork', 'home.navImportant', 'home.navJobs', 'home.hot', 'home.importantNews', 'home.ranking24h', 'home.sectionChinaHot', 'home.sectionIce', 'home.weatherUnknown', 'home.weatherThunderstorm', 'home.offline', 'home.slowRefresh']) {
+    assert.ok(home.includes(`'${key}'`), `homepage chrome must translate ${key}`);
+  }
+  assert.match(home, /openCategory\(item\.category\)/);
+  assert.match(home, /openCategory\(category\)/);
+  assert.match(home, /t\(weatherInfo\.textKey\)/);
+  assert.doesNotMatch(home, /styles\.sectionTitle}>24小时热榜/);
+  assert.doesNotMatch(home, /styles\.stickySearchText}>搜索/);
+  assert.doesNotMatch(home, /setError\([^\n]*网络不可用/);
+});

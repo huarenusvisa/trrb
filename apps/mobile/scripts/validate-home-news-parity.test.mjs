@@ -18,7 +18,7 @@ test('keeps the App homepage on the PC mobile content structure', () => {
     position = next;
   }
   assert.match(home, /titleKey: 'home\.topicFinanceTitle'/);
-  assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', title: '中国热门头条'/);
+  assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', titleKey: 'home\.sectionChinaHot', category: '热门头条'/);
   for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '订阅每日快报', '加入读者群', '投稿爆料']) {
     assert.ok(i18n.includes(section), `${section} must stay in the localized App homepage content`);
   }
@@ -44,7 +44,9 @@ test('keeps category labels at the page level and rotates important news on the 
   assert.match(home, /pagingEnabled/);
   assert.match(home, /importantCarousel\.map/);
   assert.match(home, /setInterval[\s\S]*carouselRef\.current\?\.scrollTo/);
-  assert.match(home, /HOME_NAV_ITEMS = \['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'\]/);
+  for (const category of ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态']) {
+    assert.match(home, new RegExp(`category: '${category}'`));
+  }
 });
 
 test('keeps ICE in its designated sections, ranking, nav and qualified focus carousel', () => {
@@ -54,8 +56,8 @@ test('keeps ICE in its designated sections, ranking, nav and qualified focus car
   const publicArticles = fs.readFileSync(new URL('../../../netlify/functions/public-articles.js', import.meta.url), 'utf8');
   assert.doesNotMatch(home, /中国官场/);
   assert.match(home, /key: 'ice',[\s\S]*?titleKey: 'home\.topicIceTitle'/);
-  assert.match(home, /key: 'ice-news', title: 'ICE执法动态'/);
-  assert.equal((home.match(/title: 'ICE执法动态'/g) || []).length, 1);
+  assert.match(home, /key: 'ice-news', titleKey: 'home\.sectionIce', category: 'ICE执法动态'/);
+  assert.equal((home.match(/category: 'ICE执法动态'/g) || []).length, 2);
   assert.equal((home.match(/titleKey: 'home\.topicIceTitle'/g) || []).length, 1);
   assert.match(home, /rankCategories[^;]*'ICE执法动态'/s);
   assert.match(home, /const rankItems = useMemo[\s\S]*?return articles[\s\S]*?rankCategories\.has/);

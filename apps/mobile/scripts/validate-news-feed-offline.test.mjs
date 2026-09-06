@@ -6,13 +6,15 @@ const home = await readFile(new URL('../app/(tabs)/index.tsx', import.meta.url),
 const list = await readFile(new URL('../src/components/PaginatedNewsList.tsx', import.meta.url), 'utf8');
 const image = await readFile(new URL('../src/components/NewsImage.tsx', import.meta.url), 'utf8');
 const foregroundRetry = await readFile(new URL('../src/hooks/useForegroundRetry.ts', import.meta.url), 'utf8');
+const i18n = await readFile(new URL('../src/i18n/i18n-core.ts', import.meta.url), 'utf8');
 
 test('restores homepage and list snapshots before refreshing official news', () => {
   assert.match(home, /readCachedHomeFeed/);
   assert.match(home, /cacheHomeFeed\(merged, focus\)/);
   assert.match(list, /readCachedNewsPage\(category, q\)/);
   assert.match(list, /cacheNewsPage\(category, q, page\.articles/);
-  assert.match(home, /正在显示上次读取的新闻/);
+  assert.match(home, /t\(error === 'offline' \? 'home\.offline' : 'home\.loadFailed'\)/);
+  assert.match(i18n, /'home\.offline': '网络不可用，正在显示上次读取的新闻/);
   assert.match(list, /t\('news\.offline'\)/);
 });
 
@@ -48,8 +50,10 @@ test('paints the canonical feed before loading supplements and prefetches only a
 
 test('explains slow initial and refresh requests without clearing visible news', () => {
   assert.match(home, /setTimeout[\s\S]*setSlowLoading\(true\)[\s\S]*4000/);
-  assert.match(home, /当前网络较慢，仍在尝试读取最新新闻/);
-  assert.match(home, /当前网络较慢，已保留现有新闻，仍在尝试更新/);
+  assert.match(home, /t\('home\.slowLoading'\)/);
+  assert.match(home, /t\('home\.slowRefresh'\)/);
+  assert.match(i18n, /'home\.slowLoading': '当前网络较慢，仍在尝试读取最新新闻/);
+  assert.match(i18n, /'home\.slowRefresh': '当前网络较慢，已保留现有新闻/);
   assert.match(home, /clearTimeout\(slowTimer\)/);
 });
 

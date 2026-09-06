@@ -60,6 +60,14 @@ test('translates homepage service portals, reader services and footer', () => {
   assert.equal(translate('en', 'home.footerBrand'), 'Tang Ren Daily');
 });
 
+test('translates homepage navigation, rankings, weather and network states', () => {
+  assert.equal(translate('en', 'home.navUsPolitics'), 'U.S. Politics');
+  assert.equal(translate('zh-TW', 'home.ranking24h'), '24 小時熱榜');
+  assert.equal(translate('en', 'home.weatherPartlyCloudy'), 'Partly cloudy');
+  assert.equal(translate('zh-CN', 'home.offline'), '网络不可用，正在显示上次读取的新闻。下拉即可重试。');
+  assert.equal(translate('en', 'home.sectionIce'), 'ICE enforcement updates');
+});
+
 test('localizes account validation and known client failures without hiding server details', () => {
   assert.equal(authValidationMessage('en', 'identifier'), 'Enter a valid email address or phone number.');
   assert.equal(authValidationMessage('zh-TW', 'password'), '密碼需要 8–128 位。');

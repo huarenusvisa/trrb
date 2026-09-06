@@ -28,6 +28,17 @@ test('keeps the App homepage on the PC mobile content structure', () => {
   assert.match(api, /public-home-articles/);
 });
 
+
+test('loads the visible hero before below-the-fold homepage images', () => {
+  const home = read('app/(tabs)/index.tsx');
+  assert.match(home, /setShowDeferredImages\(true\)/);
+  assert.match(home, /testID={`home-important-image-\${index}`} priority={index === 0 \? 'high' : 'normal'}/);
+  assert.match(home, /uri={showDeferredImages \? topic\.image : undefined}[^>]*priority="low"/);
+  assert.match(home, /uri={showDeferredImages \? first\.cover_image : undefined}[^>]*priority="low"/);
+  assert.match(home, /InteractionManager\.runAfterInteractions[\s\S]*setShowDeferredImages\(true\)/);
+  assert.match(home, /importantCarousel\.slice\(1, 3\)[\s\S]*InteractionManager\.runAfterInteractions[\s\S]*prefetchNewsImages/);
+});
+
 test('shows the U.S. section once instead of repeating it on every card', () => {
   const america = read('app/(tabs)/america.tsx');
   const i18n = read('src/i18n/i18n-core.ts');

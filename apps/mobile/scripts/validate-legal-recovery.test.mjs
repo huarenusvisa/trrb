@@ -19,3 +19,21 @@ test('legal directory supports accessible search, retry, and dynamic-height reco
   assert.match(source, /flexShrink:1/);
   assert.doesNotMatch(source, /height:\s*\d+/);
 });
+
+const detailSource = await readFile(new URL('../app/legal/[id].tsx', import.meta.url), 'utf8');
+
+test('legal detail restores records and analyses independently before refreshing', () => {
+  assert.match(detailSource, /readCachedLegalRecords/);
+  assert.match(detailSource, /readCachedLegalAnalyses/);
+  assert.match(detailSource, /Promise\.allSettled/);
+  assert.match(detailSource, /REQUEST_TIMEOUT_MS = 12_000/);
+  assert.match(detailSource, /useForegroundRetry\(Boolean\(error\)/);
+});
+
+test('legal detail preserves content with pull retry and accessible actions', () => {
+  assert.match(detailSource, /RefreshControl/);
+  assert.match(detailSource, /accessibilityRole="alert"/);
+  assert.match(detailSource, /accessibilityLabel={t\('news.retry'\)}/);
+  assert.match(detailSource, /minHeight:48/);
+  assert.doesNotMatch(detailSource, /height:\s*\d+/);
+});

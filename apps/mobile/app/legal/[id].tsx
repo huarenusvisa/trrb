@@ -1,31 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Linking, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Linking, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { localeDateTag, SupportedLocale } from '../../src/i18n/i18n-core';
+import { cacheLegalAnalyses, cacheLegalRecords, readCachedLegalAnalyses, readCachedLegalRecords } from '../../src/storage/legalCache';
+import type { CachedLegalAnalysis as LegalAnalysis, CachedLegalRecord as LegalRecord } from '../../src/storage/legal-cache-core';
 
-type LegalRecord = {
-  id: string;
-  title?: string;
-  docket?: string;
-  citation?: string;
-  issuingBody?: string;
-  authorityType?: string;
-  publicationDate?: string;
-  sourceSystem?: string;
-  officialUrl?: string;
-  officialPdfUrl?: string;
-};
-
-type LegalAnalysis = {
-  recordId: string;
-  chineseTitle?: string;
-  summary?: string;
-  legalIssue?: string;
-  holdingOrRule?: string;
-  impact?: string;
-  disclaimer?: string;
-};
+const LEGAL_URL = 'https://trrb.net/data/legal/unified-legal-authorities-latest.json';
+const ANALYSIS_URL = 'https://trrb.net/data/legal/legal-ai-analysis-latest.json';
+const REQUEST_TIMEOUT_MS = 12_000;
 
 function formatLegalDate(value: string, locale: SupportedLocale): string {
   const date = new Date(`${value}T00:00:00Z`);
@@ -39,33 +23,79 @@ export default function LegalDetailScreen() {
   const [record, setRecord] = useState<LegalRecord | null>(null);
   const [analysis, setAnalysis] = useState<LegalAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
+  const mounted = useRef(true);
+  const activeRequest = useRef<AbortController | null>(null);
+
+  const selectRecord = useCallback((rows: LegalRecord[]) => rows.find((item) => String(item.id) === String(id)) || null, [id]);
+  const selectAnalysis = useCallback((rows: LegalAnalysis[]) => rows.find((item) => String(item.recordId) === String(id)) || null, [id]);
+
+  const load = useCallback(async (manual = false) => {
+    activeRequest.current?.abort();
+    const controller = new AbortController();
+    activeRequest.current = controller;
+    if (manual) setRefreshing(true);
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    const requestJson = async (url: string) => {
+      const response = await fetch(url, { headers: { Accept: 'application/json' }, signal: controller.signal });
+      if (!response.ok) throw new Error(t('legal.databaseError', { status: response.status }));
+      return response.json();
+    };
+
+    try {
+      const [databaseResult, analysisResult] = await Promise.allSettled([requestJson(LEGAL_URL), requestJson(ANALYSIS_URL)]);
+      if (!mounted.current || activeRequest.current !== controller) return;
+
+      if (databaseResult.status === 'fulfilled') {
+        const records = Array.isArray(databaseResult.value?.records) ? databaseResult.value.records as LegalRecord[] : [];
+        setRecord(selectRecord(records));
+        setError('');
+        void cacheLegalRecords(records);
+      } else {
+        const cause = databaseResult.reason;
+        setError(cause instanceof Error && cause.name !== 'AbortError' ? cause.message : t('legal.loadFailed'));
+      }
+
+      if (analysisResult.status === 'fulfilled') {
+        const analyses = Array.isArray(analysisResult.value?.analyses) ? analysisResult.value.analyses as LegalAnalysis[] : [];
+        setAnalysis(selectAnalysis(analyses));
+        void cacheLegalAnalyses(analyses);
+      }
+    } finally {
+      clearTimeout(timer);
+      if (mounted.current && activeRequest.current === controller) {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    }
+  }, [selectAnalysis, selectRecord, t]);
 
   useEffect(() => {
-    Promise.all([
-      fetch('https://trrb.net/data/legal/unified-legal-authorities-latest.json', { headers: { Accept: 'application/json' } }).then((r) => {
-        if (!r.ok) throw new Error(t('legal.databaseError', { status: r.status }));
-        return r.json();
-      }),
-      fetch('https://trrb.net/data/legal/legal-ai-analysis-latest.json', { headers: { Accept: 'application/json' } }).then((r) => r.ok ? r.json() : ({ analyses: [] }))
-    ])
-      .then(([db, ai]) => {
-        const rows = Array.isArray(db?.records) ? db.records : [];
-        const analyses = Array.isArray(ai?.analyses) ? ai.analyses : [];
-        setRecord(rows.find((item: LegalRecord) => String(item.id) === String(id)) || null);
-        setAnalysis(analyses.find((item: LegalAnalysis) => String(item.recordId) === String(id)) || null);
-      })
-      .catch((e) => setError(e instanceof Error ? e.message : t('legal.loadFailed')))
-      .finally(() => setLoading(false));
-  }, [id, t]);
+    mounted.current = true;
+    void Promise.all([readCachedLegalRecords(), readCachedLegalAnalyses()]).then(([records, analyses]) => {
+      if (!mounted.current) return;
+      const cachedRecord = selectRecord(records || []);
+      setRecord(cachedRecord);
+      setAnalysis(selectAnalysis(analyses || []));
+      if (cachedRecord) setLoading(false);
+    }).finally(() => { if (mounted.current) void load(); });
+    return () => {
+      mounted.current = false;
+      activeRequest.current?.abort();
+    };
+  }, [load, selectAnalysis, selectRecord]);
+
+  useForegroundRetry(Boolean(error), () => void load());
 
   const shareUrl = useMemo(() => `https://trrb.net/legal/detail.html?id=${encodeURIComponent(String(id || ''))}`, [id]);
 
-  if (loading) return <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={t('legal.detailLoading')}><ActivityIndicator color="#c8211e" /><Text style={styles.muted}>{t('legal.detailLoading')}</Text></View>;
-  if (error || !record) return <View style={styles.center} accessibilityRole="alert"><Text style={styles.error}>{error || t('legal.detailNotFound')}</Text></View>;
+  if (loading && !record) return <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={t('legal.detailLoading')}><ActivityIndicator color="#c8211e" /><Text style={styles.muted}>{t('legal.detailLoading')}</Text></View>;
+  if (!record) return <View style={styles.center} accessibilityRole="alert"><Text style={styles.error}>{error || t('legal.detailNotFound')}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('news.retry')} style={styles.retry} onPress={() => void load(true)}><Text style={styles.retryText}>{t('news.retry')}</Text></Pressable></View>;
 
   return (
-    <ScrollView style={styles.page} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true)} tintColor="#c8211e" />}>
+      {error ? <View accessibilityRole="alert" style={styles.errorBox}><Text style={styles.error}>{t('news.offline')}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('news.retry')} style={styles.inlineRetry} onPress={() => void load(true)}><Text style={styles.retryText}>{t('news.retry')}</Text></Pressable></View> : null}
       <Text style={styles.eyebrow}>{record.issuingBody || record.sourceSystem || t('legal.officialSource')}</Text>
       <Text style={styles.title}>{analysis?.chineseTitle || record.title || record.citation || t('legal.detailFallbackTitle')}</Text>
       <Text style={styles.officialTitle}>{record.title || ''}</Text>
@@ -98,5 +128,10 @@ export default function LegalDetailScreen() {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:20,paddingTop:58,paddingBottom:50},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28},error:{color:'#b42318',textAlign:'center'},eyebrow:{color:'#c8211e',fontSize:14,fontWeight:'900'},title:{fontSize:28,lineHeight:38,fontWeight:'900',color:'#101828',marginTop:8},officialTitle:{fontSize:15,lineHeight:23,color:'#667085',marginTop:10},metaBox:{backgroundColor:'#fff',borderRadius:14,padding:16,marginTop:18,gap:6},meta:{fontSize:14,color:'#475467'},analysis:{backgroundColor:'#fff',borderRadius:16,padding:18,marginTop:16},section:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:12},label:{fontSize:15,fontWeight:'900',color:'#344054',marginTop:10,marginBottom:4},body:{fontSize:17,lineHeight:29,color:'#1d2939'},disclaimer:{fontSize:12,lineHeight:19,color:'#98a2b3',marginTop:16},muted:{color:'#667085',lineHeight:24},actions:{gap:10,marginTop:18},primary:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center'},primaryText:{color:'#fff',fontWeight:'900'},secondary:{backgroundColor:'#fff',padding:15,borderRadius:12,alignItems:'center'},secondaryText:{color:'#344054',fontWeight:'900'}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:20,paddingTop:58,paddingBottom:50},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28},error:{color:'#b42318',lineHeight:22,textAlign:'center',flexShrink:1},
+  errorBox:{backgroundColor:'#fef3f2',borderRadius:14,padding:12,marginBottom:16,alignItems:'flex-start'},retry:{minHeight:48,marginTop:12,justifyContent:'center',paddingHorizontal:18,backgroundColor:'#fff',borderRadius:12},inlineRetry:{minHeight:44,justifyContent:'center',paddingHorizontal:4},retryText:{color:'#b42318',fontWeight:'900'},
+  eyebrow:{color:'#c8211e',fontSize:14,lineHeight:21,fontWeight:'900',flexShrink:1},title:{fontSize:28,lineHeight:38,fontWeight:'900',color:'#101828',marginTop:8,flexShrink:1},officialTitle:{fontSize:15,lineHeight:23,color:'#667085',marginTop:10,flexShrink:1},
+  metaBox:{backgroundColor:'#fff',borderRadius:14,padding:16,marginTop:18,gap:6},meta:{fontSize:14,lineHeight:21,color:'#475467',flexShrink:1},analysis:{backgroundColor:'#fff',borderRadius:16,padding:18,marginTop:16},section:{fontSize:22,lineHeight:30,fontWeight:'900',color:'#101828',marginBottom:12,flexShrink:1},
+  label:{fontSize:15,lineHeight:22,fontWeight:'900',color:'#344054',marginTop:10,marginBottom:4,flexShrink:1},body:{fontSize:17,lineHeight:29,color:'#1d2939',flexShrink:1},disclaimer:{fontSize:12,lineHeight:19,color:'#667085',marginTop:16,flexShrink:1},muted:{color:'#667085',lineHeight:24,textAlign:'center',flexShrink:1},
+  actions:{gap:10,marginTop:18},primary:{minHeight:48,backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',justifyContent:'center'},primaryText:{color:'#fff',fontWeight:'900',textAlign:'center'},secondary:{minHeight:48,backgroundColor:'#fff',padding:15,borderRadius:12,alignItems:'center',justifyContent:'center'},secondaryText:{color:'#344054',fontWeight:'900',textAlign:'center'}
 });

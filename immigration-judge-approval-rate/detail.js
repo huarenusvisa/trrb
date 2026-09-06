@@ -3,6 +3,7 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const apiUrl = (path) => path;
+const REQUEST_TIMEOUT_MS = 15000;
 const detailLoading = $('#detail-loading');
 const initialDetailLoading = detailLoading.textContent;
 let nationality = [];
@@ -21,6 +22,21 @@ const sampleDescription = (row) => {
   return `${fmt(count)} 件有效裁决`;
 };
 const dateRange = (row) => row.data_start_date || row.data_end_date ? `记录日期 ${row.data_start_date || '—'} 至 ${row.data_end_date || '—'}` : '';
+
+async function requestJson(url, options = {}) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    if (!response.ok) throw new Error(`Judge detail failed: ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
 
 function renderBackground(background) {
   $('#judge-background').hidden = false;
@@ -139,9 +155,7 @@ async function load() {
   detailLoading.setAttribute('aria-busy', 'true');
   try {
     const localUrl = `/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(id)}`;
-    const response = await fetch(apiUrl(localUrl), { cache: 'no-store' });
-    if (!response.ok) throw new Error(`Judge detail failed: ${response.status}`);
-    const data = await response.json();
+    const data = await requestJson(apiUrl(localUrl), { cache: 'no-store' });
     if (!data.judge) throw new Error('Judge detail missing');
     const judge = data.judge;
     if (data.background || document.body.dataset.seoPrerendered !== 'true') renderBackground(data.background);

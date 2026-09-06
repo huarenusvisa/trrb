@@ -29,6 +29,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   const [loadingMore, setLoadingMore] = useState(false);
   const [nextOffset, setNextOffset] = useState<number | null>(0);
   const [error, setError] = useState('');
+  const [loadMoreError, setLoadMoreError] = useState('');
   const itemsRef = useRef<NewsArticle[]>([]);
   const prefetchedThroughRef = useRef(-1);
   const requestGateRef = useRef(new NewsPageRequestGate());
@@ -56,10 +57,13 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
     if (!token) return;
     try {
       setError('');
+      setLoadMoreError('');
       if (reset) {
         setRefreshing(true);
         setLoadingMore(false);
-      } else setLoadingMore(true);
+      } else {
+        setLoadingMore(true);
+      }
       const page = await fetchArticlePage({ category, q, offset, limit: 24 });
       if (!gate.isCurrent(token)) return;
       setItems((current) => {
@@ -73,10 +77,12 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
         });
       });
       setNextOffset(page.has_more ? page.next_offset : null);
+      if (!reset) setLoadMoreError('');
       if (reset) void cacheNewsPage(category, q, page.articles, page.has_more ? page.next_offset : null).catch(() => undefined);
     } catch (e) {
       if (!gate.isCurrent(token)) return;
-      setError(reset && items.length > 0 ? t('news.offline') : (e instanceof Error ? e.message : t('news.loadFailed')));
+      if (reset) setError(items.length > 0 ? t('news.offline') : (e instanceof Error ? e.message : t('news.loadFailed')));
+      else setLoadMoreError(t('news.loadMoreFailed'));
     } finally {
       if (gate.finish(token)) {
         setLoading(false);
@@ -89,7 +95,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   useEffect(() => {
     let active = true;
     const generation = requestGateRef.current.resetFeed();
-    setLoading(true); setRefreshing(false); setLoadingMore(false); setItems([]); setNextOffset(0); setError('');
+    setLoading(true); setRefreshing(false); setLoadingMore(false); setItems([]); setNextOffset(0); setError(''); setLoadMoreError('');
     void (async () => {
       let restored = false;
       const cached = await readCachedNewsPage(category, q).catch(() => null);
@@ -122,7 +128,12 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
     void load(true);
   };
 
+  const retryLoadMore = () => {
+    void load(false);
+  };
+
   useForegroundRetry(Boolean(error), retryList);
+  useForegroundRetry(Boolean(loadMoreError), retryLoadMore);
 
   const renderArticle = useCallback(({ item, index }: ListRenderItemInfo<NewsArticle>) => (
     <Pressable
@@ -162,11 +173,11 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       onEndReached={() => { if (nextOffset != null) void load(false); }}
       ListHeaderComponent={<View style={styles.header}><Text accessibilityRole="header" testID="category-screen-title" style={[styles.title, compact && styles.compactTitle]}>{title}</Text>{error ? <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}><Text style={styles.error}>{error}</Text><Pressable testID="category-network-retry" accessibilityRole="button" accessibilityLabel={t('news.retry')} accessibilityState={{ disabled: refreshing }} disabled={refreshing} style={[styles.retryButton, refreshing && styles.retryButtonDisabled]} onPress={retryList}><Text style={styles.retryButtonText}>{refreshing ? t('news.retrying') : t('news.retry')}</Text></Pressable></View> : null}</View>}
       ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText || t('news.empty')}</Text></View>}
-      ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color="#c8211e" /> : nextOffset == null && items.length ? <Text style={styles.end}>{t('news.end')}</Text> : null}
+      ListFooterComponent={loadingMore ? <View style={styles.footer} accessibilityLiveRegion="polite" accessibilityLabel={t('news.loadingMore')}><ActivityIndicator color="#c8211e" /></View> : loadMoreError ? <View testID="category-load-more-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.footerError}><Text style={styles.footerErrorText}>{loadMoreError}</Text><Pressable testID="category-load-more-retry" accessibilityRole="button" accessibilityLabel={t('news.retryLoadMore')} style={styles.footerRetryButton} onPress={retryLoadMore}><Text style={styles.footerRetryText}>{t('news.retryLoadMore')}</Text></Pressable></View> : nextOffset == null && items.length ? <Text style={styles.end}>{t('news.end')}</Text> : null}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},compactContent:{paddingHorizontal:9},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085',lineHeight:21,textAlign:'center'},header:{marginBottom:18},title:{fontSize:30,lineHeight:39,fontWeight:'900',color:'#101828'},compactTitle:{fontSize:26,lineHeight:35},errorPanel:{marginTop:12,backgroundColor:'#fef3f2',borderRadius:10,padding:12,alignItems:'flex-start'},error:{color:'#b42318',lineHeight:21},retryButton:{minHeight:44,borderRadius:8,backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,marginTop:10,alignItems:'center',justifyContent:'center'},retryButtonDisabled:{opacity:0.58},retryButtonText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},empty:{paddingVertical:80,alignItems:'center'},card:{minHeight:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},compactCard:{minHeight:108},largeTextCard:{minHeight:144},thumb:{width:126,minHeight:118,alignSelf:'stretch',backgroundColor:'#e4e7ec'},body:{flex:1,minWidth:0,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,lineHeight:18,color:'#667085',marginTop:7},footer:{marginVertical:20},end:{textAlign:'center',color:'#667085',marginVertical:20,lineHeight:21}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},compactContent:{paddingHorizontal:9},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085',lineHeight:21,textAlign:'center'},header:{marginBottom:18},title:{fontSize:30,lineHeight:39,fontWeight:'900',color:'#101828'},compactTitle:{fontSize:26,lineHeight:35},errorPanel:{marginTop:12,backgroundColor:'#fef3f2',borderRadius:10,padding:12,alignItems:'flex-start'},error:{color:'#b42318',lineHeight:21},retryButton:{minHeight:44,borderRadius:8,backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,marginTop:10,alignItems:'center',justifyContent:'center'},retryButtonDisabled:{opacity:0.58},retryButtonText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},empty:{paddingVertical:80,alignItems:'center'},card:{minHeight:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},compactCard:{minHeight:108},largeTextCard:{minHeight:144},thumb:{width:126,minHeight:118,alignSelf:'stretch',backgroundColor:'#e4e7ec'},body:{flex:1,minWidth:0,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,lineHeight:18,color:'#667085',marginTop:7},footer:{minHeight:44,marginVertical:20,alignItems:'center',justifyContent:'center'},footerError:{marginVertical:14,borderRadius:10,backgroundColor:'#fef3f2',padding:12,alignItems:'center'},footerErrorText:{color:'#b42318',lineHeight:21,textAlign:'center'},footerRetryButton:{minHeight:44,marginTop:8,paddingHorizontal:18,paddingVertical:10,borderRadius:8,backgroundColor:'#c8211e',alignItems:'center',justifyContent:'center'},footerRetryText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},end:{textAlign:'center',color:'#667085',marginVertical:20,lineHeight:21}
 });

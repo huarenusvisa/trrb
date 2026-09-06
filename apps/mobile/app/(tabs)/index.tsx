@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, InteractionManager, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, ActivityIndicator, InteractionManager, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
@@ -7,7 +7,8 @@ import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { localeDateTag, MessageKey } from '../../src/i18n/i18n-core';
-import { cacheHomeFeed, readCachedHomeFeed } from '../../src/storage/newsFeedCache';
+import { cacheHomeFeed, readCachedHomeFeedEnvelope } from '../../src/storage/newsFeedCache';
+import { isNewsFeedCacheStale } from '../../src/storage/news-feed-cache-core';
 
 const HOME_NAV_ITEMS = [
   { category: '重要新闻', labelKey: 'home.navImportant' },
@@ -157,6 +158,7 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [slowLoading, setSlowLoading] = useState(false);
   const [error, setError] = useState<'offline' | 'loadFailed' | ''>('');
+  const [cacheSavedAt, setCacheSavedAt] = useState<number | null>(null);
   const [hotIndex, setHotIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [showStickyBrand, setShowStickyBrand] = useState(false);
@@ -174,12 +176,14 @@ export default function HomeScreen() {
       if (sequence === loadSequence.current) setSlowLoading(true);
     }, 4000);
     if (restoreCache) {
-      const cached = await readCachedHomeFeed().catch(() => null);
+      const cachedEntry = await readCachedHomeFeedEnvelope().catch(() => null);
+      const cached = cachedEntry?.snapshot ?? null;
       if (cached) {
         restored = true;
         cachedFocus = cached.focusArticles || [];
         setArticles(cached.articles);
         setFocusArticles(cachedFocus);
+        setCacheSavedAt(cachedEntry?.savedAt ?? null);
         setLoading(false);
       }
     }
@@ -196,8 +200,10 @@ export default function HomeScreen() {
       const focus = focusResult ?? cachedFocus;
       setArticles(global);
       setFocusArticles(focus);
+      setCacheSavedAt(null);
       setLoading(false);
       setRefreshing(false);
+      if (!restoreCache) AccessibilityInfo.announceForAccessibility(t('home.refreshSucceeded'));
       void cacheHomeFeed(global, focus).catch(() => undefined);
 
       // The canonical PC feed paints first. Category supplements fill gaps only
@@ -339,6 +345,11 @@ export default function HomeScreen() {
 
   useForegroundRetry(Boolean(error), retryHome);
 
+  const homeCacheIsStale = cacheSavedAt !== null && isNewsFeedCacheStale(cacheSavedAt);
+  const homeCacheStatus = cacheSavedAt === null ? '' : t(homeCacheIsStale ? 'home.cachedStale' : 'home.cachedAt', {
+    time: new Date(cacheSavedAt).toLocaleString(localeDateTag(locale)),
+  });
+
   if (loading) return (
     <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={slowLoading ? t('home.slowLoading') : t('home.loading')}>
       <ActivityIndicator size="large" color="#c8211e" />
@@ -402,6 +413,16 @@ export default function HomeScreen() {
             <Text style={styles.breakingTitle} numberOfLines={1}>{activeHot.title}</Text>
             <Text style={styles.chevron}>›</Text>
           </Pressable>
+        ) : null}
+
+        {homeCacheStatus ? (
+          <View
+            testID="home-cache-status"
+            accessibilityLiveRegion="polite"
+            style={[styles.cacheStatus, homeCacheIsStale && styles.cacheStatusStale]}
+          >
+            <Text style={styles.cacheStatusText}>{homeCacheStatus}</Text>
+          </View>
         ) : null}
 
         {slowLoading || error ? (
@@ -586,6 +607,9 @@ const styles = StyleSheet.create({
   breakingLabel: { color: '#c8211e', fontSize: 12, fontWeight: '900', marginRight: 8 },
   breakingTitle: { flex: 1, color: '#101828', fontSize: 13, fontWeight: '800' },
   chevron: { color: '#98a2b3', fontSize: 22, marginLeft: 5 },
+  cacheStatus: { backgroundColor: '#eef4ff', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 9, marginBottom: 10 },
+  cacheStatusStale: { backgroundColor: '#fffaeb' },
+  cacheStatusText: { color: '#344054', lineHeight: 20 },
   networkStatus: { backgroundColor: '#fff6d8', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 9, marginBottom: 10, alignItems: 'flex-start' },
   error: { color: '#b42318' },
   networkHint: { color: '#875b00' },

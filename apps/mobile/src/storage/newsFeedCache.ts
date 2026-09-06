@@ -30,6 +30,10 @@ export async function readCachedHomeFeed() {
   return read(HOME_KEY);
 }
 
+export async function readCachedHomeFeedEnvelope() {
+  return readEnvelope(HOME_KEY);
+}
+
 export async function cacheHomeFeed(articles: NewsArticle[], focusArticles: NewsArticle[]) {
   await AsyncStorage.setItem(HOME_KEY, JSON.stringify({ savedAt: Date.now(), snapshot: { articles, focusArticles } }));
 }

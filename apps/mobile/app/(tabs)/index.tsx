@@ -160,6 +160,7 @@ export default function HomeScreen() {
   const [hotIndex, setHotIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [showStickyBrand, setShowStickyBrand] = useState(false);
+  const [showDeferredImages, setShowDeferredImages] = useState(false);
   const [showDeferredServices, setShowDeferredServices] = useState(false);
   const [weather, setWeather] = useState<WeatherState>({ temperature: null, code: null, isDay: true });
 
@@ -244,7 +245,10 @@ export default function HomeScreen() {
   useEffect(() => { void load(true); void loadWeather(); }, []);
 
   useEffect(() => {
-    const task = InteractionManager.runAfterInteractions(() => setShowDeferredServices(true));
+    const task = InteractionManager.runAfterInteractions(() => {
+      setShowDeferredImages(true);
+      setShowDeferredServices(true);
+    });
     return () => task.cancel();
   }, []);
 
@@ -433,7 +437,7 @@ export default function HomeScreen() {
                   style={[styles.heroCard, { width: carouselWidth }]}
                   onPress={() => openArticle(item)}
                 >
-                  <NewsImage uri={item.cover_image} style={styles.heroImage} testID={`home-important-image-${index}`} />
+                  <NewsImage uri={item.cover_image} style={styles.heroImage} testID={`home-important-image-${index}`} priority={index === 0 ? 'high' : 'normal'} />
                   <View style={styles.heroOverlay} />
                   <View style={styles.heroCopy}>
                     <Text style={styles.heroCategory}>{t('home.importantNews')}</Text>
@@ -470,7 +474,7 @@ export default function HomeScreen() {
             const latest = topicLatest[topic.key];
             return (
               <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} style={styles.focusCard} onPress={() => openTopic(topic.url)}>
-                <NewsImage uri={topic.image} style={styles.focusImage} testID={`home-topic-image-${topic.key}`} />
+                <NewsImage uri={showDeferredImages ? topic.image : undefined} style={styles.focusImage} testID={`home-topic-image-${topic.key}`} priority="low" />
                 <View style={styles.focusBody}>
                   <Text style={styles.focusTitle}>{t(topic.titleKey)}</Text>
                   <Text style={styles.focusSub}>{t(topic.subtitleKey)}</Text>
@@ -494,7 +498,7 @@ export default function HomeScreen() {
                 <Pressable onPress={() => openCategory(category)}><Text style={styles.more}>{t('home.more')} ›</Text></Pressable>
               </View>
               <Pressable style={styles.categoryLead} onPress={() => openArticle(first)}>
-                <NewsImage uri={first.cover_image} style={styles.categoryLeadImage} testID={`home-category-image-${key}`} />
+                <NewsImage uri={showDeferredImages ? first.cover_image : undefined} style={styles.categoryLeadImage} testID={`home-category-image-${key}`} priority="low" />
                 <Text style={styles.categoryLeadTitle} numberOfLines={3}>{first.title}</Text>
               </Pressable>
               {rest.map((item) => (

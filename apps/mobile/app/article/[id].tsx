@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Linking, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Linking, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
 import { ArticleNavigation, ArticleTranslation, fetchArticle, fetchArticleNavigation, fetchArticleTranslation, fetchRelatedArticles, NewsArticle } from '../../src/api/trrb';
@@ -44,7 +44,11 @@ export default function ArticleDetailScreen() {
   const [translation, setTranslation] = useState<ArticleTranslation | null>(null);
   const [showTranslation, setShowTranslation] = useState(false);
   const [translationLoading, setTranslationLoading] = useState(false);
+  const [translationError, setTranslationError] = useState(false);
+  const [actionBusy, setActionBusy] = useState<'favorite' | 'share' | 'copy' | 'website' | null>(null);
+  const [actionNotice, setActionNotice] = useState<{ message: string; error: boolean } | null>(null);
   const requestVersion = useRef(0);
+  const translationVersion = useRef(0);
   const articleRef = useRef<NewsArticle | null>(null);
   const stackedLayout = width < 380 || systemFontScale >= 1.3;
 
@@ -129,28 +133,38 @@ export default function ArticleDetailScreen() {
   const retryArticle = useCallback(() => { void load(false); }, [load]);
   useForegroundRetry(Boolean(error), retryArticle);
 
+  const loadTranslation = useCallback(async () => {
+    if (!article || offline || (locale !== 'en' && locale !== 'zh-TW')) return;
+    const version = ++translationVersion.current;
+    setTranslationLoading(true);
+    setTranslationError(false);
+    try {
+      const row = await withTimeout(fetchArticleTranslation(article.id, locale));
+      if (version !== translationVersion.current) return;
+      setTranslation(row);
+      setShowTranslation(Boolean(row));
+    } catch {
+      if (version !== translationVersion.current) return;
+      setTranslation(null);
+      setShowTranslation(false);
+      setTranslationError(true);
+    } finally {
+      if (version === translationVersion.current) setTranslationLoading(false);
+    }
+  }, [article?.id, locale, offline]);
+
   useEffect(() => {
-    let active = true;
+    translationVersion.current += 1;
     setTranslation(null);
     setShowTranslation(false);
     setTranslationLoading(false);
-    if (!article || offline || (locale !== 'en' && locale !== 'zh-TW')) return () => { active = false; };
+    setTranslationError(false);
+    void loadTranslation();
+    return () => { translationVersion.current += 1; };
+  }, [loadTranslation]);
 
-    setTranslationLoading(true);
-    void fetchArticleTranslation(article.id, locale)
-      .then((row) => {
-        if (!active) return;
-        setTranslation(row);
-        setShowTranslation(Boolean(row));
-      })
-      .catch(() => {
-        if (active) setTranslation(null);
-      })
-      .finally(() => {
-        if (active) setTranslationLoading(false);
-      });
-    return () => { active = false; };
-  }, [article?.id, locale, offline]);
+  const retryTranslation = useCallback(() => { void loadTranslation(); }, [loadTranslation]);
+  useForegroundRetry(translationError, retryTranslation);
 
   const webUrl = useMemo(() => {
     if (!article) return 'https://trrb.net';
@@ -162,7 +176,41 @@ export default function ArticleDetailScreen() {
     return `https://trrb.net/article.html?id=${encodeURIComponent(String(article.id))}`;
   }, [article]);
 
-  const copyLink = async () => { await Clipboard.setStringAsync(webUrl); Alert.alert(t('article.copiedTitle'), t('article.copiedBody')); };
+  const runArticleAction = async (
+    kind: NonNullable<typeof actionBusy>,
+    action: () => Promise<void>,
+    failureMessage: string,
+    successMessage?: string,
+  ) => {
+    if (actionBusy) return;
+    setActionBusy(kind);
+    setActionNotice(null);
+    try {
+      await action();
+      if (successMessage) setActionNotice({ message: successMessage, error: false });
+    } catch {
+      setActionNotice({ message: failureMessage, error: true });
+    } finally {
+      setActionBusy(null);
+    }
+  };
+
+  const toggleSavedArticle = () => runArticleAction('favorite', async () => {
+    setFavorite(await toggleFavorite(article!));
+  }, t('article.saveFailed'));
+
+  const shareArticle = () => runArticleAction('share', async () => {
+    await Share.share({ title: article!.title, message: `${article!.title}\n${webUrl}`, url: webUrl });
+  }, t('article.shareFailed'));
+
+  const copyLink = () => runArticleAction('copy', async () => {
+    await Clipboard.setStringAsync(webUrl);
+  }, t('article.copyFailed'), t('article.copiedBody'));
+
+  const openWebsite = () => runArticleAction('website', async () => {
+    if (!await Linking.canOpenURL(webUrl)) throw new Error('unsupported-url');
+    await Linking.openURL(webUrl);
+  }, t('article.openWebsiteFailed'));
 
   const openArticleSection = () => {
     if (!article) return;
@@ -201,7 +249,10 @@ export default function ArticleDetailScreen() {
       <Pressable testID="article-translation-toggle" accessibilityRole="button" accessibilityLabel={showTranslation ? t('article.showOriginal') : t('article.showTranslation')} style={styles.translationButton} onPress={() => setShowTranslation((value) => !value)}>
         <Text style={styles.translationButtonText}>{showTranslation ? t('article.showOriginal') : t('article.showTranslation')}</Text>
       </Pressable>
-    </View> : locale !== 'zh-CN' ? <Text testID="article-original-language-note" style={styles.languageNote}>{translationLoading ? t('article.checkingTranslation') : t('article.originalLanguage')}</Text> : null}
+    </View> : locale !== 'zh-CN' ? translationError ? <View testID="article-translation-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.translationError}>
+      <Text style={styles.translationErrorText}>{t('article.translationFailed')}</Text>
+      <Pressable testID="article-translation-retry" accessibilityRole="button" accessibilityLabel={t('article.retryTranslation')} disabled={translationLoading} style={styles.translationRetry} onPress={retryTranslation}><Text style={styles.translationRetryText}>{t('article.retryTranslation')}</Text></Pressable>
+    </View> : <Text testID="article-original-language-note" accessibilityLiveRegion="polite" style={styles.languageNote}>{translationLoading ? t('article.checkingTranslation') : t('article.originalLanguage')}</Text> : null}
     {!offline && (navigation.previous || navigation.next) ? <View style={styles.navigation}>
       <Text accessibilityRole="header" style={styles.navigationTitle}>{t('article.continueReading')}</Text>
       <View style={[styles.navigationRow, stackedLayout && styles.navigationRowStacked]}>
@@ -210,14 +261,15 @@ export default function ArticleDetailScreen() {
       </View>
     </View> : null}
     <View style={styles.actions}>
-      <Pressable accessibilityRole="button" accessibilityLabel={favorite?t('article.saved'):t('article.save')} accessibilityState={{ selected: favorite }} style={favorite?styles.savedButton:styles.primaryButton} onPress={async()=>setFavorite(await toggleFavorite(article))}><Text style={styles.primaryButtonText}>{favorite?t('article.saved'):t('article.save')}</Text></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('article.share')} style={styles.primaryButton} onPress={()=>Share.share({title:article.title,message:`${article.title}\n${webUrl}`,url:webUrl})}><Text style={styles.primaryButtonText}>{t('article.share')}</Text></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel={t('article.copyLink')} style={styles.outlineButton} onPress={copyLink}><Text style={styles.outlineButtonText}>{t('article.copyLink')}</Text></Pressable>
-      <Pressable accessibilityRole="link" accessibilityLabel={t('article.openWebsite')} style={styles.outlineButton} onPress={()=>Linking.openURL(webUrl)}><Text style={styles.outlineButtonText}>{t('article.openWebsite')}</Text></Pressable>
+      {actionNotice ? <Text testID="article-action-notice" accessibilityRole={actionNotice.error ? 'alert' : undefined} accessibilityLiveRegion="polite" style={actionNotice.error ? styles.actionError : styles.actionSuccess}>{actionNotice.message}</Text> : null}
+      <Pressable accessibilityRole="button" accessibilityLabel={favorite?t('article.saved'):t('article.save')} accessibilityState={{ selected: favorite, disabled: Boolean(actionBusy), busy: actionBusy === 'favorite' }} disabled={Boolean(actionBusy)} style={[favorite?styles.savedButton:styles.primaryButton, actionBusy && styles.disabledButton]} onPress={() => void toggleSavedArticle()}><Text style={styles.primaryButtonText}>{favorite?t('article.saved'):t('article.save')}</Text></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('article.share')} accessibilityState={{ disabled: Boolean(actionBusy), busy: actionBusy === 'share' }} disabled={Boolean(actionBusy)} style={[styles.primaryButton, actionBusy && styles.disabledButton]} onPress={() => void shareArticle()}><Text style={styles.primaryButtonText}>{t('article.share')}</Text></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('article.copyLink')} accessibilityState={{ disabled: Boolean(actionBusy), busy: actionBusy === 'copy' }} disabled={Boolean(actionBusy)} style={[styles.outlineButton, actionBusy && styles.disabledButton]} onPress={() => void copyLink()}><Text style={styles.outlineButtonText}>{t('article.copyLink')}</Text></Pressable>
+      <Pressable accessibilityRole="link" accessibilityLabel={t('article.openWebsite')} accessibilityState={{ disabled: Boolean(actionBusy), busy: actionBusy === 'website' }} disabled={Boolean(actionBusy)} style={[styles.outlineButton, actionBusy && styles.disabledButton]} onPress={() => void openWebsite()}><Text style={styles.outlineButtonText}>{t('article.openWebsite')}</Text></Pressable>
     </View>
     {related.length ? <View style={styles.related}><Text accessibilityRole="header" style={styles.relatedTitle}>{t('article.related')}</Text>{related.map((item)=><Pressable key={String(item.id)} accessibilityRole="button" accessibilityLabel={t('news.openArticle', { title: item.title })} style={styles.relatedItem} onPress={()=>router.push(`/article/${item.id}`)}><Text style={styles.relatedItemTitle}>{item.title}</Text><Text style={styles.relatedMeta}>{newsCategoryName(locale, item.category_name)}</Text></Pressable>)}</View> : null}
     {!offline ? <CommentThread articleId={String(article.id)} /> : null}
   </ScrollView></>;
 }
 
-const styles=StyleSheet.create({page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingTop:20,paddingBottom:60},contentNarrow:{paddingHorizontal:16},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28,gap:12},muted:{color:'#667085',textAlign:'center'},errorTitle:{fontSize:20,fontWeight:'900',color:'#101828'},categoryButton:{alignSelf:'flex-start',minHeight:44,flexDirection:'row',alignItems:'center',gap:5,backgroundColor:'#fff1f0',borderRadius:999,paddingHorizontal:12,paddingVertical:8},category:{color:'#c8211e',fontWeight:'900',fontSize:14,flexShrink:1},categoryArrow:{color:'#c8211e',fontWeight:'900',fontSize:18,lineHeight:18},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},titleNarrow:{fontSize:27,lineHeight:36},meta:{color:'#667085',marginTop:12,marginBottom:20,flexShrink:1},image:{width:'100%',aspectRatio:16/9,borderRadius:16,backgroundColor:'#eaecf0',marginBottom:22},imageNarrow:{borderRadius:12},summary:{fontWeight:'700',color:'#344054',marginBottom:20,flexShrink:1},body:{color:'#1d2939',flexShrink:1},languageNote:{color:'#667085',fontSize:13,lineHeight:19,marginTop:18},translationControls:{marginTop:18,gap:10,alignItems:'flex-start'},translationNote:{color:'#027a48',fontSize:13,lineHeight:19,fontWeight:'700',flexShrink:1},translationButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:999,paddingHorizontal:14,paddingVertical:10,justifyContent:'center'},translationButtonText:{color:'#344054',fontSize:13,fontWeight:'800',flexShrink:1},navigation:{marginTop:30,paddingTop:22,borderTopWidth:1,borderTopColor:'#eaecf0'},navigationTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginBottom:12},navigationRow:{flexDirection:'row',gap:10},navigationRowStacked:{flexDirection:'column'},navigationItem:{flex:1,minHeight:126,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:13,backgroundColor:'#f9fafb'},navigationSpacer:{flex:1},navigationLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginBottom:8},navigationLabelNext:{textAlign:'right'},navigationItemTitle:{color:'#1d2939',fontWeight:'800',fontSize:15,lineHeight:21,flexShrink:1},actions:{gap:12,marginTop:30},primaryButton:{minHeight:48,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},savedButton:{minHeight:48,backgroundColor:'#344054',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},primaryButtonText:{color:'#fff',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},outlineButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},outlineButtonText:{color:'#344054',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},related:{marginTop:36,paddingTop:24,borderTopWidth:1,borderTopColor:'#eaecf0'},relatedTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:10},relatedItem:{minHeight:48,paddingVertical:14,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},relatedItemTitle:{fontSize:17,lineHeight:24,fontWeight:'800',color:'#1d2939',flexShrink:1},relatedMeta:{fontSize:12,color:'#667085',marginTop:5},offline:{backgroundColor:'#fffaeb',borderWidth:1,borderColor:'#fedf89',borderRadius:12,padding:12,marginBottom:18},offlineText:{color:'#93370d',flexShrink:1},inlineRetry:{minHeight:44,alignSelf:'flex-start',justifyContent:'center'},retry:{color:'#b54708',fontWeight:'900'},skeleton:{flex:1,padding:20,paddingTop:70,backgroundColor:'#fff'},sk1:{height:14,width:70,backgroundColor:'#eaecf0',borderRadius:7,marginBottom:18},sk2:{height:34,width:'92%',backgroundColor:'#eaecf0',borderRadius:8,marginBottom:12},sk3:{height:14,width:'48%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:24},sk4:{height:220,width:'100%',backgroundColor:'#eaecf0',borderRadius:16,marginBottom:24},sk5:{height:18,width:'100%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:12}});
+const styles=StyleSheet.create({page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingTop:20,paddingBottom:60},contentNarrow:{paddingHorizontal:16},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28,gap:12},muted:{color:'#667085',textAlign:'center'},errorTitle:{fontSize:20,fontWeight:'900',color:'#101828'},categoryButton:{alignSelf:'flex-start',minHeight:44,flexDirection:'row',alignItems:'center',gap:5,backgroundColor:'#fff1f0',borderRadius:999,paddingHorizontal:12,paddingVertical:8},category:{color:'#c8211e',fontWeight:'900',fontSize:14,flexShrink:1},categoryArrow:{color:'#c8211e',fontWeight:'900',fontSize:18,lineHeight:18},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},titleNarrow:{fontSize:27,lineHeight:36},meta:{color:'#667085',marginTop:12,marginBottom:20,flexShrink:1},image:{width:'100%',aspectRatio:16/9,borderRadius:16,backgroundColor:'#eaecf0',marginBottom:22},imageNarrow:{borderRadius:12},summary:{fontWeight:'700',color:'#344054',marginBottom:20,flexShrink:1},body:{color:'#1d2939',flexShrink:1},languageNote:{color:'#667085',fontSize:13,lineHeight:19,marginTop:18},translationControls:{marginTop:18,gap:10,alignItems:'flex-start'},translationNote:{color:'#027a48',fontSize:13,lineHeight:19,fontWeight:'700',flexShrink:1},translationButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:999,paddingHorizontal:14,paddingVertical:10,justifyContent:'center'},translationButtonText:{color:'#344054',fontSize:13,fontWeight:'800',flexShrink:1},translationError:{marginTop:18,gap:8,alignItems:'flex-start'},translationErrorText:{color:'#b42318',fontSize:13,lineHeight:19,fontWeight:'700',flexShrink:1},translationRetry:{minHeight:44,justifyContent:'center',borderWidth:1,borderColor:'#fda29b',borderRadius:999,paddingHorizontal:14},translationRetryText:{color:'#b42318',fontWeight:'800'},navigation:{marginTop:30,paddingTop:22,borderTopWidth:1,borderTopColor:'#eaecf0'},navigationTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginBottom:12},navigationRow:{flexDirection:'row',gap:10},navigationRowStacked:{flexDirection:'column'},navigationItem:{flex:1,minHeight:126,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:13,backgroundColor:'#f9fafb'},navigationSpacer:{flex:1},navigationLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginBottom:8},navigationLabelNext:{textAlign:'right'},navigationItemTitle:{color:'#1d2939',fontWeight:'800',fontSize:15,lineHeight:21,flexShrink:1},actions:{gap:12,marginTop:30},actionError:{color:'#b42318',fontWeight:'700',lineHeight:21},actionSuccess:{color:'#027a48',fontWeight:'700',lineHeight:21},primaryButton:{minHeight:48,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},savedButton:{minHeight:48,backgroundColor:'#344054',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},disabledButton:{opacity:0.6},primaryButtonText:{color:'#fff',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},outlineButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},outlineButtonText:{color:'#344054',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},related:{marginTop:36,paddingTop:24,borderTopWidth:1,borderTopColor:'#eaecf0'},relatedTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:10},relatedItem:{minHeight:48,paddingVertical:14,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},relatedItemTitle:{fontSize:17,lineHeight:24,fontWeight:'800',color:'#1d2939',flexShrink:1},relatedMeta:{fontSize:12,color:'#667085',marginTop:5},offline:{backgroundColor:'#fffaeb',borderWidth:1,borderColor:'#fedf89',borderRadius:12,padding:12,marginBottom:18},offlineText:{color:'#93370d',flexShrink:1},inlineRetry:{minHeight:44,alignSelf:'flex-start',justifyContent:'center'},retry:{color:'#b54708',fontWeight:'900'},skeleton:{flex:1,padding:20,paddingTop:70,backgroundColor:'#fff'},sk1:{height:14,width:70,backgroundColor:'#eaecf0',borderRadius:7,marginBottom:18},sk2:{height:34,width:'92%',backgroundColor:'#eaecf0',borderRadius:8,marginBottom:12},sk3:{height:14,width:'48%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:24},sk4:{height:220,width:'100%',backgroundColor:'#eaecf0',borderRadius:16,marginBottom:24},sk5:{height:18,width:'100%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:12}});

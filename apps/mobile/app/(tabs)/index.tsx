@@ -9,15 +9,22 @@ import { useI18n } from '../../src/i18n/I18nProvider';
 import { localeDateTag, MessageKey } from '../../src/i18n/i18n-core';
 import { cacheHomeFeed, readCachedHomeFeed } from '../../src/storage/newsFeedCache';
 
-const HOME_NAV_ITEMS = ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态'] as const;
+const HOME_NAV_ITEMS = [
+  { category: '重要新闻', labelKey: 'home.navImportant' },
+  { category: '热门头条', labelKey: 'home.navHot' },
+  { category: '美国时政', labelKey: 'home.navUsPolitics' },
+  { category: '美国警情', labelKey: 'home.navUsSafety' },
+  { category: '招聘求职', labelKey: 'home.navJobs', route: '/jobs' },
+  { category: 'ICE执法动态', labelKey: 'home.navIce' },
+] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/jobs' }>;
 const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
 
 const newsSections = [
-  { key: 'china-hot', title: '中国热门头条', category: '热门头条', aliases: ['热门头条', '中国热门头条'] },
-  { key: 'us-politics', title: '美国时政', category: '美国时政', aliases: ['美国时政'] },
-  { key: 'ice-news', title: 'ICE执法动态', category: 'ICE执法动态', aliases: ['ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
-  { key: 'us-crime', title: '美国警情', category: '美国警情', aliases: ['美国警情'] },
-] as const;
+  { key: 'china-hot', titleKey: 'home.sectionChinaHot', category: '热门头条', aliases: ['热门头条', '中国热门头条'] },
+  { key: 'us-politics', titleKey: 'home.sectionUsPolitics', category: '美国时政', aliases: ['美国时政'] },
+  { key: 'ice-news', titleKey: 'home.sectionIce', category: 'ICE执法动态', aliases: ['ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
+  { key: 'us-crime', titleKey: 'home.sectionUsSafety', category: '美国警情', aliases: ['美国警情'] },
+] as const satisfies ReadonlyArray<{ key: string; titleKey: MessageKey; category: string; aliases: readonly string[] }>;
 
 const topicCards = [
   {
@@ -106,16 +113,16 @@ const readerServices = [
 type WeatherState = { temperature: number | null; code: number | null; isDay: boolean };
 
 function weatherLabel(code: number | null, isDay: boolean) {
-  if (code == null) return { icon: '☁️', text: '天气' };
-  if (code === 0) return { icon: isDay ? '☀️' : '🌙', text: '晴' };
-  if ([1, 2].includes(code)) return { icon: isDay ? '🌤️' : '☁️', text: '少云' };
-  if (code === 3) return { icon: '☁️', text: '多云' };
-  if ([45, 48].includes(code)) return { icon: '🌫️', text: '雾' };
-  if ([51, 53, 55, 56, 57].includes(code)) return { icon: '🌦️', text: '毛毛雨' };
-  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { icon: '🌧️', text: '雨' };
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return { icon: '🌨️', text: '雪' };
-  if ([95, 96, 99].includes(code)) return { icon: '⛈️', text: '雷雨' };
-  return { icon: '☁️', text: '天气' };
+  if (code == null) return { icon: '☁️', textKey: 'home.weatherUnknown' as MessageKey };
+  if (code === 0) return { icon: isDay ? '☀️' : '🌙', textKey: 'home.weatherClear' as MessageKey };
+  if ([1, 2].includes(code)) return { icon: isDay ? '🌤️' : '☁️', textKey: 'home.weatherPartlyCloudy' as MessageKey };
+  if (code === 3) return { icon: '☁️', textKey: 'home.weatherCloudy' as MessageKey };
+  if ([45, 48].includes(code)) return { icon: '🌫️', textKey: 'home.weatherFog' as MessageKey };
+  if ([51, 53, 55, 56, 57].includes(code)) return { icon: '🌦️', textKey: 'home.weatherDrizzle' as MessageKey };
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { icon: '🌧️', textKey: 'home.weatherRain' as MessageKey };
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return { icon: '🌨️', textKey: 'home.weatherSnow' as MessageKey };
+  if ([95, 96, 99].includes(code)) return { icon: '⛈️', textKey: 'home.weatherThunderstorm' as MessageKey };
+  return { icon: '☁️', textKey: 'home.weatherUnknown' as MessageKey };
 }
 
 function shortDate(value: string | undefined, locale: string) {
@@ -131,10 +138,6 @@ function shortDate(value: string | undefined, locale: string) {
 
 function articleDate(item: NewsArticle, locale: string) {
   return shortDate(item.published_at || item.created_at, locale);
-}
-
-function displayCategory(category?: string) {
-  return category === '热门头条' ? '中国热门头条' : (category || '最新');
 }
 
 function isHiddenHomepageCategory(category?: string) {
@@ -153,7 +156,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [slowLoading, setSlowLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<'offline' | 'loadFailed' | ''>('');
   const [hotIndex, setHotIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [showStickyBrand, setShowStickyBrand] = useState(false);
@@ -210,9 +213,9 @@ export default function HomeScreen() {
       });
       setArticles(merged);
       void cacheHomeFeed(merged, focus).catch(() => undefined);
-    } catch (e) {
+    } catch {
       if (sequence !== loadSequence.current) return;
-      setError(restored || articles.length > 0 ? '网络不可用，正在显示上次读取的新闻。下拉即可重试。' : (e instanceof Error ? e.message : '新闻加载失败'));
+      setError(restored || articles.length > 0 ? 'offline' : 'loadFailed');
     } finally {
       clearTimeout(slowTimer);
       if (sequence === loadSequence.current) {
@@ -333,12 +336,12 @@ export default function HomeScreen() {
   useForegroundRetry(Boolean(error), retryHome);
 
   if (loading) return (
-    <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={slowLoading ? '当前网络较慢，仍在尝试读取最新新闻' : '正在读取唐人日报最新内容'}>
+    <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={slowLoading ? t('home.slowLoading') : t('home.loading')}>
       <ActivityIndicator size="large" color="#c8211e" />
-      <Text style={styles.muted}>{slowLoading ? '当前网络较慢，仍在尝试读取最新新闻…' : '正在读取唐人日报最新内容…'}</Text>
+      <Text style={styles.muted}>{slowLoading ? t('home.slowLoading') : t('home.loading')}</Text>
       {slowLoading ? (
-        <Pressable testID="home-initial-retry" accessibilityRole="button" accessibilityLabel="重新读取首页新闻" style={styles.retryButton} onPress={retryHome}>
-          <Text style={styles.retryButtonText}>重新尝试</Text>
+        <Pressable testID="home-initial-retry" accessibilityRole="button" accessibilityLabel={t('home.reloadA11y')} style={styles.retryButton} onPress={retryHome}>
+          <Text style={styles.retryButtonText}>{t('home.retry')}</Text>
         </Pressable>
       ) : null}
     </View>
@@ -357,33 +360,33 @@ export default function HomeScreen() {
         }}
       >
         <View style={styles.utilityRow}>
-          <View style={styles.utilityCell}><Text style={styles.utilityIcon}>📍</Text><Text style={styles.utilityText}>纽约</Text></View>
+          <View style={styles.utilityCell}><Text style={styles.utilityIcon}>📍</Text><Text style={styles.utilityText}>{t('home.locationNewYork')}</Text></View>
           <Text style={styles.utilityDate}>{dateLabel}</Text>
-          <View style={styles.utilityWeather}><Text>{weatherInfo.icon}</Text><Text style={styles.utilityText}>{weather.temperature == null ? '--°C' : `${weather.temperature}°C`} {weatherInfo.text}</Text></View>
+          <View style={styles.utilityWeather}><Text>{weatherInfo.icon}</Text><Text style={styles.utilityText}>{weather.temperature == null ? '--°C' : `${weather.temperature}°C`} {t(weatherInfo.textKey)}</Text></View>
         </View>
 
         <View style={styles.brandRow}>
           <View>
-            <Text style={styles.brand}>唐人日报</Text>
+            <Text style={styles.brand}>{t('home.brand')}</Text>
             <Text style={styles.brandEn}>TANG REN DAILY</Text>
           </View>
-          <Pressable testID="home-search-button" accessibilityLabel="搜索" style={styles.searchButton} onPress={() => router.push('/search')}>
+          <Pressable testID="home-search-button" accessibilityLabel={t('home.search')} style={styles.searchButton} onPress={() => router.push('/search')}>
             <Text style={styles.searchIcon}>⌕</Text>
           </Pressable>
         </View>
-        <Text style={styles.slogan}>立足美国 · 服务华人</Text>
+        <Text style={styles.slogan}>{t('home.slogan')}</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.navRow}>
           {HOME_NAV_ITEMS.map((item) => (
             <Pressable
-              key={item}
+              key={item.category}
               style={styles.navItem}
               onPress={() => {
-                if (item === '招聘求职') router.push('/jobs');
-                else openCategory(item);
+                if ('route' in item) router.push(item.route);
+                else openCategory(item.category);
               }}
             >
-              <Text style={styles.navText}>{displayCategory(item)}</Text>
+              <Text style={styles.navText}>{t(item.labelKey)}</Text>
             </Pressable>
           ))}
         </ScrollView>
@@ -391,7 +394,7 @@ export default function HomeScreen() {
         {activeHot ? (
           <Pressable style={styles.breakingRow} onPress={() => openArticle(activeHot)}>
             <View style={styles.liveDot} />
-            <Text style={styles.breakingLabel}>热门</Text>
+            <Text style={styles.breakingLabel}>{t('home.hot')}</Text>
             <Text style={styles.breakingTitle} numberOfLines={1}>{activeHot.title}</Text>
             <Text style={styles.chevron}>›</Text>
           </Pressable>
@@ -399,17 +402,17 @@ export default function HomeScreen() {
 
         {slowLoading || error ? (
           <View accessibilityRole={error ? 'alert' : undefined} accessibilityLiveRegion="polite" style={styles.networkStatus}>
-            <Text style={error ? styles.error : styles.networkHint}>{error || '当前网络较慢，已保留现有新闻，仍在尝试更新…'}</Text>
+            <Text style={error ? styles.error : styles.networkHint}>{error ? t(error === 'offline' ? 'home.offline' : 'home.loadFailed') : t('home.slowRefresh')}</Text>
             <Pressable
               testID="home-network-retry"
               accessibilityRole="button"
-              accessibilityLabel="重新读取首页新闻"
+              accessibilityLabel={t('home.reloadA11y')}
               accessibilityState={{ disabled: refreshing }}
               disabled={refreshing}
               style={[styles.retryButton, refreshing && styles.retryButtonDisabled]}
               onPress={retryHome}
             >
-              <Text style={styles.retryButtonText}>{refreshing ? '正在重试…' : '重新尝试'}</Text>
+              <Text style={styles.retryButtonText}>{refreshing ? t('home.retrying') : t('home.retry')}</Text>
             </Pressable>
           </View>
         ) : null}
@@ -433,7 +436,7 @@ export default function HomeScreen() {
                   <NewsImage uri={item.cover_image} style={styles.heroImage} testID={`home-important-image-${index}`} />
                   <View style={styles.heroOverlay} />
                   <View style={styles.heroCopy}>
-                    <Text style={styles.heroCategory}>重要新闻</Text>
+                    <Text style={styles.heroCategory}>{t('home.importantNews')}</Text>
                     <Text style={styles.heroTitle} numberOfLines={3}>{item.title}</Text>
                   </View>
                 </Pressable>
@@ -447,8 +450,8 @@ export default function HomeScreen() {
 
         <View testID="home-rankings" style={styles.sectionCard}>
           <View style={styles.sectionHead}>
-            <Text style={styles.sectionTitle}>24小时热榜</Text>
-            <Pressable onPress={() => openCategory('热门头条')}><Text style={styles.more}>更多 ›</Text></Pressable>
+            <Text style={styles.sectionTitle}>{t('home.ranking24h')}</Text>
+            <Pressable onPress={() => openCategory('热门头条')}><Text style={styles.more}>{t('home.more')} ›</Text></Pressable>
           </View>
           {rankItems.map((item, index) => (
             <Pressable key={String(item.id)} style={styles.rankRow} onPress={() => openArticle(item)}>
@@ -480,15 +483,15 @@ export default function HomeScreen() {
           })}
         </View>
 
-        {categoryGroups.map(({ key, title, category, items }) => {
+        {categoryGroups.map(({ key, titleKey, category, items }) => {
           if (!items.length) return null;
           const first = items[0];
           const rest = items.slice(1);
           return (
             <View key={key} testID={`home-news-${key}`} style={styles.sectionCard}>
               <View style={styles.sectionHead}>
-                <Text style={styles.sectionTitle}>{title}</Text>
-                <Pressable onPress={() => openCategory(category)}><Text style={styles.more}>更多 ›</Text></Pressable>
+                <Text style={styles.sectionTitle}>{t(titleKey)}</Text>
+                <Pressable onPress={() => openCategory(category)}><Text style={styles.more}>{t('home.more')} ›</Text></Pressable>
               </View>
               <Pressable style={styles.categoryLead} onPress={() => openArticle(first)}>
                 <NewsImage uri={first.cover_image} style={styles.categoryLeadImage} testID={`home-category-image-${key}`} />
@@ -545,8 +548,8 @@ export default function HomeScreen() {
 
       {showStickyBrand ? (
         <View style={[styles.stickyHeader, { paddingTop: insets.top, height: insets.top + 46 }]}> 
-          <Text style={styles.stickyBrand}>唐人日报</Text>
-          <Pressable testID="home-search-sticky" accessibilityLabel="搜索" onPress={() => router.push('/search')} style={styles.stickySearch}><Text style={styles.stickySearchText}>搜索</Text></Pressable>
+          <Text style={styles.stickyBrand}>{t('home.brand')}</Text>
+          <Pressable testID="home-search-sticky" accessibilityLabel={t('home.search')} onPress={() => router.push('/search')} style={styles.stickySearch}><Text style={styles.stickySearchText}>{t('home.search')}</Text></Pressable>
         </View>
       ) : null}
     </View>

@@ -4,6 +4,7 @@ const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value 
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const loading = $('#loading');
 const initialLoading = loading.textContent;
+const REQUEST_TIMEOUT_MS = 15000;
 
 async function load() {
   const query = new URLSearchParams(location.search);
@@ -14,11 +15,16 @@ async function load() {
   loading.hidden = false;
   loading.textContent = initialLoading;
   loading.setAttribute('aria-busy', 'true');
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
   try {
     const params = new URLSearchParams({ mode: 'court-detail', court: courtName });
     if (state) params.set('state', state);
     if (Number.isFinite(requestedYear)) params.set('fy', requestedYear);
-    const response = await fetch(`/.netlify/functions/immigration-judges?${params}`);
+    const response = await fetch(`/.netlify/functions/immigration-judges?${params}`, { signal: controller.signal });
     if (!response.ok) throw new Error(`Court detail failed: ${response.status}`);
     const data = await response.json();
     if (!data.court) throw new Error('Court detail missing');
@@ -52,6 +58,7 @@ async function load() {
     loading.innerHTML = '<b>暂时无法读取该法院资料</b><p>请稍后重试。</p><button id="court-detail-retry" class="detail-retry" type="button">重新尝试</button>';
     $('#court-detail-retry').addEventListener('click', load);
   } finally {
+    clearTimeout(timeoutId);
     loading.setAttribute('aria-busy', 'false');
   }
 }

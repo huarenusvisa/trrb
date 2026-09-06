@@ -17,7 +17,10 @@ const [html, js, css, focusCss, home, routes, built, seoAudit] = await Promise.a
 
 assert.match(home, /href="\/compare"/, 'homepage must link to judge comparison');
 assert.match(html, /id="compare-search"/);
+assert.match(html, /class="compare-picker"[^>]*role="search"/, 'judge comparison search must expose a search landmark');
+assert.match(html, /id="compare-search"[^>]*name="judge"[^>]*type="search"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*spellcheck="false"/, 'judge comparison search must expose native mobile search semantics');
 assert.match(html, /id="compare-search"[^>]*role="combobox"[^>]*aria-autocomplete="list"[^>]*aria-controls="compare-search-results"[^>]*aria-expanded="false"/);
+assert.match(html, /id="compare-search"[^>]*aria-controls="compare-search-results"[^>]*aria-describedby="compare-status"/, 'judge comparison search must identify its results and selection status');
 assert.match(html, /id="compare-search-results"[^>]*role="listbox"/);
 assert.match(html, /id="compare-trend"/);
 assert.match(html, /id="compare-nationalities"/);

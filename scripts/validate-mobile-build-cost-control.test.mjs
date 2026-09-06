@@ -39,12 +39,13 @@ test('ordinary app code publishes OTA while test-only and icon-only changes do n
   assert.match(otaWorkflow, /group:\s*\$\{\{ workflow\.filename \}\}-\$\{\{ github\.ref \}\}/);
 });
 
-test('Netlify preserves previews and skips production for mobile-only commits', () => {
+test('Netlify skips mobile-only production builds and deploy previews', () => {
   assert.match(netlifyConfig, /ignore\s*=\s*"bash scripts\/netlify-ignore-build\.sh"/);
-  assert.match(netlifyIgnore, /CONTEXT:-.*production/);
-  assert.match(netlifyIgnore, /pathspecs\+=\(":\(exclude\)apps\/mobile\/\*\*"\)/);
+  assert.match(netlifyIgnore, /":\(exclude\)apps\/mobile\/\*\*"/);
+  assert.doesNotMatch(netlifyIgnore, /if \[\[ "\$\{CONTEXT:-\}" == "production" \]\]/, 'mobile exclusion must apply to every Netlify context');
 
-  const contextGuard = netlifyIgnore.indexOf('if [[ "${CONTEXT:-}" == "production" ]]');
+  const pathspecStart = netlifyIgnore.indexOf('pathspecs=(');
   const mobileExclusion = netlifyIgnore.indexOf(':(exclude)apps/mobile/**');
-  assert.ok(contextGuard >= 0 && mobileExclusion > contextGuard, 'mobile exclusion must be production-only');
+  const diffCheck = netlifyIgnore.indexOf('git diff --quiet');
+  assert.ok(pathspecStart >= 0 && mobileExclusion > pathspecStart && mobileExclusion < diffCheck, 'mobile exclusion must be unconditional before the diff check');
 });

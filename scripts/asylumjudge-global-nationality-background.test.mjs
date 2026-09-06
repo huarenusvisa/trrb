@@ -205,7 +205,7 @@ const routes = readFileSync('scripts/finalize-redirects.mjs', 'utf8');
 const seoBuilder = readFileSync('scripts/build-asylumjudge-seo.mjs', 'utf8');
 const homepageClient = readFileSync('asylumjudge/site.js', 'utf8');
 assert.match(detailPage, /id="detail-loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'judge detail loading and failure updates must be announced');
-assert.match(detailPage, /detail\.css\?v=6[\s\S]*detail\.js\?v=9/, 'judge detail page must load the current asset versions');
+assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=9/, 'judge detail page must load the current asset versions');
 assert.match(detailStyles, /\.country-tools \.nationality-fy button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'judge detail fiscal-year filters must provide responsive 44px touch targets');
 assert.match(detailClient, /const REQUEST_TIMEOUT_MS = 15000/, 'judge detail requests must use a finite timeout');
 assert.match(detailClient, /new DOMException\('Request timed out', 'TimeoutError'\)/, 'timed-out judge detail requests must reach the retry state');

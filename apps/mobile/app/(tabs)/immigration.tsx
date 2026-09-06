@@ -1,10 +1,12 @@
-import { Linking, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { AccessibilityInfo, Linking, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import type { MessageKey } from '../../src/i18n/i18n-core';
 
 const BASE_URL = 'https://trrb.net/immigrate';
 
 type Pathway = { key: string; titleKey: MessageKey; descriptionKey: MessageKey; topics: readonly [MessageKey, string][] };
+type LinkFailure = { url: string; label: string };
 
 const pathways: readonly Pathway[] = [
   { key: 'study', titleKey: 'home.portalImmigrationStudy', descriptionKey: 'immigration.studyDescription', topics: [['immigration.topicF1', 'f1'], ['immigration.topicJ1', 'j1'], ['immigration.topicCpt', 'cpt'], ['immigration.topicOpt', 'opt'], ['immigration.topicStemOpt', 'stem-opt']] },
@@ -26,6 +28,26 @@ export default function ImmigrationScreen() {
   const { fontScale, width } = useWindowDimensions();
   const compact = width < 360;
   const largeText = fontScale >= 1.3;
+  const openingRef = useRef(false);
+  const [opening, setOpening] = useState(false);
+  const [linkFailure, setLinkFailure] = useState<LinkFailure | null>(null);
+
+  const openExternal = async (url: string, label: string) => {
+    if (openingRef.current) return;
+    openingRef.current = true;
+    setOpening(true);
+    setLinkFailure(null);
+    try {
+      if (!await Linking.canOpenURL(url)) throw new Error('unsupported-url');
+      await Linking.openURL(url);
+    } catch {
+      setLinkFailure({ url, label });
+      AccessibilityInfo.announceForAccessibility(t('immigration.linkFailed', { title: label }));
+    } finally {
+      openingRef.current = false;
+      setOpening(false);
+    }
+  };
 
   return (
     <ScrollView testID="screen-immigration" style={styles.page} contentContainerStyle={[styles.content, compact && styles.compactContent]}>
@@ -34,10 +56,27 @@ export default function ImmigrationScreen() {
           <Text accessibilityRole="header" style={styles.h1}>{t('immigration.heading')}</Text>
           <Text style={styles.sub}>{t('immigration.subtitle')}</Text>
         </View>
-        <Pressable accessibilityRole="link" accessibilityLabel={t('immigration.openAllA11y')} style={styles.allButton} onPress={() => void Linking.openURL(`${BASE_URL}/`)}>
+        <Pressable accessibilityRole="link" accessibilityLabel={t('immigration.openAllA11y')} accessibilityState={{ disabled: opening }} disabled={opening} style={styles.allButton} onPress={() => void openExternal(`${BASE_URL}/`, t('immigration.openAll'))}>
           <Text style={styles.allButtonText}>{t('immigration.openAll')}</Text>
         </Pressable>
       </View>
+
+      {linkFailure ? (
+        <View testID="immigration-link-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.linkError}>
+          <Text style={styles.linkErrorText}>{t('immigration.linkFailed', { title: linkFailure.label })}</Text>
+          <Pressable
+            testID="immigration-link-retry"
+            accessibilityRole="button"
+            accessibilityLabel={t('immigration.retryLink')}
+            accessibilityState={{ disabled: opening }}
+            disabled={opening}
+            style={[styles.retryButton, opening && styles.buttonDisabled]}
+            onPress={() => void openExternal(linkFailure.url, linkFailure.label)}
+          >
+            <Text style={styles.retryButtonText}>{opening ? t('immigration.opening') : t('immigration.retryLink')}</Text>
+          </Pressable>
+        </View>
+      ) : null}
 
       <View style={[styles.statsRow, (compact || largeText) && styles.statsWrap]}>
         <Text style={styles.statsStrong}>{t('immigration.centerCount')}</Text>
@@ -47,7 +86,7 @@ export default function ImmigrationScreen() {
       {pathways.map((pathway, index) => {
         const title = t(pathway.titleKey);
         return (
-          <Pressable key={pathway.key} accessibilityRole="link" accessibilityLabel={t('immigration.openPathA11y', { title })} style={styles.card} onPress={() => void Linking.openURL(centerUrl(pathway.key))}>
+          <Pressable key={pathway.key} accessibilityRole="link" accessibilityLabel={t('immigration.openPathA11y', { title })} accessibilityState={{ disabled: opening }} disabled={opening} style={styles.card} onPress={() => void openExternal(centerUrl(pathway.key), title)}>
             <View style={styles.cardTop}>
               <Text style={styles.number}>{String(index + 1).padStart(2, '0')}</Text>
               <Text style={styles.title}>{title}</Text>
@@ -58,7 +97,7 @@ export default function ImmigrationScreen() {
               {pathway.topics.map(([labelKey, slug]) => {
                 const label = t(labelKey);
                 return (
-                  <Pressable key={slug} accessibilityRole="link" accessibilityLabel={t('immigration.openTopicA11y', { topic: label })} style={styles.topicChip} onPress={(event) => { event.stopPropagation(); void Linking.openURL(centerUrl(pathway.key, slug)); }}>
+                  <Pressable key={slug} accessibilityRole="link" accessibilityLabel={t('immigration.openTopicA11y', { topic: label })} accessibilityState={{ disabled: opening }} disabled={opening} style={styles.topicChip} onPress={(event) => { event.stopPropagation(); void openExternal(centerUrl(pathway.key, slug), label); }}>
                     <Text style={styles.topicText}>{label}</Text>
                   </Pressable>
                 );
@@ -83,6 +122,11 @@ const styles = StyleSheet.create({
   sub: { color: '#667085', fontSize: 13, lineHeight: 20, marginTop: 5 },
   allButton: { minHeight: 44, backgroundColor: '#101828', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'flex-start' },
   allButtonText: { color: '#fff', fontSize: 13, lineHeight: 19, fontWeight: '700', textAlign: 'center' },
+  linkError: { backgroundColor: '#fff1f0', borderRadius: 10, padding: 12, marginBottom: 12, alignItems: 'flex-start' },
+  linkErrorText: { color: '#b42318', fontSize: 13, lineHeight: 20 },
+  retryButton: { minHeight: 44, marginTop: 8, borderRadius: 8, backgroundColor: '#c8211e', paddingHorizontal: 14, paddingVertical: 10, justifyContent: 'center' },
+  retryButtonText: { color: '#fff', fontSize: 13, lineHeight: 19, fontWeight: '800' },
+  buttonDisabled: { opacity: 0.55 },
   statsRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
   statsWrap: { flexWrap: 'wrap', alignItems: 'flex-start' },
   statsStrong: { color: '#c8211e', fontSize: 13, lineHeight: 20, fontWeight: '800' },

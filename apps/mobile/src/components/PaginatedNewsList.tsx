@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import type { ListRenderItemInfo } from 'react-native';
 import { router } from 'expo-router';
 import { fetchArticlePage, NewsArticle } from '../api/trrb';
@@ -18,6 +18,9 @@ type Props = {
 
 export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   const { locale, t } = useI18n();
+  const { fontScale, width } = useWindowDimensions();
+  const compact = width < 360;
+  const largeText = fontScale >= 1.3;
   const [items, setItems] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -96,16 +99,16 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       testID={`category-article-${index}`}
       accessibilityRole="button"
       accessibilityLabel={t('news.openArticle', { title: item.title })}
-      style={styles.card}
+      style={[styles.card, compact && styles.compactCard, largeText && styles.largeTextCard]}
       onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}
     >
       <NewsImage uri={item.cover_image} style={styles.thumb} testID={`category-article-image-${index}`} />
       <View style={styles.body}>
-        <Text style={styles.articleTitle} numberOfLines={3}>{item.title}</Text>
+        <Text style={styles.articleTitle} numberOfLines={largeText ? undefined : 3}>{item.title}</Text>
         <Text style={styles.meta}>{item.published_at ? new Date(item.published_at).toLocaleString(localeDateTag(locale)) : ''}</Text>
       </View>
     </Pressable>
-  ), [locale, t]);
+  ), [compact, largeText, locale, t]);
 
   if (loading) return <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={t('news.loading')}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>{t('news.loading')}</Text></View>;
 
@@ -113,7 +116,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
     <FlatList
       testID="category-news-list"
       style={styles.page}
-      contentContainerStyle={styles.content}
+      contentContainerStyle={[styles.content, compact && styles.compactContent]}
       data={items}
       keyExtractor={(item) => String(item.id)}
       renderItem={renderArticle}
@@ -121,12 +124,11 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       maxToRenderPerBatch={8}
       updateCellsBatchingPeriod={40}
       windowSize={7}
-      removeClippedSubviews
-      getItemLayout={(_, index) => ({ length: 130, offset: 130 * index, index })}
+      removeClippedSubviews={!largeText}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retryList} />}
       onEndReachedThreshold={0.45}
       onEndReached={() => { if (!loadingMore && nextOffset != null) load(false); }}
-      ListHeaderComponent={<View style={styles.header}><Text testID="category-screen-title" style={styles.title}>{title}</Text>{error ? <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}><Text style={styles.error}>{error}</Text><Pressable testID="category-network-retry" accessibilityRole="button" accessibilityLabel={t('news.retry')} accessibilityState={{ disabled: refreshing }} disabled={refreshing} style={[styles.retryButton, refreshing && styles.retryButtonDisabled]} onPress={retryList}><Text style={styles.retryButtonText}>{refreshing ? t('news.retrying') : t('news.retry')}</Text></Pressable></View> : null}</View>}
+      ListHeaderComponent={<View style={styles.header}><Text accessibilityRole="header" testID="category-screen-title" style={[styles.title, compact && styles.compactTitle]}>{title}</Text>{error ? <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}><Text style={styles.error}>{error}</Text><Pressable testID="category-network-retry" accessibilityRole="button" accessibilityLabel={t('news.retry')} accessibilityState={{ disabled: refreshing }} disabled={refreshing} style={[styles.retryButton, refreshing && styles.retryButtonDisabled]} onPress={retryList}><Text style={styles.retryButtonText}>{refreshing ? t('news.retrying') : t('news.retry')}</Text></Pressable></View> : null}</View>}
       ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText || t('news.empty')}</Text></View>}
       ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color="#c8211e" /> : nextOffset == null && items.length ? <Text style={styles.end}>{t('news.end')}</Text> : null}
     />
@@ -134,5 +136,5 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085'},header:{marginBottom:18},title:{fontSize:30,fontWeight:'900',color:'#101828'},errorPanel:{marginTop:12,backgroundColor:'#fef3f2',borderRadius:10,padding:12,alignItems:'flex-start'},error:{color:'#b42318'},retryButton:{minHeight:40,borderRadius:8,backgroundColor:'#c8211e',paddingHorizontal:16,marginTop:10,alignItems:'center',justifyContent:'center'},retryButtonDisabled:{opacity:0.58},retryButtonText:{color:'#fff',fontSize:13,fontWeight:'800'},empty:{paddingVertical:80,alignItems:'center'},card:{height:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},thumb:{width:126,height:118,backgroundColor:'#e4e7ec'},body:{flex:1,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,color:'#98a2b3',marginTop:7},footer:{marginVertical:20},end:{textAlign:'center',color:'#98a2b3',marginVertical:20}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},compactContent:{paddingHorizontal:9},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085',lineHeight:21,textAlign:'center'},header:{marginBottom:18},title:{fontSize:30,lineHeight:39,fontWeight:'900',color:'#101828'},compactTitle:{fontSize:26,lineHeight:35},errorPanel:{marginTop:12,backgroundColor:'#fef3f2',borderRadius:10,padding:12,alignItems:'flex-start'},error:{color:'#b42318',lineHeight:21},retryButton:{minHeight:44,borderRadius:8,backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,marginTop:10,alignItems:'center',justifyContent:'center'},retryButtonDisabled:{opacity:0.58},retryButtonText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},empty:{paddingVertical:80,alignItems:'center'},card:{minHeight:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},compactCard:{minHeight:108},largeTextCard:{minHeight:144},thumb:{width:126,minHeight:118,alignSelf:'stretch',backgroundColor:'#e4e7ec'},body:{flex:1,minWidth:0,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,lineHeight:18,color:'#667085',marginTop:7},footer:{marginVertical:20},end:{textAlign:'center',color:'#667085',marginVertical:20,lineHeight:21}
 });

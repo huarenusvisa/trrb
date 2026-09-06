@@ -48,6 +48,14 @@ test('reviewed translation failures remain retryable without hiding the publishe
   assert.equal((i18n.match(/'article\.retryTranslation':/g) || []).length, 3);
 });
 
+test('reviewed translations restore from isolated local cache and survive refresh failures', () => {
+  assert.match(article, /readCachedArticleTranslation\(article\.id, locale\)/);
+  assert.match(article, /if \(cached\)[\s\S]*setTranslation\(cached\)[\s\S]*if \(offline\) \{/);
+  assert.match(article, /cacheArticleTranslation\(row\)/);
+  assert.match(article, /if \(!row\) await removeCachedArticleTranslation/);
+  assert.match(article, /catch \{[\s\S]*if \(!cached\)[\s\S]*setTranslationError\(true\)/);
+});
+
 test('article actions serialize native work and report localized failures accessibly', () => {
   assert.match(article, /if \(actionBusy\) return/);
   assert.match(article, /Linking\.canOpenURL\(webUrl\)/);

@@ -6,6 +6,7 @@ import { ArticleNavigation, ArticleTranslation, fetchArticle, fetchArticleNaviga
 import { addHistory, isFavorite, toggleFavorite } from '../../src/storage/library';
 import { getReadingPreferences, ReadingPreferences, subscribeReadingPreferences } from '../../src/storage/reading-preferences';
 import { cacheArticle, readCachedArticle, removeCachedArticle } from '../../src/storage/articleCache';
+import { cacheArticleTranslation, readCachedArticleTranslation, removeCachedArticleTranslation } from '../../src/storage/articleTranslationCache';
 import { CommentThread } from '../../src/components/CommentThread';
 import { NewsImage } from '../../src/components/NewsImage';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
@@ -134,20 +135,35 @@ export default function ArticleDetailScreen() {
   useForegroundRetry(Boolean(error), retryArticle);
 
   const loadTranslation = useCallback(async () => {
-    if (!article || offline || (locale !== 'en' && locale !== 'zh-TW')) return;
+    if (!article || (locale !== 'en' && locale !== 'zh-TW')) return;
     const version = ++translationVersion.current;
     setTranslationLoading(true);
     setTranslationError(false);
+    const cached = await readCachedArticleTranslation(article.id, locale).catch(() => null);
+    if (version !== translationVersion.current) return;
+    if (cached) {
+      setTranslation(cached);
+      setShowTranslation(true);
+      setTranslationLoading(false);
+    }
+    if (offline) {
+      setTranslationLoading(false);
+      return;
+    }
     try {
       const row = await withTimeout(fetchArticleTranslation(article.id, locale));
       if (version !== translationVersion.current) return;
+      if (!row) await removeCachedArticleTranslation(article.id, locale).catch(() => {});
+      else await cacheArticleTranslation(row).catch(() => {});
       setTranslation(row);
       setShowTranslation(Boolean(row));
     } catch {
       if (version !== translationVersion.current) return;
-      setTranslation(null);
-      setShowTranslation(false);
-      setTranslationError(true);
+      if (!cached) {
+        setTranslation(null);
+        setShowTranslation(false);
+        setTranslationError(true);
+      }
     } finally {
       if (version === translationVersion.current) setTranslationLoading(false);
     }

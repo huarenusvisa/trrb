@@ -150,6 +150,13 @@ test('translates news comment composition, moderation and pagination states', ()
   assert.equal(translate('en', 'comments.likeA11y', { count: 3 }), 'Like, 3 likes');
 });
 
+test('translates job discovery, salary and contact states', () => {
+  assert.equal(translate('en', 'jobs.title'), 'Jobs across the United States');
+  assert.equal(translate('zh-TW', 'jobs.typePartTime'), '兼職');
+  assert.equal(translate('en', 'jobs.salaryMaximum', { maximum: '$30', period: ' / hour' }), 'Up to $30 / hour');
+  assert.equal(translate('zh-CN', 'jobs.contactA11y', { action: '拨打电话', title: '纽约司机' }), '拨打电话：纽约司机');
+});
+
 test('translates profile data controls and the permanent account deletion flow', () => {
   assert.equal(translate('en', 'profile.pendingCount', { count: 2 }), ' · 2 pending');
   assert.equal(translate('zh-TW', 'profile.accountPrivacy'), '帳戶與隱私');

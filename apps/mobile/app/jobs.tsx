@@ -1,13 +1,135 @@
-import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Linking, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, FlatList, Linking, Pressable, SafeAreaView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Stack } from 'expo-router';
+import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
+import { useI18n } from '../src/i18n/I18nProvider';
+import { withUiTimeout } from '../src/utils/async-state-core';
+import { contactLabel, employmentTypeLabel, formatJobSalary } from '../src/jobs/job-presentation';
 
-type Contact={type:'phone'|'email'|'official_apply';value:string};
-type Job={id:string;title:string;description?:string;category_slug?:string;employment_type?:string;salary_min?:number|null;salary_max?:number|null;salary_period?:string|null;state_code:string;city:string;borough?:string;neighborhood?:string;status:string;contact?:Contact|null};
-const ENDPOINT='https://trrb.net/.netlify/functions/public-jobs?limit=40';
-const periodLabel:Record<string,string>={hour:'小时',day:'天',week:'周',month:'月',year:'年',job:'项目'};
-const typeLabel:Record<string,string>={full_time:'全职',part_time:'兼职',contract:'合同',temporary:'临时',internship:'实习',unspecified:'类型未注明'};
-function salary(job:Job){const min=Number(job.salary_min||0),max=Number(job.salary_max||0),period=job.salary_period?periodLabel[job.salary_period]||job.salary_period:'';if(!min&&!max)return'薪资面议';if(min&&max)return`$${min.toLocaleString()}–$${max.toLocaleString()}${period?` / ${period}`:''}`;return`${min?`$${min.toLocaleString()}+`:`最高$${max.toLocaleString()}`}${period?` / ${period}`:''}`}
-function contactLabel(contact?:Contact|null){if(contact?.type==='phone')return'拨打电话';if(contact?.type==='email')return'发送邮件';if(contact?.type==='official_apply')return'申请职位';return'联系招聘方'}
-async function openContact(contact?:Contact|null){if(!contact?.value)return;const url=contact.type==='phone'?`tel:${contact.value}`:contact.type==='email'?`mailto:${contact.value}`:contact.value;await Linking.openURL(url)}
-export default function JobsScreen(){const[items,setItems]=useState<Job[]>([]);const[loading,setLoading]=useState(true);const[error,setError]=useState('');const load=useCallback(async()=>{setLoading(true);setError('');try{const r=await fetch(ENDPOINT,{headers:{Accept:'application/json'}});const p=await r.json();if(!r.ok)throw new Error(p?.error||`HTTP ${r.status}`);setItems(Array.isArray(p?.items)?p.items:[])}catch(e){setError(e instanceof Error?e.message:'加载失败')}finally{setLoading(false)}},[]);useEffect(()=>{load()},[load]);return <SafeAreaView style={s.page}><View style={s.header}><Text style={s.eyebrow}>唐人日报 · 招聘</Text><Text style={s.title}>美国招聘求职</Text><Text style={s.sub}>直接看岗位、薪资、地点和公开联系方式。</Text></View>{loading?<ActivityIndicator color="#1769d2"/>:error?<View><Text style={s.error}>{error}</Text><Pressable style={s.retry} onPress={load}><Text style={s.retryText}>重试</Text></Pressable></View>:<FlatList contentContainerStyle={s.list} data={items} keyExtractor={x=>x.id} onRefresh={load} refreshing={loading} renderItem={({item})=><View style={s.card}><Text style={s.jobTitle}>{item.title}</Text><View style={s.metaRow}><Text style={s.salary}>{salary(item)}</Text><Text style={s.pill}>{[item.city,item.state_code].filter(Boolean).join(' · ')}</Text><Text style={s.pill}>{typeLabel[item.employment_type||'unspecified']||item.employment_type}</Text></View>{item.description?<Text numberOfLines={3} style={s.desc}>{item.description}</Text>:null}<Pressable style={s.contact} onPress={()=>openContact(item.contact)}><Text style={s.contactText}>{contactLabel(item.contact)}</Text></Pressable></View>} ListEmptyComponent={<Text style={s.empty}>暂无可直接联系或申请的招聘岗位。</Text>}/>}</SafeAreaView>}
-const s=StyleSheet.create({page:{flex:1,backgroundColor:'#f6f9fd'},header:{paddingHorizontal:16,paddingTop:12,paddingBottom:14},eyebrow:{fontSize:12,fontWeight:'800',color:'#1769d2',marginBottom:6},title:{fontSize:28,fontWeight:'800',color:'#0f172a'},sub:{marginTop:6,color:'#64748b',fontSize:14},list:{paddingHorizontal:12,paddingBottom:28,gap:10},card:{backgroundColor:'#fff',borderWidth:1,borderColor:'#dbe5f1',borderRadius:16,padding:15,shadowColor:'#0f172a',shadowOpacity:.04,shadowRadius:10,shadowOffset:{width:0,height:4},elevation:1},jobTitle:{fontSize:18,fontWeight:'700',color:'#0f172a',marginBottom:9,lineHeight:24},metaRow:{flexDirection:'row',flexWrap:'wrap',gap:6,marginBottom:8},salary:{backgroundColor:'#eff6ff',color:'#0f4fa7',fontWeight:'800',paddingHorizontal:8,paddingVertical:4,borderRadius:999,fontSize:12},pill:{backgroundColor:'#f1f5f9',color:'#64748b',paddingHorizontal:8,paddingVertical:4,borderRadius:999,fontSize:12},desc:{color:'#536174',lineHeight:20,marginBottom:12},contact:{alignSelf:'stretch',backgroundColor:'#1769d2',borderRadius:10,paddingVertical:11,alignItems:'center'},contactText:{color:'#fff',fontWeight:'800'},retry:{alignSelf:'flex-start',marginTop:8,backgroundColor:'#1769d2',paddingHorizontal:14,paddingVertical:9,borderRadius:9},retryText:{color:'#fff',fontWeight:'800'},error:{color:'#b42318'},empty:{padding:24,textAlign:'center',color:'#64748b'}});
+type Contact = { type: 'phone' | 'email' | 'official_apply'; value: string };
+type Job = {
+  id: string;
+  title: string;
+  description?: string;
+  employment_type?: string;
+  salary_min?: number | null;
+  salary_max?: number | null;
+  salary_period?: string | null;
+  state_code: string;
+  city: string;
+  contact?: Contact | null;
+};
+
+const ENDPOINT = 'https://trrb.net/.netlify/functions/public-jobs?limit=40';
+
+async function openContact(contact?: Contact | null) {
+  if (!contact?.value) return;
+  const url = contact.type === 'phone' ? `tel:${contact.value}` : contact.type === 'email' ? `mailto:${contact.value}` : contact.value;
+  await Linking.openURL(url);
+}
+
+export default function JobsScreen() {
+  const { locale, t } = useI18n();
+  const { width } = useWindowDimensions();
+  const compact = width < 360;
+  const [items, setItems] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState('');
+  const requestVersion = useRef(0);
+
+  const load = useCallback(async (refresh = false) => {
+    const version = ++requestVersion.current;
+    refresh ? setRefreshing(true) : setLoading(true);
+    setError('');
+    try {
+      const response = await withUiTimeout(fetch(ENDPOINT, { headers: { Accept: 'application/json' } }), t('jobs.timeout'));
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload?.error || t('jobs.httpFailed', { status: response.status }));
+      if (version === requestVersion.current) setItems(Array.isArray(payload?.items) ? payload.items : []);
+    } catch (cause) {
+      if (version === requestVersion.current) setError(cause instanceof Error ? cause.message : t('jobs.loadFailed'));
+    } finally {
+      if (version === requestVersion.current) {
+        setLoading(false);
+        setRefreshing(false);
+      }
+    }
+  }, [t]);
+
+  useEffect(() => {
+    void load();
+    return () => { requestVersion.current += 1; };
+  }, [load]);
+  useForegroundRetry(Boolean(error), () => void load(Boolean(items.length)));
+
+  return <SafeAreaView style={styles.page}>
+    <Stack.Screen options={{ title: t('jobs.screenTitle') }} />
+    <FlatList
+      contentContainerStyle={[styles.list, compact && styles.compactList]}
+      data={items}
+      keyExtractor={(item) => item.id}
+      onRefresh={() => void load(true)}
+      refreshing={refreshing}
+      ListHeaderComponent={<>
+        <View style={styles.header}>
+          <Text style={styles.eyebrow}>{t('jobs.eyebrow')}</Text>
+          <Text accessibilityRole="header" style={[styles.title, compact && styles.compactTitle]}>{t('jobs.title')}</Text>
+          <Text style={styles.subtitle}>{t('jobs.subtitle')}</Text>
+        </View>
+        {error && items.length ? <View testID="jobs-refresh-error" accessibilityRole="alert" style={styles.errorBanner}>
+          <Text style={styles.errorTitle}>{t('jobs.refreshFailed')}</Text>
+          <Text style={styles.errorDetail}>{error}</Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('jobs.retryA11y')} style={styles.retry} onPress={() => void load(true)}><Text style={styles.retryText}>{t('jobs.retry')}</Text></Pressable>
+        </View> : null}
+      </>}
+      renderItem={({ item }) => {
+        const action = contactLabel(item.contact?.type, t);
+        return <View style={styles.card}>
+          <Text accessibilityRole="header" style={styles.jobTitle}>{item.title}</Text>
+          <View style={styles.metaRow}>
+            <Text style={styles.salary}>{formatJobSalary(item, locale, t)}</Text>
+            <Text style={styles.pill}>{[item.city, item.state_code].filter(Boolean).join(' · ')}</Text>
+            <Text style={styles.pill}>{employmentTypeLabel(item.employment_type, t)}</Text>
+          </View>
+          {item.description ? <Text numberOfLines={4} style={styles.description}>{item.description}</Text> : null}
+          <Pressable accessibilityRole="link" accessibilityLabel={t('jobs.contactA11y', { action, title: item.title })} style={styles.contact} onPress={() => void openContact(item.contact)}>
+            <Text style={styles.contactText}>{action}</Text>
+          </Pressable>
+        </View>;
+      }}
+      ListEmptyComponent={loading
+        ? <View testID="jobs-loading" accessibilityLiveRegion="polite" style={styles.state}><ActivityIndicator color="#1769d2" /><Text style={styles.stateText}>{t('jobs.loading')}</Text></View>
+        : error
+          ? <View testID="jobs-load-error" accessibilityRole="alert" style={styles.state}><Text style={styles.errorTitle}>{t('jobs.unavailable')}</Text><Text style={styles.errorDetail}>{error}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('jobs.retryA11y')} style={styles.retry} onPress={() => void load()}><Text style={styles.retryText}>{t('jobs.retry')}</Text></Pressable></View>
+          : <Text testID="jobs-empty" style={styles.empty}>{t('jobs.empty')}</Text>}
+    />
+  </SafeAreaView>;
+}
+
+const styles = StyleSheet.create({
+  page: { flex: 1, backgroundColor: '#f6f9fd' },
+  list: { width: '100%', maxWidth: 720, alignSelf: 'center', paddingHorizontal: 12, paddingBottom: 28, gap: 10 },
+  compactList: { paddingHorizontal: 8 },
+  header: { paddingHorizontal: 4, paddingTop: 12, paddingBottom: 14 },
+  eyebrow: { fontSize: 12, lineHeight: 18, fontWeight: '800', color: '#1769d2', marginBottom: 6 },
+  title: { fontSize: 28, lineHeight: 36, fontWeight: '800', color: '#0f172a' },
+  compactTitle: { fontSize: 25, lineHeight: 33 },
+  subtitle: { marginTop: 6, color: '#64748b', fontSize: 14, lineHeight: 21 },
+  card: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#dbe5f1', borderRadius: 16, padding: 15, shadowColor: '#0f172a', shadowOpacity: 0.04, shadowRadius: 10, shadowOffset: { width: 0, height: 4 }, elevation: 1 },
+  jobTitle: { fontSize: 18, fontWeight: '700', color: '#0f172a', marginBottom: 9, lineHeight: 25 },
+  metaRow: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start', gap: 6, marginBottom: 8 },
+  salary: { flexShrink: 1, backgroundColor: '#eff6ff', color: '#0f4fa7', fontWeight: '800', paddingHorizontal: 8, paddingVertical: 5, borderRadius: 12, fontSize: 12, lineHeight: 18 },
+  pill: { flexShrink: 1, backgroundColor: '#f1f5f9', color: '#475569', paddingHorizontal: 8, paddingVertical: 5, borderRadius: 12, fontSize: 12, lineHeight: 18 },
+  description: { color: '#536174', lineHeight: 21, marginBottom: 12 },
+  contact: { alignSelf: 'stretch', minHeight: 48, backgroundColor: '#1769d2', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, alignItems: 'center', justifyContent: 'center' },
+  contactText: { color: '#fff', fontWeight: '800', fontSize: 15, lineHeight: 21, textAlign: 'center' },
+  errorBanner: { backgroundColor: '#fff4f2', borderWidth: 1, borderColor: '#fecdca', borderRadius: 12, padding: 14, marginBottom: 10 },
+  state: { minHeight: 180, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 10 },
+  stateText: { color: '#475569', textAlign: 'center', lineHeight: 21 },
+  errorTitle: { color: '#b42318', fontWeight: '800', fontSize: 16, lineHeight: 23, textAlign: 'center' },
+  errorDetail: { color: '#7a271a', marginTop: 4, lineHeight: 20, textAlign: 'center' },
+  retry: { alignSelf: 'center', minHeight: 44, marginTop: 10, backgroundColor: '#1769d2', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 9, justifyContent: 'center' },
+  retryText: { color: '#fff', fontWeight: '800', textAlign: 'center' },
+  empty: { padding: 28, textAlign: 'center', color: '#64748b', lineHeight: 22 },
+});

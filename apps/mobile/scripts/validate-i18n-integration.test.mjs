@@ -254,6 +254,23 @@ test('localizes news comment interactions while preserving reader content', () =
   assert.doesNotMatch(comments, /styles\.heading}>评论/);
 });
 
+test('localizes job discovery and keeps long text usable on narrow screens', () => {
+  const jobs = read('app/jobs.tsx');
+  for (const key of ['jobs.title', 'jobs.subtitle', 'jobs.timeout', 'jobs.refreshFailed', 'jobs.empty', 'jobs.contactA11y']) {
+    assert.ok(jobs.includes(`'${key}'`), `jobs screen must translate ${key}`);
+  }
+  assert.match(jobs, /useWindowDimensions\(\)/);
+  assert.match(jobs, /width < 360/);
+  assert.match(jobs, /flexWrap: 'wrap'/);
+  assert.match(jobs, /minHeight: 48/);
+  assert.match(jobs, /useForegroundRetry/);
+  assert.match(jobs, /withUiTimeout/);
+  assert.match(jobs, /item\.title/);
+  assert.match(jobs, /item\.description/);
+  assert.doesNotMatch(jobs, />美国招聘求职</);
+  assert.doesNotMatch(jobs, /numberOfLines=\{1\}/);
+});
+
 test('localizes signed-in profile data controls and account deletion safeguards', () => {
   const profile = read('app/(tabs)/profile.tsx');
   const deletion = read('app/delete-account.tsx');

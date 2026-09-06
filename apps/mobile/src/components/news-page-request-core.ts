@@ -24,7 +24,7 @@ export class NewsPageRequestGate {
   }
 
   startAppend(offset: number): NewsPageRequestToken | null {
-    if (this.refreshing || this.appending || offset < 0) return null;
+    if (this.refreshing || this.appending || !Number.isFinite(offset) || offset < 0) return null;
     this.appending = true;
     return { generation: this.generation, kind: 'append', offset };
   }

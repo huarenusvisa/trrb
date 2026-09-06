@@ -131,10 +131,11 @@ assert.match(courtsClient, /#court-results-status'\)\.textContent = `\$\{fmt\(li
 assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="2025"[^>]*aria-pressed="false"/, 'court year controls must have initial accessible selection state');
 assert.match(statesHtml, /data-state-year="2026"[^>]*aria-pressed="true"[\s\S]*data-state-year="2025"[^>]*aria-pressed="false"/, 'state year controls must have initial accessible selection state');
 assert.match(courtsHtml, /courts\.js\?v=13/, 'court page must load the request-timeout client');
-assert.match(statesHtml, /courts\.css\?v=5[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=12/, 'state page must load the request-timeout client');
-assert.match(courtsHtml, /courts\.css\?v=5[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=13/, 'court page must load the request-timeout client');
+assert.match(statesHtml, /courts\.css\?v=6[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=12/, 'state page must load the request-timeout client');
+assert.match(courtsHtml, /courts\.css\?v=6[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=13/, 'court page must load the request-timeout client');
 assert.match(courtsCss, /\.state-year-tabs button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'directory fiscal-year filters must provide responsive 44px touch targets');
 assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');
+assert.match(courtsCss, /\.court-head input:focus-visible,\.court-head button:focus-visible,\.state-year-tabs button:focus-visible,\.crow:not\(\.chead\):focus-visible,\.method-note a:focus-visible\{outline:3px solid #101828;outline-offset:3px\}/, 'directory search, filters, result rows, and methodology links must have a visible keyboard focus style');
 assert.match(appI18n, /\['重新尝试','Try again'.*'إعادة المحاولة','Tekrar dene'\]/, 'retry action must be translated in all supported languages');
 assert.match(detailClient, /params\.set\('state', state\)/, 'court detail must preserve state scope');
 assert.match(detailClient, /params\.set\('fy', requestedYear\)/, 'court detail must request the fiscal year selected in the directory');

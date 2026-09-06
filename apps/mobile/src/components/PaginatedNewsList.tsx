@@ -9,6 +9,7 @@ import { useForegroundRetry } from '../hooks/useForegroundRetry';
 import { cacheNewsPage, readCachedNewsPage } from '../storage/newsFeedCache';
 import { NewsImage, prefetchNewsImages } from './NewsImage';
 import { nextNewsImagePrefetchWindow } from './news-image-prefetch-core';
+import { NewsPageRequestGate } from './news-page-request-core';
 
 type Props = {
   title: string;
@@ -30,6 +31,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   const [error, setError] = useState('');
   const itemsRef = useRef<NewsArticle[]>([]);
   const prefetchedThroughRef = useRef(-1);
+  const requestGateRef = useRef(new NewsPageRequestGate());
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50, minimumViewTime: 120 }).current;
 
   useEffect(() => { itemsRef.current = items; }, [items]);
@@ -49,10 +51,17 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   const load = useCallback(async (reset = false) => {
     const offset = reset ? 0 : nextOffset;
     if (offset == null) return;
+    const gate = requestGateRef.current;
+    const token = reset ? gate.startRefresh() : gate.startAppend(offset);
+    if (!token) return;
     try {
       setError('');
-      if (!reset) setLoadingMore(true);
+      if (reset) {
+        setRefreshing(true);
+        setLoadingMore(false);
+      } else setLoadingMore(true);
       const page = await fetchArticlePage({ category, q, offset, limit: 24 });
+      if (!gate.isCurrent(token)) return;
       setItems((current) => {
         const source = reset ? page.articles : [...current, ...page.articles];
         const seen = new Set<string>();
@@ -66,21 +75,25 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       setNextOffset(page.has_more ? page.next_offset : null);
       if (reset) void cacheNewsPage(category, q, page.articles, page.has_more ? page.next_offset : null).catch(() => undefined);
     } catch (e) {
+      if (!gate.isCurrent(token)) return;
       setError(reset && items.length > 0 ? t('news.offline') : (e instanceof Error ? e.message : t('news.loadFailed')));
     } finally {
-      setLoading(false);
-      setRefreshing(false);
-      setLoadingMore(false);
+      if (gate.finish(token)) {
+        setLoading(false);
+        setRefreshing(false);
+        setLoadingMore(false);
+      }
     }
   }, [category, items.length, nextOffset, q, t]);
 
   useEffect(() => {
     let active = true;
-    setLoading(true); setItems([]); setNextOffset(0); setError('');
+    const generation = requestGateRef.current.resetFeed();
+    setLoading(true); setRefreshing(false); setLoadingMore(false); setItems([]); setNextOffset(0); setError('');
     void (async () => {
       let restored = false;
       const cached = await readCachedNewsPage(category, q).catch(() => null);
-      if (!active) return;
+      if (!active || !requestGateRef.current.isCurrent(generation)) return;
       if (cached) {
         restored = true;
         setItems(cached.articles);
@@ -89,24 +102,23 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       }
       try {
         const page = await fetchArticlePage({ category, q, offset: 0, limit: 24 });
-        if (!active) return;
+        if (!active || !requestGateRef.current.isCurrent(generation)) return;
         const next = page.has_more ? page.next_offset : null;
         setItems(page.articles);
         setNextOffset(next);
         setError('');
         void cacheNewsPage(category, q, page.articles, next).catch(() => undefined);
       } catch (e) {
-        if (!active) return;
+        if (!active || !requestGateRef.current.isCurrent(generation)) return;
         setError(restored ? t('news.offline') : (e instanceof Error ? e.message : t('news.loadFailed')));
       } finally {
-        if (active) setLoading(false);
+        if (active && requestGateRef.current.isCurrent(generation)) setLoading(false);
       }
     })();
     return () => { active = false; };
   }, [category, q]);
 
   const retryList = () => {
-    setRefreshing(true);
     void load(true);
   };
 
@@ -147,7 +159,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       removeClippedSubviews={!largeText}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retryList} />}
       onEndReachedThreshold={0.45}
-      onEndReached={() => { if (!loadingMore && nextOffset != null) load(false); }}
+      onEndReached={() => { if (nextOffset != null) void load(false); }}
       ListHeaderComponent={<View style={styles.header}><Text accessibilityRole="header" testID="category-screen-title" style={[styles.title, compact && styles.compactTitle]}>{title}</Text>{error ? <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}><Text style={styles.error}>{error}</Text><Pressable testID="category-network-retry" accessibilityRole="button" accessibilityLabel={t('news.retry')} accessibilityState={{ disabled: refreshing }} disabled={refreshing} style={[styles.retryButton, refreshing && styles.retryButtonDisabled]} onPress={retryList}><Text style={styles.retryButtonText}>{refreshing ? t('news.retrying') : t('news.retry')}</Text></Pressable></View> : null}</View>}
       ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText || t('news.empty')}</Text></View>}
       ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.footer} color="#c8211e" /> : nextOffset == null && items.length ? <Text style={styles.end}>{t('news.end')}</Text> : null}

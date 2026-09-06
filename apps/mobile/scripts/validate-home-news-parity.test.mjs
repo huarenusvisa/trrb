@@ -39,6 +39,22 @@ test('loads the visible hero before below-the-fold homepage images', () => {
   assert.match(home, /importantCarousel\.slice\(1, 3\)[\s\S]*InteractionManager\.runAfterInteractions[\s\S]*prefetchNewsImages/);
 });
 
+test('guards homepage external links and keeps failures retryable', () => {
+  const home = read('app/(tabs)/index.tsx');
+  const i18n = read('src/i18n/i18n-core.ts');
+  assert.match(home, /const externalActionRef = useRef\(false\)/);
+  assert.match(home, /if \(externalActionRef\.current\) return/);
+  assert.match(home, /Linking\.canOpenURL\(url\)[\s\S]*Linking\.openURL\(url\)/);
+  assert.match(home, /setExternalFailure\(\{ url, label \}\)/);
+  assert.match(home, /AccessibilityInfo\.announceForAccessibility\(t\('home\.externalLinkFailed'/);
+  assert.match(home, /testID="home-external-link-error"[\s\S]*accessibilityRole="alert"/);
+  assert.match(home, /testID="home-external-link-retry"[\s\S]*onPress=\{\(\) => void openExternal\(externalFailure\.url, externalFailure\.label\)\}/);
+  assert.match(home, /openExternal\(service\.url, t\(service\.titleKey\)\)/);
+  assert.doesNotMatch(home, /Linking\.openURL\(service\.url\)|Linking\.openURL\(section\.url\)/);
+  assert.match(i18n, /'home\.externalLinkFailed': '无法打开“\{title\}”。请检查网络或稍后重试。'/);
+  assert.match(i18n, /'home\.retryExternal': 'Try opening again'/);
+});
+
 test('shows the U.S. section once instead of repeating it on every card', () => {
   const america = read('app/(tabs)/america.tsx');
   const i18n = read('src/i18n/i18n-core.ts');

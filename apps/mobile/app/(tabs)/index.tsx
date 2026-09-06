@@ -112,6 +112,7 @@ const readerServices = [
 ] as const;
 
 type WeatherState = { temperature: number | null; code: number | null; isDay: boolean };
+type ExternalLinkFailure = { url: string; label: string };
 
 function weatherLabel(code: number | null, isDay: boolean) {
   if (code == null) return { icon: '☁️', textKey: 'home.weatherUnknown' as MessageKey };
@@ -152,6 +153,7 @@ export default function HomeScreen() {
   const { width } = useWindowDimensions();
   const carouselRef = useRef<ScrollView>(null);
   const loadSequence = useRef(0);
+  const externalActionRef = useRef(false);
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [focusArticles, setFocusArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
@@ -159,6 +161,8 @@ export default function HomeScreen() {
   const [slowLoading, setSlowLoading] = useState(false);
   const [error, setError] = useState<'offline' | 'loadFailed' | ''>('');
   const [cacheSavedAt, setCacheSavedAt] = useState<number | null>(null);
+  const [externalBusy, setExternalBusy] = useState(false);
+  const [externalFailure, setExternalFailure] = useState<ExternalLinkFailure | null>(null);
   const [hotIndex, setHotIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [showStickyBrand, setShowStickyBrand] = useState(false);
@@ -331,9 +335,25 @@ export default function HomeScreen() {
 
   const openArticle = (item: NewsArticle) => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } });
   const openCategory = (category: string) => router.push({ pathname: '/category/[name]', params: { name: category } });
-  const openTopic = (url: string) => { void Linking.openURL(url); };
+  const openExternal = async (url: string, label: string) => {
+    if (externalActionRef.current) return;
+    externalActionRef.current = true;
+    setExternalBusy(true);
+    setExternalFailure(null);
+    try {
+      if (!await Linking.canOpenURL(url)) throw new Error('unsupported-url');
+      await Linking.openURL(url);
+    } catch {
+      setExternalFailure({ url, label });
+      AccessibilityInfo.announceForAccessibility(t('home.externalLinkFailed', { title: label }));
+    } finally {
+      externalActionRef.current = false;
+      setExternalBusy(false);
+    }
+  };
+  const openTopic = (url: string, label: string) => { void openExternal(url, label); };
   const openPortal = (section: (typeof portalSections)[number]) => {
-    if ('url' in section) void Linking.openURL(section.url);
+    if ('url' in section) void openExternal(section.url, t(section.titleKey));
     else router.push(section.route as '/immigration' | '/legal' | '/jobs' | '/community');
   };
 
@@ -442,6 +462,23 @@ export default function HomeScreen() {
           </View>
         ) : null}
 
+        {externalFailure ? (
+          <View testID="home-external-link-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.externalStatus}>
+            <Text style={styles.error}>{t('home.externalLinkFailed', { title: externalFailure.label })}</Text>
+            <Pressable
+              testID="home-external-link-retry"
+              accessibilityRole="button"
+              accessibilityLabel={t('home.retryExternal')}
+              accessibilityState={{ disabled: externalBusy }}
+              disabled={externalBusy}
+              style={[styles.retryButton, externalBusy && styles.retryButtonDisabled]}
+              onPress={() => void openExternal(externalFailure.url, externalFailure.label)}
+            >
+              <Text style={styles.retryButtonText}>{externalBusy ? t('home.retrying') : t('home.retryExternal')}</Text>
+            </Pressable>
+          </View>
+        ) : null}
+
         {importantCarousel.length ? (
           <View testID="home-important-carousel" style={styles.carouselWrap}>
             <ScrollView
@@ -494,7 +531,7 @@ export default function HomeScreen() {
           {topicCards.map((topic) => {
             const latest = topicLatest[topic.key];
             return (
-              <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} style={styles.focusCard} onPress={() => openTopic(topic.url)}>
+              <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.focusCard} onPress={() => openTopic(topic.url, t(topic.titleKey))}>
                 <NewsImage uri={showDeferredImages ? topic.image : undefined} style={styles.focusImage} testID={`home-topic-image-${topic.key}`} priority="low" />
                 <View style={styles.focusBody}>
                   <Text style={styles.focusTitle}>{t(topic.titleKey)}</Text>
@@ -539,23 +576,23 @@ export default function HomeScreen() {
               <View key={section.key} testID={`home-portal-${section.key}`} style={styles.portalCard}>
                 <View style={styles.portalHead}>
                   <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
-                  <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} onPress={() => openPortal(section)}><Text style={styles.portalAction}>{t(section.actionKey)}</Text></Pressable>
+                  <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} onPress={() => openPortal(section)}><Text style={styles.portalAction}>{t(section.actionKey)}</Text></Pressable>
                 </View>
-                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} style={styles.portalBanner} onPress={() => openPortal(section)}><Text style={styles.portalBannerText}>{t(section.bannerKey)}</Text></Pressable>
+                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.portalBanner} onPress={() => openPortal(section)}><Text style={styles.portalBannerText}>{t(section.bannerKey)}</Text></Pressable>
                 <View style={styles.portalGrid}>
                   {section.itemKeys.map((itemKey, index) => (
-                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} style={[styles.portalItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
+                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
                       <Text style={styles.portalItemText}>{t(itemKey)}</Text><Text style={styles.portalArrow}>›</Text>
                     </Pressable>
                   ))}
                 </View>
-                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} style={styles.portalMore} onPress={() => openPortal(section)}><Text style={styles.portalMoreText}>{t(section.actionKey)}</Text></Pressable>
+                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.portalMore} onPress={() => openPortal(section)}><Text style={styles.portalMoreText}>{t(section.actionKey)}</Text></Pressable>
               </View>
             ))}
 
             <View testID="home-reader-services" style={styles.readerServicesCard}>
               {readerServices.map((service) => (
-                <Pressable key={service.key} accessibilityRole="link" accessibilityLabel={t('home.openReaderServiceA11y', { title: t(service.titleKey) })} style={styles.readerService} onPress={() => void Linking.openURL(service.url)}>
+                <Pressable key={service.key} accessibilityRole="link" accessibilityLabel={t('home.openReaderServiceA11y', { title: t(service.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.readerService} onPress={() => void openExternal(service.url, t(service.titleKey))}>
                   <View style={styles.readerServiceCopy}><Text style={styles.readerServiceTitle}>{t(service.titleKey)}</Text><Text style={styles.readerServiceSub}>{t(service.subtitleKey)}</Text></View>
                   <Text style={styles.readerServiceAction}>{t(service.actionKey)}</Text>
                 </Pressable>
@@ -608,6 +645,7 @@ const styles = StyleSheet.create({
   breakingTitle: { flex: 1, color: '#101828', fontSize: 13, fontWeight: '800' },
   chevron: { color: '#98a2b3', fontSize: 22, marginLeft: 5 },
   cacheStatus: { backgroundColor: '#eef4ff', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 9, marginBottom: 10 },
+  externalStatus: { backgroundColor: '#fff1f0', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 9, marginBottom: 10, alignItems: 'flex-start' },
   cacheStatusStale: { backgroundColor: '#fffaeb' },
   cacheStatusText: { color: '#344054', lineHeight: 20 },
   networkStatus: { backgroundColor: '#fff6d8', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 9, marginBottom: 10, alignItems: 'flex-start' },

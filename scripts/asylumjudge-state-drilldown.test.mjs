@@ -124,6 +124,8 @@ assert.match(statesClient, /role="alert"/, 'state load failures must be announce
 assert.match(courtsClient, /role="alert"/, 'court load failures must be announced');
 assert.match(statesHtml, /id="state-results-status"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'state results must use a concise atomic status');
 assert.match(courtsHtml, /id="court-results-status"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'court results must use a concise atomic status');
+assert.match(statesHtml, /id="state-search"[^>]*role="search"[\s\S]*label class="sr-only" for="state-q"[\s\S]*id="state-q"[^>]*type="search"[^>]*aria-controls="state-results"[^>]*aria-describedby="state-results-status"/, 'state search must expose a labelled search landmark and its result relationship');
+assert.match(courtsHtml, /id="court-search"[^>]*role="search"[\s\S]*label class="sr-only" for="court-q"[\s\S]*id="court-q"[^>]*type="search"[^>]*aria-controls="court-results"[^>]*aria-describedby="court-results-status"/, 'court search must expose a labelled search landmark and its result relationship');
 assert.match(statesHtml, /id="state-results"[^>]*aria-busy="true"/, 'state results must expose loading state');
 assert.match(courtsHtml, /id="court-results"[^>]*aria-busy="true"/, 'court results must expose loading state');
 assert.doesNotMatch(statesHtml, /id="state-results"[^>]*aria-live=/, 'the full state table must not be a live region');

@@ -23,7 +23,9 @@ function recordSharedFailure(uri: string) {
 }
 
 export async function prefetchNewsImages(uris: Array<string | undefined>, limit = 6) {
-  const unique = [...new Set(uris.filter((uri): uri is string => Boolean(uri) && sharedRetryDelay(uri) === 0))].slice(0, limit);
+  const unique = [
+    ...new Set(uris.filter((uri): uri is string => typeof uri === 'string' && uri.length > 0 && sharedRetryDelay(uri) === 0)),
+  ].slice(0, limit);
   if (!unique.length) return false;
   return ExpoImage.prefetch(unique, 'memory-disk').catch(() => false);
 }

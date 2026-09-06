@@ -229,7 +229,12 @@ assert.match(page, /id="trend-chart"[^>]*role="group"[^>]*data-i18n-aria-label="
 assert.doesNotMatch(page, /id="(?:country-comparison-chart|trend-chart)"[^>]*role="img"/, 'interactive nationality charts must not flatten their keyboard points into images');
 assert.doesNotMatch(page, /id="(?:comparison-tooltip|trend-tooltip)"[^>]*(?:role="status"|aria-live=)/, 'pointer and touch tooltips must not trigger repeated live announcements');
 assert.match(page, /china-dashboard-i18n\.js\?v=9/, 'nationality dashboard must load the localized chart guidance asset version');
-assert.match(page, /china-dashboard\.js\?v=26/, 'nationality dashboard must load the chart shortcut semantics asset version');
+assert.match(page, /china-dashboard\.js\?v=27/, 'nationality dashboard must load the request-timeout client');
+assert.match(client, /const REQUEST_TIMEOUT_MS = 15000/, 'nationality requests must use a finite timeout');
+assert.match(client, /new DOMException\('Request timed out', 'TimeoutError'\)/, 'stalled nationality requests must reach the existing retry state');
+assert.match(client, /options\.signal\?\.addEventListener\('abort', forwardAbort, \{ once: true \}\)/, 'nationality request timeouts must preserve caller cancellation');
+assert.match(client, /fetch\(apiUrl\(url\), \{ cache: 'no-store', \.\.\.options, signal: requestController\.signal \}\)/, 'all nationality data requests must use the timeout-aware abort signal');
+assert.match(client, /finally \{[\s\S]*clearTimeout\(timeoutId\);[\s\S]*removeEventListener\('abort', forwardAbort\)/, 'nationality requests must release timeout and cancellation resources');
 assert.match(client, /mode=nationalities/);
 assert.match(client, /mode=nationality-detail/);
 assert.match(client, /trend-line/);

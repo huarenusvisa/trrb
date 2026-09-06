@@ -205,6 +205,7 @@ const routes = readFileSync('scripts/finalize-redirects.mjs', 'utf8');
 const seoBuilder = readFileSync('scripts/build-asylumjudge-seo.mjs', 'utf8');
 const homepageClient = readFileSync('asylumjudge/site.js', 'utf8');
 assert.match(detailPage, /id="detail-loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'judge detail loading and failure updates must be announced');
+assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="search"[^>]*inputmode="search"[^>]*autocomplete="off"[^>]*aria-label="输入中文或英文国籍，例如：古巴、Cuba、中国、China"[^>]*aria-controls="nationality"[^>]*aria-describedby="nationality-period-label"/, 'judge nationality filter must expose a persistent localized name and its result relationship');
 assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=9/, 'judge detail page must load the current asset versions');
 assert.match(detailStyles, /\.country-tools \.nationality-fy button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'judge detail fiscal-year filters must provide responsive 44px touch targets');
 assert.match(detailClient, /const REQUEST_TIMEOUT_MS = 15000/, 'judge detail requests must use a finite timeout');

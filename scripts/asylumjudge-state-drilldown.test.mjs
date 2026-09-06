@@ -101,6 +101,9 @@ assert.match(statesClient, /url\.searchParams\.set\('q', query\)/, 'state listin
 assert.match(statesClient, /history\[historyMode === 'push' \? 'pushState' : 'replaceState'\]/, 'user-selected state filters must create browser history entries');
 assert.match(statesClient, /addEventListener\('popstate',[\s\S]*load\(applyLocationState\(\), 'none'\)/, 'browser navigation must restore the state query and fiscal year');
 assert.match(statesClient, /loadController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'state navigation must cancel a superseded request');
+assert.match(statesClient, /const REQUEST_TIMEOUT_MS = 15000/, 'state requests must use a finite timeout');
+assert.match(statesClient, /controller\.abort\(new DOMException\('Request timed out', 'TimeoutError'\)\)/, 'stalled state requests must reach the retry state');
+assert.match(statesClient, /finally \{[\s\S]*clearTimeout\(timeoutId\)/, 'completed state requests must release their timeout');
 assert.match(statesClient, /if \(requestId !== loadSequence\) return;/, 'state navigation must ignore a stale response');
 assert.match(statesClient, /url\.searchParams\.delete\('state'\)/, 'state listing must remove the legacy state alias after canonicalizing the URL');
 assert.match(statesClient, /button\.setAttribute\('aria-pressed', String\(active\)\)/, 'state year controls must expose their selected state');
@@ -125,7 +128,7 @@ assert.match(courtsClient, /#court-results-status'\)\.textContent = `\$\{fmt\(li
 assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="2025"[^>]*aria-pressed="false"/, 'court year controls must have initial accessible selection state');
 assert.match(statesHtml, /data-state-year="2026"[^>]*aria-pressed="true"[\s\S]*data-state-year="2025"[^>]*aria-pressed="false"/, 'state year controls must have initial accessible selection state');
 assert.match(courtsHtml, /courts\.js\?v=12/, 'court page must load the concise-status client');
-assert.match(statesHtml, /courts\.css\?v=5[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=11/, 'state page must load the touch-target stylesheet and accessible result-status client');
+assert.match(statesHtml, /courts\.css\?v=5[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=12/, 'state page must load the request-timeout client');
 assert.match(courtsHtml, /courts\.css\?v=5[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=12/, 'court page must load the touch-target stylesheet and accessible result-status client');
 assert.match(courtsCss, /\.state-year-tabs button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'directory fiscal-year filters must provide responsive 44px touch targets');
 assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');

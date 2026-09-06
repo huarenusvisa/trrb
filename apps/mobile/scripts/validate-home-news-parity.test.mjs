@@ -6,6 +6,7 @@ const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), '
 
 test('keeps the App homepage on the PC mobile content structure', () => {
   const home = read('app/(tabs)/index.tsx');
+  const i18n = read('src/i18n/i18n-core.ts');
   const api = read('src/api/trrb.ts');
   const renderStart = home.indexOf('return (');
   const renderedHome = home.slice(renderStart);
@@ -19,7 +20,10 @@ test('keeps the App homepage on the PC mobile content structure', () => {
   assert.match(home, /titleKey: 'home\.topicFinanceTitle'/);
   assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', title: '中国热门头条'/);
   for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '订阅每日快报', '加入读者群', '投稿爆料']) {
-    assert.ok(home.includes(section), `${section} must stay on the App homepage`);
+    assert.ok(i18n.includes(section), `${section} must stay in the localized App homepage content`);
+  }
+  for (const marker of ['home.portalJudgesTitle', 'home.portalImmigrationTitle', 'home.portalLegalTitle', 'home.portalJobsTitle', 'home.portalCommunityTitle', 'home.readerSubscribeTitle', 'home.readerGroupTitle', 'home.readerTipsTitle']) {
+    assert.ok(home.includes(marker), `${marker} must stay on the App homepage`);
   }
   assert.match(api, /public-home-articles/);
 });

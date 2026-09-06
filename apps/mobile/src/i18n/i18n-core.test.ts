@@ -52,6 +52,14 @@ test('translates homepage topics and legal detail chrome', () => {
   assert.equal(translate('zh-CN', 'legal.detailOpenOfficial'), '查看官方原文');
 });
 
+test('translates homepage service portals, reader services and footer', () => {
+  assert.equal(translate('en', 'home.portalJudgesTitle'), 'Immigration judge grant rates');
+  assert.equal(translate('zh-TW', 'home.portalImmigrationCitizenship'), '入籍美國公民');
+  assert.equal(translate('en', 'home.openPortalItemA11y', { item: 'Supreme Court' }), 'Open service item: Supreme Court');
+  assert.equal(translate('zh-CN', 'home.readerTipsAction'), '提交线索');
+  assert.equal(translate('en', 'home.footerBrand'), 'Tang Ren Daily');
+});
+
 test('localizes account validation and known client failures without hiding server details', () => {
   assert.equal(authValidationMessage('en', 'identifier'), 'Enter a valid email address or phone number.');
   assert.equal(authValidationMessage('zh-TW', 'password'), '密碼需要 8–128 位。');

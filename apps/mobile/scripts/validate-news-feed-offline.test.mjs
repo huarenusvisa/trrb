@@ -108,3 +108,13 @@ test('deduplicates pagination and ignores responses from stale feeds', () => {
   assert.match(list, /requestGateRef\.current\.isCurrent\(generation\)/);
   assert.match(list, /if \(gate\.finish\(token\)\)/);
 });
+
+test('keeps visible stories and retries failed pagination in place', () => {
+  assert.match(list, /setLoadMoreError\(t\('news\.loadMoreFailed'\)\)/);
+  assert.match(list, /useForegroundRetry\(Boolean\(loadMoreError\), retryLoadMore\)/);
+  assert.match(list, /testID="category-load-more-error"[\s\S]*accessibilityRole="alert"/);
+  assert.match(list, /testID="category-load-more-retry"[\s\S]*accessibilityRole="button"/);
+  assert.match(list, /onPress=\{retryLoadMore\}/);
+  assert.match(i18n, /'news\.loadMoreFailed': '更多新闻加载失败，已保留当前内容。'/);
+  assert.match(i18n, /'news\.retryLoadMore': 'Retry loading more'/);
+});

@@ -114,3 +114,6 @@
 
 /* Keep knowledge recovery compact while preserving the shared touch-sized retry. */
 .knowledge-empty>span{display:grid;justify-items:center;gap:10px}.knowledge-empty b{color:#475467}
+
+/* Keep every homepage trend filter visibly focused during keyboard navigation. */
+.state-fy-tabs button:focus-visible,.trend-interval-tabs button:focus-visible,.state-trend-states button:focus-visible,.trend-scope-controls select:focus-visible{outline:3px solid #101828;outline-offset:3px}

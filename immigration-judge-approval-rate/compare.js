@@ -3,6 +3,7 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString();
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const colors = ['#14804a', '#2563a9', '#c4161c', '#7c3aed'];
+const REQUEST_TIMEOUT_MS = 15000;
 const copy = {
   en: { title:'Compare immigration judges', intro:'Select 2–4 judges to compare approval rates, denials, sample sizes, yearly trends, nationalities, and official appointment backgrounds.', searchLabel:'Add a judge', searchPlaceholder:'Enter a judge, court, or city', clear:'Clear', hint:'Select at least 2 and no more than 4 judges.', emptyTitle:'Select judges to begin', emptyBody:'Search by name, court, or city. The full comparison appears after you select a second judge.', summary:'Core data comparison', copyLink:'Copy comparison link', trend:'Yearly approval-rate trend', trendNote:'Only yearly points with at least 50 merits decisions are shown', nationalities:'Leading applicant nationalities', nationalityNote:'Top five nationalities by merits decisions for each judge', background:'Official appointment background', disclaimer:'Historical statistics are informational only, not legal advice, and cannot predict an individual case. Read rates together with sample size, period, and case type.', loading:'Loading verified judge data…', max:'You can compare up to 4 judges.', copied:'Comparison link copied.', addMore:'Add one more judge to generate the comparison.', retry:'Try again', error:'The comparison data could not be loaded. Please try again.' },
   'zh-Hans': { title:'移民法官对比', intro:'选择2至4名法官，并排比较批准率、拒绝率、案件样本量、年度走势、申请人国籍和官方任命背景。', searchLabel:'添加法官', searchPlaceholder:'输入法官姓名、法院或城市', clear:'清空', hint:'至少选择2名、最多4名法官。', emptyTitle:'选择法官开始对比', emptyBody:'搜索姓名、法院或城市；选择第二名法官后生成完整对比。', summary:'核心数据对比', copyLink:'复制对比链接', trend:'年度批准率走势', trendNote:'仅显示达到50件有效裁决门槛的年度数据点', nationalities:'主要申请人国籍', nationalityNote:'每名法官按有效裁决量列出前5个国籍', background:'官方任命背景', disclaimer:'历史统计仅供信息参考，不构成法律意见，也不能预测个案结果。批准率必须与样本量、数据期间及案件类型一起理解。', loading:'正在读取真实法官数据…', max:'最多只能同时比较4名法官。', copied:'对比链接已复制。', addMore:'再添加1名法官即可生成对比。', retry:'重新尝试', error:'对比数据暂时无法读取，请稍后重试。' },
@@ -47,6 +48,25 @@ let details = [];
 let activeSearchResult = -1;
 let detailRequestId = 0;
 let detailRequestController = null;
+
+async function requestJson(url, options = {}) {
+  const requestController = new AbortController();
+  const forwardAbort = () => requestController.abort(options.signal?.reason);
+  if (options.signal?.aborted) forwardAbort();
+  else options.signal?.addEventListener('abort', forwardAbort, { once: true });
+  const timeoutId = setTimeout(
+    () => requestController.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
+  try {
+    const response = await fetch(url, { ...options, signal: requestController.signal });
+    if (!response.ok) throw new Error(response.status);
+    return await response.json();
+  } finally {
+    clearTimeout(timeoutId);
+    options.signal?.removeEventListener('abort', forwardAbort);
+  }
+}
 
 const locale = () => window.AsylumI18n?.locale || document.body.dataset.asylumLocale || 'zh-Hans';
 const words = () => copy[locale()] || copy.en;
@@ -250,7 +270,7 @@ async function loadDetails() {
   $('.compare-results').setAttribute('aria-busy', 'true');
   $('#compare-status').textContent = words().loading;
   try {
-    const nextDetails = await Promise.all(requestedJudges.map((row) => fetch(`/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(row.id)}`, { signal: controller.signal }).then((response) => { if (!response.ok) throw new Error(response.status); return response.json(); })));
+    const nextDetails = await Promise.all(requestedJudges.map((row) => requestJson(`/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(row.id)}`, { signal: controller.signal })));
     if (requestId !== detailRequestId) return;
     details = nextDetails;
     renderComparison();
@@ -270,9 +290,7 @@ async function load() {
   $('.compare-results').setAttribute('aria-busy', 'true');
   $('#compare-status').textContent = words().loading;
   try {
-    const response = await fetch('/.netlify/functions/immigration-judges?mode=all');
-    if (!response.ok) throw new Error(response.status);
-    judges = (await response.json()).results || [];
+    judges = (await requestJson('/.netlify/functions/immigration-judges?mode=all')).results || [];
     const requested = (new URLSearchParams(location.search).get('judges') || '').split(',').filter(Boolean).slice(0,4);
     selected = requested.map((id) => judges.find((row) => row.id === id)).filter(Boolean);
     renderSelected();

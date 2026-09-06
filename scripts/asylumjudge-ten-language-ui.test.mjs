@@ -75,10 +75,14 @@ for (const path of [
   'immigration-judge-approval-rate/detail.html',
   'immigration-judge-approval-rate/china-dashboard.html'
 ]) {
-  assert.match(readFileSync(path, 'utf8'), /domain-brand\.css\?v=6/, `${path} must load the touch-target brand stylesheet`);
+  assert.match(readFileSync(path, 'utf8'), /domain-brand\.css\?v=7/, `${path} must load the keyboard-focus brand stylesheet`);
 }
 assert.match(domainStyles, /\.asylumjudge-primary-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile inner-page navigation must provide responsive 44px touch targets');
 assert.match(domainStyles, /\.language-control select\{[^}]*height:44px[^}]*touch-action:manipulation/, 'inner-page language selectors must provide responsive 44px touch targets');
+for (const selector of ['.asylumjudge-logo', '.asylumjudge-primary-nav a', '.language-control select']) {
+  assert.match(domainStyles, new RegExp(selector.replace(/[.]/g, '\\.') + ':focus-visible'), `${selector} must expose a visible keyboard focus state`);
+}
+assert.match(domainStyles, /:focus-visible\{outline:3px solid #101828;outline-offset:3px\}/, 'inner-page header focus must remain high contrast and offset from the control');
 
 const nationality = readFileSync('immigration-judge-approval-rate/china-dashboard-i18n.js', 'utf8');
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {

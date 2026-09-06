@@ -34,9 +34,9 @@
         <span class="compare-eyebrow">JUDGE COMPARISON</span>
         <h1 data-copy="title">移民法官对比</h1>
         <p data-copy="intro">选择2至4名法官，并排比较批准率、拒绝率、案件样本量、年度走势、申请人国籍和官方任命背景。</p>
-        <div class="compare-picker">
+        <div class="compare-picker" role="search">
           <label for="compare-search" data-copy="searchLabel">添加法官</label>
-          <div class="compare-search-wrap"><input id="compare-search" role="combobox" aria-autocomplete="list" aria-controls="compare-search-results" aria-expanded="false" autocomplete="off" data-copy-placeholder="searchPlaceholder" placeholder="输入法官姓名、法院或城市"><button id="clear-comparison" type="button" data-copy="clear">清空</button></div>
+          <div class="compare-search-wrap"><input id="compare-search" name="judge" type="search" inputmode="search" enterkeyhint="search" spellcheck="false" role="combobox" aria-autocomplete="list" aria-controls="compare-search-results" aria-describedby="compare-status" aria-expanded="false" autocomplete="off" data-copy-placeholder="searchPlaceholder" placeholder="输入法官姓名、法院或城市"><button id="clear-comparison" type="button" data-copy="clear">清空</button></div>
           <div id="compare-search-results" class="compare-search-results" role="listbox" hidden></div>
           <div id="selected-judges" class="selected-judges"></div>
           <p id="compare-status" class="compare-status" role="status" aria-live="polite" aria-atomic="true" data-copy="hint">至少选择2名、最多4名法官。</p>

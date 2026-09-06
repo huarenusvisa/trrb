@@ -3,6 +3,7 @@ const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':
 const fmt = (value) => window.AsylumI18n?.formatNumber?.(value) || Number(value || 0).toLocaleString('zh-CN');
 let searchController = null;
 let searchSequence = 0;
+const REQUEST_TIMEOUT_MS = 15000;
 const initialResultNote = $('#result-note').textContent;
 const initialResults = $('#results').innerHTML;
 const freshnessElement = $('#data-freshness');
@@ -40,8 +41,16 @@ function resetSearch({ historyMode = 'none' } = {}) {
 async function loadStats() {
   freshnessElement?.setAttribute('aria-busy', 'true');
   if (freshnessElement) freshnessElement.textContent = initialFreshnessText;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
   try {
-    const [statsResponse, freshnessResponse] = await Promise.all([fetch('/.netlify/functions/immigration-judges?mode=stats'), fetch('/.netlify/functions/immigration-judges?mode=freshness')]);
+    const [statsResponse, freshnessResponse] = await Promise.all([
+      fetch('/.netlify/functions/immigration-judges?mode=stats', { signal: controller.signal }),
+      fetch('/.netlify/functions/immigration-judges?mode=freshness', { signal: controller.signal })
+    ]);
     if (!statsResponse.ok || !freshnessResponse.ok) throw new Error(`Judge stats failed: ${statsResponse.status}/${freshnessResponse.status}`);
     const stats = await statsResponse.json();
     const freshness = await freshnessResponse.json();
@@ -51,11 +60,13 @@ async function loadStats() {
     const latest = freshness.latest_import;
     if (freshnessElement) freshnessElement.textContent = latest ? `最近数据导入：${latest.source_name || '可验证来源'} · ${String(latest.source_date || latest.completed_at || '').slice(0, 10)} · ${fmt(latest.accepted_rows)} 条记录` : '数据库框架已上线，等待首批通过校验的真实法官裁决数据';
   } catch {
+    controller.abort();
     if (freshnessElement) {
       freshnessElement.innerHTML = '<span>数据库接口暂时无法读取</span> · <button class="freshness-retry" type="button">重新尝试</button>';
       freshnessElement.querySelector('.freshness-retry').addEventListener('click', loadStats);
     }
   } finally {
+    clearTimeout(timeoutId);
     freshnessElement?.setAttribute('aria-busy', 'false');
   }
 }
@@ -70,6 +81,10 @@ async function search(query, { historyMode = 'push', reveal = true } = {}) {
   searchController?.abort();
   const controller = new AbortController();
   searchController = controller;
+  const timeoutId = setTimeout(
+    () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
   updateSearchHistory(query, historyMode);
   $('#result-note').textContent = '正在查询…';
   $('#results').setAttribute('aria-busy', 'true');
@@ -100,7 +115,11 @@ async function search(query, { historyMode = 'push', reveal = true } = {}) {
     $('#judge-retry').addEventListener('click', () => search(query, { historyMode: 'none' }));
     if (reveal) revealSearchResults();
   } finally {
-    if (requestId === searchSequence) $('#results').setAttribute('aria-busy', 'false');
+    clearTimeout(timeoutId);
+    if (requestId === searchSequence) {
+      searchController = null;
+      $('#results').setAttribute('aria-busy', 'false');
+    }
   }
 }
 

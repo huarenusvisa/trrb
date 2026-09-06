@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Linking, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, ActivityIndicator, Linking, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { useI18n } from '../../src/i18n/I18nProvider';
@@ -27,6 +27,9 @@ export default function LegalDetailScreen() {
   const [error, setError] = useState('');
   const mounted = useRef(true);
   const activeRequest = useRef<AbortController | null>(null);
+  const actionInFlight = useRef(false);
+  const [activeAction, setActiveAction] = useState<'official' | 'share' | null>(null);
+  const [failedAction, setFailedAction] = useState<'official' | 'share' | null>(null);
 
   const selectRecord = useCallback((rows: LegalRecord[]) => rows.find((item) => String(item.id) === String(id)) || null, [id]);
   const selectAnalysis = useCallback((rows: LegalAnalysis[]) => rows.find((item) => String(item.recordId) === String(id)) || null, [id]);
@@ -90,6 +93,49 @@ export default function LegalDetailScreen() {
 
   const shareUrl = useMemo(() => `https://trrb.net/legal/detail.html?id=${encodeURIComponent(String(id || ''))}`, [id]);
 
+  const openOfficial = useCallback(async () => {
+    const url = record?.officialUrl;
+    if (!url || actionInFlight.current) return;
+    actionInFlight.current = true;
+    setActiveAction('official');
+    setFailedAction(null);
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (!supported) throw new Error('Unsupported legal source URL');
+      await Linking.openURL(url);
+    } catch {
+      if (mounted.current) {
+        setFailedAction('official');
+        AccessibilityInfo.announceForAccessibility(t('legal.detailOpenFailed'));
+      }
+    } finally {
+      actionInFlight.current = false;
+      if (mounted.current) setActiveAction(null);
+    }
+  }, [record?.officialUrl, t]);
+
+  const shareRecord = useCallback(async () => {
+    if (actionInFlight.current) return;
+    actionInFlight.current = true;
+    setActiveAction('share');
+    setFailedAction(null);
+    try {
+      await Share.share({
+        title: record?.title || t('legal.detailShareTitle'),
+        message: shareUrl,
+        url: shareUrl,
+      });
+    } catch {
+      if (mounted.current) {
+        setFailedAction('share');
+        AccessibilityInfo.announceForAccessibility(t('legal.detailShareFailed'));
+      }
+    } finally {
+      actionInFlight.current = false;
+      if (mounted.current) setActiveAction(null);
+    }
+  }, [record?.title, shareUrl, t]);
+
   if (loading && !record) return <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={t('legal.detailLoading')}><ActivityIndicator color="#c8211e" /><Text style={styles.muted}>{t('legal.detailLoading')}</Text></View>;
   if (!record) return <View style={styles.center} accessibilityRole="alert"><Text style={styles.error}>{error || t('legal.detailNotFound')}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('news.retry')} style={styles.retry} onPress={() => void load(true)}><Text style={styles.retryText}>{t('news.retry')}</Text></Pressable></View>;
 
@@ -120,9 +166,25 @@ export default function LegalDetailScreen() {
       )}
 
       <View style={styles.actions}>
-        {record.officialUrl ? <Pressable accessibilityRole="link" accessibilityLabel={t('legal.detailOpenOfficialA11y')} style={styles.primary} onPress={() => Linking.openURL(record.officialUrl!)}><Text style={styles.primaryText}>{t('legal.detailOpenOfficial')}</Text></Pressable> : null}
-        <Pressable accessibilityRole="button" accessibilityLabel={t('legal.detailShareA11y')} style={styles.secondary} onPress={() => Share.share({ title: record.title || t('legal.detailShareTitle'), message: shareUrl, url: shareUrl })}><Text style={styles.secondaryText}>{t('legal.detailShare')}</Text></Pressable>
+        {record.officialUrl ? <Pressable accessibilityRole="link" accessibilityLabel={t('legal.detailOpenOfficialA11y')} accessibilityState={{ disabled: activeAction !== null, busy: activeAction === 'official' }} disabled={activeAction !== null} style={[styles.primary, activeAction !== null && styles.actionDisabled]} onPress={() => void openOfficial()}><Text style={styles.primaryText}>{activeAction === 'official' ? t('legal.detailOpening') : t('legal.detailOpenOfficial')}</Text></Pressable> : null}
+        <Pressable accessibilityRole="button" accessibilityLabel={t('legal.detailShareA11y')} accessibilityState={{ disabled: activeAction !== null, busy: activeAction === 'share' }} disabled={activeAction !== null} style={[styles.secondary, activeAction !== null && styles.actionDisabled]} onPress={() => void shareRecord()}><Text style={styles.secondaryText}>{activeAction === 'share' ? t('legal.detailSharing') : t('legal.detailShare')}</Text></Pressable>
       </View>
+      {failedAction ? (
+        <View testID="legal-action-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.actionError}>
+          <Text style={styles.error}>{t(failedAction === 'official' ? 'legal.detailOpenFailed' : 'legal.detailShareFailed')}</Text>
+          <Pressable
+            testID="legal-action-retry"
+            accessibilityRole="button"
+            accessibilityLabel={t(failedAction === 'official' ? 'legal.detailRetryOpen' : 'legal.detailRetryShare')}
+            accessibilityState={{ disabled: activeAction !== null, busy: activeAction !== null }}
+            disabled={activeAction !== null}
+            style={styles.actionRetry}
+            onPress={() => void (failedAction === 'official' ? openOfficial() : shareRecord())}
+          >
+            <Text style={styles.retryText}>{t(failedAction === 'official' ? 'legal.detailRetryOpen' : 'legal.detailRetryShare')}</Text>
+          </Pressable>
+        </View>
+      ) : null}
     </ScrollView>
   );
 }
@@ -133,5 +195,5 @@ const styles = StyleSheet.create({
   eyebrow:{color:'#c8211e',fontSize:14,lineHeight:21,fontWeight:'900',flexShrink:1},title:{fontSize:28,lineHeight:38,fontWeight:'900',color:'#101828',marginTop:8,flexShrink:1},officialTitle:{fontSize:15,lineHeight:23,color:'#667085',marginTop:10,flexShrink:1},
   metaBox:{backgroundColor:'#fff',borderRadius:14,padding:16,marginTop:18,gap:6},meta:{fontSize:14,lineHeight:21,color:'#475467',flexShrink:1},analysis:{backgroundColor:'#fff',borderRadius:16,padding:18,marginTop:16},section:{fontSize:22,lineHeight:30,fontWeight:'900',color:'#101828',marginBottom:12,flexShrink:1},
   label:{fontSize:15,lineHeight:22,fontWeight:'900',color:'#344054',marginTop:10,marginBottom:4,flexShrink:1},body:{fontSize:17,lineHeight:29,color:'#1d2939',flexShrink:1},disclaimer:{fontSize:12,lineHeight:19,color:'#667085',marginTop:16,flexShrink:1},muted:{color:'#667085',lineHeight:24,textAlign:'center',flexShrink:1},
-  actions:{gap:10,marginTop:18},primary:{minHeight:48,backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',justifyContent:'center'},primaryText:{color:'#fff',fontWeight:'900',textAlign:'center'},secondary:{minHeight:48,backgroundColor:'#fff',padding:15,borderRadius:12,alignItems:'center',justifyContent:'center'},secondaryText:{color:'#344054',fontWeight:'900',textAlign:'center'}
+  actions:{gap:10,marginTop:18},primary:{minHeight:48,backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',justifyContent:'center'},primaryText:{color:'#fff',fontWeight:'900',textAlign:'center'},secondary:{minHeight:48,backgroundColor:'#fff',padding:15,borderRadius:12,alignItems:'center',justifyContent:'center'},secondaryText:{color:'#344054',fontWeight:'900',textAlign:'center'},actionDisabled:{opacity:0.6},actionError:{backgroundColor:'#fef3f2',borderRadius:14,padding:14,marginTop:12,alignItems:'flex-start'},actionRetry:{minHeight:44,justifyContent:'center',paddingHorizontal:4,marginTop:4}
 });

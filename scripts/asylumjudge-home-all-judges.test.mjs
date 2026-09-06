@@ -203,6 +203,11 @@ assert.match(client, /if \(trendController === controller\) \{[\s\S]*trendContro
 assert.match(client, /container\.setAttribute\('aria-busy', 'true'\)[\s\S]*id="overview-retry"[\s\S]*loadOverview\(fiscalYear\)[\s\S]*finally[\s\S]*container\.setAttribute\('aria-busy', 'false'\)/, 'state overview failures must retry the selected fiscal year and announce completion');
 assert.doesNotMatch(client, /catch \(error\) \{[\s\S]{0,500}state-market-chart[\s\S]{0,500}州级数据暂时无法读取/, 'state overview failures must not overwrite the independently loaded trend chart');
 assert.match(client, /overviewController\?\.abort\(\)[\s\S]*new AbortController\(\)[\s\S]*signal: controller\.signal/, 'a new fiscal-year request must cancel the previous overview request');
+assert.match(client, /const REQUEST_TIMEOUT_MS = 15000;/, 'homepage data requests must have a finite timeout');
+assert.match(client, /const requestController = new AbortController\(\);[\s\S]*options\.signal\?\.addEventListener\('abort', forwardAbort, \{ once: true \}\)/, 'request timeouts must preserve caller cancellation');
+assert.match(client, /setTimeout\([\s\S]*new DOMException\('Request timed out', 'TimeoutError'\)[\s\S]*REQUEST_TIMEOUT_MS/, 'stalled homepage requests must abort with an explicit timeout');
+assert.match(client, /fetch\(requestUrl, \{ \.\.\.options, signal: requestController\.signal \}\)/, 'homepage requests must use the combined cancellation signal');
+assert.match(client, /finally \{[\s\S]*clearTimeout\(timeoutId\);[\s\S]*removeEventListener\('abort', forwardAbort\)/, 'request timeout and cancellation listeners must be cleaned up');
 assert.match(client, /if \(overviewController !== controller\) return;[\s\S]*error\.name === 'AbortError' \|\| overviewController !== controller/, 'late or cancelled overview responses must not overwrite the latest fiscal year');
 assert.match(client, /if \(overviewController === controller\) \{[\s\S]*overviewController = null;[\s\S]*aria-busy/, 'only the current overview request may end the loading state');
 assert.match(client, /data-state-fy[\s\S]*setAttribute\('aria-pressed', String\(selected\)\)/, 'fiscal-year buttons must announce selection changes');
@@ -216,8 +221,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=38/, 'standalone homepage must load the localized judge-directory recovery assets');
-assert.match(trrb, /app-i18n\.js\?v=11[\s\S]*site\.js\?v=37/, 'embedded homepage must load the localized judge-directory recovery assets');
+assert.match(standalone, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=39/, 'standalone homepage must load the request-timeout client');
+assert.match(trrb, /app-i18n\.js\?v=11[\s\S]*site\.js\?v=38/, 'embedded homepage must load the request-timeout client');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

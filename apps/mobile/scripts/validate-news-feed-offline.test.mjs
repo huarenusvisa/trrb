@@ -74,7 +74,9 @@ test('bounds long-list rendering work and exposes every story as a button', () =
   assert.match(list, /initialNumToRender=\{8\}/);
   assert.match(list, /maxToRenderPerBatch=\{8\}/);
   assert.match(list, /windowSize=\{7\}/);
-  assert.match(list, /removeClippedSubviews/);
-  assert.match(list, /getItemLayout=.*length: 130, offset: 130 \* index/s);
+  assert.match(list, /removeClippedSubviews=\{!largeText\}/);
+  assert.match(list, /fontScale >= 1\.3/);
+  assert.match(list, /card:\{minHeight:118/);
+  assert.doesNotMatch(list, /getItemLayout=/);
   assert.match(list, /accessibilityRole="button"/);
 });

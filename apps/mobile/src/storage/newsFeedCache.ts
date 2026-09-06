@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { NewsArticle } from '../api/trrb';
-import { NEWS_FEED_CACHE_MAX_ITEMS, newsFeedKeysToPrune, parseNewsFeedCache } from './news-feed-cache-core';
+import { createBoundedNewsFeedSnapshot, NEWS_FEED_CACHE_MAX_ITEMS, newsFeedKeysToPrune, parseNewsFeedCache } from './news-feed-cache-core';
 
 const HOME_KEY = 'trrb.news.feed.v1.home';
 const LIST_PREFIX = 'trrb.news.feed.v1.list.';
@@ -30,7 +30,8 @@ export async function readCachedNewsPage(category?: string, q?: string) {
 
 export async function cacheNewsPage(category: string | undefined, q: string | undefined, articles: NewsArticle[], nextOffset: number | null) {
   const key = listKey(category, q);
-  await AsyncStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), snapshot: { articles, nextOffset } }));
+  const snapshot = createBoundedNewsFeedSnapshot(articles, nextOffset);
+  await AsyncStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), snapshot }));
   const keys = (await AsyncStorage.getAllKeys()).filter((item) => item.startsWith(LIST_PREFIX));
   if (keys.length <= NEWS_FEED_CACHE_MAX_ITEMS) return;
   const rows = await AsyncStorage.multiGet(keys);
@@ -41,4 +42,3 @@ export async function cacheNewsPage(category: string | undefined, q: string | un
   const remove = newsFeedKeysToPrune(entries);
   if (remove.length) await AsyncStorage.multiRemove(remove);
 }
-

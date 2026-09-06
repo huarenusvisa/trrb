@@ -12,10 +12,17 @@ test('restores homepage and list snapshots before refreshing official news', () 
   assert.match(home, /readCachedHomeFeed/);
   assert.match(home, /cacheHomeFeed\(merged, focus\)/);
   assert.match(list, /readCachedNewsPage\(category, q\)/);
-  assert.match(list, /cacheNewsPage\(category, q, page\.articles/);
+  assert.match(list, /cacheNewsPage\(category, q, merged/);
   assert.match(home, /t\(error === 'offline' \? 'home\.offline' : 'home\.loadFailed'\)/);
   assert.match(i18n, /'home\.offline': '网络不可用，正在显示上次读取的新闻/);
   assert.match(list, /t\('news\.offline'\)/);
+});
+
+test('persists successful appended pages for bounded offline continuation', () => {
+  assert.match(list, /const source = reset \? page\.articles : \[\.\.\.itemsRef\.current, \.\.\.page\.articles\]/);
+  assert.match(list, /itemsRef\.current = merged/);
+  assert.match(list, /cacheNewsPage\(category, q, merged, page\.has_more \? page\.next_offset : null\)/);
+  assert.doesNotMatch(list, /if \(reset\) void cacheNewsPage/);
 });
 
 test('uses the shared image fallback across homepage and category cards', () => {

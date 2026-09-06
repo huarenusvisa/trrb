@@ -242,6 +242,18 @@ test('localizes comments, favorites and history while preserving article and com
   assert.match(history, /item\.title/);
 });
 
+test('localizes news comment interactions while preserving reader content', () => {
+  const comments = read('src/components/CommentThread.tsx');
+  assert.match(comments, /useI18n\(\)/);
+  assert.match(comments, /localeDateTag\(locale\)/);
+  for (const key of ['comments.hint', 'comments.draftCounter', 'comments.reportSubmitted', 'comments.likeA11y', 'comments.moreFailed']) {
+    assert.ok(comments.includes(`'${key}'`), `news comments must translate ${key}`);
+  }
+  assert.match(comments, /item\.content/);
+  assert.doesNotMatch(comments, /toLocaleString\('zh-CN'\)/);
+  assert.doesNotMatch(comments, /styles\.heading}>评论/);
+});
+
 test('localizes signed-in profile data controls and account deletion safeguards', () => {
   const profile = read('app/(tabs)/profile.tsx');
   const deletion = read('app/delete-account.tsx');

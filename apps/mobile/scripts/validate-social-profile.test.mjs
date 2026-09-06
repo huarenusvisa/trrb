@@ -222,10 +222,10 @@ test('news and community comments preserve scoped drafts and failed submissions'
     assert.match(screen, /clearCommentDraft/);
     assert.match(screen, /draft-restored/);
   }
-  assert.match(news, /草稿自动保存 7 天/);
+  assert.match(news, /t\('comments\.draftCounter'/);
   assert.match(community, /t\('community\.draftCounter'/);
   assert.match(news, /news-comment-error/);
-  assert.match(news, /重试发布/);
+  assert.match(news, /t\('comments\.retryPublish'\)/);
   assert.match(news, /parentId: target\?\.id/);
   assert.match(community, /t\('community\.commentSubmitFailed'\)/);
   assert.match(drafts, /scope: CommentDraftScope/);
@@ -240,9 +240,9 @@ test('news comment lists distinguish empty, failed and pagination states', () =>
   assert.match(news, /news-comments-empty/);
   assert.match(news, /withUiTimeout\(listComments/);
   assert.match(news, /useForegroundRetry\(Boolean\(loadError\)/);
-  assert.match(news, /已加载的评论仍保留在本页/);
-  assert.match(news, /重新读取评论/);
-  assert.match(news, /重试加载更多/);
+  assert.match(news, /t\('comments\.loadedPreserved'\)/);
+  assert.match(news, /t\('comments\.reload'\)/);
+  assert.match(news, /t\('comments\.retryMore'\)/);
   assert.doesNotMatch(news, /if \(!append\) setItems\(\[\]\)/);
 });
 
@@ -252,10 +252,10 @@ test('news comment actions keep failures retryable without losing report input',
   assert.match(news, /news-comment-like-error/);
   assert.match(news, /news-comment-report-error/);
   assert.match(news, /news-comment-delete-error/);
-  assert.match(news, /重试点赞/);
-  assert.match(news, /重试提交举报/);
-  assert.match(news, /重试删除/);
-  assert.match(news, /举报理由仍保留在本页/);
+  assert.match(news, /'comments\.retryLike'/);
+  assert.match(news, /t\('comments\.retryReport'\)/);
+  assert.match(news, /'comments\.retryDelete'/);
+  assert.match(news, /t\('comments\.reportReasonPreserved'\)/);
   assert.match(news, /withUiTimeout\(nextLiked \? likeComment/);
   assert.match(news, /withUiTimeout\(reportComment/);
   assert.match(news, /withUiTimeout\(deleteOwnComment/);
@@ -273,9 +273,9 @@ test('news comments show counts and toggle the signed-in viewer like state', () 
   assert.match(api, /select\('comment_id'\)\.eq\('user_id'/);
   assert.match(news, /unlikeComment/);
   assert.match(news, /updateCommentLikeState/);
-  assert.match(news, /viewer_has_liked \? '取消点赞' : '点赞'/);
+  assert.match(news, /item\.viewer_has_liked \? 'comments\.unlikeA11y' : 'comments\.likeA11y'/);
   assert.match(news, /selected: item\.viewer_has_liked/);
-  assert.match(news, /已取消点赞/);
+  assert.match(news, /'comments\.liked' : 'comments\.unliked'/);
 });
 
 test('news replies stay grouped with parents and identify the reply target', () => {
@@ -290,7 +290,7 @@ test('news replies stay grouped with parents and identify the reply target', () 
   assert.match(presentation, /buildCommentDisplayRows/);
   assert.match(presentation, /for \(const child of children\.get\(row\.id\) \|\| \[\]\) append/);
   assert.match(news, /displayItems\.map\(\(\{ item, depth, replyToLabel \}/);
-  assert.match(news, /回复 \{replyToLabel\}/);
+  assert.match(news, /t\('comments\.replyingTo'/);
   assert.match(news, /styles\.replyComment/);
 });
 

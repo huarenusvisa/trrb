@@ -142,6 +142,14 @@ test('translates comments, saved stories and reading history without changing ti
   assert.equal(translate('zh-CN', 'history.openArticleA11y', { title: '原始标题' }), '打开历史新闻：原始标题');
 });
 
+test('translates news comment composition, moderation and pagination states', () => {
+  assert.equal(translate('en', 'comments.hint'), 'Sign in to comment, reply, like, and report. Only published comments appear publicly.');
+  assert.equal(translate('zh-TW', 'comments.reportSubmitted'), '檢舉已提交，我們會在後台審核。');
+  assert.equal(translate('en', 'comments.reportingUser', { name: 'Alex' }), "Report Alex's comment");
+  assert.equal(translate('zh-CN', 'comments.draftCounter', { count: 12 }), '12/3000 · 草稿自动保存 7 天');
+  assert.equal(translate('en', 'comments.likeA11y', { count: 3 }), 'Like, 3 likes');
+});
+
 test('translates profile data controls and the permanent account deletion flow', () => {
   assert.equal(translate('en', 'profile.pendingCount', { count: 2 }), ' · 2 pending');
   assert.equal(translate('zh-TW', 'profile.accountPrivacy'), '帳戶與隱私');

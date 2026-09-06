@@ -66,19 +66,19 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       }
       const page = await fetchArticlePage({ category, q, offset, limit: 24 });
       if (!gate.isCurrent(token)) return;
-      setItems((current) => {
-        const source = reset ? page.articles : [...current, ...page.articles];
-        const seen = new Set<string>();
-        return source.filter((item) => {
-          const key = String(item.id);
-          if (!key || seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
+      const source = reset ? page.articles : [...itemsRef.current, ...page.articles];
+      const seen = new Set<string>();
+      const merged = source.filter((item) => {
+        const key = String(item.id);
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
       });
+      itemsRef.current = merged;
+      setItems(merged);
       setNextOffset(page.has_more ? page.next_offset : null);
       if (!reset) setLoadMoreError('');
-      if (reset) void cacheNewsPage(category, q, page.articles, page.has_more ? page.next_offset : null).catch(() => undefined);
+      void cacheNewsPage(category, q, merged, page.has_more ? page.next_offset : null).catch(() => undefined);
     } catch (e) {
       if (!gate.isCurrent(token)) return;
       if (reset) setError(items.length > 0 ? t('news.offline') : (e instanceof Error ? e.message : t('news.loadFailed')));
@@ -95,13 +95,14 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   useEffect(() => {
     let active = true;
     const generation = requestGateRef.current.resetFeed();
-    setLoading(true); setRefreshing(false); setLoadingMore(false); setItems([]); setNextOffset(0); setError(''); setLoadMoreError('');
+    setLoading(true); setRefreshing(false); setLoadingMore(false); setItems([]); itemsRef.current = []; setNextOffset(0); setError(''); setLoadMoreError('');
     void (async () => {
       let restored = false;
       const cached = await readCachedNewsPage(category, q).catch(() => null);
       if (!active || !requestGateRef.current.isCurrent(generation)) return;
       if (cached) {
         restored = true;
+        itemsRef.current = cached.articles;
         setItems(cached.articles);
         setNextOffset(cached.nextOffset ?? null);
         setLoading(false);
@@ -110,6 +111,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
         const page = await fetchArticlePage({ category, q, offset: 0, limit: 24 });
         if (!active || !requestGateRef.current.isCurrent(generation)) return;
         const next = page.has_more ? page.next_offset : null;
+        itemsRef.current = page.articles;
         setItems(page.articles);
         setNextOffset(next);
         setError('');

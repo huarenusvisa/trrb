@@ -11,6 +11,7 @@ let fiscalYear = Number(initialParams.get('fy')) || 2026;
 const initialQuery = (initialParams.get('q') || initialParams.get('state') || '').trim();
 let loadController = null;
 let loadSequence = 0;
+const REQUEST_TIMEOUT_MS = 15000;
 
 if (initialQuery) $('#state-q').value = initialQuery;
 
@@ -75,6 +76,10 @@ async function load(year = fiscalYear, historyMode = 'replace') {
   loadController?.abort();
   const controller = new AbortController();
   loadController = controller;
+  const timeoutId = setTimeout(
+    () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
   fiscalYear = Number(year) || fiscalYear;
   updateYearControls();
   setLoading(true);
@@ -95,6 +100,7 @@ async function load(year = fiscalYear, historyMode = 'replace') {
     if (error.name === 'AbortError' || requestId !== loadSequence) return;
     renderError();
   } finally {
+    clearTimeout(timeoutId);
     if (requestId === loadSequence) setLoading(false);
   }
 }

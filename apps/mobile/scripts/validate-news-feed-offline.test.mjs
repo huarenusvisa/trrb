@@ -99,3 +99,12 @@ test('prefetches only the next image window as list rows become visible', () => 
   assert.match(list, /prefetchedThroughRef\.current = next\.prefetchedThrough/);
   assert.match(list, /prefetchNewsImages\(next\.uris, 4\)/);
 });
+
+test('deduplicates pagination and ignores responses from stale feeds', () => {
+  assert.match(list, /new NewsPageRequestGate\(\)/);
+  assert.match(list, /gate\.startRefresh\(\) : gate\.startAppend\(offset\)/);
+  assert.match(list, /if \(!gate\.isCurrent\(token\)\) return/);
+  assert.match(list, /requestGateRef\.current\.resetFeed\(\)/);
+  assert.match(list, /requestGateRef\.current\.isCurrent\(generation\)/);
+  assert.match(list, /if \(gate\.finish\(token\)\)/);
+});

@@ -42,6 +42,10 @@ export function createBoundedNewsFeedSnapshot(
   };
 }
 
+export function isNewsFeedCacheStale(savedAt: number, now = Date.now()) {
+  return !Number.isFinite(savedAt) || savedAt <= 0 || Math.max(0, now - savedAt) > NEWS_FEED_CACHE_MAX_AGE_MS;
+}
+
 export function parseNewsFeedCache(
   raw: string | null,
   options: { allowStale?: boolean; now?: number } = {},

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createBoundedNewsFeedSnapshot, NEWS_FEED_CACHE_MAX_AGE_MS, NEWS_FEED_CACHE_MAX_ARTICLES, newsFeedKeysToPrune, parseNewsFeedCache } from './news-feed-cache-core.ts';
+import { createBoundedNewsFeedSnapshot, isNewsFeedCacheStale, NEWS_FEED_CACHE_MAX_AGE_MS, NEWS_FEED_CACHE_MAX_ARTICLES, newsFeedKeysToPrune, parseNewsFeedCache } from './news-feed-cache-core.ts';
 
 const article = { id: 'news-1', title: '测试新闻' };
 
@@ -9,6 +9,12 @@ test('parses a valid cached feed and accepts stale data for offline recovery', (
   assert.equal(parseNewsFeedCache(raw, { now: 200 })?.snapshot.articles[0].id, 'news-1');
   assert.equal(parseNewsFeedCache(raw, { now: NEWS_FEED_CACHE_MAX_AGE_MS + 101 }), null);
   assert.ok(parseNewsFeedCache(raw, { now: NEWS_FEED_CACHE_MAX_AGE_MS + 101, allowStale: true }));
+});
+
+test('classifies cache freshness at the same boundary used by parsing', () => {
+  assert.equal(isNewsFeedCacheStale(100, NEWS_FEED_CACHE_MAX_AGE_MS + 100), false);
+  assert.equal(isNewsFeedCacheStale(100, NEWS_FEED_CACHE_MAX_AGE_MS + 101), true);
+  assert.equal(isNewsFeedCacheStale(Number.NaN, 200), true);
 });
 
 test('rejects malformed cache records', () => {

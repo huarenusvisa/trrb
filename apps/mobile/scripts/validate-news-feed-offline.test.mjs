@@ -11,11 +11,21 @@ const i18n = await readFile(new URL('../src/i18n/i18n-core.ts', import.meta.url)
 test('restores homepage and list snapshots before refreshing official news', () => {
   assert.match(home, /readCachedHomeFeed/);
   assert.match(home, /cacheHomeFeed\(merged, focus\)/);
-  assert.match(list, /readCachedNewsPage\(category, q\)/);
+  assert.match(list, /readCachedNewsPageEnvelope\(category, q\)/);
   assert.match(list, /cacheNewsPage\(category, q, merged/);
   assert.match(home, /t\(error === 'offline' \? 'home\.offline' : 'home\.loadFailed'\)/);
   assert.match(i18n, /'home\.offline': '网络不可用，正在显示上次读取的新闻/);
   assert.match(list, /t\('news\.offline'\)/);
+});
+
+test('shows localized cache age and announces successful refreshes', () => {
+  assert.match(list, /readCachedNewsPageEnvelope\(category, q\)/);
+  assert.match(list, /setCacheSavedAt\(cachedEntry\?\.savedAt \?\? null\)/);
+  assert.match(list, /isNewsFeedCacheStale\(cacheSavedAt\)/);
+  assert.match(list, /testID="category-cache-status"[\s\S]*accessibilityLiveRegion="polite"/);
+  assert.match(list, /AccessibilityInfo\.announceForAccessibility\(t\('news\.refreshSucceeded'\)\)/);
+  assert.match(i18n, /'news\.cachedStale': '离线内容保存于 \{time\}，可能不是最新内容。'/);
+  assert.match(i18n, /'news\.cachedAt': 'Offline copy saved \{time\}.'/);
 });
 
 test('persists successful appended pages for bounded offline continuation', () => {

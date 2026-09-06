@@ -39,3 +39,11 @@ test('feed reset invalidates every request from the previous category', () => {
   assert.equal(gate.isCurrent(append), false);
   assert.equal(gate.isCurrent(nextGeneration), true);
 });
+
+test('rejects invalid pagination offsets without locking the gate', () => {
+  const gate = new NewsPageRequestGate();
+  gate.resetFeed();
+  assert.equal(gate.startAppend(Number.NaN), null);
+  assert.equal(gate.startAppend(-1), null);
+  assert.ok(gate.startAppend(0));
+});

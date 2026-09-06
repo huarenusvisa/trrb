@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, ActivityIndicator, FlatList, Pressable, RefreshControl, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import type { ListRenderItemInfo, ViewToken } from 'react-native';
 import { router } from 'expo-router';
 import { fetchArticlePage, NewsArticle } from '../api/trrb';
 import { useI18n } from '../i18n/I18nProvider';
 import { localeDateTag } from '../i18n/i18n-core';
 import { useForegroundRetry } from '../hooks/useForegroundRetry';
-import { cacheNewsPage, readCachedNewsPage } from '../storage/newsFeedCache';
+import { cacheNewsPage, readCachedNewsPageEnvelope } from '../storage/newsFeedCache';
+import { isNewsFeedCacheStale } from '../storage/news-feed-cache-core';
 import { NewsImage, prefetchNewsImages } from './NewsImage';
 import { nextNewsImagePrefetchWindow } from './news-image-prefetch-core';
 import { NewsPageRequestGate } from './news-page-request-core';
@@ -30,6 +31,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   const [nextOffset, setNextOffset] = useState<number | null>(0);
   const [error, setError] = useState('');
   const [loadMoreError, setLoadMoreError] = useState('');
+  const [cacheSavedAt, setCacheSavedAt] = useState<number | null>(null);
   const itemsRef = useRef<NewsArticle[]>([]);
   const prefetchedThroughRef = useRef(-1);
   const requestGateRef = useRef(new NewsPageRequestGate());
@@ -77,6 +79,8 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       itemsRef.current = merged;
       setItems(merged);
       setNextOffset(page.has_more ? page.next_offset : null);
+      setCacheSavedAt(null);
+      if (reset) AccessibilityInfo.announceForAccessibility(t('news.refreshSucceeded'));
       if (!reset) setLoadMoreError('');
       void cacheNewsPage(category, q, merged, page.has_more ? page.next_offset : null).catch(() => undefined);
     } catch (e) {
@@ -95,14 +99,16 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   useEffect(() => {
     let active = true;
     const generation = requestGateRef.current.resetFeed();
-    setLoading(true); setRefreshing(false); setLoadingMore(false); setItems([]); itemsRef.current = []; setNextOffset(0); setError(''); setLoadMoreError('');
+    setLoading(true); setRefreshing(false); setLoadingMore(false); setItems([]); itemsRef.current = []; setNextOffset(0); setError(''); setLoadMoreError(''); setCacheSavedAt(null);
     void (async () => {
       let restored = false;
-      const cached = await readCachedNewsPage(category, q).catch(() => null);
+      const cachedEntry = await readCachedNewsPageEnvelope(category, q).catch(() => null);
+      const cached = cachedEntry?.snapshot ?? null;
       if (!active || !requestGateRef.current.isCurrent(generation)) return;
       if (cached) {
         restored = true;
         itemsRef.current = cached.articles;
+        setCacheSavedAt(cachedEntry?.savedAt ?? null);
         setItems(cached.articles);
         setNextOffset(cached.nextOffset ?? null);
         setLoading(false);
@@ -114,6 +120,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
         itemsRef.current = page.articles;
         setItems(page.articles);
         setNextOffset(next);
+        setCacheSavedAt(null);
         setError('');
         void cacheNewsPage(category, q, page.articles, next).catch(() => undefined);
       } catch (e) {
@@ -136,6 +143,13 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
 
   useForegroundRetry(Boolean(error), retryList);
   useForegroundRetry(Boolean(loadMoreError), retryLoadMore);
+
+  const cachedIsStale = cacheSavedAt !== null && isNewsFeedCacheStale(cacheSavedAt);
+  const cachedStatus = cacheSavedAt === null
+    ? ''
+    : t(cachedIsStale ? 'news.cachedStale' : 'news.cachedAt', {
+      time: new Date(cacheSavedAt).toLocaleString(localeDateTag(locale)),
+    });
 
   const renderArticle = useCallback(({ item, index }: ListRenderItemInfo<NewsArticle>) => (
     <Pressable
@@ -173,7 +187,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={retryList} />}
       onEndReachedThreshold={0.45}
       onEndReached={() => { if (nextOffset != null) void load(false); }}
-      ListHeaderComponent={<View style={styles.header}><Text accessibilityRole="header" testID="category-screen-title" style={[styles.title, compact && styles.compactTitle]}>{title}</Text>{error ? <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}><Text style={styles.error}>{error}</Text><Pressable testID="category-network-retry" accessibilityRole="button" accessibilityLabel={t('news.retry')} accessibilityState={{ disabled: refreshing }} disabled={refreshing} style={[styles.retryButton, refreshing && styles.retryButtonDisabled]} onPress={retryList}><Text style={styles.retryButtonText}>{refreshing ? t('news.retrying') : t('news.retry')}</Text></Pressable></View> : null}</View>}
+      ListHeaderComponent={<View style={styles.header}><Text accessibilityRole="header" testID="category-screen-title" style={[styles.title, compact && styles.compactTitle]}>{title}</Text>{cachedStatus ? <View testID="category-cache-status" accessibilityLiveRegion="polite" style={[styles.cachePanel, cachedIsStale && styles.cachePanelStale]}><Text style={styles.cacheText}>{cachedStatus}</Text></View> : null}{error ? <View accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}><Text style={styles.error}>{error}</Text><Pressable testID="category-network-retry" accessibilityRole="button" accessibilityLabel={t('news.retry')} accessibilityState={{ disabled: refreshing }} disabled={refreshing} style={[styles.retryButton, refreshing && styles.retryButtonDisabled]} onPress={retryList}><Text style={styles.retryButtonText}>{refreshing ? t('news.retrying') : t('news.retry')}</Text></Pressable></View> : null}</View>}
       ListEmptyComponent={<View style={styles.empty}><Text style={styles.muted}>{emptyText || t('news.empty')}</Text></View>}
       ListFooterComponent={loadingMore ? <View style={styles.footer} accessibilityLiveRegion="polite" accessibilityLabel={t('news.loadingMore')}><ActivityIndicator color="#c8211e" /></View> : loadMoreError ? <View testID="category-load-more-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.footerError}><Text style={styles.footerErrorText}>{loadMoreError}</Text><Pressable testID="category-load-more-retry" accessibilityRole="button" accessibilityLabel={t('news.retryLoadMore')} style={styles.footerRetryButton} onPress={retryLoadMore}><Text style={styles.footerRetryText}>{t('news.retryLoadMore')}</Text></Pressable></View> : nextOffset == null && items.length ? <Text style={styles.end}>{t('news.end')}</Text> : null}
     />
@@ -181,5 +195,5 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},compactContent:{paddingHorizontal:9},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085',lineHeight:21,textAlign:'center'},header:{marginBottom:18},title:{fontSize:30,lineHeight:39,fontWeight:'900',color:'#101828'},compactTitle:{fontSize:26,lineHeight:35},errorPanel:{marginTop:12,backgroundColor:'#fef3f2',borderRadius:10,padding:12,alignItems:'flex-start'},error:{color:'#b42318',lineHeight:21},retryButton:{minHeight:44,borderRadius:8,backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,marginTop:10,alignItems:'center',justifyContent:'center'},retryButtonDisabled:{opacity:0.58},retryButtonText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},empty:{paddingVertical:80,alignItems:'center'},card:{minHeight:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},compactCard:{minHeight:108},largeTextCard:{minHeight:144},thumb:{width:126,minHeight:118,alignSelf:'stretch',backgroundColor:'#e4e7ec'},body:{flex:1,minWidth:0,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,lineHeight:18,color:'#667085',marginTop:7},footer:{minHeight:44,marginVertical:20,alignItems:'center',justifyContent:'center'},footerError:{marginVertical:14,borderRadius:10,backgroundColor:'#fef3f2',padding:12,alignItems:'center'},footerErrorText:{color:'#b42318',lineHeight:21,textAlign:'center'},footerRetryButton:{minHeight:44,marginTop:8,paddingHorizontal:18,paddingVertical:10,borderRadius:8,backgroundColor:'#c8211e',alignItems:'center',justifyContent:'center'},footerRetryText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},end:{textAlign:'center',color:'#667085',marginVertical:20,lineHeight:21}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingTop:58,paddingBottom:38},compactContent:{paddingHorizontal:9},center:{flex:1,alignItems:'center',justifyContent:'center',gap:12},muted:{color:'#667085',lineHeight:21,textAlign:'center'},header:{marginBottom:18},title:{fontSize:30,lineHeight:39,fontWeight:'900',color:'#101828'},compactTitle:{fontSize:26,lineHeight:35},cachePanel:{marginTop:12,borderRadius:10,backgroundColor:'#eef4ff',padding:12},cachePanelStale:{backgroundColor:'#fffaeb'},cacheText:{color:'#344054',lineHeight:21},errorPanel:{marginTop:12,backgroundColor:'#fef3f2',borderRadius:10,padding:12,alignItems:'flex-start'},error:{color:'#b42318',lineHeight:21},retryButton:{minHeight:44,borderRadius:8,backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,marginTop:10,alignItems:'center',justifyContent:'center'},retryButtonDisabled:{opacity:0.58},retryButtonText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},empty:{paddingVertical:80,alignItems:'center'},card:{minHeight:118,flexDirection:'row',backgroundColor:'#fff',borderRadius:14,overflow:'hidden',marginBottom:12},compactCard:{minHeight:108},largeTextCard:{minHeight:144},thumb:{width:126,minHeight:118,alignSelf:'stretch',backgroundColor:'#e4e7ec'},body:{flex:1,minWidth:0,padding:12,justifyContent:'center'},articleTitle:{fontSize:17,lineHeight:23,fontWeight:'800',color:'#101828'},meta:{fontSize:12,lineHeight:18,color:'#667085',marginTop:7},footer:{minHeight:44,marginVertical:20,alignItems:'center',justifyContent:'center'},footerError:{marginVertical:14,borderRadius:10,backgroundColor:'#fef3f2',padding:12,alignItems:'center'},footerErrorText:{color:'#b42318',lineHeight:21,textAlign:'center'},footerRetryButton:{minHeight:44,marginTop:8,paddingHorizontal:18,paddingVertical:10,borderRadius:8,backgroundColor:'#c8211e',alignItems:'center',justifyContent:'center'},footerRetryText:{color:'#fff',fontSize:13,fontWeight:'800',textAlign:'center'},end:{textAlign:'center',color:'#667085',marginVertical:20,lineHeight:21}
 });

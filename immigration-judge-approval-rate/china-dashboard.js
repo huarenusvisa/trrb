@@ -10,6 +10,7 @@ let selectedDetail = null;
 let period = 'yearly';
 let countryRequestId = 0;
 let countryRequestController = null;
+const REQUEST_TIMEOUT_MS = 15000;
 const apiUrl = (path) => /^(?:www\.)?asylumjudge\.com$|^(?:.+--)?asylumjudge\.netlify\.app$/i.test(location.hostname) ? `https://trrb.net${path}` : path;
 
 const judgePath = (row) => window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `${window.judgePagePath ? window.judgePagePath('detail.html') : '/immigration-judge-approval-rate/detail.html'}?id=${encodeURIComponent(row?.id || row)}`;
@@ -22,9 +23,22 @@ const countryCodeLabels = (row) => {
 };
 
 async function getJson(url, options = {}) {
-  const response = await fetch(apiUrl(url), { cache: 'no-store', ...options });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json();
+  const requestController = new AbortController();
+  const forwardAbort = () => requestController.abort(options.signal?.reason);
+  if (options.signal?.aborted) forwardAbort();
+  else options.signal?.addEventListener('abort', forwardAbort, { once: true });
+  const timeoutId = setTimeout(
+    () => requestController.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
+  try {
+    const response = await fetch(apiUrl(url), { cache: 'no-store', ...options, signal: requestController.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeoutId);
+    options.signal?.removeEventListener('abort', forwardAbort);
+  }
 }
 
 function renderDirectory(rows = countries) {

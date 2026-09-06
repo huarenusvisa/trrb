@@ -141,6 +141,10 @@ assert.match(detailClient, /params\.set\('fy', requestedYear\)/, 'court detail m
 assert.match(detailClient, /data\.fiscal_year[\s\S]*#court-source/, 'court detail must visibly identify the returned fiscal year');
 assert.match(detailClient, /backParams[\s\S]*fy:[\s\S]*#court-back/, 'court detail back link must preserve fiscal year and state context');
 assert.match(detailClient, /if \(!response\.ok\) throw new Error\(`Court detail failed: \$\{response\.status\}`\)[\s\S]*const data = await response\.json\(\)/, 'court detail must reject non-success responses before parsing');
+assert.match(detailClient, /const REQUEST_TIMEOUT_MS = 15000/, 'court detail requests must use a finite timeout');
+assert.match(detailClient, /controller\.abort\(new DOMException\('Request timed out', 'TimeoutError'\)\)/, 'stalled court detail requests must reach the retry state');
+assert.match(detailClient, /fetch\(`\/\.netlify\/functions\/immigration-judges\?\$\{params\}`, \{ signal: controller\.signal \}\)/, 'court detail requests must use the timeout signal');
+assert.match(detailClient, /finally \{[\s\S]*clearTimeout\(timeoutId\)[\s\S]*loading\.setAttribute\('aria-busy', 'false'\)/, 'completed court detail requests must release their timeout');
 assert.match(detailClient, /id="court-detail-retry"[\s\S]*addEventListener\('click', load\)/, 'court detail failures must offer an in-place retry');
 assert.match(detailClient, /loading\.setAttribute\('aria-busy', 'true'\)[\s\S]*finally[\s\S]*loading\.setAttribute\('aria-busy', 'false'\)/, 'court detail must expose its loading state');
 assert.match(detailClient, /judge_list_scope === 'fiscal_year'/, 'court detail must distinguish fiscal-year judge rows from all-time profiles');
@@ -150,9 +154,9 @@ assert.match(courtDetailPage, /id="judge-list-title"/, 'court judge list must ha
 assert.match(courtDetailPage, /id="judge-list"[^>]*role="region"[^>]*aria-labelledby="judge-list-title"/, 'court judge list must expose a labelled navigation region');
 assert.match(detailClient, /class="trow thead outcome-row" aria-hidden="true"/, 'visual column headings must not be read separately from the complete row summary');
 assert.match(detailClient, /const accessibleSummary = `\$\{row\.judge_name\}；\$\{decisionHeading\}[\s\S]*aria-label="\$\{esc\(accessibleSummary\)\}"/, 'each judge profile link must announce every visible metric with its label');
-assert.match(courtDetailPage, /court-detail\.js\?v=6/, 'court detail must load the accessible row-summary client');
+assert.match(courtDetailPage, /court-detail\.js\?v=7/, 'court detail must load the request-timeout client');
 assert.match(courtDetailPage, /id="loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court detail loading and failure updates must be announced');
-assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=6/, 'court detail must load the scope-aware client and expose its context targets');
+assert.match(courtDetailPage, /detail\.css\?v=3[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=7/, 'court detail must load the scope-aware request-timeout client and expose its context targets');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 
 // Court profile recovery and period-scope disclosure are part of the state-to-court drill-down contract.

@@ -11,6 +11,7 @@ let selectedState = '';
 let fiscalYear = Number(new URLSearchParams(location.search).get('fy')) || 2026;
 let loadSequence = 0;
 let loadController = null;
+const REQUEST_TIMEOUT_MS = 15000;
 
 function updateYearControls() {
   document.querySelectorAll('[data-fy]').forEach((button) => {
@@ -84,6 +85,10 @@ async function load(query = '', state = selectedState, year = fiscalYear, histor
   loadController?.abort();
   const controller = new AbortController();
   loadController = controller;
+  const timeoutId = setTimeout(
+    () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
   fiscalYear = Number(year) || fiscalYear;
   updateYearControls();
   setLoading(true);
@@ -107,6 +112,7 @@ async function load(query = '', state = selectedState, year = fiscalYear, histor
     if (error.name === 'AbortError' || requestId !== loadSequence) return;
     renderError();
   } finally {
+    clearTimeout(timeoutId);
     if (requestId === loadSequence) {
       loadController = null;
       setLoading(false);

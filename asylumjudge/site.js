@@ -22,6 +22,7 @@ let selectedTrendCourt = '';
 let selectedTrendInterval = 'month';
 let trendController = null;
 let overviewController = null;
+const REQUEST_TIMEOUT_MS = 15000;
 
 const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylumjudge(?:\/|$)/i.test(location.pathname);
 const appPath = (page = '') => trrbColumn
@@ -56,9 +57,22 @@ async function json(url, options = {}) {
   const requestUrl = sharedApiOrigin && url.startsWith('/.netlify/functions/')
     ? `${sharedApiOrigin}${url}`
     : url;
-  const response = await fetch(requestUrl, options);
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json();
+  const requestController = new AbortController();
+  const forwardAbort = () => requestController.abort(options.signal?.reason);
+  if (options.signal?.aborted) forwardAbort();
+  else options.signal?.addEventListener('abort', forwardAbort, { once: true });
+  const timeoutId = setTimeout(
+    () => requestController.abort(new DOMException('Request timed out', 'TimeoutError')),
+    REQUEST_TIMEOUT_MS
+  );
+  try {
+    const response = await fetch(requestUrl, { ...options, signal: requestController.signal });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } finally {
+    clearTimeout(timeoutId);
+    options.signal?.removeEventListener('abort', forwardAbort);
+  }
 }
 
 function periodLabel(data) {

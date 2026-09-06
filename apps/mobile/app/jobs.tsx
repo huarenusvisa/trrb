@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, Linking, Pressable, SafeAreaView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, ActivityIndicator, FlatList, Linking, Pressable, SafeAreaView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Stack } from 'expo-router';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
 import { useI18n } from '../src/i18n/I18nProvider';
@@ -22,10 +22,8 @@ type Job = {
 
 const ENDPOINT = 'https://trrb.net/.netlify/functions/public-jobs?limit=40';
 
-async function openContact(contact?: Contact | null) {
-  if (!contact?.value) return;
-  const url = contact.type === 'phone' ? `tel:${contact.value}` : contact.type === 'email' ? `mailto:${contact.value}` : contact.value;
-  await Linking.openURL(url);
+function contactUrl(contact: Contact): string {
+  return contact.type === 'phone' ? `tel:${contact.value}` : contact.type === 'email' ? `mailto:${contact.value}` : contact.value;
 }
 
 export default function JobsScreen() {
@@ -37,6 +35,9 @@ export default function JobsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
   const requestVersion = useRef(0);
+  const contactInFlight = useRef(false);
+  const [activeContactId, setActiveContactId] = useState<string | null>(null);
+  const [failedContact, setFailedContact] = useState<{ item: Job; action: string } | null>(null);
 
   const load = useCallback(async (refresh = false) => {
     const version = ++requestVersion.current;
@@ -62,6 +63,26 @@ export default function JobsScreen() {
     return () => { requestVersion.current += 1; };
   }, [load]);
   useForegroundRetry(Boolean(error), () => void load(Boolean(items.length)));
+
+  const openJobContact = useCallback(async (item: Job, action: string) => {
+    const contact = item.contact;
+    if (!contact?.value || contactInFlight.current) return;
+    contactInFlight.current = true;
+    setActiveContactId(item.id);
+    setFailedContact(null);
+    try {
+      const url = contactUrl(contact);
+      const supported = await Linking.canOpenURL(url);
+      if (!supported) throw new Error('Unsupported job contact URL');
+      await Linking.openURL(url);
+    } catch {
+      setFailedContact({ item, action });
+      AccessibilityInfo.announceForAccessibility(t('jobs.contactFailed'));
+    } finally {
+      contactInFlight.current = false;
+      setActiveContactId(null);
+    }
+  }, [t]);
 
   return <SafeAreaView style={styles.page}>
     <Stack.Screen options={{ title: t('jobs.screenTitle') }} />
@@ -93,9 +114,29 @@ export default function JobsScreen() {
             <Text style={styles.pill}>{employmentTypeLabel(item.employment_type, t)}</Text>
           </View>
           {item.description ? <Text numberOfLines={4} style={styles.description}>{item.description}</Text> : null}
-          <Pressable accessibilityRole="link" accessibilityLabel={t('jobs.contactA11y', { action, title: item.title })} style={styles.contact} onPress={() => void openContact(item.contact)}>
-            <Text style={styles.contactText}>{action}</Text>
-          </Pressable>
+          {item.contact?.value ? <Pressable
+            accessibilityRole="link"
+            accessibilityLabel={t('jobs.contactA11y', { action, title: item.title })}
+            accessibilityState={{ disabled: activeContactId !== null, busy: activeContactId === item.id }}
+            disabled={activeContactId !== null}
+            style={[styles.contact, activeContactId !== null && styles.contactDisabled]}
+            onPress={() => void openJobContact(item, action)}
+          >
+            <Text style={styles.contactText}>{activeContactId === item.id ? t('jobs.contactOpening', { action }) : action}</Text>
+          </Pressable> : null}
+          {failedContact?.item.id === item.id ? <View testID={`job-contact-error-${item.id}`} accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.contactError}>
+            <Text style={styles.contactErrorText}>{t('jobs.contactFailed')}</Text>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('jobs.retryContactA11y', { action: failedContact.action, title: item.title })}
+              accessibilityState={{ disabled: activeContactId !== null, busy: activeContactId === item.id }}
+              disabled={activeContactId !== null}
+              style={styles.contactRetry}
+              onPress={() => void openJobContact(failedContact.item, failedContact.action)}
+            >
+              <Text style={styles.retryText}>{t('jobs.retryContact')}</Text>
+            </Pressable>
+          </View> : null}
         </View>;
       }}
       ListEmptyComponent={loading
@@ -124,6 +165,10 @@ const styles = StyleSheet.create({
   description: { color: '#536174', lineHeight: 21, marginBottom: 12 },
   contact: { alignSelf: 'stretch', minHeight: 48, backgroundColor: '#1769d2', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 11, alignItems: 'center', justifyContent: 'center' },
   contactText: { color: '#fff', fontWeight: '800', fontSize: 15, lineHeight: 21, textAlign: 'center' },
+  contactDisabled: { opacity: 0.6 },
+  contactError: { marginTop: 10, borderRadius: 10, backgroundColor: '#fff4f2', borderWidth: 1, borderColor: '#fecdca', padding: 12, alignItems: 'flex-start' },
+  contactErrorText: { color: '#7a271a', lineHeight: 20 },
+  contactRetry: { minHeight: 44, marginTop: 4, paddingHorizontal: 4, justifyContent: 'center' },
   errorBanner: { backgroundColor: '#fff4f2', borderWidth: 1, borderColor: '#fecdca', borderRadius: 12, padding: 14, marginBottom: 10 },
   state: { minHeight: 180, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 10 },
   stateText: { color: '#475569', textAlign: 'center', lineHeight: 21 },

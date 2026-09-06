@@ -120,3 +120,6 @@
 
 /* Keep the homepage's primary destination cards visible during keyboard navigation. */
 .entry-grid>a:focus-visible,.lookup-grid>a:focus-visible,.knowledge-item:focus-visible{outline:3px solid #101828;outline-offset:3px}
+
+/* Keep homepage judge-search actions visible during keyboard navigation. */
+.search-box button:focus-visible,.quick button:focus-visible{outline:3px solid #101828;outline-offset:3px}

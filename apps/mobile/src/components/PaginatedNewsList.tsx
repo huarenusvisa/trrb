@@ -102,7 +102,7 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       style={[styles.card, compact && styles.compactCard, largeText && styles.largeTextCard]}
       onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}
     >
-      <NewsImage uri={item.cover_image} style={styles.thumb} testID={`category-article-image-${index}`} />
+      <NewsImage uri={item.cover_image} style={styles.thumb} testID={`category-article-image-${index}`} priority="low" />
       <View style={styles.body}>
         <Text style={styles.articleTitle} numberOfLines={largeText ? undefined : 3}>{item.title}</Text>
         <Text style={styles.meta}>{item.published_at ? new Date(item.published_at).toLocaleString(localeDateTag(locale)) : ''}</Text>

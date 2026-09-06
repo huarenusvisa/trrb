@@ -23,13 +23,23 @@ test('uses the shared image fallback across homepage and category cards', () => 
   assert.doesNotMatch(list, /<Image\s/);
   assert.match(home, /<NewsImage/g);
   assert.match(list, /<NewsImage/);
-  assert.match(image, /onError=\{\(\) => setFailed\(true\)\}/);
-  assert.match(image, /retryCount >= 1/);
-  assert.match(image, /setTimeout[\s\S]*setRetryCount[\s\S]*900/);
+  assert.match(image, /recordSharedFailure\(uri\)/);
+  assert.match(image, /sharedRetryDelay\(uri\)/);
+  assert.match(image, /setTimeout[\s\S]*setRetryCount/);
   assert.match(image, /cachePolicy="memory-disk"/);
-  assert.match(image, /recyclingKey=\{`\$\{uri\}:\$\{retryCount\}`\}/);
+  assert.match(image, /recyclingKey=\{uri\}/);
   assert.match(image, /contentFit="cover"/);
   assert.match(image, /transition=\{120\}/);
+});
+
+test('downscales list images early and backs off repeated broken URLs', () => {
+  assert.match(list, /<NewsImage[^>]*priority="low"/);
+  assert.match(image, /priority=\{priority\}/);
+  assert.match(image, /memo\(function NewsImage/);
+  assert.match(image, /allowDownscaling/);
+  assert.match(image, /enforceEarlyResizing/);
+  assert.match(image, /onLoad=\{\(\) => sharedFailures\.delete\(uri\)\}/);
+  assert.match(image, /filter\(\(uri\).*sharedRetryDelay\(uri\) === 0/);
 });
 
 test('defers below-the-fold service modules until the first interaction settles', () => {

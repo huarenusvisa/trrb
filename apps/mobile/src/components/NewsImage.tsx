@@ -1,36 +1,56 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Image as ExpoImage } from 'expo-image';
 import { ImageStyle, StyleProp, StyleSheet, Text, View } from 'react-native';
+import { imageFailureKeysToPrune, imageRetryDelay, nextImageFailure, type ImageFailureState } from './news-image-retry-core';
 
 type Props = {
   uri?: string;
   style?: StyleProp<ImageStyle>;
   testID?: string;
+  priority?: 'low' | 'normal' | 'high';
 };
 
+const sharedFailures = new Map<string, ImageFailureState>();
+
+function sharedRetryDelay(uri: string) {
+  return imageRetryDelay(sharedFailures.get(uri));
+}
+
+function recordSharedFailure(uri: string) {
+  sharedFailures.set(uri, nextImageFailure(sharedFailures.get(uri)));
+  const keysToRemove = imageFailureKeysToPrune([...sharedFailures].map(([key, state]) => ({ key, state })));
+  for (const key of keysToRemove) sharedFailures.delete(key);
+}
+
 export async function prefetchNewsImages(uris: Array<string | undefined>, limit = 6) {
-  const unique = [...new Set(uris.filter((uri): uri is string => Boolean(uri)))].slice(0, limit);
+  const unique = [...new Set(uris.filter((uri): uri is string => Boolean(uri) && sharedRetryDelay(uri) === 0))].slice(0, limit);
   if (!unique.length) return false;
   return ExpoImage.prefetch(unique, 'memory-disk').catch(() => false);
 }
 
-export function NewsImage({ uri, style, testID }: Props) {
-  const [failed, setFailed] = useState(false);
+export const NewsImage = memo(function NewsImage({ uri, style, testID, priority = 'normal' }: Props) {
+  const [failed, setFailed] = useState(() => Boolean(uri && sharedRetryDelay(uri)));
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    setFailed(false);
+    setFailed(Boolean(uri && sharedRetryDelay(uri)));
     setRetryCount(0);
   }, [uri]);
 
   useEffect(() => {
-    if (!uri || !failed || retryCount >= 1) return;
+    if (!uri || !failed) return;
+    const delay = sharedRetryDelay(uri);
+    if (delay <= 0) {
+      setRetryCount((current) => current + 1);
+      setFailed(false);
+      return;
+    }
     const timer = setTimeout(() => {
       setRetryCount((current) => current + 1);
       setFailed(false);
-    }, 900);
+    }, delay);
     return () => clearTimeout(timer);
-  }, [failed, retryCount, uri]);
+  }, [failed, uri]);
 
   if (!uri || failed) {
     return (
@@ -48,13 +68,20 @@ export function NewsImage({ uri, style, testID }: Props) {
       style={style}
       contentFit="cover"
       cachePolicy="memory-disk"
-      recyclingKey={`${uri}:${retryCount}`}
+      priority={priority}
+      allowDownscaling
+      enforceEarlyResizing
+      recyclingKey={uri}
       transition={120}
       accessible={false}
-      onError={() => setFailed(true)}
+      onLoad={() => sharedFailures.delete(uri)}
+      onError={() => {
+        recordSharedFailure(uri);
+        setFailed(true);
+      }}
     />
   );
-}
+});
 
 const styles = StyleSheet.create({
   placeholder: { alignItems: 'center', justifyContent: 'center', backgroundColor: '#e4e7ec' },

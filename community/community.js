@@ -7,6 +7,7 @@
     uscis_interview: 'USCIS 面谈', ice_experience: 'ICE 经历', lawyer_review: '律师点评', tipoff: '投稿爆料'
   };
   const labelNames = { official_policy: '官方政策', personal_experience: '个人经历', community_summary: '社区整理', question: '问题求助' };
+  const REQUEST_TIMEOUT_MS = 15000;
   const state = { session: null, profile: null, category: '', posts: [] };
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[char]));
@@ -19,9 +20,25 @@
     return state.session?.access_token || '';
   }
 
+  async function fetchWithTimeout(url, options = {}) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(
+      () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+      REQUEST_TIMEOUT_MS
+    );
+    try {
+      return await fetch(url, { ...options, signal: controller.signal });
+    } catch (error) {
+      if (error.name === 'TimeoutError') throw new Error('请求超时，请重试。');
+      throw error;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
   async function api(method = 'GET', body, query = '') {
     const accessToken = await token();
-    const response = await fetch(`${apiUrl}${query}`, {
+    const response = await fetchWithTimeout(`${apiUrl}${query}`, {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -139,7 +156,7 @@
     button.disabled = true;
     $('auth-message').textContent = '正在验证账号…';
     try {
-      const response = await fetch(accountUrl, {
+      const response = await fetchWithTimeout(accountUrl, {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ identifier:$('auth-identifier').value, password:$('auth-password').value })
       });

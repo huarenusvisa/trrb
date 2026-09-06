@@ -19,15 +19,14 @@ pathspecs=(
   ":(exclude).github/**"
   ":(exclude)reports/**"
   ":(exclude)scripts/validate-mobile-build-cost-control.test.mjs"
+  ":(exclude)apps/mobile/**"
 )
 
-# Deploy previews remain available for App pull requests. On production,
-# mobile-only commits are delivered through EAS OTA/native workflows and do
-# not need a second, unrelated website deploy.
-if [[ "${CONTEXT:-}" == "production" ]]; then
-  pathspecs+=(":(exclude)apps/mobile/**")
-fi
-
+# Mobile-only changes are delivered and validated through the App CI/EAS
+# pipeline. They do not change the Netlify website, so skip both production
+# builds and deploy previews when apps/mobile/** is the only changed area.
+# Any web, SEO, Netlify, function, edge-function, or shared-site change still
+# remains in the diff and therefore keeps the normal Netlify build/preview.
 if git diff --quiet "$base_ref" "$head_ref" -- "${pathspecs[@]}"; then
   echo "No Netlify site changes detected for ${CONTEXT:-unknown}; skipping build."
   exit 0

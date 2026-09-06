@@ -57,50 +57,50 @@ const topicCards = [
 const portalSections = [
   {
     key: 'judges',
-    title: '移民法官通过率',
-    action: '进入查询',
-    banner: '查法官 · 看法院 · 比较庇护裁决数据',
-    items: ['查移民法官', '全部移民法院', '按州查看', '各国国籍批准率'],
+    titleKey: 'home.portalJudgesTitle',
+    actionKey: 'home.portalJudgesAction',
+    bannerKey: 'home.portalJudgesBanner',
+    itemKeys: ['home.portalJudgesSearch', 'home.portalJudgesCourts', 'home.portalJudgesStates', 'home.portalJudgesNationalities'],
     url: 'https://asylumjudge.com/',
   },
   {
     key: 'immigration',
-    title: '移民美国',
-    action: '进入知识库',
-    banner: '找到适合您的美国身份途径',
-    items: ['赴美留学', '赴美工作', '职业移民', '家庭移民', '人道主义庇护', '境内身份转换', '入籍美国公民'],
+    titleKey: 'home.portalImmigrationTitle',
+    actionKey: 'home.portalImmigrationAction',
+    bannerKey: 'home.portalImmigrationBanner',
+    itemKeys: ['home.portalImmigrationStudy', 'home.portalImmigrationWork', 'home.portalImmigrationEmployment', 'home.portalImmigrationFamily', 'home.portalImmigrationHumanitarian', 'home.portalImmigrationStatus', 'home.portalImmigrationCitizenship'],
     route: '/immigration',
   },
   {
     key: 'legal',
-    title: '美国判例与新规',
-    action: '进入数据库',
-    banner: '追踪美国最新判例、裁决与政府新规',
-    items: ['最高法院', '巡回法院', 'BIA裁决', '行政命令', '联邦新规'],
+    titleKey: 'home.portalLegalTitle',
+    actionKey: 'home.portalLegalAction',
+    bannerKey: 'home.portalLegalBanner',
+    itemKeys: ['home.portalLegalSupremeCourt', 'home.portalLegalCircuitCourts', 'home.portalLegalBia', 'home.portalLegalExecutiveOrders', 'home.portalLegalFederalRules'],
     route: '/legal',
   },
   {
     key: 'jobs',
-    title: '招聘求职',
-    action: '更多职位',
-    banner: '查看最新岗位与华人招聘信息',
-    items: ['推荐岗位', '餐饮服务', '物流运输', '办公室职位', '兼职工作', '发布招聘'],
+    titleKey: 'home.portalJobsTitle',
+    actionKey: 'home.portalJobsAction',
+    bannerKey: 'home.portalJobsBanner',
+    itemKeys: ['home.portalJobsFeatured', 'home.portalJobsFood', 'home.portalJobsLogistics', 'home.portalJobsOffice', 'home.portalJobsPartTime', 'home.portalJobsPost'],
     route: '/jobs',
   },
   {
     key: 'community',
-    title: '移民社区',
-    action: '进入社区',
-    banner: '分享真实经历 · 问问题 · 互相帮助',
-    items: ['USCIS面谈', '上庭交流', '移民互助', 'ICE经历', '律师点评', '投稿爆料'],
+    titleKey: 'home.portalCommunityTitle',
+    actionKey: 'home.portalCommunityAction',
+    bannerKey: 'home.portalCommunityBanner',
+    itemKeys: ['home.portalCommunityUscis', 'home.portalCommunityCourt', 'home.portalCommunityHelp', 'home.portalCommunityIce', 'home.portalCommunityLawyers', 'home.portalCommunityTips'],
     route: '/community',
   },
 ] as const;
 
 const readerServices = [
-  { key: 'subscribe', title: '订阅每日快报', subtitle: '每日精选新闻直达邮箱，不错过任何重要消息', action: '立即订阅', url: 'https://trrb.net/#daily' },
-  { key: 'readers', title: '加入读者群', subtitle: '获取第一手资讯与深度解读', action: '查看方式', url: 'https://trrb.net/#community' },
-  { key: 'tips', title: '投稿爆料', subtitle: '提交新闻线索、独家爆料、图片或视频', action: '提交线索', url: 'https://trrb.net/#submit' },
+  { key: 'subscribe', titleKey: 'home.readerSubscribeTitle', subtitleKey: 'home.readerSubscribeSubtitle', actionKey: 'home.readerSubscribeAction', url: 'https://trrb.net/#daily' },
+  { key: 'readers', titleKey: 'home.readerGroupTitle', subtitleKey: 'home.readerGroupSubtitle', actionKey: 'home.readerGroupAction', url: 'https://trrb.net/#community' },
+  { key: 'tips', titleKey: 'home.readerTipsTitle', subtitleKey: 'home.readerTipsSubtitle', actionKey: 'home.readerTipsAction', url: 'https://trrb.net/#submit' },
 ] as const;
 
 type WeatherState = { temperature: number | null; code: number | null; isDay: boolean };
@@ -510,34 +510,34 @@ export default function HomeScreen() {
             {portalSections.map((section) => (
               <View key={section.key} testID={`home-portal-${section.key}`} style={styles.portalCard}>
                 <View style={styles.portalHead}>
-                  <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text style={styles.portalTitle}>{section.title}</Text></View>
-                  <Pressable onPress={() => openPortal(section)}><Text style={styles.portalAction}>{section.action}</Text></Pressable>
+                  <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
+                  <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} onPress={() => openPortal(section)}><Text style={styles.portalAction}>{t(section.actionKey)}</Text></Pressable>
                 </View>
-                <Pressable style={styles.portalBanner} onPress={() => openPortal(section)}><Text style={styles.portalBannerText}>{section.banner}</Text></Pressable>
+                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} style={styles.portalBanner} onPress={() => openPortal(section)}><Text style={styles.portalBannerText}>{t(section.bannerKey)}</Text></Pressable>
                 <View style={styles.portalGrid}>
-                  {section.items.map((item, index) => (
-                    <Pressable key={item} style={[styles.portalItem, section.items.length % 2 === 1 && index === section.items.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
-                      <Text style={styles.portalItemText}>{item}</Text><Text style={styles.portalArrow}>›</Text>
+                  {section.itemKeys.map((itemKey, index) => (
+                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} style={[styles.portalItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
+                      <Text style={styles.portalItemText}>{t(itemKey)}</Text><Text style={styles.portalArrow}>›</Text>
                     </Pressable>
                   ))}
                 </View>
-                <Pressable style={styles.portalMore} onPress={() => openPortal(section)}><Text style={styles.portalMoreText}>{section.action}</Text></Pressable>
+                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} style={styles.portalMore} onPress={() => openPortal(section)}><Text style={styles.portalMoreText}>{t(section.actionKey)}</Text></Pressable>
               </View>
             ))}
 
             <View testID="home-reader-services" style={styles.readerServicesCard}>
               {readerServices.map((service) => (
-                <Pressable key={service.key} style={styles.readerService} onPress={() => void Linking.openURL(service.url)}>
-                  <View style={styles.readerServiceCopy}><Text style={styles.readerServiceTitle}>{service.title}</Text><Text style={styles.readerServiceSub}>{service.subtitle}</Text></View>
-                  <Text style={styles.readerServiceAction}>{service.action}</Text>
+                <Pressable key={service.key} accessibilityRole="link" accessibilityLabel={t('home.openReaderServiceA11y', { title: t(service.titleKey) })} style={styles.readerService} onPress={() => void Linking.openURL(service.url)}>
+                  <View style={styles.readerServiceCopy}><Text style={styles.readerServiceTitle}>{t(service.titleKey)}</Text><Text style={styles.readerServiceSub}>{t(service.subtitleKey)}</Text></View>
+                  <Text style={styles.readerServiceAction}>{t(service.actionKey)}</Text>
                 </Pressable>
               ))}
             </View>
 
             <View style={styles.footerBlock}>
-              <Text style={styles.footerBrand}>唐人日报 Tang Ren Daily</Text>
-              <Text style={styles.footerText}>立足美国 · 服务华人</Text>
-              <Text style={styles.footerText}>新闻、移民知识、判例新规与华人生活服务</Text>
+              <Text style={styles.footerBrand}>{t('home.footerBrand')}</Text>
+              <Text style={styles.footerText}>{t('home.footerSlogan')}</Text>
+              <Text style={styles.footerText}>{t('home.footerServices')}</Text>
             </View>
           </>
         ) : null}

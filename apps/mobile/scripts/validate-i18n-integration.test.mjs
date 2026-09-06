@@ -277,3 +277,19 @@ test('localizes homepage topic entries and legal detail chrome while preserving 
   assert.match(legal, /localeDateTag\(locale\)/);
   assert.doesNotMatch(legal, />中文解析</);
 });
+
+test('localizes homepage portals, reader services and footer without changing destinations', () => {
+  const home = read('app/(tabs)/index.tsx');
+  for (const key of ['home.portalJudgesTitle', 'home.portalImmigrationAction', 'home.portalLegalBanner', 'home.portalJobsPost', 'home.portalCommunityTips', 'home.readerSubscribeTitle', 'home.readerGroupSubtitle', 'home.readerTipsAction', 'home.footerBrand', 'home.footerServices']) {
+    assert.ok(home.includes(`'${key}'`), `homepage services must translate ${key}`);
+  }
+  assert.match(home, /t\(section\.titleKey\)/);
+  assert.match(home, /t\(section\.bannerKey\)/);
+  assert.match(home, /t\(itemKey\)/);
+  assert.match(home, /t\(service\.titleKey\)/);
+  assert.match(home, /accessibilityLabel=\{t\('home\.openPortalItemA11y'/);
+  for (const destination of ['https://asylumjudge.com/', "route: '/immigration'", "route: '/legal'", "route: '/jobs'", "route: '/community'", 'https://trrb.net/#daily', 'https://trrb.net/#community', 'https://trrb.net/#submit']) {
+    assert.ok(home.includes(destination), `homepage destination must remain ${destination}`);
+  }
+  assert.doesNotMatch(home, /styles\.footerText}>立足美国 · 服务华人/);
+});

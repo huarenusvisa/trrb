@@ -9,7 +9,7 @@ const foregroundRetry = await readFile(new URL('../src/hooks/useForegroundRetry.
 const i18n = await readFile(new URL('../src/i18n/i18n-core.ts', import.meta.url), 'utf8');
 
 test('restores homepage and list snapshots before refreshing official news', () => {
-  assert.match(home, /readCachedHomeFeed/);
+  assert.match(home, /readCachedHomeFeedEnvelope/);
   assert.match(home, /cacheHomeFeed\(merged, focus\)/);
   assert.match(list, /readCachedNewsPageEnvelope\(category, q\)/);
   assert.match(list, /cacheNewsPage\(category, q, merged/);
@@ -26,6 +26,16 @@ test('shows localized cache age and announces successful refreshes', () => {
   assert.match(list, /AccessibilityInfo\.announceForAccessibility\(t\('news\.refreshSucceeded'\)\)/);
   assert.match(i18n, /'news\.cachedStale': '离线内容保存于 \{time\}，可能不是最新内容。'/);
   assert.match(i18n, /'news\.cachedAt': 'Offline copy saved \{time\}.'/);
+});
+
+test('shows homepage cache age and announces successful refreshes', () => {
+  assert.match(home, /readCachedHomeFeedEnvelope\(\)/);
+  assert.match(home, /setCacheSavedAt\(cachedEntry\?\.savedAt \?\? null\)/);
+  assert.match(home, /isNewsFeedCacheStale\(cacheSavedAt\)/);
+  assert.match(home, /testID="home-cache-status"[\s\S]*accessibilityLiveRegion="polite"/);
+  assert.match(home, /if \(!restoreCache\) AccessibilityInfo\.announceForAccessibility\(t\('home\.refreshSucceeded'\)\)/);
+  assert.match(i18n, /'home\.cachedStale': '离线首页保存于 \{time\}，可能不是最新内容。'/);
+  assert.match(i18n, /'home\.cachedAt': 'Offline homepage saved \{time\}.'/);
 });
 
 test('persists successful appended pages for bounded offline continuation', () => {

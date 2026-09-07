@@ -74,11 +74,13 @@ const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8')
 
 assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
-assert.match(standalone, /site\.css\?v=34/, 'standalone homepage must load the chart-focus stylesheet');
-assert.match(trrb, /site\.css\?v=33/, 'embedded homepage must load the chart-focus stylesheet');
+assert.match(standalone, /site\.css\?v=35/, 'standalone homepage must load the skip-link stylesheet');
+assert.match(trrb, /site\.css\?v=34/, 'embedded homepage must load the skip-link stylesheet');
 assert.match(backgroundDirectory, /site\.css\?v=17/, 'background directory must load the chart-focus stylesheet');
 assert.match(styles, /@media\(prefers-reduced-motion:reduce\)\{html\{scroll-behavior:auto\}[^}]*\.skeleton,[^{]+\{animation:none\}[^}]*\.entry-grid>a,[^{]+\{transition:none\}[^}]*\.entry-grid>a:hover,[^{]+\{transform:none\}/, 'shared pages must disable smooth scrolling, loading motion, transitions, and hover displacement when reduced motion is requested');
 assert.match(styles, /\.market-hit:focus-visible \.market-hit-area\{[^}]*fill:rgba\(16,24,40,\.08\)[^}]*stroke:#101828[^}]*stroke-width:2/, 'keyboard-focused trend points must expose a high-contrast visible indicator');
+assert.match(styles, /\.skip-link\{[^}]*position:fixed[^}]*z-index:100[^}]*transform:translateY\(calc\(-100% - 24px\)\)[^}]*border:3px solid #101828/, 'skip link must remain hidden until focused and render above the sticky header');
+assert.match(styles, /\.skip-link:focus\{[^}]*transform:translateY\(0\)/, 'skip link must become visible on keyboard focus');
 assert.match(styles, /\.header-inner \.home-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile homepage navigation must provide responsive 44px touch targets');
 assert.match(styles, /\.home-language-control select\{[^}]*height:44px[^}]*touch-action:manipulation/, 'homepage language selector must provide a 44px touch target');
 assert.match(styles, /@media\(max-width:480px\)\{.*?\.home-language-control select\{[^}]*height:44px/, 'narrow screens must preserve the homepage language selector touch target');
@@ -116,6 +118,8 @@ assert.deepEqual(
 );
 
 for (const html of [standalone, trrb]) {
+  assert.match(html, /<body>\s*<a class="skip-link" href="#main-content">跳到主要内容<\/a>/, 'both homepage variants must start with a skip link');
+  assert.match(html, /<main id="main-content" tabindex="-1">/, 'the skip-link target must receive programmatic focus');
   assert.match(html, /id="all-judges"/, 'both homepage variants must expose the full judge directory');
   assert.match(html, /id="judge-directory-list"/);
   assert.match(html, /id="judge-search"[^>]+role="search"[^>]+aria-labelledby="judge-search-label"/, 'homepage judge filtering must expose a named search landmark');
@@ -155,6 +159,7 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
+assert.match(i18n, /\['跳到主要内容','Skip to main content'[^\n]+انتقل إلى المحتوى الرئيسي[^\n]+Ana içeriğe geç'/, 'skip-link text must be localized across all supported languages');
 assert.match(client, /mode=all/, 'homepage must request the complete judge dataset');
 assert.match(client, /state-list-status[\s\S]{0,160}selected\.length/, 'state overview must announce only the rendered result count');
 assert.match(client, /state-list-status[\s\S]{0,500}正在汇总州级样本/, 'state overview must announce its loading state');

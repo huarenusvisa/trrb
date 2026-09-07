@@ -48,7 +48,11 @@ test('deduplicates bounded pagination snapshots and closes a cursor when content
   assert.equal(truncated.posts.length, COMMUNITY_FEED_CACHE_MAX_POSTS);
   assert.equal(new Set(truncated.posts.map((item) => item.id)).size, COMMUNITY_FEED_CACHE_MAX_POSTS);
   assert.equal(truncated.nextOffset, null);
-  assert.equal(publicCommunityFeedSnapshot(posts.slice(0, 40), 40).nextOffset, 40);
+  assert.equal(truncated.truncated, true);
+  const partial = publicCommunityFeedSnapshot(posts.slice(0, 40), 40);
+  assert.equal(partial.nextOffset, 40);
+  assert.equal(partial.truncated, false);
+  assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: [post], nextOffset: 20, truncated: true } }), 200), null);
 });
 
 test('isolates each community category cache from the all-posts cache', () => {

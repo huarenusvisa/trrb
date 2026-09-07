@@ -1,5 +1,6 @@
 export type PushPlatform = 'ios' | 'android';
-export type PushRegistrationErrorKind = 'network' | 'server' | 'unknown';
+export type PushRegistrationErrorKind = 'network' | 'server' | 'auth' | 'unknown';
+export type PendingPushRegistrationErrorKind = Exclude<PushRegistrationErrorKind, 'auth'>;
 export type PendingPushRetryTrigger = 'scheduled' | 'foreground' | 'network' | 'manual';
 
 export type StoredPushRegistration = {
@@ -17,7 +18,7 @@ export type PendingPushRegistration = {
   attempts: number;
   createdAt: number;
   retryAt: number;
-  errorKind: PushRegistrationErrorKind;
+  errorKind: PendingPushRegistrationErrorKind;
 };
 
 const MAX_USER_ID_LENGTH = 128;
@@ -80,7 +81,7 @@ export function nextPendingPushRegistration(
   platform: PushPlatform,
   expoPushToken: string | null,
   now = Date.now(),
-  errorKind: PushRegistrationErrorKind = 'unknown',
+  errorKind: PendingPushRegistrationErrorKind = 'unknown',
   retryAfterMs: number | null = null
 ) {
   const previous = parsePendingPushRegistration(raw, now);
@@ -101,7 +102,7 @@ export function classifyPushRegistrationError(error: unknown): PushRegistrationE
   if (error instanceof TypeError) return 'network';
   if (typeof error !== 'object' || error === null || !('pushRegistrationErrorKind' in error)) return 'unknown';
   const kind = (error as { pushRegistrationErrorKind?: unknown }).pushRegistrationErrorKind;
-  return kind === 'network' || kind === 'server' ? kind : 'unknown';
+  return kind === 'network' || kind === 'server' || kind === 'auth' ? kind : 'unknown';
 }
 
 export function pushRegistrationRetryAfterMs(error: unknown) {

@@ -87,6 +87,9 @@ test('translates notification categories, fallback labels and push preferences',
   assert.equal(translate('zh-TW', 'push.nextRetry', { time: '下午3:20' }), '下次自動重試：下午3:20');
   assert.equal(translate('en', 'push.syncError.server'), 'Reason: The push service is temporarily unavailable.');
   assert.equal(translate('en', 'push.retryNow'), 'Retry now');
+  assert.equal(translate('zh-CN', 'push.signInAgain'), '重新登录');
+  assert.equal(translate('zh-TW', 'push.signInRequired'), '需要重新登入');
+  assert.equal(translate('en', 'push.signInRequiredBody'), 'Your account session has expired. Automatic retries have stopped to protect this device registration.');
 });
 
 test('translates community categories and comment actions without changing user text', () => {

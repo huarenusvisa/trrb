@@ -182,6 +182,11 @@ test('push settings expose account-scoped pending registration and accessible re
   assert.match(settings, /push-registration-next-retry/);
   assert.match(settings, /Intl\.DateTimeFormat\(locale/);
   assert.match(registration, /errorKind: pending\.errorKind/);
+  assert.match(registration, /errorKind === 'auth'/);
+  assert.match(registration, /clearPendingRegistration\('auth_required'\)/);
+  assert.match(settings, /push-registration-auth-required/);
+  assert.match(settings, /push-registration-sign-in/);
+  assert.match(settings, /router\.push\('\/auth'\)/);
 });
 
 test('push settings follow background token synchronization without stale state', () => {

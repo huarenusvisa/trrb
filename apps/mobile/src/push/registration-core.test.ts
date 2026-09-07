@@ -118,6 +118,18 @@ test('backs off repeated pending sync while keeping delay bounded', () => {
   assert.equal((cappedValue?.retryAt ?? 0) - cappedNow, MAX_PENDING_PUSH_RETRY_DELAY_MS);
 });
 
+test('only manual retries and recovered network failures bypass the pending backoff', () => {
+  const now = 1_800_000_000_000;
+  const network = nextPendingPushRegistration(null, 'user-1', 'ios', null, now, 'network');
+  const server = nextPendingPushRegistration(null, 'user-1', 'ios', null, now, 'server');
+
+  assert.equal(pendingPushRetryDelay(network, 'user-1', now, 'network'), 0);
+  assert.equal(pendingPushRetryDelay(server, 'user-1', now, 'network'), 15_000);
+  assert.equal(pendingPushRetryDelay(network, 'user-1', now, 'foreground'), 15_000);
+  assert.equal(pendingPushRetryDelay(server, 'user-1', now, 'manual'), 0);
+  assert.equal(pendingPushRetryDelay(network, 'user-2', now, 'manual'), null);
+});
+
 test('isolates pending retries by account and rejects stale or malformed records', () => {
   const now = 1_800_000_000_000;
   const raw = nextPendingPushRegistration(null, 'user-1', 'ios', null, now);

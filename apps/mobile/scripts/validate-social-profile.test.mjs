@@ -172,7 +172,7 @@ test('push settings expose account-scoped pending registration and accessible re
   assert.match(registration, /getPendingPushRegistrationStatus/);
   assert.match(registration, /pending\.userId !== userId/);
   assert.match(registration, /supabase\.auth\.getSession\(\)/);
-  assert.match(registration, /performRegisterPushToken\(\{ retryPending: true \}\)/);
+  assert.match(registration, /retryPendingPushRegistrationForTrigger\('manual'\)/);
   assert.match(settings, /push-registration-pending/);
   assert.match(settings, /push-registration-retry/);
   assert.match(settings, /accessibilityLiveRegion="polite"/);
@@ -206,7 +206,10 @@ test('pending push registration retries immediately after network recovery witho
 
   assert.match(registration, /Network\.addNetworkStateListener/);
   assert.match(registration, /connectivityGate\.record\(state\)/);
-  assert.match(registration, /await retryPendingPushRegistration\(\)/);
+  assert.match(registration, /retryPendingPushRegistration/);
+  assert.match(registration, /retryPending\('foreground'\)/);
+  assert.match(registration, /retryPending\('network'\)/);
+  assert.match(core, /trigger === 'network' && pending\.errorKind === 'network'/);
   assert.match(registration, /if \(pendingRetryInFlight\) return pendingRetryInFlight/);
   assert.match(registration, /networkSubscription\?\.remove\(\)/);
   assert.match(core, /class PushConnectivityGate/);

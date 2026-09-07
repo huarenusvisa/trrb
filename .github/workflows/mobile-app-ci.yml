@@ -27,6 +27,9 @@ on:
       - 'netlify/functions/community-push-core.test.js'
       - 'netlify/functions/_shared/expo-push-client.js'
       - 'netlify/functions/_shared/expo-push-client.test.js'
+      - 'netlify/functions/push-token-registration.js'
+      - 'netlify/functions/push-token-registration-core.js'
+      - 'netlify/functions/push-token-registration-core.test.js'
       - 'assets/brand/tangren-avatar-512.png'
       - 'scripts/audit-app-batch2-node7.mjs'
       - 'scripts/validate-mobile-store-config.mjs'
@@ -36,6 +39,7 @@ on:
       - 'supabase/migrations/20260903202000_article_translation_cache.sql'
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
+      - 'supabase/migrations/20260907122247_claim_mobile_push_token.sql'
       - 'netlify.toml'
       - 'scripts/netlify-ignore-build.sh'
       - 'scripts/validate-mobile-build-cost-control.test.mjs'
@@ -69,6 +73,9 @@ on:
       - 'netlify/functions/community-push-core.test.js'
       - 'netlify/functions/_shared/expo-push-client.js'
       - 'netlify/functions/_shared/expo-push-client.test.js'
+      - 'netlify/functions/push-token-registration.js'
+      - 'netlify/functions/push-token-registration-core.js'
+      - 'netlify/functions/push-token-registration-core.test.js'
       - 'assets/brand/tangren-avatar-512.png'
       - 'scripts/audit-app-batch2-node7.mjs'
       - 'scripts/validate-mobile-store-config.mjs'
@@ -78,6 +85,7 @@ on:
       - 'supabase/migrations/20260903202000_article_translation_cache.sql'
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
+      - 'supabase/migrations/20260907122247_claim_mobile_push_token.sql'
       - 'netlify.toml'
       - 'scripts/netlify-ignore-build.sh'
       - 'scripts/validate-mobile-build-cost-control.test.mjs'
@@ -121,6 +129,8 @@ jobs:
           node --check netlify/functions/community-push.mjs
           node --test netlify/functions/community-push-core.test.js
           node --test netlify/functions/_shared/expo-push-client.test.js
+          node --check netlify/functions/push-token-registration.js
+          node --test netlify/functions/push-token-registration-core.test.js
           node --test netlify/functions/unified-account-login.test.js
           node --test netlify/functions/community-api.test.js
       - name: Install mobile dependencies

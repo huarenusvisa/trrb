@@ -112,10 +112,14 @@ test('localizes community list, post detail and comment actions while preserving
     assert.match(source, /localeDateTag\(locale\)/);
     assert.doesNotMatch(source, /toLocaleString\('zh-CN'\)/);
   }
-  for (const key of ['community.heading', 'community.cacheNotice', 'community.emptyAll', 'community.loadMore']) {
+  for (const key of ['community.heading', 'community.cacheNotice', 'community.cacheExpired', 'community.refreshSucceeded', 'community.emptyAll', 'community.loadMore']) {
     assert.ok(list.includes(`t('${key}')`), `community list must translate ${key}`);
   }
   assert.ok(list.includes("'community.likeA11y'"));
+  assert.match(list, /discardReason === 'expired'/);
+  assert.match(list, /AccessibilityInfo\.announceForAccessibility/);
+  assert.ok(list.includes("announceForAccessibility(t('community.refreshSucceeded'))"));
+  assert.match(list, /useForegroundRetry\(Boolean\(error\)/);
   for (const key of ['community.detailLoadingTitle', 'community.reportPost', 'community.refreshFailedTitle', 'community.commentReviewing', 'community.signInToComment']) {
     assert.ok(detail.includes(`t('${key}')`), `community detail must translate ${key}`);
   }

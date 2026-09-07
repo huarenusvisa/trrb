@@ -274,8 +274,8 @@ test('localizes job discovery and keeps long text usable on narrow screens', () 
   assert.match(jobs, /minHeight: 48/);
   assert.match(jobs, /useForegroundRetry/);
   assert.match(jobs, /withUiTimeout/);
-  assert.match(jobs, /readCachedJobs\\(\\)/);
-  assert.match(jobs, /cacheJobs\\(nextItems\\)/);
+  assert.match(jobs, /readCachedJobs\(\)/);
+  assert.match(jobs, /cacheJobs\(nextItems\)/);
   assert.match(jobs, /createBoundedJobsSnapshot/);
   assert.match(jobs, /testID="jobs-cache-notice"/);
   assert.ok(jobs.includes("t('jobs.cachedAt'"));

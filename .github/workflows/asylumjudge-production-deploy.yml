@@ -12,7 +12,9 @@ on:
       - 'scripts/build-asylumjudge-site.mjs'
       - 'scripts/build-asylumjudge-seo.mjs'
       - 'scripts/asylumjudge-indexing-hygiene.mjs'
+      - 'scripts/asylumjudge-live-seo-audit.mjs'
       - 'scripts/asylumjudge-seo.test.mjs'
+      - 'scripts/submit-asylumjudge-indexnow.mjs'
       - 'netlify.asylumjudge.toml'
       - '.github/workflows/asylumjudge-production-deploy.yml'
 
@@ -43,13 +45,17 @@ jobs:
           node <<'NODE'
           const fs = require('fs');
           const report = JSON.parse(fs.readFileSync('.netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json', 'utf8'));
-          if (!Number.isFinite(report.localized_pages) || report.localized_pages <= 0) {
-            throw new Error('No multilingual pages were server-localized');
+          const highCjk = report.high_cjk_page_count ?? report.high_cjk_pages?.length ?? 0;
+          if (!Number.isFinite(report.localized_pages) || report.localized_pages < 10000) {
+            throw new Error(`Server-side localization regressed: ${report.localized_pages}`);
           }
           if (report.removed_untranslated_methodology_urls !== 9) {
             throw new Error(`Expected 9 untranslated methodology URLs to be removed, got ${report.removed_untranslated_methodology_urls}`);
           }
-          console.log(`Indexing hygiene verified: ${report.localized_pages} localized pages; ${report.server_side_replacements} server-side replacements; ${report.high_cjk_page_count ?? report.high_cjk_pages?.length ?? 0} high-CJK warnings.`);
+          if (highCjk > 10) {
+            throw new Error(`Multilingual duplicate-content guard failed: ${highCjk} non-Chinese pages exceed the CJK threshold`);
+          }
+          console.log(`Indexing hygiene verified: ${report.localized_pages} localized pages; ${report.server_side_replacements} server-side replacements; ${highCjk} high-CJK warnings.`);
           NODE
       - name: Save AsylumJudge production bundle
         uses: actions/upload-artifact@v4

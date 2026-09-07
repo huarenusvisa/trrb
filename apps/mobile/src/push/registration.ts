@@ -12,6 +12,7 @@ import {
   stalePushTokensForCurrentUser,
   tokenToDisableForCurrentUser
 } from './registration-core';
+import { claimPushToken } from './registration-api';
 
 const LEGACY_DEVICE_TOKEN_KEY = '@trrb/push-device-token/v1';
 const DEVICE_REGISTRATION_KEY = '@trrb/push-device-registration/v2';
@@ -66,7 +67,10 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
   const deviceDisabled = await AsyncStorage.getItem(DEVICE_PUSH_DISABLED_KEY) === 'true';
   if (registrationSuspended || !shouldSynchronizePushRegistration(deviceDisabled, options.requestPermission === true)) return null;
 
-  const { data: auth } = await supabase.auth.getUser();
+  const { data: sessionData } = await supabase.auth.getSession();
+  const accessToken = sessionData.session?.access_token;
+  if (!accessToken) return null;
+  const { data: auth } = await supabase.auth.getUser(accessToken);
   if (!auth.user?.id) return null;
 
   await ensureAndroidChannel();
@@ -90,14 +94,12 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
     projectId,
     ...(options.devicePushToken ? { devicePushToken: options.devicePushToken } : {})
   })).data;
-  const result = await supabase.from('push_tokens').upsert({
-    user_id: auth.user.id,
-    platform: Platform.OS,
-    expo_push_token: expoPushToken,
-    enabled: true,
-    updated_at: new Date().toISOString()
-  }, { onConflict: 'user_id,expo_push_token' });
-  if (result.error) throw result.error;
+  const claim = await claimPushToken({
+    accessToken,
+    platform: Platform.OS as 'ios' | 'android',
+    expoPushToken
+  });
+  if (claim.userId !== auth.user.id) throw new Error('推送令牌账号校验失败');
 
   const staleTokens = stalePushTokensForCurrentUser(auth.user.id, expoPushToken, storedRegistration, legacyToken);
   if (staleTokens.length) {

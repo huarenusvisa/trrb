@@ -34,6 +34,7 @@ test('classifies expired cache separately from malformed or future content', () 
 test('never persists pending, oversized, or malformed community posts', () => {
   const pending = { ...post, id: 'pending-1', status: 'pending' as const };
   assert.deepEqual(publicCommunityFeedSnapshot([pending, post], 20).posts.map((item) => item.id), ['post-1']);
+  assert.equal(publicCommunityFeedSnapshot([post], -1).nextOffset, null);
   assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: [pending], nextOffset: null } }), 200), null);
   assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: Array.from({ length: COMMUNITY_FEED_CACHE_MAX_POSTS + 1 }, (_, index) => ({ ...post, id: String(index) })), nextOffset: 20 } }), 200), null);
   assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: [post], nextOffset: -1 } }), 200), null);

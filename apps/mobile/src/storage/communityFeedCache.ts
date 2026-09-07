@@ -1,13 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { CommunityPost } from '../api/community-core';
-import { communityFeedCacheKey, parseCommunityFeedCache, publicCommunityFeedSnapshot } from './community-feed-cache-core';
+import { communityFeedCacheKey, inspectCommunityFeedCache, publicCommunityFeedSnapshot } from './community-feed-cache-core';
 
 export async function readCachedCommunityFeed(category = '') {
   const key = communityFeedCacheKey(category);
   const raw = await AsyncStorage.getItem(key);
-  const payload = parseCommunityFeedCache(raw);
-  if (!payload && raw) await AsyncStorage.removeItem(key);
-  return payload?.snapshot ?? null;
+  const result = inspectCommunityFeedCache(raw);
+  if (result.discardReason && raw) await AsyncStorage.removeItem(key);
+  return {
+    snapshot: result.payload?.snapshot ?? null,
+    discardReason: result.discardReason,
+  };
 }
 
 export async function cacheCommunityFeed(posts: CommunityPost[], nextOffset: number | null, category = '') {

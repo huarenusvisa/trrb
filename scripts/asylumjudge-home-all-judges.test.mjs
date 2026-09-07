@@ -138,6 +138,7 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /data-state-interval="year" aria-pressed="false"/, 'the inactive trend interval must expose its unselected state');
   assert.match(html, /id="state-trend-states"[^>]*role="group"[^>]*aria-label="华人聚集城市快捷入口"/, 'city shortcut buttons must expose a named group');
   assert.match(html, /class="state-fy-tabs"[^>]*role="group"[^>]*aria-label="选择财政年度"/, 'homepage fiscal-year buttons must expose a named group');
+  assert.match(html, /class="quick"[^>]*role="group"[^>]*aria-label="热门查询"/, 'homepage quick-search buttons must expose a named group');
   assert.match(html, /data-state-fy="2026" aria-pressed="true"/, 'the initial fiscal year must expose its selected state');
   assert.match(html, /data-state-fy="2025" aria-pressed="false"/, 'inactive fiscal years must expose their unselected state');
   assert.match(html, /id="state-trend-detail"/, 'homepage must expose touch-friendly point details');

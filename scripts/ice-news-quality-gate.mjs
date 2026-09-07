@@ -11,7 +11,7 @@ const NOISE = /ice cream|iced latte|iced coffee|ice tea|ice cube|ice cubes|ice h
 const AGENCY = /\bICE\b|immigration and customs enforcement|enforcement and removal operations|\bERO\b|\bHSI\b|homeland security investigations|\bDHS\b|department of homeland security|\bCBP\b|customs and border protection|border patrol|immigration agents?|immigration officers?|deportation officers?|移民与海关执法局|移民和海关执法局|移民局特工|移民执法人员|国土安全调查局|边境巡逻/i;
 const LOWERCASE_ICE_WITH_IMMIGRATION = /\bice\b/i;
 const IMMIGRATION = /immigration|immigrant|migrant|undocumented|illegal alien|illegal immigrant|deport|removal|asylum|border|visa|green card|移民|非法入境|无证|庇护|边境|遣返|递解|驱逐/i;
-const CONCRETE_ACTION = /arrest(?:ed|s|ing)?|apprehend(?:ed|s|ing)?|detain(?:ed|s|ing)?|detention|taken into custody|raid(?:ed|s|ing)?|execut(?:e|ed|ing)|operation (?:is )?(?:underway|launched)|deport(?:ed|s|ing)?|removal flight|repatriat(?:e|ed|ion)|warrant|fugitive|custody|charged|indicted|sentenced|convicted|released|rescued|recovered|traffick|smuggl|shooting|shot by|use of force|vehicle stop|worksite enforcement|抓捕|抓获|拘捕|逮捕|拘留|拘押|羁押|带走|抓走|遣返|递解|驱逐|突袭|搜捕|扫荡|执法行动|查获|起诉|判刑|释放|枪击|开枪|营救|人口贩卖|走私/i;
+const CONCRETE_ACTION = /arrest(?:ed|s|ing)?|apprehend(?:ed|s|ing)?|detain(?:ed|s|ing)?|detention|taken into custody|raid(?:ed|s|ing)?|execut(?:e|ed|ing)|operation (?:is )?(?:underway|launched)|deport(?:ed|s|ing)?|removal flight|repatriat(?:e|ed|ion)|warrant|fugitive|custody|charged|indicted|sentenced|convicted|released|rescued|recovered|traffick|smuggl|shooting|shot by|killed by|fatal|death|use of force|vehicle stop|worksite enforcement|抓捕|抓获|拘捕|逮捕|拘留|拘押|羁押|带走|抓走|遣返|递解|驱逐|突袭|搜捕|扫荡|执法行动|查获|起诉|判刑|释放|枪击|开枪|死亡|身亡|营救|人口贩卖|走私/i;
 const JUDICIAL_UPDATE = /judge|court|ruling|ruled|motion to dismiss|lawsuit|indictment|indicted|charged|sentenced|order(?:ed)?|hearing|appeal|法院|法官|裁定|判决|诉讼|起诉|判刑|上诉/i;
 const HYPOTHETICAL_OR_OPINION = /\bshould\b|\bcould\b|\bwould\b|\bhope\b|\bwant\b|\bneeds? to\b|perfect location for an ice raid|good job ice|ice hasn'?t been|abolish ice|defund ice|support ice|oppose ice|fuck ice|fuck trump|why are .* mad|badge does not make/i;
 const ANTI_ICE_PROTEST = /anti[- ]ice|ice watch|protest(?:er|ers|ing)? against ice|anti ice/i;
@@ -70,7 +70,7 @@ export function classifyNewsQuality(row) {
     return { keep: false, reason: "anti_ice_protest_without_enforcement_event" };
   }
 
-  if (HYPOTHETICAL_OR_OPINION.test(text) && !concrete && !judicial) return { keep: false, reason: "ice_opinion_without_new_event" };
+  if (HYPOTHETICAL_OR_OPINION.test(text) && !FRESH_UPDATE.test(text) && !judicial) return { keep: false, reason: "ice_opinion_without_new_event" };
   if (!concrete && !judicial) return { keep: false, reason: "ice_low_news_value_filtered" };
 
   if (staleRecap(text) && !FRESH_UPDATE.test(text) && !judicial) return { keep: false, reason: "ice_stale_recap_filtered" };

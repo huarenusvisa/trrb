@@ -72,6 +72,7 @@ jobs:
           node --check scripts/ice-filter-replies.mjs
           node --check scripts/ice-dedupe-v3.mjs
           node --check scripts/ice-high-recall-discovery.mjs
+          node --check scripts/ice-candidate-gate.mjs
           node --check scripts/ice-ero-official-discovery.mjs
           node --check scripts/ice-translate-title-body.mjs
           node --check scripts/ice-trusted-source-promote.mjs
@@ -81,6 +82,7 @@ jobs:
         run: |
           node --test scripts/ice-architecture.test.mjs
           node --test scripts/ice-original-posts.test.mjs
+          node --test scripts/ice-high-recall-production.test.mjs
 
       - name: Recover stuck and retryable records
         run: node scripts/ice-night-maintenance.mjs

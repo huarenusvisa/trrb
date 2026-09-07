@@ -26,6 +26,15 @@ env:
   ICE_PRIORITY_ROTATION_GROUPS: "4"
   ICE_ERO_ROTATION_GROUPS: "4"
   ICE_ERO_LOOKBACK_HOURS: "12"
+  # 高召回发现按小时进入正式生产，但限制分页和单次结果数以控制X读取成本。
+  ICE_HIGH_RECALL_LOOKBACK_HOURS: "12"
+  ICE_HIGH_RECALL_MAX_PAGES: "2"
+  ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"
+  ICE_HIGH_RECALL_MIN_SCORE: "45"
+  ICE_HIGH_RECALL_MIN_FOLLOWERS: "500"
+  # 采集入口使用宽候选门槛；严格原始证据标准保留在最终发布边界。
+  ICE_CANDIDATE_GATE_LOOKBACK_HOURS: "12"
+  ICE_CANDIDATE_GATE_MAX: "4000"
   ICE_MAX_SOURCE_AGE_MINUTES: "720"
   ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
   ICE_PUBLISHED_DEDUPE_DAYS: "30"
@@ -115,18 +124,20 @@ jobs:
             scripts/ice-priority-discovery.mjs \
             scripts/ice-ero-official-discovery.mjs \
             scripts/ice-extra-monitored-discovery.mjs \
-            scripts/ice-added-source-discovery.mjs
+            scripts/ice-added-source-discovery.mjs \
+            scripts/ice-high-recall-discovery.mjs
           do
             node "$script" && ok=1
           done
           [[ "$ok" -eq 1 ]]
 
-      - name: Filter, dedupe and intake
+      - name: Candidate gate, dedupe and intake
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
-          node scripts/ice-official-source-only.mjs
+          # 宽进严出：只剔除明显无关内容；疑似ICE/ERO/HSI/DHS/CBP内容进入AI或人工审核。
+          node scripts/ice-candidate-gate.mjs
           node scripts/ice-drop-stale-posts.mjs || true
           node scripts/ice-filter-replies.mjs || true
           node scripts/ice-english-pretranslation-dedupe.mjs
@@ -145,7 +156,7 @@ jobs:
 
       - name: Publish
         # 发布器自身会再次核验：仅官方来源或真实管理员已批准的内容可以发布。
-        # 不再让栏目级旧开关误伤官方来源自动发布。
+        # 高召回候选不会绕过严格原始证据、风险标记和人工审核边界。
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"

@@ -1,20 +1,25 @@
 # Robot safety verification rerun: 2026-09-02T22:00Z
 # Manual verification rerun after Google Search Console permission: 2026-09-02
 # Manual verification rerun after Bing API secret configuration: 2026-09-02
-name: Google/Bing SEO每日提交与诊断
+name: 全站 Google/Bing SEO 自动机器人
 
 on:
   workflow_dispatch:
   schedule:
-    # Fully automatic daily search-engine maintenance. The manual trigger remains
-    # only as an emergency fallback; normal operation requires no human action.
+    # One daily robot run covers TRRB plus AsylumJudge. No extra schedule is added.
     - cron: '23 7 * * *'
   push:
-    # Validate this SEO control workflow immediately when its own logic changes.
-    # Ordinary product/code pushes still do not trigger a full search-engine run.
+    # Run immediately when the SEO robot or AsylumJudge indexing protection changes.
     branches: [main]
     paths:
       - '.github/workflows/seo-search-engine-ops.yml'
+      - 'scripts/asylumjudge-live-seo-audit.mjs'
+      - 'scripts/submit-asylumjudge-indexnow.mjs'
+      - 'scripts/asylumjudge-indexing-hygiene.mjs'
+      - 'scripts/build-asylumjudge-site.mjs'
+      - 'scripts/build-asylumjudge-seo.mjs'
+      - 'asylumjudge/app-i18n.js'
+      - 'immigration-judge-approval-rate/china-dashboard-i18n.js'
 
 permissions:
   contents: read
@@ -36,12 +41,10 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/automation-gate.mjs
       - id: gate
-        # SEO is now autonomous: scheduled runs no longer depend on the individual
-        # seo_search_engine switch. Keep only the global control as an emergency
-        # kill switch for the entire automation platform. Push/manual corrective
-        # runs are always allowed.
+        # SEO is autonomous. Keep only the global emergency kill switch for scheduled runs.
         run: echo "allowed=${{ github.event_name != 'schedule' || steps.controls.outputs.global == 'true' }}" >> "$GITHUB_OUTPUT"
-  monitor:
+
+  trrb-monitor:
     needs: automation-gate
     if: ${{ needs.automation-gate.outputs.allowed == 'true' }}
     runs-on: ubuntu-latest
@@ -57,10 +60,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # SEO must audit the site that search engines can actually crawl. The
-          # latest Git commit may intentionally be a reports/** or .github/**
-          # bookkeeping commit that Netlify correctly skips, so requiring the
-          # exact GITHUB_SHA here would block SEO for a non-production change.
           for attempt in $(seq 1 12); do
             live="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?run=${GITHUB_RUN_ID}&attempt=${attempt}" 2>/dev/null | tr -d '\r\n[:space:]' || true)"
             if [[ "$live" =~ ^[0-9a-f]{40}$ ]]; then
@@ -79,40 +78,97 @@ jobs:
           curl --fail --silent --show-error --head https://trrb.net/sitemap.xml \
             | tr -d '\r' \
             | grep -qi '^x-trrb-sitemap: live-supabase-v9-quality-budget-canonical$'
-      - name: Push current URLs to Bing and Yandex through IndexNow
+      - name: Push current TRRB URLs through IndexNow
         env:
           INDEXNOW_FULL_SYNC: 'true'
           INDEXNOW_INCLUDE_RETIRED: 'true'
           INDEXNOW_FRESH_HOURS: '48'
           INDEXNOW_USE_LIVE_NEWS: 'true'
         run: node scripts/submit-indexnow.mjs
-      - name: Run SEO search-engine operations
+      - name: Run TRRB search-engine operations
         env:
           SITE_ORIGIN: https://trrb.net
           GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'sc-domain:trrb.net' }}
           GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON }}
           BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
           SEO_WRITE_MODE: 'true'
-          # Missing Search Console authorization is a blocking robot failure.
-          # Never report the SEO workflow green when Google submission did not run.
           SEO_REQUIRE_GOOGLE: 'true'
-          # Bing credentials and submissions are also mandatory.
           SEO_REQUIRE_BING: 'true'
           SEO_LIVE_AUDIT_LIMIT: '120'
         run: node scripts/seo-search-engine-ops.mjs
-      - name: Save SEO robot report
+      - name: Save TRRB SEO robot report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seo-search-engine-ops-report
+          name: trrb-seo-search-engine-ops-report
           path: seo-search-engine-ops-report.json
           retention-days: 30
-
-      - name: 写入 Google/Bing SEO 机器人站内通知
+      - name: 写入 TRRB SEO 机器人站内通知
         if: failure()
         env:
           SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           AUTOMATION_CONTROL_KEY: seo_search_engine
-          AUTOMATION_NOTIFICATION_TITLE: Google/Bing SEO机器人执行失败
+          AUTOMATION_NOTIFICATION_TITLE: TRRB Google/Bing SEO机器人执行失败
+        run: node scripts/automation-notify.mjs
+
+  asylumjudge-monitor:
+    needs: automation-gate
+    if: ${{ needs.automation-gate.outputs.allowed == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build and auto-normalize AsylumJudge SEO output
+        run: node scripts/build-asylumjudge-site.mjs
+      - name: Verify AsylumJudge canonical sitemap contract
+        run: node scripts/asylumjudge-seo.test.mjs
+      - name: Block multilingual duplicate-canonical regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('.netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json', 'utf8'));
+          const highCjk = report.high_cjk_page_count ?? report.high_cjk_pages?.length ?? 0;
+          if (report.removed_untranslated_methodology_urls !== 9) {
+            throw new Error(`Localized methodology crawl surfaces regressed: expected 9 removals, got ${report.removed_untranslated_methodology_urls}`);
+          }
+          if (!Number.isFinite(report.localized_pages) || report.localized_pages < 10000) {
+            throw new Error(`Server-side localization regressed: ${report.localized_pages}`);
+          }
+          if (highCjk > 10) {
+            throw new Error(`Multilingual duplicate-content guard failed: ${highCjk} non-Chinese pages exceed the CJK threshold`);
+          }
+          console.log(`AsylumJudge indexing guard passed: ${report.localized_pages} localized pages; ${highCjk} high-CJK warnings.`);
+          NODE
+      - name: Audit the live AsylumJudge site for canonical, noindex, redirects and 404s
+        env:
+          ASYLUMJUDGE_SITE_ORIGIN: https://asylumjudge.com
+          ASYLUMJUDGE_SEO_SAMPLE_PER_SITEMAP: '8'
+          ASYLUMJUDGE_SEO_CONCURRENCY: '4'
+        run: node scripts/asylumjudge-live-seo-audit.mjs
+      - name: Push live AsylumJudge canonical URLs through IndexNow
+        run: node scripts/submit-asylumjudge-indexnow.mjs --live
+      - name: Save AsylumJudge SEO robot reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asylumjudge-seo-robot-report
+          path: |
+            asylumjudge-live-seo-report.json
+            .netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: 写入 AsylumJudge SEO 机器人站内通知
+        if: failure()
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          AUTOMATION_CONTROL_KEY: seo_search_engine
+          AUTOMATION_NOTIFICATION_TITLE: AsylumJudge SEO机器人执行失败
+          AUTOMATION_NOTIFICATION_MESSAGE: 'AsylumJudge live canonical/noindex/redirect/404 or multilingual duplicate-content guard failed. Review the SEO robot artifact before the next deploy.'
         run: node scripts/automation-notify.mjs

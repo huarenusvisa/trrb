@@ -4,6 +4,8 @@
   const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
   const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const PAGE_SIZE = 12;
+  const FETCH_PAGE_SIZE = 500;
+  const HISTORY_MAX = 2500;
   const REFRESH_MS = 60000;
   const DEFAULT_US_BOUNDS = window.L ? L.latLngBounds(L.latLng(24.2, -125), L.latLng(49.7, -66.4)) : null;
   const EXTENDED_US_BOUNDS = window.L ? L.latLngBounds(L.latLng(17, -171), L.latLng(72, -50)) : null;
@@ -40,6 +42,8 @@
   let visibleCount = PAGE_SIZE;
   let currentRange = "24h";
   let currentType = "all";
+  let historyLoaded = false;
+  let historyLoading = null;
   let map = null;
   let markerLayer = null;
 
@@ -125,13 +129,15 @@
     item.type = inferType(item);
     return item;
   }
-  async function fetchIceArticles(limit = 500) {
+  async function fetchIceArticlePage(offset = 0, limit = FETCH_PAGE_SIZE) {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
     url.searchParams.set("select", "id,title,summary,content,cover_image,published_at,created_at,source_account,source_name,source_url,source_created_at,event_date,arrest_count,city,state,metadata,topic_key,status");
     url.searchParams.set("topic_key", "eq.ice");
     url.searchParams.set("status", "eq.published");
+    url.searchParams.set("visibility", "eq.public");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
     url.searchParams.set("limit", String(limit));
+    url.searchParams.set("offset", String(offset));
 
     const response = await fetch(url.toString(), {
       cache: "no-store",
@@ -144,6 +150,20 @@
     const rows = await response.json();
     return (Array.isArray(rows) ? rows : []).map(mapArticle);
   }
+  function mergeArticles(...groups) {
+    const byId = new Map();
+    groups.flat().forEach((item) => { if (item?.id && !byId.has(item.id)) byId.set(item.id, item); });
+    return [...byId.values()].sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
+  }
+  async function fetchIceHistory() {
+    const pages = [];
+    for (let offset = 0; offset < HISTORY_MAX; offset += FETCH_PAGE_SIZE) {
+      const page = await fetchIceArticlePage(offset, FETCH_PAGE_SIZE);
+      pages.push(...page);
+      if (page.length < FETCH_PAGE_SIZE) break;
+    }
+    return mergeArticles(pages);
+  }
   function itemTime(item) {
     const date = new Date(item.time || 0);
     return Number.isNaN(date.getTime()) ? null : date;
@@ -151,12 +171,12 @@
   function rangeHours() { return { "24h": 24, "7d": 168, "30d": 720 }[currentRange] || 24; }
   function withinRange(item) {
     const time = itemTime(item);
-    return Boolean(time) && Date.now() - time.getTime() <= rangeHours() * 3600000;
+    return Boolean(time) && (currentRange === "all" || Date.now() - time.getTime() <= rangeHours() * 3600000);
   }
   function rangeData(ignoreType = false) {
     return allData.filter((item) => withinRange(item) && (ignoreType || currentType === "all" || item.type === currentType));
   }
-  function rangeLabel() { return { "24h": "近24小时", "7d": "近7天", "30d": "近30天" }[currentRange] || "近24小时"; }
+  function rangeLabel() { return { "24h": "近24小时", "7d": "近7天", "30d": "近30天", all: "全部历史" }[currentRange] || "近24小时"; }
   function updateStats() {
     const items = rangeData();
     const people = items.reduce((sum, item) => sum + Math.max(0, Number(item.people || 0)), 0);
@@ -293,12 +313,35 @@
   }
   function renderAll() { updateStats(); renderNews(); renderMarkers(); }
   async function reloadData() {
-    try { allData = await fetchIceArticles(); window.TRRB_ICE_DATA = allData; renderAll(); }
+    try {
+      const latest = await fetchIceArticlePage();
+      allData = historyLoaded ? mergeArticles(latest, allData) : latest;
+      window.TRRB_ICE_DATA = allData;
+      renderAll();
+    }
     catch (error) { console.error("ICE实时数据加载失败", error); if (!allData.length) { renderNews(); showMapState("ice-map-error"); } }
   }
+  async function loadHistory() {
+    if (historyLoaded) return;
+    if (historyLoading) return historyLoading;
+    historyLoading = (async () => {
+      const rows = await fetchIceHistory();
+      allData = mergeArticles(rows, allData);
+      historyLoaded = true;
+      window.TRRB_ICE_DATA = allData;
+    })();
+    try { await historyLoading; } finally { historyLoading = null; }
+  }
   function bindControls() {
-    document.querySelectorAll(".range-tabs [data-range]").forEach((button) => button.addEventListener("click", () => {
-      currentRange = button.dataset.range || "24h"; visibleCount = PAGE_SIZE;
+    document.querySelectorAll(".range-tabs [data-range]").forEach((button) => button.addEventListener("click", async () => {
+      const nextRange = button.dataset.range || "24h";
+      if (nextRange === "all" && !historyLoaded) {
+        button.disabled = true;
+        button.setAttribute("aria-busy", "true");
+        try { await loadHistory(); } catch (error) { console.error("ICE历史数据加载失败", error); }
+        finally { button.disabled = false; button.removeAttribute("aria-busy"); }
+      }
+      currentRange = nextRange; visibleCount = PAGE_SIZE;
       document.querySelectorAll(".range-tabs [data-range]").forEach((item) => item.classList.toggle("active", item === button)); renderAll();
     }));
     document.querySelectorAll(".type-tabs [data-type]").forEach((button) => button.addEventListener("click", () => {

@@ -7,6 +7,15 @@ on:
       - main
     paths:
       - '.github/workflows/operations-control-plane.yml'
+      # Deploying the China Hot classifier or publisher must immediately run
+      # the production recovery path instead of waiting for the next heartbeat.
+      - '.github/workflows/china-hot-li-teacher-ingest.yml'
+      - 'netlify/functions/_shared/china-hot-headlines.js'
+      - 'scripts/china-hot-li-teacher-ingest.mjs'
+      - 'scripts/china-hot-li-teacher-ingest.test.mjs'
+      - 'topic/ice/index.html'
+      - 'topic/ice/ice.js'
+      - 'scripts/ice-history-list.test.mjs'
   workflow_dispatch:
     inputs:
       module:

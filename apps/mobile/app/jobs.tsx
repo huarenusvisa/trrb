@@ -3,24 +3,17 @@ import { AccessibilityInfo, ActivityIndicator, FlatList, Linking, Pressable, Saf
 import { Stack } from 'expo-router';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
 import { useI18n } from '../src/i18n/I18nProvider';
+import { localeDateTag } from '../src/i18n/i18n-core';
 import { withUiTimeout } from '../src/utils/async-state-core';
 import { contactLabel, employmentTypeLabel, formatJobSalary } from '../src/jobs/job-presentation';
-
-type Contact = { type: 'phone' | 'email' | 'official_apply'; value: string };
-type Job = {
-  id: string;
-  title: string;
-  description?: string;
-  employment_type?: string;
-  salary_min?: number | null;
-  salary_max?: number | null;
-  salary_period?: string | null;
-  state_code: string;
-  city: string;
-  contact?: Contact | null;
-};
+import { cacheJobs, readCachedJobs } from '../src/storage/jobsCache';
+import { createBoundedJobsSnapshot, type CachedJob as Job, type CachedJobContact as Contact } from '../src/storage/jobs-cache-core';
 
 const ENDPOINT = 'https://trrb.net/.netlify/functions/public-jobs?limit=40';
+
+function formatCacheTime(savedAt: number, locale: 'zh-CN' | 'zh-TW' | 'en') {
+  return new Intl.DateTimeFormat(localeDateTag(locale), { dateStyle: 'short', timeStyle: 'short' }).format(new Date(savedAt));
+}
 
 function contactUrl(contact: Contact): string {
   return contact.type === 'phone' ? `tel:${contact.value}` : contact.type === 'email' ? `mailto:${contact.value}` : contact.value;
@@ -34,6 +27,7 @@ export default function JobsScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState('');
+  const [cachedAt, setCachedAt] = useState<number | null>(null);
   const requestVersion = useRef(0);
   const contactInFlight = useRef(false);
   const [activeContactId, setActiveContactId] = useState<string | null>(null);
@@ -47,7 +41,12 @@ export default function JobsScreen() {
       const response = await withUiTimeout(fetch(ENDPOINT, { headers: { Accept: 'application/json' } }), t('jobs.timeout'));
       const payload = await response.json();
       if (!response.ok) throw new Error(payload?.error || t('jobs.httpFailed', { status: response.status }));
-      if (version === requestVersion.current) setItems(Array.isArray(payload?.items) ? payload.items : []);
+      if (version === requestVersion.current) {
+        const nextItems = createBoundedJobsSnapshot(Array.isArray(payload?.items) ? payload.items : []);
+        setItems(nextItems);
+        setCachedAt(null);
+        void cacheJobs(nextItems).catch(() => {});
+      }
     } catch (cause) {
       if (version === requestVersion.current) setError(cause instanceof Error ? cause.message : t('jobs.loadFailed'));
     } finally {
@@ -59,8 +58,19 @@ export default function JobsScreen() {
   }, [t]);
 
   useEffect(() => {
-    void load();
-    return () => { requestVersion.current += 1; };
+    let active = true;
+    void readCachedJobs().then((cached) => {
+      if (!active || !cached?.items.length) return;
+      setItems(cached.items);
+      setCachedAt(cached.savedAt);
+      setLoading(false);
+    }).catch(() => null).finally(() => {
+      if (active) void load();
+    });
+    return () => {
+      active = false;
+      requestVersion.current += 1;
+    };
   }, [load]);
   useForegroundRetry(Boolean(error), () => void load(Boolean(items.length)));
 
@@ -98,6 +108,7 @@ export default function JobsScreen() {
           <Text accessibilityRole="header" style={[styles.title, compact && styles.compactTitle]}>{t('jobs.title')}</Text>
           <Text style={styles.subtitle}>{t('jobs.subtitle')}</Text>
         </View>
+        {cachedAt && items.length ? <View testID="jobs-cache-notice" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>{t('jobs.cachedAt', { time: formatCacheTime(cachedAt, locale) })}</Text></View> : null}
         {error && items.length ? <View testID="jobs-refresh-error" accessibilityRole="alert" style={styles.errorBanner}>
           <Text style={styles.errorTitle}>{t('jobs.refreshFailed')}</Text>
           <Text style={styles.errorDetail}>{error}</Text>
@@ -169,6 +180,8 @@ const styles = StyleSheet.create({
   contactError: { marginTop: 10, borderRadius: 10, backgroundColor: '#fff4f2', borderWidth: 1, borderColor: '#fecdca', padding: 12, alignItems: 'flex-start' },
   contactErrorText: { color: '#7a271a', lineHeight: 20 },
   contactRetry: { minHeight: 44, marginTop: 4, paddingHorizontal: 4, justifyContent: 'center' },
+  cacheNotice: { backgroundColor: '#eff6ff', borderWidth: 1, borderColor: '#bfdbfe', borderRadius: 12, padding: 12, marginBottom: 10 },
+  cacheNoticeText: { color: '#1e4f91', lineHeight: 20 },
   errorBanner: { backgroundColor: '#fff4f2', borderWidth: 1, borderColor: '#fecdca', borderRadius: 12, padding: 14, marginBottom: 10 },
   state: { minHeight: 180, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 10 },
   stateText: { color: '#475569', textAlign: 'center', lineHeight: 21 },

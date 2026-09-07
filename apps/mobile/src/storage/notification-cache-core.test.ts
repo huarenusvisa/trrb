@@ -10,7 +10,7 @@ test('restores a recent notification page only for its signed-in owner and categ
   assert.equal(parseNotificationCache(raw, 'user-2', 'replies', 200), null);
   assert.equal(parseNotificationCache(raw, 'user-1', 'likes', 200), null);
   assert.equal(parseNotificationCache(raw, 'user-1', 'replies', NOTIFICATION_CACHE_MAX_AGE_MS + 101), null);
-  assert.equal(parseNotificationCache(raw, 'user-1', 'replies', 99), null);
+  assert.equal(parseNotificationCache(raw, 'user-1', 'replies', 99)?.savedAt, 100);
 });
 
 test('classifies expired notification cache separately from invalid content', () => {

@@ -33,7 +33,7 @@ export default function JobsScreen() {
   const [activeContactId, setActiveContactId] = useState<string | null>(null);
   const [failedContact, setFailedContact] = useState<{ item: Job; action: string } | null>(null);
 
-  const load = useCallback(async (refresh = false) => {
+  const load = useCallback(async (refresh = false, announceSuccess = false) => {
     const version = ++requestVersion.current;
     refresh ? setRefreshing(true) : setLoading(true);
     setError('');
@@ -46,6 +46,7 @@ export default function JobsScreen() {
         setItems(nextItems);
         setCachedAt(null);
         void cacheJobs(nextItems).catch(() => {});
+        if (announceSuccess) AccessibilityInfo.announceForAccessibility(t('jobs.refreshSucceeded'));
       }
     } catch (cause) {
       if (version === requestVersion.current) setError(cause instanceof Error ? cause.message : t('jobs.loadFailed'));
@@ -59,20 +60,29 @@ export default function JobsScreen() {
 
   useEffect(() => {
     let active = true;
-    void readCachedJobs().then((cached) => {
-      if (!active || !cached?.items.length) return;
+    let restored = false;
+    let announceRefresh = false;
+    void readCachedJobs().then(({ payload: cached, discardReason }) => {
+      if (!active) return;
+      if (discardReason === 'expired') {
+        announceRefresh = true;
+        AccessibilityInfo.announceForAccessibility(t('jobs.cacheExpired'));
+      }
+      if (!cached?.items.length) return;
+      restored = true;
+      announceRefresh = true;
       setItems(cached.items);
       setCachedAt(cached.savedAt);
       setLoading(false);
     }).catch(() => null).finally(() => {
-      if (active) void load();
+      if (active) void load(restored, announceRefresh);
     });
     return () => {
       active = false;
       requestVersion.current += 1;
     };
-  }, [load]);
-  useForegroundRetry(Boolean(error), () => void load(Boolean(items.length)));
+  }, [load, t]);
+  useForegroundRetry(Boolean(error), () => void load(Boolean(items.length), true));
 
   const openJobContact = useCallback(async (item: Job, action: string) => {
     const contact = item.contact;
@@ -100,7 +110,7 @@ export default function JobsScreen() {
       contentContainerStyle={[styles.list, compact && styles.compactList]}
       data={items}
       keyExtractor={(item) => item.id}
-      onRefresh={() => void load(true)}
+      onRefresh={() => void load(true, true)}
       refreshing={refreshing}
       ListHeaderComponent={<>
         <View style={styles.header}>
@@ -112,7 +122,7 @@ export default function JobsScreen() {
         {error && items.length ? <View testID="jobs-refresh-error" accessibilityRole="alert" style={styles.errorBanner}>
           <Text style={styles.errorTitle}>{t('jobs.refreshFailed')}</Text>
           <Text style={styles.errorDetail}>{error}</Text>
-          <Pressable accessibilityRole="button" accessibilityLabel={t('jobs.retryA11y')} style={styles.retry} onPress={() => void load(true)}><Text style={styles.retryText}>{t('jobs.retry')}</Text></Pressable>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('jobs.retryA11y')} style={styles.retry} onPress={() => void load(true, true)}><Text style={styles.retryText}>{t('jobs.retry')}</Text></Pressable>
         </View> : null}
       </>}
       renderItem={({ item }) => {
@@ -153,7 +163,7 @@ export default function JobsScreen() {
       ListEmptyComponent={loading
         ? <View testID="jobs-loading" accessibilityLiveRegion="polite" style={styles.state}><ActivityIndicator color="#1769d2" /><Text style={styles.stateText}>{t('jobs.loading')}</Text></View>
         : error
-          ? <View testID="jobs-load-error" accessibilityRole="alert" style={styles.state}><Text style={styles.errorTitle}>{t('jobs.unavailable')}</Text><Text style={styles.errorDetail}>{error}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('jobs.retryA11y')} style={styles.retry} onPress={() => void load()}><Text style={styles.retryText}>{t('jobs.retry')}</Text></Pressable></View>
+          ? <View testID="jobs-load-error" accessibilityRole="alert" style={styles.state}><Text style={styles.errorTitle}>{t('jobs.unavailable')}</Text><Text style={styles.errorDetail}>{error}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('jobs.retryA11y')} style={styles.retry} onPress={() => void load(false, true)}><Text style={styles.retryText}>{t('jobs.retry')}</Text></Pressable></View>
           : <Text testID="jobs-empty" style={styles.empty}>{t('jobs.empty')}</Text>}
     />
   </SafeAreaView>;

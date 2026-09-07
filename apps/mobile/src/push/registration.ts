@@ -28,6 +28,7 @@ const LEGACY_DEVICE_TOKEN_KEY = '@trrb/push-device-token/v1';
 const DEVICE_REGISTRATION_KEY = '@trrb/push-device-registration/v2';
 const DEVICE_PUSH_DISABLED_KEY = '@trrb/push-device-disabled/v1';
 const PENDING_REGISTRATION_KEY = '@trrb/push-registration-pending/v1';
+const DEVICE_REGISTRATION_ERROR_KEY = '@trrb/push-registration-device-error/v1';
 const isNative = Platform.OS === 'ios' || Platform.OS === 'android';
 const pushResponseGate = new PushResponseGate();
 const authRecoveryGate = new PushAuthRecoveryGate();
@@ -36,7 +37,7 @@ let tokenMutationQueue: Promise<void> = Promise.resolve();
 let pendingRetryTimer: ReturnType<typeof setTimeout> | null = null;
 let pendingRetryInFlight: Promise<string | null> | null = null;
 export type PendingPushRegistrationStatus = { attempts: number; retryAt: number; errorKind: 'network' | 'server' | 'unknown' };
-type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' | 'auth_required' | 'auth_recovered' };
+type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' | 'auth_required' | 'auth_recovered' | 'device_invalid' };
 const pendingRegistrationListeners = new Set<(event: PendingPushRegistrationEvent) => void>();
 
 function publishPendingRegistration(event: PendingPushRegistrationEvent) {
@@ -67,7 +68,7 @@ function schedulePendingRetry(delayMs: number) {
   }, Math.max(0, Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, delayMs)));
 }
 
-async function clearPendingRegistration(reason: 'synced' | 'cleared' | 'auth_required' | 'auth_recovered' = 'cleared') {
+async function clearPendingRegistration(reason: 'synced' | 'cleared' | 'auth_required' | 'auth_recovered' | 'device_invalid' = 'cleared') {
   clearPendingRetryTimer();
   await AsyncStorage.removeItem(PENDING_REGISTRATION_KEY);
   publishPendingRegistration({ status: null, reason });
@@ -123,11 +124,19 @@ export async function getPendingPushRegistrationStatus() {
   return { attempts: pending.attempts, retryAt: pending.retryAt, errorKind: pending.errorKind };
 }
 
+export async function hasPushRegistrationDeviceError() {
+  if (!isNative) return false;
+  return await AsyncStorage.getItem(DEVICE_REGISTRATION_ERROR_KEY) === 'invalid_token';
+}
+
 async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; retryTrigger?: PendingPushRetryTrigger; authenticationRecovery?: boolean } = {}) {
   if (!isNative) return null;
 
   const deviceDisabled = await AsyncStorage.getItem(DEVICE_PUSH_DISABLED_KEY) === 'true';
   if (registrationSuspended || !shouldSynchronizePushRegistration(deviceDisabled, options.requestPermission === true)) return null;
+  const deviceRegistrationInvalid = await hasPushRegistrationDeviceError();
+  if (deviceRegistrationInvalid && options.requestPermission !== true) return null;
+  if (deviceRegistrationInvalid) await AsyncStorage.removeItem(DEVICE_REGISTRATION_ERROR_KEY);
 
   const { data: sessionData } = await supabase.auth.getSession();
   const accessToken = sessionData.session?.access_token;
@@ -190,6 +199,7 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
     ]);
     await Promise.all([
       AsyncStorage.removeItem(LEGACY_DEVICE_TOKEN_KEY),
+      AsyncStorage.removeItem(DEVICE_REGISTRATION_ERROR_KEY),
       clearPendingRegistration(options.authenticationRecovery ? 'auth_recovered' : 'synced')
     ]);
     return expoPushToken;
@@ -199,6 +209,15 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
       authRecoveryGate.requireAuthentication();
       registrationSuspended = true;
       await clearPendingRegistration('auth_required');
+      throw error;
+    }
+    if (errorKind === 'device') {
+      authRecoveryGate.clear();
+      registrationSuspended = true;
+      clearPendingRetryTimer();
+      await AsyncStorage.multiRemove([PENDING_REGISTRATION_KEY, DEVICE_REGISTRATION_KEY, LEGACY_DEVICE_TOKEN_KEY]);
+      await AsyncStorage.setItem(DEVICE_REGISTRATION_ERROR_KEY, 'invalid_token');
+      publishPendingRegistration({ status: null, reason: 'device_invalid' });
       throw error;
     }
     const nextPendingRaw = nextPendingPushRegistration(
@@ -247,7 +266,7 @@ export function isPushRegistrationAuthError(error: unknown) {
 
 async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolean) {
   if (!isNative) return;
-  await clearPendingRegistration();
+  await Promise.all([clearPendingRegistration(), AsyncStorage.removeItem(DEVICE_REGISTRATION_ERROR_KEY)]);
   const rememberDisabledChoice = async () => {
     if (rememberDeviceChoice) await AsyncStorage.setItem(DEVICE_PUSH_DISABLED_KEY, 'true');
   };

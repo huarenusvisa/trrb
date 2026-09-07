@@ -46,6 +46,19 @@ test('treats forbidden token claims as expired authentication without scheduling
     && error.pushRegistrationRetryAfterMs === null);
 });
 
+test('treats a rejected Expo token as a non-retryable device registration error', async () => {
+  await assert.rejects(claimPushToken({
+    platform: 'ios', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'token',
+    fetchImpl: async () => new Response(JSON.stringify({ error: '无效的 Expo Push Token' }), {
+      status: 400,
+      headers: { 'Retry-After': '120' }
+    })
+  }), (error: unknown) => error instanceof PushRegistrationError
+    && error.pushRegistrationErrorKind === 'device'
+    && error.pushRegistrationRetryAfterMs === null
+    && /重新启用推送/.test(error.message));
+});
+
 test('converts request timeout to a user-facing error', async () => {
   await assert.rejects(claimPushToken({
     platform: 'ios', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'token', timeoutMs: 5,

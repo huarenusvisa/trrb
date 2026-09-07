@@ -184,6 +184,13 @@ test('push settings expose account-scoped pending registration and accessible re
   assert.match(registration, /errorKind: pending\.errorKind/);
   assert.match(registration, /errorKind === 'auth'/);
   assert.match(registration, /clearPendingRegistration\('auth_required'\)/);
+  assert.match(registration, /errorKind === 'device'/);
+  assert.match(registration, /multiRemove\(\[PENDING_REGISTRATION_KEY, DEVICE_REGISTRATION_KEY, LEGACY_DEVICE_TOKEN_KEY\]\)/);
+  assert.match(registration, /setItem\(DEVICE_REGISTRATION_ERROR_KEY, 'invalid_token'\)/);
+  assert.match(registration, /reason: 'device_invalid'/);
+  assert.match(settings, /push-registration-device-invalid/);
+  assert.match(settings, /push-registration-enable-again/);
+  assert.match(settings, /t\('push\.deviceRegistrationInvalidBody'\)/);
   assert.match(settings, /push-registration-auth-required/);
   assert.match(settings, /push-registration-sign-in/);
   assert.match(settings, /router\.push\('\/auth'\)/);

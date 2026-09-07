@@ -90,6 +90,9 @@ test('translates notification categories, fallback labels and push preferences',
   assert.equal(translate('zh-CN', 'push.signInAgain'), '重新登录');
   assert.equal(translate('zh-TW', 'push.signInRequired'), '需要重新登入');
   assert.equal(translate('en', 'push.signInRequiredBody'), 'Your account session has expired. Automatic retries have stopped to protect this device registration.');
+  assert.equal(translate('zh-CN', 'push.deviceRegistrationInvalid'), '本设备的推送登记已失效');
+  assert.equal(translate('zh-TW', 'push.enableAgain'), '重新啟用推送');
+  assert.equal(translate('en', 'push.deviceRegistrationInvalidBody'), 'Retries stopped and the invalid local registration was cleared. Enable push again to obtain a new device token.');
 });
 
 test('translates community categories and comment actions without changing user text', () => {

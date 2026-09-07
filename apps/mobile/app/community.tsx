@@ -107,7 +107,9 @@ export default function CommunityScreen() {
       if (sequence !== loadSequence.current) return;
       setItems((current) => {
         const known = new Set(current.map((item) => item.id));
-        return [...current, ...page.posts.filter((item) => !known.has(item.id))];
+        const nextItems = [...current, ...page.posts.filter((item) => !known.has(item.id))];
+        void cacheCommunityFeed(nextItems, page.nextOffset, category).catch(() => undefined);
+        return nextItems;
       });
       setNextOffset(page.nextOffset);
     } catch (e) {

@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -6,6 +6,9 @@ import { router } from 'expo-router';
 import { supabase } from '../auth/supabase';
 import { PushResponseGate, pushDestination, shouldRequestPushPermission } from './push-core';
 import {
+  MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  nextPendingPushRegistration,
+  pendingPushRetryDelay,
   parseStoredPushRegistration,
   serializePushRegistration,
   shouldSynchronizePushRegistration,
@@ -17,10 +20,30 @@ import { claimPushToken } from './registration-api';
 const LEGACY_DEVICE_TOKEN_KEY = '@trrb/push-device-token/v1';
 const DEVICE_REGISTRATION_KEY = '@trrb/push-device-registration/v2';
 const DEVICE_PUSH_DISABLED_KEY = '@trrb/push-device-disabled/v1';
+const PENDING_REGISTRATION_KEY = '@trrb/push-registration-pending/v1';
 const isNative = Platform.OS === 'ios' || Platform.OS === 'android';
 const pushResponseGate = new PushResponseGate();
 let registrationSuspended = false;
 let tokenMutationQueue: Promise<void> = Promise.resolve();
+let pendingRetryTimer: ReturnType<typeof setTimeout> | null = null;
+
+function clearPendingRetryTimer() {
+  if (pendingRetryTimer) clearTimeout(pendingRetryTimer);
+  pendingRetryTimer = null;
+}
+
+function schedulePendingRetry(delayMs: number) {
+  clearPendingRetryTimer();
+  pendingRetryTimer = setTimeout(() => {
+    pendingRetryTimer = null;
+    if (!registrationSuspended) void registerPushToken().catch((error) => console.warn('push token retry failed', error));
+  }, Math.max(0, Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, delayMs)));
+}
+
+async function clearPendingRegistration() {
+  clearPendingRetryTimer();
+  await AsyncStorage.removeItem(PENDING_REGISTRATION_KEY);
+}
 
 function enqueueTokenMutation<T>(mutation: () => Promise<T>) {
   const result = tokenMutationQueue.then(mutation, mutation);
@@ -73,6 +96,13 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
   const { data: auth } = await supabase.auth.getUser(accessToken);
   if (!auth.user?.id) return null;
 
+  const pendingRaw = await AsyncStorage.getItem(PENDING_REGISTRATION_KEY);
+  const pendingDelay = pendingPushRetryDelay(pendingRaw, auth.user.id);
+  if (options.requestPermission !== true && !options.devicePushToken && pendingDelay !== null && pendingDelay > 0) {
+    schedulePendingRetry(pendingDelay);
+    return null;
+  }
+
   await ensureAndroidChannel();
 
   const permission = await Notifications.getPermissionsAsync();
@@ -80,7 +110,10 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
   if (shouldRequestPushPermission(status, options.requestPermission === true)) {
     status = (await Notifications.requestPermissionsAsync()).status;
   }
-  if (status !== 'granted') return null;
+  if (status !== 'granted') {
+    await clearPendingRegistration();
+    return null;
+  }
 
   const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
   if (!projectId) throw new Error('EAS projectId is not configured for push notifications');
@@ -90,32 +123,48 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
     AsyncStorage.getItem(LEGACY_DEVICE_TOKEN_KEY)
   ]);
   const storedRegistration = parseStoredPushRegistration(storedRegistrationRaw);
-  const expoPushToken = (await Notifications.getExpoPushTokenAsync({
-    projectId,
-    ...(options.devicePushToken ? { devicePushToken: options.devicePushToken } : {})
-  })).data;
-  const claim = await claimPushToken({
-    accessToken,
-    platform: Platform.OS as 'ios' | 'android',
-    expoPushToken
-  });
-  if (claim.userId !== auth.user.id) throw new Error('推送令牌账号校验失败');
+  let expoPushToken: string | null = null;
+  try {
+    expoPushToken = (await Notifications.getExpoPushTokenAsync({
+      projectId,
+      ...(options.devicePushToken ? { devicePushToken: options.devicePushToken } : {})
+    })).data;
+    const claim = await claimPushToken({
+      accessToken,
+      platform: Platform.OS as 'ios' | 'android',
+      expoPushToken
+    });
+    if (claim.userId !== auth.user.id) throw new Error('推送令牌账号校验失败');
 
-  const staleTokens = stalePushTokensForCurrentUser(auth.user.id, expoPushToken, storedRegistration, legacyToken);
-  if (staleTokens.length) {
-    const cleanup = await supabase.from('push_tokens').update({
-      enabled: false,
-      updated_at: new Date().toISOString()
-    }).eq('user_id', auth.user.id).in('expo_push_token', staleTokens);
-    if (cleanup.error) throw cleanup.error;
+    const staleTokens = stalePushTokensForCurrentUser(auth.user.id, expoPushToken, storedRegistration, legacyToken);
+    if (staleTokens.length) {
+      const cleanup = await supabase.from('push_tokens').update({
+        enabled: false,
+        updated_at: new Date().toISOString()
+      }).eq('user_id', auth.user.id).in('expo_push_token', staleTokens);
+      if (cleanup.error) throw cleanup.error;
+    }
+
+    await AsyncStorage.multiSet([
+      [DEVICE_REGISTRATION_KEY, serializePushRegistration(auth.user.id, Platform.OS as 'ios' | 'android', expoPushToken)],
+      [DEVICE_PUSH_DISABLED_KEY, 'false']
+    ]);
+    await Promise.all([
+      AsyncStorage.removeItem(LEGACY_DEVICE_TOKEN_KEY),
+      clearPendingRegistration()
+    ]);
+    return expoPushToken;
+  } catch (error) {
+    const nextPendingRaw = nextPendingPushRegistration(
+      pendingRaw,
+      auth.user.id,
+      Platform.OS as 'ios' | 'android',
+      expoPushToken
+    );
+    await AsyncStorage.setItem(PENDING_REGISTRATION_KEY, nextPendingRaw);
+    schedulePendingRetry(pendingPushRetryDelay(nextPendingRaw, auth.user.id) ?? MAX_PENDING_PUSH_RETRY_DELAY_MS);
+    throw error;
   }
-
-  await AsyncStorage.multiSet([
-    [DEVICE_REGISTRATION_KEY, serializePushRegistration(auth.user.id, Platform.OS as 'ios' | 'android', expoPushToken)],
-    [DEVICE_PUSH_DISABLED_KEY, 'false']
-  ]);
-  await AsyncStorage.removeItem(LEGACY_DEVICE_TOKEN_KEY);
-  return expoPushToken;
 }
 
 export function registerPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken } = {}) {
@@ -125,6 +174,7 @@ export function registerPushToken(options: { requestPermission?: boolean; device
 
 async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolean) {
   if (!isNative) return;
+  await clearPendingRegistration();
   const rememberDisabledChoice = async () => {
     if (rememberDeviceChoice) await AsyncStorage.setItem(DEVICE_PUSH_DISABLED_KEY, 'true');
   };
@@ -160,11 +210,16 @@ async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolea
 
 export function disableCurrentDevicePushToken(options: { rememberDeviceChoice?: boolean } = {}) {
   registrationSuspended = true;
+  clearPendingRetryTimer();
   return enqueueTokenMutation(() => performDisableCurrentDevicePushToken(options.rememberDeviceChoice === true));
 }
 
 export function installPushRegistrationLifecycle() {
   const sync = (devicePushToken?: Notifications.DevicePushToken) => void registerPushToken({ devicePushToken }).catch((error) => console.warn('push token sync failed', error));
+  const retryPending = async () => {
+    if (registrationSuspended || !await AsyncStorage.getItem(PENDING_REGISTRATION_KEY)) return;
+    sync();
+  };
   sync();
   const { data } = supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session) {
@@ -175,9 +230,14 @@ export function installPushRegistrationLifecycle() {
   const tokenSubscription = isNative ? Notifications.addPushTokenListener((token) => {
     if (!registrationSuspended) sync(token);
   }) : null;
+  const appStateSubscription = isNative ? AppState.addEventListener('change', (state) => {
+    if (state === 'active') void retryPending().catch((error) => console.warn('push token pending retry failed', error));
+  }) : null;
   return () => {
     data.subscription.unsubscribe();
     tokenSubscription?.remove();
+    appStateSubscription?.remove();
+    clearPendingRetryTimer();
   };
 }
 

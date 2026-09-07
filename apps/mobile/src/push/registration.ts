@@ -4,14 +4,14 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 import { supabase } from '../auth/supabase';
-import { pushTargetPath, shouldRequestPushPermission } from './push-core';
+import { PushResponseGate, pushDestination, shouldRequestPushPermission } from './push-core';
 
 const DEVICE_TOKEN_KEY = '@trrb/push-device-token/v1';
 const isNative = Platform.OS === 'ios' || Platform.OS === 'android';
+const pushResponseGate = new PushResponseGate();
 
 export function openPushTarget(data: Record<string, unknown> | undefined) {
-  const path = pushTargetPath(data);
-  if (path) router.push(path as never);
+  router.push(pushDestination(data) as never);
 }
 
 async function ensureAndroidChannel() {
@@ -109,11 +109,12 @@ export function installPushRuntimeHandlers() {
     })
   });
 
-  let lastHandledIdentifier: string | null = null;
   const handleResponse = (response: Notifications.NotificationResponse | null) => {
-    if (!response || response.notification.request.identifier === lastHandledIdentifier) return;
-    lastHandledIdentifier = response.notification.request.identifier;
-    openPushTarget(response.notification.request.content.data as Record<string, unknown> | undefined);
+    if (!response || !pushResponseGate.claim(response.notification.request.identifier)) return;
+    void Notifications.clearLastNotificationResponseAsync().catch((error) => console.warn('push response cleanup failed', error));
+    setTimeout(() => {
+      openPushTarget(response.notification.request.content.data as Record<string, unknown> | undefined);
+    }, 0);
   };
 
   handleResponse(Notifications.getLastNotificationResponse());

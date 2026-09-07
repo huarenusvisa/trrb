@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { pushTargetPath, shouldRequestPushPermission } from './push-core.ts';
+import { PushResponseGate, pushDestination, pushTargetPath, shouldRequestPushPermission } from './push-core.ts';
 
 test('routes article notifications and encodes identifiers', () => {
   assert.equal(pushTargetPath({ article_id: 'news/42' }), '/article/news%2F42');
@@ -18,6 +18,25 @@ test('routes community and inbox notifications', () => {
 test('rejects arbitrary notification links', () => {
   assert.equal(pushTargetPath({ url: 'https://example.com/phishing' }), null);
   assert.equal(pushTargetPath({ article_id: '   ' }), null);
+  assert.equal(pushDestination({ url: 'https://example.com/phishing' }), '/notifications?pushTarget=unavailable');
+  assert.equal(pushDestination(undefined), '/notifications?pushTarget=unavailable');
+});
+
+test('deduplicates cold-start and listener delivery without permanently consuming a notification', () => {
+  const gate = new PushResponseGate();
+
+  assert.equal(gate.claim('notification-1', 1_000), true);
+  assert.equal(gate.claim('notification-1', 1_001), false);
+  assert.equal(gate.claim('notification-2', 1_001), true);
+  assert.equal(gate.claim('notification-1', 16_000), true);
+});
+
+test('rejects invalid response identifiers and recovers from future timestamps', () => {
+  const gate = new PushResponseGate();
+
+  assert.equal(gate.claim('   ', 1_000), false);
+  assert.equal(gate.claim('notification-1', 20_000), true);
+  assert.equal(gate.claim('notification-1', 10_000), true);
 });
 
 test('only an explicit user action may prompt for permission', () => {

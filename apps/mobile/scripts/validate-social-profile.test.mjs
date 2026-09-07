@@ -371,12 +371,15 @@ test('community feed paginates and restores only public cached posts', () => {
   assert.match(list, /community-load-more/);
   assert.match(list, /community-page-error/);
   assert.match(list, /known = new Set/);
+  assert.match(list, /cacheCommunityFeed\(nextItems, page\.nextOffset, category\)/);
   assert.match(api, /\?offset=\$\{safeOffset\}&limit=\$\{safeLimit\}/);
   assert.match(cache, /AsyncStorage\.setItem/);
   assert.match(cacheCore, /post\.status === 'published'/);
   assert.match(cacheCore, /COMMUNITY_FEED_CACHE_MAX_AGE_MS/);
   assert.match(cacheCore, /inspectCommunityFeedCache/);
   assert.match(cacheCore, /snapshot\.posts\.length > COMMUNITY_FEED_CACHE_MAX_POSTS/);
+  assert.match(cacheCore, /const truncated = publicPosts\.length > COMMUNITY_FEED_CACHE_MAX_POSTS/);
+  assert.match(cacheCore, /nextOffset: !truncated/);
   assert.match(cache, /result\.discardReason/);
   assert.match(list, /discardReason === 'expired'/);
   assert.match(list, /load\(true\)/);

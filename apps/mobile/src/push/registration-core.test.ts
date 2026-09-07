@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  PushAuthRecoveryGate,
   PushConnectivityGate,
   classifyPushRegistrationError,
   nextPendingPushRegistration,
@@ -99,6 +100,17 @@ test('retries only after a confirmed offline to online transition', () => {
   assert.equal(gate.record({ isConnected: true, isInternetReachable: false }), false);
   assert.equal(gate.record({ isConnected: true, isInternetReachable: true }), true);
   assert.equal(gate.record({ isConnected: true, isInternetReachable: true }), false);
+});
+
+test('resumes an authentication-blocked registration exactly once after sign-in', () => {
+  const gate = new PushAuthRecoveryGate();
+  assert.equal(gate.resumeAfterSignIn(), false);
+  gate.requireAuthentication();
+  assert.equal(gate.resumeAfterSignIn(), true);
+  assert.equal(gate.resumeAfterSignIn(), false);
+  gate.requireAuthentication();
+  gate.clear();
+  assert.equal(gate.resumeAfterSignIn(), false);
 });
 
 test('backs off repeated pending sync while keeping delay bounded', () => {

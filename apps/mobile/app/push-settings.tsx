@@ -69,7 +69,7 @@ export default function PushSettingsScreen() {
     const unsubscribeStatus = subscribeToPendingPushRegistration((event) => {
       if (!mounted) return;
       refreshGeneration.current += 1;
-      const completedPendingSync = event.reason === 'synced' && Boolean(pendingSyncRef.current);
+      const completedPendingSync = event.reason === 'auth_recovered' || event.reason === 'synced' && Boolean(pendingSyncRef.current);
       updatePendingSync(event.status);
       setAuthRequired(event.reason === 'auth_required');
       if (completedPendingSync) {

@@ -43,8 +43,8 @@ assert.match(client, /if \(initial\)[\s\S]*reveal: false[\s\S]*addEventListener\
 assert.match(page, /id="result-note" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"/, 'judge search must announce an atomic summary that remains programmatically focusable');
 assert.match(page, /id="results" class="results" aria-busy="false"/, 'judge results must expose loading state');
 assert.doesNotMatch(page, /id="results"[^>]*aria-live=/, 'the full judge result list must not be announced as one oversized live region');
-assert.match(page, /<form id="judge-search" role="search">[\s\S]*<label class="sr-only" for="judge-q">[^<]+<\/label>[\s\S]*<input id="judge-q" name="q" type="search"/, 'judge search must expose a persistent accessible name and search landmark');
-assert.match(page, /id="judge-q"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*aria-describedby="judge-search-help"/, 'judge search must expose mobile search keyboard intent and its visible help text');
+assert.match(page, /<h2 id="judge-search-title">[^<]+<\/h2>[\s\S]*<form id="judge-search" role="search" aria-labelledby="judge-search-title">[\s\S]*<label class="sr-only" for="judge-q">[^<]+<\/label>[\s\S]*<input id="judge-q" name="q" type="search"/, 'judge search must expose a persistent input name and a named search landmark');
+assert.match(page, /id="judge-q"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*autocomplete="off"[^>]*spellcheck="false"[^>]*aria-controls="results"[^>]*aria-describedby="judge-search-help result-note"/, 'judge search must expose mobile keyboard intent and its result and status relationships');
 assert.match(page, /<button type="submit">查询<\/button>/, 'judge search submit control must declare its button type');
 assert.match(page, /id="data-freshness" role="status" aria-live="polite" aria-busy="true"/, 'judge overview freshness must expose an accessible status');
 assert.match(page, /judges\.css\?v=4[\s\S]*app-i18n\.js\?v=8[\s\S]*judges\.js\?v=9/, 'judge search page must load overview-retry styles and the request-timeout client');

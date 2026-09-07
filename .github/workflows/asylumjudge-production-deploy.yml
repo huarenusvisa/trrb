@@ -1,0 +1,68 @@
+name: AsylumJudge Production Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'asylumjudge/**'
+      - 'asylumjudge-community.html'
+      - 'immigration-judge-approval-rate/**'
+      - 'data/immigration-judge-backgrounds.json'
+      - 'scripts/build-asylumjudge-site.mjs'
+      - 'scripts/build-asylumjudge-seo.mjs'
+      - 'scripts/asylumjudge-indexing-hygiene.mjs'
+      - 'scripts/asylumjudge-seo.test.mjs'
+      - 'netlify.asylumjudge.toml'
+      - '.github/workflows/asylumjudge-production-deploy.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: asylumjudge-production
+  cancel-in-progress: true
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: 7beb8b62-f7e3-49fc-b954-46699c9956b7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build canonical AsylumJudge site
+        run: node scripts/build-asylumjudge-site.mjs
+      - name: Verify sitemap and canonical SEO contract
+        run: node scripts/asylumjudge-seo.test.mjs
+      - name: Verify indexing hygiene report
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs = require('fs');
+          const report = JSON.parse(fs.readFileSync('.netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json', 'utf8'));
+          if (!Number.isFinite(report.localized_pages) || report.localized_pages <= 0) {
+            throw new Error('No multilingual pages were server-localized');
+          }
+          if (report.removed_untranslated_methodology_urls !== 9) {
+            throw new Error(`Expected 9 untranslated methodology URLs to be removed, got ${report.removed_untranslated_methodology_urls}`);
+          }
+          console.log(`Indexing hygiene verified: ${report.localized_pages} localized pages; ${report.server_side_replacements} server-side replacements.`);
+          NODE
+      - name: Deploy AsylumJudge production
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_AUTH_TOKEN:-}"
+          npx --yes netlify-cli@latest deploy \
+            --prod \
+            --dir=.netlify/asylumjudge-bundle/public \
+            --functions=.netlify/asylumjudge-bundle/netlify/functions \
+            --site="$NETLIFY_SITE_ID" \
+            --auth="$NETLIFY_AUTH_TOKEN" \
+            --message="AsylumJudge ${GITHUB_SHA}"

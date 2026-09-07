@@ -163,7 +163,7 @@ assert.match(detailClient, /class="trow thead outcome-row" aria-hidden="true"/, 
 assert.match(detailClient, /const accessibleSummary = `\$\{row\.judge_name\}；\$\{decisionHeading\}[\s\S]*aria-label="\$\{esc\(accessibleSummary\)\}"/, 'each judge profile link must announce every visible metric with its label');
 assert.match(courtDetailPage, /court-detail\.js\?v=7/, 'court detail must load the request-timeout client');
 assert.match(courtDetailPage, /id="loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court detail loading and failure updates must be announced');
-assert.match(courtDetailPage, /detail\.css\?v=7[\s\S]*domain-brand\.css\?v=7[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=7/, 'court detail must load current shared styles, the scope-aware request-timeout client, and expose its context targets');
+assert.match(courtDetailPage, /detail\.css\?v=7[\s\S]*domain-brand\.css\?v=8[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=7/, 'court detail must load current shared styles, the scope-aware request-timeout client, and expose its context targets');
 assert.match(judgeDetailPage, /detail\.css\?v=7/, 'judge detail must load the current shared detail styles');
 assert.match(detailCss, /\.country-tools input:focus-visible,\.country-tools button:focus-visible,\.judge-link:focus-visible,\.detail-webex a:focus-visible,\.background-copy a:focus-visible,\.method-note a:focus-visible\{outline:3px solid #101828;outline-offset:3px\}/, 'detail search, filters, profile rows, and supporting links must have a visible keyboard focus style');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');

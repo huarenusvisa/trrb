@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
+import { PageRequestGate } from '../src/components/news-page-request-core';
 import { supabase } from '../src/auth/supabase';
 import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationCategories, notificationTarget, type NotificationCategory, type NotificationType, type UserNotification } from '../src/community/notifications';
 import { useI18n } from '../src/i18n/I18nProvider';
@@ -37,14 +38,16 @@ export default function NotificationsScreen() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageError, setPageError] = useState('');
   const [cachedStatus, setCachedStatus] = useState<{ savedAt: number; count: number; truncated: boolean } | null>(null);
-  const requestId = useRef(0);
+  const requestGate = useRef(new PageRequestGate());
   const hydratedCaches = useRef(new Set<string>());
   const errorMessage = useCallback((error: unknown, fallback: MessageKey) => error instanceof Error
     ? error.message === '需要登录' ? t('inbox.signInRequired') : error.message
     : t(fallback), [t]);
 
   const load = useCallback(async (refresh = false, knownViewerId = '', announceSuccess = false) => {
-    const currentRequest = ++requestId.current;
+    const gate = requestGate.current;
+    const token = gate.startRefresh();
+    if (!token) return;
     setLoadingMore(false);
     if (refresh) setRefreshing(true);
     else {
@@ -53,19 +56,18 @@ export default function NotificationsScreen() {
     }
     try {
       const page = await withUiTimeout(listNotifications(0, PAGE_SIZE, category), t('inbox.timeout'));
-      if (currentRequest === requestId.current) {
-        setItems(page.notifications);
-        setNextOffset(page.nextOffset);
-        setPageError('');
-        setCachedStatus(null);
-        setError('');
-        if (knownViewerId) void cacheNotifications(page.notifications, page.nextOffset, knownViewerId, category).catch(() => undefined);
-        if (announceSuccess) AccessibilityInfo.announceForAccessibility(t('inbox.refreshSucceeded'));
-      }
+      if (!gate.isCurrent(token)) return;
+      setItems(page.notifications);
+      setNextOffset(page.nextOffset);
+      setPageError('');
+      setCachedStatus(null);
+      setError('');
+      if (knownViewerId) void cacheNotifications(page.notifications, page.nextOffset, knownViewerId, category).catch(() => undefined);
+      if (announceSuccess) AccessibilityInfo.announceForAccessibility(t('inbox.refreshSucceeded'));
     }
-    catch (e) { if (currentRequest === requestId.current) setError(errorMessage(e, 'inbox.loadFailed')); }
+    catch (e) { if (gate.isCurrent(token)) setError(errorMessage(e, 'inbox.loadFailed')); }
     finally {
-      if (currentRequest === requestId.current) refresh ? setRefreshing(false) : setLoading(false);
+      if (gate.finish(token)) refresh ? setRefreshing(false) : setLoading(false);
     }
   }, [category, errorMessage, t]);
 
@@ -100,7 +102,7 @@ export default function NotificationsScreen() {
       }
     };
     void begin();
-    return () => { active = false; requestId.current += 1; };
+    return () => { active = false; requestGate.current.resetFeed(); };
   }, [category, load]);
   useForegroundRetry(Boolean(error), () => void load(true, viewerId, true));
 
@@ -111,7 +113,7 @@ export default function NotificationsScreen() {
 
   const selectCategory = (nextCategory: NotificationCategory) => {
     if (nextCategory === category || markingRead) return;
-    requestId.current += 1;
+    requestGate.current.resetFeed();
     setCategory(nextCategory);
     setItems([]);
     setNextOffset(null);
@@ -124,22 +126,24 @@ export default function NotificationsScreen() {
   };
 
   const loadMore = async () => {
-    if (nextOffset === null || loadingMore || refreshing) return;
-    const currentRequest = requestId.current;
+    if (nextOffset === null || refreshing) return;
+    const gate = requestGate.current;
+    const token = gate.startAppend(nextOffset);
+    if (!token) return;
     setLoadingMore(true);
     setPageError('');
     try {
-      const page = await withUiTimeout(listNotifications(nextOffset, PAGE_SIZE, category), t('inbox.pageTimeout'));
-      if (currentRequest !== requestId.current) return;
+      const page = await withUiTimeout(listNotifications(token.offset, PAGE_SIZE, category), t('inbox.pageTimeout'));
+      if (!gate.isCurrent(token)) return;
       const known = new Set(items.map((item) => item.id));
       const nextItems = [...items, ...page.notifications.filter((item) => !known.has(item.id))];
       setItems(nextItems);
       setNextOffset(page.nextOffset);
       cacheVisibleItems(nextItems, page.nextOffset);
     } catch (e) {
-      if (currentRequest === requestId.current) setPageError(errorMessage(e, 'inbox.pageFailed'));
+      if (gate.isCurrent(token)) setPageError(errorMessage(e, 'inbox.pageFailed'));
     } finally {
-      if (currentRequest === requestId.current) setLoadingMore(false);
+      if (gate.finish(token)) setLoadingMore(false);
     }
   };
 

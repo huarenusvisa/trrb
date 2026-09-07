@@ -129,7 +129,8 @@ test('notification center filters categories and marks only the active category 
   assert.match(screen, /markAllNotificationsRead\(category\)/);
   assert.match(screen, /unread\.refresh\(\)/);
   assert.match(screen, /t\('inbox\.markCategory'\)/);
-  assert.match(screen, /requestId\.current/);
+  assert.match(screen, /new PageRequestGate\(\)/);
+  assert.match(screen, /requestGate\.current\.resetFeed\(\)/);
   assert.match(api, /notificationTypesForCategory\(category\)/);
   assert.match(api, /query\.in\('type', types\)/);
   assert.match(provider, /markNotificationsReadLocally/);
@@ -152,7 +153,10 @@ test('notification center pages older messages and restores account-scoped offli
   assert.match(screen, /'inbox\.cacheDetails'/);
   assert.match(screen, /'inbox\.cacheTruncated'/);
   assert.match(screen, /'inbox\.refreshSucceeded'/);
-  assert.match(screen, /listNotifications\(nextOffset, PAGE_SIZE, category\)/);
+  assert.match(screen, /gate\.startAppend\(nextOffset\)/);
+  assert.match(screen, /listNotifications\(token\.offset, PAGE_SIZE, category\)/);
+  assert.match(screen, /if \(!gate\.isCurrent\(token\)\) return/);
+  assert.match(screen, /if \(gate\.finish\(token\)\) setLoadingMore\(false\)/);
   assert.match(screen, /new Set\(items\.map\(\(item\) => item\.id\)\)/);
   assert.match(screen, /cacheVisibleItems\(nextItems, page\.nextOffset\)/);
   assert.match(api, /\.range\(safeOffset, safeOffset \+ safeLimit\)/);

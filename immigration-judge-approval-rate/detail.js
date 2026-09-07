@@ -10,6 +10,22 @@ let nationality = [];
 let nationalityYearly = [];
 let nationalityFiscalYear = 2026;
 let nationalitySource = null;
+const detailLoadMessages = {
+  en: { missing: 'Judge ID is missing.', unavailable: 'This judge profile is temporarily unavailable.', retryLater: 'Please try again later.', retry: 'Try again' },
+  es: { missing: 'Falta el identificador del juez.', unavailable: 'El perfil de este juez no está disponible temporalmente.', retryLater: 'Inténtalo de nuevo más tarde.', retry: 'Volver a intentar' },
+  fr: { missing: 'L’identifiant du juge est manquant.', unavailable: 'Le profil de ce juge est temporairement indisponible.', retryLater: 'Veuillez réessayer plus tard.', retry: 'Réessayer' },
+  'pt-BR': { missing: 'O identificador do juiz está ausente.', unavailable: 'O perfil deste juiz está temporariamente indisponível.', retryLater: 'Tente novamente mais tarde.', retry: 'Tentar novamente' },
+  hi: { missing: 'न्यायाधीश की आईडी उपलब्ध नहीं है।', unavailable: 'इस न्यायाधीश की प्रोफ़ाइल फ़िलहाल उपलब्ध नहीं है।', retryLater: 'कृपया बाद में फिर कोशिश करें।', retry: 'फिर कोशिश करें' },
+  'zh-Hans': { missing: '缺少法官编号。', unavailable: '暂时无法读取该法官资料。', retryLater: '请稍后重试。', retry: '重新尝试' },
+  'zh-Hant': { missing: '缺少法官編號。', unavailable: '暫時無法讀取該法官資料。', retryLater: '請稍後重試。', retry: '重新嘗試' },
+  ru: { missing: 'Не указан идентификатор судьи.', unavailable: 'Профиль этого судьи временно недоступен.', retryLater: 'Повторите попытку позже.', retry: 'Повторить' },
+  ar: { missing: 'معرّف القاضي غير موجود.', unavailable: 'الملف التعريفي لهذا القاضي غير متاح مؤقتًا.', retryLater: 'يرجى المحاولة مرة أخرى لاحقًا.', retry: 'إعادة المحاولة' },
+  tr: { missing: 'Hâkim kimliği eksik.', unavailable: 'Bu hâkimin profiline geçici olarak erişilemiyor.', retryLater: 'Lütfen daha sonra tekrar deneyin.', retry: 'Tekrar dene' }
+};
+const detailLoadCopy = () => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  return detailLoadMessages[locale] || detailLoadMessages['zh-Hans'];
+};
 const nationalityResultMessages = {
   en: 'FY {year}: {count} nationality results.',
   es: 'Año fiscal {year}: {count} resultados de nacionalidad.',
@@ -252,7 +268,7 @@ function renderCountries() {
 
 async function load() {
   const id = document.body.dataset.judgeId || new URLSearchParams(location.search).get('id');
-  if (!id) { detailLoading.textContent = '缺少法官编号'; detailLoading.setAttribute('aria-busy', 'false'); return; }
+  if (!id) { detailLoading.textContent = detailLoadCopy().missing; detailLoading.setAttribute('aria-busy', 'false'); return; }
   detailLoading.hidden = false;
   detailLoading.textContent = initialDetailLoading;
   detailLoading.setAttribute('aria-busy', 'true');
@@ -289,7 +305,8 @@ async function load() {
     detailLoading.hidden = true;
     $('#detail').hidden = false;
   } catch {
-    detailLoading.innerHTML = '<b>暂时无法读取该法官资料</b><p>请稍后重试。</p><button id="judge-detail-retry" class="detail-retry" type="button">重新尝试</button>';
+    const message = detailLoadCopy();
+    detailLoading.innerHTML = `<b>${esc(message.unavailable)}</b><p>${esc(message.retryLater)}</p><button id="judge-detail-retry" class="detail-retry" type="button">${esc(message.retry)}</button>`;
     $('#judge-detail-retry').addEventListener('click', load);
   } finally {
     detailLoading.setAttribute('aria-busy', 'false');

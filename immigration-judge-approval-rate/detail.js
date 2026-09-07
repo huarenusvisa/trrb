@@ -46,6 +46,18 @@ const nationalityPeriodMessages = {
   ar: 'السنة المالية {year}: من {start} إلى {end} · يعرض كل صف السنة المالية والجنسية وعدد القضايا ونتائج القرارات الفعلية.',
   tr: 'Mali yıl {year}: {start}–{end} · Her satır mali yılı, uyruğu, dava sayısını ve gerçek karar sonuçlarını gösterir.'
 };
+const nationalityTableLabels = {
+  en: { first: 'Fiscal year / Nationality', total: 'Total decisions', grants: 'Grants', denials: 'Denials', other: 'Other', otherTitle: 'Includes dismissals, A10, cancellation of removal, withholding of removal, voluntary departure, and other outcomes', rate: 'Adjudicated approval rate' },
+  es: { first: 'Año fiscal / Nacionalidad', total: 'Decisiones totales', grants: 'Aprobaciones', denials: 'Denegaciones', other: 'Otros', otherTitle: 'Incluye desestimaciones, A10, cancelación de expulsión, suspensión de expulsión, salida voluntaria y otros resultados', rate: 'Tasa de aprobación adjudicada' },
+  fr: { first: 'Exercice / Nationalité', total: 'Décisions totales', grants: 'Accords', denials: 'Refus', other: 'Autres', otherTitle: 'Comprend les classements, A10, annulations d’expulsion, sursis à l’expulsion, départs volontaires et autres décisions', rate: 'Taux d’approbation jugé' },
+  'pt-BR': { first: 'Ano fiscal / Nacionalidade', total: 'Total de decisões', grants: 'Aprovações', denials: 'Negações', other: 'Outros', otherTitle: 'Inclui arquivamentos, A10, cancelamento de remoção, suspensão de remoção, saída voluntária e outros resultados', rate: 'Taxa de aprovação julgada' },
+  hi: { first: 'वित्त वर्ष / राष्ट्रीयता', total: 'कुल निर्णय', grants: 'स्वीकृत', denials: 'अस्वीकृत', other: 'अन्य', otherTitle: 'इसमें खारिज मामले, A10, निष्कासन रद्दीकरण, निष्कासन पर रोक, स्वैच्छिक प्रस्थान और अन्य परिणाम शामिल हैं', rate: 'निर्णीत स्वीकृति दर' },
+  'zh-Hans': { first: '财年 / 国籍', total: '裁决总数', grants: '批准', denials: '拒绝', other: '其他', otherTitle: '包括撤案、A10、十年绿卡、暂缓递解、自愿递解等其他裁决', rate: '裁决批准率' },
+  'zh-Hant': { first: '財年 / 國籍', total: '裁決總數', grants: '批准', denials: '拒絕', other: '其他', otherTitle: '包括撤案、A10、取消遞解、暫緩遞解、自願離境等其他裁決', rate: '裁決批准率' },
+  ru: { first: 'Финансовый год / Гражданство', total: 'Всего решений', grants: 'Одобрено', denials: 'Отказано', other: 'Другие', otherTitle: 'Включает прекращение дел, A10, отмену высылки, приостановление высылки, добровольный выезд и другие решения', rate: 'Доля одобрений по существу' },
+  ar: { first: 'السنة المالية / الجنسية', total: 'إجمالي القرارات', grants: 'الموافقات', denials: 'الرفض', other: 'أخرى', otherTitle: 'يشمل إسقاط القضايا وA10 وإلغاء الإبعاد ووقف الإبعاد والمغادرة الطوعية والنتائج الأخرى', rate: 'معدل الموافقة في القضايا المفصول فيها' },
+  tr: { first: 'Mali yıl / Uyruk', total: 'Toplam karar', grants: 'Kabuller', denials: 'Retler', other: 'Diğer', otherTitle: 'Düşürülen davalar, A10, sınır dışı kararının iptali veya ertelenmesi, gönüllü ayrılış ve diğer sonuçları içerir', rate: 'Karara bağlanan dosyalarda kabul oranı' }
+};
 const nationalityResultStatus = (count, year) => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   const template = nationalityResultMessages[locale] || nationalityResultMessages['zh-Hans'];
@@ -117,6 +129,12 @@ function renderWebex(webex) {
 
 function outcomeHeader(firstLabel) {
   return `<div class="trow thead outcome-row"><span>${firstLabel}</span><span>裁决总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other" title="包括撤案、A10、十年绿卡、暂缓递解、自愿递解等其他裁决">其他</span><span>裁决批准率</span></div>`;
+}
+
+function nationalityOutcomeHeader() {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const labels = nationalityTableLabels[locale] || nationalityTableLabels['zh-Hans'];
+  return `<div class="trow thead outcome-row"><span>${esc(labels.first)}</span><span>${esc(labels.total)}</span><span class="verdict-pass">${esc(labels.grants)}</span><span class="verdict-deny">${esc(labels.denials)}</span><span class="verdict-other" title="${esc(labels.otherTitle)}">${esc(labels.other)}</span><span>${esc(labels.rate)}</span></div>`;
 }
 
 function outcomeRow(firstCell, row) {
@@ -199,7 +217,7 @@ function renderCountries() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
-  $('#nationality').innerHTML = rows.length ? `${outcomeHeader('财年 / 国籍')}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
+  $('#nationality').innerHTML = rows.length ? `${nationalityOutcomeHeader()}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
   $('#nationality-results-status').textContent = nationalityResultStatus(rows.length, nationalityFiscalYear);
 }
 

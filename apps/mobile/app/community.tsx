@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, Stack, useFocusEffect } from 'expo-router';
 import { CommunityCategory, CommunityPost, listCommunityPosts, toggleCommunityPostLike } from '../src/api/community';
 import { supabase } from '../src/auth/supabase';
@@ -42,7 +42,7 @@ export default function CommunityScreen() {
   const hydratedCaches = useRef(new Set<string>());
   const loadSequence = useRef(0);
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (announceSuccess = false) => {
     const sequence = ++loadSequence.current;
     try {
       const [{ data }, page] = await withUiTimeout(Promise.all([supabase.auth.getSession(), listCommunityPosts(0, PAGE_SIZE, category || undefined)]), t('community.timeout'), 16_000);
@@ -54,6 +54,7 @@ export default function CommunityScreen() {
       setShowingCached(false);
       setError('');
       void cacheCommunityFeed(page.posts, page.nextOffset, category).catch(() => undefined);
+      if (announceSuccess) AccessibilityInfo.announceForAccessibility(t('community.refreshSucceeded'));
     } catch (e) {
       if (sequence !== loadSequence.current) return;
       setError(e instanceof Error ? e.message : t('community.loadFailed'));
@@ -68,10 +69,17 @@ export default function CommunityScreen() {
   useFocusEffect(useCallback(() => {
     let active = true;
     const begin = async () => {
+      let announceRefresh = false;
       if (!hydratedCaches.current.has(category)) {
         hydratedCaches.current.add(category);
-        const cached = await readCachedCommunityFeed(category).catch(() => null);
+        const cachedResult = await readCachedCommunityFeed(category).catch(() => null);
+        if (active && cachedResult?.discardReason === 'expired') {
+          announceRefresh = true;
+          AccessibilityInfo.announceForAccessibility(t('community.cacheExpired'));
+        }
+        const cached = cachedResult?.snapshot;
         if (active && cached?.posts.length) {
+          announceRefresh = true;
           setItems((current) => current.length ? current : cached.posts);
           setNextOffset(cached.nextOffset);
           setShowingCached(true);
@@ -80,15 +88,15 @@ export default function CommunityScreen() {
       }
       if (active) {
         setRefreshing(true);
-        void load();
+        void load(announceRefresh);
       }
     };
     void begin();
     return () => { active = false; loadSequence.current += 1; };
   }, [load]));
-  useForegroundRetry(Boolean(error), () => { setRefreshing(true); void load(); });
+  useForegroundRetry(Boolean(error), () => { setRefreshing(true); void load(true); });
 
-  const retryCommunity = () => { setRefreshing(true); setPageError(''); void load(); };
+  const retryCommunity = () => { setRefreshing(true); setPageError(''); void load(true); };
   const loadMore = async () => {
     if (nextOffset === null || loadingMore || refreshing) return;
     const sequence = loadSequence.current;
@@ -155,7 +163,7 @@ export default function CommunityScreen() {
       })}
     </ScrollView>
     {loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="community-loading" title={t('community.loadingTitle')} message={t('community.loadingBody')} busy /></View> :
-      <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void load(); }} />}>
+      <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void load(true); }} />}>
         {showingCached ? <View testID="community-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>{t('community.cacheNotice')}</Text></View> : null}
         {error ? <AsyncStatePanel testID="community-error" tone="error" title={t('community.errorTitle')} message={error} actionLabel={t('community.reload')} onAction={retryCommunity} busy={refreshing} /> : null}
         {!error && items.length === 0 ? <AsyncStatePanel testID="community-empty" title={category ? t('community.emptyCategory', { category: t(categoryKeys[category]) }) : t('community.emptyAll')} message={t('community.emptyBody')} actionLabel={signedIn ? t('community.publishFirst') : t('community.signInToPost')} onAction={compose} /> : null}

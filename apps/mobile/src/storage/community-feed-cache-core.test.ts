@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { COMMUNITY_FEED_CACHE_MAX_AGE_MS, communityFeedCacheKey, parseCommunityFeedCache, publicCommunityFeedSnapshot } from './community-feed-cache-core.ts';
+import {
+  COMMUNITY_FEED_CACHE_MAX_AGE_MS,
+  COMMUNITY_FEED_CACHE_MAX_POSTS,
+  communityFeedCacheKey,
+  inspectCommunityFeedCache,
+  parseCommunityFeedCache,
+  publicCommunityFeedSnapshot,
+} from './community-feed-cache-core.ts';
 
 const post = {
   id: 'post-1', user_id: 'user-1', category: 'immigration_help', title: '公开帖子', content: '公开内容',
@@ -14,10 +21,23 @@ test('restores a recent public community page', () => {
   assert.equal(parseCommunityFeedCache(raw, COMMUNITY_FEED_CACHE_MAX_AGE_MS + 101), null);
 });
 
-test('never persists pending or malformed community posts', () => {
+test('classifies expired cache separately from malformed or future content', () => {
+  const now = 20_000_000_000;
+  const expired = JSON.stringify({ savedAt: now - COMMUNITY_FEED_CACHE_MAX_AGE_MS - 1, snapshot: { posts: [post], nextOffset: 20 } });
+  const future = JSON.stringify({ savedAt: now + 10 * 60 * 1000, snapshot: { posts: [post], nextOffset: 20 } });
+
+  assert.deepEqual(inspectCommunityFeedCache(expired, now), { payload: null, discardReason: 'expired' });
+  assert.deepEqual(inspectCommunityFeedCache(future, now), { payload: null, discardReason: 'invalid' });
+  assert.deepEqual(inspectCommunityFeedCache(null, now), { payload: null, discardReason: null });
+});
+
+test('never persists pending, oversized, or malformed community posts', () => {
   const pending = { ...post, id: 'pending-1', status: 'pending' as const };
   assert.deepEqual(publicCommunityFeedSnapshot([pending, post], 20).posts.map((item) => item.id), ['post-1']);
+  assert.equal(publicCommunityFeedSnapshot([post], -1).nextOffset, null);
   assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: [pending], nextOffset: null } }), 200), null);
+  assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: Array.from({ length: COMMUNITY_FEED_CACHE_MAX_POSTS + 1 }, (_, index) => ({ ...post, id: String(index) })), nextOffset: 20 } }), 200), null);
+  assert.equal(parseCommunityFeedCache(JSON.stringify({ savedAt: 100, snapshot: { posts: [post], nextOffset: -1 } }), 200), null);
   assert.equal(parseCommunityFeedCache('{', 200), null);
 });
 

@@ -5,10 +5,27 @@ import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 import { supabase } from '../auth/supabase';
 import { PushResponseGate, pushDestination, shouldRequestPushPermission } from './push-core';
+import {
+  parseStoredPushRegistration,
+  serializePushRegistration,
+  shouldSynchronizePushRegistration,
+  stalePushTokensForCurrentUser,
+  tokenToDisableForCurrentUser
+} from './registration-core';
 
-const DEVICE_TOKEN_KEY = '@trrb/push-device-token/v1';
+const LEGACY_DEVICE_TOKEN_KEY = '@trrb/push-device-token/v1';
+const DEVICE_REGISTRATION_KEY = '@trrb/push-device-registration/v2';
+const DEVICE_PUSH_DISABLED_KEY = '@trrb/push-device-disabled/v1';
 const isNative = Platform.OS === 'ios' || Platform.OS === 'android';
 const pushResponseGate = new PushResponseGate();
+let registrationSuspended = false;
+let tokenMutationQueue: Promise<void> = Promise.resolve();
+
+function enqueueTokenMutation<T>(mutation: () => Promise<T>) {
+  const result = tokenMutationQueue.then(mutation, mutation);
+  tokenMutationQueue = result.then(() => undefined, () => undefined);
+  return result;
+}
 
 export function openPushTarget(data: Record<string, unknown> | undefined) {
   router.push(pushDestination(data) as never);
@@ -34,11 +51,20 @@ export async function getPushPermissionStatus() {
 }
 
 export async function hasCurrentDevicePushToken() {
-  return isNative && Boolean(await AsyncStorage.getItem(DEVICE_TOKEN_KEY));
+  if (!isNative) return false;
+  const [registration, legacyToken, disabled] = await Promise.all([
+    AsyncStorage.getItem(DEVICE_REGISTRATION_KEY),
+    AsyncStorage.getItem(LEGACY_DEVICE_TOKEN_KEY),
+    AsyncStorage.getItem(DEVICE_PUSH_DISABLED_KEY)
+  ]);
+  return disabled !== 'true' && Boolean(parseStoredPushRegistration(registration) || legacyToken?.trim());
 }
 
-export async function registerPushToken(options: { requestPermission?: boolean } = {}) {
+async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken } = {}) {
   if (!isNative) return null;
+
+  const deviceDisabled = await AsyncStorage.getItem(DEVICE_PUSH_DISABLED_KEY) === 'true';
+  if (registrationSuspended || !shouldSynchronizePushRegistration(deviceDisabled, options.requestPermission === true)) return null;
 
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user?.id) return null;
@@ -55,7 +81,15 @@ export async function registerPushToken(options: { requestPermission?: boolean }
   const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
   if (!projectId) throw new Error('EAS projectId is not configured for push notifications');
 
-  const expoPushToken = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+  const [storedRegistrationRaw, legacyToken] = await Promise.all([
+    AsyncStorage.getItem(DEVICE_REGISTRATION_KEY),
+    AsyncStorage.getItem(LEGACY_DEVICE_TOKEN_KEY)
+  ]);
+  const storedRegistration = parseStoredPushRegistration(storedRegistrationRaw);
+  const expoPushToken = (await Notifications.getExpoPushTokenAsync({
+    projectId,
+    ...(options.devicePushToken ? { devicePushToken: options.devicePushToken } : {})
+  })).data;
   const result = await supabase.from('push_tokens').upsert({
     user_id: auth.user.id,
     platform: Platform.OS,
@@ -64,39 +98,85 @@ export async function registerPushToken(options: { requestPermission?: boolean }
     updated_at: new Date().toISOString()
   }, { onConflict: 'user_id,expo_push_token' });
   if (result.error) throw result.error;
-  await AsyncStorage.setItem(DEVICE_TOKEN_KEY, expoPushToken);
+
+  const staleTokens = stalePushTokensForCurrentUser(auth.user.id, expoPushToken, storedRegistration, legacyToken);
+  if (staleTokens.length) {
+    const cleanup = await supabase.from('push_tokens').update({
+      enabled: false,
+      updated_at: new Date().toISOString()
+    }).eq('user_id', auth.user.id).in('expo_push_token', staleTokens);
+    if (cleanup.error) throw cleanup.error;
+  }
+
+  await AsyncStorage.multiSet([
+    [DEVICE_REGISTRATION_KEY, serializePushRegistration(auth.user.id, Platform.OS as 'ios' | 'android', expoPushToken)],
+    [DEVICE_PUSH_DISABLED_KEY, 'false']
+  ]);
+  await AsyncStorage.removeItem(LEGACY_DEVICE_TOKEN_KEY);
   return expoPushToken;
 }
 
-export async function disableCurrentDevicePushToken() {
-  if (!isNative) return;
-  const { data: auth } = await supabase.auth.getUser();
-  if (!auth.user?.id) return;
+export function registerPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken } = {}) {
+  if (options.requestPermission === true) registrationSuspended = false;
+  return enqueueTokenMutation(() => performRegisterPushToken(options));
+}
 
-  let token = await AsyncStorage.getItem(DEVICE_TOKEN_KEY);
+async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolean) {
+  if (!isNative) return;
+  const rememberDisabledChoice = async () => {
+    if (rememberDeviceChoice) await AsyncStorage.setItem(DEVICE_PUSH_DISABLED_KEY, 'true');
+  };
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user?.id) return rememberDisabledChoice();
+
+  const [storedRegistrationRaw, legacyToken] = await Promise.all([
+    AsyncStorage.getItem(DEVICE_REGISTRATION_KEY),
+    AsyncStorage.getItem(LEGACY_DEVICE_TOKEN_KEY)
+  ]);
+  const storedRegistration = parseStoredPushRegistration(storedRegistrationRaw);
+  let liveToken: string | null = null;
+  let token = tokenToDisableForCurrentUser(auth.user.id, storedRegistration, legacyToken, null);
   if (!token) {
     const permission = await Notifications.getPermissionsAsync();
-    if (permission.status !== 'granted') return;
+    if (permission.status !== 'granted') return rememberDisabledChoice();
     const projectId = Constants.expoConfig?.extra?.eas?.projectId ?? Constants.easConfig?.projectId;
-    if (!projectId) return;
-    token = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+    if (!projectId) return rememberDisabledChoice();
+    liveToken = (await Notifications.getExpoPushTokenAsync({ projectId })).data;
+    token = tokenToDisableForCurrentUser(auth.user.id, storedRegistration, legacyToken, liveToken);
   }
+  if (!token) return;
 
   const result = await supabase.from('push_tokens').update({
     enabled: false,
     updated_at: new Date().toISOString()
   }).eq('user_id', auth.user.id).eq('expo_push_token', token);
   if (result.error) throw result.error;
-  await AsyncStorage.removeItem(DEVICE_TOKEN_KEY);
+  if (storedRegistration?.userId === auth.user.id) await AsyncStorage.removeItem(DEVICE_REGISTRATION_KEY);
+  if (legacyToken?.trim() === token) await AsyncStorage.removeItem(LEGACY_DEVICE_TOKEN_KEY);
+  await rememberDisabledChoice();
+}
+
+export function disableCurrentDevicePushToken(options: { rememberDeviceChoice?: boolean } = {}) {
+  registrationSuspended = true;
+  return enqueueTokenMutation(() => performDisableCurrentDevicePushToken(options.rememberDeviceChoice === true));
 }
 
 export function installPushRegistrationLifecycle() {
-  const sync = () => void registerPushToken().catch((error) => console.warn('push token sync failed', error));
+  const sync = (devicePushToken?: Notifications.DevicePushToken) => void registerPushToken({ devicePushToken }).catch((error) => console.warn('push token sync failed', error));
   sync();
   const { data } = supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session) setTimeout(sync, 0);
+    if (event === 'SIGNED_IN' && session) {
+      registrationSuspended = false;
+      setTimeout(sync, 0);
+    }
   });
-  return () => data.subscription.unsubscribe();
+  const tokenSubscription = isNative ? Notifications.addPushTokenListener((token) => {
+    if (!registrationSuspended) sync(token);
+  }) : null;
+  return () => {
+    data.subscription.unsubscribe();
+    tokenSubscription?.remove();
+  };
 }
 
 export function installPushRuntimeHandlers() {

@@ -1,7 +1,7 @@
 import type { CommunityPost } from '../api/community-core';
 
 export const COMMUNITY_FEED_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
-export const COMMUNITY_FEED_CACHE_MAX_POSTS = 20;
+export const COMMUNITY_FEED_CACHE_MAX_POSTS = 60;
 const COMMUNITY_FEED_CACHE_FUTURE_TOLERANCE_MS = 5 * 60 * 1000;
 const COMMUNITY_FEED_CACHE_KEY = 'trrb.community.feed.v1';
 
@@ -61,8 +61,16 @@ export function parseCommunityFeedCache(raw: string | null, now = Date.now()): C
 }
 
 export function publicCommunityFeedSnapshot(posts: CommunityPost[], nextOffset: number | null): CommunityFeedSnapshot {
+  const seen = new Set<string>();
+  const publicPosts = posts.filter((post) => {
+    const id = String(post?.id || '').trim();
+    if (!validPublicPost(post) || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+  const truncated = publicPosts.length > COMMUNITY_FEED_CACHE_MAX_POSTS;
   return {
-    posts: posts.filter(validPublicPost).slice(0, COMMUNITY_FEED_CACHE_MAX_POSTS),
-    nextOffset: nextOffset !== null && Number.isInteger(nextOffset) && nextOffset >= 0 ? nextOffset : null,
+    posts: publicPosts.slice(0, COMMUNITY_FEED_CACHE_MAX_POSTS),
+    nextOffset: !truncated && nextOffset !== null && Number.isInteger(nextOffset) && nextOffset >= 0 ? nextOffset : null,
   };
 }

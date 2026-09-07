@@ -8,7 +8,9 @@ const MAX_ROWS = Number(process.env.ICE_NEWS_QUALITY_MAX || 4000);
 
 const NATIVE_HANDLE = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*|hsi[a-z0-9_]*)$/i;
 const NOISE = /ice cream|iced latte|iced coffee|ice tea|ice cube|ice cubes|ice hockey|hockey|ice wizard|ice spice|ice rink|skating|frost invasion|operation ice\b|glacier|espresso|beverage|product shot|summer joy|waffle cone|salted caramel/i;
-const AGENCY = /\bICE\b|immigration and customs enforcement|enforcement and removal operations|\bERO\b|\bHSI\b|homeland security investigations|\bDHS\b|department of homeland security|\bCBP\b|customs and border protection|border patrol|immigration agents?|immigration officers?|deportation officers?|移民与海关执法局|移民和海关执法局|移民局特工|移民执法人员|国土安全调查局|边境巡逻/i;
+const ACRONYM_AGENCY = /\b(?:ICE|ERO|HSI|DHS|CBP)\b/;
+const AGENCY_PHRASE = /immigration and customs enforcement|enforcement and removal operations|homeland security investigations|department of homeland security|customs and border protection|border patrol|immigration agents?|immigration officers?|deportation officers?|移民与海关执法局|移民和海关执法局|移民局特工|移民执法人员|国土安全调查局|边境巡逻/i;
+const STRONG_AGENCY_ACTION = /\bice\s+(?:agents?|officers?|officials?|raid|arrest|detention|operation|deportation|director)\b|\bero\b|\bhsi\b|immigration and customs enforcement|homeland security investigations/i;
 const LOWERCASE_ICE_WITH_IMMIGRATION = /\bice\b/i;
 const IMMIGRATION = /immigration|immigrant|migrant|undocumented|illegal alien|illegal immigrant|deport|removal|asylum|border|visa|green card|移民|非法入境|无证|庇护|边境|遣返|递解|驱逐/i;
 const CONCRETE_ACTION = /arrest(?:ed|s|ing)?|apprehend(?:ed|s|ing)?|detain(?:ed|s|ing)?|detention|taken into custody|raid(?:ed|s|ing)?|execut(?:e|ed|ing)|operation (?:is )?(?:underway|launched)|deport(?:ed|s|ing)?|removal flight|repatriat(?:e|ed|ion)|warrant|fugitive|custody|charged|indicted|sentenced|convicted|released|rescued|recovered|traffick|smuggl|shooting|shot by|killed by|fatal|death|use of force|vehicle stop|worksite enforcement|抓捕|抓获|拘捕|逮捕|拘留|拘押|羁押|带走|抓走|遣返|递解|驱逐|突袭|搜捕|扫荡|执法行动|查获|起诉|判刑|释放|枪击|开枪|死亡|身亡|营救|人口贩卖|走私/i;
@@ -53,20 +55,23 @@ function staleRecap(text) {
   }
   return /\blast year\b|\bin 2025\b|\b2025 arrest\b|\bmonths later\b|\b60 days later\b|\b90 days later\b|几个月前|数月前|去年|2025年/i.test(value);
 }
+function hasAgencyContext(text) {
+  return ACRONYM_AGENCY.test(text) || AGENCY_PHRASE.test(text) || (LOWERCASE_ICE_WITH_IMMIGRATION.test(text) && IMMIGRATION.test(text));
+}
 
 export function classifyNewsQuality(row) {
   const text = String(row?.source_text || "");
   const username = String(row?.source_username || "").replace(/^@/, "").trim();
   const type = String(row?.source_type || "").trim();
   const native = NATIVE_HANDLE.test(username) || /^(official|government|agency)$/i.test(type);
-  const agency = AGENCY.test(text) || (LOWERCASE_ICE_WITH_IMMIGRATION.test(text) && IMMIGRATION.test(text));
+  const agency = hasAgencyContext(text);
   const concrete = CONCRETE_ACTION.test(text);
   const judicial = JUDICIAL_UPDATE.test(text);
 
-  if (NOISE.test(text) && !AGENCY.test(text)) return { keep: false, reason: "ice_lexical_noise_filtered" };
+  if (NOISE.test(text) && !STRONG_AGENCY_ACTION.test(text)) return { keep: false, reason: "ice_lexical_noise_filtered" };
   if (!agency && !native) return { keep: false, reason: "missing_ice_agency_context" };
 
-  if (ANTI_ICE_PROTEST.test(text) && !/\bICE\b.{0,80}(arrest|detain|raid|deport|agent|officer)|(?:arrest|detain|raid|deport).{0,80}\bICE\b/i.test(text)) {
+  if (ANTI_ICE_PROTEST.test(text) && !/\bice\b.{0,80}(arrest|detain|raid|deport|agent|officer)|(?:arrest|detain|raid|deport).{0,80}\bice\b/i.test(text)) {
     return { keep: false, reason: "anti_ice_protest_without_enforcement_event" };
   }
 
@@ -120,7 +125,7 @@ async function main() {
   }
   await reject(rejected);
   console.log(JSON.stringify({
-    stage: "ice-news-quality-gate-v1",
+    stage: "ice-news-quality-gate-v2",
     scanned: active.length,
     kept,
     rejected: active.length - kept,

@@ -72,14 +72,42 @@ function loadTranslationRows(source) {
   return rows;
 }
 
+function loadNationalityTranslations(source) {
+  const start = source.indexOf('const en =');
+  const end = source.indexOf('const supported =', start);
+  if (start < 0 || end <= start) throw new Error('Unable to read nationality translation dictionaries');
+  const setup = source.slice(start, end);
+  const translations = runInNewContext(`(() => { ${setup}\nreturn translations; })()`, Object.create(null), { timeout: 2000 });
+  if (!translations?.en || !translations?.['zh-Hans']) throw new Error('Nationality translation dictionaries are incomplete');
+  return translations;
+}
+
 function translationPairs(rows, localeCode) {
   const column = TRANSLATION_COLUMN.get(localeCode);
   if (!column) return [];
   return rows
     .filter((row) => Array.isArray(row) && typeof row[0] === 'string' && typeof row[column] === 'string')
     .map((row) => [row[0], row[column]])
-    .filter(([source, target]) => source && target && source !== target)
-    .sort((a, b) => b[0].length - a[0].length);
+    .filter(([source, target]) => source && target && source !== target);
+}
+
+function nationalityTranslationPairs(translations, localeCode) {
+  const source = translations['zh-Hans'] || {};
+  const target = translations[localeCode] || {};
+  const fallback = translations.en || {};
+  return Object.entries(source)
+    .map(([key, sourceText]) => [sourceText, target[key] ?? fallback[key]])
+    .filter(([sourceText, targetText]) => typeof sourceText === 'string' && typeof targetText === 'string' && sourceText && targetText && sourceText !== targetText);
+}
+
+function mergeTranslationPairs(...groups) {
+  const merged = new Map();
+  for (const group of groups) {
+    for (const [source, target] of group) {
+      if (!merged.has(source)) merged.set(source, target);
+    }
+  }
+  return [...merged.entries()].sort((a, b) => b[0].length - a[0].length);
 }
 
 function escapeRegex(value) {
@@ -178,10 +206,18 @@ async function assertSitemapHygiene(output) {
 }
 
 export async function applyAsylumJudgeIndexingHygiene({ root, output }) {
-  const i18n = await readFile(join(root, 'asylumjudge', 'app-i18n.js'), 'utf8');
-  const rows = loadTranslationRows(i18n);
+  const globalI18n = await readFile(join(root, 'asylumjudge', 'app-i18n.js'), 'utf8');
+  const nationalityI18n = await readFile(join(root, 'immigration-judge-approval-rate', 'china-dashboard-i18n.js'), 'utf8');
+  const rows = loadTranslationRows(globalI18n);
+  const nationalityTranslations = loadNationalityTranslations(nationalityI18n);
   const pages = await collectIndexPages(output);
-  const translators = new Map([...TRANSLATION_COLUMN.keys()].map((locale) => [locale, createTranslator(translationPairs(rows, locale))]));
+  const translators = new Map([...TRANSLATION_COLUMN.keys()].map((locale) => [
+    locale,
+    createTranslator(mergeTranslationPairs(
+      nationalityTranslationPairs(nationalityTranslations, locale),
+      translationPairs(rows, locale)
+    ))
+  ]));
 
   let localizedPages = 0;
   let replacementCount = 0;
@@ -211,10 +247,11 @@ export async function applyAsylumJudgeIndexingHygiene({ root, output }) {
     localized_pages: localizedPages,
     server_side_replacements: replacementCount,
     removed_untranslated_methodology_urls: removedMethodologyUrls,
+    high_cjk_page_count: cjkWarnings.length,
     high_cjk_pages: cjkWarnings.slice(0, 50)
   };
   await writeFile(join(output, 'asylumjudge-indexing-hygiene.json'), `${JSON.stringify(report, null, 2)}\n`);
   console.log(`AsylumJudge indexing hygiene: ${localizedPages} pages localized server-side, ${removedMethodologyUrls} untranslated methodology URLs removed from sitemap`);
-  if (cjkWarnings.length) console.warn(`AsylumJudge indexing hygiene: ${cjkWarnings.length} non-Chinese pages still contain substantial CJK text; see asylumjudge-indexing-hygiene.json`);
+  console.log(`AsylumJudge indexing hygiene: ${cjkWarnings.length} non-Chinese pages remain above the CJK warning threshold`);
   return report;
 }

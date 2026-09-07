@@ -34,6 +34,18 @@ const nationalityEmptyMessages = {
   ar: 'لا توجد بيانات جنسية مطابقة لهذه السنة المالية.',
   tr: 'Bu mali yıl için eşleşen uyruk verisi yok.'
 };
+const nationalityPeriodMessages = {
+  en: 'FY {year}: {start} to {end} · Each row shows fiscal year, nationality, case count, and actual decision outcomes.',
+  es: 'Año fiscal {year}: del {start} al {end} · Cada fila muestra el año fiscal, la nacionalidad, el número de casos y los resultados reales.',
+  fr: 'Exercice {year} : du {start} au {end} · Chaque ligne indique l’exercice, la nationalité, le nombre de dossiers et les décisions réelles.',
+  'pt-BR': 'Ano fiscal {year}: de {start} a {end} · Cada linha mostra o ano fiscal, a nacionalidade, o número de casos e os resultados reais.',
+  hi: 'वित्त वर्ष {year}: {start} से {end} · हर पंक्ति में वित्त वर्ष, राष्ट्रीयता, मामलों की संख्या और वास्तविक निर्णय परिणाम दिखते हैं।',
+  'zh-Hans': 'FY {year}：{start} 至 {end} · 每行显示财年、国籍、案件数和真实裁决结果。',
+  'zh-Hant': 'FY {year}：{start} 至 {end} · 每列顯示財年、國籍、案件數和實際裁決結果。',
+  ru: 'Финансовый год {year}: с {start} по {end} · В каждой строке указаны год, гражданство, число дел и фактические решения.',
+  ar: 'السنة المالية {year}: من {start} إلى {end} · يعرض كل صف السنة المالية والجنسية وعدد القضايا ونتائج القرارات الفعلية.',
+  tr: 'Mali yıl {year}: {start}–{end} · Her satır mali yılı, uyruğu, dava sayısını ve gerçek karar sonuçlarını gösterir.'
+};
 const nationalityResultStatus = (count, year) => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   const template = nationalityResultMessages[locale] || nationalityResultMessages['zh-Hans'];
@@ -164,8 +176,14 @@ function enrichNationalityRow(row) {
 }
 
 function nationalityPeriodLabel(year) {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const template = nationalityPeriodMessages[locale] || nationalityPeriodMessages['zh-Hans'];
+  const start = `${Number(year) - 1}-10-01`;
   const end = Number(year) === 2026 ? (nationalitySource?.scope_end || '2026-07-01') : `${year}-09-30`;
-  return `FY ${year}：${Number(year) - 1}-10-01 至 ${end} · 每行显示财年、国籍、案件数和真实裁决结果。`;
+  return template
+    .replace('{year}', String(year))
+    .replace('{start}', start)
+    .replace('{end}', end);
 }
 
 function renderCountries() {

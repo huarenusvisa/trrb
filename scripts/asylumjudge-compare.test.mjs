@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 const root = process.cwd();
 const read = (relative) => readFile(join(root, relative), 'utf8');
-const [html, js, css, focusCss, home, routes, built, seoAudit] = await Promise.all([
+const [html, js, css, focusCss, home, routes, built, builtEnglish, hygieneText, seoAudit] = await Promise.all([
   read('immigration-judge-approval-rate/compare.html'),
   read('immigration-judge-approval-rate/compare.js'),
   read('immigration-judge-approval-rate/compare.css'),
@@ -12,8 +12,11 @@ const [html, js, css, focusCss, home, routes, built, seoAudit] = await Promise.a
   read('asylumjudge/index.html'),
   read('scripts/build-asylumjudge-site.mjs'),
   read('.netlify/asylumjudge-bundle/public/compare/index.html'),
+  read('.netlify/asylumjudge-bundle/public/en/compare/index.html'),
+  read('.netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json'),
   read('scripts/seo-integrity-audit.mjs')
 ]);
+const hygiene = JSON.parse(hygieneText);
 
 assert.match(home, /href="\/compare"/, 'homepage must link to judge comparison');
 assert.match(html, /id="compare-search"/);
@@ -104,5 +107,8 @@ for (const selector of ['.compare-search-wrap button', '.compare-section-head > 
 assert.doesNotMatch(css, /\.compare-search-result\{[^}]*text-align:left/, 'Arabic search results must not be forced left');
 assert.match(built, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/compare\/">/);
 assert.match(built, /<meta name="robots" content="index,follow,/);
+assert.match(builtEnglish, />Compare immigration judges<\/h1>/, 'server-rendered English comparison copy must use the page-specific translation');
+assert.match(builtEnglish, />Select 2–4 judges to compare approval rates, denials, sample sizes, yearly trends, nationalities, and official appointment backgrounds\.<\/p>/, 'server-rendered comparison intro must not be assembled from partial word replacements');
+assert.equal(hygiene.high_cjk_page_count, 0, 'non-Chinese generated pages must remain below the CJK warning threshold');
 
 console.log('AsylumJudge judge comparison contract: PASS');

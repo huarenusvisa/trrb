@@ -82,6 +82,16 @@ function loadNationalityTranslations(source) {
   return translations;
 }
 
+function loadCompareTranslations(source) {
+  const start = source.indexOf('const copy =');
+  const end = source.indexOf('const sharedCopy =', start);
+  if (start < 0 || end <= start) throw new Error('Unable to read comparison translation dictionaries');
+  const setup = source.slice(start, end);
+  const translations = runInNewContext(`(() => { ${setup}\nreturn copy; })()`, Object.create(null), { timeout: 2000 });
+  if (!translations?.en || !translations?.['zh-Hans']) throw new Error('Comparison translation dictionaries are incomplete');
+  return translations;
+}
+
 function translationPairs(rows, localeCode) {
   const column = TRANSLATION_COLUMN.get(localeCode);
   if (!column) return [];
@@ -97,6 +107,14 @@ function nationalityTranslationPairs(translations, localeCode) {
   const fallback = translations.en || {};
   return Object.entries(source)
     .map(([key, sourceText]) => [sourceText, target[key] ?? fallback[key]])
+    .filter(([sourceText, targetText]) => typeof sourceText === 'string' && typeof targetText === 'string' && sourceText && targetText && sourceText !== targetText);
+}
+
+function compareTranslationPairs(translations, localeCode) {
+  const source = translations['zh-Hans'] || {};
+  const target = translations[localeCode] || translations.en || {};
+  return Object.entries(source)
+    .map(([key, sourceText]) => [sourceText, target[key]])
     .filter(([sourceText, targetText]) => typeof sourceText === 'string' && typeof targetText === 'string' && sourceText && targetText && sourceText !== targetText);
 }
 
@@ -208,12 +226,22 @@ async function assertSitemapHygiene(output) {
 export async function applyAsylumJudgeIndexingHygiene({ root, output }) {
   const globalI18n = await readFile(join(root, 'asylumjudge', 'app-i18n.js'), 'utf8');
   const nationalityI18n = await readFile(join(root, 'immigration-judge-approval-rate', 'china-dashboard-i18n.js'), 'utf8');
+  const compareI18n = await readFile(join(root, 'immigration-judge-approval-rate', 'compare.js'), 'utf8');
   const rows = loadTranslationRows(globalI18n);
   const nationalityTranslations = loadNationalityTranslations(nationalityI18n);
+  const compareTranslations = loadCompareTranslations(compareI18n);
   const pages = await collectIndexPages(output);
   const translators = new Map([...TRANSLATION_COLUMN.keys()].map((locale) => [
     locale,
     createTranslator(mergeTranslationPairs(
+      nationalityTranslationPairs(nationalityTranslations, locale),
+      translationPairs(rows, locale)
+    ))
+  ]));
+  const compareTranslators = new Map([...TRANSLATION_COLUMN.keys()].map((locale) => [
+    locale,
+    createTranslator(mergeTranslationPairs(
+      compareTranslationPairs(compareTranslations, locale),
       nationalityTranslationPairs(nationalityTranslations, locale),
       translationPairs(rows, locale)
     ))
@@ -225,7 +253,7 @@ export async function applyAsylumJudgeIndexingHygiene({ root, output }) {
   for (const filename of pages) {
     const { rel, locale } = localeForGeneratedPage(output, filename);
     if (locale === 'zh-Hans' || rel.endsWith('/methodology/index.html')) continue;
-    const translate = translators.get(locale);
+    const translate = rel.endsWith('compare/index.html') ? compareTranslators.get(locale) : translators.get(locale);
     if (!translate) continue;
     let html = await readFile(filename, 'utf8');
     const result = translate(html);

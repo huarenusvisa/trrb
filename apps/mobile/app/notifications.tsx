@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { PageRequestGate } from '../src/components/news-page-request-core';
+import { NotificationActionGate } from '../src/notifications/notification-action-core';
 import { supabase } from '../src/auth/supabase';
 import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationCategories, notificationTarget, type NotificationCategory, type NotificationType, type UserNotification } from '../src/community/notifications';
 import { useI18n } from '../src/i18n/I18nProvider';
@@ -32,6 +33,12 @@ export default function NotificationsScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [category, setCategory] = useState<NotificationCategory>('all');
   const [markingRead, setMarkingRead] = useState(false);
+  const [openingItemId, setOpeningItemId] = useState('');
+  const [actionError, setActionError] = useState<
+    | { kind: 'open'; item: UserNotification; message: string }
+    | { kind: 'mark-all'; message: string }
+    | null
+  >(null);
   const [error, setError] = useState('');
   const [viewerId, setViewerId] = useState('');
   const [nextOffset, setNextOffset] = useState<number | null>(null);
@@ -39,6 +46,7 @@ export default function NotificationsScreen() {
   const [pageError, setPageError] = useState('');
   const [cachedStatus, setCachedStatus] = useState<{ savedAt: number; count: number; truncated: boolean } | null>(null);
   const requestGate = useRef(new PageRequestGate());
+  const actionGate = useRef(new NotificationActionGate());
   const hydratedCaches = useRef(new Set<string>());
   const errorMessage = useCallback((error: unknown, fallback: MessageKey) => error instanceof Error
     ? error.message === '需要登录' ? t('inbox.signInRequired') : error.message
@@ -48,6 +56,10 @@ export default function NotificationsScreen() {
     const gate = requestGate.current;
     const token = gate.startRefresh();
     if (!token) return;
+    actionGate.current.reset();
+    setOpeningItemId('');
+    setMarkingRead(false);
+    setActionError(null);
     setLoadingMore(false);
     if (refresh) setRefreshing(true);
     else {
@@ -102,7 +114,11 @@ export default function NotificationsScreen() {
       }
     };
     void begin();
-    return () => { active = false; requestGate.current.resetFeed(); };
+    return () => {
+      active = false;
+      requestGate.current.resetFeed();
+      actionGate.current.reset();
+    };
   }, [category, load]);
   useForegroundRetry(Boolean(error), () => void load(true, viewerId, true));
 
@@ -114,6 +130,9 @@ export default function NotificationsScreen() {
   const selectCategory = (nextCategory: NotificationCategory) => {
     if (nextCategory === category || markingRead) return;
     requestGate.current.resetFeed();
+    actionGate.current.reset();
+    setOpeningItemId('');
+    setActionError(null);
     setCategory(nextCategory);
     setItems([]);
     setNextOffset(null);
@@ -147,36 +166,58 @@ export default function NotificationsScreen() {
     }
   };
 
+  const reportActionError = (nextError: NonNullable<typeof actionError>) => {
+    setActionError(nextError);
+    AccessibilityInfo.announceForAccessibility(`${t('inbox.actionFailed')} ${nextError.message}`);
+  };
+
   const openItem = async (item: UserNotification) => {
+    const gate = actionGate.current;
+    const token = gate.start(item.id);
+    if (!token) return;
+    let retryItem = item;
+    setOpeningItemId(item.id);
+    setActionError(null);
     try {
       if (!item.is_read) {
-        await markNotificationRead(item.id);
-        const nextItems = items.map(x => x.id === item.id ? { ...x, is_read: true } : x);
+        await withUiTimeout(markNotificationRead(item.id), t('inbox.markTimeout'));
+        if (!gate.isCurrent(token)) return;
+        retryItem = { ...item, is_read: true };
+        const nextItems = items.map(x => x.id === item.id ? retryItem : x);
         setItems(nextItems);
         cacheVisibleItems(nextItems);
         unread.markNotificationReadLocally();
       }
-      const target = notificationTarget(item);
+      if (!gate.isCurrent(token)) return;
+      const target = notificationTarget(retryItem);
       if (target) router.push(target as never);
     } catch (e) {
-      Alert.alert(t('inbox.actionFailed'), e instanceof Error ? e.message : t('inbox.retryLater'));
+      if (gate.isCurrent(token)) reportActionError({ kind: 'open', item: retryItem, message: errorMessage(e, 'inbox.retryLater') });
+    } finally {
+      if (gate.finish(token)) setOpeningItemId('');
     }
   };
 
   const markAll = async () => {
-    if (markingRead) return;
+    const gate = actionGate.current;
+    const token = gate.start(`mark-all:${category}`);
+    if (!token) return;
     const unreadCount = items.filter((item) => !item.is_read).length;
     setMarkingRead(true);
+    setActionError(null);
     try {
       await withUiTimeout(markAllNotificationsRead(category), t('inbox.markTimeout'));
+      if (!gate.isCurrent(token)) return;
       const nextItems = items.map(x => ({ ...x, is_read: true }));
       setItems(nextItems);
       cacheVisibleItems(nextItems);
       category === 'all' ? unread.markAllNotificationsReadLocally() : unread.markNotificationsReadLocally(unreadCount);
       void unread.refresh().catch((refreshError) => console.warn('unread count sync failed', refreshError));
     } catch (e) {
-      Alert.alert(t('inbox.actionFailed'), e instanceof Error ? e.message : t('inbox.retryLater'));
-    } finally { setMarkingRead(false); }
+      if (gate.isCurrent(token)) reportActionError({ kind: 'mark-all', message: errorMessage(e, 'inbox.retryLater') });
+    } finally {
+      if (gate.finish(token)) setMarkingRead(false);
+    }
   };
 
   const categoryLabel = t(CATEGORY_KEYS[category]);
@@ -184,7 +225,7 @@ export default function NotificationsScreen() {
 
   return <><Stack.Screen options={{ title: t('inbox.screenTitle'), headerBackTitle: t('common.back') }} />
     <ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true, viewerId, true)} />}>
-      <View style={styles.header}><Text style={styles.h1}>{t('inbox.heading')}</Text>{items.some(item => !item.is_read) ? <Pressable disabled={markingRead} accessibilityRole="button" accessibilityLabel={category === 'all' ? t('inbox.markAllA11y') : t('inbox.markCategoryA11y', { category: categoryLabel })} onPress={() => void markAll()}><Text style={[styles.markAll, markingRead && styles.disabled]}>{markingRead ? t('inbox.processing') : category === 'all' ? t('inbox.markAll') : t('inbox.markCategory')}</Text></Pressable> : null}</View>
+      <View style={styles.header}><Text style={styles.h1}>{t('inbox.heading')}</Text>{items.some(item => !item.is_read) ? <Pressable disabled={markingRead || Boolean(openingItemId)} accessibilityRole="button" accessibilityLabel={category === 'all' ? t('inbox.markAllA11y') : t('inbox.markCategoryA11y', { category: categoryLabel })} onPress={() => void markAll()}><Text style={[styles.markAll, markingRead && styles.disabled]}>{markingRead ? t('inbox.processing') : category === 'all' ? t('inbox.markAll') : t('inbox.markCategory')}</Text></Pressable> : null}</View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters} accessibilityRole="tablist">
         {notificationCategories.map((item) => <Pressable key={item.key} disabled={markingRead} testID={`notification-filter-${item.key}`} accessibilityRole="tab" accessibilityState={{ selected: category === item.key, disabled: markingRead }} accessibilityLabel={t('inbox.filterA11y', { category: t(CATEGORY_KEYS[item.key]) })} style={[styles.filter, category === item.key && styles.filterSelected, markingRead && styles.disabled]} onPress={() => selectCategory(item.key)}><Text style={[styles.filterText, category === item.key && styles.filterTextSelected]}>{t(CATEGORY_KEYS[item.key])}</Text></Pressable>)}
       </ScrollView>
@@ -194,11 +235,12 @@ export default function NotificationsScreen() {
       </View> : null}
       {loading ? <AsyncStatePanel testID="notifications-loading" title={t('inbox.loadingTitle')} message={t('inbox.loadingBody')} busy /> : error && items.length === 0 ? <AsyncStatePanel testID="notifications-error" tone="error" title={t('inbox.loadErrorTitle')} message={error} actionLabel={t('inbox.reload')} onAction={() => void load(true, viewerId, true)} busy={refreshing} /> : <>
       {error ? <AsyncStatePanel testID="notifications-refresh-error" tone="error" title={t('inbox.refreshErrorTitle')} message={error} actionLabel={t('inbox.resync')} onAction={() => void load(true, viewerId, true)} busy={refreshing} /> : null}
-      {!error && items.length === 0 ? <AsyncStatePanel testID="notifications-empty" title={category === 'all' ? t('inbox.emptyAllTitle') : t('inbox.emptyCategoryTitle', { category: categoryLabel })} message={category === 'all' ? t('inbox.emptyAllBody') : t('inbox.emptyCategoryBody')} /> : items.map(item => <Pressable accessibilityRole="button" accessibilityLabel={t('inbox.openA11y', { title: itemTitle(item) })} key={item.id} style={[styles.card, !item.is_read && styles.unread]} onPress={() => void openItem(item)}>
+      {!error && items.length === 0 ? <AsyncStatePanel testID="notifications-empty" title={category === 'all' ? t('inbox.emptyAllTitle') : t('inbox.emptyCategoryTitle', { category: categoryLabel })} message={category === 'all' ? t('inbox.emptyAllBody') : t('inbox.emptyCategoryBody')} /> : items.map(item => <Pressable disabled={Boolean(openingItemId) || markingRead} accessibilityRole="button" accessibilityLabel={t('inbox.openA11y', { title: itemTitle(item) })} accessibilityState={{ disabled: Boolean(openingItemId) || markingRead, busy: openingItemId === item.id }} key={item.id} style={[styles.card, !item.is_read && styles.unread, (Boolean(openingItemId) || markingRead) && styles.disabled]} onPress={() => void openItem(item)}>
         <View style={styles.row}><Text style={styles.title}>{itemTitle(item)}</Text>{!item.is_read ? <View style={styles.dot} /> : null}</View>
         {item.body ? <Text style={styles.body}>{item.body}</Text> : null}
         <Text style={styles.time}>{new Date(item.created_at).toLocaleString(localeDateTag(locale))}</Text>
       </Pressable>)}
+      {actionError ? <AsyncStatePanel testID="notifications-action-error" tone="error" title={t('inbox.actionFailed')} message={actionError.message} actionLabel={t('inbox.retryAction')} onAction={() => actionError.kind === 'open' ? void openItem(actionError.item) : void markAll()} busy={Boolean(openingItemId) || markingRead} /> : null}
       {pageError ? <AsyncStatePanel testID="notifications-page-error" tone="error" title={t('inbox.pageErrorTitle')} message={pageError} actionLabel={t('inbox.retryPage')} onAction={() => void loadMore()} busy={loadingMore} /> : null}
       {!pageError && nextOffset !== null ? <Pressable testID="notifications-load-more" accessibilityRole="button" accessibilityLabel={loadingMore ? t('inbox.loadingMoreA11y') : t('inbox.loadMore')} accessibilityState={{ disabled: loadingMore || refreshing }} disabled={loadingMore || refreshing} style={[styles.loadMore, (loadingMore || refreshing) && styles.disabled]} onPress={() => void loadMore()}><Text style={styles.loadMoreText}>{loadingMore ? t('inbox.loadingMore') : t('inbox.loadMore')}</Text></Pressable> : null}
       </>}

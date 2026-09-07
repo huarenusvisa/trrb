@@ -99,10 +99,10 @@ await writeFile(join(output, '_headers'), `
   Strict-Transport-Security: max-age=31536000; includeSubDomains
 
 /*.js
-  Cache-Control: no-cache, no-store, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
 
 /*.css
-  Cache-Control: no-cache, no-store, must-revalidate
+  Cache-Control: public, max-age=0, must-revalidate
 
 /robots.txt
   Content-Type: text/plain; charset=UTF-8

@@ -39,6 +39,15 @@ test("真实当前ICE执法和实际羁押事件保留", () => {
   assert.equal(classifyNewsQuality(row("ICE @EROSanFrancisco arrested a parole violator in Sacramento today.")).keep, true);
 });
 
-test("旧案出现新的司法进展仍可保留", () => {
+test("正在进行的ICE行动即使报道重点是后续事故也保留", () => {
+  assert.equal(classifyNewsQuality(row("An undocumented immigrant fleeing a targeted ICE operation crashed into multiple vehicles, injuring a mayor's wife." )).keep, true);
+});
+
+test("新司法命令和授权属于有效ICE新闻进展", () => {
   assert.equal(classifyNewsQuality(row("A federal judge ruled today on a lawsuit over a 2025 arrest at an ICE detention facility.")).keep, true);
+  assert.equal(classifyNewsQuality(row("A federal judge authorized ICE to force-feed a Cuban migrant on hunger strike at a Texas detention center." )).keep, true);
+});
+
+test("带有评论包装但包含具体新ICE抓捕事实仍可保留", () => {
+  assert.equal(classifyNewsQuality(row("This police chief should be fired. ICE arrested an NOPD recruit with a deportation order after the department hired him." )).keep, true);
 });

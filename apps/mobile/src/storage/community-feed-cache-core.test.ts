@@ -41,6 +41,16 @@ test('never persists pending, oversized, or malformed community posts', () => {
   assert.equal(parseCommunityFeedCache('{', 200), null);
 });
 
+test('deduplicates bounded pagination snapshots and closes a cursor when content is truncated', () => {
+  const posts = Array.from({ length: COMMUNITY_FEED_CACHE_MAX_POSTS + 5 }, (_, index) => ({ ...post, id: `post-${index}` }));
+  const truncated = publicCommunityFeedSnapshot([posts[0], ...posts], 80);
+
+  assert.equal(truncated.posts.length, COMMUNITY_FEED_CACHE_MAX_POSTS);
+  assert.equal(new Set(truncated.posts.map((item) => item.id)).size, COMMUNITY_FEED_CACHE_MAX_POSTS);
+  assert.equal(truncated.nextOffset, null);
+  assert.equal(publicCommunityFeedSnapshot(posts.slice(0, 40), 40).nextOffset, 40);
+});
+
 test('isolates each community category cache from the all-posts cache', () => {
   assert.equal(communityFeedCacheKey(), 'trrb.community.feed.v1');
   assert.equal(communityFeedCacheKey('ice_experience'), 'trrb.community.feed.v1.category.ice_experience');

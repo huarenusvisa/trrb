@@ -52,7 +52,7 @@
           <figure class="state-market" aria-labelledby="state-market-title">
             <figcaption class="state-market-head">
               <div><span>STATE TREND</span><b id="state-market-title">纽约州裁决批准率走势</b><small id="state-market-period-label">最近 24 个月（读取中）</small></div>
-              <div><div class="trend-interval-tabs" aria-label="选择趋势周期"><button class="active" type="button" data-state-interval="month" aria-pressed="true">按月</button><button type="button" data-state-interval="year" aria-pressed="false">按财年</button></div><div class="state-market-legend"><i class="approval"></i>批准率 <i class="denial"></i>拒绝率 <i class="other"></i>其他占比 <i class="volume"></i>结案量</div></div>
+              <div><div class="trend-interval-tabs" role="group" aria-label="选择趋势周期"><button class="active" type="button" data-state-interval="month" aria-pressed="true">按月</button><button type="button" data-state-interval="year" aria-pressed="false">按财年</button></div><div class="state-market-legend"><i class="approval"></i>批准率 <i class="denial"></i>拒绝率 <i class="other"></i>其他占比 <i class="volume"></i>结案量</div></div>
             </figcaption>
             <p id="state-market-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true">正在读取州趋势数据…</p>
             <div id="state-market-chart" class="state-market-chart" aria-busy="true">
@@ -60,7 +60,7 @@
             </div>
             <div class="trend-scope-controls" aria-busy="true"><label>按州查看<select id="trend-state-select" aria-label="选择州"></select></label><label>按城市／法院查看<select id="trend-court-select" aria-label="选择城市或移民法院"></select></label></div>
             <p id="trend-location-status" class="trend-location-status" aria-live="polite" hidden></p>
-            <div id="state-trend-states" class="state-trend-states" aria-label="华人聚集城市快捷入口"></div>
+            <div id="state-trend-states" class="state-trend-states" role="group" aria-label="华人聚集城市快捷入口"></div>
             <div id="state-trend-detail" class="state-trend-detail">点按或移动到图中数据点，查看该期案件数量。</div>
           </figure>
           <form id="judge-search" class="search-box" role="search" aria-labelledby="judge-search-label">
@@ -80,7 +80,7 @@
         <aside class="snapshot" aria-labelledby="snapshot-title">
           <div class="snapshot-head">
             <div><span>全美数据库概览</span><h2 id="snapshot-title">庇护裁决数据</h2><small id="snapshot-period-label">FY 2026（读取中）</small></div>
-            <div class="snapshot-controls"><div class="state-fy-tabs" aria-label="选择财政年度"><button class="active" type="button" data-state-fy="2026" aria-pressed="true">2026</button><button type="button" data-state-fy="2025" aria-pressed="false">2025</button><button type="button" data-state-fy="2024" aria-pressed="false">2024</button></div><span id="freshness-badge" class="live-badge">读取中</span></div>
+            <div class="snapshot-controls"><div class="state-fy-tabs" role="group" aria-label="选择财政年度"><button class="active" type="button" data-state-fy="2026" aria-pressed="true">2026</button><button type="button" data-state-fy="2025" aria-pressed="false">2025</button><button type="button" data-state-fy="2024" aria-pressed="false">2024</button></div><span id="freshness-badge" class="live-badge">读取中</span></div>
           </div>
           <div class="national-rate">
             <div>

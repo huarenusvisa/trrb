@@ -6,24 +6,30 @@ import path from "node:path";
 const root = process.cwd();
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 
-test("生产ICE流水线启用高召回发现且成本有上限", () => {
+test("生产ICE流水线启用高召回但优先最近内容且成本有上限", () => {
   const workflow = read(".github/workflows/ice-unified-pipeline.yml");
   assert.match(workflow, /scripts\/ice-high-recall-discovery\.mjs/);
-  assert.match(workflow, /ICE_HIGH_RECALL_LOOKBACK_HOURS: "12"/);
+  assert.match(workflow, /ICE_HIGH_RECALL_LOOKBACK_HOURS: "6"/);
   assert.match(workflow, /ICE_HIGH_RECALL_MAX_PAGES: "2"/);
   assert.match(workflow, /ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"/);
+  assert.match(workflow, /ICE_HIGH_RECALL_MIN_SCORE: "60"/);
+  assert.match(workflow, /ICE_HIGH_RECALL_MIN_FOLLOWERS: "1000"/);
 });
 
-test("采集入口使用宽候选门禁而不是严格发布门禁", () => {
+test("新闻质量门禁在候选门禁之前执行", () => {
   const workflow = read(".github/workflows/ice-unified-pipeline.yml");
+  const qualityIndex = workflow.indexOf("node scripts/ice-news-quality-gate.mjs");
+  const candidateIndex = workflow.indexOf("node scripts/ice-candidate-gate.mjs");
+  assert.ok(qualityIndex >= 0);
+  assert.ok(candidateIndex > qualityIndex);
+});
+
+test("高召回评分不能绕过机构语境和具体事件要求", () => {
   const gate = read("scripts/ice-candidate-gate.mjs");
-  assert.match(workflow, /node scripts\/ice-candidate-gate\.mjs/);
-  assert.doesNotMatch(workflow, /node scripts\/ice-official-source-only\.mjs/);
   assert.match(gate, /highRecallSignal/);
-  assert.match(gate, /verified_discovered/);
-  assert.match(gate, /discovered_individual/);
-  assert.match(gate, /federal agents/);
-  assert.match(gate, /immigration agents/);
+  assert.match(gate, /hasAgencyContext/);
+  assert.doesNotMatch(gate, /if \(highRecallSignal\(row\)\) return true/);
+  assert.match(gate, /ACTION_CONTEXT/);
   assert.match(gate, /non_ice_candidate_filtered/);
 });
 

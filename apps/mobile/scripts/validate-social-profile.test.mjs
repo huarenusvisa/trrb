@@ -143,11 +143,14 @@ test('notification center pages older messages and restores account-scoped offli
   assert.match(screen, /notifications-load-more/);
   assert.match(screen, /notifications-page-error/);
   assert.match(screen, /notifications-offline-cache/);
+  assert.match(screen, /notifications-cache-truncated/);
   assert.match(screen, /readCachedNotifications\(userId, category\)/);
   assert.match(screen, /discardReason === 'expired'/);
   assert.match(screen, /cachedResult\?\.savedAt/);
+  assert.match(screen, /cached\.truncated === true/);
   assert.match(screen, /AccessibilityInfo\.announceForAccessibility/);
   assert.match(screen, /'inbox\.cacheDetails'/);
+  assert.match(screen, /'inbox\.cacheTruncated'/);
   assert.match(screen, /'inbox\.refreshSucceeded'/);
   assert.match(screen, /listNotifications\(nextOffset, PAGE_SIZE, category\)/);
   assert.match(screen, /new Set\(items\.map\(\(item\) => item\.id\)\)/);

@@ -8,6 +8,7 @@ const COMMUNITY_FEED_CACHE_KEY = 'trrb.community.feed.v1';
 export type CommunityFeedSnapshot = {
   posts: CommunityPost[];
   nextOffset: number | null;
+  truncated?: boolean;
 };
 
 type CommunityFeedCacheEnvelope = {
@@ -50,6 +51,9 @@ export function inspectCommunityFeedCache(raw: string | null, now = Date.now()):
     if (snapshot.nextOffset !== null && (!Number.isInteger(snapshot.nextOffset) || snapshot.nextOffset < 0)) {
       return { payload: null, discardReason: 'invalid' };
     }
+    if ((snapshot.truncated !== undefined && typeof snapshot.truncated !== 'boolean') || (snapshot.truncated === true && snapshot.nextOffset !== null)) {
+      return { payload: null, discardReason: 'invalid' };
+    }
     return { payload: { savedAt, snapshot }, discardReason: null };
   } catch {
     return { payload: null, discardReason: 'invalid' };
@@ -72,5 +76,6 @@ export function publicCommunityFeedSnapshot(posts: CommunityPost[], nextOffset: 
   return {
     posts: publicPosts.slice(0, COMMUNITY_FEED_CACHE_MAX_POSTS),
     nextOffset: !truncated && nextOffset !== null && Number.isInteger(nextOffset) && nextOffset >= 0 ? nextOffset : null,
+    truncated,
   };
 }

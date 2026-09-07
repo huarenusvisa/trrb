@@ -1,5 +1,6 @@
 export type PushPlatform = 'ios' | 'android';
 export type PushRegistrationErrorKind = 'network' | 'server' | 'unknown';
+export type PendingPushRetryTrigger = 'scheduled' | 'foreground' | 'network' | 'manual';
 
 export type StoredPushRegistration = {
   version: 2;
@@ -111,9 +112,15 @@ export class PushConnectivityGate {
   }
 }
 
-export function pendingPushRetryDelay(raw: string | null, userId: string, now = Date.now()) {
+export function pendingPushRetryDelay(
+  raw: string | null,
+  userId: string,
+  now = Date.now(),
+  trigger: PendingPushRetryTrigger = 'scheduled'
+) {
   const pending = parsePendingPushRegistration(raw, now);
   if (!pending || pending.userId !== userId) return null;
+  if (trigger === 'manual' || (trigger === 'network' && pending.errorKind === 'network')) return 0;
   return Math.max(0, Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, pending.retryAt - now));
 }
 

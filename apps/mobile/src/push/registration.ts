@@ -8,6 +8,7 @@ import { supabase } from '../auth/supabase';
 import { PushResponseGate, pushDestination, shouldRequestPushPermission } from './push-core';
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  PendingPushRetryTrigger,
   PushConnectivityGate,
   classifyPushRegistrationError,
   nextPendingPushRegistration,
@@ -119,7 +120,7 @@ export async function getPendingPushRegistrationStatus() {
   return { attempts: pending.attempts, retryAt: pending.retryAt, errorKind: pending.errorKind };
 }
 
-async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; retryPending?: boolean } = {}) {
+async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; retryTrigger?: PendingPushRetryTrigger } = {}) {
   if (!isNative) return null;
 
   const deviceDisabled = await AsyncStorage.getItem(DEVICE_PUSH_DISABLED_KEY) === 'true';
@@ -131,8 +132,9 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
   if (!accessToken || !userId) return null;
 
   const pendingRaw = await AsyncStorage.getItem(PENDING_REGISTRATION_KEY);
-  const pendingDelay = pendingPushRetryDelay(pendingRaw, userId);
-  if (options.requestPermission !== true && !options.devicePushToken && options.retryPending !== true && pendingDelay !== null && pendingDelay > 0) {
+  const pendingDelay = pendingPushRetryDelay(pendingRaw, userId, Date.now(), options.retryTrigger);
+  if (options.retryTrigger && pendingDelay === null) return null;
+  if (options.requestPermission !== true && !options.devicePushToken && pendingDelay !== null && pendingDelay > 0) {
     schedulePendingRetry(pendingDelay);
     return null;
   }
@@ -213,15 +215,19 @@ export function registerPushToken(options: { requestPermission?: boolean; device
   return enqueueTokenMutation(() => performRegisterPushToken(options));
 }
 
-export function retryPendingPushRegistration() {
+function retryPendingPushRegistrationForTrigger(trigger: 'manual' | 'foreground' | 'network') {
   if (pendingRetryInFlight) return pendingRetryInFlight;
   registrationSuspended = false;
-  const retry = enqueueTokenMutation(() => performRegisterPushToken({ retryPending: true }));
+  const retry = enqueueTokenMutation(() => performRegisterPushToken({ retryTrigger: trigger }));
   pendingRetryInFlight = retry;
   void retry.finally(() => {
     if (pendingRetryInFlight === retry) pendingRetryInFlight = null;
   }).catch(() => {});
   return retry;
+}
+
+export function retryPendingPushRegistration() {
+  return retryPendingPushRegistrationForTrigger('manual');
 }
 
 async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolean) {
@@ -268,9 +274,9 @@ export function disableCurrentDevicePushToken(options: { rememberDeviceChoice?: 
 
 export function installPushRegistrationLifecycle() {
   const sync = (devicePushToken?: Notifications.DevicePushToken) => void registerPushToken({ devicePushToken }).catch((error) => console.warn('push token sync failed', error));
-  const retryPending = async () => {
+  const retryPending = async (trigger: 'foreground' | 'network') => {
     if (registrationSuspended || !await AsyncStorage.getItem(PENDING_REGISTRATION_KEY)) return;
-    await retryPendingPushRegistration();
+    await retryPendingPushRegistrationForTrigger(trigger);
   };
   const connectivityGate = new PushConnectivityGate();
   sync();
@@ -284,10 +290,10 @@ export function installPushRegistrationLifecycle() {
     if (!registrationSuspended) sync(token);
   }) : null;
   const appStateSubscription = isNative ? AppState.addEventListener('change', (state) => {
-    if (state === 'active') void retryPending().catch((error) => console.warn('push token pending retry failed', error));
+    if (state === 'active') void retryPending('foreground').catch((error) => console.warn('push token pending retry failed', error));
   }) : null;
   const networkSubscription = isNative ? Network.addNetworkStateListener((state) => {
-    if (connectivityGate.record(state)) void retryPending().catch((error) => console.warn('push token network recovery retry failed', error));
+    if (connectivityGate.record(state)) void retryPending('network').catch((error) => console.warn('push token network recovery retry failed', error));
   }) : null;
   return () => {
     data.subscription.unsubscribe();

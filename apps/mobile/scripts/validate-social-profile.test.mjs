@@ -150,6 +150,21 @@ test('notification actions reject duplicate taps and retry failures in place', (
   assert.match(gate, /token\.generation === this\.generation/);
 });
 
+test('push responses deduplicate cold-start delivery and recover invalid targets safely', () => {
+  const registration = read('src/push/registration.ts');
+  const core = read('src/push/push-core.ts');
+  const inbox = read('app/notifications.tsx');
+
+  assert.match(registration, /new PushResponseGate\(\)/);
+  assert.match(registration, /pushResponseGate\.claim\(response\.notification\.request\.identifier\)/);
+  assert.match(registration, /clearLastNotificationResponseAsync\(\)/);
+  assert.match(registration, /setTimeout\(\(\) => \{/);
+  assert.match(core, /PUSH_RESPONSE_DEDUP_MS = 15_000/);
+  assert.match(core, /\/notifications\?pushTarget=unavailable/);
+  assert.match(inbox, /notifications-push-target-unavailable/);
+  assert.match(inbox, /'inbox\.pushTargetUnavailableBody'/);
+});
+
 test('notification center pages older messages and restores account-scoped offline cache', () => {
   const screen = read('app/notifications.tsx');
   const api = read('src/community/notifications.ts');

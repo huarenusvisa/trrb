@@ -19,6 +19,8 @@ const [html, js, css, focusCss, home, routes, built, builtEnglish, hygieneText, 
 const hygiene = JSON.parse(hygieneText);
 
 assert.match(home, /href="\/compare"/, 'homepage must link to judge comparison');
+assert.match(html, /<body>\s*<a class="skip-link" href="#main-content">跳到主要内容<\/a>/, 'comparison page must let keyboard users bypass its sticky header');
+assert.match(html, /<main id="main-content" class="compare-page" tabindex="-1">/, 'comparison skip target must accept programmatic focus');
 assert.match(html, /id="compare-search"/);
 assert.match(html, /class="compare-picker"[^>]*role="search"/, 'judge comparison search must expose a search landmark');
 assert.match(html, /id="compare-search"[^>]*name="judge"[^>]*type="search"[^>]*inputmode="search"[^>]*enterkeyhint="search"[^>]*spellcheck="false"/, 'judge comparison search must expose native mobile search semantics');
@@ -30,6 +32,7 @@ assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
 assert.match(html, /compare\.js\?v=9/);
+assert.match(html, /site\.css\?v=35/, 'comparison page must load the skip-link style under the current cache key');
 assert.match(html, /compare\.css\?v=5/);
 assert.match(html, /compare-focus\.css\?v=1/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
@@ -108,6 +111,7 @@ assert.doesNotMatch(css, /\.compare-search-result\{[^}]*text-align:left/, 'Arabi
 assert.match(built, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/compare\/">/);
 assert.match(built, /<meta name="robots" content="index,follow,/);
 assert.match(builtEnglish, />Compare immigration judges<\/h1>/, 'server-rendered English comparison copy must use the page-specific translation');
+assert.match(builtEnglish, /<a class="skip-link" href="#main-content">Skip to main content<\/a>/, 'generated English comparison skip navigation must be localized server-side');
 assert.match(builtEnglish, />Select 2–4 judges to compare approval rates, denials, sample sizes, yearly trends, nationalities, and official appointment backgrounds\.<\/p>/, 'server-rendered comparison intro must not be assembled from partial word replacements');
 assert.equal(hygiene.high_cjk_page_count, 0, 'non-Chinese generated pages must remain below the CJK warning threshold');
 

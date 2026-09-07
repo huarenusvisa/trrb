@@ -1,13 +1,14 @@
 import type { NotificationCategory, UserNotification } from '../community/notifications';
 
 export const NOTIFICATION_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
-export const NOTIFICATION_CACHE_MAX_ITEMS = 20;
+export const NOTIFICATION_CACHE_MAX_ITEMS = 60;
 const NOTIFICATION_CACHE_FUTURE_TOLERANCE_MS = 5 * 60 * 1000;
 const NOTIFICATION_CACHE_PREFIX = 'trrb.notifications.v1';
 
 export type NotificationCacheSnapshot = {
   notifications: UserNotification[];
   nextOffset: number | null;
+  truncated?: boolean;
 };
 
 export type NotificationCacheEnvelope = {
@@ -59,6 +60,10 @@ export function inspectNotificationCache(raw: string | null, userId: string, cat
       && (!Number.isInteger(payload.snapshot.nextOffset) || payload.snapshot.nextOffset < 0)) {
       return { payload: null, discardReason: 'invalid' };
     }
+    if ((payload.snapshot.truncated !== undefined && typeof payload.snapshot.truncated !== 'boolean')
+      || (payload.snapshot.truncated === true && payload.snapshot.nextOffset !== null)) {
+      return { payload: null, discardReason: 'invalid' };
+    }
     return { payload, discardReason: null };
   } catch {
     return { payload: null, discardReason: 'invalid' };
@@ -70,8 +75,17 @@ export function parseNotificationCache(raw: string | null, userId: string, categ
 }
 
 export function notificationCacheSnapshot(notifications: UserNotification[], nextOffset: number | null, userId: string): NotificationCacheSnapshot {
+  const seen = new Set<string>();
+  const validNotifications = notifications.filter((item) => {
+    const id = String(item?.id || '').trim();
+    if (!validNotification(item, userId) || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+  const truncated = validNotifications.length > NOTIFICATION_CACHE_MAX_ITEMS;
   return {
-    notifications: notifications.filter((item) => validNotification(item, userId)).slice(0, NOTIFICATION_CACHE_MAX_ITEMS),
-    nextOffset: nextOffset !== null && Number.isInteger(nextOffset) && nextOffset >= 0 ? nextOffset : null,
+    notifications: validNotifications.slice(0, NOTIFICATION_CACHE_MAX_ITEMS),
+    nextOffset: !truncated && nextOffset !== null && Number.isInteger(nextOffset) && nextOffset >= 0 ? nextOffset : null,
+    truncated,
   };
 }

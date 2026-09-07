@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { claimPushToken, PushRegistrationError, PUSH_TOKEN_REGISTRATION_ENDPOINT } from './registration-api.ts';
+import { claimPushToken, MAX_PUSH_REGISTRATION_RETRY_AFTER_MS, parsePushRegistrationRetryAfter, PushRegistrationError, PUSH_TOKEN_REGISTRATION_ENDPOINT } from './registration-api.ts';
 
 test('claims a token through the authenticated server endpoint', async () => {
   const result = await claimPushToken({
@@ -46,4 +46,25 @@ test('marks HTTP and malformed responses as server failures', async () => {
     platform: 'ios', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'token',
     fetchImpl: async () => new Response('not-json', { status: 502 })
   }), (error: unknown) => error instanceof PushRegistrationError && error.pushRegistrationErrorKind === 'server');
+});
+
+test('parses bounded Retry-After seconds and HTTP dates', () => {
+  const now = Date.parse('2026-09-07T20:00:00Z');
+  assert.equal(parsePushRegistrationRetryAfter('120', now), 120_000);
+  assert.equal(parsePushRegistrationRetryAfter('Mon, 07 Sep 2026 20:03:00 GMT', now), 180_000);
+  assert.equal(parsePushRegistrationRetryAfter('999999', now), MAX_PUSH_REGISTRATION_RETRY_AFTER_MS);
+  assert.equal(parsePushRegistrationRetryAfter('invalid', now), null);
+  assert.equal(parsePushRegistrationRetryAfter('-1', now), null);
+});
+
+test('preserves a valid server Retry-After delay without exposing response details', async () => {
+  await assert.rejects(claimPushToken({
+    platform: 'ios', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'token',
+    fetchImpl: async () => new Response(JSON.stringify({ error: 'temporarily unavailable' }), {
+      status: 503,
+      headers: { 'Retry-After': '120' }
+    })
+  }), (error: unknown) => error instanceof PushRegistrationError
+    && error.pushRegistrationErrorKind === 'server'
+    && error.pushRegistrationRetryAfterMs === 120_000);
 });

@@ -80,14 +80,19 @@ export function nextPendingPushRegistration(
   platform: PushPlatform,
   expoPushToken: string | null,
   now = Date.now(),
-  errorKind: PushRegistrationErrorKind = 'unknown'
+  errorKind: PushRegistrationErrorKind = 'unknown',
+  retryAfterMs: number | null = null
 ) {
   const previous = parsePendingPushRegistration(raw, now);
   const nextToken = safeString(expoPushToken, MAX_PUSH_TOKEN_LENGTH) ?? previous?.expoPushToken ?? null;
   const sameAttempt = previous?.userId === userId && previous.platform === platform && previous.expoPushToken === nextToken;
   const attempts = sameAttempt ? Math.min(MAX_PENDING_ATTEMPTS, previous.attempts + 1) : 1;
   const createdAt = sameAttempt ? previous.createdAt : now;
-  const delay = Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, BASE_PENDING_RETRY_DELAY_MS * (2 ** (attempts - 1)));
+  const exponentialDelay = Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, BASE_PENDING_RETRY_DELAY_MS * (2 ** (attempts - 1)));
+  const serverDelay = errorKind === 'server' && Number.isFinite(retryAfterMs) && Number(retryAfterMs) >= 0
+    ? Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, Number(retryAfterMs))
+    : 0;
+  const delay = Math.max(exponentialDelay, serverDelay);
   const pending: PendingPushRegistration = { version: 1, userId, platform, expoPushToken: nextToken, attempts, createdAt, retryAt: now + delay, errorKind };
   return JSON.stringify(pending);
 }
@@ -97,6 +102,13 @@ export function classifyPushRegistrationError(error: unknown): PushRegistrationE
   if (typeof error !== 'object' || error === null || !('pushRegistrationErrorKind' in error)) return 'unknown';
   const kind = (error as { pushRegistrationErrorKind?: unknown }).pushRegistrationErrorKind;
   return kind === 'network' || kind === 'server' ? kind : 'unknown';
+}
+
+export function pushRegistrationRetryAfterMs(error: unknown) {
+  if (typeof error !== 'object' || error === null || !('pushRegistrationRetryAfterMs' in error)) return null;
+  const delay = Number((error as { pushRegistrationRetryAfterMs?: unknown }).pushRegistrationRetryAfterMs);
+  if (!Number.isFinite(delay) || delay < 0) return null;
+  return Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, delay);
 }
 
 export class PushConnectivityGate {

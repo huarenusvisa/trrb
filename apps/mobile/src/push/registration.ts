@@ -14,6 +14,7 @@ import {
   nextPendingPushRegistration,
   parsePendingPushRegistration,
   pendingPushRetryDelay,
+  pushRegistrationRetryAfterMs,
   parseStoredPushRegistration,
   serializePushRegistration,
   shouldSynchronizePushRegistration,
@@ -197,7 +198,8 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
       Platform.OS as 'ios' | 'android',
       expoPushToken,
       Date.now(),
-      classifyPushRegistrationError(error)
+      classifyPushRegistrationError(error),
+      pushRegistrationRetryAfterMs(error)
     );
     await AsyncStorage.setItem(PENDING_REGISTRATION_KEY, nextPendingRaw);
     const nextPending = parsePendingPushRegistration(nextPendingRaw);

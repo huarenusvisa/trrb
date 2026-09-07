@@ -26,14 +26,16 @@ env:
   ICE_PRIORITY_ROTATION_GROUPS: "4"
   ICE_ERO_ROTATION_GROUPS: "4"
   ICE_ERO_LOOKBACK_HOURS: "12"
-  # 高召回发现按小时进入正式生产，但限制分页和单次结果数以控制X读取成本。
-  ICE_HIGH_RECALL_LOOKBACK_HOURS: "12"
+  # 高召回只扫最近6小时，并提高最低评分和来源门槛，减少旧闻与低价值社媒噪声。
+  ICE_HIGH_RECALL_LOOKBACK_HOURS: "6"
   ICE_HIGH_RECALL_MAX_PAGES: "2"
   ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"
-  ICE_HIGH_RECALL_MIN_SCORE: "45"
-  ICE_HIGH_RECALL_MIN_FOLLOWERS: "500"
-  # 采集入口使用宽候选门槛；严格原始证据标准保留在最终发布边界。
-  ICE_CANDIDATE_GATE_LOOKBACK_HOURS: "12"
+  ICE_HIGH_RECALL_MIN_SCORE: "60"
+  ICE_HIGH_RECALL_MIN_FOLLOWERS: "1000"
+  # 新闻质量门禁优先剔除普通单词ice、旧闻回顾、纯观点和没有具体事件的内容。
+  ICE_NEWS_QUALITY_LOOKBACK_HOURS: "8"
+  ICE_NEWS_QUALITY_MAX: "4000"
+  ICE_CANDIDATE_GATE_LOOKBACK_HOURS: "8"
   ICE_CANDIDATE_GATE_MAX: "4000"
   ICE_MAX_SOURCE_AGE_MINUTES: "720"
   ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
@@ -131,12 +133,12 @@ jobs:
           done
           [[ "$ok" -eq 1 ]]
 
-      - name: Candidate gate, dedupe and intake
+      - name: Fresh news quality gate, dedupe and intake
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_fetch == 'true'
         shell: bash
         run: |
           set -e
-          # 宽进严出：只剔除明显无关内容；疑似ICE/ERO/HSI/DHS/CBP内容进入AI或人工审核。
+          node scripts/ice-news-quality-gate.mjs
           node scripts/ice-candidate-gate.mjs
           node scripts/ice-drop-stale-posts.mjs || true
           node scripts/ice-filter-replies.mjs || true
@@ -155,8 +157,7 @@ jobs:
           node scripts/ice-translate-title-body.mjs
 
       - name: Publish
-        # 发布器自身会再次核验：仅官方来源或真实管理员已批准的内容可以发布。
-        # 高召回候选不会绕过严格原始证据、风险标记和人工审核边界。
+        # 最终发布仍执行官方原始证据、风险标记和人工审核边界；质量门禁只负责减少噪声和旧闻。
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
@@ -185,5 +186,4 @@ jobs:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
-        run: |
-          node scripts/ice-pipeline-heartbeat.mjs || true
+        run: node scripts/ice-pipeline-heartbeat.mjs || true

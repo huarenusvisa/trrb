@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 
 const i18n = readFileSync('asylumjudge/app-i18n.js', 'utf8');
 const domainStyles = readFileSync('asylumjudge/domain-brand.css', 'utf8');
+const domainBrand = readFileSync('asylumjudge/domain-brand.js', 'utf8');
 const rowsMatch = i18n.match(/const rows = (\[[\s\S]*?\n  \]);\n\n  const indexes/);
 assert.ok(rowsMatch, 'global translation rows must be readable');
 const rows = Function(`"use strict"; return ${rowsMatch[1]}`)();
@@ -70,13 +71,27 @@ for (const path of pages) {
 }
 
 for (const path of [
+  'immigration-judge-approval-rate/index.html',
   'immigration-judge-approval-rate/states.html',
   'immigration-judge-approval-rate/courts.html',
+  'immigration-judge-approval-rate/court-detail.html',
   'immigration-judge-approval-rate/detail.html',
-  'immigration-judge-approval-rate/china-dashboard.html'
+  'immigration-judge-approval-rate/china-dashboard.html',
+  'immigration-judge-approval-rate/methodology.html'
 ]) {
-  assert.match(readFileSync(path, 'utf8'), /domain-brand\.css\?v=7/, `${path} must load the keyboard-focus brand stylesheet`);
+  const html = readFileSync(path, 'utf8');
+  assert.match(html, /domain-brand\.css\?v=8/, `${path} must load the skip-navigation brand stylesheet`);
+  assert.match(html, /domain-brand\.js\?v=11/, `${path} must load the skip-navigation brand client`);
 }
+assert.match(domainBrand, /document\.querySelector\('\.skip-link\[href\^="#"\],\.domain-skip-link\[href\^="#"\]'\)/, 'shared branding must preserve pages that already provide skip navigation');
+assert.match(domainBrand, /if \(!main\.id\) main\.id = 'main-content'/, 'shared branding must provide a stable main-content target');
+assert.match(domainBrand, /main\.setAttribute\('tabindex', '-1'\)/, 'shared branding must make the skip target programmatically focusable');
+assert.match(domainBrand, /document\.body\.prepend\(skipLink\)/, 'shared branding must place skip navigation before the sticky header in keyboard order');
+for (const phrase of ['Skip to main content', 'Saltar al contenido principal', 'Aller au contenu principal', 'Ir para o conteúdo principal', 'मुख्य सामग्री पर जाएँ', '跳到主要内容', '跳到主要內容', 'Перейти к основному содержанию', 'انتقل إلى المحتوى الرئيسي', 'Ana içeriğe geç']) {
+  assert.ok(domainBrand.includes(`skip: '${phrase}'`), `shared skip navigation must include ${phrase}`);
+}
+assert.match(domainStyles, /\.domain-skip-link\{[^}]*position:fixed[^}]*z-index:100[^}]*transform:translateY\(calc\(-100% - 24px\)\)[^}]*border:3px solid #101828/, 'shared skip navigation must remain hidden until focused and render above the sticky header');
+assert.match(domainStyles, /\.domain-skip-link:focus\{[^}]*transform:translateY\(0\)/, 'shared skip navigation must become visible on keyboard focus');
 assert.match(domainStyles, /\.asylumjudge-primary-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile inner-page navigation must provide responsive 44px touch targets');
 assert.match(domainStyles, /\.language-control select\{[^}]*height:44px[^}]*touch-action:manipulation/, 'inner-page language selectors must provide responsive 44px touch targets');
 for (const selector of ['.asylumjudge-logo', '.asylumjudge-primary-nav a', '.language-control select']) {

@@ -82,24 +82,29 @@ function translationPairs(rows, localeCode) {
     .sort((a, b) => b[0].length - a[0].length);
 }
 
-function translateHtml(html, pairs) {
-  const protectedBlocks = [];
-  let next = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, (block) => {
-    const token = `__AJ_PROTECTED_${protectedBlocks.length}__`;
-    protectedBlocks.push(block);
-    return token;
-  });
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
-  let replacements = 0;
-  for (const [source, target] of pairs) {
-    if (!next.includes(source)) continue;
-    const parts = next.split(source);
-    replacements += parts.length - 1;
-    next = parts.join(target);
-  }
-
-  next = next.replace(/__AJ_PROTECTED_(\d+)__/g, (_, index) => protectedBlocks[Number(index)] || '');
-  return { html: next, replacements };
+function createTranslator(pairs) {
+  const replacements = new Map(pairs);
+  const pattern = pairs.length ? new RegExp(pairs.map(([source]) => escapeRegex(source)).join('|'), 'g') : null;
+  return (html) => {
+    if (!pattern) return { html, replacements: 0 };
+    const protectedBlocks = [];
+    let next = html.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, (block) => {
+      const token = `__AJ_PROTECTED_${protectedBlocks.length}__`;
+      protectedBlocks.push(block);
+      return token;
+    });
+    let count = 0;
+    next = next.replace(pattern, (matched) => {
+      count += 1;
+      return replacements.get(matched) || matched;
+    });
+    next = next.replace(/__AJ_PROTECTED_(\d+)__/g, (_, index) => protectedBlocks[Number(index)] || '');
+    return { html: next, replacements: count };
+  };
 }
 
 async function collectIndexPages(dir, root = dir, pages = []) {
@@ -176,7 +181,7 @@ export async function applyAsylumJudgeIndexingHygiene({ root, output }) {
   const i18n = await readFile(join(root, 'asylumjudge', 'app-i18n.js'), 'utf8');
   const rows = loadTranslationRows(i18n);
   const pages = await collectIndexPages(output);
-  const pairsByLocale = new Map([...TRANSLATION_COLUMN.keys()].map((locale) => [locale, translationPairs(rows, locale)]));
+  const translators = new Map([...TRANSLATION_COLUMN.keys()].map((locale) => [locale, createTranslator(translationPairs(rows, locale))]));
 
   let localizedPages = 0;
   let replacementCount = 0;
@@ -184,9 +189,10 @@ export async function applyAsylumJudgeIndexingHygiene({ root, output }) {
   for (const filename of pages) {
     const { rel, locale } = localeForGeneratedPage(output, filename);
     if (locale === 'zh-Hans' || rel.endsWith('/methodology/index.html')) continue;
-    const pairs = pairsByLocale.get(locale) || [];
+    const translate = translators.get(locale);
+    if (!translate) continue;
     let html = await readFile(filename, 'utf8');
-    const result = translateHtml(html, pairs);
+    const result = translate(html);
     if (result.replacements) {
       html = result.html;
       await writeFile(filename, html);

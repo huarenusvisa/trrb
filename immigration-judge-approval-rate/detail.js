@@ -58,6 +58,18 @@ const nationalityTableLabels = {
   ar: { first: 'السنة المالية / الجنسية', total: 'إجمالي القرارات', grants: 'الموافقات', denials: 'الرفض', other: 'أخرى', otherTitle: 'يشمل إسقاط القضايا وA10 وإلغاء الإبعاد ووقف الإبعاد والمغادرة الطوعية والنتائج الأخرى', rate: 'معدل الموافقة في القضايا المفصول فيها' },
   tr: { first: 'Mali yıl / Uyruk', total: 'Toplam karar', grants: 'Kabuller', denials: 'Retler', other: 'Diğer', otherTitle: 'Düşürülen davalar, A10, sınır dışı kararının iptali veya ertelenmesi, gönüllü ayrılış ve diğer sonuçları içerir', rate: 'Karara bağlanan dosyalarda kabul oranı' }
 };
+const nationalityRowMessages = {
+  en: { insufficient: 'Only {count} adjudicated decisions; fewer than 50, so the approval rate is not shown.', limited: '{count} adjudicated decisions meet the display threshold, but the sample remains limited.', sufficient: '{count} adjudicated decisions.', dates: 'Record dates: {start} to {end}' },
+  es: { insufficient: 'Solo {count} decisiones resueltas; al ser menos de 50, no se muestra la tasa de aprobación.', limited: '{count} decisiones resueltas alcanzan el mínimo de visualización, pero la muestra sigue siendo limitada.', sufficient: '{count} decisiones resueltas.', dates: 'Fechas de registro: del {start} al {end}' },
+  fr: { insufficient: 'Seulement {count} décisions au fond ; moins de 50, le taux d’approbation n’est donc pas affiché.', limited: '{count} décisions au fond atteignent le seuil d’affichage, mais l’échantillon reste limité.', sufficient: '{count} décisions au fond.', dates: 'Dates des données : du {start} au {end}' },
+  'pt-BR': { insufficient: 'Apenas {count} decisões julgadas; como são menos de 50, a taxa de aprovação não é exibida.', limited: '{count} decisões julgadas atingem o limite de exibição, mas a amostra ainda é limitada.', sufficient: '{count} decisões julgadas.', dates: 'Datas dos registros: de {start} a {end}' },
+  hi: { insufficient: 'केवल {count} निर्णीत मामले; 50 से कम होने के कारण स्वीकृति दर नहीं दिखाई गई है।', limited: '{count} निर्णीत मामले प्रदर्शन सीमा पूरी करते हैं, लेकिन नमूना अभी भी सीमित है।', sufficient: '{count} निर्णीत मामले।', dates: 'रिकॉर्ड की तारीखें: {start} से {end}' },
+  'zh-Hans': { insufficient: '仅 {count} 件有效裁决，少于 50 件，不显示通过率。', limited: '{count} 件有效裁决，已达到展示标准，但样本仍然有限。', sufficient: '{count} 件有效裁决。', dates: '记录日期：{start} 至 {end}' },
+  'zh-Hant': { insufficient: '僅 {count} 件有效裁決，少於 50 件，不顯示通過率。', limited: '{count} 件有效裁決，已達到顯示標準，但樣本仍然有限。', sufficient: '{count} 件有效裁決。', dates: '記錄日期：{start} 至 {end}' },
+  ru: { insufficient: 'Всего решений по существу: {count}; поскольку их меньше 50, доля одобрений не показана.', limited: 'Решений по существу: {count}; порог для показа достигнут, но выборка остаётся ограниченной.', sufficient: 'Решений по существу: {count}.', dates: 'Даты записей: с {start} по {end}' },
+  ar: { insufficient: '{count} قرارات مفصول فيها فقط؛ ولأنها أقل من 50، لا يُعرض معدل الموافقة.', limited: '{count} قرارات مفصول فيها تستوفي حد العرض، لكن العينة ما زالت محدودة.', sufficient: '{count} قرارات مفصول فيها.', dates: 'تواريخ السجلات: من {start} إلى {end}' },
+  tr: { insufficient: 'Yalnızca {count} dosya karara bağlandı; 50’den az olduğu için kabul oranı gösterilmiyor.', limited: '{count} karara bağlanan dosya gösterim eşiğini karşılıyor, ancak örneklem hâlâ sınırlı.', sufficient: '{count} dosya karara bağlandı.', dates: 'Kayıt tarihleri: {start}–{end}' }
+};
 const nationalityResultStatus = (count, year) => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   const template = nationalityResultMessages[locale] || nationalityResultMessages['zh-Hans'];
@@ -79,6 +91,19 @@ const sampleDescription = (row) => {
   return `${fmt(count)} 件有效裁决`;
 };
 const dateRange = (row) => row.data_start_date || row.data_end_date ? `记录日期 ${row.data_start_date || '—'} 至 ${row.data_end_date || '—'}` : '';
+const nationalityRowMessage = (row) => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const messages = nationalityRowMessages[locale] || nationalityRowMessages['zh-Hans'];
+  const count = Number(row.adjudicated_decisions ?? row.decision_count ?? 0);
+  const template = count < 50 ? messages.insufficient : count < 200 ? messages.limited : messages.sufficient;
+  return template.replace('{count}', fmt(count));
+};
+const nationalityDateRange = (row) => {
+  if (!row.data_start_date && !row.data_end_date) return '';
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const template = (nationalityRowMessages[locale] || nationalityRowMessages['zh-Hans']).dates;
+  return template.replace('{start}', row.data_start_date || '—').replace('{end}', row.data_end_date || '—');
+};
 
 async function requestJson(url, options = {}) {
   const controller = new AbortController();
@@ -217,7 +242,7 @@ function renderCountries() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
-  $('#nationality').innerHTML = rows.length ? `${nationalityOutcomeHeader()}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
+  $('#nationality').innerHTML = rows.length ? `${nationalityOutcomeHeader()}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(nationalityRowMessage(row))}</small>${nationalityDateRange(row) ? `<small class="decision-range">${esc(nationalityDateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
   $('#nationality-results-status').textContent = nationalityResultStatus(rows.length, nationalityFiscalYear);
 }
 

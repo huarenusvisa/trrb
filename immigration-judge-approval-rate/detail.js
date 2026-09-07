@@ -159,6 +159,22 @@ const nationalityDateRange = (row) => {
   const template = (nationalityRowMessages[locale] || nationalityRowMessages['zh-Hans']).dates;
   return template.replace('{start}', row.data_start_date || '—').replace('{end}', row.data_end_date || '—');
 };
+const webexMessages = {
+  en: { title: 'EOIR Webex hearing access', link: 'Webex hearing', phone: 'Phone', accessCode: 'Access code', officialPage: 'See official page', warning: 'Verify that the full Webex URL above matches your hearing notice. Attend online only if your hearing notice says to do so; contact the immigration court if you are unsure.' },
+  es: { title: 'Acceso a audiencias por Webex de EOIR', link: 'Audiencia por Webex', phone: 'Teléfono', accessCode: 'Código de acceso', officialPage: 'Consulte la página oficial', warning: 'Verifique que la URL completa de Webex coincida con su notificación de audiencia. Asista en línea solo si la notificación así lo indica; si tiene dudas, comuníquese con el tribunal de inmigración.' },
+  fr: { title: 'Accès aux audiences EOIR par Webex', link: 'Audience Webex', phone: 'Téléphone', accessCode: 'Code d’accès', officialPage: 'Voir la page officielle', warning: 'Vérifiez que l’URL Webex complète ci-dessus correspond à votre avis d’audience. Ne participez en ligne que si cet avis le prévoit ; en cas de doute, contactez le tribunal de l’immigration.' },
+  'pt-BR': { title: 'Acesso às audiências da EOIR pelo Webex', link: 'Audiência pelo Webex', phone: 'Telefone', accessCode: 'Código de acesso', officialPage: 'Consulte a página oficial', warning: 'Confirme se a URL completa do Webex acima corresponde ao seu aviso de audiência. Participe on-line somente se o aviso indicar essa modalidade; em caso de dúvida, entre em contato com o tribunal de imigração.' },
+  hi: { title: 'EOIR Webex सुनवाई का प्रवेश', link: 'Webex सुनवाई', phone: 'फ़ोन', accessCode: 'एक्सेस कोड', officialPage: 'आधिकारिक पेज देखें', warning: 'ऊपर दिया पूरा Webex URL अपने सुनवाई नोटिस से मिलाएँ। ऑनलाइन तभी शामिल हों जब आपके नोटिस में ऐसा लिखा हो; संदेह होने पर इमिग्रेशन कोर्ट से संपर्क करें।' },
+  'zh-Hans': { title: 'EOIR Webex 网上上庭入口', link: 'Webex 网上上庭', phone: '电话', accessCode: '接入码', officialPage: '见官方页面', warning: '请先核对上方完整 Webex URL 与本人开庭通知是否一致。是否网上上庭以本人开庭通知为准；不确定时请联系移民法院。' },
+  'zh-Hant': { title: 'EOIR Webex 線上出庭入口', link: 'Webex 線上出庭', phone: '電話', accessCode: '存取碼', officialPage: '請見官方頁面', warning: '請先核對上方完整 Webex URL 是否與本人的開庭通知一致。是否線上出庭以本人開庭通知為準；不確定時請聯絡移民法院。' },
+  ru: { title: 'Подключение к слушанию EOIR через Webex', link: 'Слушание в Webex', phone: 'Телефон', accessCode: 'Код доступа', officialPage: 'См. официальную страницу', warning: 'Сверьте полный URL Webex выше с уведомлением о слушании. Подключайтесь онлайн только в том случае, если это указано в уведомлении; при сомнениях свяжитесь с иммиграционным судом.' },
+  ar: { title: 'الدخول إلى جلسات EOIR عبر Webex', link: 'جلسة عبر Webex', phone: 'الهاتف', accessCode: 'رمز الدخول', officialPage: 'راجع الصفحة الرسمية', warning: 'تحقق من أن رابط Webex الكامل أعلاه يطابق إشعار جلستك. احضر عبر الإنترنت فقط إذا نصّ إشعار الجلسة على ذلك؛ وتواصل مع محكمة الهجرة إذا لم تكن متأكدًا.' },
+  tr: { title: 'EOIR Webex duruşmasına erişim', link: 'Webex duruşması', phone: 'Telefon', accessCode: 'Erişim kodu', officialPage: 'Resmî sayfaya bakın', warning: 'Yukarıdaki tam Webex URL’sinin duruşma bildiriminizle eşleştiğini doğrulayın. Yalnızca bildiriminizde belirtilmişse çevrim içi katılın; emin değilseniz göçmenlik mahkemesiyle iletişime geçin.' }
+};
+const webexCopy = () => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  return webexMessages[locale] || webexMessages['zh-Hans'];
+};
 
 async function requestJson(url, options = {}) {
   const controller = new AbortController();
@@ -202,9 +218,10 @@ function renderBackground(background) {
 function renderWebex(webex) {
   const links = webex?.links || [];
   if (!links.length) return;
+  const copy = webexCopy();
   const container = $('#judge-webex');
   container.hidden = false;
-  container.innerHTML = `<b><i class="webex-icon" aria-hidden="true">W</i> EOIR Webex 网上上庭入口</b>${links.map((item) => `<div class="webex-link-item"><a href="${esc(item.webex_url)}" target="_blank" rel="noopener">${esc(item.court_name || 'Webex 网上上庭')} ↗</a><code>${esc(item.webex_url)}</code><small>电话 ${esc(webex.telephonic_number || '1-415-527-5035')} · 接入码 ${esc(item.access_code || '见官方页面')}</small></div>`).join('')}<small>请先核对上方完整 Webex URL 与本人开庭通知是否一致。是否网上上庭以本人开庭通知为准；不确定时请联系移民法院。</small>`;
+  container.innerHTML = `<b><i class="webex-icon" aria-hidden="true">W</i> ${esc(copy.title)}</b>${links.map((item) => `<div class="webex-link-item"><a href="${esc(item.webex_url)}" target="_blank" rel="noopener">${esc(item.court_name || copy.link)} ↗</a><code>${esc(item.webex_url)}</code><small>${esc(copy.phone)} ${esc(webex.telephonic_number || '1-415-527-5035')} · ${esc(copy.accessCode)} ${esc(item.access_code || copy.officialPage)}</small></div>`).join('')}<small>${esc(copy.warning)}</small>`;
 }
 
 function outcomeHeader(firstLabel) {

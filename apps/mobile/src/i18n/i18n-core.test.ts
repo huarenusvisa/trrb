@@ -83,6 +83,9 @@ test('translates notification categories, fallback labels and push preferences',
   assert.equal(translate('zh-TW', 'push.deviceTitle'), '允許本裝置接收通知');
   assert.equal(translate('en', 'push.commentsMeta'), 'New replies to news and community comments');
   assert.equal(translate('zh-CN', 'push.pendingSync', { count: 2 }), '推送登记尚未同步（已尝试 2 次）。恢复网络后会自动重试。');
+  assert.equal(translate('zh-CN', 'push.syncError.network'), '原因：网络暂时不可用。');
+  assert.equal(translate('zh-TW', 'push.nextRetry', { time: '下午3:20' }), '下次自動重試：下午3:20');
+  assert.equal(translate('en', 'push.syncError.server'), 'Reason: The push service is temporarily unavailable.');
   assert.equal(translate('en', 'push.retryNow'), 'Retry now');
 });
 

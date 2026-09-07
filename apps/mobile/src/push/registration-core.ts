@@ -1,4 +1,5 @@
 export type PushPlatform = 'ios' | 'android';
+export type PushRegistrationErrorKind = 'network' | 'server' | 'unknown';
 
 export type StoredPushRegistration = {
   version: 2;
@@ -15,6 +16,7 @@ export type PendingPushRegistration = {
   attempts: number;
   createdAt: number;
   retryAt: number;
+  errorKind: PushRegistrationErrorKind;
 };
 
 const MAX_USER_ID_LENGTH = 128;
@@ -64,7 +66,8 @@ export function parsePendingPushRegistration(raw: string | null, now = Date.now(
     if (!Number.isInteger(attempts) || attempts < 1 || attempts > MAX_PENDING_ATTEMPTS) return null;
     if (!Number.isFinite(createdAt) || createdAt <= 0 || createdAt > now + MAX_FUTURE_SKEW_MS || now - createdAt > MAX_PENDING_AGE_MS) return null;
     if (!Number.isFinite(retryAt) || retryAt < createdAt || retryAt > now + MAX_PENDING_PUSH_RETRY_DELAY_MS + MAX_FUTURE_SKEW_MS) return null;
-    return { version: 1, userId, platform: value.platform, expoPushToken: token, attempts, createdAt, retryAt };
+    const errorKind = value.errorKind === 'network' || value.errorKind === 'server' ? value.errorKind : 'unknown';
+    return { version: 1, userId, platform: value.platform, expoPushToken: token, attempts, createdAt, retryAt, errorKind };
   } catch {
     return null;
   }
@@ -75,7 +78,8 @@ export function nextPendingPushRegistration(
   userId: string,
   platform: PushPlatform,
   expoPushToken: string | null,
-  now = Date.now()
+  now = Date.now(),
+  errorKind: PushRegistrationErrorKind = 'unknown'
 ) {
   const previous = parsePendingPushRegistration(raw, now);
   const nextToken = safeString(expoPushToken, MAX_PUSH_TOKEN_LENGTH) ?? previous?.expoPushToken ?? null;
@@ -83,8 +87,15 @@ export function nextPendingPushRegistration(
   const attempts = sameAttempt ? Math.min(MAX_PENDING_ATTEMPTS, previous.attempts + 1) : 1;
   const createdAt = sameAttempt ? previous.createdAt : now;
   const delay = Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, BASE_PENDING_RETRY_DELAY_MS * (2 ** (attempts - 1)));
-  const pending: PendingPushRegistration = { version: 1, userId, platform, expoPushToken: nextToken, attempts, createdAt, retryAt: now + delay };
+  const pending: PendingPushRegistration = { version: 1, userId, platform, expoPushToken: nextToken, attempts, createdAt, retryAt: now + delay, errorKind };
   return JSON.stringify(pending);
+}
+
+export function classifyPushRegistrationError(error: unknown): PushRegistrationErrorKind {
+  if (error instanceof TypeError) return 'network';
+  if (typeof error !== 'object' || error === null || !('pushRegistrationErrorKind' in error)) return 'unknown';
+  const kind = (error as { pushRegistrationErrorKind?: unknown }).pushRegistrationErrorKind;
+  return kind === 'network' || kind === 'server' ? kind : 'unknown';
 }
 
 export function pendingPushRetryDelay(raw: string | null, userId: string, now = Date.now()) {

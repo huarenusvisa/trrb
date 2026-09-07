@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  classifyPushRegistrationError,
   nextPendingPushRegistration,
   parsePendingPushRegistration,
   pendingPushRetryDelay,
@@ -66,10 +67,25 @@ test('persists bounded pending sync metadata without session credentials', () =>
     expoPushToken: 'ExpoPushToken[current-token]',
     attempts: 1,
     createdAt: now,
-    retryAt: now + 15_000
+    retryAt: now + 15_000,
+    errorKind: 'unknown'
   });
   assert.equal(raw.includes('access_token'), false);
   assert.equal(raw.includes('refresh_token'), false);
+});
+
+test('classifies retry failures without persisting sensitive error details', () => {
+  const now = 1_800_000_000_000;
+  const networkError = Object.assign(new Error('contains private diagnostic text'), { pushRegistrationErrorKind: 'network' });
+  const raw = nextPendingPushRegistration(null, 'user-1', 'ios', null, now, classifyPushRegistrationError(networkError));
+  assert.equal(parsePendingPushRegistration(raw, now)?.errorKind, 'network');
+  assert.equal(raw.includes('private diagnostic text'), false);
+  assert.equal(classifyPushRegistrationError(Object.assign(new Error('down'), { pushRegistrationErrorKind: 'server' })), 'server');
+  assert.equal(classifyPushRegistrationError(new TypeError('offline')), 'network');
+  assert.equal(classifyPushRegistrationError(new Error('other')), 'unknown');
+
+  const legacy = JSON.stringify({ ...JSON.parse(raw), errorKind: undefined });
+  assert.equal(parsePendingPushRegistration(legacy, now)?.errorKind, 'unknown');
 });
 
 test('backs off repeated pending sync while keeping delay bounded', () => {

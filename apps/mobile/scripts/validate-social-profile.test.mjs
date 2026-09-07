@@ -170,13 +170,18 @@ test('push settings expose account-scoped pending registration and accessible re
   const settings = read('app/push-settings.tsx');
 
   assert.match(registration, /getPendingPushRegistrationStatus/);
-  assert.match(registration, /pending\.userId !== auth\.user\.id/);
+  assert.match(registration, /pending\.userId !== userId/);
+  assert.match(registration, /supabase\.auth\.getSession\(\)/);
   assert.match(registration, /performRegisterPushToken\(\{ retryPending: true \}\)/);
   assert.match(settings, /push-registration-pending/);
   assert.match(settings, /push-registration-retry/);
   assert.match(settings, /accessibilityLiveRegion="polite"/);
   assert.match(settings, /AccessibilityInfo\.announceForAccessibility/);
   assert.match(settings, /t\('push\.retryPendingA11y'\)/);
+  assert.match(settings, /push-registration-error-kind/);
+  assert.match(settings, /push-registration-next-retry/);
+  assert.match(settings, /Intl\.DateTimeFormat\(locale/);
+  assert.match(registration, /errorKind: pending\.errorKind/);
 });
 
 test('push settings follow background token synchronization without stale state', () => {

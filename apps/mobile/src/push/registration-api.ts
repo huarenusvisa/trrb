@@ -1,5 +1,15 @@
 export const PUSH_TOKEN_REGISTRATION_ENDPOINT = 'https://trrb.net/.netlify/functions/push-token-registration';
 
+export class PushRegistrationError extends Error {
+  readonly pushRegistrationErrorKind: 'network' | 'server';
+
+  constructor(kind: 'network' | 'server', message: string) {
+    super(message);
+    this.name = 'PushRegistrationError';
+    this.pushRegistrationErrorKind = kind;
+  }
+}
+
 type FetchLike = (input: string, init: RequestInit) => Promise<Response>;
 
 export async function claimPushToken(options: {
@@ -30,15 +40,15 @@ export async function claimPushToken(options: {
     try {
       payload = text ? JSON.parse(text) as Record<string, unknown> : {};
     } catch {
-      throw new Error('推送服务返回异常，请稍后重试。');
+      throw new PushRegistrationError('server', '推送服务返回异常，请稍后重试。');
     }
     if (!response.ok || payload.ok !== true || typeof payload.user_id !== 'string') {
-      throw new Error(typeof payload.error === 'string' ? payload.error : `推送令牌登记失败（${response.status}）`);
+      throw new PushRegistrationError('server', typeof payload.error === 'string' ? payload.error : `推送令牌登记失败（${response.status}）`);
     }
     return { userId: payload.user_id, replacedOwnerCount: Number(payload.replaced_owner_count || 0) };
   } catch (error) {
-    if (controller.signal.aborted) throw new Error('连接推送服务超时，请检查网络后重试。');
-    if (error instanceof TypeError) throw new Error('无法连接推送服务，请检查网络后重试。');
+    if (controller.signal.aborted) throw new PushRegistrationError('network', '连接推送服务超时，请检查网络后重试。');
+    if (error instanceof TypeError) throw new PushRegistrationError('network', '无法连接推送服务，请检查网络后重试。');
     throw error;
   } finally {
     clearTimeout(timeout);

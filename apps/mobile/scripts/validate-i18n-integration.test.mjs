@@ -90,7 +90,7 @@ test('localizes notification inbox and push settings without translating server 
   const push = read('app/push-settings.tsx');
 
   for (const source of [inbox, push]) assert.match(source, /useI18n\(\)/);
-  for (const key of ['inbox.heading', 'inbox.cacheDetails', 'inbox.cacheExpired', 'inbox.refreshSucceeded', 'inbox.emptyAllTitle', 'inbox.loadMore', 'inbox.pageErrorTitle']) {
+  for (const key of ['inbox.heading', 'inbox.cacheDetails', 'inbox.cacheTruncated', 'inbox.cacheExpired', 'inbox.refreshSucceeded', 'inbox.emptyAllTitle', 'inbox.loadMore', 'inbox.pageErrorTitle']) {
     assert.ok(inbox.includes(`t('${key}'`), `notification inbox must translate ${key}`);
   }
   for (const key of ['push.heading', 'push.description', 'push.deviceTitle', 'push.openSystemSettings', 'push.types', 'push.footnote']) {

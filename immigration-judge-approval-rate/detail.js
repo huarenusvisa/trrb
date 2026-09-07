@@ -143,7 +143,11 @@ function renderCountries() {
     .map(enrichNationalityRow)
     .sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   $('#nationality-period-label').textContent = nationalityPeriodLabel(nationalityFiscalYear);
-  document.querySelectorAll('[data-nationality-fy]').forEach((button) => button.classList.toggle('active', Number(button.dataset.nationalityFy) === nationalityFiscalYear));
+  document.querySelectorAll('[data-nationality-fy]').forEach((button) => {
+    const selected = Number(button.dataset.nationalityFy) === nationalityFiscalYear;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
   $('#nationality').innerHTML = rows.length ? `${outcomeHeader('财年 / 国籍')}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : '<div class="empty">该财年暂无匹配国籍数据</div>';
 }
 

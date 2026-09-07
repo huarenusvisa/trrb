@@ -206,6 +206,8 @@ const seoBuilder = readFileSync('scripts/build-asylumjudge-seo.mjs', 'utf8');
 const homepageClient = readFileSync('asylumjudge/site.js', 'utf8');
 assert.match(detailPage, /id="detail-loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'judge detail loading and failure updates must be announced');
 assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="search"[^>]*inputmode="search"[^>]*autocomplete="off"[^>]*aria-label="输入中文或英文国籍，例如：古巴、Cuba、中国、China"[^>]*aria-controls="nationality"[^>]*aria-describedby="nationality-period-label"/, 'judge nationality filter must expose a persistent localized name and its result relationship');
+assert.match(detailPage, /class="nationality-fy"[^>]*role="group"[^>]*aria-label="选择国籍数据财政年度"[\s\S]*data-nationality-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-nationality-fy="2025"[^>]*aria-pressed="false"/, 'judge nationality year filters must expose their group and initial selected state');
+assert.match(detailClient, /data-nationality-fy[\s\S]*const selected = Number\(button\.dataset\.nationalityFy\) === nationalityFiscalYear;[\s\S]*button\.setAttribute\('aria-pressed', String\(selected\)\)/, 'judge nationality year filters must keep the announced selected state in sync');
 assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=9/, 'judge detail page must load the current asset versions');
 assert.match(detailStyles, /\.country-tools \.nationality-fy button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'judge detail fiscal-year filters must provide responsive 44px touch targets');
 assert.match(detailClient, /const REQUEST_TIMEOUT_MS = 15000/, 'judge detail requests must use a finite timeout');

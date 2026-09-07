@@ -130,8 +130,11 @@ for (const html of [standalone, trrb]) {
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');
   assert.match(html, /data-state-interval="month"/, 'homepage must offer a monthly trend');
   assert.match(html, /data-state-interval="year"/, 'homepage must offer a fiscal-year trend');
+  assert.match(html, /class="trend-interval-tabs"[^>]*role="group"[^>]*aria-label="选择趋势周期"/, 'trend interval buttons must expose a named group');
   assert.match(html, /data-state-interval="month" aria-pressed="true"/, 'the initial trend interval must expose its selected state');
   assert.match(html, /data-state-interval="year" aria-pressed="false"/, 'the inactive trend interval must expose its unselected state');
+  assert.match(html, /id="state-trend-states"[^>]*role="group"[^>]*aria-label="华人聚集城市快捷入口"/, 'city shortcut buttons must expose a named group');
+  assert.match(html, /class="state-fy-tabs"[^>]*role="group"[^>]*aria-label="选择财政年度"/, 'homepage fiscal-year buttons must expose a named group');
   assert.match(html, /data-state-fy="2026" aria-pressed="true"/, 'the initial fiscal year must expose its selected state');
   assert.match(html, /data-state-fy="2025" aria-pressed="false"/, 'inactive fiscal years must expose their unselected state');
   assert.match(html, /id="state-trend-detail"/, 'homepage must expose touch-friendly point details');

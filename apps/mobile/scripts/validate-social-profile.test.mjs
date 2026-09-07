@@ -200,6 +200,19 @@ test('push settings follow background token synchronization without stale state'
   assert.match(settings, /completionAnnouncementPending\.current = false/);
 });
 
+test('pending push registration retries immediately after network recovery without duplicate mutations', () => {
+  const registration = read('src/push/registration.ts');
+  const core = read('src/push/registration-core.ts');
+
+  assert.match(registration, /Network\.addNetworkStateListener/);
+  assert.match(registration, /connectivityGate\.record\(state\)/);
+  assert.match(registration, /await retryPendingPushRegistration\(\)/);
+  assert.match(registration, /if \(pendingRetryInFlight\) return pendingRetryInFlight/);
+  assert.match(registration, /networkSubscription\?\.remove\(\)/);
+  assert.match(core, /class PushConnectivityGate/);
+  assert.match(core, /this\.wasOffline && online/);
+});
+
 test('notification center pages older messages and restores account-scoped offline cache', () => {
   const screen = read('app/notifications.tsx');
   const api = read('src/community/notifications.ts');

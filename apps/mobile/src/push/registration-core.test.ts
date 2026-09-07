@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  PushConnectivityGate,
   classifyPushRegistrationError,
   nextPendingPushRegistration,
   parsePendingPushRegistration,
@@ -86,6 +87,16 @@ test('classifies retry failures without persisting sensitive error details', () 
 
   const legacy = JSON.stringify({ ...JSON.parse(raw), errorKind: undefined });
   assert.equal(parsePendingPushRegistration(legacy, now)?.errorKind, 'unknown');
+});
+
+test('retries only after a confirmed offline to online transition', () => {
+  const gate = new PushConnectivityGate();
+  assert.equal(gate.record({ isConnected: true, isInternetReachable: true }), false);
+  assert.equal(gate.record({ isConnected: false, isInternetReachable: false }), false);
+  assert.equal(gate.record({}), false);
+  assert.equal(gate.record({ isConnected: true, isInternetReachable: false }), false);
+  assert.equal(gate.record({ isConnected: true, isInternetReachable: true }), true);
+  assert.equal(gate.record({ isConnected: true, isInternetReachable: true }), false);
 });
 
 test('backs off repeated pending sync while keeping delay bounded', () => {

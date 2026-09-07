@@ -98,6 +98,19 @@ export function classifyPushRegistrationError(error: unknown): PushRegistrationE
   return kind === 'network' || kind === 'server' ? kind : 'unknown';
 }
 
+export class PushConnectivityGate {
+  private wasOffline = false;
+
+  record(state: { isConnected?: boolean; isInternetReachable?: boolean }) {
+    const offline = state.isConnected === false || state.isInternetReachable === false;
+    const online = state.isConnected === true && state.isInternetReachable !== false;
+    const recovered = this.wasOffline && online;
+    if (offline) this.wasOffline = true;
+    if (online) this.wasOffline = false;
+    return recovered;
+  }
+}
+
 export function pendingPushRetryDelay(raw: string | null, userId: string, now = Date.now()) {
   const pending = parsePendingPushRegistration(raw, now);
   if (!pending || pending.userId !== userId) return null;

@@ -22,10 +22,26 @@ const nationalityResultMessages = {
   ar: 'السنة المالية {year}: عدد نتائج الجنسية {count}.',
   tr: 'Mali yıl {year}: {count} uyruk sonucu.'
 };
+const nationalityEmptyMessages = {
+  en: 'No matching nationality data for this fiscal year.',
+  es: 'No hay datos de nacionalidad coincidentes para este año fiscal.',
+  fr: 'Aucune donnée de nationalité correspondante pour cet exercice.',
+  'pt-BR': 'Não há dados de nacionalidade correspondentes para este ano fiscal.',
+  hi: 'इस वित्त वर्ष के लिए कोई मेल खाता राष्ट्रीयता डेटा नहीं है।',
+  'zh-Hans': '该财年暂无匹配国籍数据。',
+  'zh-Hant': '該財年暫無相符的國籍資料。',
+  ru: 'За этот финансовый год нет подходящих данных по гражданству.',
+  ar: 'لا توجد بيانات جنسية مطابقة لهذه السنة المالية.',
+  tr: 'Bu mali yıl için eşleşen uyruk verisi yok.'
+};
 const nationalityResultStatus = (count, year) => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   const template = nationalityResultMessages[locale] || nationalityResultMessages['zh-Hans'];
   return template.replace('{year}', String(year)).replace('{count}', fmt(count));
+};
+const nationalityEmptyMessage = () => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  return nationalityEmptyMessages[locale] || nationalityEmptyMessages['zh-Hans'];
 };
 const sampleText = (level, count) => level === 'insufficient' || level === 'small'
   ? `仅 ${fmt(count)} 件有效裁决，少于 50 件，因此不展示通过率。`
@@ -165,7 +181,7 @@ function renderCountries() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
-  $('#nationality').innerHTML = rows.length ? `${outcomeHeader('财年 / 国籍')}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : '<div class="empty">该财年暂无匹配国籍数据</div>';
+  $('#nationality').innerHTML = rows.length ? `${outcomeHeader('财年 / 国籍')}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
   $('#nationality-results-status').textContent = nationalityResultStatus(rows.length, nationalityFiscalYear);
 }
 

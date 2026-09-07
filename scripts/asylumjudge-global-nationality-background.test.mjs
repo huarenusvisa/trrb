@@ -209,11 +209,17 @@ assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="s
 assert.match(detailPage, /id="nationality-results-status"[^>]*class="sr-only"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced without exposing the full table as a live region');
 assert.match(detailPage, /class="nationality-fy"[^>]*role="group"[^>]*aria-label="选择国籍数据财政年度"[\s\S]*data-nationality-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-nationality-fy="2025"[^>]*aria-pressed="false"/, 'judge nationality year filters must expose their group and initial selected state');
 assert.match(detailClient, /data-nationality-fy[\s\S]*const selected = Number\(button\.dataset\.nationalityFy\) === nationalityFiscalYear;[\s\S]*button\.setAttribute\('aria-pressed', String\(selected\)\)/, 'judge nationality year filters must keep the announced selected state in sync');
-assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=10/, 'judge detail page must load the current asset versions');
+assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=11/, 'judge detail page must load the current asset versions');
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(detailClient, new RegExp(`['"]?${locale}['"]?\\s*:`), `nationality result announcements must support ${locale}`);
 }
 assert.match(detailClient, /nationality-results-status'\)\.textContent = nationalityResultStatus\(rows\.length, nationalityFiscalYear\)/, 'filter and fiscal-year changes must announce the updated result count');
+const nationalityEmptyMessages = detailClient.match(/const nationalityEmptyMessages = \{[\s\S]*?\n\};/)?.[0] || '';
+for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
+  assert.match(nationalityEmptyMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `nationality empty states must support ${locale}`);
+}
+assert.match(detailClient, /`<div class="empty">\$\{esc\(nationalityEmptyMessage\(\)\)\}<\/div>`/, 'empty nationality filters must render the active locale message safely');
+assert.doesNotMatch(detailClient, /<div class="empty">该财年暂无匹配国籍数据<\/div>/, 'the dynamic empty state must not remain hard-coded in Simplified Chinese');
 assert.match(detailStyles, /\.country-tools \.nationality-fy button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'judge detail fiscal-year filters must provide responsive 44px touch targets');
 assert.match(detailClient, /const REQUEST_TIMEOUT_MS = 15000/, 'judge detail requests must use a finite timeout');
 assert.match(detailClient, /new DOMException\('Request timed out', 'TimeoutError'\)/, 'timed-out judge detail requests must reach the retry state');

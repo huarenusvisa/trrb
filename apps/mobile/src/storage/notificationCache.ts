@@ -1,13 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { NotificationCategory, UserNotification } from '../community/notifications';
-import { notificationCacheKey, notificationCacheSnapshot, parseNotificationCache } from './notification-cache-core';
+import { notificationCacheKey, inspectNotificationCache, notificationCacheSnapshot } from './notification-cache-core';
 
 export async function readCachedNotifications(userId: string, category: NotificationCategory) {
   const key = notificationCacheKey(userId, category);
   const raw = await AsyncStorage.getItem(key);
-  const payload = parseNotificationCache(raw, userId, category);
-  if (!payload && raw) await AsyncStorage.removeItem(key);
-  return payload?.snapshot || null;
+  const result = inspectNotificationCache(raw, userId, category);
+  if (result.discardReason && raw) await AsyncStorage.removeItem(key);
+  return {
+    snapshot: result.payload?.snapshot ?? null,
+    savedAt: result.payload?.savedAt ?? null,
+    discardReason: result.discardReason,
+  };
 }
 
 export async function cacheNotifications(notifications: UserNotification[], nextOffset: number | null, userId: string, category: NotificationCategory) {

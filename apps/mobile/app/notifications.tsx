@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { supabase } from '../src/auth/supabase';
@@ -36,14 +36,14 @@ export default function NotificationsScreen() {
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageError, setPageError] = useState('');
-  const [showingCached, setShowingCached] = useState(false);
+  const [cachedStatus, setCachedStatus] = useState<{ savedAt: number; count: number } | null>(null);
   const requestId = useRef(0);
   const hydratedCaches = useRef(new Set<string>());
   const errorMessage = useCallback((error: unknown, fallback: MessageKey) => error instanceof Error
     ? error.message === '需要登录' ? t('inbox.signInRequired') : error.message
     : t(fallback), [t]);
 
-  const load = useCallback(async (refresh = false, knownViewerId = '') => {
+  const load = useCallback(async (refresh = false, knownViewerId = '', announceSuccess = false) => {
     const currentRequest = ++requestId.current;
     setLoadingMore(false);
     if (refresh) setRefreshing(true);
@@ -57,9 +57,10 @@ export default function NotificationsScreen() {
         setItems(page.notifications);
         setNextOffset(page.nextOffset);
         setPageError('');
-        setShowingCached(false);
+        setCachedStatus(null);
         setError('');
         if (knownViewerId) void cacheNotifications(page.notifications, page.nextOffset, knownViewerId, category).catch(() => undefined);
+        if (announceSuccess) AccessibilityInfo.announceForAccessibility(t('inbox.refreshSucceeded'));
       }
     }
     catch (e) { if (currentRequest === requestId.current) setError(errorMessage(e, 'inbox.loadFailed')); }
@@ -78,19 +79,22 @@ export default function NotificationsScreen() {
         if (!active) return;
         setViewerId(userId);
         const cacheScope = `${userId}:${category}`;
-        let cached = null;
+        let cachedResult = null;
         if (!hydratedCaches.current.has(cacheScope)) {
           hydratedCaches.current.add(cacheScope);
-          cached = await readCachedNotifications(userId, category).catch(() => null);
+          cachedResult = await readCachedNotifications(userId, category).catch(() => null);
         }
         if (!active) return;
-        if (cached?.notifications.length) {
+        const announceRefresh = cachedResult?.discardReason === 'expired';
+        if (announceRefresh) AccessibilityInfo.announceForAccessibility(t('inbox.cacheExpired'));
+        const cached = cachedResult?.snapshot;
+        if (cached?.notifications.length && cachedResult?.savedAt) {
           setItems(cached.notifications);
           setNextOffset(cached.nextOffset);
-          setShowingCached(true);
+          setCachedStatus({ savedAt: cachedResult.savedAt, count: cached.notifications.length });
           setLoading(false);
-          await load(true, userId);
-        } else await load(false, userId);
+          await load(true, userId, true);
+        } else await load(false, userId, announceRefresh);
       } catch {
         if (active) await load(false);
       }
@@ -98,7 +102,7 @@ export default function NotificationsScreen() {
     void begin();
     return () => { active = false; requestId.current += 1; };
   }, [category, load]);
-  useForegroundRetry(Boolean(error), () => void load(true, viewerId));
+  useForegroundRetry(Boolean(error), () => void load(true, viewerId, true));
 
   const cacheVisibleItems = (nextItems: UserNotification[]) => {
     if (!viewerId) return;
@@ -115,7 +119,7 @@ export default function NotificationsScreen() {
     setLoadingMore(false);
     setError('');
     setPageError('');
-    setShowingCached(false);
+    setCachedStatus(null);
     setLoading(true);
     setRefreshing(false);
   };
@@ -176,14 +180,14 @@ export default function NotificationsScreen() {
   const itemTitle = (item: UserNotification) => item.title || t(NOTICE_KEYS[item.type]);
 
   return <><Stack.Screen options={{ title: t('inbox.screenTitle'), headerBackTitle: t('common.back') }} />
-    <ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true, viewerId)} />}>
+    <ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true, viewerId, true)} />}>
       <View style={styles.header}><Text style={styles.h1}>{t('inbox.heading')}</Text>{items.some(item => !item.is_read) ? <Pressable disabled={markingRead} accessibilityRole="button" accessibilityLabel={category === 'all' ? t('inbox.markAllA11y') : t('inbox.markCategoryA11y', { category: categoryLabel })} onPress={() => void markAll()}><Text style={[styles.markAll, markingRead && styles.disabled]}>{markingRead ? t('inbox.processing') : category === 'all' ? t('inbox.markAll') : t('inbox.markCategory')}</Text></Pressable> : null}</View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters} accessibilityRole="tablist">
         {notificationCategories.map((item) => <Pressable key={item.key} disabled={markingRead} testID={`notification-filter-${item.key}`} accessibilityRole="tab" accessibilityState={{ selected: category === item.key, disabled: markingRead }} accessibilityLabel={t('inbox.filterA11y', { category: t(CATEGORY_KEYS[item.key]) })} style={[styles.filter, category === item.key && styles.filterSelected, markingRead && styles.disabled]} onPress={() => selectCategory(item.key)}><Text style={[styles.filterText, category === item.key && styles.filterTextSelected]}>{t(CATEGORY_KEYS[item.key])}</Text></Pressable>)}
       </ScrollView>
-      {showingCached ? <View testID="notifications-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>{t('inbox.cacheNotice')}</Text></View> : null}
-      {loading ? <AsyncStatePanel testID="notifications-loading" title={t('inbox.loadingTitle')} message={t('inbox.loadingBody')} busy /> : error && items.length === 0 ? <AsyncStatePanel testID="notifications-error" tone="error" title={t('inbox.loadErrorTitle')} message={error} actionLabel={t('inbox.reload')} onAction={() => void load(true, viewerId)} busy={refreshing} /> : <>
-      {error ? <AsyncStatePanel testID="notifications-refresh-error" tone="error" title={t('inbox.refreshErrorTitle')} message={error} actionLabel={t('inbox.resync')} onAction={() => void load(true, viewerId)} busy={refreshing} /> : null}
+      {cachedStatus ? <View testID="notifications-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>{t('inbox.cacheDetails', { count: cachedStatus.count, savedAt: new Date(cachedStatus.savedAt).toLocaleString(localeDateTag(locale)) })}</Text></View> : null}
+      {loading ? <AsyncStatePanel testID="notifications-loading" title={t('inbox.loadingTitle')} message={t('inbox.loadingBody')} busy /> : error && items.length === 0 ? <AsyncStatePanel testID="notifications-error" tone="error" title={t('inbox.loadErrorTitle')} message={error} actionLabel={t('inbox.reload')} onAction={() => void load(true, viewerId, true)} busy={refreshing} /> : <>
+      {error ? <AsyncStatePanel testID="notifications-refresh-error" tone="error" title={t('inbox.refreshErrorTitle')} message={error} actionLabel={t('inbox.resync')} onAction={() => void load(true, viewerId, true)} busy={refreshing} /> : null}
       {!error && items.length === 0 ? <AsyncStatePanel testID="notifications-empty" title={category === 'all' ? t('inbox.emptyAllTitle') : t('inbox.emptyCategoryTitle', { category: categoryLabel })} message={category === 'all' ? t('inbox.emptyAllBody') : t('inbox.emptyCategoryBody')} /> : items.map(item => <Pressable accessibilityRole="button" accessibilityLabel={t('inbox.openA11y', { title: itemTitle(item) })} key={item.id} style={[styles.card, !item.is_read && styles.unread]} onPress={() => void openItem(item)}>
         <View style={styles.row}><Text style={styles.title}>{itemTitle(item)}</Text>{!item.is_read ? <View style={styles.dot} /> : null}</View>
         {item.body ? <Text style={styles.body}>{item.body}</Text> : null}

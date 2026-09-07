@@ -1,4 +1,4 @@
-name: AsylumJudge Production Deploy
+name: AsylumJudge Production Build Gate
 
 on:
   workflow_dispatch:
@@ -20,16 +20,13 @@ permissions:
   contents: read
 
 concurrency:
-  group: asylumjudge-production
+  group: asylumjudge-production-build-gate
   cancel-in-progress: true
 
 jobs:
-  build-test-deploy:
+  build-test:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    env:
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      NETLIFY_SITE_ID: 7beb8b62-f7e3-49fc-b954-46699c9956b7
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -52,17 +49,11 @@ jobs:
           if (report.removed_untranslated_methodology_urls !== 9) {
             throw new Error(`Expected 9 untranslated methodology URLs to be removed, got ${report.removed_untranslated_methodology_urls}`);
           }
-          console.log(`Indexing hygiene verified: ${report.localized_pages} localized pages; ${report.server_side_replacements} server-side replacements.`);
+          console.log(`Indexing hygiene verified: ${report.localized_pages} localized pages; ${report.server_side_replacements} server-side replacements; ${report.high_cjk_page_count ?? report.high_cjk_pages?.length ?? 0} high-CJK warnings.`);
           NODE
-      - name: Deploy AsylumJudge production
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -n "${NETLIFY_AUTH_TOKEN:-}"
-          npx --yes netlify-cli@latest deploy \
-            --prod \
-            --dir=.netlify/asylumjudge-bundle/public \
-            --functions=.netlify/asylumjudge-bundle/netlify/functions \
-            --site="$NETLIFY_SITE_ID" \
-            --auth="$NETLIFY_AUTH_TOKEN" \
-            --message="AsylumJudge ${GITHUB_SHA}"
+      - name: Save AsylumJudge production bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: asylumjudge-production-bundle
+          path: .netlify/asylumjudge-bundle
+          retention-days: 7

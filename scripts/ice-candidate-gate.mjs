@@ -10,7 +10,8 @@ const HIGH_RECALL_MIN_SCORE = Number(process.env.ICE_HIGH_RECALL_MIN_SCORE || 60
 
 const NATIVE_AGENCY_HANDLE = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|doj_eoir|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*|hsi[a-z0-9_]*)$/i;
 const CANDIDATE_SOURCE_TYPE = /^(official|government|agency|monitored_individual|verified_discovered|discovered_individual|major_media|local_media|specialist_media|media|legal_org|research_org|civic_org|organization|individual)$/i;
-const DIRECT_CONTEXT = /\bICE\b|immigration and customs enforcement|enforcement and removal operations|\bERO\b|\bHSI\b|homeland security investigations|\bDHS\b|department of homeland security|\bCBP\b|customs and border protection|border patrol|\bUSBP\b|\bUSCIS\b|immigration agents?|immigration officers?|federal immigration agents?|deportation officers?|移民与海关执法局|移民和海关执法局|移民局特工|移民执法人员|国土安全调查局|边境巡逻/i;
+const ACRONYM_CONTEXT = /\b(?:ICE|ERO|HSI|DHS|CBP|USBP|USCIS)\b/;
+const DIRECT_PHRASE = /immigration and customs enforcement|enforcement and removal operations|homeland security investigations|department of homeland security|customs and border protection|border patrol|immigration agents?|immigration officers?|federal immigration agents?|deportation officers?|移民与海关执法局|移民和海关执法局|移民局特工|移民执法人员|国土安全调查局|边境巡逻/i;
 const LOWERCASE_ICE = /\bice\b/i;
 const ACTION_CONTEXT = /arrest|apprehend|detain|detention|custody|raid|operation|sweep|deport|removal|repatriat|warrant|fugitive|shooting|shot by|gunfire|use of force|chase|crash|vehicle stop|traffic stop|worksite|courthouse|facility|traffick|smuggl|rescued|recovered|fraud|charged|indicted|sentenced|抓捕|抓获|拘捕|逮捕|拘留|拘押|羁押|带走|抓走|遣返|递解|驱逐|突袭|搜捕|扫荡|执法行动|查获|枪击|开枪|追车|破窗|拖出|营救|人口贩卖|走私|起诉|判刑/i;
 const IMMIGRATION_CONTEXT = /immigration|immigrant|migrant|undocumented|illegal alien|illegal immigrant|deport|removal|asylum|border|visa|green card|移民|非法入境|无证|庇护|边境|遣返|递解|驱逐/i;
@@ -59,22 +60,18 @@ function highRecallSignal(row) {
   return collector.startsWith("ice-high-recall-") && score >= HIGH_RECALL_MIN_SCORE;
 }
 function hasAgencyContext(text) {
-  return DIRECT_CONTEXT.test(text) || (LOWERCASE_ICE.test(text) && IMMIGRATION_CONTEXT.test(text));
+  return ACRONYM_CONTEXT.test(text) || DIRECT_PHRASE.test(text) || (LOWERCASE_ICE.test(text) && IMMIGRATION_CONTEXT.test(text));
 }
 function isCandidate(row) {
   const text = String(row?.source_text || "");
   const username = String(row?.source_username || "").replace(/^@/, "").trim();
   const sourceType = String(row?.source_type || "").trim();
 
-  // 严格原始ICE执法证据始终进入后续处理。
   if (isIceEnforcementEvidence(text, username)) return true;
-
   if (!CANDIDATE_SOURCE_TYPE.test(sourceType) && !NATIVE_AGENCY_HANDLE.test(username)) return false;
   if (!ACTION_CONTEXT.test(text)) return false;
 
-  // 高召回评分只能作为加分项，不能再绕过机构语境和具体事件要求。
   if (highRecallSignal(row) && hasAgencyContext(text)) return true;
-
   if (hasAgencyContext(text)) return true;
   if (FEDERAL_AGENT_CONTEXT.test(text) && IMMIGRATION_CONTEXT.test(text)) return true;
   if (NATIVE_AGENCY_HANDLE.test(username) && (IMMIGRATION_CONTEXT.test(text) || ACTION_CONTEXT.test(text))) return true;
@@ -118,7 +115,7 @@ async function main() {
   if (rejected.length) await reject(rejected);
 
   console.log(JSON.stringify({
-    stage: "ice-candidate-gate-v2",
+    stage: "ice-candidate-gate-v3",
     scanned: active.length,
     kept_for_ai_or_review: active.length - rejected.length,
     rejected_non_candidates: rejected.length,

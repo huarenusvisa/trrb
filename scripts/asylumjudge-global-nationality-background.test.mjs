@@ -218,8 +218,8 @@ const nationalityEmptyMessages = detailClient.match(/const nationalityEmptyMessa
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(nationalityEmptyMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `nationality empty states must support ${locale}`);
 }
-assert.match(detailClient, /`<div class="empty">\\$\\{esc\\(nationalityEmptyMessage\\(\\)\\)\\}<\\/div>`/, 'empty nationality filters must render the active locale message safely');
-assert.doesNotMatch(detailClient, /<div class="empty">该财年暂无匹配国籍数据<\\/div>/, 'the dynamic empty state must not remain hard-coded in Simplified Chinese');
+assert.match(detailClient, /`<div class="empty">\$\{esc\(nationalityEmptyMessage\(\)\)\}<\/div>`/, 'empty nationality filters must render the active locale message safely');
+assert.doesNotMatch(detailClient, /<div class="empty">该财年暂无匹配国籍数据<\/div>/, 'the dynamic empty state must not remain hard-coded in Simplified Chinese');
 assert.match(detailStyles, /\.country-tools \.nationality-fy button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'judge detail fiscal-year filters must provide responsive 44px touch targets');
 assert.match(detailClient, /const REQUEST_TIMEOUT_MS = 15000/, 'judge detail requests must use a finite timeout');
 assert.match(detailClient, /new DOMException\('Request timed out', 'TimeoutError'\)/, 'timed-out judge detail requests must reach the retry state');

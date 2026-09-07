@@ -1,12 +1,14 @@
 import { AppState, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import * as Network from 'expo-network';
 import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 import { supabase } from '../auth/supabase';
 import { PushResponseGate, pushDestination, shouldRequestPushPermission } from './push-core';
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  PushConnectivityGate,
   classifyPushRegistrationError,
   nextPendingPushRegistration,
   parsePendingPushRegistration,
@@ -28,6 +30,7 @@ const pushResponseGate = new PushResponseGate();
 let registrationSuspended = false;
 let tokenMutationQueue: Promise<void> = Promise.resolve();
 let pendingRetryTimer: ReturnType<typeof setTimeout> | null = null;
+let pendingRetryInFlight: Promise<string | null> | null = null;
 export type PendingPushRegistrationStatus = { attempts: number; retryAt: number; errorKind: 'network' | 'server' | 'unknown' };
 type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' };
 const pendingRegistrationListeners = new Set<(event: PendingPushRegistrationEvent) => void>();
@@ -211,8 +214,14 @@ export function registerPushToken(options: { requestPermission?: boolean; device
 }
 
 export function retryPendingPushRegistration() {
+  if (pendingRetryInFlight) return pendingRetryInFlight;
   registrationSuspended = false;
-  return enqueueTokenMutation(() => performRegisterPushToken({ retryPending: true }));
+  const retry = enqueueTokenMutation(() => performRegisterPushToken({ retryPending: true }));
+  pendingRetryInFlight = retry;
+  void retry.finally(() => {
+    if (pendingRetryInFlight === retry) pendingRetryInFlight = null;
+  }).catch(() => {});
+  return retry;
 }
 
 async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolean) {
@@ -261,8 +270,9 @@ export function installPushRegistrationLifecycle() {
   const sync = (devicePushToken?: Notifications.DevicePushToken) => void registerPushToken({ devicePushToken }).catch((error) => console.warn('push token sync failed', error));
   const retryPending = async () => {
     if (registrationSuspended || !await AsyncStorage.getItem(PENDING_REGISTRATION_KEY)) return;
-    sync();
+    await retryPendingPushRegistration();
   };
+  const connectivityGate = new PushConnectivityGate();
   sync();
   const { data } = supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session) {
@@ -276,10 +286,14 @@ export function installPushRegistrationLifecycle() {
   const appStateSubscription = isNative ? AppState.addEventListener('change', (state) => {
     if (state === 'active') void retryPending().catch((error) => console.warn('push token pending retry failed', error));
   }) : null;
+  const networkSubscription = isNative ? Network.addNetworkStateListener((state) => {
+    if (connectivityGate.record(state)) void retryPending().catch((error) => console.warn('push token network recovery retry failed', error));
+  }) : null;
   return () => {
     data.subscription.unsubscribe();
     tokenSubscription?.remove();
     appStateSubscription?.remove();
+    networkSubscription?.remove();
     clearPendingRetryTimer();
   };
 }

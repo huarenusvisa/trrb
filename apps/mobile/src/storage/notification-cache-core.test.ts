@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { NOTIFICATION_CACHE_MAX_AGE_MS, notificationCacheKey, notificationCacheSnapshot, parseNotificationCache } from './notification-cache-core.ts';
+import { NOTIFICATION_CACHE_MAX_AGE_MS, inspectNotificationCache, notificationCacheKey, notificationCacheSnapshot, parseNotificationCache } from './notification-cache-core.ts';
 
 const notification = { id: 'notice-1', user_id: 'user-1', type: 'comment_reply' as const, is_read: false, created_at: '2026-09-05T10:00:00Z' };
 
@@ -13,6 +13,16 @@ test('restores a recent notification page only for its signed-in owner and categ
   assert.equal(parseNotificationCache(raw, 'user-1', 'replies', 99), null);
 });
 
+test('classifies expired notification cache separately from invalid content', () => {
+  const now = 20_000_000_000;
+  const expired = JSON.stringify({ savedAt: now - NOTIFICATION_CACHE_MAX_AGE_MS - 1, userId: 'user-1', category: 'all', snapshot: { notifications: [notification], nextOffset: null } });
+  const future = JSON.stringify({ savedAt: now + 10 * 60 * 1000, userId: 'user-1', category: 'all', snapshot: { notifications: [notification], nextOffset: null } });
+
+  assert.deepEqual(inspectNotificationCache(expired, 'user-1', 'all', now), { payload: null, discardReason: 'expired' });
+  assert.deepEqual(inspectNotificationCache(future, 'user-1', 'all', now), { payload: null, discardReason: 'invalid' });
+  assert.deepEqual(inspectNotificationCache(null, 'user-1', 'all', now), { payload: null, discardReason: null });
+});
+
 test('rejects malformed, cross-account and oversized notification cache content', () => {
   const crossAccount = { ...notification, user_id: 'user-2' };
   const malformed = JSON.stringify({ savedAt: 100, userId: 'user-1', category: 'all', snapshot: { notifications: [crossAccount], nextOffset: null } });
@@ -20,6 +30,7 @@ test('rejects malformed, cross-account and oversized notification cache content'
   assert.equal(parseNotificationCache('{', 'user-1', 'all', 200), null);
   const many = Array.from({ length: 25 }, (_, index) => ({ ...notification, id: `notice-${index}` }));
   assert.equal(notificationCacheSnapshot(many, 20, 'user-1').notifications.length, 20);
+  assert.equal(notificationCacheSnapshot([notification], -1, 'user-1').nextOffset, null);
 });
 
 test('isolates every account and category storage key', () => {

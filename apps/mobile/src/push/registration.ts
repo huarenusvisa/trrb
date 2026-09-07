@@ -27,6 +27,24 @@ const pushResponseGate = new PushResponseGate();
 let registrationSuspended = false;
 let tokenMutationQueue: Promise<void> = Promise.resolve();
 let pendingRetryTimer: ReturnType<typeof setTimeout> | null = null;
+export type PendingPushRegistrationStatus = { attempts: number; retryAt: number };
+type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' };
+const pendingRegistrationListeners = new Set<(event: PendingPushRegistrationEvent) => void>();
+
+function publishPendingRegistration(event: PendingPushRegistrationEvent) {
+  pendingRegistrationListeners.forEach((listener) => {
+    try {
+      listener(event);
+    } catch (error) {
+      console.warn('push registration status listener failed', error);
+    }
+  });
+}
+
+export function subscribeToPendingPushRegistration(listener: (event: PendingPushRegistrationEvent) => void) {
+  pendingRegistrationListeners.add(listener);
+  return () => pendingRegistrationListeners.delete(listener);
+}
 
 function clearPendingRetryTimer() {
   if (pendingRetryTimer) clearTimeout(pendingRetryTimer);
@@ -41,9 +59,10 @@ function schedulePendingRetry(delayMs: number) {
   }, Math.max(0, Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, delayMs)));
 }
 
-async function clearPendingRegistration() {
+async function clearPendingRegistration(reason: 'synced' | 'cleared' = 'cleared') {
   clearPendingRetryTimer();
   await AsyncStorage.removeItem(PENDING_REGISTRATION_KEY);
+  publishPendingRegistration({ status: null, reason });
 }
 
 function enqueueTokenMutation<T>(mutation: () => Promise<T>) {
@@ -162,7 +181,7 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
     ]);
     await Promise.all([
       AsyncStorage.removeItem(LEGACY_DEVICE_TOKEN_KEY),
-      clearPendingRegistration()
+      clearPendingRegistration('synced')
     ]);
     return expoPushToken;
   } catch (error) {
@@ -173,6 +192,11 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
       expoPushToken
     );
     await AsyncStorage.setItem(PENDING_REGISTRATION_KEY, nextPendingRaw);
+    const nextPending = parsePendingPushRegistration(nextPendingRaw);
+    if (nextPending) publishPendingRegistration({
+      status: { attempts: nextPending.attempts, retryAt: nextPending.retryAt },
+      reason: 'pending'
+    });
     schedulePendingRetry(pendingPushRetryDelay(nextPendingRaw, auth.user.id) ?? MAX_PENDING_PUSH_RETRY_DELAY_MS);
     throw error;
   }

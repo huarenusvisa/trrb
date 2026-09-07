@@ -160,6 +160,9 @@ assert.ok(verifiedPerson?.description?.includes('appointed'), 'Person schema mus
 assert.ok(verifiedPerson?.sameAs?.[0]?.startsWith('https://www.justice.gov/'), 'Person schema must cite its official DOJ source');
 
 const headers = await read('_headers');
+assert.match(headers, /\/\*\.js\s+Cache-Control: public, max-age=0, must-revalidate/, 'JavaScript must allow safe conditional browser caching');
+assert.match(headers, /\/\*\.css\s+Cache-Control: public, max-age=0, must-revalidate/, 'stylesheets must allow safe conditional browser caching');
+assert.doesNotMatch(headers, /\/\*\.(?:js|css)\s+Cache-Control:[^\n]*no-store/, 'static assets must remain eligible for ETag revalidation');
 assert.match(headers, /\/judge\s+X-Robots-Tag: noindex, follow/);
 assert.match(headers, /\/\*\/judge\s+X-Robots-Tag: noindex, follow/);
 

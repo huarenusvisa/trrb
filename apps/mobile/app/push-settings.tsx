@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { AccessibilityInfo, ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, ActivityIndicator, Alert, AppState, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useI18n } from '../src/i18n/I18nProvider';
 import type { MessageKey } from '../src/i18n/i18n-core';
 import { getPushPreferences, PushPreferences, updatePushPreferences } from '../src/push/preferences';
-import { disableCurrentDevicePushToken, getPendingPushRegistrationStatus, getPushPermissionStatus, hasCurrentDevicePushToken, registerPushToken, retryPendingPushRegistration } from '../src/push/registration';
+import { disableCurrentDevicePushToken, getPendingPushRegistrationStatus, getPushPermissionStatus, hasCurrentDevicePushToken, PendingPushRegistrationStatus, registerPushToken, retryPendingPushRegistration, subscribeToPendingPushRegistration } from '../src/push/registration';
 
 const OPTIONS: { key: keyof PushPreferences; title: MessageKey; description: MessageKey }[] = [
   { key: 'breaking_news', title: 'push.breakingNews', description: 'push.breakingNewsMeta' },
@@ -26,18 +26,73 @@ export default function PushSettingsScreen() {
   const [enabled, setEnabled] = useState(false);
   const [busy, setBusy] = useState(true);
   const [retrying, setRetrying] = useState(false);
-  const [pendingSync, setPendingSync] = useState<{ attempts: number; retryAt: number } | null>(null);
+  const [pendingSync, setPendingSync] = useState<PendingPushRegistrationStatus | null>(null);
   const [savingKey, setSavingKey] = useState<keyof PushPreferences | null>(null);
+  const pendingSyncRef = useRef<PendingPushRegistrationStatus | null>(null);
+  const completionAnnouncementPending = useRef(false);
+  const refreshGeneration = useRef(0);
+
+  const updatePendingSync = useCallback((nextPendingSync: PendingPushRegistrationStatus | null) => {
+    pendingSyncRef.current = nextPendingSync;
+    setPendingSync(nextPendingSync);
+  }, []);
+
+  const refreshDeviceState = useCallback(async (announceCompletion: boolean) => {
+    const generation = refreshGeneration.current;
+    const [nextPermission, hasToken, nextPendingSync] = await Promise.all([
+      getPushPermissionStatus(),
+      hasCurrentDevicePushToken(),
+      getPendingPushRegistrationStatus()
+    ]);
+    if (generation !== refreshGeneration.current) return;
+    const completedPendingSync = (Boolean(pendingSyncRef.current) && !nextPendingSync || completionAnnouncementPending.current) && nextPermission.status === 'granted' && hasToken;
+    setPermission(nextPermission.status);
+    setCanAskAgain(nextPermission.canAskAgain);
+    setEnabled(nextPermission.status === 'granted' && hasToken);
+    updatePendingSync(nextPendingSync);
+    if (announceCompletion && completedPendingSync) {
+      completionAnnouncementPending.current = false;
+      AccessibilityInfo.announceForAccessibility(t('push.retrySucceeded'));
+    }
+  }, [t, updatePendingSync]);
 
   useEffect(() => {
-    Promise.all([getPushPreferences(), getPushPermissionStatus(), hasCurrentDevicePushToken(), getPendingPushRegistrationStatus()]).then(([nextPreferences, nextPermission, hasToken, nextPendingSync]) => {
-      setPreferences(nextPreferences);
-      setPermission(nextPermission.status);
-      setCanAskAgain(nextPermission.canAskAgain);
-      setEnabled(nextPermission.status === 'granted' && hasToken);
-      setPendingSync(nextPendingSync);
-    }).catch((error) => Alert.alert(t('push.loadFailed'), error instanceof Error ? error.message : t('push.retryLater'))).finally(() => setBusy(false));
-  }, [t]);
+    let mounted = true;
+    Promise.all([getPushPreferences(), refreshDeviceState(false)]).then(([nextPreferences]) => {
+      if (mounted) setPreferences(nextPreferences);
+    }).catch((error) => {
+      if (mounted) Alert.alert(t('push.loadFailed'), error instanceof Error ? error.message : t('push.retryLater'));
+    }).finally(() => {
+      if (mounted) setBusy(false);
+    });
+    const unsubscribeStatus = subscribeToPendingPushRegistration((event) => {
+      if (!mounted) return;
+      refreshGeneration.current += 1;
+      const completedPendingSync = event.reason === 'synced' && Boolean(pendingSyncRef.current);
+      updatePendingSync(event.status);
+      if (completedPendingSync) {
+        setEnabled(true);
+        if (AppState.currentState === 'active') {
+          completionAnnouncementPending.current = false;
+          AccessibilityInfo.announceForAccessibility(t('push.retrySucceeded'));
+        } else {
+          completionAnnouncementPending.current = true;
+        }
+      } else if (event.reason !== 'synced') {
+        completionAnnouncementPending.current = false;
+      }
+    });
+    const appStateSubscription = AppState.addEventListener('change', (state) => {
+      if (state !== 'active') return;
+      void refreshDeviceState(true).catch((error) => console.warn('push settings refresh failed', error));
+    });
+    return () => {
+      mounted = false;
+      refreshGeneration.current += 1;
+      unsubscribeStatus();
+      appStateSubscription.remove();
+    };
+  }, [refreshDeviceState, t, updatePendingSync]);
 
   const enablePush = async () => {
     setBusy(true);
@@ -47,12 +102,12 @@ export default function PushSettingsScreen() {
       setPermission(nextPermission.status);
       setCanAskAgain(nextPermission.canAskAgain);
       setEnabled(Boolean(token));
-      setPendingSync(await getPendingPushRegistrationStatus());
+      updatePendingSync(await getPendingPushRegistrationStatus());
       if (!token) {
         Alert.alert(t('push.pendingTitle'), nextPermission.canAskAgain ? t('push.allowPrompt') : t('push.systemPrompt'));
       }
     } catch (error) {
-      setPendingSync(await getPendingPushRegistrationStatus().catch(() => null));
+      updatePendingSync(await getPendingPushRegistrationStatus().catch(() => null));
       Alert.alert(t('push.enableFailed'), error instanceof Error ? error.message : t('push.networkRetry'));
     } finally {
       setBusy(false);
@@ -64,7 +119,7 @@ export default function PushSettingsScreen() {
     try {
       await disableCurrentDevicePushToken({ rememberDeviceChoice: true });
       setEnabled(false);
-      setPendingSync(null);
+      updatePendingSync(null);
     } catch (error) {
       Alert.alert(t('push.disableFailed'), error instanceof Error ? error.message : t('push.networkRetry'));
     } finally {
@@ -78,7 +133,7 @@ export default function PushSettingsScreen() {
     try {
       const token = await retryPendingPushRegistration();
       const nextPendingSync = await getPendingPushRegistrationStatus();
-      setPendingSync(nextPendingSync);
+      updatePendingSync(nextPendingSync);
       if (!token) {
         const nextPermission = await getPushPermissionStatus();
         setPermission(nextPermission.status);
@@ -86,9 +141,8 @@ export default function PushSettingsScreen() {
         throw new Error(nextPermission.canAskAgain ? t('push.allowPrompt') : t('push.systemPrompt'));
       }
       setEnabled(true);
-      AccessibilityInfo.announceForAccessibility(t('push.retrySucceeded'));
     } catch (error) {
-      setPendingSync(await getPendingPushRegistrationStatus().catch(() => null));
+      updatePendingSync(await getPendingPushRegistrationStatus().catch(() => null));
       Alert.alert(t('push.retryFailed'), error instanceof Error ? error.message : t('push.networkRetry'));
     } finally {
       setRetrying(false);

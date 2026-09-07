@@ -179,6 +179,22 @@ test('push settings expose account-scoped pending registration and accessible re
   assert.match(settings, /t\('push\.retryPendingA11y'\)/);
 });
 
+test('push settings follow background token synchronization without stale state', () => {
+  const registration = read('src/push/registration.ts');
+  const settings = read('app/push-settings.tsx');
+
+  assert.match(registration, /subscribeToPendingPushRegistration/);
+  assert.match(registration, /reason: 'pending'/);
+  assert.match(registration, /clearPendingRegistration\('synced'\)/);
+  assert.match(settings, /AppState\.addEventListener\('change'/);
+  assert.match(settings, /refreshDeviceState\(true\)/);
+  assert.match(settings, /refreshGeneration\.current \+= 1/);
+  assert.match(settings, /event\.reason === 'synced'/);
+  assert.match(settings, /AppState\.currentState === 'active'/);
+  assert.match(settings, /completionAnnouncementPending\.current = true/);
+  assert.match(settings, /completionAnnouncementPending\.current = false/);
+});
+
 test('notification center pages older messages and restores account-scoped offline cache', () => {
   const screen = read('app/notifications.tsx');
   const api = read('src/community/notifications.ts');

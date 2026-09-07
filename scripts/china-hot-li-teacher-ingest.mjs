@@ -150,13 +150,27 @@ async function collectXPosts() {
 function externalId(tweetId) { return `x:${SOURCE_HANDLE}:${tweetId}`; }
 
 async function existingCandidate(tweetId) {
-  const rows = await supabase("news_candidates", { query: { select: "id,decision,article_id", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
+  const rows = await supabase("news_candidates", { query: { select: "id,decision,decision_reason,article_id,ai_payload,updated_at", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
 async function existingArticle(tweetId) {
-  const rows = await supabase("articles", { query: { select: "id,status", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
+  const rows = await supabase("articles", { query: { select: "id,status,created_at", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
+  if (!candidate || !qualified?.accepted) return false;
+  if (candidate.decision === "failed") return true;
+  if (candidate.decision !== "review_required") return false;
+  const reason = cleanText(candidate.decision_reason, 1_000);
+  const generatedFailure = reason.startsWith("自动扩写或发布失败:");
+  const classifierFailure = reason.startsWith("自动发布复核未通过:outside-china-hot");
+  if (!generatedFailure && !classifierFailure) return false;
+  const attempts = Number(candidate.ai_payload?.automatic_retry_attempts || 0);
+  if (!Number.isFinite(attempts) || attempts >= 3) return false;
+  const retryAt = Date.parse(candidate.ai_payload?.automatic_retry_at || "");
+  return !Number.isFinite(retryAt) || retryAt <= now;
 }
 
 function shingles(value) {
@@ -315,7 +329,7 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
       ].join("\n"),
       input: [{ role: "user", content: [
         { type: "input_text", text: previous
-          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n上一版未通过质量检查（长度${previous.content.length}，或含套话）。请重新阅读原文和图片，完整重写；只能补充有依据的具体信息：\n${previous.content}`
+          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n上一版未通过质量检查（长度${previous.content.length}、中国主体不明确或含套话）。请重新阅读原文和图片，标题必须保留原文中的中国主体，并完整重写；只能补充有依据的具体信息：\n${previous.content}`
           : `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n请结合随附原帖图片中的可见信息整理文章。` },
         ...visualInputs(tweet),
       ] }],
@@ -324,10 +338,11 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
   }, 60_000));
   const article = JSON.parse(responseText(response));
   article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000); article.old_news_reason = cleanText(article.old_news_reason, 800);
-  if ((article.content.length < target.min || containsBoilerplate(article.content)) && attempt < 5) return generateArticle(qualified, tweet, attempt + 1, article);
+  const subjectClear = isChinaHotHeadline(article.title, article.content);
+  if ((article.content.length < target.min || article.content.length > target.max || containsBoilerplate(article.content) || !subjectClear) && attempt < 5) return generateArticle(qualified, tweet, attempt + 1, article);
   if (article.content.length < target.min || article.content.length > target.max) throw new Error(`生成正文长度${article.content.length}，未达到${target.min}-${target.max}字`);
   if (containsBoilerplate(article.content)) throw new Error("生成正文含提醒、呼吁或宣传式套话，禁止自动发布");
-  if (!isChinaHotHeadline(article.title, article.content)) throw new Error("生成稿未明确中国新闻主体");
+  if (!subjectClear) throw new Error("生成稿未明确中国新闻主体");
   return { ...article, seo_keywords: cleanText(article.seo_keywords, 300), target };
 }
 
@@ -388,8 +403,16 @@ export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOStri
   };
 }
 
-async function publishArticle(body) {
+async function publishArticle(body, prior = null) {
   if (DRY_RUN) return { id: null };
+  if (prior && prior.status !== "published") {
+    const rows = await supabase("articles", {
+      method: "PATCH", query: { id: `eq.${prior.id}` },
+      body: { ...body, created_at: prior.created_at || body.created_at, updated_at: new Date().toISOString() },
+      prefer: "return=representation",
+    });
+    return Array.isArray(rows) ? rows[0] : rows;
+  }
   const rows = await supabase("articles", { method: "POST", body, prefer: "return=representation" });
   return Array.isArray(rows) ? rows[0] : rows;
 }
@@ -400,12 +423,12 @@ async function keepEditableDraft(tweet, reason) {
   return publishArticle(buildReviewDraft(tweet, reason));
 }
 
-async function requireManualReview(candidate, tweet, reason) {
+async function requireManualReview(candidate, tweet, reason, retry = null) {
   const draft = await keepEditableDraft(tweet, reason);
   await patchCandidate(candidate?.id || tweet.candidateId, {
     decision: "review_required", decision_reason: reason, article_id: draft?.id || null,
     processed_at: new Date().toISOString(),
-    ai_payload: { status: "review_required", editable: true, manual_publish_allowed: true, reason },
+    ai_payload: { status: "review_required", editable: true, manual_publish_allowed: true, reason, ...(retry || {}) },
   });
   return draft;
 }
@@ -614,9 +637,10 @@ export async function run() {
     }
     counters.qualified += 1;
     const priorCandidate = await existingCandidate(tweet.id);
-    if (priorCandidate && priorCandidate.decision !== "failed") { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-pool", decision: priorCandidate.decision }); continue; }
+    const retryCandidate = shouldRetryCandidate(priorCandidate, qualified);
+    if (priorCandidate && priorCandidate.decision !== "failed" && !retryCandidate) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-pool", decision: priorCandidate.decision }); continue; }
     const priorArticle = await existingArticle(tweet.id);
-    if (priorArticle) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-article", articleId: priorArticle.id }); continue; }
+    if (priorArticle?.status === "published" || (priorArticle && !retryCandidate && priorCandidate?.decision !== "failed")) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-article", articleId: priorArticle.id }); continue; }
     if (counters.published >= MAX_PUBLISH) { results.push({ tweetId: tweet.id, status: "deferred" }); continue; }
     const candidate = priorCandidate || await createCandidate(tweet, qualified);
     try {
@@ -635,13 +659,19 @@ export async function run() {
         continue;
       }
       const articleBody = buildPublishedArticle(tweet, qualified, generated);
-      const saved = await publishArticle(articleBody);
+      const saved = await publishArticle(articleBody, priorArticle);
       recentArticles.unshift({ id: saved?.id, title: generated.title, summary: generated.summary, content: generated.content });
       await patchCandidate(candidate?.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
       counters.published += 1; results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
     } catch (error) {
       const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}；保留为可编辑草稿，由编辑决定是否发布`;
-      const draft = await requireManualReview(candidate, tweet, reason);
+      const retryAttempts = Number(candidate?.ai_payload?.automatic_retry_attempts || 0) + 1;
+      const retryDelay = [30, 120, 360][Math.min(retryAttempts - 1, 2)] * 60_000;
+      const retry = retryAttempts < 3 ? {
+        automatic_retry_attempts: retryAttempts,
+        automatic_retry_at: new Date(Date.now() + retryDelay).toISOString(),
+      } : { automatic_retry_attempts: retryAttempts, automatic_retry_exhausted: true };
+      const draft = await requireManualReview(candidate, tweet, reason, retry);
       results.push({ tweetId: tweet.id, status: "review-required", articleId: draft?.id || null, error: cleanText(error?.message || error, 800) });
     }
   }

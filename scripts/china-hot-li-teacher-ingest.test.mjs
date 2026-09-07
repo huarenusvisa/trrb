@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -100,11 +100,33 @@ test("未自动发布的内容仍是可编辑、可人工发布的后台草稿",
   assert.match(draft.metadata.review_reason, /需要编辑核对/);
 });
 
-test("拒绝美国主导、回复、转帖和低信息片段", () => {
+test("直接涉及中国的跨国新闻进入中国热门，纯美国新闻仍被拒绝", () => {
+  assert.equal(qualifyTweet({ id: "china-cars", text: "美国车企联盟致信国会，要求立法禁销中国车，并称此举涉及中国制造商在美国市场的销售、生产和进口安排。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "xinhua", text: "新华社时评关注农村高额彩礼问题，小红书相关讨论引发网友关注，话题直接涉及中国农村青年婚恋负担。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "security", text: "环球时报报道，国家安全部披露有人深夜翻进快递站偷取数据，国安部提示相关案件涉及数据安全。" }).accepted, true);
   assert.equal(qualifyTweet({ id: "us", text: "8月23日，美国佛罗里达州警方宣布将与ICE开展联合执法行动，并公布新的移民拘留安排。" }).accepted, false);
   assert.equal(qualifyTweet({ id: "reply", text: chinaTweet.text, referenced_tweets: [{ type: "replied_to" }] }).accepted, false);
   assert.equal(qualifyTweet({ id: "rt", text: `RT @example: ${chinaTweet.text}` }).accepted, false);
   assert.equal(qualifyTweet({ id: "thin", text: "北京突发，稍后更新。" }).accepted, false);
+});
+
+test("自动失败草稿可有界重试，人工复核决定不会被自动覆盖", () => {
+  const qualified = qualifyTweet(chinaTweet);
+  assert.equal(shouldRetryCandidate({
+    decision: "review_required",
+    decision_reason: "自动发布复核未通过：outside-china-hot；保留为可编辑草稿，由编辑决定是否发布",
+    ai_payload: {},
+  }, qualified), true);
+  assert.equal(shouldRetryCandidate({
+    decision: "review_required",
+    decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
+    ai_payload: { automatic_retry_attempts: 3 },
+  }, qualified), false);
+  assert.equal(shouldRetryCandidate({
+    decision: "review_required",
+    decision_reason: "编辑要求人工核对来源",
+    ai_payload: {},
+  }, qualified), false);
 });
 
 test("中国热门头条打开开关立即采集，并由每小时唤醒器补漏24小时内容", () => {
@@ -121,6 +143,8 @@ test("中国热门头条打开开关立即采集，并由每小时唤醒器补�
   assert.doesNotMatch(workflow, /collection-cadence-gate/);
   assert.doesNotMatch(workflow, /COLLECTION_CADENCE_MINUTES/);
   assert.match(control, /cron: "7 \* \* \* \*"/);
+  assert.match(control, /netlify\/functions\/_shared\/china-hot-headlines\.js/);
+  assert.match(control, /scripts\/china-hot-li-teacher-ingest\.mjs/);
   assert.match(control, /must never be blocked by an internal cadence lock/);
   assert.match(control, /github\.event_name == 'schedule'[\s\S]*inputs\.module == 'china-hot'/);
   assert.match(control, /china-hot-li-teacher:/);
